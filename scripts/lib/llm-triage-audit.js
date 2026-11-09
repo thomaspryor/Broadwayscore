@@ -86,7 +86,10 @@ function judgeNomination(row, out, { nowMs }) {
       // An earlier answer only makes this wrong when no new question came after it.
       const lastAnswer = Math.max(...answers.filter((c) => c.at <= ts).map((c) => c.at));
       const askedAgain = comments.some((c) => c.at > lastAnswer && c.at <= ts && /DECISION NEEDED/i.test(c.body) && !OWNER_ANSWERED_COMMENT_RE.test(c.body));
-      if (!askedAgain) return { judgment: 'wrong', why: 'already-answered' };
+      // Any other human comment after the answer may be a re-ask in other words: unknown, not wrong.
+      const humanAfter = comments.some((c) => c.at > lastAnswer && c.at <= ts && !isBotComment(c.body) && !OWNER_ANSWERED_COMMENT_RE.test(c.body));
+      if (!askedAgain && humanAfter && !answers.some((c) => c.at > ts)) return { judgment: 'pending', why: 'activity-after-answer' };
+      if (!askedAgain && !humanAfter) return { judgment: 'wrong', why: 'already-answered' };
     }
     if (answers.some((c) => c.at > ts)) return { judgment: 'right', why: 'owner-answered' };
     return { judgment: 'pending', why: 'unanswered' };
@@ -110,11 +113,19 @@ const hash = (s) => { let h = 2166136261; for (const ch of String(s)) { h ^= ch.
  * Nominations to audit: CI rows with a verdict, at least MIN_AGE_DAYS old, latest per card,
  * a deterministic hash-ordered sample (stable week to week, so pending ones get re-judged).
  */
-function sampleNominations(rows, { nowMs, n = SAMPLE, includeLocal = false, settled = new Set() } = {}) {
+/**
+ * The 15 Step 0 cards the v3 prompt was tuned on (BRO-7139 Step 1 re-score). Their 14/15 is an
+ * in-sample score, so the audit never samples them: the wrong-rate measures unseen cards only.
+ */
+const TUNING_IDS = new Set(['BRO-6915', 'BRO-6810', 'BRO-5957', 'BRO-7095', 'BRO-7026', 'BRO-6737', 'BRO-6427', 'BRO-7028',
+  'BRO-7041', 'BRO-7031', 'BRO-6608', 'BRO-5500', 'BRO-7107', 'BRO-6866', 'BRO-4061']);
+
+function sampleNominations(rows, { nowMs, n = SAMPLE, includeLocal = false, settled = new Set(), exclude = TUNING_IDS } = {}) {
   const seen = new Map();
   for (const r of rows || []) {
     if (!r || !r.verdict || !/^BRO-\d+$/.test(String(r.id))) continue;
     if (!includeLocal && r.source !== 'ci') continue;
+    if (exclude.has(r.id)) continue;
     const t = ms(r.ts);
     if (t == null || nowMs - t < MIN_AGE_DAYS * DAY_MS) continue;
     const k = `${r.id}|${r.ts}`;
@@ -174,4 +185,4 @@ function cumulativeJudgments(auditRows, { includeLocal = false } = {}) {
   return { right, wrong, judged: right + wrong, scored, wrongRate: scored ? wrong / scored : null };
 }
 
-module.exports = { SAMPLE, MIN_AGE_DAYS, AUDIT_LEDGER_PATH, THROTTLE_DAYS, isWorkLanding, judgeNomination, sampleNominations, settledKeys, auditRow, auditedRecently, cumulativeJudgments };
+module.exports = { SAMPLE, TUNING_IDS, MIN_AGE_DAYS, AUDIT_LEDGER_PATH, THROTTLE_DAYS, isWorkLanding, judgeNomination, sampleNominations, settledKeys, auditRow, auditedRecently, cumulativeJudgments };

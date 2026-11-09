@@ -57,6 +57,8 @@ test('ask-owner: an earlier answer with no new question is wrong; a later answer
   assert.equal(j({ verdict: 'ask-owner' }, { comments: [ans(-2)] }).why, 'already-answered');
   assert.equal(j({ verdict: 'ask-owner' }, { comments: [ans(-2), ask(-1)] }).why, 'unanswered');
   assert.equal(j({ verdict: 'ask-owner' }, { comments: [ans(3)] }).why, 'owner-answered');
+  const note = { body: 'Owner, which layout should ship?', createdAt: at(-1) };
+  assert.equal(j({ verdict: 'ask-owner' }, { comments: [ans(-2), note] }).why, 'activity-after-answer'); // a re-ask in other words is not "wrong"
   assert.equal(j({ verdict: 'ask-owner' }, { comments: [] }).judgment, 'pending');
 });
 
@@ -83,6 +85,11 @@ test('sampleNominations: CI rows only, latest per card, old enough, deterministi
   assert.equal(s.length, A.SAMPLE);
   assert.ok(!s.some((r) => ['BRO-2', 'BRO-3', 'BRO-4'].includes(r.id)));
   assert.deepEqual(A.sampleNominations(rows, { nowMs: NOW }).map((r) => r.id), s.map((r) => r.id));
+  // Cards the prompt was tuned on are never audited (in-sample); unseen ones are.
+  assert.equal(A.TUNING_IDS.size, 15);
+  const tuned = [...rows.slice(0, 1)].map((r) => ({ ...r, id: 'BRO-6915' }));
+  assert.equal(A.sampleNominations(tuned, { nowMs: NOW }).length, 0);
+  assert.equal(A.sampleNominations(tuned, { nowMs: NOW, exclude: new Set() }).length, 1);
   // Every nomination is its own sample unit; ones an earlier audit settled are skipped.
   assert.equal(A.sampleNominations(rows.slice(0, 2), { nowMs: NOW }).length, 2);
   assert.deepEqual(A.sampleNominations(rows.slice(0, 2), { nowMs: NOW, settled: new Set([`BRO-1|${at(0)}`]) }).map((r) => r.verdict), ['release']);
