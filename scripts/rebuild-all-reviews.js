@@ -2888,19 +2888,22 @@ showDirs.forEach(showId => {
       // below so an outlet whose reviews are currently excluded still contributes
       // to its own region inference. See outletShowCategoriesRaw's declaration above.
       //
-      // Trustworthiness gate is isReviewContentTrustworthy() (task #1553,
-      // scripts/lib/review-guards.js) — see its JSDoc for the full rationale on why
-      // wrongProduction is excluded UNCONDITIONALLY (a second-pass Claude review
-      // found 16 real false positives — US regional outlets like Entertainment
-      // Tonight, Edmonton Journal, KUTV — from an earlier version that kept counting
-      // wrongProduction:true evidence). Outlets whose ONLY reviews are
-      // wrongProduction-flagged stay region-less here — strictly safer than a wrong
-      // stamp, and they still get the isUkUrl fallback plus the chance to earn
-      // evidence from a future non-flagged review.
+      // Reject wrong-production evidence except the region guard's own circular
+      // assumption. Otherwise a newly registered London blog on a .com domain
+      // loses its evidence before reaching the three-show inference threshold.
       {
         const rawOutletForCategory = (data.outletId || data.outlet || '').toLowerCase();
         const cat = showCategoryMap[showId];
-        if (rawOutletForCategory && cat && isReviewContentTrustworthy(data)) {
+        if (rawOutletForCategory && cat) {
+          const trustworthy = isReviewContentTrustworthy(data);
+          const market = regionEvidenceMarket({
+            trustworthy,
+            trustworthyApartFromWrongProduction: isReviewContentTrustworthy({ ...data, wrongProduction: false }),
+            category: cat,
+            isLondonMarket,
+            review: data,
+            urlIsUk: !!data.url && isUkOutletUrl(data.url),
+          });
           // normalizeOutletCanonical matches the key allReviews/newOutlets register
           // brand-new outlets under (line ~2015); OUTLET_CANONICAL_ID_MAP resolves
           // ALIASES back to an already-registered outlet's actual registry key.
@@ -2913,25 +2916,11 @@ showDirs.forEach(showId => {
           const canonicalOutletForCategory = normalizeOutletCanonical(rawOutletForCategory);
           const canonicalId = OUTLET_CANONICAL_ID_MAP[canonicalOutletForCategory]
             || OUTLET_CANONICAL_ID_MAP[rawOutletForCategory] || canonicalOutletForCategory;
-          (outletShowCategoriesRaw[canonicalId] = outletShowCategoriesRaw[canonicalId] || new Set()).add(cat);
-        }
-        // BRO-5896: per-market distinct-show evidence for retracting a wrong
-        // london stamp. Wider than the trustworthy gate above on the NYC side
-        // only; see regionEvidenceMarket in lib/outlet-region-map.js.
-        if (rawOutletForCategory && cat) {
-          const market = regionEvidenceMarket({
-            trustworthy: isReviewContentTrustworthy(data),
-            trustworthyApartFromWrongProduction: isReviewContentTrustworthy({ ...data, wrongProduction: false }),
-            category: cat,
-            isLondonMarket,
-            wrongProductionNote: data.wrongProductionNote,
-            urlIsUk: !!data.url && isUkOutletUrl(data.url),
-          });
+          if (trustworthy || market === 'london') {
+            (outletShowCategoriesRaw[canonicalId] = outletShowCategoriesRaw[canonicalId] || new Set()).add(cat);
+          }
           if (market) {
-            const canonicalOutletForEvidence = normalizeOutletCanonical(rawOutletForCategory);
-            const evidenceId = OUTLET_CANONICAL_ID_MAP[canonicalOutletForEvidence]
-              || OUTLET_CANONICAL_ID_MAP[rawOutletForCategory] || canonicalOutletForEvidence;
-            const ev = (outletMarketShowsRaw[evidenceId] = outletMarketShowsRaw[evidenceId] || { london: new Set(), nyc: new Set() });
+            const ev = (outletMarketShowsRaw[canonicalId] = outletMarketShowsRaw[canonicalId] || { london: new Set(), nyc: new Set() });
             ev[market].add(showId);
           }
         }
@@ -7475,7 +7464,7 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
   if (retractedOutlets.length > 0) {
     console.log(`\n↩️  RETRACTED wrong region:'london' on ${retractedOutlets.length} outlet(s) (BRO-5896): ${retractedOutlets.map(r => `${r.id} (${r.nycShows} NYC / ${r.londonShows} London shows)`).join(', ')}`);
   }
-  const backfilledOutlets = backfillMissingOutletRegions(outletRegistry.outlets, outletShowCategories, isLondonMarket);
+  const backfilledOutlets = backfillMissingOutletRegions(outletRegistry.outlets, outletShowCategories, isLondonMarket, undefined, outletMarketShowsRaw);
 
   // Staged ids were NOT written to the registry — counting them here would
   // rewrite + commit data/outlet-registry.json on every one of ~20 workflows'
