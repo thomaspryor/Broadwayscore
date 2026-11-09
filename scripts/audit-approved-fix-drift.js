@@ -81,7 +81,13 @@ async function main() {
     if (flag('--all')) for (const d of explained) console.log(`  explained   ${d.file} ${d.field}: ${d.explained}`);
     if (unexplained.length) console.log('Restore each with node scripts/new-fix-plan.js --review-edit=<show>/<file>.json:<field>=<value>, then find the writer that erased it.');
   }
-  if (flag('--alert')) await routeAuditDecisions(decideDriftAlert(unexplained), 'audit-approved-fix-drift');
+  if (flag('--alert')) {
+    const decision = decideDriftAlert(unexplained);
+    if (decision.action === 'resolve' && scanned === 0) {
+      // An empty/partial checkout proves nothing: never resolve (and so never let the sweep cancel) a live card.
+      console.error('audit-approved-fix-drift: scanned 0 files with approvedFixes, leaving the alert condition untouched');
+    } else await routeAuditDecisions(decision, 'audit-approved-fix-drift');
+  }
   return flag('--strict') && unexplained.length ? 1 : 0;
 }
 

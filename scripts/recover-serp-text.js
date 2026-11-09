@@ -48,7 +48,7 @@ const { discoverCorrectUrl, OUTLET_DOMAINS, REGISTRY_DOMAIN_ALIASES } = require(
 const { evaluateCandidate, buildDomainOutletIds, isProvenZeroSweep } = require('./lib/serp-text-recovery-candidates');
 const { fetchPage, unwrapRedirectUrl, cleanup } = require('./lib/scraper');
 // One gate + one locked write for every recovery route (BRO-7171).
-const { recoverReviewText, llmIdentityVerdict } = require('./lib/gap-acceptance');
+const { recoverReviewTextVerified } = require('./lib/gap-acceptance');
 const { checkpointReviewTexts: landReviewTexts, retryPendingPushes, createWriteTracker } = require('./lib/review-texts-checkpoint');
 
 const args = process.argv.slice(2);
@@ -242,43 +242,12 @@ async function fetchAndExtract(url) {
 }
 
 /**
- * LLM identity verdict for a text found at a NEW url. Only asked when the
- * cheap proofs (aggregator excerpt overlap) did not settle identity.
- */
-async function verifyMovedReview(candidate, cleanedText, newUrl) {
-  const { verifyContent, resolveCvMarket } = require('./lib/content-verifier');
-  const { isLongRunningProduction } = require('./lib/long-runner-registry');
-  const review = JSON.parse(fs.readFileSync(candidate.filePath, 'utf8'));
-  const show = candidate.show || {};
-  try {
-    // venue-write-guard-ok: venue is prompt context for verifyContent, never written to data.
-    const v = await verifyContent({
-      scrapedText: cleanedText,
-      excerpt: review.excerpt || null,
-      showTitle: show.title || candidate.showId,
-      criticName: review.criticName || null,
-      outletName: review.outlet || review.outletId || null,
-      url: newUrl,
-      venue: show.venue || null,
-      openingDate: show.openingDate || null,
-      publishDate: review.publishDate || null,
-      market: resolveCvMarket(show),
-      isLongRunningProduction: isLongRunningProduction(show),
-      show,
-    });
-    return llmIdentityVerdict(v);
-  } catch (e) {
-    console.log(`    LLM identity check failed: ${e.message.slice(0, 120)}`);
-    return false;
-  }
-}
-
-/**
  * Gate + write recovered text into the candidate's file through the shared
  * acceptRecoveredText gate (BRO-7171). newUrl === candidate.url means no URL
  * change (in-place text upgrade). Paid calls (LLM identity, score
  * extraction) run OUTSIDE the review-texts lock, between a decide-only pass
- * and the locked write, which re-reads the file and re-runs the gate.
+ * and the locked write, which re-reads the file and re-runs the gate
+ * (gap-acceptance.recoverReviewTextVerified, shared with the gap-recovery driver).
  */
 async function processRecovered(candidate, text, html, newUrl, method) {
   const labels = {
@@ -288,62 +257,45 @@ async function processRecovered(candidate, text, html, newUrl, method) {
     urlDiscoveryMethod: 'google-serp',
   };
   const url = newUrl || candidate.url;
-  // The record must still carry the url this candidate was built from; a
-  // concurrent writer that moved it wins and this recovery is refused.
-  const expectUrl = candidate.url || null;
-  const ctxOpts = { reviewTextsDir: CONFIG.reviewTextsDir };
-  let pre = recoverReviewText({ filePath: candidate.filePath, rawText: text, url, expectUrl, labels, dryRun: true, ctxOpts });
-  // identity_unproven is the one refusal an LLM verdict can overturn, and only
-  // when the verdict is the ONLY missing proof (outlet domain, critic named and
-  // no cross-show owner already hold); otherwise the paid call cannot help.
-  const missing = (pre.decision && pre.decision.identity && pre.decision.identity.missing) || [];
-  const onlyLlmMissing = missing.length === 1 && /no LLM identity verdict/.test(missing[0]);
-  if (!pre.ok && pre.code === 'identity_unproven' && onlyLlmMissing) {
-    if (CONFIG.dryRun) {
-      console.log(`    [DRY RUN] Would ask the LLM identity check, then write if it confirms (${method})`);
-      return { ok: false, reason: 'dry_run_needs_llm' };
-    }
-    const cleaned = require('./lib/gap-acceptance').cleanCandidateText(text, { url, showId: candidate.showId });
-    if (!cleaned.refused) {
-      ctxOpts.llmIdentityVerified = await verifyMovedReview(candidate, cleaned.text, url);
-      pre = recoverReviewText({ filePath: candidate.filePath, rawText: text, url, expectUrl, labels, dryRun: true, ctxOpts });
-    }
-  }
-  if (!pre.ok) {
-    console.log(`    Refused (${pre.code}): ${pre.reason}`);
-    return { ok: false, reason: pre.code };
-  }
-  if (CONFIG.dryRun) {
-    console.log(`    [DRY RUN] Would write ${pre.newLen} chars (${method})`);
-    return { ok: true, reason: 'dry_run' };
-  }
-
-  let scoreResult = null;
-  try {
-    scoreResult = await extractExplicitScore({ text: pre.decision.cleanedText, html: html || '', outletId: candidate.outletId, showId: candidate.showId });
-  } catch { /* score is optional */ }
-
-  const r = recoverReviewText({
+  const r = await recoverReviewTextVerified({
     filePath: candidate.filePath,
     rawText: text,
     url,
-    expectUrl,
+    // The record must still carry the url this candidate was built from; a
+    // concurrent writer that moved it wins and this recovery is refused.
+    expectUrl: candidate.url || null,
     labels,
+    dryRun: CONFIG.dryRun,
     tracker: RUN_WRITES,
-    ctxOpts,
-    beforeWrite: (data) => {
-      if (!scoreResult) return;
-      const { field } = setExtractedScore(data, {
-        value: scoreResult.originalScore,
-        normalizedValue: scoreResult.normalizedScore,
-        source: scoreResult.source,
-      });
-      console.log(`    Found ${field}: ${scoreResult.originalScore} (${scoreResult.normalizedScore}/100)`);
+    ctxOpts: { reviewTextsDir: CONFIG.reviewTextsDir },
+    show: candidate.show || null,
+    prepareWrite: async (decision) => {
+      let scoreResult = null;
+      try {
+        scoreResult = await extractExplicitScore({ text: decision.cleanedText, html: html || '', outletId: candidate.outletId, showId: candidate.showId });
+      } catch { /* score is optional */ }
+      if (!scoreResult) return null;
+      return (data) => {
+        const { field } = setExtractedScore(data, {
+          value: scoreResult.originalScore,
+          normalizedValue: scoreResult.normalizedScore,
+          source: scoreResult.source,
+        });
+        console.log(`    Found ${field}: ${scoreResult.originalScore} (${scoreResult.normalizedScore}/100)`);
+      };
     },
   });
+  if (r.code === 'dry_run_needs_llm') {
+    console.log(`    [DRY RUN] Would ask the LLM identity check, then write if it confirms (${method})`);
+    return { ok: false, reason: 'dry_run_needs_llm' };
+  }
   if (!r.ok) {
-    console.log(`    Refused at write (${r.code}): ${r.reason}`);
+    console.log(`    Refused (${r.code}): ${r.reason}`);
     return { ok: false, reason: r.code };
+  }
+  if (CONFIG.dryRun) {
+    console.log(`    [DRY RUN] Would write ${r.newLen} chars (${method})`);
+    return { ok: true, reason: 'dry_run' };
   }
   return { ok: true, reason: method };
 }

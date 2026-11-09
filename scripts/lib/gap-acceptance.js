@@ -439,9 +439,81 @@ function recoverReviewText({ filePath, rawText, url, expectUrl, labels, dryRun =
   return withReviewTextsLock(`recover-text:${path.basename(path.dirname(filePath))}/${path.basename(filePath)}`, run);
 }
 
+/**
+ * LLM identity verdict for a text found at a NEW url (content-verifier). Only
+ * asked when the cheap proofs did not settle identity. Never throws.
+ */
+async function verifyMovedReview({ filePath, show, showId, cleanedText, newUrl, log = console.log }) {
+  const { verifyContent, resolveCvMarket } = require('./content-verifier');
+  const { isLongRunningProduction } = require('./long-runner-registry');
+  const review = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+  const s = show || {};
+  try {
+    // venue-write-guard-ok: venue is prompt context for verifyContent, never written to data.
+    const v = await verifyContent({
+      scrapedText: cleanedText,
+      excerpt: review.excerpt || null,
+      showTitle: s.title || showId,
+      criticName: review.criticName || null,
+      outletName: review.outlet || review.outletId || null,
+      url: newUrl,
+      venue: s.venue || null,
+      openingDate: s.openingDate || null,
+      publishDate: review.publishDate || null,
+      market: resolveCvMarket(s),
+      isLongRunningProduction: isLongRunningProduction(s),
+      show: s,
+    });
+    return llmIdentityVerdict(v);
+  } catch (e) {
+    log(`    LLM identity check failed: ${String(e.message).slice(0, 120)}`);
+    return false;
+  }
+}
+
+/**
+ * recoverReviewText with the paid steps OUTSIDE the lock: a decide-only pass;
+ * when the only missing identity proof is the LLM verdict, ask it and decide
+ * again; then (live) an optional async prepare step (score extraction) and the
+ * locked write, which re-reads the file and re-runs the gate. Shared by
+ * recover-serp-text.js and the gap-recovery driver (BRO-7171).
+ *
+ * @param {object} a  recoverReviewText args plus:
+ * @param {object|null} [a.show]  shows.json record (LLM prompt context)
+ * @param {(decision:object) => Promise<((data:object)=>void)|null>} [a.prepareWrite]
+ * @returns {Promise<{ok:boolean, code:string, reason:string, newLen?:number, decision?:object, llmAsked?:boolean}>}
+ */
+async function recoverReviewTextVerified({ filePath, rawText, url, expectUrl, labels, dryRun = false, tracker, ctxOpts = {}, show = null, prepareWrite, log = console.log }) {
+  const base = { filePath, rawText, url, expectUrl, labels, ctxOpts };
+  let pre = recoverReviewText({ ...base, dryRun: true });
+  let llmAsked = false;
+  // identity_unproven is the one refusal an LLM verdict can overturn, and only
+  // when the verdict is the ONLY missing proof (outlet domain, critic named and
+  // no cross-show owner already hold); otherwise the paid call cannot help.
+  const missing = (pre.decision && pre.decision.identity && pre.decision.identity.missing) || [];
+  const onlyLlmMissing = missing.length === 1 && /no LLM identity verdict/.test(missing[0]);
+  if (!pre.ok && pre.code === 'identity_unproven' && onlyLlmMissing) {
+    if (dryRun) return { ok: false, code: 'dry_run_needs_llm', reason: 'would ask the LLM identity check, then write if it confirms', decision: pre.decision };
+    const showId = path.basename(path.dirname(filePath));
+    const cleaned = cleanCandidateText(rawText, { url, showId });
+    if (!cleaned.refused) {
+      llmAsked = true;
+      const verified = await verifyMovedReview({ filePath, show, showId, cleanedText: cleaned.text, newUrl: url, log });
+      pre = recoverReviewText({ ...base, ctxOpts: { ...ctxOpts, llmIdentityVerified: verified }, dryRun: true });
+      if (verified) ctxOpts = { ...ctxOpts, llmIdentityVerified: true };
+    }
+  }
+  if (!pre.ok || dryRun) return { ...pre, llmAsked };
+  const beforeWrite = prepareWrite ? await prepareWrite(pre.decision) : null;
+  const r = recoverReviewText({ ...base, ctxOpts, tracker, beforeWrite: beforeWrite || undefined });
+  return { ...r, llmAsked };
+}
+
 module.exports = {
   acceptRecoveredText,
   recoverReviewText,
+  recoverReviewTextVerified,
+  verifyMovedReview,
   buildAcceptanceContext,
   deriveShowTitle,
   cleanCandidateText,

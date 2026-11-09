@@ -18788,14 +18788,14 @@
       "disposition": "digest",
       "title": "LLM scoring daily spend over budget",
       "firstSeen": "2026-10-15T09:31:55.528Z",
-      "incidentOpenedAt": "2026-10-19T11:53:05.157Z",
-      "lastSeen": "2026-11-04T18:18:53.990Z",
-      "lastNotifiedAt": "2026-11-04T03:20:43.596Z",
-      "lastSurfacedAt": "2026-11-04T03:20:43.596Z",
-      "notifyCount": 19,
+      "incidentOpenedAt": "2026-11-09T02:18:27.213Z",
+      "lastSeen": "2026-11-09T02:32:53.122Z",
+      "lastNotifiedAt": "2026-11-09T02:18:27.213Z",
+      "lastSurfacedAt": "2026-11-09T02:18:27.213Z",
+      "notifyCount": 20,
       "cardId": null,
       "linearIdentifier": "BRO-6732",
-      "silentRefires": 36
+      "silentRefires": 1
     },
     "feedback-outcomes:2026-10-15T05:05:16.652944+00:00": {
       "status": "resolved",
@@ -29199,19 +29199,21 @@
       "resolvedAt": "2026-10-27T14:58:44.406Z"
     },
     "pending-unrecoverable:girls-off-west-end-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "1 review(s) for girls-off-west-end-2026 stuck in _pending with no text and no byline",
       "firstSeen": "2026-10-27T14:47:17.212Z",
       "incidentOpenedAt": "2026-11-08T22:18:45.729Z",
-      "lastSeen": "2026-11-09T00:56:57.661Z",
+      "lastSeen": "2026-11-09T01:55:53.214Z",
       "lastNotifiedAt": "2026-11-08T22:18:45.729Z",
       "lastSurfacedAt": "2026-11-08T22:18:45.729Z",
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4,
+      "resolvedAt": "2026-11-09T02:11:24.804Z",
+      "resolveReason": "outside the post-opening alert window on a complete scan"
     },
     "land:land/job/linear-BRO-6384-mvqsbs80": {
       "status": "resolved",
@@ -37289,12 +37291,13 @@
       "title": "1 review(s) for well-see-off-broadway-2026 stuck in _pending with no text and no byline",
       "firstSeen": "2026-11-04T16:06:40.931Z",
       "incidentOpenedAt": "2026-11-04T16:06:40.931Z",
-      "lastSeen": "2026-11-08T21:00:50.944Z",
+      "lastSeen": "2026-11-09T02:14:54.703Z",
       "lastNotifiedAt": "2026-11-08T21:00:50.944Z",
       "lastSurfacedAt": "2026-11-08T21:00:50.944Z",
       "notifyCount": 5,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "land:land/job/linear-BRO-6975-mw2c95n8": {
       "status": "resolved",
@@ -37963,13 +37966,13 @@
       "title": "1 review(s) for speculations-off-west-end-2026 stuck in _pending with no text and no byline",
       "firstSeen": "2026-11-06T16:57:24.209Z",
       "incidentOpenedAt": "2026-11-06T16:57:24.209Z",
-      "lastSeen": "2026-11-09T00:57:08.182Z",
+      "lastSeen": "2026-11-09T02:14:48.749Z",
       "lastNotifiedAt": "2026-11-08T21:10:47.112Z",
       "lastSurfacedAt": "2026-11-08T21:10:47.112Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "review-gap:opening-window:speculations-off-west-end-2026": {
       "status": "open",
@@ -38145,13 +38148,12 @@
       "title": "1 review(s) for parcel-from-america-off-broadway-2026 stuck in _pending with no text and no byline",
       "firstSeen": "2026-11-06T20:46:29.742Z",
       "incidentOpenedAt": "2026-11-06T20:46:29.742Z",
-      "lastSeen": "2026-11-08T21:00:42.741Z",
-      "lastNotifiedAt": "2026-11-08T02:07:37.167Z",
-      "lastSurfacedAt": "2026-11-08T02:07:37.167Z",
-      "notifyCount": 2,
+      "lastSeen": "2026-11-09T02:14:47.047Z",
+      "lastNotifiedAt": "2026-11-09T02:14:47.047Z",
+      "lastSurfacedAt": "2026-11-09T02:14:47.047Z",
+      "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 6
+      "linearIdentifier": null
     },
     "uncollected-blackout:tango-after-dark-off-west-end-2026": {
       "status": "resolved",
@@ -39394,7 +39396,7 @@
       "linearIdentifier": null
     },
     "land:land/worktree-agent-a2ea40cac568bc05a": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: scripts-lib-tests red on land/worktree-agent-a2ea40cac568bc05a",
       "firstSeen": "2026-11-09T01:34:18.121Z",
@@ -39404,7 +39406,8 @@
       "lastSurfacedAt": "2026-11-09T01:34:18.121Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-09T02:23:27.087Z"
     }
   }
 }
