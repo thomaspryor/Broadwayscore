@@ -29,10 +29,15 @@ const ACTIVE_STATUSES = new Set(['queued', 'in_progress', 'waiting', 'requested'
  *   step, and gather-reviews carries its own work list, so a cancel pages the owner or loses the dispatch.
  */
 const AUTO_SAFE = {
-  '.github/workflows/vercel-demo.yml': 'demo site deploy',
   '.github/workflows/demo-alias-watchdog.yml': 'demo alias watchdog',
-  '.github/workflows/update-critic-consensus.yml': "Critics' Take",
-  '.github/workflows/land-retry-cancelled.yml': 'land retry sweep',
+};
+
+/**
+ * Auto-cancelled only while still queued: cancelling a demo build mid-run leaves the demo alias on stale content
+ * (.github/workflows/CLAUDE.md, vercel-demo), so a running one is reported for a person instead.
+ */
+const AUTO_QUEUED_ONLY = {
+  '.github/workflows/vercel-demo.yml': 'demo site deploy',
 };
 
 /**
@@ -51,6 +56,9 @@ const MANUAL_MAIN_PUSH = {
 };
 
 const MANUAL_SAFE = {
+  // Critics' Take: its run title never names the show (no run-name), the poller dispatches it for tonight's shows, and
+  // its push and deploy steps are if: always(), so a cancel pushes a partial file. Never automatic.
+  '.github/workflows/update-critic-consensus.yml': "Critics' Take",
   '.github/workflows/mirror-data-to-gitlab.yml': 'core data mirror',
   '.github/workflows/fetch-all-image-formats.yml': 'show images',
 };
@@ -70,6 +78,8 @@ const LANE_LIVE = '.github/workflows/opening-night-lane-live.yml';
  */
 const NEVER = new Set([
   '.github/workflows/land.yml',
+  // It re-runs cancelled Land jobs; one of them may carry tonight's fix, and its cron backstop is throttled.
+  '.github/workflows/land-retry-cancelled.yml',
   '.github/workflows/vercel-deploy.yml',
   '.github/workflows/opening-night-lane-switch.yml',
   '.github/workflows/execute-approved-fix.yml',
@@ -113,6 +123,20 @@ function protectedShows(shows, nowMs) {
 
 const titleOf = (run) => String(run.display_title || run.name || '');
 
+const DAY = 24 * 60 * MIN;
+/**
+ * True when the title carries a YYYY-MM-DD night within a day of a protected show's opening date. Watchdog, probe and
+ * lane titles name their night; this keeps a show's own opening-night run even when shows.json lacks or misstates its
+ * openingDate.
+ */
+function titleNamesNearNight(title, nights) {
+  for (const m of String(title).matchAll(/\b(\d{4}-\d{2}-\d{2})\b/g)) {
+    const t = Date.parse(`${m[1]}T00:00:00Z`);
+    if (Number.isFinite(t) && nights.some((n) => Math.abs(t - n) <= DAY)) return true;
+  }
+  return false;
+}
+
 /** Every known show id that appears in the title as a whole token. */
 function showIdsInTitle(title, knownIds) {
   const tokens = new Set(String(title).split(/[\s,;|()]+/).filter(Boolean));
@@ -133,7 +157,9 @@ function classifyRun(run, ctx) {
   const tonightHit = (ctx.tonightIds || []).find((id) => title.includes(id));
   if (tonightHit) return keep(`for ${tonightHit}, whose press night is tonight`);
   if (NEVER.has(wf)) return keep('never-cancel list');
+  if (titleNamesNearNight(title, ctx.nights || [])) return keep("names tonight's night");
   if (AUTO_SAFE[wf]) return cancel(AUTO_SAFE[wf]);
+  if (AUTO_QUEUED_ONLY[wf]) return run.status === 'queued' ? cancel(`${AUTO_QUEUED_ONLY[wf]} (queued)`) : manual(`${AUTO_QUEUED_ONLY[wf]} (already building)`);
   if (MANUAL_SAFE[wf]) return manual(MANUAL_SAFE[wf]);
   if (MANUAL_MAIN_PUSH[wf]) {
     return run.event === 'push' && run.head_branch === 'main' ? manual(MANUAL_MAIN_PUSH[wf]) : keep('not a main push');
@@ -155,7 +181,10 @@ function planPriority({ shows, runs, nowMs }) {
   const tonight = tonightShows(shows, nowMs);
   const plan = { tonight, cancel: [], manual: [], keep: [] };
   if (!tonight.length) return plan;
-  const ctx = { tonightIds: protectedShows(shows, nowMs).map((t) => t.id), knownIds: (shows || []).map((s) => s && s.id).filter(Boolean) };
+  const prot = protectedShows(shows, nowMs);
+  const byId = new Map((shows || []).filter((s) => s && s.id).map((s) => [s.id, s]));
+  const nights = prot.map((t) => Date.parse(`${byId.get(t.id).openingDate}T00:00:00Z`)).filter(Number.isFinite);
+  const ctx = { tonightIds: prot.map((t) => t.id), knownIds: [...byId.keys()], nights };
   for (const run of runs || []) {
     const d = classifyRun(run, ctx);
     plan[d.action].push({ run, reason: d.reason });
@@ -164,6 +193,6 @@ function planPriority({ shows, runs, nowMs }) {
 }
 
 module.exports = {
-  WINDOW_BEFORE_MIN, WINDOW_AFTER_MIN, AUTO_SAFE, AUTO_OTHER_SHOW, MANUAL_SAFE, MANUAL_MAIN_PUSH, MANUAL_OTHER_SHOW, NEVER, LANE_LIVE,
-  tonightShows, protectedShows, showIdsInTitle, classifyRun, planPriority,
+  WINDOW_BEFORE_MIN, WINDOW_AFTER_MIN, AUTO_SAFE, AUTO_QUEUED_ONLY, AUTO_OTHER_SHOW, MANUAL_SAFE, MANUAL_MAIN_PUSH, MANUAL_OTHER_SHOW, NEVER, LANE_LIVE,
+  tonightShows, protectedShows, showIdsInTitle, titleNamesNearNight, classifyRun, planPriority,
 };

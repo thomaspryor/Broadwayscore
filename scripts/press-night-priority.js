@@ -54,6 +54,7 @@ async function fetchActiveRuns(repo, token) {
       const runs = body.workflow_runs || [];
       out.push(...runs);
       if (runs.length < 100) break;
+      if (page === 5) console.log(`::warning::press-night priority: more than 500 ${status} runs; the rest are not seen this pass`);
     }
   }
   const seen = new Set();
@@ -72,9 +73,11 @@ async function main() {
   const nowArg = arg('now');
   const nowMs = nowArg ? Date.parse(nowArg) : Date.now();
   if (!Number.isFinite(nowMs)) { console.error(`press-night priority: bad --now ${nowArg}`); return 1; }
-  const max = arg('max') ? Number(arg('max')) : 40;
+  const maxArg = arg('max');
+  const max = maxArg === undefined ? 40 : (maxArg === true ? NaN : Number(maxArg));
   if (!Number.isInteger(max) || max < 0) { console.error('press-night priority: bad --max'); return 1; }
   if (apply && arg('runs-file')) { console.error('press-night priority: --apply cannot use --runs-file (fixture runs are not real)'); return 1; }
+  if (apply && nowArg) { console.error('press-night priority: --apply cannot use --now (a rehearsal must never cancel real runs)'); return 1; }
 
   const showsFile = arg('shows-file') || path.join(__dirname, '../data/shows.json');
   let shows;
@@ -89,7 +92,9 @@ async function main() {
   const repo = process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore';
   const token = process.env.GITHUB_TOKEN || process.env.GH_TOKEN;
   let runs;
-  if (arg('runs-file')) runs = readRunsFile(arg('runs-file'));
+  if (arg('runs-file')) {
+    try { runs = readRunsFile(arg('runs-file')); } catch (e) { console.error(`press-night priority: cannot read ${arg('runs-file')}: ${e.message}`); return 1; }
+  }
   else {
     if (!token) { console.error('press-night priority: GITHUB_TOKEN is not set'); return 1; }
     runs = await fetchActiveRuns(repo, token);
@@ -105,22 +110,27 @@ async function main() {
   for (const { run, reason } of plan.manual) console.log(`manual ${line(run, reason)}`);
   for (const { run, reason } of plan.keep) console.log(`keep   ${line(run, reason)}`);
 
+  let done = 0;
+  if (apply) {
+    for (const { run } of plan.cancel.slice(0, max)) {
+      let status = 'error';
+      try {
+        const res = await api('POST', `https://api.github.com/repos/${repo}/actions/runs/${run.id}/cancel`, token);
+        status = res.status;
+      } catch (e) { status = `error ${e.message}`; } // one failed cancel never stops the rest
+      // 409 = already finished; anything else is logged and skipped (a cancel never retries).
+      console.log(`cancel ${run.id}: HTTP ${status}`);
+      if (status === 202) done++;
+    }
+    if (plan.cancel.length > max) console.log(`press-night priority: ${plan.cancel.length - max} more left for the next pass (--max=${max})`);
+    console.log(`press-night priority: cancelled ${done} run(s)`);
+  }
   const summary = [`### Press-night priority (${apply ? 'apply' : 'dry run'})`, '', `Tonight: ${tonight}`, '',
-    `${plan.cancel.length} ${apply ? 'cancelled' : 'would be cancelled'}, ${plan.manual.length} safe to cancel by hand only (go-live-now), ${plan.keep.length} kept.`, '',
+    `${apply ? `${done} cancelled` : `${plan.cancel.length} would be cancelled`}, ${plan.manual.length} safe to cancel by hand only (go-live-now), ${plan.keep.length} kept.`, '',
     ...plan.cancel.map(({ run, reason }) => `- cancel: ${run.display_title || run.name || ''} (${run.id}): ${reason}`),
     ...plan.manual.map(({ run, reason }) => `- by hand: ${run.display_title || run.name || ''} (${run.id}): ${reason}`)];
   if (process.env.GITHUB_STEP_SUMMARY) fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, summary.join('\n') + '\n');
 
-  if (!apply) return 0;
-  let done = 0;
-  for (const { run } of plan.cancel.slice(0, max)) {
-    const res = await api('POST', `https://api.github.com/repos/${repo}/actions/runs/${run.id}/cancel`, token);
-    // 409 = already finished; anything else is logged and skipped (a cancel never retries).
-    console.log(`cancel ${run.id}: HTTP ${res.status}`);
-    if (res.status === 202) done++;
-  }
-  if (plan.cancel.length > max) console.log(`press-night priority: ${plan.cancel.length - max} more left for the next pass (--max=${max})`);
-  console.log(`press-night priority: cancelled ${done} run(s)`);
   return 0;
 }
 

@@ -53,10 +53,16 @@ const RUNS = [
   run(31, 'execute-approved-fix.yml', 'Execute Approved Fix'),
   run(32, 'opening-night-lane-switch.yml', 'Opening-night lane switch'),
   run(33, 'fetch-all-image-formats.yml', 'Fetch Show Images', { status: 'completed' }),
+  // Critics' Take dispatched by the poller for tonight's show: its title never names the show (no run-name).
+  run(34, 'update-critic-consensus.yml', "Update Critics' Take", { status: 'in_progress' }),
+  run(35, 'vercel-demo.yml', 'Deploy Demo Site', { event: 'push', status: 'in_progress' }),
+  // Watchdog for a show whose shows.json entry lacks an openingDate, on tonight's night: kept by the night in its title.
+  run(36, 'press-night-watchdog.yml', 'Press night watchdog the-steel-man-off-broadway-2026 2026-11-08'),
+  run(37, 'press-night-watchdog.yml', 'Press night watchdog the-steel-man-off-broadway-2026 2026-10-01'),
 ];
 // Auto: no alert, no follow-up job, no lost work. Manual: on the skill's list, but a cancel pages, re-queues or loses work.
-const EXPECTED_CANCEL = [16, 18, 20, 21, 23, 27];
-const EXPECTED_MANUAL = [6, 8, 11, 17, 19, 22];
+const EXPECTED_CANCEL = [16, 21, 23, 37];
+const EXPECTED_MANUAL = [8, 11, 17, 18, 19, 22, 34, 35];
 
 const ids = (list) => list.map((x) => x.run.id).sort((a, b) => a - b);
 
@@ -115,6 +121,24 @@ test('BRO-7198: tests on main and alerting workflows are never cancelled automat
     const d = P.classifyRun(run(1, wf, `X — the-steel-man-off-broadway-2026`, { event: 'push' }), ctx);
     assert.notEqual(d.action, 'cancel', wf);
   }
+});
+
+test('BRO-7198: Critics\' Take, land retry and a running demo build are never cancelled automatically', () => {
+  const plan = P.planPriority({ shows: SHOWS, runs: RUNS, nowMs: Date.parse('2026-11-09T03:30:00Z') });
+  const action = (id) => ['cancel', 'manual', 'keep'].find((k) => plan[k].some((x) => x.run.id === id));
+  assert.equal(action(18), 'manual');
+  assert.equal(action(34), 'manual');
+  assert.equal(action(20), 'keep');
+  assert.equal(action(35), 'manual');
+  assert.equal(action(16), 'cancel');
+  for (const id of [6, 27, 36]) assert.equal(action(id), 'keep', `run ${id} names tonight's night`);
+});
+
+test('BRO-7198: a night in the title protects within one day only', () => {
+  const n = [Date.parse('2026-11-08T00:00:00Z')];
+  assert.equal(P.titleNamesNearNight('x 2026-11-09', n), true);
+  assert.equal(P.titleNamesNearNight('x 2026-11-10', n), false);
+  assert.equal(P.titleNamesNearNight('x no date', n), false);
 });
 
 test('BRO-7198: show ids match whole tokens only', () => {
