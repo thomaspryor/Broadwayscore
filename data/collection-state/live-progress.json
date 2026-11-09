@@ -1,38 +1,97 @@
 {
-  "updatedAt": "2026-11-09T02:40:47.775Z",
-  "processed": 2,
-  "failed": 7,
-  "successRate": "22.2%",
+  "updatedAt": "2026-11-09T03:26:53.708Z",
+  "processed": 8,
+  "failed": 16,
+  "successRate": "33.3%",
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 5,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 4,
     "directCookies": 0,
     "scrapingdog": 1,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
-      "t": "2026-11-09T02:30:28.360Z",
+      "t": "2026-11-09T03:18:37.011Z",
       "event": "bb-session",
-      "session": "9d048081",
-      "url": "https://bachtrack.com/review-lorfeo-william-kentridge-greek-national-opera-athen"
+      "session": "6bc4a9c3",
+      "url": "https://www.nytimes.com/2026/11/06/theater/the-unbelievers-222-a-ghost-story-rev"
     },
     {
-      "t": "2026-11-09T02:31:31.714Z",
-      "event": "bb-session",
-      "session": "6963d05f",
-      "url": "https://bachtrack.com/review-shostakovich-cherry-town-ahlbom-dutch-national-oper"
+      "t": "2026-11-09T03:18:37.384Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-11-09T02:32:34.392Z",
+      "t": "2026-11-09T03:18:54.464Z",
       "event": "bb-session",
-      "session": "1c3767de",
-      "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
+      "session": "ea4e165e",
+      "url": "https://www.wsj.com/articles/the-unbelievers-and-2-22a-ghost-story-review-off-br"
+    },
+    {
+      "t": "2026-11-09T03:18:54.739Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-09T03:19:10.918Z",
+      "event": "bb-session",
+      "session": "5d822c35",
+      "url": "https://www.wsj.com/articles/the-unbelievers-and-2-22a-ghost-story-review-off-br"
+    },
+    {
+      "t": "2026-11-09T03:19:11.171Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-09T03:21:19.086Z",
+      "event": "bb-session",
+      "session": "d62cf05b",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655533"
+    },
+    {
+      "t": "2026-11-09T03:21:19.373Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-09T03:24:25.612Z",
+      "event": "bb-session",
+      "session": "b657bc09",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655534"
+    },
+    {
+      "t": "2026-11-09T03:24:25.971Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-09T03:24:28.649Z",
+      "event": "bb-session",
+      "session": "2b2bd541",
+      "url": "https://www.nytimes.com/2026/11/08/theater/the-charioteer-review.html"
+    },
+    {
+      "t": "2026-11-09T03:24:28.925Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-09T03:24:45.103Z",
+      "event": "bb-session",
+      "session": "159f5475",
+      "url": "https://www.nytimes.com/2026/11/08/theater/the-charioteer-review.html"
+    },
+    {
+      "t": "2026-11-09T03:24:45.403Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
