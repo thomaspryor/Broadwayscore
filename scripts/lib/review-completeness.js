@@ -9,7 +9,7 @@
  *
  * The contract: an outlet display name (not an id), a critic name, a publish date, and a pull quote. Every check that
  * decides whether a review card is ready reads it from here: the lane before it scores and before it publishes
- * (lane-runner.js), and the site check on opening-night shows (scripts/check-review-card-completeness.js).
+ * (lane-runner.js), and the site check on opening-night shows (opening-night-checks/review-cards-complete.check.js).
  *
  * The quote is the rebuild's own: finalizePullQuote() in rebuild-all-reviews.js, so a lane card shows the same quote the
  * next full rebuild will. That file is loaded by a computed path on purpose: rehearsal.js laneCodeFiles() follows
