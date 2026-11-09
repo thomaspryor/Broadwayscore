@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7170",
   "planId": "cd6db46a-d8fb-46a3-8780-c7b3bc4c1483",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-08T22:23:26.954Z",
   "submitter": {
     "name": null,
@@ -44,5 +44,24 @@
         "description": "shows.json: angels-bone-west-end-2026.type"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-09T01:52:27.664Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for trial-by-jury-and-the-zoo-english-national-opera-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for trial-by-jury-and-the-zoo-english-national-opera-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for angels-bone-west-end-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
