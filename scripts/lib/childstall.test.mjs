@@ -34,7 +34,7 @@ const bro6854 = {
   anchor: -1, done: [],
   tools: [
     bash(4, 'node scripts/lib/wait-for-land.js land/bro-6854-sd 60', { run_in_background: true }, { taskId: 'bq1', startedAt: STALL_AT - 150 * MIN }),
-    bash(9, 'gh workflow run llm-scoring.yml -f show=boston'),
+    bash(9, 'gh workflow run llm-ensemble-score.yml -f show_id=boston'),
   ],
 };
 
@@ -127,7 +127,7 @@ function bro6854Transcript(extra = []) {
     userStr(CHILD_PROMPT),
     toolUse('t1', 'Bash', { command: 'node scripts/lib/wait-for-land.js land/bro-6854-sd 60', run_in_background: true }, 150),
     toolRes('t1', 'Command running in background with ID: bq1abc. Output is being written to: /tmp/x', 150),
-    toolUse('t2', 'Bash', { command: 'gh workflow run llm-scoring.yml -f show=boston' }, 2),
+    toolUse('t2', 'Bash', { command: 'gh workflow run llm-ensemble-score.yml -f show_id=boston' }, 2),
     toolRes('t2', 'Created workflow_dispatch event', 2),
     ...extra,
   ];
@@ -205,7 +205,7 @@ test('e2e: kill switch, and a non-child session is not CHILDSTALL-gated', () => 
 test('e2e: a parent prompt quoting the REPORT-BACK template (no BUDGET line) keeps WAKELESS', () => {
   const r = runHook([
     userStr('Start a worker; its prompt needs a line\nREPORT-BACK: send_message @parent'),
-    toolUse('t2', 'Bash', { command: 'gh workflow run llm-scoring.yml' }, 2),
+    toolUse('t2', 'Bash', { command: 'gh workflow run llm-ensemble-score.yml' }, 2),
     toolRes('t2', 'Created workflow_dispatch event', 2),
   ]);
   assert.doesNotMatch(r.stderr, STALL_MSG);
