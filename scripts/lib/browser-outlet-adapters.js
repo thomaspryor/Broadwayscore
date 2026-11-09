@@ -125,6 +125,10 @@ const ADAPTERS = Object.freeze({
     },
   }),
   wapo: Object.freeze({
+    // Stage 4 live batches 2026-11-09: 0/40 accepted. 31 stored urls answer a
+    // real 404 ("Page Not Found", confirmed in a fresh browser too); those
+    // rows are dead urls for ARCHIVE, not a session problem. Off for the nightly.
+    nightly: false,
     outletIds: ['washpost'],
     cookieDomain: 'washingtonpost.com',
     testUrl: 'https://www.washingtonpost.com/entertainment/theater/2025/09/29/masquerade-phantom-review/',

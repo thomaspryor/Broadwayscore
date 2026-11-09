@@ -34,6 +34,7 @@ test('every recover-*-browser.js outlet has an adapter, keyed by its persistent 
 
 test('30% rule per adapter: a nightly:false adapter is planned only when the run names its outlet', () => {
   assert.equal(A.ADAPTERS.nyt.nightly, false, 'NYT measured 4/20 live (20%)');
+  assert.equal(A.ADAPTERS.wapo.nightly, false, 'WaPo measured 0/40 live');
   assert.equal(A.adapterUsable('nytimes'), false);
   assert.equal(A.adapterUsable('nytimes', { explicitOutlets: new Set(['nytimes']) }), true);
   assert.equal(A.adapterUsable('nytimes', { explicitOutlets: new Set(['thestage']) }), false);
