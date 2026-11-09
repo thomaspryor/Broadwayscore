@@ -120,3 +120,6 @@ test('a run path carrying an @ref is still matched', () => {
   const r = hook(bash('gh run cancel 42533347172'), run(ME, '.github/workflows/press-night-clock.yml@refs/heads/main'));
   assert.equal(r.code, 2);
 });
+test('an unreadable run still fails open for a never-cancel workflow (pinned behaviour)', () => {
+  assert.equal(hook(bash('gh run cancel 42533347172'), 'not json').code, 0);
+});

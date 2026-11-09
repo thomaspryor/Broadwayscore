@@ -17,6 +17,9 @@
 # (cancelling is the emergency stop for a wrong send). A hand-cancel of press-night-clock.yml on Wanted night
 # (2026-11-09) left the press-night chain dead for 3h16m.
 #
+# The block is permanent (every day, not only on press nights), as the skill's Never-cancel list is; the kill switch below
+# is the way past it. It sees only `gh run cancel` / REST / MCP calls, not a cancel made inside a script.
+#
 # Fails open when the run cannot be read or this session's id is unknown.
 # The Land ownership rule is cloud-only in effect: CLAUDE_CODE_REMOTE_SESSION_ID is set only in cloud
 # sessions, so a local session passes through it. The never-cancel rule applies to every session.
