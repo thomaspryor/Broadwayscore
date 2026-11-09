@@ -7,16 +7,17 @@
  * then diff against what reviews.json says. Chicago lessons baked into the prompt: the article byline wins over
  * Theatre-In-X-style critic names; do not anchor on our own dates; two reviews in one article is not a roundup.
  *
- *   node scripts/audit-city-reviews.js --ids=a,b,c --reviews=<path to reviews.json> --shows=<path to shows.json>
+ *   node scripts/lib/audit-city-reviews.js --ids=a,b,c --reviews=<path to reviews.json> --shows=<path to shows.json>
  *        [--cache=dir] [--out=data/audit/city-review-audit.json]
  */
 'use strict';
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const os = require('os');
 
 const arg = (n, d) => { const h = process.argv.slice(2).find((a) => a.startsWith(`--${n}=`)); return h ? h.split('=').slice(1).join('=') : d; };
-const ROOT = path.join(__dirname, '..');
+const ROOT = path.join(__dirname, '..', '..');
 
 function articleText(html) {
   return String(html || '').replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/gi, ' ')
@@ -38,12 +39,14 @@ JSON keys: rightProduction (true/false/"unclear"), productionSeen (title and the
 
 async function gemini(prompt) {
   const key = process.env.GEMINI_API_KEY;
-  const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`, {
-    method: 'POST', headers: { 'Content-Type': 'application/json' },
+  if (!key) throw new Error('GEMINI_API_KEY is not set');
+  const res = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent', {
+    method: 'POST', headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
     body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature: 0, responseMimeType: 'application/json' } }),
   }); // timeout-audit-ok: one-shot audit CLI
   const j = await res.json();
-  const t = j && j.candidates && j.candidates[0] && j.candidates[0].content.parts[0].text;
+  if (!res.ok) throw new Error(`Gemini HTTP ${res.status}: ${JSON.stringify(j).slice(0, 200)}`);
+  const t = j && j.candidates && j.candidates[0] && j.candidates[0].content && j.candidates[0].content.parts && j.candidates[0].content.parts[0] && j.candidates[0].content.parts[0].text;
   return parseJson(t);
 }
 
@@ -68,10 +71,11 @@ function sameCritic(a, b) {
 }
 
 async function main() {
-  const { fetchPage } = require('./lib/scraper');
+  const { fetchPage } = require('./scraper');
   const ids = arg('ids', '').split(',').filter(Boolean);
-  const cache = arg('cache', '/tmp/claude-0/fc');
+  const cache = arg('cache', path.join(os.tmpdir(), 'city-review-audit-cache'));
   fs.mkdirSync(cache, { recursive: true });
+  if (!arg('shows') || !arg('reviews')) throw new Error('--shows=<shows.json> and --reviews=<reviews.json> are required');
   const shows = JSON.parse(fs.readFileSync(arg('shows'), 'utf8')); const sh = Array.isArray(shows) ? shows : shows.shows;
   const rv = JSON.parse(fs.readFileSync(arg('reviews'), 'utf8')); const R = Array.isArray(rv) ? rv : (rv.reviews || Object.values(rv));
   const flags = []; let n = 0;
@@ -82,12 +86,14 @@ async function main() {
       const f = path.join(cache, crypto.createHash('sha1').update(rev.url).digest('hex') + '.json');
       let page = null;
       try { page = JSON.parse(fs.readFileSync(f, 'utf8')); } catch { /* fetch */ }
-      if (!page) { try { const p = await fetchPage(rev.url, { skipVerify: true }); page = p && p.content ? { content: p.content } : null; if (page) fs.writeFileSync(f, JSON.stringify(page)); } catch { page = null; } }
+      if (!page) { try { const p = await fetchPage(rev.url, { skipVerify: true }); page = p && p.content ? { content: p.content, finalUrl: p.finalUrl || p.url || null } : null; if (page) fs.writeFileSync(f, JSON.stringify(page)); } catch { page = null; } }
       if (!page) { flags.push({ id, url: rev.url, problem: 'unfetchable' }); continue; }
       const meta = [metaOf(page.content, /<title[^>]*>([^<]+)/i), metaOf(page.content, /property="article:published_time"\s+content="([^"]+)/i), metaOf(page.content, /name="author"\s+content="([^"]+)/i)].filter(Boolean).join(' | ');
       let v; try { v = await gemini(buildPrompt(show, rev, articleText(page.content), meta)); } catch (e) { flags.push({ id, url: rev.url, problem: 'llm-error ' + e.message }); continue; }
       const problems = [];
       const body = articleText(page.content);
+      const redirected = page.finalUrl && String(page.finalUrl).replace(/[?#].*$/, '').replace(/\/+$/, '') !== String(rev.url).replace(/[?#].*$/, '').replace(/\/+$/, '');
+      if (redirected) problems.push(`redirected to ${page.finalUrl}`);
       if (body.length > 6000) v.truncatedAt = 6000;
       if (v.rightProduction === false) problems.push(`wrong production (${v.productionSeen})`);
       if (v.rightProduction === 'unclear') problems.push('production unclear');
@@ -99,8 +105,9 @@ async function main() {
     }
   }
   const out = arg('out', path.join(ROOT, 'data', 'audit', 'city-review-audit.json'));
+  fs.mkdirSync(path.dirname(out), { recursive: true });
   fs.writeFileSync(out, JSON.stringify({ audited: n, flagged: flags.length, flags }, null, 1));
-  try { require('./lib/scraper').cleanup(); } catch { /* none */ }
+  try { require('./scraper').cleanup(); } catch { /* none */ }
   console.log(`audited ${n} reviews, flagged ${flags.length} -> ${out}`);
 }
 if (require.main === module) main().catch((e) => { console.error(e); process.exit(1); });

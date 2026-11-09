@@ -134,9 +134,9 @@ function finderDriftRun(kept, row) {
   if (!keptStart || !rowStart || rowStart >= keptStart) return false;
   const gapDays = (Date.parse(keptStart) - Date.parse(rowStart)) / 86400000;
   if (gapDays > FINDER_DRIFT_DAYS) return false;
-  const keptEnd = isoOrNull(kept.closingDate);
-  const rowEnd = isoOrNull(row.closingDate);
-  return !rowEnd || (!!keptEnd && rowEnd <= keptEnd);
+  // A finder row that states any closing date is a run of its own (it may have ended before the kept run began): refuse.
+  if (row.closingDate) return false;
+  return true;
 }
 
 function duplicateRefusal(row, duplicateOf, shows, reviewCount, evidenceUrl) {
