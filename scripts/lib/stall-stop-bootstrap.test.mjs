@@ -13,7 +13,7 @@ import { spawnSyncStdinFile } from '../../tests/helpers/spawn-stdin-file.mjs';
 const REPO = path.resolve(new URL('.', import.meta.url).pathname, '..', '..');
 const BOOT = path.join(REPO, '.claude', 'hooks', 'lib', 'stall-stop-bootstrap.sh');
 const tmp = (p) => fs.mkdtempSync(path.join(os.tmpdir(), p));
-const run = (mode, env, input = '{}') => spawnSync('bash', [BOOT, mode], { input, encoding: 'utf8', env: { ...process.env, ...env }, timeout: 60000 });
+const run = (mode, env, input = '{}') => spawnSyncStdinFile('bash', [BOOT, mode], { input, encoding: 'utf8', env: { ...process.env, ...env }, timeout: 60000 });
 
 // A tiny stand-in for Broadwayscore: a runner that echoes what it was given.
 function fakeRepo() {
