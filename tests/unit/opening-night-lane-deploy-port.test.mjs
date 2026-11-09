@@ -108,7 +108,7 @@ test('ghDispatcher dispatches vercel-deploy.yml with the press-night source and 
 
 function publishWith(live, { timeoutMs = 60_000 } = {}) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro6649-'));
-  let t = 0; const deployed = []; const timeoutPages = []; let marked = 0;
+  let t = 0; const deployed = []; const timeoutPages = [];
   const row = { showId: SHOW, outlet: 'Out', criticName: 'C', url: U(1), assignedScore: 80, contentTier: 'complete', productionVerified: 'aggregator', openingNightLane: { show: SHOW, night: '2026-10-30', source: 'aggregator', seenAt: '2026-10-31T00:30:00.000Z' } };
   const ports = {
     updateReviews: async (fn) => fn({ reviews: [] }) && { applied: [row], added: 1, replaced: 0, kept: 0 },
@@ -167,7 +167,7 @@ test('real ports: dispatch is off unless the env switch is set; with it on, fetc
   await on.deploy({ show: SHOW, night: '2026-10-30', expectedUrls: [U(1), U(2)] });
   await on.fetchLiveShow(SHOW); // shows U(1) only
   assert.equal(dispatched.length, 1, 'U(2) is still missing: the open dispatch stays open, no second one');
-  const timeoutPages = [];
+  const timeoutPages = []; let marked = 0;
   const emailNow = real.createRealPublishPorts({ ...base, env: {}, page: async (o) => { timeoutPages.push(o); }, autoFixFirstGate: async () => ({ email: true, preamble: 'Fix did not hold.', markEscalated: async () => { marked += 1; } }) });
   await emailNow.pageLiveTimeout({ show: SHOW, night: '2026-10-30', missing: [U(2)], ms: 1_800_000 });
   assert.equal(timeoutPages[0].disposition, 'human');
