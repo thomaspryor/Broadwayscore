@@ -22,6 +22,11 @@
  *    banked half their capitalization ran far longer once under (median 68 vs
  *    21 weeks at 90%), so a live show is compared with past spells on its own
  *    side of that line whenever that side alone has enough history.
+ * 5. Show age: a first-year show under break-even closes fast, a long runner
+ *    lingers. Comparing only with spells that began at the same stage (inside
+ *    or after the run's first CLOSING_WATCH_YOUNG_WEEKS) cut the median miss
+ *    in a leave-one-show-out backtest of 60 closed shows from 43 weeks to 13,
+ *    and early and late misses evened out (22/3 became 7/9).
  *
  * Time is calendar weeks inside the show's final continuous run (a gap of
  * more than CLOSING_WATCH_MAX_GAP_WEEKS, such as the 2020-21 shutdown, starts
@@ -43,6 +48,9 @@ export const CLOSING_WATCH_MAX_GAP_WEEKS = 4;
 
 /** Banked operating profit, as a share of capitalization, that splits "had a cushion" from "did not". */
 export const CLOSING_WATCH_CUSHION_SPLIT = 0.5;
+
+/** Weeks into the run that split a young show from an established one. */
+export const CLOSING_WATCH_YOUNG_WEEKS = 52;
 
 /** Designations whose closing is not driven by box office. */
 const NOT_BOX_OFFICE_DRIVEN = new Set(['Nonprofit', 'Tour Stop']);
@@ -159,6 +167,8 @@ export interface ClosingObservation {
   under?: number;
   /** Banked share of capitalization when the spell began (bankedShareSeries); null/absent = unknown. */
   cushion?: number | null;
+  /** Calendar weeks into the final run when the spell began. Absent = unknown. */
+  age?: number;
 }
 
 /**
@@ -176,7 +186,7 @@ export function spellObservations(
   CLOSING_WATCH_THRESHOLDS.forEach((threshold, t) => {
     let start = -1;
     const close = (until: number) => {
-      out[t].push({ weeks: end - start, closed, under: until - start, cushion: banked[start] ?? null });
+      out[t].push({ weeks: end - start, closed, under: until - start, cushion: banked[start] ?? null, age: start });
       start = -1;
     };
     ratios.forEach((r, i) => {
@@ -242,6 +252,8 @@ export interface ClosingEstimate {
   p75: number | null;
   /** Which past spells it was compared with: those that had banked at least / less than CLOSING_WATCH_CUSHION_SPLIT, or all (null). */
   cushion: 'banked' | 'thin' | null;
+  /** Compared only with spells that began in the run's first year (true), after it (false), or all (null). */
+  young: boolean | null;
 }
 
 /** Calendar weeks the series has been under `threshold` (null weeks keep state). */
@@ -271,13 +283,19 @@ export function estimateClosing(
   const threshold = CLOSING_WATCH_THRESHOLDS[t];
   const weeksUnder = weeksUnderThreshold(ratios, threshold);
   // Same position: past spells that also stayed under this long, and lasted this long.
-  const same = (calibration[t] ?? []).filter((o) => o.weeks >= weeksUnder && (o.under ?? o.weeks) >= weeksUnder);
-  // Same cushion: compare with past spells that began with as much (or as little) banked, when there are enough.
-  const myCushion = banked[ratios.length - 1 - weeksUnder] ?? null;
-  const side = myCushion == null ? null : myCushion >= CLOSING_WATCH_CUSHION_SPLIT ? 'banked' : 'thin';
-  const sameSide = side == null ? [] : same.filter((o) => o.cushion != null && (o.cushion >= CLOSING_WATCH_CUSHION_SPLIT) === (side === 'banked'));
   const enough = (xs: ClosingObservation[]) =>
     xs.length >= CLOSING_WATCH_MIN_SAMPLE && xs.filter((o) => o.closed).length >= CLOSING_WATCH_MIN_CLOSINGS;
+  const position = (calibration[t] ?? []).filter((o) => o.weeks >= weeksUnder && (o.under ?? o.weeks) >= weeksUnder);
+  // Same stage of the run: spells that began as early (or as late) in their runs, when there are enough.
+  const spellStart = ratios.length - 1 - weeksUnder;
+  const isYoung = spellStart < CLOSING_WATCH_YOUNG_WEEKS;
+  const sameAge = position.filter((o) => o.age != null && o.age < CLOSING_WATCH_YOUNG_WEEKS === isYoung);
+  const young = enough(sameAge) ? isYoung : null;
+  const same = young == null ? position : sameAge;
+  // Same cushion: compare with past spells that began with as much (or as little) banked, when there are enough.
+  const myCushion = banked[spellStart] ?? null;
+  const side = myCushion == null ? null : myCushion >= CLOSING_WATCH_CUSHION_SPLIT ? 'banked' : 'thin';
+  const sameSide = side == null ? [] : same.filter((o) => o.cushion != null && (o.cushion >= CLOSING_WATCH_CUSHION_SPLIT) === (side === 'banked'));
   const cushion = side != null && enough(sameSide) ? side : null;
   const conditional = (cushion ? sameSide : same).map((o) => ({ weeks: o.weeks - weeksUnder, closed: o.closed }));
   const closings = conditional.filter((o) => o.closed).length;
@@ -293,6 +311,7 @@ export function estimateClosing(
     median,
     p75: kaplanMeierQuantile(conditional, 0.75),
     cushion,
+    young,
   };
 }
 

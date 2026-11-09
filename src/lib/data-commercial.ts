@@ -880,6 +880,7 @@ export function getClosingWatch(): ClosingWatchShow[] {
         thresholdPct: Math.round(estimate.threshold * 100),
         medianWeeks: estimate.median,
         cushion: estimate.cushion,
+        young: estimate.young,
       } : null,
     });
   }

@@ -96,7 +96,9 @@ export default function ClosingWatchCard({
       </div>
       {basis && (
         <p className="text-xs text-fg-muted mt-3">
-          Of {basis.sample} past Broadway runs that{' '}
+          Of {basis.sample} past Broadway runs
+          {basis.young === true && ' in their first year'}
+          {basis.young === false && ' past their first year'} that{' '}
           {basis.weeksUnder > 0 ? `spent ${basis.weeksUnder}+ weeks` : 'fell'} under {basis.thresholdPct}% of
           break-even (adjusted for the season)
           {basis.cushion === 'thin' && ' without having earned back half their investment first'}

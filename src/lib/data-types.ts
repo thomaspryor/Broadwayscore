@@ -621,7 +621,7 @@ export interface ClosingWatchShow {
   likelyClosing: { early: string | null; median: string; late: string | null } | null;
   /** What the estimate rests on: past spells under the same threshold that lasted at least as long as this one. */
   /** cushion: compared only with past runs that had banked at least ('banked') or less than ('thin') half their capitalization; null = all. */
-  basis: { sample: number; closings: number; weeksUnder: number; thresholdPct: number; medianWeeks: number; cushion: 'banked' | 'thin' | null } | null;
+  basis: { sample: number; closings: number; weeksUnder: number; thresholdPct: number; medianWeeks: number; cushion: 'banked' | 'thin' | null; young: boolean | null } | null;
 }
 
 export interface RecentRecoupmentShow {

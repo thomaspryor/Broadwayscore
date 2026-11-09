@@ -84,9 +84,9 @@ test('spells: one observation per drop under each threshold, weeks to the end, r
   const ratios = [null, 1.1, 0.95, 1.05, 0.85, 0.85];
   const obs = spellObservations(ratios, true);
   // Under 100%: dropped at index 2 and again at 4 (end = 5).
-  assert.deepEqual(obs[3], [{ weeks: 3, closed: true, under: 1, cushion: null }, { weeks: 1, closed: true, under: 1, cushion: null }]);
+  assert.deepEqual(obs[3], [{ weeks: 3, closed: true, under: 1, cushion: null, age: 2 }, { weeks: 1, closed: true, under: 1, cushion: null, age: 4 }]);
   // Under 90%: once, at index 4.
-  assert.deepEqual(obs[2], [{ weeks: 1, closed: true, under: 1, cushion: null }]);
+  assert.deepEqual(obs[2], [{ weeks: 1, closed: true, under: 1, cushion: null, age: 4 }]);
   assert.deepEqual(obs[0], []);
   assert.equal(calibrateClosingWatch([{ ratios, closed: false }])[3][0].closed, false);
 });
@@ -152,4 +152,18 @@ test('cushion: banked profit splits the comparison when that side has enough his
   // Too few on its own side: pooled.
   const thinOnly = cal.map((c) => c.filter((o) => o.cushion! < 0.5 || o.weeks > 55));
   assert.equal(estimateClosing(ratios, thinOnly, [...Array(10).fill(0), 0.8])!.cushion, null);
+});
+
+test('show age: a first-year show is compared with first-year spells, an established one with established spells', () => {
+  const cal: ClosingObservation[][] = [[], [], [], []];
+  for (let w = 1; w <= 20; w++) cal[2].push({ weeks: w, closed: true, age: 10 }); // young flops: 1..20
+  for (let w = 61; w <= 80; w++) cal[2].push({ weeks: w, closed: true, age: 200 }); // long runners: 61..80
+  const youngShow = estimateClosing([...Array(10).fill(1.05), 0.85], cal)!;
+  assert.equal(youngShow.young, true);
+  assert.equal(youngShow.median, 10);
+  const oldShow = estimateClosing([...Array(100).fill(1.05), 0.85], cal)!;
+  assert.equal(oldShow.young, false);
+  assert.equal(oldShow.median, 70);
+  // Without age on the history (or too few on its side): everyone counts.
+  assert.equal(estimateClosing([...Array(10).fill(1.05), 0.85], cal.map((c) => c.map(({ age: _a, ...o }) => o)))!.young, null);
 });
