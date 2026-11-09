@@ -54,7 +54,7 @@ const USAGE = `send-reddit-post-email.js: email each new Reddit opening-post dra
   --resend=ID,ID     send these unposted drafts again now (ignores age and earlier sends)`;
 
 const os = require('os');
-const { dueEmails, resendEmails, buildSubject, buildHtml, stampsFor, afterSend, liveMatchesDraft } = require('./lib/reddit-post-email');
+const { dueEmails, resendEmails, buildSubject, buildHtml, stampsFor, afterSend, liveMatchesDraft, SHOW_HEADER } = require('./lib/reddit-post-email');
 const { captureShowImages } = require('./lib/reddit-post-screenshots');
 
 // ── Send ────────────────────────────────────────────────────────────────────
@@ -146,7 +146,7 @@ async function main() {
       continue;
     }
     try {
-      const res = await postJSON('https://api.resend.com/emails', { from: FROM, to: [SEND_TO], subject, html, ...(attachments.length ? { attachments } : {}) },
+      const res = await postJSON('https://api.resend.com/emails', { from: FROM, to: [SEND_TO], subject, html, headers: { [SHOW_HEADER]: draft.showId }, ...(attachments.length ? { attachments } : {}) },
         { Authorization: `Bearer ${process.env.RESEND_API_KEY}` });
       const stamp = new Date().toISOString();
       drafts.drafts[draft.showId] = afterSend(drafts.drafts[draft.showId], stampsFor(kind, draft, stamp, { resend: RESEND.length > 0 }));

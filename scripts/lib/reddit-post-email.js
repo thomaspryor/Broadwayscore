@@ -115,6 +115,8 @@ async function defaultFetchJson(url) {
 
 // The subject lead per email kind. scripts/lib/reddit-email-archive.js parses these
 // subjects to archive superseded emails, so it reads this table, not its own copy.
+// Header on every draft email (the show id); reddit-email-archive.js reads it to tell shows with the same title apart.
+const SHOW_HEADER = 'X-BSC-Show-Id';
 const SUBJECT_LEADS = { new: 'Reddit post ready', update: 'Updated Reddit post', reminder: 'Still ready to post' };
 
 function buildSubject(d, kind) {
@@ -192,4 +194,4 @@ function buildHtml(d, kind, images = [], { siteBehind = false } = {}) {
 </body></html>`;
 }
 
-module.exports = { SUBJECT_LEADS, liveMatchesDraft, stampsFor, afterSend, resendEmails, dueEmails, buildSubject, buildHtml, REMIND_AFTER_HOURS };
+module.exports = { SUBJECT_LEADS, SHOW_HEADER, liveMatchesDraft, stampsFor, afterSend, resendEmails, dueEmails, buildSubject, buildHtml, REMIND_AFTER_HOURS };

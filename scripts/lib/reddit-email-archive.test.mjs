@@ -98,7 +98,7 @@ test('isOurSender accepts bare and display-name forms only', () => {
 
 // ---- sweep against a fake Gmail ----
 
-function fakeGmail({ messages, patchStatus = 200, patchBody = {}, scope = 'https://www.googleapis.com/auth/gmail.modify', messagesAt = null }) {
+function fakeGmail({ messages, patchStatus = 200, patchBody = {}, scope = 'https://www.googleapis.com/auth/gmail.modify', messagesAt = null, pageSize = 0 }) {
   const calls = [];
   let listCalls = 0;
   const current = () => (messagesAt ? messagesAt(listCalls) : messages);
@@ -108,9 +108,16 @@ function fakeGmail({ messages, patchStatus = 200, patchBody = {}, scope = 'https
     const json = (status, body) => ({ ok: status < 400, status, json: async () => body });
     if (u.hostname === 'oauth2.googleapis.com') return json(200, { access_token: 'tok', scope });
     if (u.pathname.endsWith('/messages/batchModify')) return json(patchStatus, patchBody);
-    if (u.pathname.endsWith('/messages')) { listCalls++; return json(200, { messages: current().map((m) => ({ id: m.id })) }); }
+    if (u.pathname.endsWith('/messages')) {
+      listCalls++;
+      const all = current();
+      if (!pageSize) return json(200, { messages: all.map((m) => ({ id: m.id })) });
+      const from = Number(u.searchParams.get('pageToken') || 0);
+      const page = all.slice(from, from + pageSize);
+      return json(200, { messages: page.map((m) => ({ id: m.id })), ...(from + pageSize < all.length ? { nextPageToken: String(from + pageSize) } : {}) });
+    }
     const m = current().find((x) => u.pathname.endsWith(`/messages/${x.id}`));
-    return json(200, { id: m.id, internalDate: m.internalDate, payload: { headers: [{ name: 'Subject', value: m.subject }, { name: 'From', value: m.from }] } });
+    return json(200, { id: m.id, internalDate: m.internalDate, payload: { headers: [{ name: 'Subject', value: m.subject }, { name: 'From', value: m.from }, ...(m.showId ? [{ name: 'X-BSC-Show-Id', value: m.showId }] : [])] } });
   };
   return { fetchImpl, calls };
 }
@@ -208,4 +215,61 @@ test('class guard: the archiver reads the sender\'s own subject table, so a new 
     assert.ok(subject.startsWith(`${lead}: `), kind);
     assert.ok(a.parseDraftSubject(subject), `${kind} subject must parse`);
   }
+});
+
+// ---- same title, different shows; pagination; polling cost ----
+
+test('two shows with the same title in one subreddit are kept apart when their emails carry a show id', () => {
+  const m = [
+    { ...msg('a1', 'Updated Reddit post: Hamlet (60/100) for r/TheWestEnd', 1000), showId: 'hamlet-2025' },
+    { ...msg('a2', 'Updated Reddit post: Hamlet (61/100) for r/TheWestEnd', 2000), showId: 'hamlet-2025' },
+    { ...msg('b1', 'Reddit post ready: Hamlet (70/100) for r/TheWestEnd', 1500), showId: 'hamlet-2026' },
+  ];
+  const p = a.planArchive(m);
+  assert.deepEqual(p.archive, ['a1']);
+  assert.deepEqual(p.keep.sort(), ['a2', 'b1']);
+});
+
+test('when show ids disagree, an older email without one is left alone rather than guessed at', () => {
+  const m = [
+    msg('old', 'Updated Reddit post: Hamlet (58/100) for r/TheWestEnd', 500),
+    { ...msg('a1', 'Updated Reddit post: Hamlet (60/100) for r/TheWestEnd', 1000), showId: 'hamlet-2025' },
+    { ...msg('b1', 'Reddit post ready: Hamlet (70/100) for r/TheWestEnd', 1500), showId: 'hamlet-2026' },
+  ];
+  assert.deepEqual(a.planArchive(m).archive, []);
+});
+
+test('emails with one show id (or none) still supersede each other as before', () => {
+  const m = [
+    msg('old', 'Updated Reddit post: Nero (40/100) for r/TheWestEnd', 500),
+    { ...msg('new', 'Updated Reddit post: Nero (41/100) for r/TheWestEnd', 1000), showId: 'nero' },
+  ];
+  assert.deepEqual(a.planArchive(m).archive, ['old']);
+});
+
+test('sweep reads the show id header from Gmail and uses it', async () => {
+  const { fetchImpl, calls } = fakeGmail({ messages: [
+    { ...msg('a1', 'Updated Reddit post: Hamlet (60/100) for r/TheWestEnd', 1000), showId: 'x' },
+    { ...msg('b1', 'Updated Reddit post: Hamlet (61/100) for r/TheWestEnd', 2000), showId: 'y' },
+  ] });
+  const r = await a.sweep({ env: ENV, fetchImpl, log: () => {} });
+  assert.equal(r.archived, 0);
+  assert.ok(calls.some((c) => c.path.includes('/messages/a1')));
+});
+
+test('sweep follows Gmail result pages and sees an email on the second page', async () => {
+  const many = Array.from({ length: 5 }, (_, i) => msg(`m${i}`, `Updated Reddit post: Nero (4${i}/100) for r/TheWestEnd`, 1000 + i));
+  const { fetchImpl, calls } = fakeGmail({ messages: many, pageSize: 2 });
+  const r = await a.sweep({ env: ENV, fetchImpl, log: () => {} });
+  assert.equal(r.candidates, 5);
+  assert.equal(r.archived, 4);
+  assert.equal(JSON.parse(calls.find((c) => c.path.endsWith('/batchModify')).body).ids.includes('m4'), false);
+});
+
+test('while waiting for a just-sent email, messages already read are not fetched again', async () => {
+  const early = [msg('n40', 'Updated Reddit post: Nero (40/100) for r/TheWestEnd', 1000)];
+  const late = [...early, msg('n41', 'Updated Reddit post: Nero (41/100) for r/TheWestEnd', 2000)];
+  const { fetchImpl, calls } = fakeGmail({ messages: late, messagesAt: (n) => (n >= 3 ? late : early) });
+  await a.sweep({ env: ENV, fetchImpl, log: () => {}, sleep: async () => {}, expectSubjects: ['Updated Reddit post: Nero (41/100) for r/TheWestEnd'] });
+  assert.equal(calls.filter((c) => c.path.endsWith('/messages/n40')).length, 1);
 });

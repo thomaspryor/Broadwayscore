@@ -24,7 +24,7 @@
 
 'use strict';
 
-const { SUBJECT_LEADS } = require('./reddit-post-email');
+const { SUBJECT_LEADS, SHOW_HEADER } = require('./reddit-post-email');
 
 const SENDER = 'updates@broadwayscorecard.com';
 const LEADS = Object.values(SUBJECT_LEADS);
@@ -68,17 +68,26 @@ function planArchive(messages) {
     if (!p) continue;
     const key = `${p.showTitle.toLowerCase()}\u0000${p.subreddit}`;
     if (!groups.has(key)) groups.set(key, []);
-    groups.get(key).push({ id: m.id, at: Number(m.internalDate) || 0 });
+    groups.get(key).push({ id: m.id, at: Number(m.internalDate) || 0, showId: String(m.showId || '').trim() });
+  }
+  // One title can belong to more than one show (a transfer, a revival). When the stamped
+  // show ids in a group disagree, handle each show on its own and leave unstamped (older)
+  // emails alone, since there is no telling which show they belong to.
+  const sets = [];
+  for (const list of groups.values()) {
+    const ids = new Set(list.map((x) => x.showId).filter(Boolean));
+    if (ids.size <= 1) { sets.push(list); continue; }
+    for (const id of ids) sets.push(list.filter((x) => x.showId === id));
   }
   const archive = [];
   const keep = [];
-  for (const list of groups.values()) {
+  for (const list of sets) {
     // Newest first; the id breaks a same-millisecond tie so the choice is stable.
     list.sort((a, b) => b.at - a.at || (a.id < b.id ? 1 : -1));
     keep.push(list[0].id);
     for (const old of list.slice(1)) archive.push(old.id);
   }
-  return { archive, keep, groups: groups.size };
+  return { archive, keep, groups: sets.length };
 }
 
 class GmailScopeError extends Error {}
@@ -123,8 +132,8 @@ async function gmailJson(fetchImpl, token, path, init = {}) {
   return body;
 }
 
-/** Inbox candidates with their Subject / From / date, newest first. */
-async function listCandidates(fetchImpl, token) {
+/** Inbox candidates with their Subject / From / show id / date, newest first. `cache` (id -> record) skips refetching a message already read. */
+async function listCandidates(fetchImpl, token, cache = new Map()) {
   const ids = [];
   let pageToken = '';
   do {
@@ -139,12 +148,14 @@ async function listCandidates(fetchImpl, token) {
   for (let i = 0; i < ids.length; i += FETCH_CONCURRENCY) {
     const chunk = ids.slice(i, i + FETCH_CONCURRENCY);
     const got = await Promise.all(chunk.map(async (id) => {
+      if (cache.has(id)) return cache.get(id);
       const q = new URLSearchParams({ format: 'metadata' });
-      q.append('metadataHeaders', 'Subject');
-      q.append('metadataHeaders', 'From');
+      for (const name of ['Subject', 'From', SHOW_HEADER]) q.append('metadataHeaders', name);
       const m = await gmailJson(fetchImpl, token, `/messages/${id}?${q}`);
-      const h = (name) => ((m.payload && m.payload.headers) || []).find((x) => x.name.toLowerCase() === name.toLowerCase());
-      return { id, subject: (h('Subject') || {}).value || '', from: (h('From') || {}).value || '', internalDate: m.internalDate };
+      const h = (name) => ((m.payload && m.payload.headers) || []).find((x) => String(x.name).toLowerCase() === name.toLowerCase());
+      const rec = { id, subject: (h('Subject') || {}).value || '', from: (h('From') || {}).value || '', showId: (h(SHOW_HEADER) || {}).value || '', internalDate: m.internalDate };
+      cache.set(id, rec);
+      return rec;
     }));
     out.push(...got);
   }
@@ -165,11 +176,14 @@ async function listCandidates(fetchImpl, token) {
  */
 async function sweep({ env = process.env, fetchImpl = fetch, dryRun = false, expectSubjects = [], waitMs = DEFAULT_WAIT_MS, sleep = (ms) => new Promise((r) => setTimeout(r, ms)), log = console.log } = {}) {
   const { token, scope } = await accessToken(env, fetchImpl);
-  let messages = await listCandidates(fetchImpl, token);
+  const cache = new Map();
+  let messages = await listCandidates(fetchImpl, token, cache);
+  // Only a subject match is checked, so a repeat of an earlier subject (same score, a
+  // resend) ends the wait early; the next sweep then archives that one's predecessor.
   const missingNow = () => expectSubjects.filter((subj) => !messages.some((m) => m.subject === subj));
   for (let waited = 0; missingNow().length && waited < waitMs; waited += POLL_MS) {
     await sleep(POLL_MS);
-    messages = await listCandidates(fetchImpl, token);
+    messages = await listCandidates(fetchImpl, token, cache);
   }
   const missing = missingNow();
   // Not fatal: the older emails stay one more round and the next sweep archives them.
@@ -194,4 +208,4 @@ async function sweep({ env = process.env, fetchImpl = fetch, dryRun = false, exp
   return { candidates: messages.length, groups: plan.groups, archived: dryRun ? 0 : plan.archive.length, wouldArchive: plan.archive.length, dryRun, missing };
 }
 
-module.exports = { SENDER, LEADS, MODIFY_SCOPE, LIST_QUERY, parseDraftSubject, isOurSender, planArchive, sweep, listCandidates, GmailScopeError };
+module.exports = { SENDER, LEADS, MODIFY_SCOPE, SHOW_HEADER, MAX_MESSAGES, LIST_QUERY, parseDraftSubject, isOurSender, planArchive, sweep, listCandidates, GmailScopeError };
