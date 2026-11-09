@@ -1,7 +1,7 @@
 const { getReviewBreakdownTierId, getBreakdownTierId } = require('./score-tiers');
 
 // BRO-6729 decision, owner-hold sweep BRO-6852 (2026-11-02): align the web
-// counters and review badges with the critic verdict. Mobile bd now uses the
+// counters with the critic verdict (badges follow the number since 2026-11-09, below). Mobile bd now uses the
 // same counter (the iOS app builds its bar from review scores and ignores the
 // extra rave key).
 function countReviewVerdicts(reviews, category) {
