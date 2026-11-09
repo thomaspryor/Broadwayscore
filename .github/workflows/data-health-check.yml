@@ -242,7 +242,8 @@ jobs:
     # 13.6%, below the gate's 15%. 345min = 20700s keeps ~16% margin.
     # BRO-5769: 345->350 for the 1-min early-publish-date audit step (job-timeout-margin gate).
     # BRO-7131: 350->355 for the 5-min abandoned-review rescue step (job-timeout-margin gate).
-    timeout-minutes: 355
+    # BRO-7181: 355->365 for three --alert audit steps raised 1->3 min each (Linear calls; job-timeout-margin gate).
+    timeout-minutes: 365
     permissions:
       contents: write
       issues: write
