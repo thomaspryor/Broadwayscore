@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-09T08:19:06.912Z",
+  "timestamp": "2026-11-09T08:39:30.918Z",
   "stats": {
-    "totalReviews": 80819,
+    "totalReviews": 80823,
     "alreadyFlagged": 22107,
     "dateGuardCatches": 219,
     "directorMismatch": 3595,
     "tvFilmSignals": 2308,
-    "londonSignals": 3653,
-    "offBroadwaySignals": 752,
+    "londonSignals": 3654,
+    "offBroadwaySignals": 751,
     "yearMismatch": 370,
-    "noPublishDate": 8390
+    "noPublishDate": 8391
   },
   "findings": [
     {
@@ -3895,7 +3895,7 @@
     },
     {
       "showId": "alfred-hitchcock-presents-the-musical-royal-bath-regional-2025",
-      "file": "plays-international--unknown.json",
+      "file": "plays-international--simon-thomas.json",
       "score": 57,
       "publishDate": "2025-03-29",
       "url": "https://playsinternational.org.uk/alfred-hitchcock-presents-the-musical-theatre-royal-bath/",
@@ -69707,7 +69707,7 @@
     {
       "showId": "the-guy-who-didnt-like-musicals-west-end-2026",
       "file": "thestage--tom-wicker.json",
-      "score": 61,
+      "score": 65,
       "publishDate": "2026-05-18",
       "url": "https://thestage.co.uk/reviews/the-guy-who-didnt-like-musicals-review-apollo-theatre-london-starkid",
       "findings": [
@@ -97596,7 +97596,7 @@
     },
     {
       "showId": "double-bill-tell-me-straight-and-aggy-off-west-end-2026",
-      "file": "firstnightmagazine--unknown.json",
+      "file": "firstnightmagazine--guillermo-nazara.json",
       "score": 14,
       "publishDate": "2026-10-20",
       "url": "https://firstnightmagazine.com/2026/10/20/review-of-tell-me-straight-aggy-double-bill-is-twice-as-bad/",
@@ -98923,7 +98923,7 @@
     {
       "showId": "equus-off-west-end-2026",
       "file": "thestage--holly-omahony.json",
-      "score": 79,
+      "score": 82,
       "publishDate": "2026-05-22",
       "url": "https://www.thestage.co.uk/reviews/equus-review-menier-chocolate-factory-london-lindsay-posner",
       "findings": [
@@ -100935,7 +100935,7 @@
     {
       "showId": "garry-starr-classic-penguins-off-west-end-2026",
       "file": "thestage--paul-vale.json",
-      "score": 82,
+      "score": 81,
       "publishDate": "2026-10-26",
       "url": "https://www.thestage.co.uk/reviews/garry-starr-classic-penguins-review-damien-warren-smith-the-other-palace",
       "findings": [
@@ -101701,7 +101701,7 @@
     },
     {
       "showId": "golden-boy-off-west-end-2026",
-      "file": "firstnightmagazine--unknown.json",
+      "file": "firstnightmagazine--guillermo-nazara.json",
       "score": 78,
       "publishDate": "2026-09-22",
       "url": "https://firstnightmagazine.com/2026/09/22/review-of-golden-boy-2026-almeida-striking-revival-pulls-no-punches-back-and-its-a-theatrical-heavyweight/",
@@ -105224,6 +105224,20 @@
       "score": 63,
       "publishDate": "2026-06-05",
       "url": "https://everything-theatre.co.uk/2026/06/review-high-society-the-barbican/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "high-society-off-west-end-2026",
+      "file": "firstnightmagazine--guillermo-nazara.json",
+      "score": 77,
+      "publishDate": "2026-06-06",
+      "url": "https://firstnightmagazine.com/2026/06/06/review-of-high-society-2026-barbican-flimsy-narrative-rides-high-on-spectacle-and-thats-alright-with-me/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -108829,7 +108843,7 @@
     },
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
-      "file": "firstnightmagazine--unknown.json",
+      "file": "firstnightmagazine--guillermo-nazara.json",
       "score": 63,
       "publishDate": "2026-04-07",
       "url": "https://firstnightmagazine.com/2026/04/07/review-of-john-proctor-is-the-villain-revisionist-play-is-a-crucible-of-ideas-but-the-narrative-is-a-witchs-brew/",
@@ -112665,7 +112679,7 @@
     },
     {
       "showId": "martin-guerre-west-end-2026",
-      "file": "firstnightmagazine--unknown.json",
+      "file": "firstnightmagazine--guillermo-nazara.json",
       "score": 62,
       "publishDate": "2026-10-22",
       "url": "https://firstnightmagazine.com/2026/10/22/review-of-martin-guerre-old-vic-2026-new-revival-features-more-historical-accuracy-but-loses-its-identity/",
@@ -115850,7 +115864,7 @@
     },
     {
       "showId": "night-city-off-west-end-2026",
-      "file": "firstnightmagazine--unknown.json",
+      "file": "firstnightmagazine--guillermo-nazara.json",
       "score": 76,
       "publishDate": "2026-09-16",
       "url": "https://firstnightmagazine.com/2026/09/16/__trashed-2/",
@@ -117261,7 +117275,7 @@
     {
       "showId": "oliver-west-end-2024",
       "file": "guardian--susannah-clapp.json",
-      "score": 78,
+      "score": 77,
       "publishDate": "2025-01-19",
       "url": "https://www.theguardian.com/stage/2025/jan/19/the-week-in-theatre-oliver-lionel-bart-matthew-bourne-gielgud-theatre-review-the-devil-may-care-bernard-shaw-southwark-playhouse-mark-giesser-national-theatre-of-wales-michael-sheen",
       "findings": [
@@ -125656,7 +125670,7 @@
     },
     {
       "showId": "tango-after-dark-off-west-end-2026",
-      "file": "firstnightmagazine--unknown.json",
+      "file": "firstnightmagazine--guillermo-nazara.json",
       "publishDate": "2026-11-08",
       "url": "https://firstnightmagazine.com/2026/11/08/german-cornejo-talks-tango-after-dark-tango-is-so-much-more-than-just-a-dance/",
       "findings": [
@@ -135574,7 +135588,7 @@
     {
       "showId": "the-shitheads-west-end-2026",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 66,
+      "score": 65,
       "publishDate": "February 13th, 2026",
       "url": "https://www.whatsonstage.com/news/the-shtheads-at-the-royal-court-review_1712175/",
       "findings": [
@@ -136457,20 +136471,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"gielgud\""
-        }
-      ]
-    },
-    {
-      "showId": "the-unbelievers-off-broadway-2026",
-      "file": "nytimes--laura-collins-hughes.json",
-      "score": 78,
-      "publishDate": "2026-11-06",
-      "url": "https://www.nytimes.com/2026/11/06/theater/the-unbelievers-222-a-ghost-story-review-ambrose.html",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
         }
       ]
     },
@@ -140965,7 +140965,7 @@
     },
     {
       "showId": "whos-afraid-of-virginia-woolf-west-end-2026",
-      "file": "firstnightmagazine--unknown.json",
+      "file": "firstnightmagazine--guillermo-nazara.json",
       "score": 94,
       "publishDate": "2026-10-01",
       "url": "https://firstnightmagazine.com/2026/10/01/review-of-whos-afraid-of-virginia-woolf-soho-place-2026-billy-crudup-and-gillian-anderson-are-the-hottest-hateful-couple-in-town/",
