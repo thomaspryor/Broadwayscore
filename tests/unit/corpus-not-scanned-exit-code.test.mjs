@@ -47,7 +47,7 @@ const REVIEW = {
   fullText: 'A review of Alpha. '.repeat(40),
 };
 
-const REFERENCE_DATA = ['west-end-venues.json', 'off-broadway-venues.json'];
+const REFERENCE_DATA = ['west-end-venues.json', 'off-broadway-venues.json', 'outlet-registry.json'];
 
 function writeJson(file, obj) {
   fs.mkdirSync(path.dirname(file), { recursive: true });
@@ -62,6 +62,8 @@ function makeRoot(kind, corpus) {
   const data = path.join(root, 'data');
   fs.mkdirSync(path.join(data, 'audit'), { recursive: true });
   writeJson(path.join(data, 'shows.json'), SHOWS);
+  writeJson(path.join(data, 'reviews.json'), { reviews: [] });
+  writeJson(path.join(data, 'critic-consensus.json'), { shows: {} });
   // Public reference files some shared libs require() at load time (copied,
   // so nothing a script does can reach the real data/).
   for (const f of REFERENCE_DATA) fs.copyFileSync(path.join(REPO, 'data', f), path.join(data, f));
@@ -106,6 +108,12 @@ const CASES = [
   ['url-downgrade', 'review-texts'],
   ['duplicate-of-url-mismatch', 'review-texts'],
   ['non-reviews', 'review-texts'],
+  ['pull-quote-quality', 'review-texts'],
+  ['critic-consensus-contamination', 'review-texts'],
+  ['outlet-identity-hygiene', 'review-texts'],
+  ['aggregator-url-latent', 'review-texts'],
+  ['cloned-excerpts', 'review-texts'],
+  ['review-texts', 'review-texts'],
 ];
 
 const roots = [];
@@ -115,7 +123,7 @@ function runAuditIn(root, audit) {
   return spawnSync(
     process.execPath,
     ['--preserve-symlinks', '--preserve-symlinks-main', path.join(root, 'scripts', audit.script), ...audit.args],
-    { cwd: root, encoding: 'utf8', maxBuffer: 32 * 1024 * 1024, timeout: 60_000 },
+    { cwd: root, env: { ...process.env, REVIEW_TEXTS_DIR: path.join(root, 'data', 'review-texts') }, encoding: 'utf8', maxBuffer: 32 * 1024 * 1024, timeout: 60_000 },
   );
 }
 
@@ -169,9 +177,19 @@ for (const [name, kind] of CASES) {
       const root = makeRoot(kind, 'healthy');
       roots.push(root);
       const r = runAuditIn(root, audit);
-      assert.notEqual(r.status, null, `${name} timed out or was killed`);
-      assert.notEqual(r.status, CORPUS_NOT_SCANNED_EXIT_CODE,
+      assert.ok(r.status === 0 || r.status === 1,
         `${name} with a healthy fixture exited ${r.status}\n${(r.stdout || '').slice(-800)}\n${(r.stderr || '').slice(-800)}`);
     });
+  });
+}
+
+for (const name of ['pull-quote-quality', 'cloned-excerpts', 'review-texts']) {
+  test(`${name}: a populated corpus with an empty show selection still runs`, () => {
+    const root = makeRoot('review-texts', 'healthy');
+    roots.push(root);
+    fs.mkdirSync(path.join(root, 'data', 'review-texts', 'beta-2023'));
+    const audit = AUDITS.find(a => a.name === name);
+    const r = runAuditIn(root, { ...audit, args: [...audit.args, '--show=beta-2023'] });
+    assert.equal(r.status, 0, `${name}: ${r.stderr}`);
   });
 }

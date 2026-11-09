@@ -36,6 +36,7 @@
 
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
+const { assertReviewTextCorpus, exitIfCorpusNotScanned } = require('./lib/corpus-scan-guard');
 const path = require('path');
 
 const USAGE = `audit-aggregator-url-latent.js — ratchets the latent aggregator-URL population.
@@ -116,14 +117,7 @@ function scanCorpus() {
 }
 
 function main() {
-  // A missing corpus means the review-texts checkout did not happen. That step reports
-  // its own failure; this one runs under if: always(), so exiting 1 here would just
-  // stack a second, misleading red on top of the real cause. Warn and stand down
-  // (Codex adversarial finding, #1002).
-  if (!fs.existsSync(REVIEW_TEXTS_DIR)) {
-    console.log(`::warning::review-texts not found at ${path.relative(REPO_ROOT, REVIEW_TEXTS_DIR)} — skipping the latent aggregator-URL ratchet. If this is CI, the checkout-review-texts step failed and is the real error; locally, run scripts/setup-local-data.sh.`);
-    return;
-  }
+  try { assertReviewTextCorpus(REVIEW_TEXTS_DIR); } catch (err) { exitIfCorpusNotScanned(err); }
 
   let pin;
   try {

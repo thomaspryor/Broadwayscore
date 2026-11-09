@@ -32,6 +32,7 @@
  */
 
 const fs = require('fs');
+const { assertReviewTextCorpus, exitIfCorpusNotScanned } = require('./lib/corpus-scan-guard');
 const path = require('path');
 const { normalizeOutlet, AGGREGATOR_SCORE_SOURCES } = require('./lib/review-normalization');
 const { shouldBlockReviewTextsGate, HEALABLE_CHECKS, REPORT_ONLY_CHECKS } = require('./lib/review-texts-gate');
@@ -347,6 +348,8 @@ function stalePendingErrors({ reviewTextsDir = REVIEW_TEXTS_DIR, showsPath = SHO
  * Main validation function
  */
 function main() {
+  try { assertReviewTextCorpus(REVIEW_TEXTS_DIR); } catch (err) { exitIfCorpusNotScanned(err); }
+
   // Load outlet registry
   const validOutlets = loadOutletRegistry();
 

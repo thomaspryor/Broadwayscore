@@ -75,6 +75,34 @@ function assertCorpusScanned(scanned, { gate, label = 'data/review-texts', corpu
 }
 
 /**
+ * Preflight for audits whose scan is filtered by live reviews or show/date.
+ * Check the unfiltered corpus so a valid zero-match selection stays valid.
+ * Stop at the first review file; sidecars and holding folders are not evidence
+ * that the review-texts checkout is populated. Malformed JSON is still a file
+ * for the validator to report, not an absent corpus.
+ */
+function assertReviewTextCorpus(root) {
+  const fs = require('node:fs');
+  const path = require('node:path');
+  const { listShowDirs } = require('./list-show-dirs');
+  const { isReviewTextFile } = require('./review-text-sidecars');
+  let populated = false;
+  try {
+    for (const show of listShowDirs(root, { skipHolding: true, silent: true })) {
+      const files = fs.readdirSync(path.join(root, show), { withFileTypes: true });
+      if (files.some(file => file.isFile() && isReviewTextFile(file.name))) {
+        populated = true;
+        break;
+      }
+    }
+  } catch (err) {
+    if (!['ENOENT', 'ENOTDIR', 'EACCES', 'EPERM'].includes(err.code)) throw err;
+    assertCorpusScanned(0, { label: root, corpusRootMissing: true });
+  }
+  assertCorpusScanned(populated ? 1 : 0, { gate: true, label: root });
+}
+
+/**
  * Companion to assertCorpusScanned for audits that scan a DATE-WINDOWED
  * subset of the corpus rather than all of it. assertCorpusScanned answers
  * "did we look at anything at all"; this answers the question that actually
@@ -184,6 +212,7 @@ function shouldRefuseRedirectedGate({ rootOverride, corpusEntries, strict, updat
 }
 
 module.exports = {
+  assertReviewTextCorpus,
   assertCorpusScanned,
   CorpusNotScannedError,
   CORPUS_NOT_SCANNED_EXIT_CODE,

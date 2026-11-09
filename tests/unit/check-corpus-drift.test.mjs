@@ -209,3 +209,42 @@ test('BRO-3549: every AUDITS script using corpus-scan-guard lists exit 2 as a cr
     assert.equal(a.crashCodes.includes(CORPUS_NOT_SCANNED_EXIT_CODE), false, `${name} now lists 2; drop its exemption`);
   }
 });
+
+// BRO-7193: deriving coverage only from existing guard imports misses the audits
+// that never adopted it. Every review-texts reader must now make that decision.
+const ACCEPTED_CUSTOM_CORPUS_GUARDS = {
+  'backfill-amaze-review-flags': 'Optional historical probe skips absent review texts; reviews.json assertions still run.',
+  'regex-fp': '--full catches corpus-load errors and exits 2.',
+  'run-contamination': 'loadCorpus errors exit 3, registered in crashCodes.',
+  'cast-vs-reviews': 'Missing corpus exits 2 before the scan.',
+  'body-date-mismatch': 'Missing corpus or zero files exits 3.',
+  'phantom-text-stars': 'Missing corpus exits 3.',
+  'shared-url-quote': 'Missing corpus exits 2 before the scan.',
+  'review-pair-anomalies': 'Missing corpus exits 2 before the scan.',
+  'unknown-outlets': 'Missing corpus or registry exits 2.',
+  'review-key-duplicates': 'Missing corpus exits 2 before the scan.',
+  'stuck-rescore-flags': 'Missing corpus exits 2 in the CLI catch.',
+  'stale-score-input': 'Missing corpus exits 2 in the CLI catch.',
+  'orphaned-wrongprod-provenance': 'Missing corpus exits 2 before the scan.',
+  'counted-review-integrity': 'Missing corpus exits 2 before the scan.',
+  'flagged-in-window': 'Same counted-review-integrity CLI with --flagged.',
+  'orphan-review-folders': 'Missing corpus exits 2 in the CLI catch.',
+};
+
+test('BRO-7193: every AUDITS review-texts reader uses the corpus guard or has an explicit exemption', () => {
+  const fs = require('node:fs');
+  const path = require('node:path');
+  const sources = new Map(AUDITS.map(a => [a.name,
+    fs.readFileSync(path.resolve(import.meta.dirname, '../../scripts', a.script), 'utf8')]));
+  const readers = AUDITS.filter(a => /review-texts|reviewTextsDir|REVIEW_TEXTS_DIR/.test(sources.get(a.name)));
+  const unguarded = readers.filter(a => !/corpus-scan-guard/.test(sources.get(a.name)) &&
+    !ACCEPTED_CUSTOM_CORPUS_GUARDS[a.name]).map(a => a.name);
+  assert.deepEqual(unguarded, [], 'Adopt corpus-scan-guard and register its crash code, or document an exemption.');
+  for (const [name, reason] of Object.entries(ACCEPTED_CUSTOM_CORPUS_GUARDS)) {
+    const audit = readers.find(a => a.name === name);
+    assert.ok(audit, `${name}: stale corpus-guard exemption`);
+    assert.ok(reason.length > 20, `${name}: explain the custom policy`);
+    assert.doesNotMatch(sources.get(name), /corpus-scan-guard/, `${name}: remove the exemption after adopting the guard`);
+    if (!name.startsWith('backfill-')) assert.ok(audit.crashCodes.length > 0, `${name}: register the custom crash code`);
+  }
+});

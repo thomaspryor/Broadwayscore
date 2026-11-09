@@ -152,7 +152,7 @@ const AUDITS = [
     // absorb (see file header). scripts/tests/pull-quote-quality.test.mjs
     // keeps only the pinned Les Mis/Cititour regression as a blocking test.
     args: ['--fail-on-hit'],
-    crashCodes: [],            // 0 clean / 1 = hard-guard hit (drift). Corpus-missing also exits 1 → shown as drift, same as aggregator-truth.
+    crashCodes: [2],           // 2 = corpus missing or empty (BRO-7193)
   },
   {
     name: 'regex-fp',
@@ -353,7 +353,7 @@ const AUDITS = [
     label: 'same-outlet review files sharing one aggregator excerpt, both live (phantom/duplicate double-count)',
     script: 'audit-cloned-excerpts.js',
     args: ['--live-only'],     // 0 clean / 1 = any live cloned pair (drift)
-    crashCodes: [],
+    crashCodes: [2],           // 2 = corpus missing or empty (BRO-7193)
   },
   {
     name: 'cast-changes',
@@ -377,7 +377,7 @@ const AUDITS = [
     label: 'review-text file structure — full validator (gate = catastrophic classes + churn floor)',
     script: 'validate-review-texts.js',
     args: [],                  // 0 clean / 1 = ANY error: dup/garbage/contamination/corrupt (drift)
-    crashCodes: [],
+    crashCodes: [2],           // 2 = corpus missing or empty (BRO-7193)
   },
   // The next four flappy whole-corpus contamination audits gated to a --gate
   // catastrophe floor in test.yml (2026-06-30, Notion 38f637c5). The per-push gate
@@ -414,7 +414,7 @@ const AUDITS = [
     label: 'data/critic-consensus.json orphan/staleness — full --strict (gate = orphan key only)',
     script: 'audit-critic-consensus-contamination.js',
     args: ['--strict'],        // 0 clean / 1 = orphan or staleness drift
-    crashCodes: [],
+    crashCodes: [2],           // 2 = corpus missing or empty (BRO-7193)
   },
   {
     name: 'synopsis-story',
@@ -594,7 +594,7 @@ const AUDITS = [
     healExempt: 'each hit is a judgment call (confirm the outlet with a tier, or block the host); no --fix can decide that.',
     script: 'audit-outlet-identity-hygiene.js',
     args: ['--strict'],
-    crashCodes: [],            // 0 clean / 1 = a live look-alike, look-alike alias, or undecided provisional outlet
+    crashCodes: [2],           // 2 = corpus missing or empty (BRO-7193)
   },
   {
     name: 'critic-outlets',
@@ -667,7 +667,7 @@ const AUDITS = [
     script: 'audit-aggregator-url-latent.js',
     args: [],
     healExempt: 'ratchet — fix the producer that wrote the bad outletId, not the ceiling; no mechanical --fix is safe (the class is discovered per-writer, not per-file).',
-    crashCodes: [],            // 0 clean/shrinking / 1 = population grew
+    crashCodes: [2],           // 2 = corpus missing or empty (BRO-7193)
   },
   {
     name: 'awards-freshness',

@@ -51,6 +51,7 @@
  */
 
 const fs = require('fs');
+const { assertReviewTextCorpus, exitIfCorpusNotScanned } = require('./lib/corpus-scan-guard');
 const path = require('path');
 const { MIN_SCORED_REVIEWS, isConsensusEligible, liveOutletKeys } = require('./lib/critic-consensus-eligibility');
 const {
@@ -183,6 +184,8 @@ function audit(opts = {}) {
 }
 
 function main() {
+  try { assertReviewTextCorpus(reviewTextsDir()); } catch (err) { exitIfCorpusNotScanned(err); }
+
   const issues = audit();
   const json = process.argv.includes('--json');
   const strict = process.argv.includes('--strict');
@@ -234,12 +237,6 @@ function main() {
   }
 
   if (fails > 0 || (strict && warns > 0)) process.exitCode = 1;
-  // --strict must not pass green because the drift half never ran: without
-  // review texts there is nothing like-for-like to compare (BRO-4869).
-  if (strict && fs.existsSync(REVIEWS_FILE) && !fs.existsSync(reviewTextsDir())) {
-    console.error('❌ --strict: review texts missing, REVIEWCOUNT/MEANSCORE drift could not be checked.');
-    process.exitCode = 1;
-  }
 }
 
 if (require.main === module) main();
