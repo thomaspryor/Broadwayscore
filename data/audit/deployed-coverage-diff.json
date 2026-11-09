@@ -1,15 +1,31 @@
 {
-  "generatedAt": "2026-11-09T01:33:04.969Z",
+  "generatedAt": "2026-11-09T02:00:55.459Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 320,
-  "clean": 319,
-  "defective": 1,
+  "clean": 318,
+  "defective": 2,
   "byType": {
-    "score-drift": 1
+    "score-drift": 2
   },
   "shows": [
+    {
+      "showId": "iphigenie-en-tauride-english-national-opera-west-end-2026",
+      "title": "Iphigenie en Tauride - English National Opera",
+      "openingDate": "2026-11-06",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 69.5 vs local 67.6 (Δ1.9)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 6,
+      "deployedCount": 6,
+      "firstDefectAt": "2026-11-09T02:00:46.586Z"
+    },
     {
       "showId": "aladdin-2014",
       "title": "Aladdin",
@@ -24,7 +40,7 @@
       "missingFromProd": [],
       "localCount": 40,
       "deployedCount": 40,
-      "firstDefectAt": "2026-11-09T01:33:00.869Z"
+      "firstDefectAt": "2026-11-09T02:00:46.586Z"
     }
   ],
   "persistentDefective": 0,

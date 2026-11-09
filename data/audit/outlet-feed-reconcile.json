@@ -1,8 +1,13 @@
 {
-  "generatedAt": "2026-11-09T01:33:05.385Z",
+  "generatedAt": "2026-11-09T02:00:55.893Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
+    {
+      "id": "wanted-2022",
+      "title": "Wanted",
+      "openingDate": "2026-11-08"
+    },
     {
       "id": "the-unbelievers-off-broadway-2026",
       "title": "The Unbelievers",
@@ -106,10 +111,6 @@
   ],
   "skipped": [
     {
-      "showId": "wanted-2022",
-      "reason": "no data/review-texts directory for this show"
-    },
-    {
       "showId": "cloud-9-west-end-2026",
       "reason": "no data/review-texts directory for this show"
     }
@@ -142,8 +143,8 @@
     }
   ],
   "itemsScanned": 822,
-  "matchedGaps": 2,
-  "possibleGaps": 4,
+  "matchedGaps": 3,
+  "possibleGaps": 5,
   "gaps": [
     {
       "showId": "222-a-ghost-story-off-broadway-2026",
@@ -162,6 +163,15 @@
       "url": "https://t2conline.com/222-a-ghost-story-the-loudest-thing-in-the-room-isnt-the-ghost/",
       "headline": "2:22 – A Ghost Story: The Loudest Thing in the Room Isn’t the Ghost",
       "publishDate": "2026-11-07"
+    },
+    {
+      "showId": "msblackforpresident-off-broadway-2026",
+      "title": "Ms. Blakk for President",
+      "level": "matched",
+      "outletId": "the-recs",
+      "url": "https://therecs.co.uk/ms-blakk-for-president/",
+      "headline": "Ms. Blakk For President ★★★★★",
+      "publishDate": "2026-11-09"
     },
     {
       "showId": "king-lear-off-broadway-2026",
@@ -198,6 +208,15 @@
       "url": "https://standard.co.uk/culture/theatre/the-oresteia-at-the-bridge-review-b1290028.html",
       "headline": "The Oresteia at the Bridge: Thrillingly stripped back and bloody",
       "publishDate": null
+    },
+    {
+      "showId": "wanted-2022",
+      "title": "Wanted",
+      "level": "possible",
+      "outletId": "west-end-best-friend",
+      "url": "https://www.westendbestfriend.co.uk/news/review-jim-carusos-cast-party-with-billy-stritch-at-the-piano-crazy-coqs",
+      "headline": "Review: JIM CARUSO'S CAST PARTY WITH BILLY STRITCH AT THE PIANO, Crazy Coqs",
+      "publishDate": "2026-11-05"
     }
   ]
 }
