@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-09T12:55:53.743Z",
+  "timestamp": "2026-11-09T13:46:44.392Z",
   "stats": {
-    "totalReviews": 80829,
+    "totalReviews": 80828,
     "alreadyFlagged": 22113,
     "dateGuardCatches": 219,
-    "directorMismatch": 3584,
+    "directorMismatch": 3581,
     "tvFilmSignals": 2306,
     "londonSignals": 3655,
     "offBroadwaySignals": 751,
     "yearMismatch": 370,
-    "noPublishDate": 8392
+    "noPublishDate": 8391
   },
   "findings": [
     {
@@ -67574,31 +67574,11 @@
       ]
     },
     {
-      "showId": "the-family-album-lajolla-regional-2026",
-      "file": "from-another-zero--alejandra-enciso.json",
-      "score": 78,
-      "publishDate": "2026-07-31",
-      "url": "https://fromanother0.com/the-family-album-from-waves-to-stage/",
+      "showId": "the-family-album-regional-2026",
+      "file": "playbill--andrew-gans.json",
+      "publishDate": "2026-08-07",
+      "url": "https://playbill.com/article/video-watch-highlights-from-the-family-album-musical-at-the-la-jolla-playhouse",
       "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jess mcleod\" from the-family-album-regional-2026"
-        }
-      ]
-    },
-    {
-      "showId": "the-family-album-lajolla-regional-2026",
-      "file": "san-diego-story--david-dixon.json",
-      "score": 79,
-      "publishDate": "2026-07-31",
-      "url": "https://sandiegostory.com/an-emotionally-truthful-la-jolla-playhouse-musical/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jess mcleod\" from the-family-album-regional-2026"
-        },
         {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
@@ -67607,24 +67587,11 @@
       ]
     },
     {
-      "showId": "the-family-album-lajolla-regional-2026",
-      "file": "talk-theatre-to-me--unknown.json",
-      "score": 89,
-      "publishDate": "2026-07-27",
-      "url": "https://www.talktheatretome.com/theatre/ljpthefamilyalbum",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jess mcleod\" from the-family-album-regional-2026"
-        }
-      ]
-    },
-    {
       "showId": "the-family-album-regional-2026",
-      "file": "playbill--andrew-gans.json",
-      "publishDate": "2026-08-07",
-      "url": "https://playbill.com/article/video-watch-highlights-from-the-family-album-musical-at-the-la-jolla-playhouse",
+      "file": "san-diego-story--david-dixon.json",
+      "score": 79,
+      "publishDate": "2026-07-31",
+      "url": "https://sandiegostory.com/an-emotionally-truthful-la-jolla-playhouse-musical/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
