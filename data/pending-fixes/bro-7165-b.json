@@ -1,0 +1,198 @@
+{
+  "issueNumber": "bro-7165-b",
+  "planId": "973259ab-05d8-42b5-8443-fcab4b03c8fe",
+  "status": "pending",
+  "createdAt": "2026-11-09T07:03:47.906Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7165: name the critic the stored text prints (Plays International, First Night Magazine, A Youngish Perspective, markaspen) instead of Unknown (part 2 of 2)",
+    "steps": [
+      "BRO-7165: byline printed in the stored text (Jeremy Malies)",
+      "BRO-7165: byline printed in the stored text (Guillermo Nazara)",
+      "BRO-7165: byline printed in the stored text (Guillermo Nazara)",
+      "BRO-7165: byline printed in the stored text (Guillermo Nazara)",
+      "BRO-7165: byline printed in the stored text (Mark Brown)",
+      "BRO-7165: byline printed in the stored text (Simon Thomas)",
+      "BRO-7165: byline printed in the stored text (Jeremy Malies)",
+      "BRO-7165: byline printed in the stored text (Guillermo Nazara)",
+      "BRO-7165: byline printed in the stored text (Guillermo Nazara)",
+      "BRO-7165: byline printed in the stored text (Jeremy Malies)",
+      "BRO-7165: byline printed in the stored text (Guillermo Nazara)",
+      "BRO-7165: byline printed in the stored text (Mark Brown)",
+      "BRO-7165: byline printed in the stored text (Jeremy Malies)",
+      "BRO-7165: byline printed in the stored text (Simon Thomas)",
+      "BRO-7165: byline printed in the stored text (Guillermo Nazara)",
+      "BRO-7165: byline printed in the stored text (Guillermo Nazara)",
+      "BRO-7165: byline printed in the stored text (Holly A Coombes)",
+      "BRO-7165: byline printed in the stored text (Jeremy Malies)",
+      "BRO-7165: byline printed in the stored text (Claire Alexander)",
+      "BRO-7165: byline printed in the stored text (Guillermo Nazara)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "murder-cathedral-off-west-end-2026/plays-international--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Jeremy Malies",
+        "description": "BRO-7165: byline printed in the stored text (Jeremy Malies)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "night-city-off-west-end-2026/firstnightmagazine--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Guillermo Nazara",
+        "description": "BRO-7165: byline printed in the stored text (Guillermo Nazara)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "now-you-see-me-live-off-west-end-2026/firstnightmagazine--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Guillermo Nazara",
+        "description": "BRO-7165: byline printed in the stored text (Guillermo Nazara)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rent-west-end-2026/firstnightmagazine--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Guillermo Nazara",
+        "description": "BRO-7165: byline printed in the stored text (Guillermo Nazara)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "saint-joan-citizens-regional-2026/plays-international--unknown.json",
+        "field": "criticName",
+        "oldValue": "Ri-admin",
+        "newValue": "Mark Brown",
+        "description": "BRO-7165: byline printed in the stored text (Mark Brown)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "small-hotel-royal-bath-regional-2025/plays-international--unknown.json",
+        "field": "criticName",
+        "oldValue": "Ri-admin",
+        "newValue": "Simon Thomas",
+        "description": "BRO-7165: byline printed in the stored text (Simon Thomas)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "speculations-off-west-end-2026/plays-international--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Jeremy Malies",
+        "description": "BRO-7165: byline printed in the stored text (Jeremy Malies)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tango-after-dark-off-west-end-2026/firstnightmagazine--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Guillermo Nazara",
+        "description": "BRO-7165: byline printed in the stored text (Guillermo Nazara)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-bridge-off-west-end-2026/firstnightmagazine--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Guillermo Nazara",
+        "description": "BRO-7165: byline printed in the stored text (Guillermo Nazara)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-caretaker-chichester-festival-regional-2024/plays-international--unknown.json",
+        "field": "criticName",
+        "oldValue": "Ri-admin",
+        "newValue": "Jeremy Malies",
+        "description": "BRO-7165: byline printed in the stored text (Jeremy Malies)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-comedy-about-spies-west-end-2026/firstnightmagazine--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Guillermo Nazara",
+        "description": "BRO-7165: byline printed in the stored text (Guillermo Nazara)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-glass-menagerie-dundee-rep-regional-2025/plays-international--unknown.json",
+        "field": "criticName",
+        "oldValue": "Ri-admin",
+        "newValue": "Mark Brown",
+        "description": "BRO-7165: byline printed in the stored text (Mark Brown)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-house-party-chichester-festival-regional-2024/plays-international--unknown.json",
+        "field": "criticName",
+        "oldValue": "Ri-admin",
+        "newValue": "Jeremy Malies",
+        "description": "BRO-7165: byline printed in the stored text (Jeremy Malies)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-lover-the-collection-royal-bath-regional-2024/plays-international--unknown.json",
+        "field": "criticName",
+        "oldValue": "Ri-admin",
+        "newValue": "Simon Thomas",
+        "description": "BRO-7165: byline printed in the stored text (Simon Thomas)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-moth-off-west-end-2026/firstnightmagazine--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Guillermo Nazara",
+        "description": "BRO-7165: byline printed in the stored text (Guillermo Nazara)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-pianist-off-west-end-2026/firstnightmagazine--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Guillermo Nazara",
+        "description": "BRO-7165: byline printed in the stored text (Guillermo Nazara)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-revlon-girl-off-west-end-2026/a-youngish-perspective--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Holly A Coombes",
+        "description": "BRO-7165: byline printed in the stored text (Holly A Coombes)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-spy-who-came-in-from-the-cold-chichester-festival-regional-2024/plays-international--unknown.json",
+        "field": "criticName",
+        "oldValue": "Ri-admin",
+        "newValue": "Jeremy Malies",
+        "description": "BRO-7165: byline printed in the stored text (Jeremy Malies)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tosca-english-national-opera-west-end-2026/markaspen--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Claire Alexander",
+        "description": "BRO-7165: byline printed in the stored text (Claire Alexander)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "whos-afraid-of-virginia-woolf-west-end-2026/firstnightmagazine--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Guillermo Nazara",
+        "description": "BRO-7165: byline printed in the stored text (Guillermo Nazara)"
+      }
+    ]
+  }
+}

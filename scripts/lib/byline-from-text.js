@@ -15,8 +15,14 @@
 //   "<Critic Name> in the West End ★★★★☆ 22 July 2026 <review...>"
 //   "<Critic Name> on the South Bank ..." / "in North London" / "in north London"
 // Occasionally preceded by junk ("19 Views", or the article title).
-const PI_LOCATION =
+const PI_LOCATION_KNOWN =
   "(?:the\\s+)?(?:[Nn]orth|[Ss]outh|[Ee]ast|[Ww]est)\\s+London|the\\s+West\\s+End|the\\s+South\\s+Bank";
+// BRO-7165: PI also prints "in central London", "in West Sussex", "on Clydeside", "in Southwest
+// England". Any short place phrase counts when the rating stars or the dateline follows it
+// ("... Jeremy Malies in central London ★★☆☆☆ 8 November 2026"); the anchor keeps prose out.
+const PI_LOCATION_ANY =
+  "[\\p{L}'’ -]{3,40}?(?=\\s*(?:[★☆]|\\*|\\d{1,2}\\s+\\p{Lu}\\p{Ll}+\\s+\\d{4}))";
+const PI_LOCATION = PI_LOCATION_KNOWN + "|" + PI_LOCATION_ANY;
 // Unicode-aware (accented names like Nilgün) and tolerant of lowercase
 // particles (van/der/de/von/le/al) inside a name.
 const PI_NAME_TOKEN = "[\\p{L}'’.-]+";
@@ -42,6 +48,8 @@ const PI_KNOWN_CRITICS = [
   "Louise Penn",
   "Tom Bolton",
   "Mark Shenton",
+  "Simon Thomas", // BRO-7165: credited in the text of the Bath regional reviews ("Simon Thomas in the South West")
+  "Mark Brown", // "Mark Brown on Clydeside"
 ];
 
 /**
@@ -281,6 +289,8 @@ function otherNamedCriticAtOutlet(seenKeys, outletKey, criticKey) {
 }
 
 module.exports = {
+  printedPerson,
+  PRINTED_NAME,
   otherNamedCriticAtOutlet,
   tailCreditBelongsToSibling,
   extractBylineFromText,
