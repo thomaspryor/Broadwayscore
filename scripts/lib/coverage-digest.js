@@ -3,6 +3,7 @@
 // Schema 2 is the version that first kept prior-production citations out of
 // the candidate pool; later bumps (3: BRO-4190 URL gate) keep that property.
 const PRIOR_RUN_OUTSIDE_POOL_SINCE_SCHEMA = 2;
+const { citedUncollectedNow } = require('./audit-show-review-gap');
 
 /**
  * coverage-digest.js — plain-English "N of M known reviews live" digest lines
@@ -88,6 +89,34 @@ function coverageStatus(result) {
   // gap — and because a partial candidate list read as authoritative. The
   // legacy path is reachable only for rows the next merge has not migrated
   // yet, so the safe choice is the behaviour those rows were written under.
+  // BRO-7153: from schema 2 on, the SERP census pool admits reviews of OTHER
+  // productions (Tosca OB: a 2018 Met review, Royal Opera House, an album, a
+  // film listing), so candidateCount is not a count of KNOWN reviews and "N
+  // being fetched" was false. Same fix as BRO-7147's opening grade: known =
+  // live + aggregator-cited still missing (citedUncollectedNow, census-tagged
+  // rows excluded). Census-only hits are shown as a separate "possible" number.
+  if (cv.censusSchema >= PRIOR_RUN_OUTSIDE_POOL_SINCE_SCHEMA) {
+    const cited = citedUncollectedNow(result) || 0;
+    const knownCount = liveCount + cited;
+    const possible = Math.max(0, candidateCount - liveCount - cited);
+    if (cited === 0 && possible === 0) return null;
+    const extra = [];
+    if (cited > 0) extra.push(`${cited} being fetched`);
+    if (possible > 0) extra.push(`${possible} unverified search hit${possible === 1 ? '' : 's'}, may be other productions`);
+    let det = knownCount === 0
+      ? `no aggregator-cited reviews yet — ${extra.join(', ')}`
+      : `${liveCount} of ${knownCount} known reviews live${extra.length ? ` — ${extra.join(', ')}` : ''}`;
+    const prior = (Array.isArray(result.missing) ? result.missing : []).filter((m) => m && m.priorRun);
+    if (prior.length) {
+      const byLabel = new Map();
+      for (const m of prior) { const l = excludedReasonLabel(m); byLabel.set(l, (byLabel.get(l) || 0) + 1); }
+      det += ` — separately, ${[...byLabel].map(([l, c]) => `${c} (${l})`).join(', ')} on file from outside this run's candidate pool`;
+    }
+    return {
+      liveCount, candidateCount: knownCount, ratio: knownCount ? liveCount / knownCount : 1,
+      detail: det,
+    };
+  }
   const remaining = Math.max(0, candidateCount - liveCount);
   const outsideByConstruction = cv.censusSchema >= PRIOR_RUN_OUTSIDE_POOL_SINCE_SCHEMA;
   const insidePool = (outsideByConstruction || excluded.length > remaining) ? [] : excluded;
@@ -112,7 +141,7 @@ function coverageStatus(result) {
     const outside = [...tally(outsidePool)].map(([label, count]) => `${count} (${label})`);
     detail += ` — separately, ${outside.join(', ')} on file from outside this run's candidate pool`;
   }
-  return { liveCount, candidateCount, detail };
+  return { liveCount, candidateCount, ratio: liveCount / candidateCount, detail };
 }
 
 /**
@@ -142,8 +171,7 @@ function coverageDigestItem(result) {
 // Sort key shared by coverageDigestLines/coverageDigestItems — most
 // incomplete (lowest live/candidate ratio) first.
 function ratioOf(result) {
-  const cv = result.censusVerdict;
-  return cv.liveCount / cv.candidateCount;
+  return coverageStatus(result).ratio;
 }
 
 /**
