@@ -1,17 +1,13 @@
 {
-  "generatedAt": "2026-11-09T16:52:59.980Z",
+  "generatedAt": "2026-11-09T17:38:51.306Z",
   "night": "2026-11-08",
   "counts": {
     "total": 3,
-    "passed": 0,
-    "failed": 1,
+    "passed": 1,
+    "failed": 0,
     "notGraded": 2
   },
   "lines": [
-    {
-      "verdict": "FAIL",
-      "line": "Wanted: published by the regular pipeline; theatrely fixed by hand at 11:18pm; 20 of 20 reviews live by 12:00am; opening-night email draft is out of date (built with score 60 from 20 reviews, the site shows score 60 from 21 reviews). Failed."
-    },
     {
       "verdict": "UNKNOWN",
       "line": "Ms. Blakk for President: not graded, the overnight check stopped before it finished; emails ready."
@@ -19,6 +15,10 @@
     {
       "verdict": "UNKNOWN",
       "line": "The Steel Man: not graded, the overnight check stopped before it finished."
+    },
+    {
+      "verdict": "PASS",
+      "line": "Wanted: published by the regular pipeline; theatrely fixed by hand at 11:18pm; 20 of 20 reviews live by 12:00am; emails ready, passed."
     }
   ],
   "scoreboard": {
@@ -26,7 +26,5 @@
     "passed": 2,
     "passedOnOwn": 1
   },
-  "missFirstSeen": {
-    "wanted-2022|2026-11-08|email:broadcast:stale": "2026-11-09T16:52:59.980Z"
-  }
+  "missFirstSeen": {}
 }
