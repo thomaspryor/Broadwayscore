@@ -1,48 +1,13 @@
 {
-  "generatedAt": "2026-11-09T05:03:45.814Z",
+  "generatedAt": "2026-11-09T06:26:43.218Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 323,
-  "clean": 321,
-  "defective": 2,
-  "byType": {
-    "score-drift": 2
-  },
-  "shows": [
-    {
-      "showId": "wanted-2022",
-      "title": "Wanted",
-      "openingDate": "2026-11-08",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 59.72 vs local 59.24 (Δ0.48)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 19,
-      "deployedCount": 19,
-      "firstDefectAt": "2026-11-09T05:03:36.329Z"
-    },
-    {
-      "showId": "the-royale-regional-2026",
-      "title": "The Royale",
-      "openingDate": "2026-10-30",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 85.24 vs local 85.11 (Δ0.13)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 13,
-      "deployedCount": 13,
-      "firstDefectAt": "2026-11-09T05:03:36.329Z"
-    }
-  ],
+  "clean": 323,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
