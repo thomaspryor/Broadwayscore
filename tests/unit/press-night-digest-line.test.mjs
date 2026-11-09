@@ -445,3 +445,12 @@ test('BRO-7230: a finalized record whose probe stopped early grades UNKNOWN with
   assert.equal(g.verdict, 'UNKNOWN');
   assert.match(g.why, /stopped early.*\+2\.0h/);
 });
+
+test('BRO-7230: an early-stopped probe is named in the why even when the verdict was already UNKNOWN', () => {
+  // A real record that already grades UNKNOWN (no reviews published overnight).
+  const rec = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/audit/press-night/tosca-off-broadway-2026-2026-11-01.json'), 'utf8'));
+  rec.probe.incompleteReason = 'probe stopped at +2.0h of 6h';
+  const g = D.gradeReviews(rec, AFTER_DEADLINE);
+  assert.equal(g.verdict, 'UNKNOWN');
+  assert.match(g.why, /no reviews were published overnight.*also stopped early: probe stopped at \+2\.0h/);
+});

@@ -80,6 +80,7 @@ function gradeReviews(rec, nowMs = Date.now()) {
     const noPublish = firstGate && firstGate.status === 'unknown' && /no census or lane discovery shows any outlet published/.test(firstGate.detail);
     why = noPublish ? 'no reviews were published overnight'
       : `could not check ${gates.filter((g) => g.required && g.status === 'unknown').map((g) => GATE_WORDS[g.name] || g.name).join(' or ')}`;
+    if (rec.probe.incompleteReason) why += ` (the overnight check also stopped early: ${rec.probe.incompleteReason})`;
   }
   return {
     verdict, finalized: true, release: rel, embargoAt: graded.embargoAt, items,
