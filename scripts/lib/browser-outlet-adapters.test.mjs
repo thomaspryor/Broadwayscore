@@ -37,6 +37,7 @@ test('30% rule per adapter: a nightly:false adapter is planned only when the run
   assert.equal(A.ADAPTERS.wapo.nightly, false, 'WaPo measured 0/40 live');
   assert.equal(A.ADAPTERS.thetimes.nightly, false, 'Times measured 0/20 live');
   assert.equal(A.ADAPTERS.wsj.nightly, false, 'WSJ measured 1/20 live');
+  assert.equal(A.ADAPTERS.newyorker.nightly, false, 'New Yorker measured 0/20 live');
   assert.equal(A.adapterUsable('nytimes'), false);
   assert.equal(A.adapterUsable('nytimes', { explicitOutlets: new Set(['nytimes']) }), true);
   assert.equal(A.adapterUsable('nytimes', { explicitOutlets: new Set(['thestage']) }), false);

@@ -113,6 +113,10 @@ const ADAPTERS = Object.freeze({
     },
   }),
   newyorker: Object.freeze({
+    // Stage 4 live batch 2026-11-09: 0/20 accepted. 12 stored urls answer a
+    // real 404 (mostly web-search rows with template urls), 7 not_longer
+    // (the stored text is already the whole piece). Off for the nightly.
+    nightly: false,
     outletIds: ['newyorker'],
     cookieDomain: 'newyorker.com',
     testUrl: 'https://www.newyorker.com/magazine/2023/03/20/dolls-house-review-broadway-jessica-chastain',
