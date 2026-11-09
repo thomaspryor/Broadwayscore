@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "222-a-ghost-story-off-broadway-2026",
   "openingDate": "2026-11-05",
-  "detectedAt": "2026-11-09T23:27:45.136Z",
+  "detectedAt": "2026-11-09T23:32:48.939Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -21,29 +21,12 @@
       "llmScore": null,
       "contentTier": "truncated",
       "eligibilityReason": null
-    },
-    {
-      "file": "josh-at-the-movies--unknown.json",
-      "outletId": "josh-at-the-movies",
-      "criticName": "Unknown",
-      "url": "https://joshatthemovies.com/2026/11/08/theater-review-222-a-ghost-story/",
-      "fullTextLen": 5736,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
     }
   ],
-  "orphanCount": 2,
-  "dispatchableOrphanCount": 1,
+  "orphanCount": 1,
+  "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-cooldown",
+  "lastDispatch": "suppressed-no-actionable-orphans",
   "lastDispatchAt": null
 }
