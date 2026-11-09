@@ -394,45 +394,21 @@ function checkpoint(stats) {
     const msg = `feat: WSJ subscriber recovery - ${stats.recovered} reviews recovered [${stats.upgraded} upgraded, ${stats.newText} new text]`;
     execSync(`git commit -m "${msg}"`, { stdio: 'pipe', cwd: path.join(__dirname, '..') });
 
-    // Push with retry
-    for (let i = 0; i < 5; i++) {
-      try {
-        execSync('git pull --rebase -X theirs origin main', {
-          stdio: 'pipe',
-          cwd: path.join(__dirname, '..'),
-          timeout: 30000,
-        });
-        // -X theirs lets a stale checkout's version beat origin's richer one
-        // (Trainspotting The Stage clobber, 2026-07-23). Reconcile protected
-        // fields both directions before pushing — same call every other
-        // rebase site makes.
-        try {
-          execSync(`node "${path.join(__dirname, 'lib', 'restore-protected-fields.js')}" origin/main`, {
-            stdio: 'pipe',
-            cwd: path.join(__dirname, '..'),
-          });
-          execSync('git add -A && git diff --staged --quiet || git commit --amend --no-edit', {
-            stdio: 'pipe',
-            cwd: path.join(__dirname, '..'),
-            env: { ...process.env, GIT_EDITOR: 'true' },
-          });
-        } catch { /* non-fatal — push what we have */ }
-        execSync('git push origin main', {
-          stdio: 'pipe',
-          cwd: path.join(__dirname, '..'),
-          timeout: 30000,
-        });
-        console.log(`  [Checkpoint] Committed and pushed (${stats.recovered} recovered)`);
-        return;
-      } catch {
-        console.log(`  [Checkpoint] Push attempt ${i + 1}/5 failed, retrying...`);
-        try { execSync('git rebase --abort', { stdio: 'pipe', cwd: path.join(__dirname, '..') }); } catch {}
-        const delay = 3000 + Math.random() * 5000;
-        const start = Date.now();
-        while (Date.now() - start < delay) {} // sync sleep
-      }
+    // Push through the shared retry script: shallow-safe fetch, audit/ files
+    // keep the local run's data on conflict, jittered retries. The old inline
+    // `git pull --rebase` was an unbounded fetch from the workflow's
+    // fetch-depth: 1 checkout (unbounded-fetch guard). Only data/audit/ is
+    // staged here, so no review-text protected fields are in play.
+    try {
+      execSync('bash scripts/lib/push-with-retry.sh 5 main', {
+        stdio: 'inherit',
+        cwd: path.join(__dirname, '..'),
+      });
+      console.log(`  [Checkpoint] Committed and pushed (${stats.recovered} recovered)`);
+      return;
+    } catch (e) {
+      console.log(`  [Checkpoint] WARNING: push-with-retry failed (exit ${e.status})`);
     }
-    console.log('  [Checkpoint] WARNING: Could not push after 5 attempts');
   } catch (e) {
     console.log(`  [Checkpoint] Error: ${e.message}`);
   }
