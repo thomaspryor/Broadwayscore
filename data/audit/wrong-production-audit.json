@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-09T09:06:42.313Z",
+  "timestamp": "2026-11-09T09:19:57.085Z",
   "stats": {
-    "totalReviews": 80820,
-    "alreadyFlagged": 22114,
+    "totalReviews": 80824,
+    "alreadyFlagged": 22115,
     "dateGuardCatches": 219,
     "directorMismatch": 3594,
     "tvFilmSignals": 2307,
-    "londonSignals": 3653,
+    "londonSignals": 3654,
     "offBroadwaySignals": 751,
     "yearMismatch": 370,
-    "noPublishDate": 8391
+    "noPublishDate": 8392
   },
   "findings": [
     {
@@ -113202,6 +113202,20 @@
       "score": 94,
       "publishDate": "2026-04-29",
       "url": "https://theatreweekly.com/review-mass-at-donmar-warehouse/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "mass-off-west-end-2026",
+      "file": "times-uk--clive-davis.json",
+      "score": null,
+      "publishDate": "2026-04-30",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/mass-review-donmar-warehouse-lqnms25hk",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
