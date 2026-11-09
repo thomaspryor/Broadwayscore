@@ -342,3 +342,53 @@ test('routine marker covers live routine prompts (weekly retro "read and follow"
   assert.equal(R.test('Please fix the header on the show page'), false);
   assert.equal(R.test('Can you explain what docs/cloud-routines/board-workers.md does?'), false);
 });
+
+// BRO-7195: the Mac global gate (scripts/lib/stall-stop-gate.js, run from ~/.claude/settings.json Stop by
+// ~/.claude/hooks/stall-stop-gate.sh) gives WAKEPROMISE to a session in ANY repo, not just this one.
+// End to end: a scratch git repo outside Broadwayscore, a real transcript file, the real CLI.
+const MAC_GATE = path.join(REPO_ROOT, 'scripts', 'lib', 'stall-stop-gate.js');
+function macGateRun(lines, { cwd, home, env = {} } = {}) {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7195-tx-'));
+  const tp = path.join(dir, 'session.jsonl');
+  fs.writeFileSync(tp, lines.map((l) => JSON.stringify(l)).join('\n') + '\n');
+  return spawnSyncStdinFile('node', [MAC_GATE, '--stop-hook'], { encoding: 'utf8', cwd, timeout: 30000,
+    input: JSON.stringify({ session_id: 'bro7195-e2e', transcript_path: tp, cwd, stop_hook_active: false, hook_event_name: 'Stop' }),
+    env: { ...process.env, HOME: home, WAKEPROMISE_GATE_DISABLE: '', STALL_STOP_GATE_MODE: '', ...env } });
+}
+const macHuman = (text) => ({ type: 'user', timestamp: new Date().toISOString(), message: { role: 'user', content: text } });
+const macSay = (text) => ({ type: 'assistant', timestamp: new Date().toISOString(), message: { content: [{ type: 'text', text }] } });
+const scratchRepo = () => {
+  const d = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7195-scratch-repo-'));
+  fs.mkdirSync(path.join(d, '.git'));
+  return d;
+};
+
+test('BRO-7195 e2e: a Mac session in a scratch repo ending "I will check back" with nothing running is blocked, once per turn', () => {
+  const cwd = scratchRepo();
+  const home = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7195-home-'));
+  const tx = [macHuman('Bump the dependency and push.'), macSay('Pushed the bump. I will check back once CI finishes.')];
+  const r = macGateRun(tx, { cwd, home });
+  assert.equal(r.status, 2, r.stderr);
+  assert.match(r.stderr, /WAKEPROMISE \(BRO-7195\)/);
+  const again = macGateRun(tx, { cwd, home });
+  assert.equal(again.status, 0, 'a second stop in the same human turn must pass (no block loop)');
+  const ledger = fs.readFileSync(path.join(home, '.claude', 'state', 'wake-promise-advisory.jsonl'), 'utf8').trim().split('\n').map((l) => JSON.parse(l));
+  assert.deepEqual(ledger.map((x) => [x.source, x.blocked]), [['global', true], ['global', false]]);
+  // A new human turn gets the gate again.
+  assert.equal(macGateRun([...tx, macHuman('and the other repo?'), macSay("Started it. I'll report back.")], { cwd, home }).status, 2);
+});
+
+test('BRO-7195 e2e: the Mac gate passes live work, advisory mode, the kill switch, and steps aside in Broadwayscore', () => {
+  const cwd = scratchRepo();
+  const home = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7195-home-'));
+  const live = [macHuman('run it'),
+    { type: 'assistant', timestamp: new Date().toISOString(), message: { content: [{ type: 'tool_use', id: 'tu1', name: 'Bash', input: { command: 'npm test', run_in_background: true } }] } },
+    { type: 'user', timestamp: new Date().toISOString(), message: { content: [{ type: 'tool_result', tool_use_id: 'tu1', content: 'Command running in background with ID: bk9q2x7ma. Output is being written to: /tmp/o' }] } },
+    macSay("Tests are running. I'll check back when they finish.")];
+  assert.equal(macGateRun(live, { cwd, home }).status, 0);
+  const idle = [macHuman('x'), macSay('Done for now. I will check back later.')];
+  assert.equal(macGateRun(idle, { cwd, home, env: { STALL_STOP_GATE_MODE: 'advisory' } }).status, 0);
+  assert.equal(macGateRun(idle, { cwd, home, env: { WAKEPROMISE_GATE_DISABLE: '1' } }).status, 0);
+  assert.equal(macGateRun(idle, { cwd: REPO_ROOT, home }).status, 0, 'inside Broadwayscore the repo hook owns WAKEPROMISE');
+  assert.equal(macGateRun(idle, { cwd, home }).status, 2);
+});
