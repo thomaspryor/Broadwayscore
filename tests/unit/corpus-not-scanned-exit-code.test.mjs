@@ -104,6 +104,8 @@ const CASES = [
   ['contradicted-flag-basis', 'review-texts'],
   ['duplicate-of-cleared-contradiction', 'review-texts'],
   ['url-downgrade', 'review-texts'],
+  ['duplicate-of-url-mismatch', 'review-texts'],
+  ['non-reviews', 'review-texts'],
 ];
 
 const roots = [];

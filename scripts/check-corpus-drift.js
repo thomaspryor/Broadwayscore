@@ -340,7 +340,7 @@ const AUDITS = [
     label: 'stale duplicateOf flags (our URL ≠ sibling URL) — full report (gate = spike floor)',
     script: 'audit-duplicate-of-url-mismatch.js',
     args: [],                  // report mode: 0 clean / 1 = ANY mismatch (drift)
-    crashCodes: [],
+    crashCodes: [2],           // 2 = corpus missing or empty (BRO-3549)
   },
   // BRO-4406: same show + same outlet, one aggregator excerpt on TWO files, both live
   // in reviews.json (phantom/duplicate reviews double-counted). The write-time guard
@@ -369,7 +369,7 @@ const AUDITS = [
     label: 'scored non-review content (definitive wrong-page) — full --strict',
     script: 'audit-non-reviews.js',
     args: ['--strict'],        // 0 clean / 1 = definitive wrong-page among scored (drift)
-    crashCodes: [],
+    crashCodes: [2],           // 2 = corpus missing or empty (BRO-3549)
   },
   {
     name: 'review-texts',
