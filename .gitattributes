@@ -517,3 +517,6 @@ data/audit/mobile-detail-prune-candidates.json merge=ours
 # (strategyState, reconcileRecovered, acceptedToday) groups by reviewKey and
 # re-sorts by each row's ts, so union's out-of-order append is harmless.
 data/audit/gap-recovery-attempts.jsonl merge=union
+# BRO-7171 Stage 3 nightly summary rows (scripts/lib/gap-recovery-nightly.js):
+# counts-only, one row per night, read by the morning digest; readers sort by ts.
+data/audit/gap-recovery-nightly.jsonl merge=union

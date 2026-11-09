@@ -82,6 +82,8 @@ async function extractArticle(page, url) {
 }
 
 async function main() {
+  // BRO-7171 Stage 3: never overlap the nightly gap-recovery job or another recovery run.
+  require('./lib/browser-recovery-helpers').acquireRecoveryRunLock('recover-newyorker-browser');
   const cookies = loadCookiesForDomain('newyorker.com');
   if (!cookies) {
     console.error('ERROR: no New Yorker cookies available. Run: node scripts/newyorker-otp-login.js');
