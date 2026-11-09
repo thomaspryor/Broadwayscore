@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-09T03:13:02.062Z",
+  "timestamp": "2026-11-09T04:21:04.735Z",
   "stats": {
-    "totalReviews": 80667,
-    "alreadyFlagged": 22099,
+    "totalReviews": 80761,
+    "alreadyFlagged": 22101,
     "dateGuardCatches": 219,
-    "directorMismatch": 3580,
-    "tvFilmSignals": 2305,
+    "directorMismatch": 3593,
+    "tvFilmSignals": 2307,
     "londonSignals": 3652,
-    "offBroadwaySignals": 752,
-    "yearMismatch": 368,
-    "noPublishDate": 8380
+    "offBroadwaySignals": 751,
+    "yearMismatch": 370,
+    "noPublishDate": 8386
   },
   "findings": [
     {
@@ -4017,6 +4017,20 @@
     },
     {
       "showId": "all-my-sons-2019",
+      "file": "deadline--greg-evans.json",
+      "score": 88,
+      "publishDate": "April 22, 2019",
+      "url": "https://deadline.com/2019/04/all-my-sons-broadway-review-annette-bening-tracy-letts-benjamin-walker-arthur-miller-classic-1202599803/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (2x) more than 2019 (0x). 2026 matches production: all-my-sons-regional-2026"
+        }
+      ]
+    },
+    {
+      "showId": "all-my-sons-2019",
       "file": "hollywood-reporter--frank-scheck.json",
       "score": 86,
       "publishDate": "April 22, 2019",
@@ -6036,6 +6050,50 @@
       "score": 78,
       "publishDate": "2025-12-31",
       "url": "https://wernerstheatrereviews.wordpress.com/2025/12/31/a-family-friendly-annie-brings-optimism-to-music-theater-works/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"martin charnin\" from annie-1997"
+        }
+      ]
+    },
+    {
+      "showId": "annie-regional-2026",
+      "file": "broadwayworld--r-scott-reedy.json",
+      "publishDate": "2026-06-21",
+      "url": "https://www.broadwayworld.com/boston/article/Review-ANNIE-at-Greater-Boston-Stage-Company-20260621",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"martin charnin\" from annie-1997"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2012 (2x) more than 2026 (0x). 2012 matches production: annie-2012"
+        }
+      ]
+    },
+    {
+      "showId": "annie-regional-2026",
+      "file": "metrmag--unknown.json",
+      "publishDate": null,
+      "url": "https://www.metrmag.com/latest-reviews/annie-the-musical-by-thomas-meehan-charles-strouse-and-martin-charnin-greater-boston-stage-company-stoneham-ma-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"martin charnin\" from annie-1997"
+        }
+      ]
+    },
+    {
+      "showId": "annie-regional-2026",
+      "file": "theater-mirror--julie-anne-whitney.json",
+      "publishDate": "2026-06-04",
+      "url": "https://www.theatermirror.net/?p=11258",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -18171,6 +18229,84 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "delirium-regional-2026",
+      "file": "artsfuse--bill-marx.json",
+      "publishDate": "2026-06-28",
+      "url": "https://artsfuse.org/330885/theater-review-arlekins-delirium-reimagines-ionesco-with-visual-flair-and-urgency/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"igor golyak\" from delirium-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "delirium-regional-2026",
+      "file": "boston-globe--unknown.json",
+      "publishDate": "2026-06-25",
+      "url": "https://www.bostonglobe.com/2026/06/25/arts/arlekin-delirium/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"igor golyak\" from delirium-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "delirium-regional-2026",
+      "file": "stageandcinema--lynne-weiss.json",
+      "publishDate": "2026-06-26",
+      "url": "https://stageandcinema.com/2026/06/26/delirium-review-arlekin-players/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"igor golyak\" from delirium-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "delirium-regional-2026",
+      "file": "theater-mirror--julie-anne-whitney.json",
+      "publishDate": "2026-06-25",
+      "url": "https://www.theatermirror.net/arlekin-players-delirium-is-a-rampantly-imaginative-work-that-will-leave-you-speechless/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"igor golyak\" from delirium-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "delirium-regional-2026",
+      "file": "theater-mirror--michele-markarian.json",
+      "publishDate": "2026-06-27",
+      "url": "https://www.theatermirror.net/delirium-strikes-all-the-right-raw-notes/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"igor golyak\" from delirium-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "delirium-regional-2026",
+      "file": "theater-mirror--theater-mirror.json",
+      "publishDate": "2026-06-16",
+      "url": "https://www.theatermirror.net/director-igor-golyack-on-delirium-his-new-adaptation-of-ionescos-delire-a-deux/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"igor golyak\" from delirium-off-broadway-2026"
         }
       ]
     },
@@ -36534,6 +36670,19 @@
       ]
     },
     {
+      "showId": "joseph-and-the-amazing-technicolor-dreamcoat-north-regional-2026",
+      "file": "metrmag--unknown.json",
+      "publishDate": null,
+      "url": "https://www.metrmag.com/latest-reviews/a-christmas-story-the-musical-by-joseph-robinette-benj-pasek-and-justin-paul-calliope-productions-boylston-ma-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hulu\""
+        }
+      ]
+    },
+    {
       "showId": "joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021",
       "file": "telegraph--claire-allfree.json",
       "score": 80,
@@ -50118,6 +50267,32 @@
     },
     {
       "showId": "paranormal-activity-boston-regional-2026",
+      "file": "metrmag--unknown.json",
+      "publishDate": null,
+      "url": "https://www.metrmag.com/latest-reviews/paranormal-activity-by-levin-holloway-emerson-colonial-theatre-boston-ma-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"oren peli\" from paranormal-activity-2026"
+        }
+      ]
+    },
+    {
+      "showId": "paranormal-activity-boston-regional-2026",
+      "file": "netheatregeek--kitty-drexel.json",
+      "publishDate": "2026-07-17",
+      "url": "https://www.netheatregeek.com/2026/07/17/alarm-goes-on-alarm-goes-off-paranormal-activity-play/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"oren peli\" from paranormal-activity-2026"
+        }
+      ]
+    },
+    {
+      "showId": "paranormal-activity-boston-regional-2026",
       "file": "nysr--bob-verini.json",
       "score": 78,
       "publishDate": "2026-07-24",
@@ -50197,6 +50372,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "paranormal-activity-regional-2026",
+      "file": "boston-globe--unknown.json",
+      "publishDate": "2026-10-07",
+      "url": "https://www.bostonglobe.com/2026/10/07/arts/paranormal-activity-stranger-things-horror-theater/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"felix barrett\" from paranormal-activity-west-end-2025"
         }
       ]
     },
@@ -56089,6 +56277,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "shear-madness-regional-2026",
+      "file": "theater-mirror--mike-hoban.json",
+      "score": 79,
+      "publishDate": "2026-10-03",
+      "url": "https://www.theatermirror.net/gbscs-shear-madness-is-sheer-fun/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bruce jordan\" from shear-madness-off-broadway-2015"
         }
       ]
     },
@@ -71843,6 +72045,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"wilford leach\" from the-mystery-of-edwin-drood-1985"
+        }
+      ]
+    },
+    {
+      "showId": "the-mystery-of-irma-vep-regional-2026",
+      "file": "boston-globe--unknown.json",
+      "publishDate": "2026-06-01",
+      "url": "https://www.bostonglobe.com/2026/06/01/arts/central-square-theater-mystery-of-irma-vep/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -136175,20 +136390,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"gielgud\""
-        }
-      ]
-    },
-    {
-      "showId": "the-unbelievers-off-broadway-2026",
-      "file": "nytimes--laura-collins-hughes.json",
-      "score": 78,
-      "publishDate": "2026-11-06",
-      "url": "https://www.nytimes.com/2026/11/06/theater/the-unbelievers-222-a-ghost-story-review-ambrose.html",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
         }
       ]
     },

@@ -25,7 +25,6 @@ const TESTIDS = [
   'regional-trust-line',
   'tour-parent-line',
   'tour-stops-line',
-  'tryout-link-line',
 ];
 
 test('every trust line is defined in ShowTrustLines', () => {
@@ -50,4 +49,11 @@ test('legacy header renders ShowTrustLines', () => {
 test('redesigned hero receives ShowTrustLines and renders it', () => {
   assert.ok(PAGE.includes('trustLines={<ShowTrustLines show={show} />}'), 'RedesignOn hero no longer gets trustLines');
   assert.match(HERO, /data-testid="hero-trust-lines">\{trustLines\}</);
+});
+
+// Owner decision 2026-11-09: the Broadway page's top card must not carry the
+// "Pre-Broadway tryout" line. Tryouts live in "Other Productions" below the fold.
+test('top card has no Pre-Broadway tryout line', () => {
+  assert.ok(!TRUST_LINES.includes('Pre-Broadway tryout'), 'tryout line is back in ShowTrustLines.tsx');
+  assert.ok(!TRUST_LINES.includes('tryout-link-line'), 'tryout-link-line is back in ShowTrustLines.tsx');
 });

@@ -36,7 +36,7 @@ const { stripTrivial, normalizeOutlet, canonicalizeHost, canonicalArticleKey } =
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { shouldBlockDuplicateOfGate } = require('./lib/duplicate-of-gate');
 const { findDuplicateOfCycle } = require('./lib/duplicate-cycle');
-const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
+const { assertCorpusScanned, CorpusNotScannedError, CORPUS_NOT_SCANNED_EXIT_CODE } = require('./lib/corpus-scan-guard');
 const { clearCrossOutletFields } = require('./lib/cascade-clear-duplicate-refs');
 const { crossOutletCyclePartner } = require('./lib/cross-outlet-cycle');
 const { isCrossOutletSyndicationPair } = require('./lib/syndication-pairs');
@@ -477,11 +477,18 @@ function main() {
   const { mismatches, scanned } = audit();
 
   try {
-    assertCorpusScanned(scanned, { gate: GATE });
+    // BRO-3549: report mode is what check-corpus-drift.js runs, and
+    // walkShowDirs() returns [] for a missing root, so a missing or empty corpus
+    // read as a clean 0-mismatch pass. This script has no show filter, so a
+    // full scan of 0 files is never legitimate: refuse it in report and --gate
+    // mode (--fix keeps its old behaviour except for a missing root, which fails
+    // loud in every mode). Exit with the shared "could not run" code, never 1
+    // (this script's drift code), so the drift monitor reports a crash.
+    assertCorpusScanned(scanned, { gate: GATE || !FIX, corpusRootMissing: !fs.existsSync(REVIEW_TEXTS_DIR) });
   } catch (e) {
     if (!(e instanceof CorpusNotScannedError)) throw e;
     console.error(`\nFAIL: ${e.message}`);
-    process.exitCode = 1; return;
+    process.exitCode = CORPUS_NOT_SCANNED_EXIT_CODE; return;
   }
 
   if (JSON_OUT) {
