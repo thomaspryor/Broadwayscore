@@ -35,7 +35,7 @@ test('one outlet posting several times counts once; zone-less or date-only times
   const rows = [
     { outlet: 'A', publishedTime: '2026-05-01T01:00:00Z' }, { outlet: 'A', publishedTime: '2026-05-01T01:01:00Z' },
     { outlet: 'A', publishedTime: '2026-05-01T01:02:00Z' }, { outlet: 'B', publishedTime: '2026-05-01T01:00:00' },
-    { outlet: 'C', publishedTime: '2026-05-01' },
+    { outlet: 'C', publishedTime: '2026-05-01' }, { outlet: 'D', publishedTime: '2026-05-01T01:01:00' },
   ];
   const r = observedEmbargo({ estimateMs: ms('2026-05-01T02:00:00Z'), publishTimes: rows });
   assert.equal(r.source, 'estimate');
@@ -67,4 +67,21 @@ test('an outlet whose second critic posted early still counts in the real cluste
   assert.equal(r.source, 'observed-cluster');
   assert.equal(r.at, '2026-10-30T03:00:00.000Z');
   assert.equal(r.n, 3);
+});
+
+test('the 6h search bound: three outlets 7h early are not the embargo', () => {
+  const rows = ['P', 'Q', 'R'].map((o) => ({ outlet: o, publishedTime: '2026-05-01T19:00:00Z' }));
+  assert.equal(observedEmbargo({ estimateMs: ms('2026-05-02T02:00:00Z'), publishTimes: rows }).source, 'estimate');
+});
+
+test('snap boundary: 5 min off the quarter snaps, 6 min does not', () => {
+  const mk = (m) => ['P', 'Q', 'R'].map((o) => ({ outlet: o, publishedTime: `2026-05-01T01:${m}:00Z` }));
+  assert.equal(observedEmbargo({ estimateMs: ms('2026-05-01T02:00:00Z'), publishTimes: mk('10') }).at, '2026-05-01T01:15:00.000Z');
+  assert.equal(observedEmbargo({ estimateMs: ms('2026-05-01T02:00:00Z'), publishTimes: mk('09') }).at, '2026-05-01T01:09:00.000Z');
+});
+
+test('a cluster of only UTC-midnight stamps is flagged midnightOnly', () => {
+  const rows = ['P', 'Q', 'R'].map((o) => ({ outlet: o, publishedTime: '2026-05-02T00:00:00+00:00' }));
+  assert.equal(observedEmbargo({ estimateMs: ms('2026-05-02T02:00:00Z'), publishTimes: rows }).midnightOnly, true);
+  assert.equal(observedEmbargo({ estimateMs: ms('2026-10-30T02:00:00Z'), publishTimes: afgm }).midnightOnly, false);
 });

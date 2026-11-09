@@ -74,7 +74,11 @@ function observedEmbargo({ estimateMs = null, publishTimes = [] } = {}, opts = {
     for (let j = i; j < pts.length && pts[j].t - pts[i].t <= windowMs; j++) if (!inWindow.has(pts[j].key)) inWindow.set(pts[j].key, pts[j].outlet);
     if (inWindow.size >= minCluster) {
       const atMs = snapQuarter(pts[i].t);
+      // A cluster made only of exact UTC-midnight stamps may be a theme's date-only stamp, not a real lift: flag it.
+      const inWin = pts.filter((q) => q.t >= pts[i].t && q.t - pts[i].t <= windowMs);
+      const midnightOnly = inWin.every((q) => q.t % (24 * 60 * MIN) === 0);
       return {
+        midnightOnly,
         at: new Date(atMs).toISOString(), atMs, source: 'observed-cluster', n: inWindow.size,
         outlets: [...inWindow.values()],
         shiftMin: estimateMs == null ? null : Math.round((atMs - estimateMs) / MIN),
