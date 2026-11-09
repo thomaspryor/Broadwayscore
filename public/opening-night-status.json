@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-09T04:41:07.897Z",
+  "generatedAt": "2026-11-09T05:21:50.316Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -930,23 +930,23 @@
       "status": "open",
       "slug": "wanted",
       "thumbnail": "/images/shows/wanted-2022/thumbnail.webp",
-      "siteScore": 59.24,
-      "liveScore": 59,
-      "scoreDrift": -0.240000000000002,
+      "siteScore": 59.72,
+      "liveScore": 60,
+      "scoreDrift": 0.28000000000000114,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 19,
+      "total": 20,
       "t1": 4,
-      "t2": 12,
+      "t2": 13,
       "t3": 3,
       "positive": 8,
-      "mixed": 7,
+      "mixed": 8,
       "negative": 4,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 19,
+        "highConfidence": 20,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1248,6 +1248,18 @@
           "t3": 3,
           "p": 8,
           "m": 7,
+          "n": 4,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-09T05:21:50.316Z",
+          "rc": 20,
+          "s": 59.72,
+          "t1": 4,
+          "t2": 13,
+          "t3": 3,
+          "p": 8,
+          "m": 8,
           "n": 4,
           "bc": "waiting"
         }

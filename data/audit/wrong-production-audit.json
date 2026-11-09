@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-09T04:40:46.445Z",
+  "timestamp": "2026-11-09T05:21:31.810Z",
   "stats": {
-    "totalReviews": 80762,
-    "alreadyFlagged": 22101,
+    "totalReviews": 80766,
+    "alreadyFlagged": 22102,
     "dateGuardCatches": 219,
     "directorMismatch": 3593,
     "tvFilmSignals": 2307,
-    "londonSignals": 3652,
+    "londonSignals": 3653,
     "offBroadwaySignals": 751,
     "yearMismatch": 370,
-    "noPublishDate": 8385
+    "noPublishDate": 8384
   },
   "findings": [
     {
@@ -106386,7 +106386,7 @@
         {
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"almeida\""
+          "detail": "Mentions London venue: \"donmar warehouse\""
         }
       ]
     },
@@ -123161,6 +123161,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "some-woman-west-end-2026",
+      "file": "islingtontribune--unknown.json",
+      "score": 78,
+      "publishDate": null,
+      "url": "https://www.islingtontribune.co.uk/article/review-some-woman-at-dorfman-national-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
         }
       ]
     },
