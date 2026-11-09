@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-08T22:58:04.086Z",
+  "generatedAt": "2026-11-09T00:00:51.945Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -27,11 +27,6 @@
       "id": "iphigenie-en-tauride-english-national-opera-west-end-2026",
       "title": "Iphigenie en Tauride - English National Opera",
       "openingDate": "2026-11-06"
-    },
-    {
-      "id": "clifford-odets-waiting-for-lefty-off-broadway-2026",
-      "title": "Clifford Odets’ Waiting for Lefty",
-      "openingDate": "2026-11-02"
     },
     {
       "id": "msblackforpresident-off-broadway-2026",
@@ -84,11 +79,6 @@
       "openingDate": "2026-11-05"
     },
     {
-      "id": "the-morbs-off-broadway-2026",
-      "title": "The Morbs",
-      "openingDate": "2026-11-02"
-    },
-    {
       "id": "broom-play-off-broadway-2026",
       "title": "Broom Play",
       "openingDate": "2026-11-07"
@@ -104,19 +94,9 @@
       "openingDate": "2026-11-06"
     },
     {
-      "id": "slanted-floors-off-broadway-2026",
-      "title": "Slanted Floors",
-      "openingDate": "2026-11-02"
-    },
-    {
       "id": "king-lear-off-broadway-2026",
       "title": "King Lear",
       "openingDate": "2026-11-05"
-    },
-    {
-      "id": "adirondack-chair-circle-regional-2026",
-      "title": "Adirondack Chair Circle",
-      "openingDate": "2026-11-02"
     },
     {
       "id": "the-niceties-regional-2026",
@@ -127,6 +107,10 @@
   "skipped": [
     {
       "showId": "wanted-2022",
+      "reason": "no data/review-texts directory for this show"
+    },
+    {
+      "showId": "cloud-9-west-end-2026",
       "reason": "no data/review-texts directory for this show"
     }
   ],
@@ -153,8 +137,8 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 824,
-  "matchedGaps": 2,
+  "itemsScanned": 829,
+  "matchedGaps": 6,
   "possibleGaps": 3,
   "gaps": [
     {
@@ -174,6 +158,42 @@
       "url": "https://t2conline.com/222-a-ghost-story-the-loudest-thing-in-the-room-isnt-the-ghost/",
       "headline": "2:22 – A Ghost Story: The Loudest Thing in the Room Isn’t the Ghost",
       "publishDate": "2026-11-07"
+    },
+    {
+      "showId": "msblackforpresident-off-broadway-2026",
+      "title": "Ms. Blakk for President",
+      "level": "matched",
+      "outletId": "culturesauce",
+      "url": "https://culturesauce.com/ms-blakk-for-president-off-broadway-review/",
+      "headline": "&#8216;Ms. Blakk for President&#8217; sashays through an historic footnote (Off Broadway review)",
+      "publishDate": "2026-11-09"
+    },
+    {
+      "showId": "msblackforpresident-off-broadway-2026",
+      "title": "Ms. Blakk for President",
+      "level": "matched",
+      "outletId": "nyt-theater",
+      "url": "https://newyorktheater.me/2026/11/08/ms-blakk-for-president-review/",
+      "headline": "Ms. Blakk for President Review",
+      "publishDate": "2026-11-08"
+    },
+    {
+      "showId": "msblackforpresident-off-broadway-2026",
+      "title": "Ms. Blakk for President",
+      "level": "matched",
+      "outletId": "pages-on-stages",
+      "url": "https://pagesonstages.com/2026/11/08/ms-blakk-for-president/",
+      "headline": "Life of the Party",
+      "publishDate": "2026-11-09"
+    },
+    {
+      "showId": "msblackforpresident-off-broadway-2026",
+      "title": "Ms. Blakk for President",
+      "level": "matched",
+      "outletId": "theatermania",
+      "url": "https://www.theatermania.com/news/review-ms-blakk-for-president-a-drag-queens-long-shot-campaign-in-92_1859063/",
+      "headline": "Review: Ms. Blakk for President, a Drag Queen’s Long Shot Campaign in ’92",
+      "publishDate": "2026-11-08"
     },
     {
       "showId": "king-lear-off-broadway-2026",
