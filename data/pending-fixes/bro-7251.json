@@ -1,0 +1,78 @@
+{
+  "issueNumber": "bro-7251",
+  "planId": "9f3c92ce-51e7-43a1-b310-621f8c34e5d2",
+  "status": "pending",
+  "createdAt": "2026-11-09T22:36:57.863Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7251: replace ticket-horizon closingDates with press-announced runs (Rocky Horror through May 30 2027 per BroadwayWorld 2026-11-02; Operation Mincemeat through Jul 4 2027 per TicketNews Nov 2026) and clear Just in Time (no closing announced)",
+    "steps": [
+      "shows.json: the-rocky-horror-show-2026.closingDate",
+      "shows.json: the-rocky-horror-show-2026.closingDateSource",
+      "shows.json: operation-mincemeat-2025.closingDate",
+      "shows.json: operation-mincemeat-2025.closingDateSource",
+      "shows.json: just-in-time-2025.closingDate",
+      "shows.json: just-in-time-2025.closingDateSource"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-rocky-horror-show-2026",
+        "field": "closingDate",
+        "oldValue": "2027-04-14",
+        "newValue": "2027-05-30",
+        "description": "shows.json: the-rocky-horror-show-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-rocky-horror-show-2026",
+        "field": "closingDateSource",
+        "oldValue": "broadway.com schedule (audit 2026-11-08)",
+        "newValue": "BroadwayWorld extension announcement 2026-11-02 (BRO-7251)",
+        "description": "shows.json: the-rocky-horror-show-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "operation-mincemeat-2025",
+        "field": "closingDate",
+        "oldValue": "2027-04-17",
+        "newValue": "2027-07-04",
+        "description": "shows.json: operation-mincemeat-2025.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "operation-mincemeat-2025",
+        "field": "closingDateSource",
+        "oldValue": "broadway.com schedule (audit 2026-11-08)",
+        "newValue": "TicketNews extension announcement Nov 2026 (BRO-7251)",
+        "description": "shows.json: operation-mincemeat-2025.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "just-in-time-2025",
+        "field": "closingDate",
+        "oldValue": "2027-04-27",
+        "newValue": null,
+        "description": "shows.json: just-in-time-2025.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "just-in-time-2025",
+        "field": "closingDateSource",
+        "oldValue": "broadway.com schedule (audit 2026-11-08)",
+        "newValue": null,
+        "description": "shows.json: just-in-time-2025.closingDateSource"
+      }
+    ]
+  }
+}
