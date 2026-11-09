@@ -94,7 +94,7 @@ test('sampleNominations: CI rows only, one unit per nomination, old enough, dete
   // Every nomination is its own sample unit; ones an earlier audit settled are skipped.
   assert.equal(A.sampleNominations(rows.slice(0, 2), { nowMs: NOW }).length, 2);
   assert.deepEqual(A.sampleNominations(rows.slice(0, 2), { nowMs: NOW, settled: new Set([`BRO-1|${at(0)}`]) }).map((r) => r.verdict), ['release']);
-  assert.deepEqual([...A.settledKeys([{ items: [{ id: 'BRO-1', nominatedTs: 'x', judgment: 'right' }, { id: 'BRO-2', nominatedTs: 'y', judgment: 'pending' }] }])], ['BRO-1|x']);
+  assert.deepEqual([...A.settledKeys([{ source: 'ci', items: [{ id: 'BRO-1', nominatedTs: 'x', judgment: 'right' }, { id: 'BRO-2', nominatedTs: 'y', judgment: 'pending' }] }])], ['BRO-1|x']);
   assert.equal(A.sampleNominations(rows, { nowMs: NOW, includeLocal: true, n: 999 }).some((r) => r.id === 'BRO-2'), true);
 });
 

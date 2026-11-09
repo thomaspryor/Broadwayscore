@@ -143,7 +143,8 @@ function sampleNominations(rows, { nowMs, n = SAMPLE, includeLocal = false, sett
 /** id|ts keys an earlier audit already judged right or wrong (never re-sampled). */
 function settledKeys(auditRows) {
   const out = new Set();
-  for (const r of auditRows || []) for (const i of (r && r.items) || []) if (i.judgment === 'right' || i.judgment === 'wrong') out.add(`${i.id}|${i.nominatedTs}`);
+  // CI rows only: a local --write must not settle a nomination that cumulativeJudgments (CI only) never counts.
+  for (const r of auditRows || []) if (r && r.source === 'ci') for (const i of r.items || []) if (i.judgment === 'right' || i.judgment === 'wrong') out.add(`${i.id}|${i.nominatedTs}`);
   return out;
 }
 
