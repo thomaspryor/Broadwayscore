@@ -335,3 +335,26 @@ test('BRO-7167: the headroom is bounded and the import script uses it', () => {
   assert.equal(preImportTotalBytes({ maxTotalBytes: 1000, maxNightBytes: 10 }, [3, 50, 0]), 1000 - 13, 'each artifact reserves its own size, capped at a night');
   assert.match(fs.readFileSync(fileURLToPath(new URL('../../scripts/lane-recording-import.js', import.meta.url)), 'utf8'), /preImportTotalBytes\([^)]*work\.map\(\(w\) => imp\.dirBytes\(w\.dir\)\)\)/, 'the script sizes the headroom from the downloaded artifacts');
 });
+
+test('BRO-7167: an over-budget night older than every retained night is beyond retention (warn, not red)', async () => {
+  const { isBeyondRetention } = require('../../scripts/lib/lane-recording-headroom');
+  assert.equal(isBeyondRetention('2026-09-28', ['2026-10-30', '2026-11-08']), true);
+  assert.equal(isBeyondRetention('2026-11-08', ['2026-10-30', '2026-11-08']), false, 'a night inside the kept range still fails loudly');
+  assert.equal(isBeyondRetention('2026-09-28', []), false, 'an empty archive cannot call anything old');
+});
+
+test('BRO-7167: malformed night names never downgrade a failure to a warning', async () => {
+  const { isBeyondRetention } = require('../../scripts/lib/lane-recording-headroom');
+  assert.equal(isBeyondRetention('2026-09-28', ['tmp', '2026-99-99']), false, 'stray directories are ignored, leaving no kept night');
+  assert.equal(isBeyondRetention('tmp', ['2026-10-30']), false);
+  assert.equal(isBeyondRetention('2026-09-28', ['tmp', '2026-10-30']), true);
+});
+
+test('BRO-7167: only a total-budget refusal of a beyond-retention night is a warning; a per-night overrun stays red', async () => {
+  const { isHarmlessOverBudget } = require('../../scripts/lib/lane-recording-headroom');
+  const kept = ['2026-10-30'];
+  assert.equal(isHarmlessOverBudget({ status: 'over-budget', detail: '106846388 bytes > 104857600 total' }, '2026-09-28', kept), true);
+  assert.equal(isHarmlessOverBudget({ status: 'over-budget', detail: '12000000 bytes > 10485760 per night' }, '2026-09-28', kept), false);
+  assert.equal(isHarmlessOverBudget({ status: 'over-budget', detail: 'x bytes > y total' }, '2026-11-08', kept), false);
+  assert.equal(isHarmlessOverBudget({ status: 'error', detail: 'total' }, '2026-09-28', kept), false);
+});

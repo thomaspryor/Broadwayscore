@@ -798,20 +798,6 @@
     "queuedAt": "2026-11-09T21:20:40.925Z"
   },
   {
-    "conditionKey": "pending-unrecoverable:harry-potter-and-the-cursed-child-one-part-west-end-2026",
-    "title": "1 review(s) for harry-potter-and-the-cursed-child-one-part-west-end-2026 stuck in _pending with no text and no byline",
-    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--unknown.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/harry-potter-and-the-cursed-child-review-at-palace-theatre-london--new-cast-equals-the-original",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-09T21:36:43.683Z"
-  },
-  {
     "conditionKey": "pending-unrecoverable:speculations-off-west-end-2026",
     "title": "1 review(s) for speculations-off-west-end-2026 stuck in _pending with no text and no byline",
     "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--2b0f3c6f.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/speculations-review-marylebone-theatre-london-torben-betts-trevor-nunn-janie-dee",
@@ -826,17 +812,150 @@
     "queuedAt": "2026-11-09T21:37:58.719Z"
   },
   {
-    "conditionKey": "pending-unrecoverable:the-pianist-off-west-end-2026",
-    "title": "1 review(s) for the-pianist-off-west-end-2026 stuck in _pending with no text and no byline",
-    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--5e07c019.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/the-pianist-review-park-theatre-london",
+    "conditionKey": "cron-health-failed:Commercial Pending Review",
+    "title": "Cron's latest run failed (not yet stale): Commercial Pending Review",
+    "description": "Commercial Pending Review: Latest run failed (last success 54h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42705970241",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42705970241)"
+      }
+    ],
+    "queuedAt": "2026-11-09T21:49:54.779Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:Opening Night Orchestrator",
+    "title": "Cron's latest run failed (not yet stale): Opening Night Orchestrator",
+    "description": "Opening Night Orchestrator: Latest run failed (last success 8h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42705970241",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42705970241)"
+      }
+    ],
+    "queuedAt": "2026-11-09T21:49:54.807Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:Update Show Status",
+    "title": "Cron's latest run failed (not yet stale): Update Show Status",
+    "description": "Update Show Status: Latest run failed (last success 31h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42705970241",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42705970241)"
+      }
+    ],
+    "queuedAt": "2026-11-09T21:49:54.829Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:Enrich West End Dates",
+    "title": "Cron's latest run failed (not yet stale): Enrich West End Dates",
+    "description": "Enrich West End Dates: Latest run failed (last success 108h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42705970241",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42705970241)"
+      }
+    ],
+    "queuedAt": "2026-11-09T21:49:54.849Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:Enrich Off-Broadway Dates",
+    "title": "Cron's latest run failed (not yet stale): Enrich Off-Broadway Dates",
+    "description": "Enrich Off-Broadway Dates: Latest run failed (last success 52h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42705970241",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42705970241)"
+      }
+    ],
+    "queuedAt": "2026-11-09T21:49:54.869Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:Update Lottery/Rush",
+    "title": "Cron's latest run failed (not yet stale): Update Lottery/Rush",
+    "description": "Update Lottery/Rush: Latest run failed (last success 60h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42705970241",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42705970241)"
+      }
+    ],
+    "queuedAt": "2026-11-09T21:49:54.890Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:Audit Aggregator Review Gap",
+    "title": "Cron's latest run failed (not yet stale): Audit Aggregator Review Gap",
+    "description": "Audit Aggregator Review Gap: Latest run failed (last success 4h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42705970241",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42705970241)"
+      }
+    ],
+    "queuedAt": "2026-11-09T21:49:54.910Z"
+  },
+  {
+    "conditionKey": "llm-scoring:daily-cost-breach",
+    "title": "LLM scoring daily spend over budget (still open — BRO-6732)",
+    "description": "Still firing after 21 notifications since it was filed. Tracked at BRO-6732.\n\nRolling 24h LLM scoring cost $12.50 exceeds the $10.00 llmScoringDailyUsd alarm line, across all GitHub runs.",
     "severity": "warning",
     "url": null,
     "decision": false,
     "info": false,
     "decisionPrompt": null,
     "model": null,
-    "tracked": null,
+    "tracked": "BRO-6732",
     "fields": [],
-    "queuedAt": "2026-11-09T21:38:05.121Z"
+    "queuedAt": "2026-11-09T22:49:43.028Z"
   }
 ]

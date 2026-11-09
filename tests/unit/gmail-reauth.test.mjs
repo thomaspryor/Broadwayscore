@@ -37,7 +37,7 @@ test('a fresh start link verifies; expiry, tampering and a wrong key do not', ()
   assert.equal(g.verifyStartLink(`${e}&x`, s, SECRET, NOW).reason, 'malformed');
 });
 
-test('the consent URL asks only for gmail.readonly, offline, fresh consent, PKCE S256, owner hint', () => {
+test('the consent URL asks only for gmail.modify, offline, fresh consent, PKCE S256, owner hint', () => {
   const req = g.makeAuthRequest();
   const u = new URL(g.buildConsentUrl({ clientId: 'cid.apps.googleusercontent.com', state: req.state, challenge: req.challenge }));
   assert.equal(u.origin + u.pathname, g.GOOGLE_AUTH_URL);
@@ -46,7 +46,7 @@ test('the consent URL asks only for gmail.readonly, offline, fresh consent, PKCE
     client_id: 'cid.apps.googleusercontent.com',
     redirect_uri: 'https://broadwayscorecard.com/api/admin/gmail-reauth/callback',
     response_type: 'code',
-    scope: 'https://www.googleapis.com/auth/gmail.readonly',
+    scope: 'https://www.googleapis.com/auth/gmail.modify',
     access_type: 'offline',
     prompt: 'consent',
     login_hint: g.OWNER_ACCOUNT,
@@ -71,7 +71,9 @@ test('state + verifier survive the cookie; junk and mismatched states are refuse
 });
 
 test('scope and owner checks', () => {
-  assert.equal(g.grantedScopeOk('email https://www.googleapis.com/auth/gmail.readonly'), true);
+  assert.equal(g.grantedScopeOk('email https://www.googleapis.com/auth/gmail.modify'), true);
+  // A read-only grant (a stale consent link from before the widening) must not count as a renewal.
+  assert.equal(g.grantedScopeOk('https://www.googleapis.com/auth/gmail.readonly'), false);
   assert.equal(g.grantedScopeOk('https://www.googleapis.com/auth/gmail.metadata'), false);
   assert.equal(g.grantedScopeOk(null), false);
   assert.equal(g.isOwnerAccount(' Thomas.Pryor@Gmail.com '), true);
@@ -263,7 +265,7 @@ test('completeGrant refuses another account, a missing refresh token, a narrowed
   assert.match((await completeGrant(env(), noRefresh.fn, NOW)).reason, /long-lived key/);
 
   const narrow = stubFetch({ [TOKEN_URL]: { body: { ...goodToken, scope: 'email' } } });
-  assert.match((await completeGrant(env(), narrow.fn, NOW)).reason, /Gmail read access/);
+  assert.match((await completeGrant(env(), narrow.fn, NOW)).reason, /Gmail access/);
 
   const refused = stubFetch({ [TOKEN_URL]: { status: 400, body: { error: 'invalid_grant' } } });
   assert.match((await completeGrant(env(), refused.fn, NOW)).reason, /did not accept/);

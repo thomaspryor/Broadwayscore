@@ -19,4 +19,24 @@ function preImportTotalBytes({ maxTotalBytes, maxNightBytes }, incoming) {
   return Math.max(0, maxTotalBytes - room);
 }
 
-module.exports = { preImportTotalBytes, MAX_INCOMING_NIGHTS };
+/**
+ * An over-budget artifact whose night is older than every night the archive keeps would be evicted by retention the
+ * moment it was imported, so refusing it loses nothing and must not turn the job red (five Sep 28 to Oct 29 nights did).
+ * @param {string} night YYYY-MM-DD of the refused artifact
+ * @param {string[]} archivedNights nights currently in the archive (any show)
+ */
+function isBeyondRetention(night, archivedNights) {
+  const isNight = (n) => /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/.test(String(n));
+  const kept = (archivedNights || []).filter(isNight).sort(); // a stray directory name never decides what is old
+  return isNight(night) && kept.length > 0 && String(night) < kept[0];
+}
+
+/**
+ * True only for an `over-budget` refusal caused by the archive TOTAL (not one night being too big on its own) for a night
+ * retention would evict anyway. A per-night overrun is a recorder size regression and stays red.
+ */
+function isHarmlessOverBudget(result, night, archivedNights) {
+  return !!result && result.status === 'over-budget' && /total/.test(String(result.detail || '')) && isBeyondRetention(night, archivedNights);
+}
+
+module.exports = { preImportTotalBytes, isBeyondRetention, isHarmlessOverBudget, MAX_INCOMING_NIGHTS };

@@ -674,7 +674,7 @@ function laneHeld(rec, guard) {
 const UNRELIABLE_TITLE_OUTLETS = new Set(['pages-on-stages']);
 
 // Domain alias matching — imported from shared lib (scraper.js)
-const { domainMatchesExpected, checkScrapingBeeCredits, getScraperStats, fetchWithScrapingdog, isTollbitGate } = require('./lib/scraper');
+const { domainMatchesExpected, checkScrapingBeeCredits, getScraperStats, fetchWithScrapingdog, isTollbitGate, isChallengeOrGarbage } = require('./lib/scraper');
 const { isSoft404Body } = require('./lib/soft-404-body');
 const { shouldCountFailure, isPermanentlyFailed, shouldReopenStaleContentMismatch, classifyFetchFailure, routeCapFromBrowserbaseError, applyRouteCapDeferralLimit, isRouteCapCooldownActive, effectiveFailureReason, isOwnCodeException } = require('./lib/failed-fetch-policy');
 const { consultBrightData } = require('./lib/brightdata-caps');
@@ -2648,6 +2648,9 @@ async function fetchWithScrapingdogText(url) {
   const html = result.content;
   if (isBlocked(html)) {
     throw new Error('CAPTCHA detected (scrapingdog)');
+  }
+  if (isChallengeOrGarbage(html)) {
+    throw new Error('Scrapingdog returned garbage (BRO-7158)');
   }
   const text = extractTextFromHtml(html, url);
   if (text && text.length > 500) {
