@@ -35,7 +35,7 @@ cwd=$(printf '%s' "$input" | jq -r '.cwd // empty' 2>/dev/null)
 common_dir() { git -C "$1" rev-parse --path-format=absolute --git-common-dir 2>/dev/null; }
 OURS="$(common_dir "$R")"
 [ -n "$OURS" ] || exit 0
-[ "$(common_dir "$cwd")" = "$OURS" ] && grep -q "\.claude/hooks/$hook" "$(git -C "$cwd" rev-parse --show-toplevel)/.claude/settings.json" 2>/dev/null && exit 0  # BRO-6126: project settings already run it
+P="${CLAUDE_PROJECT_DIR:-$cwd}"; [ "$(common_dir "$P")" = "$OURS" ] && grep -q "\.claude/hooks/$hook" "$(git -C "$P" rev-parse --show-toplevel)/.claude/settings.json" 2>/dev/null && exit 0  # BRO-6126: the SESSION dir's project settings already run it (not the cwd: a /home/user session in a worktree ran no hook)
 # in_other_repo DIR: true when DIR is inside a git repo that is not this one
 # (worktrees of this repo share its common dir, so they count as ours).
 in_other_repo() {

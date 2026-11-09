@@ -246,6 +246,25 @@ test('runner does not re-run a hook for a session whose cwd is this checkout', (
   assert.equal(inRepo.stdout.trim(), '', 'no hook output: the runner deduped');
 });
 
+// 2026-11-08: a multi-repo session starts in /home/user (CLAUDE_PROJECT_DIR=/home/user)
+// and loads only /home/user/.claude. Once it worked in a worktree of this repo the runner
+// deduped on the cwd, so NO repo hook fired (a land push with a known rebase conflict went
+// through). The session's project dir, not the cwd, says whether project settings run it.
+test('runner dedupes on the session project dir, not the cwd', () => {
+  const runner = path.join(REPO_ROOT, '.claude', 'hooks', 'lib', 'home-hook-runner.sh');
+  const call = (cwd, projectDir) => spawnSyncStdinFile('bash', [runner, 'block-prompting-remote-tools.sh'], {
+    cwd, encoding: 'utf8', timeout: 30000,
+    input: JSON.stringify({ hook_event_name: 'PreToolUse', cwd, tool_name: 'mcp__claude-code-remote__create_session',
+      tool_input: { source_url: 'https://github.com/thomaspryor/broadwayscore', prompt: 'x', model: 'claude-sonnet-5-5' } }),
+    env: { ...process.env, HOME: fakeHome, CLAUDE_PROJECT_DIR: projectDir },
+  });
+  const deny = /"permissionDecision":\s*"deny"/;
+  assert.match(call(REPO_ROOT, scratch).stdout, deny, 'session started outside the repo, cwd in the repo: the hook runs');
+  assert.equal(call(REPO_ROOT, REPO_ROOT).stdout.trim(), '', 'session started in the repo: project settings run it, deduped');
+  const { other } = makeTarget('t-cpd');
+  assert.equal(call(other, REPO_ROOT).stdout.trim(), '', 'session started in the repo, cwd in another repo: still deduped (no double fire)');
+});
+
 // The saved cloud setup creates autoMode settings before invoking this installer.
 test('explicit adoption preserves hookless owner settings through install, check, reinstall and uninstall', () => {
   const { target } = makeTarget('t-adopt');
