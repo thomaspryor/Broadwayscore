@@ -44,6 +44,13 @@ const DATA_PATH = path.join(__dirname, '..', '..', 'data', 'cast-changes.json');
 const data = JSON.parse(fs.readFileSync(DATA_PATH, 'utf8'));
 const TODAY = new Date();
 const DAY_MS = 24 * 60 * 60 * 1000;
+// BRO-7068: check-corpus-drift.yml heals this file (audit-cast-changes.js --write,
+// same 30-day and ended-absence rules) earlier in the SAME job, ~40 minutes before
+// this lane runs. An entry whose boundary falls between the two instants (a heal at
+// 23:41 UTC, this test at 00:20 UTC, addedDate exactly 30 days back) is not a heal
+// miss; it is gone on the next run. One day of grace absorbs that lag. A real heal
+// failure still fails here the following day.
+const HEAL_LAG_MS = DAY_MS;
 
 function eachUpcoming(fn) {
   for (const [showId, show] of Object.entries(data.shows || {})) {
@@ -54,7 +61,7 @@ function eachUpcoming(fn) {
 }
 
 test('no [AUTO-FLAGGED] entries older than 30 days in upcoming', () => {
-  const cutoff = new Date(TODAY.getTime() - 30 * DAY_MS);
+  const cutoff = new Date(TODAY.getTime() - 30 * DAY_MS - HEAL_LAG_MS);
   const offenders = [];
   eachUpcoming((showId, e) => {
     if (!isAutoFlaggedEvent(e)) return;
@@ -70,7 +77,7 @@ test('no absence with endDate strictly before today', () => {
   eachUpcoming((showId, e) => {
     if (e.type !== 'absence' || !e.endDate) return;
     const end = new Date(e.endDate);
-    if (end < TODAY) offenders.push(`${showId}: ${e.name} absence ended ${e.endDate}`);
+    if (end.getTime() < TODAY.getTime() - HEAL_LAG_MS) offenders.push(`${showId}: ${e.name} absence ended ${e.endDate}`);
   });
   assert.deepEqual(offenders, [], `ended absences still in upcoming:\n${offenders.join('\n')}`);
 });
