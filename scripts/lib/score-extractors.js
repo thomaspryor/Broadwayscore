@@ -150,9 +150,9 @@ function isRelayedStarRating(source, matchIndex) {
 // when the word before it is a determiner/preposition/verb that makes "stars" a
 // noun phrase, or when a nationality/"of the" noun follows ("two stars, British...").
 const CAST_STARS_PRECEDER = /(?:^|[\s>])(?:with|the|these|those|both|between)\s*(?:<[^>]*>\s*)*$/i;
-const CAST_STARS_FOLLOWER = /^\s*[,;:]?\s*(?:British|American|English|Irish|Scottish|Welsh|Australian|Canadian|Broadway|West End|Hollywood|of\s+(?:the|this|that)\b|who\b|whose\b|both\b)/i;
+const CAST_STARS_FOLLOWER = /^\s*[,;:]?\s*(?:British|American|English|Irish|Scottish|Welsh|Australian|Canadian|Hollywood|of\s+(?:the|this|that)\b|who\b|whose\b)/i;
 function isCastStarsProse(source, matchIndex, matched) {
-  if (!source || !/^\s*(?:one|two|three|four|five)\b/i.test(matched)) return false;
+  if (!source || !/^\s*(?:one|two|three|four|five)\b/i.test(matched) || /out/i.test(matched)) return false;
   const before = source.slice(Math.max(0, matchIndex - 40), matchIndex);
   if (CAST_STARS_PRECEDER.test(before)) return true;
   // Only a comma-ended match continues the same sentence; "Four stars. Broadway transfer

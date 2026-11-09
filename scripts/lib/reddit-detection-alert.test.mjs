@@ -1,19 +1,21 @@
-// BRO-7210: persistent Reddit posted-detection outage becomes a card; blips and recovery do not.
+// BRO-7210: a Reddit posted-detection outage lasting a day becomes a card; blips and recovery do not.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { nextFailureStreak, decideRedditDetectionAlert, DETECTION_FAILURE_THRESHOLD } = require('./reddit-detection-alert.js');
+const { nextFailingSince, decideRedditDetectionAlert } = require('./reddit-detection-alert.js');
 
-test('streak counts consecutive skips and resets on success', () => {
-  assert.equal(nextFailureStreak(undefined, false), 1);
-  assert.equal(nextFailureStreak(2, false), 3);
-  assert.equal(nextFailureStreak(5, true), 0);
-  assert.equal(nextFailureStreak('x', false), 1);
+const T0 = '2026-11-01T00:00:00.000Z';
+const at = (h) => Date.parse(T0) + h * 3600000;
+
+test('stamps the first failure, keeps it while failing, clears on success', () => {
+  assert.equal(nextFailingSince(undefined, false, T0), T0);
+  assert.equal(nextFailingSince(T0, false, '2026-11-02T00:00:00.000Z'), T0);
+  assert.equal(nextFailingSince('garbage', false, T0), T0);
+  assert.equal(nextFailingSince(T0, true, T0), null);
 });
-test('blip is silent, threshold routes, recovery resolves', () => {
-  assert.equal(decideRedditDetectionAlert(1), null);
-  assert.equal(decideRedditDetectionAlert(DETECTION_FAILURE_THRESHOLD - 1), null);
-  assert.equal(decideRedditDetectionAlert(DETECTION_FAILURE_THRESHOLD).action, 'route');
-  assert.equal(decideRedditDetectionAlert(0).action, 'resolve');
+test('blip is silent, a day-long outage routes, recovery resolves', () => {
+  assert.equal(decideRedditDetectionAlert(T0, at(3)), null);
+  assert.equal(decideRedditDetectionAlert(T0, at(24)).action, 'route');
+  assert.equal(decideRedditDetectionAlert(null, at(0)).action, 'resolve');
 });

@@ -203,7 +203,7 @@ async function main() {
   // The email step holds back "Updated" emails when this run could not check
   // for the owner's post (archive down), so a posted draft is not updated (BRO-5879).
   const detAlert = require('./lib/reddit-detection-alert');
-  const detectionStreak = detAlert.nextFailureStreak(drafts._meta && drafts._meta.postedDetectionFailures, !!posts);
+  const failingSince = detAlert.nextFailingSince(drafts._meta && drafts._meta.postedDetectionFailingSince, !!posts, new Date().toISOString());
   drafts._meta = { ...drafts._meta, postedDetection: posts ? 'ok' : 'skipped' };
   if (posts) {
     const before = Object.values(drafts.drafts).filter(d => d.status === 'posted').length;
@@ -295,7 +295,7 @@ async function main() {
 
   drafts._meta = {
     postedDetection: drafts._meta.postedDetection,
-    postedDetectionFailures: detectionStreak,
+    postedDetectionFailingSince: failingSince,
     description: 'Reddit "reviews are in" post drafts for Broadway, WE/OWE/OB openings (BRO-4333). Written by scripts/draft-reddit-opening-posts.js, shown in the opening digest email.',
     lastRun: new Date().toISOString(),
   };
@@ -314,7 +314,7 @@ async function main() {
   fs.writeFileSync(DRAFTS_PATH, JSON.stringify(drafts, null, 2) + '\n');
   console.log(`\nSaved ${Object.keys(drafts.drafts).length} draft(s) to ${path.relative(ROOT, DRAFTS_PATH)}`);
   // BRO-7210: a persistent detection outage files one worker card; never changes the exit code.
-  await require('./lib/audit-alert').routeAuditDecisions(detAlert.decideRedditDetectionAlert(detectionStreak), 'draft-reddit-opening-posts');
+  await require('./lib/audit-alert').routeAuditDecisions(detAlert.decideRedditDetectionAlert(failingSince, Date.now()), 'draft-reddit-opening-posts');
   reportForcedFailures(forcedFailures);
 }
 
