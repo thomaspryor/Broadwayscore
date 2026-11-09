@@ -210,7 +210,13 @@ function createShowsWriteGuard(showsPath, options = {}) {
     const showCount = data && Array.isArray(data.shows) ? data.shows.length : null;
     const entry = { reason: reason || null, showCount, at: new Date().toISOString() };
     if (!allowDup && process.env.SHOWS_DUP_GUARD_DISABLED !== 'true') {
-      const added = newDuplicateFindings(() => readOnDiskShows(guard.filePath), data && data.shows);
+      let onDisk;
+      const readBefore = () => (onDisk === undefined ? (onDisk = readOnDiskShows(guard.filePath)) : onDisk);
+      // Same two rules as the real save, so a clean dry run means a clean save.
+      const added = [
+        ...newDuplicateFindings(readBefore, data && data.shows),
+        ...newRowFragmentFindings(readBefore, data && data.shows),
+      ];
       if (added.length) {
         entry.wouldRefuse = true;
         entry.duplicates = added.map(formatFinding);

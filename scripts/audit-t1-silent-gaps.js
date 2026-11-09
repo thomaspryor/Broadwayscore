@@ -333,7 +333,7 @@ async function main() {
 
     const scoredOutlets = new Set(scoredMap.get(show.id) || []);
     for (const [f, d] of parsed) {
-      if (fileCountsAsScored(d, show)) scoredOutlets.add(f.split('--')[0]);
+      if (fileCountsAsScored(d, show, path.join(dir, f))) scoredOutlets.add(f.split('--')[0]);
     }
 
     for (const [f, d] of parsed) {

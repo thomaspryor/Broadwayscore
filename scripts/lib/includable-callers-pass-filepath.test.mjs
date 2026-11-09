@@ -42,9 +42,14 @@ function argCount(src, open) {
   return -1;
 }
 
-export function shortCalls(src) {
+// Local wrappers that forward a filePath into the predicate. Their callers
+// drop the path just as easily (audit-t1-silent-gaps.js:336 did, found by the
+// BRO-7080 ship-check), so they are held to the same rule.
+const WRAPPERS = ['isIncludableForRebuild', 'fileCountsAsScored'];
+
+export function shortCalls(src, name = 'isIncludableForRebuild') {
   const out = [];
-  const re = /\bisIncludableForRebuild\s*\(/g;
+  const re = new RegExp(`\\b${name}\\s*\\(`, 'g');
   let m;
   while ((m = re.exec(src))) {
     const before = src.slice(Math.max(0, m.index - 20), m.index);
@@ -52,7 +57,7 @@ export function shortCalls(src) {
     const line = src.slice(0, m.index).split('\n').length;
     const lineText = src.split('\n')[line - 1];
     if (/^\s*(\/\/|\*|\/\*)/.test(lineText)) continue; // comment
-    if (/`[^`]*isIncludableForRebuild\(\.\.\.\)/.test(lineText)) continue;
+    if (new RegExp(`\`[^\`]*${name}\\(\\.\\.\\.\\)`).test(lineText)) continue;
     const n = argCount(src, m.index + m[0].length - 1);
     if (n > 0 && n < 3) out.push({ line, n }); // n === 0: prose "isIncludableForRebuild()" in a string
   }
@@ -64,6 +69,7 @@ test('shortCalls finds a 2-argument call and passes a 3-argument one', () => {
   assert.deepEqual(shortCalls('x = isIncludableForRebuild(d, show, path.join(a, f));'), []);
   assert.deepEqual(shortCalls('x = isIncludableForRebuild(d, f(a, b));').map(c => c.n), [2]);
   assert.deepEqual(shortCalls('// isIncludableForRebuild(d)'), []);
+  assert.deepEqual(shortCalls('if (fileCountsAsScored(d, show)) x();', 'fileCountsAsScored').map(c => c.n), [2]);
 });
 
 test('every isIncludableForRebuild caller in scripts/ passes filePath (BRO-7080)', () => {
@@ -72,8 +78,10 @@ test('every isIncludableForRebuild caller in scripts/ passes filePath (BRO-7080)
     const rel = path.relative(ROOT, file);
     if (ALLOW.has(rel)) continue;
     const src = fs.readFileSync(file, 'utf8');
-    if (!src.includes('isIncludableForRebuild')) continue;
-    for (const c of shortCalls(src)) bad.push(`${rel}:${c.line} (${c.n} args)`);
+    for (const name of WRAPPERS) {
+      if (!src.includes(name)) continue;
+      for (const c of shortCalls(src, name)) bad.push(`${rel}:${c.line} ${name} (${c.n} args)`);
+    }
   }
   assert.deepEqual(bad, [], `pass the review file's path as the 3rd argument:\n${bad.join('\n')}`);
 });
