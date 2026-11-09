@@ -577,6 +577,15 @@ const CORE_DATA_MERGE_REGISTRY = [
     note: 'nightly report-only board dispatch rows: per-handler card counts and unowned gaps',
   },
   {
+    file: 'audit/llm-triage-audit.jsonl',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-11-09 (BRO-7139 Step 3): sole WRITER scripts/llm-triage-audit.js --write (appends one ids/enums/dates-only row per weekly audit; self-throttled to one CI row per 6 days), invoked only by data-health-check.yml\'s "LLM triage audit (weekly, report-only)" step in the board-dispatch job; that job\'s "Commit board dispatch ledger" step is the only git-add of the path. Fresh checkout of main, so earlier rows are already local. merge=union in .gitattributes. Residual risk: a hand --write pushed between checkout and push would lose its row (report-only, accepted; hand runs are source=local and never feed acceptance).',
+    note: 'weekly report-only audit of llm-triage nominations: wrong-rate against later Linear state and landings (read by scripts/llm-triage-acceptance.js)',
+  },
+  {
     file: 'audit/llm-triage.jsonl',
     surface: 'public-repo',
     status: 'single-writer',

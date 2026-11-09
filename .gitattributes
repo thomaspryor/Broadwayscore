@@ -58,6 +58,7 @@ data/audit/scraper-spend-ledger.jsonl merge=union
 data/audit/gemini-usage-ledger.jsonl merge=union
 data/audit/board-dispatch.jsonl merge=union
 data/audit/llm-triage.jsonl merge=union
+data/audit/llm-triage-audit.jsonl merge=union
 data/audit/cross-show-url-holds.jsonl merge=union
 # BRO-5080: sourced fact-check sample answers, one row per checked show (append-only).
 data/audit/fact-check/*.jsonl merge=union
