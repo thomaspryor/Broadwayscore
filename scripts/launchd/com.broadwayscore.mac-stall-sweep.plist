@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Mac-held stalled cards (BRO-7195). The cloud stalled-session sweep (BRO-7183) can only
+         read cloud sessions (get_session), so cards claimed "by local session <uuid> on
+         Toms-Mac-Studio.local" sat In Progress until the 48h hourly reclaim (8 of 9 on its first
+         run). This job runs ON the Mac, where the session registry (~/.claude/sessions), ps and
+         the transcripts are visible:
+
+           node scripts/linear-reclaim-abandoned.js mac-stall-sweep mode
+
+         An In Progress card idle 12h+ whose claiming local session is not running, whose
+         transcript has not changed in 12h, and whose card has no dispatch-ledger row in 24h
+         (bsc-reconcile may still resume it) goes back to Todo (Backlog after repeated reclaims),
+         with the RECLAIM marker comment. At most 5 per run. Rules: localStallAction in
+         scripts/lib/stalled-session-sweep.js.
+
+         Hourly. MUST run on this Mac (GitHub Actions never sees local sessions).
+
+         Install:  cp scripts/launchd/com.broadwayscore.mac-stall-sweep.plist ~/Library/LaunchAgents/
+                   launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.broadwayscore.mac-stall-sweep.plist
+         Manual run: launchctl kickstart -k gui/$(id -u)/com.broadwayscore.mac-stall-sweep
+         Kill:     launchctl bootout gui/$(id -u)/com.broadwayscore.mac-stall-sweep  (or STALL_SWEEP_DISABLE=1)
+         Dry run:  node scripts/linear-reclaim-abandoned.js mac-stall-sweep mode with the dry-run flag -->
+    <key>Label</key>
+    <string>com.broadwayscore.mac-stall-sweep</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>-c</string>
+        <string>cd /Users/tompryor/Broadwayscore &amp;&amp; SYNC_TAG=mac-stall-sweep bash scripts/lib/sync-audit-checkout.sh &amp;&amp; set -a &amp;&amp; source .env &amp;&amp; set +a &amp;&amp; exec node scripts/linear-reclaim-abandoned.js --mac-stall-sweep</string>
+    </array>
+    <key>StartInterval</key>
+    <integer>3600</integer>
+    <key>StandardOutPath</key>
+    <string>/tmp/mac-stall-sweep-launchd.log</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/mac-stall-sweep-launchd.log</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/Users/tompryor/.local/bin</string>
+    </dict>
+</dict>
+</plist>
