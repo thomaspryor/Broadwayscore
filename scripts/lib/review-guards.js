@@ -6093,9 +6093,8 @@ function explainExclusion(data, show, filePath, opts) {
     {
       const outletSynd = require('./review-normalization').normalizeOutlet(data.outletId || data.outlet || '');
       const synd = require('./syndication-pairs');
-      let dirFiles = [];
-      try { dirFiles = require('fs').readdirSync(require('path').dirname(filePath)); } catch { /* unreadable dir: no portal rule */ }
-      const syndPrimaries = synd.getSyndicationPrimariesInDir(data.criticName, outletSynd, dirFiles, require('./review-normalization').normalizeOutlet);
+      const listDir = () => { try { return require('fs').readdirSync(require('path').dirname(filePath)); } catch { return []; } }; // unreadable dir: no portal rule
+      const syndPrimaries = synd.getSyndicationPrimariesInDir(data.criticName, outletSynd, listDir, require('./review-normalization').normalizeOutlet);
       if (syndPrimaries.length) {
         let hasPrimary = false;
         try {
@@ -6270,9 +6269,8 @@ function hasIncludableSyndicationPrimary(data, show, filePath, { primaries, requ
   if (!data || !filePath) return false;
   const synd = require('./syndication-pairs');
   const norm = require('./review-normalization').normalizeOutlet;
-  let dirFiles = [];
-  try { dirFiles = require('fs').readdirSync(require('path').dirname(filePath)); } catch { /* unreadable dir */ }
-  const prims = primaries || synd.getSyndicationPrimariesInDir(data.criticName, norm(data.outletId || data.outlet || ''), dirFiles, norm);
+  const listDir = () => { try { return require('fs').readdirSync(require('path').dirname(filePath)); } catch { return []; } };
+  const prims = primaries || synd.getSyndicationPrimariesInDir(data.criticName, norm(data.outletId || data.outlet || ''), listDir, norm);
   if (!prims.length) return false;
   return synd.hasLiveSyndicationPrimary(require('path').dirname(filePath), prims, data.criticName, {
     extraCheck: (p, pPath) => (!requireScore || hasValidScore(p)) && explainExclusion(p, show, pPath, opts) === null,

@@ -141,7 +141,9 @@ function sameCriticOutletsFrom(fileNames, criticName, normalize = (o) => o) {
   const out = new Set();
   for (const f of fileNames || []) {
     const m = re.exec(f);
-    if (m && !SYNDICATION_PORTAL_OUTLETS.includes(normalize(m[1]))) out.add(m[1]);
+    // 'unknown'/'unnamed' files are shadows that defer to the named copy (dedup-survivor.unknownOutletShadowTargets);
+    // letting a portal defer to them back would drop both.
+    if (m && !/^(unknown|unnamed)$/.test(m[1]) && !SYNDICATION_PORTAL_OUTLETS.includes(normalize(m[1]))) out.add(m[1]);
   }
   return [...out];
 }
@@ -152,12 +154,13 @@ function sameCriticOutletsFrom(fileNames, criticName, normalize = (o) => o) {
  * portal rule. Callers without a directory (lane) keep getSyndicationPrimaries.
  * @param {string} criticName
  * @param {string} outletId normalized outlet id of the file being judged
- * @param {string[]} fileNames the show directory listing
+ * @param {string[]|(()=>string[])} fileNames the show directory listing, or a thunk returning it
  * @param {(o:string)=>string} [normalize]
  */
 function getSyndicationPrimariesInDir(criticName, outletId, fileNames, normalize) {
   if (!SYNDICATION_PORTAL_OUTLETS.includes(outletId)) return getSyndicationPrimaries(criticName, outletId);
-  return getSyndicationPrimaries(criticName, outletId, { sameCriticOutlets: sameCriticOutletsFrom(fileNames, criticName, normalize) });
+  const names = typeof fileNames === 'function' ? fileNames() : fileNames; // a thunk: list the directory only for portal files
+  return getSyndicationPrimaries(criticName, outletId, { sameCriticOutlets: sameCriticOutletsFrom(names, criticName, normalize) });
 }
 
 /**

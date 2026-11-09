@@ -57,7 +57,7 @@ function readReviewFileState(showId, show, { dir = DEFAULT_DIR } = {}) {
     try { reason = explainExclusion(d, show, path.join(showDir, f)); } catch (e) { reason = null; }
     let syndicatedUnder = null;
     if (reason && SYNDICATED_REASONS.has(reason)) {
-      const prims = synd.getSyndicationPrimaries(d.criticName, outletIdOfFile(d));
+      const prims = synd.getSyndicationPrimariesInDir(d.criticName, outletIdOfFile(d), names, require('./review-normalization').normalizeOutlet);
       syndicatedUnder = prims.length ? prims[0] : null;
     }
     files.push({

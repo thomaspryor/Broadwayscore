@@ -95,3 +95,18 @@ test('BRO-7238 part 3 detector: a pair is "covered" once a secondary is known, "
   assert.equal(keys.length, 2);
   assert.deepEqual(unresolved(keys).map((k) => k.showId), ['b']);
 });
+
+test('BRO-7238: a portal never defers to unknown/unnamed shadow files, and -2 suffixes count', () => {
+  const synd = require('../../scripts/lib/syndication-pairs.js');
+  const n = (o) => o;
+  assert.deepEqual(synd.sameCriticOutletsFrom(['yahoo--jane-doe.json', 'unknown--jane-doe.json', 'unnamed--jane-doe.json'], 'Jane Doe', n), []);
+  assert.deepEqual(synd.sameCriticOutletsFrom(['yahoo--jane-doe.json', 'variety--jane-doe-2.json'], 'Jane Doe', n), ['variety']);
+});
+
+test('BRO-7238 class guard: no caller feeds a portal outlet through the plain lookup where a directory is in hand', () => {
+  const fs = require('node:fs');
+  for (const f of ['scripts/lib/rebuild-staleness-scan.js', 'scripts/lib/press-night-review-state.js', 'scripts/lib/star-score-mismatch.js', 'scripts/lib/dedup-survivor.js']) {
+    const src = fs.readFileSync(new URL('../../' + f, import.meta.url), 'utf8');
+    assert.ok(/getSyndicationPrimariesInDir/.test(src), f + ' must use the folder-aware lookup');
+  }
+});
