@@ -548,6 +548,8 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   { host: /(^|\.)flopbox\.(?:net|org|com)$/, path: /\/event\//i, reason: 'event-listing' },
   { host: /(^|\.)mommypoppins\.com$/, path: /\/event\/events\//i, reason: 'event-listing' },
   { host: /^events\.newyorkfamily\.com$/, path: /^\/event\//i, reason: 'event-listing' },
+  // Afridiziak /offers/ is a ticket-discount post (Julius Caesar, Globe 2026).
+  { host: /(^|\.)afridiziak\.com$/, path: /^\/offers\//i, reason: 'event-listing' },
   // BRO-5489: the same hub is served under a locale prefix (/pl/shows/, /de/shows/);
   // the census cited four of them as Buffy Revamped's missing reviews. Locale
   // reviews live at /<lang>/posts/ (22 in reviews.json), which this never matches.

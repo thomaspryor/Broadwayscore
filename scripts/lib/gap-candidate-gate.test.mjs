@@ -259,6 +259,7 @@ test('what\'s-on /event(s)/ listings are refused; real /event/ reviews are not (
     'https://donyc.com/events/2026/9/27/the-secret-circus-musical-tickets',
     'https://mommypoppins.com/new-york-city-kids/event/events/the-secret-circus-at-the-soho-playhouse',
     'https://events.newyorkfamily.com/event/the-secret-circus-musical/',
+    'https://www.afridiziak.com/offers/access-17-tickets-to-see-intermission-youths-julius-caesar',
   ]) {
     assert.equal(nr.classifyGapCandidateUrl(u).ok, false, u);
     assert.equal(nr.submissionNonReviewReason(u), 'event-listing', u);
