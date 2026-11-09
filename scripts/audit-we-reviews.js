@@ -19,6 +19,7 @@
  *   --concurrency <n>    Concurrent workers (default: 3)
  */
 
+require('./lib/llm-usage-install'); // LLM spend meter: before any client is built (BRO-5043)
 const https = require('https');
 const http = require('http');
 const fs = require('fs');

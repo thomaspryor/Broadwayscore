@@ -30,6 +30,7 @@
  * Kill switch: RECURRENCE_DETECTOR_DISABLED=1 (exits 0, writes nothing).
  */
 'use strict';
+require('./lib/llm-usage-install'); // LLM spend meter: before any client is built (BRO-5043)
 require('./lib/cli-help').exitOnHelp(module);
 
 const fs = require('fs');

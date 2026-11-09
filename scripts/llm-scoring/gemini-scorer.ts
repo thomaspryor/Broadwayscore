@@ -7,6 +7,7 @@
  * - Bucket/score validation and clamping
  */
 
+import '../lib/llm-usage-install.js'; // LLM spend meter: keep it the first import (BRO-5043)
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { SimplifiedLLMResult, Bucket } from './types';
 import { SYSTEM_PROMPT_V5, buildPromptV5, BUCKET_RANGES, GEMINI_CALIBRATION_OFFSET } from './config';

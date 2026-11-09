@@ -17,6 +17,7 @@
  *   APPROVAL_HMAC_SECRET   - For signing approval URLs
  */
 
+import './lib/llm-usage-install.js'; // LLM spend meter: keep it the first import (BRO-5043)
 import { Anthropic } from '@anthropic-ai/sdk';
 import crypto from 'crypto';
 import fs from 'fs';

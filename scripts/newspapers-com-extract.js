@@ -29,6 +29,7 @@
  *   node scripts/newspapers-com-extract.js --show=funny-girl-2022 --date-range=7
  */
 
+require('./lib/llm-usage-install'); // LLM spend meter: before any client is built (BRO-5043)
 const fs = require('fs');
 const path = require('path');
 const { heuristicClassify } = require('./lib/non-review-patterns');

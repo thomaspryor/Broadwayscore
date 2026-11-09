@@ -247,6 +247,7 @@ jobs:
         # 600s deadline with margin. No job-level timeout-minutes is set on
         # this job, so GitHub's 360min default already has ample headroom.
         env:
+          PUSH_RECONCILE_MERGED_JSON: '1' # union-merges the LLM spend ledger on rebase (BRO-5043)
           PUSH_DEADLINE_SEC: '600'
         run: |
           git config user.name "GitHub Action"
@@ -257,6 +258,7 @@ jobs:
           # staged explicitly here — the prior comment claiming push-core-data
           # covered it was wrong and made this step a permanent no-op
           # (task #1460, same bug class as #1456).
+          git add data/audit/gemini-usage-ledger.jsonl 2>/dev/null || true # LLM spend meter rows (BRO-5043)
           git add data/audit/*.json 2>/dev/null || true
           # alert-ledger.json is already covered by the glob above at
           # runtime, but named explicitly here so the alert-ledger-commit-

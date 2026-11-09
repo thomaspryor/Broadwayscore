@@ -21,6 +21,7 @@
 // draft is never held up. Kill switch: NEWSLETTER_AI_SUBJECT_DISABLED=true.
 //
 // Pure except for the two network calls, which tests replace via deps.
+import '../lib/llm-usage-install.js'; // LLM spend meter: keep it the first import (BRO-5043)
 import { createRequire } from 'node:module';
 const require_ = createRequire(import.meta.url);
 const { SOCIAL_WRITER, GPT55 } = require_('../lib/models.js');

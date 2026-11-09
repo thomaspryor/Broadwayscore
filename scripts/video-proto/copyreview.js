@@ -4,6 +4,7 @@
 // every number, label, grade, outlet, quote and timing phrase; then both review again. render.js refuses a plan
 // whose current wording has not passed, so failed copy never reaches a video.
 // usage: node copyreview.js <plan.json>   (exit 0 = pass, 1 = blocked)
+require('../lib/llm-usage-install'); // LLM spend meter: before any client is built (BRO-5043)
 const fs = require('fs'), crypto = require('crypto');
 const { foldDiacritics } = require('../lib/title-match.js');
 

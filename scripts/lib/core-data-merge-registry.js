@@ -2086,6 +2086,12 @@ const CORE_DATA_MERGE_REGISTRY = [
   // real per-entry union reconciliation, unlike apiFallbackSafe's fail-closed
   // whole-file overwrite, so multi-writer is not a disqualifier here.
   { file: 'audit/scraper-spend-ledger.jsonl', surface: 'public-repo', status: 'active', merge: mergeScraperSpendLedger, format: 'jsonl', apiFallbackMerge: true },
+  // BRO-5043 (2026-11-09): the LLM spend meter ledger. Every Gemini/OpenAI
+  // caller now writes it, and the jobs that run them stage it inside their
+  // existing commit steps, so it must not disqualify those steps' Git Data API
+  // fallback. Rows are whole-record unique (ts + runId + script + model), so
+  // the scraper ledger's full-record union merge fits as-is.
+  { file: 'audit/gemini-usage-ledger.jsonl', surface: 'public-repo', status: 'active', merge: mergeScraperSpendLedger, format: 'jsonl', apiFallbackMerge: true },
   // BRO-4521: apiFallbackMerge so data-health-check.yml's intermediate
   // commit steps can stage it (per-entry union merge, same as the ledgers
   // around it).

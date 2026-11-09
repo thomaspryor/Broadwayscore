@@ -20,6 +20,7 @@
 //
 // See sprint-plan-visual-qa-gate.md and .claude/skills/visual-qa/skill.md.
 
+import './lib/llm-usage-install.js'; // LLM spend meter: keep it the first import (BRO-5043)
 import { execSync } from 'node:child_process';
 import { existsSync, mkdirSync, readFileSync, writeFileSync, readdirSync, statSync, rmSync } from 'node:fs';
 import { join } from 'node:path';

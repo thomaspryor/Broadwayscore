@@ -14,6 +14,7 @@
  *   node scripts/tag-genres.js --all           # include closed shows
  *   node scripts/tag-genres.js --replay=COMMIT # redo: reuse the lost commit's tags, no LLM
  */
+require('./lib/llm-usage-install'); // LLM spend meter: before any client is built (BRO-5043)
 const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');

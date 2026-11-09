@@ -3,6 +3,7 @@
 // claim they don't support. Anything that fails falls back to the template caption (captions.js),
 // so a bad draft never posts. Kill switch: SOCIAL_AI_CAPTIONS_DISABLED=true.
 
+require('../lib/llm-usage-install'); // LLM spend meter: before any client is built (BRO-5043)
 const crypto = require('crypto');
 const { SOCIAL_WRITER, GPT55 } = require('../lib/models.js');
 const { finalResponseText, firstJsonObject } = require('../lib/anthropic-response-text.js');

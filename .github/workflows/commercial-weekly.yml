@@ -322,6 +322,7 @@ jobs:
           GIT_NET_TIMEOUT_SEC: '30'
         run: |
           # commercial.json is gitignored (core data); push-core-data syncs it to the private repo.
+          git add data/audit/gemini-usage-ledger.jsonl 2>/dev/null || true # LLM spend meter rows (BRO-5043)
           if [ "$RESEARCH_OUTCOME" = "success" ]; then
             bash scripts/lib/git-add-existing.sh data/commercial-pending-review.json data/deep-research-cost-log.json data/deep-research-progress.json data/commercial-research-spend.json data/commercial-research-queue.json
           else
@@ -681,6 +682,7 @@ jobs:
           # as the sibling commits in this file. Matches BRO-334/BRO-346.
           GIT_NET_TIMEOUT_SEC: '30'
         run: |
+          git add data/audit/gemini-usage-ledger.jsonl 2>/dev/null || true # LLM spend meter rows (BRO-5043)
           bash scripts/lib/git-add-existing.sh data/commercial-pending-review.json data/audit/commercial-data-audit.json data/audit/commercial-data-history.json data/recoupment-calibration-anchors.json
           bash scripts/lib/stage-data-changes.sh
           if git diff --staged --quiet; then

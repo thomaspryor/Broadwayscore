@@ -5,6 +5,7 @@
  * Sends proposals to Claude, GPT-4o, and Gemini for independent critique
  */
 
+import '../lib/llm-usage-install.js'; // LLM spend meter: keep it the first import (BRO-5043)
 import Anthropic from '@anthropic-ai/sdk';
 import OpenAI from 'openai';
 import { GoogleGenerativeAI } from '@google/generative-ai';
