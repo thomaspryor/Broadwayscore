@@ -4,7 +4,6 @@
 // citation built by buildCitation() so writers can credit and link the score
 // without asking us. Renders nothing when the badge would read TBD.
 import { useEffect, useRef, useState } from 'react';
-import Link from 'next/link';
 import { shareOrCopy } from '@/lib/share-link';
 import { trackUgc } from '@/lib/ugc-analytics';
 import { buildCitation, getCitableScore } from '@/lib/cite-score';
@@ -48,10 +47,6 @@ export default function CiteScoreControl({ show, className = '' }: { show: Compu
       >
         Cite this score
       </button>
-      <span aria-hidden="true"> · </span>
-      <Link href="/partners" className="inline-block py-1.5 underline underline-offset-2 decoration-white/10 hover:text-brand transition-colors">
-        Badge &amp; embed
-      </Link>
       <span role="status" className="ml-2 text-gray-400">
         {status === 'copied' ? 'Citation copied' : status === 'failed' ? 'Copy failed. Select the text below.' : ''}
       </span>
