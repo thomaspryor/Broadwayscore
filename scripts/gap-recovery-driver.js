@@ -355,6 +355,7 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
       };
       const r = await recoverReviewTextVerified({
         filePath: c.filePath, rawText: got.rawText, url: got.url, expectUrl: c.url || null,
+        headline: require('./lib/gap-acceptance').pageHeadline(got.html),
         labels, tracker, ctxOpts: { reviewTextsDir: dir }, show: c.show,
       });
       if (!r.ok) {

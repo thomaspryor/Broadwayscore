@@ -113,10 +113,62 @@ function proveIdentity(existing, cleaned, newUrl, ctx) {
 }
 
 /**
+ * Outlets whose article body routinely never names the show because the name
+ * lives only in the headline. The Stage: the BRO-7171 pilot extracted 16 full
+ * logged-in reviews whose body omits the title ("Powerful and precise revival
+ * of Peter Shaffer's equine psychodrama ...") while the h1 reads "Equus review
+ * at the Menier Chocolate Factory, London".
+ */
+const HEADLINE_IDENTITY_OUTLETS = new Set(['thestage']);
+
+/** The page's own headline: og:title, else the first <h1>. Never the url. */
+function pageHeadline(html) {
+  if (!html || typeof html !== 'string') return null;
+  const decode = (s) => String(s).replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replace(/&#0?39;|&rsquo;|&#8217;/g, "'")
+    .replace(/&quot;/g, '"').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim();
+  const og = /<meta[^>]+property=["']og:title["'][^>]*content=["']([^"']+)["']/i.exec(html)
+    || /<meta[^>]+content=["']([^"']+)["'][^>]*property=["']og:title["']/i.exec(html);
+  if (og && decode(og[1])) return decode(og[1]);
+  const h1 = /<h1\b[^>]*>([\s\S]*?)<\/h1>/i.exec(html);
+  return h1 && decode(h1[1]) ? decode(h1[1]) : null;
+}
+
+/**
+ * Headline identity (BRO-7171 Stage 2b, owner-delegated decision 2026-11-09).
+ * For HEADLINE_IDENTITY_OUTLETS only, a body that never names the show may
+ * pass the show-mentioned check when the fetched page's OWN headline names it.
+ *
+ * Why this is not the BRO-5395 rollback again: that change counted a title in
+ * the review's URL plus a nearby date, and the corpus audit found
+ * other-production reviews it would admit. This is page evidence: the
+ * headline comes from the HTML we fetched (og:title / h1), never the slug.
+ * Matching uses title-match.normalizeTitle on both sides as a whole-phrase
+ * match (no loose substring), and the generic-title gate still applies: a
+ * generic or ambiguous one-word title must also find its venue / cast /
+ * creative / year in the headline. The wrong-article, byline, date and
+ * identity checks after this one are unchanged.
+ * @returns {{ok:boolean, why?:string}}
+ */
+function headlineIdentity({ outletId, headline, show, showTitle }) {
+  if (!HEADLINE_IDENTITY_OUTLETS.has(outletId)) return { ok: false };
+  if (!headline) return { ok: false, why: 'none on page' };
+  const { normalizeTitle } = require('./title-match');
+  const titles = [...new Set([showTitle, show && show.title].filter(Boolean))];
+  const h = ` ${normalizeTitle(headline)} `;
+  const named = titles.some((t) => { const n = normalizeTitle(t); return n.length >= 3 && h.includes(` ${n} `); });
+  if (!named) return { ok: false, why: `"${String(headline).slice(0, 80)}" does not name the show` };
+  if (show) {
+    const g = require('./generic-title-matching').checkGenericTitleCandidate({ show, candidate: { title: headline } });
+    if (!g.ok) return { ok: false, why: g.reason };
+  }
+  return { ok: true };
+}
+
+/**
  * Pure acceptance decision.
  *
  * @param {object} existing  the on-disk review record (fresh read)
- * @param {{rawText: string, url?: string}} candidate  text from the fetch; url
+ * @param {{rawText: string, url?: string, headline?: string}} candidate  text from the fetch; url
  *   is where it came from (defaults to existing.url = no URL change)
  * @param {object} ctx
  * @param {string} ctx.showId
@@ -175,7 +227,8 @@ function acceptRecoveredText(existing, candidate, ctx = {}) {
   //    date plausible for this production.
   const showTitle = deriveShowTitle(showId);
   if (!validateShowMentioned(text, showTitle, showId).valid) {
-    return refuse('show_not_mentioned', `show not mentioned: "${showTitle}"`);
+    const hl = headlineIdentity({ outletId: existing.outletId, headline: candidate.headline, show: ctx.show, showTitle });
+    if (!hl.ok) return refuse('show_not_mentioned', `show not mentioned: "${showTitle}"${hl.why ? ` (headline: ${hl.why})` : ''}`);
   }
   if (ctx.show) {
     const v = require('./wrong-article-screen').screenWrongArticle(text, ctx.show);
@@ -359,7 +412,7 @@ function buildAcceptanceContext(filePath, existing, candidateUrl, opts = {}) {
  * @param {(data: object, decision: object) => void} [args.beforeWrite] add score fields etc.
  * @returns {{ok: boolean, code: string, reason: string, newLen?: number, decision: object, write?: object}}
  */
-function recoverReviewText({ filePath, rawText, url, expectUrl, labels, dryRun = false, tracker, ctxOpts = {}, beforeWrite }) {
+function recoverReviewText({ filePath, rawText, url, headline = null, expectUrl, labels, dryRun = false, tracker, ctxOpts = {}, beforeWrite }) {
   const { withReviewTextsLock } = require('./review-texts-lock');
   const run = () => {
     const { readReviewForUpdate, persistReviewViaSafeWrite } = require('./persist-review-snapshot');
@@ -373,7 +426,7 @@ function recoverReviewText({ filePath, rawText, url, expectUrl, labels, dryRun =
       }
     }
     const ctx = buildAcceptanceContext(filePath, data, url, ctxOpts);
-    const decision = acceptRecoveredText(data, { rawText, url }, ctx);
+    const decision = acceptRecoveredText(data, { rawText, url, headline }, ctx);
     if (!decision.accept || dryRun) {
       return { ok: decision.accept, code: decision.code, reason: decision.reason, newLen: decision.cleanedText && decision.cleanedText.length, decision, dryRun };
     }
@@ -483,8 +536,8 @@ async function verifyMovedReview({ filePath, show, showId, cleanedText, newUrl, 
  * @param {(decision:object) => Promise<((data:object)=>void)|null>} [a.prepareWrite]
  * @returns {Promise<{ok:boolean, code:string, reason:string, newLen?:number, decision?:object, llmAsked?:boolean}>}
  */
-async function recoverReviewTextVerified({ filePath, rawText, url, expectUrl, labels, dryRun = false, tracker, ctxOpts = {}, show = null, prepareWrite, log = console.log }) {
-  const base = { filePath, rawText, url, expectUrl, labels, ctxOpts };
+async function recoverReviewTextVerified({ filePath, rawText, url, headline = null, expectUrl, labels, dryRun = false, tracker, ctxOpts = {}, show = null, prepareWrite, log = console.log }) {
+  const base = { filePath, rawText, url, headline, expectUrl, labels, ctxOpts };
   let pre = recoverReviewText({ ...base, dryRun: true });
   let llmAsked = false;
   // identity_unproven is the one refusal an LLM verdict can overturn, and only
@@ -511,6 +564,9 @@ async function recoverReviewTextVerified({ filePath, rawText, url, expectUrl, la
 
 module.exports = {
   acceptRecoveredText,
+  headlineIdentity,
+  pageHeadline,
+  HEADLINE_IDENTITY_OUTLETS,
   recoverReviewText,
   recoverReviewTextVerified,
   verifyMovedReview,

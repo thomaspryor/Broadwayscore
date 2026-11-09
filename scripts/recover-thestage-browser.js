@@ -183,7 +183,7 @@ async function main() {
         fetchMethod: 'thestage-subscriber-browser-session',
         sourceMethod: 'thestage-subscriber-recovery-login',
         contentTierReasonFallback: 'Recovered via authenticated The Stage browser session (task #876)',
-      });
+      }, { headline: require('./lib/gap-acceptance').pageHeadline(result.html) });
       if (outcome.ok) {
         stats.recovered++;
         console.log(`  ✓ RECOVERED (${outcome.newLen} chars)`);
