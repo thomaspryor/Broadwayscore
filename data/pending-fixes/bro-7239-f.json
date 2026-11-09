@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7239-f",
   "planId": "400f41d7-141f-47cc-9589-732d8be5f15e",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-09T18:39:50.583Z",
   "submitter": {
     "name": null,
@@ -54,5 +54,29 @@
         "description": "shows.json: shear-madness-regional-2026.closingDateSource"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-09T20:26:43.025Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for covenant-speakeasy-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for covenant-speakeasy-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for shear-madness-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for shear-madness-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
