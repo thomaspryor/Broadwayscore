@@ -141,18 +141,20 @@ test('cushion: banked profit splits the comparison when that side has enough his
 
   const cal: ClosingObservation[][] = [[], [], [], []];
   for (let w = 1; w <= 20; w++) cal[2].push({ weeks: w, closed: true, cushion: 0.1 }); // thin: close within 1..20
-  for (let w = 41; w <= 60; w++) cal[2].push({ weeks: w, closed: true, cushion: 0.9 }); // banked: 41..60
+  for (let w = 41; w <= 60; w++) cal[2].push({ weeks: w, closed: true, cushion: 1.3 }); // banked: 41..60
   const ratios = [...Array(10).fill(1.05), 0.85];
   assert.equal(estimateClosing(ratios, cal, [...Array(10).fill(0), 0.05])!.cushion, 'thin');
   assert.equal(estimateClosing(ratios, cal, [...Array(10).fill(0), 0.05])!.median, 10);
-  assert.equal(estimateClosing(ratios, cal, [...Array(10).fill(0), 0.8])!.median, 50);
+  assert.equal(estimateClosing(ratios, cal, [...Array(10).fill(0), 1.2])!.median, 50);
+  // Half earned back is still thin (Buena Vista Social Club, Nov 2026: 0.50 banked, closed 12 weeks later).
+  assert.equal(estimateClosing(ratios, cal, [...Array(10).fill(0), 0.5])!.cushion, 'thin');
   // No capitalization: pooled.
   const pooled = estimateClosing(ratios, cal)!;
   assert.equal(pooled.cushion, null);
   assert.equal(pooled.sample, 40);
   // Too few on its own side: pooled.
-  const thinOnly = cal.map((c) => c.filter((o) => o.cushion! < 0.5 || o.weeks > 55));
-  assert.equal(estimateClosing(ratios, thinOnly, [...Array(10).fill(0), 0.8])!.cushion, null);
+  const thinOnly = cal.map((c) => c.filter((o) => o.cushion! < 1 || o.weeks > 55));
+  assert.equal(estimateClosing(ratios, thinOnly, [...Array(10).fill(0), 1.2])!.cushion, null);
 });
 
 test('show age: a first-year show is compared with first-year spells, an established one with established spells', () => {

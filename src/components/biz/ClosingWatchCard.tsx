@@ -109,8 +109,8 @@ export default function ClosingWatchCard({
           {basis.young === false && ' past their first year'} that{' '}
           {basis.weeksUnder > 0 ? `spent ${basis.weeksUnder}+ weeks` : 'fell'} under {basis.thresholdPct}% of
           break-even (adjusted for the season)
-          {basis.cushion === 'thin' && ' without having earned back half their investment first'}
-          {basis.cushion === 'banked' && ' after already earning back half their investment or more'}, half closed
+          {basis.cushion === 'thin' && ' before earning back their investment'}
+          {basis.cushion === 'banked' && ' after already earning back their investment'}, half closed
           within {basis.medianWeeks} more weeks.
         </p>
       )}

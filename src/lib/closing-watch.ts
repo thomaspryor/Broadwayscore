@@ -50,8 +50,13 @@ export const CLOSING_WATCH_MIN_CLOSINGS = 8;
 /** Missing weeks in a row that end a run (a shutdown, a transfer), not a skipped report. */
 export const CLOSING_WATCH_MAX_GAP_WEEKS = 4;
 
-/** Banked operating profit, as a share of capitalization, that splits "had a cushion" from "did not". */
-export const CLOSING_WATCH_CUSHION_SPLIT = 0.5;
+/**
+ * Banked operating profit, as a share of capitalization, that splits "had a cushion" from "did not".
+ * 1 = earned back its full investment. Backtest (BRO-7246, 2026-11-09): at 0.5 Buena Vista Social Club
+ * (0.50 banked, unrecouped) got an 85-week estimate and closed in 12; at 1 it gets no confident date,
+ * and leave-one-out accuracy goes 70% -> 72% in window, median miss unchanged at 8 weeks.
+ */
+export const CLOSING_WATCH_CUSHION_SPLIT = 1;
 
 /** Weeks into the run that split a young show from an established one. */
 export const CLOSING_WATCH_YOUNG_WEEKS = 52;
