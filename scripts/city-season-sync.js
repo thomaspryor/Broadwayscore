@@ -20,7 +20,6 @@ const { fetchPage, cleanup } = require('./lib/scraper');
 const F = require('./lib/city-review-finder');
 const S = require('./lib/city-season');
 const { getFinder, SEASON_SOURCES } = require('./lib/city-finder-config');
-const { sanitizeVenueForWrite } = require('./lib/venue-classification');
 const { pageToText, readSeasonPage } = require('./lib/season-page-reader');
 
 const ROOT = path.join(__dirname, '..');
@@ -150,7 +149,7 @@ async function main() {
   for (const c of cands) perHash[c.hash] = (perHash[c.hash] || 0) + 1;
   for (const c of cands) {
     if (perHash[c.hash] > 1) { report.skipped.push(`${c.row.title}: image shared with another production (site-wide banner)`); continue; }
-    const show = S.buildShow(c.row, { id: c.id, hubSlug, hub, city, today, venueOf: sanitizeVenueForWrite });
+    const show = S.buildShow(c.row, { id: c.id, hubSlug, hub, city, today });
     show.images = flag('apply') ? await writeArt(c.id, c.art) : { poster: `/images/shows/${c.id}/poster.webp`, thumbnail: `/images/shows/${c.id}/thumbnail.webp` };
     actions.push({ type: 'add-show', show, description: `add ${c.id}` });
     report.added.push({ id: c.id, title: c.row.title, theatre: c.row.theatre, start: c.row.start, end: c.row.end, sources: c.row.sources });

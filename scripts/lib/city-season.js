@@ -14,6 +14,7 @@
 
 const { norm, hasPhrase, addDays } = require('./city-review-finder');
 const { SEASON_SOURCES } = require('./city-finder-config');
+const { sanitizeVenueForWrite } = require('./venue-classification');
 
 const HORIZON_DAYS = 100; // "the next ~3 months"
 const MAX_RUN_DAYS = 200; // a longer "run" is a season banner, not a production
@@ -123,10 +124,10 @@ function showId(row, taken) {
  * The add-show entry for a season row. Dates are the theatre's own (closingDate + closingDateSource);
  * `images` is filled by the caller once the art is on disk.
  */
-function buildShow(row, { id, hubSlug, hub, city, today, venueOf = (x) => x }) {
+function buildShow(row, { id, hubSlug, hub, city, today }) {
   return {
     id, title: row.title, slug: id,
-    venue: venueOf(`${row.theatre}, ${row.city || city.defaultCity}, ${city.state}`),
+    venue: sanitizeVenueForWrite(`${row.theatre}, ${row.city || city.defaultCity}, ${city.state}`),
     status: row.start > today ? 'upcoming' : 'open',
     type: row.type === 'musical' || row.type === 'play' ? row.type : (/\b(musical|cabaret|cinderella)\b/i.test(row.title) ? 'musical' : 'play'),
     category: 'regional', market: 'regional',
