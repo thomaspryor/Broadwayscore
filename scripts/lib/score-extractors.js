@@ -1246,6 +1246,12 @@ function extractGenericStarRating(html, text) {
     if (match) {
       if (match[1].includes('★') || match[1].includes('☆')) {
         const filled = (match[1].match(/★/g) || []).length;
+        // BRO-7080: a run of only empty stars ("☆☆☆☆") is page decoration or a
+        // site that draws its filled star as ☆ (theatre-south-east, Camden New
+        // Journal), never a 0-star verdict. It pinned three published reviews
+        // to a 0-30 band (Beetlejuice WE 21, "the wait was worth it").
+        // findStarGroups already refuses full === 0.
+        if (filled === 0) continue;
         const hasEmpty = match[1].includes('☆');
         // If both filled and empty stars shown, total = filled + empty
         // If only filled stars (no ☆), assume /5 scale (standard for theatre reviews)

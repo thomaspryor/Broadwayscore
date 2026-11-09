@@ -1,0 +1,108 @@
+{
+  "issueNumber": "bro-7080-zero-stars",
+  "planId": "9a24ed2b-7d9b-471a-b528-ccf7fda73596",
+  "status": "pending",
+  "createdAt": "2026-11-09T10:33:33.500Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Clear 0/N star ratings read from runs of empty ☆ glyphs (no verdict); clearing re-queues the anchored rescore for the 4 published rows pinned to 0-30 (BRO-7080)",
+    "steps": [
+      "scenes-from-a-repatriation-west-end-2025/westminsterextra--unknown.json: originalScore",
+      "heathers-the-musical-off-west-end-2026/theatre-south-east--unknown.json: originalScore",
+      "the-mousetrap-west-end-2021/reviewsgate--william-russell.json: originalScore",
+      "les-liaisons-dangereuses-west-end-2026/camdennewjournal--unknown.json: originalScore",
+      "mary-poppins-west-end-2019/camdennewjournal--unknown.json: originalScore",
+      "my-neighbour-totoro-west-end-2025/islingtontribune--unknown.json: originalScore",
+      "my-neighbour-totoro-west-end-2025/camdennewjournal--unknown.json: originalScore",
+      "beetlejuice-west-end-2026/theatre-south-east--helena-featherstone.json: originalScore",
+      "bat-out-of-hell-west-end-2017/reviewsgate--indigo-cleverley.json: originalScore",
+      "the-cherry-orchard-west-end-2026/theatre-south-east--sammi-oneill.json: originalScore"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "scenes-from-a-repatriation-west-end-2025/westminsterextra--unknown.json",
+        "field": "originalScore",
+        "oldValue": "0/4 stars",
+        "newValue": null,
+        "description": "scenes-from-a-repatriation-west-end-2025/westminsterextra--unknown.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "heathers-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
+        "field": "originalScore",
+        "oldValue": "0/4 stars",
+        "newValue": null,
+        "description": "heathers-the-musical-off-west-end-2026/theatre-south-east--unknown.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-mousetrap-west-end-2021/reviewsgate--william-russell.json",
+        "field": "originalScore",
+        "oldValue": "0/4 stars",
+        "newValue": null,
+        "description": "the-mousetrap-west-end-2021/reviewsgate--william-russell.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "les-liaisons-dangereuses-west-end-2026/camdennewjournal--unknown.json",
+        "field": "originalScore",
+        "oldValue": "0/3 stars",
+        "newValue": null,
+        "description": "les-liaisons-dangereuses-west-end-2026/camdennewjournal--unknown.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mary-poppins-west-end-2019/camdennewjournal--unknown.json",
+        "field": "originalScore",
+        "oldValue": "0/4 stars",
+        "newValue": null,
+        "description": "mary-poppins-west-end-2019/camdennewjournal--unknown.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "my-neighbour-totoro-west-end-2025/islingtontribune--unknown.json",
+        "field": "originalScore",
+        "oldValue": "0/4 stars",
+        "newValue": null,
+        "description": "my-neighbour-totoro-west-end-2025/islingtontribune--unknown.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "my-neighbour-totoro-west-end-2025/camdennewjournal--unknown.json",
+        "field": "originalScore",
+        "oldValue": "0/4 stars",
+        "newValue": null,
+        "description": "my-neighbour-totoro-west-end-2025/camdennewjournal--unknown.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "beetlejuice-west-end-2026/theatre-south-east--helena-featherstone.json",
+        "field": "originalScore",
+        "oldValue": "0/5 stars",
+        "newValue": null,
+        "description": "beetlejuice-west-end-2026/theatre-south-east--helena-featherstone.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bat-out-of-hell-west-end-2017/reviewsgate--indigo-cleverley.json",
+        "field": "originalScore",
+        "oldValue": "0/4 stars",
+        "newValue": null,
+        "description": "bat-out-of-hell-west-end-2017/reviewsgate--indigo-cleverley.json: originalScore"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-cherry-orchard-west-end-2026/theatre-south-east--sammi-oneill.json",
+        "field": "originalScore",
+        "oldValue": "0/3 stars",
+        "newValue": null,
+        "description": "the-cherry-orchard-west-end-2026/theatre-south-east--sammi-oneill.json: originalScore"
+      }
+    ]
+  }
+}
