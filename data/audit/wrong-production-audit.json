@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-09T18:05:47.638Z",
+  "timestamp": "2026-11-09T19:10:09.796Z",
   "stats": {
-    "totalReviews": 80875,
-    "alreadyFlagged": 22122,
+    "totalReviews": 80896,
+    "alreadyFlagged": 22124,
     "dateGuardCatches": 219,
     "directorMismatch": 3579,
-    "tvFilmSignals": 2306,
-    "londonSignals": 3654,
+    "tvFilmSignals": 2303,
+    "londonSignals": 3652,
     "offBroadwaySignals": 754,
     "yearMismatch": 370,
-    "noPublishDate": 8414
+    "noPublishDate": 8439
   },
   "findings": [
     {
@@ -2188,20 +2188,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"jamie lloyd\" from a-dolls-house-2023"
-        }
-      ]
-    },
-    {
-      "showId": "a-dolls-house-part-2-2017",
-      "file": "broadwayworld--michael-dale.json",
-      "score": 84,
-      "publishDate": "2017-08-13",
-      "url": "https://www.broadwayworld.com/article/BWW-Review-New-Cast-Members-Add-New-Dynamics-To-A-DOLLS-HOUSE-PART-2-20170813",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"episode 7\""
         }
       ]
     },
@@ -14826,23 +14812,9 @@
     },
     {
       "showId": "cult-of-love-2024",
-      "file": "guardian--adrian-horton.json",
+      "file": "guardian--jesse-hassenger.json",
       "score": 75,
       "publishDate": "December 11, 2024",
-      "url": "https://www.theguardian.com/stage/2024/dec/12/cult-of-love-review-broadway-play",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"disney\""
-        }
-      ]
-    },
-    {
-      "showId": "cult-of-love-2024",
-      "file": "guardian--jesse-hassenger.json",
-      "score": 77,
-      "publishDate": "December 12, 2024",
       "url": "https://www.theguardian.com/stage/2024/dec/12/cult-of-love-review-broadway-play",
       "findings": [
         {
@@ -14947,20 +14919,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "cult-of-love-2024",
-      "file": "variety--daniel-daddario.json",
-      "score": 68,
-      "publishDate": "December 19, 2024",
-      "url": "https://variety.com/2024/legit/reviews/cult-of-love-review-shailene-woodley-zachary-quinto-leslye-headland-1236247528/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"hbo max\""
         }
       ]
     },
@@ -46291,7 +46249,8 @@
     {
       "showId": "north-by-northwest-old-regional-2026",
       "file": "san-diego-jewish-world--sandi-masori.json",
-      "publishDate": null,
+      "score": 89,
+      "publishDate": "2026-07-19",
       "url": "https://www.sdjewishworld.com/2026/07/19/north-by-northwest-not-exactly-a-musical-something-else-altogether/",
       "findings": [
         {
@@ -126227,20 +126186,6 @@
     },
     {
       "showId": "the-audience-2015",
-      "file": "chicagotribune--chris-jones.json",
-      "score": 87,
-      "publishDate": "2015-03-08",
-      "url": "http://www.chicagotribune.com/entertainment/theater/ct-the-audience-broadway-review-20150308-column.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-audience-2015",
       "file": "curtainup--elyse-sommer.json",
       "score": 81,
       "publishDate": null,
@@ -131237,20 +131182,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
-        }
-      ]
-    },
-    {
-      "showId": "the-inheritance-2019",
-      "file": "variety--charles-isherwood.json",
-      "score": 82,
-      "publishDate": "November 17, 2019",
-      "url": "https://variety.com/2019/legit/reviews/the-inheritance-review-broadway-1203381347/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
