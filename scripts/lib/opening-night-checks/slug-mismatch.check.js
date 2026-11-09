@@ -152,6 +152,10 @@ function buildAcceptSlugs(show, { titleWords = true } = {}) {
   // significant words as their own accept-slug, still boundary-matched like
   // every other entry, so it can't swallow an unrelated substring.
   if (significantWords.length >= 2) slugs.add(significantWords.join(''));
+  // The whole title glued INCLUDING its short words ("Building the Wall" ->
+  // curtainup.com/buildingthewall17.html, BRO-7223): the join above drops "the".
+  const squashed = title.toLowerCase().replace(/[^a-z0-9]/g, '');
+  if (squashed.length >= 8 && /[a-z]/.test(squashed)) slugs.add(squashed);
 
   return Array.from(slugs).filter(Boolean);
 }
@@ -189,6 +193,9 @@ const STRUCTURAL_PATH_WORDS = new Set([
   'p', 'id', 'view', 'node', 'index', 'amp', 'www', 'html', 'htm', 'php',
   // londontheatrereviews.co.uk/post.cfm?p=<id>: an id-only query URL (BRO-5438)
   'post', 'cfm',
+  // thetimes.co.uk/tto/arts/stage/theatre/article2924370.ece: section folders
+  // plus a numeric id, no title words (BRO-7223)
+  'tto', 'ece', 'arts', 'stage', 'theatre', 'theater',
   // talkinbroadway.com/page/ob/02_24_26b.html: date-only review pages, the
   // path never carries a title (BRO-6524)
   'page',
