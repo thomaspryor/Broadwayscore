@@ -1,47 +1,47 @@
 {
-  "generatedAt": "2026-11-08T09:21:22.695Z",
-  "bannerText": "127/141 Done(14d) verified on main · 8 FAILED · 0 vacuous · 18 stuck-but-done",
+  "generatedAt": "2026-11-09T10:27:26.615Z",
+  "bannerText": "191/209 Done(14d) verified on main · 6 FAILED · 0 vacuous · 10 stuck-but-done · 1 mis-armed, needs re-arming (BRO-7141)",
   "items": [
     {
-      "title": "FAILED BRO-4554 — UX audit: Feedback after action is below the fold. 'Date saved' confirmation in 'mobile__ios_date_wheel_sim' requires sc",
-      "detail": "FAIL UX resolution: LINEAR_API_KEY not set in .env or environment",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4554/ux-audit-feedback-after-action-is-below-the-fold-date-saved"
-    },
-    {
-      "title": "FAILED BRO-7047 — Digest plain wording: 34 owner-visible health checks still show their raw check name",
-      "detail": "not ok: plain wording: no visitor-facing health check shows its raw… | first failure: Improvement: root-cause share still shows its raw check name: add a PLAIN_HEALTH",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7047/digest-plain-wording-34-owner-visible-health-checks-still-show-their"
+      "title": "FAILED BRO-7007 — BSC Daily: Data: armed-but-vacuous backlog cards",
+      "detail": "[check-health-row-absent] FAIL: \"Data: armed-but-vacuous backlog cards\" still listed in the 2026-11-09T09:53:17.023Z health snapshot",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7007/bsc-daily-data-armed-but-vacuous-backlog-cards"
     },
     {
       "title": "FAILED BRO-7004 — P1: Opening night miss: Parcel from America (2026-11-04)",
-      "detail": "gap audit generated 2026-11-08T07:36:54.780Z BLIND parcel-from-america-off-broadway-2026: 6 live, 0 cited not live; info: 0 census candidate(s), 0 exclusion(s) confirmed correct; …",
+      "detail": "gap audit generated 2026-11-09T09:27:30.273Z BLIND parcel-from-america-off-broadway-2026: 6 live, 0 cited not live; info: 0 census candidate(s), 0 exclusion(s) confirmed correct; …",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-7004/p1-opening-night-miss-parcel-from-america-2026-11-04"
     },
     {
-      "title": "FAILED BRO-6888 — BSC Daily: Stuck pipeline items",
-      "detail": "[check-health-row-absent] FAIL: \"Stuck pipeline items\" still listed in the 2026-11-08T09:07:18.221Z health snapshot",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6888/bsc-daily-stuck-pipeline-items"
-    },
-    {
-      "title": "FAILED BRO-6827 — BSC Daily: Cron's latest run failed (not yet stale): Test Suite",
-      "detail": "[check-health-row-absent] FAIL: \"Cron's latest run failed (not yet stale): Test Suite\" still listed in the 2026-11-08T09:07:18.221Z health snapshot",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6827/bsc-daily-crons-latest-run-failed-not-yet-stale-test-suite"
-    },
-    {
       "title": "FAILED BRO-6524 — BSC Daily: Data quality: slug-mismatch lifetime sweep",
-      "detail": "[check-health-row-absent] FAIL: \"Data quality: slug-mismatch lifetime sweep\" still listed in the 2026-11-08T09:07:18.221Z health snapshot",
+      "detail": "[check-health-row-absent] FAIL: \"Data quality: slug-mismatch lifetime sweep\" still listed in the 2026-11-09T09:53:17.023Z health snapshot",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-6524/bsc-daily-data-quality-slug-mismatch-lifetime-sweep"
     },
     {
       "title": "FAILED BRO-5693 — BSC Daily: Data quality: slug-mismatch lifetime sweep",
-      "detail": "[check-health-row-absent] FAIL: \"Data quality: slug-mismatch lifetime sweep\" still listed in the 2026-11-08T09:07:18.221Z health snapshot",
+      "detail": "[check-health-row-absent] FAIL: \"Data quality: slug-mismatch lifetime sweep\" still listed in the 2026-11-09T09:53:17.023Z health snapshot",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-5693/bsc-daily-data-quality-slug-mismatch-lifetime-sweep"
     },
     {
       "title": "FAILED BRO-5516 — Review-gap audit refused to write — 61.9% of shows changed coverage state",
-      "detail": "[check-alert-condition-absent] FAIL: \"review-gap:blast-radius-refused\" still firing — open, last fired 2026-11-07T16:40:54.348Z (16.7h ago, within 168h)",
+      "detail": "[check-alert-condition-absent] FAIL: \"review-gap:blast-radius-refused\" still firing — open, last fired 2026-11-09T07:55:47.811Z (2.6h ago, within 168h)",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-5516/review-gap-audit-refused-to-write-619percent-of-shows-changed-coverage"
+    },
+    {
+      "title": "FAILED BRO-7047 — Digest plain wording: 34 owner-visible health checks still show their raw check name",
+      "detail": "not ok: plain wording: no visitor-facing health check shows its raw… | first failure: Data: approved-fix drift still shows its raw check name: add a PLAIN_HEALTH entr",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7047/digest-plain-wording-34-owner-visible-health-checks-still-show-their"
+    },
+    {
+      "title": "STUCK BRO-6873 — Time-bomb test armed: tests/unit/digest-inline-answers.test.mjs — label plus decision block: one awaiting row with its options and a button per option",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6873/time-bomb-test-armed-testsunitdigest-inline-answerstestmjs-label-plus"
+    },
+    {
+      "title": "STUCK BRO-6663 — Morning after each press night: decrypt the lane's recorded pages and commit them to the private aggregator archive as a replay night",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6663/morning-after-each-press-night-decrypt-the-lanes-recorded-pages-and"
     }
   ],
-  "moreCount": 18
+  "moreCount": 8
 }
