@@ -322,3 +322,32 @@ test('bulk scrapers are still NOT exempt by script name', () => {
     assert.equal(isExemptCaller(s, list, 'Gather Review Data'), false, s);
   }
 });
+
+// ---- BRO-7202: ceiling must not sit below normal bulk traffic ---------------
+test('BRO-7202: worst-case effective ceiling clears 2,500 reqs/day (normal bulk traffic)', () => {
+  const worst = caps.effectiveCeilingForOpeningWindow({
+    ceiling: DEFAULT_DAILY_REQ_CEILING, openingWindowShows: 1000,
+  });
+  assert.ok(worst >= 2500, `worst-case effective ceiling ${worst} is below normal daily traffic; breaker would trip daily (BRO-7202)`);
+});
+
+test('BRO-7202: breakerCalibrationVerdict flags a breaker tripping most days', () => {
+  const now = new Date('2026-11-09T12:00:00Z');
+  const key = 'bd-circuit-breaker-web_unlocker2';
+  const mk = (n) => Array.from({ length: n }, (_, i) => ({
+    conditionKey: key, to: 'tripped', day: utcDay(new Date(now.getTime() - i * 86400000)),
+  }));
+  assert.equal(caps.breakerCalibrationVerdict(mk(10), { conditionKey: key, now }).miscalibrated, true);
+  assert.equal(caps.breakerCalibrationVerdict(mk(2), { conditionKey: key, now }).miscalibrated, false);
+  assert.equal(caps.breakerCalibrationVerdict(mk(10), { conditionKey: 'other', now }).tripDays, 0);
+});
+
+test('BRO-7202: replaying real Oct13-Nov9 unlocker history, the new floor trips far fewer days', () => {
+  const f = path.join(path.dirname(new URL(import.meta.url).pathname), '..', '..', 'data', 'audit', 'breaker-transitions.jsonl');
+  if (!fs.existsSync(f)) return;
+  const rows = fs.readFileSync(f, 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l))
+    .filter((r) => r.conditionKey === 'bd-circuit-breaker-web_unlocker2' && r.to === 'tripped' && r.day >= '2026-10-13' && r.day <= '2026-11-09');
+  const newFloor = caps.effectiveCeilingForOpeningWindow({ ceiling: DEFAULT_DAILY_REQ_CEILING, openingWindowShows: 1000 });
+  const stillTrip = rows.filter((r) => r.units >= newFloor).length;
+  assert.ok(stillTrip <= rows.length * 0.4, `${stillTrip}/${rows.length} historical days would still trip`);
+});

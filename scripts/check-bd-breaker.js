@@ -33,6 +33,7 @@ const {
   utcDay,
   effectiveCeilingForOpeningWindow,
   resolveOpeningWindowReservePerShow,
+  breakerCalibrationVerdict,
 } = require('./lib/brightdata-caps');
 const { fetchBdZoneCostDay } = require('./lib/provider-billing');
 const { topCallers, LEDGER_PATH } = require('./lib/provider-telemetry');
@@ -49,7 +50,7 @@ if (hasHelpFlag(process.argv.slice(2))) {
 
 Env:
   BRIGHTDATA_TOKEN         required; without it the check no-ops
-  BD_BREAKER_CEILING       per-zone daily request ceiling (default 3500)
+  BD_BREAKER_CEILING       per-zone daily request ceiling (default 6000)
   BD_BREAKER_STATE_PATH    override the state file location (tests)
 `);
   process.exit(0);
@@ -122,6 +123,12 @@ async function main() {
     const billedReqs = billing ? billing.reqs : null;
     const verdict = shouldTripBreaker({ billedReqs, ceiling: effectiveCeiling });
 
+    try {
+      const rows = fs.readFileSync(path.join(__dirname, '..', 'data', 'audit', 'breaker-transitions.jsonl'), 'utf8')
+        .split('\n').filter(Boolean).map((l) => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
+      const cal = breakerCalibrationVerdict(rows, { conditionKey: `bd-circuit-breaker-${zone}` });
+      if (cal.miscalibrated) console.log(`${zone}: CALIBRATION WARNING — tripped on ${cal.tripDays} of the last 14 days; the ceiling is mis-sized (BRO-7202), resize it instead of filing per-day cards.`);
+    } catch { /* no history yet */ }
     console.log(`${zone}: ${billedReqs == null ? 'billing unknown' : `${billedReqs} reqs`}`
       + `${billing ? ` / $${billing.cost.toFixed(2)}` : ''} — ${verdict.reason}`
       + `${verdict.tripped ? ' → TRIPPED' : ''}`

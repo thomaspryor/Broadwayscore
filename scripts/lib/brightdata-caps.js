@@ -52,8 +52,16 @@ const path = require('path');
  * observed NORMAL day (2026-07-28..08-01 peaked at 2,050 unlocker requests).
  * The breaker is meant to catch runaways, not to shape normal traffic — step it
  * down only after the "never trips on a normal day" RECHECK in the card.
+ *
+ * RE-SIZED 3500 -> 6000 (BRO-7202). From 2026-10-13 the opening-window reserve
+ * (capped at MAX_RESERVE_SHARE) pinned the EFFECTIVE ceiling at 1750 all season,
+ * below ordinary bulk traffic (1,771-3,634/day), so the breaker tripped on 25 of
+ * 25 days and filed a card each time (8 in 30 days). Worst-case effective
+ * ceiling is now 6000*(1-MAX_RESERVE_SHARE)=3000. The guard is
+ * breakerCalibrationVerdict() below + its test: a limit that trips daily is
+ * miscalibrated, not an alarm.
  */
-const DEFAULT_DAILY_REQ_CEILING = 3500;
+const DEFAULT_DAILY_REQ_CEILING = 6000;
 
 /**
  * Per-zone, per-show reservation (S2-T7 follow-up, task #1315): the request
@@ -295,6 +303,20 @@ function breakerAlertSeverity({ tripped, openingWindowShows }) {
   return openingWindowShows > 0 ? 'critical' : 'warn';
 }
 
+/**
+ * Calibration verdict over breaker-transitions rows: a breaker that trips on
+ * most recent days is mis-sized, not catching runaways (BRO-7202).
+ * @param {Array<{conditionKey:string,to:string,day:string}>} rows
+ * @param {{conditionKey:string, windowDays?:number, maxTripDays?:number, now?:Date}} opts
+ */
+function breakerCalibrationVerdict(rows, { conditionKey, windowDays = 14, maxTripDays = 5, now = new Date() }) {
+  const cutoff = utcDay(new Date(new Date(now).getTime() - windowDays * 86400000));
+  const days = new Set((rows || [])
+    .filter((r) => r && r.conditionKey === conditionKey && r.to === 'tripped' && r.day >= cutoff)
+    .map((r) => r.day));
+  return { tripDays: days.size, miscalibrated: days.size > maxTripDays };
+}
+
 // ---------- stateful consult (the single enforcement helper) -----------------
 
 const _runStats = {
@@ -433,6 +455,7 @@ module.exports = {
   resolveOpeningWindowReservePerShow,
   shouldTripBreaker,
   effectiveCeilingForOpeningWindow,
+  breakerCalibrationVerdict,
   MAX_RESERVE_SHARE,
   isExemptCaller,
   checkPerRunBudget,
