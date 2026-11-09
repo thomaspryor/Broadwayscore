@@ -64,6 +64,17 @@ function baseTitle(show) {
 }
 
 /**
+ * Word-order/possessive-insensitive title key: "Othello (Bedlam)" and "Bedlam's Othello"
+ * are the same production under two house styles (BRO-5489). Used only as a second chance
+ * for a venue+date prior-run match whose base titles differ.
+ */
+function titleWordKey(show) {
+  return String((show && show.title) || '').toLowerCase()
+    .replace(/[\u2018\u2019']s\b/g, '').replace(/[^a-z0-9]+/g, ' ').trim()
+    .split(' ').filter(Boolean).sort().join(' ');
+}
+
+/**
  * Does `newer` declare `older` (a separate show entry) as its prior run?
  *
  * 1. An explicit cross-link wins: a priorRuns entry carrying the older entry's id
@@ -279,6 +290,14 @@ function windowRunFor(run, sibling) {
   return { openingDate: ymd(sibling.openingDate), closingDate: ymd(sibling.closingDate) || undefined };
 }
 
+function siblingSpanWindow(run, sibling) {
+  const w = windowRunFor(run, sibling);
+  const own = { openingDate: ymd(sibling.openingDate), closingDate: ymd(sibling.closingDate) };
+  const opens = [w.openingDate, own.openingDate].filter(Boolean).sort()[0];
+  const closes = [w.closingDate, own.closingDate].filter(Boolean).sort().pop();
+  return { ...w, openingDate: opens, closingDate: closes };
+}
+
 /**
  * Earlier-run entries a returning show declares via priorRuns. An explicit id
  * link holds whatever the titles say; a date/venue match also needs the same
@@ -293,12 +312,18 @@ function findPriorRunSiblings(show, shows) {
     const run = matchingPriorRunFor(show, other);
     if (!run) continue;
     const explicit = isExplicitLink(run, other);
-    if (!explicit && baseTitle(other) !== base) continue;
+    const fuzzyTitle = !explicit && baseTitle(other) !== base;
+    if (fuzzyTitle && titleWordKey(other) !== titleWordKey(show)) continue;
     out.push({
-      sibling: other, run, window: windowRunFor(run, other), explicit,
+      sibling: other, run, explicit,
+      // A fuzzy-title link trusts the sibling's own recorded run over the declared one: the
+      // declared opening (Othello: 05-10) can sit after the reviews the sibling holds (05-03..07).
+      window: fuzzyTitle ? siblingSpanWindow(run, other) : windowRunFor(run, other),
       // `inheritReviews: false` on a priorRuns entry keeps the link (director-guard exemption,
       // dedup cross-link) but stops that run's reviews being carried onto this entry.
-      carryReviews: linkCarriesReviews(show, run),
+      // A word-order/possessive title match only recognises the run (gap audit, guards); it never
+      // starts carrying reviews onto a show that did not opt in with an explicit link.
+      carryReviews: fuzzyTitle ? false : linkCarriesReviews(show, run),
     });
   }
   return out;
