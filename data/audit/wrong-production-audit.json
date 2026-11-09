@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-09T13:46:44.392Z",
+  "timestamp": "2026-11-09T14:07:10.593Z",
   "stats": {
-    "totalReviews": 80828,
-    "alreadyFlagged": 22113,
+    "totalReviews": 80841,
+    "alreadyFlagged": 22117,
     "dateGuardCatches": 219,
     "directorMismatch": 3581,
-    "tvFilmSignals": 2306,
+    "tvFilmSignals": 2307,
     "londonSignals": 3655,
-    "offBroadwaySignals": 751,
+    "offBroadwaySignals": 754,
     "yearMismatch": 370,
-    "noPublishDate": 8391
+    "noPublishDate": 8390
   },
   "findings": [
     {
@@ -562,6 +562,7 @@
     {
       "showId": "360-allstars-off-west-end-2026",
       "file": "thestage--siobhan-murphy.json",
+      "score": 39,
       "publishDate": "2026-06-03",
       "url": "https://www.thestage.co.uk/reviews/360-allstars-review-peacock-theatre-london",
       "findings": [
@@ -2396,6 +2397,7 @@
     {
       "showId": "a-midsummer-nights-dream-off-west-end-2026",
       "file": "thestage--holly-o.json",
+      "score": 82,
       "publishDate": "2026-06-30",
       "url": "https://www.thestage.co.uk/reviews/a-midsummer-nights-dream-review-at-regents-park-open-air-theatre",
       "findings": [
@@ -16854,6 +16856,7 @@
     {
       "showId": "death-becomes-her-tour-2026",
       "file": "jhpentertainment--jonathan-pinkerton.json",
+      "score": 91,
       "publishDate": "2026-11-05",
       "url": "https://jhpentertainment.com/theatre-review-death-becomes-her-national-tour-2026/",
       "findings": [
@@ -19238,7 +19241,7 @@
     {
       "showId": "dog-man-the-musical-off-west-end-2026",
       "file": "whatsonstage--theo-bosanquet.json",
-      "score": 55,
+      "score": 58,
       "publishDate": "2026-08-04",
       "url": "https://www.whatsonstage.com/news/dog-man-the-musical-at-londons-southbank-centre-and-on-tour-review_1728502/",
       "findings": [
@@ -24317,7 +24320,7 @@
     {
       "showId": "game-of-thrones-the-mad-king-regional-2026",
       "file": "times-uk--clive-davis.json",
-      "score": 36,
+      "score": 61,
       "publishDate": "8/10/2026",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/game-of-thrones-the-mad-king-review-stage-version-lacks-pace-sex-and-gore-cz8qgzhrw",
       "findings": [
@@ -30480,6 +30483,19 @@
       ]
     },
     {
+      "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
+      "file": "timeout--mark-peikert.json",
+      "publishDate": "2026-09-10",
+      "url": "https://www.timeout.com/newyork/news/the-heated-rivalry-musical-parody-has-extended-its-run-for-the-third-timeheres-your-last-day-to-see-the-horny-hockey-show-091026",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hbo max\""
+        }
+      ]
+    },
+    {
       "showId": "heathers-the-musical-off-broadway-2025",
       "file": "amny--matt-windman.json",
       "score": 90,
@@ -35493,6 +35509,7 @@
     {
       "showId": "jagged-little-pill-tour-2022",
       "file": "broadwayworld--james-lindhorst.json",
+      "score": 77,
       "publishDate": "2024-01-20",
       "url": "https://www.broadwayworld.com/st-louis/article/Review-JAGGED-LITTLE-PILL-at-The-Fabulous-Fox-Theatre-20240120",
       "findings": [
@@ -39270,6 +39287,7 @@
     {
       "showId": "les-miserables-tour-2022",
       "file": "the-cap-times--allison-garfield.json",
+      "score": 74,
       "publishDate": "2024-02-15",
       "url": "https://captimes.com/entertainment/les-miserables-at-overture-has-bright-spots-lacks-emotional-depth/article_19f88d54-cbd7-11ee-a5de-9b218b229536.html",
       "findings": [
@@ -44117,6 +44135,7 @@
     {
       "showId": "mrs-doubtfire-tour-2023",
       "file": "maryland-theatre-guide--unknown.json",
+      "score": 91,
       "publishDate": "2024-02-02",
       "url": "https://mdtheatreguide.com/2024/02/theatre-review-mrs-doubtfire-at-the-hippodrome-theatre/",
       "findings": [
@@ -44130,6 +44149,7 @@
     {
       "showId": "mrs-doubtfire-tour-2023",
       "file": "the-news-herald--mark-meszoros.json",
+      "score": 87,
       "publishDate": "2024-01-12",
       "url": "https://www.news-herald.com/2024/01/12/mrs-doubtfire-at-playhouse-square-review-star-rob-mcclure-a-whirlwind-of-fun/",
       "findings": [
@@ -47116,6 +47136,7 @@
     {
       "showId": "oh-mary-tour-2026",
       "file": "broadwayworld--jay-irwin.json",
+      "score": 92,
       "publishDate": "2026-11-04",
       "url": "https://www.broadwayworld.com/seattle/article/Review-OH-MARY-at-Paramount-Theatre-20261104",
       "findings": [
@@ -49518,7 +49539,7 @@
     {
       "showId": "pacific-overtures-off-broadway-2017",
       "file": "wsj--terry-teachout.json",
-      "score": null,
+      "score": 77,
       "publishDate": "May 4th, 2017",
       "url": "https://www.wsj.com/articles/pacific-overtures-review-shortening-sondheim-1493944200",
       "findings": [
@@ -55926,7 +55947,7 @@
     {
       "showId": "sea-wall-a-life-2019",
       "file": "nytimes--laura-collins-hughes.json",
-      "score": null,
+      "score": 76,
       "publishDate": "2019-08-08",
       "url": "https://www.nytimes.com/2019/08/08/theater/sea-wall-a-life-review-broadway-gyllenhaal.html?smtyp=cur&smid=tw-nytimesarts",
       "findings": [
@@ -59213,7 +59234,7 @@
     {
       "showId": "speculations-off-west-end-2026",
       "file": "jonathan-baz--unknown.json",
-      "score": 46,
+      "score": 43,
       "publishDate": "2026-11-04",
       "url": "http://www.jonathanbaz.com/2026/11/speculations-review.html",
       "findings": [
@@ -81530,7 +81551,7 @@
     {
       "showId": "waitress-west-end-2019",
       "file": "artsdesk--unknown.json",
-      "score": 75,
+      "score": 60,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/waitress-adelphi-theatre-review-sweet-if-sometimes-silly-musical-arrives-broadway",
       "findings": [
@@ -87230,6 +87251,45 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "a-streetcar-named-desire-crucible-regional-2025",
+      "file": "dailybeast--tim-teeman.json",
+      "publishDate": "2025-10-20",
+      "url": "https://www.thedailybeast.com/paul-mescal-triumphs-in-a-stunning-streetcar-named-desire/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "a-streetcar-named-desire-crucible-regional-2025",
+      "file": "latimes--charles-mcnulty.json",
+      "publishDate": "2025-03-12",
+      "url": "https://www.latimes.com/entertainment-arts/story/2025-03-11/paul-mescal-patsy-ferran-streetcar-named-desire-brooklyn-academy-music",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
+        }
+      ]
+    },
+    {
+      "showId": "a-streetcar-named-desire-crucible-regional-2025",
+      "file": "nypost--johnny-oleksinski.json",
+      "publishDate": "2025-03-11",
+      "url": "https://nypost.com/2025/03/11/entertainment/a-streetcar-named-desire-review-paul-mescal-sizzles-patsy-ferran-amazes-in-4-star-revival/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"bam\""
         }
       ]
     },
@@ -102516,6 +102576,7 @@
     {
       "showId": "guess-how-much-i-love-you-west-end-2026",
       "file": "mildconcern--tim-brandon.json",
+      "score": 78,
       "publishDate": "2026-02-22",
       "url": "https://mildconcern.substack.com/p/theatre-reviews-here-there-are-blueberries",
       "findings": [
@@ -103962,7 +104023,7 @@
     },
     {
       "showId": "harry-potter-tour-2024",
-      "file": "hotchka--unknown.json",
+      "file": "hotchka--chuck-duncan.json",
       "score": 89,
       "publishDate": "2025-07-17",
       "url": "https://hotchka.com/harry-potter-and-the-cursed-child-review-washington-dc-national-theatre",
@@ -106242,14 +106303,14 @@
     {
       "showId": "ilford-boy-off-west-end-2026",
       "file": "revstanstheatreblog--unknown.json",
-      "score": 94,
+      "score": 91,
       "publishDate": "2026-10-25",
       "url": "https://revstanstheatreblog.co.uk/2026/10/25/review-ilford-boy-donmar-warehouse/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"donmar warehouse\""
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -113050,7 +113111,7 @@
     {
       "showId": "mass-off-west-end-2026",
       "file": "times-uk--clive-davis.json",
-      "score": null,
+      "score": 59,
       "publishDate": "2026-04-30",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/mass-review-donmar-warehouse-lqnms25hk",
       "findings": [
@@ -114694,7 +114755,7 @@
     {
       "showId": "my-master-builder-west-end-2025",
       "file": "all-that-dazzles-uk--unknown.json",
-      "score": 65,
+      "score": 64,
       "publishDate": null,
       "url": "https://www.allthatdazzles.co.uk/post/review-my-master-builder-wyndham-s-theatre",
       "findings": [
@@ -114708,7 +114769,7 @@
     {
       "showId": "my-master-builder-west-end-2025",
       "file": "london-box-office--stuart-king.json",
-      "score": 59,
+      "score": 55,
       "publishDate": "2025-05-01",
       "url": "https://www.londonboxoffice.co.uk/news/post/my-master-builder-review",
       "findings": [
@@ -118117,6 +118178,7 @@
     {
       "showId": "p-rn-play-west-end-2025",
       "file": "nytimes--houman-barekat.json",
+      "score": 67,
       "publishDate": "2025-12-10",
       "url": "https://www.nytimes.com/2025/12/10/arts/smartphones-onstage-porn-play-the-maids-evita.html?eafs_enabled=false",
       "findings": [
@@ -120378,7 +120440,7 @@
     {
       "showId": "relics-off-west-end-2026",
       "file": "liamodell--liam-odell.json",
-      "score": 55,
+      "score": 60,
       "publishDate": "2026-06-28",
       "url": "https://liamodell.com/2026/06/28/relics-review-lyric-hammersmith-theatre-ben-ockrent-sally-phillips-sam-swainsbury-jj-feild-charly-clive-michael-longhurst/",
       "findings": [
@@ -126848,7 +126910,7 @@
     {
       "showId": "the-bounds-west-end-2024",
       "file": "broadwayworld--cindy-marcolina.json",
-      "score": 60,
+      "score": 56,
       "publishDate": "June 20th, 2024",
       "url": "https://www.broadwayworld.com/westend/article/Review-THE-BOUNDS-Royal-Court-Theatre-20240618",
       "findings": [
@@ -126932,7 +126994,7 @@
     {
       "showId": "the-bounds-west-end-2024",
       "file": "theatre-weekly--theatre-weekly.json",
-      "score": 79,
+      "score": 65,
       "publishDate": "2024-06-17",
       "url": "https://theatreweekly.com/review-the-bounds-at-the-royal-court/",
       "findings": [
@@ -128208,7 +128270,7 @@
     {
       "showId": "the-crown-jewels-west-end-2023",
       "file": "sunday-times--quentin-letts.json",
-      "score": 41,
+      "score": 37,
       "publishDate": "2023-07-30",
       "url": "https://www.thetimes.co.uk/article/the-crown-jewels-and-the-empress-and-now-for-something-completely-different-5qx79q5rc",
       "findings": [
@@ -132336,7 +132398,7 @@
     },
     {
       "showId": "the-lives-of-others-west-end-2026",
-      "file": "plays-international--unknown.json",
+      "file": "plays-international--janes-edwardes.json",
       "score": 95,
       "publishDate": "2026-11-02",
       "url": "https://playsinternational.org.uk/the-lives-of-others-adelphi-theatre/",
@@ -134002,7 +134064,7 @@
     {
       "showId": "the-pianist-off-west-end-2026",
       "file": "jolienstheatrediary--jolien.json",
-      "score": 93,
+      "score": 94,
       "publishDate": "2026-10-25",
       "url": "https://www.jolienstheatrediary.com/reviews/review-the-pianist-the-park-theatre-london",
       "findings": [
@@ -134683,7 +134745,7 @@
     {
       "showId": "the-prince-of-egypt-west-end-2020",
       "file": "theatre-weekly--greg-stewart.json",
-      "score": 75,
+      "score": 67,
       "publishDate": "2020-02-25",
       "url": "https://theatreweekly.com/review-the-prince-of-egypt-at-the-dominion-theatre/",
       "findings": [
