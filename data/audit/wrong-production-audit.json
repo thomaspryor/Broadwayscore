@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-09T02:35:04.937Z",
+  "timestamp": "2026-11-09T02:52:19.708Z",
   "stats": {
-    "totalReviews": 80669,
+    "totalReviews": 80667,
     "alreadyFlagged": 22099,
-    "dateGuardCatches": 218,
-    "directorMismatch": 3579,
-    "tvFilmSignals": 2304,
-    "londonSignals": 3651,
+    "dateGuardCatches": 219,
+    "directorMismatch": 3580,
+    "tvFilmSignals": 2305,
+    "londonSignals": 3652,
     "offBroadwaySignals": 752,
     "yearMismatch": 368,
-    "noPublishDate": 8389
+    "noPublishDate": 8382
   },
   "findings": [
     {
@@ -556,6 +556,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "360-allstars-off-west-end-2026",
+      "file": "thestage--siobhan-murphy.json",
+      "publishDate": "2026-06-03",
+      "url": "https://www.thestage.co.uk/reviews/360-allstars-review-peacock-theatre-london",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
@@ -2377,6 +2390,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "a-midsummer-nights-dream-off-west-end-2026",
+      "file": "thestage--holly-o.json",
+      "publishDate": "2026-06-30",
+      "url": "https://www.thestage.co.uk/reviews/a-midsummer-nights-dream-review-at-regents-park-open-air-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"emily lim\" from a-midsummer-nights-dream-globe-off-west-end-2026"
         }
       ]
     },
@@ -25369,6 +25395,20 @@
     },
     {
       "showId": "glengarry-glen-ross-west-end-2026",
+      "file": "thestage--sam-marlowe.json",
+      "score": 71,
+      "publishDate": "2026-06-19",
+      "url": "https://www.thestage.co.uk/reviews/glengarry-glen-ross-review-old-vic-theatre-london-patrick-marber",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
+        }
+      ]
+    },
+    {
+      "showId": "glengarry-glen-ross-west-end-2026",
       "file": "timeout-london--andrzej-lukowski.json",
       "score": 82,
       "publishDate": "2026-06-17",
@@ -45660,6 +45700,20 @@
     },
     {
       "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
+      "file": "gay-times--chris-selman.json",
+      "score": 82,
+      "publishDate": "2022-10-24",
+      "url": "https://www.gaytimes.co.uk/originals/my-sons-a-queer-but-what-can-you-do-makes-triumphant-west-end-debut-review/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1423d before show (2022-10-24 vs 2026-09-16)"
+        }
+      ]
+    },
+    {
+      "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
       "file": "london-theatre--matt-wolf.json",
       "score": 79,
       "publishDate": "2022-10-24",
@@ -49271,20 +49325,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
-      "showId": "pacific-overtures-1976",
-      "file": "wsj--terry-teachout.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.wsj.com/articles/pacific-overtures-review-shortening-sondheim-1493944200",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"amon miyamoto\" from pacific-overtures-2004"
         }
       ]
     },
@@ -98608,6 +98648,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "equus-off-west-end-2026",
+      "file": "thestage--holly-omahony.json",
+      "score": 79,
+      "publishDate": "2026-05-22",
+      "url": "https://www.thestage.co.uk/reviews/equus-review-menier-chocolate-factory-london-lindsay-posner",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },

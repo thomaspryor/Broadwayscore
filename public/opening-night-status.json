@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-09T02:35:20.338Z",
+  "generatedAt": "2026-11-09T02:52:37.312Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1306,28 +1306,27 @@
       "status": "open",
       "slug": "msblackforpresident",
       "thumbnail": "/images/shows/msblackforpresident-off-broadway-2026/thumbnail.jpg",
-      "siteScore": 66,
-      "liveScore": 66,
-      "scoreDrift": 0,
+      "siteScore": 68.39,
+      "liveScore": 68,
+      "scoreDrift": -0.39000000000000057,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 5,
+      "total": 6,
       "t1": 0,
-      "t2": 2,
+      "t2": 3,
       "t3": 3,
-      "positive": 3,
+      "positive": 4,
       "mixed": 2,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "5/12 total",
+          "6/12 total",
           "T1:0/3",
-          "T2:2/3",
-          "hi-conf:5/8"
+          "hi-conf:6/8"
         ],
-        "highConfidence": 5,
+        "highConfidence": 6,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1668,6 +1667,18 @@
           "t2": 2,
           "t3": 3,
           "p": 3,
+          "m": 2,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-09T02:52:37.312Z",
+          "rc": 6,
+          "s": 68.39,
+          "t1": 0,
+          "t2": 3,
+          "t3": 3,
+          "p": 4,
           "m": 2,
           "n": 0,
           "bc": "waiting"
@@ -2464,8 +2475,8 @@
       "status": "open",
       "slug": "iphigenie-en-tauride-english-national-opera-west-end",
       "thumbnail": "/images/shows/iphigenie-en-tauride-english-national-opera-west-end-2026/thumbnail.jpg",
-      "siteScore": 69.5,
-      "liveScore": 71,
+      "siteScore": 68.5,
+      "liveScore": 70,
       "scoreDrift": 1.5,
       "belowThreshold": false,
       "reviewsNeeded": 0,
@@ -2664,6 +2675,18 @@
           "t": "2026-11-09T01:46:55.452Z",
           "rc": 6,
           "s": 69.5,
+          "t1": 1,
+          "t2": 2,
+          "t3": 3,
+          "p": 4,
+          "m": 2,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-09T02:52:37.312Z",
+          "rc": 6,
+          "s": 68.5,
           "t1": 1,
           "t2": 2,
           "t3": 3,
