@@ -46,6 +46,7 @@ import {
 } from '@/components/show-cards';
 import MiniStars from '@/components/user/Stars';
 import StarRating from '@/components/user/StarRating';
+import { getMobileStarRowState } from '@/lib/mobile-star-row';
 import WatchlistPlanCard, { PlanRow, DateTile } from '@/components/user/WatchlistPlanCard';
 import { buildPlannedShowEvent } from '@/lib/calendar-event';
 import RatingEditor, { type RatingEditorSaveData } from '@/components/user/RatingEditor';
@@ -195,17 +196,18 @@ function Inner({
 
   const [ratePanelOpen, setRatePanelOpen] = useState(false);
   const [editingReview, setEditingReview] = useState<UserReview | null>(null);
+  // Which signed-in user's ratings for this show have finished loading (null = none yet).
+  const [reviewsLoadedFor, setReviewsLoadedFor] = useState<string | null>(null);
   const rateBtnRef = useRef<HTMLButtonElement>(null);
   // Return focus to the rate button when the editor closes — the inline
   // (desktop) editor is not a Modal, so nothing else restores focus and it
   // falls to <body>, stranding keyboard/screen-reader users (audit P2).
-  // On phones the Rate it button is display:none while the star row shows, so
-  // focus goes to the first star instead (focus on a hidden button is a no-op).
-  const mobileStarsRef = useRef<HTMLDivElement>(null);
+  // On phones the Rate it button is display:none while the star row shows (focus on
+  // a hidden button is a no-op, so skip it): the editor is a Modal there, and the
+  // Modal itself returns focus to the star that opened it (BRO-7074).
   const refocusRateBtn = () => requestAnimationFrame(() => {
     const btn = rateBtnRef.current;
     if (btn && btn.offsetParent !== null) btn.focus();
-    else mobileStarsRef.current?.querySelector<HTMLButtonElement>('button')?.focus();
   });
 
   // ?rate=1 / ?stars=N / ?edit=1 deep-link helpers (kept compatible with /my-shows entry points).
@@ -230,8 +232,11 @@ function Inner({
   const hasRating = ratingCount > 0;
   // Keep "Log another viewing" for a show already rated; hide a first "Rate it" until it could have been seen.
   const showRateButton = seeable || hasRating;
-  // Phone star row: only for a first rating on a show the viewer could have seen.
-  const showMobileStars = showRateButton && !hasRating;
+  // Phone star row: only for a first rating on a show the viewer could have seen,
+  // and only once we know they have not already rated it (see mobile-star-row.ts).
+  const ratingStateKnown = isAuthenticated ? reviewsLoadedFor === user?.id : !authLoading;
+  const mobileStarState = getMobileStarRowState({ showRateButton, hasRating, hasLocalRating: !!localRating, ratingStateKnown });
+  const showMobileStars = mobileStarState !== 'hidden';
   const isMulti = ratingCount > 1;
   const { isSavedLocally, toggleLocal } = useLocalWatchlist();
   // Signed out, "Want to See" saves on this device (BRO-4616).
@@ -275,7 +280,8 @@ function Inner({
   // Load on auth
   useEffect(() => {
     if (isAuthenticated && user) {
-      getReviewsForShow(show.id);
+      const uid = user.id;
+      getReviewsForShow(show.id).finally(() => setReviewsLoadedFor(uid));
       getWatchlist();
       getLists();
     }
@@ -764,9 +770,15 @@ function Inner({
           a rated show keeps "Log another viewing" and the rating card. A tap seeds
           the same fresh rating panel as the poster stars (handlePosterStarsPick). */}
       {userFeaturesEnabled && showMobileStars && (
-        <div ref={mobileStarsRef} className="sm:hidden rounded-lg border border-white/10 bg-white/5 px-3 pt-2.5 pb-2">
+        <div
+          // 'pending' keeps the row's height but hides and disables it, so there is no
+          // flash or layout jump while we learn whether this viewer already rated.
+          className={`sm:hidden rounded-lg border border-white/10 bg-white/5 px-3 pt-2.5 pb-2 ${mobileStarState === 'pending' ? 'invisible' : ''}`}
+          inert={mobileStarState === 'pending'}
+          aria-hidden={mobileStarState === 'pending' ? true : undefined}
+        >
           <p className="text-[11px] font-semibold uppercase tracking-widest text-fg-muted mb-1">Tap to rate</p>
-          <StarRating rating={null} onRatingChange={handlePosterStarsPick} size="lg" hideLabel fill />
+          <StarRating rating={null} onRatingChange={handlePosterStarsPick} size="lg" hideLabel fill arrowKeys={false} />
         </div>
       )}
       {userFeaturesEnabled && (

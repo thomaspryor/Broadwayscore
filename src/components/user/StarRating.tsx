@@ -19,6 +19,10 @@ interface StarRatingProps {
    *  stars) and the glyph is centred in it, so the half-star maths still reads the button rect.
    *  From sm up the row keeps its fixed size. (BRO-6719 mobile web, matches the iOS app.) */
   fill?: boolean;
+  /** Arrow keys nudge the rating by half a star (default). Off for rows where any change
+   *  commits at once (the show-page "Tap to rate" row opens the editor on every pick, so
+   *  one stray arrow press would pop it open at 0.5). Enter/Space still pick the star. */
+  arrowKeys?: boolean;
 }
 
 const SIZE_MAP = {
@@ -75,7 +79,7 @@ function fillFor(displayRating: number, starIndex: number): '0%' | '50%' | '100%
  * is the whole point — the previous isTouchDevice/synthetic-mousemove heuristic
  * broke half-stars on real phones.
  */
-export default function StarRating({ rating, onRatingChange, size = 'md', readOnly = false, hideLabel = false, expandHitTarget = false, onHoverChange, fill = false }: StarRatingProps) {
+export default function StarRating({ rating, onRatingChange, size = 'md', readOnly = false, hideLabel = false, expandHitTarget = false, onHoverChange, fill = false, arrowKeys = true }: StarRatingProps) {
   const [hoverRating, setHoverRating] = useState<number | null>(null);
   const { star: starSize, gap } = SIZE_MAP[size];
   const uid = useId();
@@ -124,14 +128,14 @@ export default function StarRating({ rating, onRatingChange, size = 'md', readOn
   // Arrow keys adjust in half-star steps — Enter/Space on a star can only give
   // whole values, so without this, keyboard users can't reach 3.5 etc. (audit P2).
   const handleArrowKey = useCallback((e: React.KeyboardEvent) => {
-    if (readOnly) return;
+    if (readOnly || !arrowKeys) return;
     const delta = e.key === 'ArrowRight' || e.key === 'ArrowUp' ? 0.5
       : e.key === 'ArrowLeft' || e.key === 'ArrowDown' ? -0.5 : 0;
     if (!delta) return;
     e.preventDefault();
     const next = Math.min(5, Math.max(0.5, (rating ?? 0) + delta));
     onRatingChange(next);
-  }, [readOnly, rating, onRatingChange]);
+  }, [readOnly, arrowKeys, rating, onRatingChange]);
 
   // Label renders only for a committed rating — mounting it on hover-enter when
   // rating is null shifted tightly-packed rows (My Shows "To Be Rated" renders
