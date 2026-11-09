@@ -1,13 +1,144 @@
 {
-  "generatedAt": "2026-11-09T09:03:03.947Z",
+  "generatedAt": "2026-11-09T09:30:23.885Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 323,
-  "clean": 323,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 315,
+  "defective": 8,
+  "byType": {
+    "score-drift": 8
+  },
+  "shows": [
+    {
+      "showId": "nero-off-west-end-2026",
+      "title": "Nero",
+      "openingDate": "2026-11-06",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 37.99 vs local 38.52 (Δ0.53)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 14,
+      "deployedCount": 14,
+      "firstDefectAt": "2026-11-09T09:30:17.758Z"
+    },
+    {
+      "showId": "tosca-english-national-opera-west-end-2026",
+      "title": "Tosca - English National Opera",
+      "openingDate": "2026-10-30",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 62.81 vs local 63 (Δ0.19)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 21,
+      "deployedCount": 21,
+      "firstDefectAt": "2026-11-09T09:30:17.758Z"
+    },
+    {
+      "showId": "middlemarch-rsc-regional-2026",
+      "title": "Middlemarch",
+      "openingDate": "2026-10-29",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 77.4 vs local 77.65 (Δ0.25)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 13,
+      "deployedCount": 13,
+      "firstDefectAt": "2026-11-09T09:30:17.758Z"
+    },
+    {
+      "showId": "memoriam-off-west-end-2026",
+      "title": "Memoriam",
+      "openingDate": "2026-10-27",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 70.21 vs local 70.62 (Δ0.41)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 27,
+      "deployedCount": 27,
+      "firstDefectAt": "2026-11-09T09:30:17.758Z"
+    },
+    {
+      "showId": "the-master-builder-off-west-end-2026",
+      "title": "The Master Builder",
+      "openingDate": "2026-10-22",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 68.93 vs local 69.34 (Δ0.41)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 23,
+      "deployedCount": 23,
+      "firstDefectAt": "2026-11-09T09:30:17.758Z"
+    },
+    {
+      "showId": "some-woman-west-end-2026",
+      "title": "Some Woman",
+      "openingDate": "2026-10-15",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 69.07 vs local 69.29 (Δ0.22)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 35,
+      "deployedCount": 35,
+      "firstDefectAt": "2026-11-09T09:30:17.758Z"
+    },
+    {
+      "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
+      "title": "Catarina and the Beauty of Killing Fascists",
+      "openingDate": "2026-09-21",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 63.26 vs local 63.52 (Δ0.26)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 26,
+      "deployedCount": 26,
+      "firstDefectAt": "2026-11-09T09:30:17.758Z"
+    },
+    {
+      "showId": "chewing-gum-dreams-off-west-end-2026",
+      "title": "Chewing Gum Dreams",
+      "openingDate": "2026-09-10",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 83.76 vs local 83.89 (Δ0.13)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 6,
+      "deployedCount": 6,
+      "firstDefectAt": "2026-11-09T09:30:17.758Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
