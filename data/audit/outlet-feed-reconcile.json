@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-09T20:23:30.931Z",
+  "generatedAt": "2026-11-09T21:39:44.437Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -143,6 +143,10 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     },
     {
+      "outletId": "the-knockturnal",
+      "error": "HTTP 403 for https://theknockturnal.com/feed/"
+    },
+    {
       "outletId": "times-square-chronicles",
       "error": "fetchPage returned an unexpected page for https://t2conline.com/wp-json/wp/v2/posts?categories=504,298,283&per_page=100&"
     },
@@ -151,8 +155,8 @@
       "error": "fetchPage returned an unexpected page for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&o"
     }
   ],
-  "itemsScanned": 791,
-  "matchedGaps": 7,
+  "itemsScanned": 781,
+  "matchedGaps": 4,
   "possibleGaps": 5,
   "gaps": [
     {
@@ -165,12 +169,21 @@
       "publishDate": "2026-11-04"
     },
     {
-      "showId": "nero-off-west-end-2026",
-      "title": "Nero",
+      "showId": "msblackforpresident-off-broadway-2026",
+      "title": "Ms. Blakk for President",
       "level": "matched",
-      "outletId": "firstnightmagazine",
-      "url": "https://firstnightmagazine.com/2026/11/09/review-of-nero-2026-southwark-playhouse-historical-musical-is-unlikely-to-make-history/",
-      "headline": "Review of &#8216;Nero&#8217; (2026, Southwark Playhouse): &#8220;Historical musical is unlikely to make history&#8221;",
+      "outletId": "one-minute-critic",
+      "url": "https://1minutecritic.com/ms-blakk-for-president-vineyard-theatre-review/",
+      "headline": "The drag queen who crashed the 1992 Democratic National Convention gets an encore",
+      "publishDate": "2026-11-09"
+    },
+    {
+      "showId": "msblackforpresident-off-broadway-2026",
+      "title": "Ms. Blakk for President",
+      "level": "matched",
+      "outletId": "theater-pizzazz",
+      "url": "https://theaterpizzazz.com/ms-blakk-for-president-a-drag-queens-campaign-runs-on-fabulousness-not-drama/",
+      "headline": "“MS. BLAKK FOR PRESIDENT”: A DRAG QUEEN&#8217;S CAMPAIGN RUNS ON FABULOUSNESS, NOT DRAMA",
       "publishDate": "2026-11-09"
     },
     {
@@ -180,42 +193,6 @@
       "outletId": "south-london",
       "url": "https://southlondon.co.uk/lifestyle/review-nero-southwark-playhouse/",
       "headline": "Review: Nero @ Southwark Playhouse",
-      "publishDate": "2026-11-09"
-    },
-    {
-      "showId": "nero-off-west-end-2026",
-      "title": "Nero",
-      "level": "matched",
-      "outletId": "theupcoming",
-      "url": "https://www.theupcoming.co.uk/2026/11/07/nero-at-southwark-playhouse-theatre-review/",
-      "headline": "Nero at Southwark Playhouse &#124; Theatre review",
-      "publishDate": "2026-11-07"
-    },
-    {
-      "showId": "parcel-from-america-off-broadway-2026",
-      "title": "Parcel from America",
-      "level": "matched",
-      "outletId": "theater-pizzazz",
-      "url": "https://theaterpizzazz.com/parcel-from-america-the-irish-musical-a-holiday-card/",
-      "headline": "&#8216;Parcel From America- The Irish Musical&#8217; – A Holiday Card",
-      "publishDate": "2026-11-09"
-    },
-    {
-      "showId": "rope-off-broadway-2026",
-      "title": "Rope",
-      "level": "matched",
-      "outletId": "theater-scene",
-      "url": "https://www.theaterscene.net/plays/offbway-plays/rope/victor-gluck/",
-      "headline": "Rope",
-      "publishDate": "2026-11-09"
-    },
-    {
-      "showId": "well-see-off-broadway-2026",
-      "title": "We'll See",
-      "level": "matched",
-      "outletId": "off-off-online",
-      "url": "https://www.offoffonline.com/offoffonline/2026/11/5/well-see",
-      "headline": "We’ll See",
       "publishDate": "2026-11-09"
     },
     {
