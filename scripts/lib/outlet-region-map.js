@@ -103,10 +103,12 @@ function inferOutletRegionFromCategories(categories, isLondonMarket, evidence = 
  * that falls below this bar once NYC evidence outweighs it.
  * @param {string|null|undefined} domain
  * @param {number} londonShowCount - distinct London shows
+ * @param {string[]} [aliases] - registry domainAliases; a UK alias counts as a UK domain
  * @returns {boolean}
  */
-function meetsLondonStampBar(domain, londonShowCount) {
-  const ukDomain = /^[a-z0-9.-]+\.(?:uk|london|wales|scot)$/i.test(domain || '');
+function meetsLondonStampBar(domain, londonShowCount, aliases) {
+  const isUk = (d) => /^[a-z0-9.-]+\.(?:uk|london|wales|scot)$/i.test(d || '');
+  const ukDomain = isUk(domain) || (Array.isArray(aliases) && aliases.some(isUk));
   return ukDomain || londonShowCount >= 3;
 }
 
@@ -272,7 +274,7 @@ function retractContradictedOutletRegions(outlets, outletMarketShows, nowIso) {
     // Broadway id), which isUkOutletUrl cannot tell; a human decides those
     // (audit-london-outlet-flags.js).
     if (nycShows < 2) continue;
-    const weakOutvoted = !meetsLondonStampBar(info.domain, londonShows) && nycShows > londonShows;
+    const weakOutvoted = !meetsLondonStampBar(info.domain, londonShows, info.domainAliases) && nycShows > londonShows;
     if (londonShows > 0 && !weakOutvoted) continue;
     delete info.region;
     info.regionCorrectedBy = `retractContradictedOutletRegions (BRO-5896): ${nycShows} NYC show(s) vs ${londonShows} London show(s) contradict the ${info.regionInferredBy} london stamp`;

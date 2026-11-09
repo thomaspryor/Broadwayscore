@@ -318,3 +318,9 @@ test('regionEvidenceMarket: other categories are no evidence', () => {
     assert.equal(regionEvidenceMarket({ isLondonMarket: isLdn, category, trustworthy: true, trustworthyApartFromWrongProduction: true }), null);
   }
 });
+
+test('retract: a .com outlet with a UK domain alias clears the bar and is kept (theatreboard case)', () => {
+  const outlets = { tb: { region: 'london', regionInferredBy: 'b', domain: 'theatreboard.com', domainAliases: ['theatreboard.co.uk'] } };
+  assert.deepEqual(retractContradictedOutletRegions(outlets, { tb: { london: ['w1'], nyc: ['n1', 'n2'] } }), []);
+  assert.equal(outlets.tb.region, 'london');
+});
