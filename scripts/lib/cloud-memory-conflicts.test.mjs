@@ -134,3 +134,75 @@ test('digest names unresolved copies, escapes markup and bounds the visible list
   assert.match(html, /\+1 more waiting/);
   assert.doesNotMatch(html, /private memo body|<unsafe>/);
 });
+
+// BRO-7228: saved MEMORY.md copies settle themselves instead of waiting for a human.
+const { INDEX_LINE_CAP } = require('./cloud-memory-conflicts.js');
+const ptr = (n) => `- [${n}](${n}.md) one-line hook for ${n}`;
+
+function indexConflict(f, { local, mirror }) {
+  f.write(f.src, 'MEMORY.md', '# index\n');
+  applySync(f.args);
+  f.write(f.src, 'MEMORY.md', local);
+  f.write(f.dest, 'MEMORY.md', mirror);
+}
+const resolvedNames = f => fs.readdirSync(path.join(f.src, '_conflicts', '_resolved'));
+
+test('BRO-7228: a cloud-added pointer is carried into the local index and the conflict clears', t => {
+  const f = fixture(t);
+  f.write(f.src, 'mine.md', 'memo');
+  f.write(f.src, 'cloud.md', 'memo');
+  indexConflict(f, { local: `# index\n${ptr('mine')}\n`, mirror: `# index\n${ptr('cloud')}\n` });
+  const result = applySync(f.args);
+  const index = fs.readFileSync(path.join(f.src, 'MEMORY.md'), 'utf8');
+  assert.equal(index, `# index\n${ptr('mine')}\n${ptr('cloud')}\n`);
+  assert.equal(fs.readFileSync(path.join(f.dest, 'MEMORY.md'), 'utf8'), index);
+  assert.deepEqual(result.settled.appended, [ptr('cloud')]);
+  assert.equal(resolvedNames(f).length, 1);
+  assert.equal(JSON.parse(fs.readFileSync(f.reportPath, 'utf8')).conflictCount, 0);
+  assert.equal(readConflictDigest(f.dest), null);
+  // The very next sync sees src == dest: no new conflict, no churn.
+  const again = applySync({ ...f.args, now: new Date('2031-01-01') });
+  assert.equal(again.conflictCopies.length, 0);
+  assert.equal(resolvedNames(f).length, 1);
+});
+
+test('BRO-7228: a copy that adds nothing is archived, not deleted, and the index is untouched', t => {
+  const f = fixture(t);
+  f.write(f.src, 'a.md', 'memo');
+  const local = `# index\n${ptr('a')}\nlocal-only prose line\n`;
+  indexConflict(f, { local, mirror: `# index\n${ptr('a')}\nmirror-only heading\n` });
+  applySync(f.args);
+  assert.equal(fs.readFileSync(path.join(f.src, 'MEMORY.md'), 'utf8'), local);
+  const [saved] = resolvedNames(f);
+  assert.match(fs.readFileSync(path.join(f.src, '_conflicts', '_resolved', saved), 'utf8'), /mirror-only heading/);
+  assert.equal(readConflictDigest(f.dest), null);
+});
+
+test('BRO-7228: pointers to memos that do not exist, or that leave the memory dir, are never added', t => {
+  const f = fixture(t);
+  indexConflict(f, {
+    local: '# index\nlocal change\n',
+    mirror: `# index\n${ptr('ghost')}\n- [x](../outside.md) escape\n- [y](sub/dir.md) nested\n`,
+  });
+  applySync(f.args);
+  assert.equal(fs.readFileSync(path.join(f.src, 'MEMORY.md'), 'utf8'), '# index\nlocal change\n');
+  assert.equal(resolvedNames(f).length, 1);
+});
+
+test('BRO-7228: a copy that would push the index past its cap stays for review', t => {
+  const f = fixture(t);
+  f.write(f.src, 'extra.md', 'memo');
+  const full = ['# index', ...Array.from({ length: INDEX_LINE_CAP - 1 }, (_, i) => `- line ${i}`)].join('\n') + '\n';
+  indexConflict(f, { local: full, mirror: `# index\n${ptr('extra')}\n` });
+  const result = applySync(f.args);
+  assert.equal(fs.readFileSync(path.join(f.src, 'MEMORY.md'), 'utf8'), full);
+  assert.equal(result.settled.kept.length, 1);
+  assert.equal(fs.existsSync(path.join(f.src, '_conflicts', '_resolved')), false);
+  assert.match(readConflictDigest(f.dest).bannerText, /1 saved copy needs review/);
+});
+
+test('BRO-7228: only MEMORY.md copies are settled automatically; other memos still wait for review', t => {
+  const f = fixture(t);
+  f.conflict();
+  assert.match(readConflictDigest(f.dest).bannerText, /1 saved copy needs review/);
+});
