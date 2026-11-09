@@ -65,7 +65,7 @@ import { buildSeasonProfiles, buildRecoupFindings, compareSeason, hasKnownOutcom
 import fs from 'fs';
 import path from 'path';
 import { getMarketDate } from './date-utils';
-import { calibrateClosingWatch, closingBandFor, isOnClosingWatch, addWeeks, weeksBelowBreakEven as countWeeksBelowBreakEven, type ClosingBandStats } from './closing-watch';
+import { calibrateClosingWatch, finalContinuousRun, closingBandFor, isOnClosingWatch, addWeeks, weeksBelowBreakEven as countWeeksBelowBreakEven, type ClosingBandStats } from './closing-watch';
 import { isLossDesignation } from '../../scripts/lib/commercial-designations';
 import { conversionOf, isConvertedToCommercial, commercialRunWeeks, recoupClockStart } from '../../scripts/lib/commercial-conversion';
 import {
@@ -769,6 +769,9 @@ export function getShowsAtRisk(): AtRiskShow[] {
 
 let closingCalibration: ClosingBandStats[] | null = null;
 
+/** Week-ending keys of the March 2020 shutdown. */
+const COVID_SHUTDOWN = /^2020-03-/;
+
 /**
  * BRO-7246: how long past Broadway shows kept running after their grosses
  * fell into each band under break-even. Closed, box-office-driven runs with a
@@ -784,12 +787,11 @@ export function getClosingWatchCalibration(): ClosingBandStats[] {
     if (!show || show.status !== 'closed') continue;
     const breakEven = getBreakEven(data);
     if (!breakEven) continue;
-    const grossesOldestFirst: number[] = [];
-    for (const key of weeksOldestFirst) {
-      const gross = grossesHistory.weeks[key]?.[slug]?.gross;
-      if (gross) grossesOldestFirst.push(gross);
-    }
-    samples.push({ grossesOldestFirst, breakEven });
+    const weekly = weeksOldestFirst.map((key) => grossesHistory.weeks[key]?.[slug]?.gross ?? null);
+    const last = weekly.reduce<number>((at, g, i) => (g ? i : at), -1);
+    // A run the March 2020 shutdown ended did not close on box office.
+    if (last < 0 || COVID_SHUTDOWN.test(weeksOldestFirst[last])) continue;
+    samples.push({ grossesOldestFirst: finalContinuousRun(weekly), breakEven });
   }
   closingCalibration = calibrateClosingWatch(samples);
   return closingCalibration;

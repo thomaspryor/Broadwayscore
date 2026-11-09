@@ -60,6 +60,31 @@ function bandIndex(ratio: number): number {
   return CLOSING_WATCH_BANDS.findIndex((b) => ratio >= b.min && ratio < b.max);
 }
 
+/** Missing weeks in a row that end a run (a shutdown, a transfer), not a skipped report. */
+export const CLOSING_WATCH_MAX_GAP_WEEKS = 4;
+
+/**
+ * The final continuous run of a show's weekly grosses (oldest first, null =
+ * no report that week). A gap longer than CLOSING_WATCH_MAX_GAP_WEEKS (the
+ * 2020-21 shutdown, a re-opening) starts a new run, so weeks before it are
+ * not counted as weeks the closing run kept going. Single missing weeks
+ * inside the run are dropped.
+ */
+export function finalContinuousRun(weeksOldestFirst: Array<number | null | undefined>): number[] {
+  let run: number[] = [];
+  let gap = 0;
+  for (const g of weeksOldestFirst) {
+    if (g == null || !(g > 0)) {
+      gap++;
+      continue;
+    }
+    if (gap > CLOSING_WATCH_MAX_GAP_WEEKS) run = [];
+    gap = 0;
+    run.push(g);
+  }
+  return run;
+}
+
 /** Weeks each closed show kept running after first reaching each band. */
 export function calibrateClosingWatch(shows: ClosingCalibrationShow[]): ClosingBandStats[] {
   const weeksLeft: number[][] = CLOSING_WATCH_BANDS.map(() => []);

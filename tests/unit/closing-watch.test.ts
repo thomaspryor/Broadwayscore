@@ -96,3 +96,10 @@ test('formatMonthYear prints the estimate as a month, never a day', async () => 
   assert.equal(formatMonthYear(null), null);
   assert.equal(formatMonthYear('soon'), null);
 });
+
+test('final continuous run: a long gap (the 2020-21 shutdown) starts a new run; a skipped week does not', async () => {
+  const { finalContinuousRun } = await import('../../src/lib/closing-watch');
+  assert.deepEqual(finalContinuousRun([5, 6, null, null, null, null, null, 7, 8]), [7, 8]);
+  assert.deepEqual(finalContinuousRun([5, null, 6, 7]), [5, 6, 7]);
+  assert.deepEqual(finalContinuousRun([null, null]), []);
+});

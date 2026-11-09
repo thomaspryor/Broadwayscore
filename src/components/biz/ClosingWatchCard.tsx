@@ -61,6 +61,11 @@ export default function ClosingWatchCard({
           )}
         </div>
       )}
+      {!median && (
+        <div className="rounded-lg bg-surface-overlay px-3 py-2 mb-3 text-xs text-fg-muted" data-testid="closing-watch-estimate">
+          Too few past shows ran this far under break-even for us to estimate a date.
+        </div>
+      )}
       <div className="flex justify-between text-sm">
         <span className="text-fg-muted">Avg gross (4 wks)</span>
         <span className="text-white">{formatCurrency(avgWeeklyGross)}</span>
