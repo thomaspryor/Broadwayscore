@@ -1,4 +1,5 @@
 'use strict';
+// venue-write-guard-ok: venue is copied into in-memory comparison records for the return-engagement check (BRO-7080); nothing here writes shows.json.
 
 const { isBroadwayCategory } = require('./venue-classification');
 const { foldDiacritics } = require('./title-match');
