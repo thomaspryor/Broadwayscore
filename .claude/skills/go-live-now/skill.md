@@ -30,26 +30,45 @@ List runs with GitHub MCP `actions_list` / `list_workflow_runs`, once with
 (the output is large: save it and parse id, name, head_sha, created_at).
 Cancel with `actions_run_trigger` / `cancel_workflow_run`, all in one message.
 Recheck the queued list every couple of minutes until your deploy is
-building: automation re-queues things (for example "Land retry on cancel").
+building: automation re-queues things (cancelled tests start follow-up jobs).
 
-Safe to cancel (each reruns on its own schedule or can be rerun later):
-- `Test Suite` and `Check Direct Push To Main` on main pushes
-- `Deploy Demo Site`, `Demo Alias Watchdog`, `Mirror Core Data to GitLab`
-- `Fetch Show Images`, `Update Critics' Take`
-- opening-night lane shadow runs, press-night probes and watchdogs for
-  OTHER shows (anything marked dry run or shadow)
-- `Gather Review Data` and `LLM Ensemble Score` for other shows that are not
-  opening tonight
-- `Land retry on cancel`, and other sessions' `land/**` runs that are still
-  queued or in the Checks phase (note their run ids and rerun them with
-  `rerun_workflow_run` after yours has landed)
+The lists below mirror `scripts/lib/press-night-priority.js` (BRO-7198), which
+holds the reasons; `scripts/lib/go-live-now-skill.test.mjs` fails if they drift.
+During a Broadway press night (embargo -1h to +6h) you can get the plan from it:
+save the run list to a file, then
+`node scripts/press-night-priority.js --runs-file=<file>` (dry run, cancels nothing).
+
+Safe to cancel (each reruns on its own schedule or loses nothing):
+- `demo-alias-watchdog.yml`
+- `vercel-demo.yml` while still queued (a running demo build left half done
+  leaves the demo alias on stale content)
+- `llm-ensemble-score.yml` and `press-night-watchdog.yml` for shows not
+  opening tonight (the 6-hourly batch scores whatever is left)
+- `test.yml` and `check-direct-push-to-main.yml` on main pushes (each cancel
+  re-queues a follow-up job, so recheck the queue)
+- `mirror-data-to-gitlab.yml`, `fetch-all-image-formats.yml` (each raises a
+  cancelled alert; expected)
+- `gather-reviews.yml`, `press-night-probe.yml`,
+  `opening-night-lane-watchdog.yml`, and `opening-night-lane-live.yml` shadow
+  runs, only for shows not opening tonight
+- other sessions' `land.yml` runs that are still queued or in the Checks
+  phase (note their run ids and rerun them with `rerun_workflow_run` after
+  yours has landed)
 
 Never cancel:
-- any run for the show you are rushing (orchestrator, poller, lane, rebuild)
-- a `Land` job past "Wait for the landing mutex" (a landing in flight)
-- a `Deploy to Vercel` run whose head sha contains your commit
-- `opening-night-lane-switch`, `execute-approved-fix`, rebuild-reviews
-- `Morning Digest` and email workflows (they reach real people)
+- any run for the show you are rushing, or for any show opening tonight
+  (orchestrator, poller, lane, rebuild, scoring)
+- `update-critic-consensus.yml` (Critics' Take): its title never names the
+  show, and its push and deploy steps run even when cancelled, so a cancel
+  publishes a partial file
+- `land-retry-cancelled.yml`: it re-runs cancelled Land jobs, one of which
+  may carry tonight's fix
+- a `land.yml` job past "Wait for the landing mutex" (a landing in flight)
+- a `vercel-deploy.yml` run whose head sha contains your commit
+- `opening-night-lane-switch.yml`, `execute-approved-fix.yml`,
+  `rebuild-reviews.yml`, `rebuild-fast.yml`, `extract-pull-quotes.yml`,
+  `opening-night-poller.yml`, `opening-night-orchestrator.yml`
+- `morning-digest-action.yml` and email workflows (they reach real people)
 
 ## 3. Clear the line in front of you
 The landing mutex is a FIFO of refs: `git ls-remote origin 'refs/land-mutex/*'`.
