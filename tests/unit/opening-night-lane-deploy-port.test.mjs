@@ -210,7 +210,16 @@ test('BRO-7235: isBroadwayLaneShow fails open, says no only for a known non-Broa
   assert.equal(real.isBroadwayLaneShow('b-2026', dir), true);
   assert.equal(real.isBroadwayLaneShow('c-2026', dir), true, 'no category: fail open');
   assert.equal(real.isBroadwayLaneShow('missing-2026', dir), true, 'unknown id: fail open');
-  // Real data: tonight's Broadway opening is Broadway.
-  assert.equal(real.isBroadwayLaneShow('here-there-are-blueberries-2026', path.join(path.dirname(new URL(import.meta.url).pathname), '..', '..')), true);
+  // Real data, only when core data is checked out (a missing file reads "yes", which would prove nothing): every
+  // Broadway record reads Broadway and every non-Broadway record does not.
+  const root = path.join(path.dirname(new URL(import.meta.url).pathname), '..', '..');
+  const showsPath = path.join(root, 'data', 'shows.json');
+  if (fs.existsSync(showsPath)) {
+    const shows = JSON.parse(fs.readFileSync(showsPath, 'utf8')).shows;
+    const bway = shows.find((x) => x.category === 'broadway');
+    const other = shows.find((x) => x.category && x.category !== 'broadway');
+    assert.equal(real.isBroadwayLaneShow(bway.id, root), true);
+    assert.equal(real.isBroadwayLaneShow(other.id, root), false);
+  }
   fs.rmSync(dir, { recursive: true, force: true });
 });
