@@ -494,5 +494,36 @@
     "testId": "tests/unit/critic-spelling-duplicates-live-data.test.mjs::reviews.json: no NEW critic page split by a byline spelling variant",
     "fields": [],
     "queuedAt": "2026-11-09T15:43:11.727Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7235-broadway-email",
+    "title": "Landing blocked: rebase red on land/bro-7235-broadway-email",
+    "description": "land.yml did not land land/bro-7235-broadway-email: the rebase gate went red at 7f0af2a6e8. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-7235-broadway-email @ 7f0af2a6e8 (origin/land/bro-7235-broadway-email) → origin/main @ 518a9cd6e1 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 518a9cd6e1: Rebasing (1/2) error: could not apply bb5b74ffe4d... fix(lane): Broadway live-timeout emails the owner right away (BRO-7235) hint: Resolve all conflicts manually, mark them as resolved with hint: \"git add/r Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42645339082",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7235-broadway-email"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "7f0af2a6e897d6660e7977c81df5f73071c37995"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42645339082"
+      }
+    ],
+    "queuedAt": "2026-11-09T16:02:11.833Z"
   }
 ]
