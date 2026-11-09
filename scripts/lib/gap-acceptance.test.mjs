@@ -156,7 +156,7 @@ test('a recovery clears the stale dead-candidate stamp, including on a second re
   // Re-stamped dead later, then recovered again: the clear must work again.
   onDisk.incompleteReason = 'bot_blocked';
   fs.writeFileSync(c.filePath, JSON.stringify(onDisk, null, 2) + '\n');
-  const r2 = gate.recoverReviewText({ filePath: c.filePath, rawText: `${GOOD}${' A closing paragraph that makes this text materially longer still.'.repeat(3)}`, labels });
+  const r2 = gate.recoverReviewText({ filePath: c.filePath, rawText: `${GOOD} ${REVIEW} ${MORE}`, labels }); // new prose, not a repeated line (Stage 4 novel-prose bar)
   assert.equal(r2.ok, true, r2.reason);
   onDisk = JSON.parse(fs.readFileSync(c.filePath, 'utf8'));
   assert.equal(onDisk.incompleteReason, undefined);
@@ -308,4 +308,36 @@ test('pageHeadline keeps apostrophes inside a double-quoted og:title', () => {
   const { pageHeadline } = require('./gap-acceptance.js');
   assert.equal(pageHeadline('<meta property="og:title" content="Peter Shaffer\'s Equus review">'), "Peter Shaffer's Equus review");
   assert.equal(pageHeadline("<meta content='A \"quoted\" title' property='og:title'>"), 'A "quoted" title');
+});
+
+// BRO-7171 Stage 4: same-tier gains must be new PROSE. Fixtures shaped on real
+// accepts from the first nightly (londonlivinglarge listing block, Guardian
+// related headline, Islington Tribune related-articles teaser).
+const REVIEW = [
+  "Joe Turner's Come and Gone opens in a Pittsburgh boarding house where every lodger is waiting for someone who may never come back.",
+  'The director keeps the long first act at a low simmer, so that when Herald Loomis finally breaks the floorboards seem to give way under the whole audience.',
+  'Seth and Bertha argue about biscuits and rent with the ease of a couple who have rehearsed the same quarrel for twenty years.',
+  'Bynum, the conjure man, is played with a sly, unhurried warmth that makes his talk of binding songs sound like plain common sense.',
+].join(' ');
+const MORE = [
+  'The second act belongs to Loomis, whose search for his wife has hardened into something closer to a curse than a hope.',
+  'When he finally stands in the doorway with Martha, the reunion the play has promised all evening turns out to be a release rather than a homecoming.',
+  'It is a demanding, generous evening, and the cast never lets the poetry of the text harden into speechifying.',
+].join(' ');
+const LISTING = 'Joe Turner’s Come and Gone Barrymore Theatre | Mar 1 - Jun 21, 2026 Get link Facebook X Pinterest Email Other Apps (c) Photo by Joan Marcus Tue - Sat: 7 pm, Wed & Sat: 2 pm Barrymore Theatre Nearest station: 50 St Map & Location: 243 W 47th St, New York, NY 10036 March Activities April Activities Theatre Get link Facebook X Pinterest Email Other Apps';
+const RELATED = 'Share this story Categories Theatre Related articles Canonbury low traffic neighbourhood plans continue to divide residents and businesses as the council prepares a final consultation on the scheme next month';
+
+test('novel prose: a chrome or related-article gain is not prose; new review paragraphs are', () => {
+  assert.equal(gate.novelProseChars(REVIEW, `${REVIEW} ${LISTING}`), 0);
+  assert.equal(gate.novelProseChars(REVIEW, `${REVIEW} ${RELATED}`), 0);
+  assert.equal(gate.novelProseChars(REVIEW, `${REVIEW} Giant step back in elections: Trump says he was only kidding.`), 0);
+  assert.ok(gate.novelProseChars(REVIEW, `${REVIEW} ${MORE}`) >= 300);
+});
+
+test('same-tier refetch that only gains page chrome is refused; one that gains the missing paragraphs is accepted', () => {
+  const prior = base({ fullText: REVIEW, contentTier: 'truncated' });
+  const chrome = acceptRecoveredText(prior, { rawText: `${REVIEW} ${LISTING} ${RELATED}` }, ctx);
+  assert.equal(chrome.code, 'not_materially_longer', chrome.reason);
+  const real = acceptRecoveredText(prior, { rawText: `${REVIEW} ${MORE}` }, ctx);
+  assert.equal(real.accept, true, real.reason);
 });
