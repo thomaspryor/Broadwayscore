@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7239-e",
   "planId": "1ae360ea-4b82-4d21-b158-d6337d9828c8",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-11-09T18:39:50.583Z",
   "submitter": {
     "name": null,
@@ -254,5 +254,129 @@
         "description": "shows.json: all-my-sons-regional-2026.closingDateSource"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-09T20:21:47.330Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for joseph-and-the-amazing-technicolor-dreamcoat-north-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for joseph-and-the-amazing-technicolor-dreamcoat-north-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "Show \"paranormal-activity-regional-2026\" not found in shows.json"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "Show \"paranormal-activity-regional-2026\" not found in shows.json"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for a-new-era-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for a-new-era-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for buyer-and-cellar-hub-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for buyer-and-cellar-hub-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for a-midsummer-nights-dream-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for a-midsummer-nights-dream-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for m-refractions-from-an-evil-act-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for m-refractions-from-an-evil-act-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for rock-of-ages-north-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for rock-of-ages-north-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "Show \"rhinoceros-regional-2026\" not found in shows.json"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "Show \"rhinoceros-regional-2026\" not found in shows.json"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for eleanor-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for eleanor-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "Show \"purpose-huntington-regional-2026\" not found in shows.json"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "Show \"purpose-huntington-regional-2026\" not found in shows.json"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for come-from-away-north-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for come-from-away-north-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for all-my-sons-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for all-my-sons-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
