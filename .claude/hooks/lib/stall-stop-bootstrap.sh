@@ -40,10 +40,15 @@ case "$mode" in
     if [ -d "$S/.git" ]; then
       timeout 30 git -C "$S" fetch -q --depth 1 origin main 2>/dev/null && git -C "$S" reset -q --hard FETCH_HEAD 2>/dev/null
     else
-      rm -rf "$S"
-      if timeout 90 git clone -q --depth 1 --filter=blob:none --sparse "$URL" "$S" 2>/dev/null \
-         && git -C "$S" sparse-checkout set --no-cone '/.claude/' '/scripts/' '/package.json' 2>/dev/null; then :; else
-        rm -rf "$S"; msg "BRO-7194: could not fetch the stall Stop gate from $URL, so this session has NO stall gate. Do not end a turn promising later work with nothing running."; exit 0
+      # Clone into a private temp dir, then rename: a concurrent session never sees a half-made
+      # checkout and never has it deleted under it. Loser of the rename race just discards its copy.
+      T="$S.tmp.$$"; rm -rf "$T"
+      if timeout 90 git clone -q --depth 1 --filter=blob:none --sparse "$URL" "$T" 2>/dev/null \
+         && git -C "$T" sparse-checkout set --no-cone '/.claude/' '/scripts/' '/package.json' 2>/dev/null; then
+        if [ -d "$S" ] && [ ! -d "$S/.git" ]; then rm -rf "$S"; fi
+        [ -d "$S" ] && rm -rf "$T" || mv "$T" "$S" 2>/dev/null || rm -rf "$T"
+      else
+        rm -rf "$T"; msg "BRO-7194: could not fetch the stall Stop gate from $URL, so this session has NO stall gate. Do not end a turn promising later work with nothing running."; exit 0
       fi
     fi
     find_runner >/dev/null || msg "BRO-7194: hook runner missing after fetch, stall Stop gate NOT installed."
