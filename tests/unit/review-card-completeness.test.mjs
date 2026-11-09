@@ -176,3 +176,12 @@ test('a show-listing footer is never a pull quote (Cititour on Wanted, The Count
   for (const prose of ['The cast is superb and the second act soars.', 'She lives at 200 West 54th Street and dreams of the stage.', 'The show is open-ended in the best way.'])
     assert.equal(hasListingChrome(prose), false, prose);
 });
+
+test('every registered outlet has a display name the lane accepts (no id-shaped displayName)', () => {
+  // 12 outlets (oklahoman, masslive, 3views, ...) carried their own id as displayName, so the lane held every review
+  // from them as "no outlet" and the site showed the lowercase id. Sentinel ids (junk parses) are excluded on purpose.
+  const { isSentinelOutletId } = require('../../scripts/lib/review-normalization.js');
+  const outlets = require('../../data/outlet-registry.json').outlets;
+  const bad = Object.keys(outlets).filter((id) => !isSentinelOutletId(id) && !card.outletDisplayName(id));
+  assert.deepEqual(bad, []);
+});
