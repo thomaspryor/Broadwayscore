@@ -94,6 +94,31 @@ test('tierOf re-tiers before classifying (what a rebuild would store)', () => {
   assert.equal(m.complete, 2);
 });
 
+test('an unknown-critic stub beside an included named critic at the same outlet is not a gap (the rebuild drops it)', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'gapmetric-unk-'));
+  const w = (rel, obj) => {
+    fs.mkdirSync(path.dirname(path.join(dir, rel)), { recursive: true });
+    fs.writeFileSync(path.join(dir, rel), JSON.stringify(obj));
+  };
+  const stub = { url: null, contentTier: 'stub', fullText: '', criticName: 'Unknown' };
+  // real shape: school-girls-...-2026/nytimes--unknown.json beside nytimes--helen-shaw.json
+  w('show-a/nytimes--helen-shaw.json', review({ outletId: 'nytimes', criticName: 'Helen Shaw' }));
+  w('show-a/nytimes--unknown.json', review({ outletId: 'nytimes', ...stub }));
+  // no named sibling: still a gap
+  w('show-a/variety--unknown.json', review({ outletId: 'variety', ...stub }));
+  // named sibling is itself excluded (wrong show): the stub is what the rebuild keeps, still a gap
+  w('show-a/vulture--sara-holdren.json', review({ outletId: 'vulture', criticName: 'Sara Holdren', wrongShow: true }));
+  w('show-a/vulture--unknown.json', review({ outletId: 'vulture', ...stub }));
+  const rows = scanCorpus({ dir, shows, nowMs: NOW }).rows;
+  const by = Object.fromEntries(rows.map((r) => [r.file, r]));
+  assert.equal(by['nytimes--unknown.json'].gapClass, 'EXCLUDED');
+  assert.equal(by['nytimes--unknown.json'].subclass, 'unknown_stub_named_sibling');
+  assert.equal(by['nytimes--unknown.json'].open, false);
+  assert.equal(by['variety--unknown.json'].gapClass, 'NO_URL');
+  assert.equal(by['vulture--sara-holdren.json'].gapClass, 'EXCLUDED');
+  assert.equal(by['vulture--unknown.json'].gapClass, 'NO_URL');
+});
+
 test('the enum covers what classifyIncompleteReason can write', () => {
   for (const r of ['no_url', 'url_dead', 'scraper_garbage', 'paywall', 'url_content_mismatch', 'route_capped', 'scraper_timeout', 'code_error', 'bot_blocked', 'partial_text', 'not_attempted', 'unknown']) {
     assert.ok(INCOMPLETE_REASON_ENUM.includes(r), r);
