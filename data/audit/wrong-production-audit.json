@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-09T23:09:42.234Z",
+  "timestamp": "2026-11-09T23:28:02.062Z",
   "stats": {
-    "totalReviews": 80937,
+    "totalReviews": 80938,
     "alreadyFlagged": 22135,
     "dateGuardCatches": 219,
     "directorMismatch": 3580,
     "tvFilmSignals": 2303,
-    "londonSignals": 3652,
+    "londonSignals": 3653,
     "offBroadwaySignals": 752,
     "yearMismatch": 370,
     "noPublishDate": 8436
@@ -104746,6 +104746,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "here-there-are-blueberries-theatre-royal-stratford-east-off-west-end-2026",
+      "file": "theatreandtonic--liam-arnold.json",
+      "publishDate": "2026-02-12",
+      "url": "https://theatreandtonic.co.uk/blog/here-there-are-blueberries-at-stratford-east-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
         }
       ]
     },
