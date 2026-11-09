@@ -167,8 +167,17 @@ test('real ports: dispatch is off unless the env switch is set; with it on, fetc
   await on.deploy({ show: SHOW, night: '2026-10-30', expectedUrls: [U(1), U(2)] });
   await on.fetchLiveShow(SHOW); // shows U(1) only
   assert.equal(dispatched.length, 1, 'U(2) is still missing: the open dispatch stays open, no second one');
-  const timeoutPages = []; const withPage = real.createRealPublishPorts({ ...base, env: {}, page: async (o) => { timeoutPages.push(o); } });
-  await withPage.pageLiveTimeout({ show: SHOW, night: '2026-10-30', missing: [U(2)], ms: 1_200_000 });
+  const timeoutPages = [];
+  const emailNow = real.createRealPublishPorts({ ...base, env: {}, page: async (o) => { timeoutPages.push(o); }, autoFixFirstGate: async () => ({ email: true, preamble: 'Fix did not hold.', markEscalated: async () => {} }) });
+  await emailNow.pageLiveTimeout({ show: SHOW, night: '2026-10-30', missing: [U(2)], ms: 1_800_000 });
   assert.equal(timeoutPages[0].disposition, 'human');
+  assert.match(timeoutPages[0].description, /^Fix did not hold\./);
+  // BRO-7232: while a fix card is open (email:false) nobody is paged; a gate crash pages like notify-failure does.
+  const held = real.createRealPublishPorts({ ...base, env: {}, page: async (o) => { timeoutPages.push(o); }, autoFixFirstGate: async () => ({ email: false, action: 'file' }) });
+  await held.pageLiveTimeout({ show: SHOW, night: '2026-10-30', missing: [U(2)], ms: 1_800_000 });
+  assert.equal(timeoutPages.length, 1, 'auto-fix-first holds the page');
+  const crashed = real.createRealPublishPorts({ ...base, env: {}, page: async (o) => { timeoutPages.push(o); }, autoFixFirstGate: async () => { throw new Error('linear down'); } });
+  await crashed.pageLiveTimeout({ show: SHOW, night: '2026-10-30', missing: [U(2)], ms: 1_800_000 });
+  assert.equal(timeoutPages.length, 2, 'a gate failure still pages');
   fs.rmSync(dir, { recursive: true, force: true });
 });

@@ -42,7 +42,7 @@ const redact = (text) => String(text || '').replace(/\/\/[^@\s/]+@/g, '//***@').
 
 function createRealPublishPorts({
   show, repoDir, coreDir, holder, baseUrl = DEFAULT_BASE_URL, remote = 'origin', branch = 'main', attempts = 5,
-  now, exec = execFileSync, regen, readLeases = leaseStore.readRemote, fetchImpl, night, dispatchDeploy, page, env = process.env,
+  now, exec = execFileSync, regen, readLeases = leaseStore.readRemote, fetchImpl, night, dispatchDeploy, page, autoFixFirstGate, env = process.env,
   sleep = (ms) => new Promise((r) => setTimeout(r, ms)),
 } = {}) {
   for (const [k, v] of Object.entries({ show, repoDir, coreDir, holder })) if (!v) throw new Error(`real-ports: ${k} is required`);
@@ -105,6 +105,7 @@ function createRealPublishPorts({
   // The path is built at run time on purpose: laneCodeFiles() follows literal require()s into the arm hash, and an alert
   // router edit must not disarm the lane (driver.test.mjs).
   const pageAlert = page || ((o) => require(['..', 'owner-alert-router'].join('/')).routeAlert({ severity: 'critical', disposition: 'human', cooldownHours: 12, ...o }));
+  const autoFixGate = autoFixFirstGate || ((o) => require(['..', 'auto-fix-first'].join('/')).gate(o));
   const deployer = dispatcher ? deployPort.createDeployPort({ show, night, dispatch: dispatcher, page: pageAlert, now }) : null;
   const liveFetch = publish.fetchLiveShowFrom(baseUrl, fetchImpl ? { fetchImpl } : {});
 
@@ -137,12 +138,21 @@ function createRealPublishPorts({
       return doc;
     },
     async pageLiveTimeout({ show: s, night: n, missing, ms }) {
+      // BRO-7232: auto-fix-first (BRO-5477). A slow build is normal, so a worker card is filed first and the owner is
+      // emailed only when that fix does not hold. Any gate error means email now (same as notify-failure).
+      const conditionKey = `lane-live-timeout:${s}:${n || night || 'night'}`;
+      const title = `Lane publish for ${s} not live after ${Math.round(ms / 60000)} min`;
+      const description = `${missing.length} review(s) pushed to core data are still missing from the live show JSON. The lane keeps its lease and re-queues them with the next batch.`;
+      let gated = null;
+      try { gated = await autoFixGate({ key: conditionKey, alertTitle: title, alertDescription: description }); } catch { gated = null; }
+      if (gated && gated.email === false) return;
       await pageAlert({
         disposition: 'human',
-        conditionKey: `lane-live-timeout:${s}:${n || night || 'night'}`,
-        title: `Lane publish for ${s} not live after ${Math.round(ms / 60000)} min`,
-        description: `${missing.length} review(s) pushed to core data are still missing from the live show JSON. The lane keeps its lease and re-queues them with the next batch.`,
+        conditionKey,
+        title,
+        description: gated && gated.preamble ? `${gated.preamble}\n\n${description}` : description,
       });
+      if (gated && typeof gated.markEscalated === 'function') { try { await gated.markEscalated(); } catch { /* the email already went */ } }
     },
   };
 }

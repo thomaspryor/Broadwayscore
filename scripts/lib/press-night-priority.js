@@ -95,6 +95,8 @@ const NEVER = new Set([
   '.github/workflows/opening-night-broadcast.yml', // real subscribers
   '.github/workflows/autonomous-merge.yml', // shares the landing mutex (land-retry-cancelled.yml header)
   '.github/workflows/update-deploy-watermark.yml',
+  // BRO-7232: a hand-cancel on Wanted night left the clock chain dead for 3h16m. The land-cancel-guard hook refuses it.
+  '.github/workflows/press-night-clock.yml',
 ]);
 
 function embargoMs(show) {

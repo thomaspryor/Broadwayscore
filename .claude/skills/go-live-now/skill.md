@@ -74,6 +74,10 @@ Never cancel:
   workflows (they reach real people)
 - `autonomous-merge.yml` (holds the same landing mutex as Land) and
   `update-deploy-watermark.yml`
+- `press-night-clock.yml`: it fires every press-night kick, and a cancel
+  leaves the chain dead until the next orchestrator tick (3h16m on Wanted
+  night, BRO-7232). A hook refuses the cancel; to stop the chain on purpose,
+  create `$HOME/.claude/LAND_CANCEL_GUARD_OFF` first
 
 ## 3. Clear the line in front of you
 The landing mutex is a FIFO of refs: `git ls-remote origin 'refs/land-mutex/*'`.

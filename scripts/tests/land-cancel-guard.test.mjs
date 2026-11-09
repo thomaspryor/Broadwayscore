@@ -84,3 +84,35 @@ test('refuses the :owner/:repo REST form and a run URL', () => {
 test('block message names the kill switch', () => {
   assert.match(hook(bash('gh run cancel 40274353165'), run('01SomeoneElse')).err, /LAND_CANCEL_GUARD_OFF/);
 });
+
+// BRO-7232: never-cancel workflows are refused for any session; the list is the planner's NEVER set.
+import { createRequire } from 'node:module';
+const { NEVER } = createRequire(import.meta.url)('../lib/press-night-priority.js');
+const EXEMPT = new Set(['land.yml', 'vercel-deploy.yml', 'opening-night-broadcast.yml', 'morning-digest-action.yml']);
+const guarded = [...NEVER].filter((f) => !EXEMPT.has(f.split('/').pop()));
+test('press-night-clock.yml is in the never-cancel set (red if it is removed)', () => {
+  assert.ok(NEVER.has('.github/workflows/press-night-clock.yml'));
+  const r = hook(bash('gh run cancel 42533347172'), run('01SomeoneElse', '.github/workflows/press-night-clock.yml'));
+  assert.equal(r.code, 2);
+  assert.match(r.err, /press-night-clock\.yml/);
+});
+test('every guarded never-cancel workflow is refused, even for the session that owns the run and with no session id', () => {
+  assert.ok(guarded.length >= 8);
+  for (const wf of guarded) {
+    assert.equal(hook(bash('gh run cancel 42533347172'), run(ME, wf)).code, 2, wf);
+    assert.equal(hook(bash('gh run cancel 42533347172'), run(ME, wf), { CLAUDE_CODE_REMOTE_SESSION_ID: '' }).code, 2, wf);
+  }
+});
+test('the MCP cancel of a never-cancel run is refused too', () => {
+  assert.equal(hook({ method: 'cancel_workflow_run', owner: 'thomaspryor', repo: 'Broadwayscore', run_id: 42533347172 },
+    run(ME, '.github/workflows/press-night-clock.yml'), {}, 'mcp__github__actions_run_trigger').code, 2);
+});
+test('exempt workflows stay cancellable: vercel-deploy (stale deploys) and the email workflows (emergency stop)', () => {
+  for (const wf of EXEMPT) {
+    if (wf === 'land.yml') continue;
+    assert.equal(hook(bash('gh run cancel 42533347172'), run('01SomeoneElse', `.github/workflows/${wf}`)).code, 0, wf);
+  }
+});
+test('the kill switch lets a never-cancel run be cancelled on purpose', () => {
+  assert.equal(hook(bash('gh run cancel 42533347172'), run(ME, '.github/workflows/press-night-clock.yml'), { LAND_CANCEL_GUARD_OFF: '1' }).code, 0);
+});

@@ -11,9 +11,15 @@
 # for a thomaspryor/Broadwayscore run of land.yml whose head commit does not
 # carry this session's Claude-Session trailer. Other workflows' runs pass.
 #
+# BRO-7232: also refused, for ANY session, a cancel of a run of a never-cancel workflow: the NEVER set in
+# scripts/lib/press-night-priority.js (read at run time, so the hook and the go-live-now skill cannot drift), minus
+# land.yml (own-session rule above), vercel-deploy.yml (the skill cancels stale deploys) and the two email workflows
+# (cancelling is the emergency stop for a wrong send). A hand-cancel of press-night-clock.yml on Wanted night
+# (2026-11-09) left the press-night chain dead for 3h16m.
+#
 # Fails open when the run cannot be read or this session's id is unknown.
-# Cloud-only in effect: CLAUDE_CODE_REMOTE_SESSION_ID is set only in cloud
-# sessions, so a local session passes through.
+# The Land ownership rule is cloud-only in effect: CLAUDE_CODE_REMOTE_SESSION_ID is set only in cloud
+# sessions, so a local session passes through it. The never-cancel rule applies to every session.
 # Kill switch: LAND_CANCEL_GUARD_OFF=1, or the file
 # $HOME/.claude/LAND_CANCEL_GUARD_OFF (an MCP call cannot carry an env prefix).
 # Tests inject the run as LAND_CANCEL_GUARD_RUN_JSON instead of calling gh.
@@ -59,13 +65,25 @@ esac
 
 sid=${CLAUDE_CODE_REMOTE_SESSION_ID:-}
 sid=${sid#cse_}; sid=${sid#session_}
-[ -n "$sid" ] || exit 0
+
+never_list=""
+if command -v node >/dev/null 2>&1; then
+  never_list=$(node -e 'const skip=new Set(["land.yml","vercel-deploy.yml","opening-night-broadcast.yml","morning-digest-action.yml"]);console.log([...require(process.argv[1]).NEVER].map(f=>f.split("/").pop()).filter(f=>!skip.has(f)).join(" "))' "$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)/scripts/lib/press-night-priority.js" 2>/dev/null) || never_list=""
+fi
 
 for run_id in $run_ids; do
 if [ -n "${LAND_CANCEL_GUARD_RUN_JSON:-}" ]; then run=$LAND_CANCEL_GUARD_RUN_JSON
 else run=$(timeout 15 gh api "repos/thomaspryor/Broadwayscore/actions/runs/$run_id" 2>/dev/null) || continue
 fi
 path=$(printf '%s' "$run" | jq -r '.path // empty' 2>/dev/null)
+wf=${path##*/}; wf=${wf%%@*}
+for n in $never_list; do
+  if [ "$wf" = "$n" ]; then
+    echo "🛑 BLOCKED: run $run_id is a $n run, a never-cancel workflow (BRO-7232: cancelling press-night-clock.yml on Wanted night left the press-night chain dead for 3h16m). Leave it running. If it must stop, ask the owner, or create \$HOME/.claude/LAND_CANCEL_GUARD_OFF." >&2
+    exit 2
+  fi
+done
+[ -n "$sid" ] || continue
 case "$path" in .github/workflows/land.yml*) ;; *) continue ;; esac
 msg=$(printf '%s' "$run" | jq -r '.head_commit.message // empty' 2>/dev/null)
 printf '%s' "$msg" | grep -Eq "^Claude-Session: .*${sid}" && continue
