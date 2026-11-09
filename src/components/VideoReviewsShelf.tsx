@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { getScoreColorClass, getScoreTier, getScoreTextColorClass } from '@/components/show-cards';
+import { getScoreColorClass } from '@/components/show-cards';
 import type { VideoReview } from '@/lib/data-video-reviews';
 import ShowImage from '@/components/ShowImage';
 import ScrollRow from '@/components/ScrollRow';
@@ -39,7 +39,6 @@ export default function VideoReviewsShelf({ reviews }: { reviews: VideoReview[] 
 
   const showAggregate = reviews.length >= 2;
   const avgScore = Math.round(reviews.reduce((sum, r) => sum + r.score, 0) / reviews.length);
-  const tier = showAggregate ? getScoreTier(avgScore) : null;
 
   const countLabel = `${reviews.length} ${reviews.length === 1 ? 'review' : 'reviews'}`;
 
@@ -52,19 +51,15 @@ export default function VideoReviewsShelf({ reviews }: { reviews: VideoReview[] 
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:gap-6">
         <header className="flex items-center justify-between gap-3 sm:flex-col sm:items-start sm:justify-start sm:gap-3 sm:w-44 sm:shrink-0">
           <h2 id="video-reviews-heading" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">
-            Video Critic Score
+            Video Score
           </h2>
           {showAggregate ? (
             <div className="flex flex-row-reverse items-center gap-2.5 shrink-0 sm:flex-row">
               <div className={`score-badge w-12 h-12 text-xl sm:w-16 sm:h-16 sm:text-2xl rounded-xl font-extrabold ${getScoreColorClass(avgScore)}`}>
                 {avgScore}
               </div>
-              <div className="text-right sm:text-left">
-                {tier && (
-                  <div className={`text-sm font-bold leading-tight ${getScoreTextColorClass(avgScore)}`}>{tier.label}</div>
-                )}
-                <div className="text-[11px] font-medium tracking-[0.06em] text-fg-muted lowercase">{countLabel}</div>
-              </div>
+              {/* Number only: no tier label (owner, 2026-11-09). */}
+              <div className="text-[11px] font-medium tracking-[0.06em] text-fg-muted lowercase">{countLabel}</div>
             </div>
           ) : (
             <span className="text-[11px] font-medium tracking-[0.06em] text-fg-muted lowercase shrink-0">

@@ -29,7 +29,7 @@ const CARD_TARGETS = {
   castupdates: { headings: ['Cast Updates'], shows: ['hamilton','wicked','the-lion-king','oh-mary'] },
   castsection: { headings: ['Original Broadway Cast','Original Cast','Original London Cast','Current Cast'], shows: ['hamilton','wicked','the-lion-king','oh-mary','the-lost-boys'] },
   seating:     { headings: ['Seating Scorecard','Where to Sit'], shows: ['hamilton','wicked','the-lion-king','oh-mary'] },
-  video:       { headings: ['Video Critic Score','Video Reviews'], shows: ['the-lost-boys','oh-mary','maybe-happy-ending','hamilton'] },
+  video:       { headings: ['Video Score','Video Critic Score','Video Reviews'], shows: ['the-lost-boys','oh-mary','maybe-happy-ending','hamilton'] },
   lottery:     { headings: ['Discount Tickets'], shows: ['hamilton','oh-mary','the-lost-boys','wicked'] },
   quickfacts:  { headings: ['Quick Facts'], shows: ['hamilton','oh-mary','the-lost-boys','wicked','death-becomes-her'] },
   whereitranks: { headings: ['Where It Ranks','Where it ranks'], shows: ['hamilton','oh-mary','the-lost-boys','wicked','death-becomes-her'] },
