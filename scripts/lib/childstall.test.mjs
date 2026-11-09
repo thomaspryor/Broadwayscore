@@ -310,3 +310,26 @@ test('e2e: routine that moved its card to Paused, or has a live poller, passes',
   assert.doesNotMatch(ocRun([...claimT(), toolUse('c3', 'Bash', { command: 'node scripts/lib/wait-for-land.js land/x 60', run_in_background: true, timeout: 7200000 }, 5),
     toolRes('c3', 'Command running in background with ID: boc1. Output is being written to: /tmp/y', 5)]).stderr, OC_MSG);
 });
+test('OPENCLAIM review fixes: routine marker is a directive, claim --title counts, save_issue closes only with a closing state', () => {
+  const G = createRequire(import.meta.url)('./child-session-wait-guard.js');
+  const claim = { idx: 1, name: 'Bash', ok: true, input: { command: 'node scripts/linear-session.js claim --issue=BRO-7074' } };
+  assert.equal(G.openClaimDecision({ firstPrompt: 'Can you explain what docs/cloud-routines/board-workers.md does?', tools: [claim] }).block, false);
+  assert.equal(G.openClaimDecision({ firstPrompt: 'New board-workers firing. Read docs/cloud-routines/board-workers.md on origin/main (git fetch first) and follow it exactly.', tools: [claim] }).block, true);
+  assert.deepEqual(G.openClaimDecision({ firstPrompt: ROUTINE, tools: [{ idx: 1, name: 'Bash', ok: true, input: { command: 'node scripts/linear-session.js claim --title "Fix x"' }, result: 'claimed BRO-7300' }] }).cards, ['BRO-7300']);
+  assert.equal(G.openClaimDecision({ firstPrompt: ROUTINE, tools: [{ ...claim, input: { command: 'node scripts/Linear-Session.js CLAIM --issue=bro-7074' } }] }).block, true);
+  const save = (input) => ({ idx: 2, name: 'mcp__x__save_issue', ok: true, input });
+  assert.equal(G.openClaimDecision({ firstPrompt: ROUTINE, tools: [claim, save({ id: 'BRO-7074', state: 'In Progress' })] }).block, true);
+  assert.equal(G.openClaimDecision({ firstPrompt: ROUTINE, tools: [claim, save({ id: 'BRO-7074', state: 'Done' })] }).block, false);
+});
+test('e2e: a later routine firing in the same session anchors OPENCLAIM at that firing', () => {
+  const FIRING = 'New board-workers firing. Read docs/cloud-routines/board-workers.md on origin/main (git fetch first) and follow it exactly.';
+  // Card claimed in an earlier firing, then a new firing that claims nothing: not this firing's card.
+  assert.doesNotMatch(ocRun([...claimT('BRO-7074', 200), userStr(FIRING)], {}, FIRING).stderr, OC_MSG);
+  assert.match(ocRun([userStr(FIRING), ...claimT('BRO-7075', 10)], {}, FIRING).stderr, OC_MSG);
+});
+test('WAKEPROMISE review fixes: curly apostrophe matches, bare "continue"/"monitor" do not', () => {
+  assert.match(promiseRun('Kicked off the run. I’ll check back once it finishes.').stderr, PROMISE_MSG);
+  assert.doesNotMatch(promiseRun("Done. If you want, I'll continue polishing the copy next time.").stderr, PROMISE_MSG);
+  assert.doesNotMatch(promiseRun("Fixed it. I'll monitor-proof the script in a later card.").stderr, PROMISE_MSG);
+  assert.match(promiseRun("Started the deploy. I'll monitor the run and report.").stderr, PROMISE_MSG);
+});

@@ -15,7 +15,9 @@
  *   archived, or get_session says not found     -> requeue to Todo (the session is gone)
  *   idle / finished / failed, < MAX_NUDGES      -> nudge (send_message), at most one per NUDGE_GAP_MS
  *   idle after MAX_NUDGES nudges NUDGE_GAP_MS+ ago -> requeue (it ignored two nudges)
- * Nudges are recorded as STALL_NUDGE_MARKER comments, which is also the per-card ledger.
+ * Nudges are recorded as STALL_NUDGE_MARKER comments, which is also the per-card ledger. A nudge comment
+ * counts as card activity, so it pushes the 48h reclaim back; the sweep's own requeue after MAX_NUDGES
+ * ignored nudges (NUDGE_GAP_MS apart) is what ends that.
  * The hourly reclaim (48h -> Todo) stays the backstop that needs no Claude.
  */
 const { decide } = require('./child-idle-watch.js');
@@ -30,7 +32,9 @@ const MAX_REQUEUES_PER_RUN = 5;
 const STALL_NUDGE_MARKER = 'STALL-NUDGE:';
 const CLOUD_CLAIM_RE = /^Claimed by https:\/\/claude\.ai\/code\/(session_[A-Za-z0-9]+)/;
 const ANY_CLAIM_RE = /^Claimed by /;
-const NOT_FOUND_RE = /not[ _-]?found|\b404\b|no such session|does not exist/i;
+// Only a get_session answer that names the session as missing. A bare "not found" or 404 can come from
+// a proxy or a wrong tool name, and requeueing a live card on that would hand its work to a second worker.
+const NOT_FOUND_RE = /\bsession\b[^.\n]{0,40}\b(?:not found|does not exist)\b|\bno such session\b/i;
 
 const ms = (c) => Date.parse(c && c.createdAt);
 const byNewest = (a, b) => ms(b) - ms(a);
@@ -63,11 +67,11 @@ function stalledSessionEntry({ issue, comments, landRefs, nowMs, idleMs = STALL_
  * Decide from an entry plus its get_session result (or the error get_session gave).
  * @returns {{action:'nudge'|'requeue'|'skip', reason:string}}
  */
-function stalledSessionAction({ entry, session, error, nowMs }) {
+function stalledSessionAction({ entry, session, error, notFound, nowMs }) {
   if (!entry || entry.action !== 'check') return { action: 'skip', reason: 'not-a-check-entry' };
   if (error != null || session == null) {
     const msg = String(error || 'no get_session result');
-    return NOT_FOUND_RE.test(msg) ? { action: 'requeue', reason: `session not found (${msg.slice(0, 80)})` }
+    return (notFound === true || NOT_FOUND_RE.test(msg)) ? { action: 'requeue', reason: `session not found (${msg.slice(0, 80)})` }
       : { action: 'skip', reason: `get_session failed, retry next firing (${msg.slice(0, 80)})` };
   }
   const v = decide({ session, now: nowMs, idleMinutes: 60 });
@@ -100,7 +104,7 @@ function buildStallRequeueComment(entry, reason, nowMs) {
     '',
     `This card sat In Progress for ${entry.idleHours}h and the session that claimed it (${entry.sessionId}) is not coming back: ${reason}.`,
     entry.requeueTo === 'Backlog'
-      ? `It has been reclaimed ${entry.reclaims} times already, so it goes to Backlog: someone should read the history before it is retried.`
+      ? `It has been reclaimed ${entry.reclaims} times already, so it goes to Backlog instead of Todo: someone should read the history before it is retried.`
       : 'Moved back to Todo so the board workers can take it again. Read the comments above before redoing anything: part of the work may have landed.',
     '',
     'To keep a card In Progress while nobody touches it, add a `NO-RECLAIM: <reason>` line to its description.',

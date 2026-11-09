@@ -93,3 +93,15 @@ test('requeue comment carries the reclaim marker so MAX_RECLAIMS still sends rep
   assert.equal(twiceReclaimed.requeueTo, 'Backlog');
   assert.match(S.buildStallNudgeComment(e, NOW), /^STALL-NUDGE: /);
 });
+
+test('review fixes: only a structured or session-named not-found requeues; Backlog text matches the picker', () => {
+  const e = entryFor();
+  assert.equal(S.stalledSessionAction({ entry: e, error: 'HTTP 404 Not Found', nowMs: NOW }).action, 'skip');
+  assert.equal(S.stalledSessionAction({ entry: e, error: 'tool get_session not found', nowMs: NOW }).action, 'skip');
+  assert.equal(S.stalledSessionAction({ entry: e, error: 'whatever', notFound: true, nowMs: NOW }).action, 'requeue');
+  assert.equal(S.stalledSessionAction({ entry: e, error: 'Session session_01ABC does not exist', nowMs: NOW }).action, 'requeue');
+  const { RECLAIM_TO_BACKLOG_RE, isMachineComment } = require('./cloud-worker-pick.js');
+  const back = { ...e, requeueTo: 'Backlog', reclaims: 2 };
+  assert.match(S.buildStallRequeueComment(back, 'x', NOW), RECLAIM_TO_BACKLOG_RE);
+  assert.equal(isMachineComment(S.buildStallNudgeComment(e, NOW)), true);
+});

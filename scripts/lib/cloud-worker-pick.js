@@ -233,7 +233,7 @@ const IOS_APP_CARD_RE = /^\W*iOS\b(?!\s+Safari)/i;
 // the Codex runner's hand-backs (scripts/codex/daily-runner.js), BRO-5360, and the
 // claim trace linear-session.js claim posts (buildClaimComment), BRO-6092.
 const { isFilerRefreshComment } = require('./filer-refresh-marker.js');
-const MACHINE_COMMENT_RE = /^(?:Dispatched (?:[0-9a-f]+ )?to |Claimed by |Auto-corrected |Auto-reset |\*\*Re-arm \(auto\b|RECLAIMED-ABANDONED:|Headless worker ended without its own session report|<!-- codex-runner|## Codex runner\b)/i;
+const MACHINE_COMMENT_RE = /^(?:Dispatched (?:[0-9a-f]+ )?to |Claimed by |Auto-corrected |Auto-reset |\*\*Re-arm \(auto\b|RECLAIMED-ABANDONED:|STALL-NUDGE:|Headless worker ended without its own session report|<!-- codex-runner|## Codex runner\b)/i;
 // The reclaim sweep's note when it sends a card to Backlog, not Todo, after
 // MAX_RECLAIMS: "Someone should read the history before it is retried."
 const RECLAIM_TO_BACKLOG_RE = /^RECLAIMED-ABANDONED:[\s\S]*goes to Backlog instead of Todo/;
@@ -886,7 +886,7 @@ function findResumeCard(issues, landRefs, opts) {
 
 module.exports = {
   leaveCodexCards,
-  isMachineComment, laneUnworkableReason, LANE_UNWORKABLE_MAX_MS,
+  isMachineComment, RECLAIM_TO_BACKLOG_RE, laneUnworkableReason, LANE_UNWORKABLE_MAX_MS,
   IDLE_MS, STRANDED_MS, RESUME_WINDOW_MS, MAX_LAND_RUNS, RECENT_PAUSE_MS, RECENT_PAUSE_URGENT_MS, MAX_PAUSES, AWAITING_OWNER_MAX_MS, isPausedBacklog,
   AUTOMATION_PARK_STALE_MS, effectiveTouchMs, hasPersonParkHold, isFallbackTechnicalPark, START_NOW_MIN_AGE_MS, START_NOW_MAX_AGE_MS, IOS_APP_CARD_RE, isStaleAutomationParked, isStartNow, hasStartNowLine, isOwnerTaskResume, ownerWaitHolds, startNowUnpickableReason, skipReason, pickCloudCard, pausedHistorySkipReason, historySkipReason, landRefCardNumber, resumableCardsByNumber,
   P2_PRIORITY, TIER_P0P1, TIER_P2, isP2FallbackCandidate, P3_PRIORITY, TIER_P3, isP3FallbackCandidate, buildPickQueue, needsComments, pickModel, modelPicker, noDispatchHold, opusClaimEntries, fetchOpusClaimEntries, withCloudOpusClaims, sessionModelFor, cloudPriorAttempts, mayTakeUnchecked,

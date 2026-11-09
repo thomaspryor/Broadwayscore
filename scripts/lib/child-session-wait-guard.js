@@ -240,8 +240,10 @@ function childStallDecision(input) {
 // docs/cloud-routines/, or a prompt saying no human is watching) that claimed
 // a card in this firing must close, report or hand it off before it stops.
 // Nothing else ever comes back for it (BRO-7074 sat In Progress 34h).
-const NO_HUMAN_RE = /docs\/cloud-routines\/|\bno human is (?:watching|in the session)\b/i;
-const CLAIM_RE = /linear-session\.js\s+claim\b[^\n]*?--issue[= ](BRO-\d+)|linear-brain\.js\s+create\b[^\n]*--self\b/;
+// A routine's own directive, not any mention: a human session that quotes a routine doc must not match.
+const NO_HUMAN_RE = /^\s*New [\w-]+ firing\b|\bRead docs\/cloud-routines\/\S+\.md\b[^\n]*\bfollow\b|\bno human is (?:watching|in the session)\b/i;
+const CLAIM_RE = /linear-session\.js\s+claim\b[^\n]*?--issue[= ](BRO-\d+)|linear-session\.js\s+claim\b[^\n]*--title\b|linear-brain\.js\s+create\b[^\n]*--self\b/i;
+const CLOSING_STATE_RE = /^(?:Done|In Review|Paused|Duplicate|Todo|Backlog|Canceled|Cancelled)$/i;
 const CREATED_RE = /\b(BRO-\d+)\b/;
 const CLOSE_RE = /linear-brain\.js\s+update\s+(BRO-\d+)\b[^\n]*--state[= ]["']?(?:Done|In Review|Paused|Duplicate|Todo|Backlog|Canceled|Cancelled)|linear-session\.js\s+(?:report|release)\b[^\n]*?--issue[= ](BRO-\d+)/gi;
 
@@ -260,8 +262,9 @@ function openClaimDecision(input) {
       const m = cmd.match(CLAIM_RE);
       if (m) { const id = m[1] || (String(t.result || '').match(CREATED_RE) || [])[1]; if (id) claimed.add(id.toUpperCase()); }
       for (const c of cmd.matchAll(CLOSE_RE)) closed.add(String(c[1] || c[2]).toUpperCase());
-    } else if (/save_issue$/.test(String(t.name || '')) && (t.input || {}).state) {
-      closed.add(String((t.input || {}).id || '').toUpperCase());
+    } else if (/save_issue$/.test(String(t.name || ''))) {
+      const { id, state } = t.input || {};
+      if (/^BRO-\d+$/i.test(String(id || '')) && CLOSING_STATE_RE.test(String(state || '').trim())) closed.add(String(id).toUpperCase());
     }
   }
   const open = [...claimed].filter((id) => !closed.has(id));

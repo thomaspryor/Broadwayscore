@@ -60,7 +60,8 @@ Progress; nothing else wakes them (BRO-7183). Every firing:
    (In Progress cards idle 12h+ held by a cloud session). If the list is `[]`, skip to section 2.
 2. For each entry call `get_session` with its `sessionId`. Write `/tmp/stall-rows.json` as
    `[{"card": "...", "sessionId": "...", "session": <the get_session result>}]`, or
-   `"error": "<the error text>"` in place of `session` when the call failed.
+   `"error": "<the error text>"` in place of `session` when the call failed. Add `"notFound": true`
+   only when get_session said that session does not exist; any other failure is retried next firing.
 3. `node scripts/linear-reclaim-abandoned.js --stall-act --from-json=/tmp/stall-rows.json`. It moves
    cards whose session is gone back to Todo and records nudges (at most 5 of each per firing).
 4. For each result with `"action": "nudge"`, call `send_message` with its `sessionId` and its

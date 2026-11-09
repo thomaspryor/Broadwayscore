@@ -21,7 +21,7 @@
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
-const USAGE = 'usage: node scripts/linear-reclaim-abandoned.js [--dry-run] [--max=N] | --stalled-sessions [--threshold-hours=12] | --stall-act --from-json=<file> [--dry-run]';
+const USAGE = 'usage: node scripts/linear-reclaim-abandoned.js [--dry-run] [--max=N] | --stalled-sessions [--threshold-hours=12] | --stall-act --from-json=<file> [--threshold-hours=12] [--dry-run]';
 if (hasHelpFlag(process.argv.slice(2))) {
   console.log(USAGE);
   process.exit(0);
@@ -85,18 +85,22 @@ async function stallEntry(linear, identifier, refs, nowMs, idleMs) {
   const { landRefCardNumber } = require('./lib/cloud-worker-pick.js');
   const { stalledSessionEntry } = require('./lib/stalled-session-sweep.js');
   const { issue } = await linear.graphql(ISSUE_QUERY, { id: identifier }, { timeoutMs: 15000, maxAttempts: 2 });
-  if (!issue) return { issue: null, entry: { action: 'skip', reason: 'not-found' } };
+  if (!issue) return { issue: null, named: [], entry: { action: 'skip', reason: 'not-found' } };
   const n = Number(String(issue.identifier).split('-')[1]);
   const named = refs.filter((r) => landRefCardNumber(r.ref) === n).map((r) => ({ ref: r.ref, lastActivityAt: lastActivityAt(r) }));
-  return { issue, entry: stalledSessionEntry({ issue, comments: issue.comments.nodes, landRefs: named, nowMs, idleMs }) };
+  return { issue, named, entry: stalledSessionEntry({ issue, comments: issue.comments.nodes, landRefs: named, nowMs, idleMs }) };
+}
+
+function stallIdleMs() {
+  const { STALL_IDLE_MS } = require('./lib/stalled-session-sweep.js');
+  const hours = Number(flagValue('--threshold-hours'));
+  return Number.isFinite(hours) && hours > 0 ? hours * 3600000 : STALL_IDLE_MS;
 }
 
 async function stalledList() {
-  const { STALL_IDLE_MS } = require('./lib/stalled-session-sweep.js');
   const linear = require('./lib/linear-client.js');
   const { findReclaimCandidates } = require('./lib/linear-reclaim-abandoned.js');
-  const hours = Number(flagValue('--threshold-hours'));
-  const idleMs = Number.isFinite(hours) && hours > 0 ? hours * 3600000 : STALL_IDLE_MS;
+  const idleMs = stallIdleMs();
   const nowMs = Date.now();
   const issues = await linear.listOpenIssuesWithDescriptions();
   const candidates = findReclaimCandidates(issues, { nowMs, idleMs }).filter((i) => i.state.name === 'In Progress');
@@ -130,16 +134,24 @@ async function stallAct() {
   const team = (await linear.getTeam()).states.nodes;
   const stateId = (name) => { const s = team.find((x) => x.name === name); if (!s) throw new Error(`no "${name}" state`); return s.id; };
   const results = [];
+  const idleMs = stallIdleMs();
+  let landDispatchLive = null;
   let nudges = 0;
   let requeues = 0;
   for (const row of rows) {
     const card = row && row.card;
     try {
       // Re-read: the session may have woken (or someone closed the card) since the list.
-      const { issue, entry } = await stallEntry(linear, card, refs, nowMs, S.STALL_IDLE_MS);
+      const { issue, named, entry } = await stallEntry(linear, card, refs, nowMs, idleMs);
       if (entry.action !== 'check') { results.push({ card, action: 'skip', reason: entry.reason }); continue; }
-      if (row.sessionId && row.sessionId !== entry.sessionId) { results.push({ card, action: 'skip', reason: 'claim changed since the list' }); continue; }
-      const d = S.stalledSessionAction({ entry, session: row.session, error: row.error, nowMs });
+      if (!row.sessionId) { results.push({ card, action: 'skip', reason: 'row has no sessionId: copy it from the list output' }); continue; }
+      if (row.sessionId !== entry.sessionId) { results.push({ card, action: 'skip', reason: 'claim changed since the list' }); continue; }
+      // Same guard as main(): a dispatched Land run lists under main, so a card with a land ref may be landing now.
+      if (named.length) {
+        if (landDispatchLive === null) landDispatchLive = dispatchInFlight();
+        if (landDispatchLive) { results.push({ card, action: 'skip', reason: 'land ref with a dispatched Land run in flight' }); continue; }
+      }
+      const d = S.stalledSessionAction({ entry, session: row.session, error: row.error, notFound: row.notFound, nowMs });
       if (d.action === 'nudge' && nudges >= S.MAX_NUDGES_PER_RUN) { results.push({ card, action: 'skip', reason: 'nudge cap for this firing' }); continue; }
       if (d.action === 'requeue' && requeues >= S.MAX_REQUEUES_PER_RUN) { results.push({ card, action: 'skip', reason: 'requeue cap for this firing' }); continue; }
       if (d.action === 'skip') { results.push({ card, action: 'skip', reason: d.reason }); continue; }

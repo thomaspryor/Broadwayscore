@@ -373,10 +373,11 @@ _STATUS_RE = re.compile(_VERDICT_PREFIX + r'(?:SAFE TO ARCHIVE|SAFE TO EXIT|KEEP
 _LEGACY_STATUS_RE = re.compile(_VERDICT_PREFIX + r'(?:NOT )?SAFE TO EXIT\b')
 # A promise of later action in closing prose (WAKEPROMISE, BRO-7183). First person only:
 # "the routine will continue" is a description, not this session's promise.
-_PROMISE_RE = re.compile(r"\b(?:I'?ll|I will|I'm going to|I am going to)\s+(?:check back|check in|check on (?:it|that|this)"
-                         r"|come back|report back|follow up|keep an eye|keep watching|keep monitoring|monitor\b|continue\b"
-                         r"|pick (?:it|this|that) (?:back )?up)|\bI'?m (?:continuing|monitoring|watching (?:it|the|for))\b"
-                         r"|\bonce (?:it|that|this|the \w+) (?:finishes|lands|passes|completes|is done)\b[^.\n]{0,40}\bI'?ll\b", re.I)
+_PROMISE_RE = re.compile(r"\b(?:I['\u2019]?ll|I will|I['\u2019]?m going to|I am going to)\s+(?:check back|check in|check on (?:it|that|this)"
+                         r"|come back|report back|follow up|keep an eye|keep watching|keep monitoring|monitor (?:it|this|that|the)\b"
+                         r"|continue (?:to (?:monitor|watch|check)|once|when|after)\b"
+                         r"|pick (?:it|this|that) (?:back )?up)|\bI['\u2019]?m (?:continuing|monitoring|watching (?:it|the|for))\b"
+                         r"|\bonce (?:it|that|this|the \w+) (?:finishes|lands|passes|completes|is done)\b[^.\n]{0,40}\bI['\u2019]?ll\b", re.I)
 _VERDICT_TOKEN_RE = re.compile(r'\b(?:(?:NOT )?SAFE TO (?:EXIT|ARCHIVE)|KEEP OPEN|ACTION NEEDED FROM YOU)\b')
 
 def _owner_must_act(text, strict=False):
@@ -1473,7 +1474,8 @@ if _CW_CODES:
         _cw_keep = bool(_KEEP_RE.match(_cw_last)) and not _owner_must_act(_cw_text)
         _cw_stall = _cs_on and 'CHILDSTALL' in _CW_CODES
         # OPENCLAIM (BRO-7183 phase 2): a no-human routine leaving a claimed card open.
-        _oc_on = 'OPENCLAIM' in _CW_CODES and bool(re.search(r'docs/cloud-routines/|no human is (?:watching|in the session)', '\n'.join(_user_prompts), re.I))
+        _OC_RT = re.compile(r'^\s*New [\w-]+ firing\b|\bRead docs/cloud-routines/\S+\.md\b[^\n]*\bfollow\b|\bno human is (?:watching|in the session)\b', re.I)
+        _oc_on = 'OPENCLAIM' in _CW_CODES and bool(_user_prompts and _OC_RT.search(_user_prompts[0]))
         if 'NO-VERIFY:' not in (_last_msg or '') and os.path.isfile(_cw_js) and (_cw_keep or _cw_stall or _oc_on):
             import subprocess, time
             from datetime import datetime
@@ -1513,7 +1515,7 @@ if _CW_CODES:
                 'all': True, 'now': time.time() * 1000, 'skip': [c for c in _CW_ALL if c not in _CW_CODES],
                 'liveChildren': _live_work()['children'] if _cw_keep else [], 'keepOpen': _cw_keep, 'stall': _cw_stall,
                 'reportBack': True, 'anchor': _cw_anchor, 'parentIds': _cw_pids, 'openClaim': _oc_on,
-                'ocAnchor': max([_j for _j, (_k, _p) in enumerate(events) if _k == 'user_human'] or [-1]),
+                'ocAnchor': max([_j for _j, (_k, _p) in enumerate(events) if _k == 'user_human' or (_k == 'user_text' and _OC_RT.search(_p or ''))] or [-1]),
                 'otherLive': bool((_cw_stall or _oc_on) and (lambda w: w['agents'] or w['pr_watch'] or w['triggers'])(_live_work()))}))
             sys.stderr.write(('⚠️  CHILDWAIT: ' + _cw.stderr.strip()[:200] + '\n') if _cw.stderr.strip() else '')
             _cw_res = json.loads(_cw.stdout or '{}')
