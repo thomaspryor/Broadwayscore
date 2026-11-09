@@ -195,3 +195,40 @@ test('a url move stamps the caller urlDiscoveryMethod (and drops a stale one); t
   assert.equal(r2.ok, true, r2.reason);
   assert.equal(JSON.parse(fs.readFileSync(c2.filePath, 'utf8')).urlDiscoveryMethod, 'test-recovery', 'stale method replaced by the recovery method');
 });
+
+// ── recoverReviewTextVerified: the shared async wrapper (recover-serp-text + gap-recovery driver) ──
+
+test('verified wrapper: dry run at a new url with only the LLM proof missing asks for it, writes nothing', async () => {
+  const c = candidateFile({});
+  const before = fs.readFileSync(c.filePath, 'utf8');
+  const r = await gate.recoverReviewTextVerified({
+    filePath: c.filePath, rawText: `${GOOD} Review by Jesse Green.`, url: 'https://www.nytimes.com/2026/03/17/theater/joe-turner-elsewhere.html',
+    expectUrl: c.url, labels: LABELS, dryRun: true,
+  });
+  assert.equal(r.code, 'dry_run_needs_llm');
+  assert.equal(fs.readFileSync(c.filePath, 'utf8'), before);
+});
+
+test('verified wrapper: live write runs prepareWrite outside the gate and lands its fields', async () => {
+  const c = candidateFile({});
+  let prepared = 0;
+  const r = await gate.recoverReviewTextVerified({
+    filePath: c.filePath, rawText: GOOD, url: c.url, expectUrl: c.url, labels: LABELS,
+    prepareWrite: async (decision) => { prepared++; assert.ok(decision.cleanedText.length > 300); return (data) => { data.testScoreField = 77; }; },
+  });
+  assert.equal(r.ok, true, r.reason);
+  assert.equal(prepared, 1);
+  assert.equal(JSON.parse(fs.readFileSync(c.filePath, 'utf8')).testScoreField, 77);
+});
+
+test('verified wrapper: a refused text never reaches prepareWrite', async () => {
+  const c = candidateFile({});
+  let prepared = 0;
+  const r = await gate.recoverReviewTextVerified({
+    filePath: c.filePath, rawText: 'Too short.', url: c.url, expectUrl: c.url, labels: LABELS,
+    prepareWrite: async () => { prepared++; return null; },
+  });
+  assert.equal(r.ok, false);
+  assert.equal(r.code, 'too_short');
+  assert.equal(prepared, 0);
+});
