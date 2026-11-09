@@ -285,3 +285,14 @@ test('BRO-5201 laneAdapters: one clock drives every adapter that reads time', as
   await tb.discover({ show, night: '2026-10-20', fetchText }).catch(() => {});
   assert.ok(probes > first, 'an hour later on the injected clock, it probes again');
 });
+
+test('a held paywall teaser and an incomplete card both page, side by side, on an otherwise clean night (BRO-7159 + BRO-7196)', async () => {
+  const h = harness({ runNight: async () => ({ passes: 4, admitted: [{}], published: [], errors: [], failed: [], unpublished: [],
+    quoteless: [{ key: 'tb', missing: ['quote'] }], awaiting: ['wsj.com/arts/wanted-review'] }) });
+  const out = await h.run();
+  assert.equal(out.exit, 0, 'neither is an unpublished scored row');
+  assert.equal(h.calls.pages.length, 1);
+  assert.match(h.calls.pages[0].title, /1 incomplete card\(s\), 1 awaiting an excerpt/);
+  assert.match(h.calls.pages[0].description, /paywall teaser still awaiting an excerpt .*wsj\.com/);
+  assert.match(h.calls.pages[0].description, /incomplete card \(no quote\): tb/);
+});
