@@ -25,6 +25,7 @@ const fs = require('fs');
 const path = require('path');
 const { classifyRecord, decideDriftAlert } = require('./lib/approved-fix-drift');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { routeAuditDecisions } = require('./lib/audit-alert');
 
 const args = process.argv.slice(2);
 const flag = (n) => args.includes(n);
@@ -81,22 +82,11 @@ async function main() {
     if (unexplained.length) console.log('Restore each with node scripts/new-fix-plan.js --review-edit=<show>/<file>.json:<field>=<value>, then find the writer that erased it.');
   }
   if (flag('--alert')) {
-    // An alert failure is logged and never changes the audit's own exit code.
-    try {
-      const decision = decideDriftAlert(unexplained);
-      const router = require('./lib/owner-alert-router.js');
-      if (decision.action === 'resolve' && scanned === 0) {
-        // An empty/partial checkout proves nothing: never resolve (and so never let the sweep cancel) a live card.
-        console.error('audit-approved-fix-drift: scanned 0 files with approvedFixes, leaving the alert condition untouched');
-      } else if (decision.action === 'resolve') router.resolveCondition(decision.conditionKey, { reason: decision.reason });
-      else {
-        const res = await router.routeAlert(decision.alert);
-        const r = res || {};
-        console.log(`alert: ${r.action || 'routed'}${r.linearIdentifier ? ` ${r.linearIdentifier}` : ''}${r.dispatchOk === false ? ` (card not filed: ${r.dispatchError || 'unknown error'})` : ''}`);
-      }
-    } catch (err) {
-      console.error(`audit-approved-fix-drift: alert failed: ${err.message}`);
-    }
+    const decision = decideDriftAlert(unexplained);
+    if (decision.action === 'resolve' && scanned === 0) {
+      // An empty/partial checkout proves nothing: never resolve (and so never let the sweep cancel) a live card.
+      console.error('audit-approved-fix-drift: scanned 0 files with approvedFixes, leaving the alert condition untouched');
+    } else await routeAuditDecisions(decision, 'audit-approved-fix-drift');
   }
   return flag('--strict') && unexplained.length ? 1 : 0;
 }

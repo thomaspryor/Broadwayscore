@@ -19,9 +19,10 @@
  *
  * Usage: node scripts/audit-star-band-drift.js [--tol=2] [--json=PATH] [--counts=PATH] [--strict]
  *   --strict   exit 1 when any publishedOutOfBand row exists (CI/health use once the backlog is triaged)
+ *   --alert    file/refresh a worker card per condition via owner-alert-router; clears it when clean (BRO-7181)
  */
 const { hasHelpFlag } = require('./lib/cli-help.js');
-if (hasHelpFlag(process.argv.slice(2))) { console.log('Usage:\n  node scripts/audit-star-band-drift.js [--tol=2] [--json=PATH] [--strict]\n  --strict     exit 1 when a published score is out of band, or when no published score could be joined\n  --help, -h   print this usage and exit'); process.exit(0); }
+if (hasHelpFlag(process.argv.slice(2))) { console.log('Usage:\n  node scripts/audit-star-band-drift.js [--tol=2] [--json=PATH] [--strict] [--alert]\n  --alert      file/refresh a worker card via owner-alert-router (BRO-7181)\n  --strict     exit 1 when a published score is out of band, or when no published score could be joined\n  --help, -h   print this usage and exit'); process.exit(0); }
 const fs = require('fs');
 const path = require('path');
 const glob = require('glob');
@@ -107,4 +108,17 @@ if (countsArg) {
   fs.writeFileSync(countsArg.split('=')[1], JSON.stringify({ generatedAt: new Date().toISOString(), publishedJoined: out.publishedJoined, publishedOutOfBand: out.publishedOutOfBand.length, queuedForRescore: out.publishedQueued.length, bySource, kinds }, null, 2) + '\n');
 }
 if (jsonArg) fs.writeFileSync(jsonArg.split('=')[1], JSON.stringify(out, null, 2));
-if (process.argv.includes('--strict') && (out.publishedOutOfBand.length || out.publishedJoined === 0)) process.exit(1);
+const strictFail = process.argv.includes('--strict') && (out.publishedOutOfBand.length || out.publishedJoined === 0);
+// BRO-7181: --alert files or clears the worker cards (scripts/lib/star-band-drift-alert.js); exitCode, not
+// process.exit, so the router finishes before the process ends.
+(async () => {
+  if (process.argv.includes('--alert')) {
+    const { decideStarBandAlerts } = require('./lib/star-band-drift-alert');
+    const { routeAuditDecisions } = require('./lib/audit-alert');
+    await routeAuditDecisions(decideStarBandAlerts(out), 'audit-star-band-drift');
+  }
+  process.exitCode = strictFail ? 1 : 0;
+})().catch((err) => {
+  console.error(`audit-star-band-drift: alert step failed: ${err.stack || err.message}`);
+  process.exitCode = 3;
+});

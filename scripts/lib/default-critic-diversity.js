@@ -175,6 +175,26 @@ function findUnflaggedMultiAuthorOutlets(records, outlets, opts) {
   return rows.sort((a, b) => b.others.length - a.others.length || a.outletId.localeCompare(b.outletId));
 }
 
+const DIVERSITY_ALERT_KEY = 'default-critic-diversity:unflagged';
+
+/**
+ * BRO-7181: worker-card decision for audit-default-critic-diversity.js --alert.
+ * Pure. Call only after a real scan: a missing or empty review-texts checkout
+ * must not call this, or the resolve would close a real card. Rows carry the
+ * outlet id, the registry defaultCritic and counts only.
+ */
+function decideDefaultCriticAlert(rows) {
+  const list = Array.isArray(rows) ? rows : [];
+  return require('./audit-alert').buildAuditAlert({
+    conditionKey: DIVERSITY_ALERT_KEY,
+    rows: list.map((r) => `${r.outletId}: defaultCritic ${r.defaultCritic} x${r.defaultCount}, unnamed ${r.unnamedCount}, ${(r.others || []).length} other named critics`),
+    title: (n) => `Default-critic diversity: ${n} outlet${n === 1 ? '' : 's'} credit blank bylines to one of several critics`,
+    intro: `The daily default-critic diversity audit found ${list.length} outlet${list.length === 1 ? '' : 's'} whose registry defaultCritic fills blank bylines although the outlet's review files name several other critics, so a byline-less review can be credited to the wrong person.`,
+    hint: 'For each outlet run node scripts/audit-default-critic-diversity.js --all to see the critics, then set "multiAuthor": true with a "multiAuthorNote" in data/outlet-registry.json, or "multiAuthor": false after checking the default writes nearly all of them. Done when node scripts/audit-default-critic-diversity.js --strict exits 0.',
+    resolveReason: 'every multi-critic defaultCritic outlet is marked multiAuthor',
+  });
+}
+
 module.exports = {
   normName,
   isNamedByline,
@@ -183,4 +203,6 @@ module.exports = {
   summarizeOutletBylines,
   classifyOutlet,
   findUnflaggedMultiAuthorOutlets,
+  decideDefaultCriticAlert,
+  DIVERSITY_ALERT_KEY,
 };

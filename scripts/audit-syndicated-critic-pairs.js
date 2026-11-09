@@ -14,12 +14,14 @@
  * otherwise it is a double count or a wrong outlet attribution.
  *
  * Usage: node scripts/audit-syndicated-critic-pairs.js [--reviews=PATH] [--allowlist=PATH] [--strict]
- *   --strict   exit 1 when any syndicated or unexplained pair exists
+ *   --strict   exit 1 when any syndicated or unexplained pair exists (exit 3: unreadable input)
+ *   --alert    file/refresh one worker card via owner-alert-router; clears it when clean (BRO-7181)
  */
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const fs = require('fs');
 const path = require('path');
 const { getSyndicationPrimaries, criticFileSlug } = require('./lib/syndication-pairs');
+const { buildAuditAlert, routeAuditDecisions } = require('./lib/audit-alert');
 
 const DEFAULT_ALLOWLIST = path.join(__dirname, 'config', 'same-critic-pairs-allowlist.json');
 const BYLINE_PLACEHOLDER = /^(unknown|staff|n\/a|none|anonymous)$/;
@@ -83,9 +85,31 @@ function findUnexplainedSameCriticPairs(reviews, allowlist = []) {
   return { unexplained, stale };
 }
 
-function main(argv) {
+const PAIR_ALERT_KEY = 'syndicated-critic-pairs:unexplained';
+
+/**
+ * BRO-7181: one worker card for both finding kinds --strict fails on, so a
+ * syndicated pair alone can never resolve the card. Pure. Rows carry show id,
+ * the published byline and outlet ids only.
+ */
+function decideSyndicatedPairAlert(pairs, unexplained) {
+  const rows = [
+    ...(pairs || []).map((p) => `${p.showId}: ${p.criticName} ships as ${p.secondary} and its syndication primary ${p.primary}`),
+    ...(unexplained || []).map((u) => `${u.showId}: ${u.criticName} ships as ${u.outlets.join(' and ')}`),
+  ];
+  return buildAuditAlert({
+    conditionKey: PAIR_ALERT_KEY,
+    rows,
+    title: (n) => `Same-critic outlet pairs: ${n} show/critic pair${n === 1 ? '' : 's'} counted at two outlets`,
+    intro: `The daily syndicated critic pair audit found ${rows.length} show/critic pair${rows.length === 1 ? '' : 's'} where one critic's review ships at two outlets that syndication-pairs.js and scripts/config/same-critic-pairs-allowlist.json do not explain. Each is a double count, a wrong attribution, or two real reviews.`,
+    hint: 'For each row open both review files. Same article at two outlets: keep the primary, mark the other duplicateOf. Wrong byline: fix criticName. Two separate reviews: add the pair to scripts/config/same-critic-pairs-allowlist.json with the evidence (both URLs, different text). Never allowlist without reading both. Done when node scripts/audit-syndicated-critic-pairs.js --strict exits 0.',
+    resolveReason: 'no unexplained same-critic outlet pairs',
+  });
+}
+
+async function main(argv) {
   if (hasHelpFlag(argv)) {
-    console.log('Usage:\n  node scripts/audit-syndicated-critic-pairs.js [--reviews=PATH] [--allowlist=PATH] [--strict]\n  --strict     exit 1 when a show ships one critic at an outlet and its syndication primary,\n               or at two outlets the allowlist does not name as separate reviews\n  --help, -h   print this usage and exit');
+    console.log('Usage:\n  node scripts/audit-syndicated-critic-pairs.js [--reviews=PATH] [--allowlist=PATH] [--strict] [--alert]\n  --alert      file/refresh a worker card via owner-alert-router (BRO-7181)\n  --strict     exit 1 when a show ships one critic at an outlet and its syndication primary,\n               or at two outlets the allowlist does not name as separate reviews\n  --help, -h   print this usage and exit');
     return 0;
   }
   const reviewsArg = argv.find(a => a.startsWith('--reviews='));
@@ -105,9 +129,18 @@ function main(argv) {
     console.log(`::warning::${u.showId}: ${u.criticName} ships as ${u.outlets.join(' and ')} (double count, wrong attribution, or allowlist it)`);
   }
   if (stale.length) console.log(`[syndicated-critic-pairs] info: ${stale.length} allowlist entr${stale.length === 1 ? 'y no longer matches' : 'ies no longer match'}: ${stale.map(e => `${e.showId}/${e.critic}`).join(', ')}`);
+  // An empty corpus (failed rebuild) or a fixture override is not a clean scan: never resolve the card on it.
+  if (argv.includes('--alert') && (reviewsArg || !Array.isArray(reviews) || !reviews.length)) {
+    console.log('[syndicated-critic-pairs] --alert skipped: fixture input or empty reviews.json');
+  } else if (argv.includes('--alert')) await routeAuditDecisions(decideSyndicatedPairAlert(pairs, unexplained), 'audit-syndicated-critic-pairs');
   return (pairs.length || unexplained.length) && argv.includes('--strict') ? 1 : 0;
 }
 
-if (require.main === module) process.exit(main(process.argv.slice(2)));
+if (require.main === module) {
+  main(process.argv.slice(2)).then((code) => { process.exitCode = code; }, (err) => {
+    console.error(`audit-syndicated-critic-pairs: ${err.stack || err.message}`);
+    process.exitCode = 3;
+  });
+}
 
-module.exports = { findSyndicatedCriticPairs, findUnexplainedSameCriticPairs };
+module.exports = { findSyndicatedCriticPairs, findUnexplainedSameCriticPairs, decideSyndicatedPairAlert, PAIR_ALERT_KEY };
