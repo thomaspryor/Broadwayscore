@@ -15,6 +15,8 @@
  * Usage:
  *   node scripts/opening-night-poller.js --show=show-id-2026
  *   node scripts/opening-night-poller.js --show=show-id-2026 --dry-run
+ *     (dry run writes no backoff state and no roundup-miss ledgers; the spend ledger still
+ *      records real provider spend)
  *   node scripts/opening-night-poller.js --show=show-id-2026 --skip-serp
  *   node scripts/opening-night-poller.js --show=show-id-2026 --skip-site-search
  *   node scripts/opening-night-poller.js --lane-live-smoke --show=show-id --url=archived-review-url [--out=empty-sandbox]
@@ -150,6 +152,8 @@ function loadBackoffState(showId) {
 }
 
 function saveBackoffState(showId, state) {
+  // BRO-7176: a --dry-run must not leave a live show backed off.
+  if (DRY_RUN) return;
   if (!fs.existsSync(BACKOFF_DIR)) fs.mkdirSync(BACKOFF_DIR, { recursive: true });
   const p = path.join(BACKOFF_DIR, `${showId}.json`);
   fs.writeFileSync(p, JSON.stringify(state, null, 2));
@@ -733,7 +737,7 @@ async function runAggregators(show) {
             // a temporary Browserbase/SD outage. 'section-only' means
             // reviews.php was never even tried (skipReviewsPhp) — also not
             // a confident answer. See discoverBwwRoundupUrl's via contract.
-            if (discovery.via === 'not-found') {
+            if (discovery.via === 'not-found' && !DRY_RUN) { // BRO-7176: dry run writes no miss ledger
               try {
                 const { recordRoundupMiss } = require('./lib/bww-roundup-persistence.js');
                 recordRoundupMiss(show.id);
@@ -1014,7 +1018,7 @@ async function runAggregators(show) {
           }
         } else {
           console.log('  theatre.reviews: no roundup found');
-          try { trMiss.recordTrMiss(show, trStats); } catch { /* ledger write is best-effort */ }
+          try { if (!DRY_RUN) trMiss.recordTrMiss(show, trStats); } catch { /* ledger write is best-effort */ }
         }
       }
     } catch (err) {
