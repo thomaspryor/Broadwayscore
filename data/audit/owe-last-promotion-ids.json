@@ -1,6 +1,22 @@
 {
-  "generatedAt": "2026-11-08T19:49:11.551Z",
-  "promoted": [],
+  "generatedAt": "2026-11-09T23:50:53.884Z",
+  "promoted": [
+    {
+      "id": "jeremy-irons-reads-ts-eliots-masterpiece-four-quartets-off-west-end-2026",
+      "source": "venue-page:marylebone-theatre",
+      "sourceUrl": "https://marylebonetheatre.com/"
+    },
+    {
+      "id": "joy-off-west-end-2027",
+      "source": "venue-page:southwark-playhouse",
+      "sourceUrl": "https://southwarkplayhouse.co.uk/"
+    },
+    {
+      "id": "steam-off-west-end-2027",
+      "source": "venue-page:waterloo-east-theatre",
+      "sourceUrl": "https://waterlooeast.ticketsolve.com/shows/873669112/events"
+    }
+  ],
   "rejected": [
     {
       "title": "Golden Boy",
@@ -371,20 +387,20 @@
       "reason": "already in shows.json as the-radium-girls-off-west-end-2026 (normalized-equal)"
     },
     {
-      "title": "An Oak Tree",
-      "venue": "The Other Palace",
-      "source": "venue-page:the-other-palace",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as an-oak-tree-off-west-end-2026 (london-pool-title-equal (venue \"The Other Palace\" vs \"The Other Palace - Main Theatre\"))"
-    },
-    {
       "title": "Garry Starr Classic Penguins",
       "venue": "The Other Palace",
       "source": "venue-page:the-other-palace",
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as garry-starr-classic-penguins-garrick-west-end-2026 (london-pool-title-equal (venue \"The Other Palace\" vs \"Garrick Theatre\"))"
+    },
+    {
+      "title": "An Oak Tree",
+      "venue": "The Other Palace",
+      "source": "venue-page:the-other-palace",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as an-oak-tree-off-west-end-2026 (london-pool-title-equal (venue \"The Other Palace\" vs \"The Other Palace - Main Theatre\"))"
     },
     {
       "title": "A Homo Alone 2 Yikes We Did It Again",
@@ -675,6 +691,14 @@
       "reason": "already in shows.json as the-weddings-off-west-end-2027 (normalized-equal)"
     },
     {
+      "title": "ALTB: Talking People - Matchmakers",
+      "venue": "Bush Theatre",
+      "source": "venue-page:bush-theatre",
+      "sourceUrl": null,
+      "kind": "skip-unconfirmed",
+      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-12-13))"
+    },
+    {
       "title": "ATTENTION",
       "venue": "Bush Theatre",
       "source": "venue-page:bush-theatre",
@@ -849,14 +873,6 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as thinking-drinkers-great-british-pub-ride-off-west-end-2027 (normalized-equal)"
-    },
-    {
-      "title": "Thou Shalt Sit The F*** Down",
-      "venue": "King's Head Theatre",
-      "source": "venue-page:king-s-head-theatre",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-11-08))"
     },
     {
       "title": "Before the Coffee Gets Cold",
@@ -1369,14 +1385,6 @@
       "sourceUrl": null,
       "kind": "skip-unconfirmed",
       "reason": "venue's dated listing does not confirm a run: only 4 performance(s) listed — a short booking, not a run"
-    },
-    {
-      "title": "A Train To Woking",
-      "venue": "Waterloo East Theatre",
-      "source": "venue-page:waterloo-east-theatre",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as a-train-to-woking-off-west-end-2026 (normalized-equal)"
     },
     {
       "title": "Suicidal",
