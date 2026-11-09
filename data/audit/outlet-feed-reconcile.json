@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-09T17:26:39.858Z",
+  "generatedAt": "2026-11-09T19:33:13.906Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -99,6 +99,11 @@
       "openingDate": "2026-11-06"
     },
     {
+      "id": "the-charioteer-off-broadway-2026",
+      "title": "The Charioteer",
+      "openingDate": "2026-11-08"
+    },
+    {
       "id": "king-lear-off-broadway-2026",
       "title": "King Lear",
       "openingDate": "2026-11-05"
@@ -140,15 +145,11 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "stagebuddy",
-      "error": "Timeout fetching https://stagebuddy.com/feed"
     }
   ],
-  "itemsScanned": 831,
-  "matchedGaps": 6,
-  "possibleGaps": 4,
+  "itemsScanned": 839,
+  "matchedGaps": 8,
+  "possibleGaps": 5,
   "gaps": [
     {
       "showId": "222-a-ghost-story-off-broadway-2026",
@@ -196,6 +197,24 @@
       "publishDate": "2026-11-07"
     },
     {
+      "showId": "parcel-from-america-off-broadway-2026",
+      "title": "Parcel from America",
+      "level": "matched",
+      "outletId": "theater-pizzazz",
+      "url": "https://theaterpizzazz.com/parcel-from-america-the-irish-musical-a-holiday-card/",
+      "headline": "&#8216;Parcel From America- The Irish Musical&#8217; – A Holiday Card",
+      "publishDate": "2026-11-09"
+    },
+    {
+      "showId": "rope-off-broadway-2026",
+      "title": "Rope",
+      "level": "matched",
+      "outletId": "theater-scene",
+      "url": "https://www.theaterscene.net/plays/offbway-plays/rope/victor-gluck/",
+      "headline": "Rope",
+      "publishDate": "2026-11-09"
+    },
+    {
       "showId": "well-see-off-broadway-2026",
       "title": "We'll See",
       "level": "matched",
@@ -230,6 +249,15 @@
       "url": "https://standard.co.uk/culture/theatre/the-oresteia-at-the-bridge-review-b1290028.html",
       "headline": "The Oresteia at the Bridge: Thrillingly stripped back and bloody",
       "publishDate": null
+    },
+    {
+      "showId": "wanted-2022",
+      "title": "Wanted",
+      "level": "possible",
+      "outletId": "nypost",
+      "url": "https://nypost.com/2026/11/09/entertainment/wanted-review-bizarre-broadway-bandit-musical-goes-off-the-rails/",
+      "headline": "&#8216;Wanted&#8217; review: Bizarre Broadway bandit musical goes off the rails",
+      "publishDate": "2026-11-09"
     },
     {
       "showId": "wanted-2022",

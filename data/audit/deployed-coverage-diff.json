@@ -1,30 +1,70 @@
 {
-  "generatedAt": "2026-11-09T17:26:39.575Z",
+  "generatedAt": "2026-11-09T19:33:13.633Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 323,
-  "clean": 322,
-  "defective": 1,
+  "checked": 314,
+  "clean": 311,
+  "defective": 3,
   "byType": {
-    "score-drift": 1
+    "missing-from-prod": 1,
+    "score-drift": 1,
+    "unreachable": 2
   },
   "shows": [
     {
-      "showId": "wanted-2022",
-      "title": "Wanted",
-      "openingDate": "2026-11-08",
+      "showId": "the-greatest-story-ever-off-broadway-2026",
+      "title": "The Greatest Story Ever",
+      "openingDate": "2026-10-29",
       "ok": false,
       "defects": [
         {
-          "type": "score-drift",
-          "detail": "deployed cs 59.72 vs local 59.78 (Δ0.06)"
+          "type": "unreachable",
+          "detail": "HTTP 404"
         }
       ],
       "missingFromProd": [],
-      "localCount": 19,
-      "deployedCount": 19,
-      "firstDefectAt": "2026-11-09T17:26:33.519Z"
+      "localCount": 0,
+      "deployedCount": null,
+      "firstDefectAt": "2026-11-09T19:33:07.407Z"
+    },
+    {
+      "showId": "women-who-eat-off-broadway-2026",
+      "title": "Women Who Eat",
+      "openingDate": "2026-10-22",
+      "ok": false,
+      "defects": [
+        {
+          "type": "unreachable",
+          "detail": "HTTP 404"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 0,
+      "deployedCount": null,
+      "firstDefectAt": "2026-11-09T19:33:07.407Z"
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "title": "Stranger Things: The First Shadow",
+      "openingDate": "2023-12-14",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: times-uk"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 84.99 vs local 83.31 (Δ1.68)"
+        }
+      ],
+      "missingFromProd": [
+        "times-uk"
+      ],
+      "localCount": 34,
+      "deployedCount": 33,
+      "firstDefectAt": "2026-11-09T19:33:07.407Z"
     }
   ],
   "persistentDefective": 0,
