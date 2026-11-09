@@ -89,6 +89,10 @@ const ALLOWED_SCRIPTS = [
   // BRO-7061: cut the theartsdesk.com support banner and trailing Image label from stored texts
   // (incl. _pending). Plans pass --apply --expect=N.
   'strip-artsdesk-banner.js',
+  // BRO-7192: take a false tourParent roll-up apart (refuses a real tour; drops only review rows
+  // that are copies of a leg's). Plans pass --aggregate=<id> --transfer-leg=<id> --apply --expect=N
+  // and follow it with a retire-show of the aggregate.
+  'unlink-tour-aggregate.js',
   'strip-variety-promo-bleed.js', // BRO-5254: strip Variety promo modules from stored texts
   'strip-leading-site-nav.js', // BRO-5859: cut site nav menus / Stage and Cinema footer from stored texts
   // BRO-5080: West End historical rows whose openingDate is a WhatsOnStage
