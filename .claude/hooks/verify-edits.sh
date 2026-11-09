@@ -371,6 +371,12 @@ _KEEP_RE = re.compile(_VERDICT_PREFIX + r'(?:KEEP OPEN|NOT SAFE TO EXIT)\b')
 _ACTION_RE = re.compile(_VERDICT_PREFIX + r'ACTION NEEDED FROM YOU\b')
 _STATUS_RE = re.compile(_VERDICT_PREFIX + r'(?:SAFE TO ARCHIVE|SAFE TO EXIT|KEEP OPEN|NOT SAFE TO EXIT|ACTION NEEDED FROM YOU)\b')
 _LEGACY_STATUS_RE = re.compile(_VERDICT_PREFIX + r'(?:NOT )?SAFE TO EXIT\b')
+# A promise of later action in closing prose (WAKEPROMISE, BRO-7183). First person only:
+# "the routine will continue" is a description, not this session's promise.
+_PROMISE_RE = re.compile(r"\b(?:I'?ll|I will|I'm going to|I am going to)\s+(?:check back|check in|check on (?:it|that|this)"
+                         r"|come back|report back|follow up|keep an eye|keep watching|keep monitoring|monitor\b|continue\b"
+                         r"|pick (?:it|this|that) (?:back )?up)|\bI'?m (?:continuing|monitoring|watching (?:it|the|for))\b"
+                         r"|\bonce (?:it|that|this|the \w+) (?:finishes|lands|passes|completes|is done)\b[^.\n]{0,40}\bI'?ll\b", re.I)
 _VERDICT_TOKEN_RE = re.compile(r'\b(?:(?:NOT )?SAFE TO (?:EXIT|ARCHIVE)|KEEP OPEN|ACTION NEEDED FROM YOU)\b')
 
 def _owner_must_act(text, strict=False):
@@ -1422,6 +1428,27 @@ if os.environ.get('WAKELESS_GATE_DISABLE', '0') != '1' and not _cs_on:
             if not _wk_owner and not (_lw['triggers'] or _lw['agents'] or _lw['children']
                                       or _lw['waits'] or _lw['pr_watch']):
                 _ve_block("WAKELESS")
+        # WAKEPROMISE (BRO-7183): no verdict line (Mac, routines) but the prose promises later
+        # action ("I'll check back", "I'm continuing"). SAFE TO ARCHIVE is LOOSEENDS', KEEP OPEN
+        # is above. Advisory (ledger row) until PROMISE_GATE_MODE=block.
+        elif (not _STATUS_RE.match(_wk_last) and 'NO-VERIFY:' not in (_last_msg or '')
+                and _PROMISE_RE.search(_wk_text) and not _ve_seen('WAKEPROMISE')
+                and '?' not in (_wk_text.strip().split('\n\n') or [''])[-1]
+                and not _owner_must_act(_wk_text)):
+            _lw = _live_work()
+            if not (_lw['triggers'] or _lw['agents'] or _lw['children'] or _lw['waits'] or _lw['pr_watch']):
+                if os.environ.get('PROMISE_GATE_MODE') == 'block':
+                    _ve_block("WAKEPROMISE")
+                else:
+                    try:
+                        import time
+                        _pd = os.path.join(os.path.expanduser('~'), '.claude', 'state')
+                        os.makedirs(_pd, exist_ok=True)
+                        with open(os.path.join(_pd, 'wake-promise-advisory.jsonl'), 'a') as _pf:
+                            _pf.write(json.dumps({'at': time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()), 'session': os.environ.get('CLAUDE_CODE_SESSION_ID', ''),
+                                                  'phrase': _PROMISE_RE.search(_wk_text).group(0)}) + '\n')
+                    except Exception:
+                        pass
     except Exception:
         pass  # fail-open — never let this gate crash the rest of the script
 
@@ -2487,6 +2514,11 @@ fi
 
 if [[ "$result" == "WAKELESS" ]]; then
   echo "🛑 BLOCKED: KEEP OPEN says this session is waiting on something, but nothing will wake it to check (BRO-5881: sessions sat 10-19 hours on 'I will check it at 14:56'). Before ending the turn, start the wait: a Bash with run_in_background: true and timeout up to 7200000 that polls until the thing finishes (land: node scripts/lib/wait-for-land.js land/<name> 60 --prod; a workflow run: loop on that run's own id (actions/runs/<id>), never on the newest run of the workflow, which another session may have started; a deploy: node scripts/check-prod-deploy.js <sha> --wait), or Monitor. Its exit wakes you; if it times out, start another. send_later is denied here (it prompts the owner's phone). If you are waiting on the owner, end ACTION NEEDED FROM YOU with a DECISION NEEDED block or a 'You need to:' line naming what they must do. If nothing is actually pending, finish the work or end SAFE TO ARCHIVE. Bypass: NO-VERIFY: <reason>." >&2
+  exit 2
+fi
+
+if [[ "$result" == "WAKEPROMISE" ]]; then
+  echo "🛑 BLOCKED: your closing promises later action (\"I'll check back\", \"I'm continuing\") but nothing will wake this session to do it (BRO-7183: BRO-7074 sat 34h on a promise). Either do it now in this turn, or start the wait as a Bash with run_in_background: true (timeout up to 7200000) or a Monitor whose exit wakes you, or drop the promise and say what is left for the owner. Bypass: NO-VERIFY: <reason>. Mode switch PROMISE_GATE_MODE (unset = log only)." >&2
   exit 2
 fi
 

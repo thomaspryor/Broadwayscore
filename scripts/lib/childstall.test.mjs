@@ -239,3 +239,32 @@ test('e2e (cousin): WAKELESS no longer counts a background Bash past its timeout
   fresh[0] = userStr('Fix the Boston page.');
   assert.doesNotMatch(runHook(fresh).stderr, /nothing will wake it/);
 });
+
+// WAKEPROMISE (BRO-7183 phase 2): a closing that promises later action with no verdict line.
+const PROMISE_MSG = /promises later action/;
+function promiseRun(lastMsg, extra = [], env = {}) {
+  const lines = bro6854Transcript(extra);
+  lines[0] = userStr('Fix the Boston page.');
+  return runHook(lines, { CLAUDE_CODE_REMOTE: '', PROMISE_GATE_MODE: 'block', ...env }, lastMsg);
+}
+test('e2e: BRO-7074 shape ("I\'ll check back", nothing live, no verdict) is blocked in block mode', () => {
+  const r = promiseRun("Kicked off the scoring run. I'll check back once it finishes and post the results.");
+  assert.equal(r.status, 2, r.stderr);
+  assert.match(r.stderr, PROMISE_MSG);
+});
+test('e2e: WAKEPROMISE is log-only by default', () => {
+  const r = promiseRun("Kicked off the scoring run. I'll check back once it finishes.", [], { PROMISE_GATE_MODE: '' });
+  assert.doesNotMatch(r.stderr, PROMISE_MSG);
+});
+test('e2e: a promise with a live background poller passes', () => {
+  const r = promiseRun("I'm monitoring the run and will post results.", [
+    toolUse('t3', 'Bash', { command: 'gh run view 9', run_in_background: true, timeout: 7200000 }, 5),
+    toolRes('t3', 'Command running in background with ID: bfresh1. Output is being written to: /tmp/y', 5),
+  ]);
+  assert.doesNotMatch(r.stderr, PROMISE_MSG);
+});
+test('e2e: owner question, third-person description, and a done report are not promises', () => {
+  assert.doesNotMatch(promiseRun("The page is fixed. I'll continue once you confirm the copy, OK?").stderr, PROMISE_MSG);
+  assert.doesNotMatch(promiseRun('The board worker will continue with the next card on its own schedule.').stderr, PROMISE_MSG);
+  assert.doesNotMatch(promiseRun('Fixed the Boston page and verified it live.').stderr, PROMISE_MSG);
+});
