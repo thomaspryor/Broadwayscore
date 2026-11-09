@@ -121,6 +121,7 @@ async function runProductionLane({ show, night, holder, deps, heartbeatMs = HEAR
   const unpublished = result.unpublished || [];
   const failed = result.failed || [];
   const errors = result.errors || [];
+  const quoteless = result.quoteless || []; // BRO-7196: published with no pull quote (no text to quote yet)
   // A lost lease outranks the stand-down: exit 4 and its summary page still apply.
   if (stoodDown !== null && !leaseLost) {
     log(`opening-night lane: stood down for ${show.id}; ${unpublished.length} scored reviews left to the regular pipeline`);
@@ -130,10 +131,10 @@ async function runProductionLane({ show, night, holder, deps, heartbeatMs = HEAR
     }
     return { exit: 3, reason: `stood-down-mid-run:${stoodDown}`, result };
   }
-  if (unpublished.length || failed.length || errors.length || leaseLost) {
-    await page({ conditionKey: key('summary'), title: `Opening-night lane for ${show.id}: ${unpublished.length} unpublished, ${failed.length} failed, ${errors.length} errors`,
+  if (unpublished.length || failed.length || errors.length || quoteless.length || leaseLost) {
+    await page({ conditionKey: key('summary'), title: `Opening-night lane for ${show.id}: ${unpublished.length} unpublished, ${failed.length} failed, ${errors.length} errors${quoteless.length ? `, ${quoteless.length} without a quote` : ''}`,
       description: [`passes ${result.passes}, admitted ${(result.admitted || []).length}${leaseLost ? `, lease lost (${leaseLost})` : ''}`,
-        ...unpublished.slice(0, 5).map((k) => `unpublished: ${k}`), ...failed.slice(0, 5).map((f) => `failed: ${f.key} (${f.reason})`),
+        ...unpublished.slice(0, 5).map((k) => `unpublished: ${k}`), ...quoteless.slice(0, 5).map((k) => `no quote yet: ${k}`), ...failed.slice(0, 5).map((f) => `failed: ${f.key} (${f.reason})`),
         ...errors.slice(0, 5).map((e) => `error: ${e.adapter}: ${e.error}`)].join('\n') });
   }
   return { exit: unpublished.length || leaseLost ? 4 : 0, reason: leaseLost ? `lease-lost:${leaseLost}` : 'done', result };

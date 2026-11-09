@@ -307,6 +307,11 @@ const LISTING_CHROME_PATTERNS = [
   /\bbooking (?:until|to|through)\s+\d{1,2}\s+\w+\s+20\d\d/i,
   // Runtime furniture: "Running time: 1 hour 40 minutes, no interval"
   /\brunning time:?\s*\d+\s*(?:hour|hr|minute|min)/i,
+  // BRO-7196: a show-listing footer (Cititour, Wanted 2026-11-08): "Open/Close Dates Opening 11/8/2026 Closing
+  // Open-ended Theatre Info James Earl Jones Theatre 138 West 48th Street New York, NY 10036 Map".
+  /\bopen\s*\/\s*close dates\b/i,
+  /\bclosing:?\s+open[- ]ended\b/i,
+  /\b\d{2,5}\s+(?:(?:west|east|w\.?|e\.?)\s+)?\d{1,3}(?:st|nd|rd|th)\s+street\b[^.]{0,40}\bNY\s+1\d{4}\b/i,
 ];
 
 function hasListingChrome(excerpt) {

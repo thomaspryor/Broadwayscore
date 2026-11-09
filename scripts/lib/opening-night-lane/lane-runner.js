@@ -27,10 +27,14 @@ const trust = require('./trust-model');
 const publish = require('./publish');
 const { createLaneReviewWriter } = require('./persist');
 const { getSyndicationPrimaries, criticFileSlug } = require('../syndication-pairs');
+const card = require('../review-completeness');
 
 const criticKey = (name) => criticFileSlug(name); // the rebuild's critic match (diacritics, punctuation folded)
 
 /** Review keys a restarted lane must not redo: those that already reached `scored`, plus URLs already on disk. */
+// BRO-7196: passes a review missing outlet name, critic or date is retried before the lane leaves it to the regular pipeline.
+const INCOMPLETE_TRIES = 3;
+
 function loadDone(ledgerDir, show, night, onDiskUrls = []) {
   const done = new Set();
   for (const u of onDiskUrls) { const k = discovery.canonicalUrl(u); if (k) done.add(k); }
@@ -69,6 +73,8 @@ async function runLaneNight({
   const admitted = [];
   const published = [];
   const failed = [];
+  const quoteless = [];
+  const incomplete = new Map(); // BRO-7196: review key -> passes it was held for a missing card field
   const skipped = []; // deliberately not published (a syndicated copy whose primary is live), with the reason
   const pending = []; // rows scored but not yet published (or sent back by a failed batch)
   const inflight = new Set(); // real mode: batches publishing now
@@ -127,7 +133,7 @@ async function runLaneNight({
         ledger.appendEvent(ledgerDir, { show: show.id, night, reviewKey: a.key, stage: 'fetched', at: now() });
         let row = trust.buildLaneReview({
           showId: show.id, night, source: a.source, seenAt: new Date(stamp).toISOString(), outletId: fetched.outletId || a.outletId,
-          outlet: fetched.outlet, criticName: fetched.criticName, url: a.url, publishDate: a.publishDate || fetched.publishDate || null,
+          outlet: fetched.outlet, criticName: fetched.criticName || null, url: a.url, publishDate: a.publishDate || fetched.publishDate || null,
           fullText: fetched.fullText, aggregator: fetched.aggregator || {}, excerpts: fetched.excerpts,
         });
         // The printed rating the page carries (inline-score.js ratingFields), as the regular pipeline's review file has
@@ -135,6 +141,18 @@ async function runLaneNight({
         // lane-aggregator-*) never reaches the scorer, so a page rating there would sit beside a score it did not anchor
         // and make isHighReliabilityStar read the aggregator label as the rating's source.
         if (fetched.rating && row.assignedScore == null) Object.assign(row, fetched.rating);
+        // BRO-7196: a card needs outlet name, critic and date before any score is spent on it. The date may come from the
+        // URL or the text (the rebuild's backfill); never from the opening date. A row still missing one is held: retried
+        // on the next passes (a byline can be late to the page), then left to the regular pipeline with a reason.
+        if (!row.publishDate) { const d = card.cardPublishDate(row); if (d) row.publishDate = d; }
+        // The byline from the text when the page markup gave none (Talkin' Broadway's was null on Wanted).
+        if (card.missingCardFields(row, { quote: false }).includes('criticName')) { const c = card.cardCriticName(row); if (c) row.criticName = c; }
+        const gaps = card.missingCardFields(row, { quote: false });
+        if (gaps.length) {
+          const tries = (incomplete.get(a.key) || 0) + 1;
+          incomplete.set(a.key, tries);
+          throw Object.assign(new Error(`incomplete card (no ${gaps.join(', ')}), attempt ${tries}/${INCOMPLETE_TRIES}; held from publish`), { permanent: tries >= INCOMPLETE_TRIES });
+        }
         // A syndicated copy (Chris Jones's Chicago Tribune review in the NY Daily News) is the rebuild's to drop only
         // when the primary is present (syndication-pairs.js). Mirror that: skip a copy whose primary is already
         // scored, and pull a queued copy when its primary arrives. The Oct 22 shadow run would have published one.
@@ -157,6 +175,18 @@ async function runLaneNight({
         if (persistReview) {
           // The guarded writer can preserve a human correction. Publish precisely what survived on disk.
           row = persistReview(row).row;
+        }
+        // BRO-7196: publish the card row (outlet display name, the rebuild's pull quote), not the bare file row; the
+        // quote stays off the file, where pullQuote means a human editor's pick. A scored row with text but no usable
+        // quote is kept on disk for the regular pipeline and not published by the lane. A row with no text at all (a
+        // paywall scored from the aggregator's thumb alone) has nothing to quote: holding it would drop the score from
+        // the night, so it publishes and is reported as quoteless for the summary page.
+        row = card.toCardRow(row, show);
+        const cardGaps = card.missingCardFields(row);
+        if (cardGaps.length === 1 && cardGaps[0] === 'pullQuote' && !card.hasQuotableText(row)) quoteless.push(a.key);
+        else if (cardGaps.length) {
+          ledger.appendEvent(ledgerDir, { show: show.id, night, reviewKey: a.key, stage: 'scored', at: now() });
+          throw Object.assign(new Error(`incomplete card after scoring (no ${cardGaps.join(', ')}); held from publish, left to the regular pipeline`), { permanent: true });
         }
         ledger.appendEvent(ledgerDir, { show: show.id, night, reviewKey: a.key, stage: 'scored', at: now() });
         for (let i = pending.length - 1; i >= 0; i--) {
@@ -195,7 +225,7 @@ async function runLaneNight({
       else await Promise.race(inflight);
     }
   }
-  return { passes, admitted, published, errors, failed, skipped, unpublished: pending.map((r) => r.key), stopped };
+  return { passes, admitted, published, errors, failed, skipped, quoteless, unpublished: pending.map((r) => r.key), stopped };
 }
 
 module.exports = { runLaneNight, loadDone };

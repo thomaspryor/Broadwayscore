@@ -167,7 +167,11 @@ test('the production driver persists scored reviews before publishing and skips 
   assert.deepEqual(first.errors, []);
   assert.equal(first.published[0].verified.length, 1);
   assert.equal(savedRows()[0].fullText, text.trim());
-  assert.deepEqual(doc.reviews, savedRows(), 'publish exactly the persisted record');
+  // BRO-7196: publish exactly the persisted record plus the card's display fields (outlet name, the rebuild's quote).
+  const { pullQuote, ...published } = doc.reviews[0];
+  assert.deepEqual(published, { ...savedRows()[0], outlet: 'The Guardian' }, 'publish exactly the persisted record');
+  assert.ok(pullQuote && pullQuote.length >= 20, 'the published card carries a pull quote');
+  assert.equal(savedRows()[0].pullQuote, undefined, 'the quote never lands on the review file');
   assert.ok(ledger.readLedger(ledgerDir, show.id, NIGHT).events.some(e => e.stage === 'scored'));
   const restarted = await deps.runNight({ shouldStop: () => false });
   assert.equal(restarted.admitted.length, 0);
