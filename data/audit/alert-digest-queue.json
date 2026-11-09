@@ -1711,5 +1711,36 @@
       }
     ],
     "queuedAt": "2026-11-09T05:22:16.542Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7198-press-night-priority",
+    "title": "Landing blocked: actionlint-install red on land/bro-7198-press-night-priority",
+    "description": "land.yml did not land land/bro-7198-press-night-priority: the actionlint-install gate went red at 125e8bc1f6. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42570674968",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7198-press-night-priority"
+      },
+      {
+        "name": "gate",
+        "value": "actionlint-install"
+      },
+      {
+        "name": "tip",
+        "value": "125e8bc1f623c840f5e018899dd21f25e2537eae"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42570674968"
+      }
+    ],
+    "queuedAt": "2026-11-09T06:05:10.107Z"
   }
 ]
