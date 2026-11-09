@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-09T19:53:17.140Z",
+  "generatedAt": "2026-11-09T20:13:35.690Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1291,26 +1291,26 @@
       "status": "open",
       "slug": "msblackforpresident",
       "thumbnail": "/images/shows/msblackforpresident-off-broadway-2026/thumbnail.jpg",
-      "siteScore": 70.99,
+      "siteScore": 70.69,
       "liveScore": 71,
-      "scoreDrift": 0.010000000000005116,
+      "scoreDrift": 0.3100000000000023,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 9,
+      "total": 10,
       "t1": 0,
       "t2": 4,
-      "t3": 5,
+      "t3": 6,
       "positive": 6,
-      "mixed": 3,
+      "mixed": 4,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "9/12 total",
+          "10/12 total",
           "T1:0/3"
         ],
-        "highConfidence": 9,
+        "highConfidence": 10,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1704,6 +1704,18 @@
           "t3": 5,
           "p": 6,
           "m": 3,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-09T20:13:35.690Z",
+          "rc": 10,
+          "s": 70.69,
+          "t1": 0,
+          "t2": 4,
+          "t3": 6,
+          "p": 6,
+          "m": 4,
           "n": 0,
           "bc": "waiting"
         }
@@ -3156,9 +3168,9 @@
       "status": "open",
       "slug": "nero-off-west-end",
       "thumbnail": "/images/shows/nero-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 40.46,
+      "siteScore": 40.22,
       "liveScore": 40,
-      "scoreDrift": -0.46000000000000085,
+      "scoreDrift": -0.21999999999999886,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -3535,6 +3547,18 @@
           "t": "2026-11-09T16:48:09.076Z",
           "rc": 17,
           "s": 40.46,
+          "t1": 2,
+          "t2": 5,
+          "t3": 10,
+          "p": 3,
+          "m": 4,
+          "n": 10,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-09T20:13:35.690Z",
+          "rc": 17,
+          "s": 40.22,
           "t1": 2,
           "t2": 5,
           "t3": 10,
