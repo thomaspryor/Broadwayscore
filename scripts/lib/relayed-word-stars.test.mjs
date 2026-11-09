@@ -47,3 +47,20 @@ test('isRelayedStarRating reads only the match\'s own sentence', () => {
   const s = 'Awarding the show three stars, the critic praised the lead.';
   assert.equal(isRelayedStarRating(s, at(s, 'three')), true);
 });
+
+// BRO-7080 replay of BRO-6905: relay wordings the giving-verb list missed.
+test('relayed: earned/with/label/paren forms; own verdicts still read (BRO-7080)', () => {
+  const { extractScore } = require('./score-extractors.js');
+  const read = (t) => { const r = extractScore('', t, 'theargus'); return r ? r.originalScore : null; };
+  for (const t of [
+    'The Times critic said it earned four out of five stars.',
+    'The Telegraph, with four out of five stars, called it a triumph.',
+    'The Stage: four stars.',
+    'The Telegraph (four stars) called it irresistible. The Daily Mirror (five stars): a joy.',
+  ]) assert.equal(read(t), null, t);
+  for (const t of [
+    'Ahead of the upcoming Tony Awards, and it garners four out of five stars.',
+    'Rating: Four out of five stars.',
+    'I would give it four out of five stars.',
+  ]) assert.equal(read(t), '4/5 stars', t);
+});

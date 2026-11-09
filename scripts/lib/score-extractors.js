@@ -121,13 +121,28 @@ const BARE_WORD_STARS = new RegExp(`(?<!out${WGAP}of${WGAP})\\b(one|two|three|fo
 // Awards, and it garners four out of five stars" (the critic's own rating).
 const RELAYED_STAR_VERB = /\b(?:[Gg]ave|[Gg]ives|[Gg]iven|[Gg]iving|[Aa]warded|awards|[Aa]warding|[Hh]anded|hands|[Bb]estowed|[Rr]ated|rates|[Ss]cored)\b/;
 const FIRST_PERSON_SUBJECT = /\b(?:I|I'd|I'm|I'll|I've|we|we'd|we're|we'll|this\s+reviewer|this\s+critic)\b/;
+// BRO-7080: relay wordings the giving-verb list missed. "earned/received/got"
+// only relay when the clause names another critic or outlet ("The Times
+// critic said it earned four out of five stars"); with the show as subject
+// ("it garners four out of five stars") they are the critic's own verdict.
+// And an outlet label straight before the stars: "The Telegraph, with four out
+// of five stars, ..." / "The Stage: four stars."
+const RELAYED_PASSIVE_VERB = /\b(?:earned|earns|earning|received|receives|garnered|got|landed|picked\s+up)\b/i;
+const OTHER_SOURCE_NAMED = /\b(?:critic|critics|reviewer|reviewers)\b|\b(?:The\s+(?:Times|Sunday\s+Times|Telegraph|Guardian|Observer|Stage|Independent|Evening\s+Standard|Financial\s+Times|Daily\s+Mail|Mail\s+on\s+Sunday|Daily\s+Express|Sun|Arts\s*Desk|New\s+York\s+Times)|Time\s+Out|WhatsOnStage|Variety|Metro|iNews|Broadway\s*World)\b/;
+const OUTLET_LABEL_BEFORE = /(?:\bThe\s+(?:Times|Sunday\s+Times|Telegraph|Guardian|Observer|Stage|Independent|Evening\s+Standard|Financial\s+Times|Daily\s+Mail|Arts\s*Desk)|Time\s+Out|WhatsOnStage|Variety|Metro|iNews)(?:'s\s+[A-Z][\w'-]+(?:\s+[A-Z][\w'-]+)?)?\s*(?::|,\s*with|\s+with|\s*\()\s*$/;
+// Any capitalised "The <Name>" straight before "(four stars)" is a relayed
+// label in a roundup ("The Daily Mirror (five stars): ..."); a critic's own
+// verdict line is "Rating:"/"Verdict:", never a parenthesised outlet name.
+const NAMED_PAREN_BEFORE = /\bThe(?:\s+[A-Z][\w'&.-]*){1,3}\s*\(\s*$/;
 function isRelayedStarRating(source, matchIndex) {
   if (!source || !(matchIndex > 0)) return false;
   const before = source.slice(Math.max(0, matchIndex - 240), matchIndex);
   const sentenceStart = Math.max(before.lastIndexOf('. '), before.lastIndexOf('! '), before.lastIndexOf('? '), before.lastIndexOf('\n'), before.lastIndexOf('>'));
   const clause = sentenceStart >= 0 ? before.slice(sentenceStart + 1) : before;
-  if (!RELAYED_STAR_VERB.test(clause)) return false;
-  return !FIRST_PERSON_SUBJECT.test(clause);
+  if (FIRST_PERSON_SUBJECT.test(clause)) return false;
+  if (OUTLET_LABEL_BEFORE.test(clause) || NAMED_PAREN_BEFORE.test(clause)) return true;
+  if (RELAYED_STAR_VERB.test(clause)) return true;
+  return RELAYED_PASSIVE_VERB.test(clause) && OTHER_SOURCE_NAMED.test(clause);
 }
 
 // First spelled-out star rating across `sources` that is not relayed from
