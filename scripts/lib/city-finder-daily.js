@@ -16,7 +16,11 @@ const normUrl = (u) => String(u || '').toLowerCase().replace(/^https?:\/\/(www\.
 function matchShow(prod, shows) {
   const t = norm(prod.title);
   const th = norm(prod.theatre);
-  return shows.find((s) => norm(s.title) === t && norm(s.venue || '').includes(th)) || null;
+  const exact = shows.find((s) => norm(s.title) === t && norm(s.venue || '').includes(th));
+  if (exact) return exact;
+  // Venue strings often use a short or alternate name ("A.R.T.'s Loeb Drama Center"), so a title that is unique in the hub still matches.
+  const sameTitle = shows.filter((s) => norm(s.title) === t);
+  return sameTitle.length === 1 ? sameTitle[0] : null;
 }
 
 function planPickup({ staged, shows, reviews, hubSlug, minNew = 3, dispatched = [], outletId = (id) => id }) {

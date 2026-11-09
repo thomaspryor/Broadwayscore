@@ -350,7 +350,9 @@ function makeContext({ getPage, today, dayCache = {}, saveDayCache = () => {} })
         if (!dayIndexCache[site.id]) dayIndexCache[site.id] = locs(await getPage(site.dayIndex));
         const kids = dayIndexCache[site.id].filter((u) => u.includes(`/${day}/`));
         urls = [];
-        for (const k of kids) { r = await getPage(k); urls.push(...locs(r)); }
+        let complete = kids.length > 0;
+        for (const k of kids) { const kr = await getPage(k); if (!kr || !kr.content) complete = false; urls.push(...locs(kr)); }
+        r = complete ? { ok: true } : null; // a partial day is returned but never cached
         if (site.pathIncludes) urls = urls.filter((u) => u.includes(site.pathIncludes));
       } else {
         r = await getPage(`${site.base}/sitemap.xml?yyyy=${y}&mm=${m}&dd=${d}`);

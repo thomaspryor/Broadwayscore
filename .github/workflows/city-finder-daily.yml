@@ -105,6 +105,10 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         run: node scripts/dispatch-ingest-batch.js --plan=/tmp/city-finder-ingest-all.json --checkpoint=/tmp/city-finder-ckpt.json
 
+      - name: Warn when dispatch failed
+        if: steps.dispatch.outcome == 'failure'
+        run: echo "::warning::City finder dispatch failed; URLs were not marked dispatched and will be retried next run"
+
       - name: Mark dispatched URLs
         if: steps.dispatch.outcome == 'success'
         run: |
@@ -115,7 +119,7 @@ jobs:
       - name: Commit reports
         if: always()
         run: |
-          git add data/audit/city-finder-daily-*.json data/audit/city-finder-days-*.json data/audit/city-finder-stage-*.json data/audit/city-finder-dispatched-*.json
+          git add -A -- 'data/audit/city-finder-*.json'
           if git diff --staged --quiet; then
             echo "No report changes"
           else
