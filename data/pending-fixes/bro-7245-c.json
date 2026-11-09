@@ -1,0 +1,86 @@
+{
+  "issueNumber": "bro-7245-c",
+  "planId": "7a20b925-35ce-47f3-816c-b573dfa6099f",
+  "status": "pending",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7245 follow-up: Legally Blonde (2007) Wait & See -> Recouped on a private industry tip (owner rule: a private tip may set a label; the source is recorded privately).",
+    "steps": [
+      "An industry contact (recorded privately on the Linear card) says the Broadway production became profitable after closing from tour and international royalties. Consistent with Luftig (Freakonomics, Apr 2025): US tour recouped and profited, London small profit, UK tour very profitable, 300-400 licensed productions a year.",
+      "recouped=true with no recoupedDate (none reported). designationBasis cleared (it described a loss).",
+      "recoupedDate 2012 is our estimate (no date reported), stated as such in notes. estimatedRecoupmentPct removed: a recouped record must not carry an earlier share returned."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showId": "legally-blonde-2007",
+        "field": "designation",
+        "oldValue": "Wait & See",
+        "newValue": "Recouped",
+        "description": "commercial.json: legally-blonde-2007.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showId": "legally-blonde-2007",
+        "field": "recouped",
+        "oldValue": false,
+        "newValue": true,
+        "description": "commercial.json: legally-blonde-2007.recouped"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showId": "legally-blonde-2007",
+        "field": "recoupedDate",
+        "oldValue": null,
+        "newValue": "2012",
+        "description": "commercial.json: legally-blonde-2007.recoupedDate (our estimate)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showId": "legally-blonde-2007",
+        "field": "estimatedRecoupmentPct",
+        "oldValue": [
+          60,
+          60
+        ],
+        "newValue": null,
+        "description": "commercial.json: legally-blonde-2007.estimatedRecoupmentPct (the 60% at closing moves to the text)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showId": "legally-blonde-2007",
+        "field": "designationBasis",
+        "oldValue": "reported-loss",
+        "newValue": null,
+        "description": "commercial.json: legally-blonde-2007.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showId": "legally-blonde-2007",
+        "field": "recoupedSource",
+        "oldValue": "Freakonomics Radio (Apr 18, 2025), on lead producer Hal Luftig: \"as Luftig told us, it made back only around 60 percent of its $11 million capitalization.\" https://freakonomics.com/podcast/on-broadway-nobody-knows-nothing/",
+        "newValue": "Industry contact (private, Nov 2026): the Broadway production went on to recoup and become profitable after closing, from royalties paid by the tours and international productions. At closing it had returned around 60% of its $11M capitalization (Freakonomics Radio, Apr 18, 2025, quoting lead producer Hal Luftig: https://freakonomics.com/podcast/on-broadway-nobody-knows-nothing/).",
+        "description": "commercial.json: legally-blonde-2007.recoupedSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showId": "legally-blonde-2007",
+        "field": "notes",
+        "oldValue": "Commercial musical at the Palace Theatre (opened Apr 29, 2007; closed Oct 19, 2008 after 595 performances). Lead producer Hal Luftig says the Broadway run returned around 60% of its $11M capitalization (his 2006 pre-production budget was $12.8M, including a San Francisco tryout). It cost about $650K a week to run and grossed about $56M. Luftig says the several-year US tour recouped and made a profit, the London production made a small profit and the UK tour that followed was very profitable, and the show is licensed to hundreds of productions a year. Those productions pay royalties to the Broadway company, but no source yet reports the Broadway investors being paid back in full. A '75% by closing' figure that circulates online traces only to a January 2008 forum projection.",
+        "newValue": "Commercial musical at the Palace Theatre (opened Apr 29, 2007; closed Oct 19, 2008 after 595 performances). Lead producer Hal Luftig says the Broadway run returned around 60% of its $11M capitalization by closing (his 2006 pre-production budget was $12.8M, including a San Francisco tryout). It cost about $650K a week to run and grossed about $56M. It recouped after closing from royalties paid by later productions: Luftig says the several-year US tour recouped and made a profit, the London production made a small profit and the UK tour that followed was very profitable, and the show is licensed to hundreds of productions a year. No public report gives the date or the size of the eventual profit; 2012 is our estimate of when it crossed, after the US tour closed and while the London production ran.",
+        "description": "commercial.json: legally-blonde-2007.notes"
+      }
+    ]
+  }
+}
