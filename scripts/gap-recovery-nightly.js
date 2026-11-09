@@ -158,9 +158,11 @@ function main() {
   if (!plan) log(`plan unavailable (driver exit ${planExit}); counts left empty`);
 
   const status = DRY ? 'dry_run' : (runExit !== 0 || recExit !== 0) ? 'failed' : 'ran';
+  // BRO-7171 Stage 4: the owner batch scripts/gap-terminal.js --owner-batch wrote, until answered.
+  const ownerBatch = readJsonSafe(path.join(STATE_DIR, 'owner-batch-pending.json'));
   const row = N.buildNightlyRow({
     ...base, status, summary, counts, reopened, ledgerRows: L.readRows(runLedger),
-    driverExit: runExit || recExit,
+    driverExit: runExit || recExit, ownerBatch,
   });
   const code = finishRow(row, nightlyPath, ledgerPath);
   if (DRY) { try { fs.unlinkSync(runLedger); } catch { /* none */ } }

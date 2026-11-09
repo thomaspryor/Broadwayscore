@@ -123,6 +123,12 @@ const MANUAL_FIELDS = [
   'bwwThumb',
   // Per-file protection array lock
   'protectedFields',
+  // BRO-7171 Stage 4: terminal "text cannot be recovered" record (owner /
+  // evidence decision, gap-terminal.js) and its clear breadcrumb, the third
+  // leg of the PROTECTED_FIELDS three-way sync. A url change clears it
+  // (url-change-invariant), which _urlChangedClear above already honors.
+  'textUnrecoverable',
+  'textUnrecoverableClearReason',
   // (b) Durable url-change-invariant breadcrumb (Notion 399637c5) — records
   // fields deliberately cleared when a file's url moved to a different
   // canonical article. isIntentionalClear() keys on it; losing it on rebase

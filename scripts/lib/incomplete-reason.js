@@ -91,6 +91,13 @@ function classifyIncompleteReason(review, failedFetchEntry) {
     return { incompleteReason: 'wrong_content', incompleteDetail: detail };
   }
 
+  // Priority 1.5 (BRO-7171 Stage 4): a valid terminal record. The collector
+  // skips 'permanently_unavailable' (collect-review-texts.js). Recency is
+  // enforced when the record is written and by the gap classifier.
+  if (require('./gap-terminal').validateTerminal(review).valid) {
+    return { incompleteReason: 'permanently_unavailable', incompleteDetail: review.textUnrecoverable.reason };
+  }
+
   // Priority 2: URL dead
   if (failureReason === 'url_dead_404' || failureReason === 'url_dead_410') {
     return {

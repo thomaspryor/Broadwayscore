@@ -24,6 +24,7 @@ const INCOMPLETE_REASON_ENUM = Object.freeze([
   'wrong_content', 'url_dead', 'scraper_garbage', 'paywall', 'url_content_mismatch', 'no_url',
   'route_capped', 'scraper_timeout', 'code_error', 'bot_blocked', 'roundup_only', 'partial_text',
   'not_attempted', 'unknown', 'multi_show_section_not_found', 'non_review', 'unrecoverable',
+  'permanently_unavailable',
 ]);
 
 /**
