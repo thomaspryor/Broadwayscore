@@ -1,8 +1,31 @@
 {
-  "generatedAt": "2026-11-09T13:45:45.135Z",
+  "generatedAt": "2026-11-09T15:06:13.152Z",
   "windowDays": 45,
   "showsScanned": 243,
   "gaps": [
+    {
+      "showId": "iphigenie-en-tauride-english-national-opera-west-end-2026",
+      "title": "Iphigenie en Tauride - English National Opera",
+      "openingDate": "2026-11-06",
+      "file": "london-theatre--cheryl-markosky.json",
+      "outletId": "london-theatre",
+      "tier": 2,
+      "type": "unscored",
+      "dispatchable": true,
+      "skipReason": null,
+      "fetchAbandoned": false,
+      "recoverable": false,
+      "url": "https://www.londontheatre.co.uk/reviews/iphigenie-en-tauride-review-london-coliseum",
+      "recovery": null,
+      "recoveryCount": 0,
+      "forumLinkRecoveryCount": 0,
+      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=iphigenie-en-tauride-english-national-opera-west-end-2026",
+      "firstSeen": "2026-11-09T13:41:24.904Z",
+      "fileAgeHours": 1.4114866666666666,
+      "gapSeenAt": "2026-11-09T15:06:13.152Z",
+      "nonTerminalAgeHours": 0,
+      "needsManualRecovery": false
+    },
     {
       "showId": "iphigenie-en-tauride-english-national-opera-west-end-2026",
       "title": "Iphigenie en Tauride - English National Opera",
@@ -18,9 +41,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=iphigenie-en-tauride-english-national-opera-west-end-2026 --url=https://www.thetimes.com/culture/classical-opera/article/iphigenie-en-tauride-review-youve-never-seen-a-family-reunion-like-this-hmwx2kkh2 --outlet=sunday-times   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-08T22:39:44.349Z",
-      "fileAgeHours": 15.099107777777778,
+      "fileAgeHours": 16.439418888888888,
       "gapSeenAt": "2026-11-09T00:00:26.432Z",
-      "nonTerminalAgeHours": 13.755195277777778,
+      "nonTerminalAgeHours": 15.096311111111111,
       "needsManualRecovery": false
     }
   ],

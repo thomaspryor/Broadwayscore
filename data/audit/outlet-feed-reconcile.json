@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-09T13:46:04.861Z",
+  "generatedAt": "2026-11-09T15:06:45.822Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -118,6 +118,10 @@
   "feedsChecked": 84,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -138,8 +142,8 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 839,
-  "matchedGaps": 4,
+  "itemsScanned": 838,
+  "matchedGaps": 6,
   "possibleGaps": 4,
   "gaps": [
     {
@@ -164,10 +168,28 @@
       "showId": "nero-off-west-end-2026",
       "title": "Nero",
       "level": "matched",
+      "outletId": "firstnightmagazine",
+      "url": "https://firstnightmagazine.com/2026/11/09/review-of-nero-2026-southwark-playhouse-historical-musical-is-unlikely-to-make-history/",
+      "headline": "Review of &#8216;Nero&#8217; (2026, Southwark Playhouse): &#8220;Historical musical is unlikely to make history&#8221;",
+      "publishDate": "2026-11-09"
+    },
+    {
+      "showId": "nero-off-west-end-2026",
+      "title": "Nero",
+      "level": "matched",
       "outletId": "south-london",
       "url": "https://southlondon.co.uk/lifestyle/review-nero-southwark-playhouse/",
       "headline": "Review: Nero @ Southwark Playhouse",
       "publishDate": "2026-11-09"
+    },
+    {
+      "showId": "nero-off-west-end-2026",
+      "title": "Nero",
+      "level": "matched",
+      "outletId": "theupcoming",
+      "url": "https://www.theupcoming.co.uk/2026/11/07/nero-at-southwark-playhouse-theatre-review/",
+      "headline": "Nero at Southwark Playhouse &#124; Theatre review",
+      "publishDate": "2026-11-07"
     },
     {
       "showId": "nero-off-west-end-2026",
