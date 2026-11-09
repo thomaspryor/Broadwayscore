@@ -78,7 +78,9 @@ test('absent verdicts and invalid scores do not manufacture negative reviews', (
 
 test('review badges follow the number, not the verdict (owner 2026-11-09)', () => {
   // TheWrap on Wanted: 59 with a Mixed verdict must look like every other 59.
-  assert.deepEqual(getReviewBadgePresentation(59), getReviewBadgePresentation(59));
+  assert.deepEqual(getReviewBadgePresentation(59), { label: 'Mixed', colorScore: 59 });
+  assert.equal(getReviewBadgePresentation(84, 'west-end').label, 'Positive');
+  assert.equal(getReviewBadgePresentation(91).label, 'Rave');
   assert.equal(getReviewBadgePresentation(59).colorScore, 59);
   assert.equal(getReviewBadgePresentation(null).label, 'Unscored');
   assert.equal(getReviewBadgePresentation.length, 2, 'badge takes (score, category); a verdict argument would bring back verdict colors');
