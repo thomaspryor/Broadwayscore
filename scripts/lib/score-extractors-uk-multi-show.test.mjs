@@ -46,6 +46,6 @@ test('non-Times UK outlets keep the first-group rule (related-review chrome)', (
 });
 
 test('glued scraped header ("TimesHamiltonVictoria Palace") still finds the show', () => {
-  const t = 'The TimesHamiltonVictoria Palace, London★★★★☆ ' + 'Hamilton dazzles. '.repeat(4) + 'Related reviews Cats Palladium ★★☆☆☆ ' + 'x '.repeat(40);
+  const t = 'The TimesHamiltonVictoria Palace, London★★★★☆ ' + 'Hamilton dazzles. '.repeat(4) + 'Filler about other matters entirely, nothing relevant at all here, truly. Related reviews Cats Palladium ★★☆☆☆ ' + 'x '.repeat(40);
   assert.equal(extractScore('', t, 'times-uk', 'Hamilton').normalizedScore, 80);
 });
