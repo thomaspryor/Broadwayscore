@@ -176,3 +176,12 @@ test('no runner: the blocked retry (stop_hook_active) and non-promise closings p
   assert.equal(plain.status, 0);
   assert.match(plain.stdout, /not installed/);
 });
+
+test('a full checkout that is still cloning (no runner yet) does not block the sparse fetch into .bsc-hooks', () => {
+  const src = fakeRepo(); const home = tmp('bsc-home-');
+  fs.mkdirSync(path.join(home, 'Broadwayscore/.git'), { recursive: true }); // half-cloned
+  const env = { BSC_HOOKS_HOME: home, BSC_HOOKS_REPO_URL: 'file://' + src };
+  assert.equal(run('fetch', env).status, 0);
+  assert.ok(fs.existsSync(path.join(home, '.bsc-hooks/.claude/hooks/lib/home-hook-runner.sh')));
+  assert.match(run('stop', env, '{}').stdout, /RUNNER hook=verify-edits\.sh/);
+});

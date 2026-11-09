@@ -35,7 +35,9 @@ case "$mode" in
   fetch)
     full=""
     for d in "$HOME_DIR/Broadwayscore" "$HOME_DIR/broadwayscore"; do [ -d "$d/.git" ] && full=1; done
-    [ -n "$full" ] && { find_runner >/dev/null && exit 0; msg "BRO-7194: Broadwayscore is cloned but has no hook runner yet (clone still running?). The stall Stop gate will load once it finishes."; exit 0; }
+    # A full clone that has a runner is enough. One that is still cloning (no runner yet): fall through
+    # and sparse-clone into .bsc-hooks anyway (BRO-7194 probe 3), find_runner takes whichever is ready.
+    [ -n "$full" ] && find_runner >/dev/null && exit 0
     S="$HOME_DIR/.bsc-hooks"
     command -v git >/dev/null 2>&1 || { msg "BRO-7194: git missing, stall Stop gate NOT installed."; exit 0; }
     if [ -d "$S/.git" ]; then
