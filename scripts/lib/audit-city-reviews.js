@@ -15,6 +15,7 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const os = require('os');
+const { foldDiacritics } = require('./title-match');
 
 const arg = (n, d) => { const h = process.argv.slice(2).find((a) => a.startsWith(`--${n}=`)); return h ? h.split('=').slice(1).join('=') : d; };
 const ROOT = path.join(__dirname, '..', '..');
@@ -61,7 +62,7 @@ function parseJson(t) {
 }
 
 const ISO = /^\d{4}-\d{2}-\d{2}/;
-const nameTokens = (s) => String(s || '').toLowerCase().replace(/[^a-z\s'-]/g, ' ').split(/\s+/).filter((t) => t.length > 1);
+const nameTokens = (s) => foldDiacritics(String(s || '')).toLowerCase().replace(/[^a-z\s'-]/g, ' ').split(/\s+/).filter((t) => t.length > 1);
 /** Same critic when the last names match and, if both sides give a first name, the first initials match. */
 function sameCritic(a, b) {
   const x = nameTokens(a); const y = nameTokens(b);
