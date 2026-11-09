@@ -98,7 +98,10 @@ export default function ClosingWatchCard({
         <p className="text-xs text-fg-muted mt-3">
           Of {basis.sample} past Broadway runs that{' '}
           {basis.weeksUnder > 0 ? `spent ${basis.weeksUnder}+ weeks` : 'fell'} under {basis.thresholdPct}% of
-          break-even (adjusted for the season), half closed within {basis.medianWeeks} more weeks.
+          break-even (adjusted for the season)
+          {basis.cushion === 'thin' && ' without having earned back half their investment first'}
+          {basis.cushion === 'banked' && ' after already earning back half their investment or more'}, half closed
+          within {basis.medianWeeks} more weeks.
         </p>
       )}
     </Link>

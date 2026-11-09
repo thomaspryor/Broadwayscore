@@ -65,7 +65,7 @@ import { buildSeasonProfiles, buildRecoupFindings, compareSeason, hasKnownOutcom
 import fs from 'fs';
 import path from 'path';
 import { getMarketDate } from './date-utils';
-import { calibrateClosingWatch, seasonalIndexSeries, adjustedRatioSeries, estimateClosing, isBoxOfficeDriven, isOnClosingWatch, addWeeks, weeksBelowBreakEven as countWeeksBelowBreakEven, type ClosingObservation } from './closing-watch';
+import { bankedShareSeries, calibrateClosingWatch, seasonalIndexSeries, adjustedRatioSeries, estimateClosing, isBoxOfficeDriven, isOnClosingWatch, addWeeks, weeksBelowBreakEven as countWeeksBelowBreakEven, type ClosingObservation } from './closing-watch';
 import { isLossDesignation } from '../../scripts/lib/commercial-designations';
 import { conversionOf, isConvertedToCommercial, commercialRunWeeks, recoupClockStart } from '../../scripts/lib/commercial-conversion';
 import {
@@ -800,7 +800,7 @@ function weeklyGrossesOldestFirst(slug: string): Array<number | null> {
 export function getClosingWatchCalibration(): ClosingObservation[][] {
   if (closingCalibration) return closingCalibration;
   const seasonal = getSeasonalIndex();
-  const runs: Array<{ ratios: Array<number | null>; closed: boolean }> = [];
+  const runs: Array<{ ratios: Array<number | null>; closed: boolean; banked: Array<number | null> }> = [];
   for (const [slug, data] of Object.entries(commercial.shows)) {
     const show = rawShows.find((s) => s.slug === slug);
     if (!show || !isBoxOfficeDriven(data.designation, show.limitedRun)) continue;
@@ -814,7 +814,11 @@ export function getClosingWatchCalibration(): ClosingObservation[][] {
     if (last < 0 || (closed && COVID_SHUTDOWN.test(WEEK_KEYS_OLDEST_FIRST[last]))) continue;
     // A closed run ends at its last reported week; a running one at the latest week.
     const span = closed ? weekly.slice(0, last + 1) : weekly;
-    runs.push({ ratios: adjustedRatioSeries(span, seasonal, breakEven), closed });
+    runs.push({
+      ratios: adjustedRatioSeries(span, seasonal, breakEven),
+      closed,
+      banked: bankedShareSeries(span, breakEven, data.capitalization),
+    });
   }
   closingCalibration = calibrateClosingWatch(runs);
   return closingCalibration;
@@ -853,7 +857,7 @@ export function getClosingWatch(): ClosingWatchShow[] {
       adjustedRatio,
     })) continue;
 
-    const estimate = estimateClosing(ratios, calibration);
+    const estimate = estimateClosing(ratios, calibration, bankedShareSeries(weekly, breakEven, data.capitalization));
     results.push({
       slug,
       title: show.title,
@@ -875,6 +879,7 @@ export function getClosingWatch(): ClosingWatchShow[] {
         weeksUnder: estimate.weeksUnder,
         thresholdPct: Math.round(estimate.threshold * 100),
         medianWeeks: estimate.median,
+        cushion: estimate.cushion,
       } : null,
     });
   }

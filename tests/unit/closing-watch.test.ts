@@ -16,6 +16,7 @@ import {
   weeksUnderThreshold,
   estimateClosing,
   addWeeks,
+  bankedShareSeries,
   weeksBelowBreakEven,
   CLOSING_WATCH_MIN_WEEKS,
   type ClosingWatchInput,
@@ -83,9 +84,9 @@ test('spells: one observation per drop under each threshold, weeks to the end, r
   const ratios = [null, 1.1, 0.95, 1.05, 0.85, 0.85];
   const obs = spellObservations(ratios, true);
   // Under 100%: dropped at index 2 and again at 4 (end = 5).
-  assert.deepEqual(obs[3], [{ weeks: 3, closed: true, under: 1 }, { weeks: 1, closed: true, under: 1 }]);
+  assert.deepEqual(obs[3], [{ weeks: 3, closed: true, under: 1, cushion: null }, { weeks: 1, closed: true, under: 1, cushion: null }]);
   // Under 90%: once, at index 4.
-  assert.deepEqual(obs[2], [{ weeks: 1, closed: true, under: 1 }]);
+  assert.deepEqual(obs[2], [{ weeks: 1, closed: true, under: 1, cushion: null }]);
   assert.deepEqual(obs[0], []);
   assert.equal(calibrateClosingWatch([{ ratios, closed: false }])[3][0].closed, false);
 });
@@ -126,4 +127,29 @@ test('helpers: addWeeks, consecutive weeks under break-even over the full run, m
   assert.equal(weeksBelowBreakEven([80, null, 90, 70, 70, 70, 70, 70, 70, 70, 110], 100), 9);
   assert.equal(formatMonthYear('2027-01-24'), 'Jan 2027');
   assert.equal(formatMonthYear(null), null);
+});
+
+test('cushion: banked profit splits the comparison when that side has enough history, else everyone counts', () => {
+  // 100 a week against break-even 80 for 10 weeks, then 50: banked share of a 400 capitalization.
+  const banked = bankedShareSeries([...Array(10).fill(100), 50, 50], 80, 400);
+  assert.equal(banked[9], 0.5);
+  assert.equal(banked[11], (200 - 60) / 400);
+  assert.deepEqual(bankedShareSeries([100], 80, null), []);
+  const obs = spellObservations([null, 1.1, 0.8, 0.8], true, [0, 0.1, 0.6, 0.5]);
+  assert.equal(obs[2][0].cushion, 0.6);
+
+  const cal: ClosingObservation[][] = [[], [], [], []];
+  for (let w = 1; w <= 20; w++) cal[2].push({ weeks: w, closed: true, cushion: 0.1 }); // thin: close within 1..20
+  for (let w = 41; w <= 60; w++) cal[2].push({ weeks: w, closed: true, cushion: 0.9 }); // banked: 41..60
+  const ratios = [...Array(10).fill(1.05), 0.85];
+  assert.equal(estimateClosing(ratios, cal, [...Array(10).fill(0), 0.05])!.cushion, 'thin');
+  assert.equal(estimateClosing(ratios, cal, [...Array(10).fill(0), 0.05])!.median, 10);
+  assert.equal(estimateClosing(ratios, cal, [...Array(10).fill(0), 0.8])!.median, 50);
+  // No capitalization: pooled.
+  const pooled = estimateClosing(ratios, cal)!;
+  assert.equal(pooled.cushion, null);
+  assert.equal(pooled.sample, 40);
+  // Too few on its own side: pooled.
+  const thinOnly = cal.map((c) => c.filter((o) => o.cushion! < 0.5 || o.weeks > 55));
+  assert.equal(estimateClosing(ratios, thinOnly, [...Array(10).fill(0), 0.8])!.cushion, null);
 });

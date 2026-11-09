@@ -16,6 +16,12 @@
  * 3. A running show under a threshold for E weeks gets the Kaplan-Meier
  *    estimate over past spells that also stayed under for E weeks, shifted
  *    by E: "of past shows stuck this far down this long, when did they close".
+ * 4. Reserves are not public, so the cushion is the run's banked operating
+ *    profit (weekly gross minus break-even, summed from the first week of the
+ *    run) as a share of capitalization when the spell began. Shows that had
+ *    banked half their capitalization ran far longer once under (median 68 vs
+ *    21 weeks at 90%), so a live show is compared with past spells on its own
+ *    side of that line whenever that side alone has enough history.
  *
  * Time is calendar weeks inside the show's final continuous run (a gap of
  * more than CLOSING_WATCH_MAX_GAP_WEEKS, such as the 2020-21 shutdown, starts
@@ -34,6 +40,9 @@ export const CLOSING_WATCH_MIN_CLOSINGS = 8;
 
 /** Missing weeks in a row that end a run (a shutdown, a transfer), not a skipped report. */
 export const CLOSING_WATCH_MAX_GAP_WEEKS = 4;
+
+/** Banked operating profit, as a share of capitalization, that splits "had a cushion" from "did not". */
+export const CLOSING_WATCH_CUSHION_SPLIT = 0.5;
 
 /** Designations whose closing is not driven by box office. */
 const NOT_BOX_OFFICE_DRIVEN = new Set(['Nonprofit', 'Tour Stop']);
@@ -120,12 +129,36 @@ export function adjustedRatioSeries(
   return out;
 }
 
+/**
+ * Banked operating profit per week over the final run (aligned with
+ * adjustedRatioSeries): running sum of gross minus break-even from the run's
+ * first week, over capitalization. Empty without a capitalization.
+ */
+export function bankedShareSeries(
+  weekly: Array<number | null | undefined>,
+  breakEven: number,
+  capitalization: number | null | undefined,
+): Array<number | null> {
+  const start = finalRunStart(weekly);
+  if (start < 0 || !(breakEven > 0) || !capitalization || !(capitalization > 0)) return [];
+  const out: Array<number | null> = [];
+  let banked = 0;
+  for (let i = start; i < weekly.length; i++) {
+    const g = weekly[i];
+    if (g != null && g > 0) banked += g - breakEven;
+    out.push(banked / capitalization);
+  }
+  return out;
+}
+
 export interface ClosingObservation {
   /** Weeks from the spell's start to closing (closed) or to now (still running). */
   weeks: number;
   closed: boolean;
   /** Weeks the spell stayed under the threshold before recovering (or to the end). Absent = the whole span. */
   under?: number;
+  /** Banked share of capitalization when the spell began (bankedShareSeries); null/absent = unknown. */
+  cushion?: number | null;
 }
 
 /**
@@ -133,13 +166,17 @@ export interface ClosingObservation {
  * ending at the closing week (closed) or the latest week (running); a null
  * week keeps the previous state.
  */
-export function spellObservations(ratios: Array<number | null>, closed: boolean): ClosingObservation[][] {
+export function spellObservations(
+  ratios: Array<number | null>,
+  closed: boolean,
+  banked: Array<number | null> = [],
+): ClosingObservation[][] {
   const out: ClosingObservation[][] = CLOSING_WATCH_THRESHOLDS.map(() => []);
   const end = ratios.length - 1;
   CLOSING_WATCH_THRESHOLDS.forEach((threshold, t) => {
     let start = -1;
     const close = (until: number) => {
-      out[t].push({ weeks: end - start, closed, under: until - start });
+      out[t].push({ weeks: end - start, closed, under: until - start, cushion: banked[start] ?? null });
       start = -1;
     };
     ratios.forEach((r, i) => {
@@ -154,11 +191,11 @@ export function spellObservations(ratios: Array<number | null>, closed: boolean)
 
 /** Pools observations from every run into one list per threshold. */
 export function calibrateClosingWatch(
-  runs: Array<{ ratios: Array<number | null>; closed: boolean }>,
+  runs: Array<{ ratios: Array<number | null>; closed: boolean; banked?: Array<number | null> }>,
 ): ClosingObservation[][] {
   const pooled: ClosingObservation[][] = CLOSING_WATCH_THRESHOLDS.map(() => []);
   for (const run of runs) {
-    spellObservations(run.ratios, run.closed).forEach((obs, t) => pooled[t].push(...obs));
+    spellObservations(run.ratios, run.closed, run.banked).forEach((obs, t) => pooled[t].push(...obs));
   }
   return pooled;
 }
@@ -203,6 +240,8 @@ export interface ClosingEstimate {
   p25: number | null;
   median: number;
   p75: number | null;
+  /** Which past spells it was compared with: those that had banked at least / less than CLOSING_WATCH_CUSHION_SPLIT, or all (null). */
+  cushion: 'banked' | 'thin' | null;
 }
 
 /** Calendar weeks the series has been under `threshold` (null weeks keep state). */
@@ -219,7 +258,11 @@ export function weeksUnderThreshold(ratios: Array<number | null>, threshold: num
 }
 
 /** The estimate for a live show's ratio series, or null without enough history behind it. */
-export function estimateClosing(ratios: Array<number | null>, calibration: ClosingObservation[][]): ClosingEstimate | null {
+export function estimateClosing(
+  ratios: Array<number | null>,
+  calibration: ClosingObservation[][],
+  banked: Array<number | null> = [],
+): ClosingEstimate | null {
   let current: number | null = null;
   for (let i = ratios.length - 1; i >= 0 && current == null; i--) current = ratios[i];
   if (current == null) return null;
@@ -228,9 +271,15 @@ export function estimateClosing(ratios: Array<number | null>, calibration: Closi
   const threshold = CLOSING_WATCH_THRESHOLDS[t];
   const weeksUnder = weeksUnderThreshold(ratios, threshold);
   // Same position: past spells that also stayed under this long, and lasted this long.
-  const conditional = (calibration[t] ?? [])
-    .filter((o) => o.weeks >= weeksUnder && (o.under ?? o.weeks) >= weeksUnder)
-    .map((o) => ({ weeks: o.weeks - weeksUnder, closed: o.closed }));
+  const same = (calibration[t] ?? []).filter((o) => o.weeks >= weeksUnder && (o.under ?? o.weeks) >= weeksUnder);
+  // Same cushion: compare with past spells that began with as much (or as little) banked, when there are enough.
+  const myCushion = banked[ratios.length - 1 - weeksUnder] ?? null;
+  const side = myCushion == null ? null : myCushion >= CLOSING_WATCH_CUSHION_SPLIT ? 'banked' : 'thin';
+  const sameSide = side == null ? [] : same.filter((o) => o.cushion != null && (o.cushion >= CLOSING_WATCH_CUSHION_SPLIT) === (side === 'banked'));
+  const enough = (xs: ClosingObservation[]) =>
+    xs.length >= CLOSING_WATCH_MIN_SAMPLE && xs.filter((o) => o.closed).length >= CLOSING_WATCH_MIN_CLOSINGS;
+  const cushion = side != null && enough(sameSide) ? side : null;
+  const conditional = (cushion ? sameSide : same).map((o) => ({ weeks: o.weeks - weeksUnder, closed: o.closed }));
   const closings = conditional.filter((o) => o.closed).length;
   if (conditional.length < CLOSING_WATCH_MIN_SAMPLE || closings < CLOSING_WATCH_MIN_CLOSINGS) return null;
   const median = kaplanMeierQuantile(conditional, 0.5);
@@ -243,6 +292,7 @@ export function estimateClosing(ratios: Array<number | null>, calibration: Closi
     p25: kaplanMeierQuantile(conditional, 0.25),
     median,
     p75: kaplanMeierQuantile(conditional, 0.75),
+    cushion,
   };
 }
 
