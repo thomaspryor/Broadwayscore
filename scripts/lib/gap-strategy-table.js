@@ -12,7 +12,11 @@
 const STRATEGY_FLAGS = Object.freeze({
   REFETCH_FREE: Object.freeze({ enabled: true, cost: 'F', note: 'fetchPage free tiers only (cookies-plain, playwright)' }),
   BROWSER_SESSION: Object.freeze({ enabled: true, cost: 'B', note: 'headed subscriber Chrome via browser-outlet-adapters' }),
-  ARCHIVE: Object.freeze({ enabled: true, cost: 'F', note: 'earliest 200 Wayback capture (pre-paywall)' }),
+  // Stage 3 live pilots 2026-11-09 (30% bar applied per recency band):
+  // recent shows 0/20 accepted (17 archive_empty: Wayback has no capture of a
+  // review this new; 3 not_longer) -> OFF for recent shows; historic shows
+  // (--historic-only) 9/20 = 45% accepted -> stays ON for historic shows.
+  ARCHIVE: Object.freeze({ enabled: true, historicOnly: true, cost: 'F', note: 'earliest non-teaser 200 Wayback capture (pre-paywall); historic shows only' }),
   // DISABLED 2026-11-09 by the Stage 2 decision rule: the NO_URL pilot (20
   // daily-mail / mail-on-sunday files) accepted 0/20, and The Stage
   // URL_WRONG_PAGE run 0/14, all no_serp_match. Part of that is a provider
@@ -62,13 +66,14 @@ const URL_STRATEGIES = new Set(['REFETCH_FREE', 'BROWSER_SESSION', 'ARCHIVE']);
  * @param {string|null} [a.only] restrict to one strategy
  * @returns {{strategy: string|null, skipped: Array<{strategy:string, reason:string}>}}
  */
-function selectStrategy({ gapClass, hasUrl, hasAdapter, eligible = () => ({ ok: true, reason: 'not_gated' }), runGates = {}, flags = STRATEGY_FLAGS, only = null }) {
+function selectStrategy({ gapClass, hasUrl, hasAdapter, recency = null, eligible = () => ({ ok: true, reason: 'not_gated' }), runGates = {}, flags = STRATEGY_FLAGS, only = null }) {
   const order = CLASS_STRATEGIES[gapClass] || [];
   const skipped = [];
   for (const s of order) {
     if (only && s !== only) continue;
     const f = flags[s];
     if (!f || !f.enabled) { skipped.push({ strategy: s, reason: 'disabled' }); continue; }
+    if (f.historicOnly && recency === 'recent') { skipped.push({ strategy: s, reason: 'disabled_recent' }); continue; }
     if (URL_STRATEGIES.has(s) && !hasUrl) { skipped.push({ strategy: s, reason: 'no_url' }); continue; }
     if (s === 'BROWSER_SESSION' && !hasAdapter) { skipped.push({ strategy: s, reason: 'no_adapter' }); continue; }
     const g = runGates[s];

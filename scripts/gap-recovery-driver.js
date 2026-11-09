@@ -123,6 +123,7 @@ function planCandidates({ dir, shows, outlets, ledgerIndex, runGates }) {
       gapClass: row.gapClass,
       hasUrl: !!review.url,
       hasAdapter: !!adapterFor(review.outletId),
+      recency: row.recency,
       eligible,
       runGates: { ...runGates, ...extraGates },
       only: OPTS.only,
