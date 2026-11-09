@@ -63,3 +63,10 @@ test('a no-author cooldown does not hide a file whose text now yields a name', (
   const out = orderCriticCandidates([named, bare], { now });
   assert.deepEqual(out, [named]);
 });
+
+test('BRO-7165 review: refuses sentence words, photo credits', async () => {
+  const { extractMarkAspenByline, extractFirstNightByline } = (await import('node:module')).createRequire(import.meta.url)('../../scripts/lib/critic-byline-backfill.js');
+  assert.equal(extractMarkAspenByline('Tosca Review by Claire This production was superb'), null);
+  assert.equal(extractFirstNightByline('Great show. Photos By Marc Brenner Share this: x'), null);
+  assert.equal((extractFirstNightByline('Great show. By Guillermo Nazara Share this: x') || {}), 'Guillermo Nazara');
+});

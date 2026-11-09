@@ -351,7 +351,7 @@ function orderCriticCandidates(entries, { openShowIds = new Set(), now = Date.no
     if (!at) return true;
     // BRO-7165: a cooldown exists to avoid re-fetching a page; a name the stored text already
     // prints costs no fetch, so a no-author stamp from before a pattern existed must not hide it.
-    if (attempt.result === 'no-author' && d.fullText && extractCriticFromFullText(u.outletId || d.outletId, d.fullText, { showTitle: d.showTitle })) return true;
+    if (attempt.result === 'no-author' && attempt.textV !== 2 && d.fullText && extractCriticFromFullText(u.outletId || d.outletId, d.fullText, { showTitle: d.showTitle })) return true;
     const days = attempt.result === 'fetch-error' ? FETCH_ERROR_RETRY_DAYS : retryDays;
     return at <= now - days * 24 * 3600 * 1000;
   });
@@ -378,7 +378,7 @@ function loadOpenShowIds() {
 
 function stampAttempt(u, result) {
   if (dryRun) return;
-  u.data.criticBackfillAttempt = { at: new Date().toISOString(), result };
+  u.data.criticBackfillAttempt = { at: new Date().toISOString(), result, textV: 2 }; // textV 2 (BRO-7165): stored-text patterns already tried, the cooldown bypass fires once
   const r = safeWriteReview(u.filePath, u.data);
   if (r && r.lockedSkipped) lockedSkipCount++;
 }

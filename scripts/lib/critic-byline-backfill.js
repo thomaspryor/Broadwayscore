@@ -47,6 +47,7 @@ function hasFullSurname(name) {
 }
 
 const MONTH = '(?:January|February|March|April|May|June|July|August|September|October|November|December)';
+const SENTENCE_WORDS = new Set(['this', 'the', 'a', 'an', 'in', 'it', 'its', 'of', 'on', 'at', 'for', 'with', 'as', 'when', 'what', 'how', 'why', 'is', 'are', 'was', 'and', 'but', 'that', 'there', 'these', 'those', 'from', 'to', 'by']);
 const NAME_WORD = String.raw`\p{Lu}[\p{L}'’-]+`;
 
 // markaspen (WordPress): "Tosca Posted by markaspen Warmth With Steel ... Review by Claire Alexander Puccini's ..."
@@ -56,6 +57,7 @@ function extractMarkAspenByline(text) {
   const head = String(text || '').slice(0, 600).replace(/\s+/g, ' ');
   const m = new RegExp(String.raw`\bReview by\s+(${NAME_WORD})\s+(${NAME_WORD})(?:\s+(${NAME_WORD}))?`, 'u').exec(head);
   if (!m) return null;
+  if (SENTENCE_WORDS.has(m[2].toLowerCase())) return null; // "Review by Claire This production ..."
   const two = `${m[1]} ${m[2]}`;
   if (m[3] && !/['’]s$/.test(m[3])) {
     const three = `${two} ${m[3]}`;
@@ -68,7 +70,10 @@ function extractMarkAspenByline(text) {
 function extractFirstNightByline(text) {
   const tail = String(text || '').replace(/\s+/g, ' ').slice(-900);
   const m = new RegExp(String.raw`\bBy\s+(${PRINTED_NAME}?)\s+Share this\b`, 'u').exec(tail);
-  return m ? printedPerson(m[1]) : null;
+  if (!m) return null;
+  // "Photos By Marc Brenner Share this:" is a photo credit, not the critic.
+  if (/\b(?:photos?|photography|photographs?|images?|pictures?|credits?|illustrations?|design|designed)\s*(?:\w+\s+)?$/i.test(tail.slice(Math.max(0, m.index - 30), m.index))) return null;
+  return printedPerson(m[1]);
 }
 
 // A Youngish Perspective (WordPress): "<standfirst> Lucy Holz April 12, 2025 <stars> , Review , Theatre".
