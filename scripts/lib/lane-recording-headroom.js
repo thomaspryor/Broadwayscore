@@ -19,4 +19,15 @@ function preImportTotalBytes({ maxTotalBytes, maxNightBytes }, incoming) {
   return Math.max(0, maxTotalBytes - room);
 }
 
-module.exports = { preImportTotalBytes, MAX_INCOMING_NIGHTS };
+/**
+ * An over-budget artifact whose night is older than every night the archive keeps would be evicted by retention the
+ * moment it was imported, so refusing it loses nothing and must not turn the job red (five Sep 28 to Oct 29 nights did).
+ * @param {string} night YYYY-MM-DD of the refused artifact
+ * @param {string[]} archivedNights nights currently in the archive (any show)
+ */
+function isBeyondRetention(night, archivedNights) {
+  const kept = (archivedNights || []).filter(Boolean).sort();
+  return kept.length > 0 && String(night) < kept[0];
+}
+
+module.exports = { preImportTotalBytes, isBeyondRetention, MAX_INCOMING_NIGHTS };

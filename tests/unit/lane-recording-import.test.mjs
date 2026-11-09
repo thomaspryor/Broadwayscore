@@ -335,3 +335,10 @@ test('BRO-7167: the headroom is bounded and the import script uses it', () => {
   assert.equal(preImportTotalBytes({ maxTotalBytes: 1000, maxNightBytes: 10 }, [3, 50, 0]), 1000 - 13, 'each artifact reserves its own size, capped at a night');
   assert.match(fs.readFileSync(fileURLToPath(new URL('../../scripts/lane-recording-import.js', import.meta.url)), 'utf8'), /preImportTotalBytes\([^)]*work\.map\(\(w\) => imp\.dirBytes\(w\.dir\)\)\)/, 'the script sizes the headroom from the downloaded artifacts');
 });
+
+test('BRO-7167: an over-budget night older than every retained night is beyond retention (warn, not red)', async () => {
+  const { isBeyondRetention } = require('../../scripts/lib/lane-recording-headroom');
+  assert.equal(isBeyondRetention('2026-09-28', ['2026-10-30', '2026-11-08']), true);
+  assert.equal(isBeyondRetention('2026-11-08', ['2026-10-30', '2026-11-08']), false, 'a night inside the kept range still fails loudly');
+  assert.equal(isBeyondRetention('2026-09-28', []), false, 'an empty archive cannot call anything old');
+});
