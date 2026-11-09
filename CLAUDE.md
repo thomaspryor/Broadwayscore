@@ -100,7 +100,7 @@ Query: `npm run db:build` then `node scripts/query.js "SQL"`. Use `db:build:full
 Run `validate-data.js` before pushing. Secrets via `env:`. Local keys in `.env`.
 
 ### Commercial (`/biz`)
-Config: `src/config/commercial.ts`. Components: `src/components/biz/`. Never mark `recouped: true` uncited. **Purpose: extrapolate, don't play it safe** (owner, repeated every session): our marked best guess where the record is silent IS the feature; never ask the owner whether to show an estimate or prediction. `cloud-memory/project_investment_tracker_purpose.md`.
+Config: `src/config/commercial.ts`. Components: `src/components/biz/`. Never mark `recouped: true` uncited.
 
 ### Content Quality
 5 tiers: complete→truncated→excerpt→stub→invalid. Flags `wrongProduction`, `wrongShow`, `isRoundupArticle` → excluded.
