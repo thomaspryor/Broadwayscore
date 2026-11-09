@@ -141,6 +141,10 @@ const ADAPTERS = Object.freeze({
     },
   }),
   wsj: Object.freeze({
+    // Stage 4 live batch 2026-11-09: 1/20 accepted. 16 stored urls answer a
+    // real 404 ("Page Not Found", confirmed in a fresh browser): wrong urls,
+    // work for url rediscovery, not the session. Off for the nightly.
+    nightly: false,
     outletIds: ['wsj'],
     cookieDomain: 'wsj.com',
     testUrl: 'https://www.wsj.com/articles/smash-review-an-inside-broadway-musical-bdcafc62',
