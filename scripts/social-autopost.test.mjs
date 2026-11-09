@@ -1731,3 +1731,101 @@ test('short captions drop the question before clipping a show name past recognit
   assert.doesNotMatch(long.bluesky, /^Clifford… /);
   assert.match(long.bluesky, /^Clifford Odets’ Waiting/);
 });
+
+// BRO-7188: a Buffer plan lapse (2026-11-08: limit 3, 7 connected, 4 of ours locked)
+// pages the owner instead of riding the workflow's digest-only failure.
+const planCh = (service, plan, extra = {}) => ({ id: `ch-${service}`, service, key: service, set: 'broadway', network: service, organizationId: 'org', orgPlan: plan, ...extra });
+const lapsed = { channelCount: 7, limit: 3 };
+
+test('plan limit: locked channels in an org over its plan limit raise the alert, naming them', () => {
+  const st = bufferLib.planLimitStatus([planCh('facebook', lapsed, { isLocked: true }), planCh('twitter', lapsed, { isLocked: true }), planCh('instagram', lapsed)]);
+  assert.equal(st.state, 'alert');
+  assert.match(st.message, /allows 3 channel\(s\) but 7 are connected, so Buffer locked facebook, twitter\./);
+  assert.match(st.message, /renewed or upgraded/);
+});
+
+test('plan limit: a lock the plan does not explain, an unlimited plan, or a channel we ignore is not a plan problem', () => {
+  assert.deepEqual(bufferLib.planLimitStatus([planCh('facebook', { channelCount: 3, limit: 7 }, { isLocked: true })]), { state: 'clear' });
+  assert.deepEqual(bufferLib.planLimitStatus([planCh('facebook', { channelCount: 9, limit: null }, { isLocked: true })]), { state: 'clear' });
+  assert.deepEqual(bufferLib.planLimitStatus([planCh('facebook', lapsed, { isLocked: true, set: null, key: null }), planCh('bluesky', lapsed)]), { state: 'clear' });
+  assert.deepEqual(bufferLib.planLimitStatus([planCh('facebook', lapsed, { isDisconnected: true })]), { state: 'clear' });
+});
+
+test('plan limit: an unread plan neither pages nor re-arms', () => {
+  assert.deepEqual(bufferLib.planLimitStatus([planCh('facebook', null, { isLocked: true }), planCh('bluesky', lapsed)]), { state: 'unknown' });
+});
+
+test('plan limit: routePlanStatus pages on a lapse, re-arms when clear, does nothing when unknown, never throws', async () => {
+  const { routePlanStatus, PLAN_LIMIT_KEY } = require('./social-autopost/plan-alert.js');
+  const calls = [];
+  const router = (over = {}) => ({
+    routeAlert: async o => { calls.push(['route', o]); return { action: 'human', delivered: true, ...over }; },
+    resolveCondition: k => { calls.push(['resolve', k]); return true; },
+  });
+  const alert = bufferLib.planLimitStatus([planCh('facebook', lapsed, { isLocked: true })]);
+  assert.deepEqual(await routePlanStatus(alert, { router: router() }), { sent: 'human' });
+  assert.equal(calls[0][1].conditionKey, PLAN_LIMIT_KEY);
+  assert.equal(calls[0][1].disposition, 'human');
+  assert.match(calls[0][1].description, /Buffer locked facebook/);
+  assert.match((await routePlanStatus(alert, { router: router({ delivered: false }) })).problem, /did not send/);
+  calls.length = 0;
+  assert.deepEqual(await routePlanStatus({ state: 'clear' }, { router: router() }), { resolved: true });
+  assert.deepEqual(calls, [['resolve', PLAN_LIMIT_KEY]]);
+  calls.length = 0;
+  assert.deepEqual(await routePlanStatus({ state: 'unknown' }, { router: router() }), {});
+  assert.deepEqual(calls, []);
+  const broken = { routeAlert: async () => { throw new Error('resend down'); }, resolveCondition: () => false };
+  assert.match((await routePlanStatus(alert, { router: broken })).problem, /alerting the owner failed: resend down/);
+});
+
+test('plan limit: run.js records the status for the alert step and returns the problem', () => {
+  const run = require('./social-autopost/run.js');
+  const file = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'plan-')), 'buffer-plan.json');
+  const saved = process.env.BUFFER_PLAN_STATUS_FILE;
+  process.env.BUFFER_PLAN_STATUS_FILE = file;
+  try {
+    assert.match(run.recordPlanStatus([planCh('facebook', lapsed, { isLocked: true })]), /Buffer locked facebook/);
+    assert.equal(JSON.parse(fs.readFileSync(file, 'utf8')).state, 'alert');
+    assert.equal(run.recordPlanStatus([planCh('facebook', lapsed)]), null);
+    assert.equal(JSON.parse(fs.readFileSync(file, 'utf8')).state, 'clear');
+  } finally {
+    if (saved === undefined) delete process.env.BUFFER_PLAN_STATUS_FILE; else process.env.BUFFER_PLAN_STATUS_FILE = saved;
+  }
+});
+
+test('plan limit: the key pages the owner with a billing action', () => {
+  const pw = require('./lib/page-worthy-alerts.js');
+  assert.equal(pw.isPageWorthy('social:buffer-plan-limit'), true);
+  assert.match(pw.ownerActionFor('social:buffer-plan-limit'), /Buffer plan/);
+});
+
+test('plan limit: listChannels carries each org plan, and falls back to no plan when Buffer refuses the fields', async () => {
+  const http = require('http');
+  for (const refuse of [false, true]) {
+    const server = http.createServer((req, res) => {
+      let body = '';
+      req.on('data', c => { body += c; });
+      req.on('end', () => {
+        const { query } = JSON.parse(body);
+        let out;
+        if (/limits/.test(query)) out = refuse ? { errors: [{ message: 'Cannot query field "limits"' }] } : { data: { account: { organizations: [{ id: 'o1', name: 'BSC', channelCount: 7, limits: { channels: 3 } }] } } };
+        else if (/organizations/.test(query)) out = { data: { account: { organizations: [{ id: 'o1', name: 'BSC' }] } } };
+        else out = { data: { channels: [{ id: 'c1', name: 'fb', service: 'facebook', isLocked: true }] } };
+        res.writeHead(200, { 'Content-Type': 'application/json', 'X-Ratelimit-Remaining': '100', 'X-Ratelimit-Reset': '1793051582' });
+        res.end(JSON.stringify(out));
+      });
+    });
+    await new Promise(r => server.listen(0, '127.0.0.1', r));
+    const saved = { url: process.env.BUFFER_API_URL, key: process.env.BUFFER_API_KEY };
+    process.env.BUFFER_API_URL = `http://127.0.0.1:${server.address().port}`;
+    process.env.BUFFER_API_KEY = 'fake';
+    try {
+      const chs = await bufferLib.listChannels();
+      assert.equal(chs.length, 1);
+      assert.deepEqual(chs[0].orgPlan, refuse ? null : { channelCount: 7, limit: 3 });
+    } finally {
+      for (const [k, v] of [['BUFFER_API_URL', saved.url], ['BUFFER_API_KEY', saved.key]]) { if (v === undefined) delete process.env[k]; else process.env[k] = v; }
+      await new Promise(r => server.close(r));
+    }
+  }
+});

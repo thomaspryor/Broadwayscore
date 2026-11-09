@@ -133,6 +133,10 @@ const PAGE_WORTHY_CONDITION_KEYS = new Set([
   // BRO-6764: the Mac's checkout-sync heartbeat went quiet (off / FileVault login screen). Own key
   // so the digest check re-arming cannot resolve it. Emitted from check-morning-digest-sent.js.
   'mac:checkin-heartbeat-dead',
+  // BRO-7188: Buffer's plan lapsed or was downgraded and locked our social channels
+  // (2026-11-08: 6h of failed posting, digest-only, nobody knew). Only the owner can
+  // pay. Emitted by scripts/social-autopost/run.js reportPlanLimit().
+  'social:buffer-plan-limit',
 
   // Owner request 2026-10-05 (BRO-4719): "How will I ever know that they're
   // waiting on me for a decision? I didn't even know they existed!" and "don't
@@ -312,6 +316,7 @@ const OWNER_ACTIONS = {
   'alert-router:usage-limit-exceeded': 'Raise or reset the Linear plan limit (a billing decision only you can make).',
   'mac:morning-digest-missing': 'Nothing is needed from you. The morning email did not send; the failed run is flagged for a fix.',
   'mac:checkin-heartbeat-dead': 'Check the Mac is on, awake and signed in.',
+  'social:buffer-plan-limit': 'Renew or upgrade the Buffer plan (a billing decision only you can make).',
   'owner-decisions:new': 'Answer the decision.',
   // BRO-5542: test-ugc-roundtrip.yml starts a START-NOW fix card first and the
   // email says whether it did; the owner has nothing to do either way.

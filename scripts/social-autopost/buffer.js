@@ -60,15 +60,55 @@ async function gql(query, variables = {}) {
   return body.data;
 }
 
-/** All channels across the account's organizations: [{id, name, service, isQueuePaused, network}] */
+/**
+ * The org's plan seat count, read with the org list (BRO-7188) so it costs no extra
+ * request: {channelCount, limit} (limit null = unlimited), or null when Buffer
+ * stops answering those fields, which then only loses the plan diagnosis.
+ */
+async function listOrganizations() {
+  try {
+    const data = await gql('query { account { organizations { id name channelCount limits { channels } } } }');
+    return data.account.organizations.map(o => ({ id: o.id, name: o.name, plan: { channelCount: o.channelCount, limit: o.limits ? o.limits.channels : null } }));
+  } catch (e) {
+    if (!/^Buffer: /.test(e.message)) throw e; // HTTP, network and rate errors are real; only a schema answer falls back
+    console.log(`::warning::Buffer would not report plan limits (${e.message.slice(0, 160)}); posting continues without the plan check`);
+    const data = await gql('query { account { organizations { id name } } }');
+    return data.account.organizations.map(o => ({ id: o.id, name: o.name, plan: null }));
+  }
+}
+
+/** All channels across the account's organizations: [{id, name, service, isQueuePaused, network, orgPlan}] */
 async function listChannels() {
-  const data = await gql('query { account { organizations { id name } } }');
   const out = [];
-  for (const org of data.account.organizations) {
+  for (const org of await listOrganizations()) {
     const d = await gql('query Ch($org: OrganizationId!) { channels(input: { organizationId: $org }) { id name displayName service isQueuePaused isDisconnected isLocked } }', { org: org.id });
-    for (const ch of d.channels) out.push({ ...ch, organizationId: org.id, network: SERVICE_TO_NETWORK[ch.service] || null });
+    for (const ch of d.channels) out.push({ ...ch, organizationId: org.id, orgPlan: org.plan, network: SERVICE_TO_NETWORK[ch.service] || null });
   }
   return out;
+}
+
+/**
+ * Pure (BRO-7188): is Buffer's plan the reason our channels are locked? Buffer locks
+ * channels past the plan's seat count when a plan lapses or is downgraded, and only
+ * the owner can pay, so this pages them (run.js) instead of waiting for the digest.
+ * `channels` are tagChannels() output (set non-null = one we post to).
+ *   {state: 'alert', message}  a channel of ours is locked and its org is over its limit
+ *   {state: 'clear'}           plans were read and none explains a lock (re-arms the page)
+ *   {state: 'unknown'}         a plan could not be read: neither page nor re-arm
+ */
+function planLimitStatus(channels) {
+  const ours = channels.filter(c => c.set);
+  if (ours.some(c => !c.orgPlan)) return { state: 'unknown' };
+  const over = c => c.orgPlan.limit !== null && c.orgPlan.limit !== undefined && c.orgPlan.channelCount > c.orgPlan.limit;
+  const locked = ours.filter(c => c.isLocked && over(c));
+  if (!locked.length) return { state: 'clear' };
+  const { limit, channelCount } = locked[0].orgPlan;
+  const names = locked.map(c => c.key || c.service).join(', ');
+  return {
+    state: 'alert',
+    message: `Buffer's plan allows ${limit} channel(s) but ${channelCount} are connected, so Buffer locked ${names}. ` +
+      'Posts to those accounts are not going out until the Buffer plan is renewed or upgraded (or channels are removed in Buffer).',
+  };
 }
 
 /** Network-specific required metadata (Facebook and Instagram require a post type). */
@@ -223,4 +263,4 @@ function listingProblem(posts, expected) {
   return expected.some(id => ids.has(id)) ? null : `listing returned none of the ${expected.length} post(s) the ledger has scheduled in the window`;
 }
 
-module.exports = { gql, parseRateHeaders, rateLimit, quotaProblem, listChannelPosts, busyDays, listingProblem, localDay, listChannels, createImagePost, findExistingPost, getPost, deletePost, validateChannels, metadataFor, SERVICE_TO_NETWORK };
+module.exports = { gql, parseRateHeaders, rateLimit, quotaProblem, listChannelPosts, busyDays, listingProblem, localDay, listChannels, planLimitStatus, createImagePost, findExistingPost, getPost, deletePost, validateChannels, metadataFor, SERVICE_TO_NETWORK };
