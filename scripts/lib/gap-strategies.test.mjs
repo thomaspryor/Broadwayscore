@@ -81,6 +81,13 @@ test('ARCHIVE: every capture thin is a rejection (evidence), every snapshot unre
   }));
   assert.equal(unreachable.outcome, 'non_evidence');
   assert.match(unreachable.reason, /^archive_unavailable/);
+  // one capture thin, the other unreachable: the unreachable one may be the full copy
+  const mixed = await S.archive(c, deps({
+    listCaptureTimestamps: async () => ['20190101000000', '20200101000000'],
+    fetchText: async (u) => { if (u.includes('2020')) throw new Error('HTTP 503'); return ARTICLE; },
+    extractArticleText: () => 'Opening paragraph only. '.repeat(10),
+  }));
+  assert.equal(mixed.outcome, 'non_evidence');
 });
 
 test('listCaptureTimestamps: earliest-first distinct captures, no hardcoded year bound', async () => {

@@ -70,8 +70,11 @@ function publishLedgers({ repoDir, files, message, remote = 'origin', branch = '
   let lastErr = null;
   for (let i = 1; i <= attempts; i++) {
     try {
-      git(['fetch', '--quiet', remote, branch], { timeout: 180000 });
-      const base = git(['rev-parse', 'FETCH_HEAD']).trim();
+      // A private ref, never FETCH_HEAD: other jobs in the shared checkout
+      // fetch other branches and would swap the base under us.
+      const privRef = `refs/gap-publish/${branch}`;
+      git(['fetch', '--quiet', remote, `+refs/heads/${branch}:${privRef}`], { timeout: 180000 });
+      const base = git(['rev-parse', privRef]).trim();
       const changes = [];
       const added = {};
       for (const f of files) {
@@ -124,7 +127,10 @@ function seedStateFile({ repoDir, rel, localPath, remote = 'origin', branch = 'm
   try { workText = fs.readFileSync(path.join(repoDir, rel), 'utf8'); } catch { /* none */ }
   let stateText = '';
   try { stateText = fs.readFileSync(localPath, 'utf8'); } catch { /* none */ }
-  const merged = unionLines(unionLines(stateText, originText).text, workText);
+  // Drop torn/non-JSON lines on the state side too: a torn tail left there
+  // would be joined to the next appended row and lose both.
+  const cleanState = unionLines('', stateText).text;
+  const merged = unionLines(unionLines(cleanState, originText).text, workText);
   fs.mkdirSync(path.dirname(localPath), { recursive: true });
   const tmp = `${localPath}.tmp-${process.pid}`;
   fs.writeFileSync(tmp, merged.text);

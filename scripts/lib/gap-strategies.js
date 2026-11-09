@@ -114,7 +114,10 @@ async function archive(c, deps = defaultDeps()) {
     return { ok: false, outcome: 'non_evidence', reason: `archive_unavailable: ${String((lastFetchError && lastFetchError.message) || 'bad snapshot url').slice(0, 80)}` };
   }
   // A thin copy or extractor miss on any capture is evidence; soft-404
-  // snapshots alone say nothing about the review.
+  // snapshots alone say nothing about the review. But when some capture
+  // could not be fetched at all, that one may have been the full copy: not
+  // evidence, retry later.
+  if (lastFetchError) return { ok: false, outcome: 'non_evidence', reason: `archive_unavailable: ${String(lastFetchError.message).slice(0, 80)}` };
   if (evidenceRefusal) return evidenceRefusal;
   return lastRefusal || { ok: false, outcome: 'non_evidence', reason: 'archive_unavailable: no usable snapshot' };
 }

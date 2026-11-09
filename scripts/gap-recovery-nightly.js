@@ -100,15 +100,14 @@ function main() {
   const { seedStateFile } = require('./lib/gap-recovery-publish');
   // A dry run reads a scratch copy so it never creates or touches the machine ledger.
   const runLedger = DRY ? path.join(os.tmpdir(), `gap-nightly-dry-${process.pid}.jsonl`) : ledgerPath;
-  if (DRY && fs.existsSync(ledgerPath)) fs.copyFileSync(ledgerPath, runLedger);
-  if (!DRY) seedStateFile({ repoDir: ROOT, rel: N.NIGHTLY_REL, localPath: nightlyPath });
-  const prevRows = N.readNightlyRows(nightlyPath);
-  const base = { runId: RUN_ID, prevRows, ceiling, counts: null };
+  // Early exits (kill switch, busy) read the state rows unseeded: seeding
+  // rewrites the file (tmp + rename) and must only happen under the run lock.
+  const early = { runId: RUN_ID, prevRows: N.readNightlyRows(nightlyPath), ceiling, counts: null };
 
   const ks = L.killSwitchActive();
   if (ks.active) {
     log(`kill switch active (${ks.why}); nothing run`);
-    return finishRow(N.buildNightlyRow({ ...base, status: DRY ? 'dry_run' : 'disabled' }), nightlyPath, ledgerPath);
+    return finishRow(N.buildNightlyRow({ ...early, status: DRY ? 'dry_run' : 'disabled' }), nightlyPath, ledgerPath);
   }
 
   const { acquireRunLock, RunLockBusyError } = require('./lib/recovery-run-lock');
@@ -116,16 +115,19 @@ function main() {
     try { acquireRunLock('gap-recovery-nightly'); } catch (e) {
       if (!(e instanceof RunLockBusyError)) throw e;
       log(e.message);
-      return finishRow(N.buildNightlyRow({ ...base, status: 'busy' }), nightlyPath, ledgerPath);
+      return finishRow(N.buildNightlyRow({ ...early, status: 'busy' }), nightlyPath, ledgerPath);
     }
+    seedStateFile({ repoDir: ROOT, rel: N.NIGHTLY_REL, localPath: nightlyPath });
   }
+  const base = { ...early, prevRows: N.readNightlyRows(nightlyPath) };
+  if (DRY && fs.existsSync(ledgerPath)) fs.copyFileSync(ledgerPath, runLedger);
   const n = seedStateFile({ repoDir: ROOT, rel: LEDGER_REL, localPath: runLedger });
   log(`ledger ${runLedger}: ${n} rows after seeding`);
 
   const env = {
     GAP_RECOVERY_LEDGER_PATH: runLedger,
     GAP_RECOVERY_RUN_LOCK_PARENT: String(process.pid),
-    GAP_RECOVERY_DAILY_CEILING: String(ceiling),
+    GAP_RECOVERY_RUN_CEILING: String(ceiling),
     BD_REQ_BUDGET: process.env.BD_REQ_BUDGET || '25',
     SERP_QUERY_BUDGET: process.env.SERP_QUERY_BUDGET || '60',
     TIME_BUDGET_MIN: process.env.TIME_BUDGET_MIN || '90',

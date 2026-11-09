@@ -101,6 +101,12 @@ function lastRanRow(rows) {
   return null;
 }
 
+/** Last row whose driver run produced a summary (ran or failed): the auth-streak base. */
+function lastSummaryRow(rows) {
+  for (let i = (rows || []).length - 1; i >= 0; i--) if (rows[i].status === 'ran' || rows[i].status === 'failed') return rows[i];
+  return null;
+}
+
 /**
  * auth_failed streak in nights. A night with no browser attempt at all (screen
  * locked, no GUI) says nothing about the login: the streak carries over.
@@ -111,6 +117,20 @@ function nextAuthStreak(prevRow, tonight) {
   if (tonight.authFailed) return prev + 1;
   if (tonight.authOk) return 0;
   return prev;
+}
+
+/**
+ * Per-site streaks: site A failing one night and site B the next is not "B
+ * failed 2 nights". A site not tried tonight carries its streak.
+ * @returns {Record<string, number>} only sites with a streak > 0
+ */
+function nextAuthStreaks(prevRow, failedOutlets = [], okOutlets = []) {
+  const prev = (prevRow && prevRow.authFailedStreaks && typeof prevRow.authFailedStreaks === 'object') ? prevRow.authFailedStreaks : {};
+  const out = {};
+  for (const [k, v] of Object.entries(prev)) if (Number(v) > 0) out[k] = Number(v);
+  for (const o of okOutlets) delete out[o];
+  for (const o of failedOutlets) out[o] = (prev[o] ? Number(prev[o]) : 0) + 1;
+  return out;
 }
 
 /**
@@ -147,10 +167,16 @@ function decideAlerts({ authFailedStreak = 0, authOutlets = [], pendingStuck = 0
  */
 function buildNightlyRow({ runId, status, summary, counts, reopened = 0, ledgerRows = [], prevRows = [], ceiling, nowMs = Date.now(), driverExit = 0 }) {
   const s = summary || {};
-  const authFailedOutlets = s.authFailedOutlets || [];
-  const authFailedStreak = nextAuthStreak(lastRanRow(prevRows), { authFailed: authFailedOutlets.length > 0, authOk: (s.authOkOutlets || []).length > 0 });
+  // Streaks carry across busy/disabled/dry nights and count failed nights too.
+  const base = summary ? lastSummaryRow(prevRows) : null;
+  const authFailedStreaks = summary
+    ? nextAuthStreaks(base, s.authFailedOutlets || [], s.authOkOutlets || [])
+    : { ...((lastSummaryRow(prevRows) || {}).authFailedStreaks || {}) };
+  const authFailedStreak = Object.values(authFailedStreaks).reduce((m, v) => Math.max(m, v), 0);
+  const authFailedOutlets = Object.keys(authFailedStreaks).filter((k) => authFailedStreaks[k] >= AUTH_STREAK_ALERT).sort();
   const pendingStuck = pendingStuckCount(ledgerRows, nowMs);
-  const runFailed = status === 'failed' || (driverExit !== 0 && !s.pushFailed);
+  // A push failure has its own alert; it is not also a "run failed".
+  const runFailed = (status === 'failed' || driverExit !== 0) && !s.pushFailed;
   const row = {
     ts: new Date(nowMs).toISOString(),
     runId,
@@ -165,6 +191,7 @@ function buildNightlyRow({ runId, status, summary, counts, reopened = 0, ledgerR
     reopened,
     pendingStuck,
     authFailedStreak,
+    authFailedStreaks,
     authFailedOutlets,
     ceiling,
     ceilingHit: !!s.ceilingHit,
@@ -229,7 +256,9 @@ module.exports = {
   planCounts,
   pendingStuckCount,
   lastRanRow,
+  lastSummaryRow,
   nextAuthStreak,
+  nextAuthStreaks,
   decideAlerts,
   buildNightlyRow,
   renderDigestLine,

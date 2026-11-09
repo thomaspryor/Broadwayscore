@@ -62,6 +62,25 @@ test('buildNightlyRow: streak builds across nights and raises browser_session_lo
   assert.deepEqual(dry.alerts, []);
 });
 
+test('auth streak is per site and counts failed nights; push failure is not also run_failed', () => {
+  const counts = { openTotal: 1, openRecent: 1, needsDecision: 0 };
+  const a = { attempted: 1, authFailedOutlets: ['thestage'], authOkOutlets: [] };
+  const b = { attempted: 1, authFailedOutlets: ['nyt'], authOkOutlets: [] };
+  const n1 = N.buildNightlyRow({ runId: '1', status: 'ran', summary: a, counts, ceiling: 60, nowMs: NOW - 48 * H });
+  const n2 = N.buildNightlyRow({ runId: '2', status: 'ran', summary: b, counts, prevRows: [n1], ceiling: 60, nowMs: NOW - 24 * H });
+  assert.equal(n2.authFailedStreak, 1, 'A then B is not a 2-night streak');
+  assert.deepEqual(n2.alerts, []);
+  // night 2 failed overall but still counts toward the streak
+  const f2 = N.buildNightlyRow({ runId: '2', status: 'failed', summary: a, counts, prevRows: [n1], ceiling: 60, nowMs: NOW - 24 * H, driverExit: 1 });
+  const busy = N.buildNightlyRow({ runId: 'b', status: 'busy', summary: null, counts: null, prevRows: [n1, f2], ceiling: 60, nowMs: NOW - 12 * H });
+  assert.deepEqual(busy.authFailedStreaks, { thestage: 2 }, 'busy night carries streaks');
+  const n3 = N.buildNightlyRow({ runId: '3', status: 'ran', summary: a, counts, prevRows: [n1, f2, busy], ceiling: 60, nowMs: NOW });
+  assert.equal(n3.authFailedStreak, 3);
+  assert.deepEqual(n3.authFailedOutlets, ['thestage']);
+  const pf = N.buildNightlyRow({ runId: 'p', status: 'failed', summary: { pushFailed: true, error: 'git push: remote rejected' }, counts, ceiling: 60, nowMs: NOW, driverExit: 1 });
+  assert.deepEqual(pf.alerts.map((x) => x.key), ['pending_push_stuck']);
+});
+
 test('renderDigestLine: one aggregated plain-English line with change vs the night before', () => {
   const r1 = { ts: new Date(NOW - 30 * H).toISOString(), status: 'ran', openRecent: 1800, recovered: 5, needsDecision: 0, alerts: [] };
   const r2 = { ts: new Date(NOW - 6 * H).toISOString(), status: 'ran', openRecent: 1782, recovered: 18, needsDecision: 3, alerts: [] };

@@ -215,6 +215,12 @@ function dailyCeiling(env = process.env) {
 }
 
 /** True when today's accepted count (ledger + this run) has reached the ceiling. */
+/** Per-run accepted cap (GAP_RECOVERY_RUN_CEILING), or null when unset. */
+function runCeiling(env = process.env) {
+  const s = String(env.GAP_RECOVERY_RUN_CEILING || '').trim();
+  return /^\d+$/.test(s) ? Number(s) : null;
+}
+
 function ceilingReached({ rows, nowMs = Date.now(), ceiling, acceptedThisRun = 0 }) {
   return acceptedToday(rows, nowMs) + acceptedThisRun >= ceiling;
 }
@@ -359,6 +365,7 @@ module.exports = {
   serpGateReason,
   acceptedToday,
   dailyCeiling,
+  runCeiling,
   ceilingReached,
   killSwitchPath,
   killSwitchActive,

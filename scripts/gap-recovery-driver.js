@@ -26,6 +26,7 @@
  * Env:
  *   GAP_RECOVERY_DISABLED=1 (or ~/.broadwayscore-state/gap-recovery-disabled)  kill switch
  *   GAP_RECOVERY_DAILY_CEILING=N   accepted reviews per UTC day (default 40)
+ *   GAP_RECOVERY_RUN_CEILING=N     accepted reviews in THIS run instead (the nightly job sets it)
  *   BD_REQ_BUDGET (default 25), SERP_QUERY_BUDGET (default 60): per-run spend caps
  *   TIME_BUDGET_MIN (default 60)   REVIEW_TEXTS_DIR   GAP_RECOVERY_LEDGER_PATH
  */
@@ -123,7 +124,9 @@ function planCandidates({ dir, shows, outlets, ledgerIndex, runGates }) {
       gapClass: row.gapClass,
       hasUrl: !!review.url,
       hasAdapter: !!adapterFor(review.outletId),
-      recency: row.recency,
+      // An unknown show date counts as 'recent' for ordering, but such shows
+      // are often old: do not take ARCHIVE away from them.
+      recency: row.dateKnown === false ? null : row.recency,
       eligible,
       runGates: { ...runGates, ...extraGates },
       only: OPTS.only,
@@ -259,7 +262,11 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
   const { withReviewTextsLock } = require('./lib/review-texts-lock');
   const S = require('./lib/gap-strategies');
   const { adapterFor, openSession } = require('./lib/browser-outlet-adapters');
-  const ceiling = L.dailyCeiling();
+  // A per-run cap (the nightly job) replaces the per-UTC-day count, so manual
+  // runs earlier in the same UTC day do not eat the night's budget.
+  const runCeiling = L.runCeiling();
+  const ceiling = runCeiling != null ? runCeiling : L.dailyCeiling();
+  const ceilingRows = runCeiling != null ? [] : rows;
   const tracker = createWriteTracker();
   const pendingInfo = new Map(); // reviewKey -> attempt info for the recovered row
   const earlierPending = L.pendingPushInfo(rows); // accepted by an earlier run, not yet landed
@@ -280,7 +287,7 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
 
   const todo = cands.filter((c) => c.strategy);
   const work = OPTS.limit ? todo.slice(0, OPTS.limit) : todo;
-  console.log(`\n${todo.length} candidates with a strategy; running ${work.length}. Daily ceiling ${ceiling} (accepted today so far: ${L.acceptedToday(rows)}).`);
+  console.log(`\n${todo.length} candidates with a strategy; running ${work.length}. ${runCeiling != null ? `Run ceiling ${ceiling}` : `Daily ceiling ${ceiling} (accepted today so far: ${L.acceptedToday(rows)})`}.`);
 
   const stats = { attempted: 0, accepted: 0, byStrategy: {} };
   const sessions = new Map(); // adapter name -> session | {failed}
@@ -318,7 +325,7 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
     for (let i = 0; i < work.length; i++) {
       const c = work[i];
       if (Date.now() - start > OPTS.timeBudgetMs) { console.log('\nTime budget reached.'); break; }
-      if (L.ceilingReached({ rows, ceiling, acceptedThisRun: accepted })) { console.log(`\nDaily ceiling ${ceiling} reached.`); SUMMARY.ceilingHit = true; break; }
+      if (L.ceilingReached({ rows: ceilingRows, ceiling, acceptedThisRun: accepted })) { console.log(`\n${runCeiling != null ? 'Run' : 'Daily'} ceiling ${ceiling} reached.`); SUMMARY.ceilingHit = true; break; }
       if (L.killSwitchActive().active) { console.log('\nKill switch turned on mid-run; stopping.'); break; }
       // Browser preferred but no GUI: record the non-evidence row, then use the next strategy.
       for (const k of c.skipped) {

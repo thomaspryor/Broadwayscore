@@ -145,6 +145,10 @@ test('daily ceiling: distinct reviews accepted today (ledger + this run), yester
   assert.equal(L.ceilingReached({ rows, nowMs: NOW, ceiling: 3, acceptedThisRun: 1 }), true);
   assert.equal(L.dailyCeiling({ GAP_RECOVERY_DAILY_CEILING: '7' }), 7);
   assert.equal(L.dailyCeiling({}), L.DEFAULT_DAILY_CEILING);
+  assert.equal(L.runCeiling({ GAP_RECOVERY_RUN_CEILING: '60' }), 60);
+  assert.equal(L.runCeiling({}), null);
+  // per-run cap: earlier rows today do not count
+  assert.equal(L.ceilingReached({ rows: [], nowMs: NOW, ceiling: 3, acceptedThisRun: 2 }), false);
 });
 
 test('strategy table: per-class order, skips with reasons, disabled flag removes a strategy', () => {
