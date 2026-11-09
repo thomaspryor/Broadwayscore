@@ -179,6 +179,42 @@ function retiredConsistency(sources, scheduled) {
 }
 
 /**
+ * Does a workflow file round-trip data/aggregator-archive? Comment lines do not
+ * count. Returns { checkout, push } booleans.
+ */
+function archiveSteps(yamlText) {
+  const live = String(yamlText || '').split('\n').filter(l => !/^\s*#/.test(l)).join('\n');
+  return {
+    checkout: /uses:\s*\.\/\.github\/actions\/checkout-aggregator-archive\b/.test(live),
+    push: /uses:\s*\.\/\.github\/actions\/push-aggregator-archive\b/.test(live),
+  };
+}
+
+/**
+ * BRO-6098: a feed workflow that writes archive pages but never checks out or
+ * pushes data/aggregator-archive loses every page with the runner. The Stage's
+ * scrape-thestage-roundups.yml did exactly this: 153 pages fetched on
+ * 2026-11-03, none persisted, and coverage read as a collapse. `steps` maps
+ * workflow file -> archiveSteps() result (a missing key: file not read).
+ */
+function archivePersistence(sources, steps) {
+  const findings = [];
+  for (const s of sources) {
+    if (s.retired) continue;
+    for (const wf of Object.keys(s.workflows)) {
+      const st = steps && steps[wf];
+      if (!st) continue;
+      const missing = [!st.checkout && 'checkout-aggregator-archive', !st.push && 'push-aggregator-archive'].filter(Boolean);
+      if (missing.length) {
+        findings.push({ source: s.id, kind: 'archive-not-persisted', workflow: wf,
+          message: `${s.label}: ${wf} feeds data/aggregator-archive/${s.id} but does not use ${missing.join(' or ')}, so its archived pages are lost with the runner` });
+      }
+    }
+  }
+  return findings;
+}
+
+/**
  * Assemble findings. Inputs are already-gathered data so this stays pure.
  * @param {object} p
  * @param {Array} p.sources registry entries
@@ -186,8 +222,9 @@ function retiredConsistency(sources, scheduled) {
  * @param {Object<string,Set<string>>|null} p.archives source id -> archived show ids (null: no archive available)
  * @param {Object<string,Array>|null} p.runs workflow file -> REST runs (null: run history unavailable)
  * @param {Object<string,boolean>} p.scheduled workflow file -> has active schedule
+ * @param {Object<string,{checkout:boolean,push:boolean}>|null} p.archiveStepsByWorkflow workflow file -> archiveSteps()
  */
-function assess({ sources = SOURCES, shows, archives, runs, scheduled, now = new Date(), opts = {} }) {
+function assess({ sources = SOURCES, shows, archives, runs, scheduled, archiveStepsByWorkflow = null, now = new Date(), opts = {} }) {
   const findings = [];
   const report = [];
   // Pick a stable owner for shared-workflow alerts. Registry order must not
@@ -197,6 +234,7 @@ function assess({ sources = SOURCES, shows, archives, runs, scheduled, now = new
     for (const wf of Object.keys(s.workflows)) if (!workflowOwner.has(wf)) workflowOwner.set(wf, s.id);
   }
   findings.push(...retiredConsistency(sources, scheduled || {}));
+  findings.push(...archivePersistence(sources, archiveStepsByWorkflow));
   for (const s of sources) {
     if (s.retired) { report.push({ source: s.id, retired: s.retired }); continue; }
     const entry = { source: s.id, label: s.label };
@@ -241,7 +279,7 @@ function conditionKey(f) {
 }
 
 /** Only clear a condition after reading the input for that particular source. */
-function resolvedConditionKeys(findings, sources, { archives, runs }) {
+function resolvedConditionKeys(findings, sources, { archives, runs, archiveStepsByWorkflow = null }) {
   const live = new Set(findings.map(conditionKey));
   const resolved = [];
   const add = f => { const key = conditionKey(f); if (!live.has(key)) resolved.push(key); };
@@ -250,6 +288,7 @@ function resolvedConditionKeys(findings, sources, { archives, runs }) {
       for (const kind of ['workflow-missing', 'retired-but-scheduled', 'schedule-removed']) {
         add({ source: s.id, kind, workflow: wf });
       }
+      if (!s.retired && archiveStepsByWorkflow?.[wf]) add({ source: s.id, kind: 'archive-not-persisted', workflow: wf });
       if (!s.retired && Array.isArray(runs?.[wf])) {
         for (const kind of ['workflow-failing', 'workflow-idle', 'workflow-stale', 'workflow-no-runs']) {
           add({ source: s.id, kind, workflow: wf });
@@ -263,5 +302,5 @@ function resolvedConditionKeys(findings, sources, { archives, runs }) {
 
 module.exports = {
   SOURCES, DEFAULTS, quarterOf, coverageSeries, coverageVerdict, workflowVerdict,
-  retiredConsistency, assess, conditionKey, resolvedConditionKeys,
+  retiredConsistency, archiveSteps, archivePersistence, assess, conditionKey, resolvedConditionKeys,
 };

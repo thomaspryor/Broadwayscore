@@ -25,12 +25,12 @@
 
 const fs = require('fs');
 const path = require('path');
-const { matchTitleToShow, loadShows, buildSiblingCategoriesFromShows } = require('./lib/show-matching');
+const { matchTitleToShow, loadShows, buildSiblingCategoriesFromShows, normalizeTitle } = require('./lib/show-matching');
 const { checkArchiveCategory, readCachedArchiveIfValid } = require('./lib/archive-cache-guard');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { filterToLiveShowIds, loadLiveShowIds } = require('./lib/live-show-ids');
 const { resolveArchiveRowOutletId } = require('./lib/archive-outlet-identity');
-const { checkAggregatorPageProduction } = require('./lib/aggregator-page-production');
+const { checkAggregatorPageProduction, resolveProductionByPageDate, canonicalUrlFromHtml, sameRoundupUrl } = require('./lib/aggregator-page-production');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { fetchWithCookiesPlain } = require('./lib/fetch-plain');
 const { discoverRoundupUrlsPlain, classifyRoundupPage, LOGIN_EXPIRED_MESSAGE } = require('./lib/thestage-fetch');
@@ -44,9 +44,9 @@ function siblingCategoriesByShowId() {
   return _siblingCategoriesCache;
 }
 
-const ARCHIVE_DIR = path.join(__dirname, '..', 'data', 'aggregator-archive', 'thestage-roundups');
+const ARCHIVE_DIR = process.env.THESTAGE_ARCHIVE_DIR || path.join(__dirname, '..', 'data', 'aggregator-archive', 'thestage-roundups');
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
-const RATE_LIMIT_MS = 3000;
+const RATE_LIMIT_MS = Number(process.env.THESTAGE_RATE_LIMIT_MS ?? 3000);
 
 // BrowserBase config
 const BB_API_KEY = process.env.BROWSERBASE_API_KEY;
@@ -203,8 +203,17 @@ async function discoverRoundupUrls(page) {
 
 // ─── Scrape Phase (Playwright) ───────────────────────────────────────────────
 
-async function scrapeRoundups(fetchHtml, urls, weShows) {
+// --shows=ID targets: does this title-matched show, or another production of
+// the same title, appear in the target list? (The page date picks which.)
+function targetsTitle(targetIds, show, shows) {
+  if (targetIds.includes(show.id)) return true;
+  const key = normalizeTitle(show.title || '');
+  return shows.some(s => targetIds.includes(s.id) && normalizeTitle(s.title || '') === key);
+}
+
+async function scrapeRoundups(fetchHtml, urls, weShows, { siblings = null } = {}) {
   const matched = [];
+  const siblingIndex = () => siblings || siblingCategoriesByShowId();
 
   for (const url of urls) {
     // Extract title from URL slug
@@ -223,63 +232,118 @@ async function scrapeRoundups(fetchHtml, urls, weShows) {
       console.log(`  [LOW CONFIDENCE] "${title}" → ${match.show.title} (${match.confidence}) — skipped`);
       continue;
     }
-    if (TARGET_SHOWS && !TARGET_SHOWS.includes(match.show.id)) continue;
+    // A targeted run may name an earlier production of this title; the page
+    // date (known only after the fetch) decides which one the page is about.
+    if (TARGET_SHOWS && !targetsTitle(TARGET_SHOWS, match.show, weShows)) continue;
 
-    const showId = match.show.id;
-    const archivePath = path.join(ARCHIVE_DIR, `${showId}.html`);
+    let show = match.show;
+    let archivePath = path.join(ARCHIVE_DIR, `${show.id}.html`);
 
     // Skip if already archived (unless --force)
     // A cached file is re-validated; a poisoned one is purged and refetched (BRO-2550).
-    const cached = !FORCE ? readCachedArchiveIfValid(archivePath, Infinity, match.show, siblingCategoriesByShowId()[showId]) : null;
-    if (cached && !cached.valid) console.log(`  [PURGED] ${match.show.title}: cached archive failed ${cached.check.reason}`);
-    if (cached && cached.valid) {
+    const cached = !FORCE ? readCachedArchiveIfValid(archivePath, Infinity, show, siblingIndex()[show.id]) : null;
+    if (cached && !cached.valid) console.log(`  [PURGED] ${show.title}: cached archive failed ${cached.check.reason}`);
+    // BRO-6098: the cache is keyed by the title's most recent production, so a
+    // second round-up URL for the same title (an earlier revival) used to be
+    // skipped as [CACHED] without ever being fetched. Only short-circuit when
+    // the archive IS this URL's page.
+    const cachedUrl = cached && cached.valid ? canonicalUrlFromHtml(cached.html) : null;
+    let staleArchive = null; // this URL's own archive, refetched rather than trusted
+    if (cached && cached.valid && (!cachedUrl || sameRoundupUrl(cachedUrl, url))) {
       // BRO-6089: a poisoned cache must not outlive the page-date guard below.
-      const cprod = checkAggregatorPageProduction({ html: cached.html, show: match.show });
+      const cprod = checkAggregatorPageProduction({ html: cached.html, show });
       if (cprod.outOfRun) {
-        console.log(`  [WRONG PRODUCTION] ${match.show.title}: cached archive ${cprod.reason}`);
+        // Quarantine it, then refetch so the page is routed by its date (BRO-6098).
+        console.log(`  [WRONG PRODUCTION] ${show.title}: cached archive ${cprod.reason}`);
         if (!DRY_RUN) { try { fs.renameSync(archivePath, archivePath + '.mismatch'); } catch { /* gone */ } }
-        stats.errors++;
+      } else if (!cprod.pageDate) {
+        // BRO-6098: archives saved by the old Browserbase route carry no publish
+        // date, so the date guard never judged them, and several hold an earlier
+        // revival's page under the newest production's id. Refetch to date it.
+        console.log(`  [UNDATED CACHE] ${show.title}: refetching to check the page date`);
+        staleArchive = archivePath;
+      } else {
+        if (!matched.some(m => m.showId === show.id)) {
+          console.log(`  [CACHED] ${show.title}`);
+          matched.push({ showId: show.id, show, archivePath });
+          stats.cached++;
+        }
         continue;
       }
-      console.log(`  [CACHED] ${match.show.title}`);
-      matched.push({ showId, show: match.show, archivePath });
-      stats.cached++;
-      continue;
     }
 
-    console.log(`  Fetching: ${match.show.title} → ${url}`);
+    console.log(`  Fetching: ${show.title} → ${url}`);
     try {
       let html;
       try {
         html = await fetchHtml(url);
       } catch (fetchErr) {
         stats.fetchErrors++;
+        if (RATE_LIMIT_MS > 0) await new Promise(r => setTimeout(r, RATE_LIMIT_MS));
         throw fetchErr;
       }
+      // Pace every fetched page, including the ones skipped below.
+      if (RATE_LIMIT_MS > 0) await new Promise(r => setTimeout(r, RATE_LIMIT_MS));
       // Dead login first: the registration gate has its own page title, so the
       // category guard below would otherwise hide it as a plain skip.
-      const extractedRows = extractReviews(html, showId);
-      if (extractedRows.length === 0 && classifyRoundupPage(html, 0) === 'gated') {
+      if (extractReviews(html, show.id).length === 0 && classifyRoundupPage(html, 0) === 'gated') {
         const e = new Error(LOGIN_EXPIRED_MESSAGE);
         e.loginExpired = true;
         throw e;
       }
 
+      // BRO-6089: the slug has no date, so a same-title revival's round-up passes
+      // the title-only guard. BRO-6098: route it by its own publish date to the
+      // production whose run contains it; drop it only when none does.
+      const route = resolveProductionByPageDate({
+        html, show,
+        rematch: (date) => {
+          const m = matchTitleToShow(title, weShows, { market: 'west-end', date, year: Number(date.slice(0, 4)) });
+          return m && m.confidence === 'high' ? m.show : null;
+        },
+      });
+      if (staleArchive && (route.rerouted || route.prod.outOfRun)) {
+        // The undated archive held this other production's page: retire it.
+        console.log(`    ✗ ${path.basename(staleArchive)} held a page dated outside its run — quarantined`);
+        if (!DRY_RUN) { try { fs.renameSync(staleArchive, staleArchive + '.mismatch'); } catch { /* gone */ } }
+      }
+      if (route.rerouted) {
+        console.log(`    ↪ ${route.prod.reason}: routed ${route.from} → ${route.show.id}`);
+        show = route.show;
+        archivePath = path.join(ARCHIVE_DIR, `${show.id}.html`);
+      }
+      if (route.prod.outOfRun) {
+        console.log(`    ✗ wrong production (${route.prod.reason}) — not archiving`);
+        stats.errors++;
+        continue;
+      }
+      if (TARGET_SHOWS && !TARGET_SHOWS.includes(show.id)) continue;
+
       // Validate page title matches the show before archiving — Stuart King 2026-04-25
-      const v = checkArchiveCategory(html, match.show, siblingCategoriesByShowId()[match.show.id]);
+      const v = checkArchiveCategory(html, show, siblingIndex()[show.id]);
       if (!v.ok) {
         console.log(`    ✗ archive guard (${v.reason}): "${(v.pageTitle||'').substring(0,60)}" — skipped`);
         stats.errors++;
         continue;
       }
 
-      // BRO-6089: the slug has no date, so a same-title revival's round-up passes
-      // the title-only guard. Drop pages dated outside this show's run.
-      const prod = checkAggregatorPageProduction({ html, show: match.show });
-      if (prod.outOfRun) {
-        console.log(`    ✗ wrong production (${prod.reason}) — not archiving`);
-        stats.errors++;
+      const extractedRows = extractReviews(html, show.id);
+      // Two round-up URLs for one production: keep the page already archived
+      // (this run, or an earlier run's archive of the other URL) rather than
+      // flip the archive between them on every run.
+      if (matched.some(m => m.showId === show.id)) {
+        console.log(`    = ${show.id} already has a round-up this run — not overwriting`);
         continue;
+      }
+      if (!FORCE && archivePath !== staleArchive && fs.existsSync(archivePath)) {
+        const prior = readCachedArchiveIfValid(archivePath, Infinity, show, siblingIndex()[show.id]);
+        const priorProd = prior && prior.valid ? checkAggregatorPageProduction({ html: prior.html, show }) : null;
+        if (priorProd && priorProd.pageDate && !priorProd.outOfRun) {
+          console.log(`  [CACHED] ${show.title} (${show.id})`);
+          matched.push({ showId: show.id, show, archivePath });
+          stats.cached++;
+          continue;
+        }
       }
 
       if (extractedRows.length === 0) {
@@ -298,10 +362,8 @@ async function scrapeRoundups(fetchHtml, urls, weShows) {
         fs.writeFileSync(archivePath, html);
       }
 
-      matched.push({ showId, show: match.show, archivePath });
+      matched.push({ showId: show.id, show, archivePath });
       stats.pagesChecked++;
-
-      await new Promise(r => setTimeout(r, RATE_LIMIT_MS));
     } catch (err) {
       if (err.loginExpired) throw err; // dead cookies: stop, every later page would be gated too
       console.log(`    ✗ Error: ${err.message}`);
@@ -507,7 +569,7 @@ function zeroDataFailure({ pagesChecked, cached, reviewsExtracted, targetShows, 
   return pagesChecked + cached === 0 ? 'ZERO roundup pages fetched or found cached from The Stage (likely blocked or site change).' : null;
 }
 
-module.exports = { extractReviews, writeReviewFiles, zeroDataFailure };
+module.exports = { extractReviews, writeReviewFiles, zeroDataFailure, scrapeRoundups, targetsTitle };
 
 if (require.main === module) {
   main().catch(err => {
