@@ -346,6 +346,15 @@ export function isOnClosingWatch(input: ClosingWatchInput): boolean {
   return input.avgGross < input.breakEven;
 }
 
+/** Break-even estimates are rough: the card says whether the show stays under if ours is this much too high. */
+export const CLOSING_WATCH_BREAKEVEN_MARGIN = 0.1;
+
+/** Still under break-even, raw and season-adjusted, if break-even were CLOSING_WATCH_BREAKEVEN_MARGIN lower. */
+export function holdsAtLowerBreakEven(avgGross: number, breakEven: number, adjustedRatio: number): boolean {
+  const scale = 1 - CLOSING_WATCH_BREAKEVEN_MARGIN;
+  return avgGross < breakEven * scale && adjustedRatio / scale < 1;
+}
+
 /** YYYY-MM-DD plus whole weeks. */
 export function addWeeks(isoDate: string, weeks: number): string {
   const d = new Date(`${isoDate.slice(0, 10)}T12:00:00Z`);

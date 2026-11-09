@@ -620,6 +620,10 @@ export interface ClosingWatchShow {
   /** Our estimated closing window (YYYY-MM-DD); early/late null when the history never got that far. Null without enough history. */
   likelyClosing: { early: string | null; median: string; late: string | null } | null;
   /** What the estimate rests on: past spells under the same threshold that lasted at least as long as this one. */
+  /** Still under break-even if our break-even estimate were 10% too high (holdsAtLowerBreakEven). */
+  holdsAtLowerBreakEven: boolean;
+  /** Won Best Musical/Play/Revival: past winners often outran the estimate (4 of 8 in the backtest ran 20+ weeks longer). */
+  topTonyWinner: boolean;
   /** cushion: compared only with past runs that had banked at least ('banked') or less than ('thin') half their capitalization; null = all. */
   basis: { sample: number; closings: number; weeksUnder: number; thresholdPct: number; medianWeeks: number; cushion: 'banked' | 'thin' | null; young: boolean | null } | null;
 }

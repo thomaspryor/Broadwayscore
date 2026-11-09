@@ -27,6 +27,8 @@ export default function ClosingWatchCard({
   weeksBelowBreakEven,
   trend,
   recouped,
+  holdsAtLowerBreakEven,
+  topTonyWinner,
   likelyClosing,
   basis,
 }: ClosingWatchShow) {
@@ -94,6 +96,12 @@ export default function ClosingWatchCard({
           {getTrendIcon(trend, false)} {trendLabel}
         </span>
       </div>
+      <div className="flex justify-between text-sm mt-1">
+        <span className="text-fg-muted">If break-even is 10% lower</span>
+        <span className={holdsAtLowerBreakEven ? 'text-score-tepid' : 'text-white'}>
+          {holdsAtLowerBreakEven ? 'Still under' : 'About at break-even'}
+        </span>
+      </div>
       {basis && (
         <p className="text-xs text-fg-muted mt-3">
           Of {basis.sample} past Broadway runs
@@ -104,6 +112,12 @@ export default function ClosingWatchCard({
           {basis.cushion === 'thin' && ' without having earned back half their investment first'}
           {basis.cushion === 'banked' && ' after already earning back half their investment or more'}, half closed
           within {basis.medianWeeks} more weeks.
+        </p>
+      )}
+      {topTonyWinner && (
+        <p className="text-xs text-fg-muted mt-2">
+          Top Tony winners often run longer than this kind of estimate: producers tend to carry an award winner through
+          losing stretches.
         </p>
       )}
     </Link>

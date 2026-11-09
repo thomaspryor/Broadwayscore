@@ -65,7 +65,8 @@ import { buildSeasonProfiles, buildRecoupFindings, compareSeason, hasKnownOutcom
 import fs from 'fs';
 import path from 'path';
 import { getMarketDate } from './date-utils';
-import { bankedShareSeries, calibrateClosingWatch, seasonalIndexSeries, adjustedRatioSeries, estimateClosing, isBoxOfficeDriven, isOnClosingWatch, addWeeks, weeksBelowBreakEven as countWeeksBelowBreakEven, type ClosingObservation } from './closing-watch';
+import { isTopTonyWinner } from './data-awards';
+import { bankedShareSeries, calibrateClosingWatch, seasonalIndexSeries, adjustedRatioSeries, estimateClosing, isBoxOfficeDriven, isOnClosingWatch, holdsAtLowerBreakEven, addWeeks, weeksBelowBreakEven as countWeeksBelowBreakEven, type ClosingObservation } from './closing-watch';
 import { isLossDesignation } from '../../scripts/lib/commercial-designations';
 import { conversionOf, isConvertedToCommercial, commercialRunWeeks, recoupClockStart } from '../../scripts/lib/commercial-conversion';
 import {
@@ -868,6 +869,8 @@ export function getClosingWatch(): ClosingWatchShow[] {
       weeksBelowBreakEven: countWeeksBelowBreakEven([...weekly].reverse(), breakEven),
       trend: getRecoupmentTrend(slug),
       recouped: data.recouped === true,
+      holdsAtLowerBreakEven: holdsAtLowerBreakEven(avgGross as number, breakEven, adjustedRatio as number),
+      topTonyWinner: isTopTonyWinner(show.id),
       likelyClosing: estimate && latestWeek ? {
         early: estimate.p25 != null ? addWeeks(latestWeek, estimate.p25) : null,
         median: addWeeks(latestWeek, estimate.median),

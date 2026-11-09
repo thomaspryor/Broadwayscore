@@ -17,6 +17,7 @@ import {
   estimateClosing,
   addWeeks,
   bankedShareSeries,
+  holdsAtLowerBreakEven,
   weeksBelowBreakEven,
   CLOSING_WATCH_MIN_WEEKS,
   type ClosingWatchInput,
@@ -166,4 +167,10 @@ test('show age: a first-year show is compared with first-year spells, an establi
   assert.equal(oldShow.median, 70);
   // Without age on the history (or too few on its side): everyone counts.
   assert.equal(estimateClosing([...Array(10).fill(1.05), 0.85], cal.map((c) => c.map(({ age: _a, ...o }) => o)))!.young, null);
+});
+
+test('break-even margin: a show far enough under stays under if our break-even is 10% too high', () => {
+  assert.equal(holdsAtLowerBreakEven(747, 935, 0.82), true); // 841 at 10% lower: still under
+  assert.equal(holdsAtLowerBreakEven(880, 935, 0.94), false);
+  assert.equal(holdsAtLowerBreakEven(800, 935, 0.92), false); // raw under, season-adjusted not
 });
