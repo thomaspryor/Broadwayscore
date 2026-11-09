@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7245-b",
   "planId": "6fb957ea-ec46-4889-8f72-3541bee64c97",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -159,5 +159,69 @@
         "description": "commercial.json: legally-blonde-2007.sources"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-09T21:38:05.561Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for legally-blonde-2007"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for legally-blonde-2007"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for legally-blonde-2007"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for legally-blonde-2007"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: estimatedRecoupmentPct updated for legally-blonde-2007"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: estimatedRecoupmentSource updated for legally-blonde-2007"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: estimatedRecoupmentDate updated for legally-blonde-2007"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCost updated for legally-blonde-2007"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for legally-blonde-2007"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costMethodology updated for legally-blonde-2007"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for legally-blonde-2007"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for legally-blonde-2007"
+    }
+  ],
+  "executedIn": "ci"
 }
