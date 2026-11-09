@@ -13,6 +13,11 @@ on:
   schedule:
     - cron: '41 * * * *'
   workflow_dispatch:
+    inputs:
+      main_wins:
+        description: 'Owner chose main: <push-rescue branch>@<tip sha>, comma-separated (prune then deletes it)'
+        required: false
+        default: ''
 
 permissions:
   contents: read
@@ -61,6 +66,8 @@ jobs:
         id: replay
         if: steps.probe.outputs.count != '0'
         working-directory: data/review-texts
+        env:
+          PUSH_RESCUE_MAIN_WINS: ${{ inputs.main_wins }}
         run: node ../../scripts/lib/push-rescue.js replay --manifest="$RUNNER_TEMP/push-rescue-manifest.json"
 
       - name: Push to private repo
