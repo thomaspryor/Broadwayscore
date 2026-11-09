@@ -1,43 +1,5 @@
 [
   {
-    "startedAt": "2026-11-08T07:56:58.788Z",
-    "completedAt": "2026-11-08T07:56:58.790Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "42459981735",
-    "source": "comparative-rescore",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-11-08T10:43:44.002Z",
-    "completedAt": "2026-11-08T10:43:44.004Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "42471351596",
-    "source": "comparative-rescore",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-11-08T10:52:21.003Z",
     "completedAt": "2026-11-08T10:52:21.005Z",
     "totalReviews": 0,
@@ -413169,6 +413131,50 @@
     },
     "costUsd": 0,
     "runId": "42636324174",
+    "source": "comparative-rescore",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-11-09T15:06:55.406Z",
+    "completedAt": "2026-11-09T15:06:59.891Z",
+    "totalReviews": 11,
+    "processed": 1,
+    "skipped": 9,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 5432,
+      "output": 270,
+      "cacheRead": 0,
+      "cacheWrite": 3807,
+      "total": 14162
+    },
+    "costUsd": 0.03362205000000001,
+    "runId": "42640034546",
+    "source": "index",
+    "errorDetails": [
+      {
+        "showId": "iphigenie-en-tauride-english-national-opera-west-end-2026",
+        "outletId": "cherylmarkosky",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-11-09T15:11:58.306Z",
+    "completedAt": "2026-11-09T15:11:58.321Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "42640034546",
     "source": "comparative-rescore",
     "errorDetails": []
   }
