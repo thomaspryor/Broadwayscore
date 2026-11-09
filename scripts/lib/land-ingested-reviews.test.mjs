@@ -141,3 +141,44 @@ test('pushFailureAction: CI commit step recovers, so only a run outside it fails
   assert.equal(pushFailureAction({ inCiWithCommitStep: false, noRebuild: true }), 'fail');
   assert.equal(pushFailureAction({ inCiWithCommitStep: false, noRebuild: false }), 'fail');
 });
+
+// BRO-6854: a byline rename of a file created in the same run leaves its old path neither on disk nor
+// tracked; `git add -- <old path>` aborted the whole add and no review text reached the repo.
+test('pushReviewTexts skips a renamed-away untracked path and still pushes the file it became', () => {
+  const { pushReviewTexts } = require('./land-ingested-reviews.js');
+  const { execSync } = require('node:child_process');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'rt-ghost-'));
+  const git = (c) => execSync(`git -C "${dir}" ${c}`, { stdio: 'pipe' });
+  git('init -q -b main'); git('config user.email t@t'); git('config user.name t');
+  fs.writeFileSync(path.join(dir, 'seed.txt'), 'x'); git('add -A'); git('commit -q -m seed');
+  fs.mkdirSync(path.join(dir, 'show-a'));
+  fs.writeFileSync(path.join(dir, 'show-a', 'outlet--jane-doe.json'), '{}');
+  const calls = [];
+  const r = pushReviewTexts({
+    reviewTextsDir: dir, message: 'm', log: () => {}, isCheckout: () => true, leaseRevert: () => [],
+    pushRetry: (o) => { calls.push(o.branch); return { ok: true, code: 0, stderr: '' }; },
+    touchedPaths: [path.join(dir, 'show-a', 'outlet--unknown.json'), path.join(dir, 'show-a', 'outlet--jane-doe.json')],
+  });
+  assert.equal(r.pushed, true, r.error);
+  assert.deepEqual(calls, ['HEAD:main']);
+  assert.match(String(execSync(`git -C "${dir}" ls-files`)), /show-a\/outlet--jane-doe\.json/);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('pushReviewTexts with only ghost paths stages nothing instead of the whole tree', () => {
+  const { pushReviewTexts } = require('./land-ingested-reviews.js');
+  const { execSync } = require('node:child_process');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'rt-ghost-'));
+  const git = (c) => execSync(`git -C "${dir}" ${c}`, { stdio: 'pipe' });
+  git('init -q -b main'); git('config user.email t@t'); git('config user.name t');
+  fs.writeFileSync(path.join(dir, 'seed.txt'), 'x'); git('add -A'); git('commit -q -m seed');
+  fs.writeFileSync(path.join(dir, 'unrelated.txt'), 'y'); // untracked, not ours: must stay out of any commit
+  const r = pushReviewTexts({
+    reviewTextsDir: dir, message: 'm', log: () => {}, isCheckout: () => true, leaseRevert: () => [],
+    pushRetry: () => ({ ok: true, code: 0, stderr: '' }),
+    touchedPaths: [path.join(dir, 'show-a', 'gone.json')],
+  });
+  assert.equal(r.pushed, false);
+  assert.equal(String(execSync(`git -C "${dir}" ls-files`)).includes('unrelated.txt'), false);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
