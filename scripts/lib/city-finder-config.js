@@ -127,10 +127,43 @@ const REGISTRY_ID = {
 };
 const registryId = (finderId) => REGISTRY_ID[finderId] || finderId;
 
+/**
+ * BRO-7250: where each producing theatre lists its own season (read by scripts/city-season-sync.js), and the
+ * other names a listing may print for its stages. Keyed by the theatre name above. A theatre with no `pages`
+ * is read from BroadwayWorld's regional listing only (the Old Globe and San Diego Rep block fetchers).
+ */
+const SEASON_SOURCES = {
+  'The Old Globe': { venues: ['old globe theatre', 'donald and darlene shiley stage', 'sheryl and harvey white theatre', 'lowell davies festival theatre'] },
+  'La Jolla Playhouse': { pages: ['https://lajollaplayhouse.org/shows-events/'], venues: ['mandell weiss theatre', 'mandell weiss forum theatre', 'potiker theatre', 'la jolla playhouse mandell weiss'] },
+  'Cygnet Theatre': { pages: ['https://www.cygnettheatre.com/shows/'] },
+  'North Coast Repertory Theatre': { pages: ['https://northcoastrep.org/'], venues: ['north coast repertory'] },
+  'Moxie Theatre': { pages: ['https://moxietheatre.com/'] },
+  "Lamb's Players Theatre": { pages: ['https://www.lambsplayers.org/shows'], venues: ['lamb s players', 'lambs players theatre'] },
+  'Diversionary Theatre': { pages: ['https://diversionary.org/'] },
+  'New Village Arts': { pages: ['https://www.newvillagearts.org/shows'] },
+  'Backyard Renaissance': { pages: ['https://backyardrenaissance.com/'] },
+  'Moonlight Stage Productions': { pages: ['https://moonlightstage.com/'] },
+  'San Diego Musical Theatre': { pages: ['https://sdmt.org/'], venues: ['sdmt stage'] },
+  'San Diego Repertory Theatre': { venues: ['lyceum theatre', 'lyceum space'] },
+  'Huntington Theatre Company': { pages: ['https://www.huntingtontheatre.org/season/'], venues: ['huntington theatre maso studio', 'huntington theatre', 'calderwood pavilion huntington'] },
+  'American Repertory Theater': { pages: ['https://americanrepertorytheater.org/shows-events/'], venues: ['loeb drama center', 'art oberon', 'farkas hall'] },
+  'Lyric Stage Company of Boston': { pages: ['https://www.lyricstage.com/'] },
+  'SpeakEasy Stage Company': { pages: ['https://www.speakeasystage.com/shows'], venues: ['speakeasy stage boston center for the arts', 'calderwood pavilion speakeasy'] },
+  'Central Square Theater': { pages: ['https://www.centralsquaretheater.org/'] },
+  'ArtsEmerson': { pages: ['https://artsemerson.org/whats-on/'], venues: ['emerson paramount center', 'paramount center', 'jackie liebergott black box'] },
+  'Greater Boston Stage Company': { pages: ['https://www.greaterbostonstage.org/shows'] },
+  'North Shore Music Theatre': { pages: ['https://nsmt.org/'] },
+  'Merrimack Repertory Theatre': { pages: ['https://mrt.org/'] },
+  'Commonwealth Shakespeare Company': { pages: ['https://commshakes.org/'] },
+  'Company One Theatre': { pages: ['https://companyone.org/'] },
+  "Actors' Shakespeare Project": { pages: ['https://actorsshakespeareproject.org/'] },
+  "Boston Playwrights' Theatre": { venues: ['boston playwrights theatre'] },
+};
+
 function getFinder(key) {
   const f = FINDERS[key];
   if (!f) throw new Error(`unknown finder city "${key}" (known: ${Object.keys(FINDERS).join(', ')})`);
   return f;
 }
 
-module.exports = { FINDERS, getFinder, registryId, REGISTRY_ID, monthsBetween, slug };
+module.exports = { SEASON_SOURCES, FINDERS, getFinder, registryId, REGISTRY_ID, monthsBetween, slug };
