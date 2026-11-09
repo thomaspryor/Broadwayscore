@@ -1072,7 +1072,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
               1. Critic Reviews
               1.5. Ad slot (AdSlot, client; usually renders nothing)
             BELOW FOLD (ShowPageBelowFold lazy chunk):
-              2. Video Reviews
+              2. Video Critic Score (VideoReviewsShelf)
               3. Audience Scorecard
               4. Awards Scorecard
               5. Box Office Scorecard

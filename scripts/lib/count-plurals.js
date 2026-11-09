@@ -11,9 +11,6 @@ const BARE_COUNT = /\$?\{([^{}]+)\}(?:\{' '\}|&nbsp;|\s)+(shows|reviews)\b(?!\s*
 
 // File -> expression -> reason the count cannot render as 1.
 const ALLOWED = {
-  'src/components/VideoReviewsShelf.tsx': {
-    'reviews.length': 'The aggregate branch requires reviews.length >= 2; the single branch says review.',
-  },
   'src/components/HomePageClient.tsx': {
     'totalReviews.toLocaleString()': 'Site-wide critic-review total, in the thousands.',
   },
