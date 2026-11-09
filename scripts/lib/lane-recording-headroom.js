@@ -31,4 +31,12 @@ function isBeyondRetention(night, archivedNights) {
   return isNight(night) && kept.length > 0 && String(night) < kept[0];
 }
 
-module.exports = { preImportTotalBytes, isBeyondRetention, MAX_INCOMING_NIGHTS };
+/**
+ * True only for an `over-budget` refusal caused by the archive TOTAL (not one night being too big on its own) for a night
+ * retention would evict anyway. A per-night overrun is a recorder size regression and stays red.
+ */
+function isHarmlessOverBudget(result, night, archivedNights) {
+  return !!result && result.status === 'over-budget' && /total/.test(String(result.detail || '')) && isBeyondRetention(night, archivedNights);
+}
+
+module.exports = { preImportTotalBytes, isBeyondRetention, isHarmlessOverBudget, MAX_INCOMING_NIGHTS };

@@ -349,3 +349,12 @@ test('BRO-7167: malformed night names never downgrade a failure to a warning', a
   assert.equal(isBeyondRetention('tmp', ['2026-10-30']), false);
   assert.equal(isBeyondRetention('2026-09-28', ['tmp', '2026-10-30']), true);
 });
+
+test('BRO-7167: only a total-budget refusal of a beyond-retention night is a warning; a per-night overrun stays red', async () => {
+  const { isHarmlessOverBudget } = require('../../scripts/lib/lane-recording-headroom');
+  const kept = ['2026-10-30'];
+  assert.equal(isHarmlessOverBudget({ status: 'over-budget', detail: '106846388 bytes > 104857600 total' }, '2026-09-28', kept), true);
+  assert.equal(isHarmlessOverBudget({ status: 'over-budget', detail: '12000000 bytes > 10485760 per night' }, '2026-09-28', kept), false);
+  assert.equal(isHarmlessOverBudget({ status: 'over-budget', detail: 'x bytes > y total' }, '2026-11-08', kept), false);
+  assert.equal(isHarmlessOverBudget({ status: 'error', detail: 'total' }, '2026-09-28', kept), false);
+});

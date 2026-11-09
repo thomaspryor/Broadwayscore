@@ -17,7 +17,7 @@ const os = require('os');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const imp = require('./lib/lane-recorded-nights/recording-import');
-const { preImportTotalBytes, isBeyondRetention } = require('./lib/lane-recording-headroom');
+const { preImportTotalBytes, isHarmlessOverBudget } = require('./lib/lane-recording-headroom');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 if (require.main === module && hasHelpFlag(process.argv.slice(2))) {
@@ -153,7 +153,7 @@ function main() {
         red++;
       } else if (r.status === 'no-keys') {
         unread++;
-      } else if (r.status === 'over-budget' && isBeyondRetention(w.p.night, archivedNights(root))) {
+      } else if (isHarmlessOverBudget(r, w.p.night, archivedNights(root))) {
         console.log(`::warning::${tag}: over budget and older than every retained night, so retention would drop it anyway; skipped`);
       } else if (r.status === 'error' || r.status === 'over-budget') {
         console.log(`::error::${tag}: ${r.status}: ${r.detail}`);
