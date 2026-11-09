@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-09T17:45:47.335Z",
+  "timestamp": "2026-11-09T18:05:47.638Z",
   "stats": {
-    "totalReviews": 80858,
-    "alreadyFlagged": 22119,
+    "totalReviews": 80875,
+    "alreadyFlagged": 22122,
     "dateGuardCatches": 219,
-    "directorMismatch": 3581,
-    "tvFilmSignals": 2307,
-    "londonSignals": 3655,
+    "directorMismatch": 3579,
+    "tvFilmSignals": 2306,
+    "londonSignals": 3654,
     "offBroadwaySignals": 754,
     "yearMismatch": 370,
-    "noPublishDate": 8396
+    "noPublishDate": 8414
   },
   "findings": [
     {
@@ -45008,20 +45008,6 @@
       ]
     },
     {
-      "showId": "much-ado-about-nothing-west-end-2025",
-      "file": "whatsonstage--sarah-crompton.json",
-      "score": 97,
-      "publishDate": "February 19th, 2025",
-      "url": "https://www.whatsonstage.com/news/much-ado-about-nothing-with-tom-hiddleston-and-hayley-atwell-review-simply-sublime-shakespeare_1665700/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from much-ado-about-nothing-2026"
-        }
-      ]
-    },
-    {
       "showId": "music-city-off-broadway-2026",
       "file": "lighting-and-sound-america--david-barbour.json",
       "score": 79,
@@ -54840,7 +54826,7 @@
       "showId": "richard-iii-2013",
       "file": "nbcny--robert-kahn.json",
       "score": 77,
-      "publishDate": null,
+      "publishDate": "2013-11-10T20:26:13-05:00",
       "url": "https://www.nbcnewyork.com/news/local/twelfth-night-richard-III-review-231156711.html",
       "findings": [
         {
@@ -57450,19 +57436,6 @@
     },
     {
       "showId": "smash-2025",
-      "file": "cititour--brian-scot-lipton.json",
-      "publishDate": null,
-      "url": "https://cititour.com/NYC_Broadway/Smash/1294",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "smash-2025",
       "file": "cititour--brian-scott-lipton.json",
       "score": 26,
       "publishDate": null,
@@ -58843,20 +58816,6 @@
       "score": 84,
       "publishDate": null,
       "url": "https://stagebuddy.com/theater/theater-review/spamalot",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"mike nichols\" from spamalot-2005"
-        }
-      ]
-    },
-    {
-      "showId": "spamalot-2023",
-      "file": "talkinbroadway--howard-miller.json",
-      "score": 91,
-      "publishDate": "2023-11-16",
-      "url": "https://www.talkinbroadway.com/page/world/Spamalot23.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -74670,7 +74629,7 @@
       "showId": "the-piano-lesson-2022",
       "file": "amny--matt-windman.json",
       "score": 79,
-      "publishDate": null,
+      "publishDate": "2022-10-13T20:37:49-04:00",
       "url": "https://www.amny.com/entertainment/theater/review-a-piano-lesson-worth-learning/",
       "findings": [
         {
@@ -117273,19 +117232,6 @@
       ]
     },
     {
-      "showId": "oliver-west-end-2024",
-      "file": "whatsonstage--unknown.json",
-      "score": 99,
-      "publishDate": "January 14th, 2025",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"gielgud\""
-        }
-      ]
-    },
-    {
       "showId": "on-bear-ridge-west-end-2019",
       "file": "everything-theatre--rob-warren.json",
       "score": 82,
@@ -132440,7 +132386,7 @@
     },
     {
       "showId": "the-lives-of-others-west-end-2026",
-      "file": "the-morning-star--unknown.json",
+      "file": "the-morning-star--mary-conway.json",
       "score": 67,
       "publishDate": "2026-11-02",
       "url": "https://morningstaronline.co.uk/article/lives-others-review-art-vs-socialism",
