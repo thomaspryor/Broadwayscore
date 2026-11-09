@@ -61,6 +61,21 @@ test('listing opener: review prose containing "until 7 June" is not a listing (c
   assert.equal(T.stripUkListingBullets(BODY + " • 1984 continues at Her Majesty's Theatre until 27 May"), BODY);
 });
 
+test('The Stage: a closing critic bio is a trailer; a cut-off review or a prose "X is a ..." line is not (BRO-7171 Stage 4)', () => {
+  // real ending: memoriam-off-west-end-2026/thestage--dave-fargnoli.json
+  const bio = "Dave is a playwright and critic. He was the winner of The Stage's Critic Search 2015";
+  assert.equal(T.stripStageCriticBio(`${BODY}  ${bio}`), BODY);
+  assert.equal(tier(`${BODY}  ${bio}`, 'thestage').contentTier, 'complete');
+  // only for The Stage
+  assert.notEqual(tier(`${BODY}  ${bio}`, 'guardian').contentTier, 'complete');
+  // review prose that opens "X is a ..." without a writing job stays
+  const prose = `${BODY}  Hamlet is a production that couldn't be more timely and its themes of love`;
+  assert.equal(T.stripStageCriticBio(prose), prose);
+  // body cut off mid-sentence before the bio: not stripped
+  const cut = `${BODY.slice(0, -1)} and the lead  ${bio}`;
+  assert.equal(T.stripStageCriticBio(cut), cut);
+});
+
 test('one-minute-critic: a cut-off final paragraph is not a headline (codex finding)', () => {
   const cut = BODY + '\n\nThe final act\n\nThe lead actor finally begins to';
   assert.equal(T.stripRelatedPostHeadlines(cut), cut);

@@ -168,8 +168,29 @@ function stripGuardianTopicsFooter(text) {
   return m ? text.slice(0, m.index) : text;
 }
 
+// ---------------------------------------------------------------------------
+// The Stage: the subscriber page ends with the critic's bio, one short
+// paragraph with no final full stop ("Dave is a playwright and critic. He was
+// the winner of The Stage's Critic Search 2015"). BRO-7171 Stage 4: 21
+// complete Stage reviews read as truncated because of it. Only a short final
+// paragraph that opens "<Name> is a/an ..." and names a writing job, after a
+// body that ends a sentence and is review-length.
+// ---------------------------------------------------------------------------
+const STAGE_BIO_RE = /\s{2,}([A-Z][\w'’-]+(?: [A-Z][\w'’-]+)? is (?:a|an) [^\n]{0,360})$/;
+const STAGE_BIO_JOB_RE = /\b(?:critic|writer|journalist|reviewer|playwright|editor|dramaturg)\b/i;
+
+function stripStageCriticBio(text) {
+  if (!text || typeof text !== 'string') return text;
+  const t = text.replace(/\s+$/, '');
+  const m = STAGE_BIO_RE.exec(t);
+  if (!m || !STAGE_BIO_JOB_RE.test(m[1])) return text;
+  const body = t.slice(0, m.index).replace(/\s+$/, '');
+  return SENTENCE_END_RE.test(body) && body.length >= RELATED_MIN_REMAINING ? body : text;
+}
+
 // Outlet-scoped strippers (outletId is the registry id on the review file).
 const OUTLET_TRAILER_STRIPPERS = Object.freeze({
+  thestage: stripStageCriticBio,
   'one-minute-critic': stripRelatedPostHeadlines,
   thefourthwalsh: stripFourthWalshInfoBlock,
 });
@@ -200,6 +221,7 @@ module.exports = {
   stripUkListingBullets,
   stripFourthWalshInfoBlock,
   stripRelatedPostHeadlines,
+  stripStageCriticBio,
   stripGuardianTopicsFooter,
   stripOutletTrailer,
   stripKnownTrailers,
