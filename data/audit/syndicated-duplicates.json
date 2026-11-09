@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-11-09T15:06:01.250Z",
+  "generatedAt": "2026-11-09T15:23:22.240Z",
   "threshold": 50,
   "summary": {
-    "totalSyndicatedPairs": 0,
-    "newlyFlagged": 0,
+    "totalSyndicatedPairs": 1,
+    "newlyFlagged": 1,
     "alreadyFlagged": 0,
-    "criticsAffected": 0,
-    "showsAffected": 0,
-    "avgSimilarity": 0,
-    "avgScoreDiff": 0
+    "criticsAffected": 1,
+    "showsAffected": 1,
+    "avgSimilarity": 78,
+    "avgScoreDiff": 4
   },
   "syndicationPairs": [
     {
@@ -17,7 +17,7 @@
       "secondaryOutlets": [
         "nydailynews"
       ],
-      "count": 0
+      "count": 1
     },
     {
       "critic": "kathleen campion",
@@ -161,7 +161,20 @@
       "count": 0
     }
   ],
-  "flagged": [],
+  "flagged": [
+    {
+      "critic": "Chris Jones",
+      "showId": "wanted-2022",
+      "primaryOutlet": "chicagotribune",
+      "secondaryOutlet": "nydailynews",
+      "primaryFile": "chicagotribune--chris-jones--on-2026-11-08.json",
+      "secondaryFile": "nydailynews--chris-jones.json",
+      "similarity": 78,
+      "primaryScore": 51,
+      "secondaryScore": 47,
+      "scoreDiff": 4
+    }
+  ],
   "authorMismatches": [
     {
       "showId": "birthday-candles-2022",
