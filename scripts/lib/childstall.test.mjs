@@ -333,3 +333,12 @@ test('WAKEPROMISE review fixes: curly apostrophe matches, bare "continue"/"monit
   assert.doesNotMatch(promiseRun("Fixed it. I'll monitor-proof the script in a later card.").stderr, PROMISE_MSG);
   assert.match(promiseRun("Started the deploy. I'll monitor the run and report.").stderr, PROMISE_MSG);
 });
+
+test('routine marker covers live routine prompts (weekly retro "read and follow"), not a human ask or a one-shot', () => {
+  const { NO_HUMAN_RE: R } = createRequire(import.meta.url)('./child-session-wait-guard.js');
+  assert.equal(R.test('New board-workers firing. You are running in a fresh session with no human watching.'), true);
+  assert.equal(R.test('New daily worker-check firing. Earlier firings are finished. No human is watching.'), true);
+  assert.equal(R.test('Scheduled job: weekly retrospective. Then read and follow docs/cloud-routines/weekly-retro.md in that repo exactly.'), true);
+  assert.equal(R.test('Please fix the header on the show page'), false);
+  assert.equal(R.test('Can you explain what docs/cloud-routines/board-workers.md does?'), false);
+});

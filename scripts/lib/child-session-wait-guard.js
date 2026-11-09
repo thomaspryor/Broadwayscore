@@ -241,7 +241,7 @@ function childStallDecision(input) {
 // a card in this firing must close, report or hand it off before it stops.
 // Nothing else ever comes back for it (BRO-7074 sat In Progress 34h).
 // A routine's own directive, not any mention: a human session that quotes a routine doc must not match.
-const NO_HUMAN_RE = /^\s*New [\w-]+ firing\b|\bRead docs\/cloud-routines\/\S+\.md\b[^\n]*\bfollow\b|\bno human is (?:watching|in the session)\b/i;
+const NO_HUMAN_RE = /^\s*New [\w-]+ firing\b|\bRead docs\/cloud-routines\/\S+\.md\b[^\n]*\bfollow\b|\bfollow docs\/cloud-routines\/\S+\.md\b|\bno human is (?:watching|in the session)\b/i;
 const CLAIM_RE = /linear-session\.js\s+claim\b[^\n]*?--issue[= ](BRO-\d+)|linear-session\.js\s+claim\b[^\n]*--title\b|linear-brain\.js\s+create\b[^\n]*--self\b/i;
 const CLOSING_STATE_RE = /^(?:Done|In Review|Paused|Duplicate|Todo|Backlog|Canceled|Cancelled)$/i;
 const CREATED_RE = /\b(BRO-\d+)\b/;
