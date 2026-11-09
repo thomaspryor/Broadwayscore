@@ -1370,7 +1370,8 @@ function decideInclusion(review, show, guards, filePath) {
   if (filePath) {
     const synd = guards.__syndicationLib || require('./lib/syndication-pairs');
     const normalize = guards.__dedupNormalizeOutlet || normalizeOutletCanonical;
-    const primaries = synd.getSyndicationPrimaries(review.criticName, normalize(review.outletId || review.outlet || ''));
+    const primaries = (synd.getSyndicationPrimariesInDir || synd.getSyndicationPrimaries).call(synd, review.criticName, normalize(review.outletId || review.outlet || ''),
+      () => { try { return require('fs').readdirSync(require('path').dirname(filePath)); } catch { return []; } }, normalize);
     // BRO-5901: the rebuild skips the secondary only when a primary actually
     // ships, so the closest per-file mirror is an includable, scored primary.
     // Baseline guards that predate the helper keep the old file-exists rule.

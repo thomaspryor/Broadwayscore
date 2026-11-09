@@ -86,10 +86,20 @@ const PUBLISHING_GROUPS = [
   ['san-francisco-chronicle', 'sfgate'],
   // BRO-6054: content partnership; the i newspaper printed theartsdesk reviews (often cut down) in 2019.
   ['artsdesk', 'i-paper'],
+  // BRO-7238: critic-owned sites that repost the review a publisher ran first (same date, same text). The outlet ids
+  // are specific to one critic each, so a group-wide rule cannot misfire on another critic.
+  ['dailybeast', 'timteeman'],          // Tim Teeman's own site reposts his Daily Beast pieces (13 shows)
+  ['observer', 'cote-notices'],         // David Cote's newsletter reposts his Observer reviews (7 shows)
+  ['allabouttheatreuk', 'sarahmonaghan'], // Sarah Monaghan's own site, three days after All About Theatre
+  ['vulture', 'vu'],                    // 'vu' is a second filing of the Vulture review (same score, no date)
+  ['theater-life', 'theatres-leiter-side', 'thedaviddesk2'], // Leiter's / Sheward's own blogs repost Theater Life
   // BRO-7237: Yahoo Entertainment reprints TheWrap's reviews under a yahoo.com URL (Robert Hofler's Wanted review,
   // 2026-11-08, ran at both). Yahoo is the reprint; TheWrap is the original.
   ['thewrap', 'yahoo'],
 ];
+
+// Outlet ids of aggregator portals (review-normalization.js SYNDICATION_PORTAL_HOSTS: yahoo.com, msn.com, aol.com).
+const SYNDICATION_PORTAL_OUTLETS = Object.freeze(['yahoo', 'msn', 'aol']);
 
 function _isRealByline(criticName) {
   const c = String(criticName || '').toLowerCase().trim();
@@ -101,7 +111,7 @@ function _isRealByline(criticName) {
  * `outletId` would merely be reprinting. Empty array = outletId is not a
  * syndicated secondary. Union of the per-critic map and publishing groups.
  */
-function getSyndicationPrimaries(criticName, outletId) {
+function getSyndicationPrimaries(criticName, outletId, { sameCriticOutlets } = {}) {
   if (!_isRealByline(criticName) || !outletId) return [];
   const out = new Set();
   const cfg = getSyndicationConfig(criticName);
@@ -110,7 +120,50 @@ function getSyndicationPrimaries(criticName, outletId) {
     const i = group.indexOf(outletId);
     if (i > 0) group.slice(0, i).forEach(o => out.add(o));
   }
+  // BRO-7238: a portal carries other publishers' reviews, so a portal copy defers to ANY other outlet that holds the
+  // same critic's review of the same show. Only callers that know those outlets (a show dir scan) pass them.
+  if (SYNDICATION_PORTAL_OUTLETS.includes(outletId) && Array.isArray(sameCriticOutlets)) {
+    for (const o of sameCriticOutlets) if (o && o !== outletId && !SYNDICATION_PORTAL_OUTLETS.includes(o)) out.add(o);
+  }
   return [...out];
+}
+
+/**
+ * Outlet prefixes of the same critic's files in a show directory
+ * (`<outlet>--<criticSlug>[-n].json`), for the portal rule above. Portal files
+ * (judged on the NORMALIZED prefix, so `yahoo-news--` counts) are left out: a
+ * portal copy never defers to another portal, or to itself.
+ * @param {string[]} fileNames
+ * @param {string} criticName
+ * @param {(o:string)=>string} [normalize] outlet normalizer (callers pass their own; default identity)
+ */
+function sameCriticOutletsFrom(fileNames, criticName, normalize = (o) => o) {
+  const slug = criticFileSlug(criticName);
+  if (!slug) return [];
+  const re = new RegExp(`^(.+?)--${slug}(?:-\\d+)?\\.json$`);
+  const out = new Set();
+  for (const f of fileNames || []) {
+    const m = re.exec(f);
+    // 'unknown'/'unnamed' files are shadows that defer to the named copy (dedup-survivor.unknownOutletShadowTargets);
+    // letting a portal defer to them back would drop both.
+    if (m && !/^(unknown|unnamed)$/.test(m[1]) && !SYNDICATION_PORTAL_OUTLETS.includes(normalize(m[1]))) out.add(m[1]);
+  }
+  return [...out];
+}
+
+/**
+ * THE one entry point for callers that can see the show directory (rebuild,
+ * explainExclusion, dedup-survivor): per-critic pairs + publishing groups + the
+ * portal rule. Callers without a directory (lane) keep getSyndicationPrimaries.
+ * @param {string} criticName
+ * @param {string} outletId normalized outlet id of the file being judged
+ * @param {string[]|(()=>string[])} fileNames the show directory listing, or a thunk returning it
+ * @param {(o:string)=>string} [normalize]
+ */
+function getSyndicationPrimariesInDir(criticName, outletId, fileNames, normalize) {
+  if (!SYNDICATION_PORTAL_OUTLETS.includes(outletId)) return getSyndicationPrimaries(criticName, outletId);
+  const names = typeof fileNames === 'function' ? fileNames() : fileNames; // a thunk: list the directory only for portal files
+  return getSyndicationPrimaries(criticName, outletId, { sameCriticOutlets: sameCriticOutletsFrom(names, criticName, normalize) });
 }
 
 /**
@@ -220,6 +273,6 @@ function hasLiveSyndicationPrimary(showDir, primaries, criticName, { fileNames, 
 
 module.exports = {
   criticFileSlug, isPrimaryFileFor, isLiveSyndicationPrimary, hasLiveSyndicationPrimary,
-  KNOWN_SYNDICATION_PAIRS, PUBLISHING_GROUPS, getSyndicationConfig, isSecondaryOutlet,
+  KNOWN_SYNDICATION_PAIRS, PUBLISHING_GROUPS, SYNDICATION_PORTAL_OUTLETS, sameCriticOutletsFrom, getSyndicationPrimariesInDir, getSyndicationConfig, isSecondaryOutlet,
   getSyndicationPrimaries, isCrossOutletSyndicationPair, isRenameCollisionPair,
 };
