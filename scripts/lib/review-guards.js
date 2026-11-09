@@ -4453,7 +4453,11 @@ function shouldRetryFetch(show, review, failureEntry) {
   if (!review || typeof review !== 'object') return { shouldRetry: true, reason: 'not_gated' };
   if (!failureEntry) return { shouldRetry: true, reason: 'not_gated' };
 
-  // Permanent gate — once set, only a human unsets.
+  // Permanent gate for the COLLECTOR — once set, only a human unsets it. The
+  // gap-recovery driver (BRO-7171 Stage 4) deliberately reads 'abandoned' and
+  // 'max_retries_reached' as "the collector's own route is spent", not as
+  // evidence about the URL, and re-tries from the Mac's residential IP under
+  // its own ledger cap (gap-recovery-ledger REFETCH_FREE: 3 tries, backoff).
   if (review.fetchDiscoveryAbandoned === true) {
     return { shouldRetry: false, reason: 'abandoned' };
   }

@@ -234,3 +234,34 @@ test('GUI check: a locked screen is usable (Stage 4); a missing console session 
   assert.equal(parseIoregConsole(open, 'someone').reason, 'user_not_on_console');
   assert.equal(parseIoregConsole('', 'tom').reason, 'no_console_session');
 });
+
+test('URL_WRONG_PAGE retries the stored url first when nothing contradicts it (Stage 4)', () => {
+  // Stage 3 sent every URL_WRONG_PAGE row to URL_REDISCOVER (disabled), so 1,009
+  // rows had no route although The Stage's stored urls extract fine in the browser.
+  const now = Date.parse('2026-11-09T00:00:00Z');
+  const show = { title: 'The Master Builder', previewsStartDate: '2026-09-01', openingDate: '2026-09-10', venue: 'Old Vic', category: 'west-end' };
+  const stageUrl = 'https://www.thestage.co.uk/reviews/the-master-builder-review-old-vic-london';
+  const ok = T.storedUrlWorthRetry({ url: stageUrl, show, nowMs: now });
+  assert.equal(ok.ok, true);
+  const sel = T.selectStrategy({ gapClass: 'URL_WRONG_PAGE', hasUrl: true, hasAdapter: true, storedUrlOk: ok });
+  assert.equal(sel.strategy, 'REFETCH_FREE');
+  // deadline row pointing at unrelated news: rediscovery only (disabled -> none)
+  const news = T.storedUrlWorthRetry({ url: 'https://deadline.com/2026/05/ben-affleck-artificial-intelligence-startup-1236123456/', show, nowMs: now });
+  assert.deepEqual(news, { ok: false, reason: 'url_names_other_show' });
+  const none = T.selectStrategy({ gapClass: 'URL_WRONG_PAGE', hasUrl: true, hasAdapter: true, storedUrlOk: news });
+  assert.equal(none.strategy, null);
+  assert.deepEqual(none.skipped.map((s) => s.reason), ['url_names_other_show', 'url_names_other_show', 'disabled']);
+  // Globe Seagull row holds another production's url; the show has not started.
+  const seagull = { title: 'The Seagull', previewsStartDate: '2027-01-15', venue: "Shakespeare's Globe", category: 'west-end' };
+  assert.equal(T.storedUrlWorthRetry({ url: 'https://www.thestage.co.uk/reviews/the-seagull-review-barbican-london', show: seagull, nowMs: now }).reason, 'show_not_started');
+  assert.equal(T.storedUrlWorthRetry({ url: stageUrl, show: null, nowMs: now }).reason, 'show_unknown');
+  // other classes ignore the stored-url check
+  assert.equal(T.selectStrategy({ gapClass: 'BLOCKED', hasUrl: true, hasAdapter: false, storedUrlOk: news }).strategy, 'REFETCH_FREE');
+});
+
+test('free refetch: only the collector cooldown blocks; abandoned / max retries do not (Stage 4)', () => {
+  assert.deepEqual(T.collectorRefetchGate({ shouldRetry: false, reason: 'cooldown' }), { ok: false, reason: 'collector_cooldown' });
+  assert.equal(T.collectorRefetchGate({ shouldRetry: false, reason: 'abandoned' }).ok, true);
+  assert.equal(T.collectorRefetchGate({ shouldRetry: false, reason: 'max_retries_reached' }).ok, true);
+  assert.equal(T.collectorRefetchGate({ shouldRetry: true, reason: 'not_gated' }).ok, true);
+});

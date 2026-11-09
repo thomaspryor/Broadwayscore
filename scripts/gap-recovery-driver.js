@@ -44,7 +44,7 @@ const os = require('os');
 const path = require('path');
 
 const L = require('./lib/gap-recovery-ledger');
-const { STRATEGY_FLAGS, selectStrategy, compareCandidates } = require('./lib/gap-strategy-table');
+const { STRATEGY_FLAGS, selectStrategy, compareCandidates, storedUrlWorthRetry, collectorRefetchGate } = require('./lib/gap-strategy-table');
 
 function arg(name, def = null) {
   const hit = process.argv.slice(2).find((a) => a.startsWith(`--${name}=`));
@@ -108,12 +108,9 @@ function planCandidates({ dir, shows, outlets, ledgerIndex, runGates }) {
     const eligible = (strategy) => {
       const e = L.strategyEligibility({ strategy, show, review, gapClass: row.gapClass, state: L.strategyState(ledgerIndex, reviewKey, strategy) });
       if (!e.ok) return e;
-      // The collector's own fetch gate (failed-fetches.json + lifecycle): when it
-      // has given up on the url, the free refetch is the same cheap path; the
-      // other strategies are the escalation.
       if (strategy === 'REFETCH_FREE' && ffEntry) {
-        const c = rg.shouldRetryFetch(show, review, ffEntry);
-        if (!c.shouldRetry) return { ok: false, reason: `collector_${c.reason}` };
+        const g = collectorRefetchGate(rg.shouldRetryFetch(show, review, ffEntry));
+        if (!g.ok) return g;
       }
       return e;
     };
@@ -127,6 +124,7 @@ function planCandidates({ dir, shows, outlets, ledgerIndex, runGates }) {
       // An unknown show date counts as 'recent' for ordering, but such shows
       // are often old: do not take ARCHIVE away from them.
       recency: row.dateKnown === false ? null : row.recency,
+      storedUrlOk: row.gapClass === 'URL_WRONG_PAGE' ? storedUrlWorthRetry({ url: review.url, show }) : undefined,
       eligible,
       runGates: { ...runGates, ...extraGates },
       only: OPTS.only,
