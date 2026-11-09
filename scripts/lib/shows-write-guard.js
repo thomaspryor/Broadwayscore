@@ -58,7 +58,7 @@ const { restoreHumanCorrectedOpeningDates } = require('./opening-date-guard');
 const { sanitizeVenueForWrite } = require('./venue-classification');
 
 const { hasStoredStaleUpcomingTag, stripUpcomingTag } = require('./opening-night-completeness');
-const { newDuplicateFindings, formatFinding } = require('./shows-duplicate-rule');
+const { newDuplicateFindings, newRowFragmentFindings, formatFinding } = require('./shows-duplicate-rule');
 const { typeForListedShow } = require('./announced-promotion');
 const { typeExempt } = require('./market-expansion-validator');
 
@@ -174,7 +174,13 @@ function createShowsWriteGuard(showsPath, options = {}) {
       // read here is the state being replaced.
       // Kill switch for a misfire: SHOWS_DUP_GUARD_DISABLED=true (the prebuild gate still runs).
       if (!allowDuplicates && process.env.SHOWS_DUP_GUARD_DISABLED !== 'true') {
-        const added = newDuplicateFindings(() => readOnDiskShows(guard.filePath), finalData.shows);
+        let onDisk;
+        const readBefore = () => (onDisk === undefined ? (onDisk = readOnDiskShows(guard.filePath)) : onDisk);
+        const added = [
+          ...newDuplicateFindings(readBefore, finalData.shows),
+          // BRO-7080: title-fragment stubs the key rule never pairs.
+          ...newRowFragmentFindings(readBefore, finalData.shows),
+        ];
         if (added.length) {
           throw new Error(`shows-write-guard: refusing to write ${added.length} new duplicate show row(s); the prebuild gate would fail the build:\n${added.map((f) => `  - ${formatFinding(f)}`).join('\n')}\nUse the existing row instead of adding one; for a genuinely distinct production list the other id in the row's distinctFrom.`);
         }
