@@ -85,7 +85,10 @@ async function main() {
     try {
       const decision = decideDriftAlert(unexplained);
       const router = require('./lib/owner-alert-router.js');
-      if (decision.action === 'resolve') router.resolveCondition(decision.conditionKey, { reason: decision.reason });
+      if (decision.action === 'resolve' && scanned === 0) {
+        // An empty/partial checkout proves nothing: never resolve (and so never let the sweep cancel) a live card.
+        console.error('audit-approved-fix-drift: scanned 0 files with approvedFixes, leaving the alert condition untouched');
+      } else if (decision.action === 'resolve') router.resolveCondition(decision.conditionKey, { reason: decision.reason });
       else {
         const res = await router.routeAlert(decision.alert);
         const r = res || {};

@@ -4,6 +4,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import os from 'node:os';
+import { spawnSync } from 'node:child_process';
 import path from 'node:path';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
@@ -214,4 +216,16 @@ test('decideDriftAlert: non-flag values are clamped, never echoed', () => {
   const { alert } = decideDriftAlert([drift(1, { current: long, stamp: { newValue: { text: 'BODY' }, at: 'a', fixId: 'f' } })]);
   assert.ok(!alert.description.includes(long) && !alert.description.includes('BODY'));
   assert.match(alert.description, /<string, not shown>/);
+});
+
+test('BRO-7179: an empty scan never resolves the alert condition', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'afd-empty-'));
+  fs.mkdirSync(path.join(dir, 'some-show-2020'));
+  fs.writeFileSync(path.join(dir, 'some-show-2020', 'a.json'), JSON.stringify({ url: 'x' }));
+  const r = spawnSync('node', [path.join(import.meta.dirname, '../../scripts/audit-approved-fix-drift.js'), `--dir=${dir}`, '--alert'], {
+    encoding: 'utf8', env: { ...process.env, LINEAR_API_KEY: '', HOME: dir },
+  });
+  assert.equal(r.status, 0);
+  assert.match(r.stderr, /scanned 0 files .* leaving the alert condition untouched/);
+  fs.rmSync(dir, { recursive: true, force: true });
 });
