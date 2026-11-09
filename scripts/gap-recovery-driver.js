@@ -189,6 +189,12 @@ async function main() {
   const runGates = {};
   if (!gui.available) runGates.BROWSER_SESSION = { ok: false, reason: `browser_unavailable:${gui.reason}` };
   if (!serpKeys.scrapingBeeKey && !serpKeys.brightDataKey) runGates.URL_REDISCOVER = { ok: false, reason: 'no_serp_key' };
+  const env = require('./lib/gap-strategy-table').liveEnvironmentGates({
+    showsJsonReadable: (() => { try { fs.accessSync(path.join(ROOT, 'data', 'shows.json'), fs.constants.R_OK); return true; } catch { return false; } })(),
+    cookieJarExists: fs.existsSync(require('./lib/cookie-loader').COOKIE_DIR),
+  });
+  if (!runGates.BROWSER_SESSION && env.runGates.BROWSER_SESSION) runGates.BROWSER_SESSION = env.runGates.BROWSER_SESSION;
+  if (env.fatal && !OPTS.dryRun) { console.error(`gap-recovery: refusing a live run: ${env.fatal}`); return 2; }
 
   const rows = L.readRows(ledgerPath);
   const ledgerIndex = L.indexRows(rows);

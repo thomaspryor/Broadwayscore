@@ -13,7 +13,14 @@ const STRATEGY_FLAGS = Object.freeze({
   REFETCH_FREE: Object.freeze({ enabled: true, cost: 'F', note: 'fetchPage free tiers only (cookies-plain, playwright)' }),
   BROWSER_SESSION: Object.freeze({ enabled: true, cost: 'B', note: 'headed subscriber Chrome via browser-outlet-adapters' }),
   ARCHIVE: Object.freeze({ enabled: true, cost: 'F', note: 'earliest 200 Wayback capture (pre-paywall)' }),
-  URL_REDISCOVER: Object.freeze({ enabled: true, cost: 'S', note: 'discoverCorrectUrl + identity proof; search budget enforced in url-discovery' }),
+  // DISABLED 2026-11-09 by the Stage 2 decision rule: the NO_URL pilot (20
+  // daily-mail / mail-on-sunday files) accepted 0/20, and The Stage
+  // URL_WRONG_PAGE run 0/14, all no_serp_match. Part of that is a provider
+  // defect, not an absence of articles: Scrapingdog now returns many organic
+  // `link`s as opaque google.com/url?q=CAES... tokens (no target url inside;
+  // the redirect answers 200, not a 302), which url-discovery blocks as
+  // non-review hosts. Re-measure after that is fixed before turning this on.
+  URL_REDISCOVER: Object.freeze({ enabled: false, cost: 'S', note: 'discoverCorrectUrl + identity proof; search budget enforced in url-discovery' }),
   AGG_LINK: Object.freeze({ enabled: false, cost: 'F', note: 'unbuilt: aggregator outbound links unverified (revised plan item 1)' }),
 });
 
@@ -85,4 +92,22 @@ function compareCandidates(a, b) {
   return String(a.reviewKey).localeCompare(String(b.reviewKey));
 }
 
-module.exports = { STRATEGY_FLAGS, CLASS_STRATEGIES, selectStrategy, compareCandidates };
+/**
+ * Live-run preflight. The acceptance gate's generic-title check reads the
+ * repo's own data/shows.json and turns itself off (with only a warning) when
+ * it is missing, and the cookie loader reads the repo's own data/cookies/.
+ * A git worktree has neither (both are gitignored), so a live run from a
+ * worktree would accept texts with a weaker gate and burn every subscriber
+ * candidate on `no_cookies`. Found in the BRO-7171 Stage 2 pilot.
+ * @param {{showsJsonReadable:boolean, cookieJarExists:boolean}} env
+ * @returns {{fatal:string|null, runGates:object}}
+ */
+function liveEnvironmentGates({ showsJsonReadable, cookieJarExists }) {
+  const runGates = {};
+  if (!cookieJarExists) runGates.BROWSER_SESSION = { ok: false, reason: 'browser_unavailable:cookie_jar_missing' };
+  const fatal = showsJsonReadable ? null
+    : 'data/shows.json is not readable from this checkout, so the generic-title gate would be off; run from the main checkout or link data/shows.json';
+  return { fatal, runGates };
+}
+
+module.exports = { STRATEGY_FLAGS, CLASS_STRATEGIES, selectStrategy, compareCandidates, liveEnvironmentGates };

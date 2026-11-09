@@ -141,15 +141,21 @@ test('strategy table: per-class order, skips with reasons, disabled flag removes
   assert.deepEqual(s.skipped, [{ strategy: 'BROWSER_SESSION', reason: 'browser_unavailable' }]);
   s = T.selectStrategy({ gapClass: 'PAYWALL_PAGE', hasUrl: true, hasAdapter: false });
   assert.equal(s.skipped[0].reason, 'no_adapter');
+  // Stage 2 decision rule (pilot accepted 0/20 < 30%): both url-finding routes ship off.
+  assert.equal(T.STRATEGY_FLAGS.URL_REDISCOVER.enabled, false);
+  assert.equal(T.STRATEGY_FLAGS.AGG_LINK.enabled, false);
   s = T.selectStrategy({ gapClass: 'NO_URL', hasUrl: false, hasAdapter: false });
+  assert.equal(s.strategy, null);
+  assert.deepEqual(s.skipped, [{ strategy: 'AGG_LINK', reason: 'disabled' }, { strategy: 'URL_REDISCOVER', reason: 'disabled' }]);
+  const on = { ...T.STRATEGY_FLAGS, URL_REDISCOVER: { ...T.STRATEGY_FLAGS.URL_REDISCOVER, enabled: true } };
+  s = T.selectStrategy({ gapClass: 'NO_URL', hasUrl: false, hasAdapter: false, flags: on });
   assert.equal(s.strategy, 'URL_REDISCOVER');
   assert.deepEqual(s.skipped, [{ strategy: 'AGG_LINK', reason: 'disabled' }]);
-  const off = { ...T.STRATEGY_FLAGS, URL_REDISCOVER: { ...T.STRATEGY_FLAGS.URL_REDISCOVER, enabled: false } };
-  assert.equal(T.selectStrategy({ gapClass: 'NO_URL', hasUrl: false, hasAdapter: false, flags: off }).strategy, null);
   s = T.selectStrategy({ gapClass: 'TRUNCATED_OTHER', hasUrl: true, hasAdapter: false, eligible: (st) => (st === 'REFETCH_FREE' ? { ok: false, reason: 'cooldown' } : { ok: true }) });
   assert.equal(s.strategy, 'ARCHIVE');
   assert.equal(T.selectStrategy({ gapClass: 'FALSE_TRUNCATION_SUSPECT', hasUrl: true, hasAdapter: true }).strategy, null);
-  assert.equal(T.selectStrategy({ gapClass: 'GARBAGE_PAGE', hasUrl: true, hasAdapter: true, only: 'URL_REDISCOVER' }).strategy, 'URL_REDISCOVER');
+  assert.equal(T.selectStrategy({ gapClass: 'GARBAGE_PAGE', hasUrl: true, hasAdapter: true, only: 'URL_REDISCOVER', flags: on }).strategy, 'URL_REDISCOVER');
+  assert.equal(T.selectStrategy({ gapClass: 'GARBAGE_PAGE', hasUrl: true, hasAdapter: true, only: 'URL_REDISCOVER' }).strategy, null);
   // every open class the classifier emits has a table row
   const { GAP_CLASSES, CLOSED_CLASSES } = require('./text-gap-classify.js');
   for (const c of GAP_CLASSES) if (!CLOSED_CLASSES.includes(c)) assert.ok(Array.isArray(T.CLASS_STRATEGIES[c]), `no strategy row for ${c}`);
@@ -163,6 +169,14 @@ test('candidate order: recent before historic, newest show first, cheaper strate
     { reviewKey: 'd', recency: 'recent', showDate: '2025-01-01', strategy: 'ARCHIVE' },
   ].sort(T.compareCandidates).map((x) => x.reviewKey);
   assert.deepEqual(c, ['c', 'd', 'b', 'a']);
+});
+
+test('live preflight: no shows.json refuses the run; no cookie jar gates the browser only', () => {
+  assert.match(T.liveEnvironmentGates({ showsJsonReadable: false, cookieJarExists: true }).fatal, /generic-title gate/);
+  const noJar = T.liveEnvironmentGates({ showsJsonReadable: true, cookieJarExists: false });
+  assert.equal(noJar.fatal, null);
+  assert.equal(noJar.runGates.BROWSER_SESSION.reason, 'browser_unavailable:cookie_jar_missing');
+  assert.deepEqual(T.liveEnvironmentGates({ showsJsonReadable: true, cookieJarExists: true }), { fatal: null, runGates: {} });
 });
 
 test('GUI check: locked screen and missing console session are unavailable', () => {
