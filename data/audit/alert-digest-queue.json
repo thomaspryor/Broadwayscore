@@ -1587,5 +1587,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-09T03:41:22.853Z"
+  },
+  {
+    "conditionKey": "land:land/go-live-now-skill",
+    "title": "Landing blocked: unit-tests-node red on land/go-live-now-skill",
+    "description": "land.yml did not land land/go-live-now-skill: the unit-tests-node gate went red at ed4462e52d. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42558544574",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/go-live-now-skill"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "ed4462e52d994819c74fbf943330fd5da496d32e"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42558544574"
+      }
+    ],
+    "queuedAt": "2026-11-09T04:21:00.657Z"
   }
 ]
