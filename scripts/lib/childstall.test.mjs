@@ -46,8 +46,12 @@ test('BRO-6854 replay: stop with nothing live and no report is blocked', () => {
 test('a REPORT-BACK send_message to @parent passes', () => {
   assert.equal(childStallDecision({ ...bro6854, tools: [...bro6854.tools, send(10, 'REPORT-BACK BRO-6854: landed abc123')] }).block, false);
 });
-test('a report naming only the card id passes (template wording)', () => {
-  assert.equal(childStallDecision({ ...bro6854, tools: [...bro6854.tools, send(10, 'BRO-6854 done, land run green')] }).block, false);
+test('a status ping naming the card, or a URL with ?, is not a report (reviewer P1)', () => {
+  assert.equal(childStallDecision({ ...bro6854, tools: [...bro6854.tools, send(10, 'BRO-6854: SD landed, starting Boston')] }).block, true);
+  assert.equal(childStallDecision({ ...bro6854, tools: [...bro6854.tools, send(10, 'run https://x/runs?id=9 green')] }).block, true);
+});
+test('a live background Agent, PR watch or trigger passes (otherLive)', () => {
+  assert.equal(childStallDecision({ ...bro6854, otherLive: true }).block, false);
 });
 test('an owner question to @parent passes (the reply wakes the child)', () => {
   assert.equal(childStallDecision({ ...bro6854, tools: [...bro6854.tools, send(10, 'DECISION NEEDED: launch Boston with 40 shows or wait?')] }).block, false);
@@ -195,4 +199,32 @@ test('e2e: kill switch, and a non-child session is not CHILDSTALL-gated', () => 
   const plain = bro6854Transcript();
   plain[0] = userStr('Fix the Boston page.');
   assert.doesNotMatch(runHook(plain).stderr, STALL_MSG);
+});
+
+// ─── Reviewer findings (ship-check, BRO-7183) ───────────────────────────────
+test('e2e: a parent prompt quoting the REPORT-BACK template (no BUDGET line) keeps WAKELESS', () => {
+  const r = runHook([
+    userStr('Start a worker; its prompt needs a line\nREPORT-BACK: send_message @parent'),
+    toolUse('t2', 'Bash', { command: 'gh workflow run llm-scoring.yml' }, 2),
+    toolRes('t2', 'Created workflow_dispatch event', 2),
+  ]);
+  assert.doesNotMatch(r.stderr, STALL_MSG);
+  assert.match(r.stderr, /nothing will wake it/);
+});
+test('e2e: a background Agent still working passes', () => {
+  const r = runHook(bro6854Transcript([
+    toolUse('t3', 'Agent', { description: 'review', prompt: 'review the diff', run_in_background: true }, 1),
+    toolRes('t3', 'Async agent launched successfully. agentId: a1b2c3d4 The agent is working in the background.', 1),
+  ]));
+  assert.doesNotMatch(r.stderr, STALL_MSG);
+});
+test('e2e: a parent message delivered mid-turn (queued_command attachment) moves the anchor', () => {
+  const r = runHook(bro6854Transcript([
+    toolUse('t3', 'mcp__claude-code-remote__send_message', { session_id: '@parent', message: 'REPORT-BACK BRO-6854: SD done' }, 1),
+    toolRes('t3', '{"delivered":true}', 1),
+    { type: 'attachment', timestamp: ts(1), attachment: { type: 'queued_command',
+      prompt: '<cross-session-message from-session="session_01RUGH9ofwN3mfkzprugvLhL">\nResume Boston.\n</cross-session-message>' } },
+  ]));
+  assert.equal(r.status, 2, r.stderr);
+  assert.match(r.stderr, STALL_MSG);
 });

@@ -475,6 +475,8 @@ def _is_owner_record(r, text):
 events = []  # list of (kind, payload)
 _user_prompts = []  # early user texts (CHILDWAIT: worker BUDGET: line)
 _report_back_prompt = []  # CHILDSTALL: an early prompt has a REPORT-BACK: line (full text, not the 6000-char copy)
+def _rb_child(t):  # a create_session child prompt: REPORT-BACK: and BUDGET: lines (CHILDSTALL)
+    return bool(re.search(r'(^|\n)\s*REPORT-BACK:', t) and re.search(r'(^|\n)\s*BUDGET:[ \t]*([1-9]|1[0-2])h\b', t))
 # kinds: 'tool' payload=(name,input,tool_use_id) | 'text' payload=str | 'result' payload=(tool_use_id, text)
 tool_results_by_id = {}
 result_ts_by_id = {}  # tool_use_id -> transcript timestamp of its result (scoring gate)
@@ -524,7 +526,8 @@ try:
                     if mtype == 'attachment' and _att.get('type') != 'queued_command':
                         continue
                     _txt = _att.get('prompt') if mtype == 'attachment' else _att.get('content')
-                if isinstance(_txt, str) and ('<task-notification>' in _txt or '<agent-message' in _txt):
+                if isinstance(_txt, str) and ('<task-notification>' in _txt or '<agent-message' in _txt
+                                              or '<cross-session-message' in _txt):  # parent mid-turn (CHILDSTALL)
                     events.append(('user_notice', _txt))
                 continue
             elif mtype == 'user':
@@ -539,7 +542,7 @@ try:
                     events.append(('user_notice', content))
                     if len(_user_prompts) < 6 and not r.get('isMeta'):
                         _user_prompts.append(content[:6000])
-                        _report_back_prompt += ['REPORT-BACK:' in content]
+                        _report_back_prompt += [content if _rb_child(content) else '']
                     # The owner's own typed prompt (origin.kind 'human'; older
                     # transcripts: no origin, not meta, not a <notice>). Stop-hook
                     # feedback is isMeta. Consumed by the chain gate only.
@@ -560,7 +563,7 @@ try:
                                      if isinstance(c, dict) and c.get('type') == 'text')
                 if _list_text and len(_user_prompts) < 6 and not r.get('isMeta'):
                     _user_prompts.append(_list_text[:6000])
-                    _report_back_prompt += ['REPORT-BACK:' in _list_text]
+                    _report_back_prompt += [_list_text if _rb_child(_list_text) else '']
                 if _list_text and _is_owner_record(r, _list_text):
                     events.append(('user_human', ''))
                 for c in content:
@@ -1401,7 +1404,7 @@ if os.environ.get('PASSIVEOFFER_GATE_DISABLE', '0') != '1':
 # asked for, or a PR subscription. A NOT SAFE that waits on the owner
 # (DECISION NEEDED:, or a "You need to:" line that is not "nothing") needs no
 # wake. Kill switch WAKELESS_GATE_DISABLE=1. Fail-open.
-# A REPORT-BACK child is CHILDSTALL's (below): one block per stall, not two.
+# A REPORT-BACK child (REPORT-BACK: + BUDGET: lines) is CHILDSTALL's (below).
 _cs_on = (os.environ.get('CHILDSTALL_GATE_DISABLE', '0') != '1' and any(_report_back_prompt)
           and os.environ.get('CLAUDE_CODE_REMOTE') == 'true')
 if os.environ.get('WAKELESS_GATE_DISABLE', '0') != '1' and not _cs_on:
@@ -1471,11 +1474,12 @@ if _CW_CODES:
                 [_p for _k, _p in events if _k in ('user_notice', 'user_text')]
                 + [tool_results_by_id.get(_p[2], '') or '' for _k, _p in events if _k == 'tool' and _p[0] == 'ReadNotifications']))))
             _cw = subprocess.run(['node', _cw_js], capture_output=True, text=True, timeout=10, input=json.dumps({
-                'firstPrompt': '\n'.join(_user_prompts), 'closing': _cw_text + '\n' + _cw_last, 'tools': _cw_tools,
+                'firstPrompt': '\n'.join(_user_prompts + [t for t in _report_back_prompt if t][:1]), 'closing': _cw_text + '\n' + _cw_last, 'tools': _cw_tools,
                 'done': sorted(_cw_done), 'env': {k: v for k, v in os.environ.items() if k.endswith('PARENT_SESSION_ID')},
                 'all': True, 'now': time.time() * 1000, 'skip': [c for c in _CW_ALL if c not in _CW_CODES],
                 'liveChildren': _live_work()['children'] if _cw_keep else [], 'keepOpen': _cw_keep, 'stall': _cw_stall,
-                'reportBack': True, 'anchor': _cw_anchor, 'parentIds': _cw_pids}))
+                'reportBack': True, 'anchor': _cw_anchor, 'parentIds': _cw_pids,
+                'otherLive': bool(_cw_stall and (lambda w: w['agents'] or w['pr_watch'] or w['triggers'])(_live_work()))}))
             sys.stderr.write(('⚠️  CHILDWAIT: ' + _cw.stderr.strip()[:200] + '\n') if _cw.stderr.strip() else '')
             _cw_res = json.loads(_cw.stdout or '{}')
             if _cw_res.get('block') and (_cw_res.get('code') or 'CHILDWAIT') in _CW_CODES:

@@ -204,13 +204,15 @@ function parentWatchDecision(input) {
 const REMOTE_SEND_RE = /^mcp__(?:claude-code-remote|Claude_Code_Remote)__send_message$/;
 // What a report or a question to the parent looks like: the REPORT-BACK
 // prefix, the card id, a question, or an owner decision.
-const PARENT_REPORT_RE = /REPORT-BACK|\bBRO-\d+\b|\?|DECISION NEEDED|ACTION NEEDED|\bquestion\b/i;
+// A report or a question the parent must answer. A status ping ("BRO-6854: SD landed,
+// starting Boston") is neither: no reply comes, so it must not count. A URL's ? is not a question.
+const PARENT_REPORT_RE = /REPORT-BACK|\?(?=\s|$)|DECISION NEEDED|ACTION NEEDED|\bquestion\b/i;
 const MOVED_BG_RE = /moved to the background \(ID:/;
 
 /** @returns {{block: boolean, reason: string, wrongTool?: boolean}} */
 function childStallDecision(input) {
   const { firstPrompt, env, tools = [], done = [], now = null, reportBack = false,
-    anchor = -1, parentIds = [], noVerify = false } = input || {};
+    anchor = -1, parentIds = [], noVerify = false, otherLive = false } = input || {};
   const no = (reason) => ({ block: false, reason });
   if (noVerify) return no('NO-VERIFY bypass');
   if (!reportBack) return no('prompt has no REPORT-BACK: line');
@@ -227,6 +229,7 @@ function childStallDecision(input) {
   const asBg = tools.map((t) => (t && t.name === 'Bash' && !(t.input || {}).run_in_background
     && MOVED_BG_RE.test(String(t.result || '')) ? { ...t, input: { ...t.input, run_in_background: true, timeout: 0 } } : t));
   if (liveBackground(asBg, done, { now }).length) return no('a background task or Monitor is live');
+  if (otherLive) return no('a background Agent, PR subscription or self-bound trigger will wake it');
   const wrongTool = after.some((t) => t && t.name === 'SendMessage');
   return { block: true, wrongTool,
     reason: 'child session ends its turn with nothing live and no report or question sent to @parent'
