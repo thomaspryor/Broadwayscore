@@ -1,50 +1,20 @@
 {
-  "generatedAt": "2026-11-09T19:48:57.510Z",
+  "generatedAt": "2026-11-09T19:59:25.991Z",
   "current": {
-    "totalCritics": 172,
-    "totalGaps": 89,
+    "totalCritics": 176,
+    "totalGaps": 88,
     "gapsByBucket": {
       "A": 0,
       "B": 2,
-      "C": 86,
+      "C": 85,
       "D": 1,
       "E": 0
     },
     "gapsBySource": {
-      "muckrack": 89
+      "muckrack": 88
     }
   },
   "history": [
-    {
-      "date": "2026-07-27",
-      "timestamp": "2026-07-27T10:37:07.379Z",
-      "totalCritics": 82,
-      "totalGaps": 425,
-      "gapsByBucket": {
-        "A": 32,
-        "B": 6,
-        "C": 383,
-        "D": 4,
-        "E": 0
-      },
-      "gapsBySource": {
-        "muckrack": 425
-      },
-      "perCritic": {
-        "Chris Jones": 119,
-        "Elysa Gardner": 108,
-        "Jesse Green": 77,
-        "Frank Scheck": 28,
-        "Juan A. Ramirez": 23,
-        "Helen Shaw": 18,
-        "Pete Hempstead": 15,
-        "Anya Ryan": 15,
-        "Arifa Akbar": 11,
-        "Tim Teeman": 5,
-        "Mark Kennedy": 4,
-        "David Rooney": 2
-      }
-    },
     {
       "date": "2026-08-03",
       "timestamp": "2026-08-03T10:33:53.105Z",
@@ -509,6 +479,30 @@
         "Maya Phillips": 3,
         "Laura Collins-Hughes": 1
       }
+    },
+    {
+      "date": "2026-11-09",
+      "timestamp": "2026-11-09T19:44:44.389Z",
+      "totalCritics": 176,
+      "totalGaps": 88,
+      "gapsByBucket": {
+        "A": 0,
+        "B": 2,
+        "C": 85,
+        "D": 1,
+        "E": 0
+      },
+      "gapsBySource": {
+        "muckrack": 88
+      },
+      "perCritic": {
+        "Elysa Gardner": 73,
+        "Helen Shaw": 4,
+        "Jackson McHenry": 4,
+        "Sara Holdren": 3,
+        "Maya Phillips": 3,
+        "Laura Collins-Hughes": 1
+      }
     }
   ],
   "topCriticsByGap": [
@@ -517,21 +511,14 @@
       "outlet": "usatoday",
       "tier": 2,
       "missingCount": 73,
-      "lastDate": "2026-10-29"
-    },
-    {
-      "name": "Sara Holdren",
-      "outlet": "vulture",
-      "tier": 1,
-      "missingCount": 4,
-      "lastDate": "2026-10-29"
+      "lastDate": "2026-11-09"
     },
     {
       "name": "Helen Shaw",
       "outlet": "vulture",
       "tier": 1,
       "missingCount": 4,
-      "lastDate": "2026-11-01"
+      "lastDate": "2026-11-09"
     },
     {
       "name": "Jackson McHenry",
@@ -539,6 +526,13 @@
       "tier": 1,
       "missingCount": 4,
       "lastDate": "2026-10-30"
+    },
+    {
+      "name": "Sara Holdren",
+      "outlet": "vulture",
+      "tier": 1,
+      "missingCount": 3,
+      "lastDate": "2026-11-05"
     },
     {
       "name": "Maya Phillips",
@@ -552,35 +546,35 @@
       "outlet": "nytimes",
       "tier": 1,
       "missingCount": 1,
-      "lastDate": "2026-10-21"
-    },
-    {
-      "name": "Jonathan Mandell",
-      "outlet": "nyt-theater",
-      "tier": 2,
-      "missingCount": 0,
-      "lastDate": "2026-10-29"
-    },
-    {
-      "name": "Charles Isherwood",
-      "outlet": "wsj",
-      "tier": 1,
-      "missingCount": 0,
-      "lastDate": "2026-10-29"
-    },
-    {
-      "name": "David Barbour",
-      "outlet": "lighting-and-sound-america",
-      "tier": 2,
-      "missingCount": 0,
-      "lastDate": "2026-10-29"
+      "lastDate": "2026-11-06"
     },
     {
       "name": "Chris Jones",
       "outlet": "chicagotribune",
       "tier": 2,
       "missingCount": 0,
-      "lastDate": "2026-10-29"
+      "lastDate": "2026-11-09"
+    },
+    {
+      "name": "Charles Isherwood",
+      "outlet": "wsj",
+      "tier": 1,
+      "missingCount": 0,
+      "lastDate": "2026-11-05"
+    },
+    {
+      "name": "Jonathan Mandell",
+      "outlet": "nyt-theater",
+      "tier": 2,
+      "missingCount": 0,
+      "lastDate": "2026-11-09"
+    },
+    {
+      "name": "David Barbour",
+      "outlet": "lighting-and-sound-america",
+      "tier": 2,
+      "missingCount": 0,
+      "lastDate": "2026-11-05"
     }
   ]
 }
