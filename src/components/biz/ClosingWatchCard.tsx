@@ -2,7 +2,7 @@
  * ClosingWatchCard (BRO-7246): a running show with no announced closing whose
  * 4-week average gross is under break-even, with our estimated closing window
  * from how long past Broadway shows in the same spot kept running. The
- * estimate is ours and the card says so.
+ * estimate is ours and the card says so. Window ends can be null (history never got that far).
  */
 
 import Link from 'next/link';
@@ -56,8 +56,10 @@ export default function ClosingWatchCard({
         <div className="rounded-lg bg-surface-overlay px-3 py-2 mb-3" data-testid="closing-watch-estimate">
           <div className="text-xs text-fg-muted">Our estimate: likely closes around</div>
           <div className="text-lg font-semibold text-score-tepid">{median}</div>
-          {early && late && early !== late && (
-            <div className="text-xs text-fg-muted">Likely window {early} to {late}</div>
+          {(early || late) && (
+            <div className="text-xs text-fg-muted">
+              Likely window {early ?? 'soon'} to {late ?? 'later'}
+            </div>
           )}
         </div>
       )}
@@ -94,8 +96,9 @@ export default function ClosingWatchCard({
       </div>
       {basis && (
         <p className="text-xs text-fg-muted mt-3">
-          Based on {basis.sample} past Broadway shows that ran this far under break-even: half closed within{' '}
-          {basis.medianWeeks} weeks, three in four within {basis.p75Weeks}.
+          Of {basis.sample} past Broadway runs that{' '}
+          {basis.weeksUnder > 0 ? `spent ${basis.weeksUnder}+ weeks` : 'fell'} under {basis.thresholdPct}% of
+          break-even (adjusted for the season), half closed within {basis.medianWeeks} more weeks.
         </p>
       )}
     </Link>

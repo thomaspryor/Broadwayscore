@@ -5,15 +5,23 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  calibrateClosingWatch,
-  closingBandFor,
   isOnClosingWatch,
+  isBoxOfficeDriven,
+  finalRunStart,
+  seasonalIndexSeries,
+  adjustedRatioSeries,
+  spellObservations,
+  calibrateClosingWatch,
+  kaplanMeierQuantile,
+  weeksUnderThreshold,
+  estimateClosing,
   addWeeks,
   weeksBelowBreakEven,
-  quantile,
-  CLOSING_WATCH_MIN_SAMPLE,
+  CLOSING_WATCH_MIN_WEEKS,
   type ClosingWatchInput,
+  type ClosingObservation,
 } from '../../src/lib/closing-watch';
+import { formatMonthYear } from '../../src/lib/biz-format';
 
 const base: ClosingWatchInput = {
   status: 'open',
@@ -22,84 +30,100 @@ const base: ClosingWatchInput = {
   today: '2026-11-09',
   avgGross: 750_000,
   breakEven: 935_000,
-  reportedWeeks: 40,
+  adjustedRatio: 0.8,
 };
 
-test('watch: running, no closing announced, 4-week average under break-even (Maybe Happy Ending shape)', () => {
+test('watch: running, no closing announced, under break-even as printed and season-adjusted', () => {
   assert.equal(isOnClosingWatch(base), true);
   assert.equal(isOnClosingWatch({ ...base, status: 'previews' }), true);
-  // A recouped hit that slips under break-even can still close.
   assert.equal(isOnClosingWatch({ ...base, designation: 'Recouped' }), true);
 });
 
-test('watch: an announced closing still ahead takes the show off (nothing left to predict)', () => {
-  assert.equal(isOnClosingWatch({ ...base, closingDate: '2027-01-03' }), false);
-  assert.equal(isOnClosingWatch({ ...base, closingDate: '2026-11-09' }), false);
-  // A passed date on an open show is not an announcement.
-  assert.equal(isOnClosingWatch({ ...base, closingDate: '2026-06-01' }), true);
+test('watch: a January dip alone (adjusted ratio at or over 1) does not list a hit', () => {
+  assert.equal(isOnClosingWatch({ ...base, designation: 'Recouped', adjustedRatio: 1.04 }), false);
+  assert.equal(isOnClosingWatch({ ...base, adjustedRatio: null }), false);
 });
 
-test('watch: closed, nonprofit and tour-stop runs, new shows and shows at or over break-even are off', () => {
+test('watch: announced closing ahead, closed, nonprofit, tour stop, limited run, at or over break-even are off', () => {
+  assert.equal(isOnClosingWatch({ ...base, closingDate: '2027-01-03' }), false);
+  assert.equal(isOnClosingWatch({ ...base, closingDate: '2026-11-09' }), false);
+  assert.equal(isOnClosingWatch({ ...base, closingDate: '2026-06-01' }), true); // a passed date is no announcement
   assert.equal(isOnClosingWatch({ ...base, status: 'closed' }), false);
   assert.equal(isOnClosingWatch({ ...base, designation: 'Nonprofit' }), false);
   assert.equal(isOnClosingWatch({ ...base, designation: 'Tour Stop' }), false);
-  assert.equal(isOnClosingWatch({ ...base, reportedWeeks: 5 }), false);
+  assert.equal(isOnClosingWatch({ ...base, limitedRun: true }), false);
   assert.equal(isOnClosingWatch({ ...base, avgGross: 935_000 }), false);
-  assert.equal(isOnClosingWatch({ ...base, avgGross: null }), false);
   assert.equal(isOnClosingWatch({ ...base, breakEven: 0 }), false);
+  assert.equal(isBoxOfficeDriven('Flop', false), true);
 });
 
-test('calibration: weeks left are counted from the first week a show enters each band', () => {
-  // 10 healthy weeks at break-even 100, then 4 weeks at 50: the 4-week average
-  // first drops to 0.875 at index 10, 0.75 (band 75-90%) at 11, 0.625 at 12, 0.5 at 13.
-  const g = [...Array(10).fill(100), 50, 50, 50, 50];
-  const cal = calibrateClosingWatch([{ grossesOldestFirst: g, breakEven: 100 }]);
-  assert.deepEqual(cal.map((b) => b.sample), [1, 1, 1, 0]);
-  assert.equal(cal[0].median, 0); // under 60% first at the last week
-  assert.equal(cal[1].median, 1); // 60-75% at index 12
-  assert.equal(cal[2].median, 3); // 75-90% at index 10
+test('final run: a long gap (the 2020-21 shutdown) starts a new run; a skipped week does not', () => {
+  assert.equal(finalRunStart([5, 6, null, null, null, null, null, 7, 8]), 7);
+  assert.equal(finalRunStart([5, null, 6, 7]), 0);
+  assert.equal(finalRunStart([null, null]), -1);
 });
 
-test('calibration: shows with no break-even or too few weeks are skipped', () => {
-  const cal = calibrateClosingWatch([
-    { grossesOldestFirst: Array(20).fill(10), breakEven: 0 },
-    { grossesOldestFirst: Array(5).fill(10), breakEven: 100 },
-  ]);
-  assert.ok(cal.every((b) => b.sample === 0));
+test('seasonal index: a week below the market year average reads under 1; too little history reads 1', () => {
+  const market = [...Array(48).fill(100), 70, 70, 70, 70];
+  const idx = seasonalIndexSeries(market);
+  assert.equal(idx[10], 1); // fewer than 26 weeks of history
+  assert.ok(idx[51] < 0.8);
 });
 
-test('band lookup needs enough past shows before it prints a window', () => {
-  const shows = Array.from({ length: CLOSING_WATCH_MIN_SAMPLE }, (_, k) => ({
-    grossesOldestFirst: [...Array(10).fill(100), ...Array(k + 3).fill(80)],
-    breakEven: 100,
-  }));
-  const cal = calibrateClosingWatch(shows);
-  const band = closingBandFor(0.8, cal);
-  assert.ok(band);
-  assert.equal(band!.min, 0.75);
-  assert.equal(closingBandFor(0.5, cal), null); // empty band
-  assert.equal(closingBandFor(1.1, cal), null); // over break-even
+test('adjusted ratio: null until the run has enough weeks, then 4-week average / break-even / season', () => {
+  const weekly = Array(10).fill(80);
+  const r = adjustedRatioSeries(weekly, Array(10).fill(1), 100);
+  assert.equal(r.slice(0, CLOSING_WATCH_MIN_WEEKS - 1).every((x) => x === null), true);
+  assert.equal(r[9], 0.8);
+  // A January market at 0.8 of its year: the same gross reads as break-even.
+  assert.equal(adjustedRatioSeries(weekly, Array(10).fill(0.8), 100)[9], 1);
 });
 
-test('helpers: quantile, addWeeks, consecutive weeks under break-even', () => {
-  assert.equal(quantile([1, 2, 3, 4, 5], 0.5), 3);
-  assert.equal(quantile([0, 10], 0.25), 2.5);
+test('spells: one observation per drop under each threshold, weeks to the end, recoveries counted again', () => {
+  const ratios = [null, 1.1, 0.95, 1.05, 0.85, 0.85];
+  const obs = spellObservations(ratios, true);
+  // Under 100%: dropped at index 2 and again at 4 (end = 5).
+  assert.deepEqual(obs[3], [{ weeks: 3, closed: true, under: 1 }, { weeks: 1, closed: true, under: 1 }]);
+  // Under 90%: once, at index 4.
+  assert.deepEqual(obs[2], [{ weeks: 1, closed: true, under: 1 }]);
+  assert.deepEqual(obs[0], []);
+  assert.equal(calibrateClosingWatch([{ ratios, closed: false }])[3][0].closed, false);
+});
+
+test('Kaplan-Meier: running shows (censored) push the median out instead of being ignored', () => {
+  const closedOnly: ClosingObservation[] = [2, 4, 6, 8].map((w) => ({ weeks: w, closed: true }));
+  assert.equal(kaplanMeierQuantile(closedOnly, 0.5), 4);
+  const withSurvivors = [...closedOnly, ...[3, 5, 30, 40].map((w) => ({ weeks: w, closed: false }))];
+  assert.equal(kaplanMeierQuantile(withSurvivors, 0.5), 8);
+  assert.equal(kaplanMeierQuantile([{ weeks: 5, closed: false }], 0.5), null);
+});
+
+test('estimate: conditions on how long the show has already been under, so the clock does not restart', () => {
+  const cal: ClosingObservation[][] = [[], [], [], []];
+  // 30 past spells under 90%: closed after 1..30 weeks.
+  for (let w = 1; w <= 30; w++) cal[2].push({ weeks: w, closed: true });
+  const fresh = [...Array(10).fill(1.05), 0.85];
+  const est = estimateClosing(fresh, cal);
+  assert.ok(est);
+  assert.equal(est!.weeksUnder, 0);
+  assert.equal(est!.median, 15);
+  // Under 90% for 10 weeks already: only spells lasting 10+ weeks count, shifted by 10.
+  const long = [...Array(10).fill(1.05), ...Array(11).fill(0.85)];
+  assert.equal(weeksUnderThreshold(long, 0.9), 10);
+  const est2 = estimateClosing(long, cal)!;
+  assert.equal(est2.sample, 21);
+  assert.equal(est2.median, 10);
+  // A past spell that recovered quickly is not the same position as one stuck under.
+  const recovered = cal.map((c) => c.map((o) => ({ ...o, under: 2 })));
+  assert.equal(estimateClosing(long, recovered), null);
+  // Not enough history behind it: no estimate.
+  assert.equal(estimateClosing([...Array(10).fill(1.05), ...Array(30).fill(0.85)], cal), null);
+});
+
+test('helpers: addWeeks, consecutive weeks under break-even over the full run, month formatting', () => {
   assert.equal(addWeeks('2026-11-01', 10), '2027-01-10');
   assert.equal(weeksBelowBreakEven([80, 90, 120, 50], 100), 2);
-  assert.equal(weeksBelowBreakEven([null, 80], 100), 0);
-});
-
-test('formatMonthYear prints the estimate as a month, never a day', async () => {
-  const { formatMonthYear } = await import('../../src/lib/biz-format');
+  assert.equal(weeksBelowBreakEven([80, null, 90, 70, 70, 70, 70, 70, 70, 70, 110], 100), 9);
   assert.equal(formatMonthYear('2027-01-24'), 'Jan 2027');
-  assert.equal(formatMonthYear('2026-12-13'), 'Dec 2026');
   assert.equal(formatMonthYear(null), null);
-  assert.equal(formatMonthYear('soon'), null);
-});
-
-test('final continuous run: a long gap (the 2020-21 shutdown) starts a new run; a skipped week does not', async () => {
-  const { finalContinuousRun } = await import('../../src/lib/closing-watch');
-  assert.deepEqual(finalContinuousRun([5, 6, null, null, null, null, null, 7, 8]), [7, 8]);
-  assert.deepEqual(finalContinuousRun([5, null, 6, 7]), [5, 6, 7]);
-  assert.deepEqual(finalContinuousRun([null, null]), []);
 });

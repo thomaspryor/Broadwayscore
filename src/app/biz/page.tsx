@@ -115,8 +115,10 @@ export default function BizDashboard() {
   const costCoverage = featureFlags.commercial && featureFlags.boxOfficeV2 ? getBoxOfficeCostCoverage() : null;
 
   const approachingRecoupment = getShowsApproachingRecoupment();
-  const atRiskShows = getShowsAtRisk();
   const closingWatch = getClosingWatch();
+  // A show on Closing Watch gets that card only, not a second At Risk card (BRO-7246).
+  const watchSlugs = new Set(closingWatch.map((s) => s.slug));
+  const atRiskShows = getShowsAtRisk().filter((s) => !watchSlugs.has(s.slug));
   const recentRecoupments = getRecentRecoupments(24);
   const allOpenShows = getAllOpenShowsWithCommercial();
 

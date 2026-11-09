@@ -51,7 +51,9 @@ export function buildDevelopments(scope: keyof typeof LIMITS = 'short'): Develop
     });
   }
 
-  const atRisk: DevelopmentItem[] = getShowsAtRisk().slice(0, lim.atRisk).map((show) => ({
+  const watchShows = getClosingWatch();
+  const watchSlugs = new Set(watchShows.map((s) => s.slug));
+  const atRisk: DevelopmentItem[] = getShowsAtRisk().filter((s) => !watchSlugs.has(s.slug)).slice(0, lim.atRisk).map((show) => ({
     date: 'Now',
     type: 'at-risk',
     showTitle: show.title,
@@ -59,7 +61,7 @@ export function buildDevelopments(scope: keyof typeof LIMITS = 'short'): Develop
     description: '4-week average gross below estimated break-even',
   }));
 
-  const watch: DevelopmentItem[] = getClosingWatch().slice(0, lim.watch).map((show) => {
+  const watch: DevelopmentItem[] = watchShows.slice(0, lim.watch).map((show) => {
     const month = formatMonthYear(show.likelyClosing?.median);
     return {
       date: 'Now',

@@ -3,146 +3,277 @@
  * closing but whose grosses trail break-even, with our estimate of when they
  * are likely to close.
  *
- * The estimate is an extrapolation, marked as ours on the page. It comes from
- * the shows that already closed: for each one we find the first week its
- * 4-week average gross fell into a band (under 60% of break-even, 60-75%,
- * 75-90%, 90-100%) and count the weeks it kept running after that. A running
- * show in the same band today gets that band's quartiles as its likely
- * window. The calibration is recomputed from the data on every build.
+ * The estimate is an extrapolation, marked as ours on the page. How it works:
  *
- * Pure: no data imports, so tests require the real functions (CLAUDE.md §15).
+ * 1. Each week's 4-week average gross is divided by break-even and by a
+ *    seasonal index (the market's 4-week average per show over its own
+ *    52-week average), so the January slump does not read as a show failing.
+ * 2. A "spell" starts the week that adjusted ratio falls under a threshold
+ *    (100%, 90%, 75% or 60% of break-even). Every spell of every Broadway
+ *    show we have a break-even for is one observation: weeks from the spell's
+ *    start to the show's closing, or to now when it is still running (a
+ *    censored observation, so shows that dipped and survived count).
+ * 3. A running show under a threshold for E weeks gets the Kaplan-Meier
+ *    estimate over past spells that also stayed under for E weeks, shifted
+ *    by E: "of past shows stuck this far down this long, when did they close".
+ *
+ * Time is calendar weeks inside the show's final continuous run (a gap of
+ * more than CLOSING_WATCH_MAX_GAP_WEEKS, such as the 2020-21 shutdown, starts
+ * a new run). Pure: no data imports, so tests require the real functions.
  */
 
-/** Gross / break-even bands, deepest first. `max` is exclusive. */
-export const CLOSING_WATCH_BANDS: ReadonlyArray<{ min: number; max: number }> = [
-  { min: 0, max: 0.6 },
-  { min: 0.6, max: 0.75 },
-  { min: 0.75, max: 0.9 },
-  { min: 0.9, max: 1 },
-];
+/** Thresholds of adjusted gross / break-even, deepest first. */
+export const CLOSING_WATCH_THRESHOLDS = [0.6, 0.75, 0.9, 1] as const;
 
-/** Reported weeks a show needs before it can be watched (skips the previews ramp). */
+/** Reported weeks a run needs before its ratio counts (skips the previews ramp). */
 export const CLOSING_WATCH_MIN_WEEKS = 8;
 
-/** Past shows a band needs before we print a window from it. */
+/** Observations (and closings among them) needed before we print a window. */
 export const CLOSING_WATCH_MIN_SAMPLE = 15;
-
-/** Designations whose closing is not driven by box office. */
-const NOT_BOX_OFFICE_DRIVEN = new Set(['Nonprofit', 'Tour Stop']);
-
-export interface ClosingCalibrationShow {
-  /** Every reported weekly gross for the run, oldest first. */
-  grossesOldestFirst: number[];
-  breakEven: number;
-}
-
-export interface ClosingBandStats {
-  min: number;
-  max: number;
-  /** Past shows that reached this band. */
-  sample: number;
-  /** Weeks those shows kept running after first reaching the band. */
-  p25: number;
-  median: number;
-  p75: number;
-}
-
-/** Linear-interpolated quantile of a sorted list (0..1). */
-export function quantile(sorted: number[], q: number): number {
-  if (sorted.length === 0) return NaN;
-  const pos = (sorted.length - 1) * q;
-  const lo = Math.floor(pos);
-  const hi = Math.ceil(pos);
-  return sorted[lo] + (sorted[hi] - sorted[lo]) * (pos - lo);
-}
-
-function bandIndex(ratio: number): number {
-  return CLOSING_WATCH_BANDS.findIndex((b) => ratio >= b.min && ratio < b.max);
-}
+export const CLOSING_WATCH_MIN_CLOSINGS = 8;
 
 /** Missing weeks in a row that end a run (a shutdown, a transfer), not a skipped report. */
 export const CLOSING_WATCH_MAX_GAP_WEEKS = 4;
 
-/**
- * The final continuous run of a show's weekly grosses (oldest first, null =
- * no report that week). A gap longer than CLOSING_WATCH_MAX_GAP_WEEKS (the
- * 2020-21 shutdown, a re-opening) starts a new run, so weeks before it are
- * not counted as weeks the closing run kept going. Single missing weeks
- * inside the run are dropped.
- */
-export function finalContinuousRun(weeksOldestFirst: Array<number | null | undefined>): number[] {
-  let run: number[] = [];
+/** Designations whose closing is not driven by box office. */
+const NOT_BOX_OFFICE_DRIVEN = new Set(['Nonprofit', 'Tour Stop']);
+
+/** Box-office-driven run: not nonprofit, not a tour stop, not a limited engagement. */
+export function isBoxOfficeDriven(designation: string | null | undefined, limitedRun: boolean | null | undefined): boolean {
+  return !limitedRun && !(designation && NOT_BOX_OFFICE_DRIVEN.has(designation));
+}
+
+/** Index (oldest first) where the show's final continuous run starts, -1 when it never reported. */
+export function finalRunStart(weekly: Array<number | null | undefined>): number {
+  let start = -1;
   let gap = 0;
-  for (const g of weeksOldestFirst) {
+  for (let i = 0; i < weekly.length; i++) {
+    const g = weekly[i];
     if (g == null || !(g > 0)) {
       gap++;
       continue;
     }
-    if (gap > CLOSING_WATCH_MAX_GAP_WEEKS) run = [];
+    if (start < 0 || gap > CLOSING_WATCH_MAX_GAP_WEEKS) start = i;
     gap = 0;
-    run.push(g);
   }
-  return run;
+  return start;
 }
 
-/** Weeks each closed show kept running after first reaching each band. */
-export function calibrateClosingWatch(shows: ClosingCalibrationShow[]): ClosingBandStats[] {
-  const weeksLeft: number[][] = CLOSING_WATCH_BANDS.map(() => []);
-  for (const { grossesOldestFirst: g, breakEven } of shows) {
-    if (!(breakEven > 0) || g.length < CLOSING_WATCH_MIN_WEEKS + 2) continue;
-    const seen = new Set<number>();
-    for (let i = CLOSING_WATCH_MIN_WEEKS - 1; i < g.length; i++) {
-      const avg = (g[i] + g[i - 1] + g[i - 2] + g[i - 3]) / 4;
-      const b = bandIndex(avg / breakEven);
-      if (b >= 0 && !seen.has(b)) {
-        seen.add(b);
-        weeksLeft[b].push(g.length - 1 - i);
-      }
+function presentSlice(xs: Array<number | null | undefined>, from: number, to: number): number[] {
+  const out: number[] = [];
+  for (let i = Math.max(0, from); i <= to; i++) {
+    const v = xs[i];
+    if (v != null && v > 0) out.push(v);
+  }
+  return out;
+}
+
+function mean(xs: number[]): number {
+  return xs.reduce((a, b) => a + b, 0) / xs.length;
+}
+
+/**
+ * Seasonal index per week (oldest first): the market's 4-week average gross
+ * per show over its trailing 52-week average. 1 where there is not enough
+ * history (fewer than 26 weeks) or no market data.
+ */
+export function seasonalIndexSeries(marketPerShow: Array<number | null | undefined>): number[] {
+  const out: number[] = [];
+  for (let i = 0; i < marketPerShow.length; i++) {
+    const recent = presentSlice(marketPerShow, i - 3, i);
+    const year = presentSlice(marketPerShow, i - 51, i);
+    out.push(recent.length >= 3 && year.length >= 26 ? mean(recent) / mean(year) : 1);
+  }
+  return out;
+}
+
+/**
+ * Ratio series over the final run (oldest first, one entry per calendar week
+ * from finalRunStart to the last week given): seasonally adjusted 4-week
+ * average gross / break-even, null before the run has
+ * CLOSING_WATCH_MIN_WEEKS reported weeks or in a week the show did not report.
+ */
+export function adjustedRatioSeries(
+  weekly: Array<number | null | undefined>,
+  seasonal: number[],
+  breakEven: number,
+): Array<number | null> {
+  const start = finalRunStart(weekly);
+  if (start < 0 || !(breakEven > 0)) return [];
+  const out: Array<number | null> = [];
+  const grosses: number[] = [];
+  const idx: number[] = [];
+  for (let i = start; i < weekly.length; i++) {
+    const g = weekly[i];
+    if (g == null || !(g > 0)) {
+      out.push(null);
+      continue;
     }
+    grosses.push(g);
+    idx.push(seasonal[i] || 1);
+    if (grosses.length < CLOSING_WATCH_MIN_WEEKS) {
+      out.push(null);
+      continue;
+    }
+    out.push(mean(grosses.slice(-4)) / breakEven / mean(idx.slice(-4)));
   }
-  return CLOSING_WATCH_BANDS.map((band, i) => {
-    const sorted = [...weeksLeft[i]].sort((a, b) => a - b);
-    return {
-      ...band,
-      sample: sorted.length,
-      p25: Math.round(quantile(sorted, 0.25)),
-      median: Math.round(quantile(sorted, 0.5)),
-      p75: Math.round(quantile(sorted, 0.75)),
-    };
-  });
+  return out;
 }
 
-/** The band a gross / break-even ratio falls in, when it has enough past shows. */
-export function closingBandFor(ratio: number, calibration: ClosingBandStats[]): ClosingBandStats | null {
-  const b = calibration.find((s) => ratio >= s.min && ratio < s.max);
-  return b && b.sample >= CLOSING_WATCH_MIN_SAMPLE ? b : null;
+export interface ClosingObservation {
+  /** Weeks from the spell's start to closing (closed) or to now (still running). */
+  weeks: number;
+  closed: boolean;
+  /** Weeks the spell stayed under the threshold before recovering (or to the end). Absent = the whole span. */
+  under?: number;
+}
+
+/**
+ * Spells under each threshold. `ratios` is adjustedRatioSeries for the run,
+ * ending at the closing week (closed) or the latest week (running); a null
+ * week keeps the previous state.
+ */
+export function spellObservations(ratios: Array<number | null>, closed: boolean): ClosingObservation[][] {
+  const out: ClosingObservation[][] = CLOSING_WATCH_THRESHOLDS.map(() => []);
+  const end = ratios.length - 1;
+  CLOSING_WATCH_THRESHOLDS.forEach((threshold, t) => {
+    let start = -1;
+    const close = (until: number) => {
+      out[t].push({ weeks: end - start, closed, under: until - start });
+      start = -1;
+    };
+    ratios.forEach((r, i) => {
+      if (r == null) return;
+      if (r < threshold && start < 0) start = i;
+      else if (r >= threshold && start >= 0) close(i);
+    });
+    if (start >= 0) close(end);
+  });
+  return out;
+}
+
+/** Pools observations from every run into one list per threshold. */
+export function calibrateClosingWatch(
+  runs: Array<{ ratios: Array<number | null>; closed: boolean }>,
+): ClosingObservation[][] {
+  const pooled: ClosingObservation[][] = CLOSING_WATCH_THRESHOLDS.map(() => []);
+  for (const run of runs) {
+    spellObservations(run.ratios, run.closed).forEach((obs, t) => pooled[t].push(...obs));
+  }
+  return pooled;
+}
+
+/**
+ * Kaplan-Meier: the first week by which a `q` share of the observations had
+ * closed (censored ones leave the risk set without counting). null when the
+ * curve never gets there (too many still running).
+ */
+export function kaplanMeierQuantile(obs: ClosingObservation[], q: number): number | null {
+  const sorted = [...obs].sort((a, b) => a.weeks - b.weeks);
+  let atRisk = sorted.length;
+  let survival = 1;
+  let i = 0;
+  while (i < sorted.length) {
+    const t = sorted[i].weeks;
+    let events = 0;
+    let leaving = 0;
+    while (i < sorted.length && sorted[i].weeks === t) {
+      if (sorted[i].closed) events++;
+      leaving++;
+      i++;
+    }
+    if (events > 0) {
+      survival *= 1 - events / atRisk;
+      if (1 - survival >= q - 1e-9) return t;
+    }
+    atRisk -= leaving;
+  }
+  return null;
+}
+
+export interface ClosingEstimate {
+  /** Threshold the show is under (its deepest one). */
+  threshold: number;
+  /** Weeks it has been under that threshold. */
+  weeksUnder: number;
+  /** Past observations behind the estimate, and how many of them closed. */
+  sample: number;
+  closings: number;
+  /** Weeks from now by which a quarter, half and three quarters had closed; null = not reached. */
+  p25: number | null;
+  median: number;
+  p75: number | null;
+}
+
+/** Calendar weeks the series has been under `threshold` (null weeks keep state). */
+export function weeksUnderThreshold(ratios: Array<number | null>, threshold: number): number {
+  const end = ratios.length - 1;
+  let start = -1;
+  for (let i = end; i >= 0; i--) {
+    const r = ratios[i];
+    if (r == null) continue;
+    if (r < threshold) start = i;
+    else break;
+  }
+  return start < 0 ? 0 : end - start;
+}
+
+/** The estimate for a live show's ratio series, or null without enough history behind it. */
+export function estimateClosing(ratios: Array<number | null>, calibration: ClosingObservation[][]): ClosingEstimate | null {
+  let current: number | null = null;
+  for (let i = ratios.length - 1; i >= 0 && current == null; i--) current = ratios[i];
+  if (current == null) return null;
+  const t = CLOSING_WATCH_THRESHOLDS.findIndex((th) => (current as number) < th);
+  if (t < 0) return null;
+  const threshold = CLOSING_WATCH_THRESHOLDS[t];
+  const weeksUnder = weeksUnderThreshold(ratios, threshold);
+  // Same position: past spells that also stayed under this long, and lasted this long.
+  const conditional = (calibration[t] ?? [])
+    .filter((o) => o.weeks >= weeksUnder && (o.under ?? o.weeks) >= weeksUnder)
+    .map((o) => ({ weeks: o.weeks - weeksUnder, closed: o.closed }));
+  const closings = conditional.filter((o) => o.closed).length;
+  if (conditional.length < CLOSING_WATCH_MIN_SAMPLE || closings < CLOSING_WATCH_MIN_CLOSINGS) return null;
+  const median = kaplanMeierQuantile(conditional, 0.5);
+  if (median == null) return null;
+  return {
+    threshold,
+    weeksUnder,
+    sample: conditional.length,
+    closings,
+    p25: kaplanMeierQuantile(conditional, 0.25),
+    median,
+    p75: kaplanMeierQuantile(conditional, 0.75),
+  };
 }
 
 export interface ClosingWatchInput {
   status: string | null | undefined;
   designation: string | null | undefined;
+  limitedRun?: boolean | null;
   /** shows.json closingDate, any form. */
   closingDate: string | null | undefined;
   /** YYYY-MM-DD. */
   today: string;
+  /** Raw 4-week average gross (what the card prints). */
   avgGross: number | null;
   breakEven: number | null;
-  /** Weeks the show has reported grosses. */
-  reportedWeeks: number;
+  /** Latest seasonally adjusted ratio, null when the run is too new. */
+  adjustedRatio: number | null;
 }
 
 /**
- * On the watch: running, box-office-driven, no closing date still ahead,
- * past the previews ramp, and its 4-week average under break-even. Recouped
+ * On the watch: running, box-office-driven, no closing date still ahead, past
+ * the previews ramp, and under break-even both as printed and after the
+ * seasonal adjustment (a January dip alone does not list a hit). Recouped
  * shows count too: a hit that slips under break-even can still close.
  */
 export function isOnClosingWatch(input: ClosingWatchInput): boolean {
   if (input.status !== 'open' && input.status !== 'previews') return false;
-  if (input.designation && NOT_BOX_OFFICE_DRIVEN.has(input.designation)) return false;
+  if (!isBoxOfficeDriven(input.designation, input.limitedRun)) return false;
   const close = (input.closingDate ?? '').slice(0, 10);
   if (/^\d{4}-\d{2}-\d{2}$/.test(close) && close >= input.today) return false;
-  if (input.reportedWeeks < CLOSING_WATCH_MIN_WEEKS) return false;
   if (input.avgGross == null || input.breakEven == null || input.breakEven <= 0) return false;
+  if (input.adjustedRatio == null || input.adjustedRatio >= 1) return false;
   return input.avgGross < input.breakEven;
 }
 
@@ -153,11 +284,12 @@ export function addWeeks(isoDate: string, weeks: number): string {
   return d.toISOString().slice(0, 10);
 }
 
-/** Consecutive weeks, newest first, whose gross was under break-even. */
+/** Consecutive reported weeks, newest first, whose gross was under break-even (missing weeks skipped). */
 export function weeksBelowBreakEven(grossesNewestFirst: Array<number | null>, breakEven: number): number {
   let n = 0;
   for (const g of grossesNewestFirst) {
-    if (g == null || g >= breakEven) break;
+    if (g == null) continue;
+    if (g >= breakEven) break;
     n++;
   }
   return n;

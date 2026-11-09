@@ -617,10 +617,10 @@ export interface ClosingWatchShow {
   weeksBelowBreakEven: number;
   trend: import('@/config/commercial').RecoupmentTrend;
   recouped: boolean;
-  /** Our estimated closing window (YYYY-MM-DD), null when the band has too few past shows. */
-  likelyClosing: { early: string; median: string; late: string } | null;
-  /** Past Broadway shows behind the estimate, and their median weeks left. */
-  basis: { sample: number; medianWeeks: number; p25Weeks: number; p75Weeks: number } | null;
+  /** Our estimated closing window (YYYY-MM-DD); early/late null when the history never got that far. Null without enough history. */
+  likelyClosing: { early: string | null; median: string; late: string | null } | null;
+  /** What the estimate rests on: past spells under the same threshold that lasted at least as long as this one. */
+  basis: { sample: number; closings: number; weeksUnder: number; thresholdPct: number; medianWeeks: number } | null;
 }
 
 export interface RecentRecoupmentShow {

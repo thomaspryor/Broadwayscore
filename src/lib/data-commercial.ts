@@ -65,7 +65,7 @@ import { buildSeasonProfiles, buildRecoupFindings, compareSeason, hasKnownOutcom
 import fs from 'fs';
 import path from 'path';
 import { getMarketDate } from './date-utils';
-import { calibrateClosingWatch, finalContinuousRun, closingBandFor, isOnClosingWatch, addWeeks, weeksBelowBreakEven as countWeeksBelowBreakEven, type ClosingBandStats } from './closing-watch';
+import { calibrateClosingWatch, seasonalIndexSeries, adjustedRatioSeries, estimateClosing, isBoxOfficeDriven, isOnClosingWatch, addWeeks, weeksBelowBreakEven as countWeeksBelowBreakEven, type ClosingObservation } from './closing-watch';
 import { isLossDesignation } from '../../scripts/lib/commercial-designations';
 import { conversionOf, isConvertedToCommercial, commercialRunWeeks, recoupClockStart } from '../../scripts/lib/commercial-conversion';
 import {
@@ -767,84 +767,115 @@ export function getShowsAtRisk(): AtRiskShow[] {
   });
 }
 
-let closingCalibration: ClosingBandStats[] | null = null;
-
-/** Week-ending keys of the March 2020 shutdown. */
+/** Week-ending keys of the March 2020 shutdown: a run that ended there did not close on box office. */
 const COVID_SHUTDOWN = /^2020-03-/;
 
+/** Every reported week, oldest first. */
+const WEEK_KEYS_OLDEST_FIRST = [...WEEK_KEYS_NEWEST_FIRST].reverse();
+
+let seasonalIndex: number[] | null = null;
+let closingCalibration: ClosingObservation[][] | null = null;
+
+/** Market seasonal index per week, oldest first (seasonalIndexSeries over gross per reporting show). */
+function getSeasonalIndex(): number[] {
+  if (seasonalIndex) return seasonalIndex;
+  const perShow = WEEK_KEYS_OLDEST_FIRST.map((key) => {
+    const rows = Object.values(grossesHistory.weeks[key] ?? {}).filter((r) => r?.gross && r.gross > 0);
+    return rows.length ? rows.reduce((sum, r) => sum + (r.gross as number), 0) / rows.length : null;
+  });
+  seasonalIndex = seasonalIndexSeries(perShow);
+  return seasonalIndex;
+}
+
+function weeklyGrossesOldestFirst(slug: string): Array<number | null> {
+  return WEEK_KEYS_OLDEST_FIRST.map((key) => grossesHistory.weeks[key]?.[slug]?.gross ?? null);
+}
+
 /**
- * BRO-7246: how long past Broadway shows kept running after their grosses
- * fell into each band under break-even. Closed, box-office-driven runs with a
- * break-even, from the full weekly grosses history. Computed once per build.
+ * BRO-7246: spells under each break-even threshold across every
+ * box-office-driven Broadway run with a break-even: closed runs end at their
+ * closing, running ones are censored at the latest week (so shows that dipped
+ * and survived count). Computed once per build.
  */
-export function getClosingWatchCalibration(): ClosingBandStats[] {
+export function getClosingWatchCalibration(): ClosingObservation[][] {
   if (closingCalibration) return closingCalibration;
-  const weeksOldestFirst = [...WEEK_KEYS_NEWEST_FIRST].reverse();
-  const samples = [];
+  const seasonal = getSeasonalIndex();
+  const runs: Array<{ ratios: Array<number | null>; closed: boolean }> = [];
   for (const [slug, data] of Object.entries(commercial.shows)) {
-    if (data.designation === 'Nonprofit' || data.designation === 'Tour Stop') continue;
     const show = rawShows.find((s) => s.slug === slug);
-    if (!show || show.status !== 'closed') continue;
+    if (!show || !isBoxOfficeDriven(data.designation, show.limitedRun)) continue;
+    const closed = show.status === 'closed';
+    if (!closed && !isRunningStatus(show.status)) continue;
     const breakEven = getBreakEven(data);
     if (!breakEven) continue;
-    const weekly = weeksOldestFirst.map((key) => grossesHistory.weeks[key]?.[slug]?.gross ?? null);
-    const last = weekly.reduce<number>((at, g, i) => (g ? i : at), -1);
-    // A run the March 2020 shutdown ended did not close on box office.
-    if (last < 0 || COVID_SHUTDOWN.test(weeksOldestFirst[last])) continue;
-    samples.push({ grossesOldestFirst: finalContinuousRun(weekly), breakEven });
+    const weekly = weeklyGrossesOldestFirst(slug);
+    let last = -1;
+    weekly.forEach((g, i) => { if (g) last = i; });
+    if (last < 0 || (closed && COVID_SHUTDOWN.test(WEEK_KEYS_OLDEST_FIRST[last]))) continue;
+    // A closed run ends at its last reported week; a running one at the latest week.
+    const span = closed ? weekly.slice(0, last + 1) : weekly;
+    runs.push({ ratios: adjustedRatioSeries(span, seasonal, breakEven), closed });
   }
-  closingCalibration = calibrateClosingWatch(samples);
+  closingCalibration = calibrateClosingWatch(runs);
   return closingCalibration;
 }
 
 /**
  * BRO-7246 Closing Watch: running shows with no closing date ahead whose
- * 4-week average gross is under break-even, deepest shortfall first, each with
- * our estimated closing window from getClosingWatchCalibration().
+ * 4-week average gross is under break-even (as printed and after the seasonal
+ * adjustment), deepest shortfall first, each with our estimated closing window.
  */
 export function getClosingWatch(): ClosingWatchShow[] {
   const calibration = getClosingWatchCalibration();
-  const today = new Date().toISOString().slice(0, 10);
+  const seasonal = getSeasonalIndex();
+  const today = getMarketDate();
   const latestWeek = WEEK_KEYS_NEWEST_FIRST[0];
   const results: ClosingWatchShow[] = [];
 
   for (const [slug, data] of Object.entries(commercial.shows)) {
     const show = rawShows.find((s) => s.slug === slug);
-    if (!show) continue;
-    const recent = getRecentGrosses(slug, 8);
-    const avgGross = trailingAverageGross(recent.slice(0, 4));
+    if (!show || !isRunningStatus(show.status)) continue;
     const breakEven = getBreakEven(data);
-    const reportedWeeks = WEEK_KEYS_NEWEST_FIRST.reduce(
-      (n, key) => n + (grossesHistory.weeks[key]?.[slug]?.gross ? 1 : 0), 0,
-    );
+    if (!breakEven) continue;
+    const weekly = weeklyGrossesOldestFirst(slug);
+    const avgGross = trailingAverageGross(getRecentGrosses(slug, 4));
+    const ratios = adjustedRatioSeries(weekly, seasonal, breakEven);
+    let adjustedRatio: number | null = null;
+    for (let i = ratios.length - 1; i >= 0 && adjustedRatio == null; i--) adjustedRatio = ratios[i];
     if (!isOnClosingWatch({
       status: show.status,
       designation: data.designation,
+      limitedRun: show.limitedRun,
       closingDate: show.closingDate,
       today,
       avgGross,
       breakEven,
-      reportedWeeks,
+      adjustedRatio,
     })) continue;
 
-    const ratio = (avgGross as number) / (breakEven as number);
-    const band = closingBandFor(ratio, calibration);
+    const estimate = estimateClosing(ratios, calibration);
     results.push({
       slug,
       title: show.title,
       season: getSeason(show.openingDate) || 'Unknown',
       avgWeeklyGross: avgGross as number,
-      breakEven: breakEven as number,
-      breakEvenRatio: ratio,
-      weeksBelowBreakEven: countWeeksBelowBreakEven(recent, breakEven as number),
+      breakEven,
+      breakEvenRatio: (avgGross as number) / breakEven,
+      weeksBelowBreakEven: countWeeksBelowBreakEven([...weekly].reverse(), breakEven),
       trend: getRecoupmentTrend(slug),
       recouped: data.recouped === true,
-      likelyClosing: band && latestWeek ? {
-        early: addWeeks(latestWeek, band.p25),
-        median: addWeeks(latestWeek, band.median),
-        late: addWeeks(latestWeek, band.p75),
+      likelyClosing: estimate && latestWeek ? {
+        early: estimate.p25 != null ? addWeeks(latestWeek, estimate.p25) : null,
+        median: addWeeks(latestWeek, estimate.median),
+        late: estimate.p75 != null ? addWeeks(latestWeek, estimate.p75) : null,
       } : null,
-      basis: band ? { sample: band.sample, medianWeeks: band.median, p25Weeks: band.p25, p75Weeks: band.p75 } : null,
+      basis: estimate ? {
+        sample: estimate.sample,
+        closings: estimate.closings,
+        weeksUnder: estimate.weeksUnder,
+        thresholdPct: Math.round(estimate.threshold * 100),
+        medianWeeks: estimate.median,
+      } : null,
     });
   }
 
