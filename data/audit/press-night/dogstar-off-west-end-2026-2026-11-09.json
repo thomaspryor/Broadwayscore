@@ -1,0 +1,135 @@
+{
+  "schemaVersion": 1,
+  "showId": "dogstar-off-west-end-2026",
+  "night": "2026-11-09",
+  "market": "off-west-end",
+  "embargoAt": "2026-11-09T21:00:00.000Z",
+  "embargoSource": "market-default",
+  "probe": {
+    "startedAt": "2026-11-09T20:30:04.578Z",
+    "endedAt": null,
+    "intervalMin": 5,
+    "samples": 30,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-11-09T22:55:12.408Z",
+    "lastOkSampleAt": "2026-11-09T22:55:12.408Z"
+  },
+  "firstLiveAt": null,
+  "firstLiveBaseline": false,
+  "lastLiveAt": null,
+  "liveCount": 0,
+  "liveCountAt": {
+    "1h": 0,
+    "2h": null,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-11-09T22:00:09.381Z",
+    "2h": null,
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": null,
+    "precision": "unknown",
+    "source": "prod-rv-publishDate",
+    "tierScope": null
+  },
+  "perReview": [],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 0,
+      "fetchedAt": "2026-11-09T23:00:26.909Z",
+      "censusNote": "archive only"
+    }
+  },
+  "manualActions": [],
+  "publishedBy": {
+    "path": "regular",
+    "method": "lane-only-decision",
+    "checks": [
+      {
+        "at": "2026-11-09T23:00:27.002Z",
+        "label": "2h",
+        "standDown": false,
+        "reason": "market not lane-only"
+      }
+    ]
+  },
+  "fileState": {
+    "capturedAt": "2026-11-09T23:00:27.701Z",
+    "files": [
+      {
+        "file": "bestoftheatre--alan-ingram.json",
+        "outletId": "bestoftheatre",
+        "outlet": "Best Of Theatre",
+        "critic": "Alan Ingram",
+        "firstSeenAt": "2026-10-30T16:43:37.946Z",
+        "scoredAt": null,
+        "publishDate": "2026-10-08",
+        "url": "bestoftheatre.co.uk/blog/post/everything-you-need-to-know-dogstar",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "london-box-office--unknown.json",
+        "outletId": "london-box-office",
+        "outlet": "London Box Office",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-11-09T08:49:14.697Z",
+        "scoredAt": null,
+        "publishDate": null,
+        "url": "londonboxoffice.co.uk/search/month/dogstar-tickets/2026/11/30/2",
+        "includable": false,
+        "reason": "rejectionReason",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "louder-than-war--simon-reed.json",
+        "outletId": "louder-than-war",
+        "outlet": "Louder Than War",
+        "critic": "Simon Reed",
+        "firstSeenAt": "2026-10-31T16:04:40.891Z",
+        "scoredAt": null,
+        "publishDate": "2026-06-16",
+        "url": "louderthanwar.com/dogstar-the-roundhouse-london-live-review",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "theatre-weekly--unknown.json",
+        "outletId": "theatre-weekly",
+        "outlet": "Theatre Weekly",
+        "critic": "Staff Writer",
+        "firstSeenAt": "2026-10-31T16:30:13.990Z",
+        "scoredAt": null,
+        "publishDate": "2026-10-15",
+        "url": "theatreweekly.com/first-look-rehearsal-images-released-for-daisy-halls-dogstar-at-hampstead-theatre",
+        "includable": false,
+        "reason": "rejectionReason",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "theatreboard--unknown.json",
+        "outletId": "theatreboard",
+        "outlet": "TheatreBoard",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-11-01T22:18:07.562Z",
+        "scoredAt": "2026-11-01T23:56:55.336Z",
+        "publishDate": "2026-10-31",
+        "url": "theatreboard.co.uk/thread/16312/dogstar-hampstead-theatre",
+        "includable": false,
+        "reason": "listingPageUrl",
+        "syndicatedUnder": null
+      }
+    ]
+  }
+}
