@@ -3584,10 +3584,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
       - name: Install actionlint
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           ACTIONLINT_VERSION=1.7.7
-          curl -sL "https://github.com/rhysd/actionlint/releases/download/v${ACTIONLINT_VERSION}/actionlint_${ACTIONLINT_VERSION}_linux_amd64.tar.gz" | tar xz
-          sudo mv actionlint /usr/local/bin/
+          bash scripts/lib/install-release-binary.sh rhysd/actionlint "v${ACTIONLINT_VERSION}" "actionlint_${ACTIONLINT_VERSION}_linux_amd64.tar.gz" actionlint
       - name: Setup Node (for orphan-test audit)
         uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:

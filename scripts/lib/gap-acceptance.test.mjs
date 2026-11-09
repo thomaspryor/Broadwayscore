@@ -63,6 +63,10 @@ test('refuses short, paywalled, off-topic and not-longer texts with the old stat
   const notLonger = acceptRecoveredText(base({ fullText: GOOD + ' extra words here.', contentTier: 'complete' }), { rawText: GOOD }, ctx);
   assert.equal(notLonger.code, 'not_longer');
   assert.match(notLonger.reason, /not longer/);
+
+  // same tier, a few characters more (first nightly: 2487 -> 2489): not a recovery
+  const tiny = acceptRecoveredText(base({ fullText: GOOD, contentTier: 'complete' }), { rawText: GOOD + ' More.' }, ctx);
+  assert.equal(tiny.code, 'not_materially_longer');
 });
 
 test('date-implausible publishDate is refused (task #915 class)', () => {
@@ -152,7 +156,7 @@ test('a recovery clears the stale dead-candidate stamp, including on a second re
   // Re-stamped dead later, then recovered again: the clear must work again.
   onDisk.incompleteReason = 'bot_blocked';
   fs.writeFileSync(c.filePath, JSON.stringify(onDisk, null, 2) + '\n');
-  const r2 = gate.recoverReviewText({ filePath: c.filePath, rawText: `${GOOD} A closing line that makes this text longer still.`, labels });
+  const r2 = gate.recoverReviewText({ filePath: c.filePath, rawText: `${GOOD}${' A closing paragraph that makes this text materially longer still.'.repeat(3)}`, labels });
   assert.equal(r2.ok, true, r2.reason);
   onDisk = JSON.parse(fs.readFileSync(c.filePath, 'utf8'));
   assert.equal(onDisk.incompleteReason, undefined);

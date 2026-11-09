@@ -30,6 +30,8 @@ const crypto = require('crypto');
 
 const TIER_RANK = { invalid: 0, stub: 1, excerpt: 2, truncated: 3, complete: 4 };
 const MIN_TEXT_CHARS = 300;
+const MIN_MATERIAL_GAIN_CHARS = 100;
+const MIN_MATERIAL_GAIN_FRAC = 0.03;
 const EXCERPT_IDENTITY_MIN = 0.5;
 
 function sha256(text) {
@@ -271,6 +273,15 @@ function acceptRecoveredText(existing, candidate, ctx = {}) {
   if (newTier === 'invalid') return refuse('tier_invalid', `garbage content: classifies invalid (${tierResult.tierReason || tierResult.reason || ''})`.trim());
   if (priorTier && TIER_RANK[priorTier] !== undefined && TIER_RANK[newTier] < TIER_RANK[priorTier]) {
     return refuse('tier_downgrade', `tier downgrade ${priorTier} -> ${newTier}`);
+  }
+  // 8. Material gain (BRO-7171 Stage 3, first nightly: 12 of 60 accepts gained
+  //    under 50 chars, e.g. 2487 -> 2489 bytes, still truncated). A same-tier
+  //    re-fetch that adds a few characters recovers nothing: it would burn the
+  //    nightly ceiling and be reported to the owner as a recovered review.
+  const tierUp = !priorTier || TIER_RANK[priorTier] === undefined || TIER_RANK[newTier] > TIER_RANK[priorTier];
+  const minGain = Math.max(MIN_MATERIAL_GAIN_CHARS, Math.ceil(priorLen * MIN_MATERIAL_GAIN_FRAC));
+  if (priorLen > 0 && !tierUp && text.length - priorLen < minGain) {
+    return refuse('not_materially_longer', `not materially longer than existing (+${text.length - priorLen} chars, need ${minGain} or a better tier)`);
   }
 
   return {
