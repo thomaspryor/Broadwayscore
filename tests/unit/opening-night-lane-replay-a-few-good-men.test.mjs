@@ -90,7 +90,7 @@ test('New York Theater comes from its own feed when no BWW roundup is found all 
   assert.ok(!has(off, 'nytheater'), 'with neither source it is not found: the feed is what finds it');
 });
 
-test('the lane reads the regular pipeline\'s feed list plus its own direct-only list, every feed within ceil(n / 24) passes', async () => {
+test('the lane reads the regular pipeline\'s feed list plus its own direct-only list, every feed within two passes', async () => {
   const feeds = d.defaultLaneFeeds(SHOW);
   assert.ok(feeds.some((f) => f.url === NYT_FEED));
   // BRO-6872: on-time outlets the regular list lacks come from lane-sources.js LANE_FEEDS, fetched direct only.
@@ -98,7 +98,10 @@ test('the lane reads the regular pipeline\'s feed list plus its own direct-only 
   assert.ok(!feeds.some((f) => /whatsonstage|standard\.co\.uk|theatreweekly/.test(f.url)), 'West End feeds are not read for a Broadway show');
   const asked = new Set();
   const adapter = d.rssAdapter();
-  for (let i = 0; i < Math.ceil(feeds.length / 24); i++) await adapter.discover({ show: SHOW, fetchText: async (u) => { asked.add(u); return '<rss></rss>'; } });
+  // Each kind rotates in its own window; both must cycle within two passes so no feed waits longer than every other pass.
+  const passes = Math.max(Math.ceil(feeds.filter((f) => !f.directOnly).length / d.MAX_FEEDS_PER_PASS), Math.ceil(feeds.filter((f) => f.directOnly).length / d.MAX_DIRECT_FEEDS_PER_PASS));
+  assert.ok(passes <= 2, `a feed is read only every ${passes} passes: widen the window or trim the list`);
+  for (let i = 0; i < passes; i++) await adapter.discover({ show: SHOW, fetchText: async (u) => { asked.add(u); return '<rss></rss>'; } });
   assert.deepEqual([...asked].sort(), feeds.map((f) => f.url).sort());
 });
 

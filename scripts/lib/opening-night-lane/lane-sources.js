@@ -71,7 +71,6 @@ const LANE_FEEDS = [
   { url: 'https://www.theatrereviews.com/feed/', outletId: 'theatre-reviews-limited', name: 'Theatre Reviews Limited' },
   { url: 'https://therecs.co.uk/feed/', outletId: 'the-recs', name: 'The Recs' },
   { url: 'https://www.stageandcinema.com/feed/', outletId: 'stageandcinema', name: 'Stage and Cinema' },
-  { url: 'https://lavocedinewyork.com/feed/', outletId: 'la-voce-di-new-york', name: 'La Voce di New York' },
   { url: 'https://www.theaterscene.net/feed/', outletId: 'theater-scene', name: 'Theater Scene' },
   { url: 'https://thefrontrowcenter.com/feed', outletId: 'front-row-center', name: 'Front Row Center' },
   { url: 'https://thecontending.com/feed/', outletId: 'the-contending', name: 'The Contending' },
@@ -86,6 +85,13 @@ const LANE_FEEDS = [
   // news ("Theater Bulletin: ..."), so its items count as reviews only when the headline is the show title by itself.
   { url: 'https://www.jkstheatrescene.com/feeds/posts/default?alt=rss', outletId: 'jks-theatre-scene', name: "JK's Theatre Scene" },
   { url: 'https://gotham-playgoer.blogspot.com/feeds/posts/default?alt=rss', outletId: 'bobs-theater-blog', name: "Bob's Theater Blog", titledReviews: true },
+  // On time with no lane source in the 10-opening coverage check (scripts/lane-on-time-outlets.js --per-show=10, BRO-7199),
+  // probed 2026-11-09 with a plain fetch: 200 with 10-12 items each. Whole-site feeds; the lane keeps only show-named items.
+  { url: 'https://nyunews.com/feed/', outletId: 'washington-square-news', name: 'Washington Square News' },
+  { url: 'https://thequeerreview.com/feed/', outletId: 'the-queer-review', name: 'The Queer Review' },
+  { url: 'https://w42st.com/feed', outletId: 'w42st', name: 'W42ST' },
+  // Same check over 30 openings (older nights), probed 2026-11-09 through fetchPage directOnly: 200 with 20 items.
+  { url: 'https://forward.com/culture/theater/feed/', outletId: 'forward', name: 'Forward Theater' },
 ];
 
 // On-time outlets the lane cannot poll for free, and what finds them instead. A gap needs a reason a reader can check.
@@ -98,6 +104,17 @@ const LANE_SOURCE_GAPS = {
   usatoday: 'usatoday.com answers 402 to datacenter fetches (feed and theater section, probed 2026-11-03); BWW roundup and SERP',
   purewow: 'purewow.com has no feed (404, probed 2026-11-03) and no theater section; SERP',
   // Broadway is covered by NYT's Theater RSS; that feed is Broadway-market only, and the section page answers runners 403.
+  // BRO-7199: NYDN runs Chris Jones's Chicago Tribune review under its own URL (Wanted, A Few Good Men); the Tribune
+  // section page finds the same review. nydailynews.com/feed answers 403 (probed 2026-11-09).
+  nydailynews: "syndicates the Chicago Tribune's Chris Jones review (chicagotribune section page finds it); its feeds answer 403 (2026-11-09); Google News and SERP",
+  ap: 'apnews.com answers 403 to datacenter fetches (theater and Broadway hubs, probed 2026-11-09) and AP has filed no Broadway review in 2026; Google News and SERP',
+  'dc-theater-arts': 'dctheaterarts.org answers 403 to datacenter fetches (feed, probed 2026-11-09); BWW roundup and SERP',
+  'this-week-in-new-york': 'twi-ny.com answers 406 to its feed from datacenters (probed 2026-11-09; the listing poller reads it from elsewhere); SERP',
+  // Checked 2026-11-09 through fetchPage directOnly, the lane's own fetch (a curl with a browser agent gets 200 from both).
+  njcom: 'nj.com answers 403 to the direct fetch (its entertainment feed, 2026-11-09); Google News and SERP',
+  'la-voce-di-new-york': 'its feed carries the Italian edition only (one item, 2026-11-09) and /en/feed answers 403; Google News and SERP',
+  '4columns': 'ceased publication 2026-06-26 (its feed says so); nothing new to find',
+  'substack-com': 'not one outlet: substack.com/@profile posts from writers with no publication of their own; Google News and SERP',
   nytimes: 'West End shows: the NYT Theater feed is read for Broadway only and nytimes.com/section/theater answers 403 (2026-11-04); Google News and SERP',
 };
 
