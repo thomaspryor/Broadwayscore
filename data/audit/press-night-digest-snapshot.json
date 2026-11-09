@@ -1,17 +1,32 @@
 {
-  "generatedAt": "2026-11-08T06:47:10.675Z",
-  "night": "2026-11-07",
+  "generatedAt": "2026-11-09T06:05:46.818Z",
+  "night": "2026-11-08",
   "counts": {
-    "total": 0,
+    "total": 3,
     "passed": 0,
-    "failed": 0,
-    "notGraded": 0
+    "failed": 1,
+    "notGraded": 2
   },
-  "lines": [],
+  "lines": [
+    {
+      "verdict": "FAIL",
+      "line": "Ms. Blakk for President: reviews not graded yet, still being checked; Reddit draft emailed to you is out of date (score 68 from 6 reviews, the site shows score 71 from 7 reviews). Failed."
+    },
+    {
+      "verdict": "PENDING",
+      "line": "The Steel Man: not graded yet, still being checked."
+    },
+    {
+      "verdict": "PENDING",
+      "line": "Wanted: not graded yet, still being checked; opening-night email draft not due until 9:00am; Reddit draft not due until 9:00am."
+    }
+  ],
   "scoreboard": {
     "graded": 16,
     "passed": 1,
     "passedOnOwn": 1
   },
-  "missFirstSeen": {}
+  "missFirstSeen": {
+    "msblackforpresident-off-broadway-2026|2026-11-08|email:reddit:stale": "2026-11-09T06:05:46.818Z"
+  }
 }
