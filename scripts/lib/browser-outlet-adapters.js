@@ -86,7 +86,7 @@ async function openSession(adapter) {
       await close();
       return { ok: false, outcome: 'auth_failed', reason: `auth_probe: ${probe.error || `${probe.len || 0} chars`}` };
     }
-    return { ok: true, session: { extract: (url) => adapter.extract(page, url), close } };
+    return { ok: true, session: { extract: (url) => adapter.extract(page, url), probe: () => adapter.extract(page, adapter.testUrl), close } };
   } catch (e) {
     try { if (context) await context.close(); } catch { /* ignore */ }
     release();
