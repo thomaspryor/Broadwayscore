@@ -129,3 +129,12 @@ test('onlyMainConflicts: hint only when main_wins can settle the branch', () => 
   assert.equal(onlyMainConflicts({ conflicts: [{ why: 'main holds a different version' }], dropped: ['x'] }), false);
   assert.equal(onlyMainConflicts({ conflicts: [] }), false);
 });
+test('mainWinsFor applies only when the live tip equals the approved tip', () => {
+  const { mainWinsFor } = createRequire(import.meta.url)('../../scripts/lib/push-rescue.js');
+  const map = parseMainWins(`${BR}@${TIP}`);
+  assert.deepEqual([...mainWinsFor([{ ref: BR, sha: TIP }], map).apply], [BR]);
+  const moved = mainWinsFor([{ ref: BR, sha: 'f'.repeat(40) }], map);
+  assert.equal(moved.apply.size, 0);
+  assert.equal(moved.notes[0].level, 'error');
+  assert.equal(mainWinsFor([], map).notes[0].level, 'warning');
+});
