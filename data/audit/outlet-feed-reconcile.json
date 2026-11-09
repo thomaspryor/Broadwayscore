@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-09T15:06:45.822Z",
+  "generatedAt": "2026-11-09T16:27:55.391Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -140,9 +140,13 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "stagebuddy",
+      "error": "Timeout fetching https://stagebuddy.com/feed"
     }
   ],
-  "itemsScanned": 838,
+  "itemsScanned": 830,
   "matchedGaps": 6,
   "possibleGaps": 4,
   "gaps": [
@@ -192,12 +196,12 @@
       "publishDate": "2026-11-07"
     },
     {
-      "showId": "nero-off-west-end-2026",
-      "title": "Nero",
+      "showId": "well-see-off-broadway-2026",
+      "title": "We'll See",
       "level": "matched",
-      "outletId": "whatsonstage",
-      "url": "https://www.whatsonstage.com/news/nero-musical-at-southwark-playhouse-elephant-review_1736407/",
-      "headline": "Nero musical at Southwark Playhouse Elephant – review",
+      "outletId": "off-off-online",
+      "url": "https://www.offoffonline.com/offoffonline/2026/11/5/well-see",
+      "headline": "We’ll See",
       "publishDate": "2026-11-09"
     },
     {
