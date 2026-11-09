@@ -752,3 +752,24 @@ test('BRO-6676: a draft held for an aggregator gap is not emailed or resent', ()
   assert.equal(mail.resendEmails(held, ['s']).due.length, 0);
   assert.equal(mail.dueEmails(free, now).length, 1, 'without the flag the same draft is due');
 });
+
+// BRO-7230 class guard: 2026-11-09 08:39Z the 5-refresh cap went to four lint-only drafts (numbers unchanged)
+// and the draft whose score and review count had moved sat 9h stale. Moved refreshes rank first.
+test('a refresh whose numbers moved is never starved by lint-only refreshes under the cap (BRO-7230)', () => {
+  const lintOnly = ['l1', 'l2', 'l3', 'l4', 'l5'];
+  const ids = [...lintOnly, 'moved'];
+  const shows = ids.map(id => ({ ...show, id, slug: id, title: id }));
+  const slims = new Map(ids.map(id => [id, slim({ cs: id === 'moved' ? 60 : 95, n: id === 'moved' ? 14 : 30 })]));
+  const base = { status: 'ready', source: 'claude', subreddit: 'TheWestEnd', body: 'old', createdAt: '2026-09-28T06:00:00Z', emailedAt: '2026-09-28T06:00:00Z' };
+  const facts = id => lib.buildFacts(shows.find(s => s.id === id), slims.get(id), []);
+  const drafts = Object.fromEntries(ids.map(id => {
+    const f = facts(id);
+    return id === 'moved'
+      ? [id, { ...base, title: `${id} old`, score: f.score - 3, reviewCount: f.reviewCount - 2, emailedScore: f.score - 3, emailedReviewCount: f.reviewCount - 2 }]
+      : [id, { ...base, title: `${id} old`, score: f.score, reviewCount: f.reviewCount, emailedScore: f.score, emailedReviewCount: f.reviewCount }];
+  }));
+  const picked = lib.selectCandidates({ shows, slims, drafts: { drafts }, peersByMarket: {}, today: '2026-09-29' });
+  assert.equal(picked.length, lib.MAX_REFRESHES_PER_RUN);
+  assert.ok(picked.some(c => c.show.id === 'moved'), 'moved refresh picked despite lower notability');
+  assert.equal(picked[0].show.id, 'moved', 'moved refresh ranks first');
+});
