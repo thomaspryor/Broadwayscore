@@ -379,7 +379,7 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 | `GUARDIAN_API_KEY` | 12 cross-repo writers (of 14 workflows using it) |
 | `HTML_HANDOFF_PRIVATE_KEY` | 1 cross-repo writers (of 2 workflows using it): `execute-approved-fix.yml` |
 | `LANE_RECORDING_KEY` | 1 cross-repo writers (of 2 workflows using it): `opening-night-lane-live.yml` |
-| `LINEAR_API_KEY` | 30 cross-repo writers (of 89 workflows using it) |
+| `LINEAR_API_KEY` | 30 cross-repo writers (of 90 workflows using it) |
 | `MEZZANINE_APP_ID` | 2 cross-repo writers (of 3 workflows using it): `fetch-all-image-formats.yml`, `update-mezzanine.yml` |
 | `MEZZANINE_SESSION_TOKEN` | 2 cross-repo writers (of 3 workflows using it): `fetch-all-image-formats.yml`, `update-mezzanine.yml` |
 | `NEW_YORKER_EMAIL` | 4 cross-repo writers (of 4 workflows using it) |
@@ -396,10 +396,10 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 | `NYT_PASSWORD` | 1 cross-repo writers (of 1 workflows using it): `process-review-submission.yml` |
 | `OPENAI_API_KEY` | 34 cross-repo writers (of 56 workflows using it) |
 | `OPENROUTER_API_KEY` | 12 cross-repo writers (of 16 workflows using it) |
-| `OWNER_EMAIL` | 69 cross-repo writers (of 154 workflows using it) |
+| `OWNER_EMAIL` | 69 cross-repo writers (of 155 workflows using it) |
 | `REDDIT_CLIENT_ID` | 3 cross-repo writers (of 4 workflows using it): `bulk-reddit-sentiment.yml`, `reddit-engagement-digest.yml`, `update-reddit-sentiment.yml` |
 | `REDDIT_CLIENT_SECRET` | 3 cross-repo writers (of 4 workflows using it): `bulk-reddit-sentiment.yml`, `reddit-engagement-digest.yml`, `update-reddit-sentiment.yml` |
-| `RESEND_API_KEY` | 73 cross-repo writers (of 160 workflows using it) |
+| `RESEND_API_KEY` | 73 cross-repo writers (of 161 workflows using it) |
 | `RESEND_WE_AUDIENCE_ID` | 2 cross-repo writers (of 2 workflows using it): `opening-night-broadcast.yml`, `recreate-broadcast-draft.yml` |
 | `REVIEW_TEXTS_TOKEN` | 142 cross-repo writers (of 260 workflows using it) |
 | `SCRAPINGBEE_API_KEY` | 81 cross-repo writers (of 110 workflows using it) |

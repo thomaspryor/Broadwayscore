@@ -850,7 +850,7 @@ async function main() {
     const planProblem = recordPlanStatus(all);
     if (planProblem) problems.push(planProblem);
     if (missing.length) problems.push(`Buffer channel(s) not usable: ${missing.join(', ')}`);
-    if (!channels.length && planProblem) throw new Error(planProblem);
+    if (!channels.length && planProblem) throw new Error(problems.join('; ')); // the throw skips the end-of-run problem list
     if (!channels.length) throw new Error('none of the Buffer channels in config.js CHANNEL_SETS is usable');
     if (backlogSkipped.length) {
       const ymd = new Date(now).toISOString().slice(0, 10);
