@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Nightly review-text gap recovery (BRO-7171 Stage 3).
+
+         Runs scripts/gap-recovery-nightly.js: kill switch, whole-run lock
+         (never overlaps a manual recover-*-browser.js run), reconcile, then
+         the gap-recovery driver live (pending pushes first, recent shows
+         first) under a conservative ceiling, then one counts-only summary
+         row published with the attempt ledger to origin/main by plumbing.
+         The owner's morning digest (GitHub Action) renders that row as ONE
+         line plus ACTION-only alerts.
+
+         GUI LaunchAgent (gui/$(id -u) domain): the subscriber-browser
+         strategy needs a logged-in, unlocked console session. When the screen
+         is locked, scripts/lib/gui-session.js says so, the browser attempts are
+         recorded as browser_unavailable (non-evidence) and the free
+         strategies (REFETCH_FREE, ARCHIVE) still run.
+
+         01:30 local: finishes before com.broadwayscore.backfill-gather (04:00)
+         and the digest (~08:00 ET). sync-audit-checkout.sh first, chained with
+         && so a refused sync never runs stale code (the digest then says the
+         job did not run).
+
+         Ceilings (first week, plan item 8): 60 accepted reviews per night,
+         25 Bright Data requests, 60 searches, 90-minute budget. Edit the
+         EnvironmentVariables below and re-install to change them.
+         Kill switch: touch ~/.broadwayscore-state/gap-recovery-disabled
+         (or set GAP_RECOVERY_DISABLED=1 below).
+
+         Install:  mkdir -p ~/Library/Logs/broadwayscore
+                   cp scripts/launchd/com.broadwayscore.gap-recovery-nightly.plist ~/Library/LaunchAgents/
+                   launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.broadwayscore.gap-recovery-nightly.plist
+         Manual run: launchctl kickstart -k gui/$(id -u)/com.broadwayscore.gap-recovery-nightly
+         Dry run by hand: node scripts/gap-recovery-nightly.js --dry-run
+         Remove:   launchctl bootout gui/$(id -u)/com.broadwayscore.gap-recovery-nightly -->
+    <key>Label</key>
+    <string>com.broadwayscore.gap-recovery-nightly</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>-c</string>
+        <string>cd /Users/tompryor/Broadwayscore &amp;&amp; SYNC_TAG=gap-recovery-nightly bash scripts/lib/sync-audit-checkout.sh &amp;&amp; set -a &amp;&amp; source .env &amp;&amp; set +a &amp;&amp; exec node scripts/gap-recovery-nightly.js</string>
+    </array>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/tompryor/.local/bin</string>
+        <key>GAP_RECOVERY_NIGHTLY_CEILING</key>
+        <string>60</string>
+        <key>BD_REQ_BUDGET</key>
+        <string>25</string>
+        <key>SERP_QUERY_BUDGET</key>
+        <string>60</string>
+        <key>TIME_BUDGET_MIN</key>
+        <string>90</string>
+    </dict>
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>1</integer>
+        <key>Minute</key>
+        <integer>30</integer>
+    </dict>
+    <key>StandardOutPath</key>
+    <string>/Users/tompryor/Library/Logs/broadwayscore/gap-recovery-nightly.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/tompryor/Library/Logs/broadwayscore/gap-recovery-nightly.log</string>
+    <key>RunAtLoad</key>
+    <false/>
+</dict>
+</plist>

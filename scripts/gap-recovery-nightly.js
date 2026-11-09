@@ -27,7 +27,7 @@
  * Env (all optional; defaults are the conservative first-week values):
  *   GAP_RECOVERY_NIGHTLY_CEILING (60 accepted reviews)  BD_REQ_BUDGET (25)  SERP_QUERY_BUDGET (60)
  *   TIME_BUDGET_MIN (90)  GAP_RECOVERY_STATE_DIR (~/.broadwayscore-state/gap-recovery)
- *   GAP_RECOVERY_NIGHTLY_DRY_RUN=1 (same as --dry-run; for a launchctl kickstart test)
+ *   GAP_RECOVERY_NIGHTLY_DRY_RUN=1 (same as --dry-run), or touch <state dir>/dry-run-once for one kickstarted dry run
  */
 'use strict';
 
@@ -42,8 +42,14 @@ const L = require('./lib/gap-recovery-ledger');
 const N = require('./lib/gap-recovery-nightly');
 
 const ROOT = path.join(__dirname, '..');
-const DRY = process.argv.includes('--dry-run') || process.env.GAP_RECOVERY_NIGHTLY_DRY_RUN === '1';
 const STATE_DIR = process.env.GAP_RECOVERY_STATE_DIR || path.join(os.homedir(), '.broadwayscore-state', 'gap-recovery');
+// One-shot dry run for a `launchctl kickstart` test (kickstart cannot pass
+// flags): touch <state dir>/dry-run-once; the next run is a dry run and
+// removes the file.
+const DRY_ONCE = path.join(STATE_DIR, 'dry-run-once');
+const DRY = process.argv.includes('--dry-run') || process.env.GAP_RECOVERY_NIGHTLY_DRY_RUN === '1' || (() => {
+  try { fs.unlinkSync(DRY_ONCE); return true; } catch { return false; }
+})();
 const LEDGER_REL = path.join('data', 'audit', 'gap-recovery-attempts.jsonl');
 const RUN_ID = `nightly-${new Date().toISOString().replace(/[:.]/g, '').slice(0, 15)}-${process.pid}`;
 

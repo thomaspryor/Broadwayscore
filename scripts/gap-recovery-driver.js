@@ -19,7 +19,7 @@
  *   node scripts/gap-recovery-driver.js --limit=20 --outlet=daily-mail,mail-on-sunday --class=NO_URL --strategy=URL_REDISCOVER
  *   node scripts/gap-recovery-driver.js --reconcile [--dry-run]        # reopen 'recovered' rows whose recovered text is no longer on disk
  *
- * Options: --class=A,B  --show=ID  --strategy=X (only this strategy)  --recent-only
+ * Options: --class=A,B  --show=ID  --strategy=X (only this strategy)  --recent-only  --historic-only
  *          --verbose (dry run: one line per candidate)  --json=PATH (dry run: plan to a file outside the repo)
  *          --summary=PATH (run stats as JSON, read by scripts/gap-recovery-nightly.js)
  * Exit codes: 0 ok, 1 failed (incl. push failure), 2 refused live env, 3 another recovery run holds the run lock.
@@ -62,6 +62,7 @@ const OPTS = {
   show: arg('show'),
   only: arg('strategy'),
   recentOnly: flag('recent-only'),
+  historicOnly: flag('historic-only'),
   jsonOut: arg('json'),
   summaryOut: arg('summary'),
   timeBudgetMs: (parseInt(process.env.TIME_BUDGET_MIN || '60', 10) || 60) * 60000,
@@ -96,6 +97,7 @@ function planCandidates({ dir, shows, outlets, ledgerIndex, runGates }) {
     if (!row.open) continue;
     if (OPTS.classes && !OPTS.classes.has(row.gapClass)) continue;
     if (OPTS.recentOnly && row.recency !== 'recent') continue;
+    if (OPTS.historicOnly && row.recency === 'recent') continue;
     const reviewKey = `${row.showId}/${row.file}`;
     const filePath = path.join(dir, row.showId, row.file);
     let review;

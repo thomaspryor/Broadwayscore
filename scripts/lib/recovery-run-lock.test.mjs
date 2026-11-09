@@ -35,6 +35,17 @@ test('normal exit releases the lock file', () => {
   assert.equal(fs.existsSync(env.RECOVERY_RUN_LOCK_PATH), false);
 });
 
+test('class guard: every recover-*-browser.js and the driver/nightly take the run lock', () => {
+  const scripts = path.join(path.dirname(LIB), '..');
+  const browser = fs.readdirSync(scripts).filter((f) => /^recover-.*-browser\.js$/.test(f));
+  assert.ok(browser.length >= 6, 'found the browser recovery scripts');
+  for (const f of browser) {
+    assert.match(fs.readFileSync(path.join(scripts, f), 'utf8'), /acquireRecoveryRunLock\(/, `${f} must take the recovery run lock before opening Chrome`);
+  }
+  assert.match(fs.readFileSync(path.join(scripts, 'gap-recovery-driver.js'), 'utf8'), /takeRunLock\(/);
+  assert.match(fs.readFileSync(path.join(scripts, 'gap-recovery-nightly.js'), 'utf8'), /acquireRunLock\('gap-recovery-nightly'\)/);
+});
+
 test('re-entrant in-process', () => {
   const out = spawnSync(process.execPath, ['-e', `
     const L = require(${JSON.stringify(LIB)}); L.acquireRunLock('x'); L.acquireRunLock('x'); console.log('OK');`], { env, encoding: 'utf8' }).stdout.trim();
