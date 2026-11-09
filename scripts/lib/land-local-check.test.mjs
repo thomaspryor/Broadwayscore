@@ -467,7 +467,7 @@ test('BRO-7186: envFailureLogs finds ENOSPC in raw gate logs, not in clean ones'
   writeFileSync(join(d, 'a.log'), 'ok 1\n'); writeFileSync(join(d, 'b.log'), 'Error: ENOSPC: no space left');
   const hits = envFailureLogs([d, join(d, 'missing')]);
   assert.deepEqual(hits, [join(d, 'b.log')]);
-  rmSync(d, { recursive: true });
+  rmSync(d, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('BRO-7186: parseMainLog reads git log rows', () => {
