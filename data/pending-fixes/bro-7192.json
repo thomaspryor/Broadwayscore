@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7192",
   "planId": "c1985013-addf-49f9-b79c-6e0b1c325b7a",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-09T04:39:33.202Z",
   "submitter": {
     "name": null,
@@ -39,5 +39,24 @@
         "reason": "Not a tour: the 2020 Signature Theatre premiere and the 2024 Paper Mill Playhouse production were different productions (different director and cast, four years apart). The roll-up copied both runs' reviews onto a third page (BRO-7192)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-09T07:26:49.533Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for gun-and-powder-signature-regional-2020"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran unlink-tour-aggregate.js successfully"
+    },
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired gun-and-powder-regional-2020 (\"Gun & Powder\" @ Regional Tryouts (Arlington, VA 2020; Millburn, NJ 2024))"
+    }
+  ],
+  "executedIn": "ci"
 }
