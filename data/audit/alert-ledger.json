@@ -780,13 +780,13 @@
       "title": "Time-to-publish SLA cannot be measured — only 0 review(s) in scope (need 5)",
       "firstSeen": "2026-08-08T11:39:46.729Z",
       "incidentOpenedAt": "2026-10-27T08:11:38.216Z",
-      "lastSeen": "2026-11-08T09:29:59.496Z",
+      "lastSeen": "2026-11-09T10:47:44.925Z",
       "lastNotifiedAt": "2026-11-03T09:57:34.258Z",
       "lastSurfacedAt": "2026-11-03T09:57:34.258Z",
       "notifyCount": 13,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 6
+      "silentRefires": 7
     },
     "affiliate:bot-divergence": {
       "status": "open",
@@ -26133,13 +26133,13 @@
     "aggregator-health:nyc-theatre:coverage-drop": {
       "status": "open",
       "disposition": "digest",
-      "title": "NYC Theatre roundups: archive coverage 44% in 2025Q4+2026Q2 vs 82% baseline (2024Q2+2024Q4+2025Q1+2025Q2)",
+      "title": "NYC Theatre roundups: archive coverage 44% in 2025Q4+2026Q2 vs 80% baseline (2024Q2+2024Q4+2025Q1+2025Q2)",
       "firstSeen": "2026-10-24T07:38:57.677Z",
       "incidentOpenedAt": "2026-10-24T07:38:57.677Z",
-      "lastSeen": "2026-11-08T09:27:22.160Z",
-      "lastNotifiedAt": "2026-11-08T09:27:22.160Z",
+      "lastSeen": "2026-11-09T10:44:27.504Z",
+      "lastNotifiedAt": "2026-11-09T10:44:27.504Z",
       "lastSurfacedAt": "2026-11-07T09:07:59.625Z",
-      "notifyCount": 16,
+      "notifyCount": 17,
       "cardId": null,
       "linearIdentifier": "BRO-7065"
     },
@@ -39898,6 +39898,19 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-7209"
+    },
+    "aggregator-health:theatre-reviews:coverage-drop": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "theatre.reviews: archive coverage 33% in 2026Q2+2026Q3 vs 73% baseline (2025Q2+2025Q3+2025Q4+2026Q1)",
+      "firstSeen": "2026-11-09T10:44:27.716Z",
+      "incidentOpenedAt": "2026-11-09T10:44:27.716Z",
+      "lastSeen": "2026-11-09T10:44:27.716Z",
+      "lastNotifiedAt": "2026-11-09T10:44:27.716Z",
+      "lastSurfacedAt": "2026-11-09T10:44:27.716Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
     }
   }
 }
