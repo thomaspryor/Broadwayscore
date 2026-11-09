@@ -564885,21 +564885,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-09T01:51:58.278Z",
-    "completedAt": "2026-11-09T01:52:03.315Z",
-    "totalReviews": 47,
+    "startedAt": "2026-11-09T01:52:54.865Z",
+    "completedAt": "2026-11-09T01:53:00.192Z",
+    "totalReviews": 51,
     "processed": 1,
-    "skipped": 46,
+    "skipped": 50,
     "errors": 0,
     "tokensUsed": {
-      "input": 5596,
-      "output": 320,
-      "cacheRead": 0,
-      "cacheWrite": 3807,
-      "total": 14529
+      "input": 6569,
+      "output": 326,
+      "cacheRead": 3807,
+      "cacheWrite": 0,
+      "total": 15948
     },
-    "costUsd": 0.03485525,
-    "runId": "42547219302",
+    "costUsd": 0.024562,
+    "runId": "42547248477",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -566716,10 +566716,10 @@
       {
         "showId": "a-few-good-men-2026",
         "ourDistribution": {
-          "up": 12,
+          "up": 13,
           "flat": 11,
           "down": 8,
-          "total": 31
+          "total": 32
         },
         "dtliDistribution": {
           "up": 4,
@@ -566734,7 +566734,7 @@
           "total": 21
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 35% (ours: 35%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 34% (ours: 34%, theirs: 0%)"
       },
       {
         "showId": "a-fight-against-una-lucha-contra-west-end-2021",
@@ -572033,10 +572033,10 @@
       {
         "showId": "billy-crystal-860-2026",
         "ourDistribution": {
-          "up": 36,
+          "up": 35,
           "flat": 2,
           "down": 0,
-          "total": 38
+          "total": 37
         },
         "bwwDistribution": {
           "up": 17,
@@ -615835,8 +615835,8 @@
     ]
   },
   {
-    "startedAt": "2026-11-09T01:57:00.600Z",
-    "completedAt": "2026-11-09T01:57:00.622Z",
+    "startedAt": "2026-11-09T01:58:15.321Z",
+    "completedAt": "2026-11-09T01:58:15.342Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -615849,7 +615849,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "42547219302",
+    "runId": "42547248477",
     "source": "comparative-rescore",
     "errorDetails": []
   }
