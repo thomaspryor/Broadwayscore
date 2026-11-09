@@ -686,7 +686,7 @@ function isArchiveFirstSite(url) {
  */
 async function fetchFromArchiveOrg(url) {
   try {
-    const cdxUrl = `https://web.archive.org/cdx/search/cdx?url=${encodeURIComponent(url)}&output=json&limit=5&from=2008&to=2026`;
+    const cdxUrl = `https://web.archive.org/cdx/search/cdx?url=${encodeURIComponent(url)}&output=json&limit=5&from=2008`;
     const cdxData = await httpGet(cdxUrl);
     if (!cdxData) return null;
 

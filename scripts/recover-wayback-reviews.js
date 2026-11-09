@@ -197,7 +197,7 @@ async function queryCDX(url) {
   if (cleanUrl !== url) {
     console.log(`  CDX normalized: ${cleanUrl.substring(0, 100)}...`);
   }
-  const cdxUrl = `https://web.archive.org/cdx/search/cdx?url=${encodeURIComponent(cleanUrl)}&output=json&limit=10&from=2005&to=2026`;
+  const cdxUrl = `https://web.archive.org/cdx/search/cdx?url=${encodeURIComponent(cleanUrl)}&output=json&limit=10&from=2005`;
 
   const response = await httpGet(cdxUrl, 30000);
   if (response.statusCode !== 200) {

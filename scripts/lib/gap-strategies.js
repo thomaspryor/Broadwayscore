@@ -23,7 +23,7 @@ function defaultDeps() {
     fetchPage: (url, opts) => require('./scraper').fetchPage(url, opts),
     extractArticleText: (html, host) => require('./article-extractor').extractArticleText(html, host),
     isNotFoundHtml: (html) => require('./soft-404-body').isNotFoundHtml(html),
-    earliestCaptureTimestamp: (url, opts) => require('./fetch-archive-fallback').earliestCaptureTimestamp(url, opts),
+    listCaptureTimestamps: (url, opts) => require('./fetch-archive-fallback').listCaptureTimestamps(url, opts),
     archiveSnapshotFetchUrl: (url, ts) => require('./archive-snapshot-url').archiveSnapshotFetchUrl(url, ts),
     fetchText: async (url) => {
       const r = await fetch(url, { headers: { 'User-Agent': 'BroadwayScorecard/1.0' }, signal: AbortSignal.timeout(30000) });
@@ -68,24 +68,55 @@ async function refetchFree(c, deps = defaultDeps()) {
   return r.ok ? { ...r, url: c.url } : r;
 }
 
-/** Earliest 200 Wayback capture of the stored url (pre-paywall copy). Free. */
+// Distinct captures tried per review (earliest first). Each costs one free
+// archive.org fetch; 4 keeps a night's ARCHIVE work bounded.
+const ARCHIVE_MAX_CAPTURES = 4;
+
+/**
+ * Earliest usable 200 Wayback capture of the stored url (pre-paywall copy). Free.
+ * Three distinct failure outcomes (revised plan item 5):
+ *   archive_unavailable  CDX or every snapshot fetch failed      -> non_evidence
+ *   archive_empty        no 200 capture exists                   -> no_evidence
+ *   archive_thin_copy /  captures exist but each one is a teaser,
+ *   extractor_null       404 template or unextractable            -> rejected
+ * A capture whose text is under archiveCopyDisposition's 1,000-char bar
+ * (BRO-5874) is a teaser, not the review: skip it and try the next one.
+ */
 async function archive(c, deps = defaultDeps()) {
   if (!c.url) return { ok: false, outcome: 'non_evidence', reason: 'no_url' };
   let cdxError = null;
-  const ts = await deps.earliestCaptureTimestamp(c.url, { onError: (e) => { cdxError = e; } });
-  if (!ts) {
-    if (cdxError) return { ok: false, outcome: 'non_evidence', reason: `archive_unreachable: ${String(cdxError.message).slice(0, 80)}` };
-    return { ok: false, outcome: 'no_evidence', reason: 'no_snapshot' };
+  const list = deps.listCaptureTimestamps
+    ? await deps.listCaptureTimestamps(c.url, { limit: ARCHIVE_MAX_CAPTURES, onError: (e) => { cdxError = e; } })
+    : [];
+  if (!list.length) {
+    if (cdxError) return { ok: false, outcome: 'non_evidence', reason: `archive_unavailable: ${String(cdxError.message).slice(0, 80)}` };
+    return { ok: false, outcome: 'no_evidence', reason: 'archive_empty' };
   }
-  const snap = deps.archiveSnapshotFetchUrl(c.url, ts);
-  if (!snap) return { ok: false, outcome: 'non_evidence', reason: 'bad_snapshot_url' };
-  let html;
-  try { html = await deps.fetchText(snap); } catch (e) {
-    return { ok: false, outcome: 'non_evidence', reason: `archive_unreachable: ${String(e.message).slice(0, 80)}` };
+  const { archiveCopyDisposition } = require('./fetch-archive-fallback');
+  let fetchedAny = false;
+  let lastFetchError = null;
+  let lastRefusal = null;
+  let evidenceRefusal = null;
+  for (const ts of list) {
+    const snap = deps.archiveSnapshotFetchUrl(c.url, ts);
+    if (!snap) continue;
+    let html;
+    try { html = await deps.fetchText(snap); } catch (e) { lastFetchError = e; continue; }
+    fetchedAny = true;
+    const r = fromHtml(html, c.url, `archive:${ts}`, deps);
+    if (!r.ok) { lastRefusal = r; if (r.outcome === 'rejected' && !evidenceRefusal) evidenceRefusal = r; continue; }
+    const disp = archiveCopyDisposition({ viaArchive: false, explicitSnapshot: true, stubOnFailure: false, textLength: r.rawText.length });
+    if (disp !== 'ok') { evidenceRefusal = { ok: false, outcome: 'rejected', reason: 'archive_thin_copy' }; continue; }
+    // The text is the stored url's article: the candidate url stays the original.
+    return { ...r, url: c.url };
   }
-  const r = fromHtml(html, c.url, `archive:${ts}`, deps);
-  // The text is the stored url's article: the candidate url stays the original.
-  return r.ok ? { ...r, url: c.url } : r;
+  if (!fetchedAny) {
+    return { ok: false, outcome: 'non_evidence', reason: `archive_unavailable: ${String((lastFetchError && lastFetchError.message) || 'bad snapshot url').slice(0, 80)}` };
+  }
+  // A thin copy or extractor miss on any capture is evidence; soft-404
+  // snapshots alone say nothing about the review.
+  if (evidenceRefusal) return evidenceRefusal;
+  return lastRefusal || { ok: false, outcome: 'non_evidence', reason: 'archive_unavailable: no usable snapshot' };
 }
 
 /**
