@@ -63,6 +63,7 @@ test('relayed: earned/with/label/paren forms; own verdicts still read (BRO-7080)
     'Rating: Four out of five stars.',
     'I would give it four out of five stars.',
   ]) assert.equal(read(t), '4/5 stars', t);
+});
 
 // BRO-7210: cast prose is not a rating ("with two stars, British actors ...").
 test('"two stars, British..." cast prose is not a word-star rating', () => {
