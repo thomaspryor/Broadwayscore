@@ -22,7 +22,7 @@ const { listShowDirs } = require('./list-show-dirs');
 const { isIncludableForRebuild } = require('./review-guards');
 const { getBestScore, applyScoreRelevantMigrations } = require('./rebuild-helpers');
 const { normalizeOutlet } = require('./review-normalization');
-const { getSyndicationPrimaries, hasLiveSyndicationPrimary } = require('./syndication-pairs');
+const { getSyndicationPrimariesInDir, hasLiveSyndicationPrimary } = require('./syndication-pairs');
 const { findMissingScoreableShows } = require('./rebuild-staleness-guard');
 
 function loadJSON(file, fallback = null) {
@@ -72,7 +72,7 @@ function isScoreableFile(data, show, filePath) {
 function isUnflaggedSyndicationSecondary(data, currentFile, allFiles, showDir, show) {
   const criticName = (data.criticName || '').toLowerCase().trim();
   const outletId = normalizeOutlet(data.outletId || data.outlet || '');
-  const primaries = getSyndicationPrimaries(criticName, outletId);
+  const primaries = getSyndicationPrimariesInDir(criticName, outletId, allFiles, normalizeOutlet);
   if (!primaries.length) return false;
   return hasLiveSyndicationPrimary(showDir, primaries, criticName,
     { fileNames: allFiles.filter((f) => f !== currentFile), extraCheck: (p, fp) => isScoreableFile(p, show, fp) });

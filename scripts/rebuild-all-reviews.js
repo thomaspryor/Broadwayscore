@@ -6067,7 +6067,7 @@ if (fs.existsSync(reviewsJsonPath)) {
                 if (!wouldBeExcluded) {
                   const criticLc = (d.criticName || '').toLowerCase().trim();
                   const outletLc = normalizeOutletCanonical(d.outletId || d.outlet || '');
-                  const prims = getSyndicationPrimariesInDir(criticLc, outletLc, fs.readdirSync(showDir), normalizeOutletCanonical);
+                  const prims = getSyndicationPrimariesInDir(criticLc, outletLc, () => fs.readdirSync(showDir), normalizeOutletCanonical);
                   if (prims.length && hasIncludableSyndicationPrimary(d, showById[showId], path.join(showDir, f), { primaries: prims })) wouldBeExcluded = true;
                 }
                 if (wouldBeExcluded) {
