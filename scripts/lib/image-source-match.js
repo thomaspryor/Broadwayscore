@@ -14,7 +14,7 @@
  * Pure, no I/O (CLAUDE.md §15); scripts/lib/image-source-match.test.mjs.
  */
 
-const { todaytixMarket } = require('./todaytix-market');
+const { todaytixMarket, isRegionalRow } = require('./todaytix-market');
 const { findOtherSameTitleProduction } = require('./canon-poster-art');
 
 const DAY = 86400000;
@@ -153,6 +153,7 @@ function theatrEligible(show, candidate, allShows) {
   if (!show || !candidate) return false;
   if (candidate.venue && venuesMatch(candidate.venue.name, show.venue)) return true;
   if (todaytixMarket(show) === 'london') return false;
+  if (isRegionalRow(show)) return false; // NYC-only source (BRO-6703)
   if (show.status === 'closed' && findOtherSameTitleProduction(show, allShows || [])) return false;
   return true;
 }
@@ -297,7 +298,8 @@ function recordFileSources(sources, images) {
 
 /** IBDB is a Broadway database: any hit for a London row is another production. */
 function ibdbEligible(show) {
-  return todaytixMarket(show) !== 'london';
+  // Broadway-only database: a London or regional row's hit is another production (BRO-6703).
+  return todaytixMarket(show) !== 'london' && !isRegionalRow(show);
 }
 
 /** Title key Mezzanine rows are matched on (one rule for every Mezzanine reader). */
@@ -321,7 +323,33 @@ function buildMezzIndex(records) {
   return byNormTitle;
 }
 
+/**
+ * A verifier verdict on a stage photo that names no problem but being a stage photo. Only such a
+ * still may be kept as a last-resort card: one also flagged wrong_production / wrong_show /
+ * community_theater etc. is ANOTHER production's photo (BRO-6703: the fallback served a Great
+ * Lakes Theater still the verifier had called "not Hope Mill Theatre" for Hope Mill's row).
+ */
+const STILL_ONLY_ISSUES = new Set(['production_photo']);
+function isCleanProductionStill(result) {
+  if (!result || result.imageType !== 'production_still') return false;
+  const issues = Array.isArray(result.issues) ? result.issues : [];
+  return issues.every((i) => STILL_ONLY_ISSUES.has(i));
+}
+
+/**
+ * May a stage photo found by the title-only search be this row's last-resort card? Not for a
+ * regional row: a widely staged title has stills from dozens of productions and a still carries
+ * no venue branding for the verifier to judge, so the hit is almost always another production
+ * (BRO-6703: Hope Mill's Little Shop of Horrors got a La Mirada, California still). A regional
+ * row's own stage photo comes from its venue page instead (fetchFromRegionalVenue).
+ */
+function searchStillAllowed(show) {
+  return !isRegionalRow(show);
+}
+
 module.exports = {
+  isCleanProductionStill,
+  searchStillAllowed,
   normalizeMezzTitle,
   buildMezzIndex,
   sourceBase,

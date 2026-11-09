@@ -37,9 +37,9 @@ const { cleanSearchTitle } = require('./lib/title-normalization');
 const { isCrossMarketPlaybillUrl } = require('./lib/playbill-url-market');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { getMarketSearchKeyword } = require('./lib/market-label');
-const { todaytixMarket, todaytixSearchUrl, extractTodaytixShowLink, todaytixSerpQuery, todaytixShowUrl } = require('./lib/todaytix-market');
+const { todaytixMarket, isRegionalRow, todaytixSearchUrl,extractTodaytixShowLink, todaytixSerpQuery, todaytixShowUrl } = require('./lib/todaytix-market');
 const { unconfirmedArtReason } = require('./lib/unconfirmed-art-policy');
-const { normalizeMezzTitle, buildMezzIndex, pickMezzanineCandidate, theatrEligible, isRejectedImage, thumbnailFallbackAction, ibdbEligible, venuesMatch, buildVenueCityIndex, keepExistingImage, fileSourceUrls, recordFileSources, recordedSourceFor, imagePathOwner } = require('./lib/image-source-match');
+const { isCleanProductionStill, searchStillAllowed, normalizeMezzTitle, buildMezzIndex,pickMezzanineCandidate, theatrEligible, isRejectedImage, thumbnailFallbackAction, ibdbEligible, venuesMatch, buildVenueCityIndex, keepExistingImage, fileSourceUrls, recordFileSources, recordedSourceFor, imagePathOwner } = require('./lib/image-source-match');
 const { isStrictGoogleShow, noArtOutcome, buildNoReliableArtMarker } = require('./lib/no-reliable-art');
 const { selectShowsToFetch, todaytixApiArtEligible } = require('./lib/image-fetch-selection');
 const { loadImageSources, saveImageSources } = require('./lib/image-sources-store');
@@ -280,7 +280,10 @@ async function fetchFromRegionalVenue(show, verifyCtx) {
   let sharpLib;
   try { sharpLib = require('sharp'); } catch { console.log('   ⚠ sharp unavailable — cannot process regional venue images'); return null; }
   const { REGIONAL_FEEDER_VENUES } = require('./lib/aggregator-candidate-extract');
-  const venueEntry = REGIONAL_FEEDER_VENUES.find(v => v.re.test(show.venue || '')) || require('./lib/regional-image-venues').imageOnlyVenue(show.venue);
+  const { imageOnlyVenue, feederImageSite, isVenueUtilityPage, extractKeyArtImage, isOwnProductionStill } = require('./lib/regional-image-venues');
+  // A feeder venue whose productions are listed on another site (Òran Mór -> playpiepint.com) is
+  // searched there; classification keeps the feeder's own domain (BRO-6703).
+  const venueEntry = feederImageSite(show.venue) || REGIONAL_FEEDER_VENUES.find(v => v.re.test(show.venue || '')) || imageOnlyVenue(show.venue);
 
   const localPaths = {
     poster: `/images/shows/${show.id}/poster.webp`,
@@ -301,23 +304,19 @@ async function fetchFromRegionalVenue(show, verifyCtx) {
     return { ...localPaths };
   }
 
-  const extractOgImage = (html, baseUrl) => {
-    const m = (html && html.match(/property="og:image"\s+content="([^"]+)"/i))
-      || (html && html.match(/content="([^"]+)"\s+property="og:image"/i));
-    if (!m) return null;
-    const raw = m[1].replace(/&amp;/g, '&');
-    try { return new URL(raw, baseUrl || undefined).href; } catch { return null; }
-  };
-
   // Candidate source URLs, best-first.
   const sources = [];
-  if (venueEntry && venueEntry.pageUrls) for (const url of venueEntry.pageUrls(show)) sources.push({ url, label: 'venue page' });
+  // exact: the URL is built from this show's own title, so the page is this production's (a SERP hit may be another show's).
+  if (venueEntry && venueEntry.pageUrls) for (const url of venueEntry.pageUrls(show)) sources.push({ url, label: 'venue page', exact: true });
   if (venueEntry && venueEntry.domain) {
     try {
       // Quoted first, then unquoted: Google returns nothing for some exact-title queries (BRO-6771).
+      // Never the site's contact/about/privacy page or homepage: a title like "Contact" matches it
+      // and its og:image is the venue logo (BRO-6703).
+      const isShowPage = (u) => u && u.includes(venueEntry.domain) && !isVenueUtilityPage(u);
       let results = await serpQuery(`site:${venueEntry.domain} "${show.title}"`);
-      if (!(results || []).some(r => r.url && r.url.includes(venueEntry.domain))) results = await serpQuery(`site:${venueEntry.domain} ${show.title}`);
-      const hit = (results || []).map(r => r.url).find(u => u && u.includes(venueEntry.domain));
+      if (!(results || []).some(r => isShowPage(r.url))) results = await serpQuery(`site:${venueEntry.domain} ${show.title}`);
+      const hit = (results || []).map(r => r.url).find(u => isShowPage(u) && !sources.some(s => s.url === u));
       if (hit) sources.push({ url: hit, label: 'venue page' });
     } catch (e) {
       console.log(`   ⚠ venue SERP failed: ${e.message.slice(0, 60)}`);
@@ -326,17 +325,39 @@ async function fetchFromRegionalVenue(show, verifyCtx) {
   const roundupArchive = path.join(__dirname, '..', 'data', 'aggregator-archive', 'bww-roundups', `${show.id}.html`);
   if (fs.existsSync(roundupArchive)) sources.push({ archivePath: roundupArchive, label: 'BWW roundup archive' });
 
+  // Honor --dry-run exactly like the other local-write paths. (ship-check P1)
+  const writeRegionalImages = async (buffer, ogImage, label) => {
+    const outputBase = dryRunMode ? DRY_RUN_DIR : IMAGES_DIR;
+    const dir = path.join(outputBase, show.id);
+    fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(path.join(dir, 'poster.webp'), await portraitCardFromKeyArt(sharpLib, buffer, 480, 720, 82));
+    fs.writeFileSync(path.join(dir, 'thumbnail.webp'), await portraitCardFromKeyArt(sharpLib, buffer, 300, 450, 80));
+    await sharpLib(buffer).resize(1600, 1000, { fit: 'cover', position: 'attention' }).webp({ quality: 82 }).toFile(path.join(dir, 'hero.webp'));
+    console.log(`   ✓ regional images written (poster/thumbnail/hero) from ${label}${dryRunMode ? ' [dry-run dir]' : ''}`);
+    const _fileSources = {};
+    for (const format of ['poster', 'thumbnail', 'hero']) _fileSources[format] = { path: localPaths[format], source: ogImage };
+    return { ...localPaths, _source: `regional-venue:${label}`, _fileSources };
+  };
+  // A stage photo from the production's own venue page (an exact pageUrls page, never a SERP hit):
+  // the verifier rejects stills as card art, but it is this production for certain, unlike
+  // anything the generic title search finds.
+  // Used only when no venue source yields key art (BRO-6703: every Òran Mór play page leads with one).
+  let ownStill = null;
+
   for (const src of sources) {
     try {
       const html = src.archivePath
         ? fs.readFileSync(src.archivePath, 'utf8')
         : await fetchPageWithFallback(src.url);
-      const ogImage = extractOgImage(html, src.url);
-      if (!ogImage) { console.log(`   ⚠ no og:image on ${src.label}`); continue; }
-      console.log(`   Regional source (${src.label}): ${ogImage.slice(0, 90)}`);
+      const keyArt = extractKeyArtImage(html, src.url);
+      if (!keyArt) { console.log(`   ⚠ no og:image or hero image on ${src.label}`); continue; }
+      const ogImage = keyArt.url;
+      console.log(`   Regional source (${src.label}, ${keyArt.via}): ${ogImage.slice(0, 90)}`);
       if (venueEntry && venueEntry.genericImage && venueEntry.genericImage.test(ogImage)) { console.log(`   ⚠ ${src.label} og:image is the venue's generic photo`); continue; }
       if (isRejectedImage({ poster: ogImage }, show)) { console.log('   ✗ og:image is in this show\'s rejectedImageUrls'); continue; }
       const buffer = await downloadImageDirect(ogImage);
+      // A bot-check page answers 2xx with HTML (hopemilltheatre.co.uk, BRO-6703): say so, not "unsupported format".
+      if (/^\s*</.test(buffer.subarray(0, 64).toString('latin1'))) { console.log(`   ⚠ ${src.label} image URL did not return an image (${buffer.length} bytes; blocked or bot-check page)`); continue; }
       const meta = await sharpLib(buffer).metadata();
       if (!meta.width || meta.width < 400) { console.log(`   ⚠ source image too small (${meta.width}px)`); continue; }
 
@@ -352,7 +373,12 @@ async function fetchFromRegionalVenue(show, verifyCtx) {
             venue: show.venue,
           });
           if (v && v.match === false) {
-            console.log(`   ✗ verification rejected ${src.label} image: ${(v.description || '').slice(0, 80)}`);
+            if (!ownStill && src.exact && isOwnProductionStill(v)) {
+              console.log(`   ⚠ ${src.label} image is a production photo — kept as the fallback if no key art: ${(v.description || '').slice(0, 80)}`);
+              ownStill = { buffer, ogImage, label: `${src.label} (production photo)` };
+            } else {
+              console.log(`   ✗ verification rejected ${src.label} image: ${(v.description || '').slice(0, 80)}`);
+            }
             continue;
           }
         } catch (e) {
@@ -360,19 +386,16 @@ async function fetchFromRegionalVenue(show, verifyCtx) {
         }
       }
 
-      // Honor --dry-run exactly like the other local-write paths. (ship-check P1)
-      const outputBase = dryRunMode ? DRY_RUN_DIR : IMAGES_DIR;
-      const dir = path.join(outputBase, show.id);
-      fs.mkdirSync(dir, { recursive: true });
-      fs.writeFileSync(path.join(dir, 'poster.webp'), await portraitCardFromKeyArt(sharpLib, buffer, 480, 720, 82));
-      fs.writeFileSync(path.join(dir, 'thumbnail.webp'), await portraitCardFromKeyArt(sharpLib, buffer, 300, 450, 80));
-      await sharpLib(buffer).resize(1600, 1000, { fit: 'cover', position: 'attention' }).webp({ quality: 82 }).toFile(path.join(dir, 'hero.webp'));
-      console.log(`   ✓ regional images written (poster/thumbnail/hero) from ${src.label}${dryRunMode ? ' [dry-run dir]' : ''}`);
-      const _fileSources = {};
-      for (const format of ['poster', 'thumbnail', 'hero']) _fileSources[format] = { path: localPaths[format], source: ogImage };
-      return { ...localPaths, _source: `regional-venue:${src.label}`, _fileSources };
+      return await writeRegionalImages(buffer, ogImage, src.label);
     } catch (e) {
       console.log(`   ⚠ ${src.label} failed: ${e.message.slice(0, 80)}`);
+    }
+  }
+  if (ownStill) {
+    try {
+      return await writeRegionalImages(ownStill.buffer, ownStill.ogImage, ownStill.label);
+    } catch (e) {
+      console.log(`   ⚠ ${ownStill.label} failed: ${e.message.slice(0, 80)}`);
     }
   }
   return null;
@@ -737,7 +760,7 @@ let ibdbImageCache = null;
 // Fetch show images from IBDB page (which embeds broadway.org CDN images)
 async function fetchFromIBDB(show) {
   if (!ibdbEligible(show)) {
-    console.log('   ✗ IBDB: Broadway-only source, skipped for a London show');
+    console.log('   ✗ IBDB: Broadway-only source, skipped for a London or regional show');
     return null;
   }
   if (!ibdbImageCache) {
@@ -2059,7 +2082,13 @@ async function verifyAndCollect(images, show, tierName, verifyCtx) {
     return { images, verifyResult: result, url: urlToVerify, tierName, score };
   }
 
-  // Fix 3: Track production photos as fallback instead of rejecting outright
+  // Fix 3: Track production photos as fallback instead of rejecting outright, but only a still the
+  // verifier found nothing else wrong with: one it calls another production's stays rejected (BRO-6703).
+  if (result.imageType === 'production_still' && !isCleanProductionStill(result)) {
+    console.log(`   ✗ REJECTED (production photo of another production): ${result.description} [${(result.issues || []).join(', ')}]`);
+    verifyCtx.rejected = (verifyCtx.rejected || 0) + 1;
+    return null;
+  }
   if (result.imageType === 'production_still') {
     const bufSize = Buffer.isBuffer(imageInput) ? imageInput.length : 0;
     console.log(`   ⚠ DEFERRED (production photo): ${result.description} — will use as fallback if no poster art`);
@@ -2117,7 +2146,13 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
       downloadImage: downloadImageDirect,
       log: (message) => console.log(message),
     });
-    if (apiImages) return apiImages;
+    // applyImages refuses a source another unrelated show already owns. Check that here, so a
+    // title match onto another production's art falls through to the other sources instead of
+    // "succeeding" into a refusal and leaving the row imageless on every self-heal (BRO-6703).
+    const refused = apiImages ? sharedSourceProblems(apiImages, show).filter(d => d.format === 'poster' || d.format === 'thumbnail') : [];
+    for (const d of refused) console.log(`   ✗ TodayTix API ${describeSharedSource(d)}`);
+    const usable = apiImages ? ['poster', 'thumbnail'].filter(f => apiImages[f] && !refused.some(d => d.format === f)) : [];
+    if (usable.length) return apiImages;
     console.log('   API match found but no usable poster or thumbnail, trying other sources');
   }
 
@@ -2327,8 +2362,13 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
   // Fix 4: Last resort — use production photo fallback with 3 safety guards
   const existingThumb = show.images?.thumbnail;
   const isPinned = PINNED_IMAGES.has(show.id);
+  const stillAllowed = searchStillAllowed(show);           // GUARD 4: never for a regional row (BRO-6703)
+  if (!stillAllowed && verifyCtx?.productionPhotoFallbacks?.some(p => p.showId === show.id)) {
+    console.log('   ✗ Regional production: a searched stage photo is likely another production — no last resort');
+  }
   if (!existingThumb                                      // GUARD 1: Don't overwrite existing images
       && !isPinned                                         // GUARD 2: Never override pinned images
+      && stillAllowed
       && verifyCtx?.productionPhotoFallbacks?.length > 0) {
     // BRO-4380: [0] used to be whichever show deferred a photo first in the run,
     // so later shows got that show's /images/shows/<other-id>/ paths.
@@ -2396,8 +2436,13 @@ async function processOneShowInner(show, apiLookup, todayTixIds, badImagesOnly, 
   const londonSibling = !newerProduction && show.status === 'closed' && todaytixMarket(show) === 'london'
     ? findOtherSameTitleProduction(show, allShowsData.shows, { sameMarket: true })
     : null;
-  const skipTodayTix = !!(newerProduction || londonSibling);
-  if (newerProduction) {
+  // TodayTix lists New York and London only: a regional row's title match, cached id or
+  // page-scrape hit is another production (BRO-6703). Its own explicit id still counts.
+  const regionalRow = !newerProduction && !londonSibling && isRegionalRow(show) && !show.todaytixId;
+  const skipTodayTix = !!(newerProduction || londonSibling || regionalRow);
+  if (regionalRow) {
+    console.log('   ⚠ Regional production — TodayTix (New York/London only) skipped');
+  } else if (newerProduction) {
     console.log(`   ⚠ Newer production "${newerProduction.id}" exists — skipping TodayTix, trying IBDB/Google`);
   } else if (londonSibling) {
     console.log(`   ⚠ Same-title London production "${londonSibling.id}" exists — skipping TodayTix`);

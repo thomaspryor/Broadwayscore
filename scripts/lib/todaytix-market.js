@@ -40,6 +40,20 @@ function todaytixMarket(show) {
 }
 
 /**
+ * A regional row (category or market 'regional': UK houses, US feeder venues).
+ * TodayTix, Theatr and IBDB list New York and London productions only, so for
+ * one of these a title match there is always another production's art. The
+ * fetcher tries the venue's own site first, but when that fails it falls
+ * through to the generic chain, where these must not treat the row as New York
+ * (BRO-6703: Hope Mill's Little Shop of Horrors took the Westside Theatre art).
+ *
+ * @param {{category?: string|null, market?: string|null}} show
+ */
+function isRegionalRow(show) {
+  return [show && show.category, show && show.market].some((v) => String(v || '').trim().toLowerCase() === 'regional');
+}
+
+/**
  * On-site search page for the show's market. (/nyc/shows?q= — the old
  * hard-coded path — is a 404 on the current site; /<city>/search?q= is the
  * live route for both cities.)
@@ -102,6 +116,7 @@ function todaytixShowUrl(market, id, slug) {
 module.exports = {
   LONDON_MARKETS,
   todaytixMarket,
+  isRegionalRow,
   todaytixSearchUrl,
   todaytixShowLinkRe,
   extractTodaytixShowLink,

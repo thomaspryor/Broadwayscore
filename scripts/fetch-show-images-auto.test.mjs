@@ -365,6 +365,8 @@ test('TodayTix API: alternate fields, existing query strings and missing slots',
 test('TodayTix API: fetchShowImages calls the per-slot helper with the shared verification context', () => {
   const src = fs.readFileSync(new URL('./fetch-show-images-auto.js', import.meta.url), 'utf8');
   assert.match(src, /await fetchTodayTixApiImages\(show, apiData, \{\s*verifyCtx,\s*downloadImage: downloadImageDirect,/);
-  assert.match(src, /if \(apiImages\) return apiImages;/);
+  // BRO-6703: returns the API art only when a poster or thumbnail survives the shared-source check.
+  assert.match(src, /sharedSourceProblems\(apiImages, show\)/);
+  assert.match(src, /if \(usable\.length\) return apiImages;/);
   assert.doesNotMatch(src, /addWebp\(filteredThumb \|\| filteredPoster\)/);
 });

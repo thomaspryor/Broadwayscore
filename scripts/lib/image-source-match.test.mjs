@@ -89,6 +89,37 @@ test('IBDB is Broadway-only', () => {
   assert.equal(ibdbEligible({ category: 'broadway' }), true);
 });
 
+// BRO-6703: Theatr and IBDB are New York catalogues; a regional row that falls
+// through its venue source must not take a same-title NYC production's art
+// (Hope Mill's Little Shop of Horrors -> the Westside Theatre listing).
+test('only a still the verifier found nothing else wrong with may be a last-resort card', () => {
+  const { isCleanProductionStill } = require('./image-source-match.js');
+  assert.equal(isCleanProductionStill({ imageType: 'production_still', match: true, issues: [] }), true);
+  assert.equal(isCleanProductionStill({ imageType: 'production_still', match: false, issues: ['production_photo'] }), true);
+  // The Great Lakes Theater still served for Hope Mill's row.
+  assert.equal(isCleanProductionStill({ imageType: 'production_still', match: false, issues: ['production_photo', 'wrong_production'] }), false);
+  assert.equal(isCleanProductionStill({ imageType: 'production_still', match: false, issues: ['community_theater'] }), false);
+  assert.equal(isCleanProductionStill({ imageType: 'promotional_art', match: true, issues: [] }), false);
+  assert.equal(isCleanProductionStill(null), false);
+});
+
+test('a searched stage photo is never a regional row\'s last resort', () => {
+  const { searchStillAllowed } = require('./image-source-match.js');
+  assert.equal(searchStillAllowed({ category: 'regional', market: 'regional' }), false);
+  assert.equal(searchStillAllowed({ category: 'musical', market: 'regional' }), false);
+  assert.equal(searchStillAllowed({ category: 'off-broadway' }), true);
+  assert.equal(searchStillAllowed({ category: 'west-end' }), true);
+});
+
+test('NYC-only catalogues skip regional rows unless the venue itself matches', () => {
+  const hopeMill = { id: 'little-shop-of-horrors-hope-mill-regional-2026', title: 'Little Shop of Horrors', venue: 'Hope Mill Theatre, Manchester', category: 'regional', market: 'regional', status: 'open' };
+  const westside = { venue: { name: 'Westside Theatre' } };
+  assert.equal(theatrEligible(hopeMill, westside, [hopeMill]), false);
+  assert.equal(ibdbEligible(hopeMill), false);
+  assert.equal(ibdbEligible({ category: 'musical', market: 'regional' }), false);
+  assert.equal(theatrEligible({ ...hopeMill, category: 'off-broadway', market: 'off-broadway' }, westside, []), true);
+});
+
 test('rejectedImageUrls blocks a re-fetch of the same source, query string ignored', () => {
   const show = { rejectedImageUrls: ['https://cdn/theatr/godot-poster.jpg'] };
   assert.equal(isRejectedImage({ poster: 'https://cdn/theatr/godot-poster.jpg?w=720' }, show), true);

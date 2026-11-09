@@ -19,3 +19,14 @@ test('running, upcoming and recently closed rows may', () => {
   assert.equal(todaytixApiArtEligible({ status: 'previews' }, NOW), true);
   assert.equal(todaytixApiArtEligible({ status: 'closed', closingDate: '2026-09-01' }, NOW), true);
 });
+
+// BRO-6703: the catalogue is New York and London only, so a regional row's title
+// match (Hope Mill's Little Shop of Horrors -> the Westside Theatre listing) is
+// another production's art.
+test('a regional row never takes catalogue art by title, but may by its own id', () => {
+  assert.equal(todaytixApiArtEligible({ status: 'open', category: 'regional' }, NOW), false);
+  assert.equal(todaytixApiArtEligible({ status: 'open', category: 'musical', market: 'regional' }, NOW), false);
+  assert.equal(todaytixApiArtEligible({ status: 'open', category: 'regional', todaytixId: 123 }, NOW), true);
+  assert.equal(todaytixApiArtEligible({ status: 'open', category: 'west-end' }, NOW), true);
+  assert.equal(todaytixApiArtEligible({ status: 'open', category: 'off-broadway' }, NOW), true);
+});

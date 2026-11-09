@@ -44,4 +44,73 @@ function imageOnlyVenue(venue) {
   return IMAGE_ONLY_VENUES.find((v) => v.re.test(venue || '')) || null;
 }
 
-module.exports = { IMAGE_ONLY_VENUES, imageOnlyVenue, slug };
+/**
+ * Feeder venues (data/uk-regional-venues.json) whose productions live on a different site than
+ * the venue's own domain. Image sourcing only: the feeder `domain` stays what classification and
+ * verification use (BRO-6703). Òran Mór's lunchtime plays are A Play, A Pie and A Pint
+ * productions, listed at playpiepint.com/whats-on/event/<slug>/; oran-mor.co.uk has no page for
+ * them, so a "site:oran-mor.co.uk Contact" search landed on the venue's Contact Us page.
+ */
+const FEEDER_IMAGE_SITES = [
+  {
+    re: /(?<![\p{L}\p{N}_])[oò]ran m[oó]r(?![\p{L}\p{N}_])/iu, domain: 'playpiepint.com', sample: 'Òran Mór, Glasgow',
+    pageUrls: (show) => (slug(show.title) ? [`https://playpiepint.com/whats-on/event/${slug(show.title)}/`] : []),
+  },
+];
+
+function feederImageSite(venue) {
+  return FEEDER_IMAGE_SITES.find((v) => v.re.test(venue || '')) || null;
+}
+
+/**
+ * A venue site's own utility page (contact, about, privacy, terms, access, the homepage). Its
+ * og:image is the venue logo or building, never a production's art, and a show titled "Contact"
+ * or "About" matches it in a site: search (BRO-6703).
+ */
+const UTILITY_PAGE_RE = /^\/(?:(?:about|about-us|visit|visiting|info|help)\/)?(?:contact(?:-us)?|about(?:-us)?|privacy(?:-policy)?|cookies?(?:-policy)?|terms[a-z-]*|accessibility|visiting-accessibility|faqs?)\/?$/i;
+function isVenueUtilityPage(url) {
+  let p;
+  try { p = new URL(url).pathname; } catch { return false; }
+  return p === '/' || p === '' || UTILITY_PAGE_RE.test(p);
+}
+
+/**
+ * The page's key art: og:image, then twitter:image, then the page's hero <img> (an <img> whose
+ * own class names a hero, or the first <img> inside an element whose class does). Hope Mill
+ * Theatre's event pages carry no og:image at all; the show art is only in
+ * <div class="content-hero"><img src=...> (BRO-6703). The caller still runs the image verifier.
+ *
+ * @returns {{url: string, via: 'og:image'|'twitter:image'|'hero img'}|null}
+ */
+function extractKeyArtImage(html, baseUrl) {
+  if (!html) return null;
+  const abs = (raw) => {
+    try { return new URL(String(raw).replace(/&amp;/g, '&').trim(), baseUrl || undefined).href; } catch { return null; }
+  };
+  const meta = (prop) => {
+    const m = html.match(new RegExp(`(?:property|name)="${prop}"\\s+content="([^"]+)"`, 'i'))
+      || html.match(new RegExp(`content="([^"]+)"\\s+(?:property|name)="${prop}"`, 'i'));
+    return m ? abs(m[1]) : null;
+  };
+  const og = meta('og:image');
+  if (og) return { url: og, via: 'og:image' };
+  const tw = meta('twitter:image');
+  if (tw) return { url: tw, via: 'twitter:image' };
+  const srcOf = (tag) => { const m = tag.match(/\ssrc="([^"]+)"/i); return m ? abs(m[1]) : null; };
+  const ownHero = html.match(/<img\b[^>]*\bclass="[^"]*\bhero\b[^"]*"[^>]*>/i);
+  const inHero = html.match(/\bclass="[^"]*\bhero\b[^"]*"[^>]*>\s*(?:<(?:picture|a)\b[^>]*>\s*(?:<source\b[^>]*>\s*)*)?(<img\b[^>]*>)/i);
+  const tag = ownHero ? ownHero[0] : inHero ? inHero[1] : null;
+  const url = tag && srcOf(tag);
+  return url ? { url, via: 'hero img' } : null;
+}
+
+/**
+ * Was a venue-page image rejected ONLY for being a stage photo? (verify-image.js rejects every
+ * production still as card art.) Any other issue (wrong show, wrong production, placeholder,
+ * venue photo) means the image is not this production's and must stay rejected (BRO-6703).
+ */
+function isOwnProductionStill(verdict) {
+  return !!verdict && verdict.match === false && require('./image-source-match').isCleanProductionStill(verdict);
+}
+
+module.exports = { IMAGE_ONLY_VENUES, imageOnlyVenue, FEEDER_IMAGE_SITES, feederImageSite, isVenueUtilityPage, extractKeyArtImage, isOwnProductionStill, slug };

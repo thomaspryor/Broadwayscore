@@ -13,6 +13,7 @@
  */
 
 const { partitionNoReliableArt } = require('./no-reliable-art');
+const { isRegionalRow } = require('./todaytix-market');
 
 function selectShowsToFetch(shows, { onlyMissing = false, includeClosed = false, retryNoArt = false, imageOnDisk, log = () => {}, now = Date.now() } = {}) {
   let out = shows || [];
@@ -53,6 +54,12 @@ function selectShowsToFetch(shows, { onlyMissing = false, includeClosed = false,
 const TODAYTIX_RECENT_CLOSE_DAYS = 120;
 function todaytixApiArtEligible(show, now = Date.now()) {
   if (!show) return false;
+  // The catalogue is New York and London only, so a regional row's title match is
+  // always another production (BRO-6703: Hope Mill's Little Shop of Horrors matched
+  // the Westside Theatre listing, the cross-show guard refused that art at apply
+  // time, and the self-heal looped seven times without trying the venue's own art).
+  // A row that names its own TodayTix id is still matched by id.
+  if (isRegionalRow(show) && !show.todaytixId) return false;
   if (show.status !== 'closed') return true;
   const closed = Date.parse(show.closingDate || '');
   if (Number.isNaN(closed)) return false;
