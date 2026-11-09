@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7251-b",
   "planId": "87291ecb-4491-40ed-a18c-c606b625f9b2",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-09T23:37:49.034Z",
   "submitter": {
     "name": null,
@@ -54,5 +54,29 @@
         "description": "shows.json: oh-mary-2024.closingDateSource"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-09T23:47:54.117Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for schmigadoon-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for schmigadoon-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for oh-mary-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for oh-mary-2024"
+    }
+  ],
+  "executedIn": "ci"
 }
