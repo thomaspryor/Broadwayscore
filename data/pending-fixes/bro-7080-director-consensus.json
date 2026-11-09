@@ -1,0 +1,130 @@
+{
+  "issueNumber": "bro-7080-director-consensus",
+  "planId": "dbd1e1fb-cdc8-4878-9c3e-926715724292",
+  "status": "pending",
+  "createdAt": "2026-11-09T10:51:07.278Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Correct 4 director credits that 0 reviews mention while 9-26 name another director (audit-show-director-consensus STRICT; BRO-7080 cousins of BRO-4208)",
+    "steps": [
+      "shows.json: the-saviors-off-broadway-2026.creativeTeam",
+      "shows.json: evening-all-afternoon-off-west-end-2026.creativeTeam",
+      "shows.json: just-for-us-2023.creativeTeam",
+      "shows.json: here-there-are-blueberries-theatre-royal-stratford-east-off-west-end-2026.creativeTeam"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-saviors-off-broadway-2026",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Lileana Blain-Cruz",
+            "role": "Director"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Jack Serio",
+            "role": "Director"
+          }
+        ],
+        "description": "shows.json: the-saviors-off-broadway-2026.creativeTeam"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "evening-all-afternoon-off-west-end-2026",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "David Cromer",
+            "role": "Director"
+          },
+          {
+            "name": "Annie Baker",
+            "role": "Book Writer"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Diyan Zora",
+            "role": "Director"
+          },
+          {
+            "name": "Annie Baker",
+            "role": "Book Writer"
+          }
+        ],
+        "description": "shows.json: evening-all-afternoon-off-west-end-2026.creativeTeam"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "just-for-us-2023",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Alex Edelman",
+            "role": "Playwright"
+          },
+          {
+            "name": "Adam Brace",
+            "role": "Co-Writer"
+          },
+          {
+            "name": "Moritz von Stuelpnagel",
+            "role": "Director"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Alex Edelman",
+            "role": "Playwright"
+          },
+          {
+            "name": "Adam Brace",
+            "role": "Director"
+          }
+        ],
+        "description": "shows.json: just-for-us-2023.creativeTeam"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "here-there-are-blueberries-theatre-royal-stratford-east-off-west-end-2026",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Joan Littlewood",
+            "role": "Director"
+          },
+          {
+            "name": "Shelagh Delaney",
+            "role": "Book Writer"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Moisés Kaufman",
+            "role": "Director"
+          },
+          {
+            "name": "Moisés Kaufman",
+            "role": "Playwright"
+          },
+          {
+            "name": "Amanda Gronich",
+            "role": "Playwright"
+          }
+        ],
+        "description": "shows.json: here-there-are-blueberries-theatre-royal-stratford-east-off-west-end-2026.creativeTeam"
+      }
+    ]
+  }
+}

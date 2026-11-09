@@ -291,6 +291,18 @@ const BODY_BYLINE_RE = new RegExp(
   String.raw`(?:\s*[|,]?\s*Photo(?:s|graphy)?(?:\s+by)?\s*:?\s*[^\n]{0,80})?\s*$`,
 );
 
+// BRO-7080: TotalTheater (totaltheater1.wordpress.com) prints a production
+// credits header at the TOP of the body and names the reviewer in it:
+// "... Director: Scott Ellis. 90 min. Critic: David Sheward (Oct. 2026). ****".
+// The credit must open its own sentence/line ("Critic" capitalised, after
+// start/./!/?/newline), sit in the first BODY_HEADER_SPAN chars, and the name
+// must end at "(", ".", ",", a newline or the end of text. Prose such as "the
+// critic: he said" or "Critic: David Sheward wrote that" never matches.
+const BODY_HEADER_SPAN = 600;
+const BODY_HEADER_CRITIC_RE = new RegExp(
+  String.raw`(?:^|[.!?\n]\s*)Critic\s*:\s*${BODY_NAME}\s*(?=\(|[.,\n]|$)`,
+);
+
 /**
  * BRO-3919: recover a reviewer credit printed in the review BODY (some outlets
  * have no byline element). Strict on purpose: the credit must be the text's
@@ -309,7 +321,7 @@ const BODY_BYLINE_RE = new RegExp(
 function extractBodyByline(text, opts = {}) {
   if (!text || typeof text !== 'string') return null;
   const tail = text.trimEnd().slice(-300);
-  const m = BODY_BYLINE_RE.exec(tail);
+  const m = BODY_BYLINE_RE.exec(tail) || BODY_HEADER_CRITIC_RE.exec(text.slice(0, BODY_HEADER_SPAN));
   if (!m) return null;
   const name = normalizeBylineCapture(m[1].trim());
   if (!name) return null;

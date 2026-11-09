@@ -23,7 +23,7 @@ import os from 'node:os';
 import path from 'node:path';
 
 const require = createRequire(import.meta.url);
-const { isIncludableForRebuild } = require('../../scripts/lib/review-guards.js');
+const { isIncludableForRebuild, explainExclusion } = require('../../scripts/lib/review-guards.js');
 
 function basePayload(overrides = {}) {
   return {
@@ -93,5 +93,28 @@ describe('isIncludableForRebuild — runtime known-syndication dedup (task #838)
   test('filePath omitted → dedup skipped (same opt-in mechanism as duplicateOf, though the pre-existing no-filePath default differs: duplicateOf excludes, syndication includes)', () => {
     const secondaryData = basePayload({ criticName: 'Chris Jones', outletId: 'nydailynews' });
     assert.strictEqual(isIncludableForRebuild(secondaryData), true);
+  });
+});
+
+describe('David Sheward: theater-life primary, totaltheater1 reprint (BRO-7080)', () => {
+  test('totaltheater1 copy beside a theater-life original is excluded as knownSyndicationSecondary', () => {
+    const d = fs.mkdtempSync(path.join(tmpDir, 'sheward-'));
+    fs.writeFileSync(path.join(d, 'theater-life--david-sheward.json'),
+      JSON.stringify(basePayload({ criticName: 'David Sheward', outletId: 'theater-life' })));
+    const copy = basePayload({ criticName: 'David Sheward', outletId: 'totaltheater1' });
+    const copyPath = path.join(d, 'totaltheater1--unknown.json');
+    fs.writeFileSync(copyPath, JSON.stringify(copy));
+    assert.strictEqual(explainExclusion(copy, undefined, copyPath), 'knownSyndicationSecondary');
+    assert.strictEqual(isIncludableForRebuild(copy, undefined, copyPath), false);
+    const orig = basePayload({ criticName: 'David Sheward', outletId: 'theater-life' });
+    assert.strictEqual(isIncludableForRebuild(orig, undefined, path.join(d, 'theater-life--david-sheward.json')), true);
+  });
+
+  test('totaltheater1 Sheward review with no theater-life sibling stays in', () => {
+    const d = fs.mkdtempSync(path.join(tmpDir, 'sheward-solo-'));
+    const solo = basePayload({ criticName: 'David Sheward', outletId: 'totaltheater1' });
+    const p = path.join(d, 'totaltheater1--david-sheward.json');
+    fs.writeFileSync(p, JSON.stringify(solo));
+    assert.strictEqual(isIncludableForRebuild(solo, undefined, p), true);
   });
 });
