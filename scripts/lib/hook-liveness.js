@@ -26,11 +26,12 @@ function probe({ runner, repo: repoArg, projectDir = process.env.CLAUDE_PROJECT_
   const r = spawnSync('bash', [runner, PROBE_HOOK], {
     cwd, encoding: 'utf8', timeout: timeoutMs,
     input: JSON.stringify({ hook_event_name: 'PreToolUse', cwd, tool_name: 'Bash', tool_input: { command: PROBE_COMMAND } }),
-    env: { ...process.env, CLAUDE_PROJECT_DIR: projectDir },
+    env: { ...process.env, CLAUDE_PROJECT_DIR: projectDir, HOOK_RUNNER_PROBE: '1' },
   });
   if ((r.stdout || '').includes(PROBE_MARKER)) return { alive: true };
-  const top = projectDir && git(projectDir, ['rev-parse', '--show-toplevel']);
-  const sameRepo = top && git(projectDir, ['rev-parse', '--path-format=absolute', '--git-common-dir']) === main;
+  const sessionDir = projectDir || cwd; // the runner's rule: P=${CLAUDE_PROJECT_DIR:-$cwd}
+  const top = git(sessionDir, ['rev-parse', '--show-toplevel']);
+  const sameRepo = top && git(sessionDir, ['rev-parse', '--path-format=absolute', '--git-common-dir']) === main;
   let wired = false;
   if (sameRepo) {
     try { wired = fs.readFileSync(path.join(top, '.claude', 'settings.json'), 'utf8').includes(`.claude/hooks/${PROBE_HOOK}`); } catch { /* unreadable: not wired */ }

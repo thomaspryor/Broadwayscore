@@ -346,5 +346,7 @@ test('liveness probe warns when the runner dedupes every event (BRO-7180)', () =
   });
   assert.equal(probe(mk('live-ok', pinned)).stdout.trim(), '', 'control: session outside the repo, healthy runner: no warning');
   assert.match(probe(mk('live-broken', broken)).stdout, /BRO-7180: repo hooks are NOT firing/, 'runner that exits before exec: warns');
+  const unset = spawnSync('node', [LIVENESS, '--runner', path.join(REPO_ROOT, '.claude', 'hooks', 'lib', 'home-hook-runner.sh')], { encoding: 'utf8', env: { ...process.env, HOME: fakeHome, CLAUDE_PROJECT_DIR: '' } });
+  assert.equal(unset.stdout.trim(), '', 'CLAUDE_PROJECT_DIR unset: the runner falls back to cwd, so does the probe (no false warning)');
   assert.equal(probe(path.join(REPO_ROOT, '.claude', 'hooks', 'lib', 'home-hook-runner.sh')).stdout.trim(), '', 'the real runner is alive');
 });
