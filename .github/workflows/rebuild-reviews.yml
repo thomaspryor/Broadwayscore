@@ -492,6 +492,7 @@ jobs:
         run: node scripts/exclusion-rule-census.js --compare-rebuild --no-diff
 
       - name: Applied fix plans reached includable rows
+        # strict-alert-exempt: BRO-7182 follow-up: route findings to a worker card
         if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true'
         # BRO-6872: an approved fix plan (data/pending-fixes/*.json) marked "applied" that cleared
         # wrongProduction/wrongShow/isRoundupArticle/wrongAttribution, whose review still has no row

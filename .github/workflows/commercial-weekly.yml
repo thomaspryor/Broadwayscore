@@ -533,6 +533,7 @@ jobs:
         continue-on-error: true
 
       - name: Commercial scope-contamination audit (informational)
+        # strict-alert-exempt: BRO-7182 follow-up: route findings to a worker card
         # OUT_OF_MARKET_SCOPE/SHOW_NOT_IN_DB are warn-only (not ship-blocking,
         # see script header) but were previously NEVER run on a schedule —
         # audit-commercial-contamination.js was only wired via `--gate` in

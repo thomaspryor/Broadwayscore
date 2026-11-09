@@ -1524,6 +1524,31 @@ function findEolNodeVersions(raw) {
 }
 
 /**
+ * Rule (ad): advisory --strict audit with no --alert (BRO-7181). A step with
+ * `continue-on-error: true` that runs a `--strict` audit only turns itself red
+ * inside a green job, which nobody reads: the approved-fix drift audit sat
+ * like that until BRO-7179. Route findings to a worker card with --alert
+ * (scripts/lib/audit-alert.js), or put `# strict-alert-exempt: <reason>` in
+ * the step (e.g. a PR check, where the red check itself is the signal).
+ * Comments are ignored when matching, including trailing `# ...` on a line.
+ */
+const STRICT_ALERT_EXEMPT_RE = /#[ \t]*strict-alert-exempt:[ \t]*\S/;
+function findStrictAdvisoryWithoutAlert(raw) {
+  const hits = [];
+  for (const step of splitWorkflowSteps(raw)) {
+    const body = step.lines.join('\n');
+    if (STRICT_ALERT_EXEMPT_RE.test(body)) continue;
+    const code = stripComments(step.lines).map((l) => l.replace(/\s+#.*$/, ''));
+    if (!code.some((l) => /^\s*continue-on-error:\s*true\s*$/.test(l))) continue;
+    const idx = code.findIndex((l) => /(?:^|\s)--strict\b/.test(l));
+    if (idx === -1 || code.some((l) => /(?:^|\s)--alert\b/.test(l))) continue;
+    const lineOffset = step.lines.indexOf(code[idx]) === -1 ? 0 : step.lines.indexOf(code[idx]);
+    hits.push({ name: step.name, lineNum: step.startLine + lineOffset + 1, text: code[idx].trim() });
+  }
+  return hits;
+}
+
+/**
  * Sparse re-checkout over a populated tree (gitleaks.yml, 2026-10-31..11-08).
  * actions/checkout in cone mode runs `git sparse-checkout set <entries>`; a
  * FILE entry is accepted on a fresh checkout but refused on a tree an earlier
@@ -1598,6 +1623,7 @@ module.exports = {
   findMissingTopLevelPermissions,
   findUnpinnedActionUses,
   findEolNodeVersions,
+  findStrictAdvisoryWithoutAlert,
   NODE_MIN_MAJOR,
   findUnboundedGitNetworkCommands,
   findGitNetUsedBeforeSource,
