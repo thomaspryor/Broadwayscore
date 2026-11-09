@@ -20,13 +20,16 @@ const MAX_RUN_DAYS = 200; // a longer "run" is a season banner, not a production
 
 const NON_PRODUCTION_RE = /\b(tour|school|youth|teen|kids?|family series|jr\.?|concert|recital|tribute|tree lighting|reading|gala|benefit|fundraiser|workshop|class(es)?|camp|auditions?|open house|improv|karaoke|trivia|silent movie|in concert|live in|storytime|story time|rental|subscription|season ticket|gift|membership|tbd)\b/i;
 
+/** Houses that mostly present touring work: never a producing theatre for a local hub. */
+const PRESENTERS = new Set(['ArtsEmerson', 'Emerson Colonial Theatre']);
+
 /** The producing theatre a listing's venue string names, or null (not on the allowlist). */
 function resolveTheatre(city, venue) {
   const n = norm(venue);
   if (!n) return null;
   for (const t of city.theatres) {
     const names = [t.name, ...(t.aliases || []), ...((SEASON_SOURCES[t.name] || {}).venues || [])];
-    if (names.some((a) => hasPhrase(n, a) || hasPhrase(a, n))) return t;
+    if (names.some((a) => hasPhrase(n, a))) return PRESENTERS.has(t.name) ? null : t;
   }
   return null;
 }
@@ -53,7 +56,13 @@ function fromBwwRows(rows, city, today, horizonDays = HORIZON_DAYS) {
 }
 
 const MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
-const monthIn = (text, iso) => new RegExp(`\\b${MONTHS[Number(iso.slice(5, 7)) - 1]}`, 'i').test(text);
+const FULL = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+/** The page names this month with a day number beside it ("Nov 12", "12 November"), not just a word that starts alike. */
+const monthIn = (text, iso) => {
+  const i = Number(iso.slice(5, 7)) - 1;
+  const m = `(?:${MONTHS[i]}\\.?|${FULL[i]})`;
+  return new RegExp(`\\b${m}\\s*\\d{1,2}\\b|\\b\\d{1,2}(?:st|nd|rd|th)?\\s*${m}\\b`, 'i').test(text);
+};
 
 /**
  * LLM rows read from a theatre's season page -> season rows. Nothing the page does not say survives:
@@ -93,10 +102,11 @@ function mergeSeason(lists) {
 
 /** Existing hub show for a season row (same title; venue names the theatre when the title is not unique). */
 function findExisting(row, shows) {
-  const same = shows.filter((s) => norm(s.title) === norm(row.title));
+  const yr = (d) => String(d || '').slice(0, 4);
+  const same = shows.filter((s) => norm(s.title) === norm(row.title) && [yr(s.openingDate), yr(s.closingDate)].some((y) => y && (y === yr(row.start) || y === yr(row.end))));
   if (!same.length) return null;
-  const th = norm(row.theatre).split(' ').slice(0, 2).join(' ');
-  return same.find((s) => norm(s.venue || '').includes(th)) || (same.length === 1 ? same[0] : null);
+  const th = norm(row.theatre).replace(/^the /, '');
+  return same.find((s) => norm(s.venue || '').includes(th)) || null;
 }
 
 const slugify = (t) => String(t).toLowerCase().replace(/&/g, ' and ').replace(/['’]/g, '').normalize('NFKD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
