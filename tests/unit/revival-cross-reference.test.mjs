@@ -17,9 +17,6 @@ const {
   normalizeRevivalTitle, buildExistingTitleMap, detectRevivalByTitleCrossReference,
   writersConflict, describesNewWork, shouldAcceptIbdbRevival, isReturnEngagement,
 } = require('../../scripts/lib/revival-cross-reference.js');
-import fs from 'node:fs';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 
 test('normalizeRevivalTitle strips leading article + punctuation, case-folds', () => {
   assert.equal(normalizeRevivalTitle('The Seagull'), 'seagull');
@@ -222,9 +219,8 @@ test('describesNewWork ignores "new play-by-play" style copy', () => {
 });
 
 // BRO-7080 (class of BRO-4436): a return run of the same production at the
-// same house is not a revival of it. The real rows come from data/shows.json
-// (gitignored private data) when present; the frozen copy below is the same
-// rows' relevant fields as of 2026-11-09, for CI checkouts without the data.
+// same house is not a revival of it. The frozen rows below are the real
+// rows' relevant fields as of 2026-11-09.
 const FROZEN_DEGENERATES = {
   'degenerates-off-broadway-2026': {
     id: 'degenerates-off-broadway-2026', title: 'Degenerates', type: 'play', isRevival: false, tags: [],
@@ -238,10 +234,9 @@ const FROZEN_DEGENERATES = {
   },
 };
 function degeneratesRows() {
-  const file = path.join(path.dirname(fileURLToPath(import.meta.url)), '../../data/shows.json');
-  let live = [];
-  try { live = JSON.parse(fs.readFileSync(file, 'utf8')).shows || []; } catch { /* no private data in this checkout */ }
-  return Object.keys(FROZEN_DEGENERATES).map(id => live.find(s => s.id === id) || FROZEN_DEGENERATES[id]);
+  // Frozen fixture only: a live read of the shows file pins derived data
+  // (tests-vs-derived-data audit) and changes once the fix plan applies.
+  return Object.values(FROZEN_DEGENERATES);
 }
 
 test('BRO-7080: Degenerates Dec-Jan return run at Playwrights Horizons is NOT a revival (real rows)', () => {
