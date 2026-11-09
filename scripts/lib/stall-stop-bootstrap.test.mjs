@@ -14,7 +14,7 @@ const REPO = path.resolve(new URL('.', import.meta.url).pathname, '..', '..');
 const BOOT = path.join(REPO, '.claude', 'hooks', 'lib', 'stall-stop-bootstrap.sh');
 const scratchDirs = [];
 const tmp = (p) => { const dir = fs.mkdtempSync(path.join(os.tmpdir(), p)); scratchDirs.push(dir); return dir; };
-after(() => { for (const dir of scratchDirs) fs.rmSync(dir, { recursive: true, force: true }); });
+after(() => { for (const dir of scratchDirs) fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); });
 const suiteTmp = tmp('bsc-bootstrap-suite-');
 const run = (mode, env, input = '{}') => spawnSyncStdinFile('bash', [BOOT, mode], { input, encoding: 'utf8', env: { ...process.env, TMPDIR: suiteTmp, ...env }, timeout: 60000 });
 

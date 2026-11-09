@@ -2,8 +2,8 @@
 # Sourced by home-hook-runner.sh after reading input. Keep the missing-jq path
 # independent of jq, just like the bootstrap's missing-runner fallback.
 if ! command -v jq >/dev/null 2>&1; then
-  if [ "$hook" = verify-edits.sh ] && printf '%s' "$input" | grep -Eqi 'KEEP OPEN|check(ing)? back|report(ing)? back|I.ll (check|wait|come back|continue|report)|I.m (continuing|waiting)|will (check|report|continue)' \
-     && ! printf '%s' "$input" | grep -Eq '"stop_hook_active"[[:space:]]*:[[:space:]]*true'; then
+  if [ "$hook" = verify-edits.sh ] && grep -Eqi 'KEEP OPEN|check(ing)? back|report(ing)? back|I.ll (check|wait|come back|continue|report)|I.m (continuing|waiting)|will (check|report|continue)' <<<"$input" \
+     && ! grep -Eq '"stop_hook_active"[[:space:]]*:[[:space:]]*true' <<<"$input"; then
     echo 'BLOCKED: jq is missing, so the stall Stop gate cannot confirm a wake for this promise closing. Start a wake or report completed work before stopping again.' >&2
     exit 2
   fi
