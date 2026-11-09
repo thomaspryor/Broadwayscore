@@ -458,9 +458,9 @@ function fullTextNamesVenueAndTitleWords(fullTexts, show, venueRe, mentionRe) {
  */
 const OWN_MIN_MENTIONS = 2;
 const DISTINCTIVE_MAX_TITLES = 3;
-const RIVAL_SINGLE_WORD_MIN = 7;
+const RIVAL_SINGLE_WORD_MIN = 5;
 const normWords = (s) => foldDiacritics(String(s || '')).toLowerCase()
-  .replace(/['\u2019`]/g, '').split(/[^a-z0-9]+/).filter(Boolean);
+  .replace(/['\u2018\u2019\u02bc`]/g, '').split(/[^a-z0-9]+/).filter(Boolean);
 
 const titleIndexCache = new WeakMap();
 function buildTitleIndex(shows) {
@@ -477,19 +477,19 @@ function buildTitleIndex(shows) {
       wordTitles.get(x).add(key);
     }
   }
-  const idx = { wordTitles, titles };
+  const lengths = [...new Set([...titles].map(t => t.split(' ').length))].filter(n => n >= 2);
+  const idx = { wordTitles, titles, lengths };
   titleIndexCache.set(shows, idx);
   return idx;
 }
 
 function fullTextAboutThisShow(fullTexts, show, shows) {
   if (!fullTexts || !Array.isArray(shows) || shows.length === 0) return false;
-  const { wordTitles, titles } = buildTitleIndex(shows);
+  const { wordTitles, titles, lengths } = buildTitleIndex(shows);
   const ownKey = normWords(show.title).join(' ');
   const own = significantTitleWords(show).map(w => normWords(w).join(''))
     .filter(w => w && (wordTitles.get(w) || new Set()).size <= DISTINCTIVE_MAX_TITLES);
   if (own.length === 0) return false;
-  const lengths = [...new Set([...titles].map(t => t.split(' ').length))].filter(n => n >= 2);
   return fullTexts.some((text) => {
     if (typeof text !== 'string' || !text) return false;
     const words = normWords(text);
@@ -499,7 +499,7 @@ function fullTextAboutThisShow(fullTexts, show, shows) {
     if (ownScore < OWN_MIN_MENTIONS) return false;
     let rivalScore = 0;
     const bump = (key) => {
-      if (key === ownKey || ownKey.includes(key) || key.includes(ownKey)) return;
+      if (key === ownKey) return;
       const n = (rivalCounts.get(key) || 0) + 1;
       rivalCounts.set(key, n);
       if (n > rivalScore) rivalScore = n;
@@ -512,7 +512,8 @@ function fullTextAboutThisShow(fullTexts, show, shows) {
         if (titles.has(key)) bump(key);
       }
     }
-    return ownScore >= rivalScore;
+    // Strictly more: a tie between this show and a rival is not attribution.
+    return ownScore > rivalScore;
   });
 }
 

@@ -24,7 +24,11 @@ const OTHER1 = { id: 'murder-ballad-2013', title: 'Murder Ballad', slug: 'murder
 const OTHER2 = { id: 'murder-on-the-orient-express-2017', title: 'Murder on the Orient Express', slug: 'murder-on-the-orient-express' };
 const OTHER3 = { id: 'a-murder-is-announced-2020', title: 'A Murder Is Announced', slug: 'a-murder-is-announced' };
 const OTHER4 = { id: 'murder-for-two-2013', title: 'Murder for Two', slug: 'murder-for-two' };
-const SHOWS = [DOLLY, MURDER, RIVAL, OTHER1, OTHER2, OTHER3, OTHER4];
+const ANNIE = { id: 'annie-2012', title: 'Annie', slug: 'annie' };
+const AGYG = { id: 'annie-get-your-gun-1999', title: 'Annie Get Your Gun', slug: 'annie-get-your-gun' };
+const WICKED = { id: 'wicked-2003b', title: 'Wicked', slug: 'wicked' };
+const SPIRE = { id: 'spire-2020', title: 'Spirelight Garden', slug: 'spirelight-garden' };
+const SHOWS = [ANNIE, AGYG, WICKED, SPIRE, DOLLY, MURDER, RIVAL, OTHER1, OTHER2, OTHER3, OTHER4];
 
 // The URL shapes that each earlier card had to special-case, plus headline URLs.
 const URL_SHAPES = [
@@ -75,5 +79,17 @@ describe('competing-show attribution (BRO-7204)', () => {
   it('without context.shows the rule is inert (back-compat)', () => {
     assert.strictEqual(run(DOLLY, URL_SHAPES[0], TEXT.own, false).ok, false);
     assert.strictEqual(run(DOLLY, URL_SHAPES[0], TEXT.own, true).ok, true);
+  });
+  it('a rival whose title contains this show title still counts (Annie vs Annie Get Your Gun)', () => {
+    const t = `${filler.repeat(3)} Annie Get Your Gun opens. Annie Get Your Gun again. Annie Get Your Gun ends.`;
+    assert.strictEqual(run(ANNIE, 'https://example.com/2020/a-headline/', t).ok, false);
+  });
+  it('a tie with a rival is not attribution', () => {
+    const t = `${filler} Spirelight rises. Spirelight falls. Wicked opens. Wicked closes.`;
+    assert.strictEqual(run(SPIRE, 'https://example.com/2020/a-headline/', t).ok, false);
+  });
+  it('a short one-word rival (Wicked) outweighs two mentions of a distinctive word', () => {
+    const t = `${filler} Wicked soars. Wicked flies. Wicked ends. Spirelight once. Spirelight twice.`;
+    assert.strictEqual(run(SPIRE, 'https://example.com/2020/a-headline/', t).ok, false);
   });
 });
