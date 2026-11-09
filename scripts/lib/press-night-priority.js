@@ -110,6 +110,8 @@ function showsInWindow(shows, nowMs, beforeMin, accept) {
 
 /** Broadway (category) shows in their press-night window [embargo - 1h, embargo + 6h]: these switch priority on. */
 function tonightShows(shows, nowMs) {
+  // Intentionally NOT isBroadwayCategory: its permissive form treats a null category as Broadway, and an unclassified
+  // show must never switch cancelling on. Strict match only; protectedShows() still covers every category.
   return showsInWindow(shows, nowMs, WINDOW_BEFORE_MIN, (s) => s.category === 'broadway');
 }
 
