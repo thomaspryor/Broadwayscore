@@ -1,0 +1,270 @@
+{
+  "issueNumber": "bro-6854-art2",
+  "planId": "f9b0a0c2-efec-4978-8510-84a4be90bd47",
+  "status": "pending",
+  "createdAt": "2026-11-09T07:25:03.661Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "San Diego and Boston: production art for 14 shows image search could not match (BRO-6854)",
+    "steps": [
+      "shows.json: a-black-billed-cuckoo-regional-2026.images",
+      "shows.json: a-midsummer-nights-dream-regional-2026.images",
+      "shows.json: a-new-era-regional-2026.images",
+      "shows.json: buyer-and-cellar-hub-regional-2026.images",
+      "shows.json: covenant-speakeasy-regional-2026.images",
+      "shows.json: good-night-oscar-regional-2026.images",
+      "shows.json: m-refractions-from-an-evil-act-regional-2026.images",
+      "shows.json: oedipus-el-rey-regional-2026.images",
+      "shows.json: ripcord-regional-2026.images",
+      "shows.json: the-mystery-of-irma-vep-regional-2026.images",
+      "shows.json: theatre-people-or-the-angel-next-door-regional-2026.images",
+      "shows.json: come-from-away-north-regional-2026.images",
+      "shows.json: joseph-and-the-amazing-technicolor-dreamcoat-north-regional-2026.images",
+      "shows.json: rock-of-ages-north-regional-2026.images"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-black-billed-cuckoo-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/a-black-billed-cuckoo-regional-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "poster": "/images/shows/a-black-billed-cuckoo-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/a-black-billed-cuckoo-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/a-black-billed-cuckoo-regional-2026/hero.webp"
+        },
+        "description": "shows.json: a-black-billed-cuckoo-regional-2026.images"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-midsummer-nights-dream-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/a-midsummer-nights-dream-regional-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "poster": "/images/shows/a-midsummer-nights-dream-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/a-midsummer-nights-dream-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/a-midsummer-nights-dream-regional-2026/hero.webp"
+        },
+        "description": "shows.json: a-midsummer-nights-dream-regional-2026.images"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-new-era-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/a-new-era-regional-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "poster": "/images/shows/a-new-era-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/a-new-era-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/a-new-era-regional-2026/hero.webp"
+        },
+        "description": "shows.json: a-new-era-regional-2026.images"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "buyer-and-cellar-hub-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/buyer-and-cellar-hub-regional-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "poster": "/images/shows/buyer-and-cellar-hub-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/buyer-and-cellar-hub-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/buyer-and-cellar-hub-regional-2026/hero.webp"
+        },
+        "description": "shows.json: buyer-and-cellar-hub-regional-2026.images"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "covenant-speakeasy-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/covenant-speakeasy-regional-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "poster": "/images/shows/covenant-speakeasy-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/covenant-speakeasy-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/covenant-speakeasy-regional-2026/hero.webp"
+        },
+        "description": "shows.json: covenant-speakeasy-regional-2026.images"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "good-night-oscar-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/good-night-oscar-regional-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "poster": "/images/shows/good-night-oscar-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/good-night-oscar-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/good-night-oscar-regional-2026/hero.webp"
+        },
+        "description": "shows.json: good-night-oscar-regional-2026.images"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "m-refractions-from-an-evil-act-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/m-refractions-from-an-evil-act-regional-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "poster": "/images/shows/m-refractions-from-an-evil-act-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/m-refractions-from-an-evil-act-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/m-refractions-from-an-evil-act-regional-2026/hero.webp"
+        },
+        "description": "shows.json: m-refractions-from-an-evil-act-regional-2026.images"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "oedipus-el-rey-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/oedipus-el-rey-regional-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "poster": "/images/shows/oedipus-el-rey-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/oedipus-el-rey-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/oedipus-el-rey-regional-2026/hero.webp"
+        },
+        "description": "shows.json: oedipus-el-rey-regional-2026.images"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ripcord-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/ripcord-regional-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "poster": "/images/shows/ripcord-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/ripcord-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/ripcord-regional-2026/hero.webp"
+        },
+        "description": "shows.json: ripcord-regional-2026.images"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-mystery-of-irma-vep-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-mystery-of-irma-vep-regional-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "poster": "/images/shows/the-mystery-of-irma-vep-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/the-mystery-of-irma-vep-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/the-mystery-of-irma-vep-regional-2026/hero.webp"
+        },
+        "description": "shows.json: the-mystery-of-irma-vep-regional-2026.images"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "theatre-people-or-the-angel-next-door-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/theatre-people-or-the-angel-next-door-regional-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "poster": "/images/shows/theatre-people-or-the-angel-next-door-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/theatre-people-or-the-angel-next-door-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/theatre-people-or-the-angel-next-door-regional-2026/hero.webp"
+        },
+        "description": "shows.json: theatre-people-or-the-angel-next-door-regional-2026.images"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "come-from-away-north-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/come-from-away-north-regional-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "poster": "/images/shows/come-from-away-north-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/come-from-away-north-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/come-from-away-north-regional-2026/hero.webp"
+        },
+        "description": "shows.json: come-from-away-north-regional-2026.images"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "joseph-and-the-amazing-technicolor-dreamcoat-north-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/joseph-and-the-amazing-technicolor-dreamcoat-north-regional-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "poster": "/images/shows/joseph-and-the-amazing-technicolor-dreamcoat-north-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/joseph-and-the-amazing-technicolor-dreamcoat-north-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/joseph-and-the-amazing-technicolor-dreamcoat-north-regional-2026/hero.webp"
+        },
+        "description": "shows.json: joseph-and-the-amazing-technicolor-dreamcoat-north-regional-2026.images"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rock-of-ages-north-regional-2026",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/rock-of-ages-north-regional-2026/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "poster": "/images/shows/rock-of-ages-north-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/rock-of-ages-north-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/rock-of-ages-north-regional-2026/hero.webp"
+        },
+        "description": "shows.json: rock-of-ages-north-regional-2026.images"
+      }
+    ]
+  }
+}
