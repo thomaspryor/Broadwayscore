@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-09T20:42:47.589Z",
+  "timestamp": "2026-11-09T21:53:00.302Z",
   "stats": {
-    "totalReviews": 80900,
-    "alreadyFlagged": 22129,
-    "dateGuardCatches": 219,
+    "totalReviews": 80934,
+    "alreadyFlagged": 22134,
+    "dateGuardCatches": 220,
     "directorMismatch": 3580,
     "tvFilmSignals": 2303,
-    "londonSignals": 3652,
-    "offBroadwaySignals": 754,
+    "londonSignals": 3653,
+    "offBroadwaySignals": 752,
     "yearMismatch": 370,
-    "noPublishDate": 8429
+    "noPublishDate": 8439
   },
   "findings": [
     {
@@ -20168,7 +20168,7 @@
     {
       "showId": "end-of-the-rainbow-west-end-2010",
       "file": "guardian--michael-billington.json",
-      "score": 56,
+      "score": 55,
       "publishDate": "2010-11-23",
       "url": "https://www.theguardian.com/stage/2010/nov/23/end-of-the-rainbow-review-theatre",
       "findings": [
@@ -20201,6 +20201,7 @@
     {
       "showId": "end-of-the-rainbow-west-end-2010",
       "file": "telegraph--charles-spencer.json",
+      "score": 69,
       "publishDate": "2010-11-23",
       "url": "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/8154022/End-of-the-Rainbow-Trafalgar-Studios-review.html",
       "findings": [
@@ -47066,6 +47067,7 @@
     {
       "showId": "oh-mary-tour-2026",
       "file": "425-magazine--blake-peterson.json",
+      "score": 91,
       "publishDate": "2026-11-04",
       "url": "https://www.425magazine.com/arts-entertainment/oh-mary-broadway-at-the-paramount-review/article_f345f46e-e4de-4545-ae20-0d05b0ff7ce2.html",
       "findings": [
@@ -87187,33 +87189,8 @@
     },
     {
       "showId": "a-streetcar-named-desire-crucible-regional-2025",
-      "file": "dailybeast--tim-teeman.json",
-      "publishDate": "2025-10-20",
-      "url": "https://www.thedailybeast.com/paul-mescal-triumphs-in-a-stunning-streetcar-named-desire/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "a-streetcar-named-desire-crucible-regional-2025",
-      "file": "latimes--charles-mcnulty.json",
-      "publishDate": "2025-03-12",
-      "url": "https://www.latimes.com/entertainment-arts/story/2025-03-11/paul-mescal-patsy-ferran-streetcar-named-desire-brooklyn-academy-music",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
-        }
-      ]
-    },
-    {
-      "showId": "a-streetcar-named-desire-crucible-regional-2025",
       "file": "nypost--johnny-oleksinski.json",
+      "score": 92,
       "publishDate": "2025-03-11",
       "url": "https://nypost.com/2025/03/11/entertainment/a-streetcar-named-desire-review-paul-mescal-sizzles-patsy-ferran-amazes-in-4-star-revival/",
       "findings": [
@@ -89759,7 +89736,7 @@
     {
       "showId": "arcadia-west-end-2026",
       "file": "independent--alice-saville.json",
-      "score": 82,
+      "score": 81,
       "publishDate": "2026-02-05",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/arcadia-old-vic-review-tom-stoppard-b2914437.html",
       "findings": [
@@ -89787,7 +89764,7 @@
     {
       "showId": "arcadia-west-end-2026",
       "file": "london-theatre--theo-bosanquet.json",
-      "score": 80,
+      "score": 82,
       "publishDate": "2026-02-05",
       "url": "https://www.londontheatre.co.uk/reviews/arcadia-review-old-vic",
       "findings": [
@@ -89829,7 +89806,7 @@
     {
       "showId": "arcadia-west-end-2026",
       "file": "theartsdispatch--the-arts-dispatch.json",
-      "score": 75,
+      "score": 78,
       "publishDate": "2026-02-08",
       "url": "https://theartsdispatch.substack.com/p/arcadia-review-old-vic-london",
       "findings": [
@@ -108779,6 +108756,24 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "julius-caesar-globe-off-west-end-2026",
+      "file": "london-theatre--olivia-rook.json",
+      "publishDate": "2026-10-06",
+      "url": "https://www.londontheatre.co.uk/theatre-news/news/casting-revealed-for-julius-caesar-at-the-sam-wanamaker-playhouse",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 31d before show (2026-10-06 vs 2026-11-06)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
