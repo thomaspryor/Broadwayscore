@@ -82,6 +82,13 @@ test('review badges follow the number, not the verdict (owner 2026-11-09)', () =
   assert.equal(getReviewBadgePresentation(59).colorScore, 59);
   assert.equal(getReviewBadgePresentation(null).label, 'Unscored');
   assert.equal(getReviewBadgePresentation.length, 2, 'badge takes (score, category); a verdict argument would bring back verdict colors');
+  // A stale (verdict, score, category) call would read the verdict string as the score and render "Unscored".
+  assert.equal(getReviewBadgePresentation('mixed').label, 'Unscored');
+  const { execFileSync } = require('node:child_process');
+  const calls = execFileSync('git', ['grep', '-n', 'getReviewBadgePresentation(', '--', 'src', 'scripts'], { cwd: new URL('../../', import.meta.url), encoding: 'utf8' })
+    .split('\n').filter(l => l && !l.includes('.test.') && !l.includes('function getReviewBadgePresentation'));
+  assert.ok(calls.length >= 1, 'the show page still renders badges through this helper');
+  for (const line of calls) assert.doesNotMatch(line, /getReviewBadgePresentation\([^)]*verdict/, `badge call passes a verdict: ${line}`);
 });
 
 test('opening-night stats retain missing-site fallback and readiness filtering', () => {
