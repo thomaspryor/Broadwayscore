@@ -481,7 +481,7 @@ export default function ShowPageBelowFold({
                   An announced show may have no theater yet (BRO-5814): no /theater/null link. */}
               {!show.venue ? (
                 <span className="text-gray-400">To be announced</span>
-              ) : isTour ? (
+              ) : isTour || isRegional ? (
                 <span>{show.venue}</span>
               ) : isWestEnd && !venueSlug ? (
                 <span>{show.venue}</span>
