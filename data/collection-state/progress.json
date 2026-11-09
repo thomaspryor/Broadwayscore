@@ -1,136 +1,29 @@
 {
   "processed": [
-    "jest-to-impress-off-broadway-2026/donyc--unknown.json",
-    "the-unbelievers-off-broadway-2026/nytimes--laura-collins-hughes.json",
-    "222-a-ghost-story-off-broadway-2026/consequence--alex-young.json",
-    "the-charioteer-off-broadway-2026/nytimes--helen-shaw.json",
-    "dogstar-off-west-end-2026/theatreboard--unknown.json",
-    "the-visitors-off-broadway-2026/theatermania--linda-buchwald.json",
-    "kelly-mccaughan-catholic-guilt-off-broadway-2026/broadway-baby--unknown.json",
-    "wanted-2022/cititour--brian-scott-lipton.json"
+    "wanted-2022/cititour--unknown.json",
+    "nero-off-west-end-2026/musical-theatre-review--angela-thomas.json"
   ],
   "failed": [
-    "the-visitors-off-broadway-2026/bobs-theater-blog--unknown.json",
-    "the-visitors-off-broadway-2026/boston-globe--unknown.json",
-    "jest-to-impress-off-broadway-2026/chelmsfordtheatre--genre.json",
-    "medea-off-broadway-2026/express-uk--neil-norman.json",
     "msblackforpresident-off-broadway-2026/guardian--unknown.json",
-    "222-a-ghost-story-off-broadway-2026/theatrely--kobi-kassal.json",
-    "222-a-ghost-story-off-broadway-2026/talkinbroadway--unknown.json",
-    "the-unbelievers-off-broadway-2026/bobs-theater-blog--unknown.json",
-    "the-verge-off-broadway-2026/talkinbroadway--unknown.json",
-    "parcel-from-america-off-broadway-2026/talkinbroadway--unknown.json",
-    "a-few-good-men-2026/variety--anna-tingley.json",
-    "a-few-good-men-2026/goldderby--ethan-alter.json",
-    "the-heart-off-broadway-2026/frontmezzjunkies--unknown.json",
-    "in-the-heights-off-broadway-2026/nypost--clive-barnes.json",
-    "in-the-heights-off-broadway-2026/bloomberg--john-simon.json",
-    "i-became-we-off-broadway-2026/timeout--unknown.json"
+    "iphigenie-en-tauride-english-national-opera-west-end-2026/sunday-times--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "jest-to-impress-off-broadway-2026/donyc--unknown.json",
-      "222-a-ghost-story-off-broadway-2026/consequence--alex-young.json",
-      "dogstar-off-west-end-2026/theatreboard--unknown.json",
-      "the-visitors-off-broadway-2026/theatermania--linda-buchwald.json",
-      "kelly-mccaughan-catholic-guilt-off-broadway-2026/broadway-baby--unknown.json"
-    ],
+    "playwright": [],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/the-unbelievers-off-broadway-2026/nytimes--laura-collins-hughes.json",
-      "the-unbelievers-off-broadway-2026/nytimes--laura-collins-hughes.json",
-      "data/review-texts/the-charioteer-off-broadway-2026/nytimes--helen-shaw.json",
-      "the-charioteer-off-broadway-2026/nytimes--helen-shaw.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [],
+    "scrapingdog": [
+      "nero-off-west-end-2026/musical-theatre-review--angela-thomas.json"
+    ],
     "scrapingbee": [
-      "wanted-2022/cititour--brian-scott-lipton.json"
+      "wanted-2022/cititour--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-11-09T08:00:16.947Z",
-  "lastProcessed": "wanted-2022/cititour--brian-scott-lipton.json",
-  "log": [
-    {
-      "t": "2026-11-09T08:02:51.573Z",
-      "event": "bb-session",
-      "session": "ad5d0d4c",
-      "url": "https://www.nytimes.com/2026/11/06/theater/the-unbelievers-222-a-ghost-story-rev"
-    },
-    {
-      "t": "2026-11-09T08:02:52.507Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-09T08:05:48.712Z",
-      "event": "bb-session",
-      "session": "c8c45f3d",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655533"
-    },
-    {
-      "t": "2026-11-09T08:05:49.550Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-09T08:08:47.545Z",
-      "event": "bb-session",
-      "session": "c5d46884",
-      "url": "https://www.nytimes.com/2026/11/08/theater/the-charioteer-review.html"
-    },
-    {
-      "t": "2026-11-09T08:08:48.447Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-09T08:09:20.565Z",
-      "event": "bb-session",
-      "session": "20f199de",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655534"
-    },
-    {
-      "t": "2026-11-09T08:09:21.328Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-09T09:47:21.731Z",
-      "event": "bb-session",
-      "session": "671d7c8f",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655533"
-    },
-    {
-      "t": "2026-11-09T09:47:22.358Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-09T09:49:58.036Z",
-      "event": "bb-session",
-      "session": "7640e4f3",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655534"
-    },
-    {
-      "t": "2026-11-09T09:49:58.662Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-09T09:51:39.549Z",
-      "event": "bb-session",
-      "session": "94af0db0",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655510"
-    },
-    {
-      "t": "2026-11-09T09:51:40.109Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    }
-  ]
+  "startTime": "2026-11-09T10:50:40.108Z",
+  "lastProcessed": "iphigenie-en-tauride-english-national-opera-west-end-2026/sunday-times--unknown.json",
+  "log": []
 }
