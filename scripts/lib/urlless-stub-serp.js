@@ -70,4 +70,23 @@ function attachSerpUrlsToStubs(results, slots, attach) {
   return { remaining, attached, refused };
 }
 
-module.exports = { urllessStubSlots, attachSerpUrlsToStubs };
+// Stub searches per poller cycle. The SERP budget is 12 calls and a 2026 show
+// can carry 9 url-less stubs; uncapped they took most of it every cycle.
+const URLLESS_STUB_SERP_PER_CYCLE = 2;
+
+/**
+ * Pick up to `cap` stub outlets for this cycle, rotating through the list by
+ * `rotation` (the caller passes the hour) so every stub gets its turn. Pure.
+ * @param {string[]} outletIds
+ * @param {number} cap
+ * @param {number} rotation
+ * @returns {string[]}
+ */
+function pickStubOutletsForCycle(outletIds, cap, rotation) {
+  const ids = [...outletIds].sort();
+  if (ids.length <= cap) return ids;
+  const start = ((rotation % ids.length) + ids.length) % ids.length;
+  return Array.from({ length: cap }, (_, i) => ids[(start + i) % ids.length]);
+}
+
+module.exports = { urllessStubSlots, attachSerpUrlsToStubs, pickStubOutletsForCycle, URLLESS_STUB_SERP_PER_CYCLE };

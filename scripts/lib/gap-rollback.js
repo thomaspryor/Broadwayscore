@@ -9,7 +9,7 @@
  *
  * Pure decision; scripts/gap-recovery-rollback.js does the locked write.
  */
-const { sha256, novelProseChars, MIN_NOVEL_PROSE_CHARS, MIN_NOVEL_PROSE_FRAC } = require('./gap-acceptance');
+const { sha256, novelProseVerdict } = require('./gap-acceptance');
 
 // The text fields recoverReviewText writes (gap-acceptance.js), minus three:
 // - textFetchedAt is stamped NOW. The review-texts merge driver
@@ -37,9 +37,9 @@ function chromeRollbackDecision({ current, prior, nowIso = new Date().toISOStrin
   if ((prior.url || null) !== (current.url || null)) return { ok: false, reason: 'url_differs_from_prior' };
   if (sha256(current.fullText || '') !== prov.newFullTextHash) return { ok: false, reason: 'text_changed_since_accept' };
   if (sha256(prior.fullText) !== prov.priorFullTextHash) return { ok: false, reason: 'prior_is_not_the_accepted_prior' };
-  const novel = novelProseChars(prior.fullText, current.fullText);
-  const need = Math.max(MIN_NOVEL_PROSE_CHARS, Math.ceil(prior.fullText.length * MIN_NOVEL_PROSE_FRAC));
-  if (novel >= need) return { ok: false, reason: 'real_new_prose', novel, need };
+  // The acceptance gate's own bar (novelProseVerdict): roll back exactly what gate 9 now refuses.
+  const { ok: realProse, novel, need } = novelProseVerdict(prior.fullText, current.fullText);
+  if (realProse) return { ok: false, reason: 'real_new_prose', novel, need };
   const patch = {};
   for (const f of TEXT_FIELDS) if (prior[f] !== undefined) patch[f] = prior[f];
   patch.textFetchedAt = nowIso;

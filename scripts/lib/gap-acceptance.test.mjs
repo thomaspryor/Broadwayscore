@@ -342,6 +342,24 @@ test('same-tier refetch that only gains page chrome is refused; one that gains t
   assert.equal(real.accept, true, real.reason);
 });
 
+test('ship-check: a tier-up made of chrome is refused too, and the rollback uses the same bar', () => {
+  // real shape: londonpubtheatres accepts gained an iubenda cookie banner that
+  // ends in a full stop, so the "truncated" file classified complete.
+  const cut = `${REVIEW} London pub theatres magazine is published in Rickmansworth by London Pub Theatres Magazine Ltd ISSN 2977-6724`;
+  const banner = 'We and selected third parties use cookies or similar technologies for technical purposes and, with your consent, for other purposes as specified in the cookie policy . Use the “Accept” button to consent. Use the “Reject” button to continue without accepting.';
+  const prior = base({ fullText: cut, contentTier: 'truncated' });
+  const d = acceptRecoveredText(prior, { rawText: `${cut}\n\n${banner}` }, ctx);
+  assert.equal(d.code, 'not_materially_longer', d.reason);
+  // a real ending still passes on a tier-up
+  assert.equal(acceptRecoveredText(prior, { rawText: `${cut} ${MORE}` }, ctx).accept, true);
+  const v = gate.novelProseVerdict(cut, `${cut}\n\n${banner}`);
+  assert.equal(v.ok, false);
+  const { chromeRollbackDecision } = require('./gap-rollback.js');
+  const src = require('node:fs').readFileSync(new URL('./gap-rollback.js', import.meta.url), 'utf8');
+  assert.match(src, /novelProseVerdict\(prior\.fullText, current\.fullText\)/);
+  assert.equal(typeof chromeRollbackDecision, 'function');
+});
+
 test('show-mention uses the shows.json title, not the slug (tour / punctuated titles, Stage 4 WaPo batch)', () => {
   const show = { id: 'life-of-pi-tour-2024', title: 'Life of Pi', openingDate: '2024-12-20' };
   const body = 'Life of Pi arrives at the Kennedy Center with its tiger puppet intact, and the touring company finds real wonder in the lifeboat scenes. '.repeat(6);

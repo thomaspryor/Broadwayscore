@@ -235,10 +235,20 @@ const OUTLET_TRAILER_STRIPPERS = Object.freeze({
   thefourthwalsh: stripFourthWalshInfoBlock,
 });
 
-/** Strip the trailer known for this outlet; unknown outlet returns text unchanged. */
-function stripOutletTrailer(text, outletId) {
+// Strippers that only feed the tier classifier and never edit saved text: the
+// Times footer carries the star rating (★★★★☆), the scorer's band anchor.
+const CLASSIFY_ONLY_OUTLETS = Object.freeze(new Set(['times-uk', 'sunday-times']));
+
+/**
+ * Strip the trailer known for this outlet; unknown outlet returns text unchanged.
+ * @param {{forClassify?: boolean}} [opts] forClassify also runs the classify-only
+ *   strippers; the save path (stripTrailingJunk) leaves it off.
+ */
+function stripOutletTrailer(text, outletId, { forClassify = false } = {}) {
   const fn = outletId && OUTLET_TRAILER_STRIPPERS[outletId];
-  return fn ? fn(text) : text;
+  if (!fn) return text;
+  if (!forClassify && CLASSIFY_ONLY_OUTLETS.has(outletId)) return text;
+  return fn(text);
 }
 
 /**
@@ -254,7 +264,7 @@ function trailerFixesEnabled() {
 /** Every known trailer, for the ending-punctuation check. */
 function stripKnownTrailers(text, outletId) {
   if (!trailerFixesEnabled()) return text;
-  return stripOutletTrailer(stripUkListingBullets(stripGuardianTopicsFooter(text)), outletId);
+  return stripOutletTrailer(stripUkListingBullets(stripGuardianTopicsFooter(text)), outletId, { forClassify: true });
 }
 
 module.exports = {

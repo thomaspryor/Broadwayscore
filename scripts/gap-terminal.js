@@ -12,7 +12,8 @@
  *   node scripts/gap-terminal.js                    # dry run: counts per group
  *   node scripts/gap-terminal.js --owner-batch      # write the owner's one-reply batch file
  *   node scripts/gap-terminal.js --apply-auto       # write OUTLET_DEFUNCT / NEVER_ONLINE records
- *   node scripts/gap-terminal.js --apply-owner-batch=<batch.json> --approve=A,B --approved-by="<owner reply>"
+ *   node scripts/gap-terminal.js --apply-owner-batch=<batch.json> --approve=A,B|none --approved-by="<owner reply>"
+ *   node scripts/gap-terminal.js --clear=<show/file.json>[,...] --reason="<why>"   # withdraw records
  *
  * Exit codes: 0 ok, 1 failed, 3 another recovery run holds the run lock.
  */
@@ -55,7 +56,24 @@ function driverPlan() {
 
 function hostOf(u) { try { return new URL(u).hostname.replace(/^www\./, ''); } catch { return null; } }
 
+// An offline Mac answers ENOTFOUND for every host. Control hosts must resolve,
+// and a dead share above the cap means the resolver, not the outlets.
+const DNS_CONTROL_HOSTS = ['nytimes.com', 'theguardian.com', 'example.com'];
+const DEAD_HOST_MAX_FRAC = 0.1;
+
 async function deadHostsFor(hosts) {
+  for (const h of DNS_CONTROL_HOSTS) {
+    try { await dns.lookup(h); } catch (e) { throw new Error(`DNS control lookup failed (${h}: ${e.code}); refusing to judge outlets defunct`); }
+  }
+  const dead = await lookupDead(hosts);
+  const n = [...hosts].length;
+  if (dead.size > 3 && dead.size > n * DEAD_HOST_MAX_FRAC) {
+    throw new Error(`${dead.size}/${n} hosts failed DNS, above the ${DEAD_HOST_MAX_FRAC * 100}% cap; resolver problem, refusing`);
+  }
+  return dead;
+}
+
+async function lookupDead(hosts) {
   const dead = new Map();
   for (const h of hosts) {
     try { await dns.lookup(h); } catch (e) {
@@ -129,6 +147,37 @@ function writeRecords(items, { decidedBy, approvedBy = null, label }) {
   return written;
 }
 
+/** Withdraw terminal records (owner reversed it, or a text turned up): the record goes, with its breadcrumb. */
+function clearRecords(reviewKeys, reason) {
+  const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
+  const { withReviewTextsLock } = require('./lib/review-texts-lock');
+  const { readReviewForUpdate, persistReviewSnapshot } = require('./lib/persist-review-snapshot');
+  const { checkpointReviewTexts, createWriteTracker } = require('./lib/review-texts-checkpoint');
+  const dir = process.env.REVIEW_TEXTS_DIR || resolveReviewTextsDir();
+  const tracker = createWriteTracker();
+  let cleared = 0;
+  for (const key of reviewKeys) {
+    const filePath = path.join(dir, key);
+    withReviewTextsLock(`gap-terminal-clear:${key}`, () => {
+      const data = readReviewForUpdate(filePath);
+      if (!data.textUnrecoverable) { console.log(`  ${key}: no terminal record`); return; }
+      delete data.textUnrecoverable;
+      data.textUnrecoverableClearReason = `${reason} (${new Date().toISOString()})`;
+      // permanently_unavailable came from the record; the next rebuild re-derives the reason
+      if (data.incompleteReason === 'permanently_unavailable') { data.incompleteReason = null; data.incompleteDetail = null; }
+      persistReviewSnapshot({ filePath, data, trailingNewline: true });
+      tracker.add(path.resolve(filePath));
+      cleared++;
+    });
+  }
+  if (tracker.size) {
+    const res = checkpointReviewTexts({ repoDir: dir, paths: [...tracker], expected: tracker.expected, message: `fix: gap-terminal clear - ${cleared} terminal record(s) withdrawn (BRO-7171 Stage 4)`, meta: { source: 'gap-terminal' } });
+    console.log(`  [checkpoint] ${res.pushed ? 'pushed' : 'nothing to push'}; ${res.landed.length} file(s) confirmed on origin/main`);
+  }
+  console.log(`cleared ${cleared}`);
+  return cleared;
+}
+
 function takeLock(label) {
   const { acquireRunLock, RunLockBusyError } = require('./lib/recovery-run-lock');
   try { acquireRunLock(label); return true; } catch (e) {
@@ -170,10 +219,19 @@ function writeOwnerBatch(groups) {
 }
 
 async function main() {
+  if (arg('clear')) {
+    const reason = arg('reason');
+    if (!reason) { console.error('--reason="<why, e.g. owner reversed it>" is required'); return 1; }
+    if (!takeLock('gap-terminal --clear')) return 3;
+    clearRecords(arg('clear').split(',').map((s) => s.trim()).filter(Boolean), reason);
+    return 0;
+  }
   if (arg('apply-owner-batch')) {
     const approve = String(arg('approve') || '').split(',').map((s) => s.trim().toUpperCase()).filter(Boolean);
     const approvedBy = arg('approved-by');
     if (!approvedBy) { console.error('--approved-by="<the owner\'s reply>" is required'); return 1; }
+    // "approve none" is an answer too, but it has to be said: --approve=none.
+    if (!approve.length) { console.error('--approve=A,B (or --approve=none) is required'); return 1; }
     const batch = readJson(arg('apply-owner-batch'));
     const groups = Object.entries(GROUP_LETTER).filter(([, l]) => approve.includes(l)).map(([g]) => g);
     const items = groups.flatMap((g) => batch.items[g] || []);

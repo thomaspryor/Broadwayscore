@@ -70,3 +70,22 @@ test('attach: a refused write (another outlet\'s domain) leaves the stub alone a
   assert.equal(out.refused.length, 1);
   assert.equal(JSON.parse(fs.readFileSync(path.join(dir, 'guardian--arifa-akbar.json'), 'utf8')).url, null);
 });
+
+test('ship-check: stubs take at most 2 SERP calls a cycle, rotating; dry runs attach nothing', () => {
+  const S = require('./urlless-stub-serp.js');
+  assert.equal(S.URLLESS_STUB_SERP_PER_CYCLE, 2);
+  const ids = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'];
+  const seen = new Set();
+  for (let h = 0; h < 5; h++) {
+    const pick = S.pickStubOutletsForCycle(ids, 2, h);
+    assert.equal(pick.length, 2);
+    pick.forEach((x) => seen.add(x));
+  }
+  assert.equal(seen.size, 6, 'rotation reaches new stubs each hour');
+  assert.deepEqual(S.pickStubOutletsForCycle(['b', 'a'], 2, 7), ['a', 'b']);
+  const src = fs.readFileSync(new URL('../opening-night-poller.js', import.meta.url), 'utf8');
+  assert.match(src, /pickStubOutletsForCycle\(stubAll, URLLESS_STUB_SERP_PER_CYCLE/);
+  assert.match(src, /missingOutlets = \[\.\.\.missingOutlets, \.\.\.stubOutlets\]/, 'stubs go after the really-missing outlets');
+  const attach = src.indexOf('attachSerpUrlsToStubs(serpResults, urllessSlots');
+  assert.match(src.slice(attach - 300, attach), /if \(DRY_RUN && urllessSlots/);
+});

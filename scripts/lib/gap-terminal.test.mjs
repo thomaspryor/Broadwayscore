@@ -88,6 +88,34 @@ test('grouping: recent and routable rows never terminal; auto only with DNS + ar
   assert.deepEqual(g.open, { recent_never_terminal: 1, route_left_to_try: 1, 'no_evidence_yet:GARBAGE_PAGE': 1 });
 });
 
+test('ship-check: waiting rows, owned rows, garbage and pre-reopen evidence never go terminal', () => {
+  const base = { recency: 'historic', strategy: null, outletId: 'dead', url: 'https://dead.example/r' };
+  const rows = [
+    { ...base, reviewKey: 'cool/x.json', gapClass: 'NO_URL', url: null, skipped: [{ strategy: 'AGG_LINK', reason: 'collector_cooldown' }] },
+    { ...base, reviewKey: 'own/x.json', gapClass: 'URL_DEAD', skipped: [{ strategy: 'ANY', reason: 'manual_tier' }] },
+    { ...base, reviewKey: 'garb/x.json', gapClass: 'GARBAGE_PAGE', url: null, skipped: [{ strategy: 'REFETCH_FREE', reason: 'no_url' }] },
+    { ...base, reviewKey: 'reop/x.json', gapClass: 'URL_DEAD', skipped: [{ strategy: 'URL_REDISCOVER', reason: 'disabled' }] },
+    { ...base, reviewKey: 'ok/x.json', gapClass: 'NO_URL', url: null, skipped: [{ strategy: 'URL_REDISCOVER', reason: 'disabled' }] },
+  ];
+  const att = new Map([['reop/x.json', [
+    { strategy: 'ARCHIVE', outcome: 'no_evidence', reason: 'archive_empty', runId: 'old' },
+    { strategy: 'ANY', outcome: 'reopened', reason: 'url_changed' },
+  ]]]);
+  const g = GT.groupTerminalCandidates(rows, att, { deadHosts: new Map([['dead.example', 'ENOTFOUND']]), hostFor: () => 'dead.example' });
+  assert.deepEqual(g.auto.map((a) => a.row.reviewKey), ['ok/x.json']);
+  assert.equal(g.open.waiting_on_retry, 1);
+  assert.equal(g.open['owned:manual_tier'], 1);
+  assert.equal(g.open['no_evidence_yet:GARBAGE_PAGE'], 1);
+  assert.equal(g.open['no_evidence_yet:URL_DEAD'], 1);
+});
+
+test('ship-check: a terminal record never masks a garbage fetch (scorer reads incompleteReason)', () => {
+  const r = stub({ fullText: 'Subscribe now to keep reading' });
+  r.textUnrecoverable = auto(r);
+  const res = classifyIncompleteReason(r, { failureReason: 'garbage_content', garbageReason: 'nav chrome', failureCount: 2 });
+  assert.equal(res.incompleteReason, 'scraper_garbage');
+});
+
 test('durable across a rebase; a recorded clear is honored (three-way sync)', () => {
   assert.ok(guard.PROTECTED_FIELDS.includes('textUnrecoverable'));
   assert.ok(guard.PROTECTED_FIELDS.includes('textUnrecoverableClearReason'));

@@ -71,6 +71,13 @@ function buildTerminalRecord({ review, reason, evidence, decidedBy, approvedBy =
 // (reference_paywall_subscriptions_status: Telegraph cancelled 2026-07-21).
 const NO_ACCESS_OUTLETS = new Set(['telegraph', 'sunday-telegraph']);
 
+// Driver skip reasons that do not expire: a strategy turned off on measured
+// yield, no url / no adapter for it, or a stored url that names another show.
+// Anything else (cooldown, browser_unavailable, no_serp_key, ...) is waiting.
+const PERMANENT_SKIPS = /^(?:disabled|disabled_recent|no_url|no_adapter|url_names_other_(?:show|venue))$/;
+
+const { liveRows } = require('./gap-recovery-ledger');
+
 /**
  * Sort the driver's no-route rows into terminal candidates. Pure.
  * Only HISTORIC rows the driver has nothing left to try are considered; a row
@@ -89,7 +96,17 @@ function groupTerminalCandidates(planRows, attemptsByKey, { deadHosts = new Map(
   for (const row of planRows) {
     if (row.recency === 'recent' || row.recency == null) { bump('recent_never_terminal'); continue; }
     if (row.strategy) { bump('route_left_to_try'); continue; }
-    const tries = attemptsByKey.get(row.reviewKey) || [];
+    // "Nothing to try right now" is not "nothing left": a cooldown, a missing
+    // browser or key, or a record another owner holds keeps the row open.
+    const skips = Array.isArray(row.skipped) ? row.skipped : [];
+    const owned = skips.find((k) => k.strategy === 'ANY');
+    if (owned) { bump(`owned:${owned.reason}`); continue; }
+    if (skips.some((k) => !PERMANENT_SKIPS.test(String(k.reason || '')))) { bump('waiting_on_retry'); continue; }
+    // A garbage page: the terminal reason would mask scraper_garbage and let
+    // the scorer read the garbage text (incomplete-reason.js priority order).
+    if (row.gapClass === 'GARBAGE_PAGE') { bump('no_evidence_yet:GARBAGE_PAGE'); continue; }
+    // A reopen (url corrected, text changed) resets the evidence (ledger liveRows).
+    const tries = liveRows(attemptsByKey.get(row.reviewKey) || []);
     const archiveEmpty = tries.find((t) => t.strategy === 'ARCHIVE' && t.outcome === 'no_evidence' && /archive_empty/.test(t.reason || ''));
     const host = hostFor(row);
     if (host && deadHosts.has(host) && (!row.url || archiveEmpty)) {

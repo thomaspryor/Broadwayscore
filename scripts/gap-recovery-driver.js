@@ -220,6 +220,11 @@ async function main() {
   const shows = new Map((Array.isArray(showsRaw) ? showsRaw : showsRaw.shows || []).filter((s) => s && s.id).map((s) => [s.id, s]));
   const outletsRaw = readJson(path.join(ROOT, 'data', 'outlet-registry.json'));
   const outlets = outletsRaw.outlets || outletsRaw;
+  // --outlet takes registry ids (nytimes, times-uk), not adapter names (nyt, thetimes).
+  if (OPTS.outlets) {
+    const unknown = [...OPTS.outlets].filter((id) => !outlets[id]);
+    if (unknown.length) { console.error(`--outlet: not a registry outlet id: ${unknown.join(', ')} (use e.g. nytimes, times-uk, washpost)`); process.exit(1); }
+  }
 
   const gui = require('./lib/gui-session').guiSessionAvailable();
   const serpKeys = { scrapingBeeKey: process.env.SCRAPINGBEE_API_KEY || '', brightDataKey: process.env.BRIGHTDATA_TOKEN || '' };

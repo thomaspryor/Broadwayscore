@@ -102,6 +102,12 @@ test('The Times: listing footer + promo line are a trailer; a cut-off review is 
   // prose after a star is not a footer
   const prose = `${BODY} ★ The cast is superb. Everyone should go and see this show tonight.`;
   assert.equal(T.stripTimesFooter(prose), prose);
+  // ship-check: the save path keeps the star rating (the scorer's band anchor);
+  // the footer is stripped only for the tier classifier.
+  for (const id of ['times-uk', 'sunday-times']) {
+    assert.match(stripTrailingJunk(BODY + endings[0], id), /★★★★☆/, id);
+    assert.equal(T.stripKnownTrailers(BODY + endings[0], id), BODY);
+  }
 });
 
 test('one-minute-critic: a cut-off final paragraph is not a headline (codex finding)', () => {

@@ -27,7 +27,7 @@
  */
 
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
-const { urllessStubSlots, attachSerpUrlsToStubs } = require('./lib/urlless-stub-serp'); // BRO-7171 Stage 4
+const { urllessStubSlots, attachSerpUrlsToStubs, pickStubOutletsForCycle, URLLESS_STUB_SERP_PER_CYCLE } = require('./lib/urlless-stub-serp'); // BRO-7171 Stage 4
 const { updateFileUrlWithInvariant } = require('./lib/url-change-invariant');
 const fs = require('fs');
 const path = require('path');
@@ -2052,10 +2052,13 @@ async function pollShow(show) {
       const reg = JSON.parse(fs.readFileSync(OUTLET_REGISTRY_PATH, 'utf8'));
       const allOutlets = reg.outlets || reg;
       const queued = new Set(missingOutlets.map((o) => o.id.toLowerCase()));
-      const stubOutlets = [...urllessSlots.keys()].filter((id) => !queued.has(id) && allOutlets[id])
+      const stubAll = [...urllessSlots.keys()].filter((id) => !queued.has(id) && allOutlets[id]);
+      // At most URLLESS_STUB_SERP_PER_CYCLE per cycle, rotating hourly, so stubs
+      // never crowd the outlets that are really missing out of the 12-call budget.
+      const stubOutlets = pickStubOutletsForCycle(stubAll, URLLESS_STUB_SERP_PER_CYCLE, Math.floor(Date.now() / 3600000))
         .map((id) => ({ id, name: allOutlets[id].displayName || id, tier: allOutlets[id].tier || 3, domain: allOutlets[id].domain }));
-      missingOutlets = [...stubOutlets, ...missingOutlets];
-      console.log(`  [url-less stubs: ${urllessSlots.size} in window, ${stubOutlets.length} newly queued for SERP]`);
+      missingOutlets = [...missingOutlets, ...stubOutlets];
+      console.log(`  [url-less stubs: ${urllessSlots.size} in window, ${stubOutlets.length}/${stubAll.length} queued for SERP this cycle]`);
     }
     if (missingOutlets.length > 0) {
       // Daily SERP-SESSION cap (Sprint 1, scripts/lib/serp-session-cap.js). A hard per-show +
@@ -2135,7 +2138,9 @@ async function pollShow(show) {
       }
       const serpStats = {};
       serpResults = await runSERPBackup(show, missingOutlets, knownUrls, serpStats);
-      if (urllessSlots.size > 0 && serpResults.length > 0) {
+      if (DRY_RUN && urllessSlots.size > 0 && serpResults.length > 0) {
+        console.log('  [url-less stub] dry run: links not attached');
+      } else if (urllessSlots.size > 0 && serpResults.length > 0) {
         const att = attachSerpUrlsToStubs(serpResults, urllessSlots, (fp, u) => updateFileUrlWithInvariant(
           fp, u, { urlSource: 'opening-night-poller-serp', urlUpdatedAt: new Date().toISOString() }, { stampOnNoop: true }));
         serpResults = att.remaining;

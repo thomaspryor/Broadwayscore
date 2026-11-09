@@ -126,6 +126,18 @@ function novelProseChars(priorText, candidateText) {
   return chars;
 }
 
+/**
+ * The one novel-prose bar, shared by the acceptance gate (gate 9) and the
+ * chrome rollback (gap-rollback.js) so the two can never disagree. Pure.
+ * @returns {{ok: boolean, novel: number, need: number}}
+ */
+function novelProseVerdict(priorText, candidateText) {
+  const prior = String(priorText || '');
+  const novel = novelProseChars(prior, candidateText);
+  const need = Math.max(MIN_NOVEL_PROSE_CHARS, Math.ceil(prior.length * MIN_NOVEL_PROSE_FRAC));
+  return { ok: novel >= need, novel, need };
+}
+
 function cleanedLength(text) {
   if (typeof text !== 'string' || !text) return 0;
   const { cleanText, stripTrailingJunk } = require('./text-cleaning');
@@ -351,12 +363,14 @@ function acceptRecoveredText(existing, candidate, ctx = {}) {
   if (priorLen > 0 && !tierUp && text.length - priorLen < minGain) {
     return refuse('not_materially_longer', `not materially longer than existing (+${text.length - priorLen} chars, need ${minGain} or a better tier)`);
   }
-  // 9. Same tier: the gain must be new prose, not page chrome (Stage 4).
-  if (priorLen > 0 && !tierUp) {
-    const novel = novelProseChars(existing.fullText, text);
-    const needNovel = Math.max(MIN_NOVEL_PROSE_CHARS, Math.ceil(priorLen * MIN_NOVEL_PROSE_FRAC));
-    if (novel < needNovel) {
-      return refuse('not_materially_longer', `no material new prose (${novel} chars of new prose, need ${needNovel} or a better tier); the gain is page chrome`);
+  // 9. The gain must be new prose, not page chrome (Stage 4). A tier-up is no
+  //    exemption: chrome that ends in a full stop (a cookie banner, a booking
+  //    line) flips truncated -> complete. Ship-check audit 2026-11-09: all 16
+  //    tier-up accepts under this bar were chrome or a repeated review.
+  if (priorLen > 0) {
+    const v = novelProseVerdict(existing.fullText, text);
+    if (!v.ok) {
+      return refuse('not_materially_longer', `no material new prose (${v.novel} chars of new prose, need ${v.need}); the gain is page chrome`);
     }
   }
 
@@ -678,4 +692,5 @@ module.exports = {
   novelProseChars,
   MIN_NOVEL_PROSE_CHARS,
   MIN_NOVEL_PROSE_FRAC,
+  novelProseVerdict,
 };
