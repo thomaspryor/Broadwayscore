@@ -3304,7 +3304,14 @@ function buildSubjectFacts() {
     .filter(s => s && primaryCats.includes(s.category) && !isOperaShow(s) && inWeek(s.openingDate)).length;
   const typical = _typicalWeekly(s => primaryCats.includes(s.category) && scored(s));
   if (typical > 0) lines.push(`Week size: ${nNow} new ${IS_WE ? 'London' : 'New York'} productions opened this week with enough reviews for a Critic Score; a typical recent week has about ${Math.round(typical)}.`);
-  if (!IS_WE && box) { const b = _boxOfficeCtx(); if (b) lines.push(`Box office: ${b.text}`); }
+  if (!IS_WE && box) {
+    const b = _boxOfficeCtx();
+    if (b) {
+      lines.push(`Box office: ${b.text}`);
+      // The box-office leader is named in the email too, so it is not "another show".
+      if (b.showRef && b.showRef.id && inBody(b.showRef.title)) titles.set(b.showRef.id, { id: b.showRef.id, slug: b.showRef.slug, title: b.showRef.title });
+    }
+  }
   const knownTitles = shows.filter(s => ['open', 'previews'].includes(s.status) || (s.openingDate && s.openingDate >= _daysBefore(120)))
     .map(s => s.title).filter(Boolean);
   return { edition: EDITION, lines, titles: [...titles.values()], knownTitles };
