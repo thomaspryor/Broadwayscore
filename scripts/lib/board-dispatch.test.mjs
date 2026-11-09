@@ -7,7 +7,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { planDispatch, HANDLERS } = require('./board-handlers.js');
-const { main, parseArgs, shouldWrite, ledgerRow } = require('../board-dispatch.js');
+const { main, parseArgs, shouldWrite, ledgerRow, boardCounts } = require('../board-dispatch.js');
 const NO_RECHECK = path.join(os.tmpdir(), 'bd-no-such-recheck-ledger.jsonl');
 
 const report = {
@@ -54,7 +54,7 @@ test('parseArgs and ledgerRow', () => {
   assert.equal(parseArgs(['--no-write']).write, false);
   const row = ledgerRow(planDispatch(report), { now: new Date('2026-11-08T00:00:00Z'), broken: 1 });
   assert.equal(row.mode, 'report-only');
-  assert.equal(row.v, 1);
+  assert.equal(row.v, 2);
   assert.deepEqual(row.handlers['owner-decision-emails'].categories, ['waiting-owner']);
   assert.equal(row.ts, '2026-11-08T00:00:00.000Z');
   assert.equal(row.uncategorized, 1);
@@ -83,6 +83,9 @@ test('main: appends one row, only reads Linear (every call is a query, no mutati
   const rows = fs.readFileSync(ledger, 'utf8').trim().split('\n').map((l) => JSON.parse(l));
   assert.equal(rows.length, 2);
   assert.equal(rows[0].open, 1);
+  assert.equal(rows[0].v, 2);
+  assert.equal(Object.values(rows[0].groups).reduce((a, n) => a + n, 0), 1); // groups partition the open cards
+  assert.equal(typeof rows[0].ready, 'number');
   assert.ok(queries.every((q) => !/\bmutation\b/.test(q)));
 });
 
@@ -97,7 +100,7 @@ test('main: a Linear failure exits 1 and leaves an error row', async () => {
   assert.equal(row.error, 'down');
   assert.equal(row.source, 'ci');
   assert.equal(row.runId, '42');
-  assert.equal(row.v, 1);
+  assert.equal(row.v, 2);
 });
 
 test('shouldWrite: CI or explicit ledger writes; a bare local run does not; flags win', () => {
@@ -116,4 +119,13 @@ test('planDispatch: a card with no category is a named gap, never an undefined k
 test('ledgerRow carries answeredCheck', () => {
   const row = ledgerRow({ ...planDispatch(report), answeredCheck: 'answered-line-only' }, { now: new Date(), env: {} });
   assert.equal(row.answeredCheck, 'answered-line-only');
+});
+
+test('boardCounts: group exclusives and ready come from the real classifier report', () => {
+  const r = { categories: [{ key: 'ready', exclusive: 3, overlap: 0, byPriority: { urgent: 0, high: 0 } }, { key: 'started-idle', exclusive: 2, overlap: 0, byPriority: { urgent: 0, high: 0 } }] };
+  const c = boardCounts(r);
+  assert.equal(c.ready, 3);
+  assert.equal(c.groups.stuck, 2);
+  assert.equal(c.groups.moving, 3);
+  assert.equal(boardCounts({ categories: [] }).ready, 0);
 });
