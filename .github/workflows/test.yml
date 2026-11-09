@@ -42,6 +42,8 @@ on:
       - 'scripts/re-extract-talkin-broadway-reviews.js'
       # BRO-6663: tests/unit/lane-recording-import.test.mjs
       - 'scripts/lane-recording-import.js'
+      # BRO-7167: tests/unit/wanted-method-check.test.mjs
+      - 'scripts/wanted-method-check.js'
       # BRO-7199: tests/unit/opening-night-lane-sources.test.mjs requires its per-show coverage check.
       - 'scripts/lane-on-time-outlets.js'
       # BRO-6620: tests/unit/lane-only-markets.test.mjs runs these and pins the workflow wiring.
