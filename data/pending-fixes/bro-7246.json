@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7246",
   "planId": "a39492eb-e3b8-4aa3-b16f-85d1bc491d7d",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-09T22:31:45.397Z",
   "submitter": {
     "name": null,
@@ -54,5 +54,29 @@
         "description": "shows.json: the-great-gatsby-2024.closingDateSource"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-09T22:40:29.307Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for the-outsiders-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for the-outsiders-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for the-great-gatsby-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for the-great-gatsby-2024"
+    }
+  ],
+  "executedIn": "ci"
 }
