@@ -131,7 +131,7 @@ const { guardPublishDate, evaluateDatelessRevivalGuard, earliestShowDate, evalua
 const { rebuildPreWindowHold } = require('./lib/date-guard-hold');
 const { isAwaitingUrlCorrectionRefetch, shouldWithholdStaleExclusionFlag } = require('./lib/stale-flag-after-url-correction');
 const { safeWriteReview, writeReviewOrThrow, invalidateWrongProductionAutoClear, invalidateWrongShowAutoClear, retractScriptWrongProductionClear } = require('./lib/review-write-guard');
-const { KNOWN_SYNDICATION_PAIRS, getSyndicationPrimaries, hasLiveSyndicationPrimary } = require('./lib/syndication-pairs');
+const { KNOWN_SYNDICATION_PAIRS, getSyndicationPrimaries, getSyndicationPrimariesInDir, hasLiveSyndicationPrimary } = require('./lib/syndication-pairs');
 const { checkExcerptDuplicate } = require('./lib/excerpt-fingerprint-dedup');
 const { createClaimLedger, primaryFilesFor, unknownOutletShadowTargets, orderAfterDependencies, syndicationShieldDecision, shadowShieldDecision } = require('./lib/dedup-survivor');
 const { logExclusion: _sharedLogExclusion } = require('./lib/exclusion-logger');
@@ -4392,7 +4392,7 @@ showDirs.forEach(showId => {
       {
         const criticSynd = (data.criticName || '').toLowerCase().trim();
         const outletSynd = normalizeOutletCanonical(data.outletId || data.outlet || '');
-        const syndPrimaries = getSyndicationPrimaries(criticSynd, outletSynd);
+        const syndPrimaries = getSyndicationPrimariesInDir(criticSynd, outletSynd, files, normalizeOutletCanonical);
         if (syndPrimaries.length) {
           // Skip the secondary only if a primary copy actually ships. Primaries
           // are processed first (orderAfterDependencies above), so this is
@@ -6067,7 +6067,7 @@ if (fs.existsSync(reviewsJsonPath)) {
                 if (!wouldBeExcluded) {
                   const criticLc = (d.criticName || '').toLowerCase().trim();
                   const outletLc = normalizeOutletCanonical(d.outletId || d.outlet || '');
-                  const prims = getSyndicationPrimaries(criticLc, outletLc);
+                  const prims = getSyndicationPrimariesInDir(criticLc, outletLc, fs.readdirSync(showDir), normalizeOutletCanonical);
                   if (prims.length && hasIncludableSyndicationPrimary(d, showById[showId], path.join(showDir, f), { primaries: prims })) wouldBeExcluded = true;
                 }
                 if (wouldBeExcluded) {

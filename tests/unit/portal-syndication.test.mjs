@@ -9,10 +9,11 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const synd = require('../../scripts/lib/syndication-pairs.js');
 const { primaryFilesFor } = require('../../scripts/lib/dedup-survivor.js');
+const { normalizeOutlet } = require('../../scripts/lib/review-normalization.js');
 
 test('sameCriticOutletsFrom reads outlets from <outlet>--<critic>[-n].json and anchors the critic slug', () => {
   const files = ['yahoo--jesse-green.json', 'variety--jesse-green.json', 'ap--jesse-green-2.json', 'nytimes--jesse-green-mueller.json', 'x--other.json'];
-  assert.deepEqual(synd.sameCriticOutletsFrom(files, 'Jesse Green').sort(), ['ap', 'variety', 'yahoo']);
+  assert.deepEqual(synd.sameCriticOutletsFrom(files, 'Jesse Green').sort(), ['ap', 'variety']);
   assert.deepEqual(synd.sameCriticOutletsFrom(['a--rob-weinert-kendt.json'], 'Rob Weinert'), []);
 });
 
@@ -46,4 +47,51 @@ test('explainExclusion drops a portal copy when a live same-critic file exists, 
   fs.writeFileSync(path.join(dir, 'variety--jesse-green.json'), JSON.stringify(rev('variety')));
   assert.equal(explainExclusion(rev('yahoo'), show, path.join(dir, 'yahoo--jesse-green.json')), 'knownSyndicationSecondary');
   assert.notEqual(explainExclusion(rev('variety'), show, path.join(dir, 'variety--jesse-green.json')), 'knownSyndicationSecondary');
+});
+
+test('alias portal files (yahoo-news--) never defer to themselves or to each other', () => {
+  const files = ['yahoo--jesse-green.json', 'yahoo-news--jesse-green.json'];
+  assert.deepEqual(synd.sameCriticOutletsFrom(files, 'Jesse Green', normalizeOutlet), []);
+  assert.deepEqual(synd.getSyndicationPrimariesInDir('Jesse Green', 'yahoo', files, normalizeOutlet), []);
+  const withVariety = [...files, 'variety--jesse-green.json'];
+  assert.deepEqual(synd.getSyndicationPrimariesInDir('Jesse Green', 'yahoo', withVariety, normalizeOutlet), ['variety']);
+});
+
+test('explainExclusion: a lone yahoo-news file is kept, and with yahoo + yahoo-news side by side neither is dropped', () => {
+  const { explainExclusion } = require('../../scripts/lib/review-guards.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7238b-'));
+  const rev = (outletId) => ({ showId: 'test-show-2026', outletId, outlet: outletId, criticName: 'Jesse Green', url: `https://${outletId}.example/r`, publishDate: '2026-11-01', assignedScore: 70, contentTier: 'complete', fullText: 'A full review of the production. '.repeat(40) });
+  const show = { id: 'test-show-2026', title: 'Test Show', openingDate: '2026-11-01', status: 'open' };
+  for (const o of ['yahoo-news', 'yahoo']) fs.writeFileSync(path.join(dir, `${o}--jesse-green.json`), JSON.stringify(rev(o)));
+  for (const o of ['yahoo-news', 'yahoo']) assert.notEqual(explainExclusion(rev(o), show, path.join(dir, `${o}--jesse-green.json`)), 'knownSyndicationSecondary');
+});
+
+test('the rebuild and the exclusion mirror both use the folder-aware helper (class guard: reverting either fails)', () => {
+  const root = path.join(path.dirname(new URL(import.meta.url).pathname), '..', '..', 'scripts');
+  const rebuild = fs.readFileSync(path.join(root, 'rebuild-all-reviews.js'), 'utf8');
+  const guards = fs.readFileSync(path.join(root, 'lib', 'review-guards.js'), 'utf8');
+  assert.equal((rebuild.match(/getSyndicationPrimariesInDir\(/g) || []).length, 2, 'rebuild skip + inline census');
+  assert.doesNotMatch(rebuild, /[^.\w]getSyndicationPrimaries\(\s*criticSynd|[^.\w]getSyndicationPrimaries\(\s*criticLc/);
+  assert.match(guards, /getSyndicationPrimariesInDir\(data\.criticName, outletSynd/);
+});
+
+test('BRO-7238 part 3: critic-owned repost sites defer to the publisher that ran the review first', () => {
+  const cases = [['Tim Teeman', 'timteeman', 'dailybeast'], ['David Cote', 'cote-notices', 'observer'], ['Sarah Monaghan', 'sarahmonaghan', 'allabouttheatreuk'],
+    ['Sara Holdren', 'vu', 'vulture'], ['Samuel L. Leiter', 'theatres-leiter-side', 'theater-life'], ['David Sheward', 'thedaviddesk2', 'theater-life']];
+  for (const [critic, copy, original] of cases) {
+    assert.ok(synd.getSyndicationPrimaries(critic, copy).includes(original), `${copy} should defer to ${original}`);
+    assert.ok(!synd.getSyndicationPrimaries(critic, original).includes(copy), `${original} must stay the primary`);
+  }
+});
+
+test('BRO-7238 part 3 detector: a pair is "covered" once a secondary is known, "unresolved" while both would count', () => {
+  const { findSameCriticMultiOutlet, unresolved } = require('../../scripts/lib/same-critic-multi-outlet.js');
+  const rows = [
+    { showId: 'a', criticName: 'Tim Teeman', outletId: 'dailybeast' }, { showId: 'a', criticName: 'Tim Teeman', outletId: 'timteeman' },
+    { showId: 'b', criticName: 'Jesse Green', outletId: 'nytimes' }, { showId: 'b', criticName: 'Jesse Green', outletId: 'theatermania' },
+    { showId: 'c', criticName: 'Staff', outletId: 'x' }, { showId: 'c', criticName: 'Staff', outletId: 'y' },
+  ];
+  const keys = findSameCriticMultiOutlet(rows);
+  assert.equal(keys.length, 2);
+  assert.deepEqual(unresolved(keys).map((k) => k.showId), ['b']);
 });

@@ -86,6 +86,13 @@ const PUBLISHING_GROUPS = [
   ['san-francisco-chronicle', 'sfgate'],
   // BRO-6054: content partnership; the i newspaper printed theartsdesk reviews (often cut down) in 2019.
   ['artsdesk', 'i-paper'],
+  // BRO-7238: critic-owned sites that repost the review a publisher ran first (same date, same text). The outlet ids
+  // are specific to one critic each, so a group-wide rule cannot misfire on another critic.
+  ['dailybeast', 'timteeman'],          // Tim Teeman's own site reposts his Daily Beast pieces (13 shows)
+  ['observer', 'cote-notices'],         // David Cote's newsletter reposts his Observer reviews (7 shows)
+  ['allabouttheatreuk', 'sarahmonaghan'], // Sarah Monaghan's own site, three days after All About Theatre
+  ['vulture', 'vu'],                    // 'vu' is a second filing of the Vulture review (same score, no date)
+  ['theater-life', 'theatres-leiter-side', 'thedaviddesk2'], // Leiter's / Sheward's own blogs repost Theater Life
 ];
 
 // Outlet ids of aggregator portals (review-normalization.js SYNDICATION_PORTAL_HOSTS: yahoo.com, msn.com, aol.com).
@@ -119,18 +126,38 @@ function getSyndicationPrimaries(criticName, outletId, { sameCriticOutlets } = {
 }
 
 /**
- * Outlet ids of the same critic's other files in a show directory
- * (`<outlet>--<criticSlug>[-n].json`), for the portal rule above.
+ * Outlet prefixes of the same critic's files in a show directory
+ * (`<outlet>--<criticSlug>[-n].json`), for the portal rule above. Portal files
+ * (judged on the NORMALIZED prefix, so `yahoo-news--` counts) are left out: a
+ * portal copy never defers to another portal, or to itself.
  * @param {string[]} fileNames
  * @param {string} criticName
+ * @param {(o:string)=>string} [normalize] outlet normalizer (callers pass their own; default identity)
  */
-function sameCriticOutletsFrom(fileNames, criticName) {
+function sameCriticOutletsFrom(fileNames, criticName, normalize = (o) => o) {
   const slug = criticFileSlug(criticName);
   if (!slug) return [];
-  const re = new RegExp(`^(.+?)--${slug.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?:-\\d+)?\\.json$`);
+  const re = new RegExp(`^(.+?)--${slug}(?:-\\d+)?\\.json$`);
   const out = new Set();
-  for (const f of fileNames || []) { const m = re.exec(f); if (m) out.add(m[1]); }
+  for (const f of fileNames || []) {
+    const m = re.exec(f);
+    if (m && !SYNDICATION_PORTAL_OUTLETS.includes(normalize(m[1]))) out.add(m[1]);
+  }
   return [...out];
+}
+
+/**
+ * THE one entry point for callers that can see the show directory (rebuild,
+ * explainExclusion, dedup-survivor): per-critic pairs + publishing groups + the
+ * portal rule. Callers without a directory (lane) keep getSyndicationPrimaries.
+ * @param {string} criticName
+ * @param {string} outletId normalized outlet id of the file being judged
+ * @param {string[]} fileNames the show directory listing
+ * @param {(o:string)=>string} [normalize]
+ */
+function getSyndicationPrimariesInDir(criticName, outletId, fileNames, normalize) {
+  if (!SYNDICATION_PORTAL_OUTLETS.includes(outletId)) return getSyndicationPrimaries(criticName, outletId);
+  return getSyndicationPrimaries(criticName, outletId, { sameCriticOutlets: sameCriticOutletsFrom(fileNames, criticName, normalize) });
 }
 
 /**
@@ -240,6 +267,6 @@ function hasLiveSyndicationPrimary(showDir, primaries, criticName, { fileNames, 
 
 module.exports = {
   criticFileSlug, isPrimaryFileFor, isLiveSyndicationPrimary, hasLiveSyndicationPrimary,
-  KNOWN_SYNDICATION_PAIRS, PUBLISHING_GROUPS, SYNDICATION_PORTAL_OUTLETS, sameCriticOutletsFrom, getSyndicationConfig, isSecondaryOutlet,
+  KNOWN_SYNDICATION_PAIRS, PUBLISHING_GROUPS, SYNDICATION_PORTAL_OUTLETS, sameCriticOutletsFrom, getSyndicationPrimariesInDir, getSyndicationConfig, isSecondaryOutlet,
   getSyndicationPrimaries, isCrossOutletSyndicationPair, isRenameCollisionPair,
 };

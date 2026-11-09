@@ -6093,11 +6093,9 @@ function explainExclusion(data, show, filePath, opts) {
     {
       const outletSynd = require('./review-normalization').normalizeOutlet(data.outletId || data.outlet || '');
       const synd = require('./syndication-pairs');
-      let sameCriticOutlets;
-      if (synd.SYNDICATION_PORTAL_OUTLETS.includes(outletSynd)) {
-        try { sameCriticOutlets = synd.sameCriticOutletsFrom(require('fs').readdirSync(require('path').dirname(filePath)), data.criticName); } catch { /* unreadable dir: no portal rule */ }
-      }
-      const syndPrimaries = synd.getSyndicationPrimaries(data.criticName, outletSynd, { sameCriticOutlets });
+      let dirFiles = [];
+      try { dirFiles = require('fs').readdirSync(require('path').dirname(filePath)); } catch { /* unreadable dir: no portal rule */ }
+      const syndPrimaries = synd.getSyndicationPrimariesInDir(data.criticName, outletSynd, dirFiles, require('./review-normalization').normalizeOutlet);
       if (syndPrimaries.length) {
         let hasPrimary = false;
         try {
@@ -6271,8 +6269,10 @@ function explainExclusion(data, show, filePath, opts) {
 function hasIncludableSyndicationPrimary(data, show, filePath, { primaries, requireScore = false, opts } = {}) {
   if (!data || !filePath) return false;
   const synd = require('./syndication-pairs');
-  const prims = primaries || synd.getSyndicationPrimaries(data.criticName,
-    require('./review-normalization').normalizeOutlet(data.outletId || data.outlet || ''));
+  const norm = require('./review-normalization').normalizeOutlet;
+  let dirFiles = [];
+  try { dirFiles = require('fs').readdirSync(require('path').dirname(filePath)); } catch { /* unreadable dir */ }
+  const prims = primaries || synd.getSyndicationPrimariesInDir(data.criticName, norm(data.outletId || data.outlet || ''), dirFiles, norm);
   if (!prims.length) return false;
   return synd.hasLiveSyndicationPrimary(require('path').dirname(filePath), prims, data.criticName, {
     extraCheck: (p, pPath) => (!requireScore || hasValidScore(p)) && explainExclusion(p, show, pPath, opts) === null,
