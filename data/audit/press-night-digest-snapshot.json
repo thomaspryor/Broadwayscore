@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-11-09T10:21:32.506Z",
+  "generatedAt": "2026-11-09T13:29:12.096Z",
   "night": "2026-11-08",
   "counts": {
     "total": 3,
     "passed": 1,
-    "failed": 1,
-    "notGraded": 1
+    "failed": 0,
+    "notGraded": 2
   },
   "lines": [
     {
-      "verdict": "FAIL",
-      "line": "Ms. Blakk for President: reviews not graded, the overnight check stopped before it finished; Reddit draft emailed to you is out of date (score 68 from 6 reviews, the site shows score 71 from 9 reviews). Failed."
+      "verdict": "UNKNOWN",
+      "line": "Ms. Blakk for President: not graded, the overnight check stopped before it finished; emails ready."
     },
     {
       "verdict": "UNKNOWN",
@@ -18,7 +18,7 @@
     },
     {
       "verdict": "PASS",
-      "line": "Wanted: published by the regular pipeline; theatrely fixed by hand at 11:18pm; 20 of 20 reviews live by 12:00am; opening-night email draft not due until 9:00am, passed."
+      "line": "Wanted: published by the regular pipeline; theatrely fixed by hand at 11:18pm; 20 of 20 reviews live by 12:00am; emails ready, passed."
     }
   ],
   "scoreboard": {
@@ -26,7 +26,5 @@
     "passed": 2,
     "passedOnOwn": 1
   },
-  "missFirstSeen": {
-    "msblackforpresident-off-broadway-2026|2026-11-08|email:reddit:stale": "2026-11-09T06:05:46.818Z"
-  }
+  "missFirstSeen": {}
 }

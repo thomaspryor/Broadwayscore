@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-09T10:21:14.298Z",
+  "generatedAt": "2026-11-09T13:27:55.045Z",
   "date": "2026-11-09",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 232212,
+  "entryCount": 241748,
   "shows": [
     {
       "showId": "speculations-off-west-end-2026",
@@ -2241,7 +2241,7 @@
     },
     {
       "showId": "billy-crystal-860-2026",
-      "reviewCount": 35,
+      "reviewCount": 34,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -3291,13 +3291,13 @@
     },
     {
       "showId": "ilford-boy-off-west-end-2026",
-      "reviewCount": 30,
+      "reviewCount": 31,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 10347476,
-        "scored-to-rebuilt": 89631,
+        "scored-to-rebuilt": 95436,
         "rebuilt-to-deployed": 97619749
       },
       "reviews_over_15min": 0,
@@ -4308,8 +4308,8 @@
       "p90_e2e_ms": 93253878,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 468514,
-        "scored-to-rebuilt": 273044,
+        "collected-to-scored": 428447,
+        "scored-to-rebuilt": 270110,
         "rebuilt-to-deployed": 66445247
       },
       "reviews_over_15min": 5,
@@ -13725,13 +13725,13 @@
     },
     {
       "showId": "the-steel-man-off-broadway-2026",
-      "reviewCount": 1,
+      "reviewCount": 2,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 467759,
-        "scored-to-rebuilt": 1284985,
+        "collected-to-scored": 458418,
+        "scored-to-rebuilt": 746722,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -14645,8 +14645,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 631589,
+        "collected-to-scored": 111581,
+        "scored-to-rebuilt": 633709,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -15037,6 +15037,21 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1006935,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "lanny-bristol-old-vic-regional-2026",
+      "reviewCount": 14,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1283161,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
