@@ -15,6 +15,7 @@
  * them. The wrong-rate counts only CI audits and only informative judgments (see
  * llm-triage-audit.js SCORED).
  */
+require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 const { spawnSync } = require('child_process');
