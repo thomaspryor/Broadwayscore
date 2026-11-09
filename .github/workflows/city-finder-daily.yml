@@ -5,10 +5,10 @@ run-name: 'City finder daily pickup'
 # finder (scripts/lib/city-review-finder.js, every fetch through fetchPage). This pickup runs the finder over
 # productions open now or opened in the last 21 days, then sends review URLs not yet on file for shows we already
 # have to ingest-urls.yml (one dispatch-ingest-batch call for all cities, one scoring run).
-# New productions are NEVER added here: they are written to data/audit/city-finder-daily-<city>.json as
-# candidates and added through a pending-fix plan.
+# The finder never writes shows: its candidates go to data/audit/city-finder-daily-<city>.json. Season productions
+# (BRO-7250, step below) are added only through a pending-fix plan and execute-approved-fix.
 # Advisory: the dispatch step is continue-on-error. Kill switch: repo variable CITY_FINDER_DISPATCH=false
-# (the finder and its report still run).
+# (the finder and its report still run). BRO-7250 adds a season-listing step (CITY_SEASON_SYNC=false switches it off).
 
 on:
   schedule:
@@ -115,6 +115,50 @@ jobs:
           for C in ${{ steps.find.outputs.ok }}; do
             node scripts/city-finder-mark-dispatched.js --city="$C" --plan="/tmp/city-finder-ingest-$C.json"
           done
+
+      # BRO-7250: list the local professional productions on each theatre's season page (running now or opening in ~3 months)
+      # before any review exists. Season rows come from scripts/city-season-sync.js (LLM-read, every row checked against the
+      # page text, real art only), go to shows.json through a pending-fix plan and execute-approved-fix, never a direct write.
+      # Advisory: continue-on-error. Kill switch: repo variable CITY_SEASON_SYNC=false. Cap: 8 new shows per run.
+      - name: List season productions (plan + art)
+        id: season
+        if: vars.CITY_SEASON_SYNC != 'false'
+        continue-on-error: true
+        timeout-minutes: 40
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # A plan that landed but was never dispatched (push or dispatch failed on an earlier day) is dispatched first.
+          for F in data/pending-fixes/bro-7250-d*.json; do
+            [ -f "$F" ] || continue
+            if [ "$(node -p "require('./$F').status")" = "pending" ]; then
+              P=$(basename "$F" .json)
+              echo "Re-dispatching undispatched plan $P"
+              gh workflow run execute-approved-fix.yml -f issue_number="$P" -f plan_id="$(node -p "require('./$F').planId")" -f mode=apply || echo "::warning::re-dispatch of $P failed"
+            fi
+          done
+          ARGS=""
+          for C in ${{ steps.cities.outputs.cities }}; do
+            if node scripts/city-season-sync.js --city="$C" --id="bro-7250-$C" --apply --max=8 --out="/tmp/season-$C.json"; then ARGS="$ARGS --actions=/tmp/season-$C.json"; else echo "::warning::season sync failed for $C"; fi
+          done
+          N=0
+          for C in ${{ steps.cities.outputs.cities }}; do
+            [ -f "/tmp/season-$C.json" ] && N=$((N + $(node -p "require('/tmp/season-$C.json').length")))
+          done
+          echo "new=$N" >> "$GITHUB_OUTPUT"
+          [ "$N" != "0" ] || { echo "No new season productions"; exit 0; }
+          PLAN="bro-7250-d$(date -u +%y%m%d)"
+          node scripts/new-fix-plan.js --id="$PLAN" --summary="BRO-7250: $N local productions from theatre season pages" $ARGS
+          PLAN_ID=$(node -p "require('./data/pending-fixes/$PLAN.json').planId")
+          trap 'git reset -q -- data/pending-fixes public/images/shows 2>/dev/null || true' ERR
+          git add -A -- "data/pending-fixes/$PLAN.json" public/images/shows 'data/audit/city-season-*.json'
+          git commit -m "data: season productions plan $PLAN [skip ci]"
+          bash scripts/lib/push-with-retry.sh
+          gh workflow run execute-approved-fix.yml -f issue_number="$PLAN" -f plan_id="$PLAN_ID" -f mode=apply
+
+      - name: Warn when season step failed
+        if: steps.season.outcome == 'failure'
+        run: echo "::warning::City season listing failed; no season productions were added today"
 
       - name: Commit reports
         if: always()

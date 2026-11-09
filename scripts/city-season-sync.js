@@ -5,7 +5,7 @@
  * BRO-7250: list a finder city's local professional productions (running now or opening in ~3 months) from the
  * producing theatres' seasons, before any review exists.
  *
- *   node scripts/city-season-sync.js --city=san-diego [--id=bro-7250-sd] [--apply] [--cache=<dir>] [--out=<actions.json>]
+ *   node scripts/city-season-sync.js --city=san-diego [--id=bro-7250-sd] [--apply] [--max=N] [--cache=<dir>] [--out=<actions.json>]
  *
  * Reads BroadwayWorld's regional listing plus each SEASON_SOURCES page (LLM-read, every row checked against the page
  * text, see scripts/lib/city-season.js), drops shows the hub already has, fetches real art into public/images/shows/<id>/
@@ -123,7 +123,7 @@ async function main() {
   let retired = () => false;
   try { retired = require('./lib/retired-show-ids').isRetiredId; } catch { /* registry missing */ }
   const pf = path.join(ROOT, 'data', 'pending-fixes');
-  if (fs.existsSync(pf)) for (const f of fs.readdirSync(pf)) { if (f.startsWith(planId)) continue; try { for (const a of JSON.parse(fs.readFileSync(path.join(pf, f), 'utf8')).plan.actions || []) if (a.show) { taken.add(a.show.id); pending.push(a.show); } } catch { /* skip */ } }
+  if (fs.existsSync(pf)) for (const f of fs.readdirSync(pf)) { if (f.startsWith(planId)) continue; try { const pj = JSON.parse(fs.readFileSync(path.join(pf, f), 'utf8')); if (!['pending', 'applied', 'partial'].includes(pj.status)) continue; /* a failed or rejected plan must not lock its shows out */ for (const a of pj.plan.actions || []) if (a.show) { taken.add(a.show.id); pending.push(a.show); } } catch { /* skip */ } }
 
   const bwwAll = await bwwRows(city, getPage);
   if (!bwwAll.length) log.push('WARN: BroadwayWorld listing returned no rows');
@@ -139,6 +139,7 @@ async function main() {
     if (have) { report.existing.push(`${row.title} (${have.id})`); continue; }
     const id = S.showId(row, taken);
     if (!id || retired(id)) { report.skipped.push(`${row.title}: id taken or retired`); continue; }
+    if (cands.length >= (Number(arg('max', 0)) || Infinity) + 2) { report.skipped.push(`${row.title}: over the per-run cap`); continue; } // before the art download; +2 spare for banner rejects
     const art = await findArt(row, getPage);
     if (!art) { report.skipped.push(`${row.title}: no real image`); continue; }
     taken.add(id);
@@ -147,7 +148,9 @@ async function main() {
   // One banner shared by several productions is the theatre's site-wide image, not that show's art.
   const perHash = {};
   for (const c of cands) perHash[c.hash] = (perHash[c.hash] || 0) + 1;
+  const max = Number(arg('max', 0)) || Infinity; // per-run cap (daily job): the rest wait for the next run
   for (const c of cands) {
+    if (actions.length >= max) { report.skipped.push(`${c.row.title}: over the per-run cap`); continue; }
     if (perHash[c.hash] > 1) { report.skipped.push(`${c.row.title}: image shared with another production (site-wide banner)`); continue; }
     const show = S.buildShow(c.row, { id: c.id, hubSlug, hub, city, today });
     show.images = flag('apply') ? await writeArt(c.id, c.art) : { poster: `/images/shows/${c.id}/poster.webp`, thumbnail: `/images/shows/${c.id}/thumbnail.webp` };
