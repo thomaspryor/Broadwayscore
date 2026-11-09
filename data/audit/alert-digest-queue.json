@@ -1897,5 +1897,36 @@
       }
     ],
     "queuedAt": "2026-11-09T07:19:34.193Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7197-nonreview-census",
+    "title": "Landing blocked: actionlint-install red on land/bro-7197-nonreview-census",
+    "description": "land.yml did not land land/bro-7197-nonreview-census: the actionlint-install gate went red at 30fba5de1f. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42580466176",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7197-nonreview-census"
+      },
+      {
+        "name": "gate",
+        "value": "actionlint-install"
+      },
+      {
+        "name": "tip",
+        "value": "30fba5de1f5edd3843dc73db2ee2dabccb1ce5c1"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42580466176"
+      }
+    ],
+    "queuedAt": "2026-11-09T07:41:00.878Z"
   }
 ]
