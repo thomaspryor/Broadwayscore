@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-09T04:21:25.708Z",
+  "generatedAt": "2026-11-09T04:41:07.897Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -930,9 +930,9 @@
       "status": "open",
       "slug": "wanted",
       "thumbnail": "/images/shows/wanted-2022/thumbnail.webp",
-      "siteScore": 58.74,
+      "siteScore": 59.24,
       "liveScore": 59,
-      "scoreDrift": 0.259999999999998,
+      "scoreDrift": -0.240000000000002,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -941,8 +941,8 @@
       "t2": 12,
       "t3": 3,
       "positive": 8,
-      "mixed": 6,
-      "negative": 5,
+      "mixed": 7,
+      "negative": 4,
       "readiness": {
         "ready": true,
         "reasons": [],
@@ -1035,10 +1035,6 @@
         },
         {
           "name": "The Daily Beast",
-          "isDualMarket": false
-        },
-        {
-          "name": "Theatrely",
           "isDualMarket": false
         },
         {
@@ -1241,6 +1237,18 @@
           "p": 8,
           "m": 6,
           "n": 5,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-09T04:41:07.897Z",
+          "rc": 19,
+          "s": 59.24,
+          "t1": 4,
+          "t2": 12,
+          "t3": 3,
+          "p": 8,
+          "m": 7,
+          "n": 4,
           "bc": "waiting"
         }
       ]
