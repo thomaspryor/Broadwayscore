@@ -925,6 +925,42 @@ function isPrematureReviewForUnopenedShow(data, show, nowMs = Date.now()) {
   return publishMs < nowMs - UNSCHEDULED_MAX_AGE_DAYS * 86400000;
 }
 
+// BRO-7210: ingest-side counterpart of isPrematureReviewForUnopenedShow. That read-side
+// guard covers only never-opened rows with a 120d window; an announced/new row also gets
+// an OLD production's review attached at ingest (the-apology-west-end-2027 took a 2022
+// London Box Office review of a different production; private-lives-2025 took five
+// 2011/2012 reviews). A review published more than a year BEFORE the row's first date is
+// never this production's, whatever the row's status. Dry run over 79,432 files: 2,285
+// match, 2,238 already excluded elsewhere, 47 would have been newly refused.
+const OLD_PRODUCTION_LEAD_DAYS = 365;
+/**
+ * Pure. Returns 'oldProductionReview' when `publishDate` is more than
+ * OLD_PRODUCTION_LEAD_DAYS before the row's earliest show date, else null.
+ * Silent (null) for rows with declared priorRuns/tourLegs, no usable show date or
+ * review date, and writes carrying a human override.
+ * @param {{publishDate?: string, wrongProductionManualClear?: boolean, wrongProductionOverride?: boolean, humanReviewedWrongProduction?: boolean, allowEarlyDate?: boolean, humanReviewedEarlyPublish?: boolean, allowCrossMarket?: boolean}} review
+ * @param {object|null|undefined} show
+ * @returns {string|null}
+ */
+function oldProductionReviewReason(review, show) {
+  if (!review || !show) return null;
+  if (Array.isArray(show.priorRuns) && show.priorRuns.some(r => r && (r.openingDate || r.closingDate || r.previewsStartDate))) return null;
+  if (Array.isArray(show.tourLegs) && show.tourLegs.some(l => l && (l.startDate || l.endDate))) return null;
+  if (
+    review.wrongProductionManualClear === true || review.wrongProductionOverride === true ||
+    review.humanReviewedWrongProduction === false || review.allowEarlyDate === true ||
+    review.humanReviewedEarlyPublish === true || review.allowCrossMarket === true
+  ) return null;
+  const du = require('./date-utils');
+  const publishMs = du.toDateMs(review.publishDate);
+  if (isNaN(publishMs)) return null;
+  const start = require('./date-guard').earliestShowDate(show);
+  if (!start) return null;
+  const startMs = du.toDateMs(start);
+  if (isNaN(startMs)) return null;
+  return publishMs < startMs - OLD_PRODUCTION_LEAD_DAYS * 86400000 ? 'oldProductionReview' : null;
+}
+
 /**
  * Festival / public-theater venue carve-out (R&J Delacorte 2026 incident).
  *
@@ -7044,6 +7080,7 @@ module.exports = {
   soloVerdictHeld,
   isSameTitleDifferentYearFalsePositive,
   isPrematureReviewForUnopenedShow,
+  oldProductionReviewReason,
   PRE_OPENING_LEAD_DAYS,
   UNSCHEDULED_MAX_AGE_DAYS,
   applyVenueClassificationCarveout,
