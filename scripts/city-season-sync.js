@@ -5,7 +5,7 @@
  * BRO-7250: list a finder city's local professional productions (running now or opening in ~3 months) from the
  * producing theatres' seasons, before any review exists.
  *
- *   node scripts/city-season-sync.js --city=san-diego [--id=bro-7250-sd] [--apply] [--cache=<dir>] [--out=<actions.json>]
+ *   node scripts/city-season-sync.js --city=san-diego [--id=bro-7250-sd] [--apply] [--max=N] [--cache=<dir>] [--out=<actions.json>]
  *
  * Reads BroadwayWorld's regional listing plus each SEASON_SOURCES page (LLM-read, every row checked against the page
  * text, see scripts/lib/city-season.js), drops shows the hub already has, fetches real art into public/images/shows/<id>/
@@ -147,7 +147,9 @@ async function main() {
   // One banner shared by several productions is the theatre's site-wide image, not that show's art.
   const perHash = {};
   for (const c of cands) perHash[c.hash] = (perHash[c.hash] || 0) + 1;
+  const max = Number(arg('max', 0)) || Infinity; // per-run cap (daily job): the rest wait for the next run
   for (const c of cands) {
+    if (actions.length >= max) { report.skipped.push(`${c.row.title}: over the per-run cap`); continue; }
     if (perHash[c.hash] > 1) { report.skipped.push(`${c.row.title}: image shared with another production (site-wide banner)`); continue; }
     const show = S.buildShow(c.row, { id: c.id, hubSlug, hub, city, today });
     show.images = flag('apply') ? await writeArt(c.id, c.art) : { poster: `/images/shows/${c.id}/poster.webp`, thumbnail: `/images/shows/${c.id}/thumbnail.webp` };
