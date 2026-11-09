@@ -1,0 +1,27 @@
+{
+  "issueNumber": "bro-7080-glued-runs",
+  "planId": "f5fb2419-389a-4f55-9758-206e322bfd7c",
+  "status": "pending",
+  "createdAt": "2026-11-09T10:35:10.995Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Strip glued run-dates 'Runs' from the Jonathan Baz byline on The Smile of Her (BRO-7080 replay of BRO-4874)",
+    "steps": [
+      "the-smile-of-her-off-west-end-2026/jonathan-baz--florit-shoihetruns.json: criticName"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-smile-of-her-off-west-end-2026/jonathan-baz--florit-shoihetruns.json",
+        "field": "criticName",
+        "oldValue": "Florit ShoihetRuns",
+        "newValue": "Florit Shoihet",
+        "description": "the-smile-of-her-off-west-end-2026/jonathan-baz--florit-shoihetruns.json: criticName"
+      }
+    ]
+  }
+}

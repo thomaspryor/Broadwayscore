@@ -95,6 +95,7 @@ const JUNK_CRITIC_NAME_PATTERNS = [
   OUTLET_THEN_PAREN_NAME_RE,
   /,\s*([a-z]+\s+)?editor$/i,               // "Laura Hackett, Fiction Editor"
   /[a-z]{4,}[A-Z][a-z]{4,}/,                // two names run together: "ArgenEdward"
+  /[a-z]{2,}Runs(\s.*)?$/,                  // run-dates glued on: "Florit ShoihetRuns" (BRO-4874/BRO-7080)
   /\.\s+special to\b/i,                     // "Matt Windman. Special to AmNewYork"
   /^[Tt]he [Rr]ecs\s+(?:[A-Z]{2,4}|[A-Z][a-z]{1,2})$/,                 // The Recs initials signature with no name: "The Recs IT" (BRO-4874)
 ];

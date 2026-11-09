@@ -30,6 +30,9 @@ function normalizeBylineCapture(raw) {
   // trim part of a real name.
   const trailingChrome = /\s*(?:\n|—|–|·|\|)?\s*(?:Plus\s*Icon|Share|Copy\s*Link|Twitter|Facebook|Email|Print|Comments?|Save)\b.*$/i;
   cleaned = cleaned.replace(trailingChrome, '').trim();
+  // A run-dates line glued onto the surname with no space ("Emma KaabachiRuns
+  // until 12 Oct", "Florit ShoihetRuns"): BRO-4874, still live in BRO-7080.
+  cleaned = cleaned.replace(/(?<=[a-z])Runs\b.*$/, '').trim();
 
   // Collapse internal newlines / runs of whitespace introduced by inline
   // chrome that wasn't matched by the trailing-chrome regex above.
