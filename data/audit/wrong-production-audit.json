@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-09T14:07:10.593Z",
+  "timestamp": "2026-11-09T15:17:49.922Z",
   "stats": {
-    "totalReviews": 80841,
+    "totalReviews": 80853,
     "alreadyFlagged": 22117,
     "dateGuardCatches": 219,
-    "directorMismatch": 3581,
+    "directorMismatch": 3582,
     "tvFilmSignals": 2307,
     "londonSignals": 3655,
     "offBroadwaySignals": 754,
     "yearMismatch": 370,
-    "noPublishDate": 8390
+    "noPublishDate": 8394
   },
   "findings": [
     {
@@ -47097,6 +47097,19 @@
       "score": 100,
       "publishDate": "2024-02-08",
       "url": "https://www.timeout.com/newyork/theater/oh-mary-review-comedy-cole-escola-mary-todd-lincoln",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam pinkleton\" from oh-mary-2024"
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-tour-2026",
+      "file": "425-magazine--blake-peterson.json",
+      "publishDate": "2026-11-04",
+      "url": "https://www.425magazine.com/arts-entertainment/oh-mary-broadway-at-the-paramount-review/article_f345f46e-e4de-4545-ae20-0d05b0ff7ce2.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
