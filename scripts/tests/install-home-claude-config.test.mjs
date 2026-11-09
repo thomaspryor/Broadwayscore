@@ -322,3 +322,29 @@ test('an owner env entry and effort level survive re-runs and uninstall (BRO-668
   run('--uninstall');
   assert.deepEqual(JSON.parse(fs.readFileSync(file, 'utf8')), { env: { FOO: '1' }, effortLevel: 'high' });
 });
+
+// BRO-7180: nothing checked at runtime that the runner actually reaches a hook. The liveness
+// probe sends the runner a synthetic event and warns when it never reaches exec. The broken
+// runner is a copy pinned to this checkout (R hardcoded) so the warning can only come from
+// the forced dedupe, not from the copy living outside the repo; the control copy differs only
+// by that pin.
+test('liveness probe warns when the runner dedupes every event (BRO-7180)', () => {
+  const LIVENESS = path.join(REPO_ROOT, 'scripts', 'lib', 'hook-liveness.js');
+  const src = fs.readFileSync(path.join(REPO_ROOT, '.claude', 'hooks', 'lib', 'home-hook-runner.sh'), 'utf8');
+  const pinned = src.replace(/^R="\$\(cd .*$/m, `R=${JSON.stringify(REPO_ROOT)}`);
+  assert.notEqual(pinned, src, 'R pin applied');
+  const mk = (name, body) => {
+    const p = path.join(scratch, name, '.claude', 'hooks', 'lib', 'home-hook-runner.sh');
+    fs.mkdirSync(path.dirname(p), { recursive: true });
+    fs.writeFileSync(p, body);
+    return p;
+  };
+  const broken = pinned.replace(/^P="\$\{CLAUDE_PROJECT_DIR.*$/m, 'exit 0');
+  assert.notEqual(broken, pinned, 'dedupe line replaced');
+  const probe = (runner) => spawnSync('node', [LIVENESS, '--runner', runner, '--repo', REPO_ROOT], {
+    encoding: 'utf8', env: { ...process.env, HOME: fakeHome, CLAUDE_PROJECT_DIR: scratch },
+  });
+  assert.equal(probe(mk('live-ok', pinned)).stdout.trim(), '', 'control: session outside the repo, healthy runner: no warning');
+  assert.match(probe(mk('live-broken', broken)).stdout, /BRO-7180: repo hooks are NOT firing/, 'runner that exits before exec: warns');
+  assert.equal(probe(path.join(REPO_ROOT, '.claude', 'hooks', 'lib', 'home-hook-runner.sh')).stdout.trim(), '', 'the real runner is alive');
+});
