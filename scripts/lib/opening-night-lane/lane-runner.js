@@ -16,6 +16,14 @@
  * loop never waits for it. The rehearsal passes a virtual clock plus `forkClock(startMs)`, which gives each publish its
  * own virtual timeline (the single shared clock cannot run two things at once), still one batch at a time.
 
+ * Publish may start after EACH scored row (BRO-7159), not only after the whole pass: a 20-review burst used to hold the
+ * first deploy until every candidate had been fetched and scored one after another. A mid-pass publish uses at most
+ * `maxInflight - 1` slots, so one is always left for the end-of-pass batch; a row scored while those are busy waits in
+ * `pending` for the next call. Scoring stays one candidate at a time; there is no concurrent scoring pool.
+ *
+ * A paywall teaser held for an aggregator excerpt or rating (inline-score.js LaneAwaitingEvidenceError) is not an error
+ * and is never marked seen: a later pass that brings the excerpt scores it. It is reported in `awaiting`.
+ *
  * A candidate whose fetch or score throws is not marked seen, so the next pass retries it, unless the error says
  * `permanent` (inline-score.js after its bounded retries): then it is marked done and reported in `failed`, with the
  * reason already in the lane's failure record. Nothing is dropped without a trace. A publish that throws, or
@@ -50,15 +58,15 @@ function loadDone(ledgerDir, show, night, onDiskUrls = []) {
  *   publishPorts {updateReviews, regenShow, deploy, fetchLiveShow, pushData?, isLeased?} OR makePublishPorts(clock),
  *   missingOutlets? (T1/T2 outlet ids still missing, or a function of {seen} returning them, so captured outlets stop being searched; gates the SERP phase),
  *   reviewTextsDir? (persist scored rows before marking done, also in a dry-run sandbox),
- *   dryRun?, onDiskUrls?, onDiskRows? ([{criticName, outletId}] of this show already in reviews.json), now() -> ms, wait(ms) -> Promise, forkClock?(startMs) -> {now, wait},
+ *   dryRun?, onDiskUrls?, onDiskRows? ([{criticName, outletId}] of this show already in reviews.json), now() -> ms, wait(ms) -> Promise, forkClock?(startMs) -> {now, wait}, midPassTickMs? (real mode's mid-pass timer; default min(bar, 30 s)),
  *   latency {fetchMs, scoreMs}, passIntervalMs, maxPasses, windowMs (how long the lane runs), startedAt?, publishTimeoutMs, pollMs,
  *   shouldStop?() (stop discovering and scoring), abandonPending?() (LANE_STANDDOWN: publish nothing new, only let in-flight batches finish;
  *   queued rows are already in review-texts, so the regular pipeline publishes them)
- * @returns {Promise<{passes, admitted, published, errors, failed, skipped, unpublished}>}
+ * @returns {Promise<{passes, admitted, published, errors, failed, skipped, unpublished, awaiting, stopped}>}
  */
 async function runLaneNight({
   show, night, openingDate, timeZone, adapters, fetchText, ledgerDir, fetchReview, scoreReview, publishPorts, makePublishPorts, dryRun = false,
-  onDiskUrls = [], onDiskRows = [], maxInflight = 2, now, wait, forkClock, latency = {}, passIntervalMs = 2 * 60 * 1000, maxPasses = 1000, windowMs = 6 * 60 * 60 * 1000,
+  onDiskUrls = [], onDiskRows = [], maxInflight = 2, midPassPublishAfterMs = 5 * 60 * 1000, midPassTickMs = Math.min(midPassPublishAfterMs, 30 * 1000), now, wait, forkClock, latency = {}, passIntervalMs = 2 * 60 * 1000, maxPasses = 1000, windowMs = 6 * 60 * 60 * 1000,
   startedAt, publishTimeoutMs, pollMs, reviewTextsDir, shouldStop = () => false, abandonPending = () => false, missingOutlets = [],
 } = {}) {
   for (const [k, v] of Object.entries({ show, night, adapters, fetchText, ledgerDir, fetchReview, scoreReview, now, wait })) {
@@ -75,6 +83,7 @@ async function runLaneNight({
   const failed = [];
   const quoteless = [];
   const incomplete = new Map(); // BRO-7196: review key -> passes it was held for a missing card field
+  const awaiting = new Set(); // paywall teasers held for an aggregator excerpt or rating (keys), until they score
   const skipped = []; // deliberately not published (a syndicated copy whose primary is live), with the reason
   const pending = []; // rows scored but not yet published (or sent back by a failed batch)
   const inflight = new Set(); // real mode: batches publishing now
@@ -92,24 +101,57 @@ async function runLaneNight({
       published.push(res);
       for (const key of res.dropped || []) failed.push({ key, reason: 'landed in reviews.json but not in the regenerated show JSON' });
       const missing = new Set(res.missing);
-      pending.push(...batch.filter((r) => missing.has(r.key))); // never went live: try again with the next batch
+      // never went live: try again with the next batch. A re-queued row restarts its mid-pass wait, or the 30 s timer
+      // below would retry a failing publish every 30 s instead of about once a pass (BRO-7159 review).
+      pending.push(...batch.filter((r) => missing.has(r.key)).map((r) => ({ ...r, scoredAt: clock.now() })));
     } catch (e) {
       errors.push({ adapter: 'publish', error: String((e && e.message) || e).slice(0, 200) });
-      pending.unshift(...batch); // the rows are scored; losing them to a failed push would drop reviews silently
+      pending.unshift(...batch.map((r) => ({ ...r, scoredAt: clock.now() }))); // scored: losing them to a failed push would drop reviews silently
     }
   };
-  const maybePublish = async () => {
+  // A row that may be a syndicated copy (its critic has a primary outlet) is held until the end of the pass: its primary
+  // can still be scored later in the same pass, and then the copy must be pulled from the queue, not already published
+  // (the Oct 22 shadow run). Every other row may go out the moment it is scored.
+  const mayBeCopy = (r) => getSyndicationPrimaries(r.row.criticName, r.row.outletId).length > 0;
+  const takeBatch = (midPass) => {
+    if (!midPass) return pending.splice(0);
+    const batch = pending.filter((r) => !mayBeCopy(r));
+    const held = pending.filter(mayBeCopy);
+    pending.splice(0, pending.length, ...held);
+    return batch;
+  };
+  // midPass (inside a pass): only once the oldest queued row has waited `midPassPublishAfterMs`, never with a possible
+  // syndicated copy, and leaving one slot free for the end-of-pass batch. Two deploy slots are the whole capacity: a
+  // mid-pass batch in an ordinary 4-minute burst pass spends the second slot, and a straggler found two minutes later
+  // then waits a full deploy cycle (rehearsal: 18.6 -> 24.7 minutes with per-row publish, 22.7 with a 3-minute bar).
+  // So an ordinary pass still publishes once at its end; only a pass that runs long (slow or hung scoring) publishes
+  // what it already has after 5 minutes instead of holding it for the whole pass.
+  const maybePublish = async ({ midPass = false } = {}) => {
     if (!pending.length || abandonPending()) return;
+    if (midPass && !pending.some((r) => now() - r.scoredAt >= midPassPublishAfterMs)) return;
+    const slots = midPass ? maxInflight - 1 : maxInflight;
     if (forkClock) {
-      if (busyUntil.filter((e) => e > now()).length >= maxInflight) return; // every slot is still busy on its own timeline
+      if (busyUntil.filter((e) => e > now()).length >= slots) return; // every slot is still busy on its own timeline
+      const batch = takeBatch(midPass);
+      if (!batch.length) return;
       const clock = forkClock(now());
-      await publishBatch(pending.splice(0), clock);
+      await publishBatch(batch, clock);
       busyUntil.push(clock.now());
-    } else if (inflight.size < maxInflight) {
-      const p = publishBatch(pending.splice(0), { now, wait }).finally(() => inflight.delete(p));
+    } else if (inflight.size < slots) {
+      const batch = takeBatch(midPass);
+      if (!batch.length) return;
+      const p = publishBatch(batch, { now, wait }).finally(() => inflight.delete(p));
       inflight.add(p);
     }
   };
+
+  // Real mode: a hung score never reaches the per-row check below, so a timer makes the same mid-pass check. The
+  // rehearsal's virtual clock only moves at awaits, so the per-row check covers it.
+  // Only on the wall clock: an offline replay injects a virtual now() with no forkClock, and a real-time timer checking
+  // a virtual clock would make its mid-pass publishes depend on how fast the machine runs.
+  const wallClock = Math.abs(now() - Date.now()) < 60 * 1000;
+  const midPassTimer = forkClock || !wallClock ? null : setInterval(() => { maybePublish({ midPass: true }).catch(() => {}); }, Math.max(1, midPassTickMs));
+  if (midPassTimer && midPassTimer.unref) midPassTimer.unref();
 
   let passes = 0;
   // The lane runs for its whole window, not until a pass finds nothing: reviews keep arriving for hours (late roundup
@@ -117,6 +159,7 @@ async function runLaneNight({
   // shouldStop: the production driver's lease-lost signal. Stop discovering and scoring (they spend credits for rows
   // nobody may publish); the flush below still runs, and publish refuses on its own once the lease is gone.
   let stopped = false;
+  try { // the finally clears the mid-pass timer even if a pass throws
   for (; passes < maxPasses && now() - t0 < windowMs; passes++) {
     if (shouldStop()) { stopped = true; break; }
     const pass = await discovery.runDiscoveryPass({ show, night, now: now(), startedAt: t0, adapters, fetchText, seen, memo, timeZone,
@@ -128,7 +171,7 @@ async function runLaneNight({
 
     for (const a of pass.admitted) {
       try {
-        await wait(latency.fetchMs || 0);
+        if (!awaiting.has(a.key)) await wait(latency.fetchMs || 0); // a held teaser is re-offered without a fetch
         const fetched = await fetchReview(a);
         ledger.appendEvent(ledgerDir, { show: show.id, night, reviewKey: a.key, stage: 'fetched', at: now() });
         let row = trust.buildLaneReview({
@@ -162,6 +205,7 @@ async function runLaneNight({
         const copyOf = getSyndicationPrimaries(row.criticName, row.outletId).find((o) => taken.has(`${criticKey(row.criticName)}|${o}`));
         if (copyOf) {
           seen.add(a.key);
+          awaiting.delete(a.key);
           skipped.push({ key: a.key, reason: `syndicated copy of the ${copyOf} review by ${row.criticName}` });
           continue;
         }
@@ -197,18 +241,22 @@ async function runLaneNight({
           skipped.push({ key: pending.at(i).key, reason: `syndicated copy of the ${row.outletId} review by ${row.criticName}` });
           pending.splice(i, 1);
         }
-        pending.push({ key: a.key, row });
+        pending.push({ key: a.key, row, scoredAt: now() });
         taken.add(`${criticKey(row.criticName)}|${row.outletId}`);
         seen.add(a.key);
+        awaiting.delete(a.key);
         admitted.push(a);
+        await maybePublish({ midPass: true }); // a long pass publishes what it has (see maybePublish)
       } catch (e) {
+        if (e && e.awaiting) { awaiting.add(a.key); continue; } // held for evidence: not seen, not an error, re-offered next pass
         errors.push({ adapter: a.adapter, error: `${a.key}: ${String((e && e.message) || e).slice(0, 150)}` });
-        if (e && e.permanent) { seen.add(a.key); failed.push({ key: a.key, reason: String(e.message).slice(0, 200) }); } // else: retried next pass
+        if (e && e.permanent) { seen.add(a.key); awaiting.delete(a.key); failed.push({ key: a.key, reason: String(e.message).slice(0, 200) }); } // else: retried next pass
       }
     }
     await maybePublish();
     await wait(passIntervalMs);
   }
+  } finally { if (midPassTimer) clearInterval(midPassTimer); }
 
   // Window over: flush what is queued and let the in-flight batch finish, so nothing scored is left unpublished.
   // A stand-down skips the queue and only waits for in-flight batches, so the lease is released quickly.
@@ -221,13 +269,17 @@ async function runLaneNight({
     }
   } else {
     let guard = 0;
-    const publishable = () => pending.length > 0 && !abandonPending();
+    // A publish that keeps failing (push rejected, deploy refused) is tried a few more times, not 40 back to back: each
+    // try is a push and a deploy dispatch. What is left is reported unpublished and paged (BRO-7159 what-else).
+    const publishErrors = () => errors.filter((e) => e.adapter === 'publish').length;
+    const errorsBefore = publishErrors();
+    const publishable = () => pending.length > 0 && !abandonPending() && publishErrors() - errorsBefore < 3;
     while ((inflight.size || publishable()) && guard++ < 40) {
       if (publishable() && inflight.size < maxInflight) await maybePublish();
       else await Promise.race(inflight);
     }
   }
-  return { passes, admitted, published, errors, failed, skipped, quoteless, unpublished: pending.map((r) => r.key), stopped };
+  return { passes, admitted, published, errors, failed, skipped, quoteless, unpublished: pending.map((r) => r.key), awaiting: [...awaiting], stopped };
 }
 
 module.exports = { runLaneNight, loadDone };

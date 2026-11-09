@@ -44,6 +44,10 @@ const SERP_AFTER_MS = 3 * 60 * 60 * 1000;
 const SERP_COOLDOWN_MS = 30 * 60 * 1000;
 const SERP_NIGHT_MAX = 20;
 const DEFAULT_MAX_DATE_CHECKS = 10;
+// Date checks a pass may still START after its deadline (BRO-7159). Without them a night whose adapters always ran past
+// the deadline never dated an undated section-index find (TheaterMania, NYTG, Theatrely): each pass deferred it again.
+// Each runs under its adapter's own timeout and outlives the pass; the next pass reads the answer (inFlight).
+const LATE_DATE_CHECK_STARTS = 2;
 const DEFAULT_FETCH_TIMEOUT_MS = 15000;
 const DEFAULT_PASS_DEADLINE_MS = 90000;
 const MAX_SOURCES_PER_ADAPTER = 12; // index pages per pass (Talkin' Broadway, section indexes)
@@ -1276,6 +1280,7 @@ function makeLimiter(max) {
     Promise.resolve().then(fn).then(resolve, reject).finally(() => { running--; next(); });
   };
   const run = (fn, tag) => new Promise((resolve, reject) => { queue.push({ fn, resolve, reject, tag }); next(); });
+  run.hasFreeSlot = () => running + queue.length < max;
   run.dropQueued = () => {
     const dropped = queue;
     queue = [];
@@ -1301,7 +1306,7 @@ function looksReviewLike(c, show) {
 async function runDiscoveryPass({
   show, night, now = Date.now(), startedAt, fetchText: rawFetch, adapters = [], seen = new Set(), memo = { rejected: {} },
   timeZone, missingOutlets = [], serpMax = 5, maxDateChecks = DEFAULT_MAX_DATE_CHECKS,
-  fetchTimeoutMs = DEFAULT_FETCH_TIMEOUT_MS, deadlineMs = DEFAULT_PASS_DEADLINE_MS,
+  lateDateCheckStarts = LATE_DATE_CHECK_STARTS, fetchTimeoutMs = DEFAULT_FETCH_TIMEOUT_MS, deadlineMs = DEFAULT_PASS_DEADLINE_MS,
 } = {}) {
   if (!show || !show.title) throw new Error('runDiscoveryPass: show.title is required');
   if (typeof rawFetch !== 'function') throw new Error('runDiscoveryPass: fetchText is required');
@@ -1372,6 +1377,7 @@ async function runDiscoveryPass({
   const admitted = [];
   const deferredDateChecks = [];
   let dateChecks = 0;
+  let lateStarts = 0;
   if (!memo[DATE_CHECKS_IN_FLIGHT]) Object.defineProperty(memo, DATE_CHECKS_IN_FLIGHT, { value: { checks: new Map(), pending: new Map(), timeouts: new Map(), limit: makeLimiter(DATE_CHECK_CONCURRENCY) }, enumerable: false });
   const { checks: inFlight, pending, timeouts, limit: limitDateCheck } = memo[DATE_CHECKS_IN_FLIGHT];
   const adapterCaps = new Map(adapters.filter((a) => a.fetchTimeoutMs).map((a) => [a.name, a.fetchTimeoutMs]));
@@ -1443,7 +1449,13 @@ async function runDiscoveryPass({
         pending.set(key, c); // until its date is read or it is given up, also when the date-check cap defers it
         if (!check) {
           if (dateChecks >= maxDateChecks) { deferredDateChecks.push(c.url); continue; } // tried first next pass: attempts is still 0
-          if (overDeadline()) { deadlineHit = true; deferredDateChecks.push(c.url); continue; }
+          if (overDeadline()) {
+            deadlineHit = true;
+            // A few reserved starts past the deadline, so slow adapters cannot starve date checks all night (BRO-7159).
+            // Only into a free slot: a queued late start would be dropped at the read below (dropQueued) and do nothing.
+            if (lateStarts >= lateDateCheckStarts || !limitDateCheck.hasFreeSlot()) { deferredDateChecks.push(c.url); continue; }
+            lateStarts++;
+          }
           dateChecks++;
           // The check runs under its adapter's own cap (TB: 75 s), not the pass's 15 s, and outlives the pass: a page that
           // answers after the pass deadline is read on the next pass instead of fetched (and paid for) all over again.
@@ -1555,5 +1567,5 @@ module.exports = {
   NON_REVIEW_HOSTS, WRAPPER_HOSTS, canonicalUrl, bodyScope, playbillArticleBody, bwwRoundupBody, storyCitedLinks, extractAnchors, citedExcerpts, extractCitedLinks, extractPublishDate, MAX_FEEDS_PER_PASS, MAX_DIRECT_FEEDS_PER_PASS, looksReviewLike,
   nonReviewReason, SECTION_INDEX_PARSERS, headlineIsShowTitle, hasReviewSignal, hostSignalsReview, REVIEW_WITHOUT_WORD_HOSTS, pageDatedNear, dtliSitemapPages, defaultLaneFeeds, bwwRoundupAdapter, dtliAdapter, rssAdapter, PAID_FEED_REST_PASSES, PAID_FEED_MAX_FAILS, PAID_FEED_RUN_MAX, CHAIN_FEED_MAX_FAILS, CHAIN_FEED_REST_PASSES, unreachableFromRunner, sectionIndexAdapter, showScoreAdapter, playbillVerdictAdapter, googleNewsAdapter, googleNewsSiteQueries, GOOGLE_NEWS_SITE_QUERY_HOSTS, GOOGLE_NEWS_FETCH_TIMEOUT_MS, GOOGLE_NEWS_SEARCH_TIMEOUT_MS, GOOGLE_NEWS_MIN_UNWRAP_MS, GOOGLE_NEWS_UNWRAP_CONCURRENCY, talkinBroadwayAdapter, TB_PROBE_BATCH, TB_MAX_CARRIES, tbFetchWasBlocked, serpAdapter,
   publisherUrlFromWrapperPage, parseFeedEntries, fetchTextFrom, serpAllowed, memoPath, loadMemo, saveMemo,
-  runDiscoveryPass, loadSeen, recordDiscovered, PREFETCHED_PAGE,
+  runDiscoveryPass, LATE_DATE_CHECK_STARTS, loadSeen, recordDiscovered, PREFETCHED_PAGE,
 };

@@ -80,6 +80,12 @@ const DEFAULT_RETRY_MS = [30 * 1000, 2 * 60 * 1000, 5 * 60 * 1000, 10 * 60 * 100
 
 class LaneRetryError extends Error { constructor(msg) { super(msg); this.name = 'LaneRetryError'; } }
 class LanePermanentError extends Error { constructor(msg) { super(msg); this.name = 'LanePermanentError'; this.permanent = true; } }
+/**
+ * A paywall teaser held for an aggregator excerpt or rating (BRO-7159). Not a failure and never terminal: the runner keeps
+ * the URL out of `seen`, so a roundup that quotes the critic 90 minutes later still gets it scored. Re-offering it costs
+ * nothing (no fetch, no model) until a candidate brings that new evidence.
+ */
+class LaneAwaitingEvidenceError extends Error { constructor(msg) { super(msg); this.name = 'LaneAwaitingEvidenceError'; this.awaiting = true; } }
 
 const hostOf = (url) => { try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return ''; } };
 
@@ -131,6 +137,17 @@ function createInlineScoring({
   const shortLen = new Map(); // key -> length of the last under-the-floor extraction
   const usedCarried = new Set(); // keys whose discovery-fetched page was already scored once
   const teaserVerdict = new Map(); // key -> the scorer's not_a_review on a paywall teaser, waiting for an aggregator excerpt
+  const awaitingExcerpt = new Map(); // key -> {why, outlet, criticName, publishDate, rating} of a paywall teaser held for an excerpt or rating
+  /** Hold a teaser for new evidence: recorded once in the failure record (non-terminal), then re-offered for free. */
+  const awaitEvidence = (stage, key, why, held) => {
+    if (held && !awaitingExcerpt.has(key)) awaitingExcerpt.set(key, held);
+    const st = state.get(`${stage}:${key}`) || { attempts: 0, nextAt: 0, terminal: false };
+    if (!st.awaiting) {
+      st.awaiting = true; st.nextAt = 0; state.set(`${stage}:${key}`, st);
+      failures.appendFailure(ledgerDir, { show: show.id, night, reviewKey: key, stage, reason: `${why}; awaiting an aggregator excerpt or rating`, attempt: Math.max(1, st.attempts), terminal: false, nextRetryAt: null, at: now() });
+    }
+    throw new LaneAwaitingEvidenceError(`${stage}: ${why}; awaiting an aggregator excerpt or rating`);
+  };
   // Rebuild retry state from the night's failure record (a restart must not reset attempts or reopen terminal verdicts).
   for (const f of failures.readFailures(ledgerDir, show.id, night).failures) {
     const id = `${f.stage}:${f.reviewKey}`;
@@ -171,9 +188,11 @@ function createInlineScoring({
       const more = usableExcerpts(candidate.excerpts);
       if (Object.keys(more).length) out.excerpts = { ...(out.excerpts || {}), ...more };
       gate('score', key);
+      // A teaser the scorer judged, held for an excerpt: with none yet, wait again here, before the runner logs a fetch
+      // or pays a scorer call for it (BRO-7159).
+      if (teaserVerdict.has(key) && !Object.keys(usableExcerpts(out.excerpts)).length) awaitEvidence('score', key, `scorer rejected the paywall teaser (${teaserVerdict.get(key)})`);
       return out;
     }
-    gate('fetch', key);
     const aggregator = { ...(candidate.excerpts ? { excerpts: candidate.excerpts } : {}), ...(aggregatorFor(candidate) || {}) };
     // An aggregator excerpt stands in for the review only on a paywall host (EXCERPT_FALLBACK_HOSTS: WSJ, NYT, Times, ...), where the page
     // will never give the text. On an open site a failed or short fetch is a block or an extractor miss, and a one-line
@@ -192,6 +211,20 @@ function createInlineScoring({
     const excerptTier = hasExcerpt && !thumbScore ? { contentTier: 'excerpt' } : {};
     const withExcerpts = (o) => (Object.keys(excerpts).length ? { ...o, excerpts } : o);
     const fallback = (why) => withExcerpts({ outlet: undefined, criticName: null, publishDate: null, fullText: '', aggregator, fallbackReason: why, ...excerptTier });
+    // A paywall teaser already held for evidence (BRO-7159): with none new, wait again without fetching; with an excerpt or
+    // an aggregator rating now, score that, keeping what the teaser page said (outlet, critic, date, printed rating).
+    const held = awaitingExcerpt.get(key);
+    if (held) {
+      const st = state.get(`fetch:${key}`);
+      if (st && st.terminal) gate('fetch', key); // a verdict recorded on some other path still stands
+      if (!canFallBack) awaitEvidence('fetch', key, held.why);
+      awaitingExcerpt.delete(key);
+      failures.appendFailure(ledgerDir, { show: show.id, night, reviewKey: key, stage: 'fetch', reason: `${held.why}; ${thumbScore ? 'aggregator score' : 'aggregator excerpt'} arrived, scoring it`, attempt: Math.max(1, (state.get(`fetch:${key}`) || {}).attempts || 0), terminal: false, at: now() });
+      const out = { ...fallback('paywall-teaser-held'), outlet: held.outlet, criticName: held.criticName, publishDate: held.publishDate, ...(held.rating ? { rating: held.rating } : {}) };
+      fetched.set(key, out);
+      return out;
+    }
+    gate('fetch', key);
     try {
       // The page discovery already fetched is scored as is, once: fetching the same Talkin' Broadway page a second time drew
       // a challenge five times running in the p17 replays. Not on a paywall host, whose rules read how the page was fetched
@@ -234,10 +267,13 @@ function createInlineScoring({
         // On a paywall host (WSJ, NYT, ...) a short page is the teaser, not a partial copy of the review: the lane's fetch
         // has no subscriber login (production gets WSJ through collect-review-texts' logged-in Browserbase), so scoring
         // it would score a headline and a paragraph. It is held unscored, on the backoff, until an aggregator excerpt or
-        // score arrives; when the retries run out the regular pipeline collects it in full (BRO-6872).
+        // score arrives. Once the fetch retries are spent it is held, never failed, for the rest of the night (BRO-7159);
+        // if nothing arrives, the regular pipeline collects it in full (BRO-6872).
         const paywallTeaser = excerptMayScore(candidate.url);
         const partialOk = !paywallTeaser && text.length >= MIN_SHORT_PARTIAL_CHARS;
-        if (!partialOk && !canFallBack && paywallTeaser) fail('fetch', key, new Error(`${why}: a paywall teaser, held unscored until an aggregator excerpt or score arrives`));
+        // Retries spent (or the page gives the same length again): a teaser is HELD, never terminal, so an excerpt or rating
+        // a roundup prints at +90 minutes still scores it (BRO-7159: the URL went into `seen` and discovery skipped it).
+        if (!partialOk && !canFallBack && paywallTeaser) awaitEvidence('fetch', key, `${why}: a paywall teaser`, { why: `${why}: a paywall teaser`, outlet: meta.outlet, criticName: meta.criticName || null, publishDate: meta.publishDate || null, rating });
         if (!partialOk && !canFallBack) fail('fetch', key, new Error(`${why}, under the ${MIN_SHORT_PARTIAL_CHARS} a partial copy needs, and no aggregator score or paywall excerpt`), true);
         const using = partialOk ? 'scoring it as a partial copy' : (thumbScore ? 'using the aggregator score' : 'scoring the aggregator excerpt');
         failures.appendFailure(ledgerDir, { show: show.id, night, reviewKey: key, stage: 'fetch', reason: `${why}; ${using}`, attempt, terminal: false, at: now() });
@@ -266,7 +302,7 @@ function createInlineScoring({
       fetched.set(key, out);
       return out;
     } catch (e) {
-      if (e instanceof LaneRetryError || e instanceof LanePermanentError) throw e;
+      if (e instanceof LaneRetryError || e instanceof LanePermanentError || e instanceof LaneAwaitingEvidenceError) throw e;
       // A hard paywall (401/403) is a paywall, not an outage: a T1 review with an aggregator score is never rejected for
       // it (trust-model paywallFallbackScore), so take the fallback now instead of retrying a door that stays shut. An
       // excerpt-only fallback retries first (a proxy's 403 is often transient) and is taken when the retries run out.
@@ -306,16 +342,16 @@ function createInlineScoring({
     let fromExcerpt = false;
     try {
       // The teaser was judged once already: never pay the models for it again. With an excerpt now, score that; without
-      // one, wait (bounded by the retry schedule) for an aggregator that prints one.
+      // one, hold it (never terminal, BRO-7159) for an aggregator that prints one.
       if (teaserVerdict.has(key)) {
-        if (!hasExcerpts) return fail('score', key, new Error(`scorer rejected the paywall teaser (${teaserVerdict.get(key)}); waiting for an aggregator excerpt`));
+        if (!hasExcerpts) return awaitEvidence('score', key, `scorer rejected the paywall teaser (${teaserVerdict.get(key)})`);
         r = { rejected: true, rejection: teaserVerdict.get(key) };
       } else r = await scoreText(row.fullText, ctx);
       // not_a_review on a known hard-paywall host's teaser judges the teaser. With an aggregator excerpt the excerpt is
-      // scored; without one it is retried on the backoff (not a verdict yet), since a later pass may bring the excerpt.
+      // scored; without one it is held (not a verdict, never terminal), since a later pass may bring the excerpt.
       if (r && r.rejected && row.fullText && isTeaserNotAReview(r.rejection, row.url, row.fullText)) {
         teaserVerdict.set(key, r.rejection);
-        if (!hasExcerpts) return fail('score', key, new Error(`scorer rejected the paywall teaser (${r.rejection}, ${row.fullText.length} chars); waiting for an aggregator excerpt`));
+        if (!hasExcerpts) return awaitEvidence('score', key, `scorer rejected the paywall teaser (${r.rejection}, ${row.fullText.length} chars)`);
         failures.appendFailure(ledgerDir, { show: show.id, night, reviewKey: key, stage: 'score', reason: `scorer judged the paywall teaser (${r.rejection}); scoring the aggregator excerpt`, attempt: 1, terminal: false, at: now() });
         r = await scoreText('', { ...ctx, contentTier: 'excerpt', excerpts });
         fromExcerpt = true;
@@ -334,7 +370,7 @@ function createInlineScoring({
       }
     } catch (e) {
       // A retry or verdict already recorded above (the teaser wait) must not be counted a second time (ship-check).
-      if (e instanceof LaneRetryError || e instanceof LanePermanentError) throw e;
+      if (e instanceof LaneRetryError || e instanceof LanePermanentError || e instanceof LaneAwaitingEvidenceError) throw e;
       return fail('score', key, e);
     }
     // The scorer judging it not a review of this show is a verdict, not a glitch: record it and stop retrying.
@@ -409,4 +445,4 @@ function realFetchPorts({ fetchPage = require('../scraper').fetchPage } = {}) {
 }
 
 module.exports = {
-  DEFAULT_RETRY_MS, usableExcerpts, ratingFields, excerptMayScore, EXCERPT_FALLBACK_HOSTS, isTeaserNotAReview, LaneRetryError, LanePermanentError, createInlineScoring, ensembleScoreText, realFetchPorts };
+  DEFAULT_RETRY_MS, usableExcerpts, ratingFields, excerptMayScore, EXCERPT_FALLBACK_HOSTS, isTeaserNotAReview, LaneRetryError, LanePermanentError, LaneAwaitingEvidenceError, createInlineScoring, ensembleScoreText, realFetchPorts };

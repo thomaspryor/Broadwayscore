@@ -120,6 +120,8 @@ function gradeReplay(rec, run = {}) {
     ...errors.filter((e) => e && LANE_ERROR_ADAPTERS.has(e.adapter)).map((e) => `${e.adapter} error: ${e.error}`),
     ...(run.failed || []).map((f) => `review failed: ${f && f.key} (${f && f.reason})`),
     ...(run.unpublished || []).map((u) => `scored but unpublished: ${(u && (u.key || u.url)) || JSON.stringify(u)}`),
+    // A paywall teaser still held for an excerpt at the end of the night is a review the lane did not publish (BRO-7159).
+    ...(run.awaiting || []).map((k) => `paywall teaser still awaiting an excerpt: ${k}`),
   ];
   const gates = graded.gates.map((g) => (g.name === 'same-night-completeness' && runProblems.length && g.status === 'pass'
     ? { ...g, status: 'fail', detail: `the lane run reported problems: ${runProblems.join('; ')}` } : g));
