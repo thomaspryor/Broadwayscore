@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-09T21:39:44.437Z",
+  "generatedAt": "2026-11-09T23:00:34.940Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -123,8 +123,12 @@
   "feedsChecked": 84,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
-      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
+      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
       "outletId": "cote-notices",
@@ -143,20 +147,12 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     },
     {
-      "outletId": "the-knockturnal",
-      "error": "HTTP 403 for https://theknockturnal.com/feed/"
-    },
-    {
-      "outletId": "times-square-chronicles",
-      "error": "fetchPage returned an unexpected page for https://t2conline.com/wp-json/wp/v2/posts?categories=504,298,283&per_page=100&"
-    },
-    {
       "outletId": "londontheatre1",
-      "error": "fetchPage returned an unexpected page for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&o"
+      "error": "All scraping methods failed"
     }
   ],
-  "itemsScanned": 781,
-  "matchedGaps": 4,
+  "itemsScanned": 814,
+  "matchedGaps": 3,
   "possibleGaps": 5,
   "gaps": [
     {
@@ -169,22 +165,13 @@
       "publishDate": "2026-11-04"
     },
     {
-      "showId": "msblackforpresident-off-broadway-2026",
-      "title": "Ms. Blakk for President",
+      "showId": "222-a-ghost-story-off-broadway-2026",
+      "title": "2:22 - A Ghost Story",
       "level": "matched",
-      "outletId": "one-minute-critic",
-      "url": "https://1minutecritic.com/ms-blakk-for-president-vineyard-theatre-review/",
-      "headline": "The drag queen who crashed the 1992 Democratic National Convention gets an encore",
-      "publishDate": "2026-11-09"
-    },
-    {
-      "showId": "msblackforpresident-off-broadway-2026",
-      "title": "Ms. Blakk for President",
-      "level": "matched",
-      "outletId": "theater-pizzazz",
-      "url": "https://theaterpizzazz.com/ms-blakk-for-president-a-drag-queens-campaign-runs-on-fabulousness-not-drama/",
-      "headline": "“MS. BLAKK FOR PRESIDENT”: A DRAG QUEEN&#8217;S CAMPAIGN RUNS ON FABULOUSNESS, NOT DRAMA",
-      "publishDate": "2026-11-09"
+      "outletId": "times-square-chronicles",
+      "url": "https://t2conline.com/222-a-ghost-story-the-loudest-thing-in-the-room-isnt-the-ghost/",
+      "headline": "2:22 – A Ghost Story: The Loudest Thing in the Room Isn’t the Ghost",
+      "publishDate": "2026-11-07"
     },
     {
       "showId": "nero-off-west-end-2026",
@@ -205,6 +192,15 @@
       "publishDate": "2026-11-04"
     },
     {
+      "showId": "msblackforpresident-off-broadway-2026",
+      "title": "Ms. Blakk for President",
+      "level": "possible",
+      "outletId": "lighting-and-sound-america",
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=TO9BBB",
+      "headline": "Theatre&#32;in&#32;Review:&#32;Ms.&#32;Blakk&#32;for&#32;President&#32;(Vineyard&#32;Theatre)",
+      "publishDate": "2026-11-09"
+    },
+    {
       "showId": "the-bridge-off-west-end-2026",
       "title": "The Bridge",
       "level": "possible",
@@ -221,15 +217,6 @@
       "url": "https://standard.co.uk/culture/theatre/the-oresteia-at-the-bridge-review-b1290028.html",
       "headline": "The Oresteia at the Bridge: Thrillingly stripped back and bloody",
       "publishDate": null
-    },
-    {
-      "showId": "wanted-2022",
-      "title": "Wanted",
-      "level": "possible",
-      "outletId": "nypost",
-      "url": "https://nypost.com/2026/11/09/entertainment/wanted-review-bizarre-broadway-bandit-musical-goes-off-the-rails/",
-      "headline": "&#8216;Wanted&#8217; review: Bizarre Broadway bandit musical goes off the rails",
-      "publishDate": "2026-11-09"
     },
     {
       "showId": "wanted-2022",

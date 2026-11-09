@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-09T21:39:25.109Z",
+  "generatedAt": "2026-11-09T22:57:37.515Z",
   "windowDays": 45,
   "showsScanned": 242,
   "gaps": [
@@ -18,33 +18,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=iphigenie-en-tauride-english-national-opera-west-end-2026 --url=https://www.thetimes.com/culture/classical-opera/article/iphigenie-en-tauride-review-youve-never-seen-a-family-reunion-like-this-hmwx2kkh2 --outlet=sunday-times   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-08T22:39:44.349Z",
-      "fileAgeHours": 22.934237222222222,
+      "fileAgeHours": 24.288060277777777,
       "gapSeenAt": "2026-11-09T00:00:26.432Z",
-      "nonTerminalAgeHours": 21.6496325,
-      "needsManualRecovery": false
-    },
-    {
-      "showId": "speculations-off-west-end-2026",
-      "title": "Speculations",
-      "openingDate": "2026-11-05",
-      "file": "financialtimes--unknown.json",
-      "outletId": "financialtimes",
-      "tier": 1,
-      "type": "empty-body",
-      "recoverable": true,
-      "url": "https://www.ft.com/content/6fdda172-c38f-450c-98f8-447f0fe30c8c?syn-25a6b1a6=1",
-      "recovery": {
-        "attempted": true,
-        "ok": false,
-        "reason": "⚠️  ScrapingBee failed (render_js=false, domain=ft.com): ScrapingBee HTTP 500: {\"error\": \"Error with your request, please try again (you will not be charged for this request).You should: 1) check that your URL is correctly encoded 2) try with render_js=True (5 credits per reques\nFetch failed: fetch failed: All scraping methods failed; no archive.org capture"
-      },
-      "recoveryCount": 0,
-      "forumLinkRecoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=speculations-off-west-end-2026 --url=https://www.ft.com/content/6fdda172-c38f-450c-98f8-447f0fe30c8c?syn-25a6b1a6=1 --outlet=financialtimes   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-11-09T21:14:53.439Z",
-      "fileAgeHours": 0.403045,
-      "gapSeenAt": "2026-11-09T21:39:25.109Z",
-      "nonTerminalAgeHours": 0,
+      "nonTerminalAgeHours": 22.953078333333334,
       "needsManualRecovery": false
     },
     {
@@ -62,13 +38,13 @@
         "ok": false,
         "reason": "Fetch failed: fetch failed: All scraping methods failed; no archive.org capture"
       },
-      "recoveryCount": 0,
+      "recoveryCount": 1,
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=adirondack-chair-circle-regional-2026 --url=https://www.talkinbroadway.com/page/regional/chicago/ch944.html --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T21:14:38.698Z",
-      "fileAgeHours": 0.4128913888888889,
+      "fileAgeHours": 1.7163372222222222,
       "gapSeenAt": "2026-11-09T21:39:25.109Z",
-      "nonTerminalAgeHours": 0,
+      "nonTerminalAgeHours": 1.3034458333333334,
       "needsManualRecovery": false
     }
   ],

@@ -1,32 +1,13 @@
 {
-  "generatedAt": "2026-11-09T21:39:44.096Z",
+  "generatedAt": "2026-11-09T23:00:34.500Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 311,
-  "clean": 310,
-  "defective": 1,
-  "byType": {
-    "score-drift": 1
-  },
-  "shows": [
-    {
-      "showId": "oh-mary-tour-2026",
-      "title": "Oh, Mary!",
-      "openingDate": "2026-09-19",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 84.27 vs local 84.04 (Δ0.23)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 13,
-      "deployedCount": 14,
-      "firstDefectAt": "2026-11-09T21:39:38.644Z"
-    }
-  ],
+  "clean": 311,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
