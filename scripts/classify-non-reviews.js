@@ -41,6 +41,7 @@
  *   OPENAI_API_KEY     Required for openai provider
  *   ANTHROPIC_API_KEY  Required for claude provider
  */
+require('./lib/llm-usage-install'); // LLM spend meter: before any client is built (BRO-5043)
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
@@ -1166,6 +1167,8 @@ async function main() {
           const blockReason = nonReviewStampBlockReason(data, hasBotStubTruncationSignal(data));
           if (blockReason) {
             console.log(`  [EVIDENCE-CONFLICT] ${nr.file} — ${blockReason}; skipping terminal stamp`);
+            // BRO-7050: kept live, so stamp it checked; otherwise every incremental run re-pays Gemini for it.
+            if (/aggregator lists this review/.test(blockReason)) reviewsConfirmed.push(nr.file);
             continue;
           }
           data.isNonReview = true;

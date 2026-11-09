@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-2433: submit-review-form outletId must be validated against the URL host.
 // A URL whose host contradicts the claimed outlet is refused (guardRefused, so the
 // ingest CLI exits 1) instead of being written as e.g. a T1 review.

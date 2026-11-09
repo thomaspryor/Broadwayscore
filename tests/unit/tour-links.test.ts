@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/site-image-versions.json (untracked core data); data/grosses.json (untracked core data); data/audience-buzz.json (untracked core data); +7 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * getToursOf (BRO-4211 Phase D): which Broadway pages get the "On tour" /
  * "National tour" line. A tour's tourOf names one Broadway run, but every

@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6725-m",
   "planId": "eee48c58-7735-41a5-bdaf-8a5ea1b374c0",
-  "status": "pending",
+  "status": "superseded",
   "createdAt": "2026-10-31T16:46:14.493Z",
   "submitter": {
     "name": null,
@@ -254,5 +254,138 @@
         "description": "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date"
       }
     ]
-  }
+  },
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "resolved": 18,
+      "obsolete": 6
+    },
+    "ops": [
+      {
+        "i": 0,
+        "verdict": "resolved",
+        "reason": "a-family-business-tobacco-factory-regional-2024.openingDate already \"2024-02-08\""
+      },
+      {
+        "i": 1,
+        "verdict": "resolved",
+        "reason": "a-family-business-tobacco-factory-regional-2024.openingDateSource already \"first-review-date\""
+      },
+      {
+        "i": 2,
+        "verdict": "resolved",
+        "reason": "a-family-business-tobacco-factory-regional-2024.humanCorrectedOpeningDate already null"
+      },
+      {
+        "i": 3,
+        "verdict": "resolved",
+        "reason": "to-have-and-to-hold-hull-truck-regional-2025.openingDate already \"2025-05-08\""
+      },
+      {
+        "i": 4,
+        "verdict": "resolved",
+        "reason": "to-have-and-to-hold-hull-truck-regional-2025.openingDateSource already \"first-review-date\""
+      },
+      {
+        "i": 5,
+        "verdict": "resolved",
+        "reason": "to-have-and-to-hold-hull-truck-regional-2025.humanCorrectedOpeningDate already null"
+      },
+      {
+        "i": 6,
+        "verdict": "resolved",
+        "reason": "figures-in-extinction-aviva-studios-regional-2025.openingDate already \"2025-02-20\""
+      },
+      {
+        "i": 7,
+        "verdict": "resolved",
+        "reason": "figures-in-extinction-aviva-studios-regional-2025.openingDateSource already \"first-review-date\""
+      },
+      {
+        "i": 8,
+        "verdict": "resolved",
+        "reason": "figures-in-extinction-aviva-studios-regional-2025.humanCorrectedOpeningDate already null"
+      },
+      {
+        "i": 9,
+        "verdict": "obsolete",
+        "reason": "show the-high-life-the-musical-dundee-rep-regional-2026 was retired"
+      },
+      {
+        "i": 10,
+        "verdict": "obsolete",
+        "reason": "show the-high-life-the-musical-dundee-rep-regional-2026 was retired"
+      },
+      {
+        "i": 11,
+        "verdict": "obsolete",
+        "reason": "show the-high-life-the-musical-dundee-rep-regional-2026 was retired"
+      },
+      {
+        "i": 12,
+        "verdict": "resolved",
+        "reason": "the-spy-who-came-in-from-the-cold-chichester-festival-regional-2024.openingDate already \"2024-08-30\""
+      },
+      {
+        "i": 13,
+        "verdict": "resolved",
+        "reason": "the-spy-who-came-in-from-the-cold-chichester-festival-regional-2024.openingDateSource already \"first-review-date\""
+      },
+      {
+        "i": 14,
+        "verdict": "resolved",
+        "reason": "the-spy-who-came-in-from-the-cold-chichester-festival-regional-2024.humanCorrectedOpeningDate already null"
+      },
+      {
+        "i": 15,
+        "verdict": "resolved",
+        "reason": "nan-shepherd-naked-and-unashamed-pitlochry-festival-regional-2024.openingDate already \"2024-06-13\""
+      },
+      {
+        "i": 16,
+        "verdict": "resolved",
+        "reason": "nan-shepherd-naked-and-unashamed-pitlochry-festival-regional-2024.openingDateSource already \"first-review-date\""
+      },
+      {
+        "i": 17,
+        "verdict": "resolved",
+        "reason": "nan-shepherd-naked-and-unashamed-pitlochry-festival-regional-2024.humanCorrectedOpeningDate already null"
+      },
+      {
+        "i": 18,
+        "verdict": "obsolete",
+        "reason": "show studio3-alright-sunshine-fleg-and-fruitcake-tron-regional-2025 was retired"
+      },
+      {
+        "i": 19,
+        "verdict": "obsolete",
+        "reason": "show studio3-alright-sunshine-fleg-and-fruitcake-tron-regional-2025 was retired"
+      },
+      {
+        "i": 20,
+        "verdict": "obsolete",
+        "reason": "show studio3-alright-sunshine-fleg-and-fruitcake-tron-regional-2025 was retired"
+      },
+      {
+        "i": 21,
+        "verdict": "resolved",
+        "reason": "cock-53two-regional-2024.openingDate already \"2024-11-14\""
+      },
+      {
+        "i": 22,
+        "verdict": "resolved",
+        "reason": "cock-53two-regional-2024.openingDateSource already \"first-review-date\""
+      },
+      {
+        "i": 23,
+        "verdict": "resolved",
+        "reason": "cock-53two-regional-2024.humanCorrectedOpeningDate already null"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (18 resolved, 6 obsolete); per-op reasons in triage.ops"
 }

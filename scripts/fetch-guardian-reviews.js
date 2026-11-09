@@ -40,6 +40,8 @@ const { setExtractedScore } = require('./lib/score-routing');
 const { isArticleOutsideProductionWindow } = require('./lib/date-guard');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 const { invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
+const { guardianFetchEligibility } = require('./lib/guardian-fetch-eligibility');
+const { GUARDIAN_API_FIELDS, applyGuardianPublication } = require('./lib/guardian-publication');
 
 // Lazy show lookup so the Guardian fetcher can reject a prior-production article
 // the API returns for a revival's stale slug (see updateReviewFile date guard).
@@ -115,7 +117,7 @@ async function fetchArticleFromAPI(articleId) {
   return new Promise((resolve, reject) => {
     const params = new URLSearchParams({
       'api-key': CONFIG.apiKey,
-      'show-fields': 'body,bodyText,headline,byline,standfirst,starRating',
+      'show-fields': GUARDIAN_API_FIELDS,
     });
 
     const url = `${CONFIG.baseUrl}/${articleId}?${params}`;
@@ -149,6 +151,7 @@ async function fetchArticleFromAPI(articleId) {
               text: text,
               headline: fields.headline || content.webTitle,
               byline: fields.byline,
+              publication: fields.publication || null,
               standfirst: fields.standfirst,
               starRating: fields.starRating != null ? parseInt(fields.starRating) : null,
               webUrl: content.webUrl,
@@ -238,21 +241,11 @@ function findGuardianReviews() {
       try {
         const data = readReviewForUpdate(filePath);
 
-        // In backfill-ratings mode, also process reviews that have fullText but no originalScore
-        const hasFullText = data.fullText && data.fullText.length > CONFIG.minTextLength;
-        const needsRating = !data.originalScore;
-
-        if (hasFullText && !CLI.backfillRatings) {
-          stats.skipped++;
-          continue;
-        }
-        if (hasFullText && CLI.backfillRatings && !needsRating) {
-          stats.skipped++;
-          continue;
-        }
-
-        // Skip if no URL
-        if (!data.url) {
+        // BRO-6964: a row with text, a URL and no recorded rating is eligible (rating-only);
+        // --backfill-ratings is kept as a no-op flag for existing dispatches.
+        const elig = guardianFetchEligibility(data, { minTextLength: CONFIG.minTextLength });
+        if (!elig.eligible) {
+          if (elig.reason === 'has-text-and-rating') stats.skipped++;
           continue;
         }
 
@@ -269,6 +262,7 @@ function findGuardianReviews() {
           file,
           url: data.url,
           articleId,
+          mode: elig.mode,
           outlet: data.outlet || 'The Guardian',
           critic: data.criticName || 'Unknown',
           existingData: data,
@@ -320,18 +314,21 @@ function updateReviewFile(review, apiResult) {
     return;
   }
 
-  // Only update fullText if we don't already have it
-  if (!data.fullText || data.fullText.length < CONFIG.minTextLength) {
-    data.fullText = apiResult.text;
+  // Rating-only rows already hold their body from another route: leave the text and fetch provenance alone.
+  if (review.mode !== 'rating-only') {
+    // Only update fullText if we don't already have it
+    if (!data.fullText || data.fullText.length < CONFIG.minTextLength) {
+      data.fullText = apiResult.text;
+    }
+    data.isFullReview = (data.fullText || apiResult.text).length > 1500;
+    data.textWordCount = apiResult.text.split(/\s+/).filter(w => w.length > 0).length;
+    data.textFetchedAt = new Date().toISOString();
+    data.fetchMethod = 'guardian-api';
+    data.fetchTier = 0; // API is tier 0 (most reliable)
+    data.textQuality = data.isFullReview ? 'full' : 'partial';
+    data.textStatus = 'complete';
+    data.sourceMethod = 'guardian-api';
   }
-  data.isFullReview = (data.fullText || apiResult.text).length > 1500;
-  data.textWordCount = apiResult.text.split(/\s+/).filter(w => w.length > 0).length;
-  data.textFetchedAt = new Date().toISOString();
-  data.fetchMethod = 'guardian-api';
-  data.fetchTier = 0; // API is tier 0 (most reliable)
-  data.textQuality = data.isFullReview ? 'full' : 'partial';
-  data.textStatus = 'complete';
-  data.sourceMethod = 'guardian-api';
 
   // Extract star rating from API (Guardian uses 1-5 stars)
   if (apiResult.starRating && !data.originalScore) {
@@ -340,8 +337,13 @@ function updateReviewFile(review, apiResult) {
       normalizedValue: Math.round((apiResult.starRating / 5) * 100),
       source: 'guardian-api',
     });
-    data.scoreSource = 'guardian-api';
-    data.scoreExtractedFrom = 'api-metadata';
+    if (routed.field === 'originalScore') {
+      // setExtractedScore leaves scoreSource alone, so queue (reads the LLM source) before restamping it.
+      // Only when the star actually landed (a cleared row returns 'blocked').
+      require('./lib/rescore-flagging').queueRescoreForLateRating(data, 'guardian-api');
+      data.scoreSource = 'guardian-api';
+      data.scoreExtractedFrom = 'api-metadata';
+    }
     console.log(`  ★ Star rating: ${apiResult.starRating}/5 → ${Math.round((apiResult.starRating / 5) * 100)}/100 [${routed.field}]`);
   }
 
@@ -349,11 +351,13 @@ function updateReviewFile(review, apiResult) {
   data.guardianApi = {
     headline: apiResult.headline,
     byline: apiResult.byline,
+    publication: apiResult.publication || null,
     standfirst: apiResult.standfirst,
     starRating: apiResult.starRating,
     webUrl: apiResult.webUrl,
     fetchedAt: new Date().toISOString(),
   };
+  applyGuardianPublication(data, apiResult.publication);
 
   if (!CLI.dryRun) {
     persistReviewSnapshot({ filePath: review.filePath, data: data });

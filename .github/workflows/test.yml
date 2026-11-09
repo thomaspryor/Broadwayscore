@@ -34,6 +34,8 @@ on:
       # impossible and removes the merge-conflict-magnet property of a single
       # shared list every parallel worktree session had to edit.
       - 'scripts/lib/**'
+      # BRO-7103: scripts/lib/recurrence-classes.test.mjs and root-cause-close.test.mjs require it.
+      - 'scripts/recurrence-detector.js'
       - 'scripts/route-dependabot-pr-cards.js'
       - 'scripts/read-theater-newsletters.js'
       # BRO-3497: scripts/re_extract_talkin_broadway_reviews.test.mjs covers this script.
@@ -52,6 +54,12 @@ on:
       - 'scripts/press-night-watchdog-replay.js'
       - '.github/workflows/opening-night-lane-live.yml'
       - '.github/actions/read-lane-only-vars/**'
+      # BRO-6886: tests/unit/press-night-scoring-dispatch.test.mjs and
+      # push-review-texts-scoring-file-list.test.mjs cover these.
+      - 'scripts/score-new-press-night-reviews.js'
+      - '.github/actions/push-review-texts/**'
+      # BRO-6941: tests/unit/push-review-texts-resolve.test.mjs covers this resolver.
+      - 'scripts/lib/resolve-modify-delete.js'
       # BRO-6622: tests/unit/lane-rollback.test.mjs runs the CLI refusals and pins the switch workflow.
       - 'scripts/lane-switch.js'
       - 'scripts/email/profitability-launch.mjs' # BRO-6772 launch email, tested by tests/unit/profitability-launch-email.test.mjs
@@ -124,6 +132,8 @@ on:
       - 'scripts/check-workflow-run-status.js'
       - 'scripts/check-remote-branch-absent.js'
       - 'scripts/audit-london-census-coverage.js'
+      - 'scripts/audit-approved-fix-drift.js'
+      - 'scripts/audit-artsdesk-banner.js'
       - 'scripts/audit-url-critic-slug-filenames.js'
       - 'scripts/export-cookies.js'
       # scripts/backtest-recoupment-ground-truth.js runs in unit-tests (advisory model backtest, BRO-4989)
@@ -179,6 +189,8 @@ on:
       - 'scripts/reconcile-uk-regional-opening-dates.js'
       # tests/unit/audit-malformed-review-urls.test.mjs names this CLI (audit-toplevel-script-test-yml-coverage).
       - 'scripts/audit-malformed-review-urls.js'
+      # BRO-2454: CLI + scripts/audit-route-alert.test.mjs (audit-toplevel-script-test-yml-coverage).
+      - 'scripts/audit-route-alert.js'
       - 'scripts/audit-multi-verdict-stars.js'
       # tests/unit/run-contamination.test.mjs requires class2/3/5 from this audit (BRO-5261).
       - 'scripts/audit-run-contamination.js'
@@ -191,6 +203,7 @@ on:
       # tests/unit/html-publish-date.test.mjs names this CLI (audit-toplevel-script-test-yml-coverage).
       - 'scripts/backfill-network-tier-dates.js'
       - 'scripts/backfill-roundup-pull-quote-compilation.js'
+      - 'scripts/backfill-outlet-from-sitemap.js'
       - 'scripts/backfill-wrongproduction-legacy-audit.js'
       # tests/unit/enrich-dtli-thumbs.test.mjs names this CLI (audit-toplevel-script-test-yml-coverage).
       - 'scripts/enrich-dtli-thumbs.js'
@@ -448,12 +461,20 @@ on:
       - 'scripts/build-ob-venues.js'
       # scripts/lib/stuck-card-closer.test.mjs (BRO-4523 CLI exit-code tests)
       - 'scripts/close-stuck-verified-cards.js'
+      # scripts/lib/board-closer.test.mjs (BRO-7135 sweep CLI end-to-end)
+      - 'scripts/sweep-recovered-alert-cards.js'
+      # scripts/lib/board-dispatch.test.mjs (BRO-7139 nightly board dispatch report)
+      - 'scripts/board-dispatch.js'
+      # scripts/lib/llm-triage-facts.test.mjs (BRO-7139 report-only LLM triage CLI)
+      - 'scripts/llm-triage.js'
       # tests/unit/detect-venue-transfers.test.mjs
       - 'scripts/detect-venue-transfers.js'
       # tests/unit/promote-historical-auto.test.mjs
       - 'scripts/enrich-ob-dates-from-showscore.js'
       # tests/unit/promote-historical-auto.test.mjs
       - 'scripts/enrich-west-end-shows.js'
+      # tests/unit/applied-fix-plan-rows.test.mjs
+      - 'scripts/audit-applied-fix-plans.js'
       # tests/unit/exclusion-rule-consumption.test.mjs
       - 'scripts/exclusion-rule-census.js'
       # tests/unit/extract-stagedoor-preserves-exclusion-flags.test.mjs
@@ -1575,6 +1596,7 @@ on:
       - 'scripts/generate-mobile-show-details.js'
       - 'scripts/compute-gold-lists.js'
       - 'scripts/send-opening-digest.js'
+      - 'scripts/send-reddit-post-email.js' # BRO-7075: named by tests/unit/email-type-floor.test.mjs
       - 'scripts/reddit-opening-posts-due.js' # BRO-6634: dep of scripts/lib/reddit-opening-post.test.mjs
       # BRO-2408: related-shows generator + its guard test (scores must come
       # via loadReviewsWithBlog). Test is in tests/unit-test-manifest.txt;
@@ -1751,6 +1773,7 @@ on:
       # exemptions). Unlisted until 2026-08-01, so an edit to the exempt map
       # shipped with ZERO CI — exactly the hole this allow-list exists to close.
       - 'scripts/audit-orphan-tests.js'
+      - 'scripts/live-data-lane.js' # BRO-7101: lane filter + trace classifier (tests/unit/live-data-lane.test.mjs)
       - 'scripts/audit-orphaned-audit-writes.js'
       # BRO-3431 reopen: root-level scripts/*.js + *.test.mjs pair, no
       # scripts/** broad glob covers it.
@@ -1810,6 +1833,7 @@ on:
       # coverage audit. Colocated *.test.mjs run in the lib-test glob;
       # path-listed so a solo edit triggers CI.
       - 'scripts/audit-critic-coverage.js'
+      - 'scripts/audit-critic-splits.js'
       - 'scripts/monitor-outlet-recency.js'
       - 'tests/unit/outlet-recency-monitor.test.mjs'
       # Card #1498: same correction-merge bug in the separate review-submission
@@ -2200,6 +2224,7 @@ on:
       - 'scripts/llm-scoring/comparative-rescore.ts'
       - 'scripts/llm-scoring/config.ts'
       - 'scripts/outlet-listing-poller.js'
+      - 'scripts/window-shows-needing-collection.js'
       - 'scripts/probe-outlet-feeds.js'
       # visual-qa push-gate helper — colocated test runs in the scripts/lib step
       # but the workflow only fires when a push-path matches; without this entry
@@ -2343,6 +2368,9 @@ on:
       # tests/unit/morning-digest-action.test.mjs.
       - 'scripts/check-morning-digest-sent.js'
       - 'scripts/lib/digest-enable-gate.js'
+      # BRO-7017: pager wake gate; tested by tests/unit/check-morning-digest-sent-wakes.test.mjs.
+      - 'scripts/lib/digest-pager-gate.js'
+      - 'tests/unit/check-morning-digest-sent-wakes.test.mjs'
       - 'scripts/digest-sent-precheck.js'
       # Close-time acceptance verify + trunk status (task #1003) — the decision
       # lib, the shared checkout/runner it leans on, the gh producer, and the
@@ -3329,6 +3357,14 @@ on:
       # above (scripts/lib/** / scripts/launchd/**) — only these two
       # top-level, un-globbed paths need explicit listing.
       - 'scripts/audit-launchd-stale-sync-guard.js'
+      # launchd plist PATH lint (zero-gap plan G7): lib + test sit under the
+      # scripts/lib/** glob; only the top-level audit needs listing.
+      - 'scripts/audit-launchd-plist-path.js'
+      # Text-gap metric + false-truncation dry-run (zero-gap plan 1B/1C): libs,
+      # trailer-signatures and their tests sit under scripts/lib/**; only the two
+      # top-level read-only CLIs need listing.
+      - 'scripts/audit-text-gaps.js'
+      - 'scripts/audit-false-truncation-dryrun.js'
       # Linear-issue dispatcher (task #1303): fetches a Linear issue and
       # launches a Claude Code worker on it, reusing bsc-next.js's cmux/
       # headless launch primitives. dispatch-guards.js (task #1303 plan
@@ -3987,6 +4023,15 @@ jobs:
         # a trailing `# launchd-stale-sync-ok: <reason>` comment.
         run: node scripts/audit-launchd-stale-sync-guard.js
 
+      - name: Audit — launchd plist bare command without PATH
+        if: always() && steps.deps.outcome == 'success'
+        # A plist that runs bare `node`/`gh` with no EnvironmentVariables.PATH and
+        # no `bash -lc` exits 127 under launchd's PATH=/usr/bin:/bin:/usr/sbin:/sbin:
+        # the WSJ monthly cookie refresh did that and never ran. Blocking from the
+        # start (not advisory): it reads only tracked scripts/launchd/*.plist, so it
+        # cannot flap on bot-driven data, and it is clean on all 26 plists today.
+        run: node scripts/audit-launchd-plist-path.js
+
       - name: Audit — gate corpus-guard coverage
         if: always() && steps.deps.outcome == 'success'
         # Task #1069. Blocking, unlike the advisory audits around it: every
@@ -4317,7 +4362,7 @@ jobs:
         run: |
           OUT=$(node scripts/audit-playwright-count-assertions.js || true)
           echo "$OUT"
-          if echo "$OUT" | grep -q "unguarded count() assignment"; then
+          if grep -q "unguarded count() assignment" <<<"$OUT"; then
             echo "::warning::Playwright count()-without-assertion pattern found — a selector drift here would silently pass having checked nothing. Run: node scripts/audit-playwright-count-assertions.js"
           fi
 
@@ -4761,6 +4806,8 @@ jobs:
     # ~14 min worst green runtime + that stall. The rule above still holds:
     # a hung TEST must be found, not absorbed — the per-step `timeout 180` and
     # --test-timeout ceilings are what bound those.
+    # BRO-7113: stays 30. The node batch + scripts/lib glob now run in `unit-test-shards`,
+    # so this job no longer needs a raise; do not raise it again.
     timeout-minutes: 30
     steps:
       - name: Checkout
@@ -4902,24 +4949,21 @@ jobs:
             return "$rc"
           }
 
-          # BRO-2483: the node batch is collected (scripts/lib/unit-test-collection.js),
-          # not read from the retired tests/unit-test-manifest.txt tombstone. --min
-          # exits 1 on an empty list or one under its MIN_NODE_BATCH floor.
-          node_list=$(node scripts/lib/unit-test-collection.js --min) || { echo "::error::scripts/lib/unit-test-collection.js --min failed (empty, under MIN_NODE_BATCH, or crashed)"; exit 1; }
-          mapfile -t node_tests <<< "$node_list"
-          [ ${#node_tests[@]} -eq 0 ] && { echo "::error::scripts/lib/unit-test-collection.js collected no node unit tests"; exit 1; }
-          run_batch node /tmp/unit-node-batch.log \
-            node --test --test-timeout 300000 "${node_tests[@]}"
-          node_rc=$?; node_pass=$BATCH_PASS; node_fail=$BATCH_FAIL
+          # BRO-7113: the node batch (1,600+ files, ~16 min on a 4-core runner)
+          # moved to the `unit-test-shards` matrix job below; this step keeps
+          # only the tsx batch. node_rc stays defined so the summary is unchanged.
+          node_rc=0; node_pass=sharded; node_fail=sharded
+          node_tests=()
 
-          mapfile -t tsx_tests < tests/unit-test-manifest-tsx.txt
-          [ ${#tsx_tests[@]} -eq 0 ] && { echo "::error::tests/unit-test-manifest-tsx.txt is empty or missing"; exit 1; }
+          # BRO-7101: same lane split for the tsx manifest.
+          mapfile -t tsx_tests < <(node scripts/live-data-lane.js --filter=blocking < tests/unit-test-manifest-tsx.txt)
+          [ ${#tsx_tests[@]} -eq 0 ] && { echo "::error::tests/unit-test-manifest-tsx.txt is empty or missing (or every entry is LIVE-DATA-LANE)"; exit 1; }
           run_batch tsx /tmp/unit-tsx-batch.log \
             npx tsx --test --test-timeout 300000 "${tsx_tests[@]}"
           tsx_rc=$?; tsx_pass=$BATCH_PASS; tsx_fail=$BATCH_FAIL
 
           echo "── unit test batches ──────────────────────────────"
-          echo "node batch: ${#node_tests[@]} files, pass=$node_pass fail=$node_fail exit=$node_rc"
+          echo "node batch: moved to the unit-test-shards job (BRO-7113)"
           echo "tsx  batch: ${#tsx_tests[@]} files, pass=$tsx_pass fail=$tsx_fail exit=$tsx_rc"
           if [ "$node_rc" -ne 0 ] || [ "$tsx_rc" -ne 0 ]; then
             echo "::error::unit tests failed (node exit=$node_rc, tsx exit=$tsx_rc) — see the per-batch groups above"
@@ -5008,48 +5052,19 @@ jobs:
         continue-on-error: true
         run: node scripts/resize-show-images.js --check-variants
 
-      - name: Run scripts/lib tests (visual-qa transcript-scan etc.)
-        # Tests colocated with the helpers they cover (scripts/lib/*.test.mjs)
-        # per CLAUDE.md §15 test-extraction pattern. Covered helpers:
-        #   - scripts/lib/transcript-scan.mjs (visual-qa gate helper)
-        #
-        # MEASURED 2026-08-14 (the "25/25 pass in <100ms" this comment used to
-        # claim was true when one helper was covered; it is now 279 files /
-        # ~3,700 tests): the glob runs in 34s wall locally. It is not slow.
-        #
-        # --test-timeout 300000 is the load-bearing part. `node --test` has NO
-        # default per-test timeout, so a single wedged file blocks until the
-        # JOB timeout fires and the runner SIGTERMs everything. Run 31823977918
-        # is the worked example: scripts/lib/intake-breaker.test.mjs hung for
-        # 635.9s (`signal: 'SIGTERM'`, `exitCode: ~`), this step burned 645s of
-        # a 10-minute budget, and the whole run concluded `cancelled` — so the
-        # `# fail 1` it did report was never surfaced and four other jobs' worth
-        # of results were thrown away. With a per-test ceiling the same hang
-        # fails as one named test and every other result survives.
-        #
-        # SIZING (corrected in run 31827505814 — the first attempt used 120s and
-        # cancelled a legitimate test, so this number is measured, not guessed):
-        # the slowest honest test is tests/unit/validate-data-push-refusal-
-        # sentinel.test.mjs, which shells out to validate-data.js against the
-        # full corpus — 52.5s locally, ~121s on a runner (CI is ~2.3x slower
-        # than the dev machine). 300s is ~2.5x that CI figure, and still less
-        # than a third of the 15-minute job budget, so a genuine hang (the 635s
-        # one above included) is still caught and NAMED rather than eating the
-        # job. Raise this only against a fresh measurement of the slowest
-        # legitimate test — not to silence a hang.
-        # if: always() so a red earlier test batch (e.g. tests/unit/*) can't skip
-        # this step — otherwise a new scripts/lib/*.test.mjs gets ZERO CI coverage.
-        if: always()
-        run: |
-          shopt -s nullglob
-          tests=(scripts/lib/*.test.mjs)
-          [ ${#tests[@]} -eq 0 ] && { echo "no scripts/lib tests"; exit 0; }
-          # BRO-5588: name failing tests; exit code preserved.
-          set +e
-          node --test --test-timeout 300000 "${tests[@]}" 2>&1 | tee /tmp/scripts-lib-batch.log
-          rc=${PIPESTATUS[0]}
-          bash scripts/lib/summarize-failing-tests.sh "scripts/lib" /tmp/scripts-lib-batch.log "$rc"
-          exit "$rc"
+      - name: Cross-show URL guard corpus regression (BRO-6910, advisory)
+        # strict-alert-exempt: PR check, the red check on the PR is the signal; a card per PR run would duplicate
+        # Runs detectCrossShowUrlMismatch over every included review URL in
+        # data/reviews.json. Each hit is a review gather-reviews would refuse
+        # today, so a guard change that raises the count is about to drop real
+        # reviews (Waiting for Lefty lost 4 this way on 2026-11-02). --max is the
+        # committed baseline: lower it when false flags are fixed, never raise it
+        # without reading the new hits. 117 = count with the BRO-6909 author-credit
+        # fix on 2026-11-03 core data; 92 after the BRO-6910 one-word-title and
+        # own-show-vouching fixes on 2026-11-07 core data (was 216 live).
+        # Advisory first (CLAUDE.md section 19).
+        continue-on-error: true
+        run: node scripts/audit-cross-show-url.js --source=reviews.json --strict --max=92
 
       - name: Repeat file-lock race test 20x (stale-break regression guard)
         # scripts/lib/file-lock.test.mjs's 'racing stale-lock breakers' test
@@ -5291,6 +5306,13 @@ jobs:
         # over-fire.
         if: always()  # independent suite — don't let an earlier red step skip it
         run: bash scripts/lib/push-with-retry.rebase-refusal.test.sh
+
+      - name: Run push-with-retry orphan REBASE_HEAD test (bash integration)
+        # BRO-6986. A conflict-resolved rebase --continue leaves .git/REBASE_HEAD
+        # with no rebase dir; the next push-with-retry.sh in the same job then
+        # refused on the BRO-142 stale-marker guard and failed the poller run.
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: bash scripts/lib/push-with-retry.orphan-rebase-head.test.sh
 
       - name: Run push-with-retry autostash test (bash integration)
         # BRO-3668/3669/3667/3687. A caller that arrives with tracked files
@@ -5656,6 +5678,101 @@ jobs:
               if [ -e "$f" ]; then echo "$f (modified $(date -u -r "$f" +%H:%M:%S) UTC)"; else echo "$f (deleted)"; fi
             done <<< "$new"
             echo "Isolate the test: redirect the ledger path to a tmp dir (see BRO-2656)."
+          else
+            echo "OK: no test wrote to data/audit."
+          fi
+
+  unit-test-shards:
+    name: Unit Test Shard
+    # BRO-7113: the node --test batch (tests/unit via scripts/lib/unit-test-collection.js)
+    # and the scripts/lib/*.test.mjs glob used to run serially inside `unit-tests`
+    # (~16 + ~5 min on a 4-core runner), pushing the job to a 25 min mean / 29 max.
+    # They are independent of every other step in that job, so they run here as
+    # 4 parallel node --test-shard slices. Measured per-shard budget is in
+    # tests/unit/test-yml-timeout-headroom.test.mjs. Do NOT raise timeout-minutes:
+    # add shards (matrix `shard` + SHARD_TOTAL) when a shard nears 80% of it.
+    if: github.actor != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4]
+    env:
+      SHARD_TOTAL: 4
+    steps:
+      - name: Checkout
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - name: Disable git auto-maintenance (global config)
+        # Same reason as unit-tests (BRO-4720/4749). Guard: tests/unit/ci-git-auto-maintenance-off.test.mjs.
+        run: |
+          git config --global gc.auto 0
+          git config --global gc.autoDetach false
+          git config --global maintenance.auto false
+          git config --global receive.autogc false
+      - name: Setup Node.js
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '22'
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit
+      - name: Checkout core data
+        id: core-data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Refresh gold lists from current reviews
+        run: node scripts/compute-gold-lists.js
+      - name: Snapshot data/audit before tests (BRO-2664)
+        if: always()
+        run: find data/audit -type f -exec sha256sum {} + 2>/dev/null | sort -k2 > "$RUNNER_TEMP/audit-before.txt" || true
+      - name: Run unit tests (node batch shard)
+        env:
+          BSC_STAGE_LATENCY_MUTE: '1'
+        run: |
+          # Same collector, lane and per-test ceiling as the pre-shard step
+          # (BRO-2483, BRO-7101); --test-shard slices the file list by index.
+          node_list=$(node scripts/lib/unit-test-collection.js --lane=blocking --min) || { echo "::error::scripts/lib/unit-test-collection.js --lane=blocking --min failed (empty, under MIN_NODE_BATCH, or crashed)"; exit 1; }
+          mapfile -t node_tests <<< "$node_list"
+          [ ${#node_tests[@]} -eq 0 ] && { echo "::error::scripts/lib/unit-test-collection.js collected no node unit tests"; exit 1; }
+          echo "shard ${{ matrix.shard }}/$SHARD_TOTAL of ${#node_tests[@]} node unit test files"
+          set +e
+          node --test --test-timeout 300000 --test-shard="${{ matrix.shard }}/$SHARD_TOTAL" "${node_tests[@]}" 2>&1 | tee /tmp/unit-node-batch.log
+          rc=${PIPESTATUS[0]}
+          bash scripts/lib/summarize-failing-tests.sh "unit-node-shard-${{ matrix.shard }}" /tmp/unit-node-batch.log "$rc"
+          exit "$rc"
+      - name: Run scripts/lib tests shard
+        # Moved verbatim from `unit-tests` (BRO-7113); see git history for the
+        # sizing notes on --test-timeout 300000 (runs 31823977918, 31827505814).
+        # if: always() so a red node shard cannot skip a new scripts/lib test's only CI coverage.
+        if: always()
+        run: |
+          shopt -s nullglob
+          # BRO-7101: LIVE-DATA-LANE files run in check-corpus-drift.yml, not here.
+          all_lib=(scripts/lib/*.test.mjs)
+          [ ${#all_lib[@]} -eq 0 ] && { echo "no scripts/lib tests"; exit 0; }
+          mapfile -t tests < <(node scripts/live-data-lane.js --filter=blocking "${all_lib[@]}")
+          [ ${#tests[@]} -eq 0 ] && { echo "::error::live-data-lane.js --filter=blocking returned no scripts/lib tests"; exit 1; }
+          # BRO-5588: name failing tests; exit code preserved.
+          set +e
+          node --test --test-timeout 300000 --test-shard="${{ matrix.shard }}/$SHARD_TOTAL" "${tests[@]}" 2>&1 | tee /tmp/scripts-lib-batch.log
+          rc=${PIPESTATUS[0]}
+          bash scripts/lib/summarize-failing-tests.sh "scripts/lib" /tmp/scripts-lib-batch.log "$rc"
+          exit "$rc"
+      - name: Ledger isolation check (BRO-2664, advisory)
+        if: always()
+        continue-on-error: true
+        run: |
+          before="$RUNNER_TEMP/audit-before.txt"
+          [ -f "$before" ] || { echo "No snapshot; skipping."; exit 0; }
+          after="$RUNNER_TEMP/audit-after.txt"
+          find data/audit -type f -exec sha256sum {} + 2>/dev/null | sort -k2 > "$after" || true
+          new=$(comm -3 <(sort "$before") <(sort "$after") | sed -E 's/^\t?[0-9a-f]{64}  //' | sort -u)
+          if [ -n "$new" ]; then
+            echo "::warning::Unit tests wrote to production ledgers under data/audit:"
+            while IFS= read -r f; do
+              if [ -e "$f" ]; then echo "$f (modified $(date -u -r "$f" +%H:%M:%S) UTC)"; else echo "$f (deleted)"; fi
+            done <<< "$new"
           else
             echo "OK: no test wrote to data/audit."
           fi
@@ -6579,40 +6696,46 @@ jobs:
       - name: Route data-audit failures to the daily digest
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          JOB_STATUS: ${{ job.status }}
         # BRO-3425: this job is continue-on-error, so a corpus-state audit going
-        # red no longer reddens main or pages anyone. It queues ONE digest line
-        # (24h cooldown) naming the failing steps. The old Discord "Test Suite
-        # Failed" ping fired on every data drift and is gone with the demotion.
-        if: failure() && (github.event_name == 'schedule' || (github.event_name == 'push' && github.ref == 'refs/heads/main'))
+        # red no longer reddens main. BRO-7130: each failing step gets its own
+        # alert (digest first, a card after 24h, escalation after 48h) and is
+        # resolved when that step passes, so this runs on green runs too.
+        # Logic: scripts/lib/data-validation-routing.js.
+        if: ${{ !cancelled() && (github.event_name == 'schedule' || (github.event_name == 'push' && github.ref == 'refs/heads/main')) }}
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
         with:
           script: |
-            // A failed lookup must not drop the digest line — fall back to a
-            // generic title (ship-check finding).
-            let failing = [];
+            // A failed lookup passes steps=null: the lib then routes one
+            // "step list unavailable" digest line if the job is failing.
+            let steps = null;
             try {
               const { data } = await github.rest.actions.listJobsForWorkflowRunAttempt({
                 owner: context.repo.owner, repo: context.repo.repo,
                 run_id: context.runId, attempt_number: Number(process.env.GITHUB_RUN_ATTEMPT || 1), per_page: 100,
               });
               const job = (data.jobs || []).find(j => j.name === 'Data Validation');
-              failing = ((job && job.steps) || []).filter(s => s.conclusion === 'failure').map(s => s.name);
+              if (job && Array.isArray(job.steps)) steps = job.steps.map(s => ({ name: s.name, conclusion: s.conclusion }));
             } catch (e) {
-              core.warning(`could not list failing Data Validation steps: ${e.message}`);
+              core.warning(`could not list Data Validation steps: ${e.message}`);
             }
-            const { routeAlert } = require('./scripts/lib/owner-alert-router.js');
-            await routeAlert({
-              conditionKey: 'test-yml:data-validation-red',
-              title: `Data audits failing (non-blocking): ${failing.join(', ') || 'see run'}`,
-              description: `Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
-              disposition: 'digest',
-              severity: 'warning',
-              cooldownHours: 24,
-            });
+            try {
+              const fs = require('fs');
+              const { routeDataValidationRun } = require('./scripts/lib/data-validation-routing.js');
+              await routeDataValidationRun({
+                steps,
+                ymlText: fs.readFileSync('.github/workflows/test.yml', 'utf8'),
+                runUrl: `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+                jobStatus: process.env.JOB_STATUS,
+              });
+            } catch (e) {
+              core.warning(`data-audit routing failed: ${e.message}`);
+            }
 
       - name: Commit data-audit digest line
         continue-on-error: true
-        if: failure() && (github.event_name == 'schedule' || (github.event_name == 'push' && github.ref == 'refs/heads/main'))
+        # BRO-7130: also on green runs, which now resolve per-step conditions.
+        if: ${{ !cancelled() && (github.event_name == 'schedule' || (github.event_name == 'push' && github.ref == 'refs/heads/main')) }}
         run: |
           git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl 2>/dev/null || true
           if ! git diff --staged --quiet; then
@@ -6930,7 +7053,7 @@ jobs:
     # until 2026-09-30 and turned main red with no code change).
     # data-validation is deliberately NOT here: it audits corpus state, is
     # continue-on-error, and routes failures to the daily digest (BRO-3425).
-    needs: [unit-tests, data-safety-guards, e2e-tests, visual-regression, design-tokens-lint, lint-workflows, typescript-check]
+    needs: [unit-tests, unit-test-shards, data-safety-guards, e2e-tests, visual-regression, design-tokens-lint, lint-workflows, typescript-check]
     if: always()
     steps:
       - name: Check results
@@ -7134,9 +7257,11 @@ jobs:
       # which only gate the NEW dispatch on the streak's own 2+/4+
       # thresholds (unchanged from before). The aggregate 'test-yml:main-
       # streak'/'-escalation' keys (health-check.js backstop + "Resolve
-      # alert" step below) are untouched by this — they stay the human-paged
-      # "main has been down a long time, nobody's per-signature card is
-      # stemming it" signal, not a per-breakage one. continue-on-error:true
+      # alert" step below) only resolve here; the "red too long" action is
+      # this script's BRO-7102 escalation: a signature red 6h+ gets its own
+      # card bumped to High and stamped START-NOW for the cloud worker
+      # (needs LINEAR_API_KEY; kill switch RED_ESCALATION_DISABLED=true).
+      # continue-on-error:true
       # is a deliberate backstop (adversarial review): every gh/API call
       # inside the script already degrades gracefully rather than throwing,
       # but this ensures even an unforeseen bug in the script can never flip

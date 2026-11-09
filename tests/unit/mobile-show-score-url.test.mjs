@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/show-score-urls.json (read by the test); data/reviews.json (untracked core data); data/shows.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // TESTS-VS-DERIVED-DATA-EXEMPT: structural consistency of generated per-show JSON against its inputs; pins no facts
 import { test } from 'node:test';
 import assert from 'node:assert/strict';

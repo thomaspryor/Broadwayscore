@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/audit/score-history.jsonl (bot ledger). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 import { describe, it, before, after } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

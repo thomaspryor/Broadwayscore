@@ -6,6 +6,7 @@
  */
 
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
+const { hasExcerpt } = require('./lib/excerpt-fields');
 const fs = require('fs');
 const path = require('path');
 const { normalizeOutlet } = require('./lib/review-normalization');

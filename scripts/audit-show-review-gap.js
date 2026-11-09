@@ -51,6 +51,11 @@ process.env.INGEST_CALLER = process.env.INGEST_CALLER || 'audit-show-review-gap'
 const fs = require('fs');
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
+const { readCrossShowUrlRows } = require('./lib/cross-show-url-ledger'); // BRO-6910
+const { trackedPendingFiles } = require('./lib/pending-coverage'); // BRO-7163 F11
+const { isOpaqueArticleUrl, headlineAsUrl } = require('./lib/opaque-article-url'); // BRO-7163 F02
+const { weUrlIsPriorRun } = require('./lib/we-prior-run'); // BRO-7163 F09
+const { isAggregatorBlind, majorOutletCountFor } = require('./lib/aggregator-blind'); // BRO-6910
 const cheerio = require('cheerio');
 const { execSync, execFileSync } = require('child_process');
 
@@ -62,6 +67,7 @@ const { parseShowFilter, selectShowsById } = require('./lib/gap-audit-show-filte
 const {
   provisionalOutletIdFromHost,
   sameOutletUrlVariant,
+  platformOriginMirrorOf,
   _buildDomainMap,
   resolveUrlEditionOutletId,
 } = require('./lib/outlet-canonicalize');
@@ -218,6 +224,7 @@ const { articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow, isUrlMonthB
 const { otherProductionSignal } = require('./lib/other-production-signal');
 const { priorRunUrlSignal, phillyFringeUrlSignal } = require('./lib/prior-run-url-signal');
 const { isLikelyTourReview } = require('./lib/review-guards');
+const { censusOtherPlaceSignal } = require('./lib/census-other-place');
 const { ingestRefusalReason } = require('./lib/non-review-url-patterns');
 const { classifyIngestSkip, describeSkip } = require('./lib/ingest-skip-classify');
 // WE reference schema version — bump to invalidate WE checkpoint entries (59 shows
@@ -398,6 +405,60 @@ function getKnownDomainMap() {
   return map;
 }
 
+// BRO-7129: the registry entry (region, tier, standing coverage) for a URL's host.
+let _registryOutlets = null;
+function registryEntryForUrl(u) {
+  const map = getKnownDomainMap();
+  const id = map.get(registrableHost(hostOf(u))) || map.get(publicationHostOf(u));
+  if (!id) return null;
+  if (!_registryOutlets) {
+    try { const raw = JSON.parse(fs.readFileSync(OUTLET_REGISTRY_PATH, 'utf8')); _registryOutlets = raw.outlets || raw; } catch { _registryOutlets = {}; }
+  }
+  const entry = _registryOutlets[id];
+  if (!entry) return null;
+  return { ...entry, nyReviewCount: nyReviewCountByOutlet().get(id) || 0 };
+}
+// Live reviews per outlet on New York shows: a regional outlet that already covers
+// New York keeps its census rows (censusOtherPlaceSignal NY_COVERAGE_MIN).
+let _nyReviewCounts = null;
+function nyReviewCountByOutlet() {
+  if (_nyReviewCounts) return _nyReviewCounts;
+  _nyReviewCounts = new Map();
+  try {
+    const { isBroadwayCategory, isOffBroadwayCategory } = require('./lib/venue-classification');
+    const ny = new Set(loadShows().filter((s) => isBroadwayCategory(s) || isOffBroadwayCategory(s)).map((s) => s.id));
+    const reviews = cachedReviews();
+    // A sample or truncated reviews.json would read every regional outlet as 0 and drop
+    // its rows: fail open below a plausible corpus size.
+    if (reviews.length < 1000) throw new Error(`reviews.json holds only ${reviews.length} rows`);
+    for (const r of reviews) {
+      if (r && ny.has(r.showId) && r.outletId) _nyReviewCounts.set(r.outletId, (_nyReviewCounts.get(r.outletId) || 0) + 1);
+    }
+  } catch (e) {
+    // Fail open: without the counts no regional outlet is dropped.
+    if (verbose) console.error(`  ny review counts unavailable: ${e.message}`);
+    _nyReviewCounts = { get: () => Infinity };
+  }
+  return _nyReviewCounts;
+}
+// URLs already live as reviews of each show: the census never rejects its own live review
+// (BRO-7129 review: the NYT's Donmar Henry IV at St. Ann's names only the London house).
+let _liveUrlsByShow = null;
+function liveReviewUrl(showId, u) {
+  if (!_liveUrlsByShow) {
+    _liveUrlsByShow = new Map();
+    try {
+      for (const r of cachedReviews()) {
+        if (!r || !r.showId || !r.url) continue;
+        if (!_liveUrlsByShow.has(r.showId)) _liveUrlsByShow.set(r.showId, new Set());
+        _liveUrlsByShow.get(r.showId).add(gapUrlIdentity(r.url));
+      }
+    } catch { /* no reviews.json: nothing is live */ }
+  }
+  const set = _liveUrlsByShow.get(showId);
+  return !!set && set.has(gapUrlIdentity(u));
+}
+
 // Curated show → Show Score page URL map (data/show-score-urls.json), loaded once.
 // Used by the Show Score reconciliation source; missing entries fall back to
 // slug construction in showScoreUrlForShow.
@@ -415,6 +476,21 @@ let _allShowsForShowScore = null;
 function getAllShowsForShowScore() {
   if (!_allShowsForShowScore) _allShowsForShowScore = loadShows();
   return _allShowsForShowScore;
+}
+
+// BRO-6910: tier-1/2 outlets known for an off-Broadway show (live reviews +
+// cross-show guard drops), only computed when it can change the BLIND verdict;
+// reviews.json is parsed once per run, not once per show.
+let _reviewsForBlind = null;
+function blindOutletCount(show, row) {
+  if (!show || show.category !== 'off-broadway') return 0;
+  if (Array.isArray(row.aggregatorArticles) && row.aggregatorArticles.length) return 0;
+  return majorOutletCountFor(show.id, { reviews: cachedReviews(), ledgerRows: readCrossShowUrlRows({ showId: show.id }) });
+}
+
+function cachedReviews() {
+  if (!_reviewsForBlind) _reviewsForBlind = loadReviews();
+  return _reviewsForBlind;
 }
 
 function loadReviews() {
@@ -458,7 +534,6 @@ async function fetchVerdictCategoryOnce(url) {
 async function findAggregatorArticles(show) {
   const title = show.title;
   const id = show.id;
-  const tokens = titleTokens(title);
   const queries = [
     `site:playbill.com/article "${title}" reviews`,
     `site:broadwayworld.com "Review Roundup" "${title}"`,
@@ -478,7 +553,7 @@ async function findAggregatorArticles(show) {
         // girl-interrupted 2026-06-06). Verdict slugs embed the title, so a real
         // match passes; "weather-girl" matches only "girl" and is rejected.
         const clean = u.split('?')[0].split('#')[0];
-        if (!urlMatchesShow(clean, tokens) || namesLongerShowTitle(clean, show)) continue;
+        if (!urlMatchesShowTitle(clean, show, { context: 'article' })) continue;
         // Playbill Verdict article patterns
         if (/playbill\.com\/article\/(read|what|reviews|critics)/i.test(u) && /\.html?$|article\//.test(u)) {
           urls.add(clean);
@@ -510,7 +585,7 @@ async function findAggregatorArticles(show) {
       const hit = await searchPlaybillVerdict(show, { fetchHtml: fetchVerdictCategoryOnce });
       const clean = hit && hit.articleUrl ? hit.articleUrl.split('?')[0].split('#')[0] : null;
       // Same slug gate the SERP results above pass through.
-      if (clean && urlMatchesShow(clean, tokens) && !namesLongerShowTitle(clean, show)) urls.add(clean);
+      if (clean && urlMatchesShowTitle(clean, show, { context: 'article' })) urls.add(clean);
     } catch (e) {
       if (verbose) console.error(`  Playbill Verdict lookup error for ${id}: ${e.message}`);
     }
@@ -603,9 +678,9 @@ function dropRoundupsOwnedByOtherShows(urls, showId, owners) {
   });
 }
 
-const { titleTokens } = require('./lib/show-title-tokens');
+const { titleTokens, titleVariantInfo, venueTokens, labelledSiblings, proofInSegments } = require('./lib/show-title-tokens');
 const { foldDiacritics } = require('./lib/title-match');
-const { titleExtendedInUrl, vetTimeoutListingCandidates, vetTourCandidatesByPageDate } = require('./lib/gap-census-noise');
+const { titleExtendedInUrl, titleOnlyAsOtherVenue, crossShowDropsOwedHere, vetTimeoutListingCandidates, vetTourCandidatesByPageDate } = require('./lib/gap-census-noise');
 
 function urlMatchesShow(href, tokens) {
   if (tokens.length === 0) return true; // no tokens → accept everything
@@ -634,8 +709,8 @@ function urlMatchesShow(href, tokens) {
 // exposed. Reject a URL whose path spells out the whole title of ANOTHER show
 // in shows.json that is longer and contains this show's tokens.
 let _showTitleTokens = null;
-function namesLongerShowTitle(href, show, shows = null) {
-  const tokens = titleTokens(show && show.title);
+function namesLongerShowTitle(href, show, shows = null, tokensOverride = null) {
+  const tokens = tokensOverride || titleTokens(show && show.title);
   if (!tokens.length) return false;
   if (shows || !_showTitleTokens) {
     const list = (shows || (() => { try { return loadShows(); } catch { return []; } })())
@@ -644,6 +719,117 @@ function namesLongerShowTitle(href, show, shows = null) {
     _showTitleTokens = list;
   }
   return _namesLonger(href, show, tokens, _showTitleTokens);
+}
+// BRO-6909: accept a URL that names this show under ANY title it is billed by
+// (show-title-tokens.titleVariants: akaTitles, an author credit dropped, a
+// performer prefix dropped, a venue label dropped). The full-title-only gate threw
+// out Playbill's Verdict for "Clifford Odets’ Waiting for Lefty" (slug
+// .../waiting-for-lefty-at-classic-stage-company, 2 of 4 tokens) plus two of the
+// review URLs it listed, and the audit reported 0 gaps with 4 of 7 reviews missing.
+// Each variant still gets the longer-title guard with its own tokens.
+let _showRowsById = null;
+function fullShowRow(show) {
+  // Callers often pass {id, title} only; the credit and venue rules need the row.
+  // Always merged: run dates decide whether a same-title production is nearby.
+  if (!show || !show.id) return show;
+  if (!_showRowsById) {
+    _showRowsById = new Map();
+    try { for (const s of loadShows()) _showRowsById.set(s.id, s); } catch { /* title-only variants */ }
+  }
+  return Object.assign({}, _showRowsById.get(show.id) || {}, show);
+}
+// A derived variant is shorter and more generic than the billed title ("Long
+// Story Short", "The Best Man"), so it must appear in the URL as the exact
+// phrase; the n-1 token tolerance applies only to the billed title (an akaTitle
+// such as "The Fever (Greenwich House Theater)" matched every Greenwich House review).
+// Measured over 42k stored review URLs: token-matching derived variants let 226
+// other shows' URLs through, the phrase rule keeps the same-show recall.
+const slugPhrase = (x) => String(x || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+  .replace(/[’']/g, '').replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+function urlHasPhrase(href, phrase) {
+  let path;
+  try { const p = new URL(href); path = decodeURIComponent(p.pathname); } catch { path = String(href || ''); }
+  const slug = slugPhrase(phrase);
+  return !!slug && `-${slugPhrase(path)}-`.includes(`-${slug}-`);
+}
+// A variant that is ANOTHER production's exact title ("Waiting for Lefty" is also
+// the 2024 regional; "A Midsummer Night's Dream" has 9 other rows) can name that
+// production, and a same-year one gets past every year guard (review of this
+// commit: the Unicorn's AMND accepted the Globe 2026 reviews). Such a variant
+// counts only with evidence it is THIS production:
+//   - a distinctive venue word in the URL (".../waiting-for-lefty-at-classic-stage-company"), or
+//   - context 'article-link': the link sits inside a round-up already accepted for
+//     this show (the Verdict's own list is the evidence), or
+//   - context 'article', a credit-made variant (not a venue label), and no
+//     same-title production ran within a year of this one; the article is then
+//     dated against this run by articleRunIdentity.
+// context 'census' (un-scoped SERP results, the default) gets only the first.
+const DAY_MS = 86400000;
+function runWindow(row) {
+  const t = (d) => { const x = Date.parse(d); return Number.isFinite(x) ? x : null; };
+  const start = t(row && (row.previewsStartDate || row.openingDate));
+  const end = t(row && row.closingDate);
+  return { start, end };
+}
+function sameTitleRunNearby(row, clashIds) {
+  const me = runWindow(row);
+  if (me.start == null) return true; // undated: can't rule the other run out
+  const lo = me.start - 365 * DAY_MS;
+  const hi = (me.end != null ? me.end : Date.now()) + 365 * DAY_MS;
+  fullShowRow({ id: '__warm__' });
+  return clashIds.some(id => {
+    const o = runWindow(_showRowsById && _showRowsById.get(id));
+    if (o.start == null) return true;
+    const oEnd = o.end != null ? o.end : Date.now();
+    return o.start <= hi && oEnd >= lo;
+  });
+}
+function urlPathSegments(href) {
+  let path;
+  try { path = decodeURIComponent(new URL(href).pathname); } catch { path = String(href || ''); }
+  return new Set(slugPhrase(path).split('-').filter(Boolean));
+}
+/**
+ * Token lists of every billed title of `show` that `href` names (empty = none).
+ * @param {{context?: 'census'|'article'|'article-link'}} [opts]
+ */
+function matchingTitleVariants(href, show, { context = 'census' } = {}) {
+  const row = fullShowRow(show);
+  const out = [];
+  const variants = titleVariantInfo(row);
+  const head = variants.find(o => o.labelHead);
+  for (const v of variants) {
+    const tokens = titleTokens(v.title);
+    if (!urlMatchesShow(href, tokens) || namesLongerShowTitle(href, show, null, tokens)) continue;
+    if (v.kind !== 'billed' && !urlHasPhrase(href, v.title)) continue;
+    const segs = urlPathSegments(href);
+    // The Met's "Tosca" vs "Tosca - English National Opera": a URL naming the
+    // labelled production's venue or initials, and not this show's venue, is its.
+    if (v.kind === 'billed' && context !== 'article-link') {
+      const own = venueTokens(row).some(w => segs.has(w));
+      if (!own && labelledSiblings(row).some(x => proofInSegments(x.proof, segs))) continue;
+      // "Tosca - English National Opera" passes the n-1 token gate on
+      // "tosca-welsh-national-opera": three of four words. When a labelled
+      // title matches with a word missing, it needs this show's venue or label
+      // as well. A URL with every word ("school-of-rock-review" for "School of
+      // Rock – The Musical") is the full name and needs nothing more.
+      if (head && !tokens.every(w => segs.has(w))
+          && !proofInSegments([...venueTokens(row), ...(head.proofTokens || [])], segs)) continue;
+    }
+    if (v.clashIds.length) {
+      const venueHit = proofInSegments([...venueTokens(row), ...(v.proofTokens || [])], segs);
+      const ok = venueHit || context === 'article-link'
+        // A one-word head ("Stories", "Tosca") is too common to pass on dates alone.
+        || (context === 'article' && !v.fromVenue && !(v.labelHead && tokens.length < 2)
+          && !sameTitleRunNearby(row, v.clashIds));
+      if (!ok) continue;
+    }
+    out.push(tokens);
+  }
+  return out;
+}
+function urlMatchesShowTitle(href, show, opts) {
+  return matchingTitleVariants(href, show, opts).length > 0;
 }
 function _namesLonger(href, show, tokens, list) {
   // the slug's significant words, filtered the way titles are, so stopwords
@@ -781,8 +967,15 @@ function isOwnVenueUrl(u, show) {
 function acceptSerpCensusResult(sr, { show, showInfo, priorVetted = false }) {
   const u = sr && (sr.url || sr.link);
   if (!u || !isReviewUrl(u)) return null;
-  const tokens = titleTokens(show.title);
-  if (!urlMatchesShow(u, tokens) || namesLongerShowTitle(u, show)) return null;
+  let passing = matchingTitleVariants(u, show, { context: 'census' });
+  // BRO-7163 F02: an opaque URL (story.asp?ID=48291) has no title tokens to match. The SERP headline
+  // stands in, but only on an outlet we know, so a random host's opaque page is not accepted on a headline alone.
+  if (!passing.length && isOpaqueArticleUrl(u) && sr.title
+      && (getKnownDomainMap().has(registrableHost(hostOf(u))) || getKnownDomainMap().has(publicationHostOf(u)))) {
+    const hu = headlineAsUrl(sr.title);
+    if (hu) passing = matchingTitleVariants(hu, show, { context: 'census' });
+  }
+  if (!passing.length) return null;
   // BRO-5732: fail closed. An unregistered host must show review-shaped evidence
   // (url/title/snippet), not merely avoid every known-bad pattern. `priorVetted`:
   // a URL seeded from the prior census already passed this once and its SERP
@@ -799,10 +992,17 @@ function acceptSerpCensusResult(sr, { show, showInfo, priorVetted = false }) {
   // the census, require EVERY title token in the URL path or in the SERP
   // title/snippet, and drop book-review/bookstore pages (the same title also
   // names novels).
-  if (tokens.length >= 3) {
+  // BRO-6909: checked per billed title (titleVariants), so "Clifford Odets’
+  // Waiting for Lefty" accepts a URL that carries every token of "Waiting for
+  // Lefty". A 1-2 token variant already had to match all its tokens in the path.
+  const tokens = titleTokens(show && show.title);
+  {
     const segs = new Set(new URL(u).pathname.toLowerCase().split(/[\/\-_.\s]+/).filter(Boolean));
     const hay = new Set(titleTokens(`${sr.title || ''} ${sr.snippet || ''}`));
-    if (!tokens.every(t => segs.has(t) || hay.has(t))) return null;
+    // Same variant must pass both checks (review: billed-title n-1 tolerance
+    // plus a different variant's bare token match reopened BRO-4540).
+    const ok = passing.some(ts => ts.length < 3 || ts.every(t => segs.has(t) || hay.has(t)));
+    if (!ok) return null;
   }
   if (isBookPageUrl(u)) return null;
   if (isOwnVenueUrl(u, show)) return null;
@@ -822,9 +1022,18 @@ function acceptSerpCensusResult(sr, { show, showInfo, priorVetted = false }) {
   if (isUrlMonthBeforeRun(u, show)) return null;
   // BRO-6804: a slug reading as a longer title (The Girls / School Girls vs Girls).
   if (titleExtendedInUrl(u, show, titleTokens)) return null;
+  // BRO-6968: the title appears only as another house's name ("into-the-woods-review-bridge-theatre").
+  if (titleOnlyAsOtherVenue(`${new URL(u).pathname} ${sr.title || ''} ${sr.snippet || ''}`, show, titleTokens)) return null;
   // Same-title production elsewhere (BRO-4190): the URL or SERP title names
   // another market's edition or a London house on a New York show.
   if (otherProductionUrlSignal(u, show, sr.title, { census: true }) || edinburghFringeUrlSignal(u, show) || phillyFringeUrlSignal(u, show)) return null;
+  // BRO-7129: same title staged in another city or house (King Lear OB counted
+  // Manchester, London, Chicago and New Orleans stagings as "known" reviews).
+  if (show && !liveReviewUrl(show.id, u) && censusOtherPlaceSignal(u, sr.title, show, () => registryEntryForUrl(u))) {
+    candidateRejections.count++;
+    candidateRejections.byReason['other-place'] = (candidateRejections.byReason['other-place'] || 0) + 1;
+    return null;
+  }
   // Weak-specificity gate (ship-check 2026-07-24): isGenericShowTitle's raw
   // word-count test misses titles that are 2+ words on paper but reduce to a
   // SINGLE significant token once titleTokens() strips stopwords/short words
@@ -908,12 +1117,21 @@ async function extractAggregatorReviewUrls(articleUrl, show) {
   }
   if (html == null) return null;
   const $ = cheerio.load(html);
-  const tokens = titleTokens(show.title);
   const urls = new Set();
   $('a[href]').each((_, el) => {
     const href = $(el).attr('href') || '';
     if (!isReviewUrl(href)) return;
-    if (!urlMatchesShow(href, tokens) || namesLongerShowTitle(href, show)) return;
+    if (!urlMatchesShowTitle(href, show, { context: 'article-link' })) {
+      // BRO-7163 F02: an opaque href (story.asp?ID=48291) is judged on its link text / list item instead.
+      if (!isOpaqueArticleUrl(href)) return;
+      // Same bar as the SERP path: only a registered outlet host may be accepted on headline evidence.
+      let hrefAbs = href;
+      try { hrefAbs = new URL(href, 'https://base.invalid').href; } catch { /* keep raw */ }
+      if (!(getKnownDomainMap().has(registrableHost(hostOf(hrefAbs))) || getKnownDomainMap().has(publicationHostOf(hrefAbs)))) return;
+      const blockText = ($(el).closest('li,p,tr,dd,dt').first().text() || '').replace(/\s+/g, ' ').slice(0, 400);
+      const hu = headlineAsUrl(`${$(el).text()} ${blockText}`);
+      if (!hu || !urlMatchesShowTitle(hu, show, { context: 'article-link' })) return;
+    }
     urls.add(normalizeReviewUrl(href));
   });
   // Production identity (2026-07-11): urlMatchesShow filters wrong SHOWS, not
@@ -978,6 +1196,12 @@ function explainFileExclusion(d, show) {
 
 const { lastNewReviewAt, hasRecentReviewActivity } = require('./lib/collection-phase');
 
+// A closed show stays auditable through the window plus a week of grace (BRO-7163 F05).
+const CLOSED_GRACE_DAYS = 7;
+function closedShowStillInWindow(diffDays, windowDays) {
+  return diffDays >= -3 && diffDays <= windowDays + CLOSED_GRACE_DAYS;
+}
+
 function isShowEligible(show) {
   // Recency falls back openingDate → previewsStartDate. This used to be a bare
   // `if (!show.openingDate) return false`, which made this audit — the one whose
@@ -990,10 +1214,14 @@ function isShowEligible(show) {
   if (recencyDate === NO_DATE_SENTINEL) return false;
   // --include-closed: also audit closed shows (one-time back-catalogue backfill).
   // Without it, only currently open/previews shows are checked (the default cron).
-  if (!includeClosed && !['open', 'previews'].includes(show.status)) return false;
   const opened = new Date(recencyDate);
   const today = new Date();
   const diffDays = (today - opened) / 86400000;
+  // BRO-7163 F05: a short-run show that closed inside (or just after) the opening window is still
+  // owed its late reviews. Without this a 12-day Off-West End run left the audit the day it closed.
+  if (!includeClosed && !['open', 'previews'].includes(show.status)) {
+    return show.status === 'closed' && closedShowStillInWindow(diffDays, windowDays);
+  }
   // Eligible if opened within window OR in pre-opening (<=3 days from now)
   if (diffDays >= -3 && diffDays <= windowDays) return true;
   // BRO-4770: a show past the window stays in scope while it is still collecting
@@ -1183,8 +1411,17 @@ async function auditShow(show, opts = {}) {
               page: step.page,
               geo: step.geo,
             });
+            // BRO-7162 F14: serpQuery returns null when every provider is unavailable. That is a failed
+            // query, not an empty answer; recording it ok:true let a dead provider stamp the cooldown.
+            if (serpResults === null) {
+              queryStatus.push({
+                arm: step.arm, query: step.query, page: step.page, geo: step.geo,
+                ok: false, results: 0, accepted: 0, error: 'serp-provider-unavailable',
+              });
+              continue;
+            }
             let accepted = 0;
-            for (const sr of (serpResults || [])) {
+            for (const sr of serpResults) {
               const url = acceptSerpCensusResult(sr, { show, showInfo });
               if (url && !serpCensusUrls.has(url)) accepted++;
               if (url) serpCensusUrls.add(url);
@@ -1249,6 +1486,22 @@ async function auditShow(show, opts = {}) {
   // BRO-5252: census provenance is census-ONLY. A URL an aggregator also cites is
   // an aggregator-cited gap; tagging it serpCensus would report-only it and (via
   // currentRunUncollected) hide it from the opening-window alert.
+  // BRO-6910: every URL gather-reviews' cross-show URL guard dropped for this
+  // show is a citation the site does not carry. Feeding it in as a source makes
+  // a dropped review MISSING (slow-market-grade FAILs) unless it went live some
+  // other way, instead of the drop vanishing from every audit.
+  // A row whose URL is live under another show was a correct drop (real
+  // contamination, owned elsewhere), so it is not a gap here. Any other show, not
+  // only the one the guard named: BRO-6968's guard named Into the Woods 2022
+  // (Broadway) for London reviews live under the Bridge Theatre production.
+  const crossShowDrops = readCrossShowUrlRows({ showId: show.id });
+  if (crossShowDrops.length) {
+    const canon = (u) => canonicalizeUrlForDedup(u) || u;
+    for (const row of crossShowDropsOwedHere(crossShowDrops, loadReviews(), show.id, canon, { show, tokensOf: titleTokens })) {
+      if (!isReviewUrl(row.url)) continue;
+      addSourceUrl(normalizeReviewUrl(row.url), 'cross-show-url-drop', row.sourceUrl || null);
+    }
+  }
   const serpCensusOnlyUrls = new Set([...serpCensusUrls].filter(u => !aggUrls.has(u)));
   for (const u of serpCensusUrls) addSourceUrl(u, 'serp-census');
 
@@ -1416,6 +1669,7 @@ async function auditShow(show, opts = {}) {
         // February NYT review would hide a new nytimes.com review of the return.
         dirFilesAll.filter(d => !d._exactMatchOnly && (!d.url || classifyReviewUrl(d.url).ok)),
         d => isCoveredFile(d, show),
+        aggUrl, // BRO-7163 F10: a sibling review on the same host must not vouch for this one
       );
     if (dirFiles.length === 0) {
       // Before calling it missing: is this the SAME outlet's review we already
@@ -1440,6 +1694,12 @@ async function auditShow(show, opts = {}) {
           url: aggUrl, host: aggHost, matchedUrl: variant.matchedUrl,
           outletId: variant.outletId, reason: variant.reason,
         });
+        continue;
+      }
+      // BRO-7147: a Squarespace origin-host copy of a review held at its custom domain.
+      const mirror = platformOriginMirrorOf({ candidateUrl: aggUrl, heldUrls: coveredUrls });
+      if (mirror.dup) {
+        result.dedupedVariants.push({ url: aggUrl, host: aggHost, matchedUrl: mirror.matchedUrl, outletId: null, reason: mirror.reason });
         continue;
       }
       // BRO-5489: an aol/yahoo/msn reprint of a review we already hold (the
@@ -1638,7 +1898,7 @@ async function auditShow(show, opts = {}) {
           m.weRefStarsSource = starRow.source;
         }
       }
-      if (weRefPriorRunUrls.has(m.url)) m.priorRun = true;
+      if (weUrlIsPriorRun(m.url, weRefPriorRunUrls, weRefUrlSources)) m.priorRun = true; // BRO-7163 F09: current-run corroboration wins
       // Broadway-path production identity: cited only by a prior production's
       // dated aggregator article → permanently report-only (TKAM 2018 class).
       if (bwPriorRunUrls.has(m.url)) { m.priorRun = true; m.priorRunSource = 'aggregator-article-date'; }
@@ -1690,7 +1950,13 @@ async function auditShow(show, opts = {}) {
     try {
       const pendingDir = path.join(REVIEW_TEXTS_DIR, '_pending', show.id);
       if (fs.existsSync(pendingDir)) {
-        pendingOutlets = new Set(fs.readdirSync(pendingDir).filter(f => f.endsWith('.json')).map(f => outletKey(normalizeOutletId(f.split('--')[0]))));
+        // BRO-7163 F11: only a strand a recovery path works (no-byline) is "tracked elsewhere"; a
+        // date_implausible / cross_market file can never go live and must not hide the citation.
+        const pendingFiles = fs.readdirSync(pendingDir).filter(f => f.endsWith('.json')).map(f => {
+          let rec = null; try { rec = JSON.parse(fs.readFileSync(path.join(pendingDir, f), 'utf8')); } catch { /* unreadable: not tracked */ }
+          return { name: f, rec };
+        });
+        pendingOutlets = new Set(trackedPendingFiles(pendingFiles).map(f => outletKey(normalizeOutletId(f.name.split('--')[0]))));
       }
     } catch { /* pending scan is best-effort */ }
     const seenOutlets = new Set();
@@ -2056,6 +2322,7 @@ function openingWindowConditionKey(showId) {
 // window filter here: resolving needs 96h of quiet, so a gap that last fired
 // after ~day 17 leaves the 21-day window before it could resolve and would
 // stay open forever. Keys that were never opened are a no-op in the router.
+// BRO-7116: census-only rows are quiet in or out of window (alertUncollected below).
 // BRO-5252: a show past its window whose only uncollected rows are SERP-census
 // hits is quiet too. The alert loop below skips it, so it can never fire again,
 // and a row carried forward from before the census-gate fix (Alice in
@@ -2084,14 +2351,20 @@ function alertShowState(r, showById) {
   return { openingDate: s.openingDate || r.openingDate, previewsStartDate: s.previewsStartDate, status: s.status };
 }
 
-function censusGapsAlert(state, now = Date.now()) {
-  return inOpeningWindow(state, now) && state.status !== 'closed';
+// BRO-7116: the per-show owner alert (and its Linear card) counts only gaps an
+// aggregator cited. A SERP-census hit is a discovery guess: with the ingest gate on
+// the audit tries it and usually refuses it as another production's review, a
+// collision or a failed fetch, and the same guess re-fired as "missing N cited
+// review(s)" (45 cards in 30 days, 19 of the 20 alerting shows census-only on
+// 2026-11-08). Census gaps stay in the audit row, the checkpoint count behind the
+// newsletter gate and freshness tiers, and the SERP census report.
+function alertUncollected(r) {
+  return currentRunUncollected(r, { ignoreCensusTagged: true });
 }
 
-function openingWindowClearedKeys(results, now = Date.now(), { liveShowIds, showById } = {}) {
+function openingWindowClearedKeys(results, now = Date.now(), { liveShowIds } = {}) {
   return (results || [])
-    .filter(r => r && r.showId && ((liveShowIds && !liveShowIds.has(r.showId)) || currentRunUncollected(r) <= 0
-      || (!censusGapsAlert(alertShowState(r, showById), now) && currentRunUncollected(r, { ignoreCensusTagged: true }) <= 0)))
+    .filter(r => r && r.showId && ((liveShowIds && !liveShowIds.has(r.showId)) || alertUncollected(r) <= 0))
     .map(r => openingWindowConditionKey(r.showId));
 }
 
@@ -2609,11 +2882,15 @@ async function main(argv = process.argv.slice(2)) {
         uncollected: currentRunUncollected(r),
         // BRO-5513: the opening-window alert's own count (a closed show ignores census-only
         // hits), so gap-audit-freshness refreshes only rows that alert still reads.
-        alertUncollected: currentRunUncollected(r, { ignoreCensusTagged: !censusGapsAlert(alertShowState(r, new Map([[s.id, s]]))) }),
+        alertUncollected: alertUncollected(r),
         // BRO-6687: the slow-market rollup's own count (cited rows plus reverify
         // exclusions, which `uncollected` leaves out), so a show the rollup still
         // alerts on keeps the 12h alerting cadence instead of the clean 48h one.
         ...(SLOW_MARKETS.has(s.category) ? { slowMarketResidual: slowMarketListedGap(r).residual } : {}),
+        // BRO-6910: no Verdict/BWW article found 2+ days past opening, for a show
+        // that should have one, means the audit had nothing to compare against,
+        // so its 0 gaps is not "clean" (freshness keeps it on the short cadence).
+        ...(isAggregatorBlind(s, r.aggregatorArticles, Date.now(), { majorOutletCount: blindOutletCount(s, r) }) ? { aggregatorBlind: true } : {}),
         ...(isWeShow(s) ? { refVersion: WE_REF_VERSION } : {}),
         ...(checkpoint[s.id] && checkpoint[s.id].weAlert ? { weAlert: checkpoint[s.id].weAlert } : {}),
         ...(zeroCharStored && Object.keys(zeroCharStored).length ? { zeroChar: zeroCharStored } : {}),
@@ -2822,7 +3099,7 @@ async function main(argv = process.argv.slice(2)) {
       // newsletter gate don't keep a just-closed gap at > 0 for another cycle.
       if (useCheckpoint && r.ingestResults.length && checkpoint[s.id]) {
         const recount = currentRunUncollected(r);
-        const alertRecount = currentRunUncollected(r, { ignoreCensusTagged: !censusGapsAlert(alertShowState(r, new Map([[s.id, s]]))) });
+        const alertRecount = alertUncollected(r);
         const slowRecount = SLOW_MARKETS.has(s.category) ? slowMarketListedGap(r).residual : undefined;
         if (recount !== checkpoint[s.id].uncollected || alertRecount !== checkpoint[s.id].alertUncollected || slowRecount !== checkpoint[s.id].slowMarketResidual) {
           checkpoint[s.id] = { ...checkpoint[s.id], uncollected: recount, alertUncollected: alertRecount, ...(slowRecount !== undefined ? { slowMarketResidual: slowRecount } : {}) };
@@ -3420,7 +3697,7 @@ async function main(argv = process.argv.slice(2)) {
       // the per-show condition stayed 'open' forever and its card's
       // check-alert-condition-absent VERIFY could never pass.
       try {
-        const cleared = resolveQuietConditions(openingWindowClearedKeys(reportedResults, Date.now(), { liveShowIds, showById }), { reason: 'review-gap: no uncollected cited reviews on the latest audit, show past its opening window (or closed) with only SERP-census gaps, or show id retired' });
+        const cleared = resolveQuietConditions(openingWindowClearedKeys(reportedResults, Date.now(), { liveShowIds }), { reason: 'review-gap: no uncollected cited reviews on the latest audit, only SERP-census gaps, or show id retired' });
         if (cleared.length) console.log(`[Alert Router] resolved ${cleared.length} cleared opening-window gap condition(s): ${cleared.join(', ')}`);
       } catch (e) {
         console.error(`::warning::resolving cleared opening-window gap conditions failed: ${(e.message || '').slice(0, 120)}`);
@@ -3430,8 +3707,8 @@ async function main(argv = process.argv.slice(2)) {
         const state = alertShowState(r, showById);
         if (!inOpeningWindow(state)) continue;
         const conditionKey = openingWindowConditionKey(r.showId);
-        // BRO-5489: a closed show alerts only on non-census gaps (see alertShowState).
-        const uncollected = currentRunUncollected(r, { ignoreCensusTagged: !censusGapsAlert(state) });
+        // BRO-7116: census gaps never alert, in or out of window (see alertUncollected).
+        const uncollected = alertUncollected(r);
         if (uncollected <= 0) {
           // Trim the not-yet-sent digest queue. The ledger resolve is the
           // debounced resolveQuietConditions call above, never a per-run
@@ -3627,4 +3904,4 @@ if (require.main === module) {
 // REVIEW_TEXTS_DIR before requiring this module.
 // main + USAGE are exported so scripts/audit-show-review-gap.test.mjs can
 // prove --help never falls through to a real gh call (task #266).
-module.exports = { auditShow, dropRoundupsOwnedByOtherShows, roundupOwnerMap, planRoundupGapAlerts, openLegacyRoundupGapKeys, buildRoundupGapAlert, syncRollupCard, ROUNDUP_GAP_ROLLUP_KEY, isInVerdictWindow, findAggregatorArticles, urlMatchesShow, namesLongerShowTitle, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap, isReviewUrl, normalizeReviewUrl, gapUrlIdentity, classifyShowFile, isCoveredFile, bumpRecoveryCount, acceptSerpCensusResult, otherProductionUrlSignal, computeResidualCounts, currentRunUncollected, openingWindowClearedKeys, main, USAGE, dispatchGatherFor };
+module.exports = { urlMatchesShowTitle, matchingTitleVariants, auditShow, dropRoundupsOwnedByOtherShows, roundupOwnerMap, planRoundupGapAlerts, openLegacyRoundupGapKeys, buildRoundupGapAlert, syncRollupCard, ROUNDUP_GAP_ROLLUP_KEY, isInVerdictWindow, findAggregatorArticles, urlMatchesShow, namesLongerShowTitle, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap, isReviewUrl, normalizeReviewUrl, gapUrlIdentity, classifyShowFile, isCoveredFile, bumpRecoveryCount, acceptSerpCensusResult, isShowEligible, closedShowStillInWindow, otherProductionUrlSignal, computeResidualCounts, currentRunUncollected, alertUncollected, openingWindowClearedKeys, main, USAGE, dispatchGatherFor };

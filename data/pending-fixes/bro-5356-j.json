@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5356-j",
   "planId": "55bcb697-412b-460a-9ac3-e6452aa7ed59",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-14T16:00:00.000Z",
   "submitter": {
     "name": null,
@@ -122,5 +122,32 @@
       "ok": true,
       "msg": "the-whos-tommy-2024/nysr--david-finkle.json wrongProduction: true -> false"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 3
+    },
+    "ops": [
+      {
+        "i": 0,
+        "verdict": "resolved",
+        "reason": "buena-vista-social-club-2025/nysr--bob-verini.json wrongProductionManualClear already true"
+      },
+      {
+        "i": 2,
+        "verdict": "resolved",
+        "reason": "buena-vista-social-club-2025/nysr--michael-sommers.json wrongProductionManualClear already true"
+      },
+      {
+        "i": 6,
+        "verdict": "resolved",
+        "reason": "the-whos-tommy-2024/nysr--david-finkle.json wrongProductionManualClear already true"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (3 resolved); per-op reasons in triage.ops"
 }

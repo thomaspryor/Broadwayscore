@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/site-image-versions.json (untracked core data); data/grosses.json (untracked core data); data/audience-buzz.json (untracked core data); +8 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-6114: Next 16 calls the sitemap handler with `id` as a Promise<string>
  * (next-metadata-route-loader: `handler({ id: targetIdPromise })`). The handler

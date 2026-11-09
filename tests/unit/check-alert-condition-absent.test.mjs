@@ -113,3 +113,12 @@ test('digest-needs-you key matches ledger rows by title (resolved passes, open f
   assert.equal(run(writeLedger('dn-open.json', { 'tour-candidate:mexodus:2026-07-08': { ...row('open'), lastSeen: iso(1) } }), key).status, 1);
   assert.equal(run(writeLedger('dn-none.json', { other: { status: 'open', title: 'x', lastSeen: iso(1) } }), key).status, 3);
 });
+
+test('BRO-6435: a resolved row with no resolvedAt is absent by its lastSeen; with no timestamps it is unknown', () => {
+  const { classifyEntry } = require('../../scripts/check-alert-condition-absent.js');
+  const v = classifyEntry({ status: 'resolved', lastSeen: iso(200) }, realNowMs());
+  assert.equal(v.verdict, 'absent');
+  assert.match(v.why, /lastSeen used/);
+  assert.equal(classifyEntry({ status: 'resolved', resolvedAt: 'junk' }, realNowMs()).verdict, 'unknown');
+  assert.equal(classifyEntry({ status: 'resolved', lastSeen: iso(2), resolvedAt: iso(10) }, realNowMs()).verdict, 'unknown', 'seen after resolve stays unknown');
+});

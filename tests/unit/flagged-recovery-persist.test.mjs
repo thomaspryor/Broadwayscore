@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Integration guard for the retry-cap persistence in the self-healing recovery
  * loop (scripts/audit-show-review-gap.js → bumpRecoveryCount). The pure

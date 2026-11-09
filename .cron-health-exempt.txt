@@ -336,3 +336,4 @@ board-hygiene-report.yml
 
 # city-finder-daily.yml: daily pickup of new San Diego/Boston reviews (BRO-6854); a missed day only delays reviews one day, and the failure step posts to the alerts channel.
 city-finder-daily.yml
+critic-reach.yml  # BRO-6984 owner-only reach count for claimed critic pages; low-stakes (stale data hides the line after 3 days), notify-failure on error

@@ -381,7 +381,7 @@ async function listIssuesByProvenance({ since, titlePrefixes = [], descriptionMa
 // return the oldest N (verified live 2026-10-14, BRO-5287). An issue with 50+
 // comments is then read whole, page by page, up to maxPerIssue (BRO-6139: the
 // runner card BRO-4745 has hundreds, and the newest 50 hid older summaries).
-async function listIssueComments(identifiers, teamKey = TEAM_KEY, { maxPerIssue = 2000 } = {}) {
+async function listIssueComments(identifiers, teamKey = TEAM_KEY, { maxPerIssue = 2000, includeArchived = false } = {}) {
   const prefix = `${teamKey}-`;
   const numbers = [...new Set((identifiers || [])
     .filter((id) => String(id).startsWith(prefix))
@@ -389,7 +389,7 @@ async function listIssueComments(identifiers, teamKey = TEAM_KEY, { maxPerIssue 
     .filter(Number.isFinite))];
   const byId = new Map();
   for (let i = 0; i < numbers.length; i += 50) {
-    const data = await graphql(linearDispatch.buildIssueCommentsByNumberQuery(), { teamKey, numbers: numbers.slice(i, i + 50) });
+    const data = await graphql(linearDispatch.buildIssueCommentsByNumberQuery({ includeArchived }), { teamKey, numbers: numbers.slice(i, i + 50) });
     for (const n of (data.issues && data.issues.nodes) || []) {
       const nodes = (n.comments && n.comments.nodes) || [];
       let all = nodes;

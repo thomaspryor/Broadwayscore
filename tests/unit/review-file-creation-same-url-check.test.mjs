@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data); data/review-texts/__test-bro730-same-url-20250 (untracked core data); data/review-texts/__test-bro730-same-url-20250/variety--brent-lang.json (untracked core data); +8 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-730: Review file creation should check same-URL across critic names.
 //
 // Root cause: createReviewFile() only merged same-URL writes into an existing

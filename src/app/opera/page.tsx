@@ -10,16 +10,16 @@ const currentYear = new Date().getFullYear();
 const operaOgImageUrl = `${BASE_URL}/og/opera.png`;
 
 export const metadata: Metadata = {
-  title: `Opera Reviews & Ratings: Met Opera, Royal Opera House & ENO (${currentYear}) | OperaScorecard`,
+  title: `Opera Reviews & Ratings: Met Opera, Royal Opera House, San Francisco Opera and English National Opera (${currentYear}) | OperaScorecard`,
   description:
-    'CriticScore ratings for Metropolitan Opera productions and new premieres at the Royal Opera House and English National Opera. Aggregated from The New York Times, Operawire, Parterre Box, New York Classical Review, Bachtrack, and more. All opera critic voices count equally.',
+    'CriticScore ratings for Metropolitan Opera productions and new premieres at the Royal Opera House, San Francisco Opera and English National Opera. Aggregated from The New York Times, Operawire, Parterre Box, New York Classical Review, Bachtrack, and more. All opera critic voices count equally.',
   alternates: {
     canonical: `${BASE_URL}/opera`,
   },
   openGraph: {
     title: 'OperaScorecard: Met Opera Reviews & Ratings',
     description:
-      'Aggregated CriticScore ratings for Metropolitan Opera productions from Operawire, NYT, Parterre Box, NYCR, and more.',
+      'Aggregated CriticScore ratings for Metropolitan Opera, Royal Opera House, San Francisco Opera and English National Opera productions from Operawire, NYT, Parterre Box, NYCR, and more.',
     url: `${BASE_URL}/opera`,
     type: 'article',
     images: [{ url: operaOgImageUrl, width: 1200, height: 630, alt: 'OperaScorecard: Met Opera Reviews & Ratings' }],
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'OperaScorecard',
-    description: 'Aggregated CriticScore ratings for Metropolitan Opera productions from Operawire, NYT, Parterre Box, NYCR, and more.',
+    description: 'Aggregated CriticScore ratings for Metropolitan Opera, Royal Opera House, San Francisco Opera and English National Opera productions from Operawire, NYT, Parterre Box, NYCR, and more.',
     images: [{ url: operaOgImageUrl, width: 1200, height: 630, alt: 'OperaScorecard: Met Opera Reviews & Ratings' }],
   },
 };
@@ -77,7 +77,7 @@ export default function OperaPage() {
     name: 'Opera Scorecard',
     url: 'https://operascorecard.com',
     logo: `${BASE_URL}/og/opera.png`,
-    description: 'Aggregated critic ratings for Metropolitan Opera productions and new productions at the Royal Opera House and English National Opera',
+    description: 'Aggregated critic ratings for Metropolitan Opera productions and new productions at the Royal Opera House, San Francisco Opera and English National Opera',
     inLanguage: 'en',
   };
 

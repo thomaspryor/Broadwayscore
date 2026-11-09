@@ -5,7 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { stalePlans, readPlans, describeStale } = require('./pending-fixes-stale-check.js');
+const { stalePlans, stillNeededReason, readPlans, describeStale } = require('./pending-fixes-stale-check.js');
 const { evaluate } = require('../cloud-doctor.js');
 
 const NOW = Date.parse('2026-10-22T00:00:00Z');
@@ -50,7 +50,7 @@ test('evaluate skips the row when stalePendingPlans is absent', () => {
 
 test('describeStale is null when nothing is stale and names ids when it is', () => {
   assert.equal(describeStale([]), null);
-  assert.match(describeStale(stalePlans([{ planId: '925', status: 'pending', createdAt: day(29) }], { now: NOW })), /1 unresolved fix plan.*925 \(29d\)/);
+  assert.match(describeStale(stalePlans([{ planId: '925', status: 'pending', createdAt: day(29) }], { now: NOW })), /1 unresolved fix plan.*925 \(29d: not triaged/);
 });
 
 test('readPlans reads a directory and labels each plan by its file name', (t) => {
@@ -69,9 +69,36 @@ test('cloud-doctor warns on every stale unresolved status and stays ok otherwise
     const warn = evaluate({ ...base, stalePendingPlans: stalePlans([{ planId: status, status, createdAt: day(29) }], { now: NOW }) }, { now: NOW }).find((r) => r.id === 'pending-fixes');
     assert.equal(warn.level, 'warn');
     assert.match(warn.detail, /1 unresolved fix plan\(s\) older than 7 days/);
-    assert.ok(warn.detail.includes(`${status} (29d)`));
+    assert.ok(warn.detail.includes(`${status} (29d: not triaged`));
     assert.doesNotMatch(warn.detail, /never applied/);
   }
   const ok = evaluate({ ...base, stalePendingPlans: [] }, { now: NOW }).find((r) => r.id === 'pending-fixes');
   assert.equal(ok.level, 'ok');
+});
+
+// BRO-7092: only plans whose triage still finds needed work count, each with a named reason.
+test('a triaged plan counts only while its triage finds still-needed work, and names why', () => {
+  const at = day(2);
+  const plans = [
+    { planId: 'needed', status: 'partial', createdAt: day(30), executedAt: day(29), triage: { at, verdict: 'still-needed', stillNeededReason: 'op 3: x.json is still counted' } },
+    { planId: 'needed-no-reason', status: 'partial', createdAt: day(30), triage: { at, verdict: 'still-needed' } },
+    { planId: 'settled', status: 'partial', createdAt: day(30), triage: { at, verdict: 'resolved' } },
+    { planId: 'obsolete', status: 'pending', createdAt: day(30), triage: { at, verdict: 'obsolete' } },
+    { planId: 'untriaged', status: 'partial', createdAt: day(31) },
+    { planId: 'rerun-after-triage', status: 'partial', createdAt: day(32), executedAt: day(1), triage: { at, verdict: 'resolved' } },
+  ];
+  const s = stalePlans(plans, { now: NOW });
+  assert.deepEqual(s.map((x) => x.id), ['rerun-after-triage', 'untriaged', 'needed', 'needed-no-reason']);
+  assert.equal(s.find((x) => x.id === 'needed').reason, 'op 3: x.json is still counted');
+  assert.match(s.find((x) => x.id === 'needed-no-reason').reason, /still-needed ops/);
+  assert.match(s.find((x) => x.id === 'untriaged').reason, /not triaged/);
+  assert.match(s.find((x) => x.id === 'rerun-after-triage').reason, /not triaged/);
+  for (const x of s) assert.ok(x.reason && x.reason.length > 0, `${x.id} has a named reason`);
+  assert.match(describeStale(s), /needed \(\d+d: op 3: x\.json is still counted\)/);
+  assert.equal(stillNeededReason({ triage: { at, verdict: 'resolved' } }), null);
+});
+
+test('the real plans directory: every stale plan carries a named reason', () => {
+  const dir = path.join(path.dirname(new URL(import.meta.url).pathname), '..', '..', 'data', 'pending-fixes');
+  for (const s of stalePlans(readPlans(dir))) assert.ok(typeof s.reason === 'string' && s.reason.trim(), `${s.id} has no reason`);
 });

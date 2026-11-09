@@ -51,6 +51,17 @@ function republishMarker(text) {
       const m = re.exec(seg);
       if (!m) continue;
       if (WORK_HISTORY_RE.test(m[0])) continue;
+      // "the memoir was withdrawn ... before being republished in 1998" (The Pianist,
+      // Stage Door): the work word sits earlier in the same sentence, not in the match.
+      // The article's own notice ("This review is from 2025") is never about the work.
+      // Only the bare "republished in <year>" shape needs this: the dated "originally
+      // published in <outlet>, <date>" shapes already require a month before the year, and
+      // "this story/article was ..." datelines use work words (story, film) about the article.
+      if (re === REPUBLISH_PATTERNS[3]) {
+        const lead = seg.slice(Math.max(0, m.index - 150), m.index);
+        const sentence = lead.slice(lead.search(/[^.!?\n]*$/));
+        if (WORK_HISTORY_RE.test(sentence) && !/\b(?:this|the|our)\s+(?:story|article|piece|post|review|interview|page)\b[^.]*$/i.test(sentence)) continue;
+      }
       const year = parseInt(m[m.length - 1], 10);
       if (!best || year < best.year) best = { year, snippet: m[0].replace(/\s+/g, ' ').slice(0, 120) };
     }
@@ -154,7 +165,49 @@ function humanFlagOutranksScriptClear(d) {
   return r.conflict && r.flagLater && require('./review-write-guard').isScriptWrongProductionClear(d);
 }
 
+/**
+ * Does the page text itself say this review belongs to an EARLIER run? Both
+ * republish detectors, so a caller cannot check one and miss the other: the
+ * "This review is from 2025" / "Originally published" markers
+ * (evaluateRepublishedReview) and the body-basis phrases
+ * (detectPriorRunRepublish). BRO-7085: clear-stale-wrong-production-flags.js
+ * cleared An Oak Tree's republish flag on an LLM "real review of An Oak Tree"
+ * verdict (true, of the 2025 run) and stamped an override that then hid the
+ * marker from the rebuild's guard.
+ *
+ * @param {{fullText?: string, publishDate?: string}} d review record
+ * @param {object} show shows.json record
+ * @returns {boolean}
+ */
+function textNamesEarlierRun(d, show) {
+  if (!d || !show || typeof d.fullText !== 'string') return false;
+  if (evaluateRepublishedReview({ fullText: d.fullText, show, publishDate: d.publishDate }).exclude) return true;
+  return require('./prior-run-republish-guard').detectPriorRunRepublish({ text: d.fullText, show }).flag;
+}
+
+/**
+ * May the rebuild's republish-marker guard run on this record? Open wherever the
+ * general wrongProduction audit is open, and ALSO over a SCRIPT's clear: a script
+ * verdict ("this is a real review of the show") cannot read the page's own
+ * "this review is from 2025" line as the date, so only a person's clear
+ * (humanReviewedWrongProduction === false, a hand-set ManualClear/override,
+ * allowEarlyDate, allowCrossMarket) outranks the marker.
+ *
+ * @param {object} d review record
+ * @param {{ auditOpen: boolean, laneHeld?: boolean }} ctx auditOpen = the general gate
+ */
+function republishGuardOpen(d, { auditOpen, laneHeld = false } = {}) {
+  if (auditOpen) return true;
+  if (!d || laneHeld) return false;
+  if (d.wrongProductionCleared || d.humanReviewedWrongProduction === false) return false;
+  if (d.allowEarlyDate || d.allowCrossMarket === true) return false;
+  const cleared = d.wrongProductionManualClear === true || d.wrongProductionOverride === true;
+  return cleared && require('./review-write-guard').isScriptWrongProductionClear(d);
+}
+
 module.exports = {
+  textNamesEarlierRun,
+  republishGuardOpen,
   humanFlagOutranksScriptClear,
   republishMarker,
   evaluateRepublishedReview,

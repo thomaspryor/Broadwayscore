@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/cast-manifest.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Critic-slug alias registry + redirect emission (2026 data audit, S5-T9).
 //
 // Requires the real module (CLAUDE.md §15) and points it at temp files via the
@@ -156,7 +157,7 @@ test('seed template loads through the real loader, flattens with nothing dropped
 const FIXTURE_SHOWS = {
   _meta: { lastUpdated: '2026-09-28T00:00:00.000Z' },
   shows: [
-    { id: 'hamilton-2015', slug: 'hamilton-2015' },
+    { id: 'hamilton-2015', slug: 'hamilton-2015', category: 'broadway' },
     { id: 'hamilton-west-end-2017', slug: 'hamilton-west-end' },
     {
       id: 'the-emporium-off-broadway-2025',
@@ -277,11 +278,34 @@ test('build-slug-redirects.js: an alias whose canonical critic has no reviews le
   withTmp((dir) => {
     const registry = join(dir, 'critic-slug-aliases.json');
     writeFileSync(registry, JSON.stringify({ johnpeter: 'john-peter', 'Jose-Sol-S': 'jose-solis' }));
-    const res = runScript(dir, registry, [{ criticName: 'José Solís' }, { criticName: 'Unknown' }]);
+    const res = runScript(dir, registry, [{ criticName: 'José Solís', showId: 'hamilton-2015' }, { criticName: 'Unknown' }]);
     assert.equal(res.status, 0, `build-slug-redirects.js failed:\n${res.stdout}\n${res.stderr}`);
     assert.equal(res.compact['critic:jose-sol-s'], 'jose-solis');
     assert.ok(!('critic:johnpeter' in res.compact), 'alias to a vanished critic must not be emitted');
     assert.deepEqual(res.full.criticRedirects, { 'jose-sol-s': 'jose-solis' });
     assert.match(res.stderr, /johnpeter.*no critic page/);
   });
+});
+
+test('criticSlugsFromReviews with shows: regional/tour-only and inherited reviews make no page (BRO-7045)', () => {
+  const shows = [{ id: 'a', category: 'broadway' }, { id: 'r', category: 'regional' }, { id: 't', category: 'tour' }];
+  const reviews = [
+    { criticName: 'Ann Real', showId: 'a' },
+    { criticName: 'Rita Regional', showId: 'r' },
+    { criticName: 'Tom Tour', showId: 't' },
+    { criticName: 'Ivy Inherited', showId: 'a', inheritedFromShowId: 'x' },
+    { criticName: 'Gone Show', showId: 'zzz' },
+  ];
+  assert.deepEqual([...criticSlugsFromReviews(reviews, shows)], ['ann-real']);
+  assert.equal(criticSlugsFromReviews(reviews).size, 5);
+});
+
+test('dropAliasesWithoutLiveCanonical: regional-only canonicals are dropped but do not trip the truncation limit (BRO-7045)', () => {
+  const flat = {};
+  for (let i = 0; i <= MAX_DEAD_CANONICAL_DROPS + 2; i++) flat['old-' + i] = 'regional-' + i;
+  const bylines = new Set(Object.values(flat));
+  const { aliases, dropped } = dropAliasesWithoutLiveCanonical(flat, new Set(['x']), bylines);
+  assert.deepEqual(aliases, {});
+  assert.equal(dropped.length, MAX_DEAD_CANONICAL_DROPS + 3);
+  assert.throws(() => dropAliasesWithoutLiveCanonical(flat, new Set(['x']), new Set()), /refusing to drop/);
 });

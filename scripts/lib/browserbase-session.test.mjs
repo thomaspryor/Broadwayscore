@@ -481,12 +481,13 @@ test('BRO-5243 boost: BROWSERBASE_TIER1_BOOST_DISABLED=true turns it off', async
   assert.equal(caps.tier1RecoveryBoost('deadline.com', { now: new Date(BOOSTED), env: {} }), 0);
 });
 
-// ---------- Owner-approved caller allowance (Talkin' Broadway probe, 2026-10-19) ----------
-const TB_PROBE = 'probe-talkinbroadway-browserbase.js';
+// ---------- Owner-approved caller allowance (Talkin' Broadway, 2026-10-19) ----------
+// The probe's own entry was retired on 2026-11-04 (unused since 10-22); the index collector carries these tests.
+const TB_CALLER = 'collect-talkinbroadway-index.js';
 
-test('caller allowance: the probe runs past both reserves while the account is under the raw ceiling', async () => {
+test('caller allowance: the collector runs past both reserves while the account is under the raw ceiling', async () => {
   // Bulk limit here is 175 (23 shows) and a non-lane caller is refused at 267.
-  await withBb({ windowShows: 23, live: 249, host: 'talkinbroadway.com', caller: TB_PROBE, callerUsed: 2 }, async (call) => {
+  await withBb({ windowShows: 23, live: 249, host: 'talkinbroadway.com', caller: TB_CALLER, callerUsed: 2 }, async (call) => {
     assert.equal((await call()).id, 'sess_ok');
   });
   await withBb({ windowShows: 23, live: 249, host: 'talkinbroadway.com' }, async (call) => {
@@ -495,35 +496,36 @@ test('caller allowance: the probe runs past both reserves while the account is u
 });
 
 test('caller allowance: never above the raw daily ceiling (boost included only while active)', async () => {
-  await withBb({ windowShows: 23, live: 250, host: 'talkinbroadway.com', caller: TB_PROBE }, async (call) => {
+  await withBb({ windowShows: 23, live: 250, host: 'talkinbroadway.com', caller: TB_CALLER }, async (call) => {
     await assert.rejects(call, /Browserbase daily cap reached \(250\/250/);
   });
-  await withBb({ windowShows: 23, live: 267, host: 'talkinbroadway.com', caller: TB_PROBE, now: BOOSTED }, async (call) => {
+  await withBb({ windowShows: 23, live: 267, host: 'talkinbroadway.com', caller: TB_CALLER, now: BOOSTED }, async (call) => {
     assert.equal((await call()).id, 'sess_ok');
   });
 });
 
 test('caller allowance: the caller is capped at its own sessions per day', async () => {
-  await withBb({ live: 10, host: 'talkinbroadway.com', caller: TB_PROBE, callerUsed: 3 }, async (call, { fetchMock }) => {
-    await assert.rejects(call, /Browserbase caller allowance used \(3\/3\)/);
+  await withBb({ live: 10, host: 'talkinbroadway.com', caller: TB_CALLER, callerUsed: 8 }, async (call, { fetchMock }) => {
+    await assert.rejects(call, /Browserbase caller allowance used \(8\/8\)/);
     assert.equal(fetchMock.mock.callCount(), 0);
   });
 });
 
 test('caller allowance: an unknown own count or unknown account count refuses', async () => {
-  await withBb({ live: 10, host: 'talkinbroadway.com', caller: TB_PROBE, callerUsed: null }, async (call) => {
+  await withBb({ live: 10, host: 'talkinbroadway.com', caller: TB_CALLER, callerUsed: null }, async (call) => {
     await assert.rejects(call, /caller allowance used \(count unknown\)/);
   });
-  await withBb({ live: null, host: 'talkinbroadway.com', caller: TB_PROBE, callerUsed: 0 }, async (call) => {
+  await withBb({ live: null, host: 'talkinbroadway.com', caller: TB_CALLER, callerUsed: 0 }, async (call) => {
     await assert.rejects(call, /caller allowance used \(count unknown\)/);
   });
 });
 
 test('caller allowance: expires, and the kill switch turns it off', async () => {
   const caps = require('./browserbase-caps.js');
-  assert.equal(caps.callerAllowance(TB_PROBE, { now: new Date('2026-11-18T23:59:00Z'), env: {} }), 3);
-  assert.equal(caps.callerAllowance(TB_PROBE, { now: new Date('2026-11-19T00:00:00Z'), env: {} }), 0);
-  assert.equal(caps.callerAllowance(TB_PROBE, { now: new Date('2026-10-20T00:00:00Z'), env: { BROWSERBASE_CALLER_ALLOWANCES_DISABLED: 'true' } }), 0);
+  assert.equal(caps.callerAllowance(TB_CALLER, { now: new Date('2027-01-18T23:59:00Z'), env: {} }), 8);
+  assert.equal(caps.callerAllowance(TB_CALLER, { now: new Date('2027-01-19T00:00:00Z'), env: {} }), 0);
+  assert.equal(caps.callerAllowance('probe-talkinbroadway-browserbase.js', { now: new Date('2026-11-05T00:00:00Z'), env: {} }), 0, 'the probe entry is retired');
+  assert.equal(caps.callerAllowance(TB_CALLER, { now: new Date('2026-10-20T00:00:00Z'), env: { BROWSERBASE_CALLER_ALLOWANCES_DISABLED: 'true' } }), 0);
   assert.equal(caps.callerAllowance('some-other-script.js', { now: new Date('2026-10-20T00:00:00Z'), env: {} }), 0);
   assert.equal(caps.callerAllowance('constructor', { now: new Date('2026-10-20T00:00:00Z'), env: {} }), 0);
 });

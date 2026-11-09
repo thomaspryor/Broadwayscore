@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/commercial.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-5050: the BRO-5020 cap-only commercial entries must stay applied to
 // data/commercial.json (private data repo, gitignored). Skips when the file
 // is absent (CI jobs without the private data).

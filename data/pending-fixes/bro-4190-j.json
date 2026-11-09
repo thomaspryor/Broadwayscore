@@ -2,7 +2,7 @@
   "createdAt": "2026-10-13T04:43:22Z",
   "issueNumber": "bro-4190-j",
   "planId": "46bf3b06-28a0-4fb4-89ab-d75af0959867",
-  "status": "partial",
+  "status": "superseded",
   "submitter": {
     "name": null,
     "email": null
@@ -29,5 +29,22 @@
       "ok": false,
       "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=la-boheme-off-broadway-2026 --url=https://newyorkclassicalreview.com/2026/10/alternate-cast-keeps-the-romance-and-comedy-alight-in-mets-boheme/ --stub-on-failure"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 1
+    },
+    "ops": [
+      {
+        "i": 0,
+        "verdict": "resolved",
+        "reason": "https://newyorkclassicalreview.com/2026/10/alternate-cast-keeps-the-romance-and-comedy-alight-in-mets-boheme/ is counted for la-boheme-off-broadway-2026"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (1 resolved); per-op reasons in triage.ops"
 }

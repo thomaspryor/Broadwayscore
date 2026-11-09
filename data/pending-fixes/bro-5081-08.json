@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5081-08",
   "planId": "14c79beb-cf6d-49a2-921b-74b3315b79df",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-11T21:42:49.528Z",
   "submitter": {
     "name": null,
@@ -367,5 +367,22 @@
       "ok": true,
       "msg": "the-play-that-goes-wrong-2017/variety--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"Frank Rizzo\""
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "obsolete": 1
+    },
+    "ops": [
+      {
+        "i": 6,
+        "verdict": "obsolete",
+        "reason": "review file the-encounter-2016/variety--marilyn-stasio.json no longer exists and nothing in the-encounter-2016 looks like a rename"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (1 obsolete); per-op reasons in triage.ops"
 }

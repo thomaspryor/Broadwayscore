@@ -33,6 +33,7 @@
  * (cron passes a small cap; manual full sweeps can omit it).
  */
 
+import '../lib/llm-usage-install.js'; // LLM spend meter: keep it the first import (BRO-5043)
 import * as fs from 'fs';
 import * as path from 'path';
 import { GoogleGenerativeAI } from '@google/generative-ai';

@@ -1,0 +1,367 @@
+{
+  "issueNumber": "bro-6221-i",
+  "planId": "c2cb4ff9-8963-426a-8a89-4e6fb273b41f",
+  "status": "applied",
+  "createdAt": "2026-11-03T15:03:22.151Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6221: null images.thumbnail/poster that point at local files missing from public/ (272 refs on 215 closed shows). A placeholder beats a 404; the Mon/Thu fetch-show-images run refills a slot when art is found. Board-lead approved, no paid image search. (part 9 of 9)",
+    "steps": [
+      "shows.json: the-selling-of-the-president-1972.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: elizabeth-i-1972.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: sugar-1972.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: thats-entertainment-1972.images thumbnail+poster -> null (file missing from public/, BRO-6221)",
+      "shows.json: promenade-all-1972.images thumbnail+poster -> null (file missing from public/, BRO-6221)",
+      "shows.json: captain-brassbounds-conversion-1972.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: lost-in-the-stars-1972.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: all-the-girls-came-out-to-play-1972.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: the-little-black-book-1972.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: an-evening-with-richard-nixon-and-1972.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: different-times-1972.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: tough-to-get-help-1972.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: hard-job-being-god-1972.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: dont-play-us-cheap-1972.images thumbnail+poster -> null (file missing from public/, BRO-6221)",
+      "shows.json: heathen-1972.images thumbnail -> null (file missing from public/, BRO-6221)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-selling-of-the-president-1972",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-selling-of-the-president-1972/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: the-selling-of-the-president-1972.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "elizabeth-i-1972",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/elizabeth-i-1972/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: elizabeth-i-1972.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sugar-1972",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/sugar-1972/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: sugar-1972.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "thats-entertainment-1972",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/thats-entertainment-1972/thumbnail.jpg",
+          "poster": "/images/shows/thats-entertainment-1972/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: thats-entertainment-1972.images thumbnail+poster -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "promenade-all-1972",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/promenade-all-1972/thumbnail.jpg",
+          "poster": "/images/shows/promenade-all-1972/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: promenade-all-1972.images thumbnail+poster -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "captain-brassbounds-conversion-1972",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/captain-brassbounds-conversion-1972/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: captain-brassbounds-conversion-1972.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "lost-in-the-stars-1972",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/lost-in-the-stars-1972/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: lost-in-the-stars-1972.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "all-the-girls-came-out-to-play-1972",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/all-the-girls-came-out-to-play-1972/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: all-the-girls-came-out-to-play-1972.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-little-black-book-1972",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-little-black-book-1972/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: the-little-black-book-1972.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "an-evening-with-richard-nixon-and-1972",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/an-evening-with-richard-nixon-and-1972/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: an-evening-with-richard-nixon-and-1972.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "different-times-1972",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/different-times-1972/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: different-times-1972.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "tough-to-get-help-1972",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/tough-to-get-help-1972/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: tough-to-get-help-1972.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hard-job-being-god-1972",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/hard-job-being-god-1972/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: hard-job-being-god-1972.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dont-play-us-cheap-1972",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/dont-play-us-cheap-1972/thumbnail.jpg",
+          "poster": "/images/shows/dont-play-us-cheap-1972/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: dont-play-us-cheap-1972.images thumbnail+poster -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "heathen-1972",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/heathen-1972/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: heathen-1972.images thumbnail -> null (file missing from public/, BRO-6221)"
+      }
+    ]
+  },
+  "executedAt": "2026-11-03T18:08:39.995Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-selling-of-the-president-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for elizabeth-i-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for sugar-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for thats-entertainment-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for promenade-all-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for captain-brassbounds-conversion-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for lost-in-the-stars-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for all-the-girls-came-out-to-play-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-little-black-book-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for an-evening-with-richard-nixon-and-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for different-times-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for tough-to-get-help-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for hard-job-being-god-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for dont-play-us-cheap-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for heathen-1972"
+    }
+  ],
+  "executedIn": "ci"
+}

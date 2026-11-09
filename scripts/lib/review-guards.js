@@ -17,6 +17,7 @@ const { isNonEvidenceFailure, isStrictFailureReason, effectiveFailureReason, SOF
 // publishes stops costing a full fetch chain every run.
 const SOFT_404_COOLDOWNS_MS = [3, 12, 48, 168].map((h) => h * 3600 * 1000);
 const { passesGenericTitleIdentity } = require('./generic-title-guard');
+const { evaluateSoloVerdictHold } = require('./single-verdict-guard');
 
 /**
  * Fix #12 — assignedScore skip guard (collect-review-texts.js)
@@ -201,6 +202,85 @@ const STRONG_DIFFERENT_SHOW_MARKERS = [
   /\b(?:scraped content|this) is a review of (?:a|an|the) (?:film|movie) (?:adaptation|version)\b/i,
 ];
 
+// Different-city production (King Lear Off-Broadway 2026-11-07, BRO-7058). Two
+// Babes with Blades reviews (Theater Wit, Chicago) sat on The Secret Theatre's
+// page because they landed 6-8 days before opening, so the 30-day safety net
+// downgraded CV's wrongProduction to low even though CV named the Chicago venue.
+// A same-title play (Shakespeare, Chekhov, A Christmas Carol) staged in another
+// city in the same weeks is the normal case for the classics, so the proximity
+// net must not rescue a review whose CV text names a different city's production.
+// Needs BOTH a named non-NYC city/region AND an explicit "not this market"
+// statement, and stays off for tryouts/tours/transfers where CV is describing
+// the same production's earlier or travelling life.
+// US regional cities only. UK/overseas names are left out on purpose: CV's "this is the
+// London production" verdicts mostly come from a critic mentioning the show's history
+// (Heathers, Kenrex, Hamlet, Waiting for Godot were all real NYC reviews), while a US
+// regional venue address in the text (Theater Wit, 1229 W. Belmont) is concrete.
+const DIFFERENT_CITY_ALT =
+  'Chicago|Illinois|Los Angeles|California|San Francisco|San Diego|Boston|Massachusetts|' +
+  'Philadelphia|Pennsylvania|Washington,? D\\.?C\\.?|Seattle|Houston|Dallas|Austin|Atlanta|Minneapolis|' +
+  'Cleveland|Pittsburgh|Denver|Detroit|Norfolk';
+// BRO-7077: CV's own wording for the King Lear case was "The review is of a Chicago production
+// by Babes with Blades at Theater Wit" (no "not Off-Broadway"), so the market-statement test
+// missed it. The locator is anchored to the review's OWN subject ("the review is of a <city>
+// production", "reviews a <city>-based company"), so a comparison or history mention ("compares
+// it to the Chicago production", "the director helmed the Chicago staging") never fires. The
+// signal beats the slug-match run-window veto, so a loose match would drop real reviews.
+const CITY_PRODUCTION_LOCATOR_RE = new RegExp(
+  '(?:\\b(?:review|article|piece|critique)\\s+(?:is|was)\\s+(?:of|about)|^\\s*(?:reviews?|covers?)|[.;]\\s*(?:reviews?|covers?))' +
+  '\\s+(?:an?|the)\\s+(?:' + DIFFERENT_CITY_ALT + ')(?:-based)?\\s+(?:production|staging|mounting|revival|company|troupe)\\b', 'i'
+);
+// A located production that is PLAYING HERE (a visiting company at the Public or BAM) is
+// this market's review: the locator never fires when the same text places it in New York
+// or describes a visit (BRO-7077 ship-check P1).
+const LOCATOR_HERE_VETO_RE =
+  /\b(?:New York|NYC|Manhattan|Brooklyn|Broadway|BAM|visit(?:s|ing)?|engagement|bring(?:s|ing)?|brought|now (?:at|playing|running|in)|in residence)\b/i;
+const DIFFERENT_CITY_NAMES_RE = new RegExp(
+  '\\b(?:' + DIFFERENT_CITY_ALT + ')\\b' +
+  // "Austin Pendleton", "Denver Post": a city glued to another capitalised word is a name, not a place,
+  // unless that word is a venue word ("Chicago Shakespeare Theater").
+  '(?!\\s+(?!Theat|Playhouse|Rep\\b|Stage|Shakes|Opera)[A-Z][a-z]+)'
+);
+// "not <market>" must follow within a few words (not 80 characters), and "does/do/did not mention
+// Broadway" is a statement about the critic, not about where the show was staged.
+const NOT_THIS_MARKET_RE =
+  /(?<!\b(?:does|do|did)\s)\bnot\s+(?:\S+\s+){0,3}?(?:an?\s+|the\s+)?(?:expected\s+|intended\s+)?(?:Off[- ]?Broadway|Broadway|New York(?: City)?|NYC)\b(?!\s+(?:City\s+)?(?:Center|Centre|Theat|Ballet|Opera|Live|Public|Fringe))|\bregional (?:theat(?:er|re)|production)\b|\bgeographic(?:al)? (?:location|mismatch)\b/i;
+function escapeRegExp(v) { return String(v).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+// Outlet names carry a city ("Chicago Tribune" critic bylines, "Boston Globe") and quoted
+// passages carry the play's own setting; neither says where the production was staged.
+const OUTLET_CITY_RE = /\b(?:Chicago (?:Tribune|Reader|Sun-Times|Magazine)|Boston (?:Globe|Herald)|Washington Post|Los Angeles Times|LA Times|Philadelphia Inquirer|Houston Chronicle|San Francisco Chronicle|Seattle Times|Dallas Morning News|Denver Post|Atlanta Journal-Constitution|Pittsburgh Post-Gazette|Star Tribune|Plain Dealer|Virginian-Pilot|Third Coast Review|New City Stage)\b/gi;
+const QUOTED_PASSAGE_RE = /["\u201C][^"\u201D]{0,300}["\u201D]|(?<![A-Za-z])'[^']{10,300}'(?![A-Za-z])/g;
+const SAME_PRODUCTION_TRAVEL_RE =
+  /\b(?:pre-?broadway|try-?out|out-of-town|premiered|premieres|world premiere|(?:Broadway|Off-Broadway|New York|U\.?S\.?) premiere|touring|tour\b|national tour|transfer(?:red|s)?|moved to|presentation of|presented by|co-?production|originated|imported|originally (?:staged|produced)|workshop|previous(?:ly)? (?:run|production)|earlier (?:run|production)|years? (?:ago|earlier|before))\b/i;
+
+function hasDifferentCityProductionSignal(cvIssues, cvReasoning, show) {
+  // Needs the show: a Chicago venue is the WRONG production for an Off-Broadway page but
+  // the right one for a Chicago regional page. No show, or any non-NYC market, never fires.
+  if (!show || show.market !== 'broadway') return false;
+  // Kill switch: DIFFERENT_CITY_SIGNAL_DISABLED=1 restores the old opening-week behaviour.
+  if (process.env.DIFFERENT_CITY_SIGNAL_DISABLED === '1') return false;
+  const texts = [];
+  if (Array.isArray(cvIssues)) texts.push(...cvIssues.map(String));
+  if (cvReasoning) texts.push(String(cvReasoning));
+  if (texts.length === 0) return false;
+  if (SAME_PRODUCTION_TRAVEL_RE.test(texts.join(' | '))) return false;
+  // The show's own title can be a city (the musical Chicago); its venue turns "not The Secret
+  // Theatre" into a market statement even when CV never writes "Off-Broadway".
+  const titleRe = show.title ? new RegExp(escapeRegExp(show.title), 'gi') : null;
+  const venueBare = show.venue ? String(show.venue).replace(/^the\s+/i, '').trim() : '';
+  const venueNotRe = venueBare ? new RegExp('\\bnot\\s+(?:the\\s+)?' + escapeRegExp(venueBare) + '\\b', 'i') : null;
+  // City and "not this market" must come from the SAME issue string, never stitched across issues.
+  return texts.some((seg) => {
+    let cityText = seg.replace(QUOTED_PASSAGE_RE, ' ').replace(OUTLET_CITY_RE, ' ');
+    if (titleRe) cityText = cityText.replace(titleRe, ' ');
+    if (!DIFFERENT_CITY_NAMES_RE.test(cityText)) return false;
+    if (NOT_THIS_MARKET_RE.test(seg) || (venueNotRe && venueNotRe.test(seg))) return true;
+    if (!CITY_PRODUCTION_LOCATOR_RE.test(cityText)) return false;
+    return !LOCATOR_HERE_VETO_RE.test(cityText)
+      && !(venueBare && new RegExp('\\b' + escapeRegExp(venueBare) + '\\b', 'i').test(cityText));
+  });
+}
+
 function hasStrongDifferentShowSignal(cvIssues, cvReasoning) {
   const texts = [];
   if (Array.isArray(cvIssues)) texts.push(...cvIssues.map(String));
@@ -376,6 +456,7 @@ function applyTemporalOverrides(wpFlag, filmTvFlag, wpConfidence, openingDate, p
   const strongDifferent =
     !!(cvContext && hasStrongDifferentShowSignal(cvContext.issues, cvContext.reasoning)) ||
     !!(cvContext && hasNamedDifferentDirectorSignal(cvContext.issues, cvContext.reasoning, cvContext.show, cvContext.fullText)) ||
+    !!(cvContext && hasDifferentCityProductionSignal(cvContext.issues, cvContext.reasoning, cvContext.show)) ||
     !!(cvContext && hasForeignRoundupUrlSignal(cvContext.bwwRoundupUrl, cvContext.show, cvContext.otherShowTitles));
 
   // In-window + slug-match veto (audit S6-T4, BRO-4204). The 30-day rule
@@ -608,6 +689,25 @@ function isInWindowSlugMatchedReview(data, show) {
 }
 
 /**
+ * BRO-7050: single-verdict hold (scripts/lib/single-verdict-guard.js) with the
+ * current-CV second-family signal supplied from this module's own predicates.
+ * kind: 'nonReview' | 'wrongProduction' | 'wrongShow' | 'rejection'.
+ * Returns the full evaluation ({held, reason, families, listedBy, scored}).
+ */
+function soloVerdictHeld(data, kind, ctx = {}) {
+  if (!data) return { held: false, reason: 'no-data', families: [], listedBy: [], scored: false };
+  const cv = data.contentVerification;
+  const rejKind = kind === 'rejection'
+    ? (data.rejectionReason === 'wrong_show' ? 'wrongShow'
+      : data.rejectionReason === 'wrong_production' ? 'wrongProduction' : 'nonReview')
+    : kind;
+  const cvStands = rejKind === 'nonReview'
+    ? !!cv && cv.confidence === 'high' && (cvArticleTypeNonReview(cv) || cvWrongArticleFamily(cv) === 'nonReview')
+    : currentCvVerdictStands(data, rejKind);
+  return evaluateSoloVerdictHold(data, kind, { ...ctx, cvStands });
+}
+
+/**
  * wrongProduction whose provenance is a CV promotion ('CV-promoted: …' —
  * NOT 'CV-low-but-strong-signal', that path is the strong-signal bypass) or
  * classify-wrong-production.js (llmClassified). A wrongProductionNote or
@@ -641,7 +741,8 @@ function hasStrongDifferentProductionSignal(data, show) {
   const cv = data && data.contentVerification;
   if (!cv) return false;
   return hasStrongDifferentShowSignal(cv.issues, cv.reasoning)
-    || hasNamedDifferentDirectorSignal(cv.issues, cv.reasoning, show, data.fullText);
+    || hasNamedDifferentDirectorSignal(cv.issues, cv.reasoning, show, data.fullText)
+    || hasDifferentCityProductionSignal(cv.issues, cv.reasoning, show);
 }
 
 /**
@@ -661,9 +762,15 @@ function hasStrongDifferentProductionSignal(data, show) {
  */
 function cvFlagVetoedInWindow(data, show, kind, ctx = {}) {
   if (!data || !show) return false;
+  // BRO-7155: a person's wrongShow/wrongProduction verdict is never vetoed.
+  if (kind === 'wrongShow' && require('./wrong-production-autoclear').isWrongShowHeld(data)) return false;
+  if (kind === 'wrongProduction' && require('./wrong-production-autoclear').isWrongProductionHeld(data)) return false;
+  if (ctx && ctx.urlFiledUnderOtherShow === true) return false;
+  // BRO-7050: one automated classifier verdict never hides an aggregator-listed
+  // or full-text-scored review (same safety carve-outs as below, no window test).
+  if (soloVerdictHeld(data, kind, ctx).held && !hasStrongDifferentProductionSignal(data, show)) return true;
   const sourced = kind === 'wrongShow' ? isCvSourcedWrongShow(data) : isCvSourcedWrongProduction(data);
   if (!sourced) return false;
-  if (ctx && ctx.urlFiledUnderOtherShow === true) return false;
   // The collector's / promotion's wrong-content stamps are lifted only by a
   // real clear (explainExclusion's wrongContentFlagsUncleared and
   // contentTierInvalid rules read the clear breadcrumbs, never this veto),
@@ -1037,6 +1144,7 @@ function cvWrongProductionIsVenueCarveout(cv, show, publishDate, cvLowButStrong 
  */
 function isVenueCarveoutPersistedWrongProduction(data, show) {
   if (!data || data.wrongProduction !== true) return false;
+  if (require('./wrong-production-autoclear').isWrongProductionHeld(data)) return false; // BRO-7155: a held wrongProduction is a person's verdict
   const reason = String(data.wrongProductionReason || '');
   if (reason && !/^CV-promoted:/.test(reason)) return false;
   if (data.wrongProductionNote) return false;
@@ -1458,6 +1566,12 @@ function urlTitleWordsPass(lowerUrl, showTitle) {
   // BRO-2760: "The Story"-style titles: a lone generic word is not identity.
   if (!passesGenericTitleIdentity(lowerUrl, showTitle)) return false;
 
+  // BRO-7077 (BRO-5866 cousin): every per-word check below counts a repeated
+  // word once, so "Fire Fire" passed on a single "fire" (Wirecutter
+  // best-smokeless-fire-pits). A one-repeated-word title needs the word twice,
+  // or once beside a stage/arts cue (see repeatedTitleWordsPresent).
+  if (!repeatedTitleWordsPresent(lowerUrl, titleWords)) return false;
+
   const isTBWorldPath = /talkinbroadway\.com\/(?:page\/)?world\//i.test(lowerUrl);
   if (isTBWorldPath) {
     const matchCountTB = titleWords.filter(w => lowerUrl.includes(w)).length;
@@ -1479,6 +1593,25 @@ function urlTitleWordsPass(lowerUrl, showTitle) {
   const matchCount = titleWords.filter(w => wordMatch(lowerUrl, w)).length;
   const minMatch = titleWords.length <= 3 ? titleWords.length : Math.ceil(titleWords.length * 0.5);
   return matchCount >= minMatch;
+}
+
+/**
+ * Titles whose significant words are ONE repeated word ("Fire Fire", "Love,
+ * Love, Love", "Bella Bella") have no distinctive token, the same class
+ * rss-discovery.js titleMatchesShow handles (BRO-4185). The word twice is
+ * identity; once is identity only beside a stage/arts cue in the URL, because
+ * outlets often slug these with one word ("/theater/.../promises_are_fulfilled",
+ * "lemons-harold-pinter-theatre-review"). Any other title passes (long titles
+ * repeat filler words: "Are You Now or Have You Ever Been"). Pure; exported.
+ */
+const REPEATED_TITLE_STAGE_CUE_RE = /theat(?:er|re)|broadway|west-?end|stage|musical|playhouse|entertainment|arts?[-_/]|culture/i;
+function repeatedTitleWordsPresent(haystack, titleWords) {
+  const words = titleWords || [];
+  if (words.length < 2 || new Set(words).size !== 1) return true;
+  const escaped = words[0].replace(/[.*+?${}()|[\]\\]/g, '\\$&');
+  const re = new RegExp('(?:^|[^a-z0-9])' + escaped + '(?=$|[^a-z])', 'gi');
+  const hits = (String(haystack || '').match(re) || []).length;
+  return hits >= 2 || (hits === 1 && REPEATED_TITLE_STAGE_CUE_RE.test(String(haystack || '')));
 }
 
 function urlLooksLikeReview(url, showTitle) {
@@ -1937,6 +2070,7 @@ const INDIVIDUAL_REVIEW_URL_PATTERNS = [
 
 function isLikelyStaleRoundupFlag(data) {
   if (!data || data.isRoundupArticle !== true) return false;
+  if (require('./approved-fix-flag').hasApprovedFlag(data, 'isRoundupArticle')) return false; // BRO-7155
   const fullText = (data.fullText || '').trim();
   if (fullText.length < 800) return false;
   const url = data.url || '';
@@ -2067,6 +2201,42 @@ function cvNonReviewHumanCleared(data) {
  * but of a different production), 'nonReview' when it did not (not a review at
  * all: preview/interview/feature), null when CV raised no wrongArticle.
  */
+// BRO-6973: articleType values a clean-boolean verdict (isValid, no wrongArticle)
+// can carry that still prove the page is not a critic's review. 'preview' and
+// 'feature' are deliberately absent: the verifier labels real previews-period
+// reviews 'preview' (allegiance-2015 huffpost 'preview night') and long-form
+// reviews 'feature', so those need a per-row read, not a blanket exclusion.
+const CV_ARTICLE_TYPE_NON_REVIEW = new Set(['interview', 'news', 'box-office', 'obituary']);
+
+/**
+ * True when the verdict's OWN articleType (high articleType confidence, high or
+ * medium overall — the pre-pass confidence gate) says the page is an
+ * interview/news/box-office/obituary piece even though wrongArticle is false.
+ * Callers apply the high/medium overall-confidence gate (this helper does not).
+ * The rebuild only promoted isNonReview from wrongArticle, so these stayed live
+ * (chess-2025 AP interview scored 88). Routed through cvWrongArticlePromotion,
+ * so ensemble-says-review, partial-window, human-clear and lane holds still apply.
+ */
+function cvArticleTypeNonReview(cv) {
+  return !!cv && cv.isValid === true && cv.wrongArticle !== true && cv.wrongProduction !== true
+    && cv.articleTypeConfidence === 'high' && CV_ARTICLE_TYPE_NON_REVIEW.has(cv.articleType);
+}
+
+/**
+ * BRO-6973: the head-of-article / truncated-fetch advisory for the articleType-only
+ * path. Kept OUT of isCvVerdictFromPartialWindow itself because that predicate also
+ * feeds isCvPartialWindowAdvisory, whose demotion use would then lift an existing
+ * CV-promoted isNonReview off a clean-verdict roundup (the-reservoir playbill row).
+ * Only 'news' is head-ambiguous (HEAD_AMBIGUOUS_ARTICLE_TYPES), so a news verdict on a
+ * long or cut-off fetch stays advisory while interview/box-office/obituary promote.
+ */
+function cvArticleTypeVerdictIsPartialWindow(cv, data) {
+  if (!cvArticleTypeNonReview(cv)) return false;
+  const cvLib = require('./content-verifier'); // lazy: content-verifier requires this module
+  const asWrongArticle = { ...cv, wrongArticle: true };
+  return cvLib.isCvVerdictFromPartialWindow(asWrongArticle, data && data.fullText, data);
+}
+
 function cvWrongArticleFamily(cv) {
   if (!cv || cv.wrongArticle !== true) return null;
   return cv.wrongProduction === true ? 'wrongShow' : 'nonReview';
@@ -2092,8 +2262,9 @@ function cvWrongArticleFamily(cv) {
  * @param {(guard: string) => boolean} [ctx.laneHolds] opening-night lane hold (BRO-4806)
  */
 function cvWrongArticlePromotion(data, cv, ctx = {}) {
-  const family = cvWrongArticleFamily(cv);
+  const family = cvWrongArticleFamily(cv) || (cvArticleTypeNonReview(cv) ? 'nonReview' : null);
   if (!data || !family) return null;
+  if (cv.wrongArticle !== true && cvArticleTypeVerdictIsPartialWindow(cv, data)) return null;
   const { cvPartialWindow = false, skipLondon = false, laneHolds = () => false } = ctx;
   const ensembleSaysReview = hasHighConfidenceLlmScore(data);
   const blocked = ensembleSaysReview || skipLondon || data.allowEarlyDate || data.allowCrossMarket;
@@ -2264,6 +2435,17 @@ function wrongShowExplicitlyCleared(data) {
   return !!data && (data.wrongShowManualClear === true || data.wrongShowOverride === true);
 }
 
+/**
+ * A not_a_review rejection a person has since overruled (nonReviewManualClear), by the scorer's own rule
+ * (human-cleared-rejection.js), so the rebuild and the scorer agree. Only an explicit not_a_review reason: a bare
+ * rejectedAt does not say which verdict it stamped, and a non-review clear says nothing about garbage text or the
+ * wrong production.
+ */
+function nonReviewRejectionHumanCleared(data) {
+  if (!data || data.rejectionReason !== 'not_a_review') return false;
+  return require('./human-cleared-rejection').humanClearOverridingRejection(data, 'not_a_review') === 'non-review';
+}
+
 function rejectedAtHumanCleared(data) {
   if (!data) return false;
   if (
@@ -2315,6 +2497,7 @@ function _wrongShowTitleTokens(s) {
  */
 function isLikelyStaleWrongShow(data, show) {
   if (!data || data.wrongShow !== true) return false;
+  if (require('./wrong-production-autoclear').isWrongShowHeld(data)) return false; // BRO-7155: an approved wrongShow is a person's verdict
   if (!show || !show.title || String(show.title).length < 5) return false;
 
   const fullText = String(data.fullText || '').trim();
@@ -2444,6 +2627,7 @@ function isLikelyStaleWrongShow(data, show) {
  */
 function isLikelyStaleWrongProduction(data, show) {
   if (!data || data.wrongProduction !== true) return false;
+  if (require('./wrong-production-autoclear').isWrongProductionHeld(data)) return false; // BRO-7155: a held wrongProduction is a person's verdict
   if (!show || !show.title || String(show.title).length < 5) return false;
 
   // Already manually cleared — don't double-process; the sweep would be a no-op.
@@ -2599,6 +2783,7 @@ function isLikelyStaleWrongProduction(data, show) {
  */
 function isStaleCvPromotedWrongProduction(data, cvIsStale) {
   if (!data || data.wrongProduction !== true) return false;
+  if (require('./wrong-production-autoclear').isWrongProductionHeld(data)) return false; // BRO-7155: a held wrongProduction is a person's verdict
   if (cvIsStale) return false;
 
   // Provenance gate: only self-heal flags CV itself set (or the contamination
@@ -2816,6 +3001,7 @@ function isStaleCvPromotedWrongShow(data, cvIsStale) {
  */
 function isMisFamilyCvPromotedWrongShow(data, { cvIsStale = false, urlFiledUnderOtherShow = false } = {}) {
   if (!data || data.wrongShow !== true) return false;
+  if (require('./wrong-production-autoclear').isWrongShowHeld(data)) return false; // BRO-7155: an approved wrongShow is a person's verdict
   if (cvIsStale || urlFiledUnderOtherShow) return false;
   if (!/^CV-promoted: /.test(String(data.wrongShowReason || ''))) return false;
   // A person's clear (wrongShowCleared) is NOT a bar here, unlike BRO-168: it
@@ -2850,6 +3036,7 @@ const NON_ARTICLE_URL_RE = /[?&](?:s|preview|preview_id)=|\/(?:search|tag|tags|c
  */
 function isStaleGenericHomepageWrongShow(data, show, { urlFiledUnderOtherShow = false } = {}) {
   if (!data || data.wrongShow !== true || urlFiledUnderOtherShow) return false;
+  if (require('./wrong-production-autoclear').isWrongShowHeld(data)) return false; // BRO-7155: an approved wrongShow is a person's verdict
   if (!/^Generic homepage URL/i.test(String(data.wrongShowReason || ''))) return false;
   if (data.wrongShowNote || data.humanReviewedWrongShow === true) return false;
   let u;
@@ -2950,6 +3137,7 @@ function ensembleScoredSinceCv(data) {
  */
 function isStaleCvNonReviewVerdictOverruled(data) {
   if (!data || data.rejectedAt) return false;
+  if (require('./approved-fix-flag').hasApprovedFlag(data, 'isNonReview')) return false; // BRO-7155
   if (data.manualReviewedBy || data.manualNonReviewSet === true || data.manualNonReviewBy
     || data.nonReviewOverride || data._locked === true || data.manualContentTier
     || /^manual \(not a review\)/i.test(String(data.isNonReviewReason || ''))) return false;
@@ -3019,13 +3207,14 @@ function isStaleCvNonReviewVerdictOverruled(data) {
  */
 function isNonReviewDemotedByFreshCV(data) {
   if (!data || data.isNonReview !== true) return false;
+  if (require('./approved-fix-flag').hasApprovedFlag(data, 'isNonReview')) return false; // BRO-7155
   // A human/monitor-set flag is never demoted: the freshness checks below only
   // make sense for LLM/CV-set flags (BRO-3415, a forum thread stayed scored).
   if (data.manualReviewedBy || data.manualNonReviewSet === true || data.manualNonReviewBy
     || (typeof data.isNonReviewReason === 'string'
       && /^manual \(not a review\)/i.test(data.isNonReviewReason))) return false;
   const cv = data.contentVerification;
-  if (!cv) return false;
+  if (!cv) return soloVerdictHeld(data, 'nonReview').held; // BRO-7050: no CV record, a lone classifier verdict can still be held
   const isCvPromotedProvenance = typeof data.isNonReviewReason === 'string'
     && /^CV-promoted \(not a review\):/.test(data.isNonReviewReason);
   if (isCvPartialWindowAdvisory(data)) return true;
@@ -3035,6 +3224,12 @@ function isNonReviewDemotedByFreshCV(data) {
   // independent-corroboration bar as the other CV-promoted branch below (a confident ensemble score).
   // Without one the label stays and reverify-stale-cv-promoted.js --cv-promoted-nonreview re-checks the body.
   if (isCvPromotedProvenance && isStaleCvNonReviewVerdictOverruled(data)) return true;
+  // BRO-6745: reverify-stale-cv-promoted.js stores a clean verdict even when a clear guard
+  // refused it (a roundup or interview whose booleans said clean). That verdict must not
+  // overrule the label here either, or the refusal only stops the script, not the rebuild.
+  if (cv.clearRefusal) return false;
+  // BRO-7050: a lone automated classifier verdict on an aggregator-listed / full-text-scored review is advisory.
+  if (soloVerdictHeld(data, 'nonReview').held) return true;
   if (cv.articleType !== 'review') return false;
   if (cv.isValid === false) return false;
   if (cv.wrongArticle === true) return false;
@@ -3103,6 +3298,7 @@ function isNonReviewDemotedByFreshCV(data) {
  */
 function isLikelyStaleSuspectedMisattribution(data, registry) {
   if (!data || data.suspectedMisattribution !== true) return false;
+  if (require('./approved-fix-flag').hasApprovedFlag(data, 'suspectedMisattribution')) return false; // BRO-7155
   if (!registry || typeof registry !== 'object') return false;
   if (Object.keys(registry).length === 0) return false; // Empty-registry fail-safe.
   const criticName = (data.criticName || '').trim();
@@ -3629,6 +3825,13 @@ function evaluateShowMentionGuard(review, cleanedText, cleanedWordCount, showChe
   // wrong page, so neither setter re-flags or quarantines it.
   if (typeof review?.showNotMentionedManualClear === 'string' && review.showNotMentionedManualClear.trim()) {
     return { action: 'skip', reason: 'human show-mention clear', repairStaleFlags: false };
+  }
+  // BRO-7171 Stage 2b: gap-acceptance accepted this text because the fetched
+  // page's OWN headline (og:title/h1, never the url) names the show (The Stage
+  // only, whole-phrase + generic-title gate; see gap-acceptance headlineIdentity).
+  // A body that omits the title is then expected, not evidence of a wrong page.
+  if (typeof review?.showIdentityHeadline === 'string' && review.showIdentityHeadline.trim()) {
+    return { action: 'skip', reason: 'page headline names the show', repairStaleFlags: false };
   }
   // Context-too-thin gate: heuristic is unreliable on short paywalled excerpts
   // where the lede may legitimately omit the show title (metaphorical opening,
@@ -5130,7 +5333,7 @@ function evaluateUrlYearGuard(data, show, guardEntry) {
 function evaluateDirectorGuard(data, show, directorMap) {
   if (!data || !directorMap || data.routedFromShowId || data.humanReviewedWrongProduction === false) return null;
   if (wrongProductionLaneBypass(data, show)) return null;
-  const text = (data.fullText || data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.lboRoundupExcerpt || '').toLowerCase();
+  const text = (data.fullText || require('./excerpt-fields').getExcerpts(data)[0] || '').toLowerCase();
   if (text.length < 30) return null;
   const { toDateMs } = require('./date-utils');
   const publishMs = data.publishDate ? toDateMs(data.publishDate) : NaN;
@@ -5211,6 +5414,12 @@ function isRejectedByReasonExclusion(data, opts) {
     // honours it for the rejectedAt stamp. Without this the clear only worked
     // if a second plan also nulled rejectionReason (BRO-4891 theupcoming).
     if (data.rejectionReason === 'wrong_production' && rejectedAtHumanCleared(data)) return false;
+    // A person said the file IS a review (nonReviewManualClear): an ensemble not_a_review stamp on it predates that
+    // clear, since the scorer no longer re-stamps cleared files (human-cleared-rejection.js, BRO-4838). Without this the
+    // clear only worked if a second plan also nulled rejectionReason (BRO-6910: Theatrely on Waiting for Lefty).
+    if (nonReviewRejectionHumanCleared(data)) return false;
+    // BRO-7050: an ensemble-only rejection of an aggregator-listed / full-text-scored review is advisory.
+    if (soloVerdictHeld(data, 'rejection').held) return false;
     const isJsonLdStarNotAReview = data.rejectionReason === 'not_a_review' &&
       (data.originalScoreSource === 'json-ld' || data.aggregatorStarsSource === 'json-ld') &&
       require('./score-extractors').KNOWN_STAR_OUTLETS.has(data.outletId);
@@ -5271,8 +5480,10 @@ function isRegistrationWallStubExclusion(data) {
 function isRejectedAtExclusion(data) {
   if (!data) return false;
   if (data.rejectedAt && typeof data.rejectedAt === 'string') {
+    // BRO-7050: the rejectedAt stamp is the same ensemble verdict as rejectionReason; one hold covers both.
+    if (data.rejectionReason && soloVerdictHeld(data, 'rejection').held) return false;
     const reFetched = isTimestampAfter(data.textFetchedAt, data.rejectedAt);
-    const wpCleared = rejectedAtHumanCleared(data) || isFreshWpAutoCleared(data);
+    const wpCleared = rejectedAtHumanCleared(data) || isFreshWpAutoCleared(data) || nonReviewRejectionHumanCleared(data);
     // Exception 3: matches the rejectionReason exception — not_a_review + json-ld star
     // from a known star outlet clears the rejectedAt gate as well.
     const isJsonLdStarNotAReview = data.rejectionReason === 'not_a_review' &&
@@ -5375,6 +5586,40 @@ function rebuildOnlyPassExclusion(filePath, rebuildExclusions) {
 }
 
 /**
+ * BRO-2453: the four consecutive early per-file gates (BRO-4890, BRO-3126, BRO-2746), in the order
+ * the rebuild loop applies them. One shared decision for rebuild-all-reviews.js, explainExclusion
+ * and scoring-delta.js decideInclusion, replacing three hand-kept copies.
+ * @param {object} data - review-text file
+ * @param {object} show - shows.json entry
+ * @param {{opts?: object, tolerateMissing?: boolean, guards?: object}} [cfg] - opts goes ONLY to
+ *   isUnverifiableWebSearchRow (it alone reads opts.forScoring). guards lets scoring-delta replay
+ *   a baseline module; tolerateMissing skips a predicate the module lacks (older BASE_REF), never
+ *   set it from rebuild or explainExclusion.
+ * @returns {{statKey: string, reason: string}|null}
+ */
+function decideEarlyFileExclusion(data, show, cfg = {}) {
+  const g = cfg.guards || {
+    isCancelledBeforeOpeningShow, isUnverifiableWebSearchRow, isPreviewFirstLookPiece, isCombinedReviewOfOtherMemberOnly,
+  };
+  const call = (name, ...args) => {
+    if (typeof g[name] !== 'function') {
+      if (cfg.tolerateMissing) return false;
+      throw new Error('decideEarlyFileExclusion: missing predicate ' + name);
+    }
+    return g[name](...args);
+  };
+  for (const [name, statKey, reason, args] of [
+    ['isCancelledBeforeOpeningShow', 'skippedCancelledBeforeOpening', 'cancelledBeforeOpening', [show]],
+    ['isUnverifiableWebSearchRow', 'skippedUnverifiableWebSearchRow', 'unverifiableWebSearchRow', [data, cfg.opts]],
+    ['isPreviewFirstLookPiece', 'skippedPreviewFirstLookPiece', 'previewFirstLookPiece', [data]],
+    ['isCombinedReviewOfOtherMemberOnly', 'skippedCombinedReviewOfOtherMemberOnly', 'combinedReviewOfOtherMemberOnly', [data, show]],
+  ]) {
+    if (call(name, ...args)) return { statKey, reason };
+  }
+  return null;
+}
+
+/**
  * Show-level skips the rebuild applies before it reads any review file: an 'upcoming' show, or a
  * Broadway-category show still in 'previews'. explainExclusion is per-review and returns null for
  * these, so a file could read "includable" yet be absent from reviews.json (BRO-5795: zeal-nyc on
@@ -5412,10 +5657,8 @@ function explainExclusion(data, show, filePath, opts) {
   if (!data) return 'no-data';
   // BRO-4890: show-level and unverifiable-row exclusions run first; the rebuild loop and
   // scoring-delta.js decideInclusion mirror them in the same order.
-  if (isCancelledBeforeOpeningShow(show)) return 'cancelledBeforeOpening';
-  if (isUnverifiableWebSearchRow(data, opts)) return 'unverifiableWebSearchRow';
-  if (isPreviewFirstLookPiece(data)) return 'previewFirstLookPiece';
-  if (isCombinedReviewOfOtherMemberOnly(data, show)) return 'combinedReviewOfOtherMemberOnly';
+  const early = decideEarlyFileExclusion(data, show, { opts });
+  if (early) return early.reason;
   // BRO-4806: opening-night lane reviews (provenance + productionVerified:"aggregator") are exempt from the guards in
   // trust-model LANE_BYPASSED_GUARDS and from nothing else. One predicate, called per guard; rebuild-all-reviews.js's
   // inline gates call the same one.
@@ -6501,10 +6744,7 @@ function isRejectedNonReview(data) {
 // first-party fullText is absent. Moved verbatim from the deleted
 // the deleted review-text mirror so the RETRIEVED axis has one home.
 function hasAggregatorExcerpt(data) {
-  return !!(
-    data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt ||
-    data.nycTheatreExcerpt || data.stagedoorExcerpt || data.lboRoundupExcerpt || data.metaExcerpt
-  );
+  return require('./excerpt-fields').hasExcerpt(data);
 }
 
 // The longest available aggregator excerpt field, or null. Picks the longest
@@ -6778,6 +7018,7 @@ module.exports = {
   isCvSourcedWrongShow,
   currentCvVerdictStands,
   cvFlagVetoedInWindow,
+  soloVerdictHeld,
   isSameTitleDifferentYearFalsePositive,
   isPrematureReviewForUnopenedShow,
   PRE_OPENING_LEAD_DAYS,
@@ -6793,6 +7034,8 @@ module.exports = {
   showHasFestivalVenue,
   reasoningAssertsDifferentProduction,
   hasStrongDifferentShowSignal,
+  hasDifferentCityProductionSignal,
+  hasStrongDifferentProductionSignal,
   hasForeignRoundupUrlSignal,
   hasNamedDifferentDirectorSignal,
   STRONG_DIFFERENT_SHOW_MARKERS,
@@ -6803,6 +7046,7 @@ module.exports = {
   getWrongProductionReasonForAudit,
   urlYearFromPath,
   urlLooksLikeReview,
+  repeatedTitleWordsPresent,
   isSluglessReviewUrl,
   isLikelyWrongProduction,
   isLikelyTourReview,
@@ -6824,6 +7068,9 @@ module.exports = {
   isCvWrongArticleHighConfidence,
   cvNonReviewHumanCleared,
   cvWrongArticleFamily,
+  cvArticleTypeNonReview,
+  cvArticleTypeVerdictIsPartialWindow,
+  CV_ARTICLE_TYPE_NON_REVIEW,
   cvWrongArticlePromotion,
   wrongShowCleared,
   wrongShowExplicitlyCleared,
@@ -6837,6 +7084,7 @@ module.exports = {
   evaluateDirectorGuard,
   setMultiProdGuardShows,
   rejectedAtHumanCleared,
+  nonReviewRejectionHumanCleared,
   isTimestampAfter,
   isLikelyStaleSuspectedMisattribution,
   getCriticRegistry,
@@ -6883,6 +7131,7 @@ module.exports = {
   isLegacyWebSearchOnly,
   isPreviewFirstLookPiece,
   isCombinedReviewOfOtherMemberOnly,
+  decideEarlyFileExclusion,
   bodylessScoreProvenance,
   isBodylessAggregatorScoreUncorroborated,
   bodylessCorroboratedByProduction,

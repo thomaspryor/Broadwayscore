@@ -21,7 +21,8 @@
 
 const { CHECK_NAME: AUTOFIX_EFFECTIVENESS_CHECK_NAME } = require('./autofix-effectiveness.js');
 const { BSC_DAILY_TITLE_PREFIX } = require('./autofix-filed-marker.js');
-const { splitHealthByAudience } = require('./digest-audience.js');
+const { splitHealthByAudience, classifyHealthCheck } = require('./digest-audience.js');
+const { isSettling, SETTLE_HOURS, LEGACY_SEED, reportableCleared } = require('./health-first-seen.js');
 
 function esc(s) {
   return String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -272,12 +273,95 @@ const PLAIN_HEALTH = [
   [/^Quality: DMARC deliverability/, () => 'Email deliverability reports stopped arriving'],
   [/^Coverage: SERP census recall/, () => 'Finding fewer published reviews than usual'],
   [/^Feedback: needs-manual-review backlog/, () => 'Visitor feedback waiting for a manual look'],
+  // BRO-7040: the two rows that reached the owner under their raw check names
+  // on 2026-11-05. Quality: Show Score gap is refined with show names below.
+  [/^Quality: Show Score gap/, () => 'Some shows have no audience score yet'],
+  [/^Revenue: affiliate health/, () => 'Ticket-link click numbers look unusual'],
+  // BRO-7047: the remaining visitor-classified checks that showed their raw name.
+  // One specific regex per check (renderAutofixBlock dedups on this output).
+  [/^Data: review-texts checkout coverage/, () => 'Some saved review texts are not available to the scoring jobs'],
+  [/^Sync: review-texts vs reviews\.json/, () => 'Saved review texts and the site\u2019s review list disagree'],
+  [/^Sync: open show coverage/, () => 'Some open shows are missing reviews or box-office numbers'],
+  [/^Sync: phantom show detection/, () => 'The site may list a show that does not exist'],
+  [/^Sync: grosses weekEnding/, () => 'Weekly box-office numbers have not updated in over two weeks'],
+  [/^Data: UK regional opening dates/, () => 'Some UK regional shows have an opening date later than their first review'],
+  [/^Scoring: batch state/, () => 'A review-scoring batch looks stuck'],
+  [/^Quality: scored review ratio/, () => 'Too few of the saved reviews have been scored'],
+  [/^Quality: missing contentTier/, () => 'Some reviews have no text-quality label, so they may not count'],
+  [/^Quality: outlet stub rate/, () => 'An outlet\u2019s reviews are mostly saved as fragments'],
+  [/^Quality: outlet invalid-content rate/, () => 'An outlet\u2019s saved reviews are mostly unusable pages'],
+  [/^Data quality: provider spend ledger/, () => 'Spending on data services is not being tracked correctly'],
+  [/^Data quality: roundup-url-mismatch lifetime sweep/, () => 'Some roundup links may point at the wrong show'],
+  [/^Data: OB shows no closing signal can detect/, () => 'Some Off-Broadway shows can no longer be checked for closing'],
+  [/^Memory: cloud mirror reconcile failing/, () => 'Behind-the-scenes notes are not syncing between machines'],
+  [/^Memory: cloud notes not reaching the Mac/, () => 'Notes written in the cloud are not reaching the owner\u2019s Mac'],
+  [/^Data: Tours To You pages not checked/, () => 'Some national-tour pages were not checked'],
+  [/^Data: closed national tours reopened automatically/, () => 'Closed national tours were reopened automatically'],
+  [/^Data: closed national tour lists new dates/, () => 'A closed national tour is listing new dates'],
+  [/^Quality: standingCoverage drift/, () => 'The share of reviews found for each show is drifting'],
+  [/^Quality: expected critics missing/, () => 'A critic who reviews nearly every opening has no review of a new show yet'],
+  [/^Quality: coverageExpectation drift/, () => 'Expected review counts for some shows are drifting'],
+  [/^Quality: outlet-heartbeat red flags/, () => 'Some review outlets look like they stopped publishing'],
+  [/^Quality: outlet feed staleness/, () => 'Some outlet feeds have not updated in a while'],
+  [/^Commercial pending-review queue/, () => 'Commercial figures are waiting for a manual check'],
+  [/^Commercial: rows held for a person/, () => 'Some commercial figures are held back for a manual check'],
+  [/^Commercial model: Boring Waltz fit/, () => 'The recoupment model fits one show poorly'],
+  [/^Commercial model: running-show bar revisit/, () => 'Some running shows\u2019 recoupment estimates need a fresh look'],
+  [/^Commercial: season share cards/, () => 'Season share cards for the commercial page are out of date'],
+  [/^Cookies: expiration/, () => 'A scraper login cookie is about to expire'],
+  [/^CWV: performance/, () => 'The site is loading slower than it should'],
+  [/^Data: published scores outside the critic.s rating/, () => 'Some published scores contradict the critic\u2019s own rating'],
+  [/^Data: early publish dates awaiting page-date recheck/, () => 'Some reviews have publish dates that need rechecking'],
+  [/^Data: duplicate-flag leaks/, () => 'A good review may have been dropped as a duplicate'],
+  [/^Data: stale-slot squatters/, () => 'A review slot for this year is held by another production'],
+  // BRO-7040: family fallbacks for check names that carry a file or job name.
+  // Specific rows above win (first match); these only catch what would otherwise
+  // reach the owner as "Freshness: audit/same-title-confusion.json".
+  [/^Freshness: (.+)/, (m) => `${capFirst(humanizeCheckTarget(m[1]))} has not refreshed on schedule`],
+  [/^Push verify: (.+)/, (m) => `An update to ${humanizeCheckTarget(m[1])} may not have reached the site`],
+  [/^Cron: failing every scheduled run/, () => 'A scheduled job has failed on every run'],
+  [/^Cron: (.+)/, (m) => `The scheduled "${m[1]}" job is not running on time`],
+  [/^Pipeline: (.+)/, (m) => `The ${humanizeCheckTarget(m[1])} update did not finish cleanly`],
 ];
-function plainHealthLine(name) {
+
+function capFirst(t) { return t.charAt(0).toUpperCase() + t.slice(1); }
+
+// "audit/same-title-confusion.json" -> "same title confusion data"; "weekly-grosses" -> "weekly grosses".
+function humanizeCheckTarget(raw) {
+  const stem = String(raw).split('/').pop().replace(/\.json$/i, '');
+  const words = stem.replace(/[-_]+/g, ' ').trim();
+  return /\.json$/i.test(String(raw)) ? `${words} data` : words;
+}
+
+// "midnight-2026" -> "Midnight", "parcel-from-america-2026" -> "Parcel From America".
+function prettyShowSlug(id) {
+  const words = String(id || '').trim().replace(/-(?:19|20)\d\d$/, '').replace(/-(?:broadway|west-end|off-broadway)$/, '').split('-').filter(Boolean);
+  return words.map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+}
+
+// Rows whose message carries the thing the owner cares about (the show names).
+// Returns null to fall back to the static line.
+function plainHealthFromMessage(name, message) {
+  const msg = String(message || '');
+  if (/^Quality: Show Score gap/.test(name)) {
+    const m = msg.match(/^(\d+) opened show\(s\).*\(([^)]*)\)/);
+    if (!m) return null;
+    const total = Number(m[1]);
+    const shown = m[2].split(',').map((x) => x.trim()).filter((x) => x && x !== '...').map(prettyShowSlug);
+    if (!shown.length) return null;
+    if (total === 1) return `${shown[0]} has no audience score yet`;
+    if (total <= shown.length) return `${shown.slice(0, -1).join(', ')} and ${shown[shown.length - 1]} have no audience score yet`;
+    return `${shown.join(', ')} and ${total - shown.length} more have no audience score yet`;
+  }
+  return null;
+}
+function plainHealthLine(name, message) {
   // BRO-5669: owner-login-dependent sources (lib/login-sources.js). The row
   // name after the prefix is already the plain sentence.
   const login = String(name).match(/^Login expired:\s*(.+)$/);
   if (login) return login[1];
+  const fromMsg = message ? plainHealthFromMessage(String(name), message) : null;
+  if (fromMsg) return fromMsg;
   for (const [re2, fn] of PLAIN_HEALTH) { const m = String(name).match(re2); if (m) return fn(m); }
   return String(name);
 }
@@ -487,21 +571,22 @@ function renderNeedsAttentionBlock(queued) {
   // composeDigestEmail attaches q.actionUrl (signed dispatch link, same HMAC
   // machinery as the API's approve/dispatch flow); prose-only cards are a
   // regression the content invariant now catches.
+  // BRO-7075: one bold title, ONE plain sentence (the question if there is one,
+  // else the description; they used to print both and read as the same text
+  // twice), then buttons. No raw links or URLs are ever printed.
+  const btn = (href, label, bg) => `<a href="${esc(href)}" style="display:inline-block;font-size:15px;font-weight:700;color:#fff;background-color:${bg};text-decoration:none;padding:9px 18px;border-radius:8px;margin:0 8px 0 0;">${label}</a>`;
   return validQueued.length
     ? `<div style="border:1px solid #e5e5e5;border-radius:10px;padding:14px 16px;margin:0 0 14px;">
-        <div style="font-size:13px;font-weight:700;margin-bottom:8px;">Needs your attention</div>
+        <div style="font-size:16px;font-weight:700;margin-bottom:8px;">Needs your attention</div>
         ${validQueued.map(q => {
           const href = safeUrl(q.url);
           const action = safeUrl(q.actionUrl);
-          // Every remaining queued row is a genuine decision (task #843):
-          // technical rows are folded into renderAutofixBlock's "Being fixed
-          // automatically" list before this ever runs — see
-          // send-morning-digest.js. decisionPrompt names the actual choice
-          // so a bare button never leaves the owner guessing what it does.
-          return `<div style="margin:0 0 10px;">
-            <div style="font-size:13px;color:#333;"><b>${esc(q.title || '(untitled)')}</b>${q.description ? ` \u2014 ${esc(clip(q.description, 200))}` : ''}${href ? ` <a href="${esc(href)}" style="color:#1d4ed8;text-decoration:underline;">view</a>` : ''}</div>
-            ${q.decisionPrompt ? `<div style="font-size:13px;font-weight:700;color:#b45309;margin:4px 0 0;">${esc(clip(q.decisionPrompt, 200).replace(/^Decision needed:\s*/i, ''))}</div>` : ''}
-            ${action ? `<div style="margin:4px 0 0;"><a href="${esc(action)}" style="display:inline-block;font-size:13px;font-weight:700;color:#fff;background-color:#16a34a;text-decoration:none;padding:7px 16px;border-radius:8px;">Dispatch a fix \u2192</a></div>` : ''}
+          const question = q.decisionPrompt ? clip(String(q.decisionPrompt).replace(/^Decision needed:\s*/i, ''), 220) : '';
+          const detail = question || (q.description ? clip(q.description, 160) : '');
+          return `<div style="margin:0 0 14px;">
+            <div style="font-size:15px;font-weight:700;color:#111;margin:0 0 4px;">${esc(clip(q.title || '(untitled)', 110))}</div>
+            ${detail ? `<div style="font-size:15px;color:${question ? '#b45309' : '#333'};margin:0 0 8px;">${esc(detail)}</div>` : ''}
+            <div>${href ? btn(href, 'Open', '#1d4ed8') : ''}${action ? btn(action, 'Dispatch a fix \u2192', '#16a34a') : ''}</div>
           </div>`;
         }).join('')}</div>`
     : '';
@@ -617,8 +702,24 @@ function ownerItemKey(it) {
   return String((it && (it.url || it.title)) || '');
 }
 
+// "Nov 3" in the owner's timezone (America/New_York) for a since-date.
+function shortDateET(iso) {
+  const t = Date.parse(iso);
+  if (!Number.isFinite(t)) return null;
+  return new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', month: 'short', day: 'numeric' }).format(new Date(t));
+}
+function isMondayET(nowMs) {
+  return new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', weekday: 'short' }).format(new Date(nowMs)) === 'Mon';
+}
+// firstSeen older than the 1970 seed is a real date; the seed means "was already there when tracking began".
+function realFirstSeen(iso) {
+  const t = Date.parse(iso);
+  return Number.isFinite(t) && iso !== LEGACY_SEED ? iso : null;
+}
+
 function buildOwnerView({
   health = null, autofixRows = null, needsYou = null, awaitingOwner = null, inReviewBacklog = null, loopDead = false,
+  nowMs = Date.now(),
 } = {}) {
   const split = splitHealthByAudience(health);
   const allQueued = filterForbiddenQueued(Array.isArray(health?.queued) ? health.queued : []);
@@ -679,16 +780,22 @@ function buildOwnerView({
   // share a plain-English line read as one problem).
   // A merged plain line is handled only when every row behind it is.
   const byPlain = new Map();
+  // BRO-7040: a WARNING stays out of the email until it has lasted
+  // SETTLE_HOURS (errors never wait; a row with no first-seen date is shown).
+  let settling = 0;
   for (const [severity, list] of [['error', split.visitors.errors], ['warn', split.visitors.warns]]) {
     for (const r of list) {
-      const plain = plainHealthLine(r.name);
+      if (isSettling(r, severity, nowMs)) { settling++; continue; }
+      const plain = plainHealthLine(r.name, r.message);
       // BRO-5669: an expired login can only be fixed by the owner, so no
       // autofix row may ever demote it to "handled" ("all with automation").
       const loginRow = r.loginSource === true || /^Login expired:/.test(String(r.name));
       const fix = loopDead || loginRow ? null : findAutofixRow(r, autofixRows);
       const handled = !!fix && OWNER_HANDLED_STATES.has(fix.state) && !(fix.state === 'watching' && severity === 'error');
+      const seenAt = realFirstSeen(r.firstSeen);
       const item = {
-        name: r.name, plain, severity, handled, status: loginRow ? 'needs your login: only you can fix this' : ownerFixStatus(r, autofixRows, loopDead),
+        name: r.name, plain, severity, handled, since: seenAt ? shortDateET(seenAt) : null,
+        sinceDays: seenAt ? Math.max(0, Math.floor((nowMs - Date.parse(seenAt)) / 86400000)) : null, status: loginRow ? 'needs your login: only you can fix this' : ownerFixStatus(r, autofixRows, loopDead),
         ...(loginRow ? { loginSource: true, fixUrl: r.fixUrl || null } : {}),
         kind: !handled ? null : fix.state === 'watching' ? 'watching' : fix.state === 'acknowledged' ? 'acknowledged' : 'ticket',
       };
@@ -707,8 +814,21 @@ function buildOwnerView({
   else if (visitorItems.some((i) => i.severity === 'error')) siteState = 'affected';
   else if (visitorItems.length) siteState = 'minor';
   else if (handledItems.length) siteState = 'handled';
+  // Rows that left the list since yesterday and that the email could have
+  // shown (errors, or warnings that outlasted the hold). Names are plain.
+  const clearedNames = [];
+  for (const c of reportableCleared(health && health.cleared, nowMs)) {
+    if (classifyHealthCheck({ name: c.name }) !== 'visitors') continue; // machinery rows are not for the owner
+    const plain = plainHealthLine(c.name);
+    // Two rows can share one plain line; if the sibling is still open it is not "cleared".
+    if (byPlain.has(plain) || clearedNames.includes(plain)) continue;
+    clearedNames.push(plain);
+  }
   return {
     siteState,
+    settling,
+    cleared: clearedNames,
+    isMonday: isMondayET(nowMs),
     visitorItems,
     visitorHandled: handledItems.length,
     visitorHandledWatching: handledItems.filter((i) => i.kind === 'watching').length,
@@ -764,7 +884,7 @@ function renderVisitorItems(view) {
   const rest = view.visitorItems.length - shown.length;
   // A dead loop gives every row the same status; say it once, not per row.
   return shown.map((i) => `<div style="margin:0 0 5px;">
-        <div style="font-size:13px;color:#333;">• ${esc(i.plain)}</div>
+        <div style="font-size:13px;color:#333;">• ${esc(i.plain)}${i.since && i.sinceDays >= 1 ? ` <span style="font-size:11px;color:#777;">(since ${esc(i.since)})</span>` : ''}</div>
         ${i.loginSource ? `<div style="font-size:11px;color:#92400e;margin:1px 0 0 12px;">${esc(i.status)}${i.fixUrl ? ` · <a href="${esc(i.fixUrl)}" style="color:#1d4ed8;">fix it here</a>` : ''}</div>` : view.loopDead ? '' : `<div style="font-size:11px;color:#777;margin:1px 0 0 12px;">${esc(i.status)}</div>`}
       </div>`).join('')
     + (rest > 0 ? `<div style="font-size:11px;color:#777;margin-top:4px;">+${rest} more (listed under Technical details)</div>` : '')
@@ -803,7 +923,7 @@ function infoLines(view) {
 // cards with their one-click links, Needs your decision, Waiting on your
 // approval, Review queue) so every existing block keeps its own markup and
 // mandates.
-function renderOwnerTopBlock(view, { decisionBlocksHtml = '', overnightLine = null } = {}) {
+function renderOwnerTopBlock(view, { decisionBlocksHtml = '', overnightLine = null, lastNightHtml = '' } = {}) {
   const parts = [];
   if (view.siteState === 'affected' || view.siteState === 'minor') {
     const affected = view.siteState === 'affected';
@@ -823,10 +943,24 @@ function renderOwnerTopBlock(view, { decisionBlocksHtml = '', overnightLine = nu
     parts.push(`<p style="font-size:13px;color:#666;margin:0 0 12px;">The overnight site check did not report in, so site status is unknown this morning.</p>`);
   }
 
+  // BRO-7040: one line for what cleared (only things this email could have
+  // shown), and one small line for warnings still inside the 48h hold.
+  if (view.cleared && view.cleared.length) {
+    parts.push(`<p style="font-size:13px;color:#15803d;margin:0 0 6px;"><b>Cleared since yesterday:</b> ${esc(view.cleared.slice(0, 4).join('; '))}${view.cleared.length > 4 ? ` (+${view.cleared.length - 4} more)` : ''}.</p>`);
+  }
+  if (view.settling > 0) {
+    parts.push(`<p style="font-size:11px;color:#888;margin:0 0 12px;">${view.settling} new ${view.settling === 1 ? 'item is' : 'items are'} under watch. ${view.settling === 1 ? 'It shows' : 'They show'} here only if still there on day 3.</p>`);
+  }
+
+  if (lastNightHtml) parts.push(lastNightHtml);
+
   if (view.decisions > 0) {
     parts.push(`<p style="font-size:16px;font-weight:700;color:#1d4ed8;margin:4px 0 2px;">${view.decisions} decision${view.decisions === 1 ? '' : 's'} for you</p>`);
-    // BRO-6131: say how to answer once, up top (no "ask Claude": BRO-5542).
-    parts.push(`<p style="font-size:12px;color:#555;margin:0 0 10px;">Tap a button to open the item. To answer a decision with lettered options, comment on it with just the letter (for example "A"). Twice a day your answer is read: the work is queued, or you get a short question back if it was unclear. Each one says what happens if you do nothing.</p>`);
+    // BRO-7040: the how-to-answer paragraph only on Mondays (a weekly nudge),
+    // otherwise one short line. Lettered answers: comment with just the letter.
+    parts.push(view.isMonday
+      ? `<p style="font-size:12px;color:#555;margin:0 0 10px;">Tap a button to open the item. To answer a decision with lettered options, comment on it with just the letter (for example "A"). Twice a day your answer is read: the work is queued, or you get a short question back if it was unclear. Each one says what happens if you do nothing.</p>`
+      : `<p style="font-size:12px;color:#555;margin:0 0 10px;">Tap Open to read the options and answer.</p>`);
     if (decisionBlocksHtml) parts.push(decisionBlocksHtml);
   } else if (view.siteState !== 'affected') {
     // About the OWNER's attention only (no decisions waiting); the visitor
@@ -848,6 +982,12 @@ function renderOwnerTopBlock(view, { decisionBlocksHtml = '', overnightLine = nu
   if (view.autoFixed) did.push(`${view.autoFixed} problem${view.autoFixed === 1 ? ' was' : 's were'} fixed automatically overnight.`);
   if (did.length) parts.push(`<p style="font-size:12px;color:#444;margin:0 0 8px;">${esc(did.join(' '))}</p>`);
 
+  return parts.join('\n');
+}
+
+// "Behind the scenes" status line. BRO-7040: no longer part of the owner-first
+// top; the caller puts it in the collapsed bottom section.
+function renderBehindTheScenesLine(view) {
   const items = `${view.tracked} maintenance item${view.tracked === 1 ? '' : 's'} tracked`;
   let behind;
   if (view.loopDead) {
@@ -861,8 +1001,7 @@ function renderOwnerTopBlock(view, { decisionBlocksHtml = '', overnightLine = nu
     if (view.launched) parts2.push(`${view.launched} fix attempt${view.launched === 1 ? '' : 's'} launched this morning (tomorrow's email confirms ${view.launched === 1 ? 'it' : 'they'} ran)`);
     behind = `Behind the scenes: ${items}${parts2.length ? `, ${parts2.join(', ')}` : ''}.`;
   }
-  parts.push(`<p style="font-size:12px;color:#888;margin:0 0 16px;">${esc(behind)}</p>`);
-  return parts.join('\n');
+  return `<p style="font-size:12px;color:#888;margin:0 0 8px;">${esc(behind)}</p>`;
 }
 
 // Heading that demotes the full technical report (kept for debugging) below
@@ -891,7 +1030,7 @@ function healthIssueCount(health) {
 // detail, url?}], moreCount } — routine FYI content, not errors/warnings, so
 // unlike renderHealthDigestBlock this never bumps the "N things to look at"
 // count; it's context, same tier as the overnight digest block below it.
-function renderNamedDigestBlock(label, snapshot, { actionCards = false, showBanner = false } = {}) {
+function renderNamedDigestBlock(label, snapshot, { actionCards = false, showBanner = false, compactOld = false } = {}) {
   if (!snapshot) return '';
   // .filter(Boolean): a corrupted/partial snapshot write must not crash the
   // whole email render — same guard as renderHealthDigestBlock's queued items
@@ -911,7 +1050,7 @@ function renderNamedDigestBlock(label, snapshot, { actionCards = false, showBann
     // look like plain text.
     return `<div style="margin:0 0 14px;">
     <div style="font-size:13px;font-weight:700;color:#333;margin:0 0 8px;">${esc(label)}${showBanner && snapshot.bannerText ? `<span style="font-weight:400;color:#777;"> \u00b7 ${esc(snapshot.bannerText)}</span>` : ''}</div>
-    ${items.map((it) => renderActionCard(it, safeUrl)).join('')}${more}${asOf}
+    ${items.map((it) => renderActionCard(it, safeUrl, { compact: compactOld && it.ageDays >= 2 })).join('')}${more}${asOf}
   </div>`;
   }
   const rows = items.map(it => {
@@ -932,7 +1071,7 @@ function renderNamedDigestBlock(label, snapshot, { actionCards = false, showBann
 // each option with its upside/downside, the recommended pick and what happens
 // if nothing is answered. Any other row (approval, review queue, cmux tab)
 // shows its title and one line of context. A card with a URL ends in a button.
-function renderActionCard(it, safeUrl) {
+function renderActionCard(it, safeUrl, { compact = false } = {}) {
   const { cleanOwnerText, recommendedKey } = require('./decision-card-parse.js');
   const href = safeUrl(it.url);
   const cardHref = safeUrl(it.cardUrl) || href;
@@ -953,6 +1092,16 @@ function renderActionCard(it, safeUrl) {
   const titleHtml = href
     ? `<a href="${esc(href)}" style="color:#1d4ed8;text-decoration:underline;">${esc(title)}</a>`
     : esc(title);
+  // BRO-7040: a decision the owner has already seen (waiting 2+ days) is one
+  // line plus a button on ordinary days; Mondays and new decisions show it in full.
+  if (compact) {
+    const openLabel = href ? `<a href="${esc(href)}" style="display:inline-block;font-size:13px;font-weight:700;color:#ffffff;background-color:#1d4ed8;text-decoration:none;padding:5px 14px;border-radius:8px;">Open</a>` : '';
+    return `<div style="border-left:4px solid ${accent};background-color:${bg};border-radius:6px;padding:8px 12px;margin:0 0 8px;">
+    <div style="font-size:14px;font-weight:700;color:#111;margin:0 0 2px;">${esc(title)}</div>
+    <div style="font-size:11px;color:${it.stale ? '#b91c1c' : '#92400e'};margin:0 0 6px;">${[ref, it.ageDays >= 1 ? `waiting ${esc(it.ageDays)} days` : ''].filter(Boolean).join(' \u00b7 ')}</div>
+    ${openLabel}
+  </div>`;
+  }
   const pick = d ? recommendedKey(d.recommendation, d.options) : null;
   let body = '';
   if (d) {
@@ -1291,7 +1440,7 @@ module.exports = {
   renderEmail, renderItem, renderUsageBlock, renderQueueSummary, renderAttentionBlock, renderRecheckBlock, renderSummaryLine, summarizeQueue, skipBucket, extractWhy, esc,
   attentionCountOf, actionableAttentionCountOf, digestStuckCount,
   renderHealthDigestBlock, healthIssueCount, selectHealthRows,
-  renderHealthScoreboard, renderAutofixBlock, plainHealthLine, autofixLoopDeadMessage,
+  renderHealthScoreboard, renderAutofixBlock, plainHealthLine, autofixLoopDeadMessage, renderBehindTheScenesLine, prettyShowSlug,
   renderNamedDigestBlock, renderDailyDigestBlock, renderOpeningDigestBlock, renderRedditDigestBlock,
   buildPlainLanguageItemPrompt, sanitizePlainLanguageText,
   renderParkedCardsBlock,

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/grosses.json (untracked core data); data/commercial.json (untracked core data); data/grosses-history.json (untracked core data); +2 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-5502 (owner, 2026-10-16: "so many gaps"): every /biz % Recouped cell
  * says something, run over the real data through the real loader. Logic

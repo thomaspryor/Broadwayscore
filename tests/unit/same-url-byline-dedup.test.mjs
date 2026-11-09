@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Regression tests for dedupe-same-url-bylines.js — the same-URL / multi-byline
  * double-count class (Notion 2026-07-12).

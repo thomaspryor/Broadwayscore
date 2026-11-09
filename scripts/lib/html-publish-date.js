@@ -354,7 +354,24 @@ function extractPublishDateFromHtml(html, pageUrl) {
   return r ? r.date : null;
 }
 
+/**
+ * BRO-7149: one date resolver for ingest writers that skipped the extractor.
+ * Order: page html (extractor, dateSource 'html-page') -> the strict body byline
+ * (exactly one date, run/closing dates rejected; dateSource 'text-regex', the
+ * source every date guard already treats as a body-derived date). Never a URL.
+ * @returns {{date: string, dateSource: string}|null}
+ */
+function resolveMissingPublishDate({ html, fullText, url, now = new Date() } = {}) {
+  const ok = (d) => d && d >= '2000-01-01' && d <= now.toISOString().slice(0, 10);
+  const fromHtml = extractPublishDateDetailed(html, url);
+  if (fromHtml && ok(fromHtml.date)) return { date: fromHtml.date, dateSource: 'html-page' };
+  const d = require('./body-date-mismatch').extractDateFromText(fullText);
+  if (ok(d)) return { date: d, dateSource: 'text-regex' };
+  return null;
+}
+
 module.exports = {
+  resolveMissingPublishDate,
   extractPublishDateFromHtml,
   extractPublishDateDetailed,
   normalizeExtractedDate,

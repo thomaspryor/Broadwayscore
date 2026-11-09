@@ -2,7 +2,7 @@
   "createdAt": "2026-10-12T11:13:12Z",
   "issueNumber": "bro-4190-i",
   "planId": "ac1085e9-d0f0-418f-bdf0-6c56f10c2d0c",
-  "status": "partial",
+  "status": "superseded",
   "submitter": {
     "name": null,
     "email": null
@@ -46,5 +46,22 @@
       "ok": false,
       "reason": "openingDateSource: current value doesn't match expected (data changed since plan was created)"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "obsolete": 1
+    },
+    "ops": [
+      {
+        "i": 1,
+        "verdict": "obsolete",
+        "reason": "hercules-west-end-2025.openingDateSource changed since by a later write (now \"human-correction\")"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (1 obsolete); per-op reasons in triage.ops"
 }

@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6137-r2-d",
   "planId": "cfe19d59-6bac-4563-b0f6-98028b32628b",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-24T16:25:24.828Z",
   "submitter": {
     "name": null,
@@ -378,5 +378,62 @@
       "msg": "commercial.json: needsLossEvidence updated for ohio-state-murders-2022"
     }
   ],
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "obsolete": 9
+    },
+    "ops": [
+      {
+        "i": 2,
+        "verdict": "obsolete",
+        "reason": "eclipsed-2016.designationBasis changed since by a later write (now \"model-estimate\")"
+      },
+      {
+        "i": 3,
+        "verdict": "obsolete",
+        "reason": "eclipsed-2016.needsLossEvidence changed since by a later write (now unset)"
+      },
+      {
+        "i": 6,
+        "verdict": "obsolete",
+        "reason": "spring-awakening-2015.designationBasis changed since by a later write (now \"model-estimate\")"
+      },
+      {
+        "i": 7,
+        "verdict": "obsolete",
+        "reason": "spring-awakening-2015.needsLossEvidence changed since by a later write (now unset)"
+      },
+      {
+        "i": 10,
+        "verdict": "obsolete",
+        "reason": "hangmen-2022.designationBasis changed since by a later write (now \"model-estimate\")"
+      },
+      {
+        "i": 11,
+        "verdict": "obsolete",
+        "reason": "hangmen-2022.needsLossEvidence changed since by a later write (now unset)"
+      },
+      {
+        "i": 14,
+        "verdict": "obsolete",
+        "reason": "the-minutes-2022.designationBasis changed since by a later write (now \"model-estimate\")"
+      },
+      {
+        "i": 18,
+        "verdict": "obsolete",
+        "reason": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022.designationBasis changed since by a later write (now \"model-estimate\")"
+      },
+      {
+        "i": 22,
+        "verdict": "obsolete",
+        "reason": "ohio-state-murders-2022.designationBasis changed since by a later write (now \"model-estimate\")"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (9 obsolete); per-op reasons in triage.ops"
 }

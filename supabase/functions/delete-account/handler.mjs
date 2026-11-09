@@ -205,6 +205,23 @@ export async function handleDeleteAccount(req, { env, fetch = globalThis.fetch, 
     await deleteRows(fetch, base, auth, 'import_fetch_log', 'user_id', userId);
     await deleteRows(fetch, base, auth, 'mezzanine_search_log', 'user_id', userId);
     await deleteRows(fetch, base, auth, 'theatr_screenshot_log', 'user_id', userId);
+    // Critic page claims: profile photos live in the critic-photos bucket under <slug>/, so
+    // remove the files while the profile rows still say where they are.
+    const critPhotos = await selectAll(fetch, base, auth, 'critic_profiles', `user_id=eq.${userId}&select=photo_path`, 'photo_path');
+    if (critPhotos !== null) {
+      const critPaths = critPhotos.map((p) => p.photo_path).filter(Boolean);
+      for (let i = 0; i < critPaths.length; i += 1000) {
+        const res = await fetch(`${base}/storage/v1/object/critic-photos`, {
+          method: 'DELETE',
+          headers: auth,
+          body: JSON.stringify({ prefixes: critPaths.slice(i, i + 1000) }),
+        });
+        if (!res.ok) throw new Error(`delete critic photos failed: ${res.status}`);
+      }
+    }
+    await deleteRows(fetch, base, auth, 'critic_profiles', 'user_id', userId);
+    await deleteRows(fetch, base, auth, 'critic_claims', 'user_id', userId);
+    await deleteRows(fetch, base, auth, 'critic_requests', 'user_id', userId);
     // plan_shares and diary_shares cascade from profiles.
     await deleteRows(fetch, base, auth, 'profiles', 'id', userId);
 

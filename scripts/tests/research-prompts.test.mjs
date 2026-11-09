@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/commercial.json (untracked core data); data/grosses.json (untracked core data); data/grosses-history.json (untracked core data); +1 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-5570: the research-prompt generators build prompts from live data and splice
 // them into the prompts page. Node's built-in runner: node --test scripts/tests/research-prompts.test.mjs
 import { test } from 'node:test';

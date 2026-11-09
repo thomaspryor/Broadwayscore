@@ -8,7 +8,7 @@ import { renderDiaryCard } from '@/lib/shared-diary/og-card';
  * the server; nothing on it comes from URL parameters. An unknown, stopped
  * or reset link gets the generic card.
  */
-export const alt = 'Theater diary on Broadway Scorecard';
+export const alt = 'Shows seen, on Broadway Scorecard';
 export const size = SHARE_OG_SIZE;
 export const contentType = 'image/jpeg';
 // Live data: render per request; shared caches may hold it for 10 minutes.

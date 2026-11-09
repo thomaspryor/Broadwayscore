@@ -69,6 +69,7 @@ const PROD_MAX_ERRORS = 3;
 // Error messages can contain entire API responses: firstLine bounds them
 // (shared with check-prod-deploy.js since BRO-6257).
 const { firstLine } = require('./log-lines');
+const { landedOnMain } = require('./land-check-resources');
 const { LANDINGS_REL, parseLandings, landedShaForTip } = require('./landings-ledger');
 
 // check-prod-deploy prints its verdict last. Preserve that line without
@@ -267,6 +268,15 @@ function branchSiteFiles(refSha) {
 
 const CHECK_PROD = path.join(__dirname, '..', 'check-prod-deploy.js');
 
+// The line to show for one prod check: its last stdout line, plus, when it
+// could not tell (exit 2+), its stderr reason, which said why (BRO-7110).
+function prodDetail(res, checkExit) {
+  const out = lastLine(res.stdout);
+  const err = lastLine(res.stderr);
+  if (!out) return err;
+  return checkExit !== 0 && checkExit !== 1 && err ? `${out} | ${err}` : out;
+}
+
 async function waitForProd({ siteFiles, prodMin }) {
   const postSha = remoteSha('main');
   const plan = prodPlan({ mainSha: postSha && fetchMain() ? postSha : null, siteFiles });
@@ -288,7 +298,7 @@ async function waitForProd({ siteFiles, prodMin }) {
     const checkExit = res.status === null ? -1 : res.status;
     errors = checkExit === 0 || checkExit === 1 ? 0 : errors + 1;
     const v = prodVerdict({ checkExit, errors, nowMs: Date.now(), deadlineMs });
-    const detail = lastLine(res.stdout) || lastLine(res.stderr);
+    const detail = prodDetail(res, checkExit);
     if (v.verdict === 'live') {
       console.log(`${stamp()} LIVE: ${detail}`);
       return 0;
@@ -303,6 +313,15 @@ async function waitForProd({ siteFiles, prodMin }) {
     // ~5 min apart: each no-token check costs ~25 GitHub REST calls.
     await sleep(Math.min(270_000 + Math.floor(Math.random() * 60_000), Math.max(0, deadlineMs - Date.now())));
   }
+}
+
+// BRO-7110: the next step after a refusal, said where the session reads it.
+// Rebasing a refused land/ branch makes the re-push non-fast-forward, and the
+// cloud git proxy refuses that (and refuses deleting the ref), which stranded
+// re-lands under new names. land.yml rebases onto main itself.
+function refusedMessage(ref, why, url) {
+  return `REFUSED: ${ref} ${why}${url ? ` ${url}` : ''}\n` +
+    `  next: fix on top of the refused commit (do not rebase, squash or reset: land.yml rebases, and a rewritten re-push is refused as non-fast-forward), then push the same ref ${ref}`;
 }
 
 const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
@@ -343,6 +362,19 @@ async function reportLandedSha(tip, { budgetMs = 150_000, io = {} } = {}) {
   }
   console.log(`${stamp()} ON MAIN AS: not recorded yet. land.yml rebases, so branch tip ${tip.slice(0, 9)} is never on main; find the landed sha later by "tip":"${tip}" in ${LANDINGS_REL} (train riders get no row).`);
   return null;
+}
+
+// BRO-7186: read-only look at origin/main's landings ledger for a ref that is gone.
+function findLandedOnMain(ref, run) {
+  try {
+    if (!fetchMain()) return { landed: false };
+    let ledgerRows = [];
+    try { ledgerRows = mainLandingsRows(); } catch { /* ledger unreadable: not landed as far as we can tell */ }
+    return landedOnMain({ ref, ledgerRows, run, nowMs: Date.now() });
+  } catch (err) {
+    console.error(`${stamp()} could not check main for ${ref}: ${firstLine(err.message || err)}`);
+    return { landed: false };
+  }
 }
 
 async function main(argv) {
@@ -390,12 +422,21 @@ async function main(argv) {
         await reportLandedSha(tip);
         return code;
       }
+      if (v.verdict === 'unknown' && !lastSha) {
+        // BRO-7186: land.yml may have landed and deleted the ref with no run found by name.
+        const found = findLandedOnMain(args.ref, run);
+        if (found.landed) {
+          console.log(`${stamp()} LANDED: ${args.ref} is gone from origin and ${found.sha} is on main (${found.via}) (${COMMIT_URL}${found.sha})`);
+          if (args.prodMin) return waitForProd({ siteFiles: null, prodMin: args.prodMin });
+          return 0;
+        }
+      }
       if (v.verdict === 'unknown') {
         console.error(`${stamp()} UNKNOWN: ${args.ref} ${v.why}`);
         return 3;
       }
       if (v.verdict === 'refused') {
-        console.log(`${stamp()} REFUSED: ${args.ref} ${v.why}${run && run.url ? ` ${run.url}` : ''}`);
+        console.log(`${stamp()} ${refusedMessage(args.ref, v.why, run && run.url)}`);
         return 1;
       }
       const line = `waiting: ${v.why}`;
@@ -413,7 +454,7 @@ async function main(argv) {
 if (require.main === module) {
   // Exit 1 means "refused", so an unexpected crash must not reuse it.
   main(process.argv.slice(2)).then(
-    (code) => process.exit(code),
+    (code) => require('./exit-flushed.js').exitFlushed(code),
     (err) => {
       console.error(`wait-for-land crashed: ${err && err.stack ? err.stack : err}`);
       process.exit(3);
@@ -421,4 +462,4 @@ if (require.main === module) {
   );
 }
 
-module.exports = { reportLandedSha, landVerdict, readLatestRun, waitForProd, prodPlan, prodVerdict, parseArgs, sitePathsIn, firstLine, lastLine, RED_CONCLUSIONS };
+module.exports = { refusedMessage, prodDetail, reportLandedSha, landVerdict, readLatestRun, waitForProd, prodPlan, prodVerdict, parseArgs, sitePathsIn, firstLine, lastLine, RED_CONCLUSIONS };

@@ -26,7 +26,7 @@ function isJointCombinedCopy(data, showId, keptCopies, show) {
   if (!data || data.isCombinedReview !== true || !Array.isArray(keptCopies)) return false;
   if (!show || !show.title || !data.fullText) return false;
   const { canonicalizeUrlForDedup } = require('./review-guards');
-  const { textMentionsTitle } = require('./show-title-variants');
+  const { textMentionsTitle, textMentionsShortTitle } = require('./show-title-variants');
   const url = canonicalizeUrlForDedup(data.url);
   if (!url) return false;
   const mine = Array.isArray(data.combinedWith) ? data.combinedWith : [];
@@ -34,7 +34,12 @@ function isJointCombinedCopy(data, showId, keptCopies, show) {
     && canonicalizeUrlForDedup(k.url) === url
     && (mine.includes(k.showId) || (Array.isArray(k.combinedWith) && k.combinedWith.includes(showId))));
   if (!sibling) return false;
-  return !!textMentionsTitle(data.fullText, show.title);
+  // textMentionsTitle skips variants under 4 characters, so a joint copy for
+  // Red, Art or SIX never counted (BRO-7077, BRO-4305 Codex P2). This path is
+  // already corroborated by a shared URL and a combinedWith link, so short
+  // alphabetic titles count when written as a proper noun at least twice.
+  return !!textMentionsTitle(data.fullText, show.title)
+    || !!textMentionsShortTitle(data.fullText, show.title, 2, { allowUncurated: true });
 }
 
 module.exports = { isJointCombinedCopy };

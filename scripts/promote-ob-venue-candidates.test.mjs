@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/retired-show-ids.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-160: buildShowEntry() stops hardcoding category/market/date fields.
 // Tests the REAL exported functions per CLAUDE.md §15 — no logic copies.
 //
@@ -254,4 +255,16 @@ test('closing date alone: closing year, still flagged provisional', () => {
   const e = buildHistoricalShowEntry(row({ dates: { closingDate: '1998-06-01' }, titleParse: {} }), new Set());
   assert.match(e.id, /-1998$/);
   assert.equal(e.idYearProvisional, true);
+});
+
+// BRO-7146: a hand-staged candidate.type is honoured at creation (Off-West-End builder already did).
+test('buildShowEntry: explicit candidate.type is set at creation; unknown stays null', () => {
+  const base = { title: 'Puppetopia', venue: 'HERE Arts Center', source: 'venue-page:here-arts-center', discoveredAt: '2026-11-01T00:00:00.000Z' };
+  assert.equal(buildShowEntry({ ...base, type: 'special' }).type, 'special');
+  assert.equal(buildShowEntry({ ...base, listingGenre: 'Musical Theater' }).type, 'musical');
+  assert.equal(buildShowEntry({ ...base }).type, null);
+  // explicit type beats a musical genre; an invalid value falls back to the heuristic
+  assert.equal(buildShowEntry({ ...base, type: 'play', listingGenre: 'Musical Theater' }).type, 'play');
+  assert.equal(buildShowEntry({ ...base, type: 'Musical' }).type, null);
+  assert.equal(buildShowEntry({ ...base, type: 'concert', listingGenre: 'Musical Theater' }).type, 'musical');
 });

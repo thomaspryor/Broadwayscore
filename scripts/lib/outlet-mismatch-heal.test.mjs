@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data); data/critic-registry.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * outlet-mismatch-heal.test.mjs — rebuild-all-reviews.js's stale
  * outlet-mismatch pass (URL-edition rewrite, guarded rename, flagged-tombstone

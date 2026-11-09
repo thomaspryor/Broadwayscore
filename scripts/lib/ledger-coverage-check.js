@@ -136,10 +136,10 @@ function jobInvokesLedgerScripts(jobLines, ledgerScripts) {
 // True if `arg` (a path passed to stage-data-changes.sh) covers the ledger
 // file — either the exact path or a directory prefix of it (matched on a
 // path-segment boundary, so 'data/aud' does NOT wrongly match 'data/audit/').
-function argCoversLedgerPath(arg) {
+function argCoversLedgerPath(arg, ledgerPath = LEDGER_PATH) {
   const a = arg.replace(/\/+$/, '');
   if (a === '') return false;
-  return LEDGER_PATH === a || LEDGER_PATH.startsWith(a + '/');
+  return ledgerPath === a || ledgerPath.startsWith(a + '/');
 }
 
 // Does `line` invoke scripts/lib/stage-data-changes.sh in a way that stages
@@ -149,13 +149,13 @@ function argCoversLedgerPath(arg) {
 // `data/`) count. Real example: recover-explicit-ratings.yml stages via
 // `bash scripts/lib/stage-data-changes.sh data/audit/` — a plain `git add
 // <ledger-file>` text search would miss this entirely.
-function lineStagesLedgerViaHelper(line) {
+function lineStagesLedgerViaHelper(line, ledgerPath = LEDGER_PATH) {
   const m = line.match(/stage-data-changes\.sh([^#]*)/);
   if (!m) return false;
   const argsStr = m[1].trim();
   if (argsStr === '') return true; // no args = stages all of data/
   const args = argsStr.split(/\s+/);
-  return args.some(argCoversLedgerPath);
+  return args.some((a) => argCoversLedgerPath(a, ledgerPath));
 }
 
 // Does a bare `git add <path...>` line (no stage-data-changes.sh helper, no
@@ -171,13 +171,13 @@ function lineStagesLedgerViaHelper(line) {
 // ledger's `.jsonl` extension, and this function can't safely evaluate glob
 // semantics, so it conservatively treats globbed operands as non-covering
 // (a real gap stays flagged rather than silently passing).
-function lineStagesLedgerViaDirectAdd(line) {
+function lineStagesLedgerViaDirectAdd(line, ledgerPath = LEDGER_PATH) {
   const m = line.match(/git add\b([^#]*)/);
   if (!m) return false;
   const argsStr = m[1].trim();
   if (argsStr === '') return false;
   const args = argsStr.split(/\s+/).filter((a) => a && !a.startsWith('-') && a !== '||' && a !== '&&');
-  return args.some((a) => !/[*?[\]{}$]/.test(a) && argCoversLedgerPath(a));
+  return args.some((a) => !/[*?[\]{}$]/.test(a) && argCoversLedgerPath(a, ledgerPath));
 }
 
 // Does `line` invoke scripts/lib/git-add-existing.sh with the ledger path as
@@ -188,29 +188,30 @@ function lineStagesLedgerViaDirectAdd(line) {
 // literal, exact list of data/audit/ files (as opposed to a directory
 // sweep). Same argument-matching logic as lineStagesLedgerViaDirectAdd:
 // literal path operands only, `--force`/`-f` and globs excluded.
-function lineStagesLedgerViaGitAddExisting(line) {
+function lineStagesLedgerViaGitAddExisting(line, ledgerPath = LEDGER_PATH) {
   const m = line.match(/git-add-existing\.sh\b([^#]*)/);
   if (!m) return false;
   const argsStr = m[1].trim();
   if (argsStr === '') return false;
   const args = argsStr.split(/\s+/).filter((a) => a && !a.startsWith('-'));
-  return args.some((a) => !/[*?[\]{}$]/.test(a) && argCoversLedgerPath(a));
+  return args.some((a) => !/[*?[\]{}$]/.test(a) && argCoversLedgerPath(a, ledgerPath));
 }
 
-function jobStagesLedgerFile(jobLines) {
+function jobStagesLedgerFile(jobLines, ledgerPath = LEDGER_PATH) {
+  const ledgerFile = path.basename(ledgerPath);
   const lines = joinBackslashContinuations(jobLines);
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
     if (COMMENT_LINE_RE.test(line)) continue;
 
-    if (line.includes(LEDGER_FILE) && /git add\b/.test(line)) return true;
-    if (lineStagesLedgerViaHelper(line)) return true;
-    if (lineStagesLedgerViaDirectAdd(line)) return true;
-    if (lineStagesLedgerViaGitAddExisting(line)) return true;
+    if (line.includes(ledgerFile) && /git add\b/.test(line)) return true;
+    if (lineStagesLedgerViaHelper(line, ledgerPath)) return true;
+    if (lineStagesLedgerViaDirectAdd(line, ledgerPath)) return true;
+    if (lineStagesLedgerViaGitAddExisting(line, ledgerPath)) return true;
     if (COMMIT_LEDGER_ACTION_RE.test(line)) return true;
 
     const loopMatch = matchForLoopStart(lines, i);
-    if (loopMatch && loopMatch.list.includes(LEDGER_FILE)) {
+    if (loopMatch && loopMatch.list.includes(ledgerFile)) {
       const stageRe = new RegExp(`git add\\b.*\\$\\{?${loopMatch.varName}\\b`);
       for (let j = loopMatch.bodyStart; j < lines.length && !DONE_RE.test(lines[j]); j++) {
         if (!COMMENT_LINE_RE.test(lines[j]) && stageRe.test(lines[j])) return true;
@@ -246,8 +247,105 @@ function findMissingLedgerCommits(workflowYamlText, ledgerScripts) {
   return violations;
 }
 
+// ---------------------------------------------------------------------------
+// LLM spend meter (BRO-5043 follow-up, owner asked 2026-11-08 to explain the
+// Gemini + OpenAI bill). Same question for a second ledger: a job that runs a
+// script which turns on the meter (scripts/lib/llm-usage-install.js, enforced
+// in every caller by tests/unit/llm-usage-install-coverage.test.mjs) must
+// stage data/audit/gemini-usage-ledger.jsonl or its rows die with the runner.
+// The meter is a side-effect import, not a called export, so reachability is
+// "requires (transitively) a file that turns on the meter": a text require
+// graph over scripts/ that follows only TOP-LEVEL (column 0) requires and
+// imports. Lazy in-function requires are skipped on purpose: review-guards.js
+// and rebuild-helpers.js lazily require content-verifier.js just for its
+// contentHash(), and following them would flag nearly every workflow (the
+// BRO-2961 over-flag). Approximate, so the lint is ADVISORY (CLAUDE.md §19).
+// It also sees `npx tsx|ts-node scripts/...ts`.
+const LLM_LEDGER_PATH = 'data/audit/gemini-usage-ledger.jsonl';
+const LLM_METER_RE = /llm-usage-install|gemini-usage-ledger['"]\)\.install\(\)/;
+const LLM_INVOKE_RE = /\b(?:node|npx\s+(?:tsx|ts-node)|tsx)\s+(?:--[\w-]+(?:=\S+)?\s+)*scripts\/([A-Za-z0-9_./-]+\.(?:c?js|mjs|ts))/g;
+const REQ_RE = /^(?:(?:const|let|var)\s[^=]*=\s*require\(\s*|require\(\s*|import\s+(?:[^'"]*?\s+from\s+)?)['"](\.{1,2}\/[^'"]+)['"]/gm;
+
+function _walkScripts(dir, out = []) {
+  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+    if (e.name === 'node_modules' || e.name.startsWith('.')) continue;
+    const p = path.join(dir, e.name);
+    if (e.isDirectory()) _walkScripts(p, out);
+    else if (/\.(c?js|mjs|ts)$/.test(e.name) && !/\.test\./.test(e.name)) out.push(path.resolve(p));
+  }
+  return out;
+}
+
+function _resolveLocal(fromAbs, spec) {
+  const base = path.resolve(path.dirname(fromAbs), spec);
+  for (const c of [base, `${base}.js`, `${base}.ts`, `${base}.mjs`, `${base}.cjs`, path.join(base, 'index.js'), path.join(base, 'index.ts')]) {
+    try { if (fs.statSync(c).isFile()) return c; } catch { /* next */ }
+  }
+  // tsx resolves `./x.js` to `./x.ts`
+  if (base.endsWith('.js')) { const ts = base.replace(/\.js$/, '.ts'); try { if (fs.statSync(ts).isFile()) return ts; } catch { /* none */ } }
+  return null;
+}
+
+/**
+ * findLlmUsageScripts(scriptsDir) -> Set<string> of scripts/-relative paths
+ * whose process turns on the LLM spend meter (directly or via a required file).
+ */
+function findLlmUsageScripts(scriptsDir) {
+  const files = _walkScripts(scriptsDir);
+  const reverse = new Map(); // dep abs -> Set<requirer abs>
+  const reached = new Set();
+  for (const f of files) {
+    let src;
+    try { src = fs.readFileSync(f, 'utf8'); } catch { continue; }
+    const code = src.split('\n').filter((l) => !/^\s*(\/\/|\*)/.test(l)).join('\n');
+    if (LLM_METER_RE.test(code)) reached.add(f);
+    REQ_RE.lastIndex = 0;
+    let m;
+    while ((m = REQ_RE.exec(code))) {
+      const dep = _resolveLocal(f, m[1]);
+      if (!dep) continue;
+      if (!reverse.has(dep)) reverse.set(dep, new Set());
+      reverse.get(dep).add(f);
+    }
+  }
+  const queue = [...reached];
+  while (queue.length) {
+    const f = queue.pop();
+    for (const r of reverse.get(f) || []) if (!reached.has(r)) { reached.add(r); queue.push(r); }
+  }
+  return new Set([...reached].map((f) => path.relative(path.resolve(scriptsDir), f).split(path.sep).join('/')));
+}
+
+/**
+ * findMissingLlmUsageCommits(workflowYamlText, llmScripts) -> {job, message}[]
+ * One entry per job that runs a metered script but never stages the LLM
+ * usage ledger in that job.
+ */
+function findMissingLlmUsageCommits(workflowYamlText, llmScripts) {
+  const violations = [];
+  for (const job of splitJobs(workflowYamlText)) {
+    const invoked = [];
+    for (const line of job.lines) {
+      if (COMMENT_LINE_RE.test(line)) continue;
+      LLM_INVOKE_RE.lastIndex = 0;
+      let m;
+      while ((m = LLM_INVOKE_RE.exec(line))) if (llmScripts.has(m[1]) && !invoked.includes(m[1])) invoked.push(m[1]);
+    }
+    if (invoked.length > 0 && !jobStagesLedgerFile(job.lines, LLM_LEDGER_PATH)) {
+      violations.push({
+        job: job.name,
+        message: `job '${job.name}' runs ${invoked.join(', ')} (turns on the LLM spend meter) but no step stages ${LLM_LEDGER_PATH} for commit in this job`,
+      });
+    }
+  }
+  return violations;
+}
+
 module.exports = {
   findLedgerScripts,
   findMissingLedgerCommits,
+  findLlmUsageScripts,
+  findMissingLlmUsageCommits,
+  jobStagesLedgerFile,
   splitJobs,
 };

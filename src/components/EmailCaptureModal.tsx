@@ -7,6 +7,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
+import { buildSignupBody } from '@/lib/signup-city';
 import { track } from '@vercel/analytics';
 import { captureEvent } from '@/lib/posthog-events';
 import { gaEvent } from '@/lib/analytics/ga-event';
@@ -134,13 +135,15 @@ export default function EmailCaptureModal({
         return;
       }
       {
-        const body: Record<string, string> = {
+        const body = buildSignupBody({
           email: userData.email,
           source: `modal-${trigger}`,
           market: marketKey,
           page: pathname || '/',
-        };
-        if (userData.name) body.firstName = userData.name;
+          pathname,
+          firstName: userData.name || undefined,
+          isSubscriber: true,
+        });
         const res = await fetch(`https://formspree.io/f/${formId}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },

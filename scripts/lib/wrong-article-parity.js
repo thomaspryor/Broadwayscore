@@ -3,7 +3,7 @@
  * BRO-3956: where do the hand-rolled `contentVerification.wrongArticle === true`
  * checks disagree with the canonical isRejectedNonReview() (review-guards.js)?
  *
- * Inline sites: gather-reviews.js "existingIsJunk" (any wrongArticle===true) and
+ * Inline sites: gather-reviews.js "existingIsJunk" (now url-cross-production.js existingCopyYieldsUrl) (any wrongArticle===true) and
  * merge-review-fields.js _isAdoptableSource (any wrongArticle===true). The canonical
  * predicate additionally needs confidence 'high' and honours the manual-clear hatches.
  *

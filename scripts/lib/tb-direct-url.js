@@ -338,8 +338,12 @@ function extractTbReviewDate(text) {
 function buildTbObCandidateUrls(date) {
   if (!date || !date.y || !date.m || !date.d) return [];
   const pad = (n) => String(n).padStart(2, '0');
-  const base = `${TB_HOST}/page/ob/${pad(date.m)}_${pad(date.d)}_${pad(date.y % 100)}`;
-  return [`${base}.html`, `${base}b.html`, `${base}c.html`];
+  // BRO-4437 (via BRO-7079): live TB urls in reviews.json also use an `a` suffix
+  // (11 rows) and an unpadded month (29 rows, e.g. 9_29_26a.html); the old
+  // padded b/c-only list could never find those pages.
+  const tail = `_${pad(date.d)}_${pad(date.y % 100)}`;
+  const months = [...new Set([pad(date.m), String(date.m)])];
+  return months.flatMap(m => ['', 'a', 'b', 'c'].map(sfx => `${TB_HOST}/page/ob/${m}${tail}${sfx}.html`));
 }
 
 // Resolve a TB OB index URL to the dated review page. Accepts a candidate only when

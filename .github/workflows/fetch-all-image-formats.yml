@@ -190,6 +190,7 @@ jobs:
 
       # BRO-4901: advisory. Lists art whose recorded source is a URL the show rejected.
       - name: Audit image sources against rejected URLs
+        # strict-alert-exempt: BRO-7182 follow-up: route findings to a worker card
         if: always()
         continue-on-error: true
         run: node scripts/audit-image-source-rejected.js --strict

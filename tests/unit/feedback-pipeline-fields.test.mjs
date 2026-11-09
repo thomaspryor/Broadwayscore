@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // TESTS-VS-DERIVED-DATA-EXEMPT: structural check only — asserts editable
 // field names exist as keys on data/shows.json, pins no specific show facts.
 import { test, describe } from 'node:test';

@@ -36,6 +36,17 @@ export const HUB_CITIES: Record<string, HubCity> = Object.fromEntries(
   Object.entries(ALL_HUB_CITIES).filter(([, h]) => h.launched),
 );
 
+/**
+ * The launched hub a pathname belongs to ("/tours/chicago-il" and its sub-pages), or null.
+ * Lets the header market pill name the city instead of falling through to "Broadway".
+ */
+export function hubForPath(pathname: string, hubs: Record<string, HubCity> = HUB_CITIES): { slug: string; hub: HubCity } | null {
+  for (const [slug, hub] of Object.entries(hubs)) {
+    if (pathname === `/tours/${slug}` || pathname.startsWith(`/tours/${slug}/`)) return { slug, hub };
+  }
+  return null;
+}
+
 /** "Arena Stage, Washington, DC" -> "Arena Stage" on the DC hub; suburbs keep their city. */
 export function hubVenue(venue: string | null | undefined, slug: string): string {
   const home = HUB_CITIES[slug]?.home;

@@ -63,6 +63,10 @@ const ALLOWLIST = new Map([
     'Title is "Strictly Come Dancing - London": the London leg (The O2 Arena, 12-14 Feb 2027) of the '
     + 'touring arena show. "London" names the tour stop, like paranormal-activity-national-tour above; '
     + 'checked 2026-09-26 that shows.json has no second entry for this run under another title.'],
+  ['loki-the-end-of-the-world-tour-regional-2026',
+    'Title is "Loki - The End of the World Tour" (Lifeline Theatre, Chicago): "Tour" is the work\'s name, '
+    + 'not a touring market. Checked 2026-11-05 against the theatreinchicago.com listing '
+    + '(/loki-the-end-of-the-world-tour/13032/), which carries the same title; shows.json has one Loki entry.'],
 ]);
 
 /**

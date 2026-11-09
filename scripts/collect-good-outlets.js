@@ -164,7 +164,7 @@ async function fetchWithPlaywright(browser, url) {
         const allP = Array.from(document.querySelectorAll('p'))
           .filter(p => {
             const t = p.textContent.trim();
-            return t.length > 50 && !t.toLowerCase().includes('cookie') && !t.toLowerCase().includes('subscribe');
+            return t.length > 50 && !(t.length < 300 && /cookie|subscribe/i.test(t)) /* BRO-6872: short clutter only, see chrome-paragraph.js */;
           })
           .map(p => p.textContent.trim())
           .join('\n\n');

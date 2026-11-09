@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Regression test (card #1907): a same-URL cluster where two INDEPENDENT
  * repairs each clear one side of an A<->B duplicateOf cycle leaves BOTH

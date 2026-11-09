@@ -6,6 +6,7 @@
  */
 
 const { isReviewTextFile } = require('../lib/review-text-sidecars');
+const { hasExcerpt } = require('../lib/excerpt-fields');
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('../lib/list-show-dirs');
@@ -33,7 +34,7 @@ listShowDirs(dir).forEach(showDir => {
 
       // Text coverage
       if (d.fullText && d.fullText.length > 100) withText++;
-      else if (d.dtliExcerpt || d.bwwExcerpt || d.showScoreExcerpt) withExcerptOnly++;
+      else if (hasExcerpt(d)) withExcerptOnly++;
     });
 });
 

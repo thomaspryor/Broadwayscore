@@ -129,9 +129,21 @@ const START_NOW_MAX_AGE_MS = 48 * HOUR_MS;
 function hasStartNowLine(issue) {
   return !!(issue && START_NOW_RE.test(issue.description || ''));
 }
+// BRO-7102: an escalator that puts an OLDER card back in front (red-escalation.js)
+// stamps "START-NOW-SINCE: <iso>"; the window then runs from that stamp, not
+// from filing. The newest stamp wins.
+const START_NOW_SINCE_RE = /^\s*START-NOW-SINCE\s*:\s*(\S+)/gim;
+function startNowAnchorMs(issue) {
+  let best = Date.parse(issue && issue.createdAt);
+  for (const m of String((issue && issue.description) || '').matchAll(START_NOW_SINCE_RE)) {
+    const t = Date.parse(m[1]);
+    if (Number.isFinite(t) && !(t <= best)) best = t;
+  }
+  return best;
+}
 function isStartNow(issue, nowMs) {
   if (!hasStartNowLine(issue) || !issue.state || issue.state.type !== 'unstarted') return false;
-  const age = nowMs - Date.parse(issue.createdAt);
+  const age = nowMs - startNowAnchorMs(issue);
   return Number.isFinite(age) && age >= START_NOW_MIN_AGE_MS && age < START_NOW_MAX_AGE_MS;
 }
 // BRO-6654: the owner tapped Done on a Mac-only task emailed from this card
@@ -478,7 +490,7 @@ function needsComments(issue, nowMs) {
  *   'not-p0-p1' there); `orderedP2`/`eligibleP2`/`skippedP2` are the P2 fallback tier and
  *   `orderedP3`/`eligibleP3`/`skippedP3` the P3 (Low) fallback tier.
  */
-function pickCloudCard(issues, { nowMs, codex = false }) {
+function pickCloudCard(issues, { nowMs, codex = false, recurrence = null }) {
   const { priorityRank } = require('./linear-dispatch.js');
   const { issueNumber } = require('./linear-drain-parked.js');
   const skipped = {};
@@ -491,6 +503,14 @@ function pickCloudCard(issues, { nowMs, codex = false }) {
   // too old), by id: a filer told the owner they were queued, so say why not.
   const startNowSkipped = {};
   for (const iss of Array.isArray(issues) ? issues : []) {
+    // BRO-7103: one more case of a recurring problem whose root-cause card is
+    // being worked waits for that card instead of spending a worker on it.
+    const routed = recurrence ? require('./recurrence-classes.js').rootCauseRouteReason(iss, recurrence, nowMs) : null;
+    if (routed) {
+      skipped[routed] = (skipped[routed] || 0) + 1;
+      if (hasStartNowLine(iss) && iss.state && iss.state.type === 'unstarted') startNowSkipped[iss.identifier] = routed;
+      continue;
+    }
     const reason = skipReason(iss, nowMs, { codex });
     if (reason) skipped[reason] = (skipped[reason] || 0) + 1;
     else eligible.push(iss);
@@ -721,6 +741,8 @@ function pausedHistorySkipReason(comments, nowMs, { priority, pausedBacklog = fa
   const stampIdx = sorted.findIndex((c) => parseRecheckAfter(c.body) != null);
   if (stampIdx >= 0 && parseRecheckAfter(sorted[stampIdx].body) > nowMs
     && !sorted.slice(0, stampIdx).some((c) => !isMachineComment(c.body))) return 'recheck-pending';
+  // BRO-7098: the newest comment (any kind of report, not only a paused one) says the card waits on the owner.
+  if (ownerWaitHolds(sorted, nowMs)) return 'awaiting-owner';
   if (idx < 0) return null;
   const report = sorted[idx];
   if (parseSessionReportStatus(report.body) !== 'paused') return null;
@@ -751,6 +773,39 @@ function namesOwnerHold(text) {
     if (!OWNER_NEGATED_BEFORE_RE.test(before) && !OWNER_NEGATED_AFTER_RE.test(after)) return true;
   }
   return false;
+}
+
+// BRO-7098: wording that says the owner already answered (or that nothing is needed), so a mention of
+// "owner approval" next to it is no hold.
+const OWNER_ANSWERED_WORDING_RE = /^\*\*Owner decision\*\* \(answered by the owner\b|^Owner answered:|\b(?:DECISION NEEDED|owner (?:decision|approval|call))\s*:?\s*(?:none|n\/a)\b|\bowner (?:approval|decision|answer|sign[- ]?off|go[- ]ahead)\b[^.\n]{0,30}\b(?:came in|arrived|received|given|granted|recorded)\b/i;
+const OWNER_WAIT_MAX_MS = AWAITING_OWNER_MAX_MS;
+// "it is waiting on the owner's OK" (the BRO-6984 wording): the possessive form namesOwnerHold skips on purpose.
+const OWNER_WAIT_POSSESSIVE_RE = /\b(?:waiting|waits|held|blocked|pending)\s+(?:on|for)\s+the\s+owner['\u2019]s\s+(?:ok|approval|decision|go[- ]?ahead|sign[- ]?off|call|answer|judg(?:e)?ment)\b/i;
+const OWNER_WAIT_LINE_RE = /(?:^|[.!?]\s+)\s*(?:[-*>]\s*)?(?:\*\*|__)?(?:DECISION NEEDED\b|(?:waiting|waits|held|blocked|pending)\s+(?:on|for)\s+(?:the\s+|an?\s+)?(?:owner|thomas)\b|needs?\s+(?:the\s+|an?\s+)?owner\b|owner(?:'s)?\s+(?:decision|approval|sign[- ]?off|go[- ]ahead|judg(?:e)?ment|call)\s+(?:needed|required|pending)\b)/im;
+
+/**
+ * BRO-7098. True while the card's newest human-or-worker comment (machine notes, Codex runner notes and retry
+ * notes skipped) says the card waits on the owner and is under 14 days old. Every comment posts as the owner's
+ * account, so the body decides. A later comment of any kind replaces the hold: an owner answer is a comment too,
+ * and the recorded-answer shapes never count as a hold. Pure; `comments` are the card's comment nodes.
+ */
+function ownerWaitHolds(comments, nowMs) {
+  const newest = (Array.isArray(comments) ? comments : [])
+    .filter((c) => c && Number.isFinite(Date.parse(c.createdAt)) && !isMachineComment(c.body))
+    .sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt))[0];
+  if (!newest) return false;
+  const { unescapeMarkdown } = require('../../src/lib/owner-decision-link.js');
+  const body = unescapeMarkdown(String(newest.body || '')).trim();
+  const age = nowMs - Date.parse(newest.createdAt);
+  if (!(age >= 0 && age < OWNER_WAIT_MAX_MS)) return false;
+  if (OWNER_ANSWERED_WORDING_RE.test(body) || OWNER_DRAIN_ANSWER_RE.test(body)) return false;
+  // The owner-gate clear line (OWNER-CLEARED:, "not an owner decision") is the sweep's release, never a hold.
+  if (require('./headless-dispatchability.js').commentClearsOwnerGate([body], '')) return false;
+  if (OWNER_WAIT_POSSESSIVE_RE.test(body) && !OWNER_NEGATED_BEFORE_RE.test(body.slice(0, body.search(OWNER_WAIT_POSSESSIVE_RE)).slice(-30))) return true;
+  // A bare mention ("fixed the bug where DECISION NEEDED blocks mis-parsed", "owner approval: yes") is no hold:
+  // only wording that opens a line or sentence counts.
+  if (!/\bDECISION NEEDED:/.test(body) && !OWNER_WAIT_LINE_RE.test(body)) return false;
+  return namesOwnerHold(body);
 }
 
 /** Card number named by a land ref ('land/bro-2311-x' -> 2311), or null. */
@@ -833,7 +888,7 @@ module.exports = {
   leaveCodexCards,
   isMachineComment, laneUnworkableReason, LANE_UNWORKABLE_MAX_MS,
   IDLE_MS, STRANDED_MS, RESUME_WINDOW_MS, MAX_LAND_RUNS, RECENT_PAUSE_MS, RECENT_PAUSE_URGENT_MS, MAX_PAUSES, AWAITING_OWNER_MAX_MS, isPausedBacklog,
-  AUTOMATION_PARK_STALE_MS, effectiveTouchMs, hasPersonParkHold, isFallbackTechnicalPark, START_NOW_MIN_AGE_MS, START_NOW_MAX_AGE_MS, IOS_APP_CARD_RE, isStaleAutomationParked, isStartNow, hasStartNowLine, isOwnerTaskResume, startNowUnpickableReason, skipReason, pickCloudCard, pausedHistorySkipReason, historySkipReason, landRefCardNumber, resumableCardsByNumber,
+  AUTOMATION_PARK_STALE_MS, effectiveTouchMs, hasPersonParkHold, isFallbackTechnicalPark, START_NOW_MIN_AGE_MS, START_NOW_MAX_AGE_MS, IOS_APP_CARD_RE, isStaleAutomationParked, isStartNow, hasStartNowLine, isOwnerTaskResume, ownerWaitHolds, startNowUnpickableReason, skipReason, pickCloudCard, pausedHistorySkipReason, historySkipReason, landRefCardNumber, resumableCardsByNumber,
   P2_PRIORITY, TIER_P0P1, TIER_P2, isP2FallbackCandidate, P3_PRIORITY, TIER_P3, isP3FallbackCandidate, buildPickQueue, needsComments, pickModel, modelPicker, noDispatchHold, opusClaimEntries, fetchOpusClaimEntries, withCloudOpusClaims, sessionModelFor, cloudPriorAttempts, mayTakeUnchecked,
   findResumeCandidates, findResumeCard, headlessUnfitReason, AWAITING_OWNER_RE, namesOwnerHold, FALLBACK_PARK_DENY_RE,
 };

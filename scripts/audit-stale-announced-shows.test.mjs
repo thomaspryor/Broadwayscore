@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (read by the test); data/audit/stale-announced-shows-ack.json (bot ledger); data/review-texts/let-the-good-times-roll-2026 (untracked core data); +165 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';

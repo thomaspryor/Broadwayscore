@@ -86,10 +86,10 @@ export function buildSharedDiaryView(
   return { name: payload.name, showText: payload.showText, capped: selected.capped, showsSeen: selected.showsSeen, groups, recentPosters };
 }
 
-/** "Tom's theater diary" / "Chris' theater diary". */
+/** "Shows Tom has seen". */
 export function diaryTitle(name: string): string {
   const n = name.trim();
-  return `${n}${/s$/i.test(n) ? '’' : '’s'} theater diary`;
+  return `Shows ${n} has seen`;
 }
 
 /** "112 shows seen" / "1 show seen" (distinct shows, as the app counts). */

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Pins the per-channel video caption rules (BRO-6737). Requires the real module and the real reviewed plan files.
 import test from 'node:test';
 import assert from 'node:assert/strict';

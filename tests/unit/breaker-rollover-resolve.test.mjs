@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-5261 retro-review: the SD and BD breaker checkers decide "was tripped"
 // with a day-scoped helper, so a trip on an earlier UTC day was never seen
 // as a change at rollover and its alert-ledger incident stayed open

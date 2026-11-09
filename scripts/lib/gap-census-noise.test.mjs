@@ -233,3 +233,46 @@ test('BRO-5489: a UK-market show page-date vets every census candidate (Buffy Re
     assert.equal(o.nonReview.length, 1, category);
   }
 });
+
+// BRO-6968: The Bridge (Bush Theatre) census held Into the Woods / Guys and Dolls "at the Bridge Theatre".
+test('a title used only as another house\'s name is not this show', () => {
+  const show = { title: 'The Bridge', venue: 'Bush Theatre', category: 'off-west-end', openingDate: '2026-11-03' };
+  const u = (url) => noise.titleOnlyAsOtherVenueInUrl(url, show, titleTokens);
+  assert.equal(u('https://www.thetimes.com/culture/theatre-dance/article/into-the-woods-review-bridge-theatre-gzw6h6f8b'), true);
+  assert.equal(u('https://www.timeout.com/london/news/review-into-the-woods-bridge-theatre-121125'), true);
+  assert.equal(u('https://variety.com/2023/legit/reviews/guys-and-dolls-review-london-nicholas-hytner-bridge-theatre-1235553744/'), true);
+  assert.equal(u('https://www.theguardian.com/culture/2026/aug/30/the-bridge-review-alaa-shehada'), false);
+  assert.equal(u('https://www.bestoftheatre.co.uk/blog/post/review-roundup-the-bridge-bush-theatre'), false);
+  assert.equal(u('https://www.timeout.com/london/theatre/the-bridge-4'), false);
+  // SERP title/snippet: the noel-coward URL carried "bridge" only in its snippet.
+  assert.equal(noise.titleOnlyAsOtherVenue('/article/into-woods-review-noel-coward-theatre Into the Woods review: the Bridge Theatre transfer', show, titleTokens), true);
+  assert.equal(noise.titleOnlyAsOtherVenue('/stage/x The Bridge review, Bush Theatre', show, titleTokens), false);
+  assert.equal(noise.missingNoiseReason({ url: 'https://www.timeout.com/london/news/review-into-the-woods-bridge-theatre-121125', serpCensus: true }, { show, tokensOf: titleTokens }), 'title-is-other-venue');
+  // The title followed by the outlet's "theatre review" label is this show (review finding).
+  assert.equal(u('https://x.com/the-bridge-theatre-review'), false);
+  assert.equal(noise.titleOnlyAsOtherVenue('/stage/x The Bridge, theatre review: a quiet triumph', show, titleTokens), false);
+  assert.equal(u('https://variety.com/2026/legit/reviews/into-the-woods-review-bridge-theater-1234/'), true);
+  // Trade-off pinned: a "theatre review" label after the house keeps the row (an extra gap, never a hidden review).
+  assert.equal(u('https://x.com/guys-and-dolls-at-the-bridge-theatre-review'), false);
+  // Own house spelled "theater" by a US outlet stays this show's.
+  assert.equal(noise.titleOnlyAsOtherVenueInUrl('https://variety.com/x-bridge-theater-1234', { title: 'Bridge', venue: 'Bridge Theatre', category: 'off-west-end' }, titleTokens), false);
+  // A New York show's "theater" is its own spelling, never a London house.
+  assert.equal(noise.titleOnlyAsOtherVenueInUrl('https://x.com/show-apollo-theater-harlem', { title: 'Apollo', venue: 'Booth Theatre', category: 'broadway' }, titleTokens), false);
+  // A show whose own house carries the name keeps those reviews.
+  const own = { title: 'Lyric', venue: 'Lyric Theatre', openingDate: '2026-11-03' };
+  assert.equal(noise.titleOnlyAsOtherVenueInUrl('https://x.co.uk/lyric-lyric-theatre-review', own, titleTokens), false);
+  assert.equal(noise.titleOnlyAsOtherVenueInUrl('https://x.co.uk/review-at-the-lyric-theatre', own, titleTokens), false);
+});
+
+test('a cross-show drop live under any other show is not owed here (BRO-6968)', () => {
+  const ITW = 'https://www.timeout.com/london/news/review-into-the-woods-bridge-theatre-121125';
+  const OWN = 'https://www.theguardian.com/culture/2026/aug/30/the-bridge-review-alaa-shehada';
+  const drops = [{ url: ITW, matchedShowId: 'into-the-woods-2022' }, { url: OWN, matchedShowId: 'bridge-2019' }, { url: null }];
+  const reviews = [{ showId: 'into-the-woods-off-west-end-2025', url: `${ITW}/` }, { showId: 'the-bridge-off-west-end-2026', url: OWN }];
+  const canon = (u) => u.replace(/\/+$/, '');
+  assert.deepEqual(noise.crossShowDropsOwedHere(drops, reviews, 'the-bridge-off-west-end-2026', canon).map((d) => d.url), [OWN]);
+  const JC = 'https://www.thetimes.com/culture/theatre-dance/article/theatre-review-julius-caesar-bridge-theatre-david-morrissey-ben-whishaw-8f6fcfxnh';
+  const show = { title: 'The Bridge', venue: 'Bush Theatre' };
+  assert.deepEqual(noise.crossShowDropsOwedHere([{ url: JC }, { url: OWN }], [], 'the-bridge-off-west-end-2026', canon, { show, tokensOf: titleTokens }).map((d) => d.url), [OWN]);
+  assert.equal(noise.crossShowDropsOwedHere([{ url: JC }], [], 'x', canon).length, 1);
+});

@@ -4,6 +4,7 @@
  * web search ON, record mention / position / cited URLs / how we're described.
  */
 
+require('./llm-usage-install'); // LLM spend meter: before any client is built (BRO-5043)
 const PROMPTS = [
   // Generic discovery
   'Where can I find aggregated Broadway critic scores for current shows?',

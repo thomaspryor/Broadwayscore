@@ -300,3 +300,45 @@ test('BRO-4956: a held fetch lock falls back to a standalone clone, never for a 
     assert.throws(() => makeFreshCheckout({ repo: f.repo, prefix: 'bro4956-co-', sha: pinned, lockRetryDelaysMs: [0] }), /\.lock': File exists/);
   } finally { fs.rmSync(f.root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
+
+// BRO-7138: a check that fails on something the check machine withholds by
+// design (checksEnv strips every token) fails every night whatever the fix's
+// state. It must read as unverifiable with a named cause, not as "the fix broke".
+test('BRO-7138: a fail on a withheld credential is unverifiable + envCause', () => {
+  const cwd = tmpCheckout();
+  try {
+    fs.mkdirSync(path.join(cwd, 'tests/unit'), { recursive: true });
+    fs.writeFileSync(path.join(cwd, 'tests/unit/needs-key.test.mjs'),
+      "import test from 'node:test';\ntest('ux', () => { throw new Error('FAIL UX resolution: LINEAR_API_KEY not set in .env or environment'); });\n");
+    const out = runVerify(cwd, 'node --test tests/unit/needs-key.test.mjs', { attempts: 1 });
+    assert.equal(out.status, 'unverifiable');
+    assert.equal(out.envCause, 'credential-withheld');
+    assert.match(out.detail, /^could not run here \(credential-withheld\)/);
+  } finally {
+    fs.rmSync(cwd, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});
+
+// BRO-7138 (BRO-5814, BRO-6595, 3b8637c5): a test CI runs under `npx tsx
+// --test` was run under plain node and failed on its .ts import every night.
+test('BRO-7138: a tsx-manifest test runs under tsx, and a real failure there stays fail', () => {
+  const cwd = tmpCheckout();
+  try {
+    fs.mkdirSync(path.join(cwd, 'tests/unit'), { recursive: true });
+    fs.mkdirSync(path.join(cwd, 'src'), { recursive: true });
+    const nm = path.join(path.dirname(require.resolve('tsx')).split(`${path.sep}node_modules${path.sep}`)[0], 'node_modules');
+    fs.symlinkSync(nm, path.join(cwd, 'node_modules'));
+    fs.writeFileSync(path.join(cwd, 'src/val.ts'), 'export const val: number = 2;\n');
+    fs.writeFileSync(path.join(cwd, 'tests/unit-test-manifest-tsx.txt'), 'tests/unit/ts.test.mjs\ntests/unit/ts-bad.test.mjs\n');
+    fs.writeFileSync(path.join(cwd, 'tests/unit/ts.test.mjs'),
+      "import test from 'node:test';\nimport assert from 'node:assert/strict';\nimport { val } from '../../src/val';\ntest('ts', () => { assert.equal(val, 2); });\n");
+    fs.writeFileSync(path.join(cwd, 'tests/unit/ts-bad.test.mjs'),
+      "import test from 'node:test';\nimport { val } from '../../src/gone';\ntest('bad', () => {});\n");
+    assert.equal(runVerify(cwd, 'node --test tests/unit/ts.test.mjs', { attempts: 1 }).status, 'pass');
+    const bad = runVerify(cwd, 'node --test tests/unit/ts-bad.test.mjs', { attempts: 1 });
+    assert.equal(bad.status, 'fail', bad.detail);
+    assert.equal(bad.envCause, undefined);
+  } finally {
+    fs.rmSync(cwd, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-5047 (owner decision 2026-10-11): catch-up scoring waits for the
  * half-price batch runs; opening-night scoring stays immediate.

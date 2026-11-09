@@ -243,9 +243,26 @@ function setupWorktree() {
   if (!fs.existsSync(path.join(WT, '.git'))) {
     sh('git', ['worktree', 'prune']);
     git(['fetch', 'origin', 'main'], ROOT);
-    git(['worktree', 'add', '--detach', WT, 'origin/main'], ROOT);
+    addWorktree(WT);
   }
+  applyTreeMode(WT);
   linkNodeModules(WT);
+}
+/** BRO-7097: 'slim' trees skip the image trees (R.SLIM_EXCLUDED_DIRS); a card that reads images gets 'full'. Set per card. */
+let treeMode = 'slim';
+/** Put <tree> into the current tree mode. Idempotent, and also slims a full tree an earlier version made. */
+function applyTreeMode(tree) {
+  // `sparse-checkout` turns on extensions.worktreeConfig in the SHARED .git/config the first time.
+  // Two slots doing that at once can lose a config lock, so set it once up front, and retry once.
+  let on = false; try { on = git(['config', '--get', 'extensions.worktreeConfig'], ROOT) === 'true'; } catch { /* unset */ }
+  if (!on) { try { git(['config', 'extensions.worktreeConfig', 'true'], ROOT); } catch { /* the sparse-checkout call below sets it too */ } }
+  try { git(R.treeModeArgs(treeMode), tree); } catch { git(R.treeModeArgs(treeMode), tree); }
+}
+/** A new detached worktree of origin/main in the current tree mode, without ever writing the excluded trees. */
+function addWorktree(tree) {
+  git(['worktree', 'add', '--no-checkout', '--detach', tree, 'origin/main'], ROOT);
+  git(R.treeModeArgs(treeMode), tree);
+  git(['checkout', '-q', '-f', 'HEAD'], tree);
 }
 /** Link <tree>/node_modules to ROOT's (a dangling link is replaced). Node finds ROOT's copy from a nested tree anyway, but tests that copy the tree to /tmp follow this link. */
 function linkNodeModules(tree) {
@@ -430,6 +447,7 @@ function resetWorktree(branch) {
   cardBase = git(['rev-parse', 'origin/main']);
   git(['checkout', '-f', '-B', branch, cardBase]);
   git(['reset', '--hard', cardBase]);
+  applyTreeMode(WT);
   // -x: gitignored files Codex or tests wrote must not carry into the next card.
   git(['clean', '-fdx', '-e', 'node_modules']);
   return provideData(WT);
@@ -578,7 +596,7 @@ const CHECK_BINARY_LINES = 1000; // a binary file is never "small"
 
 /** Commit Codex's working-tree changes (message: a --pr landing's own). -> { hasDiff, blocked } */
 function commitAttempt(card, attempt, message = null) {
-  git(['add', '-A']); // node_modules is a gitignored symlink; naming it in a pathspec makes git add fail
+  git(['add', '-A', '--sparse']); // --sparse: a card that adds a file under a slim tree's excluded dir still commits it. node_modules is a gitignored symlink; naming it in a pathspec makes git add fail
   const names = git(['diff', '--cached', '--name-only', '--no-renames']).split('\n').filter(Boolean);
   if (!names.length) return { hasDiff: git(['rev-list', '--count', 'origin/main..HEAD']) !== '0', blocked: null };
   if (names.some((n) => n.startsWith('.github/workflows/'))) return { hasDiff: true, blocked: 'Codex edited .github/workflows/**, which the runner never lands' };
@@ -622,10 +640,11 @@ function prepareBase() {
   if (SB.dropStale(BASE_WT, { gitCommon: gitCommonDir() })) log(`removed ${BASE_WT}: a sandboxed run that did not finish left it owned by the sandbox`);
   if (!fs.existsSync(path.join(BASE_WT, '.git'))) {
     sh('git', ['worktree', 'prune'], { cwd: ROOT });
-    git(['worktree', 'add', '--detach', BASE_WT, 'origin/main'], ROOT);
+    addWorktree(BASE_WT);
   }
   linkNodeModules(BASE_WT);
   git(['checkout', '-q', '-f', '--detach', cardBase], BASE_WT);
+  applyTreeMode(BASE_WT); // same mode as the card's tree: the land check compares the two
   git(['clean', '-qfdx', '-e', 'node_modules'], BASE_WT);
   provideData(BASE_WT, { reviewTexts: false });
 }
@@ -642,6 +661,33 @@ function newLandFailuresNow() {
     const gauntlet = require(path.join(ROOT, 'scripts/lib/land-local-check.js')).stageGauntletHarness(WT, harnessDir);
     return landFailuresWith(D, gauntlet);
   } finally { fs.rmSync(harnessDir, { recursive: true, force: true }); }
+}
+/**
+ * BRO-7134: re-run each red file-list gate's failing files alone on the branch.
+ * -> Map<gate, {exit,text,root}>, only for gates whose failures all sit in files the batch ran
+ * (D.computeRerunScope, isolated) and whose re-run produced an exit code. Never runs an empty
+ * list: `node --test` with no files would run every test in the tree.
+ */
+function isolatedBranchRuns(D, red, branch) {
+  const plans = red.filter((b) => b.files).map((b) => ({ b, scope: D.computeRerunScope({ gate: b.gate, branch: branch.get(b.gate), branchFiles: b.files, isolated: true }) }))
+    .filter((p) => p.scope.scoped && p.scope.files.length);
+  const out = new Map();
+  if (!plans.length) return out;
+  for (const d of R.DATA_DIRS) R.dropDataDir(path.join(WT, 'data', d), WT); // as for the batch
+  try {
+    SB.withTrees([WT], () => {
+      for (const { b, scope } of plans) {
+        keepLock();
+        const r = b.run(WT, scope.files);
+        if (typeof r.exit === 'number') out.set(b.gate, r); // no exit code: keep the batch verdict
+      }
+    });
+  } finally {
+    // A throw here must not leave WT without data or with test-rewritten files for the base run.
+    cleanTree(WT);
+    provideData(WT);
+  }
+  return out;
 }
 function landFailuresWith(D, gauntlet) {
   requireSandbox();
@@ -679,14 +725,23 @@ function landFailuresWith(D, gauntlet) {
   const onlyMissingActionlint = (b) => b.gate === 'lint-workflows' && sh('actionlint', ['--version'], { timeoutMs: 30_000 }).code !== 0
     && [...D.parseGateFailures(b.gate, branch.get(b.gate).text, WT).values()].every((f) => f.name === 'actionlint')
     && D.parseGateFailures(b.gate, branch.get(b.gate).text, WT).size > 0;
-  const red = batches.filter((b) => branch.get(b.gate).exit !== 0 && !onlyMissingActionlint(b));
+  let red = batches.filter((b) => branch.get(b.gate).exit !== 0 && !onlyMissingActionlint(b));
+  // BRO-7134: the base side runs only the failing files, alone. Judged against the full batch,
+  // a test that fails only under batch load (a 300 s timeout, a race) passed alone on base and
+  // read as "new", rejecting good work. So re-run those files alone on the branch too and judge
+  // alone vs alone; the full batch result stays the verdict when the failures cannot be scoped.
+  // A failure that is real only under load is not lost: an accepted branch still lands through
+  // land.yml, which runs the full batch and forces a full base run on timeouts.
+  const isolated = isolatedBranchRuns(D, red, branch);
+  for (const [gate, r] of isolated) log(`land checks: ${gate} failing file(s) re-run alone on the branch: ${r.exit === 0 ? 'all pass (failed only under batch load, not counted)' : 'still failing, judged alone against base'}`);
+  red = red.filter((b) => (isolated.get(b.gate) || branch.get(b.gate)).exit !== 0);
   const report = [];
   if (red.length) {
     keepLock();
     prepareBase();
     SB.withTrees([BASE_WT], () => { for (const b of red) {
       keepLock();
-      const br = branch.get(b.gate);
+      const br = isolated.get(b.gate) || branch.get(b.gate);
       let base;
       if (b.files) {
         const failing = [...new Set([...D.parseGateFailures(b.gate, br.text, WT).values()].map((f) => f.file))].filter((f) => f && f !== '?');
@@ -796,6 +851,22 @@ async function settleLanded(id, stats, { partial, remaining = [], body, countRef
       return r.code === 0;
     }
     if (ap.kind === 'applied') body = `${body}\n\n### Data-fix plan applied\n${ap.lines.map((l) => `- ${l}`).join('\n')}\n\nAny item above that asks to approve or apply this plan is already done; only the other items remain.`;
+  }
+  if (partial && remaining.length && !OPTS.dryRun) {
+    // BRO-7133: items only the owner can do go to their own parked card, so the code part can close.
+    const { owner, code } = R.splitOwnerSteps(remaining);
+    if (owner.length) {
+      const card = await linear.getIssue(id).catch(() => null);
+      // One try, not linearBrain's retries: create is not idempotent, and a failed split only leaves the items on this card.
+      const made = sh('node', ['scripts/linear-brain.js', ...R.ownerStepCardArgs(id, card && card.title, owner)], { timeoutMs: 600_000 });
+      const ref = R.filedCardId(made && made.out);
+      if (made && made.code === 0 && ref) {
+        log(`${id}: owner steps split to ${ref}`);
+        body = `${body}\n\n### Owner steps split off\n${ref} (parked) carries:\n${owner.map((x) => `- ${x}`).join('\n')}`;
+        remaining = code;
+        partial = code.length > 0;
+      }
+    }
   }
   if (partial) {
     const left = remaining.length ? `Still open on this card:\n${remaining.map((x) => `- ${x}`).join('\n')}\n\n` : 'Some card items are still open (see the runner\'s "landing a partial fix" note).\n\n';
@@ -918,6 +989,7 @@ async function workCard(pick, stats, inFlight) {
     // Record the claim in the lock, so a run that dies from here on leaves this card named.
     if (!refreshLock(MAX_STAMP_GAP_MS)) throw new Error('lost the run lock (another run took it, or it could not be re-stamped before going stale)');
     const branch = `codex/${id.toLowerCase()}`;
+    treeMode = R.cardNeedsImages(`${card.title}\n${card.description || ''}\n${verifyCommand(card) || ''}`) ? 'full' : 'slim';
     const data = resetWorktree(branch);
     const cmd = verifyCommand(card);
     let onMain = 'The card has no automatic check command.';
@@ -990,6 +1062,7 @@ async function workCard(pick, stats, inFlight) {
       }
     };
     const failed = (cx) => `Codex exited ${cx.code}: ${tail(R.stripHookNoise(R.redactSecrets(R.codexExitTransient(cx.out) ? cx.out : cx.report, process.env)).trim(), 400)}`;
+    let lastHasDiff = null; // the branch holds a Codex commit after the newest attempt (BRO-7133)
     for (;;) {
       // The first exec gets the full timeout unless the hard stop is near; fix rounds fit the card budget.
       const cx = await exec(prompt(extra), execs === 0 ? firstExecMs() : fixExecMs());
@@ -997,6 +1070,7 @@ async function workCard(pick, stats, inFlight) {
       // A failed exec (quota, login, crash) is not a fix attempt: hand back unmarked and stop the run.
       if (cx.code !== 0) { abort = failed(cx); break; }
       let c = commitAttempt(card, attempt);
+      lastHasDiff = c.hasDiff;
       if (c.blocked) { check = { verdict: 'REJECT', text: `Blocked before review: ${c.blocked}.` }; step = 'bounce'; break; }
       // Land refuses new unit/audit failures half an hour after the push, when the worktree has
       // moved on; catch them here and hand them straight back to Codex in the same attempt.
@@ -1086,6 +1160,7 @@ async function workCard(pick, stats, inFlight) {
     const remaining = step === 'land' || step === 'close-already-fixed' ? R.parseRemaining(check.text) : [];
     if (step === 'close-already-fixed' && remaining.length) step = 'bounce'; // nothing to land, items still open
     let landBlocked = false;
+    let refusedClose = false;
 
     if (step === 'land') {
       if (!OPTS.land) { stats.wouldLand.push(id); handedBack = (await moveCard(id, 'Todo', `${R.BOUNCED_MARKER}\n## Codex runner: passed the check, not landed (--no-land run)\n\n${summary}`)).code === 0; disposed = true; return 'done'; }
@@ -1138,6 +1213,7 @@ async function workCard(pick, stats, inFlight) {
         const rev = await moveCard(id, 'In Review', `## Codex runner: already fixed on main, no code change\n\nThe independent check found nothing left to do, but the card has no check the Done gate can run, so it waits here for a person to close it.\n\n${summary}`);
         if (rev.code === 0) { stats.inReview.push(id); handedBack = true; disposed = true; return 'done'; }
       }
+      if (r.code === 5) refusedClose = true;
       if (r.code === 5) summary += `\n\n### Not fixed after all\nThe reviewer judged it already fixed, but the card's own check still fails on main (the Done gate refused to close it):\n${fence(tail(R.redactSecrets(r.out || '', process.env), 800))}`;
     }
     stats.bounced.push(id);
@@ -1148,6 +1224,20 @@ async function workCard(pick, stats, inFlight) {
     const blockedText = /^Blocked before review: /.test(check.text || '') ? check.text : null;
     const bounceClass = R.classifyBounce({ envBlocked, blocked: blockedText, remaining: [...remaining, ...R.parseRemaining(check.text)], report });
     log(`${id}: bounce class ${bounceClass}`);
+    // BRO-7133: Codex changed nothing (a later date, another repo, the owner's Mac, missing telemetry): another
+    // try changes nothing again, so the card is parked with Codex's reason instead of circling back after 14 days.
+    // A Done-gate refusal of an "already fixed" claim is Codex's miss, not a block, and keeps the plain bounce.
+    const openItems = [...remaining, ...R.parseRemaining(check.text)];
+    if (R.parkOnNoChange({ hasDiff: lastHasDiff, landBlocked, refusedClose, bounceClass, envBlocked, remaining: openItems, report })) {
+      const park = R.blockedParkNote({ report, remaining: openItems, nowMs: Date.now() });
+      log(`${id}: no change, parking (${park.reason.slice(0, 120)})`);
+      const note = R.blockedParkBody({ ...park, summary: `${why} Findings for whoever takes it next:\n\n${summary}` });
+      // "Paused" is a state the team may not have (linear-session-reporting STATUS_TO_STATE_NAME): Backlog then.
+      let parked = await moveCard(id, 'Paused', note);
+      if (parked.code !== 0 && parked.code !== 5) parked = await moveCard(id, 'Backlog', note);
+      if (parked.code === 0) { stats.bounced.push(id); handedBack = true; disposed = true; return 'done'; }
+      log(`${id}: could not park (exit ${parked.code}); bouncing to Todo`);
+    }
     handedBack = (await moveCard(id, 'Todo', `${R.BOUNCED_MARKER}\n## Codex runner: not landed, left for the Claude worker\n${R.bounceClassLine(bounceClass)}\n\n${why} Findings for whoever takes it next:\n\n${summary}`)).code === 0;
     disposed = true;
     return 'done';
@@ -1443,8 +1533,16 @@ async function launchSlots() {
     const n = R.slotNames(plan.base + k);
     return [n.wt, n.base].filter((w) => !fs.existsSync(path.join(ROOT, '.claude/worktrees', w, '.git'))).length;
   });
-  const disk = R.slotsForDisk({ slots: plan.slots, freeBytes: freeDisk(), missingBySlot });
+  // BRO-7097: budget a worktree from a real one (any slot's existing tree), not a constant.
+  const existingTree = [...Array(plan.slots).keys()].flatMap((k) => { const n = R.slotNames(plan.base + k); return [n.wt, n.base]; })
+    .map((w) => path.join(ROOT, '.claude/worktrees', w))
+    // Only a slim tree stands for the budget: a legacy full tree (or one a full card holds) would read 1.8 GB and cost the slot.
+    .find((d) => fs.existsSync(path.join(d, '.git')) && R.isSlimTree(d));
+  const measuredBytes = existingTree ? R.measureTreeBytes(existingTree) : null;
+  const worktreeBytes = R.worktreeBytesFor({ mode: 'slim', measuredBytes });
+  const disk = R.slotsForDisk({ slots: plan.slots, freeBytes: freeDisk(), missingBySlot, reserveBytes: R.LANES[OPTS.lane].diskReserveBytes, worktreeBytes });
   if (disk.slots < plan.slots) Object.assign(plan, { slots: disk.slots, why: [plan.why, disk.why].filter(Boolean).join('; ') });
+  log(`worktree budget ${(worktreeBytes / 1e9).toFixed(2)} GB each (${measuredBytes ? `measured ${(measuredBytes / 1e9).toFixed(2)} GB from ${path.basename(existingTree)}` : 'estimate, no worktree exists yet'}); ${(freeDisk() / 1e9).toFixed(1)} GB free`);
   log(`launching ${plan.slots} slot(s) from slot ${plan.base} (${plan.lane} lane)${plan.why ? ` instead of ${OPTS.slots}: ${plan.why}` : ''}`);
   // One slot: no run dir, so it runs exactly as a lone runner (2 landings in flight, plain summary).
   const runDir = plan.slots > 1 ? fs.mkdtempSync(path.join(LOG_DIR, 'launch-')) : '';
@@ -1453,7 +1551,7 @@ async function launchSlots() {
     if (k) await sleep(SLOT_STAGGER_MS);
     if (dying || (runDir && fs.existsSync(path.join(runDir, 'STOP')))) break;
     const args = R.slotArgs(process.argv.slice(2), { slot: plan.base + k, runDir, runStartedMs: RUN_STARTED_MS, limit: Math.ceil(OPTS.limit / plan.slots), checkBudgetUsd: OPTS.checkBudgetUsd / plan.slots, pickList: OPTS.limit + 5 * plan.slots });
-    const child = spawn(process.execPath, [__filename, ...args], { cwd: ROOT, stdio: 'inherit', env: { ...process.env, ...(plan.slots < OPTS.slots ? { CODEX_SLOT_SHORTFALL: `${plan.slots} of ${OPTS.slots} requested: ${plan.why || 'disk or lane limit'}` } : {}),
+    const child = spawn(process.execPath, [__filename, ...args], { cwd: ROOT, stdio: 'inherit', env: { ...process.env, CODEX_FULL_TREE_BYTES: String(R.FULL_WORKTREE_BYTES), ...(plan.slots < OPTS.slots ? { CODEX_SLOT_SHORTFALL: `${plan.slots} of ${OPTS.slots} requested: ${plan.why || 'disk or lane limit'}` } : {}),
       // A lane that fell back to another lane's slot (the login may refresh) stands down by design if that slot is busy.
       ...fallback } });
     slotChildren.push(child);
@@ -1654,6 +1752,7 @@ async function runLocked(startedMs) {
     weeklyPct: weeklyPct(),
     checkCount, checkSpentUsd, checkByModel,
     slotShortfall: process.env.CODEX_SLOT_SHORTFALL,
+    worktreeLine: R.worktreeSummaryLine({ mode: treeMode, bytes: R.measureTreeBytes(WT), fullBytes: Number(process.env.CODEX_FULL_TREE_BYTES) || null }),
     landedPerLane: SLOT === 0 ? landedPerLane() : null,
     ladderLine: ladderLine(),
   });
@@ -1747,6 +1846,7 @@ async function runPr(n) {
     // Inside the try: a setup throw still turns the started comment into an error verdict.
     ensureTools({ codex: false });
     pruneDisk();
+    treeMode = 'full'; // a PR's files are not known before its diff: take the whole tree (set before setupWorktree so the tree is not slimmed and refilled)
     setupWorktree();
     const data = resetWorktree(`codex-pr-${n}`);
     git(['fetch', 'origin', `+refs/pull/${n}/head:refs/remotes/origin/codex-pr/${n}`]);

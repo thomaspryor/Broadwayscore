@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5295",
   "planId": "2f70b6f4-c9c7-425a-b5e2-96c6db1fd9c8",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-13T21:40:00Z",
   "submitter": {
     "name": null,
@@ -151,5 +151,22 @@
       "ok": true,
       "msg": "alvin-ailey-american-dance-theater-new-works-west-end-2026/bestoftheatre--alan-ingram.json originalScore: \"5/5\" -> null (retracted originalScoreCleared, originalScoreClearedReason, originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource)"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 1
+    },
+    "ops": [
+      {
+        "i": 0,
+        "verdict": "resolved",
+        "reason": "death-becomes-her-tour-2026/hercampus--jessica-sprague.json originalScore already null"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (1 resolved); per-op reasons in triage.ops"
 }

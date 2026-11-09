@@ -81,11 +81,13 @@ function buildIssueQuery() {
       description
       priority
       url
+      startedAt
+      updatedAt
       completedAt
       state { id name type }
       project { name }
       labels(first: 20) { nodes { id name } }
-      comments(first: 50, orderBy: createdAt) { nodes { id body createdAt user { name } } }
+      comments(first: 250, orderBy: createdAt) { nodes { id body createdAt user { name } } }
       relations(first: ${RELATIONS_PAGE_SIZE}) { nodes { type relatedIssue { id identifier } } }
     }
   }`;
@@ -1137,9 +1139,12 @@ function reportedOutcomeGuard(issue, opts) {
 
 // Comments for a batch of one team's issues by number (BRO-4642): one round
 // trip instead of a getIssue per card. Same comments shape as buildIssueQuery.
-function buildIssueCommentsByNumberQuery() {
+// includeArchived (BRO-7103): Linear auto-archives finished cards after a few
+// weeks, and the default issues() query silently drops them, so a by-number
+// comment read of an old Done card came back empty.
+function buildIssueCommentsByNumberQuery({ includeArchived = false } = {}) {
   return `query($teamKey: String!, $numbers: [Float!]) {
-    issues(first: 50, filter: { team: { key: { eq: $teamKey } }, number: { in: $numbers } }) {
+    issues(first: 50,${includeArchived ? ' includeArchived: true,' : ''} filter: { team: { key: { eq: $teamKey } }, number: { in: $numbers } }) {
       nodes {
         identifier
         comments(first: 50, orderBy: createdAt) { nodes { body createdAt } }

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/critic-registry.json (untracked core data); data/shows.json (untracked core data); data/audit/stage-latency.jsonl (bot ledger). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -213,7 +214,8 @@ test('BRO-720: manual/audit reasons, CV-confirmed and allowCrossMarket-only stil
 test('BRO-720 wiring: every date-based wrongProduction writer is behind an allowEarlyDate bypass', () => {
   const src = fs.readFileSync(new URL('./rebuild-all-reviews.js', import.meta.url), 'utf8');
   // pre-pass date guards (pre-window + dateless-revival) sit after this early continue
-  assert.ok(/if \(d\.allowEarlyDate\) continue;[\s\S]{0,6000}\[PRE-OPENING\][\s\S]{0,6000}\[DATELESS-REVIVAL\]/.test(src));
+  // (9000: the republish guards, BRO-4641/5000/7085, sit between them; the bound is a proximity check)
+  assert.ok(/if \(d\.allowEarlyDate\) continue;[\s\S]{0,9000}\[PRE-OPENING\][\s\S]{0,6000}\[DATELESS-REVIVAL\]/.test(src));
   // inclusion-pass pre-opening guard
   assert.ok(src.includes('data.publishDate && showDateMap[showId] && !data.allowEarlyDate && !data.routedFromShowId'));
   assert.ok(src.includes('shouldAutoClearWrongProduction(data)'));

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/cast-changes.json (read by the test); data/commercial.json (read by the test); data/reviews.json (read by the test); +1 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * health-check-hours-ago.test.mjs — BRO-3349 prevent-class guard.
  *

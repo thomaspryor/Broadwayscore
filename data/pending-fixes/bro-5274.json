@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5274",
   "planId": "d59f4da3-8d05-4aa2-9ad5-b0f01148360e",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-14T01:33:02.755374Z",
   "submitter": {
     "name": null,
@@ -343,5 +343,107 @@
       "ok": false,
       "reason": "only-fools-and-horses-west-end-2019/whatsonstage--unknown.json duplicateOf: write guard kept null"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "obsolete": 18
+    },
+    "ops": [
+      {
+        "i": 0,
+        "verdict": "obsolete",
+        "reason": "review file affluenza-off-west-end-2026/timeout-london--unknown.json no longer exists and nothing in affluenza-off-west-end-2026 looks like a rename"
+      },
+      {
+        "i": 1,
+        "verdict": "obsolete",
+        "reason": "review file all-about-eve-west-end-2019/whatsonstage--unknown.json no longer exists and nothing in all-about-eve-west-end-2019 looks like a rename"
+      },
+      {
+        "i": 2,
+        "verdict": "obsolete",
+        "reason": "review file anything-goes-2011/variety--steven-suskin.json no longer exists and nothing in anything-goes-2011 looks like a rename"
+      },
+      {
+        "i": 5,
+        "verdict": "obsolete",
+        "reason": "review file choir-boy-2019/vulture--jesse-green.json no longer exists and nothing in choir-boy-2019 looks like a rename"
+      },
+      {
+        "i": 6,
+        "verdict": "obsolete",
+        "reason": "review file degenerates-off-broadway-2026/talkinbroadway--unknown.json no longer exists and nothing in degenerates-off-broadway-2026 looks like a rename"
+      },
+      {
+        "i": 8,
+        "verdict": "obsolete",
+        "reason": "review file escape-to-margaritaville-2018/broadwaynews--unknown.json no longer exists and nothing in escape-to-margaritaville-2018 looks like a rename"
+      },
+      {
+        "i": 9,
+        "verdict": "obsolete",
+        "reason": "duplicate target eureka-day-west-end-2022/whatsonstage--unknown.json no longer exists, so eureka-day-west-end-2022/whatsonstage--sarah-crompton.json is the only copy"
+      },
+      {
+        "i": 11,
+        "verdict": "obsolete",
+        "reason": "review file funny-girl-2022/variety--aramide-tinubu.json no longer exists and nothing in funny-girl-2022 looks like a rename"
+      },
+      {
+        "i": 12,
+        "verdict": "obsolete",
+        "reason": "review file ghetto-klown-2011/variety--unknown.json no longer exists and nothing in ghetto-klown-2011 looks like a rename"
+      },
+      {
+        "i": 13,
+        "verdict": "obsolete",
+        "reason": "review file hadestown-west-end-2024/broadwayworld--cindy-marcolina.json no longer exists and nothing in hadestown-west-end-2024 looks like a rename"
+      },
+      {
+        "i": 14,
+        "verdict": "obsolete",
+        "reason": "review file hughie-2016/theater-life--david-sheward.json no longer exists and nothing in hughie-2016 looks like a rename"
+      },
+      {
+        "i": 15,
+        "verdict": "obsolete",
+        "reason": "review file jajas-african-hair-braiding-2023/nysr--unknown.json no longer exists and nothing in jajas-african-hair-braiding-2023 looks like a rename"
+      },
+      {
+        "i": 16,
+        "verdict": "obsolete",
+        "reason": "duplicate target jerusalem-west-end-2022/whatsonstage--unknown.json no longer exists, so jerusalem-west-end-2022/whatsonstage--sarah-crompton.json is the only copy"
+      },
+      {
+        "i": 17,
+        "verdict": "obsolete",
+        "reason": "review file jesus-christ-superstar-west-end-2026/broadwayworld--unknown.json no longer exists and nothing in jesus-christ-superstar-west-end-2026 looks like a rename"
+      },
+      {
+        "i": 18,
+        "verdict": "obsolete",
+        "reason": "review file linda-vista-2019/nydailynews--chris-jones-bway.json no longer exists and nothing in linda-vista-2019 looks like a rename"
+      },
+      {
+        "i": 21,
+        "verdict": "obsolete",
+        "reason": "review file my-name-is-lucy-barton-2020/broadwaynews--unknown.json no longer exists and nothing in my-name-is-lucy-barton-2020 looks like a rename"
+      },
+      {
+        "i": 23,
+        "verdict": "obsolete",
+        "reason": "duplicate target one-man-two-guvnors-2012/timeout--adam-feldman.json no longer exists, so one-man-two-guvnors-2012/timeout--david-cote.json is the only copy"
+      },
+      {
+        "i": 24,
+        "verdict": "obsolete",
+        "reason": "review file only-fools-and-horses-west-end-2019/whatsonstage--unknown.json no longer exists and nothing in only-fools-and-horses-west-end-2019 looks like a rename"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (18 obsolete); per-op reasons in triage.ops"
 }

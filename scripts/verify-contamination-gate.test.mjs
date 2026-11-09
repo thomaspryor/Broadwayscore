@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: hand-listed in check-corpus-drift.yml since BRO-3425/BRO-4750; asserts on bot-rewritten data, so it never blocks main (BRO-7101).
 /**
  * verify-contamination-gate.test.mjs — the machine-checkable acceptance command
  * for the review-text contamination gate (Notion 3b3637c5-416f-818b / task #1072).

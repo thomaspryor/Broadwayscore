@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5183-05",
   "planId": "d25d88a6-40c7-4cf3-85d4-ee3adb0ed156",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-12T22:52:13.942Z",
   "submitter": {
     "name": null,
@@ -353,5 +353,77 @@
       "ok": false,
       "reason": "duplicateOf: current value doesn't match expected (data changed since plan was created)"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 12
+    },
+    "ops": [
+      {
+        "i": 1,
+        "verdict": "resolved",
+        "reason": "a-christmas-story-the-musical-2012/ew--thom-geier.json duplicateOf already \"ew--tanner-stransky.json\""
+      },
+      {
+        "i": 3,
+        "verdict": "resolved",
+        "reason": "aint-no-mo-2022/nysr--bart-greenberg.json duplicateOf already \"nysr--michael-sommers.json\""
+      },
+      {
+        "i": 5,
+        "verdict": "resolved",
+        "reason": "baby-its-you-2011/variety--david-rooney.json duplicateOf already \"variety--steven-suskin.json\""
+      },
+      {
+        "i": 7,
+        "verdict": "resolved",
+        "reason": "chinglish-2011/theatermania--david-finkle.json and chinglish-2011/theatermania--dan-bacalzo.json share one counted row, so nothing is double-counted"
+      },
+      {
+        "i": 9,
+        "verdict": "resolved",
+        "reason": "company-2021/nysr--tulis-mccall.json duplicateOf already \"nysr--melissa-rose-bernardo.json\""
+      },
+      {
+        "i": 11,
+        "verdict": "resolved",
+        "reason": "cult-of-love-2024/washpost--peter-marks.json duplicateOf already \"washpost--naveen-kumar.json\""
+      },
+      {
+        "i": 13,
+        "verdict": "resolved",
+        "reason": "driving-miss-daisy-2010/variety--charles-isherwood.json duplicateOf already \"variety--joe-dziemianowicz.json\""
+      },
+      {
+        "i": 15,
+        "verdict": "resolved",
+        "reason": "enron-2010/observer--rex-reed.json duplicateOf already \"observer--jesse-oxfeld.json\""
+      },
+      {
+        "i": 17,
+        "verdict": "resolved",
+        "reason": "evita-2012/ew--thom-geier.json duplicateOf already \"ew--melissa-rose-bernardo.json\""
+      },
+      {
+        "i": 19,
+        "verdict": "resolved",
+        "reason": "groundhog-day-2017/theatermania--adam-feldman.json duplicateOf already \"theatermania--david-gordon.json\""
+      },
+      {
+        "i": 21,
+        "verdict": "resolved",
+        "reason": "here-lies-love-2023/talkinbroadway--matthew-murray.json duplicateOf already \"talkinbroadway--howard-miller.json\""
+      },
+      {
+        "i": 23,
+        "verdict": "resolved",
+        "reason": "mary-poppins-2006/variety--charles-isherwood.json duplicateOf already \"variety--david-rooney.json\""
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (12 resolved); per-op reasons in triage.ops"
 }

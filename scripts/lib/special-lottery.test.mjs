@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/lottery-rush.json (read by the test); data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-6862 / BRO-6878: bwayrush access programs (MTC $35, HipTix, LincTix, Ponyboy Seat)
 // must map to specialLottery and survive the scraper's own cleanup. Colocated here so the
 // scripts/lib/*.test.mjs glob runs it in CI (the old scripts/test-special-lottery.js did not run in CI).

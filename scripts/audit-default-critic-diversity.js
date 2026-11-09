@@ -16,9 +16,11 @@
  *   node scripts/audit-default-critic-diversity.js --all      also list every defaultCritic outlet's verdict
  *   node scripts/audit-default-critic-diversity.js --json     machine-readable
  *   node scripts/audit-default-critic-diversity.js --strict   exit 1 when any outlet is listed
+ *   node scripts/audit-default-critic-diversity.js --alert    file/refresh a worker card (owner-alert-router);
+ *                                                             clears it when clean, never on missing input (BRO-7181)
  *
  * Exit: 0 clean (or no review-texts checkout, with a warning), 1 --strict and
- * outlets listed, 2 bad input (unreadable registry, or a checkout with no files).
+ * outlets listed, 2 bad input (unreadable registry, or a checkout with no files), 3 crash.
  */
 'use strict';
 
@@ -30,7 +32,9 @@ const {
   summarizeOutletBylines,
   classifyOutlet,
   findUnflaggedMultiAuthorOutlets,
+  decideDefaultCriticAlert,
 } = require('./lib/default-critic-diversity');
+const { routeAuditDecisions } = require('./lib/audit-alert');
 
 const ROOT = path.join(__dirname, '..');
 const REGISTRY_PATH = path.join(ROOT, 'data', 'outlet-registry.json');
@@ -70,7 +74,7 @@ function fmtOthers(others, n = 6) {
   }).join(', ') + (others.length > n ? `, +${others.length - n} more` : '');
 }
 
-function main() {
+async function main() {
   const args = process.argv.slice(2);
   const asJson = args.includes('--json');
   const strict = args.includes('--strict');
@@ -117,9 +121,15 @@ function main() {
       console.log('\nFix: set "multiAuthor": true with a "multiAuthorNote" in data/outlet-registry.json, or "multiAuthor": false after checking the default writes nearly all of them.');
     }
   }
+  if (args.includes('--alert')) await routeAuditDecisions(decideDefaultCriticAlert(rows), 'audit-default-critic-diversity');
   return strict && rows.length ? 1 : 0;
 }
 
-if (require.main === module) process.exitCode = main();
+if (require.main === module) {
+  main().then((code) => { process.exitCode = code; }, (err) => {
+    console.error(`audit-default-critic-diversity: ${err.stack || err.message}`);
+    process.exitCode = 3;
+  });
+}
 
 module.exports = { loadRecords, main };

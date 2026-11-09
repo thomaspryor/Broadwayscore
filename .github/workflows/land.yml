@@ -367,6 +367,63 @@ jobs:
         # siblings must sit next to the copy (BRO-6152); the test enforces the list.
         run: cp scripts/lib/land-gauntlet.sh scripts/lib/tsc-node-options.sh "$RUNNER_TEMP/"
 
+      # ── Fast-fail (BRO-7150): the cheap tests first, so a refusal arrives in
+      # ~3 min instead of ~25. Runs the repo-wide invariant tests plus the tests
+      # that name a changed file (scripts/lib/land-fast-tests.js select), judged
+      # by the same delta rule as the full gauntlet: only a failure that is NEW
+      # against the base refuses. A red result skips the rest of the job; any
+      # infrastructure problem is a warning and the full gauntlet decides.
+      # Rollback: repo variable LAND_FAST_FAIL_DISABLED=true.
+      # audit-secret-gap-ok: REVIEW_TEXTS_TOKEN — every land.yml step that "reads" it
+      # does so only by requiring land-branch.js, which imports SITE_PATHS and
+      # SITE_DATA_FILES constants from should-deploy-gate.js; the token read there
+      # (getDataBlobShas) is vercel-deploy.yml's code path and never runs here.
+      - name: Fast-fail — cheap invariant and targeted tests first (BRO-7150)
+        if: steps.plan.outputs.skip_gauntlet != 'true' && vars.LAND_FAST_FAIL_DISABLED != 'true'
+        id: fast
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BASE: ${{ steps.rebase.outputs.base }}
+          REBASED: ${{ steps.rebase.outputs.rebased }}
+          DEPS_CHANGED: ${{ steps.rebase.outputs.deps_changed }}
+        run: |
+          if [ ! -f scripts/lib/land-fast-tests.js ]; then echo "no fast-test selector in this tree"; exit 0; fi
+          FD="$RUNNER_TEMP/land-fast"
+          rm -rf "$FD"; mkdir -p "$FD"
+          if ! node scripts/lib/land-fast-tests.js select --base "$BASE" --tip HEAD --profile ci --scope-dir "$FD/scope" --json > "$FD/select.json"; then
+            echo "::warning::fast-fail: could not select tests — the full gauntlet decides"; exit 0
+          fi
+          GATES=$(node -e 'const r=require(process.argv[1]);console.log((r.gates||[]).join(","))' "$FD/select.json" 2>/dev/null || true)
+          if [ -z "$GATES" ]; then echo "fast-fail: nothing to run"; exit 0; fi
+          echo "fast-fail gates: $GATES"
+          GAUNTLET_GATES="$GATES" GAUNTLET_SCOPE_DIR="$FD/scope" bash "$RUNNER_TEMP/land-gauntlet.sh" "$FD/branch" \
+            || { echo "::warning::fast-fail: the branch run errored — the full gauntlet decides"; exit 0; }
+          RED=$(node scripts/lib/land-gate-delta.js --red-gates "$FD/branch" --gates "$GATES") \
+            || { echo "::warning::fast-fail: could not read the branch result"; exit 0; }
+          if [ -z "$RED" ]; then echo "fast-fail: every selected test green on the branch"; exit 0; fi
+          echo "fast-fail: red on the branch: $RED — re-checking the failing files on base"
+          node scripts/lib/land-gate-delta.js --rerun-scope "$FD/branch" --gates "$RED" --out "$FD/rerun" \
+            || { echo "::warning::fast-fail: could not compute the base re-check scope — the full gauntlet decides"; exit 0; }
+          # A red gate with no per-file scope (a crash with nothing parsed) would re-run whole on base
+          # (10-16 min) and could refuse on a crash: leave that to the full gauntlet (BRO-7150 review).
+          for g in ${RED//,/ }; do
+            [ -s "$FD/rerun/$g.files" ] || { echo "::warning::fast-fail: $g went red with no failing file named — the full gauntlet decides"; exit 0; }
+          done
+          GAUNTLET_GATES="$RED" GAUNTLET_SCOPE_DIR="$FD/rerun" bash "$RUNNER_TEMP/land-gauntlet.sh" "$FD/base" \
+            --checkout "$BASE" --return-to "$REBASED" $([ "$DEPS_CHANGED" = "true" ] && echo --deps-changed) \
+            || { echo "::warning::fast-fail: the base re-check errored — the full gauntlet decides"; exit 0; }
+          if [ "$(git rev-parse HEAD)" != "$REBASED" ]; then
+            echo "::error::fast-fail: the base re-check did not return to the rebased tip"; exit 1
+          fi
+          # Judge into a private file: only a recorded NEW failure refuses; a judge crash is not a refusal.
+          # lint-allow-swallow: the judge's exit is not the verdict here; new_failures is read below, and with no verdict the full gauntlet re-judges strictly.
+          node scripts/lib/land-gate-delta.js --base-dir "$FD/base" --branch-dir "$FD/branch" --gates "$RED" \
+            --summary-file "$GITHUB_STEP_SUMMARY" --github-output "$FD/out" --base-source fast-fail || J=$?
+          NEW=$(sed -n 's/^new_failures=//p' "$FD/out" 2>/dev/null | tail -1)
+          case "$NEW" in ''|*[!0-9]*) echo "::warning::fast-fail: the judge recorded no verdict (exit ${J:-0}) — the full gauntlet decides"; exit 0;; esac
+          cat "$FD/out" >> "$GITHUB_OUTPUT"
+          [ "$NEW" -eq 0 ] || exit 1
+
       # ── Branch gauntlet: the rebased tip ─────────────────────────────────────
       # BRO-6043: core-data digest BEFORE the gauntlet; the seed export refuses
       # unless it is unchanged afterwards (see scripts/lib/tsc-stamp.js).
@@ -631,6 +688,7 @@ jobs:
             "manifests:${{ steps.manifests.outcome }}" \
             "actionlint-install:${{ steps.actionlint.outcome }}" \
             "harness:${{ steps.harness.outcome }}" \
+            "fast-fail:${{ steps.fast.outcome }}" \
             "branch-gauntlet:${{ steps.branch_run.outcome }}" \
             "need:${{ steps.need.outcome }}" \
             "base-key:${{ steps.basekey.outcome }}" \
@@ -652,6 +710,8 @@ jobs:
               *)       GATE="${{ steps.delta.outputs.gate }}"; GATE="${GATE:-delta}" ;;
             esac
           fi
+          # BRO-7150: a fast-fail refusal names the gate it judged.
+          if [ "$GATE" = "fast-fail" ]; then GATE="${{ steps.fast.outputs.gate }}"; GATE="${GATE:-fast-fail}"; fi
           echo "gate=$GATE" >> "$GITHUB_OUTPUT"
           {
             echo "### land.yml checks — \`$BRANCH\`"
@@ -765,6 +825,151 @@ jobs:
           path: ${{ runner.temp }}/land-gauntlet/branch
           retention-days: 7
           if-no-files-found: warn
+
+  # ── Browser E2E on a local build (BRO-7106), ADVISORY (CLAUDE.md §19) ──────
+  # test.yml's E2E job runs Playwright against PRODUCTION after a change has
+  # landed, so a src/ change that breaks a user flow surfaces only once live.
+  # This job builds the rebased tip, serves it with `next start` and runs the
+  # smoke-first spec set (scripts/lib/land-e2e-local.sh) on chromium. If the
+  # tip is red it runs the same on origin/main @ base, and land-gate-delta.js
+  # (--gates e2e-local) reports only the tests the branch newly breaks.
+  # Its own job, in parallel with `checks` (second-opinion review): the
+  # gauntlet is the checks job's serial critical path and the build rewrites
+  # tracked files. It is NOT in the land job's `needs`, so it never delays or
+  # refuses a landing. Arming (BRO-7106 follow-up card) = add it to `needs`
+  # and set repo variable LAND_E2E_BROWSER_BLOCKING=1, after 3 measured lands.
+  e2e-local:
+    name: E2E on a local build (advisory)
+    needs: dispatch-guard
+    runs-on: ubuntu-latest
+    concurrency:
+      group: land-e2e-local-${{ github.event_name }}-${{ github.event.inputs.branch || github.ref_name }}
+      # concurrency-cancel-ok: per-branch group on land/** pushes only (never
+      # main); an advisory report for a superseded tip has no reader.
+      cancel-in-progress: true
+    # Budget: checkout + npm ci + core data ~2 min, Playwright install ~1 min
+    # (cached), build ~5-8 min, smoke-first specs ~2 min; doubled when the tip
+    # is red and the base is built too. Each run is capped by E2E_LOCAL_TIMEOUT.
+    timeout-minutes: 45
+    # Advisory (BRO-7106): a red or timed-out e2e-local must never make the
+    # run's conclusion `failure`, which land-retry-on-cancel.js,
+    # land-stranded-refs.js and cloud-worker-pick.js read. Drop when arming.
+    continue-on-error: true
+    steps:
+      - name: Checkout the land branch
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: ${{ github.event.inputs.branch && format('refs/heads/{0}', github.event.inputs.branch) || github.ref }}
+          fetch-depth: 0
+          filter: blob:none
+
+      - name: Rebase onto origin/main
+        id: rebase
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh" 2>/dev/null || git_net() { shift; git "$@"; }
+          git_net 180 fetch origin main
+          BASE=$(git rev-parse origin/main)
+          echo "base=$BASE" >> "$GITHUB_OUTPUT"
+          HELPER="$RUNNER_TEMP/land-rebase"; mkdir -p "$HELPER"
+          for f in land-rebase.sh promisor-fetch-failure.js; do
+            git show "$BASE:scripts/lib/$f" > "$HELPER/$f" 2>/dev/null || git show "HEAD:scripts/lib/$f" > "$HELPER/$f"
+          done
+          BRANCH="$BRANCH" bash "$HELPER/land-rebase.sh" "$BASE" "$BRANCH" || exit $?
+          # Diff scope: only a change that can alter what the browser sees, or the
+          # harness itself (so a harness change exercises and measures it).
+          if git diff --name-only "$BASE"...HEAD | grep -qE '^(src/|tests/e2e/|public/|next\.config\.js$|playwright\.config\.ts$|package(-lock)?\.json$|scripts/lib/land-e2e-local)'; then
+            echo "site_diff=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "site_diff=false" >> "$GITHUB_OUTPUT"; echo "No site-relevant change vs origin/main: e2e-local skipped."
+          fi
+          if git diff --name-only "$BASE"...HEAD -- package.json package-lock.json | grep -q .; then
+            echo "deps_changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "deps_changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Setup Node.js
+        if: steps.rebase.outputs.site_diff == 'true'
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        if: steps.rebase.outputs.site_diff == 'true'
+        run: npm ci --prefer-offline --no-audit --no-fund
+
+      - name: Checkout core data
+        if: steps.rebase.outputs.site_diff == 'true'
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Playwright
+        if: steps.rebase.outputs.site_diff == 'true'
+        uses: ./.github/actions/setup-playwright
+
+      - name: E2E on the rebased tip
+        id: branch
+        if: steps.rebase.outputs.site_diff == 'true'
+        run: |
+          # Stage the tip's harness: the base checkout below replaces the tree.
+          H="$RUNNER_TEMP/e2e-harness"; mkdir -p "$H"
+          # All of scripts/lib, not a hand list: land-gate-delta.js requires ~25 sibling
+          # modules, and a missing one crashed the verdict step (BRO-7106). The --help
+          # load proves the staged copy is complete before the base checkout.
+          cp scripts/lib/*.js scripts/lib/*.sh "$H/"
+          node "$H/land-gate-delta.js" --help > /dev/null
+          bash "$H/land-e2e-local.sh" "$RUNNER_TEMP/e2e-local/branch"
+          echo "exit=$(cat "$RUNNER_TEMP/e2e-local/branch/e2e-local.exit")" >> "$GITHUB_OUTPUT"
+
+      - name: E2E on origin/main @ base (only when the tip is red)
+        if: steps.rebase.outputs.site_diff == 'true' && steps.branch.outputs.exit != '0' && vars.LAND_STRICT_GATES != '1'
+        env:
+          BASE: ${{ steps.rebase.outputs.base }}
+          DEPS_CHANGED: ${{ steps.rebase.outputs.deps_changed }}
+        run: |
+          # Keep the private core data (checkout-core-data overwrote tracked
+          # data files) so base and tip build from the same data.
+          KEEP="$RUNNER_TEMP/e2e-core-keep"; rm -rf "$KEEP"; mkdir -p "$KEEP"
+          git diff HEAD --name-only -- data/ > "$KEEP.list"
+          while IFS= read -r f; do [ -f "$f" ] && { mkdir -p "$KEEP/$(dirname "$f")"; cp -p "$f" "$KEEP/$f"; }; done < "$KEEP.list"
+          git checkout --force --detach "$BASE"
+          (cd "$KEEP" && find . -type f -print0 | xargs -0 -r cp -p --parents -t "$GITHUB_WORKSPACE")
+          if [ "$DEPS_CHANGED" = "true" ]; then
+            npm ci --prefer-offline --no-audit --no-fund
+            npx --no-install playwright install chromium   # base may pin another Playwright
+          fi
+          E2E_LOCAL_PORT=3458 bash "$RUNNER_TEMP/e2e-harness/land-e2e-local.sh" "$RUNNER_TEMP/e2e-local/base"
+
+      - name: E2E verdict — new failures vs base
+        if: steps.rebase.outputs.site_diff == 'true' && !cancelled()
+        # Advisory while LAND_E2E_BROWSER_BLOCKING is unset: land-gate-delta.js
+        # downgrades e2e-local to report-only, and this job gates nothing.
+        continue-on-error: true
+        shell: bash
+        env:
+          LAND_E2E_BROWSER_BLOCKING: ${{ vars.LAND_E2E_BROWSER_BLOCKING }}
+          LAND_STRICT_GATES: ${{ vars.LAND_STRICT_GATES }}
+        run: |
+          [ -f "$RUNNER_TEMP/e2e-local/branch/meta.json" ] || { echo "::error::e2e-local produced no branch result"; exit 1; }
+          echo "e2e-local wall time (branch): $(node -e 'console.log(Math.round(require(process.argv[1]).wallMs/1000))' "$RUNNER_TEMP/e2e-local/branch/meta.json")s" | tee -a "$GITHUB_STEP_SUMMARY"
+          node "$RUNNER_TEMP/e2e-harness/land-gate-delta.js" --gates e2e-local \
+            --base-dir "$RUNNER_TEMP/e2e-local/base" --branch-dir "$RUNNER_TEMP/e2e-local/branch" \
+            --summary-file "$GITHUB_STEP_SUMMARY"
+
+      - name: Keep the E2E report
+        if: steps.rebase.outputs.site_diff == 'true' && !cancelled()
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
+        with:
+          name: e2e-local-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/e2e-local
+            test-results
+          retention-days: 7
+          if-no-files-found: ignore
 
   land:
     name: Land
@@ -881,6 +1086,12 @@ jobs:
         # Only the re-check path (main moved substantively since `checks`)
         # needs it — land.js's gauntlet copies data/*.json into its throwaway
         # worktree from this checkout. Cheap enough to always have.
+        # BRO-7029 bootstrap (revert once main has the maxBuffer/:(glob) fix in
+        # core-data-files.js): this job checks out main, whose `git ls-files
+        # data/*.json` overflowed execFileSync's buffer. GIT_GLOB_PATHSPECS=1 makes
+        # `*` stop at `/`, so the broken script lists ~4 KB instead of ~1 MiB.
+        env:
+          GIT_GLOB_PATHSPECS: "1"
         uses: ./.github/actions/checkout-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}

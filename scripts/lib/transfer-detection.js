@@ -326,4 +326,5 @@ function detectLondonComparePairs(shows, opts) {
 module.exports = {
   detectTransferPairs, detectLondonTransferPairs, findLondonRun, detectLondonComparePairs,
   TITLE_JACCARD_THRESHOLD, LONDON_TRANSFER_WINDOW_DAYS, LONDON_COMPARE_MAX_YEARS,
+  sameTitle: _sameTitle,
 };

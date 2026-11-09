@@ -19,6 +19,7 @@
  * tests/unit/recoupment-classify.test.mjs.
  */
 
+require('./llm-usage-install'); // LLM spend meter: before any client is built (BRO-5043)
 const https = require('https');
 const { GPT4O_MINI } = require('./models');
 const { applyProductionGuard, extractHeadlines, extractPublishedDate, productionStartDate } = require('./recoupment-production-guard');

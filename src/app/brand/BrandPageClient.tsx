@@ -355,7 +355,7 @@ export default function BrandPageClient() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="text-base sm:text-lg font-bold text-white group-hover:text-brand transition-colors">Download Entire Brand Kit</div>
-                  <div className="text-xs sm:text-sm text-gray-400 mt-0.5">52 PNGs · logos, score/grade badges, social templates · 8.2 MB zip</div>
+                  <div className="text-xs sm:text-sm text-gray-400 mt-0.5">{brandKitAssetCount} PNGs · logos, score/grade badges, social templates · ZIP</div>
                 </div>
                 <span className="hidden sm:inline-flex items-center gap-1 px-3 py-1.5 rounded-pill bg-brand text-white text-xs font-bold group-hover:bg-brand-hover transition-colors">
                   Get kit
@@ -506,6 +506,9 @@ const logoAssets: Asset[] = [
   { label: 'West End Wordmark', sub: 'Dark background', filename: 'logos/west-end-wordmark-dark.png', aspect: 'wide' },
   { label: 'West End Wordmark', sub: 'Transparent', filename: 'logos/west-end-wordmark-transparent.png', transparent: true, aspect: 'wide' },
   { label: 'West End Wordmark', sub: 'Light background', filename: 'logos/west-end-wordmark-light.png', lightBg: true, aspect: 'wide' },
+  { label: 'Opera Wordmark', sub: 'Dark background', filename: 'logos/opera-wordmark-dark.png', aspect: 'wide' },
+  { label: 'Opera Wordmark', sub: 'Transparent', filename: 'logos/opera-wordmark-transparent.png', transparent: true, aspect: 'wide' },
+  { label: 'Opera Wordmark', sub: 'Light background', filename: 'logos/opera-wordmark-light.png', lightBg: true, aspect: 'wide' },
   { label: 'App Icon', sub: 'Dark', filename: 'logos/icon-dark.png', aspect: 'square' },
   { label: 'App Icon', sub: 'Transparent', filename: 'logos/icon-transparent.png', transparent: true, aspect: 'square' },
 ];
@@ -551,7 +554,14 @@ const socialAssets: Asset[] = [
   { label: 'Instagram Story', sub: 'West End · 1080×1920', filename: 'social/west-end-instagram-story-1080x1920.png', aspect: 'tall' },
   { label: 'OG / Link Preview', sub: 'West End · 1200×630', filename: 'social/west-end-og-1200x630.png', aspect: 'wide' },
   { label: 'Twitter Header', sub: 'West End · 1500×500', filename: 'social/west-end-twitter-header-1500x500.png', aspect: 'wide' },
+  { label: 'Profile Picture', sub: 'Opera · 1080×1080', filename: 'social/opera-profile-1080x1080.png', aspect: 'square' },
+  { label: 'Twitter Header', sub: 'Opera · 1500×500', filename: 'social/opera-twitter-header-1500x500.png', aspect: 'wide' },
+  { label: 'Bluesky Banner', sub: 'Opera · 1500×500', filename: 'social/opera-bluesky-banner-1500x500.png', aspect: 'wide' },
+  { label: 'Facebook Cover', sub: 'Opera · 1640×624', filename: 'social/opera-facebook-cover-1640x624.png', aspect: 'wide' },
 ];
+
+const brandKitAssetCount = logoAssets.length + scoreBadgeAssets.length + gradeBadgeAssets.length
+  + referenceAssets.length + socialAssets.length;
 
 function AssetGallery({ title, assets, columns = 'default' }: { title: string; assets: Asset[]; columns?: 'default' | 'md' }) {
   const gridClass = columns === 'md'

@@ -14,6 +14,7 @@ const path = require('path');
 // included → excluded (or vice versa) in reviews.json.
 const INCLUSION_FILES = [
   'scripts/lib/review-guards.js',
+  'scripts/lib/single-verdict-guard.js',  // BRO-7050: holds an aggregator-listed review against one classifier verdict
   // BRO-3963: the replay and rebuild share these dedup decisions.
   'scripts/lib/duplicate-of-exclusion.js',
   'scripts/lib/duplicate-cycle.js',
@@ -58,6 +59,9 @@ const INCLUSION_FILES = [
   // decides skippedListingPage (rebuild-all-reviews.js), and neither was watched.
   'scripts/lib/domain-filters.js',
   'scripts/lib/non-review-url-patterns.js',
+  // BRO-7078 review: urlPathOppositeMarketIndicator / urlPathGuardTreatsShowAsUk
+  // decide the rebuild's URL-path wrongProduction flag; the file was unwatched.
+  'scripts/lib/cross-market-guard.js',
   // Historical miss (2026-08-14): rebuild-all-reviews.js consumes
   // shouldWithholdStaleExclusionFlag from here at ten producer sites to decide
   // whether a guard may write an exclusion flag at all — an inclusion decision

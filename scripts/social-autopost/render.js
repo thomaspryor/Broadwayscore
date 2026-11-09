@@ -216,12 +216,12 @@ function buildCompareHtml(card) {
       <div style="margin-top:-34px;position:relative;z-index:2">${crown}
         <div class="${tier.cls}" style="width:64px;height:64px;box-sizing:border-box;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:26px;line-height:32px;font-weight:700">${esc(s.score)}</div>
       </div>
-      <span data-fit data-max="13" data-min="10" data-lines="1" style="margin-top:9px;width:100%;text-align:center;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:${sm.brand}">${esc(s.label)}</span>
+      <span data-fit data-max="13" data-min="10" data-lines="2" style="margin-top:9px;line-height:1.25;width:100%;text-align:center;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:${sm.brand}">${esc(s.label)}</span>
       <span style="margin-top:3px;font-size:12px;color:#9ca3af;white-space:nowrap">${esc(s.reviewCount)} critics${s.soFar ? ' so far' : ''}</span>
     </div>`;
   };
   const delta = Number.isFinite(card.delta)
-    ? (card.delta === 0 ? 'The same score in both cities' : `${card.delta} point${card.delta === 1 ? '' : 's'} apart`)
+    ? (card.delta === 0 ? (card.sameText || 'The same score in both cities') : `${card.delta} point${card.delta === 1 ? '' : 's'} apart`)
     : '';
 
   return `<!doctype html><html><head><meta charset="utf-8"><style>
@@ -233,7 +233,7 @@ ${Object.entries(SITE_CSS).map(([k, v]) => `.${k}{${v}}`).join('\n')}
 </style></head><body>
 <div data-frame style="zoom:${ZOOM};width:432px;height:540px;box-sizing:border-box;padding:22px 24px;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden">
   <img src="${logo}" alt="${esc(m.label)} Scorecard" style="height:21px;width:auto;display:block">
-  <span style="margin-top:6px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:${m.brand}">Reviewed in two cities</span>
+  <span style="margin-top:6px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:${m.brand}">${esc(card.kicker || 'Reviewed in two cities')}</span>
   <h1 data-fit data-max="24" data-min="16" data-lines="2" style="margin-top:8px;width:100%;line-height:1.25;font-weight:800;letter-spacing:-.025em;text-align:center">${esc(card.title)}</h1>
   <div style="margin-top:14px;display:flex;gap:28px;justify-content:center">${card.sides.map(side).join('')}</div>
   ${delta ? `<span style="margin-top:12px;font-size:13px;font-weight:600;color:#d1d5db">${esc(delta)}</span>` : ''}

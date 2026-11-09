@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/reviews.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // TESTS-VS-DERIVED-DATA-EXEMPT: asserts one-way floors (no show drops below its backfilled count), not exact facts; review-texts source is absent from most checkouts.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';

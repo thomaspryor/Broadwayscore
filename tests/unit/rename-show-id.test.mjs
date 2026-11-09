@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // rename-show-id (2026 data audit, S5-T6 + S5-T8).
 //
 // Builds a temp copy of a minimal three-tree fixture (web data/ + public/,
@@ -21,7 +22,7 @@ const require = createRequire(import.meta.url);
 const { SHOW_ID_KEYED_FILES, validateRegistry } = require('../../scripts/lib/show-id-keyed-files.js');
 const {
   planShowIdRename, applyShowIdRename, buildSqlMigration, formatPlan,
-  SUPABASE_SHOW_ID_TABLES, yearlessSlug, applyShape,
+  SUPABASE_SHOW_ID_TABLES, yearlessSlug, applyShape, countEdits,
 } = require('../../scripts/lib/show-id-rename.js');
 
 const OLD = 'fixture-musical-2026';
@@ -516,4 +517,19 @@ test('buildSqlMigration emits one UPDATE per confirmed show_id table and documen
   assert.ok(sql.text.includes('push_tokens'));
   assert.equal(sql.jsonbStatements.length, 2);
   assert.ok(sql.jsonbStatements.every((s) => sql.text.includes(`-- ${s}`)), 'jsonb rewrites are commented, never live');
+});
+
+test('resume: an identical leftover old key is dropped, a differing one still refuses (BRO-4315 batch 3)', () => {
+  const ctx = { oldId: 'x-west-end-2026', newId: 'x-off-west-end-2026', slugChanged: false, resume: true };
+  const plain = { ...SHOW_ID_KEYED_FILES.find((e) => e.path === 'audience-history'), onCollision: undefined };
+  const same = { shows: { 'x-west-end-2026': { wins: [1] }, 'x-off-west-end-2026': { wins: [1] }, other: {} } };
+  const edits = applyShape(same, plain, ctx);
+  assert.deepEqual(Object.keys(same.shows), ['x-off-west-end-2026', 'other']);
+  assert.deepEqual(edits.map((e) => e.op), ['drop-duplicate-source']);
+  assert.equal(countEdits(edits).duplicatesDropped, 1);
+  assert.equal(countEdits(edits).refs, 0);
+  const differ = { shows: { 'x-west-end-2026': { wins: [1] }, 'x-off-west-end-2026': { wins: [2] } } };
+  assert.throws(() => applyShape(differ, plain, ctx), (e) => e.code === 'KEY_COLLISION');
+  const fresh = { shows: { 'x-west-end-2026': { wins: [1] }, 'x-off-west-end-2026': { wins: [1] } } };
+  assert.throws(() => applyShape(fresh, plain, { ...ctx, resume: false }), (e) => e.code === 'KEY_COLLISION');
 });

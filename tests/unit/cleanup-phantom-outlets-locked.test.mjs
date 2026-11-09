@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Verifies cleanup-phantom-outlets.js's re-aliasing path skips locked files
  * (S1-T3f). outletId is NOT in PROTECTED_FIELDS, so safeWriteReview's

@@ -686,6 +686,24 @@ _rebase_state_dir() {
     git rev-parse --git-path "$1" 2>/dev/null
   fi
 }
+# BRO-6986: a conflict-resolved `GIT_EDITOR=true git rebase --continue` finishes
+# the rebase (rebase-merge/ is gone, HEAD is on the new tip) but git leaves
+# .git/REBASE_HEAD behind. Nothing is in progress, yet the next
+# push-with-retry.sh call in the same job (the opening-night poller's collect
+# checkpoint push -> its final rebuilt-data push, 11 minutes apart) trips the
+# BRO-142 stale-marker guard below and fails the whole run. Only a REBASE_HEAD
+# with NO rebase-merge/ or rebase-apply/ beside it is orphaned: a live
+# conflict stop always has one, so a genuine in-progress rebase is untouched.
+_drop_orphan_rebase_head() {
+  local head_path rm_dir ra_dir
+  head_path=$(_rebase_state_dir REBASE_HEAD)
+  rm_dir=$(_rebase_state_dir rebase-merge)
+  ra_dir=$(_rebase_state_dir rebase-apply)
+  [ -n "$head_path" ] && [ -f "$head_path" ] || return 0
+  [ -n "$rm_dir" ] && [ -n "$ra_dir" ] || return 0
+  [ ! -d "$rm_dir" ] && [ ! -d "$ra_dir" ] || return 0
+  rm -f "$head_path" 2>/dev/null || true
+}
 _rebase_with_captured_stderr() {
   local errfile
   errfile=$(mktemp 2>/dev/null || echo "/tmp/push-retry-rebase-err.$$.$RANDOM")
@@ -1134,7 +1152,7 @@ fi
 # against a half-restored tree). Same `command -v` guard as above: the stale-marker
 # exit below fires before it is defined. `|| true` is load-bearing: under set -e a
 # failing statement inside an EXIT trap aborts the trap before `exit $rc`.
-trap 'rc=$?; { [ "$rc" -ne 0 ] && announce_unpushed_work; } || true; { [ "$rc" -ne 0 ] && rescue_unpushed_review_texts; } || true; { [ "$rc" -ne 0 ] && command -v restore_head_if_moved >/dev/null 2>&1 && restore_head_if_moved "trap-nonzero-exit-$rc"; } || true; { command -v restore_autostash >/dev/null 2>&1 && restore_autostash; } || true; push_mutex_release; exit $rc' EXIT
+trap 'rc=$?; { [ "$rc" -ne 0 ] && announce_unpushed_work; } || true; [ -n "${_BRO142_REFUSED:-}" ] || _drop_orphan_rebase_head || true; { [ "$rc" -ne 0 ] && rescue_unpushed_review_texts; } || true; { [ "$rc" -ne 0 ] && command -v restore_head_if_moved >/dev/null 2>&1 && restore_head_if_moved "trap-nonzero-exit-$rc"; } || true; { command -v restore_autostash >/dev/null 2>&1 && restore_autostash; } || true; push_mutex_release; exit $rc' EXIT
 
 # BRO-142 (generalized to REBASE_HEAD/CHERRY_PICK_HEAD/REVERT_HEAD by task
 # #1558): refuse to fetch/rebase/merge on top of an in-progress-operation
@@ -1165,6 +1183,7 @@ if [ -f "$SCRIPT_DIR/detect-stale-merge-head.sh" ]; then
     _bro142_result=$(marker_staleness "$(pwd)" "$_bro142_marker")
     _bro142_status="${_bro142_result%% *}"
     if [ "$_bro142_status" != "none" ]; then
+      _BRO142_REFUSED=1  # the EXIT trap must not tidy the marker we are refusing on
       echo "::error::push-with-retry: existing $_bro142_marker found before this run touched anything — refusing to fetch/rebase/merge on top of it." >&2
       marker_staleness_message "$(pwd)" "$_bro142_marker" "$_bro142_status" "${_bro142_result#* }" >&2
       exit 1
@@ -1291,6 +1310,9 @@ restore_autostash() {
     # stage-latency.jsonl): plain merge-file reports every both-sides append as
     # a conflict, which would drop the caller's rows.
     union=""
+    # autostash=append (BRO-4688): append-only JSON array logs; the key-wise merge may union both sides' new rows.
+    append_arrays=""
+    case "$(git check-attr autostash -- "$p" 2>/dev/null)" in *": autostash: append") append_arrays="--append-arrays" ;; esac
     case "$(git check-attr merge -- "$p" 2>/dev/null)" in *": merge: union") union="--union" ;; esac
     if git merge-file -q $union "$ours_f" "$base_f" "$theirs_f" 2>/dev/null; then
       if cp -f "$ours_f" "$p" 2>/dev/null; then merged=1; restored+=("$p"); else kept=1; fi
@@ -1298,7 +1320,7 @@ restore_autostash() {
          && ! autostash_is_regenerated "$p" \
          && command -v node >/dev/null 2>&1 \
          && git show "$AUTOSTASH_SHA:$p" >"$tmpd/ours.json" 2>/dev/null \
-         && _timeout 30 node "$SCRIPT_DIR/json-three-way-merge.js" "$base_f" "$tmpd/ours.json" "$theirs_f" "$tmpd/merged.json" 2>/dev/null \
+         && _timeout 30 node "$SCRIPT_DIR/json-three-way-merge.js" "$base_f" "$tmpd/ours.json" "$theirs_f" "$tmpd/merged.json" $append_arrays 2>/dev/null \
          && cp -f "$tmpd/merged.json" "$p" 2>/dev/null; then
       # BRO-4688: a JSON file that conflicts as text but where no single value
       # changed on both sides (two rebuilds each auto-registering an outlet in
@@ -2774,6 +2796,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
         if GIT_EDITOR=true git -c "$(_keep_run_driver B)" rebase --continue 2>/dev/null; then
           rebase_ok=true
           RESOLUTION_PATH="rebase-resolved(${_round} round(s))"
+          _drop_orphan_rebase_head || true
           echo "  Rebase completed after $_round round(s) of conflict resolution"
           restore_protected_fields
           reconcile_merged_json

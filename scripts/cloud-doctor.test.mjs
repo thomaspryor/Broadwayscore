@@ -59,6 +59,15 @@ test('missing data, unresolvable review texts, a partial install and no push acc
   assert.equal(r['node-modules'].fix, 'npm-ci');
 });
 
+test('BRO-7110: a shell install the three probes miss still fails on the declared-package check', () => {
+  const many = Array.from({ length: 9 }, (_, i) => `pkg${i}`);
+  const r = byId(evaluate(healthy({ missingPkgs: many }), { now: NOW }));
+  assert.equal(r['node-modules'].level, 'fail');
+  assert.equal(r['node-modules'].fix, 'npm-ci');
+  assert.match(r['node-modules'].detail, /pkg0, .*pkg5 and 3 more \(partial install\)/);
+  assert.equal(byId(evaluate(healthy({ missingPkgs: [] }), { now: NOW }))['node-modules'].level, 'ok');
+});
+
 test('a git checkout or symlinked core data counts as current', () => {
   const r = byId(evaluate(healthy({ coreSymlink: true, coreCopySha: null, reviewCopyIsCheckout: true, reviewCopySha: null }), { now: NOW }));
   assert.equal(r['core-copy'].level, 'ok');

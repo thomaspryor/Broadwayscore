@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: hand-listed in check-corpus-drift.yml since BRO-3425/BRO-4750; asserts on bot-rewritten data, so it never blocks main (BRO-7101).
 // TESTS-VS-DERIVED-DATA-EXEMPT: structural check (image file exists on disk,
 // non-placeholder hash, findImagelessScoredShows() predicate holds) — there is
 // no precursor source file for images, the image file itself IS the source of

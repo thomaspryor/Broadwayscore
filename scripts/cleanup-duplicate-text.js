@@ -21,6 +21,7 @@ const path = require("path");
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { markRescoreNeeded } = require('./lib/rescore-flagging');
+const { EXCERPT_FIELDS } = require('./lib/excerpt-fields');
 
 const USAGE = `cleanup-duplicate-text.js — Fixes 14 same-outlet duplicate-text pairs where two files at the same outlet.
 
@@ -176,7 +177,7 @@ for (const pair of PAIRS) {
   }
 
   // Merge excerpts if keep file lacks them
-  for (const field of ["dtliExcerpt", "bwwExcerpt", "showScoreExcerpt", "nycTheatreExcerpt", "lboRoundupExcerpt"]) {
+  for (const field of EXCERPT_FIELDS) {
     if (!keepData[field] && deleteData[field]) {
       if (!dryRun) keepData[field] = deleteData[field];
       console.log(`  MERGE ${field}: ${pair.show}/${pair.delete} → ${pair.keep}`);

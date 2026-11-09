@@ -128,6 +128,12 @@ jobs:
       NEWSLETTER_ALLOW_GAPS: ${{ github.event.inputs.allowGaps || '' }}
       GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
       GA_SERVICE_ACCOUNT_KEY: ${{ secrets.GA_SERVICE_ACCOUNT_KEY }}
+      # Subject writer (scripts/newsletter/subject-writer.mjs, BRO-7168): Claude
+      # writes subject/preview/opening candidates, GPT-5.5 fact-checks them.
+      # Job-level so pre-send-check's regen writes the same way. Missing key or
+      # any API failure keeps the template subject; never blocks the draft.
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
     steps:
       - name: Checkout repository
@@ -205,6 +211,10 @@ jobs:
 
       - name: Generate newsletter HTML + meta.json
         if: steps.status.outputs.status == 'draft'
+        env:
+          # Read-only: the subject writer reads recent subjects and spots a
+          # subject the owner typed into the Resend draft (BRO-7168). Never sends.
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: |
           node scripts/newsletter/generate.mjs "${{ steps.week.outputs.weekStart }}"
 

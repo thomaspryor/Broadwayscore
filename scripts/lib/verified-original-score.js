@@ -42,6 +42,8 @@ function applyVerifiedOriginalScore(data, raw, reason) {
     data.originalScoreType = null;
     data.originalScoreCleared = true;
     data.originalScoreClearedReason = why;
+    // A score the LLM read against the cleared star still carries it (BRO-305).
+    if (prior != null) require('./rescore-flagging').queueRescoreForClearedRating(data, why);
   } else {
     data.originalScore = raw;
     data.originalScoreNormalized = require('./score-parsers').parseOriginalScore(raw, data.outletId);

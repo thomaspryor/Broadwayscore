@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/fantasy-league.json (read by the test); data/fantasy-scores.json (read by the test); data/awards.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Acceptance regression tests for BRO-760 (Broadway Fantasy League).
 // require()s the real pure functions (scripts/lib/fantasy-helpers.js) and
 // checks the real data files — no logic duplicated here (CLAUDE.md rule 15).
@@ -56,11 +57,12 @@ describe('draftable show catalog (data/fantasy-league.json)', () => {
     // form is supposed to show their locked score as built-in research.
     // A show locked because it opens in the last days before the draft has
     // no reviews yet; give the review pipeline a week after opening night.
-    // Anchored to the catalog's own snapshot time (the frozen catalog is not
-    // re-scored), not Date.now(), so the test doesn't decay as the clock moves.
-    const snapshotMs = Date.parse(leagueData._meta.generatedAt);
-    assert.ok(Number.isFinite(snapshotMs), '_meta.generatedAt must be a valid timestamp');
-    const weekAgo = new Date(snapshotMs - 7 * 86400000).toISOString().slice(0, 10);
+    // Anchored to the draft-open date (when the lock is decided), not
+    // generatedAt (re-stamped weekly, so it drifts past shows that opened
+    // right before the draft and still have no reviews) or Date.now().
+    const draftOpensMs = Date.parse(leagueData._meta.draftOpens);
+    assert.ok(Number.isFinite(draftOpensMs), '_meta.draftOpens must be a valid date');
+    const weekAgo = new Date(draftOpensMs - 7 * 86400000).toISOString().slice(0, 10);
     const locked = Object.entries(shows).filter(([, s]) => s.eligible.criticScore === false && (!s.openingDate || s.openingDate <= weekAgo));
     for (const [id, show] of locked) {
       assert.ok(

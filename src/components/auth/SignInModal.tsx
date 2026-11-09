@@ -6,7 +6,7 @@ import { Modal, ModalCloseButton } from '@/components/show-cards';
 import { prepareAppleSignIn } from '@/lib/apple-auth';
 import EmailCodeForm, { type EmailAuthResult } from './EmailCodeForm';
 
-type SignInContext = 'rating' | 'watchlist' | 'watchlist_local' | 'generic';
+type SignInContext = 'rating' | 'watchlist' | 'watchlist_local' | 'generic' | 'critic';
 
 interface SignInModalProps {
   isOpen: boolean;
@@ -22,18 +22,21 @@ interface SignInModalProps {
 
 const CONTEXT_HEADLINES: Record<SignInContext, string> = {
   rating: 'Sign in to save your rating',
-  watchlist: 'Sign in to save your watchlist',
+  watchlist: 'Sign in to save your To See list',
   watchlist_local: 'Saved. Keep your list with a free account',
   // "Sign in" alone read as "for people who already have an account", and
   // email-list members assumed they did (BRO-4893).
   generic: 'Sign in or create a free account',
+  // Critics claiming their page (owner 2026-11-04): speak to them, not to theatergoers.
+  critic: 'Sign in to claim your page',
 };
 
 const CONTEXT_SUBTEXT: Record<SignInContext, string> = {
   rating: 'Your rating will be saved automatically after sign-in.',
-  watchlist: 'Your watchlist will be saved automatically after sign-in.',
+  watchlist: 'Your To See list will be saved automatically after sign-in.',
   watchlist_local: "Your list is on this device for now. Sign in to see it on your phone and computer, and we'll move it over for you.",
-  generic: 'Track shows, rate performances, and build your theater diary.',
+  generic: 'Track the shows you’ve seen and the ones you want to see.',
+  critic: 'A free account lets you add a photo, bio and links to your critic page.',
 };
 
 export default function SignInModal({ isOpen, onClose, onSignIn, onSendEmailCode, onVerifyEmailCode, context = 'generic', loading = false, error = null }: SignInModalProps) {

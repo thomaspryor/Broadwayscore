@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-4656: the push-review-texts restore copied cleared manualClearFallback*
 // give-up markers back from the committed file, because a null PROTECTED field
 // looks like data loss unless isIntentionalClear() says otherwise. Three

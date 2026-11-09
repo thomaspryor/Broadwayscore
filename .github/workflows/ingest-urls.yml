@@ -21,6 +21,11 @@ on:
         required: false
         type: boolean
         default: false
+      caller:
+        description: 'Automated dispatcher slug (e.g. tic-daily). Leave empty for a hand dispatch (BRO-7082).'
+        required: false
+        type: string
+        default: ''
       dry_run:
         # Smoke-test lane (task #737): this workflow shipped and sat
         # dispatched ZERO times (checkout/core-data/review-texts/npm/scraper
@@ -118,6 +123,7 @@ jobs:
           SCRAPER_USE_SCRAPINGDOG: '1'
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           INPUT_SHOW_ID: ${{ inputs.show_id }}
+          INGEST_CALLER: ${{ inputs.caller }}
           INGEST_DISPATCH_MARKER: ${{ runner.temp }}/ingest-dispatch-pending
           WORKFLOW_CAP_DISABLED: ${{ vars.WORKFLOW_CAP_DISABLED }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -146,6 +152,7 @@ jobs:
         if: always() && inputs.dry_run != true
         env:
           INPUT_SHOW_ID: ${{ inputs.show_id }}
+          INGEST_CALLER: ${{ inputs.caller }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           INGEST_DISPATCH_MARKER: ${{ runner.temp }}/ingest-dispatch-pending
           WORKFLOW_CAP_DISABLED: ${{ vars.WORKFLOW_CAP_DISABLED }}
@@ -165,7 +172,11 @@ jobs:
             node "$GITHUB_WORKSPACE/scripts/opening-night-lease.js" enforce --dir="$GITHUB_WORKSPACE/data/review-texts" || \
               echo "::warning::opening-night lease enforce failed to run"
             git add -A
-            git diff --cached --quiet || git commit -m "data: Ingest URLs for ${INPUT_SHOW_ID}"
+            # BRO-7082: a named (scheduled) caller tags the subject so the opening
+            # grade does not count it as a hand dispatch; caller is slug-checked.
+            SUBJ="data: Ingest URLs for ${INPUT_SHOW_ID}"
+            if [[ "$INGEST_CALLER" =~ ^[a-z0-9][a-z0-9-]{0,39}$ ]]; then SUBJ="data(${INGEST_CALLER}): Ingest URLs for ${INPUT_SHOW_ID}"; fi
+            git diff --cached --quiet || git commit -m "$SUBJ"
             bash ../../scripts/lib/push-with-retry.sh 5 main
           fi
           if [ -f "$INGEST_DISPATCH_MARKER" ]; then

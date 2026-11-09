@@ -26,6 +26,7 @@ const fs = require('fs');
 const { normalizeLlmResult: sharedNormalizeLlmResult, LETTER_GRADES } = require('./score-parsers');
 const { GEMINI_FLASH, GPT4O_MINI } = require('./models');
 const { publishesNoCriticRating } = require('./score-extractors');
+const { isGalleryCounterRating } = require('./gallery-counter');
 
 // Lazy-load outlet-registry for starScale lookups. Tests can avoid this by
 // passing `opts.starScale` directly to extractExplicitScore.
@@ -364,6 +365,10 @@ function verifyInText(result, fullText) {
   if (!result || !fullText) return null;
   const ft = fullText;
   const lower = ft.toLowerCase();
+
+  // BRO-305: a "1/N" alone on its line is a photo-gallery slide counter
+  // (Evening Standard), not the critic's rating, so its presence verifies nothing.
+  if (isGalleryCounterRating(result.raw, ft)) return null;
 
   // --- Letter grades ---
   if (result.type === 'letter') {

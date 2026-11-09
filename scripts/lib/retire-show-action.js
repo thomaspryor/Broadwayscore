@@ -22,7 +22,8 @@
  *     and the same closing date, BRO-5706), or a
  *     non-production named with `nonProduction` (BRO-4449/BRO-4505: a film
  *     screening, one-night concert or stand-up set minted before the dated
- *     venue readers existed): still announced/upcoming, never dated as
+ *     venue readers existed): still announced/upcoming (or previews with no
+ *     openingDate, BRO-7080: an open-ended attraction), never dated as
  *     opened, zero reviews, and `evidenceUrl` cites the venue listing;
  *   - `reason` is required (the registry breadcrumb);
  *   - `blockTitleVenue: true` for junk that must never return under any id;
@@ -45,7 +46,9 @@ const HOUSE_WORDS = new Set(['centre', 'center', 'theatre', 'theater', 'main', '
 // "Marjorie S. Deane Little Theater @ The West Side Y" names the building the room
 // sits in, and a leading "the" is formatting (BRO-6481), as in show-duplicate-detection.
 function houseKey(v) {
-  return normalizeVenueName(String(v || '').replace(/\s*@.*$/, '').replace(/^\s*the\s+/i, ''));
+  // A parenthesised stage name is a room of the same house
+  // ("The Old Globe (Donald and Darlene Shiley Stage)"), BRO-7080.
+  return normalizeVenueName(String(v || '').replace(/\s*\([^)]*\)/g, '').replace(/\s*@.*$/, '').replace(/^\s*the\s+/i, ''));
 }
 function sameHouse(a, b) {
   const ka = houseKey(a);
@@ -59,6 +62,7 @@ function sameHouse(a, b) {
 }
 
 const NON_PRODUCTION_STATUSES = new Set(['announced', 'upcoming']);
+const UNDATED_PREVIEWS_MIN_DAYS = 180;
 
 function isoOrNull(v) {
   return typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v) ? v : null;
@@ -143,7 +147,22 @@ function duplicateRefusal(row, duplicateOf, shows, reviewCount, evidenceUrl) {
 function nonProductionRefusal(row, action, reviewCount, now) {
   if (action.duplicateOf !== undefined) return 'nonProduction and duplicateOf are exclusive';
   if (typeof action.evidenceUrl !== 'string' || !/^https:\/\/[^\s/]+\.[^\s]+$/.test(action.evidenceUrl)) return 'nonProduction needs evidenceUrl (https link to the venue listing that shows it is not a production)';
-  if (!NON_PRODUCTION_STATUSES.has(row.status)) return `status is "${row.status}": only an announced/upcoming row can be retired as a non-production`;
+  // A `previews` row with no openingDate (BRO-7080): TodayTix gives an open-ended
+  // attraction (Shrek's Adventure, Armory Public Tours) a start date, so status
+  // derivation files it as previews forever. It was never dated as opened, and
+  // the zero-review and evidence checks below still apply.
+  // A real show in its first weeks of previews also has no openingDate and no
+  // reviews, so the start must be at least UNDATED_PREVIEWS_MIN_DAYS old: no real
+  // production previews for six months without announcing an opening.
+  const undatedPreviews = row.status === 'previews' && !isoOrNull(row.openingDate);
+  if (undatedPreviews) {
+    const start = isoOrNull(row.previewsStartDate);
+    const nowMs = (now instanceof Date ? now : now ? new Date(now) : new Date()).getTime();
+    if (!start) return 'previews row with no openingDate and no previewsStartDate: cannot tell an attraction from a new show';
+    const days = Math.floor((nowMs - Date.parse(start)) / 86400000);
+    if (days < UNDATED_PREVIEWS_MIN_DAYS) return `previews started ${start} (${days} days ago): a previews row must be ${UNDATED_PREVIEWS_MIN_DAYS}+ days old with no opening before it can be retired as a non-production`;
+  }
+  if (!NON_PRODUCTION_STATUSES.has(row.status) && !undatedPreviews) return `status is "${row.status}": only an announced/upcoming row (or a long-running previews row with no openingDate) can be retired as a non-production`;
   // `outOfTier: true` (BRO-6531): an out-of-tier listing (Off-Off-Broadway) carries a scheduled
   // opening date from its source. It may go while that date is still ahead; one that has
   // opened is a real run either way.
@@ -220,4 +239,28 @@ function applyRetireShow(shows, action, { retire, now, reviewCount, isRetired } 
   return { ok: true, msg: `retired ${a.id} ("${row.title}" @ ${row.venue})${a.blockTitleVenue ? ' — title+venue blocked' : ''}` };
 }
 
-module.exports = { applyRetireShow };
+// Reviews a retire would orphan. A reviews.json row whose review file this same
+// plan already moved or deleted is stale (the next rebuild re-attributes it), so
+// a plan can move a duplicate's reviews onto the kept row and retire the
+// duplicate in one run (BRO-7080). Files are named "<outletId>--<critic>.json".
+function remainingReviewCount({ showId, scoredRows = [], textFiles = [], removedPaths = [] }) {
+  // One stale row per file moved away, per outlet: a second row of that outlet
+  // with no file (a manual entry) still counts.
+  const removedByOutlet = new Map();
+  for (const p of removedPaths) {
+    const [dir, file] = String(p).split('/');
+    if (dir !== showId || !file) continue;
+    const outlet = file.split('--')[0];
+    removedByOutlet.set(outlet, (removedByOutlet.get(outlet) || 0) + 1);
+  }
+  let scored = 0;
+  for (const r of scoredRows) {
+    if (!r || r.showId !== showId) continue;
+    const left = removedByOutlet.get(r.outletId) || 0;
+    if (left > 0) removedByOutlet.set(r.outletId, left - 1);
+    else scored++;
+  }
+  return scored + textFiles.length;
+}
+
+module.exports = { applyRetireShow, remainingReviewCount };

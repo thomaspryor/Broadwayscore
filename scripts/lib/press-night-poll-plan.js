@@ -4,8 +4,11 @@
  *
  * A poller run takes ~58 min (p50 of the last 100 runs, 2026-11-02: inline poll 15, text collection 11, rebuild 8,
  * deploy wait 8), so the orchestrator's own sleep is the only gap it controls. Inside the first 2h after a Broadway
- * show's embargo the sleep drops from 15 to 5 min; everywhere else it stays as before. SERP deferral is unchanged
- * (still counted in iterations). An explicit poll_interval_minutes input always wins.
+ * show's embargo the sleep drops from 15 to 5 min; everywhere else it stays as before. An explicit
+ * poll_interval_minutes input always wins. SERP: the orchestrator still sends --skip-serp on iterations 1-8, but
+ * for Broadway the poller's hourly SERP sweep (BRO-4272, serp-burst-caps.js) overrides it from the first stored
+ * review of the night, under the burst caps; tests/unit/press-night-poll-plan.test.mjs pins that the embargo to
+ * +3h sits inside that sweep's window.
  *
  * CLI: node scripts/lib/press-night-poll-plan.js --shows=a,b [--default=15] [--override=N] [--now=ISO]
  * prints the minutes to sleep (shows from data/shows.json).

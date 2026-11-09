@@ -15,6 +15,10 @@ const MARKETS = {
   // Opera Scorecard (BRO-6770): a show's market is 'opera' when its type is opera (marketOf), whatever its category.
   // Opera shows live under /opera/<title slug> on broadwayscorecard.com (operascorecard.com redirects there).
   opera: { label: 'Opera', tz: 'America/New_York', domain: 'broadwayscorecard.com', brand: '#e0485f', logo: 'opera-wordmark-transparent.png', hashtags: ['Opera'] },
+  // Touring and out-of-town shows on the Broadway accounts (BRO-6935). Which of these post is decided by
+  // touringEligible (select.js); these entries give them a label, time zone and hashtags.
+  regional: { label: 'Regional', tz: 'America/New_York', domain: 'broadwayscorecard.com', brand: '#d4a574', logo: 'broadway-wordmark-transparent.png', hashtags: ['PreBroadway', 'BroadwayReviews'] },
+  tour: { label: 'National Tour', tz: 'America/New_York', domain: 'broadwayscorecard.com', brand: '#d4a574', logo: 'broadway-wordmark-transparent.png', hashtags: ['BroadwayTour', 'BroadwayReviews'] },
   'off-west-end': { label: 'Off-West End', tz: 'Europe/London', domain: 'westendscorecard.com', brand: '#f472b6', logo: 'west-end-wordmark-transparent.png', hashtags: ['OffWestEnd', 'LondonTheatre'] },
 };
 
@@ -32,8 +36,9 @@ const CHANNEL_SETS = {
   // West End Scorecard accounts (BRO-6378). Fill in the Buffer channel ids from
   // `node scripts/social-autopost/run.js --list-channels` once the owner has
   // connected them (guide: claude-outputs/west-end-social-accounts-guide.md).
-  // While this is empty, West End shows keep posting to the Broadway set
-  // (routing.js), so switching routing on is just adding ids here.
+  // While this is empty, main-stage West End shows keep posting to the Broadway set
+  // (BROADWAY_FALLBACK_CATEGORIES, routing.js) and Off-West End shows post nothing,
+  // so switching routing on is just adding ids here.
   'west-end': {
     // instagram: '', facebook: '', twitter: '', threads: '', bluesky: '',
   },
@@ -49,7 +54,11 @@ const CHANNELS = CHANNEL_SETS.broadway; // the original set; kept for callers th
 
 // Which channel set is a show's home. Broadway and Off-Broadway post to the Broadway
 // accounts, West End and Off-West End to the West End accounts.
-const MARKET_CHANNEL_SET = { broadway: 'broadway', 'off-broadway': 'broadway', 'west-end': 'west-end', 'off-west-end': 'west-end' };
+const MARKET_CHANNEL_SET = { broadway: 'broadway', 'off-broadway': 'broadway', regional: 'broadway', tour: 'broadway', 'west-end': 'west-end', 'off-west-end': 'west-end' };
+// Categories whose shows post to the Broadway accounts while their own set is not
+// configured. Off-West End is not one (owner, BRO-6932: fringe London shows do not
+// belong on the Broadway accounts); it waits for the West End accounts.
+const BROADWAY_FALLBACK_CATEGORIES = ['west-end'];
 
 // "High profile" rule for cross-posting to the OTHER market's accounts (BRO-6378;
 // proposal, the owner approves it). Also the rule for the video lane (BRO-6250):
@@ -73,12 +82,29 @@ const HIGH_PROFILE = {
 };
 
 // Score-post floors layered on the shared gate, which carries only the opening-night
-// email's Broadway and London floors. Off-Broadway: 3 tier-1 outlets marks a major
-// show. Off-West End: London's national critics review most fringe openings, so it
-// needs more (2025-26 season: 88 shows clear 8 total / 3 T1, 53 clear 10 / 5).
+// email's Broadway and London floors. The floors ask only "is the score settled",
+// never "is this a major show" (owner, BRO-6920: the old 3 tier-1 Off-Broadway / 5
+// tier-1 Off-West End floors posted 33 of 278 Off-Broadway and 47 of 179 Off-West End
+// shows in the year to 2026-10, and skipped I Became We, King of the Yees, Copperfield).
+// Off-Broadway rarely draws 3 tier-1 critics, so it needs no tier-1 review, only 8 scored
+// reviews (108 of 278 clear it within 10 days of opening). Off-West End has no entry,
+// so it uses the shared gate's London floors (London's nationals review most fringe
+// openings, so 3 tier-1 is common there).
 const SCORE_FLOORS = {
-  'off-broadway': { total: 8, t1: 3, t2: 2, highConfidence: 6 },
-  'off-west-end': { total: 10, t1: 5, t2: 2, highConfidence: 6 },
+  'off-broadway': { total: 8, t1: 0, t2: 2, highConfidence: 6 },
+  // BRO-6935: out-of-town and touring shows are never looser than Off-Broadway, and ask for
+  // one tier-1 critic so 839 regional productions do not flood the Broadway accounts.
+  regional: { total: 8, t1: 1, t2: 2, highConfidence: 6 },
+  tour: { total: 8, t1: 1, t2: 2, highConfidence: 6 },
+};
+// "All its reviews are in" floors (BRO-6932): a show under its SCORE_FLOORS still posts
+// when the review-coverage census says no known review is missing (slim cov.state
+// 'complete', scripts/lib/public-coverage-verdict.js) at least minDays after opening
+// (80% of Off-Broadway reviews land within 7 days), with a tier-1 critic among them so
+// the show is big enough to post (In the Heights, Two Girls). 6 Off-Broadway shows of
+// 2026 to date clear this and not the 8-review floor.
+const COMPLETE_COVERAGE_FLOORS = {
+  'off-broadway': { total: 5, t1: 1, t2: 0, highConfidence: 4, minDays: 7 },
 };
 
 const ELIGIBLE_CATEGORIES = Object.keys(MARKETS).filter(k => k !== 'opera'); // categories; opera is a market by type (marketOf)
@@ -131,9 +157,29 @@ const CLOSING_SOON = {
   minScore: 80, maxPerDay: 2, // rounded Critic Score
 };
 
+// Quiet-day backfill (BRO-6932): a show whose score settled after its SCORE_LOOKBACK_DAYS
+// window still gets its score post on a day with nothing else going out (owner, 2026-11-03:
+// "it doesn't have to always be so timely"). Judged on the New York day, because every
+// network posts from the Broadway channel set today. Set enabled false to stop.
+const BACKFILL = {
+  enabled: true,
+  fromHour: 14, // New York local hour from which a day with no post counts as quiet
+  maxPerDay: 2, // backfill posts on one quiet day (90 minutes apart, STAGGER_MINUTES)
+  lookbackDays: 45, // opened at most this many days ago
+  minDaysLeft: 2, // a show closing sooner than this is not worth a post
+};
+
+// AI-written score posts (BRO-6959): Claude writes, code and GPT-5.5 check, the template stands in
+// on any failure (ai-captions.js). ON since 2026-11-04 after three dispatched dry runs (input ai_captions) drafted good posts;
+// the repo variable SOCIAL_AI_CAPTIONS_DISABLED=true stops it without a commit.
+const AI_CAPTIONS = {
+  enabled: true,
+  runBudgetMs: 8 * 60e3, // all drafts in one run; after this every show gets the template
+};
+
 module.exports = {
-  WEEKLY_ROUNDUP, CLOSING_SOON,
-  MARKETS, marketOf, OPERA_HOUSE_TAGS, operaHouseTag, CHANNELS, CHANNEL_SETS, MARKET_CHANNEL_SET, HIGH_PROFILE, SCORE_FLOORS, ELIGIBLE_CATEGORIES, SKIP_TYPES,
+  WEEKLY_ROUNDUP, CLOSING_SOON, BACKFILL, AI_CAPTIONS,
+  MARKETS, marketOf, OPERA_HOUSE_TAGS, operaHouseTag, CHANNELS, CHANNEL_SETS, MARKET_CHANNEL_SET, BROADWAY_FALLBACK_CATEGORIES, HIGH_PROFILE, SCORE_FLOORS, COMPLETE_COVERAGE_FLOORS, ELIGIBLE_CATEGORIES, SKIP_TYPES,
   SCORE_POST_LOCAL_HOUR, SCORE_POST_WINDOW, CREATE_LEAD_MINUTES,
   SCORE_LOOKBACK_DAYS, FIRST_RUN_FRESH_DAYS, STAGGER_MINUTES, LONDON_COMPARE_LOOKBACK_DAYS,
 };

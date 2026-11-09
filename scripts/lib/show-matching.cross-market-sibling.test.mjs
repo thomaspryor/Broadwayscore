@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Regression lock for validateRoundupPageTitle's cross-market-sibling check.
 //
 // Background (#1652 / BRO-363): a Show Score page archived for the Broadway

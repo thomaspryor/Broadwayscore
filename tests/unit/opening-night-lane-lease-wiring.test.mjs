@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-4786 (BRO-4210 phase 2d): cross-machine lease claim + every competing writer honours the lease.
 // Real functions and real git (temp bare repo); nothing under the repo is written.
 import test from 'node:test';

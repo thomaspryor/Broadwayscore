@@ -24,11 +24,12 @@ import {
 } from '../../src/lib/local-watchlist';
 
 // Owner call 2026-10-04: ask right after the first save; the save still happens first.
-test('the first save prompts, and so does any later one outside the cooldown', () => {
-  assert.equal(PROMPT_AT_COUNT, 1);
+test('the first two saves stay quiet; the 3rd prompts, and so does any later one outside the cooldown', () => {
+  assert.equal(PROMPT_AT_COUNT, 3);
   assert.equal(shouldPromptAfterSave(0, null, 1000), false);
-  assert.equal(shouldPromptAfterSave(1, null, 1000), true);
-  assert.equal(shouldPromptAfterSave(2, null, 1000), true);
+  assert.equal(shouldPromptAfterSave(1, null, 1000), false);
+  assert.equal(shouldPromptAfterSave(2, null, 1000), false);
+  assert.equal(shouldPromptAfterSave(3, null, 1000), true);
   assert.equal(shouldPromptAfterSave(5, null, 1000), true);
 });
 

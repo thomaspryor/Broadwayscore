@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/audit/dispatch-ledger.jsonl (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // classifyTrapped contract (archiver deadlock recovery). Per CLAUDE.md §15 this
 // require()s the real predicate rather than restating it, so a change to the
 // production classification fails here.

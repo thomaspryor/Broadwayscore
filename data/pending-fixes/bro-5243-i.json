@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5243-i",
   "planId": "7fc614cc-a169-4ce2-8516-ab60540b4263",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-14T13:00:00.000Z",
   "submitter": {
     "name": null,
@@ -108,5 +108,48 @@
       "ok": true,
       "msg": "Ran reverify-stale-cv-promoted.js successfully"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "obsolete": 2,
+      "resolved": 4
+    },
+    "ops": [
+      {
+        "i": 0,
+        "verdict": "obsolete",
+        "reason": "all-my-sons-2019/wsj--terry-teachout.json duplicateClearReason changed since by a later write (now (text))"
+      },
+      {
+        "i": 1,
+        "verdict": "resolved",
+        "reason": "all-my-sons-2019/wsj--terry-teachout.json duplicateOf already null"
+      },
+      {
+        "i": 2,
+        "verdict": "resolved",
+        "reason": "all-my-sons-2019/wsj--terry-teachout.json duplicateReason already null"
+      },
+      {
+        "i": 3,
+        "verdict": "obsolete",
+        "reason": "grand-horizons-2020/wsj--terry-teachout.json duplicateClearReason changed since by a later write (now (text))"
+      },
+      {
+        "i": 4,
+        "verdict": "resolved",
+        "reason": "grand-horizons-2020/wsj--terry-teachout.json duplicateOf already null"
+      },
+      {
+        "i": 5,
+        "verdict": "resolved",
+        "reason": "grand-horizons-2020/wsj--terry-teachout.json duplicateReason already null"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (2 obsolete, 4 resolved); per-op reasons in triage.ops"
 }

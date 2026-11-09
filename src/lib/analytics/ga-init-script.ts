@@ -22,6 +22,7 @@ var __bwscPriv = ${JSON.stringify(PRIVATE_SHARE_PREFIXES)};
 for (var __i = 0; __i < __bwscPriv.length; __i++) {
   if (location.pathname === '/' + __bwscPriv[__i] || location.pathname.indexOf('/' + __bwscPriv[__i] + '/') === 0) window['ga-disable-' + ${id}] = true;
 }
+if (/[?&]invite=/.test(location.search)) window['ga-disable-' + ${id}] = true; // critic invite token (BRO-7087)
 var __bwscCfg = __bwscOwner ? { traffic_type: 'internal' } : {};
 var __bwscRef = document.referrer.replace(new RegExp(${JSON.stringify(PRIVATE_SHARE_SEGMENT_SOURCE)}, 'g'), ${JSON.stringify(PRIVATE_SHARE_REDACTED)});
 if (__bwscRef !== document.referrer) __bwscCfg.page_referrer = __bwscRef;

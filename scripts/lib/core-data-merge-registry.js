@@ -59,6 +59,7 @@ const { mergeOutletRegistryStaging } = require('./merge-outlet-registry-staging'
 const { mergeOutletRegistry } = require('./merge-outlet-registry');
 const { mergeFeedbackLedger } = require('./merge-feedback-ledger');
 const { mergeBwwRoundupLedger } = require('./merge-bww-roundup-ledger');
+const { mergeCrossShowUrlLedger } = require('./merge-cross-show-url-ledger');
 const { mergeScraperSpendLedger } = require('./merge-scraper-spend-ledger');
 const { mergeOwnerEmailLog } = require('./merge-owner-email-log');
 const { mergeCensusRecallTrend } = require('./merge-census-recall-trend');
@@ -225,6 +226,11 @@ const CORE_DATA_MERGE_REGISTRY = [
   // genuinely unregistered — see the "NOT added, deliberately" block above —
   // so this alone does not yet make that whole step fallback-eligible.)
   { file: 'audit/bww-roundup-miss-ledger.jsonl', surface: 'public-repo', status: 'active', merge: mergeBwwRoundupLedger, format: 'jsonl', apiFallbackMerge: true },
+  // BRO-6910: every review URL gather-reviews' cross-show URL guard dropped.
+  // Multi-writer (parallel gather shards and per-show dispatches all append via
+  // `git add data/audit/`), so it gets a union merge keyed (showId, url) on both
+  // the local reconcile and the Git Data API fallback paths.
+  { file: 'audit/cross-show-url-holds.jsonl', surface: 'public-repo', status: 'active', merge: mergeCrossShowUrlLedger, format: 'jsonl', apiFallbackMerge: true },
   {
     file: 'audit/express-retry-queue.json',
     surface: 'public-repo',
@@ -465,6 +471,14 @@ const CORE_DATA_MERGE_REGISTRY = [
     verifiedBy: '2026-10-16 (BRO-4861): sole writer scripts/audit-coverage-holes.js --counts, invoked only by data-health-check.yml\'s "Coverage holes on current shows" step and committed by its "Commit provider spend ledger (apiFallbackSafe)" step. Counts only (no file names or text), regenerated each run — nothing to union.',
   },
   {
+    file: 'audit/abandoned-review-rescue.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-11-08 (BRO-7131): sole writer scripts/rescue-abandoned-reviews.js --apply, invoked only by data-health-check.yml\'s "Rescue abandoned reviews on recent shows" step and committed by its "Commit provider spend ledger (apiFallbackSafe)" step. Ids, file names and URLs only.',
+  },
+  {
     file: 'audit/star-band-drift.json',
     surface: 'public-repo',
     status: 'single-writer',
@@ -528,6 +542,48 @@ const CORE_DATA_MERGE_REGISTRY = [
     apiFallbackSafe: true,
     concurrencyGroup: 'data-health-check',
     verifiedBy: '2026-08-23: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (data-health-check.yml), group data-health-check.',
+  },
+  {
+    file: 'audit/recurrence-classes.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-11-07 (BRO-7103): written only by the Recurrence detector step in data-health-check.yml (scripts/recurrence-detector.js --apply), group data-health-check.',
+  },
+  {
+    file: 'audit/root-cause-sample.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-11-08 (BRO-7103): written only by the Recurrence detector step in data-health-check.yml (scripts/recurrence-detector.js --sample, weekly), group data-health-check.',
+  },
+  {
+    file: 'audit/outlet-corpus-critics.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-11-04 (BRO-6947): written only by the Printed byline conflict audit step in data-health-check.yml (--cache-out), group data-health-check.',
+  },
+  {
+    file: 'audit/board-dispatch.jsonl',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-11-08 (BRO-7139): sole WRITER scripts/board-dispatch.js (appends one row; a bare local run writes nothing, shouldWrite), invoked only by data-health-check.yml\'s "Board dispatch report" step; the same job\'s "Commit board dispatch ledger" step is the only git-add of the path. The job checks out main fresh, so the local copy already holds every earlier row and the API fallback\'s ours-wins cannot drop history. Residual risk: a hand run with an explicit --ledger pushed between checkout and push would lose its row (report-only telemetry, accepted).',
+    note: 'nightly report-only board dispatch rows: per-handler card counts and unowned gaps',
+  },
+  {
+    file: 'audit/llm-triage.jsonl',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-11-09 (BRO-7139): sole WRITER scripts/llm-triage.js --ledger (appends one row per triaged card; --ledger needs --ask), invoked only by data-health-check.yml\'s "LLM triage (report-only)" step in the board-dispatch job; that job\'s "Commit board dispatch ledger" step is the only git-add of the path. The job checks out main fresh, so the local copy already holds every earlier row. merge=union in .gitattributes. Residual risk: a hand run with --ledger pushed between checkout and push would lose its rows (report-only, accepted).',
+    note: 'nightly report-only llm-triage nominations (release/ask-owner/close-candidate/...) for cards no applying handler owns',
   },
   {
     file: 'audit/linear-archive-done.jsonl',
@@ -2039,6 +2095,12 @@ const CORE_DATA_MERGE_REGISTRY = [
   // real per-entry union reconciliation, unlike apiFallbackSafe's fail-closed
   // whole-file overwrite, so multi-writer is not a disqualifier here.
   { file: 'audit/scraper-spend-ledger.jsonl', surface: 'public-repo', status: 'active', merge: mergeScraperSpendLedger, format: 'jsonl', apiFallbackMerge: true },
+  // BRO-5043 (2026-11-09): the LLM spend meter ledger. Every Gemini/OpenAI
+  // caller now writes it, and the jobs that run them stage it inside their
+  // existing commit steps, so it must not disqualify those steps' Git Data API
+  // fallback. Rows are whole-record unique (ts + runId + script + model), so
+  // the scraper ledger's full-record union merge fits as-is.
+  { file: 'audit/gemini-usage-ledger.jsonl', surface: 'public-repo', status: 'active', merge: mergeScraperSpendLedger, format: 'jsonl', apiFallbackMerge: true },
   // BRO-4521: apiFallbackMerge so data-health-check.yml's intermediate
   // commit steps can stage it (per-entry union merge, same as the ledgers
   // around it).

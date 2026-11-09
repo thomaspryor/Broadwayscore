@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6577",
   "planId": "cd3fd4fd-2a94-4676-a216-c6231d84e2d3",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-30T03:26:10.533Z",
   "submitter": {
     "name": null,
@@ -45,5 +45,22 @@
       "reason": "retire-show: no show with id \"tristan-yseult-royal-bath-regional-2026\""
     }
   ],
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 1
+    },
+    "ops": [
+      {
+        "i": 1,
+        "verdict": "resolved",
+        "reason": "show tristan-yseult-royal-bath-regional-2026 is retired or gone"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (1 resolved); per-op reasons in triage.ops"
 }

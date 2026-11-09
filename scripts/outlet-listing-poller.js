@@ -56,9 +56,20 @@ const {
   isFlaggedMergeTarget,
 } = require('./lib/review-normalization');
 const { normalizeUrl } = require('./lib/url-utils');
+const { dailyLaneFeedConfigs, laneFeedAccepts } = require('./lib/daily-lane-feeds');
+const { extractPublishDate } = require('./lib/article-extractor');
+const ow = require('./lib/outlet-opening-window');
 const { describeSkip } = require('./lib/ingest-skip-classify');
+const censusListing = require('./lib/outlet-listing-census');
 const {
   findMatchingShows,
+  findPageConfirmCandidates,
+  itemReadsAsReview,
+  headlineLooksLikeNews,
+  pageConfirmsShow,
+  pageText,
+  pageNamesTitle,
+  publishedInRunWindow,
   deriveQualifyingOutlets,
   mergeAlwaysOnOutlets,
   parseRssFeed,
@@ -125,7 +136,9 @@ const OUTLET_STRATEGY_CONFIG = {
   nytimes:             { strategy: 'rss', url: 'https://rss.nytimes.com/services/xml/rss/nyt/Theater.xml', titleFilter: /\b(review|critic['’]?s\s+pick)\b/i },
   // TheaterMania: /rss.xml → 302 → sitemap.rss (site-wide feed, no reviews).
   // Listing page at /news/?categories=reviews is SSR; plain fetch returns review anchors.
-  theatermania:        { strategy: 'listing-html', url: 'https://www.theatermania.com/news/?categories=reviews', urlFilter: /\/news\/review-/, usePlainFetch: true },
+  // theatermania: WP_API_CONFIG below (BRO-6921). The /news/?categories=reviews
+  // listing showed only its newest 5 items and ignored paging, so a review that
+  // dropped off it between daily polls (Fish, The Ask) was never seen.
   // Variety theater-specific RSS — /v/theater/ path is review-only, no filter needed
   variety:             { strategy: 'rss', url: 'https://variety.com/v/theater/feed/' },
   // TheWrap theater section RSS (the old /tag/theater/feed/ froze in June 2026, BRO-6340).
@@ -134,7 +147,9 @@ const OUTLET_STRATEGY_CONFIG = {
   // TheReviewsHub: 100-item RSS covering all UK theater; no urlFilter needed — findMatchingShows guards FPs
   thereviewshub:       { strategy: 'rss', url: 'https://www.thereviewshub.com/feed/' },
   // Theater Scene: /plays/ and /musicals/ paths are reviews; /features/ /columns/ /multimedia/ are not
-  'theater-scene':     { strategy: 'rss', url: 'https://www.theaterscene.net/feed/', urlFilter: /\/(plays|musicals)\// },
+  // reviewsOnly (BRO-6921): every item after the filter is a review, so page
+  // confirmation needs no "review" word in the headline. Set only where true.
+  'theater-scene':     { strategy: 'rss', url: 'https://www.theaterscene.net/feed/', urlFilter: /\/(plays|musicals)\//, reviewsOnly: true },
   // Theatre Weekly (UK): review URLs have /review- prefix; drops news/industry pieces
   'theatre-weekly':    { strategy: 'rss', url: 'https://theatreweekly.com/feed', urlFilter: /\/review-/ },
   // Pages on Stages: theater review blog; no URL discriminator, findMatchingShows guards noise
@@ -168,7 +183,8 @@ const OUTLET_STRATEGY_CONFIG = {
   // Listing-page HTML strategies (known-good review index URLs)
   // nytg: /reviews redirects to /reviews/broadway; plain fetch gets 12 review links per page.
   // urlFilter: keep only individual review slugs (they all end in -review, dropping category pages)
-  nytg:              { strategy: 'listing-html', url: 'https://www.newyorktheatreguide.com/reviews/broadway', urlFilter: /\/reviews\/[^/]+-review/, usePlainFetch: true },
+  // BRO-6921: off-Broadway reviews sit on their own list (The Ask, ANON were never on /broadway).
+  nytg:              { strategy: 'listing-html', url: 'https://www.newyorktheatreguide.com/reviews/broadway', extraUrls: ['https://www.newyorktheatreguide.com/reviews/off-broadway'], urlFilter: /\/reviews\/[^/]+-review/, usePlainFetch: true, reviewsOnly: true },
   // thestage: SSR listing page; 18 reviews per page, BD fetches directly
   // urlFilter keeps /reviews/<slug> paths; drops /review-round-ups/ multi-show roundup pages
   thestage:          { strategy: 'listing-html', url: 'https://www.thestage.co.uk/reviews', urlFilter: /\/reviews\/[^/]+/ },
@@ -200,8 +216,9 @@ const OUTLET_STRATEGY_CONFIG = {
   operawire:                { strategy: 'rss', url: 'https://operawire.com/feed/' },
   // Stage and Cinema: theater + film coverage; findMatchingShows guards film-only items
   stageandcinema:           { strategy: 'rss', url: 'https://www.stageandcinema.com/feed/' },
-  // Slant Magazine: film + theater criticism; theater-specific feed for precision
-  slantmagazine:            { strategy: 'rss', url: 'https://www.slantmagazine.com/theater/feed/' },
+  // Slant Magazine: film + music + theater criticism. The /theater/ feed is Cloudflare-blocked on every
+  // provider (BRO-6953), so read the all-site feed through the proxy chain and keep /theater/ slugs only.
+  slantmagazine:            { strategy: 'rss', url: 'https://slantmagazine.com/feed/', urlFilter: /\/theater\// },
   // David Cote (Cote Notices) Substack: theater criticism newsletter; all content is theater
   'cote-notices':           { strategy: 'rss', url: 'https://davidcote1.substack.com/feed' },
   // City A.M.: London business paper; theatre category RSS has West End reviews
@@ -253,6 +270,28 @@ const OUTLET_STRATEGY_CONFIG = {
   'rhombus-rota':            { strategy: 'rss', url: 'https://rhombusrota.co.uk/feed/' },
   'harry-theatre-life':      { strategy: 'rss', url: 'https://www.harrytheatrelife.co.uk/blog-feed.xml' },
   onin:                      { strategy: 'rss', url: 'https://onin.london/feed/' },
+  // BRO-6921: these were SERP-only, so a review reached us only if a search
+  // engine had indexed it inside the lookback (totaltheater1 Fish, Arts Fuse
+  // Slam Frank, Exeunt Creation Stories were all hand-ingested). Feeds probed 200.
+  totaltheater1:             { strategy: 'rss', url: 'https://totaltheater1.wordpress.com/feed/' },
+  // pageConfirmAll: general-arts feeds (film, books, Boston stages). A feed
+  // match alone is not trusted here: every match must also page-confirm.
+  artsfuse:                  { strategy: 'rss', url: 'https://artsfuse.org/feed/', titleFilter: /\b(theat(er|re)|review|stage|play|musical|off-broadway)\b/i, pageConfirmAll: true },
+  'exeunt-magazine':         { strategy: 'rss', url: 'https://exeuntnyc.com/feed/', pageConfirmAll: true },
+  // BRO-7051: frequent Off-Broadway / Off-West End reviewers that were SERP-only, so the
+  // 3-hourly opening-window run (feed + listing only, no SERP) could not see them.
+  // Feeds probed 200 with items on 2026-11-06 (probe-outlet-feeds.js). Mixed feeds page-confirm.
+  londonpubtheatres:         { strategy: 'rss', url: 'https://www.londonpubtheatres.com/feed/rss2' },
+  fringereview:              { strategy: 'rss', url: 'https://fringereview.co.uk/feed/' },
+  'partially-obstructed-view': { strategy: 'rss', url: 'https://partially-obstructed-view.blogspot.com/feeds/posts/default' },
+  stagebuddy:                { strategy: 'rss', url: 'https://stagebuddy.com/feed', pageConfirmAll: true },
+  'the-knockturnal':         { strategy: 'rss', url: 'https://theknockturnal.com/feed/', pageConfirmAll: true },
+  'lighting-and-sound-america': { strategy: 'rss', url: 'https://lightingandsoundamerica.com/news/rss.asp', titleFilter: /\b(review|theat(er|re)|broadway|musical|play)\b/i, pageConfirmAll: true },
+  // BRO-7051: New York Sun reviews appear at /article/<slug> (25 OB reviews in 6 months) but the
+  // site has no RSS/WP API we could find, and nysun.com answered 429 to every probe from the
+  // sandbox, so the arts section page is read instead. Unverified from here: confirm with a
+  // dispatch of outlet-listing-poller.yml (dry_run, outlets=new-york-sun) and adjust the url.
+  'new-york-sun':            { strategy: 'listing-html', url: 'https://www.nysun.com/section/culture', urlFilter: /nysun\.com\/article\//, pageConfirmAll: true },
 };
 
 // Outlets where we use WordPress REST API (separate — API approach, no URL scraping needed)
@@ -261,6 +300,35 @@ const WP_API_CONFIG = {
     apiBase: 'https://nystagereview.com/wp-json/wp/v2/posts',
     // No category filter — NYSR only posts theater reviews
     params: 'per_page=50&orderby=date&order=desc',
+    reviewsOnly: true,
+  },
+  // TheaterMania (BRO-6921): custom post type "news", category 157 = Reviews (the
+  // id scripts/lib/theatermania-discovery.js uses). Replaces the 5-item listing
+  // page, which dropped reviews between polls. Like every WP_API outlet there is
+  // no SERP fallback: an API error counts in "Outlets with errors".
+  theatermania: {
+    apiBase: 'https://www.theatermania.com/wp-json/wp/v2/news',
+    params: 'categories=157&per_page=100&_fields=link,date,title&orderby=date&order=desc',
+    urlFilter: /\/news\/review-/,
+    reviewsOnly: true,
+  },
+  // Times Square Chronicles and Gay City News (BRO-6921 follow-up) had no feed and
+  // were SERP-only, so a review whose headline had no "review" word (TSC's Phyl,
+  // 2026-10-23) was never seen. Their categories (TSC 504 Theater, 298 Off Broadway,
+  // 283 Broadway; GCN 24 Theater) mix reviews with news, so not reviewsOnly: a
+  // headline counts as a review when it leads with the title (titleLedReviews),
+  // and the page check still has to find the title plus a credit.
+  'times-square-chronicles': {
+    apiBase: 'https://t2conline.com/wp-json/wp/v2/posts',
+    params: 'categories=504,298,283&per_page=100&_fields=link,date,title&orderby=date&order=desc',
+    titleLedReviews: true,
+    keepSerp: true,
+  },
+  'gay-city-news': {
+    apiBase: 'https://gaycitynews.com/wp-json/wp/v2/posts',
+    params: 'categories=24&per_page=50&_fields=link,date,title&orderby=date&order=desc',
+    titleLedReviews: true,
+    keepSerp: true,
   },
   'nyt-theater': {
     apiBase: 'https://newyorktheater.me/wp-json/wp/v2/posts',
@@ -278,6 +346,11 @@ const WP_API_CONFIG = {
   },
 };
 
+// BRO-6965: every feed the opening-night lane reads is also read here, daily, on the lane's rules
+// (market, review word, reviewsOnly, titledReviews). Derived from LANE_FEEDS so the two lists cannot drift;
+// tests/unit/daily-lane-feeds.test.mjs fails when a LANE_FEEDS outlet is not read here.
+Object.assign(OUTLET_STRATEGY_CONFIG, dailyLaneFeedConfigs({ ...OUTLET_STRATEGY_CONFIG, ...WP_API_CONFIG }, SKIP_OUTLETS));
+
 // ---------------------------------------------------------------------------
 // CLI args
 // ---------------------------------------------------------------------------
@@ -290,6 +363,8 @@ function parseArgs() {
     outlets: null,
     market: null,
     minShowCount: 5,
+    openingWindow: false, // BRO-7051: 0-3 days past opening, free feeds/listings only, capped paid fetches
+    maxPaid: ow.DEFAULT_MAX_PAID,
   };
   for (let i = 0; i < args.length; i++) {
     switch (args[i]) {
@@ -298,6 +373,8 @@ function parseArgs() {
       case '--outlets': opts.outlets = args[++i].split(',').map(s => s.trim()); break;
       case '--market': opts.market = args[++i]; break;
       case '--min-show-count': opts.minShowCount = parseInt(args[++i], 10); break;
+      case '--opening-window': opts.openingWindow = true; break;
+      case '--max-paid': { const n = parseInt(args[++i], 10); if (Number.isFinite(n) && n >= 0) opts.maxPaid = n; break; }
     }
   }
   return opts;
@@ -338,6 +415,18 @@ function fetchSimple(url, timeoutMs = 15000, redirectsLeft = 5) {
 
 let _rejectedCache = null;       // Set<string>: "url|||showId" keys for fast lookup
 let _rejectedCacheList = null;   // Array<{url,showId,outletId,reason,rejectedAt}>: ordered FIFO
+
+// Paid page fetches (fetchPage tiers) go through one budget. Unlimited outside opening-window mode.
+// Counts ATTEMPTS, so a dry run with blank keys still reports the real call pattern (an upper bound).
+let paidBudget = { used: 0, refused: 0, max: Infinity, attempt() { this.used++; return true; } };
+async function paidFetchPage(url, o) {
+  if (!paidBudget.attempt()) {
+    const e = new Error('paid fetch budget exhausted');
+    e.code = 'PAID_BUDGET';
+    throw e;
+  }
+  return fetchPage(url, o);
+}
 
 function _loadRejectedCache() {
   if (_rejectedCache) return _rejectedCache;
@@ -444,7 +533,7 @@ function alreadyFiled(showId, outletId, url) {
   if (!existing) return false;
   // If existing file has the same URL, skip
   const existingUrl = existing.data && existing.data.url;
-  return existingUrl === url;
+  return existingUrl === url || (!!existingUrl && normalizeUrl(existingUrl) === normalizeUrl(url));
 }
 
 function createStub(showId, outletId, outletDisplayName, url, headline, publishDate, isMultiShow, nytCriticsPick, dryRun) {
@@ -511,7 +600,7 @@ async function fetchXmlWithProxyRetry(url, label, isExpected, { proxyRetry = tru
     if (!proxyRetry) throw err;
     if (health) health.directBlocked = true;
     console.log(`  [${label}] direct fetch failed (${err.message}); retrying via fetchPage`);
-    const result = await fetchPage(url, { renderJs: false });
+    const result = await paidFetchPage(url, { renderJs: false });
     if (!isExpected(result && result.content)) {
       throw new Error(`fetchPage returned an unexpected page for ${url}`);
     }
@@ -549,14 +638,22 @@ async function fetchViaRss(outletId, config, cutoff, { proxyRetry = true, health
   return items;
 }
 
+function looksLikeWpPostList(body) {
+  try { return Array.isArray(JSON.parse(String(body || '').trim())); } catch { return false; }
+}
+
 async function fetchViaWpApi(outletId, config, cutoff) {
   const after = cutoff.toISOString();
   const url = `${config.apiBase}?${config.params}&after=${encodeURIComponent(after)}`;
   console.log(`  [wp-api] Fetching ${url}`);
-  const json = await fetchSimple(url);
+  // A bot challenge in place of the JSON (t2conline.com's SiteGround "sg-captcha"
+  // answers Node's TLS client with HTTP 202 while curl gets 200) retries through
+  // fetchPage, like the RSS and sitemap strategies.
+  const json = await fetchXmlWithProxyRetry(url, 'wp-api', looksLikeWpPostList);
   const posts = JSON.parse(json);
   if (!Array.isArray(posts)) return [];
-  const items = parseWpApiPosts(posts, cutoff);
+  let items = parseWpApiPosts(posts, cutoff);
+  if (config.urlFilter) items = items.filter(i => config.urlFilter.test(i.url));
   console.log(`  [wp-api] ${items.length} items in window`);
   return items;
 }
@@ -607,7 +704,7 @@ async function fetchViaListingHtml(outletId, listingUrl, urlFilter, usePlainFetc
     // falls back to SERP. Swallowing here would prevent that fallback.
     html = await fetchSimple(listingUrl, 20000);
   } else {
-    const result = await fetchPage(listingUrl, { timeout: 25000 });
+    const result = await paidFetchPage(listingUrl, { timeout: 25000 });
     // fetchPage returns {content, format, source} or null on all-tiers failure
     html = result && typeof result === 'object' ? result.content : result;
   }
@@ -620,6 +717,21 @@ async function fetchViaListingHtml(outletId, listingUrl, urlFilter, usePlainFetc
   if (urlFilter) items = items.filter(i => urlFilter.test(i.url));
   console.log(`  [listing-html] ${items.length} links extracted`);
   return items;
+}
+
+// A listing-html config: its main url, then any extraUrls (deduped). The main
+// url's errors propagate (SERP fallback); an extra list failing only warns.
+async function fetchViaListingConfig(outletId, sc) {
+  const articles = await fetchViaListingHtml(outletId, sc.url, sc.urlFilter, sc.usePlainFetch);
+  const seen = new Set(articles.map(a => a.url));
+  for (const extra of sc.extraUrls || []) {
+    try {
+      for (const a of await fetchViaListingHtml(outletId, extra, sc.urlFilter, sc.usePlainFetch)) {
+        if (!seen.has(a.url)) { seen.add(a.url); articles.push(a); }
+      }
+    } catch (err) { console.warn(`  ⚠ extra listing ${extra} failed: ${err.message}`); }
+  }
+  return articles;
 }
 
 async function fetchViaSerp(outletId, domain, cutoff, opts) {
@@ -649,36 +761,93 @@ async function fetchViaSerp(outletId, domain, cutoff, opts) {
   return items;
 }
 
-async function fetchViaHtml(outletId, domain, outletEntry, cutoff) {
-  // Try common theater/stage section paths for the outlet
-  const candidates = [
-    outletEntry.theaterUrl,
-    outletEntry.reviewsUrl,
-    `https://${domain}/theater/`,
-    `https://${domain}/stage/`,
-    `https://${domain}/theater-reviews/`,
-    `https://${domain}/reviews/`,
-    `https://${domain}/broadway/`,
-  ].filter(Boolean);
 
-  for (const listingUrl of candidates) {
-    try {
-      console.log(`  [html] Fetching ${listingUrl}`);
-      const result = await fetchPage(listingUrl, { timeout: 20000 });
-      // fetchPage returns {content, format, source}, never a bare string
-      const html = result && typeof result === 'object' ? result.content : result;
-      if (!html || html.length < 500) continue;
+// ---------------------------------------------------------------------------
+// Page confirmation (BRO-6921)
+// ---------------------------------------------------------------------------
 
-      const items = extractListingUrls(html, domain);
-      if (items.length < 3) continue; // listing page didn't parse well
+// Cap on article pages fetched per run. A candidate needs a title form in the
+// headline or slug plus a run-window date, so a normal day yields a handful.
+const PAGE_CONFIRM_MAX_FETCHES = (() => { const n = parseInt(process.env.PAGE_CONFIRM_MAX_FETCHES || '30', 10); return Number.isFinite(n) && n >= 0 ? n : 30; })(); // a typo'd value must not remove the cap (BRO-7083)
 
-      console.log(`  [html] ${items.length} links extracted from ${listingUrl}`);
-      return items;
-    } catch (err) {
-      console.log(`  [html] Failed: ${err.message}`);
+// looksRight: the plain-fetch page must pass it (it names a candidate's title),
+// otherwise it is a bot wall, paywall stub or JS shell and the scraper chain runs.
+async function fetchArticleHtml(url, looksRight = () => true) {
+  try {
+    const html = await fetchSimple(url, 20000);
+    if (html && html.length >= 2000 && looksRight(html)) return html;
+  } catch { /* fall through to the scraper chain */ }
+  const result = await paidFetchPage(url, { timeout: 25000 });
+  return result && typeof result === 'object' ? result.content : result;
+}
+
+// A page that was fetched and did NOT confirm a show is not fetched again for
+// that show for a week (the poll's lookback), so a daily run does not re-spend
+// paid fetches on the same "Creation Stories" vs "Stories" page. Committed by
+// outlet-listing-poller.yml next to the feed-health snapshot.
+const UNCONFIRMED_CACHE = path.join(__dirname, '..', 'data', 'audit', 'outlet-page-confirm-unconfirmed.json');
+const UNCONFIRMED_TTL_MS = 7 * 24 * 60 * 60 * 1000;
+const unconfirmedKey = (url, showId) => `${normalizeUrl(url)}|${showId}`;
+// An unreadable page (fetch failed, or no candidate title in its text) is marked
+// for one day, so a dead or walled URL does not spend paid fetches every run.
+const FAILED_SHOW_ID = '*unreadable*';
+const FAILED_TTL_MS = 24 * 60 * 60 * 1000;
+function loadUnconfirmedCache(file = UNCONFIRMED_CACHE, nowMs = Date.now()) {
+  let raw = {};
+  try { raw = JSON.parse(fs.readFileSync(file, 'utf-8')).entries || {}; } catch { /* first run */ }
+  const live = {};
+  for (const [k, at] of Object.entries(raw)) {
+    const ttl = k.endsWith(`|${FAILED_SHOW_ID}`) ? FAILED_TTL_MS : UNCONFIRMED_TTL_MS;
+    if (nowMs - Date.parse(at) < ttl) live[k] = at;
+  }
+  return live;
+}
+function isUnconfirmedCached(cache, url, showId) { return !!(cache[unconfirmedKey(url, showId)] || cache[unconfirmedKey(url, FAILED_SHOW_ID)]); }
+function saveUnconfirmedCache(cache, file = UNCONFIRMED_CACHE) {
+  try {
+    fs.mkdirSync(path.dirname(file), { recursive: true });
+    fs.writeFileSync(file, JSON.stringify({ note: 'BRO-6921: url|showId pages that did not confirm the show; skipped for 7 days', entries: cache }, null, 2) + '\n');
+  } catch (err) {
+    console.warn(`  ⚠ could not save ${file}: ${err.message}`);
+  }
+}
+
+/**
+ * Fetch the article once and keep the candidate shows its text confirms
+ * (pageConfirmsShow). Shows it does not confirm go into unconfirmedCache.
+ * @param {{fetcher?: (url: string) => Promise<string>, activeShows?: Array,
+ *   publishDate?: string|null, unconfirmedCache?: object}} [opts]
+ */
+async function confirmOnPage(url, candidates, stats, { fetcher = fetchArticleHtml, activeShows = [], publishDate = null, unconfirmedCache = null, maxFetches = PAGE_CONFIRM_MAX_FETCHES, titleOnly = null } = {}) {
+  if (stats.fetched >= maxFetches) { stats.overBudget += candidates.length; return []; }
+  stats.fetched++;
+  const markUnreadable = () => { stats.failed++; if (unconfirmedCache) unconfirmedCache[unconfirmedKey(url, FAILED_SHOW_ID)] = new Date().toISOString(); return []; };
+  const namesACandidate = (h) => { const t = pageText(h); return candidates.some(({ show }) => pageNamesTitle(t, show)); };
+  let html;
+  try { html = await fetcher(url, namesACandidate); } catch (err) {
+    // Out of paid budget is not a verdict on the page: leave it unmarked so the next run retries.
+    if (err.code === 'PAID_BUDGET') { stats.fetched--; stats.overBudget += candidates.length; return []; }
+    console.log(`  [page-confirm] fetch failed ${url}: ${err.message}`);
+  }
+  if (!html) return markUnreadable();
+  const text = pageText(html);
+  // No candidate's title anywhere on the page: not a verdict on the show, an
+  // unreadable page. Never record it as "does not confirm" for a week.
+  if (!candidates.some(({ show }) => pageNamesTitle(text, show))) return markUnreadable();
+  // Undated (listing) items: the page's own date stands in, and must be in the run.
+  const pageDate = publishDate ? null : extractPublishDate(html, url);
+  const nowMs = Date.parse(publishDate || pageDate || '') || Date.now();
+  const out = [];
+  out.pageDate = pageDate;
+  for (const { show, needsPageDate } of candidates) {
+    const dated = !needsPageDate || (pageDate && publishedInRunWindow(show, pageDate));
+    if (dated && (pageConfirmsShow(text, show, { nowMs, otherShows: activeShows }) || (titleOnly && pageNamesTitle(text, show) && titleOnly(show)))) { out.push(show); stats.confirmed++; }
+    else {
+      stats.unconfirmed++;
+      if (unconfirmedCache) unconfirmedCache[unconfirmedKey(url, show.id)] = new Date().toISOString();
     }
   }
-  return [];
+  return out;
 }
 
 // ---------------------------------------------------------------------------
@@ -699,7 +868,13 @@ async function main() {
   const opts = parseArgs();
   const cutoff = new Date(Date.now() - opts.lookbackDays * 24 * 60 * 60 * 1000);
 
-  console.log(`\n=== Outlet Listing Poller ===`);
+  console.log(`\n=== Outlet Listing Poller${opts.openingWindow ? ' (opening window)' : ''} ===`);
+  const win = opts.openingWindow;
+  if (win && /^(1|true)$/i.test(process.env.OPENING_WINDOW_DISABLED || '')) {
+    console.log('OPENING_WINDOW_DISABLED is set: kill switch, nothing fetched.');
+    if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, 'new_stubs=0\n');
+    return;
+  }
   console.log(`Lookback: ${opts.lookbackDays} days (since ${cutoff.toISOString().slice(0, 10)})`);
   if (opts.dryRun) console.log('DRY RUN mode — no files written');
 
@@ -707,15 +882,66 @@ async function main() {
   const { shows: allShows } = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf-8'));
   const { reviews: allReviews } = JSON.parse(fs.readFileSync(REVIEWS_PATH, 'utf-8'));
   const { outlets: outletRegistry } = JSON.parse(fs.readFileSync(REGISTRY_PATH, 'utf-8'));
+  const outletMarkets = censusListing.outletMarketCounts(allReviews, allShows); // BRO-7083 census wrong-city guard
 
   // Active shows only (open or previews), optionally filtered by market
   let activeShows = allShows.filter(s => s.status === 'open' || s.status === 'previews');
+  if (win) {
+    // Match only against shows 0-3 days past opening; nothing in the window means no fetches at all.
+    activeShows = ow.selectWindowShows(allShows);
+    if (activeShows.length === 0) {
+      console.log('No shows 0-3 days past opening: nothing to fetch.');
+      console.log('OPENING_WINDOW_STATS fetches=0 paid=0');
+      if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, 'new_stubs=0\n');
+      return;
+    }
+    console.log(`Window shows: ${activeShows.map(s => `${s.id} (${s.openingDate})`).join(', ')}`);
+    paidBudget = ow.createPaidBudget(opts.maxPaid);
+  }
   if (opts.market) activeShows = activeShows.filter(s => s.category === opts.market || s.market === opts.market);
   console.log(`Active shows: ${activeShows.length}${opts.market ? ` (${opts.market})` : ''}`);
 
+  // --- Census listing source (BRO-7076) ---
+  // Report-only unless CENSUS_LISTING_WRITE=1: census items are matched and run through the writer
+  // in dry-run mode, logged as "CENSUS would-add", and nothing is written or cached.
+  const censusDisabled = win || censusListing.isDisabled();
+  const censusWrite = /^(1|true)$/i.test(process.env.CENSUS_LISTING_WRITE || '');
+  const censusOnly = new Set();
+  const hasFeedEntry = (id) => !!(WP_API_CONFIG[id] || OUTLET_STRATEGY_CONFIG[id]);
+  const censusStats = { outlets: 0, items: 0, wouldAdd: 0, added: 0, reasons: {}, incomplete: [] };
+  // Paid retries stay capped per run (CENSUS_PROXY_MAX, default 6) so a blocked index cannot fan out into dozens of paid child fetches.
+  let censusProxyLeft = Math.max(0, parseInt(process.env.CENSUS_PROXY_MAX || '6', 10) || 0);
+  const censusDeps = { fetchText: (u, label, ok, o) => { const want = (o && o.proxyRetry) || label === 'sitemap'; const use = want && censusProxyLeft > 0; if (use) censusProxyLeft--; return fetchXmlWithProxyRetry(u, label, ok, { proxyRetry: use, timeoutMs: 30000 }); }, fetchViaSitemap }; // a sitemap that blocks the plain fetch (406) goes through the poller's own fetchPage retry
+  if (censusListing.isDisabled()) console.log('CENSUS_LISTING_DISABLED is set: census listing sources are not read.');
+  const latestByOutlet = latestReviewDateByOutlet(allReviews);
+  // Census reads a whole window, so it also sees shows that closed inside it (a review of a
+  // show that just closed is still a real miss). Announced shows have no dates to check.
+  const closedSince = new Date(cutoff.getTime() - 14 * 86400000).toISOString().slice(0, 10);
+  const censusShows = [...activeShows, ...allShows.filter(s => ((s.status === 'closed' && (s.closingDate || '') >= closedSince) || s.status === 'announced')
+    && (!opts.market || s.category === opts.market || s.market === opts.market))];
+  // Census page checks have their own counters and a per-outlet cap, so they never use up the feed budget.
+  const censusPageStats = { fetched: 0, confirmed: 0, unconfirmed: 0, overBudget: 0, failed: 0 };
+  const CENSUS_PAGE_MAX = (() => { const n = parseInt(process.env.CENSUS_PAGE_MAX_FETCHES || '80', 10); return Number.isFinite(n) && n >= 0 ? n : 80; })(); // a typo'd value must not remove the cap (BRO-7083)
+  // BRO-7083 write-mode caps: at most CENSUS_MAX_ADDS census files per run (the rest stay
+  // would-add), and at most CENSUS_PAID_MAX paid page fetches across all census outlets.
+  const CENSUS_MAX_ADDS = Math.max(0, parseInt(process.env.CENSUS_MAX_ADDS || '40', 10) || 0);
+  const censusFetch = censusListing.makeCensusFetcher({
+    plain: (u) => fetchSimple(u, 20000),
+    paid: async (u) => { const r = await paidFetchPage(u, { timeout: 25000 }); return r && typeof r === 'object' ? r.content : r; },
+    maxPaid: Math.max(0, parseInt(process.env.CENSUS_PAID_MAX || '30', 10) || 0),
+  });
+
   // --- Derive qualifying outlets ---
   let qualifyingOutlets;
-  if (opts.outlets) {
+  if (win && !opts.outlets) {
+    const sel = ow.selectWindowOutlets({
+      windowShows: activeShows, allShows, allReviews,
+      outletStrategyConfig: OUTLET_STRATEGY_CONFIG, wpApiConfig: WP_API_CONFIG, skipOutlets: SKIP_OUTLETS,
+      minShowCount: Number.isFinite(opts.minShowCount) && opts.minShowCount !== 5 ? opts.minShowCount : 2,
+    });
+    qualifyingOutlets = sel.outlets;
+    console.log(`Window outlets: ${qualifyingOutlets.length} feed/listing outlets (${sel.skippedSerp.length} SERP-only outlets skipped, daily run covers them)`);
+  } else if (opts.outlets) {
     qualifyingOutlets = opts.outlets;
     console.log(`Targeting specific outlets: ${qualifyingOutlets.join(', ')}`);
   } else {
@@ -733,6 +959,13 @@ async function main() {
     // The Recs' 5-star The Lost Boys review (opened late in a busy week, 2026-04).
     const configured = [...Object.keys(OUTLET_STRATEGY_CONFIG), ...Object.keys(WP_API_CONFIG)];
     qualifyingOutlets = mergeAlwaysOnOutlets(derived, configured, SKIP_OUTLETS);
+    // BRO-7076: outlets with a free census source but no feed are read from that source
+    // (census-only: no paid SERP sweep is added for them).
+    if (!censusDisabled) {
+      for (const id of censusListing.censusOnlyCandidates(hasFeedEntry)) {
+        if (!SKIP_OUTLETS.has(id) && !qualifyingOutlets.includes(id) && outletRegistry[id]) { qualifyingOutlets.push(id); censusOnly.add(id); }
+      }
+    }
     const added = qualifyingOutlets.length - derived.length;
     console.log(`Qualifying outlets: ${qualifyingOutlets.length} (${derived.length} derived ≥${opts.minShowCount} shows/4mo + ${added} always-on configured)`);
   }
@@ -744,13 +977,17 @@ async function main() {
   // "no new reviews" (index lag, keyword mismatch) — listed in the summary so a
   // silent miss is visible; the fix is a feed entry (scripts/probe-outlet-feeds.js).
   const serpOnlyEmpty = [];
+  let windowFetches = 0;
   const blockedCollisions = [];
   const sameUrlFlagged = [];
   // Per-outlet rss/sitemap feed health (BRO-6352), written to OUTLET_FEED_HEALTH_REL.
   const feedHealth = {};
+  const pageConfirmStats = { fetched: 0, confirmed: 0, unconfirmed: 0, overBudget: 0, failed: 0 };
+  const unconfirmedCache = loadUnconfirmedCache();
   const feedHealthFor = (outletId, sc) => (feedHealth[outletId] = { strategy: sc.strategy, url: null, newestAny: null, oldestAny: null, newestFiltered: null, directBlocked: false });
 
   for (const outletId of qualifyingOutlets) {
+    const censusPageBase = censusPageStats.fetched; // the census page-check cap is per outlet, so one big backlog cannot starve the rest
     const outletEntry = outletRegistry[outletId] || {};
     const domain = outletEntry.domain || outletEntry.url;
     const displayName = outletEntry.displayName || outletId;
@@ -758,8 +995,11 @@ async function main() {
     const isPaid = accessModel === 'paywalled';
 
     console.log(`\n--- ${displayName} (${outletId}) ---`);
+    if (win && !ow.windowStrategyFor(outletId, OUTLET_STRATEGY_CONFIG, WP_API_CONFIG)) { console.log('  Skipping: SERP-only outlet (not polled in opening-window mode)'); continue; }
+    windowFetches++;
 
     let articles = [];
+    let viaSerp = false; // SERP results are unfiltered, so never "reviews only"
 
     if (WP_API_CONFIG[outletId]) {
       // WordPress REST API — try directly, no SERP fallback (API errors are informative)
@@ -768,7 +1008,24 @@ async function main() {
       } catch (err) {
         console.warn(`  ⚠ WP API failed for ${outletId}: ${err.message}`);
         outletsFailed++;
-        continue;
+        if (win || !(WP_API_CONFIG[outletId].keepSerp && domain)) continue;
+      }
+      // keepSerp: a mixed review/news feed only admits review-shaped headlines
+      // (titleLedReviews), so the SERP sweep this outlet had before keeps running
+      // beside it and still finds the reviews titled any other way.
+      if (!win && WP_API_CONFIG[outletId].keepSerp && domain) {
+        try {
+          const key = (u) => { try { return normalizeUrl(u); } catch { return u; } };
+          const seen = new Set(articles.map(a => key(a.url)));
+          for (const a of await fetchViaSerp(outletId, domain, cutoff, opts)) {
+            // SERP found it too: file it on the SERP rules, as before keepSerp.
+            const dup = articles.find(x => key(x.url) === key(a.url));
+            if (dup) dup.viaSerp = true;
+            else { seen.add(key(a.url)); articles.push({ ...a, viaSerp: true }); }
+          }
+        } catch (err) {
+          console.warn(`  ⚠ SERP (keepSerp) failed for ${outletId}: ${err.message}`);
+        }
       }
 
     } else {
@@ -780,26 +1037,34 @@ async function main() {
           switch (sc.strategy) {
             case 'rss':          articles = await fetchViaRss(outletId, sc, cutoff, { health: feedHealthFor(outletId, sc) }); break;
             case 'sitemap':      articles = await fetchViaSitemap(outletId, sc, cutoff, { health: feedHealthFor(outletId, sc) }); break;
-            case 'listing-html': articles = await fetchViaListingHtml(outletId, sc.url, sc.urlFilter, sc.usePlainFetch); break;
+            case 'listing-html': articles = await fetchViaListingConfig(outletId, sc); break;
             default: console.warn(`  Unknown strategy "${sc.strategy}" for ${outletId}`);
           }
         } catch (err) {
           if (feedHealth[outletId]) feedHealth[outletId].error = String(err.message || err).slice(0, 200);
-          console.warn(`  ⚠ ${sc.strategy} failed (${err.message}); falling back to SERP`);
-          if (!domain) { outletsFailed++; continue; }
-          try {
-            articles = await fetchViaSerp(outletId, domain, cutoff, opts);
-          } catch (serpErr) {
-            console.warn(`  ⚠ SERP fallback also failed: ${serpErr.message}`);
-            outletsFailed++;
-            continue;
+          console.warn(`  ⚠ ${sc.strategy} failed (${err.message});${win ? " no SERP in opening-window mode" : " falling back to SERP"}`);
+          if (!win && !censusDisabled && (!domain || sc.laneRules) && censusListing.censusSourceFor(outletId)) {
+            outletsFailed++; // BRO-7076: the census source can still cover this outlet (no SERP either way)
+          } else if (win || !domain || sc.laneRules) { outletsFailed++; continue; } // lane-derived feeds never fall back to paid SERP (BRO-6965)
+          else {
+            try {
+              viaSerp = true;
+              articles = await fetchViaSerp(outletId, domain, cutoff, opts);
+            } catch (serpErr) {
+              console.warn(`  ⚠ SERP fallback also failed: ${serpErr.message}`);
+              outletsFailed++;
+              continue;
+            }
           }
         }
 
       } else {
         // No outlet-specific strategy — SERP only (covers paywalled and uncharted outlets)
-        if (!domain) { console.log(`  Skipping — no domain in registry`); continue; }
-        try {
+        if (censusOnly.has(outletId)) {
+          // census-only outlet: read below from its census source, no paid SERP sweep
+        } else if (!domain) { console.log(`  Skipping — no domain in registry`); continue; }
+        else try {
+          viaSerp = true;
           articles = await fetchViaSerp(outletId, domain, cutoff, opts);
         } catch (err) {
           console.warn(`  ⚠ SERP failed for ${outletId}: ${err.message}`);
@@ -809,8 +1074,34 @@ async function main() {
       }
     }
 
+    // BRO-7076: read the outlet's free census source over the lookback when the feed is absent,
+    // failed, stale or shorter than the lookback. Items join `articles` flagged viaCensus.
+    if (!censusDisabled) {
+      const why = censusListing.shouldUseCensus({
+        outletId, hasFeed: hasFeedEntry(outletId), health: feedHealth[outletId] || null,
+        latestReviewDate: latestByOutlet[outletId] || null, lookbackDays: opts.lookbackDays,
+      });
+      if (why.use) {
+        try {
+          const have = new Set(articles.map(a => { try { return normalizeUrl(a.url); } catch { return a.url; } }));
+          const detail = await censusListing.enumerateCensusItemsDetailed(outletId, cutoff, censusDeps);
+          if (!detail.complete) {
+            censusStats.incomplete.push(outletId);
+            console.warn(`  ⚠ [census] ${outletId}: listing read INCOMPLETE (${['failed', 'capped', 'partial', 'skipped'].flatMap(k => (detail[k] || []).map(x => `${k}: ${x}`)).slice(0, 4).join('; ')})`);
+          }
+          const got = detail.items
+            .filter(a => { try { return !have.has(normalizeUrl(a.url)); } catch { return true; } });
+          console.log(`  [census] ${why.reason}: ${got.length} extra item(s) from the census source in the lookback`);
+          censusStats.outlets++; censusStats.items += got.length; censusStats.reasons[why.reason] = (censusStats.reasons[why.reason] || 0) + 1;
+          articles = articles.concat(got);
+        } catch (err) {
+          console.warn(`  ⚠ census source failed for ${outletId}: ${err.message}`);
+        }
+      }
+    }
+
     if (articles.length === 0) {
-      const serpOnly = !WP_API_CONFIG[outletId] && !OUTLET_STRATEGY_CONFIG[outletId];
+      const serpOnly = !WP_API_CONFIG[outletId] && !OUTLET_STRATEGY_CONFIG[outletId] && !censusOnly.has(outletId);
       if (serpOnly) serpOnlyEmpty.push(outletId);
       console.log(serpOnly
         ? `  No articles found — SERP-only outlet, so this is unverified (add a feed entry: scripts/probe-outlet-feeds.js --outlets ${outletId})`
@@ -827,9 +1118,54 @@ async function main() {
     // --- Match each article to shows ---
     let outletNewStubs = 0;
 
-    for (const { url, headline, publishDate, description } of articles) {
+    for (const { url, headline, publishDate, description, viaSerp: itemViaSerp, viaCensus } of articles) {
+      // Census items run report-only unless CENSUS_LISTING_WRITE=1: dry writer, plain fetches, no cache writes.
+      const { censusDry, itemDry } = censusListing.censusItemMode({ viaCensus, censusWrite, dryRun: opts.dryRun, added: censusStats.added, maxAdds: CENSUS_MAX_ADDS });
+      const showPool = viaCensus ? censusShows : activeShows;
+      const censusOk = (show) => !viaCensus || (censusListing.censusMarketOk(outletId, show, outletMarkets) && censusListing.censusItemAccepted({ url, headline, description, publishDate }, show));
       const urlSlug = (() => { try { return new URL(url).pathname; } catch { return url; } })();
-      const matchedShows = findMatchingShows(headline, urlSlug, activeShows, description, { publishDate });
+      const outletCfg = WP_API_CONFIG[outletId] || OUTLET_STRATEGY_CONFIG[outletId] || {};
+      const fromFeed = !viaSerp && !itemViaSerp;
+      let feedMatched = findMatchingShows(headline, urlSlug, showPool, description, { publishDate }).filter(censusOk);
+      // A mixed review/news feed: a match must also read as a review (BRO-6921 follow-up).
+      if (fromFeed && outletCfg.titleLedReviews) {
+        feedMatched = feedMatched.filter(show => itemReadsAsReview({ url, headline, description }, show));
+      } else if (outletCfg.titleLedReviews && headlineLooksLikeNews(headline)) {
+        // The SERP sweep on these outlets returns their news too ("Memoirs of
+        // Amorous Gentlemen Offers a First Look ..."): keep its old recall, minus news.
+        feedMatched = [];
+      }
+      // Feeds taken from LANE_FEEDS (BRO-6965) file only what the lane would file.
+      if (fromFeed && outletCfg.laneRules) {
+        feedMatched = feedMatched.filter(show => laneFeedAccepts(outletCfg, outletId, { url, headline, description }, show));
+      }
+      // pageConfirmAll outlets: feed matches go through the page check too.
+      // Census items are matched on a slug or headline only, so every one is page-confirmed.
+      const matchedShows = (outletCfg.pageConfirmAll || viaCensus) ? [] : feedMatched;
+
+      // BRO-6921: subtitled or short titles the headline alone cannot prove.
+      const reviewOnlyFeed = fromFeed && !viaCensus && !!outletCfg.reviewsOnly;
+      const candidates = [
+        ...((outletCfg.pageConfirmAll || viaCensus) ? feedMatched.map(show => ({ show, form: 'feed-match' })) : []),
+        ...findPageConfirmCandidates({ url, headline, publishDate, description }, showPool, { alreadyMatched: feedMatched, reviewOnlyFeed, titleLedReviews: fromFeed && !!outletCfg.titleLedReviews }),
+      ].filter(c => censusOk(c.show))
+        .filter(c => !(fromFeed && outletCfg.laneRules) || laneFeedAccepts(outletCfg, outletId, { url, headline, description }, c.show))
+        .filter(c => !alreadyFiled(c.show.id, outletId, url) && !isRejectedCached(url, c.show.id)
+          && !(!censusDry && isUnconfirmedCached(unconfirmedCache, url, c.show.id)));
+      let stubDate = publishDate;
+      if (candidates.length > 0) {
+        const confirmed = await confirmOnPage(url, candidates, viaCensus ? censusPageStats : pageConfirmStats, {
+          activeShows: showPool, publishDate, maxFetches: viaCensus ? censusPageBase + CENSUS_PAGE_MAX : PAGE_CONFIRM_MAX_FETCHES,
+          titleOnly: viaCensus ? (show) => censusListing.censusTitleOnly({ url, headline, publishDate }, show, showPool, { siblingOk: (o) => censusListing.censusMarketOk(outletId, o, outletMarkets) }) : null, unconfirmedCache: censusDry ? null : unconfirmedCache,
+          // A dry run never spends paid scraper fetches: plain fetch only.
+          fetcher: itemDry ? (u => fetchSimple(u, 20000)) : viaCensus ? censusFetch.fetcher : fetchArticleHtml,
+        });
+        if (!publishDate && confirmed.pageDate) stubDate = confirmed.pageDate;
+        for (const show of confirmed) {
+          console.log(`  Page-confirmed: "${(headline || url).slice(0, 80)}" → ${show.id}`);
+          matchedShows.push(show);
+        }
+      }
 
       if (matchedShows.length === 0) continue;
 
@@ -846,18 +1182,27 @@ async function main() {
         // writer would just reject them again and we'd burn classifier work.
         if (isRejectedCached(url, show.id)) continue;
 
-        const result = createStub(show.id, outletId, displayName, url, headline, publishDate, isMultiShow, nytCriticsPick, opts.dryRun);
+        // Re-check the add cap per show: one census item can match several shows (BRO-7083).
+        const showMode = viaCensus
+          ? censusListing.censusItemMode({ viaCensus, censusWrite, dryRun: opts.dryRun, added: censusStats.added, maxAdds: CENSUS_MAX_ADDS })
+          : { censusDry, itemDry };
+        const result = createStub(show.id, outletId, displayName, url, headline, stubDate, isMultiShow, nytCriticsPick, showMode.itemDry);
+        if (viaCensus && result && result.action === 'new') {
+          console.log(`  CENSUS ${!showMode.itemDry ? 'added' : 'would-add'}: ${show.id} / ${outletId}: ${url}`);
+          if (!showMode.itemDry) censusStats.added++; else censusStats.wouldAdd++;
+          if (showMode.censusDry) continue; // report-only or over the cap: not a new stub, no cache entries
+        }
         // Only count NEW writes — the shared writer may also reject (cross-market
         // classifier), reroute, or merge into an existing file. None of those
         // are "new stubs" for the workflow output.
-        if (result && result.action === 'skipped' && result.reason === 'flagged-filename-collision') {
+        if (result && result.action === 'skipped' && result.reason === 'flagged-filename-collision' && !showMode.censusDry) {
           if (isSameUrlFlaggedTarget(show.id, outletId, url)) sameUrlFlagged.push({ showId: show.id, outletId, url });
           else blockedCollisions.push({ showId: show.id, outletId, url });
         }
         if (result && result.action === 'new') {
           if (!opts.dryRun) outletNewStubs++;
           totalNewStubs++;
-        } else if (result && result.action === 'skipped' && !opts.dryRun
+        } else if (result && result.action === 'skipped' && !showMode.itemDry
             && shouldCacheSkipReason(result.reason)) {
           // Record durable rejections (cross-market classifier, junk outlet,
           // domain mismatch) so the next poll cycle doesn't re-process them.
@@ -872,6 +1217,10 @@ async function main() {
   // --- Summary ---
   console.log(`\n=== Done ===`);
   console.log(`New stubs: ${totalNewStubs}`);
+  if (win) console.log(`OPENING_WINDOW_STATS fetches=${windowFetches} paid=${paidBudget.used} paidRefused=${paidBudget.refused} cap=${paidBudget.max}`);
+  if (pageConfirmStats.overBudget > 0) console.warn(`⚠ Page-confirm budget (${PAGE_CONFIRM_MAX_FETCHES} pages${paidBudget && paidBudget.refused ? ', paid cap ' + paidBudget.max : ''}) ran out: ${pageConfirmStats.overBudget} candidate(s) not checked this run`);
+  console.log(`Census listing (BRO-7076): ${censusStats.outlets} outlet(s) read, ${censusStats.items} extra item(s), ${censusStats.wouldAdd} would-add, ${censusStats.added} added; page-confirm ${censusPageStats.fetched} fetched/${censusPageStats.confirmed} confirmed/${censusPageStats.overBudget} over cap; paid ${censusFetch.stats.paid}/${censusFetch.stats.paidRefused} refused; add cap ${CENSUS_MAX_ADDS}; mode=${censusDisabled ? 'disabled' : censusWrite ? 'write' : 'report-only'}; reasons=${JSON.stringify(censusStats.reasons)}; incomplete=${censusStats.incomplete.length}${censusStats.incomplete.length ? ' [' + censusStats.incomplete.join(',') + ']' : ''}`);
+  console.log(`Page-confirm (BRO-6921): ${pageConfirmStats.fetched} pages fetched, ${pageConfirmStats.confirmed} confirmed, ${pageConfirmStats.unconfirmed} not confirmed, ${pageConfirmStats.overBudget} over budget, ${pageConfirmStats.failed} fetch failures`);
   if (outletsFailed > 0) console.warn(`Outlets with errors: ${outletsFailed}`);
   if (serpOnlyEmpty.length > 0) {
     console.warn(`SERP-only outlets with 0 results (unverified, not proof of no reviews): ${serpOnlyEmpty.length} — ${serpOnlyEmpty.join(', ')}`);
@@ -898,6 +1247,7 @@ async function main() {
   // next poll cycle skips them upfront. Skip in dry-run since recordRejection
   // is already gated above.
   if (!opts.dryRun) flushRejectedCache();
+  if (!opts.dryRun) saveUnconfirmedCache(unconfirmedCache);
 
   // Signal to GitHub Actions workflow
   if (process.env.GITHUB_OUTPUT) {
@@ -914,7 +1264,7 @@ async function main() {
  * (BRO-6352). A --outlets run merges into the existing file instead of
  * replacing it, so a targeted re-poll does not drop the other ~70 feeds.
  */
-function buildFeedHealthReport(feedHealth, allReviews, { now = Date.now(), previous = null, partial = false } = {}) {
+function buildFeedHealthReport(feedHealth, allReviews, { now = Date.now(), previous = null, partial = false, holdStreak = false } = {}) {
   const latestByOutlet = latestReviewDateByOutlet(allReviews);
   const checkedAt = new Date(now).toISOString();
   const outlets = partial && previous && previous.outlets ? { ...previous.outlets } : {};
@@ -922,7 +1272,9 @@ function buildFeedHealthReport(feedHealth, allReviews, { now = Date.now(), previ
     const latestReviewDate = latestByOutlet[outletId] || null;
     const stale = !h.error && isFeedStale({ newestFiltered: h.newestFiltered, filteredCount: h.filteredCount, newestAny: h.newestAny, oldestAny: h.oldestAny, latestReviewDate, now });
     const prev = previous && previous.outlets && previous.outlets[outletId];
-    const failStreak = h.error ? ((prev && prev.failStreak) || 0) + 1 : 0;
+    // holdStreak (3-hourly window runs): FEED_FAIL_STREAK counts daily runs, so a window run must not bump it.
+    const prevStreak = (prev && prev.failStreak) || 0;
+    const failStreak = h.error ? (holdStreak ? prevStreak : prevStreak + 1) : 0;
     outlets[outletId] = { ...h, latestReviewDate, stale, failStreak, checkedAt };
   }
   const stale = Object.keys(outlets).filter(id => outlets[id].stale).sort();
@@ -941,7 +1293,7 @@ function reportFeedHealth(feedHealth, allReviews, opts) {
   // Previous snapshot: carries failStreak, and is the merge base for --outlets runs.
   let previous = null;
   try { previous = JSON.parse(fs.readFileSync(FEED_HEALTH_PATH, 'utf-8')); } catch { previous = null; }
-  const report = buildFeedHealthReport(feedHealth, allReviews, { previous, partial: !!opts.outlets });
+  const report = buildFeedHealthReport(feedHealth, allReviews, { previous, partial: !!opts.outlets || !!opts.openingWindow, holdStreak: !!opts.openingWindow });
   if (report.stale.length > 0) {
     console.warn(`\n⚠ Stale feeds (outlet still publishing, feed's newest matching item >${FEED_STALE_DAYS}d old or none): ${report.stale.length}`);
     for (const id of report.stale) {
@@ -971,8 +1323,9 @@ if (require.main === module) {
 
 // Exported for scripts/probe-outlet-feeds.js (lists SERP-only outlets) and tests.
 module.exports = {
-  SKIP_OUTLETS, OUTLET_STRATEGY_CONFIG, WP_API_CONFIG, isSameUrlFlaggedTarget,
+  SKIP_OUTLETS, OUTLET_STRATEGY_CONFIG, WP_API_CONFIG, isSameUrlFlaggedTarget, looksLikeWpPostList,
   // feed fetchers, reused by scripts/outlet-feed-reconcile.js (BRO-5358)
-  fetchViaRss, fetchViaWpApi, fetchViaSitemap, fetchViaListingHtml,
+  fetchViaRss, fetchViaWpApi, fetchViaSitemap, fetchViaListingHtml, fetchViaListingConfig,
+  confirmOnPage, loadUnconfirmedCache, isUnconfirmedCached,
   buildFeedHealthReport,
 };

@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5166-c",
   "planId": "819f56ed-2289-4be8-bd3f-00dd7c4e77d6",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-12T20:51:24.967Z",
   "submitter": {
     "name": null,
@@ -29,5 +29,22 @@
       "ok": false,
       "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=human-things-off-broadway-2026 --url=https://www.talkinbroadway.com/page/ob/09_25_26.html --outlet=talkinbroadway --critic=\"Moshe A. Bloxenheim\""
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 1
+    },
+    "ops": [
+      {
+        "i": 0,
+        "verdict": "resolved",
+        "reason": "https://www.talkinbroadway.com/page/ob/09_25_26.html is counted for human-things-off-broadway-2026"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (1 resolved); per-op reasons in triage.ops"
 }

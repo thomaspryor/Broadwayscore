@@ -21,7 +21,7 @@ const {
   landBranch, defaultPushMain, firstFailedCheck, classifyPushFailure, shouldRetry, decideCancelledLandRetry, decideCancelledWait, MAX_CANCEL_RETRIES, isPlausibleBranchName, formatLandLine, MAX_ATTEMPTS,
   isInertForVerification, classifyIntervening, decideVerifiedBaseSkip, makeVerifiedBaseChecks, mergedTreeGateInput, CAPPED_DOCS_TEST,
   selectRecheckScope, selectTrainRecheckScope, isBuildCodePath, isMergeableBothSidesLedger, jsonFileParses,
-  isPromisorFetchFailure, isGeneratedDocConflict, DEFAULT_LAND_DEADLINE_MS, landDeadlineMs, deadlineRefusal, checkTimings,
+  isPromisorFetchFailure, isGeneratedDocConflict, refreshGeneratedDocsIn, DEFAULT_LAND_DEADLINE_MS, landDeadlineMs, deadlineRefusal, checkTimings,
 } = require('./land-branch.js');
 const { selectTestFiles } = require('./merge-post-merge-test-gate.js');
 
@@ -591,6 +591,55 @@ test('BRO-6035: a conflict in DEPENDENCIES.md AND another file still refuses as 
     assert.equal(r.failedCheck, 'rebase');
     assert.equal(w.worktreeCount(), 1);
   } finally { w.cleanup(); }
+});
+
+// BRO-7150: a clean rebase that leaves the generated doc stale is regenerated and folded into the
+// branch's last commit (land.yml used to refuse it ~25 min in), never into main's own commit.
+function seedCheckingGenerator(w) {
+  // Doc = the sorted workflow file names; --check exits 1 when the doc differs (the real generator's contract).
+  const gen = "const fs=require('fs');const d='.github/workflows';fs.mkdirSync(d,{recursive:true});" +
+    "const want=fs.readdirSync(d).filter((f)=>f.endsWith('.yml')).sort().join(',')+'\\n';" +
+    "const p=d+'/DEPENDENCIES.md';const have=fs.existsSync(p)?fs.readFileSync(p,'utf8'):'';" +
+    "if(process.argv.includes('--check'))process.exit(have===want?0:1);fs.writeFileSync(p,want);\n";
+  w.commitOn(w.other, 'scripts/generate-workflow-dependencies.js', gen, 'generator');
+  w.commitOn(w.other, '.github/workflows/a.yml', 'a\n', 'wf a');
+  w.commitOn(w.other, '.github/workflows/DEPENDENCIES.md', 'a.yml\n', 'doc');
+  sh(w.other, ['push', '-q', 'origin', 'HEAD:main']);
+  sh(w.repoDir, ['fetch', '-q', 'origin', 'main']);
+}
+
+test('BRO-7150: a stale DEPENDENCIES.md after a clean rebase is regenerated into the last branch commit', () => {
+  const w = makeWorld();
+  try {
+    seedCheckingGenerator(w);
+    sh(w.repoDir, ['checkout', '-q', '-b', 'feat-stale', 'origin/main']);
+    w.commitOn(w.repoDir, '.github/workflows/b.yml', 'b\n', 'add workflow b, forgot to regenerate');
+    sh(w.repoDir, ['checkout', '-q', 'main']);
+    w.commitOn(w.other, 'other.txt', 'x\n', 'main moves');
+    sh(w.other, ['push', '-q', 'origin', 'HEAD:main']);
+    const r = landBranch({ branch: 'feat-stale', repoDir: w.repoDir, checks: greenChecks, pushMain: plainPush });
+    assert.equal(r.failedCheck, null, r.reason);
+    assert.equal(r.landed, true);
+    assert.equal(sh(w.repoDir, ['show', `${r.sha}:.github/workflows/DEPENDENCIES.md`]), 'a.yml,b.yml');
+    assert.match(sh(w.repoDir, ['log', '-1', '--format=%s', r.sha]), /forgot to regenerate/, 'folded into the branch commit');
+  } finally { w.cleanup(); }
+});
+
+test('BRO-7150: refreshGeneratedDocsIn leaves HEAD alone when up to date, without a generator, or on a generator error', () => {
+  const calls = [];
+  const git = (args) => { calls.push(args.join(' ')); return args[0] === 'rev-parse' ? (args[1] === 'HEAD' ? 'h' : args[1].replace('^{commit}', '')) : ''; };
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'rgd-'));
+  try {
+    assert.equal(refreshGeneratedDocsIn(dir, { onto: 'o', git, exec: () => {} }).reason, 'no generator in this tree');
+    fs.mkdirSync(path.join(dir, 'scripts'));
+    fs.writeFileSync(path.join(dir, 'scripts/generate-workflow-dependencies.js'), '');
+    assert.equal(refreshGeneratedDocsIn(dir, { onto: 'o', git, exec: () => {} }).reason, 'up to date');
+    const r = refreshGeneratedDocsIn(dir, { onto: 'o', git, exec: () => { throw new Error('boom'); } });
+    assert.equal(r.refreshed, false);
+    assert.match(r.reason, /regeneration failed/);
+    assert.ok(!calls.some((c) => c.startsWith('commit')), 'never commits on failure');
+    assert.equal(refreshGeneratedDocsIn(dir, { onto: 'h', git, exec: () => { throw new Error('x'); } }).reason, 'nothing rebased');
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('dry-run: rebases and checks, never pushes, reports the would-be sha', () => {

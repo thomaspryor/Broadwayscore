@@ -23,7 +23,7 @@
  *   --max-wait-minutes  give up waiting for the mutex after N min (default 20): exit 4 with a
  *            warning, so a worker is never stranded behind another check
  * Exit: 0 no new failures | 1 new failures (printed) | 2 usage | 3 not ready (tracked
- *       changes, no common history with origin/main, or no local core data) | 4 skipped
+ *       changes, under 3 GB free disk (BRO-7186), no common history with origin/main, or no local core data) | 4 skipped
  *       (mutex wait timed out)
  */
 'use strict';
@@ -33,6 +33,7 @@ const os = require('os');
 const path = require('path');
 const { spawnSync } = require('child_process');
 const R = require('./codex-runner.js');
+const { lowDiskMessage, freeBytesOf, envFailureLogs } = require('./land-check-resources.js');
 const { GATES, ADVISORY_GATES, readGateResult, parseGateFailures } = require('./land-gate-delta.js');
 
 // Blocking gates left out of the default run, each with its reason. Every other gate land.yml
@@ -60,6 +61,56 @@ const CORE_DATA_FILES = ['data/shows.json', 'data/reviews.json', 'data/cast-mani
 /** -> list of CORE_DATA_FILES missing under root */
 function missingCoreData(root, exists = fs.existsSync) {
   return CORE_DATA_FILES.filter((f) => !exists(path.join(root, f)));
+}
+
+// BRO-7110: the branch gauntlet runs in this tree and regenerates tracked
+// prebuild outputs (data/gold-lists-computed.json). They were clean when the
+// check started (it refuses a dirty tree), so put them back: otherwise the next
+// run refuses with "commit or discard tracked changes", and a session may commit
+// a generated file it never meant to change.
+/** Restore modified tracked prebuild outputs under <root>; -> the paths restored */
+function restorePrebuildResidue(root, git = (...a) => run('git', a, { cwd: root })) {
+  const { PREBUILD_OUTPUTS } = require('./prebuild-outputs.js');
+  const changed = git('diff', '--name-only', '--no-renames').stdout.split('\n').filter(Boolean);
+  const residue = changed.filter((f) => PREBUILD_OUTPUTS.some((re) => re.test(f)));
+  if (residue.length) git('checkout', '--', ...residue);
+  return residue;
+}
+
+// BRO-7110: a run stopped mid-gauntlet never reaches restorePrebuildResidue, so
+// its regenerated outputs block the next run. Not restored here (the tree's
+// state at start is unknown), but named, with the one command that clears them.
+/** porcelain status -> the refusal text */
+function dirtyTreeMessage(porcelain) {
+  const { PREBUILD_OUTPUTS } = require('./prebuild-outputs.js');
+  const files = porcelain.split('\n').filter(Boolean).map((l) => l.trim().replace(/^\S+\s+/, '').replace(/^.* -> /, '')); // the caller's output may be trimmed
+  const base = 'land-local-check: commit or discard tracked changes first:\n' + porcelain;
+  if (!files.length || !files.every((f) => PREBUILD_OUTPUTS.some((re) => re.test(f)))) return base;
+  // HEAD, not the index: a staged output must go back too. Many files (public/data/shows/*.json):
+  // name their directories instead; every dirty file there is a generated output, so only those change.
+  const targets = files.length <= 10 ? files : [...new Set(files.map((f) => path.dirname(f)))];
+  return base + (base.endsWith('\n') ? '' : '\n') +
+    `  only generated prebuild outputs changed (${files.length} file(s), often left by a stopped run); if you did not mean to change them: git checkout HEAD -- ${targets.join(' ')}`;
+}
+
+// BRO-7110: a worktree under the main checkout with no node_modules of its own
+// still type-checks, resolving packages from the parent directory, but the /tmp
+// base copy finds none. The two sides then fail with different error text and
+// every error reads as new (639 false tsc failures on a diff with no TypeScript).
+/** -> true when <root> has its own node_modules (a directory or a symlink to one) */
+function hasOwnNodeModules(root, exists = fs.existsSync) {
+  return exists(path.join(root, 'node_modules'));
+}
+
+const { missingDeclaredPackages } = require('./declared-packages.js');
+
+// The main checkout links nothing (its git-common-dir is its own .git): install there.
+// -sfn replaces a dangling link, which existsSync also reports as missing.
+/** -> the one-line fix for a checkout with no node_modules */
+function nodeModulesRemedy(root, commonDir) {
+  const main = commonDir ? path.resolve(root, commonDir, '..') : root;
+  if (main === path.resolve(root)) return 'Install them first: npm ci';
+  return `Link them first: ln -sfn ${path.join(main, 'node_modules')} node_modules`;
 }
 
 /** -> { gates, maxWaitMs } or { error } */
@@ -222,15 +273,30 @@ function main(argv = process.argv.slice(2)) {
   // The branch run judges the working tree as committed; uncommitted tracked edits would make it
   // judge something no push carries. (The base run no longer touches this tree: BRO-6252.)
   const dirty = git('status', '--porcelain', '--untracked-files=no');
-  if (dirty.stdout) { console.error('land-local-check: commit or discard tracked changes first:\n' + dirty.stdout); return 3; }
+  if (dirty.stdout) { console.error(dirtyTreeMessage(dirty.stdout)); return 3; }
   const missing = missingCoreData(ROOT);
   if (missing.length) {
     console.error(`land-local-check: ${missing.join(', ')} missing in this checkout (a worktree has no local data). `
       + 'Data-dependent tests would fail on both sides and report false new failures. '
-      + 'Run ./scripts/setup-local-data.sh --link-only for core data. With data/cast/ available, generate the manifests with '
-      + 'node scripts/build-actor-slugs-manifest.js && node scripts/build-cast-manifest.js.');
+      + 'Run ./scripts/setup-local-data.sh --link-only: it links core data and builds the cast manifests from data/cast/ '
+      + '(by hand: node scripts/build-actor-slugs-manifest.js && node scripts/build-cast-manifest.js).');
     return 3;
   }
+  if (!hasOwnNodeModules(ROOT)) {
+    console.error('land-local-check: node_modules missing in this checkout. Packages would resolve from a parent '
+      + 'checkout here but not in the base copy, so every type and lint error would read as new. '
+      + nodeModulesRemedy(ROOT, git('rev-parse', '--git-common-dir').stdout));
+    return 3;
+  }
+  const pkgs = missingDeclaredPackages(ROOT);
+  if (pkgs.missing.length) {
+    console.error(`land-local-check: node_modules is incomplete (${pkgs.missing.length} package(s) declared in ${pkgs.owner}/package.json are not installed, e.g. ${pkgs.missing.slice(0, 5).join(', ')}). `
+      + `Both runs share this install, so every gate would fail on both sides and nothing could be judged. Reinstall first: (cd ${pkgs.owner} && npm ci)`);
+    return 3;
+  }
+  // BRO-7186: a full disk (ENOSPC) fails tests on the branch run and reads as new failures.
+  const lowDisk = lowDiskMessage(freeBytesOf(ROOT)) || lowDiskMessage(freeBytesOf(os.tmpdir()), { when: 'in the temp dir before the run' });
+  if (lowDisk) { console.error(lowDisk); return 3; }
   const fetch = git('fetch', '-q', 'origin', 'main');
   if (fetch.code !== 0) console.error(`land-local-check: git fetch failed, judging against the local origin/main (${fetch.stderr.split('\n').pop()})`);
   const head = git('rev-parse', 'HEAD').stdout;
@@ -252,6 +318,8 @@ function main(argv = process.argv.slice(2)) {
       if (waited) console.log(`land-local-check: got the land-check mutex after ${Math.round((Date.now() - t0) / 60_000)} min`);
       console.log(`land-local-check: gates ${opts.gates.join(',')} on HEAD ${head.slice(0, 10)} (base ${base.slice(0, 10)}, the merge-base with origin/main)`);
       const b = run('bash', ['scripts/lib/land-gauntlet.sh', branchDir], { env: { ...env, GAUNTLET_GATES: opts.gates.join(',') }, stdio: ['ignore', 'ignore', 'inherit'] });
+      const restored = restorePrebuildResidue(ROOT);
+      if (restored.length) console.log(`land-local-check: restored ${restored.join(', ')} (regenerated by the gauntlet)`);
       if (!fs.existsSync(path.join(branchDir, 'meta.json'))) { console.error(`land-local-check: the gauntlet wrote no result (exit ${b.code}); see ${branchDir}`); return 1; }
       const red = run('node', ['scripts/lib/land-gate-delta.js', '--red-gates', branchDir, '--gates', opts.gates.join(',')]).stdout;
       if (red) printRedGates(branchDir, red.split(','), 'HEAD');
@@ -279,6 +347,12 @@ function main(argv = process.argv.slice(2)) {
       const d = run('node', ['scripts/lib/land-gate-delta.js', '--base-dir', baseDir, '--branch-dir', branchDir, '--gates', opts.gates.join(','), '--base-source', depsChanged ? 'skipped: deps changed vs base (BRO-6114)' : red ? `ran locally for ${red}` : 'not needed (every gate green on HEAD)'], { stdio: ['ignore', 'pipe', 'inherit'] });
       console.log(d.stdout);
       let clean = d.code === 0;
+      // BRO-7186: disk filled during the run, or the raw gate logs show ENOSPC (on either side, clean or not):
+      // those failures are the machine's, not the branch's. The delta summary drops error text, so read the logs.
+      const enospc = envFailureLogs([branchDir, baseDir]);
+      const lowAfter = lowDiskMessage(freeBytesOf(ROOT), { when: 'after the run' }) || lowDiskMessage(freeBytesOf(os.tmpdir()), { when: 'in the temp dir after the run' })
+        || (enospc.length ? `land-local-check: ENOSPC (disk full) in ${enospc.join(', ')}. The run is not a valid verdict. Free space and re-run.` : null);
+      if (lowAfter) { console.error(lowAfter); return 3; }
       // A gauntlet test file failing under load can pass alone (2026-10-20: a duplicate-of-url
       // test failed in the gauntlet, then passed 16/16 twice by itself). Re-run the new failures'
       // files once, alone; clean only when every new failure is a test file and all of them pass.
@@ -305,7 +379,7 @@ function main(argv = process.argv.slice(2)) {
   }
 }
 
-module.exports = { main, withBaseWorktree, depsChangedSince, linkIgnored, ignoredPaths, parseArgs, newFailureFiles, missingCoreData, stageGauntletHarness, HARNESS_FILES, CORE_DATA_FILES, DEFAULT_GATES, LOCAL_SKIPPED_GATES };
+module.exports = { dirtyTreeMessage, nodeModulesRemedy, main, withBaseWorktree, depsChangedSince, linkIgnored, ignoredPaths, parseArgs, newFailureFiles, missingCoreData, hasOwnNodeModules, restorePrebuildResidue, stageGauntletHarness, HARNESS_FILES, CORE_DATA_FILES, DEFAULT_GATES, LOCAL_SKIPPED_GATES };
 
 if (require.main === module) {
   // Capture the tip before the ~20 min run: the session may commit meanwhile, and that commit was not tested.
@@ -313,5 +387,5 @@ if (require.main === module) {
   const code = main();
   // BRO-5730: record the verdict so the land push hook can tell whether this tip was checked.
   if (!parseArgs(process.argv.slice(2)).help) require('./land-local-check-log.js').recordVerdict(ROOT, code, { head: judgedHead });
-  process.exit(code);
+  require('./exit-flushed.js').exitFlushed(code); // BRO-7111: a plain exit truncated the ~1MB verdict above when piped
 }

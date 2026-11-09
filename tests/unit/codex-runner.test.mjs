@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/audit/codex-trust-ladder.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-4745: decisions of the daily unattended Codex runner (scripts/codex/daily-runner.js).
 // Requires the real helpers (CLAUDE.md §15), never a copy.
 import { test } from 'node:test';
@@ -1011,11 +1012,101 @@ test('slotsForDisk: budgets worktrees not yet created plus the per-card reserve'
   // All worktrees exist: 3 slots x 3 GB reserve = 9 GB.
   assert.deepEqual(r.slotsForDisk({ slots: 3, freeBytes: 10e9, missingBySlot: [0, 0, 0] }), { slots: 3, why: null });
   // Fresh session: each slot also creates 2 x 1.4 GB.
-  const fresh = r.slotsForDisk({ slots: 3, freeBytes: 12e9, missingBySlot: [2, 2, 2] });
+  const fresh = r.slotsForDisk({ slots: 3, freeBytes: 12e9, missingBySlot: [2, 2, 2], worktreeBytes: 1.4e9 });
   assert.equal(fresh.slots, 2);
   assert.match(fresh.why, /12\.0 GB/);
-  assert.equal(r.slotsForDisk({ slots: 3, freeBytes: 2e9, missingBySlot: [2, 2, 2] }).slots, 1);
+  assert.equal(r.slotsForDisk({ slots: 3, freeBytes: 2e9, missingBySlot: [2, 2, 2], worktreeBytes: 1.4e9 }).slots, 1);
   assert.deepEqual(r.slotsForDisk({ slots: 3, freeBytes: NaN }), { slots: 3, why: null });
+});
+
+test('slotsForDisk: reserveBytes keeps room for the session\'s own work (BRO-7088)', () => {
+  // 20 GB free, 8 GB reserved, nothing created yet: 12 GB left; 3 slots need 17.4, 2 need 11.6.
+  const tight = r.slotsForDisk({ slots: 3, freeBytes: 20e9, missingBySlot: [2, 2, 2], reserveBytes: 8e9, worktreeBytes: 1.4e9 });
+  assert.equal(tight.slots, 2);
+  assert.match(tight.why, /20\.0 GB of disk free \(1\.40 GB per worktree\), 8\.0 GB of it kept/);
+  // The same disk without a reserve carries all 3.
+  assert.deepEqual(r.slotsForDisk({ slots: 3, freeBytes: 20e9, missingBySlot: [2, 2, 2], worktreeBytes: 1.4e9 }), { slots: 3, why: null });
+  // A reserve bigger than the free disk still leaves one slot (stopReason owns the per-card stop).
+  assert.equal(r.slotsForDisk({ slots: 3, freeBytes: 5e9, missingBySlot: [2, 2, 2], reserveBytes: 8e9 }).slots, 1);
+  // One slot, an unmeasurable disk, and a junk reserve are all no-ops.
+  assert.deepEqual(r.slotsForDisk({ slots: 1, freeBytes: 1e9, reserveBytes: 8e9 }), { slots: 1, why: null });
+  assert.deepEqual(r.slotsForDisk({ slots: 3, freeBytes: NaN, reserveBytes: 8e9 }), { slots: 3, why: null });
+  assert.deepEqual(r.slotsForDisk({ slots: 3, freeBytes: 20e9, missingBySlot: [0, 0, 0], reserveBytes: NaN }), { slots: 3, why: null });
+});
+
+test('slim worktrees (BRO-7097): three cloud slots fit at about 20 GB free with the lane reserve', () => {
+  // 3 slots x (worktree + base) x slim budget + 3 x per-card free-disk floor, 20 GB free, the lane reserve (5.31 GB) held back.
+  const d = r.slotsForDisk({ slots: 3, freeBytes: 20e9, missingBySlot: [2, 2, 2], reserveBytes: r.LANES.cloud.diskReserveBytes });
+  assert.deepEqual(d, { slots: 3, why: null });
+  // The old full-tree budget stopped at 2, which is what slim trees fix.
+  assert.equal(r.slotsForDisk({ slots: 3, freeBytes: 20e9, missingBySlot: [2, 2, 2], reserveBytes: r.LANES.cloud.diskReserveBytes, worktreeBytes: r.FULL_WORKTREE_BYTES }).slots, 2);
+  // A junk worktreeBytes falls back to the slim estimate.
+  assert.equal(r.slotsForDisk({ slots: 3, freeBytes: 20e9, missingBySlot: [2, 2, 2], reserveBytes: r.LANES.cloud.diskReserveBytes, worktreeBytes: NaN }).slots, 3);
+});
+
+test('worktreeBytesFor: a measurement wins but is floored; no measurement uses the mode estimate', () => {
+  assert.equal(r.worktreeBytesFor({ mode: 'slim' }), r.SLIM_WORKTREE_BYTES);
+  assert.equal(r.worktreeBytesFor({ mode: 'full' }), r.FULL_WORKTREE_BYTES);
+  assert.equal(r.worktreeBytesFor({ mode: 'slim', measuredBytes: 0.9e9 }), 0.9e9);
+  assert.equal(r.worktreeBytesFor({ mode: 'slim', measuredBytes: 1e6 }), r.SLIM_WORKTREE_BYTES);
+  assert.equal(r.worktreeBytesFor({ mode: 'slim', measuredBytes: NaN }), r.SLIM_WORKTREE_BYTES);
+  assert.ok(r.SLIM_WORKTREE_BYTES <= 0.4 * r.FULL_WORKTREE_BYTES + 0.02e9, 'slim estimate is at most ~40% of a full tree');
+});
+
+test('cardNeedsImages: image, poster, video-review and validate-data cards get a full tree', () => {
+  for (const t of ['rename show id foo-bar', 'Fix hero image for show X', 'poster missing', 'public/images/shows/x.webp', 'node scripts/validate-data.js fails', 'video-reviews transcripts', 'thumbnail 404']) assert.equal(r.cardNeedsImages(t), true, t);
+  for (const t of ['Fix codex runner slot count', 'scoring tier weights', '', null]) assert.equal(r.cardNeedsImages(t), false, String(t));
+});
+
+test('slim sparse patterns: a real git worktree drops the image trees, keeps the rest, and full mode brings them back', () => {
+  const sh = (cwd, ...args) => { const x = spawnSync('git', args, { cwd, encoding: 'utf8' }); assert.equal(x.status, 0, x.stderr); return x.stdout; };
+  const dir = mkdtempSync(join(tmpdir(), 'slim-wt-'));
+  try {
+    sh(dir, 'init', '-q');
+    sh(dir, 'config', 'user.email', 't@t.t'); sh(dir, 'config', 'user.name', 't');
+    for (const f of [...r.SLIM_EXCLUDED_DIRS.map((d) => `${d}/a.txt`), 'public/data/keep.json', 'public/images/theaters/t.txt', 'README.md']) {
+      fs.mkdirSync(join(dir, dirname(f)), { recursive: true }); writeFileSync(join(dir, f), 'x');
+    }
+    sh(dir, 'add', '-A'); sh(dir, 'commit', '-qm', 'x');
+    sh(dir, ...r.treeModeArgs('slim'));
+    for (const d of r.SLIM_EXCLUDED_DIRS) assert.equal(fs.existsSync(join(dir, d)), false, d);
+    for (const f of ['public/data/keep.json', 'public/images/theaters/t.txt', 'README.md']) assert.equal(fs.existsSync(join(dir, f)), true, f);
+    // Repeating the setup on a slim tree is a no-op (setupWorktree runs it every card).
+    sh(dir, ...r.treeModeArgs('slim'));
+    assert.ok(r.measureTreeBytes(dir) > 0);
+    assert.equal(r.isSlimTree(dir), true);
+    // A new file under an excluded dir still stages with --sparse (commitAttempt).
+    fs.mkdirSync(join(dir, 'public/images/shows'), { recursive: true }); writeFileSync(join(dir, 'public/images/shows/new.txt'), 'y');
+    sh(dir, 'add', '-A', '--sparse');
+    assert.match(sh(dir, 'diff', '--cached', '--name-only'), /public\/images\/shows\/new\.txt/);
+    sh(dir, 'reset', '-q', '--hard', 'HEAD');
+    sh(dir, ...r.treeModeArgs('full'));
+    assert.equal(r.isSlimTree(dir), false);
+    for (const d of r.SLIM_EXCLUDED_DIRS) assert.equal(fs.existsSync(join(dir, d, 'a.txt')), true, d);
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+});
+
+test('worktreeSummaryLine prints the measured size and its share of a full tree', () => {
+  assert.equal(r.worktreeSummaryLine({ mode: 'slim', bytes: 0.7e9, fullBytes: 1.77e9 }), 'slim checkout, 0.70 GB measured on disk, 40% of a full tree (1.77 GB)');
+  assert.equal(r.worktreeSummaryLine({ mode: 'full', bytes: 1.7e9 }), 'full checkout, 1.70 GB measured on disk');
+  assert.equal(r.worktreeSummaryLine({ mode: 'slim', bytes: null }), '');
+  assert.match(r.runnerSummaryText({ heading: 'h', stats: { landed: [], landedPartial: [], alreadyFixed: [], bounced: [], inReview: [], landFailed: [], crashed: [], recoveredStops: [], carried: [], outOfTime: [], wouldLand: [] }, worked: 0, skipped: 0, picks: [], stop: null, settingsLine: '', weeklyPct: null, checkCount: 0, checkSpentUsd: 0, checkByModel: {}, worktreeLine: 'slim checkout, 0.70 GB measured on disk' }) || '', /- Worktree: slim checkout, 0\.70 GB/);
+});
+
+test('the runner picks the tree mode per card, measures the budget, and stages sparsely', () => {
+  const src = fs.readFileSync(new URL('../../scripts/codex/daily-runner.js', import.meta.url), 'utf8');
+  assert.match(src, /treeMode = R\.cardNeedsImages\(/);
+  assert.match(src, /worktreeBytes = R\.worktreeBytesFor\(/);
+  assert.match(src, /'add', '-A', '--sparse'/);
+  assert.match(src, /addWorktree\(WT\)/);
+  assert.match(src, /addWorktree\(BASE_WT\)/);
+});
+
+test('the runner passes its lane\'s disk reserve to slotsForDisk, and only the cloud lane has one', () => {
+  assert.ok(r.LANES.cloud.diskReserveBytes > 0);
+  assert.equal(r.LANES.gha.diskReserveBytes, 0);
+  const src = fs.readFileSync(new URL('../../scripts/codex/daily-runner.js', import.meta.url), 'utf8');
+  assert.match(src, /slotsForDisk\(\{[^}]*reserveBytes: R\.LANES\[OPTS\.lane\]\.diskReserveBytes/);
 });
 
 test('isDiskFailure: the system message counts on its own, a bare ENOSPC only while the disk is low', () => {
@@ -1549,4 +1640,222 @@ test('codexBounceCapped (BRO-6857): two bounces cap the card, a retry note does 
   assert.equal(r.codexBounceCapped([...two, c('CODEX-OK', '2026-10-06T00:00:00Z')], now), false);
   assert.equal(r.codexBounceCapped([...two, c('Retry this one, the key is set now.', '2026-10-06T00:00:00Z')], now), false);
   assert.equal(r.codexBounceCapped([...two, c('Claimed by https://claude.ai/code/session_x', '2026-10-06T00:00:00Z')], now), true);
+});
+
+// BRO-7098: a card whose newest comment says it waits on the owner is not picked (the real functions, §15).
+test('BRO-7098: ownerWaitHolds / historySkipReason skip a card that waits on the owner', () => {
+  const P = require('../../scripts/lib/cloud-worker-pick.js');
+  const now = Date.parse('2026-11-07T12:00:00Z');
+  const day = 86400_000;
+  const c = (body, ageDays) => ({ body, createdAt: new Date(now - ageDays * day).toISOString() });
+  const hold = 'Code landed. Waiting on the owner OK to apply supabase/migrations/20261104_critic_requests_kinds.sql.';
+  // the hold is the newest comment: not picked, by either lane's skip rule
+  assert.equal(P.ownerWaitHolds([c(hold, 2)], now), true);
+  assert.equal(P.historySkipReason({ priority: 3 }, [c(hold, 2)], now), 'awaiting-owner');
+  assert.equal(P.historySkipReason({ priority: 3 }, [c('**Outcome**\n\nLanded. DECISION NEEDED: approve the tier policy.', 1)], now), 'awaiting-owner');
+  // machine notes (claim, Codex bounce, retry) after the hold do not hide it
+  assert.equal(P.ownerWaitHolds([c(hold, 3), c('Claimed by https://claude.ai/code/session_x', 1), c('<!-- codex-runner-retry -->\nowner approval needed', 0.5)], now), true);
+  // a later comment replaces it
+  assert.equal(P.ownerWaitHolds([c(hold, 3), c('Go ahead and apply it.', 1)], now), false);
+  // answers and negations are no hold
+  assert.equal(P.ownerWaitHolds([c('**Owner decision** (answered by the owner via email)\n\nChose: Option A', 1)], now), false);
+  assert.equal(P.ownerWaitHolds([c('The owner approval came in, proceeding.', 1)], now), false);
+  assert.equal(P.ownerWaitHolds([c('DECISION NEEDED: none', 1)], now), false);
+  // Bare mentions inside an ordinary Outcome comment are no hold (reviewer finding).
+  assert.equal(P.ownerWaitHolds([c('Updated AWAITING_OWNER_RE so owner decision cards are skipped.', 1)], now), false);
+  assert.equal(P.ownerWaitHolds([c('Fixed the bug where DECISION NEEDED blocks were mis-parsed.', 1)], now), false);
+  assert.equal(P.ownerWaitHolds([c('Owner approval: yes', 1)], now), false);
+  // Real BRO-6984 status wording (possessive form) is a hold; the owner's later approval lifts it.
+  const status = "Code landed. Still pending: migration is NOT applied, and it is waiting on the owner's OK.";
+  assert.equal(P.ownerWaitHolds([c(status, 2)], now), true);
+  assert.equal(P.ownerWaitHolds([c(status, 2), c('Owner approved ("A for both") the migration. Applied.', 1)], now), false);
+  assert.equal(P.ownerWaitHolds([c('Waiting on the owner to pick a tier policy.', 1)], now), true);
+  assert.equal(P.ownerWaitHolds([c('No owner decision needed.', 1)], now), false);
+  // age: held at 13 days, released at 15
+  assert.equal(P.ownerWaitHolds([c(hold, 13)], now), true);
+  assert.equal(P.ownerWaitHolds([c(hold, 15)], now), false);
+  // CODEX-OK in the description does not lift it
+  assert.equal(P.historySkipReason({ priority: 3, description: 'CODEX-OK' }, [c(hold, 2)], now), 'awaiting-owner');
+  // a card with no owner wording is untouched
+  assert.equal(P.historySkipReason({ priority: 3 }, [c('Plain progress note.', 2)], now), null);
+});
+
+// BRO-7133: Codex spent two attempts on cards blocked outside the code (12 of 62 bounced cards on 2026-11-08),
+// and a disk-full crash in git's own words banned the card for 14 days.
+test('isDiskFailure: git and npm disk-full phrasings count as the machine, not the card (BRO-7133)', () => {
+  assert.equal(r.isDiskFailure('npm ERR! Out of diskspace', 20e9), true);
+  // These two also follow a dropped fetch: they stop a run only while the disk is low.
+  for (const t of ['error: failed to write object\nfatal: unable to write sha1 file', 'fatal: early EOF\nerror: unpack-objects failed']) {
+    assert.equal(r.isDiskFailure(t, 1e9), true, t);
+    assert.equal(r.isDiskFailure(t, 20e9), false, t);
+    assert.ok(r.DISK_FULL_RE.test(t), t);
+  }
+  // The crash note that names it does not count toward the card's two crashes.
+  const now = Date.parse('2026-11-08T00:00:00Z');
+  const crash = (msg, at) => ({ body: `## Codex runner: stopped mid-card\n\n${msg}`, createdAt: at });
+  assert.equal(r.codexBouncedRecently([crash('error: unpack-objects failed', '2026-11-06T00:00:00Z'), crash('npm ERR! Out of diskspace', '2026-11-07T00:00:00Z')], now), false);
+  assert.equal(r.codexBouncedRecently([crash('TypeError: x', '2026-11-06T00:00:00Z'), crash('TypeError: y', '2026-11-07T00:00:00Z')], now), true);
+  // The lane-health report classes the same stop as a disk stop.
+  const h = require('../../scripts/lib/codex-lane-health.js');
+  assert.ok(h.DISK_STOP.test('out of disk: error: failed to write object'));
+});
+
+test('codexCardFit: cards blocked outside the code are skipped by name before any attempt (BRO-7133)', () => {
+  const now = Date.parse('2026-11-08T12:00:00Z');
+  const fit = (description, title = 'Fix the thing') => r.codexCardFit({ title, description, verify: 'node --test tests/unit/x.test.mjs', nowMs: now, canDispatch: true });
+  // Shapes from the bounced cards: tech-scorecard (BRO-5996), ~/.claude hooks (BRO-3681), the app repo.
+  assert.equal(fit('Put the photos in thomaspryor/tech-scorecard under public/img.').skip, 'other-repo');
+  assert.equal(fit('The code under test is ~/.claude/hooks/exit-status-gate.sh.').skip, 'other-repo');
+  assert.equal(fit('Mirror it in BroadwayScorecard-app components/user/StarRating.tsx.').skip, 'other-repo');
+  assert.equal(fit('Export the cookie from the owner\'s browser and paste it in.').skip, 'owner-device');
+  assert.equal(fit('The owner must log in to Buffer again, then the script refreshes.').skip, 'owner-device');
+  assert.equal(fit('Fix the owner\'s login redirect loop on /account.').skip, null);
+  assert.equal(fit('Capture the real pages into the private recordings archive.').skip, 'missing-prerequisite');
+  assert.equal(fit('Pick the threshold once fleet telemetry has accumulated for a week.').skip, 'missing-prerequisite');
+  // A later date the card waits for; a passed one is no wait (BRO-6863: "defer edits until after November 9").
+  assert.equal(fit('Do not edit the poller until 2026-11-09, after press night.').skip, 'deferred-date');
+  assert.equal(fit('The freeze lasts until Nov 13; change nothing before.').skip, 'deferred-date');
+  assert.equal(fit('On/after 2027-01-02 pull the PostHog market numbers.').skip, 'deferred-date');
+  assert.equal(fit('Not before 2026-10-23 (already passed).').skip, null);
+  assert.equal(fit('Broke after October 30 when the cron moved.').skip, null);
+  // Code work that only mentions these words stays fit.
+  assert.equal(fit('Add telemetry for queue depth to dispatch-flow-health.js.').skip, null);
+  assert.equal(fit('Fix the password reset form on the web sign-in page.').skip, null);
+  // CODEX-OK still sends a card to Codex.
+  assert.equal(fit('CODEX-OK\nThe code under test is ~/.claude/hooks/x.sh.').skip, null);
+});
+
+test('codexCardFit: a card that only NAMES the app repo is web work, not other-repo (BRO-7141, a)', () => {
+  const now = Date.parse('2026-11-08T12:00:00Z');
+  const fit = (description) => r.codexCardFit({ title: 'Fix the thing', description, verify: 'node --test tests/unit/x.test.mjs', nowMs: now, canDispatch: true }).skip;
+  // The BRO-7133 worker's case, plus the full-slug and consumer-side wordings.
+  assert.equal(fit('Fix the API that BroadwayScorecard-app calls (scripts/build-api.js).'), null);
+  assert.equal(fit('Fix the API that thomaspryor/BroadwayScorecard-app calls (scripts/build-api.js).'), null);
+  assert.equal(fit('The iOS app (BroadwayScorecard-app) consumes /api/x; keep the response shape.'), null);
+  // Work that lands IN the app repo is still other-repo.
+  assert.equal(fit('Mirror it in BroadwayScorecard-app components/user/StarRating.tsx.'), 'other-repo');
+  assert.equal(fit('Update BroadwayScorecard-app to show the new badge.'), 'other-repo');
+  assert.equal(fit('Add the field to thomaspryor/BroadwayScorecard-app.'), 'other-repo');
+  assert.equal(fit('Put the change in the app repo.'), 'other-repo');
+});
+
+test('futureDeferral: "valid until <date>" is a fact, not a wait; a deferring word makes it one (BRO-7141, b)', () => {
+  const now = Date.parse('2026-11-08T12:00:00Z');
+  const fit = (description) => r.codexCardFit({ title: 'Fix the thing', description, verify: 'node --test tests/unit/x.test.mjs', nowMs: now, canDispatch: true }).skip;
+  assert.equal(r.futureDeferral('Cache entries are valid until 2026-12-01.', now), null);
+  assert.equal(r.futureDeferral('Tokens are valid until Dec 1.', now), null);
+  assert.equal(fit('Cache entries are valid until 2026-12-01; make the TTL a constant.'), null);
+  // Real waits still read as waits, with or without a bare until/after.
+  assert.equal(r.futureDeferral('Hold off until Nov 30.', now).iso, '2026-11-30');
+  assert.equal(r.futureDeferral('Defer the edit until after November 9.', now).iso, '2026-11-09');
+  assert.equal(r.futureDeferral('Seasons run until 2026-12-01. Wait until 2026-11-20 for the data.', now).iso, '2026-11-20');
+  assert.equal(fit('Do not edit the poller until 2026-11-09, after press night.'), 'deferred-date');
+  // A date that does not exist (Feb 30 rolls to Mar 2 in Date.UTC) is no wait.
+  assert.equal(r.futureDeferral('Not before Feb 30.', Date.parse('2027-01-10T00:00:00Z')), null);
+});
+
+test('BRO-7141 reviewer cases: app repo as an API peer or past tense is not other-repo; real app-repo work is', () => {
+  const skip = (d) => r.codexCardFit({ title: 'Fix', description: d, verify: 'node --test tests/unit/x.test.mjs', nowMs: Date.parse('2026-11-08T12:00:00Z'), canDispatch: true }).skip;
+  for (const d of ['Ported to BroadwayScorecard-app already (done). Web fix only.', 'Send scores to BroadwayScorecard-app via the API', 'Keep the response shape the same as in BroadwayScorecard-app', 'Fix the API that BroadwayScorecard-app calls']) assert.notEqual(skip(d), 'other-repo', d);
+  for (const d of ['BroadwayScorecard-app needs a new screen', 'Make BroadwayScorecard-app show the badge (StarRating.swift)', 'The iOS app repo needs updating', 'Put the change in the app repo.']) assert.equal(skip(d), 'other-repo', d);
+});
+
+test('BRO-7141 reviewer cases: "lasts/should not ... until <date>" is not a deferral; "Run X after <date>" is', () => {
+  const skip = (d) => r.codexCardFit({ title: 'Fix', description: d, verify: 'node --test tests/unit/x.test.mjs', nowMs: Date.parse('2026-11-08T12:00:00Z'), canDispatch: true }).skip;
+  for (const d of ['The redirect lasts until Dec 1', 'Ship this now; it should not break anything until Dec 1', 'Broke after Nov 20']) assert.notEqual(skip(d), 'deferred-date', d);
+  for (const d of ['Run the backfill after Nov 20', 'The freeze lasts until Nov 13; change nothing before.']) assert.equal(skip(d), 'deferred-date', d);
+});
+
+test('futureDeferral reads ISO and month-day dates, only when still ahead (BRO-7133)', () => {
+  const now = Date.parse('2026-11-08T12:00:00Z');
+  assert.equal(r.futureDeferral('RECHECK-AFTER: 2026-11-22', now).iso, '2026-11-22');
+  assert.equal(r.futureDeferral('wait until December 3, 2026 for the season', now).iso, '2026-12-03');
+  assert.equal(r.futureDeferral('until 2026-11-01', now), null);
+  assert.equal(r.futureDeferral('nothing dated here', now), null);
+  assert.equal(r.futureDeferral('not before 2026-11-09T07:00Z', now).iso, '2026-11-09');
+  // A month-day without a year is the nearest such day across New Year.
+  assert.equal(r.futureDeferral('broke after Dec 30', Date.parse('2027-01-02T00:00:00Z')), null);
+  assert.equal(r.futureDeferral('not before Jan 5', Date.parse('2026-12-28T00:00:00Z')).iso, '2027-01-05');
+});
+
+test('codexFoundBlocked: a bounce where Codex changed nothing keeps the card from Codex until a person answers (BRO-7133)', () => {
+  const at = (h) => new Date(Date.parse('2026-11-01T00:00:00Z') + h * 3600_000).toISOString();
+  const legacy = { body: `${r.BOUNCED_MARKER}\n## Codex runner: not landed, left for the Claude worker\n<!-- codex-bounce-class: genuine-failure -->\n\n2 Codex attempt(s) did not pass the checks, so nothing was pushed. Findings for whoever takes it next:\n\n### Codex report\n\`\`\`\nBRO-3890 remains blocked by missing fleet telemetry. No files changed; choosing a threshold would be guessing.\n\`\`\`\n\n### Independent check (REJECT)\n\`\`\`\nREJECT\n\`\`\``, createdAt: at(0) };
+  assert.match(r.codexFoundBlocked([legacy], Date.parse(at(2))), /missing fleet telemetry/);
+  const fresh = { body: r.blockedParkBody({ reason: 'the card defers edits until after November 9', recheckAfter: '2026-11-09' }), createdAt: at(0) };
+  assert.equal(r.codexFoundBlocked([fresh], Date.parse(at(2))), 'the card defers edits until after November 9');
+  // A plain REJECT with a diff is not this; "No files changed" in the check's text does not count either.
+  const plain = { body: `${r.BOUNCED_MARKER}\n## Codex runner: not landed, left for the Claude worker\n\n### Codex report\n\`\`\`\nFixed the parser; 12 tests pass.\n\`\`\`\n\n### Independent check (REJECT)\n\`\`\`\nNo files changed in the test dir\n\`\`\``, createdAt: at(0) };
+  assert.equal(r.codexFoundBlocked([plain], Date.parse(at(2))), null);
+  // A person's comment or CODEX-OK after it lifts it; a partial landing is not it.
+  assert.equal(r.codexFoundBlocked([legacy, { body: 'Telemetry is in now, try again.', createdAt: at(1) }], Date.parse(at(2))), null);
+  assert.equal(r.codexFoundBlocked([legacy, { body: 'CODEX-OK', createdAt: at(1) }], Date.parse(at(2))), null);
+  assert.equal(r.codexFoundBlocked([{ body: `${r.BOUNCED_MARKER}\n${r.PARTIAL_HEADING}\n\nNo files changed`, createdAt: at(0) }]), null);
+  // It expires with the structural memory, a retry note lifts it, a passed RECHECK-AFTER frees it,
+  // and a Done-gate refusal of an "already fixed" claim never counts.
+  assert.equal(r.codexFoundBlocked([legacy], Date.parse(at(24 * 61))), null);
+  assert.equal(r.codexFoundBlocked([legacy, { body: r.retryBody({ reason: 'x' }), createdAt: at(1) }], Date.parse(at(2))), null);
+  assert.equal(r.codexFoundBlocked([fresh], Date.parse('2026-11-08T00:00:00Z')), 'the card defers edits until after November 9');
+  assert.equal(r.codexFoundBlocked([fresh], Date.parse('2026-11-10T00:00:00Z')), null);
+  const refused = { body: `${legacy.body}\n\n### Not fixed after all\nThe card's check still fails.`, createdAt: at(0) };
+  assert.equal(r.codexFoundBlocked([refused], Date.parse(at(2))), null);
+  // codexCardFit names it, and the new note is a structural hold (no 14-day return).
+  const f = r.codexCardFit({ title: 'Re-measure the threshold', description: 'x', comments: [legacy], nowMs: Date.parse(at(2)), canDispatch: true });
+  assert.equal(f.skip, 'codex-found-blocked');
+  const held = { ...fresh, body: r.blockedParkBody({ reason: 'needs the owner\'s Mac' }) };
+  assert.equal(r.codexBouncedRecently([held], Date.parse(at(24 * 30))), true, 'blocked-no-change holds past 14 days');
+});
+
+test('blockedParkNote: Codex\'s verdict line is the reason and a later date becomes RECHECK-AFTER (BRO-7133)', () => {
+  const now = Date.parse('2026-11-03T00:00:00Z');
+  const p = r.blockedParkNote({ report: 'No files changed. The card defers edits until 2026-11-09.\n\nChecklist a-e:\n- a. ...', nowMs: now });
+  assert.equal(p.reason, 'No files changed. The card defers edits until 2026-11-09.');
+  assert.equal(p.recheckAfter, '2026-11-09');
+  const q = r.blockedParkNote({ report: '', remaining: ['On the owner\'s Mac, run the hook test'], nowMs: now });
+  assert.equal(q.reason, 'On the owner\'s Mac, run the hook test');
+  assert.equal(q.recheckAfter, null);
+  const body = r.blockedParkBody({ ...p, summary: 'S' });
+  assert.ok(body.startsWith(`${r.BOUNCED_MARKER}\n## Codex runner: blocked`));
+  assert.equal(r.bounceClassOf(body), 'blocked-no-change');
+  assert.match(body, /^BLOCKED: No files changed/m);
+  assert.match(body, /^RECHECK-AFTER: 2026-11-09$/m);
+  const { parseRecheckAfter } = require('../../scripts/lib/recheck-stamp.js');
+  assert.equal(parseRecheckAfter(body), Date.parse('2026-11-09T00:00:00Z'), 'the pick\'s recheck-pending hold reads the stamp');
+});
+
+test('splitOwnerSteps: owner/Mac items split to their own parked card, code items stay (BRO-7133)', () => {
+  const s = r.splitOwnerSteps(['On the owner\'s Mac, run node --test scripts/lib/x.test.mjs', 'Approve the money-card visuals', 'Add the missing unit test for parseFoo', 'Needs an owner decision on the threshold', 'On the owner\'s Mac, run the smoke test and implement the missing error handling']);
+  assert.deepEqual(s.owner, ['On the owner\'s Mac, run node --test scripts/lib/x.test.mjs', 'Approve the money-card visuals']);
+  // A decision needs a DECISION NEEDED card the runner cannot write; an item that also asks for code stays.
+  assert.equal(s.code.length, 3);
+  assert.deepEqual(r.splitOwnerSteps(['No owner decision needed; fix the regex']).owner, []);
+  const args = r.ownerStepCardArgs('BRO-1', 'Money card ranges', s.owner);
+  assert.deepEqual(args.slice(0, 2), ['create', 'Owner step from BRO-1: Money card ranges']);
+  assert.equal(args[args.indexOf('--park') + 1].startsWith('needs the owner\'s own hands: '), true);
+  assert.match(args[args.indexOf('--notes') + 1], /Split from BRO-1/);
+  // The owner-judgment limbo guard linear-brain create runs accepts this card.
+  const G = require('../../scripts/lib/owner-judgment-limbo-guard.js');
+  assert.equal(G.createLimboReason({ body: args[args.indexOf('--notes') + 1], parkReason: args[args.indexOf('--park') + 1] }), null);
+  // The filed id comes from the marker line, never from a title naming the source card.
+  assert.equal(r.filedCardId('{"title":"Owner step from BRO-1: x"}\nPARKED: BRO-77 ("Owner step from BRO-1: x") — state=Backlog'), 'BRO-77');
+  assert.equal(r.filedCardId('ISSUE-REUSED: BRO-12 ("x") is already open'), 'BRO-12');
+  assert.equal(r.filedCardId('Owner step from BRO-1'), null);
+});
+
+test('parkOnNoChange: only a no-commit bounce that names a block is parked (BRO-7133)', () => {
+  const base = { hasDiff: false, bounceClass: 'genuine-failure', report: 'BRO-1 remains blocked by missing fleet telemetry. No files changed.' };
+  assert.equal(r.parkOnNoChange(base), true);
+  assert.equal(r.parkOnNoChange({ ...base, hasDiff: true }), false);
+  assert.equal(r.parkOnNoChange({ ...base, landBlocked: true }), false);
+  assert.equal(r.parkOnNoChange({ ...base, refusedClose: true }), false);
+  assert.equal(r.parkOnNoChange({ ...base, report: 'Tried a parser change but reverted it.' }), false, 'no named block: a plain bounce');
+  assert.equal(r.parkOnNoChange({ ...base, report: 'x', bounceClass: 'mac-or-private' }), true);
+  assert.equal(r.parkOnNoChange({ ...base, report: 'x', remaining: ['Run it after the next cron'] }), true);
+});
+
+test('daily-runner parks a no-change bounce and splits owner steps off a partial landing (BRO-7133)', () => {
+  const src = fs.readFileSync(new URL('../../scripts/codex/daily-runner.js', import.meta.url), 'utf8');
+  assert.match(src, /lastHasDiff = c\.hasDiff;/);
+  assert.match(src, /if \(R\.parkOnNoChange\(\{ hasDiff: lastHasDiff, landBlocked, refusedClose, bounceClass,[\s\S]{0,700}moveCard\(id, 'Paused', note\)[\s\S]{0,120}moveCard\(id, 'Backlog', note\)/);
+  assert.match(src, /R\.splitOwnerSteps\(remaining\)[\s\S]{0,500}sh\('node', \['scripts\/linear-brain\.js', \.\.\.R\.ownerStepCardArgs\(/);
 });

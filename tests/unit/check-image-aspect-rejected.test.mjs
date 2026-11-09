@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/rejected-images.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // check-image-aspect.js refuses image bytes a person rejected by eye
 // (data/rejected-images.json). Root cause it guards: the auto-fetch job
 // (c321b887f52) re-downloaded all three files BRO-4251 had removed, because

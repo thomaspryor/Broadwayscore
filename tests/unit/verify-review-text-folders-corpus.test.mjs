@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-5683: exercise the real acceptance test's missing-corpus contract.
 import test from 'node:test';
 import assert from 'node:assert/strict';

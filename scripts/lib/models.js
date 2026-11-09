@@ -50,5 +50,8 @@ module.exports = {
   // shift 29.2pp). Wired for --openai-model= re-testing after prompt tuning.
   // Requires max_completion_tokens (not max_tokens) in chat completion calls.
   GPT54_MINI: 'gpt-5.4-mini',
+  // Social score posts (BRO-6959): Claude writes from the fact pool, GPT-5.5 fact-checks it.
+  SOCIAL_WRITER: 'claude-opus-5-5',
+  GPT55: 'gpt-5.5',
   KIMI: 'moonshotai/kimi-k2.5',
 };

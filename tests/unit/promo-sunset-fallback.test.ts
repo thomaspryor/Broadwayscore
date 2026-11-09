@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/site-image-versions.json (untracked core data); data/grosses.json (untracked core data); data/audience-buzz.json (untracked core data); +7 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Regression: homepage Tony-predictions + Beat-the-Critics promos must HIDE
 // themselves once the season rolls past a ceremony. The 2026-2027 rollover
 // (2026-06) left both promos live for two weeks because the old fallback

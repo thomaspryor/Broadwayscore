@@ -140,6 +140,9 @@ async function main() {
   const shows = showsFile.shows || showsFile;
   const byId = new Map(shows.map(s => [s.id, s]));
   const tours = shows.filter(s => s.category === 'tour');
+  // City hubs list each metro's own productions beside its tour stops (BRO-6728).
+  const localShows = shows.filter(s => s.category === 'regional');
+  const hubs = Object.fromEntries(Object.entries(readJson('data/city-hubs.json').hubs || {}).filter(([, h]) => h.launched === true));
   const schedules = readJson('data/tour-schedules.json').tours || {};
   const tickets = readJson('data/tour-tickets.json').tours || {};
   if (!tours.length) { console.error('No category:tour shows in data/shows.json (stub data?)'); process.exit(2); }
@@ -205,10 +208,13 @@ async function main() {
     const expectedYesterday = A.expectedCities({ tours, schedules, listedIds: scoredIds, today: todays[0] });
     const cityPages = new Set(expected.keys());
     const cityPagesPrev = new Set(expectedYesterday.keys());
-    cityCount = expected.size;
+    // Hub pages exist and index whatever their tour count; the tours list and
+    // show-page city links still follow the tour-only cities above.
+    const pagesToCheck = A.withHubs(expected, hubs);
+    cityCount = pagesToCheck.size;
     for (const p of sitemap) {
       const m = p.match(/^\/tours\/([^/]+)$/);
-      if (m && !expected.has(m[1]) && !expectedYesterday.has(m[1])) findings.push({ severity: 'error', code: 'sitemap-city-unexpected', where: p, message: 'city page in sitemap but data gives it no page' });
+      if (m && !pagesToCheck.has(m[1]) && !expectedYesterday.has(m[1])) findings.push({ severity: 'error', code: 'sitemap-city-unexpected', where: p, message: 'city page in sitemap but data gives it no page' });
     }
     if (list.cityLinks.length) {
       // Same one-day build lag as the sitemap check: a link is dead only when
@@ -253,17 +259,17 @@ async function main() {
     });
 
     // 5. Every city page.
-    await pool(Array.from(expected.values()), 6, async c => {
+    await pool(Array.from(pagesToCheck.values()), 6, async c => {
       const url = `/tours/${c.slug}`;
       const r = await fetchText(`${BASE}${url}`);
       pagesChecked++;
       if (r.status !== 200) { findings.push({ severity: 'error', code: 'city-page-status', where: url, message: `HTTP ${r.status} (data says ${c.city} has a page)` }); return; }
-      add(A.checkCityPage({ url, page: A.parseCityPage(r.text), expected: c, tours, schedules, tickets, todays, inSitemap: sitemap.has(url) }));
+      add(A.checkCityPage({ url, page: A.parseCityPage(r.text), expected: c, tours, schedules, tickets, todays, inSitemap: sitemap.has(url), localShows }));
     });
 
     // 6. Mobile overflow.
     if (args.mobile) {
-      const paths = [listUrl, ...tours.map(t => `/show/${t.slug || t.id}`), ...Array.from(expected.keys()).map(s => `/tours/${s}`)];
+      const paths = [listUrl, ...tours.map(t => `/show/${t.slug || t.id}`), ...Array.from(pagesToCheck.keys()).map(s => `/tours/${s}`)];
       const mo = await mobileOverflow(paths);
       if (mo.skipped) findings.push({ severity: 'error', code: 'mobile-skipped', where: 'mobile', message: mo.skipped });
       for (const r of mo.results || []) {

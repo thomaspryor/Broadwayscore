@@ -46,7 +46,7 @@ test('grid and list offer the same clearly labeled add action', () => {
   for (const variant of ['grid', 'list']) {
     const button = render(variant);
     assert.equal(button.type, 'button');
-    assert.equal(button.getAttribute('aria-label'), 'Add a new show to watchlist');
+    assert.equal(button.getAttribute('aria-label'), 'Add a new show to To See');
     assert.equal(button.textContent.trim(), 'Add a show');
     assert.ok(button.classList.contains('card-interactive'), 'use the shared filled card treatment');
     assert.ok(button.classList.contains('focus-ring'), 'keyboard focus must be visible');

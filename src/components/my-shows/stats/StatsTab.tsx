@@ -115,7 +115,7 @@ class StatsErrorBoundary extends Component<{ children: ReactNode }, { failed: bo
     return (
       <div className="card px-6 py-10 text-center" data-testid="stats-crashed">
         <h3 className="text-lg font-bold text-white">Your stats hit a snag</h3>
-        <p className="text-sm text-gray-400 mt-2">Your diary is safe. Try loading the stats again.</p>
+        <p className="text-sm text-gray-400 mt-2">Your shows are safe. Try loading the stats again.</p>
         <button type="button" onClick={() => this.setState({ failed: false })} className="btn-secondary text-sm min-h-[44px] mt-5">
           Try again
         </button>
@@ -207,7 +207,7 @@ function StatsTabContent({ reviews, showMap }: StatsTabProps) {
         </div>
         <h3 className="text-lg font-bold text-white">Log {MIN_ENTRIES_FOR_STATS - logged} more to open your Scorecard</h3>
         <p className="text-sm text-gray-400 mt-2">
-          Stats need at least {MIN_ENTRIES_FOR_STATS} shows in your diary. You have {logged}.
+          Stats need at least {MIN_ENTRIES_FOR_STATS} shows in Seen. You have {logged}.
         </p>
       </div>
     );
@@ -380,7 +380,7 @@ function StatsTabContent({ reviews, showMap }: StatsTabProps) {
         title: `${label} winners to see`,
         caption: missing > 0 ? `${list.unseen.length} unseen · ${inCatalog.length} in the catalog` : `${list.unseen.length} of ${list.total}`,
         shows: inCatalog,
-        emptyText: 'Every winner in the catalog is in your diary.',
+        emptyText: 'You’ve seen every winner in the catalog.',
       });
       return;
     }
@@ -405,7 +405,7 @@ function StatsTabContent({ reviews, showMap }: StatsTabProps) {
     } else {
       open({
         title: entry.t,
-        caption: `${entry.season} winner, not in your diary`,
+        caption: `${entry.season} winner, not seen yet`,
         shows: catalogShows([entry.id]),
         emptyText: 'Not in the current catalog.',
       });

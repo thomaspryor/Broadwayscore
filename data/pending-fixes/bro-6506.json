@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6506",
   "planId": "cd13a192-08f8-4716-8239-17627bc9cced",
-  "status": "pending",
+  "status": "superseded",
   "createdAt": "2026-10-29T13:36:35.692Z",
   "submitter": {
     "name": null,
@@ -154,5 +154,87 @@
         "description": "shows.json: the-potluck-off-broadway-2026.type (source: https://www.theatermania.com/shows/new-york-city-theater/off-broadway/the-potluck_1828908/ (genre Musical))"
       }
     ]
-  }
+  },
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 14
+    },
+    "ops": [
+      {
+        "i": 0,
+        "verdict": "resolved",
+        "reason": "jim-hensons-fraggle-rock-back-to-the-rock-live-off-broadway-2026.type already \"musical\""
+      },
+      {
+        "i": 1,
+        "verdict": "resolved",
+        "reason": "kilgallen-off-broadway-2026.type already \"musical\""
+      },
+      {
+        "i": 2,
+        "verdict": "resolved",
+        "reason": "whats-eating-gilbert-grape-off-broadway-2026.type already \"musical\""
+      },
+      {
+        "i": 3,
+        "verdict": "resolved",
+        "reason": "chasing-grace-off-broadway-2026.type already \"musical\""
+      },
+      {
+        "i": 4,
+        "verdict": "resolved",
+        "reason": "the-apple-boys-off-broadway-2027.type already \"musical\""
+      },
+      {
+        "i": 5,
+        "verdict": "resolved",
+        "reason": "walk-on-through-confessions-of-a-museum-novice-off-broadway-2023.type already \"musical\""
+      },
+      {
+        "i": 6,
+        "verdict": "resolved",
+        "reason": "the-gardens-of-anuncia-off-broadway-2023.type already \"musical\""
+      },
+      {
+        "i": 7,
+        "verdict": "resolved",
+        "reason": "the-connector-off-broadway-2024.type already \"musical\""
+      },
+      {
+        "i": 8,
+        "verdict": "resolved",
+        "reason": "the-big-gay-jamboree-off-broadway-2024.type already \"musical\""
+      },
+      {
+        "i": 9,
+        "verdict": "resolved",
+        "reason": "wesley-off-broadway-2025.type already \"musical\""
+      },
+      {
+        "i": 10,
+        "verdict": "resolved",
+        "reason": "animal-wisdom-off-broadway-2022.type already \"musical\""
+      },
+      {
+        "i": 11,
+        "verdict": "resolved",
+        "reason": "going-bacharach-the-songs-of-an-icon-off-broadway-2026.type already \"musical\""
+      },
+      {
+        "i": 12,
+        "verdict": "resolved",
+        "reason": "milk-and-honey-amt-theater-off-broadway-2026.type already \"musical\""
+      },
+      {
+        "i": 13,
+        "verdict": "resolved",
+        "reason": "the-potluck-off-broadway-2026.type already \"musical\""
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (14 resolved); per-op reasons in triage.ops"
 }

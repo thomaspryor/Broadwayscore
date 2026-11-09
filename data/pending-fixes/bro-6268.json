@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6268",
   "planId": "31d2a4b7-4461-4833-ac99-32f7734a2cdb",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-30T13:07:17.745Z",
   "submitter": {
     "name": null,
@@ -94,5 +94,22 @@
       "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
     }
   ],
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 1
+    },
+    "ops": [
+      {
+        "i": 4,
+        "verdict": "resolved",
+        "reason": "art-west-end-2016/artshub--gina-fairley.json wrongProduction already true"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (1 resolved); per-op reasons in triage.ops"
 }

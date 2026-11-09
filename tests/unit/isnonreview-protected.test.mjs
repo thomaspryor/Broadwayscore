@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-3106: isNonReview / isNonReviewReason were missing from PROTECTED_FIELDS,
  * so a manual "not a review" verdict (the-story-west-end-2026's Spectator

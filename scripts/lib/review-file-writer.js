@@ -65,8 +65,9 @@ let _creditGuardInertWarned = false;
 const { findCrossShowOwners, shouldBlockCrossShowCreate, recordUrlOwner, showDirHoldsUrl } = require('./url-ownership');
 const { decodeHtmlEntities, hasUndecodedHtmlEntities, hasJsonLdArtifact } = require('./text-cleaning');
 const { emitStage } = require('./stage-latency');
-const { shouldSkipAggregatorUrlWrite, shouldRefuseAggregatorOutletRefinement, hasPreservableAggregatorScore, isAggregatorReviewSource } = require('./aggregator-domains');
+const { shouldSkipAggregatorUrlWrite, shouldRefuseAggregatorOutletRefinement, hasPreservableAggregatorScore, isAggregatorReviewSource, isSharedDomainOutlet } = require('./aggregator-domains');
 const { EXCERPT_FIELDS } = require('./excerpt-fields');
+const { guardianReviewOutletId } = require('./guardian-publication');
 const { isUrlSwapRegression } = require('./url-downgrade-guard');
 const { loadBlocklist, findBlockedEntry } = require('./poller-blocklist');
 
@@ -375,11 +376,25 @@ function _createOrMergeReviewFile(showId, input, options = {}) {
   // post is (see wordpressAttachmentParentUrl). Rewrite before every url guard.
   const attachmentParent = input && input.url ? require('./non-review-url-patterns').wordpressAttachmentParentUrl(input.url) : null;
   if (attachmentParent) input = { ...input, url: attachmentParent };
-  const fields = input.fields || {};
+  let fields = input.fields || {};
   // A top-level input.publishDate drives the guards below but was never written:
   // only fields are spread into the file, so every ingest-urls review landed
   // undated (NY Sun on A Few Good Men, BRO-6585). Persist it like fields.publishDate.
   if (input.publishDate && !fields.publishDate) fields.publishDate = input.publishDate;
+  // BRO-7149: ingest paths that skipped the extractor landed undated reviews that a person
+  // then had to date. Resolve here once for every writer: page html if the caller passed it,
+  // else the strict body byline (same reader the collector uses). Never overrides a date;
+  // truly dateless pages stay undated. Works on a copy: the caller's `fields` is not mutated.
+  if (!fields.publishDate && !input.publishDate) {
+    const r = require('./html-publish-date').resolveMissingPublishDate({
+      html: input.html || fields.html, fullText: fields.fullText || input.fullText, url: input.url,
+    });
+    if (r) {
+      input = { ...input, _publishDateResolved: true };
+      fields = { ...fields, publishDate: r.date, ...(fields.dateSource ? {} : { dateSource: r.dateSource }) };
+      input.fields = fields;
+    }
+  }
   // BRO-4807: a lane review (provenance + productionVerified:"aggregator") is already production-verified by an
   // aggregator, so the corpus guards below stand down for it, and only for it. laneBypasses is the single predicate.
   const laneHolds = (guard) => {
@@ -521,7 +536,8 @@ function _createOrMergeReviewFile(showId, input, options = {}) {
     // become the aggregator's — skip the general refinement logic below entirely
     // whenever the URL resolved onto an aggregator at all, or the cross-domain
     // "Case 2" branch would immediately undo that decision.
-    if (!urlResolvesToAggregator && urlResolved && urlResolved.outletId !== outletId) {
+    if (!urlResolvesToAggregator && urlResolved && urlResolved.outletId !== outletId
+        && !isSharedDomainOutlet(urlResolved.outletId, outletId)) {
       const registry = loadOutletRegistry();
       const urlOutlet = registry?.outlets?.[urlResolved.outletId];
       const nameOutlet = registry?.outlets?.[outletId];
@@ -933,6 +949,9 @@ function _createOrMergeReviewFile(showId, input, options = {}) {
     console.warn(`  ✎ Byline: ${outletId} page prints "${printedByline}", replacing "${criticName}"`);
     criticName = sanitizeCriticName(printedByline);
   }
+  // Guardian hosts the Observer too. Use the final byline before naming the
+  // file, including SERP and roundup inputs without publication metadata.
+  outletId = guardianReviewOutletId({ outletId, criticName, url: input.url, guardianApi: fields.guardianApi });
   if (!laneHolds('scraperGarbage') && criticName === 'Unknown' && !input.url && !fields.fullText && !fields.bwwExcerpt
       && !fields.dtliExcerpt && !fields.showScoreExcerpt && !fields.nycTheatreExcerpt
       && !fields.stagedoorExcerpt && !fields.lboRoundupExcerpt) {
@@ -1454,6 +1473,27 @@ function _createOrMergeReviewFile(showId, input, options = {}) {
     if (refusal) return refusal;
   }
 
+  // --- Guard: undated The Stage stub (BRO-7084) ---
+  // No year in the URL, no body (paywall) and no date: nothing ties it to this
+  // production. Callers date it from the page first (discovery-prefetch); with
+  // no date found it is parked. Aggregator rows carrying a score are cited
+  // reviews and exempt.
+  if (!(existing && existing.data) && !fs.existsSync(filepath)
+    && !isAggregatorReviewSource(input.source) && !hasPreservableAggregatorScore(fields)
+    && require('./unvetted-serp-sources').isUnvettedSerpSource(input.source)
+    && fields.humanReviewScore == null && fields.allowUndatedStageStub !== true && !input.allowUndatedStageStub) {
+    const stage = require('./undated-stage-stub-guard').evaluateUndatedStageStub({
+      outletId, url: input.url,
+      publishDate: fields.publishDate || input.publishDate,
+      fullText: input.fullText || fields.fullText,
+      excerpt: input.excerpt || fields.excerpt,
+    });
+    if (stage.park) {
+      console.warn(`  ⛔ Parking undated The Stage stub: ${input.url}`);
+      return { action: 'skipped', reason: stage.reason, guardRefused: true };
+    }
+  }
+
   // --- Guard M: merged-away URL (BRO-4414) ---
   // A sibling file already absorbed this URL in an earlier merge and the
   // duplicate was deleted. Creating a file for it re-manufactures that duplicate
@@ -1809,9 +1849,15 @@ const URL_BODY_FIELDS = [
  * @returns {string[]} keys reverted
  */
 function revertBodyFromRefusedUrl(before, existing, input, fields) {
-  if (!input || !input.url || !existing.url || !fields) return [];
-  const { urlCanonicallyChanged } = require('./url-change-invariant');
-  if (!urlCanonicallyChanged(existing.url, input.url)) return [];
+  if (!input || !input.url || !fields) return [];
+  if (existing.url) {
+    const { urlCanonicallyChanged } = require('./url-change-invariant');
+    if (!urlCanonicallyChanged(existing.url, input.url)) return [];
+  } else if (!isAggregatorPageUrl(input.url)) {
+    // BRO-7091: a url-less file whose first-set url was refused as an
+    // aggregator/roundup page keeps no body or date from that roundup either.
+    return [];
+  }
   const reverted = [];
   for (const key of URL_BODY_FIELDS) {
     if (fields[key] == null || before[key]) continue;
@@ -1845,7 +1891,14 @@ function _preOpeningNewsRefusal(showId, outletId, input, fields) {
 }
 
 function _mergeIntoExisting(filepath, existing, ctx) {
-  const { showId, input, fields, criticName, dryRun, onMerge } = ctx;
+  const { showId, input, criticName, dryRun, onMerge } = ctx;
+  let { fields } = ctx;
+  // BRO-7149: a date WE resolved never certifies or replaces what the file already carries.
+  if (input._publishDateResolved && existing.publishDate) {
+    fields = { ...fields };
+    delete fields.publishDate;
+    delete fields.dateSource;
+  }
   // BRO-5693: the create-only listing guard cannot protect a repaired slot
   // from being refilled by aggregator refresh or URL discovery. Check both
   // existing-file routes here before merging any candidate body or score.
@@ -1902,11 +1955,12 @@ function _mergeIntoExisting(filepath, existing, ctx) {
   // invalid, merge-reviews-json TIER_RANK). A split parent's section is
   // complete, so its whole article must be complete too; any other stored
   // body must be strictly beaten, or matched only by 'complete'.
-  const _bodyUpgradeTierOk = () => {
+  const _bodyUpgradeTierOk = ({ requireComplete = false } = {}) => {
     const { tierRank } = require('./merge-reviews-json');
     const r = classifyContentTier({ ...existing, fullText: fields.fullText, contentTier: undefined });
     const cand = r && r.contentTier;
     if (!cand) return false;
+    if (requireComplete && cand !== 'complete') return false;
     if (existing.multiShowSplitParent === true) {
       if (cand !== 'complete') return false;
       // The fan-out that follows must be able to act on the whole article
@@ -1957,8 +2011,13 @@ function _mergeIntoExisting(filepath, existing, ctx) {
       });
     } catch { return false; }
   };
+  // BRO-7131: the same-url teaser rule skips the lede/shingle proof, so it only takes a COMPLETE incoming body (a
+  // consent or paywall page at the same url must not beat a stored excerpt on length alone).
+  const _sameUrl = () => !!(existing.url && input.url && require('./review-url-collision').sameArticleUrl(existing.url, input.url));
+  const _teaserOnly = () => !isSameArticleBodyUpgrade(existing, fields.fullText);
   if (input && input.replaceBadBody === true && typeof fields.fullText === 'string'
-      && (isSameArticleBodyUpgrade(existing, fields.fullText)
+      && ((isSameArticleBodyUpgrade(existing, fields.fullText, { sameUrl: _sameUrl() })
+        && (!_teaserOnly() || _bodyUpgradeTierOk({ requireComplete: true })))
         || (_multiShowWhole() && isSameArticleBodyUpgrade(existing, fields.fullText, { multiShowWhole: true })))
       && _bodyUpgradeTierOk()) {
     console.log(`  ↑ Replacing stored body (${fullTextBefore.length} chars) with a longer copy of the same article (${fields.fullText.length} chars)`);

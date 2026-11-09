@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/pending-fixes/bro-4504.json (read by the test); data/pending-fixes/bro-4504-3.json (read by the test); data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

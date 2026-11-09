@@ -425,6 +425,8 @@ export interface AudienceBuzzSource {
 }
 
 export interface AudienceBuzzData {
+  /** Attached by data-audience so review gates share scoring's show context. */
+  showInfo?: { category?: string; status?: string; closingDate?: string | null };
   title: string;
   designation: AudienceBuzzDesignation;
   combinedScore: number;
@@ -890,6 +892,9 @@ export interface OutletProfile {
   lowScore: number;
   volumeRank: number;
   generosityRank: number;
+  generosityPool?: number;
+  peerMedianAvg?: number;
+  generosityShare?: number;
   criticCount: number;
   logoDomain: string | null;
   logoColor: string | null;
@@ -910,6 +915,9 @@ export interface CriticProfile {
   lowScore: number;
   volumeRank: number;
   generosityRank: number;
+  generosityPool?: number;
+  peerMedianAvg?: number;
+  generosityShare?: number;
 }
 
 // Creative team page types

@@ -27,6 +27,19 @@ import { reviewVerdictTier, VERDICT_VARIANTS, trimToWordBoundary } from './newsw
 const { showHasFestivalVenue } = createRequire(import.meta.url)('../lib/review-guards.js');
 
 const SUBJECT_MAX = 80;
+
+// Week-size framing (owner, 2026-11-08): "A big week for London theatre"
+// opened 7 of 8 West End issues, including a four-opening week when a normal
+// week had 8 to 14. Readers notice a stock opener, and it was often false.
+// Only call a week busy or quiet when it really is, against the median of
+// recent weeks (`typical`, computed by generate.mjs). Otherwise say nothing
+// and let the news lead.
+export function weekSize(n, typical) {
+  if (!(typical > 0)) return null;
+  if (n >= Math.max(typical * 1.5, typical + 3)) return 'busy';
+  if (n <= typical * 0.5) return 'quiet';
+  return null;
+}
 const WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
 const word = (n) => WORDS[n] || String(n);
 
@@ -71,7 +84,7 @@ const scoreOf = (o) => {
  * @returns {null | { subject, sentences: string[], showRefs: Array<{id,slug,title}>, lead }}
  *   null when there is no New York opening to lead with.
  */
-export function composeWeekVoice({ bw = [], ob = [], counts = {}, announcedIds = new Set(), notableIds = new Set() } = {}) {
+export function composeWeekVoice({ bw = [], ob = [], counts = {}, announcedIds = new Set(), notableIds = new Set(), typical = null } = {}) {
   const bwScored = bw.filter(o => scoreOf(o) != null);
   const obScored = ob.filter(o => scoreOf(o) != null);
   if (!bwScored.length && !obScored.length) return null;
@@ -80,7 +93,7 @@ export function composeWeekVoice({ bw = [], ob = [], counts = {}, announcedIds =
   const total = bwN + obN;
   const bwAnnounced = bwScored.length > 0 && bwScored.every(o => announcedIds.has(o.show.id));
   if (bwAnnounced && obScored.length) {
-    return composeAnnouncedBroadwayWeek({ bwScored, obScored, bwN, obN, notableIds });
+    return composeAnnouncedBroadwayWeek({ bwScored, obScored, bwN, obN, notableIds, typical });
   }
   // Broadway leads Off Broadway whenever it has an opening, same as the
   // newsworthiness weights.
@@ -107,7 +120,7 @@ export function composeWeekVoice({ bw = [], ob = [], counts = {}, announcedIds =
   }
   if (n >= 2) {
     subjectOptions.push(`${L} and ${n - 1} other show${n - 1 === 1 ? '' : 's'} open ${M.on} this week`);
-  } else if (total <= 2) {
+  } else if (total <= 2 && (!typical || weekSize(total, typical.total) === 'quiet')) {
     subjectOptions.push(`${L} ${verb} ${leadWhere} in a quiet week`);
   } else {
     subjectOptions.push(`${L} ${verb} ${leadWhere}, plus ${word(otherN)} ${OM.on} opening${otherN === 1 ? '' : 's'}`);
@@ -118,7 +131,16 @@ export function composeWeekVoice({ bw = [], ob = [], counts = {}, announcedIds =
   // ── Lede ─────────────────────────────────────────────────────────────────
   const named = new Set([lead.show.id]);
   const sentences = [];
-  if (total === 1) sentences.push('A slow week in New York, with just one opening.');
+  if (typical) {
+    // Frame the week's size only when it is unusual (see weekSize()).
+    const size = weekSize(total, typical.total);
+    const reviewed = list.length;
+    const top = [...list].sort((x, y) => scoreOf(y) - scoreOf(x))[0];
+    if (size === 'busy') sentences.push(`An unusually busy week in New York, with ${word(total)} openings.`);
+    else if (size === 'quiet') sentences.push(total === 1 ? 'A quieter week in New York, with just one opening.' : `A quieter week in New York, with ${word(total)} openings.`);
+    if (n >= 5 && reviewed < n) sentences.push(`${capitalize(word(reviewed))} of the ${word(n)} openings ${M.the} got enough reviews for a Critic Score, and ${top.show.title} scored the highest with a ${scoreOf(top)}.`);
+  }
+  else if (total === 1) sentences.push('A slow week in New York, with just one opening.');
   else if (total === 2) sentences.push('A slow week in New York, with just two openings.');
   else if (n >= 5) {
     // The count is the calendar's; openings without enough reviews for a Critic
@@ -248,7 +270,7 @@ export function obHighlights(list, notableIds = new Set()) {
 const capitalize = (t) => t.charAt(0).toUpperCase() + t.slice(1);
 
 // Off Broadway leads; the already-announced Broadway opening(s) close the lede.
-function composeAnnouncedBroadwayWeek({ bwScored, obScored, bwN, obN, notableIds }) {
+function composeAnnouncedBroadwayWeek({ bwScored, obScored, bwN, obN, notableIds, typical = null }) {
   const bwTitles = bwScored.map(o => o.show.title);
   const bwPart = bwScored.length <= 2 ? joinWithAnd(bwTitles) : `${word(bwScored.length)} Broadway shows`;
   const subjectOptions = [
@@ -259,9 +281,13 @@ function composeAnnouncedBroadwayWeek({ bwScored, obScored, bwN, obN, notableIds
   const subject = subjectOptions.find(x => x.length <= SUBJECT_MAX) || trimToWordBoundary(subjectOptions[subjectOptions.length - 1], SUBJECT_MAX);
 
   const sentences = [];
-  sentences.push(obN >= 5
-    ? `A busy week Off Broadway, with ${word(obN)} openings.`
-    : obN === 1 ? 'One new show Off Broadway this week.' : `A steady week Off Broadway, with ${word(obN)} openings.`);
+  if (typical) {
+    if (weekSize(obN, typical.ob) === 'busy') sentences.push(`An unusually busy week Off Broadway, with ${word(obN)} openings.`);
+  } else {
+    sentences.push(obN >= 5
+      ? `A busy week Off Broadway, with ${word(obN)} openings.`
+      : obN === 1 ? 'One new show Off Broadway this week.' : `A steady week Off Broadway, with ${word(obN)} openings.`);
+  }
   const hl = obHighlights(obScored, notableIds);
   sentences.push(hl.text);
   const bwSentence = bwScored.length === 1
@@ -278,4 +304,20 @@ function composeAnnouncedBroadwayWeek({ bwScored, obScored, bwN, obN, notableIds
   const showRefs = [...named].map(id => all.find(o => o.show.id === id).show)
     .map(x => ({ id: x.id, slug: x.slug, title: x.title }));
   return { subject, sentences: sentences.filter(Boolean).slice(0, 5), showRefs, lead: obScored[0].show };
+}
+
+// West End edition aggregate opener (owner, 2026-08-02): "A big week for
+// London theatre: six shows opened, four scoring 75 or higher." It says
+// "opened" of this week, so it counts only in-week openings: the London
+// section's grace-window catch-ups (opened in an earlier week, scored late)
+// stay out. Counting them claimed eight London openings for Nov 2-8 2026,
+// when five had opened (Tosca, Derren Brown, Ilford Boy were October
+// openings). Input: weOpeningStories() rows ({ agg: { avg }, isCatchUp }).
+export function composeWeOpener(stories, { typical } = {}) {
+  const inWeek = (stories || []).filter(x => !x.isCatchUp);
+  const n = inWeek.length;
+  const size = weekSize(n, typical);
+  if (size === 'busy') return `An unusually busy week in London, with ${word(n)} openings.`;
+  if (size === 'quiet' && n >= 1) return `A quieter week in London, with ${n === 1 ? 'just one opening' : `${word(n)} openings`}.`;
+  return '';
 }

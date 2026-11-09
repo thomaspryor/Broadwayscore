@@ -91,6 +91,10 @@ function synopsisNeedsLook(text) {
 
 const MIN_SCORED = 5;
 const MIN_DISPLAYABLE_SHARE = 0.7;
+// Owner decision 2026-11-03 (BRO-6487): 2012-13 has too few surviving reviews
+// (about 2.8 per show; The Stage and The Times unreachable) to reach 0.70, so it
+// is held to a documented lower floor. Every other season keeps 0.70.
+const SEASON_DISPLAYABLE_FLOOR = { '2012-2013': 0.25 };
 
 const USAGE = `audit-we-historical-season.js — pass/fail quality gate for a West End historical season.
 
@@ -188,8 +192,9 @@ function auditSeason({ shows, reviews, season, ids, imageSources = {}, factCheck
   const unreadable = promoted.reduce((n, s) => n + (textFiles[s.id] || []).filter(f => f === null).length, 0);
 
   const displayableShare = promoted.length ? perShow.filter(s => s.displayable).length / promoted.length : 0;
+  const minShare = SEASON_DISPLAYABLE_FLOOR[season] ?? MIN_DISPLAYABLE_SHARE;
   const checks = {
-    displayable: { pass: displayableShare >= MIN_DISPLAYABLE_SHARE, value: Math.round(displayableShare * 100) / 100, threshold: MIN_DISPLAYABLE_SHARE },
+    displayable: { pass: displayableShare >= minShare, value: Math.round(displayableShare * 100) / 100, threshold: minShare },
     inWindow: { pass: outOfWindow.length === 0, value: outOfWindow.length, rows: outOfWindow, exempted },
     duplicates: { pass: duplicates.length === 0, value: duplicates.length, rows: duplicates },
     provenance: { pass: null, value: t12 ? Math.round((t12WithUrl / t12) * 100) / 100 : null, note: `${t12WithUrl}/${t12} T1/T2 reviews have a URL (reported, not gated)` },

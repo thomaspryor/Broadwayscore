@@ -23,9 +23,14 @@ async function fetch(slug, maxPages = 2) {
     const url = p === 1
       ? `https://muckrack.com/${slug}/articles`
       : `https://muckrack.com/${slug}/articles?page=${p}`;
-    let html;
-    try { const r = await fetchPage(url, { timeout: 30000 }); html = r && r.content; } catch { html = null; }
-    if (!html || html.length < 5000) break;
+    let html, fetchErr = null;
+    try { const r = await fetchPage(url, { timeout: 30000 }); html = r && r.content; } catch (e) { html = null; fetchErr = e; }
+    if (!html || html.length < 5000) {
+      // Page 1 failing means we learned nothing about this critic. Throw so the
+      // caller records a failed source instead of "0 missing" (BRO-6927).
+      if (p === 1) throw new Error(`muckrack ${url}: ${fetchErr ? fetchErr.message : `got ${html ? html.length : 0} bytes`}`);
+      break;
+    }
     const matches = [...html.matchAll(/<h\d[^>]*>\s*<a[^>]+href="(https?:[^"]+)"[^>]*>([^<]{6,200})<\/a>/g)];
     let foundOnPage = 0;
     for (const m of matches) {

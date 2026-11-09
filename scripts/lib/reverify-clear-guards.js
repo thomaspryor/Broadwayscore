@@ -46,8 +46,12 @@ const { normalizeTitle } = require('./title-match');
  * reasoning that quotes a venue, a critic pull-quote, or the show's own title
  * does not trip the guard.
  */
+// A bare "not " is NOT in this list (BRO-6745): anywhere in a 90-char window it
+// hit "is not truncated", "does not appear", "cannot", and the word "Not" inside
+// the quoted pull-quote itself, so clean verdicts on real reviews (Guardian, The
+// Stage, DC Theater Arts) were refused as title mismatches. "not" counts only
+// through NOT_CONTRAST_RE, where it negates a quoted name or the show itself.
 const CONTRAST_CUES = [
-  'not ',
   'rather than',
   'instead of',
   'different show',
@@ -55,6 +59,9 @@ const CONTRAST_CUES = [
   'different musical',
   'different play',
   'different title',
+  'unrelated show',
+  'another show',
+  'separate review',
   'does not match',
   "doesn't match",
   'mismatch',
@@ -88,6 +95,25 @@ const DOUBLE_QUOTED_RE = /["“”]([^"“”\n]{2,80})["“”]/g;
 const SINGLE_QUOTED_RE = /(?:^|[^\w'’])['‘]([^'’\n]{2,80})['’](?![\w])/g;
 
 const CUE_WINDOW = 90;
+// Bump when a guard changes what it refuses: rows a guard refused are stamped
+// with the version (contentVerification.clearRefusal) and re-checked once per
+// bump instead of every week (cv-promoted-nonreview-selector.js, BRO-6745).
+const CLEAR_GUARD_VERSION = 2;
+// "'X', not 'Y'" / "not the specified show" / "not a theater review of 'Y'" /
+// "not this production" / "not for 'Y'": the negation is about WHICH work this
+// is. "not a different production" / "not the wrong show" are the opposite
+// claim, so a gap word that is itself a contrast word is refused.
+const NOT_CONTRAST_RE = /\bnot\s+(?:(?:for|about|of)\s+)?(?:["“'‘]|(?:a|an|the|this|that)\s+(?:(?!different\b|wrong\b|separate\b|unrelated\b|other\b)[\w-]+\s+){0,2}?(?:review|show|production|play|musical|title|staging)s?\b)/;
+// A cue that is itself negated ("nor does it review a different production",
+// "is not evidence of reviewing a different show") says the opposite of a
+// mismatch. A conjunction in the gap ("not Proof but rather a different
+// production") ends the negation, and "no" reaches one word at most ("no
+// doubt it is a different show" is not a negation of the cue).
+const NEGATED_CUE_RE = /(?:\b(?:not|nor|never|neither|without)\b(?:\s+(?!but\b|rather\b|yet\b|however\b|instead\b)[\w'’-]+){0,4}|\bno\b(?:\s+[\w'’-]+)?)\s*$/;
+
+function _escapeRe(s) {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
 
 function _norm(s) {
   if (!s || typeof s !== 'string') return '';
@@ -113,13 +139,28 @@ function _titlesAgree(a, b) {
   return a.includes(b) || b.includes(a);
 }
 
-function _hasCueNear(text, index, length) {
+function _hasCueNear(text, index, length, showTitle) {
   const lower = text.toLowerCase();
-  const start = Math.max(0, index - CUE_WINDOW);
-  const end = Math.min(lower.length, index + length + CUE_WINDOW);
-  const window = lower.slice(start, end);
-  for (const cue of CONTRAST_CUES) {
-    if (window.includes(cue)) return cue;
+  // The quoted span itself is excluded: a pull-quote that contains "not" or
+  // "actually" is the critic's prose, not the verdict contrasting two titles.
+  const parts = [
+    { str: lower.slice(Math.max(0, index - CUE_WINDOW), index), offset: Math.max(0, index - CUE_WINDOW) },
+    { str: lower.slice(index + length, Math.min(lower.length, index + length + CUE_WINDOW)), offset: index + length },
+  ];
+  for (const { str, offset } of parts) {
+    for (const cue of CONTRAST_CUES) {
+      let from = 0;
+      for (;;) {
+        const i = str.indexOf(cue, from);
+        if (i === -1) break;
+        from = i + cue.length;
+        if (NEGATED_CUE_RE.test(lower.slice(Math.max(0, offset + i - 30), offset + i))) continue;
+        return cue;
+      }
+    }
+    if (NOT_CONTRAST_RE.test(str)) return 'not ';
+    // "It reviews 'The Crucible', not Consumed." — the show's own title, unquoted.
+    if (showTitle && new RegExp(`\\bnot\\s+(?:the\\s+)?${_escapeRe(showTitle.toLowerCase())}(?![\\w])`).test(str)) return 'not ';
   }
   return null;
 }
@@ -165,7 +206,7 @@ function detectTitleMismatch({ reasoning, showTitle }) {
       const normQ = _norm(quoted);
       if (!normQ || normQ.length < 3) continue;
       if (_titlesAgree(normQ, normShow)) continue;
-      const cue = _hasCueNear(reasoning, m.index, m[0].length);
+      const cue = _hasCueNear(reasoning, m.index, m[0].length, showTitle);
       if (cue) {
         return {
           quotedTitle: quoted,
@@ -218,6 +259,13 @@ const NON_REVIEW_ADMISSIONS = [
   'reads as promotional material',
   'promotional material or a preview',
   'is not a review',
+  // BRO-6745: clean verdicts on an interview and two review roundups.
+  'rather than a critical evaluation',
+  'is an interview',
+  'compilation of critical assessments',
+  'collection of excerpts',
+  'excerpts from multiple critics',
+  'assessments from various outlets',
 ];
 
 function detectNonReviewAdmission({ reasoning }) {
@@ -231,7 +279,7 @@ function detectNonReviewAdmission({ reasoning }) {
       from = i + phrase.length;
       // Discard a negated occurrence: "not a preview", "isn't a roundup".
       const before = lower.slice(Math.max(0, i - 14), i);
-      if (/\b(?:not|isn'?t|n'?t|never)\s+$/.test(before)) continue;
+      if (/\b(?:not|isn'?t|n'?t|never)\s+(?:an?\s+)?$/.test(before)) continue;
       // Discard a phrase that is only a PREFIX of a longer word: "is a feature"
       // must not fire on "is a feature-length review", and "is a preview" must
       // not fire on "is a previewing". A refusal here strands a legitimately
@@ -374,10 +422,23 @@ function assessClearSafety({ filePath, data, show, result, showTitle, fsImpl }) 
     });
   }
 
+  // GUARD 6 (BRO-6745) — the verdict's own articleType says it is not a review
+  // while its booleans say clean. "news/high" with isValid:true,
+  // wrongArticle:false reached a Broadway News extension story (bug-2026).
+  // A missing articleType is the verifier's 'review' default, not a contradiction.
+  const articleType = result && result.articleType;
+  if (typeof articleType === 'string' && articleType && articleType !== 'review') {
+    refusals.push({
+      code: 'article-type-not-review',
+      detail: `verdict articleType=${articleType} contradicts its clean booleans`,
+    });
+  }
+
   return { safe: refusals.length === 0, refusals };
 }
 
 module.exports = {
+  CLEAR_GUARD_VERSION,
   assessClearSafety,
   detectTitleMismatch,
   detectNonReviewAdmission,

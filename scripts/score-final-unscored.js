@@ -9,6 +9,7 @@
  */
 
 const fs = require('fs');
+const { getExcerpts } = require('./lib/excerpt-fields');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
 
@@ -210,7 +211,7 @@ showDirs.forEach(showId => {
       }
 
       // Get text to analyze
-      const textToAnalyze = data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt || data.fullText || '';
+      const textToAnalyze = getExcerpts(data)[0] || data.fullText || '';
 
       if (textToAnalyze.length < 30) {
         stats.stillUnscored++;

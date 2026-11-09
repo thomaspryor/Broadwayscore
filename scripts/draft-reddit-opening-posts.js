@@ -31,6 +31,7 @@
 
 'use strict';
 
+require('./lib/llm-usage-install'); // LLM spend meter: before any client is built (BRO-5043)
 const { COPY_SONNET, REDDIT_SONNET } = require('./lib/models.js');
 const fs = require('fs');
 const path = require('path');

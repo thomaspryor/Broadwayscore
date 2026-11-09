@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/critic-registry.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Run: node --test scripts/lib/audit-publisher-domain-live.test.mjs
  * BRO-4411: the audit must flag NYT reviews live as About Entertainment even

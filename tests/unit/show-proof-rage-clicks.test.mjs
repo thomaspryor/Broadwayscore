@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/reviews.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // TESTS-VS-DERIVED-DATA-EXEMPT: structural key-uniqueness invariant over all of
 // data/reviews.json (no hardcoded scores/dates asserted as ground truth); the one
 // proof-2026/nysr fact is a precondition guard for the regression case, not a

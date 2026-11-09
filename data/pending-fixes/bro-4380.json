@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4380",
   "planId": "87bbc869-288d-4566-8835-6fbcd637f068",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-09-29T20:09:19.085Z",
   "submitter": {
     "name": null,
@@ -569,5 +569,27 @@
       "ok": true,
       "msg": "shows.json: images updated for untitled-new-work-by-monica-bill-barnes-and-robbie-saenz-de-viteri-off-broadway-2026"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "obsolete": 2
+    },
+    "ops": [
+      {
+        "i": 2,
+        "verdict": "obsolete",
+        "reason": "show migrant-qa-panel-off-west-end-2026 was retired"
+      },
+      {
+        "i": 10,
+        "verdict": "obsolete",
+        "reason": "show ukaff-hostile-special-qa-off-west-end-2026 was retired"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (2 obsolete); per-op reasons in triage.ops"
 }

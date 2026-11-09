@@ -32,6 +32,7 @@ git add public/data/mobile-shows.json 2>/dev/null || true
 git add public/data/stats-canon.json public/data/stats-reviews.json 2>/dev/null || true
 # iOS quiz onboarding data (BRO-6647), regenerated after the mobile index.
 git add public/data/onboarding-cities.json public/data/onboarding-hits.json 2>/dev/null || true
+git add src/config/genre-tags.json 2>/dev/null || true  # BRO-6925
 # Lock audit-trail snapshot (Lost Boys 2026-04-27 Gap #6): /admin/locks SSR
 # ships an empty page unless locks.json lands in the public tree.
 git add public/data/admin/locks.json 2>/dev/null || true

@@ -38,6 +38,7 @@ const { isCrossMarketPlaybillUrl } = require('./lib/playbill-url-market');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { getMarketSearchKeyword } = require('./lib/market-label');
 const { todaytixMarket, todaytixSearchUrl, extractTodaytixShowLink, todaytixSerpQuery, todaytixShowUrl } = require('./lib/todaytix-market');
+const { unconfirmedArtReason } = require('./lib/unconfirmed-art-policy');
 const { normalizeMezzTitle, buildMezzIndex, pickMezzanineCandidate, theatrEligible, isRejectedImage, thumbnailFallbackAction, ibdbEligible, venuesMatch, buildVenueCityIndex, keepExistingImage, fileSourceUrls, recordFileSources, recordedSourceFor, imagePathOwner } = require('./lib/image-source-match');
 const { isStrictGoogleShow, noArtOutcome, buildNoReliableArtMarker } = require('./lib/no-reliable-art');
 const { selectShowsToFetch, todaytixApiArtEligible } = require('./lib/image-fetch-selection');
@@ -2006,6 +2007,15 @@ async function verifyAndCollect(images, show, tierName, verifyCtx) {
     rateLimiter: verifyCtx.rateLimiter,
   });
 
+  // BRO-6995: anyone can upload to Mezzanine/Theater Diary, and the verifier fails
+  // open on a missing key or an API error. Art from those tiers must be confirmed.
+  const unconfirmed = unconfirmedArtReason(tierName, result);
+  if (unconfirmed) {
+    console.log(`   ✗ REFUSED (${tierName}): ${unconfirmed} — ${result && result.description}`);
+    verifyCtx.refusedUnconfirmed = (verifyCtx.refusedUnconfirmed || 0) + 1;
+    return null;
+  }
+
   if (strict) {
     const tally = strictTallyFor(verifyCtx, show.id);
     const verdict = applyStrictVerdict(result, { strict: true });
@@ -3407,6 +3417,7 @@ async function main() {
     console.log(`  Rejected (wrong image): ${verifyCtx.rejected}`);
     console.log(`  Production photos deferred: ${verifyCtx.productionPhotos || 0}`);
     console.log(`  Uncertain (accepted anyway): ${verifyCtx.uncertain}`);
+    if (verifyCtx.refusedUnconfirmed) console.log(`  Refused (user-uploaded art, verifier not confident): ${verifyCtx.refusedUnconfirmed}`);
     if (verifyCtx.venueOverrides > 0) {
       console.log(`  Venue overrides (pre-Broadway): ${verifyCtx.venueOverrides}`);
     }

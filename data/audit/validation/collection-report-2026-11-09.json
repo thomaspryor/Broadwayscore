@@ -1,0 +1,128 @@
+{
+  "runDate": "2026-11-09T02:41:44.679Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 100,
+    "priority": "all",
+    "showFilter": "the-imaginary-invalid-2026,the-kick-inside-off-broadway-2026,a-few-good-men-2026,tosca-english-national-opera-west-end-2026",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 2,
+    "failed": 7,
+    "skipped": 0,
+    "successRate": "22.2%"
+  },
+  "tierBreakdown": {
+    "playwright": 2,
+    "amp": 0,
+    "browserbase": 0,
+    "directCookies": 0,
+    "scrapingdog": 0,
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archiveToday": 0,
+    "archive": 0
+  },
+  "statistics": {
+    "tier1Attempts": 8,
+    "tier1Success": 3,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier1_9Attempts": 5,
+    "tier1_9Success": 3,
+    "tier2Attempts": 2,
+    "tier2Success": 0,
+    "tier3Attempts": 3,
+    "tier3Success": 1,
+    "tier3_6Attempts": 2,
+    "tier3_6Success": 0,
+    "tier4Attempts": 3,
+    "tier4Success": 0,
+    "totalFailed": 7,
+    "scrapingBeePageCredits": 11,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 0,
+    "urlDiscoverySuccess": 0,
+    "urlDiscoveryCapped": 0
+  },
+  "thisRun": {
+    "processed": 2,
+    "failed": 7,
+    "shows": [
+      "a-few-good-men-2026",
+      "tosca-english-national-opera-west-end-2026"
+    ],
+    "outOfScopeShows": [],
+    "inheritedFromResume": {
+      "processed": 0,
+      "failed": 0
+    }
+  },
+  "processed": [
+    "tosca-english-national-opera-west-end-2026/closeupculture--unknown.json",
+    "tosca-english-national-opera-west-end-2026/standard--unknown.json"
+  ],
+  "failed": [
+    "tosca-english-national-opera-west-end-2026/bachtrack--anna-bogdanova.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--clare-varney.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--peter-quantrill.json",
+    "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json",
+    "a-few-good-men-2026/variety--anna-tingley.json",
+    "a-few-good-men-2026/goldderby--ethan-alter.json"
+  ],
+  "cumulativeResumedState": {
+    "processed": [
+      "tosca-english-national-opera-west-end-2026/closeupculture--unknown.json",
+      "tosca-english-national-opera-west-end-2026/standard--unknown.json"
+    ],
+    "failed": [
+      "tosca-english-national-opera-west-end-2026/bachtrack--anna-bogdanova.json",
+      "tosca-english-national-opera-west-end-2026/bachtrack--clare-varney.json",
+      "tosca-english-national-opera-west-end-2026/bachtrack--peter-quantrill.json",
+      "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+      "tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json",
+      "a-few-good-men-2026/variety--anna-tingley.json",
+      "a-few-good-men-2026/goldderby--ethan-alter.json"
+    ]
+  },
+  "tierDetails": {
+    "playwright": [
+      "tosca-english-national-opera-west-end-2026/closeupculture--unknown.json",
+      "tosca-english-national-opera-west-end-2026/standard--unknown.json"
+    ],
+    "amp": [],
+    "browserbase": [],
+    "directCookies": [],
+    "scrapingdog": [],
+    "scrapingbee": [],
+    "brightdata": [],
+    "archiveToday": [],
+    "archive": []
+  },
+  "failuresByOutlet": {
+    "Cheryl Markosky": {
+      "count": 1,
+      "domain": "cherylmarkosky.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Times (UK)": {
+      "count": 1,
+      "domain": "thetimes.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
+  "urlDiscoveries": []
+}

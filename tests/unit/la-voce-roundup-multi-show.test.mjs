@@ -37,6 +37,20 @@ test('real contamination still dedups', () => {
   assert.equal(isJointCombinedCopy(null, P, kept, SHOW[P]), false);
 });
 
+test('short titles (Red, SIX, Art) count when written as a proper noun twice (BRO-7077)', () => {
+  const R = 'red-off-broadway-2026';
+  const red = (fullText) => copy(R, [B], { fullText });
+  const kept = [copy(B, [R])];
+  assert.equal(isJointCombinedCopy(red('Benevolent is first. Red is gorgeous and RED lingers.'), R, kept, { title: 'Red' }), true);
+  assert.equal(isJointCombinedCopy(red('Benevolent is first. SIX rocks. SIX again.'), R, kept, { title: 'SIX' }), true);
+  assert.equal(isJointCombinedCopy(red('Benevolent is first, then Art. Art is next.'), R, kept, { title: 'Art' }), true);
+  assert.equal(isJointCombinedCopy(red('Benevolent is first, then a play in red light.'), R, kept, { title: 'Red' }), false, 'prose red never counts');
+  assert.equal(isJointCombinedCopy(red('Benevolent is first. Redemption follows. Redder.'), R, kept, { title: 'Red' }), false, 'substring never counts');
+  assert.equal(isJointCombinedCopy(red('Benevolent is first. Big surprise in act two.'), R, kept, { title: 'Big' }), false, 'one sentence-start hit is not enough');
+  assert.equal(isJointCombinedCopy(red('Benevolent opened March 13 and runs to May 13.'), R, kept, { title: '13' }), false, 'number titles never count');
+  assert.equal(isJointCombinedCopy(copy(R, [], { fullText: 'Art is next. Art again.' }), R, [copy(B, ['x'])], { title: 'Art' }), false, 'still needs the combinedWith link');
+});
+
 test('rebuild dedup consults the joint-copy guard', () => {
   const src = readFileSync(new URL('../../scripts/rebuild-all-reviews.js', import.meta.url), 'utf8');
   assert.match(src, /isJointCombinedCopy\(data, showId, existing\.copies \|\| \[existing\], showById\[showId\]\)/);

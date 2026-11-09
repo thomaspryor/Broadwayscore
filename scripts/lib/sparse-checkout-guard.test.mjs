@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data); data/critic-registry.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Regression: a write from a SPARSE review-texts clone must never "create" a
 // file that already exists on origin but sits outside the sparse set
 // (2026-09-25: the-children-2017/wsj--edward-rothstein.json was replaced

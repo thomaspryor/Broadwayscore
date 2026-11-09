@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // TESTS-VS-DERIVED-DATA-EXEMPT: the one shows.json read is a structural clash check (no feeder-venue pattern may claim a venue filed under another market); it pins no facts about any show.
 // BRO-4923: noteworthy UK-regional trigger. A Guardian critic review of a
 // production at a flagship house in data/uk-regional-venues.json gets the show

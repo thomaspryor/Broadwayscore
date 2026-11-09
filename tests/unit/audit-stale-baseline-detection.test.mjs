@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/review-texts (read by the test); data/aggregator-archive (read by the test); data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // TESTS-VS-DERIVED-DATA-EXEMPT: structural check that each audit reports no stale baseline entries on live data; pins no specific facts
 // BRO-5315: every baseline-diff audit must detect STALE baseline entries
 // (keys with no live violation behind them). A fixed violation left in the

@@ -1216,6 +1216,48 @@ function shouldAutoClearWrongProductionUkDualMarket(data, ctx = {}) {
 }
 
 /**
+ * In-own-production-window test for the London-outlet reverse self-heal, for
+ * files that may have no publishDate (BRO-6994). 38 of the 55 observer.com files
+ * held as "Cross-market: London outlet" had a null publishDate, so the window
+ * gate failed them although the URL carries the date or year
+ * (observer.com/2024/...). With no publishDate, fall back to the URL date, then
+ * to the URL month (/YYYY/MM/), then the bare year: in window only when some day of it falls
+ * inside the show's own window. A year is coarser than a date, so the caller keeps its
+ * other-show-URL veto (urlFiledUnderOtherShow).
+ *
+ * @param {object} show
+ * @param {string|null} publishDate
+ * @param {string|null} url
+ * @param {(show: object, date: string) => boolean} isReviewWithinOwnProductionWindow injected from
+ *   review-guards by the caller: requiring it here would pull its heavy graph into this light module
+ *   (safe-form-allowlist graph check).
+ * @returns {boolean}
+ */
+function isInOwnWindowByDateOrUrlYear(show, publishDate, url, isReviewWithinOwnProductionWindow) {
+  if (publishDate) return isReviewWithinOwnProductionWindow(show, publishDate);
+  if (!show || !url) return false;
+  const inWin = (d) => isReviewWithinOwnProductionWindow(show, d);
+  // observer.com-style /YYYY/MM/slug/ (or /YYYY/slug/) right after the host. Parsed here
+  // rather than via extractDateFromUrl, which drops the month and skips title years
+  // such as 2026 (cross-review finding, BRO-6994).
+  const m = String(url).match(/^https?:\/\/[^/]+\/(20\d{2}|19\d{2})(?:\/(0?[1-9]|1[0-2])(?=\/))?/);
+  if (m) {
+    const y = m[1];
+    if (m[2]) {
+      const mo = String(m[2]).padStart(2, '0');
+      // The window is >= 51 days wide, so sampling the month every 7 days cannot step over it.
+      return ['01', '08', '15', '22', '28'].some((d) => inWin(`${y}-${mo}-${d}`));
+    }
+    for (let mm = 1; mm <= 12; mm++) {
+      if (inWin(`${y}-${String(mm).padStart(2, '0')}-01`)) return true;
+    }
+    return inWin(`${y}-12-31`);
+  }
+  const u = require('./url-date').extractDateFromUrl(url);
+  return !!(u && u.date && inWin(u.date));
+}
+
+/**
  * Reverse direction of shouldAutoClearWrongProductionUkDualMarket: a stale
  * "Cross-market: London outlet ..." flag on a Broadway / off-Broadway show,
  * written before the outlet was registered as dual-market.
@@ -1309,4 +1351,5 @@ module.exports = {
   isUrlIndependentWrongShowReason,
   shouldAutoClearWrongProductionUkDualMarket,
   shouldAutoClearStaleLondonOutletCrossMarket,
+  isInOwnWindowByDateOrUrlYear,
 };

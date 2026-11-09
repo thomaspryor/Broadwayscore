@@ -26,6 +26,9 @@
  *                         relayed-rating carrier (leave alone) from junk (exclude)
  *   E uncapturedStar      (BRO-4838) a star printed in the text but never stored as the rating
  *   F scoreOutsideBand    (BRO-4838) the published score sits outside the critic's own rating band
+ *   G teaserTwin          (BRO-7131) a short post that only points to the critic's full review elsewhere ("Read my full
+ *                         London Theatre review here") counted beside that same critic's full review of the show under
+ *                         another outlet: one critic, two scores. Cross-file, so the audit pairs it (teaserTwin below)
  */
 const { hasExcerpt } = require('./excerpt-fields');
 
@@ -128,4 +131,36 @@ function isCurrentShow(show, now = Date.now(), days = 120) {
   return Number.isFinite(opened) && opened <= now + 30 * 864e5 && now - opened < days * 864e5;
 }
 
-module.exports = { EXCLUSION_FLAGS, NO_TEXT_REASONS, NO_SIGNAL_RULES, hasExcerpt, noUsableText, cvSaysReview, rejectedYetVerified, neverScored, blockedUrlUnflagged, uncapturedStar, scoreOutsideBand, classify, isCurrentShow };
+// G: a pointer post. Short (a real review this short with a link-out phrase is a teaser) and says where the full review is.
+const TEASER_POINTER_MAX_CHARS = 1500;
+const POINTER_RE = /read (?:my|the|our) (?:full|complete|entire) [^.]{0,40}review here|(?:full|complete) review (?:is )?(?:here|at|on)\b|read (?:my|the|our) (?:full |complete )?review (?:here|at|on)\b/i;
+function isTeaserPointer(d) {
+  const t = d && typeof d.fullText === 'string' ? d.fullText : '';
+  return t.length > 0 && t.length <= TEASER_POINTER_MAX_CHARS && POINTER_RE.test(t);
+}
+
+/** One critic across outlets: "Cheryl Markosky" and a blog's "Cherylmarkosky" both compact to cherylmarkosky. */
+function criticKeys(name) {
+  const n = String(name || '').toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '');
+  if (!n.trim() || /^(unknown|staff|anonymous)\b/.test(n.trim()) || /\bstaff\b/.test(n)) return null;
+  const compact = n.split(/[^a-z]+/).filter(Boolean).join('');
+  return compact.length >= 6 ? compact : null; // a lone first name or initials is not enough to pair two outlets
+}
+function sameCritic(a, b) {
+  const x = criticKeys(a);
+  return !!x && x === criticKeys(b);
+}
+
+/**
+ * G. @param {object} d the record; @param {Array<{file, outletId, criticName}>} included the show's OTHER files the
+ * rebuild includes. Returns {twin} (the counted full review's file) or null. The caller passes only included files and
+ * only calls this for a record the rebuild itself includes, so a teaser already excluded never shows.
+ */
+function teaserTwin(d, included) {
+  if (!isTeaserPointer(d)) return null;
+  // The twin must be the full review: if both are pointers, flagging both would drop the critic entirely.
+  const twin = (included || []).find((o) => o.outletId !== d.outletId && !o.teaser && sameCritic(o.criticName, d.criticName));
+  return twin ? { twin: twin.file, twinOutlet: twin.outletId } : null;
+}
+
+module.exports = { isTeaserPointer, sameCritic, teaserTwin, EXCLUSION_FLAGS, NO_TEXT_REASONS, NO_SIGNAL_RULES, hasExcerpt, noUsableText, cvSaysReview, rejectedYetVerified, neverScored, blockedUrlUnflagged, uncapturedStar, scoreOutsideBand, classify, isCurrentShow };

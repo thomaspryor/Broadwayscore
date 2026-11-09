@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (read by the test); data/reviews.json (read by the test); data/outlet-registry.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // TESTS-VS-DERIVED-DATA-EXEMPT: structural check that measured coverage
 // (derived from current shows.json/reviews.json) doesn't drift from the
 // registry's coverageExpectation claim — not a pinned fact about any show.

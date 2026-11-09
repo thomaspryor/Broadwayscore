@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/tony-frozen-audience-grades.json (read by the test); data/awards.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // TESTS-VS-DERIVED-DATA-EXEMPT: pins the frozen-audience-grade snapshot invariants — a
 // deliberate freeze artifact, not a value derivable from live audience data (live data
 // is exactly what this fix freezes out).

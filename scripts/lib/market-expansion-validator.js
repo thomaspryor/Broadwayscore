@@ -73,9 +73,11 @@ function findStaleOpenShows(marketShows, now = new Date(), graceDays = CLOSING_G
 // discovery fix): exempt while status='announced', and while a provisional
 // venue-page stub is 'upcoming' because the venue listed dates but no genre
 // (BRO-4396 gives dated stubs the status their dates imply; knownShowType()
-// leaves type null rather than guess). Nothing fills it automatically: the
-// status flip at previews keeps refusing to guess (announced-promotion.js
-// typeForListedShow), so findUntypedStubsNearPreviews warns ahead of that date.
+// leaves type null rather than guess). shows-write-guard.js fills a type on
+// every write once a row leaves 'announced', but only a confident one
+// (announced-promotion.js typeForListedShow, BRO-7130); a row nothing names
+// stays null, so findUntypedStubsNearPreviews warns ahead of that date and a
+// failure here routes to its own alert (data-validation-routing.js).
 // The exemption names the venue-page source (BRO-5261): other provisional
 // sources (manual requests, tour schedules, roundups) still need a type.
 function typeExempt(s) {
@@ -92,10 +94,18 @@ function findMissingRequiredFields(marketShows) {
 // Exempt upcoming stubs with no type whose first preview is within `days`:
 // on that date the row turns 'previews' and findMissingRequiredFields fails.
 const UNTYPED_STUB_WARN_DAYS = 30;
+// BRO-7100: also a stub whose start date is unknown but whose run is
+// evidently live: an opening date inside the window, or a closing date
+// already known. speculations-off-west-end-2026 ('announced', closingDate
+// set, no previews date) flipped straight to 'open' from its reviews and
+// failed this check with no warning ever printed.
 function findUntypedStubsNearPreviews(marketShows, now = new Date(), days = UNTYPED_STUB_WARN_DAYS) {
   const horizon = new Date(now.getTime() + days * 86400000).toISOString().slice(0, 10);
-  return marketShows.filter((s) => s.status === 'upcoming' && !s.type && typeExempt(s)
-    && s.previewsStartDate && String(s.previewsStartDate).slice(0, 10) <= horizon);
+  const within = (d) => d && String(d).slice(0, 10) <= horizon;
+  return marketShows.filter((s) => !s.type && typeExempt(s) && (
+    (s.status === 'upcoming' && within(s.previewsStartDate))
+    || (!s.previewsStartDate && (within(s.openingDate) || !!s.closingDate))
+  ));
 }
 
 // outlet-registry.json → { outletDomains: {id: domain}, outletDomainAliases: {id: [domains]} }
@@ -212,6 +222,7 @@ module.exports = {
   findSlugCollisions,
   findStaleOpenShows,
   findMissingRequiredFields,
+  typeExempt,
   buildOutletDomainMaps,
   urlMatchesOutletDomain,
   scanShowReviews,

@@ -86,6 +86,9 @@ const ALLOWED_SCRIPTS = [
   // on (refetch + same-article check in scripts/lib/page-bleed-repair.js;
   // queues a rescore for each trimmed file).
   'repair-page-bleed.js',
+  // BRO-7061: cut the theartsdesk.com support banner and trailing Image label from stored texts
+  // (incl. _pending). Plans pass --apply --expect=N.
+  'strip-artsdesk-banner.js',
   'strip-variety-promo-bleed.js', // BRO-5254: strip Variety promo modules from stored texts
   'strip-leading-site-nav.js', // BRO-5859: cut site nav menus / Stage and Cinema footer from stored texts
   // BRO-5080: West End historical rows whose openingDate is a WhatsOnStage
@@ -104,6 +107,9 @@ const ALLOWED_SCRIPTS = [
   // BRO-4490: stamp textFetchedAt on review texts that lack it (git history first,
   // then firstSeenAt/addedAt/collectedAt; plans pass --apply).
   'backfill-text-fetched-at.js',
+  // BRO-5507: apply hand-reviewed outlet display names to outlet-registry.json. Plans pass
+  // --apply-proposals=data/audit/outlet-display-name-proposals.json --write; exits 1 on any refused row.
+  'audit-registry-slug-displaynames.js',
 ];
 
 /** Why the executor would refuse this run-script name, or null. */

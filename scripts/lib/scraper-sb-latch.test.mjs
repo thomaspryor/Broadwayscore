@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/audit/sb-circuit-breaker.json (bot ledger). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // S1-T5/S1-T6 (Scraping cost v3, card 3b1637c5): ScrapingBee's proactive
 // /usage credit check (checkScrapingBeeCredits, scraper.js:189) was only ever
 // invoked by scripts that opted in explicitly — most don't — so sbCreditsLow

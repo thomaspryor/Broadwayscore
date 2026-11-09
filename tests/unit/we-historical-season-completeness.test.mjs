@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/audit/we-season-reference/2012-2013.json (read by the test); data/audit/we-season-reference/2013-2014.json (read by the test); data/audit/we-season-reference/2014-2015.json (read by the test); +3 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';

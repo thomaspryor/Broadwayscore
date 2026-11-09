@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // TESTS-VS-DERIVED-DATA-EXEMPT: parity test — same reviews.json/shows.json fed to old + new impl; expects 0 diffs, no factual pins.
 // Parity regression guard for scripts/lib/market-routing.js — Sprint 3 / S3-T2.
 //

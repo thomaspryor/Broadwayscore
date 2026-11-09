@@ -43,6 +43,14 @@ const regionalBookingResults = [
   ['The Prime of Miss Jean Brodie', 'Royal Lyceum Theatre, Edinburgh', 'https://lyceum.org.uk/events/the-prime-of-miss-jean-brodie'],
   ['King Lear', 'Royal Exchange Theatre, Manchester', 'https://www.royalexchange.co.uk/event/king-lear/'],
   ['Antigone Exits', 'Chichester Festival Theatre, Chichester', 'https://www.cft.org.uk/events/antigone-exits'],
+  ['As You Like It', 'Pitlochry Festival Theatre, Pitlochry', 'https://www.pitlochryfestivaltheatre.com/whats-on/as-you-like-it'],
+  ['Hamlet', 'Theatre Royal Bath, Bath', 'https://theatreroyal.org.uk/whats-on/hamlet'],
+  ['Oh What A Night', 'Òran Mór, Glasgow', 'https://www.oran-mor.co.uk/events/oh-what-a-night'],
+  ['Medea', 'Citizens Theatre, Glasgow', 'https://www.citz.co.uk/whats-on/medea'],
+  ['King Lear', 'Crucible Theatre, Sheffield', 'https://www.sheffieldtheatres.co.uk/whats-on/king-lear'],
+  ['Our Town', 'Writers Theatre, Glencoe, IL', 'https://www.writerstheatre.org/production/our-town/'],
+  ['The Mousetrap', 'Theater Wit, Chicago, IL', 'https://www.theaterwit.org/shows/the-mousetrap'],
+  ['Hedda Gabler', 'Studio Theatre, Washington, DC', 'https://www.studiotheatre.org/shows/hedda-gabler'],
 ];
 
 for (const [title, venue, url] of regionalBookingResults) {
@@ -190,4 +198,11 @@ test('market wins over a conflicting category (the "market first" contract, not 
   // region and starts rejecting correct links.
   assert.equal(showRegion({ market: 'broadway', category: 'west-end' }), 'us');
   assert.equal(showRegion({ market: 'west-end', category: 'broadway' }), 'uk');
+});
+
+test('BRO-5455: regional venue hosts do not attach to look-alike NYC venues', () => {
+  const url = 'https://www.studiotheatre.org/shows/hedda-gabler';
+  for (const venue of ['Ensemble Studio Theatre', 'Irish Repertory Studio Theatre']) {
+    assert.equal(pickTicketUrl([{ title: 'Hedda Gabler', url }], { title: 'Hedda Gabler', venue, market: 'broadway' }), null);
+  }
 });

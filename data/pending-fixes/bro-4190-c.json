@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4190-c",
   "planId": "1fbfead5-57e3-40b5-bc7a-4ef0c7e1d096",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-12T01:08:06.000Z",
   "submitter": {
     "name": null,
@@ -115,5 +115,22 @@
       "ok": true,
       "msg": "Ran ingest-review-from-url.js successfully"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 1
+    },
+    "ops": [
+      {
+        "i": 4,
+        "verdict": "resolved",
+        "reason": "https://www.interestedbystander.com/2025/10/theater-broadways-punch-argues-for.html is counted for torera-off-broadway-2026"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (1 resolved); per-op reasons in triage.ops"
 }

@@ -1,7 +1,7 @@
 {
-  "generated": "2026-11-03T12:47:49.374Z",
+  "generated": "2026-11-09T02:59:45.313Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 41,
+  "count": 46,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -18,7 +18,7 @@
       "field": "duplicateOf"
     },
     {
-      "showId": "a-midsummer-nights-dream-globe-west-end-2026",
+      "showId": "a-midsummer-nights-dream-globe-off-west-end-2026",
       "loserFile": "whatsonstage--alun-hood.json",
       "targetFile": "whatsonstage--james-fitzgerald.json",
       "reason": "orphaned-duplicate-heal: whatsonstage--james-fitzgerald.json was flagged invalid after whatsonstage--alun-hood.json was pointed at it",
@@ -53,6 +53,13 @@
       "field": "duplicateOf"
     },
     {
+      "showId": "beetlejuice-tour-2022",
+      "loserFile": "theatermania--unknown.json",
+      "targetFile": "theatermania--david-gordon.json",
+      "reason": "orphaned-duplicate-heal: theatermania--david-gordon.json was flagged invalid after theatermania--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
       "showId": "catch-me-if-you-can-2011",
       "loserFile": "ap--unknown.json",
       "targetFile": "ap--mark-kennedy.json",
@@ -67,7 +74,7 @@
       "field": "duplicateOf"
     },
     {
-      "showId": "end-of-the-rainbow-west-end-2026",
+      "showId": "end-of-the-rainbow-off-west-end-2026",
       "loserFile": "guardian--unknown.json",
       "targetFile": "guardian--emma-brockes.json",
       "reason": "orphaned-duplicate-heal: guardian--emma-brockes.json was flagged invalid after guardian--unknown.json was pointed at it",
@@ -123,6 +130,13 @@
       "field": "duplicateOf"
     },
     {
+      "showId": "la-traviata-off-broadway-2026",
+      "loserFile": "times-uk--richard-morrison.json",
+      "targetFile": "sunday-times--richard-morrison.json",
+      "reason": "orphaned-duplicate-heal: sunday-times--richard-morrison.json was flagged invalid after times-uk--richard-morrison.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
       "showId": "lost-atoms-off-west-end-2026",
       "loserFile": "standard--unknown.json",
       "targetFile": "standard--nick-curtis.json",
@@ -144,7 +158,7 @@
       "field": "duplicateOf"
     },
     {
-      "showId": "mass-west-end-2026",
+      "showId": "mass-off-west-end-2026",
       "loserFile": "times-uk--dominic-maxwell.json",
       "targetFile": "times-uk--rachel-halliburton.json",
       "reason": "orphaned-duplicate-heal: times-uk--rachel-halliburton.json was flagged invalid after times-uk--dominic-maxwell.json was pointed at it",
@@ -158,7 +172,7 @@
       "field": "duplicateOf"
     },
     {
-      "showId": "midnight-at-the-never-get-west-end-2026",
+      "showId": "midnight-at-the-never-get-off-west-end-2026",
       "loserFile": "times-uk--will-hodgkinson.json",
       "targetFile": "times-uk--unknown.json",
       "reason": "orphaned-duplicate-heal: times-uk--unknown.json was flagged invalid after times-uk--will-hodgkinson.json was pointed at it",
@@ -176,6 +190,13 @@
       "loserFile": "the-sun--dominic-maxwell.json",
       "targetFile": "sunday-times--dominic-maxwell.json",
       "reason": "orphaned-duplicate-heal: sunday-times--dominic-maxwell.json was flagged invalid after the-sun--dominic-maxwell.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "private-lives-2025",
+      "loserFile": "nytimes--unknown.json",
+      "targetFile": "nytimes--ben-brantley.json",
+      "reason": "orphaned-duplicate-heal: nytimes--ben-brantley.json was flagged invalid after nytimes--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -228,7 +249,7 @@
       "field": "duplicateOf"
     },
     {
-      "showId": "the-car-man-west-end-2026",
+      "showId": "the-car-man-off-west-end-2026",
       "loserFile": "financialtimes--unknown.json",
       "targetFile": "financialtimes--louise-levene.json",
       "reason": "orphaned-duplicate-heal: financialtimes--louise-levene.json was flagged invalid after financialtimes--unknown.json was pointed at it",
@@ -256,6 +277,13 @@
       "field": "duplicateOf"
     },
     {
+      "showId": "the-lives-of-others-west-end-2026",
+      "loserFile": "independent--unknown.json",
+      "targetFile": "independent--lizzie-edmonds.json",
+      "reason": "orphaned-duplicate-heal: independent--lizzie-edmonds.json was flagged invalid after independent--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
       "showId": "the-mousetrap-west-end-2021",
       "loserFile": "metro-uk--unknown.json",
       "targetFile": "metro-uk--tori-brazier.json",
@@ -263,10 +291,17 @@
       "field": "duplicateOf"
     },
     {
-      "showId": "the-outsiders-tour-2025",
-      "loserFile": "oklahoman--unknown.json",
-      "targetFile": "oklahoman--brandy-mcdonnell.json",
-      "reason": "orphaned-duplicate-heal: oklahoman--brandy-mcdonnell.json was flagged invalid after oklahoman--unknown.json was pointed at it",
+      "showId": "the-music-man-2022",
+      "loserFile": "independent--unknown.json",
+      "targetFile": "independent--isobel-lewis.json",
+      "reason": "orphaned-duplicate-heal: independent--isobel-lewis.json was flagged invalid after independent--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "the-music-man-2022",
+      "loserFile": "latimes--unknown.json",
+      "targetFile": "latimes--christie-dzurilla.json",
+      "reason": "orphaned-duplicate-heal: latimes--christie-dzurilla.json was flagged invalid after latimes--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {

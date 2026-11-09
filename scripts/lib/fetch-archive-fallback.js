@@ -7,28 +7,48 @@
 // (web.archive.org is not a free-fetch host there) plus the CDX lookup. Bounded: it only runs after a live failure.
 
 const { archiveSnapshotFetchUrl } = require('./archive-snapshot-url');
+const { isNotFoundHtml } = require('./soft-404-body');
 
 const MIN_HTML = 500;
 const usable = (h) => typeof h === 'string' && h.length >= MIN_HTML;
 
 /** Newest 200-status capture timestamp (14 digits) for a url, or null. */
-async function latestCaptureTimestamp(url, { fetchJson } = {}) {
+async function latestCaptureTimestamp(url, opts = {}) {
+  return captureTimestamp(url, 'latest', opts);
+}
+
+/**
+ * Earliest 200-status capture (14 digits), or null: the copy most likely taken
+ * before a paywall went up (gap-recovery ARCHIVE strategy, BRO-7171).
+ * `unreachable` callers can tell "no capture" (null) from "CDX down" via
+ * opts.onError.
+ */
+async function earliestCaptureTimestamp(url, opts = {}) {
+  return captureTimestamp(url, 'earliest', opts);
+}
+
+async function captureTimestamp(url, which, { fetchJson, onError } = {}) {
   const get = fetchJson || (async (u) => {
     const ctl = new AbortController();
     const t = setTimeout(() => ctl.abort(), 15000);
     try {
       const r = await fetch(u, { signal: ctl.signal });
-      return r.ok ? await r.json() : null;
+      if (!r.ok) throw new Error(`CDX HTTP ${r.status}`);
+      return await r.json();
     } finally { clearTimeout(t); }
   });
-  const cdx = `https://web.archive.org/cdx/search/cdx?url=${encodeURIComponent(url)}&output=json&fl=timestamp&filter=statuscode:200&limit=-1`;
+  const limit = which === 'earliest' ? '1' : '-1';
+  const cdx = `https://web.archive.org/cdx/search/cdx?url=${encodeURIComponent(url)}&output=json&fl=timestamp&filter=statuscode:200&limit=${limit}`;
   try {
     const rows = await get(cdx);
     if (!Array.isArray(rows) || rows.length < 2) return null;
-    const last = rows[rows.length - 1];
-    const ts = Array.isArray(last) ? last[0] : last;
+    const pick = which === 'earliest' ? rows[1] : rows[rows.length - 1];
+    const ts = Array.isArray(pick) ? pick[0] : pick;
     return /^\d{14}$/.test(String(ts)) ? String(ts) : null;
-  } catch { return null; }
+  } catch (e) {
+    if (onError) onError(e);
+    return null;
+  }
 }
 
 /**
@@ -43,8 +63,9 @@ async function fetchWithArchiveFallback(url, { fetchPageFn, fetchJson } = {}) {
   try {
     const r = await fetchPageFn(url);
     const html = (r && (r.content || r.html || r.body)) || (typeof r === 'string' ? r : null);
-    if (usable(html)) return { html, via: 'live' };
-    liveError = `no usable HTML (${html ? html.length : 0} chars)`;
+    // BRO-7147: a 200 "Page not found" template from an unlocker is a failed fetch.
+    if (usable(html) && !isNotFoundHtml(html)) return { html, via: 'live' };
+    liveError = usable(html) ? 'live page is the site\'s not-found template' : `no usable HTML (${html ? html.length : 0} chars)`;
   } catch (e) { liveError = `fetch failed: ${e.message}`; }
   const ts = await latestCaptureTimestamp(url, { fetchJson });
   const snapUrl = ts ? archiveSnapshotFetchUrl(url, ts) : null;
@@ -52,7 +73,7 @@ async function fetchWithArchiveFallback(url, { fetchPageFn, fetchJson } = {}) {
   try {
     const r = await fetchPageFn(snapUrl);
     const html = (r && (r.content || r.html || r.body)) || (typeof r === 'string' ? r : null);
-    if (usable(html)) return { html, via: 'archive', snapshot: ts };
+    if (usable(html) && !isNotFoundHtml(html)) return { html, via: 'archive', snapshot: ts };
     return { html: null, via: null, error: `${liveError}; archive copy unusable` };
   } catch (e) {
     return { html: null, via: null, error: `${liveError}; archive fetch failed: ${e.message}` };
@@ -72,4 +93,4 @@ function archiveCopyDisposition({ viaArchive, explicitSnapshot, stubOnFailure, t
 }
 
 module.exports = {
-  archiveCopyDisposition, fetchWithArchiveFallback, latestCaptureTimestamp };
+  archiveCopyDisposition, fetchWithArchiveFallback, latestCaptureTimestamp, earliestCaptureTimestamp };

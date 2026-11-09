@@ -38,12 +38,25 @@ test('a prepared Apple sign-in opens the popup synchronously, inside the tap', a
   assert.ok(r.nonce.length >= 32);
 });
 
+async function until(cond: () => boolean, ms = 2000): Promise<void> {
+  const start = Date.now();
+  while (!cond()) {
+    if (Date.now() - start > ms) throw new Error(`condition not met within ${ms}ms`);
+    await new Promise((r) => setTimeout(r, 5));
+  }
+}
+
 test('each attempt gets a fresh nonce, and a retry is prepared after the first settles', async () => {
-  const { signInWithAppleSDK } = await import('../../src/lib/apple-auth');
-  await new Promise((res) => setTimeout(res, 20)); // let the re-prepare finish
+  const { prepareAppleSignIn, signInWithAppleSDK } = await import('../../src/lib/apple-auth');
+  // Wait for the re-prepare itself, not a fixed sleep: it hashes the nonce with
+  // crypto.subtle (thread pool), which took over 20ms on a loaded CI runner
+  // (test.yml run 42531505934). Poll for the init that signInWithAppleSDK's own
+  // re-prepare performs, so the test still fails if that re-prepare is removed.
+  await prepareAppleSignIn();
   calls.length = 0;
+  const before = inits;
   const first = await signInWithAppleSDK();
-  await new Promise((res) => setTimeout(res, 20));
+  await until(() => inits > before);
   const p = signInWithAppleSDK();
   assert.deepEqual(calls, ['signIn', 'signIn'], 'the retry also opens without waiting');
   const second = await p;

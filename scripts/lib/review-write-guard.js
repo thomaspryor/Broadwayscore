@@ -1028,6 +1028,21 @@ function _rejectionSelfHealedMatches(d, committed) {
     && (h.rejectionReasoning || null) === (committed.rejectionReasoning || null);
 }
 
+// BRO-7171: gap-acceptance.js recoverReviewText replaced the text and stamped
+// textRecoveryProvenance {newFullTextHash, at}. Its deletion of the stale
+// incompleteReason/incompleteDetail is honored only while that stamp names
+// the text being written and is newer than the committed copy's stamp.
+function _textRecoveredFresh(d, committed) {
+  const p = d && d.textRecoveryProvenance;
+  if (!p || typeof d.fullText !== 'string' || !p.newFullTextHash) return false;
+  if (require('crypto').createHash('sha256').update(d.fullText).digest('hex') !== p.newFullTextHash) return false;
+  const at = Date.parse(p.at);
+  if (!Number.isFinite(at)) return false;
+  const prior = committed && committed.textRecoveryProvenance;
+  const priorAt = prior ? Date.parse(prior.at) : NaN;
+  return !Number.isFinite(priorAt) || at > priorAt;
+}
+
 const CLEAR_BREADCRUMBS = {
   duplicateOf: (d) => !_isEmptyValue(d.duplicateClearReason),
   // duplicateTextOf (task #1624, found by ship-check codebase review): the
@@ -1088,6 +1103,8 @@ const CLEAR_BREADCRUMBS = {
     'incompleteReason', 'incompleteDetail', 'llmPullQuote', 'wordCount', 'trNoRecordForProduction', 'stuckRescoreCleared', 'stuckRescoreClearedAt', 'wrongShowReason', 'wrongShowNote'].map((k) => [k, _trWrongProductionTextReplaced])),
   ...Object.fromEntries(['rejectedAt', 'rejectedBy', 'rejectionReason', 'rejectionReasoning'].map((k) => [k,
     (d, committed) => _trWrongProductionTextReplaced(d, committed) || _rejectionSelfHealedMatches(d, committed)])),
+  ...Object.fromEntries(['incompleteReason', 'incompleteDetail'].map((k) => [k,
+    (d, committed) => _trWrongProductionTextReplaced(d, committed) || _textRecoveredFresh(d, committed)])),
   crossOutletVerified: _clearBreadcrumbRetracted('crossOutletVerified'),
   // crossOutletVerifiedNote (task #1624, found by ship-check codebase review):
   // shares the SAME field-scope key as crossOutletVerified above — every
@@ -1544,6 +1561,38 @@ function stripDowJonesChromeForWrite(filePath, newData) {
   return out;
 }
 
+/**
+ * Replace a review file atomically: write a unique dot-prefixed temp file in
+ * the same directory, then rename over the target (BRO-7171). A crash or a
+ * concurrent reader never sees a half-written JSON. The target is resolved
+ * through symlinks first so a rename never replaces a link with a file.
+ * @param {string} filePath
+ * @param {string} contents
+ */
+function writeReviewFileAtomic(filePath, contents) {
+  let target = filePath;
+  try { target = fs.realpathSync(filePath); } catch (e) { if (e.code !== 'ENOENT') throw e; }
+  if (target === filePath) {
+    // A dangling file symlink: write through it like writeFileSync did,
+    // never replace the link with a plain file.
+    try {
+      if (fs.lstatSync(filePath).isSymbolicLink()) target = path.resolve(path.dirname(filePath), fs.readlinkSync(filePath));
+    } catch { /* not there yet */ }
+  }
+  if (target === filePath) {
+    // New file: resolve its directory (data/review-texts is a symlink).
+    try { target = path.join(fs.realpathSync(path.dirname(filePath)), path.basename(filePath)); } catch { /* dir missing: write fails below */ }
+  }
+  const tmp = path.join(path.dirname(target), `.${path.basename(target)}.tmp-${process.pid}-${Math.random().toString(36).slice(2, 10)}`);
+  try {
+    fs.writeFileSync(tmp, contents);
+    fs.renameSync(tmp, target);
+  } catch (e) {
+    try { fs.unlinkSync(tmp); } catch { /* never created */ }
+    throw e;
+  }
+}
+
 function safeWriteReview(filePath, newData, options = {}) {
   const { force = false, merge = true } = options;
   // A file missing only because this checkout is sparse is not new: writing it
@@ -1825,7 +1874,7 @@ function safeWriteReview(filePath, newData, options = {}) {
         // allowlist) opts a file out here too.
         if (!alreadyFlaggedThisWrite && newData && newData.publishDate && !newData._auditAllowCrossMarket && !(onDiskRecord && onDiskRecord._auditAllowCrossMarket)) {
           const sibOpenings = _getSiblingOpenings(parentDirName);
-          if (sibOpenings.length) {
+          if (sibOpenings.length && require('./cross-market-contamination').classAApplies(show)) {
             const { classifyClassAContamination } = require('./cross-market-contamination');
             const xv = classifyClassAContamination(
               new Date(require('./date-utils').toDateMs(newData.publishDate)),
@@ -2133,9 +2182,17 @@ function safeWriteReview(filePath, newData, options = {}) {
           const manualMerge = options.manualUrlChangeFields
             ? require('./manual-review-fields').prepareManualUrlChangeFields(newData, options.manualUrlChangeFields)
             : null;
+          // options.preserveUrlDerivedFields (BRO-7171): a recovery that PROVED
+          // the new url is the same review (gap-acceptance identity proof)
+          // keeps the review's aggregator excerpts/stars across the move, the
+          // rule recover-serp-text/rediscover-review-urls already applied via
+          // updateFileUrlWithInvariant's preserveFields.
+          const preserveUrlDerived = Array.isArray(options.preserveUrlDerivedFields) && options.preserveUrlDerivedFields.length
+            ? new Set([...(manualMerge && manualMerge.preserveFields ? manualMerge.preserveFields : []), ...options.preserveUrlDerivedFields])
+            : (manualMerge && manualMerge.preserveFields);
           const inv = applyUrlChangeInvariant(existing, newData, {
             fileLabel: path.basename(filePath),
-            preserveFields: manualMerge && manualMerge.preserveFields,
+            preserveFields: preserveUrlDerived,
           });
           // BRO-3151: equality with the old body is not evidence of stale
           // content when a manual ingest explicitly supplied that body. Apply
@@ -2493,8 +2550,13 @@ function safeWriteReview(filePath, newData, options = {}) {
           ? shouldMarkPostCorrectionDuplicate(newData, colliderData)
           : shouldMarkUrlCollisionDuplicate(newData, colliderData)) {
         console.warn(`[review-write-guard] URL collision: ${path.basename(filePath)} shares URL with ${collider} — marking as duplicate`);
+        // BRO-6905: a file that already points at this collider keeps the
+        // reason it was marked with (e.g. criticName-override-collided-at-rename,
+        // which syndication-pairs.js keys on). Restamping it turned an unrelated
+        // field edit into a duplicateReason change the fix executor refuses.
+        const alreadyMarked = newData.duplicateOf === collider && !_isEmptyValue(newData.duplicateReason);
         newData.duplicateOf = collider;
-        newData.duplicateReason = 'url-collision-detected-at-write';
+        if (!alreadyMarked) newData.duplicateReason = 'url-collision-detected-at-write';
         // Clear any stale clear-breadcrumb from a prior heal — this file is now a
         // live duplicate again, so a leftover duplicateClearReason would lie about
         // its state (and the push-review-texts restore exception keys on that
@@ -2706,7 +2768,11 @@ function safeWriteReview(filePath, newData, options = {}) {
     console.warn(`[review-write-guard] discarded relayed originalScore on no-critic-rating outlet ${newData.outletId}: ${path.basename(filePath)}`);
   }
 
-  fs.writeFileSync(filePath, JSON.stringify(newData, null, 2) + '\n');
+  // BRO-7082: record who created the file (pipeline / person / unknown), once, at
+  // creation. Never guessed from where the process runs; never blocks the write.
+  if (!fs.existsSync(filePath)) require('./review-provenance').stampIngestOrigin(newData);
+
+  writeReviewFileAtomic(filePath, JSON.stringify(newData, null, 2) + '\n');
   return { wrote: true, preserved, lockedSkipped, ...(autoFlaggedWrongProduction ? { autoFlaggedWrongProduction: true } : {}) };
 }
 
@@ -3932,4 +3998,60 @@ function _urlCorroboration(url, record) {
   return n;
 }
 
-module.exports = { safeWriteReview, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, isExcludedIgnoringDuplicate, shouldMarkUrlCollisionDuplicate, shouldMarkPostCorrectionDuplicate, wouldFormDuplicateCycle, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, preserveFlaggedFields, protectStagedDeletions, PROTECTED_FIELDS, CLEAR_BREADCRUMBS, CLEARABLE_VERDICT_FLAGS, isIntentionalClear, invalidateWrongProductionAutoClear, retractScriptWrongProductionClear, isScriptWrongProductionClear, WRONG_PRODUCTION_CLEAR_MARKERS, retractScriptWrongShowClear, isScriptWrongShowClear, WRONG_SHOW_CLEAR_MARKERS, isFreshWrongProductionAutoClear: _freshWrongProductionAutoClear, invalidateWrongShowAutoClear, isFreshWrongShowAutoClear: _freshWrongShowAutoClear, _setShowsCacheForTest, SUBSTANTIVE_BODY_CHARS, NEAR_EMPTY_BODY_CHARS, _flipFlopShouldTakeIncoming, writeReviewOrThrow };
+/**
+ * Class-A (cross-market) stamp for writers that persist an EXISTING review
+ * file without going through safeWriteReview (persistReviewSnapshot, used by
+ * the collector and 10+ backfills, writes with a bare fs.writeFileSync).
+ *
+ * Why this exists (BRO-6983): collect-review-texts.js filled in the page date
+ * of maybe-happy-ending-2024/theatrely--joey-sims.json on 2026-11-03 through
+ * persistReviewSnapshot, so safeWriteReview's class-A check never ran and the
+ * review (dated 22d from the 2026 tour's opening, 692d from the folder show's)
+ * landed live. The audit re-reddened main twice in two days.
+ *
+ * Mutates `record` (the merged record about to be written) in place: stamps
+ * wrongProduction with the same note shape as the in-guard stamp. Stamps, never
+ * quarantines, because the file already exists and the writer is mid-update.
+ * Uses the same predicate (classifyClassAContamination), the tour exemption
+ * (classAApplies) and the same opt-outs as the audit and the in-guard check, so detector and preventer cannot drift.
+ * A date that was already class A before this write is left alone: the audit
+ * owns pre-existing contamination, and re-stamping every enrichment would undo
+ * a human's _auditAllowCrossMarket / override decision.
+ *
+ * @returns {{flagged:boolean, detail?:string}}
+ */
+function flagSiblingEraDateOnPersist(filePath, priorRecord, record) {
+  const none = { flagged: false };
+  if (!record || !record.publishDate) return none;
+  if (priorRecord && priorRecord.publishDate === record.publishDate) return none;
+  const parentDirName = path.basename(path.dirname(filePath));
+  const grandparentDirName = path.basename(path.dirname(path.dirname(filePath)));
+  if (!parentDirName || parentDirName.startsWith('_') || parentDirName.startsWith('.') || grandparentDirName === '_pending') return none;
+  if (record.wrongProduction || record.wrongShow || record.isRoundupArticle || record.wrongAttribution
+    || record.duplicateOf || record.isNonReview || record._auditAllowCrossMarket
+    || record._locked === true || record.wrongProductionOverride === true || record.wrongProductionManualClear === true
+    || record.humanReviewedWrongProduction === false || !!record.humanReviewScore
+    || (priorRecord && (priorRecord._auditAllowCrossMarket || priorRecord._locked === true
+      || priorRecord.humanReviewedWrongProduction === false || !!priorRecord.humanReviewScore))) return none;
+  const show = _getShowById(parentDirName);
+  if (!show || !show.openingDate) return none;
+  const { classifyClassAContamination, classAApplies } = require('./cross-market-contamination');
+  // Same exemption as the audit: tour stops legitimately carry dates near a sibling's opening (BRO-6114).
+  if (!classAApplies(show)) return none;
+  const sibOpenings = _getSiblingOpenings(parentDirName);
+  if (!sibOpenings.length) return none;
+  const { toDateMs } = require('./date-utils');
+  const classify = (d) => classifyClassAContamination(new Date(toDateMs(d)), new Date(show.openingDate), sibOpenings);
+  const xv = classify(record.publishDate);
+  if (!xv.isClassA) return none;
+  if (priorRecord && priorRecord.publishDate && classify(priorRecord.publishDate).isClassA) return none;
+  if (laneBypasses(record, 'wrongProduction', { openingDate: show.openingDate })) return none;
+  const detail = `publishDate ${record.publishDate} is ${Math.round(xv.sibDiff)}d from a same-title sibling production's opening but ${Math.round(xv.thisDiff)}d from this show's, so it belongs to the sibling`;
+  record.wrongProduction = true;
+  record.wrongProductionNote = `Auto-flagged (cross-market): ${detail}`;
+  invalidateWrongProductionAutoClear(record);
+  console.warn(`[review-write-guard] ${parentDirName}/${path.basename(filePath)} → auto-flagged wrongProduction at persist (date arrived through a non-guard writer): ${detail}`);
+  return { flagged: true, detail };
+}
+
+module.exports = { safeWriteReview, writeReviewFileAtomic, flagSiblingEraDateOnPersist, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, isExcludedIgnoringDuplicate, shouldMarkUrlCollisionDuplicate, shouldMarkPostCorrectionDuplicate, wouldFormDuplicateCycle, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, preserveFlaggedFields, protectStagedDeletions, PROTECTED_FIELDS, CLEAR_BREADCRUMBS, CLEARABLE_VERDICT_FLAGS, isIntentionalClear, invalidateWrongProductionAutoClear, retractScriptWrongProductionClear, isScriptWrongProductionClear, WRONG_PRODUCTION_CLEAR_MARKERS, retractScriptWrongShowClear, isScriptWrongShowClear, WRONG_SHOW_CLEAR_MARKERS, isFreshWrongProductionAutoClear: _freshWrongProductionAutoClear, invalidateWrongShowAutoClear, isFreshWrongShowAutoClear: _freshWrongShowAutoClear, _setShowsCacheForTest, SUBSTANTIVE_BODY_CHARS, NEAR_EMPTY_BODY_CHARS, _flipFlopShouldTakeIncoming, writeReviewOrThrow };

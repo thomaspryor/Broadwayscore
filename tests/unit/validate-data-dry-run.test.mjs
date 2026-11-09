@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (read by the test); data/retired-show-ids.json (untracked core data); data/site-image-versions.json (untracked core data); +18 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // TESTS-VS-DERIVED-DATA-EXEMPT: the spawn case copies data/shows.json only as an opaque fixture (hash before must equal hash after); no factual pins.
 /**
  * --dry-run for validate-data.js (Sprint 0 / S0-T1).

@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5081-09",
   "planId": "a5f71261-9a67-4597-b895-9dd360b2e0cb",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-11T21:42:49.529Z",
   "submitter": {
     "name": null,
@@ -367,5 +367,27 @@
       "ok": true,
       "msg": "west-side-story-2020/vulture--jesse-green.json criticName: \"Jesse Green\" -> \"Helen Shaw\""
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "obsolete": 2
+    },
+    "ops": [
+      {
+        "i": 18,
+        "verdict": "obsolete",
+        "reason": "review file topdog-underdog-2022/variety--charles-isherwood.json no longer exists and nothing in topdog-underdog-2022 looks like a rename"
+      },
+      {
+        "i": 19,
+        "verdict": "obsolete",
+        "reason": "review file topdog-underdog-2022/guardian--adrian-horton.json no longer exists and nothing in topdog-underdog-2022 looks like a rename"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (2 obsolete); per-op reasons in triage.ops"
 }

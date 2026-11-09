@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/audit/owe-venue-candidates.json (read by the test); data/audit/owe-venue-candidates.json.lock (untracked core data); data/audit/owe-venue-candidates.json (bot ledger). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-182 — Off-West-End venue-page discovery lacks the OB staging gate.
  *

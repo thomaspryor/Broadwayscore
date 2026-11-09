@@ -119,7 +119,7 @@ test('base comparison runs the staged gauntlet in a throwaway worktree, never ch
   t.mock.method(console, 'log', (message) => messages.push(message));
   t.mock.method(R, 'withFileMutex', (_lock, fn) => fn());
   const exists = fs.existsSync;
-  t.mock.method(fs, 'existsSync', (p) => /data\/(shows|reviews|cast-manifest|actor-slugs)\.json$/.test(String(p)) || exists(p));
+  t.mock.method(fs, 'existsSync', (p) => /data\/(shows|reviews|cast-manifest|actor-slugs)\.json$|\/node_modules$|\/node_modules\/.+\/package\.json$/.test(String(p)) || exists(p));
   const checker = checkerWithRunner(t, (cmd, args, opts) => {
     const result = (stdout = '') => ({ status: 0, stdout, stderr: '' });
     if (cmd === 'git') {
@@ -271,6 +271,17 @@ test('main exits 3 (not ready) when core data is missing, before any gate runs',
   assert.ok(main.indexOf('missingCoreData(ROOT)') > 0 && main.indexOf('missingCoreData(ROOT)') < main.indexOf('mkdtempSync'));
 });
 
+test('BRO-7110: a checkout with no node_modules of its own is not ready, checked before any gate runs', () => {
+  const { hasOwnNodeModules } = require('./land-local-check.js');
+  assert.equal(hasOwnNodeModules('/r', (p) => p === '/r/node_modules'), true);
+  assert.equal(hasOwnNodeModules('/r', () => false), false, 'a parent checkout\'s node_modules does not count');
+  const src = require('fs').readFileSync(new URL('./land-local-check.js', import.meta.url), 'utf8');
+  const main = src.slice(src.indexOf('function main('));
+  const at = main.indexOf('hasOwnNodeModules(ROOT)');
+  assert.ok(at > 0 && at < main.indexOf('mkdtempSync'), 'checked before the base copy is built');
+  assert.match(main.slice(at, at + 600), /return 3;/);
+});
+
 // BRO-6152: the base run executes a COPY of land-gauntlet.sh outside the tree it checks out.
 // Every sibling it calls via $(dirname "${BASH_SOURCE[0]}")/<file> must be staged next to it,
 // by stageGauntletHarness (land-local-check, codex daily runner) and by land.yml's harness step.
@@ -351,4 +362,115 @@ test('main() skips the base run when deps changed, so red gates count as new', (
   const src = fs.readFileSync(new URL('./land-local-check.js', import.meta.url), 'utf8');
   assert.match(src, /const depsChanged = red && depsChangedSince\(git, base, head\);/);
   assert.match(src, /if \(red && !depsChanged\) \{[\s\S]*?withBaseWorktree\(/, 'the base worktree run is gated on !depsChanged');
+});
+
+test('BRO-7110: restorePrebuildResidue puts back regenerated prebuild outputs only', () => {
+  const { restorePrebuildResidue } = require('./land-local-check.js');
+  const calls = [];
+  const git = (...a) => { calls.push(a); return { stdout: a[0] === 'diff' ? 'data/gold-lists-computed.json\nscripts/x.js\npublic/data/mobile-shows.json\n' : '' }; };
+  assert.deepEqual(restorePrebuildResidue('/r', git), ['data/gold-lists-computed.json', 'public/data/mobile-shows.json']);
+  assert.deepEqual(calls[1], ['checkout', '--', 'data/gold-lists-computed.json', 'public/data/mobile-shows.json'], 'a real edit (scripts/x.js) is never touched');
+  const quiet = [];
+  assert.deepEqual(restorePrebuildResidue('/r', (...a) => { quiet.push(a); return { stdout: '' }; }), []);
+  assert.equal(quiet.length, 1, 'nothing to restore: no checkout');
+  const src = fs.readFileSync(new URL('./land-local-check.js', import.meta.url), 'utf8');
+  const main = src.slice(src.indexOf('function main('));
+  assert.ok(main.indexOf('restorePrebuildResidue(ROOT)') > main.indexOf("'scripts/lib/land-gauntlet.sh', branchDir"), 'restored right after the branch run');
+});
+
+test('BRO-7110: the node_modules remedy links a worktree to the main checkout, and installs in the main checkout itself', () => {
+  const { nodeModulesRemedy } = require('./land-local-check.js');
+  assert.equal(nodeModulesRemedy('/repo/.claude/worktrees/x', '/repo/.git'), 'Link them first: ln -sfn /repo/node_modules node_modules');
+  assert.equal(nodeModulesRemedy('/repo', '.git'), 'Install them first: npm ci');
+  assert.equal(nodeModulesRemedy('/repo', ''), 'Install them first: npm ci');
+});
+
+test('BRO-7110: a tree dirty only with prebuild outputs names them and the restore command', () => {
+  const { dirtyTreeMessage } = require('./land-local-check.js');
+  const onlyGenerated = dirtyTreeMessage(' M data/gold-lists-computed.json\n');
+  assert.match(onlyGenerated, /commit or discard tracked changes first/);
+  assert.match(onlyGenerated, /git checkout HEAD -- data\/gold-lists-computed\.json$/, 'HEAD: a staged output goes back too');
+  const many = Array.from({ length: 40 }, (_, i) => ` M public/data/shows/show-${i}.json`).join('\n');
+  assert.match(dirtyTreeMessage(many), /\(40 file\(s\).*git checkout HEAD -- public\/data\/shows$/, 'many files: their directory, one line');
+  assert.match(dirtyTreeMessage('M data/gold-lists-computed.json'), /git checkout HEAD -- data\/gold-lists-computed\.json$/, 'trimmed status, as run() returns it');
+  const mixed = dirtyTreeMessage(' M data/gold-lists-computed.json\n M scripts/foo.js\n');
+  assert.doesNotMatch(mixed, /git checkout HEAD --/, 'a real edit in the mix gets no discard hint');
+});
+
+test('BRO-7110: declared packages are checked against the install owner (a worktree link resolves to main)', () => {
+  const { missingDeclaredPackages } = require('./declared-packages.js');
+  const present = new Set(['/main/node_modules/next/package.json', '/main/node_modules/@types/node/package.json']);
+  const reads = [];
+  const readPkg = (dir) => { reads.push(dir); return { dependencies: { next: '1' }, devDependencies: { '@types/node': '1', acorn: '8' } }; };
+  assert.deepEqual(missingDeclaredPackages('/wt', { owner: '/main', exists: (p) => present.has(p), readPkg }), { owner: '/main', missing: ['acorn'] });
+  assert.deepEqual(reads, ['/main'], "the owner's package.json, which its npm ci installs");
+  assert.deepEqual(missingDeclaredPackages('/wt', { owner: '/main', exists: () => true, readPkg }).missing, []);
+  assert.deepEqual(missingDeclaredPackages('/wt', { owner: null, exists: () => false, readPkg }), { owner: null, missing: [] }, 'no node_modules: nothing to judge');
+  assert.deepEqual(missingDeclaredPackages('/wt', { owner: '/main', exists: () => false, readPkg: () => { throw new Error('none'); } }).missing, [], 'unreadable package.json: no opinion');
+});
+
+test('BRO-7110: main() refuses an incomplete install before fetching or running any gate', (t) => {
+  const { missingDeclaredPackages } = require('./declared-packages.js');
+  const real = missingDeclaredPackages(decodeURIComponent(new URL('../..', import.meta.url).pathname));
+  // A checkout with no node_modules anywhere up the tree (a fresh worktree) has no install to break.
+  if (!real.owner) { t.skip('no node_modules install above this checkout'); return; }
+  const declared = Object.keys(JSON.parse(fs.readFileSync(join(real.owner, 'package.json'), 'utf8')).devDependencies || {});
+  const gone = declared[0];
+  const errors = [];
+  t.mock.method(console, 'error', (m) => errors.push(String(m)));
+  const exists = fs.existsSync;
+  t.mock.method(fs, 'existsSync', (p) => {
+    const s = String(p);
+    if (s.endsWith(`/node_modules/${gone}/package.json`)) return false;
+    return /data\/(shows|reviews|cast-manifest|actor-slugs)\.json$|\/node_modules$|\/node_modules\/.+\/package\.json$/.test(s) || exists(p);
+  });
+  const gitCalls = [];
+  const checker = checkerWithRunner(t, (cmd, args) => {
+    if (cmd === 'git') { gitCalls.push(args[0]); return { status: 0, stdout: args[0] === 'rev-parse' ? '.git' : '', stderr: '' }; }
+    assert.fail(`no command may run before the install check: ${cmd} ${args.join(' ')}`);
+  });
+  assert.equal(checker.main([]), 3);
+  assert.ok(errors.some((m) => m.includes('node_modules is incomplete') && m.includes(gone) && m.includes('npm ci')), errors.join('\n'));
+  assert.ok(!gitCalls.includes('fetch'), 'refused before git fetch');
+});
+
+// BRO-7186: false results from land tooling
+const { lowDiskMessage, looksLikeEnvFailure, landedOnMain, envFailureLogs, MIN_FREE_BYTES } = require('./land-check-resources.js');
+
+test('BRO-7186: under 3 GB free refuses; enough or unreadable does not', () => {
+  assert.match(lowDiskMessage(1024 ** 3), /1\.0 GB free before the run.*ENOSPC/s);
+  assert.equal(lowDiskMessage(MIN_FREE_BYTES), null);
+  assert.equal(lowDiskMessage(NaN), null);
+  assert.match(lowDiskMessage(0, { when: 'after the run' }), /after the run/);
+});
+
+test('BRO-7186: ENOSPC output is an environment failure', () => {
+  assert.ok(looksLikeEnvFailure('Error: ENOSPC: no space left on device, write'));
+  assert.ok(!looksLikeEnvFailure('AssertionError: expected 1'));
+});
+
+test('BRO-7186: a gone ref counts as landed only via an exact-branch recent ledger row and no red run', () => {
+  const now = Date.parse('2026-11-08T12:00:00Z');
+  const ago = (h) => new Date(now - h * 3600_000).toISOString();
+  const ref = 'land/bro-7137-fallback-date';
+  const row = { branch: ref, sha: 'abc', tip: 't1', ts: ago(1) };
+  assert.deepEqual(landedOnMain({ ref, nowMs: now, ledgerRows: [row] }), { landed: true, sha: 'abc', tip: 't1', via: 'landings ledger' });
+  assert.equal(landedOnMain({ ref, nowMs: now, ledgerRows: [{ ...row, ts: ago(9) }] }).landed, false);
+  assert.equal(landedOnMain({ ref, nowMs: now, ledgerRows: [{ ...row, ts: undefined }] }).landed, false);
+  assert.equal(landedOnMain({ ref: 'land/other', nowMs: now, ledgerRows: [row] }).landed, false);
+  assert.equal(landedOnMain({ ref, nowMs: now, ledgerRows: [row], run: { conclusion: 'failure' } }).landed, false);
+  assert.equal(landedOnMain({ ref, nowMs: now, ledgerRows: [row], run: { conclusion: 'success' } }).landed, true);
+});
+
+test('BRO-7186: envFailureLogs finds ENOSPC in raw gate logs, not in clean ones', () => {
+  const d = mkdtempSync(join(tmpdir(), 'enospc-'));
+  writeFileSync(join(d, 'a.log'), 'ok 1\n'); writeFileSync(join(d, 'b.log'), 'Error: ENOSPC: no space left');
+  const hits = envFailureLogs([d, join(d, 'missing')]);
+  assert.deepEqual(hits, [join(d, 'b.log')]);
+  rmSync(d, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+});
+
+test('BRO-7186: parseMainLog reads git log rows', () => {
+  const { parseMainLog } = require('./land-check-resources.js');
+  assert.deepEqual(parseMainLog('abc\t2026-11-08T00:00:00Z\tfix(BRO-1): a\tb\n\n'), [{ sha: 'abc', ts: '2026-11-08T00:00:00Z', subject: 'fix(BRO-1): a\tb' }]);
 });

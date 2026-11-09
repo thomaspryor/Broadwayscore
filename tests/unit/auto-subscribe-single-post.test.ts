@@ -65,3 +65,16 @@ test('an older marker still counts as sent (no second post after 10+ min)', asyn
   assert.equal(store.get('bsc_email_subscribed_broadway'), 'true');
   assert.equal(store.get(m.INFLIGHT_KEY), undefined);
 });
+
+// Owner 2026-11-04 (reversed the same day): critics who sign in from "Claim
+// this page" join the list like everyone else. Devices that ran the brief
+// opt-out may still hold its keys; they must not block the post.
+test('leftover critic opt-out keys from the reverted skip do not block joining', async () => {
+  const m = await import('../../src/lib/auto-subscribe');
+  m.__resetForNewPage();
+  respond = 'ok';
+  store.set('bsc_autosub_skip', String(Date.now()));
+  store.set('bsc_autosub_skip_user', 'u1');
+  await m.autoSubscribeOnSignIn('critic@example.com');
+  assert.equal(posts, 1);
+});

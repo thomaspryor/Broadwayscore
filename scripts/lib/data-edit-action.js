@@ -37,7 +37,10 @@ EDITABLE_DATA_FIELDS['shows.json'] = [...EDITABLE_DATA_FIELDS['shows.json'], 'no
   'transferOf', 'transferredTo',
   // BRO-6725: a plan that moves a review-seeded date to an unconfirmed source clears the
   // human pin the openingDate edit stamps, so Playbill press-night dates can still refine it.
-  'humanCorrectedOpeningDate'];
+  'humanCorrectedOpeningDate',
+  // BRO-7080: the "no critic reviews expected" exemption for an open-ended attraction
+  // (owner decision 2026-11-07). Plan-only; zero-review-catchup and the show page honor it.
+  'noReviewsExpected', 'noReviewsExpectedReason'];
 
 // BRO-6191: plan-only (owner-approved) commercial.json extras with value checks
 // (cleared-field-guard.js planOnlyValueProblem); not offered to the feedback-plan LLM.

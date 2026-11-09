@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-2862: drift guard for the three venue-token vocabularies.
 //   venueSearchToken  (venue-search-token.js)  durable Playbill cache query term
 //   venueQueryToken   (serp-review-census.js)  review-census SERP query term

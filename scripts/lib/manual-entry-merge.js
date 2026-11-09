@@ -29,6 +29,22 @@
  */
 
 const { isPlaceholderByline } = require('./placeholder-byline');
+const { isRoundupUrl, isQuotingRoundupHostUrl, isRoundupPageAsReview } = require('./review-guards');
+
+/**
+ * BRO-7080 (BRO-4875 class): a manual entry whose URL is a multi-outlet roundup
+ * page, credited to the roundup host itself, is the roundup scored as a review.
+ * The rebuild flags such pipeline files isRoundupArticle; manual entries skipped
+ * that check, so black-swan-regional-2026 published BroadwayWorld's
+ * "Review-Roundup-BLACK-SWAN..." page at 85. A review merely SOURCED from a
+ * quoting roundup (another outlet's critic) stays allowed.
+ */
+function isRoundupManualEntry(manual) {
+  if (!manual || !manual.url) return false;
+  if (!isRoundupUrl(manual.url).isRoundup) return false;
+  if (!isQuotingRoundupHostUrl(manual.url)) return true;
+  return isRoundupPageAsReview(manual);
+}
 
 const TIER_RANK = { complete: 5, truncated: 4, excerpt: 3, stub: 2, invalid: 1 };
 
@@ -117,10 +133,17 @@ function findPipelineTwin(manual, reviews, normalizeUrl) {
   return null;
 }
 
+/** True when the manual row points at a roundup/aggregator page and its scored twin has the critic's own url (BRO-7079). */
+function manualUrlIsAggregatorOverOwn(manual, twin) {
+  const { isAggregatorPageUrl } = require('./review-slot-guards');
+  return !!(manual.url && twin && twin.url && isAggregatorPageUrl(manual.url) && !isAggregatorPageUrl(twin.url));
+}
+
 /**
  * Merge manual entries into the rebuilt review set, in place.
  *
  * Rules, in order:
+ *   - a roundup page credited to its own host → refused (BRO-7080).
  *   - twin has scoreSource 'human-review' → pipeline already consumed the
  *     manual score from the source file; it is authoritative, skip.
  *   - unbylined manual with a bylined, finite-scored twin of at least the same
@@ -131,13 +154,14 @@ function findPipelineTwin(manual, reviews, normalizeUrl) {
  * @param {object[]} reviews - mutated in place
  * @param {object[]} manualEntries
  * @param {(url: string) => string|null} normalizeUrl
- * @returns {{preserved: number, appended: number, matchedByUrl: number, matchedCrossOutlet: number}}
+ * @returns {{preserved: number, appended: number, matchedByUrl: number, matchedCrossOutlet: number, refusedRoundup: string[]}}
  */
 function mergeManualEntries(reviews, manualEntries, normalizeUrl) {
   let preserved = 0;
   let appended = 0;
   let matchedByUrl = 0;
   let matchedCrossOutlet = 0;
+  const refusedRoundup = [];
 
   for (const manual of manualEntries) {
     const twin = findPipelineTwin(manual, reviews, normalizeUrl);
@@ -159,6 +183,15 @@ function mergeManualEntries(reviews, manualEntries, normalizeUrl) {
       const merged = { ...manual };
       if (twin.review.designation) merged.designation = twin.review.designation;
       else delete merged.designation;
+      // BRO-7079 (BRO-4430 class): a manual score typed against a review
+      // roundup keeps the roundup url, and this merge is the last write, so it
+      // replaced the critic's own article url on every rebuild (Black Swan,
+      // R. Scott Reedy). The human owns the score; the url and its date belong
+      // to the twin when the manual url is an aggregator page and the twin's is not.
+      if (manualUrlIsAggregatorOverOwn(manual, twin.review)) {
+        merged.url = twin.review.url;
+        if (twin.review.publishDate) merged.publishDate = twin.review.publishDate;
+      }
       if (idx >= 0) reviews[idx] = merged;
       preserved++;
       if (twin.matchedBy.startsWith('url')) matchedByUrl++;
@@ -167,6 +200,13 @@ function mergeManualEntries(reviews, manualEntries, normalizeUrl) {
     }
 
     if (!twin) {
+      // BRO-7080 (BRO-4875 class): with no own review to attach the score to,
+      // appending would publish the roundup page itself as the host's review.
+      // When a twin exists the human score is kept and BRO-7079 swaps the url.
+      if (isRoundupManualEntry(manual)) {
+        refusedRoundup.push(`${manual.showId}|${manual.outletId}|${manual.url}`);
+        continue;
+      }
       reviews.push(manual);
       preserved++;
       appended++;
@@ -175,7 +215,7 @@ function mergeManualEntries(reviews, manualEntries, normalizeUrl) {
     // nothing scoreable — appending here would duplicate, so do nothing.
   }
 
-  return { preserved, appended, matchedByUrl, matchedCrossOutlet };
+  return { preserved, appended, matchedByUrl, matchedCrossOutlet, refusedRoundup };
 }
 
-module.exports = { criticKey, tierRank, isUnknownByline, isMergeFossilAnchor, findPipelineTwin, mergeManualEntries };
+module.exports = { isRoundupManualEntry, manualUrlIsAggregatorOverOwn, criticKey, tierRank, isUnknownByline, isMergeFossilAnchor, findPipelineTwin, mergeManualEntries };

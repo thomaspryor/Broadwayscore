@@ -37,6 +37,7 @@
  */
 
 const fs = require('fs');
+const { getExcerpts } = require('./lib/excerpt-fields');
 const path = require('path');
 const { callGemini, callOpenAI } = require('./lib/content-verifier');
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
@@ -91,8 +92,7 @@ function reviewEvidence(f) {
   if (!fs.existsSync(p)) return null;
   let r;
   try { r = JSON.parse(fs.readFileSync(p, 'utf8')); } catch { return null; }
-  const text = r.fullText || r.reviewText || r.bwwExcerpt || r.dtliExcerpt
-    || r.nycTheatreExcerpt || r.showScoreExcerpt || r.pullQuote || '';
+  const text = r.fullText || r.reviewText || getExcerpts(r)[0] || r.pullQuote || '';
   return {
     reviewUrl: r.url || null,           // the review's OWN url, NOT the roundup slug
     outlet: r.outlet || r.outletId || null,

@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4317-b-03",
   "planId": "fcc88b11-956b-491d-b683-4cec7b67383b",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-13T01:56:27.497Z",
   "submitter": {
     "name": null,
@@ -323,5 +323,47 @@
       "ok": true,
       "msg": "Deleted pen-pals-2025/lighting-and-sound-america--david-barbour.json"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 6
+    },
+    "ops": [
+      {
+        "i": 0,
+        "verdict": "resolved",
+        "reason": "kinky-boots-2026/financialtimes--brendan-lemon.json is gone and kinky-boots-2013/financialtimes--brendan-lemon.json exists"
+      },
+      {
+        "i": 1,
+        "verdict": "resolved",
+        "reason": "kinky-boots-2026/huffpost--michael-giltz.json is gone and kinky-boots-2013/huffpost--michael-giltz.json exists"
+      },
+      {
+        "i": 2,
+        "verdict": "resolved",
+        "reason": "kinky-boots-2026/northjerseycom--robert-feldberg.json is gone and kinky-boots-2013/northjerseycom--robert-feldberg.json exists"
+      },
+      {
+        "i": 3,
+        "verdict": "resolved",
+        "reason": "kinky-boots-2026/nypost--elisabeth-vincentelli.json is gone and kinky-boots-2013/nypost--elisabeth-vincentelli.json exists"
+      },
+      {
+        "i": 5,
+        "verdict": "resolved",
+        "reason": "kinky-boots-2026/talkinbroadway--matthew-murray.json is gone and kinky-boots-2013/talkinbroadway--matthew-murray.json exists"
+      },
+      {
+        "i": 6,
+        "verdict": "resolved",
+        "reason": "kinky-boots-2026/vulture--christopher-bonanos.json is gone and kinky-boots-2013/vulture--christopher-bonanos.json exists"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (6 resolved); per-op reasons in triage.ops"
 }

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data); data/critic-consensus.json (untracked core data); data/reviews.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-4960: --prune-only drops a Critics' Take whose show has too few live
  * reviews (and orphans) without an LLM call, and keeps the MAX_STALE_PRUNE cap.

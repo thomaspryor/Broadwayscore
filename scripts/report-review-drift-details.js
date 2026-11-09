@@ -18,6 +18,7 @@ const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { isRejectedNonReview } = require('./lib/review-guards');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { fileSlug } = require('./lib/key-duplicate-plan');
 
 const ROOT = path.join(__dirname, '..');
 const RT = path.join(ROOT, 'data', 'review-texts');
@@ -64,7 +65,7 @@ const brief = (r) => {
     dupOf: d.duplicateOf || null,
     // Byline evidence without printing text: does the article's head/tail name the
     // critic the filename claims, and the one criticName claims?
-    bylineFile: bylineHit(`${r.file}`.replace(/\.json$/, '').split('--')[1], d),
+    bylineFile: bylineHit(fileSlug(`${r.file}`), d),
     bylineField: bylineHit(d.criticName, d),
     locked: d._locked || undefined,
   };

@@ -8,6 +8,7 @@
  */
 
 const fs = require('fs');
+const { getExcerpts } = require('./lib/excerpt-fields');
 const { readReviewForUpdate, persistReviewSnapshot } = require('./lib/persist-review-snapshot');
 const path = require('path');
 const { spawnSync } = require('child_process');
@@ -337,7 +338,7 @@ async function main() {
     }
 
     // Get text to score
-    const text = review.fullText || review.dtliExcerpt || review.bwwExcerpt;
+    const text = review.fullText || getExcerpts(review)[0];
     if (!text || text.length < 100) {
       console.log(`  Skipping ${item.showId}/${item.file} - insufficient text (${text?.length || 0} chars)`);
       skipped++;

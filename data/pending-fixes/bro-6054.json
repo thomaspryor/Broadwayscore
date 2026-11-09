@@ -368,5 +368,26 @@
       "msg": "red-2010/theatermania--charles-isherwood.json wrongAttribution: null -> true"
     }
   ],
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "still-needed",
+    "counts": {
+      "still-needed": 2
+    },
+    "stillNeededReason": "op 8: the write guard rolled this edit back because it also rewrote duplicateOf/duplicateReason; the record needs a hand check before a retry (BRO-7092 hand check); op 10: the write guard rolled this edit back because it also rewrote duplicate fields; the record needs a hand check before a retry (BRO-7092 hand check)",
+    "ops": [
+      {
+        "i": 8,
+        "verdict": "still-needed",
+        "reason": "the write guard rolled this edit back because it also rewrote duplicateOf/duplicateReason; the record needs a hand check before a retry (BRO-7092 hand check)"
+      },
+      {
+        "i": 10,
+        "verdict": "still-needed",
+        "reason": "the write guard rolled this edit back because it also rewrote duplicate fields; the record needs a hand check before a retry (BRO-7092 hand check)"
+      }
+    ]
+  }
 }

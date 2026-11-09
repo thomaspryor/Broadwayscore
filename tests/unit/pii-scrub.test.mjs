@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/archive/notion-card-history.jsonl (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-518: the notion-card-history archive must carry no email or phone PII
 // in the current tree. History is checked as a report only: the raw PII from
 // before BRO-376 still sits in a few old commits until the owner schedules a

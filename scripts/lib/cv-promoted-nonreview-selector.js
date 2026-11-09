@@ -107,6 +107,11 @@ function alreadyReverified(d) {
   const cv = d?.contentVerification;
   if (cv?.reverifiedFrom !== 'stored-fullText') return false;
   if (typeof d.fullText !== 'string') return false;
+  // BRO-6745: a clean, confident verdict on a row that kept its label means a
+  // clear guard refused it (title-mismatch false positives held real Guardian /
+  // The Stage reviews). Re-select it so a fixed guard gets another look; the
+  // re-check pays a fresh verdict, never reuses this one.
+  if (storedVerdictCleanButHeld(d)) return false;
   const { stripConsentLayerPrefix } = require('./text-cleaning');
   const judged = stripConsentLayerPrefix(d.fullText);
   // verifyContent's skip-short verdict carries no hash; it stays done while the
@@ -118,9 +123,25 @@ function alreadyReverified(d) {
   return contentHash(judged) === cv.contentHash || contentHash(d.fullText) === cv.contentHash;
 }
 
+function storedVerdictCleanButHeld(d) {
+  const cv = d?.contentVerification;
+  if (!cv || d.isNonReview !== true) return false;
+  const articleConfidence = cv.articleTypeConfidence || cv.confidence;
+  const clean = cv.isValid === true && !cv.wrongArticle && !cv.wrongProduction && !cv.isFilmTv
+    && cv.confidence === 'high' && articleConfidence === 'high'
+    && (!cv.articleType || cv.articleType === 'review');
+  if (!clean) return false;
+  // Refused under the current guards: done until a guard changes. Without this
+  // the same held rows are re-paid weekly and, sorted first, fill the --limit
+  // batch so later rows never get a turn (ship-check review, BRO-6745).
+  const { CLEAR_GUARD_VERSION } = require('./reverify-clear-guards');
+  return !(cv.clearRefusal && cv.clearRefusal.guardVersion === CLEAR_GUARD_VERSION);
+}
+
 module.exports = {
   planClear,
   alreadyReverified,
+  storedVerdictCleanButHeld,
   CV_PROMOTED_NON_REVIEW_PREFIX,
   isCvPromotedNonReviewCandidate,
   selectCvPromotedNonReview,

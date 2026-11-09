@@ -37,6 +37,11 @@ test('extractOutput reads the delimited block and exit code from a timestamped j
   assert.equal(r.exitCode, 4);
 });
 
+test('extractOutput drops a byte-order mark before a mid-log timestamp', () => {
+  const log = [`2026-10-10T21:00:00Z ${BEGIN}`, '2026-10-10T21:00:01Z abc', '\uFEFF2026-10-10T21:00:02Z def', `2026-10-10T21:00:03Z ${END}`, '2026-10-10T21:00:03Z === RUN-SCRIPT EXIT 0 ==='].join('\n');
+  assert.equal(extractOutput(log).output.split('\n').join(''), 'abcdef');
+});
+
 test('extractOutput reports not-found when the script never started', () => {
   const r = extractOutput('2026-10-10T21:00:00Z checkout failed');
   assert.equal(r.found, false);

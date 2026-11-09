@@ -68,6 +68,7 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: node scripts/supabase-custom-domain.mjs
 
+      # severity-low-ok: manual workflow_dispatch only: the person who dispatched it is watching the run, and nothing scheduled or user-facing depends on it (one-off domain setup, each dispatch prints its state)
       - name: Notify on failure
         if: failure()
         uses: ./.github/actions/notify-failure

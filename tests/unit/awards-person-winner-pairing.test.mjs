@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/awards.json (read by the test); data/precursors/drama-desk.json (read by the test); data/precursors/outer-critics.json (read by the test); +1 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Regression test for pair-based person-winner attribution
  * (scripts/enrich-awards-with-precursors.js applyDDOCCDL, shipped 2026-05-24).

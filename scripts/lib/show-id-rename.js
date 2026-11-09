@@ -42,6 +42,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
+const { isDeepStrictEqual } = require('util');
 const { SHOW_ID_KEYED_FILES } = require('./show-id-keyed-files');
 
 const REPO_ROOT = path.join(__dirname, '..', '..');
@@ -256,7 +257,8 @@ function colonRename(key, oldKey, newKey) {
  * @returns {Array<{op:string, at:string, from:string, to:string}>} edits
  *   (throws on a key collision — the caller turns that into a refusal at
  *   plan time, so apply never sees one — unless the entry opts into
- *   onCollision 'drop-orphan-target' on a forward rename)
+ *   onCollision 'drop-orphan-target' on a forward rename, or this is a
+ *   resume and both keys hold equal values: the old key is then dropped)
  */
 function applyShape(doc, entry, ctx) {
   const keyedBy = entry.keyedBy || 'id';
@@ -281,10 +283,17 @@ function applyShape(doc, entry, ctx) {
           // rename: the plan has refused any target id a shows.json row owns,
           // so the existing entry is orphan data no page reads. On a resume
           // the row already carries newId, so its newId entry is live (CI may
-          // have written it since) and a collision must refuse instead.
+          // have written it since) and a collision with a differing value must refuse instead.
           if (entry.onCollision === 'drop-orphan-target' && !ctx.resume) {
             delete container[renamed];
             edits.push({ op: 'drop-orphan', at: joinPath(base, renamed), from: renamed, to: null });
+          } else if (ctx.resume && isDeepStrictEqual(container[key], container[renamed])) {
+            // Resume after a half-applied rename (BRO-4315 batch 3): both keys
+            // exist and hold the same value, so the old key is a leftover copy.
+            // Dropping it loses nothing; differing values still refuse below.
+            delete container[key];
+            edits.push({ op: 'drop-duplicate-source', at: joinPath(base, key), from: key, to: renamed });
+            continue;
           } else {
             const err = new Error(`key ${JSON.stringify(renamed)} already exists at ${base || '<root>'}`);
             err.code = 'KEY_COLLISION';
@@ -488,7 +497,7 @@ function listMatching(dir, name, isGlob) {
 
 function gitTracked(root, rel) {
   try {
-    execFileSync('git', ['-C', root, 'ls-files', '--error-unmatch', '--', rel], { stdio: ['ignore', 'pipe', 'pipe'] });
+    execFileSync('git', ['-C', root, 'ls-files', '--error-unmatch', '--', rel], { stdio: ['ignore', 'pipe', 'pipe'], maxBuffer: 256 * 1024 * 1024 });
     return true;
   } catch { return false; }
 }
@@ -548,10 +557,11 @@ function rewriteText(text, entries, ctx, { jsonl = false, skipGenericKeys } = {}
 
 /** Group edits into counts for the summary line. */
 function countEdits(edits) {
-  const c = { keys: 0, fields: 0, refs: 0, paths: 0, orphansDropped: 0 };
+  const c = { keys: 0, fields: 0, refs: 0, paths: 0, orphansDropped: 0, duplicatesDropped: 0 };
   for (const e of edits) {
     if (e.op === 'rename-key') c.keys++;
     else if (e.op === 'drop-orphan') c.orphansDropped++;
+    else if (e.op === 'drop-duplicate-source') c.duplicatesDropped++;
     else if (e.op === 'set-field') c.fields++;
     else if (e.op === 'replace-path' || e.op === 'replace-prefix') c.paths++;
     else c.refs++;
@@ -824,6 +834,7 @@ function planShowIdRename(oldId, newId, treesIn = {}) {
     filesRewritten: plan.changes.length,
     keysRenamed: plan.changes.reduce((n, c) => n + c.counts.keys, 0),
     orphansDropped: plan.changes.reduce((n, c) => n + (c.counts.orphansDropped || 0), 0),
+    duplicatesDropped: plan.changes.reduce((n, c) => n + (c.counts.duplicatesDropped || 0), 0),
     fieldsSet: plan.changes.reduce((n, c) => n + c.counts.fields, 0),
     refsRewritten: plan.changes.reduce((n, c) => n + c.counts.refs + c.counts.paths, 0),
     dirsMoved: plan.moves.filter((m) => m.isDir).length,
@@ -1076,6 +1087,7 @@ function formatPlan(plan, { verbose = false, maxEdits = 6 } = {}) {
     for (const c of plan.changes) {
       const parts = [];
       if (c.counts.keys) parts.push(`${c.counts.keys} key${c.counts.keys === 1 ? '' : 's'}`);
+      if (c.counts.duplicatesDropped) parts.push(`${c.counts.duplicatesDropped} leftover old key${c.counts.duplicatesDropped === 1 ? '' : 's'} dropped`);
       if (c.counts.orphansDropped) parts.push(`${c.counts.orphansDropped} orphan target entr${c.counts.orphansDropped === 1 ? 'y' : 'ies'} dropped`);
       if (c.counts.fields) parts.push(`${c.counts.fields} id field${c.counts.fields === 1 ? '' : 's'}`);
       if (c.counts.refs) parts.push(`${c.counts.refs} ref${c.counts.refs === 1 ? '' : 's'}`);
@@ -1153,6 +1165,7 @@ module.exports = {
   // exported for tests / other tools
   rewriteText,
   applyShape,
+  countEdits,
   genericPass,
   findMentions,
   detectJsonFormat,

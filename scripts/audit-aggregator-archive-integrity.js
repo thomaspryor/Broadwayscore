@@ -12,6 +12,7 @@
  * Three modes:
  *   1. Default (informational): print summary, exit 0 unless internal error.
  *   2. --strict: exit 1 if any bad archives are found beyond the committed baseline.
+ *      Exit 2 = could not run (archive dir missing/empty, shows.json unreadable).
  *   3. --update-baseline: write current state to baseline JSON (manual only,
  *      after a deliberate cleanup).
  *
@@ -33,6 +34,7 @@ const fs = require('fs');
 const path = require('path');
 const { scanArchiveIntegrity } = require('./lib/aggregator-archive-scan');
 const { computeStaleBaselineKeys, reportStaleBaseline, pruneStaleEntries, runStaleModes } = require('./lib/stale-baseline');
+const { CORPUS_NOT_SCANNED_EXIT_CODE } = require('./lib/corpus-scan-guard');
 
 const STRICT = process.argv.includes('--strict');
 const UPDATE_BASELINE = process.argv.includes('--update-baseline');
@@ -69,7 +71,23 @@ function loadBaseline() {
   }
 }
 
-const result = audit();
+// BRO-3549: "could not run" exits CORPUS_NOT_SCANNED_EXIT_CODE (2), never 1
+// (this script's drift code), so check-corpus-drift.js (crashCodes: [2]) can
+// tell a missing input from a new bad archive. A missing/empty
+// data/aggregator-archive (private, gitignored) used to scan 0 files and let
+// --strict print "No additions vs baseline" and exit 0 — a vacuous pass.
+let result;
+try {
+  result = audit();
+} catch (e) {
+  console.error(`\n❌ aggregator-archive integrity could not run: ${e.message}`);
+  process.exit(CORPUS_NOT_SCANNED_EXIT_CODE);
+}
+if ((STRICT || UPDATE_BASELINE || process.argv.includes('--check-stale')) && !result.totalScanned) {
+  console.error('\n❌ scanned 0 archive files — data/aggregator-archive is missing or empty (private data not set up). ' +
+    'The gate cannot pass vacuously; run scripts/setup-local-data.sh first.');
+  process.exit(CORPUS_NOT_SCANNED_EXIT_CODE);
+}
 const report = {
   generatedAt: new Date().toISOString(),
   totalScanned: result.totalScanned,

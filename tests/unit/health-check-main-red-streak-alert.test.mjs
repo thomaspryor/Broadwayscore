@@ -74,14 +74,10 @@ test('a red streak past the 2h threshold pages via routeAlert with the shared co
   // detectors dedup through ONE ledger entry, per the comment above
   // checkMainRedStreak() in scripts/health-check.js.
   assert.equal(call.conditionKey, 'test-yml:main-streak');
-  // BRO-3865: 'human' (not 'auto') — test.yml's push-triggered dispatch now
-  // files a per-signature 'auto' card per distinct breakage instead of one
-  // shared 'auto' card under this key, so this aggregate backstop is the
-  // "nobody's per-signature card is stemming a long-running red trunk"
-  // human page, same tier as 'test-yml:main-streak-escalation'. It's on
-  // page-worthy-alerts.js's allowlist so 'human' isn't silently downgraded
-  // to digest.
-  assert.equal(call.disposition, 'human');
+  // BRO-3865 made this 'human', but the key is not page-worthy, so the router
+  // downgraded it to the digest on every fire.
+  // BRO-7102: explicit 'digest' (the page gate downgraded 'human' to it anyway).
+  assert.equal(call.disposition, 'digest');
   assert.equal(call.severity, 'error');
   // 24h, matching the escalation tier — 'auto' never paged more than once
   // per incident (Linear tracker dedupe); 'human' has no such dedupe, only

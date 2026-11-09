@@ -34,3 +34,19 @@ test('no shell script pipes echo/printf into grep -q', () => {
   }
   assert.deepEqual(hits, [], 'use grep -q PATTERN <<<"$var"');
 });
+
+// BRO-6906: the same EPIPE hazard lives in workflow run: blocks (echo "$OUT" |
+// grep -q ...). Workflows run under bash with pipefail, so use here-strings.
+// Only the echo form is gated: printf '%s' "$SHOW" | grep -Eq validations check
+// short workflow inputs, not captured command output.
+test('no workflow pipes echo into grep -q', () => {
+  const BAD_ECHO = /\becho\b[^|\n]*\|\s*grep\s+-[a-zA-Z]*q/;
+  const dir = path.join(ROOT, '.github', 'workflows');
+  const hits = [];
+  for (const f of fs.readdirSync(dir).filter((n) => n.endsWith('.yml'))) {
+    fs.readFileSync(path.join(dir, f), 'utf8').split('\n').forEach((l, i) => {
+      if (!/^\s*#/.test(l) && BAD_ECHO.test(l)) hits.push(`.github/workflows/${f}:${i + 1}`);
+    });
+  }
+  assert.deepEqual(hits, [], 'use grep -q PATTERN <<<"$var"');
+});

@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6018",
   "planId": "3bd79590-05a6-44c1-99a9-38dfdb674c4d",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-22T20:25:56.413Z",
   "submitter": {
     "name": null,
@@ -393,5 +393,22 @@
       "msg": "shows.json: openingDate updated for a-christmas-carol-west-end-2022"
     }
   ],
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 1
+    },
+    "ops": [
+      {
+        "i": 19,
+        "verdict": "resolved",
+        "reason": "my-brilliant-friend-part-1-part-2-west-end-2019.openingDate already \"2019-11-26\""
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (1 resolved); per-op reasons in triage.ops"
 }

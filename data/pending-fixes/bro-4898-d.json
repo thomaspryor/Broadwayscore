@@ -240,5 +240,37 @@
       "ok": false,
       "reason": "Field \"allowEarlyDate\" not allowed for review-field-edit"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "still-needed",
+    "counts": {
+      "obsolete": 2,
+      "still-needed": 2
+    },
+    "stillNeededReason": "op 12: execute-approved-fix refuses review-field-edit of allowEarlyDate (not an allowed field); clearing it needs that field allowlisted or a dedicated op (BRO-7092 hand check); op 16: execute-approved-fix refuses review-field-edit of allowEarlyDate (not an allowed field); clearing it needs that field allowlisted or a dedicated op (BRO-7092 hand check)",
+    "ops": [
+      {
+        "i": 11,
+        "verdict": "obsolete",
+        "reason": "marie-and-rosetta-west-end-2026/whatsonstage--rachel-agyekum.json wrongProductionReason changed since by a later write (now (text))"
+      },
+      {
+        "i": 12,
+        "verdict": "still-needed",
+        "reason": "execute-approved-fix refuses review-field-edit of allowEarlyDate (not an allowed field); clearing it needs that field allowlisted or a dedicated op (BRO-7092 hand check)"
+      },
+      {
+        "i": 15,
+        "verdict": "obsolete",
+        "reason": "marie-and-rosetta-west-end-2026/times-uk--clive-davis.json wrongProductionReason changed since by a later write (now (text))"
+      },
+      {
+        "i": 16,
+        "verdict": "still-needed",
+        "reason": "execute-approved-fix refuses review-field-edit of allowEarlyDate (not an allowed field); clearing it needs that field allowlisted or a dedicated op (BRO-7092 hand check)"
+      }
+    ]
+  }
 }

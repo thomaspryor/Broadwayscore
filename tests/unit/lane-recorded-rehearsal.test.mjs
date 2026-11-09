@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-5201 S4-T3: the recorded rehearsal. Real nights replay through the production wiring and are graded like a press
 // night; the fixtures must match the archived aggregator pages. No archive is a loud skip that records nothing, never a
 // pass. The archive is private, so these tests build a stand-in archive holding only the URLs (no article text).

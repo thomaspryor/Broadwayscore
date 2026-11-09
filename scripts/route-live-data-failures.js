@@ -3,11 +3,11 @@
 // BRO-5788: route each failing live-data test from check-corpus-drift.yml's
 // "Live-data assertions" step through owner-alert-router. Usage:
 //   node scripts/route-live-data-failures.js --tap=<file> --exit=<node --test exit code>
-// Best-effort and always exits 0: the step's own pass/fail comes from node --test.
+// Best-effort and always exits 0. The pass/fail verdict is the workflow's final step, from the new_failures output (BRO-6983).
 const fs = require('node:fs');
 const path = require('node:path');
 const { parseTapOutput } = require('./lib/tap-failure-parser');
-const { planLiveDataRouting, KEY_PREFIX } = require('./lib/live-data-routing');
+const { planLiveDataRouting, splitNewAndKnown, KEY_PREFIX } = require('./lib/live-data-routing');
 
 async function main() {
   const arg = (n) => (process.argv.find((a) => a.startsWith(`--${n}=`)) || '').split('=').slice(1).join('=');
@@ -28,6 +28,13 @@ async function main() {
   const openKeys = Object.entries(router.loadLedger().conditions || {})
     .filter(([, c]) => c.status === 'open').map(([k]) => k).filter((k) => k.startsWith(KEY_PREFIX));
   const plan = planLiveDataRouting(parsed.failures, openKeys, parsed, exitCode);
+  // BRO-6983: classify BEFORE routing (routing refreshes the ledger entries). The workflow's last
+  // step fails the job only when new_failures is not 0, so known, owned failures stop reddening it.
+  const { newKeys, knownKeys } = splitNewAndKnown(plan.route, router.loadLedger().conditions || {});
+  console.log(`[live-data-routing] new=${newKeys.length} known(owned)=${knownKeys.length}`);
+  for (const k of newKeys) console.log(`  NEW   ${k}`);
+  for (const k of knownKeys) console.log(`  known ${k}`);
+  if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, `new_failures=${newKeys.length}\n`);
   console.log(`[live-data-routing] tests=${parsed.totals.tests} fail=${parsed.totals.fail} exit=${exitCode} route=${plan.route.length} resolve=${plan.resolve.length}`);
   for (const r of plan.route) {
     try {

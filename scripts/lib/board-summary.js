@@ -168,7 +168,7 @@ function tile(big, label, note, esc, side) {
 function money(usd) { return `$${Math.round(usd)}`; }
 
 /** The four tiles: shipped, waiting on you, stuck, cost. Missing data reads "n/a", never 0. */
-function tilesFor(m, { startedIdle = null } = {}) {
+function tilesFor(m, { startedIdle = null, compact = false } = {}) {
   const lanes7 = m.lanes.d7;
   const lanes1 = m.lanes.d1;
   const shipped = lanes7 ? lanes7.codex + lanes7.claude : null;
@@ -187,7 +187,7 @@ function tilesFor(m, { startedIdle = null } = {}) {
       m.waiting === null ? 'could not be read' : m.waiting ? 'listed at the top of this email' : 'no decisions pending'],
     // BRO-6870: with the board table present the tile IS its "Started, but no update for 2+ days" row (one number, two places).
     Number.isFinite(startedIdle)
-      ? ['Stuck', plural(startedIdle, 'card'), 'started, no update for 2+ days (the "Started, but no update" row below)']
+      ? ['Stuck', plural(startedIdle, 'card'), `started, no update for 2+ days${compact ? ' (the attached report lists them)' : ' (the "Started, but no update" row below)'}`]
       : ['Stuck', m.stuckCards === null ? 'n/a' : `${m.stuckCards}${m.stuckCardsFloor ? '+' : ''} card${m.stuckCards === 1 && !m.stuckCardsFloor ? '' : 's'}`,
         'started, no progress in 2+ days'],
     ['Spent this week', costBig, costNote],
@@ -195,12 +195,12 @@ function tilesFor(m, { startedIdle = null } = {}) {
 }
 
 /** The owner-facing block. `daily` is fetchDailyFlow's days or null. */
-function renderBoardSummaryHtml(m, daily, esc = (s) => String(s), { now = new Date(), partial = false, startedIdle = null } = {}) {
+function renderBoardSummaryHtml(m, daily, esc = (s) => String(s), { now = new Date(), partial = false, startedIdle = null, compact = false } = {}) {
   const v = boardVerdict(m, daily, { partial });
   const tone = v.tone === 'good'
     ? { bg: '#e8f6e8', dot: '#0ca30c', icon: '&#10003;' }
     : v.tone === 'warn' ? { bg: '#fdf3dc', dot: '#b97e00', icon: '!' } : { bg: '#f4f4f1', dot: MUTED, icon: '?' };
-  const t = tilesFor(m, { startedIdle });
+  const t = tilesFor(m, { startedIdle, compact });
   const tiles = `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin:10px 0 0;">
 <tr>${tile(t[0][1], t[0][0], t[0][2], esc, 'left')}${tile(t[1][1], t[1][0], t[1][2], esc, 'right')}</tr>
 <tr>${tile(t[2][1], t[2][0], t[2][2], esc, 'left')}${tile(t[3][1], t[3][0], t[3][2], esc, 'right')}</tr></table>`;
@@ -209,7 +209,7 @@ function renderBoardSummaryHtml(m, daily, esc = (s) => String(s), { now = new Da
 <div style="background-color:${tone.bg};border-radius:8px;padding:10px 12px;">
 <div style="font-size:15px;font-weight:700;color:${INK};"><span style="display:inline-block;width:18px;height:18px;line-height:18px;border-radius:9px;background-color:${tone.dot};color:#fff;font-size:12px;text-align:center;margin-right:6px;">${tone.icon}</span>${esc(v.headline)}</div>
 <div style="font-size:13px;color:${INK};margin-top:4px;">${esc(v.sentence)}</div></div>
-${Array.isArray(daily) && daily.length ? renderChart(daily, esc, { now }) : ''}
+${!compact && Array.isArray(daily) && daily.length ? renderChart(daily, esc, { now }) : ''}
 ${tiles}
 </div>`;
 }

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data); data/audit/theatre-reviews-coverage.json (bot ledger). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Runs scripts/test-tr-roundup-negative-cache.js (real-lib tests for the
 // theatre.reviews negative cache) so the unit-test glob in CI picks it up.
 import { test } from 'node:test';

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/audit/sd-circuit-breaker.json (bot ledger). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // tests/unit/reddit-scraper-ci.test.mjs — BRO-546.
 //
 // Reddit 403s direct requests from GitHub Actions runner IPs even though the

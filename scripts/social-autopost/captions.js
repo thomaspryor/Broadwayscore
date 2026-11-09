@@ -11,6 +11,8 @@ const { MARKETS, marketOf, operaHouseTag } = require('./config');
 
 const LIMITS = { twitter: 280, bluesky: 300, threads: 500, instagram: 2196, facebook: 5000 };
 const SHORT_BUDGET = 270; // fits X and Bluesky with margin
+/** Characters a short caption may use on X or Bluesky: the network limit less a small margin (BRO-7154: a 30-character margin cost Bluesky posts their question). */
+const shortBudget = network => LIMITS[network] - 4;
 
 function showPath(show) {
   if (marketOf(show) === 'opera') return `/opera/${String(show.slug || show.id).replace(/-off-broadway/, '')}`; // the site's opera page (getOperaTitleSlug)
@@ -37,9 +39,7 @@ function pathMarker(show) {
  * the score sentence. buffer.js findExistingPost matches on them so the same post
  * is never created twice.
  */
-// The score post's sentence. No other post type may use it (social-autopost.test.mjs),
-// so a score post's dedupe never mistakes a brief post for itself, and the reverse.
-const SCORE_SENTENCE = /has a Critic Score of \d/;
+// SCORE_SENTENCE (defined below the other post types' sentences) is the score post's marker.
 
 function postMarkers(show) {
   return [pathMarker(show), SCORE_SENTENCE];
@@ -73,8 +73,9 @@ function breakdownLine(b) {
 // Voice (BRO-6417, scripts/social-autopost/VOICE.md): every post informs, then asks
 // an open question. The question is built here from the facts, never written by a
 // session, so it cannot misstate a number or a direction. On X and Bluesky it
-// outranks the caveat and the lead-in: those go first, then the title is shortened,
-// and the question is dropped only if nothing else is left to cut.
+// outranks the caveat and the lead-in: those go first, then the title is shortened
+// while it still names the show (READABLE_CLIPS), then the question is dropped, and only
+// then is the title cut further (BRO-7154: a post once read "Clifford… has a Critic Score").
 
 const cap1 = t => `${t[0].toUpperCase()}${t.slice(1)}`;
 const an = n => (/^8/.test(String(n)) || n === 11 || n === 18 ? 'an' : 'a');
@@ -90,6 +91,8 @@ const clipTitle = (t, max) => {
 const firstFit = (budget, tries) => tries.find(t => [...t].length <= budget) || tries[tries.length - 1];
 /** Title lengths to try when a short caption has to give up title characters. */
 const CLIPS = [60, 48, 38, 30, 24, 18, 14];
+/** Clip lengths that still name the show; below these the question goes before the title shrinks further. */
+const READABLE_CLIPS = CLIPS.filter(n => n >= 24);
 
 /** Critic counts the score question reads: positive side (rave + positive), mixed-or-negative side, and the total. */
 function sides(b) {
@@ -140,13 +143,14 @@ function buildCaptions(p) {
   const alt = `${title} poster with its Critic Score of ${p.score} out of 100, rated ${p.tierLabel}${bd ? `. Critics: ${bd}` : ''}.`;
 
   const withUrl = (text, network) => `${text}\n\n${showUrl(show, network)}`;
-  // Order: drop the lead-in, then shorten the title, then (only if nothing else is left) the question.
+  // Order: drop the lead-in, shorten the title to a readable length, drop the question, then shorten the title further.
   const fitShort = (network) => {
     const url = showUrl(show, network);
-    const budget = Math.min(SHORT_BUDGET, LIMITS[network]) - (network === 'twitter' ? 23 : url.length) - 2;
+    const budget = shortBudget(network) - (network === 'twitter' ? 23 : url.length) - 2;
     const body = (t, lead, ask) => `${sentence(t, lead)}${ask ? `\n\n${ask}` : ''}`;
     const t = firstFit(budget, [body(title, true, q.short), body(title, false, q.short),
-      ...CLIPS.map(n => body(clipTitle(title, n), false, q.short)), body(clipTitle(title, 14), false, null)]);
+      ...READABLE_CLIPS.map(n => body(clipTitle(title, n), false, q.short)), body(title, false, null),
+      ...CLIPS.map(n => body(clipTitle(title, n), false, null))]);
     return `${t}\n\n${url}`;
   };
 
@@ -179,6 +183,25 @@ const HOOK_BANNED = [
   [/\b(delve|robust|leverage|unlock|tapestry|realm|journey|landscape|navigate|deep dive|not just|it's not|moreover|furthermore|additionally|truly|genuinely)\b/i, 'an anti-slop word'],
 ];
 
+// Audience reception is a letter grade, never a number (VOICE.md rule 8, BRO-6922). Numbers may be digits or
+// spoken words (voiceover prompts spell them out). A count of audience reviews is allowed; a score or a
+// critic-versus-audience point gap is not.
+const NUM = '(?:(?:\\d{1,3}|one|two|three|four|five|six|seven|eight|nine|ten)\\s+(?:out\\s+of|in)\\s+(?:ten|10)|\\d{1,3}(?:,\\d{3})*(?:%|\\s+percent)?|(?:twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred)(?:-[a-z]+)?|(?:one|two|three|four|five)\\s+stars?)';
+const AUD = '(?:audiences?|crowds?)';
+const AUDIENCE_NUMBER = [
+  new RegExp(`\\b${AUD}\\b[^.\\n]{0,40}?\\b${NUM}(?!\\w)`, 'i'),
+  new RegExp(`\\b${NUM}\\s+(?:[a-z]+\\s+){0,2}?(?:from|with|among|by|for|of)\\s+(?:the\\s+)?${AUD}\\b`, 'i'),
+  new RegExp(`\\b${NUM}[- ]points?\\b[^.\\n]{0,40}?\\b${AUD}\\b`, 'i'),
+  new RegExp(`\\b(?:\\d{1,3}|one|two|three|four|five|six|seven|eight|nine|ten)\\s+(?:out\\s+of|in)\\s+(?:ten|10)\\b[^.\\n]{0,25}?\\b${AUD}\\b`, 'i'),
+];
+const AUDIENCE_COUNT = new RegExp(`\\b${NUM}\\s+audience\\s+(?:reviews?|ratings?)\\b`, 'gi');
+/** The phrase that gives audiences a number, or null. */
+function audienceNumber(text) {
+  const t = String(text).replace(AUDIENCE_COUNT, 'some audience reviews');
+  for (const re of AUDIENCE_NUMBER) { const m = t.match(re); if (m) return m[0]; }
+  return null;
+}
+
 /** Problem with a hook sentence, or null when it is fine (empty is fine). */
 function validateHook(hook) {
   if (hook == null || hook === '') return null;
@@ -186,6 +209,7 @@ function validateHook(hook) {
   if (hook.length > HOOK_MAX) return `hook is ${hook.length} characters, at most ${HOOK_MAX}`;
   if (/\n/.test(hook)) return 'hook must be one line';
   for (const [re, what] of HOOK_BANNED) if (re.test(hook)) return `hook contains ${what}`;
+  if (audienceNumber(hook)) return 'hook gives audiences a number (audiences get a letter grade only)';
   return null;
 }
 
@@ -287,8 +311,9 @@ function buildCompareCaptions(p) {
       body(title, { withHook: true, line: caveat }), body(title, { line: caveat }), body(title, { line: shortCaveat }),
       body(title), body(title, { ask: q.short }),
       body(title, { ask: q.short, bare: true }), body(title, { ask: q.tiny, bare: true }),
-      ...CLIPS.map(n => body(clipTitle(title, n), { ask: q.short, bare: true })),
-      body(clipTitle(title, 14), { ask: null }),
+      ...READABLE_CLIPS.map(n => body(clipTitle(title, n), { ask: q.short, bare: true })),
+      body(title, { ask: null, bare: true }),
+      ...CLIPS.map(n => body(clipTitle(title, n), { ask: null, bare: true })),
     ]);
     return `${t}\n${url}`;
   };
@@ -316,6 +341,86 @@ function buildCompareCaptions(p) {
 }
 
 // ---------------------------------------------------------------------------
+// Moved post (BRO-6934): the same production in the same city, reopened at a new theatre.
+// The two runs are told apart by venue, not by market, so the lines read "At the London
+// Palladium: Critic Score 74 from 28 critics." and there is no cross-city caveat.
+
+// The venue line, in every moved caption: "At the <venue>: " then the score and critic count.
+const MOVED_SENTENCE = /\bAt the [^:\n]{2,60}: (?:Critic Score )?\d+ from \d+ critics\b/;
+const venueOf = show => String(show.venue || '').trim();
+/** "the Palladium", never "the The Public Theater": the venue with its article, for running text. */
+const theVenue = v => `the ${String(v).trim().replace(/^the\s+/i, '')}`;
+
+/** Markers every caption of a moved post carries: the newer show's path, the moved sentence and the older venue's line. */
+function movedMarkers(newerShow, olderVenue) {
+  const out = [pathMarker(newerShow), MOVED_SENTENCE];
+  if (olderVenue) out.push(new RegExp(`(?:^|\\n)At ${escapeRe(theVenue(olderVenue))}: `));
+  return out;
+}
+
+/** Closing question of a moved post, from the size and direction of the gap (the gap is allowed in briefs.allowedNumbers as `delta`). */
+function movedQuestion(newer, older) {
+  const gap = Math.abs(newer.score - older.score);
+  if (gap <= 3) return { long: 'Same show, new theatre, and the critics largely agree. What do you think carried over so well?', short: 'New theatre, critics agree. What carried over?', tiny: 'What carried over?' };
+  const warmer = newer.score > older.score ? newer : older, v = theVenue(venueOf(warmer.show));
+  return { long: `Same show, new theatre, ${an(gap)} ${gap}-point gap. Why do you think critics warmed to it more at ${v}?`, short: `${cap1(an(gap))} ${gap}-point gap. Why did critics warm to it more at ${v}?`, tiny: `Why did critics warm to it more at ${v}?` };
+}
+
+/** Moved post captions. p: { newer, older, hook } where newer/older = { show, score, reviewCount, soFar }. */
+function buildMovedCaptions(p) {
+  const { newer, older } = p;
+  const q = movedQuestion(newer, older);
+  const lead = title => `${title} has moved from ${theVenue(venueOf(older.show))} to ${theVenue(venueOf(newer.show))}.`;
+  const fact = d => `At ${theVenue(venueOf(d.show))}: Critic Score ${d.score} from ${d.reviewCount} critics${d.soFar ? ' so far' : ''}.`;
+  // clip: shorten the venue names in the fact lines, the last resort for very long theatre names on X and Bluesky.
+  const shortFact = (d, clip = Infinity) => `At ${theVenue(clipTitle(venueOf(d.show), clip))}: ${d.score} from ${d.reviewCount} critics${d.soFar ? ' so far' : ''}`;
+  const facts = `${fact(older)}\n${fact(newer)}`;
+  const hook = p.hook ? `${p.hook.trim()}\n\n` : '';
+  const title = newer.show.title;
+  const long = `${hook}${lead(title)}\n\n${facts}\n\n${q.long}`;
+  const links = network => `${venueOf(older.show)} reviews: ${showUrl(older.show, network, 'brief')}\n${venueOf(newer.show)} reviews: ${showUrl(newer.show, network, 'brief')}`;
+
+  // X and Bluesky carry the newer show's link only. Fit order: drop the hook, shorten the title,
+  // shorten the question; the facts and the link never. X counts any link as 23 characters (t.co).
+  const fitShort = network => {
+    const url = showUrl(newer.show, network, 'brief');
+    const linkCost = network === 'twitter' ? 23 : url.length;
+    const budget = LIMITS[network] - 4 - linkCost - 1;
+    const body = (t, { withHook = false, ask = q.long, bare = false, clip = Infinity } = {}) =>
+      `${withHook ? hook : ''}${bare ? t : lead(t)}\n${shortFact(older, clip)}\n${shortFact(newer, clip)}${ask ? `\n${ask}` : ''}`;
+    const t = firstFit(budget, [
+      body(title, { withHook: true }), body(title), body(title, { ask: q.short }),
+      body(title, { ask: q.short, bare: true }), body(title, { ask: q.tiny, bare: true }),
+      ...READABLE_CLIPS.map(n => body(clipTitle(title, n), { ask: q.short, bare: true })),
+      body(title, { ask: null, bare: true }),
+      ...CLIPS.map(n => body(clipTitle(title, n), { ask: null, bare: true })),
+      ...[30, 22, 16].map(n => body(clipTitle(title, 24), { ask: q.tiny, bare: true, clip: n })),
+    ]);
+    return `${t}\n${url}`;
+  };
+  const fitThreads = () => {
+    const noHook = `${lead(title)}\n\n${facts}\n\n${q.long}`;
+    const tries = [`${long}\n\n${links('threads')}`, `${noHook}\n\n${links('threads')}`, `${noHook}\n\n${showUrl(newer.show, 'threads', 'brief')}`,
+      `${lead(title)}\n\n${facts}\n\n${showUrl(newer.show, 'threads', 'brief')}`,
+      // very long theatre names: the compact fact lines, then clipped names
+      ...[Infinity, 40, 28].map(clip => `${lead(title)}\n${shortFact(older, clip)}\n${shortFact(newer, clip)}\n${q.short}\n${showUrl(newer.show, 'threads', 'brief')}`)];
+    return tries.find(t => [...t].length <= LIMITS.threads) || tries[tries.length - 1];
+  };
+  const tags = [...new Set([...MARKETS[newer.show.category].hashtags, ...MARKETS[older.show.category].hashtags, 'Theatre'])].map(t => `#${t}`).join(' ');
+  const site = d => `${MARKETS[d.show.category].domain}${showPath(d.show)}`;
+  const altFact = d => `at ${theVenue(venueOf(d.show))}, ${d.score} from ${d.reviewCount} critics${d.soFar ? ' so far' : ''}`;
+
+  return {
+    twitter: fitShort('twitter'),
+    bluesky: fitShort('bluesky'),
+    threads: fitThreads(),
+    instagram: `${long}\n\nFull reviews: ${site(newer)} and ${site(older)} (link in bio)\n\n${tags}`,
+    facebook: `${long}\n\n${links('facebook')}`,
+    altText: `Critic Scores for ${title}, which moved from ${theVenue(venueOf(older.show))} to ${theVenue(venueOf(newer.show))}: ${altFact(older)}; ${altFact(newer)}.`,
+  };
+}
+
+// ---------------------------------------------------------------------------
 // Weekly roundup and closing soon (BRO-6413). Like every caption here these are
 // templates over the site's numbers; the only words are fixed.
 
@@ -327,6 +432,13 @@ const monthDay = ymd => `${MONTHS[+String(ymd).slice(5, 7) - 1]} ${+String(ymd).
 // (social-autopost.test.mjs), and neither matches SCORE_SENTENCE or COMPARE_SENTENCE.
 const ROUNDUP_SENTENCE = /New openings, [A-Z][a-z]{2} \d{1,2} to [A-Z][a-z]{2} \d{1,2}, Critic Scores:/;
 const CLOSING_SENTENCE = / closes [A-Z][a-z]{2} \d{1,2}, with a Critic Score of \d/;
+
+// The score post's marker: "Critic Score" and none of the other post types' sentences. Template
+// posts say "has a Critic Score of 61"; AI-written posts (BRO-6959, ai-captions.js) word it freely
+// but must say "Critic Score", and the checks there refuse a draft that reads as another type.
+// No other post type may match it (social-autopost.test.mjs), so a score post's dedupe never
+// mistakes a brief, compare, roundup or closing post for itself, and the reverse.
+const SCORE_SENTENCE = new RegExp(`^(?![\\s\\S]*(?:${[COMPARE_SENTENCE, MOVED_SENTENCE, ROUNDUP_SENTENCE, CLOSING_SENTENCE].map(r => r.source).join('|')}))[\\s\\S]*\\bCritic Score\\b`);
 
 const SET_DOMAIN = { broadway: 'broadwayscorecard.com', 'west-end': 'westendscorecard.com' };
 const rootUrl = (set, network) => `https://${SET_DOMAIN[set]}/?utm_source=${network}&utm_medium=social&utm_campaign=roundup`;
@@ -378,7 +490,7 @@ function buildRoundupCaptions(p) {
   // question is kept in its short form before a row goes, and never the numbers.
   const fitShort = network => {
     const url = rootUrl(p.set, network);
-    const budget = Math.min(SHORT_BUDGET, LIMITS[network]) - (network === 'twitter' ? 23 : url.length) - 2;
+    const budget = shortBudget(network) - (network === 'twitter' ? 23 : url.length) - 2;
     const text = (n, ask, clip = Infinity) => {
       const cut = p.rows.length - n + p.more;
       return `${header}\n${p.rows.slice(0, n).map(r => line({ ...r, title: clipTitle(r.title, clip) }, false)).join('\n')}${cut > 0 ? `\nPlus ${cut} more on the site.` : ''}\n\n${ask}`;
@@ -430,10 +542,11 @@ function buildClosingCaptions(p) {
   // Fit order: the long question, the short one, a shorter title, and only then no question.
   const fitShort = network => {
     const url = showUrl(show, network, 'closing');
-    const budget = Math.min(SHORT_BUDGET, LIMITS[network]) - (network === 'twitter' ? 23 : url.length) - 2; // X counts any link as 23
+    const budget = shortBudget(network) - (network === 'twitter' ? 23 : url.length) - 2; // X counts any link as 23
     const body = (t, ask) => `${sentence(t)}${ask ? `\n\n${ask}` : ''}`;
     const t = firstFit(budget, [body(show.title, cq.long), body(show.title, cq.short),
-      ...CLIPS.map(n => body(clipTitle(show.title, n), cq.short)), body(show.title, null), body(clipTitle(show.title, 14), null)]);
+      ...READABLE_CLIPS.map(n => body(clipTitle(show.title, n), cq.short)), body(show.title, null),
+      ...CLIPS.map(n => body(clipTitle(show.title, n), null))]);
     return `${t}\n\n${url}`;
   };
   return {
@@ -454,7 +567,7 @@ function closingAllowedNumbers(p) {
 
 module.exports = {
   scoreQuestion, scoreAllowedNumbers, compareQuestion, roundupQuestion, closingQuestion,
-  buildCaptions, showUrl, postMarkers, LIMITS,
-  buildCompareCaptions, compareCaveat, compareMarkers, validateHook, strayNumbers, productionLabel, pathMarker, CITY, SCORE_SENTENCE, COMPARE_SENTENCE,
+  buildCaptions, showUrl, showPath, hashtagLine, postMarkers, LIMITS, SHORT_BUDGET, shortBudget,
+  buildCompareCaptions, buildMovedCaptions, theVenue, movedQuestion, movedMarkers, venueOf, MOVED_SENTENCE, compareCaveat, compareMarkers, validateHook, audienceNumber, strayNumbers, productionLabel, pathMarker, CITY, SCORE_SENTENCE, COMPARE_SENTENCE,
   monthDay, ROUNDUP_SENTENCE, CLOSING_SENTENCE, roundupHeader, roundupMarkers, buildRoundupCaptions, roundupAllowedNumbers, closingMarkers, buildClosingCaptions, closingAllowedNumbers, SET_DOMAIN,
 };

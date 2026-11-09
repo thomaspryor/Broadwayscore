@@ -49,6 +49,12 @@ const NON_REVIEW_HOST_PATTERNS = [
   /^stagemag\.broadwayworld\.com$/, /^broadwayworldshop\.com$/,
   /^forum\.broadwayworld\.com$/, /^data\.broadwayworld\.com$/,
   /^wisdomdigital\.com$/, /^cur8\.com$/, /^jt-pr-dot-yamm-track\.appspot\.com$/,
+  // BRO-7147: affiliate click-redirect trackers (Commission Junction, Awin,
+  // Partnerize). Show Score's ticket buttons route through them; a Ceilidh
+  // tkqlhce.com/click-... link was counted as a missing review and proposed as a
+  // new outlet. 0 of the reviews.json URLs use these hosts.
+  /(^|\.)(tkqlhce|jdoqocy|kqzyfj|emjcd)\.com$/, /(^|\.)(anrdoezrs|dpbolvw|qksrv)\.net$/,
+  /(^|\.)awin1\.com$/, /^prf\.hn$/,
   // venue & box-office (not reviews)
   /\.org$/, // catches many venue domains; allow-list known critic .orgs below
   /^ci\.ovationtix\.com$/,
@@ -72,7 +78,10 @@ const NON_REVIEW_HOST_PATTERNS = [
   /^nimaxtheatres\.com$/, /(^|\.)londontheatres\.co\.uk$/,
   /^sadlerswells\.com$/, /^improbable\.co\.uk$/,
   /^imdb\.com$/, /(^|\.)wikipedia\.org$/, /(^|\.)tripadvisor\./,
-  /^theatreboard\.com$/, /^officiallondontheatre\.com$/,
+  /^theatreboard\.(?:com|co\.uk)$/, /^officiallondontheatre\.com$/,
+  // News aggregator: /article/<slug> pages re-host another outlet's review
+  // (BRO-6909: Memoriam counted Ground News's copy of The Spy in the Stalls).
+  /(^|\.)ground\.news$/,
   /(^|\.)london-theatreland\.co\.uk$/, /^ma\.to$/,
   // Our own site is never a source for our own gap list.
   /(^|\.)broadwayscorecard\.com$/,
@@ -196,14 +205,32 @@ function siteUtilityPathReason(url) {
 const OFF_TOPIC_SECTION_RE = /\/(sports?|obituar(y|ies))\/|\/films?\/news\//i;
 NON_REVIEW_PATH_PATTERNS.push(OFF_TOPIC_SECTION_RE);
 
+// BRO-7027: The Times files hard news under a section + subsection
+// (/uk/politics/article/<slug>, /world/europe/article/<slug>, /money/tax/...),
+// and title-word discovery filed a politics story about the City Bridge
+// Foundation under the play "Bridge". Its arts pages live under /culture/ or a
+// bare /uk/article/<slug> (Lehman Trilogy), and a theatre story in a news
+// section names the stage in its slug, so a slug with a theatre cue or a London
+// postcode is left alone. Host-scoped: other papers use these words for arts.
+// Replayed over the 581 Times URLs in reviews.json: only the Bridge story and a
+// student-loans piece filed under Proof (2026) match. /sport/ is already above.
+const TIMES_HOST_RE = /(^|\.)thetimes\.(co\.uk|com)$/i;
+const TIMES_NEWS_SECTION_RE = /^\/(?:(?:uk|world|us)\/[^/]+|money|business(?:-money)?|comment|life-style|sunday-times-rich-list|edition\/news)\/(?:[^/]+\/)*article\/(?![a-z0-9-]*(?:review|theat|stage|musical|opera|ballet|danc|play|comedy|panto|-at-|wc\d|se\d|sw\d|ec\d|nw\d|-w\d|-n\d))[a-z0-9-]+\/?$/i;
+
 /**
- * 'off-topic-section' when the URL sits in a sport/obituary/film-news section, else null.
+ * 'off-topic-section' when the URL sits in a sport/obituary/film-news section
+ * (any host) or a Times hard-news section (BRO-7027), else null.
  * @param {string} url
  * @returns {string|null}
  */
 function offTopicSectionReason(url) {
   if (typeof url !== 'string' || !url) return null;
-  try { return OFF_TOPIC_SECTION_RE.test(new URL(url).pathname) ? 'off-topic-section' : null; } catch { return null; }
+  try {
+    const u = new URL(url);
+    if (OFF_TOPIC_SECTION_RE.test(u.pathname)) return 'off-topic-section';
+    if (TIMES_HOST_RE.test(u.hostname) && TIMES_NEWS_SECTION_RE.test(u.pathname)) return 'off-topic-section';
+    return null;
+  } catch { return null; }
 }
 
 /**
@@ -245,6 +272,9 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   { host: /(^|\.)nypost\.com$/, path: /^\/\d{4}\/\d\d\/\d\d\/[^/]+-join-forces-to-produce-[^/]+\/?$/i, reason: 'producer-news' },
   { host: /(^|\.)nationaltheatre\.org\.uk$/, path: /^\/productions\//, reason: 'venue-production-page' },
   { host: /(^|\.)middlesexcountyculture\.com$/, path: /^\/event\//, reason: 'event-listing' },
+  // BRO-5829: New Jersey Stage per-showtime calendar pages (/events/YYYY/MM/DD/...-on-DATE-TIME) are
+  // listings, never reviews; the SERP census kept re-alerting four of them for The Unexpected 3rd.
+  { host: /(^|\.)newjerseystage\.com$/, path: /^\/events\/\d{4}\/\d\d\/\d\d\//, reason: 'event-listing' },
   // An events-calendar entry ("UPCOMING ... Event information supplied by the
   // originating source") at a bare title slug. Opening Night Online's real reviews
   // use the same shape (/the-invention-of-love/), so only this page is named (BRO-4679).
@@ -610,7 +640,12 @@ const LISTING_PAGE_URL_PATTERNS = [
   // critic review: theatreboard.com (ProBoards) scored a preview punter 90/Rave.
   // Host-scoped on purpose: a bare /topic/ path is also a real news topic page
   // (britannica.com/topic/...), so it is only a forum on a forum-shaped host.
-  { host: /(^|\.)theatreboard\.com$/, path: /^\/(thread|board|user|forum)\b/i, reason: 'forum-thread' },
+  // theatreboard.co.uk is the same ProBoards forum (BRO-6909: a Dogstar
+  // thread scored 77, a Stoker & Wilde thread 75).
+  { host: /(^|\.)theatreboard\.(?:com|co\.uk)$/, path: /^\/(thread|board|user|forum)\b/i, reason: 'forum-thread' },
+  // Ground News /article/ pages summarise other outlets' reviews; the review
+  // is the original outlet's URL. 7 counted rows on 2026-11-03, none original.
+  { host: /(^|\.)ground\.news$/, path: /^\/article\//i, reason: 'news-aggregator-repost' },
   { host: /(^|\.)proboards\.com$/, path: /./, reason: 'forum-thread' },
   { host: /^forum\.broadwayworld\.com$/, path: /^\/(thread|forum|newcsd)/i, reason: 'forum-thread' },
   { host: /(^|\.)balletcoforum\.com$/, path: /^\/(topic|forum)\b/i, reason: 'forum-thread' },
@@ -632,6 +667,13 @@ const LISTING_PAGE_URL_PATTERNS = [
   // live under /<market>/article/ (0 of 56k scored rows on 2026-10-13 use a
   // /regional/ path).
   { host: /(^|\.)broadwayworld\.com$/, path: /^\/[^/]+\/regional\//i, reason: 'show-listing-page' },
+  // BWW feature articles whose headline prefix says what they are (BRO-5958,
+  // BRO-7079): a "Previews:" piece on Arias with a Twist, dated five days
+  // before opening, counted as Peter Danish's review until a hand fix. BWW
+  // article slugs are the headline, so the prefix survives in the path.
+  // Reviews are /article/Review-... (1,027 live rows on 2026-11-07, 0 with
+  // any prefix below).
+  { host: /(^|\.)broadwayworld\.com$/, path: /\/article\/(?:Previews?|Interview|Photos?|Photo-Flash|Video|Exclusive-Photos|Breaking)-/i, reason: 'feature-not-review' },
   // Talkin' Broadway regional section indexes, /regional/<city>/ (BRO-5436:
   // /regional/alb/ filed as a Macbeth review). Reviews are /page/<section>/<slug>.html.
   { host: /(^|\.)talkinbroadway\.com$/, path: /^\/regional(\/[^/.]*)?\/?$/i, reason: 'review-index-page' },
@@ -690,7 +732,42 @@ const LISTING_PAGE_URL_PATTERNS = [
   // reviews.json 2026-10-14: 0 of 2,078 scored rows from these hosts use such
   // a path. Host-scoped: other sites do publish reviews at /tag/ urls
   // (twi-ny.com, offoffonline, whatsonoffbroadway).
-  { host: /(^|\.)(?:thereviewshub\.com|deadline\.com|vulture\.com|theatermania\.com|whatsonstage\.com|theatreweekly\.com)$/, path: /^\/(?:tags?|category|author)\//i, reason: 'tag-index-page' },
+  // BRO-6909: three London blogs whose reviews are dated posts. reviews.json
+  // 2026-11-03: their one /tag/ row each was counted (ENO Tosca took
+  // cherylmarkosky.com/tag/english-national-opera/, scored 87); 0 of their
+  // other 108 rows use the path.
+  { host: /(^|\.)(?:thereviewshub\.com|deadline\.com|vulture\.com|theatermania\.com|whatsonstage\.com|theatreweekly\.com|cherylmarkosky\.com|monstagigz\.com|firstnightmagazine\.com)$/, path: /^\/(?:tags?|category|author)\//i, reason: 'tag-index-page' },
+  // BRO-6921: that host list grew one incident at a time (StageBuddy's
+  // /tag/the-kings-critique was filed for a show still in previews, 2026-11-04),
+  // so a one-segment /tag/<x>/ or /author/<x>/ archive is now a listing on ANY
+  // host except exceptHosts, whose reviews do sit at /tag/<show>/ urls.
+  // /category/ stays host-scoped above: some sites nest article permalinks under it.
+  // Corpus 2026-11-04: /tag|author/ files on 20 hosts; every one is flagged or an
+  // uncounted stub except twi-ny (2) and whatsonoffbroadway (1), the only such rows
+  // of 49,326 in reviews.json. exceptHosts is a plain field so scoring-delta's
+  // listingPatternsKey fingerprints it.
+  { host: /./, path: /^\/tags?\/[^/]+(?:\/page\/\d+)?\/?$/i, reason: 'tag-index-page',
+    exceptHosts: /(^|\.)(?:twi-ny\.com|whatsonoffbroadway\.com)$/ },
+  { host: /./, path: /^\/author\/[^/]+(?:\/page\/\d+)?\/?$/i, reason: 'tag-index-page' },
+  // BRO-7081: the hourly gap audit kept alerting on listing pages the SERP census
+  // cited. A per-performance event page ends in its date (limelight-arts.com.au
+  // /event/garry-starr-classic-penguins-2/2026-06-25/, nine of them for one show,
+  // BRO-6950), and a bare /shows/<slug>/ page is a show hub (broadwayblack.com
+  // /shows/midnight/, BRO-5134/BRO-6731; mirvish.com /shows/juliet). Corpus
+  // 2026-11-07: 0 of reviews.json's URLs match either shape; reviews on hub hosts
+  // sit one level deeper (didtheylikeit /shows/<show>/<review>/).
+  { host: /./, path: /^(?![^?#]*review)[^?#]*\/events?\/[^/]+\/\d{4}-\d\d-\d\d\/?$/i, reason: 'event-listing' },
+  // Registered aggregators (stagedoor.com, show-score.com, ...) are exempt: their
+  // /shows/<slug> page is the citation URL an aggregator star-stub is filed under
+  // (aggregator-outlet-refinement.test.mjs), so refusing it would drop exactly the
+  // aggregator-cited reviews this rule exists to protect.
+  { host: new RegExp(`^(?!(?:.*\\.)?(?:${[...require('./aggregator-domains').AGGREGATOR_DOMAINS].map((d) => d.replace(/\./g, '\\.')).join('|')})$)`), path: /^\/shows\/[^/]+\/?$/i, reason: 'show-hub' },
+  // BRO-5629: an aggregator cited bestoftheatre's "everything you need to know"
+  // explainer as Affluenza's missing review (also /everything-you-need-to-know-dogstar,
+  // oldvictheatre /things-you-need-to-know-about-martin-guerre/). A slug that also
+  // says "review" stays a review (kiddoadventures "review-beetlejuice-...-everything-
+  // you-need-to-know-before-you-go"). Corpus 2026-11-07: 0 live reviews match.
+  { host: /./, path: /^(?![^?#]*review)[^?#]*(?:^|[-/])(?:everything|things)-(?:you-)?need-to-know(?:[-/._]|$)/i, reason: 'guide-article' },
 ];
 
 /**
@@ -713,6 +790,7 @@ function listingPageUrlReason(url) {
   for (const p of LISTING_PAGE_URL_PATTERNS) {
     if (!p.host.test(host)) continue;
     if (!p.path.test(pathname)) continue;
+    if (p.exceptHosts && p.exceptHosts.test(host)) continue;
     return p.reason;
   }
   if ((pathname === '' || pathname === '/') && !u.search) return 'bare-host';

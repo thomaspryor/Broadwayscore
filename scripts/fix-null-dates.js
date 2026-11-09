@@ -131,8 +131,11 @@ for (const show of shows) {
 
       const displayDate = formatDateForDisplay(extractedDate);
       if (!dryRun) {
+        const _priorDate = data.publishDate;
         data.publishDate = displayDate;
         data.dateSource = source;
+        // BRO-6983: this write skips safeWriteReview, so run its cross-market (class A) check.
+        require('./lib/review-write-guard').flagSiblingEraDateOnPersist(filePath, { publishDate: _priorDate }, data);
         fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
       }
       if (source === 'extracted-from-archive-timestamp') fixedFromArchive++;

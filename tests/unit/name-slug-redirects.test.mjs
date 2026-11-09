@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/slug-redirects.json (read by the test); data/slug-redirects-compact.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Retired person/place slug redirects (2026 data audit, S7-T3 follow-up).
 //
 // The S7-T3 diacritic fold moved every accented /creative, /theater,

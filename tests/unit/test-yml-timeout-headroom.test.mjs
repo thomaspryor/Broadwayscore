@@ -45,6 +45,8 @@ const MEASURED_RUNTIME_SEC = {
   'design-tokens-lint': 30,
   'typescript-check': 108,
   'unit-tests': 852,
+  // BRO-7113: placeholder until measured from the first main runs; shard ceiling is 30 min.
+  'unit-test-shards': 600,
   'data-safety-guards': 168,
   'data-validation': 318,
   'e2e-tests': 294,

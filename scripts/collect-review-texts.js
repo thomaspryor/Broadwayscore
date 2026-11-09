@@ -56,6 +56,8 @@ const { pointsAtFile, planCanonicalPointerClear, applyCanonicalPointerClear } = 
 const { quarantineBody } = require('./lib/quarantine-body');
 const { withTimeout: sharedWithTimeout } = require('./lib/with-timeout');
 const { guardianContentToResult, titleHtmlFor, guardianMentionWaiver } = require('./lib/guardian-api-result');
+const { GUARDIAN_API_FIELDS, applyGuardianPublication } = require('./lib/guardian-publication');
+const { isTitledBlogUrl, titledBlogMentionWaiver } = require('./lib/titled-blog-collect');
 const fs = require('fs');
 const { readReviewForUpdate, persistReviewSnapshot, renameReviewSnapshot } = require('./lib/persist-review-snapshot');
 const path = require('path');
@@ -66,6 +68,7 @@ const { loadCookiesForDomain, hasCookiesForUrl, buildCookieHeaderForUrl, COOKIE_
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { pushWithRetry } = require('./lib/push-with-retry.js');
 const { markReviewTextsPushed } = require('./lib/review-texts-pushed-marker.js'); // BRO-5308
+const { listUnpushedReviewFiles, startPressNightScoring } = require('./lib/press-night-scoring-trigger'); // BRO-6886
 const { isTimeBudgetExceeded } = require('./lib/collect-time-budget.js');
 const { buildCollectSummary, writeCollectSummary } = require('./lib/collect-run-summary.js');
 const { shouldSkipAlreadyAttempted, dedupeAttemptState } = require('./lib/collection-attempt-guard.js');
@@ -117,7 +120,7 @@ const { applyMultiShowFanoutToFile } = require('./lib/multi-show-review-fanout')
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
 // BRO-912: shared byline-anchored extractor (article-extractor.js) — aliased
 // to avoid colliding with this file's own Playwright-DOM extractArticleText(page).
-const { extractArticleText: extractArticleTextFromHtml, extractZoxNewsBody, extractVarietyBody, isDedicatedExtractorHost } = require('./lib/article-extractor');
+const { extractArticleText: extractArticleTextFromHtml, extractZoxNewsBody, extractVarietyBody, isDedicatedExtractorHost, isExclusiveExtractorHost } = require('./lib/article-extractor');
 
 // Text cleaning (entity decoding, junk stripping)
 const { cleanText, stripTrailingJunk, TRAILING_JUNK_PATTERNS, hasStrippableConsentLayer } = require('./lib/text-cleaning');
@@ -129,6 +132,7 @@ const { isLongRunningProduction: _isLongRunner } = require('./lib/long-runner-re
 
 // Content quality detection (garbage/invalid content filter)
 const { isolateMultiShowSection, MULTI_SHOW_NOT_FOUND_REASON } = require('./lib/multi-show-section-extract');
+const { columnSectionAfterRoundupRejection } = require('./lib/column-section-extract');
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const { assessTextQuality, qualityOptsFor, isGarbageContent, validateShowMentioned, validateContentMentionsShow, extractByline, matchesCritic, computeContentFingerprint, classifyContentTier, verifyFullTextContent, extractAuthorFromHtml, extractHighConfidenceAuthor, URL_CONTENT_CHECK_VERSION } = require('./lib/content-quality');
 const { chooseArticleBody, SHORT_JSONLD_MAX: JSONLD_TEASER_MAX } = require('./lib/jsonld-body-choice');
@@ -149,6 +153,7 @@ const {
   AGED_STUB_DRAIN_PER_RUN,
   isAgedNeverAttemptedStub,
   promoteAgedStubs,
+  markUncoveredShows,
 } = require('./lib/collection-priority');
 
 // NYT Critics' Pick lookup — lazy-loaded once per run from authoritative URL list.
@@ -178,7 +183,9 @@ const {
 } = require('./lib/wrong-production-autoclear');
 const { shouldRetryGarbageConsentWall, storedTextNeedsConsentRefetch, shouldReleaseConsentLayerNonReview, salvageConsentPrefixedStoredText, salvageSourceHash, applyVerifiedRetryOutcome } = require('./lib/consent-refetch');
 const { shouldRetryDatelessHoldFetch } = require('./lib/review-slot-guards');
+const { needsSerpUrlDiscovery } = require('./lib/serp-discovery-gate');
 const { isProvisionalPublishDate, isReplaceableByPageDate, needsOpeningWindowDateRecheck, resolvePageDateReplacement, htmlDateSourceFor, bodyPublishDateFallback, ingestGateDate } = require('./lib/publish-date-provenance');
+const { decidePrintedByline, buildKnownCriticsIndex, mergeCorpusCritics, knownCriticsForOutlet } = require('./lib/printed-byline-conflict');
 const { checkBrowserbaseCaps, countBrowserbaseAttempt, resolveMaxSessionsPerDay, resolveRecoveryReserve, resolveUseReserve, isDeniedHost, isTier1RecoveryHost, tier1BoostForCaller, resolveExemptScripts: resolveBbExemptScripts } = require('./lib/browserbase-caps');
 const { isExemptCaller: isBbExemptCaller } = require('./lib/brightdata-caps');
 
@@ -194,7 +201,7 @@ const { shouldSkipPollerUpdate, invalidateWrongShowAutoClear, shouldMarkUrlColli
 const { updateFileUrlWithInvariant, isDifferentArticleRecovery } = require('./lib/url-change-invariant');
 const { extractDateFromUrl: extractDateFromUrlCanonical } = require('./lib/rebuild-helpers');
 const { verificationPublishDate } = require('./lib/verification-publish-date');
-const { verifierExcerpt } = require('./lib/excerpt-fields');
+const { verifierExcerpt, hasExcerpt } = require('./lib/excerpt-fields');
 const { discoveredPageVerdict } = require('./lib/discovered-page-verdict');
 const { isLegacyWebSearchOnly } = require('./lib/legacy-web-search');
 const { parseDate } = require('./lib/date-utils');
@@ -617,6 +624,30 @@ function loadOutletRegistryForDedupe() {
     }
   }
   return _dedupeOutletRegistry;
+}
+
+// BRO-6940: outlet -> critics the registry lists, for the printed-byline check (1B-v). Read once, lazily.
+let _printedBylineIndex;
+function getPrintedBylineIndex() {
+  if (_printedBylineIndex === undefined) {
+    _printedBylineIndex = buildKnownCriticsIndex(loadOutletRegistryForDedupe());
+  }
+  return _printedBylineIndex;
+}
+
+// BRO-6947: outlet -> critics the review corpus files there (daily cache written by the data-health-check
+// audit). Weaker than the registry: decidePrintedByline uses it only to fill unnamed files. Missing cache = empty.
+let _corpusBylineIndex;
+function getCorpusBylineIndex() {
+  if (_corpusBylineIndex === undefined) {
+    let cache = null;
+    try { cache = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'audit', 'outlet-corpus-critics.json'), 'utf8')); } catch { /* no cache yet */ }
+    // Stale cache (audit not running, e.g. 14+ days) = ignored, so old outlet staff lists never keep filling credits.
+    const ageMs = cache && cache.generatedAt ? Date.now() - Date.parse(cache.generatedAt) : Infinity;
+    if (!(ageMs < 14 * 24 * 3600 * 1000)) cache = null;
+    _corpusBylineIndex = mergeCorpusCritics(new Map(), cache);
+  }
+  return _corpusBylineIndex;
 }
 
 // BRO-4807: opening-night lane reviews (provenance + productionVerified:"aggregator") stand down for the
@@ -2824,11 +2855,12 @@ async function fetchWithScrapingBee(url, useStealth = false) {
  */
 async function fetchWithDirectCookies(url) {
   const cookieHeader = buildCookieHeaderForUrl(url);
-  if (!cookieHeader) {
+  // A titledReviews blog (BRO-6965) is public: a plain request works where Playwright meets a Google block page.
+  if (!cookieHeader && !isTitledBlogUrl(url)) {
     throw new Error('No cookies available for this domain');
   }
 
-  console.log(`    Direct HTTP fetch (+cookies, ${cookieHeader.length} chars)...`);
+  console.log(`    Direct HTTP fetch (${cookieHeader ? `+cookies, ${cookieHeader.length} chars` : 'no cookies, public blog'})...`);
 
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 30000);
@@ -2841,7 +2873,7 @@ async function fetchWithDirectCookies(url) {
     const resp = await fetch(url, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
-        'Cookie': cookieHeader,
+        ...(cookieHeader ? { 'Cookie': cookieHeader } : {}),
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
         'Accept-Language': 'en-US,en;q=0.9',
         'Accept-Encoding': 'gzip, deflate, br',
@@ -2863,7 +2895,7 @@ async function fetchWithDirectCookies(url) {
     clearTimeout(timeout);
 
     if (resp.status === 403 || resp.status === 401) {
-      throw new Error(`Auth rejected (HTTP ${resp.status}) — cookies may be expired`);
+      throw new Error(cookieHeader ? `Auth rejected (HTTP ${resp.status}) — cookies may be expired` : `Blocked (HTTP ${resp.status}) on cookie-less public fetch`);
     }
     if (resp.status === 404) {
       throw new Error(`404 Not Found`);
@@ -3707,7 +3739,7 @@ function buildTierChain(ctx, review) {
       label: 'Direct HTTP fetch with cookies',
       shouldRun: () => {
         // Only run if we have cookies for this domain AND previous tiers failed
-        if (!ctx.hasCookiesLoaded) return false;
+        if (!ctx.hasCookiesLoaded && !isTitledBlogUrl(review.url)) return false;
         return ctx.anyTierFailed || ctx.sawPaywall || ctx.sawCaptcha;
       },
       execute: (url) => fetchWithDirectCookies(url),
@@ -3836,7 +3868,7 @@ async function fetchReviewText(review) {
   if (url && url.includes('theguardian.com') && process.env.GUARDIAN_API_KEY) {
     try {
       const articlePath = url.replace(/^https?:\/\/(www\.)?theguardian\.com\//, '').replace(/\/$/, '');
-      const apiUrl = `https://content.guardianapis.com/${articlePath}?api-key=${process.env.GUARDIAN_API_KEY}&show-fields=body,starRating,bodyText,headline`;
+      const apiUrl = `https://content.guardianapis.com/${articlePath}?api-key=${process.env.GUARDIAN_API_KEY}&show-fields=${GUARDIAN_API_FIELDS}`;
       const resp = await fetch(apiUrl, { signal: AbortSignal.timeout(60000) });
       if (resp.ok) {
         const json = await resp.json();
@@ -4138,6 +4170,7 @@ function isPaywalled(html) {
 // Playwright browser context via page.evaluate.
 const { extractArticleTextFromDocument } = require('./lib/dom-article-extractor');
 const { decodeBloxRot47, decodeBloxRot47InDocument } = require('./lib/blox-rot47-decode');
+const { isChromeParagraph } = require('./lib/chrome-paragraph');
 
 async function extractArticleText(page) {
   // Serialize the lib function and run it in the browser. Wrapping in
@@ -4149,27 +4182,45 @@ async function extractArticleText(page) {
   // BRO-4221: BLOX ROT47-scrambled paragraphs are one text node in the DOM;
   // decode them in place first, or the extractor saves the gibberish.
   await page.evaluate(`(${decodeBloxRot47InDocument.toString()})(document)`).catch(() => 0);
-  return await page.evaluate(
+  const domText = await page.evaluate(
     `(${extractArticleTextFromDocument.toString()})(document, ${JSON.stringify(currentUrl)})`
   );
+  // BRO-6872: the browser path never consulted the tested per-host extractors,
+  // so L&SA's A Few Good Men review was saved without its last paragraphs and
+  // with the magazine's address footer (5375 chars vs the dedicated 5772).
+  if (!isDedicatedExtractorHost(currentUrl)) return domText;
+  const html = await page.content().catch(() => '');
+  return preferDedicatedText(domText, decodeBloxRot47(html), currentUrl);
 }
 
 // BRO-3499: only TB and Variety delegated to article-extractor.js; the other
 // DEDICATED_EXTRACTOR_HOSTS (WSJ, La Voce, The Stage, The Times, LSA, Theatre
 // Weekly) ran on the generic extraction alone, leaving their tested dedicated
-// patterns unused. Generic stays first (no behavior change when it already
-// found a full body); the dedicated extractor is the fallback when the generic
-// result is short, and wins only if it recovers more text.
-const DEDICATED_FALLBACK_MIN_CHARS = 500;
+// patterns unused. Generic still runs first; the dedicated extractor wins only
+// if it recovers more text.
+//
+// BRO-6872: the 500-char short-circuit is gone. A generic body past 500 chars
+// can still be wrong on these hosts: on L&SA it dropped the review's closing
+// paragraphs and kept the address footer, while the dedicated extractor got
+// the whole review. Both the HTML path and the browser path now run the
+// dedicated extractor on every dedicated host and keep it when it is longer.
+function preferDedicatedText(generic, html, url) {
+  const base = String(generic || '');
+  if (!url || !html || !isDedicatedExtractorHost(url)) return base;
+  let dedicated = null;
+  try { dedicated = extractArticleTextFromHtml(html, url); } catch { dedicated = null; }
+  // Exclusive host: the generic pass is the bug (it keeps the support banner), so a dedicated miss is a failed
+  // extraction, never a banner-prefixed save.
+  if (isExclusiveExtractorHost(url)) return dedicated || '';
+  return dedicated && dedicated.length > base.length ? dedicated : base;
+}
+
 function extractTextFromHtml(html, url) {
   // BLOX CMS hosts (Tulsa World, Buffalo News, ...) ship paywalled paragraphs
   // ROT47-scrambled; decode before either extractor runs (BRO-4221).
   html = decodeBloxRot47(html);
   const generic = extractTextFromHtmlGeneric(html, url);
-  if (!url || generic.length >= DEDICATED_FALLBACK_MIN_CHARS || !isDedicatedExtractorHost(url)) return generic;
-  let dedicated = null;
-  try { dedicated = extractArticleTextFromHtml(html, url); } catch { dedicated = null; }
-  return dedicated && dedicated.length > generic.length ? dedicated : generic;
+  return preferDedicatedText(generic, html, url);
 }
 
 function extractTextFromHtmlGeneric(html, url) {
@@ -4292,11 +4343,7 @@ function extractNewYorkerFromHtml(html) {
       .replace(/&ndash;/g, '\u2013')
       .trim();
 
-    if (pText.length > 30 &&
-        !pText.toLowerCase().includes('cookie') &&
-        !pText.toLowerCase().includes('subscribe') &&
-        !pText.toLowerCase().includes('sign up for') &&
-        !pText.toLowerCase().includes('newsletter')) {
+    if (pText.length > 30 && !isChromeParagraph(pText)) {
       paragraphs.push(pText);
     }
   }
@@ -4577,6 +4624,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     console.log(`    [PROTECTED] ${protectionGate.reason} — skipping updateReviewJson`);
     return;
   }
+  if (method === 'guardian-api') applyGuardianPublication(data, apiMeta?.publication);
 
   // Get excerpt length for truncation detection
   const excerptLength = Math.max(
@@ -5211,7 +5259,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       quarantineBody(data); // BRO-2788: records quarantinedWordCount
       data.showNotMentioned = true;
       data.suspectedLlmHallucination = true;
-      data.contentTier = (data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt) ? 'excerpt' : 'needs-rescrape';
+      data.contentTier = (hasExcerpt(data)) ? 'excerpt' : 'needs-rescrape';
     } else {
       // LLM confirmed content is correct AND keyword gate passed (or was inapplicable).
       // Clear stale flag from previous bad fetches.
@@ -5273,7 +5321,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       // Unscored review with substantive text that doesn't mention the show.
       data.showNotMentioned = true;
       quarantineBody(data); // BRO-2788: records quarantinedWordCount
-      data.contentTier = (data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt) ? 'excerpt' : 'needs-rescrape';
+      data.contentTier = (hasExcerpt(data)) ? 'excerpt' : 'needs-rescrape';
       console.log(`    ⚠ Heuristic fallback — show not mentioned in text — fullText nulled: ${guard.reason}`);
     } else if (guard.action === 'skip' && guard.reason) {
       // Heuristic deferred (text too thin) — log so we can spot regressions
@@ -5422,6 +5470,40 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     }
   }
 
+  // 1B-v. PRINTED-BYLINE CONFLICT (BRO-6940). Per-critic SERP discovery names the critic from the search
+  // QUERY, so a colleague's review lands under the queried critic; extractByline above only reads a byline
+  // at the start of a line and misses one-line headers ("<date> <title> By Michael Sommers"), and it only
+  // flags the text, never re-credits. When the head prints "By <a critic this outlet is known for>" and the
+  // credited critic is not printed there, the print wins. Unnamed files ("Unknown") are filled the same way,
+  // except at outlets whose pages list editors or several critics.
+  if (cleanedText) {
+    const bylineOutlet = normalizeOutlet(data.outletId || data.outlet);
+    const creditedNow = data.criticName || review.critic || '';
+    const printedHit = decidePrintedByline({
+      criticName: creditedNow,
+      outletId: bylineOutlet,
+      fullText: cleanedText,
+      knownCritics: knownCriticsForOutlet(getPrintedBylineIndex(), bylineOutlet),
+      corpusCritics: knownCriticsForOutlet(getCorpusBylineIndex(), bylineOutlet),
+      relPath: review && review.filePath ? `${path.basename(path.dirname(review.filePath))}/${path.basename(review.filePath)}` : undefined,
+      locked: !!(data.criticNameManual || data._locked),
+      excluded: !!(data.isRoundupArticle || data.wrongShow || data.wrongProduction || data.duplicateOf),
+    });
+    if (printedHit) {
+      console.log(`    → Printed byline override: "${creditedNow || 'Unknown'}" → "${printedHit.printedName}"`);
+      data.criticName = printedHit.printedName;
+      data.criticEnrichedFrom = 'printed-byline';
+      data._priorCriticName = creditedNow;
+      delete data.misattributedFullText;
+      delete data.extractedByline;
+      delete data.expectedCritic;
+      delete data.fullTextWrongAuthor;
+      delete data.fullTextWrongAuthorAt;
+      delete data._authorMismatch;
+      renameReviewFileForCriticOverride(review, data, printedHit.printedName);
+    }
+  }
+
   // 1B-iv. OUTLET ENRICHMENT — resolve "unknown" outlets from URL domain
   if ((!data.outletId || data.outletId === 'unknown') && data.url) {
     const resolved = resolveOutletFromUrl(data.url);
@@ -5505,7 +5587,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
           data.needsReviewReason = `Heuristic: content mismatch (score ${contentMatch.score}: ${contentMatch.negativeSignals.join(', ')}) but already scored — needs human verification`;
           console.log(`    ⚠ Heuristic: content mismatch — but already scored, flagging for review instead of nulling`);
         } else {
-          const hasExcerpts = !!(data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt);
+          const hasExcerpts = hasExcerpt(data);
           quarantineBody(data); // BRO-2788: records quarantinedWordCount
           data.contentMismatchNote = contentMatch.negativeSignals.join('; ');
           data.contentMismatchScore = contentMatch.score;
@@ -5542,6 +5624,8 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       // via `...result` spreads — this keeps the main ingestion path in sync.
       urlYearConflict: contentVerification.urlYearConflict || null,
       reviewedVenue: contentVerification.reviewedVenue || null,
+      // BRO-6880: the verdict is on this show's section of a multi-show column.
+      ...(contentVerification.columnSectionIsolated ? { columnSectionIsolated: true } : {}),
       // BRO-4563: a "not a review" verdict on a fetch cut off after the lede
       // of a /review/ URL. Rebuild reads this as advisory
       // (isCvVerdictFromPartialWindow), the collector below keeps the text.
@@ -5637,7 +5721,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
         data.needsReviewReason = `Collector LLM: wrong production (${contentVerification.confidence} conf) but already scored — needs human verification`;
         console.log(`    ⚠ LLM: Wrong production (${contentVerification.confidence}) — but already scored, flagging for review instead of nulling`);
       } else {
-        const hasExcerpts = !!(data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt);
+        const hasExcerpts = hasExcerpt(data);
         if (data.fullText) {
           quarantineBody(data); // BRO-2788: records quarantinedWordCount
         }
@@ -5664,7 +5748,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
         data.needsReviewReason = `Collector LLM: film/TV content (${contentVerification.confidence} conf) but already scored — needs human verification`;
         console.log(`    ⚠ LLM: Film/TV content (${contentVerification.confidence}) — but already scored, flagging for review instead of nulling`);
       } else if (!wrongShowCleared(data)) {
-        const hasExcerpts = !!(data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt);
+        const hasExcerpts = hasExcerpt(data);
         quarantineBody(data); // BRO-2788: records quarantinedWordCount
         data.wrongShow = true;
         data.wrongShowReason = `Collector LLM: film/TV content (${contentVerification.confidence}) — ${(contentVerification.reasoning || '').substring(0, 200)}`;
@@ -6265,9 +6349,11 @@ function pushReviewTextsCheckpoint(processed) {
     // push-with-retry.sh documents. The helper accepts the remote deletion
     // instead. That is the repo's intended behaviour (memory/feedback_outlet_
     // merge_no_flag_and_keep.md), so this is a fix, not a regression.
+    const pushedReviewFiles = listUnpushedReviewFiles(rtDir); // BRO-6886
     const rtPush = pushWithRetry({ cwd: rtDir, branch: 'main', retries: 3 });
     if (rtPush.ok) {
       markReviewTextsPushed(); // BRO-5308: final push-review-texts reports pushed=true
+      startPressNightScoring(pushedReviewFiles); // BRO-6886: score new press-night reviews now, not at job end
       console.log(`  ✓ Pushed review-texts checkpoint to private repo`);
       return;
     }
@@ -6721,6 +6807,14 @@ function findReviewsToProcess() {
           fetchAttempts: fileAttempts,
           wrongShow: data.wrongShow || false,
           wrongShowReason: data.wrongShowReason || null,
+          // Read only by needsSerpUrlDiscovery (BRO-6924): a manual clear on an
+          // unflagged file means fetch the stored url instead of searching.
+          // Kept apart so no other check sees new fields on the queued review.
+          _serpGateFields: {
+            wrongProduction: !!data.wrongProduction,
+            wrongAttribution: !!data.wrongAttribution,
+            wrongProductionManualClear: data.wrongProductionManualClear === true,
+          },
           // Retry markers set by the gates above. They were never copied onto
           // the queued review, so the post-fetch outcome handler (clear on
           // success, cooldown stamp on failure) only ran for the SERP path.
@@ -6755,6 +6849,13 @@ function findReviewsToProcess() {
   // then never-attempted before previously-attempted,
   // then by outlet tier priority
   const closedShowMode = process.env.CLOSED_SHOW_MODE === 'true';
+  // BRO-6972: the opening-night poller/express set PRIORITIZE_UNCOVERED=1 so a show with no
+  // scored review yet is collected before shows that already have some (its first review is
+  // what the first-live SLA times). Off everywhere else: it reads each queued show's files.
+  const prioritizeUncovered = process.env.PRIORITIZE_UNCOVERED === '1';
+  if (prioritizeUncovered) {
+    markUncoveredShows(reviews, CONFIG.reviewTextsDir);
+  }
   reviews.sort((a, b) => compareReviewPriority(a, b, { closedShowMode }));
   // BRO-6648 S1-T2: the opening-night lane writes the shows it holds. Drop them before the reserved
   // slices and per-run caps below, so a held review never takes a slot.
@@ -6793,6 +6894,16 @@ function findReviewsToProcess() {
     if (n) console.log(`  needsRefetch drain: ${n} textless review(s) queued first (cap ${NEEDS_REFETCH_DRAIN_PER_RUN}/run)`);
     reviews.length = 0;
     reviews.push(...promoted);
+  }
+  // BRO-6972: the promotions above put old stubs / textless refetches ahead of everything,
+  // including a brand-new show's first review. Re-lift uncovered-show items (stable).
+  if (prioritizeUncovered) {
+    const front = reviews.filter(r => r.showUncovered);
+    if (front.length && front.length < reviews.length) {
+      const rest = reviews.filter(r => !r.showUncovered);
+      reviews.length = 0;
+      reviews.push(...front, ...rest);
+    }
   }
   // Per-run caps, applied in priority order (see DRAIN_NETWORK_PER_RUN).
   {
@@ -7204,7 +7315,7 @@ async function verifyFetchedContent(review, result, validation, { discoveredUrl 
         console.log('  LLM Verification skipped: multi-show post has no unique section for this show');
         return null;
       }
-      contentVerification = await verifyContent({
+      const cvArgs = {
         scrapedText: stored.text || result.text,
         excerpt: excerpt,
         showTitle: showMeta?.title || showId.replace(/-\d{4}$/, '').replace(/-/g, ' '),
@@ -7257,7 +7368,33 @@ async function verifyFetchedContent(review, result, validation, { discoveredUrl 
         // that doesn't match show.creativeTeam directors AND the actual director
         // isn't mentioned ≥2x in scrapedText, keep wrongProduction at full confidence.
         show: showMeta || null,
+      };
+      contentVerification = await verifyContent(cvArgs);
+
+      // BRO-6880: a critic column (Washington Post) covering several shows is
+      // rejected as a multi-show page. Only then, cut out this show's section and
+      // verify THAT; on a pass the section replaces the fetched text for the save
+      // path. Texts the verifier accepts are never cut (title sectioning truncated
+      // single-show reviews when it ran on every write).
+      const column = columnSectionAfterRoundupRejection({
+        url: discoveredUrl || reviewData.url || review.url,
+        text: cvArgs.scrapedText,
+        show: showMeta,
+        allShows: _showsJsonCache?.shows || [],
+        verdict: contentVerification,
       });
+      if (column.isolated) {
+        console.log(`  [COLUMN] verifier rejected a multi-show column; re-verifying this show's section (${column.text.length} of ${cvArgs.scrapedText.length} chars)`);
+        const sectionVerdict = await verifyContent({ ...cvArgs, scrapedText: column.text });
+        if (sectionVerdict && sectionVerdict.isValid) {
+          console.log('  [COLUMN] section verified: storing this show\'s section only');
+          result.text = column.text;
+          Object.assign(validation, validateReviewText(column.text, review));
+          contentVerification = { ...sectionVerdict, columnSectionIsolated: true };
+        } else {
+          console.log('  [COLUMN] section also rejected: keeping the rejection');
+        }
+      }
 
       const verifier = contentVerification.verifiedBy?.startsWith('llm:') ? `LLM (${contentVerification.verifiedBy.split(':')[1]})` : 'Heuristic';
       console.log(`  ${verifier} Verify: ${contentVerification.isValid ? 'VALID' : 'REJECTED'} (${contentVerification.confidence} confidence)`);
@@ -7302,8 +7439,10 @@ async function processReview(review) {
 
   // Reason-aware URL discovery: no_url, wrong_content, and fabricated entries need SERP search before fetch
   // A dateless-revival hold (BRO-4430) needs only its stored url's date: no SERP.
-  const needsSerpDiscovery = !review._datelessDateRetry
-    && (review.incompleteReason === 'no_url' || review.incompleteReason === 'wrong_content' || review.fabricatedEntry);
+  // A wrong_content verdict a person overruled fetches its stored url (BRO-6924).
+  const needsSerpDiscovery = needsSerpUrlDiscovery({ ...review, ...(review._serpGateFields || {}) });
+  // Its stale incompleteReason is cleared on a successful fetch below, as a discovered url's is.
+  if (!needsSerpDiscovery && review.incompleteReason === 'wrong_content') review._manualClearUrlFetch = true;
   if (needsSerpDiscovery && review.filePath) {
     const reason = review.fabricatedEntry ? 'fabricated' : review.incompleteReason;
     console.log(`  [${reason}] Attempting URL discovery before fetch...`);
@@ -7569,6 +7708,11 @@ async function processReview(review) {
         console.log(`  ↪ Mention check (${sanity.reason}) waived: Guardian API headline leads with the show title ("${result.pageTitle}")`);
         sanity.valid = true;
       }
+      if (!sanity.valid && titledBlogMentionWaiver(review.url, sanity, canonicalTitle)) {
+        console.log(`  ↪ Mention check (${sanity.reason}) waived: titledReviews blog, page title is the show title ("${sanity.htmlTitle}")`);
+        sanity.valid = true;
+      }
+      review._showMentionProven = sanity.valid; // BRO-7041: the Time Out re-credit below needs a proven show
       if (!sanity.valid && !laneHeld(review, 'headlineBackstop')) {
         console.log(`  ✗ URL→CONTENT MISMATCH: ${sanity.reason}`);
         if (sanity.htmlTitle) console.log(`    HTML <title>: "${sanity.htmlTitle}"`);
@@ -7616,7 +7760,24 @@ async function processReview(review) {
         recordFailedFetch(review, 'partial_no_improvement', { storedLength: review._storedTextLength, newLength: result.text.length, method: result.method, timeoutPage: timeoutPage.reason });
         return { success: false, error: 'timeout_listing_capsule_kept_existing', reason: timeoutPage.reason };
       }
-      if (timeoutPage.verdict === 'wrong_critic' || timeoutPage.verdict === 'listing_capsule') {
+      // A page that is this show's real review but signed by someone other than the row's critic is a
+      // roundup misattribution (BRO-7041: the-unbelievers, row Adam Feldman, page Billy McEntee). The
+      // sanity check above already proved the page is this show, so re-credit the row to the page byline
+      // and keep the text instead of failing the fetch.
+      if (timeoutPage.verdict === 'wrong_critic' && timeoutPage.pageCritic && review._showMentionProven && !review._urlDiscovered && review.filePath && !review._timeoutRecredited) {
+        const data = readReviewForUpdate(review.filePath);
+        const credited = data.criticName;
+        data.criticName = timeoutPage.pageCritic;
+        data.criticReattributedFrom = credited || 'Unknown';
+        data.criticReattributedReason = `timeout-page-byline: ${timeoutPage.reason}`;
+        const moved = renameReviewFileForCriticOverride(review, data, timeoutPage.pageCritic);
+        if (moved.action === 'renamed') {
+          review.critic = timeoutPage.pageCritic;
+          review._timeoutRecredited = true;
+          console.log(`  ↻ TIME OUT PAGE: re-credited ${credited} → ${timeoutPage.pageCritic} (${timeoutPage.reason})`);
+        }
+      }
+      if ((timeoutPage.verdict === 'wrong_critic' && !review._timeoutRecredited) || timeoutPage.verdict === 'listing_capsule') {
         console.log(`  ✗ TIME OUT PAGE: ${timeoutPage.reason}`);
         recordFailedFetch(review, 'url_content_mismatch', {
           method: result.method,
@@ -7690,7 +7851,7 @@ async function processReview(review) {
     // DoaS Apr 9-10 #11: also clear stale rejection metadata so the file isn't permanently
     // skipped on next run. Without clearing incompleteReason/incompleteDetail/contentTier,
     // the next collect cycle would re-skip the file via line 5067's isWrongContent guard.
-    if (review.incompleteReason === 'wrong_content' && review._urlDiscovered && review.filePath) {
+    if (review.incompleteReason === 'wrong_content' && (review._urlDiscovered || review._manualClearUrlFetch) && review.filePath) {
       try {
         const postData = readReviewForUpdate(review.filePath);
         // BRO-2828: this recovery answers ONE question — did re-fetching from
@@ -7858,6 +8019,10 @@ async function processReview(review) {
           );
           if (!retrySanity.valid && guardianMentionWaiver(retryResult, retryCanonicalTitle)) {
             console.log(`  ↪ Mention check (${retrySanity.reason}) waived: Guardian API headline leads with the show title ("${retryResult.pageTitle}")`);
+            retrySanity.valid = true;
+          }
+          if (!retrySanity.valid && titledBlogMentionWaiver(review.url, retrySanity, retryCanonicalTitle)) {
+            console.log(`  ↪ Mention check (${retrySanity.reason}) waived: titledReviews blog, page title is the show title`);
             retrySanity.valid = true;
           }
           if (!retrySanity.valid && !laneHeld(review, 'headlineBackstop')) {
@@ -8442,7 +8607,7 @@ function exitIfStuckAfterMain(graceMs = 20000) {
 }
 
 module.exports = {
-  reviewTimeoutMs, pushReviewTextsCheckpoint, commitChanges, extractTextFromHtml, findReviewsToProcess, dropLeasedReviews, updateReviewJson };
+  reviewTimeoutMs, pushReviewTextsCheckpoint, commitChanges, extractTextFromHtml, preferDedicatedText, extractArticleText, findReviewsToProcess, dropLeasedReviews, updateReviewJson, verifyFetchedContent };
 
 // Run (guarded so scripts/collect-review-texts.test.mjs can require() this
 // file for pushReviewTextsCheckpoint() without kicking off a real collection

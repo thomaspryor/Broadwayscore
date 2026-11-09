@@ -6,7 +6,7 @@ import os from 'node:os';
 import path from 'node:path';
 
 const require = createRequire(import.meta.url);
-const { checkTrArchiveClaim, quarantineClaimedOrphans, claimsFromCoverage } = require('./tr-archive-claim.js');
+const { checkTrArchiveClaim, quarantineClaimedOrphans, claimsFromCoverage, aliasMapFromShows } = require('./tr-archive-claim.js');
 
 const page = (url) => `<html><head><link rel="canonical" href="${url}"/></head><body>x</body></html>`;
 const claims = claimsFromCoverage({ shows: [
@@ -32,4 +32,14 @@ test('quarantine renames only claimed-by-other orphans', () => {
   assert.deepEqual(q, [{ showId: 'bad', owner: 'godot-2024' }]);
   assert.ok(fs.existsSync(path.join(d, 'bad.html.mismatch')));
   assert.ok(fs.existsSync(path.join(d, 'free.html')));
+});
+
+test('BRO-6968: a claim under a renamed show\'s old id belongs to the current id', () => {
+  const aliases = aliasMapFromShows([{ id: 'mass-off-west-end-2026', aliases: ['mass-west-end-2026'] }]);
+  const c = claimsFromCoverage({ shows: [{ showId: 'mass-west-end-2026', roundupUrl: 'https://theatre.reviews/reviews-roundup/mass-donmar-reviews/' }] }, aliases);
+  const p = page('https://theatre.reviews/reviews-roundup/mass-donmar-reviews/');
+  assert.equal(checkTrArchiveClaim(p, 'mass-off-west-end-2026', c).ok, true, 'own round-up, not another show\'s');
+  assert.equal(checkTrArchiveClaim(p, 'other-show', c).owner, 'mass-off-west-end-2026');
+  const raw = claimsFromCoverage({ shows: [{ showId: 'gone-2020', roundupUrl: 'https://theatre.reviews/reviews-roundup/g/' }] }, aliases);
+  assert.equal(raw[0].showId, 'gone-2020', 'unknown ids are kept as recorded');
 });

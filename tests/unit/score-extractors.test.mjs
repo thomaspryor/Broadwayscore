@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-866: explicit star ratings at star-rating outlets must win over LLM scores.
  * Cases from the card: NYSR "Data" (5 unicode stars), Guardian "Cats" (4 stars),
@@ -237,4 +238,23 @@ test('BRO-5223: lower-case prose that reads like a chrome heading does not hide 
 test('BRO-5223: an out-of-range numeric entity in the review HTML does not throw', () => {
   const html = `<html><body><article><h1>Orphans</h1><p>&#99999999; &#x110000; ${BODY}</p></article></body></html>`;
   assert.doesNotThrow(() => extractScore(html, `Orphans ${BODY}`, 'timeout', 'Orphans'));
+});
+
+// BRO-7080: NYSR half stars and spaced runs. Counting glyphs as the denominator
+// stored "★★★½☆" as 3/3 = 100 and the text fallback read "★★½" as 2/2.
+describe('BRO-7080 NYSR half and spaced star runs', () => {
+  const BODY7080 = ' The production moves briskly and the cast is strong. '.repeat(40);
+  for (const [label, html, text, want] of [
+    ['text-xl ★★★½☆', '<p class="text-xl">★★★½☆ The show</p>', `x${BODY7080}`, 70],
+    ['text-xl ★★★★½', '<p class="text-xl">★★★★½ The show</p>', `x${BODY7080}`, 90],
+    ['text-xl ★★★☆☆', '<p class="text-xl">★★★☆☆ The show</p>', `x${BODY7080}`, 60],
+    ['fallback spaced ★ ★ ★ ★ ☆', '', `★ ★ ★ ★ ☆ ${BODY7080}`, 80],
+    ['fallback ★★½☆☆', '', `★★½☆☆ ${BODY7080}`, 50],
+  ]) {
+    test(`NYSR ${label} -> ${want}`, () => {
+      const r = extractScore(html, text, 'nysr', 'Some Show');
+      assert.ok(r, 'expected a score');
+      assert.strictEqual(r.normalizedScore, want);
+    });
+  }
 });

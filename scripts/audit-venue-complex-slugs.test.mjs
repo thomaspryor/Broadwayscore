@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/venue-complexes.json (read by the test); data/venue-complexes-west-end.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Regression guard for the off-Broadway venue-complexes.json audit (task #1475),
 // cousin of the West End National Theatre bare-form-slug bug fixed in e0a63053ec6.
 //

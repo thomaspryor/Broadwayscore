@@ -83,3 +83,32 @@ test('a literal __proto__ key survives as a key', () => {
   assert.deepEqual(Object.keys(r.merged), ['t', '__proto__']);
   assert.equal(JSON.stringify(r.merged), '{"t":1,"__proto__":{"x":1}}');
 });
+
+test('append-only arrays: both sides appended -> union, theirs first', () => {
+  const r = mergeJson([{ id: 1 }], [{ id: 1 }, { id: 2 }], [{ id: 1 }, { id: 3 }], { appendArrays: true });
+  assert.equal(mergeJson([{ id: 1 }], [{ id: 1 }, { id: 2 }], [{ id: 1 }, { id: 3 }]).ok, false); // opt-in only
+  assert.equal(r.ok, true);
+  assert.deepEqual(r.merged, [{ id: 1 }, { id: 3 }, { id: 2 }]);
+  // same row appended on both sides is not duplicated
+  assert.deepEqual(mergeJson([], [{ id: 2 }], [{ id: 2 }, { id: 3 }], { appendArrays: true }).merged, [{ id: 2 }, { id: 3 }]);
+});
+
+test('arrays that are not pure appends (capped, edited, reordered) still conflict', () => {
+  assert.equal(mergeJson([1, 2, 3], [7, 8, 9], [1, 2, 3, 5], { appendArrays: true }).ok, false);
+  assert.equal(mergeJson([1, 2], [1, 9], [1, 2, 5], { appendArrays: true }).ok, false);
+});
+
+test('capped log: real appendRunSummary on both sides at the cap keeps both new rows', async () => {
+  const { createRequire } = await import('node:module');
+  const { appendRunSummary } = createRequire(import.meta.url)('./llm-scoring-cost-recording.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'j3w-cap-'));
+  const row = (i) => ({ startedAt: new Date(2020, 0, 1, i).toISOString(), completedAt: new Date(2020, 0, 1, i).toISOString(), runId: String(i) });
+  const mk = (n, extra) => { const f = path.join(dir, n); fs.writeFileSync(f, JSON.stringify(Array.from({ length: 100 }, (_, i) => row(i)), null, 2) + '\n'); appendRunSummary(row(extra), { runsLogPath: f }); return JSON.parse(fs.readFileSync(f, 'utf8')); };
+  const base = Array.from({ length: 100 }, (_, i) => row(i));
+  const o = mk('o', 500), t = mk('t', 600);
+  assert.equal(o.length, 100); assert.equal(o[0].runId, '1');
+  const r = mergeJson(base, o, t, { appendArrays: true });
+  assert.equal(r.ok, true);
+  const ids = r.merged.map((x) => x.runId);
+  assert.ok(ids.includes('500') && ids.includes('600'));
+});

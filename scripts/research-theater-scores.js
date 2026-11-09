@@ -18,6 +18,7 @@
  *   data/theater-research/{slug}.json - Per-theater research + scores
  */
 
+require('./lib/llm-usage-install'); // LLM spend meter: before any client is built (BRO-5043)
 const fs = require('fs');
 const path = require('path');
 const { fetchPage, cleanup } = require('./lib/scraper');

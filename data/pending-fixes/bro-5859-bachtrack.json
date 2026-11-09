@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5859-bachtrack",
   "planId": "1595ff71-64d2-4008-bbde-69e333e8bc8e",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-21T18:55:50.388Z",
   "submitter": {
     "name": null,
@@ -80,5 +80,27 @@
       "msg": "innocence-off-broadway-2026/bachtrack--kurt-gottschalk.json wrongProduction: true -> false"
     }
   ],
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 2
+    },
+    "ops": [
+      {
+        "i": 2,
+        "verdict": "resolved",
+        "reason": "https://bachtrack.com/review-mazzoli-lincoln-in-the-bardo-blain-cruz-mattei-metropolitan-opera-new-york-october-2026 is counted for lincoln-in-the-bardo-off-broadway-2026"
+      },
+      {
+        "i": 3,
+        "verdict": "resolved",
+        "reason": "https://bachtrack.com/review-saariaho-innocence-malkki-didonato-metropolitan-opera-april-2026 is counted for innocence-off-broadway-2026"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (2 resolved); per-op reasons in triage.ops"
 }

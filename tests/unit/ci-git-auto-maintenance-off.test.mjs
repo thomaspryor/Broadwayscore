@@ -42,6 +42,7 @@ const REQUIRED = [
 // Jobs that run tests/unit + scripts/lib temp-git-repo tests.
 const JOBS = [
   ['test.yml', 'unit-tests'],
+  ['test.yml', 'unit-test-shards'],
   ['land.yml', 'checks'],
 ];
 

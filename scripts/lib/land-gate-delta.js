@@ -124,6 +124,12 @@ const ADVISORY_GATES = {
     ? 'BRO-5117; LAND_TOPLEVEL_ADVISORY=1 is set' : null),
   'unit-tests-e2e': () => (process.env.LAND_E2E_UNIT_BLOCKING === '1'
     ? null : 'BRO-5161; arm with LAND_E2E_UNIT_BLOCKING=1'),
+  // e2e-local (BRO-7106): browser E2E on a local build, run by land.yml's own
+  // parallel `e2e-local` job (scripts/lib/land-e2e-local.sh), NOT the checks
+  // job's gauntlet, so it is deliberately absent from GATES above; that job
+  // passes --gates e2e-local. Report-only until LAND_E2E_BROWSER_BLOCKING=1.
+  'e2e-local': () => (process.env.LAND_E2E_BROWSER_BLOCKING === '1'
+    ? null : 'BRO-7106; arm with LAND_E2E_BROWSER_BLOCKING=1'),
 };
 const TAP_GATES = new Set(['unit-tests-node', 'unit-tests-tsx', 'unit-tests-e2e', 'scripts-lib-tests']);
 // Gates whose failure key is the failing script's path in `.name` (BRO-5766).
@@ -131,6 +137,20 @@ const FILE_KEYED_GATES = new Set(['bash-integration', 'toplevel-regression']);
 const TSC_GATES = new Set(['tsc', 'tsc-llm-scoring']);
 
 // ── Parsers: gate output → Map<key, {file, name}> ───────────────────────────
+
+// e2e-local (BRO-7106): one line per failing Playwright test, printed by
+// scripts/lib/land-e2e-local-report.js, or one per infrastructure failure
+// (build, server, missing browser, timeout) printed by land-e2e-local.sh.
+// Key = `<spec file> > <title path>`, so a test red on base and branch alike
+// is pre-existing and only a newly failing test counts.
+function parseE2eLocalFailures(text) {
+  const out = new Map();
+  for (const raw of stripAnsi(text).split('\n')) {
+    const m = /^::error::e2e-local gate failed: (.+?) \(exit \d+\)$/.exec(raw.trimEnd());
+    if (m) out.set(`e2e-local::${m[1]}`, { file: 'e2e-local', name: m[1] });
+  }
+  return out;
+}
 
 const ANSI_RE = /\x1b\[[0-9;]*m/g;
 const stripAnsi = (s) => String(s || '').replace(ANSI_RE, '');
@@ -242,6 +262,7 @@ function parseGateFailures(gate, text, treeRoot) {
   if (gate === 'lint-workflows') return parseLintWorkflowsFailures(text);
   if (gate === 'bash-integration') return parseBashIntegrationFailures(text);
   if (gate === 'toplevel-regression') return parseToplevelRegressionFailures(text);
+  if (gate === 'e2e-local') return parseE2eLocalFailures(text);
   throw new Error(`land-gate-delta: no parser for gate ${JSON.stringify(gate)}`);
 }
 
@@ -313,11 +334,12 @@ function redGates({ gates = GATES, dir, read = readGateResult }) {
  * toplevel-regression the failing path is the key's `.name`. Anything else (a
  * non-TAP/non-file-keyed gate, a crash with nothing parsed, an unlocated `?::`
  * key, a location in a helper module, a budget-cut or timed-out script) runs
- * the gate in full.
- * @param {{gate:string, branch:{exit:number|null,text:string,root?:string}|null, branchFiles:string[]|null}} o
+ * the gate in full. `isolated` (BRO-7134, the Codex runner): the scoped files are re-run alone on
+ * the branch AND on base, so timing failures are scoped too instead of forcing a full run.
+ * @param {{gate:string, branch:{exit:number|null,text:string,root?:string}|null, branchFiles:string[]|null, isolated?:boolean}} o
  * @returns {{gate:string, scoped:boolean, files:string[], reason:string}}
  */
-function computeRerunScope({ gate, branch, branchFiles }) {
+function computeRerunScope({ gate, branch, branchFiles, isolated = false }) {
   const full = (reason) => ({ gate, scoped: false, files: [], reason });
   const fileKeyed = FILE_KEYED_GATES.has(gate);
   if (!TAP_GATES.has(gate) && !fileKeyed) return full('not keyed by test file');
@@ -326,6 +348,10 @@ function computeRerunScope({ gate, branch, branchFiles }) {
   if (!Array.isArray(branchFiles) || branchFiles.length === 0) return full('the branch run recorded no file list');
   const failures = parseGateFailures(gate, branch.text, branch.root);
   if (failures.size === 0) return full('no failure could be parsed (crash/timeout?)');
+  // BRO-7134: an isolated re-run only judges the files that printed a failure. A batch killed at
+  // its time or output limit (exit not 1, or no final `# tests N` summary) never ran the rest, so
+  // passing those few alone must not clear the gate: keep the batch verdict.
+  if (isolated && (branch.exit !== 1 || !/^# tests \d+\s*$/m.test(branch.text || ''))) return full('the batch did not finish (killed or cut short)');
   // Normalized path -> the entry exactly as the gate listed it, so the
   // gauntlet matches its own spelling.
   const ran = new Map(branchFiles.map((p) => [normalizeTestPath(p), p]));
@@ -350,7 +376,9 @@ function computeRerunScope({ gate, branch, branchFiles }) {
     if (!f.file || f.file === '?') return full(`unlocated failure "${f.name}"`);
     // A timeout or cancellation can come from full-batch load; alone on base it
     // may pass and turn a pre-existing failure into a refusal.
-    if (/ \[(testTimeoutFailure|cancelledByParent)\]$/.test(f.name)) return full(`timing failure "${f.name}"`);
+    // BRO-7134: with `isolated`, the caller re-runs these files alone on BOTH sides, so a
+    // load-dependent timeout is judged alone vs alone and can be scoped like any failure.
+    if (!isolated && / \[(testTimeoutFailure|cancelledByParent)\]$/.test(f.name)) return full(`timing failure "${f.name}"`);
     const file = normalizeTestPath(f.file);
     if (!ran.has(file)) return full(`failure located in ${file}, not a test file of this gate`);
     files.add(ran.get(file));
@@ -562,6 +590,7 @@ module.exports = {
   parseLintWorkflowsFailures,
   parseBashIntegrationFailures,
   parseTapGateFailures,
+  parseE2eLocalFailures,
   addWithMultiplicity,
   isCacheKeyRelevant,
   decideGateDelta,
@@ -578,7 +607,7 @@ module.exports = {
 
 if (require.main === module) {
   try {
-    process.exit(main());
+    require('./exit-flushed.js').exitFlushed(main());
   } catch (err) {
     console.error(`land-gate-delta: fatal: ${err && err.message ? err.message : err}`);
     process.exit(1);

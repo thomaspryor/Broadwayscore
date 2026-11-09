@@ -27,6 +27,7 @@
  */
 
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
+const { hasExcerpt: hasAnyExcerpt, getExcerpts } = require('./lib/excerpt-fields');
 const { parseVerdictTierId, verdictAppliesToSource } = require('./lib/score-tiers');
 const fs = require('fs');
 const path = require('path');
@@ -48,7 +49,7 @@ function parseReviewFileText(raw) {
 }
 const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
 const { resolveRelativeReviewUrl, reverseCrossMarketExclusion } = require('./lib/recovery-exclusions');
-const { buildOutletRegionMap, buildRegisteredOutletIds, evaluateForwardCrossMarketGuard, evaluateReverseLondonCrossMarketGuard, evaluateUrlPathCrossMarketGuard, urlPathOppositeMarketIndicator, evaluateLateDualMarketUkOnBroadway, outletIsUkSideSelfHealRegion, UK_MARKET_REGIONS, outletIsUkMarketRegion, buildCrossMarketCriticIndex, findSiblingInOtherMarket, classifyDualMarketNullUrl, outletRegionExplicitlyNotLondon } = require('./lib/cross-market-guard');
+const { buildOutletRegionMap, buildRegisteredOutletIds, evaluateForwardCrossMarketGuard, evaluateReverseLondonCrossMarketGuard, evaluateUrlPathCrossMarketGuard, urlPathOppositeMarketIndicator, urlPathGuardTreatsShowAsUk, evaluateLateDualMarketUkOnBroadway, outletIsUkSideSelfHealRegion, UK_MARKET_REGIONS, outletIsUkMarketRegion, buildCrossMarketCriticIndex, findSiblingInOtherMarket, classifyDualMarketNullUrl, outletRegionExplicitlyNotLondon } = require('./lib/cross-market-guard');
 const { computeContentFingerprint } = require('./lib/content-quality');
 const { textMentionsTitle, textMentionsShortTitle } = require('./lib/show-title-variants');
 const { classifyTierWriteBack } = require('./lib/content-tier-reason-sync');
@@ -74,7 +75,7 @@ const { inheritUrlFromDuplicateLosers } = require('./lib/duplicate-fold-url');
 const { siblingRatingForClamp } = require('./lib/sibling-rating-inherit');
 const { detectBandFromReviewFile } = require('./lib/star-reliability');
 const { displayedOriginalRating } = require('./lib/displayed-original-rating');
-const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, multiShowSplitGroup, isMultiShowSplitSibling, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasIncludableSyndicationPrimary, isRejectedByReasonExclusion, isFullTextWrongAuthorActive, isRejectedAtExclusion, isRegistrationWallStubExclusion, duplicateOfInheritedFlag, duplicateOfRefIsCopy, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, isMisFamilyCvPromotedWrongShow, isStaleGenericHomepageWrongShow, isStaleBulkTitleWrongShow, computeCvIsStale, applyVenueClassificationCarveout, cvWrongProductionIsVenueCarveout, isVenueCarveoutPersistedWrongProduction, isOwnCastEvidencePersistedWrongProduction, isEnsembleCategoryQuibbleRejection, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, isNamedNonReviewUrlRecord, isCancelledBeforeOpeningShow, isUnverifiableWebSearchRow, isPreviewFirstLookPiece, isCombinedReviewOfOtherMemberOnly, isBodylessAggregatorScoreUncorroborated, cvNonReviewHumanCleared, cvWrongArticleFamily, cvWrongArticlePromotion, wrongShowCleared, wrongShowExplicitlyCleared, evaluateLateDateGuard, evaluateUrlYearGuard, evaluateDirectorGuard } = require('./lib/review-guards');
+const { decideEarlyFileExclusion, isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, multiShowSplitGroup, isMultiShowSplitSibling, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasIncludableSyndicationPrimary, isRejectedByReasonExclusion, isFullTextWrongAuthorActive, isRejectedAtExclusion, isRegistrationWallStubExclusion, duplicateOfInheritedFlag, duplicateOfRefIsCopy, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, isMisFamilyCvPromotedWrongShow, isStaleGenericHomepageWrongShow, isStaleBulkTitleWrongShow, computeCvIsStale, applyVenueClassificationCarveout, cvWrongProductionIsVenueCarveout, isVenueCarveoutPersistedWrongProduction, isOwnCastEvidencePersistedWrongProduction, isEnsembleCategoryQuibbleRejection, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, soloVerdictHeld, isNamedNonReviewUrlRecord, isCancelledBeforeOpeningShow, isUnverifiableWebSearchRow, isPreviewFirstLookPiece, isCombinedReviewOfOtherMemberOnly, isBodylessAggregatorScoreUncorroborated, cvNonReviewHumanCleared, cvWrongArticleFamily, cvArticleTypeNonReview, cvArticleTypeVerdictIsPartialWindow, cvWrongArticlePromotion, wrongShowCleared, wrongShowExplicitlyCleared, evaluateLateDateGuard, evaluateUrlYearGuard, evaluateDirectorGuard } = require('./lib/review-guards');
 const { ownShowTextEvidence } = require('./lib/own-show-text-evidence');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { isSoft404Body } = require('./lib/soft-404-body');
@@ -117,10 +118,11 @@ const {
   shouldAutoClearAnticipatoryGrace,
   shouldAutoClearWrongProductionUkDualMarket,
   shouldAutoClearStaleLondonOutletCrossMarket,
+  isInOwnWindowByDateOrUrlYear,
   isDateOnlyAutoReason,
 } = require('./lib/wrong-production-autoclear');
 const { isAnticipatoryPreviewPost } = require('./lib/content-filters');
-const { evaluateRepublishedReview, humanFlagOutranksScriptClear } = require('./lib/run-contamination');
+const { evaluateRepublishedReview, humanFlagOutranksScriptClear, republishGuardOpen } = require('./lib/run-contamination');
 const { detectPriorRunRepublish, shouldReleasePriorRunRepublish } = require('./lib/prior-run-republish-guard');
 const { detectOtherProductionUrl, shouldReleaseOtherProductionUrl, OTHER_PRODUCTION_URL_REASON } = require('./lib/other-production-signal');
 const { resolveBackfillPublishDate, resolveGuardReviewDate } = require('./lib/backfill-publish-date');
@@ -1201,6 +1203,7 @@ function selectBestExcerpt(data, showTitle) {
 // Stats tracking
 const { humanScoreOutsideStarBand } = require('./lib/human-score-star-guard');
 const humanOverridesOutsideBand = [];
+const soloVerdictHoldLog = [];
 const stats = {
   totalFiles: 0,
   totalReviews: 0,
@@ -2043,9 +2046,17 @@ const crossShowFingerprints = new Map();
         // earliest date — a prior-production review is wrong regardless of manual override.
         // Threshold raised from 180→365 and requires publishDate specifically (no URL fallback)
         // because the 180-day threshold combined with URL-extracted dates caused false overrides.
+        // BRO-7085: a SCRIPT's clear (sweep verdict) still faces the republish-marker guard below
+        // (An Oak Tree: in-window republish date + script ManualClear exited here before it ran).
+        const republishOpen = republishGuardOpen(d, { auditOpen: wpAuditOpen, laneHeld: laneHolds(d, 'wrongProduction') });
+        const retractScriptClearForRepublish = () => { if (!wpAuditOpen) retractScriptWrongProductionClear(d); };
+        let republishOnly = false;
         if (d.wrongProductionManualClear) {
           let mcReviewDate = parseDate(d.publishDate);
-          if (!mcReviewDate || (showEarliest - mcReviewDate) <= 365 * 86400000) continue;
+          if (!mcReviewDate || (showEarliest - mcReviewDate) <= 365 * 86400000) {
+            if (!(republishOpen && !wpAuditOpen)) continue;
+            republishOnly = true;
+          }
           // Extreme date mismatch (>1 year with reliable publishDate) — override manual clear
         }
         // Prior-run republish guard (BRO-4641): body text says the review is of an
@@ -2053,10 +2064,11 @@ const crossShowFingerprints = new Map();
         // Theater") even though the page was republished with an in-window date.
         // Runs regardless of reviewDate: the date guards cannot see this.
         // lane-guarded: wpAuditOpen includes laneHolds(d, 'wrongProduction')
-        if (wpAuditOpen) {
+        if (republishOpen) {
           const republish = detectPriorRunRepublish({ text: d.fullText, show: showRecord });
           if (republish.flag) {
             console.log(`  [PRIOR-RUN-REPUBLISH] ${sid}/${f}: ${republish.reason} — "${republish.evidence}"`);
+            retractScriptClearForRepublish();
             d.wrongProduction = true;
             invalidateWrongProductionAutoClear(d);
             d.wrongProductionReason = 'prior-run-republish';
@@ -2068,12 +2080,13 @@ const crossShowFingerprints = new Map();
           // 2026 run, a timeout.com/london page on a NYC show). The date guards below
           // trust publishDate, which a url swap or republish can stamp with the
           // current run's date.
-          if (flagOtherProductionUrl(d)) continue;
+          if (wpAuditOpen && flagOtherProductionUrl(d)) continue;
           // BRO-5000: a page that says outright it was written in an earlier year
           // ("This review is from 2025") on a show with no declared run in that year.
           const earlier = evaluateRepublishedReview({ fullText: d.fullText, show: showRecord, publishDate: d.publishDate });
           if (earlier.exclude) {
             console.log(`  [REPUBLISHED-EARLIER-YEAR] ${sid}/${f}: "${earlier.snippet}"`);
+            retractScriptClearForRepublish();
             d.wrongProduction = true;
             invalidateWrongProductionAutoClear(d);
             d.wrongProductionReason = earlier.reason;
@@ -2082,6 +2095,7 @@ const crossShowFingerprints = new Map();
             continue;
           }
         }
+        if (republishOnly) continue; // a script-cleared record gets only the republish checks above
         // (reviewDate resolved above, shared with the dateless-revival auto-clear.
         // YYYY-only URL fallback intentionally omitted: a year alone defaults to
         // July 1st — too imprecise for the pre-window guard, caused 74 false positives
@@ -2874,19 +2888,22 @@ showDirs.forEach(showId => {
       // below so an outlet whose reviews are currently excluded still contributes
       // to its own region inference. See outletShowCategoriesRaw's declaration above.
       //
-      // Trustworthiness gate is isReviewContentTrustworthy() (task #1553,
-      // scripts/lib/review-guards.js) — see its JSDoc for the full rationale on why
-      // wrongProduction is excluded UNCONDITIONALLY (a second-pass Claude review
-      // found 16 real false positives — US regional outlets like Entertainment
-      // Tonight, Edmonton Journal, KUTV — from an earlier version that kept counting
-      // wrongProduction:true evidence). Outlets whose ONLY reviews are
-      // wrongProduction-flagged stay region-less here — strictly safer than a wrong
-      // stamp, and they still get the isUkUrl fallback plus the chance to earn
-      // evidence from a future non-flagged review.
+      // Reject wrong-production evidence except the region guard's own circular
+      // assumption. Otherwise a newly registered London blog on a .com domain
+      // loses its evidence before reaching the three-show inference threshold.
       {
         const rawOutletForCategory = (data.outletId || data.outlet || '').toLowerCase();
         const cat = showCategoryMap[showId];
-        if (rawOutletForCategory && cat && isReviewContentTrustworthy(data)) {
+        if (rawOutletForCategory && cat) {
+          const trustworthy = isReviewContentTrustworthy(data);
+          const market = regionEvidenceMarket({
+            trustworthy,
+            trustworthyApartFromWrongProduction: isReviewContentTrustworthy({ ...data, wrongProduction: false }),
+            category: cat,
+            isLondonMarket,
+            review: data,
+            urlIsUk: !!data.url && isUkOutletUrl(data.url),
+          });
           // normalizeOutletCanonical matches the key allReviews/newOutlets register
           // brand-new outlets under (line ~2015); OUTLET_CANONICAL_ID_MAP resolves
           // ALIASES back to an already-registered outlet's actual registry key.
@@ -2899,25 +2916,11 @@ showDirs.forEach(showId => {
           const canonicalOutletForCategory = normalizeOutletCanonical(rawOutletForCategory);
           const canonicalId = OUTLET_CANONICAL_ID_MAP[canonicalOutletForCategory]
             || OUTLET_CANONICAL_ID_MAP[rawOutletForCategory] || canonicalOutletForCategory;
-          (outletShowCategoriesRaw[canonicalId] = outletShowCategoriesRaw[canonicalId] || new Set()).add(cat);
-        }
-        // BRO-5896: per-market distinct-show evidence for retracting a wrong
-        // london stamp. Wider than the trustworthy gate above on the NYC side
-        // only; see regionEvidenceMarket in lib/outlet-region-map.js.
-        if (rawOutletForCategory && cat) {
-          const market = regionEvidenceMarket({
-            trustworthy: isReviewContentTrustworthy(data),
-            trustworthyApartFromWrongProduction: isReviewContentTrustworthy({ ...data, wrongProduction: false }),
-            category: cat,
-            isLondonMarket,
-            wrongProductionNote: data.wrongProductionNote,
-            urlIsUk: !!data.url && isUkOutletUrl(data.url),
-          });
+          if (trustworthy || market === 'london') {
+            (outletShowCategoriesRaw[canonicalId] = outletShowCategoriesRaw[canonicalId] || new Set()).add(cat);
+          }
           if (market) {
-            const canonicalOutletForEvidence = normalizeOutletCanonical(rawOutletForCategory);
-            const evidenceId = OUTLET_CANONICAL_ID_MAP[canonicalOutletForEvidence]
-              || OUTLET_CANONICAL_ID_MAP[rawOutletForCategory] || canonicalOutletForEvidence;
-            const ev = (outletMarketShowsRaw[evidenceId] = outletMarketShowsRaw[evidenceId] || { london: new Set(), nyc: new Set() });
+            const ev = (outletMarketShowsRaw[canonicalId] = outletMarketShowsRaw[canonicalId] || { london: new Set(), nyc: new Set() });
             ev[market].add(showId);
           }
         }
@@ -3345,7 +3348,7 @@ showDirs.forEach(showId => {
           // human clear of one flag left the other. Only a review of a
           // different production (both flags) is wrongShow here, and neither
           // family is promoted over a human clear.
-          const cvFamily = cvWrongArticleFamily(cv);
+          const cvFamily = cvWrongArticleFamily(cv) || (cvArticleTypeNonReview(cv) && !cvArticleTypeVerdictIsPartialWindow(cv, data) ? 'nonReview' : null);
           if (cvFamily === 'wrongShow' && !cvPartialWindow && !ensembleSaysReview && data.wrongShow !== true && !wrongShowCleared(data) && !skipWsForLondon && !data.allowEarlyDate && !data.allowCrossMarket && !laneHolds(data, 'wrongProduction')) {
             // CV outlet-style override (S3-T5): defer wrongShow for known long-biographical
             // outlets when the text is substantive + opinionated. The CV pass false-positives
@@ -3679,7 +3682,7 @@ showDirs.forEach(showId => {
             isDateMismatch: revDateMismatch,
             isShowListingUrl: require('./lib/cross-production-guards').isEvergreenListingUrl(data.url),
             cvBlocksClear: cvBlocksUkWrongProductionAutoClear(data.contentVerification),
-            inOwnProductionWindow: isReviewWithinOwnProductionWindow(showById[showId], data.publishDate),
+            inOwnProductionWindow: isInOwnWindowByDateOrUrlYear(showById[showId], data.publishDate, data.url, isReviewWithinOwnProductionWindow),
             urlFiledUnderOtherShow: ((urlShowIdsAll.get(normalizeUrlForDedup(data.url)) || new Set()).size > 1),
           })) {
             delete data.wrongProduction;
@@ -3752,6 +3755,15 @@ showDirs.forEach(showId => {
         data.wrongProduction = false;
       }
       const laneOk = (guard) => laneBypasses(data, guard, { openingDate: showById[showId] && showById[showId].openingDate });
+      // BRO-7050: log every file a lone classifier verdict would have hidden (the hold itself lives in
+      // review-guards.js soloVerdictHeld, read by the vetoes the gates below already call).
+      for (const svKind of ['nonReview', 'wrongProduction', 'wrongShow', 'rejection']) {
+        const sv = soloVerdictHeld(data, svKind);
+        if (!sv.held) continue;
+        soloVerdictHoldLog.push({ showId, file, outletId: data.outletId || null, kind: svKind,
+          classifiers: sv.families, listedBy: sv.listedBy, scored: sv.scored });
+        stats.singleVerdictHeld = (stats.singleVerdictHeld || 0) + 1;
+      }
       if (data.wrongProduction === true && !laneOk('wrongProduction')) {
         if (data.wrongProductionManualClear || data.wrongProductionOverride || data.humanReviewedWrongProduction === false) {
           console.log(`  [NUCLEAR GUARD FAILURE] ${showId}/${file}: wrongProduction=true despite manual clear — FORCING false`);
@@ -3779,31 +3791,16 @@ showDirs.forEach(showId => {
       // (whos-afraid-of-virginia-woolf-2020 carried a counted 2005 review), and a
       // row known only from a search hit with no url and no stored text has
       // nothing to check. Same predicates as explainExclusion(); runs after the wrongProduction auto-clear branches above, so only the reason label differs, never the include decision. Rows added after this loop (inheritPriorRunReviews, lease carry-over, manualEntry) skip it (BRO-4890 known limit).
-      if (isCancelledBeforeOpeningShow(showById[showId])) {
-        logExclusion("skippedCancelledBeforeOpening", showId, file, data);
-        stats.skippedCancelledBeforeOpening = (stats.skippedCancelledBeforeOpening || 0) + 1;
-        return;
-      }
-      if (isUnverifiableWebSearchRow(data)) {
-        logExclusion("skippedUnverifiableWebSearchRow", showId, file, data);
-        stats.skippedUnverifiableWebSearchRow = (stats.skippedUnverifiableWebSearchRow || 0) + 1;
-        return;
-      }
-
-      // BRO-3126: a preview-period "first look" the verifier already called a preview and that
-      // says so itself (jane-eyre-off-west-end-2026 scored 79 and shipped). Same predicate as
-      // explainExclusion().
-      if (isPreviewFirstLookPiece(data)) {
-        logExclusion("skippedPreviewFirstLookPiece", showId, file, data);
-        stats.skippedPreviewFirstLookPiece = (stats.skippedPreviewFirstLookPiece || 0) + 1;
-        return;
-      }
-
-      // BRO-2746: a combined-review file holding a co-member show's review (url names
-      // only the other show, text never names this one). Same predicate as explainExclusion().
-      if (isCombinedReviewOfOtherMemberOnly(data, showById[showId])) {
-        logExclusion("skippedCombinedReviewOfOtherMemberOnly", showId, file, data);
-        stats.skippedCombinedReviewOfOtherMemberOnly = (stats.skippedCombinedReviewOfOtherMemberOnly || 0) + 1;
+      // BRO-2453: one shared decision (review-guards decideEarlyFileExclusion) for the four
+      // early gates above; literal logExclusion keys kept so scoring-delta's site detector sees them.
+      const earlyExclusion = decideEarlyFileExclusion(data, showById[showId]);
+      if (earlyExclusion) {
+        if (earlyExclusion.statKey === "skippedCancelledBeforeOpening") logExclusion("skippedCancelledBeforeOpening", showId, file, data);
+        else if (earlyExclusion.statKey === "skippedUnverifiableWebSearchRow") logExclusion("skippedUnverifiableWebSearchRow", showId, file, data);
+        else if (earlyExclusion.statKey === "skippedPreviewFirstLookPiece") logExclusion("skippedPreviewFirstLookPiece", showId, file, data);
+        else if (earlyExclusion.statKey === "skippedCombinedReviewOfOtherMemberOnly") logExclusion("skippedCombinedReviewOfOtherMemberOnly", showId, file, data);
+        else throw new Error("unknown early-exclusion statKey " + earlyExclusion.statKey);
+        stats[earlyExclusion.statKey] = (stats[earlyExclusion.statKey] || 0) + 1;
         return;
       }
 
@@ -3970,7 +3967,7 @@ showDirs.forEach(showId => {
         const hasAggregatorScore = (data.assignedScore && data.assignedScore >= 1 && data.assignedScore <= 100)
           || (data.originalScore && parseOriginalScore(data.originalScore, data.outletId) !== null)
           || (data.aggregatorStars && parseOriginalScore(data.aggregatorStars, data.outletId) !== null);
-        const hasExcerpt = data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt || data.stagedoorExcerpt || data.metaExcerpt;
+        const hasExcerpt = hasAnyExcerpt(data);
         if (!hasAggregatorScore && !hasExcerpt) {
           logExclusion("skippedScraperGarbage", showId, file, data);
           stats.skippedScraperGarbage = (stats.skippedScraperGarbage || 0) + 1;
@@ -4236,8 +4233,8 @@ showDirs.forEach(showId => {
           const urlPath = urlObj.pathname.toLowerCase();
           const urlPathGuardReviewDate = data.publishDate ? parseDate(data.publishDate) : null;
           const urlPathGuardPriorRuns = showById[showId] && showById[showId].priorRuns;
-          if (isLondonMarket(showCategory) && hostname !== 'broadwayworld.com' && !hostname.endsWith('.broadwayworld.com')) {
-            // WE show but URL path contains Broadway production indicators
+          if (urlPathGuardTreatsShowAsUk(showCategory, showById[showId] && showById[showId].venue) && hostname !== 'broadwayworld.com' && !hostname.endsWith('.broadwayworld.com')) {
+            // WE (or UK regional, BRO-5790) show but URL path contains Broadway production indicators
             const urlPathImpliesBroadway = urlPathOppositeMarketIndicator({ urlPath, oppositeMarket: 'us', showTitle: showById[showId] && showById[showId].title });
             // priorRuns exemption (card #1532, 3rd cousin of BRO-222/#1528): a review
             // in-window for a declared US priorRun (e.g. a Chicago tryout before this
@@ -4431,7 +4428,7 @@ showDirs.forEach(showId => {
         delete data.fullText;
         delete data.assignedScore;
         delete data.ensembleData;
-        const hasExcerpt = !!(data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.stagedoorExcerpt || data.lboRoundupExcerpt || data.metaExcerpt);
+        const hasExcerpt = hasAnyExcerpt(data);
         // Respect a human contentTier override (the only direct contentTier setter
         // that bypassed classifyContentTier's manualContentTier check). Mirrors the
         // wrongProduction setter-guard discipline (shouldSkipWrongProductionAudit):
@@ -4717,7 +4714,7 @@ showDirs.forEach(showId => {
         delete data.fullText;
         delete data.assignedScore;
         delete data.ensembleData;
-        const hasExcerpt = !!(data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.stagedoorExcerpt || data.lboRoundupExcerpt || data.metaExcerpt);
+        const hasExcerpt = hasAnyExcerpt(data);
         // Respect a human contentTier override (the only direct contentTier setter
         // that bypassed classifyContentTier's manualContentTier check). Mirrors the
         // wrongProduction setter-guard discipline (shouldSkipWrongProductionAudit):
@@ -4922,7 +4919,7 @@ showDirs.forEach(showId => {
         }
 
         if (data.showNotMentioned === true) {
-          const hasExcerpt = data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt || data.stagedoorExcerpt || data.metaExcerpt;
+          const hasExcerpt = hasAnyExcerpt(data);
           // Allow through if review has an aggregator-provided star rating (e.g. from WET roundup)
           // even when scraped text was paywall junk that didn't mention the show
           const hasOriginalScore = (data.originalScore && parseOriginalScore(data.originalScore, data.outletId) !== null)
@@ -5520,7 +5517,7 @@ showDirs.forEach(showId => {
       if (data.fullText && data.fullText.length >= 800 &&
           data.contentTier === 'complete' && data.textStatus === 'complete') {
         const ftWords = new Set(data.fullText.toLowerCase().match(/\b[a-z]{5,}\b/g) || []);
-        const excerptFields = ['dtliExcerpt', 'showScoreExcerpt'];
+        const excerptFields = ['dtliExcerpt', 'showScoreExcerpt']; // excerpt-subset-ok: report-only check, the two aggregators that quote one critic per outlet
         for (const field of excerptFields) {
           if (data[field] && data[field].length >= 50) {
             const exWords = (data[field].toLowerCase().match(/\b[a-z]{5,}\b/g) || []);
@@ -5545,7 +5542,7 @@ showDirs.forEach(showId => {
 
       // CHECK: Flag reviews that SHOULD have LLM scores but don't
       // These have scorable text but were never run through LLM scoring
-      const scorableText = data.fullText || data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt || data.lboRoundupExcerpt || data.metaExcerpt || '';
+      const scorableText = data.fullText || getExcerpts(data)[0] || '';
       const hasScorableText = scorableText.length >= 100;
       const hasLlmScore = data.llmScore && data.llmScore.score;
 
@@ -6446,8 +6443,11 @@ for (const sid of postDedupTouchedShows) {
       // Matching lives in scripts/lib/manual-entry-merge.js. This merge runs after
       // every dedup pass, so a missed match appends a permanent phantom duplicate —
       // the helper matches punctuation-insensitively and falls back to the URL.
-      const { preserved, appended, matchedByUrl } =
+      const { preserved, appended, matchedByUrl, refusedRoundup = [] } =
         mergeManualEntries(allReviews, manualEntries, normalizeUrlForDedup);
+      for (const key of refusedRoundup) {
+        console.warn(`⚠️  Manual entry refused (roundup page credited to its host, no own review to attach to): ${key}`);
+      }
       if (preserved > 0) {
         console.log(`\n✅ Preserved ${preserved} manual entries from previous reviews.json` +
           ` (${appended} appended, ${matchedByUrl} matched by URL after byline mismatch)`);
@@ -7200,6 +7200,11 @@ if (stats.unscoredWithText.length > 0) {
   });
 
   fs.writeFileSync(auditPath, JSON.stringify(auditOutput, null, 2) + '\n');
+  // BRO-7050: deterministic (sorted, no timestamp) so an unchanged corpus rewrites an identical file.
+  fs.writeFileSync(path.join(path.dirname(auditPath), 'single-verdict-holds.json'), JSON.stringify({
+    _meta: { issue: 'BRO-7050', count: soloVerdictHoldLog.length },
+    holds: soloVerdictHoldLog.slice().sort((a, b) => (a.showId + a.file + a.kind).localeCompare(b.showId + b.file + b.kind)),
+  }, null, 2) + '\n');
   if (humanReviewQueue.length > 0) {
     console.log(`\nHUMAN REVIEW QUEUE: ${humanReviewQueue.length} reviews flagged`);
     Object.entries(auditOutput._meta.reasons).forEach(([reason, count]) => {
@@ -7459,7 +7464,7 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
   if (retractedOutlets.length > 0) {
     console.log(`\n↩️  RETRACTED wrong region:'london' on ${retractedOutlets.length} outlet(s) (BRO-5896): ${retractedOutlets.map(r => `${r.id} (${r.nycShows} NYC / ${r.londonShows} London shows)`).join(', ')}`);
   }
-  const backfilledOutlets = backfillMissingOutletRegions(outletRegistry.outlets, outletShowCategories, isLondonMarket);
+  const backfilledOutlets = backfillMissingOutletRegions(outletRegistry.outlets, outletShowCategories, isLondonMarket, undefined, outletMarketShowsRaw);
 
   // Staged ids were NOT written to the registry — counting them here would
   // rewrite + commit data/outlet-registry.json on every one of ~20 workflows'

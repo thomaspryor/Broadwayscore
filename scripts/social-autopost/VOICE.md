@@ -12,7 +12,17 @@ This file governs captions written by code (`captions.js`), hooks written by a s
 4. Never a yes/no question and never engagement bait. Banned: "Thoughts?", "Agree?", "Tag a friend", "Like if", "Share if", "Comment below", "Drop a".
 5. No em dashes. No "not X, but Y" or "it's not just A, it's B". No slop words: delve, robust, leverage, unlock, tapestry, realm, deep dive, landscape of, journey of, navigate, "excited to share", "thrilled to".
 6. The code builds the question from the facts (direction and size of a gap, the tally split, the tier). A session never writes a number or a direction into a question.
-7. On X and Bluesky the question outranks the caveat and the lead-in. Fit order: drop the hook, drop the caveat, shorten the title, shorten the question, and only then drop the question.
+7. On X and Bluesky the question outranks the caveat and the lead-in. Fit order: drop the hook, drop the caveat, shorten the title while it still names the show (24 characters or more), shorten the question, then drop the question, and only then cut the title further. A post must always say which show it is about.
+8. Audience reception is a letter grade, never a number (owner rule 2026-11-03). Say "audiences give it an A-" or "audiences are Loving It", from `getAudienceGrade` with the site's minimum-review gate. Never "audiences give it 82" and never a critic-versus-audience point gap.
+
+## AI-written score posts (BRO-6959)
+
+Score posts are written by Claude (`ai-captions.js`, model `SOCIAL_WRITER`) from a ranked fact pool (`facts.js`) that code computes from the site data. Owner feedback that shaped it: template data sentences read as robotic, pull quotes are generic, and the post should show what only the site has (the weighted score, how the top-tier critics split, the full tally, a precise season rank, critics against audiences).
+
+9. Lead with the most unusual fact in the pool (season rank, a lopsided top-tier split, critics and audiences disagreeing, an earlier production that scored differently, a sell-out despite weak reviews). Always give the Critic Score with its label and, in the long post, the full tally.
+10. A rank keeps its qualifier ("of the 5 Broadway shows that opened since September 1 and have at least 8 reviews"). Say "top-tier critics", never "critics we weight most" or "papers". No quotes from reviews. Opinions belong to critics.
+11. Every post must say "Critic Score": it is how the duplicate-post guard finds a score post (`SCORE_SENTENCE`).
+12. Code refuses any draft with a number not in the pool (digits or words), an audience number, a dash, a stock opener or a slop word; GPT-5.5 then reads the post beside the facts and refuses any claim they don't support. One rewrite with the reasons, then the template caption posts instead. On/off: `AI_CAPTIONS.enabled` in `config.js`, on since 2026-11-04 for live posts. Dry runs and `--show` previews draft only with the `ai_captions` input (env `SOCIAL_AI_CAPTIONS_FORCE`), so previews never pay by accident. An API or key failure posts the template and lands in the digest. The monthly social email compares AI-written and template score posts once each has 3 different shows with posts at least a week old. Kill switch without a commit: repo variable `SOCIAL_AI_CAPTIONS_DISABLED=true`.
 
 ## Examples by post type
 

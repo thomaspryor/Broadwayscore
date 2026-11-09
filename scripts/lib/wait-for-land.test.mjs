@@ -389,3 +389,23 @@ test('reportLandedSha: null tip, failed fetch and unreadable ledger never throw'
   assert.equal(await waitForLand.reportLandedSha('aaa111', { io }), null);
   assert.deepEqual(waits, []);
 });
+
+test('BRO-7110: a refusal says to fix on top without rebasing and re-push the same ref', () => {
+  const { refusedMessage } = require('./wait-for-land.js');
+  const msg = refusedMessage('land/x', 'run 1 failure', 'https://example.test/run/1');
+  const [first, next] = msg.split('\n');
+  assert.equal(first, 'REFUSED: land/x run 1 failure https://example.test/run/1');
+  assert.match(next, /fix on top of the refused commit/);
+  assert.match(next, /do not rebase, squash or reset/);
+  assert.match(next, /push the same ref land\/x$/);
+  assert.equal(refusedMessage('land/y', 'why', null).split('\n')[0], 'REFUSED: land/y why');
+});
+
+test('BRO-7110: an unsure prod check keeps its stderr reason; a sure one shows stdout only', () => {
+  const { prodDetail } = waitForLand;
+  const unsure = { stdout: 'Production READY\n❓ could not check whether abc is live\n', stderr: '⚠️  Could not determine (reason=unshallow-failed)\n' };
+  assert.equal(prodDetail(unsure, 2), '❓ could not check whether abc is live | ⚠️  Could not determine (reason=unshallow-failed)');
+  assert.equal(prodDetail({ stdout: '✅ abc is LIVE\n', stderr: 'noise\n' }, 0), '✅ abc is LIVE');
+  assert.equal(prodDetail({ stdout: '⏳ not live\n', stderr: 'noise\n' }, 1), '⏳ not live');
+  assert.equal(prodDetail({ stdout: '', stderr: 'only stderr\n' }, 2), 'only stderr');
+});

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // show-id market suffix + year guard (BRO-4315, 2026 data audit S8-T1).
 // TESTS-VS-DERIVED-DATA-EXEMPT: structural rule (id suffix agrees with category); shows.json is the source of truth for both fields, no facts pinned
 //

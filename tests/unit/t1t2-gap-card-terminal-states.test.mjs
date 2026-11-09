@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-341: the T1/T2 silent-gap card generator (scripts/audit-t1-silent-gaps.js)
  * had no terminal state (a card, once filed, never closed even after the

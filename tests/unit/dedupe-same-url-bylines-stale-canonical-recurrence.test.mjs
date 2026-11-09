@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Regression test (BRO-2391): the BRO-318 stale-backpointer class recurred on
  * loves-labours-lost-globe-west-end-2026 TWICE after the original fix

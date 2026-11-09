@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/grosses.json (untracked core data); data/commercial.json (untracked core data); data/grosses-history.json (untracked core data); +3 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-5007: Box Office Scorecard v2 status logic, tested against the real
  * functions (CLAUDE.md §15). Runs in the tsx batch

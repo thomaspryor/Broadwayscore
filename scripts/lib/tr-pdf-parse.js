@@ -375,6 +375,19 @@ function parseRawPdfReviews(text, showTitle, venue) {
     e.outlet === r.outlet && e.date === r.date && e.critic === r.critic)) : matched;
 }
 
+// BRO-6356: whether a title word stands in the text as a word of its own: a
+// whole word in any case (plural or possessive too), or, where old issues
+// glue words together ("City ofAngels", "andtheMaiden"), written as a proper
+// name ("Angels", "MAIDEN") that no lowercase letter runs on from. "lear" in
+// "clear" or "learns" never counts.
+function hasTitleWord(text, w) {
+  const src = foldDiacritics(String(text));
+  if (new RegExp(`(?<![a-z0-9])${w}(?:e?s)?(?![a-z0-9])`, 'i').test(src)) return true;
+  const cap = w[0].toUpperCase() + w.slice(1);
+  if (new RegExp(`${cap}(?:e?s)?(?![a-z])`).test(src)) return true;
+  return new RegExp(`(?<![A-Z])${w.toUpperCase()}(?:E?S)?(?![A-Z])`).test(src);
+}
+
 // Keep only reviews ABOUT the show: raw and default modes extract every
 // review in the volume, so the rest are other productions'.
 function filterByTitle(allReviews, showTitle) {
@@ -403,8 +416,21 @@ function filterByTitle(allReviews, showTitle) {
     // Path 2: For multi-word titles, check significant word overlap
     // Multi-column PDFs often break "Book of Mormon" across lines
     if (significantWords.length >= 2) {
+      // Substring match: old issues glue words together ("ofwest side").
       const wordsFound = significantWords.filter(w => textLower.includes(w));
-      if (wordsFound.length >= Math.ceil(significantWords.length * 0.7) && wordsFound.length >= 2) {
+      // BRO-6356: a title mixing common and distinctive words (King Lear) is
+      // only ours when a distinctive word stands as a whole word: "king" plus
+      // "lear" inside "clear"/"learn" matched THE KING AND I's and EXIT THE
+      // KING's reviews. Critics also drop the common word ("Lear"), so every
+      // distinctive word present is enough on its own.
+      const distinctive = significantWords.filter(w => !GENERIC_TITLE_WORDS.has(w));
+      const mixed = distinctive.length > 0 && distinctive.length < significantWords.length;
+      const distinctiveWhole = distinctive.filter(w => hasTitleWord(r.fullText, w));
+      const byDistinctive = mixed && distinctiveWhole.length === distinctive.length;
+      // A title printed as one word ("Showboat") is still the title.
+      const vetoed = mixed && distinctiveWhole.length === 0
+        && !textLower.replace(/[^a-z0-9]/g, '').includes(significantWords.join(''));
+      if (!vetoed && (byDistinctive || (wordsFound.length >= Math.ceil(significantWords.length * 0.7) && wordsFound.length >= 2))) {
         // Reject if all title words only appear in the last 30% (wrong-show contamination)
         const firstWordIdx = Math.min(...wordsFound.map(w => textLower.indexOf(w)));
         if (firstWordIdx > textLower.length * 0.7) { /* skip — title only at tail */ }
@@ -430,7 +456,10 @@ function filterByTitle(allReviews, showTitle) {
       .map(w => w.replace(/[^a-z0-9]/g, ''))
       .filter(w => w.length >= 2 && !['the', 'and', 'for', 'from', 'with', 'a', 'an', 'at', 'in', 'on', 'of', 'to'].includes(w))
       .sort((a, b) => a.length - b.length)[0];
-    if (coreWord && coreWord.length <= 4) {
+    // BRO-6356: for a multi-word title the shortest word can be a common one
+    // ("king" in King Lear), so THE KING AND I's and EXIT THE KING's reviews
+    // matched here. Such a title's distinctive words must appear too.
+    if (coreWord && coreWord.length <= 4 && hasDistinctiveTitleWord(r.fullText, showTitle)) {
       const coreRegex = new RegExp(`\\b${coreWord}\\b`, 'gi');
       const coreMentions = (textLower.match(coreRegex) || []).length;
       if (coreMentions >= 3) {
@@ -653,6 +682,14 @@ const { foldDiacritics } = require('./title-match');
 // titles its own way), but common title words do not count: KING LEAR kept
 // EXIT THE KING's and THE KING AND I's reviews, LOVE LETTERS kept LOVE BITES'.
 const GENERIC_TITLE_WORDS = new Set(['king', 'queen', 'prince', 'princess', 'lady', 'man', 'men', 'woman', 'women', 'girl', 'girls', 'boy', 'boys', 'love', 'night', 'nights', 'day', 'days', 'life', 'death', 'light', 'dark', 'great', 'little', 'old', 'new', 'one', 'two', 'three', 'last', 'first', 'play', 'show', 'story', 'house', 'home', 'world', 'time', 'christmas', 'that', 'this', 'into', 'what', 'when', 'who', 'all', 'not', 'are', 'was', 'you', 'your', 'our', 'his', 'her', 'broken', 'come', 'away', 'goes', 'over', 'out', 'way', 'wild', 'heart', 'blood', 'city', 'street', 'road', 'big', 'good', 'bad', 'young', 'black', 'white', 'red', 'blue', 'green']);
+// BRO-6356: true unless the title has distinctive (non-generic) words and the
+// text names none of them. "King Lear" needs "lear"; "Cats" or "Come From
+// Away" (no distinctive word) always passes.
+function hasDistinctiveTitleWord(text, showTitle) {
+  const distinctive = titleWords(showTitle).filter(w => !GENERIC_TITLE_WORDS.has(w));
+  if (!distinctive.length) return true;
+  return distinctive.some(w => hasTitleWord(text, w));
+}
 // A long title wraps over caps lines; a line-end hyphen joins the halves of a
 // wrapped word ("A MIDSUM-" / "MER NIGHT'S DREAM").
 const joinWrapped = (parts) => parts.join(' ').replace(/(\w)-\s+(?=\w)/g, '$1');
@@ -907,6 +944,8 @@ module.exports = {
   skeletonKeepLines,
   productionRuns,
   sharesTitleWord,
+  hasDistinctiveTitleWord,
+  hasTitleWord,
   captionOwnedBy,
   isKnownOutletLine,
   sectionOwnedBy,

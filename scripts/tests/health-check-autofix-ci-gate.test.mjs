@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/audit/digest-autofix-ledger.jsonl (bot ledger). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * health-check-autofix-ci-gate.test.mjs — BRO-467 regression guard.
  *

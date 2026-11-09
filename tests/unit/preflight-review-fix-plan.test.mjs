@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-4849: preflight-review-fix-plan replays a plan on a throwaway copy through the real executor and write guard.
  * Run: node --test tests/unit/preflight-review-fix-plan.test.mjs

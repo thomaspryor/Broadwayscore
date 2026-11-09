@@ -348,35 +348,52 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop
       <span aria-hidden="true" className="text-fg-muted"> · </span>{pin}<span className="sr-only">Reviewed in </span>{stop}
     </span>
   ) : null;
-  const mobileDate = dateLabel && !stop ? <span className="sm:hidden block text-xs text-fg-muted mt-0.5">{dateLabel}</span> : null;
-  // With a stop, phones get one full-width line under the byline row instead
-  // ("Oct 5 · Rochester, NY"), so it never squeezes against Full Review. Only
+  // Compact layout (owner pick 2026-11-06): the byline runs in at the end of the
+  // quote ("... precision." — Name), phones add the date after it, and Full
+  // Review shrinks to an arrow beside the date in the header row.
+  // The published rating (owner pick 2026-11-08) rides with the date instead of
+  // hanging under the score badge: "4/5 stars · Nov 7, 2026" on the header row
+  // (sm+), and after the byline's date on phones.
+  const rating = review.originalRating || null;
+  const mobileRating = rating ? <span className="whitespace-nowrap" data-testid="review-original-rating-mobile"> &middot; {rating}</span> : null;
+  const mobileDate = !stop && (dateLabel || rating) ? (
+    <span className="sm:hidden">
+      {dateLabel ? <span className="whitespace-nowrap">, {dateLabel.replace(new RegExp(`,\\s*${new Date().getFullYear()}$`), '')}</span> : null}
+      {dateLabel ? mobileRating : rating ? <span className="whitespace-nowrap">, {rating}</span> : null}
+    </span>
+  ) : null;
+  // With a stop, phones get one full-width line under the quote instead
+  // ("Oct 5 · Rochester, NY"), so it never squeezes against the byline. Only
   // this year's dates lose the year; an older tour's review keeps it.
   const mobileStopLine = stop ? (
     <div className="sm:hidden text-xs text-fg-muted mt-0.5">
       {dateLabel && <>{dateLabel.replace(new RegExp(`,\\s*${new Date().getFullYear()}$`), '')}<span aria-hidden="true" className="text-fg-muted"> · </span></>}
       {pin}<span className="sr-only">Reviewed in </span>{stop}
+      {mobileRating}
     </div>
   ) : null;
 
-  // Subtle caption under the score badge so readers can see the rating our
-  // score is anchored to (the pull quote only mentions it when the critic
-  // happened to say it there). It hangs in the gutter left of the quote, which
-  // is pl-24 wide, so it stacks on two lines to fit.
-  const ratingNote = review.originalRating ? (
-    <div
-      className="absolute left-0 top-[50px] sm:top-[54px] w-20 text-sm leading-tight text-fg-muted"
-      title="The published rating for this review. It anchors our score."
-      data-testid="review-original-rating"
-    >
-      <span className="block">Rated</span>
-      <span className="block">{review.originalRating}</span>
-    </div>
-  ) : null;
+  const hasCritic = !!review.criticName && review.criticName !== 'Unknown';
+  const attribution = (
+    <span className="text-xs sm:text-sm text-fg-muted">
+      {' '}
+      <span className="whitespace-nowrap">
+        <span aria-hidden="true">&mdash; </span>
+        {hasCritic ? (
+          <>
+            <span className="sr-only">By </span>
+            {featureFlags.criticPages && review.criticSlug ? (
+              <Link href={`/critics/${review.criticSlug}`} className="hover:text-brand transition-colors">{review.criticName}</Link>
+            ) : review.criticName}
+          </>
+        ) : <>{review.outlet} Staff</>}
+      </span>
+      {stopTag}{mobileDate}
+    </span>
+  );
 
   return (
-    // min-h keeps a quote-less review tall enough for the two-line rating caption.
-    <article className={`${isLast ? '' : 'border-b border-white/5 pb-2'} group ${review.originalRating ? 'relative min-h-[100px]' : ''}`} data-testid="review-card" aria-label={`Review from ${review.outlet}`}>
+    <article className={`${isLast ? '' : 'border-b border-white/5 pb-2'} group`} data-testid="review-card" aria-label={`Review from ${review.outlet}`}>
       {/* CRITICAL: Outlet name vertical centering with score badge and logo.
          Broken 15+ times. Root cause: <a> tags (from Next.js Link) render as
          display:block in flex and ALWAYS stretch to cross-axis height (44px),
@@ -416,8 +433,28 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop
             {review.designation.replace('_', ' ')}
           </span>
         )}
-        {formatDate(review.publishDate) && (
-          <span className="hidden sm:inline text-xs text-fg-muted flex-shrink-0">{formatDate(review.publishDate)}</span>
+        {(rating || formatDate(review.publishDate)) && (
+          <span className="hidden sm:inline text-xs text-fg-muted flex-shrink-0 whitespace-nowrap">
+            {rating && (
+              <span title="The published rating for this review. It anchors our score." data-testid="review-original-rating">
+                <span className="sr-only">Rated </span>{rating}
+              </span>
+            )}
+            {rating && formatDate(review.publishDate) && <span aria-hidden="true"> &middot; </span>}
+            {formatDate(review.publishDate)}
+          </span>
+        )}
+        {review.url && (
+          <a
+            href={review.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Full review"
+            className="inline-flex flex-shrink-0 items-center justify-center p-2 -m-2 text-brand hover:text-brand-hover transition-colors"
+            aria-label={`Read full review from ${review.outlet}${hasCritic ? ` by ${review.criticName}` : ''} (opens in new tab)`}
+          >
+            <ExternalLinkIcon className="w-4 h-4" />
+          </a>
         )}
       </div>
 
@@ -433,45 +470,24 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop
         )}
         {review.quote && (
           <p className="text-sm sm:text-base text-gray-300 leading-snug mb-0.5">
-            &ldquo;{nestQuotes(review.quote)}&rdquo;
+            &ldquo;{nestQuotes(review.quote)}&rdquo;{attribution}
           </p>
         )}
         {review.summary && !review.quote && (
           <p className="text-sm sm:text-base text-gray-400 leading-snug mb-0.5">
-            {review.summary}{/[.!?'""\u2019]$/.test(review.summary.trim()) ? '' : '.'}
+            {review.summary}{/[.!?'""\u2019]$/.test(review.summary.trim()) ? '' : '.'}{attribution}
           </p>
         )}
         {review.pullQuote && !review.quote && !review.summary && (
           <p className="text-sm sm:text-base text-gray-300 leading-snug mb-0.5">
-            &ldquo;{withEndPunctuation(nestQuotes(review.pullQuote))}&rdquo;
+            &ldquo;{withEndPunctuation(nestQuotes(review.pullQuote))}&rdquo;{attribution}
           </p>
         )}
-
-        <div className="flex items-center justify-between gap-3 text-xs sm:text-sm leading-tight">
-          {review.criticName && review.criticName !== 'Unknown' ? (
-            <span className="text-sm text-fg-muted">By {featureFlags.criticPages && review.criticSlug ? (
-              <Link href={`/critics/${review.criticSlug}`} className="hover:text-brand transition-colors">{review.criticName}</Link>
-            ) : review.criticName}{stopTag}{mobileDate}</span>
-          ) : (
-            <span className="text-sm text-gray-400">{review.outlet} Staff{stopTag}{mobileDate}</span>
-          )}
-          {review.url && (
-            <a
-              href={review.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex flex-shrink-0 whitespace-nowrap items-center gap-1 text-xs font-semibold text-brand hover:text-brand-hover transition-colors uppercase tracking-wide"
-              aria-label={`Read full review from ${review.outlet}${review.criticName && review.criticName !== 'Unknown' ? ` by ${review.criticName}` : ''} (opens in new tab)`}
-            >
-              Full Review
-              <ExternalLinkIcon className="w-3 h-3" />
-            </a>
-          )}
-        </div>
+        {!review.quote && !review.summary && !review.pullQuote && (
+          <p className="leading-snug mb-0.5">{attribution}</p>
+        )}
         {mobileStopLine}
       </div>
-      {/* After the header and quote in the DOM so screen readers hear the score and outlet first; positioned under the badge. */}
-      {ratingNote}
     </article>
   );
 });

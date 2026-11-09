@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data); data/critic-registry.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-3791: ingest-urls.js (bulk break-glass URL ingest) had the same
  * merge-into-existing false-positive-success shape fixed in BRO-3790 for the

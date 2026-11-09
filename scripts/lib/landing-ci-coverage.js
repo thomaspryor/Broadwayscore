@@ -170,4 +170,4 @@ async function main(argv) {
 
 module.exports = { hasSkipCiMarker, touchesCodePaths, pushPathsFromWorkflow, findCoveringRun, ensureCoverage };
 
-if (require.main === module) main(process.argv.slice(2)).then(c => process.exit(c), e => { console.error(e); process.exit(2); });
+if (require.main === module) main(process.argv.slice(2)).then((c) => require('./exit-flushed.js').exitFlushed(c), e => { console.error(e); process.exit(2); });

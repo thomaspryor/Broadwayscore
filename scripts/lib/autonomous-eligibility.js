@@ -190,6 +190,7 @@ const EXCLUDED_FILES = new Set([
   'scripts/lib/cross-outlet-cycle.js',
   'scripts/lib/syndication-pairs.js',
   'scripts/lib/review-guards.js',
+  'scripts/lib/single-verdict-guard.js', // BRO-7050: holds an aggregator-listed review against one classifier verdict
   'scripts/rebuild-all-reviews.js',
   'scripts/lib/date-guard.js',
   'scripts/lib/wrong-production-autoclear.js',
@@ -221,6 +222,7 @@ const EXCLUDED_FILES = new Set([
   'scripts/lib/date-plausibility.js',
   'scripts/lib/review-write-guard.js',
   'scripts/lib/content-filters.js',
+  'scripts/lib/cross-market-guard.js', // BRO-7078: scoring-delta watchlist (URL-path guard in rebuild)
   'scripts/lib/excerpt-validation.js',
   // scoring-delta LLM_INPUT_FILES (BRO-2609): they shape the text the LLM
   // scorer reads, and the replay cannot measure an edit to them.

@@ -21,6 +21,7 @@ const { cascadeClearDuplicateRefs } = require('./lib/cascade-clear-duplicate-ref
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { adoptNewerFetchedText } = require('./lib/merge-review-fields');
+const { EXCERPT_FIELDS } = require('./lib/excerpt-fields');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -122,7 +123,7 @@ function mergeReviewData(target, source) {
   if (source.scoreSource && !target.scoreSource) target.scoreSource = source.scoreSource;
   if (source.assignedScore != null && target.assignedScore == null) target.assignedScore = source.assignedScore;
   if (source.url && !target.url) target.url = source.url;
-  for (const f of ['bwwExcerpt','dtliExcerpt','showScoreExcerpt','nycTheatreExcerpt','playbillExcerpt']) {
+  for (const f of [...EXCERPT_FIELDS, 'playbillExcerpt']) {
     if (source[f] && !target[f]) target[f] = source[f];
   }
   for (const f of ['bwwThumb','dtliThumb','showScoreThumb','publishDate','originalRating']) {

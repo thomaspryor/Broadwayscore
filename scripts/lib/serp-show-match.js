@@ -25,8 +25,17 @@ function serpResultMentionsShow(resultTitle, resultUrl, showTitle) {
   // is often ASCII, or vice versa — ship-check (task #760) caught that only
   // the URL-slug branch below was folded, leaving the primary headline match
   // (the function's dominant signal) broken for accented titles.
-  const title = foldDiacritics(resultTitle || '').toLowerCase();
+  let title = foldDiacritics(resultTitle || '').toLowerCase();
   const url = (resultUrl || '').toLowerCase();
+
+  // BRO-7046: SERP appends the publisher to tech-review headlines. The
+  // publisher "The Verge" is not a reference to the play. Keep any title
+  // mention in the headline itself or the article path as identity evidence.
+  let host = '';
+  try { host = new URL(resultUrl).hostname.toLowerCase(); } catch { /* non-URL input */ }
+  if (host === 'theverge.com' || host.endsWith('.theverge.com')) {
+    title = title.replace(/(?:^|\s+[|\u2013\u2014-]\s*)the verge\s*$/, '');
+  }
 
   // Build list of title variants to check
   const variants = [];

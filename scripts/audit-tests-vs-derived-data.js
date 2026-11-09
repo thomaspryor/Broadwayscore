@@ -24,6 +24,10 @@
  *   anywhere in the first 40 lines. Use for genuinely structural tests
  *   (schema integrity, count > 0, no nulls) that don't pin specific facts.
  *
+ * Live-data lane (BRO-7101): a test that declares `// LIVE-DATA-LANE: <why>`
+ *   (or is named *-live-data.test.*) no longer runs in test.yml's blocking
+ *   batch, so a fact that rots there cannot redden main. It is compliant here.
+ *
  * Exit code: 0 = clean, 1 = violations.
  */
 
@@ -48,6 +52,7 @@ const SOURCE_PATTERNS = [
 ];
 
 const EXEMPT_MARKER = /\/\/\s*TESTS-VS-DERIVED-DATA-EXEMPT:\s*\S+/;
+const { isDeclaredLive } = require('./lib/live-data-paths.js');
 
 function audit() {
   if (!fs.existsSync(TESTS_DIR)) {
@@ -63,6 +68,7 @@ function audit() {
   for (const name of files) {
     const fp = path.join(TESTS_DIR, name);
     const src = fs.readFileSync(fp, 'utf8');
+    if (isDeclaredLive(`tests/unit/${name}`, src)) continue; // BRO-7101: not in the blocking batch
     const readsDerived = DERIVED_PATTERNS.some((re) => re.test(src));
     if (!readsDerived) continue;
 

@@ -1523,10 +1523,111 @@ function findEolNodeVersions(raw) {
   return hits;
 }
 
+/**
+ * Rule (ad): advisory --strict audit with no --alert (BRO-7181). A step with
+ * `continue-on-error: true` that runs a `--strict` audit only turns itself red
+ * inside a green job, which nobody reads: the approved-fix drift audit sat
+ * like that until BRO-7179. Route findings to a worker card with --alert
+ * (scripts/lib/audit-alert.js), or put `# strict-alert-exempt: <reason>` in
+ * the step (e.g. a PR check, where the red check itself is the signal).
+ * Comments are ignored when matching, including trailing `# ...` on a line.
+ */
+const STRICT_ALERT_EXEMPT_RE = /#[ \t]*strict-alert-exempt:[ \t]*\S/;
+const STRICT_FLAG_RE = /(?:^|\s)--strict(?![\w-])/;
+const ALERT_FLAG_RE = /(?:^|\s)--alert(?![\w-])/;
+function findStrictAdvisoryWithoutAlert(raw) {
+  const hits = [];
+  for (const step of splitWorkflowSteps(raw)) {
+    const body = step.lines.join('\n');
+    if (STRICT_ALERT_EXEMPT_RE.test(body)) continue;
+    // Per original line (keeps line numbers right): drop full-line and trailing comments.
+    const code = step.lines.map((l) => (/^\s*#/.test(l) ? '' : l.replace(/\s+#.*$/, '')));
+    if (!code.some((l) => /^\s*continue-on-error:\s*["']?true["']?\s*$/.test(l))) continue;
+    // Each --strict command line needs its own --alert (one --alert must not cover a sibling command).
+    const lineOffset = code.findIndex((l) => STRICT_FLAG_RE.test(l) && !ALERT_FLAG_RE.test(l));
+    if (lineOffset === -1) continue;
+    const idx = lineOffset;
+    hits.push({ name: step.name, lineNum: step.startLine + lineOffset + 1, text: code[idx].trim() });
+  }
+  return hits;
+}
+
+/**
+ * Sparse re-checkout over a populated tree (gitleaks.yml, 2026-10-31..11-08).
+ * actions/checkout in cone mode runs `git sparse-checkout set <entries>`; a
+ * FILE entry is accepted on a fresh checkout but refused on a tree an earlier
+ * checkout step of the same job already populated ("'x.js' is not a
+ * directory", exit 128). Flags a checkout step whose `sparse-checkout:` lists
+ * a file-looking entry into a `path:` (default '.') an earlier checkout step
+ * of the same job filled, unless `sparse-checkout-cone-mode: false`, an
+ * `if:` that runs it only when the tree is missing (`hashFiles(...) == ''`),
+ * or a `# hygiene-sparse-file-ok: <reason>` marker. Returns
+ * [{ job, lineNum, step, entry }]. `checkoutSteps` counts every checkout step
+ * seen, so a sweep can assert the parser found any (indent drift would
+ * otherwise read as "no offenders").
+ */
+const SPARSE_FILE_OK_RE = /hygiene-sparse-file-ok:/;
+const unquote = (v) => v.replace(/^(['"])(.*)\1$/, '$2');
+function sparseCheckoutStepInfo(stepLines) {
+  const text = stepLines.join('\n');
+  if (!/^\s*(?:-\s+)?uses\s*:\s*['"]?actions\/checkout@/m.test(text)) return null;
+  // Whole value (a `${{ github.workspace }}/x` path has spaces), unquoted,
+  // with `./` and trailing `/` dropped so `./sub` and `sub` match.
+  const pathM = /^\s+path\s*:\s*(.+)$/m.exec(text);
+  const pathVal = pathM ? unquote(pathM[1].replace(/\s+#.*$/, '').trim()).replace(/^(?:\.\/)+/, '').replace(/\/+$/, '') : '';
+  const coneOff = /^\s+sparse-checkout-cone-mode\s*:\s*['"]?false\b/m.test(text);
+  const ifM = /^\s*(?:-\s+)?if\s*:\s*(.+)$/m.exec(text);
+  const missingGuard = !!ifM && /hashFiles\([^)]*\)\s*==\s*''/.test(ifM[1]);
+  const entries = [];
+  for (let i = 0; i < stepLines.length; i++) {
+    const m = /^(\s+)sparse-checkout\s*:\s*(.*)$/.exec(stepLines[i]);
+    if (!m) continue;
+    const inline = m[2].replace(/\s+#.*$|^#.*$/, '').trim();
+    // Any block-scalar header: |, >, |-, |+, >-, |2 ...
+    if (inline && !/^[|>][+-]?\d*[+-]?$/.test(inline)) entries.push(unquote(inline));
+    else {
+      for (let j = i + 1; j < stepLines.length; j++) {
+        const l = stepLines[j];
+        if (l.trim() === '') continue;
+        if (indentOf(l) <= m[1].length) break;
+        if (!l.trimStart().startsWith('#')) entries.push(unquote(l.trim()));
+      }
+    }
+  }
+  const files = entries.filter((e) => !e.endsWith('/') && /[^/.][^/]*\.[A-Za-z0-9]{1,8}$/.test(e.split('/').pop()));
+  return { path: pathVal || '.', coneOff, missingGuard, files, exempt: SPARSE_FILE_OK_RE.test(text) };
+}
+
+function findSparseFileRecheckouts(raw) {
+  const hits = [];
+  let checkoutSteps = 0;
+  for (const [job, jobLines] of Object.entries(readWorkflowJobBlocks(raw.replace(/\r\n?/g, '\n')))) {
+    const jobStart = raw.replace(/\r\n?/g, '\n').split('\n').indexOf(jobLines[0]);
+    const filled = new Set();
+    for (const step of splitWorkflowSteps(jobLines.join('\n'))) {
+      const info = sparseCheckoutStepInfo(step.lines);
+      if (!info) continue;
+      checkoutSteps++;
+      // A marker may also sit in the comment block just above the step.
+      for (let k = step.startLine - 1; k >= 0 && jobLines[k].trimStart().startsWith('#'); k--) {
+        if (SPARSE_FILE_OK_RE.test(jobLines[k])) info.exempt = true;
+      }
+      if (filled.has(info.path) && info.files.length && !info.coneOff && !info.missingGuard && !info.exempt) {
+        hits.push({ job, lineNum: jobStart + step.startLine + 1, step: step.name, entry: info.files[0] });
+      }
+      filled.add(info.path);
+    }
+  }
+  hits.checkoutSteps = checkoutSteps;
+  return hits;
+}
+
 module.exports = {
+  findSparseFileRecheckouts,
   findMissingTopLevelPermissions,
   findUnpinnedActionUses,
   findEolNodeVersions,
+  findStrictAdvisoryWithoutAlert,
   NODE_MIN_MAJOR,
   findUnboundedGitNetworkCommands,
   findGitNetUsedBeforeSource,

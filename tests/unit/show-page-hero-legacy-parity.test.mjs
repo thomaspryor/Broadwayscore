@@ -18,7 +18,10 @@ const HERO = read('src/components/show-page/ShowHeroRedesign.tsx');
 
 test('hero renders the Add to list button for signed-in users only', () => {
   assert.match(HERO, /\{isAuthenticated && <ShowPageAddToListButton showId=\{show\.id\} variant="hero" \/>\}/);
-  assert.match(HERO, /isAuthenticated \? 'grid-cols-\[1fr_1fr_auto\]' : 'grid-cols-2'/);
+  // Signed in = three columns from sm up (Want to See, Rate it, list); signed out = two.
+  // Phones drop the Rate it column while the star row shows (BRO-7074, mobile-star-row.test.mjs).
+  assert.match(HERO, /\? 'grid-cols-\[1fr_auto\] sm:grid-cols-\[1fr_1fr_auto\]' : 'grid-cols-\[1fr_1fr_auto\]'/);
+  assert.match(HERO, /\? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-2'/);
 });
 
 test('hero renders the shared Limited Run badge for limitedRun shows', () => {

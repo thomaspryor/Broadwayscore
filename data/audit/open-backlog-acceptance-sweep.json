@@ -1,22 +1,100 @@
 {
-  "generatedAt": "2026-11-03T09:45:07.550Z",
+  "generatedAt": "2026-11-08T09:21:13.983Z",
   "shadow": true,
-  "checkoutSha": "ab0168a4331bd41337b2ed4bad9a4a7f98d906f4",
-  "totalCandidates": 396,
-  "eligibleCandidates": 115,
-  "checked": 30,
+  "checkoutSha": "2bb8fc91cefd0771211de92694cdae917eb273c3",
+  "totalCandidates": 334,
+  "eligibleCandidates": 88,
+  "checked": 27,
   "truncated": true,
   "fetchError": null,
   "counts": {
-    "pass": 19,
-    "fail": 4,
-    "unverifiable": 7
+    "pass": 20,
+    "fail": 3,
+    "unverifiable": 4
   },
   "alreadyDone": [
     {
-      "id": "BRO-6880",
-      "name": "Multi-show newspaper columns: isolate this show's section instead of rejecting as roundup (WaPo Imaginary Invalid)",
-      "verifyCmd": "node scripts/lib/verify-data-backfill.js --show=the-imaginary-invalid-2026 --reviews=23",
+      "id": "BRO-7114",
+      "name": "Arm auto-revert of breaking landings (BRO-7102 stage 2 runs in shadow mode)",
+      "verifyCmd": "node --test scripts/lib/auto-revert.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-7105",
+      "name": "Recurrence detector follow-ups: group by files touched, root-card lookup past 365 days, local --apply lock",
+      "verifyCmd": "node --test scripts/lib/recurrence-classes.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-7097",
+      "name": "Codex runner: check out slim worktrees (skip public/images, 740 MB) so 3 slots fit, and replace the disk guesses with measured sizes",
+      "verifyCmd": "node --test tests/unit/codex-runner.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-7094",
+      "name": "Finish the 8 still-needed fix plans left by the BRO-7092 settlement",
+      "verifyCmd": "node --test scripts/lib/pending-fixes-stale-check.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-7051",
+      "name": "Direct outlet checks every 3h during opening window (outlet-listing-poller), free feeds first",
+      "verifyCmd": "node --test tests/unit/outlet-listing-opening-window.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-7034",
+      "name": "Refetch real reviews hidden by BRO-6774 wrongAttribution marks (Mountford/Art, Dale/King Kong, McNulty/Groundhog Day, Cavendish/Play That Goes Wrong) and dedupe Letts/Treneman, Independent Paul Taylor lion-king, NYT mislabels first-date/ghost",
+      "verifyCmd": "node scripts/audit-review-contamination.js --strict",
+      "detail": null
+    },
+    {
+      "id": "BRO-7033",
+      "name": "P1: Opening night miss: The Verge (2026-11-05)",
+      "verifyCmd": "node scripts/slow-market-grade.js --opened-from=2026-11-05 --opened-to=2026-11-05 --check-gaps",
+      "detail": null
+    },
+    {
+      "id": "BRO-7028",
+      "name": "Auto-fix: Opening Night Orchestrator Failed",
+      "verifyCmd": "node scripts/check-workflow-run-status.js --workflow=opening-night-orchestrator.yml --expect=success",
+      "detail": null
+    },
+    {
+      "id": "BRO-6972",
+      "name": "P1: Opening night miss: We'll See (2026-11-03)",
+      "verifyCmd": "node scripts/slow-market-grade.js --opened-from=2026-11-03 --opened-to=2026-11-03 --check-gaps",
+      "detail": null
+    },
+    {
+      "id": "BRO-6939",
+      "name": "Onboarding follow-ups: audit new tours' art in CI, keep genre tags through a lost-push redo",
+      "verifyCmd": "node scripts/validate-data.js --strict",
+      "detail": null
+    },
+    {
+      "id": "BRO-6916",
+      "name": "West End lane: capture the real Lives of Others pages into the private recordings archive",
+      "verifyCmd": "node --test tests/unit/west-end-fixture-replay.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6904",
+      "name": "Daily Mail review files whose url points at a different review (low text overlap)",
+      "verifyCmd": "node --test scripts/lib/dailymail-url-discovery.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6901",
+      "name": "Regional (UK/DC/Chicago) shows still missing images: root cause + systematic fix",
+      "verifyCmd": "node scripts/validate-data.js --strict",
+      "detail": null
+    },
+    {
+      "id": "BRO-6886",
+      "name": "P1: Opening night miss: Clifford Odets’ Waiting for Lefty (2026-11-02)",
+      "verifyCmd": "node --test tests/unit/press-night-scoring-dispatch.test.mjs",
       "detail": null
     },
     {
@@ -32,18 +110,6 @@
       "detail": null
     },
     {
-      "id": "BRO-6840",
-      "name": "registrableDomain in review-normalization.js keeps its own ccTLD regex; use multipartSuffixOf",
-      "verifyCmd": "node --test scripts/lib/host-suffix-lists.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-6839",
-      "name": "Digest: report-only rows covered by a differently-titled work card still read 'no automatic fix confirmed'",
-      "verifyCmd": "node --test scripts/lib/digest-autofix.test.mjs",
-      "detail": null
-    },
-    {
       "id": "BRO-6802",
       "name": "P1: Broadway press-night race is failing (first review 87-100 min after embargo vs 30-min bar); lane cutover stalled; 6 Broadway openings Nov 9-19",
       "verifyCmd": "node scripts/lib/verify-data-backfill.js --show=here-there-are-blueberries-2026",
@@ -56,51 +122,9 @@
       "detail": null
     },
     {
-      "id": "BRO-6792",
-      "name": "Opening-date audit: 1 show need review (2026-11-01)",
-      "verifyCmd": "node scripts/lib/verify-data-backfill.js --show=billy-crystal-860-2026",
-      "detail": null
-    },
-    {
-      "id": "BRO-6785",
-      "name": "Live in HD polish: keep date in meta description, fix post-expiry title/hero mismatch",
-      "verifyCmd": "node --test tests/unit/live-in-hd.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-6774",
-      "name": "Finish BRO-6759 cross-outlet repair: 42 different-critic flags still unverified or stale (unfetchable pages)",
-      "verifyCmd": "node scripts/audit-review-contamination.js --strict",
-      "detail": null
-    },
-    {
-      "id": "BRO-6773",
-      "name": "Monthly Profitability Scorecard email: preview-only draft generator for the money list",
-      "verifyCmd": "node --test tests/unit/money-monthly.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-6763",
-      "name": "Owner email for each new Profitability Scorecard sign-up",
-      "verifyCmd": "node --test tests/unit/money-signup-notify.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-6762",
-      "name": "Fix gaps at the source: reviews regular gathering still misses and only the after-the-fact gap audit catches",
-      "verifyCmd": "node --test tests/unit/outlet-coverage-claim.test.mjs",
-      "detail": null
-    },
-    {
       "id": "BRO-6761",
       "name": "Older-years every-review sweep: gap-audit ~2,400 never-checked shows opened >1 year ago, Broadway first (owner chose A 2026-11-01)",
       "verifyCmd": "node scripts/lib/verify-data-backfill.js --show=appropriate-2023,and-juliet-2022 --reviews=2",
-      "detail": null
-    },
-    {
-      "id": "BRO-6750",
-      "name": "Audience grade gate still counts sources the combined score ignores (sub-10 Theatr, sub-50 Reddit, non-US Broadway.com)",
-      "verifyCmd": "node --test tests/unit/audience-grade-min.test.mjs",
       "detail": null
     },
     {
@@ -108,97 +132,111 @@
       "name": "Video captions: tagged link on Facebook, link in bio on TikTok/Instagram, YouTube description link (per-channel)",
       "verifyCmd": "node --test scripts/test-video-captions.test.mjs",
       "detail": null
-    },
-    {
-      "id": "BRO-6711",
-      "name": "Missing hero/poster images for bernarda-regional-2023 and happy-days-are-here-again-regional-2024 fail validate-data --strict",
-      "verifyCmd": "node scripts/validate-data.js --strict",
-      "detail": null
-    },
-    {
-      "id": "BRO-6666",
-      "name": "verify-schema failed 2 days (unapplied migration) with nobody acting: auto-file a fix card on failure",
-      "verifyCmd": "node scripts/audit-workflow-hygiene.js",
-      "detail": null
-    },
-    {
-      "id": "BRO-6599",
-      "name": "audit-cross-show-url.js: 109 non-London unhandled hits are title-overlap false positives (A Beautiful Noise vs Beautiful etc.); teach it to skip them",
-      "verifyCmd": "node --test scripts/lib/cross-show-url.test.mjs",
-      "detail": null
     }
   ],
   "failing": [
     {
-      "id": "BRO-6865",
-      "name": "commercial-pending-indecent-2017 — recoupment claim needs review",
-      "verifyCmd": "node scripts/check-review-item-resolved.js --claim=indecent-2017",
-      "detail": "OPEN: pending row indecent-2017 still waits\n"
+      "id": "BRO-7055",
+      "name": "Re-collect 262 review files stored as scraper_garbage (multi-show check) across 216 shows, after BRO-7053 detector fix",
+      "verifyCmd": "node scripts/lib/verify-data-backfill.js --show=262 --reviews=262",
+      "detail": "FAIL 262: show missing; scored reviews 0 < 262\n"
     },
     {
-      "id": "BRO-6688",
-      "name": "Delete stale failed land branch land/bro-6682-opening-night-leftovers",
-      "verifyCmd": "node scripts/check-remote-branch-absent.js --branch=land/bro-6682-opening-night-leftovers",
-      "detail": "[check-remote-branch-absent] FAIL: land/bro-6682-opening-night-leftovers is still on origin\n"
+      "id": "BRO-6944",
+      "name": "iOS: signed-out rating Save shows no sign-in sheet and strands the user on the show page",
+      "verifyCmd": "npx tsc --noEmit",
+      "detail": "src/lib/data-actors.ts(22,26): error TS2307: Cannot find module '../../data/cast-manifest.json' or its corresponding type declarations.\nsrc/lib/data-cast-obc.ts(12,26): error TS2307: Cannot find module '../../data/cast-manifest.json' or its corresponding type declarations.\nsrc/lib/data-tony-nominees.ts(32,32): error TS2307: Cannot find module '../../data/actor-slugs.json' or its corresponding type"
     },
     {
-      "id": "BRO-6590",
-      "name": "Renew the NYT login cookie on the Mac Studio (NYT-S / nyt-a expired by 2026-10-27, poller NYT reviews cut at the paywall)",
-      "verifyCmd": "node scripts/check-workflow-run-status.js --workflow=check-cookie-health.yml --expect=success",
-      "detail": "(gh not authenticated; read runs from the public GitHub API)\ncheck-cookie-health.yml: MISMATCH — most recent run concluded 'failure', expected 'success' (https://github.com/thomaspryor/Broadwayscore/actions/runs/41566254276)\n"
-    },
-    {
-      "id": "BRO-6586",
-      "name": "Re-extract truncated/stub BroadwayWorld review files with the new JSON-LD articleBody extractor",
-      "verifyCmd": "node scripts/lib/verify-data-backfill.js --show=broadwayworld --reviews=3",
-      "detail": "FAIL broadwayworld: show missing; scored reviews 0 < 3\n"
+      "id": "BRO-6794",
+      "name": "Older-years sweep remainder: 1,835 never-audited older shows + blocked-host fetch failures",
+      "verifyCmd": "node scripts/lib/verify-data-backfill.js --show=broadway,west-end,regional,tour --reviews=1835",
+      "detail": "FAIL broadway: show missing; scored reviews 0 < 1835\nFAIL west-end: show missing; scored reviews 0 < 1835\nFAIL regional: show missing; scored reviews 0 < 1835\nFAIL tour: show missing; scored reviews 0 < 1835\n"
     }
   ],
   "unverifiable": [
     {
-      "id": "BRO-6800",
-      "name": "Opera hub page text still names only the Met and Royal Opera House (needs owner visual OK)",
-      "verifyCmd": "node --test tests/unit/opera-hub-text-expansion.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/opera-hub-text-expansion.test.mjs"
+      "id": "BRO-7060",
+      "name": "Audit url_content_mismatch rejections for false positives (74 files from BRO-7055 re-collect)",
+      "verifyCmd": "node --test tests/unit/url-content-mismatch.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/url-content-mismatch.test.mjs"
     },
     {
-      "id": "BRO-6791",
-      "name": "Opera brand colour: site header is amber, social kit is rose-red",
-      "verifyCmd": "node --test scripts/opera-brand-colour.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/opera-brand-colour.test.mjs"
+      "id": "BRO-6959",
+      "name": "Social autopost: AI-written review posts from a ranked fact pool (Claude writes, GPT-5.5 fact-checks)",
+      "verifyCmd": "node --test scripts/verify-social-ai-live-post.test.mjs",
+      "detail": "ran no passing tests (all skipped or none ran)"
     },
     {
-      "id": "BRO-6768",
-      "name": "iOS nightly E2E failures reach no one: auto-file one Linear card when the scheduled Maestro run fails",
-      "verifyCmd": "node --test tests/unit/e2e-failure-alert.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/e2e-failure-alert.test.mjs"
+      "id": "BRO-6932",
+      "name": "Social autopost: quiet-day backfill of older settled shows (Off-Broadway mostly)",
+      "verifyCmd": "node --test scripts/verify-bro-6932-recheck.test.mjs",
+      "detail": "ran no passing tests (all skipped or none ran)"
     },
     {
       "id": "BRO-6724",
       "name": "Pre-existing red checks seen during BRO-6716: cross-outlet attribution suspect tests + audit-regex-patterns --full overages",
       "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 132839ms (timeout — no verdict)"
-    },
-    {
-      "id": "BRO-6681",
-      "name": "iOS: share my diary link from the Watched tab (web already has it)",
-      "verifyCmd": "node --test tests/unit/diary-share.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/diary-share.test.mjs"
-    },
-    {
-      "id": "BRO-6674",
-      "name": "Audit the 15 workflows whose failure alert is low severity (digest only): which should file a fix card like verify-schema",
-      "verifyCmd": "node --test scripts/audit-low-severity-workflows.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/audit-low-severity-workflows.test.mjs"
-    },
-    {
-      "id": "BRO-6602",
-      "name": "main test.yml red: Unit Tests / scripts/lib tests — matchSlugToShow 20 real fixtures + BRO-2281 Hackney Empire venue",
-      "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 62092ms (timeout — no verdict)"
+      "detail": "check killed by SIGTERM after 41070ms (timeout — no verdict)"
     }
   ],
   "landedButOpen": [
+    {
+      "id": "BRO-7105",
+      "name": "Recurrence detector follow-ups: group by files touched, root-card lookup past 365 days, local --apply lock",
+      "branch": "land/bro-7105-followups",
+      "sha": "6dff8d01f6faa7033b4c6e7a73d878eea3f7ef97",
+      "landedAt": "2026-11-08T03:20:10.261Z"
+    },
+    {
+      "id": "BRO-7097",
+      "name": "Codex runner: check out slim worktrees (skip public/images, 740 MB) so 3 slots fit, and replace the disk guesses with measured sizes",
+      "branch": "land/bro-7097-slim-worktrees",
+      "sha": "13f0f622c164978a852bc6cc19a598df562f559f",
+      "landedAt": "2026-11-07T23:24:38.736Z"
+    },
+    {
+      "id": "BRO-7051",
+      "name": "Direct outlet checks every 3h during opening window (outlet-listing-poller), free feeds first",
+      "branch": "land/bro-7051-nysun",
+      "sha": "223d1f31afacac2833f91c3bc303edddeebb1a0d",
+      "landedAt": "2026-11-06T20:40:26.525Z"
+    },
+    {
+      "id": "BRO-7034",
+      "name": "Refetch real reviews hidden by BRO-6774 wrongAttribution marks (Mountford/Art, Dale/King Kong, McNulty/Groundhog Day, Cavendish/Play That Goes Wrong) and dedupe Letts/Treneman, Independent Paul Taylor lion-king, NYT mislabels first-date/ghost",
+      "branch": "land/codex-bro-7034",
+      "sha": "fc0beeb3d5f259d9e034d409c38801c0f193ac3d",
+      "landedAt": "2026-11-07T21:49:39.716Z"
+    },
+    {
+      "id": "BRO-6972",
+      "name": "P1: Opening night miss: We'll See (2026-11-03)",
+      "branch": "land/bro-6972-uncovered-first",
+      "sha": "1ccaca0e1d67870b719120c7d75f60d6b7e7d785",
+      "landedAt": "2026-11-04T20:32:02.535Z"
+    },
+    {
+      "id": "BRO-6939",
+      "name": "Onboarding follow-ups: audit new tours' art in CI, keep genre tags through a lost-push redo",
+      "branch": "land/codex-bro-6939",
+      "sha": "d5cf7cb53df52a65818c590e50475505816b1e62",
+      "landedAt": "2026-11-05T22:24:25.170Z"
+    },
+    {
+      "id": "BRO-6901",
+      "name": "Regional (UK/DC/Chicago) shows still missing images: root cause + systematic fix",
+      "branch": "land/bro-6901-session-cost",
+      "sha": "b4e516950800ecb32407ef0f165151e1b0ebecb4",
+      "landedAt": "2026-11-03T19:48:31.859Z"
+    },
+    {
+      "id": "BRO-6886",
+      "name": "P1: Opening night miss: Clifford Odets’ Waiting for Lefty (2026-11-02)",
+      "branch": "land/job/linear-BRO-6886-mw0wu2u3",
+      "sha": "2fe919987307807ee5b3394bcf028e425ce04a71",
+      "landedAt": "2026-11-03T18:49:53.149Z"
+    },
     {
       "id": "BRO-6877",
       "name": "Keep past showtimes: archive every week's schedule and use it for diary entries",
@@ -221,34 +259,6 @@
       "landedAt": "2026-11-02T17:40:19.636Z"
     },
     {
-      "id": "BRO-6774",
-      "name": "Finish BRO-6759 cross-outlet repair: 42 different-critic flags still unverified or stale (unfetchable pages)",
-      "branch": "land/bro-6774-cost",
-      "sha": "1abc3a1035de976ef438edd32bc72e9c5b187f2c",
-      "landedAt": "2026-11-01T20:01:56.269Z"
-    },
-    {
-      "id": "BRO-6773",
-      "name": "Monthly Profitability Scorecard email: preview-only draft generator for the money list",
-      "branch": "land/bro-6773-audience-apply",
-      "sha": "91e2216d4eb269f76d7bdabae18a7ee18a3e4a68",
-      "landedAt": "2026-11-01T18:10:53.314Z"
-    },
-    {
-      "id": "BRO-6763",
-      "name": "Owner email for each new Profitability Scorecard sign-up",
-      "branch": "land/bro-6763-money-signup-notify",
-      "sha": "7d99bd00bd1b289f0927590b6aa3010f81dbc71a",
-      "landedAt": "2026-11-01T14:47:03.789Z"
-    },
-    {
-      "id": "BRO-6762",
-      "name": "Fix gaps at the source: reviews regular gathering still misses and only the after-the-fact gap audit catches",
-      "branch": "land/bro-6762-cost-row",
-      "sha": "b8321d30fe59ebd3678a3d8a0886938f9d351bb7",
-      "landedAt": "2026-11-01T16:26:01.820Z"
-    },
-    {
       "id": "BRO-6761",
       "name": "Older-years every-review sweep: gap-audit ~2,400 never-checked shows opened >1 year ago, Broadway first (owner chose A 2026-11-01)",
       "branch": "land/bro-6761-cost2",
@@ -261,20 +271,6 @@
       "branch": "land/bro-6737-video-clean2",
       "sha": "11f4cc38b7d71e57dac7ffb1d8a08c85082cbad5",
       "landedAt": "2026-11-01T15:07:57.966Z"
-    },
-    {
-      "id": "BRO-6666",
-      "name": "verify-schema failed 2 days (unapplied migration) with nobody acting: auto-file a fix card on failure",
-      "branch": "land/bro-6666-schema-drift-card",
-      "sha": "6947845febf7a49fe03443fea3222768a67d4c6e",
-      "landedAt": "2026-10-30T22:48:34.402Z"
-    },
-    {
-      "id": "BRO-6599",
-      "name": "audit-cross-show-url.js: 109 non-London unhandled hits are title-overlap false positives (A Beautiful Noise vs Beautiful etc.); teach it to skip them",
-      "branch": "land/bro-6599-cross-show-canon",
-      "sha": "88819d77d5934cc5eebb2b9dbbd8f56d813e1fa3",
-      "landedAt": "2026-11-01T04:44:16.715Z"
     }
   ]
 }

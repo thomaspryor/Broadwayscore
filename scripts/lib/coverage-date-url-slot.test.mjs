@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-4430: real reviews of the right production dropped because a date, URL
 // or byline on the file was wrong, or a stale file blocked the outlet's slot.
 // Every assertion require()s the production function (CLAUDE.md rule 15).
@@ -185,8 +186,12 @@ test('the dateless-hold fetch is cooled down and ends once a date or no url', ()
 
 test('collect-review-texts skips SERP rediscovery for a dateless hold', () => {
   const src = fs.readFileSync(new URL('../collect-review-texts.js', import.meta.url), 'utf8');
-  assert.match(src, /const needsSerpDiscovery = !review\._datelessDateRetry/);
+  // BRO-6924: the decision lives in serp-discovery-gate.js; the collector must call it.
+  assert.match(src, /const needsSerpDiscovery = needsSerpUrlDiscovery\(/);
   assert.match(src, /_datelessDateRetry: data\._datelessDateRetry === true/);
+  const { needsSerpUrlDiscovery } = require('./serp-discovery-gate.js');
+  assert.equal(needsSerpUrlDiscovery({ _datelessDateRetry: true, incompleteReason: 'no_url' }), false);
+  assert.equal(needsSerpUrlDiscovery({ _datelessDateRetry: true, fabricatedEntry: true }), false);
 });
 
 // ── Wrong page served for the right url (Golden Boy BroadwayWorld) ──

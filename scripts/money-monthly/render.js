@@ -50,7 +50,7 @@ ${parts.join('\n')}
 <tr><td style="padding:0 24px 24px 24px"><a href="${SITE}/biz" style="display:inline-block;background:${T.brand};color:${T.surface};text-decoration:none;font-weight:600;padding:10px 18px;border-radius:8px">Open the Profitability Scorecard</a></td></tr>
 <tr><td style="padding:16px 24px 28px 24px;border-top:1px solid ${T.border};color:${T.textDim};font-size:12px;line-height:1.6">You are getting this because you signed up for the Profitability Scorecard. Estimates are ours, built from public filings and trade reports. <a href="${esc(unsubscribeUrl)}" style="color:${T.textMuted}">Unsubscribe</a></td></tr>
 </table></td></tr></table></body></html>`;
-  return applyUtm(html, { source: 'money-list', medium: 'email', campaign: campaign || `money-monthly-${issue.window.monthKey}` });
+  return applyUtm(html, { source: 'money-list', medium: 'email', campaign: campaign || `money-monthly-${issue.window.monthKey}`, listLink: true });
 }
 
 module.exports = { renderHtml };

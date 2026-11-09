@@ -43,3 +43,16 @@ test('free index failures never fall through to paid providers or browsers', asy
     mock.mock.restore();
   }
 });
+
+test('free fetch names itself: a site that serves a nameless client an empty page (The Stage) answers it (BRO-6872)', async () => {
+  const http = require('node:http');
+  const body = `<html><body><main>${'Theatre reviews listing. '.repeat(50)}</main></body></html>`;
+  // thestage.co.uk/reviews: 200 with 0 bytes for undici's default "node" agent, the full page for a named one.
+  const srv = http.createServer((q, r) => r.end(/^BroadwayScorecard\//.test(q.headers['user-agent'] || '') ? body : ''));
+  await new Promise((ok) => srv.listen(0, '127.0.0.1', ok));
+  try {
+    const result = await fetchPage(`http://127.0.0.1:${srv.address().port}/reviews`, { directOnly: true });
+    assert.equal(result.content, body);
+    assert.equal(result.source, 'direct');
+  } finally { srv.close(); }
+});

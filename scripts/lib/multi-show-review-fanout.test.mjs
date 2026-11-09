@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data); data/retired-show-ids.json (untracked core data); data/critic-registry.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Tests for multi-show-review-fanout.js (BRO-4431): one critic article that
 // reviews several shows is filed under every show it reviews.
 // Run: node --test scripts/lib/multi-show-review-fanout.test.mjs
@@ -451,6 +452,19 @@ test('TR round-up discovery uses the WP search API result, not just the homepage
   assert.equal(pickTheatreReviewsRoundup(posts, 'Cleansed'), 'https://theatre.reviews/reviews-roundup/cleansed-almeida-reviews/');
   assert.equal(pickTheatreReviewsRoundup(posts, 'Golden Boy'), null);
   assert.equal(pickTheatreReviewsRoundup(null, 'Cleansed'), null);
+  // BRO-6968: a title that is only the venue ("Into The Woods at The Bridge") is not The Bridge's round-up.
+  const bridge = [
+    { link: 'https://theatre.reviews/reviews-roundup/into-the-woods-bridge-reviews/', slug: 'into-the-woods-bridge-reviews', title: { rendered: 'Theatre reviews roundup: Into The Woods at The Bridge' } },
+    { link: 'https://theatre.reviews/reviews-roundup/the-bridge-bush-reviews/', slug: 'the-bridge-bush-reviews', title: { rendered: 'Theatre reviews roundup: The Bridge at the Bush Theatre' } },
+  ];
+  assert.equal(pickTheatreReviewsRoundup(bridge, 'The Bridge'), 'https://theatre.reviews/reviews-roundup/the-bridge-bush-reviews/');
+  assert.equal(pickTheatreReviewsRoundup(bridge.slice(0, 1), 'The Bridge'), null);
+  assert.equal(pickTheatreReviewsRoundup([{ link: 'https://theatre.reviews/reviews-roundup/b/', slug: 'b', title: { rendered: 'Reviews Roundup - Breakfast at Tiffany&#8217;s' } }], "Breakfast at Tiffany's"), 'https://theatre.reviews/reviews-roundup/b/');
+  for (const t of ['Into The Woods at The Bridge - Reviews Roundup', 'Into The Woods at The Bridge &#8211; theatre reviews roundup', 'Reviews Roundup: Into The Woods at The Bridge - Theatre Reviews with Paul Seven']) {
+    assert.equal(pickTheatreReviewsRoundup([{ link: 'https://theatre.reviews/reviews-roundup/itw/', slug: 'into-the-woods-bridge-reviews', title: { rendered: t } }], 'The Bridge'), null, t);
+  }
+  assert.equal(pickTheatreReviewsRoundup([{ link: 'https://theatre.reviews/reviews-roundup/y/', slug: 'y', title: { rendered: 'The Years at The Harold Pinter - Reviews Roundup' } }], 'The Years'), 'https://theatre.reviews/reviews-roundup/y/');
+  assert.equal(pickTheatreReviewsRoundup([{ link: 'https://theatre.reviews/reviews-roundup/c/', slug: 'c', title: { rendered: 'Cleansed &#8211; Almeida reviews' } }], 'Almeida'), null);
   const src = fs.readFileSync(new URL('../gather-reviews.js', import.meta.url), 'utf8');
   assert.match(src, /pickTheatreReviewsRoundup\(/, 'gather-reviews must use the API discovery');
 });

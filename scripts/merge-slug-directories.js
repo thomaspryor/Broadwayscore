@@ -12,6 +12,7 @@
  *   node scripts/merge-slug-directories.js             # execute
  *   node scripts/merge-slug-directories.js --limit 5   # first 5 dirs
  */
+const { EXCERPT_FIELDS } = require('./lib/excerpt-fields');
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
@@ -51,7 +52,7 @@ function scoreFile(data) {
   if (data.llmMetadata && data.llmMetadata.scoredAt) {
     try { s += new Date(data.llmMetadata.scoredAt).getTime() / 1e12; } catch {}
   }
-  for (const key of ['dtliExcerpt', 'bwwExcerpt', 'showScoreExcerpt', 'playbillExcerpt']) {
+  for (const key of [...EXCERPT_FIELDS, 'playbillExcerpt']) {
     if (data[key]) s += 30;
   }
   return s;

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (read by the test); data/grosses.json (read by the test); data/grosses-history.json (read by the test); +1 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-6178: the loss side of the star-play default weekly cost
 // (estimateWeeklyNut's playStar figure in recoupment-model.js). The
 // ground-truth backtest cannot see it: a show that never recouped scores error

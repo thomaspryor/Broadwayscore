@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.bwsc.opening-night-backup-trigger-we</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>/Users/tompryor/Broadwayscore/scripts/opening-night-backup-trigger.sh</string>
+        <string>west-end</string>
+    </array>
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>15</integer>
+        <key>Minute</key>
+        <integer>0</integer>
+    </dict>
+    <key>StandardOutPath</key>
+    <string>/Users/tompryor/Broadwayscore/data/opening-night-monitor/backup-trigger-we-stdout.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/tompryor/Broadwayscore/data/opening-night-monitor/backup-trigger-we-stderr.log</string>
+    <key>WorkingDirectory</key>
+    <string>/Users/tompryor/Broadwayscore</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/Users/tompryor/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string>
+        <key>HOME</key>
+        <string>/Users/tompryor</string>
+    </dict>
+</dict>
+</plist>

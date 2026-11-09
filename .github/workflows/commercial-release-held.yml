@@ -84,12 +84,12 @@ jobs:
           # save) must fail this step, not tee's.
           set -o pipefail
           LIST=$(echo "$SHOWS" | tr -d ' ')
-          if ! echo "$LIST" | grep -Eq '^[a-z0-9-]+(,[a-z0-9-]+)*$'; then
+          if ! grep -Eq '^[a-z0-9-]+(,[a-z0-9-]+)*$' <<<"$LIST"; then
             echo "::error::shows must be comma-separated slugs (a-z, 0-9, -)"
             exit 1
           fi
           if [ -n "$REVERT" ]; then
-            if ! echo "$REVERT" | grep -Eq '^[0-9a-f]{7,40}$'; then
+            if ! grep -Eq '^[0-9a-f]{7,40}$' <<<"$REVERT"; then
               echo "::error::revert_core_commit must be a commit SHA"
               exit 1
             fi

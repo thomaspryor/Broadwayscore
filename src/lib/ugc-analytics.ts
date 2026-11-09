@@ -113,6 +113,8 @@ const VERCEL_UGC_PROPS = new Map<string, readonly [string, string?]>([
   ['rating_submitted', ['show_id', 'source']],
   ['rating_save_failed', ['show_id', 'source']],
   ['rating_deleted', ['show_id', 'source']],
+  ['rating_saved_local', ['show_id', 'source']],
+  ['rating_local_migrated', ['local_count', 'added']],
   ['watchlist_add', ['show_id', 'source']],
   ['watchlist_remove', ['show_id', 'reason']],
   ['watchlist_local_migrated', ['local_count', 'added']],

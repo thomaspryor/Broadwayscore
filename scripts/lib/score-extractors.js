@@ -21,7 +21,9 @@
 // Bump this when extractors are added or improved.
 // recollect-for-scores.js stamps this on _noScoreOnHtml so stale
 // "no score found" flags are retried after extractor changes.
-const EXTRACTOR_VERSION = 7;  // v7 (BRO-922): NY Post css-stars re-scoped to rating__stars DOM boundary (was v6: Guardian class-attribute anchoring, Radio Times <use>-anchored SVG matching)
+const { isGalleryCounterAt } = require('./gallery-counter');
+
+const EXTRACTOR_VERSION = 8;  // v8 (BRO-6966): Guardian 5/5 widgets can omit unused empty-star CSS
 
 /**
  * Remove star glyphs that sit inside <style>…</style> blocks: icon CSS draws
@@ -94,6 +96,59 @@ const BUCKET_SCORES = {
 const THUMB_SCORES = {
   'Up': 80, 'Meh': 60, 'Flat': 60, 'Down': 35
 };
+
+// Spelled-out star ratings. "Rating: Four out of five stars" is the Daily
+// Mail's verdict line (BRO-6900): read its numerator first, and keep the bare
+// "five stars" pattern off its denominator, which read every such review as 5/5.
+// BRO-7080: the hyphenated "Four-out-of-five stars" and the digit "4 out of
+// five stars" slipped past both patterns and the bare one read the denominator
+// as 5/5, so the out/of/five joints also accept a hyphen and the numerator a digit.
+const WORD_STAR_NUM = { one: 1, two: 2, three: 3, four: 4, five: 5, 1: 1, 2: 2, 3: 3, 4: 4, 5: 5 };
+const GAP = '(?:\\s|&nbsp;|&#160;|<[^>]*>)+';
+const WGAP = '(?:\\s|-|&nbsp;|&#160;|<[^>]*>)+';
+const OUT_OF_FIVE_WORD_STARS = new RegExp(`(?<![\\d.])\\b(one|two|three|four|five|[1-5])${WGAP}out${WGAP}of${WGAP}(?:five|5)${GAP}stars?\\s*(?:[!.,;:\\)<]|$)`, 'im');
+const BARE_WORD_STARS = new RegExp(`(?<!out${WGAP}of${WGAP})\\b(one|two|three|four|five)\\s+stars?\\s*(?:[!.,;:\\)<]|$)`, 'im');
+
+// BRO-6905: a news roundup relays OTHER critics' stars ("The Telegraph awarded
+// the production four out of five stars", "The Independent's Tim Bano gave the
+// adaption two out of five stars"). Those are not the article's own rating; PA
+// syndications of the Game of Thrones: The Mad King roundup and Metro's Romeo
+// and Juliet roundup were stored as 5/5 word-stars. A spelled-out star match is
+// relayed when its own sentence, before the match, carries a giving verb with a
+// non-first-person subject. "I'd give it four stars." stays the critic's own.
+// Case-sensitive on purpose: lowercase "awards" is the verb ("he awards the
+// play four stars"), capitalised "Awards" is the noun in "the upcoming Tony
+// Awards, and it garners four out of five stars" (the critic's own rating).
+const RELAYED_STAR_VERB = /\b(?:[Gg]ave|[Gg]ives|[Gg]iven|[Gg]iving|[Aa]warded|awards|[Aa]warding|[Hh]anded|hands|[Bb]estowed|[Rr]ated|rates|[Ss]cored)\b/;
+const FIRST_PERSON_SUBJECT = /\b(?:I|I'd|I'm|I'll|I've|we|we'd|we're|we'll|this\s+reviewer|this\s+critic)\b/;
+function isRelayedStarRating(source, matchIndex) {
+  if (!source || !(matchIndex > 0)) return false;
+  const before = source.slice(Math.max(0, matchIndex - 240), matchIndex);
+  const sentenceStart = Math.max(before.lastIndexOf('. '), before.lastIndexOf('! '), before.lastIndexOf('? '), before.lastIndexOf('\n'), before.lastIndexOf('>'));
+  const clause = sentenceStart >= 0 ? before.slice(sentenceStart + 1) : before;
+  if (!RELAYED_STAR_VERB.test(clause)) return false;
+  return !FIRST_PERSON_SUBJECT.test(clause);
+}
+
+// First spelled-out star rating across `sources` that is not relayed from
+// another critic. Pattern order is outer (out-of-five before bare), then
+// source order, so callers keep their historical precedence. `anchored`
+// limits matches to the verdict positions (first/last 15% of each source).
+function findOwnWordStars(sources, { anchored = false } = {}) {
+  for (const pat of [OUT_OF_FIVE_WORD_STARS, BARE_WORD_STARS]) {
+    for (const source of sources) {
+      if (!source) continue;
+      const srcLen = source.length;
+      for (const m of source.matchAll(new RegExp(pat.source, pat.flags + 'g'))) {
+        if (anchored && !(m.index <= srcLen * 0.15 || m.index >= srcLen * 0.85)) continue;
+        if (isRelayedStarRating(source, m.index)) continue;
+        const rating = WORD_STAR_NUM[m[1].toLowerCase()];
+        if (rating) return rating;
+      }
+    }
+  }
+  return null;
+}
 
 // Star rating to numeric (out of 5)
 function starsToNumeric(filled, total = 5) {
@@ -425,15 +480,15 @@ function extractNYSRScore(html, text) {
   // This is the most reliable target — it's THIS review's stars, not sidebar content.
   // html.match() first-occurrence is unreliable because multi-critic show pages embed
   // other critics' stars in og:description and sidebar links before the article body.
-  const textXlMatch = html.match(/<p[^>]*class="[^"]*\btext-xl\b[^"]*"[^>]*>\s*([★☆]{1,5})/);
+  // BRO-7080: read the run with findStarGroups so a half star counts 0.5 and
+  // the denominator is 5. Counting glyphs made "★★★½☆" 3/3 = 100.
+  const textXlMatch = html.match(/<p[^>]*class="[^"]*\btext-xl\b[^"]*"[^>]*>\s*([★☆][★☆½ ]{0,10})/);
   if (textXlMatch) {
-    const stars = textXlMatch[1];
-    const filled = (stars.match(/★/g) || []).length;
-    const total = stars.length;
-    if (total >= 1 && total <= 5) {
+    const g = findStarGroups(textXlMatch[1])[0];
+    if (g && g.index === 0) {
       return {
-        originalScore: `${filled}/${total} stars`,
-        normalizedScore: starsToNumeric(filled, total),
+        originalScore: `${g.filled}/${g.total} stars`,
+        normalizedScore: starsToNumeric(g.filled, g.total),
         source: 'unicode-stars'
       };
     }
@@ -453,24 +508,18 @@ function extractNYSRScore(html, text) {
   // Do NOT match stars mid-body — critics occasionally quote other reviewers'
   // ratings ("The Times gave it ★★★★, but I disagree…"). Anchor to the first
   // or last 15% of text, same convention as KNOWN_STAR_OUTLETS fallthrough.
-  const textStarMatches = [...text.matchAll(/([★☆]{1,5})/g)];
-  if (textStarMatches.length > 0) {
+  // BRO-7080: findStarGroups also reads spaced runs ("★ ★ ★ ★ ☆") and half
+  // stars, with denominator 5; the old contiguous count stored "★★½" as 2/2.
+  const groups = findStarGroups(text);
+  if (groups.length > 0) {
     const len = text.length;
-    const anchored = textStarMatches.find(m => {
-      const pos = m.index;
-      return pos <= len * 0.15 || pos >= len * 0.85;
-    });
+    const anchored = groups.find(g => g.index <= len * 0.15 || g.index >= len * 0.85);
     if (anchored) {
-      const stars = anchored[1];
-      const filled = (stars.match(/★/g) || []).length;
-      const total = stars.length;
-      if (total >= 1 && total <= 5) {
-        return {
-          originalScore: `${filled}/${total} stars`,
-          normalizedScore: starsToNumeric(filled, total),
-          source: 'unicode-stars'
-        };
-      }
+      return {
+        originalScore: `${anchored.filled}/${anchored.total} stars`,
+        normalizedScore: starsToNumeric(anchored.filled, anchored.total),
+        source: 'unicode-stars'
+      };
     }
   }
 
@@ -567,11 +616,14 @@ function extractGuardianScore(html, text) {
       new RegExp(`\\.(dcr-[a-z0-9]+)\\{[^}]*background-color\\s*:\\s*var\\(--${varName}\\b[^)]*\\)[^}]*\\}`);
     const filledClassMatch = html.match(cssPropPattern('star-rating-background'));
     const emptyClassMatch = html.match(cssPropPattern('star-rating-empty-background'));
-    if (filledClassMatch && emptyClassMatch && filledClassMatch[1] !== emptyClassMatch[1]) {
+    // BRO-6966: 5/5 pages do not render empty stars, so Emotion omits
+    // their CSS rule entirely. Still require exactly five icons below.
+    if (filledClassMatch && (!emptyClassMatch || filledClassMatch[1] !== emptyClassMatch[1])) {
       const headlineIdx = html.indexOf('data-gu-name="headline"');
       const scoped = headlineIdx > -1 ? html.slice(headlineIdx, headlineIdx + 6000) : html;
       const filledCount = (scoped.match(new RegExp(`class="${filledClassMatch[1]}"`, 'g')) || []).length;
-      const emptyCount = (scoped.match(new RegExp(`class="${emptyClassMatch[1]}"`, 'g')) || []).length;
+      const emptyCount = emptyClassMatch
+        ? (scoped.match(new RegExp(`class="${emptyClassMatch[1]}"`, 'g')) || []).length : 0;
       const total = filledCount + emptyCount;
       if (filledCount >= 1 && total === 5) {
         return {
@@ -1000,24 +1052,15 @@ function extractUKStarRating(html, text) {
   // is packed with talent" (celebrity headliners, not a 2-star rating) matched
   // at the 75% mark and corrupted iceboy-regional-2026's Allie and the After
   // Party rating (card #806, 2026-08-02).
+  // BRO-6905: skips stars relayed from another critic (findOwnWordStars).
   {
-    const wordMap = { one: 1, two: 2, three: 3, four: 4, five: 5 };
-    const wordStarPat = /\b(one|two|three|four|five)\s+stars?\s*(?:[!.,;:\)<]|$)/gim;
-    for (const source of [html, text]) {
-      const srcLen = source.length;
-      const wsMatches = [...source.matchAll(wordStarPat)];
-      for (const wsMatch of wsMatches) {
-        const pos = wsMatch.index;
-        if (srcLen > 0 && !(pos <= srcLen * 0.15 || pos >= srcLen * 0.85)) continue;
-        const rating = wordMap[wsMatch[1].toLowerCase()];
-        if (rating) {
-          return {
-            originalScore: `${rating}/5 stars`,
-            normalizedScore: starsToNumeric(rating, 5),
-            source: 'word-stars'
-          };
-        }
-      }
+    const rating = findOwnWordStars([html, text], { anchored: true });
+    if (rating) {
+      return {
+        originalScore: `${rating}/5 stars`,
+        normalizedScore: starsToNumeric(rating, 5),
+        source: 'word-stars'
+      };
     }
   }
 
@@ -1054,7 +1097,7 @@ function extractUKStarRating(html, text) {
   const textPatterns = [
     { re: /(\d(?:\.\d)?)\s*\/\s*5\b/g,            needsAnchor: true  },
     { re: /(\d(?:\.\d)?)\s*out\s*of\s*5\b/gi,    needsAnchor: false },
-    { re: /(?<![\d/]|\d\.)(\d(?:\.\d)?)\s*stars?\b/gi,   needsAnchor: false },
+    { re: /(?<![\d/]|\d\.|out\s+of\s+)(\d(?:\.\d)?)\s*stars?\b/gi,   needsAnchor: false },
   ];
   const len = text.length;
   for (const { re, needsAnchor } of textPatterns) {
@@ -1068,6 +1111,8 @@ function extractUKStarRating(html, text) {
       if (/https?:\/\/|\.(jpg|jpeg|png|webp|gif|svg)\b|\bcdn\b|\bstatic\b|\bassets\b|\/\d{4}\/\d{2}\/\d{2}\/|\/\d{2,4}x\d{2,4}\b/i.test(ctx)) continue;
       // Position anchor for the bare "X/5" form
       if (needsAnchor && !(pos <= len * 0.15 || pos >= len * 0.85)) continue;
+      // BRO-305: a "1/5" alone on its line is a gallery slide counter.
+      if (needsAnchor && isGalleryCounterAt(text, pos, match[0].length)) continue;
       return {
         originalScore: `${rating}/5 stars`,
         normalizedScore: starsToNumeric(rating, 5),
@@ -1191,7 +1236,7 @@ function extractGenericStarRating(html, text) {
     // number or the denominator of a fraction/"out of" (handled above), and
     // needs a word boundary after "star(s)" so "1992 starring ..." and
     // "© 2014 StarTribune" are not "2 stars" / "4 stars" (BRO-5295).
-    /(?<!\d|\d\.|\d\s*\/\s*|\d\s*(?:out\s+)?of\s+)(\d(?:\.\d)?)\s*stars?\b(?:\s*(?:out\s+of|\/)\s*5)?/i,
+    /(?<!\d|\d\.|\d\s*\/\s*|\d\s*(?:out\s+)?of\s+|out\s+of\s+)(\d(?:\.\d)?)\s*stars?\b(?:\s*(?:out\s+of|\/)\s*5)?/i,
     // Unicode stars — visual, unambiguous
     /([★☆]{3,5})/
   ];
@@ -1224,12 +1269,10 @@ function extractGenericStarRating(html, text) {
   }
 
   // Spelled-out star ratings: "Five stars!", "Three Stars</p>"
+  // BRO-6905: a star relayed from another critic is skipped, not taken.
   {
-    const WORD_TO_NUM = { one: 1, two: 2, three: 3, four: 4, five: 5 };
-    const wordStarPat = /\b(one|two|three|four|five)\s+stars?\s*(?:[!.,;:\)<]|$)/im;
-    const wsMatch = text.match(wordStarPat) || html.match(wordStarPat);
-    if (wsMatch) {
-      const rating = WORD_TO_NUM[wsMatch[1].toLowerCase()];
+    const rating = findOwnWordStars([text, html]);
+    {
       if (rating) {
         return {
           originalScore: `${rating}/5 stars`,
@@ -1268,6 +1311,9 @@ function extractGenericStarRating(html, text) {
     // REJECT (BRO-6779): a run-dates listing — "Through 3/5: Thu-Sat", "runs until 2/5",
     // "opens 4/5" — is a month/day date, not a rating.
     if (/\b(?:through|thru|until|till|closes|closing|opens|opening|runs?|extended\s+to)\s*$/i.test(beforeMatch)) continue;
+
+    // REJECT (BRO-305): "1/5" alone on its line is a photo-gallery slide counter.
+    if (isGalleryCounterAt(text, pos, xOf5Match[0].length)) continue;
 
     return {
       originalScore: `${rating}/5`,
@@ -2203,6 +2249,7 @@ module.exports = {
   extractNYPostScore,
   extractCultureSauceScore,
   extractGenericStarRating,
+  isRelayedStarRating,
   extractGenericLetterGrade,
   extractUKStarRating,
   extractUSATodayScore,

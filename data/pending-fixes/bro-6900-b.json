@@ -1,0 +1,162 @@
+{
+  "issueNumber": "bro-6900-b",
+  "planId": "bb1d97a6-3193-4166-a905-78f5a2179d32",
+  "status": "applied",
+  "createdAt": "2026-11-03T17:15:42.499Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Record the printed star ratings that Daily Mail reviews (and one La Voce review) carry but were stored without (or misread as 5/5) (part 2 of 2)",
+    "steps": [
+      "BRO-6900: the outlet page (https://www.dailymail.co.uk/news/article-14709301/PATRICK-MARMION-Comedy-Spies.html) prints a single 5/5 verdict (dailymail-css-stars) and its body matches the stored text; the file was stored with no rating, so it was scored unanchored.",
+      "BRO-6900: the outlet page (https://www.dailymail.co.uk/tvshowbiz/article-10244387/These-slick-Drifters-joyful-doo-wop-beats-Saturday-night-movies-PATRICK-MARMION-reviews.html) prints a single 4/5 verdict (dailymail-rating-img) and its body matches the stored text; the file was stored with no rating, so it was scored unanchored.",
+      "BRO-6900: the outlet page (https://www.dailymail.co.uk/tvshowbiz/article-15150337/Stephen-Fry-Lady-Bracknell-PATRICK-MARMION-review.html) prints a single 4/5 verdict (dailymail-css-stars) and its body matches the stored text; the file was stored with no rating, so it was scored unanchored.",
+      "BRO-6900: the outlet page (https://www.dailymail.co.uk/tvshowbiz/article-10071075/PATRICK-MARMION-REVIEWS-Chop-chop-Henrys-not-moment-soon.html) prints a single 4/5 verdict (dailymail-rating-img) and its body matches the stored text; the file was stored with no rating, so it was scored unanchored.",
+      "BRO-6900: the outlet page (https://www.dailymail.co.uk/tvshowbiz/article-9719159/Michael-Sheen-Sian-Phillips-poetry-PATRICK-MARMIONs-night-review-Milk-Wood.html) prints a single 4/5 verdict (dailymail-rating-img) and its body matches the stored text; the file was stored with no rating, so it was scored unanchored.",
+      "BRO-6900: the outlet page (https://www.dailymail.co.uk/tvshowbiz/article-14396239/PATRICK-MARMION-reviews-Unicorn-Garrick-Theatre.html) prints a single 3/5 verdict (dailymail-css-stars) and its body matches the stored text; the file was stored with no rating, so it was scored unanchored.",
+      "BRO-6900: the outlet page (https://www.dailymail.co.uk/tvshowbiz/article-12170995/PATRICK-MARMION-reviews-Queen-musical-Rock-You.html) prints a single 1/5 verdict (dailymail-css-stars) and its body matches the stored text; the file was stored with no rating, so it was scored unanchored.",
+      "BRO-6900: the outlet page (https://www.dailymail.com/tvshowbiz/article-16068575/PATRICK-MARMION-Killed-Marilyn-Lott-play.html) prints a single 2/5 verdict (word-stars) and its body matches the stored text; the file was stored with no rating, so it was scored unanchored.",
+      "BRO-6900: text opens '**** / ***** (four out of five stars)'; the spelled-out-star pattern read 'five stars' as 5/5.",
+      "BRO-6900: provisional machine value copied from the 5/5 misread; set to the corrected 4/5 (stays provisional)."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-comedy-about-spies-west-end-2025/daily-mail--patrick-marmion.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "5/5",
+        "description": "BRO-6900: the outlet page (https://www.dailymail.co.uk/news/article-14709301/PATRICK-MARMION-Comedy-Spies.html) prints a single 5/5 verdict (dailymail-css-stars) and its body matches the stored text; the file was stored with no rating, so it was scored unanchored."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-drifters-girl-west-end-2021/daily-mail--patrick-marmion.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "4/5",
+        "description": "BRO-6900: the outlet page (https://www.dailymail.co.uk/tvshowbiz/article-10244387/These-slick-Drifters-joyful-doo-wop-beats-Saturday-night-movies-PATRICK-MARMION-reviews.html) prints a single 4/5 verdict (dailymail-rating-img) and its body matches the stored text; the file was stored with no rating, so it was scored unanchored."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-importance-of-being-earnest-west-end-2025/daily-mail--patrick-marmion.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "4/5",
+        "description": "BRO-6900: the outlet page (https://www.dailymail.co.uk/tvshowbiz/article-15150337/Stephen-Fry-Lady-Bracknell-PATRICK-MARMION-review.html) prints a single 4/5 verdict (dailymail-css-stars) and its body matches the stored text; the file was stored with no rating, so it was scored unanchored."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-mirror-and-the-light-west-end-2021/daily-mail--patrick-marmion.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "4/5",
+        "description": "BRO-6900: the outlet page (https://www.dailymail.co.uk/tvshowbiz/article-10071075/PATRICK-MARMION-REVIEWS-Chop-chop-Henrys-not-moment-soon.html) prints a single 4/5 verdict (dailymail-rating-img) and its body matches the stored text; the file was stored with no rating, so it was scored unanchored."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "under-milk-wood-west-end-2021/daily-mail--patrick-marmion.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "4/5",
+        "description": "BRO-6900: the outlet page (https://www.dailymail.co.uk/tvshowbiz/article-9719159/Michael-Sheen-Sian-Phillips-poetry-PATRICK-MARMIONs-night-review-Milk-Wood.html) prints a single 4/5 verdict (dailymail-rating-img) and its body matches the stored text; the file was stored with no rating, so it was scored unanchored."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "unicorn-west-end-2025/daily-mail--patrick-marmion.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "3/5",
+        "description": "BRO-6900: the outlet page (https://www.dailymail.co.uk/tvshowbiz/article-14396239/PATRICK-MARMION-reviews-Unicorn-Garrick-Theatre.html) prints a single 3/5 verdict (dailymail-css-stars) and its body matches the stored text; the file was stored with no rating, so it was scored unanchored."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "we-will-rock-you-west-end-2023/daily-mail--patrick-marmion.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "1/5",
+        "description": "BRO-6900: the outlet page (https://www.dailymail.co.uk/tvshowbiz/article-12170995/PATRICK-MARMION-reviews-Queen-musical-Rock-You.html) prints a single 1/5 verdict (dailymail-css-stars) and its body matches the stored text; the file was stored with no rating, so it was scored unanchored."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "who-killed-marilyn-off-west-end-2026/daily-mail--patrick-marmion.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "2/5",
+        "description": "BRO-6900: the outlet page (https://www.dailymail.com/tvshowbiz/article-16068575/PATRICK-MARMION-Killed-Marilyn-Lott-play.html) prints a single 2/5 verdict (word-stars) and its body matches the stored text; the file was stored with no rating, so it was scored unanchored."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "schmigadoon-2026/la-voce-di-new-york--elise-nussbaum.json",
+        "field": "originalScore",
+        "oldValue": "5/5 stars",
+        "newValue": "4/5",
+        "description": "BRO-6900: text opens '**** / ***** (four out of five stars)'; the spelled-out-star pattern read 'five stars' as 5/5."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "schmigadoon-2026/la-voce-di-new-york--elise-nussbaum.json",
+        "field": "humanReviewScore",
+        "oldValue": 100,
+        "newValue": 80,
+        "description": "BRO-6900: provisional machine value copied from the 5/5 misread; set to the corrected 4/5 (stays provisional)."
+      }
+    ]
+  },
+  "executedAt": "2026-11-03T20:34:45.909Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-comedy-about-spies-west-end-2025/daily-mail--patrick-marmion.json originalScore: null -> \"5/5\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-drifters-girl-west-end-2021/daily-mail--patrick-marmion.json originalScore: null -> \"4/5\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-importance-of-being-earnest-west-end-2025/daily-mail--patrick-marmion.json originalScore: null -> \"4/5\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-mirror-and-the-light-west-end-2021/daily-mail--patrick-marmion.json originalScore: null -> \"4/5\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "under-milk-wood-west-end-2021/daily-mail--patrick-marmion.json originalScore: null -> \"4/5\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "unicorn-west-end-2025/daily-mail--patrick-marmion.json originalScore: null -> \"3/5\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "we-will-rock-you-west-end-2023/daily-mail--patrick-marmion.json originalScore: null -> \"1/5\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "who-killed-marilyn-off-west-end-2026/daily-mail--patrick-marmion.json originalScore: null -> \"2/5\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "schmigadoon-2026/la-voce-di-new-york--elise-nussbaum.json originalScore: \"5/5 stars\" -> \"4/5\" (retracted originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "schmigadoon-2026/la-voce-di-new-york--elise-nussbaum.json humanReviewScore: 100 -> 80"
+    }
+  ],
+  "executedIn": "ci"
+}

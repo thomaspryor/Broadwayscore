@@ -49,12 +49,12 @@ test.describe('My Shows — Page Structure', () => {
     await expect(page.getByRole('heading', { name: 'My Shows', level: 1 })).toBeAttached();
   });
 
-  test('header is Diary / Watchlist / Lists with the List / Feed / Stats switch', async ({ page }) => {
+  test('header is Seen / To See / Lists with the List / Photos / Stats switch', async ({ page }) => {
     await goToMock(page);
     const sections = page.getByRole('tablist', { name: 'My Shows sections' });
-    await expect(sections.getByRole('tab')).toHaveText(['Diary', 'Watchlist', 'Lists']);
-    const views = page.getByRole('tablist', { name: 'Diary views' });
-    await expect(views.getByRole('tab')).toHaveText(['List', 'Feed', 'Stats']);
+    await expect(sections.getByRole('tab')).toHaveText(['Seen', 'To See', 'Lists']);
+    const views = page.getByRole('tablist', { name: 'My Shows views' });
+    await expect(views.getByRole('tab')).toHaveText(['List', 'Photos', 'Stats']);
     await expect(views.getByRole('tab', { name: 'List' })).toHaveAttribute('aria-selected', 'true');
     // No count badges and no "N to rate" line (owner, 2026-07-17 / 2026-10-25).
     await expect(page.getByText(/^\d+ to rate$/)).toHaveCount(0);
@@ -62,17 +62,17 @@ test.describe('My Shows — Page Structure', () => {
 
   test('Feed and Stats open from the Diary switch and keep Diary selected', async ({ page }) => {
     await goToMock(page);
-    const views = page.getByRole('tablist', { name: 'Diary views' });
+    const views = page.getByRole('tablist', { name: 'My Shows views' });
     await views.getByRole('tab', { name: 'Stats' }).click();
     await expect(page.locator('#panel-stats')).toBeVisible();
     await expect(page).toHaveURL(/tab=stats/);
-    await expect(page.getByRole('tab', { name: 'Diary' })).toHaveAttribute('aria-selected', 'true');
-    await views.getByRole('tab', { name: 'Feed' }).click();
+    await expect(page.getByRole('tab', { name: 'Seen' })).toHaveAttribute('aria-selected', 'true');
+    await views.getByRole('tab', { name: 'Photos' }).click();
     await expect(page.locator('#panel-feed')).toBeVisible();
     await expect(page).toHaveURL(/tab=feed/);
     // Watchlist hides the Diary switch.
-    await page.getByRole('tab', { name: 'Watchlist' }).click();
-    await expect(page.getByRole('tablist', { name: 'Diary views' })).toHaveCount(0);
+    await page.getByRole('tab', { name: 'To See' }).click();
+    await expect(page.getByRole('tablist', { name: 'My Shows views' })).toHaveCount(0);
   });
 
   test('no console errors on page load', async ({ page }) => {
@@ -109,11 +109,11 @@ test.describe('My Shows — Accessibility', () => {
     // tablist container
     await expect(page.getByRole('tablist', { name: 'My Shows sections' })).toBeVisible();
     // Diary tab with selected state
-    const diaryTab = page.getByRole('tab', { name: 'Diary' });
+    const diaryTab = page.getByRole('tab', { name: 'Seen' });
     await expect(diaryTab).toBeVisible();
     await expect(diaryTab).toHaveAttribute('aria-selected', 'true');
     // Watchlist tab not selected
-    const watchlistTab = page.getByRole('tab', { name: /Watchlist/ });
+    const watchlistTab = page.getByRole('tab', { name: /To See/ });
     await expect(watchlistTab).toBeVisible();
     await expect(watchlistTab).toHaveAttribute('aria-selected', 'false');
   });
@@ -126,10 +126,10 @@ test.describe('My Shows — Accessibility', () => {
 
   test('sort dropdowns have aria-labels', async ({ page }) => {
     await goToMock(page);
-    await expect(page.getByRole('combobox', { name: 'Sort diary' })).toBeVisible();
+    await expect(page.getByRole('combobox', { name: 'Sort Seen' })).toBeVisible();
     // Switch to watchlist
-    await page.getByRole('tab', { name: /Watchlist/ }).click();
-    await expect(page.getByRole('combobox', { name: 'Sort watchlist' })).toBeVisible();
+    await page.getByRole('tab', { name: /To See/ }).click();
+    await expect(page.getByRole('combobox', { name: 'Sort To See' })).toBeVisible();
   });
 
   test('To Be Rated posters are labeled rate links', async ({ page }) => {
@@ -235,7 +235,7 @@ test.describe('My Shows — Diary Sections', () => {
 test.describe('My Shows — Sorting', () => {
   test('diary "Top Rated" sort orders correctly', async ({ page }) => {
     await goToMock(page);
-    await page.getByRole('combobox', { name: 'Sort diary' }).selectOption('rating-desc');
+    await page.getByRole('combobox', { name: 'Sort Seen' }).selectOption('rating-desc');
     // Read the ratings on the rendered cards, independent of star styling.
     const ratings = page.getByTestId('diary-rating');
     await expect(ratings).toHaveCount(9);
@@ -250,7 +250,7 @@ test.describe('My Shows — Sorting', () => {
   test('diary "Oldest" sort shows oldest first', async ({ page }) => {
     await goToMock(page);
     await switchToListView(page); // list-row UI — diary/watchlist default is grid (2026-07-17); DiaryGridCard titles aren't <h4> so this test found 0 matches without it (2026-07-22)
-    await page.getByRole('combobox', { name: 'Sort diary' }).selectOption('date-asc');
+    await page.getByRole('combobox', { name: 'Sort Seen' }).selectOption('date-asc');
     // Book of Mormon (Mar 2024) should appear before Wicked (Dec 2025) in Past Shows
     const cards = await page.locator('h4').allTextContents();
     const mormonIndex = cards.indexOf('The Book of Mormon');
@@ -270,7 +270,7 @@ test.describe('My Shows — Sorting', () => {
     const listBtn = page.getByRole('button', { name: 'List view' });
     await listBtn.click();
     await expect(listBtn).toHaveClass(/bg-white/, { timeout: 3000 });
-    await page.getByRole('combobox', { name: 'Sort watchlist' }).selectOption('alphabetical');
+    await page.getByRole('combobox', { name: 'Sort To See' }).selectOption('alphabetical');
     // Get show title headings from the watchlist cards (h4 inside card items, not the "Add" button)
     const headings = page.locator('[role="tabpanel"] h4');
     const titles = await headings.allTextContents();
@@ -289,7 +289,7 @@ test.describe('My Shows — Tabs', () => {
   test('switching to Watchlist tab shows watchlist content', async ({ page }) => {
     await goToMock(page);
     // Click Watchlist tab
-    await page.getByRole('tab', { name: /Watchlist/ }).click();
+    await page.getByRole('tab', { name: /To See/ }).click();
     // URL should update
     await expect(page).toHaveURL(/tab=watchlist/);
     // Watchlist defaults to grid — poster cards for upcoming/undated entries;
@@ -305,13 +305,13 @@ test.describe('My Shows — Tabs', () => {
   test('switching back to Diary preserves sort', async ({ page }) => {
     await goToMock(page);
     // Change sort to Top Rated
-    await page.getByRole('combobox', { name: 'Sort diary' }).selectOption('rating-desc');
+    await page.getByRole('combobox', { name: 'Sort Seen' }).selectOption('rating-desc');
     // Switch to Watchlist
-    await page.getByRole('tab', { name: /Watchlist/ }).click();
+    await page.getByRole('tab', { name: /To See/ }).click();
     // Switch back to Diary
-    await page.getByRole('tab', { name: 'Diary' }).click();
+    await page.getByRole('tab', { name: 'Seen' }).click();
     // Sort should still be Top Rated
-    const sortValue = await page.getByRole('combobox', { name: 'Sort diary' }).inputValue();
+    const sortValue = await page.getByRole('combobox', { name: 'Sort Seen' }).inputValue();
     expect(sortValue).toBe('rating-desc');
   });
 });
@@ -353,11 +353,11 @@ test.describe('My Shows — View Toggle', () => {
     // Set diary to grid
     await page.getByRole('button', { name: 'Grid view' }).click();
     // Switch to watchlist (defaults to grid)
-    await page.getByRole('tab', { name: /Watchlist/ }).click();
+    await page.getByRole('tab', { name: /To See/ }).click();
     // Switch watchlist to list
     await page.getByRole('button', { name: 'List view' }).click();
     // Switch back to diary — should still be grid
-    await page.getByRole('tab', { name: 'Diary' }).click();
+    await page.getByRole('tab', { name: 'Seen' }).click();
     const gridBtn = page.getByRole('button', { name: 'Grid view' });
     const classes = await gridBtn.getAttribute('class');
     expect(classes).toContain('bg-white');
@@ -429,7 +429,7 @@ test.describe('My Shows — Watchlist', () => {
     // only render as poster cards in the flat A-Z view (the default split
     // routes them to the To Be Rated band). It is hover-revealed at sm+, so
     // assert presence, not visibility.
-    await page.getByRole('combobox', { name: 'Sort watchlist' }).selectOption('alphabetical');
+    await page.getByRole('combobox', { name: 'Sort To See' }).selectOption('alphabetical');
     const strips = page.locator('[role="tabpanel"] [role="radiogroup"][aria-label^="Rate "]');
     expect(await strips.count()).toBeGreaterThan(0);
     await expect(strips.first().getByRole('button', { name: '5 stars', includeHidden: true })).toBeAttached();
@@ -445,7 +445,7 @@ test.describe('My Shows — Watchlist', () => {
     await goToMock(page, 'watchlist');
     // Switch to list view for easier interaction
     await page.getByRole('button', { name: 'List view' }).click();
-    const removeBtn = page.getByRole('button', { name: 'Remove from watchlist' }).first();
+    const removeBtn = page.getByRole('button', { name: 'Remove from To See' }).first();
     await removeBtn.click();
     await expect(page.getByRole('button', { name: /Remove\?/ })).toBeVisible();
   });

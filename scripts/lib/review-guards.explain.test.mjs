@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (read by the test); data/review-texts (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Coverage Verdict S0 (task #902) — explainExclusion() parity + rule-name contract.
 //
 // explainExclusion() is the SINGLE implementation of the includability decision;

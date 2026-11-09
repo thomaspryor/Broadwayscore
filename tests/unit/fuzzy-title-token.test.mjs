@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Review follow-ups for the BWW one-typo roundup fallback. Requires the real module.
 import test from 'node:test';
 import assert from 'node:assert/strict';

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/grosses.json (untracked core data); data/commercial.json (untracked core data); data/grosses-history.json (untracked core data); +1 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Box Office v3 market page (BRO-5007): the story sentences, label placement
  * and a real-data sweep of the page object. Imports the real functions (§15).

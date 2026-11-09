@@ -13,9 +13,11 @@ const FOLLOW_PREFIX = 'bsc_show_follow_subscribed_';
 interface ShowFollowBannerProps {
   showId: string;
   showTitle: string;
+  /** Metro slug for a local show (e.g. 'chicago-il'); tags the signup by city. */
+  city?: string | null;
 }
 
-export default function ShowFollowBanner({ showId, showTitle }: ShowFollowBannerProps) {
+export default function ShowFollowBanner({ showId, showTitle, city }: ShowFollowBannerProps) {
   const bannerEnabled = emailCaptureConfig.showFollowBanner.enabled;
 
   const [visible, setVisible] = useState(false);
@@ -29,7 +31,8 @@ export default function ShowFollowBanner({ showId, showTitle }: ShowFollowBanner
     source: 'show-page',
     showId,
     showTitle,
-  }), [showId, showTitle]);
+    city,
+  }), [showId, showTitle, city]);
 
   const { status, errorMessage, submit, isSubscribed } = useFormspreeCapture(loopsOptions);
 

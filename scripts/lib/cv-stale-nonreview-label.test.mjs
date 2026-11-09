@@ -90,3 +90,15 @@ test('evaluative critic-outlet body: re-check selector picks it up whatever its 
   const picked = selectCvPromotedNonReview(dir, [{ id: 'show-a-2026', openingDate: '2026-03-01' }], { openedSince: '2025-11-01' });
   assert.deepEqual(picked.map((p) => p.file), ['theatermania--jane-doe.json']);
 });
+
+test('BRO-6745 ship-check: a clean verdict a clear guard refused never overrules the label in the rebuild', () => {
+  const fresh = {
+    isValid: true, wrongArticle: false, wrongProduction: false, articleType: 'review', articleTypeConfidence: 'high',
+    confidence: 'high', verifiedAt: '2026-10-10T00:00:00Z', contentHash: contentHash(fullReview), reverifiedFrom: 'stored-fullText',
+  };
+  const d = labelled({ ...ensemble, llmMetadata: { scoredAt: '2026-10-11T00:00:00Z' }, contentVerification: fresh });
+  assert.equal(isNonReviewDemotedByFreshCV(d), true, 'precondition: an unrefused clean verdict demotes');
+  const refused = { ...d, contentVerification: { ...fresh, clearRefusal: { guardVersion: 2, codes: ['non-review-admitted-in-reasoning'] } } };
+  assert.equal(isNonReviewDemotedByFreshCV(refused), false);
+  assert.equal(explainExclusion(refused), 'nonReview');
+});

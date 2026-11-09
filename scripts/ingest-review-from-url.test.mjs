@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (read by the test); data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-462: T1/T2 silent gap on near-opening show — Anansi the Spider —
  * thestage--anna-james.json was auto-filed as a gap by the owner-alert-router.

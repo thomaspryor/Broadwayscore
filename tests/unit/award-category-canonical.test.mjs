@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/awards.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Tests for scripts/lib/award-category-canonical.js + a data gate over
  * data/awards.json. Guards the forum-reported bug (2026-05-24): the same award

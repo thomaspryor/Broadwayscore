@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/audit/ccusage-2026-09-daily.json (read by the test); data/audit/ccusage-2026-09-sessions.json (read by the test); data/audit/ccusage-monthly.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

@@ -216,7 +216,9 @@ test('skips a show that opened years after the review, and falls through to a sh
 });
 
 test('skips a show that closed decades before the review (any date format)', () => {
-  const url = 'https://example.com/reviews/knockout-performance-hells-kitchen';
+  // BRO-6910: a url naming the row's own show is vouched for regardless of
+  // date, so this one names only the other show, from a title position.
+  const url = 'https://example.com/reviews/knockout-review';
   assert.equal(dcheck('hells-kitchen-tour-2025', url, '2025-11-02'), null);
   assert.equal(dcheck('hells-kitchen-tour-2025', url, '2 November 2025'), null);
   assert.equal(dcheck('hells-kitchen-tour-2025', url, 'November 2nd, 2025'), null);
@@ -243,7 +245,7 @@ test('BroadwayWorld regional section word does not name the show', () => {
   const r = dcheck('hells-kitchen-tour-2025', 'https://www.broadwayworld.com/article/Review-OKLAHOMA-at-Circle-in-the-Square-20190408');
   assert.equal(r && r.matchedShowId, 'oklahoma-2019');
   // non-BWW hosts keep the full path
-  assert.equal(dcheck('hells-kitchen-tour-2025', 'https://example.com/oklahoma/article/x').matchedShowId, 'oklahoma-2019');
+  assert.equal(dcheck('hells-kitchen-tour-2025', 'https://example.com/review-oklahoma/article/x').matchedShowId, 'oklahoma-2019');
 });
 
 test('single-word titles match whole path words only (full slug and base title)', () => {

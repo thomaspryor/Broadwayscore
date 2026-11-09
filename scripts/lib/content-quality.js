@@ -9,6 +9,8 @@
  */
 
 const { buildShowTitleVariants, normalizeForMention, countVariant, findVariantSpans, textMentionsTitle, textMentionsShortTitle } = require('./show-title-variants');
+const { hasExcerpt: hasAnyExcerpt, getLongestExcerpt } = require('./excerpt-fields');
+const { stripKnownTrailers, trailerFixesEnabled } = require('./trailer-signatures');
 
 /**
  * Patterns that indicate ad blocker messages
@@ -334,8 +336,15 @@ const MID_TEXT_CHROME_BLOCKS = [
   // tiered full 4-7K reviews `invalid` and tripped the outlet invalid-content health row.
   { name: 'bristol247-member-appeal', maxGap: 300,
     start: 'Independent journalism is needed now', end: 'Community\\s+member\\s+Find\\s+out\\s+more' },
-  { name: 'warwickshireworld-newsletter', maxGap: 600,
-    start: 'Sign up to our daily WarwickshireWorld Today newsletter', end: 'Google\\s+Privacy\\s+Notice\\s+and\\s+Terms\\s+of\\s+Service\\s+apply\\.' },
+  // The newsletter block is the shared National World template (BRO-6824 follow-up, 11-03):
+  // the same widget with a different newsletter name ships on Portsmouth News ("daily"),
+  // The Scotsman ("Arts and Culture"), Yorkshire Post, Derbyshire Times and WarwickshireWorld
+  // ("daily WarwickshireWorld Today"). Matching only the WarwickshireWorld name left Portsmouth
+  // News 3/3 recent `invalid` ("premium content") and 8 Scotsman reviews too. Anchored on the
+  // widget's fixed "Sign up Thank you for signing up!" + the reCAPTCHA notice ending it.
+  { name: 'nationalworld-newsletter', maxGap: 600,
+    start: "Sign\\s+up\\s+to\\s+our\\s+(?:[\\w'’&-]+\\s+){0,5}?newsletter\\s+Sign\\s+up\\s+Thank\\s+you\\s+for\\s+signing\\s+up!",
+    end: 'Google\\s+Privacy\\s+Notice\\s+and\\s+Terms\\s+of\\s+Service\\s+apply\\.' },
 ].map((b) => ({
   ...b,
   re: new RegExp(`${b.start}[\\s\\S]{0,${b.maxGap}}?${b.end}`, 'gi'),
@@ -347,6 +356,10 @@ const MID_TEXT_CHROME_BLOCKS = [
 // two-part marker matches and a review of at least MID_TEXT_CHROME_MIN_BODY chars precedes it.
 const TAIL_CHROME_CUTS = [
   { name: 'bristol247-footer', re: /Become a member of Bristol24\/7\s+Share\s+Share on Facebook[\s\S]*$/i },
+  // National World article footer: "... Until October 26. Continue Reading Related topics: Chichester
+  // summer Devon". The tag list hid the review's real last sentence, so Portsmouth News reviews
+  // read as truncated. Only a short, sentence-free tag list at the very end is cut.
+  { name: 'nationalworld-related-topics', re: /\s*(?:\bContinue\s+Reading\s+)?\bRelated\s+topics:[^.!?\n]{0,200}$/i },
 ];
 // Same floor as DOW_JONES_MIN_BODY: article text must follow the block, and what is left must still be a review.
 const MID_TEXT_CHROME_MIN_BODY = 300;
@@ -1110,6 +1123,13 @@ const COMMON_WORD_SHOW_TITLES = new Set([
   'ambassador', 'steaming', 'monument', 'consumed', 'anonymous',
 ]);
 
+// BRO-7053: ordinary words and first names that are also show titles and
+// matched real London reviews (Speculations: Guardian, Arts Desk). Kept apart
+// from the set above so opts.subjectNames:false still reproduces the old rule.
+const SUBJECT_MODE_COMMON_WORDS = new Set([
+  'still', 'people', 'both', 'right now', 'john', 'jack', 'miles', 'trevor',
+]);
+
 // BRO-5373: show titles that are ordinary words ("Tender", "Local", "Miles",
 // "The Estate", "The Story") matched lowercase prose and marked real reviews as
 // multi-show junk. A junk index or nav page prints titles in Title Case, so
@@ -1138,18 +1158,80 @@ function titleCaseMatch(span) {
 }
 
 /**
+ * BRO-7053: true when a matched title recurs through the body, which marks it
+ * as the review's subject matter rather than a listing entry. Needs
+ * SUBJECT_MIN_HITS interior occurrences (outside the first and last
+ * SUBJECT_EDGE of the text, where nav and footer links live) spread over at
+ * least SUBJECT_MIN_SPREAD of the text; a card repeating a title in a row
+ * still counts.
+ */
+const SUBJECT_MIN_HITS = 3;
+const SUBJECT_MIN_SPREAD = 0.4;
+const SUBJECT_EDGE = 0.1;
+// A schedule or deals grid repeats each title densely down a short page; prose
+// names recur sparsely. Both bounds keep that listing shape flagged.
+const SUBJECT_MIN_TEXT = 1500;
+const SUBJECT_MIN_MEAN_GAP = 200;
+// Prose mentions arrive in bursts; a schedule row or card list repeats a title
+// at an even rhythm. Coefficient of variation of the gaps tells them apart.
+const SUBJECT_MIN_GAP_CV = 0.5;
+function isSubjectName(hitIndexes, textLength) {
+  if (!textLength || textLength < SUBJECT_MIN_TEXT) return false;
+  // Header nav and footer links sit at the edges of a junk page; only hits in
+  // the interior of the text can show a title recurring through a body.
+  const lo = textLength * SUBJECT_EDGE;
+  const hi = textLength * (1 - SUBJECT_EDGE);
+  const interior = hitIndexes.filter((i) => i >= lo && i <= hi);
+  if (interior.length < SUBJECT_MIN_HITS) return false;
+  const span = interior[interior.length - 1] - interior[0];
+  if (span / textLength < SUBJECT_MIN_SPREAD) return false;
+  const gaps = [];
+  for (let i = 1; i < interior.length; i++) gaps.push(interior[i] - interior[i - 1]);
+  const mean = span / gaps.length;
+  if (mean < SUBJECT_MIN_MEAN_GAP) return false;
+  const variance = gaps.reduce((a, g) => a + (g - mean) ** 2, 0) / gaps.length;
+  return Math.sqrt(variance) / mean >= SUBJECT_MIN_GAP_CV;
+}
+
+/**
+ * BRO-7053: short captures (a 1.6-3k review) name their subject only once or
+ * twice in the interior, so the strict rule above cannot reach them. Two
+ * interior hits at least SHORT_SUBJECT_MIN_GAP apart count, but only when few
+ * titles qualify: a junk page listing many titles twice would qualify many.
+ */
+const SHORT_SUBJECT_MAX_TEXT = 3000;
+const SHORT_SUBJECT_MIN_TEXT = 1000;
+const SHORT_SUBJECT_MIN_GAP = 300;
+const SHORT_SUBJECT_MIN_SPREAD = 0.2;
+const SHORT_SUBJECT_MAX_TITLES = 4;
+function isShortSubjectName(hitIndexes, textLength) {
+  if (!textLength || textLength < SHORT_SUBJECT_MIN_TEXT || textLength >= SHORT_SUBJECT_MAX_TEXT) return false;
+  const lo = textLength * SUBJECT_EDGE;
+  const hi = textLength * (1 - SUBJECT_EDGE);
+  const interior = hitIndexes.filter((i) => i >= lo && i <= hi);
+  if (interior.length < 2) return false;
+  const span = interior[interior.length - 1] - interior[0];
+  if (span < SHORT_SUBJECT_MIN_GAP || span / textLength < SHORT_SUBJECT_MIN_SPREAD) return false;
+  // Every gap must be wide: a card repeating a title in a row stays flagged.
+  for (let i = 1; i < interior.length; i++) if (interior[i] - interior[i - 1] < SHORT_SUBJECT_MIN_GAP) return false;
+  return true;
+}
+
+/**
  * Detect if text contains references to multiple different Broadway shows
  * This indicates a 404/index page or navigation junk, not a single review
  *
  * @param {string} text - Text to check
  * @param {string} [expectedShowId] - The show this review should be about (excluded from count)
- * @param {{ requireTitleCase?: boolean }} [opts] - requireTitleCase: a title
+ * @param {{ requireTitleCase?: boolean, subjectNames?: boolean }} [opts] - subjectNames:
+ *   false turns off the BRO-7053 subject-name exemption (replay audits only). requireTitleCase: a title
  *   counts only where it appears in Title Case (see titleCaseMatch, BRO-5373).
  *   Defaults to MULTI_SHOW_REQUIRE_TITLE_CASE.
  * @returns {{ detected: boolean, showsFound: string[], reason: string | null }}
  */
 function detectMultiShowContent(text, expectedShowId, opts = {}) {
   const requireTitleCase = opts.requireTitleCase === undefined ? MULTI_SHOW_REQUIRE_TITLE_CASE : !!opts.requireTitleCase;
+  const subjectNames = opts.subjectNames !== false; // false reproduces the pre-BRO-7053 rule for replay audits
   if (!text || text.length < 200) {
     return { detected: false, showsFound: [], reason: null };
   }
@@ -1186,36 +1268,52 @@ function detectMultiShowContent(text, expectedShowId, opts = {}) {
   // CURRENT_BROADWAY_SHOWS is deduped at construction (loadBroadwayShows), so
   // one entry here == one distinct title, and foundShows.length is a count of
   // DIFFERENT shows rather than of productions.
-  const foundShows = CURRENT_BROADWAY_SHOWS.filter(show => {
+  const candidates = [];
+  for (const show of CURRENT_BROADWAY_SHOWS) {
     // Skip common English words that happen to be show titles
-    if (COMMON_WORD_SHOW_TITLES.has(show)) return false;
+    if (COMMON_WORD_SHOW_TITLES.has(show)) continue;
+    if (subjectNames && SUBJECT_MODE_COMMON_WORDS.has(show)) continue;
 
     // Skip if this is the expected show
     const showWords = show.split(/\s+/);
     const isExpectedShow = expectedWords.some(ew => showWords.some(sw => sw.includes(ew) || ew.includes(sw)));
-    if (isExpectedShow) return false;
+    if (isExpectedShow) continue;
 
     // Use word-boundary regex instead of substring matching
     const escaped = show.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    if (!requireTitleCase) {
-      const regex = new RegExp(`\\b${escaped}\\b`, 'i');
-      return regex.test(text);
-    }
     const regex = new RegExp(`\\b${escaped}\\b`, 'gi');
+    const hits = [];
     for (const m of text.matchAll(regex)) {
-      if (titleCaseMatch(m[0])) return true;
+      if (requireTitleCase && !titleCaseMatch(m[0])) continue;
+      // BRO-7053: a single-word title written entirely in lowercase is prose
+      // ("a stalker", "imitations"); listings and nav name shows in Title Case or caps.
+      if (subjectNames && showWords.length === 1 && m[0] === m[0].toLowerCase()) continue;
+      hits.push(m.index);
     }
-    return false;
-  });
-
-  // Scale threshold by text length — critics routinely reference other shows for comparison
-  // Short text (< 1000 chars) with 3+ shows = likely junk page
-  // Long reviews (5000+ chars) are substantial articles where many references are normal
+    if (hits.length === 0) continue;
+    // BRO-7053: a name the article keeps coming back to across its whole body
+    // is the review's SUBJECT (Marilyn, Dorothy, Kilgallen in a play about
+    // Monroe), not a cross-show mention. A junk index or sidebar lists each
+    // title once or twice, or clusters repeats inside one card.
+    if (subjectNames && isSubjectName(hits, text.length)) continue;
+    candidates.push({ show, hits });
+  }
   const threshold = text.length < 1000 ? 3
     : text.length < 3000 ? 5
     : text.length < 5000 ? 7
     : text.length < 8000 ? 10
     : 15;
+  // Short captures: few repeated names are the subject; many mean a listing.
+  // The titles that do NOT qualify must stay well under the threshold, so a
+  // header/footer strip around a card grid cannot hide behind its repeats.
+  const shortSubjects = subjectNames ? candidates.filter((c) => isShortSubjectName(c.hits, text.length)) : [];
+  const leftover = candidates.length - shortSubjects.length;
+  const exempt = shortSubjects.length > 0 && shortSubjects.length <= SHORT_SUBJECT_MAX_TITLES && leftover <= threshold - 3 ? new Set(shortSubjects.map((c) => c.show)) : new Set();
+  const foundShows = candidates.filter((c) => !exempt.has(c.show)).map((c) => c.show);
+
+  // Scale threshold by text length — critics routinely reference other shows for comparison
+  // Short text (< 1000 chars) with 3+ shows = likely junk page
+  // Long reviews (5000+ chars) are substantial articles where many references are normal
   if (foundShows.length >= threshold) {
     return {
       detected: true,
@@ -2090,19 +2188,34 @@ function _stripExemptedChromeLines(text) {
 }
 
 /**
+ * True when the text ends on sentence punctuation. A curly closing quote counts
+ * when it follows . ! or ? (`...saying anything.”`): the old ASCII-only class
+ * read that as a cut-off, and it only hid behind a trailer that happened to end
+ * in a full stop (a Guardian `• At the Royal Court, London, until 27 July.`).
+ */
+function endsWithSentencePunctuation(s) {
+  return /[.!?"'")\]]$/.test(s) || (trailerFixesEnabled() && /[.!?][”’]$/.test(s));
+}
+
+/**
  * Strip a trailing venue address ("Hayes Theater 240 West 44th Street New York,
  * NY 10036") or "Listings and ticket information can be found here" line so the
  * ending-punctuation check judges the review prose, not the trailer (BRO-4387).
  * Only strips when the trailer is short and follows a punctuated sentence end,
  * so a review truncated mid-sentence right before an address stays flagged.
  */
-function stripVenueListingsTrailer(text) {
+function stripVenueListingsTrailer(text, outletId) {
   let t = text;
-  for (let i = 0; i < 2; i++) {
+  for (let i = 0; i < 3; i++) {
     const listings = t.replace(/\s*Listings?\s+and\s+ticket\s+information\s+can\s+be\s+found\s+here\.?\s*$/i, '');
     if (listings !== t) { t = listings; continue; }
     const addr = /([.!?]["'\u201d\u2019)]?)\s+(?:[A-Z0-9][\w'’&-]*,?\s+){1,10}(?:NY|NJ|CT)\s+\d{5}(?:-\d{4})?\s*$/.exec(t);
     if (addr) { t = t.slice(0, addr.index + addr[1].length); continue; }
+    // UK `• At the Almeida, London, until 7 June` listing bullets, thefourthwalsh's
+    // production-info block, one-minute-critic's related-post headlines
+    // (scripts/lib/trailer-signatures.js, shared with stripTrailingJunk).
+    const known = stripKnownTrailers(t, outletId);
+    if (known !== t) { t = known; continue; }
     break;
   }
   return t;
@@ -2113,7 +2226,7 @@ function stripVenueListingsTrailer(text) {
  * @param {string} text - Text to analyze
  * @returns {{ signals: string[], severeCount: number, moderateCount: number, likelyTruncated: boolean }}
  */
-function detectTruncationSignals(text) {
+function detectTruncationSignals(text, opts = {}) {
   if (!text) return { signals: [], severeCount: 0, moderateCount: 0, likelyTruncated: false };
 
   const signals = [];
@@ -2185,8 +2298,8 @@ function detectTruncationSignals(text) {
   // ends with proper punctuation before the footer.
   // Venue-address / "Listings and ticket information" trailers (stagebuddy,
   // theatreweekly) are not review prose: judge the ending on what precedes them.
-  const trimmed = stripVenueListingsTrailer(text.trim());
-  if (!hasFooterJunk && trimmed.length > 100 && !/[.!?"'"")\]]$/.test(trimmed) && !/[.!?]\s*[A-DF][+-]?$/.test(trimmed)) {
+  const trimmed = stripVenueListingsTrailer(text.trim(), opts && opts.outletId);
+  if (!hasFooterJunk && trimmed.length > 100 && !endsWithSentencePunctuation(trimmed) && !/[.!?]\s*[A-DF][+-]?$/.test(trimmed)) {
     signals.push('no_ending_punctuation');
     moderateCount++;
   }
@@ -2425,14 +2538,8 @@ function classifyContentTier(review) {
   const charCount = fullText.length;
 
   // Check for excerpts
-  const hasExcerpt = !!(review.dtliExcerpt || review.bwwExcerpt || review.showScoreExcerpt || review.nycTheatreExcerpt || review.lboRoundupExcerpt || review.metaExcerpt);
-  const longestExcerptLen = Math.max(
-    (review.dtliExcerpt || '').length,
-    (review.bwwExcerpt || '').length,
-    (review.showScoreExcerpt || '').length,
-    (review.lboRoundupExcerpt || '').length,
-    (review.metaExcerpt || '').length
-  );
+  const hasExcerpt = hasAnyExcerpt(review);
+  const longestExcerptLen = getLongestExcerpt(review).length;
 
   // T5: INVALID - Check first (garbage, wrong show, corrupted)
   const { effectivelyWrongProduction, effectivelyWrongShow } = isEffectivelyWrongProductionOrShow(review);
@@ -2481,12 +2588,12 @@ function classifyContentTier(review) {
   }
 
   // Now we have fullText with 100+ chars - check if complete or truncated
-  const truncation = detectTruncationSignals(fullText);
+  const truncation = detectTruncationSignals(fullText, { outletId: review.outletId });
 
   // T1: COMPLETE - Full review with no truncation issues
   // Check ending - allow URLs, ticket info at end (common footer pattern)
-  const trimmed = stripVenueListingsTrailer(fullText.trim()); // BRO-4387: venue/listings trailer is not review prose
-  let hasProperEnding = /[.!?"'"")\]]$/.test(trimmed) ||
+  const trimmed = stripVenueListingsTrailer(fullText.trim(), review.outletId); // BRO-4387: venue/listings trailer is not review prose
+  let hasProperEnding = endsWithSentencePunctuation(trimmed) ||
     /\.(com|org|net|co\.uk)\/?$/.test(trimmed) ||
     /[.!?]\s*[A-DF][+-]?$/.test(trimmed);
 
@@ -2502,7 +2609,7 @@ function classifyContentTier(review) {
     }
     // Check if text before footer has proper ending
     const beforeFooter = fullText.slice(0, fullText.length - 500 + earliestFooter).trim();
-    if (/[.!?"'"")\]]$/.test(beforeFooter)) {
+    if (endsWithSentencePunctuation(beforeFooter)) {
       hasProperEnding = true;
     }
   }

@@ -46,7 +46,7 @@ function summaryReviews(events) {
  */
 function buildAdapters(fixture, now) {
   const { feeds = [], outlets = [], showScoreUrlMap = {} } = fixture.adapters || {};
-  return laneAdapters({ showScoreGuards: { urlMap: showScoreUrlMap, allShows: [fixture.show] }, adaptersConfig: { feeds, outlets }, search: async () => [], decodeImpl: null, now });
+  return laneAdapters({ showScoreGuards: { urlMap: showScoreUrlMap, allShows: [fixture.show] }, adaptersConfig: { feeds, outlets }, search: async () => [], decodeImpl: null, now, fetchGated: async () => null });
 }
 
 // BRO-6619: lane code that lives outside this folder, repo-relative. The night entry and the live workflow are hashed as

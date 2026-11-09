@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // TESTS-VS-DERIVED-DATA-EXEMPT: source review-texts JSON lives in the private
 // broadway-review-texts repo (gitignored, not checked out in this repo or in
 // CI) — the fixtures below are a snapshot copied from it, not derivable from

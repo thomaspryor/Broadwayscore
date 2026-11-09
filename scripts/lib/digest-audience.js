@@ -41,6 +41,7 @@ const INTERNAL_CATEGORIES = new Set([
   'Alert Router',       // alert auto-dispatch deadman
   'Codex runner',       // unattended Codex card runner landing cards (BRO-5287)
   'Workflow coverage',  // workflows that never ran (CI hygiene)
+  'Improvement',        // root-cause share / recurring classes: how we fix things, not the site (BRO-7132)
 ]);
 
 // Individual checks whose category is otherwise visitor-facing ("Data:",
@@ -68,6 +69,9 @@ const INTERNAL_WORKFLOWS = new Set([
   'Investigate Alert', 'Execute Approved Fix', 'Card Verifiability Audit', 'Check Arm Yield',
   'Drain Not-Attempted Backlog', 'Monitor Scheduled Email Count', 'Audit Time-Bomb Tests',
   'Secret Scan (gitleaks)', 'Stage Latency Log Rotation', 'Sentry Auto-Triage',
+  // BRO-6983: manual-dispatch (workflow_dispatch only) show-id migration for the BRO-4315 batches. A red run
+  // is an operator retry on a migration, never something a visitor sees; the card (BRO-4315) owns it.
+  'Rename Show IDs',
 ]);
 
 const WORKFLOW_ROW_RE = /^(?:Cron failed|Workflow repeat-failure|Cron):\s*(.+)$/;

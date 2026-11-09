@@ -31,7 +31,9 @@
  *
  * Integrated into rebuild via: scripts/rebuild-all-reviews.js (future)
  */
+require('./lib/llm-usage-install'); // LLM spend meter: before any client is built (BRO-5043)
 const fs = require('fs');
+const { getExcerpts } = require('./lib/excerpt-fields');
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
 const https = require('https');
@@ -412,8 +414,7 @@ async function main() {
       }
 
       // Check if there's any text to work with
-      const text = reviewData.fullText || reviewData.bwwExcerpt || reviewData.dtliExcerpt
-        || reviewData.showScoreExcerpt || reviewData.pullQuote || '';
+      const text = reviewData.fullText || getExcerpts(reviewData)[0] || reviewData.pullQuote || '';
       if (text.trim().length < 20) {
         stats.skippedNoText++;
         return;

@@ -143,6 +143,10 @@ const DECLARED_TYPO_PAIRS = [
   ['abc-new-york', 'nbcny'],
   // Separate publications, with different registry domains.
   ['backstage', 'jackstage'], // backstage.com / jackstage.co.uk
+  // BRO-6991: The American is a UK expat magazine, not American Theater Web.
+  // Its masthead (https://www.theamerican.co.uk/pr/about-us.php) strips to
+  // "american", one edit from American Theater Web's legacy alias "america".
+  ['american-theater-web', 'theamerican'],
   ['gay-city-news', 'localnewsmatters'], // Bay City News is an alias of the latter
   ['curtainsup', 'curtainup'], // curtainsup.online / curtainup.com
   ['independent', 'indiependent'], // independent.co.uk / indiependent.co.uk

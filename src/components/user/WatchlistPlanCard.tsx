@@ -150,7 +150,7 @@ function PlanSheet({ showId, showTitle, entry, event, onDateChange, onShowtimeCh
         <div className="flex items-start justify-between gap-3 mb-5">
           <div className="min-w-0">
             <h2 className="text-lg font-bold text-white truncate">{showTitle}</h2>
-            <p className="text-sm text-gray-400">On your watchlist</p>
+            <p className="text-sm text-gray-400">On your To See list</p>
           </div>
           <ModalCloseButton onClick={onClose} />
         </div>
@@ -212,7 +212,7 @@ function PlanSheet({ showId, showTitle, entry, event, onDateChange, onShowtimeCh
             onClick={async () => { await guarded(onRemove)(); onClose(); }}
             className="btn btn-secondary w-full h-12 text-score-skip"
           >
-            Remove from watchlist
+            Remove from To See
           </button>
         </div>
       </div>

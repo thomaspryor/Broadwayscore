@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-4317: review-text folders whose name is not a shows.json id never reach
  * the site (rebuild-all-reviews.js skips them). Covers the scanner, the

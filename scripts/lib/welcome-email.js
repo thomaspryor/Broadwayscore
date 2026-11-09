@@ -39,23 +39,23 @@ const DAILY_CAP = 25;
 const PER_RUN_CAP = 10;
 
 const SUBJECT = 'Welcome to Broadway Scorecard';
-const PREHEADER = "Your diary, your watchlist, and how to bring over the shows you've already logged.";
+const PREHEADER = "The shows you've seen, the ones you want to see, and how to bring over the shows you've already logged.";
 const MY_SHOWS_URL = 'https://broadwayscorecard.com/my-shows?utm_source=email&utm_medium=welcome&utm_campaign=welcome';
 const SITE_URL = 'https://broadwayscorecard.com';
 
-const INTRO = 'Your account is set up. It keeps your theater diary, your watchlist and your lists in one place, and they follow you to any phone or computer you sign in on.';
+const INTRO = "Your account is set up. It keeps the shows you've seen, the ones you want to see and your lists in one place, and they follow you to any phone or computer you sign in on.";
 const STEPS = [
   {
     title: "Rate the shows you've seen",
-    body: 'Open any show and tap the stars. Each rating goes into your diary, and you can add the date you went.',
+    body: 'Open any show and tap the stars. Each rating goes into Seen, and you can add the date you went.',
   },
   {
     title: 'Bring your history over',
     body: 'Already log shows on Show Score, Mezzanine or Theatr? Import them from My Shows and skip the typing.',
   },
   {
-    title: 'Keep a watchlist',
-    body: "Tap Watchlist on a show you want to catch, then sort the list by closing date so you don't miss it.",
+    title: 'Keep a To See list',
+    body: "Tap Want to See on a show you want to catch, then sort the list by closing date so you don't miss it.",
   },
 ];
 const BUTTON_LABEL = 'Open My Shows';

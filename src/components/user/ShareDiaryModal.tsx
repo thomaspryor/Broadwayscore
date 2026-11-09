@@ -60,7 +60,7 @@ export default function ShareDiaryModal({ isOpen, onClose, userId, profileName, 
       const link = reuse ? url : await ensure({ display_name: name });
       if (!link) { showToast?.('Couldn’t create your link. Try again.', 'error'); return; }
       if (!live) trackSharedDiary({ name: 'diary_share_enabled', props: { shows: showsSeen } });
-      const outcome = await shareOrCopy({ title: 'My theater diary', url: link });
+      const outcome = await shareOrCopy({ title: 'Shows I’ve seen', url: link });
       if (outcome === 'shared') trackSharedDiary({ name: 'diary_shared', props: { method: 'native-sheet' } });
       if (outcome === 'copied') {
         trackSharedDiary({ name: 'diary_shared', props: { method: 'copy' } });
@@ -99,10 +99,10 @@ export default function ShareDiaryModal({ isOpen, onClose, userId, profileName, 
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} maxWidth="md" bottomSheet ariaLabel="Share your theater diary">
+    <Modal isOpen={isOpen} onClose={onClose} maxWidth="md" bottomSheet ariaLabel="Share the shows you’ve seen">
       <div className="p-card-lg" data-testid="share-diary-modal">
         <div className="flex items-start justify-between gap-3 mb-2">
-          <h2 className="text-lg font-bold text-white">Share your theater diary</h2>
+          <h2 className="text-lg font-bold text-white">Share the shows you’ve seen</h2>
           <ModalCloseButton onClick={onClose} />
         </div>
         <p className="text-sm text-gray-400 mb-5">

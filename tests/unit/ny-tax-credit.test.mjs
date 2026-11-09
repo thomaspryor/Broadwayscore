@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/commercial.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // NY tax credit amounts the recoupment models count (BRO-5517): a published
 // ESD award wins over the formula, and the formula is the one refitted to
 // those awards. Tests the real modules via require().

@@ -140,4 +140,55 @@ function readJobTimeouts(workflowFile) {
   return parseJobTimeouts(fs.readFileSync(wfPath, 'utf8'));
 }
 
-module.exports = { minutesBetween, classifyJob, parseJobTimeouts, readJobTimeouts };
+/**
+ * PURE (BRO-7102 stage 4). Time headroom per job: how close each job's NORMAL
+ * duration sits to its declared `timeout-minutes`. The class this guards: a
+ * job's runtime creeps up to its limit, runs get killed there and counted red
+ * with nothing broken (test.yml Unit Tests, 30 days to 2026-11-07: 74 of 79
+ * cancelled main runs). classifyJob only names a kill after it happens; this
+ * warns while there is still room.
+ *
+ * Counted: success and failure jobs at their duration, plus timeout-cancelled
+ * jobs (>= 0.85 x timeout, classifyJob's fingerprint). Leaving the killed ones
+ * out would hide exactly the runs that hit the wall (survivor bias). Other
+ * cancels (concurrency, manual stop) and skips say nothing about runtime.
+ * Jobs with no declared timeout, or not matched by name (matrix templates),
+ * are left out.
+ *
+ * @param {Array<{name,conclusion,startedAt,completedAt}>} jobs
+ * @param {Object<string, number>} timeouts parseJobTimeouts output
+ * @param {{ratio?: number, minSamples?: number}} [opts]
+ * @returns {Array<{name,n,p90Min,timeoutMin,ratio,tight}>} tightest first
+ */
+function timeoutHeadroom(jobs, timeouts, { ratio = 0.8, minSamples = 5 } = {}) {
+  const byName = new Map();
+  for (const job of Array.isArray(jobs) ? jobs : []) {
+    if (!job || !job.name) continue;
+    // Matrix jobs report as `Unit Test Shard (2)`; the workflow's `name:` has no
+    // suffix, so the shards pool under one row (same strip as main-red-streak.js).
+    const name = String(job.name).replace(/\s*\(\d+\)$/, '');
+    const timeout = timeouts[name];
+    if (timeout == null) continue;
+    const d = minutesBetween(job.startedAt, job.completedAt);
+    if (d == null || d < 0) continue;
+    const counted = job.conclusion === 'success' || job.conclusion === 'failure'
+      || (job.conclusion === 'cancelled' && d >= timeout * 0.85);
+    if (!counted) continue;
+    if (!byName.has(name)) byName.set(name, []);
+    byName.get(name).push(d);
+  }
+  const rows = [];
+  for (const [name, ds] of byName) {
+    if (ds.length < minSamples) continue;
+    const sorted = ds.slice().sort((a, b) => a - b);
+    // Nearest-rank p90: with 10 or fewer samples this is the max, so one slow run can warn
+    // (advisory, by design: a single run near the wall is worth a look).
+    const p90Min = sorted[Math.min(sorted.length - 1, Math.ceil(sorted.length * 0.9) - 1)];
+    const timeoutMin = timeouts[name];
+    const r = p90Min / timeoutMin;
+    rows.push({ name, n: ds.length, p90Min, timeoutMin, ratio: r, tight: r >= ratio });
+  }
+  return rows.sort((a, b) => b.ratio - a.ratio);
+}
+
+module.exports = { minutesBetween, classifyJob, parseJobTimeouts, readJobTimeouts, timeoutHeadroom };

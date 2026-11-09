@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Metadata } from 'next';
 import { getBroadwayShows } from '@/lib/data-core';
-import { getAudienceBuzz, getAudienceBuzzLastUpdated, getAudienceGrade, FULL_CONFIDENCE_AUDIENCE_REVIEWS } from '@/lib/data-audience';
+import { getAudienceBuzz, getAudienceBuzzLastUpdated, getTotalAudienceReviews, getAudienceGrade, FULL_CONFIDENCE_AUDIENCE_REVIEWS } from '@/lib/data-audience';
 import type { AudienceBuzzData } from '@/lib/data-types';
 import { generateBreadcrumbSchema, marketAlternates, BASE_URL, SITE_OG_IMAGE } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
@@ -85,7 +85,7 @@ export default function AudienceBuzzPage() {
     }))
     .filter(item => {
       if (!item.buzz || item.buzz.combinedScore <= 0) return false;
-      const total = Object.values(item.buzz.sources || {}).reduce((sum, s) => sum + (s?.reviewCount || 0), 0);
+      const total = getTotalAudienceReviews(item.buzz, item.show);
       return total >= FULL_CONFIDENCE_AUDIENCE_REVIEWS; // ranked page: full-confidence bar
     })
     .sort((a, b) => (b.buzz?.combinedScore || 0) - (a.buzz?.combinedScore || 0));
@@ -100,7 +100,7 @@ export default function AudienceBuzzPage() {
 
   const totalReviews = showsWithBuzz.reduce((sum, item) => {
     if (!item.buzz) return sum;
-    return sum + Object.values(item.buzz.sources || {}).reduce((s, src) => s + (src?.reviewCount || 0), 0);
+    return sum + getTotalAudienceReviews(item.buzz, item.show);
   }, 0);
 
   const breadcrumbSchema = generateBreadcrumbSchema([

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-3790: ingest-review-from-url.js merge-into-existing silently preserves
  * stale url/criticName/fullText, reports false-positive "Updated".

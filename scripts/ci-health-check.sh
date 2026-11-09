@@ -83,6 +83,13 @@ SKIPPED=0
 CANCELLED_MID_SETUP=0
 CANCELLED_VALIDATED=0
 OTHER=0
+# BRO-7102 stage 4: per-job durations from the same `gh run view` calls (no
+# extra API calls), printed as one JOB-DURATIONS: line for health-check.js's
+# "Main: job time headroom" row (cron-health.js timeoutHeadroom).
+# One JSON array per run in a temp file (no growing command-line argument:
+# --argjson on the whole accumulator hits the 128 KiB per-argument cap near 100 runs).
+JOBS_FILE=$(mktemp)
+trap 'rm -f "${JOBS_FILE}"' EXIT
 
 for id in ${RUN_IDS}; do
   if ! RUN_DETAIL=$(gh run view "${id}" --json conclusion,jobs 2>/dev/null) || [ -z "${RUN_DETAIL}" ]; then
@@ -91,6 +98,8 @@ for id in ${RUN_IDS}; do
     continue
   fi
   CONCLUSION=$(echo "${RUN_DETAIL}" | jq -r '.conclusion // "unknown"')
+  jq -c '[(.jobs // [])[] | {name, conclusion, startedAt, completedAt}]' <<<"${RUN_DETAIL}" >>"${JOBS_FILE}" 2>/dev/null \
+    || echo "::warning::run ${id}: could not read its jobs for JOB-DURATIONS" >&2
 
   TOTAL=$((TOTAL + 1))
 
@@ -117,6 +126,8 @@ if [ "${TOTAL}" -eq 0 ]; then
 fi
 
 RATE_PCT=$((CANCELLED_MID_SETUP * 100 / TOTAL))
+
+echo "JOB-DURATIONS: $(jq -cs 'add // []' "${JOBS_FILE}" 2>/dev/null || echo '[]')"
 
 echo ""
 echo "=== CI Health: test.yml on main (last ${TOTAL} completed runs, ${SKIPPED} skipped) ==="

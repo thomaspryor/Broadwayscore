@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Regression lock for LBO individual-review URL → show matching.
 //
 // Background: the LBO sitemap sweep (scrape-london-box-office-roundups.js) used

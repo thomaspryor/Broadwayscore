@@ -21,7 +21,8 @@
  * Facebook have clicks, Instagram has reach), but every network can send a visit.
  */
 
-const { scoreDecision, doneKeys, isEligibleShow, morningAfter } = require('../social-autopost/select');
+const { backfillWindow, backfillDoneKeys, scoreDecision, doneKeys, isEligibleShow, morningAfter } = require('../social-autopost/select');
+const { postsToOwnSet } = require('../social-autopost/routing');
 const C = require('../social-autopost/config');
 
 const NETWORK_NAMES = { twitter: 'X', bluesky: 'Bluesky', threads: 'Threads', instagram: 'Instagram', facebook: 'Facebook', tiktok: 'TikTok', youtube: 'YouTube' };
@@ -105,6 +106,9 @@ function buildPostRows(bufferPosts, ledger, shows = []) {
       service: p.service,
       sentAt: p.sentAt,
       lane: entry ? (entry.type || 'score') : (p.isVideo ? 'video' : 'other'),
+      // Score posts only: 'ai' when the AI writer's draft posted (BRO-6959), else 'template'
+      // (entries from before the writer existed carry no field and were all template).
+      writer: entry && (entry.type || 'score') === 'score' ? (entry.writer === 'ai' ? 'ai' : 'template') : null,
       title: (entry && entry.title) || (named && `${named.title} (video)`) || (firstLine.length > 70 ? `${firstLine.slice(0, 67)}...` : firstLine) || 'Untitled post',
       slug: (entry && entry.slug) || slugFromText(p.text),
       // Slugs whose visits count for this post: a compare post links both shows.
@@ -245,7 +249,7 @@ function groupStats(rows, keyFn) {
 }
 
 /** Monthly keep/drop suggestion over `rows` (the last 30 days). */
-function monthlySuggestion(rows) {
+function monthlySuggestion(rows, now = Date.now()) {
   const judged = (groups, nameFn) => Object.entries(groups)
     .filter(([, g]) => g.posts >= MIN_POSTS_TO_JUDGE)
     .map(([k, g]) => ({ key: k, name: nameFn(k), ...g, perPost: (g.visits * 3 + g.interactions) / g.posts }))
@@ -257,6 +261,19 @@ function monthlySuggestion(rows) {
     lines.push(`Do more ${lanes[0].name}: ${(lanes[0].visits / lanes[0].posts).toFixed(1)} visits per post, against ${(lanes[lanes.length - 1].visits / lanes[lanes.length - 1].posts).toFixed(1)} for ${lanes[lanes.length - 1].name}.`);
   } else if (lanes.length === 1) {
     lines.push(`Only ${lanes[0].name} have enough posts to judge so far (${lanes[0].posts}); keep going and next month can compare.`);
+  }
+  // BRO-6959: are the AI-written score posts earning more than the template ones? Only posts at
+  // least a week old count (newer AI posts have had less time to collect visits), and each side
+  // needs MIN_POSTS_TO_JUDGE different shows, since one show cross-posted to five networks is five rows.
+  const aged = rows.filter((r) => r.writer && now - Date.parse(r.sentAt) >= 7 * DAY_MS);
+  const side = (w) => {
+    const rs = aged.filter((r) => r.writer === w);
+    return { posts: rs.length, shows: new Set(rs.map((r) => r.slug)).size, visits: rs.reduce((n, r) => n + r.visits, 0), interactions: rs.reduce((n, r) => n + r.interactions, 0) };
+  };
+  const ai = side('ai'), tpl = side('template');
+  if (ai.shows >= MIN_POSTS_TO_JUDGE && tpl.shows >= MIN_POSTS_TO_JUDGE) {
+    const per = (g) => (g.visits / g.posts).toFixed(1), likes = (g) => (g.interactions / g.posts).toFixed(1);
+    lines.push(`AI-written score posts: ${per(ai)} visits and ${likes(ai)} likes or shares per post, against ${per(tpl)} and ${likes(tpl)} for template ones (${plural(ai.shows, 'show')} and ${plural(tpl.shows, 'show')}, posts at least a week old).`);
   }
   if (nets.length) {
     lines.push(`Best network: ${nets[0].name} (${plural(nets[0].visits, 'visit')}, ${plural(nets[0].interactions, 'like or share', 'likes and shares')} from ${plural(nets[0].posts, 'post')}).`);
@@ -323,6 +340,11 @@ function gaveUpIds(ledger) {
   const failures = (ledger && ledger._meta && ledger._meta.failures) || {};
   return new Set(Object.keys(failures).filter((id) => failures[id] && failures[id].count >= MAX_SHOW_ATTEMPTS));
 }
+// True when the show's closing date fell within the last week or is under bf.minDaysLeft away.
+function closedRecently(show, now, bf) {
+  const closing = Date.parse(`${String(show.closingDate || '').slice(0, 10)}T12:00:00Z`);
+  return Number.isFinite(closing) && closing > now - 7 * DAY_MS && closing < now + bf.minDaysLeft * DAY_MS;
+}
 function skippedShows({ ctx, ledger, now }) {
   if (!ctx) return [];
   const posts = (ledger && ledger.posts) || [];
@@ -330,15 +352,21 @@ function skippedShows({ ctx, ledger, now }) {
   if (!Number.isFinite(goLive)) return [];
   const showsById = new Map(ctx.shows.map((s) => [s.id, s]));
   const dctx = { ...ctx, done: doneKeys(ledger), now };
+  const bctx = { ...dctx, done: backfillDoneKeys(ledger) };
   const lookbackMs = C.SCORE_LOOKBACK_DAYS * DAY_MS;
+  const bf = C.BACKFILL && C.BACKFILL.enabled ? C.BACKFILL : null;
+  const backfillMs = bf ? bf.lookbackDays * DAY_MS : 0;
   const gaveUp = gaveUpIds(ledger);
   const out = [];
   for (const show of ctx.shows) {
-    if (!isEligibleShow(show, { allowOpera: true })) continue;
+    if (!isEligibleShow(show, { allowOpera: true, allowTouring: true, shows: ctx.shows })) continue;
     const slot = morningAfter(show);
-    if (slot > now || now - slot > lookbackMs + 7 * DAY_MS || slot + lookbackMs < goLive) continue;
+    if (slot > now || now - slot > Math.max(lookbackMs, backfillMs) + 7 * DAY_MS) continue;
+    // Aged out before go-live: only the quiet-day backfill can still post it.
+    if (slot + lookbackMs < goLive && !backfillWindow(show, bctx)) continue;
     const d = scoreDecision(show, dctx);
     if (d.why === 'done' || d.why === 'not-yet') continue;
+    if (bctx.done.has(`score:${show.id}`)) continue; // a brief or closing-soon card covered it
     if (gaveUp.has(show.id)) {
       out.push({ title: showName(show), link: showLink(show), reason: 'posting failed 3 times in a row, so it stopped trying (needs a look)', final: true, category: show.category });
       continue;
@@ -347,20 +375,48 @@ function skippedShows({ ctx, ledger, now }) {
     let reason; let final = false;
     if (d.why === 'too-old') {
       const u = scoreDecision(show, dctx, { ignoreAge: true });
-      reason = u.due
-        ? `has a score now, but it was not ready within ${C.SCORE_LOOKBACK_DAYS} days of opening`
-        : `gave up ${C.SCORE_LOOKBACK_DAYS} days after opening: ${plainReason(u)}`;
-      final = true;
+      const age = now - slot;
+      if (backfillWindow(show, bctx)) {
+        // BRO-6932: still owed a post; a quiet day picks it up once its score settles.
+        reason = u.due
+          ? `its score settled after the ${C.SCORE_LOOKBACK_DAYS}-day window, so it will post on a quiet day (a day with nothing else going out)`
+          : `not posted yet: ${plainReason(u)}. It will post on a quiet day once that changes`;
+      } else if (bf && age > backfillMs && show.status === 'open' && postsToOwnSet(show) && !['regional', 'tour'].includes(show.category)) {
+        // Was owed a quiet-day post until bf.lookbackDays; reported once, the week it ages out.
+        reason = u.due
+          ? `no quiet day came up within ${bf.lookbackDays} days of opening, so it was never posted`
+          : `gave up ${bf.lookbackDays} days after opening: ${plainReason(u)}`;
+        final = true;
+      } else if (bf && age <= backfillMs && closedRecently(show, now, bf) && postsToOwnSet(show) && !['regional', 'tour'].includes(show.category)) {
+        // Was owed a quiet-day post until it closed (or got too close to closing); said the week that happens.
+        if (u.due) reason = 'closed before a quiet day came up, so it was never posted';
+        else if (age <= lookbackMs + 7 * DAY_MS) reason = `gave up ${C.SCORE_LOOKBACK_DAYS} days after opening: ${plainReason(u)}`;
+        else reason = `gave up when it closed: ${plainReason(u)}`;
+        final = true;
+      } else if (age <= lookbackMs + 7 * DAY_MS) {
+        reason = u.due
+          ? `has a score now, but it was not ready within ${C.SCORE_LOOKBACK_DAYS} days of opening`
+          : `gave up ${C.SCORE_LOOKBACK_DAYS} days after opening: ${plainReason(u)}`;
+        final = true;
+      } else {
+        continue; // already reported the week it aged out
+      }
     } else {
       reason = plainReason(d);
     }
     out.push({ title: showName(show), link: showLink(show), reason, final, category: show.category });
   }
   for (const p of posts) {
-    if (!p.skipped || !p.date || now - Date.parse(`${p.date}T12:00:00Z`) > 7 * DAY_MS) continue;
+    if (!p.skipped || !p.date) continue;
     const show = showsById.get(p.showId);
-    const reason = p.skipped === 'backlog at go-live' ? 'opened before automatic posting was switched on' : p.skipped;
-    out.push({ title: show ? showName(show) : p.showId, link: show ? showLink(show) : null, reason, final: true, category: show && show.category });
+    const backlog = p.skipped === 'backlog at go-live';
+    // BRO-6932: a backlog skip stays owed a quiet-day post (backfillDoneKeys ignores it) until it posts.
+    const owed = !!(backlog && show && backfillWindow(show, bctx));
+    if (!owed && now - Date.parse(`${p.date}T12:00:00Z`) > 7 * DAY_MS) continue;
+    const reason = owed
+      ? `opened before automatic posting was switched on; it will post on a quiet day${scoreDecision(show, bctx, { ignoreAge: true }).due ? '' : ' once its score settles'}`
+      : backlog ? 'opened before automatic posting was switched on' : p.skipped;
+    out.push({ title: show ? showName(show) : p.showId, link: show ? showLink(show) : null, reason, final: !owed, category: show && show.category });
   }
   const rank = (c) => (CATEGORY_ORDER.includes(c) ? CATEGORY_ORDER.indexOf(c) : CATEGORY_ORDER.length);
   return out.sort((a, b) => b.final - a.final || rank(a.category) - rank(b.category) || a.title.localeCompare(b.title))
@@ -401,7 +457,7 @@ function upcomingPosts({ scheduled = [], ctx, ledger, now }) {
     const done = doneKeys(ledger);
     const gaveUp = gaveUpIds(ledger);
     for (const show of ctx.shows) {
-      if (!isEligibleShow(show, { allowOpera: true }) || done.has(`score:${show.id}`) || gaveUp.has(show.id) || inBuffer.has(show.slug || show.id)) continue;
+      if (!isEligibleShow(show, { allowOpera: true, allowTouring: true, shows: ctx.shows }) || done.has(`score:${show.id}`) || gaveUp.has(show.id) || inBuffer.has(show.slug || show.id)) continue;
       const slot = morningAfter(show);
       if (slot <= now || slot > end) continue;
       out.push({ title: showName(show), due: slot, line: `${localTime(slot, C.MARKETS[show.category].tz)}, score post on every network if the score is ready by then` });
@@ -495,7 +551,7 @@ function buildSocialReport({ bufferPosts, ledger, utmRows, bioRows, bioPageViews
   };
   if (new Date(now).getUTCDate() <= 7) {
     const monthRows = rows.filter((r) => now - Date.parse(r.sentAt) <= 30 * DAY_MS);
-    report.monthly = { posts: monthRows.length, lines: monthlySuggestion(monthRows) };
+    report.monthly = { posts: monthRows.length, lines: monthlySuggestion(monthRows, now) };
   }
   return report;
 }

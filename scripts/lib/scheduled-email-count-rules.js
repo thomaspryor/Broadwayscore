@@ -207,4 +207,30 @@ function decideDayMissing(dayBucket, dayKey = null) {
   return { missing: !primaryFired, primaryFired, senderCount, missingExpected };
 }
 
-module.exports = { SCHEDULED_SENDERS, EXPECTED_SENDER_KEYS, classifySubject, dayKeyET, buildDailyReport, decideDayViolation, decideDayMissing, PRIMARY_SENDER_KEY, RETIRED_FORGIVENESS_ENDS };
+// BRO-6157: a dated `scheduled-email-missing:<sender>:<day>` key fires once
+// (the run that judges <day>) and is never re-evaluated, so nothing ever
+// resolved it. owner-alert-router's absence rule only resolves it after its
+// card is Done, and the card's check-alert-condition-absent VERIFY needs the
+// row resolved first: a deadlock that left BRO-6157 un-closable. The explicit
+// green observation is the same sender delivering on a LATER day in the
+// fetched Resend history. `judgedDay` (the day this run may fire a key for)
+// is never resolved here, so a key is not filed and cleared in one run.
+// Returns [{ key, sender, missedDay, recoveredOn }] for open rows only.
+const MISSING_KEY_RE = /^scheduled-email-missing:([a-z0-9-]+):(\d{4}-\d{2}-\d{2})$/;
+function recoveredMissingKeys(conditions, days, { judgedDay = null } = {}) {
+  const out = [];
+  if (!(days instanceof Map)) return out;
+  const dayKeys = [...days.keys()].sort();
+  for (const [key, row] of Object.entries(conditions || {})) {
+    if (!row || row.status !== 'open') continue;
+    const m = MISSING_KEY_RE.exec(key);
+    if (!m) continue;
+    const [, sender, missedDay] = m;
+    if (judgedDay && missedDay >= judgedDay) continue;
+    const recoveredOn = dayKeys.find((d) => d > missedDay && days.get(d)?.senders?.has(sender));
+    if (recoveredOn) out.push({ key, sender, missedDay, recoveredOn });
+  }
+  return out;
+}
+
+module.exports = { SCHEDULED_SENDERS, EXPECTED_SENDER_KEYS, classifySubject, dayKeyET, buildDailyReport, decideDayViolation, decideDayMissing, recoveredMissingKeys, PRIMARY_SENDER_KEY, RETIRED_FORGIVENESS_ENDS };

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-6611: the "reviewed shows missing from shows.json" digest row flagged
  * "Middlemarch" (Guardian review, RSC) at "missing 0d", hours before the daily

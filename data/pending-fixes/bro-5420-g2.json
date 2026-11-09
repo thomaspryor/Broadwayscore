@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5420-g2",
   "planId": "c5f1baed-b20a-4b34-a15b-3719cffd12ae",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-16T04:45:00.000Z",
   "submitter": {
     "name": null,
@@ -128,5 +128,52 @@
       "msg": "Moved waiting-for-godot-2025/city-am--adam-bloodworth.json → waiting-for-godot-west-end-2024/city-am--adam-bloodworth.json",
       "cleared": []
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "obsolete": 7
+    },
+    "ops": [
+      {
+        "i": 0,
+        "verdict": "obsolete",
+        "reason": "review file the-hills-of-california-2024/london-theatre--unknown.json no longer exists and nothing in the-hills-of-california-2024 looks like a rename"
+      },
+      {
+        "i": 1,
+        "verdict": "obsolete",
+        "reason": "the-hills-of-california-west-end-2024/radio-times--olivia-garrett.json exists and the-hills-of-california-2024/radio-times--olivia-garrett.json is not counted, so nothing is double-counted"
+      },
+      {
+        "i": 2,
+        "verdict": "obsolete",
+        "reason": "review file the-shark-is-broken-2023/guardian--httpswwwtheguardiancomprofileryangilbey.json no longer exists and nothing in the-shark-is-broken-2023 looks like a rename"
+      },
+      {
+        "i": 3,
+        "verdict": "obsolete",
+        "reason": "the-shark-is-broken-west-end-2021/i-paper--sam-marlowe.json exists and the-shark-is-broken-2023/i-paper--sam-marlowe.json is not counted, so nothing is double-counted"
+      },
+      {
+        "i": 4,
+        "verdict": "obsolete",
+        "reason": "review file the-shark-is-broken-2023/independent--unknown.json no longer exists and nothing in the-shark-is-broken-2023 looks like a rename"
+      },
+      {
+        "i": 5,
+        "verdict": "obsolete",
+        "reason": "review file the-shark-is-broken-2023/london-theatre--unknown.json no longer exists and nothing in the-shark-is-broken-2023 looks like a rename"
+      },
+      {
+        "i": 6,
+        "verdict": "obsolete",
+        "reason": "review file uncle-vanya-2024/london-theatre--unknown.json no longer exists and nothing in uncle-vanya-2024 looks like a rename"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (7 obsolete); per-op reasons in triage.ops"
 }

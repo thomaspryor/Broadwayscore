@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Regression test: a registration-walled The Stage page still yields the
  * article's date, byline and standfirst (reader report 2026-09-26: Man to Man,

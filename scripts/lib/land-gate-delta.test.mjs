@@ -719,3 +719,128 @@ test('next-lint keys absolute ESLint stylish paths to the repo-relative file (BR
   assert.deepEqual([...a.keys()], [...b.keys()]);
   assert.ok([...a.keys()][0].startsWith('src/app/x.tsx'));
 });
+
+// BRO-7111: the CLI ended with process.exit(main()). With stdout a pipe the reader drains
+// slower than the writer (land-local-check's spawnSync capture), Node queued the writes and
+// process.exit threw them away: a 960KB verdict arrived as 231KB with no FAIL line, so the
+// report hid the one new failure. This fails if the entry point goes back to process.exit.
+test('BRO-7111: a verdict over 1MB reaches a piped reader whole (FAIL line, NEW line and summary table)', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'land-gate-delta-big-'));
+  try {
+    const msg = 'Cannot find module or its corresponding type declarations. '.repeat(3);
+    const old = Array.from({ length: 8000 }, (_, i) => `src/f${i}.ts(1,1): error TS2307: ${msg}`).join('\n');
+    const base = resultDir(tmp, 'base', { tsc: { exit: 2, text: `${old}\n` } });
+    const branch = resultDir(tmp, 'branch', { tsc: { exit: 2, text: `${old}\nsrc/new.ts(1,1): error TS2322: brand new\n` } });
+    const env = { ...process.env };
+    delete env.NODE_TEST_CONTEXT;
+    const r = spawnSync(process.execPath, [CLI, '--base-dir', base, '--branch-dir', branch, '--gates', 'tsc', '--base-source', 'test'],
+      { encoding: 'utf8', env, maxBuffer: 64 * 1024 * 1024 });
+    assert.equal(r.status, 1);
+    assert.ok(r.stdout.length > 1024 * 1024, `expected >1MB of output, got ${r.stdout.length}`);
+    assert.match(r.stdout, /^FAIL {2}tsc/m);
+    assert.match(r.stdout, /::error::tsc: NEW failure on the branch \(absent on origin\/main\): src\/new\.ts/);
+    assert.match(r.stdout, /\| tsc \| \*\*FAIL\*\* \|/, 'the markdown summary printed last must arrive');
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});
+
+// ── e2e-local (BRO-7106): browser E2E on a local build, its own land.yml job ──
+function withE2eBrowserBlocking(value, fn) {
+  const prev = process.env.LAND_E2E_BROWSER_BLOCKING;
+  try {
+    if (value === undefined) delete process.env.LAND_E2E_BROWSER_BLOCKING; else process.env.LAND_E2E_BROWSER_BLOCKING = value;
+    return fn();
+  } finally {
+    if (prev === undefined) delete process.env.LAND_E2E_BROWSER_BLOCKING; else process.env.LAND_E2E_BROWSER_BLOCKING = prev;
+  }
+}
+const E2E_A = '::error::e2e-local gate failed: tests/e2e/user-flows.spec.ts > Diary > search works (exit 1)';
+const E2E_B = '::error::e2e-local gate failed: tests/e2e/smoke.spec.ts > Homepage > loads (exit 1)';
+
+test('e2e-local (BRO-7106): not a checks-job gate, keyed per test, advisory until LAND_E2E_BROWSER_BLOCKING=1', () => {
+  assert.equal(GATES.includes('e2e-local'), false, 'run by its own land.yml job with --gates e2e-local, not the gauntlet');
+  assert.deepEqual([...parseGateFailures('e2e-local', `noise\n\x1b[31m${E2E_A}\x1b[0m\n${E2E_B}\n`).keys()].sort(), [
+    'e2e-local::tests/e2e/smoke.spec.ts > Homepage > loads',
+    'e2e-local::tests/e2e/user-flows.spec.ts > Diary > search works',
+  ]);
+  const read = (dir) => (dir === 'branch' ? { exit: 1, text: E2E_A } : { exit: 0, text: '' });
+  for (const unset of [undefined, '', '0']) {
+    const [adv] = withE2eBrowserBlocking(unset, () => decideAllGates({ gates: ['e2e-local'], base: 'base', branch: 'branch', read }));
+    assert.equal(adv.verdict, 'pass', `LAND_E2E_BROWSER_BLOCKING=${JSON.stringify(unset)} stays advisory`);
+    assert.equal(adv.mode, 'advisory');
+    assert.equal(adv.newFailures.length, 1);
+  }
+  const [armed] = withE2eBrowserBlocking('1', () => decideAllGates({ gates: ['e2e-local'], base: 'base', branch: 'branch', read }));
+  assert.equal(armed.verdict, 'fail');
+});
+
+test('e2e-local armed: a test red on base too is pre-existing; a newly red one blocks', () => {
+  const read = (dir) => (dir === 'branch' ? { exit: 1, text: `${E2E_A}\n${E2E_B}` } : { exit: 1, text: E2E_A });
+  const [d] = withE2eBrowserBlocking('1', () => decideAllGates({ gates: ['e2e-local'], base: 'base', branch: 'branch', read }));
+  assert.equal(d.verdict, 'fail');
+  assert.equal(d.preExisting.length, 1);
+  assert.equal(d.newFailures.length, 1);
+  assert.match(d.newFailures[0].name, /smoke\.spec\.ts > Homepage > loads/);
+});
+
+test('e2e-local advisory never downgrades a run that produced no result', () => {
+  const [d] = withE2eBrowserBlocking(undefined, () => decideAllGates({ gates: ['e2e-local'], base: 'base', branch: 'branch', read: () => null }));
+  assert.equal(d.verdict, 'fail');
+});
+
+test('land-e2e-local-report.js: unexpected tests become keyed lines; flaky and passed do not', () => {
+  const { failingTests, formatLines } = require('./land-e2e-local-report.js');
+  const report = { suites: [{ title: 'smoke.spec.ts', file: 'smoke.spec.ts', specs: [], suites: [{ title: 'Homepage', specs: [
+    { title: 'loads', file: 'smoke.spec.ts', tests: [{ status: 'unexpected' }] },
+    { title: 'retried', file: 'smoke.spec.ts', tests: [{ status: 'flaky' }] },
+    { title: 'ok', file: 'smoke.spec.ts', tests: [{ status: 'expected' }] },
+  ] }] }] };
+  const lines = formatLines(failingTests(report));
+  assert.deepEqual(lines, ['::error::e2e-local gate failed: smoke.spec.ts > Homepage > loads (exit 1)']);
+  assert.equal(parseGateFailures('e2e-local', lines.join('\n')).size, 1, 'the delta parser reads what the report writes');
+});
+
+test('e2e-local CLI: --gates e2e-local over result dirs written in the gauntlet shape', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'e2e-local-delta-'));
+  const mk = (name, exit, log) => {
+    const d = path.join(tmp, name); fs.mkdirSync(d);
+    fs.writeFileSync(path.join(d, 'e2e-local.exit'), `${exit}\n`);
+    fs.writeFileSync(path.join(d, 'e2e-local.log'), log);
+    fs.writeFileSync(path.join(d, 'meta.json'), JSON.stringify({ sha: name, root: tmp }));
+    return d;
+  };
+  const base = mk('base', 1, E2E_A);
+  const branch = mk('branch', 1, `${E2E_A}\n${E2E_B}`);
+  const cli = path.join(path.dirname(new URL(import.meta.url).pathname), 'land-gate-delta.js');
+  const env = { ...process.env }; delete env.LAND_E2E_BROWSER_BLOCKING; delete env.LAND_STRICT_GATES;
+  const adv = spawnSync('node', [cli, '--base-dir', base, '--branch-dir', branch, '--gates', 'e2e-local'], { env, encoding: 'utf8' });
+  assert.equal(adv.status, 0, adv.stdout + adv.stderr);
+  assert.match(adv.stdout, /::warning::e2e-local: NEW failure.*smoke\.spec\.ts > Homepage > loads/);
+  const armed = spawnSync('node', [cli, '--base-dir', base, '--branch-dir', branch, '--gates', 'e2e-local'], { env: { ...env, LAND_E2E_BROWSER_BLOCKING: '1' }, encoding: 'utf8' });
+  assert.equal(armed.status, 1);
+  fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+});
+
+// BRO-7106: land.yml's e2e-local job stages a copy of the harness outside the tree (the base
+// checkout replaces it), then runs land-gate-delta.js from that copy. A hand-picked file list
+// missed its sibling requires and the verdict step crashed (MODULE_NOT_FOUND) on its first land.
+// Re-run land.yml's own staging line into a temp dir and load the copy.
+test('BRO-7106: land.yml e2e-harness staging copies everything land-gate-delta.js requires', () => {
+  const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..', '..');
+  const yml = fs.readFileSync(path.join(root, '.github/workflows/land.yml'), 'utf8');
+  const line = yml.split('\n').map((l) => l.trim()).find((l) => /^cp .*"\$H\/"$/.test(l));
+  assert.ok(line, 'land.yml no longer has the e2e-harness `cp ... "$H/"` staging line');
+  const H = fs.mkdtempSync(path.join(os.tmpdir(), 'e2e-harness-'));
+  try {
+    execFileSync('bash', ['-c', line], { cwd: root, env: { ...process.env, H } });
+    for (const f of ['land-e2e-local.sh', 'land-e2e-local-report.js', 'land-gate-delta.js']) {
+      assert.ok(fs.existsSync(path.join(H, f)), `staging misses ${f}`);
+    }
+    const r = spawnSync(process.execPath, [path.join(H, 'land-gate-delta.js'), '--help'], { encoding: 'utf8' });
+    assert.doesNotMatch(r.stderr, /Cannot find module/, r.stderr);
+    assert.match(r.stdout + r.stderr, /usage: land-gate-delta\.js/);
+  } finally {
+    fs.rmSync(H, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});

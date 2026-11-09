@@ -74,6 +74,12 @@ const ROOT = path.resolve(__dirname, '..');
 // that as "decay" would turn a success into a red main. Keep this map tiny and
 // only for tests whose correct home is a scheduled recheck, not the test suite.
 const EXEMPT_NEVER_CI = {
+  // BRO-7082 RECHECK-AFTER probe: live opening-grades file, skipped until 2026-11-09.
+  'scripts/verify-opening-grades-live.test.mjs': 'BRO-7082',
+  // BRO-7040 RECHECK-AFTER probe: live health snapshot, skipped until 2026-11-08.
+  'scripts/verify-bro-7040-recheck.test.mjs': 'BRO-7040',
+  // BRO-6932 RECHECK-AFTER probe: live social ledger, skipped until 2026-11-09.
+  'scripts/verify-bro-6932-recheck.test.mjs': 'BRO-6932',
   // BRO-6518 RECHECK-AFTER probe: live core data, skipped until batch scoring catches up (2026-11-03).
   'scripts/verify-bro-6518-recheck.test.mjs': 'BRO-6518',
   // BRO-5992 RECHECK-AFTER probe: live GSC/PostHog snapshots, skipped until the cohort hold ends (2026-11-16).
@@ -110,6 +116,10 @@ const EXEMPT_NEVER_CI = {
   // accumulates history. Run by autonomous-acceptance-recheck.js at its
   // RECHECK-AFTER date, never by CI. Lives in scripts/, not tests/unit/.
   'scripts/verify-provider-spend-streak.test.mjs': '3ae637c5-416f-81bb',
+  // Deferred-effect acceptance probe (BRO-6959): asserts a live score post
+  // since 2026-11-04 was AI-written; data-state, run only by
+  // autonomous-acceptance-recheck.js after its RECHECK-AFTER date.
+  'scripts/verify-social-ai-live-post.test.mjs': 'BRO-6959',
   // Deferred-effect acceptance probe (task #419, card 3a7637c5-416f-81fd):
   // asserts the "SEO: health" digest condition doesn't fire on the next
   // weekly check-seo-health.yml run. Run by autonomous-acceptance-recheck.js
@@ -218,6 +228,8 @@ const EXEMPT_NEVER_CI = {
   // BRO-3444 RECHECK-AFTER probe: reads the CI health snapshot on origin/main.
   'tests/live/digest-urgent-visitor-only.test.mjs': 'BRO-3444',
   'tests/live/audit-dependencies-no-expiring.test.mjs': 'BRO-4434',
+  // BRO-6872 card acceptance: reads the wall clock against CALLER_ALLOWANCES (check-provider-spend.js VERIFY line).
+  'tests/live/browserbase-allowance-no-expiring.test.mjs': 'BRO-6872',
 };
 
 const EXEMPT_KNOWN_BROKEN = {
@@ -378,6 +390,16 @@ function collectCiCoverage(root = ROOT) {
       throw e;
     }
     for (const entry of entries) manifestEntries.add(entry);
+  }
+  // BRO-7101: check-corpus-drift.yml runs the collector's live lane
+  // (`unit-test-collection.js --lane=live`), which also takes quarantined and
+  // verify-* files that declare LIVE-DATA-LANE. Count them only while some
+  // workflow actually runs that lane.
+  if (/unit-test-collection\.js --lane=live\b/.test(runText)) {
+    try {
+      const { collectLane } = require('./lib/unit-test-collection.js');
+      for (const entry of collectLane(root, 'live')) manifestEntries.add(entry);
+    } catch { /* a collector failure is reported by checkManifests() */ }
   }
   const ci = { manifestEntries, runText };
   return { ...ci, coverageOf: (rel) => ciCoverageOf(rel, ci) };

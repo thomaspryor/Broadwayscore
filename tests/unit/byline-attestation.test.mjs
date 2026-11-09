@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Regression test (BRO-3247, 2026-09-15): same-URL byline dedup crowned a
  * scraper-invented byline over the real one.

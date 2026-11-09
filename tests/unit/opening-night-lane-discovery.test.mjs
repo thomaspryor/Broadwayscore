@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-4783 (epic BRO-4210): the opening-night lane's discovery pass. Real functions, injected fetch, no network.
 // The pages below are hand-built in the shape of the real ones, INCLUDING page chrome (nav, footer, rails, ads,
 // related stories), because what a pass admits is stamped aggregator-verified and the corpus guards stand down for it.
@@ -13,6 +14,7 @@ const require = createRequire(import.meta.url);
 const d = require('../../scripts/lib/opening-night-lane/discovery.js');
 const ledger = require('../../scripts/lib/opening-night-lane/ledger.js');
 const { laneAdapters } = require('../../scripts/lib/opening-night-lane/adapters.js');
+const { resolveOutletFromUrl } = require('../../scripts/lib/review-normalization');
 
 test('unconfigured lane factory sweeps T1 indexes using free requests', async () => {
   const calls = [];
@@ -20,7 +22,7 @@ test('unconfigured lane factory sweeps T1 indexes using free requests', async ()
   await index.discover({ show: { title: 'Test', category: 'broadway' }, fetchText: async (url, opts) => {
     calls.push({ url, opts }); return '<main></main>';
   } });
-  assert.ok(calls.some(c => c.url === 'https://www.nytimes.com/section/theater'));
+  assert.ok(calls.some(c => c.url === 'https://www.vulture.com/theater/'));
   assert.ok(calls.every(c => c.opts.directOnly === true));
 });
 
@@ -218,6 +220,10 @@ test('canonicalUrl: one key per article (https, no www, tracking stripped, param
   assert.equal(d.canonicalUrl('https://nytimes.com/2026/10/19/theater/other-desert-cities-review.html/amp/'), NYT);
   assert.equal(d.canonicalUrl('https://example.com/a?b=2&a=1&utm_campaign=x&fbclid=y'), 'https://example.com/a?a=1&b=2');
   assert.equal(d.canonicalUrl('https://example.com/a?id=7'), 'https://example.com/a?id=7', 'a real parameter survives');
+  const WSJ = 'https://wsj.com/articles/the-imaginary-invalid-review-bill-irwins-hilarious-hypochondriac-ff88aa6b';
+  assert.equal(d.canonicalUrl(`${WSJ.replace('https://', 'https://www.')}?mod=rss_artsculture`), WSJ, 'the WSJ feed tag does not split one review into two keys');
+  assert.equal(d.canonicalUrl(`${WSJ}?reflink=desktopwebshare_permalink&mod=e2tw`), WSJ, 'nor does a WSJ share link');
+  assert.equal(d.canonicalUrl('http://www.lightingandsoundamerica.com/news/story.asp?ID=TNQ36D'), 'https://lightingandsoundamerica.com/news/story.asp?ID=TNQ36D', 'the L&SA article id survives');
   assert.equal(d.canonicalUrl('https://feedproxy.google.com/~r/variety/legit/~3/abc/story.html'), null);
   assert.equal(d.canonicalUrl('https://news.google.com/rss/articles/CBMi'), null);
   assert.equal(d.canonicalUrl('https://bit.ly/3abc'), null);
@@ -592,6 +598,16 @@ test('Talkin\' Broadway adapter: dated review pages that name the show, date rea
   assert.equal(down.errors.length, 1, 'every index failing is reported');
 });
 
+test('Talkin\' Broadway adapter: a Broadway named page listed on past.html is a candidate; index and past pages are not (School Girls replay 2026-11-04)', async () => {
+  const past = 'https://www.talkinbroadway.com/page/world/past.html';
+  const list = `<html><body><main><a href="/page/world/SchoolGirls.html">School Girls; Or, The African Mean Girls Play</a><a href="/page/world/index.html">School Girls</a><a href="/page/world/OtherShow.html">Other Show</a></main></body></html>`;
+  const show = { id: 'school-girls-or-the-african-mean-girls-play-2026', title: 'School Girls; Or, The African Mean Girls Play', openingDate: '2026-09-28' };
+  const a = d.talkinBroadwayAdapter({ indexUrls: [past], now: () => T0 });
+  const fetchText = async (url) => { if (url === past) return list; throw Object.assign(new Error('404 not found'), { status: 404 }); };
+  const out = await a.discover({ show, fetchText });
+  assert.deepEqual(out.map((c) => c.url), ['https://www.talkinbroadway.com/page/world/SchoolGirls.html']);
+});
+
 test('SERP adapter: limit caps the searches themselves, results are restricted to the missing outlet\'s host and to this show', async () => {
   const queries = [];
   const search = async (q) => { queries.push(q); const dom = /site:(\S+)/.exec(q)[1];
@@ -831,6 +847,56 @@ test('Talkin\' Broadway: a name list that is not a multiple of the batch wraps a
   assert.deepEqual([...new Set(asked)].sort(), [...names].sort());
 });
 
+test('Talkin\' Broadway: a "Title; Or, Subtitle" show has its bare short-title page in the first batch (School Girls replay 2026-11-04)', async () => {
+  const show = { id: 'school-girls-or-the-african-mean-girls-play-2026', title: 'School Girls; Or, The African Mean Girls Play', openingDate: '2026-09-28' };
+  const real = 'https://www.talkinbroadway.com/page/world/SchoolGirls.html';
+  const asked = [];
+  const fetchText = async (url) => { asked.push(url); throw Object.assign(new Error(`404 not found: ${url}`), { status: 404 }); };
+  await d.talkinBroadwayAdapter({ indexUrls: [], now: () => T0 }).discover({ show, fetchText });
+  assert.equal(asked.length, d.TB_PROBE_BATCH);
+  assert.ok(asked.includes(real), `first batch ${asked.join(' ')}`);
+});
+
+test('Talkin\' Broadway: a name blocked by the Cloudflare challenge is fetched first at the next probe, up to a cap (School Girls replay 2026-11-04)', async () => {
+  const byline = '<p>The Play by Some Writer. Directed by Jane Director. Theatre Review by Ann Critic</p>' + '<p>filler text for length. </p>'.repeat(40);
+  const show = { id: 'school-girls-or-the-african-mean-girls-play-2026', title: 'School Girls; Or, The African Mean Girls Play', openingDate: '2026-09-28' };
+  const real = 'https://www.talkinbroadway.com/page/world/SchoolGirls.html';
+  let blocked = true; let clock = T0; let asked = [];
+  const fetchText = async (url) => {
+    asked.push(url);
+    if (url === real && blocked) throw Object.assign(new Error(`403 still behind the Cloudflare challenge: ${url}`), { status: 403 });
+    if (url === real) return `<html><head><title>School Girls</title></head><body><p>September 28, 2026</p>${byline}</body></html>`;
+    throw Object.assign(new Error(`404 not found: ${url}`), { status: 404 });
+  };
+  const a = d.talkinBroadwayAdapter({ indexUrls: [], now: () => clock });
+  assert.deepEqual(await a.discover({ show, fetchText }), []);
+  clock += 16 * 60 * 1000; asked = [];
+  assert.deepEqual(await a.discover({ show, fetchText }), []);
+  assert.ok(asked.includes(real), 'the blocked name is asked again at the next probe');
+  blocked = false; clock += 16 * 60 * 1000; asked = [];
+  const out = await a.discover({ show, fetchText });
+  assert.deepEqual(out.map((c) => c.url), [real]);
+
+  // An always-blocked name stops being carried after the cap, so the rotation still reaches every name.
+  const b = d.talkinBroadwayAdapter({ indexUrls: [], now: () => clock });
+  const counts = new Map();
+  const alwaysBlocked = async (url) => { counts.set(url, (counts.get(url) || 0) + 1); throw Object.assign(new Error('403 still behind the Cloudflare challenge'), { status: 403 }); };
+  for (let i = 0; i < 12; i++) { await b.discover({ show, fetchText: alwaysBlocked }); clock += 16 * 60 * 1000; }
+  const names = require('../../scripts/lib/tb-direct-url.js').buildTbCandidateUrls(show.title, '2026');
+  assert.deepEqual([...counts.keys()].sort(), [...names].sort(), 'every name is still tried');
+});
+
+test('Talkin\' Broadway: only a blocked fetch is carried; a 404 or a plain failure is not', () => {
+  const blockedErr = (status, message = '') => Object.assign(new Error(message), status ? { status } : {});
+  assert.equal(d.tbFetchWasBlocked(blockedErr(403, '403 still behind the Cloudflare challenge: x')), true);
+  assert.equal(d.tbFetchWasBlocked(blockedErr(429, 'too many')), true);
+  assert.equal(d.tbFetchWasBlocked(blockedErr(503, 'unavailable')), true);
+  assert.equal(d.tbFetchWasBlocked(blockedErr(0, 'request timed out after 75000ms')), true);
+  assert.equal(d.tbFetchWasBlocked(blockedErr(404, '404 not found: x')), false);
+  assert.equal(d.tbFetchWasBlocked(blockedErr(0, '404')), false);
+  assert.equal(d.tbFetchWasBlocked(blockedErr(0, 'All scraping methods failed')), false);
+});
+
 test('section index: every <article> card on an index page is read, not only the first', async () => {
   const card = (slug, t) => `<article><a href="https://www.theguardian.com/stage/2026/oct/18/${slug}">${t}</a></article>`;
   const html = `<html><body><nav><a href="https://www.theguardian.com/stage/2026/oct/18/nav-other-desert-cities">Other Desert Cities nav</a></nav><main>${card('hamlet-review', 'Hamlet review')}${card('other-desert-cities-review', 'Other Desert Cities review')}</main></body></html>`;
@@ -858,6 +924,34 @@ test('google news searches press titles too, and a press-title-only headline nee
   assert.deepEqual(unwrapped, ['Review: 860, Billy Crystal’s grief-stricken Broadway tribute'], 'the running-shoe headline is never unwrapped');
 });
 
+test('google news: the New York Sun is searched by site with no "review" word, and its headline-style review is admitted (2026 shadow replays)', async () => {
+  const sunUrl = 'https://www.nysun.com/article/republican-family-fireworks-in-other-desert-cities-set-broadway-alight-again';
+  const item = (title, src, id) => `<item><title>${title}</title><link>https://news.google.com/rss/articles/${id}</link><pubDate>Mon, 19 Oct 2026 01:00:00 GMT</pubDate><source url="${src}">x</source></item>`;
+  const mainRss = '<rss><channel></channel></rss>';
+  const siteRss = `<rss><channel>${item('Republican Family Fireworks in ‘Other Desert Cities’ Set Broadway Alight Again - The New York Sun', 'https://www.nysun.com', 'SUN1')}${item('Other Desert Cities review', 'https://www.theatermania.com', 'TM1')}</channel></rss>`;
+  const asked = [];
+  const map = {};
+  const fetchText = async (url) => {
+    asked.push(url);
+    if (url.startsWith('https://news.google.com/rss/search')) return /site%3Anysun\.com|site:nysun\.com/.test(url) ? siteRss : mainRss;
+    if (map[url]) return map[url];
+    throw new Error(`404 ${url}`);
+  };
+  const decodeImpl = async (link) => (link.endsWith('/SUN1') ? sunUrl : null);
+  const r = await d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + 2 * HOUR, startedAt: T0, adapters: [d.googleNewsAdapter({ decodeImpl })], fetchText });
+  const site = asked.find((u) => /site/.test(decodeURIComponent(u)));
+  assert.equal(new URL(site).searchParams.get('q'), '"Other Desert Cities" site:nysun.com', 'no "review" word in the site search');
+  assert.deepEqual(r.admitted.map((a) => a.url || a.key).filter((u) => /nysun/.test(u)).length, 1, `admitted ${JSON.stringify(r.admitted.map((a) => a.key))} rejected ${JSON.stringify(r.rejected)}`);
+  assert.ok(!r.admitted.some((a) => /theatermania/.test(a.key)), 'a site search keeps only that outlet');
+
+  // West End shows do not run it; a failing site search does not fail the adapter.
+  asked.length = 0;
+  await d.googleNewsAdapter().discover({ show: { ...SHOW, category: 'west-end' }, fetchText });
+  assert.ok(!asked.some((u) => /site/.test(decodeURIComponent(u))));
+  const flaky = async (url) => { if (/site/.test(decodeURIComponent(url))) throw new Error('429'); return mainRss; };
+  assert.deepEqual(await d.googleNewsAdapter().discover({ show: SHOW, fetchText: flaky }), []);
+});
+
 test('DTLI sitemap pages: a title the sitemap has no match for falls back to listed word runs of the title', () => {
   const sitemapSlugs = new Set(['860-2', 'billy-crystal.700-sundays-reviews', 'a-few-good-men', 'the-crucible-2']);
   assert.deepEqual(d.dtliSitemapPages({ candidates: [], sitemapSlugs }, { title: 'Billy Crystal 860' }),
@@ -878,4 +972,201 @@ test('DTLI sitemap pages: a title the sitemap has no match for falls back to lis
   assert.deepEqual(d.dtliSitemapPages({ candidates: [], sitemapSlugs }, {}), []);
   assert.deepEqual(d.dtliSitemapPages({ candidates: [{ slug: 'a-few-good-men' }], sitemapSlugs }, { title: 'Billy Crystal 860' }),
     ['https://didtheylikeit.com/shows/a-few-good-men/'], 'a real title match is used as before; the fallback only runs without one');
+});
+
+test('hostSignalsReview: a review-only outlet titled with the show alone counts; another host, or no show title, does not (BRO-6872)', () => {
+  const SG = 'School Girls; Or, The African Mean Girls Play';
+  assert.equal(d.hostSignalsReview('https://theaterpizzazz.com/school-girls-or-the-african-mean-girls-play-delightful/', 'SCHOOL GIRLS; OR, THE AFRICAN MEAN GIRLS PLAY: DELIGHTFUL', SG), true);
+  assert.equal(d.hostSignalsReview('https://www.theaterpizzazz.com/finally-waiting-for-lefty-has-arrived/', 'FINALLY: WAITING FOR LEFTY HAS ARRIVED', 'Waiting for Lefty'), true, 'www and an all-caps headline');
+  assert.equal(d.hostSignalsReview('https://theaterpizzazz.com/finally-waiting-for-lefty-has-arrived/', 'FINALLY: WAITING FOR LEFTY HAS ARRIVED', 'Other Desert Cities'), false, 'another show');
+  assert.equal(d.hostSignalsReview('https://theaterpizzazz.com/finally-waiting-for-lefty-has-arrived/', 'FINALLY: WAITING FOR LEFTY HAS ARRIVED', ''), false, 'no show title');
+  assert.equal(d.hostSignalsReview('https://variety.com/2026/legit/waiting-for-lefty-has-arrived/', 'Waiting for Lefty has arrived', 'Waiting for Lefty'), false, 'not a review-only host');
+  assert.equal(d.hostSignalsReview('https://thefrontrowcenter.com/2026/11/waiting-for-lefty/', 'Waiting For Lefty', 'Waiting for Lefty'), true);
+  assert.equal(d.hasReviewSignal('https://theaterpizzazz.com/finally-waiting-for-lefty-has-arrived/', 'FINALLY: WAITING FOR LEFTY HAS ARRIVED'), false, 'the review-word check alone still refuses it');
+});
+
+test('a pass admits a review-only outlet\'s show-titled post with no review word, from any source; news on another host stays out (BRO-6872)', async () => {
+  const PZ = 'https://theaterpizzazz.com/other-desert-cities-a-family-at-war/';
+  const NEWS = 'https://variety.com/2026/legit/other-desert-cities-a-family-at-war/';
+  const item = (t, u) => `<rss><channel><item><title>${t}</title><link>${u}</link><pubDate>Mon, 19 Oct 2026 02:00:00 GMT</pubDate></item></channel></rss>`;
+  const r = await d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + 2 * HOUR, startedAt: T0,
+    adapters: [d.rssAdapter({ feeds: [{ url: 'https://theaterpizzazz.com/feed/', name: 'Theater Pizzazz', outletId: 'theater-pizzazz' }, { url: 'https://variety.com/feed', name: 'Variety', outletId: 'variety' }] })],
+    ...pages({ 'https://theaterpizzazz.com/feed/': item('OTHER DESERT CITIES: A FAMILY AT WAR', PZ), 'https://variety.com/feed': item('Other Desert Cities: a family at war', NEWS) }) });
+  assert.deepEqual(r.admitted.map((a) => a.key), [d.canonicalUrl(PZ)]);
+  assert.equal((r.rejected.find((x) => x.url === d.canonicalUrl(NEWS)) || {}).reason, 'not-review-like');
+});
+
+// BRO-6872: Lighting & Sound America serves every story as /news/story.asp?ID=..., so the generic index sweep's links were
+// all refused as a /news/ path, and its story pages carry no date extractPublishDate reads. Card shape of the real
+// "theatre in review" index (2026-11-04): the date sits in its own table above the headline, inside the card's row.
+const LSA_INDEX = 'http://www.lightingandsoundamerica.com/news/result.asp?src=theatre+in+review';
+const lsaCard = (id, date, title, venue) => `<tr><td class="relative" colspan="5"><table align="right"><tr><td><p class="newsfillernobottom"><font>(${date})</font></p></td></tr></table>`
+  + `<p class="newsfiller"><font><a href="story.asp?ID=${id}"><b>Theatre in Review: <i>${title}</i> (${venue})</b></a></font></p>`
+  + `<table><tr><td><a href="story.asp?ID=${id}"><img alt="Theatre in Review: ${title}"></a></td></tr></table><p>Excerpt ...<a href="story.asp?ID=${id}"><img alt="More"></a></p></td></tr>`;
+const lsaPage = (cards) => `<html><body><table><tr><td><a href="/MediaKit2026.pdf">Media kit</a></td></tr>${cards.join('')}</table><a href="story.asp?ID=NEWS01">Other Desert Cities star joins tour</a></body></html>`;
+
+test('L&SA: its index review is admitted on time with the card date, despite the /news/story.asp path', async () => {
+  const html = lsaPage([lsaCard('-K88YDJ', '11/2/2026', 'Specky Clark', 'Irish Arts Center'), lsaCard('TNQ36D', '10/18/2026', 'Other Desert Cities', 'Hayes Theater')]);
+  const fetched = [];
+  const r = await d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + 2 * HOUR, startedAt: T0,
+    adapters: [d.sectionIndexAdapter({ outlets: [{ outletId: 'lighting-and-sound-america', indexUrl: LSA_INDEX }] })],
+    fetchText: async (u) => { fetched.push(u); if (u === LSA_INDEX) return html; throw new Error(`404 ${u}`); } });
+  assert.deepEqual(r.admitted.map((a) => [a.key, a.publishDate, a.outletId]), [['https://lightingandsoundamerica.com/news/story.asp?ID=TNQ36D', '2026-10-18', 'lighting-and-sound-america']]);
+  assert.deepEqual(fetched, [LSA_INDEX], 'dated from the index card: no story-page date check');
+  assert.equal(r.rejected.length, 0, 'the non-review headline naming the show is never offered');
+});
+
+test('L&SA: a review dated weeks before the night is not admitted, and the path pass is for the parser only', async () => {
+  const html = lsaPage([lsaCard('OLD123', '9/1/2026', 'Other Desert Cities', 'Hayes Theater')]);
+  const r = await d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + 2 * HOUR, startedAt: T0,
+    adapters: [d.sectionIndexAdapter({ outlets: [{ outletId: 'lighting-and-sound-america', indexUrl: LSA_INDEX }] })], fetchText: async () => html });
+  assert.equal(r.admitted.length, 0);
+  assert.equal(d.nonReviewReason('http://www.lightingandsoundamerica.com/news/story.asp?ID=TNQ36D'), 'non-review-path');
+  assert.equal(d.nonReviewReason('http://www.lightingandsoundamerica.com/news/story.asp?ID=TNQ36D', { outletListed: true }), null);
+  assert.equal(d.nonReviewReason('https://x.example.com/photos/story', { outletListed: true }), 'non-review-path', 'only the news segment stands down');
+});
+
+test('own-host section index and feed finds are vetted to their outlet: TheaterMania and amNY /news/ reviews pass', async () => {
+  const TM_INDEX = 'https://www.theatermania.com/news/?categories=reviews';
+  const TM = 'https://www.theatermania.com/news/review-other-desert-cities-returns-to-broadway_1830001/';
+  const TM_NEWS = 'https://www.theatermania.com/news/other-desert-cities-extends-run_1830002/';
+  const AMNY_FEED = 'https://www.amny.com/category/entertainment/theater/feed/';
+  const AMNY = 'https://www.amny.com/news/review-other-desert-cities-broadway/';
+  const dated = '<html><head><meta property="article:published_time" content="2026-10-18T23:00:00Z"></head><body>x</body></html>';
+  const feed = `<?xml version="1.0"?><rss><channel><item><title>Review: Other Desert Cities</title><link>${AMNY}</link><pubDate>Sun, 18 Oct 2026 23:30:00 GMT</pubDate></item></channel></rss>`;
+  const pagesMap = { [TM_INDEX]: `<main><a href="${TM}">Review: Other Desert Cities returns</a><a href="${TM_NEWS}">Other Desert Cities extends run</a></main>`, [AMNY_FEED]: feed, [TM]: dated };
+  const r = await d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + 2 * HOUR, startedAt: T0,
+    adapters: [d.sectionIndexAdapter({ outlets: [{ outletId: 'theatermania', indexUrl: TM_INDEX }] }), d.rssAdapter({ feeds: [{ url: AMNY_FEED, outletId: 'amny', name: 'amNY Theater' }] })],
+    fetchText: async (u) => { if (pagesMap[u]) return pagesMap[u]; throw new Error(`404 ${u}`); } });
+  assert.deepEqual(r.admitted.map((a) => a.key).sort(), [d.canonicalUrl(AMNY), d.canonicalUrl(TM)].sort());
+  assert.equal((r.rejected.find((x) => x.url === d.canonicalUrl(TM_NEWS)) || {}).reason, 'non-review-path', 'a /news/ slug that does not lead with the review stays refused');
+});
+
+// Guard (BRO-6872): every lane index and feed outlet must show one real review URL of its (reviews.json, 2026-11-04) passing
+// the path gate the way its adapter offers it. A new source without a sample fails here, so a source whose every review the
+// gate refuses (TheaterMania 309/309, L&SA 101/101 before this) cannot be added silently again.
+const LANE_SOURCE_SAMPLE_REVIEW = {
+  theatermania: 'https://www.theatermania.com/news/review-a-dental-lab-technician-wrestles-with-questions-of-career-and-family-in-off-beat-a-good-day-to-me-not-to-you_1721265/',
+  nytg: 'https://www.newyorktheatreguide.com/reviews/review-of-a-soldiers-play-starring-david-alan-grier-blair-underwood-on-broadway',
+  timeout: 'https://www.timeout.com/newyork/news/broadway-review-aaron-sorkins-a-few-good-men-103026',
+  theatrely: 'https://www.theatrely.com/post/a-dolls-house-a-directors-choice-review',
+  'lighting-and-sound-america': 'http://www.lightingandsoundamerica.com/news/story.asp?ID=TMZ190',
+  'the-100-word-review': 'https://www.the100wordreview.com/billy-crystals-860-at-the-imperial-theatre',
+  independent: 'https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/billy-crystal-860-broadway-review-b3070230.html',
+  chicagotribune: 'http://www.chicagotribune.com/entertainment/theater/broadway/sc-ent-band-together-broadway-review-0814-story.html',
+  guardian: 'https://www.theguardian.com/stage/2026/nov/02/the-lives-of-others-review-keira-knightley-brings-star-power-to-robert-ickes-stasi-drama',
+  'one-minute-critic': 'https://1minutecritic.com/anne-washburn-anon-review-mcc-theater/',
+  culturesauce: 'https://culturesauce.com/dolls-house-jessica-chastain-jamie-lloyd-broadway-review/',
+  thewrap: 'https://www.thewrap.com/act-one-theater-review-tony-shalhoub',
+  'pages-on-stages': 'https://pagesonstages.com/2026/10/29/the-imaginary-invalid/',
+  'theater-life': 'https://theaterlife.com/a-good-day-to-me-not-to-you-1-2/',
+  amny: 'https://www.amny.com/news/review-la-cage-aux-folles-at-encores/',
+  'theater-pizzazz': 'https://www.theaterpizzazz.com/noises-off-review/',
+  frontmezzjunkies: 'https://frontmezzjunkies.com/2026/03/30/a-story-that-still-demands-to-be-heard-joe-turners-come-and-gone-begins-broadway-previews/',
+  'theatre-reviews-limited': 'https://www.theatrereviews.com/broadway-review-1776-at-roundabouts-american-airlines-theatre-through-sunday-january-8-2023/',
+  'the-recs': 'https://therecs.co.uk/the-hunger-games-on-stage/',
+  stageandcinema: 'https://stageandcinema.com/2026/10/30/all-the-worlds-a-stage-signature-review/',
+  'la-voce-di-new-york': 'https://lavocedinewyork.com/en/new-york/2026/10/19/in-other-desert-cities-a-family-grapples-with-speaking-the-unspeakable/',
+  'theater-scene': 'https://theaterscene.com/Bandstand-review.html',
+  'front-row-center': 'https://thefrontrowcenter.com/2026/10/copperfield-the-new-musical/',
+  'the-contending': 'https://thecontending.com/jonathan-spectors-brilliant-new-play-birthright-belongs-on-broadway/',
+  'times-square-chronicles': 'https://t2conline.com/the-whoopi-monologues-review-five-extraordinary-women-prove-whoopi-goldbergs-words-are-timeless/',
+  'josh-at-the-movies': 'https://joshatthemovies.com/2026/10/31/theater-review-a-ghost-in-your-ear/',
+  'new-york-notebook': 'https://newyorknotebook.substack.com/p/oedipus',
+  dailybeast: 'https://www.thedailybeast.com/jersey-boys-refuse-to-grow-up-review-of-gettin-the-band-back-together',
+  mashable: 'https://mashable.com/article/be-more-chill-review-broadway',
+  'the-interested-bystander': 'https://www.interestedbystander.com/2026/07/theater-review-walk-on-moon-is-old.html',
+  'jks-theatre-scene': 'https://www.jkstheatrescene.com/2026/10/review-few-good-men.html',
+  'bobs-theater-blog': 'https://gotham-playgoer.blogspot.com/2026/10/a-few-good-men.html',
+};
+test('guard: every lane index and feed outlet has a real review URL the path gate admits as its adapter offers it', () => {
+  const ls = require('../../scripts/lib/opening-night-lane/lane-sources.js');
+  const ids = new Set([...Object.keys(ls.LANE_SECTION_INDEXES), ...ls.LANE_FEEDS.map((f) => f.outletId)]);
+  for (const id of ids) {
+    const url = LANE_SOURCE_SAMPLE_REVIEW[id];
+    assert.ok(url, `lane source ${id} has no sample review URL: add one from reviews.json and check the gate admits it`);
+    const outletListed = Object.prototype.hasOwnProperty.call(d.SECTION_INDEX_PARSERS, id);
+    // As the adapters and runDiscoveryPass apply it: vetted only for the source's own outlet (same host as the feed or
+    // index page, or a host the registry maps to that outlet) and a host the registry resolves.
+    const feed = ls.LANE_FEEDS.find((f) => f.outletId === id);
+    const sourceUrl = ls.LANE_SECTION_INDEXES[id] || (feed && feed.url);
+    const own = new URL(url).hostname.replace(/^www\./, '') === new URL(sourceUrl).hostname.replace(/^www\./, '') || (resolveOutletFromUrl(url) || {}).outletId === id;
+    const vettedOutlet = own && !!resolveOutletFromUrl(url);
+    assert.equal(d.nonReviewReason(url, { vettedOutlet, outletListed }), null, `${id}: ${url} (vetted ${vettedOutlet})`);
+  }
+});
+
+test('a Google News sighting of an L&SA story first keeps the parser\'s listing claim, and a stale path memo is re-judged', async () => {
+  const STORY = 'http://www.lightingandsoundamerica.com/news/story.asp?ID=TNQ36D';
+  const html = lsaPage([lsaCard('TNQ36D', '10/18/2026', 'Other Desert Cities', 'Hayes Theater')]);
+  const gn = { name: 'google-news', kind: 'outlet-index', phase: 'cheap', discover: async () => [{ url: STORY, title: 'Theatre in Review: Other Desert Cities', source: 'outlet-index', publishDate: null, needsDate: true, vettedOutlet: true }] };
+  const lsa = d.sectionIndexAdapter({ outlets: [{ outletId: 'lighting-and-sound-america', indexUrl: LSA_INDEX }] });
+  const fetchText = async (u) => { if (u === LSA_INDEX) return html; throw new Error(`404 ${u}`); };
+  const r = await d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + 2 * HOUR, startedAt: T0, adapters: [gn, lsa], fetchText });
+  assert.deepEqual(r.admitted.map((a) => [a.key, a.publishDate]), [['https://lightingandsoundamerica.com/news/story.asp?ID=TNQ36D', '2026-10-18']]);
+  const memo = { rejected: { 'https://lightingandsoundamerica.com/news/story.asp?ID=TNQ36D': { reason: 'non-review-path', attempts: 1 } } };
+  const again = await d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + 2 * HOUR, startedAt: T0, adapters: [lsa], fetchText, memo });
+  assert.equal(again.admitted.length, 1, 'a rejection written before the parser existed does not stand for the night');
+});
+
+test('vetted /news/ slugs that recap or round up are still refused', () => {
+  for (const u of ['https://www.theatermania.com/news/review-the-year-in-theater-2026_1/', 'https://www.theatermania.com/news/review-of-the-week-broadway-openings_2/', 'https://www.amny.com/news/review-recap-podcast/']) {
+    assert.equal(d.nonReviewReason(u, { vettedOutlet: true }), 'non-review-path', u);
+  }
+  assert.equal(d.nonReviewReason('https://www.theatermania.com/news/review-other-desert-cities_3/', { vettedOutlet: true }), null);
+});
+
+test('a feed item on a sister host the registry maps to the feed\'s outlet is that outlet\'s own item', async () => {
+  const FEED = 'https://culturesauce.net/feed';
+  const ITEM = 'https://culturesauce.com/other-desert-cities-broadway-review/';
+  const xml = `<?xml version="1.0"?><rss><channel><item><title>Other Desert Cities</title><link>${ITEM}</link><pubDate>Sun, 18 Oct 2026 23:30:00 GMT</pubDate></item></channel></rss>`;
+  const out = await d.rssAdapter({ feeds: [{ url: FEED, outletId: 'culturesauce', name: 'Culture Sauce' }] }).discover({ show: SHOW, fetchText: async () => xml });
+  assert.equal(out[0].outletId, 'culturesauce');
+  assert.equal(out[0].vettedOutlet, true);
+});
+
+test("Bob's Theater Blog: a post headed with the show title alone is a review; a show-named bulletin is not", async () => {
+  const FEED = 'https://gotham-playgoer.blogspot.com/feeds/posts/default?alt=rss';
+  const REVIEW = 'https://gotham-playgoer.blogspot.com/2026/10/other-desert-cities.html';
+  const BULLETIN = 'https://gotham-playgoer.blogspot.com/2026/10/theater-bulletin-other-desert-cities-extends.html';
+  const it = (title, link) => `<item><title>${title}</title><link>${link}</link><pubDate>Sun, 18 Oct 2026 23:30:00 GMT</pubDate></item>`;
+  const xml = `<?xml version="1.0"?><rss><channel>${it('Other Desert Cities', REVIEW)}${it('Theater Bulletin: &quot;Other Desert Cities&quot; Extends', BULLETIN)}</channel></rss>`;
+  const ls = require('../../scripts/lib/opening-night-lane/lane-sources.js');
+  const feed = ls.laneFeeds({ title: 'Other Desert Cities', category: 'broadway' }).find((f) => f.outletId === 'bobs-theater-blog');
+  assert.ok(feed && feed.titledReviews, 'the lane reads the feed with the show-title rule');
+  const r = await d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + 2 * HOUR, startedAt: T0, adapters: [d.rssAdapter({ feeds: [feed] })], fetchText: async () => xml });
+  assert.deepEqual(r.admitted.map((a) => a.key), [d.canonicalUrl(REVIEW)]);
+  assert.ok(r.rejected.some((x) => x.url === d.canonicalUrl(BULLETIN)), 'the bulletin is refused');
+  assert.equal(FEED, feed.url);
+});
+
+test('BRO-6872: Google News items dated outside the night window are never decoded, so they cannot use up the budget', async () => {
+  const OLD = 'https://news.google.com/rss/articles/CBMiOLD?oc=5';
+  const UNDATED = 'https://news.google.com/rss/articles/CBMiUNDATED?oc=5';
+  const item = (link, date, title) => `<item><title>${title} - The New York Times</title><link>${link}</link>${date ? `<pubDate>${date}</pubDate>` : ''}<source url="https://www.nytimes.com">The New York Times</source></item>`;
+  // The 2011 production's review comes first in Google's order, as the 2017 Variety review did for School Girls.
+  const feed = `<rss><channel>${item(OLD, 'Tue, 11 Jan 2011 03:00:00 GMT', 'Other Desert Cities review: 2011')}${item(GN_LINK, 'Mon, 19 Oct 2026 03:00:00 GMT', 'Other Desert Cities review: a family at war')}${item(UNDATED, null, 'Other Desert Cities review: undated')}</channel></rss>`;
+  const decoded = [];
+  const decodeImpl = async (link) => { decoded.push(link); return link === GN_LINK ? NYT_RAW : null; };
+  const track = pages({ [GN_FEED_URL]: feed });
+  const r = await d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + 2 * HOUR, startedAt: T0, ...track,
+    adapters: [d.googleNewsAdapter({ decodeImpl, maxDecode: 1, maxUnwrap: 0 })] });
+  assert.deepEqual(r.admitted.map((a) => a.key), [NYT]);
+  assert.deepEqual(decoded, [GN_LINK], 'the 2011 item is skipped and the one decode goes to the night\'s review');
+  // No night (direct adapter use): nothing is skipped; an undated item is never skipped.
+  const all = [];
+  await d.googleNewsAdapter({ decodeImpl: async (l) => { all.push(l); return null; }, maxUnwrap: 0, maxDecode: 5 }).discover({ show: SHOW, fetchText: track.fetchText });
+  assert.deepEqual(all.sort(), [GN_LINK, OLD, UNDATED].sort());
+  const dated = [];
+  await d.googleNewsAdapter({ decodeImpl: async (l) => { dated.push(l); return null; }, maxUnwrap: 0, maxDecode: 5 }).discover({ show: SHOW, night: NIGHT, fetchText: track.fetchText });
+  assert.deepEqual(dated.sort(), [GN_LINK, UNDATED].sort());
+});
+
+test('BRO-6872: an old Google date no longer claims a URL, so a feed sighting of the same review in the window is admitted', async () => {
+  const gn = `<rss><channel><item><title>Other Desert Cities review - The New York Times</title><link>${GN_LINK}</link><pubDate>Tue, 11 Jan 2011 03:00:00 GMT</pubDate><source url="https://www.nytimes.com">The New York Times</source></item></channel></rss>`;
+  const feed = `<rss><channel><item><title>Review: Other Desert Cities</title><link>${NYT_RAW}</link><pubDate>Mon, 19 Oct 2026 03:00:00 GMT</pubDate></item></channel></rss>`;
+  const FEED = 'https://rss.nytimes.com/services/xml/rss/nyt/Theater.xml';
+  const r = await d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + 2 * HOUR, startedAt: T0, ...pages({ [GN_FEED_URL]: gn, [FEED]: feed }),
+    adapters: [d.googleNewsAdapter({ decodeImpl: async () => NYT_RAW, maxUnwrap: 0, maxDecode: 5 }), d.rssAdapter({ feeds: [{ url: FEED, outletId: 'nytimes', name: 'NYT' }] })] });
+  assert.deepEqual(r.admitted.map((a) => a.key), [NYT], JSON.stringify(r.rejected));
 });

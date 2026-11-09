@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/audit/review-evidence.json (bot ledger). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -316,5 +317,6 @@ test('writeLedger excludes tour shows and purges stale tour ledger rows', () => 
     assert.ok(Object.keys(run(mk('broadway')).shows).length > 0, 'control: broadway show mints ledger cells');
     assert.deepEqual(Object.keys(run(mk('tour')).shows), [], 'tour must mint no cells and purge its stale row');
     assert.equal(isTourShow(mk('tour')), true);
+    assert.deepEqual(Object.keys(run(mk('regional')).shows), [], 'regional must mint no cells and purge its stale row (BRO-5532)');
   } finally { fixture.cleanup(); fs.rmSync(dir, { recursive: true, force: true }); }
 });

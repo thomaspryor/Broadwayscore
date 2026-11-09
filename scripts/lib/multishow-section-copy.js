@@ -18,7 +18,7 @@
  * judge already treats as one article filed per show. The column row keeps
  * its whole text: the scorer trims it at score time.
  */
-const { buildChild, rewriteParent } = require('./multi-show-review-fanout');
+const { buildChild, rewriteParent, urlKey, verdictNamesOtherSection, isHumanJudged } = require('./multi-show-review-fanout');
 const { EXCERPT_FIELDS } = require('./excerpt-fields');
 const { foldDiacritics } = require('./title-match');
 
@@ -109,12 +109,37 @@ function withSplitSource(target) {
   return [...sources];
 }
 
-function planSectionCopy({ source, sourceShowId, section, target, targetShowId, expectStart, expectEnd, method = 'venue-box', ownSection = null, now = new Date().toISOString() }) {
+/**
+ * BRO-6736: the target already holds ITS section of this same article: the
+ * fan-out split it from the whole article and named the source show as the
+ * child, but the source slot already held the whole article, so it was left
+ * whole (filed before the fan-out learned to trim a held sibling). Only the
+ * source needs cutting down to its own section; the target is not written.
+ */
+function isHeldSplitSibling(target, source, sourceShowId) {
+  if (!target || !source || !target.url || !source.url) return false;
+  if (urlKey(target.url) !== urlKey(source.url)) return false;
+  if (target.multiShowSplitParent !== true || target.multiShowSplitChild) return false;
+  return Array.isArray(target.multiShowSplitChildShowIds) && target.multiShowSplitChildShowIds.includes(sourceShowId);
+}
+
+function planSectionCopy({ source, sourceShowId, section, target, targetShowId, targetTitle = null, expectStart, expectEnd, method = 'venue-box', ownSection = null, now = new Date().toISOString() }) {
   if (!source || typeof source !== 'object') return { ok: false, reason: 'source row missing' };
   if (!targetShowId || targetShowId === sourceShowId) return { ok: false, reason: 'target show must differ from the source show' };
-  const blocked = SOURCE_BLOCKING.find((k) => source[k]);
+  const held = method === 'markers' && isHeldSplitSibling(target, source, sourceShowId);
+  // A held source's automated wrong-show / wrong-production verdict that names
+  // the target show was read off the whole article: the trim retires it.
+  // An automated round-up flag on a held source was set for the same reason:
+  // the target's own split already shows the URL is one critic's joint review.
+  const autoJudged = held && !isHumanJudged(source);
+  const verdictNamesTarget = autoJudged && verdictNamesOtherSection(source, [{ showTitle: targetTitle || '' }]);
+  const wholePostVerdict = verdictNamesTarget || (autoJudged && source.isRoundupArticle === true);
+  const blocked = SOURCE_BLOCKING.find((k) => source[k] && !(
+    (verdictNamesTarget && (k === 'wrongShow' || k === 'wrongProduction'))
+    || (autoJudged && k === 'isRoundupArticle')));
   if (blocked) return { ok: false, reason: `source is ${blocked}` };
-  if (source.contentTier !== 'complete') return { ok: false, reason: `source contentTier is ${source.contentTier}, not complete` };
+  const verdictInvalid = wholePostVerdict && source.contentTier === 'invalid' && /wrong\s*(?:show|production)/i.test(source.contentTierReason || '');
+  if (source.contentTier !== 'complete' && !verdictInvalid) return { ok: false, reason: `source contentTier is ${source.contentTier}, not complete` };
   if (!section || !section.ok || typeof section.text !== 'string') return { ok: false, reason: `no unambiguous section: ${(section && section.reason) || 'none'}` };
   const m = markersMatch(section.text, expectStart, expectEnd);
   if (!m.ok) return m;
@@ -141,12 +166,20 @@ function planSectionCopy({ source, sourceShowId, section, target, targetShowId, 
     if (normWords(section.text).includes(normWords(ownSection.text).slice(0, 200)) || normWords(ownSection.text).includes(normWords(section.text).slice(0, 200))) {
       return { ok: false, reason: 'own section and target section overlap' };
     }
+    // 'joint' makes rewriteParent retire the whole-article verdicts (flags, CV
+    // promotion, invalid tier); the stored anchor stays the marker method.
     parent = {
-      ...rewriteParent(source, { sectionText: ownSection.text, anchorKind: method }, parent.multiShowSplitChildShowIds, now),
+      ...rewriteParent(source, { sectionText: ownSection.text, anchorKind: wholePostVerdict ? 'joint' : method }, parent.multiShowSplitChildShowIds, now),
       multiShowSplitMethod: method,
+      multiShowSplitAnchorKind: method,
     };
     // Scores of the whole article must not publish against the trimmed text before the rescore.
     for (const k of ['assignedScore', 'originalScore', 'llmMetadata', 'scoreSource']) if (k in parent) parent[k] = null;
+  }
+  if (held) {
+    if (!ownSection) return { ok: false, reason: 'target already holds its section: name the source\'s own section (--own-start/--own-end)' };
+    parent.multiShowHeldTrim = { targetShowId, at: now, wholePostVerdict };
+    return { ok: true, reason: `held-trim: ${targetShowId} already holds its section; source cut to its own ${ownSection.text.length}-char section`, row: null, parent, action: 'held-trim' };
   }
   if (target && target.multiShowSectionCopy && target.multiShowSectionCopy.fromShowId === sourceShowId && target.fullText === section.text) {
     return { ok: true, reason: `refresh: ${section.text.length}-char section already filed`, row: { ...target, sources: withSplitSource(target), multiShowSource }, parent, action: 'refresh' };
@@ -197,4 +230,4 @@ function planSectionCopy({ source, sourceShowId, section, target, targetShowId, 
   return { ok: true, reason: `${action}: ${section.text.length}-char section`, row, parent, action };
 }
 
-module.exports = { planSectionCopy, sectionByMarkers, markersMatch, parseMarker, SOURCE_BLOCKING, TARGET_BLOCKING };
+module.exports = { planSectionCopy, isHeldSplitSibling, sectionByMarkers, markersMatch, parseMarker, SOURCE_BLOCKING, TARGET_BLOCKING };

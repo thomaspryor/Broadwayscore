@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4317-c-02",
   "planId": "9ed12843-3aa1-4f6c-a176-1e706341b141",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-13T01:59:32.269Z",
   "submitter": {
     "name": null,
@@ -323,5 +323,32 @@
       "ok": true,
       "msg": "Deleted spamalot-off-broadway-2026/cititour--brian-scott-lipton.json"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 3
+    },
+    "ops": [
+      {
+        "i": 8,
+        "verdict": "resolved",
+        "reason": "little-bear-ridge-road/theater-life--david-sheward.json is gone and little-bear-ridge-road-2025/theater-life--david-sheward.json exists"
+      },
+      {
+        "i": 9,
+        "verdict": "resolved",
+        "reason": "maybe-happy-ending/nysr--michael-sommers.json is gone and maybe-happy-ending-2024/nysr--michael-sommers.json exists"
+      },
+      {
+        "i": 16,
+        "verdict": "resolved",
+        "reason": "punch/theater-life--samuel-l-leiter.json is gone and punch-2025/theater-life--samuel-l-leiter.json exists"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (3 resolved); per-op reasons in triage.ops"
 }

@@ -17,6 +17,8 @@ import Anthropic from '@anthropic-ai/sdk';
 import { MIN_SCORED_REVIEWS, MAX_STALE_PRUNE, isConsensusEligible, liveScoredCounts, staleConsensusIds, pruneConsensusEntries, liveOutletKeys } from './lib/critic-consensus-eligibility.js';
 import { finalResponseText, describeResponse } from './lib/anthropic-response-text.js';
 import { loadReviewTexts as loadConsensusInputs, consensusFingerprint } from './lib/critic-consensus-inputs.js';
+import { isScoreable } from './lib/is-scoreable.js';
+import { createWithinShowDedup } from './lib/within-show-dedup.js';
 import { requestWithRefusalRetry, REFUSAL_RETRY_EXCERPT_CHARS } from './lib/critic-consensus-refusal.js';
 // --shows=a,b / --show=a filter (BRO-4595). List form lets the opening-night
 // poller dispatch update-critic-consensus.yml ONCE for every polled show; its
@@ -47,10 +49,14 @@ const anthropic = {
 
 // loadReviewTexts / consensusFingerprint live in scripts/lib so the
 // contamination audit counts the same inputs this script stores (BRO-4869).
-function loadReviewTexts(showId, liveOutlets = null) {
+function loadReviewTexts(showId, liveOutlets = null, show = undefined) {
   return loadConsensusInputs(showId, liveOutlets, {
     onWarn: (msg) => console.warn(`  ⚠️  ${msg}`),
     normalizeOutlet,
+    show,
+    // BRO-6226: the scorer's own predicate and the rebuild's within-show dedup.
+    isScoreable,
+    createDedup: createWithinShowDedup,
   });
 }
 
@@ -336,7 +342,7 @@ async function main() {
     console.log(`\n📖 ${showTitle} (${showId})`);
 
     // Load reviews
-    const reviews = loadReviewTexts(showId, liveOutlets);
+    const reviews = loadReviewTexts(showId, liveOutlets, show);
 
     // Layer 5a: Input validation — minimum review threshold
     const scoredReviews = reviews.filter(r => r.score != null);

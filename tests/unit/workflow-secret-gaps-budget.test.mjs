@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data); data/reviews.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-5151: ratchet on scripts/audit-workflow-secret-gaps.js. Every gap is a
 // workflow step running a script that reads a secret the step never gets, so
 // the read silently no-ops (BRO-67 class). The budget only goes down: when a
@@ -15,7 +16,7 @@ const require = createRequire(import.meta.url);
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const { findGaps } = require(path.join(ROOT, 'scripts', 'audit-workflow-secret-gaps.js'));
 
-const GAP_BUDGET = 162;
+const GAP_BUDGET = 153;
 
 test(`workflow secret gaps stay within budget (${GAP_BUDGET})`, () => {
   const gaps = findGaps(path.join(ROOT, '.github', 'workflows'));

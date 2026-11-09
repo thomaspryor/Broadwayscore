@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/grosses.json (untracked core data); data/commercial.json (untracked core data); data/grosses-history.json (untracked core data); +1 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-5568: a recoupment date we estimated (isEstimate.recoupedDate: Chicago
  * "March 1997", The Lion King 1999, ...) is never presented as reported. It

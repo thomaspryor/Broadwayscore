@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5420-g1",
   "planId": "bb2aec5c-12a8-4907-a3d5-31f007dced13",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-16T04:45:00.000Z",
   "submitter": {
     "name": null,
@@ -323,5 +323,117 @@
       "ok": false,
       "reason": "Destination exists: the-hills-of-california-west-end-2024/express-uk--george-simpson.json (delete it first or set overwrite: true)"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "obsolete": 20
+    },
+    "ops": [
+      {
+        "i": 0,
+        "verdict": "obsolete",
+        "reason": "john-proctor-is-the-villain-west-end-2026/new-statesman--emily-lawford.json exists and john-proctor-is-the-villain-2025/new-statesman--emily-lawford.json is not counted, so nothing is double-counted"
+      },
+      {
+        "i": 1,
+        "verdict": "obsolete",
+        "reason": "review file machinal-2014/all-that-dazzles-uk--daz-gale.json no longer exists and nothing in machinal-2014 looks like a rename"
+      },
+      {
+        "i": 2,
+        "verdict": "obsolete",
+        "reason": "machinal-west-end-2024/artsdesk--david-nice.json exists and machinal-2014/artsdesk--david-nice.json is not counted, so nothing is double-counted"
+      },
+      {
+        "i": 3,
+        "verdict": "obsolete",
+        "reason": "machinal-west-end-2024/london-theatre--olivia-rook.json exists and machinal-2014/london-theatre--olivia-rook.json is not counted, so nothing is double-counted"
+      },
+      {
+        "i": 4,
+        "verdict": "obsolete",
+        "reason": "machinal-west-end-2024/timeout-london--andrzej-lukowski.json exists and machinal-2014/timeout-london--andrzej-lukowski.json is not counted, so nothing is double-counted"
+      },
+      {
+        "i": 5,
+        "verdict": "obsolete",
+        "reason": "oleanna-west-end-2021/artsdesk--aleks-sierz.json exists and oleanna-2009/artsdesk--aleks-sierz.json is not counted, so nothing is double-counted"
+      },
+      {
+        "i": 6,
+        "verdict": "obsolete",
+        "reason": "oleanna-west-end-2021/london-theatre--matt-wolf.json exists and oleanna-2009/london-theatre--matt-wolf.json is not counted, so nothing is double-counted"
+      },
+      {
+        "i": 7,
+        "verdict": "obsolete",
+        "reason": "oleanna-west-end-2021/standard--jessie-thompson.json exists and oleanna-2009/standard--jessie-thompson.json is not counted, so nothing is double-counted"
+      },
+      {
+        "i": 9,
+        "verdict": "obsolete",
+        "reason": "orphans-off-west-end-2026/everything-theatre--dave-b.json exists and orphans-2013/everything-theatre--dave-b.json is not counted, so nothing is double-counted"
+      },
+      {
+        "i": 11,
+        "verdict": "obsolete",
+        "reason": "orphans-off-west-end-2026/theatre-weekly--nick-wayne.json exists and orphans-2013/theatre-weekly--nick-wayne.json is not counted, so nothing is double-counted"
+      },
+      {
+        "i": 14,
+        "verdict": "obsolete",
+        "reason": "stranger-things-the-first-shadow-west-end-2023/city-am--adam-bloodworth.json exists and stranger-things-2024/city-am--adam-bloodworth.json is not counted, so nothing is double-counted"
+      },
+      {
+        "i": 15,
+        "verdict": "obsolete",
+        "reason": "stranger-things-the-first-shadow-west-end-2023/i-paper--emily-baker.json exists and stranger-things-2024/i-paper--emily-baker.json is not counted, so nothing is double-counted"
+      },
+      {
+        "i": 16,
+        "verdict": "obsolete",
+        "reason": "stranger-things-the-first-shadow-west-end-2023/independent--unknown.json exists and stranger-things-2024/independent--unknown.json is not counted, so nothing is double-counted"
+      },
+      {
+        "i": 17,
+        "verdict": "obsolete",
+        "reason": "stranger-things-the-first-shadow-west-end-2023/standard--nick-curtis.json exists and stranger-things-2024/standard--nick-curtis.json is not counted, so nothing is double-counted"
+      },
+      {
+        "i": 18,
+        "verdict": "obsolete",
+        "reason": "review file sunset-boulevard-2024/all-that-dazzles-uk--daz-gale.json no longer exists and nothing in sunset-boulevard-2024 looks like a rename"
+      },
+      {
+        "i": 19,
+        "verdict": "obsolete",
+        "reason": "sunset-boulevard-west-end-2023/attitude--simon-button.json exists and sunset-boulevard-2024/attitude--simon-button.json is not counted, so nothing is double-counted"
+      },
+      {
+        "i": 20,
+        "verdict": "obsolete",
+        "reason": "sunset-boulevard-west-end-2023/city-am--adam-bloodworth.json exists and sunset-boulevard-2024/city-am--adam-bloodworth.json is not counted, so nothing is double-counted"
+      },
+      {
+        "i": 21,
+        "verdict": "obsolete",
+        "reason": "review file the-great-gatsby-2024/london-theatre--unknown.json no longer exists and nothing in the-great-gatsby-2024 looks like a rename"
+      },
+      {
+        "i": 22,
+        "verdict": "obsolete",
+        "reason": "the-great-gatsby-west-end-2025/mail-on-sunday--mark-cook.json exists and the-great-gatsby-2024/mail-on-sunday--mark-cook.json is not counted, so nothing is double-counted"
+      },
+      {
+        "i": 24,
+        "verdict": "obsolete",
+        "reason": "the-hills-of-california-west-end-2024/express-uk--george-simpson.json exists and the-hills-of-california-2024/express-uk--george-simpson.json is not counted, so nothing is double-counted"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (20 obsolete); per-op reasons in triage.ops"
 }

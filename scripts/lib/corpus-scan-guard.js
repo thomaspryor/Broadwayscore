@@ -42,6 +42,31 @@ class CorpusNotScannedError extends Error {
 // makes that case fail loud regardless of --gate: it is the exact shape of the
 // vacuous pass this file exists to prevent, and until now only tripped when a
 // caller happened to pass --gate.
+/**
+ * BRO-3549: the exit code a corpus audit uses when assertCorpusScanned
+ * refuses (corpus root missing, or 0 files scanned under a gate).
+ *
+ * Before this, most callers caught CorpusNotScannedError and exited 1, which
+ * is ALSO their "ran and found drift" code — so check-corpus-drift.js could
+ * not tell "the private repo is not checked out" from "a new bad record
+ * appeared" and reported a missing corpus as ordinary drift. 2 matches the
+ * convention already used by audit-sibling-title-misroute.js and
+ * audit-cv-flag-contradiction.js (2 = could not run; listed in that audit's
+ * `crashCodes`). A caller adopting this constant must not use 2 for drift.
+ */
+const CORPUS_NOT_SCANNED_EXIT_CODE = 2;
+
+/**
+ * Catch-block helper: if `err` is a CorpusNotScannedError, print it and exit
+ * with CORPUS_NOT_SCANNED_EXIT_CODE; otherwise rethrow. Keeps every audit's
+ * corpus-missing exit on one shared code instead of a per-script literal.
+ */
+function exitIfCorpusNotScanned(err, { prefix = 'FAIL: ' } = {}) {
+  if (!(err instanceof CorpusNotScannedError)) throw err;
+  console.error(`\n${prefix}${err.message}`);
+  process.exit(CORPUS_NOT_SCANNED_EXIT_CODE);
+}
+
 function assertCorpusScanned(scanned, { gate, label = 'data/review-texts', corpusRootMissing = false } = {}) {
   if (corpusRootMissing) throw new CorpusNotScannedError(label, { rootMissing: true });
   if (!gate) return;
@@ -161,6 +186,8 @@ function shouldRefuseRedirectedGate({ rootOverride, corpusEntries, strict, updat
 module.exports = {
   assertCorpusScanned,
   CorpusNotScannedError,
+  CORPUS_NOT_SCANNED_EXIT_CODE,
+  exitIfCorpusNotScanned,
   summarizeWindowCoverage,
   shouldRefuseRedirectedGate,
 };

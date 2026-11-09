@@ -1,10 +1,11 @@
 /**
  * js-outlet-giveup — per-show, per-outlet suppression for the poller's
- * JS-rendered (ScrapingBee render_js, 5 credits/attempt) site-search tier.
+ * JS-rendered (ScrapingBee render_js, 5 credits/attempt; ew tries a 1-credit Scrapingdog
+ * page first, BRO-6908) site-search tier.
  *
  * BRO-2941: missingJsIds (opening-night-poller.js) re-renders EVERY still-missing
  * requiresJs outlet on EVERY poll tick, forever — an outlet with no market/applies
- * restriction (vulture, hollywood-reporter, deadline, timeout, ew, telegraph-search)
+ * restriction (vulture, hollywood-reporter, deadline, timeout, ew; telegraph-search is disabled, BRO-6898)
  * fires for shows it will never cover (e.g. THR on an Off-Broadway transfer), and
  * data/audit/poller-backoff shows shows sitting at consecutiveNoOp 50-85 with no
  * per-outlet cap — each tick still pays the full JS-render outlet set.
@@ -46,4 +47,23 @@ function updateOutletMisses(misses, attemptedEffectiveIds, foundEffectiveIds) {
   return next;
 }
 
-module.exports = { DEFAULT_GIVEUP_THRESHOLD, isOutletGivenUp, updateOutletMisses };
+/**
+ * BRO-7162 F04: which attempted outlets count as an honest miss. A search that errored (timeout, 429, provider
+ * outage) or never ran says nothing about the outlet, so it must not walk it toward give-up.
+ * @param {string[]} attemptedEffectiveIds
+ * @param {Object<string,string>} outcomesByOutletKey - searchOutletSites' outcomes, keyed by endpoint key
+ * @param {(key:string)=>string} effectiveIdOf - endpoint key -> effective outlet id
+ * @param {string[]} attemptedKeys - endpoint keys, parallel to attemptedEffectiveIds
+ * @returns {string[]} effective ids safe to count
+ */
+function countableMissIds(attemptedKeys, outcomesByOutletKey, effectiveIdOf) {
+  const out = [];
+  for (const key of attemptedKeys) {
+    const o = outcomesByOutletKey ? outcomesByOutletKey[key] : undefined;
+    if (o === 'failed' || o === 'not-attempted') continue;
+    out.push(effectiveIdOf(key));
+  }
+  return out;
+}
+
+module.exports = { countableMissIds, DEFAULT_GIVEUP_THRESHOLD, isOutletGivenUp, updateOutletMisses };

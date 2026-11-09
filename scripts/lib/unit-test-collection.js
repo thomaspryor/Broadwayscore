@@ -314,6 +314,47 @@ function collectNodeUnitTests(root, opts = {}) {
   });
 }
 
+const LANES = ['all', 'blocking', 'live'];
+
+/**
+ * BRO-7101: split by lane. A file is LIVE when it declares itself with a
+ * `// LIVE-DATA-LANE: <why>` comment in its first 40 lines or a -live-data.test.*
+ * name (scripts/lib/live-data-paths.js); scripts/live-data-lane.js decides which
+ * files need it from a runtime trace of their data/ reads.
+ *   'all'      the land batch, unchanged (land judges branch vs base, so a code
+ *              change that breaks a live test is still refused before landing).
+ *   'blocking' 'all' minus live files: test.yml's unit batch on main.
+ *   'live'     every candidate declared live, INCLUDING ones EXCLUDED or
+ *              default-excluded from 'all' (quarantined live-data tests,
+ *              scripts/verify-* probes), minus tsx/e2e manifest entries:
+ *              check-corpus-drift.yml's "Live-data assertions" step.
+ * Two properties, two mechanisms: EXCLUDED means "land does not run it"
+ * (runtime, network or corpus reasons); the marker means "it never blocks main".
+ */
+// An EXCLUDED file that already runs at its own test.yml step (it races or
+// breaks the shared runner, e.g. opening-night-checks-skeleton writes stub
+// checks, scraper-cookie-wiring patches https globally), or an acceptance shim
+// that only re-imports a suite run elsewhere, stays out of the live lane even
+// when it carries the marker: collecting it would run it twice, the second time
+// under a runner it is known to break.
+const RUNS_ELSEWHERE_RE = /\bits own (?:serial |advisory )?(?:test\.yml )?step\b|acceptance shim/i;
+function runsElsewhere(reason) {
+  return typeof reason === 'string' && RUNS_ELSEWHERE_RE.test(reason);
+}
+
+function collectLane(root, lane = 'all', opts = {}) {
+  if (!LANES.includes(lane)) throw new Error(`unknown lane ${lane} (expected ${LANES.join('|')})`);
+  const { isDeclaredLiveFile } = require('./live-data-paths.js');
+  if (lane === 'all') return collectNodeUnitTests(root, opts);
+  if (lane === 'blocking') return collectNodeUnitTests(root, opts).filter((rel) => !isDeclaredLiveFile(rel, root));
+  const others = new Set(readOtherRunnerEntries(root));
+  const excluded = opts.excluded || EXCLUDED;
+  return listCandidateFiles(root)
+    .filter((rel) => isCandidate(rel) && !others.has(rel) && isDeclaredLiveFile(rel, root))
+    .filter((rel) => !runsElsewhere(excluded.get(rel)))
+    .sort();
+}
+
 /**
  * The node batch for the tree at root, picking the source the tree itself
  * uses: the collector when root carries scripts/lib/unit-test-collection.js
@@ -365,6 +406,7 @@ function hasRetiredHeader(text) {
 }
 
 module.exports = {
+  runsElsewhere,
   MIN_NODE_BATCH,
   RETIRED_HEADER,
   hasRetiredHeader,
@@ -387,6 +429,8 @@ module.exports = {
   listCandidateFiles,
   readOtherRunnerEntries,
   collectNodeUnitTests,
+  collectLane,
+  LANES,
   nodeUnitTestsForTree,
   treeUsesCollector,
 };
@@ -395,18 +439,22 @@ if (require.main === module) {
   const args = process.argv.slice(2);
   if (args.includes('--help') || args.includes('-h')) {
     console.log(
-      'Usage: node scripts/lib/unit-test-collection.js [--root <dir>] [--min]\n\n' +
+      'Usage: node scripts/lib/unit-test-collection.js [--root <dir>] [--min] [--lane=all|blocking|live]\n\n' +
         'Prints the plain-node unit-test batch (one repo-relative path per line). Exits 1 when it is empty.\n' +
         `--min also exits 1 (printing nothing) when fewer than MIN_NODE_BATCH (${MIN_NODE_BATCH}) files are collected:\n` +
-        'the floor test.yml and land-gauntlet.sh use to catch a collector that silently returns too few.'
+        'the floor test.yml and land-gauntlet.sh use to catch a collector that silently returns too few.\n' +
+        '--lane (BRO-7101): all = the land batch (default); blocking = minus LIVE-DATA-LANE files (test.yml);\n' +
+        'live = every LIVE-DATA-LANE file, quarantined ones included (check-corpus-drift.yml). --min applies to all/blocking.'
     );
     process.exit(0);
   }
   const i = args.indexOf('--root');
   const root = i >= 0 && args[i + 1] ? path.resolve(args[i + 1]) : path.resolve(__dirname, '..', '..');
+  const laneArg = args.find((a) => a.startsWith('--lane='));
+  const lane = laneArg ? laneArg.slice('--lane='.length) : 'all';
   let list;
   try {
-    list = collectNodeUnitTests(root);
+    list = collectLane(root, lane);
   } catch (e) {
     console.error(`unit-test-collection: collection failed under ${root}: ${e.message}`);
     process.exit(1);
@@ -415,7 +463,7 @@ if (require.main === module) {
     console.error(`unit-test-collection: collected 0 node unit tests under ${root}`);
     process.exit(1);
   }
-  if (args.includes('--min') && list.length < MIN_NODE_BATCH) {
+  if (args.includes('--min') && lane !== 'live' && list.length < MIN_NODE_BATCH) {
     console.error(`unit-test-collection: collected only ${list.length} node unit tests under ${root} (MIN_NODE_BATCH ${MIN_NODE_BATCH}) — the collector is broken`);
     process.exit(1);
   }

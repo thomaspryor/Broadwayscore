@@ -8,7 +8,7 @@ import os from 'node:os';
 import path from 'node:path';
 
 const require = createRequire(import.meta.url);
-const { applyRetireShow } = require('./retire-show-action.js');
+const { applyRetireShow, remainingReviewCount } = require('./retire-show-action.js');
 const { retireId, unretireId, loadRetiredIds, matchesRetired } = require('./retired-show-ids.js');
 const { mergeRetiredRecords } = require('./merge-retired-ids.js');
 
@@ -132,6 +132,12 @@ test('nonProduction: a non-provisional announced row with no reviews retires wit
     [{ ...base, nonProduction: 'yes' }, {}, none, /must be true/],
     [{ ...base, duplicateOf: 'other-show' }, {}, none, /exclusive/],
     [base, { status: 'open' }, none, /announced\/upcoming/],
+    [base, { status: 'previews', openingDate: '2026-10-01' }, none, /announced\/upcoming|real run/],
+    [base, { status: 'previews', previewsStartDate: '2021-05-31' }, () => 1, /1 review/],
+    // A real show in its first weeks of previews has no opening date and no reviews yet.
+    [base, { status: 'previews', previewsStartDate: new Date(Date.now() - 5 * 864e5).toISOString().slice(0, 10) }, none, /days ago/],
+    [base, { status: 'previews', previewsStartDate: undefined }, none, /no previewsStartDate/],
+    [base, { status: 'previews', openingDate: '', previewsStartDate: '2021-05-31' }, () => 3, /3 review/],
     [base, { status: 'closed' }, none, /announced\/upcoming/],
     [base, { openingDate: '2026-10-01' }, none, /real run/],
     [base, { openingDate: '2099-01-01' }, none, /real run/],
@@ -300,4 +306,47 @@ test('outOfTier: an upcoming row with a future scheduled opening date retires (B
   const r = applyRetireShow(shows, action, { retire, reviewCount: none, now: new Date('2026-10-31T00:00:00Z') });
   assert.equal(r.ok, true, r.reason);
   assert.equal(shows.length, 0);
+});
+
+test('BRO-7080: a parenthesised stage name is a room of the same house (Begin Again replay)', () => {
+  const row = (id, venue, extra = {}) => ({ id, title: 'Begin Again', venue, category: 'regional', status: 'closed', ...extra });
+  const opts = { retire: () => ({ ok: true }), now: '2026-11-07', reviewCount: () => 0, isRetired: () => false };
+  const shows = [
+    row('ba', 'The Old Globe (Donald and Darlene Shiley Stage), San Diego, CA', { previewsStartDate: '2026-09-06', closingDate: '2026-10-18', provisional: true }),
+    row('ba-old', 'The Old Globe, San Diego, CA', { openingDate: '2026-09-18' }),
+  ];
+  assert.equal(applyRetireShow(shows, { type: 'retire-show', id: 'ba-old', expectTitle: 'Begin Again', duplicateOf: 'ba', reason: 'test dup' }, opts).ok, true);
+  // A different house in another parenthetical-free name still refuses.
+  const other = [row('a', 'The Old Globe (Donald and Darlene Shiley Stage), San Diego, CA', { previewsStartDate: '2026-09-06', closingDate: '2026-10-18' }),
+    row('b', 'La Jolla Playhouse, San Diego, CA', { openingDate: '2026-09-18' })];
+  assert.equal(applyRetireShow(other, { type: 'retire-show', id: 'b', expectTitle: 'Begin Again', duplicateOf: 'a', reason: 'test dup' }, opts).ok, false);
+});
+
+test('BRO-7080: rows whose file this plan moved away do not block the duplicate retire; anything left does', () => {
+  const rows = [{ showId: 'old', outletId: 'a' }, { showId: 'old', outletId: 'b' }, { showId: 'kept', outletId: 'a' }];
+  const moved = ['old/a--x.json', 'old/b--unknown.json'];
+  assert.equal(remainingReviewCount({ showId: 'old', scoredRows: rows, textFiles: [], removedPaths: moved }), 0);
+  // One file left behind, or a row with no moved file, still counts.
+  assert.equal(remainingReviewCount({ showId: 'old', scoredRows: rows, textFiles: ['c--y.json'], removedPaths: moved }), 1);
+  assert.equal(remainingReviewCount({ showId: 'old', scoredRows: rows, textFiles: [], removedPaths: ['old/a--x.json'] }), 1);
+  // A move out of a different folder never discounts this show's rows.
+  assert.equal(remainingReviewCount({ showId: 'old', scoredRows: rows, textFiles: [], removedPaths: ['kept/a--x.json', 'kept/b--y.json'] }), 2);
+  // No moves: the plain count (back-compat).
+  assert.equal(remainingReviewCount({ showId: 'old', scoredRows: rows }), 2);
+});
+
+test('BRO-7080: a second row of a moved outlet with no file of its own still blocks the retire', () => {
+  const rows = [{ showId: 'old', outletId: 'a' }, { showId: 'old', outletId: 'a' }];
+  assert.equal(remainingReviewCount({ showId: 'old', scoredRows: rows, textFiles: [], removedPaths: ['old/a--x.json'] }), 1);
+  assert.equal(remainingReviewCount({ showId: 'old', scoredRows: rows, textFiles: [], removedPaths: ['old/a--x.json', 'old/a--y.json'] }), 0);
+});
+
+test('nonProduction: a previews row with no openingDate (an open-ended attraction) retires with evidence and zero reviews (BRO-7080)', () => {
+  const { retire } = scratch();
+  const shrek = row('shreks-adventure-london-standard-entry-off-west-end-2026', "Shrek's Adventure! London Standard Entry", { provisional: undefined, status: 'previews', openingDate: null, previewsStartDate: '2021-05-31', venue: 'County Hall' });
+  const action = { id: shrek.id, expectTitle: shrek.title, reason: 'walk-through attraction, not a stage production', nonProduction: true, evidenceUrl: 'https://www.todaytix.com/london/shows/22835' };
+  const shows = [{ ...shrek }, row('keep-me-2026', 'Keep Me')];
+  const r = applyRetireShow(shows, action, { retire, reviewCount: none });
+  assert.equal(r.ok, true, r.reason);
+  assert.deepEqual(shows.map(s => s.id), ['keep-me-2026']);
 });

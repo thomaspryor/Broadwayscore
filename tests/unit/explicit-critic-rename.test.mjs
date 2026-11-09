@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-5166: ingest-review-from-url.js --critic onto an --unknown file (a TB
  * forum-thread husk upgraded to its review page) always failed "Stale merge:

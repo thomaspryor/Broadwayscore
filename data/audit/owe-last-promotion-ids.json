@@ -1,27 +1,6 @@
 {
-  "generatedAt": "2026-11-02T23:16:31.472Z",
-  "promoted": [
-    {
-      "id": "saving-alan-turing-off-west-end-2027",
-      "source": "venue-page:king-s-head-theatre",
-      "sourceUrl": "https://kingsheadtheatre.com/whats-on/"
-    },
-    {
-      "id": "thinking-drinkers-great-british-pub-ride-off-west-end-2027",
-      "source": "venue-page:king-s-head-theatre",
-      "sourceUrl": "https://kingsheadtheatre.com/whats-on/"
-    },
-    {
-      "id": "mrs-macbeth-off-west-end-2027",
-      "source": "venue-page:riverside-studios",
-      "sourceUrl": "https://riversidestudios.co.uk/whats-on/"
-    },
-    {
-      "id": "yippee-ki-yay-off-west-end-2026",
-      "source": "venue-page:riverside-studios",
-      "sourceUrl": "https://riversidestudios.co.uk/whats-on/"
-    }
-  ],
+  "generatedAt": "2026-11-08T19:49:11.551Z",
+  "promoted": [],
   "rejected": [
     {
       "title": "Golden Boy",
@@ -88,14 +67,6 @@
       "reason": "already in shows.json as love-off-west-end-2027 (normalized-equal)"
     },
     {
-      "title": "Boy Blue: 25 Stories",
-      "venue": "Theatre Royal Stratford East",
-      "source": "venue-page:theatre-royal-stratford-east",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as boy-blue-25-stories-off-west-end-2026 (normalized-equal)"
-    },
-    {
       "title": "Mehfil Masti",
       "venue": "Theatre Royal Stratford East",
       "source": "venue-page:theatre-royal-stratford-east",
@@ -142,6 +113,14 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as robin-hood-and-the-merry-mandem-off-west-end-2026 (same house, title words contained, overlapping run (\"Robin Hood and the Merry Mandem\" vs \"Robin Hood\"))"
+    },
+    {
+      "title": "Robin Hood Press Night",
+      "venue": "Theatre Royal Stratford East",
+      "source": "venue-page:theatre-royal-stratford-east",
+      "sourceUrl": null,
+      "kind": "skip-unconfirmed",
+      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-11-27))"
     },
     {
       "title": "Talking In Tongues",
@@ -328,14 +307,6 @@
       "reason": "already in shows.json as brixton-calling-off-west-end-2027 (normalized-equal)"
     },
     {
-      "title": "Dog Mom",
-      "venue": "Southwark Playhouse",
-      "source": "venue-page:southwark-playhouse",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as dog-mom-off-west-end-2026 (normalized-equal)"
-    },
-    {
       "title": "Fly, You Fools!",
       "venue": "Southwark Playhouse",
       "source": "venue-page:southwark-playhouse",
@@ -400,14 +371,6 @@
       "reason": "already in shows.json as the-radium-girls-off-west-end-2026 (normalized-equal)"
     },
     {
-      "title": "Garry Starr Classic Penguins",
-      "venue": "The Other Palace",
-      "source": "venue-page:the-other-palace",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as garry-starr-classic-penguins-garrick-west-end-2026 (london-pool-title-equal (venue \"The Other Palace\" vs \"Garrick Theatre\"))"
-    },
-    {
       "title": "An Oak Tree",
       "venue": "The Other Palace",
       "source": "venue-page:the-other-palace",
@@ -416,12 +379,12 @@
       "reason": "already in shows.json as an-oak-tree-off-west-end-2026 (london-pool-title-equal (venue \"The Other Palace\" vs \"The Other Palace - Main Theatre\"))"
     },
     {
-      "title": "Boys Who Dance",
+      "title": "Garry Starr Classic Penguins",
       "venue": "The Other Palace",
       "source": "venue-page:the-other-palace",
       "sourceUrl": null,
       "kind": "skip-duplicate",
-      "reason": "already in shows.json as boys-who-dance-off-west-end-2026 (normalized-equal)"
+      "reason": "already in shows.json as garry-starr-classic-penguins-garrick-west-end-2026 (london-pool-title-equal (venue \"The Other Palace\" vs \"Garrick Theatre\"))"
     },
     {
       "title": "A Homo Alone 2 Yikes We Did It Again",
@@ -502,14 +465,6 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as mortal-wounds-off-west-end-2026 (same house, title words contained, undated catalog row (\"Mortal Wounds\" vs \"Mortal Wounds at St Mary Magdalene Church\"))"
-    },
-    {
-      "title": "Murder in the Cathedral: OT in the Church",
-      "venue": "Orange Tree Theatre",
-      "source": "venue-page:orange-tree-theatre",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as murder-cathedral-off-west-end-2026 (subtitle-variant-of: \"Murder in the Cathedral\")"
     },
     {
       "title": "Richard II",
@@ -614,6 +569,14 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as goblin-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "It's Beginning To Look A Lot Like...",
+      "venue": "Park Theatre",
+      "source": "venue-page:park-theatre",
+      "sourceUrl": null,
+      "kind": "skip-unconfirmed",
+      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-12-21))"
     },
     {
       "title": "Jimmy",
@@ -760,14 +723,6 @@
       "reason": "already in shows.json as squid-a-victim-impact-statement-off-west-end-2026 (normalized-equal)"
     },
     {
-      "title": "The Banality of Evil: Hannah Arendt, France 1940",
-      "venue": "Arcola Theatre",
-      "source": "venue-page:arcola-theatre",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026 (normalized-equal)"
-    },
-    {
       "title": "The Master Builder",
       "venue": "Arcola Theatre",
       "source": "venue-page:arcola-theatre",
@@ -821,7 +776,7 @@
       "source": "venue-page:king-s-head-theatre",
       "sourceUrl": null,
       "kind": "skip-duplicate",
-      "reason": "already in shows.json as dick-whittington-and-his-cat-west-end-2026 (normalized-equal)"
+      "reason": "already in shows.json as dick-whittington-and-his-cat-off-west-end-2026 (normalized-equal)"
     },
     {
       "title": "Dick Whittington: ADULTS ONLY",
@@ -838,6 +793,14 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as double-bill-tell-me-straight-and-aggy-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "Fault",
+      "venue": "King's Head Theatre",
+      "source": "venue-page:king-s-head-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as fault-off-west-end-2027 (normalized-equal)"
     },
     {
       "title": "For Dolores",
@@ -864,12 +827,28 @@
       "reason": "already in shows.json as god-is-a-woman-the-musical-off-west-end-2026 (normalized-equal)"
     },
     {
+      "title": "Saving Alan Turing",
+      "venue": "King's Head Theatre",
+      "source": "venue-page:king-s-head-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as saving-alan-turing-off-west-end-2027 (normalized-equal)"
+    },
+    {
       "title": "Stand Up If You're Here Tonight",
       "venue": "King's Head Theatre",
       "source": "venue-page:king-s-head-theatre",
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as stand-up-if-youre-here-tonight-off-west-end-2027 (normalized-equal)"
+    },
+    {
+      "title": "Thinking Drinkers' Great British Pub Ride",
+      "venue": "King's Head Theatre",
+      "source": "venue-page:king-s-head-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as thinking-drinkers-great-british-pub-ride-off-west-end-2027 (normalized-equal)"
     },
     {
       "title": "Thou Shalt Sit The F*** Down",
@@ -933,7 +912,7 @@
       "source": "venue-page:lyric-hammersmith",
       "sourceUrl": null,
       "kind": "skip-duplicate",
-      "reason": "already in shows.json as jajas-african-hair-braiding-west-end-2026 (normalized-equal)"
+      "reason": "already in shows.json as jajas-african-hair-braiding-off-west-end-2026 (normalized-equal)"
     },
     {
       "title": "Live at the Lyric: A Comedy Gala",
@@ -1125,7 +1104,15 @@
       "source": "venue-page:riverside-studios",
       "sourceUrl": null,
       "kind": "skip-duplicate",
-      "reason": "already in shows.json as cadel-lungs-on-legs-west-end-2026 (normalized-equal)"
+      "reason": "already in shows.json as cadel-lungs-on-legs-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "Concrete",
+      "venue": "Riverside Studios",
+      "source": "venue-page:riverside-studios",
+      "sourceUrl": null,
+      "kind": "skip-unconfirmed",
+      "reason": "venue's dated listing does not confirm a run: only 4 performance(s) listed — a short booking, not a run"
     },
     {
       "title": "Cradle: Stories of Iran, Exile & Belonging",
@@ -1160,14 +1147,6 @@
       "reason": "already in shows.json as in-my-own-little-world-off-west-end-2026 (normalized-equal)"
     },
     {
-      "title": "Kick The Door Down: BTS Development Night",
-      "venue": "Riverside Studios",
-      "source": "venue-page:riverside-studios",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-11-07))"
-    },
-    {
       "title": "Looking at the Big Sky!",
       "venue": "Riverside Studios",
       "source": "venue-page:riverside-studios",
@@ -1192,12 +1171,28 @@
       "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2027-01-15))"
     },
     {
+      "title": "Midnight Train to Nowhere",
+      "venue": "Riverside Studios",
+      "source": "venue-page:riverside-studios",
+      "sourceUrl": null,
+      "kind": "skip-unconfirmed",
+      "reason": "venue's dated listing does not confirm a run: only 2 performance(s) listed — a short booking, not a run"
+    },
+    {
       "title": "Mother Ignacia",
       "venue": "Riverside Studios",
       "source": "venue-page:riverside-studios",
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as mother-ignacia-off-west-end-2027 (normalized-equal)"
+    },
+    {
+      "title": "Mrs Macbeth",
+      "venue": "Riverside Studios",
+      "source": "venue-page:riverside-studios",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as mrs-macbeth-off-west-end-2027 (normalized-equal)"
     },
     {
       "title": "The Crimes of Pete",
@@ -1216,6 +1211,14 @@
       "reason": "already in shows.json as tinderella-off-west-end-2026 (normalized-equal)"
     },
     {
+      "title": "Yippee Ki Yay",
+      "venue": "Riverside Studios",
+      "source": "venue-page:riverside-studios",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as yippee-ki-yay-off-west-end-2026 (normalized-equal)"
+    },
+    {
       "title": "An Iliad",
       "venue": "Rose Theatre Kingston",
       "source": "venue-page:rose-theatre-kingston",
@@ -1229,7 +1232,7 @@
       "source": "venue-page:rose-theatre-kingston",
       "sourceUrl": null,
       "kind": "skip-duplicate",
-      "reason": "already in shows.json as frankenstein-west-end-2027 (london-pool-title-equal (venue \"Rose Theatre Kingston\" vs \"Rose Theatre\"))"
+      "reason": "already in shows.json as frankenstein-off-west-end-2027 (london-pool-title-equal (venue \"Rose Theatre Kingston\" vs \"Rose Theatre\"))"
     },
     {
       "title": "A Christmas Carol In Words and Music",
@@ -1341,7 +1344,7 @@
       "source": "venue-page:wilton-s-music-hall",
       "sourceUrl": null,
       "kind": "skip-duplicate",
-      "reason": "already in shows.json as the-little-match-girl-west-end-2026 (normalized-equal)"
+      "reason": "already in shows.json as the-little-match-girl-off-west-end-2026 (normalized-equal)"
     },
     {
       "title": "Top Gunchained",

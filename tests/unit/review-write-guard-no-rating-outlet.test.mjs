@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-5064: safeWriteReview discards a relayed (Show Score) originalScore on a
  * no-critic-rating outlet, so no writer can land the hard violation that

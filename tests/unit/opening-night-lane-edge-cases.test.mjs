@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-5201 S4-T5: the edge cases of a real night, through the production wiring.
 // - A disarmed lane: buildRealLaneDeps with no recorded rehearsal (or only a synthetic one) refuses before any lease
 //   work and pages why. Nothing is claimed, so the regular pipeline covers the night.

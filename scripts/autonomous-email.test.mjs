@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/audit/autonomous-queue.json (untracked core data); data/audit/rebuild-regression.json (bot ledger); data/reviews.json (untracked core data); +4 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-6199: call-site test for sanitizePlainLanguageText. The unit test in
 // scripts/lib proves the function; this spawns the real autonomous-email.js
 // (--dry-run, all I/O stubbed by a preload) to prove the script actually runs

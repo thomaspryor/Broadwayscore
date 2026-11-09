@@ -294,4 +294,4 @@ module.exports = {
   BANNED,
 };
 
-if (require.main === module) process.exit(main(process.argv));
+if (require.main === module) require('./exit-flushed.js').exitFlushed(main(process.argv));

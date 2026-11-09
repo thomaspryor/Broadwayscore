@@ -134,7 +134,7 @@ jobs:
               # BRO-6858 preflight (-24h / -3h): credits, balances and secrets for the night. Dedupe on its run title.
               DONE=$(gh run list --workflow=press-night-preflight.yml --limit 50 --json displayTitle,createdAt \
                        --jq ".[] | select(.createdAt >= \"$SINCE\") | .displayTitle" 2>/dev/null || true)
-              if echo "$DONE" | grep -qF "Press night preflight $SHOW $NIGHT $KIND"; then
+              if grep -qF "Press night preflight $SHOW $NIGHT $KIND" <<<"$DONE"; then
                 echo "Preflight $KIND for $SHOW $NIGHT already ran."
               else
                 echo "Preflight $KIND for $SHOW"
@@ -155,7 +155,7 @@ jobs:
             STARTED=$(printf '%s\n%s\n' "$STARTED" "$ORCH" | sed 's/^Opening Night Orchestrator targeted /Press night probe /;s/ (broadway)$/ '"$NIGHT"'/')
             if [ -z "$CATEGORY" ]; then
               echo "::warning::$SHOW is not in shows.json any more; skipping its kick."
-            elif echo "$STARTED" | grep -qF "Press night probe $SHOW $NIGHT"; then
+            elif grep -qF "Press night probe $SHOW $NIGHT" <<<"$STARTED"; then
               echo "A probe was already started for $SHOW $NIGHT; nothing to start."
             elif [ "$CATEGORY" = "broadway" ]; then
               echo "Kick: orchestrator for $SHOW"

@@ -1,6 +1,7 @@
 // Outlet & Critic profile data module
 // Imports reviews.json + shows.json directly (NOT through engine.ts or data.ts barrel)
 // Pages using this module must import it directly to avoid bundle bloat on other routes
+import { assignPositivityRanks } from './critic-standing';
 
 import type { ProfileReview, OutletProfile, CriticProfile } from './data-types';
 import { OUTLET_TIERS } from '@/config/scoring';
@@ -469,9 +470,8 @@ for (const [outletId, reviews] of Array.from(outletReviewsMap.entries())) {
 outletProfilesList.sort((a, b) => b.reviewCount - a.reviewCount);
 outletProfilesList.forEach((p, i) => { p.volumeRank = i + 1; });
 
-// Generosity rank (by avg score desc)
-const outletsByGenerosity = [...outletProfilesList].sort((a, b) => b.avgScore - a.avgScore);
-outletsByGenerosity.forEach((p, i) => { p.generosityRank = i + 1; });
+// Positivity rank among outlets with 5+ reviews (src/lib/critic-standing.ts)
+assignPositivityRanks(outletProfilesList);
 
 // ============================================
 // Build Critic Profiles
@@ -543,9 +543,8 @@ for (const group of groupReviewsByCritic(allProfileReviews)) {
 criticProfilesList.sort((a, b) => b.reviewCount - a.reviewCount);
 criticProfilesList.forEach((p, i) => { p.volumeRank = i + 1; });
 
-// Generosity rank
-const criticsByGenerosity = [...criticProfilesList].sort((a, b) => b.avgScore - a.avgScore);
-criticsByGenerosity.forEach((p, i) => { p.generosityRank = i + 1; });
+// Positivity rank among critics with 5+ reviews, matching the critics list default
+assignPositivityRanks(criticProfilesList);
 
 // ============================================
 // Back-fill outletSlug and criticSlug on reviews

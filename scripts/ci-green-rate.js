@@ -57,6 +57,7 @@ function usage() {
     '  --min M        minimum green rate percent for PASS (default 80)',
     '  --json         print the full result object instead of the table',
     '  --record       append this reading to data/audit/ci-green-rate.jsonl (health-check.js nightly; not an acceptance form)',
+    '  --cause-mix    also print a CAUSE-MIX line: CAUSE: tags on main test.yml red cards closed in the window (reads Linear)',
     'Exit 0 = PASS, 1 = FAIL, 2 = usage or gh API error.',
   ].join('\n');
 }
@@ -96,9 +97,35 @@ function appendLedger(row, file = LEDGER_PATH) {
  * One-shot paginated fetch against an EXPLICIT repo (never the
  * `{owner}/{repo}` placeholder). Returns { runs, truncated }.
  */
-function fetchRuns({ repo, workflow, branch, days, maxPages, now }, exec = execFileSync) {
-  if (!repo) throw new Error('fetchRuns: repo is required');
-  const sinceDate = core.windowStartDate(days, now);
+function fetchRuns(opts, exec = execFileSync) {
+  if (!opts.repo) throw new Error('fetchRuns: repo is required');
+  const whole = fetchWindow(opts, exec);
+  if (!whole.truncated) return whole;
+  // BRO-3425: GitHub serves at most 1000 results per filtered query, and main
+  // makes ~70 runs/day, so any window over ~14d hit the cap and was FORCED to
+  // FAIL no matter how green main was. Re-read in one-day slices (each far
+  // under 1000); only a single day over the cap stays truncated.
+  const runs = [];
+  const seen = new Set();
+  let truncated = false;
+  const start = Date.parse(core.windowStartDate(opts.days, opts.now));
+  const end = Date.parse(new Date(opts.now).toISOString().slice(0, 10));
+  for (let t = start; t <= end; t += 86400000) {
+    const day = new Date(t).toISOString().slice(0, 10);
+    const slice = fetchWindow({ ...opts, sinceDate: day, untilDate: day }, exec);
+    if (slice.truncated) truncated = true;
+    for (const r of slice.runs) {
+      const id = r && r.databaseId;
+      if (seen.has(id)) continue;
+      seen.add(id);
+      runs.push(r);
+    }
+  }
+  return { runs, truncated };
+}
+
+function fetchWindow({ repo, workflow, branch, days, maxPages, now, sinceDate: sd, untilDate }, exec = execFileSync) {
+  const sinceDate = sd || core.windowStartDate(days, now);
   const runs = [];
   const seen = new Set();
   let truncated = false;
@@ -106,7 +133,7 @@ function fetchRuns({ repo, workflow, branch, days, maxPages, now }, exec = execF
   const env = { ...process.env };
   delete env.GH_REPO; // belt-and-braces: the path is explicit, but never let an override leak into gh
   for (let page = 1; page <= maxPages; page++) {
-    const apiPath = core.buildRunsApiPath({ repo, workflow, branch, page, sinceDate, perPage: core.DEFAULTS.perPage });
+    const apiPath = core.buildRunsApiPath({ repo, workflow, branch, page, sinceDate, untilDate, perPage: core.DEFAULTS.perPage });
     const parsed = ghApiJson(apiPath, {
       exec,
       jq: JQ,
@@ -234,8 +261,28 @@ function main(argv, deps = {}) {
   return result.verdict === 'PASS' ? 0 : 1;
 }
 
-if (require.main === module) {
-  process.exit(main(process.argv.slice(2)));
+// BRO-7102 item 5: --cause-mix adds one CAUSE-MIX line counting the CAUSE: tags
+// on main test.yml red cards closed in the window (scripts/lib/red-cause-tag.js).
+// It reads Linear, so it is opt-in and never changes the green-rate exit code.
+async function printCauseMix(argv, { log = console.log, error = console.error, fromLinear } = {}) {
+  const i = argv.indexOf('--days');
+  const days = i >= 0 && Number.isInteger(Number(argv[i + 1])) ? Number(argv[i + 1]) : core.DEFAULTS.days;
+  const rct = require('./lib/red-cause-tag.js');
+  try {
+    log(rct.formatCauseMix(await (fromLinear || rct.causeMixFromLinear)(days), days));
+  } catch (err) {
+    error(`ci-green-rate: cause mix unavailable: ${String((err && err.message) || err).split('\n')[0]}`);
+    log(`CAUSE-MIX: n/a over ${days}d (Linear read failed)`);
+  }
 }
 
-module.exports = { main, fetchRuns, fetchStable, resolveRepo, readLedger, LEDGER_PATH };
+if (require.main === module) {
+  const argv = process.argv.slice(2);
+  const wantMix = argv.includes('--cause-mix') && !hasHelpFlag(argv);
+  const code = main(argv.filter((a) => a !== '--cause-mix'));
+  // With --json, stdout stays pure JSON: the CAUSE-MIX line goes to stderr.
+  if (wantMix) printCauseMix(argv, argv.includes('--json') ? { log: console.error } : {}).then(() => process.exit(code));
+  else process.exit(code);
+}
+
+module.exports = { main, printCauseMix, fetchRuns, fetchWindow, fetchStable, resolveRepo, readLedger, LEDGER_PATH };

@@ -352,9 +352,16 @@ function buildBudgetPreamble(timeoutMs) {
     // interactive sessions are held to it by finish-line Gate 6, which is
     // headless-exempt, so the record would otherwise be missing from every
     // job's final block (BRO-4134).
+    // BRO-7132: the close check (root-cause-close.js) also needs ROOT-CAUSE and
+    // RED-THEN-GREEN; PREVENTION alone read as missing on every worker close.
     + `When you fix a defect, look for the same bug elsewhere and fix what causes it, then include in your final `
-    + `status block: PREVENTION: <the test/lint/gate/guard that now catches this class> ; cousins: <where you `
-    + `looked, what you found> (or NO-PREVENTION: <reason> for a feature, docs or revert).\n\n`;
+    + `status block and in the card's close comment, one per line: ROOT-CAUSE: <why the defect was possible> / `
+    + `PREVENTION: <path of the test/lint/gate/guard in your diff that now catches this class> ; cousins: <where you `
+    + `looked, what you found> / RED-THEN-GREEN: <the guard failed with the fix reverted and passed with it> `
+    + `(or NO-ROOT-CAUSE: <reason> for a fix with no possible guard, NO-PREVENTION: <reason> for a feature, docs or revert). `
+    // BRO-7138: the close check also wants proof the fix had its effect.
+    + `Every fix close also needs EFFECT: <what you measured on real data after landing, before and after, with numbers; `
+    + `for a new check, gate or rule, its dry run over real past inputs and hit rate> (or NO-EFFECT-CHECK: <reason>).\n\n`;
 }
 
 async function runJob(opts) {

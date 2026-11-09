@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data); data/reviews.json (untracked core data); data/review-texts (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Acceptance test for Notion card 3b2637c5-416f-818f (Carmen-class sweep):
 // passes only when every cross-outlet attribution suspect has been triaged
 // (corrected, excluded, or annotated crossOutletVerified:true). Reads LIVE

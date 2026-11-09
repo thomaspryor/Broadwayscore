@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Guard L (BRO-5499): a NEW review whose text names two cast members of a same-title
 // sibling production in the same market and none of this production's people is stamped
 // wrongProduction at write time, even with an Unknown critic and no date (the shape that

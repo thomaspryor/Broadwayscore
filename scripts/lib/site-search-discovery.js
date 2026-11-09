@@ -22,6 +22,7 @@ const { isLondonMarket } = require('./venue-classification');
 const { passesGenericTitleIdentity } = require('./generic-title-guard');
 const { urlLooksLikeReview } = require('./review-guards');
 const { cleanSearchTitle } = require('./title-normalization');
+const { splitLabelledTitle } = require('./market-routing');
 const { namedNonReviewReason } = require('./non-review-url-patterns');
 const { hasNonMetOperaUrlMarker, operaHouseForVenue, isUrlYearOutsideWindow } = require('./content-filters');
 const { withOperaCache } = require('./opera-discovery-cache');
@@ -131,6 +132,48 @@ function filterOperaUrls(urls, outletId, showId, openingDate, venue) {
  */
 function operaTitleWords(title) {
   if (!title) return [];
+  const words = _operaWords(title);
+  // BRO-6924: "Tosca - English National Opera" splits into tosca/english/
+  // national/opera, so "polish-national-opera" scored 2 hits with no "tosca".
+  // The head words ride along so operaTitleMatch can require the opera itself.
+  const split = splitLabelledTitle(title);
+  if (split) {
+    // A short or stopword head ("Io", "La Cid") still needs a head word: fall
+    // back to its raw tokens, and an empty list rejects every match.
+    let headWords = _operaWords(split.head);
+    if (!headWords.length) headWords = _operaTokens(split.head);
+    Object.defineProperty(words, 'headWords', { value: headWords });
+  }
+  return words;
+}
+
+function _operaTokens(text) {
+  return String(text || '').toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, '')
+    .split(/[^a-z0-9]+/).filter(Boolean);
+}
+
+/**
+ * True when `text` carries at least `minHits` of the title words and, for a
+ * "<head> - <label>" title, at least one head word (BRO-6924). The label alone
+ * (a company or venue name) never makes a match.
+ */
+function operaTitleMatch(text, titleWords, minHits) {
+  const t = String(text || '');
+  const tokens = new Set(_operaTokens(t));
+  // A short word counts only as a whole token: "don" (Don Carlo, Don Pasquale)
+  // sat inside every "london" slug, so a 1-hit outlet attached any London opera
+  // review to a Don X show (BRO-6954). Words of 5+ letters still match inside a
+  // longer token ("latraviata", "isoldes"), where a false hit is implausible.
+  const hits = titleWords.filter(w => tokens.has(w) || (w.length >= 5 && t.includes(w))).length;
+  if (hits < minHits) return false;
+  if (process.env.DISABLE_OPERA_HEAD_WORD_MATCH === 'true') return true;
+  const head = titleWords.headWords;
+  if (!head) return true;
+  // Whole tokens: "don" must not match inside "london", "tosca" inside "toscanini".
+  return head.some(w => tokens.has(w));
+}
+
+function _operaWords(title) {
   const stop = new Set(['the','and','und','et','y','le','la','les','el','un','una','di','da','du','dei','der','die','das','of','for','to','at','in','on','with','from']);
   // NFD-normalize + strip diacritics BEFORE the char filter. Without this,
   // "Último Sueño" tokenizes to ["ltimo","sue"] (fragments left after \w
@@ -167,8 +210,7 @@ function parterrePostMatchesShow(post, showWords) {
   const slug = (post.link || '').toLowerCase();
   const excerpt = (post.excerpt?.rendered || '').toLowerCase().replace(/<[^>]+>/g, ' ');
   const text = title + ' ' + slug + ' ' + excerpt;
-  const hits = showWords.filter(w => text.includes(w)).length;
-  return hits >= Math.min(2, showWords.length);
+  return operaTitleMatch(text, showWords, Math.min(2, showWords.length));
 }
 
 /**
@@ -186,8 +228,7 @@ function wpPostMatchesShow(post, titleWords) {
   const title = (post.title?.rendered || '').toLowerCase().replace(/<[^>]+>/g, '');
   const slug = (post.link || '').toLowerCase();
   const text = title + ' ' + slug;
-  const hits = titleWords.filter(w => text.includes(w)).length;
-  return hits >= Math.min(2, titleWords.length);
+  return operaTitleMatch(text, titleWords, Math.min(2, titleWords.length));
 }
 
 /**
@@ -315,6 +356,12 @@ const SITE_SEARCH_ENDPOINTS = {
     domain: 'ew.com',
     linkPattern: /href="(https:\/\/ew\.com\/[^"]*review[^"]*)"/gi,
     requiresJs: true,
+    // BRO-6908: the results are in the server HTML. Live test 2026-11-03: Scrapingdog's
+    // plain page (1 credit) gave the same review links as a ScrapingBee render (5 credits)
+    // on Hamilton, Oedipus and Cats; ScrapingBee succeeded on only 45% of EW renders.
+    // Do NOT copy this to hollywood-reporter, deadline or timeout: Scrapingdog returns
+    // byte-identical HTML with dynamic on or off there, and 0 links on Deadline and Time Out.
+    fetchVia: 'scrapingdog-page',
   },
 
   // --- Vulture (JS-rendered section page, needs ScrapingBee) ---
@@ -598,7 +645,9 @@ const SITE_SEARCH_ENDPOINTS = {
     //
     // COVERAGE NOTE: this index is a rolling window of ~30-40 recent reviews, so
     // it does NOT cover older reviews the way the search endpoint did. The
-    // 'telegraph-search' entry below keeps that path alive for backfill.
+    // 'telegraph-search' entry below was meant to keep that backfill path alive but
+    // returns no results on any provider (BRO-6898), so older Telegraph reviews are
+    // only reachable through aggregators or manual ingest.
     // showId → showInfo is needed by the one-word-title disambiguator gate; the
     // dispatcher passes showId as the 4th fetchAndParse arg.
     fetchAndParse: async (showTitle, market, openingDate, showId) => {
@@ -610,7 +659,7 @@ const SITE_SEARCH_ENDPOINTS = {
       return discoverTelegraphReviewUrls(showTitle, fetchSSR, (msg) => console.warn(msg), showInfo);
     },
   },
-  // Telegraph site search — the pre-#720 config, kept so the rolling section
+  // Telegraph site search (DISABLED, see applies below) — the pre-#720 config, kept so the rolling section
   // index above doesn't silently narrow coverage to "recent reviews only"
   // (ship-check finding). requiresJs keeps it in the poller's JS tier, which
   // only fires for outlets still missing after the free SSR pass, so it costs a
@@ -624,6 +673,13 @@ const SITE_SEARCH_ENDPOINTS = {
     linkPattern: /href="(https:\/\/www\.telegraph\.co\.uk\/theatre\/[^"]*)"/gi,
     requiresJs: true,
     outletIdOverride: 'telegraph',
+    // BRO-6898: disabled. Ledger 2026-11-01..03: ScrapingBee returned HTTP 500 on
+    // 626 of 660 telegraph.co.uk renders (3,190 credits). Scrapingdog returns 200
+    // but the byte-identical 152,030-byte "Search the Telegraph" shell for three
+    // different queries (Hamilton, Oedipus, Kiss Me Kate) even with dynamic=true JS rendering, and its only /theatre/ link is
+    // the nav item /theatre/tickets/: the endpoint no longer returns results on either
+    // provider. The 'telegraph' section index above is the working path.
+    applies: () => false,
   },
 
   'lighting-and-sound-america': {
@@ -688,8 +744,7 @@ const SITE_SEARCH_ENDPOINTS = {
       const titleMatched = unique.filter(url => {
         const slug = (url.split('/review-')[1] || '').toLowerCase();
         if (!slug) return false;
-        const hits = titleWords.filter(w => slug.includes(w)).length;
-        return hits >= Math.min(2, titleWords.length);
+        return operaTitleMatch(slug, titleWords, Math.min(2, titleWords.length));
       });
       return filterOperaUrls(titleMatched, 'bachtrack', showId, openingDate);
     },
@@ -922,8 +977,7 @@ const SITE_SEARCH_ENDPOINTS = {
         // surfaces ~10 URLs at a time and Alex Ross writes one Met review per
         // month, so false-positive risk is low. Two-word match would miss
         // "tristan-at-the-met-music-review" (operaTitleWords drops "und").
-        const hits = titleWords.filter((w) => slug.includes(w)).length;
-        return hits >= 1;
+        return operaTitleMatch(slug, titleWords, 1);
       });
       return filterOperaUrls(matches, 'newyorker', showId, openingDate);
     }),
@@ -977,8 +1031,7 @@ const SITE_SEARCH_ENDPOINTS = {
       const titleWords = operaTitleWords(showTitle);
       const matches = [...new Set(all)].filter((url) => {
         const slug = (url.split('/').pop() || '').toLowerCase();
-        const hits = titleWords.filter((w) => slug.includes(w)).length;
-        return hits >= 1;
+        return operaTitleMatch(slug, titleWords, 1);
       });
       return filterOperaUrls(matches, 'washpost', showId, openingDate);
     }),
@@ -1011,8 +1064,7 @@ const SITE_SEARCH_ENDPOINTS = {
       const titleWords = operaTitleWords(showTitle);
       const matches = [...new Set(all)].filter((url) => {
         const slug = (url.split('/').pop() || '').toLowerCase();
-        const hits = titleWords.filter((w) => slug.includes(w)).length;
-        return hits >= 1;
+        return operaTitleMatch(slug, titleWords, 1);
       });
       return filterOperaUrls(matches, 'times-uk', showId, openingDate);
     }),
@@ -1038,8 +1090,7 @@ const SITE_SEARCH_ENDPOINTS = {
       const titleWords = operaTitleWords(showTitle);
       const matches = [...new Set(all)].filter((url) => {
         const slug = (url.split('/').pop() || '').toLowerCase();
-        const hits = titleWords.filter((w) => slug.includes(w)).length;
-        return hits >= 1;
+        return operaTitleMatch(slug, titleWords, 1);
       });
       return filterOperaUrls(matches, 'artsdesk', showId, openingDate);
     }),
@@ -1072,8 +1123,7 @@ const SITE_SEARCH_ENDPOINTS = {
       const titleWords = operaTitleWords(showTitle);
       const matches = [...new Set(all)].filter((url) => {
         const slug = (url.split('/').pop() || '').toLowerCase();
-        const hits = titleWords.filter((w) => slug.includes(w)).length;
-        return hits >= 1;
+        return operaTitleMatch(slug, titleWords, 1);
       });
       return filterOperaUrls(matches, 'nystagereview', showId, openingDate);
     }),
@@ -1127,8 +1177,7 @@ const SITE_SEARCH_ENDPOINTS = {
       const titleWords = operaTitleWords(showTitle);
       const matches = [...new Set(all)].filter((url) => {
         const slug = (url.split('/article/')[1] || '').toLowerCase();
-        const hits = titleWords.filter((w) => slug.includes(w)).length;
-        return hits >= Math.min(2, titleWords.length);
+        return operaTitleMatch(slug, titleWords, Math.min(2, titleWords.length));
       });
       return filterOperaUrls(matches, 'vulture', showId, openingDate);
     }),
@@ -1344,6 +1393,46 @@ function fetchWithScrapingBee(url, timeoutMs = 30000) {
   });
 }
 
+/**
+ * Fetch the HTML of a requiresJs search page (BRO-6908).
+ *
+ * Endpoints marked fetchVia 'scrapingdog-page' try Scrapingdog's plain page first
+ * (1 credit) and fall back to the ScrapingBee render (5 credits) when Scrapingdog
+ * returns nothing (capped, quota, error) or HTML with no match for the endpoint's
+ * link pattern at all (a shell, as Scrapingdog returned for telegraph-search).
+ * Every other endpoint renders on ScrapingBee exactly as before.
+ *
+ * @param {Object} config - SITE_SEARCH_ENDPOINTS entry
+ * @param {string} url - fully built search URL
+ * @param {{sdFetch?: Function, sbFetch?: Function}} [deps] - injectable for tests
+ * @returns {Promise<string>} HTML
+ */
+async function fetchJsSearchHtml(config, url, deps = {}) {
+  const sbFetch = deps.sbFetch || fetchWithScrapingBee;
+  // SCRAPER_USE_SCRAPINGDOG=0 is the global Scrapingdog off switch (scraper.js); fetchWithScrapingdog
+  // itself does not read it, so honour it here. It is also the rollback for this reroute.
+  if (config.fetchVia !== 'scrapingdog-page' || process.env.SCRAPER_USE_SCRAPINGDOG === '0') return sbFetch(url);
+  const sdFetch = deps.sdFetch || ((u) => require('./scraper').fetchWithScrapingdog(u, { renderJs: false }));
+  let html = '';
+  try {
+    const res = await sdFetch(url);
+    html = res && typeof res.content === 'string' ? res.content : '';
+  } catch (_) {
+    html = '';
+  }
+  if (html) {
+    const probe = new RegExp(config.linkPattern.source, config.linkPattern.flags.replace('g', ''));
+    // A link match alone is not proof of results: site chrome links to section pages whose
+    // path contains "review". A real results page also echoes the query (EW live test
+    // 2026-11-03: 82 and 12 occurrences of the title word); a nav-only shell does not.
+    let word = '';
+    try { word = (new URL(url).searchParams.get('q') || '').toLowerCase().split(/[^a-z0-9]+/).find(w => w.length >= 3) || ''; } catch (_) { word = ''; }
+    const echoes = word ? html.toLowerCase().split(word).length - 1 : Infinity;
+    if (probe.test(html) && echoes >= 3) return html;
+  }
+  return sbFetch(url);
+}
+
 // urlLooksLikeReview imported from ./review-guards (pure function, tested in test-opening-night-fixes.js)
 
 /**
@@ -1354,6 +1443,7 @@ function fetchWithScrapingBee(url, timeoutMs = 30000) {
  * @param {Object} options
  * @param {boolean} options.verbose - Log progress
  * @param {boolean} options.skipJs - Skip JS-rendered endpoints (save ScrapingBee credits)
+ * @param {Object} [options.outcomes] - out-param: outletId -> 'found'|'confirmed-empty'|'failed'|'not-attempted' (BRO-7162 F04)
  * @param {string} options.openingDate - Show's opening date (YYYY-MM-DD). Passed to
  *   fetchAndParse implementations that support date-window filtering (e.g. TheaterMania).
  * @param {Object} [options.show] - Full show object for applies() predicate evaluation.
@@ -1366,6 +1456,7 @@ async function searchOutletSite(outletId, showTitle, options = {}) {
   const { verbose = false, skipJs = false, market = 'broadway', openingDate = null, show = null } = options;
   const config = SITE_SEARCH_ENDPOINTS[outletId];
   if (!config) return [];
+  if (options.outcomes) options.outcomes[outletId] = 'not-attempted'; // overwritten once a search actually runs
   // Clean title for search queries (strip suffixes, normalize quotes/ampersands)
   const searchTitle = cleanSearchTitle(showTitle);
 
@@ -1445,7 +1536,7 @@ async function searchOutletSite(outletId, showTitle, options = {}) {
 
       let html;
       if (config.requiresJs) {
-        html = await fetchWithScrapingBee(searchUrl);
+        html = await fetchJsSearchHtml(config, searchUrl);
       } else {
         html = await fetchSSR(searchUrl);
       }
@@ -1479,11 +1570,14 @@ async function searchOutletSite(outletId, showTitle, options = {}) {
     if (verbose) {
       console.log(`    Site search [${config.name}]: ${results.length} result(s)`);
     }
+    // BRO-7162 F04: a completed search is evidence; an error (below) is not.
+    if (options.outcomes) options.outcomes[outletId] = results.length ? 'found' : 'confirmed-empty';
     return results;
   } catch (err) {
     if (verbose) {
       console.log(`    Site search [${config.name}]: ${err.message}`);
     }
+    if (options.outcomes) options.outcomes[outletId] = 'failed';
     return []; // Non-fatal — SERP layer will catch this outlet
   }
 }
@@ -1502,13 +1596,13 @@ async function searchOutletSite(outletId, showTitle, options = {}) {
  * @returns {Promise<Array<{url, outletId, outlet, source}>>}
  */
 async function searchOutletSites(showTitle, outletIds, options = {}) {
-  const { knownUrls = new Set(), verbose = false, skipJs = false, market = 'broadway', openingDate = null, show = null } = options;
+  const { knownUrls = new Set(), verbose = false, skipJs = false, market = 'broadway', openingDate = null, show = null, outcomes = null } = options;
   const results = [];
 
   for (const outletId of outletIds) {
     if (!SITE_SEARCH_ENDPOINTS[outletId]) continue;
 
-    const found = await searchOutletSite(outletId, showTitle, { verbose, skipJs, market, openingDate, show });
+    const found = await searchOutletSite(outletId, showTitle, { verbose, skipJs, market, openingDate, show, outcomes });
     for (const result of found) {
       if (!knownUrls.has(result.url)) {
         results.push(result);
@@ -1569,11 +1663,13 @@ function dailyMailHeadlineMatches(showTitle, headline) {
 }
 
 module.exports = {
+  operaTitleMatch,
   dailyMailHeadlineMatches,
   searchOutletSites,
   searchOutletSite,
   selectApplicableSiteSearchOutlets,
   SITE_SEARCH_ENDPOINTS,
+  fetchJsSearchHtml,
   extractVultureTheaterArticleUrls,
   extractGuardianRssReviewUrls,
   extractSectionLinks,

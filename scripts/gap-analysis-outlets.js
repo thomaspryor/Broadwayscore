@@ -8,6 +8,7 @@
  */
 
 const fs = require('fs');
+const { hasExcerpt } = require('./lib/excerpt-fields');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
 
@@ -57,7 +58,7 @@ function run() {
           hasFullText: !!(data.fullText && data.fullText.length > 100),
           fullTextLen: (data.fullText || '').length,
           isFullReview: data.isFullReview || false,
-          hasExcerpt: !!(data.bwwExcerpt || data.dtliExcerpt || data.showScoreExcerpt || data.nycTheatreExcerpt),
+          hasExcerpt: hasExcerpt(data),
           fetchAttempts: data.fetchAttempts || 0,
           url: data.url || null,
           wrongProduction: data.wrongProduction || false,

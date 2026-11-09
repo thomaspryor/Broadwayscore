@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data); data/critic-registry.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-4933: opening-night discovery must fill the body in the same run.
 import test from 'node:test';
 import assert from 'node:assert/strict';

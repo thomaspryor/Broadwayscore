@@ -10,6 +10,7 @@
  * Uses all 276 reviews with explicit numeric scores.
  */
 
+import '../lib/llm-usage-install.js'; // LLM spend meter: keep it the first import (BRO-5043)
 import { isReviewTextFile } from '../lib/review-text-sidecars';
 import Anthropic from '@anthropic-ai/sdk';
 import OpenAI from 'openai';

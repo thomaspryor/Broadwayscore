@@ -47,3 +47,14 @@ test('showTypeFor: venue genre label first, then the title', () => {
   assert.equal(knownShowType('X', 'Drama; Plays/Drama'), 'play');
   assert.equal(knownShowType('X', 'Musicals'), 'musical');
 });
+
+// BRO-7146: "Revival" says a show is a revival, not whether it is a play.
+import { createRequire as _cr } from 'node:module';
+import { test as _t } from 'node:test';
+import _assert from 'node:assert/strict';
+_t('knownShowType: a "Revival" label alone leaves the type unknown, and a later "Musicals" label still wins', () => {
+  const { knownShowType: k } = _cr(import.meta.url)('./title-says-musical.js');
+  _assert.equal(k('Bluebirds', 'Revival'), null);
+  _assert.equal(k('Bluebirds', 'Drama'), 'play');
+  _assert.equal(k('Bluebirds', 'Musicals'), 'musical');
+});

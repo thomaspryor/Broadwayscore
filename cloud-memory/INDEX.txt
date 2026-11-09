@@ -427,7 +427,7 @@ feedback_returning_production_priorRuns.md | feedback | A returning/transferring
 feedback_review_recovery_pipeline_gaps.md | feedback | Run verify-review-recovery.js; 5 steps silently fail independently.
 feedback_review_skills_design_lens.md | feedback [archived] | /plan-review and /second-opinion now check design quality too.
 feedback_review_texts_ci_overwrites.md | feedback [archived] | CI pushes overwrite local changes; commit to review-texts first.
-feedback_review_texts_not_symlink.md | feedback | Unlike reviews.json/shows.json, data/review-texts/ is a REGULAR directory in the main repo, independent of ~/broadway-review-texts. Local writes don't propagate.
+feedback_review_texts_not_symlink.md | feedback | Main checkout's data/review-texts IS now a symlink to ~/broadway-review-texts (seen 2026-11-04); worktrees have none, so scoring-delta fails there until you symlink it.
 feedback_reviews_json_dual_repo_push.md | feedback | Flag + rebuild + push data repo + redeploy; review-texts alone isn't enough.
 feedback_reviews_json_outlet_ids.md | feedback [archived] | outletId values don't match intuitive names; verify against real data first.
 feedback_revival_title_disambiguation.md | feedback [archived] | isRevivalByCanonicalTitle needs ms pubDate + cast/crew surname match.

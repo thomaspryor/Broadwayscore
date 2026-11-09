@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Task #653 — reviews.json corpus non-determinism.
 //
 // findExistingReviewFile() deliberately refuses to return wrongProduction /

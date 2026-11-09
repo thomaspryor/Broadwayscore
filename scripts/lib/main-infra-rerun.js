@@ -75,4 +75,35 @@ function waitMsFor(input = {}, { now = Date.now(), minAgeMs = MIN_AGE_MS, maxWai
   return Math.max(0, Math.min(maxWaitMs, later - now + 5000));
 }
 
-module.exports = { decideInfraRerun, waitMsFor, isStarvedJob, candidateJobs, MAX_ATTEMPTS, MIN_AGE_MS, AGGREGATOR_JOB };
+/**
+ * BRO-7102: the confirm re-run. A real failure on the newest main push run, on its
+ * first attempt, right after a green run, gets its failed jobs re-run ONCE. A flake
+ * then clears on its own instead of holding main red until a worker looks, and a
+ * real break fails twice: the confirmation scripts/lib/auto-revert.js needs. The
+ * re-run attempts it leaves in history are what scripts/auto-revert-replay.js
+ * reads as the confirm when the arming card replays 30 days.
+ * Newest-only, like the starvation re-run. A red that follows a red is left alone
+ * (already confirmed red; re-running it again only burns minutes).
+ * Kill switch: CONFIRM_RERUN_DISABLED=true (repo variable, passed by the workflow).
+ */
+function decideConfirmRerun({ runs, jobs, annotationsByJobId = {}, env = process.env } = {}) {
+  const no = (reason, run) => ({ retry: false, reason, runId: run ? run.id : null });
+  if (env && env.CONFIRM_RERUN_DISABLED === 'true') return no('kill-switch');
+  const list = runs || [];
+  const run = list[0];
+  if (!run) return no('no-run');
+  if (run.event !== 'push' || run.head_branch !== 'main') return no('not-main-push', run);
+  if (run.status !== 'completed') return no('newest-run-not-completed', run);
+  if (run.conclusion !== 'failure') return no(`conclusion-${run.conclusion || 'none'}`, run);
+  if ((run.run_attempt || 1) !== 1) return no('already-rerun', run);
+  // The verdict main showed before this run: the newest older run that finished
+  // with a code verdict (cancelled/superseded runs carry none).
+  const prev = list.slice(1).find((r) => r && r.status === 'completed' && (r.conclusion === 'success' || r.conclusion === 'failure'));
+  if (!prev) return no('no-previous-verdict', run);
+  if (prev.conclusion !== 'success') return no('red-after-red', run);
+  const real = candidateJobs(jobs).filter((j) => !isStarvedJob(j, annotationsByJobId[j.id]));
+  if (!real.length) return no('no-real-failure', run);
+  return { retry: true, reason: 'confirm-new-red', runId: run.id, attempt: 1, failed: real.map((j) => j.name) };
+}
+
+module.exports = { decideInfraRerun, decideConfirmRerun, waitMsFor, isStarvedJob, candidateJobs, MAX_ATTEMPTS, MIN_AGE_MS, AGGREGATOR_JOB };

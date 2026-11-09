@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (read by the test); data/diary-shows.json (read by the test); data/west-end-venues.json (read by the test); +1 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
 // TESTS-VS-DERIVED-DATA-EXEMPT: CJS-mirror parity canary — diffs the mirror against the real TS normalizer across the LIVE venue corpus on purpose; assertions are structural (parity), not hardcoded facts
  * scripts/lib/diary-lookup-entry.js — the build-time CommonJS mirror of the

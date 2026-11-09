@@ -9,6 +9,8 @@ const { isArticleOutsideProductionWindow } = require('./date-guard');
 const { createRunBudget } = require('./run-budget');
 const { leaseSkipReason } = require('./opening-night-lane/lease-guard');
 const { safeWriteReview } = require('./review-write-guard');
+const { recoverScoreFromHtml, existingHasScoreSignal } = require('./ingest-html-score');
+const { setExtractedScore } = require('./score-routing');
 
 function needsEmptyBodyRetry(review) {
   return !!review && (!review.fullText || (typeof review.fullText === 'string' && !review.fullText.trim()))
@@ -47,6 +49,32 @@ function recoveryPatch(review, result, show, now = new Date().toISOString()) {
     fetchMethod: result.source,
     textFetchedAt: now,
     ...(publishDate && !review.publishDate ? { publishDate } : {}),
+    ...publishedStarPatch(review, result.content, fullText, show),
+  };
+}
+
+// The page this patch was built from also carries the critic's printed star
+// (DM "Rating: Four out of five stars", a star widget). Read it here: nothing
+// downstream re-reads the HTML, so a rating missed now leaves the review scored
+// from prose alone, unanchored (BRO-6900: Murder in the Cathedral, Marmion 4/5
+// scored 62). Same gates as a url ingest: outlet extractors only, never over an
+// existing score or a deliberate clear.
+const PUBLISHED_STAR_FIELDS = ['originalScore', 'originalScoreNormalized', 'originalScoreSource', 'scoreExtractedFrom'];
+
+function publishedStarPatch(review, html, fullText, show) {
+  if (existingHasScoreSignal(review) || review.originalScoreCleared === true) return {};
+  const rec = recoverScoreFromHtml(html, fullText, review.outletId, show.title);
+  if (!rec) return {};
+  // Route on the record's own scoreSource (an aggregator-sourced file keeps a
+  // rating in aggregatorStars), then hand back only the fields routing wrote.
+  const routed = setExtractedScore({ scoreSource: review.scoreSource },
+    { value: rec.originalScore, normalizedValue: rec.normalizedScore, source: rec.source });
+  if (routed.field !== 'originalScore') return {};
+  return {
+    originalScore: rec.originalScore,
+    ...(rec.normalizedScore != null ? { originalScoreNormalized: rec.normalizedScore } : {}),
+    originalScoreSource: rec.source,
+    scoreExtractedFrom: 'scraped-html',
   };
 }
 
@@ -113,6 +141,11 @@ async function retryEmptyBodyReviews({ root, shows, showIds, dryRun = false, lim
     const current = JSON.parse(fs.readFileSync(filepath, 'utf8'));
     if (isLeased(id) || current.url !== review.url || !needsEmptyBodyRetry(current)) continue;
     if (patch) {
+      // The star was gated on the record read before the fetch; a score or a
+      // clear that landed meanwhile wins over the page's star.
+      if (existingHasScoreSignal(current) || current.originalScoreCleared === true) {
+        for (const k of PUBLISHED_STAR_FIELDS) delete patch[k];
+      }
       const recovered = { ...current, ...patch, needsTextRetry: false };
       const result = safeWriteReview(filepath, recovered);
       if (result.wrote && !result.autoFlaggedWrongProduction) {

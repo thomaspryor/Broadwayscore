@@ -213,7 +213,8 @@ function main() {
 
   for (const showId of dirs) {
     const sibData = siblingIndex.get(showId);
-    if (!sibData || !sibData.siblings.length) continue; // no same-title sibling — nothing to check
+    // No same-title or head-keyed ("Tosca" / "Tosca - English National Opera") sibling: nothing to check.
+    if (!sibData || (!sibData.siblings.length && !(sibData.labelledSiblings || []).length)) continue;
     const show = byId.get(showId);
     if (!show) continue;
 

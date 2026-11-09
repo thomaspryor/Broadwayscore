@@ -4,6 +4,7 @@
 
 import type { AudienceBuzzData } from './data-types';
 import audienceGradeConfig from '../config/audience-grade.json';
+import { isSourceActive } from '../../scripts/lib/audience-weighting';
 
 /**
  * Minimum total audience reviews required to display a grade.
@@ -21,13 +22,13 @@ export const MIN_AUDIENCE_REVIEWS: number = audienceGradeConfig.minReviews;
 export const FULL_CONFIDENCE_AUDIENCE_REVIEWS: number = audienceGradeConfig.fullConfidenceReviews;
 
 /**
- * Get total audience review count across visible sources (not suppressed, with a score; mirrors
- * scripts/lib/audience-review-count.js, BRO-6738).
+ * Count only sources used by the combined score, sharing its eligibility rules.
+ * Server accessors attach showInfo so client consumers retain market/recency gates.
  */
-export function getTotalAudienceReviews(buzz: AudienceBuzzData): number {
+export function getTotalAudienceReviews(buzz: AudienceBuzzData, showInfo = buzz.showInfo): number {
   if (!buzz.sources) return 0;
-  return Object.values(buzz.sources).reduce(
-    (sum, source) => (!source || source.suppressed || source.score == null ? sum : sum + (source.reviewCount ?? 0)),
+  return Object.entries(buzz.sources).reduce(
+    (sum, [name, source]) => (isSourceActive(name, source, showInfo) ? sum + (source?.reviewCount ?? 0) : sum),
     0
   );
 }

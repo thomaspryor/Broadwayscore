@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Tests for scripts/lib/identical-text-sibling.js and the shared same-article
  * key, review-normalization.canonicalArticleKey (BRO-5321).

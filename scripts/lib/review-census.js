@@ -229,7 +229,10 @@ function sourceExtractors(market = 'west-end') {
     // Equus, 2026-06): the poller's verifyAggregatorUrl guard was added after some
     // archives were already cached, and the census reads cached archives without
     // re-checking. Re-validating here closes that gap.
-    { name: 'theatre-reviews', dir: 'theatre-reviews', fn: extractReviews, validate: true },
+    // claim → BRO-6968: the page's canonical URL must not be a round-up the TR matcher assigned to
+    // another show (tr-archive-claim, BRO-6089). gather-reviews quarantines those at read time; the
+    // census read them anyway (Into The Woods at The Bridge counted as The Bridge's census).
+    { name: 'theatre-reviews', dir: 'theatre-reviews', fn: extractReviews, validate: true, claim: true },
   ];
   let extractLbo = null;
   try { ({ extractReviewsFromLBO: extractLbo } = require('../scrape-london-box-office-roundups')); } catch (_) {}
@@ -300,6 +303,34 @@ function unionCensus(perSource, opts = {}) {
 }
 
 /**
+ * BRO-7050: a roundup that is PUBLISHED but absent from the archive must not read as "no census yet".
+ * The review files record the live roundup URL (`bwwRoundupUrl`); when one exists and no bww-roundup
+ * archive was parsed, the audit used to print NO CENSUS YET and count 0 gaps (2026-11-05 off-Broadway
+ * openings: the-unbelievers had a published BWW roundup, no archive file, 5 reviews missing, "Shows with gaps: 0").
+ * Pure: pass the review-text JSON objects and the census' sourcesPresent.
+ * @returns {{missing:boolean, url:string|null}}
+ */
+function publishedRoundupWithoutArchive(reviewFiles, sourcesPresent, showTitle) {
+  if ((sourcesPresent || []).includes('bww-roundup')) return { missing: false, url: null };
+  for (const f of reviewFiles || []) {
+    const u = f && typeof f.bwwRoundupUrl === 'string' ? f.bwwRoundupUrl : '';
+    if (!/^https?:\/\/[^ ]*review-roundup/i.test(u)) continue;
+    // A roundup URL copied onto another show's file (cross-show misroute) must not raise a gap: the slug has to
+    // carry a distinctive word of THIS show's title (e.g. "unbelievers"), when a title is known.
+    if (showTitle) {
+      const STOP = new Set(['the', 'a', 'an', 'of', 'and', 'in', 'on', 'to']);
+      const toks = String(showTitle).toLowerCase().split(/[^a-z0-9]+/).filter((t) => t && !STOP.has(t));
+      const slug = u.toLowerCase();
+      // Short titles must match fully; long titles (slugs truncate them) need at least half their words.
+      const need = toks.length <= 3 ? toks.length : Math.ceil(toks.length / 2);
+      if (toks.length && toks.filter((t) => slug.includes(t)).length < need) continue;
+    }
+    return { missing: true, url: u };
+  }
+  return { missing: false, url: null };
+}
+
+/**
  * Build the census for a show from archived roundups (archive-first, no network).
  * @param {string} showId
  * @param {object} [opts] { archiveDir, sources } injectable for tests
@@ -354,6 +385,10 @@ function buildCensusFromArchives(showId, opts = {}) {
       // and let extraction + outlet-union be the safety net, rather than nuking a
       // genuine roundup we simply can't verify.
       if (!v.isValid && v.rejectReason !== 'no-significant-title-tokens') { wrongRoundup.push(s.name); continue; }
+    }
+    if (s.claim) {
+      const { checkTrArchiveClaim, loadCoverageClaims } = require('./tr-archive-claim');
+      if (!checkTrArchiveClaim(html, showId, opts.trClaims || loadCoverageClaims()).ok) { wrongRoundup.push(s.name); continue; }
     }
     let reviews = [];
     try { reviews = s.fn(html, showId) || []; } catch (_) { reviews = []; }
@@ -481,7 +516,7 @@ function censusVerdict(census, coveredScoredOutlets, opts = {}) {
 }
 
 module.exports = {
-  buildCensusFromArchives, unionCensus, isLegacyArchiveUrl, censusVerdict, CI_UNFETCHABLE_OUTLETS,
+  buildCensusFromArchives, publishedRoundupWithoutArchive, unionCensus, isLegacyArchiveUrl, censusVerdict, CI_UNFETCHABLE_OUTLETS,
   sourceExtractors, parseBwwRoundup, parseDtli, parsePlaybillVerdict, parseShowScore,
   standingOutletsSource, candidateStatesFor, outletVariants, outletInSet,
 };

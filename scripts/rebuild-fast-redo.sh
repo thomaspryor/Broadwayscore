@@ -6,7 +6,7 @@
 #
 # Redoes only the side-effect-free, local steps that produce what the commit
 # stages:
-#   rebuild-all-reviews.js -> generate-mobile-artifacts.sh -> generate-onboarding-data.ts -> BRO-3127 staleness
+#   tag-genres.js --replay (no LLM) -> rebuild-all-reviews.js -> generate-mobile-artifacts.sh -> generate-onboarding-data.ts -> BRO-3127 staleness
 #   revert -> audit-score-public-since.js
 # then:
 #   * data/audit/: discards whatever the regen wrote there and REPLAYS the lost
@@ -64,6 +64,10 @@ if [ "$LOST_PARENTS" -gt 2 ]; then
   echo "::error::rebuild-fast redo refused: lost commit $LOST is a merge commit ($((LOST_PARENTS - 1)) parents); its first-parent diff is not this run's rebuild"
   exit 1
 fi
+
+# BRO-6939: reset dropped the genre tagger's paid results too. Merge them with
+# fresh main before mobile/onboarding regeneration, without another LLM call.
+node "$SCRIPT_DIR/tag-genres.js" --replay="$LOST"
 
 if [ -n "${REBUILD_FAST_REGEN_CMD:-}" ]; then
   eval "$REBUILD_FAST_REGEN_CMD"

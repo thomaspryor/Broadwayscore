@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6518-2024-b",
   "planId": "9daff8bc-3eea-4053-abf1-c0f7cadbaa0e",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-29T20:45:10.672Z",
   "submitter": {
     "name": null,
@@ -893,5 +893,22 @@
       "msg": "shows.json: added gypsy-regional-2023"
     }
   ],
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "obsolete": 1
+    },
+    "ops": [
+      {
+        "i": 6,
+        "verdict": "obsolete",
+        "reason": "executor refuses add-show with a placeholder venue (Various Locations) by design; no fixed venue to add (BRO-7092 hand check)"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (1 obsolete); per-op reasons in triage.ops"
 }

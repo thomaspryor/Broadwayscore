@@ -262,11 +262,20 @@ function textMentionsTitle(text, title, opts = {}) {
  * properNounTitles), which textMentionsTitle's 4-char minimum skips. Counts the
  * title written as a proper noun ("Tru" or "TRU", case-sensitive, whole word);
  * lowercase prose never counts. Titles not on the list return null.
+ * opts.allowUncurated: also count 2-3 letter alphabetic titles not on the list
+ * (only for callers with other corroborating evidence; see joint-combined-copy).
  * @returns {string|null} the lowercased title when it appears >= minHits times
  */
-function textMentionsShortTitle(text, title, minHits = 2) {
+function textMentionsShortTitle(text, title, minHits = 2, opts = {}) {
   const t = (title || '').trim().replace(/[.!?]+$/, '');
-  if (!text || !PROPER_NOUN_TITLES.has(t.toLowerCase())) return null;
+  if (!text || !t) return null;
+  if (!PROPER_NOUN_TITLES.has(t.toLowerCase())) {
+    // opts.allowUncurated (BRO-7077): callers that already hold independent
+    // evidence (e.g. joint-combined-copy's shared URL + combinedWith link) may
+    // count any short alphabetic title. Digits ("13", "44") match dates and
+    // a single letter matches initials, so those stay excluded.
+    if (!opts.allowUncurated || !/^[A-Za-z]{2,3}$/.test(t)) return null;
+  }
   const cap = t.charAt(0).toUpperCase() + t.slice(1).toLowerCase();
   const re = new RegExp(`(?<![A-Za-z0-9])(?:${cap}|${t.toUpperCase()})(?![A-Za-z0-9])`, 'g');
   return (text.match(re) || []).length >= minHits ? t.toLowerCase() : null;

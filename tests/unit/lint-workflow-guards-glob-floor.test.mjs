@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/uk-regional-venues.json.js (untracked core data); data/shows.json.js (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-3688: every lint-workflow-guards.sh check that globs .github/workflows
 // must fail closed on a near-empty/wrong dir instead of reporting clean after
 // scanning nothing (same class as BRO-3684/3686, via bash glob expansion).

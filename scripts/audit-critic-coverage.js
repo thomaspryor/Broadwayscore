@@ -26,6 +26,7 @@ const path = require('path');
 const muckrack = require(path.join(__dirname, 'lib/author-pages/muckrack.js'));
 const bww = require(path.join(__dirname, 'lib/author-pages/bww.js'));
 const nysun = require(path.join(__dirname, 'lib/author-pages/nysun.js'));
+const { criticFetchStatus, criticProgressLabel } = require(path.join(__dirname, 'lib/critic-fetch-status.js'));
 const nysr = require(path.join(__dirname, 'lib/author-pages/nysr.js'));
 const nyt = require(path.join(__dirname, 'lib/author-pages/nyt.js'));
 const newyorker = require(path.join(__dirname, 'lib/author-pages/newyorker.js'));
@@ -181,6 +182,11 @@ async function processCritic(c) {
     }
   });
 
+  const fetchStatus = criticFetchStatus(externalArts.length, errors, sourceCalls.length);
+  if (fetchStatus === 'all-sources-failed' || fetchStatus === 'fetch-failed') {
+    REPORT.push({ ...c, error: fetchStatus, errors });
+    return;
+  }
   if (externalArts.length === 0 && errors.length === 0) {
     REPORT.push({ ...c, error: 'no-articles-found' });
     return;
@@ -201,7 +207,7 @@ async function runBatch() {
     await Promise.all(batch.map(c => processCritic(c).then(() => {
       processed++;
       const last = REPORT[REPORT.length - 1];
-      console.error(`[${processed}/${critics.length}] ${c.name} — ${last.missingCount || 0} missing`);
+      console.error(`[${processed}/${critics.length}] ${c.name} — ${criticProgressLabel(last)}`);
     })));
   }
 }
@@ -298,6 +304,8 @@ async function runOutletHeartbeat() {
   fs.writeFileSync(outPath, JSON.stringify(REPORT, null, 2));
   console.error(`\nWrote ${outPath}`);
   console.error(`Total review-looking gaps: ${REPORT.reduce((s,r)=>s+(r.missingCount||0),0)}`);
+  const blind = REPORT.filter(r => r.error === 'all-sources-failed' || r.error === 'fetch-failed');
+  if (blind.length) console.error(`::warning::${blind.length} critic(s) returned no articles because sources failed, so their gaps are unknown, not zero: ${blind.map(r => r.name).slice(0, 20).join(', ')}`);
 
   // Outlet heartbeat runs alongside the default weekly sweep only — historical
   // mode and single-critic debug runs (--only) don't touch the shared state file.

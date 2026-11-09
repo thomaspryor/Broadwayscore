@@ -87,7 +87,7 @@ const horizon7Str = horizon7Date.toISOString().slice(0, 10);
 // default 'broadway' is the original US edition. The edition flips PRIMARY (the
 // hero markets) and the branding; each section filters on PRIMARY so one
 // generator serves both. West End has no grosses feed, so the WE edition drops
-// Box Office / Recoupment / Season Standing / Opera entirely (see assembly).
+// Box Office / Recoupment / Season Standing entirely; opera gets its own section.
 // Defined up here (not with BRAND rendering) because the cross-issue state key
 // below is edition-scoped.
 const EDITION = resolveNewsletterEdition(process.env.NEWSLETTER_EDITION); // throws on typos — 'westend' must not silently build the Broadway edition
@@ -373,7 +373,7 @@ function getAudienceGrade(score) {
 function audienceChip(showId) {
   const buzz = audienceBuzz[showId];
   if (!buzz || buzz.combinedScore == null) return '';
-  const totalReviews = cjsRequire('../lib/audience-review-count.js').countVisibleAudienceReviews(buzz.sources);
+  const totalReviews = cjsRequire('../lib/audience-review-count.js').countVisibleAudienceReviews(buzz.sources, shows.find(s => s.id === showId));
   if (totalReviews < AUDIENCE_GRADE_CONFIG.minReviews) return ''; // shared with the site: src/config/audience-grade.json
   const g = getAudienceGrade(buzz.combinedScore);
   // 12% alpha bg + solid text color, 10px leading-none
@@ -402,7 +402,7 @@ function showHref(show) { return show && show.slug ? `${SITE}/show/${show.slug}`
 // default 'broadway' is the original US edition. The edition flips PRIMARY (the
 // hero markets) and the branding; each section filters on PRIMARY so one
 // generator serves both. West End has no grosses feed, so the WE edition drops
-// Box Office / Recoupment / Season Standing / Opera entirely (see assembly).
+// Box Office / Recoupment / Season Standing entirely; opera gets its own section.
 // Opera shows (type='opera') are surfaced in their own dedicated Opera
 // Openings section and EXCLUDED from every other section. Opera coverage
 // follows different conventions: T1-flat weighting (per src/lib/engine.ts
@@ -1111,7 +1111,7 @@ function biggestMoverSection() {
     let before;
     try { before = JSON.parse(fs.readFileSync(path.join(snapDir, snapFile), 'utf8')); }
     catch { return []; }
-    const totalReviewsFor = d => cjsRequire('../lib/audience-review-count.js').countVisibleAudienceReviews(d.sources);
+    const totalReviewsFor = (d, show) => cjsRequire('../lib/audience-review-count.js').countVisibleAudienceReviews(d.sources, show);
     const GRADE_ORDER = ['A+','A','A-','B+','B','B-','C+','C','C-','D','F'];
     const grade = (s) => {
       if (s == null) return null;
@@ -1124,13 +1124,13 @@ function biggestMoverSection() {
     Object.entries(before.shows || {}).forEach(([id, b]) => {
       const n = audienceBuzz[id];
       if (!n || b.combinedScore == null || n.combinedScore == null) return;
-      const nReviews = totalReviewsFor(n);
-      const bReviews = totalReviewsFor(b);
       // Per-market review thresholds — Broadway shows pass at 15+, but Off-Broadway
       // needs 100+ to avoid niche shows where a few new reviews swing a small n
       // hard enough to cross a grade boundary.
       const show = shows.find(s => s.id === id);
       if (!show) return;
+      const nReviews = totalReviewsFor(n, show);
+      const bReviews = totalReviewsFor(b, show);
       if (lastMoverIds.has(id) || lastFeaturedIds.has(id) || !notFeatured(id)) return; // no week-over-week repeat; no recent-feature repeat; no cross-section dupe
       if (show.closingDate && show.closingDate < weekStartStr) return; // a run that closed before this week isn't a current "mover" (TRU backfill case)
       if (!isPrimaryMarket(show)) return;
@@ -2332,7 +2332,7 @@ function inLondonOpeningWindow(s) {
 
 function weOpeningStories() {
   const ranked = shows
-    .filter(s => (s.category === 'west-end' || s.category === 'off-west-end') && inLondonOpeningWindow(s) && !excludedShowIds.has(s.id))
+    .filter(s => (s.category === 'west-end' || s.category === 'off-west-end') && !isOperaShow(s) && inLondonOpeningWindow(s) && !excludedShowIds.has(s.id))
     .map(s => ({ s, agg: aggregateScore(s.id), isCatchUp: !inWeek(s.openingDate) }))
     .filter(x => x.agg && x.agg.count >= minReviews(x.s.category) && hasFreshRunCoverage(x.s) && (IS_WE || quietBroadwayWeek || x.agg.avg >= 75))
     // Genuine in-week openings always outrank a grace-window catch-up show
@@ -2351,7 +2351,10 @@ function weOpeningStories() {
 }
 
 function londonSection() {
-  const list = shows.filter(s => (s.category === 'west-end' || s.category === 'off-west-end') && inLondonOpeningWindow(s) && !excludedShowIds.has(s.id));
+  // Opera is not West End theatre (owner, 2026-11-08: ENO's Iphigenie en
+  // Tauride led the WE weekly's subject and hero card). It gets its own
+  // Opera Openings section lower down, in both editions.
+  const list = shows.filter(s => (s.category === 'west-end' || s.category === 'off-west-end') && !isOperaShow(s) && inLondonOpeningWindow(s) && !excludedShowIds.has(s.id));
   if (!list.length) return null;
   const withScore = list.map(s => ({ s, agg: aggregateScore(s.id), isCatchUp: !inWeek(s.openingDate) })).filter(x => x.agg && x.agg.count >= minReviews(x.s.category) && hasFreshRunCoverage(x.s));
   if (!withScore.length) return null;
@@ -2412,7 +2415,11 @@ function londonSection() {
   const cards = withScore.map(x => showRow(x.s, { showMarket: true })).join('');
   const seeAll = seeAllLink(`${SITE}/west-end`, 'Explore the full West End Scorecard', { color: '#f472b6' });
   const seeAllCard = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" style="background:#1a1a24;border-radius:16px;border:1px solid rgba(244,114,182,0.18);">${seeAll}</table>`;
-  return sectionWrap(sectionHeading(IS_WE ? 'Opened in the West End' : 'London Openings', null, { href: `${SITE}/west-end` }), cards + seeAllCard);
+  // Heading must match the cards (owner, 2026-11-08: "Opened in the West End"
+  // over a list of only Off West End shows read as an error).
+  const _cats = new Set(withScore.map(x => x.s.category));
+  const weHeading = _cats.size > 1 ? 'Opened in London' : _cats.has('off-west-end') ? 'Opened Off West End' : 'Opened in the West End';
+  return sectionWrap(sectionHeading(IS_WE ? weHeading : 'London Openings', null, { href: `${SITE}/west-end` }), cards + seeAllCard);
 }
 
 // Grace window for the WE edition's Broadway section — mirrors
@@ -2487,7 +2494,13 @@ function weBroadwaySection() {
 // differ from theatre. Indigo/violet accent picks a color distinct from
 // gold (NYC) and pink (London) so the three feeds read as siblings.
 function operaOpeningsSection() {
-  const list = shows.filter(s => isOperaShow(s) && inWeek(s.openingDate) && !excludedShowIds.has(s.id));
+  // WE edition: London opera only (ENO, Royal Opera...), using the same
+  // 14-day catch-up window as London Openings so an opera that opened late
+  // last week and was never featured still gets its card. Broadway edition
+  // keeps every in-week opera opening.
+  const isLondon = (s) => s.category === 'west-end' || s.category === 'off-west-end';
+  const list = shows.filter(s => isOperaShow(s) && !excludedShowIds.has(s.id)
+    && (IS_WE ? (isLondon(s) && inLondonOpeningWindow(s)) : inWeek(s.openingDate)));
   if (!list.length) return null;
   // Opera carries the most priorRuns in the corpus (Met revivals:
   // carmen-off-broadway-2025 and don-giovanni-off-broadway-2025 both mix
@@ -2495,7 +2508,10 @@ function operaOpeningsSection() {
   // fresh-run gate at least as much as the others (QA review, 2026-09-20).
   const withScore = list.map(s => ({ s, agg: aggregateScore(s.id) })).filter(x => x.agg && x.agg.count >= 3 && hasFreshRunCoverage(x.s));
   if (!withScore.length) return null;
+  // This week's openings before grace-window catch-ups (same rule as London Openings).
+  withScore.sort((a, b) => Number(!inWeek(a.s.openingDate)) - Number(!inWeek(b.s.openingDate)));
   const marketColor = '#a78bfa'; // indigo/violet — opera's accent
+  if (IS_WE) markFeatured(...withScore.map(x => x.s.id)); // grace window: don't repeat next week
   markOpening('opera-openings', withScore.map(x => x.s));
   // All opening cards are the same large feature size (user 2026-07-11) —
   // mirrors London Openings. showRow renders the OPERA + market pills.
@@ -2747,8 +2763,8 @@ function _slot(name, html) {
 if (_dropSet.size) process.stderr.write(`[newsletter] dropping sections: ${[..._dropSet].join(', ')}\n`);
 if (_includeSet.size) process.stderr.write(`[newsletter] opt-in sections: ${[..._includeSet].join(', ')}\n`);
 // WE edition: a lean, West End-first order. No Box Office (no WE grosses feed),
-// no Off-Broadway openings, no Recoupment / Announced-Closings / Opera / Season
-// Standing. The WE openings (londonSection, relabeled "Opened in the West End")
+// no Off-Broadway openings, no Recoupment / Announced-Closings / Season
+// Standing. London opera gets its own Opera Openings section below Broadway. The WE openings (londonSection, relabeled "Opened in the West End")
 // are the hero; Broadway (weBroadwaySection, "Opened on Broadway") is the
 // secondary cross-market feed, placed right after Closing this Week — the
 // same relative slot londonSection occupies in the Broadway edition's own
@@ -2759,6 +2775,9 @@ const sectionOrder = IS_WE ? [
   _slot('award-score-movers', awardMover),
   _slot('closing-this-week', clo),
   _slot('broadway-we', bwWe),
+  // Opera has its own section, below the West End and Broadway theatre news
+  // (owner, 2026-11-08), mirroring the Broadway edition.
+  _slot('opera-openings', opera),
   _slot('rave-pan-of-the-week', ravepan),
   _slot('casting-updates', cas),
   _slot('upcoming-openings', upcomingTop || upcomingBottom),
@@ -2850,7 +2869,7 @@ bwEvents = IS_WE
 // entry here is the one the subject/lede names. weOpeningStories() ranks
 // most-reviewed-first and londonSection floats the same show to the top card,
 // so subject, lede, and card stack always agree.
-const weGoldEvents = weOpeningStories().map(x => ({ show: x.s }));
+const weGoldEvents = weOpeningStories().map(x => ({ show: x.s, isCatchUp: !!x.isCatchUp }));
 
 const newsworthyInputs = {
   edition: EDITION,  // West End openings are primary in the WE edition, secondary in the US edition
@@ -2944,13 +2963,26 @@ const newsworthyCandidates = scoreCandidates(newsworthyInputs);
 // same order bwO/obO render their cards in). Every other week (a closing or
 // mover leads, a quiet Broadway week, the West End edition) keeps the
 // newsworthiness subject/lede below. NEWSLETTER_VOICE=legacy turns it off.
-const { composeWeekVoice } = await import('./week-voice.mjs');
+const { composeWeekVoice, composeWeOpener } = await import('./week-voice.mjs');
 const _NYC_OPENING_KINDS = new Set(['bw-opening', 'bw-reopening', 'ob-opening', 'ob-reopening']);
 // The voice says "this week", so it only names and counts shows whose opening
 // night fell in the week: the OB section's 14-day grace catch-ups stay out,
 // and so does any section NEWSLETTER_DROP_SECTIONS removed from the body.
 // counts are calendar counts (incl. openings too thinly reviewed to name) so
 // "just two openings" is never said of a week that had three.
+// Median openings per week over the 8 weeks before this issue, so the lede
+// only calls a week busy or quiet when it is (week-voice.mjs weekSize()).
+function _typicalWeekly(pred) {
+  const counts = [];
+  for (let k = 1; k <= 8; k++) {
+    const a = new Date(weekStartStr + 'T12:00:00'); a.setDate(a.getDate() - 7 * k);
+    const b = new Date(a); b.setDate(b.getDate() + 6);
+    const from = a.toISOString().slice(0, 10), to = b.toISOString().slice(0, 10);
+    counts.push(shows.filter(s => !isOperaShow(s) && s.openingDate && s.openingDate >= from && s.openingDate <= to && pred(s)).length);
+  }
+  counts.sort((x, y) => x - y);
+  return (counts[3] + counts[4]) / 2;
+}
 const _calendarOpenings = (cat) => openingEventsForWeek(cat).filter(e => !excludedShowIds.has(e.show.id)).length;
 // Broadway openings that already had their own opening-night email: the
 // voice leads with Off Broadway instead of repeating them (owner, 2026-11-02).
@@ -2963,6 +2995,11 @@ const _weekVoice = (!IS_WE && process.env.NEWSLETTER_VOICE !== 'legacy' && _NYC_
     bw: _dropSet.has('broadway-openings') ? [] : bwEvents.map(e => ({ show: e.show, agg: aggregateScore(e.show.id), isReopening: !!e.isReopening })),
     ob: _dropSet.has('offbroadway-openings') ? [] : obEvents.filter(e => inWeek(e.show.openingDate)).map(e => ({ show: e.show, agg: aggregateScore(e.show.id) })),
     counts: { bw: _calendarOpenings('broadway'), ob: _calendarOpenings('off-broadway') },
+    typical: {
+      // Intentionally NOT isBroadwayCategory: strict categories, matching openingEventsForWeek()'s counts.
+      total: _typicalWeekly(s => s.category === 'broadway' || s.category === 'off-broadway'),
+      ob: _typicalWeekly(s => s.category === 'off-broadway'),
+    },
   })
   : null;
 // SUBJECT_OVERRIDE / LEDE_OVERRIDE let an editor hand-set the subject and lede
@@ -3061,16 +3098,11 @@ const _ledeParts = buildLedeSentences(newsworthyCandidates, _maxLedeSentences) |
 // sentence to make room (second-opinion review, 2026-08-02).
 let _weOpener = '';
 if (IS_WE && !process.env.LEDE_OVERRIDE) {
-  const _stories = weOpeningStories();
-  if (_stories.length >= 3) {
-    const _hot = _stories.filter(x => (x.agg.avg ?? 0) >= 75).length;
-    const _w = (n) => ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'][n] || String(n);
-    _weOpener = _hot === _stories.length
-      ? `A big week for London theatre: ${_w(_stories.length)} shows opened, every one scoring 75 or higher.`
-      : _hot >= 2
-        ? `A big week for London theatre: ${_w(_stories.length)} shows opened, ${_w(_hot)} scoring 75 or higher.`
-        : `A busy week for London theatre, with ${_w(_stories.length)} new openings.`;
-  }
+  // Typical = scored London openings per week (matches weOpeningStories()'s gate).
+  const _weTypical = _typicalWeekly(s => (s.category === 'west-end' || s.category === 'off-west-end')
+    && (() => { const a = aggregateScore(s.id); return a && a.count >= minReviews(s.category); })());
+  _weOpener = composeWeOpener(weOpeningStories(), { typical: _weTypical });
+  process.stderr.write(`[newsletter] WE week size: ${weOpeningStories().filter(x => !x.isCatchUp).length} openings vs typical ${_weTypical}\n`);
 }
 // US-edition counterpart: on a quiet Broadway week (see quietBroadwayWeek
 // above) the lede can now be built entirely from secondary London
@@ -3167,9 +3199,152 @@ if (_weekVoice && !process.env.LEDE_OVERRIDE) {
   ledeText = _weekVoice.sentences.concat(_extra.map(c => c.text)).join(' ');
   ledeShowRefs = _weekVoice.showRefs.concat(_extra.map(c => c.showRef));
 }
+// ── AI subject, preview text and opening (subject-writer.mjs) ────────────────
+// Owner, 2026-11-08 (BRO-7168, option A): the template subjects read like a
+// database and opened every issue the same way. Claude writes candidates from
+// a fact sheet of THIS issue, code + GPT-5.5 check every fact, Claude ranks
+// the survivors; runners-up go to meta.subjectAlternates for the owner's
+// [DRAFT] preview. Any failure keeps the template subject/lede above.
+let _ai = null, _aiOff = null;
+// The whole block is best-effort: any error keeps the template subject.
+try {
+  const { writeSubject, aiSubjectDisabledReason, reusable } = await import('./subject-writer.mjs');
+  _aiOff = aiSubjectDisabledReason();
+  // Debug aid: print the fact sheet the writer would get (no API calls).
+  if (process.env.NEWSLETTER_PRINT_SUBJECT_FACTS === '1') {
+    const f = buildSubjectFacts();
+    process.stderr.write(`[newsletter] subject facts:\n${f.lines.map(l => '  - ' + l).join('\n')}\n[newsletter] recent subjects: ${JSON.stringify(await recentSubjects())}\n`);
+  }
+  if (_aiOff) {
+    process.stderr.write(`[newsletter] AI subject off: ${_aiOff}\n`);
+  } else {
+    const _facts = buildSubjectFacts();
+    // Sticky per issue: a later run for the same week and edition (Sunday
+    // refresh, recovery) keeps the subject the owner previewed while it still
+    // checks out against today's facts, and keeps a subject the owner typed
+    // into the Resend draft themselves.
+    const _prev = (_priorState.issues || []).find(i => i && i.weekStart === weekStartStr && _issueEdition(i) === EDITION);
+    const _ownerSubject = await ownerEditedSubject(_prev);
+    _ai = reusable(_prev && _prev.ai, _facts);
+    if (_ai && _ownerSubject) _ai = { ..._ai, subject: _ownerSubject, angle: 'owner edit' };
+    if (_ai) process.stderr.write(`[newsletter] AI subject reused for this issue: ${_ai.subject}\n`);
+    else {
+      _ai = await writeSubject(_facts, { recent: await recentSubjects(), log: (m) => process.stderr.write(m + '\n') });
+      if (_ai && _ownerSubject) _ai = { ..._ai, subject: _ownerSubject, angle: 'owner edit' };
+      if (_ai) process.stderr.write(`[newsletter] AI subject (${_ai.angle}): ${_ai.subject}\n`);
+    }
+  }
+} catch (e) {
+  _ai = null;
+  _aiOff = `subject writer error: ${String(e.message || e).slice(0, 160)}`;
+  process.stderr.write(`[newsletter] ${_aiOff}; keeping the template subject\n`);
+}
+if (_ai) {
+  ledeText = _ai.lede;
+  ledeSecondaryText = '';
+  ledeShowRefs = _ai.showRefs;
+  _subjectResult.showRefs = _ai.showRefs;
+  // Drop strip items the new opening already tells.
+  const _named = new Set(_ai.showRefs.map(r => r.id));
+  ledeBullets = ledeBullets.filter(b => !(b.showRef && _named.has(b.showRef.id)));
+}
+
+// Facts for the subject writer: only what this email renders, as plain true
+// sentences. Includes every well-reviewed primary-market show closing in the
+// closing window, whatever week it opened (owner, 2026-11-08).
+function buildSubjectFacts() {
+  const body = sectionOrder.join('');
+  const inBody = (t) => !!t && (body.includes(t) || body.includes(t.replace(/&/g, '&amp;')));
+  const DAY = (d) => new Date(d + 'T12:00:00Z').toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric', timeZone: 'UTC' });
+  const MKT = { 'broadway': 'Broadway', 'off-broadway': 'Off-Broadway', 'west-end': 'West End', 'off-west-end': 'Off West End' };
+  const lines = [], titles = new Map();
+  const use = (s) => { titles.set(s.id, { id: s.id, slug: s.slug, title: s.title }); };
+  const scoreBit = (s, a) => `Critic Score ${Math.round(a.raw ?? a.avg)} (${scoreTier(a.avg, s.category)?.label || 'scored'}) from ${a.count} reviews`;
+  lines.push(`The email covers the week of ${DAY(weekStartStr)} to ${DAY(weekEndStr)}.`);
+  lines.push(IS_WE
+    ? 'Editorial: this is the London edition. Lead with this week\'s London openings (West End and Off West End). Opera and Broadway have their own sections lower down and should not lead.'
+    : 'Editorial: this is the New York edition. Lead with this week\'s Broadway and Off-Broadway openings. London and opera have their own sections lower down and should not lead.');
+  const editionSections = IS_WE ? ['london-openings', 'also-opened-recently', 'broadway-we', 'opera-openings']
+    : ['broadway-openings', 'offbroadway-openings', 'out-of-town-openings', 'london-openings', 'opera-openings', 'new-tour-scores'];
+  const seen = new Set();
+  for (const r of _openingShowRefs) {
+    if (!editionSections.includes(r.section) || _dropSet.has(r.section) || seen.has(r.id)) continue;
+    const s = shows.find(x => x.id === r.id); const a = s && aggregateScore(s.id);
+    if (!s || !a || !inBody(s.title)) continue;
+    seen.add(s.id); use(s);
+    const where = isOperaShow(s) ? 'opera (secondary section)' : (IS_WE ? ['west-end', 'off-west-end'] : ['broadway', 'off-broadway']).includes(s.category) ? MKT[s.category] : `${MKT[s.category] || s.category} (secondary section)`;
+    const when = s.openingDate ? `${inWeek(s.openingDate) ? 'opened this week' : 'opened recently'}, on ${DAY(s.openingDate)}` : 'opened recently';
+    lines.push(`Opening: ${s.title}, ${where}${s.type ? `, ${s.type}` : ''}${s.venue ? ` at ${s.venue}` : ''}, ${when}. ${scoreBit(s, a)}.${s.closingDate && s.closingDate <= horizon7Str ? ` Final performance ${DAY(s.closingDate)}.` : ''}`);
+  }
+  const closing = shows.filter(s => isPrimaryMarket(s) && !isOperaShow(s) && s.status === 'open' && s.closingDate && s.closingDate >= weekEndStr && s.closingDate <= horizon7Str && !seen.has(s.id))
+    .map(s => ({ s, a: aggregateScore(s.id) }))
+    .filter(x => x.a && x.a.count >= minReviews(x.s.category) && x.a.avg >= 70 && inBody(x.s.title))
+    .sort((x, y) => y.a.avg - x.a.avg).slice(0, 6);
+  for (const { s, a } of closing) {
+    use(s);
+    lines.push(`Closing soon: ${s.title}, ${MKT[s.category]}${s.venue ? ` at ${s.venue}` : ''}${s.openingDate ? `, opened ${DAY(s.openingDate)}` : ''}. Final performance ${DAY(s.closingDate)}. ${scoreBit(s, a)}.`);
+  }
+  if (ravepan) {
+    const { rave, pan } = findWeekRavePan();
+    for (const [kind, x] of [['Rave of the week', rave], ['Pan of the week', pan]]) {
+      if (!x || !x.show || !inBody(x.show.title)) continue;
+      use(x.show);
+      lines.push(`${kind}: ${x.review.criticName || 'a critic'}${x.review.outlet ? ` (${x.review.outlet})` : ''} gave ${x.show.title} ${x.review.assignedScore} out of 100.`);
+    }
+  }
+  if (upcoming && _upcomingLede && inBody(_upcomingLede.title)) {
+    titles.set(_upcomingLede.id, { id: _upcomingLede.id, slug: _upcomingLede.slug, title: _upcomingLede.title });
+    lines.push(`Coming up: ${_upcomingLede.title} ${_upcomingLede.eventLabel === 'Opens' ? 'opens' : 'starts previews'} ${DAY(_upcomingLede.eventDate)}.`);
+  }
+  const primaryCats = IS_WE ? ['west-end', 'off-west-end'] : ['broadway', 'off-broadway'];
+  const scored = (s) => { const a = aggregateScore(s.id); return a && a.count >= minReviews(s.category); };
+  // Count only the in-week openings this email shows, so the count matches
+  // the cards the reader sees (review, 2026-11-08: sheet said 9, body had 7).
+  const nNow = [...seen].map(id => shows.find(x => x.id === id))
+    .filter(s => s && primaryCats.includes(s.category) && !isOperaShow(s) && inWeek(s.openingDate)).length;
+  const typical = _typicalWeekly(s => primaryCats.includes(s.category) && scored(s));
+  if (typical > 0) lines.push(`Week size: ${nNow} new ${IS_WE ? 'London' : 'New York'} productions opened this week with enough reviews for a Critic Score; a typical recent week has about ${Math.round(typical)}.`);
+  if (!IS_WE && box) {
+    const b = _boxOfficeCtx();
+    if (b) {
+      lines.push(`Box office: ${b.text}`);
+      // The box-office leader is named in the email too, so it is not "another show".
+      if (b.showRef && b.showRef.id && inBody(b.showRef.title)) titles.set(b.showRef.id, { id: b.showRef.id, slug: b.showRef.slug, title: b.showRef.title });
+    }
+  }
+  const knownTitles = shows.filter(s => ['open', 'previews'].includes(s.status) || (s.openingDate && s.openingDate >= _daysBefore(120)))
+    .map(s => s.title).filter(Boolean);
+  // This week's openings in this edition's own market: the roundup's lead story.
+  const leadTitles = [...seen].map(id => shows.find(x => x.id === id))
+    .filter(s => s && primaryCats.includes(s.category) && !isOperaShow(s) && inWeek(s.openingDate)).map(s => s.title);
+  return { edition: EDITION, lines, titles: [...titles.values()], knownTitles, leadTitles };
+}
+
+// The subject on this issue's Resend draft when it differs from the one this
+// generator last wrote: the owner swapped one in by hand. null otherwise.
+async function ownerEditedSubject(prev) {
+  if (!prev || !prev.subject || !process.env.RESEND_API_KEY) return null;
+  const { draftSubject } = await import('./resend-subject-history.mjs');
+  const cur = await draftSubject(process.env.RESEND_API_KEY, `${IS_WE ? 'West End' : 'Scorecard'} Weekly — ${weekStartStr}`);
+  return cur && cur !== prev.subject ? cur : null;
+}
+
+// Last subjects sent or drafted, both editions, newest first. From the issue
+// ledger; topped up from Resend when the ledger has few (first runs).
+async function recentSubjects() {
+  const mine = (_priorState.issues || [])
+    .filter(i => i && i.subject && !(i.weekStart === weekStartStr && _issueEdition(i) === EDITION))
+    .sort((a, b) => String(b.weekStart).localeCompare(String(a.weekStart)))
+    .map(i => i.subject);
+  if (mine.length >= 6 || !process.env.RESEND_API_KEY) return mine.slice(0, 8);
+  const { recentWeeklySubjects } = await import('./resend-subject-history.mjs');
+  const subs = await recentWeeklySubjects(process.env.RESEND_API_KEY, weekStartStr);
+  return [...new Set([...mine, ...subs])].slice(0, 8);
+}
+
 // Subject is plain text in every inbox — strip any *emphasis* markers an editor
 // (or a future marker-aware scorer) left in, so they never render literally.
-const subjectLine = stripEmphasisMarkers(_subjectRaw);
+const subjectLine = stripEmphasisMarkers(_ai ? _ai.subject : _subjectRaw);
 
 // Show titles to italicize in the editorial lede. Bounded to currently-running
 // or recently-opened shows so a common-word title (Pride, Camping) can't match
@@ -3196,7 +3371,7 @@ const ledeBulletsHtml = ledeBullets.length ? ledeBullets.map(b =>
 const _preheaderSentences = process.env.LEDE_OVERRIDE
   ? (ledeText || '').split(/(?<=[.!?])\s+/)
   : (_weekVoice ? _weekVoice.sentences : _ledeParts.sentences);
-const ledePlain = stripEmphasisMarkers(_preheaderSentences.slice(0, 2).join(' ') || ledeText);
+const ledePlain = _ai ? _ai.preheader : stripEmphasisMarkers(_preheaderSentences.slice(0, 2).join(' ') || ledeText);
 
 const yearForFooter = weekEndDate.getFullYear();
 
@@ -3342,6 +3517,11 @@ sections.reclassify(classifyEntry);
 sections.writeMeta(`${outDir}/${slug}.meta.json`, {
   subject: subjectLine,
   lede: ledeText,
+  // Subject writer outcome (subject-writer.mjs). subjectAlternates are the
+  // runners-up shown in the owner's [DRAFT] preview email.
+  subjectWriter: _ai ? { writer: 'ai', angle: _ai.angle, why: _ai.why, attempts: _ai.attempts, rejected: _ai.rejected }
+    : { writer: 'template', reason: _aiOff || 'no AI candidate passed the checks' },
+  subjectAlternates: _ai ? _ai.alternates : [],
   // The A-<weekStart> slug is edition-agnostic, so the edition stamp is how
   // create-broadcast-draft.mjs detects a WE draft built on Broadway HTML
   // (or vice versa) when both editions share an out dir.
@@ -3367,7 +3547,7 @@ sections.writeMeta(`${outDir}/${slug}.meta.json`, {
   // filter to the current edition's section set + honor NEWSLETTER_DROP_SECTIONS.
   openingShows: dedupeShowRefs(_openingShowRefs
     .filter(r => (IS_WE
-      ? ['london-openings', 'also-opened-recently', 'broadway-we']
+      ? ['london-openings', 'also-opened-recently', 'broadway-we', 'opera-openings']
       // NB: also-opened-recently is WE-only — the Broadway sectionOrder has no
       // slot for it, so including it here would gate the BW draft on shows the
       // email never renders (ship-check finding, 2026-08-02).
@@ -3376,5 +3556,18 @@ sections.writeMeta(`${outDir}/${slug}.meta.json`, {
     .filter(r => !_dropSet.has(r.section)))
     .map(({ section, ...rest }) => rest),
 });
+
+// Record this issue's subject in the ledger so next week's writer avoids
+// repeating it (subject-writer.mjs recent list). Best-effort.
+try {
+  const _st = JSON.parse(fs.readFileSync(STATE_PATH, 'utf8'));
+  const _e = (_st.issues || []).find(i => i && i.weekStart === weekStartStr && _issueEdition(i) === EDITION);
+  if (_e) {
+    _e.subject = subjectLine;
+    _e.subjectAngle = _ai ? _ai.angle : 'template';
+    if (_ai) _e.ai = { subject: _ai.subject, preheader: _ai.preheader, lede: _ai.lede, angle: _ai.angle, alternates: _ai.alternates || [] };
+    fs.writeFileSync(STATE_PATH, JSON.stringify(_st, null, 2) + '\n');
+  }
+} catch (e) { process.stderr.write('[newsletter] subject ledger write failed: ' + e.message + '\n'); }
 sections.printSummary();
 console.log(`Wrote ${outDir}/${slug}.html (${sectionOrder.length} sections, headerCounts="${headerCounts}")`);

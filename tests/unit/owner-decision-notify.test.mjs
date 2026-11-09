@@ -252,7 +252,7 @@ function fakeLinear(initial) {
   const esc = (s) => s.replace(/([\\`*_{}[\]()#+\-.!<>~|:])/g, '\\$1');
   const graphql = async (q, v) => {
     log.push(q.trim().split(/[({\s]/)[0] + ':' + (q.match(/(commentCreate|commentDelete|issueUpdate|issue)\b/) || [])[1]);
-    if (/commentCreate/.test(q)) { const c = { id: `c${++n}`, body: esc(v.input.body), createdAt: `2026-10-24T10:00:0${n}Z` }; card.comments.nodes.push(c); return { commentCreate: { success: true, comment: c } }; }
+    if (/commentCreate/.test(q)) { const c = { id: `c${++n}`, body: esc(v.input.body), createdAt: new Date(Date.now() - 60000 + n * 1000).toISOString() }; card.comments.nodes.push(c); return { commentCreate: { success: true, comment: c } }; }
     if (/commentDelete/.test(q)) { card.comments.nodes = card.comments.nodes.filter((c) => c.id !== v.id); return { commentDelete: { success: true } }; }
     if (/issueUpdate/.test(q)) { Object.assign(card, v.input.description !== undefined ? { description: v.input.description } : {}); if (v.input.labelIds) card.labels = { nodes: card.labels.nodes.filter((l) => v.input.labelIds.includes(l.id)) }; if (v.input.stateId) card.state = { id: v.input.stateId, name: 'Todo', type: 'unstarted' }; return { issueUpdate: { success: true } }; }
     return { issue: card };
@@ -294,7 +294,7 @@ test('recordAnswer: free text, bad choice, empty text, stale question, race lose
   assert.equal(f.card.comments.nodes.length, 0);
 
   // A pasted hash is not a recorded answer: refs are HMACs.
-  f = fakeLinear({ comments: { nodes: [{ id: 'x', body: `Decision ref ODA${HASH}`, createdAt: '2026-10-24T09:00:00Z' }] } });
+  f = fakeLinear({ comments: { nodes: [{ id: 'x', body: `Decision ref ODA${HASH}`, createdAt: new Date(Date.now() - 120000).toISOString() }] } });
   assert.equal((await link.recordAnswer({ graphql: f.graphql, id: 'BRO-12', hash: HASH, secret: SECRET, choiceKey: 'a', text: '' })).status, 'recorded');
 
   // Race: the other tap's comment already exists by the time ours is re-read.
@@ -305,7 +305,7 @@ test('recordAnswer: free text, bad choice, empty text, stale question, race lose
     const out = await real(q, v);
     if (/commentCreate/.test(q) && !raced) {
       raced = true;
-      f.card.comments.nodes.unshift({ id: 'winner', body: link.buildAnswerComment({ choiceLabel: 'Option A: Ship now', text: '', ref: link.decisionRef(SECRET, 'BRO-12', HASH) }), createdAt: '2026-10-24T09:59:00Z' });
+      f.card.comments.nodes.unshift({ id: 'winner', body: link.buildAnswerComment({ choiceLabel: 'Option A: Ship now', text: '', ref: link.decisionRef(SECRET, 'BRO-12', HASH) }), createdAt: new Date(Date.now() - 90000).toISOString() });
     }
     return out;
   };

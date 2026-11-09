@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-6082: digest rows that parked as "kept failing" because no cloud session
 // could close them. Covers the off-topic-section URL rule (discovery + write +
 // silent-gap audit), the needs-manual-recovery split of the T1/T2 gap row, and
@@ -124,4 +125,18 @@ test('monitor-only drift becomes one FYI line; carded audits are left to their o
   assert.equal(line.info, true);
   assert.match(line.title, /: 1 \(regex-fp\)\. Checked 2026-10-23\./);
   assert.equal(untrackedDriftLine(audits.filter((a) => a.channel === 'card'), 'x'), null);
+});
+
+test('BRO-7027: Times hard-news sections are off-topic, Times arts and theatre slugs are not', () => {
+  const T = 'https://www.thetimes.com';
+  assert.equal(offTopicSectionReason(`${T}/uk/politics/article/city-bridge-foundation-grant-money-hamas-linked-organisation-j5sbhgrs2`), 'off-topic-section');
+  assert.equal(offTopicSectionReason('https://www.thetimes.co.uk/money/tax/article/proof-students-loans-misled-terms-5fgckl7hw?srsltid=x'), 'off-topic-section');
+  assert.equal(offTopicSectionReason(`${T}/world/europe/article/fire-in-my-mouth-x1`), 'off-topic-section');
+  for (const keep of [
+    `${T}/uk/article/the-lehman-trilogy-review-abc123`, // bare /uk/article/ carries arts reviews
+    `${T}/culture/theatre-dance/article/bridge-review-xyz`,
+    `${T}/uk/politics/article/islington-theatre-closes-abc`, // theatre cue in a news section
+    `${T}/uk/london/article/new-show-at-the-old-vic-se1-abc`,
+    'https://www.independent.co.uk/uk/politics/article/bridge-x', // other hosts untouched
+  ]) assert.equal(offTopicSectionReason(keep), null, keep);
 });

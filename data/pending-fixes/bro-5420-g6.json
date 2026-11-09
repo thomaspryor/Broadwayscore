@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5420-g6",
   "planId": "df0e26ca-c8be-4c93-9f48-58b0ba0fe4a0",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-16T04:45:00.000Z",
   "submitter": {
     "name": null,
@@ -252,5 +252,58 @@
       "ok": true,
       "msg": "the-mystery-of-edwin-drood-1985/guardian--michael-billington.json wrongProduction: null -> true"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "resolved": 7,
+      "obsolete": 1
+    },
+    "ops": [
+      {
+        "i": 1,
+        "verdict": "resolved",
+        "reason": "the-assembled-parties-2013/artsdesk--helen-hawkins.json wrongProduction already true"
+      },
+      {
+        "i": 3,
+        "verdict": "resolved",
+        "reason": "the-assembled-parties-2013/standard--nick-curtis.json wrongProduction already true"
+      },
+      {
+        "i": 7,
+        "verdict": "resolved",
+        "reason": "the-homecoming-2007/artsdesk--heather-neill.json wrongProduction already true"
+      },
+      {
+        "i": 9,
+        "verdict": "resolved",
+        "reason": "the-homecoming-2007/london-theatre--matt-wolf.json wrongProduction already true"
+      },
+      {
+        "i": 11,
+        "verdict": "resolved",
+        "reason": "the-homecoming-2007/standard--nick-curtis.json wrongProduction already true"
+      },
+      {
+        "i": 13,
+        "verdict": "resolved",
+        "reason": "the-homecoming-2007/west-end-best-friend--diana-feng.json wrongProduction already true"
+      },
+      {
+        "i": 14,
+        "verdict": "obsolete",
+        "reason": "the-last-five-years-2025/london-theatre--unknown.json wrongProductionReason changed since by a later write (now \"audit-2026-06-21-prior-production-contamination\")"
+      },
+      {
+        "i": 15,
+        "verdict": "resolved",
+        "reason": "the-last-five-years-2025/london-theatre--unknown.json wrongProduction already true"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (7 resolved, 1 obsolete); per-op reasons in triage.ops"
 }

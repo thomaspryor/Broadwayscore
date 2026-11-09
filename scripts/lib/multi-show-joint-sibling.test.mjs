@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-6736: joint reviews (one article covering several shows) must go live on
 // EVERY show. Fixtures replay the SHAPE of the real articles; prose is invented.
 // Run: node --test scripts/lib/multi-show-joint-sibling.test.mjs
@@ -9,7 +10,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { planMultiShowFanout, applyMultiShowFanoutToFile, heldSiblingNeedsTrim } = require('./multi-show-review-fanout.js');
+const { planMultiShowFanout, applyMultiShowFanoutToFile, heldSiblingNeedsTrim, splitParentRegrew } = require('./multi-show-review-fanout.js');
 const { findSectionHeadings, extractShowSection, isolateMultiShowSection } = require('./multi-show-section-extract.js');
 
 const SHOWS = [
@@ -152,4 +153,89 @@ test('side-by-side reviews with no shared lede split (New Yorker Marjorie Prime 
   // One review that only compares to the other show once or twice stays whole.
   const compare = `Appropriately enough, “Marjorie Prime” has been here before. ${filler('prime', 14)} Unlike “Anna Christie,” it keeps quiet. ${filler('prime', 4)}`;
   assert.equal(planMultiShowFanout(base({ showId: 'marjorie-prime-x', fullText: compare, publishDate: '2025-12-14' }), SHOWS, { joint: true }), null);
+});
+
+// Interested Bystander post whose other heading names its venue with a
+// lowercase " at " ("Ma-Yi Theater Company at the Public"): the generic
+// "Label: Title At Venue" header pattern saw one heading, so the post stayed
+// whole under a wrong-production flag (Liberation, BRO-6736).
+test('bystander post with a lowercase-venue heading trims the flagged file to its own section', () => {
+  const shows = [...SHOWS, { id: 'liberation-x', title: 'Liberation', category: 'broadway', openingDate: '2025-10-28' },
+    { id: 'did-you-eat-x', title: 'Did You Eat?', category: 'broadway', openingDate: '2025-10-20' }];
+  const post = [
+    `Did You Eat? (c) Emma ZordanTheater: Did You Eat? Ma-Yi Theater Company at the Public Theater ${filler('hunger', 8)}`,
+    `Liberation (c) Little FangBroadway: Liberation At the James Earl Jones Theatre ${filler('liberation', 8)}`,
+  ].join(' ');
+  const data = { ...base({ showId: 'liberation-x', url: 'https://www.interestedbystander.com/2025/10/x.html', publishDate: null }),
+    contentTier: 'invalid', isRoundupArticle: true, wrongProduction: true, fullText: '', wrongFullText: post };
+  const p = planMultiShowFanout(data, shows, { joint: true });
+  assert.ok(p, 'planned');
+  assert.equal(p.strategy, 'header');
+  assert.equal(p.ownSection.showId, 'liberation-x');
+  assert.match(p.ownSection.sectionText, /^Liberation \(c\) Little Fang/);
+  assert.doesNotMatch(p.ownSection.sectionText, /hunger/);
+  // The lowercase-venue heading still resolves to its show (prefix match).
+  assert.deepEqual(p.otherSections.map((x) => x.showId), ['did-you-eat-x']);
+  assert.match(p.otherSections[0].sectionText, /^Did You Eat\? \(c\)/);
+});
+
+test('bystander fallback never drops a generic heading it does not cover', () => {
+  const shows = [...SHOWS, { id: 'alpha-x', title: 'Alpha', category: 'broadway', openingDate: '2025-10-20' },
+    { id: 'beta-x', title: 'Beta Show', category: 'broadway', openingDate: '2025-10-20' },
+    { id: 'gamma-x', title: 'Gamma Show', category: 'broadway', openingDate: '2025-10-20' }];
+  const post = [
+    `Beta Show (c) A PhotogTheater: Beta Show at the Public ${filler('beta', 8)}`,
+    `Broadway: Alpha At the Shubert ${filler('alpha', 8)}`,
+    `Gamma Show (c) B PhotogTheater: Gamma Show at the Atlantic ${filler('gamma', 8)}`,
+  ].join(' ');
+  const data = { ...base({ showId: 'beta-x', url: 'https://www.interestedbystander.com/2025/10/y.html', publishDate: '2025-10-25' }), fullText: post };
+  const p = planMultiShowFanout(data, shows, { joint: true });
+  if (p) for (const sec of [p.ownSection, ...p.otherSections]) {
+    if (sec.showId !== 'alpha-x') assert.doesNotMatch(sec.sectionText, /alpha passage/);
+  }
+});
+
+test('BRO-7044: a split child whose text a re-collect restored to the whole article is trimmed again, and stays a child', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7044-'));
+  try {
+    for (const s of ['bughouse-x', 'silver-manhattan-x', 'burnout-paradise-x']) fs.mkdirSync(path.join(dir, s));
+    const fp = path.join(dir, 'bughouse-x', 'la-voce--jk.json');
+    // First pass splits the article: parent keeps its section, children are created.
+    fs.writeFileSync(fp, JSON.stringify(base({ showId: 'bughouse-x', fullText: LAVOCE })));
+    assert.ok(applyMultiShowFanoutToFile(fp, { shows: SHOWS, reviewTextsDir: dir, joint: true }).applied);
+    const childPath = path.join(dir, 'silver-manhattan-x', 'la-voce--jk.json');
+    const child = JSON.parse(fs.readFileSync(childPath, 'utf8'));
+    assert.equal(child.multiShowSplitChild, true);
+    // A later collect writes the whole article back into parent AND child.
+    const parent = JSON.parse(fs.readFileSync(fp, 'utf8'));
+    fs.writeFileSync(fp, JSON.stringify({ ...parent, fullText: LAVOCE }));
+    fs.writeFileSync(childPath, JSON.stringify({ ...child, fullText: LAVOCE }));
+    const res = applyMultiShowFanoutToFile(fp, { shows: SHOWS, reviewTextsDir: dir, joint: true });
+    assert.ok(res.applied);
+    assert.equal(res.children.find((c) => c.showId === 'silver-manhattan-x').action, 'held-trim');
+    const after = JSON.parse(fs.readFileSync(childPath, 'utf8'));
+    assert.match(after.fullText, /^Silver Manhattan \*\*\*\*/);
+    assert.doesNotMatch(after.fullText, /Bughouse \*\*|Burnout Paradise \*\*\*/);
+    assert.equal(after.multiShowSplitChild, true, 'still a child');
+    assert.ok(!after.multiShowSplitParent, 'not turned into a second parent');
+    assert.doesNotMatch(JSON.parse(fs.readFileSync(fp, 'utf8')).fullText, /Silver Manhattan \*\*\*\*/);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('heldSiblingNeedsTrim: a processed split is trimmed only for the parent that created it', () => {
+  const sec = { sectionText: `Silver Manhattan ${filler('silver', 6)}` };
+  const whole = { fullText: `Intro. Bughouse ${filler('b', 5)} ${sec.sectionText} Burnout ${filler('c', 5)}`, multiShowSplitProcessed: 'x', multiShowSplitChild: true, multiShowSplitParentShowId: 'bughouse-x' };
+  assert.equal(heldSiblingNeedsTrim(whole, sec, 'bughouse-x'), true);
+  assert.equal(heldSiblingNeedsTrim(whole, sec, 'other-show'), false);
+  assert.equal(heldSiblingNeedsTrim(whole, sec), false);
+});
+
+test('BRO-7044: splitParentRegrew lets a re-collected split parent past the processed skip', () => {
+  const trimmed = { multiShowSplitProcessed: 'x', multiShowSplitParent: true, multiShowSplitTextLength: 3740, fullText: 'a'.repeat(3740) };
+  assert.equal(splitParentRegrew(trimmed), false);
+  assert.equal(splitParentRegrew({ ...trimmed, fullText: 'a'.repeat(5592) }), true);
+  assert.equal(splitParentRegrew({ ...trimmed, multiShowSplitParent: false, fullText: 'a'.repeat(5592) }), false);
+  assert.equal(splitParentRegrew(null), false);
 });

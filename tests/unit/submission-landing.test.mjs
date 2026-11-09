@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * checkSubmissionLanded — issue #908 (Golden Boy / Daily Mail, 2026-09-22).
  * The submission workflow said "Review Successfully Added" for a file the

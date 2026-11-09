@@ -120,3 +120,23 @@ test('shouldExcludeVenueShow (venue-page candidates) runs the same title gate: e
     assert.equal(shouldExcludeVenueShow(title), false, `${title} must be kept`);
   }
 });
+
+test('isNonTheaterContent gate 1b: TodayTix attraction categories never reach shows.json; theatre categories still do (BRO-7080)', () => {
+  // Real rows from the live feeds, 2026-11-07.
+  const rejected = [
+    { displayName: 'Armory Public Tours', category: { name: 'Tours' }, subcategories: [{ name: 'History' }], venue: { name: 'Park Avenue Armory' } },
+    { displayName: "Shrek's Adventure! London Standard Entry", category: { name: 'Amusement Parks' }, subcategories: [{ name: 'Off West End' }], venue: { name: 'County Hall' } },
+    { displayName: 'Madame Tussauds Standard Entry', category: { name: 'Museums and Galleries' }, venue: { name: 'Madame Tussauds' } },
+    { displayName: 'Sea Life London Standard Entry', category: { name: 'Zoos and Aquariums' }, venue: { name: 'County Hall' } },
+    { displayName: 'London Eye River Cruise', category: { name: 'Cruises' }, venue: { name: 'Waterloo Pier' } },
+    { displayName: 'Kew Gardens', category: { name: 'Gardens' }, venue: { name: 'Kew' } },
+    { displayName: 'TodayTix Digital Gift Cards', category: { name: 'Gift Cards' }, venue: { name: 'TBA' } },
+  ];
+  for (const s of rejected) {
+    assert.equal(isNonTheaterContent(s), true, `${s.displayName} (nyc)`);
+    assert.equal(isNonTheaterContent(s, { market: 'london' }), true, `${s.displayName} (london)`);
+  }
+  // Same venue, theatre category: still admitted (the Armory stages reviewed productions).
+  assert.equal(isNonTheaterContent({ displayName: 'Sleep No More', category: { name: 'Plays' }, venue: { name: 'Park Avenue Armory' } }), false);
+  assert.equal(isNonTheaterContent({ displayName: 'Magic Mike Live', category: { name: 'Cabaret' }, venue: { name: 'Hippodrome Casino' } }, { market: 'london' }), false);
+});

@@ -272,6 +272,7 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
+          git add data/audit/gemini-usage-ledger.jsonl 2>/dev/null || true # LLM spend meter rows (BRO-5043)
           git add data/audit/scraper-spend-ledger.jsonl 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No ledger changes to commit"
@@ -280,6 +281,7 @@ jobs:
             bash scripts/lib/push-with-retry.sh
           fi
 
+      # severity-low-ok: daily West End/Off-Broadway backlog collection; Broadway scores and the opening-night pollers are separate, and check-cron-health raises a chronic-stale card after 3 days
       - name: Notify on failure
         if: failure()
         uses: ./.github/actions/notify-failure

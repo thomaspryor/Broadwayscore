@@ -158,7 +158,7 @@ const archiveData = archiveShows.map(show => {
   let audienceCombinedScore = null;
   let audienceGrade = null;
   if (buzz && buzz.combinedScore != null) {
-    const totalReviews = require('./lib/audience-review-count').countVisibleAudienceReviews(buzz.sources);
+    const totalReviews = require('./lib/audience-review-count').countVisibleAudienceReviews(buzz.sources, show);
     if (totalReviews >= MIN_AUDIENCE_REVIEWS) {
       audienceCombinedScore = buzz.combinedScore;
       audienceGrade = getAudienceGrade(buzz.combinedScore);

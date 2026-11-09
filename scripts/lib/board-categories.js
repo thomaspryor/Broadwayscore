@@ -23,33 +23,36 @@ const { findOwnerDecisions } = require('./owner-decision-notify.js');
 const { holdReason } = require('./owner-decision-quiet-period.js');
 const { isAutomationParked, OWNER_HOLD_PARK_RE, visualAskOpen, commentClearsOwnerGate } = require('./headless-dispatchability.js');
 const { parseRecheckAfterFromCard } = require('./recheck-stamp.js');
+const { recheckVerdict } = require('./check-env-cause.js');
 const { skipReason, historySkipReason } = require('./cloud-worker-pick.js');
 const { codexBouncedRecently, codexBounceCapped } = require('./codex-runner.js');
 const { proseDateWait } = require('./prose-date-wait.js');
 
 // Order matters: a card's exclusive category is the first one whose trait it has.
+// BRO-7139: `handlers` names the jobs in board-handlers.js that act on the row (empty = nothing does;
+// board-handlers.test.mjs pins every such gap in KNOWN_GAPS).
 const CATEGORIES = [
-  { key: 'waiting-owner', label: 'Waiting on your answer' },
-  { key: 'being-worked', label: 'Being worked on now' },
-  { key: 'started-idle', label: 'Started, but no update for 2+ days' },
-  { key: 'dated-future', label: 'Waiting for a date in the future' },
+  { key: 'waiting-owner', label: 'Waiting on your answer', handlers: ['owner-decision-emails'] },
+  { key: 'being-worked', label: 'Being worked on now', handlers: ['linear-reclaim-abandoned'] },
+  { key: 'started-idle', label: 'Started, but no update for 2+ days', handlers: ['linear-reclaim-abandoned', 'close-stuck-verified-cards'] },
+  { key: 'dated-future', label: 'Waiting for a date in the future', handlers: ['autonomous-acceptance-recheck'] },
   // BRO-6853: split by the recheck ledger's last verdict. Without a ledger every past-dated card is "waiting".
-  { key: 'dated-past-failed', label: 'Date passed, its check failed' },
-  { key: 'dated-past', label: 'Date passed, waiting for its check' },
-  { key: 'parked-real-block', label: 'Needs a password, money or your devices' },
-  { key: 'parked-automatic', label: 'Automatic alert or estimate' },
-  { key: 'parked-owner-wording', label: 'Says it needs you, but asks nothing' },
-  { key: 'parked-no-reason', label: 'Parked with no reason written' },
-  { key: 'parked-prose-wait', label: 'Waits on a time written in words, so never restarts' },
-  { key: 'parked-other', label: 'Parked for another reason' },
-  { key: 'paused', label: 'Paused' },
-  { key: 'ready', label: 'Ready, a worker will pick it up' },
-  { key: 'cooling-off', label: 'Cooling off after recent activity' },
-  { key: 'codex-bounced', label: 'Second-check reviewer rejected it, short wait' },
-  { key: 'owner-gated-no-question', label: 'Held for you, but no question written yet' },
-  { key: 'app-repo', label: 'iPhone-app card (automatic workers cannot open it)' },
-  { key: 'needs-safe-check', label: 'Needs a way to prove it works (a daily job drafts these)' },
-  { key: 'other', label: 'Other' },
+  { key: 'dated-past-failed', label: 'Date passed, its check failed', handlers: [] }, // the recheck only reports a failure
+  { key: 'dated-past', label: 'Date passed, waiting for its check', handlers: ['autonomous-acceptance-recheck'] },
+  { key: 'parked-real-block', label: 'Needs a password, money or your devices', handlers: [] },
+  { key: 'parked-automatic', label: 'Automatic alert or estimate', handlers: ['sweep-resolved-alert-cards', 'sweep-recovered-alert-cards'] },
+  { key: 'parked-owner-wording', label: 'Says it needs you, but asks nothing', handlers: ['owner-hold-sweep'] },
+  { key: 'parked-no-reason', label: 'Parked with no reason written', handlers: ['board-hygiene-sweep'] },
+  { key: 'parked-prose-wait', label: 'Waits on a time written in words, so never restarts', handlers: ['board-hygiene-sweep'] },
+  { key: 'parked-other', label: 'Parked for another reason', handlers: ['llm-triage'] },
+  { key: 'paused', label: 'Paused', handlers: [] },
+  { key: 'ready', label: 'Ready, a worker will pick it up', handlers: ['wake-board-worker', 'close-stuck-verified-cards'] },
+  { key: 'cooling-off', label: 'Cooling off after recent activity', handlers: ['wake-board-worker'] },
+  { key: 'codex-bounced', label: 'Second-check reviewer rejected it, short wait', handlers: ['codex-runner'] },
+  { key: 'owner-gated-no-question', label: 'Held for you, but no question written yet', handlers: ['owner-hold-sweep'] },
+  { key: 'app-repo', label: 'iPhone-app card (automatic workers cannot open it)', handlers: [] },
+  { key: 'needs-safe-check', label: 'Needs a way to prove it works (a daily job drafts these)', handlers: ['enrich-card-acceptance'] },
+  { key: 'other', label: 'Other', handlers: ['llm-triage'] },
 ];
 // BRO-6870: the morning email shows the rows under four plain headings. Every
 // category key sits in exactly one group (tested), so subtotals add to the total.
@@ -225,6 +228,8 @@ function categorizeBoard(issues, { now = new Date(), secret = null, lastRecheckS
       url: issue.url || null,
       priority: Number(issue.priority) || 0,
       state: issue.state && issue.state.name || null,
+      // BRO-7137: the digest's stuck-pile count reads card age from this same report.
+      createdAt: issue.createdAt || null,
       category,
       reason: category === 'other' ? reason : null,
       traits: CATEGORIES.map((c) => c.key).filter((k) => k !== 'other' && traits.has(k)),
@@ -319,7 +324,8 @@ function lastRecheckStatuses(entries) {
   const rows = (entries || []).filter(Boolean).slice().sort((a, b) => String(a.ts || '').localeCompare(String(b.ts || '')));
   for (const e of rows) {
     if (!e || e.event !== 'recheck' || !/^BRO-\d+$/.test(String(e.cardId || '')) || !e.status) continue;
-    out.set(e.cardId, e.status);
+    // BRO-7138: a check that could not run on the recheck machine did not fail.
+    out.set(e.cardId, recheckVerdict(e).status);
   }
   return out;
 }
@@ -334,6 +340,11 @@ function readRecheckLedgerStatuses(ledgerPath) {
   const entries = [];
   for (const line of text.split('\n')) { if (!line.trim()) continue; try { entries.push(JSON.parse(line)); } catch { /* skip a torn line */ } }
   return lastRecheckStatuses(entries);
+}
+
+/** PURE. Cards categorizeBoard could not read (counted under Other with a categorize-error reason). */
+function countUncategorizable(report) {
+  return (report.cards || []).filter((c) => /^categorize-error/.test(c.reason || '')).length;
 }
 
 const plural = (n, one, many = `${one}s`) => `${n} ${n === 1 ? one : many}`;
@@ -374,7 +385,7 @@ function formatMarkdown(report, { flow = null, maxStuck = 15 } = {}) {
   }
   const gated = ownerGatedNoQuestion(report);
   if (gated) lines.push('', `${plural(gated, 'card')} ${gated === 1 ? 'is' : 'are'} held for you but ${gated === 1 ? 'has' : 'have'} no clear DECISION NEEDED question, so ${gated === 1 ? 'it is' : 'they are'} not in "Waiting on your answer". ${gated === 1 ? 'It needs' : 'They need'} a real question or a release to a worker.`);
-  const broken = report.cards.filter((c) => /^categorize-error/.test(c.reason || '')).length;
+  const broken = countUncategorizable(report);
   if (broken) lines.push('', `${plural(broken, 'card')} could not be read and ${broken === 1 ? 'is' : 'are'} counted under Other.`);
   if (report.answeredCheck !== 'full') {
     lines.push('', '_Answered questions were recognised from the card text only (no answer-link secret in this run)._');
@@ -443,8 +454,9 @@ function parseReportArgs(argv) {
 }
 
 module.exports = {
+  sortedComments,
   CATEGORIES, GROUPS, groupBoard, REAL_BLOCK_RE, lastRecheckStatuses, readRecheckLedgerStatuses,
   cardTraits, categorizeBoard, importantAndStuck, ownerGatedNoQuestion, flowFromInflow, snapshotOf, compareReports,
-  flowLine, formatMarkdown, formatCompareMarkdown, parseReportArgs,
+  countUncategorizable, flowLine, formatMarkdown, formatCompareMarkdown, parseReportArgs,
   fetchOpenBoard, fetchFlow24h,
 };

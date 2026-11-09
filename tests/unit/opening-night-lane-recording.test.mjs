@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-6651 (plan v2 Step 8): each lane pass records the aggregator/index pages it read, encrypted, and the recorded-night
 // loader replays that recording. The repo is public, so page bodies must never reach disk in the clear.
 import test from 'node:test';
@@ -70,6 +71,25 @@ test('errors, finalUrl and date-checks are recorded; a date-check keeps the date
   assert.equal(e[1].finalUrl, 'https://pub.example/x');
   assert.equal(e[2].kind, 'date-check'); assert.ok(e[2].publishDate); assert.equal(e[2].sha, undefined);
   for (const file of allFiles(dir)) assert.ok(!fs.readFileSync(file, 'utf8').includes('FULL-ARTICLE-TEXT'));
+});
+
+// The fetch source rides the recording so a replayed page is judged by the lane's paywall rule (scraped copies only)
+// exactly as the live page was (BRO-6872).
+test('the fetch source (fetchPage source or Browserbase via) is recorded and replayed', async () => {
+  const dir = tmp();
+  const r = rec.createFetchRecorder({ dir, key: KEY, now: () => 1000 });
+  const f = r.wrapFetchText(async (url) => {
+    if (url.includes('wsj')) return { content: '<html>a</html>', source: 'brightdata' };
+    if (url.includes('tb')) return { content: '<html>b</html>', via: 'browserbase' };
+    return '<html>c</html>';
+  });
+  await f('https://www.wsj.com/x'); await f('https://tb.example/y'); await f('https://plain.example/z');
+  const loaded = loadRecording(dir, { key: KEY });
+  assert.deepEqual(loaded.entries.map((e) => e.source), ['brightdata', 'browserbase', undefined]);
+  const fetch = replayFetchFrom(loaded, { now: () => 5000, startMs: 0 });
+  assert.equal((await fetch('https://www.wsj.com/x')).source, 'brightdata');
+  assert.equal((await fetch('https://tb.example/y')).source, 'browserbase');
+  assert.equal((await fetch('https://plain.example/z')).source, undefined);
 });
 
 test('size caps drop bodies but keep the manifest, and say so', async () => {

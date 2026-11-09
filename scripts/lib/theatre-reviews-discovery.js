@@ -35,12 +35,34 @@ function pickTheatreReviewsRoundup(posts, showTitle) {
   for (const p of posts) {
     const link = p && typeof p.link === 'string' ? p.link : '';
     if (!/\/reviews-roundup\//.test(link)) continue;
-    const title = normalizeTitle(_decode(p.title && p.title.rendered));
+    const rawTitle = _decode(p.title && p.title.rendered);
+    if (titleWordsOnlyInVenue(rawTitle, want)) continue;
+    const title = normalizeTitle(rawTitle);
     const slug = String(p.slug || '').replace(/-/g, ' ');
     const haystack = ` ${title} ${slug} `;
     if (want.every((w) => haystack.includes(` ${w} `))) return link;
   }
   return null;
+}
+
+/**
+ * BRO-6968: round-up titles name the venue after the show ("Into The Woods at
+ * The Bridge", "Cleansed – Almeida reviews"). A show whose title is a venue word
+ * ("The Bridge" at the Bush) matched every Bridge Theatre round-up. True when the
+ * venue segment (after the last " at " or dash) holds every title word and the
+ * part before it does not. The slug cannot tell show from venue, so a title that
+ * fails here is skipped even if the slug matches.
+ */
+function titleWordsOnlyInVenue(rawTitle, want) {
+  // Drop the "Theatre reviews roundup:" / "Reviews Roundup -" prefix so its dash is not read as the venue cut.
+  // Same for a trailing "- Reviews Roundup" / "- Theatre Reviews with Paul Seven" site suffix.
+  const t = String(rawTitle || '')
+    .replace(/^.*?\broundup\s*[:\-–—]\s*/i, '')
+    .replace(/\s+[-–—]\s+(?:theatre\s+)?reviews?\b.*$/i, '');
+  const cut = Math.max(t.search(/\s+at\s+(?!.*\s+at\s+)/i), t.search(/\s+[-–—]\s+(?!.*\s+[-–—]\s+)/));
+  if (cut <= 0) return false;
+  const has = (s) => { const h = ` ${normalizeTitle(s)} `; return want.every((w) => h.includes(` ${w} `)); };
+  return !has(t.slice(0, cut)) && has(t.slice(cut).replace(/^\s+(?:at|[-–—])\s+/i, ''));
 }
 
 /**

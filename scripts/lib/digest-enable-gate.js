@@ -9,7 +9,7 @@
 //    no March/November edit is needed; the early one for the current season is a no-op here, and
 //    the Resend sent-today guard makes the later ones no-ops once the digest is out.
 //  * after 11:30 ET (SEND_UNTIL): only the catch-up trigger can run that late (the cron lines end by
-//    08:50 ET). The pager (check-morning-digest-sent.yml, cron 16:30Z = 11:30 EST / 12:30 EDT) owns a digest still missing then; ending at 11:30 ET keeps the catch-up from sending after the page in either season.
+//    08:50 ET). The pager (check-morning-digest-sent.yml, cron 16:45Z = 11:45 EST / 12:45 EDT, event wakes from 11:45 ET) owns a digest still missing then; ending at 11:30 ET keeps the catch-up from sending after the page in either season.
 // Manual dispatch never goes through this gate.
 
 const SEND_FROM_MINUTES_ET = 7 * 60 + 45;
@@ -43,4 +43,4 @@ if (require.main === module) {
   if (process.env.GITHUB_OUTPUT) require('fs').appendFileSync(process.env.GITHUB_OUTPUT, `go=${r.go}\n`);
 }
 
-module.exports = { decideScheduledSend, SEND_FROM_MINUTES_ET, SEND_UNTIL_MINUTES_ET };
+module.exports = { decideScheduledSend, etParts, SEND_FROM_MINUTES_ET, SEND_UNTIL_MINUTES_ET };

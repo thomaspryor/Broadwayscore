@@ -81,3 +81,11 @@ test('the real ledger peak (~48K rows/day) fits the kept window under the hard c
   const { HARD_MAX_LEDGER_LINES } = require('./provider-telemetry.js');
   assert.ok(HARD_MAX_LEDGER_LINES >= 3 * 48000, `HARD_MAX_LEDGER_LINES=${HARD_MAX_LEDGER_LINES}`);
 });
+
+test('BRO-6990: the hard ceiling at ~400 bytes/row stays under GitHub\'s 100MB push rejection', () => {
+  const { HARD_MAX_LEDGER_LINES, TRIM_EVERY_APPENDS } = require('./provider-telemetry.js');
+  const BYTES_PER_ROW = 400; // measured ~385 on 2026-11-04
+  assert.ok(Number.isFinite(TRIM_EVERY_APPENDS), 'TRIM_EVERY_APPENDS exported');
+  assert.ok((HARD_MAX_LEDGER_LINES + TRIM_EVERY_APPENDS) * BYTES_PER_ROW < 100 * 1024 * 1024,
+    `ceiling ${HARD_MAX_LEDGER_LINES}+${TRIM_EVERY_APPENDS} rows x ${BYTES_PER_ROW}B would exceed 100MB`);
+});

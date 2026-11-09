@@ -104,9 +104,12 @@ function createFetchRecorder({ dir, key, now = Date.now, dateOf = () => null, ma
         const res = await fetchText(url, opts);
         const content = res && typeof res === 'object' ? res.content : res;
         const finalUrl = res && typeof res === 'object' ? res.finalUrl || null : null;
+        // How the page was fetched (fetchPage's source, or the Browserbase route's via): replay needs it so the lane's
+        // paywall rule, which applies only to scraped copies, judges a replayed page as it judged the live one (BRO-6872).
+        const source = res && typeof res === 'object' ? res.source || res.via || null : null;
         try {
           if (dateCheck) append({ ...line, status: 'ok', publishDate: dateOf(content) || null, settledMs: now() - start });
-          else append({ ...line, status: 'ok', ...(finalUrl ? { finalUrl } : {}), ...store(String(content)), settledMs: now() - start });
+          else append({ ...line, status: 'ok', ...(finalUrl ? { finalUrl } : {}), ...(source ? { source: String(source) } : {}), ...store(String(content)), settledMs: now() - start });
         } catch { stats.errors++; }
         return res;
       } catch (e) {

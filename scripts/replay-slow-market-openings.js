@@ -47,41 +47,11 @@ const DEFAULT_SHOWS = [
 const OUT_FILE = path.join(ROOT, 'data', 'audit', 'slow-market-replay.json');
 const WINDOWS_H = [24, 48, 72];
 
-// approvedFixes fields that decide whether a file can go live. A criticName
-// fix is cosmetic: the review was live before and after it.
-const GATING_FIX_FIELDS = new Set(['wrongShow', 'wrongProduction', 'combinedWith', 'duplicateOf',
-  'contentTier', 'isRoundupArticle', 'publishDate', 'url', 'showId']);
-// ingestSource values that are a person's decision (execute-approved-fix runs
-// an owner-approved digest fix). Every other named caller is a pipeline.
-const HAND_CALLERS = new Set(['execute-approved-fix', 'manual', 'owner']);
+// Hand/auto vocabulary is shared with the opening grade (BRO-7082).
+const { handSteps, discoveryMode } = require('./lib/review-provenance');
 
 const ms = (s) => { const t = Date.parse(s || ''); return Number.isFinite(t) ? t : null; };
 const hoursBetween = (a, b) => (a == null || b == null ? null : Math.round(((b - a) / 36e5) * 10) / 10);
-
-/** Steps a person took that a file needed before it could go live. */
-function handSteps(file) {
-  const gating = [];
-  const cosmetic = [];
-  const caller = file.ingestSource || null;
-  if (caller && HAND_CALLERS.has(caller)) gating.push(`ingest:${caller}`);
-  for (const fx of Array.isArray(file.approvedFixes) ? file.approvedFixes : []) {
-    (GATING_FIX_FIELDS.has(fx.field) ? gating : cosmetic).push(`approvedFix:${fx.field}`);
-  }
-  if (file.wrongProductionManualClear) gating.push('wrongProductionManualClear');
-  if (file.suspectedMisattributionClearedNote) cosmetic.push('misattributionCleared');
-  if (file.humanReviewScore != null) gating.push('humanReviewScore');
-  return { gating, cosmetic };
-}
-
-/** How the file was discovered: 'auto', 'hand' or 'caller-unknown'. */
-function discoveryMode(file) {
-  const sources = [...new Set([file.source, ...(file.sources || [])].filter(Boolean))];
-  const auto = sources.filter((s) => s !== 'submit-review-form');
-  if (auto.length) return { mode: 'auto', sources };
-  const caller = file.ingestSource || null;
-  if (!caller) return { mode: 'caller-unknown', sources };
-  return { mode: HAND_CALLERS.has(caller) ? 'hand' : 'auto', sources: [...sources, `caller:${caller}`] };
-}
 
 /**
  * Outcome for one review-text file.

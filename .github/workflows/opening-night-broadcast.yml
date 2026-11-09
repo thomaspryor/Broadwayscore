@@ -738,11 +738,13 @@ jobs:
         if: steps.check.outputs.gate_shows != ''
         continue-on-error: true
         env:
+          PUSH_RECONCILE_MERGED_JSON: '1' # union-merges the LLM spend ledger on rebase (BRO-5043)
           PUSH_DEADLINE_SEC: '240'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
+          git add data/audit/gemini-usage-ledger.jsonl 2>/dev/null || true # LLM spend meter rows (BRO-5043)
           bash scripts/lib/git-add-existing.sh data/audit/orphan-rescore-requeue-state.json
           if git diff --cached --quiet; then
             echo "No orphan-rescore-requeue-state.json changes to commit"
@@ -902,14 +904,14 @@ jobs:
               echo "--- $market draft ---"
               OUTPUT=$(node scripts/send-opening-night-broadcast.js --market="$market" --lookback="$LOOKBACK" --shows="$shows" ${DRAFT_FLAGS:-} 2>&1) || true
               echo "$OUTPUT"
-              if echo "$OUTPUT" | grep -q "Draft ready\|Draft created"; then
+              if grep -q "Draft ready\|Draft created" <<<"$OUTPUT"; then
                 SENT="true"
                 DRAFTED="true"
                 return
               fi
               # Resend already holds a sent/queued broadcast for this combo: a
               # preview now would describe an email that already went out.
-              if echo "$OUTPUT" | grep -q "Resend already has broadcast"; then
+              if grep -q "Resend already has broadcast" <<<"$OUTPUT"; then
                 return
               fi
               echo "--- $market: no draft this run, preview to owner instead ---"
@@ -918,7 +920,7 @@ jobs:
             fi
             OUTPUT=$(node scripts/send-opening-night-broadcast.js --market="$market" --lookback="$LOOKBACK" --shows="$shows" $PREVIEW_FLAG 2>&1) || true
             echo "$OUTPUT"
-            if echo "$OUTPUT" | grep -q "Preview sent to"; then
+            if grep -q "Preview sent to" <<<"$OUTPUT"; then
               SENT="true"
             fi
           }
@@ -973,7 +975,7 @@ jobs:
               rc=0
               OUTPUT=$(node scripts/send-opening-night-broadcast.js --market="$market" --lookback="$LOOKBACK" --shows="$ids" --update-unsent-draft 2>&1) || rc=$?
               echo "$OUTPUT"
-              if echo "$OUTPUT" | grep -q "Draft updated"; then UPDATED="true"; fi
+              if grep -q "Draft updated" <<<"$OUTPUT"; then UPDATED="true"; fi
               # One failed combo must not stop the others; the step goes red at
               # the end so the failure is seen (later steps run on always()).
               if [ "$rc" -ne 0 ]; then echo "::error::draft update failed for $market $ids (exit $rc)"; FAILED=1; fi

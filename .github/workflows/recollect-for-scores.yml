@@ -207,7 +207,9 @@ jobs:
             LOG=$(mktemp)
             # PIPESTATUS[0] is node's status (no pipefail here): a crashed outlet
             # is named and fails the step after the rest have run.
-            node scripts/recollect-for-scores.js $ARGS 2>&1 | tee "$LOG" || true
+            # No `|| true` needed: without pipefail the pipeline's status is
+            # tee's, and the crash is read from PIPESTATUS[0] right below.
+            node scripts/recollect-for-scores.js $ARGS 2>&1 | tee "$LOG"
             NODE_STATUS=${PIPESTATUS[0]}
             if [ "$NODE_STATUS" -ne 0 ]; then
               CRASHED="${CRASHED}${outlet} "

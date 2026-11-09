@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/reviews.json (read by the test); data/outlet-registry.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // TESTS-VS-DERIVED-DATA-EXEMPT: parity test — same reviews.json fed to engine.ts + compute-critic-score.js; asserts equality, no factual pins.
 /**
  * Cross-implementation parity test: engine.ts vs compute-critic-score.js

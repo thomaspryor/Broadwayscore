@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-4953 (GitHub #1018): "The Heart" (Laura Pels, 2026) took the 2024 roundup
  * for "The Heart of Rock and Roll", and four of its excerpts went live before

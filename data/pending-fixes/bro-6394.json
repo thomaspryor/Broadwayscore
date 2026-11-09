@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6394",
   "planId": "6f1d5a3e-9b8c-4c2e-a1d4-6394a0c0de01",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-26T21:00:00.000Z",
   "submitter": {
     "name": null,
@@ -48,5 +48,22 @@
       "reason": "retire-show bob-odenkirk-presents-hospital-hour-off-broadway-2026: bob-odenkirk-presents-hospital-hour-off-broadway-2026 has 1 review(s): move them before retiring"
     }
   ],
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 1
+    },
+    "ops": [
+      {
+        "i": 1,
+        "verdict": "resolved",
+        "reason": "show bob-odenkirk-presents-hospital-hour-off-broadway-2026 is retired or gone"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (1 resolved); per-op reasons in triage.ops"
 }

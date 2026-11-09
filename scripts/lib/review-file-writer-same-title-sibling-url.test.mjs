@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (read by the test); data/shows.json (untracked core data); data/retired-show-ids.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-5298: a write whose url a same-title sibling production already holds
 // (live) is refused, on the CREATE path and, the gap this card closed, on the
 // MERGE path (an existing outlet+critic file here that would fill or swap its

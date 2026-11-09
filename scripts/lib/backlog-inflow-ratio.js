@@ -85,6 +85,17 @@ const MIN_CREATED_FOR_ALARM = 5;
 // caller's timeout instead of merely outliving it visibly.
 const DIGEST_GRAPHQL_OPTS = { maxAttempts: 2, timeoutMs: 6_000, baseMs: 250 };
 
+// BRO-7137. The flow ratio read "Holding" for weeks while the old pile sat
+// still: same-day bookkeeping cards (a session files a card for work it does
+// right then and closes it within hours) dominate both sides of the ratio.
+// So the verdict also watches the OLD pile, open cards older than this, and
+// whether it shrank since a week ago, plus how many cards a worker can take.
+const STUCK_AGE_DAYS = 14;
+// Below this many "Ready, a worker will pick it up" cards the workers starve
+// while the pile waits on something else (owner answers, parked reasons).
+const READY_MIN = 10;
+const DAY_MS = 24 * 60 * 60 * 1000;
+
 /**
  * The exact query text sent over the wire. Exported so the test asserts on
  * the real string rather than a second, drifting copy of it (CLAUDE.md rule
@@ -207,6 +218,105 @@ async function fetchInflowCounts({ graphql, now = new Date(), windowDays = INFLO
 }
 
 /**
+ * PURE. The stuck pile: open cards created more than STUCK_AGE_DAYS ago, now
+ * and a week ago. A week ago is rebuilt, not remembered: every card in that
+ * pile is either still open (so older than STUCK_AGE_DAYS + 7 days today) or
+ * closed this week, which board-numbers' flow walk counts as `leftOldPile`.
+ * The digest reads the flow a few minutes before the board, so a 21-day-old
+ * card closed in that gap is missed (weekAgo reads 1 low). Cards reopened during the week are the other miss (they inflate weekAgo
+ * slightly), and they are rare. A mass cancel of old cards counts as the pile
+ * shrinking; the canceled count beside the ratio keeps that visible.
+ *
+ * @param {Array<{createdAt:string}>} openCards  every open card (board-categories report.cards)
+ * @param {object} opts
+ * @param {Date}   opts.now
+ * @param {number|null} [opts.leftOldPile]  null when the flow walk is unavailable
+ * @returns {{count:number, weekAgo:number|null, change:number|null}}
+ */
+function summarizeStuckPile(openCards, { now = new Date(), leftOldPile = null, windowDays = INFLOW_WINDOW_DAYS } = {}) {
+  const nowMs = now.getTime();
+  const olderThan = (days) => (openCards || []).filter((c) => Date.parse(c && c.createdAt) < nowMs - days * DAY_MS).length;
+  const count = olderThan(STUCK_AGE_DAYS);
+  if (!Number.isFinite(leftOldPile)) return { count, weekAgo: null, change: null };
+  const weekAgo = olderThan(STUCK_AGE_DAYS + windowDays) + leftOldPile;
+  return { count, weekAgo, change: count - weekAgo };
+}
+
+/**
+ * PURE. Upgrade the raw counts with what the board already knows, for the
+ * digest line: board-numbers' 7-day flow (same-day session cards, canaries and
+ * routine logs left out of both sides, see its ceremonyKind) and the
+ * board-categories report (stuck pile and Ready count). Any missing or broken
+ * input leaves that part of the raw counts alone, so the line degrades to the
+ * old flow-only verdict rather than vanishing.
+ *
+ * @param {object} rawCounts  fetchInflowCounts output
+ * @param {object} opts
+ * @param {object} [opts.flow]    board-numbers fetchBoardInflowCounts output for the same window
+ * @param {object} [opts.report]  board-categories categorizeBoard output
+ * @param {Date}   [opts.now]
+ */
+function withBacklogHealth(rawCounts, { flow = null, report = null, now = new Date() } = {}) {
+  const out = { ...(rawCounts || {}) };
+  const windowDays = Number.isFinite(out.windowDays) ? out.windowDays : INFLOW_WINDOW_DAYS;
+  const flowOk = flow && !flow.error && !flow.truncated && flow.windowDays === windowDays
+    && Number.isFinite(flow.created) && Number.isFinite(flow.completed) && flow.excluded;
+  if (flowOk) {
+    out.created = flow.created;
+    out.completed = flow.completed;
+    // One source for every number in the ratio sentence, and its own (clean) truncation state.
+    if (Number.isFinite(flow.canceled)) out.canceled = flow.canceled;
+    out.truncated = false;
+    out.truncatedCounts = [];
+    const ex = flow.excluded;
+    out.sameDay = (ex.created && ex.created.sessionTracking) || 0;
+    // Canaries, routine logs and duplicates leave the ratio too; say how many, in one number.
+    const sum = (o) => Object.values(o || {}).reduce((a, n) => a + (Number(n) || 0), 0);
+    out.otherBookkeeping = sum(ex.created) - out.sameDay;
+  }
+  if (report && Array.isArray(report.cards) && Array.isArray(report.categories)) {
+    out.stuckPile = summarizeStuckPile(report.cards, { now, windowDays, leftOldPile: flowOk && Number.isFinite(flow.leftOldPile) ? flow.leftOldPile : null });
+    const ready = report.categories.find((c) => c.key === 'ready');
+    out.ready = ready && Number.isFinite(ready.exclusive) ? ready.exclusive : null;
+    if (Number.isFinite(report.open)) out.open = report.open;
+  }
+  return out;
+}
+
+/** The stuck-pile and Ready sentences, and the reasons (if any) that hold the verdict at watch. */
+function backlogHealthPart(counts) {
+  const parts = [];
+  const reasons = [];
+  const pile = counts.stuckPile;
+  if (pile && Number.isFinite(pile.count)) {
+    if (Number.isFinite(pile.change)) {
+      const trend = pile.change < 0 ? `down ${-pile.change} from a week ago` : pile.change === 0 ? 'same as a week ago' : `up ${pile.change} from a week ago`;
+      parts.push(`Stuck pile: ${pile.count} open cards older than ${STUCK_AGE_DAYS} days, ${trend}.`);
+      // An empty pile that stays empty is not a problem.
+      if (pile.change >= 0 && pile.count > 0) reasons.push('the old pile is not shrinking');
+    } else {
+      parts.push(`Stuck pile: ${pile.count} open cards older than ${STUCK_AGE_DAYS} days (last week's number unavailable).`);
+    }
+  }
+  if (Number.isFinite(counts.ready)) {
+    parts.push(`${counts.ready} card${counts.ready === 1 ? '' : 's'} ready for a worker.`);
+    // A board with READY_MIN or fewer open cards cannot have READY_MIN ready ones; not a worry.
+    const smallBoard = Number.isFinite(counts.open) && counts.open <= READY_MIN;
+    if (counts.ready < READY_MIN && !smallBoard) reasons.push(`fewer than ${READY_MIN} cards are ready for a worker`);
+  }
+  // Both excluded numbers, so the left-out total adds back up to the raw count.
+  const sameDay = Number.isFinite(counts.sameDay) ? counts.sameDay : 0;
+  const other = Number.isFinite(counts.otherBookkeeping) ? counts.otherBookkeeping : 0;
+  if (sameDay > 0 || other > 0) {
+    const bits = [];
+    if (sameDay > 0) bits.push(`${sameDay} session cards closed within 6 hours`);
+    if (other > 0) bits.push(`${other} canary, routine-log or duplicate cards`);
+    parts.push(`Left out of both counts: ${bits.join(' and ')}.`);
+  }
+  return { text: parts.join(' '), reasons };
+}
+
+/**
  * The verdict. ALWAYS returns a message when it has usable counts — green as
  * well as red. That is deliberate and follows the trunk-status row's
  * precedent in the digest: a signal that renders only when it is angry
@@ -217,7 +327,7 @@ async function fetchInflowCounts({ graphql, now = new Date(), windowDays = INFLO
  * @param {object} counts  as returned by fetchInflowCounts
  * @returns {{status:'ok'|'watch'|'error'|'unknown', ratio:number|null, message:string|null}}
  */
-function assessInflowRatio(counts) {
+function assessFlowRatio(counts) {
   if (!counts || typeof counts !== 'object') {
     return { status: 'unknown', ratio: null, message: null };
   }
@@ -298,6 +408,32 @@ function assessInflowRatio(counts) {
   };
 }
 
+const STATUS_RANK = { unknown: 0, ok: 1, watch: 2, error: 3 };
+
+/**
+ * The digest verdict: the flow ratio (assessFlowRatio) plus, when the counts
+ * carry them (withBacklogHealth), the stuck pile and Ready count. A pile that
+ * did not shrink, or fewer than READY_MIN ready cards, holds the status at
+ * least at `watch` however good the ratio looks, and drops the word
+ * "Holding": the board is not holding when its old cards sit still.
+ */
+function assessInflowRatio(counts) {
+  const flow = assessFlowRatio(counts);
+  const health = backlogHealthPart(counts || {});
+  if (!health.text) return flow;
+  // Flow counts unreadable but the board was: still show the pile and Ready numbers.
+  let message = flow.message || 'Backlog inflow: the filed/closed counts could not be read this morning.';
+  let status = flow.status;
+  if (health.reasons.length) {
+    const why = health.reasons.join(' and ');
+    message = / Holding\.$/.test(message)
+      ? message.replace(/ Holding\.$/, ` Flow is fine, but ${why}.`)
+      : `${message} Watch: ${why}.`;
+    if (STATUS_RANK[status] < STATUS_RANK.watch) status = 'watch';
+  }
+  return { ...flow, status, message: `${message} ${health.text}` };
+}
+
 module.exports = {
   TEAM_KEY,
   INFLOW_WINDOW_DAYS,
@@ -306,6 +442,8 @@ module.exports = {
   WATCH_MAX_RATIO,
   MIN_CREATED_FOR_ALARM,
   DIGEST_GRAPHQL_OPTS,
+  STUCK_AGE_DAYS,
+  READY_MIN,
   buildInflowCountQuery,
   windowStart,
   buildCreatedFilter,
@@ -315,4 +453,6 @@ module.exports = {
   countMatching,
   fetchInflowCounts,
   assessInflowRatio,
+  summarizeStuckPile,
+  withBacklogHealth,
 };

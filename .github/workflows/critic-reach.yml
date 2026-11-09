@@ -1,0 +1,61 @@
+name: Critic Reach
+
+# BRO-6984: for each critic page with an approved claim, count the unique
+# people who visited show pages featuring that critic's reviews in the last
+# 30 days (PostHog), and store the counts in Supabase `critic_reach`.
+# /api/critics/me shows the number only to the page's owner.
+# Counts only; nothing is committed to any repo. Needs migration
+# supabase/migrations/20261104_critic_requests_kinds.sql applied first.
+
+on:
+  schedule:
+    - cron: '23 4 * * *'
+  workflow_dispatch:
+    inputs:
+      slugs:
+        description: 'Optional comma-separated critic slugs (default: every claimed page)'
+        required: false
+        default: ''
+        type: string
+      dry_run:
+        description: 'Print the counts, write nothing'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: critic-reach
+  cancel-in-progress: false
+
+jobs:
+  reach:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: ./.github/actions/setup-node
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          sparse: 'true'
+      - name: Count and store reach
+        env:
+          POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SLUGS: ${{ inputs.slugs }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          args=()
+          if [ -n "$SLUGS" ]; then args+=("--slugs=$SLUGS"); fi
+          if [ "$DRY_RUN" = "true" ]; then args+=("--dry-run"); fi
+          npx tsx scripts/critic-reach.ts "${args[@]}"
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Critic Reach Failed'

@@ -282,7 +282,8 @@ function extractStageBody(html) {
     // Author bio: "Firstname [Lastname] is a (culture|theatre|freelance)? journalist/critic/..."
     // First-name-only bylines (e.g. "Holly is a culture journalist…") slipped the
     // multi-word-name pattern, so allow zero additional name parts.
-    /^[A-Z][a-z]+(?:\s+[A-Z][a-z'-]+)*\s+is\s+(?:a|an|the|freelance|theatre)\s+(?:culture\s+|theatre\s+|freelance\s+|theater\s+)?(?:journalist|critic|writer|editor|reviewer)/i.test(t) ||
+    // BRO-6872: case-sensitive and short only; with /i "The protagonist is a writer…" was dropped.
+    (t.length < 400 && /^[A-Z][a-z]+(?:\s+[A-Z][a-z'-]+)*\s+is\s+(?:a|an|the|freelance|theatre)\s+(?:[Cc]ulture\s+|[Tt]heatre\s+|[Ff]reelance\s+|[Tt]heater\s+)?(?:journalist|critic|writer|editor|reviewer)/.test(t)) ||
     // Subscribe pitch
     /subscription\s+starting|Invest in The Stage|Subscribe\s+Start a subscription/i.test(t) ||
     // Copyright
@@ -376,10 +377,14 @@ function extractLsaBody(html) {
     .filter((m) => /<font[^>]+face="Arial,Helvetica,Geneva,Swiss/i.test(m[1]))
     .map((m) => stripHtml(m[1]))
     .filter((t) => t.length > 40 && /[a-z]/.test(t)
-      && !/^©|All rights reserved|PLASA Media|Subscribe to (?:News|LSA)|Back to|Today's News/i.test(t)
+      // BRO-6872: nav phrases anchored; an unanchored "Back to" dropped review
+      // paragraphs that said "comes back to" (LSA ID=R01JKR lost two).
+      && !/^©|All rights reserved|PLASA Media|Subscribe to (?:News|LSA)|^Back to\b|^Today's News/i.test(t)
       // Contact/address footer block ("Lighting&Sound America, 372 Central Park
       // West… Tel:… lsamedia.com") shares the Arial review font, so drop by content.
-      && !/Lighting\s*&\s*Sound America\s*,|Central Park West|Tel:\s*\d|lsamedia\.com/i.test(t));
+      // BRO-6872: "Central Park West" alone is a setting a review can name; the
+      // footer is still caught by the outlet name, phone and domain.
+      && !/Lighting\s*&\s*Sound America\s*,|Tel:\s*\d|lsamedia\.com/i.test(t));
   const body = paras.join('\n\n');
   return body.length >= 300 ? body : null;
 }
@@ -553,6 +558,69 @@ function extractTheatreWeeklyBody(html) {
   return stripHtml(cut);
 }
 
+/** The articleBody div of a Daily Mail page (balanced), or null. */
+function dailyMailArticleBody(html) {
+  const open = /<div[^>]*itemprop="articleBody"[^>]*>/.exec(String(html || ''));
+  if (!open) return null;
+  const start = open.index + open[0].length;
+  const tagRe = /<div\b[^>]*>|<\/div>/g;
+  tagRe.lastIndex = start;
+  let depth = 1;
+  let m;
+  while ((m = tagRe.exec(html))) {
+    depth += m[0] === '</div>' ? -1 : 1;
+    if (depth === 0) return html.slice(start, m.index);
+  }
+  return html.slice(start);
+}
+
+/**
+ * Daily Mail (dailymail.co.uk, dailymail.com and its subdomains): the review is
+ * the run of <p class="mol-para-with-font"> paragraphs in the articleBody div.
+ * The generic fallbacks read the page's inline scripts instead (120K chars of
+ * JavaScript on a live 2026-10 page), and the heading paragraphs that carry the
+ * verdict, "Rating: Four out of five stars", must survive so the star can be
+ * read (BRO-6900: Murder in the Cathedral, Marmion 4/5, was scored 62 from
+ * text missing that line).
+ */
+function extractDailyMailBody(html) {
+  const body = dailyMailArticleBody(html);
+  if (body == null) return '';
+  const clean = (m) => stripHtml(m[1]).replace(/\u00a0/g, ' ').replace(/\s+/g, ' ').trim();
+  const mol = [...body.matchAll(/<p[^>]*class="[^"]*mol-para[^"]*"[^>]*>([\s\S]*?)<\/p>/g)].map(clean).filter(Boolean);
+  if (mol.length) return mol.join('\n\n');
+  // Pre-2014 articles (BRO-6448: a 2013 Quentin Letts review) print plain <p> tags
+  // in the articleBody div, no mol-para class. Returning '' there sent the caller to
+  // the generic fallbacks, which read the page's anti-adblock script as the text.
+  return [...body.matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/g)].map(clean).filter(Boolean).join('\n\n');
+}
+
+const DM_WORD_STARS = { one: 1, two: 2, three: 3, four: 4, five: 5 };
+
+/**
+ * The distinct star values a Daily Mail article body prints: rating images,
+ * star widgets, star-glyph runs and "Rating: ..." lines. A bundled column
+ * (several shows, one verdict each) prints values that disagree, and its first
+ * star is often another show's; one review printing its star twice (an image
+ * plus a text line, src + data-src) is still one value (BRO-6900).
+ */
+function dailyMailVerdictValues(html) {
+  const body = dailyMailArticleBody(html);
+  if (body == null) return [];
+  const plain = stripHtml(body).replace(/\u00a0/g, ' ');
+  const values = new Set();
+  for (const m of body.matchAll(/rating_showbiz_(\d)/g)) values.add(Number(m[1]));
+  for (const m of body.matchAll(/class="rating-stars[^"]*"[^>]*>([\s\S]*?)<\/p>/g)) {
+    const n = (m[1].match(/rating-star selected/g) || []).length;
+    if (n) values.add(n);
+  }
+  for (const m of plain.matchAll(/★+[☆✩]*/g)) if (m[0].length >= 3) values.add((m[0].match(/★/g) || []).length);
+  for (const m of plain.matchAll(/\b(?:rating|stars?)\s*:?\s*(?:([1-5])\s*\/\s*5|(one|two|three|four|five)\s+(?:out\s+of|stars?))/gi)) {
+    values.add(m[1] ? Number(m[1]) : DM_WORD_STARS[m[2].toLowerCase()]);
+  }
+  return [...values];
+}
+
 /**
  * Nub News (nub.news, hyperlocal UK network, e.g. kingston.nub.news; BRO-5219).
  * The review body is <div id="article_content_block">; nothing usable carries
@@ -585,6 +653,34 @@ function extractNubNewsBody(html) {
     }
   }
   return null;
+}
+
+/**
+ * theartsdesk.com (Drupal, rebuilt autumn 2026, BRO-7061). The review body sits in the article-body block as two
+ * fields (#unsubscribed_summary lede + #pico rest) with <article class="media"> image figures between paragraphs.
+ * The generic fallback grabbed the site's "Help keep arts journalism alive" support banner (a separate body field
+ * earlier on the page) and stopped at the first figure's visually-hidden "Image" label, saving ~290 words that
+ * began with the banner and ended "Image". Keep only <p> text inside the article-body block, minus figures, and
+ * drop any banner paragraph. Returns null when the block is absent so a layout change fails loud.
+ */
+// Anchored: only a paragraph that BEGINS with the banner copy (or is just the button) goes, never one that quotes it.
+const ARTSDESK_BANNER_RE = /^\s*(?:help keep arts journalism alive|we.re rebuilding theartsdesk to secure|subscribe today\W*$)/i;
+function extractArtsDeskBody(html) {
+  const src = String(html || '').replace(/<!--[\s\S]*?-->/g, '').replace(/<script[\s\S]*?<\/script>/gi, '');
+  const inner = extractBalancedDivByClass(src, 'block-field-blocknodearticlebody');
+  if (!inner) return null;
+  const body = inner.replace(/<article\b[\s\S]*?<\/article>/gi, '');
+  const paras = [...body.matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/gi)]
+    .map((p) => stripHtml(p[1]))
+    .filter((t) => t && !ARTSDESK_BANNER_RE.test(t));
+  if (!paras.length) return null;
+  // The headline sits outside the body block and names the show ("Speculations,
+  // Marylebone Theatre review - ..."). Reviews often never repeat the title, so
+  // without it the URL-to-content sanity check sees 0 mentions and drops a
+  // correct page (BRO-7061: Speculations, 703 words, 0 mentions).
+  const h1 = src.match(/<h1\b[^>]*class="[^"]*\barticleTitle\b[^"]*"[^>]*>([\s\S]*?)<\/h1>/i);
+  const headline = h1 ? stripHtml(h1[1]).replace(/\s+/g, ' ').trim() : '';
+  return (headline ? [headline, ...paras] : paras).join('\n\n');
 }
 
 /**
@@ -887,7 +983,7 @@ const PATTERNS = [
 const DEDICATED_EXTRACTOR_HOSTS = [
   'wsj.com', 'variety.com', 'lavocedinewyork.com', 'thestage.co.uk',
   'thetimes.co.uk', 'thetimes.com', 'lightingandsoundamerica.com',
-  'talkinbroadway.com', 'theatreweekly.com',
+  'talkinbroadway.com', 'theatreweekly.com', 'theartsdesk.com',
 ];
 
 const PROMO_BOILERPLATE_PATTERNS = [
@@ -899,8 +995,71 @@ const PROMO_BOILERPLATE_PATTERNS = [
   /\brecaptcha (?:privacy policy|terms of service)\b/i,
 ];
 
+// The standfirst (dek): the sentence an outlet prints under the headline, e.g. TheaterMania's "Bill Irwin and a starry
+// cast can't find the comedic pulse of Molière's medical satire." Body patterns start below the title block, so it was
+// dropped, while the browser path (dom-article-extractor's <article>/<main> fallback) kept it. The two copies of one
+// review then scored 57/48 on the site and 62 in the opening-night lane (BRO-6872 p12 replay, The Imaginary Invalid).
+// Two signals must agree before a paragraph counts: it sits directly under an <h1>, and its text is the page's own
+// declared description (og:/twitter:/meta description). A first body paragraph or SEO blurb alone never qualifies.
+const STANDFIRST_MIN = 30;
+const STANDFIRST_MAX = 400;
+const { decodeHTML } = require('entities');
+// Tags out first, then entities decoded (stripHtml alone blanks named ones such as &egrave;, and a meta content
+// attribute is entity-encoded where the printed dek is not).
+const standfirstText = (s) => decodeHTML(String(s || '').replace(/<[^>]+>/g, ' ')).replace(/\s+/g, ' ').trim();
+const standfirstKey = (s) => foldDiacritics(String(s || '')).toLowerCase().replace(/[^a-z0-9]+/g, '');
+
+// Returns { text, keys }: the decoded dek, plus its normalized keys under both decoders (entities decoded, and
+// stripHtml's, which blanks unlisted named entities such as &egrave;) so the "body already has it" check matches either.
+function findStandfirst(html) {
+  if (!html || typeof html !== 'string') return null;
+  const described = new Set();
+  const metaRe = /<meta\b[^>]*>/gi;
+  let m;
+  while ((m = metaRe.exec(html))) {
+    const tag = m[0];
+    if (!/\b(?:name|property)\s*=\s*["'](?:description|og:description|twitter:description)["']/i.test(tag)) continue;
+    const c = tag.match(/\bcontent\s*=\s*"([^"]*)"|\bcontent\s*=\s*'([^']*)'/i);
+    const key = c ? standfirstKey(standfirstText(c[1] != null ? c[1] : c[2])) : '';
+    if (key.length >= STANDFIRST_MIN) described.add(key);
+  }
+  if (!described.size) return null;
+  const underHeadline = /<\/h1>\s*<p\b[^>]*>([\s\S]*?)<\/p>/gi;
+  while ((m = underHeadline.exec(html))) {
+    const text = standfirstText(m[1]);
+    if (text.length < STANDFIRST_MIN || text.length > STANDFIRST_MAX) continue;
+    if (described.has(standfirstKey(text))) return { text, keys: [standfirstKey(text), standfirstKey(stripHtml(m[1]))] };
+  }
+  return null;
+}
+
+function extractStandfirst(html) {
+  const found = findStandfirst(html);
+  return found ? found.text : null;
+}
+
+// Only a full-length body on a non-paywalled host gains its dek. Under the scorer's body gate the copy is a teaser or a
+// stub, and on a hard or soft paywall host up to 400 more chars must not lift a teaser over that host's length floor
+// (inline-score.js and paywall-completeness.js judge completeness by length).
+function onPaywallHost(hostname) {
+  const host = String(hostname || '').toLowerCase().replace(/^[a-z]+:\/\//, '').split(/[/?#:]/)[0].replace(/^www\./, '');
+  if (!host) return false;
+  const { HARD_PAYWALL_DOMAINS, SOFT_PAYWALL_MIN_CHARS } = require('./paywall-completeness');
+  return [...HARD_PAYWALL_DOMAINS, ...Object.keys(SOFT_PAYWALL_MIN_CHARS)].some((d) => host === d || host.endsWith(`.${d}`));
+}
+
+function withStandfirst(html, text, hostname) {
+  if (!text || text.length < require('./scorable-text').BODY_GATE_CHARS || onPaywallHost(hostname)) return text;
+  const found = findStandfirst(html);
+  if (!found) return text;
+  const body = standfirstKey(text);
+  if (found.keys.some((k) => k && body.includes(k))) return text;
+  return `${found.text}\n\n${text}`;
+}
+
 function extractArticleText(html, hostname, criticHint) {
-  const text = extractArticleTextUnchecked(html, hostname, criticHint);
+  // The dek joins first so the Radio Times promotion guard below judges the text callers actually get.
+  const text = withStandfirst(html, extractArticleTextUnchecked(html, hostname, criticHint), hostname);
   const host = String(hostname || '').toLowerCase();
   const isRadioTimes = host === 'radiotimes.com' || host.endsWith('.radiotimes.com');
   // Reject Radio Times promotions before any caller can save or score them.
@@ -1034,6 +1193,12 @@ function extractArticleTextUnchecked(html, hostname, criticHint) {
     return twText && twText.length >= 300 ? twText : null;
   }
 
+  // theartsdesk.com: see extractArtsDeskBody. Null on failure (not the generic fallbacks, which saved the support banner).
+  if (host.includes('theartsdesk.com')) {
+    const adText = extractArtsDeskBody(html);
+    return adText && adText.length >= 300 ? adText : null;
+  }
+
   // stagebuddy.com — review body lives in <div class="articleblock">, not any
   // of the common WordPress class names, and pages have no <article>/<main>
   // wrapper either — every review fell through to the noisy paragraph-density
@@ -1049,6 +1214,14 @@ function extractArticleTextUnchecked(html, hostname, criticHint) {
       const sbText = stripHtml(sbInner);
       if (sbText.length >= 300) return sbText;
     }
+  }
+
+  // Daily Mail (BRO-6900). Not exclusive: a fetch whose markup lacks the
+  // mol-para run (a proxy's reshaped copy) falls through to the fallbacks
+  // below, which is what produced every stored DM body before this branch.
+  if (host.includes('dailymail.')) {
+    const dmText = extractDailyMailBody(html);
+    if (dmText.length >= 300) return dmText;
   }
 
   // Zox News theme, detected by markup rather than host (any site on it has
@@ -1336,4 +1509,13 @@ function isDedicatedExtractorHost(urlOrHost) {
   return DEDICATED_EXTRACTOR_HOSTS.some((d) => h.includes(d));
 }
 
-module.exports = { isDedicatedExtractorHost, extractArticleText, extractArticleTextFromUrl, extractPublishDate, stripHtml, extractLsaByline, extractZoxNewsBody, extractVarietyBody, extractNubNewsBody, extractLondonTheatreBody, extractToledoBladeBody, extractCurtainUpBody };
+// Hosts whose dedicated extractor is authoritative: callers keep its text even when the generic pass is longer
+// (theartsdesk's generic pass is longer only because it keeps the support banner, BRO-7061).
+function isExclusiveExtractorHost(urlOrHost) {
+  const raw = String(urlOrHost || '').trim();
+  let h = raw;
+  try { h = new URL(/^[a-z]+:\/\//i.test(raw) ? raw : `https://${raw}`).hostname; } catch { /* keep raw */ }
+  return /(?:^|\.)theartsdesk\.com$/i.test(h);
+}
+
+module.exports = { isExclusiveExtractorHost, isDedicatedExtractorHost, extractArticleText, extractStandfirst, extractArticleTextFromUrl, extractPublishDate, stripHtml, extractLsaByline, extractZoxNewsBody, extractVarietyBody, extractNubNewsBody, extractLondonTheatreBody, extractArtsDeskBody, extractToledoBladeBody, extractCurtainUpBody, extractDailyMailBody, dailyMailVerdictValues };

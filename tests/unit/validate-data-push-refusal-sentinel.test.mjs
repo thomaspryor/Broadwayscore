@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/retired-show-ids.json (untracked core data); data/site-image-versions.json (untracked core data); data/grosses.json (untracked core data); +17 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // TESTS-VS-DERIVED-DATA-EXEMPT: tests validate-data.js exit-code + sentinel-file behavior using shows.json as fixture input; no factual pins.
 /**
  * validate-data.js must write /tmp/.skip-push-core-data when it exits with errors,
@@ -21,7 +22,7 @@
  * FIXTURE_MODE to block shared audit-artifact writes; RUNNER_TEMP isolates the
  * sentinel too.
  *
- * The two "clean shows.json → exit 0" subtests below run validate-data.js
+ * The "clean shows.json → exit 0" subtest below runs validate-data.js
  * against an UNMODIFIED copy of the live corpus — they cannot use a hand-built
  * minimal fixture instead (rejected via /second-opinion, 2026-08-23):
  * validateMinimumCounts() compares against the real ~2920-show baseline (25%
@@ -32,7 +33,7 @@
  * corpus can, transiently, actually fail validate-data.js at the moment CI runs
  * (this repo lands ~150 commits/hour) — that's a real if short-lived DATA
  * problem, not a bug in the sentinel mechanism these tests exist to guard, so
- * both subtests skip (not fail) when the unmodified baseline itself doesn't
+ * that subtest skips (not fail) when the unmodified baseline itself doesn't
  * validate clean. See task #466-adjacent noise write-up, 2026-08-23.
  */
 
@@ -126,29 +127,6 @@ describe('validate-data.js — push-refusal sentinel contract (Notion 362637c5-4
     return;
   }
 
-  test('clean shows.json → exit 0, no sentinel written', (t) => {
-    const fixturePath = freshFixtureCopy();
-    try {
-      const code = runValidate(fixturePath);
-      if (code !== 0) {
-        // The live corpus itself currently fails validate-data.js — a real,
-        // transient data problem (see file-header comment), not a sentinel
-        // regression. This test can't assert "clean → exit 0" when the data
-        // it was handed isn't actually clean; skip rather than false-fail.
-        const reason = existsSync(SENTINEL)
-          ? readFileSync(SENTINEL, 'utf8').split('\n')[0]
-          : `exit ${code}, no sentinel detail available`;
-        t.skip(`live data/shows.json is not currently clean (${reason}) — not a sentinel-mechanism bug, see file header`);
-        return;
-      }
-      assert.strictEqual(code, 0, 'expected exit 0 on clean shows.json');
-      assert.strictEqual(existsSync(SENTINEL), false,
-        'sentinel was written even though validate succeeded — push-core-data would be wrongly blocked');
-    } finally {
-      cleanupFixture();
-    }
-  });
-
   test('corrupt shows.json → exit 1, sentinel written with marker', async (t) => {
     const fixturePath = freshFixtureCopy();
     try {
@@ -174,16 +152,19 @@ describe('validate-data.js — push-refusal sentinel contract (Notion 362637c5-4
     }
   });
 
-  test('stale sentinel from prior failure → cleared on subsequent success', (t) => {
-    // Plant a stale sentinel, then run validate on clean data, assert it's gone.
+  // One full-corpus run covers both success-path contracts (BRO-7134: three ~80 s runs put this
+  // file at 236 s of its 300 s budget alone, and it timed out under the land batch's load):
+  // a success that WRITES a sentinel and a success that fails to CLEAR a stale one both leave
+  // the file present, so planting a stale sentinel first and asserting it is gone checks both.
+  test('clean shows.json → exit 0, stale sentinel from a prior failure cleared, none written', (t) => {
     const fixturePath = freshFixtureCopy();
     try {
       writeFileSync(SENTINEL, 'stale sentinel from a prior run\n');
       const code = runValidate(fixturePath);
       if (code !== 0) {
-        // Same live-corpus caveat as the "clean shows.json" test above: this
-        // test needs a genuine exit-0 run to prove the success path clears a
-        // stale sentinel, and the live data isn't currently giving us one.
+        // The live corpus itself currently fails validate-data.js: a real,
+        // transient data problem (see file header), not a sentinel regression.
+        // This test needs a genuine exit-0 run, so skip rather than false-fail.
         const reason = existsSync(SENTINEL)
           ? readFileSync(SENTINEL, 'utf8').split('\n')[0]
           : `exit ${code}, no sentinel detail available`;
@@ -192,7 +173,8 @@ describe('validate-data.js — push-refusal sentinel contract (Notion 362637c5-4
       }
       assert.strictEqual(code, 0, 'expected exit 0 on clean shows.json');
       assert.strictEqual(existsSync(SENTINEL), false,
-        'success path did not clear stale sentinel — a single past failure would permanently block push');
+        'sentinel present after a successful validate: either success wrote one (push-core-data wrongly blocked) '
+        + 'or it did not clear the stale one (a single past failure would permanently block push)');
     } finally {
       cleanupFixture();
     }

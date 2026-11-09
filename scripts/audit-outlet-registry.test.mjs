@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/audit/outlet-registry-gaps.json (read by the test); data/review-texts (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-2747: audit-outlet-registry.js rewrote the git-tracked
 // data/audit/outlet-registry-gaps.json on EVERY run, --strict included, with
 // machine-absolute paths (~3,000 changed lines when run from a worktree).

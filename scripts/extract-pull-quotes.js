@@ -22,6 +22,7 @@
  *   GEMINI_API_KEY     Required for gemini provider
  *   OPENAI_API_KEY     Required for openai provider
  */
+require('./lib/llm-usage-install'); // LLM spend meter: before any client is built (BRO-5043)
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');

@@ -111,3 +111,26 @@ test('waitMsFor: capped at maxWaitMs', () => {
   const r = run({ updated_at: new Date(NOW).toISOString() });
   assert.equal(waitMsFor({ runs: [r], jobs: jobs(), annotationsByJobId: starvedAll() }, { now: NOW, maxWaitMs: 1000 }), 1000);
 });
+
+// BRO-7102: the confirm re-run of a fresh green->red real failure.
+test('confirm re-run: a real failure right after a green run is re-run once; every hold', async () => {
+  const { decideConfirmRerun } = require('./main-infra-rerun.js');
+  const js = jobs();
+  js[1] = job(2, 'Unit Tests', 'failure', [{ conclusion: 'success' }, { conclusion: 'failure' }]);
+  const green = run({ id: 1, conclusion: 'success' });
+  const cancelled = run({ id: 2, conclusion: 'cancelled' });
+  const red = run({ id: 3 });
+  const ok = decideConfirmRerun({ runs: [red, cancelled, green], jobs: js, annotationsByJobId: starvedAll(), env: {} });
+  assert.deepEqual([ok.retry, ok.reason, ok.runId], [true, 'confirm-new-red', 3]);
+  assert.deepEqual(ok.failed, ['Unit Tests'], 'starved jobs and the aggregator are not the failure');
+  const d = (over) => decideConfirmRerun({ runs: [red, green], jobs: js, annotationsByJobId: starvedAll(), env: {}, ...over });
+  assert.equal(d({ env: { CONFIRM_RERUN_DISABLED: 'true' } }).reason, 'kill-switch');
+  assert.equal(d({ runs: [run({ run_attempt: 2 }), green] }).reason, 'already-rerun');
+  assert.equal(d({ runs: [red, run({ id: 9 })] }).reason, 'red-after-red');
+  assert.equal(d({ runs: [red] }).reason, 'no-previous-verdict');
+  assert.equal(d({ runs: [run({ status: 'in_progress', conclusion: null }), green] }).reason, 'newest-run-not-completed');
+  assert.equal(d({ runs: [run({ conclusion: 'success' }), green] }).reason, 'conclusion-success');
+  assert.equal(d({ runs: [run({ head_branch: 'land/x' }), green] }).reason, 'not-main-push');
+  // Only starved jobs failed: that is the starvation re-run's case, not this one.
+  assert.equal(d({ jobs: jobs() }).reason, 'no-real-failure');
+});

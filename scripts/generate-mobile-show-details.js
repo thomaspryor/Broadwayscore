@@ -18,10 +18,12 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const { loadReviewsWithBlog } = require('./lib/load-reviews-with-blog');
+const { formatOriginalRating } = require('./lib/format-original-rating');
 const { getTier: getAuthoritativeTier } = require('./lib/outlet-tiers');
 const { computeSlimCriticScore } = require('./lib/slim-critic-score');
 const { consensusDisplayCount } = require('./lib/consensus-display-count');
 const { publicCoverageVerdict } = require('./lib/public-coverage-verdict');
+const { countReviewVerdicts } = require('./lib/review-breakdown');
 const { isHiddenFromAppFeed } = require('./lib/markets');
 const { mayServeDiskImage } = require('./lib/image-source-match');
 const { versionedImagePath } = require('./lib/versioned-image-path');
@@ -68,7 +70,8 @@ const DETAIL_SCHEMA_VERSION = 3;
 // Lives at data/cache/mobile-show-details/last-hash.json (gitignored;
 // persisted across CI runs via the .github/workflows/vercel-deploy.yml
 // "Cache Next.js build" step which includes data/cache/).
-const { loadPriorIndexIds, planPrune } = require('./lib/mobile-detail-prune');
+const { loadPriorIndexIds, planPrune, loadLedger, saveLedger } = require('./lib/mobile-detail-prune');
+const PRUNE_LEDGER = path.join(__dirname, '../data/audit/mobile-detail-prune-candidates.json');
 const HASH_CACHE_DIR = path.join(__dirname, '../data/cache/mobile-show-details');
 const HASH_CACHE_FILE = path.join(HASH_CACHE_DIR, 'last-hash.json');
 
@@ -541,13 +544,13 @@ for (const show of visibleShows) {
   const { showReviews, scoreResult: criticScoreResult, cs: slimCs, rc: slimRc } = computeSlimCriticScore(show, allShowReviews, outletRegistry);
   const buzz = audienceBuzz[show.id];
 
-  // Score breakdown — Positive = Recommended+ (75+), Mixed = Worth Seeing/Skippable (55-74), Negative = Critical Miss (<55)
-  const breakdown = { positive: 0, mixed: 0, negative: 0 };
-  for (const r of showReviews) {
-    if (r.assignedScore >= 75) breakdown.positive++;
-    else if (r.assignedScore >= 55) breakdown.mixed++;
-    else breakdown.negative++;
-  }
+  // Score breakdown follows the critic's verdict, same as the show-page bar (BRO-6729,
+  // owner-hold sweep BRO-6852). Reviews with no verdict fall back to score bands.
+  // Rave is its own bucket; the iOS app ignores unknown keys.
+  const breakdown = countReviewVerdicts(
+    showReviews.map(r => ({ verdict: r.verdict, reviewScore: r.assignedScore })),
+    show.category
+  );
 
   // Individual reviews — sorted by tier (T1 first), then score descending
   const reviewEntries = showReviews
@@ -570,6 +573,9 @@ for (const show of visibleShows) {
       if (r.publishDate) entry.d = r.publishDate;
       if (r.pullQuote) entry.q = r.pullQuote;
       if (r.designation) entry.dg = r.designation;
+      // The critic's published rating ("4/5 stars", "B+"), display-ready; the app shows it by the date.
+      const rating = formatOriginalRating(r.originalRating);
+      if (rating) entry.or = rating;
       // Top critic promoted to T1: the app's tier sheet says why (BRO-4881).
       if (isTopCritic) entry.tc = 1;
 
@@ -966,7 +972,7 @@ if (!SHOW_ARG) {
   // here regardless, or a --force run would never see a candidate as
   // grace-period-satisfied and pruning would silently never fire under --force.
   const priorCache = FORCE_REGEN ? readCachedHash() : cachedHashes;
-  const previousCandidates = (priorCache && priorCache.pruneCandidates) || {};
+  const previousCandidates = { ...loadLedger(PRUNE_LEDGER), ...((priorCache && priorCache.pruneCandidates) || {}) };
   // BRO-4826: also treat "absent from the committed (prior-run) mobile-shows.json"
   // as grace-satisfied, since workflows that commit never restore the hash cache.
   const showById = new Map(shows.map(s => [s.id, s]));
@@ -994,6 +1000,9 @@ if (!SHOW_ARG) {
     if (pruned > 0) console.log(`✓ Pruned ${pruned} orphaned show detail file(s) (invisible for 2 consecutive runs)`);
   }
   pruneCandidatesForCache = nextCandidates;
+  // Skipped (ceiling) runs leave nextCandidates armed, so the ledger stays armed too.
+  // CI only: a local build must not dirty a tracked file with its own stale view.
+  if (process.env.CI) saveLedger(PRUNE_LEDGER, nextCandidates);
 }
 
 const avgSize = generated > 0 ? (totalSize / generated / 1024).toFixed(1) : 0;

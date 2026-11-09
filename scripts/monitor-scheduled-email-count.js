@@ -193,6 +193,15 @@ async function main() {
         console.log(`resolved legacy per-day condition ${key}`);
       }
     }
+    // BRO-6157: clear dated missing-sender rows once that sender delivered on
+    // a later day (see recoveredMissingKeys). Runs before this run's own
+    // routeAlert calls; yesterday's key is never cleared in the run that files it.
+    const { recoveredMissingKeys } = require('./lib/scheduled-email-count-rules');
+    for (const r of recoveredMissingKeys(router.loadLedger().conditions, days, { judgedDay: yesterdayKey })) {
+      if (router.resolveCondition(r.key, { reason: `BRO-6157: ${r.sender} delivered again on ${r.recoveredOn}` })) {
+        console.log(`resolved ${r.key} (${r.sender} delivered again on ${r.recoveredOn})`);
+      }
+    }
   }
 
   if (completeViolations.length === 0 && missingExpected.length === 0) {

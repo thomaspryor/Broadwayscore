@@ -16,6 +16,7 @@
  */
 
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
+const { hasExcerpt } = require('./lib/excerpt-fields');
 const { parsePublishDate } = require('./lib/review-date-checks');
 const fs = require('fs');
 const path = require('path');
@@ -223,7 +224,8 @@ function checkShowMention(review, showData) {
 
   // If review came from an aggregator (has any excerpt), the aggregator already
   // verified the show match. Trust the source.
-  const hasAggregatorSource = review.dtliExcerpt || review.bwwExcerpt || review.showScoreExcerpt ||
+  // metaExcerpt is the page's own headline, not independent aggregator evidence
+  const hasAggregatorSource = hasExcerpt({ ...review, metaExcerpt: undefined }) ||
     (review.source && ['dtli', 'show-score', 'bww-roundup', 'web-search'].includes(review.source));
   if (hasAggregatorSource) {
     return { hasMention: true, method: 'aggregator_verified', source: review.source };

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-1158 — West End closing-date audit (scripts/audit-we-closing-dates.js).
 //
 // Tests the pure extraction/classification/discovery functions via

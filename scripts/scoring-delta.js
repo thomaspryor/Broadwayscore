@@ -173,6 +173,8 @@ const FLAG_FIELDS = new Set([
   'rejectedAt', 'incompleteReason', 'duplicateOf', 'assignedScore',
   'wrongProductionManualClear', 'humanReviewedWrongProduction',
   'namedNonReviewUrlManualClear', 'source', 'url',
+  // skippedListingPage's hatches.
+  'listingPageUrlManualClear',
   // BRO-4890: isUnverifiableWebSearchRow reads the whole source list and the human score overrides.
   'sources', 'humanReviewScore', 'adjudicatedScore',
   'wrongProductionOverride', 'allowCrossMarket', 'allowEarlyDate',
@@ -690,9 +692,12 @@ function loadBaselineGuards() {
   const prsPath = path.join(baselineLibDir, 'prior-run-sibling.js');
   delete require.cache[require.resolve(prsPath)];
   const cvPath = path.join(baselineLibDir, 'content-verifier.js');
+  const nrPath = path.join(baselineLibDir, 'non-review-url-patterns.js');
+  if (fs.existsSync(nrPath)) delete require.cache[require.resolve(nrPath)];
   return {
     ...guards,
     __contentVerifier: fs.existsSync(cvPath) ? require(cvPath) : {},
+    __nonReviewUrlPatterns: fs.existsSync(nrPath) ? require(nrPath) : {},
     __dateGuard: require(dgPath),
     __priorRunLib: require(prPath),
     __crossMarketLib: require(cmPath),
@@ -716,6 +721,7 @@ function loadWorkingTreeGuards() {
   return {
     ...guards,
     __contentVerifier: require(path.resolve(REPO_ROOT, 'scripts/lib/content-verifier.js')),
+    __nonReviewUrlPatterns: require(path.resolve(REPO_ROOT, 'scripts/lib/non-review-url-patterns.js')),
     __dateGuard: require(dgPath),
     __priorRunLib: require(prPath),
     __crossMarketLib: require(cmPath),
@@ -894,25 +900,22 @@ function directorGuardMapFor(guards) {
   return _directorGuardMaps.get(guards);
 }
 
+function listingPatternsKey(guards) {
+  const lib = (guards && guards.__nonReviewUrlPatterns) || {};
+  return JSON.stringify((lib.LISTING_PAGE_URL_PATTERNS || []).map(p => [String(p.host), String(p.path), p.reason, String(p.exceptHosts || '')]))
+    + String(lib.listingPageUrlReason || '');
+}
+
 function decideInclusion(review, show, guards, filePath) {
   // BRO-4890: mirrors rebuild-all-reviews.js skippedCancelledBeforeOpening /
   // skippedUnverifiableWebSearchRow (same predicates, same order as explainExclusion).
   // The row predicate reads review.sources, review.humanReviewScore and
   // review.adjudicatedScore, which is why those are in FLAG_FIELDS.
-  if (typeof guards.isCancelledBeforeOpeningShow === 'function' && guards.isCancelledBeforeOpeningShow(show)) {
-    return { included: false, reason: 'cancelledBeforeOpening' };
-  }
-  if (typeof guards.isUnverifiableWebSearchRow === 'function' && guards.isUnverifiableWebSearchRow(review)) {
-    return { included: false, reason: 'unverifiableWebSearchRow' };
-  }
-  // BRO-3126: preview-period first-look piece (reads contentVerification + the head of fullText).
-  if (typeof guards.isPreviewFirstLookPiece === 'function' && guards.isPreviewFirstLookPiece(review)) {
-    return { included: false, reason: 'previewFirstLookPiece' };
-  }
-  // BRO-2746: combined-review file carrying a co-member show's review.
-  if (typeof guards.isCombinedReviewOfOtherMemberOnly === 'function' && guards.isCombinedReviewOfOtherMemberOnly(review, show)) {
-    return { included: false, reason: 'combinedReviewOfOtherMemberOnly' };
-  }
+  // BRO-2453: shared with the rebuild loop; replayed under the passed (baseline or working) guards.
+  // tolerateMissing: a BASE_REF module may predate a predicate. decideInclusion reads review.sources,
+  // review.humanReviewScore and review.adjudicatedScore through isUnverifiableWebSearchRow (FLAG_FIELDS).
+  const early = (guards.decideEarlyFileExclusion || require('./lib/review-guards').decideEarlyFileExclusion)(review, show, { guards, tolerateMissing: true });
+  if (early) return { included: false, reason: early.reason };
   // 1. Already-flagged top-level exclusions. A static wrongShow/wrongProduction
   // flag on disk does NOT mean rebuild-all-reviews.js excludes the review — the
   // rebuild's auto-clear paths (shouldAutoClearWrongShowUkUrl, shouldAutoClearWrongShow,
@@ -1160,6 +1163,18 @@ function decideInclusion(review, show, guards, filePath) {
   // FLAG_FIELDS (scoring-delta-autoclear-coverage.test.mjs checks the names).
   if (typeof guards.isNamedNonReviewUrlRecord === 'function' && guards.isNamedNonReviewUrlRecord(review)) {
     return { included: false, reason: 'namedNonReviewUrl' };
+  }
+  // Mirrors rebuild-all-reviews.js's skippedListingPage (same predicate). Its
+  // pattern list is data, so a new forum / repost / tag-page host changes no
+  // function source; each side reads its own copy of non-review-url-patterns.js
+  // (BRO-6909: theatreboard.co.uk, Ground News and three blogs' /tag/ pages
+  // replayed as 0 newly excluded before this branch existed).
+  if (review.url && !review.humanReviewScore && !review.manualContentTier) {
+    const listingReason = guards.__nonReviewUrlPatterns && guards.__nonReviewUrlPatterns.listingPageUrlReason;
+    if (isEvergreenListingUrl(review.url)
+        || (review.listingPageUrlManualClear !== true && typeof listingReason === 'function' && listingReason(review.url))) {
+      return { included: false, reason: 'listingPage' };
+    }
   }
   // Mirrors rebuild-all-reviews.js's skippedBodylessAggregatorScore (BRO-3135,
   // same predicate).
@@ -1498,7 +1513,10 @@ function decideInclusion(review, show, guards, filePath) {
       // wrongArticleManualClear / humanReviewedWrongArticle /
       // nonReviewManualClear and, for the wrongShow family, wrongShowManualClear /
       // wrongShowOverride (wrongShowCleared); all are FLAG_FIELDS.
-      if (cv.wrongArticle === true) {
+      // BRO-6973: a clean verdict whose own articleType says interview/news routes the same way. Read off the
+      // per-side guards module so a baseline that predates the helper replays the old behaviour (live).
+      const cvArticleTypeNonReview = typeof guards.cvArticleTypeNonReview === 'function' && guards.cvArticleTypeNonReview(cv);
+      if (cv.wrongArticle === true || cvArticleTypeNonReview) {
         const promote = typeof guards.cvWrongArticlePromotion === 'function'
           ? guards.cvWrongArticlePromotion
           : require('./lib/review-guards').cvWrongArticlePromotion;
@@ -1751,6 +1769,7 @@ function main() {
         && (baseline.isPreviewFirstLookPiece?.toString() || '') === (working.isPreviewFirstLookPiece?.toString() || '')
         // BRO-2746: combined review of another member only (helpers inlined, toString() covers them).
         && (baseline.isCombinedReviewOfOtherMemberOnly?.toString() || '') === (working.isCombinedReviewOfOtherMemberOnly?.toString() || '')
+        && (baseline.decideEarlyFileExclusion?.toString() || '') === (working.decideEarlyFileExclusion?.toString() || '')
         // cvLowButStrong carve-out (BRO-3512): the predicate and its marker regexes.
         && (baseline.hasStrongDifferentShowSignal?.toString() || '') === (working.hasStrongDifferentShowSignal?.toString() || '')
         && JSON.stringify((baseline.STRONG_DIFFERENT_SHOW_MARKERS || []).map(String)) === JSON.stringify((working.STRONG_DIFFERENT_SHOW_MARKERS || []).map(String))
@@ -1850,6 +1869,9 @@ function main() {
         // helpers, the mirror's high-confidence rule and the deferral.
         && (baseline.cvWrongArticlePromotion?.toString() || '') === (working.cvWrongArticlePromotion?.toString() || '')
         && (baseline.cvWrongArticleFamily?.toString() || '') === (working.cvWrongArticleFamily?.toString() || '')
+        && (baseline.cvArticleTypeNonReview?.toString() || '') === (working.cvArticleTypeNonReview?.toString() || '')
+        && (baseline.cvArticleTypeVerdictIsPartialWindow?.toString() || '') === (working.cvArticleTypeVerdictIsPartialWindow?.toString() || '')
+        && [...(baseline.CV_ARTICLE_TYPE_NON_REVIEW || [])].sort().join() === [...(working.CV_ARTICLE_TYPE_NON_REVIEW || [])].sort().join()
         && (baseline.cvNonReviewHumanCleared?.toString() || '') === (working.cvNonReviewHumanCleared?.toString() || '')
         && (baseline.cvWrongArticleManuallyCleared?.toString() || '') === (working.cvWrongArticleManuallyCleared?.toString() || '')
         && (baseline.wrongShowCleared?.toString() || '') === (working.wrongShowCleared?.toString() || '')
@@ -1893,6 +1915,9 @@ function main() {
         // as PRE_WINDOW_DAYS above), so compare by value.
         && String(baseline.PRE_OPENING_LEAD_DAYS) === String(working.PRE_OPENING_LEAD_DAYS)
         && String(baseline.UNSCHEDULED_MAX_AGE_DAYS) === String(working.UNSCHEDULED_MAX_AGE_DAYS)
+        // skippedListingPage's pattern list is data: an added host changes no
+        // function source above (BRO-6909).
+        && listingPatternsKey(baseline) === listingPatternsKey(working)
         // Unreadable on either side is NOT "identical" (task #1075).
         && registryComparable && registryHash === baselineRegistryHash;
       if (guardsIdentical && !dataFlagDiff && !rebuildLoopTouch.touched) {
@@ -2357,7 +2382,7 @@ function main() {
   process.exit(significant ? 2 : 0);
 }
 
-module.exports = { INCLUSION_FILES, SCORE_VALUE_FILES, LLM_INPUT_FILES, gitDiffHasChanges, changedFiles, isSignificant, ensureBaseRef, decideInclusion, FLAG_FIELDS, findLogExclusionSites, parseUnifiedHunks, computeTouchedSites, detectRebuildLoopTouch };
+module.exports = { listingPatternsKey, INCLUSION_FILES, SCORE_VALUE_FILES, LLM_INPUT_FILES, gitDiffHasChanges, changedFiles, isSignificant, ensureBaseRef, decideInclusion, FLAG_FIELDS, findLogExclusionSites, parseUnifiedHunks, computeTouchedSites, detectRebuildLoopTouch };
 
 // What this run measured, stamped with its real exit code for the Stop hook
 // (BRO-5270). Set once main() starts real work, so --help leaves no stamp.

@@ -19,6 +19,7 @@
 
 const { RECHECK_HANDOFF_MARKER, parseRecheckAfter } = require('./autonomous-recheck-core.js');
 const { ExitTrap } = require('./recheck-autoclose.js');
+const { plainEnvCause } = require('./check-env-cause.js');
 
 const HANDOFF_STATE_NAMES = Object.freeze(['Paused', 'Backlog']);
 
@@ -45,6 +46,10 @@ function decideHandoff({ card, target, result, closeVerdict = null, closeRefused
   if (!target.verifyCmd) return { handoff: true, reason: 'no-runnable-test', why: `The RECHECK-AFTER date has passed and the card has no runnable test (${target.reason || 'no safe-form VERIFY command'}).` };
   const status = result && result.status;
   if (status === 'fail') return { handoff: true, reason: 'test-failed', why: `The RECHECK-AFTER date has passed and its test failed on fresh main: \`${target.verifyCmd}\`.` };
+  // BRO-7138: the test cannot run on the recheck machine (a withheld token, the
+  // private review texts). It will never pass here, so the card would sit
+  // forever; a worker rewrites VERIFY into a check this machine can run.
+  if (status === 'unverifiable' && result.envCause) return { handoff: true, reason: 'test-cannot-run-here', why: `The RECHECK-AFTER date has passed but its test cannot run on the recheck machine (${plainEnvCause(result.envCause)}): \`${target.verifyCmd}\`.` };
   if (status === 'pass' && closeVerdict && !closeVerdict.close) {
     if (/not a real test/.test(closeVerdict.reason)) return { handoff: true, reason: 'weak-test', why: `Its test passed but is not a real test (file-exists or generic): \`${target.verifyCmd}\`.` };
     if (/comments were added after/.test(closeVerdict.reason)) return { handoff: true, reason: 'human-comment-after-stamp', why: `Its test passed (\`${target.verifyCmd}\`) but someone commented after the stamp, so the nightly run will not close it on its own.` };

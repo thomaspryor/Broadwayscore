@@ -251,9 +251,19 @@ function sha1Short(s) {
  * identically, so routeAlert's existing cooldown/dedup still collapses
  * re-notifies for it rather than re-filing.
  */
+/**
+ * BRO-7113: matrix jobs report as `Unit Test Shard (2)`. Every place that keys,
+ * resolves or tracks a red signature by job name must use this, so a test that
+ * moves between shards keeps one key and that key can still be resolved.
+ */
+function normalizeJobName(name) {
+  return String(name || '').replace(/\s*\(\d+\)$/, '');
+}
+
 function stepFailureSignature(jobName, stepName, testName) {
   const hash = sha1Short(`${stepName || ''}::${testName || ''}`);
-  return `${RED_SIGNATURE_PREFIX}${jobName || 'unknown'}:${hash}`;
+  const job = normalizeJobName(jobName);
+  return `${RED_SIGNATURE_PREFIX}${job || 'unknown'}:${hash}`;
 }
 
 // node --test's TAP reporter prints `not ok N - <name>` for each failing
@@ -298,7 +308,62 @@ function firstFailingTestNameInJobLog(jobLogText) {
     if (m) name = detach(m[1].trim());
     return Boolean(m);
   });
-  return name;
+  // BRO-7102: no TAP failure, so try Playwright (the E2E job). Before this the
+  // E2E job had no test name at all, so every E2E failure shared one step-level
+  // signature and one card, whatever test broke.
+  return name || firstFailingPlaywrightTestInJobLog(jobLogText);
+}
+
+// BRO-7102: Playwright per-test signatures. CI runs the `github` reporter, whose
+// log carries one `N) [project] › <spec>:L:C › Suite › Title` header per attempt
+// (retries repeat it, and a FLAKY test that passed on retry prints one too), then
+// a final summary: `N failed` followed by one `[project] › ...` line per failed
+// test, then `N flaky` / `N skipped` / `N passed`. The summary's failed block is
+// the authority. With no summary at all (the job was killed or timed out) the
+// first numbered header is used. A summary with no failed block means no test
+// failed (flaky only), so the job's red is something else: null.
+// The name is `<spec> › Suite › Title`: no project and no line:col, so moving a
+// test inside its file or adding a project keeps the same signature.
+const PW_ENTRY_RE = /^\s*(?:\d+\)\s+)?\[[^\]]+\]\s+›\s+((?:tests|src|e2e)\/[\w@./-]+\.spec\.[cm]?[jt]sx?):\d+(?::\d+)?\s+›\s+(.+?)\s*$/;
+const PW_NUMBERED_RE = /^\s*\d+\)\s+\[/;
+const PW_FAILED_HDR_RE = /^\s*\d+ failed\s*$/;
+const PW_OTHER_HDR_RE = /^\s*\d+ (?:flaky|skipped|passed|did not run|interrupted)\b/;
+// eslint-disable-next-line no-control-regex
+const ANSI_RE = /\u001b\[[0-9;]*m/g;
+
+function playwrightName(m) {
+  // Trailing `(retry #N)`, `(5.2s)` and `───` rules come in any order: strip until stable.
+  let title = m[2];
+  for (let prev = null; prev !== title;) {
+    prev = title;
+    title = title.replace(/\s*(?:\(retry #\d+\)|\(\d+(?:\.\d+)?m?s\)|─+)\s*$/, '');
+  }
+  title = title.trim();
+  return title ? `${m[1]} › ${title}` : null;
+}
+
+/**
+ * @param {string} jobLogText raw per-job log (timestamp-prefixed lines)
+ * @returns {string|null} `<spec> › Suite › Title` of the first failed Playwright test, or null
+ */
+function firstFailingPlaywrightTestInJobLog(jobLogText) {
+  let firstHeader = null;
+  let fromSummary = null;
+  let sawSummary = false;
+  let inFailed = false;
+  forEachLine(jobLogText, (raw) => {
+    const line = raw.replace(/^\S*Z\s?/, '').replace(/\r$/, '').replace(ANSI_RE, '').replace(/^##\[\w+\]/, '');
+    if (PW_FAILED_HDR_RE.test(line)) { sawSummary = true; inFailed = true; return false; }
+    if (PW_OTHER_HDR_RE.test(line)) { sawSummary = true; inFailed = false; return false; }
+    const m = PW_ENTRY_RE.exec(line);
+    if (!m) return false;
+    if (inFailed) { fromSummary = playwrightName(m); return Boolean(fromSummary); }
+    if (!firstHeader && PW_NUMBERED_RE.test(line)) firstHeader = playwrightName(m);
+    return false;
+  });
+  if (fromSummary) return detach(fromSummary);
+  if (sawSummary) return null;
+  return firstHeader ? detach(firstHeader) : null;
 }
 
 // BRO-6262: the test FILE behind firstFailingTestNameInJobLog()'s test. node's
@@ -421,9 +486,15 @@ function failingStepSignatures(run, testNameByJob, resolveRunCommand) {
  */
 function signaturesToResolve(openConditionKeys, run, currentSignatures) {
   const currentSet = new Set((currentSignatures || []).map((s) => s.conditionKey));
-  const confirmedGreenJobPrefixes = ((run && run.jobs) || [])
-    .filter((j) => j?.conclusion === 'success')
-    .map((j) => `${RED_SIGNATURE_PREFIX}${j.name || ''}:`);
+  // A matrix family (`Shard (1)`..`(4)`) counts as green only when EVERY member
+  // succeeded: one green shard says nothing about a test that failed in another.
+  const byName = new Map();
+  for (const j of ((run && run.jobs) || [])) {
+    const n = normalizeJobName(j?.name);
+    byName.set(n, (byName.get(n) ?? true) && j?.conclusion === 'success');
+  }
+  const confirmedGreenJobPrefixes = [...byName].filter(([, green]) => green)
+    .map(([n]) => `${RED_SIGNATURE_PREFIX}${n}:`);
   return (openConditionKeys || [])
     .filter((k) => typeof k === 'string' && k.startsWith(RED_SIGNATURE_PREFIX))
     .filter((k) => !currentSet.has(k))
@@ -469,7 +540,7 @@ function trackSignatureAbsence(openRedConditions, currentSignatures, run, runId,
   const currentSet = new Set((currentSignatures || []).map((s) => s.conditionKey));
   const failedJobs = new Set(((run && run.jobs) || [])
     .filter((j) => j?.conclusion === 'failure' && !isSetupJobOnlyFailure(j) && hasFailingStep(j))
-    .map((j) => j.name || ''));
+    .map((j) => normalizeJobName(j.name)));
   const toResolve = [];
   const updates = {};
   for (const [key, cond] of Object.entries(openRedConditions || {})) {
@@ -493,6 +564,7 @@ module.exports = {
   NON_BLOCKING_JOB_NAMES,
   STALE_ABSENT_RUN_THRESHOLD,
   jobNameFromRedKey,
+  normalizeJobName,
   trackSignatureAbsence,
   assessMainRedStreak,
   DEFAULT_THRESHOLD_HOURS,
@@ -502,6 +574,7 @@ module.exports = {
   RED_SIGNATURE_PREFIX,
   stepFailureSignature,
   firstFailingTestNameInJobLog,
+  firstFailingPlaywrightTestInJobLog,
   firstFailingTestFileInJobLog,
   isBashIntegrationStep,
   isBashTestStepCommand,

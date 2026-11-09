@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-4911: prevention for the Into the Woods page bugs (BRO-4887 leftovers).
  * Real data shapes from data/review-texts/into-the-woods-2022. Per CLAUDE.md

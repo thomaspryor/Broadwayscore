@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (read by the test); data/reviews.json (read by the test); data/outlet-registry.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // TESTS-VS-DERIVED-DATA-EXEMPT: reads real reviews.json/shows.json/outlet-registry.json
 // as fixture input for a pure classifier; no factual pins on review counts/scores.
 /**

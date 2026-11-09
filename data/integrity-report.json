@@ -1,25 +1,25 @@
 {
-  "timestamp": "2026-11-01T10:21:37.994Z",
+  "timestamp": "2026-11-08T10:07:08.337Z",
   "hasIssues": true,
   "current": {
+    "date": "2026-11-08",
+    "totalReviews": 80478,
+    "unknownOutlets": 46,
+    "duplicates": 24,
+    "syncDelta": 30772
+  },
+  "previous": {
     "date": "2026-11-01",
     "totalReviews": 78206,
     "unknownOutlets": 64,
     "duplicates": 24,
     "syncDelta": 33123
   },
-  "previous": {
-    "date": "2026-10-25",
-    "totalReviews": 61140,
-    "unknownOutlets": 26,
-    "duplicates": 22,
-    "syncDelta": 28638
-  },
   "issues": [
     {
       "type": "unknown_outlets",
       "severity": "critical",
-      "message": "64 reviews have unknown outlets",
+      "message": "46 reviews have unknown outlets",
       "examples": [
         {
           "file": "data/review-texts/a-few-good-men-2026/globalnews2--unknown.json",
@@ -37,29 +37,9 @@
           "outlet": ""
         },
         {
-          "file": "data/review-texts/afterglow-off-broadway-2017/the-gay-and-lesbian-review--allen-ellenzweig.json",
-          "outletId": "the-gay-and-lesbian-review",
-          "outlet": "the-gay-and-lesbian-review"
-        },
-        {
           "file": "data/review-texts/aftermath-art-new-york-off-broadway-2026/frombroadway--kenji-fujishima.json",
           "outletId": "frombroadway",
           "outlet": "frombroadway"
-        },
-        {
-          "file": "data/review-texts/all-the-fine-boys-off-broadway-2017/fuck-yeah-great-plays--fuck-yeah-great-plays.json",
-          "outletId": "fuck-yeah-great-plays",
-          "outlet": "fuck-yeah-great-plays"
-        },
-        {
-          "file": "data/review-texts/angels-in-america-2018/should-appeal-to-two-audiences--national-theatre.json",
-          "outletId": "should-appeal-to-two-audiences",
-          "outlet": "should-appeal-to-two-audiences"
-        },
-        {
-          "file": "data/review-texts/anna-christie-off-broadway-2025/the-showmance-already-happened--in-brooklyn.json",
-          "outletId": "the-showmance-already-happened",
-          "outlet": "the-showmance-already-happened"
         },
         {
           "file": "data/review-texts/attack-of-the-elvis-impersonators-off-broadway-2017/pillow-talking--wayne-j-keeley.json",
@@ -67,9 +47,29 @@
           "outlet": "pillow-talking"
         },
         {
-          "file": "data/review-texts/aubergine-off-broadway-2016/8asians--lily-w.json",
-          "outletId": "8asians",
-          "outlet": "8asians"
+          "file": "data/review-texts/backstairs-billy-west-end-2023/stagedoor--lyn-gardner.json",
+          "outletId": "stagedoor",
+          "outlet": "stagedoor"
+        },
+        {
+          "file": "data/review-texts/beetlejuice-tour-2022/inthespotlightinc--jarice-hanson.json",
+          "outletId": "inthespotlightinc",
+          "outlet": "inthespotlightinc"
+        },
+        {
+          "file": "data/review-texts/billy-crystal-860-2026/theglobalcelebritymeter--steve-smith.json",
+          "outletId": "theglobalcelebritymeter",
+          "outlet": "theglobalcelebritymeter"
+        },
+        {
+          "file": "data/review-texts/copperfield-the-new-musical-off-broadway-2026/frombroadway--pete-hempstead.json",
+          "outletId": "frombroadway",
+          "outlet": "frombroadway"
+        },
+        {
+          "file": "data/review-texts/double-bill-tell-me-straight-and-aggy-off-west-end-2026/nearbuzz--unknown.json",
+          "outletId": "nearbuzz",
+          "outlet": "nearbuzz"
         }
       ]
     },
@@ -79,8 +79,8 @@
       "message": "24 duplicate reviews detected",
       "examples": [
         {
-          "file": "data/review-texts/affluenza-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
-          "key": "affluenza-off-west-end-2026|londontheatredirect|carol johnson"
+          "file": "data/review-texts/affluenza-off-west-end-2026/londontheatredirect--sarah-armer.json",
+          "key": "affluenza-off-west-end-2026|londontheatredirect|lepeltier arthur"
         },
         {
           "file": "data/review-texts/aladdin-2014/theatermania--zachary-stewart.json",
@@ -103,6 +103,10 @@
           "key": "endgame-west-end-2020|times-uk|clive davis"
         },
         {
+          "file": "data/review-texts/ghost-the-musical-2012/nytimes--charles-isherwood.json",
+          "key": "ghost-the-musical-2012|nytimes|charles isherwood"
+        },
+        {
           "file": "data/review-texts/good-time-charlie-off-broadway-2026/cititour--brian-scott.json",
           "key": "good-time-charlie-off-broadway-2026|cititour|brian scott lipton"
         },
@@ -113,33 +117,19 @@
         {
           "file": "data/review-texts/labour-of-love-west-end-2017/standard--henry-hitchings.json",
           "key": "labour-of-love-west-end-2017|standard|henry hitchings"
-        },
-        {
-          "file": "data/review-texts/memphis-2009/variety--david-rooney.json",
-          "key": "memphis-2009|variety|david rooney"
         }
       ]
     },
     {
       "type": "sync_delta",
       "severity": "critical",
-      "message": "review-texts (78206) and reviews.json (45083) are out of sync by 33123 reviews"
-    },
-    {
-      "type": "unknown_outlets_degradation",
-      "severity": "warning",
-      "message": "Unknown outlets increased from 26 to 64"
-    },
-    {
-      "type": "duplicates_degradation",
-      "severity": "warning",
-      "message": "Duplicates increased from 22 to 24"
+      "message": "review-texts (80478) and reviews.json (49706) are out of sync by 30772 reviews"
     }
   ],
   "summary": {
-    "totalReviews": 78206,
-    "unknownOutlets": 64,
+    "totalReviews": 80478,
+    "unknownOutlets": 46,
     "duplicates": 24,
-    "syncDelta": 33123
+    "syncDelta": 30772
   }
 }

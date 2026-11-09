@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Unit tests for scripts/lib/playbill-verdict-discover.js.
  *
@@ -134,6 +135,53 @@ describe('searchPlaybillVerdict — per-show matching', () => {
     const hit = await searchPlaybillVerdict(show, { fetchHtml: async () => categoryHtml });
     assert.ok(hit, 'expected a match for Fiddler');
     assert.strictEqual(hit.articleUrl, REAL_ARTICLE_URLS.fiddler);
+  });
+
+  it('matches a roundup titled with the press title (BRO-6872: Billy Crystal 860)', async () => {
+    // The real Playbill title. Neither matchSlugToShow nor matchTitleToShow takes it, so the opening-night lane never
+    // opened the roundup and missed Cititour, which it cited.
+    const url860 = 'https://playbill.com/article/reviews-what-do-the-critics-think-of-billy-crystals-solo-show-860-on-broadway';
+    const categoryHtml = `
+      <a href="${REAL_ARTICLE_URLS.burnoutPara}">Read the Reviews for Pony Cam's Burnout Paradise Off-Broadway</a>
+      <a href="${url860}">Reviews: What Do the Critics Think of Billy Crystal’s Solo Show 860 on Broadway?</a>
+    `;
+    const show = { id: 'billy-crystal-860-2026', title: 'Billy Crystal 860', akaTitles: ['860'], slug: 'billy-crystal-860', category: 'broadway', openingDate: '2026-10-21' };
+    const hit = await searchPlaybillVerdict(show, { fetchHtml: async () => categoryHtml, skipSitemap: true });
+    assert.ok(hit, 'expected a match for 860');
+    assert.strictEqual(hit.articleUrl, url860);
+    // A short press title alone, with no listing-title word, is not this show.
+    const decoy = `<a href="https://playbill.com/article/reviews-860-sneakers">Reviews: What Do the Critics Think of New Balance 860?</a>`;
+    assert.strictEqual(await searchPlaybillVerdict(show, { fetchHtml: async () => decoy, skipSitemap: true }), null);
+  });
+
+  it('tries press titles only after the strict sitemap pass (BRO-6872 review)', async () => {
+    const show = { id: 'billy-crystal-860-2026', title: 'Billy Crystal 860', akaTitles: ['860'], slug: 'billy-crystal-860', category: 'broadway', openingDate: '2026-10-21' };
+    const loose = 'https://playbill.com/article/reviews-what-do-the-critics-think-of-billy-crystals-solo-show-860-on-broadway';
+    const strict = 'https://playbill.com/article/read-the-reviews-for-billy-crystal-860';
+    const sitemap = `<urlset><url><loc>${strict}</loc><lastmod>2026-10-22T03:00:00Z</lastmod></url></urlset>`;
+    const fetchHtml = async (u) => (u === VERDICT_SITEMAP_URL ? sitemap : `<a href="${loose}">Reviews: What Do the Critics Think of Billy Crystal’s Solo Show 860 on Broadway?</a>`);
+    assert.strictEqual((await searchPlaybillVerdict(show, { fetchHtml })).articleUrl, strict);
+    // With no strict hit anywhere, the press-title hit on the category page is used.
+    const none = async (u) => (u === VERDICT_SITEMAP_URL ? '<urlset></urlset>' : await fetchHtml(u));
+    assert.strictEqual((await searchPlaybillVerdict(show, { fetchHtml: none })).articleUrl, loose);
+  });
+
+  it('press-title pass skips a sitemap roundup from before this production (BRO-6872 review)', async () => {
+    const show = { id: 'billy-crystal-860-2026', title: 'Billy Crystal 860', akaTitles: ['860'], slug: 'billy-crystal-860', category: 'broadway', openingDate: '2026-10-21' };
+    const old = 'https://playbill.com/article/reviews-what-do-the-critics-think-of-billy-crystals-solo-show-860-on-broadway';
+    const sitemap = `<urlset><url><loc>${old}</loc><lastmod>2017-03-01T03:00:00Z</lastmod></url></urlset>`;
+    const fetchHtml = async (u) => (u === VERDICT_SITEMAP_URL ? sitemap : '');
+    assert.strictEqual(await searchPlaybillVerdict(show, { fetchHtml }), null);
+  });
+
+  it('press-title pass does not reuse the loose listing-title test (BRO-6872 review: The Hairy Ape)', async () => {
+    const show = { id: 'the-hairy-ape-irish-repertory-theatre-off-broadway-2026', title: 'The Hairy Ape', akaTitles: ['The Hairy Ape (Irish Repertory Theatre)'], slug: 'the-hairy-ape', category: 'off-broadway', openingDate: '2026-10-28' };
+    const armory = `<a href="https://playbill.com/article/park-avenue-armory-revival-critics-roundup">Reviews: What Do Critics Think of The Hairy Ape at Park Avenue Armory?</a>`;
+    assert.strictEqual(await searchPlaybillVerdict(show, { fetchHtml: async () => armory, skipSitemap: true }), null);
+    const caseOnly = { id: 'los-soles-truncos-off-broadway-2025', title: 'Los soles truncos', akaTitles: ['Los Soles Truncos'], slug: 'los-soles-truncos', category: 'off-broadway', openingDate: '2025-06-01' };
+    const other = `<a href="https://playbill.com/article/reviews-los-soles-truncos-in-puerto-rico">Reviews: What Do Critics Think of Los Soles Truncos in San Juan?</a>`;
+    const r = await searchPlaybillVerdict(caseOnly, { fetchHtml: async () => other, skipSitemap: true });
+    assert.ok(r === null || /los-soles-truncos/.test(r.articleUrl), 'a case-only aka adds no second, looser pass');
   });
 
   it('returns null when no article matches the show', async () => {

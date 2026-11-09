@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Submission-form junk guard: a NEW file from submit-review-form on a curated
 // non-review page (ticket reseller, venue listing, press release) is refused;
 // real reviews on hosts the broad classifier would wrongly reject
@@ -131,8 +132,9 @@ test('BRO-5275: refuses submissions on aggregator, event and listing hosts the v
     ]) {
       const r = submit(dir, outlet, url);
       assert.equal(r.guardRefused, true, url);
-      // show-score is refused earlier by the listing-page guard; the other four by this one.
-      if (!/show-score/.test(url)) assert.match(r.reason, /^submitted-non-review-url: (blocked-domain|census-junk-host)/, url);
+      // show-score is refused earlier by the listing-page guard; so are the bare
+      // /shows/<slug> hubs since BRO-7081 (show-hub). inyougo reaches this guard.
+      if (!/show-score/.test(url)) assert.match(r.reason, /^(submitted-non-review-url: (blocked-domain|census-junk-host)|listing-page-url: show-hub)/, url);
     }
     assert.equal(fs.existsSync(path.join(dir, SHOW)), false, 'nothing written');
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }

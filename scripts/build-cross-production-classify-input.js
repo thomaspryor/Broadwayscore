@@ -26,6 +26,7 @@
 'use strict';
 
 const fs = require('fs');
+const { getExcerpts } = require('./lib/excerpt-fields');
 const path = require('path');
 
 const ARGS = process.argv.slice(2);
@@ -68,8 +69,7 @@ for (const issue of ambiguous) {
   let review;
   try { review = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch { skippedMissing++; continue; }
 
-  const text = String(review.fullText || review.bwwExcerpt || review.dtliExcerpt
-    || review.showScoreExcerpt || review.pullQuote || '');
+  const text = String(review.fullText || getExcerpts(review)[0] || review.pullQuote || '');
   if (text.trim().length < MIN_TEXT) { skippedNoText++; continue; }
 
   results.push({

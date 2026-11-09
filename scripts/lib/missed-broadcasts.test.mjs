@@ -5,6 +5,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   findMissedBroadcasts,
+  currentRunQualifies,
   classifyBroadcastState,
   classifyShowBroadcastState,
   wasCoveredByWeeklyRoundup,
@@ -449,4 +450,51 @@ test('summarizeMissedForHealth: counts alertable only over uncovered shows', () 
     { state: 'covered-by-roundup', alertable: false },
   ] };
   assert.deepStrictEqual(summarizeMissedForHealth(snap), { uncovered: 2, covered: 1, alertable: 1, agedOut: 1 });
+});
+
+// --- BRO-5447: returning productions owe an email only if THIS run qualified ---
+// Shape of the real case: Jesus Christ Superstar, Palladium (opened 07-07,
+// closed 09-05) -> Drury Lane (opens 2026-10-16), 32 reviews carried, 2 fresh.
+{
+  const NOW_JCS = Date.UTC(2026, 10, 5, 12, 0, 0); // 2026-11-05
+  const prior = { id: 'jcs-palladium', title: 'JCS', status: 'closed', category: 'west-end', openingDate: '2026-07-07', closingDate: '2026-09-05' };
+  const transfer = (over = {}) => ({
+    id: 'jcs-drury', title: 'JCS', status: 'open', category: 'west-end',
+    openingDate: '2026-10-16', previewsStartDate: '2026-10-16',
+    priorRuns: [{ id: 'jcs-palladium', venue: 'Palladium', openingDate: '2026-07-07', closingDate: '2026-09-05' }],
+    ...over,
+  });
+  const dated = (id, n, date) => Array.from({ length: n }, (_, i) => ({ showId: id, assignedScore: 60 + i, publishDate: date }));
+  const run = (shows, reviews) => findMissedBroadcasts({ shows, sentShows: {}, reviews, now: NOW_JCS });
+
+  test('BRO-5447: a transfer whose reviews are all from the prior run is NOT a missed opening', () => {
+    const reviews = [...dated('jcs-drury', 30, '2026-07-08'), ...dated('jcs-drury', 2, '2026-10-21')];
+    assert.deepStrictEqual(run([prior, transfer()], reviews), []);
+    assert.strictEqual(currentRunQualifies(transfer(), [prior], reviews), false);
+  });
+
+  test('BRO-5447: a transfer the press reviewed again still counts as missed', () => {
+    const reviews = [...dated('jcs-drury', 30, '2026-07-08'), ...dated('jcs-drury', 12, '2026-10-17')];
+    const missed = run([prior, transfer()], reviews);
+    assert.strictEqual(missed.length, 1);
+    assert.strictEqual(missed[0].id, 'jcs-drury');
+    assert.strictEqual(missed[0].state, 'never-drafted');
+  });
+
+  test('BRO-5447: no priorRuns, or an unresolvable prior run, fails open (still reported)', () => {
+    const reviews = dated('jcs-drury', 20, '2026-07-08');
+    // Ordinary opening with old-dated rows: the gate does not apply.
+    assert.strictEqual(run([transfer({ priorRuns: undefined })], reviews).length, 1);
+    assert.strictEqual(currentRunQualifies(transfer({ priorRuns: [] }), [], reviews), true);
+    // Prior run with no dates and no resolvable sibling: no window, fail open.
+    assert.strictEqual(currentRunQualifies(transfer({ priorRuns: [{ venue: 'Somewhere' }] }), [], reviews), true);
+  });
+}
+
+test('BRO-5447: undated reviews on a transfer count toward this run (errs toward reporting)', () => {
+  const prior = { id: 'p', status: 'closed', category: 'west-end', openingDate: '2026-07-07', closingDate: '2026-09-05' };
+  const t = { id: 't', status: 'open', category: 'west-end', openingDate: '2026-10-16', previewsStartDate: '2026-10-16',
+    priorRuns: [{ id: 'p', openingDate: '2026-07-07', closingDate: '2026-09-05' }] };
+  const undated = Array.from({ length: 12 }, (_, i) => ({ showId: 't', assignedScore: 60 + i }));
+  assert.strictEqual(currentRunQualifies(t, [prior], undated), true);
 });

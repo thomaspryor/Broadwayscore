@@ -103,6 +103,29 @@ function anchorNameToEntryBoundary(text, nameStart, captured) {
   // own. Otherwise the run was intra-name whitespace, not an entry boundary.
   return WHOLE_NAME_RE.test(candidate) ? candidate : captured;
 }
+/**
+ * BRO-7100: a photo credit glued to the first byline with a single space
+ * ("Photo Credit: HanJie Chow Charles Isherwood, Wall Street Journal:") gives
+ * a 3-word capture whose first word is the photographer's surname. When
+ * exactly one word sits between "Photo Credit:" and the capture, that word is
+ * the photographer's first name, so the capture's first word is their surname:
+ * drop it when what is left is still a whole name. Two or more words between
+ * means the photographer's name is complete and the capture is left alone.
+ *
+ * @param {string} text - the body being scanned
+ * @param {number} nameStart - index of the raw capture in `text`
+ * @param {string} captured - the raw capture
+ * @returns {string} the capture without a leading photographer surname
+ */
+function stripPhotoCreditSurname(text, nameStart, captured) {
+  if (!captured) return captured;
+  const before = text.slice(Math.max(0, nameStart - 60), nameStart);
+  // A one-word credit ("Courtesy", "By") is not a photographer's first name.
+  const m = before.match(/[Pp]hoto [Cc]redits?:\s*([A-Z][\w'.-]*)\s+$/);
+  if (!m || /^(courtesy|by|credit)$/i.test(m[1])) return captured;
+  const rest = captured.trim().replace(/^\S+\s+/, '');
+  return rest !== captured.trim() && WHOLE_NAME_RE.test(rest) ? rest : captured;
+}
 // Lookahead is intentionally less greedy than the capture: it requires only
 // the minimum 2-word name shape so the [^]+? quote ends at the EARLIEST plausible
 // boundary. If the lookahead also allowed an optional 3rd word, "...Leap of
@@ -124,7 +147,16 @@ const NAME_LOOKAHEAD = `${LEADING_INITIAL}${NAME_WORD}${MIDDLE_INITIAL}${WORD_SE
 // "Helen Shaw, NY1:" never matched. A space-separated number ("age 35") must
 // stay out, or "Star Daniel Radcliffe, age 35:" inside a quote becomes a fake
 // critic entry and truncates the quote.
-const OUTLET = "(?:[0-9]+\\s+)?[A-Za-z][A-Za-z\\s&'.]+(?:(?<=[A-Za-z])[0-9]{1,2})?";
+// BRO-7100: an outlet that starts lower-case is a lower-case brand
+// ("amNY", "iNews", "theartsdesk.com") or "am New York" -- a lower-case first
+// word followed only by Capitalised words. A lower-case word AFTER the first
+// one means a sentence fragment from inside a quote: EW's Angels in America
+// quote "a transplant from London's National Theatre, should appeal to two
+// audiences: ..." parsed as critic "National Theatre" at outlet "should appeal
+// to two audiences", and cut the real EW quote short at that point. Putting
+// the rule in OUTLET (not a post-filter) keeps the quote-end lookahead from
+// stopping there too. 45 such fragments across the 894 archived roundups.
+const OUTLET = "(?:[0-9]+\\s+)?(?:[A-Z][A-Za-z\\s&'.]+|[a-z][A-Za-z&'.]*(?:\\s+[A-Z][A-Za-z&'.]*)*)(?:(?<=[A-Za-z])[0-9]{1,2})?";
 // BWW's CMS emits a stray space before the comma on some entries — the live
 // SPIES-2026 body carries "Ryan Gilbey , The Guardian:" and
 // "Holly O'Mahony , The Stage:" alongside comma-tight siblings. The old
@@ -164,8 +196,9 @@ function parseArticleBodyReviews(articleBody) {
     // strips page-chrome tokens, title-cases ALL-CAPS bylines) so this parser
     // can never be the origin of a raw-capture criticName. Previously the
     // roundup path was the ONE byline writer that bypassed it.
+    const anchored = anchorNameToEntryBoundary(text, match.index, match[1]);
     const criticName = normalizeBylineCapture(
-      anchorNameToEntryBoundary(text, match.index, match[1])
+      anchored === match[1] ? stripPhotoCreditSurname(text, match.index, anchored) : anchored
     );
     const outletRaw = match[2].trim();
     const quote = match[3].trim();

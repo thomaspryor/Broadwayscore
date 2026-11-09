@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/audit/press-night/the-lives-of-others-west-end-2026-2026-10-29.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-6657: shows with openingDate but no reviewEmbargoAt must get an inferred market embargo
 // (West End market default 21:00 UK) and a probe target, never be skipped.
 import test from 'node:test';

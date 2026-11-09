@@ -125,6 +125,7 @@ const BANNED_URL_SUBSTRINGS = ['chatgpt.com', 'openai.com', 'bard.google.com', '
 // checkable citation (recoupedSource must be a real URL, not just non-empty
 // text — see scripts/lib/commercial-citation-guards.js for why).
 const { isUnsourcedRecouped } = require('./lib/commercial-citation-guards');
+const { splitModelFalseNegatives } = require('./lib/model-false-negative-explanations');
 
 // Returns the list of sources[] entries whose url points at a banned
 // LLM-tool domain (ChatGPT/OpenAI/Bard/Claude), for a given entry.
@@ -712,6 +713,17 @@ function checkClosedShowTBD() {
         closedAgo = ` (closed ${daysSince} days ago on ${show.closingDate})`;
       }
 
+      // A person locked this TBD (parade-2023: owner reset it, BRO-6245, with
+      // an estimate range straddling 100%): a deliberate state, so LOW.
+      if (data.humanReviewedDesignation === true) {
+        addIssue(
+          'closed-show-tbd',
+          'low',
+          key,
+          `Show is closed${closedAgo} and designated "TBD" under a human review lock (humanReviewedDesignation). Revisit only if a recoupment or loss is reported.`
+        );
+        continue;
+      }
       addIssue(
         'closed-show-tbd',
         'medium',
@@ -978,30 +990,40 @@ function checkRecoupmentCitations() {
 // Producer announcements are ground truth (owner decision 2026-07-13, task #140).
 // Every recouped=true show where modelRecouped=false is a model false-negative:
 // the render layer suppresses the model on that show's card, and the same
-// failure mode degrades estimates on shows with no announcement. Baseline is
-// 2 known disagreements (our-town, leopoldstadt-2022, as of 2026-07-13);
-// anything above that flags HIGH so growth surfaces loudly in the digest.
+// failure mode degrades estimates on shows with no announcement. Each known
+// one carries a diagnosis in lib/model-false-negative-explanations.js
+// (BRO-6140); an undiagnosed one flags HIGH so growth surfaces loudly in the
+// digest, a diagnosed one stays LOW, and a diagnosis whose show is no longer
+// a false negative is reported so the list gets pruned.
 
-const MODEL_FALSE_NEGATIVE_BASELINE = 2;
+const MODEL_FALSE_NEGATIVE_BASELINE = 0; // undiagnosed false negatives allowed
 
 function checkModelFalseNegatives() {
-  const disagreements = commercialEntries.filter(([, d]) =>
-    d.recouped === true && d.modelRecouped === false);
-  const severity = disagreements.length > MODEL_FALSE_NEGATIVE_BASELINE ? 'high' : 'low';
-  for (const [key, d] of disagreements) {
+  const { explained, unexplained, staleExplanations } = splitModelFalseNegatives(commercialEntries);
+  const severity = unexplained.length > MODEL_FALSE_NEGATIVE_BASELINE ? 'high' : 'low';
+  const describe = (key) => {
+    const d = commercial.shows[key];
     const range = Array.isArray(d.modelRecoupmentPct) ? d.modelRecoupmentPct.join('–') + '%' : 'n/a';
-    addIssue(
-      'model-false-negative',
-      severity,
-      key,
-      `Announced recouped (${d.recoupedDate || 'no date'}) but modelRecouped=false (range ${range}). ` +
-      `Count ${disagreements.length} vs baseline ${MODEL_FALSE_NEGATIVE_BASELINE} — diagnose model inputs if this grows.`
-    );
+    return `Announced recouped (${d.recoupedDate || 'no date'}) but modelRecouped=false (range ${range}).`;
+  };
+  for (const key of unexplained) {
+    addIssue('model-false-negative', severity, key,
+      `${describe(key)} Undiagnosed: ${unexplained.length} vs baseline ${MODEL_FALSE_NEGATIVE_BASELINE}. Diagnose the model inputs, then add the reason to scripts/lib/model-false-negative-explanations.js.`);
+  }
+  for (const { key, why } of explained) {
+    addIssue('model-false-negative', 'low', key, `${describe(key)} Diagnosed: ${why}`);
+  }
+  for (const key of staleExplanations) {
+    addIssue('model-false-negative-stale', 'low', key,
+      'No longer a model false negative: delete its entry from scripts/lib/model-false-negative-explanations.js.');
   }
   return {
-    count: disagreements.length,
+    count: explained.length + unexplained.length,
+    unexplained: unexplained.length,
     baseline: MODEL_FALSE_NEGATIVE_BASELINE,
-    shows: disagreements.map(([key]) => key),
+    shows: [...unexplained, ...explained.map((e) => e.key)],
+    undiagnosedShows: unexplained,
+    staleExplanations,
   };
 }
 
@@ -1247,7 +1269,7 @@ console.log(`  Missing commercial data: ${coverageStats.missing}`);
 console.log('');
 
 console.log('--- Model vs Announced Recoupment ---');
-console.log(`  Model false negatives (recouped=true, modelRecouped=false): ${modelFnStats.count} (baseline ${modelFnStats.baseline})`);
+console.log(`  Model false negatives (recouped=true, modelRecouped=false): ${modelFnStats.count}, undiagnosed ${modelFnStats.unexplained} (baseline ${modelFnStats.baseline})`);
 if (modelFnStats.shows.length > 0) {
   console.log(`  Shows: ${modelFnStats.shows.join(', ')}`);
 }

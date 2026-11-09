@@ -83,47 +83,7 @@ async function discoverLboRoundupHtml(show, opts = {}) {
         sitemapXml = smResult?.content || null;
       } catch (e) { stats.fetchErrors++; /* sitemap fetch failed, continue */ }
       if (sitemapXml) {
-        const reviewUrls = [...sitemapXml.matchAll(/<loc>(https:\/\/www\.londonboxoffice\.co\.uk\/news\/post\/[^<]*review[^<]*)<\/loc>/gi)]
-          .map(m => m[1])
-          .filter(url => {
-            const slug = url.split('/').pop().toLowerCase();
-            return slug.includes('review') && !slug.includes('photo') && !slug.includes('cast-announced') && !slug.includes('announces');
-          });
-        const findHighConfidence = (urls) => urls.find(url => {
-          const slug = url.split('/').pop()
-            .replace(/^review-(?:round-?up-)?/i, '')
-            .replace(/-review(?:-[\w-]+)?$/i, '')
-            .replace(/-/g, ' ')
-            .toLowerCase();
-          // Roundup URLs often carry a trailing venue name that isn't in the
-          // show title (e.g. "death note the musical barbican theatre" for
-          // review-roundup-death-note-the-musical-barbican-theatre) — LBO's
-          // theatre-name suffix list (scrape-london-box-office-roundups.js's
-          // stripTheatreFromSlug) doesn't cover every venue-name variant, so
-          // instead of maintaining a second list here, progressively drop
-          // trailing words and take the first high-confidence match. Capped
-          // at 3 words: further trimming only degrades match confidence in
-          // practice (verified against the Death Note roundup slug — 2
-          // dropped words: high; 3: medium), so it doesn't risk false
-          // positives on an unrelated short show title.
-          const words = slug.split(' ').filter(Boolean);
-          for (let drop = 0; drop <= 3 && drop < words.length; drop++) {
-            const candidate = words.slice(0, words.length - drop).join(' ');
-            const r = matchTitleToShow(candidate, [show], { market: 'west-end' });
-            if (r && r.show && r.confidence === 'high') return true;
-          }
-          return false;
-        });
-        // Prefer a genuine multi-outlet "review-roundup-*" URL over a
-        // single-critic individual review page when both exist for the same
-        // show (#1708 — the loose "contains review" filter above treats
-        // both URL shapes as equally valid candidates, but a real roundup
-        // typically has several more citations than the individual page
-        // alone; verified live for Death Note: 6 outlet citations on the
-        // roundup vs. 1 on the individual page).
-        const isRoundupSlug = (url) => /round-?up/i.test(url.split('/').pop());
-        const match = findHighConfidence(reviewUrls.filter(isRoundupSlug))
-          || findHighConfidence(reviewUrls.filter((u) => !isRoundupSlug(u)));
+        const match = findLboRoundupInSitemap(sitemapXml, show);
         if (match) {
           log(`    Sitemap match: ${match}`);
           try {
@@ -164,4 +124,55 @@ async function discoverLboRoundupHtml(show, opts = {}) {
   return lboHtml ? { html: lboHtml, url: foundUrl, source: lboHtmlSource } : null;
 }
 
-module.exports = { discoverLboRoundupHtml };
+
+/**
+ * The London Box Office roundup (or individual review) URL for `show` in LBO's news sitemap, or null. Pure: the
+ * opening-night lane's LBO adapter (opening-night-lane/west-end-adapters.js) reads the sitemap through its own routed,
+ * recorded fetch and shares this matcher with discoverLboRoundupHtml (BRO-5956).
+ */
+function findLboRoundupInSitemap(sitemapXml, show) {
+  if (!sitemapXml || !show) return null;
+  const reviewUrls = [...sitemapXml.matchAll(/<loc>(https:\/\/www\.londonboxoffice\.co\.uk\/news\/post\/[^<]*review[^<]*)<\/loc>/gi)]
+    .map(m => m[1])
+    .filter(url => {
+      const slug = url.split('/').pop().toLowerCase();
+      return slug.includes('review') && !slug.includes('photo') && !slug.includes('cast-announced') && !slug.includes('announces');
+    });
+  const findHighConfidence = (urls) => urls.find(url => {
+    const slug = url.split('/').pop()
+      .replace(/^review-(?:round-?up-)?/i, '')
+      .replace(/-review(?:-[\w-]+)?$/i, '')
+      .replace(/-/g, ' ')
+      .toLowerCase();
+    // Roundup URLs often carry a trailing venue name that isn't in the
+    // show title (e.g. "death note the musical barbican theatre" for
+    // review-roundup-death-note-the-musical-barbican-theatre) — LBO's
+    // theatre-name suffix list (scrape-london-box-office-roundups.js's
+    // stripTheatreFromSlug) doesn't cover every venue-name variant, so
+    // instead of maintaining a second list here, progressively drop
+    // trailing words and take the first high-confidence match. Capped
+    // at 3 words: further trimming only degrades match confidence in
+    // practice (verified against the Death Note roundup slug — 2
+    // dropped words: high; 3: medium), so it doesn't risk false
+    // positives on an unrelated short show title.
+    const words = slug.split(' ').filter(Boolean);
+    for (let drop = 0; drop <= 3 && drop < words.length; drop++) {
+      const candidate = words.slice(0, words.length - drop).join(' ');
+      const r = matchTitleToShow(candidate, [show], { market: 'west-end' });
+      if (r && r.show && r.confidence === 'high') return true;
+    }
+    return false;
+  });
+  // Prefer a genuine multi-outlet "review-roundup-*" URL over a
+  // single-critic individual review page when both exist for the same
+  // show (#1708 — the loose "contains review" filter above treats
+  // both URL shapes as equally valid candidates, but a real roundup
+  // typically has several more citations than the individual page
+  // alone; verified live for Death Note: 6 outlet citations on the
+  // roundup vs. 1 on the individual page).
+  const isRoundupSlug = (url) => /round-?up/i.test(url.split('/').pop());
+  return findHighConfidence(reviewUrls.filter(isRoundupSlug))
+    || findHighConfidence(reviewUrls.filter((u) => !isRoundupSlug(u))) || null;
+}
+
+module.exports = { discoverLboRoundupHtml, findLboRoundupInSitemap };

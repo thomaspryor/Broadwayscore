@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6316",
   "planId": "47361a12-98fb-404b-a00c-8af56cdd5ada",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-26T12:18:15.332Z",
   "submitter": {
     "name": null,
@@ -42,5 +42,28 @@
       "reason": "Source not found: the-notebook-tour-2025/variety--unknown.json"
     }
   ],
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "obsolete": 1,
+      "resolved": 1
+    },
+    "ops": [
+      {
+        "i": 0,
+        "verdict": "obsolete",
+        "reason": "the-notebook-tour-2025/musical-theatre-review--unknown.json exists but is not counted, so it does no harm"
+      },
+      {
+        "i": 1,
+        "verdict": "resolved",
+        "reason": "the-notebook-tour-2025/variety--unknown.json is already gone"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (1 obsolete, 1 resolved); per-op reasons in triage.ops"
 }

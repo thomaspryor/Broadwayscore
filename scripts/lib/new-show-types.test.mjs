@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/audit/digest-autofix-ledger.jsonl (bot ledger); data/audit/backlog-drain-ledger.jsonl (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-6542: new tour / pre-Broadway / UK regional shows in the morning digest,
 // plus suggested Reddit posts for the new pre-Broadway ones.
 import { test } from 'node:test';

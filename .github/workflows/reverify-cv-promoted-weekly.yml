@@ -44,6 +44,7 @@ jobs:
         with:
           ref: main
           token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 300 # ledger commit step needs history to rebase (BRO-2388)
 
       - name: Checkout core data
         uses: ./.github/actions/checkout-core-data
@@ -87,6 +88,13 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: |
             fix: weekly re-verify of CV-promoted exclusions, cleared ${{ steps.run.outputs.cleared }} (BRO-4282)
+
+      - name: Commit LLM spend meter rows (BRO-5043)
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: reverify-cv-promoted-weekly
 
       - name: Summary
         if: always()

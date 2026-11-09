@@ -1,0 +1,388 @@
+/**
+ * Close-time root-cause check for fix cards (BRO-7103 item 8, owner request
+ * 2026-11-07: "ensure most or all of our work is not just spot fixing").
+ *
+ * A fix card moving to Done should say, in its close comment or any earlier
+ * comment:
+ *   ROOT-CAUSE: why the defect was possible at all
+ *   CLASS-GUARD: <path> - the test, lint rule, gate or type, in the landed
+ *                diff, that catches the whole class (not just this case)
+ *   RED-THEN-GREEN: the guard fails with the fix reverted and passes with it
+ *   COUSINS: where else the pattern was searched, what was found and fixed
+ * or opt out with one line:
+ *   NO-ROOT-CAUSE: <reason>   (counted as a spot fix in the digest share)
+ * and, spot fix or not (BRO-7138: done claims that never had their effect):
+ *   EFFECT: what was measured on real data after landing, before and after
+ *           (a NEW check, gate or rule: its dry run over real past inputs and hit rate)
+ * or NO-EFFECT-CHECK: <reason>.
+ *
+ * ADVISORY until ROOT_CAUSE_CLOSE_BLOCKING_FROM: linear-done-gate.js adds a
+ * warning and never refuses. From that date it refuses, unless
+ * ROOT_CAUSE_CLOSE_GATE=advisory (rollback switch, no deploy needed).
+ *
+ * Fix-card test: a title pattern. Measured on 30 days of titles (2,199
+ * cards, 2026-11-08): 38% match; in a 30-title sample about 3 were not fix
+ * work and about 5 fix cards were missed. Good enough for an advisory line
+ * that a one-line NO-ROOT-CAUSE answers.
+ *
+ * Everything here is PURE except landedFilesForCard (reads git + the
+ * landings ledger, fails soft to null = unknown).
+ */
+'use strict';
+
+const ROOT_CAUSE_CLOSE_BLOCKING_FROM = '2026-12-22';
+// BRO-7138: EFFECT is newer, so a close missing ONLY EFFECT gets its own,
+// later date (four weeks after ROOT-CAUSE) and its own advisory notice.
+const EFFECT_CLOSE_BLOCKING_FROM = '2027-01-19';
+const onlyEffectMissing = (r) => !!(r && Array.isArray(r.missing) && r.missing.length && r.missing.every((m) => m === 'EFFECT'));
+const blockingFromFor = (r) => (onlyEffectMissing(r) ? EFFECT_CLOSE_BLOCKING_FROM : ROOT_CAUSE_CLOSE_BLOCKING_FROM);
+const MIN_FIELD_CHARS = 10;
+
+// "red" only as a CI state ("main red: x", "test.yml red", "red again"), never
+// inside a show title like Red Carpet (BRO-7103 review).
+const FIX_RE = /\b(fix(es|ed|ing)?|broken|break(s|ing)?|bug|fail(s|ed|ing|ure|ures)?|wrong|incorrect|missing|errors?|crash(es|ed)?|regress(ion|ed)?|stale|stuck|leak(s|ed)?|not (working|showing|loading|updating|running|firing)|doesn'?t|isn'?t|won'?t|can'?t|never|red(?=\s*[:,)]|\s*$|\s+(?:on|in|since|after|again|for)\b)|404|500|timed? ?out|flak(y|e)|duplicate[sd]?|mismatch|drift|(under|over)counts?|silently|dropped|blank|ignores|hides|dead|skips|misses|loses|times? ?out|false[- ]?(flags?|flagged|positives?|alarms?)|no successful|has zero|poison(ed|s)|misfiled|misrouted|mis-?attributed|overwrites|truncat(ed|es)|garbled|corrupt(ed|s)?|unreachable|hangs)\b/i;
+// Titles that start with a build verb are new work even when they name a problem.
+const NOT_FIX_RE = /^(add|build|create|new|design|research|explore|plan|draft|write|publish|post|launch|expand|backfill|migrate|document|improve|retire|remove|refactor|tweak|polish|clean ?up|rename)\b/i;
+
+// Show titles ("Dead Outlaw", "Never Gonna Dance") hold fix words. They are
+// blanked out before matching. Loaded once from data/shows.json when present.
+let showTitleRe;
+function showTitleRegex() {
+  if (showTitleRe !== undefined) return showTitleRe;
+  showTitleRe = null;
+  try {
+    const path = require('path');
+    const file = [path.join(__dirname, '../../data/shows.json'), path.join(process.cwd(), 'data/shows.json')]
+      .find((f) => require('fs').existsSync(f));
+    if (!file) return null;
+    const raw = JSON.parse(require('fs').readFileSync(file, 'utf8'));
+    showTitleRe = buildShowTitleRegex((Array.isArray(raw) ? raw : raw.shows || []).map((x) => x && x.title));
+  } catch { showTitleRe = null; }
+  return showTitleRe;
+}
+function buildShowTitleRegex(titles) {
+  const esc = [...new Set(titles.filter((t) => typeof t === 'string' && t.trim().length >= 4).map((t) => t.trim()))]
+    .sort((a, b) => b.length - a.length)
+    .map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+  return esc.length ? new RegExp(`(?<![\\w'])(?:${esc.join('|')})(?![\\w'])`, 'gi') : null;
+}
+// Who-filed-it prefixes and priority tags, so "P1: Fix x" reads as "Fix x".
+const PREFIX_RE = /^(?:\s*(?:P[0-4]|BSC Daily|Daily digest|Auto-?fix|\[[^\]]{1,40}\])\s*[:\-–]\s*)+/i;
+
+const FIELDS = ['ROOT-CAUSE', 'CLASS-GUARD', 'RED-THEN-GREEN', 'COUSINS'];
+// `**NAME:**`, `**NAME**:` and `- NAME:` all read. PREVENTION is the older
+// close format (`PREVENTION: <guard> ; cousins: <where looked>`, BRO-4134) and
+// fills CLASS-GUARD / COUSINS only when no explicit line does (BRO-7132).
+const FIELD_RE = /^[ \t>*_-]*(ROOT-CAUSE|CLASS-GUARD|RED-THEN-GREEN|COUSINS|NO-ROOT-CAUSE|PREVENTION|EFFECT|NO-EFFECT-CHECK)(?:\*\*|__)?[ \t]*:(?:\*\*|__)?[ \t]*(.*)$/gim;
+// `; cousins:`, `, cousins:`, `— cousins checked:` and ` - cousins:` all split.
+const COUSINS_TAIL_RE = /\s*(?:[,;\u2014\u2013]|\s-)\s*cousins\b[^:\n]{0,30}:\s*/i;
+const PATH_RE = /(?:^|[\s`'"(])((?:\.?[\w@-]+\/)+[\w.@-]+\.[a-z0-9]{1,5})\b/gi;
+
+/** PURE. Is this a fix card (a defect repaired), as opposed to new work? */
+function isFixCard({ title } = {}, { showTitles } = {}) {
+  const t = String(title || '').replace(PREFIX_RE, '').trim();
+  if (!t || NOT_FIX_RE.test(t)) return false;
+  if (/^root cause: /i.test(t)) return true; // recurrence-detector root cards
+  const titleRe = showTitles ? buildShowTitleRegex(showTitles) : showTitleRegex();
+  return FIX_RE.test(titleRe ? t.replace(titleRe, ' ') : t);
+}
+
+/**
+ * PURE. The newest value of each field across the texts (oldest first, the
+ * close comment last). Returns { fields: {ROOT-CAUSE: '...', ...}, noRootCause }.
+ * A `; cousins: ...` tail is split off a CLASS-GUARD or PREVENTION value into
+ * COUSINS, so a path named only in the cousins text never counts as the guard.
+ * An explicit CLASS-GUARD / COUSINS line beats a PREVENTION line in any order.
+ */
+function parseRootCauseBlock(texts) {
+  const explicit = {};
+  const alias = {};
+  let noRootCause = null;
+  let noEffectCheck = null;
+  for (const t of [].concat(texts || [])) {
+    for (const m of String(t || '').matchAll(FIELD_RE)) {
+      const name = m[1].toUpperCase();
+      const val = m[2].replace(/[ \t]*(?:\*\*|__)[ \t]*$/, '').trim();
+      if (!val) continue; // an empty line never erases an earlier value
+      if (name === 'NO-ROOT-CAUSE') { noRootCause = val; continue; }
+      if (name === 'NO-EFFECT-CHECK') { noEffectCheck = val; continue; }
+      if (name === 'CLASS-GUARD' || name === 'PREVENTION') {
+        const [guard, ...rest] = val.split(COUSINS_TAIL_RE);
+        const into = name === 'PREVENTION' ? alias : explicit;
+        into['CLASS-GUARD'] = guard.trim();
+        if (rest.length) into.COUSINS = rest.join('; ').trim();
+        continue;
+      }
+      explicit[name] = val;
+    }
+  }
+  return { fields: { ...alias, ...explicit }, noRootCause, noEffectCheck };
+}
+
+/**
+ * PURE (BRO-7138). Did the close show the change had its effect on real data?
+ * Returns { ok, notes }. A measurement names a number; a bare "it works" does not.
+ */
+function checkEffect({ fields, noEffectCheck }) {
+  if (noEffectCheck !== null && noEffectCheck !== undefined && noEffectCheck.length >= MIN_FIELD_CHARS) return { ok: true, notes: [] };
+  const v = fields && fields.EFFECT;
+  if (!(v && v.length >= MIN_FIELD_CHARS)) return { ok: false, notes: [] };
+  if (!/\d/.test(v)) return { ok: false, notes: ['EFFECT should name the measurement on real data, before and after (numbers)'] };
+  return { ok: true, notes: [] };
+}
+
+/** PURE. Repo-relative file paths named in a CLASS-GUARD value. */
+function guardPaths(value) {
+  return [...String(value || '').matchAll(PATH_RE)].map((m) => m[1].replace(/^\.\//, ''));
+}
+
+/**
+ * PURE. Judge a close.
+ *   title, texts: card title; description + comments oldest first + close comment
+ *   landedFiles:  string[] of files the card's own commits changed, or null (unknown)
+ * Returns { applies, ok, kind: 'root-cause'|'spot'|'missing'|null, missing: [], notes: [] }
+ */
+function checkRootCauseClose({ title, texts, landedFiles = null } = {}) {
+  if (!isFixCard({ title })) return { applies: false, ok: true, kind: null, missing: [], notes: [] };
+  const parsed = parseRootCauseBlock(texts);
+  const { fields, noRootCause } = parsed;
+  const effect = checkEffect(parsed);
+  if (noRootCause !== null && noRootCause.length >= MIN_FIELD_CHARS) {
+    // A spot fix still has to show it worked; kind stays 'spot' for the digest share.
+    return effect.ok
+      ? { applies: true, ok: true, kind: 'spot', missing: [], notes: [] }
+      : { applies: true, ok: false, kind: 'spot', missing: ['EFFECT'], notes: effect.notes };
+  }
+  const missing = FIELDS.filter((f) => !(fields[f] && fields[f].length >= MIN_FIELD_CHARS));
+  const notes = [];
+  if (!missing.includes('CLASS-GUARD')) {
+    const paths = guardPaths(fields['CLASS-GUARD']);
+    if (!paths.length) {
+      missing.push('CLASS-GUARD');
+      notes.push('CLASS-GUARD names no file path');
+    } else if (Array.isArray(landedFiles) && landedFiles.length) {
+      const landed = new Set(landedFiles);
+      if (!paths.some((p) => landed.has(p))) {
+        missing.push('CLASS-GUARD');
+        notes.push(`CLASS-GUARD ${paths.join(', ')} is not in this card's landed diff`);
+      }
+    } else {
+      notes.push('landed diff unknown here, so CLASS-GUARD was not checked against it');
+    }
+  }
+  if (!missing.includes('RED-THEN-GREEN')) {
+    const v = fields['RED-THEN-GREEN'];
+    if (!(/\b(fail|fails|failed|red)\b/i.test(v) && /\b(pass|passes|passed|green)\b/i.test(v))) {
+      missing.push('RED-THEN-GREEN');
+      notes.push('RED-THEN-GREEN should say the guard failed without the fix and passed with it');
+    }
+  }
+  if (!effect.ok) { missing.push('EFFECT'); notes.push(...effect.notes); }
+  // Only EFFECT missing: the root cause WAS fixed, so the digest share counts it as one.
+  if (missing.length === 1 && missing[0] === 'EFFECT') return { applies: true, ok: false, kind: 'root-cause', missing, notes };
+  return missing.length
+    ? { applies: true, ok: false, kind: 'missing', missing, notes }
+    : { applies: true, ok: true, kind: 'root-cause', missing: [], notes };
+}
+
+/** PURE. Blocking from the date unless the rollback switch says advisory. */
+function rootCauseCloseBlocking(nowMs = Date.now(), env = process.env, result = null) {
+  if (String(env.ROOT_CAUSE_CLOSE_GATE || '').toLowerCase() === 'advisory') return false;
+  return nowMs >= Date.parse(`${blockingFromFor(result)}T00:00:00Z`);
+}
+
+/** PURE. The message a closer sees. */
+function rootCauseCloseMessage(identifier, result, blocking) {
+  if (!result || !result.applies || result.ok) return null;
+  return [
+    `${identifier || 'This card'} looks like a fix card but its close does not show ${result.missing.length === 1 && result.missing[0] === 'EFFECT' ? 'the fix had its effect on real data' : 'the root cause was fixed'}. Missing: ${result.missing.join(', ')}.`,
+    ...result.notes.map((n) => `  - ${n}`),
+    '  Add these lines to the close comment (BRO-7103):',
+    '    ROOT-CAUSE: why the defect was possible',
+    '    CLASS-GUARD: <path> (the test, lint rule, gate or type in this diff that catches the whole class)',
+    '    RED-THEN-GREEN: the guard failed with the fix reverted and passed with it',
+    '    COUSINS: where else you searched for the pattern, what you found and fixed',
+    '    EFFECT: what you measured on real data after landing, before and after (a new check, gate or rule: its dry run over real past inputs and hit rate)',
+    '    (or NO-EFFECT-CHECK: <reason>, BRO-7138)',
+    '  (A `PREVENTION: <path> ; cousins: <...>` line counts as CLASS-GUARD + COUSINS.)',
+    '  Or for a spot fix: NO-ROOT-CAUSE: <reason>, plus EFFECT or NO-EFFECT-CHECK.',
+    blocking
+      ? `  Blocking since ${blockingFromFor(result)}. Rollback: ROOT_CAUSE_CLOSE_GATE=advisory.`
+      : `  Advisory now; blocking from ${blockingFromFor(result)}.`,
+  ].join('\n');
+}
+
+/**
+ * PURE. One line for the end of a close's output, where `| tail` sees it
+ * (BRO-7132: the multi-line message prints before the success lines and was
+ * missed). Never contains "REFUSED" or the cross mark: verify-edits.sh reads
+ * those anywhere in the output as a failed close.
+ */
+function rootCauseCloseSummary(identifier, result, blocking) {
+  if (!result || !result.applies || result.ok) return null;
+  return `ROOT-CAUSE CHECK: ${identifier || 'this card'} closed without ${result.missing.join(', ')}; `
+    + `post them in a comment now (${blocking ? 'blocking' : `advisory until ${ROOT_CAUSE_CLOSE_BLOCKING_FROM}`}).`;
+}
+
+/**
+ * The card's OWN commits (subject names the card), across every landing of
+ * it (reverts excluded) plus local HEAD and origin/main. Other cards' commits
+ * in the same range (rebases, trains) are left out. Returns
+ * { commits: string[], run } or null when git could not be read.
+ */
+function ownCommitsForCard(identifier, { cwd = process.cwd(), landingsText = null, exec = null, allowFetch = true, timeoutMs = 60000 } = {}) {
+  const { execFileSync } = require('child_process');
+  const run = exec || ((args) => execFileSync('git', args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], timeout: timeoutMs, maxBuffer: 32 * 1024 * 1024 }));
+  const sc = require('./stuck-card-closer.js');
+  let text = landingsText;
+  if (text === null) {
+    try { text = require('fs').readFileSync(require('path').join(cwd, 'data/audit/landings.jsonl'), 'utf8'); } catch { text = ''; }
+  }
+  const shas = sc.parseLandingRows(text)
+    .filter((l) => !/revert/i.test(l.branch) && sc.branchIsForCard(l.branch, identifier))
+    .map((l) => l.sha);
+  const idRe = new RegExp(`(?<![A-Za-z0-9])${identifier.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![0-9])`, 'i');
+  // Fetch a missing landing sha only in a shallow clone (CI) and only when
+  // the caller allows it: a --depth fetch in a full clone would make it
+  // shallow, and the Done path must not touch the network (BRO-7103 review).
+  let shallow = false;
+  if (allowFetch) { try { shallow = run(['rev-parse', '--is-shallow-repository']).trim() === 'true'; } catch { shallow = false; } }
+  for (const sha of shas) {
+    try { run(['cat-file', '-e', `${sha}^{commit}`]); } catch {
+      if (shallow) { try { run(['fetch', '-q', '--depth=30', 'origin', sha]); } catch { /* unreachable sha: skip */ } }
+    }
+  }
+  const commits = [];
+  for (const tip of [...shas, 'HEAD', 'origin/main']) {
+    let log = '';
+    try { log = run(['log', '-60', '--format=%H%x09%s', tip]); } catch { continue; }
+    for (const line of log.split('\n')) {
+      const [h, subj] = line.split('\t');
+      if (h && subj && idRe.test(subj) && !/^revert/i.test(subj) && !commits.includes(h)) commits.push(h);
+    }
+  }
+  return { commits, run };
+}
+
+/** Files the card's own commits changed: string[], or null when unknown. */
+function landedFilesForCard(identifier, opts = {}) {
+  try {
+    // Runs inside `--state Done`: local reads only, short timeouts.
+    const own = ownCommitsForCard(identifier, { allowFetch: false, timeoutMs: 5000, ...opts });
+    if (!own || !own.commits.length) return null;
+    const files = new Set();
+    for (const c of own.commits) {
+      for (const f of own.run(['show', '--name-only', '--format=', c]).split('\n')) if (f.trim()) files.add(f.trim());
+    }
+    return [...files].sort();
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * The card's own diff, data files left out (they drown the code), capped at
+ * maxBytes. { diff, files, truncated } or null when no own commit is found.
+ */
+function cardDiff(identifier, { maxBytes = 20000, ...opts } = {}) {
+  try {
+    const own = ownCommitsForCard(identifier, opts);
+    if (!own || !own.commits.length) return null;
+    const exclude = [':(exclude)data/**', ':(exclude)*.json', ':(exclude)*.jsonl', ':(exclude)package-lock.json'];
+    let diff = '';
+    const files = new Set();
+    for (const c of own.commits) {
+      // A commit at the edge of a shallow clone has no parent, so `git show`
+      // would print the whole tree as added. Skip it rather than grade junk.
+      try { own.run(['rev-parse', '-q', '--verify', `${c}^`]); } catch { continue; }
+      diff += own.run(['show', '--format=commit %h %s', c, '--', '.', ...exclude]);
+      for (const f of own.run(['show', '--name-only', '--format=', c]).split('\n')) if (f.trim()) files.add(f.trim());
+    }
+    // No file-list header: tried 2026-11-08, it flipped the hand-graded spot fix BRO-7066
+    // to root-cause (a test file in the list read as a guard). The grader sees the diff alone.
+    if (!diff) return null;
+    return { diff: diff.slice(0, maxBytes), files: [...files].sort(), truncated: diff.length > maxBytes };
+  } catch {
+    return null;
+  }
+}
+
+// ---------- weekly independent sample (item 9) ----------
+
+// The grader sees the diff only, never the card text: the card says what the
+// closer claims, the diff says what landed. Hand-checked 2026-11-08: BRO-7066
+// (fixture date bumped) graded spot-fix 0.97, BRO-7098 (safe-check list
+// tightened) graded root-cause 0.95.
+const GRADER_SYSTEM = 'You grade a software fix by its diff only. root-cause = the change makes the whole class of defect ' +
+  'impossible or caught (a guard, a test that would fail for any case of the class, a type, a lint rule, removing the source ' +
+  'of the bug). spot-fix = it repairs this one case only (changes a value, patches one call site, edits data, bumps a date). ' +
+  'Reply JSON {"grade":"root-cause"|"spot-fix"|"unclear","confidence":0-1,"reason":"one sentence","guard_file":"path or null"}.';
+
+/** PURE. Parse the grader's reply; anything malformed is "unclear". */
+function parseGrade(text) {
+  try {
+    const j = JSON.parse(String(text || '').replace(/^```(?:json)?\s*|\s*```$/g, ''));
+    const grade = ['root-cause', 'spot-fix', 'unclear'].includes(j.grade) ? j.grade : 'unclear';
+    const confidence = Math.max(0, Math.min(1, Number(j.confidence) || 0));
+    return { grade, confidence, reason: String(j.reason || '').slice(0, 300), guardFile: j.guard_file || null };
+  } catch {
+    return { grade: 'unclear', confidence: 0, reason: 'unparseable grader reply', guardFile: null };
+  }
+}
+
+/**
+ * PURE. Majority of several grades of the same diff. A single grade is not
+ * stable (2026-11-08: the same BRO-7066 diff graded spot-fix 0.98 and then
+ * root-cause in one run), so each diff is graded GRADE_VOTES times. No
+ * majority means "unclear"; votes are kept so a split stays visible.
+ */
+const GRADE_VOTES = 3;
+function majorityGrade(grades) {
+  const count = {};
+  for (const g of grades) count[g.grade] = (count[g.grade] || 0) + 1;
+  const [top, n] = Object.entries(count).sort((a, b) => b[1] - a[1])[0] || ['unclear', 0];
+  const grade = n * 2 > grades.length ? top : 'unclear';
+  const agree = grades.filter((g) => g.grade === grade);
+  const confidence = agree.length ? Math.round((agree.reduce((t, g) => t + g.confidence, 0) / agree.length) * 100) / 100 : 0;
+  const first = agree[0] || grades[0] || {};
+  return { grade, confidence, reason: first.reason || '', guardFile: first.guardFile || null, votes: grades.map((g) => g.grade) };
+}
+
+/** PURE. Share of graded cards that fixed the cause (unclear left out). */
+function summarizeSample(items) {
+  const rootCause = items.filter((i) => i.grade === 'root-cause').length;
+  const spot = items.filter((i) => i.grade === 'spot-fix').length;
+  const unclear = items.length - rootCause - spot;
+  const decided = rootCause + spot;
+  return { graded: items.length, rootCause, spot, unclear, share: decided ? Math.round((rootCause / decided) * 1000) / 10 : null };
+}
+
+/** PURE. Deterministic pick for a week: same seed, same cards. */
+function seededPick(ids, n, seed) {
+  let h = 2166136261;
+  for (const ch of String(seed)) { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619) >>> 0; }
+  const score = (id) => { let x = h; for (const ch of id) { x ^= ch.charCodeAt(0); x = Math.imul(x, 16777619) >>> 0; } return x; };
+  return [...ids].sort((a, b) => score(a) - score(b)).slice(0, n);
+}
+
+module.exports = {
+  EFFECT_CLOSE_BLOCKING_FROM,
+  ROOT_CAUSE_CLOSE_BLOCKING_FROM,
+  FIX_RE,
+  isFixCard,
+  parseRootCauseBlock,
+  guardPaths,
+  checkRootCauseClose,
+  rootCauseCloseBlocking,
+  rootCauseCloseMessage,
+  rootCauseCloseSummary,
+  ownCommitsForCard,
+  landedFilesForCard,
+  cardDiff,
+  GRADER_SYSTEM,
+  parseGrade,
+  GRADE_VOTES,
+  majorityGrade,
+  summarizeSample,
+  seededPick,
+};

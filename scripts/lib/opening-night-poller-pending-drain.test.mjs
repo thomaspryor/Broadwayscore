@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/.test-pending-drain-6Zhupj/fetches.jsonl (read by the test); data/.test-pending-drain-6Zhupj/review-texts/broadway-in-window/thewrap--robert-hofler.json (read by the test); data/.test-pending-drain-6Zhupj/review-texts/west-end-in-window/thewrap--robert-hofler.json (read by the test); +21 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-4408: opening-night-poller.yml must drain _pending/ no-byline strands
 // for the in-window shows before the poll loop, with the BD breaker exemption.
 import test from 'node:test';
@@ -197,4 +198,21 @@ test('in-window replay and collection bypass the BD breaker; a manual SHOW_FILTE
     assert.equal(isExemptCaller(script, DEFAULT_EXEMPT_SCRIPTS, null, marker), true);
     assert.equal(isExemptCaller(script, DEFAULT_EXEMPT_SCRIPTS), false);
   }
+});
+
+// BRO-7032: Off-Broadway press nights are never "hot" (main-stage only), so the BRO-7004
+// in-loop drain skipped them and a no-byline TheaterMania review waited ~55 min.
+test('BRO-7032: poll_one drains every press-night-window show (not only hot ones) before the new-file check', () => {
+  const b = steps[pollIdx].body;
+  assert.match(b, /WINDOW_SHOWS="\$\{\{ steps\.find\.outputs\.window \}\}"/);
+  const drain = b.indexOf('[[ ",$WINDOW_SHOWS,"');
+  const created = b.indexOf('CREATED=$(cd data/review-texts');
+  assert.ok(drain > 0 && created > drain, 'window drain must run before CREATED counts new files');
+  assert.match(b.slice(drain, created), /replay-pending-bylines\.js --shows="\$SHOW_ID"/);
+});
+
+test('BRO-7032: find step exports the window list', () => {
+  const find = steps[idx(s => s.name === 'Find shows to poll')].body;
+  assert.match(find, /r\.window\.join/);
+  assert.match(find, /echo "window=\$WINDOW" >> \$GITHUB_OUTPUT/);
 });

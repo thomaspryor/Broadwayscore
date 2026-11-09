@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5261-s2",
   "planId": "cc2403ef-3ef4-42b6-9d10-2e3064b57ef9",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-13T14:28:00.192Z",
   "submitter": {
     "name": null,
@@ -44,5 +44,27 @@
       "ok": false,
       "reason": "abba-voyage-off-west-end-2026/click-liverpool--filthy-dirty.json wrongAttribution: write guard kept true"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "obsolete": 2
+    },
+    "ops": [
+      {
+        "i": 0,
+        "verdict": "obsolete",
+        "reason": "review file abba-voyage-off-west-end-2026/click-liverpool--filthy-dirty.json no longer exists and nothing in abba-voyage-off-west-end-2026 looks like a rename"
+      },
+      {
+        "i": 1,
+        "verdict": "obsolete",
+        "reason": "review file abba-voyage-off-west-end-2026/click-liverpool--filthy-dirty.json no longer exists and nothing in abba-voyage-off-west-end-2026 looks like a rename"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (2 obsolete); per-op reasons in triage.ops"
 }

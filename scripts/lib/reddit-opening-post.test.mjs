@@ -622,7 +622,7 @@ test('reddit email: a 59 to 60 move on an emailed draft sends an update (BRO-663
 });
 
 test('reddit-opening-posts-due gate flags exactly the shows the draft job would redraft (BRO-6634)', () => {
-  const { dueShows } = require('../reddit-opening-posts-due.js');
+  const { dueShows } = require('./reddit-opening-posts-due.js');
   const shows = [show];
   const slims = new Map([[show.id, slim()]]);
   const f = lib.buildFacts(show, slim(), []);
@@ -639,7 +639,7 @@ test('reddit-opening-posts-due gate flags exactly the shows the draft job would 
 // BRO-6634: the hourly gate in reddit-engagement-digest.yml runs the drafter
 // only when a show is due. A 59 to 60 move must make the emailed draft due.
 test('reddit-opening-posts-due: a moved score makes an emailed draft due, an accurate one does not', () => {
-  const { dueShows } = require('../reddit-opening-posts-due.js');
+  const { dueShows } = require('./reddit-opening-posts-due.js');
   const today = '2026-09-29';
   const make = cs => new Map([[show.id, slim({ cs })]]);
   const f59 = lib.buildFacts(show, slim({ cs: 59.4 }), []);
@@ -654,7 +654,7 @@ test('reddit-opening-posts-due: a moved score makes an emailed draft due, an acc
 
 // BRO-6634: the hourly gate skips drafter runs that cannot reach the owner.
 test('reddit-opening-posts-due: capped updates and LLM retries wait for the 6h gap', () => {
-  const { dueShows } = require('../reddit-opening-posts-due.js');
+  const { dueShows } = require('./reddit-opening-posts-due.js');
   const today = '2026-09-29';
   const make = cs => new Map([[show.id, slim({ cs })]]);
   const f59 = lib.buildFacts(show, slim({ cs: 59.4 }), []);

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // In-window + slug-match veto for CV/classifier wrongProduction / wrongShow
 // flags (2026 data audit S6-T4, BRO-4204).
 //

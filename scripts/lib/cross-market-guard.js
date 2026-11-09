@@ -590,8 +590,12 @@ function evaluateUrlPathCrossMarketGuard({ urlPathImpliesOppositeMarket, opposit
 
 // URL-path market indicators. 'us' = Broadway/tour text (flags a London show);
 // 'uk' = West End/London text (flags a Broadway/Off-Broadway show).
+// BRO-5790: Talkin' Broadway files US regional reviews under /page/regional/<city>/
+// (a Minneapolis production was filed against a London show). Anchored at the
+// path root; all 19 corpus rows with this path are talkinbroadway.com, none on
+// a London show.
 const URL_PATH_OPPOSITE_MARKET_PATTERNS = {
-  us: [/[-/](broadway-review|on-broadway|broadway[-/])/, /\/(chicago|national-tour)[-/]/],
+  us: [/[-/](broadway-review|on-broadway|broadway[-/])/, /\/(chicago|national-tour)[-/]/, /^\/page\/regional\//],
   uk: [/[-/](west-end-review|london-review|london[-/])/],
 };
 
@@ -609,6 +613,22 @@ const URL_PATH_OPPOSITE_MARKET_PATTERNS = {
  * @param {string|null} [args.showTitle] - this show's title (null = no masking)
  * @returns {boolean}
  */
+/**
+ * Should the URL-path guard treat this show as a UK production (and so look
+ * for US indicators)? London markets always; a 'regional' show only when its
+ * venue is a known UK regional house (BRO-5790: an RSC Stratford production
+ * filed as regional got a Talkin' Broadway Minneapolis review, and the guard,
+ * keyed on isLondonMarket alone, never ran).
+ *
+ * @param {string|null} category - show.category
+ * @param {string|null} venue - show.venue
+ * @returns {boolean}
+ */
+function urlPathGuardTreatsShowAsUk(category, venue) {
+  if (require('./venue-classification').isLondonMarket(category)) return true;
+  return category === 'regional' && require('./market-label').isUkRegionalVenue(venue);
+}
+
 function urlPathOppositeMarketIndicator({ urlPath, oppositeMarket, showTitle }) {
   const patterns = URL_PATH_OPPOSITE_MARKET_PATTERNS[oppositeMarket];
   if (!patterns || !urlPath) return false;
@@ -881,6 +901,7 @@ module.exports = {
   evaluateReverseLondonCrossMarketGuard,
   evaluateUrlPathCrossMarketGuard,
   urlPathOppositeMarketIndicator,
+  urlPathGuardTreatsShowAsUk,
   // Null-URL aggregator-relay guard (audit S6-T1)
   AGGREGATOR_RELAY_SOURCE_PREFIXES,
   RELAY_RUN_WINDOW_GRACE_DAYS,

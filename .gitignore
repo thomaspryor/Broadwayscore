@@ -60,6 +60,7 @@ data/.core-data-sha
 
 # Aggregator archive (copyrighted scraped HTML — stored in private repo thomaspryor/broadway-review-texts)
 data/aggregator-archive/
+/data/aggregator-archive
 # newspapers.com extraction test output (copyrighted page-image screenshots + OCR'd text, BRO-137)
 data/newspapers-com-test/
 # Finances (billing PII: receipts + P&L ledgers — stored in private repo thomaspryor/broadway-scorecard-data under data/finances/, GitHub-API access only, never checked into the public build)
@@ -90,6 +91,14 @@ data/followers.json
 # files ({issue}.json, digit-leading) are trackable again; everything else in
 # the dir stays ignored so a stray `git add -A` can't stage arbitrary files.
 data/pending-fixes/*
+!data/pending-fixes/bro-6599.json
+!data/pending-fixes/bro-7034.json
+!data/pending-fixes/bro-6848.json
+!data/pending-fixes/bro-6848-b.json
+!data/pending-fixes/bro-6848-c.json
+!data/pending-fixes/bro-6848-d.json
+!data/pending-fixes/bro-7018.json
+!data/pending-fixes/bro-6905.json
 !data/pending-fixes/bro-6806.json
 !data/pending-fixes/bro-6548.json
 !data/pending-fixes/bro-6581.json
@@ -104,6 +113,13 @@ data/pending-fixes/*
 !data/pending-fixes/bro-6493.json
 !data/pending-fixes/bro-6493-b.json
 !data/pending-fixes/bro-6493-c.json
+!data/pending-fixes/bro-6493-2.json
+!data/pending-fixes/bro-6493-2-b.json
+!data/pending-fixes/bro-6493-2-c.json
+!data/pending-fixes/bro-6493-3.json
+!data/pending-fixes/bro-6493-4.json
+!data/pending-fixes/bro-6493-5.json
+!data/pending-fixes/bro-6493-6.json
 !data/pending-fixes/bro-6215.json
 !data/pending-fixes/bro-5934.json
 !data/pending-fixes/bro-6223.json
@@ -353,8 +369,12 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 # PARENT directory is itself excluded, so a blanket `/docs/` would make
 # `!/docs/experiments/` a no-op (git never traverses into an excluded dir).
 /docs/*
+!/docs/bro-6098-aggregator-health.md
+!/docs/bro-6987-reddit-cadence-investigation.md
 !/docs/bro-6743-gather-timeouts.md
 !/docs/bro-6493-opening-dates.md
+# BRO-7103: the recurrence backtest the detector's acceptance criteria require on main.
+!/docs/recurrence-backtest.md
 # BRO-6622: the lane switch runbook CLOUD.md points sessions to.
 !/docs/opening-night-lane-switch-runbook.md
 # BRO-2880 requires the accepted core-data CI cadence in writing on main.
@@ -512,12 +532,15 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 !/docs/audit/show-score-8-tile-note.md
 !/docs/audit/bro-3875-soft-type-wrongshow.md
 !/docs/audit/bro-5603-outlet-displaynames.md
+!/docs/audit/bro-5896-outlet-regions.md
 !/docs/BRO-6450-we-season-completeness.md
 /memory/*
 # BRO-6498: keep the requested public research report in the runner's diff.
 !/memory/us-city-hubs-report.md
 # BRO-6833: the add-a-city runbook is referenced by data/city-hubs.json.
 !/memory/add-us-city-hub.md
+# BRO-6872: graded opening-night lane shadow replays (the card's acceptance file).
+!/memory/opening-night-lane-shadow-grades.md
 /data/deep-research/
 /data/theater-research/
 /data/audit/**/*.md
@@ -583,6 +606,7 @@ tmp/
 .claude/review-verdicts.jsonl
 # BRO-4593: land-preflight hook verdict log (blocks, bypasses, skips)
 .claude/land-preflight.jsonl
+.claude/hook-liveness.jsonl
 # BRO-5730: land-local-check verdict log
 .claude/land-local-check.jsonl
 .claude/ux-walkthrough/
@@ -728,6 +752,7 @@ data/audit/skipped-show-rows.json
 
 # BRO-6230: --dry-run output (can hold signed dispatch links); was committed by accident 2026-10-17.
 data/audit/morning-digest-preview.html
+data/audit/morning-digest-preview-report.html
 data/audit/outlet-census/.cache/
 
 # BRO-5146: Notion-era card verifiability report. Only a manual

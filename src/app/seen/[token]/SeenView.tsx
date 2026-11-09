@@ -117,7 +117,7 @@ export default function SeenView({ view }: { view: SharedDiaryView }) {
 
       <p className="text-sm text-gray-400 text-center">
         <Link href="/" className="inline-block py-3 text-brand hover:text-brand-light underline underline-offset-2">
-          Keep your own theater diary on Broadway Scorecard
+          Track the shows you’ve seen on Broadway Scorecard
         </Link>
       </p>
     </div>

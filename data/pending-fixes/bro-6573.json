@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6573",
   "planId": "d84531ae-c4d8-4a4a-b39d-175f4c7513e0",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-30T02:23:49.493Z",
   "submitter": {
     "name": null,
@@ -74,5 +74,22 @@
       "reason": "the-bodyguard-tour-2026/around-the-town-chicago--unknown.json wrongProduction applied, but the write guard also changed duplicateReason; check the record before trusting it"
     }
   ],
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 1
+    },
+    "ops": [
+      {
+        "i": 3,
+        "verdict": "resolved",
+        "reason": "the-bodyguard-tour-2026/around-the-town-chicago--unknown.json wrongProduction already true"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (1 resolved); per-op reasons in triage.ops"
 }

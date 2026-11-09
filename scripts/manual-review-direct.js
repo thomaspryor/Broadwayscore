@@ -47,6 +47,15 @@ if (!showId || !outletArg || !criticName) {
   process.exit(1);
 }
 
+// BRO-7079 (BRO-4430 class): a roundup / aggregator page is never the critic's
+// own review url. The manual entry is the last write into reviews.json, so a
+// roundup url typed here replaced the real article url on every rebuild.
+if (url && require('./lib/review-slot-guards').isAggregatorPageUrl(url)) {
+  console.error(`Refused: --url is a roundup/aggregator page, not ${criticName}'s own review: ${url}`);
+  console.error('Pass the critic\'s own article url (follow the link from the roundup), or omit --url.');
+  process.exit(1);
+}
+
 // --- Resolve outlet ---
 const { resolveCanonicalOutletId } = require('./lib/outlet-canonicalize');
 const _resolved = resolveCanonicalOutletId({ outletArg, url });
@@ -126,6 +135,16 @@ console.log(`╚═════════════════════�
 if (dryRun) {
   console.log('Dry run — no changes made.');
   process.exit(0);
+}
+
+// BRO-7080: a roundup page credited to its own host is not a review; the
+// rebuild's manual-entry merge refuses it, so refuse it here before writing.
+{
+  const { isRoundupManualEntry } = require('./lib/manual-entry-merge');
+  if (isRoundupManualEntry({ showId, outletId, url })) {
+    console.error(`Refusing: ${url} is a multi-outlet roundup page, not ${outletId}'s own review. Use the quoted critic's own review URL and outlet.`);
+    process.exit(1);
+  }
 }
 
 // --- Step 1: Clone core-data and edit reviews.json ---
@@ -266,7 +285,7 @@ function checkSite() {
     );
     if (found) {
       console.log(`\n✅ LIVE: ${outletName} — ${found.s} ${found.b}`);
-      console.log(`   Total reviews: ${d.rv.length} | Pos: ${d.bd.positive} | Mix: ${d.bd.mixed}`);
+      console.log(`   Total reviews: ${d.rv.length} | Pos: ${(d.bd.rave || 0) + d.bd.positive} | Mix: ${d.bd.mixed}`);
       return true;
     }
   } catch {}

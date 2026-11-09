@@ -5,7 +5,30 @@ import { generateBreadcrumbSchema, generateCriticSchema, generateCriticFAQSchema
 import { criticMarketLabel, showCountPhrase } from '@/lib/critic-market';
 import { isThinCriticPage } from '@/lib/seo-indexability';
 import { getCriticBio } from '@/config/critic-bios';
+import { getPublicCriticProfile } from '@/lib/critic-server';
+import { getAllShows } from '@/lib/data-core';
+import { hasEnoughReviews } from '@/config/score-buckets';
+import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
+import type { ShowConsensus } from '@/lib/critic-standing';
 import CriticDetailClient from './CriticDetailClient';
+
+/**
+ * The Critic Score (compositeScore, the canonical number the site shows) and
+ * scored-review count for each show this critic reviewed, only where the site
+ * itself shows a score. Feeds "You vs. the consensus" (BRO-6984).
+ */
+function consensusFor(showSlugs: Iterable<string>): Record<string, ShowConsensus> {
+  const wanted = new Set(showSlugs);
+  const out: Record<string, ShowConsensus> = {};
+  for (const show of getAllShows()) {
+    if (!wanted.has(show.slug) || show.compositeScore == null || !show.criticScore) continue;
+    const rc = show.criticScore.reviewCount;
+    const t1t2 = (show.criticScore.tier1Count ?? 0) + (show.criticScore.tier2Count ?? 0);
+    if (!hasEnoughReviews(rc, show.category || 'broadway', t1t2, CURATED_HISTORICAL_SHOWS.has(show.id))) continue;
+    out[show.slug] = { score: Math.round(show.compositeScore), reviewCount: rc };
+  }
+  return out;
+}
 
 export const revalidate = 43200;
 export const dynamicParams = true;
@@ -50,6 +73,8 @@ export default async function CriticDetailPage(props: { params: Promise<{ slug: 
     { name: critic.name, url: `${BASE_URL}/critics/${params.slug}` },
   ]);
 
+  const profile = await getPublicCriticProfile(params.slug);
+
   const criticSchema = generateCriticSchema({
     name: critic.name,
     slug: critic.slug,
@@ -58,7 +83,7 @@ export default async function CriticDetailPage(props: { params: Promise<{ slug: 
     avgScore: critic.avgScore,
     outlets: critic.outlets,
     marketLabel: criticMarketLabel(critic.reviews),
-    bio: getCriticBio(critic.slug),
+    bio: profile?.bio || getCriticBio(critic.slug),
   });
 
   const faqSchema = generateCriticFAQSchema({
@@ -76,9 +101,9 @@ export default async function CriticDetailPage(props: { params: Promise<{ slug: 
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbSchema, criticSchema, faqSchema]) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbSchema, criticSchema, faqSchema]).replace(/</g, '\\u003c') }}
       />
-      <CriticDetailClient critic={critic} />
+      <CriticDetailClient critic={critic} profile={profile} consensus={consensusFor(critic.reviews.map(r => r.showSlug))} />
     </>
   );
 }

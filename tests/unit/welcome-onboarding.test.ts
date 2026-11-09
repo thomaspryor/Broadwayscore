@@ -155,9 +155,9 @@ test('welcomeFinishDestination: My Shows only when there is something to see', (
 });
 
 test('welcomeDoneMessage: To Be Rated only when picks went in without stars', () => {
-  assert.equal(welcomeDoneMessage({ showsAdded: 0, imported: 0, unratedAdded: 0 }), 'Rate a show from its page any time, and it lands in your diary.');
-  assert.equal(welcomeDoneMessage({ showsAdded: 3, imported: 0, unratedAdded: 0 }), '3 shows added to your diary.');
-  assert.equal(welcomeDoneMessage({ showsAdded: 1, imported: 0, unratedAdded: 0 }), '1 show added to your diary.');
+  assert.equal(welcomeDoneMessage({ showsAdded: 0, imported: 0, unratedAdded: 0 }), 'Rate a show from its page any time, and it lands in Seen.');
+  assert.equal(welcomeDoneMessage({ showsAdded: 3, imported: 0, unratedAdded: 0 }), '3 shows added to Seen.');
+  assert.equal(welcomeDoneMessage({ showsAdded: 1, imported: 0, unratedAdded: 0 }), '1 show added to Seen.');
   // Imports can be watchlist rows, so they are never said to be in the diary.
   assert.equal(welcomeDoneMessage({ showsAdded: 0, imported: 12, unratedAdded: 0 }), '12 imported to My Shows.');
   assert.equal(welcomeDoneMessage({ showsAdded: 2, imported: 12, unratedAdded: 0 }), '2 shows added, 12 imported to My Shows.');

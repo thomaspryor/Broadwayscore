@@ -224,11 +224,17 @@ export function scoreCandidates(input) {
     // isShakespeareInThePark venue-naming pattern below for OB openings.
     const isGlobeVenue = s.venue === "Shakespeare's Globe" || s.venue === 'Sam Wanamaker Playhouse';
     const venueSuffix = isWeEdition && isGlobeVenue ? ' at the Globe' : '';
+    // BRO-7126: a grace-window catch-up (openingDate outside this week, scored
+    // late) did NOT open this week — never word it as "opens".
+    const catchUp = !!item.isCatchUp;
     const headline = verdict
-      ? `${s.title}${venueSuffix} opens${loc} to ${verdict}`
-      : `${s.title}${venueSuffix} opens${loc}`;
-    out.push({ kind: 'we-opening', weight: weWeight, headline, show: s, slug: s.slug,
-      verdictTier: tier, verdictPrefix: `${s.title}${venueSuffix} opens${loc} to `,
+      ? `${s.title}${venueSuffix} ${catchUp ? 'recently opened' : 'opens'}${loc} to ${verdict}`
+      : `${s.title}${venueSuffix} ${catchUp ? 'recently opened' : 'opens'}${loc}`;
+    // Catch-ups carry no verdictTier: that keeps them out of the 3+ opening
+    // fold (which would imply they opened alongside this week's shows) and
+    // out of the verdict-variant swap.
+    out.push({ kind: 'we-opening', weight: weWeight, headline, show: s, slug: s.slug, isCatchUp: catchUp,
+      ...(catchUp ? {} : { verdictTier: tier, verdictPrefix: `${s.title}${venueSuffix} opens${loc} to ` }),
       openingVenue: isWeEdition ? (isWestEndVenue ? 'the West End' : 'Off West End') : 'London' });
   }
 

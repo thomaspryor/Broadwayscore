@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/theater-metadata.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Regression guard for Theater Scorecard venue scores.
  *

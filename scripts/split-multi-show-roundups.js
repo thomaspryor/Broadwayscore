@@ -44,7 +44,7 @@
 const fs = require('fs');
 const path = require('path');
 const { loadShows } = require('./lib/multi-show-splitter');
-const { applyMultiShowFanoutToFile, fanoutMovesText } = require('./lib/multi-show-review-fanout');
+const { applyMultiShowFanoutToFile, fanoutMovesText, splitParentRegrew } = require('./lib/multi-show-review-fanout');
 const { listShowDirs: listShowDirsSafe } = require('./lib/list-show-dirs');
 
 // ============================================================================
@@ -143,7 +143,7 @@ function main() {
       if (!isFlagged && !SCAN_ALL) continue;
       if (isFlagged) stats.flagged++;
 
-      if (data.multiShowSplitProcessed) {
+      if (data.multiShowSplitProcessed && !splitParentRegrew(data)) {
         stats.alreadyProcessed++;
         continue;
       }

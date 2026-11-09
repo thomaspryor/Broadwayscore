@@ -22,6 +22,7 @@ import { getShowGrosses } from './data-grosses';
 import { getAudienceBuzz } from './data-audience';
 import { isOperaShow } from './show-market';
 import { isUkRegionalShow } from './market-utils';
+import { categoryToCityBucket } from './city-bucket';
 import { belongsOnWestEndListing, belongsOnOffWestEndHub } from './genre';
 import { isCategoryEnabled } from './markets';
 import { isTourScored, isTourBrowsable, isTourIndexable } from './tour-listing';
@@ -1440,7 +1441,6 @@ function getCity(show: { category?: string; venue?: string; localOnly?: boolean;
   // Local-only shows (BRO-6518) relate only to each other, never to tryouts or NYC/London.
   if (isLocalOnlyShow(show)) return 'local';
   const cat = show.category || 'broadway';
-  if (cat === 'broadway' || cat === 'off-broadway') return 'nyc';
   if (cat === 'west-end' || cat === 'off-west-end') return 'london';
   // UK flagship houses (RSC, Chichester, ...) are filed under the West End side
   // of the site (Beyond London shelf, BRO-5103), so they relate to London shows
@@ -1448,7 +1448,8 @@ function getCity(show: { category?: string; venue?: string; localOnly?: boolean;
   if (isUkRegionalShow(show)) return 'london';
   // 'regional' (non-NYC US tryouts) intentionally returns its own bucket ('regional'),
   // so related-shows only pull other regional shows — never NYC/London productions.
-  return cat;
+  // Unrecognized categories fold into 'nyc' (BRO-2485) rather than a dead-end own bucket.
+  return categoryToCityBucket(cat);
 }
 
 export function getRelatedShowsOpen(show: ComputedShow, limit = 6): ComputedShow[] {

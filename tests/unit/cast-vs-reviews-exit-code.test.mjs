@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/cast/a.json (untracked core data); data/cast/b.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-5860: audit-cast-vs-reviews.js runs in the daily corpus-drift monitor.
 // Its exit code is the monitor's verdict, so "could not run" (no review-texts,
 // every show insufficient) must be 2, never a clean 0.

@@ -24,7 +24,6 @@
  */
 
 const fs = require('fs');
-const { readReviewForUpdate, persistReviewSnapshot } = require('./lib/persist-review-snapshot');
 const path = require('path');
 
 const args = process.argv.slice(2);
@@ -42,7 +41,7 @@ const showsFilter = args.find(a => a.startsWith('--shows='));
 const showsAllowlist = showsFilter ? new Set(showsFilter.split('=')[1].split(',')) : null;
 
 const { loadCookiesForDomain } = require('./lib/cookie-loader');
-const { loadCandidates, processRecoveredText, checkpoint } = require('./lib/browser-recovery-helpers');
+const { loadCandidates, processRecoveredText, stampDead, startRun, checkpoint } = require('./lib/browser-recovery-helpers');
 
 const CONFIG = {
   reportPath: path.join(__dirname, '..', 'data', 'audit', 'wapo-browser-recovery-report.json'),
@@ -145,6 +144,9 @@ async function main() {
 
   let candidates;
   try {
+    // Push/restore anything an earlier run committed but could not land
+    // (BRO-7171). Throws on a still-failing push: no new work on a backlog.
+    if (!dryRun) startRun();
     candidates = loadCandidates({ filePrefix: 'washpost', showsAllowlist, maxUrls: CONFIG.maxUrls });
   } catch (e) {
     await context.close();
@@ -160,63 +162,69 @@ async function main() {
   const deadEntries = [];
   const startTime = Date.now();
 
-  for (let i = 0; i < candidates.length; i++) {
-    if (Date.now() - startTime > CONFIG.timeBudgetMs) {
-      console.log(`\nTime budget reached — stopping cleanly.`);
-      break;
-    }
-
-    const c = candidates[i];
-    console.log(`[${i + 1}/${candidates.length}] ${c.showId} (${c.contentTier}, ${c.existingChars} chars existing)`);
-
-    if (i > 0) await page.waitForTimeout(jitterDelay());
-
-    let result;
-    try {
-      result = await extractArticle(page, c.url);
-    } catch (e) {
-      result = { error: e.message };
-    }
-
-    if (result.error || !result.text) {
-      console.log(`  ✗ ${result.error || 'no text extracted'}`);
-      stats.dead++;
-      deadEntries.push({ reviewId: c.reviewId, url: c.url, reason: result.error || 'no text extracted' });
-      if (!dryRun) {
-        const data = readReviewForUpdate(c.filePath);
-        data.incompleteReason = `wapo-browser-recovery: ${result.error || 'no text extracted'} (${new Date().toISOString()})`;
-        persistReviewSnapshot({ filePath: c.filePath, data: data, trailingNewline: true });
+  // A failed push (ReviewTextsPushError) or lock timeout stops the run, but
+  // the report is still written and the browser still closed (BRO-7171).
+  let runError = null;
+  try {
+    for (let i = 0; i < candidates.length; i++) {
+      if (Date.now() - startTime > CONFIG.timeBudgetMs) {
+        console.log(`\nTime budget reached — stopping cleanly.`);
+        break;
       }
-      continue;
+
+      const c = candidates[i];
+      console.log(`[${i + 1}/${candidates.length}] ${c.showId} (${c.contentTier}, ${c.existingChars} chars existing)`);
+
+      if (i > 0) await page.waitForTimeout(jitterDelay());
+
+      let result;
+      try {
+        result = await extractArticle(page, c.url);
+      } catch (e) {
+        result = { error: e.message };
+      }
+
+      if (result.error || !result.text) {
+        console.log(`  ✗ ${result.error || 'no text extracted'}`);
+        stats.dead++;
+        deadEntries.push({ reviewId: c.reviewId, url: c.url, reason: result.error || 'no text extracted' });
+        if (!dryRun) {
+          stampDead(c, { incompleteReason: `wapo-browser-recovery: ${result.error || 'no text extracted'} (${new Date().toISOString()})` });
+        }
+        continue;
+      }
+
+      if (dryRun) {
+        console.log(`  [DRY RUN] would process ${result.len} chars`);
+        continue;
+      }
+
+      const outcome = processRecoveredText(c, result.text, {
+        fetchMethod: 'wapo-subscriber-browser-session',
+        sourceMethod: 'wapo-subscriber-recovery-login',
+        contentTierReasonFallback: 'Recovered via authenticated WaPo browser session (task #876)',
+      });
+      if (outcome.ok) {
+        stats.recovered++;
+        console.log(`  ✓ RECOVERED (${outcome.newLen} chars)`);
+        if (stats.recovered % CONFIG.checkpointInterval === 0) checkpoint(stats, 'WaPo browser recovery');
+      } else {
+        console.log(`  ✗ ${outcome.reason}`);
+        if (outcome.reason.includes('too short')) stats.tooShort++;
+        else if (outcome.reason.includes('garbage')) stats.garbage++;
+        else if (outcome.reason.includes('not mentioned')) stats.notMentioned++;
+        else if (outcome.reason.includes('not longer')) stats.notLonger++;
+        else stats.blocked++;
+      }
     }
 
-    if (dryRun) {
-      console.log(`  [DRY RUN] would process ${result.len} chars`);
-      continue;
-    }
-
-    const outcome = processRecoveredText(c, result.text, {
-      fetchMethod: 'wapo-subscriber-browser-session',
-      sourceMethod: 'wapo-subscriber-recovery-login',
-      contentTierReasonFallback: 'Recovered via authenticated WaPo browser session (task #876)',
-    });
-    if (outcome.ok) {
-      stats.recovered++;
-      console.log(`  ✓ RECOVERED (${outcome.newLen} chars)`);
-      if (stats.recovered % CONFIG.checkpointInterval === 0) checkpoint(stats, 'WaPo browser recovery');
-    } else {
-      console.log(`  ✗ ${outcome.reason}`);
-      if (outcome.reason.includes('too short')) stats.tooShort++;
-      else if (outcome.reason.includes('garbage')) stats.garbage++;
-      else if (outcome.reason.includes('not mentioned')) stats.notMentioned++;
-      else if (outcome.reason.includes('not longer')) stats.notLonger++;
-      else stats.blocked++;
-    }
+    // Tracker-driven: also lands dead-candidate stamps when nothing was recovered.
+    if (!dryRun) checkpoint(stats, 'WaPo browser recovery');
+  } catch (e) {
+    runError = e;
   }
 
-  if (stats.recovered > 0 && !dryRun) checkpoint(stats, 'WaPo browser recovery');
-
-  fs.writeFileSync(CONFIG.reportPath, JSON.stringify({ ...stats, deadEntries, timestamp: new Date().toISOString() }, null, 2) + '\n');
+  fs.writeFileSync(CONFIG.reportPath, JSON.stringify({ ...stats, deadEntries, timestamp: new Date().toISOString(), error: runError ? runError.message : null }, null, 2) + '\n');
 
   console.log(`\n${'='.repeat(60)}`);
   console.log('Summary');
@@ -227,6 +235,7 @@ async function main() {
   console.log(`  Too short: ${stats.tooShort}  Garbage: ${stats.garbage}  Not mentioned: ${stats.notMentioned}  Not longer: ${stats.notLonger}`);
 
   await context.close();
+  if (runError) throw runError;
 }
 
 main().catch(err => {

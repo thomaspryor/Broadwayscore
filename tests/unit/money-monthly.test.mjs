@@ -74,12 +74,19 @@ test('quiet month: subject says so and the email says nothing crossed the bar', 
   assert.match(renderHtml(issue), /Nothing crossed our bar/);
 });
 
-test('email copy: no em dashes, first-party links carry UTMs, unsubscribe link stays clean', () => {
+test('email copy: no em dashes, first-party links carry UTMs and subscriber access, unsubscribe link stays clean', () => {
   const commercial = { a: { designation: 'Flop', capitalization: 9e6 } };
   const issue = L.buildIssue({ commercial, shows: [show({ slug: 'a', title: 'A', status: 'closed', closingDate: '2026-10-12' })], snapshot: null, window: W });
   const html = renderHtml(issue, { unsubscribeUrl: 'https://broadwayscorecard.com/unsubscribe?email=x%40y.com' });
   assert.ok(!html.includes('—') && !L.buildSubject(issue).includes('—'));
   assert.match(html, /show\/a\?utm_source=money-list/);
+  for (const pathname of ['/show/a', '/biz']) {
+    const href = [...html.matchAll(/href="([^"]+)"/g)]
+      .map((m) => m[1].replaceAll('&amp;', '&'))
+      .find((url) => new URL(url).pathname === pathname);
+    assert.ok(href, `missing ${pathname} link`);
+    assert.equal(new URL(href).searchParams.get('subscriber'), '1', `${pathname} must bypass the signup gate for existing subscribers`);
+  }
   assert.match(html, /href="https:\/\/broadwayscorecard\.com\/unsubscribe\?email=x%40y\.com"/);
   assert.match(L.buildSubject(issue), /A closed as a Flop/);
 });

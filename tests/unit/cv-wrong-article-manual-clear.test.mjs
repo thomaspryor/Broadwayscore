@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // A high-confidence contentVerification.wrongArticle verdict is a hard exclusion
 // with no human hatch until audit S3-T3 (BRO-4204): the CV pass reads truncated
 // or context-heavy text and calls real in-window reviews "previews". The clear

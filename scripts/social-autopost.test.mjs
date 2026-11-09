@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Unit tests for scripts/social-autopost/ (BRO-6242): which posts fire, when,
 // that every caption fits its network, and that the card's badge CSS is the
 // site's. Offline: no Buffer, no browser.
@@ -10,7 +11,15 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const sel = require('./social-autopost/select.js');
-const { buildCaptions, postMarkers, showUrl, LIMITS } = require('./social-autopost/captions.js');
+// Runs fn with the live config's West End accounts filled in (dummy ids), so Off-West End
+// shows have somewhere to post (BRO-6932: they never fall back to the Broadway accounts).
+const withWestEnd = fn => {
+  const sets = require('./social-autopost/config.js').CHANNEL_SETS;
+  const prev = sets['west-end'];
+  sets['west-end'] = Object.fromEntries(Object.keys(sets.broadway).map(svc => [svc, `we-${svc}`]));
+  try { return fn(); } finally { sets['west-end'] = prev; }
+};
+const { buildCaptions, postMarkers, showUrl, LIMITS, shortBudget } = require('./social-autopost/captions.js');
 const { isUsablePoster, artVerdict, originalUrl, candidatesFor, sameTitle } = require('./social-autopost/art.js');
 const { buildCardHtml, SITE_CSS } = require('./social-autopost/render.js');
 const { metadataFor } = require('./social-autopost/buffer.js');
@@ -63,14 +72,60 @@ test('every score is posted, but only once the gate passes and the site shows a 
   assert.equal(sel.findScoreEvents({ ...base(s, { slim: {} }), now }).length, 0, 'no site score yet');
 });
 
-test('Off-Broadway uses the London floors; Off-West End needs 10 reviews with 5 tier-1', () => {
+test('Off-Broadway needs 8 reviews and no tier-1 (BRO-6920); Off-West End uses the London floors', () => {
   const now = Date.parse('2026-11-06T15:00:00Z');
   const ob = show({ category: 'off-broadway' });
-  assert.equal(sel.findScoreEvents({ ...base(ob, { reviewsByShow: { [ob.id]: reviews(3, 2, 3) } }), now }).length, 1);
+  assert.equal(sel.findScoreEvents({ ...base(ob, { reviewsByShow: { [ob.id]: reviews(0, 2, 6) } }), now }).length, 1, 'no tier-1 review needed');
+  assert.equal(sel.findScoreEvents({ ...base(ob, { reviewsByShow: { [ob.id]: reviews(2, 2, 3) } }), now }).length, 0, '7 reviews is short');
+  assert.equal(sel.findScoreEvents({ ...base(ob, { reviewsByShow: { [ob.id]: reviews(0, 1, 7) } }), now }).length, 0, 'T2 short');
   const owe = show({ category: 'off-west-end' });
   const ow = { ...base(owe), now: Date.parse('2026-11-06T10:00:00Z') };
-  assert.equal(sel.findScoreEvents({ ...ow, reviewsByShow: { [owe.id]: reviews(4, 3, 5) } }).length, 0);
-  assert.equal(sel.findScoreEvents({ ...ow, reviewsByShow: { [owe.id]: reviews(5, 3, 4) } }).length, 1);
+  withWestEnd(() => {
+    assert.equal(sel.findScoreEvents({ ...ow, reviewsByShow: { [owe.id]: reviews(2, 3, 5) } }).length, 0, 'T1 short');
+    assert.equal(sel.findScoreEvents({ ...ow, reviewsByShow: { [owe.id]: reviews(3, 2, 2) } }).length, 0, '7 reviews is short');
+    assert.equal(sel.findScoreEvents({ ...ow, reviewsByShow: { [owe.id]: reviews(3, 2, 3) } }).length, 1);
+  });
+});
+
+test('Off-Broadway under 8 reviews posts once every known review is in, a week on, with a tier-1 critic (BRO-6932)', () => {
+  const ob = show({ category: 'off-broadway', openingDate: '2026-11-05' });
+  const pub = cov => ({ [ob.id]: { cs: 78, rc: 6, ...(cov ? { cov: { state: cov, liveCount: 6, candidateCount: 6 } } : {}) } });
+  const ctx = (cov, rv, now) => ({ reviewsByShow: { [ob.id]: rv }, slim: pub(cov), getOutletTier, shows: [ob], now: Date.parse(now) });
+  const week = '2026-11-12T15:00:00Z', day3 = '2026-11-08T15:00:00Z';
+  assert.equal(sel.scoreSettled(ob, ctx('complete', reviews(2, 1, 3), week)).ok, true, 'In the Heights shape: 6 reviews, 2 tier-1, census complete');
+  assert.equal(sel.scoreSettled(ob, ctx('complete', reviews(2, 1, 3), week)).gate.coverageComplete, true);
+  assert.equal(sel.scoreSettled(ob, ctx('incomplete', reviews(2, 1, 3), week)).ok, false, 'a known review is still missing');
+  assert.equal(sel.scoreSettled(ob, ctx(null, reviews(2, 1, 3), week)).ok, false, 'no census yet');
+  assert.equal(sel.scoreSettled(ob, ctx('complete', reviews(2, 1, 3), day3)).ok, false, 'too soon: late reviews still land');
+  assert.equal(sel.scoreSettled(ob, ctx('complete', reviews(0, 2, 4), week)).ok, false, 'no tier-1 critic: too small');
+  assert.equal(sel.scoreSettled(ob, ctx('complete', reviews(1, 1, 2), week)).ok, false, '4 reviews is too few');
+  assert.equal(sel.scoreSettled(ob, ctx('complete', reviews(0, 2, 6), day3)).ok, true, '8 reviews needs no census');
+  const bw = show({ category: 'broadway', openingDate: '2026-11-05' });
+  assert.equal(sel.scoreSettled(bw, { ...ctx('complete', reviews(2, 1, 3), week), reviewsByShow: { [bw.id]: reviews(2, 1, 3) }, slim: { [bw.id]: { cs: 78, rc: 6, cov: { state: 'complete' } } } }).ok, false, 'Broadway keeps its floors');
+});
+
+test('Off-West End never posts to the Broadway accounts; main-stage West End still falls back until its own accounts exist (BRO-6932)', () => {
+  const both = { broadway: { instagram: 'b1' }, 'west-end': { instagram: 'w1' } };
+  const bwOnly = { broadway: { instagram: 'b1' }, 'west-end': {} };
+  assert.deepEqual(routing.targetSets(show({ category: 'off-west-end' }), [], bwOnly), []);
+  assert.deepEqual(routing.targetSets(show({ category: 'west-end' }), [], bwOnly), ['broadway']);
+  assert.deepEqual(routing.targetSets(show({ category: 'off-west-end' }), [], both), ['west-end']);
+  assert.equal(routing.postsToOwnSet(show({ category: 'west-end' }), bwOnly), false, 'the fallback is not its own set');
+  assert.equal(routing.postsToOwnSet(show({ category: 'off-broadway' }), bwOnly), true);
+  // the live config has no West End accounts yet: an Off-West End show is not even a candidate
+  const owe = show({ category: 'off-west-end' });
+  assert.equal(sel.isEligibleShow(owe), false);
+  assert.equal(sel.findScoreEvents({ ...base(owe, { reviewsByShow: { [owe.id]: reviews(3, 3, 6) } }), now: Date.parse('2026-11-06T10:00:00Z') }).length, 0);
+  assert.equal(withWestEnd(() => sel.isEligibleShow(owe)), true);
+});
+
+test('roundup fills its rows with main-stage openings before Off shows, each best score first (BRO-6920)', () => {
+  const mk = (id, category) => ({ id, category });
+  const cands = [mk('ob1', 'off-broadway'), mk('ob2', 'off-broadway'), mk('b1', 'broadway'), mk('ob3', 'off-broadway'), mk('b2', 'broadway')];
+  assert.deepEqual(sel.roundupFillOrder(cands, 'broadway').map(s => s.id), ['b1', 'b2', 'ob1', 'ob2', 'ob3']);
+  const we = [mk('owe1', 'off-west-end'), mk('we1', 'west-end')];
+  assert.deepEqual(sel.roundupFillOrder(we, 'west-end').map(s => s.id), ['we1', 'owe1']);
+  assert.deepEqual(sel.roundupFillOrder([], 'broadway'), []);
 });
 
 test('opera, provisional and cancelled shows never post', () => {
@@ -145,7 +200,7 @@ test('captions fit every network, carry the site numbers, link the right site, n
     for (const m of postMarkers(p.show)) assert.ok(m.test(c[net]), `${net} lacks dedupe marker ${m}`);
   }
   for (const net of ['twitter', 'bluesky']) {
-    assert.ok(xLength(net, c[net]) <= 270);
+    assert.ok(xLength(net, c[net]) <= shortBudget(net));
     assert.match(c[net], /has a Critic Score of 86 \(Critical Gold\) from 38 critics' reviews\./);
   }
   assert.match(c.facebook, /25 raves, 11 positive, 1 mixed, 1 negative/);
@@ -161,8 +216,8 @@ test('score captions: X keeps the full title, verdict and split question with a 
   assert.match(c.twitter, /has a Critic Score of 77 \(Recommended\) from 32 critics' reviews\./);
   assert.match(c.twitter, /20 positive, 12 mixed or negative\. What's behind the split\?/);
   assert.ok(c.twitter.length > LIMITS.twitter, 'raw URL length would reject this valid X caption');
-  assert.ok(xLength('twitter', c.twitter) <= 270);
-  assert.ok(xLength('bluesky', c.bluesky) <= 270);
+  assert.ok(xLength('twitter', c.twitter) <= shortBudget('twitter'));
+  assert.ok(xLength('bluesky', c.bluesky) <= shortBudget('bluesky'));
 });
 
 test('dedupe path marker does not match a longer slug', () => {
@@ -519,7 +574,11 @@ test('routing: channels are tagged by set; the Broadway ledger key stays the bar
 test('routing: the live config has Broadway channels and routes every eligible category somewhere', () => {
   const C = require('./social-autopost/config.js');
   assert.ok(Object.keys(C.CHANNEL_SETS.broadway).length >= 5);
-  for (const cat of C.ELIGIBLE_CATEGORIES) assert.ok(routing.targetSets(show({ category: cat }), NONE).length >= 1, cat);
+  // Off-West End waits for the West End accounts (BRO-6932); every other category posts somewhere.
+  for (const cat of C.ELIGIBLE_CATEGORIES) {
+    const want = cat === 'off-west-end' && !routing.postsToOwnSet(show({ category: cat })) ? 0 : 1;
+    assert.ok(routing.targetSets(show({ category: cat }), NONE).length >= want, cat);
+  }
 });
 
 test('routing: a partly filled West End set is not active; duplicate ids across sets are rejected', () => {
@@ -914,7 +973,7 @@ test('roundup: a West End week goes to the West End set, Off-Broadway stays with
   const we = [lshow('wa-west-end-2026', 'WA', 'west-end', 'play', '2026-10-16', { status: 'open' }), lshow('wb-off-west-end-2026', 'WB', 'off-west-end', 'play', '2026-10-17', { status: 'open' }), rShow('ob-off-broadway-2026', '2026-10-16', { category: 'off-broadway' })];
   const slim = { 'wa-west-end-2026': { cs: 80, rc: 14 }, 'wb-off-west-end-2026': { cs: 71, rc: 14 }, 'ob-off-broadway-2026': { cs: 75, rc: 14 } };
   const rev = Object.fromEntries(we.map(s => [s.id, reviews(6, 3, 6)]));
-  const ev = sel.findRoundupEvents({ shows: we, ledger: { posts: [] }, now: at('2026-10-23T09:05:00Z'), slim, getOutletTier, reviewsByShow: rev, cfg: { ...C6413.WEEKLY_ROUNDUP, enabled: true } });
+  const ev = withWestEnd(() => sel.findRoundupEvents({ shows: we, ledger: { posts: [] }, now: at('2026-10-23T09:05:00Z'), slim, getOutletTier, reviewsByShow: rev, cfg: { ...C6413.WEEKLY_ROUNDUP, enabled: true } }));
   const bySet = Object.fromEntries(ev.map(e => [e.set, e.candidates.map(s => s.id)]));
   assert.deepEqual(bySet['west-end'], ['wa-west-end-2026', 'wb-off-west-end-2026']);
   assert.equal(bySet.broadway, undefined, 'one Off-Broadway show alone is under the minimum');
@@ -996,7 +1055,8 @@ test('closing captions: facts only, every limit, no em dashes, closing marker, n
     assert.doesNotMatch(text, /[—–]/);
     assert.deepEqual(cap.strayNumbers(text, cap.closingAllowedNumbers(p)), [], net);
     if (net !== 'altText') for (const re of cap.closingMarkers(s)) assert.match(text, re, `${net} marker`);
-    assert.doesNotMatch(text, cap.SCORE_SENTENCE);
+    // Dedupe reads the post text only (buffer.js findExistingPost), never the image's alt text.
+    if (net !== 'altText') assert.doesNotMatch(text, cap.SCORE_SENTENCE);
     assert.doesNotMatch(text, cap.COMPARE_SENTENCE);
   }
   assert.match(caps.threads, /closes Nov 10, with a Critic Score of 84/);
@@ -1139,7 +1199,43 @@ test('voice: no banned phrase, no em dash, and no question that is only engageme
   const voice = fs.readFileSync(new URL('./social-autopost/VOICE.md', import.meta.url), 'utf8');
   assert.doesNotMatch(voice, /[—–]/, 'VOICE.md has a dash');
   assert.match(voice, /replies/i, 'VOICE.md covers replies');
+  // Audience reception is a letter grade, never a number (VOICE.md rule 8, BRO-6922).
+  for (const f of voiceFixtures()) {
+    for (const [net, text] of Object.entries(f.caps)) assert.equal(cap.audienceNumber(text), null, `${f.name} ${net} gives audiences a number`);
+  }
+  const plansDir = new URL('./video-proto/plans/', import.meta.url);
+  for (const file of fs.readdirSync(plansDir).filter(n => n.endsWith('.json'))) {
+    assert.equal(cap.audienceNumber(fs.readFileSync(new URL(file, plansDir), 'utf8')), null, `${file} gives audiences a number`);
+  }
+  assert.match(voice, /Audience reception is a letter grade, never a number/, 'VOICE.md states the audience-grade rule');
   assert.match(fs.readFileSync(new URL('../.claude/commands/social-post.md', import.meta.url), 'utf8'), /VOICE\.md/, 'social-post.md points at VOICE.md');
+});
+
+test('voice: audiences get a letter grade, never a number, in captions, hooks and every voiceover template (BRO-6922)', () => {
+  const { audienceNumber, validateHook } = require('./social-autopost/captions.js');
+  for (const bad of ['Critic Score of 61 from 26 reviews, but audiences give it 82.', 'Audiences are happier than either: 90, against 79.',
+    'And audiences give it eighty-two.', 'Audiences say ninety.', 'It scores an 82 with audiences.', 'Critics are 9 points warmer than audiences.',
+    '82% of audiences liked it.', 'Four stars from audiences.', 'A 9 out of 10 from audiences.', 'Crowd-pleasing 82.',
+    'Nine out of ten audiences love it.', '82 percent of audiences liked it.']) {
+    assert.ok(audienceNumber(bad), `should block: ${bad}`);
+  }
+  for (const ok of ['Critic Score 61 from 26 reviews. Audiences give it an A-.', "Critic Score of 84 from 32 critics' reviews, and audiences give it an A+.",
+    'Audiences give it an A- from 120 audience reviews.', 'Same show, two cities, an 8-point gap. Why do you think London critics warmed to it more?',
+    "One of the season's hits, and audiences give it an A-.", 'Two of the critics loved it. Audiences give it a B.', 'Audiences give it an A from 1,200 audience reviews.']) {
+    assert.equal(audienceNumber(ok), null, `should allow: ${ok}`);
+  }
+  assert.match(validateHook('Audiences give it eighty-two') || '', /audiences a number/);
+  // Every voiceover line, with each number slot spoken as a number and each grade slot as a grade.
+  const { LINES } = require('./video-proto/voscript.js');
+  const GRADE = { a: 'an', G: 'A-minus', g: 'A-', Aud: 'Audiences agree and give it an A-.' };
+  const NUMBER_SLOT = /^(n|N|s|tally|Tally|cn|Cn)$/;
+  const fill = t => t.replace(/\{(\w+)\}/g, (_, k) => GRADE[k] ?? (NUMBER_SLOT.test(k) ? 'eighty-two' : 'Title'));
+  let n = 0;
+  for (const [slot, opts] of Object.entries(LINES)) for (const o of opts) {
+    const text = fill(Array.isArray(o) ? o[0] : o); n++;
+    assert.equal(audienceNumber(text), null, `voscript ${slot}: ${text}`);
+  }
+  assert.ok(n > 50, `only ${n} voiceover lines scanned`);
 });
 
 test('voice: compare question follows the direction and size of the gap; within 3 points the angle is agreement', () => {
@@ -1247,4 +1343,391 @@ test('opera captions link the opera page and carry opera hashtags', () => {
   const r = buildCaptions({ show: operaShow({ category: 'off-west-end' }), score: 84, tierId: 'critical-gold', tierLabel: 'Critical Gold', reviewCount: 9, breakdown: { rave: 5, positive: 3, mixed: 1, negative: 0 } });
   assert.match(r.instagram, /#RoyalOpera/);
   assert.doesNotMatch(r.instagram, /#MetOpera/);
+});
+
+// BRO-6932: quiet-day backfill of shows that missed the 10-day window.
+const BF = { enabled: true, fromHour: 14, maxPerDay: 2, lookbackDays: 45, minDaysLeft: 2 };
+const bShow = over => show({ id: 'bf-2026', category: 'off-broadway', openingDate: '2026-10-19', closingDate: '2026-11-15', ...over });
+const live = (dueAt, extra = {}) => ({ type: 'score', showId: 'other', dueAt, channels: { twitter: { postId: 'p1' } }, ...extra });
+const bFind = (over = {}) => {
+  const s = over.s || bShow();
+  return sel.findBackfillEvents({ ...base(s), now: Date.parse(over.now || '2026-11-03T19:05:00Z'), cfg: BF, ...(over.args || {}) }); // 14:05 New York
+};
+
+test('quiet-day backfill posts a settled show that aged out, from 14:00 New York (BRO-6932)', () => {
+  const ev = bFind();
+  assert.equal(ev.length, 1);
+  assert.equal(ev[0].backfill, true);
+  assert.equal(ev[0].type, 'score');
+  assert.equal(ev[0].dueAt.toISOString(), '2026-11-03T19:15:00.000Z');
+  assert.equal(bFind({ now: '2026-11-03T18:55:00Z' }).length, 0, '13:55 New York: too early');
+  assert.equal(sel.findScoreEvents({ ...base(bShow()), now: Date.parse('2026-11-03T19:05:00Z') }).length, 0, 'the normal score lane has given up on it');
+});
+
+test('quiet-day backfill stays off on a busy day, counts its own posts and respects maxPerDay', () => {
+  assert.equal(bFind({ args: { busy: true } }).length, 0, 'another post is due this run');
+  assert.equal(bFind({ args: { ledger: { posts: [live('2026-11-03T15:00:00Z')] } } }).length, 0, 'a score post went out this morning');
+  assert.equal(bFind({ args: { ledger: { posts: [live('2026-11-03T23:30:00Z')] } } }).length, 0, 'one is scheduled for this evening');
+  assert.equal(bFind({ args: { ledger: { posts: [live('2026-11-02T15:00:00Z')] } } }).length, 1, 'yesterday does not count');
+  assert.equal(bFind({ args: { ledger: { posts: [live('2026-11-03T15:00:00Z', { channels: { twitter: { postId: 'p1', result: 'cancelled' } } })] } } }).length, 1, 'a cancelled post does not count');
+  assert.equal(bFind({ args: { ledger: { posts: [live('2026-11-03T19:00:00Z', { backfill: true }), live('2026-11-03T17:30:00Z', { backfill: true })] } } }).length, 0, 'two backfills today already');
+  assert.equal(bFind({ args: { ledger: { posts: [live('2026-11-03T17:30:00Z', { backfill: true })] } } }).length, 1, 'one backfill today: room for one more');
+  assert.equal(bFind({ args: { cfg: { ...BF, enabled: false } } }).length, 0, 'switched off');
+});
+
+test('quiet-day backfill candidates: open, not closing soon, recent, unposted, settled, newest first', () => {
+  assert.equal(bFind({ s: bShow({ status: 'closed' }) }).length, 0, 'closed');
+  assert.equal(bFind({ s: bShow({ closingDate: '2026-11-04' }) }).length, 0, 'closes tomorrow');
+  assert.equal(bFind({ s: bShow({ closingDate: '2026-11-05' }) }).length, 1, 'closes in two days');
+  assert.equal(bFind({ s: bShow({ openingDate: '2026-09-10' }) }).length, 0, 'opened more than 45 days ago');
+  assert.equal(bFind({ s: bShow({ openingDate: '2026-10-28' }) }).length, 0, 'still inside the 10-day window: the normal lane owns it');
+  assert.equal(bFind({ args: { ledger: { posts: [{ type: 'score', showId: 'bf-2026', date: '2026-10-25', channels: { twitter: { postId: 'p0' } } }] } } }).length, 0, 'already posted');
+  assert.equal(bFind({ args: { ledger: { posts: [{ type: 'score', showId: 'bf-2026', skipped: 'backlog at go-live' }] } } }).length, 1, 'a go-live backlog skip is still owed');
+  for (const type of ['brief', 'closing-soon', 'london-compare']) {
+    assert.equal(bFind({ args: { ledger: { posts: [{ type, showIds: ['bf-2026', 'other'], date: '2026-10-27', channels: { twitter: { postId: 'p0' } } }] } } }).length, 0, `${type} card already covered it`);
+  }
+  assert.equal(bFind({ s: bShow({ category: 'west-end' }) }).length, 0, 'no old London show on the Broadway fallback');
+  assert.equal(withWestEnd(() => bFind({ s: bShow({ category: 'west-end', openingDate: '2026-10-19' }), now: '2026-11-03T19:05:00Z' })).length, 1, 'on its own accounts it can');
+  assert.equal(bFind({ args: { reviewsByShow: { 'bf-2026': reviews(0, 1, 3) } } }).length, 0, 'score not settled');
+  assert.equal(bFind({ args: { blocked: id => id === 'bf-2026' } }).length, 0, 'failed too often');
+  const a = bShow({ id: 'a-2026', openingDate: '2026-10-18' }), b = bShow({ id: 'z-2026', openingDate: '2026-10-22' }), c = bShow({ id: 'c-2026', openingDate: '2026-10-20' });
+  const ids = [a, b, c].map(x => x.id);
+  const ev = sel.findBackfillEvents({ shows: [a, b, c], ledger: empty, getOutletTier, now: Date.parse('2026-11-03T19:05:00Z'), cfg: BF,
+    slim: Object.fromEntries(ids.map(id => [id, { cs: 80, rc: 14 }])), reviewsByShow: Object.fromEntries(ids.map(id => [id, reviews(3, 3, 8)])) });
+  assert.deepEqual(ev.map(e => e.show.id), ['z-2026', 'c-2026'], 'newest two');
+  const ready = sel.scheduleEvents(ev, empty, Date.parse('2026-11-03T19:05:00Z'));
+  assert.deepEqual(ready.map(e => e.show.id), ['z-2026'], 'the newest goes first; the second waits 90 minutes for a later run');
+});
+
+// ---- moved template (BRO-6934): same show, same city, new theatre ----
+const jcsOld = show({ id: 'jcs-west-end-2026', slug: 'jcs-west-end-2026', title: 'Jesus Christ Superstar', category: 'west-end', status: 'closed', venue: 'London Palladium', openingDate: '2026-07-07', previewsStartDate: '2026-06-20', closingDate: '2026-09-05' });
+const jcsNew = show({ id: 'jcs-drury-lane-west-end-2026', slug: 'jcs-drury-lane-west-end-2026', title: 'Jesus Christ Superstar', category: 'west-end', status: 'open', venue: 'Theatre Royal Drury Lane', openingDate: '2026-10-16', previewsStartDate: '2026-10-16', closingDate: '2027-01-09' });
+const moved = (a = jcsOld, b = jcsNew, sa = [74, 28], sb = [76, 32], hook = '') =>
+  briefs.buildMoved({ descA: desc(a, ...sa), descB: desc(b, ...sb), hook, now: Date.parse('2026-11-03T15:00:00Z') });
+
+test('moved: only the same title, one city, two theatres, older run closed first', () => {
+  assert.equal(briefs.orderMoved(jcsNew, jcsOld).older.id, jcsOld.id);
+  assert.ok(briefs.TEMPLATES.includes('moved'));
+  assert.throws(() => briefs.orderCompare(jcsOld, jcsNew), /one New York and one London/); // compare still refuses a same-city pair
+  assert.throws(() => briefs.orderMoved(london, offb), /one city/);
+  assert.throws(() => briefs.orderMoved(jcsOld, { ...jcsNew, title: 'Hamilton' }), /same title/);
+  assert.throws(() => briefs.orderMoved(jcsOld, { ...jcsNew, venue: 'london palladium' }), /different theatres/);
+  assert.throws(() => briefs.orderMoved(jcsOld, { ...jcsNew, venue: '' }), /venue/);
+  assert.throws(() => briefs.orderMoved(jcsOld, { ...jcsOld, id: 'z' }), /different theatres/);
+  assert.throws(() => briefs.orderMoved(jcsOld, jcsOld), /two different/);
+  assert.throws(() => briefs.orderMoved({ ...jcsOld, closingDate: '2026-11-01' }, jcsNew), /closed before/); // overlapping runs are not a move
+  assert.throws(() => briefs.orderMoved({ ...jcsOld, closingDate: null, status: 'open' }, jcsNew), /closed before/);
+  assert.equal(briefs.orderMoved({ ...jcsOld, closingDate: null }, jcsNew).older.id, jcsOld.id); // closed status without a date is enough
+});
+
+test('moved: captions state venue facts, no cross-city caveat, every limit, no stray numbers', () => {
+  const m = moved();
+  assert.equal(m.older.show.id, jcsOld.id);
+  assert.equal(m.delta, 2);
+  assert.deepEqual(m.card.sides.map(s => s.label), ['London Palladium', 'Theatre Royal Drury Lane']);
+  assert.equal(m.card.kicker, 'Same show, new theatre');
+  for (const [net, text] of Object.entries(m.captions)) {
+    if (net === 'altText') continue;
+    assert.ok(xLength(net, text) <= LIMITS[net], `${net} over its limit`);
+    assert.ok(!/[—–]/.test(text), `${net} has a dash`);
+    assert.match(text, /At the London Palladium: (Critic Score )?74 from 28 critics/);
+    assert.match(text, /At the Theatre Royal Drury Lane: (Critic Score )?76 from 32 critics(?! so far)/);
+    if (!['twitter', 'bluesky'].includes(net)) assert.match(text, /moved from the London Palladium to the Theatre Royal Drury Lane/); // the short networks shrink the lead-in to the title
+    assert.ok(!/different cities|like-for-like|also reviewed in/.test(text), `${net} carries a cross-city line`);
+    assert.ok(cap.movedMarkers(jcsNew, 'London Palladium').every(mk => mk.test(text)), `${net} misses a moved marker`);
+    assert.ok(!cap.COMPARE_SENTENCE.test(text) && !cap.SCORE_SENTENCE.test(text), `${net} reuses another post type's sentence`);
+    assert.match(text, /\?(\n|$|\s*\n?https)/, `${net} does not end on its question`);
+    assert.deepEqual(cap.strayNumbers(text, [74, 28, 76, 32, 2, 2026]), []);
+  }
+  assert.match(m.captions.facebook, /westendscorecard\.com\/show\/jcs-west-end-2026\?/);
+  assert.match(m.captions.facebook, /westendscorecard\.com\/show\/jcs-drury-lane-west-end-2026\?/);
+  assert.match(m.captions.twitter, /critics largely agree|carried over/); // a 2-point gap asks about agreement
+  assert.match(m.captions.altText, /moved from the London Palladium to the Theatre Royal Drury Lane/);
+});
+
+test('moved: a wide gap names the warmer theatre; a new run says "so far"; the hook rules still apply', () => {
+  const m = moved(jcsOld, jcsNew, [88, 28], [76, 32]);
+  assert.match(m.captions.facebook, /12-point gap\. Why do you think critics warmed to it more at the London Palladium\?/);
+  const fresh = briefs.buildMoved({ descA: desc(jcsOld, 74, 28), descB: desc(jcsNew, 76, 6), now: Date.parse('2026-10-20T15:00:00Z') });
+  assert.match(fresh.captions.twitter, /76 from 6 critics so far/);
+  assert.throws(() => moved(jcsOld, jcsNew, [74, 28], [76, 32], 'It is better now.'), /comparison word/);
+  assert.match(moved(jcsOld, jcsNew, [74, 28], [76, 32], 'Same cast, new stage.').captions.facebook, /^Same cast, new stage\./);
+  assert.throws(() => briefs.buildMoved({ descA: desc(london, 85, 26), descB: desc(offb, 77, 24), now: NOW }), /one city/);
+});
+
+test('moved: a long venue still fits X and Bluesky with the facts and link kept', () => {
+  const long = { ...jcsNew, venue: 'The Royal Shakespeare Company Theatre at the Barbican Centre' };
+  const m = moved(jcsOld, long);
+  for (const net of ['twitter', 'bluesky']) {
+    assert.ok(xLength(net, m.captions[net]) <= LIMITS[net], `${net} over its limit`);
+    assert.match(m.captions[net], /74 from 28 critics/);
+    assert.match(m.captions[net], /https:\/\/westendscorecard\.com\/show\//);
+  }
+});
+
+test('moved: the card labels sides by theatre, and the ledger entry gets moved markers', () => {
+  const html = buildCompareHtml(moved().card);
+  assert.match(html, />London Palladium</);
+  assert.match(html, />Theatre Royal Drury Lane</);
+  assert.match(html, /Same show, new theatre/);
+  assert.ok(!/Reviewed in two cities/.test(html));
+  assert.match(buildCompareHtml({ ...moved().card, delta: 0 }), /The same score at both theatres/);
+  assert.equal(briefs.olderLabelFor('moved', jcsOld), 'London Palladium');
+  assert.equal(briefs.olderLabelFor('compare', jcsOld), 'London 2026');
+  const mk = entryMarkers({ type: 'brief', template: 'moved', slug: jcsNew.slug, olderLabel: 'London Palladium' });
+  assert.ok(mk.every(r => r.test(moved().captions.facebook)));
+  // another pair with the same newer production never matches this pair's posts
+  assert.ok(!entryMarkers({ type: 'brief', template: 'moved', slug: jcsNew.slug, olderLabel: 'Adelphi Theatre' }).every(r => r.test(moved().captions.facebook)));
+  // a compare entry keeps its compare markers
+  assert.ok(entryMarkers({ type: 'brief', template: 'compare', slug: offb.slug, olderLabel: 'London 2024' }).some(r => r === cap.COMPARE_SENTENCE));
+});
+
+test('moved: the same pair dedupes like a compare pair', () => {
+  const pair = briefs.pairKey([jcsOld.id, jcsNew.id]);
+  const ledger = { posts: [{ type: 'brief', hash: 'aaaaaaaaaaaa', pair, dueAt: '2026-11-04T15:00:00Z' }] };
+  const c = briefs.briefConflicts(ledger, { hash: 'bbbbbbbbbbbb', pair }, Date.parse('2026-11-10T00:00:00Z'));
+  assert.equal(c.samePair.hash, 'aaaaaaaaaaaa');
+  assert.equal(briefs.briefConflicts(ledger, { hash: 'aaaaaaaaaaaa', pair }, Date.now()).sameHash.hash, 'aaaaaaaaaaaa');
+});
+
+test('moved: venue digits, a leading "The", very long venues and previews overlap (ship-check findings)', () => {
+  const ny = (venue, over = {}) => show({ id: `p-${venue.length}`, slug: `p-${venue.length}`, title: 'Proof', category: 'off-broadway', venue, status: 'open', openingDate: '2026-10-16', previewsStartDate: '2026-10-16', ...over });
+  const oldRun = show({ id: 'p-old', slug: 'p-old', title: 'Proof', category: 'off-broadway', venue: 'The Public Theater', status: 'closed', openingDate: '2026-07-07', previewsStartDate: '2026-06-20', closingDate: '2026-09-05' });
+  // digits in a venue name are not stray numbers
+  const studio = briefs.buildMoved({ descA: desc(oldRun, 74, 28), descB: desc(ny('Studio 54'), 76, 32), now: NOW });
+  assert.match(studio.captions.facebook, /At Studio 54 ?|At the Studio 54: Critic Score 76/);
+  // no "the The"
+  const the = briefs.buildMoved({ descA: desc(oldRun, 74, 28), descB: desc(ny('The Shed'), 76, 32), now: NOW });
+  for (const [net, text] of Object.entries(the.captions)) assert.ok(!/the The\b/i.test(text), `${net} says "the The"`);
+  assert.match(the.captions.facebook, /moved from the Public Theater to the Shed\./);
+  assert.ok(cap.movedMarkers(ny('The Shed'), 'The Public Theater').every(mk => mk.test(the.captions.facebook)));
+  // very long venue names still fit Bluesky and X
+  const longOld = { ...oldRun, venue: 'Laura Pels Theatre at the Harold and Miriam Steinberg Center for Theatre' };
+  const longNew = ny('Second Stage Theater at the Irene Diamond Stage and Education Center');
+  const long = briefs.buildMoved({ descA: desc(longOld, 74, 28), descB: desc(longNew, 76, 32), now: NOW });
+  for (const net of ['twitter', 'bluesky']) assert.ok(xLength(net, long.captions[net]) <= LIMITS[net], `${net} over its limit`);
+  // a run that overlaps the new run's previews is not a move
+  assert.throws(() => briefs.orderMoved({ ...oldRun, closingDate: '2026-10-01' }, ny('Studio 54', { openingDate: '2026-10-16', previewsStartDate: '2026-09-20' })), /closed before/);
+});
+
+// ---- AI-written score posts (BRO-6959) ----
+const ai = require('./social-autopost/ai-captions.js');
+const facts = require('./social-autopost/facts.js');
+
+// Six Broadway openings this fall plus an older production of the first title. All offline.
+const AI_NOW = Date.parse('2026-11-04T15:00:00Z');
+function aiFixture() {
+  const rv = (n, v, t = 3) => Array.from({ length: n }, (_, i) => ({ o: `Outlet ${v} ${i}`, v, s: { rave: 95, positive: 80, mixed: 60, negative: 40 }[v], b: v[0].toUpperCase() + v.slice(1), t }));
+  const mk = (id, title, opening, cs, extra = {}) => ({
+    show: { id, slug: id, title, type: 'play', category: 'broadway', openingDate: opening, status: 'open' },
+    pub: { cs, rc: 20, rv: [...rv(2, 'positive', 1), ...rv(4, 'negative', 1), ...rv(1, 'rave'), ...rv(8, 'positive'), ...rv(5, 'mixed')], ...extra },
+  });
+  const rows = [
+    mk('good-men-2026', 'Good Men', '2026-10-29', 61, { au: { score: 88, sources: { mezzanine: { c: 400 } } }, bo: { tw: { c: 100 } } }),
+    mk('b-2026', 'Show B', '2026-09-20', 80), mk('c-2026', 'Show C', '2026-10-01', 75),
+    mk('d-2026', 'Show D', '2026-10-10', 70), mk('e-2026', 'Show E', '2026-10-20', 66),
+    mk('good-men-1989', 'Good Men', '1989-11-15', 85),
+  ];
+  const shows = rows.map(r => r.show), slim = Object.fromEntries(rows.map(r => [r.show.id, r.pub]));
+  const desc = { show: shows[0], score: 61, tierId: 'mixed', tierLabel: 'Mixed', reviewCount: 20, breakdown: { rave: 1, positive: 10, mixed: 5, negative: 4 } };
+  return { ctx: { shows, slim }, desc };
+}
+const GOOD = {
+  lead: 'season-rank',
+  post: 'Of the 5 Broadway shows that opened since September 1 and have at least 8 reviews, Good Men has the lowest Critic Score: 61 (Mixed).\n\nThe top-tier critics were rough on it. Only 2 of 6 were positive, and 4 were negative.\n\nAll 20 reviews: 1 rave, 10 positive, 5 mixed, 4 negative.',
+  x: 'Good Men has the lowest Critic Score of the 5 Broadway shows that opened since September 1 with at least 8 reviews: 61 (Mixed). Only 2 of 6 top-tier critics were positive.',
+};
+
+test('ai fact pool: the season rank keeps its qualifier, audiences get a grade only, an earlier production is offered', () => {
+  const { ctx, desc } = aiFixture();
+  const pool = facts.buildFactPool(desc.show, ctx, AI_NOW);
+  const rank = pool.facts.find(f => f.tag === 'season-rank');
+  assert.match(rank.text, /the lowest of the 5 Broadway shows that opened since September 1 and have at least 8 reviews/);
+  assert.equal(rank.weight, 3);
+  const aud = pool.facts.find(f => f.tag === 'audience');
+  assert.match(aud.text, /Audience grade: [A-F][+-]?\./);
+  assert.equal(cap.audienceNumber(aud.text.split('.')[0]), null);
+  assert.ok(!pool.numbers.has('88'), 'the audience score is never an allowed number');
+  assert.match(pool.facts.find(f => f.tag === 'earlier-production').text, /Broadway 1989, Critic Score 85/);
+  assert.ok(facts.factSheet(pool).startsWith('SHOW: Good Men (Broadway)'));
+});
+
+test('ai checkDraft: a faithful draft passes; numbers, audience scores, dashes and stock phrases are refused', () => {
+  const { ctx, desc } = aiFixture();
+  const pool = facts.buildFactPool(desc.show, ctx, AI_NOW);
+  assert.deepEqual(ai.checkDraft(GOOD, pool, 'Good Men'), []);
+  const bad = (field, text) => ai.checkDraft({ ...GOOD, [field]: text }, pool, 'Good Men').join(' | ');
+  assert.match(bad('x', `${GOOD.x} Up 12 points.`), /not in the facts: 12/);
+  assert.match(bad('x', `${GOOD.x} Twenty-seven critics agree.`), /not in the facts: 27/);
+  assert.match(bad('post', `${GOOD.post} Audiences give it 88%.`), /gives audiences a number/);
+  assert.match(bad('post', GOOD.post.replace('. Only', ', only') + ' Critics — split.'), /dash/);
+  assert.match(bad('x', `The reviews are in. ${GOOD.x}`.slice(0, 250)), /stock opener/);
+  assert.match(bad('x', 'Good Men opened to mixed reviews from top-tier critics.'), /must say "Critic Score"/);
+  assert.match(bad('x', 'Good Men closes Nov 10, with a Critic Score of 61 (Mixed).'), /must not read like/);
+  assert.match(bad('post', GOOD.post.replace('Good Men', 'The show')), /must name the show/);
+  assert.deepEqual(ai.wordNumbers('twenty-six reviews, no one, one of them, the second highest, nine critics'), ['26', '2', '9']);
+});
+
+test('ai writeScoreCaptions: an approved draft fills every network within limits and keeps the dedupe markers', async () => {
+  const { ctx, desc } = aiFixture();
+  let checked = 0;
+  const r = await ai.writeScoreCaptions(desc, ctx, AI_NOW, { writer: async () => GOOD, checker: async () => { checked++; return { supported: true, problems: [] }; } });
+  assert.equal(r.meta.writer, 'ai');
+  assert.equal(r.meta.lead, 'season-rank');
+  assert.equal(checked, 1);
+  for (const [net, text] of Object.entries(r.captions)) {
+    if (LIMITS[net]) assert.ok(xLength(net, text) <= LIMITS[net], `${net} ${xLength(net, text)}`);
+    if (net !== 'altText') for (const re of postMarkers(desc.show)) assert.match(text, re, `${net} keeps the dedupe marker`);
+  }
+  assert.ok(r.captions.facebook.startsWith(GOOD.post));
+  assert.match(r.captions.instagram, /\(link in bio\)/);
+});
+
+test('ai writeScoreCaptions: a rejected draft is rewritten once, then the template stands in; errors never throw', async () => {
+  const { ctx, desc } = aiFixture();
+  const template = buildCaptions(desc);
+  const prompts = [];
+  // First draft has a stray number; the rewrite (which sees the problem) is clean.
+  const drafts = [{ ...GOOD, x: `${GOOD.x} Up 12.` }, GOOD];
+  const r1 = await ai.writeScoreCaptions(desc, ctx, AI_NOW, { writer: async p => { prompts.push(p); return drafts.shift(); }, checker: async () => ({ supported: true, problems: [] }) });
+  assert.equal(r1.meta.writer, 'ai');
+  assert.equal(r1.meta.attempts, 2);
+  assert.match(prompts[1], /not in the facts: 12/);
+  // The fact checker objects both times: template.
+  const r2 = await ai.writeScoreCaptions(desc, ctx, AI_NOW, { writer: async () => GOOD, checker: async () => ({ supported: false, problems: ['"rough" overstates it'] }) });
+  assert.equal(r2.meta.writer, 'template');
+  assert.deepEqual(r2.captions, template);
+  assert.match(r2.meta.problems[0], /fact check/);
+  // The writer is down: template, with the reason.
+  const r3 = await ai.writeScoreCaptions(desc, ctx, AI_NOW, { writer: async () => { throw new Error('Claude writer HTTP 529'); }, checker: async () => ({ supported: true, problems: [] }) });
+  assert.equal(r3.meta.writer, 'template');
+  assert.match(r3.meta.fallback, /529/);
+  assert.equal(r3.meta.outage, true, 'an API failure is flagged so run.js reports it');
+  assert.deepEqual(r3.captions, template);
+});
+
+test('ai writer switch: live follows config; dry runs draft only when forced; kill switch and missing keys win', () => {
+  const keys = { ANTHROPIC_API_KEY: 'x', OPENAI_API_KEY: 'y' };
+  assert.match(ai.aiDisabledReason(keys), /enabled is false/);
+  assert.equal(ai.aiDisabledReason(keys, { enabled: true }), null);
+  assert.match(ai.aiDisabledReason(keys, { enabled: true, dryRun: true }), /dry run/, 'a preview never pays unless forced');
+  assert.equal(ai.aiDisabledReason({ ...keys, SOCIAL_AI_CAPTIONS_FORCE: 'true' }, { dryRun: true }), null);
+  assert.match(ai.aiDisabledReason({ ...keys, SOCIAL_AI_CAPTIONS_FORCE: 'true' }, { dryRun: false }), /enabled is false/, 'force never turns it on for live posts');
+  assert.match(ai.aiDisabledReason({ ANTHROPIC_API_KEY: 'x' }, { enabled: true }), /OPENAI/);
+  assert.match(ai.aiDisabledReason({ OPENAI_API_KEY: 'y' }, { enabled: true }), /ANTHROPIC/);
+  assert.match(ai.aiDisabledReason({ ...keys, SOCIAL_AI_CAPTIONS_DISABLED: 'true' }, { enabled: true }), /DISABLED/);
+});
+
+test('ai writeScoreCaptions: a "supported" verdict that lists a problem is a rejection; a spent run budget means template', async () => {
+  const { ctx, desc } = aiFixture();
+  const r = await ai.writeScoreCaptions(desc, ctx, AI_NOW, { writer: async () => GOOD, checker: async () => ({ supported: true, problems: ['"rough" overstates it'] }) });
+  assert.equal(r.meta.writer, 'template');
+  assert.equal(r.meta.attempts, 2);
+  let called = 0;
+  const late = await ai.writeScoreCaptions(desc, ctx, AI_NOW, { deadline: Date.now() - 1, writer: async () => { called++; return GOOD; }, checker: async () => ({ supported: true, problems: [] }) });
+  assert.equal(late.meta.writer, 'template');
+  assert.match(late.meta.fallback, /budget/);
+  assert.equal(called, 0);
+});
+
+test('ai fact pool: ranks use the shown (rounded) score, so equal scores are a tie', () => {
+  const { ctx, desc } = aiFixture();
+  ctx.slim['b-2026'].cs = 61.4; // shows as 61, same as Good Men; nothing lower
+  const rank = facts.buildFactPool(desc.show, ctx, AI_NOW).facts.find(f => f.tag === 'season-rank');
+  assert.match(rank.text, /tied for the lowest of the 5 Broadway shows/);
+});
+
+test('ai fact pool: an earlier production outside a social market (a tour) is skipped, not a crash', () => {
+  const { ctx, desc } = aiFixture();
+  const tour = { id: 'good-men-tour-2020', slug: 'good-men-tour-2020', title: 'Good Men', type: 'play', category: 'tour', openingDate: '2020-01-10' };
+  ctx.shows.push(tour); ctx.slim[tour.id] = { cs: 50, rc: 12, rv: [] };
+  const pool = facts.buildFactPool(desc.show, ctx, AI_NOW);
+  assert.match(pool.facts.find(f => f.tag === 'earlier-production').text, /Broadway 1989/);
+});
+
+test('ai writeScoreCaptions: a kept draft is reused only while the fact sheet is unchanged', async () => {
+  const { ctx, desc } = aiFixture();
+  const cache = {}; let writes = 0;
+  const deps = { cache, writer: async () => { writes++; return GOOD; }, checker: async () => ({ supported: true, problems: [] }) };
+  await ai.writeScoreCaptions(desc, ctx, AI_NOW, deps);
+  const again = await ai.writeScoreCaptions(desc, ctx, AI_NOW, deps);
+  assert.equal(again.meta.reused, true);
+  assert.equal(writes, 1);
+  ctx.slim['good-men-2026'].bo.tw.c = 91; // a fact changed: draft again
+  const fresh = await ai.writeScoreCaptions(desc, ctx, AI_NOW, deps);
+  assert.ok(!fresh.meta.reused);
+  assert.equal(writes, 2);
+});
+
+test('ai fact pool: an earlier production of another type (an opera vs the play) is not offered; closing days count New York calendar days', () => {
+  const { ctx, desc } = aiFixture();
+  ctx.shows.find(s => s.id === 'good-men-1989').type = 'opera';
+  assert.ok(!facts.buildFactPool(desc.show, ctx, AI_NOW).facts.some(f => f.tag === 'earlier-production'));
+  desc.show.closingDate = '2026-11-20'; // AI_NOW is 10am New York on Nov 4
+  assert.match(facts.buildFactPool(desc.show, ctx, AI_NOW).facts.find(f => f.tag === 'closing').text, /16 days after this post/);
+});
+
+test('ai checkDraft: a number in the title never vouches for a claim; decimals are refused', () => {
+  const { ctx, desc } = aiFixture();
+  const pool = facts.buildFactPool(desc.show, ctx, AI_NOW);
+  const t = 'Good Men 13';
+  const d = { post: GOOD.post.replace(/Good Men/g, t), x: GOOD.x.replace('Good Men', t) };
+  assert.deepEqual(ai.checkDraft(d, pool, t), []);
+  assert.match(ai.checkDraft({ ...d, x: `${d.x} 13 raves.` }, pool, t).join(' | '), /not in the facts: 13/);
+  assert.match(ai.checkDraft({ ...d, x: d.x.replace('61 (Mixed)', '61.4 (Mixed)') }, pool, t).join(' | '), /decimal/);
+});
+
+// BRO-6935: touring and out-of-town shows post on the Broadway accounts, score lane only.
+test('touring: US tryouts post, UK regional, local-only and tour legs do not', () => {
+  const reg = over => show({ id: 'r-2026', category: 'regional', venue: 'Goodman Theatre, Chicago, IL', ...over });
+  assert.equal(sel.touringEligible(reg(), [reg()]), true);
+  assert.equal(sel.touringEligible(reg({ venue: 'Royal Shakespeare Theatre, Stratford-upon-Avon' })), false, 'UK flagship house');
+  assert.equal(sel.touringEligible(reg({ localOnly: true })), false);
+  assert.equal(sel.touringEligible(reg({ tourParent: 'big-tour' })), false, 'one leg of a multi-venue tour');
+});
+
+test('touring: only the first national tour launch with launch evidence posts', () => {
+  const tour = over => show({ id: 'a-tour-2024', category: 'tour', tourOf: 'a-2019', tourLaunchEvidence: 'roundup 2024', openingDate: '2024-10-20', ...over });
+  const first = tour(), relaunch = tour({ id: 'a-tour-2027', openingDate: '2027-01-12' });
+  assert.equal(sel.touringEligible(first, [first, relaunch]), true);
+  assert.equal(sel.touringEligible(relaunch, [first, relaunch]), false, 'a relaunch is not the first launch');
+  assert.equal(sel.touringEligible(tour({ tourLaunchEvidence: undefined }), []), false, 'no launch evidence');
+  assert.equal(sel.touringEligible(first), false, 'fails closed without the show list');
+  const second = tour({ id: 'a-tour-2026', tourOf: 'a-2025', openingDate: '2026-02-01', title: first.title });
+  assert.equal(sel.touringEligible(second, [first, second]), false, 'a second tour with a new tourOf and the same title');
+  assert.equal(sel.touringEligible(tour({ tourParent: 'p' }), []), false);
+});
+
+test('touring: score lane only, routed to the Broadway set, floors stricter than Off-Broadway', () => {
+  const C = require('./social-autopost/config.js');
+  const tour = show({ id: 't-tour-2026', category: 'tour', tourOf: 't-2020', tourLaunchEvidence: 'x' });
+  assert.equal(sel.isEligibleShow(tour), false, 'roundups, closing-soon and backfill never pick touring shows');
+  assert.equal(sel.isEligibleShow(tour, { allowTouring: true, shows: [tour] }), true);
+  assert.deepEqual(routing.targetSets(tour, NONE), ['broadway']);
+  const lond = { outletId: 'telegraph' };
+  assert.deepEqual(routing.targetSets(tour, [lond], SETS_BOTH, []), ['broadway'], 'never cross-posted to the West End accounts');
+  for (const cat of ['regional', 'tour']) {
+    assert.ok(C.SCORE_FLOORS[cat].t1 >= 1 && C.SCORE_FLOORS[cat].total >= C.SCORE_FLOORS['off-broadway'].total, cat);
+  }
+  // a 1 tier-1 review show clears the floor; a show with none does not
+  const s = { ...tour, openingDate: '2026-10-01' };
+  const ok = sel.scoreSettled(s, { reviewsByShow: { [s.id]: reviews(1, 3, 6) }, slim: { [s.id]: { cs: 80, rc: 10 } }, getOutletTier, shows: [s] });
+  const none = sel.scoreSettled(s, { reviewsByShow: { [s.id]: reviews(0, 3, 8) }, slim: { [s.id]: { cs: 80, rc: 11 } }, getOutletTier, shows: [s] });
+  assert.equal(ok.ok, true);
+  assert.equal(none.ok, false);
+  assert.equal(sel.scoreDecision(tour, { ...base(tour), done: new Set(), now: Date.parse('2026-11-06T15:00:00Z') }).why === 'ineligible', false);
+});
+
+test('short captions drop the question before clipping a show name past recognition', () => {
+  const cap = require('./social-autopost/captions.js');
+  const show = { id: 'clifford-odets-waiting-for-lefty-off-broadway', slug: 'clifford-odets-waiting-for-lefty-off-broadway', title: 'Clifford Odets’ Waiting for Lefty', category: 'off-broadway' };
+  const c = cap.buildCaptions({ show, score: 68, tierId: 'worth-seeing', tierLabel: 'Worth Seeing', reviewCount: 10, breakdown: { rave: 2, positive: 4, mixed: 3, negative: 1 } });
+  assert.match(c.twitter, /Clifford Odets’ Waiting for Lefty has a Critic Score of 68/);
+  // Bluesky counts the long link in full: the title may shorten, but it must still name the show.
+  assert.match(c.bluesky, /^Clifford Odets’ Waiting.{0,12} has a Critic Score of 68/);
+  assert.ok([...c.bluesky].length <= LIMITS.bluesky);
+  // With the question too, the old order clipped the title to "Clifford…"; a long question now goes first.
+  const long = cap.buildCaptions({ show: { ...show, title: 'Clifford Odets’ Waiting for Lefty and Other Plays' }, score: 68, tierId: 'worth-seeing', tierLabel: 'Worth Seeing', reviewCount: 10, breakdown: { rave: 2, positive: 4, mixed: 3, negative: 1 } });
+  assert.doesNotMatch(long.bluesky, /^Clifford… /);
+  assert.match(long.bluesky, /^Clifford Odets’ Waiting/);
 });

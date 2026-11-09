@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6137",
   "planId": "5858d7ac-886c-4a2d-9d65-4b6e7cc91cd1",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-24T14:26:22.323Z",
   "submitter": {
     "name": null,
@@ -408,5 +408,78 @@
       "msg": "commercial.json: designation updated for oh-hello-on-broadway-2016"
     }
   ],
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "resolved": 7,
+      "obsolete": 5
+    },
+    "ops": [
+      {
+        "i": 3,
+        "verdict": "resolved",
+        "reason": "the-front-page-2016.recouped already true"
+      },
+      {
+        "i": 4,
+        "verdict": "resolved",
+        "reason": "the-front-page-2016.recoupedDate already \"2017-01\""
+      },
+      {
+        "i": 5,
+        "verdict": "obsolete",
+        "reason": "the-front-page-2016.recoupedSource changed since by a later write (now \"https://variety.com/2017/biz/news/the-front-page-recoup-...)"
+      },
+      {
+        "i": 6,
+        "verdict": "obsolete",
+        "reason": "the-front-page-2016.sources changed since by a later write (now [{\"type\":\"trade\",\"url\":\"https://variety.com/2017/biz/news...)"
+      },
+      {
+        "i": 11,
+        "verdict": "resolved",
+        "reason": "the-humans-2016.recouped already true"
+      },
+      {
+        "i": 12,
+        "verdict": "resolved",
+        "reason": "the-humans-2016.recoupedDate already \"2016-09\""
+      },
+      {
+        "i": 13,
+        "verdict": "obsolete",
+        "reason": "the-humans-2016.recoupedSource changed since by a later write (now \"https://playbill.com/article/broadways-the-humans-recoup...)"
+      },
+      {
+        "i": 14,
+        "verdict": "resolved",
+        "reason": "the-humans-2016.sources already [{\"type\":\"trade\",\"url\":\"https://playbill.com/article/broa..."
+      },
+      {
+        "i": 19,
+        "verdict": "resolved",
+        "reason": "oh-hello-on-broadway-2016.recouped already true"
+      },
+      {
+        "i": 20,
+        "verdict": "resolved",
+        "reason": "oh-hello-on-broadway-2016.recoupedDate already \"2017-01\""
+      },
+      {
+        "i": 21,
+        "verdict": "obsolete",
+        "reason": "oh-hello-on-broadway-2016.recoupedSource changed since by a later write (now \"https://variety.com/2017/legit/news/oh-hello-recoup-broa...)"
+      },
+      {
+        "i": 22,
+        "verdict": "obsolete",
+        "reason": "oh-hello-on-broadway-2016.sources changed since by a later write (now [{\"type\":\"trade\",\"url\":\"https://variety.com/2017/legit/ne...)"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (7 resolved, 5 obsolete); per-op reasons in triage.ops"
 }

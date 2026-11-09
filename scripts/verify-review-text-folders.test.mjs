@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (read by the test); data/review-texts (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-5153: the five review-text folders that once had no shows.json entry must
 // stay resolved (id in shows.json, or folder gone). Where a review-texts corpus
 // is available, also assert none of them is an orphan folder.

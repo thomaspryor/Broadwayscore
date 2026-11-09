@@ -39,10 +39,11 @@ const SHOTS = [
     // The owner posts the review list, many rows to one image. Each pull
     // quote is 4-6 lines at phone width, so with quotes only one review fit.
     // The indented block under each row (ReviewsList.tsx, pl-24) holds the
-    // quote <p> and the byline/Full Review row <div>; both go. Its "earlier
+    // quote <p> (the byline now runs in at its end) and, for older markup, a
+    // trailing <div>; both go, and so does the arrow link in the header row. Its "earlier
     // run" tag is a <span> and stays, so an old review never reads as current.
     // The Sort row is a page control, not content.
-    css: '#critic-reviews article [class*="pl-24"] > p, #critic-reviews article [class*="pl-24"] > div, #critic-reviews div:has(> button):not(:has(article)):not(article *) { display: none !important; }',
+    css: '#critic-reviews article [class*="pl-24"] > p, #critic-reviews article [class*="pl-24"] > div, #critic-reviews article a[aria-label^="Read full review"], #critic-reviews div:has(> button):not(:has(article)):not(article *) { display: none !important; }',
   },
   // The real card only (AudienceBuzzCard). In previews the same slot holds an
   // "Audience data will be added" placeholder, which is not worth posting.
@@ -119,7 +120,7 @@ async function captureShowImages(url, outDir, { chromium = null, executablePath 
     // going network-idle, which would burn the timeout for no images.
     await page.goto(url, { waitUntil: 'load', timeout: 45_000 });
     // Cookie/consent banners and sticky bars would sit on top of the card.
-    await page.addStyleTag({ content: '[role="dialog"], [data-testid*="cookie" i], [data-testid*="consent" i], [aria-label="Add to watchlist"], [aria-label="Remove from watchlist"], [aria-label^="Your rating"] { display: none !important; }' });
+    await page.addStyleTag({ content: '[role="dialog"], [data-testid*="cookie" i], [data-testid*="consent" i], [aria-label$="To See"], [aria-label$="To See list"], [aria-label^="Remove from To See"], [aria-label^="Your rating"] { display: none !important; }' });
     await page.waitForTimeout(800);
     const out = [];
     for (const shot of SHOTS) {

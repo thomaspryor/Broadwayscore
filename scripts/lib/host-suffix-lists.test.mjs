@@ -240,12 +240,20 @@ test('SOURCE GUARD: no consumer re-declares its own suffix list', () => {
     'outlet-canonicalize.js',
     'silent-exclusion-detectors.js',
     'non-review-url-patterns.js',
+    'review-normalization.js',
   ];
   for (const file of consumers) {
     const src = fs.readFileSync(path.join(__dirname, file), 'utf8');
     const code = src
       .replace(/\/\*[\s\S]*?\*\//g, '')        // block comments
       .replace(/(^|[^:])\/\/.*$/gm, '$1');     // line AND trailing inline comments
+    // BRO-6840: a generic ccTLD alternation has no literal suffixes for the
+    // list guard below to count, but still duplicates multipartSuffixOf.
+    assert.doesNotMatch(
+      code,
+      /\(\?:[a-z]+(?:\|[a-z]+)+\)\\\.\[a-z\]\{2\}/,
+      `${file} declares its own second-level country suffix pattern; use multipartSuffixOf instead`,
+    );
     // Match the fork's SHAPE, not any single domain literal. Two constraints
     // pull against each other here (both found by ship-check 2026-08-12):
     //   - the fork this replaced was a REGEX (`/\.(co\.uk|com\.au|…)/i`), so

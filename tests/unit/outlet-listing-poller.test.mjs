@@ -416,6 +416,27 @@ describe('findMatchingShows — whole-word matching (ship-check on #940)', () =>
   });
 });
 
+// BRO-6921: NYTG "this song cycle with heart passes the test" put a School
+// Pictures review on "The Heart". A one-word title seen only in the headline
+// must be written capitalized there; a slug match still counts.
+describe('findMatchingShows: one-word titles in lowercase prose (BRO-6921)', () => {
+  const shows = [
+    { id: 'the-heart-off-broadway-2026', title: 'The Heart', status: 'open' },
+    { id: 'school-pictures-off-broadway-2026', title: 'School Pictures', status: 'open' },
+    { id: 'hamilton-2015', title: 'Hamilton', status: 'open' },
+  ];
+  const ids = (h, u) => findMatchingShows(h, u, shows).map(s => s.id);
+  test('lowercase common word in a headline does not match the one-word title', () => {
+    assert.deepEqual(ids("'School Pictures' Off-Broadway review: this song cycle with heart passes the test", '/reviews/school-pictures-off-broadway-review-cherry-lane-theatre'), ['school-pictures-off-broadway-2026']);
+  });
+  test('capitalized or all-caps headline title, and a slug title, still match', () => {
+    assert.deepEqual(ids("'The Heart' Off-Broadway review", '/2026/10/x'), ['the-heart-off-broadway-2026']);
+    assert.deepEqual(ids('THE HEART review: an organ musical', '/2026/10/x'), ['the-heart-off-broadway-2026']);
+    assert.deepEqual(ids('', '/reviews/the-heart-off-broadway-review'), ['the-heart-off-broadway-2026']);
+    assert.deepEqual(ids('Hamilton tour review', '/2026/10/x'), ['hamilton-2015']);
+  });
+});
+
 // BRO-6340: a proxied retry can return a 200 block/interstitial page. It must be
 // rejected (so the poller falls back to SERP) instead of parsing as an empty feed.
 describe('looksLikeFeed', () => {
@@ -538,5 +559,16 @@ describe('feed staleness (BRO-6352)', async () => {
     for (let i = 0; i < 3; i++) r = buildFeedHealthReport(failingOnly, reviews, { now, previous: r });
     fs.writeFileSync(file, JSON.stringify(r));
     assert.match(evaluateOutletFeedHealth({ filePath: file, now }).message, /1 failing: thewrap/);
+  });
+});
+
+describe('slantmagazine feed (BRO-6953)', () => {
+  test('uses the reachable all-site feed and keeps only /theater/ slugs', () => {
+    const { OUTLET_STRATEGY_CONFIG } = require('../../scripts/outlet-listing-poller.js');
+    const cfg = OUTLET_STRATEGY_CONFIG.slantmagazine;
+    assert.equal(cfg.url, 'https://slantmagazine.com/feed/');
+    assert.ok(cfg.urlFilter.test('https://www.slantmagazine.com/theater/some-show-broadway-review/'));
+    assert.ok(!cfg.urlFilter.test('https://www.slantmagazine.com/film/a-film-review/'));
+    assert.ok(!cfg.urlFilter.test('https://www.slantmagazine.com/music/an-album-review/'));
   });
 });

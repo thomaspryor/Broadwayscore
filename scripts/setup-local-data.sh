@@ -21,6 +21,8 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
 # shellcheck source=lib/core-data-clone-guard.sh
 source "$SCRIPT_DIR/lib/core-data-clone-guard.sh"
+# shellcheck source=lib/clone-failure.sh
+source "$SCRIPT_DIR/lib/clone-failure.sh"
 DATA_DIR="$PROJECT_DIR/data"
 LINK_ONLY=0
 [ "${1:-}" = "--link-only" ] && LINK_ONLY=1
@@ -131,8 +133,7 @@ elif [ -d "$CORE_DATA_DIR/.git" ]; then
 else
   echo "Cloning broadway-scorecard-data to $CORE_DATA_DIR..."
   if [ "$AUTH_METHOD" = "gh" ]; then
-    if ! gh repo clone thomaspryor/broadway-scorecard-data "$CORE_DATA_DIR" -- --depth 1 2>/dev/null; then
-      echo "ERROR: Failed to clone broadway-scorecard-data. Check your access permissions."
+    if ! run_clone "Failed to clone broadway-scorecard-data" "Check your access permissions." gh repo clone thomaspryor/broadway-scorecard-data "$CORE_DATA_DIR" -- --depth 1; then
       exit 1
     fi
   elif [ "$AUTH_METHOD" = "proxy" ]; then
@@ -143,13 +144,11 @@ else
     # a stub. GIT_TERMINAL_PROMPT=0 still prevents an interactive hang if there's no
     # helper. (The osxkeychain-hang concern only applies locally, and this branch
     # never runs locally.)
-    if ! GIT_TERMINAL_PROMPT=0 git clone --depth 1 "https://github.com/thomaspryor/broadway-scorecard-data.git" "$CORE_DATA_DIR" 2>/dev/null; then
-      echo "ERROR: Proxy clone of broadway-scorecard-data failed — the connected GitHub account may lack access to the private repo. Set REVIEW_TEXTS_TOKEN as a fallback."
+    if ! GIT_TERMINAL_PROMPT=0 run_clone "Proxy clone of broadway-scorecard-data failed" "The connected GitHub account may lack access to the private repo. Set REVIEW_TEXTS_TOKEN as a fallback." git clone --depth 1 "https://github.com/thomaspryor/broadway-scorecard-data.git" "$CORE_DATA_DIR"; then
       exit 1
     fi
   else
-    if ! git clone --depth 1 "https://x-access-token:${TOKEN}@github.com/thomaspryor/broadway-scorecard-data.git" "$CORE_DATA_DIR" 2>/dev/null; then
-      echo "ERROR: Failed to clone broadway-scorecard-data. Check your access permissions."
+    if ! run_clone "Failed to clone broadway-scorecard-data" "Check your access permissions." git clone --depth 1 "https://x-access-token:${TOKEN}@github.com/thomaspryor/broadway-scorecard-data.git" "$CORE_DATA_DIR"; then
       exit 1
     fi
   fi
@@ -270,6 +269,30 @@ for f in "${GENERATED_FILES[@]}"; do
   fi
 done
 [ "$GEN_COUNT" -gt 0 ] && echo "Generated files: $GEN_COUNT copied from main checkout"
+# BRO-7110 follow-up: a cloud main checkout never has them either, so the copy
+# above finds nothing and land-local-check refuses every fresh worktree. Build
+# any that are missing, unreadable (a killed or disk-full write) or an empty
+# stub (cloud-stub-data.js) from the tracked data/cast/ (seconds, no network).
+generator_for() {
+  case "$1" in
+    cast-manifest.json) echo build-cast-manifest.js ;;
+    actor-slugs.json) echo build-actor-slugs-manifest.js ;;
+  esac
+}
+manifest_ok() {
+  node -e 'const e=JSON.parse(require("fs").readFileSync(process.argv[1],"utf8")).entries;process.exit(e&&Object.keys(e).length?0:1)' "$1" 2>/dev/null
+}
+for f in "${GENERATED_FILES[@]}"; do
+  gen="$(generator_for "$f")"
+  [ -n "$gen" ] || continue
+  manifest_ok "$DATA_DIR/$f" && continue
+  if (cd "$PROJECT_DIR" && node "scripts/$gen" >/dev/null 2>&1) && manifest_ok "$DATA_DIR/$f"; then
+    echo "Generated files: built $f from data/cast/"
+  else
+    rm -f "$DATA_DIR/$f"
+    echo "WARN: could not build data/$f (run: node scripts/$gen)"
+  fi
+done
 
 # Env files (gitignored — symlinks can't be committed; needed for
 # `npm run build` in a fresh worktree: .env has API tokens, .env.local has
@@ -336,28 +359,21 @@ if [ "${1:-}" = "--all" ] && [ "$RT_LINKED" = 0 ]; then
     # fresh clone next to this repo. Clone it locally (hardlinked objects, no
     # network, no token) and check out its origin/main, so a working branch or
     # uncommitted edits in that clone never leak into data/.
-    if ! git clone -q "$REVIEW_TEXTS_SOURCE" "$TEMP_DIR/review-texts"; then
-      echo "ERROR: Local clone of $REVIEW_TEXTS_SOURCE failed."
-      exit 1
-    fi
-    RT_SHA="$(git -C "$REVIEW_TEXTS_SOURCE" rev-parse -q --verify refs/remotes/origin/main || git -C "$REVIEW_TEXTS_SOURCE" rev-parse HEAD)"
-    if ! git -C "$TEMP_DIR/review-texts" checkout -q --detach "$RT_SHA"; then
-      echo "ERROR: Could not check out $RT_SHA from $REVIEW_TEXTS_SOURCE."
+    # shellcheck source=lib/clone-review-texts-source.sh
+    . "$SCRIPT_DIR/lib/clone-review-texts-source.sh" || { echo "FATAL: cannot load lib/clone-review-texts-source.sh" >&2; exit 1; }
+    if ! clone_review_texts_source "$REVIEW_TEXTS_SOURCE" "$TEMP_DIR/review-texts" >/dev/null; then
       exit 1
     fi
   elif [ "$AUTH_METHOD" = "gh" ]; then
-    if ! gh repo clone thomaspryor/broadway-review-texts "$TEMP_DIR/review-texts" -- --depth 1 2>/dev/null; then
-      echo "ERROR: Failed to clone broadway-review-texts. Check your access permissions."
+    if ! run_clone "Failed to clone broadway-review-texts" "Check your access permissions." gh repo clone thomaspryor/broadway-review-texts "$TEMP_DIR/review-texts" -- --depth 1; then
       exit 1
     fi
   elif [ "$AUTH_METHOD" = "proxy" ]; then
-    if ! GIT_TERMINAL_PROMPT=0 git clone --depth 1 "https://github.com/thomaspryor/broadway-review-texts.git" "$TEMP_DIR/review-texts" 2>/dev/null; then
-      echo "ERROR: Proxy clone of broadway-review-texts failed — set REVIEW_TEXTS_TOKEN as a fallback."
+    if ! GIT_TERMINAL_PROMPT=0 run_clone "Proxy clone of broadway-review-texts failed" "The connected GitHub account may lack access to the private repo. Set REVIEW_TEXTS_TOKEN as a fallback." git clone --depth 1 "https://github.com/thomaspryor/broadway-review-texts.git" "$TEMP_DIR/review-texts"; then
       exit 1
     fi
   else
-    if ! git clone --depth 1 "https://x-access-token:${TOKEN}@github.com/thomaspryor/broadway-review-texts.git" "$TEMP_DIR/review-texts" 2>/dev/null; then
-      echo "ERROR: Failed to clone broadway-review-texts. Check your access permissions."
+    if ! run_clone "Failed to clone broadway-review-texts" "Check your access permissions." git clone --depth 1 "https://x-access-token:${TOKEN}@github.com/thomaspryor/broadway-review-texts.git" "$TEMP_DIR/review-texts"; then
       exit 1
     fi
   fi

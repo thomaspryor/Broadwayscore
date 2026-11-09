@@ -35,6 +35,7 @@ const { buildDispatchUrl, attachHealthFixUrls } = require('./lib/dispatch-link.j
 const { renderEmail, extractWhy, summarizeQueue, buildPlainLanguageItemPrompt, sanitizePlainLanguageText, actionableAttentionCountOf } = require('./lib/autonomous-email-render.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
 const { summarize: summarizeRecheck, describeResult } = require('./lib/autonomous-recheck-core.js');
+const { recheckVerdict } = require('./lib/check-env-cause.js');
 const { MAIN_REPO_ROOT } = require('./lib/repo-root');
 
 const REPO = path.join(__dirname, '..');
@@ -441,7 +442,12 @@ async function main() {
       const results = recent.map(e => {
         // Structured fields first (written since the ship-check fix); the
         // note-prefix parse is the fallback for rows written before that.
-        if (e.status || e.skip) return { name: e.name || '(untitled)', status: e.status || null, skip: e.skip || null };
+        // BRO-7138: recheckVerdict reads an old 'fail' row whose check could
+        // not run on the recheck machine as unverifiable, with its cause.
+        if (e.status || e.skip) {
+          const v = recheckVerdict(e);
+          return { name: e.name || '(untitled)', status: e.skip ? null : v.status, skip: e.skip || null, envCause: v.envCause };
+        }
         const note = String(e.note || '');
         const skipped = /^skipped/.test(note);
         return {

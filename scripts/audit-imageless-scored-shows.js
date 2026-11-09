@@ -34,6 +34,11 @@ const {
   idsClearedSinceLastRun,
   IMAGELESS_DISPATCH_FAILED_KEY,
   IMAGELESS_STILL_IMAGELESS_KEY,
+  IMAGELESS_BACKLOG_STALLED_KEY,
+  SELF_HEAL_BATCH_SIZE,
+  orderFlaggedForSelfHeal,
+  findStalledBacklog,
+  buildBacklogStalledAlert,
   buildDispatchFailedAlert,
   buildStillImagelessAlert,
 } = require('./lib/image-trigger-guard.js');
@@ -49,17 +54,15 @@ const DATA_DIR = path.join(__dirname, '..', 'data');
 const OUTPUT_FILE = path.join(DATA_DIR, 'audit', 'imageless-scored-shows.json');
 const COOLDOWN_HOURS = 12; // min gap between re-dispatch attempts for the same show
 const ESCALATE_AFTER_ATTEMPTS = 3; // self-heal dispatched 3x and still imageless -> alert
-// Caps how many shows ride in ONE batch, not how many dispatches fire — since
-// BRO-2672's second-caller fix a cycle fires at most one workflow_dispatch no
-// matter how many shows are due, so the old "flooding the fetch-images
-// concurrency group" rationale for this number no longer applies. What it
-// still buys: fetch-all-image-formats.yml processes the comma list serially
-// inside a single job, so an unbounded batch would push that one run past its
-// timeout and lose the whole batch instead of the tail. Prioritize
-// newest-first — THIS card is about a new show going live, not draining the
-// historical backlog, which still drains gradually across cycles (and via the
-// twice-weekly full sweep).
-const MAX_SHOWS_PER_BATCH = 5;
+// Caps how many shows ride in ONE batch, not how many dispatches fire: a cycle fires at most
+// one workflow_dispatch however many shows are due. fetch-all-image-formats.yml processes the
+// comma list inside a single job, so an unbounded batch would push that run past its timeout
+// and lose the whole batch instead of the tail. The number lives in lib/image-trigger-guard.js.
+// THIS job is the ONLY path that fetches art for closed shows: the twice-weekly sweep runs
+// `--missing` without --include-closed, so a closed show nobody dispatches never gets an image.
+// The queue is therefore sized to drain the closed backlog (see SELF_HEAL_BATCH_SIZE), and a
+// never-attempted row waiting 10+ days raises the backlog-stalled alert.
+const MAX_SHOWS_PER_BATCH = SELF_HEAL_BATCH_SIZE; // lib/image-trigger-guard.js explains the number
 
 function loadJson(file, fallback) {
   try {
@@ -162,9 +165,11 @@ async function main() {
     }
   }
 
-  // Newest-first: a just-published show is the actual target of this card;
-  // a years-old historical gap is lower urgency and can wait its turn.
-  const orderedFlagged = [...flagged].sort((a, b) => b.sinceMs - a.sinceMs);
+  // Never-dispatched first, newest-first within an attempt count: a
+  // just-published show still leads, but a show whose search keeps failing no
+  // longer re-takes the front slots every cooldown while older, healable shows
+  // wait forever (761 of 771 flagged rows had zero attempts).
+  const orderedFlagged = orderFlaggedForSelfHeal(flagged, prevById);
 
   // ONE dispatch for the whole batch, never one per show. Each
   // workflow_dispatch lands in fetch-all-image-formats.yml's single-slot
@@ -210,9 +215,11 @@ async function main() {
     .filter((f) => (entryById.get(f.id).dispatchAttempts || 0) >= ESCALATE_AFTER_ATTEMPTS)
     .map((f) => ({ id: f.id, title: f.title, attempts: entryById.get(f.id).dispatchAttempts }));
 
+  const stalledBacklog = findStalledBacklog(nextLedger, nowMs);
   const rollups = [
     { key: IMAGELESS_DISPATCH_FAILED_KEY, items: failedShows, opts: buildDispatchFailedAlert(failedShows, [...failedErrors].join(' | ') || 'unknown'), header: (added) => `More shows hit the failed self-heal dispatch (${added.length} new):` },
     { key: IMAGELESS_STILL_IMAGELESS_KEY, items: stillImageless, opts: buildStillImagelessAlert(stillImageless), header: (added) => `More shows still imageless after repeated self-heal (${added.length} new):` },
+    { key: IMAGELESS_BACKLOG_STALLED_KEY, items: stalledBacklog, opts: buildBacklogStalledAlert(stalledBacklog), header: (added) => `More shows have waited too long for a first fetch attempt (${added.length} new):` },
   ];
   const { routeAlert, resolveQuietConditions } = require('./lib/owner-alert-router.js');
   // Legacy per-show cards (pre-rollup keys) close through the quiet-gap debounce

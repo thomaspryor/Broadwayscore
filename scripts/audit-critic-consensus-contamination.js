@@ -77,10 +77,11 @@ function reviewTextsDir() {
   return process.env.REVIEW_TEXTS_DIR ? path.resolve(process.env.REVIEW_TEXTS_DIR) : DEFAULT_REVIEW_TEXTS_DIR;
 }
 
-function loadShowIds() {
+/** shows.json rows by id (the generator passes the row to the inputs, BRO-6226). */
+function loadShowsById() {
   try {
     const data = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf-8'));
-    return new Set((data.shows || []).map(s => s.id));
+    return new Map((data.shows || []).map(s => [s.id, s]));
   } catch {
     return null;
   }
@@ -128,7 +129,8 @@ function loadReviewsByShow() {
  *   $REVIEW_TEXTS_DIR or data/review-texts). Missing root = drift skipped.
  */
 function audit(opts = {}) {
-  const showIds = loadShowIds();
+  const showsById = loadShowsById();
+  const showIds = showsById && new Set(showsById.keys());
   const reviewsData = loadReviewsData();
   const reviewsByShow = reviewsData && reviewsData.byShow;
   const textsDir = opts.reviewTextsDir || reviewTextsDir();
@@ -158,7 +160,7 @@ function audit(opts = {}) {
       // Drift: the stored fingerprint vs the one a regeneration would write
       // today, built from the same inputs (BRO-4869).
       if (reviews && haveTexts) {
-        const current = consensusFingerprint(loadReviewTexts(id, reviewsData.liveOutlets, { reviewTextsDir: textsDir }));
+        const current = consensusFingerprint(loadReviewTexts(id, reviewsData.liveOutlets, { reviewTextsDir: textsDir, show: showsById && showsById.get(id) }));
         flags.push(...consensusDriftFlags(c, current));
       }
     }
@@ -210,10 +212,10 @@ function main() {
   const warns = issues.filter(i => i.severity === 'warn').length;
 
   if (gate) {
-    // Fail LOUD if a source-of-truth is absent: loadShowIds()/loadReviewsByShow()
+    // Fail LOUD if a source-of-truth is absent: loadShowsById()/loadReviewsByShow()
     // swallow a missing data/shows.json or data/reviews.json to null, which
     // suppresses SHOW_NOT_IN_DB and the drift signals and would pass green.
-    if (loadShowIds() === null || loadReviewsByShow() === null) {
+    if (loadShowsById() === null || loadReviewsByShow() === null) {
       console.error('\n❌ GATE: data/shows.json or data/reviews.json missing/unparseable — cannot run the critic-consensus contamination gate.');
       process.exit(1);
     }

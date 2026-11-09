@@ -92,7 +92,26 @@ function resolveDegradeConfig(env = process.env) {
   };
 }
 
+/**
+ * Fold ledger rows into { host: { provider: { successes, failures } } } for rows at
+ * or after cutoffMs. Memo-skip rows (BRO-6898) are bookkeeping and count as neither.
+ */
+function aggregateLedgerRows(rows, cutoffMs) {
+  const { isMemoSkip } = require('./provider-telemetry');
+  const agg = {};
+  for (const row of rows) {
+    if (!row || !row.host || !row.provider || !row.ts) continue;
+    if (new Date(row.ts).getTime() < cutoffMs) continue;
+    if (isMemoSkip(row)) continue;
+    const h = agg[row.host] || (agg[row.host] = {});
+    const c = h[row.provider] || (h[row.provider] = { successes: 0, failures: 0 });
+    if (row.success) c.successes++; else c.failures++;
+  }
+  return agg;
+}
+
 module.exports = {
+  aggregateLedgerRows,
   evaluateDegradeDrift,
   evaluateRecoveryProbe,
   resolveDegradeConfig,

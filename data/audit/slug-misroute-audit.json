@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-01T18:57:17.792Z",
-  "totalScanned": 78814,
+  "generatedAt": "2026-11-08T18:47:56.440Z",
+  "totalScanned": 80580,
   "findings": [
     {
       "from": "1984-2017",
@@ -145,6 +145,40 @@
       "slug": "Review-Roundup-Big-Brother-Has-Its-Eyes-on-Opening-Night-of-1984-20170622",
       "source": "bww",
       "url": "http://ew.com/theater/2017/06/22/1984-ew-stage-review/",
+      "fromTokens": "1984",
+      "toTokens": "opening|night",
+      "articleYear": 2017,
+      "toYearGap": 7,
+      "fromYearGap": 0,
+      "fromShow": {
+        "title": "1984",
+        "venue": "Hudson Theatre",
+        "openingDate": "2017-06-22",
+        "status": "closed",
+        "category": "broadway"
+      },
+      "toShow": {
+        "title": "Opening Night",
+        "venue": "Gielgud Theatre",
+        "openingDate": "2024-03-26",
+        "status": "closed",
+        "category": "west-end"
+      },
+      "class": "A",
+      "outOfScope": false,
+      "warnings": [
+        "to-year-far",
+        "from-also-full-match"
+      ],
+      "confirm": false
+    },
+    {
+      "from": "1984-2017",
+      "to": "opening-night-west-end-2024",
+      "file": "ew--tim-stack.json",
+      "slug": "Review-Roundup-Big-Brother-Has-Its-Eyes-on-Opening-Night-of-1984-20170622",
+      "source": "bww",
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-Big-Brother-Has-Its-Eyes-on-Opening-Night-of-1984-20170622",
       "fromTokens": "1984",
       "toTokens": "opening|night",
       "articleYear": 2017,
@@ -435,6 +469,328 @@
         "openingDate": "2024-03-26",
         "status": "closed",
         "category": "west-end"
+      },
+      "class": "A",
+      "outOfScope": false,
+      "warnings": [
+        "to-year-far",
+        "from-also-full-match"
+      ],
+      "confirm": false
+    },
+    {
+      "from": "222-a-ghost-story-off-broadway-2026",
+      "to": "the-story-west-end-2026",
+      "file": "culturesauce--thom-geier.json",
+      "slug": "Review-Roundup-222-A-GHOST-STORY-Opens-Off-Broadway-with-Anna-Camp-Jasmine-Cephas-Jones-and-More-20261105",
+      "source": "bww",
+      "url": "https://culturesauce.com/222-ghost-story-finn-jones-anna-camp-off-broadway-review/",
+      "fromTokens": "",
+      "toTokens": "story",
+      "articleYear": 2026,
+      "toYearGap": 0,
+      "fromYearGap": 0,
+      "fromShow": {
+        "title": "2:22 - A Ghost Story",
+        "venue": "Lucille Lortel Theatre",
+        "openingDate": "2026-11-05",
+        "status": "open",
+        "category": "off-broadway"
+      },
+      "toShow": {
+        "title": "The Story",
+        "venue": "National Theatre (Olivier)",
+        "openingDate": "2026-09-03",
+        "status": "closed",
+        "category": "west-end"
+      },
+      "class": "A",
+      "outOfScope": false,
+      "warnings": [],
+      "confirm": false
+    },
+    {
+      "from": "222-a-ghost-story-off-broadway-2026",
+      "to": "the-story-west-end-2026",
+      "file": "mashable--kristy-puchko.json",
+      "slug": "Review-Roundup-222-A-GHOST-STORY-Opens-Off-Broadway-with-Anna-Camp-Jasmine-Cephas-Jones-and-More-20261105",
+      "source": "bww",
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-222-A-GHOST-STORY-Opens-Off-Broadway-with-Anna-Camp-Jasmine-Cephas-Jones-and-More-20261105",
+      "fromTokens": "",
+      "toTokens": "story",
+      "articleYear": 2026,
+      "toYearGap": 0,
+      "fromYearGap": 0,
+      "fromShow": {
+        "title": "2:22 - A Ghost Story",
+        "venue": "Lucille Lortel Theatre",
+        "openingDate": "2026-11-05",
+        "status": "open",
+        "category": "off-broadway"
+      },
+      "toShow": {
+        "title": "The Story",
+        "venue": "National Theatre (Olivier)",
+        "openingDate": "2026-09-03",
+        "status": "closed",
+        "category": "west-end"
+      },
+      "class": "A",
+      "outOfScope": false,
+      "warnings": [],
+      "confirm": false
+    },
+    {
+      "from": "222-a-ghost-story-off-broadway-2026",
+      "to": "the-story-west-end-2026",
+      "file": "nysr--frank-scheck.json",
+      "slug": "Review-Roundup-222-A-GHOST-STORY-Opens-Off-Broadway-with-Anna-Camp-Jasmine-Cephas-Jones-and-More-20261105",
+      "source": "bww",
+      "url": "https://nystagereview.com/2026/11/05/222-a-ghost-story-whos-afraid-of-the-spectral-woolf/",
+      "fromTokens": "",
+      "toTokens": "story",
+      "articleYear": 2026,
+      "toYearGap": 0,
+      "fromYearGap": 0,
+      "fromShow": {
+        "title": "2:22 - A Ghost Story",
+        "venue": "Lucille Lortel Theatre",
+        "openingDate": "2026-11-05",
+        "status": "open",
+        "category": "off-broadway"
+      },
+      "toShow": {
+        "title": "The Story",
+        "venue": "National Theatre (Olivier)",
+        "openingDate": "2026-09-03",
+        "status": "closed",
+        "category": "west-end"
+      },
+      "class": "A",
+      "outOfScope": false,
+      "warnings": [],
+      "confirm": false
+    },
+    {
+      "from": "222-a-ghost-story-off-broadway-2026",
+      "to": "the-story-west-end-2026",
+      "file": "nytg--gillian-russo.json",
+      "slug": "Review-Roundup-222-A-GHOST-STORY-Opens-Off-Broadway-with-Anna-Camp-Jasmine-Cephas-Jones-and-More-20261105",
+      "source": "bww",
+      "url": "https://www.newyorktheatreguide.com/reviews/2-22-a-ghost-story-off-broadway-review",
+      "fromTokens": "",
+      "toTokens": "story",
+      "articleYear": 2026,
+      "toYearGap": 0,
+      "fromYearGap": 0,
+      "fromShow": {
+        "title": "2:22 - A Ghost Story",
+        "venue": "Lucille Lortel Theatre",
+        "openingDate": "2026-11-05",
+        "status": "open",
+        "category": "off-broadway"
+      },
+      "toShow": {
+        "title": "The Story",
+        "venue": "National Theatre (Olivier)",
+        "openingDate": "2026-09-03",
+        "status": "closed",
+        "category": "west-end"
+      },
+      "class": "A",
+      "outOfScope": false,
+      "warnings": [],
+      "confirm": false
+    },
+    {
+      "from": "222-a-ghost-story-off-broadway-2026",
+      "to": "the-story-west-end-2026",
+      "file": "theatermania--zachary-stewart.json",
+      "slug": "Review-Roundup-222-A-GHOST-STORY-Opens-Off-Broadway-with-Anna-Camp-Jasmine-Cephas-Jones-and-More-20261105",
+      "source": "bww",
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-222-A-GHOST-STORY-Opens-Off-Broadway-with-Anna-Camp-Jasmine-Cephas-Jones-and-More-20261105",
+      "fromTokens": "",
+      "toTokens": "story",
+      "articleYear": 2026,
+      "toYearGap": 0,
+      "fromYearGap": 0,
+      "fromShow": {
+        "title": "2:22 - A Ghost Story",
+        "venue": "Lucille Lortel Theatre",
+        "openingDate": "2026-11-05",
+        "status": "open",
+        "category": "off-broadway"
+      },
+      "toShow": {
+        "title": "The Story",
+        "venue": "National Theatre (Olivier)",
+        "openingDate": "2026-09-03",
+        "status": "closed",
+        "category": "west-end"
+      },
+      "class": "A",
+      "outOfScope": false,
+      "warnings": [],
+      "confirm": false
+    },
+    {
+      "from": "222-a-ghost-story-off-broadway-2026",
+      "to": "the-story-west-end-2026",
+      "file": "wsj--charles-isherwood.json",
+      "slug": "Review-Roundup-222-A-GHOST-STORY-Opens-Off-Broadway-with-Anna-Camp-Jasmine-Cephas-Jones-and-More-20261105",
+      "source": "bww",
+      "url": "https://www.wsj.com/articles/the-unbelievers-and-2-22a-ghost-story-review-off-broadway-stages-turn-unsettling-b758c396",
+      "fromTokens": "",
+      "toTokens": "story",
+      "articleYear": 2026,
+      "toYearGap": 0,
+      "fromYearGap": 0,
+      "fromShow": {
+        "title": "2:22 - A Ghost Story",
+        "venue": "Lucille Lortel Theatre",
+        "openingDate": "2026-11-05",
+        "status": "open",
+        "category": "off-broadway"
+      },
+      "toShow": {
+        "title": "The Story",
+        "venue": "National Theatre (Olivier)",
+        "openingDate": "2026-09-03",
+        "status": "closed",
+        "category": "west-end"
+      },
+      "class": "A",
+      "outOfScope": false,
+      "warnings": [],
+      "confirm": false
+    },
+    {
+      "from": "a-dolls-house-part-2-2017",
+      "to": "a-dolls-house-part-2-regional-2026",
+      "file": "broadwayworld--michael-dale.json",
+      "slug": "Review-Roundup-The-Critics-Check-In-with-the-New-Stars-of-A-DOLLS-HOUSE-PART-2-20170828",
+      "source": "bww",
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Check-In-with-the-New-Stars-of-A-DOLLS-HOUSE-PART-2-20170828",
+      "fromTokens": "dolls|house",
+      "toTokens": "dolls|house|part",
+      "articleYear": 2017,
+      "toYearGap": 9,
+      "fromYearGap": 0,
+      "fromShow": {
+        "title": "A Doll's House, Part 2",
+        "venue": "John Golden Theatre",
+        "openingDate": "2017-04-27",
+        "status": "closed",
+        "category": "broadway"
+      },
+      "toShow": {
+        "title": "A Doll's House Part 2",
+        "venue": "Long Beach Playhouse, Long Beach, CA",
+        "openingDate": "2026-07-20",
+        "status": "closed",
+        "category": "regional"
+      },
+      "class": "A",
+      "outOfScope": false,
+      "warnings": [
+        "to-year-far",
+        "from-also-full-match"
+      ],
+      "confirm": false
+    },
+    {
+      "from": "a-dolls-house-part-2-2017",
+      "to": "a-dolls-house-part-2-regional-2026",
+      "file": "deadline--jeremy-gerard.json",
+      "slug": "Review-Roundup-The-Critics-Check-In-with-the-New-Stars-of-A-DOLLS-HOUSE-PART-2-20170828",
+      "source": "bww",
+      "url": "http://deadline.com/2017/04/broadway-review-a-dolls-house-part-2-1202078542/",
+      "fromTokens": "dolls|house",
+      "toTokens": "dolls|house|part",
+      "articleYear": 2017,
+      "toYearGap": 9,
+      "fromYearGap": 0,
+      "fromShow": {
+        "title": "A Doll's House, Part 2",
+        "venue": "John Golden Theatre",
+        "openingDate": "2017-04-27",
+        "status": "closed",
+        "category": "broadway"
+      },
+      "toShow": {
+        "title": "A Doll's House Part 2",
+        "venue": "Long Beach Playhouse, Long Beach, CA",
+        "openingDate": "2026-07-20",
+        "status": "closed",
+        "category": "regional"
+      },
+      "class": "A",
+      "outOfScope": false,
+      "warnings": [
+        "to-year-far",
+        "from-also-full-match"
+      ],
+      "confirm": false
+    },
+    {
+      "from": "a-dolls-house-part-2-2017",
+      "to": "a-dolls-house-part-2-regional-2026",
+      "file": "huffpost--steven-suskin.json",
+      "slug": "Review-Roundup-The-Critics-Check-In-with-the-New-Stars-of-A-DOLLS-HOUSE-PART-2-20170828",
+      "source": "bww",
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Check-In-with-the-New-Stars-of-A-DOLLS-HOUSE-PART-2-20170828",
+      "fromTokens": "dolls|house",
+      "toTokens": "dolls|house|part",
+      "articleYear": 2017,
+      "toYearGap": 9,
+      "fromYearGap": 0,
+      "fromShow": {
+        "title": "A Doll's House, Part 2",
+        "venue": "John Golden Theatre",
+        "openingDate": "2017-04-27",
+        "status": "closed",
+        "category": "broadway"
+      },
+      "toShow": {
+        "title": "A Doll's House Part 2",
+        "venue": "Long Beach Playhouse, Long Beach, CA",
+        "openingDate": "2026-07-20",
+        "status": "closed",
+        "category": "regional"
+      },
+      "class": "A",
+      "outOfScope": false,
+      "warnings": [
+        "to-year-far",
+        "from-also-full-match"
+      ],
+      "confirm": false
+    },
+    {
+      "from": "a-dolls-house-part-2-2017",
+      "to": "a-dolls-house-part-2-regional-2026",
+      "file": "nytimes--jesse-green.json",
+      "slug": "Review-Roundup-The-Critics-Check-In-with-the-New-Stars-of-A-DOLLS-HOUSE-PART-2-20170828",
+      "source": "bww",
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-The-Critics-Check-In-with-the-New-Stars-of-A-DOLLS-HOUSE-PART-2-20170828",
+      "fromTokens": "dolls|house",
+      "toTokens": "dolls|house|part",
+      "articleYear": 2017,
+      "toYearGap": 9,
+      "fromYearGap": 0,
+      "fromShow": {
+        "title": "A Doll's House, Part 2",
+        "venue": "John Golden Theatre",
+        "openingDate": "2017-04-27",
+        "status": "closed",
+        "category": "broadway"
+      },
+      "toShow": {
+        "title": "A Doll's House Part 2",
+        "venue": "Long Beach Playhouse, Long Beach, CA",
+        "openingDate": "2026-07-20",
+        "status": "closed",
+        "category": "regional"
       },
       "class": "A",
       "outOfScope": false,
@@ -2840,8 +3196,194 @@
       "confirm": false
     },
     {
+      "from": "clifford-odets-waiting-for-lefty-off-broadway-2026",
+      "to": "waiting-for-lefty-regional-2024",
+      "file": "culturesauce--thom-geier.json",
+      "slug": "Review-Roundup-WAITING-FOR-LEFTY-Opens-at-Classic-Stage-Company-20261102",
+      "source": "bww",
+      "url": "https://culturesauce.com/waiting-for-lefty-clifford-odets-off-broadway-review/",
+      "fromTokens": "clifford|odets|waiting|lefty",
+      "toTokens": "waiting|lefty",
+      "articleYear": 2026,
+      "toYearGap": 2,
+      "fromYearGap": 0,
+      "fromShow": {
+        "title": "Clifford Odets’ Waiting for Lefty",
+        "venue": "Classic Stage Company",
+        "openingDate": "2026-11-02",
+        "status": "open",
+        "category": "off-broadway"
+      },
+      "toShow": {
+        "title": "Waiting for Lefty",
+        "venue": "The Greenhouse Theater Center, Chicago, IL",
+        "openingDate": "2024-02-04",
+        "status": "closed",
+        "category": "regional"
+      },
+      "class": "A",
+      "outOfScope": false,
+      "warnings": [],
+      "confirm": false
+    },
+    {
+      "from": "clifford-odets-waiting-for-lefty-off-broadway-2026",
+      "to": "waiting-for-lefty-regional-2024",
+      "file": "nysr--michael-sommers.json",
+      "slug": "Review-Roundup-WAITING-FOR-LEFTY-Opens-at-Classic-Stage-Company-20261102",
+      "source": "bww",
+      "url": "https://nystagereview.com/2026/11/02/waiting-for-lefty-no-no-odets/",
+      "fromTokens": "clifford|odets|waiting|lefty",
+      "toTokens": "waiting|lefty",
+      "articleYear": 2026,
+      "toYearGap": 2,
+      "fromYearGap": 0,
+      "fromShow": {
+        "title": "Clifford Odets’ Waiting for Lefty",
+        "venue": "Classic Stage Company",
+        "openingDate": "2026-11-02",
+        "status": "open",
+        "category": "off-broadway"
+      },
+      "toShow": {
+        "title": "Waiting for Lefty",
+        "venue": "The Greenhouse Theater Center, Chicago, IL",
+        "openingDate": "2024-02-04",
+        "status": "closed",
+        "category": "regional"
+      },
+      "class": "A",
+      "outOfScope": false,
+      "warnings": [],
+      "confirm": false
+    },
+    {
+      "from": "clifford-odets-waiting-for-lefty-off-broadway-2026",
+      "to": "waiting-for-lefty-regional-2024",
+      "file": "nytg--gillian-russo.json",
+      "slug": "Review-Roundup-WAITING-FOR-LEFTY-Opens-at-Classic-Stage-Company-20261102",
+      "source": "bww",
+      "url": "https://www.newyorktheatreguide.com/reviews/waiting-for-lefty-off-broadway-review",
+      "fromTokens": "clifford|odets|waiting|lefty",
+      "toTokens": "waiting|lefty",
+      "articleYear": 2026,
+      "toYearGap": 2,
+      "fromYearGap": 0,
+      "fromShow": {
+        "title": "Clifford Odets’ Waiting for Lefty",
+        "venue": "Classic Stage Company",
+        "openingDate": "2026-11-02",
+        "status": "open",
+        "category": "off-broadway"
+      },
+      "toShow": {
+        "title": "Waiting for Lefty",
+        "venue": "The Greenhouse Theater Center, Chicago, IL",
+        "openingDate": "2024-02-04",
+        "status": "closed",
+        "category": "regional"
+      },
+      "class": "A",
+      "outOfScope": false,
+      "warnings": [],
+      "confirm": false
+    },
+    {
+      "from": "clifford-odets-waiting-for-lefty-off-broadway-2026",
+      "to": "waiting-for-lefty-regional-2024",
+      "file": "theatermania--zachary-stewart.json",
+      "slug": "Review-Roundup-WAITING-FOR-LEFTY-Opens-at-Classic-Stage-Company-20261102",
+      "source": "bww",
+      "url": "https://www.broadwayworld.com/off-broadway/article/Review-Roundup-WAITING-FOR-LEFTY-Opens-at-Classic-Stage-Company-20261102",
+      "fromTokens": "clifford|odets|waiting|lefty",
+      "toTokens": "waiting|lefty",
+      "articleYear": 2026,
+      "toYearGap": 2,
+      "fromYearGap": 0,
+      "fromShow": {
+        "title": "Clifford Odets’ Waiting for Lefty",
+        "venue": "Classic Stage Company",
+        "openingDate": "2026-11-02",
+        "status": "open",
+        "category": "off-broadway"
+      },
+      "toShow": {
+        "title": "Waiting for Lefty",
+        "venue": "The Greenhouse Theater Center, Chicago, IL",
+        "openingDate": "2024-02-04",
+        "status": "closed",
+        "category": "regional"
+      },
+      "class": "A",
+      "outOfScope": false,
+      "warnings": [],
+      "confirm": false
+    },
+    {
+      "from": "clifford-odets-waiting-for-lefty-off-broadway-2026",
+      "to": "waiting-for-lefty-regional-2024",
+      "file": "theatrely--juan-a-ramirez.json",
+      "slug": "Review-Roundup-WAITING-FOR-LEFTY-Opens-at-Classic-Stage-Company-20261102",
+      "source": "bww",
+      "url": "https://www.broadwayworld.com/off-broadway/article/Review-Roundup-WAITING-FOR-LEFTY-Opens-at-Classic-Stage-Company-20261102",
+      "fromTokens": "clifford|odets|waiting|lefty",
+      "toTokens": "waiting|lefty",
+      "articleYear": 2026,
+      "toYearGap": 2,
+      "fromYearGap": 0,
+      "fromShow": {
+        "title": "Clifford Odets’ Waiting for Lefty",
+        "venue": "Classic Stage Company",
+        "openingDate": "2026-11-02",
+        "status": "open",
+        "category": "off-broadway"
+      },
+      "toShow": {
+        "title": "Waiting for Lefty",
+        "venue": "The Greenhouse Theater Center, Chicago, IL",
+        "openingDate": "2024-02-04",
+        "status": "closed",
+        "category": "regional"
+      },
+      "class": "A",
+      "outOfScope": false,
+      "warnings": [],
+      "confirm": false
+    },
+    {
+      "from": "clifford-odets-waiting-for-lefty-off-broadway-2026",
+      "to": "waiting-for-lefty-regional-2024",
+      "file": "vulture--sara-holdren.json",
+      "slug": "Review-Roundup-WAITING-FOR-LEFTY-Opens-at-Classic-Stage-Company-20261102",
+      "source": "bww",
+      "url": "https://www.vulture.com/article/theater-reviews-waiting-for-lefty-odets-specky-clark-doherty.html",
+      "fromTokens": "clifford|odets|waiting|lefty",
+      "toTokens": "waiting|lefty",
+      "articleYear": 2026,
+      "toYearGap": 2,
+      "fromYearGap": 0,
+      "fromShow": {
+        "title": "Clifford Odets’ Waiting for Lefty",
+        "venue": "Classic Stage Company",
+        "openingDate": "2026-11-02",
+        "status": "open",
+        "category": "off-broadway"
+      },
+      "toShow": {
+        "title": "Waiting for Lefty",
+        "venue": "The Greenhouse Theater Center, Chicago, IL",
+        "openingDate": "2024-02-04",
+        "status": "closed",
+        "category": "regional"
+      },
+      "class": "A",
+      "outOfScope": false,
+      "warnings": [],
+      "confirm": false
+    },
+    {
       "from": "cyrano-de-bergerac-2007",
-      "to": "cyrano-the-musical-1993",
+      "to": "cyrano-regional-2026",
       "file": "nydailynews--chris-jones.json",
       "slug": "Review-Roundup-CYRANO-Opens-Off-Broadway-Starring-Peter-Dinklage-Read-the-Reviews-20191107",
       "source": "bww",
@@ -2849,7 +3391,7 @@
       "fromTokens": "cyrano|bergerac",
       "toTokens": "cyrano",
       "articleYear": 2019,
-      "toYearGap": 26,
+      "toYearGap": 7,
       "fromYearGap": 12,
       "fromShow": {
         "title": "Cyrano de Bergerac",
@@ -2859,11 +3401,11 @@
         "category": "broadway"
       },
       "toShow": {
-        "title": "Cyrano - The Musical",
-        "venue": "Neil Simon Theatre",
-        "openingDate": "1993-11-21",
+        "title": "Cyrano",
+        "venue": "The Old Globe, San Diego, CA",
+        "openingDate": "2026-07-23",
         "status": "closed",
-        "category": "broadway"
+        "category": "regional"
       },
       "class": "A",
       "outOfScope": false,
@@ -2874,7 +3416,7 @@
     },
     {
       "from": "cyrano-de-bergerac-2007",
-      "to": "cyrano-the-musical-1993",
+      "to": "cyrano-regional-2026",
       "file": "nypost--johnny-oleksinski.json",
       "slug": "Review-Roundup-CYRANO-Opens-Off-Broadway-Starring-Peter-Dinklage-Read-the-Reviews-20191107",
       "source": "bww",
@@ -2882,7 +3424,7 @@
       "fromTokens": "cyrano|bergerac",
       "toTokens": "cyrano",
       "articleYear": 2019,
-      "toYearGap": 26,
+      "toYearGap": 7,
       "fromYearGap": 12,
       "fromShow": {
         "title": "Cyrano de Bergerac",
@@ -2892,11 +3434,11 @@
         "category": "broadway"
       },
       "toShow": {
-        "title": "Cyrano - The Musical",
-        "venue": "Neil Simon Theatre",
-        "openingDate": "1993-11-21",
+        "title": "Cyrano",
+        "venue": "The Old Globe, San Diego, CA",
+        "openingDate": "2026-07-23",
         "status": "closed",
-        "category": "broadway"
+        "category": "regional"
       },
       "class": "A",
       "outOfScope": false,
@@ -2907,7 +3449,7 @@
     },
     {
       "from": "cyrano-de-bergerac-2007",
-      "to": "cyrano-the-musical-1993",
+      "to": "cyrano-regional-2026",
       "file": "thewrap--robert-hofler.json",
       "slug": "Review-Roundup-CYRANO-Opens-Off-Broadway-Starring-Peter-Dinklage-Read-the-Reviews-20191107",
       "source": "bww",
@@ -2915,7 +3457,7 @@
       "fromTokens": "cyrano|bergerac",
       "toTokens": "cyrano",
       "articleYear": 2019,
-      "toYearGap": 26,
+      "toYearGap": 7,
       "fromYearGap": 12,
       "fromShow": {
         "title": "Cyrano de Bergerac",
@@ -2925,11 +3467,11 @@
         "category": "broadway"
       },
       "toShow": {
-        "title": "Cyrano - The Musical",
-        "venue": "Neil Simon Theatre",
-        "openingDate": "1993-11-21",
+        "title": "Cyrano",
+        "venue": "The Old Globe, San Diego, CA",
+        "openingDate": "2026-07-23",
         "status": "closed",
-        "category": "broadway"
+        "category": "regional"
       },
       "class": "A",
       "outOfScope": false,
@@ -2940,7 +3482,7 @@
     },
     {
       "from": "cyrano-de-bergerac-2007",
-      "to": "cyrano-the-musical-1993",
+      "to": "cyrano-regional-2026",
       "file": "variety--frank-rizzo.json",
       "slug": "Review-Roundup-CYRANO-Opens-Off-Broadway-Starring-Peter-Dinklage-Read-the-Reviews-20191107",
       "source": "bww",
@@ -2948,7 +3490,7 @@
       "fromTokens": "cyrano|bergerac",
       "toTokens": "cyrano",
       "articleYear": 2019,
-      "toYearGap": 26,
+      "toYearGap": 7,
       "fromYearGap": 12,
       "fromShow": {
         "title": "Cyrano de Bergerac",
@@ -2958,11 +3500,11 @@
         "category": "broadway"
       },
       "toShow": {
-        "title": "Cyrano - The Musical",
-        "venue": "Neil Simon Theatre",
-        "openingDate": "1993-11-21",
+        "title": "Cyrano",
+        "venue": "The Old Globe, San Diego, CA",
+        "openingDate": "2026-07-23",
         "status": "closed",
-        "category": "broadway"
+        "category": "regional"
       },
       "class": "A",
       "outOfScope": false,
@@ -3227,7 +3769,7 @@
     },
     {
       "from": "every-brilliant-thing-2026",
-      "to": "everybodys-talking-about-jamie-west-end-2024",
+      "to": "everybodys-talking-about-jamie-off-west-end-2024",
       "file": "ew--lee-lenker.json",
       "slug": "Review-Roundup-EVERYBODYS-TALKING-ABOUT-JAMIE-Opens-in-Los-Angeles--See-What-the-Critics-Had-to-Say-20220125",
       "source": "bww",
@@ -3258,7 +3800,7 @@
     },
     {
       "from": "every-brilliant-thing-2026",
-      "to": "everybodys-talking-about-jamie-west-end-2024",
+      "to": "everybodys-talking-about-jamie-off-west-end-2024",
       "file": "theatrely--rachel-hsu.json",
       "slug": "Review-Roundup-EVERYBODYS-TALKING-ABOUT-JAMIE-Opens-in-Los-Angeles--See-What-the-Critics-Had-to-Say-20220125",
       "source": "bww",
@@ -5098,7 +5640,7 @@
     },
     {
       "from": "midnight-off-broadway-2026",
-      "to": "midnight-at-the-never-get-west-end-2026",
+      "to": "midnight-at-the-never-get-off-west-end-2026",
       "file": "broadwayworld--michael-major.json",
       "slug": "Review-Roundup-Ben-Platt-in-MIDNIGHT-AT-THE-NEVER-GET-at-The-Menier-Chocolate-Factory-20260721",
       "source": "bww",
@@ -5131,40 +5673,7 @@
     },
     {
       "from": "midnight-off-broadway-2026",
-      "to": "midnight-at-the-never-get-west-end-2026",
-      "file": "broadwayworld--persson-clementine-scott.json",
-      "slug": "Review-Roundup-Ben-Platt-in-MIDNIGHT-AT-THE-NEVER-GET-at-The-Menier-Chocolate-Factory-20260721",
-      "source": "bww",
-      "url": "https://www.broadwayworld.com/article/Review-Roundup-Ben-Platt-in-MIDNIGHT-AT-THE-NEVER-GET-at-The-Menier-Chocolate-Factory-20260721",
-      "fromTokens": "midnight",
-      "toTokens": "midnight|never|get",
-      "articleYear": 2026,
-      "toYearGap": 0,
-      "fromYearGap": 0,
-      "fromShow": {
-        "title": "Midnight",
-        "venue": "Daryl Roth Theatre",
-        "openingDate": "2026-10-15",
-        "status": "open",
-        "category": "off-broadway"
-      },
-      "toShow": {
-        "title": "Midnight at the Never Get",
-        "venue": "Menier Chocolate Factory",
-        "openingDate": "2026-07-20",
-        "status": "closed",
-        "category": "off-west-end"
-      },
-      "class": "A",
-      "outOfScope": false,
-      "warnings": [
-        "from-also-full-match"
-      ],
-      "confirm": false
-    },
-    {
-      "from": "midnight-off-broadway-2026",
-      "to": "midnight-at-the-never-get-west-end-2026",
+      "to": "midnight-at-the-never-get-off-west-end-2026",
       "file": "whatsonstage--theo-bosanquet.json",
       "slug": "Review-Roundup-Ben-Platt-in-MIDNIGHT-AT-THE-NEVER-GET-at-The-Menier-Chocolate-Factory-20260721",
       "source": "bww",
@@ -5237,11 +5746,11 @@
       "toTokens": "hedda|gabler",
       "articleYear": 2012,
       "toYearGap": 0,
-      "fromYearGap": 12,
+      "fromYearGap": 13,
       "fromShow": {
         "title": "Oliver!",
         "venue": "Gielgud Theatre",
-        "openingDate": "2024-12-14",
+        "openingDate": "2025-01-14",
         "status": "open",
         "category": "west-end"
       },
@@ -5268,11 +5777,11 @@
       "toTokens": "hedda|gabler",
       "articleYear": 2012,
       "toYearGap": 0,
-      "fromYearGap": 12,
+      "fromYearGap": 13,
       "fromShow": {
         "title": "Oliver!",
         "venue": "Gielgud Theatre",
-        "openingDate": "2024-12-14",
+        "openingDate": "2025-01-14",
         "status": "open",
         "category": "west-end"
       },
@@ -5299,11 +5808,11 @@
       "toTokens": "hedda|gabler",
       "articleYear": 2012,
       "toYearGap": 0,
-      "fromYearGap": 12,
+      "fromYearGap": 13,
       "fromShow": {
         "title": "Oliver!",
         "venue": "Gielgud Theatre",
-        "openingDate": "2024-12-14",
+        "openingDate": "2025-01-14",
         "status": "open",
         "category": "west-end"
       },
@@ -7193,105 +7702,6 @@
       "confirm": false
     },
     {
-      "from": "sting-west-end-2026",
-      "to": "the-last-ship-2014",
-      "file": "newsday--linda-winer.json",
-      "slug": "Review-Roundup-Sting-in-Broadways-THE-LAST-SHIP-20141222",
-      "source": "bww",
-      "url": "http://www.newsday.com/entertainment/theater/the-last-ship-review-ravishing-concert-improbable-story-1.9542888",
-      "fromTokens": "sting",
-      "toTokens": "last|ship",
-      "articleYear": 2014,
-      "toYearGap": 0,
-      "fromYearGap": 12,
-      "fromShow": {
-        "title": "Sting",
-        "venue": "The Maria Theatre",
-        "openingDate": "2026-06-23",
-        "status": "closed",
-        "category": "off-west-end"
-      },
-      "toShow": {
-        "title": "The Last Ship",
-        "venue": "Neil Simon Theatre",
-        "openingDate": "2014-10-26",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "class": "A",
-      "outOfScope": false,
-      "warnings": [
-        "from-also-full-match"
-      ],
-      "confirm": false
-    },
-    {
-      "from": "sting-west-end-2026",
-      "to": "the-last-ship-2014",
-      "file": "newsday--unknown.json",
-      "slug": "Review-Roundup-Sting-in-Broadways-THE-LAST-SHIP-20141222",
-      "source": "bww",
-      "url": "http://www.newsday.com/entertainment/theater/the-last-ship-review-ravishing-concert-improbable-story-1.9542888",
-      "fromTokens": "sting",
-      "toTokens": "last|ship",
-      "articleYear": 2014,
-      "toYearGap": 0,
-      "fromYearGap": 12,
-      "fromShow": {
-        "title": "Sting",
-        "venue": "The Maria Theatre",
-        "openingDate": "2026-06-23",
-        "status": "closed",
-        "category": "off-west-end"
-      },
-      "toShow": {
-        "title": "The Last Ship",
-        "venue": "Neil Simon Theatre",
-        "openingDate": "2014-10-26",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "class": "A",
-      "outOfScope": false,
-      "warnings": [
-        "from-also-full-match"
-      ],
-      "confirm": false
-    },
-    {
-      "from": "sting-west-end-2026",
-      "to": "the-last-ship-2014",
-      "file": "newsday--updated-december.json",
-      "slug": "Review-Roundup-Sting-in-Broadways-THE-LAST-SHIP-20141222",
-      "source": "bww",
-      "url": "http://www.newsday.com/entertainment/theater/the-last-ship-review-ravishing-concert-improbable-story-1.9542888",
-      "fromTokens": "sting",
-      "toTokens": "last|ship",
-      "articleYear": 2014,
-      "toYearGap": 0,
-      "fromYearGap": 12,
-      "fromShow": {
-        "title": "Sting",
-        "venue": "The Maria Theatre",
-        "openingDate": "2026-06-23",
-        "status": "closed",
-        "category": "off-west-end"
-      },
-      "toShow": {
-        "title": "The Last Ship",
-        "venue": "Neil Simon Theatre",
-        "openingDate": "2014-10-26",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "class": "A",
-      "outOfScope": false,
-      "warnings": [
-        "from-also-full-match"
-      ],
-      "confirm": false
-    },
-    {
       "from": "the-lion-king-west-end-2021",
       "to": "the-lion-the-witch-and-the-wardrobe-leeds-regional-2024",
       "file": "londonist--hari-mountford.json",
@@ -8416,39 +8826,6 @@
     {
       "from": "whos-afraid-of-virginia-woolf-west-end-2026",
       "to": "whos-afraid-of-virginia-woolf-west-end-2017",
-      "file": "broadwayworld--persson-alexander-cohen.json",
-      "slug": "Review-Roundup-WHOS-AFRAID-OF-VIRGINIA-WOOLF-Starring-Gillian-Anderson-Billy-Crudup-20261001",
-      "source": "bww",
-      "url": "https://www.broadwayworld.com/westend/article/Review-Roundup-WHOS-AFRAID-OF-VIRGINIA-WOOLF-Starring-Gillian-Anderson-Billy-Crudup-20261001",
-      "fromTokens": "who|afraid|virginia|woolf",
-      "toTokens": "whos|afraid|virginia|woolf",
-      "articleYear": 2026,
-      "toYearGap": 9,
-      "fromYearGap": 0,
-      "fromShow": {
-        "title": "Who’s Afraid of Virginia Woolf?",
-        "venue": "Soho Place",
-        "openingDate": "2026-09-30",
-        "status": "open",
-        "category": "west-end"
-      },
-      "toShow": {
-        "title": "Who's Afraid of Virginia Woolf?",
-        "venue": "Harold Pinter Theatre",
-        "openingDate": "2017-02-22",
-        "status": "closed",
-        "category": "west-end"
-      },
-      "class": "A",
-      "outOfScope": false,
-      "warnings": [
-        "to-year-far"
-      ],
-      "confirm": false
-    },
-    {
-      "from": "whos-afraid-of-virginia-woolf-west-end-2026",
-      "to": "whos-afraid-of-virginia-woolf-west-end-2017",
       "file": "guardian--arifa-akbar.json",
       "slug": "Review-Roundup-WHOS-AFRAID-OF-VIRGINIA-WOOLF-Starring-Gillian-Anderson-Billy-Crudup-20261001",
       "source": "bww",
@@ -8468,7 +8845,7 @@
       "toShow": {
         "title": "Who's Afraid of Virginia Woolf?",
         "venue": "Harold Pinter Theatre",
-        "openingDate": "2017-02-22",
+        "openingDate": "2017-03-09",
         "status": "closed",
         "category": "west-end"
       },
@@ -8501,7 +8878,7 @@
       "toShow": {
         "title": "Who's Afraid of Virginia Woolf?",
         "venue": "Harold Pinter Theatre",
-        "openingDate": "2017-02-22",
+        "openingDate": "2017-03-09",
         "status": "closed",
         "category": "west-end"
       },
@@ -8534,7 +8911,7 @@
       "toShow": {
         "title": "Who's Afraid of Virginia Woolf?",
         "venue": "Harold Pinter Theatre",
-        "openingDate": "2017-02-22",
+        "openingDate": "2017-03-09",
         "status": "closed",
         "category": "west-end"
       },
@@ -8567,7 +8944,7 @@
       "toShow": {
         "title": "Who's Afraid of Virginia Woolf?",
         "venue": "Harold Pinter Theatre",
-        "openingDate": "2017-02-22",
+        "openingDate": "2017-03-09",
         "status": "closed",
         "category": "west-end"
       },
@@ -8600,7 +8977,7 @@
       "toShow": {
         "title": "Who's Afraid of Virginia Woolf?",
         "venue": "Harold Pinter Theatre",
-        "openingDate": "2017-02-22",
+        "openingDate": "2017-03-09",
         "status": "closed",
         "category": "west-end"
       },
@@ -8633,7 +9010,7 @@
       "toShow": {
         "title": "Who's Afraid of Virginia Woolf?",
         "venue": "Harold Pinter Theatre",
-        "openingDate": "2017-02-22",
+        "openingDate": "2017-03-09",
         "status": "closed",
         "category": "west-end"
       },
@@ -8666,7 +9043,7 @@
       "toShow": {
         "title": "Who's Afraid of Virginia Woolf?",
         "venue": "Harold Pinter Theatre",
-        "openingDate": "2017-02-22",
+        "openingDate": "2017-03-09",
         "status": "closed",
         "category": "west-end"
       },
@@ -9320,7 +9697,7 @@
         "title": "The Verge",
         "venue": "The Public Theater/LuEsther Hall",
         "openingDate": "2026-11-05",
-        "status": "previews",
+        "status": "open",
         "category": "off-broadway"
       },
       "class": "A",
@@ -9353,7 +9730,7 @@
         "title": "The Verge",
         "venue": "The Public Theater/LuEsther Hall",
         "openingDate": "2026-11-05",
-        "status": "previews",
+        "status": "open",
         "category": "off-broadway"
       },
       "class": "A",
@@ -9386,7 +9763,7 @@
         "title": "The Verge",
         "venue": "The Public Theater/LuEsther Hall",
         "openingDate": "2026-11-05",
-        "status": "previews",
+        "status": "open",
         "category": "off-broadway"
       },
       "class": "A",
@@ -9419,7 +9796,7 @@
         "title": "The Verge",
         "venue": "The Public Theater/LuEsther Hall",
         "openingDate": "2026-11-05",
-        "status": "previews",
+        "status": "open",
         "category": "off-broadway"
       },
       "class": "A",
@@ -9452,7 +9829,7 @@
         "title": "The Verge",
         "venue": "The Public Theater/LuEsther Hall",
         "openingDate": "2026-11-05",
-        "status": "previews",
+        "status": "open",
         "category": "off-broadway"
       },
       "class": "A",
@@ -9485,7 +9862,7 @@
         "title": "The Verge",
         "venue": "The Public Theater/LuEsther Hall",
         "openingDate": "2026-11-05",
-        "status": "previews",
+        "status": "open",
         "category": "off-broadway"
       },
       "class": "A",
@@ -9518,7 +9895,7 @@
         "title": "The Verge",
         "venue": "The Public Theater/LuEsther Hall",
         "openingDate": "2026-11-05",
-        "status": "previews",
+        "status": "open",
         "category": "off-broadway"
       },
       "class": "A",
@@ -9551,7 +9928,7 @@
         "title": "The Verge",
         "venue": "The Public Theater/LuEsther Hall",
         "openingDate": "2026-11-05",
-        "status": "previews",
+        "status": "open",
         "category": "off-broadway"
       },
       "class": "A",
@@ -9584,7 +9961,7 @@
         "title": "The Verge",
         "venue": "The Public Theater/LuEsther Hall",
         "openingDate": "2026-11-05",
-        "status": "previews",
+        "status": "open",
         "category": "off-broadway"
       },
       "class": "A",
@@ -9617,7 +9994,7 @@
         "title": "The Verge",
         "venue": "The Public Theater/LuEsther Hall",
         "openingDate": "2026-11-05",
-        "status": "previews",
+        "status": "open",
         "category": "off-broadway"
       },
       "class": "A",
@@ -9650,7 +10027,7 @@
         "title": "The Verge",
         "venue": "The Public Theater/LuEsther Hall",
         "openingDate": "2026-11-05",
-        "status": "previews",
+        "status": "open",
         "category": "off-broadway"
       },
       "class": "A",
@@ -9683,7 +10060,7 @@
         "title": "The Verge",
         "venue": "The Public Theater/LuEsther Hall",
         "openingDate": "2026-11-05",
-        "status": "previews",
+        "status": "open",
         "category": "off-broadway"
       },
       "class": "A",
@@ -9716,7 +10093,7 @@
         "title": "The Verge",
         "venue": "The Public Theater/LuEsther Hall",
         "openingDate": "2026-11-05",
-        "status": "previews",
+        "status": "open",
         "category": "off-broadway"
       },
       "class": "A",
@@ -9749,7 +10126,7 @@
         "title": "The Verge",
         "venue": "The Public Theater/LuEsther Hall",
         "openingDate": "2026-11-05",
-        "status": "previews",
+        "status": "open",
         "category": "off-broadway"
       },
       "class": "A",
@@ -9782,7 +10159,7 @@
         "title": "The Verge",
         "venue": "The Public Theater/LuEsther Hall",
         "openingDate": "2026-11-05",
-        "status": "previews",
+        "status": "open",
         "category": "off-broadway"
       },
       "class": "A",

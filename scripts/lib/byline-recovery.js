@@ -96,6 +96,7 @@ const JUNK_CRITIC_NAME_PATTERNS = [
   /,\s*([a-z]+\s+)?editor$/i,               // "Laura Hackett, Fiction Editor"
   /[a-z]{4,}[A-Z][a-z]{4,}/,                // two names run together: "ArgenEdward"
   /\.\s+special to\b/i,                     // "Matt Windman. Special to AmNewYork"
+  /^[Tt]he [Rr]ecs\s+(?:[A-Z]{2,4}|[A-Z][a-z]{1,2})$/,                 // The Recs initials signature with no name: "The Recs IT" (BRO-4874)
 ];
 
 /**

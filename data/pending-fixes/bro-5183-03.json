@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5183-03",
   "planId": "466dfb75-5ba8-4aac-8361-93a72207dad8",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-12T19:00:46.384Z",
   "submitter": {
     "name": null,
@@ -297,5 +297,67 @@
       "ok": true,
       "msg": "women-on-the-verge-of-a-nervous-breakdown-2010/variety--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"Steven Suskin\""
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 10
+    },
+    "ops": [
+      {
+        "i": 1,
+        "verdict": "resolved",
+        "reason": "mary-poppins-2006/variety--charles-isherwood.json duplicateOf already \"variety--david-rooney.json\""
+      },
+      {
+        "i": 2,
+        "verdict": "resolved",
+        "reason": "mj-2022/variety--charles-isherwood.json duplicateOf already \"variety--naveen-kumar.json\""
+      },
+      {
+        "i": 3,
+        "verdict": "resolved",
+        "reason": "mrs-warrens-profession-2010/nytimes--ben-brantley.json and mrs-warrens-profession-2010/about-entertainment--ben-brantley.json share one counted row, so nothing is double-counted"
+      },
+      {
+        "i": 4,
+        "verdict": "resolved",
+        "reason": "relatively-speaking-2011/variety--charles-isherwood.json duplicateOf already \"variety--marilyn-stasio.json\""
+      },
+      {
+        "i": 8,
+        "verdict": "resolved",
+        "reason": "sister-act-2011/timeout--david-cote.json duplicateOf already \"timeout--adam-feldman.json\""
+      },
+      {
+        "i": 9,
+        "verdict": "resolved",
+        "reason": "spongebob-squarepants-2017/vulture--jesse-green.json duplicateOf already \"vulture--sara-holdren.json\""
+      },
+      {
+        "i": 10,
+        "verdict": "resolved",
+        "reason": "that-championship-season-2011/vulture--jesse-green.json duplicateOf already \"vulture--scott-brown.json\""
+      },
+      {
+        "i": 12,
+        "verdict": "resolved",
+        "reason": "the-mystery-of-edwin-drood-2012/variety--marilyn-stasio.json duplicateOf already \"variety--steven-suskin.json\""
+      },
+      {
+        "i": 13,
+        "verdict": "resolved",
+        "reason": "the-peewee-herman-show-2010/variety--david-rooney.json duplicateOf already \"variety--steven-suskin.json\""
+      },
+      {
+        "i": 17,
+        "verdict": "resolved",
+        "reason": "what-the-constitution-means-to-me-2019/observer--rex-reed.json duplicateOf already \"observer--david-cote.json\""
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (10 resolved); per-op reasons in triage.ops"
 }

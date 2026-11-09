@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/grosses.json (untracked core data); data/commercial.json (untracked core data); data/grosses-history.json (untracked core data); +1 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * The Profitability Scorecard (capitalization, recoupment, Hit/Flop designations, /biz)
  * was released on prod 2026-10-26 (BRO-6192), the way the site releases

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/site-image-versions.json (untracked core data); data/grosses.json (untracked core data); data/audience-buzz.json (untracked core data); +7 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-5399: the sitemap listed /compare/the-band-s-visit-2017-vs-* which 404ed,
  * because COMPARISON_PAIRS held a retired show slug. Every pair that reaches the

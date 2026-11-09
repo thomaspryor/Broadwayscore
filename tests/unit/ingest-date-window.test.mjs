@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * ingest-review-from-url --date-window (BRO-4656): tour-stop discovery passes
  * the stop's engagement window; a page dated outside it, or undated, is skipped

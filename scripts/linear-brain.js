@@ -8,7 +8,7 @@
  *   node scripts/linear-brain.js create "Issue title" --notes "description" \
  *     [--dispatch | --self | --child "<what>" | --park "<reason>"] [--priority 0-4] [--project-id <id>] \
  *     [--model opus|sonnet] [--source <filer>] [--new-anyway "<reason>"] [--dedupe-opt-out <name>]
- *     [--mac-only "<what needs the Mac and why>"]
+ *     [--mac-only "<what needs the Mac and why>"] [--covers-row "<digest row title>"]
  *
  * BRO-6080: --mac-only (with --dispatch) adds the 'mac-only' label and a "MAC-ONLY: <why>" line. The cloud
  * worker skips the card; the Mac's parked drain (linear-drain-parked.js, launchd) runs it headless on the Mac.
@@ -34,6 +34,12 @@ const { warnPriorAnswers } = require('./lib/owner-decision-recall');
 const { hasHelpFlag } = require('./lib/cli-help');
 const linearClient = require('./lib/linear-client');
 const { checkLinearDoneTransition } = require('./lib/linear-done-gate');
+const rootCauseClose = require('./lib/root-cause-close.js');
+// Only a fix card pays for the git reads behind its landed-file list.
+function landedFilesIfFix(issue) {
+  if (!issue || !rootCauseClose.isFixCard({ title: issue.title })) return null;
+  return rootCauseClose.landedFilesForCard(issue.identifier);
+}
 const { makeVerifyEvidence } = require('./lib/done-evidence-verify');
 const { makeVerifyCmdEvidence } = require('./lib/linear-cmd-execution');
 const { appendBypassRow, bypassCommentLine } = require('./lib/linear-gate-bypass-ledger');
@@ -46,7 +52,7 @@ Usage:
   node scripts/linear-brain.js create "Issue title" --notes "description" \\
     [--dispatch | --self | --child "<what>" | --park "<reason>"] [--priority 0-4] [--project-id <id>] \\
     [--model opus|sonnet] [--source <filer>] [--new-anyway "<reason>"] [--dedupe-opt-out <name>]
-    [--no-verify "<reason>"] [--mac-only "<what needs the Mac and why>"]
+    [--no-verify "<reason>"] [--mac-only "<what needs the Mac and why>"] [--covers-row "<digest row title>"]
   node scripts/linear-brain.js find "search term"
   node scripts/linear-brain.js get <BRO-N>
   node scripts/linear-brain.js update <BRO-N> [--state "<name>"] [--comment "<text>"] \\
@@ -446,6 +452,8 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       // as the state-name resolve above. Gated on `target.type`, not the
       // literal state NAME, so a team rename of "Done" doesn't silently stop
       // gating (see linear-done-gate.js's header).
+      // BRO-7132: a root-cause advisory, repeated as the last output line.
+      let rootCauseNote = null;
       if (target && target.type === 'completed') {
         const bypassReason =
           args.force && typeof args.force === 'string' && args.force.length >= 10 ? args.force : null;
@@ -506,8 +514,13 @@ async function main(argv = process.argv.slice(2), deps = {}) {
             existingComments,
             verifyEvidence,
             verifyCmdEvidence,
+            identifier: issue.identifier, // BRO-7103 recurrence close warning (advisory)
+            // BRO-7103 item 8: root-cause check for fix cards (advisory, then blocking)
+            title: issue.title || '',
+            landedFiles: deps.landedFiles !== undefined ? deps.landedFiles : landedFilesIfFix(issue),
           });
           if (gate.warning) console.error(`⚠️  ${gate.warning}`);
+          if (gate.rootCauseSummary) rootCauseNote = { summary: gate.rootCauseSummary, missing: gate.rootCauseMissing || [] };
           if (gate.gated && !gate.allowed) {
             console.error(`\n❌ REFUSED (${gate.verdict}) — ${issue.identifier} not moved to ${target.name}\n`);
             console.error(gate.reason);
@@ -738,6 +751,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
         // — the part that makes the state move legal at all — actually
         // happened, or which issue it pointed at (fresh-eyes review finding).
         ...(duplicateTwin ? { duplicateOf: duplicateTwin } : {}),
+        ...(rootCauseNote ? { rootCauseMissing: rootCauseNote.missing } : {}),
       }, null, 2));
       // NOT __BOARD_CARD_ID__. That marker is the gate hooks' proof that a card
       // was FILED (notion-brain.js:669, consumed by notion-create-verify.sh),
@@ -750,6 +764,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       // the write succeeded). Hooks grep this instead of state names.
       const reported = target ? require('./lib/linear-state-types').reportedMarker(issue.identifier, target.type) : '';
       if (reported) console.error(reported);
+      if (rootCauseNote) console.error(`⚠️  ${rootCauseNote.summary}`);
     } catch (err) {
       console.error(`\n❌ ${err.message}\n`);
       process.exit(2);
@@ -859,6 +874,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       newAnyway: newAnyway || undefined,
       noVerify: noVerify || undefined,
       macOnly: macOnly === undefined ? undefined : String(macOnly),
+      coversRow: typeof args['covers-row'] === 'string' ? args['covers-row'] : undefined,
       dedupeOptOut: typeof args['dedupe-opt-out'] === 'string' ? args['dedupe-opt-out'] : undefined,
     });
     console.log(JSON.stringify(result.issue, null, 2));

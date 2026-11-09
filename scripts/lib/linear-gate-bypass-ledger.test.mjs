@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/audit/linear-gate-bypass.jsonl (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Pure I/O tests for scripts/lib/linear-gate-bypass-ledger.js (BRO-3435).
 // Uses a real temp file — this module's whole job is disk I/O, so a mock
 // filesystem would test nothing the module doesn't already assert about

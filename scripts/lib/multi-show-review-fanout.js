@@ -58,6 +58,8 @@ const SIBLING_MAX_GAP_DAYS = 400;
 const FIRST_INTRO_MAX_SHARE = 0.4;
 // A later section's show must be named within this many chars of its start.
 const INTRO_LEAD_CHARS = 160;
+const PIVOT_LEAD_CHARS = 60; // real WSJ pivot: "Dark and stormy night notwithstanding, “2:22"
+const LEDE_COMPARISON_RE = /\b(?:cousin|sibling|unlike|compared (?:to|with)|reminiscent|echoes|echoing|recalls|reminds|predecessor|follow-?up to|sequel)\b/i;
 // Partial texts can't be sectioned reliably (the missing tail may be the
 // rest of the first show); invalid ones only when rejected for wrong/multi show.
 const PARTIAL_TIERS = new Set(['truncated', 'excerpt', 'stub']);
@@ -529,6 +531,62 @@ function normTitle(t) {
 }
 
 /**
+ * Joint review whose FIRST show is named only in the lede (BRO-7044, WSJ
+ * "The Unbelievers and 2:22 A Ghost Story"): the lede names both titles, the
+ * first show's review then runs on character and actor names without ever
+ * repeating its title, and one pivot sentence names the second show, whose
+ * stretch (and the closing listing, which lists venues, not titles) runs to the
+ * end. The strict path needs each show's own stretch to name its title, so it
+ * saw the first show's lede mention as a comparison and gave up: the review
+ * stayed on one show (BRO-6736 recurred).
+ *
+ * Fails closed, two shows only. The one big silence between title mentions
+ * (>= SIDE_BY_SIDE_MIN_SHARE of the piece) separates a lede from a stretch:
+ * before it the first-named show has 2+ mentions and the second show 1+, all
+ * within the first FIRST_INTRO_MAX_SHARE of the text; after it only the second
+ * show is named, 3+ times, opening on a pivot sentence that starts with its
+ * title; and both resulting sections are >= MIN_SECTION_CHARS and
+ * >= SIDE_BY_SIDE_MIN_SHARE of the piece.
+ */
+function ledeNamedFirstSections(text, byShow, mentions) {
+  if (byShow.size !== 2 || mentions.length < 6) return [];
+  let k = -1;
+  let gap = 0;
+  for (let i = 0; i + 1 < mentions.length; i++) {
+    const g = mentions[i + 1].at - mentions[i].end;
+    if (g > gap) { gap = g; k = i; }
+  }
+  if (k < 0 || gap < MIN_SECTION_CHARS || gap / text.length < SIDE_BY_SIDE_MIN_SHARE) return [];
+  const lede = mentions.slice(0, k + 1);
+  const stretch = mentions.slice(k + 1);
+  const bId = stretch[0].id;
+  const aId = [...byShow.keys()].find((id) => id !== bId);
+  if (!aId || lede[0].id !== aId || stretch.some((mn) => mn.id !== bId) || stretch.length < 3) return [];
+  if (lede.filter((mn) => mn.id === aId).length < 2 || !lede.some((mn) => mn.id === bId)) return [];
+  // A joint lede introduces the two shows together; a backstory paragraph that
+  // happens to name a sibling show does not put the two titles side by side.
+  const ledeB = lede.filter((mn) => mn.id === bId);
+  if (!ledeB.some((mb) => lede.some((ma) => ma.id === aId && Math.abs(mb.at - ma.end) <= 200 && !/[.!?]["”’]?\s/.test(text.slice(Math.min(ma.end, mb.at), Math.max(ma.end, mb.at)).replace(/\b(?:[A-Z]|St|Mr|Mrs|Dr)\.\s/g, ''))))) return [];
+  if (lede[lede.length - 1].end > text.length * FIRST_INTRO_MAX_SHARE) return [];
+  // The pivot sentence opens on the second show's title (a short lead-in at most
+  // like "Dark nights notwithstanding,"), and the lede is not a comparison ("a louder
+  // cousin in", "unlike"): a single review that opens by comparing to another
+  // show names it twice and then never again (reviewer probe, BRO-7044).
+  const cut = Math.max(sentenceStart(text, stretch[0].at), lede[lede.length - 1].end);
+  if (stretch[0].at - cut > PIVOT_LEAD_CHARS) return [];
+  if (LEDE_COMPARISON_RE.test(text.slice(0, cut))) return [];
+  const first = text.slice(0, cut).trim();
+  const second = text.slice(cut).trim();
+  for (const part of [first, second]) {
+    if (part.length < MIN_SECTION_CHARS || part.length / text.length < SIDE_BY_SIDE_MIN_SHARE) return [];
+  }
+  return [
+    { showId: aId, showTitle: byShow.get(aId).show.title, sectionText: first, anchorKind: 'joint' },
+    { showId: bId, showTitle: byShow.get(bId).show.title, sectionText: second, anchorKind: 'joint' },
+  ];
+}
+
+/**
  * Strategy 3: a joint review. One critic covers two or three shows in one
  * running piece (NYT "Midnight" + "The Curious Case of Benjamin Button",
  * Theater Life's Good Time Charlie / Fish / Anon, BRO-5895): the lede or a
@@ -613,153 +671,164 @@ function jointSections(text, shows, ownShowId, publishDate, opts = {}) {
   }
   runs.forEach((r, i) => { r.extent = (i + 1 < runs.length ? runs[i + 1].at : text.length) - r.at; });
 
-  // Each show's stretch is its longest run; the stretches must sit side by side.
-  const bodyIdx = [];
-  for (const id of byShow.keys()) {
-    let best = -1;
-    runs.forEach((r, i) => { if (r.id === id && (best < 0 || r.extent > runs[best].extent)) best = i; });
-    bodyIdx.push(best);
-  }
-  bodyIdx.sort((a, b) => a - b);
-  for (let i = 1; i < bodyIdx.length; i++) if (bodyIdx[i] !== bodyIdx[i - 1] + 1) return [];
-  const first = bodyIdx[0];
-  const lastBody = bodyIdx[bodyIdx.length - 1];
-  const head = runs.slice(0, first);
-  const tail = runs.slice(lastBody + 1);
-  // Either the tail lists every show, or (no tail at all) the head
-  // introduces every show in the order their stretches run and each stretch
-  // carries a real share of the piece: a single review whose lede compares
-  // it to another show and which closes on a paragraph about that show is
-  // not a joint review.
-  const tailAll = new Set(tail.map((r) => r.id)).size === byShow.size;
-  if (!tailAll) {
-    if (tail.length) return [];
-    const order = [];
-    for (const r of head) if (!order.includes(r.id)) order.push(r.id);
-    // BRO-6736 (New Yorker, "Marjorie Prime" then "Anna Christie"): a piece whose
-    // lede names neither show's partner and has no listing is still two reviews
-    // when every stretch names its show at least three times and holds a third
-    // of the piece. The first stretch opens the article, so there is no lede
-    // to compare against.
-    const sideBySide = !opts.strictLede && head.length === 0 && bodyIdx.length >= 2
-      && bodyIdx.every((i) => runs[i].count >= 3 && runs[i].extent / text.length >= SIDE_BY_SIDE_MIN_SHARE);
-    if (order.join() !== bodyIdx.map((i) => runs[i].id).join() && !sideBySide) return [];
-    // The last stretch runs to the end of the piece with nothing after it to
-    // bound it, so one passing mention there is a closing aside, not a review.
-    if (runs[bodyIdx[bodyIdx.length - 1]].count < 2) return [];
-    // An earlier stretch named once must open on its title ("“Anon,” at MCC
-    // Theater, is..."): a single mention inside a sentence about the other
-    // show is a comparison ("unlike How to Dance in Ohio", BRO-5942).
-    for (const i of bodyIdx) {
-      if (runs[i].count < 2 && /[\p{L}\p{N}]/u.test(text.slice(sentenceStart(text, runs[i].at), runs[i].at))) return [];
-    }
-  }
-  const minShare = tailAll ? MIN_SECTION_SHARE : HEAD_ONLY_MIN_SHARE;
-  const cutAt = (runIdx) => {
-    const r = runs[runIdx];
-    const floor = runIdx > 0 ? runs[runIdx - 1].lastEnd : 0;
-    let c = Math.max(sentenceStart(text, r.at), floor);
-    if (c === floor && floor > 0) c += (text.slice(c).match(AFTER_TITLE_RE) || [''])[0].length;
-    // A credits listing has no sentence end of its own ("...New York, NY
-    // kingcharlesiiibroadway.com Keira Knightley in Thérèse Raquin"): its
-    // web address ends it, so the cut goes after it and another show's
-    // credits never open this section (Flipside, BRO-5942). Only a listing's
-    // address counts: "fans who found it via Broadway.com will love X" keeps
-    // its sentence whole.
-    if (runIdx > 0) {
-      const start = c;
-      let m;
-      WEB_ADDRESS_RE.lastIndex = start;
-      while ((m = WEB_ADDRESS_RE.exec(text)) && m.index < r.at) {
-        if (m.index + m[0].length <= r.at && LISTING_SIGNAL_RE.test(text.slice(start, m.index))) {
-          c = m.index + m[0].length;
-        }
-      }
-      while (c < r.at && /\s/.test(text[c])) c++;
-    }
-    return Math.min(c, r.at);
-  };
-  // With nothing before the first stretch, a second stretch that opens in
-  // the sentence closing the first ("...Waiting for Godot," and Pinter's "No
-  // Man's Land.") means the first stretch was only the opening that names
-  // both shows: the review then interleaves them (BRO-5942). A transition
-  // after a lede that already named them ("While Birthright explores...,
-  // A Walk on the Moon...") is a real join.
-  let transitionCut;
-  if (!head.length && bodyIdx.length > 1
-    && sentenceStart(text, runs[bodyIdx[1]].at) < runs[bodyIdx[0]].lastEnd) {
-    // Two full reviews joined by a sentence naming both ("Whereas sentiment
-    // is in abundance at Night Side Songs, it's in short supply at Bigfoot!",
-    // Vulture, BRO-6744) is a real join when the closing listing gives each
-    // show its run and the first stretch is a review on its own before that
-    // sentence. The join sentence opens the second section.
-    const join = sentenceStart(text, runs[bodyIdx[1]].at);
-    const first = runs[bodyIdx[0]];
-    const firstMentionsBefore = mentions.filter((mn) => mn.id === first.id && mn.at >= first.at && mn.end <= join).length;
-    const firstLen = join - first.at;
-    const realJoin = bodyIdx.length === 2 && tailAll && firstMentionsBefore >= 3
-      && firstLen >= MIN_SECTION_CHARS && firstLen / text.length >= MIN_SECTION_SHARE;
-    if (!realJoin) return [];
-    transitionCut = join;
-  }
-  const cuts = bodyIdx.map(cutAt);
-  if (transitionCut !== undefined) cuts[1] = transitionCut;
-  // A section's own photo caption just before its cut opens that section
-  // ("Kristolyn Lloyd in Bigfoot! Photo: A. Photographer Whereas ...").
-  for (let i = 1; i < cuts.length; i++) {
-    const id = runs[bodyIdx[i]].id;
-    const cap = captionMentions.filter((c) => c.id === id && c.at < cuts[i] && cuts[i] - c.at < 300
-      && !mentions.some((mn) => mn.at >= c.end && mn.at < cuts[i])).pop();
-    if (!cap) continue;
-    const prevEnd = Math.max(cuts[i - 1], ...mentions.filter((mn) => mn.at < cap.at).map((mn) => mn.end));
-    const capStart = sentenceStart(text, cap.at);
-    // A caption is a short credit line ("Ann Actor and Bo Player in X!"):
-    // a sentence start further back is the end of the previous section's
-    // prose, which never moves.
-    if (capStart >= prevEnd && cap.at - capStart <= 120) cuts[i] = capStart;
-  }
-  if (cuts[0] > text.length * FIRST_INTRO_MAX_SHARE) return [];
-  const bodyEnd = tail.length ? cutAt(lastBody + 1) : text.length;
-  // The tail is a closing listing and page chrome, never a big share of the
-  // piece: a single review that names the other show again near its end
-  // would otherwise lose its own last paragraphs.
-  if (text.length - bodyEnd > text.length * MAX_TAIL_SHARE) return [];
+  // The strict reading first (each show's own stretch names its title); a lede-named
+  // first show (BRO-7044) is the fail-closed fallback when it finds nothing.
+  const strictSections = () => {
 
-  const total = text.length;
-  const sections = [];
-  for (let i = 0; i < bodyIdx.length; i++) {
-    const run = runs[bodyIdx[i]];
-    const body = text.slice(cuts[i], i + 1 < cuts.length ? cuts[i + 1] : bodyEnd).trim();
-    if (body.length < MIN_SECTION_CHARS || body.length / total < minShare) return [];
-    // Its own line of the closing listing: from the title to the end of that
-    // entry (a sentence end past 40 chars). A shared entry ("X and Y: Through
-    // ...") stays whole; one that gives this show its own details before the
-    // next show's title ("X ****, Y **") stops at that title.
-    let listing = '';
-    const tr = tail.find((r) => r.id === run.id);
-    if (tr) {
-      const from = tr.at;
-      let to = Math.min(from + LISTING_SNIPPET_MAX, text.length);
-      const stop = /[.!?](?=\s+[A-Z“"])/g;
-      stop.lastIndex = from + 40;
-      const s = stop.exec(text);
-      if (s && s.index < to) to = s.index + 1;
-      const entry = text.slice(from, to);
-      // A closing sentence that merely names the shows again ("Fans of X
-      // should go") is the review's own ending, not a listing.
-      if (tailAll && !LISTING_SIGNAL_RE.test(entry)) return [];
-      const nextTitle = mentions.find((mn) => mn.at > from && mn.at < to && mn.id !== run.id);
-      if (nextTitle && LISTING_SIGNAL_RE.test(text.slice(tr.lastEnd, nextTitle.at))) to = nextTitle.at;
-      listing = text.slice(from, to).trim().replace(/[\s,;“"]+$/, '');
+    // Each show's stretch is its longest run; the stretches must sit side by side.
+    const bodyIdx = [];
+    for (const id of byShow.keys()) {
+      let best = -1;
+      runs.forEach((r, i) => { if (r.id === id && (best < 0 || r.extent > runs[best].extent)) best = i; });
+      bodyIdx.push(best);
     }
-    sections.push({
-      showId: run.id,
-      showTitle: byShow.get(run.id).show.title,
-      sectionText: listing ? `${body}\n\n${listing}` : body,
-      anchorKind: 'joint',
-    });
-  }
-  return sections;
+    bodyIdx.sort((a, b) => a - b);
+    for (let i = 1; i < bodyIdx.length; i++) {
+      if (bodyIdx[i] !== bodyIdx[i - 1] + 1) return [];
+    }
+    const first = bodyIdx[0];
+    const lastBody = bodyIdx[bodyIdx.length - 1];
+    const head = runs.slice(0, first);
+    const tail = runs.slice(lastBody + 1);
+    // Either the tail lists every show, or (no tail at all) the head
+    // introduces every show in the order their stretches run and each stretch
+    // carries a real share of the piece: a single review whose lede compares
+    // it to another show and which closes on a paragraph about that show is
+    // not a joint review.
+    const tailAll = new Set(tail.map((r) => r.id)).size === byShow.size;
+    if (!tailAll) {
+      if (tail.length) return [];
+      const order = [];
+      for (const r of head) if (!order.includes(r.id)) order.push(r.id);
+      // BRO-6736 (New Yorker, "Marjorie Prime" then "Anna Christie"): a piece whose
+      // lede names neither show's partner and has no listing is still two reviews
+      // when every stretch names its show at least three times and holds a third
+      // of the piece. The first stretch opens the article, so there is no lede
+      // to compare against.
+      const sideBySide = !opts.strictLede && head.length === 0 && bodyIdx.length >= 2
+        && bodyIdx.every((i) => runs[i].count >= 3 && runs[i].extent / text.length >= SIDE_BY_SIDE_MIN_SHARE);
+      if (order.join() !== bodyIdx.map((i) => runs[i].id).join() && !sideBySide) return [];
+      // The last stretch runs to the end of the piece with nothing after it to
+      // bound it, so one passing mention there is a closing aside, not a review.
+      if (runs[bodyIdx[bodyIdx.length - 1]].count < 2) return [];
+      // An earlier stretch named once must open on its title ("“Anon,” at MCC
+      // Theater, is..."): a single mention inside a sentence about the other
+      // show is a comparison ("unlike How to Dance in Ohio", BRO-5942).
+      for (const i of bodyIdx) {
+        if (runs[i].count < 2 && /[\p{L}\p{N}]/u.test(text.slice(sentenceStart(text, runs[i].at), runs[i].at))) return [];
+      }
+    }
+    const minShare = tailAll ? MIN_SECTION_SHARE : HEAD_ONLY_MIN_SHARE;
+    const cutAt = (runIdx) => {
+      const r = runs[runIdx];
+      const floor = runIdx > 0 ? runs[runIdx - 1].lastEnd : 0;
+      let c = Math.max(sentenceStart(text, r.at), floor);
+      if (c === floor && floor > 0) c += (text.slice(c).match(AFTER_TITLE_RE) || [''])[0].length;
+      // A credits listing has no sentence end of its own ("...New York, NY
+      // kingcharlesiiibroadway.com Keira Knightley in Thérèse Raquin"): its
+      // web address ends it, so the cut goes after it and another show's
+      // credits never open this section (Flipside, BRO-5942). Only a listing's
+      // address counts: "fans who found it via Broadway.com will love X" keeps
+      // its sentence whole.
+      if (runIdx > 0) {
+        const start = c;
+        let m;
+        WEB_ADDRESS_RE.lastIndex = start;
+        while ((m = WEB_ADDRESS_RE.exec(text)) && m.index < r.at) {
+          if (m.index + m[0].length <= r.at && LISTING_SIGNAL_RE.test(text.slice(start, m.index))) {
+            c = m.index + m[0].length;
+          }
+        }
+        while (c < r.at && /\s/.test(text[c])) c++;
+      }
+      return Math.min(c, r.at);
+    };
+    // With nothing before the first stretch, a second stretch that opens in
+    // the sentence closing the first ("...Waiting for Godot," and Pinter's "No
+    // Man's Land.") means the first stretch was only the opening that names
+    // both shows: the review then interleaves them (BRO-5942). A transition
+    // after a lede that already named them ("While Birthright explores...,
+    // A Walk on the Moon...") is a real join.
+    let transitionCut;
+    if (!head.length && bodyIdx.length > 1
+      && sentenceStart(text, runs[bodyIdx[1]].at) < runs[bodyIdx[0]].lastEnd) {
+      // Two full reviews joined by a sentence naming both ("Whereas sentiment
+      // is in abundance at Night Side Songs, it's in short supply at Bigfoot!",
+      // Vulture, BRO-6744) is a real join when the closing listing gives each
+      // show its run and the first stretch is a review on its own before that
+      // sentence. The join sentence opens the second section.
+      const join = sentenceStart(text, runs[bodyIdx[1]].at);
+      const first = runs[bodyIdx[0]];
+      const firstMentionsBefore = mentions.filter((mn) => mn.id === first.id && mn.at >= first.at && mn.end <= join).length;
+      const firstLen = join - first.at;
+      const realJoin = bodyIdx.length === 2 && tailAll && firstMentionsBefore >= 3
+        && firstLen >= MIN_SECTION_CHARS && firstLen / text.length >= MIN_SECTION_SHARE;
+      if (!realJoin) return [];
+      transitionCut = join;
+    }
+    const cuts = bodyIdx.map(cutAt);
+    if (transitionCut !== undefined) cuts[1] = transitionCut;
+    // A section's own photo caption just before its cut opens that section
+    // ("Kristolyn Lloyd in Bigfoot! Photo: A. Photographer Whereas ...").
+    for (let i = 1; i < cuts.length; i++) {
+      const id = runs[bodyIdx[i]].id;
+      const cap = captionMentions.filter((c) => c.id === id && c.at < cuts[i] && cuts[i] - c.at < 300
+        && !mentions.some((mn) => mn.at >= c.end && mn.at < cuts[i])).pop();
+      if (!cap) continue;
+      const prevEnd = Math.max(cuts[i - 1], ...mentions.filter((mn) => mn.at < cap.at).map((mn) => mn.end));
+      const capStart = sentenceStart(text, cap.at);
+      // A caption is a short credit line ("Ann Actor and Bo Player in X!"):
+      // a sentence start further back is the end of the previous section's
+      // prose, which never moves.
+      if (capStart >= prevEnd && cap.at - capStart <= 120) cuts[i] = capStart;
+    }
+    if (cuts[0] > text.length * FIRST_INTRO_MAX_SHARE) return [];
+    const bodyEnd = tail.length ? cutAt(lastBody + 1) : text.length;
+    // The tail is a closing listing and page chrome, never a big share of the
+    // piece: a single review that names the other show again near its end
+    // would otherwise lose its own last paragraphs.
+    if (text.length - bodyEnd > text.length * MAX_TAIL_SHARE) return [];
+
+    const total = text.length;
+    const sections = [];
+    for (let i = 0; i < bodyIdx.length; i++) {
+      const run = runs[bodyIdx[i]];
+      const body = text.slice(cuts[i], i + 1 < cuts.length ? cuts[i + 1] : bodyEnd).trim();
+      if (body.length < MIN_SECTION_CHARS || body.length / total < minShare) return [];
+      // Its own line of the closing listing: from the title to the end of that
+      // entry (a sentence end past 40 chars). A shared entry ("X and Y: Through
+      // ...") stays whole; one that gives this show its own details before the
+      // next show's title ("X ****, Y **") stops at that title.
+      let listing = '';
+      const tr = tail.find((r) => r.id === run.id);
+      if (tr) {
+        const from = tr.at;
+        let to = Math.min(from + LISTING_SNIPPET_MAX, text.length);
+        const stop = /[.!?](?=\s+[A-Z“"])/g;
+        stop.lastIndex = from + 40;
+        const s = stop.exec(text);
+        if (s && s.index < to) to = s.index + 1;
+        const entry = text.slice(from, to);
+        // A closing sentence that merely names the shows again ("Fans of X
+        // should go") is the review's own ending, not a listing.
+        if (tailAll && !LISTING_SIGNAL_RE.test(entry)) return [];
+        const nextTitle = mentions.find((mn) => mn.at > from && mn.at < to && mn.id !== run.id);
+        if (nextTitle && LISTING_SIGNAL_RE.test(text.slice(tr.lastEnd, nextTitle.at))) to = nextTitle.at;
+        listing = text.slice(from, to).trim().replace(/[\s,;“"]+$/, '');
+      }
+      sections.push({
+        showId: run.id,
+        showTitle: byShow.get(run.id).show.title,
+        sectionText: listing ? `${body}\n\n${listing}` : body,
+        anchorKind: 'joint',
+      });
+    }
+    return sections;
+  };
+  const strict = strictSections();
+  if (strict.length) return strict;
+  if (opts.strictLede) return [];
+  return ledeNamedFirstSections(text, byShow, mentions);
 }
 
 // A section's lede (caption + first sentence) may hand over from the previous
@@ -852,11 +921,30 @@ function headerSections(text, shows, ownShowId, publishDate) {
     // One header style per article: a post mixing both is not a column we can cut.
     if (new Set(heads.map((h) => h.listing)).size > 1) return none;
   }
+  // Interested Bystander "<Title> (c) <Photographer>Theater: <Title> <venue>"
+  // headings whose venue is not "At <Venue>" ("... Ma-Yi Theater Company at the
+  // Public", BRO-6736: the Liberation post stayed whole under a wrong-production
+  // flag). The section extractor's own headings bound every section; the show
+  // name is the heading text before " at ".
+  if (heads.length < 2) {
+    const { findSectionHeadings } = require('./multi-show-section-extract');
+    const bys = findSectionHeadings(text);
+    // A generic heading the bystander headings do not cover is a boundary the
+    // fallback would drop (ship-check): mixed formats are not cut.
+    const covered = heads.every((h) => bys.some((b) => h.at >= b.start && h.at - b.start < 300));
+    if (bys.length >= 2 && covered) {
+      heads = bys.map((b) => {
+        const title = b.title.split(/\s+at\s+/i)[0].trim();
+        return { at: b.start, end: b.start, start: b.start, title, listing: false, bystander: true };
+      });
+    }
+  }
   heads.sort((a, b) => a.at - b.at);
   if (heads.length < 2) return none;
   // Pull each header back over the photo that opens its section: a
   // "<Title> (c) Photographer" caption, or a WordPress [caption]...[/caption].
   heads.forEach((h, i) => {
+    if (h.bystander) return; // already opens at its caption
     h.start = h.at;
     const floor = i ? heads[i - 1].end : 0;
     const before = text.slice(floor, h.at);
@@ -915,7 +1003,14 @@ function headerSections(text, shows, ownShowId, publishDate) {
   const sections = [];
   const seen = new Set();
   heads.forEach((h, i) => {
-    const show = byTitle.get(normalizeTitle(h.title));
+    let show = byTitle.get(normalizeTitle(h.title));
+    // A bystander heading runs on into its venue ("Did You Eat? Ma-Yi Theater
+    // Company"): the one tracked title it starts with, as the extractor does.
+    if (!show && h.bystander) {
+      const n = normalizeTitle(h.title);
+      const hits = [...new Set([...byTitle.keys()].filter((k) => k.length >= 4 && n.startsWith(k + ' ')).map((k) => byTitle.get(k)))];
+      if (hits.length === 1) show = hits[0];
+    }
     if (!show || seen.has(show.id)) return;
     const sectionText = text.slice(h.start, i + 1 < heads.length ? heads[i + 1].start : text.length).trim();
     if (sectionText.length < MIN_SECTION_CHARS) return;
@@ -965,6 +1060,17 @@ function verdictNamesOtherSection(data, otherSections) {
   });
 }
 
+/**
+ * A split parent whose fullText grew back past its trimmed length (a re-collect
+ * restored the whole article, BRO-7044). The planner re-plans it; callers that
+ * skip processed files must let it through too.
+ */
+function splitParentRegrew(data) {
+  return !!(data && data.multiShowSplitParent && typeof data.fullText === 'string'
+    && Number.isFinite(data.multiShowSplitTextLength)
+    && data.fullText.length > data.multiShowSplitTextLength + 200);
+}
+
 function planMultiShowFanout(data, shows, opts = {}) {
   if (!data || typeof data !== 'object') return null;
   if (data.multiShowSplitChild) return null;
@@ -974,12 +1080,7 @@ function planMultiShowFanout(data, shows, opts = {}) {
   // stays whole: the scorer reads its own section at score time (BRO-5294),
   // and this planner's intro cut lands elsewhere in WSJ capsule columns.
   if (data.multiShowSplitMethod === 'venue-box') return null;
-  if (data.multiShowSplitProcessed) {
-    const retrimmed = data.multiShowSplitParent && typeof data.fullText === 'string'
-      && Number.isFinite(data.multiShowSplitTextLength)
-      && data.fullText.length > data.multiShowSplitTextLength + 200;
-    if (!retrimmed) return null;
-  }
+  if (data.multiShowSplitProcessed && !splitParentRegrew(data)) return null;
   // A critic's own verdict (hand clear or reject) is never overridden here.
   const humanJudged = isHumanJudged(data);
   // Aggregator round-ups quote many critics; they are not one critic's review.
@@ -1205,9 +1306,14 @@ function urlKey(u) {
  * whole article when its text is well past its section and opens with it.
  * Never a record a person or another verdict owns.
  */
-function heldSiblingNeedsTrim(existing, sec) {
+function heldSiblingNeedsTrim(existing, sec, parentShowId) {
   if (!existing || existing.unreadable || typeof existing.fullText !== 'string') return false;
-  if (existing.multiShowSplitProcessed || existing.multiShowUnsplitAt) return false;
+  // A child THIS parent's split created, whose text a re-collect put back to the
+  // whole article (BRO-7044: the opening-night poller refetched the WSJ joint review
+  // into the 2:22 child), is trimmed again; any other processed split is left alone.
+  const ownChild = !!parentShowId && existing.multiShowSplitChild === true
+    && existing.multiShowSplitParentShowId === parentShowId;
+  if ((existing.multiShowSplitProcessed && !ownChild) || existing.multiShowUnsplitAt) return false;
   // Only a hand score or lock stops a TEXT trim; a manual production clear is
   // about the production, not the text, and survives rewriteParent.
   if (existing._locked === true || existing.humanReviewScore != null || existing.manualContentTier
@@ -1245,6 +1351,18 @@ function fanoutMovesText(fan) {
   return !!(fan && fan.applied && (fan.trimOnly || fan.children.some((c) => c.action === 'create' || c.action === 'fill' || c.action === 'held' || c.action === 'held-trim')));
 }
 
+function trimHeldSibling(childPath, existing, sec, otherShowIds, now) {
+  const trimmed = rewriteParent(existing, sec, otherShowIds, now);
+  // A restored child of this split stays a child, not a second parent.
+  if (existing.multiShowSplitChild === true) {
+    delete trimmed.multiShowSplitParent;
+    delete trimmed.multiShowSplitChildShowIds;
+  }
+  // Keep the restored article so the trim remains reversible.
+  trimmed.multiShowWholeArticleText = existing.fullText;
+  return require('./review-write-guard').safeWriteReview(childPath, trimmed, { merge: false, force: true });
+}
+
 /**
  * Apply the fan-out to a file on disk. `reviewTextsDir` is the root holding
  * {showId}/ dirs. Returns { applied, parentRewritten, children: [{showId, action}] }.
@@ -1258,6 +1376,32 @@ function applyMultiShowFanoutToFile(filePath, opts = {}) {
   let data;
   try { data = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch { return result; }
   const ownShowId = data.showId || path.basename(path.dirname(filePath));
+  // BRO-7052: a collector may restore the article in ONLY a split child.
+  // Re-plan in its parent's context using that restored body, without
+  // rewriting the unchanged parent or touching any other sibling.
+  if (data.multiShowSplitChild === true) {
+    const parentShowId = data.multiShowSplitParentShowId;
+    if (!parentShowId || !shows.some((s) => s.id === parentShowId)) return result;
+    let parent;
+    try { parent = JSON.parse(fs.readFileSync(path.join(reviewTextsDir, parentShowId, path.basename(filePath)), 'utf8')); } catch { return result; }
+    if (parent.multiShowSplitParent !== true || parent.multiShowSplitChild
+      || !parent.multiShowSplitChildShowIds?.includes(ownShowId)
+      || !data.url || !parent.url || urlKey(data.url) !== urlKey(parent.url)) return result;
+    const parentPlan = planMultiShowFanout({ ...parent, fullText: data.fullText }, shows, { ownShowId: parentShowId, joint: opts.joint });
+    const sec = parentPlan && parentPlan.otherSections.find((s) => s.showId === ownShowId);
+    if (!sec || !heldSiblingNeedsTrim(data, sec, parentShowId)) return result;
+    const { loadBlocklist, findBlockedEntry } = require('./poller-blocklist');
+    if (findBlockedEntry(loadBlocklist(path.dirname(filePath)), data.url)) return result;
+    if (!dryRun) {
+      const otherShowIds = [parentShowId, ...parentPlan.otherSections.map((s) => s.showId).filter((id) => id !== ownShowId)];
+      const write = trimHeldSibling(filePath, data, sec, otherShowIds, new Date().toISOString());
+      if (!write || write.wrote === false) return result;
+    }
+    result.applied = true;
+    result.strategy = parentPlan.strategy;
+    result.children.push({ showId: ownShowId, action: 'held-trim', chars: sec.sectionText.length });
+    return result;
+  }
   const plan = planMultiShowFanout(data, shows, { ownShowId, joint: opts.joint });
   if (!plan) {
     if (!dryRun && isWholeArticleBackOnBadSplit(data, shows)) {
@@ -1289,14 +1433,10 @@ function applyMultiShowFanoutToFile(filePath, opts = {}) {
       // BRO-6736: the sibling already holds this URL, but possibly as the WHOLE
       // article (stored before any split); leaving it whole scores the other
       // sections into it and keeps a "review of <other show>" verdict alive.
-      if (heldSiblingNeedsTrim(existing, sec)) {
+      if (heldSiblingNeedsTrim(existing, sec, ownShowId)) {
         result.children[result.children.length - 1].action = 'held-trim';
         if (!dryRun) {
-          const trimmed = rewriteParent(existing, sec, [ownShowId, ...plan.otherSections.map((o) => o.showId).filter((id) => id !== sec.showId)], now);
-          trimmed.multiShowSplitAnchorKind = sec.anchorKind;
-          // The trim replaces the sibling's text; keep what it held so nothing is lost or unsplit-able.
-          trimmed.multiShowWholeArticleText = existing.fullText;
-          safeWriteReview(childPath, trimmed, { merge: false, force: true });
+          trimHeldSibling(childPath, existing, sec, [ownShowId, ...plan.otherSections.map((o) => o.showId).filter((id) => id !== sec.showId)], now);
         }
       }
       continue;
@@ -1413,8 +1553,10 @@ function unsplitArticle(filePath, data, reviewTextsDir, ownShowId) {
 }
 
 module.exports = {
+  splitParentRegrew,
   fanoutMovesText,
   heldSiblingNeedsTrim,
+  isHumanJudged,
   verdictNamesOtherSection,
   urlKey,
   planMultiShowFanout,

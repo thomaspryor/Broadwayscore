@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-6588: a review file for a pre-opening news/feature page on a review
 // outlet is refused at the writer chokepoint, on create and on a merge that
 // would swap a stub's url for the news page; the opening-night review writes.

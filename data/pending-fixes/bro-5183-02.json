@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5183-02",
   "planId": "870173a0-73bf-4100-a5b2-74f3334ab786",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-12T19:00:46.384Z",
   "submitter": {
     "name": null,
@@ -353,5 +353,72 @@
       "ok": true,
       "msg": "ifthen-2014/talkinbroadway--matthew-murray.json url: \"https://www.talkinbroadway.com/world/IfThen.html\" -> \"https://talkinbroadway.com/page/world/IfThen2014.html\""
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 11
+    },
+    "ops": [
+      {
+        "i": 1,
+        "verdict": "resolved",
+        "reason": "a-christmas-story-the-musical-2012/ew--thom-geier.json duplicateOf already \"ew--tanner-stransky.json\""
+      },
+      {
+        "i": 5,
+        "verdict": "resolved",
+        "reason": "aint-no-mo-2022/nysr--bart-greenberg.json duplicateOf already \"nysr--michael-sommers.json\""
+      },
+      {
+        "i": 12,
+        "verdict": "resolved",
+        "reason": "baby-its-you-2011/variety--david-rooney.json duplicateOf already \"variety--steven-suskin.json\""
+      },
+      {
+        "i": 14,
+        "verdict": "resolved",
+        "reason": "chinglish-2011/theatermania--david-finkle.json and chinglish-2011/theatermania--dan-bacalzo.json share one counted row, so nothing is double-counted"
+      },
+      {
+        "i": 16,
+        "verdict": "resolved",
+        "reason": "company-2021/nysr--tulis-mccall.json duplicateOf already \"nysr--melissa-rose-bernardo.json\""
+      },
+      {
+        "i": 17,
+        "verdict": "resolved",
+        "reason": "cult-of-love-2024/washpost--peter-marks.json duplicateOf already \"washpost--naveen-kumar.json\""
+      },
+      {
+        "i": 18,
+        "verdict": "resolved",
+        "reason": "driving-miss-daisy-2010/variety--charles-isherwood.json duplicateOf already \"variety--joe-dziemianowicz.json\""
+      },
+      {
+        "i": 19,
+        "verdict": "resolved",
+        "reason": "enron-2010/observer--rex-reed.json duplicateOf already \"observer--jesse-oxfeld.json\""
+      },
+      {
+        "i": 20,
+        "verdict": "resolved",
+        "reason": "evita-2012/ew--thom-geier.json duplicateOf already \"ew--melissa-rose-bernardo.json\""
+      },
+      {
+        "i": 21,
+        "verdict": "resolved",
+        "reason": "groundhog-day-2017/theatermania--adam-feldman.json duplicateOf already \"theatermania--david-gordon.json\""
+      },
+      {
+        "i": 22,
+        "verdict": "resolved",
+        "reason": "here-lies-love-2023/talkinbroadway--matthew-murray.json duplicateOf already \"talkinbroadway--howard-miller.json\""
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (11 resolved); per-op reasons in triage.ops"
 }

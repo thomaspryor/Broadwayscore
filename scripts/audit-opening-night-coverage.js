@@ -19,7 +19,7 @@ const fs = require('fs');
 const path = require('path');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { showRecencyKey, NO_DATE_SENTINEL } = require('./lib/collection-priority');
-const { buildCensusFromArchives, censusVerdict, CI_UNFETCHABLE_OUTLETS } = require('./lib/review-census');
+const { buildCensusFromArchives, publishedRoundupWithoutArchive, censusVerdict, CI_UNFETCHABLE_OUTLETS } = require('./lib/review-census');
 const { rebuildExcludedOutlets, filterCensus } = require('./lib/census-rebuild-exclusions');
 const { classifyCell, mergeLedger, serializeLedger, isDispatchTierOutlet, computeDispatchDecision, canonicalTierId, groupByCanonicalTierId, GRACE_HOURS } = require('./lib/t1-ledger');
 const { buildDigest } = require('./lib/t1-digest');
@@ -368,6 +368,13 @@ function computeShowCells(show, reviews, outlets, nowMs, standingCtx, censusOpts
 // freshly computed, so excluding tours here also purges stale tour rows.
 function isTourShow(s) { return s.category === 'tour'; }
 
+// A regional tryout is never plausibly covered by NYT/NYPost/HR, yet censusMarket
+// resolves 'regional' to the broadway roundup set. In CI (roundup archives
+// present) regional shows minted ~29 permanent census GAP cells that kept
+// t1-coverage:new-gaps-24h open (BRO-5532, 2nd root cause after tours).
+function isRegionalShow(s) { return s.category === 'regional'; }
+function isNoT1FloorShow(s) { return isTourShow(s) || isRegionalShow(s); }
+
 // Build + write the T1 coverage ledger. Scans shows that are open OR opened within
 // the window; merges with the prior ledger (preserving each gap's firstSeenAt) and
 // writes deterministic bytes so an unchanged corpus produces NO file diff.
@@ -384,7 +391,7 @@ function writeLedger(opts, shows, reviews, outlets, nowIso, nowMs) {
   // missed). Same canonical predicate the selector uses.
   const { loadReviewEvidence, hasFreshEvidence } = require('./lib/review-evidence.js');
   const evidence = loadReviewEvidence();
-  const target = shows.filter(s => !isTourShow(s)).filter(s => s.status === 'open'
+  const target = shows.filter(s => !isNoT1FloorShow(s)).filter(s => s.status === 'open'
     || (s.openingDate && s.openingDate >= cutoff)
     || (s.status !== 'closed' && hasFreshEvidence(evidence, s.id || s.slug, { now: new Date(nowMs), lookbackDays: opts.ledgerDays })));
   const freshShows = [];
@@ -786,7 +793,7 @@ async function main() {
       // A national tour has no Broadway roundup census or T1 floor to miss
       // (censusMarket would read it as 'broadway'): its launch would only
       // raise false gap alerts (BRO-4724).
-      if (isTourShow(s)) return false;
+      if (isNoT1FloorShow(s)) return false;
       const recencyDate = showRecencyKey(s);
       if (recencyDate === NO_DATE_SENTINEL) return false;
       return recencyDate >= cutoffStr;
@@ -954,6 +961,18 @@ async function main() {
       });
     }
 
+    // BRO-7050: a published roundup with no archived copy is an unverifiable census, not "no census yet".
+    let archiveMissingUrl = null;
+    if (!(census && census.hadAnySource && (census.sourcesPresent || []).includes('bww-roundup'))) {
+      try {
+        const dir = path.join(__dirname, '..', 'data', 'review-texts', showId);
+        const files = fs.existsSync(dir) ? fs.readdirSync(dir).filter((n) => n.endsWith('.json')).map((n) => { try { return JSON.parse(fs.readFileSync(path.join(dir, n), 'utf8')); } catch (_) { return null; } }) : [];
+        const r = publishedRoundupWithoutArchive(files, census ? census.sourcesPresent : [], show.title);
+        if (r.missing) archiveMissingUrl = r.url;
+      } catch (_) { /* best effort */ }
+    }
+    if (archiveMissingUrl) console.log(`  🚨 CENSUS ARCHIVE MISSING: roundup published (${archiveMissingUrl}) but no archived copy, census unverifiable.`);
+
     // A census-incomplete show is a gap even if the review-count floor is met (the
     // whole point: the floor missed the long tail the census enumerates).
     const censusIncomplete = !!(cVerdict && census && census.hadAnySource && cVerdict.verdict === 'incomplete');
@@ -974,7 +993,7 @@ async function main() {
     // or a broken extractor. A show whose only census-missing outlets are soft
     // (supplementary-source tryout noise) is honestly "incomplete" but not a gap to
     // act on — recording it as a gap would storm-dispatch a gather that can't help.
-    if (censusMissing.length > 0 || censusExtractorBroken) {
+    if (censusMissing.length > 0 || censusExtractorBroken || archiveMissingUrl) {
       gaps.push({
         showId,
         title: show.title,
@@ -989,7 +1008,8 @@ async function main() {
         censusMissingSoft,
         censusSuppressed,
         censusExtractorBroken,
-        censusVerdict: cVerdict ? cVerdict.verdict : null,
+        censusVerdict: archiveMissingUrl && !(census && census.hadAnySource) ? 'census-archive-missing' : (cVerdict ? cVerdict.verdict : null),
+        censusArchiveMissingUrl: archiveMissingUrl,
         dispatchable,
         // Severity counts only ACTIONABLE misses: escalating to 'major' (which
         // pages) on outlets we've already decided we cannot fetch is precisely
@@ -1145,4 +1165,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { computeShowCells, censusMarket, isTourShow, writeLedger };
+module.exports = { computeShowCells, censusMarket, isTourShow, isRegionalShow, isNoT1FloorShow, writeLedger };

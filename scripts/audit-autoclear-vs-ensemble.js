@@ -21,7 +21,7 @@
 const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
+const { assertCorpusScanned, exitIfCorpusNotScanned } = require('./lib/corpus-scan-guard');
 const { scanAutoclearVsEnsembleViolations } = require('./lib/autoclear-vs-ensemble-scan');
 
 const USAGE = `audit-autoclear-vs-ensemble.js — autoclear-vs-ensemble defect audit (#1146/#1156)
@@ -69,9 +69,7 @@ function main() {
   try {
     assertCorpusScanned(corpusEntries, { gate: args.strict, label: args.dir });
   } catch (e) {
-    if (!(e instanceof CorpusNotScannedError)) throw e;
-    console.error(`\nFAIL: ${e.message}`);
-    process.exit(1);
+    exitIfCorpusNotScanned(e); // BRO-3549: exit 2 (could not run), not 1 (drift)
   }
 
   const { scanned, wpViolations, wsViolations } = scanAutoclearVsEnsembleViolations({ reviewTextsDir: args.dir });

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-2619: merge-aggregator-excerpts.js findMatchingReviewFile() used to
  * return the first readdir file at the same outlet when either critic name

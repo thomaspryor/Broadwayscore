@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6137-r2-c",
   "planId": "7feea3d7-5476-472f-b2d0-e5c77cf47792",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-24T16:25:24.827Z",
   "submitter": {
     "name": null,
@@ -360,5 +360,57 @@
       "reason": "commercial.json:needsLossEvidence: value changed since plan"
     }
   ],
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "obsolete": 8
+    },
+    "ops": [
+      {
+        "i": 2,
+        "verdict": "obsolete",
+        "reason": "fool-for-love-2015.needsLossEvidence changed since by a later write (now unset)"
+      },
+      {
+        "i": 7,
+        "verdict": "obsolete",
+        "reason": "old-times-2015.needsLossEvidence changed since by a later write (now unset)"
+      },
+      {
+        "i": 12,
+        "verdict": "obsolete",
+        "reason": "oklahoma-2019.designationBasis changed since by a later write (now \"model-estimate\")"
+      },
+      {
+        "i": 13,
+        "verdict": "obsolete",
+        "reason": "oklahoma-2019.needsLossEvidence changed since by a later write (now unset)"
+      },
+      {
+        "i": 16,
+        "verdict": "obsolete",
+        "reason": "les-liaisons-dangereuses-2016.designationBasis changed since by a later write (now \"model-estimate\")"
+      },
+      {
+        "i": 17,
+        "verdict": "obsolete",
+        "reason": "les-liaisons-dangereuses-2016.needsLossEvidence changed since by a later write (now unset)"
+      },
+      {
+        "i": 20,
+        "verdict": "obsolete",
+        "reason": "cats-2016.designationBasis changed since by a later write (now \"model-estimate\")"
+      },
+      {
+        "i": 21,
+        "verdict": "obsolete",
+        "reason": "cats-2016.needsLossEvidence changed since by a later write (now unset)"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (8 obsolete); per-op reasons in triage.ops"
 }

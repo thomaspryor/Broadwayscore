@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/retired-show-ids.json (untracked core data); data/site-image-versions.json (untracked core data); data/critic-registry.json (untracked core data); +1 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Synthetic shows fixture: validate-data runs on it, so live-data errors must not leak in.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';

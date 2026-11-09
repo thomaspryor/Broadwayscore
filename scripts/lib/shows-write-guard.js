@@ -59,6 +59,8 @@ const { sanitizeVenueForWrite } = require('./venue-classification');
 
 const { hasStoredStaleUpcomingTag, stripUpcomingTag } = require('./opening-night-completeness');
 const { newDuplicateFindings, formatFinding } = require('./shows-duplicate-rule');
+const { typeForListedShow } = require('./announced-promotion');
+const { typeExempt } = require('./market-expansion-validator');
 
 const SHOWS_PATH = path.join(__dirname, '..', '..', 'data', 'shows.json');
 
@@ -74,6 +76,36 @@ function stripStaleUpcomingTags(shows) {
     if (hasStoredStaleUpcomingTag(s) && stripUpcomingTag(s)) ids.push(s.id);
   }
   return ids;
+}
+
+/**
+ * BRO-7130: a row past 'announced' with no type gets one on every write, from
+ * whichever writer flipped it (update-show-status, discovery-reconcile's
+ * press-night flip, enrich-ob-dates, a fix plan...). Only a confident type
+ * (typeForListedShow -> knownShowType: the title says musical): guessing
+ * 'play' would mistype circus, dance and family shows for good and hide them
+ * from validate-market-expansion, the one check that points at them. A row
+ * still untyped that the validator will fail on is returned as `unresolved`
+ * so the save logs it; the per-step Data Validation alert carries it from
+ * there. Kill switch: SHOWS_TYPE_GUARD_DISABLED=true.
+ * @param {Object[]} shows mutated in place
+ * @returns {{typed: {id: string, status: string, type: string}[], unresolved: {id: string, status: string}[]}}
+ */
+function fillListedShowTypes(shows, env = process.env) {
+  const typed = [];
+  const unresolved = [];
+  if (env && env.SHOWS_TYPE_GUARD_DISABLED === 'true') return { typed, unresolved };
+  for (const s of shows || []) {
+    if (!s || s.type) continue;
+    const type = typeForListedShow(s, s.status);
+    if (type) {
+      s.type = type;
+      typed.push({ id: s.id, status: s.status, type });
+    } else if (s.status && !typeExempt(s)) {
+      unresolved.push({ id: s.id, status: s.status });
+    }
+  }
+  return { typed, unresolved };
 }
 
 /** The rows currently on disk, or [] when there is no file yet. */
@@ -129,6 +161,10 @@ function createShowsWriteGuard(showsPath, options = {}) {
       // survive the save. fix-stale-upcoming-tags.js --check stays as audit.
       const unTagged = stripStaleUpcomingTags(finalData.shows);
       if (unTagged.length) console.log(`shows-write-guard: dropped stale 'upcoming' tag from ${unTagged.length} show(s): ${unTagged.join(', ')}`);
+      // A listed row needs a type (BRO-7130): fill it when the title says so.
+      const types = fillListedShowTypes(finalData.shows);
+      if (types.typed.length) console.log(`shows-write-guard: set type on ${types.typed.length} listed show(s): ${types.typed.map((t) => `${t.id} (${t.status} -> ${t.type})`).join(', ')}`);
+      if (types.unresolved.length) console.log(`::warning::shows-write-guard: ${types.unresolved.length} listed show(s) have no type and nothing says which (validate-market-expansion will fail; set it by a fix plan): ${types.unresolved.map((t) => `${t.id} (${t.status})`).join(', ')}`);
       // A person's openingDate correction outlives every writer (BRO-4911).
       const restored = restoreHumanCorrectedOpeningDates(finalData.shows);
       if (restored.length) console.log(`::warning::shows-write-guard: kept human-corrected openingDate for ${restored.map((r) => `${r.id} (${r.from} -> ${r.to})`).join(', ')}`);
@@ -204,5 +240,6 @@ module.exports = {
   createShowsWriteGuard,
   mergeShows,
   stripStaleUpcomingTags,
+  fillListedShowTypes,
   LOCK_DIR: defaultGuard.lockDir,
 };

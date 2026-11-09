@@ -387,6 +387,102 @@ function buildClosureComment({ candidate, sha, auditGeneratedAt }) {
   ].join('\n');
 }
 
+// ---------------------------------------------------------------------------
+// Backlog close (BRO-7139 Step 1): open Backlog/Todo cards whose own single-test
+// check passed in sweep-open-backlog-acceptance.js. The card was never claimed,
+// so nothing but hard evidence speaks for it: a commit FOR the card (not one
+// that files or defers it) changed that test after the card was filed, the card
+// is idle, carries no RECHECK-AFTER stamp at all (a past stamp belongs to the
+// recheck, BRO-6853), no owner marker, no earlier closer/bounce, and the pass
+// was not a flake retry. The Done gate then re-runs the check on fresh main.
+const BACKLOG_STATES = new Set(['Backlog', 'Todo']);
+const BACKLOG_IDLE_MS = 3 * 24 * HOUR_MS;
+const MAX_BACKLOG_CLOSES_PER_RUN = 5;
+const BACKLOG_CLOSER_NOTE = 'backlog sweep';
+const ANY_RECHECK_RE = /RECHECK-AFTER\s*:/i;
+// A PARKED: line in the body: the card was set aside on purpose (often for a key, money or a device).
+const PARKED_LINE_RE = /^\s*(?:[-*>]\s*)?\**PARKED\**\s*:/im;
+// Subjects of one step of a larger card, not the end of it.
+const PARTIAL_SUBJECT_RE = /\b(?:wip|step\s*\d+|part\s*\d+|phase\s*\d+|\d+\s*\/\s*\d+|scaffold\w*|failing\s+test|first\s+(?:pass|cut)|prep(?:are|aration)?\s+for)\b/i;
+// Subjects that create or push work to the card rather than finish it.
+const FOLLOWUP_SUBJECT_RE = /\b(?:follow[- ]?ups?|defer\w*|fil(?:e|es|ed|ing)\s+(?:a\s+|the\s+)?(?:card|issue|ticket|bro-)|carded|split\s+(?:out|off|to|into)|tracked\s+(?:in|as)|left\s+for|mov(?:e|ed|es|ing)\s+(?:the\s+)?(?:rest|remainder)|remaining\s+work)\b/i;
+
+/**
+ * Pick candidates from the open-backlog acceptance sweep report.
+ * Returns { error } when the report is unusable, else { candidates: [{ id, cmd, testPath }], skipped }.
+ */
+function planBacklogCandidates(sweep, nowMs) {
+  const generatedMs = Date.parse(sweep && sweep.generatedAt);
+  if (!Number.isFinite(generatedMs)) return { error: 'backlog sweep report has no generatedAt' };
+  if (nowMs - generatedMs > MAX_REPORT_AGE_MS) {
+    return { error: `backlog sweep report is ${Math.round((nowMs - generatedMs) / HOUR_MS)}h old (max ${MAX_REPORT_AGE_MS / HOUR_MS}h)` };
+  }
+  const candidates = [];
+  const skipped = {};
+  const skip = (reason) => { skipped[reason] = (skipped[reason] || 0) + 1; };
+  const rows = (Array.isArray(sweep.alreadyDone) ? sweep.alreadyDone : []).filter((r) => r && r.id);
+  // A test file two cards both name says nothing about which of them it finished.
+  const pathCount = {};
+  for (const r of rows) { const tp = cardTestPath(r.verifyCmd); if (tp) pathCount[tp] = (pathCount[tp] || 0) + 1; }
+  for (const r of rows) {
+    if (/retry|flak/i.test(String(r.detail || ''))) { skip('passed-only-on-retry'); continue; }
+    const testPath = cardTestPath(r.verifyCmd);
+    // A generic checker proves nothing about one unclaimed card.
+    if (!testPath) { skip('not-a-single-test-file'); continue; }
+    if (pathCount[testPath] > 1) { skip('test-shared-with-another-card'); continue; }
+    candidates.push({ id: r.id, cmd: r.verifyCmd, testPath });
+  }
+  return { candidates, skipped };
+}
+
+/** The commit finishes work for the card: it is for the card and its subject does not file or defer it. */
+function commitFinishesCard(message, identifier) {
+  const subject = String(message || '').trim().split('\n')[0];
+  // The subject itself must name the card: a Refs:/Linear: trailer is too weak for a card nobody claimed.
+  if (!mentionsCard(subject, identifier)) return false;
+  return !FOLLOWUP_SUBJECT_RE.test(subject) && !PARTIAL_SUBJECT_RE.test(subject);
+}
+
+/**
+ * Decide one backlog candidate against the live issue.
+ *   issue:   { state: { name }, createdAt, updatedAt, title, description, labels, comments: [{ body, createdAt }] }
+ *   commits: [{ sha, message }] that touched candidate.testPath since the card was created
+ * Returns { close: true, sha, evidence } or { close: false, reason }.
+ */
+function decideBacklogClosure({ candidate, issue, commits, nowMs }) {
+  if (!issue) return { close: false, reason: 'issue-not-found' };
+  const stateName = issue.state && issue.state.name;
+  if (!BACKLOG_STATES.has(stateName)) return { close: false, reason: `state-${stateName || 'unknown'}` };
+  const comments = Array.isArray(issue.comments) ? issue.comments : [];
+  const bodies = comments.map((c) => String((c && c.body) || ''));
+  if (bodies.some((b) => b.includes(CLOSER_MARKER) || b.includes(BOUNCE_MARKER) || b.includes(REFUSED_MARKER))) {
+    return { close: false, reason: 'closer-already-tried' };
+  }
+  if (hasOwnerMarker({ ...issue, commentText: bodies.join('\n') })) return { close: false, reason: 'owner-marker' };
+  if (PARKED_LINE_RE.test(String(issue.description || ''))) return { close: false, reason: 'parked' };
+  if ([issue.description, ...bodies].some((t) => ANY_RECHECK_RE.test(String(t || '')))) {
+    return { close: false, reason: 'recheck-stamped' };
+  }
+  const lastActivity = Math.max(Date.parse(issue.updatedAt) || 0, ...comments.map((c) => Date.parse(c && c.createdAt) || 0));
+  if (nowMs - lastActivity < BACKLOG_IDLE_MS) return { close: false, reason: 'recent-activity' };
+  const createdMs = Date.parse(issue.createdAt);
+  if (!Number.isFinite(createdMs)) return { close: false, reason: 'issue-created-unparseable' };
+  const own = (commits || []).find((c) => !/^Revert\b/.test(String(c.message || '').trim()) && commitFinishesCard(c.message, candidate.id));
+  if (!own) return { close: false, reason: 'no-commit-finishing-card-touched-test' };
+  return { close: true, sha: own.sha, evidence: `touched ${candidate.testPath}` };
+}
+
+function buildBacklogClosureComment({ candidate, sha, sweepGeneratedAt, checkoutSha }) {
+  return [
+    `${CLOSER_MARKER} (${BACKLOG_CLOSER_NOTE}, BRO-7139).`,
+    '',
+    `This card's own check, \`${candidate.cmd}\`, passed on main (${String(checkoutSha || 'unknown').slice(0, 12)}) in the open-backlog sweep of ${sweepGeneratedAt}.`,
+    `Commit ${String(sha).slice(0, 12)} is for this card and changed ${candidate.testPath} after the card was filed, so the work landed.`,
+    'The close went through the Done gate, which runs the check again on a fresh copy of main.',
+    'If part of the work is still missing, reopen the card and say what is left.',
+  ].join('\n');
+}
+
 module.exports = {
   MAX_REPORT_AGE_MS,
   IDLE_MS_BY_STATE,
@@ -419,4 +515,11 @@ module.exports = {
   buildSweepClosureComment,
   buildSweepRefusedComment,
   REFUSED_MARKER,
+  BACKLOG_STATES,
+  BACKLOG_IDLE_MS,
+  MAX_BACKLOG_CLOSES_PER_RUN,
+  planBacklogCandidates,
+  commitFinishesCard,
+  decideBacklogClosure,
+  buildBacklogClosureComment,
 };

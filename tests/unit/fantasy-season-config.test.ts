@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/fantasy-league.json (read by the test); data/fantasy-league-frozen.json (read by the test); data/fantasy-scores.json (read by the test); +1 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Season-config consistency for the Broadway Fantasy League.
  *

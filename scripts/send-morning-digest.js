@@ -73,20 +73,23 @@ const {
   visitorProblemNames,
   renderOwnerTopBlock,
   renderTechnicalDetailsHeading,
+  renderBehindTheScenesLine,
 } = require('./lib/autonomous-email-render.js');
 const { localLoopDeadMessage } = require('./lib/digest-loop-health.js');
 const { renderNewShowTypesBlock } = require('./lib/new-show-types.js');
 const { renderPressNightBlock } = require('./lib/press-night-digest-render.js');
+const { renderOpeningGradesBlock } = require('./lib/opening-grade.js');
 const { fetchPipelineIssues } = require('./lib/autofix-canary.js');
 const { assessCyrusRelay } = require('./lib/cyrus-relay-health.js');
 const { assessRunnerHealth } = require('./lib/cyrus-runner-health.js');
 const { assessSupervisorStatus } = require('./lib/pr-supervisor-core.js');
-const { fetchInflowCounts, assessInflowRatio } = require('./lib/backlog-inflow-ratio.js');
+const { fetchInflowCounts, assessInflowRatio, withBacklogHealth } = require('./lib/backlog-inflow-ratio.js');
 const { doneRatePerDay, fetchUnarmedUrgentHighCount, formatDrainThroughputLine, isHeartbeatFresh } = require('./lib/linear-drain-throughput.js');
 const { readBoardGateFailopen } = require('./lib/summarize-board-gate-failopen.js');
 const { collectCmuxTriage, renderCmuxTriageLine } = require('./lib/cmux-triage-digest.js');
 const { codexLineFromStatus } = require('./lib/codex-status-line.js');
 const { collectMoneySignups, renderMoneySignups } = require('./lib/money-signups-digest.js');
+const { readConflictDigest } = require('./lib/cloud-memory-conflicts.js');
 
 // Task #1220/BRO-230: data/audit/digest-autofix-ledger.jsonl is git-tracked,
 // but CI's snapshot of it can lag the dispatch host by days, so health-check.js
@@ -288,6 +291,19 @@ function macLocalSkippedLine(alive) {
   return { text: `Sent from GitHub, not the Mac. Not in this email (Mac-only): ${MAC_LOCAL_SECTIONS}. ${mac}`, alarm: alive.state !== 'alive' };
 }
 
+// BRO-6839: open cards that declare `covers-digest-row: <row title>`, as a Set of number-free
+// titles. Fail-soft: null (unreadable) means no coverage is assumed.
+async function readCoveredRowTitles() {
+  try {
+    const { coveredRowTitles } = require('./lib/digest-autofix.js');
+    const issues = await withTimeout(require('./lib/linear-client.js').listOpenIssuesWithDescriptions(), LINEAR_BOARD_READ_TIMEOUT_MS, { message: 'covers-digest-row read timed out' });
+    return coveredRowTitles(issues);
+  } catch (err) {
+    console.error(`[digest] WARN covers-digest-row read failed: ${String(err.message).slice(0, 120)}`);
+    return null;
+  }
+}
+
 // BRO-6230: Resend-backed sent-today check. 'send' | 'already-sent' | 'cannot-tell'.
 // Fails closed: anything short of a complete read is 'cannot-tell', never 'send'.
 async function resendSentToday({ apiKey, recipient, now = new Date(), fetchEmails = null }) {
@@ -485,7 +501,7 @@ function buildSubject({ health = null, autofixRows = null, awaitingOwner = null,
   }).format(now);
   // loopDead must match buildHtml's (composeDigestEmail computes it once):
   // it decides which visitor rows count as handled (BRO-5430).
-  const view = buildOwnerView({ health, autofixRows, needsYou, awaitingOwner, inReviewBacklog, loopDead });
+  const view = buildOwnerView({ health, autofixRows, needsYou, awaitingOwner, inReviewBacklog, loopDead, nowMs: now.getTime() });
   let site;
   if (view.siteState === 'affected') {
     const names = visitorProblemNames(view);
@@ -574,7 +590,7 @@ function boardStartedIdle(report) {
   return row && Number.isFinite(row.exclusive) ? row.exclusive : null;
 }
 
-function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, drainThroughputLine = null, pipelineIssues = null, boardNumbersData = null, boardReport = undefined, boardReportPrev = null, loopDeadMsg: givenLoopDeadMsg, reportOnly = false, skipMacLocal = false, now = new Date() } = {}) {
+function buildHtmlParts({ sections = {}, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, drainThroughputLine = null, improvementLine = null, pipelineIssues = null, boardNumbersData = null, boardReport = undefined, boardReportPrev = null, loopDeadMsg: givenLoopDeadMsg, reportOnly = false, skipMacLocal = false, now = new Date() } = {}) {
   const dateLabel = new Intl.DateTimeFormat('en-US', {
     timeZone: 'America/New_York', weekday: 'long', month: 'long', day: 'numeric',
   }).format(now);
@@ -587,8 +603,9 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // all live in `parts` now: the owner can neither see nor act on them.
   const head = [];
   let boardNumbersTableHtml = '';
+  let glanceHtml = '';
   head.push(`<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:560px;margin:0 auto;padding:18px 14px;color:#111;">`);
-  head.push(`<p style="font-size:15px;font-weight:700;margin:0 0 12px;">Morning digest · ${esc(dateLabel)}</p>`);
+  head.push(`<p style="font-size:20px;font-weight:700;margin:0 0 12px;">Morning digest · ${esc(dateLabel)}</p>`);
   const parts = [];
 
   // Trunk status (task #1003) — a standing line, always rendered when the
@@ -633,7 +650,7 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // 2026-08-02); everything else follows under "Technical details".
   const view = buildOwnerView({
     health: sections.health, autofixRows, needsYou: sections.needsYou, awaitingOwner: sections.awaitingOwner,
-    inReviewBacklog: sections.inReviewBacklog, loopDead: !!loopDeadMsg,
+    inReviewBacklog: sections.inReviewBacklog, loopDead: !!loopDeadMsg, nowMs: now.getTime(),
   });
   // Without autofix rows the fallback count also folds freshness/stuck in,
   // exactly like the technical "issues detected" line below.
@@ -641,25 +658,35 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   const decisionBlocksHtml = [
     renderNeedsAttentionBlock(view.decisionQueued),
     // "Needs You" tab triage (card #870) — the owner's own pending decisions.
-    sections.needsYou ? renderNamedDigestBlock('Decisions waiting on you', sections.needsYou, { actionCards: true }) : '',
+    sections.needsYou ? renderNamedDigestBlock('Decisions waiting on you', sections.needsYou, { actionCards: true, compactOld: !view.isMonday }) : '',
     decisionsListLinkHtml(sections.needsYou),
     // Waiting on your approval (BRO-282) — Linear issues carrying the
     // 'awaiting-owner' label (work finished, blocked on a plain-language yes,
     // e.g. the /visual-qa pre-push gate). Distinct from "Needs your decision"
     // above (session-scoped cmux state, dies with the tab): this is
     // issue-scoped and survives the originating session closing.
-    sections.awaitingOwner ? renderNamedDigestBlock('Waiting on your approval', sections.awaitingOwner, { actionCards: true, showBanner: true }) : '',
+    sections.awaitingOwner ? renderNamedDigestBlock('Waiting on your approval', sections.awaitingOwner, { actionCards: true, showBanner: true, compactOld: !view.isMonday }) : '',
     // Parked in review (BRO-3376) — finished work waiting on the owner with
     // no opt-in marker; de-duplicated against awaitingOwner in buildOwnerView.
-    view.reviewQueue ? renderNamedDigestBlock('Review queue', view.reviewQueue, { actionCards: true, showBanner: true }) : '',
+    view.reviewQueue ? renderNamedDigestBlock('Review queue', view.reviewQueue, { actionCards: true, showBanner: true, compactOld: !view.isMonday }) : '',
   ].filter(Boolean).join('\n');
-  head.push(renderOwnerTopBlock(view, { decisionBlocksHtml, overnightLine }));
   // Last night's openings (BRO-6645): one grade per press night, reviews live
   // and opening-night emails ready. Nights with no openings render nothing.
+  let lastNightHtml = '';
   try {
-    head.push(renderPressNightBlock(sections.pressNight, { esc, nowMs: now.getTime() }));
+    lastNightHtml = renderPressNightBlock(sections.pressNight, { esc, nowMs: now.getTime() }) || '';
   } catch (err) {
     console.error(`[digest] WARN press-night block failed: ${String(err.message).slice(0, 120)}`);
+  }
+  // Opening grades (BRO-7082): did each opening this week need a person or a Claude session.
+  try {
+    lastNightHtml += renderOpeningGradesBlock(sections.openingGrades, { esc, nowMs: now.getTime() }) || '';
+  } catch (err) {
+    console.error(`[digest] WARN opening-grades block failed: ${String(err.message).slice(0, 120)}`);
+  }
+  head.push(renderOwnerTopBlock(view, { decisionBlocksHtml, overnightLine, lastNightHtml }));
+  if (sections.memoryConflicts) {
+    head.push(renderNamedDigestBlock('Saved memory conflicts', sections.memoryConflicts));
   }
   // New tour / pre-Broadway / UK regional shows with suggested Reddit posts
   // (BRO-6542). Quiet days render nothing; a stale snapshot is flagged by the
@@ -669,6 +696,14 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   } catch (err) {
     console.error(`[digest] WARN new-show-types block failed: ${String(err.message).slice(0, 120)}`);
   }
+  // BRO-7040 (owner decision: board stats stay in the daily email, collapsed):
+  // everything below the four owner sections goes into one <details> at the
+  // bottom. Gmail ignores <details> and shows the content open at the bottom,
+  // which is the accepted fallback; Apple Mail collapses it.
+  // Red alarms (dead fix loop, runner/relay/supervisor/watchdog, board gate) must
+  // stay visible: they render above the <details>, never inside it.
+  const alarms = [];
+  const collapsed = [renderBehindTheScenesLine(view)];
   // Board numbers (BRO-5482). `waiting` and `stuck` are the SAME numbers the sections
   // above/below use (view.decisions, stuckCount): never a second definition.
   if (boardNumbersData) {
@@ -681,7 +716,11 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
       // BRO-6081: the owner reads a verdict, a 7-day chart and four tiles; the
       // full numbers table moves under Technical details.
       boardNumbersTableHtml = bn.renderBoardNumbersHtml(m, esc);
-      head.push(require('./lib/board-summary.js').renderBoardSummaryHtml(m, m.daily, esc, { partial: m.daily ? m.dailyTruncated : m.floors, startedIdle: boardStartedIdle(boardReport) }));
+      const summaryOpts = { partial: m.daily ? m.dailyTruncated : m.floors, startedIdle: boardStartedIdle(boardReport) };
+      collapsed.push(require('./lib/board-summary.js').renderBoardSummaryHtml(m, m.daily, esc, summaryOpts));
+      // BRO-7075: Gmail cannot collapse anything, so the email body carries only
+      // the verdict and four tiles; the chart and tables ride in the attachment.
+      glanceHtml = require('./lib/board-summary.js').renderBoardSummaryHtml(m, m.daily, esc, { ...summaryOpts, compact: true });
     } catch (err) {
       console.error(`[digest] WARN board numbers block failed: ${String(err.message).slice(0, 120)}`);
     }
@@ -691,13 +730,13 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // fetch failed: a visible "unavailable" line, never a silent gap.
   if (boardReport !== undefined) {
     try {
-      head.push(require('./lib/board-summary.js').renderBoardCategoriesHtml(boardReport, boardReportPrev, esc));
+      collapsed.push(require('./lib/board-summary.js').renderBoardCategoriesHtml(boardReport, boardReportPrev, esc));
     } catch (err) {
       console.error(`[digest] WARN board category table failed: ${String(err.message).slice(0, 120)}`);
     }
   }
 
-  head.push(renderMoneySignups(sections.moneySignups));
+  collapsed.push(renderMoneySignups(sections.moneySignups));
 
   // Technical report starts here. The raw error names stay (debugging), but
   // are no longer called "site errors": most are the automation's own
@@ -707,7 +746,7 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
     parts.push(`<p style="font-size:13px;font-weight:700;color:#b45309;margin:0 0 6px;">${esc(`${errs} health-check error${errs === 1 ? '' : 's'}: ${errNames.slice(0, 3).join('; ')}${errNames.length > 3 ? ` (+${errNames.length - 3} more)` : ''}`)}</p>`);
   }
   if (loopDeadMsg) {
-    parts.push(`<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ ${esc(fixing)} issue${fixing === 1 ? '' : 's'} detected, but the auto-fix loop looks DEAD — don't count on these getting fixed automatically. ${esc(loopDeadMsg)}</p>`);
+    alarms.push(`<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ ${esc(fixing)} issue${fixing === 1 ? '' : 's'} detected, but the auto-fix loop looks DEAD — don't count on these getting fixed automatically. ${esc(loopDeadMsg)}</p>`);
   } else if (fixing && reportOnly) {
     // BRO-6230: --no-autofix builds a report-only plan; nothing was queued, so say so.
     parts.push(`<p style="font-size:12px;color:#666;margin:0 0 12px;">${fixing} issue${fixing === 1 ? '' : 's'} detected. This digest only reports them; it did not start any automatic fix. Details below.</p>`);
@@ -720,7 +759,7 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   }
   const delegationMsg = localLinearDelegationMessage();
   if (delegationMsg) {
-    parts.push(`<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ ${esc(delegationMsg)}</p>`);
+    alarms.push(`<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ ${esc(delegationMsg)}</p>`);
   }
   const codexLine = localCodexConnectionLine();
   if (codexLine) {
@@ -728,31 +767,31 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   }
   const cyrusMsg = localCyrusRelayMessage();
   if (cyrusMsg) {
-    parts.push(`<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ ${esc(cyrusMsg)}</p>`);
+    alarms.push(`<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ ${esc(cyrusMsg)}</p>`);
   }
   const runnerMsg = localRunnerHealthMessage();
   if (runnerMsg) {
-    parts.push(`<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ ${esc(runnerMsg)}</p>`);
+    alarms.push(`<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ ${esc(runnerMsg)}</p>`);
   }
   const supervisorMsg = localPrSupervisorMessage();
   if (supervisorMsg) {
-    parts.push(`<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ ${esc(supervisorMsg)}</p>`);
+    alarms.push(`<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ ${esc(supervisorMsg)}</p>`);
   }
   const watchdogLeakMsg = localDispatchWatchdogLeakMessage();
   if (watchdogLeakMsg) {
-    parts.push(`<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ ${esc(watchdogLeakMsg)}</p>`);
+    alarms.push(`<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ ${esc(watchdogLeakMsg)}</p>`);
   }
   const boardGate = readBoardGateFailopen({ now });
   if (boardGate) {
     parts.push(`<p style="font-size:12px;color:#666;margin:0 0 12px;">${esc(boardGate.line)}</p>`);
     if (boardGate.alert) {
-      parts.push(`<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ ${esc(boardGate.alert)}</p>`);
+      alarms.push(`<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ ${esc(boardGate.alert)}</p>`);
     }
   }
   // BRO-6230: --skip-mac-local names what this email leaves out, so nothing vanishes silently.
   if (sections.macLocalSkipped) {
     const ms = sections.macLocalSkipped;
-    parts.push(`<p style="font-size:12px;color:${ms.alarm ? '#b91c1c' : '#666'};margin:0 0 12px;">${ms.alarm ? '⚠️ ' : ''}${esc(ms.text)}</p>`);
+    (ms.alarm ? alarms : parts).push(`<p style="font-size:12px;color:${ms.alarm ? '#b91c1c' : '#666'};margin:0 0 12px;">${ms.alarm ? '⚠️ ' : ''}${esc(ms.text)}</p>`);
   }
   // Dead cmux tab triage (BRO-3050): rendered only when main() collected it.
   // The line itself (incl. "no verdict" for degraded/unavailable runs) is
@@ -763,7 +802,7 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
     parts.push(`<p style="font-size:12px;color:${colour};margin:0 0 12px;">${esc(ct.text)}</p>`);
   }
   if (problemsNote) {
-    parts.push(`<p style="font-size:13px;color:#b45309;margin:0 0 12px;">⚠️ ${esc(problemsNote)}</p>`);
+    alarms.push(`<p style="font-size:13px;color:#b45309;margin:0 0 12px;">⚠️ ${esc(problemsNote)}</p>`);
   }
 
   // Section order (fresh-eyes review): "is the site okay?" first, then what
@@ -816,6 +855,11 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // audit (31 mis-filed trackers) to notice.
   if (drainThroughputLine) {
     blocks.push(`<p style="font-size:12px;color:#666;margin:0 0 12px;">${esc(drainThroughputLine)}</p>`);
+  }
+  // BRO-7103: root-cause share and repeat-problem count (recurrence detector);
+  // BRO-7138 appends the share of Done claims whose own check still passes.
+  if (improvementLine) {
+    blocks.push(`<p style="font-size:12px;color:#666;margin:0 0 12px;">${esc(improvementLine)}</p>`);
   }
   // "Needs your decision", "Waiting on your approval" and "Review queue"
   // moved to the owner-first top block (2026-09-24 rework) — see
@@ -875,13 +919,56 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   }
   if (boardNumbersTableHtml) parts.push(boardNumbersTableHtml);
   if (parts.length) {
-    head.push(renderTechnicalDetailsHeading());
-    head.push(...parts);
+    collapsed.push(renderTechnicalDetailsHeading());
+    collapsed.push(...parts);
   }
+  if (alarms.length) head.push(...alarms);
+  const reportInner = collapsed.filter(Boolean).join('\n');
+  const footer = [`<p style="color:#999;font-size:14px;margin-top:16px;text-align:center;">Broadway Scorecard morning digest</p>`, `</div>`];
+  // BRO-7075: the owner reads this in Gmail, which ignores <details>, so the
+  // old "collapsed" section showed open and made a 10,000px email. What is
+  // sent has the owner sections, a four-tile board glance and one line
+  // pointing at the attachment; the full report is a separate HTML document.
+  const body = [...head, glanceHtml,
+    reportInner ? `<p style="font-size:15px;color:#444;margin:6px 0 0;">${REPORT_ATTACHED_NOTE}</p>` : '',
+    ...footer].filter(Boolean).join('\n');
+  const full = [...head, `<div style="margin:18px 0 0;border-top:1px solid #e5e5e5;padding-top:8px;">`, reportInner, `</div>`, ...footer].join('\n');
+  return { body: enforceBodyTypeFloor(body), full, report: reportInner ? buildReportDocument({ dateLabel, inner: reportInner }) : null };
+}
 
-  head.push(`<p style="color:#999;font-size:11px;margin-top:16px;text-align:center;">Broadway Scorecard morning digest</p>`);
-  head.push(`</div>`);
-  return head.join('\n');
+/**
+ * BRO-7075: the Resend POST body. Same From as the retired morning email on purpose: the owner's
+ * Gmail filters, threading and iOS notification trust key off the sender. The full report rides as
+ * an HTML attachment because Gmail cannot collapse a section; no report means no attachment key.
+ */
+function buildResendPayload({ to, subject, bodyHtml, reportHtml, dayKey }) {
+  const payload = { from: 'Broadway Scorecard <alerts@broadwayscorecard.com>', to: [to], subject, html: bodyHtml };
+  if (reportHtml) {
+    payload.attachments = [{ filename: `morning-digest-report-${dayKey}.html`, content: Buffer.from(reportHtml, 'utf8').toString('base64'), content_type: 'text/html' }];
+  }
+  return payload;
+}
+
+/** The whole email as one string (every section), for tests, previews and the content-invariant check. */
+function buildHtml(opts) { return buildHtmlParts(opts).full; }
+
+// BRO-7075 (owner: "a wall of tiny text"): nothing in the email BODY renders
+// below this size. One choke point instead of 60 inline styles: any smaller
+// font-size the renderers emit is raised here, and a test pins the floor.
+const { enforceTypeFloor: enforceBodyTypeFloor, MIN_FONT_PX: BODY_MIN_FONT_PX } = require('./lib/email-type-floor.js');
+const REPORT_ATTACHED_NOTE = 'The full board, spend and technical report is attached to this email (tap the attachment to open it).';
+const REPORT_NOT_ATTACHED_NOTE = 'The full board, spend and technical report could not be attached this morning.';
+
+/** The attachment: the full board, spend and technical report as its own page. */
+function buildReportDocument({ dateLabel, inner }) {
+  return `<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Morning digest report, ${esc(dateLabel)}</title></head>
+<body style="margin:0;background-color:#ffffff;">
+<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:640px;margin:0 auto;padding:18px 14px;color:#111;">
+<p style="font-size:18px;font-weight:700;margin:0 0 4px;">Morning digest report · ${esc(dateLabel)}</p>
+<p style="font-size:13px;color:#666;margin:0 0 16px;">Board, spend and technical details. Nothing here needs action unless the email itself says so.</p>
+${inner}
+</div></body></html>`;
 }
 
 // Composes the subject+html the SAME way the real send does: attach Fix-this
@@ -892,7 +979,7 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
 // would not have caught that, which is exactly what happened (renderer unit
 // buttons per the 2026-08-02 owner mandate — autofix runs in main().)
 function composeDigestEmail({
-  sections, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, drainThroughputLine = null, pipelineIssues = null, boardNumbersData = null, boardReport = undefined, boardReportPrev = null, reportOnly = false, skipMacLocal = false, now = new Date(),
+  sections, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, drainThroughputLine = null, improvementLine = null, pipelineIssues = null, boardNumbersData = null, boardReport = undefined, boardReportPrev = null, reportOnly = false, skipMacLocal = false, now = new Date(),
   dispatchSecret = process.env.APPROVAL_HMAC_SECRET, dispatchConfigPath = DISPATCH_CONFIG_PATH,
 } = {}) {
   // Digest v3 (owner mandate 2026-08-02, his FIFTH escalation): no Fix-this
@@ -926,8 +1013,9 @@ function composeDigestEmail({
 
   const loopDeadMsg = digestLoopDeadMessage({ sections, autofixRows, stuckCount, pipelineIssues, skipMacLocal, now });
   const subject = buildSubject({ health: sections.health, autofixRows, awaitingOwner: sections.awaitingOwner, needsYou: sections.needsYou, inReviewBacklog: sections.inReviewBacklog, loopDead: !!loopDeadMsg, now });
-  const html = buildHtml({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, drainThroughputLine, pipelineIssues, boardNumbersData, boardReport, boardReportPrev, loopDeadMsg, reportOnly, skipMacLocal, now });
-  return { subject, html };
+  const parts = buildHtmlParts({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, drainThroughputLine, improvementLine, pipelineIssues, boardNumbersData, boardReport, boardReportPrev, loopDeadMsg, reportOnly, skipMacLocal, now });
+  // html = every section (tests, previews, invariants). bodyHtml is what the owner's inbox shows; reportHtml is the attachment.
+  return { subject, html: parts.full, bodyHtml: parts.body, reportHtml: parts.report };
 }
 
 const BOARD_TABLE_SNAPSHOT = path.join(REPO, 'data', 'audit', 'board-report-snapshot.json');
@@ -1015,6 +1103,9 @@ async function main() {
   }
 
   const { sections, problems } = readAllSnapshots();
+  // The sync's existing cloud-memory commit carries this inventory to both
+  // senders, including the Action's --skip-mac-local path. Never auto-resolve.
+  sections.memoryConflicts = readConflictDigest(path.join(REPO, 'cloud-memory'));
   sections.moneySignups = await collectMoneySignups();
 
   // Task #1641: strip forbidden-telemetry queue rows (e.g. "T1 Coverage
@@ -1507,6 +1598,26 @@ async function main() {
     drainThroughputLine = `Linear drain: could not be measured this morning (${why}).`;
   }
 
+  // BRO-7103: the recurrence detector's improvement line. Fail-soft.
+  let improvementLine = null;
+  try {
+    const snap = JSON.parse(fs.readFileSync(path.join(REPO, 'data/audit/recurrence-classes.json'), 'utf8'));
+    const ageH = (Date.now() - Date.parse(snap.generatedAt)) / 36e5;
+    improvementLine = ageH <= 48 ? require('./lib/recurrence-classes.js').improvementLine(snap)
+      : `Fixing causes: not measured this morning (the repeat-problem check last ran ${Math.round(ageH)} hours ago).`;
+  } catch (err) {
+    console.error(`[digest] WARN improvement line skipped: ${String(err.message).slice(0, 120)}`);
+  }
+  // BRO-7138: "done claims that held", on the same internal line. Fail-soft.
+  try {
+    const { entries } = require('./lib/autonomous-ledger.js').readEntries(path.join(REPO, 'data/audit/autonomous-recheck-ledger.jsonl'));
+    const held = require('./lib/autonomous-recheck-core.js').doneClaimsHeldRow(entries);
+    const heldLine = held.status === 'pass' ? held.message : `Done claims that held: not measured this morning (${held.message.toLowerCase()}).`;
+    improvementLine = improvementLine ? `${improvementLine} ${heldLine}` : heldLine;
+  } catch (err) {
+    console.error(`[digest] WARN done-claims-held line skipped: ${String(err.message).slice(0, 120)}`);
+  }
+
   const problemsNote = describeProblems(problems);
 
   // "What changed while you slept" — fail-soft; a broken collector must
@@ -1546,7 +1657,8 @@ async function main() {
     const { planAutofix, markTrackedReportOnly, keepDecisionQueued, localRollupIssues } = require('./lib/digest-autofix.js');
     const openTitles = Array.isArray(openIssues) ? new Set(openIssues.map((i) => i && i.title).filter(Boolean)) : null;
     const queued = Array.isArray(sections.health?.queued) ? sections.health.queued : [];
-    autofixRows = markTrackedReportOnly(planAutofix({ health: sections.health, extraIssues: localRollupIssues({ health: sections.health, freshnessCount: sections.freshness?.count || 0, freshnessItems: sections.freshness?.items, stuckCount }), tasks: [], queued }), openTitles);
+    const coveredTitles = await readCoveredRowTitles();
+    autofixRows = markTrackedReportOnly(planAutofix({ health: sections.health, extraIssues: localRollupIssues({ health: sections.health, freshnessCount: sections.freshness?.count || 0, freshnessItems: sections.freshness?.items, stuckCount }), tasks: [], queued }), openTitles, coveredTitles);
     if (sections.health && Array.isArray(sections.health.queued)) sections.health.queued = keepDecisionQueued(sections.health.queued, autofixRows);
     const tracked = autofixRows.filter((r) => r.state === 'tracked').length;
     console.log(`[digest] --no-autofix: report only, nothing filed or dispatched; ${tracked} of ${autofixRows.length} row(s) already have an open card${openTitles ? '' : ' (Linear unreadable)'}`);
@@ -1591,7 +1703,7 @@ async function main() {
     const openLinearTitles = Array.isArray(openIssues)
       ? new Set(openIssues.map((i) => i && i.title).filter(Boolean))
       : null;
-    autofixRows = runAutofix({ plan: planAutofix({ health: sections.health, extraIssues: localRollupIssues({ health: sections.health, freshnessCount: sections.freshness?.count || 0, freshnessItems: sections.freshness?.items, stuckCount }), tasks, queued: queuedForAutofix }), dryRun: autofixDryRun, log: (m) => console.log(m), concurrencyCap: DIGEST_CONCURRENCY_CAP, openLinearTitles });
+    autofixRows = runAutofix({ plan: planAutofix({ health: sections.health, extraIssues: localRollupIssues({ health: sections.health, freshnessCount: sections.freshness?.count || 0, freshnessItems: sections.freshness?.items, stuckCount }), tasks, queued: queuedForAutofix }), dryRun: autofixDryRun, log: (m) => console.log(m), concurrencyCap: DIGEST_CONCURRENCY_CAP, openLinearTitles, coveredLinearTitles: await readCoveredRowTitles() });
     // Liveness gate (task #940, owner screenshots 2026-08-03): the digest
     // once claimed "a fix session is working on it now" for 4 issues whose
     // sessions had died hours earlier — 'in-progress' state comes purely
@@ -1676,12 +1788,27 @@ async function main() {
   }
   // BRO-6442: the board category table, fail-soft. DIGEST_BOARD_TABLE_DISABLED=1 drops the block.
   const boardTable = await fetchBoardTable({ now });
+  // BRO-7137: re-judge the backlog line with what the board walks above already
+  // fetched (no new query): same-day session cards out of the ratio, the stuck
+  // pile and the Ready count in. Raw inflowCounts stay as they were for drain throughput.
+  // When the raw count failed or timed out, the board walks alone still carry the verdict;
+  // a result with no message (both sources down) keeps the "could not be measured" line.
+  {
+    try {
+      const d7 = boardNumbersData && boardNumbersData.d7;
+      const base = inflowCounts || { windowDays: 7, canceled: d7 && Number.isFinite(d7.canceled) ? d7.canceled : 0 };
+      const judged = assessInflowRatio(withBacklogHealth(base, { flow: d7, report: boardTable.report, now }));
+      if (judged && judged.message) inflow = judged;
+    } catch (err) {
+      console.error(`[digest] WARN backlog stuck-pile check failed, keeping the flow-only line: ${String(err.message).slice(0, 120)}`);
+    }
+  }
   if (skipMacLocal) {
     const { readMacAlive } = require('./lib/mac-applied-heartbeat.js');
     sections.macLocalSkipped = macLocalSkippedLine(await readMacAlive({ token: process.env.GH_TOKEN || process.env.GITHUB_TOKEN }));
     console.log(`[digest] ${sections.macLocalSkipped.text}`);
   }
-  const { subject, html } = composeDigestEmail({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, drainThroughputLine, pipelineIssues, boardNumbersData, boardReport: boardTable.report, boardReportPrev: boardTable.prev, reportOnly: noAutofix, skipMacLocal, now });
+  const { subject, html, bodyHtml, reportHtml } = composeDigestEmail({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, drainThroughputLine, improvementLine, pipelineIssues, boardNumbersData, boardReport: boardTable.report, boardReportPrev: boardTable.prev, reportOnly: noAutofix, skipMacLocal, now });
 
   // Card #670/#1641: pre-send content check. Never blocks the SEND itself
   // (the digest must always send — a broken invariant check must not turn
@@ -1701,13 +1828,16 @@ async function main() {
   try {
     const { assertDigestInvariants } = require('./lib/digest-content-invariants.js');
     const { ok, violations } = assertDigestInvariants(html, { health: sections.health, subject, verifySecret: process.env.APPROVAL_HMAC_SECRET });
-    if (!ok) {
-      invariantViolations = violations;
-      console.error(`[digest] FAIL content invariant violation(s): ${violations.join('; ')}`);
+    // BRO-7075: the invariants above run on every section together; the owner only sees the body.
+    const { assertBodyInvariants } = require('./lib/digest-content-invariants.js');
+    const allViolations = [...violations, ...assertBodyInvariants(bodyHtml).violations];
+    if (allViolations.length) {
+      invariantViolations = allViolations;
+      console.error(`[digest] FAIL content invariant violation(s): ${allViolations.join('; ')}`);
       try {
         const ledgerPath = path.join(REPO, 'data', 'audit', 'digest-invariant-fail-ledger.jsonl');
         fs.mkdirSync(path.dirname(ledgerPath), { recursive: true });
-        fs.appendFileSync(ledgerPath, JSON.stringify({ ts: new Date().toISOString(), violations, subject, dryRun: !!dryRun }) + '\n');
+        fs.appendFileSync(ledgerPath, JSON.stringify({ ts: new Date().toISOString(), violations: allViolations, subject, dryRun: !!dryRun }) + '\n');
       } catch (ledgerErr) {
         console.error(`[digest] WARN could not persist invariant-fail ledger record: ${String(ledgerErr.message).slice(0, 120)}`);
       }
@@ -1734,7 +1864,9 @@ async function main() {
   if (dryRun) {
     const out = path.join(REPO, 'data', 'audit', 'morning-digest-preview.html');
     fs.mkdirSync(path.dirname(out), { recursive: true });
-    fs.writeFileSync(out, html);
+    fs.writeFileSync(out, bodyHtml);
+    // The attachment, written beside the preview so a dry run shows both halves of what would be sent.
+    if (reportHtml) fs.writeFileSync(out.replace(/\.html$/, '-report.html'), reportHtml);
     console.log(`[digest] DRY RUN — preview written to ${out} (subject: ${subject})`);
     if (invariantViolations.length) process.exitCode = 1;
     return;
@@ -1783,15 +1915,17 @@ async function main() {
 
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) { console.error('[digest] RESEND_API_KEY not set'); process.exit(1); }
-  const res = await httpsJson('POST', 'https://api.resend.com/emails', { Authorization: `Bearer ${apiKey}` }, {
-    // Same From as the retired morning email on purpose: the owner's Gmail
-    // filters, threading, and iOS notification trust key off the sender
-    // (plan-review user-impact finding).
-    from: 'Broadway Scorecard <alerts@broadwayscorecard.com>',
-    to: [sendTo],
-    subject: testSend ? `TEST: ${subject}` : subject,
-    html,
-  });
+  const payload = buildResendPayload({ to: sendTo, subject: testSend ? `TEST: ${subject}` : subject, bodyHtml, reportHtml, dayKey: todayET });
+  let res = await httpsJson('POST', 'https://api.resend.com/emails', { Authorization: `Bearer ${apiKey}` }, payload);
+  // BRO-7075: a rejected attachment (a 4xx means nothing was sent) must never cost the owner the whole digest:
+  // retry once with the body alone, which is self-sufficient. 5xx/429 are not retried here (a duplicate send is worse).
+  if (payload.attachments && res.status >= 400 && res.status < 500 && res.status !== 429) {
+    console.error(`[digest] WARN send with attachment rejected (${res.status} ${JSON.stringify(res.json || {}).slice(0, 160)}); retrying without the attachment`);
+    const { attachments: _dropped, ...rest } = payload;
+    // The body must not claim an attachment that is not there.
+    const bodyOnly = { ...rest, html: String(rest.html).replace(REPORT_ATTACHED_NOTE, REPORT_NOT_ATTACHED_NOTE) };
+    res = await httpsJson('POST', 'https://api.resend.com/emails', { Authorization: `Bearer ${apiKey}` }, bodyOnly);
+  }
   if (res.status < 200 || res.status >= 300) {
     console.error(`[digest] send failed: ${res.status} ${JSON.stringify(res.json || {}).slice(0, 200)}`);
     process.exit(1);
@@ -1820,4 +1954,4 @@ if (require.main === module) {
   main().catch((err) => { console.error(`[digest] fatal: ${err.message}`); process.exit(1); });
 }
 
-module.exports = { decisionsListLinkHtml, buildSubject, buildHtml, parseArgs, composeDigestEmail, mergeNeedsYouSections, macLabelRetired, localCyrusRelayMessage, localRunnerHealthMessage, localLinearDelegationMessage, localCodexConnectionLine, retiredSyncTags, autofixShouldDryRun, DIGEST_SYNC_TAG, localDispatchWatchdogLeakMessage, macLocalSkippedLine, resendSentToday, fetchBoardTable, boardWaitingFallback, boardStartedIdle, saveBoardTableSnapshot };
+module.exports = { decisionsListLinkHtml, buildSubject, buildHtml, buildHtmlParts, buildResendPayload, REPORT_ATTACHED_NOTE, REPORT_NOT_ATTACHED_NOTE, enforceBodyTypeFloor, BODY_MIN_FONT_PX, parseArgs, composeDigestEmail, mergeNeedsYouSections, macLabelRetired, localCyrusRelayMessage, localRunnerHealthMessage, localLinearDelegationMessage, localCodexConnectionLine, retiredSyncTags, autofixShouldDryRun, DIGEST_SYNC_TAG, localDispatchWatchdogLeakMessage, macLocalSkippedLine, resendSentToday, fetchBoardTable, boardWaitingFallback, boardStartedIdle, saveBoardTableSnapshot };

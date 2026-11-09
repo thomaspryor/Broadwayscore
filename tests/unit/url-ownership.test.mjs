@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/retired-show-ids.json (read by the test); data/shows.json (untracked core data); data/critic-registry.json (untracked core data); +1 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Cross-show URL ownership gate (Notion 39a637c5-416f-8167).
  *

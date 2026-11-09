@@ -289,6 +289,37 @@ function findUnreachableAlerts(jobs) {
   return findings;
 }
 
+// --- silently downgraded 'human' alerts (BRO-7102) ---------------------------
+
+/**
+ * Every `routeAlert({ disposition: 'human' })` call whose literal conditionKey
+ * can never page (not page-worthy). owner-alert-router downgrades those to the
+ * digest on every fire, so the author's "a person must act on this" intent is
+ * silently lost: test-yml:main-streak-escalation fired 218 times that way and
+ * dispatched nothing (BRO-7102). Write 'digest' (or 'auto' to get a card) and
+ * say so, or make the key page-worthy in scripts/lib/page-worthy-alerts.js.
+ * Returns [{ file, conditionKey }] across scripts/ and .github/workflows/ (tests excluded).
+ */
+function findDowngradedHumanAlerts(roots = [path.join(__dirname), WORKFLOW_DIR]) {
+  const found = [];
+  const walk = (dir) => {
+    for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+      const p = path.join(dir, e.name);
+      if (e.isDirectory()) { if (e.name !== 'node_modules' && !e.name.startsWith('.')) walk(p); continue; }
+      if (!/\.(c?js|mjs|ya?ml)$/.test(e.name) || /\.test\./.test(e.name)) continue;
+      const text = fs.readFileSync(p, 'utf8');
+      if (!text.includes('routeAlert')) continue;
+      for (const call of extractRouteAlertCalls(text)) {
+        if (call.disposition === 'human' && !isPageWorthyLiteralPrefix(call.conditionKeyLiteral)) {
+          found.push({ file: path.relative(path.join(__dirname, '..'), p), conditionKey: call.conditionKeyLiteral });
+        }
+      }
+    }
+  };
+  for (const r of roots) if (fs.existsSync(r)) walk(r);
+  return found.sort((a, b) => (a.file + a.conditionKey).localeCompare(b.file + b.conditionKey));
+}
+
 // --- corpus scan -------------------------------------------------------------
 
 /**
@@ -344,6 +375,7 @@ module.exports = {
   splitRouteAlertCalls,
   isPageWorthyLiteralPrefix,
   findUnreachableAlerts,
+  findDowngradedHumanAlerts,
   collectFindings,
 };
 

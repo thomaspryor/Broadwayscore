@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/outlet-registry.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Outlet id vs URL host advisory (2026 data audit S7-T6, BRO-4204).
 //
 // A review file's outletId comes from the aggregator's label, not the URL

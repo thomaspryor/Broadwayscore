@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/auto-critic-aliases.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Unit tests for scripts/lib/critic-alias-picker.js — audit S7-T5 (BRO-4204).
  *

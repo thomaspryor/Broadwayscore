@@ -130,6 +130,11 @@ async function runLaneNight({
           outlet: fetched.outlet, criticName: fetched.criticName, url: a.url, publishDate: a.publishDate || fetched.publishDate || null,
           fullText: fetched.fullText, aggregator: fetched.aggregator || {}, excerpts: fetched.excerpts,
         });
+        // The printed rating the page carries (inline-score.js ratingFields), as the regular pipeline's review file has
+        // it. Only on a row the ensemble will score: an aggregator fallback row (assignedScore already set, scoreSource
+        // lane-aggregator-*) never reaches the scorer, so a page rating there would sit beside a score it did not anchor
+        // and make isHighReliabilityStar read the aggregator label as the rating's source.
+        if (fetched.rating && row.assignedScore == null) Object.assign(row, fetched.rating);
         // A syndicated copy (Chris Jones's Chicago Tribune review in the NY Daily News) is the rebuild's to drop only
         // when the primary is present (syndication-pairs.js). Mirror that: skip a copy whose primary is already
         // scored, and pull a queued copy when its primary arrives. The Oct 22 shadow run would have published one.
@@ -146,6 +151,9 @@ async function runLaneNight({
         row.contentTier = row.contentTier || fetched.contentTier || (row.isFullReview ? 'complete' : 'stub');
         // A partial copy is scored now and collected in full later, like an excerpt-only one.
         if (row.contentTier === 'truncated') row.needsRecollection = true;
+        // The old path's fields for a paywall partial copy, so the rebuild keeps it truncated until it is re-collected.
+        if (fetched.sourceMethod) row.sourceMethod = fetched.sourceMethod;
+        if (row.contentTier === 'truncated' && fetched.paywallTruncation) Object.assign(row, fetched.paywallTruncation);
         if (persistReview) {
           // The guarded writer can preserve a human correction. Publish precisely what survived on disk.
           row = persistReview(row).row;

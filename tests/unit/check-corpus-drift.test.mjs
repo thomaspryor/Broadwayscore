@@ -146,3 +146,24 @@ describe('BRO-3535: gates moved from test.yml', () => {
     assert.deepEqual([...scopedNames].sort(), [...MOVED_NAMES].sort());
   });
 });
+
+// BRO-3549: healPathRequired is the opt-in that puts an entry under the
+// heal-path ratchet (scripts/lib/data-gate-heal-paths.js filters on it). Left
+// undefined it behaves exactly like false, so a new entry could silently skip
+// the ratchet by omission. Every entry must decide, explicitly.
+test('BRO-3549: every AUDITS entry sets healPathRequired explicitly to true or false', () => {
+  const undecided = AUDITS
+    .filter((a) => a.healPathRequired !== true && a.healPathRequired !== false)
+    .map((a) => `${a.name} (healPathRequired: ${String(a.healPathRequired)})`);
+  assert.deepEqual(undecided, [],
+    'add `healPathRequired: true` (gate-like: needs a heal path or healExempt) or `healPathRequired: false` to: ' +
+    undecided.join(', '));
+});
+
+// BRO-3549: a crash code that is also an audit's drift code would make the
+// monitor report real drift as "could not run" (and red the job). 1 is the
+// drift code for every audit in this table.
+test('BRO-3549: no AUDITS entry lists exit 1 (drift) as a crash code', () => {
+  const bad = AUDITS.filter((a) => !Array.isArray(a.crashCodes) || a.crashCodes.includes(1)).map((a) => a.name);
+  assert.deepEqual(bad, []);
+});

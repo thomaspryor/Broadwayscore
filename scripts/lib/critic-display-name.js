@@ -80,6 +80,7 @@ const { isOutletishName, isPersonShapedName, CORPORATE_RE } = require('./outlet-
 const CRITIC_NAME_FIXES = require('./critic-name-fixes.json').fixes;
 // The site's critic-page slug rule (apostrophe -> hyphen), not review-normalization's.
 const { slugify: pageSlug } = require('./url-slug');
+const { isJunkCriticName, nameFromJunkCriticName } = require('./byline-recovery');
 
 // Placeholders the 2026 audit found emitted as critics, plus the obvious
 // neighbours of each. Lowercase; normalized through normalizeForCompare below
@@ -211,7 +212,15 @@ function criticRegistryNames() {
     if (!c || typeof c.displayName !== 'string') continue;
     const clean = stripBylineSuffixes(c.displayName).trim();
     const key = normKey(clean);
-    if (key && !_criticRegistryNames.has(key)) _criticRegistryNames.set(key, clean);
+    if (!key) continue;
+    // BRO-6928: a lost space is a capture artifact ("MichaelArditti"), an added
+    // one never is, so the spelling with more words wins the shared key. A
+    // hyphen is never an artifact either ("Jean-Paul" beats "Jean Paul").
+    const prev = _criticRegistryNames.get(key);
+    const hyphens = (s) => (s.match(/-/g) || []).length;
+    if (!prev || (clean.split(/\s+/).length > prev.split(/\s+/).length && hyphens(clean) >= hyphens(prev))) {
+      _criticRegistryNames.set(key, clean);
+    }
   }
   return _criticRegistryNames;
 }
@@ -505,10 +514,21 @@ function edgeVariants(key) {
   return out;
 }
 
-/** True when every token is a generic edge word ("editorial team", "the staff"). */
+// Role and site words that are never part of a person's name when EVERY word
+// is generic ("Reviewer Upload", "Guest User", "Contributing Writer", "The
+// Newsroom", "Arts and Culture Blogger"; 2026-11-08 corpus sweep). Only used by
+// isAllGeneric, so "David Guest" (a real name) still shows. Not edge words:
+// peeling "and" or "book" off an outlet comparison would be wrong.
+const ROLE_WORDS = new Set([
+  'upload', 'uploads', 'contributing', 'guest', 'guests', 'user', 'users', 'newsroom',
+  'blogger', 'bloggers', 'unit', 'and', 'of', 'book', 'books', 'admin', 'contributor',
+  'correspondent', 'moderator', 'member', 'magazine', 'blog',
+]);
+
+/** True when every token is a generic word ("editorial team", "the staff", "guest user"). */
 function isAllGeneric(key) {
   const tokens = String(key || '').split(' ').filter(Boolean);
-  return tokens.length > 0 && tokens.every((t) => EDGE_GENERIC.has(t));
+  return tokens.length > 0 && tokens.every((t) => EDGE_GENERIC.has(t) || ROLE_WORDS.has(t));
 }
 
 /**
@@ -520,12 +540,16 @@ function matchesOutletName(key, ctx) {
   if (!key) return false;
   const global = outletNameSet();
   const own = new Set();
-  if (typeof ctx.outlet === 'string') {
-    const n = normalizeForCompare(ctx.outlet);
-    if (n) { own.add(n); own.add(stripLeadingThe(n)); }
-  }
+  const addOwn = (n) => {
+    if (!n) return;
+    own.add(n); own.add(stripLeadingThe(n));
+    // "MAGNET Staff" at "Magnet Magazine": the outlet minus its kind word.
+    const bare = n.replace(/\s+(?:magazine|newspaper)$/, '');
+    if (bare !== n && bare.length >= 3) own.add(bare);
+  };
+  if (typeof ctx.outlet === 'string') addOwn(normalizeForCompare(ctx.outlet));
   if (ctx.entry && !isSelfBrandedOutlet(ctx.id, ctx.entry)) {
-    for (const n of ownNamesOf(ctx.id, ctx.entry)) { own.add(n); own.add(stripLeadingThe(n)); }
+    for (const n of ownNamesOf(ctx.id, ctx.entry)) addOwn(n);
   } else if (ctx.entry) {
     own.clear(); // self-branded outlet: its own name is the critic
   }
@@ -594,8 +618,9 @@ function isNonPerson(name, ctx) {
   const dcKey = registryDefaultCriticKey(ctx);
   if (dcKey && dcKey === key) return false;
   if (isPlaceholderPhrase(key)) return true;
-  if (isAllGeneric(key)) return true;
+  // Curated first: a hand-confirmed critic is never hidden by the word lists.
   if (isCuratedCritic(name)) return false;
+  if (isAllGeneric(key)) return true;
   if (matchesOutletName(key, ctx)) return true;
   return false;
 }
@@ -652,9 +677,26 @@ function displayCriticName(raw, outlet, registryEntry) {
   if (fixed) {
     name = fixed;
   } else {
-    const slug = normalizeCritic(stripped);
+    let slug = normalizeCritic(stripped);
     if (slug === 'unknown') return null;
-    if (Object.prototype.hasOwnProperty.call(CRITIC_ALIASES, slug) && slugify(stripped) !== slug) {
+    // BRO-6928: alias strings are stored punctuation-free ("samuel l", "andrze
+    // lukowski") but normalizeCritic matches the raw lowercase byline exactly,
+    // so "Samuel L." or "Andrze] Lukowski" missed its alias and kept its own
+    // critic page. Retry on the folded form; only an alias hit may move it.
+    const isAlias = (s) => Object.prototype.hasOwnProperty.call(CRITIC_ALIASES, s);
+    // The page a canonical's reviews live on (the site keys pages by url-slug).
+    const canonPage = (s) => pageSlug(displayFormForCanonical(s, ctx.entry));
+    if (!isAlias(slug) || slugify(stripped) === slug) {
+      const folded = slugify(stripped).replace(/-/g, ' ');
+      if (folded && folded !== stripped.toLowerCase().trim()) {
+        const foldedSlug = normalizeCritic(folded);
+        if (foldedSlug !== slug && isAlias(foldedSlug) && CRITIC_ALIASES[foldedSlug].includes(folded)) slug = foldedSlug;
+      }
+    }
+    // A raw spelling already on the canonical's page keeps its own spelling
+    // ("José Solís", "A.R. Hoffman"); any other alias hit takes the canonical's
+    // display form, so "Holly OMahony" joins Holly O'Mahony's page.
+    if (isAlias(slug) && pageSlug(stripped) !== canonPage(slug)) {
       name = displayFormForCanonical(slug, ctx.entry);
     } else {
       name = stripped;
@@ -674,6 +716,13 @@ function displayCriticName(raw, outlet, registryEntry) {
   // or abbreviation ("Dave B.", "Jr.") is kept: only one after 2+ lowercase.
   out = trimEdgePunctuation(out);
   if (!out) return null;
+  // BRO-4874: capture junk the byline-recovery sweep knows ("View my Complete",
+  // "nick730", "Sam - Admin", "The Recs IT") reached the site as a critic.
+  // Keep the person it wraps ("Read more articles by X") or drop the byline.
+  if (isJunkCriticName(out)) {
+    out = nameFromJunkCriticName(out);
+    if (!out) return null;
+  }
   // 6. one spelling per person: the critic registry's form when the name is
   //    the same modulo accents/case/punctuation, then one apostrophe style.
   out = straightenApostrophes(registrySpelling(out, ctx.id));

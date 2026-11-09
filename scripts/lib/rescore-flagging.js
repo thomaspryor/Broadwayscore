@@ -231,6 +231,43 @@ function markRescoreNeeded(fileData, reason, flaggedAt, { requeue = false } = {}
   return fileData;
 }
 
+/**
+ * BRO-6964: a rating just landed on a file whose score was produced by a model without it (llm-v6 etc.).
+ * Queue the normal anchored rescore so the score is read against the critic's band, not just clamped by the
+ * rebuild. Call BEFORE the writer overwrites scoreSource. Returns true when it flagged the file.
+ */
+function queueRescoreForLateRating(data, via) {
+  if (!data || typeof data !== 'object') return false;
+  if (!data.scoreSource || !isLlmScoreSource(data.scoreSource)) return false;
+  if (data.humanReviewScore != null) return false;
+  markRescoreNeeded(data, `outlet rating landed after the score (${via || 'late rating'}; BRO-6964)`, undefined, { requeue: true });
+  return true;
+}
+
+/**
+ * BRO-305: the counterpart of queueRescoreForLateRating. A star was just CLEARED from a file whose
+ * score an LLM produced with that star in its prompt (anchored-v6 holds the score inside the star's
+ * band), so the score is still the junk star's. Lehman Trilogy (Evening Standard): a gallery counter
+ * "1/10" was cleared, but the anchored 20 would have kept shipping on a warm review. Not a requeue:
+ * a rescore already queued reads the file after the clear anyway. Returns true when it flagged.
+ */
+function queueRescoreForClearedRating(data, why) {
+  if (!data || typeof data !== 'object') return false;
+  // An anchored read (llmScore.band) counts even after an extractor relabelled scoreSource
+  // (rebuild-helpers getBestScore reads those too).
+  const anchored = !!(data.llmScore && data.llmScore.band);
+  if (!anchored && (!data.scoreSource || !isLlmScoreSource(data.scoreSource))) return false;
+  // A provisional human score is still replaced by the LLM read (rebuild-helpers P0), so it does not block.
+  if (data.humanReviewScore != null && data.humanReviewScoreProvisional !== true) return false;
+  if (data.needsRescore === true) return false;
+  // Same safety as isFalseTruncationScore: a _locked file is restored at push (paid rescore every pass),
+  // and the needsRescore => isScoreable invariant must hold or the flag is stuck.
+  if (data._locked === true) return false;
+  if (!isScoreable(data)) return false;
+  markRescoreNeeded(data, `outlet rating cleared after the score (${why || 'cleared rating'}; BRO-305)`);
+  return true;
+}
+
 const CV_PARTIAL_WINDOW_RESCORE_REASON = 'CV not-a-review verdict from the head of a longer article is newer than the score (BRO-6225)';
 
 /**
@@ -245,4 +282,4 @@ function queueRescoreForCvPartialWindow(data, show, filePath) {
   return true;
 }
 
-module.exports = { CV_PARTIAL_WINDOW_RESCORE_REASON, queueRescoreForCvPartialWindow, isFalseTruncationScore, isBotStubContaminatedScore, BOT_STUB_FIX_AT, BOT_STUB_TIGHTENED_AT, BOT_STUB_RESCORE_REASON, isStaleScoreInput, isTruncatedScoreNowComplete, markRescoreNeeded, needsRescoreForCvPartialWindow };
+module.exports = { CV_PARTIAL_WINDOW_RESCORE_REASON, queueRescoreForCvPartialWindow, isFalseTruncationScore, isBotStubContaminatedScore, BOT_STUB_FIX_AT, BOT_STUB_TIGHTENED_AT, BOT_STUB_RESCORE_REASON, isStaleScoreInput, isTruncatedScoreNowComplete, markRescoreNeeded, needsRescoreForCvPartialWindow, queueRescoreForLateRating, queueRescoreForClearedRating, isLlmScoreSource };

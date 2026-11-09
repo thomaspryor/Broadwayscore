@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/outlet-registry.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 import test from 'node:test';
 import assert from 'node:assert';
 import { createRequire } from 'node:module';
@@ -19,12 +20,29 @@ const VERIFIED_SINGLE_WORD_DISPLAY_NAMES = Object.freeze({
   operationlivetheatre: 'Operationlivetheatre',
   // tabinthecity.co.uk og:site_name and <title> are both "Tabinthecity" (BRO-6421, 2026-10-27).
   tabinthecity: 'Tabinthecity',
+  // BRO-5507: 12 individually reviewed mastheads in outlet-display-name-proposals.json.
+  monstagigz: 'Monstagigz',
+  scribicide: 'Scribicide',
+  showbiz411: 'Showbiz411',
+  blogcritics: 'Blogcritics',
+  rescripted: 'Rescripted',
+  consequence: 'Consequence',
+  flavorwire: 'Flavorwire',
+  nippertown: 'Nippertown',
+  splitsider: 'Splitsider',
+  refinery29: 'Refinery29',
+  musicals101: 'Musicals101',
+  sequenza21: 'Sequenza21',
+  // BRO-6991: other genuine one-word names exposed by the wider selector.
+  metrosource: 'Metrosource',
+  letterboxd: 'letterboxd',
 });
 
 for (const [id, displayName] of Object.entries(VERIFIED_SINGLE_WORD_DISPLAY_NAMES)) {
   test(`verified single-word masthead ${displayName} is preserved and exempt from backfill`, () => {
     const { outlets } = require('../../data/outlet-registry.json');
     assert.equal(outlets[id]?.displayName, displayName);
+    assert.equal(outlets[id]?.displayNameReviewed, true);
     assert.deepEqual(findRunTogetherSlugDisplayNames({ [id]: outlets[id] }), [],
       `${id} needs displayNameReviewed:true so the homepage backfill preserves its verified spelling`);
   });
@@ -89,6 +107,36 @@ test('the remaining BRO-5246 names keep their individually checked spelling', ()
     donshewey: 'Don Shewey',
     travelbeginsat40: 'Travel Begins at 40',
   })) assert.equal(outlets[id]?.displayName, name);
+});
+
+test('BRO-6991 resolutions preserve reviewed mastheads and legacy label routing', () => {
+  const { outlets } = require('../../data/outlet-registry.json');
+  // Pin the reviewed results independently of the historical audit report.
+  // Changes to that report do not trigger test.yml, and must not redefine
+  // the expected registry names or silently remove a regression case.
+  for (const [outletId, from, displayName] of [
+    ['rockchicago', 'Rockchicago', 'Rock Chicago'],
+    ['lgbtweekly', 'Lgbtweekly', 'LGBT Weekly'],
+    ['sdamustang', 'Sdamustang', 'The Mustang'],
+    ['sdcitybeat', 'Sdcitybeat', 'San Diego CityBeat'],
+    ['afterellen', 'Afterellen', 'AfterEllen'],
+    ['cityguideny', 'Cityguideny', 'City Guide'],
+    ['harryforbes', 'Harryforbes', 'Forbes on Film & Footlights'],
+    ['metrosource', 'Metrosource', 'Metrosource'],
+    ['jasonraize', 'Jasonraize', 'The Raize Resource'],
+    ['letterboxd', 'letterboxd', 'letterboxd'],
+    ['myreviewer', 'myreviewer', 'MyReviewer.com'],
+    ['bookevents', 'bookevents', 'NYC Book Events'],
+    ['clevescene', 'clevescene', 'Cleveland Scene'],
+    ['thedaviddesk2', 'Thedaviddesk2', 'The David Desk 2'],
+    ['nowtoronto', 'Nowtoronto', 'NOW Toronto'],
+    ['theamerican', 'Theamerican', 'The American'],
+    ['rollingout', 'Rollingout', 'Rolling Out'],
+  ]) {
+    assert.equal(outlets[outletId]?.displayName, displayName);
+    assert.equal(normalizeOutlet(displayName), outletId, displayName);
+    assert.equal(normalizeOutlet(from), outletId, `Legacy label ${from} must still resolve`);
+  }
 });
 
 test('the two defunct lottery pages are not registered as review outlets', () => {

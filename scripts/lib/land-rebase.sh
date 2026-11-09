@@ -27,12 +27,34 @@ RETRIES="${LAND_REBASE_PROMISOR_RETRIES:-3}"
 out="$(mktemp "${TMPDIR:-/tmp}/land-rebase.XXXXXX")"
 trap 'rm -f "$out"' EXIT
 
+# BRO-7150: a clean rebase can still leave .github/workflows/DEPENDENCIES.md stale (the branch changed a
+# workflow edge without regenerating, or main moved the graph); its unit test then refused the land ~25 min
+# in. Regenerate it with the rebased tree's own generator and fold it into the branch's last commit: the
+# same tree land-branch.js (refreshGeneratedDocsIn) lands. Fails open: no generator, nothing rebased, or a
+# generator error leaves HEAD alone and the gauntlet reports the doc as before.
+refresh_generated_docs() {
+  local gen=scripts/generate-workflow-dependencies.js doc=.github/workflows/DEPENDENCIES.md
+  [ -f "$gen" ] || return 0
+  [ "$(git rev-parse HEAD)" = "$(git rev-parse "$BASE^{commit}" 2>/dev/null)" ] && return 0
+  node "$gen" --check >/dev/null 2>&1 && return 0
+  if node "$gen" >/dev/null 2>&1 && [ -n "$(git status --porcelain -- "$doc")" ] \
+     && git add -- "$doc" && git commit -q --amend --no-edit --no-verify; then
+    echo "::notice::$LABEL: $doc was stale on the rebased tree; regenerated it and folded it into the last commit (BRO-7150)"
+  else
+    git checkout -- "$doc" 2>/dev/null || true
+  fi
+  return 0
+}
+
 attempt=0
 while :; do
   git rebase "$BASE" >"$out" 2>&1
   rc=$?
   cat "$out"
-  [ "$rc" -eq 0 ] && exit 0
+  if [ "$rc" -eq 0 ]; then
+    refresh_generated_docs
+    exit 0
+  fi
   git rebase --abort >/dev/null 2>&1 || true
   # Classifier failing (exit 2 / missing node) must never widen the retry.
   if node "$HERE/promisor-fetch-failure.js" "$out" 2>/dev/null; then

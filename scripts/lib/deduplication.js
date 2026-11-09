@@ -23,7 +23,7 @@ const { VENUE_ALIASES } = require('./title-match');
 const { decodeHtmlEntities } = require('./text-cleaning');
 // transferOf/transferredTo half of isCrossLinked(); show-duplicate-detection
 // requires only ./title-match, so there is no cycle back into this module.
-const { isDeclaredTransferPair } = require('./show-duplicate-detection');
+const { isDeclaredTransferPair, canonicalVenue, sameVenueOrRoom } = require('./show-duplicate-detection');
 // Shared id-base rule for Check 3 (S5-T3) — market-slug has no requires of
 // its own, so no cycle. validate-shows-prebuild.js uses the same helper.
 const { stripIdSuffix: stripIdSuffixUncached } = require('./market-slug');
@@ -655,8 +655,12 @@ function isMultiProduction(newShow, existing) {
   const existVenueSegs = venueSegments(existing.venue);
   // Segments match on normalized equality OR a shared alias-table canonical
   // (renter company ≡ host venue, e.g. The New Group ≡ Signature Center).
+  // Or one house name is the other plus only a room suffix ("SoHo Playhouse" vs
+  // "Soho Playhouse Main Stage", BRO-4503/BRO-7080): without it the pair read as
+  // a transfer to a different venue and the ingest-time check passed the dup.
   const venuesMatch = newVenueSegs.some(a => existVenueSegs.some(b =>
-    a.norm === b.norm || a.full === b.full || (a.alias && a.alias === b.alias)));
+    a.norm === b.norm || a.full === b.full || (a.alias && a.alias === b.alias)))
+    || sameVenueOrRoom(canonicalVenueCached(newShow), canonicalVenueCached(existing));
   let venuesKnownDifferent =
     newVenueSegs.length > 0 &&
     existVenueSegs.length > 0 &&
@@ -968,6 +972,28 @@ function subtitleKey(title) {
  *
  * This is the main entry point for duplicate detection.
  */
+// Same house, allowing one venue to be the other plus only a room suffix:
+// "SoHo Playhouse" vs "Soho Playhouse Main Stage" (Jena Friedman: Motherfucker,
+// BRO-4503). The audit got this in BRO-4503; the ingest-time check did not, so
+// the stub was still created (BRO-7080). Distinct rooms named by letter
+// ("59E59 Theater A" vs "Theater C") stay different: neither is the other plus
+// a suffix.
+// canonicalVenue is called O(n^2) by validate-data's pairwise scan; cache it per
+// show object, keyed on the venue string so an edited venue recomputes.
+const _canonVenueCache = new WeakMap();
+function canonicalVenueCached(show) {
+  if (!show || typeof show !== 'object') return canonicalVenue(show);
+  const hit = _canonVenueCache.get(show);
+  if (hit && hit.key === show.venue) return hit.value;
+  const value = canonicalVenue(show);
+  _canonVenueCache.set(show, { key: show.venue, value });
+  return value;
+}
+function sameHouseVenue(a, b) {
+  if (venuesMatch(a.venue, b.venue)) return true;
+  return sameVenueOrRoom(canonicalVenueCached(a), canonicalVenueCached(b));
+}
+
 function checkForDuplicate(newShow, existingShows) {
   const newSlug = slugify(newShow.title);
   const newTitleLower = newShow.title.toLowerCase().trim();
@@ -1067,7 +1093,7 @@ function checkForDuplicate(newShow, existingShows) {
 
     // Check 7e: Same venue + same distinctive subtitle behind a different
     // credit list (isSameSubtitleTail; the Il Cimento NYU Skirball dup).
-    if (venuesMatch(newShow.venue, existing.venue) && isSameSubtitleTail(newShow.title, existing.title)) {
+    if (isSameSubtitleTail(newShow.title, existing.title) && sameHouseVenue(newShow, existing)) {
       if (!isMultiProduction(newShow, existing)) {
         return {
           isDuplicate: true,
@@ -1097,7 +1123,7 @@ function checkForDuplicate(newShow, existingShows) {
     // colon — "Louis Katz: Conflicted" vs "Conflicted" (TodayTix performer
     // prefix). normalizeTitle() keeps only the pre-colon side ("louis katz"),
     // so Checks 5/7/8 all miss this shape. Exact-segment + venue keeps it tight.
-    if (venuesMatch(newShow.venue, existing.venue) && isColonSegmentVariant(newShow.title, existing.title)) {
+    if (isColonSegmentVariant(newShow.title, existing.title) && sameHouseVenue(newShow, existing)) {
       if (!isMultiProduction(newShow, existing)) {
         return {
           isDuplicate: true,
@@ -1110,7 +1136,7 @@ function checkForDuplicate(newShow, existingShows) {
     // Check 7c: Same venue + the same double-bill segments in a different
     // order ("The Human Voice / The Seven Deadly Sins" vs "The Seven Deadly
     // Sins / The Human Voice", Charing Cross — S5-T2). See isTitleOrderSwap.
-    if (venuesMatch(newShow.venue, existing.venue) && isTitleOrderSwap(newShow.title, existing.title)) {
+    if (isTitleOrderSwap(newShow.title, existing.title) && sameHouseVenue(newShow, existing)) {
       if (!isMultiProduction(newShow, existing)) {
         return {
           isDuplicate: true,

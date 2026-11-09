@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4977",
   "planId": "73942024-788d-4744-956f-3044f122e208",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-10T16:28:17.070Z",
   "submitter": {
     "name": null,
@@ -157,5 +157,22 @@
       "ok": true,
       "msg": "Ran repair-page-bleed.js successfully"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 1
+    },
+    "ops": [
+      {
+        "i": 7,
+        "verdict": "resolved",
+        "reason": "broadway-1987/vulture--unknown.json wrongShow already true"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (1 resolved); per-op reasons in triage.ops"
 }

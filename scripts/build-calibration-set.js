@@ -6,6 +6,7 @@
  */
 
 const fs = require('fs');
+const { getExcerpts } = require('./lib/excerpt-fields');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
 
@@ -48,7 +49,7 @@ function parseStarRating(score) {
 }
 
 function getTextQuality(review) {
-  const text = review.fullText || review.dtliExcerpt || review.bwwExcerpt || '';
+  const text = review.fullText || getExcerpts(review)[0] || '';
   const wordCount = text.split(/\s+/).length;
 
   if (wordCount >= 300) return 'full';
@@ -99,7 +100,7 @@ async function main() {
         bwwThumb: review.bwwThumb || null,
         textQuality,
         hasFullText: !!review.fullText && review.fullText.length > 500,
-        textLength: (review.fullText || review.dtliExcerpt || review.bwwExcerpt || '').length,
+        textLength: (review.fullText || getExcerpts(review)[0] || '').length,
       };
 
       // Check if assigned score matches expected range
@@ -220,7 +221,7 @@ async function main() {
   // Generate calibration prompts file with examples
   const promptExamples = calibrationSet.map(item => {
     const review = JSON.parse(fs.readFileSync(path.join(REVIEW_TEXTS_DIR, item.file), 'utf8'));
-    const text = review.fullText || review.dtliExcerpt || review.bwwExcerpt || '';
+    const text = review.fullText || getExcerpts(review)[0] || '';
     return {
       showId: item.showId,
       outlet: item.outlet,

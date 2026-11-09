@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data); data/commercial.json (untracked core data); data/grosses.json (untracked core data); +1 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-5598: pins the recoupment model's musical backtest stats at the level
 // the musical calibration reached (scripts/lib/recoupment-model.js
 // MUSICAL_LIVE_OPTS), so a later model or data change that undoes it fails

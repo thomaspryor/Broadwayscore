@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/outlet-registry.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-5801 acceptance: verify the fixed cohort, registry, and effective weights.
 // Uses the real platform detector and tier lookup, without copying their logic.
 import test from 'node:test';

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // TESTS-VS-DERIVED-DATA-EXEMPT: tests preflight library logic against shows.json as input fixture; no hardcoded facts about specific shows.
 /**
  * Unit tests for scripts/lib/bulk-import-preflight.js.

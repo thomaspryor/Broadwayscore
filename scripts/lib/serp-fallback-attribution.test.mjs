@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/audit/sb-circuit-breaker.json (bot ledger). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-3344: a SERP call made because Scrapingdog already failed carries
 // fallback_from on its ledger row, and the Scrapingdog failure row carries a
 // query-free detail (provider message + request shape). Requires the REAL

@@ -691,7 +691,7 @@ export function theatrNotices(
   // with neither a score nor a reaction are certain to stay unrated.
   const undatedUnrated = attended.filter((e) => !e.date && e.rating === null && !e.reaction).length;
   if (undatedUnrated > 0) {
-    notices.push(`${undatedUnrated} seen show(s) have no date, reaction or score, so they go to your watchlist. You can rate them from there.`);
+    notices.push(`${undatedUnrated} seen show(s) have no date, reaction or score, so they go to To See. You can rate them from there.`);
   }
   return notices;
 }

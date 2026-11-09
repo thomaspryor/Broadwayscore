@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // TESTS-VS-DERIVED-DATA-EXEMPT: classifier regression test — reads shows.json as input, asserts predicate behavior, no hardcoded facts.
 /**
  * Regression test for the WE long-runner classifier.

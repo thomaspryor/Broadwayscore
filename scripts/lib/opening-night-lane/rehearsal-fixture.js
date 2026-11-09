@@ -101,7 +101,7 @@ function buildSyntheticFixture() {
   // The other production adapters (adapters.js) answer, but list nothing for this show: a quiet source is the normal
   // case, and an adapter error in the rehearsal then means something real broke.
   pages['https://playbill.com/category/the-verdict'] = '<html><body><a href="https://playbill.com/article/the-verdict-another-show">The Verdict: Another Show</a></body></html>';
-  for (const ix of ['ob', 'bwaybway']) pages[`https://www.talkinbroadway.com/page/${ix}/index.html`] = '<html><body><a href="/page/ob/another-show.html">Another Show</a></body></html>';
+  for (const ix of ['ob/index', 'world/past']) pages[`https://www.talkinbroadway.com/page/${ix}.html`] = '<html><body><a href="/page/ob/another-show.html">Another Show</a></body></html>';
   // Show Score: the show page the fixture's urlMap points at, with no critic tiles yet.
   pages[SHOW_SCORE_URL] = '<html><body><h1>The Rehearsal Play</h1><p>No critic reviews yet.</p></body></html>';
   pages[`https://news.google.com/rss/search?${new URLSearchParams({ q: `"${SHOW.title}" review`, hl: 'en-US', gl: 'US', ceid: 'US:en' })}`] = '<rss><channel><title>Google News</title></channel></rss>';

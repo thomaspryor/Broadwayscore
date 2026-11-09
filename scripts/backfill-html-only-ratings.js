@@ -27,6 +27,7 @@ const glob = require('glob');
 const { fetchPage } = require('./lib/scraper');
 const { recoverScoreFromHtml, existingHasScoreSignal } = require('./lib/ingest-html-score');
 const { setExtractedScore } = require('./lib/score-routing');
+const { extractArticleTextFromUrl } = require('./lib/article-extractor');
 const { shouldUseAnchoredMode } = require('./lib/star-reliability');
 const { isIncludableForRebuild } = require('./lib/review-guards');
 const { safeWriteReview } = require('./lib/review-write-guard');
@@ -58,7 +59,11 @@ function isCandidate(d, show, f) {
   // search stub: no fetchMethod/sourceMethod), whose score likewise never saw
   // the page. Records the collector fetched already had their HTML read.
   const neverFetched = !d.fetchMethod && !d.sourceMethod;
-  if (!neverFetched && !srcs.some(s => STARLESS_TEXT_SOURCES.has(s))) return false;
+  // Except a body recovered by empty-body-retry's recoveryPatch (directly, or
+  // as a rebuilt pending stub): before BRO-6900 it saved the text and never
+  // read the page's star (needsTextRetry false / pendingRefetchedAt mark it).
+  const retryRecovered = d.needsTextRetry === false || !!d.pendingRefetchedAt;
+  if (!neverFetched && !retryRecovered && !srcs.some(s => STARLESS_TEXT_SOURCES.has(s))) return false;
   if (d.scoreExtractedFrom === 'scraped-html') return false;
   // A page already read with no rating found: skip until its marker is 30
   // days old, so batched runs make progress instead of re-reading it.
@@ -117,7 +122,12 @@ if (require.main === module) (async () => {
       } catch (e) { lastErr = e; continue; }
       if (!page || typeof page !== 'string' || page.length < 500) continue;
       if (!html) html = page;
-      rec = recoverScoreFromHtml(page, d.fullText || '', d.outletId, show.title);
+      // Read the page's own body too: the stored text can lack the verdict
+      // line (BRO-6900, DM "Rating: Four out of five stars"), and a spelled-out
+      // star is only read near the top or bottom of the text it is given.
+      const freshText = extractArticleTextFromUrl(page, u, d.criticName) || '';
+      rec = recoverScoreFromHtml(page, freshText, d.outletId, show.title)
+        || recoverScoreFromHtml(page, d.fullText || '', d.outletId, show.title);
       if (rec) { html = page; break; }
     }
     if (!html) {

@@ -49,8 +49,14 @@ tests/unit/commercial-unannounced-surfaces.test.ts
 tests/unit/commercial-unreleased.test.mjs
 tests/unit/comparison-slugs-resolve.test.ts
 tests/unit/creative-role-mapping.test.ts
+tests/unit/creative-team-profiles.test.mjs
 tests/unit/creative-team-search.test.mjs
+tests/unit/critic-claim.test.ts
+tests/unit/critic-corrections.test.ts
+tests/unit/critic-invite.test.ts
+tests/unit/critic-reach.test.ts
 tests/unit/critic-score-canonical-parity.test.ts
+tests/unit/critic-standing.test.ts
 tests/unit/data-cast-history.test.ts
 tests/unit/data-reviews-critic-grouping.test.ts
 tests/unit/data-reviews-inherited.test.ts
@@ -79,8 +85,10 @@ tests/unit/format-opening-date-epoch.test.ts
 tests/unit/format-original-rating.test.ts
 tests/unit/format-show-date-timezone.test.ts
 tests/unit/gate-logic.test.mjs
+tests/unit/getcity-unknown-category.test.mjs
 tests/unit/homepage-notability.test.ts
 tests/unit/hub-menu-count.test.ts
+tests/unit/hub-pill.test.ts
 tests/unit/hub-show-images.test.ts
 tests/unit/img-early-error.test.ts
 tests/unit/investment-topics.test.ts
@@ -90,6 +98,7 @@ tests/unit/live-in-hd.test.mjs
 tests/unit/llm-cost-cache.test.ts
 tests/unit/llm-scoring-stale-roundup-flag.test.mjs
 tests/unit/local-market.test.ts
+tests/unit/local-ratings.test.ts
 tests/unit/local-watchlist.test.ts
 tests/unit/london-hub-routing.test.ts
 tests/unit/loss-basis-display.test.mjs
@@ -107,6 +116,7 @@ tests/unit/off-broadway-all-filter.test.mjs
 tests/unit/og-image.test.ts
 tests/unit/og-images-use-inter.test.ts
 tests/unit/og-jpeg.test.ts
+tests/unit/onboarding-tour-lists.test.ts
 tests/unit/opera-ensemble-scoreability.test.ts
 tests/unit/our-recoup-estimate.test.mjs
 tests/unit/p2-trio-fixes.test.mjs
@@ -158,6 +168,8 @@ tests/unit/show-score-tbd.test.ts
 tests/unit/show-slug-aliases.test.ts
 tests/unit/showtime-history-lookup.test.ts
 tests/unit/showtime-picker.test.ts
+tests/unit/signin-intent.test.ts
+tests/unit/signup-city.test.ts
 tests/unit/site-image-versioning.test.mjs
 tests/unit/slug-redirects.test.ts
 tests/unit/social-preview-metadata.test.ts

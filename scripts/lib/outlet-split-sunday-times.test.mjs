@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/critic-registry.json (untracked core data); data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-5137 (owner decision 2026-10-13): The Sunday Times counts as its own
  * critic vote (outletId `sunday-times`, `splitFrom: times-uk`). Both papers

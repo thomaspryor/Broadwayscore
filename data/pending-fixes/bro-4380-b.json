@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4380-b",
   "planId": "7557e755-c792-4d94-9593-367997989c2a",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-09-29T21:01:46.363Z",
   "submitter": {
     "name": null,
@@ -107,5 +107,38 @@
       "ok": false,
       "reason": "images: current value doesn't match expected (data changed since plan was created)"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "resolved": 1,
+      "obsolete": 3
+    },
+    "ops": [
+      {
+        "i": 0,
+        "verdict": "resolved",
+        "reason": "mortal-wounds-off-west-end-2026.images already {\"thumbnail\":null,\"poster\":null,\"hero\":null}"
+      },
+      {
+        "i": 1,
+        "verdict": "obsolete",
+        "reason": "its-unlikely-off-west-end-2026.images changed since by a later write (now {\"thumbnail\":\"/images/shows/its-unlikely-off-west-end-202...)"
+      },
+      {
+        "i": 2,
+        "verdict": "obsolete",
+        "reason": "the-graddys-london-semi-finals-off-west-end-2026.images changed since by a later write (now {\"thumbnail\":\"/images/shows/the-graddys-london-semi-final...)"
+      },
+      {
+        "i": 3,
+        "verdict": "obsolete",
+        "reason": "player-off-west-end-2026.images changed since by a later write (now {\"thumbnail\":\"/images/shows/player-off-west-end-2026/thum...)"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (1 resolved, 3 obsolete); per-op reasons in triage.ops"
 }

@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5090-04",
   "planId": "5e9f08b3-b95e-48ed-9753-9ec4ad564fc4",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-12T11:57:00.096Z",
   "submitter": {
     "name": null,
@@ -367,5 +367,27 @@
       "ok": true,
       "msg": "funny-girl-2022/washpost--peter-marks.json publishDate: \"April 25, 2022\" -> \"2022-05-09\""
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 2
+    },
+    "ops": [
+      {
+        "i": 3,
+        "verdict": "resolved",
+        "reason": "the-price-2017/nytimes--ben-brantley.json duplicateOf already \"nytimes--alexis-soloski.json\""
+      },
+      {
+        "i": 6,
+        "verdict": "resolved",
+        "reason": "thoughts-of-a-colored-man-2021/wsj--charles-isherwood.json and thoughts-of-a-colored-man-2021/wsj--terry-teachout.json share one counted row, so nothing is double-counted"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (2 resolved); per-op reasons in triage.ops"
 }

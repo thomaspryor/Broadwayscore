@@ -170,31 +170,76 @@ async function checkFile(absPath, role = classify(absPath), opts = {}) {
   return { role, absPath, ok: true, width: meta.width, height: meta.height, ratio };
 }
 
-function listStagedImageFiles() {
+// `git diff --name-status -M` lines -> repo-relative paths to check. A pure rename
+// (R100) moves identical bytes, so it adds no new image: a show-id rename (BRO-4315
+// batch 3) must not trip on a landscape poster that was already committed under the
+// old id. Anything else (A, C, M, R<100) still has bytes the gate has not seen.
+function pathsFromNameStatus(out) {
+  const paths = [];
+  for (const line of String(out).split('\n')) {
+    if (!line) continue;
+    const cols = line.split('\t');
+    if (/^R100$/.test(cols[0])) continue;
+    paths.push(cols[cols.length - 1]);
+  }
+  return paths;
+}
+
+function listDiffImageFiles(cmd) {
   let out;
   try {
-    out = execSync('git diff --cached --name-only --diff-filter=ACMR', { encoding: 'utf8' });
+    out = execSync(cmd, { encoding: 'utf8' });
   } catch {
     return [];
   }
-  return out.split('\n')
+  return pathsFromNameStatus(out)
     .filter(p => p && FILENAME_RE.test(p) && p.startsWith('public/images/shows/'))
-    .map(p => path.join(ROOT, p));
+    .map(p => path.join(ROOT, p))
+    .filter(p => fs.existsSync(p)); // file may have been deleted
+}
+
+// Blob ids of every image already committed under public/images/shows/. A staged
+// file whose bytes are already in HEAD adds nothing new, whatever path it sits
+// at: git's rename pairing misses these in a big batch (copies, rename limits),
+// and BRO-4315 batch 4 was refused on two posters it had only moved.
+// `git ls-tree -r` lines are "<mode> blob <id>\t<path>".
+function blobsFromLsTree(out) {
+  return new Set(String(out).split('\n').map(l => l.split(/\s+/)[2]).filter(Boolean));
+}
+
+// Keep only files whose bytes (blob id from blobOf) are not already committed.
+function dropKnownBlobs(files, known, blobOf) {
+  return files.filter(f => { const b = blobOf(f); return !(b && known.has(b)); });
+}
+
+function headImageBlobs() {
+  try {
+    const out = execSync('git ls-tree -r HEAD -- public/images/shows', { encoding: 'utf8', maxBuffer: 1 << 28 });
+    return blobsFromLsTree(out);
+  } catch {
+    return new Set();
+  }
+}
+
+function stagedBlob(abs) {
+  try {
+    return execFileSync('git', ['rev-parse', `:${path.relative(ROOT, abs)}`], { cwd: ROOT, encoding: 'utf8' }).trim();
+  } catch {
+    return null;
+  }
+}
+
+function listStagedImageFiles() {
+  const files = listDiffImageFiles('git diff --cached --name-status -M --diff-filter=ACMR');
+  if (files.length === 0) return files;
+  const known = headImageBlobs();
+  return dropKnownBlobs(files, known, stagedBlob);
 }
 
 function listChangedImageFiles(range) {
   // CI mode: list image files added/modified in the given git range (e.g. "main..HEAD" or "<sha>..<sha>").
   // Pre-existing legacy violations don't block — only files touched by this push/PR are checked.
-  let out;
-  try {
-    out = execSync(`git diff --name-only --diff-filter=ACMR ${range}`, { encoding: 'utf8' });
-  } catch {
-    return [];
-  }
-  return out.split('\n')
-    .filter(p => p && FILENAME_RE.test(p) && p.startsWith('public/images/shows/'))
-    .map(p => path.join(ROOT, p))
-    .filter(p => fs.existsSync(p)); // file may have been deleted
+  return listDiffImageFiles(`git diff --name-status -M --diff-filter=ACMR ${range}`);
 }
 
 function listAllArchiveImages() {
@@ -373,7 +418,7 @@ async function main() {
   process.exit(reportViolations(violations, mode));
 }
 
-module.exports = { checkFile, auditActivePosters };
+module.exports = { checkFile, auditActivePosters, pathsFromNameStatus, blobsFromLsTree, dropKnownBlobs };
 
 if (require.main === module) {
   main().catch(err => {

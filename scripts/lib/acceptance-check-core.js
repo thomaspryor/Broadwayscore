@@ -39,7 +39,8 @@ const { shallowFetchArgs } = require('./shallow-fetch-args.js');
 // SAFE_CHECK_FORMS matches on (CLAUDE.md §15 — one copy, reused here rather
 // than a second regex over the command string).
 const { isSafeCheckCommand, extractCheckPaths } = require('./check-paths.js');
-const { defaultDetail, tapDetail, checksEnv, cardCheckArgv, prepareCheckWorkdir, CHECK_TIMEOUT_MS } = require('./autonomous-checks.js');
+const { defaultDetail, tapDetail, checksEnv, cardCheckArgv, prepareCheckWorkdir, readTsxRunTests, CHECK_TIMEOUT_MS } = require('./autonomous-checks.js');
+const { envCauseOf, needsTsxRunner } = require('./check-env-cause.js');
 const { refreshDataClone } = require('./data-clone-refresh.js');
 
 const DEFAULT_REPO = path.join(__dirname, '..', '..');
@@ -259,7 +260,7 @@ function zeroPassingTests(output) {
  * @param {string} cwd - the fresh checkout (or any directory, for tests)
  * @param {string} cmd - the card's safe-form command, UNTRUSTED
  * @param {{attempts?:number, timeoutMs?:number}} o
- * @returns {{status:'pass'|'fail'|'unverifiable', detail:string|null}}
+ * @returns {{status:'pass'|'fail'|'unverifiable', detail:string|null, envCause?:string, missingPath?:boolean}}
  */
 function runVerify(cwd, cmd, { attempts = 2, timeoutMs = CHECK_TIMEOUT_MS, prepared = true, unpreparedReason = null } = {}) {
   const argv = cardCheckArgv(cmd, isSafeCheckCommand);
@@ -296,12 +297,18 @@ function runVerify(cwd, cmd, { attempts = 2, timeoutMs = CHECK_TIMEOUT_MS, prepa
       missingPath: true,
     };
   }
+  // BRO-7138: a test CI runs under `npx tsx --test` (the tsx manifests) fails
+  // under plain node on its first .ts import, every time, whatever the fix's
+  // state (BRO-5814, BRO-6595: ERR_MODULE_NOT_FOUND on src/lib/seo). Run it
+  // the way CI does. The card's own command string is unchanged.
+  const tsxTests = readTsxRunTests(cwd);
+  const runArgv = needsTsxRunner(argv, tsxTests) ? ['npx', 'tsx', ...argv.slice(1)] : argv;
   const env = checksEnv();
   const maxAttempts = Math.max(1, attempts);
   let last = null;
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     try {
-      const out = execFileSync(argv[0], argv.slice(1), { cwd, stdio: ['ignore', 'pipe', 'pipe'], timeout: timeoutMs, encoding: 'utf8', env });
+      const out = execFileSync(runArgv[0], runArgv.slice(1), { cwd, stdio: ['ignore', 'pipe', 'pipe'], timeout: timeoutMs, encoding: 'utf8', env });
       // BRO-4523: a test file whose tests all skip (a missing env var, a
       // guard on CI) exits 0 having proven nothing. Counting that as pass let
       // the done-evidence audit call a card STUCK and the Done gate accept it.
@@ -332,11 +339,20 @@ function runVerify(cwd, cmd, { attempts = 2, timeoutMs = CHECK_TIMEOUT_MS, prepa
       // it as FAIL would refuse a card over a typo in its own verify string
       // (ship-check finding — it violated this module's fail-open contract).
       if (err.status == null && err.code) {
-        return { status: 'unverifiable', detail: `command could not be started (${err.code}): ${argv[0]}` };
+        return { status: 'unverifiable', detail: `command could not be started (${err.code}): ${runArgv[0]}` };
       }
       last = (argv.includes('--test') ? tapDetail : defaultDetail)(err);
     }
   }
+  // BRO-7138: the check ran and failed, but on something the check machine
+  // withholds by design (a token checksEnv strips, the private review texts,
+  // a gitignored generated file). That fails every night whatever the fix's
+  // state, so it is the absence of a verdict, like exit 3 above. `envCause`
+  // names it so the recheck can say so and hand the VERIFY back for a rewrite.
+  // runArgv, not the command as written: once a tsx-manifest test runs under
+  // tsx, a missing module there is a REAL failure and must stay one.
+  const cause = envCauseOf(last, { argv: runArgv, tsxTests });
+  if (cause) return { status: 'unverifiable', detail: `could not run here (${cause.key}): ${String(last || '')}`, envCause: cause.key };
   return { status: 'fail', detail: last };
 }
 

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/outlet-registry.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Near-duplicate outlet-registry detector (task #1838 / BRO-90; extended to
  * the slugify()/concatenated class by task #1844).
@@ -286,6 +287,18 @@ describe('findOutletAliasCollisions typo class (BRO-5577)', () => {
     assert.ok(hits.some(c => c.outletIds.includes('independet')));
     // A fuzzy exception must not suppress a real alias collision.
     assert.ok(findOutletAliasCollisions({ independent: {}, indiependent: { aliases: ['independent'] } }).length);
+  });
+
+  test('The American and American Theater Web are distinct, with exact collisions still rejected', () => {
+    const outlets = {
+      'american-theater-web': { displayName: 'American Theater Web', aliases: ['america'] },
+      theamerican: { displayName: 'The American', aliases: ['theamerican'] },
+    };
+    assert.deepStrictEqual(findOutletAliasCollisions(outlets), []);
+    assert.ok(findOutletAliasCollisions({ ...outlets, theamericann: {} })
+      .some(c => c.outletIds.includes('theamericann')));
+    outlets.theamerican.aliases.push('america');
+    assert.ok(findOutletAliasCollisions(outlets).some(c => c.key === 'america'));
   });
 });
 

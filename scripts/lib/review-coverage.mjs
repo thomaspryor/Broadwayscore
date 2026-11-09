@@ -46,6 +46,7 @@
 // Exit: 0 complete, 3 incomplete, 2 transcript not found. Fails open (exit 0) on internal error
 // for hook use (--json, --stop-hook), never for --record.
 
+import './llm-usage-install.js'; // LLM spend meter: keep it the first import (BRO-5043)
 import { createHash } from 'node:crypto';
 import fs from 'node:fs';
 import os from 'node:os';
@@ -406,7 +407,7 @@ async function main(argv) {
 
 if (process.argv[1] && fs.realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)) {
   main(process.argv.slice(2)).then(
-    (c) => process.exit(c),
+    (c) => createRequire(import.meta.url)('./exit-flushed.js').exitFlushed(c),
     (e) => {
       process.stderr.write(`review-coverage: internal error: ${e && e.message}\n`);
       process.exit(process.argv.includes('--record') ? 1 : 0);

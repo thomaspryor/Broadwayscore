@@ -13,6 +13,7 @@
  * cadence ≈ $3/month total.
  */
 
+require('./llm-usage-install'); // LLM spend meter: before any client is built (BRO-5043)
 const OpenAI = require('openai');
 const { GPT4O_MINI } = require('./models');
 

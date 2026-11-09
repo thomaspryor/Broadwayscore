@@ -67,7 +67,7 @@ function replayFetchFrom(recording, { now, startMs, fallback = null }) {
       // Body dropped (oversize / capped / write failed): say so, a quiet 404 would read as a page that never existed.
       throw new Error(`recording incomplete for ${url}: body not stored${e.note ? ` (${e.note})` : ''}`);
     }
-    return { content, ...(e.finalUrl ? { finalUrl: e.finalUrl } : {}) };
+    return { content, ...(e.finalUrl ? { finalUrl: e.finalUrl } : {}), ...(e.source ? { source: e.source } : {}) };
   };
 }
 

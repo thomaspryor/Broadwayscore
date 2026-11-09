@@ -263,3 +263,52 @@ test('named manual correction still replaces a differently bylined pipeline twin
   assert.equal(reviews[0].criticName, 'Another Critic');
   assert.equal(reviews[0].assignedScore, 60);
 });
+
+// BRO-7079 (BRO-4430 class): Black Swan / R. Scott Reedy. The manual score was
+// entered against the BWW Review Roundup url; the source file holds his own
+// BWW Boston article. The score stays human, the url and date are the twin's.
+test('BRO-7079: a manual entry on a roundup url keeps its score but takes the twin\'s own url', () => {
+  const ROUNDUP = 'https://www.broadwayworld.com/article/Review-Roundup-BLACK-SWAN-Opens-at-American-Repertory-Theater-20260615';
+  const OWN = 'https://www.broadwayworld.com/boston/article/Review-A-Thrilling-BLACK-SWAN-at-American-Repertory-Theater-20260614';
+  const twin = { showId: 'black-swan-regional-2026', outletId: 'broadwayworld', criticName: 'R. Scott Reedy', url: OWN, publishDate: '2026-06-14', assignedScore: 80, scoreSource: 'llm' };
+  const manual = { showId: 'black-swan-regional-2026', outletId: 'broadwayworld', criticName: 'R. Scott Reedy', url: ROUNDUP, publishDate: '2026-06-15', assignedScore: 85, scoreSource: 'human-review', manualEntry: true };
+  const reviews = [twin];
+  mergeManualEntries(reviews, [manual], u => u);
+  assert.equal(reviews.length, 1);
+  assert.equal(reviews[0].assignedScore, 85);
+  assert.equal(reviews[0].url, OWN);
+  assert.equal(reviews[0].publishDate, '2026-06-14');
+  // a manual entry on a real article url is untouched
+  const reviews2 = [{ ...twin }];
+  const OTHER = 'https://www.broadwayworld.com/boston/article/BWW-Review-BLACK-SWAN-20260614';
+  mergeManualEntries(reviews2, [{ ...manual, url: OTHER }], u => u);
+  assert.equal(reviews2[0].url, OTHER);
+  assert.equal(reviews2[0].publishDate, '2026-06-15');
+});
+
+// BRO-7080 (BRO-4875 class): replay of the live black-swan-regional-2026 row.
+test('a manual entry that is a roundup page credited to its host is refused', () => {
+  const { isRoundupManualEntry } = require('./manual-entry-merge.js');
+  const roundup = {
+    showId: 'black-swan-regional-2026', outletId: 'broadwayworld', outlet: 'BroadwayWorld', criticName: 'R. Scott Reedy',
+    url: 'https://www.broadwayworld.com/article/Review-Roundup-BLACK-SWAN-Opens-at-American-Repertory-Theater-20260615',
+    assignedScore: 85, manualEntry: true, scoreSource: 'human-review',
+  };
+  assert.equal(isRoundupManualEntry(roundup), true);
+  const reviews = [];
+  const res = mergeManualEntries(reviews, [roundup], u => u);
+  assert.equal(reviews.length, 0);
+  assert.equal(res.refusedRoundup.length, 1);
+  // With the critic's own review present, the human score is kept (BRO-7079), not refused.
+  const twin = { showId: roundup.showId, outletId: 'broadwayworld', criticName: 'R. Scott Reedy', url: 'https://www.broadwayworld.com/boston/article/Review-A-Thrilling-BLACK-SWAN-at-American-Repertory-Theater-20260614', publishDate: '2026-06-14', assignedScore: 80, scoreSource: 'llm' };
+  const withTwin = [twin];
+  const res2 = mergeManualEntries(withTwin, [roundup], u => u);
+  assert.equal(res2.refusedRoundup.length, 0);
+  assert.equal(withTwin[0].assignedScore, 85);
+  assert.equal(withTwin[0].url, twin.url);
+  // An ordinary manual review still appends.
+  const ok = { ...roundup, outletId: 'boston-globe', url: 'https://www.bostonglobe.com/2026/06/15/arts/black-swan-review/' };
+  assert.equal(isRoundupManualEntry(ok), false);
+  mergeManualEntries(reviews, [ok], u => u);
+  assert.equal(reviews.length, 1);
+});

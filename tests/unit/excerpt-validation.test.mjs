@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Keep the card's acceptance command running all existing detector coverage.
 import '../../scripts/lib/excerpt-validation.test.mjs';
 import { test } from 'node:test';

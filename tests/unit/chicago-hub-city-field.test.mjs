@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (read by the test); data/outlet-registry.json (read by the test); data/city-hubs.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // TESTS-VS-DERIVED-DATA-EXEMPT: asserts a floor on the city field itself, which lives only in shows.json (set by the venue-metro table), not a fact derived from precursors or review texts
 // BRO-6517 acceptance: the Chicago hub's inputs exist in real data.
 // The sectioning logic itself is tested in city-hub.test.ts (src/lib/city-hub.ts).

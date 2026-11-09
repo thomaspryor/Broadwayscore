@@ -58,6 +58,81 @@ permissions:
   pull-requests: write
 
 jobs:
+  # BRO-7139 Step 2: the board dispatcher, REPORT-ONLY for now. It reads the open
+  # Linear board, records which scheduled job owns each card and which cards
+  # nothing owns, and appends one row to data/audit/board-dispatch.jsonl. It never
+  # writes Linear. Its own job (not steps in health-check) because health-check's
+  # push-retry job-timeout margin (audit-push-retry-budgets.js, 15%) has no room
+  # left. needs + always(): runs after tonight's acceptance recheck wrote its
+  # ledger, whatever happened to that job. Kill switch: vars.BOARD_DISPATCH_DISABLED.
+  board-dispatch:
+    needs: health-check
+    if: always()
+    runs-on: ubuntu-latest
+    # 55 (was 30): the LLM triage step adds up to 12 min; 55 keeps the push budget audit margin (>=15% plus residual) for the ledger commit.
+    timeout-minutes: 55
+    permissions:
+      contents: write
+      actions: read # llm-triage reads the run record of workflows a card names
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: 22
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit --no-fund
+
+      - name: Board dispatch report (report-only)
+        # lint-allow-swallow: report-only and advisory (CLAUDE.md §19); a failed
+        # night still appends an error row, and the committed ledger's last ts
+        # shows a missed night.
+        continue-on-error: true
+        timeout-minutes: 5
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
+          BOARD_DISPATCH_DISABLED: ${{ vars.BOARD_DISPATCH_DISABLED }}
+        run: node scripts/board-dispatch.js
+
+      - name: LLM triage (report-only)
+        # BRO-7139: reads up to 10 cards the board report puts in llm-triage's rows (card text
+        # is untrusted data to the prompt), appends one nomination row per card to
+        # data/audit/llm-triage.jsonl, never writes Linear. Stops starting cards at 9 min.
+        # Sonnet, about $0.20/night at 10 cards. Kill switch: vars.LLM_TRIAGE_DISABLED.
+        # lint-allow-swallow: report-only and advisory (CLAUDE.md §19); every row it managed
+        # is already in the ledger, and an all-failed night exits 1 (orange, visible).
+        continue-on-error: true
+        timeout-minutes: 12
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
+          GH_TOKEN: ${{ github.token }}
+          LLM_TRIAGE_DISABLED: ${{ vars.LLM_TRIAGE_DISABLED }}
+        run: node scripts/llm-triage.js --queue --cap=10 --ask --deadline-min=8 --ledger=data/audit/llm-triage.jsonl
+
+      - name: Commit board dispatch ledger
+        if: always()
+        continue-on-error: true
+        env:
+          PUSH_DEADLINE_SEC: '900'
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
+          GIT_NET_TIMEOUT_SEC: '30'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # One add per file: a missing pathspec fails the whole add (triage disabled or killed early).
+          git add data/audit/board-dispatch.jsonl 2>/dev/null || true
+          git add data/audit/llm-triage.jsonl 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No board dispatch changes"
+          else
+            git commit -m "data: Update board dispatch ledger [skip ci]"
+            bash scripts/lib/push-with-retry.sh 25 main
+          fi
+
   health-check:
     runs-on: ubuntu-latest
     # Raised 10->15 (task #695 ship-check finding): adding the "Acceptance
@@ -187,7 +262,9 @@ jobs:
     # cap); the margin was 15.15% and the added caps would have dropped it to
     # 13.6%, below the gate's 15%. 345min = 20700s keeps ~16% margin.
     # BRO-5769: 345->350 for the 1-min early-publish-date audit step (job-timeout-margin gate).
-    timeout-minutes: 350
+    # BRO-7131: 350->355 for the 5-min abandoned-review rescue step (job-timeout-margin gate).
+    # BRO-7181: 355->365 for three --alert audit steps raised 1->3 min each (Linear calls; job-timeout-margin gate).
+    timeout-minutes: 365
     permissions:
       contents: write
       issues: write
@@ -247,6 +324,47 @@ jobs:
             echo "- WARNING: \`check-affiliate-health.js\` exited $rc (non-blocking; 124 = timed out)" >> "$GITHUB_STEP_SUMMARY"
           fi
 
+      # BRO-3902: runtime occupancy check for GitHub Actions caches. Rule (m) in
+      # audit-workflow-hygiene.js only sees run-id keys; this reads the live
+      # `gh cache list` and flags total > 8 GiB, any entry > 1 GiB, or a churning
+      # key family. Non-blocking: surfaces in the step summary only.
+      - name: Check Actions cache budget
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          rc=0
+          out=$(timeout -k 10 60 node scripts/check-actions-cache-budget.js 2>&1) || rc=$?
+          echo "$out"
+          if [ "$rc" -ne 0 ] || grep -q '^- ' <<<"$out"; then
+            echo "::warning::Actions cache budget: see step output (non-blocking)"
+            { echo "### Actions cache budget"; echo '```'; echo "$out"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      # BRO-7103: continuous-improvement loop. Groups recent Linear cards into
+      # problem classes, files ONE START-NOW root-cause card per recurring class
+      # (cap 3 per run, never a second card for a class), comments new instances
+      # on the existing root card, and writes data/audit/recurrence-classes.json
+      # (read by the done-gate warning, the cloud worker picker and the digest
+      # line in the health check below). Non-blocking: the digest row warns when
+      # the snapshot is >48h old, which is this step's dead-man.
+      # Kill switch: `gh variable set RECURRENCE_DETECTOR_DISABLED --body 1`.
+      - name: Recurrence detector
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RECURRENCE_DETECTOR_DISABLED: ${{ vars.RECURRENCE_DETECTOR_DISABLED }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          # Weekly independent sample first (self-skips unless the last one is
+          # 6+ days old), so --apply carries its share into the digest snapshot.
+          timeout -k 10 600 node scripts/recurrence-detector.js --sample \
+            || echo "::warning::recurrence-detector.js --sample failed (non-blocking)"
+          rc=0
+          timeout -k 10 240 node scripts/recurrence-detector.js --apply || rc=$?
+          if [ "$rc" -ne 0 ]; then
+            echo "::warning::recurrence-detector.js exited $rc (non-blocking; 124 = timed out)"
+            echo "- WARNING: \`recurrence-detector.js\` exited $rc (non-blocking; 124 = timed out)" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
       - name: Run health check
         env:
           GH_TOKEN: ${{ github.token }}
@@ -263,6 +381,9 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # BRO-7139: same kill switch the board-dispatch job reads, so a
+          # deliberate off does not raise the ledger freshness row.
+          BOARD_DISPATCH_DISABLED: ${{ vars.BOARD_DISPATCH_DISABLED }}
         run: node scripts/health-check.js
 
       # Daily failure digest removed — workflow failure summary is included
@@ -333,6 +454,7 @@ jobs:
       - name: Commit digest + coverage snapshots (apiFallbackSafe)
         if: always()
         env:
+          PUSH_RECONCILE_MERGED_JSON: '1' # union-merges the LLM spend ledger on rebase (BRO-5043)
           PUSH_DEADLINE_SEC: '900'
           PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
           GIT_NET_TIMEOUT_SEC: '30'
@@ -340,10 +462,14 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/gemini-usage-ledger.jsonl 2>/dev/null || true # LLM spend meter rows (BRO-5043)
           git add data/audit/health-digest-snapshot.json 2>/dev/null || true
           git add data/audit/health-check-history.json 2>/dev/null || true
           git add data/audit/workflow-run-coverage.json 2>/dev/null || true
           git add data/audit/affiliate-health.json 2>/dev/null || true
+          # BRO-7103: recurrence detector snapshot (single writer, apiFallbackSafe).
+          git add data/audit/recurrence-classes.json 2>/dev/null || true
+          git add data/audit/root-cause-sample.json 2>/dev/null || true
           # Nightly CI green-rate reading (scripts/ci-green-rate.js --record,
           # appended by health-check.js's "Main: green rate" row) — the
           # trend/"day D of 14" line in the digest reads this history back.
@@ -418,23 +544,51 @@ jobs:
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
         run: node scripts/audit-coverage-holes.js --recent-days=14 --alert --counts=data/audit/coverage-holes.json
 
+      # BRO-7131: class-A rows (fetch abandoned) never healed on their own. Retry recent tier 3+ ones whose URL names
+      # the show through ingest-urls.yml (max 4 shows a run, its in-flight cap), then file a dispatch-at-filing card for
+      # a worker outside GitHub. Writes data/audit/abandoned-review-rescue.json (ids, file names, URLs; no text),
+      # committed by "Commit provider spend ledger". Advisory (CLAUDE.md rule 19).
+      - name: Rescue abandoned reviews on recent shows
+        # lint-allow-swallow: advisory retry/escalation (CLAUDE.md rule 19); a failure exits 1 and shows red on the step, the ledger only records successful dispatches, and the next daily run retries
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 5
+        env:
+          GH_TOKEN: ${{ github.token }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/rescue-abandoned-reviews.js --apply --alert
+
       # BRO-4840: published scores vs the critic's own rating (daily, ~12s). Counts only go to the digest row.
       # Advisory first (CLAUDE.md rule 19): --strict makes the step red, continue-on-error keeps the job green until
       # the rebuilt reviews.json has been seen clean.
+      # BRO-7181: --alert files one worker card per condition (scripts/lib/audit-alert.js, disposition auto,
+      # warning, 20h cooldown) and clears it when clean; missing input never clears. Hygiene rule (ad) keeps it so.
       - name: Published score star-band audit
         if: always()
         continue-on-error: true
-        timeout-minutes: 1
-        run: node scripts/audit-star-band-drift.js --strict --counts=data/audit/star-band-drift.json
+        timeout-minutes: 3
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/audit-star-band-drift.js --strict --alert --counts=data/audit/star-band-drift.json
 
       # BRO-6046: one critic's review of a show shipped at an outlet AND its syndication primary
       # (e.g. an Observer column also filed as "guardian"), plus BRO-6054: one critic at two outlets
       # that syndication-pairs.js and scripts/config/same-critic-pairs-allowlist.json do not explain. Advisory first (CLAUDE.md rule 19).
+      # BRO-7181: --alert files one worker card per condition (scripts/lib/audit-alert.js, disposition auto,
+      # warning, 20h cooldown) and clears it when clean; missing input never clears. Hygiene rule (ad) keeps it so.
       - name: Syndicated critic pair audit
         if: always()
         continue-on-error: true
-        timeout-minutes: 1
-        run: node scripts/audit-syndicated-critic-pairs.js --strict
+        timeout-minutes: 3
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/audit-syndicated-critic-pairs.js --strict --alert
 
       # BRO-5510: dropped-by-wrong-twin reviews and stale-slot squatters on 2026+ shows (empty outlet slots only).
       # Advisory (CLAUDE.md rule 19): the script exits 0 unless --strict; continue-on-error keeps the job green.
@@ -447,11 +601,27 @@ jobs:
       # BRO-6056: outlets whose registry defaultCritic fills blank bylines although their
       # review-text files show several other named critics (set multiAuthor in
       # data/outlet-registry.json). Advisory first (CLAUDE.md rule 19).
+      # BRO-7181: --alert files one worker card per condition (scripts/lib/audit-alert.js, disposition auto,
+      # warning, 20h cooldown) and clears it when clean; missing input never clears. Hygiene rule (ad) keeps it so.
       - name: Default-critic diversity audit
         if: always()
         continue-on-error: true
-        timeout-minutes: 1
-        run: node scripts/audit-default-critic-diversity.js --strict
+        timeout-minutes: 3
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/audit-default-critic-diversity.js --strict --alert
+
+      # BRO-6940: review files credited to one critic whose article prints a byline naming another critic
+      # known at that outlet (Waiting for Lefty's NYSR review credited to Frank Scheck, article says
+      # "By Michael Sommers"), plus unnamed files that print a known critic. Advisory first (CLAUDE.md rule 19):
+      # exit 1 lists the files; continue-on-error keeps the job green until the corpus has been seen clean.
+      - name: Printed byline conflict audit
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 3
+        run: node scripts/audit-printed-byline-conflicts.js --tier=known --limit=40 --cache-out=data/audit/outlet-corpus-critics.json
 
       # BRO-5769: early or carried publish dates no page read has confirmed (counts only, digest row).
       # Advisory: exit 1 means the daily backfill-review-dates recheck is behind; continue-on-error keeps the job green.
@@ -469,6 +639,21 @@ jobs:
         timeout-minutes: 1
         run: node scripts/audit-wet-archive-market.js
 
+      # BRO-7155: approved fixes (approvedFixes[] stamps) a later writer silently undid. Lists each unexplained
+      # drift; restore with a pending-fix plan, then close the writer's hole. Advisory first (CLAUDE.md rule 19).
+      # BRO-7179: --alert files one worker card (owner-alert-router, disposition auto, key
+      # approved-fix-drift:unexplained) while drift exists and resolves the condition when clean.
+      # An 'auto' warning never emails; RESEND/OWNER_EMAIL only serve the router's Linear usage-limit page.
+      - name: Approved-fix drift audit
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 3
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/audit-approved-fix-drift.js --strict --alert
+
       # BRO-6147: the daily batched decision email moved to owner-decision-emails.yml
       # (one email per decision, tap-to-answer buttons, every 20 minutes).
 
@@ -484,6 +669,35 @@ jobs:
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: node scripts/sweep-resolved-alert-cards.js --apply
+
+      # BRO-7135 board closer (advisory). Closes Done the "BSC Daily:" cards a
+      # session started or commented on whose condition the alert ledger marks
+      # resolved AND whose health row is absent (the step above only cancels
+      # untouched ones). Releases the ledger tracker like that step does.
+      # The landed-card closer (--landed) runs dry-run only: it lists cards
+      # whose land/<name> branch is live, to be armed once the list looks right.
+      # Kill switch: BOARD_CLOSER_KILL_SWITCH=1. Max 25 closes per run.
+      - name: Board closer (recovered alert cards, advisory)
+        # lint-allow-swallow: advisory board cleanup; a failure leaves cards open for the next run and must not block the health snapshot commit below
+        if: always()
+        continue-on-error: true
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ALERT_TOKEN_SECRET: ${{ secrets.ALERT_TOKEN_SECRET }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
+          BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+        run: |
+          rc=0
+          node scripts/sweep-recovered-alert-cards.js --apply || rc=$?
+          node scripts/sweep-recovered-alert-cards.js --landed --dry-run || true
+          exit $rc
 
       # BRO-3011 (spend-guards Sprint 3): spend-guard audit over the last 7
       # days — trip days per breaker from data/audit/breaker-transitions.jsonl,
@@ -579,6 +793,8 @@ jobs:
           git add data/audit/provider-spend-snapshot.json 2>/dev/null || true
           # BRO-4861: counts-only coverage-holes snapshot written by the step above.
           git add data/audit/coverage-holes.json 2>/dev/null || true
+          # BRO-7131: abandoned-review rescue ledger (attempts per show/file).
+          git add data/audit/abandoned-review-rescue.json 2>/dev/null || true
           # BRO-4840: counts-only published-score audit written by the step above.
           git add data/audit/star-band-drift.json 2>/dev/null || true
           # BRO-5769: counts-only early-publish-date audit written by the step above.
@@ -593,6 +809,8 @@ jobs:
           # step committed it, so each run's log was lost and the file kept
           # every later push's rebase refusing. apiFallbackMerge-registered.
           git add data/audit/owner-email-log.jsonl 2>/dev/null || true
+          # BRO-6947: corpus-derived outlet -> critics cache the collect pipeline reads (names only).
+          git add data/audit/outlet-corpus-critics.json 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No provider spend ledger changes"
           else
@@ -657,6 +875,10 @@ jobs:
           # ACCEPTANCE_RECHECK_KILL_SWITCH --body true` disables this step's
           # work without a code change, same pattern as BROWSERBASE_KILL_SWITCH.
           ACCEPTANCE_RECHECK_KILL_SWITCH: ${{ vars.ACCEPTANCE_RECHECK_KILL_SWITCH }}
+          # BRO-7138: routing of failed rechecks into one batched card. Shadow
+          # (ledger only) until RECHECK_ROUTE_FROM; `gh variable set RECHECK_ROUTE --body off` stops it.
+          RECHECK_ROUTE: ${{ vars.RECHECK_ROUTE }}
+          RECHECK_ROUTE_FROM: ${{ vars.RECHECK_ROUTE_FROM }}
         # 3 -> 5 (BRO-3434). Two changes made 3 too tight. The script now
         # starts its deadline BEFORE makeFreshCheckout instead of after, so
         # the checkout's git calls are charged to this budget rather than
@@ -673,6 +895,12 @@ jobs:
           # Inner timeouts sit under the 95/8min step backstops so an overrun
           # lands in the rc check (BRO-6261) rather than failing the job.
           rc=0
+          # BRO-7138: prepareCheckWorkdir copies data/*.json into each card's
+          # check dir, but cast-manifest.json / actor-slugs.json are gitignored
+          # build outputs; without them 6 cards' tsc checks failed every night
+          # (TS2307) whatever the state of their fix. Best effort.
+          node scripts/build-actor-slugs-manifest.js >/dev/null 2>&1 && node scripts/build-cast-manifest.js >/dev/null 2>&1 \
+            || echo "::warning::cast/actor-slug manifests not built; tsc-based rechecks will read as could-not-run"
           if [ "${RECHECK_BACKLOG}" = "true" ]; then
             timeout -k 15 5580 node scripts/autonomous-acceptance-recheck.js --backlog --time-budget-min 90 || rc=$?
           else
@@ -814,7 +1042,10 @@ jobs:
       # recheck (shadow mode)" above: same 5min internal script deadline
       # inside an 8min step-timeout backstop for the same reason (a hung
       # check command inside the verify loop wouldn't hit the internal
-      # deadline until the NEXT iteration).
+      # deadline until the NEXT iteration). BRO-7139: the sweep itself still
+      # never writes, but "Stuck verified card closer" below reads its report
+      # and closes Backlog/Todo cards on hard evidence (kill switch: repo
+      # variable BACKLOG_CLOSE_DISABLED=true).
       - name: Open backlog acceptance sweep (shadow mode)
         if: always()
         continue-on-error: true
@@ -965,6 +1196,7 @@ jobs:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           STUCK_CARD_CLOSER_KILL_SWITCH: ${{ vars.STUCK_CARD_CLOSER_KILL_SWITCH }}
+          BACKLOG_CLOSE_DISABLED: ${{ vars.BACKLOG_CLOSE_DISABLED }}
         run: node scripts/close-stuck-verified-cards.js --apply
 
       - name: Commit stuck card closer report

@@ -171,6 +171,24 @@ for (const fix of autoFixes) {
   }
 }
 
+// BRO-6928: the filename-based pass above only sees same-outlet Levenshtein-1 pairs.
+// The reviews.json pass also catches transpositions, nicknames and extra words, and
+// aliases them (displayCriticName applies them at the next rebuild). Skipped when
+// core data is not on this machine.
+try {
+  const { buildPages, findSplitPairs, loadDistinct } = require('./audit-critic-splits');
+  const rpath = path.join(__dirname, '..', 'data', 'reviews.json');
+  if (fs.existsSync(rpath)) {
+    const pairs = findSplitPairs(buildPages(JSON.parse(fs.readFileSync(rpath, 'utf8')).reviews || []), { distinct: loadDistinct() });
+    let extra = 0;
+    for (const m of pairs.filter(x => x.verdict === 'merge')) {
+      if (recordAlias(autoAliases.aliases, m.canonical.slug, m.variant.slug.replace(/-/g, ' ')).added) extra++;
+    }
+    added += extra;
+    console.log(`reviews.json split audit: ${extra} alias(es) added, ${pairs.filter(x => x.verdict === 'review').length} pair(s) need a human`);
+  }
+} catch (e) { console.log(`split audit skipped: ${e.message}`); }
+
 if (added > 0) {
   autoAliases._lastUpdated = new Date().toISOString();
   fs.writeFileSync(AUTO_ALIASES_PATH, JSON.stringify(autoAliases, null, 2) + '\n');

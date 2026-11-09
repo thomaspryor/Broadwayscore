@@ -12,6 +12,7 @@ const { normalizeOutlet } = require('./review-normalization');
 const { listShowDirs } = require('./list-show-dirs');
 const { isVerifiedRow, reviewYear, bylineContradicted } = require('./critic-tenure');
 const { foldDiacritics } = require('./title-match');
+const { CORPUS_NOT_SCANNED_EXIT_CODE } = require('./corpus-scan-guard');
 
 const DEFAULT_REVIEW_TEXTS_DIR = path.join(__dirname, '..', '..', 'data', 'review-texts');
 
@@ -31,7 +32,10 @@ function scanReviewTexts(REVIEW_TEXTS_DIR = DEFAULT_REVIEW_TEXTS_DIR) {
 
   if (!fs.existsSync(REVIEW_TEXTS_DIR)) {
     console.error('No review-texts directory found');
-    process.exit(1);
+    // BRO-3549: "could not run" (2), not 1 — 1 is the callers' drift code
+    // (audit-critic-outlets.js --strict), and both callers already exit 2 on
+    // an EMPTY corpus, so a MISSING one now reads the same way.
+    process.exit(CORPUS_NOT_SCANNED_EXIT_CODE);
   }
 
   // listShowDirs (not raw readdirSync+statSync) — a dangling symlink in the

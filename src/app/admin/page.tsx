@@ -15,7 +15,10 @@ export default async function AdminPage() {
     <div className="min-h-screen bg-surface text-white">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
         <header className="mb-6">
-          <Link href="/admin/accounts" className="text-sm text-brand hover:underline">Accounts dashboard</Link>
+          <div className="flex flex-wrap gap-x-4 gap-y-1">
+            <Link href="/admin/accounts" className="text-sm text-brand hover:underline">Accounts dashboard</Link>
+            <Link href="/admin/critic-invites" className="text-sm text-brand hover:underline">Invite a critic</Link>
+          </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold mt-3">Money Scorecard sign-ups</h1>
           <p className="text-sm text-gray-400 mt-1">
             Live on each visit. Owner test addresses excluded. Dates and times are UTC.

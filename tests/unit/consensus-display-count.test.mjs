@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (read by the test); data/reviews.json (read by the test); data/outlet-registry.json (read by the test); +1 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-6212: the number beside the Critics' Take is the show's real review count.
 import test from 'node:test';
 import assert from 'node:assert/strict';

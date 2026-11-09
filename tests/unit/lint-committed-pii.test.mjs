@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/audit/truncated-reviews-to-fix.json (bot ledger). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Unit tests for scripts/lib/pii-scan.js and scripts/lint-committed-pii.js
  * (task #1074). Pattern: require() the real functions; never copy logic

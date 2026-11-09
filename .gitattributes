@@ -56,6 +56,9 @@ data/audit/breaker-transitions.jsonl merge=union
 # the other append-only ledgers above.
 data/audit/scraper-spend-ledger.jsonl merge=union
 data/audit/gemini-usage-ledger.jsonl merge=union
+data/audit/board-dispatch.jsonl merge=union
+data/audit/llm-triage.jsonl merge=union
+data/audit/cross-show-url-holds.jsonl merge=union
 # BRO-5080: sourced fact-check sample answers, one row per checked show (append-only).
 data/audit/fact-check/*.jsonl merge=union
 # BRO-6713: keyed cross-model audit rows (readRows dedupes by key), append-only.
@@ -67,6 +70,12 @@ data/audit/landings.jsonl merge=union
 # BRO-4851: one row per West End historical promotion/revert (append-only;
 # promote-historical-we.js --revert reads it back).
 data/audit/we-historical-promotion-log.jsonl merge=union
+# BRO-7164: opening-night lane-switch audit, one append-only row per switch (scripts/lane-switch.js only appends; nothing reads it back programmatically).
+data/audit/lane-switch.jsonl merge=union
+# BRO-6952/BRO-6910: cross-show URL drop ledger, append-only, one row per (showId,url).
+# readCrossShowUrlRows only filters (no sum, no order dependence); every gather shard
+# commits it concurrently, plus mergeCrossShowUrlLedger covers the push-reconcile path.
+data/audit/cross-show-url-holds.jsonl merge=union
 # Newline-delimited registry of unit-test files, appended to by nearly every
 # worker that adds a test (BRO-181, BRO-2319, BRO-65 all did so this week).
 # Two branches each registering a different test past a common ancestor is a
@@ -462,6 +471,10 @@ data/audit/rebuild-score-drift.json autostash=regenerated
 data/audit/cross-show-fingerprint-collisions.json autostash=regenerated
 data/audit/validation-baseline.json autostash=regenerated
 data/audit/skipped-alias-collisions.json autostash=regenerated
+# BRO-4688: rewritten wholesale by every llm-scoring run (index.ts); a live status snapshot, not a resume checkpoint.
+data/collection-state/scoring-progress.json autostash=regenerated
+# BRO-4688: append-only run log (appendRunSummary); autostash=append lets the restore union both sides' new rows.
+data/llm-scoring-runs.json autostash=append
 # audit-show-review-gap.js rebuilds it in full from the audit results each run (BRO-5551).
 data/audit/unknown-aggregator-outlets.json autostash=regenerated
 data/audit/validation/collection-report-*.json autostash=regenerated
@@ -497,3 +510,10 @@ data/audit/coverage-adversarial-probe-trend.jsonl merge=union
 # can neither resurrect a pruned row nor disturb a reader. Landed tracked with no
 # attribute, which failed audit-ledger-merge-attrs.test.mjs's repo-wide check.
 data/audit/routine-logs.jsonl merge=union
+# BRO-7118 prune ledger: keep this run snapshot
+data/audit/mobile-detail-prune-candidates.json merge=ours
+# BRO-7171 gap-recovery attempt ledger (scripts/lib/gap-recovery-ledger.js):
+# append-only, one O_APPEND row per attempt, never pruned. Every reader
+# (strategyState, reconcileRecovered, acceptedToday) groups by reviewKey and
+# re-sorts by each row's ts, so union's out-of-order append is harmless.
+data/audit/gap-recovery-attempts.jsonl merge=union

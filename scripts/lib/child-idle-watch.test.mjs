@@ -221,8 +221,10 @@ test('detached launchers do not count as a wake; in-task waits and redirects do'
 test('a background task past its own timeout is dead even with no notice', () => {
   const t0 = Date.parse('2026-10-29T20:00:00Z');
   const task = { ...POLL, startedAt: t0 };
-  assert.equal(liveBackground([task], [], { now: t0 + 9 * 60000 }).length, 1, 'inside the 10 min default');
-  assert.equal(liveBackground([task], [], { now: t0 + 11 * 60000 }).length, 0, 'past the 10 min default');
+  // Harness background default is 30 min (BRO-7109; was wrongly 10, so a
+  // 25-min watch with no explicit timeout read as dead while still running).
+  assert.equal(liveBackground([task], [], { now: t0 + 25 * 60000 }).length, 1, 'inside the 30 min default');
+  assert.equal(liveBackground([task], [], { now: t0 + 31 * 60000 }).length, 0, 'past the 30 min default');
   const long = { ...POLL, startedAt: t0, input: { ...POLL.input, timeout: 7200000 } };
   assert.equal(liveBackground([long], [], { now: t0 + 119 * 60000 }).length, 1);
   assert.equal(liveBackground([long], [], { now: t0 + 121 * 60000 }).length, 0);
@@ -252,4 +254,31 @@ test('hook: a background poll started 3h ago with no notice is not live (start t
   assert.equal(r.status, 2, r.stderr.slice(0, 400));
   const fresh = { ...stale, ts: new Date(Date.now() - 60000).toISOString() };
   assert.equal(runHook(FX.firstPrompt, [...turnCalls(TURN2), fresh], TURN2.closing).status, 0);
+});
+
+test('BRO-7109: no proposed watch outlives the 30-min default background limit', () => {
+  const watch = require('./child-idle-watch.js');
+  const { BG_DEFAULT_MS } = require('./child-session-wait-guard.js');
+  assert.ok(watch.SAFE_WATCH_MINUTES * 60000 < BG_DEFAULT_MS, 'a watch launched without a timeout must finish before the harness kills it');
+  assert.equal(BG_DEFAULT_MS, 1800000, 'the guard must use the harness 30-min default, or a running watch reads as dead');
+  const working = { ccr: { id: 'session_x', status_bucket: 'SESSION_STATUS_BUCKET_WORKING', updated_at: '2026-11-08T01:24:33Z' } };
+  const r = watch.decide({ session: working, now: Date.parse('2026-11-08T01:30:00Z') });
+  assert.equal(r.action, 'rearm');
+  assert.ok(r.rearmMinutes <= watch.SAFE_WATCH_MINUTES, `WORKING rearm proposed ${r.rearmMinutes} min`);
+  // Every action's timer, even with a long idle threshold, stays under the cap.
+  for (const bucket of ['WORKING', 'IDLE', 'BLOCKED', 'FAILED', 'COMPLETED']) {
+    const s = { ccr: { id: 'session_x', status_bucket: `SESSION_STATUS_BUCKET_${bucket}`, updated_at: '2026-11-08T00:00:00Z' } };
+    assert.ok(watch.decide({ session: s, now: Date.parse('2026-11-08T00:05:00Z'), idleMinutes: 110 }).rearmMinutes <= watch.SAFE_WATCH_MINUTES, bucket);
+  }
+  // The CLOUD.md recipe the parent follows carries the long timeout.
+  const cloud = fs.readFileSync(path.join(REPO, '.claude', 'CLOUD.md'), 'utf8');
+  const lines = cloud.split('\n');
+  const step = lines.find((l) => l.includes('child-idle-watch.js watch --session'));
+  assert.match(step || '', /timeout:? 7200000/, 'CLOUD.md watch step must pass the Bash timeout');
+  // Cousins: every background-wait recipe in CLOUD.md carries the timeout too.
+  // Anchored on the recipe forms (code-quoted tool flag, imperative verbs), so
+  // plain prose that says "in the background" doesn't trip it.
+  const recipes = lines.filter((l) => /`run_in_background`|background-run `|in the background \(/.test(l));
+  assert.ok(recipes.length >= 3, `found ${recipes.length} background recipes`);
+  for (const l of recipes) assert.match(l, /timeout:? 7200000/, `background recipe without the 2h timeout: ${l.slice(0, 120)}`);
 });

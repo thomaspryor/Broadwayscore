@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/reviews.json (untracked core data); data/shows.json (untracked core data); data/audience-buzz.json (untracked core data); +9 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Regression guard for BRO-2590: the West End weekly had no equivalent of
 // the Broadway edition's "London Openings" section — WE subscribers got
 // nothing about what opened on Broadway that week. weBroadwaySection()

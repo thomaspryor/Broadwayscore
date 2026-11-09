@@ -308,5 +308,27 @@
       "ok": false,
       "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=the-children-off-west-end-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/the-children-review-pitch-perfect-fallout-from-a-knock-at-the-door-h9cv5vwv2"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "still-needed",
+    "counts": {
+      "resolved": 1,
+      "still-needed": 1
+    },
+    "stillNeededReason": "op 23: re-ingested via ingest-urls on 2026-11-07 (success) but the CI fetch of this paywalled page still yields no text or a stub; it needs a browser html handoff (ingest-html-handoff) to recover (BRO-7092 hand check)",
+    "ops": [
+      {
+        "i": 5,
+        "verdict": "resolved",
+        "reason": "https://www.thestage.co.uk/reviews/an-oak-tree-review-the-other-palace-tim-crouch-gwyneth-keyworth is counted for an-oak-tree-off-west-end-2026"
+      },
+      {
+        "i": 23,
+        "verdict": "still-needed",
+        "reason": "re-ingested via ingest-urls on 2026-11-07 (success) but the CI fetch of this paywalled page still yields no text or a stub; it needs a browser html handoff (ingest-html-handoff) to recover (BRO-7092 hand check)"
+      }
+    ]
+  }
 }

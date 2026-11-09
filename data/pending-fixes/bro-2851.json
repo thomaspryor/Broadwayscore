@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-2851",
   "planId": "f77367e7-fcb9-42a5-afb5-86a1e18951a7",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-13T06:00:00.000Z",
   "submitter": {
     "name": null,
@@ -53,5 +53,27 @@
       "ok": true,
       "msg": "Ran restore-released-quarantined-body.js successfully"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 2
+    },
+    "ops": [
+      {
+        "i": 0,
+        "verdict": "resolved",
+        "reason": "john-proctor-is-the-villain-west-end-2026/new-statesman--emily-lawford.json has its body back"
+      },
+      {
+        "i": 1,
+        "verdict": "resolved",
+        "reason": "data-off-broadway-2026/nytimes--tim-teeman.json has its body back"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (2 resolved); per-op reasons in triage.ops"
 }

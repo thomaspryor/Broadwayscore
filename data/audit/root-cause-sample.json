@@ -1,0 +1,234 @@
+{
+  "generatedAt": "2026-11-08T08:58:55.173Z",
+  "grader": "gpt-5.4-mini (diff only, majority of 3)",
+  "poolSize": 150,
+  "noDiff": 3,
+  "landingsWithoutId": 38,
+  "graded": 8,
+  "rootCause": 6,
+  "spot": 2,
+  "unclear": 0,
+  "share": 75,
+  "calibrationOk": true,
+  "calibration": [
+    {
+      "card": "BRO-7066",
+      "expect": "spot-fix",
+      "got": "spot-fix"
+    },
+    {
+      "card": "BRO-7098",
+      "expect": "root-cause",
+      "got": "root-cause"
+    }
+  ],
+  "items": [
+    {
+      "card": "BRO-6666",
+      "grade": "root-cause",
+      "confidence": 0.95,
+      "reason": "The change removes the bare leading dispatch string from the generated apply command and adds tests covering the card formatting/parser contract, preventing the audit from misreading any such card as a workflow dispatch.",
+      "guardFile": "tests/unit/schema-drift-card.test.mjs",
+      "votes": [
+        "root-cause",
+        "root-cause",
+        "root-cause"
+      ],
+      "diffHash": "1a1231c9d31d",
+      "truncated": false,
+      "files": [
+        ".github/workflows/verify-schema.yml",
+        "scripts/file-schema-drift-card.js",
+        "scripts/lib/schema-drift-card.js",
+        "tests/unit/schema-drift-card.test.mjs"
+      ]
+    },
+    {
+      "card": "BRO-7092",
+      "grade": "root-cause",
+      "confidence": 0.88,
+      "reason": "The new triage library and tests generalize stale-plan classification across op types and current data state, so the fix addresses the whole class of misclassified old fix-plan ops rather than a single instance.",
+      "guardFile": "scripts/lib/fix-plan-triage.test.mjs",
+      "votes": [
+        "root-cause",
+        "root-cause",
+        "root-cause"
+      ],
+      "diffHash": "bd53a975a324",
+      "truncated": true,
+      "files": [
+        "data/audit/claude-session-cost.jsonl",
+        "data/pending-fixes/bro-2851.json",
+        "data/pending-fixes/bro-3065.json",
+        "data/pending-fixes/bro-3919.json",
+        "data/pending-fixes/bro-4190-c.json",
+        "data/pending-fixes/bro-4190-g.json",
+        "data/pending-fixes/bro-4190-i.json",
+        "data/pending-fixes/bro-4190-j.json",
+        "data/pending-fixes/bro-4190.json",
+        "data/pending-fixes/bro-4251.json",
+        "data/pending-fixes/bro-4270.json",
+        "data/pending-fixes/bro-4301.json",
+        "data/pending-fixes/bro-4305.json",
+        "data/pending-fixes/bro-4317-b-02.json",
+        "data/pending-fixes/bro-4317-b-03.json",
+        "data/pending-fixes/bro-4317-b-04.json",
+        "data/pending-fixes/bro-4317-c-01.json",
+        "data/pending-fixes/bro-4317-c-02.json",
+        "data/pending-fixes/bro-4317-c-03.json",
+        "data/pending-fixes/bro-4317-c-04.json"
+      ]
+    },
+    {
+      "card": "BRO-7085",
+      "grade": "root-cause",
+      "confidence": 0.88,
+      "reason": "The change adds shared guards/tests that generalize the republish-marker handling and rebuild/sweep behavior so the earlier-run republish class is caught across cases, not just one instance.",
+      "guardFile": "scripts/lib/run-contamination.js",
+      "votes": [
+        "root-cause",
+        "root-cause",
+        "root-cause"
+      ],
+      "diffHash": "25e796544487",
+      "truncated": true,
+      "files": [
+        "scripts/clear-stale-wrong-production-flags.js",
+        "scripts/lib/run-contamination.js",
+        "scripts/rebuild-all-reviews.js",
+        "scripts/rebuild-all-reviews.test.mjs",
+        "tests/unit/timeout-evergreen-date.test.mjs"
+      ]
+    },
+    {
+      "card": "BRO-7018",
+      "grade": "spot-fix",
+      "confidence": 0.98,
+      "reason": "The change only whitelists one specific pending-fix file in .gitignore, so it addresses this single case rather than preventing the defect class.",
+      "guardFile": null,
+      "votes": [
+        "spot-fix",
+        "spot-fix",
+        "spot-fix"
+      ],
+      "diffHash": "b7af56322848",
+      "truncated": false,
+      "files": [
+        ".gitignore",
+        "data/pending-fixes/bro-7018.json"
+      ]
+    },
+    {
+      "card": "BRO-7079",
+      "grade": "root-cause",
+      "confidence": 0.95,
+      "reason": "The change generalizes the cookie alert router from T1-only auth expiry to all critical outlets and adds separate live-failure handling plus tests that cover the broader class, making the old T1-only gap impossible to miss in this path.",
+      "guardFile": "scripts/lib/cookie-expiry-alert.test.mjs",
+      "votes": [
+        "root-cause",
+        "root-cause",
+        "root-cause"
+      ],
+      "diffHash": "1acb6a31d5c6",
+      "truncated": true,
+      "files": [
+        ".github/workflows/test.yml",
+        "data/pending-fixes/bro-7079.json",
+        "scripts/audit-t1-silent-gaps.test.mjs",
+        "scripts/check-cookie-health.js",
+        "scripts/lib/cookie-expiry-alert.js",
+        "scripts/lib/cookie-expiry-alert.test.mjs",
+        "scripts/lib/cross-show-url.js",
+        "scripts/lib/cross-show-url.test.mjs",
+        "scripts/lib/manual-entry-merge.js",
+        "scripts/lib/manual-entry-merge.test.mjs",
+        "scripts/lib/non-review-url-patterns.js",
+        "scripts/lib/non-review-url-patterns.test.mjs",
+        "scripts/lib/review-normalization.js",
+        "scripts/lib/show-matching.test.mjs",
+        "scripts/lib/stale-automated-text-verdict.test.mjs",
+        "scripts/lib/t1-silent-gap.test.mjs",
+        "scripts/lib/tb-direct-url.js",
+        "scripts/lib/tb-direct-url.test.mjs",
+        "scripts/manual-review-direct.js",
+        "tests/unit/cross-show-url-guard.test.mjs"
+      ]
+    },
+    {
+      "card": "BRO-6779",
+      "grade": "root-cause",
+      "confidence": 0.93,
+      "reason": "The change adds a regression test and a generalized extractor rule that prevents the whole class of false positives from matching lowercase article/keyword and run-date patterns, rather than patching a single instance.",
+      "guardFile": "scripts/lib/score-extractors.test.mjs",
+      "votes": [
+        "root-cause",
+        "root-cause",
+        "root-cause"
+      ],
+      "diffHash": "58d1e4e1638d",
+      "truncated": true,
+      "files": [
+        "data/pending-fixes/bro-6779-b.json",
+        "data/pending-fixes/bro-6779.json",
+        "scripts/health-check.js",
+        "scripts/lib/score-extractors.js",
+        "scripts/lib/score-extractors.test.mjs",
+        "scripts/lib/star-score-mismatch.js",
+        "scripts/lib/star-score-mismatch.test.mjs"
+      ]
+    },
+    {
+      "card": "BRO-7066",
+      "grade": "spot-fix",
+      "confidence": 0.98,
+      "reason": "The patch only replaces hardcoded timestamps with relative ones in this test fixture, fixing the failing case without adding a general guard against future TTL-related time drift.",
+      "guardFile": null,
+      "votes": [
+        "spot-fix",
+        "spot-fix",
+        "spot-fix"
+      ],
+      "diffHash": "b0c0e5976b65",
+      "truncated": false,
+      "files": [
+        "tests/unit/owner-decision-notify.test.mjs"
+      ]
+    },
+    {
+      "card": "BRO-7077",
+      "grade": "root-cause",
+      "confidence": 0.89,
+      "reason": "The change adds reusable routing/guard logic and tests that generalize the fix across the whole class of RSC-alias, visiting-company locator, and review-slug false positives rather than patching a single instance.",
+      "guardFile": "scripts/lib/market-routing.js",
+      "votes": [
+        "root-cause",
+        "root-cause",
+        "root-cause"
+      ],
+      "diffHash": "2019f8d03f03",
+      "truncated": true,
+      "files": [
+        "data/pending-fixes/bro-7077.json",
+        "docs/triage-audit-scripts.md",
+        "scripts/audit-review-pair-anomalies.js",
+        "scripts/audit-shared-url-quote.js",
+        "scripts/check-corpus-drift.js",
+        "scripts/lib/audit-script-wiring-baseline.json",
+        "scripts/lib/byline-from-text.js",
+        "scripts/lib/different-city-production-signal.test.mjs",
+        "scripts/lib/joint-combined-copy.js",
+        "scripts/lib/market-routing.js",
+        "scripts/lib/playbill-verdict-discover.js",
+        "scripts/lib/review-guards-non-review-url.test.mjs",
+        "scripts/lib/review-guards.js",
+        "scripts/lib/review-normalization.js",
+        "scripts/lib/rss-discovery.js",
+        "scripts/lib/show-title-variants.js",
+        "scripts/lib/show-title-variants.test.mjs",
+        "scripts/lib/sibling-venue-routing.test.mjs",
+        "scripts/scrape-playbill-verdict.js",
+        "tests/unit/byline-sibling-tail-credit.test.mjs"
+      ]
+    }
+  ]
+}

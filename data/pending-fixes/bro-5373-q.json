@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5373-q",
   "planId": "4170b093-40ef-43c3-9f48-1e98c226d58e",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-14T21:32:25.000Z",
   "submitter": {
     "name": null,
@@ -58,5 +58,33 @@
       "ok": false,
       "reason": "shadowlands-west-end-2026/daily-mail--robert-gore-langton.json duplicateOf: write guard kept null"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "obsolete": 2,
+      "resolved": 1
+    },
+    "ops": [
+      {
+        "i": 0,
+        "verdict": "obsolete",
+        "reason": "shadowlands-west-end-2026/daily-mail--patrick-marmion.json duplicateClearReason changed since by a later write (now (text))"
+      },
+      {
+        "i": 1,
+        "verdict": "resolved",
+        "reason": "shadowlands-west-end-2026/daily-mail--patrick-marmion.json duplicateOf already null"
+      },
+      {
+        "i": 2,
+        "verdict": "obsolete",
+        "reason": "review file shadowlands-west-end-2026/daily-mail--robert-gore-langton.json no longer exists and nothing in shadowlands-west-end-2026 looks like a rename"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (2 obsolete, 1 resolved); per-op reasons in triage.ops"
 }

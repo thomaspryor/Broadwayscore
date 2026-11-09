@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-4849: the four classes of "found reviews that never reach the site", one predicate each, on fixtures.
 // Real predicates from scripts/lib/coverage-holes.js (CLAUDE.md section 15); the audit script runs the same ones.
 import test from 'node:test';

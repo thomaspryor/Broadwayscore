@@ -71,11 +71,20 @@ if (skipped.length === 0) {
 // The rule lives in lib/shows-duplicate-rule.js so the shows.json write guard
 // and add-show refuse the same rows this gate fails on (BRO-6578).
 const shows = allShows.filter((s) => !isTestFixture(s));
-const duplicates = findDuplicateShows(allShows).map(formatFinding);
+const findings = findDuplicateShows(allShows);
+const duplicates = findings.map(formatFinding);
 
 if (duplicates.length > 0) {
   console.error('\n\x1b[31mBUILD BLOCKED: Duplicate shows detected in shows.json\x1b[0m\n');
   duplicates.forEach(d => console.error(`  - ${d}`));
+  // BRO-7187: say when a flagged row was already retired, so a stale local copy is not filed as a live bug.
+  try {
+    const hints = require('./lib/retired-by-applied-plan').staleDataHints(findings);
+    if (hints.length) {
+      console.error('\n\x1b[33mLIKELY STALE DATA: an applied pending-fix plan already retired a flagged row.\x1b[0m');
+      hints.forEach(h => console.error(`  - ${h}`));
+    }
+  } catch (e) { console.error(`(stale-data hint unavailable: ${e.message})`); }
   console.error('\nRemove duplicates before deploying.\n');
   process.exit(1);
 }

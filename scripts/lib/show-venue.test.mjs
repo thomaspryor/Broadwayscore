@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Regression guard for BRO-2281: "I'm Every Woman, The Chaka Khan Musical"
 // (Peacock/Hackney Empire run) had a stale venue field. The Peacock Theatre
 // run was cancelled for building works and relocated on short notice to

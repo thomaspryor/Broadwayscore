@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4432",
   "planId": "5cdf35ff-6173-4fa3-8e47-241f144f0384",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-09-30T16:33:36.601Z",
   "submitter": {
     "name": null,
@@ -355,5 +355,38 @@
       "ok": true,
       "msg": "shows.json: cast updated for as-you-like-it-globe-west-end-2026"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "obsolete": 3,
+      "resolved": 1
+    },
+    "ops": [
+      {
+        "i": 0,
+        "verdict": "obsolete",
+        "reason": "review file as-you-like-it-globe-west-end-2026/guardian--arifa-akbar.json no longer exists and nothing in as-you-like-it-globe-west-end-2026 looks like a rename"
+      },
+      {
+        "i": 4,
+        "verdict": "resolved",
+        "reason": "oliver-west-end-2024/thestage--dave-fargnoli.json wrongProduction already true"
+      },
+      {
+        "i": 5,
+        "verdict": "obsolete",
+        "reason": "oliver-west-end-2024/thestage--dave-fargnoli.json wrongProductionReason changed since by a later write (now (text))"
+      },
+      {
+        "i": 13,
+        "verdict": "obsolete",
+        "reason": "waiting-for-godot-2013/guardian--michael-billington.json wrongProductionReason changed since by a later write (now (text))"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (3 obsolete, 1 resolved); per-op reasons in triage.ops"
 }

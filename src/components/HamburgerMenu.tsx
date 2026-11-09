@@ -171,7 +171,7 @@ export default function HamburgerMenu({
                     </p>
                     <ul className="mt-2 space-y-1 text-xs text-gray-400">
                       <li>Rate the shows you&apos;ve seen</li>
-                      <li>Keep a watchlist of what&apos;s next</li>
+                      <li>Save the shows you want to see</li>
                       <li>Build and share ranked lists</li>
                     </ul>
                     {localList.length > 0 && (

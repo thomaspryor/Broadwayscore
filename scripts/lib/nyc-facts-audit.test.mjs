@@ -102,9 +102,18 @@ test('consistency findings: free checks catch the classes the probe found', () =
     ob('obbw', { venue: 'Hayes Theater' }),
     ob('stale', { status: 'previews', previewsStartDate: '2026-09-01', openingDate: '2026-09-10', closingDate: '2026-10-01' }),
     ob('tba', { status: 'announced', venue: null, previewsStartDate: null, openingDate: null }),
+    ob('nopv', { previewsStartDate: '2026-03-13', openingDate: '2026-03-13', openingDateSource: 'venue-page:nyu-skirball:no-previews' }),
+    ob('ibdb', { previewsStartDate: '2025-04-04', openingDate: '2025-04-04', openingDateSource: 'ibdb' }),
+    ob('opc', { previewsStartDate: '2021-07-06', openingDate: '2021-07-06', openingDateSource: 'producer-page:write-act:opening-confirmed' }),
+    ob('pfb', { previewsStartDate: '2026-09-26', openingDate: '2026-09-26', openingDateSource: 'previews-fallback' }),
   ];
   const cls = (id) => nyc.consistencyFindings(rows, '2026-10-29').filter((f) => f.id === id).map((f) => f.class);
   assert.deepEqual(cls('same'), ['preview-equals-opening']);
+  // BRO-6493: a source-confirmed no-preview run is not flagged; an IBDB same-date row still is.
+  assert.deepEqual(cls('nopv'), []);
+  assert.deepEqual(cls('ibdb'), ['preview-equals-opening']);
+  assert.deepEqual(cls('opc'), []);
+  assert.deepEqual(cls('pfb'), ['preview-equals-opening'], 'a fallback source is not a confirmation');
   assert.deepEqual(cls('bw'), ['broadway-not-registry']);
   assert.deepEqual(cls('obbw'), ['ob-at-broadway-house']);
   assert.deepEqual(cls('stale'), ['status-vs-dates']);

@@ -30,4 +30,33 @@ function shouldTakeUrlOwnership({ reviewYear, thisYear, existingYear } = {}) {
   return Math.abs(thisYear - reviewYear) < Math.abs(existingYear - reviewYear);
 }
 
-module.exports = { shouldTakeUrlOwnership };
+/**
+ * Does the copy currently holding a shared URL give it up to another show?
+ *
+ * Junk (invalid tier, wrongShow, wrong/garbage content, a wrongArticle verdict)
+ * always did. BRO-6909 adds a copy its own show has already disowned as another
+ * production (wrongProduction, or rejected with reason wrong_production) unless a
+ * person cleared or overrode that verdict. Without it, ENO's "Tosca" (London
+ * Coliseum, 2026) could not save the FT / Telegraph / Times reviews: the Met's
+ * "Tosca" (also 2026) had collected them first and rejected them as wrong
+ * production, the years tie, and first-writer-wins kept them there, hidden.
+ * The incoming copy still faces its own show's production guards.
+ *
+ * @param {object|null} existingData the holder's review file
+ * @returns {boolean}
+ */
+function existingCopyYieldsUrl(existingData) {
+  const { shouldSkipWrongProductionAudit } = require('./review-guards');
+  const d = existingData;
+  if (!d || typeof d !== 'object') return false;
+  if (d.contentTier === 'invalid'
+    || d.wrongShow === true
+    || d.incompleteReason === 'wrong_content'
+    || d.incompleteReason === 'scraper_garbage'
+    || (d.contentVerification && d.contentVerification.wrongArticle === true)) return true;
+  const disowned = d.wrongProduction === true || d.rejectionReason === 'wrong_production';
+  // A person cleared or overrode the verdict: the copy stays the URL's owner.
+  return disowned && !shouldSkipWrongProductionAudit(d);
+}
+
+module.exports = { shouldTakeUrlOwnership, existingCopyYieldsUrl };

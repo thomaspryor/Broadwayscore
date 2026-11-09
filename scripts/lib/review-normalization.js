@@ -810,6 +810,31 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
     return { ...existing };
   }
 
+  // Aggregator-page swap guard, maybeUpgradeUrl's twin (BRO-6685 replay,
+  // BRO-7079). maybeUpgradeUrl refused a swap onto a roundup or aggregator
+  // page, but mergeReviews did not: a Gold Derby review file merged with an
+  // incoming record carrying the "-reviews/" roundup url swapped onto it and
+  // wiped its own state. Soft refusal like urlCollidesWithSibling: the url
+  // and incoming fullText are refused (and its date and score, BRO-7091),
+  // while aggregator excerpts and thumbs still merge. Covers first-set too (review-file-writer
+  // refuses the same first-set at its aggregator-url guard).
+  const urlIsAggregatorPage = !!incoming.url && !incomingUrlGarbage
+    && (urlChanged || !existing.url)
+    && require('./review-slot-guards').isAggregatorPageUrl(incoming.url);
+  if (urlIsAggregatorPage) {
+    console.warn(`[mergeReviews] refused aggregator-page url for ${existing.outletId || context.file || '?'}: ${incoming.url}`);
+    logExclusion({
+      script: context.script || 'unknown-caller',
+      showId: context.showId || 'unknown',
+      file: context.file || '-',
+      reason: 'skippedAggregatorUrlSwap',
+      details: {
+        existingUrl: existing.url || null, incomingUrl: incoming.url, outletId: existing.outletId,
+        criticName: existing.criticName,
+      },
+    });
+  }
+
   // Sibling URL-collision guard (BRO-3092). A urlChanged swap onto a URL that
   // a DIFFERENT file in this show already owns manufactures exactly the state
   // validate-data.js errors on ("One URL per outlet per show = one review"),
@@ -919,7 +944,7 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
   // scraped from the sibling's URL, so taking it here would pair THIS file's
   // (retained) url with ANOTHER article's body — undetectable by url-dated
   // audits, exactly like the regressed-swap case.
-  if (incoming.fullText && !urlSwapRegressed && !urlFlipFlop && !urlCollidesWithSibling) {
+  if (incoming.fullText && !urlSwapRegressed && !urlFlipFlop && !urlCollidesWithSibling && !urlIsAggregatorPage) {
     const decodedFullText = decodeHtmlEntities(incoming.fullText);
     if (!existing.fullText || decodedFullText.length > existing.fullText.length) {
       merged.fullText = decodedFullText;
@@ -944,7 +969,7 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
 
   if (incoming.url && !incomingUrlGarbage
       && (!existing.url || existing.url.includes('undefined') || urlChanged)
-      && !blockUrlChange && !urlSwapRegressed && !urlCollidesWithSibling) {
+      && !blockUrlChange && !urlSwapRegressed && !urlCollidesWithSibling && !urlIsAggregatorPage) {
     merged.url = incoming.url;
     if (urlChanged) {
       // URL moved to a different canonical article. Refresh publishDate and
@@ -1002,6 +1027,13 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
     && /^https?:\/\//i.test(incoming.url) && /^https?:\/\//i.test(merged.url)
     && normalizeUrl(incoming.url) !== normalizeUrl(merged.url)
     && _movedAwayFrom.includes(normalizeUrl(incoming.url)));
+  // BRO-7091: a refused aggregator-page url (BRO-7079) means the incoming
+  // row's date is the roundup's (Black Swan BWW 2026-06-15 vs the review's
+  // own 06-14) and its score comes from the roundup listing, so neither is
+  // copied. Its byline still fills an Unknown one: per-critic roundup rows
+  // (WET, BWW RR) name this review's own critic, and gather-reviews renames
+  // the file to that critic right after this merge (Unknown→named).
+  const incomingMetaRefused = incomingIsOtherArticle || urlIsAggregatorPage;
 
   // Upgrade Unknown critic name from incoming data
   if (!incomingIsOtherArticle && incoming.criticName && incoming.criticName !== 'Unknown'
@@ -1040,13 +1072,13 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
   const incomingIsAggregator = AGGREGATOR_SCORE_SOURCES.has(incoming.scoreSource);
   // BRO-5064: never onto an outlet that publishes no critic rating (london-theatre).
   const outletTakesScore = !require('./score-extractors').publishesNoCriticRating(merged.outletId || existing.outletId);
-  if (incoming.originalScore && !existing.originalScore && !incomingIsAggregator && outletTakesScore) {
+  if (incoming.originalScore && !existing.originalScore && !incomingIsAggregator && outletTakesScore && !incomingMetaRefused) {
     merged.originalScore = incoming.originalScore;
     merged.originalRating = incoming.originalRating;
   }
 
   // Keep better publish date
-  if (incoming.publishDate && !existing.publishDate && !incomingIsOtherArticle) {
+  if (incoming.publishDate && !existing.publishDate && !incomingMetaRefused) {
     merged.publishDate = incoming.publishDate;
   }
 
@@ -1111,7 +1143,7 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
   // (no show record, no show dates or no date in the url => unchanged).
   let autoClearUrlDateVeto = false;
   if (context.show && merged.url && merged.wrongProduction && incoming.url && incoming.url.startsWith('http')
-      && !urlSwapRegressed && !urlFlipFlop && !urlCollidesWithSibling
+      && !urlSwapRegressed && !urlFlipFlop && !urlCollidesWithSibling && !urlIsAggregatorPage
       && !merged.wrongProductionManualClear && !cvSaysWrongProduction && isUrlBasedWrongProd) {
     const { isUrlSwapRegression: _urlOutsideRun } = require('./url-downgrade-guard');
     const veto = _urlOutsideRun({ newUrl: merged.url, show: context.show, outletId: existing.outletId });
@@ -1138,7 +1170,7 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
     && canonicalReviewUrl(incoming.url) !== canonicalReviewUrl(existing.url);
   if (merged.wrongProduction && incoming.url && incoming.url.startsWith('http')
       && urlActuallyChanged
-      && !urlSwapRegressed && !urlFlipFlop && !urlCollidesWithSibling
+      && !urlSwapRegressed && !urlFlipFlop && !urlCollidesWithSibling && !urlIsAggregatorPage
       && !merged.wrongProductionManualClear
       && !cvSaysWrongProduction
       && !autoClearUrlDateVeto
@@ -1733,11 +1765,7 @@ function isSyndicationPortalHost(hostname) {
  */
 function registrableDomain(hostname) {
   const { platformSuffixOf, multipartSuffixOf } = require('./host-suffix-lists');
-  // Unlisted country suffixes of the common shape (com.ph, org.sg) count as
-  // multi-part too, or mb.com.ph would be keyed under the bare base "com".
-  const ccSecondLevel = hostname.match(/\.((?:co|com|org|net|ac|gov|edu)\.[a-z]{2})$/);
   const suffix = platformSuffixOf(hostname) || multipartSuffixOf(hostname)
-    || (ccSecondLevel && ccSecondLevel[1])
     || hostname.slice(hostname.lastIndexOf('.') + 1);
   if (hostname === suffix || !hostname.endsWith('.' + suffix)) return hostname;
   const head = hostname.slice(0, -(suffix.length + 1));
@@ -2067,8 +2095,10 @@ function findExistingReviewFile(showDir, outletName, criticName, url = null) {
   // wrongProduction/duplicateOf files so contamination is never a merge target.
   if (url) {
     const { canonicalReviewUrl } = require('./review-url-clusters');
+    const { sameArticleUrl } = require('./review-url-collision');
     const canonUrl = canonicalReviewUrl(url);
     if (canonUrl) {
+      let folded = null; // first www/protocol-folded match; an exact match wins over it
       for (const file of files) {
         const filePath = path.join(showDir, file);
         try {
@@ -2078,11 +2108,17 @@ function findExistingReviewFile(showDir, outletName, criticName, url = null) {
           // suffix cannot affect this URL match or the stored byline returned.
           const fileOutlet = normalizeOutlet(data.outletId || file.split('--')[0]);
           if (fileOutlet !== normalizedOutlet) continue;
+          // BRO-7083: canonicalReviewUrl keeps www/protocol, so a listing link without
+          // "www." missed the stored "www." file and minted an outlet--unknown duplicate
+          // every poller run. sameArticleUrl is the collision guard's identity (it folds
+          // www/protocol and tracking params, keeps real query ids).
           if (canonicalReviewUrl(data.url) === canonUrl) {
             return { path: filePath, filename: file, data };
           }
+          if (!folded && sameArticleUrl(data.url, url)) folded = { path: filePath, filename: file, data };
         } catch { /* unreadable — skip */ }
       }
+      if (folded) return folded;
     }
   }
 
@@ -2269,6 +2305,10 @@ const JUNK_OUTLETS = new Set([
   // BRO-3515: Rex Features photo-agency livefeed caption, not a critic
   // outlet — see domain-filters.js REFERENCE_DOMAINS for the write-time block.
   'rexfeatures',
+  // BRO-7100: section headings read as outlet names (NYC Theatre roundup
+  // "<h4>Reviews</h4>" became outletId "reviews"). Not bare 'review': it is
+  // a registered alias of reviewing-the-drama (isSentinelOutletId reads this set).
+  'reviews', 'the-reviews', 'critics', 'the-critics',
 ]);
 
 // Exact reserved-word match only — no structural fuzz (length/hyphen-count/
@@ -2308,9 +2348,11 @@ function isJunkOutlet(outletName) {
   // heuristic here (short enough, few enough hyphens) so it needs its own check.
   // ('box-office' alone only — NOT a suffix match, which would also catch the
   // real registered aggregator outlet 'london-box-office'.)
-  if (/^(buy|get)-tickets\b|tickets-directly|^box-office$/.test(slug)) return true;
+  // BRO-7100: theatre.reviews "Tickets available from the theatre" link text read as an outlet.
+  if (/^(buy|get)-tickets\b|tickets-directly|^tickets-available\b|^box-office$/.test(slug)) return true;
   // Starts with conjunctions/verbs that indicate a sentence fragment
-  if (/^(but-|and-(?!juliet)|is-|are-|has-|its-|enjoying-|id-wager|how-to-\w+-is-|does-|turns-|keeps?-|tackles-)/.test(slug)) return true;
+  // BRO-7100: modal verbs too (a "should appeal to ..." fragment of a BWW quote).
+  if (/^(but-|and-(?!juliet)|is-|are-|has-|its-|should-|would-|could-|might-|must-|enjoying-|id-wager|how-to-\w+-is-|does-|turns-|keeps?-|tackles-)/.test(slug)) return true;
   // Contains verb phrases never found in outlet names
   if (/(promises-the|crafted-a|likely-to|fun-surf|wager-that|silence-after|antidote-to|underdog-itself|make-it-fun|speeding-along|seen-on-broadway|rose-to-fame|debacle-of|candid-about|exactly-what|dear-evan-hansen)/.test(slug)) return true;
   // Contains year numbers (19XX/20XX) but not date-formatted — sentence fragments
@@ -2726,14 +2768,27 @@ function urlSlugNamesShow(url, showTitle) {
   return tTokens.some((t) => segTokens.includes(t) || squashedSeg.includes(t));
 }
 
-function reviewSlugNamesDifferentShow(url, showTitle) {
+// opts.reviewInOnly (BRO-7077, BRO-4369): read ONLY TheaterMania's "Review: In
+// <Title>, ..." slug ("review-in-falls-for-jodie-..._1855201"). The Playbill
+// Verdict anchor sweep gates on it; 0 of 46,892 shipping rows match. The
+// trailing "<x>-review" form stays rebuild-only: alone it flags 50 legit rows
+// (creative headlines such as "showmanism-review-...").
+function reviewSlugNamesDifferentShow(url, showTitle, opts = {}) {
   if (!url || !showTitle) return false;
   let seg = '';
   try {
     seg = new URL(url).pathname.toLowerCase().split('/').filter(Boolean).pop() || '';
   } catch { return false; }
   seg = seg.replace(/\.[a-z]+$/, '');
-  const m = seg.match(/^([a-z0-9-]+?)-review(?:-|$)/);
+  let m;
+  if (opts.reviewInOnly) {
+    // "Review: In <Title>, ..." headline slug, with TheaterMania's _<id> tail.
+    seg = seg.replace(/_\d+$/, '');
+    const lead = seg.match(/^review-in-([a-z0-9-]+)$/);
+    if (lead) m = [lead[0], lead[1]];
+  } else {
+    m = seg.match(/^([a-z0-9-]+?)-review(?:-|$)/);
+  }
   if (!m) return false;
   const pre = m[1].split('-').filter(
     (t) => t.length >= 3 && !URL_GENERIC_SLUG_TOKENS.has(t) && !/^\d+$/.test(t)
@@ -2861,10 +2916,9 @@ function maybeUpgradeUrl(existingData, newUrl, source, opts = {}) {
   // (via applyUrlChangeInvariant below) wipes the real score along with it.
   // Reuses the same isRoundupUrl() predicate the write path already trusts to
   // keep roundup pages from being ingested as reviews at all.
-  const { isRoundupUrl } = require('./review-guards');
   // BRO-4430: any aggregator host (show-score, stagedoor, westendtheatre, ...)
   // too, not only round-up shapes: the rebuild drops a file carrying one.
-  if (isRoundupUrl(newUrl).isRoundup || require('./review-slot-guards').isAggregatorPageUrl(newUrl)) {
+  if (require('./review-slot-guards').isAggregatorPageUrl(newUrl)) {
     console.warn(`[maybeUpgradeUrl] refused roundup-page swap for ${existingData.outletId || source || '?'}: ${newUrl}`);
     return false;
   }

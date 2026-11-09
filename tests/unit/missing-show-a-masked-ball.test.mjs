@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/pending-fixes/bro-5586.json (read by the test); data/shows.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-5586: "A Masked Ball" (Verdi, Un ballo in maschera) was missing. The eligible
 // production is Royal Ballet and Opera's new staging at the Royal Opera House,
 // 30 Nov - 18 Dec 2026 (no Met or Broadway run in 2026-27). It is added through the

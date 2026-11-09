@@ -623,6 +623,33 @@ check_ledger_coverage() {
   fi
 }
 
+check_llm_usage_coverage() {
+  # BRO-5043 follow-up (owner asked 2026-11-08 to explain and cut the Gemini +
+  # OpenAI bill): a job that runs a script which turns on the LLM spend meter
+  # (scripts/lib/llm-usage-install.js) must stage
+  # data/audit/gemini-usage-ledger.jsonl, or the meter's rows die with the
+  # runner. ADVISORY (CLAUDE.md §19): the require-graph here is text-based and
+  # approximate, so it warns and never fails the lint. Logic:
+  # scripts/lib/ledger-coverage-check.js findMissingLlmUsageCommits.
+  local OUT
+  OUT=$(node -e "
+    const fs = require('fs');
+    const path = require('path');
+    const { findLlmUsageScripts, findMissingLlmUsageCommits } = require('./scripts/lib/ledger-coverage-check.js');
+    const scripts = findLlmUsageScripts('scripts');
+    const dir = '.github/workflows';
+    for (const name of fs.readdirSync(dir).filter((f) => f.endsWith('.yml'))) {
+      for (const v of findMissingLlmUsageCommits(fs.readFileSync(path.join(dir, name), 'utf8'), scripts)) console.log(name + ': ' + v.message);
+    }
+  " 2>&1)
+  if [ -z "$OUT" ]; then
+    echo "All jobs that run an LLM-metered script stage data/audit/gemini-usage-ledger.jsonl"
+  else
+    echo "::warning::Advisory: these jobs run an LLM-metered script but never stage data/audit/gemini-usage-ledger.jsonl, so their spend rows are lost. Add 'git add data/audit/gemini-usage-ledger.jsonl 2>/dev/null || true' to the job's existing commit step:"
+    echo "$OUT"
+  fi
+}
+
 check_ledger_step_guard() {
   # BRO-2243: a job that commits data/audit/scraper-spend-ledger.jsonl is
   # racing every other concurrent workflow pushing to main — a losing race
@@ -840,6 +867,7 @@ run_check() {
     alert-ledger-commit) check_alert_ledger_commit ;;
     routealert-linear-key) check_routealert_linear_key ;;
     ledger-coverage)    check_ledger_coverage ;;
+    llm-usage-coverage) check_llm_usage_coverage ;;
     ledger-step-guard)  check_ledger_step_guard ;;
     reset-soft-partial-commit) check_reset_soft_partial_commit ;;
     dry-run-flag-setter) check_dry_run_flag_setter ;;
@@ -853,14 +881,14 @@ run_check() {
       check_prebuild; check_core_data_pairing; check_private_git_add
       check_merge_drivers; check_scraping_fallback; check_scrapingdog_pairing; check_theatr_token
       check_snapshot_overwrite; check_alert_ledger_commit; check_ledger_coverage; check_ledger_step_guard
-      check_dry_run_flag_setter ;;
+      check_dry_run_flag_setter; check_llm_usage_coverage ;;
     all)
       check_prebuild; check_core_data_pairing; check_private_git_add
       check_merge_drivers; check_scraping_fallback; check_scrapingdog_pairing; check_theatr_token
       check_demo_flags; check_snapshot_overwrite; check_alert_ledger_commit; check_ledger_coverage
       check_ledger_step_guard; check_reset_soft_partial_commit; check_dry_run_flag_setter; check_swallowed_audit_writers
-      check_routealert_linear_key ;;
-    *) echo "usage: $0 <prebuild|core-data-pairing|private-git-add|merge-drivers|scraping-fallback|scrapingdog-pairing|theatr-token|demo-flags|snapshot-overwrite|alert-ledger-commit|routealert-linear-key|ledger-coverage|ledger-step-guard|reset-soft-partial-commit|dry-run-flag-setter|swallowed-audit-writers|workflows|all>[,...]" >&2; exit 2 ;;
+      check_routealert_linear_key; check_llm_usage_coverage ;;
+    *) echo "usage: $0 <prebuild|core-data-pairing|private-git-add|merge-drivers|scraping-fallback|scrapingdog-pairing|theatr-token|demo-flags|snapshot-overwrite|alert-ledger-commit|routealert-linear-key|ledger-coverage|llm-usage-coverage|ledger-step-guard|reset-soft-partial-commit|dry-run-flag-setter|swallowed-audit-writers|workflows|all>[,...]" >&2; exit 2 ;;
   esac
 }
 

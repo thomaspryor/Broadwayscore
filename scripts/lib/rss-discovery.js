@@ -12,6 +12,7 @@ const { decodeHtmlEntities } = require('./text-cleaning');
  */
 
 const https = require('https');
+require('./ipv4-connections'); // BRO-6872: see that file
 const http = require('http');
 const { foldDiacritics } = require('./title-match');
 const { passesGenericTitleIdentity } = require('./generic-title-guard');
@@ -89,7 +90,9 @@ const ENTERTAINMENT_FEEDS = [
   // { url: 'https://www.vulture.com/feed/rss/index.xml', outletId: 'vulture', name: 'Vulture', needsFilter: true },
   { url: 'https://www.hollywoodreporter.com/feed/', outletId: 'hollywood-reporter', name: 'THR', needsFilter: true, trackRecoupment: true },
   { url: 'https://deadline.com/feed/', outletId: 'deadline', name: 'Deadline', needsFilter: true, trackRecoupment: true },
-  { url: 'https://feeds.content.dowjones.io/public/rss/RSSLifestyle', outletId: 'wsj', name: 'WSJ Lifestyle', needsFilter: true },
+  // WSJ files theater reviews under Arts & Culture; its Lifestyle feed carries cars and gadgets, and wsj.com/arts-culture
+  // answers runners with 401. The Arts & Culture feed listed the A Few Good Men and Imaginary Invalid reviews (BRO-6872).
+  { url: 'https://feeds.content.dowjones.io/public/rss/RSSArtsCulture', outletId: 'wsj', name: 'WSJ Arts & Culture', needsFilter: true },
   { url: 'https://www.latimes.com/entertainment-arts/rss2.0.xml', outletId: 'latimes', name: 'LA Times Entertainment', needsFilter: true },
   { url: 'https://feeds.washingtonpost.com/rss/entertainment', outletId: 'washpost', name: 'WashPost Entertainment', needsFilter: true },
   { url: 'https://www.newyorker.com/feed/culture', outletId: 'newyorker', name: 'New Yorker Culture', needsFilter: true },
@@ -263,9 +266,17 @@ function singleWordTitleIdentity(itemTitle, itemForms, phrase, word) {
   if (itemForms.some(h => besideReview.test(h))) return true;
   // Theatre context beside the word ("Outsiders musical wins Tony", "Notebook
   // musical opens on Broadway"): a careers or advice column has none.
-  const theatreCue = /(?:^| )(?:broadway|off broadway|musical|tony|tonys|revival|playwright|theater|theatre)(?: |$)/;
-  const hasWord = itemForms.some(h => new RegExp(`(?:^| )${esc}(?: |$)`).test(h));
-  return hasWord && itemForms.some(h => theatreCue.test(h));
+  // BRO-7077: the cue must sit beside the word, or the word must lead the
+  // headline as its subject. A cue elsewhere let a verb through: "Broadway
+  // producers ask Congress for tax relief" matched The Ask.
+  const CUE = '(?:broadway|off broadway|musical|tony|tonys|revival|playwright|theater|theatre)';
+  // A cue compound ("Tony-winning Outsiders", "Broadway-bound Notebook") and "cast of
+  // <word>" also sit beside it (ship-check P2: those headlines matched on main).
+  const LEAD_CUE = `(?:${CUE}(?:[ -](?:winning|nominated|bound|award[ -]winning))?|cast of)`;
+  const beside = new RegExp(`(?:^| )${LEAD_CUE} ${esc}(?: |$)|(?:^| )${esc} ${CUE}(?: |$)`);
+  const theatreCue = new RegExp(`(?:^| )${CUE}(?: |$)`);
+  const leads = new RegExp(`^\\s*${esc}(?: |$)`);
+  return itemForms.some(h => beside.test(h) || (leads.test(h) && theatreCue.test(h)));
 }
 
 /**
@@ -543,4 +554,18 @@ async function checkRSSFeeds(showTitle, options = {}) {
   return results;
 }
 
-module.exports = { checkRSSFeeds, ALL_FEEDS, BROADWAY_BUSINESS_FEEDS, SUBSTACK_CRITIC_FEEDS, TRACK_RECOUPMENT_FEEDS, titleMatchesShow, urlSlugMatchesShow, isWithinOpeningWindow, openingWindowFeedAccepts, singleBylineName, parseRSSItems, parseAtomItems, parseFeedItems, fetchUrl };
+/**
+ * True when a stored rss-discovery stub still passes the CURRENT identity rule:
+ * its headline (title / articleTitle) or its url slug names the show. Every rss
+ * admission path needs one of these (checkRSSFeeds), so a stub that fails was
+ * filed under an older, looser rule. Shared by sweep-rss-pending-junk.js and
+ * replay-pending-bylines.js (BRO-7078) so the rule lives in one place.
+ */
+function rssStubIdentityOk(stub, showTitle) {
+  if (!stub || !showTitle) return true;
+  return Boolean((stub.title && titleMatchesShow(stub.title, showTitle))
+    || (stub.articleTitle && titleMatchesShow(stub.articleTitle, showTitle))
+    || urlSlugMatchesShow(stub.url, showTitle));
+}
+
+module.exports = { rssStubIdentityOk, checkRSSFeeds, ALL_FEEDS, BROADWAY_BUSINESS_FEEDS, SUBSTACK_CRITIC_FEEDS, TRACK_RECOUPMENT_FEEDS, titleMatchesShow, urlSlugMatchesShow, isWithinOpeningWindow, openingWindowFeedAccepts, singleBylineName, parseRSSItems, parseAtomItems, parseFeedItems, fetchUrl };

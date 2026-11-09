@@ -209,3 +209,23 @@ test('a human non-review clear stops CV re-promotion', () => {
   assert.equal(cvNonReviewHumanCleared({ humanReviewedWrongArticle: false }), true);
   assert.equal(cvNonReviewHumanCleared({ isNonReview: false }), false);
 });
+
+// BRO-7044: NYTG's 2:22 review (complete, scored, verifier articleType "review" but
+// isValid:false over a spurious date mismatch) was stamped "feature" by one Gemini call.
+test('nonReviewStampBlockReason: a scored file the verifier calls a review is never stamped by one classifier call', () => {
+  const scored = {
+    scoreSource: 'llm-v6',
+    assignedScore: 67,
+    contentVerification: { isValid: false, confidence: 'high', wrongArticle: false, articleType: 'review', articleTypeConfidence: 'high', issues: ['date mismatch'] },
+  };
+  assert.match(nonReviewStampBlockReason(scored), /LLM score already exists/);
+  // a second independent check that agrees it is not a review lifts the block
+  assert.equal(nonReviewStampBlockReason(scored, false, { independentCheckAgrees: true }), null);
+  // unscored, wrong-article and low-confidence verifier verdicts do not trigger this rule
+  assert.equal(nonReviewStampBlockReason({ ...scored, assignedScore: null }), null);
+  assert.equal(nonReviewStampBlockReason({ ...scored, scoreSource: 'bww-excerpt' }), null);
+  assert.equal(nonReviewStampBlockReason({ ...scored, contentVerification: { ...scored.contentVerification, wrongArticle: true } }), null);
+  assert.equal(nonReviewStampBlockReason({ ...scored, contentVerification: { ...scored.contentVerification, articleTypeConfidence: 'low' } }), null);
+  // a verifier that says feature/preview is not blocked
+  assert.equal(nonReviewStampBlockReason({ ...scored, contentVerification: { ...scored.contentVerification, articleType: 'feature' } }), null);
+});

@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4734",
   "planId": "3136b26f-161e-413b-b50b-33e3d49b8425",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-15T05:25:44.296Z",
   "submitter": {
     "name": null,
@@ -393,5 +393,48 @@
       "ok": false,
       "reason": "images: current value doesn't match expected (data changed since plan was created)"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "obsolete": 3,
+      "resolved": 3
+    },
+    "ops": [
+      {
+        "i": 10,
+        "verdict": "obsolete",
+        "reason": "show pulman-and-stilgoe-hooray-for-hollywood-west-end-2026 no longer exists"
+      },
+      {
+        "i": 12,
+        "verdict": "obsolete",
+        "reason": "poster.jpg is now a portrait image (480x757), so the null-landscape-poster fix no longer applies (BRO-7092 hand check)"
+      },
+      {
+        "i": 13,
+        "verdict": "resolved",
+        "reason": "father-christmas-off-west-end-2026.images already {\"thumbnail\":\"/images/shows/father-christmas-off-west-end..."
+      },
+      {
+        "i": 14,
+        "verdict": "obsolete",
+        "reason": "poster.jpg is now a portrait image (201x251), so the null-landscape-poster fix no longer applies (BRO-7092 hand check)"
+      },
+      {
+        "i": 15,
+        "verdict": "resolved",
+        "reason": "gianni-schicchi-off-west-end-2027.images already {\"thumbnail\":\"/images/shows/gianni-schicchi-off-west-end-..."
+      },
+      {
+        "i": 16,
+        "verdict": "resolved",
+        "reason": "montgomery-an-american-musical-off-broadway-2026.images already {\"thumbnail\":\"/images/shows/montgomery-an-american-musica..."
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (3 obsolete, 3 resolved); per-op reasons in triage.ops"
 }

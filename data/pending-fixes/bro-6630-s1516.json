@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6630-s1516",
   "planId": "e938fca1-3bca-4314-80e9-539caf33d21d",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-30T16:59:19.242Z",
   "submitter": {
     "name": null,
@@ -870,5 +870,22 @@
       "msg": "shows.json: added love-and-money-off-broadway-2015"
     }
   ],
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 1
+    },
+    "ops": [
+      {
+        "i": 4,
+        "verdict": "resolved",
+        "reason": "show shear-madness-off-broadway-2015 exists"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (1 resolved); per-op reasons in triage.ops"
 }

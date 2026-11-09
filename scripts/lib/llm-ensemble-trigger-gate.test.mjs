@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data); data/review-texts/__bro-2985-trigger-gate-fixture__ (untracked core data); data/review-texts/__bro-2985-trigger-gate-fixture__/the-spectator-uk--unknown.json (untracked core data); +3 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-2985 — "LLM Ensemble Score Reviews cannot be re-triggered for work it
  * will never do."

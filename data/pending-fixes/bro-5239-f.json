@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5239-f",
   "planId": "78d297df-3670-4277-ace5-84c4f9b5f3b8",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-13T08:13:56.197Z",
   "submitter": {
     "name": null,
@@ -343,5 +343,22 @@
       "ok": true,
       "msg": "tao-of-glass-west-end-2026/north-west-end--michelle-knight.json originalScore: \"4/5\" -> \"4/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 1
+    },
+    "ops": [
+      {
+        "i": 7,
+        "verdict": "resolved",
+        "reason": "man-to-man-west-end-2026/theqr--unknown.json originalScore already \"4/5\""
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (1 resolved); per-op reasons in triage.ops"
 }

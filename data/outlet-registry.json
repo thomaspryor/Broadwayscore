@@ -1,9 +1,9 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-11-03T12:57:02.254Z",
+    "lastUpdated": "2026-11-08T22:20:13.459Z",
     "version": "2.1.0",
-    "lastChange": "BRO-6854: San Diego outlets From Another Zero, Talk Theatre to Me, Arts Meme (tier 3)"
+    "lastChange": "BRO-6122: standingCoverage[off-broadway] promote theatermania (BRO-7166: measured 3-season coverage clears the promote bar)"
   },
   "outlets": {
     "westendtheatre": {
@@ -308,7 +308,8 @@
       "accessModel": "free",
       "standingCoverage": true,
       "standingMarkets": [
-        "broadway"
+        "broadway",
+        "off-broadway"
       ]
     },
     "broadwayworld": {
@@ -324,7 +325,11 @@
         "broadwayworld.com"
       ],
       "domain": "broadwayworld.com",
-      "accessModel": "free"
+      "accessModel": "free",
+      "standingCoverage": true,
+      "standingMarkets": [
+        "west-end"
+      ]
     },
     "deadline": {
       "displayName": "Deadline",
@@ -336,7 +341,8 @@
         "deadline.com"
       ],
       "domain": "deadline.com",
-      "accessModel": "free"
+      "accessModel": "free",
+      "displayNameReviewed": true
     },
     "timeout": {
       "displayName": "Time Out New York",
@@ -556,7 +562,8 @@
       "region": "dual",
       "domainAliases": [
         "observer.co.uk"
-      ]
+      ],
+      "displayNameReviewed": true
     },
     "broadwaynews": {
       "displayName": "Broadway News",
@@ -588,7 +595,8 @@
       "accessModel": "free",
       "domainAliases": [
         "playbill.vo.llnwd.net"
-      ]
+      ],
+      "displayNameReviewed": true
     },
     "dailybeast": {
       "displayName": "The Daily Beast",
@@ -688,6 +696,9 @@
         "broadway beyond broadway"
       ],
       "domain": "the100wordreview.com",
+      "domainAliases": [
+        "synthesizer-accordion-e2w3.squarespace.com"
+      ],
       "accessModel": "free"
     },
     "talkinbroadway": {
@@ -725,7 +736,8 @@
       "standingCoverage": true,
       "standingMarkets": [
         "broadway"
-      ]
+      ],
+      "displayNameReviewed": true
     },
     "newjerseystage": {
       "displayName": "New Jersey Stage",
@@ -807,7 +819,8 @@
       "accessModel": "metered",
       "notDomainMoves": [
         "billboard.com.br"
-      ]
+      ],
+      "displayNameReviewed": true
     },
     "queerty": {
       "displayName": "Queerty",
@@ -927,7 +940,8 @@
         "mashable-erin-strecker"
       ],
       "domain": "mashable.com",
-      "accessModel": "free"
+      "accessModel": "free",
+      "displayNameReviewed": true
     },
     "indiewire": {
       "displayName": "IndieWire",
@@ -1215,7 +1229,8 @@
         "backstagecom"
       ],
       "domain": "backstage.com",
-      "accessModel": "paywalled"
+      "accessModel": "paywalled",
+      "displayNameReviewed": true
     },
     "bloomberg": {
       "displayName": "Bloomberg",
@@ -1238,7 +1253,8 @@
       "accessModel": "paywalled",
       "domainAliases": [
         "businessweek.com"
-      ]
+      ],
+      "displayNameReviewed": true
     },
     "slash-film": {
       "displayName": "SlashFilm",
@@ -1333,7 +1349,8 @@
       ],
       "domain": "towleroad.com",
       "accessModel": "free",
-      "defaultCritic": "Naveen Kumar"
+      "defaultCritic": "Naveen Kumar",
+      "displayNameReviewed": true
     },
     "wnyc": {
       "displayName": "WNYC",
@@ -1409,7 +1426,8 @@
         "showbiz411-roger-friedman"
       ],
       "domain": "showbiz411.com",
-      "accessModel": "free"
+      "accessModel": "free",
+      "displayNameReviewed": true
     },
     "dc-theater-arts": {
       "displayName": "DC Theater Arts",
@@ -1750,7 +1768,8 @@
       ],
       "domain": "scribicide.com",
       "accessModel": "free",
-      "defaultCritic": "Aaron Botwick"
+      "defaultCritic": "Aaron Botwick",
+      "displayNameReviewed": true
     },
     "show-showdown": {
       "displayName": "Show Showdown",
@@ -2158,7 +2177,11 @@
       "domain": "whatsonstage.com",
       "region": "london",
       "accessModel": "free",
-      "starScale": 5
+      "starScale": 5,
+      "standingCoverage": true,
+      "standingMarkets": [
+        "west-end"
+      ]
     },
     "theater-news-online": {
       "displayName": "Theater News Online",
@@ -2550,7 +2573,8 @@
       ],
       "domain": "attitude.co.uk",
       "region": "london",
-      "accessModel": "free"
+      "accessModel": "free",
+      "displayNameReviewed": true
     },
     "culture-whisper": {
       "displayName": "Culture Whisper",
@@ -2800,7 +2824,8 @@
         "newsweek-magazine"
       ],
       "domain": "newsweek.com",
-      "accessModel": "metered"
+      "accessModel": "metered",
+      "displayNameReviewed": true
     },
     "boston-herald": {
       "displayName": "Boston Herald",
@@ -2903,7 +2928,8 @@
       ],
       "domain": "flavorwire.com",
       "accessModel": "free",
-      "defaultCritic": "Sarah Seltzer"
+      "defaultCritic": "Sarah Seltzer",
+      "displayNameReviewed": true
     },
     "hitfix": {
       "displayName": "HitFix",
@@ -3355,7 +3381,8 @@
       ],
       "domain": "londonist.com",
       "region": "london",
-      "accessModel": "free"
+      "accessModel": "free",
+      "displayNameReviewed": true
     },
     "leicester-times": {
       "displayName": "Leicester Times",
@@ -3566,7 +3593,8 @@
         "movie-fone"
       ],
       "domain": "moviefone.com",
-      "accessModel": "defunct"
+      "accessModel": "defunct",
+      "displayNameReviewed": true
     },
     "crooked-marquee": {
       "displayName": "Crooked Marquee",
@@ -3736,7 +3764,8 @@
       "regionCorrectedEvidence": "New York-based per en.wikipedia.org/wiki/Consequence_(website)",
       "domainAliases": [
         "consequenceofsound.net"
-      ]
+      ],
+      "displayNameReviewed": true
     },
     "collider": {
       "displayName": "Collider",
@@ -3746,7 +3775,8 @@
       ],
       "domain": "collider.com",
       "accessModel": "free",
-      "defaultCritic": "Tania Hussain"
+      "defaultCritic": "Tania Hussain",
+      "displayNameReviewed": true
     },
     "den-of-geek": {
       "displayName": "Den of Geek",
@@ -3996,8 +4026,7 @@
         "the news tribune"
       ],
       "domain": "thenewstribune.com",
-      "accessModel": "paywalled",
-      "defaultCritic": "Mark Kennedy"
+      "accessModel": "paywalled"
     },
     "harvard-magazine": {
       "displayName": "Harvard Magazine",
@@ -4415,7 +4444,7 @@
       "domain": "artsknoxville.com"
     },
     "attractions": {
-      "displayName": "Attractions",
+      "displayName": "Attractions Magazine",
       "tier": 3,
       "aliases": [
         "attractions",
@@ -4423,7 +4452,8 @@
         "attractions magazine"
       ],
       "accessModel": "free",
-      "domain": "attractionsmagazine.com"
+      "domain": "attractionsmagazine.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "bg-independent-news": {
       "displayName": "Bg Independent News",
@@ -4478,7 +4508,8 @@
         "hoodline"
       ],
       "accessModel": "free",
-      "domain": "hoodline.com"
+      "domain": "hoodline.com",
+      "displayNameReviewed": true
     },
     "houston-press": {
       "displayName": "Houston Press",
@@ -4575,13 +4606,14 @@
       "domain": "spectrumnews1.com"
     },
     "telegram": {
-      "displayName": "Telegram",
+      "displayName": "Worcester Telegram",
       "tier": 3,
       "aliases": [
         "telegram"
       ],
       "accessModel": "defunct",
-      "domain": "telegram.com"
+      "domain": "telegram.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "the-austin-chronicle": {
       "displayName": "The Austin Chronicle",
@@ -4689,7 +4721,8 @@
       ],
       "accessModel": "paywalled",
       "defaultCritic": "Bill Kellert",
-      "domain": "nippertown.com"
+      "domain": "nippertown.com",
+      "displayNameReviewed": true
     },
     "oregon-artswatch": {
       "displayName": "Oregon Artswatch",
@@ -4837,7 +4870,8 @@
       ],
       "domain": "blogcritics.org",
       "accessModel": "free",
-      "region": "us"
+      "region": "us",
+      "displayNameReviewed": true
     },
     "the-georgetowner": {
       "displayName": "The Georgetowner",
@@ -5111,24 +5145,26 @@
       "domain": "out.com"
     },
     "2ontheaisle": {
-      "displayName": "2ontheaisle",
+      "displayName": "Two on the Aisle",
       "tier": 4,
       "aliases": [
         "2ontheaisle"
       ],
       "domain": "2ontheaisle.wordpress.com",
       "accessModel": "free",
-      "defaultCritic": "Karen Isaacs"
+      "defaultCritic": "Karen Isaacs",
+      "displayNameSource": "homepage-reviewed"
     },
     "bsonarts": {
-      "displayName": "Bsonarts",
+      "displayName": "BSonArts",
       "tier": 3,
       "aliases": [
         "bsonarts"
       ],
       "accessModel": "free",
       "defaultCritic": "Bruce Smith",
-      "domain": "bsonarts.com"
+      "domain": "bsonarts.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "jonathankalb": {
       "displayName": "Jonathan Kalb",
@@ -5192,14 +5228,15 @@
       "domain": "clumtheater.blogspot.com"
     },
     "towncountry": {
-      "displayName": "Towncountry",
+      "displayName": "Town & Country",
       "tier": 3,
       "aliases": [
         "towncountry",
         "town-country",
         "town-and-country"
       ],
-      "domain": "townandcountrymag.com"
+      "domain": "townandcountrymag.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "broadway-showbiz": {
       "displayName": "Broadway Showbiz",
@@ -5325,12 +5362,13 @@
       "domain": "hpherald.com"
     },
     "rockchicago": {
-      "displayName": "Rockchicago",
+      "displayName": "Rock Chicago",
       "tier": 3,
       "aliases": [
         "rockchicago"
       ],
-      "accessModel": "free"
+      "accessModel": "free",
+      "displayNameSource": "homepage-reviewed"
     },
     "windy-city-media-group": {
       "displayName": "Windy City Media Group",
@@ -5392,7 +5430,8 @@
         "the examiner"
       ],
       "accessModel": "defunct",
-      "domain": "examiner.com"
+      "domain": "examiner.com",
+      "displayNameReviewed": true
     },
     "flipsidereviews": {
       "displayName": "The Flip Side",
@@ -5430,13 +5469,14 @@
       "domain": "lamag.com"
     },
     "lgbtweekly": {
-      "displayName": "Lgbtweekly",
+      "displayName": "LGBT Weekly",
       "tier": 3,
       "aliases": [
         "lgbtweekly"
       ],
       "accessModel": "free",
-      "domain": "lgbtweekly.com"
+      "domain": "lgbtweekly.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "life-full-of-cheese": {
       "displayName": "Life Full Of Cheese",
@@ -5458,13 +5498,14 @@
       "domain": "blog.mediander.com"
     },
     "nichibeiorg": {
-      "displayName": "Nichibeiorg",
+      "displayName": "Nichi Bei News",
       "tier": 3,
       "aliases": [
         "nichibeiorg"
       ],
       "defaultCritic": "Floyd Mori",
-      "domain": "nichibei.org"
+      "domain": "nichibei.org",
+      "displayNameSource": "homepage-reviewed"
     },
     "peconic-public-broadcasting": {
       "displayName": "Peconic Public Broadcasting",
@@ -5497,21 +5538,23 @@
       "domain": "sddowntownnews.com"
     },
     "sdamustang": {
-      "displayName": "Sdamustang",
+      "displayName": "The Mustang",
       "tier": 3,
       "aliases": [
         "sdamustang"
       ],
-      "domain": "sdamustang.com"
+      "domain": "sdamustang.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "sdcitybeat": {
-      "displayName": "Sdcitybeat",
+      "displayName": "San Diego CityBeat",
       "tier": 3,
       "aliases": [
         "sdcitybeat"
       ],
       "accessModel": "free",
-      "domain": "sdcitybeat.com"
+      "domain": "sdcitybeat.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "shortandsweetnyc": {
       "displayName": "Short and Sweet NYC",
@@ -5523,14 +5566,15 @@
       "domain": "shortandsweetnyc.com"
     },
     "spoilednyc": {
-      "displayName": "Spoilednyc",
+      "displayName": "spoiled NYC",
       "tier": 3,
       "aliases": [
         "spoilednyc"
       ],
       "accessModel": "defunct",
       "defaultCritic": "Jamison Hackelman",
-      "domain": "spoilednyc.com"
+      "domain": "spoilednyc.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "the-rafu-shimpo": {
       "displayName": "The Rafu Shimpo",
@@ -5735,14 +5779,15 @@
       "domain": "theaterinthenow.com"
     },
     "fastcompany": {
-      "displayName": "Fastcompany",
+      "displayName": "Fast Company",
       "tier": 3,
       "aliases": [
         "fastcompany"
       ],
       "domain": "fastcompany.com",
       "accessModel": "free",
-      "defaultCritic": "Christopher Zara"
+      "defaultCritic": "Christopher Zara",
+      "displayNameSource": "homepage-reviewed"
     },
     "frequentbusinesstraveler": {
       "displayName": "Frequent Business Traveler",
@@ -5841,7 +5886,7 @@
       "domain": "manhattandigest.com"
     },
     "operawire": {
-      "displayName": "Operawire",
+      "displayName": "OperaWire",
       "tier": 3,
       "aliases": [
         "operawire"
@@ -5849,7 +5894,8 @@
       "accessModel": "free",
       "defaultCritic": "David Salazar",
       "multiAuthor": true,
-      "domain": "operawire.com"
+      "domain": "operawire.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "new-york-classical-review": {
       "displayName": "New York Classical Review",
@@ -6010,14 +6056,15 @@
       ]
     },
     "popbytes": {
-      "displayName": "Popbytes",
+      "displayName": "PopBytes",
       "tier": 4,
       "aliases": [
         "popbytes"
       ],
       "accessModel": "defunct",
       "defaultCritic": "Alex Nagorski",
-      "domain": "popbytes.com"
+      "domain": "popbytes.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "live-theatre-uk": {
       "displayName": "Live Theatre (UK)",
@@ -6172,7 +6219,8 @@
       ],
       "accessModel": "free",
       "defaultCritic": "Ben Lindbergh",
-      "domain": "grantland.com"
+      "domain": "grantland.com",
+      "displayNameReviewed": true
     },
     "popdose": {
       "displayName": "Popdose",
@@ -6192,7 +6240,8 @@
       ],
       "accessModel": "free",
       "defaultCritic": "Daniel Kurland",
-      "domain": "splitsider.com"
+      "domain": "splitsider.com",
+      "displayNameReviewed": true
     },
     "the-rogovoy-report": {
       "displayName": "The Rogovoy Report",
@@ -6224,13 +6273,14 @@
       "domain": "insidethemagic.net"
     },
     "afterellen": {
-      "displayName": "Afterellen",
+      "displayName": "AfterEllen",
       "tier": 3,
       "aliases": [
         "afterellen"
       ],
       "accessModel": "free",
-      "domain": "afterellen.com"
+      "domain": "afterellen.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "okazu": {
       "displayName": "Okazu",
@@ -6284,7 +6334,8 @@
       ],
       "accessModel": "free",
       "region": "nyc",
-      "domain": "gothamist.com"
+      "domain": "gothamist.com",
+      "displayNameReviewed": true
     },
     "sea-coast-online": {
       "displayName": "Sea Coast Online",
@@ -6460,7 +6511,7 @@
       "domain": "ayoungertheatre.com"
     },
     "bigissue": {
-      "displayName": "Bigissue",
+      "displayName": "Big Issue",
       "tier": 3,
       "aliases": [
         "bigissue"
@@ -6469,7 +6520,8 @@
       "domain": "bigissue.com",
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
-      "regionInferredAt": "2026-10-09T16:36:35.520Z"
+      "regionInferredAt": "2026-10-09T16:36:35.520Z",
+      "displayNameSource": "homepage-reviewed"
     },
     "gay-socialites": {
       "displayName": "Gay Socialites",
@@ -6628,7 +6680,8 @@
       ],
       "accessModel": "free",
       "defaultCritic": "Kathryn Lindsay",
-      "domain": "refinery29.com"
+      "domain": "refinery29.com",
+      "displayNameReviewed": true
     },
     "the-saratogian": {
       "displayName": "The Saratogian",
@@ -6695,14 +6748,15 @@
       "domain": "neontommy.com"
     },
     "westword": {
-      "displayName": "Westword",
+      "displayName": "Denver Westword",
       "tier": 3,
       "aliases": [
         "westword"
       ],
       "accessModel": "free",
       "defaultCritic": "Juliet Wittman",
-      "domain": "westword.com"
+      "domain": "westword.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "harpersbazaar": {
       "displayName": "Harper's Bazaar",
@@ -6735,13 +6789,14 @@
       "domain": "popdust.com"
     },
     "americajr": {
-      "displayName": "Americajr",
+      "displayName": "AmericaJR",
       "tier": 3,
       "aliases": [
         "americajr"
       ],
       "accessModel": "free",
-      "domain": "americajr.com"
+      "domain": "americajr.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "courier-journal": {
       "displayName": "Courier Journal",
@@ -7221,24 +7276,26 @@
       "domain": "irishtimes.com"
     },
     "12thnight": {
-      "displayName": "12thnight",
+      "displayName": "12thNight.ca",
       "tier": 3,
       "aliases": [
         "12thnight"
       ],
       "accessModel": "defunct",
       "defaultCritic": "Liz Nicholls",
-      "domain": "12thnight.ca"
+      "domain": "12thnight.ca",
+      "displayNameSource": "homepage-reviewed"
     },
     "cityguideny": {
-      "displayName": "Cityguideny",
+      "displayName": "City Guide",
       "tier": 3,
       "aliases": [
         "cityguideny"
       ],
       "accessModel": "free",
       "defaultCritic": "Griffin Miller",
-      "domain": "cityguideny.com"
+      "domain": "cityguideny.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "edge-boston": {
       "displayName": "Edge Boston",
@@ -7391,14 +7448,15 @@
       "domain": "bworldonline.com"
     },
     "csmonitor": {
-      "displayName": "Csmonitor",
+      "displayName": "The Christian Science Monitor",
       "tier": 3,
       "aliases": [
         "csmonitor"
       ],
       "accessModel": "metered",
       "defaultCritic": "John Beaufort",
-      "domain": "csmonitor.com"
+      "domain": "csmonitor.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "manila-bulletin": {
       "displayName": "Manila Bulletin",
@@ -7998,7 +8056,8 @@
       ],
       "domain": "musicals101.com",
       "accessModel": "free",
-      "defaultCritic": "John Kenrick"
+      "defaultCritic": "John Kenrick",
+      "displayNameReviewed": true
     },
     "the-journal-news": {
       "displayName": "The Journal News",
@@ -8269,7 +8328,11 @@
       ],
       "domain": "londontheatre.co.uk",
       "region": "london",
-      "accessModel": "free"
+      "accessModel": "free",
+      "standingCoverage": true,
+      "standingMarkets": [
+        "west-end"
+      ]
     },
     "londontheatre1": {
       "displayName": "LondonTheatre1",
@@ -8305,7 +8368,11 @@
       ],
       "domain": "timeout.com",
       "accessModel": "free",
-      "starScale": 5
+      "starScale": 5,
+      "standingCoverage": true,
+      "standingMarkets": [
+        "west-end"
+      ]
     },
     "daily-mail": {
       "displayName": "Daily Mail",
@@ -8561,13 +8628,14 @@
       "domain": "buffalotheatreguide.com"
     },
     "houstonia": {
-      "displayName": "Houstonia",
+      "displayName": "Houstonia Magazine",
       "tier": 3,
       "aliases": [
         "houstonia"
       ],
       "domain": "houstoniamag.com",
-      "accessModel": "defunct"
+      "accessModel": "defunct",
+      "displayNameSource": "homepage-reviewed"
     },
     "nashville-noise": {
       "displayName": "Nashville Noise",
@@ -8607,13 +8675,14 @@
       "domain": "abc14news.com"
     },
     "thepopbreak": {
-      "displayName": "Thepopbreak",
+      "displayName": "The Pop Break",
       "tier": 3,
       "aliases": [
         "thepopbreak"
       ],
       "domain": "thepopbreak.com",
-      "defaultCritic": "Rob Crowther IV"
+      "defaultCritic": "Rob Crowther IV",
+      "displayNameSource": "homepage-reviewed"
     },
     "thestage": {
       "tier": 1,
@@ -8630,7 +8699,11 @@
       "accessModel": "paywalled",
       "displayName": "The Stage",
       "domain": "thestage.co.uk",
-      "starScale": 5
+      "starScale": 5,
+      "standingCoverage": true,
+      "standingMarkets": [
+        "west-end"
+      ]
     },
     "everything-theatre": {
       "tier": 3,
@@ -8678,14 +8751,15 @@
       "region": "us"
     },
     "katzreviews": {
-      "displayName": "Katzreviews",
+      "displayName": "Katz Reviews",
       "tier": 3,
       "aliases": [
         "katzreviews"
       ],
       "domain": "katzreviews.com",
       "accessModel": "free",
-      "defaultCritic": "Ed Katz"
+      "defaultCritic": "Ed Katz",
+      "displayNameSource": "homepage-reviewed"
     },
     "tv-and-city": {
       "displayName": "Tv And City",
@@ -8745,7 +8819,7 @@
       "defaultCritic": "Glenn Beck"
     },
     "ethankanfer": {
-      "displayName": "Ethankanfer",
+      "displayName": "Ethan Kanfer",
       "tier": 4,
       "aliases": [
         "ethankanfer",
@@ -8754,10 +8828,11 @@
       ],
       "domain": "ethankanfer.wordpress.com",
       "accessModel": "free",
-      "defaultCritic": "Ethan Kanfer"
+      "defaultCritic": "Ethan Kanfer",
+      "displayNameSource": "homepage-reviewed"
     },
     "timteeman": {
-      "displayName": "Timteeman",
+      "displayName": "Tim Teeman",
       "tier": 3,
       "aliases": [
         "timteeman",
@@ -8766,27 +8841,30 @@
       ],
       "domain": "timteeman.com",
       "accessModel": "free",
-      "defaultCritic": "Tim Teeman"
+      "defaultCritic": "Tim Teeman",
+      "displayNameSource": "homepage-reviewed"
     },
     "royberkinfo": {
-      "displayName": "Royberkinfo",
+      "displayName": "RoyBerko.info",
       "tier": 4,
       "aliases": [
         "royberkinfo"
       ],
       "domain": "royberkinfo.blogspot.com",
       "accessModel": "defunct",
-      "defaultCritic": "Roy Berko"
+      "defaultCritic": "Roy Berko",
+      "displayNameSource": "homepage-reviewed"
     },
     "harryforbes": {
-      "displayName": "Harryforbes",
+      "displayName": "Forbes on Film & Footlights",
       "tier": 3,
       "aliases": [
         "harryforbes"
       ],
       "domain": "harryforbes.com",
       "accessModel": "defunct",
-      "defaultCritic": "Harry Forbes"
+      "defaultCritic": "Harry Forbes",
+      "displayNameSource": "homepage-reviewed"
     },
     "whatsonoffbroadway": {
       "displayName": "What's On Off Broadway",
@@ -8933,7 +9011,8 @@
         "metrosource.com"
       ],
       "displayName": "Metrosource",
-      "domain": "metrosource.com"
+      "domain": "metrosource.com",
+      "displayNameReviewed": true
     },
     "et": {
       "displayName": "Entertainment Tonight",
@@ -9018,13 +9097,14 @@
       "defaultCritic": "James George"
     },
     "jasonraize": {
-      "displayName": "Jasonraize",
+      "displayName": "The Raize Resource",
       "tier": 3,
       "aliases": [
         "jasonraize"
       ],
       "domain": "jasonraize.net",
-      "defaultCritic": "Nelson Pressley"
+      "defaultCritic": "Nelson Pressley",
+      "displayNameSource": "homepage-reviewed"
     },
     "streetdirectory": {
       "displayName": "Streetdirectory.com",
@@ -9035,13 +9115,14 @@
       "domain": "streetdirectory.com"
     },
     "theatrecat": {
-      "displayName": "Theatrecat",
+      "displayName": "theatreCat",
       "tier": 3,
       "aliases": [
         "theatrecat"
       ],
       "domain": "theatrecat.com",
-      "region": "london"
+      "region": "london",
+      "displayNameSource": "homepage-reviewed"
     },
     "bachtrack": {
       "displayName": "Bachtrack",
@@ -9051,7 +9132,8 @@
       ],
       "domain": "bachtrack.com",
       "region": "dual",
-      "isDualMarket": true
+      "isDualMarket": true,
+      "displayNameReviewed": true
     },
     "journaltimes": {
       "displayName": "The Journal Times",
@@ -9105,7 +9187,8 @@
       "displayName": "Monstagigz",
       "domain": "monstagigz.com",
       "tier": 4,
-      "region": "london"
+      "region": "london",
+      "displayNameReviewed": true
     },
     "yale-daily-news": {
       "displayName": "Yale Daily News",
@@ -9308,12 +9391,13 @@
       "domain": "chronicle.com"
     },
     "commonweal": {
-      "displayName": "Commonweal",
+      "displayName": "Commonweal Magazine",
       "tier": 3,
       "aliases": [
         "commonweal"
       ],
-      "domain": "commonwealmagazine.org"
+      "domain": "commonwealmagazine.org",
+      "displayNameSource": "homepage-reviewed"
     },
     "science-magazine": {
       "displayName": "Science Magazine",
@@ -9603,7 +9687,8 @@
         "gramilano"
       ],
       "domain": "gramilano.com",
-      "region": "london"
+      "region": "london",
+      "displayNameReviewed": true
     },
     "dance-europe": {
       "displayName": "Dance Europe",
@@ -9721,14 +9806,15 @@
       "accessModel": "free"
     },
     "dallasvoice": {
-      "displayName": "Dallasvoice",
+      "displayName": "Dallas Voice",
       "tier": 3,
       "aliases": [
         "dallasvoice",
         "dallas-voice",
         "dallas voice"
       ],
-      "domain": "dallasvoice.com"
+      "domain": "dallasvoice.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "boston-com": {
       "id": "boston-com",
@@ -9881,7 +9967,7 @@
       "region": "london"
     },
     "londongrip": {
-      "displayName": "Londongrip",
+      "displayName": "London Grip",
       "tier": 3,
       "aliases": [
         "londongrip"
@@ -9889,7 +9975,8 @@
       "domain": "londongrip.co.uk",
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
-      "regionInferredAt": "2026-08-15T09:06:13.009Z"
+      "regionInferredAt": "2026-08-15T09:06:13.009Z",
+      "displayNameSource": "homepage-reviewed"
     },
     "musical-theatre-report": {
       "displayName": "Musical Theatre Report",
@@ -9942,7 +10029,7 @@
       "regionInferredAt": "2026-08-15T09:06:13.009Z"
     },
     "jewishnews": {
-      "displayName": "Jewishnews",
+      "displayName": "Jewish News",
       "tier": 3,
       "aliases": [
         "jewishnews",
@@ -9953,7 +10040,8 @@
       "domain": "jewishnews.co.uk",
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
-      "regionInferredAt": "2026-08-15T09:06:13.009Z"
+      "regionInferredAt": "2026-08-15T09:06:13.009Z",
+      "displayNameSource": "homepage-reviewed"
     },
     "operationlivetheatre": {
       "displayName": "Operationlivetheatre",
@@ -10166,6 +10254,9 @@
         "unmissabletheatre"
       ],
       "domain": "unmissabletheatre.co.uk",
+      "domainAliases": [
+        "herring-gerbil-e2c7.squarespace.com"
+      ],
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
       "regionInferredAt": "2026-08-15T09:06:13.009Z"
@@ -10325,13 +10416,14 @@
       "region": "london"
     },
     "crazychris": {
-      "displayName": "Crazychris",
+      "displayName": "Crazy Chris",
       "tier": 3,
       "aliases": [
         "crazychris"
       ],
       "domain": "crazychris.net",
-      "region": "london"
+      "region": "london",
+      "displayNameSource": "homepage-reviewed"
     },
     "amyleighchandler": {
       "displayName": "Amy Leigh Chandler",
@@ -10361,13 +10453,14 @@
       "region": "london"
     },
     "dailyinfo": {
-      "displayName": "Dailyinfo",
+      "displayName": "Daily Info",
       "tier": 3,
       "aliases": [
         "dailyinfo"
       ],
       "domain": "dailyinfo.co.uk",
-      "region": "london"
+      "region": "london",
+      "displayNameSource": "homepage-reviewed"
     },
     "theprsd": {
       "displayName": "Theprsd",
@@ -10466,22 +10559,24 @@
       "region": "london"
     },
     "seatplan": {
-      "displayName": "Seatplan",
+      "displayName": "SeatPlan",
       "tier": 4,
       "aliases": [
         "seatplan"
       ],
       "domain": "seatplan.com",
-      "region": "london"
+      "region": "london",
+      "displayNameSource": "homepage-reviewed"
     },
     "stanservice": {
-      "displayName": "Stanservice",
+      "displayName": "stan service",
       "tier": 4,
       "aliases": [
         "stanservice"
       ],
       "domain": "stanservice.substack.com",
-      "region": "london"
+      "region": "london",
+      "displayNameSource": "homepage-reviewed"
     },
     "allthingstheatre": {
       "displayName": "All Things Theatre",
@@ -10552,7 +10647,7 @@
       "domain": "popculturepress.org"
     },
     "outinjersey": {
-      "displayName": "Outinjersey",
+      "displayName": "Out In Jersey",
       "tier": 3,
       "aliases": [
         "outinjersey",
@@ -10563,7 +10658,8 @@
       "region": "us",
       "isDualMarket": true,
       "regionCorrectedBy": "BRO-5896",
-      "regionCorrectedEvidence": "New Jersey LGBTQ magazine (outinjersey.net); BRO-5890 finding"
+      "regionCorrectedEvidence": "New Jersey LGBTQ magazine (outinjersey.net); BRO-5890 finding",
+      "displayNameSource": "homepage-reviewed"
     },
     "closeupculture": {
       "displayName": "Close-Up Culture",
@@ -10698,7 +10794,8 @@
       "domain": "letterboxd.com",
       "isDualMarket": true,
       "regionCorrectedBy": "BRO-5896",
-      "regionCorrectedEvidence": "Headquartered in Auckland, NZ (en.wikipedia.org/wiki/Letterboxd); global platform"
+      "regionCorrectedEvidence": "Headquartered in Auckland, NZ (en.wikipedia.org/wiki/Letterboxd); global platform",
+      "displayNameReviewed": true
     },
     "marquee": {
       "displayName": "marquee",
@@ -10707,12 +10804,12 @@
         "marquee"
       ],
       "domain": "marquee.tv",
-      "region": "london",
-      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
-      "regionInferredAt": "2026-08-18T14:28:06.532Z"
+      "isDualMarket": true,
+      "regionCorrectedBy": "BRO-5896",
+      "regionCorrectedEvidence": "Global performing-arts streaming platform, including international theatre; https://www.marquee.tv/help/article/what-is-marquee-tv (checked 2026-11-09). London-only inference is inappropriate for worldwide streamed productions."
     },
     "myreviewer": {
-      "displayName": "myreviewer",
+      "displayName": "MyReviewer.com",
       "tier": 3,
       "aliases": [
         "myreviewer"
@@ -10720,7 +10817,8 @@
       "domain": "myreviewer.com",
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
-      "regionInferredAt": "2026-08-18T14:28:06.532Z"
+      "regionInferredAt": "2026-08-18T14:28:06.532Z",
+      "displayNameSource": "homepage-reviewed"
     },
     "chicagoconcertreviews": {
       "displayName": "Chicago Concert Reviews",
@@ -10934,12 +11032,13 @@
       "displayNameSource": "homepage"
     },
     "bookevents": {
-      "displayName": "bookevents",
+      "displayName": "NYC Book Events",
       "tier": 3,
       "aliases": [
         "bookevents"
       ],
-      "domain": "bookevents.nyc"
+      "domain": "bookevents.nyc",
+      "displayNameSource": "homepage-reviewed"
     },
     "eventticketscenter": {
       "displayName": "Event Tickets Center",
@@ -10968,12 +11067,13 @@
       "displayNameSource": "homepage"
     },
     "clevescene": {
-      "displayName": "clevescene",
+      "displayName": "Cleveland Scene",
       "tier": 3,
       "aliases": [
         "clevescene"
       ],
-      "domain": "clevescene.com"
+      "domain": "clevescene.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "masslive": {
       "displayName": "masslive",
@@ -11009,7 +11109,8 @@
       "domain": "jackstage.co.uk",
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
-      "regionInferredAt": "2026-08-19T03:13:08.408Z"
+      "regionInferredAt": "2026-08-19T03:13:08.408Z",
+      "displayNameReviewed": true
     },
     "staybook": {
       "displayName": "Staybook",
@@ -11020,7 +11121,8 @@
       "domain": "staybook.in",
       "isDualMarket": true,
       "regionCorrectedBy": "BRO-5896",
-      "regionCorrectedEvidence": "New Delhi address (staybook.in/contact-us)"
+      "regionCorrectedEvidence": "New Delhi address (staybook.in/contact-us)",
+      "displayNameReviewed": true
     },
     "curtaincallbway": {
       "displayName": "Curtain Call",
@@ -11151,7 +11253,7 @@
       "domain": "lavenderafterdark.com"
     },
     "1883magazine": {
-      "displayName": "1883magazine",
+      "displayName": "1883 Magazine",
       "tier": 3,
       "aliases": [
         "1883magazine"
@@ -11159,7 +11261,8 @@
       "domain": "1883magazine.com",
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
-      "regionInferredAt": "2026-08-23T04:30:20.723Z"
+      "regionInferredAt": "2026-08-23T04:30:20.723Z",
+      "displayNameSource": "homepage-reviewed"
     },
     "jacktheladmag": {
       "displayName": "Jack the Lad Magazine",
@@ -11215,20 +11318,22 @@
       "accessModel": "free"
     },
     "goldderby": {
-      "displayName": "Goldderby",
+      "displayName": "Gold Derby",
       "tier": 3,
       "aliases": [
         "goldderby"
       ],
-      "domain": "goldderby.com"
+      "domain": "goldderby.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "thedaviddesk2": {
-      "displayName": "Thedaviddesk2",
+      "displayName": "The David Desk 2",
       "tier": 4,
       "aliases": [
         "thedaviddesk2"
       ],
-      "domain": "thedaviddesk2.blogspot.com"
+      "domain": "thedaviddesk2.blogspot.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "timboatswain": {
       "displayName": "Tim Boatswain",
@@ -11286,7 +11391,8 @@
       "domain": "priceless.com",
       "isDualMarket": true,
       "regionCorrectedBy": "BRO-5896",
-      "regionCorrectedEvidence": "Mastercard Priceless, global experiences platform (35+ destinations)"
+      "regionCorrectedEvidence": "Mastercard Priceless, global experiences platform (35+ destinations)",
+      "displayNameReviewed": true
     },
     "sueterryvoices": {
       "displayName": "Sue Terry Voices",
@@ -11356,12 +11462,13 @@
       "domain": "netheatregeek.com"
     },
     "newsbreak": {
-      "displayName": "Newsbreak",
+      "displayName": "NewsBreak",
       "tier": 3,
       "aliases": [
         "newsbreak"
       ],
-      "domain": "newsbreak.com"
+      "domain": "newsbreak.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "southernartsreviews": {
       "displayName": "Southern Arts Reviews",
@@ -11579,7 +11686,7 @@
       "domain": "thecomedybureau.com"
     },
     "susanelkin": {
-      "displayName": "Susanelkin",
+      "displayName": "Susan Elkin",
       "tier": 3,
       "aliases": [
         "susanelkin"
@@ -11587,7 +11694,8 @@
       "domain": "susanelkin.co.uk",
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
-      "regionInferredAt": "2026-09-20T22:46:45.330Z"
+      "regionInferredAt": "2026-09-20T22:46:45.330Z",
+      "displayNameSource": "homepage-reviewed"
     },
     "essexnewsdaily": {
       "displayName": "Essex News Daily",
@@ -12035,13 +12143,14 @@
       "domain": "rachelweinbergreviews.com"
     },
     "totaltheater1": {
-      "displayName": "Totaltheater1",
+      "displayName": "TotalTheater",
       "tier": 3,
       "aliases": [
         "totaltheater",
         "totaltheater1"
       ],
-      "domain": "totaltheater1.wordpress.com"
+      "domain": "totaltheater1.wordpress.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "timcrouchtheatre": {
       "displayName": "Tim Crouch Theatre",
@@ -12095,12 +12204,13 @@
       "regionInferredAt": "2026-10-04T17:24:04.361Z"
     },
     "newtownbee": {
-      "displayName": "Newtownbee",
+      "displayName": "The Newtown Bee",
       "tier": 3,
       "aliases": [
         "newtownbee"
       ],
-      "domain": "newtownbee.com"
+      "domain": "newtownbee.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "thepoplarreview": {
       "displayName": "The Poplar Review",
@@ -12159,12 +12269,13 @@
       "domain": "thedanielsreview.com"
     },
     "newsfromme": {
-      "displayName": "Newsfromme",
+      "displayName": "News From ME",
       "tier": 3,
       "aliases": [
         "newsfromme"
       ],
-      "domain": "newsfromme.com"
+      "domain": "newsfromme.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "uktw": {
       "displayName": "Uktw",
@@ -12194,12 +12305,13 @@
       "domain": "clickorlando.com"
     },
     "equality365": {
-      "displayName": "Equality365",
+      "displayName": "Equality 365",
       "tier": 3,
       "aliases": [
         "equality365"
       ],
-      "domain": "equality365.com"
+      "domain": "equality365.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "utahconcertreview": {
       "displayName": "Utah Concert Review",
@@ -12210,12 +12322,13 @@
       "domain": "utahconcertreview.com"
     },
     "nowtoronto": {
-      "displayName": "Nowtoronto",
+      "displayName": "NOW Toronto",
       "tier": 3,
       "aliases": [
         "nowtoronto"
       ],
-      "domain": "nowtoronto.com"
+      "domain": "nowtoronto.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "slotkinletter": {
       "displayName": "The Slotkin Letter",
@@ -12234,12 +12347,13 @@
       "domain": "phenomnaltwincities.com"
     },
     "dailyactor": {
-      "displayName": "Dailyactor",
+      "displayName": "Daily Actor",
       "tier": 3,
       "aliases": [
         "dailyactor"
       ],
-      "domain": "dailyactor.com"
+      "domain": "dailyactor.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "australianpridenetwork": {
       "displayName": "Australian Pride Network",
@@ -12258,12 +12372,13 @@
       "domain": "leagueofcincytheatres.info"
     },
     "nwtheatre": {
-      "displayName": "Nwtheatre",
+      "displayName": "NWTheatre",
       "tier": 3,
       "aliases": [
         "nwtheatre"
       ],
-      "domain": "nwtheatre.org"
+      "domain": "nwtheatre.org",
+      "displayNameSource": "homepage-reviewed"
     },
     "rhetoricalreview": {
       "displayName": "Rhetorical Review",
@@ -12336,12 +12451,13 @@
       "domain": "indianapolisrecorder.com"
     },
     "matthewsplace1": {
-      "displayName": "Matthewsplace1",
+      "displayName": "Matthew’s Place",
       "tier": 4,
       "aliases": [
         "matthewsplace1"
       ],
-      "domain": "matthewsplace1.substack.com"
+      "domain": "matthewsplace1.substack.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "jhpentertainment": {
       "displayName": "JHP Entertainment",
@@ -12352,12 +12468,13 @@
       "domain": "jhpentertainment.com"
     },
     "latheatrix": {
-      "displayName": "Latheatrix",
+      "displayName": "LA Theatrix",
       "tier": 3,
       "aliases": [
         "latheatrix"
       ],
-      "domain": "latheatrix.com"
+      "domain": "latheatrix.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "thetangential": {
       "displayName": "The Tangential",
@@ -12392,12 +12509,13 @@
       "domain": "istvandugalin.com"
     },
     "sesayarts": {
-      "displayName": "Sesayarts",
+      "displayName": "Sesaya Arts Magazine",
       "tier": 3,
       "aliases": [
         "sesayarts"
       ],
-      "domain": "sesayarts.com"
+      "domain": "sesayarts.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "new-york-irish-arts": {
       "displayName": "New York Irish Arts",
@@ -12447,9 +12565,9 @@
         "bnn"
       ],
       "domain": "bnn.network",
-      "region": "london",
-      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
-      "regionInferredAt": "2026-10-09T01:54:45.140Z"
+      "isDualMarket": true,
+      "regionCorrectedBy": "BRO-5896",
+      "regionCorrectedEvidence": "BNN Breaking was based in Hong Kong and aggregated international news; https://en.wikipedia.org/wiki/BNN_Breaking and https://mediabiasfactcheck.com/bnn-breaking-bias-and-credibility/ (checked 2026-11-09). One West End show did not establish a London outlet."
     },
     "the-culture-pages": {
       "displayName": "The Culture Pages",
@@ -12471,12 +12589,13 @@
       "domain": "chasingsupermom.com"
     },
     "heyrhody": {
-      "displayName": "Heyrhody",
+      "displayName": "Hey Rhody Media Co.",
       "tier": 3,
       "aliases": [
         "heyrhody"
       ],
-      "domain": "heyrhody.com"
+      "domain": "heyrhody.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "jupiterhadley": {
       "displayName": "Jupiter & Dann",
@@ -12501,12 +12620,13 @@
       "regionCorrectedEvidence": "\"Based in Dublin\" (jolienstheatrediary.com)"
     },
     "austin101magazine": {
-      "displayName": "Austin101magazine",
+      "displayName": "Austin 101 Magazine",
       "tier": 3,
       "aliases": [
         "austin101magazine"
       ],
-      "domain": "austin101magazine.com"
+      "domain": "austin101magazine.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "belmontvision": {
       "displayName": "Belmont Vision",
@@ -12517,20 +12637,22 @@
       "domain": "belmontvision.com"
     },
     "gamerant": {
-      "displayName": "Gamerant",
+      "displayName": "GameRant",
       "tier": 3,
       "aliases": [
         "gamerant"
       ],
-      "domain": "gamerant.com"
+      "domain": "gamerant.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "huntnewsnu": {
-      "displayName": "Huntnewsnu",
+      "displayName": "The Huntington News",
       "tier": 3,
       "aliases": [
         "huntnewsnu"
       ],
-      "domain": "huntnewsnu.com"
+      "domain": "huntnewsnu.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "intermissionblog": {
       "displayName": "Intermission",
@@ -12611,7 +12733,7 @@
       ]
     },
     "maturetimes": {
-      "displayName": "Maturetimes",
+      "displayName": "Mature Times",
       "tier": 3,
       "aliases": [
         "maturetimes"
@@ -12619,7 +12741,8 @@
       "domain": "maturetimes.co.uk",
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
-      "regionInferredAt": "2026-10-10T07:38:20.853Z"
+      "regionInferredAt": "2026-10-10T07:38:20.853Z",
+      "displayNameSource": "homepage-reviewed"
     },
     "hackneycitizen": {
       "displayName": "Hackney Citizen",
@@ -12633,7 +12756,7 @@
       "regionInferredAt": "2026-10-10T08:05:11.175Z"
     },
     "curtainsup": {
-      "displayName": "Curtainsup",
+      "displayName": "CurtainsUp",
       "tier": 3,
       "aliases": [
         "curtainsup"
@@ -12641,7 +12764,8 @@
       "domain": "curtainsup.online",
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
-      "regionInferredAt": "2026-10-10T08:23:27.367Z"
+      "regionInferredAt": "2026-10-10T08:23:27.367Z",
+      "displayNameSource": "homepage-reviewed"
     },
     "theatretradge": {
       "displayName": "TheatreTradge",
@@ -12652,7 +12776,7 @@
       "domain": "theatretradge.com"
     },
     "theamerican": {
-      "displayName": "Theamerican",
+      "displayName": "The American",
       "tier": 3,
       "aliases": [
         "theamerican"
@@ -12660,7 +12784,8 @@
       "domain": "theamerican.co.uk",
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
-      "regionInferredAt": "2026-10-10T16:06:25.478Z"
+      "regionInferredAt": "2026-10-10T16:06:25.478Z",
+      "displayNameSource": "homepage-reviewed"
     },
     "outfrontmagazine": {
       "displayName": "OUT FRONT Magazine",
@@ -12671,15 +12796,16 @@
       "domain": "outfrontmagazine.com"
     },
     "hercampus": {
-      "displayName": "Hercampus",
+      "displayName": "Her Campus",
       "tier": 3,
       "aliases": [
         "hercampus"
       ],
-      "domain": "hercampus.com"
+      "domain": "hercampus.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "markaspen": {
-      "displayName": "Markaspen",
+      "displayName": "Mark Aspen",
       "tier": 3,
       "aliases": [
         "markaspen"
@@ -12687,10 +12813,11 @@
       "domain": "markaspen.com",
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
-      "regionInferredAt": "2026-10-11T02:51:19.369Z"
+      "regionInferredAt": "2026-10-11T02:51:19.369Z",
+      "displayNameSource": "homepage-reviewed"
     },
     "musicomh": {
-      "displayName": "Musicomh",
+      "displayName": "musicOMH",
       "tier": 3,
       "aliases": [
         "musicomh"
@@ -12698,7 +12825,8 @@
       "domain": "musicomh.com",
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
-      "regionInferredAt": "2026-10-11T20:23:49.717Z"
+      "regionInferredAt": "2026-10-11T20:23:49.717Z",
+      "displayNameSource": "homepage-reviewed"
     },
     "local-theatre-ny": {
       "displayName": "Local Theatre Ny",
@@ -12717,12 +12845,13 @@
       "domain": "medicine-opera.com"
     },
     "pghlesbian": {
-      "displayName": "Pghlesbian",
+      "displayName": "Pittsburgh Lesbian Correspondents",
       "tier": 3,
       "aliases": [
         "pghlesbian"
       ],
-      "domain": "pghlesbian.com"
+      "domain": "pghlesbian.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "laughingplace": {
       "displayName": "LaughingPlace.com",
@@ -12765,12 +12894,13 @@
       "domain": "ourtheatrevoice.com"
     },
     "operacanada": {
-      "displayName": "Operacanada",
+      "displayName": "Opera Canada",
       "tier": 3,
       "aliases": [
         "operacanada"
       ],
-      "domain": "operacanada.ca"
+      "domain": "operacanada.ca",
+      "displayNameSource": "homepage-reviewed"
     },
     "artsreviewhub": {
       "displayName": "Arts Review Hub",
@@ -12787,7 +12917,8 @@
       "aliases": [
         "fandango"
       ],
-      "domain": "fandango.com"
+      "domain": "fandango.com",
+      "displayNameReviewed": true
     },
     "onstagepittsburgh": {
       "displayName": "onStage Pittsburgh",
@@ -12806,20 +12937,22 @@
       "domain": "qulturvultur.com"
     },
     "thecrimson": {
-      "displayName": "Thecrimson",
+      "displayName": "The Harvard Crimson",
       "tier": 3,
       "aliases": [
         "thecrimson"
       ],
-      "domain": "thecrimson.com"
+      "domain": "thecrimson.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "thesuburban": {
-      "displayName": "Thesuburban",
+      "displayName": "The Suburban",
       "tier": 3,
       "aliases": [
         "thesuburban"
       ],
-      "domain": "thesuburban.com"
+      "domain": "thesuburban.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "newyorksocialdiary": {
       "displayName": "New York Social Diary",
@@ -12841,12 +12974,13 @@
       "domain": "warwickshireworld.com"
     },
     "channel3000": {
-      "displayName": "Channel3000",
+      "displayName": "Channel 3000",
       "tier": 3,
       "aliases": [
         "channel3000"
       ],
-      "domain": "channel3000.com"
+      "domain": "channel3000.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "the-tennessee-tribune": {
       "displayName": "The Tennessee Tribune",
@@ -12865,12 +12999,13 @@
       "domain": "bouquetsbrickbatsreviews.com"
     },
     "corrblimey": {
-      "displayName": "Corrblimey",
+      "displayName": "Corr Blimey",
       "tier": 3,
       "aliases": [
         "corrblimey"
       ],
-      "domain": "corrblimey.uk"
+      "domain": "corrblimey.uk",
+      "displayNameSource": "homepage-reviewed"
     },
     "theargus": {
       "displayName": "Theargus",
@@ -12956,7 +13091,7 @@
       "regionInferredAt": "2026-10-13T17:40:26.215Z"
     },
     "mildconcern": {
-      "displayName": "Mildconcern",
+      "displayName": "Mild Concern",
       "tier": 4,
       "aliases": [
         "mildconcern"
@@ -12964,7 +13099,8 @@
       "domain": "mildconcern.substack.com",
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
-      "regionInferredAt": "2026-10-13T17:40:26.215Z"
+      "regionInferredAt": "2026-10-13T17:40:26.215Z",
+      "displayNameSource": "homepage-reviewed"
     },
     "louder-than-war": {
       "displayName": "Louder Than War",
@@ -13082,22 +13218,22 @@
       "regionInferredAt": "2026-10-14T08:48:29.910Z"
     },
     "munroreview": {
-      "displayName": "Munroreview",
+      "displayName": "The Munro Review",
       "tier": 3,
       "aliases": [
         "munroreview"
       ],
-      "displayNameInferred": true,
-      "domain": "munroreview.com"
+      "domain": "munroreview.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "burghvivant": {
-      "displayName": "Burghvivant",
+      "displayName": "'Burgh Vivant",
       "tier": 3,
       "aliases": [
         "burghvivant"
       ],
-      "displayNameInferred": true,
-      "domain": "burghvivant.org"
+      "domain": "burghvivant.org",
+      "displayNameSource": "homepage-reviewed"
     },
     "mixuptheatre": {
       "displayName": "Mix Up Theatre",
@@ -13118,25 +13254,25 @@
       "domain": "sarahmonaghan.com"
     },
     "egazette": {
-      "displayName": "Egazette",
+      "displayName": "EGazette",
       "tier": 3,
       "aliases": [
         "egazette"
       ],
-      "displayNameInferred": true,
-      "domain": "egazette.ai"
+      "domain": "egazette.ai",
+      "displayNameSource": "homepage-reviewed"
     },
     "mycultural": {
-      "displayName": "Mycultural",
+      "displayName": "My Cultural Life",
       "tier": 3,
       "aliases": [
         "mycultural"
       ],
-      "displayNameInferred": true,
       "domain": "mycultural.life",
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
-      "regionInferredAt": "2026-10-15T04:24:31.960Z"
+      "regionInferredAt": "2026-10-15T04:24:31.960Z",
+      "displayNameSource": "homepage-reviewed"
     },
     "thestudentnews": {
       "displayName": "The Student",
@@ -13210,13 +13346,13 @@
       "domain": "inkansascity.com"
     },
     "reviewstl": {
-      "displayName": "Reviewstl",
+      "displayName": "ReviewSTL",
       "tier": 3,
       "aliases": [
         "reviewstl"
       ],
-      "displayNameInferred": true,
-      "domain": "reviewstl.com"
+      "domain": "reviewstl.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "whatsgoodtodo": {
       "displayName": "What's Good To Do",
@@ -13264,16 +13400,16 @@
       "regionInferredAt": "2026-10-17T15:42:19.437Z"
     },
     "number9reviews": {
-      "displayName": "Number9reviews",
+      "displayName": "Number 9",
       "tier": 3,
       "aliases": [
         "number9reviews"
       ],
-      "displayNameInferred": true,
       "domain": "number9reviews.blogspot.com",
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
-      "regionInferredAt": "2026-10-17T23:19:31.261Z"
+      "regionInferredAt": "2026-10-17T23:19:31.261Z",
+      "displayNameSource": "homepage-reviewed"
     },
     "sequenza21": {
       "displayName": "Sequenza21",
@@ -13282,7 +13418,8 @@
         "sequenza21"
       ],
       "displayNameInferred": true,
-      "domain": "sequenza21.com"
+      "domain": "sequenza21.com",
+      "displayNameReviewed": true
     },
     "thecontextengine": {
       "displayName": "The Context Engine",
@@ -13328,13 +13465,13 @@
       "domain": "oazis.app"
     },
     "headtopics": {
-      "displayName": "Headtopics",
+      "displayName": "Head Topics",
       "tier": 3,
       "aliases": [
         "headtopics"
       ],
-      "displayNameInferred": true,
-      "domain": "us.headtopics.com"
+      "domain": "us.headtopics.com",
+      "displayNameSource": "homepage-reviewed"
     },
     "soundbehindcurtain": {
       "displayName": "Sound Behind Curtain",
@@ -13404,16 +13541,16 @@
       "regionInferredAt": "2026-10-19T14:55:04.601Z"
     },
     "itgirlworld": {
-      "displayName": "Itgirlworld",
+      "displayName": "ItGirl World",
       "tier": 3,
       "aliases": [
         "itgirlworld"
       ],
-      "displayNameInferred": true,
       "domain": "itgirlworld.co.uk",
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
-      "regionInferredAt": "2026-10-19T15:26:34.879Z"
+      "regionInferredAt": "2026-10-19T15:26:34.879Z",
+      "displayNameSource": "homepage-reviewed"
     },
     "1blocknews": {
       "displayName": "1BlockNews",
@@ -13433,9 +13570,9 @@
         "grandgoldman"
       ],
       "domain": "grandgoldman.com",
-      "region": "london",
-      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
-      "regionInferredAt": "2026-10-20T11:51:11.037Z"
+      "isDualMarket": true,
+      "regionCorrectedBy": "BRO-5896",
+      "regionCorrectedEvidence": "Global news and travel publication covering international destinations, not a London theatre outlet; https://grandgoldman.com/ and https://grandgoldman.com/pages/careers (checked 2026-11-09). Corpus includes regional coverage as well as two London shows."
     },
     "omahamagazine": {
       "displayName": "Omaha Magazine",
@@ -14020,7 +14157,8 @@
       ],
       "domain": "rescripted.org",
       "region": "chicago",
-      "accessModel": "free"
+      "accessModel": "free",
+      "displayNameReviewed": true
     },
     "buskingattheseams": {
       "displayName": "Busking At The Seams",
@@ -14054,14 +14192,15 @@
       "accessModel": "free"
     },
     "rollingout": {
-      "displayName": "Rollingout",
+      "displayName": "Rolling Out",
       "tier": 4,
       "aliases": [
         "rollingout"
       ],
       "domain": "rollingout.com",
       "region": "chicago",
-      "accessModel": "free"
+      "accessModel": "free",
+      "displayNameSource": "homepage-reviewed"
     },
     "chicagopride": {
       "displayName": "Chicago Pride",
@@ -15018,6 +15157,102 @@
         "white-rhino-report"
       ],
       "domain": "whiterhinoreport.blogspot.com"
+    },
+    "ricethresher": {
+      "displayName": "The Rice Thresher",
+      "tier": 3,
+      "aliases": [
+        "ricethresher"
+      ],
+      "domain": "ricethresher.org"
+    },
+    "barron-s": {
+      "displayName": "Barron S",
+      "tier": 3,
+      "aliases": [
+        "barron-s"
+      ],
+      "domain": "blogs.barrons.com"
+    },
+    "ought-to-be-clowns-uk": {
+      "displayName": "Ought To Be Clowns Uk",
+      "tier": 4,
+      "aliases": [
+        "ought-to-be-clowns-uk"
+      ],
+      "domain": "oughttobeclowns.blogspot.com"
+    },
+    "cervelli-on-stage": {
+      "displayName": "Cervelli On Stage",
+      "tier": 4,
+      "aliases": [
+        "cervelli-on-stage"
+      ],
+      "domain": "cervellionstage.blogspot.com"
+    },
+    "the-playfixer": {
+      "displayName": "The Playfixer",
+      "tier": 3,
+      "aliases": [
+        "the-playfixer"
+      ],
+      "domain": "playfixer.com"
+    },
+    "thescotsreviewer": {
+      "displayName": "The Scots Reviewer",
+      "tier": 3,
+      "aliases": [
+        "thescotsreviewer"
+      ],
+      "domain": "thescotsreviewer.com"
+    },
+    "thegreekpress": {
+      "displayName": "The Greek Press",
+      "tier": 3,
+      "aliases": [
+        "thegreekpress"
+      ],
+      "domain": "thegreekpress.ca"
+    },
+    "collindentonspotlighter": {
+      "displayName": "Collin-Denton Spotlighter",
+      "tier": 3,
+      "aliases": [
+        "collindentonspotlighter"
+      ],
+      "domain": "collindentonspotlighter.com"
+    },
+    "fuck-yeah-great-plays": {
+      "displayName": "Fuck Yeah Great Plays",
+      "tier": 3,
+      "aliases": [
+        "fuck-yeah-great-plays"
+      ],
+      "domain": "fyeahgreatplays.com"
+    },
+    "myscena": {
+      "displayName": "Myscena",
+      "tier": 3,
+      "aliases": [
+        "myscena"
+      ],
+      "domain": "myscena.org"
+    },
+    "becauseitoldyouso": {
+      "displayName": "Because I Told You So",
+      "tier": 3,
+      "aliases": [
+        "becauseitoldyouso"
+      ],
+      "domain": "becauseitoldyouso.com"
+    },
+    "mochamanstyle": {
+      "displayName": "Mocha Man Style",
+      "tier": 3,
+      "aliases": [
+        "mochamanstyle"
+      ],
+      "domain": "mochamanstyle.com"
     }
   },
   "_aliasIndex": {

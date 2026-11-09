@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/audit/.publish-date-triage-VEV30x/files.json (read by the test); data/audit/.publish-date-triage-VEV30x (untracked core data); data/audit/.publish-date-triage-Xqa6H5 (untracked core data); +8 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { createRequire } from 'node:module';

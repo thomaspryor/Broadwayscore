@@ -47,8 +47,11 @@ function run() {
       if (DRY_RUN) {
         console.log(`  [dry-run] ${showDir}/${file}: ${extracted}`);
       } else {
+        const _priorDate = data.publishDate;
         data.publishDate = extracted;
         data.dateSource = 'text-regex';
+        // BRO-6983: this write skips safeWriteReview, so run its cross-market (class A) check.
+        require('./lib/review-write-guard').flagSiblingEraDateOnPersist(filePath, { publishDate: _priorDate }, data);
         fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
       }
       updated++;

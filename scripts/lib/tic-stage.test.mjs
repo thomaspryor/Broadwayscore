@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/venue-metros.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 import fs from 'node:fs';
 import test from 'node:test';
 import assert from 'node:assert/strict';

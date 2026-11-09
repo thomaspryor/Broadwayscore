@@ -69,6 +69,21 @@ function excessivePreviewGap(show, opts = {}) {
 }
 
 /**
+ * WARNING tier below excessivePreviewGap (BRO-7131). A modern run with more than ~4 months of
+ * previews is rare; far more often the record kept an earlier announcement's previews date after
+ * a transfer or postponement (tango-off-west-end-2026: 205 days, a moved venue), or stored the
+ * first preview as opening. The 365-day error missed every one of these. Warning only: a few
+ * long-preview runs are real.
+ * @param {object} show
+ * @param {object} [opts] - { warnGapDays = 120, sinceOpening = '2024-01-01' }
+ */
+function longPreviewGap(show, opts = {}) {
+  const { warnGapDays = 120, sinceOpening = '2024-01-01' } = opts;
+  if (!show || !show.openingDate || show.openingDate < sinceOpening) return false;
+  return excessivePreviewGap(show, { maxGapDays: warnGapDays });
+}
+
+/**
  * HARD signal: this show's openingDate (or previewsStartDate) is byte-identical to a
  * DIFFERENT same-title production's. Distinct productions never share an opening night, so
  * an exact match is the date having been cloned from the namesake.
@@ -107,4 +122,4 @@ function suspiciousInheritedYear(show, currentYear, opts = {}) {
     && DATE_CHECKED_STATUSES.has(show.status);
 }
 
-module.exports = { previewsAfterOpening, excessivePreviewGap, inheritedDateFromSibling, suspiciousInheritedYear, normTitle, DATE_CHECKED_STATUSES };
+module.exports = { previewsAfterOpening, excessivePreviewGap, longPreviewGap, inheritedDateFromSibling, suspiciousInheritedYear, normTitle, DATE_CHECKED_STATUSES };

@@ -45,6 +45,7 @@ import {
   getScoreTier,
 } from '@/components/show-cards';
 import MiniStars from '@/components/user/Stars';
+import StarRating from '@/components/user/StarRating';
 import WatchlistPlanCard, { PlanRow, DateTile } from '@/components/user/WatchlistPlanCard';
 import { buildPlannedShowEvent } from '@/lib/calendar-event';
 import RatingEditor, { type RatingEditorSaveData } from '@/components/user/RatingEditor';
@@ -59,13 +60,18 @@ import { useUserReviews } from '@/hooks/useUserReviews';
 import { useWatchlist } from '@/hooks/useWatchlist';
 import { useUserLists } from '@/hooks/useUserLists';
 import { useToastSafe } from '@/components/ui/Toast';
-import { savePendingAction } from '@/lib/deferred-auth';
+import { savePendingAction, clearPendingAction } from '@/lib/deferred-auth';
 import { useLocalWatchlist } from '@/hooks/useLocalWatchlist';
 import { removeLocalShow } from '@/lib/local-watchlist';
 import { getWatchlistCtaLabel } from '@/lib/watchlist-cta-label';
 import { usePendingRatingDraft } from '@/hooks/usePendingRatingDraft';
 import { invalidateRatingsCache } from '@/hooks/useMyRating';
+import { saveLocalRating } from '@/lib/local-ratings';
+import { useLocalRatings } from '@/hooks/useLocalRatings';
+import { LOCAL_RATINGS_MIGRATED_EVENT } from '@/components/user/LocalRatingsMigrator';
 import { supabaseRestInsert, supabaseRestUpdate } from '@/lib/supabase-rest';
+import { uploadReviewPhoto, emitReviewPhotosChanged } from '@/lib/review-photos';
+import { newPhotoId } from '@/lib/review-photo-model';
 import { featureFlags } from '@/config/feature-flags';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getCurrencySymbol, getRegionalLabel } from '@/lib/market-utils';
@@ -184,6 +190,8 @@ function Inner({
   const { reviews, getReviewsForShow, deleteReview } = useUserReviews(user?.id || null);
   const { isWatchlisted, addToWatchlist, removeFromWatchlist, getWatchlist, updatePlannedDate, updatePerformance, watchlist } = useWatchlist(user?.id || null);
   const { lists, getLists } = useUserLists(user?.id || null);
+  const { getLocalRating } = useLocalRatings();
+  const localRating = !isAuthenticated ? getLocalRating(show.id) : null;
   const { showToast } = useToastSafe();
 
   const [ratePanelOpen, setRatePanelOpen] = useState(false);
@@ -192,7 +200,14 @@ function Inner({
   // Return focus to the rate button when the editor closes — the inline
   // (desktop) editor is not a Modal, so nothing else restores focus and it
   // falls to <body>, stranding keyboard/screen-reader users (audit P2).
-  const refocusRateBtn = () => requestAnimationFrame(() => rateBtnRef.current?.focus());
+  // On phones the Rate it button is display:none while the star row shows, so
+  // focus goes to the first star instead (focus on a hidden button is a no-op).
+  const mobileStarsRef = useRef<HTMLDivElement>(null);
+  const refocusRateBtn = () => requestAnimationFrame(() => {
+    const btn = rateBtnRef.current;
+    if (btn && btn.offsetParent !== null) btn.focus();
+    else mobileStarsRef.current?.querySelector<HTMLButtonElement>('button')?.focus();
+  });
 
   // ?rate=1 / ?stars=N / ?edit=1 deep-link helpers (kept compatible with /my-shows entry points).
   // Read once after mount so the prerendered HTML stays server-rendered.
@@ -216,6 +231,8 @@ function Inner({
   const hasRating = ratingCount > 0;
   // Keep "Log another viewing" for a show already rated; hide a first "Rate it" until it could have been seen.
   const showRateButton = seeable || hasRating;
+  // Phone star row: only for a first rating on a show the viewer could have seen.
+  const showMobileStars = showRateButton && !hasRating;
   const isMulti = ratingCount > 1;
   const { isSavedLocally, toggleLocal } = useLocalWatchlist();
   // Signed out, "Want to See" saves on this device (BRO-4616).
@@ -265,6 +282,14 @@ function Inner({
     }
   }, [isAuthenticated, user, show.id, getReviewsForShow, getWatchlist, getLists]);
 
+  // Signed-out ratings just moved into the account: show them without a reload.
+  useEffect(() => {
+    if (!isAuthenticated || !user) return;
+    const onMigrated = () => { getReviewsForShow(show.id); };
+    document.addEventListener(LOCAL_RATINGS_MIGRATED_EVENT, onMigrated);
+    return () => document.removeEventListener(LOCAL_RATINGS_MIGRATED_EVENT, onMigrated);
+  }, [isAuthenticated, user, show.id, getReviewsForShow]);
+
   // Draft carried across sign-in (rating + typed note + date + target review id).
   const { pendingDraft, setPendingDraft, hasExecutedPending, saveDraft } = usePendingRatingDraft(show.id, {
     isAuthenticated,
@@ -277,8 +302,8 @@ function Inner({
     onOtherPendingAction: (pending) => {
       if (pending.type === 'watchlist') {
         addToWatchlist(show.id)
-          .then(() => showToast?.(<>Added to <a href="/my-shows?tab=watchlist" className="underline hover:text-white/90">Watchlist</a></>, 'success'))
-          .catch(() => showToast?.('Failed to add to watchlist.', 'error'));
+          .then(() => showToast?.(<>Added to <a href="/my-shows?tab=watchlist" className="underline hover:text-white/90">To See</a></>, 'success'))
+          .catch(() => showToast?.('Couldn’t add to To See.', 'error'));
       }
     },
   });
@@ -330,13 +355,13 @@ function Inner({
     try {
       if (onWatchlist) {
         await removeFromWatchlist(show.id);
-        showToast?.(<>Removed from <a href="/my-shows?tab=watchlist" className="underline hover:text-white/90">Watchlist</a></>, 'info');
+        showToast?.(<>Removed from <a href="/my-shows?tab=watchlist" className="underline hover:text-white/90">To See</a></>, 'info');
       } else {
         await addToWatchlist(show.id);
-        showToast?.(<>Added to <a href="/my-shows?tab=watchlist" className="underline hover:text-white/90">Watchlist</a></>, 'success');
+        showToast?.(<>Added to <a href="/my-shows?tab=watchlist" className="underline hover:text-white/90">To See</a></>, 'success');
       }
     } catch {
-      showToast?.('Failed to update watchlist.', 'error');
+      showToast?.('Couldn’t update To See.', 'error');
     }
   }, [isAuthenticated, authLoading, onWatchlist, show.id, addToWatchlist, removeFromWatchlist, toggleLocal, showToast]);
 
@@ -366,19 +391,35 @@ function Inner({
   // open with the typed note intact when this rejects. So on the authed path we
   // THROW on failure (no swallow, no close-in-finally) and let a resolved promise
   // signal success — the editor then calls onSaved to close.
-  const handleSaveReview = useCallback(async (data: RatingEditorSaveData): Promise<void | 'auth-gated'> => {
+  const handleSaveReview = useCallback(async (data: RatingEditorSaveData): Promise<void | 'auth-gated' | 'saved-local'> => {
     if (!user) {
       if (authLoading) {
         // Session still restoring for an already-signed-in user — don't bounce
         // them to sign-in; surface a retryable error in the editor instead.
         throw new Error('Still restoring your session. Tap Retry in a moment.');
       }
-      // Gate at Save — persist the full draft, then sign in. The editor stays
-      // open behind the sign-in modal ('auth-gated'), so cancelling sign-in
-      // loses nothing; completing it lets the pending-action effect resume.
-      saveDraft(data);
+      // Save first, ask later (BRO-6917): keep the rating on this device so a
+      // dismissed sign-in loses nothing, then offer sign-in. LocalRatingsMigrator
+      // moves it into the account at sign-in; the one-hour draft is not needed.
+      const next = saveLocalRating({
+        showId: show.id,
+        rating: data.rating,
+        ...(data.reviewText ? { reviewText: data.reviewText } : {}),
+        ...(data.dateSeen ? { dateSeen: data.dateSeen } : {}),
+        ...(data.timeSlot ? { timeSlot: data.timeSlot } : {}),
+        ...(data.curtainTime ? { curtainTime: data.curtainTime } : {}),
+        ...(data.seat ? { seat: data.seat } : {}),
+      });
+      removeLocalShow(show.id); // rated = seen, off the want-to-see list
+      trackUgc('rating_saved_local', {
+        show_id: show.id,
+        source: 'show_page',
+        rating: data.rating,
+        has_review_text: !!data.reviewText,
+        local_count: next.length,
+      });
       showSignIn('rating', 'show_rating_save');
-      return 'auth-gated';
+      return 'saved-local';
     }
     if (data.reviewId) {
       const filters = `id=eq.${data.reviewId}&user_id=eq.${user.id}`;
@@ -395,7 +436,7 @@ function Inner({
       if (!updated) throw new Error('This rating no longer exists. It may have been deleted elsewhere.');
       showToast?.(<>Updated in <a href="/my-shows" className="underline hover:text-white/90">My Ratings &amp; Reviews</a></>, 'success');
     } else {
-      const { error } = await supabaseRestInsert('reviews', {
+      const { data: inserted, error } = await supabaseRestInsert<{ id?: string }>('reviews', {
         user_id: user.id,
         show_id: show.id,
         rating: data.rating,
@@ -405,6 +446,19 @@ function Inner({
       });
       if (error) throw new Error(error.message);
       showToast?.(<>Added to <a href="/my-shows" className="underline hover:text-white/90">My Ratings &amp; Reviews</a></>, 'success');
+      // Photos staged on a brand-new rating (BRO-6963, app parity): the review
+      // exists now, so upload them. The rating is already saved, so a failed
+      // photo is a toast, never a failed save.
+      if (data.photos?.length) {
+        const newReviewId = inserted?.id;
+        let failed = 0;
+        for (const file of data.photos) {
+          if (!newReviewId) { failed++; continue; }
+          try { await uploadReviewPhoto({ userId: user.id, reviewId: newReviewId, photoId: newPhotoId(), file }); } catch { failed++; }
+        }
+        if (newReviewId) emitReviewPhotosChanged(newReviewId);
+        if (failed) showToast?.(`${failed === 1 ? 'A photo' : `${failed} photos`} didn’t upload. Add ${failed === 1 ? 'it' : 'them'} from your entry in My Ratings & Reviews.`, 'error');
+      }
       // Watchlist = shows you WANT to see. Rating a show means you've seen it,
       // so drop any watchlist entry (owner rule 2026-07-12 — replaces the old
       // "watchlist and rating are independent" decision). Non-fatal: the rating
@@ -417,7 +471,7 @@ function Inner({
     }
     await getReviewsForShow(show.id);
     invalidateRatingsCache();
-  }, [user, authLoading, show.id, getReviewsForShow, showToast, showSignIn, removeFromWatchlist, saveDraft]);
+  }, [user, authLoading, show.id, getReviewsForShow, showToast, showSignIn, removeFromWatchlist]);
 
   const handleRateSaved = useCallback(() => {
     setRatePanelOpen(false);
@@ -709,9 +763,20 @@ function Inner({
       {/* Action buttons row — same geometry as the ticket buttons below
           (h-10 / rounded-lg / horizontal icon+label); a taller rounder shape
           here read as mismatched (owner report, 2026-07-17). */}
+      {/* Phones only: tap-to-rate star row, matching the iOS app. First rating only;
+          a rated show keeps "Log another viewing" and the rating card. A tap seeds
+          the same fresh rating panel as the poster stars (handlePosterStarsPick). */}
+      {userFeaturesEnabled && showMobileStars && (
+        <div ref={mobileStarsRef} className="sm:hidden rounded-lg border border-white/10 bg-white/5 px-3 pt-2.5 pb-2">
+          <p className="text-[11px] font-semibold uppercase tracking-widest text-fg-muted mb-1">Tap to rate</p>
+          <StarRating rating={null} onRatingChange={handlePosterStarsPick} size="lg" hideLabel fill />
+        </div>
+      )}
       {userFeaturesEnabled && (
         <div className={`grid gap-2 ${showRateButton
-          ? (isAuthenticated ? 'grid-cols-[1fr_1fr_auto]' : 'grid-cols-2')
+          ? (isAuthenticated
+              ? (showMobileStars ? 'grid-cols-[1fr_auto] sm:grid-cols-[1fr_1fr_auto]' : 'grid-cols-[1fr_1fr_auto]')
+              : (showMobileStars ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-2'))
           : (isAuthenticated ? 'grid-cols-[1fr_auto]' : 'grid-cols-1')}`}>
           <button
             type="button"
@@ -732,7 +797,7 @@ function Inner({
             type="button"
             ref={rateBtnRef}
             onClick={handleRateIt}
-            className="flex items-center justify-center gap-1.5 h-10 px-2 rounded-lg border bg-white/10 border-white/15 text-white hover:bg-white/15 hover:border-white/25 transition-all whitespace-nowrap"
+            className={`${showMobileStars ? 'hidden sm:flex' : 'flex'} items-center justify-center gap-1.5 h-10 px-2 rounded-lg border bg-white/10 border-white/15 text-white hover:bg-white/15 hover:border-white/25 transition-all whitespace-nowrap`}
           >
             <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
@@ -767,6 +832,7 @@ function Inner({
       {/* Membership caption — one line gathering ALL list membership: the
           Watchlist link first (the "On your list" button is a TOGGLE and must
           not navigate), then custom lists. Owner design pick, 2026-07-19. */}
+
       {userFeaturesEnabled && (onWatchlist || firstListContainingShow) && (
         <p className="text-xs text-fg-muted flex items-center gap-1.5">
           <svg className="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -781,7 +847,7 @@ function Inner({
                   href="/my-shows?tab=watchlist"
                   className="text-brand/90 hover:text-brand transition-colors border-b border-dotted border-brand/30"
                 >
-                  Watchlist
+                  To See list
                 </Link>
               </>
             )}
@@ -820,6 +886,43 @@ function Inner({
         />
       )}
 
+      {/* Signed-out rating, kept on this device until sign-in. Same row as the
+          signed-in "Your rating" card so it reads as the same design. */}
+      {userFeaturesEnabled && localRating && !hasRating && !ratePanelOpen && (
+        <div className="card flex flex-col gap-3 p-3" data-testid="local-rating-note">
+          <div className="flex items-center gap-3">
+            <StarTile />
+            <div className="min-w-0 flex-1">
+              <p className="text-sm sm:text-base font-semibold text-white">
+                Your rating
+                <span className="mt-1 block w-fit sm:mt-0 sm:ml-2 sm:inline-block whitespace-nowrap align-middle rounded-full bg-amber-400/15 px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide text-amber-300">On this device</span>
+              </p>
+              <span className="flex items-center gap-2 mt-1">
+                <MiniStars rating={localRating.rating} />
+                <span className="text-sm font-bold text-amber-400 tabular-nums">{localRating.rating.toFixed(1)}<span className="sr-only"> out of 5</span></span>
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={() => showSignIn('rating', 'show_rating_note')}
+              className="btn-primary text-sm whitespace-nowrap sm:hidden"
+            >
+              Keep it
+            </button>
+          </div>
+          <p className="hidden sm:block text-sm text-gray-400">
+            Saved on this device. Sign in to keep it, see it on your phone and laptop, and build your diary.
+          </p>
+          <button
+            type="button"
+            onClick={() => showSignIn('rating', 'show_rating_note')}
+            className="btn-primary hidden sm:block w-full text-sm"
+          >
+            Sign in to keep it
+          </button>
+        </div>
+      )}
+
       {/* Rating editor — bottom-sheet on mobile, inline card on desktop. Adjustable
           stars live inside; a failed save keeps the panel open with the note intact.
           suggestedDateSeen: watchlist planned-date prefills Date Seen for any
@@ -840,6 +943,7 @@ function Inner({
           initialSeat={editingReview ? editingReview.seat ?? null : pendingDraft?.seat ?? null}
           suggestedShowtime={editingReview ? null : planShowtime}
           mode={editingReview || pendingDraft?.reviewId ? 'edit' : hasRating ? 'append' : 'new'}
+          stagePhotos={!!user}
           onSave={handleSaveReview}
           onSaved={handleRateSaved}
           onCancel={handleCancelRate}

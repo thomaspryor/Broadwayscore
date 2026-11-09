@@ -25,18 +25,20 @@ const GUARDS_SRC = fs.readFileSync(new URL('../../scripts/lib/review-guards.js',
 const REBUILD_SRC = fs.readFileSync(new URL('../../scripts/rebuild-all-reviews.js', import.meta.url), 'utf8');
 
 const INVENTORY = {
+  // BRO-2453: the four early file gates (cancelled-before-opening, unverifiable
+  // web-search row, preview/first-look piece, combined review of another
+  // member) live in decideEarlyFileExclusion, which rebuild AND explainExclusion
+  // both call, so they can no longer drift.
+  decideEarlyFileExclusion: 'live',
   hasIncludableSyndicationPrimary: 'live',
   cvFlagVetoedInWindow: 'live',
   getCriticRegistry: 'live',
   isBodylessAggregatorScoreUncorroborated: 'live',
-  isCancelledBeforeOpeningShow: 'live',
   isLikelyStaleRoundupFlag: 'live',
   isLikelyStaleSuspectedMisattribution: 'live',
   isNamedNonReviewUrlRecord: 'live',
   isNonReviewDemotedByFreshCV: 'live',
   isPrematureReviewForUnopenedShow: 'live',
-  isPreviewFirstLookPiece: 'live',
-  isCombinedReviewOfOtherMemberOnly: 'live',
   // BRO-5795: rebuild and explainExclusion both call this stale-flag check.
   isFullTextWrongAuthorActive: 'live',
   isRejectedAtExclusion: 'live',
@@ -47,7 +49,6 @@ const INVENTORY = {
   // BRO-6745: the rebuild reaches the stale-CV-verdict override through the CV-promoted nonReview demotion.
   isStaleCvNonReviewVerdictOverruled: 'live-via:isNonReviewDemotedByFreshCV',
   isRoundupPageAsReview: 'live',
-  isUnverifiableWebSearchRow: 'live',
   // BRO-5501: the rebuild decides duplicateOf inheritance through duplicateOfInheritedFlag, which runs this text test.
   textsConfirmedDifferent: 'live-via:duplicateOfInheritedFlag',
   // BRO-5129: the census-path duplicateOf branch asks it directly, same as the rebuild's refInheritedFlag.
@@ -176,6 +177,15 @@ describe('explainExclusion mirror inventory (BRO-3592)', () => {
     assert.deepEqual(unclassified, [], 'classify these in INVENTORY: live, live-via:<fn>, or mirror-only:<reason>');
     const stale = Object.keys(INVENTORY).filter((fn) => !directHelpers.includes(fn));
     assert.deepEqual(stale, [], 'explainExclusion no longer calls these; drop them from INVENTORY');
+  });
+
+  test('decideEarlyFileExclusion still runs the four early gates (BRO-2453)', () => {
+    const start = GUARDS_SRC.indexOf('function decideEarlyFileExclusion(');
+    assert.ok(start >= 0, 'decideEarlyFileExclusion not found');
+    const body = GUARDS_SRC.slice(start, GUARDS_SRC.indexOf('\nfunction ', start + 10));
+    for (const g of ['isCancelledBeforeOpeningShow', 'isUnverifiableWebSearchRow', 'isPreviewFirstLookPiece', 'isCombinedReviewOfOtherMemberOnly']) {
+      assert.ok(body.includes(g), `decideEarlyFileExclusion no longer references ${g}`);
+    }
   });
 
   for (const [fn, status] of Object.entries(INVENTORY)) {

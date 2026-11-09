@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data); data/critic-registry.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-5899: a review file created by manual ingest or by the audit-aggregator-gap
 // auto-ingest path lands with no llmScore. The scorer has no queue file: it scans
 // the review-texts tree for files lacking llmScore (scripts/llm-scoring/index.ts

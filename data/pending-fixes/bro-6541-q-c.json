@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6541-q-c",
   "planId": "f0093889-a5b0-4b21-8358-6b1ef707c51e",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-29T20:55:20.932Z",
   "submitter": {
     "name": null,
@@ -318,5 +318,28 @@
       "msg": "Ran ingest-review-from-url.js successfully"
     }
   ],
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "obsolete": 1,
+      "resolved": 1
+    },
+    "ops": [
+      {
+        "i": 14,
+        "verdict": "obsolete",
+        "reason": "show east-is-east-citizens-regional-2026 was retired"
+      },
+      {
+        "i": 22,
+        "verdict": "resolved",
+        "reason": "https://www.thestage.co.uk/reviews/robinredbreast-review-aviva-studios-manchester-maxine-peake is counted for robinredbreast-aviva-studios-regional-2024"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (1 obsolete, 1 resolved); per-op reasons in triage.ops"
 }

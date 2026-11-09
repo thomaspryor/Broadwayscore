@@ -5,6 +5,7 @@
  * with Claude Sonnet for more robust consensus scores.
  */
 
+import '../lib/llm-usage-install.js'; // LLM spend meter: keep it the first import (BRO-5043)
 import { LLMScoringResult, ReviewTextFile, ScoredReviewFile, SimplifiedLLMResult, Bucket } from './types';
 import { SYSTEM_PROMPT, SYSTEM_PROMPT_V5, buildPrompt, buildPromptV5, scoreToBucket, scoreToThumb, PROMPT_VERSION, BUCKET_RANGES } from './config';
 const { createReviewBudget } = require('../lib/llm-call-budget.js');

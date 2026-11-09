@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5081-07",
   "planId": "4bdabe94-289c-4825-8d1f-64db43438d4f",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-11T21:42:49.528Z",
   "submitter": {
     "name": null,
@@ -367,5 +367,43 @@
       "ok": true,
       "msg": "the-apple-tree-2006/variety--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"David Rooney\""
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "resolved": 3,
+      "obsolete": 2
+    },
+    "ops": [
+      {
+        "i": 2,
+        "verdict": "resolved",
+        "reason": "school-of-rock-the-musical-2015/timeout--adam-feldman.json and school-of-rock-the-musical-2015/timeout--david-cote.json share one counted row, so nothing is double-counted"
+      },
+      {
+        "i": 7,
+        "verdict": "obsolete",
+        "reason": "review file shucked-2023/variety--aramide-tinubu.json no longer exists and nothing in shucked-2023 looks like a rename"
+      },
+      {
+        "i": 8,
+        "verdict": "resolved",
+        "reason": "soul-doctor-2013/vulture--jesse-green.json and soul-doctor-2013/vulture--scott-brown.json share one counted row, so nothing is double-counted"
+      },
+      {
+        "i": 11,
+        "verdict": "resolved",
+        "reason": "spring-awakening-2015/variety--marilyn-stasio.json and spring-awakening-2015/variety--peter-debruge.json share one counted row, so nothing is double-counted"
+      },
+      {
+        "i": 23,
+        "verdict": "obsolete",
+        "reason": "review file the-anarchist-2012/vulture--jesse-green.json no longer exists and nothing in the-anarchist-2012 looks like a rename"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (3 resolved, 2 obsolete); per-op reasons in triage.ops"
 }

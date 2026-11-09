@@ -217,3 +217,16 @@ test('liveInHd edit needs a metopera.org source and a real date (BRO-6769)', () 
     assert.equal(applyDataEdit(shows(), act(bad)).ok, false, JSON.stringify(bad));
   }
 });
+// BRO-7080: an owner-approved plan marks an open-ended attraction as getting no critic reviews.
+test('noReviewsExpected pair is plan-editable but not offered to feedback writes (BRO-7080)', () => {
+  const { FEEDBACK_EDITABLE_FIELDS } = require('./feedback-pipeline-fields');
+  const data = { shows: [{ id: 'a-2026', status: 'open' }] };
+  const flag = { file: 'shows.json', showId: 'a-2026', field: 'noReviewsExpected', oldValue: null, newValue: true };
+  const why = { file: 'shows.json', showId: 'a-2026', field: 'noReviewsExpectedReason', oldValue: null, newValue: 'Open-ended attraction with no press night.' };
+  assert.equal(dataEditAllowProblem(flag), null);
+  assert.equal(dataEditAllowProblem(why), null);
+  assert.equal(FEEDBACK_EDITABLE_FIELDS['shows.json'].includes('noReviewsExpected'), false);
+  assert.equal(applyDataEdit(data, flag).ok, true);
+  assert.equal(applyDataEdit(data, why).ok, true);
+  assert.equal(data.shows[0].noReviewsExpected, true);
+});

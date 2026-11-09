@@ -69,11 +69,11 @@ export default function PrivacyPage() {
               </p>
             </div>
             <div>
-              <h3 className={h3}>Watchlist and plans</h3>
+              <h3 className={h3}>To See and plans</h3>
               <p>
                 Shows you want to see and the dates you plan to go are private unless you turn on a shared link.
                 Anyone with the link can then see the sections you choose: upcoming shows (with the date and
-                showtime you picked) and your not-yet-booked watchlist, without an account. Turning the link off
+                showtime you picked) and the not-yet-booked shows on your To See list, without an account. Turning the link off
                 stops access to the page. Previews already sent in chats may stay visible there.
               </p>
             </div>
@@ -119,7 +119,7 @@ export default function PrivacyPage() {
               On the website we record about one in ten visits as a session replay (clicks, scrolling and page
               changes) to find bugs and confusing screens. Replays hide what you type into password, email and
               multi-line text fields such as reviews and notes. They also hide the text on your My Shows and
-              diary pages, your name in the menu, and your notes on show pages. Text typed into other fields,
+              shared Seen pages, your name in the menu, and your notes on show pages. Text typed into other fields,
               such as search boxes, can appear in a replay.
             </p>
             <p>
@@ -218,7 +218,7 @@ export default function PrivacyPage() {
           <div className="space-y-3 text-gray-300">
             <p>
               On the website, open the menu and choose Delete account. In the app, go to Settings. Deleting your
-              account immediately removes your ratings, reviews, review photos, watchlist, lists, import
+              account immediately removes your ratings, reviews, review photos, To See list, lists, import
               records, push tokens and profile, then the account itself. It can&apos;t be undone.
             </p>
             <p>

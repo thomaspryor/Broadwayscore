@@ -144,7 +144,7 @@ function DeletePhotoControl({ photo, onDelete }: { photo: FeedPhoto; onDelete: (
   return (
     <div className="mt-3 p-3 rounded-lg bg-score-skip-bg border border-score-skip/30" role="group" aria-label="Confirm delete">
       <p className="text-sm text-white">Delete this photo?</p>
-      <p className="mt-0.5 text-xs text-gray-400">It’s removed from your diary here and in the iPhone app.</p>
+      <p className="mt-0.5 text-xs text-gray-400">It’s removed here and in the iPhone app.</p>
       {error && <p role="alert" className="mt-1.5 text-xs text-score-skip">{error}</p>}
       <div className="mt-2.5 flex items-center gap-2">
         <button

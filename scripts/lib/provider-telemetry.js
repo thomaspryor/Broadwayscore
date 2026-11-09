@@ -90,7 +90,11 @@ const MAX_LEDGER_LINES = 45000;
 // The check counts yesterday's UTC day, and SB/SD credits since the previous
 // reconciliation's capturedAt, which after one skipped run is two days back.
 // So rows since 00:00Z the day before yesterday are never trimmed below this
-// hard ceiling (~45MB at ~300 bytes/row, under GitHub's 50MB warning).
+// hard ceiling. BRO-6990: rows are ~385 bytes each (2026-11-04: 44MB / 114K
+// rows), so a full 3-day window at the 48K/day peak is ~144K rows = ~55MB:
+// over GitHub's 50MB warning (a warning only) but far under its 100MB
+// rejection. Do not cut the ceiling below 3 x peak-day rows to chase the
+// warning: that drops rows check-provider-spend.js still counts (BRO-4936).
 const HARD_MAX_LEDGER_LINES = 150000;
 const TAG_BY_PROVIDER = {
   brightdata: 'BD',
@@ -166,19 +170,54 @@ function trimLedgerLines(lines, max = MAX_LEDGER_LINES, now = new Date(), hardMa
   return sorted.slice(Math.max(0, sorted.length - keep)).map((e) => e[2]);
 }
 
+// BRO-6988: the full trim reads, dedupes, sorts and rewrites the whole ledger
+// (~44MB / ~114K rows by 2026-11). Doing that on EVERY append froze the event
+// loop 0.5-5.6s per fetch batch in the long-lived opening-night lane (CPU
+// profile: trimLedgerLines + readFileSync + writeFileSync were every top
+// stall). So a process trims on its first append to a path (short scripts
+// behave as before, and the rewrite guarantees a trailing newline), then
+// appends one line at a time and re-trims every TRIM_EVERY_APPENDS appends,
+// which bounds the file at hardMax + TRIM_EVERY_APPENDS rows.
+const TRIM_EVERY_APPENDS = 1000;
+let _trimState = { path: null, appendsSinceTrim: 0 };
+
+// Another writer (git checkout, merge-scraper-spend-ledger, a second process's
+// trim) may leave the file without a final newline; a plain append would then
+// glue two rows into one unparseable line. One-byte read, no full scan.
+function _endsWithoutNewline(file) {
+  let fd;
+  try {
+    fd = fs.openSync(file, 'r');
+    const { size } = fs.fstatSync(fd);
+    if (size === 0) return false;
+    const b = Buffer.alloc(1);
+    fs.readSync(fd, b, 0, 1, size - 1);
+    return b[0] !== 0x0a;
+  } catch { return false; } finally { if (fd !== undefined) try { fs.closeSync(fd); } catch { /* ignore */ } }
+}
+
 function _appendLedgerLine(record) {
   const ledgerPath = _ledgerPath();
   try {
+    const line = JSON.stringify(record);
+    if (_trimState.path === ledgerPath && _trimState.appendsSinceTrim < TRIM_EVERY_APPENDS) {
+      fs.appendFileSync(ledgerPath, (_endsWithoutNewline(ledgerPath) ? '\n' : '') + line + '\n');
+      _trimState.appendsSinceTrim++;
+      return;
+    }
     fs.mkdirSync(path.dirname(ledgerPath), { recursive: true });
     let lines = [];
     try {
       lines = fs.readFileSync(ledgerPath, 'utf8').split('\n').filter(Boolean);
     } catch { /* first write */ }
-    lines.push(JSON.stringify(record));
+    lines.push(line);
     lines = trimLedgerLines(lines);
     fs.writeFileSync(ledgerPath, lines.join('\n') + '\n');
+    _trimState = { path: ledgerPath, appendsSinceTrim: 0 };
   } catch {
     // Ledger persistence must never break scraping — the stdout line still fired.
+    // Force a full rewrite next time (e.g. the file was deleted under us).
+    _trimState = { path: null, appendsSinceTrim: 0 };
   }
 }
 
@@ -283,10 +322,19 @@ function _inScope(ts, scope) {
  * @param {string} day - "YYYY-MM-DD"
  * @returns {{[provider: string]: number}}
  */
+// BRO-6898: scraper.js _recordRunMemo writes a zero-credit, success:false ledger row
+// when its run memo latches a tier off. It is bookkeeping, not a provider call, so
+// call counts, top-caller shares, tier-skip drift and spend caps must not count it.
+// A skip row that carries credits is billing activity and stays counted.
+const RUN_MEMO_SKIP = 'run-memo-skip';
+function isMemoSkip(rec) {
+  return !!rec && (rec.fn === RUN_MEMO_SKIP || rec.status === RUN_MEMO_SKIP) && !(rec.credits > 0);
+}
+
 function countCallsByProvider(ledgerRecords, day) {
   const counts = {};
   for (const r of ledgerRecords || []) {
-    if (!r || !_inScope(r.ts, day)) continue;
+    if (!r || !_inScope(r.ts, day) || isMemoSkip(r)) continue;
     counts[r.provider] = (counts[r.provider] || 0) + 1;
   }
   return counts;
@@ -299,7 +347,7 @@ function countCallsByProvider(ledgerRecords, day) {
 function topCallers(ledgerRecords, day, provider, n = 5) {
   const counts = {};
   for (const r of ledgerRecords || []) {
-    if (!r || !_inScope(r.ts, day) || r.provider !== provider) continue;
+    if (!r || !_inScope(r.ts, day) || r.provider !== provider || isMemoSkip(r)) continue;
     const key = r.script || 'unknown';
     counts[key] = (counts[key] || 0) + 1;
   }
@@ -457,6 +505,8 @@ module.exports = {
   recordSbCall,
   recordSdCall,
   recordBbCall,
+  RUN_MEMO_SKIP,
+  isMemoSkip,
   countCallsByProvider,
   topCallers,
   creditsByProvider,
@@ -470,5 +520,7 @@ module.exports = {
   LEDGER_PATH,
   MAX_LEDGER_LINES,
   trimLedgerLines,
+  TRIM_EVERY_APPENDS,
+  _resetLedgerTrimStateForTests: () => { _trimState = { path: null, appendsSinceTrim: 0 }; },
   HARD_MAX_LEDGER_LINES,
 };

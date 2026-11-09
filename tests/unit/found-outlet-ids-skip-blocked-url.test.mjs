@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/review-texts/__1328-found-outlet-ids-blocked-url-test__ (untracked core data); data/review-texts/__1328-found-outlet-ids-blocked-url-test__/nyt-brantley.json (untracked core data); data/review-texts/__1328-found-outlet-ids-blocked-url-test__/playbill-scored.json (untracked core data); +5 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Regression test for getFoundOutletIds (scripts/lib/found-outlet-ids.js).
  *

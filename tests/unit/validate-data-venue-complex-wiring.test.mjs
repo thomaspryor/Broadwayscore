@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/venue-complexes.json (read by the test); data/retired-show-ids.json (untracked core data); data/site-image-versions.json (untracked core data); +18 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Wiring test for validateOrphanSubVenueSlugs in scripts/validate-data.js.
  *

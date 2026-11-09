@@ -7,6 +7,7 @@
  */
 
 const fs = require('fs');
+const { hasExcerpt } = require('./lib/excerpt-fields');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
 
@@ -69,7 +70,7 @@ showDirs.forEach(showId => {
           file,
           outlet: data.outlet,
           critic: data.criticName,
-          hasText: !!(data.fullText || data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt),
+          hasText: !!(data.fullText || hasExcerpt(data)),
           url: data.url
         });
 

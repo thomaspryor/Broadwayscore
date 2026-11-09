@@ -14,6 +14,7 @@
  */
 
 const fs = require('fs');
+const { getExcerpts } = require('./lib/excerpt-fields');
 const { exitOnHelp } = require('./lib/cli-help.js');
 
 // --help/-h before any work: --fix writes review files (BRO-1711 help-flag guard).
@@ -299,7 +300,7 @@ for (const showDir of showDirs) {
     }
 
     const reviewFindings = [];
-    const text = (data.fullText || data.dtliExcerpt || data.bwwExcerpt || data.showScoreExcerpt || '').toLowerCase();
+    const text = (data.fullText || getExcerpts(data)[0] || '').toLowerCase();
     const hasText = text.length > 50;
 
     // 1. Date-based check

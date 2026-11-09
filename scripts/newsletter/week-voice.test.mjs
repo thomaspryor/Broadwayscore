@@ -3,7 +3,7 @@
 // which show they name first. Imports the real functions (CLAUDE.md §15).
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { composeWeekVoice } from './week-voice.mjs';
+import { composeWeekVoice, composeWeOpener } from './week-voice.mjs';
 import { scoreCandidates } from './newsworthiness.mjs';
 import { createRequire } from 'node:module';
 const { compareOpeningStories, sortOpeningStoriesByNewsworthiness } = createRequire(import.meta.url)('../lib/opening-story-order.js');
@@ -161,4 +161,15 @@ test('Oct 26: a Broadway opening NOT yet announced still leads, with the three O
   const lede = plain(v.sentences.join(' '));
   assert.match(lede, /Off Broadway, nine shows opened\. The Heart opens to strong reviews \(77\)\. I Became We earned the strongest reviews \(81\) and the In the Heights revival scored 75\./);
   assert.ok(!lede.includes('Hospital Hour'));
+});
+
+test('WE opener counts only in-week openings and frames size only when unusual (owner, 2026-11-08)', () => {
+  const st = (avg, isCatchUp = false) => ({ agg: { avg }, isCatchUp });
+  const four = [st(47), st(77), st(76), st(30), st(65, true)];
+  // Nov 2-8 2026: four openings against a typical ~9 is a quiet week, never "big".
+  assert.equal(composeWeOpener(four, { typical: 9 }), 'A quieter week in London, with four openings.');
+  assert.equal(composeWeOpener(four, { typical: 5 }), '');
+  assert.equal(composeWeOpener(Array.from({ length: 14 }, () => st(70)), { typical: 9 }), 'An unusually busy week in London, with 14 openings.');
+  assert.equal(composeWeOpener(four), '', 'no baseline, no framing');
+  assert.ok(!/big week/i.test(composeWeOpener(Array.from({ length: 14 }, () => st(80)), { typical: 9 })));
 });

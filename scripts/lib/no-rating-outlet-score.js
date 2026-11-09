@@ -24,6 +24,7 @@ function discardNoRatingOutletScore(data) {
   data.originalScoreCleared = true;
   data.originalScoreClearedReason = 'outlet-publishes-no-critic-rating (tier 1d)';
   invalidateStarSidedAdjudication(data, data.originalScoreClearedReason);
+  require('./rescore-flagging').queueRescoreForClearedRating(data, data.originalScoreClearedReason);
   return true;
 }
 

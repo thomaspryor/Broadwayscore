@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/site-image-versions.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-6310: a server file that does fs.existsSync(path.join(process.cwd(),'public',<dynamic>))
 // makes Next's file tracing bundle ALL of public/images (~640MB) into every page
 // function; Vercel then rejects the deploy (>250MB uncompressed). 11 failed

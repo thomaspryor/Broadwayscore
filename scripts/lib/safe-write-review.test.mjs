@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-2559 — a scraper RECREATING a review file drops PROTECTED_FIELDS.
 //
 // safeWriteReview's merge/preserve loop only has something to preserve FROM when

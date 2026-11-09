@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Tests for scripts/lib/review-field-edit.js (BRO-4216).
  * Run: node --test scripts/lib/review-field-edit.test.mjs
@@ -273,6 +274,36 @@ test('FT pair: the plan actions succeed through the real write guard and leave H
   const bano = JSON.parse(fs.readFileSync(path.join(dir, B), 'utf8'));
   assert.equal(hemming.duplicateOf ?? null, null, 'Hemming is canonical');
   assert.equal(bano.duplicateOf, H, 'the Bano copy is the duplicate');
+});
+
+// BRO-6905: an originalScore clear on a file that is ALREADY a same-url
+// duplicate of its sibling was refused: the guard restamped duplicateReason
+// (criticName-override-collided-at-rename -> url-collision-detected-at-write),
+// which the executor reports as an unexpected change. The existing reason must survive.
+test('originalScore clear on an existing same-url duplicate keeps its duplicateReason', async () => {
+  const fs = await import('node:fs');
+  const os = await import('node:os');
+  process.env.EXCLUSION_LOGGER_AUDIT_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'rfe-audit-'));
+  const { safeWriteReview } = require('./review-write-guard.js');
+  const { unexpectedChanges } = require('./review-field-edit.js');
+  const dir = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'rfe-dup-')), 'some-show-regional-2026');
+  fs.mkdirSync(dir, { recursive: true });
+  const base = { showId: 'some-show-regional-2026', outlet: 'Theargus', outletId: 'theargus', criticName: 'PA News Agency', url: 'https://www.theargus.co.uk/news/national/1.some-show-reviews/', fullText: 'Placeholder roundup body. '.repeat(80), textQuality: 'full' };
+  const P = 'theargus--pa-news-agency.json';
+  const U = 'theargus--unknown.json';
+  fs.writeFileSync(path.join(dir, P), JSON.stringify({ ...base, assignedScore: 78 }, null, 2));
+  fs.writeFileSync(path.join(dir, U), JSON.stringify({ ...base, assignedScore: 78, duplicateOf: P, duplicateReason: 'criticName-override-collided-at-rename', duplicateClearReason: null, originalScore: '5/5 stars', originalScoreNormalized: 100, originalScoreSource: 'word-stars' }, null, 2));
+  const p = path.join(dir, U);
+  const record = JSON.parse(fs.readFileSync(p, 'utf8'));
+  const action = { field: 'originalScore', oldValue: '5/5 stars', newValue: null };
+  const res = applyReviewFieldEdit(record, action, stamp);
+  assert.equal(res.ok, true, res.reason);
+  safeWriteReview(p, res.record, {});
+  const after = JSON.parse(fs.readFileSync(p, 'utf8'));
+  assert.equal(after.originalScore ?? null, null);
+  assert.equal(after.duplicateOf, P);
+  assert.equal(after.duplicateReason, 'criticName-override-collided-at-rename');
+  assert.deepEqual(unexpectedChanges(record, after, 'originalScore', res.sideEffectKeys || []), []);
 });
 
 // BRO-4599: a human wrongShow flag over a SCRIPT-made wrongShowOverride was a
@@ -689,6 +720,24 @@ test('allowCrossMarket can be set true (a UK critic who reviewed the NYC product
   assert.equal(ok.record.allowCrossMarket, true);
   assert.equal(applyReviewFieldEdit(rec, { field: 'allowCrossMarket', oldValue: null, newValue: false }, stamp).ok, false);
   assert.equal(applyReviewFieldEdit(rec, { field: 'allowCrossMarket', oldValue: null, newValue: 'yes' }, stamp).ok, false);
+});
+
+test('BRO-6599: reviewed cross-show URL exceptions are true-only and preserve other fields', () => {
+  const rec = { outletId: 'theater-life', assignedScore: 65, wrongProduction: true };
+  const action = { field: 'allowCrossShowUrl', oldValue: null, newValue: true };
+  const ok = applyReviewFieldEdit(rec, action, stamp);
+  assert.equal(ok.ok, true, ok.reason);
+  assert.equal(ok.record.allowCrossShowUrl, true);
+  assert.equal(ok.record.assignedScore, 65);
+  assert.equal(ok.record.wrongProduction, true);
+  assert.equal(ok.record.approvedFixes.at(-1).field, 'allowCrossShowUrl');
+  assert.equal(rec.allowCrossShowUrl, undefined, 'input is not mutated');
+  for (const newValue of [false, null, 'true', 1, {}]) {
+    assert.equal(applyReviewFieldEdit(rec, { ...action, newValue }, stamp).ok, false);
+  }
+  assert.equal(applyReviewFieldEdit({ ...rec, _locked: true }, action, stamp).ok, false);
+  assert.equal(applyReviewFieldEdit({ ...rec, allowCrossShowUrl: true }, action, stamp).ok, false,
+    'a stale oldValue is refused');
 });
 
 // BRO-5858: stranger-things WhatsOnStage. A stale bulk fabricatedEntry kept Alex

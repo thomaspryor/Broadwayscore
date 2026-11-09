@@ -251,3 +251,17 @@ test('findUntypedStubsNearPreviews names exempt untyped stubs inside the warning
   ];
   assert.deepEqual(findUntypedStubsNearPreviews(shows, now).map((s) => s.id), ['soon', 'overdue']);
 });
+
+test('BRO-7100: untyped stubs with no previews date but a live run are warned too', () => {
+  const { findUntypedStubsNearPreviews } = require('../../scripts/lib/market-expansion-validator.js');
+  const now = new Date('2027-03-20T12:00:00Z');
+  const base = { title: 'T', category: 'off-west-end', type: null, provisional: true, discoverySource: 'venue-page:x', previewsStartDate: null };
+  const shows = [
+    { ...base, id: 'announced-closing', status: 'announced', closingDate: '2027-05-01' },
+    { ...base, id: 'opening-soon', status: 'announced', openingDate: '2027-04-01' },
+    { ...base, id: 'opening-late', status: 'announced', openingDate: '2027-09-01' },
+    { ...base, id: 'no-dates', status: 'announced' },
+    { ...base, id: 'typed', status: 'announced', closingDate: '2027-05-01', type: 'play' },
+  ];
+  assert.deepEqual(findUntypedStubsNearPreviews(shows, now).map((s) => s.id), ['announced-closing', 'opening-soon']);
+});

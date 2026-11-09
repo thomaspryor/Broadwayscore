@@ -154,6 +154,7 @@ jobs:
             bash scripts/lib/push-with-retry.sh 5 main
           fi
 
+      # severity-low-ok: failures already route to a dispatched START-NOW card via route-workflow-alerts.js gitlab-token-failed (Route alert on ANY failure step above)
       - name: Notify on failure
         if: failure()
         uses: ./.github/actions/notify-failure

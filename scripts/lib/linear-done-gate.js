@@ -143,7 +143,7 @@ function applyCmdExecution(result, verifyCmdEvidence) {
  *   `verification` (the verifier's own result) when PR evidence was checked,
  *   and/or `cmdExecution` when a recorded command was actually run.
  */
-function checkLinearDoneTransition({ targetStateType, description = '', commentText = '', existingComments = [], verifyEvidence, verifyCmdEvidence } = {}) {
+function checkDoneEvidence({ targetStateType, description = '', commentText = '', existingComments = [], verifyEvidence, verifyCmdEvidence } = {}) {
   if (targetStateType !== 'completed') return { gated: false };
 
   const comments = [...(Array.isArray(existingComments) ? existingComments : []), commentText].filter(Boolean);
@@ -206,4 +206,97 @@ function checkLinearDoneTransition({ targetStateType, description = '', commentT
   return { gated: true, ...result };
 }
 
-module.exports = { checkLinearDoneTransition, applyCmdExecution };
+// BRO-7103: closing one more case of a problem that keeps coming back.
+// ADVISORY until recurrence-classes.js CLOSE_GATE_BLOCKING_FROM (adds a
+// `warning`), then it refuses while the snapshot is fresh;
+// RECURRENCE_CLOSE_GATE=advisory rolls that back. Linked = the root-cause card's id
+// is named in the description, an earlier comment or the close comment.
+// Reads the detector's committed snapshot; any read error fails open.
+function loadRecurrenceSnapshot() {
+  try {
+    return JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '../../data/audit/recurrence-classes.json'), 'utf8'));
+  } catch {
+    return null;
+  }
+}
+
+function recurrenceWarning({ identifier, description = '', commentText = '', existingComments = [], recurrenceSnapshot, nowMs = Date.now() }) {
+  if (!identifier) return null;
+  try {
+    const rc = require('./recurrence-classes.js');
+    const snap = recurrenceSnapshot === undefined ? loadRecurrenceSnapshot() : recurrenceSnapshot;
+    const text = [description, ...(Array.isArray(existingComments) ? existingComments : []), commentText].join('\n');
+    const named = text.match(/\bBRO-\d+\b/g) || [];
+    const blocking = rc.recurrenceCloseBlocking(snap, nowMs);
+    const message = rc.recurrenceCloseWarning(identifier, snap, named, blocking);
+    return message ? { message, blocking } : null;
+  } catch {
+    return null;
+  }
+}
+
+// BRO-7103 item 8: a fix card's close should name its root cause, the guard
+// in the landed diff that covers the class, red-then-green proof and the
+// cousins searched (lib/root-cause-close.js). Advisory until its blocking
+// date, then it refuses; ROOT_CAUSE_CLOSE_GATE=advisory rolls that back.
+// Needs the card title from the caller; any error fails open.
+function rootCauseCloseCheck({ identifier, title, description = '', commentText = '', existingComments = [], landedFiles = null, nowMs = Date.now() } = {}) {
+  if (!title) return null;
+  try {
+    const rcc = require('./root-cause-close.js');
+    const texts = [description, ...(Array.isArray(existingComments) ? existingComments : []), commentText];
+    const r = rcc.checkRootCauseClose({ title, texts, landedFiles });
+    const blocking = rcc.rootCauseCloseBlocking(nowMs, process.env, r);
+    const message = rcc.rootCauseCloseMessage(identifier, r, blocking);
+    return message ? { message, blocking, summary: rcc.rootCauseCloseSummary(identifier, r, blocking), missing: r.missing } : null;
+  } catch {
+    return null;
+  }
+}
+
+// BRO-7102 item 5: a main test.yml red card's close should say why main went
+// red (CAUSE: data-drift | stale-test | landing-collision | flake | infra), so
+// ci-green-rate.js --cause-mix can count it. ADVISORY ONLY (§19): it warns and
+// never refuses. Any error fails open.
+function redCauseCloseWarning({ identifier, title, description = '', commentText = '', existingComments = [] } = {}) {
+  if (!title) return null;
+  try {
+    const { checkRedCauseClose } = require('./red-cause-tag.js');
+    // existingComments come oldest first (sortedCommentBodies); the close comment is newest of all.
+    const texts = [description, ...(Array.isArray(existingComments) ? existingComments : []), commentText];
+    return checkRedCauseClose({ identifier, title, description, texts }).message || null;
+  } catch {
+    return null;
+  }
+}
+
+function addWarning(result, w) {
+  return { ...result, warning: result.warning ? `${result.warning}\n${w}` : w };
+}
+
+function checkLinearDoneTransition(args = {}) {
+  let result = checkDoneEvidence(args);
+  if (args.targetStateType !== 'completed') return result;
+  const rw = recurrenceWarning(args);
+  if (rw) {
+    if (rw.blocking && result.allowed !== false) {
+      result = { ...result, gated: true, allowed: false, verdict: 'root-cause-not-named', reason: rw.message };
+    } else {
+      result = addWarning(result, rw.message);
+    }
+  }
+  const cause = redCauseCloseWarning(args);
+  if (cause) result = addWarning(result, cause);
+  const rcc = rootCauseCloseCheck(args);
+  if (rcc) {
+    if (rcc.blocking && result.allowed !== false) {
+      result = { ...result, gated: true, allowed: false, verdict: 'root-cause-missing', reason: rcc.message };
+    } else {
+      // rootCauseSummary: one line the caller repeats last (BRO-7132).
+      result = { ...addWarning(result, rcc.message), rootCauseSummary: rcc.summary, rootCauseMissing: rcc.missing };
+    }
+  }
+  return result;
+}
+
+module.exports = { checkLinearDoneTransition, applyCmdExecution, recurrenceWarning, rootCauseCloseCheck, redCauseCloseWarning };

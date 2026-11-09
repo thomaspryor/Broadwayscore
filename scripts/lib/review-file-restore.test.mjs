@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-5133: restore a review-texts file from git history (execute-approved-fix review-file-op "restore").
 import { test } from 'node:test';
 import assert from 'node:assert/strict';

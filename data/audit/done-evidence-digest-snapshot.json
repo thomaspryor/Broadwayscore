@@ -1,47 +1,47 @@
 {
-  "generatedAt": "2026-11-03T09:45:24.757Z",
-  "bannerText": "146/161 Done(14d) verified on main · 7 FAILED · 0 vacuous · 14 stuck-but-done · 2 mis-armed, needs re-arming (BRO-6269, BRO-6804)",
+  "generatedAt": "2026-11-08T09:21:22.695Z",
+  "bannerText": "127/141 Done(14d) verified on main · 8 FAILED · 0 vacuous · 18 stuck-but-done",
   "items": [
     {
-      "title": "FAILED BRO-6323 — BSC Daily: main test.yml STILL red — auto-dispatch did not resolve it",
-      "detail": "[check-health-row-absent] FAIL: \"main test.yml STILL red — auto-dispatch did not resolve it\" still listed in the 2026-11-03T09:35:39.349Z health snapshot",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6323/bsc-daily-main-testyml-still-red-auto-dispatch-did-not-resolve-it"
-    },
-    {
-      "title": "FAILED BRO-5749 — BSC Daily: Commercial model drift",
-      "detail": "[check-health-row-absent] --live FAIL: \"Commercial model drift\" still flagged (warn): modelDesignationFlag contradictions up 1 (2 → 3)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5749/bsc-daily-commercial-model-drift"
-    },
-    {
-      "title": "FAILED BRO-6788 — UX audit: The 'Add a show' button in 'mobile__watchlist_grid' doesn't clearly indicate its interactivity.",
+      "title": "FAILED BRO-4554 — UX audit: Feedback after action is below the fold. 'Date saved' confirmation in 'mobile__ios_date_wheel_sim' requires sc",
       "detail": "FAIL UX resolution: LINEAR_API_KEY not set in .env or environment",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6788/ux-audit-the-add-a-show-button-in-mobile-watchlist-grid-doesnt-clearly"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4554/ux-audit-feedback-after-action-is-below-the-fold-date-saved"
     },
     {
-      "title": "FAILED BRO-6787 — UX audit: Inconsistent button label for adding a show. Uses '+ Add show' on 'desktop__watchlist_grid' and '+ Create a li",
-      "detail": "FAIL UX resolution: LINEAR_API_KEY not set in .env or environment",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6787/ux-audit-inconsistent-button-label-for-adding-a-show-uses-add-show-on"
+      "title": "FAILED BRO-7047 — Digest plain wording: 34 owner-visible health checks still show their raw check name",
+      "detail": "not ok: plain wording: no visitor-facing health check shows its raw… | first failure: Improvement: root-cause share still shows its raw check name: add a PLAIN_HEALTH",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7047/digest-plain-wording-34-owner-visible-health-checks-still-show-their"
     },
     {
-      "title": "FAILED BRO-6767 — Opera: past premiere-run pages + reviews for current Met revivals",
-      "detail": "FAIL medea-met-2022: show missing; scored reviews 0 < 3 FAIL tosca-met-2017: show missing; scored reviews 0 < 3 FAIL otello-met-2015: show missing; scored reviews 0 < 3 FAIL der-r…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6767/opera-past-premiere-run-pages-reviews-for-current-met-revivals"
+      "title": "FAILED BRO-7004 — P1: Opening night miss: Parcel from America (2026-11-04)",
+      "detail": "gap audit generated 2026-11-08T07:36:54.780Z BLIND parcel-from-america-off-broadway-2026: 6 live, 0 cited not live; info: 0 census candidate(s), 0 exclusion(s) confirmed correct; …",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7004/p1-opening-night-miss-parcel-from-america-2026-11-04"
     },
     {
-      "title": "FAILED BRO-6766 — Opera expansion B: premieres at major houses beyond the Met (ROH first)",
-      "detail": "FAIL roh-new-prod-2026-27-1: show missing FAIL roh-new-prod-2026-27-2: show missing",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6766/opera-expansion-b-premieres-at-major-houses-beyond-the-met-roh-first"
+      "title": "FAILED BRO-6888 — BSC Daily: Stuck pipeline items",
+      "detail": "[check-health-row-absent] FAIL: \"Stuck pipeline items\" still listed in the 2026-11-08T09:07:18.221Z health snapshot",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6888/bsc-daily-stuck-pipeline-items"
     },
     {
-      "title": "FAILED BRO-6464 — BSC Daily: Live-data test failing: no class-A cross-market leaks (a show showing another production's reviews) (scripts/verify-contamination-gate.test.mjs)",
-      "detail": "[check-health-row-absent] FAIL: \"Live-data test failing: no class-A cross-market leaks (a show showing another production's reviews) (scripts/verify-cont\" still listed in the 2026…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6464/bsc-daily-live-data-test-failing-no-class-a-cross-market-leaks-a-show"
+      "title": "FAILED BRO-6827 — BSC Daily: Cron's latest run failed (not yet stale): Test Suite",
+      "detail": "[check-health-row-absent] FAIL: \"Cron's latest run failed (not yet stale): Test Suite\" still listed in the 2026-11-08T09:07:18.221Z health snapshot",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6827/bsc-daily-crons-latest-run-failed-not-yet-stale-test-suite"
     },
     {
-      "title": "STUCK BRO-6386 — Time-bomb test armed: tests/unit/opening-night-orchestrator-cron.test.mjs — an earlier all-market run started 5h ago does not cover us",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6386/time-bomb-test-armed-testsunitopening-night-orchestrator-crontestmjs"
+      "title": "FAILED BRO-6524 — BSC Daily: Data quality: slug-mismatch lifetime sweep",
+      "detail": "[check-health-row-absent] FAIL: \"Data quality: slug-mismatch lifetime sweep\" still listed in the 2026-11-08T09:07:18.221Z health snapshot",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6524/bsc-daily-data-quality-slug-mismatch-lifetime-sweep"
+    },
+    {
+      "title": "FAILED BRO-5693 — BSC Daily: Data quality: slug-mismatch lifetime sweep",
+      "detail": "[check-health-row-absent] FAIL: \"Data quality: slug-mismatch lifetime sweep\" still listed in the 2026-11-08T09:07:18.221Z health snapshot",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5693/bsc-daily-data-quality-slug-mismatch-lifetime-sweep"
+    },
+    {
+      "title": "FAILED BRO-5516 — Review-gap audit refused to write — 61.9% of shows changed coverage state",
+      "detail": "[check-alert-condition-absent] FAIL: \"review-gap:blast-radius-refused\" still firing — open, last fired 2026-11-07T16:40:54.348Z (16.7h ago, within 168h)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5516/review-gap-audit-refused-to-write-619percent-of-shows-changed-coverage"
     }
   ],
-  "moreCount": 13
+  "moreCount": 18
 }

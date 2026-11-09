@@ -13,7 +13,10 @@ const { hasEnoughReviews } = require('../lib/min-reviews');
 const { priorRunClassifier } = require('../lib/prior-run-sibling');
 const { findLondonRun } = require('../lib/transfer-detection');
 const C = require('./config');
-const { homeSet, targetSets, operaConfigured } = require('./routing');
+const { isUkRegionalVenue } = require('../lib/market-label');
+const { isLocalOnlyShow } = require('../lib/local-market');
+const { titleKey } = require('./routing');
+const { homeSet, targetSets, operaConfigured, postsToOwnSet } = require('./routing');
 
 const DAY_MS = 864e5;
 const MIN_MS = 60e3;
@@ -43,12 +46,36 @@ function addDaysYmd(ymd, n) {
   return d.toISOString().slice(0, 10);
 }
 
-function isEligibleShow(show, { allowOpera = false } = {}) {
+const TOURING_CATEGORIES = new Set(['regional', 'tour']);
+
+/**
+ * Touring and out-of-town shows that may post a score (BRO-6935). Regional: a US tryout
+ * (the Pre-Broadway shelf rule: not a UK flagship house, not local-only, not one leg of a
+ * multi-venue tour). Tour: the first national tour launch of a production, with launch
+ * evidence, never a later city stop or relaunch. `shows` (all shows) finds the earlier tour.
+ */
+function touringEligible(show, shows) {
+  if (show.tourParent) return false;
+  if (show.category === 'regional') return !isUkRegionalVenue(show.venue) && !isLocalOnlyShow(show);
+  if (show.category !== 'tour' || !show.tourLaunchEvidence) return false;
+  if (!Array.isArray(shows)) return false; // cannot prove it is the first launch
+  const at = Date.parse(show.openingDate), key = titleKey(show.title);
+  // An earlier tour of the same production: same tourOf, or the same title (a second tour has a new tourOf).
+  const earlier = o => Date.parse(o.openingDate) < at || (Date.parse(o.openingDate) === at && o.id < show.id);
+  return !shows.some(o => o.id !== show.id && o.category === 'tour' && !o.tourParent && o.tourLaunchEvidence
+    && ((show.tourOf && o.tourOf === show.tourOf) || titleKey(o.title) === key) && earlier(o));
+}
+
+/** allowTouring: the score lane only. Roundups, closing-soon and the quiet-day backfill never pick touring shows. */
+function isEligibleShow(show, { allowOpera = false, allowTouring = false, shows = null } = {}) {
   if (!show || !show.id || !show.openingDate) return false;
   if (!C.ELIGIBLE_CATEGORIES.includes(show.category)) return false;
+  if (TOURING_CATEGORIES.has(show.category) && !(allowTouring && touringEligible(show, shows))) return false;
+  // No accounts to post to (Off-West End before the West End accounts exist, BRO-6932).
+  if (C.marketOf(show) !== 'opera' && !targetSets(show, []).length) return false;
   const operaOk = allowOpera && C.marketOf(show) === 'opera' && operaConfigured();
   if (show.type && C.SKIP_TYPES.has(String(show.type).toLowerCase()) && !operaOk) return false;
-  if (show.provisional) return false;
+  if (show.provisional && show.category !== 'tour') return false; // tours are created automatically from a roundup and stay provisional; the score gate decides (isTourListed)
   if (['cancelled', 'canceled', 'postponed'].includes(show.status)) return false;
   return true;
 }
@@ -70,6 +97,24 @@ function nextWindowSlot(t, tz) {
   const lp = localParts(new Date(t), tz);
   const ymd = lp.hour >= C.SCORE_POST_WINDOW.end ? addDaysYmd(lp.ymd, 1) : lp.ymd;
   return zonedTime(ymd, C.SCORE_POST_WINDOW.start, tz).getTime();
+}
+
+// Post types that already gave a show its own card, so the backfill does not repeat it.
+const COVERS_SHOW = new Set(['brief', 'closing-soon', 'london-compare']);
+
+/**
+ * doneKeys for the quiet-day backfill: a show skipped only because it opened before
+ * automatic posting went live was never posted on merit, so it stays owed; a show that
+ * already had a brief, closing-soon or London-compare card is covered (BRO-6932).
+ */
+function backfillDoneKeys(ledger) {
+  const posts = (ledger && ledger.posts) || [];
+  const keys = doneKeys({ ...ledger, posts: posts.filter(p => p.skipped !== 'backlog at go-live') });
+  for (const p of posts) {
+    if (p.skipped || !COVERS_SHOW.has(p.type)) continue;
+    for (const id of [p.showId, ...(p.showIds || [])]) if (id) keys.add(`score:${id}`);
+  }
+  return keys;
 }
 
 function doneKeys(ledger) {
@@ -94,15 +139,24 @@ function newReviewCountFor(show, shows, showReviews) {
  * a score, the confidence gate passes and the show has enough reviews. {ok: true, gate} or
  * {ok: false, why, gate?} with why one of no-score, not-confident, too-few-reviews.
  */
-function scoreSettled(show, { reviewsByShow, slim, getOutletTier, shows }) {
+function scoreSettled(show, { reviewsByShow, slim, getOutletTier, shows, now = Date.now() }) {
   const pub = slim[show.id];
   if (!pub || !Number.isFinite(pub.cs) || !pub.rc) return { ok: false, why: 'no-score' };
   const showReviews = reviewsByShow[show.id] || [];
-  const gate = evaluateScoreConfidence({
+  const gateWith = floors => evaluateScoreConfidence({
     showReviews, category: show.category, getOutletTier,
     newReviewCount: newReviewCountFor(show, shows, showReviews),
-    floors: C.SCORE_FLOORS[show.category] || null,
+    floors,
   });
+  let gate = gateWith(C.SCORE_FLOORS[show.category] || null);
+  // BRO-6932: fewer reviews will do once every known review is in (COMPLETE_COVERAGE_FLOORS).
+  const alt = C.COMPLETE_COVERAGE_FLOORS && C.COMPLETE_COVERAGE_FLOORS[show.category];
+  if (!gate.ok && alt && pub.cov && pub.cov.state === 'complete'
+    && now - Date.parse(String(show.openingDate).slice(0, 10)) >= alt.minDays * DAY_MS) {
+    const { minDays, ...floors } = alt;
+    const g = gateWith(floors);
+    if (g.ok) gate = { ...g, coverageComplete: true };
+  }
   if (!gate.ok) return { ok: false, why: 'not-confident', gate };
   if (!hasEnoughReviews(pub.rc, show.category, gate.counts.t1 + gate.counts.t2)) return { ok: false, why: 'too-few-reviews', gate };
   return { ok: true, gate };
@@ -118,7 +172,7 @@ function scoreSettled(show, { reviewsByShow, slim, getOutletTier, shows }) {
  */
 function scoreDecision(show, ctx, { ignoreAge = false } = {}) {
   const { done, now } = ctx;
-  if (!isEligibleShow(show, { allowOpera: true })) return { due: false, why: 'ineligible' };
+  if (!isEligibleShow(show, { allowOpera: true, allowTouring: true, shows: ctx.shows })) return { due: false, why: 'ineligible' };
   if (done.has(`score:${show.id}`)) return { due: false, why: 'done' };
   const slot = morningAfter(show);
   if (now < slot - C.CREATE_LEAD_MINUTES * MIN_MS) return { due: false, why: 'not-yet', slot };
@@ -142,6 +196,62 @@ function findScoreEvents({ shows, ledger, now, reviewsByShow, slim, getOutletTie
     out.push({ type: 'score', show, gate: d.gate, dueAt: new Date(nextWindowSlot(Math.max(d.slot, now + 10 * MIN_MS), tz)) });
   }
   return out;
+}
+
+/**
+ * True when a show can take a quiet-day backfill post (BRO-6932): still open, not closing
+ * within cfg.minDaysLeft New York days, opened within cfg.lookbackDays, aged out of
+ * SCORE_LOOKBACK_DAYS with no score post, and its score passes every other check now.
+ * ctx is scoreDecision's ({done, now, reviewsByShow, slim, getOutletTier, shows}).
+ * Shared with the weekly email (scripts/lib/social-report.js), so it says "will post on a
+ * quiet day" for exactly these shows.
+ */
+function backfillCandidate(show, ctx, cfg = C.BACKFILL) {
+  return backfillWindow(show, ctx, cfg) && scoreDecision(show, ctx, { ignoreAge: true }).due;
+}
+
+/** backfillCandidate without the score check: the show would post on a quiet day once its score settles. */
+function backfillWindow(show, ctx, cfg = C.BACKFILL) {
+  if (!cfg || !cfg.enabled || !isEligibleShow(show, { allowOpera: true }) || show.status !== 'open') return false;
+  // Filler stays on the show's own accounts: no old London show on the Broadway fallback.
+  if (!postsToOwnSet(show)) return false;
+  const today = localParts(new Date(ctx.now), C.MARKETS.broadway.tz).ymd;
+  const closing = String(show.closingDate || '').slice(0, 10);
+  if (/^\d{4}-\d{2}-\d{2}$/.test(closing) && closing < addDaysYmd(today, cfg.minDaysLeft)) return false;
+  if (ctx.now - morningAfter(show) > cfg.lookbackDays * DAY_MS) return false;
+  return scoreDecision(show, ctx).why === 'too-old';
+}
+
+/**
+ * Quiet-day backfill (BRO-6932): score posts for shows that aged out of SCORE_LOOKBACK_DAYS
+ * before their score settled. Empty unless today (New York) is quiet: it is cfg.fromHour or
+ * later, `busy` is false (the caller found no other post due this run), and no live ledger
+ * post other than a backfill one is due on today's New York day. Candidates are the shows
+ * backfillCandidate accepts. Newest opening first, at most
+ * cfg.maxPerDay a day counting backfill posts already made today. blocked(id) drops a show
+ * (run.js passes the shows that failed MAX_SHOW_ATTEMPTS times).
+ */
+function findBackfillEvents({ shows, ledger, now, reviewsByShow, slim, getOutletTier, busy = false, blocked = () => false, cfg = C.BACKFILL }) {
+  if (!cfg || !cfg.enabled || busy) return [];
+  const tz = C.MARKETS.broadway.tz;
+  const today = localParts(new Date(now), tz);
+  if (today.hour < cfg.fromHour) return [];
+  const live = p => !p.skipped && Object.values(p.channels || {}).some(c => c.postId && !['cancelled', 'missing', 'error'].includes(c.result));
+  const todays = (ledger && ledger.posts || []).filter(p => p.dueAt && live(p) && localParts(new Date(Date.parse(p.dueAt)), tz).ymd === today.ymd);
+  if (todays.some(p => !p.backfill)) return [];
+  const room = cfg.maxPerDay - todays.length;
+  if (room <= 0) return [];
+  const ctx = { done: backfillDoneKeys(ledger), now, reviewsByShow, slim, getOutletTier, shows };
+  const out = [];
+  for (const show of shows) {
+    if (blocked(show.id) || !backfillCandidate(show, ctx, cfg)) continue;
+    const d = scoreDecision(show, ctx, { ignoreAge: true });
+    out.push({ type: 'score', backfill: true, show, gate: d.gate });
+  }
+  out.sort((a, b) => String(b.show.openingDate).localeCompare(String(a.show.openingDate)) || a.show.id.localeCompare(b.show.id));
+  // One stagger apart in this order, so scheduleEvents (which sorts by dueAt) keeps the newest first.
+  const first = nextWindowSlot(now + 10 * MIN_MS, tz);
+  return out.slice(0, room).map((ev, i) => ({ ...ev, dueAt: new Date(first + i * C.STAGGER_MINUTES * MIN_MS) }));
 }
 
 /** True when the site shows a Critic Score for this show (the number a post would state). */
@@ -300,11 +410,23 @@ function roundupWindow(ymd, cfg = C.WEEKLY_ROUNDUP) {
  */
 function roundupCandidates(ymd, set, { shows, reviewsByShow, slim, getOutletTier }, cfg = C.WEEKLY_ROUNDUP) {
   const { first, last } = roundupWindow(ymd, cfg);
-  const ctx = { reviewsByShow, slim, getOutletTier, shows };
+  const ctx = { reviewsByShow, slim, getOutletTier, shows, now: Date.parse(`${ymd}T12:00:00Z`) }; // the post day, for COMPLETE_COVERAGE_FLOORS.minDays
   return shows.filter(s => isEligibleShow(s) && homeSet(s) === set)
     .filter(s => { const o = String(s.openingDate).slice(0, 10); return o >= first && o <= last; })
     .filter(s => scoreSettled(s, ctx).ok)
     .sort((a, b) => slim[b.id].cs - slim[a.id].cs || String(a.openingDate).localeCompare(String(b.openingDate)) || a.id.localeCompare(b.id));
+}
+
+/**
+ * The order a roundup fills its capped rows in (BRO-6920): the set's main-stage openings
+ * (Broadway for 'broadway', West End for 'west-end') before Off shows, each group best score
+ * first. With looser Off-Broadway/Off-West End floors a busy week can have more scored Off
+ * shows than rows, and a main-stage opening must not be pushed off the card by them.
+ * The card itself still lists the chosen rows best score first (buildRoundup re-sorts).
+ */
+function roundupFillOrder(candidates, set) {
+  const main = s => (s.category === set ? 0 : 1);
+  return candidates.map((s, i) => ({ s, i })).sort((a, b) => main(a.s) - main(b.s) || a.i - b.i).map(x => x.s);
 }
 
 /**
@@ -405,7 +527,7 @@ function closingSoonLookback({ shows, ledger, now, reviewsByShow, slim, getOutle
     const last = addDaysYmd(closing, -cfg.minDays);
     if (last < addDaysYmd(today, -days) || first > addDaysYmd(today, cfg.maxDays)) continue;
     if (!['open', 'closed'].includes(show.status)) continue;
-    const settled = scoreSettled(show, { reviewsByShow, slim, getOutletTier, shows });
+    const settled = scoreSettled(show, { reviewsByShow, slim, getOutletTier, shows, now });
     const score = slim[show.id] && Number.isFinite(slim[show.id].cs) ? Math.round(slim[show.id].cs) : null;
     const firstDay = first < addDaysYmd(today, -days) ? addDaysYmd(today, -days) : first;
     out.push({ show, closing, firstDay, score, settled: settled.ok, done: done.has(`closing-soon:${show.id}`), wouldFire: settled.ok && score !== null && score >= cfg.minScore });
@@ -413,4 +535,4 @@ function closingSoonLookback({ shows, ledger, now, reviewsByShow, slim, getOutle
   return out.sort((a, b) => a.firstDay.localeCompare(b.firstDay) || a.show.id.localeCompare(b.show.id));
 }
 
-module.exports = { scoreSettled, roundupDay, roundupWindow, roundupCandidates, findRoundupEvents, roundupLookback, closingDecision, findClosingSoonEvents, closingSoonLookback, ymdDays, addDaysYmd, findLondonCompareEvents, londonCompareDecision, londonCompareLookback, hasSiteScore, sentScoreEntry, briefCoversPair, findScoreEvents, scoreDecision, doneKeys, scheduleEvents, splitBacklog, morningAfter, nextWindowSlot, inWindow, zonedTime, localParts, isEligibleShow, newReviewCountFor };
+module.exports = { touringEligible, backfillCandidate, backfillDoneKeys, backfillWindow, findBackfillEvents, scoreSettled, roundupDay, roundupFillOrder, roundupWindow, roundupCandidates, findRoundupEvents, roundupLookback, closingDecision, findClosingSoonEvents, closingSoonLookback, ymdDays, addDaysYmd, findLondonCompareEvents, londonCompareDecision, londonCompareLookback, hasSiteScore, sentScoreEntry, briefCoversPair, findScoreEvents, scoreDecision, doneKeys, scheduleEvents, splitBacklog, morningAfter, nextWindowSlot, inWindow, zonedTime, localParts, isEligibleShow, newReviewCountFor };

@@ -114,7 +114,9 @@ jobs:
     # (~17% margin). Real runs still finish in ~50-70 min.
     # 145->150 (BRO-6620): the lane-only gate adds a lease re-sync (2 min), a
     # variable read (1 min) and the gate (2 min); (7260+240+60)/0.85 = 8894s.
-    timeout-minutes: 150
+    # 150->152 (BRO-6987): the Reddit due-check dispatch step (2 min);
+    # (7560+120)/0.85 = 9035s, so 152min = 9120s.
+    timeout-minutes: 152
     steps:
       # BRO-4231: this job checks out a blobless partial clone (filter: blob:none
       # on the checkout below), so rebase/diff/show fetch missing blobs over the
@@ -249,18 +251,19 @@ jobs:
               // this order, so tonight's opener is never the one a budget cut drops.
               const { orderPollShows } = require('./scripts/lib/poller-loop-budget');
               const r = orderPollShows(opened, now);
-              if (r.order.length > 0) console.log([r.order.join(','), r.hot.join(','), r.front, r.mainFrontEnd].join('|'));
+              if (r.order.length > 0) console.log([r.order.join(','), r.hot.join(','), r.front, r.mainFrontEnd, r.window.join(',')].join('|'));
             ")
 
             if [ -z "$SHOWS" ]; then
               echo "No recently opened shows"
               echo "has_shows=false" >> $GITHUB_OUTPUT
             else
-              IFS='|' read -r ORDERED HOT FRONT MAIN_FRONT_END <<< "$SHOWS"
+              IFS='|' read -r ORDERED HOT FRONT MAIN_FRONT_END WINDOW <<< "$SHOWS"
               echo "Recently opened shows: $ORDERED"
               echo "Press-night shows re-polled during the loop: ${HOT:-none}"
               echo "shows=$ORDERED" >> $GITHUB_OUTPUT
               echo "hot=$HOT" >> $GITHUB_OUTPUT
+              echo "window=$WINDOW" >> $GITHUB_OUTPUT
               echo "front=${FRONT:-0}" >> $GITHUB_OUTPUT
               echo "main_front_end=${MAIN_FRONT_END:-}" >> $GITHUB_OUTPUT
               echo "has_shows=true" >> $GITHUB_OUTPUT
@@ -441,6 +444,7 @@ jobs:
           # openers) is done, the loop stops so collect/score/rebuild/deploy run now;
           # the tail waits for the next run (at most one night, the hot span).
           HOT_SHOWS="${{ steps.find.outputs.hot }}"
+          WINDOW_SHOWS="${{ steps.find.outputs.window }}"
           FRONT="${{ steps.find.outputs.front }}"
           case "$FRONT" in ''|*[!0-9]*) FRONT=0 ;; esac
           # Missing/garbled main-front index falls back to the full front (old rule).
@@ -498,6 +502,18 @@ jobs:
               elif [ "$POLLER_RC" -ne 0 ]; then
                 GATHER_FAILED=$((GATHER_FAILED + 1))
                 echo "  ⚠️ poller exited $POLLER_RC for $SHOW_ID — counted as a gather-stage failure"
+              fi
+
+              # BRO-7004 / BRO-7032: a press-night review found without a byline (TheaterMania,
+              # Parcel from America, The Unbelievers) is routed to _pending/ and used to wait for
+              # the pre-loop drain of the NEXT run (~60 min later). Promote it right after the poll
+              # for EVERY show in its press-night window (WINDOW_SHOWS, any market: HOT_SHOWS is
+              # main-stage only, so Off-Broadway nights were skipped). Promotions stay uncommitted,
+              # so the CREATED/SHOW_DIRTY checks below and HOT_AFTER (HOT_BEFORE is read before the
+              # poll) count them as new and the commit + collect + score chain picks them up.
+              if [[ ",$WINDOW_SHOWS," == *",$SHOW_ID,"* ]]; then
+                # lint-allow-swallow: best-effort speed-up; the next run's pre-loop drain still promotes the stub, so nothing is lost.
+                BD_OPENING_NIGHT=1 timeout 240 node scripts/replay-pending-bylines.js --shows="$SHOW_ID" --time-budget-min=2 --skip-empty-body-retry || echo "::warning::press-night pending drain for $SHOW_ID failed or timed out"
               fi
 
               # Check if files were created (review-texts is a separate git checkout)
@@ -676,7 +692,7 @@ jobs:
           # post-checkout — a `[ ! -f ... ]` clause on it is always false and made
           # this early exit unreachable. git diff --cached --quiet below still
           # short-circuits correctly; dropped the dead clause.
-          if [ ! -d data/audit/poller-backoff ] && [ ! -f data/audit/serp-burst-ledger.json ] && [ ! -f data/audit/serp-session-ledger.json ] && [ ! -f data/audit/bww-roundup-miss-ledger.jsonl ] && [ ! -f data/audit/scraper-spend-ledger.jsonl ]; then
+          if [ ! -d data/audit/poller-backoff ] && [ ! -f data/audit/serp-burst-ledger.json ] && [ ! -f data/audit/serp-session-ledger.json ] && [ ! -f data/audit/bww-roundup-miss-ledger.jsonl ] && [ ! -f data/audit/scraper-spend-ledger.jsonl ] && [ ! -f data/audit/gemini-usage-ledger.jsonl ]; then
             echo "No backoff/ledger state to commit"
             exit 0
           fi
@@ -692,6 +708,7 @@ jobs:
           # never aborts this step under `bash -e` — staging is best-effort; the commit below
           # only fires if something actually got staged. (Ledgers are rewritten on UTC rollover,
           # never deleted, so the `-f` guard never needs to stage a deletion.)
+          git add data/audit/gemini-usage-ledger.jsonl 2>/dev/null || true # LLM spend meter rows (BRO-5043)
           git add data/audit/poller-backoff/ 2>/dev/null || true
           { [ -f data/audit/serp-burst-ledger.json ] && git add data/audit/serp-burst-ledger.json; } || true
           { [ -f data/audit/serp-session-ledger.json ] && git add data/audit/serp-session-ledger.json; } || true
@@ -699,6 +716,9 @@ jobs:
           # checkouts for isInRoundupMissCooldown() to see prior misses at all; without
           # this commit every run starts from an empty ledger and the cooldown never fires.
           { [ -f data/audit/bww-roundup-miss-ledger.jsonl ] && git add data/audit/bww-roundup-miss-ledger.jsonl; } || true
+          # BRO-6910: reviews createReviewFile's cross-show URL guard dropped; the gap
+          # audit reads this to FAIL a show whose real review vanished.
+          { [ -f data/audit/cross-show-url-holds.jsonl ] && git add data/audit/cross-show-url-holds.jsonl; } || true
           # Task #752: Browserbase/BD/SB/SD call-attribution ledger. This workflow is the
           # heaviest caller (BWW RR discovery + Stage cookie fetch via bww-rr-discover.js /
           # opening-night-poller.js's own BB session) — without this line every session it
@@ -758,6 +778,8 @@ jobs:
           SHOW_FILTER: ${{ steps.find.outputs.shows }}
           MAX_REVIEWS: '100'
           BATCH_SIZE: '10'
+          # BRO-6972: a show with no scored review yet is collected first (collection-priority.js).
+          PRIORITIZE_UNCOVERED: '1'
           # Opt-in soft deadline (scripts/collect-review-texts.js) — stops the
           # loop cleanly with a checkpoint well before the step's own
           # timeout-minutes below, so a big backlog exits 0 instead of being
@@ -921,6 +943,11 @@ jobs:
               SCORE_DEFERRED=$((SCORE_DEFERRED + 1))
               continue
             fi
+            # BRO-6968: a not_a_review verdict judged on the page blurb before the
+            # full text arrived (Theatre and Tonic, The Bridge) blocked the review
+            # until llm-ensemble-score.yml's scheduled sweep, 3h later. Clear it
+            # here, per show, so the scorer below re-judges the new text this poll.
+            node scripts/clear-stale-automated-text-verdicts.js --apply --show="$SHOW_ID" 2>&1 || true
             SCORE_RC=0
             npx ts-node scripts/llm-scoring/index.ts --show="$SHOW_ID" --ensemble --time-budget-min="$(score_budget_min)" 2>&1 || SCORE_RC=$?
             # Rescore reviews first scored off a roundup excerpt whose full
@@ -981,6 +1008,34 @@ jobs:
           git commit -m "data: Opening night poller — scored reviews"
           bash ../../scripts/lib/push-with-retry.sh 5 main
         continue-on-error: true
+
+      # BRO-7031: the inline scorer shares one ~8 min deadline across every show and
+      # only starts a review with 5 min left, so a busy night leaves reviews unscored
+      # ("left N for the next run"). The next poll can be cancelled by an Express
+      # takeover, which stranded New York Theatre Guide for 1h36m on 2:22 - A Ghost
+      # Story (2026-11-05). Hand any show still holding unscored reviews straight to
+      # the dedicated scoring workflow instead of waiting for a poll that may not come.
+      - name: Dispatch scoring for shows left unscored
+        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_action == 'true'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          POLLED_SHOWS: ${{ steps.find.outputs.shows }}
+        run: |
+          LEFTOVER=$(node scripts/lib/scoring-leftover-shows.js "$POLLED_SHOWS")
+          if [ -z "$LEFTOVER" ]; then
+            echo "No show left unscored by the inline scorer."
+            exit 0
+          fi
+          # One dispatch PER show: a comma list shares the "shows-multi" lane (a newer
+          # list replaces a waiting one) and Express cancels a whole list naming its
+          # show without re-dispatching it (express-preemption.js shouldCancel).
+          IFS=',' read -ra LEFT_ARRAY <<< "$LEFTOVER"
+          for LEFT_ID in "${LEFT_ARRAY[@]}"; do
+            echo "→ Dispatching llm-ensemble-score.yml for: $LEFT_ID"
+            gh workflow run llm-ensemble-score.yml -f show_id="$LEFT_ID" -f run_validation=false \
+              || echo "::warning::scoring dispatch failed for $LEFT_ID"
+          done
 
       # === FAST PATH: inline rebuild+deploy (skips separate rebuild-reviews.yml) ===
       # NYT Critic's Pick on opening night: data/nyt-critics-picks.json is
@@ -1327,6 +1382,20 @@ jobs:
         continue-on-error: true
         timeout-minutes: 9
 
+      # BRO-6987: GitHub drops many runs of the Reddit digest's hourly cron
+      # (15 of ~72 ran in 3 days, gaps up to 8h), so the opening-post drafter
+      # missed score moves. After each verified deploy, ask that workflow's
+      # cheap due check now; the drafter's own rule decides whether to redraft.
+      # Extra dispatches collapse into its one pending 'hourly' concurrency slot.
+      - name: Dispatch Reddit draft due check (after verified deploy)
+        if: steps.deploy_verify.outputs.verified == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh workflow run reddit-engagement-digest.yml -f due_check=true || echo "::warning::Reddit due-check dispatch failed; the hourly cron is the fallback"
+        continue-on-error: true
+        timeout-minutes: 2
+
       # === LEGACY PATH: dispatch rebuild-reviews.yml (when fast_path is off) ===
       - name: Trigger rebuild + deploy (legacy)
         if: (!inputs.fast_path) && steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_action == 'true' && steps.lane_only.outputs.suppress != 'true'
@@ -1497,7 +1566,10 @@ jobs:
         continue-on-error: true
         env:
           SHOWS: ${{ steps.find.outputs.shows }}
-        run: node scripts/poller-failure-audience.js --shows="$SHOWS"
+          # A run that dies before the find step (e.g. checkout-core-data) has no
+          # find output; the dispatched show_id still names the show (BRO-7029 night).
+          INPUT_SHOW_ID: ${{ inputs.show_id }}
+        run: node scripts/poller-failure-audience.js --shows="${SHOWS:-$INPUT_SHOW_ID}"
 
       # BRO-3707: opening-night-express.yml deliberately `gh run cancel`s any
       # in-progress poller run before taking over (its "Cancel competing

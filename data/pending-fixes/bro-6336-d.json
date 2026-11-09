@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6336-d",
   "planId": "7f23b02f-13fd-4400-bed9-1ecac5d397e7",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-26T14:37:28.000Z",
   "submitter": {
     "name": null,
@@ -69,5 +69,27 @@
       "msg": "commercial.json: capitalization updated for midnight-in-the-garden-of-good-and-evil"
     }
   ],
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "obsolete": 2
+    },
+    "ops": [
+      {
+        "i": 0,
+        "verdict": "obsolete",
+        "reason": "king-lear-2019.capitalization changed since by a later write (now 4950000)"
+      },
+      {
+        "i": 1,
+        "verdict": "obsolete",
+        "reason": "frankie-and-johnny-in-the-clair-de-lune-2019.capitalization changed since by a later write (now 4005000)"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (2 obsolete); per-op reasons in triage.ops"
 }

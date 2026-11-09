@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5395-k4",
   "planId": "270683fe-9141-452e-96d6-d9d3c2b82c71",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-15T22:10:00.000Z",
   "submitter": {
     "name": null,
@@ -201,5 +201,22 @@
       "ok": true,
       "msg": "the-legends-of-them-west-end-2024/thestage--laurie-yule.json showNotMentioned: true -> false"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 1
+    },
+    "ops": [
+      {
+        "i": 0,
+        "verdict": "resolved",
+        "reason": "avenue-q-west-end-2026/theupcoming--benedetta-mancusi.json showNotMentionedManualClear already (text)"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (1 resolved); per-op reasons in triage.ops"
 }

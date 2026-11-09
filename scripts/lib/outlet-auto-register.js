@@ -215,14 +215,16 @@ async function resolveMastheadName({ outletId, domain, fetchPage }) {
 }
 
 /**
- * BRO-5336/BRO-5603: a displayName that is just a run-together id, either
- * capitalized (12+ chars) or lowercase (11+ chars, including "theatlantic").
+ * BRO-6991: a displayName that is just a run-together id of 10+ letters or
+ * digits, with at least one letter, lowercase or initially capitalized.
+ * Internal capitals already distinguish a masthead ("theatreCat").
  * Long single tokens only,
  * so real one-word mastheads ("Variety", "Playbill") never match.
  */
 function isRunTogetherSlugDisplayName(outletId, displayName) {
   const d = String(displayName || '');
-  return /^[A-Z]?[a-z]{11,}$/.test(d) && d.toLowerCase() === String(outletId || '').replace(/-/g, '');
+  return d.length >= 10 && /^[A-Z]?[a-z0-9]+$/.test(d) && /[a-z]/i.test(d)
+    && d.toLowerCase() === String(outletId || '').replace(/-/g, '');
 }
 
 /**

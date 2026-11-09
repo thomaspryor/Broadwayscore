@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-3410: createOrMergeReviewFile (the shared writer chokepoint) honors the
  * per-show _blocklist.json, so no caller can re-create an operator-deleted review.

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/theater-metadata.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-3511: guards that stop an empty/partial LLM draft or a structurally
  * damaged merge from overwriting good theater-metadata.json data. Requires the

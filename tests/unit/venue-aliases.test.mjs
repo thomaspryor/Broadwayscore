@@ -71,7 +71,9 @@ test('buildVenueContext expands the renamed venue into a self-documenting string
 
 test('buildVenueContext returns plain venue when no aliases registered', () => {
   assert.equal(buildVenueContext('Apollo Theatre'), 'Apollo Theatre');
-  assert.equal(buildVenueContext('National Theatre'), 'National Theatre');
+  assert.equal(buildVenueContext('Donmar Warehouse'), 'Donmar Warehouse');
+  // BRO-6923: a multi-stage building now carries a self-documenting note instead of staying plain.
+  assert.match(buildVenueContext('National Theatre'), /several stages/);
 });
 
 test('buildVenueContext handles empty / null gracefully', () => {

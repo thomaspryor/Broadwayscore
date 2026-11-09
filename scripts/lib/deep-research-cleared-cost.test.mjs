@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/pending-fixes/bro-6191.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-6191: a cost a person cleared stays cleared. Real function require()s (CLAUDE.md §15).
 // Field names are built, not spelled, so this file is not a new direct reader of the
 // cost field (tests/unit/cost-for-week.test.mjs greps for the literal).

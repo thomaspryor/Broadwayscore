@@ -40,6 +40,12 @@ const SOURCES = Object.freeze([
     workflows: { 'scrape-new-aggregators.yml': 1 } },
   { id: 'playbill-verdict', label: 'Playbill Verdict', market: 'broadway', category: 'broadway',
     workflows: { 'scrape-new-aggregators.yml': 1 } },
+  { id: 'theatre-reviews', label: 'theatre.reviews', market: 'west-end',
+    workflows: { 'scrape-theatre-reviews.yml': 7, 'sweep-we-aggregators.yml': 7 } },
+  { id: 'dtli', label: 'Did They Like It?', market: 'broadway', category: 'broadway',
+    workflows: { 'scrape-dtli-show-score.yml': 7 } },
+  { id: 'show-score', label: 'Show Score', market: 'broadway', category: 'broadway',
+    workflows: { 'scrape-dtli-show-score.yml': 7, 'refresh-show-score-opening-night.yml': 1 } },
 ]);
 
 const DEFAULTS = Object.freeze({
@@ -184,7 +190,12 @@ function retiredConsistency(sources, scheduled) {
 function assess({ sources = SOURCES, shows, archives, runs, scheduled, now = new Date(), opts = {} }) {
   const findings = [];
   const report = [];
-  const seenWf = new Set(); // a workflow shared by several sources is reported once
+  // Pick a stable owner for shared-workflow alerts. Registry order must not
+  // change condition keys and restart the router's cooldown on every reorder.
+  const workflowOwner = new Map();
+  for (const s of [...sources].filter(s => !s.retired).sort((a, b) => a.id.localeCompare(b.id))) {
+    for (const wf of Object.keys(s.workflows)) if (!workflowOwner.has(wf)) workflowOwner.set(wf, s.id);
+  }
   findings.push(...retiredConsistency(sources, scheduled || {}));
   for (const s of sources) {
     if (s.retired) { report.push({ source: s.id, retired: s.retired }); continue; }
@@ -204,8 +215,7 @@ function assess({ sources = SOURCES, shows, archives, runs, scheduled, now = new
         if (!runs[wf]) continue;
         const v = workflowVerdict(runs[wf], { cadenceDays, now }, opts);
         entry.workflows[wf] = v;
-        if (seenWf.has(wf)) continue;
-        seenWf.add(wf);
+        if (workflowOwner.get(wf) !== s.id) continue;
         if (v.status === 'failing') {
           findings.push({ source: s.id, kind: 'workflow-failing', workflow: wf,
             message: `${s.label}: ${wf} failed its last ${v.streak} runs in a row (last success ${v.lastSuccessAt ? v.lastSuccessAt.slice(0, 10) : 'none in window'})` });
@@ -215,6 +225,9 @@ function assess({ sources = SOURCES, shows, archives, runs, scheduled, now = new
         } else if (v.status === 'stale-success') {
           findings.push({ source: s.id, kind: 'workflow-stale', workflow: wf,
             message: `${s.label}: ${wf} last succeeded ${v.daysSinceSuccess === null ? 'never (in window)' : `${v.daysSinceSuccess} days ago`}` });
+        } else if (v.status === 'no-runs') {
+          findings.push({ source: s.id, kind: 'workflow-no-runs', workflow: wf,
+            message: `${s.label}: ${wf} has no scheduled runs in the available history (expected every ${cadenceDays} days)` });
         }
       }
     }
@@ -223,7 +236,32 @@ function assess({ sources = SOURCES, shows, archives, runs, scheduled, now = new
   return { findings, report };
 }
 
+function conditionKey(f) {
+  return `aggregator-health:${f.source}:${f.kind}${f.workflow ? ':' + f.workflow : ''}`;
+}
+
+/** Only clear a condition after reading the input for that particular source. */
+function resolvedConditionKeys(findings, sources, { archives, runs }) {
+  const live = new Set(findings.map(conditionKey));
+  const resolved = [];
+  const add = f => { const key = conditionKey(f); if (!live.has(key)) resolved.push(key); };
+  for (const s of sources) {
+    for (const wf of Object.keys(s.workflows)) {
+      for (const kind of ['workflow-missing', 'retired-but-scheduled', 'schedule-removed']) {
+        add({ source: s.id, kind, workflow: wf });
+      }
+      if (!s.retired && Array.isArray(runs?.[wf])) {
+        for (const kind of ['workflow-failing', 'workflow-idle', 'workflow-stale', 'workflow-no-runs']) {
+          add({ source: s.id, kind, workflow: wf });
+        }
+      }
+    }
+    if (!s.retired && archives?.[s.id] instanceof Set) add({ source: s.id, kind: 'coverage-drop' });
+  }
+  return resolved;
+}
+
 module.exports = {
   SOURCES, DEFAULTS, quarterOf, coverageSeries, coverageVerdict, workflowVerdict,
-  retiredConsistency, assess,
+  retiredConsistency, assess, conditionKey, resolvedConditionKeys,
 };

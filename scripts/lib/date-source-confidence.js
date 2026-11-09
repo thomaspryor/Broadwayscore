@@ -105,8 +105,23 @@ function isUnconfirmedDateSource(show) {
   return false;
 }
 
+/**
+ * True when openingDateSource records a CONFIRMED no-preview run: a page
+ * source checked that opening night was the first performance and tagged the
+ * value `<source>:no-previews` (hand-sourced venue/producer pages, and the OB
+ * enricher's same-date CONFIRM path, BRO-6493), `:opening-confirmed` (a
+ * producer page named that date as opening night) or
+ * `:showcase-first-performance` (a one-night showcase). Such a row's
+ * openingDate === previewsStartDate is correct, not IBDB conflation.
+ */
+const CONFIRMED_SAME_DAY_SUFFIX = /:(no-previews|opening-confirmed|showcase-first-performance)$/;
+function isConfirmedNoPreviewSource(src) {
+  return typeof src === 'string' && CONFIRMED_SAME_DAY_SUFFIX.test(src);
+}
+
 module.exports = {
   isUnconfirmedDateSource,
+  isConfirmedNoPreviewSource,
   // Exported for tests / debug only — call sites should use the predicate.
   ALWAYS_UNCONFIRMED,
   UNCONFIRMED_FOR_OFF_BROADWAY,

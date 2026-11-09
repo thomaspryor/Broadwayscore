@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data); data/critic-registry.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-6716: a fresh fetch of the same url replaces a stored body that is a
 // DIFFERENT real article (Standard travel piece, TheWrap review of another
 // show) when an automated verdict already says so. Requires the real writer

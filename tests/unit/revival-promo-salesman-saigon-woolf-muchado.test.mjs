@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-4890 (revival promo: Salesman, Saigon, Woolf, Much Ado): acceptance tests
  * for the two inclusion rules the audit found missing. Per CLAUDE.md rule 15
@@ -68,12 +69,13 @@ test('web-search rule: a url, stored text, an aggregator source or a human overr
 
 test('rebuild-all-reviews.js enforces both rules in its main loop, ahead of the flag-writing branches', () => {
   const src = fs.readFileSync(path.join(ROOT, 'scripts', 'rebuild-all-reviews.js'), 'utf8');
-  assert.match(src, /if \(isCancelledBeforeOpeningShow\(showById\[showId\]\)\) \{\s*logExclusion\("skippedCancelledBeforeOpening"/);
-  assert.match(src, /if \(isUnverifiableWebSearchRow\(data\)\) \{\s*logExclusion\("skippedUnverifiableWebSearchRow"/);
+  // BRO-2453: both gates now run inside decideEarlyFileExclusion (review-guards.js).
+  assert.match(src, /decideEarlyFileExclusion\(data, showById\[showId\]\)/);
+  assert.match(src, /logExclusion\("skippedCancelledBeforeOpening"/);
+  assert.match(src, /logExclusion\("skippedUnverifiableWebSearchRow"/);
   const nonReview = src.indexOf('logExclusion("skippedNonReview"');
   assert.ok(nonReview > 0);
-  assert.ok(src.indexOf('isCancelledBeforeOpeningShow(showById[showId])') < nonReview);
-  assert.ok(src.indexOf('isUnverifiableWebSearchRow(data)') < nonReview);
+  assert.ok(src.indexOf('decideEarlyFileExclusion(data') < nonReview);
 });
 
 test('scoring-delta decideInclusion replays both rules, and flips when the predicates change', () => {

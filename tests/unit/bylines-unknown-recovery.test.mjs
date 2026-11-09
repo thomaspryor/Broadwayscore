@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/critic-registry.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-171 — recover Unknown-critic bylines via generalized page/text
  * extraction. Covers the three extraction paths added to

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/opening-night/leases.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-6123: closed-show stubs with a URL and zero fetch attempts were starved
 // behind the open-show backlog (176 theatre.reviews files, 2026-10-24).
 import { test } from 'node:test';

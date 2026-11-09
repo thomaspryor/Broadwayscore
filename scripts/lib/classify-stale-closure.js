@@ -121,8 +121,12 @@ function classifyStaleClosure({ show, entry, pending, archive, now, thresholds }
   // The age cap keeps historical shows we never researched out of the scan.
   // A TBD record that WAS deep-researched or owner-reviewed is exempt: otherwise a show that
   // aged past the cap before its research landed stays TBD forever
-  // (our-town, job-2024; BRO-4985).
-  const reviewedTbd = entry?.designation === 'TBD' && (hasBeenResearched(entry) || ownerDesignation);
+  // (our-town, job-2024; BRO-4985). So is a TBD record that already carries
+  // an estimate figure: an estimate needs no research (BRO-6158), and records
+  // added by hand from sources (BRO-6332's 2014-15 season) never get a
+  // research stamp, so the cap left them TBD forever (BRO-6140).
+  const reviewedTbd = entry?.designation === 'TBD'
+    && (hasBeenResearched(entry) || ownerDesignation || lossLabelFor(entry) !== null);
   if (daysClosed > maxAgeDays && !reviewedTbd) return { action: 'no-change', reason: `too-old (${Math.floor(daysClosed)}d > ${maxAgeDays}d)` };
 
   // Honor manual review locks

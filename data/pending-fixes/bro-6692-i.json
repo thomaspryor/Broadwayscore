@@ -318,5 +318,67 @@
       "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=the-grand-babylon-hotel-hull-truck-regional-2026 --url=https://www.thereviewshub.com/the-grand-babylon-hotel-hull-truck-theatre/ --outlet=thereviewshub"
     }
   ],
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "still-needed",
+    "counts": {
+      "resolved": 9,
+      "still-needed": 1
+    },
+    "stillNeededReason": "op 12: re-ingested via ingest-urls on 2026-11-07 (success) but the CI fetch of this paywalled page still yields no text or a stub; it needs a browser html handoff (ingest-html-handoff) to recover (BRO-7092 hand check)",
+    "ops": [
+      {
+        "i": 0,
+        "verdict": "resolved",
+        "reason": "https://www.thereviewshub.com/community-birmingham-rep/ is counted for community-birmingham-rep-regional-2025"
+      },
+      {
+        "i": 2,
+        "verdict": "resolved",
+        "reason": "https://www.thereviewshub.com/noises-off-stephen-joseph-theatre-scarborough/ is counted for noises-off-stephen-joseph-regional-2025"
+      },
+      {
+        "i": 4,
+        "verdict": "resolved",
+        "reason": "https://www.thereviewshub.com/the-accountants-aviva-studios-manchester/ is counted for the-accountants-aviva-studios-regional-2024"
+      },
+      {
+        "i": 10,
+        "verdict": "resolved",
+        "reason": "https://www.thereviewshub.com/little-women-york-theatre-royal/ is counted for little-women-york-royal-regional-2024"
+      },
+      {
+        "i": 12,
+        "verdict": "still-needed",
+        "reason": "re-ingested via ingest-urls on 2026-11-07 (success) but the CI fetch of this paywalled page still yields no text or a stub; it needs a browser html handoff (ingest-html-handoff) to recover (BRO-7092 hand check)"
+      },
+      {
+        "i": 14,
+        "verdict": "resolved",
+        "reason": "https://www.thereviewshub.com/good-for-a-girl-birmingham-rep/ is counted for good-for-a-girl-birmingham-rep-regional-2025"
+      },
+      {
+        "i": 18,
+        "verdict": "resolved",
+        "reason": "https://www.thereviewshub.com/starter-for-ten-birmingham-rep/ is counted for starter-for-ten-birmingham-rep-regional-2025"
+      },
+      {
+        "i": 21,
+        "verdict": "resolved",
+        "reason": "https://www.thereviewshub.com/the-school-for-scandal-royal-shakespeare-theatre-stratford-upon-avon/ is counted for the-school-for-scandal-royal-shakespeare-regional-2024"
+      },
+      {
+        "i": 22,
+        "verdict": "resolved",
+        "reason": "https://www.thereviewshub.com/lizzie-the-musical-hope-mill-theatre-manchester-2/ is counted for lizzie-the-musical-hope-mill-regional-2024"
+      },
+      {
+        "i": 24,
+        "verdict": "resolved",
+        "reason": "https://www.thereviewshub.com/the-grand-babylon-hotel-hull-truck-theatre/ is counted for the-grand-babylon-hotel-hull-truck-regional-2026"
+      }
+    ]
+  }
 }

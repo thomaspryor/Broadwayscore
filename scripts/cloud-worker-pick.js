@@ -176,7 +176,10 @@ async function main() {
       console.error(`[cloud-worker-pick] comment VERIFY check skipped: ${err && err.message ? err.message.split('\n')[0] : err}`);
     }
   }
-  const tiers = pickCloudCard(issues, { nowMs, codex: process.argv.includes('--codex') });
+  // BRO-7103: the recurrence detector's daily snapshot routes instance cards to their root-cause card. Fails open.
+  let recurrence = null;
+  try { recurrence = JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '../data/audit/recurrence-classes.json'), 'utf8')); } catch { recurrence = null; }
+  const tiers = pickCloudCard(issues, { nowMs, codex: process.argv.includes('--codex'), recurrence });
   const { eligible, skipped, startNowSkipped, eligibleP2, skippedP2, eligibleP3, skippedP3 } = tiers;
   // P2 goes after P0/P1 and P3 after P2: a fallback card (resume or new) is
   // reached only when every entry ahead of it was skipped for its history (or,
@@ -195,7 +198,8 @@ async function main() {
     // Same queue minus resume entries: a stranded landing is the Claude worker's to finish.
     // Cards Codex bounced recently (14d; 3d after a single 'landed part') go to the Claude worker, not back to Codex.
     const { codexBouncedRecently } = require('./lib/codex-runner.js');
-    let rest = queue.filter((q) => !q.resume && !codexBouncedRecently(q.issue.comments && q.issue.comments.nodes, nowMs));
+    const bounced = new Set(queue.filter((q) => !q.resume && codexBouncedRecently(q.issue.comments && q.issue.comments.nodes, nowMs)));
+    let rest = queue.filter((q) => !q.resume && !bounced.has(q));
     // --codex (the Codex runner, BRO-5287): drop cards an unattended Codex run cannot finish
     // (Mac-only, too broad) and, within each tier, put the best-suited (small, one-test VERIFY) first.
     if (process.argv.includes('--codex')) {
@@ -203,8 +207,11 @@ async function main() {
       // The trust ladder (BRO-6303), read once per pick from origin/main: min score, cloud data route, review-texts.
       const ladder = codexLadderAccess();
       console.error(`[cloud-worker-pick] codex ladder: ${ladder.mode} (${ladder.source}) minScore=${ladder.minScore} dataRouteLocked=${ladder.cloudDataRouteLocked} reviewTextsLocked=${ladder.reviewTextsLocked}`);
-      const fit = new Map(rest.map((q) => [q, codexCardFit({ title: q.issue.title, description: q.issue.description, verify: verifyCommand(q.issue), comments: q.issue.comments && q.issue.comments.nodes, ladder })]));
+      const fitOf = (q) => codexCardFit({ title: q.issue.title, description: q.issue.description, verify: verifyCommand(q.issue), comments: q.issue.comments && q.issue.comments.nodes, ladder });
+      const fit = new Map(rest.map((q) => [q, fitOf(q)]));
       for (const [q, f] of fit) if (f.skip) console.error(`[cloud-worker-pick] codex skip ${q.issue.identifier}: ${f.skip} (${f.why.join(',')})`);
+      // BRO-7133: a card inside its bounce ban still names the reason it would be skipped once the ban ends.
+      for (const q of bounced) { const f = fitOf(q); console.error(`[cloud-worker-pick] codex skip ${q.issue.identifier}: bounced${f.skip ? `, then ${f.skip} (${f.why.join(',')})` : ''}`); }
       const tierRank = new Map(rest.map((q) => [q.tier, 0]));
       [...tierRank.keys()].forEach((t, i) => tierRank.set(t, i)); // queue order already goes P0/P1, P2, P3
       rest = rest.filter((q) => !fit.get(q).skip)

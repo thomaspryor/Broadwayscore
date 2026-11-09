@@ -620,3 +620,20 @@ test('urlPathOppositeMarketIndicator: null/empty title and path are safe', () =>
   assert.equal(urlPathOppositeMarketIndicator({ urlPath: '', oppositeMarket: 'uk', showTitle: 'X' }), false);
   assert.equal(urlPathOppositeMarketIndicator({ urlPath: '/x/london-review', oppositeMarket: 'nope', showTitle: 'X' }), false);
 });
+
+test('BRO-5790: a Talkin\' Broadway US regional path flags a London show, not a Broadway one', () => {
+  const { urlPathOppositeMarketIndicator: ind } = require('./cross-market-guard.js');
+  const p = '/page/regional/minn/minn255.html';
+  assert.equal(ind({ urlPath: p, oppositeMarket: 'us', showTitle: 'Dear England' }), true);
+  assert.equal(ind({ urlPath: p, oppositeMarket: 'uk', showTitle: 'Dear England' }), false);
+  assert.equal(ind({ urlPath: '/reviews/regional/page/x', oppositeMarket: 'us', showTitle: 'X' }), false);
+});
+
+test('BRO-5790: the URL-path guard treats a UK regional show as UK, a US regional show as not', () => {
+  const { urlPathGuardTreatsShowAsUk: uk } = require('./cross-market-guard.js');
+  assert.equal(uk('west-end', 'Harold Pinter Theatre'), true);
+  assert.equal(uk('regional', 'Royal Shakespeare Theatre, Stratford-upon-Avon'), true);
+  assert.equal(uk('regional', 'Guthrie Theater, Minneapolis'), false);
+  assert.equal(uk('broadway', 'Royal Shakespeare Theatre'), false);
+  assert.equal(uk('regional', null), false);
+});

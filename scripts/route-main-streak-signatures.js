@@ -49,13 +49,14 @@
  */
 'use strict';
 
+const { testIdForSignature } = require('./lib/test-identity.js');
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const {
   failingStepSignatures, firstFailingTestNameInJobLog, firstFailingTestFileInJobLog, signaturesToResolve, RED_SIGNATURE_PREFIX,
-  trackSignatureAbsence, STALE_ABSENT_RUN_THRESHOLD,
+  trackSignatureAbsence, STALE_ABSENT_RUN_THRESHOLD, normalizeJobName,
 } = require('./lib/main-red-streak.js');
 const { routeAlert, loadLedger, resolveCondition, patchCondition } = require('./lib/owner-alert-router.js');
 // BRO-3907: every card this script files used to carry prose-only acceptance
@@ -73,8 +74,9 @@ const USAGE = `route-main-streak-signatures.js — BRO-3865 per-breakage alert r
     --exclude-job  a job NAME to drop before computing signatures; repeatable (test.yml passes its own
                    "Test Summary" and the non-blocking "Data Validation")
     --dispatch     file an 'auto' card for each currently-failing signature (caller gates this on streak>=2)
-    --escalate     also raise 'test-yml:main-streak-escalation' (caller gates this on streak>=4; digest-only since BRO-4141)
-    --prev-url     previous failed run's URL, folded into the escalation email's fields
+    --escalate     accepted for compatibility; escalation (BRO-7102) now runs on every red run:
+                   a signature red 6h+ gets its own card bumped High/Todo/START-NOW (red-escalation.js)
+    --prev-url     accepted for compatibility (unused since BRO-7102)
     --streak       consecutive-failure count, folded into alert fields/description
   Resolution (closing signatures whose job went green on THIS run) always runs, independent of the flags above.
   Stale resolution (BRO-4054) also always runs: an open signature whose job failed on ${STALE_ABSENT_RUN_THRESHOLD}
@@ -205,7 +207,7 @@ async function main() {
   } catch (err) {
     console.error(`[route-main-streak-signatures] could not read ${TEST_YML_PATH} (${err.message}); bash-integration step detection falls back to the step-name heuristic, and (if --dispatch) every signature this run falls back to VERIFY: owner-judgment.`);
   }
-  const resolveStepRunCommand = (jobName, stepName) => findStepRunCommandInWorkflow(testYmlText, jobName, stepName);
+  const resolveStepRunCommand = (jobName, stepName) => findStepRunCommandInWorkflow(testYmlText, normalizeJobName(jobName), stepName);
 
   // Test names matter for --dispatch (sharpening which card gets filed/
   // titled) AND, since BRO-4054, for judging whether an OPEN signature is
@@ -219,9 +221,9 @@ async function main() {
   if (opts.dispatch || openRedKeys.length) {
     for (const job of jobs) {
       if (!job?.conclusion || ['success', 'skipped'].includes(job.conclusion)) continue;
-      if (!job.databaseId) { unreliableJobs.add(job.name || ''); continue; }
+      if (!job.databaseId) { unreliableJobs.add(normalizeJobName(job.name)); continue; }
       const logText = await fetchJobLogText(job.databaseId);
-      if (logText === null) { unreliableJobs.add(job.name || ''); continue; }
+      if (logText === null) { unreliableJobs.add(normalizeJobName(job.name)); continue; }
       const testName = firstFailingTestNameInJobLog(logText);
       if (testName) testNameByJob.set(job.name || '', testName);
       const testFile = firstFailingTestFileInJobLog(logText);
@@ -256,14 +258,25 @@ async function main() {
     console.log(`[route-main-streak-signatures] resolved ${key} — stale: absent from ${STALE_ABSENT_RUN_THRESHOLD} consecutive failed runs (${(stale.updates[key] || []).join(', ')}) while its job kept failing elsewhere`);
   }
 
+  // BRO-7102: the old --escalate path raised 'test-yml:main-streak-escalation'
+  // as 'human', which the page gate always downgraded to the digest (218
+  // notifications, nothing dispatched). Instead, every red run puts each
+  // long-red signature's OWN card in front of a worker, whatever the streak
+  // (a flapping main never builds a 4-push streak, but its signature's
+  // ledger incident stays open). --escalate is still accepted, files nothing.
+  await escalateLongRedSignatures(currentSignatures);
+
   if (!opts.dispatch) return;
 
   const runUrl = runUrlFor(opts.runId);
   for (const sig of currentSignatures) {
     const label = sig.testName ? `${sig.job} / ${sig.step} — "${sig.testName}"` : `${sig.job} / ${sig.step}`;
     const verify = verifyForSignature({ job: sig.job, step: sig.step, testFile: sig.testName ? testFileByJob.get(sig.job) : undefined }, testYmlText);
+    // BRO-7102 item 4: shared test identity, so a live-data or digest card for the same test is reused.
+    const testId = testIdForSignature({ testName: sig.testName, testFile: testFileByJob.get(sig.job) });
     await routeAlert({
       conditionKey: sig.conditionKey,
+      ...(testId ? { testId } : {}),
       title: `main test.yml red: ${label}`,
       description: `main's Test Suite is failing on ${label} (${opts.streak} consecutive push${opts.streak === '1' ? '' : 'es'} red). Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. This card is scoped to THIS specific breakage — a different job/step/test failing at the same time gets its own card instead of deduping into this one.`,
       severity: 'error',
@@ -283,27 +296,14 @@ async function main() {
     }).catch((e) => console.error(`[route-main-streak-signatures] dispatch failed for ${sig.conditionKey}: ${e.message}`));
   }
 
-  if (opts.escalate) {
-    const failingJobsLabel = currentSignatures.length
-      ? [...new Set(currentSignatures.map((s) => s.job))].join(', ')
-      : 'unknown (job-set lookup unavailable)';
-    await routeAlert({
-      conditionKey: 'test-yml:main-streak-escalation',
-      title: 'main test.yml STILL red — auto-dispatch did not resolve it',
-      description: `main test.yml is STILL red after ${opts.streak} consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: ${failingJobsLabel}. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.`,
-      severity: 'error',
-      disposition: 'human',
-      model: 'opus',
-      fields: [
-        { name: 'This failed run', value: runUrl ? `[View logs](${runUrl})` : 'n/a' },
-        { name: 'Previous failed run', value: opts.prevUrl ? `[View logs](${opts.prevUrl})` : 'n/a' },
-        { name: 'Consecutive failures', value: opts.streak },
-        { name: 'Currently failing job(s)', value: failingJobsLabel },
-      ],
-      url: runUrl || undefined,
-      cooldownHours: 24,
-    }).catch((e) => console.error(`[route-main-streak-signatures] escalation dispatch failed: ${e.message}`));
-  }
+}
+
+// BRO-7102: for every still-failing signature whose ledger incident is
+// ESCALATION_HOURS old, bump its existing card (High, Todo, fresh START-NOW).
+// The loop lives in lib/red-escalation-runner.js (BRO-7130 shares it).
+async function escalateLongRedSignatures(currentSignatures) {
+  const { escalateLongRedConditions } = require('./lib/red-escalation-runner.js');
+  await escalateLongRedConditions(currentSignatures.map((sig) => sig.conditionKey), { logTag: 'route-main-streak-signatures' });
 }
 
 main().catch((err) => {

@@ -33,6 +33,11 @@ on:
         required: false
         type: string
         default: ''
+      ai_captions:
+        description: 'Dry runs only: draft score posts with the AI writer even while it is off in config (BRO-6959)'
+        required: false
+        type: boolean
+        default: false
       self_test:
         description: 'Create a draft on every channel, then delete it (checks the Buffer connection)'
         required: false
@@ -127,6 +132,11 @@ jobs:
           INPUT_SELF_TEST: ${{ inputs.self_test }}
           INPUT_CANCEL: ${{ inputs.cancel_queued }}
           INPUT_BRIEF: ${{ inputs.brief }}
+          # BRO-6959: AI-written score posts. Keys on this step only (not npm ci or setup).
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          SOCIAL_AI_CAPTIONS_DISABLED: ${{ vars.SOCIAL_AI_CAPTIONS_DISABLED }}
+          SOCIAL_AI_CAPTIONS_FORCE: ${{ inputs.ai_captions }}
         run: |
           ARGS=(--out=/tmp/social-autopost)
           if [ -n "$INPUT_BRIEF" ]; then ARGS+=("--brief=$INPUT_BRIEF")
@@ -151,9 +161,12 @@ jobs:
         # it, so a later failure in the same run must still land the record (or the
         # next run would find it again; buffer.js findExistingPost is the backstop).
         if: always() && inputs.dry_run != true && !inputs.show
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1' # union-merges the LLM spend ledger on rebase (BRO-5043)
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
+          git add data/audit/gemini-usage-ledger.jsonl 2>/dev/null || true # LLM spend meter rows (BRO-5043)
           [ -f data/social-autopost-ledger.json ] && git add data/social-autopost-ledger.json
           if git diff --cached --quiet; then
             echo "No changes to the social autopost ledger"

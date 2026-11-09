@@ -98,6 +98,7 @@ function guardianContentToResult(content, { show = null } = {}) {
       // mention check (titleHtmlFor), which otherwise sees no headline at all.
       pageTitle: content.webTitle || fields.headline || null,
       apiMeta: {
+        publication: fields.publication || null,
         score: stars
           ? { originalScore: `${stars}/5 stars`, normalizedScore: Math.round((stars / 5) * 100), source: 'guardian-api' }
           : null,

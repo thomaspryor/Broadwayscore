@@ -16,6 +16,7 @@
  *   node scripts/fix-critic-name-duplicates.js
  */
 
+const { EXCERPT_FIELDS } = require('./lib/excerpt-fields');
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
@@ -101,7 +102,7 @@ function mergeReviewData(canonicalData, variantData) {
   }
 
   // Merge excerpts
-  const excerptFields = ['dtliExcerpt', 'bwwExcerpt', 'showScoreExcerpt'];
+  const excerptFields = EXCERPT_FIELDS; // shared list: the old 3-field copy dropped West End excerpts on merge
   for (const field of excerptFields) {
     if (!merged[field] && variantData[field]) {
       merged[field] = variantData[field];

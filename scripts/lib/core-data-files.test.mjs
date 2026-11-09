@@ -193,3 +193,22 @@ test('verifyCoreDataCopy defaults to the live push-core-data CORE_FILES (19+ nam
   assert.ok(problems.length >= 19, `expected one problem per CORE_FILES name, got ${problems.length}`);
   assert.ok(problems.some((p) => p.startsWith('opening-night-sent.json ')));
 });
+
+// BRO-7029: `git ls-files data/*.json` crossed `/` and listed data/audit/** (>1 MiB) → ENOBUFS in CI.
+test('publicTrackedDataFiles: nested data/** files neither count nor overflow the buffer', (t) => {
+  const { publicTrackedDataFiles } = require(LIB);
+  const repo = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7029-'));
+  t.after(() => fs.rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
+  const git = (...a) => execFileSync('git', ['-C', repo, ...a], { stdio: 'pipe' });
+  git('init', '-q');
+  fs.mkdirSync(path.join(repo, 'data/audit'), { recursive: true });
+  fs.writeFileSync(path.join(repo, 'data/top.json'), '{}');
+  // ~1.2 MB of nested paths via update-index (no need for real files on disk)
+  const blob = execFileSync('git', ['-C', repo, 'hash-object', '-w', '--stdin'], { input: '{}' }).toString().trim();
+  const lines = [];
+  for (let i = 0; i < 6000; i++) lines.push(`100644 ${blob}\t0\tdata/audit/${'x'.repeat(200)}-${i}.json`);
+  execFileSync('git', ['-C', repo, 'update-index', '--add', '--index-info'], { input: lines.join('\n').replace(/\t0\t/g, '\t') });
+  git('add', 'data/top.json');
+  const out = publicTrackedDataFiles(repo);
+  assert.deepEqual([...out], ['top.json']);
+});

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (read by the test); data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Regression fixtures for Playbill-Verdict slug → show matching.
 //
 // Real article slugs harvested from the 2026-05-24 cached category page
@@ -555,4 +556,12 @@ test('single-letter title words are required tokens for short titles (BRO-6596)'
   assert.equal(id('read-the-reviews-for-teeth-and-smiles'), 'teeth-n-smiles-west-end-2026');
   assert.equal(id('read-the-reviews-for-michael-jackson-wake-up-call'), 'michael-r-jackson-wake-up-call-off-broadway-2026');
   assert.deepEqual(_showDistinctiveTokens(mini[8]), ['dana']);
+});
+
+// BRO-4298 / BRO-7079: "The Ballad of John and Paul" matched a Rhinoceros
+// headline on the words "john" + "paul". Pinned against the real function.
+test('BRO-4298: a short title does not match a headline that only shares common words', () => {
+  const { titleWordsMatch } = require('./show-matching.js');
+  assert.equal(titleWordsMatch('The Ballad of John and Paul', 'Rhinoceros Starring Paul Giamatti And John Turturro'), false);
+  assert.equal(titleWordsMatch('The Ballad of John and Paul', 'The Ballad of John and Paul review'), true);
 });

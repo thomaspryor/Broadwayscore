@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5239-h",
   "planId": "2c1d08eb-0699-441f-b0b3-35632a6d1fca",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-13T08:13:56.197Z",
   "submitter": {
     "name": null,
@@ -343,5 +343,22 @@
       "ok": true,
       "msg": "mexodus-off-broadway-2026/times-square-chronicles--genevieve-rafter-keddy.json originalScore: \"1/5\" -> null (retracted originalScoreCleared, originalScoreClearedReason, originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource)"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 1
+    },
+    "ops": [
+      {
+        "i": 10,
+        "verdict": "resolved",
+        "reason": "tru-off-west-end-2026/liamodell--unknown.json originalScore already \"3/5\""
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (1 resolved); per-op reasons in triage.ops"
 }

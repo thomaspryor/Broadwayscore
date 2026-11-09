@@ -29,11 +29,12 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const { getScoreTierId, getScoreTierLabel, getReviewBreakdownTierId } = require('../lib/score-tiers');
-const { findScoreEvents, findLondonCompareEvents, findRoundupEvents, findClosingSoonEvents, roundupLookback, closingSoonLookback, briefCoversPair, londonCompareLookback, scheduleEvents, splitBacklog, isEligibleShow, morningAfter, inWindow, nextWindowSlot, zonedTime } = require('./select');
-const { buildCaptions, postMarkers, compareMarkers, pathMarker, validateHook, strayNumbers, productionLabel, monthDay, roundupMarkers, buildRoundupCaptions, roundupAllowedNumbers, closingMarkers, buildClosingCaptions, closingAllowedNumbers } = require('./captions');
+const { roundupFillOrder, findBackfillEvents, findScoreEvents, findLondonCompareEvents, findRoundupEvents, findClosingSoonEvents, roundupLookback, closingSoonLookback, briefCoversPair, londonCompareLookback, scheduleEvents, splitBacklog, isEligibleShow, morningAfter, inWindow, nextWindowSlot, zonedTime } = require('./select');
+const { buildCaptions, postMarkers, compareMarkers, movedMarkers, pathMarker, validateHook, strayNumbers, productionLabel, monthDay, roundupMarkers, buildRoundupCaptions, roundupAllowedNumbers, closingMarkers, buildClosingCaptions, closingAllowedNumbers } = require('./captions');
 const { resolvePoster, minPosterWidth } = require('./art');
+const { writeScoreCaptions, aiDisabledReason } = require('./ai-captions');
 const { renderCard, renderCompareCard, renderRoundupCard, closeBrowser, COMPARE_POSTER_PX, ROW_POSTER_PX, MAX_ROWS } = require('./render');
-const { CHANNEL_SETS, MARKETS, marketOf, SCORE_LOOKBACK_DAYS, WEEKLY_ROUNDUP, CLOSING_SOON } = require('./config');
+const { CHANNEL_SETS, MARKETS, marketOf, SCORE_LOOKBACK_DAYS, WEEKLY_ROUNDUP, CLOSING_SOON, BACKFILL, AI_CAPTIONS } = require('./config');
 const { targetSets, tagChannels, channelKey, homeSet } = require('./routing');
 const briefs = require('./briefs');
 
@@ -172,6 +173,7 @@ const entryName = p => p.showId || p.id;
 function entryMarkers(p) {
   if (p.type === 'weekly-roundup') return roundupMarkers(p.first, p.last, p.set);
   if (p.type === 'closing-soon') return closingMarkers({ id: p.showId, slug: p.slug });
+  if (p.type === 'brief' && p.template === 'moved') return movedMarkers({ slug: p.slug }, p.olderLabel);
   return p.type === 'brief' || p.type === 'london-compare' ? compareMarkers({ slug: p.slug }, p.olderLabel) : postMarkers({ id: p.showId, slug: p.slug });
 }
 
@@ -443,7 +445,7 @@ async function hostPng(png, keyPrefix, now) {
  */
 async function buildRoundup(ev, ctx, outDir, { cfg = WEEKLY_ROUNDUP } = {}) {
   const rows = [], held = [];
-  for (const show of ev.candidates) {
+  for (const show of roundupFillOrder(ev.candidates, ev.set)) {
     if (rows.length >= MAX_ROWS) break;
     let d;
     try { d = describe(show, ctx); } catch (e) { held.push(`${show.id}: ${e.message}`); continue; }
@@ -451,6 +453,7 @@ async function buildRoundup(ev, ctx, outDir, { cfg = WEEKLY_ROUNDUP } = {}) {
     if (!poster.poster) { held.push(`${show.id}: ${poster.reason}`); continue; }
     rows.push({ show, title: show.title, venue: show.venue, category: show.category, score: d.score, tierId: d.tierId, tierLabel: d.tierLabel, poster });
   }
+  rows.sort((a, b) => ev.candidates.indexOf(a.show) - ev.candidates.indexOf(b.show)); // card lists best score first
   if (rows.length < cfg.minShows) {
     throw Object.assign(new Error(`${ev.id}: only ${rows.length} of ${ev.candidates.length} opening(s) have a usable poster (${held.join(' | ').slice(0, 200)})`), { code: 'NO_POSTER' });
   }
@@ -563,11 +566,16 @@ async function runBrief(hash, { ctx, buffer, channels, now, summary, problems })
   }
   const newer = shows.find(s => s.id === manifest.newer);
   if (!newer) throw new Error(`brief ${hash}: manifest names no newer production`);
-  const olderLabel = productionLabel(shows.find(s => s !== newer));
+  const [a, b] = manifest.ids.map(id => shows.find(s => s.id === id));
+  const order = briefs.ORDER[manifest.template];
+  if (!order) throw new Error(`brief ${hash}: unknown template ${manifest.template}`);
+  order(a, b); // the pair must still qualify for its template
+  const olderLabel = manifest.olderLabel || briefs.olderLabelFor(manifest.template, shows.find(s => s !== newer)); // the preview's label: a venue edited since then must not change the dedupe markers
 
   await postCompare({
     label: `brief ${hash}`, shows, newer, olderLabel, captions: manifest.captions, imageUrl: manifest.imageUrl,
     ctx, buffer, channels, now, summary, problems,
+    markers: manifest.template === 'moved' ? movedMarkers(newer, olderLabel) : undefined,
     note: `(${manifest.template}: ${pair}); approved: "${approval.words}"`,
     entry: { type: 'brief', id: `brief:${hash}`, hash, template: manifest.template, pair, approved: String(approval.words).slice(0, 300), approvedAt: approval.at || null },
   });
@@ -731,7 +739,8 @@ async function main() {
     const { post, skip } = splitBacklog(found, ctx.ledger, now);
     backlogSkipped = skip;
     const failures = ctx.ledger._meta.failures || {};
-    events = scheduleEvents(post.filter(ev => !(failures[ev.show.id] && failures[ev.show.id].count >= MAX_SHOW_ATTEMPTS)), ctx.ledger, now);
+    const posting = post.filter(ev => !(failures[ev.show.id] && failures[ev.show.id].count >= MAX_SHOW_ATTEMPTS));
+    events = scheduleEvents(posting, ctx.ledger, now);
     compareEvents = findLondonCompareEvents({ shows: ctx.shows, ledger: ctx.ledger, now, slim: ctx.slim })
       .filter(ev => !(failures[`london-compare:${ev.show.id}`] && failures[`london-compare:${ev.show.id}`].count >= MAX_SHOW_ATTEMPTS));
     // BRO-6413: each type runs only when its config.js flag is on (default off).
@@ -739,6 +748,18 @@ async function main() {
     const found2 = { shows: ctx.shows, ledger: ctx.ledger, now, reviewsByShow: ctx.reviewsByShow, slim: ctx.slim, getOutletTier: ctx.getOutletTier };
     if (WEEKLY_ROUNDUP.enabled) roundupEvents = findRoundupEvents({ ...found2, cfg: WEEKLY_ROUNDUP }).filter(ev => !tooManyFailures(ev.id));
     if (CLOSING_SOON.enabled) closingEvents = findClosingSoonEvents({ ...found2, cfg: CLOSING_SOON }).filter(ev => !tooManyFailures(`closing-soon:${ev.show.id}`));
+    // BRO-6932: nothing else is going out today, so post an older show that missed its window.
+    if (BACKFILL.enabled) {
+      // A show held for want of a poster is tried at most once a day, so it cannot hold a slot all afternoon.
+      const held = id => { const w = (ctx.ledger._meta.waitingForPoster || {})[id]; return !!w && now - Date.parse(w.at || w.since) < 20 * 3600e3; };
+      // Busy = something else really goes out: a brief (posted later in this run), a score post
+      // not held for a poster, or a roundup/closing card whose accounts exist (runRoundup and
+      // runClosingSoon go idle otherwise).
+      // A channel retry owed from an earlier day also goes out this run.
+      const busy = !!brief || posting.some(ev => !held(ev.show.id)) || compareEvents.length > 0 || pendingRetries(ctx.ledger, now).length > 0
+        || roundupEvents.some(ev => ownSetConfigured(ev.set)) || closingEvents.some(ev => ownSetConfigured(homeSet(ev.show)));
+      events.push(...scheduleEvents(findBackfillEvents({ ...found2, busy, blocked: id => tooManyFailures(id) || held(id), cfg: BACKFILL }), ctx.ledger, now));
+    }
   }
   const owed = pendingRetries(ctx.ledger, now).length;
   const toVerify = postsToVerify(ctx.ledger, now).length;
@@ -836,7 +857,7 @@ async function main() {
   let failed = 0;
   // A held show that ages out of the lookback window stops being retried; drop its note.
   const waitingNotes = ctx.ledger._meta.waitingForPoster || {};
-  for (const [id, w] of Object.entries(waitingNotes)) if (now - Date.parse(w.since) > 14 * 864e5) delete waitingNotes[id];
+  for (const [id, w] of Object.entries(waitingNotes)) if (now - Date.parse(w.at || w.since) > 14 * 864e5) delete waitingNotes[id];
   // Counted per show across runs so one broken show alerts MAX_SHOW_ATTEMPTS times, not hourly for weeks.
   const failures = ctx.ledger._meta.failures = ctx.ledger._meta.failures || {};
   // Outages (hosting, Buffer down, network) are not the show's fault and do not use up its tries.
@@ -849,30 +870,51 @@ async function main() {
   };
   try {
     if (live && (events.length || compareEvents.length || roundupEvents.length || closingEvents.length) && unvalidated(ctx.ledger, channels).length) await selfTest(buffer, channels, outDir, ctx, now);
+    const aiDeadline = Date.now() + AI_CAPTIONS.runBudgetMs; // BRO-6959: drafts share one time budget per run
+    for (const [id, d] of Object.entries(ctx.ledger._meta.aiDrafts || {})) if (!(now - Date.parse(d.at) < 7 * 864e5)) delete ctx.ledger._meta.aiDrafts[id]; // never posted
     for (const ev of events) {
       // One show's failure must not lose the record of shows already scheduled:
       // each is written to the ledger as soon as Buffer accepts it.
       try {
         const desc = describe(ev.show, ctx);
-        const captions = buildCaptions(desc);
         const card = await buildCard(desc, outDir, { requirePoster: live });
-        console.log(`\n[autopost] ${ev.show.id} due ${ev.dueAt.toISOString()} card=${card.path} poster=${card.poster}`);
-        console.log(`  X/Bluesky: ${captions.twitter.replace(/\n/g, ' | ')}`);
+        console.log(`\n[autopost] ${ev.show.id}${ev.backfill ? " (quiet-day backfill)" : ""} due ${ev.dueAt.toISOString()} card=${card.path} poster=${card.poster}`);
         const route = targetSets(ev.show, ctx.reviewsByShow[ev.show.id], CHANNEL_SETS, ctx.shows);
         console.log(`  routing: ${ev.show.category} -> ${route.join(' + ') || 'no'} channels${route.length > 1 ? ' (high profile, cross-posted)' : ''}`);
-        if (!live) continue;
-        if (!route.length) { console.log(`  [autopost] ${ev.show.id}: no channel set is configured for it, nothing posted`); continue; }
-        const targets = channels.filter(c => route.includes(c.set));
-        if (!targets.length) throw new Error(`no usable channel in set(s) ${route.join(', ')}`);
-
-        let imageUrl;
-        try { imageUrl = await hostCard(card.path, ev.show, now); } catch (e) { throw new Error(`image hosting failed: ${e.message}`); }
+        if (live && !route.length) { console.log(`  [autopost] ${ev.show.id}: no channel set is configured for it, nothing posted`); continue; }
+        let targets = [], imageUrl;
+        if (live) {
+          targets = channels.filter(c => route.includes(c.set));
+          if (!targets.length) throw new Error(`no usable channel in set(s) ${route.join(', ')}`);
+          try { imageUrl = await hostCard(card.path, ev.show, now); } catch (e) { throw new Error(`image hosting failed: ${e.message}`); }
+        }
+        // BRO-6959: Claude writes the post from the fact pool; code and GPT-5.5 check it; any
+        // failure keeps the template wording. Written only once the poster, route and hosted image
+        // are settled, so a show held for art or an outage does not pay for a draft every hour.
+        // An approved draft is kept (ledger _meta.aiDrafts) until it posts, and reused only while its
+        // fact sheet is unchanged, so a Buffer outage does not buy a new draft each hour.
+        const aiOff = aiDisabledReason(process.env, { enabled: AI_CAPTIONS.enabled, dryRun: !live });
+        const { captions, meta: writer } = aiOff
+          ? { captions: buildCaptions(desc), meta: { writer: 'template', attempts: 0, fallback: aiOff } }
+          : await writeScoreCaptions(desc, ctx, ev.dueAt.getTime(), { log: console.log, deadline: aiDeadline, cache: live ? (ctx.ledger._meta.aiDrafts = ctx.ledger._meta.aiDrafts || {}) : undefined });
+        if (live && writer.writer === 'ai' && !writer.reused) writeLedger(ctx.ledger);
+        // The post still goes out (template wording), but a missing key or a failing API would otherwise
+        // turn the AI writer off unnoticed: put it in the digest. Refused drafts are normal and stay quiet.
+        if (live && AI_CAPTIONS.enabled && (writer.outage || /API_KEY/.test(aiOff || ''))) problems.push(`${ev.show.id}: AI writer unavailable, posted the template wording (${writer.fallback})`);
+        console.log(`  writer: ${writer.writer}${writer.lead ? ` (lead: ${writer.lead})` : ''}${writer.fallback ? ` (template because: ${writer.fallback})` : ''}`);
+        console.log(`  X: ${captions.twitter.replace(/\n/g, ' | ')}`);
+        if (!live) { console.log(`  Facebook: ${captions.facebook.replace(/\n/g, ' | ')}`); continue; }
         const { posted, errors } = await publishEvent({ channels: targets, buffer, captions, imageUrl, markers: postMarkers(ev.show), dueAt: ev.dueAt, label: ev.show.id, now });
         if (!Object.keys(posted).length) { failed++; if (!Object.values(errors).some(outage)) recordFailure(ev.show.id, Object.values(errors)[0]); continue; } // nothing went out: the next run tries again
         delete failures[ev.show.id];
+        if (ctx.ledger._meta.aiDrafts) delete ctx.ledger._meta.aiDrafts[ev.show.id];
         const entry = {
           type: 'score', date: new Date(now).toISOString().slice(0, 10), showId: ev.show.id, slug: ev.show.slug || ev.show.id,
           title: ev.show.title, dueAt: ev.dueAt.toISOString(), score: desc.score, imageUrl, text: captions.twitter, channels: posted,
+          // Recorded only when the AI writer ran (the template alone, with AI off, adds nothing).
+          ...(aiOff ? {} : { writer: writer.writer, ...(writer.lead ? { lead: writer.lead } : {}), ...(writer.fallback ? { writerFallback: writer.fallback } : {}) }),
+          ...(writer.writer === 'ai' ? { longText: captions.facebook } : {}),
+          ...(ev.backfill ? { backfill: true } : {}),
         };
         if (Object.keys(errors).length) {
           // Retried by retryFailedChannels() on later runs with these exact texts, so
@@ -886,14 +928,14 @@ async function main() {
         ctx.ledger.posts.push(entry);
         if (ctx.ledger._meta.waitingForPoster) delete ctx.ledger._meta.waitingForPoster[ev.show.id];
         writeLedger(ctx.ledger);
-        summary.push(`| ${ev.show.title} (${desc.score}) | ${entry.dueAt} | ${Object.keys(posted).join(', ')} | ${Object.keys(errors).join(', ') || '-'} |`);
+        summary.push(`| ${ev.show.title} (${desc.score}, ${writer.writer}) | ${entry.dueAt} | ${Object.keys(posted).join(', ')} | ${Object.keys(errors).join(', ') || '-'} |`);
       } catch (e) {
         if (e.code === 'NO_POSTER') {
           // Not a failure: the show waits (every run retries) until a usable poster exists
           // or it ages out of SCORE_LOOKBACK_DAYS. Reported once so the digest shows it.
           const waiting = ctx.ledger._meta.waitingForPoster = ctx.ledger._meta.waitingForPoster || {};
           if (!waiting[ev.show.id]) problems.push(`${ev.show.id}: held, ${e.message}. Add a full-size poster (at least 440px wide) and it posts on the next run.`);
-          waiting[ev.show.id] = { since: (waiting[ev.show.id] || {}).since || new Date(now).toISOString(), reason: e.message.slice(0, 300) };
+          waiting[ev.show.id] = { since: (waiting[ev.show.id] || {}).since || new Date(now).toISOString(), at: new Date(now).toISOString(), reason: e.message.slice(0, 300) };
           console.log(`  [art] ${ev.show.id}: HELD, ${e.message}`);
           writeLedger(ctx.ledger);
           continue;

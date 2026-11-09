@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Recurrence guard for punctuation-sensitive show-mention checks (2026-09-24).
 // shows.json "Dog Man - The Musical" vs reviews' "Dog Man: The Musical" made
 // every show-mention check count 0 mentions: real reviews were nulled as
@@ -216,4 +217,13 @@ test('City Center "Encores!" series prefix: the bare show title is a variant (BR
   // The series name alone is never a variant, and a title without the prefix is untouched.
   assert.ok(!buildShowTitleVariants('Encores! The Wild Party').includes('encores'));
   assert.ok(!buildShowTitleVariants('The Wild Party').some((x) => /encores/.test(x)));
+});
+
+test('textMentionsShortTitle allowUncurated counts short alpha titles only when asked (BRO-7077)', () => {
+  const { textMentionsShortTitle: tm } = require('./show-title-variants');
+  assert.equal(tm('Red is bold. RED again.', 'Red', 2), null, 'uncurated stays off by default');
+  assert.equal(tm('Red is bold. RED again.', 'Red', 2, { allowUncurated: true }), 'red');
+  assert.equal(tm('Red is bold.', 'Red', 2, { allowUncurated: true }), null, 'one hit is not two');
+  assert.equal(tm('On March 13, then May 13.', '13', 2, { allowUncurated: true }), null, 'digits never count');
+  assert.equal(tm('G and G.', 'G', 2, { allowUncurated: true }), null, 'single letters never count');
 });

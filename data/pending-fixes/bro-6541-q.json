@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6541-q",
   "planId": "5bfb738a-1983-47cf-8d93-12cab7ec99c2",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-29T20:55:20.932Z",
   "submitter": {
     "name": null,
@@ -318,5 +318,22 @@
       "msg": "Ran ingest-review-from-url.js successfully"
     }
   ],
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "obsolete": 1
+    },
+    "ops": [
+      {
+        "i": 21,
+        "verdict": "obsolete",
+        "reason": "show the-watsons-chichester-festival-regional-2025 was retired"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (1 obsolete); per-op reasons in triage.ops"
 }

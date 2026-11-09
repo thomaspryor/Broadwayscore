@@ -211,7 +211,8 @@ test('CLI: one path per line on the real repo; exit 1 on an empty tree', () => {
   // test.yml and land-gauntlet.sh call the CLI with --min instead of hand-coding the number.
   const yml = fs.readFileSync(path.join(ROOT, '.github/workflows/test.yml'), 'utf8');
   const gauntlet = fs.readFileSync(path.join(ROOT, 'scripts/lib/land-gauntlet.sh'), 'utf8');
-  assert.match(yml, /node scripts\/lib\/unit-test-collection\.js --min/);
+  // BRO-7101: main runs only the blocking lane; land runs every collected test.
+  assert.match(yml, /node scripts\/lib\/unit-test-collection\.js --lane=blocking --min/);
   assert.match(gauntlet, /node scripts\/lib\/unit-test-collection\.js --min/);
   assert.doesNotMatch(yml + gauntlet, /-lt 1000/);
 });

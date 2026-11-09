@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/audit/stage-latency.jsonl (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * tests/unit/time-to-publish-sla.test.mjs — the SLA validator for Notion card
  * Structural #11 (task #388): BWSC must be FIRST, not last, among competitors.

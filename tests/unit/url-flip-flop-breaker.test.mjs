@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-2690: the BRO-121 flip-flop breaker pins whichever url the file holds
  * when it fires; it never fetches content. These tests pin the contract:

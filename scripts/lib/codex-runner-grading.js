@@ -8,7 +8,13 @@
  * Codex lanes (BRO-5730). Each lane owns its own slots, so the cloud routine (cloud) and the
  * GitHub runner (gha) run at the same time without sharing a slot's lock or worktrees.
  */
-const LANES = Object.freeze({ cloud: Object.freeze({ base: 0, max: 3 }), gha: Object.freeze({ base: 3, max: 2 }) });
+// diskReserveBytes (BRO-7088): disk the lane's machine needs for work that is not Codex. The cloud routine's
+// wrapper session works its own Claude-lane cards on the same volume, full checkouts of 1.77 GB each
+// (du measured 2026-11-07, BRO-7097), so the reserve is 3 of them: 3 x 1.77e9. The GitHub runner is Codex's alone.
+const LANES = Object.freeze({
+  cloud: Object.freeze({ base: 0, max: 3, diskReserveBytes: 3 * 1.77e9 }),
+  gha: Object.freeze({ base: 3, max: 2, diskReserveBytes: 0 }),
+});
 
 /**
  * The run summary heading (BRO-6139). Before it, a single-slot launch of EITHER lane posted no
@@ -73,7 +79,7 @@ function runnerSummaryFacts(body) {
  * The summary body daily-runner.js posts on the runner card. Every line runnerSummaryFacts reads is
  * written here, so the writer and the parser cannot drift apart.
  */
-function runnerSummaryText({ heading, stats, worked, skipped, picks, stop, settingsLine, weeklyPct, checkCount, checkSpentUsd, checkByModel, slotShortfall, landedPerLane, ladderLine }) {
+function runnerSummaryText({ heading, stats, worked, skipped, picks, stop, settingsLine, weeklyPct, checkCount, checkSpentUsd, checkByModel, slotShortfall, landedPerLane, ladderLine, worktreeLine }) {
   const list = (a) => (a.length ? a.join(', ') : 'none');
   const landedCount = stats.landed.length + stats.landedPartial.length;
   return [
@@ -96,6 +102,7 @@ function runnerSummaryText({ heading, stats, worked, skipped, picks, stop, setti
     `- Claude check by model: ${Object.entries(checkByModel).map(([k, v]) => `${k} ${v.n} ($${v.usd.toFixed(2)})`).join(', ') || 'none'}; per landed card: ${landedCount ? `$${(checkSpentUsd / landedCount).toFixed(2)}` : 'n/a (nothing landed)'}`,
     // A pinned lane shows in the next summary instead of days later (BRO-6129: one slot for 13 h unnoticed).
     ...(slotShortfall ? [`- Slots: ${slotShortfall}`] : []),
+    ...(worktreeLine ? [`- Worktree: ${worktreeLine}`] : []),
     ...(landedPerLane ? [`- Landed on main, last 24h: ${landedPerLane}`] : []),
     ...(ladderLine ? [ladderLine] : []), // BRO-6303: the access the trust ladder gave this run
     `- Stopped early: ${stop || 'no'}`,

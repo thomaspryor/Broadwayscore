@@ -123,6 +123,68 @@ function titleExtendedInUrl(url, show, tokensOf) {
   return false;
 }
 
+// BRO-6968: "The Bridge" (Bush Theatre) is also the name of a London house, so the
+// census took Into the Woods and Guys and Dolls reviews "at the Bridge Theatre" as
+// reviews of the play. True when every place the title appears in `text` is
+// followed by a venue noun naming a known London house ("bridge theatre") that is
+// not this show's. Any other "<title> theatre" ("bug-theatre-review", THR's
+// "-theater-1234" slugs, "othello-theatre-royal") is the outlet's label, not a house.
+const VENUE_NOUN = new Set(['theatre', 'theater', 'playhouse']);
+let _knownHouseRe = null;
+function isKnownLondonHouse(phrase) {
+  if (!_knownHouseRe) _knownHouseRe = new RegExp(`^(?:${require('./outlet-census').LONDON_SIGNAL_RE.source})$`, 'i');
+  return _knownHouseRe.test(phrase);
+}
+function titleOnlyAsOtherVenue(text, show, tokensOf) {
+  if (!text || !show || !show.title || typeof tokensOf !== 'function') return false;
+  const tokens = tokensOf(show.title);
+  if (!tokens.length) return false;
+  const wordsOf = (s) => foldDiacritics(String(s || '')).toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
+  const words = wordsOf(text);
+  // New York spells it "theater" for its own houses (Apollo, Lyric): fold only off New York.
+  const fold = !['broadway', 'off-broadway'].includes(show.category);
+  const nounOf = (w) => (fold && w === 'theater' ? 'theatre' : w);
+  const ownVenue = ` ${wordsOf(show.venue).map(nounOf).join(' ')} `;
+  let venueUses = 0;
+  for (let i = 0; i + tokens.length <= words.length; i++) {
+    if (!tokens.every((t, k) => words[i + k] === t)) continue;
+    const next = nounOf(words[i + tokens.length]);
+    // Not a known London house ("bug-theatre-review", "othello-theatre-royal"): not another venue.
+    if (!VENUE_NOUN.has(next) || !isKnownLondonHouse(`${tokens.join(' ')} ${next}`)) return false;
+    // "the-bridge-theatre-review" / "The Bridge, theatre review": the outlet's label after the title.
+    if (/^reviews?$/.test(words[i + tokens.length + 1] || '')) return false;
+    if (ownVenue.includes(` ${tokens.join(' ')} ${next} `)) return false;
+    venueUses++;
+  }
+  return venueUses > 0;
+}
+function titleOnlyAsOtherVenueInUrl(url, show, tokensOf) {
+  let p;
+  try { p = decodeURIComponent(new URL(url).pathname); } catch { return false; }
+  return titleOnlyAsOtherVenue(p, show, tokensOf);
+}
+
+/**
+ * BRO-6910 feeds every URL the cross-show guard dropped for a show back into its
+ * gap audit, so a wrongly dropped review stays owed. A URL live under ANY other
+ * show was a correct drop. BRO-6968: the guard named Into the Woods 2022
+ * (Broadway) for London reviews live under the Bridge Theatre production, so
+ * checking only the named show kept them "missing" from The Bridge.
+ * @param {Array<{url?:string}>} drops cross-show ledger rows for showId
+ * @param {Array<{showId:string,url?:string}>} reviews reviews.json rows
+ * @param {string} showId
+ * @param {(u:string)=>string} canon URL identity
+ * @param {{show?:object, tokensOf?:Function}} [ctx] enables the other-house slug check
+ * @returns {Array} the drops still owed to showId
+ */
+function crossShowDropsOwedHere(drops, reviews, showId, canon = (u) => u, { show = null, tokensOf = null } = {}) {
+  const elsewhere = new Set((reviews || []).filter((r) => r && r.url && r.showId !== showId).map((r) => canon(r.url)));
+  return (drops || []).filter((d) => d && d.url && !elsewhere.has(canon(d.url))
+    // Not live anywhere, but the slug uses the title only as another house's name
+    // ("julius-caesar-bridge-theatre"): the guard was right.
+    && !(show && titleOnlyAsOtherVenueInUrl(d.url, show, tokensOf)));
+}
+
 /**
  * Why a not-yet-collected URL is not an owed review, decidable from the URL and
  * how it was found alone; null when it stays a candidate. Only SERP-census-only
@@ -139,6 +201,7 @@ function missingNoiseReason(m, ctx = {}) {
   if (ctx.show && ukTourLegUrl(m.url, ctx.show)) return 'uk-tour-leg';
   if (ctx.show && isUrlMonthBeforeRun(m.url, ctx.show)) return 'url-date-before-run';
   if (ctx.show && titleExtendedInUrl(m.url, ctx.show, ctx.tokensOf)) return 'longer-title-collision';
+  if (ctx.show && titleOnlyAsOtherVenueInUrl(m.url, ctx.show, ctx.tokensOf)) return 'title-is-other-venue';
   return null;
 }
 
@@ -273,6 +336,9 @@ module.exports = {
   isTimeoutListingShape,
   missingNoiseReason,
   titleExtendedInUrl,
+  titleOnlyAsOtherVenue,
+  titleOnlyAsOtherVenueInUrl,
+  crossShowDropsOwedHere,
   ukTourLegUrl,
   isPortalHost,
   censusExclusionReason,

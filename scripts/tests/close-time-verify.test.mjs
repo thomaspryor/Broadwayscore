@@ -288,3 +288,17 @@ test('the nightly recheck and the close-time check share ONE checkout+verify imp
   assert.ok(!/git', \['fetch'/.test(recheck), 'recheck still runs its own fetch');
   assert.ok(!/function runVerify\s*\(/.test(recheck), 'recheck still defines its own runVerify');
 });
+
+test('BRO-7138: a missing GENERATED file (envCause) is not "not on main"; it closes unverified', () => {
+  const dispatch = { entry: {}, verifyCmd: 'npx tsc --noEmit' };
+  const d = decideClose({
+    dispatch,
+    verifyResult: {
+      status: 'unverifiable',
+      envCause: 'generated-manifest-absent',
+      detail: "could not run here (generated-manifest-absent): src/lib/data-actors.ts(22,26): error TS2307: Cannot find module '../../data/cast-manifest.json'",
+    },
+  });
+  assert.equal(d.notOnMain, undefined);
+  assert.equal(d.allowed, true);
+});

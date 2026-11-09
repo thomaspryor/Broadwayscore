@@ -127,7 +127,7 @@ jobs:
           fi
           if HEAD_OUT=$(aws s3api head-object --bucket "$R2_BUCKET" --key "$KEY" --endpoint-url "$R2_ENDPOINT" 2>&1); then
             echo "Bucket lock verified: canary survived the delete attempt"
-          elif echo "$HEAD_OUT" | grep -qE '\(404\)|Not Found'; then
+          elif grep -qE '\(404\)|Not Found' <<<"$HEAD_OUT"; then
             echo "::error::Bucket lock is OFF: a backup object was deleted. Re-enable the lock rule on the R2 bucket."
             exit 1
           else

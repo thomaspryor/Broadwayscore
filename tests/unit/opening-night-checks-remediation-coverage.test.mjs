@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/audit/exclusions-2099-01-01.jsonl (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-219 — Structural #2: opening night is not truly automated.
 //
 // These 4 checks (plus the 6 covered in opening-night-checks-juan-a-ramirez-

@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6716-hand",
   "planId": "8bbd66e6-a79b-4d3c-8752-dc508c5106e7",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-31T19:40:39.646Z",
   "submitter": {
     "name": null,
@@ -130,5 +130,27 @@
       "reason": "wrongShow: current value doesn't match expected (data changed since plan was created)"
     }
   ],
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 2
+    },
+    "ops": [
+      {
+        "i": 5,
+        "verdict": "resolved",
+        "reason": "the-disappear-off-broadway-2026/this-week-in-new-york--mark-rifkin.json wrongShow already false"
+      },
+      {
+        "i": 7,
+        "verdict": "resolved",
+        "reason": "silver-manhattan-off-broadway-2026/off-off-online--charles-wright.json wrongShow already false"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (2 resolved); per-op reasons in triage.ops"
 }

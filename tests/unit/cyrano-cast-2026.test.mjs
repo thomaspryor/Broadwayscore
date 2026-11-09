@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/pending-fixes/bro-3565.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-3565: cyrano-de-bergerac-west-end-2026 carried a 1946 Broadway cast.
 // The plan must be a valid cast edit. Whether it was applied is checked against live data by
 // execute-approved-fix (compare-and-set), not here: live-data asserts stay out of blocking CI.

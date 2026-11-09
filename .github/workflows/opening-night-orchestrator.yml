@@ -382,7 +382,7 @@ jobs:
                      gh run list --workflow=press-night-probe.yml --status queued --json displayTitle --jq '.[].displayTitle') 2>/dev/null || true)
           while read -r SHOW NIGHT MARKET EMBARGO; do
             [ -z "$SHOW" ] && continue
-            if echo "$ACTIVE" | grep -qF "Press night probe $SHOW $NIGHT"; then
+            if grep -qF "Press night probe $SHOW $NIGHT" <<<"$ACTIVE"; then
               echo "Probe already queued or running for $SHOW $NIGHT"
               continue
             fi
@@ -930,7 +930,7 @@ jobs:
             if [ "$ITERATION" -lt "$MAX_ITERATIONS" ]; then
               # BRO-6858: 5 min instead of POLL_INTERVAL inside a Broadway show's first 2h after the embargo
               # (scripts/lib/press-night-poll-plan.js). An explicit poll_interval_minutes input always wins; any
-              # error prints POLL_INTERVAL. SERP deferral is unchanged (counted in iterations).
+              # error prints POLL_INTERVAL. For Broadway the poller's capped hourly SERP sweep overrides the SERP deferral above.
               SLEEP_MIN=$(timeout 30 node scripts/lib/press-night-poll-plan.js --shows="$SHOWS" --default="$POLL_INTERVAL" \
                 --override="${{ inputs.poll_interval_minutes }}" 2>/tmp/poll-plan.err) || SLEEP_MIN=$POLL_INTERVAL
               cat /tmp/poll-plan.err 2>/dev/null || true

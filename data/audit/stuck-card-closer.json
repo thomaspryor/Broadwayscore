@@ -1,20 +1,33 @@
 {
-  "generatedAt": "2026-11-03T09:52:56.045Z",
+  "generatedAt": "2026-11-08T09:25:38.344Z",
   "apply": true,
-  "auditGeneratedAt": "2026-11-03T09:45:24.757Z",
+  "auditGeneratedAt": "2026-11-08T09:21:22.695Z",
   "counts": {
+    "skip:command-shared-with-another-card": 4,
     "skip:no-verify-command": 1,
-    "bounce:no-auto-worker": 2,
     "bounce:recent-activity": 1,
-    "closed": 3,
-    "landing-evidence-needs-in-review": 2,
-    "recent-activity": 5,
-    "no-commit-naming-card-touched-test": 1,
+    "bounce:recheck-after-pending": 1,
+    "bounce:no-auto-worker": 1,
+    "recent-activity": 9,
     "recheck-after-pending": 1,
+    "no-commit-naming-card-touched-test": 1,
     "no-landing-naming-card": 1,
+    "landing-evidence-needs-in-review": 1,
     "sweep:eligible": 0
   },
   "rows": [
+    {
+      "id": "BRO-6917",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-6571",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "recheck-after-pending"
+    },
     {
       "id": "BRO-6121",
       "state": "In Review",
@@ -22,56 +35,44 @@
       "reason": "no-auto-worker"
     },
     {
-      "id": "BRO-5516",
-      "state": "In Review",
-      "action": "leave",
-      "reason": "no-auto-worker"
-    },
-    {
-      "id": "BRO-6571",
-      "state": "In Review",
-      "action": "leave",
-      "reason": "recent-activity"
-    },
-    {
-      "id": "BRO-6386",
-      "state": "In Review",
-      "action": "closed",
-      "sha": "eece8b66577d3bb73f56d53e8bd6c3d072346881"
-    },
-    {
-      "id": "BRO-6384",
-      "state": "In Progress",
-      "action": "leave",
-      "reason": "landing-evidence-needs-in-review"
-    },
-    {
-      "id": "BRO-6382",
-      "state": "In Review",
-      "action": "closed",
-      "sha": "c38c225cc49e58bcdeda533c639e51037b0441ee"
-    },
-    {
-      "id": "BRO-6381",
-      "state": "In Review",
-      "action": "closed",
-      "sha": "628f3dce4ef56c9ba6724a6cb0d5b4b2ca298516"
-    },
-    {
-      "id": "BRO-6014",
+      "id": "BRO-3549",
       "state": "In Progress",
       "action": "leave",
       "reason": "recent-activity"
     },
     {
-      "id": "BRO-6822",
+      "id": "BRO-7068",
       "state": "In Progress",
       "action": "leave",
       "reason": "recent-activity"
     },
     {
-      "id": "BRO-6736",
-      "state": "In Review",
+      "id": "BRO-7006",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-6986",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-6947",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-6848",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-6762",
+      "state": "In Progress",
       "action": "leave",
       "reason": "recent-activity"
     },
@@ -79,7 +80,7 @@
       "id": "BRO-6663",
       "state": "In Progress",
       "action": "leave",
-      "reason": "recent-activity"
+      "reason": "recheck-after-pending"
     },
     {
       "id": "BRO-6625",
@@ -88,28 +89,28 @@
       "reason": "no-commit-naming-card-touched-test"
     },
     {
-      "id": "BRO-6616",
-      "state": "In Review",
-      "action": "leave",
-      "reason": "recheck-after-pending"
-    },
-    {
       "id": "BRO-6608",
       "state": "In Review",
       "action": "leave",
       "reason": "no-landing-naming-card"
     },
     {
-      "id": "BRO-6441",
-      "state": "In Progress",
-      "action": "leave",
-      "reason": "landing-evidence-needs-in-review"
-    },
-    {
-      "id": "BRO-6430",
+      "id": "BRO-6599",
       "state": "In Progress",
       "action": "leave",
       "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-6441",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-6384",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "landing-evidence-needs-in-review"
     }
   ]
 }

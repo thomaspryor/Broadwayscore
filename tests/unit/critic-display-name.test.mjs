@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/critic-registry.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Unit tests for scripts/lib/critic-display-name.js — audit S7-T1 (BRO-4204).
  *
@@ -91,8 +92,8 @@ test('diacritics are kept: "José Solís" stays "José Solís"', () => {
   assert.equal(displayCriticName('Juan A. Ramírez', 'The New York Times'), 'Juan A. Ramírez');
 });
 
-test('the 37 CRITIC_NAME_FIXES pairs resolve to their canonical (and the canonical is a fixed point)', () => {
-  assert.equal(Object.keys(CRITIC_NAME_FIXES).length, 37);
+test('the 41 CRITIC_NAME_FIXES pairs resolve to their canonical (and the canonical is a fixed point)', () => {
+  assert.equal(Object.keys(CRITIC_NAME_FIXES).length, 41); // +4 BRO-6928 (Holly O Mahony, AR Hoffman, Micael J. Fressola, Karen Dsouza)
   for (const [raw, canonical] of Object.entries(CRITIC_NAME_FIXES)) {
     assert.equal(displayCriticName(raw), canonical, `${JSON.stringify(raw)} → ${canonical}`);
     assert.equal(displayCriticName(canonical), canonical, `${canonical} is a fixed point`);
@@ -194,4 +195,20 @@ test('titleCaseName: alias-table spellings become display forms', () => {
   assert.equal(titleCaseName("shane o'neill"), "Shane O'Neill");
   assert.equal(titleCaseName('nicholas de jongh'), 'Nicholas de Jongh');
   assert.equal(titleCaseName('rob weinert-kendt'), 'Rob Weinert-Kendt');
+});
+
+test('role-word bylines are not critics; a real name with one role word is (2026-11-08 sweep)', () => {
+  for (const [name, outlet] of [
+    ['Reviewer Upload', 'The Reviews Hub'], ['Contributing Writer', 'Kc Studio'], ['Guest User', 'The Rendition'],
+    ['The Newsroom', 'Warwickshire World'], ['The Editorial Unit', 'X'], ['Guest Blogger', 'X'],
+    ['Arts and Culture Blogger', 'X'], ['Book Review', 'X'], ['MAGNET Staff', 'Magnet Magazine'],
+  ]) {
+    assert.equal(displayCriticName(name, outlet), null, name);
+    assert.equal(isPlaceholderCritic(name, outlet), true, name);
+  }
+  assert.equal(displayCriticName('MAGNET Staff', undefined, entry('magnetmagazine')), null, 'registry entry alone');
+  assert.equal(displayCriticName('MAGNET Staff', 'magnetmagazine'), null, 'outlet id alone');
+  for (const [name, outlet] of [['David Guest', 'The Reviews Hub'], ['Jane Newsroom', 'X'], ['Magnet Staff', 'Variety']]) {
+    assert.equal(displayCriticName(name, outlet), name, name);
+  }
 });

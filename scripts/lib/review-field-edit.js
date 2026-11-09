@@ -47,6 +47,9 @@ const REVIEW_TEXT_EDITABLE_FIELDS = [
   // It also switches off the content-verifier wrongShow / nonReview / film-TV promotions for that review, and a plan
   // cannot clear it (a manual edit is needed to undo a mistake), so set it only after reading the page.
   'allowCrossMarket',
+  // BRO-6599: after checking the stored review, acknowledge a title collision
+  // or a shared article URL. This does not clear other exclusion flags.
+  'allowCrossShowUrl',
   // _auditAllowCrossMarket (BRO-6323): TRUE ONLY. audit-review-contamination class A / A2 skip the file. For a
   // review whose date lands near a cross-market sibling's opening but whose URL and text name the folder's own
   // production. Also switches off the write guard's class-A quarantine and lets fix-circular-duplicate-pairs treat
@@ -139,6 +142,7 @@ const REVIEW_TEXT_EDITABLE_FIELDS = [
   // newspaper's host (online.wsj.com/article/AP<32 hex>.html). The text is the Associated Press's own
   // review; a rename alone is undone by the rebuild's filename-vs-outletId heal. See FIELD_VALUE_CHECKS.outletId.
   // BRO-5995: or to the registry outlet the record's own `outlet` label names, never to a higher tier.
+  // BRO-6848: or Guardian-hosted Observer publication/bylines, checked below.
   'outletId',
 ];
 
@@ -195,6 +199,11 @@ const FIELD_VALUE_CHECKS = {
     && typeof record.crossOutletVerifiedNote === 'string' && record.crossOutletVerifiedNote.trim().length >= 20
     ? null : 'crossOutletVerified may only be set true after an evidence note, with no wrongAttribution flag'),
   outletId: (v, record) => {
+    // BRO-6848: narrowly allow the Guardian-hosted Observer classification.
+    // The API publication wins; the three named Observer bylines are the
+    // fallback for historic aggregator/SERP rows. Market tier policy is separate.
+    if (v === 'observer' && record.outletId === 'guardian'
+        && require('./guardian-publication').guardianReviewOutletId(record) === 'observer') return null;
     if (v === 'ap') {
       const { AP_WIRE_URL } = require('./ap-wire-detect');
       let pathname = null;
@@ -205,6 +214,7 @@ const FIELD_VALUE_CHECKS = {
     return storedLabelRelabelError(v, record);
   },
   allowCrossMarket: (v) => (v === true ? null : 'allowCrossMarket may only be set to true'),
+  allowCrossShowUrl: (v) => (v === true ? null : 'allowCrossShowUrl may only be set to true'),
   _auditAllowCrossMarket: (v) => (v === true ? null : '_auditAllowCrossMarket may only be set to true'),
   fabricatedEntry: (v) => (v === false ? null : 'fabricatedEntry may only be cleared (false)'),
   // BRO-4415: or when the executor's syndicated-duplicate-heal decision (ctx.syndicatedHeal) is 'clear':
@@ -499,7 +509,10 @@ function applyReviewFieldEdit(record, action, stamp, ctx = {}) {
       next.syndicatedPrimaryFile = null;
       next._apContentDetected = false;
     }
-    next.outletIdCorrectedReason = newValue === 'ap'
+    next.outletIdCorrectedReason = newValue === 'observer' && record.outletId === 'guardian'
+      && require('./guardian-publication').guardianReviewOutletId(record) === 'observer'
+      ? `approved fix ${stamp.fixId}: Guardian-hosted Observer publication or Observer critic byline, not The Guardian`
+      : newValue === 'ap'
       ? `approved fix ${stamp.fixId}: AP wire page ${record.url} is the Associated Press's review, not ${record.outletId || 'another outlet'}'s`
       : `approved fix ${stamp.fixId}: the record's own outlet label "${record.outlet}" names ${newValue}, not ${record.outletId || 'another outlet'}`;
   }

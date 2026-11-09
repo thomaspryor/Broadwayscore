@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-4159: audit-cross-show-excerpt-contamination.js used to check only
 // BRO-461's fixed 259-file backlog list, so the Book of Mormon (West End)
 // Guardian row carrying Brigadoon's WestEndTheatre.com excerpt was never

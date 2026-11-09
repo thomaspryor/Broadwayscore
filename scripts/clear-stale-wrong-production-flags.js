@@ -56,6 +56,7 @@ const {
 const { buildPriorRunHint } = require('./lib/content-verifier');
 const { CLAUDE_SONNET } = require('./lib/models');
 const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
+const { textNamesEarlierRun } = require('./lib/run-contamination');
 const { splitSurge } = require('./lib/surge-drain');
 const { isStaleScoreInput, markRescoreNeeded } = require('./lib/rescore-flagging');
 
@@ -144,6 +145,10 @@ for (const showId of showDirs) {
     try { data = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch { continue; }
     if (data.wrongProduction !== true) continue;
     flagged++;
+    // BRO-7085: the page says it is an earlier run's review ("This review is from
+    // 2025"); an LLM "real review of <show>" verdict is true of that run too and
+    // must not clear it (An Oak Tree, Time Out).
+    if (textNamesEarlierRun(data, show)) continue;
     if (isLikelyStaleWrongProduction(data, show)) {
       // BRO-5672: a rejected stale-kind candidate was re-asked on every run (170+
       // paid calls per drain, crowding the time budget). Settled per live text.
@@ -427,6 +432,7 @@ Reply with JSON only: {"isThisProduction": true|false, "isReview": true|false, "
     // Apply to a fresh read: the scan-time copy is minutes old after the LLM calls.
     const data = JSON.parse(orig);
     if (data.wrongProduction !== true) continue; // cleared by someone else meanwhile
+    if (textNamesEarlierRun(data, d.c.show)) continue; // BRO-7085: fresh read may carry a republish marker
     // BRO-5000: a plan/human flag outranks this script's clear (An Oak Tree, Time Out:
     // flag set 2026-10-11 after this script cleared it 2026-10-10 and kept it counted).
     if (require('./lib/approved-fix-flag').hasApprovedFlag(data, 'wrongProduction')) continue; // bound to the url/body it judged (BRO-6676)

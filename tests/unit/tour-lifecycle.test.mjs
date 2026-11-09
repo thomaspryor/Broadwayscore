@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/retired-show-ids.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-4724: a tour's later life on one Tours To You page (layoffs, a second
 // company, a corrected page), and tour launches kept out of the Broadway
 // opening-night pipeline.

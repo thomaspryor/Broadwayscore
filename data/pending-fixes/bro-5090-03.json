@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5090-03",
   "planId": "28494836-a725-4c10-a97b-5b5c9f00f639",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-12T11:57:00.096Z",
   "submitter": {
     "name": null,
@@ -367,5 +367,27 @@
       "ok": false,
       "reason": "the-heidi-chronicles-2015/nytimes--ben-brantley.json duplicateOf: write guard kept null"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 2
+    },
+    "ops": [
+      {
+        "i": 19,
+        "verdict": "resolved",
+        "reason": "patriots-2024/washpost--peter-marks.json duplicateOf already \"washpost--naveen-kumar.json\""
+      },
+      {
+        "i": 24,
+        "verdict": "resolved",
+        "reason": "the-heidi-chronicles-2015/nytimes--ben-brantley.json and the-heidi-chronicles-2015/nytimes--charles-isherwood.json share one counted row, so nothing is double-counted"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (2 resolved); per-op reasons in triage.ops"
 }

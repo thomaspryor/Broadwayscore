@@ -8,7 +8,7 @@ Most plans have serious gaps that a single reviewer won't catch. Six independent
 
 Before critiquing HOW this is built, answer these in writing (this is not optional scanning — write the answers, they get shown to the user in Phase 3):
 
-1. **Has `/right-problem` actually been run?** Look for evidence in the conversation (reviewer outputs, approach recommendation) — not just "the plan looks considered." If it hasn't run and the plan represents >1 day of work (CLAUDE.md §10's own threshold), that is itself a Phase 0 finding: name it, don't silently proceed.
+1. **Has `/right-problem` actually been run?** Look for evidence in the conversation (reviewer outputs, approach recommendation) — not just "the plan looks considered." If it hasn't run and the plan represents >1 day of work (the substantial tier in CLAUDE.md §20), that is itself a Phase 0 finding: name it, don't silently proceed.
 2. **State the plan's first real execution step in units** (N shows, N files, N records, N users, N dollars). Then answer directly: could this be 1-2 units, done mostly by hand, before any batch tooling or automation gets built? If yes, that IS a finding — write it as "the plan should ramp: 1-2 by hand → first tooling run → full scope," not as a suggestion buried in Phase 2 output.
 3. **Is there a simpler approach nobody considered, or existing infrastructure being ignored?** (the original check — keep it.)
 4. **Is there a do-nothing or do-less option this plan skipped past?** What breaks if the scope is half as large, or the plan is deferred a sprint?

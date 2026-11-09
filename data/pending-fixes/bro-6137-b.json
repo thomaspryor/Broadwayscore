@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6137-b",
   "planId": "02ab3335-8063-4e3a-8e6a-14d7f1443ac6",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-24T14:26:22.323Z",
   "submitter": {
     "name": null,
@@ -427,5 +427,88 @@
       "msg": "commercial.json: capitalization updated for once-on-this-island-2017"
     }
   ],
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "resolved": 8,
+      "obsolete": 6
+    },
+    "ops": [
+      {
+        "i": 2,
+        "verdict": "resolved",
+        "reason": "china-doll-2015.recouped already true"
+      },
+      {
+        "i": 3,
+        "verdict": "resolved",
+        "reason": "china-doll-2015.recoupedDate already \"2016-01\""
+      },
+      {
+        "i": 4,
+        "verdict": "obsolete",
+        "reason": "china-doll-2015.recoupedSource changed since by a later write (now \"https://www.broadwayworld.com/article/Al-Pacinos-CHINA-D...)"
+      },
+      {
+        "i": 5,
+        "verdict": "obsolete",
+        "reason": "china-doll-2015.sources changed since by a later write (now [{\"type\":\"trade\",\"url\":\"https://www.broadwayworld.com/art...)"
+      },
+      {
+        "i": 10,
+        "verdict": "resolved",
+        "reason": "waitress-2016.recouped already true"
+      },
+      {
+        "i": 11,
+        "verdict": "resolved",
+        "reason": "waitress-2016.recoupedDate already \"2017-01\""
+      },
+      {
+        "i": 12,
+        "verdict": "obsolete",
+        "reason": "waitress-2016.recoupedSource changed since by a later write (now \"https://playbill.com/article/waitress-is-officially-a-hi...)"
+      },
+      {
+        "i": 13,
+        "verdict": "resolved",
+        "reason": "waitress-2016.sources already [{\"type\":\"trade\",\"url\":\"https://playbill.com/article/wait..."
+      },
+      {
+        "i": 16,
+        "verdict": "resolved",
+        "reason": "school-of-rock-the-musical-2015.recouped already true"
+      },
+      {
+        "i": 17,
+        "verdict": "resolved",
+        "reason": "school-of-rock-the-musical-2015.recoupedDate already \"2017-05\""
+      },
+      {
+        "i": 18,
+        "verdict": "obsolete",
+        "reason": "school-of-rock-the-musical-2015.recoupedSource changed since by a later write (now \"https://playbill.com/article/school-of-rock-recoups-broa...)"
+      },
+      {
+        "i": 19,
+        "verdict": "resolved",
+        "reason": "school-of-rock-the-musical-2015.sources already [{\"type\":\"trade\",\"url\":\"https://playbill.com/article/scho..."
+      },
+      {
+        "i": 22,
+        "verdict": "obsolete",
+        "reason": "commercial entry farinelli-and-the-king-2017 exists (made another way; differs on recoupedSource)"
+      },
+      {
+        "i": 23,
+        "verdict": "obsolete",
+        "reason": "commercial entry sunday-in-the-park-with-george-2017 exists (made another way; differs on recoupedSource, sources)"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (8 resolved, 6 obsolete); per-op reasons in triage.ops"
 }

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/review-texts (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Regression coverage for BRO-2283: audit-self-contradictory-clears.js
 // reported "0 review file(s) scanned, 0 contradiction(s)" — a vacuous clean
 // pass — whenever data/review-texts (a private-repo checkout) was missing
@@ -114,7 +115,7 @@ test('CLI (unscoped) against the live corpus scans >0 files when the corpus is p
       { cwd: repoRoot, encoding: 'utf8' },
     );
   } catch (err) {
-    if (err.status === 1 && /is missing or empty|does not exist or is unreadable/.test(err.stderr || '')) {
+    if (err.status === 2 && /is missing or empty|does not exist or is unreadable/.test(err.stderr || '')) {
       t.skip('data/review-texts not present in this checkout — run from a checkout with the private repo cloned');
       return;
     }

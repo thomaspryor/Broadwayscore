@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data); data/audit/scraper-spend-ledger.jsonl (bot ledger). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-3010: drives the real scripts/check-sb-breaker.js end to end with the
 // billing fetch and the alert router stubbed (a -r preload swaps them in the
 // require cache), every state/ledger path redirected into a temp dir.

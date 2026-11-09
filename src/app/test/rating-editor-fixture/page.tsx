@@ -93,6 +93,7 @@ function RatingEditorFixtureInner() {
               initialSeat={isEdit && withTime ? 'Mezzanine C-14' : null}
               suggestedShowtime={planSlot ? { time_slot: planSlot, curtain_time: planTime ? `${planTime}:00` : null } : null}
               mode={isEdit ? 'edit' : 'new'}
+              stagePhotos={sp.get('photos') === '1'}
               onSave={handleSave}
               onSaved={() => setOpen(false)}
               onCancel={() => setOpen(false)}

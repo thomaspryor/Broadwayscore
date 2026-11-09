@@ -47,8 +47,8 @@ describe('lane shadow job commits its spend ledger', () => {
 
   test('commit step is main-only, always() and non-fatal', () => {
     const s = steps[commitIdx];
-    assert.match(s.if, /always\(\)/);
-    assert.match(s.if, /github\.ref == 'refs\/heads\/main'/);
+    // Exact form: an `||` would let branch dispatches push.
+    assert.strictEqual(s.if.replace(/\s+/g, ' ').trim(), "always() && github.ref == 'refs/heads/main'");
     assert.strictEqual(s['continue-on-error'], true);
     assert.ok(s.with['workflow-name']);
   });

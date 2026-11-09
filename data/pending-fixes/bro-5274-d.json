@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5274-d",
   "planId": "61134473-6343-4280-863a-56e0723aa0ec",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-14T04:46:49.068668Z",
   "submitter": {
     "name": null,
@@ -198,5 +198,72 @@
       "ok": true,
       "msg": "Deleted the-shark-is-broken-2023/nyt-theater--david-nounou.json"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "obsolete": 11
+    },
+    "ops": [
+      {
+        "i": 0,
+        "verdict": "obsolete",
+        "reason": "review file a-soldiers-play-2020/variety--marilyn-stasio.json no longer exists and nothing in a-soldiers-play-2020 looks like a rename"
+      },
+      {
+        "i": 1,
+        "verdict": "obsolete",
+        "reason": "review file between-riverside-and-crazy-2022/variety--naveen-kumar.json no longer exists and nothing in between-riverside-and-crazy-2022 looks like a rename"
+      },
+      {
+        "i": 3,
+        "verdict": "obsolete",
+        "reason": "review file caroline-or-change-2021/hollywood-reporter--david-rooney.json no longer exists and nothing in caroline-or-change-2021 looks like a rename"
+      },
+      {
+        "i": 4,
+        "verdict": "obsolete",
+        "reason": "review file caroline-or-change-2021/variety--ayanna-prescod.json no longer exists and nothing in caroline-or-change-2021 looks like a rename"
+      },
+      {
+        "i": 5,
+        "verdict": "obsolete",
+        "reason": "review file deuce-2007/variety--david-rooney.json no longer exists and nothing in deuce-2007 looks like a rename"
+      },
+      {
+        "i": 7,
+        "verdict": "obsolete",
+        "reason": "duplicate target in-transit-2016/hollywood-reporter--david-rooney.json no longer exists, so in-transit-2016/hollywood-reporter--frank-scheck.json is the only copy"
+      },
+      {
+        "i": 8,
+        "verdict": "obsolete",
+        "reason": "review file radio-golf-2007/variety--david-rooney.json no longer exists and nothing in radio-golf-2007 looks like a rename"
+      },
+      {
+        "i": 9,
+        "verdict": "obsolete",
+        "reason": "review file spring-awakening-2006/variety--david-rooney.json no longer exists and nothing in spring-awakening-2006 looks like a rename"
+      },
+      {
+        "i": 10,
+        "verdict": "obsolete",
+        "reason": "review file straight-white-men-2018/hollywood-reporter--frank-scheck.json no longer exists and nothing in straight-white-men-2018 looks like a rename"
+      },
+      {
+        "i": 11,
+        "verdict": "obsolete",
+        "reason": "review file the-inheritance-2019/variety--marilyn-stasio.json no longer exists and nothing in the-inheritance-2019 looks like a rename"
+      },
+      {
+        "i": 12,
+        "verdict": "obsolete",
+        "reason": "review file the-lehman-trilogy-2021/variety--marilyn-stasio.json no longer exists and nothing in the-lehman-trilogy-2021 looks like a rename"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (11 obsolete); per-op reasons in triage.ops"
 }

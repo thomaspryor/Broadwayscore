@@ -315,3 +315,62 @@ test('GUARD 5 PERMITS: an llm:* verdict still clears; a missing verifiedBy is re
   assert.equal(assessClearSafety({ ...base, result: HIGH }).safe, true);
   assert.equal(assessClearSafety({ ...base, result: { ...HIGH, verifiedBy: undefined } }).safe, false);
 });
+
+// BRO-6745: the bare "not " cue fired on any negation within 90 chars of any
+// quoted string, refusing clean verdicts on real reviews. Verbatim corpus verdicts.
+test('GUARD 2 PERMITS (BRO-6745): VERBATIM clean verdicts on real reviews that a nearby "not" used to refuse', () => {
+  const cases = [
+    ['Tristan & Yseult', "This is a substantive review of the regional (Broadway-feeder) production of Tristan & Yseult at Theatre Royal Bath, published 2026-09-19 (opening night). The critic (Arifa Akbar, The Guardian) evaluates the current staging, cast performances (Edward Rowe, Nandi Bhebhe, John Leader, Tom Fox, Matthew Churcher), direction (Emma Rice), design, and creative choices with clear verdicts ('marvel of theatrical innovation,' 'the potion still seduces'). Historical context about Kneehigh's 2003 premiere and past revivals is background, not evidence of reviewing a different production. The review ends cleanly with the run dates ('At Theatre Royal Bath until 19 September. Then touring until 17 April')."],
+    ['Return to the Forest', "The content is a clear review of a theatrical production, providing critical assessment and plot details. It mentions the venue 'Aviva Studios, Manchester' in the expected metadata, and the review itself does not contradict this, nor does it review a different production or a film/TV adaptation. The review is complete and not truncated."],
+    ["The Baker's Wife", "The article is a review of 'The Baker's Wife' at Classic Stage Company, explicitly stating it's the 'NYC premiere Off-Broadway' and providing critical assessment of the production. It is not truncated and focuses on the live stage performance."],
+    ['Pied à Terre', "The content describes the plot and themes of 'Pied à Terre' and mentions its venue, the Anne L. Bernstein Theater, which is an Off-Broadway venue. It also contains evaluative language like 'Not your usual love triangle', indicating a review."],
+  ];
+  for (const [showTitle, reasoning] of cases) {
+    assert.equal(detectTitleMismatch({ reasoning, showTitle }), null, `must not refuse: ${showTitle}`);
+  }
+});
+
+test('GUARD 2 REFUSES (BRO-6745): VERBATIM mismatches still caught after the "not" cue was narrowed', () => {
+  assert.ok(detectTitleMismatch({
+    reasoning: "The scraped content is a review of Arthur Miller's 'The Crucible', not the specified show 'Consumed'. The content is also truncated.",
+    showTitle: 'Consumed',
+  }));
+  assert.ok(detectTitleMismatch({
+    reasoning: "However, the text is truncated, as it transitions into a full review of an unrelated show ('Antlia Pneumatica'), and the specific Off-Broadway venue (Westside Theatre) is not named in the scraped content provided.",
+    showTitle: 'Cagney',
+  }));
+  assert.ok(detectTitleMismatch({ reasoning: "It reviews 'Juniper Blood', not this production.", showTitle: 'Blood of my Blood' }));
+  assert.equal(detectTitleMismatch({ reasoning: "It reviews 'Juniper Blood' at the Court; this is not a different production.", showTitle: 'Blood of my Blood' }), null,
+    'a negated contrast is the opposite claim');
+});
+
+// BRO-6745: fresh verdicts whose booleans said clean while their own articleType
+// or reasoning said news / interview / roundup. Verbatim corpus verdicts.
+test('GUARD 6 REFUSES (BRO-6745): clean booleans with a non-review articleType', () => {
+  const base = { filePath: '/nonexistent/bug-2026/broadwaynews--logan-culwell-block.json', data: {}, show: null, showTitle: 'Bug' };
+  const news = { ...HIGH, articleType: 'news', articleTypeConfidence: 'high',
+    reasoning: "The article reports on the extension of the play's run, casting, and production details." };
+  const { safe, refusals } = assessClearSafety({ ...base, result: news });
+  assert.equal(safe, false);
+  assert.ok(refusals.some(r => r.code === 'article-type-not-review'));
+  assert.equal(assessClearSafety({ ...base, result: { ...HIGH, articleType: 'review' } }).safe, true);
+  assert.equal(assessClearSafety({ ...base, result: HIGH }).safe, true, 'missing articleType is the review default');
+});
+
+test('GUARD 4 REFUSES (BRO-6745): VERBATIM interview and roundup verdicts returned clean', () => {
+  for (const reasoning of [
+    "The article is an interview with Joey Arias, discussing his views on 'drag' and the history of 'Arias With a Twist', rather than a critical evaluation of the current performance.",
+    "The content is a compilation of critical assessments from various outlets for 'Broad Strokes' by Cat Cohen, explicitly stating it's playing Off-Broadway at the Lucille Lortel Theatre.",
+    "This is a review roundup article, which compiles excerpts from multiple critics' reviews of 'Cats: The Jellicle Ball' on Broadway",
+  ]) {
+    assert.ok(detectNonReviewAdmission({ reasoning }), reasoning);
+  }
+  assert.equal(detectNonReviewAdmission({ reasoning: 'A clear review, not a compilation of critical assessments.' }), null);
+});
+
+test('GUARD 2 (BRO-6745 ship-check): unquoted show title after "not" is a mismatch; conjunction / "no doubt" do not negate a cue', () => {
+  assert.ok(detectTitleMismatch({ reasoning: "It reviews 'The Crucible', not Consumed.", showTitle: 'Consumed' }));
+  assert.ok(detectTitleMismatch({ reasoning: "It reviews 'Hamlet', not Schmigadoon! at all.", showTitle: 'Schmigadoon!' }));
+  assert.ok(detectTitleMismatch({ reasoning: '"Hamlet", which is not Proof but rather a different production.', showTitle: 'Proof' }));
+  assert.ok(detectTitleMismatch({ reasoning: '"Hamlet"; no doubt it is a different show.', showTitle: 'Proof' }));
+});

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/venue-metros.json (read by the test); data/city-hubs.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * City hubs on rails (BRO-6833): every city in data/city-hubs.json is fully wired from
  * that one entry. A new US city is the registry entry plus a data/venue-metros.json place

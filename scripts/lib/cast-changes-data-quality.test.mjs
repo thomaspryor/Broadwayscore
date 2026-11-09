@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Regression coverage for BRO-1297 (cast-changes.json data quality):
  *   1. Garbage arrival/departure name: an LLM extraction storing placeholder

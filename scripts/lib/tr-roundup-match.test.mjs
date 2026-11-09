@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/outlet-registry.json (read by the test); data/shows.json (untracked core data); data/theatre-reviews-scope-overrides.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-6084: production matching, REST pagination and reconcile classification for the
 // theatre.reviews full-archive run. Real functions, real round-up index (290 posts,
 // tests/fixtures/tr-roundups/posts-page{1,2,3}.json from the live reviews-roundup category).

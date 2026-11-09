@@ -36,6 +36,10 @@ describe('corpus-wide false-positive guard', () => {
         let data;
         try { data = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch { continue; }
         if (!data.outletId || !data.url) continue;
+        // BRO-7068: files already out of scoring by another route (rejected, wrong production,
+        // invalid tier) are caught correctly by the gate but say nothing about false positives;
+        // counting them tripped this ceiling every time a rejected misattributed ingest landed.
+        if (data.rejectionReason || data.wrongProduction === true || data.contentTier === 'invalid') continue;
         if (explainOutletDomainMismatch(data, registry)) flagged.push(`${showDir.name}/${f}`);
       }
     }

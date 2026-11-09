@@ -1445,7 +1445,14 @@ function applyScoreRelevantMigrations(data) {
   }
   const isErrorPage = data.garbageReason &&
     (/^Error\/404/i.test(data.garbageReason) || /page not found/i.test(data.garbageReason));
-  if (!data.fullText && data.garbageFullText && data.garbageFullText.length > 200 && !isErrorPage) {
+  // BRO-7127: a body quarantined as another show's or outlet's article must stay
+  // quarantined, or wrong-article text could ship as a pull quote. Structured
+  // signal first (showNotMentioned), then the free-text notes that mark the same
+  // condition under their different spellings, plus any 404 page.
+  const garbageText = `${data.garbageFullTextNote || ''} ${data.garbageReason || ''} ${data.wrongShowReason || ''}`;
+  const isCrossShowDup = data.showNotMentioned === true ||
+    /cross-show duplicate|cross-attribution|wrong outlet|404 page/i.test(garbageText);
+  if (!data.fullText && data.garbageFullText && data.garbageFullText.length > 200 && !isErrorPage && !isCrossShowDup) {
     const cleaned = cleanText(data.garbageFullText);
     if (cleaned && cleaned.length > 200) {
       data.fullText = cleaned;

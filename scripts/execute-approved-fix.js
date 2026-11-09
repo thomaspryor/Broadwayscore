@@ -297,12 +297,12 @@ function executeAddShow(action) {
 function reviewCountFor(showId) {
   const data = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/reviews.json'), 'utf8'));
   const list = Array.isArray(data) ? data : (data.reviews || []);
-  const scored = list.filter(r => r && r.showId === showId).length;
   // Collected texts not yet rebuilt into reviews.json (unscored, or newer
-  // than the last rebuild) live here and would be orphaned too.
+  // than the last rebuild) live here and would be orphaned too. Rows whose file
+  // an earlier action of this plan moved away do not count (BRO-7080).
   const dir = path.join(ROOT, 'data/review-texts', showId);
-  const texts = fs.existsSync(dir) ? fs.readdirSync(dir).filter(f => isReviewTextFile(f)).length : 0;
-  return scored + texts;
+  const textFiles = fs.existsSync(dir) ? fs.readdirSync(dir).filter(f => isReviewTextFile(f)) : [];
+  return require('./lib/retire-show-action').remainingReviewCount({ showId, scoredRows: list, textFiles, removedPaths: [...deletedReviewPaths] });
 }
 
 function executeRetireShow(action) {
@@ -427,7 +427,14 @@ function executeRunScript(action) {
   try {
     const cmd = `node scripts/${script} ${safeArgs}`.trim();
     console.log(`Running: ${cmd}`);
-    execSync(cmd, { cwd: ROOT, stdio: 'inherit', timeout: 300000 }); // 5 min timeout
+    const outcome = require('./lib/ingest-outcome');
+    const outcomeFile = outcome.newOutcomeFile();
+    try {
+      execSync(cmd, { cwd: ROOT, stdio: 'inherit', timeout: 300000, env: { ...process.env, [outcome.ENV]: outcomeFile } }); // 5 min timeout
+      // BRO-6872: an ingest that only filed a retry stub exits 0, but no review reached the site.
+      const stubbed = outcome.stubProblem(outcome.readIngestOutcome(outcomeFile), script);
+      if (stubbed) return { ok: false, reason: stubbed };
+    } finally { outcome.removeOutcomeFile(outcomeFile); }
     return { ok: true, msg: `Ran ${script} successfully` };
   } catch (err) {
     return { ok: false, reason: `Script ${script} failed: ${err.message}` };

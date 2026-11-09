@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data); data/critic-registry.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-995 acceptance criteria names this exact command:
 //   node --test tests/unit/ingest-manual-review.test.mjs
 // The real coverage lives in the three colocated suites below (8-field

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data); data/.bro3999-test-bau4IZ (untracked core data); data/.bro3999-test-bau4IZ/test-show (untracked core data); +33 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';

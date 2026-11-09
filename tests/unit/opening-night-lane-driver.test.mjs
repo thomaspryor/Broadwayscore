@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-4831: the production lane driver. Real runProductionLane (CLAUDE.md section 15) with injected deps; nothing here
 // touches a lease store, a scraper or a scorer.
 import test from 'node:test';
@@ -270,7 +271,7 @@ test('BRO-5201 laneAdapters: one clock drives every adapter that reads time', as
   const { laneAdapters } = require('../../scripts/lib/opening-night-lane/adapters.js');
   let t = 0; let probes = 0;
   const tb = laneAdapters({ search: async () => [], now: () => t }).find((a) => a.name === 'talkin-broadway');
-  const fetchText = async (u) => { if (/talkinbroadway\.com\/page\/(ob|bwaybway)\/index/.test(u)) return '<html></html>'; probes++; throw new Error(`404 ${u}`); };
+  const fetchText = async (u) => { if (/talkinbroadway\.com\/page\/(?:ob\/index|world\/past)/.test(u)) return '<html></html>'; probes++; throw new Error(`404 ${u}`); };
   const show = { id: 'x-2026', title: 'Some New Play', openingDate: '2026-10-20' };
   await tb.discover({ show, night: '2026-10-20', fetchText }).catch(() => {});
   const first = probes;

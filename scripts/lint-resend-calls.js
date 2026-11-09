@@ -31,6 +31,8 @@ const ALLOWLIST = new Set([
   'scripts/lib/cloud-secrets-smoke.js', // BRO-6258: read-only GET /domains key check for check-cloud-secrets.js --smoke; sends nothing
   'scripts/lib/discord-notify.js', // sendAlert() — the shared human-disposition email path
   // KEEP — owner-confirmed product emails (email-consolidation-plan-2026-07-21.md)
+  'src/lib/critic-server.ts', // BRO-6895: one claim email to OWNER_EMAIL per critic page claim (owner-approved spec), reply-to the critic
+  'scripts/critic-opening-night-email.ts', // BRO-6895: opt-in transactional "your review is in" email to verified critics; dry-run default, needs --send --yes
   'scripts/send-morning-digest.js', // the ONE scheduled owner email/day (loop retired 2026-07-27)
   'scripts/send-daily-digest.js',
   'scripts/send-opening-digest.js',
@@ -65,6 +67,7 @@ const ALLOWLIST = new Set([
   // Grandfathered — not yet migrated (Sprint 2/3 targets). Remove each line as
   // it's migrated onto owner-alert-router.js.
   'scripts/sync-followers.js',
+  'scripts/lib/signup-city-tags.js', // BRO-6929: not a sender. Only GET/POST /contact-properties and PATCH /contacts/{email} to write the `city` property on existing subscribers; no /emails, /broadcasts or /send anywhere in the file. Split out of sync-followers.js (above) so the push logic is unit-testable with a fake http
   'scripts/execute-approved-fix.js',
   'scripts/send-opening-night-broadcast.js',
   'scripts/send-btc-results.js',
@@ -92,6 +95,7 @@ const ALLOWLIST = new Set([
   'scripts/newsletter/create-broadcast-draft.mjs',
   'scripts/lib/resend-draft-upsert.js', // not a new sender: the GET/PATCH/POST /broadcasts draft lookup moved out of three allowlisted wrappers (fantasy-weekly-email, send-opening-night-broadcast, create-broadcast-draft) so they share one dedup (BRO-3494/3493); never calls /send
   'scripts/newsletter/send-test.mjs',
+  'scripts/newsletter/resend-subject-history.mjs', // BRO-7168: GET-only reads of recent weekly subjects + this week's draft subject for the subject writer; never POST/PATCH/send
   'scripts/money-monthly/send-preview.mjs', // BRO-6773 (owner asked for this monthly money email, 2026-10-31): one transactional /emails POST to the owner, recipient from MONEY_PREVIEW_RECIPIENT/OWNER_EMAIL; no broadcasts or /send anywhere in the file
   'scripts/money-monthly/sync-audience.mjs', // BRO-6773 (same owner request): read-only unless --apply, which POSTs contacts to the separate money audience only; refuses the General audience; no broadcasts or /send
   '.github/workflows/btc-results-preview.yml',

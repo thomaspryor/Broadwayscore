@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5274-b",
   "planId": "fe35f015-74b8-4c02-90f0-cc22b2ba487b",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-14T01:33:02.756287Z",
   "submitter": {
     "name": null,
@@ -307,5 +307,42 @@
       "ok": true,
       "msg": "the-encounter-2016/variety--matt-trueman.json duplicateOf: null -> \"variety--marilyn-stasio.json\""
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "obsolete",
+    "counts": {
+      "obsolete": 5
+    },
+    "ops": [
+      {
+        "i": 3,
+        "verdict": "obsolete",
+        "reason": "review file choir-boy-2019/vulture--jesse-green.json no longer exists and nothing in choir-boy-2019 looks like a rename"
+      },
+      {
+        "i": 7,
+        "verdict": "obsolete",
+        "reason": "review file funny-girl-2022/variety--aramide-tinubu.json no longer exists and nothing in funny-girl-2022 looks like a rename"
+      },
+      {
+        "i": 19,
+        "verdict": "obsolete",
+        "reason": "review file pass-over-2021/nytg--david-gordon.json no longer exists and nothing in pass-over-2021 looks like a rename"
+      },
+      {
+        "i": 20,
+        "verdict": "obsolete",
+        "reason": "review file peter-pan-goes-wrong-2023/nyt-theater--david-nounou.json no longer exists and nothing in peter-pan-goes-wrong-2023 looks like a rename"
+      },
+      {
+        "i": 23,
+        "verdict": "obsolete",
+        "reason": "review file the-anarchist-2012/vulture--jesse-green.json no longer exists and nothing in the-anarchist-2012 looks like a rename"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is resolved or no longer applies (5 obsolete); per-op reasons in triage.ops"
 }

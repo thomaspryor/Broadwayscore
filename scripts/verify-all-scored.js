@@ -804,6 +804,8 @@ async function main() {
 module.exports = {
   isScoreableSurvivor,
   hasValidScore,
+  // BRO-6886: scripts/score-new-press-night-reviews.js reuses all three.
+  isDispatchActionable,
   isWithinWindow,
   auditShow,
   markerFilePath,

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/grosses.json (untracked core data); data/commercial.json (untracked core data); data/grosses-history.json (untracked core data); +1 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-5782 (owner decision 2026-10-20): Purpose, whose recoupment was reported
  * after it closed, shows ~24 weeks (opening night to closing) marked as our

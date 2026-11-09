@@ -34,11 +34,11 @@ const reconcileSkips = ({ deferred, onlyDeferred, canDispatch }) => (deferred ? 
 // add-commercial-entry, outlet-registry-alias ("this host IS that outlet" is a judgment call), ingest-html-handoff (owner or Claude judgment, or they move whole files/rows).
 const CODEX_PLAN_ACTIONS = new Set(['data-edit', 'review-field-edit', 'drop-orphan-key', 'retitle-show', 'outlet-registry-flag', 'coverage-expectation-redecide']);
 
-/** Plan file names (no dir) for a card: bro-6175.json, bro-6175-b.json. Case-insensitive on the id. */
+/** Plan file names (no dir) for a card, including new-fix-plan retry splits like bro-6175-2-b.json. Case-insensitive on the id. */
 function cardPlanFiles(names, cardId) {
   const id = String(cardId || '').toLowerCase();
   if (!/^bro-\d+$/.test(id)) return [];
-  const re = new RegExp(`^${id}(?:-[a-z0-9]+)?\\.json$`);
+  const re = new RegExp(`^${id}(?:-[a-z0-9]+)*\\.json$`);
   return (names || []).map((n) => String(n).replace(/^.*\//, '')).filter((n) => re.test(n)).sort();
 }
 

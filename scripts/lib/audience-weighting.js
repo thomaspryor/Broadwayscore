@@ -88,6 +88,22 @@ function isRedditEligible(reddit, showInfo) {
   return true;
 }
 
+/** Whether a source contributes to the combined score and its review count. */
+function isSourceActive(name, source, showInfo) {
+  if (!source || source.suppressed || source.score == null || !(source.reviewCount > 0)) return false;
+  switch (name) {
+    case 'theatr': return source.reviewCount >= MIN_THEATR_VOTES;
+    case 'reddit': return isRedditEligible(source, showInfo);
+    case 'broadwayCom': return isBroadwayComMarket(showInfo?.category);
+    case 'showScore':
+    case 'mezzanine':
+    case 'seatplan':
+    case 'lbo':
+    case 'ltd': return true;
+    default: return false;
+  }
+}
+
 /**
  * Calculate combined Audience Buzz score with proportional weighting
  *
@@ -98,31 +114,31 @@ function isRedditEligible(reddit, showInfo) {
 function calculateCombinedScore(sources, showInfo) {
   const active = [];
 
-  if (sources.showScore?.score != null && sources.showScore.reviewCount > 0) {
+  if (isSourceActive('showScore', sources.showScore, showInfo)) {
     active.push({ name: 'showScore', score: sources.showScore.score, volume: sources.showScore.reviewCount });
   }
-  if (sources.mezzanine?.score != null && sources.mezzanine.reviewCount > 0) {
+  if (isSourceActive('mezzanine', sources.mezzanine, showInfo)) {
     active.push({ name: 'mezzanine', score: sources.mezzanine.score, volume: sources.mezzanine.reviewCount });
   }
-  if (sources.theatr?.score != null && sources.theatr.reviewCount >= MIN_THEATR_VOTES) {
+  if (isSourceActive('theatr', sources.theatr, showInfo)) {
     active.push({ name: 'theatr', score: sources.theatr.score, volume: sources.theatr.reviewCount });
   }
   // Broadway.com is US only: on a London show it can only be the Broadway
   // production's rating (4 West End shows carried one, 2026-09-29). Same for
   // tours and regionals (isBroadwayComMarket).
-  if (sources.broadwayCom?.score != null && sources.broadwayCom.reviewCount > 0 && isBroadwayComMarket(showInfo?.category)) {
+  if (isSourceActive('broadwayCom', sources.broadwayCom, showInfo)) {
     active.push({ name: 'broadwayCom', score: sources.broadwayCom.score, volume: sources.broadwayCom.reviewCount });
   }
-  if (sources.seatplan?.score != null && sources.seatplan.reviewCount > 0) {
+  if (isSourceActive('seatplan', sources.seatplan, showInfo)) {
     active.push({ name: 'seatplan', score: sources.seatplan.score, volume: sources.seatplan.reviewCount });
   }
-  if (sources.lbo?.score != null && sources.lbo.reviewCount > 0) {
+  if (isSourceActive('lbo', sources.lbo, showInfo)) {
     active.push({ name: 'lbo', score: sources.lbo.score, volume: sources.lbo.reviewCount });
   }
-  if (sources.ltd?.score != null && sources.ltd.reviewCount > 0) {
+  if (isSourceActive('ltd', sources.ltd, showInfo)) {
     active.push({ name: 'ltd', score: sources.ltd.score, volume: sources.ltd.reviewCount });
   }
-  if (isRedditEligible(sources.reddit, showInfo)) {
+  if (isSourceActive('reddit', sources.reddit, showInfo)) {
     // Calibrate Reddit score to align with ShowScore/Mezzanine scale
     const calibrated = Math.min(sources.reddit.score + REDDIT_SCORE_CALIBRATION, REDDIT_CALIBRATION_CAP);
     active.push({ name: 'reddit', score: calibrated, volume: sources.reddit.reviewCount });
@@ -182,4 +198,4 @@ function getDesignation(score) {
   return 'Loathing';
 }
 
-module.exports = { calculateCombinedScore, getDesignation, isRedditEligible, isRedditBelowVolumeFloor, isBroadwayComMarket, isRedditMarket, MIN_REDDIT_ITEMS, REDDIT_RECENCY_YEARS, REDDIT_SCORE_CALIBRATION, REDDIT_CALIBRATION_CAP, MIN_THEATR_VOTES };
+module.exports = { calculateCombinedScore, getDesignation, isSourceActive, isRedditEligible, isRedditBelowVolumeFloor, isBroadwayComMarket, isRedditMarket, MIN_REDDIT_ITEMS, REDDIT_RECENCY_YEARS, REDDIT_SCORE_CALIBRATION, REDDIT_CALIBRATION_CAP, MIN_THEATR_VOTES };

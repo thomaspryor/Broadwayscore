@@ -36,6 +36,11 @@ test('handoff: fail, no test, weak test and human-comment-after-stamp go to a wo
   const weak = core.decideAutoClose({ card: card(), target: target({ verifyCmd: 'test -f x' }), result: pass, now: NOW });
   const human = core.decideAutoClose({ card: card([stamp, 'hmm']), target: target(), result: pass, now: NOW });
   assert.equal(decideHandoff({ card: card(), target: target(), result: { status: 'fail' } }).reason, 'test-failed');
+  // BRO-7138: a test that cannot run on the recheck machine goes back for a VERIFY rewrite; a plain unverifiable does not.
+  const envOut = decideHandoff({ card: card(), target: target(), result: { status: 'unverifiable', envCause: 'credential-withheld' } });
+  assert.equal(envOut.reason, 'test-cannot-run-here');
+  assert.match(envOut.why, /needs a password the recheck machine is not given/);
+  assert.equal(decideHandoff({ card: card(), target: target(), result: { status: 'unverifiable' } }).handoff, false);
   assert.equal(decideHandoff({ card: card(), target: target({ verifyCmd: null, reason: 'none' }), result: null }).reason, 'no-runnable-test');
   assert.equal(decideHandoff({ card: card(), target: target({ verifyCmd: 'test -f x' }), result: pass, closeVerdict: weak }).reason, 'weak-test');
   assert.equal(decideHandoff({ card: card([stamp, 'hmm']), target: target(), result: pass, closeVerdict: human }).reason, 'human-comment-after-stamp');

@@ -45,4 +45,40 @@ function findLeftovers(root = ROOT) {
   return hits;
 }
 
-module.exports = { ratio, checkToken, findLeftovers, SURFACES, AA };
+/**
+ * BRO-6567: OS "Increase Contrast". globals.css must lift muted text to >= 10:1 on every
+ * surface inside @media (prefers-contrast: more), and cover every component class that
+ * `@apply`s text-fg-muted (those compile to a literal color the .text-fg-muted override misses).
+ */
+const HC_MIN = 10;
+function checkHighContrast(root = ROOT, cssText) {
+  const css = cssText ?? fs.readFileSync(path.join(root, 'src', 'app', 'globals.css'), 'utf8');
+  const failures = [];
+  const blocks = [];
+  const re = /@media\s*\(prefers-contrast:\s*more\)[^{]*\{/g;
+  let m;
+  while ((m = re.exec(css))) {
+    let depth = 1; let i = re.lastIndex;
+    while (i < css.length && depth) { if (css[i] === '{') depth++; else if (css[i] === '}') depth--; i++; }
+    blocks.push(css.slice(re.lastIndex, i - 1));
+  }
+  if (!blocks.length) return { failures: ['no @media (prefers-contrast: more) block in globals.css'] };
+  const rules = [];
+  for (const b of blocks) for (const r of b.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
+    rules.push({ selectors: r[1].replace(/\/\*[\s\S]*?\*\//g, '').split(',').map((x) => x.trim()).filter(Boolean), body: r[2] });
+  }
+  const colorFor = (sel) => rules.find((r) => r.selectors.includes(sel))?.body.match(/color:\s*(#[0-9a-fA-F]{6})/)?.[1];
+  const needed = ['.text-fg-muted'];
+  for (const a of css.matchAll(/^\s*(\.[\w-]+)\s*\{[^{}]*@apply[^;{}]*\btext-fg-muted\b/gm)) needed.push(a[1]);
+  for (const sel of needed) {
+    const c = colorFor(sel);
+    if (!c) { failures.push(`${sel} has no high-contrast color in @media (prefers-contrast: more)`); continue; }
+    for (const [n, s] of Object.entries(SURFACES)) {
+      const r = ratio(c, s);
+      if (r < HC_MIN) failures.push(`${sel} ${c} on surface.${n} = ${r.toFixed(2)}:1 (< ${HC_MIN})`);
+    }
+  }
+  return { failures, covered: needed };
+}
+
+module.exports = { ratio, checkToken, findLeftovers, checkHighContrast, SURFACES, AA, HC_MIN };

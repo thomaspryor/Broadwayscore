@@ -62,8 +62,12 @@ function knownShowType(title, listingGenre) {
   // "Theatre" category sits beside them ("Dance; Theatre").
   if (/\b(?:opera|dance|ballet|comedy|stand.?up|cabaret|music|concert|circus|magic|children|family|cinema|film|talk)\b/i.test(g)) return null;
   // A bare "Theatre" category is not one: venues tag musicals with it too.
-  if (/\b(?:plays?|drama|new writing|revival)\b/i.test(g)) return 'play';
+  if (/\b(?:plays?|drama|new writing)\b/i.test(g)) return 'play';
   return null;
 }
 
-module.exports = { titleSaysMusical, showTypeFor, knownShowType };
+// The `type` values shows.json rows carry (validate-market-expansion.js
+// requires one on every non-announced row). One list for every stub builder (BRO-7146).
+const VALID_SHOW_TYPES = new Set(['play', 'musical', 'opera', 'special']);
+
+module.exports = { titleSaysMusical, showTypeFor, knownShowType, VALID_SHOW_TYPES };

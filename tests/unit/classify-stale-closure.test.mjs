@@ -142,6 +142,28 @@ describe('classifyStaleClosure', () => {
     assert.equal(r.designationBasis, DESIGNATION_BASES.MODEL_ESTIMATE);
   });
 
+  it('classifies an unresearched TBD past the age cap when it carries an estimate (BRO-6140)', () => {
+    // the-visit-2015: added by hand from a sourced loss, never research-stamped.
+    const r = classifyStaleClosure({
+      show: { status: 'closed', closingDate: daysBefore(4000) },
+      entry: { designation: 'TBD', recouped: false, modelRecoupmentPct: [-77, -69, -62] },
+      pending: null, archive: null, now: NOW,
+    });
+    assert.equal(r.action, 'classify-fizzle');
+    assert.equal(r.designation, 'Flop');
+    assert.equal(r.designationBasis, DESIGNATION_BASES.MODEL_ESTIMATE);
+  });
+
+  it('still skips an old unresearched TBD with no estimate figure', () => {
+    const r = classifyStaleClosure({
+      show: { status: 'closed', closingDate: daysBefore(4000) },
+      entry: { designation: 'TBD', recouped: false },
+      pending: null, archive: null, now: NOW,
+    });
+    assert.equal(r.action, 'no-change');
+    assert.ok(r.reason.includes('too-old'));
+  });
+
   it('honors humanReviewedDesignation lock', () => {
     const r = classifyStaleClosure({
       show: { status: 'closed', closingDate: daysBefore(45) },

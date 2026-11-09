@@ -689,7 +689,13 @@ function serpItemDate(result, window) {
  */
 function isIncompleteEnumeration(notes) {
   // "page 3: HTTP 503" / "page 3: fetch failed": a wp-json walk that stopped mid-listing (BRO-6514).
-  return (notes || []).some((n) => /budget \d+ reached|(?:^|: )no SERP provider|(?:^|: )child |page cap|^page \d+: (?:HTTP|fetch failed)/.test(String(n)));
+  return (notes || []).some((n) => /budget \d+ reached|(?:^|: )no SERP provider|(?:^|: )child |page cap|^page \d+: (?:HTTP|fetch failed)|^dated sitemaps: \d+ failed/.test(String(n)));
+}
+
+/** PURE. A report's enumeration status: 'unreadable', 'incomplete' or 'complete' (BRO-6488). */
+function enumerationStatus(src, notes) {
+  if (src && src.kind === 'unreadable') return 'unreadable';
+  return isIncompleteEnumeration(notes) ? 'incomplete' : 'complete';
 }
 
 /** Worth retrying: a thrown fetch (timeout, reset), 429, or a 5xx. A 4xx is an answer. */
@@ -774,6 +780,7 @@ function catalogGapMarkdown(groups, topPlaces = 25) {
 }
 
 module.exports = {
+  LONDON_SIGNAL_RE,
   catalogGapMarkdown,
   groupCatalogGaps,
   slugHeadline,
@@ -782,6 +789,7 @@ module.exports = {
   cleanSerpTitle,
   commonTitleSuffixes,
   isIncompleteEnumeration,
+  enumerationStatus,
   isTransientFetch,
   urlKey,
   titleWordsAppear,

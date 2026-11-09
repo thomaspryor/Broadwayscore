@@ -1121,7 +1121,7 @@ function ImportEntryRow({ entry, index, onToggle, liveResolve, onFindIt, onPickC
           ) : entry.type === 'diary' ? (
             // Unrated diary entries import into the watchlist, not the diary —
             // say so instead of letting the "diary" section header mislead.
-            <span className="text-xs text-fg-muted flex-shrink-0">no rating → watchlist</span>
+            <span className="text-xs text-fg-muted flex-shrink-0">no rating → To See</span>
           ) : null}
         </div>
         {entry.match && !noMatch ? (

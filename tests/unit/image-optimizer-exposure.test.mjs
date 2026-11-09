@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/site-image-versions.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Guards the exposure argument written for GHSA-2xp9-vwfh-vxw4 (BRO-3202).
  * Its allowlist entry in scripts/audit-dependencies.js was removed when the

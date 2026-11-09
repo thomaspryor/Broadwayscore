@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/critic-registry.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * S7-T2 (2026 data audit, BRO-4204): reviews.json carries the critic DISPLAY
  * name or null, produced by exactly one displayCriticName() call at the

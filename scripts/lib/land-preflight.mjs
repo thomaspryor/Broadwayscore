@@ -477,7 +477,9 @@ export const WORKFLOW_PATH_RE = /^\.github\/(workflows|actions)\/|^scripts\/lib\
 export const WORKFLOW_CHECKS = [
   { name: 'lint-workflow-guards.sh workflows', cmd: 'bash', args: ['scripts/lint-workflow-guards.sh', 'workflows'], fix: 'fix the lines it prints' },
   { name: 'audit-workflow-hygiene.js', cmd: 'node', args: ['scripts/audit-workflow-hygiene.js'], fix: 'fix the lines it prints (or the exemption comment it names)' },
-  { name: 'generate-workflow-dependencies.js --check', cmd: 'node', args: ['scripts/generate-workflow-dependencies.js', '--check'], fix: 'node scripts/generate-workflow-dependencies.js, then commit .github/workflows/DEPENDENCIES.md' },
+  // BRO-7150 autoFixedBy: once base's land-rebase.sh regenerates the doc (refresh_generated_docs), a stale doc
+  // is fixed by the land itself, so it warns instead of blocking.
+  { name: 'generate-workflow-dependencies.js --check', cmd: 'node', args: ['scripts/generate-workflow-dependencies.js', '--check'], fix: 'node scripts/generate-workflow-dependencies.js, then commit .github/workflows/DEPENDENCIES.md', autoFixedBy: { file: 'scripts/lib/land-rebase.sh', marker: 'refresh_generated_docs' } },
   // BRO-5833: a one-step workflow edit cleared this gauntlet and was refused ~20 min later by
   // the job-timeout-margin gate (~1s locally). `file` is what must exist in the tree to run it.
   { name: 'audit-push-retry-budgets.js --fail-on-job-timeout', cmd: 'node', args: ['scripts/audit-push-retry-budgets.js', '--fail-on-job-timeout'], fix: 'raise the timeout-minutes of the job it names' },
@@ -556,11 +558,19 @@ export function checkWorkflowChecks({ base, tip, cwd, landedTip = null, run = sp
         fs.rmSync(baseRoot, { recursive: true, force: true, maxRetries: 5 });
       }
     }
-    const problems = newFailures.map(({ c, text }) => {
+    // The land regenerates what base's land-rebase.sh knows how to (read from base: that copy is what land.yml runs).
+    const autoFixed = (c) => {
+      if (!c.autoFixedBy) return false;
+      const r = spawnSync('git', ['show', `${base}:${c.autoFixedBy.file}`], { cwd, encoding: 'utf8', maxBuffer: 4 * 1024 * 1024 });
+      return r.status === 0 && r.stdout.includes(c.autoFixedBy.marker);
+    };
+    const warnings = newFailures.filter(({ c }) => autoFixed(c)).map(({ c }) => `${c.name} fails on the landing tree; land.yml regenerates it during the land (BRO-7150), so this push is not blocked. To keep the branch tidy: ${c.fix}.`);
+    const problems = newFailures.filter(({ c }) => !autoFixed(c)).map(({ c, text }) => {
       const tail = text.split('\n').map((l) => l.trim()).filter(Boolean).slice(-6).join(' | ').slice(0, 600);
       return `${c.name} fails on the landing tree (${c.fix}): ${tail}`;
     });
-    return problems.length ? { status: 'fail', problems } : { status: 'clean', reason: 'failures also present on base' };
+    if (problems.length) return { status: 'fail', problems, warnings };
+    return { status: 'clean', reason: warnings.length ? 'only land-regenerated docs are stale' : 'failures also present on base', warnings };
   } finally {
     fs.rmSync(judgeRoot, { recursive: true, force: true, maxRetries: 5 });
   }
@@ -806,7 +816,7 @@ export function judgeLand({ cwd, src, target, base = 'origin/main', fetch = true
   detail.pendingPlans = pendingPlans;
   const toplevel = (seams.checkToplevelPushPaths || checkToplevelPushPaths)({ base, tip: src, cwd, landedTip: rebase.status === 'clean' ? rebase.tip : null });
   detail.toplevel = toplevel;
-  const warnings = [...(tests.warnings || []), ...(pendingPlans.warnings || []), ...(seams.retiredManifestWarnings || retiredManifestWarnings)({ base, src, cwd })];
+  const warnings = [...(tests.warnings || []), ...(workflows.warnings || []), ...(pendingPlans.warnings || []), ...(seams.retiredManifestWarnings || retiredManifestWarnings)({ base, src, cwd })];
   detail.warnings = warnings;
   if ([rebase.status === 'conflict', tests.status, botOwned.status, staleRevert.status, manifests.status, workflows.status, pendingPlans.status, toplevel.status].some((x) => x === true || x === 'fail')) {
     const message = blockMessage({ target, rebase, tests, base, botOwned, staleRevert, manifests, workflows, pendingPlans, toplevel });
@@ -931,12 +941,54 @@ export function localCheckWarning({ root, src, base = 'origin/main', seams = {} 
     const text = {
       none: `no land-local-check verdict for this tip (${sha.slice(0, 10)}). ${why} Before pushing, ${run}.`,
       'new-failures': `land-local-check found NEW failures on this tip (${sha.slice(0, 10)}); land.yml will very likely refuse it. Fix them, then ${run}.`,
-      'not-ready': `land-local-check could not run on this tip (exit 3: uncommitted edits, or a worktree without local data; run ./scripts/setup-local-data.sh --link-only). ${why} Fix that, then ${run}.`,
+      'not-ready': `land-local-check could not run on this tip (exit 3: uncommitted edits, a worktree without local data (run ./scripts/setup-local-data.sh --link-only), or no node_modules (run the ln -s it prints)). ${why} Fix that, then ${run}.`,
       skipped: `land-local-check gave up waiting for the container land-check mutex on this tip, so land.yml is the only check. ${why}`,
     }[status];
     return { status, warning: text || null };
   } catch {
     return { status: 'unknown', warning: null };
+  }
+}
+
+/**
+ * BRO-7150: the land.yml unit tests that matter for this diff (scripts/lib/land-fast-tests.js:
+ * every cheap repo-wide invariant test plus the tests that name a changed file), run on the
+ * REBASED tip the land would put on main, with failures already red on main dropped. Each
+ * refusal it catches here saves a 20-30 min land cycle. -> { status, message?, warning?, reason? }
+ *   status: fail (blocks) | clean | skip (never blocks) | off
+ * Fails open: a missing script (older tree), a timeout, a crash or unparsable output is a skip.
+ * LAND_FAST_TESTS_DISABLE=1 turns it off; LAND_FAST_TESTS_ADVISORY=1 turns a fail into a warning.
+ */
+export const FAST_TESTS_PHASE_MS = 80000;
+export function fastTestsCheck({ root, base = 'origin/main', rebase, env = process.env, seams = {} }) {
+  if (env.LAND_FAST_TESTS_DISABLE === '1') return { status: 'off', reason: 'LAND_FAST_TESTS_DISABLE=1' };
+  if (!rebase || rebase.status !== 'clean' || !rebase.tip) return { status: 'skip', reason: `rebase preview ${rebase ? rebase.status : 'missing'}` };
+  try {
+    const codeRe = rc && rc.GATED_PATH_RE;
+    const baseSha = out(git(root, ['rev-parse', '--verify', '--quiet', `${base}^{commit}`]));
+    if (!baseSha) return { status: 'skip', reason: `cannot resolve ${base}` };
+    const changed = seams.changedFiles || out(git(root, ['diff', '--name-only', `${baseSha}...${rebase.tip}`])).split('\n').filter(Boolean);
+    if (codeRe && !changed.some((f) => codeRe.test(f))) return { status: 'skip', reason: 'no gated code in the diff' };
+    const script = path.join(root, 'scripts', 'lib', 'land-fast-tests.js');
+    if (!seams.run && !fs.existsSync(script)) return { status: 'skip', reason: 'land-fast-tests.js not in this tree' };
+    const args = [script, 'run', '--base', baseSha, '--tip', rebase.tip, '--json', '--worktree', '--timeout-ms', String(FAST_TESTS_PHASE_MS)];
+    // Two phases (tip, then a base re-check of the red files) plus worktree setup; the CLI bounds each phase itself.
+    const r = (seams.run || spawnSync)(process.execPath, args, { cwd: root, encoding: 'utf8', timeout: 2 * FAST_TESTS_PHASE_MS + 40000, maxBuffer: 16 * 1024 * 1024 });
+    let res = null;
+    try { res = JSON.parse(String(r.stdout || '').trim()); } catch { /* below */ }
+    if (!res || !res.status) return { status: 'skip', reason: `land-fast-tests gave no verdict (exit ${r.status ?? r.signal ?? 'n/a'})` };
+    const secs = Math.round((res.ms || 0) / 1000);
+    if (res.status !== 'fail') return { status: res.status === 'clean' ? 'clean' : 'skip', reason: res.reason || null, ran: res.ran, secs };
+    const list = (res.newFailures || []).slice(0, 8).map((f) => `  - ${f.gate}: ${f.file} :: ${f.name}`).join('\n');
+    const more = (res.newFailures || []).length > 8 ? `\n  … and ${res.newFailures.length - 8} more` : '';
+    const text = `land.yml would refuse this push: ${res.newFailures.length} test(s) fail on the rebased tip (${rebase.tip.slice(0, 10)}) that pass on ${base} (${res.ran} fast test file(s), ${secs}s):\n${list}${more}\n` +
+      'Fix them and push again; each refusal in land.yml costs a 20-30 minute cycle. Re-run locally: ' +
+      `node scripts/lib/land-fast-tests.js run --base ${base} --tip HEAD\n` +
+      'If a failure is not yours (flaky, environment-only), bypass this push with `# NO-LAND-PREFLIGHT: <reason>`.';
+    if (env.LAND_FAST_TESTS_ADVISORY === '1') return { status: 'clean', warning: `(advisory) ${text}`, ran: res.ran, secs };
+    return { status: 'fail', message: text, newFailures: res.newFailures, ran: res.ran, secs };
+  } catch (e) {
+    return { status: 'skip', reason: `fast tests errored: ${e.message}` };
   }
 }
 
@@ -982,10 +1034,19 @@ export function runHook({ command, cwd, env = process.env, seams = {}, transcrip
     const srcIsHead = out(git(root, ['rev-parse', '--verify', '--quiet', `${t.src || 'HEAD'}^{commit}`])) === out(git(root, ['rev-parse', 'HEAD']));
     const dirty = testTreeDirty(root);
     const checkTests = srcIsHead && dirty.length === 0;
-    const v = judgeLand({ cwd: root, src: t.src || 'HEAD', target: t.dst, checkTests, seams });
+    // seams.base: replay a past push against the main it saw (tests, BRO-7150 replays); always origin/main live.
+    const base = seams.base || 'origin/main';
+    const v = judgeLand({ cwd: root, src: t.src || 'HEAD', target: t.dst, base, checkTests, seams });
     if (!checkTests) v.detail.tests = { status: 'skip', reason: srcIsHead ? `uncommitted test files: ${dirty.slice(0, 3).join(', ')}` : 'pushed ref is not HEAD' };
     const lc = localCheckWarning({ root, src: t.src || 'HEAD', seams: seams.localCheck || {} });
-    logEvent(root, { event: v.decision, target: t.dst, rebase: v.detail.rebase?.status, tests: v.detail.tests?.status, botOwned: v.detail.botOwned?.status, staleRevert: v.detail.staleRevert?.status, pendingPlans: v.detail.pendingPlans?.status, fetch: v.detail.fetch || null, skipReason: v.detail.rebase?.reason || null, localCheck: lc.status });
+    // BRO-7150: only when nothing above refused (a refusal is the faster answer) and the land would apply cleanly.
+    const ft = v.decision === 'block' ? { status: 'skip', reason: 'already refused' }
+      : lc.status === 'clean' ? { status: 'skip', reason: 'land-local-check already passed this tip' }
+      : fastTestsCheck({ root, base, rebase: v.detail.rebase, env, seams: seams.fastTests || {} });
+    v.detail.fastTests = ft;
+    if (ft.status === 'fail') { v.decision = 'block'; v.message = ft.message; }
+    if (ft.warning) v.warnings = [...(v.warnings || []), ft.warning];
+    logEvent(root, { event: v.decision, fastTests: ft.status, fastTestsSecs: ft.secs ?? null, target: t.dst, rebase: v.detail.rebase?.status, tests: v.detail.tests?.status, botOwned: v.detail.botOwned?.status, staleRevert: v.detail.staleRevert?.status, pendingPlans: v.detail.pendingPlans?.status, fetch: v.detail.fetch || null, skipReason: v.detail.rebase?.reason || null, localCheck: lc.status });
     if (v.decision !== 'block') {
       const cw = coordinatorWarnings({ root, src: t.src || 'HEAD', target: t.dst, seams });
       if (cw.length) v.warnings = [...(v.warnings || []), ...cw];
@@ -1043,7 +1104,7 @@ function main(argv) {
 
 if (process.argv[1] && fs.realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)) {
   try {
-    process.exit(main(process.argv.slice(2)));
+    createRequire(import.meta.url)('./exit-flushed.js').exitFlushed(main(process.argv.slice(2)));
   } catch (e) {
     // Fail open: an infrastructure error must never wedge a push.
     process.stderr.write(`land-preflight: internal error, not blocking: ${e && e.message}\n`);

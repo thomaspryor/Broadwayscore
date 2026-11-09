@@ -97,10 +97,14 @@ function classifyEntry(entry, nowMs) {
   if (!entry || typeof entry !== 'object') return { verdict: 'unknown', why: 'entry is not an object' };
   const lastSeen = ts(entry.lastSeen);
   if (entry.status === 'resolved') {
-    const resolvedAt = ts(entry.resolvedAt);
-    if (!Number.isFinite(resolvedAt)) return { verdict: 'unknown', why: 'resolved without a parseable resolvedAt' };
+    // BRO-6435: 17 ledger rows are 'resolved' with no resolvedAt (older writers). The row stopped
+    // changing at lastSeen, so a resolved row never seen after that is absent; one with neither
+    // timestamp still cannot be judged.
+    const stamp = Number.isFinite(ts(entry.resolvedAt)) ? entry.resolvedAt : entry.lastSeen;
+    const resolvedAt = ts(stamp);
+    if (!Number.isFinite(resolvedAt)) return { verdict: 'unknown', why: 'resolved without a parseable resolvedAt or lastSeen' };
     if (Number.isFinite(lastSeen) && lastSeen > resolvedAt) return { verdict: 'unknown', why: 'seen after it was resolved' };
-    return { verdict: 'absent', why: `resolved ${entry.resolvedAt}${entry.resolveReason ? ` (${entry.resolveReason})` : ''}` };
+    return { verdict: 'absent', why: `resolved ${stamp}${entry.resolvedAt ? '' : ' (no resolvedAt; lastSeen used)'}${entry.resolveReason ? ` (${entry.resolveReason})` : ''}` };
   }
   if (entry.status === 'open') {
     if (!Number.isFinite(lastSeen)) return { verdict: 'unknown', why: 'open without a parseable lastSeen' };

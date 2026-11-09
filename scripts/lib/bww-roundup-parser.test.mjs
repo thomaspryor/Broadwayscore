@@ -121,3 +121,27 @@ test('BRO-6585: a grade letter glued to the next byline is not part of the name'
   assert.ok(!names.includes('BCaitlin Hornik'), JSON.stringify(names));
   assert.ok(names.includes('Caitlin Hornik'), JSON.stringify(names));
 });
+
+// BRO-7100: synthetic fixtures (no review text) for the two failure shapes
+// found in the archived roundups.
+test('BRO-7100: an in-quote "Name, lowercase words:" is not a critic/outlet pair', () => {
+  const body = "Jane Doe, Entertainment Weekly: The staging, from London's National Theatre, should appeal to two audiences: fans and newcomers alike will find plenty here.     John Roe, Variety: A sturdy evening.";
+  const parsed = parseArticleBodyReviews(body);
+  const outlets = parsed.map(p => p.outletRaw);
+  assert.deepEqual(outlets, ['Entertainment Weekly', 'Variety'], JSON.stringify(parsed));
+  assert.match(parsed[0].quote, /fans and newcomers/);
+});
+
+test('BRO-7100: lowercase-first outlets with capitalised later words still parse', () => {
+  const body = 'Jane Doe, amNY: A bright night out.     John Roe, am New York: Worth a look.     Ann Poe, iNews: Lively and warm.';
+  const outlets = parseArticleBodyReviews(body).map(p => p.outletRaw);
+  assert.deepEqual(outlets, ['amNY', 'am New York', 'iNews']);
+});
+
+test('BRO-7100: a photographer surname before a byline is stripped', () => {
+  const body = 'Lead text here.     Photo Credit: Marc Brenner Jesse Green, The New York Times: A fine revival.';
+  const parsed = parseArticleBodyReviews(body);
+  assert.equal(parsed.length, 1, JSON.stringify(parsed));
+  assert.equal(parsed[0].criticName, 'Jesse Green');
+  assert.equal(parsed[0].outletRaw, 'The New York Times');
+});

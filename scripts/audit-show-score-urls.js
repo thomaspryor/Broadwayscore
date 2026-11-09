@@ -17,6 +17,9 @@ const { maxPlausibleYear } = require('./lib/date-utils');
  *   node scripts/audit-show-score-urls.js --check-stale      exit 1 on baseline entries no longer duplicated (BRO-5315)
  *   node scripts/audit-show-score-urls.js --prune-stale      drop only those entries from the baseline
  *
+ * Exit codes: 0 pass / 1 drift (--strict, --check-stale) / 2 could not run
+ * (input missing, unreadable or empty — BRO-3549).
+ *
  * Baseline-diff (BRO-3471), same posture as audit-duplicate-shows.js: which
  * side of a duplicate-URL pair is the page's real subject is a per-pair data
  * judgment call (BRO-3471's PARKED rationale) that this script cannot make
@@ -40,10 +43,12 @@ const fs = require('fs');
 const path = require('path');
 const cheerio = require('cheerio');
 const { venuesMatch } = require('./lib/deduplication');
+const { pageVenueMatches } = require('./lib/show-score-venue-match');
 const { normalizeUrl, identityKey, baselineKeySet, computeNewViolators } = require('./lib/show-score-urls-baseline');
 const { computeStaleBaselineKeys, reportStaleBaseline, pruneStaleEntries, runStaleModes } = require('./lib/stale-baseline');
 const { findDuplicateUrls, isLapsedProductionMismatch } = require('./lib/show-score-url-map');
 const { findWrongProductionMappings } = require('./lib/show-score-wrong-production');
+const { CORPUS_NOT_SCANNED_EXIT_CODE } = require('./lib/corpus-scan-guard');
 const { countWrongProductionFiles, formatWrongProductionRatio } = require('./lib/show-score-url-wrongproduction-ratio');
 
 const DATA_DIR = path.join(__dirname, '../data');
@@ -67,8 +72,19 @@ function loadBaseline() {
   }
 }
 
-const urlData = JSON.parse(fs.readFileSync(URLS_PATH, 'utf8'));
-const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+// BRO-3549: every "could not run" path exits CORPUS_NOT_SCANNED_EXIT_CODE (2),
+// never 1 — 1 is this script's --strict drift code, and check-corpus-drift.js
+// (crashCodes: [2]) must be able to tell a missing input from a new duplicate.
+// An unreadable input used to throw uncaught here, which Node reports as 1.
+let urlData;
+let showsData;
+try {
+  urlData = JSON.parse(fs.readFileSync(URLS_PATH, 'utf8'));
+  showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+} catch (e) {
+  console.error(`\n❌ cannot read input data: ${e.message}`);
+  process.exit(CORPUS_NOT_SCANNED_EXIT_CODE);
+}
 const shows = showsData.shows || showsData;
 
 // FAIL LOUD on an empty show-score-urls.json under --strict/--update-baseline
@@ -78,7 +94,7 @@ const shows = showsData.shows || showsData;
 // because nothing was checked (e.g. a bad merge emptied the file).
 if ((STRICT || UPDATE_BASELINE || STALE_MODE) && Object.keys(urlData.shows || {}).length === 0) {
   console.error(`\n❌ data/show-score-urls.json has 0 entries — cannot scan for duplicates. Refusing to pass vacuously.`);
-  process.exit(1);
+  process.exit(CORPUS_NOT_SCANNED_EXIT_CODE);
 }
 
 const showMap = {};
@@ -227,9 +243,13 @@ for (const [showId, url] of Object.entries(urlData.shows)) {
 
   // Check venue (multi-production only)
   const pageVenue = extractVenueFromMeta(html);
-  if (pageVenue && show.venue && !venuesMatch(pageVenue, show.venue)) {
+  if (pageVenue && show.venue && !venuesMatch(pageVenue, show.venue) && !pageVenueMatches(pageVenue, show.venue)) {
     const base = showId.replace(/-\d{4}$/, '');
-    if (multiProductionBases.has(base)) {
+    // BRO-6825: Show Score keeps one page per title and its venue meta names the
+    // LATEST run (beetlejuice-2019 maps to the page now headed "Palace Theatre"
+    // while its 2019 reviews are on it). A venue difference alone is therefore
+    // not proof of a wrong production; it only corroborates a date/year issue.
+    if (multiProductionBases.has(base) && issues.length > 0) {
       issues.push(`Page venue "${pageVenue}" != show venue "${show.venue}"`);
     }
   }
@@ -319,7 +339,7 @@ try {
   wrongProduction = wrongProduction.filter((w) => !awaitingRecheck.includes(w));
 } catch (e) {
   console.error(`Wrong-production check could not run: ${e.message}`);
-  if (STRICT) process.exit(1);
+  if (STRICT) process.exit(CORPUS_NOT_SCANNED_EXIT_CODE); // could not run, not drift (BRO-3549)
 }
 if (wrongProduction.length > 0) {
   console.log(`ANOTHER PRODUCTION'S PAGE (${wrongProduction.length}):`);

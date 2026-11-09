@@ -38,13 +38,15 @@
  *       # exit 1 when stale (any grade) or never-audited rows are >= 5% of them
  *   node scripts/slow-market-grade.js --opened-from=2025-10-31 --opened-to=2026-10-31 --check-gaps
  *       # BRO-6716: a fixed opening-date window (inclusive), so an acceptance check does
- *       # not drift as shows open; --check-gaps exits 1 on FAIL or NO-AUDIT only (a STALE
+ *       # not drift as shows open; --check-gaps exits 1 on FAIL, BLIND or NO-AUDIT only (a STALE
  *       # row's last audit passed; closed shows recheck every 30 days, so --check over a
  *       # year of shows can never pass)
  */
 const fs = require('fs');
 const path = require('path');
 const { slowMarketListedGap } = require('./lib/slow-market-gap');
+const { isAggregatorBlind, majorOutletCountFor } = require('./lib/aggregator-blind'); // BRO-6910
+const { readCrossShowUrlRows } = require('./lib/cross-show-url-ledger'); // BRO-6910
 const { currentRunOnly } = require('./lib/prior-production-citations');
 const { censusExclusionReason } = require('./lib/gap-census-noise');
 const { titleTokens } = require('./lib/show-title-tokens');
@@ -59,11 +61,17 @@ const GRIND_WINDOW_DAYS = 1095;
 
 const ROOT = path.join(__dirname, '..');
 
-function gradeShow(row, liveCount) {
+// BRO-6910: `show` (optional) lets a clean row that found no Verdict/BWW
+// article grade BLIND instead of PASS: nothing to compare against. Judged at
+// the row's own audit time (computedAt), so ageing never turns BLIND into PASS.
+function gradeShow(row, liveCount, show = null, nowMs = Date.now(), { majorOutletCount = 0 } = {}) {
   if (!row) return { grade: 'NO-AUDIT', live: liveCount, notLive: [], census: 0, hiddenAsNonReview: 0 };
   const g = slowMarketListedGap(row);
+  const auditAt = Date.parse(row.computedAt || '');
+  const blind = g.residual === 0
+    && isAggregatorBlind(show, row.aggregatorArticles, Number.isFinite(auditAt) ? auditAt : nowMs, { majorOutletCount });
   return {
-    grade: g.residual === 0 ? 'PASS' : 'FAIL',
+    grade: g.residual !== 0 ? 'FAIL' : (blind ? 'BLIND' : 'PASS'),
     live: liveCount,
     notLive: g.rows.map((m) => m.url),
     cited: g.rows.length - g.flaggedOut,
@@ -162,9 +170,9 @@ function openedBetweenIds(shows, from, to) {
   }).map((s) => s.id);
 }
 
-/** Pure (BRO-6716): --check-gaps verdict. FAIL (stale or not) and NO-AUDIT fail; PASS and STALE pass. */
+/** Pure (BRO-6716): --check-gaps verdict. FAIL (stale or not), NO-AUDIT and BLIND (BRO-6910) fail; PASS and STALE pass. */
 function hasGap(out) {
-  return out.some((s) => s.grade === 'FAIL' || s.grade === 'NO-AUDIT');
+  return out.some((s) => s.grade === 'FAIL' || s.grade === 'NO-AUDIT' || s.grade === 'BLIND');
 }
 
 const DATE_ARG_RE = /^\d{4}-\d{2}-\d{2}$/;
@@ -233,7 +241,9 @@ function main(argv = process.argv.slice(2)) {
   const byId = new Map((audit.results || []).map((r) => [r.showId, r]));
   const out = ids.map((id) => {
     const row = byId.get(id);
-    const g = gradeShow(row, live.get(id) || 0);
+    const majorOutletCount = showById.get(id)?.category === 'off-broadway'
+      ? majorOutletCountFor(id, { reviews, ledgerRows: readCrossShowUrlRows({ showId: id }) }) : 0;
+    const g = gradeShow(row, live.get(id) || 0, showById.get(id), nowMs, { majorOutletCount });
     const d = displayGrade(g, nowMs, maxAgeHours);
     const category = showById.get(id)?.category;
     if (category && !frequentByCategory.has(category)) frequentByCategory.set(category, frequentOutletsFor(category, shows, reviews, nowMs));
@@ -254,10 +264,11 @@ function main(argv = process.argv.slice(2)) {
       const staleNote = s.stale ? ` (stale: ${s.auditAgeHours === null ? 'no audit time' : `${s.auditAgeHours}h old`}${s.quarantined ? ', row quarantined so its time is frozen' : ''})` : '';
       console.log(`${s.grade.padEnd(8)} ${s.showId}: ${s.live} live, ${s.cited || 0} cited not live${s.capped ? ` (${s.capped} behind the ingest cap)` : ''}${s.reverify ? `, ${s.reverify} automated exclusion(s) to re-verify` : ''}; info: ${s.census} census candidate(s), ${s.hiddenAsNonReview} exclusion(s) confirmed correct${s.auditedAt ? `; audited ${s.auditedAt}` : ''}${staleNote}`);
       for (const u of s.notLive) console.log(`         - ${u}`);
+      if (s.grade === 'BLIND') console.log('         audit found no Verdict/BWW article to compare against, so 0 gaps proves nothing; re-audit once the roundup is up (BRO-6910)');
       if (s.frequentMissing.length) console.log(`         frequent outlets with nothing for this show: ${s.frequentMissing.join(', ')}`);
     }
     const count = (g) => out.filter((s) => s.grade === g).length;
-    console.log(`summary: ${out.length} show(s): PASS ${count('PASS')}, STALE ${count('STALE')}, FAIL ${count('FAIL')}, NO-AUDIT ${count('NO-AUDIT')}; OVERDUE vs the scheduler's own recheck promise: ${sched ? overdueCount : 'unknown (no checkpoint)'}`);
+    console.log(`summary: ${out.length} show(s): PASS ${count('PASS')}, STALE ${count('STALE')}, FAIL ${count('FAIL')}, BLIND ${count('BLIND')} (no Verdict/BWW article found), NO-AUDIT ${count('NO-AUDIT')}; OVERDUE vs the scheduler's own recheck promise: ${sched ? overdueCount : 'unknown (no checkpoint)'}`);
   }
   if (maxStalePct !== null) {
     const stale = out.filter(notFresh).length;

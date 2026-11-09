@@ -162,3 +162,56 @@ test('BRO-6066: each lane score records the length and tier of the text it was s
   assert.deepEqual([a.textChars, a.contentTier], [TEXT.length, 'truncated']);
   assert.deepEqual([b.textChars, b.contentTier], [quote.length, 'excerpt'], 'an excerpt score records the excerpt it read, not the teaser');
 });
+
+// BRO-6872: a Talkin' Broadway gap (lane 48 / site 60) could not be put down to the text or to the models, because the
+// score log kept neither. It now keeps a hash of the scored text and each model's score, never the text.
+test('each lane score records a hash of the text it scored and the per-model scores, not the text', async () => {
+  const grade = require('../../scripts/lib/lane-shadow-grade.js');
+  const rec = shadow.createScoreRecorder({ now: () => T0 });
+  const ens = { claudeScore: 50, openaiScore: 45, geminiScore: 48, kimiScore: null, ensembleSource: 'ensemble-unanimous' };
+  await rec.wrapScore(async () => ({ score: 48, extra: { ensembleData: ens } }))({ url: 'https://www.talkinbroadway.com/page/world/X.html', fullText: TEXT, outletId: 'talkinbroadway' }, {});
+  const quote = 'A placeholder quote the aggregator printed beside the link.';
+  await rec.wrapScore(async () => ({ score: 45, extra: { fullText: '', contentTier: 'excerpt' } }))({ url: 'https://www.wsj.com/articles/a-review-ab12', fullText: 'teaser '.repeat(200), outletId: 'wsj' }, { excerpts: { bwwExcerpt: quote } });
+  const [a, b] = rec.snapshot();
+  assert.equal(a.textSha, grade.textSha(TEXT));
+  assert.equal(a.textSha.length, 16);
+  assert.deepEqual(a.models, { claude: 50, openai: 45, gemini: 48 }, 'a missing model is dropped, not recorded as null');
+  assert.equal(b.textSha, grade.textSha(quote), 'an excerpt score hashes the excerpt it read, not the blanked page text');
+  assert.ok(!JSON.stringify(rec.snapshot()).includes(TEXT.slice(0, 40)), 'the text itself is never recorded');
+});
+
+test('an excerpt the fetch step chose (no tier from the scorer) is logged as the excerpt, not as empty page text', async () => {
+  const grade = require('../../scripts/lib/lane-shadow-grade.js');
+  const rec = shadow.createScoreRecorder({ now: () => T0 });
+  const quote = 'A placeholder quote the aggregator printed beside the paywalled link.';
+  // inline-score fetchReview returns fullText '' + contentTier 'excerpt'; ensembleScoreText's extra carries no tier.
+  await rec.wrapScore(async () => ({ score: 81, extra: { ensembleData: { claudeScore: 86, openaiScore: 80, geminiScore: 78 } } }))(
+    { url: 'https://www.wsj.com/articles/b-review-cd34', fullText: '', outletId: 'wsj' },
+    { fullText: '', contentTier: 'excerpt', excerpts: { bwwExcerpt: quote } });
+  const [e] = rec.snapshot();
+  assert.equal(e.contentTier, 'excerpt');
+  assert.equal(e.textChars, quote.length);
+  assert.equal(e.textSha, grade.textSha(quote));
+});
+
+test('a lane score records the printed rating it was anchored to, and its score source', async () => {
+  const rec = shadow.createScoreRecorder({ now: () => T0 });
+  await rec.wrapScore(async () => ({ score: 41, extra: { scoreSource: 'anchored-v6', ensembleData: { claudeScore: 42, openaiScore: 40, geminiScore: 40 } } }))(
+    { url: 'https://www.theaterscene.net/plays/x/a-critic/', fullText: TEXT, outletId: 'theater-scene' },
+    { fullText: TEXT, rating: { originalScore: '2/5', originalScoreNormalized: 40, originalScoreSource: 'regex-stars', scoreSource: 'regex-stars' } });
+  await rec.wrapScore(async () => ({ score: 60, extra: { scoreSource: 'anchored-v6' } }))({ url: 'https://example.org/c', fullText: TEXT }, { fullText: TEXT, rating: inline.ratingFields({ originalScore: '3/5', normalizedScore: 60, source: 'lbo-star-rating' }) });
+  await rec.wrapScore(async () => ({ score: 78, extra: { scoreSource: 'llm-v6' } }))({ url: 'https://example.org/b', fullText: TEXT }, { fullText: TEXT });
+  const [a, c, b] = rec.snapshot();
+  assert.deepEqual([a.rating, a.scoreSource], ['2/5 (regex-stars)', 'anchored-v6']);
+  assert.equal(c.rating, '3/5 (lbo-star-rating)', 'a rating routed to aggregatorStars is recorded with its source (real ratingFields shape)');
+  const z = shadow.createScoreRecorder({ now: () => T0 });
+  await z.wrapScore(async () => ({ score: 10, extra: { scoreSource: 'anchored-v6' } }))({ url: 'https://example.org/z', fullText: TEXT }, { fullText: TEXT, rating: inline.ratingFields({ originalScore: 0, normalizedScore: 0, source: 'regex-stars' }) });
+  assert.equal(z.snapshot()[0].rating, '0 (regex-stars)', 'a zero rating is still a rating');
+  assert.equal(b.rating, undefined, 'no printed rating, no field');
+  assert.equal(b.scoreSource, 'llm-v6');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'shadow-anchor-'));
+  const report = shadow.buildShadowReport({ show: SHOW, night: NIGHT, ledgerDir: dir, scores: rec.snapshot(), live: { polls: 1, failures: 0, firstLive: new Map() }, startedAt: T0, endedAt: T0 + 3600000, result: null });
+  const row = report.reviews.find((r) => r.laneScore === 41);
+  assert.deepEqual([row.laneRating, row.laneScoreSource], ['2/5 (regex-stars)', 'anchored-v6']);
+  fs.rmSync(dir, { recursive: true, force: true });
+});

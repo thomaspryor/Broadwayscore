@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-11-03T12:46:54.927Z",
+    "generatedAt": "2026-11-09T02:58:51.603Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 152,
+    "totalFlagged": 156,
     "highConfidence": 9,
-    "mediumConfidence": 143,
+    "mediumConfidence": 147,
     "lowConfidence": 0,
-    "reassignable": 51
+    "reassignable": 53
   },
   "results": [
     {
@@ -38,6 +38,22 @@
         "revival text signals: revival, this production, new revival"
       ],
       "textSnippet": "Who says it’s not easy being green? Well, Kermit the Frog did actually, but if you’re literal high-flyer Elphaba in the musical Wicked, it’s pretty darn boss, especially give that the teen-adored Step"
+    },
+    {
+      "showId": "wicked-2003",
+      "showTitle": "Wicked",
+      "showYear": 2003,
+      "file": "ew--unknown.json",
+      "outlet": "Entertainment Weekly",
+      "criticName": "Unknown",
+      "publishDate": "2026-11-03",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "publishDate 2026 is 23 years after original opening 2003",
+        "modern references: instagram, social media"
+      ],
+      "textSnippet": "Model claps back after influencer calls her out for climbing onto Wicked stage for photos: ‘Get some therapy’ “Wicked” star Kristin Chenoweth reacted to the drama, after Eden the Doll replied to a vlo"
     },
     {
       "showId": "wicked-2003",
@@ -226,21 +242,6 @@
         "modern references: masks"
       ],
       "textSnippet": "When it was announced that Disney had hired Julie Taymor, best known for her off-Broadway puppet tale Juan Darien, to direct its big-budget Broadway production of The Lion King, eyebrows were raised. "
-    },
-    {
-      "showId": "the-lion-king-1997",
-      "showTitle": "The Lion King",
-      "showYear": 1997,
-      "file": "jasonraize--frank-scheck.json",
-      "outlet": "Jasonraize",
-      "criticName": "Frank Scheck",
-      "publishDate": "November 21st, 1997",
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "modern references: masks"
-      ],
-      "textSnippet": "   \"The Lion King is a spectacular rendition of the animated film, a brilliant theatrical adaptation that stands on its own...Taymor has risen to the challenge, translating the physically complex tale"
     },
     {
       "showId": "the-lion-king-1997",
@@ -1034,9 +1035,9 @@
       "showId": "nine-2003",
       "showTitle": "Nine",
       "showYear": 2003,
-      "file": "curtainup--unknown.json",
+      "file": "curtainup--elyse-sommer.json",
       "outlet": "CurtainUp",
-      "criticName": "Unknown",
+      "criticName": "Elyse Sommer",
       "publishDate": null,
       "confidence": "medium",
       "suggestedShowId": "nine-1982",
@@ -1568,6 +1569,21 @@
       "textSnippet": "Tethered to a window washer’s platform and all but edible in a powder-blue monkey suit and bow tie, Matthew Broderick descends the brightly lit side of a sleek Manhattan office building, reading the t"
     },
     {
+      "showId": "falsettos-1992",
+      "showTitle": "Falsettos",
+      "showYear": 1992,
+      "file": "wolf-entertainment-guide--william-wolf.json",
+      "outlet": "Wolf Entertainment Guide",
+      "criticName": "William Wolf",
+      "publishDate": "1992-04-29",
+      "confidence": "medium",
+      "suggestedShowId": "falsettos-2016",
+      "signals": [
+        "year 2016 in text matches revival falsettos-2016"
+      ],
+      "textSnippet": "FALSETTOS Send This Review to a Friend\n\nThe musical gets off to a rousing start with the singing of the catchy “Four Jews in a Room Bitching,” a number that sets the tone for the work’s irreverence th"
+    },
+    {
       "showId": "macbeth-1981",
       "showTitle": "Macbeth",
       "showYear": 1981,
@@ -2057,6 +2073,21 @@
       "textSnippet": "The directors Michael DeFilippis, Dmitry Krymov and Aleksandr Molochnikov all infuse their current productions with a burning, modern rage.\n\nIn “Burnout Paradise,” four performers try ambitious tasks "
     },
     {
+      "showId": "gore-vidals-the-best-man-2000",
+      "showTitle": "Gore Vidal's The Best Man",
+      "showYear": 2000,
+      "file": "variety--charles-isherwood.json",
+      "outlet": "Variety",
+      "criticName": "Charles Isherwood",
+      "publishDate": "2000-09-18",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "revival text signals: revival, new revival"
+      ],
+      "textSnippet": "The fall season on Broadway gets off to an unsteady start with the new revival of Gore Vidal's \"The Best Man.\" A political drama-cum-civics lesson that takes place behind the scenes at a presidential "
+    },
+    {
       "showId": "a-class-act-2001",
       "showTitle": "A Class Act",
       "showYear": 2001,
@@ -2257,6 +2288,21 @@
       "showId": "jesus-christ-superstar-2000",
       "showTitle": "Jesus Christ Superstar",
       "showYear": 2000,
+      "file": "theatermania--unknown.json",
+      "outlet": "TheaterMania",
+      "criticName": "Unknown",
+      "publishDate": "2000-04-20",
+      "confidence": "medium",
+      "suggestedShowId": "jesus-christ-superstar-1971",
+      "signals": [
+        "year 1971 in text matches revival jesus-christ-superstar-1971"
+      ],
+      "textSnippet": "Given that the material of Jesus Christ Superstar is barren, director Gale Edwards’ labors do nothing to ameliorate or redeem it. Edwards has said–in these columns, as it happens–that she wants to und"
+    },
+    {
+      "showId": "jesus-christ-superstar-2000",
+      "showTitle": "Jesus Christ Superstar",
+      "showYear": 2000,
       "file": "variety--charles-isherwood.json",
       "outlet": "Variety",
       "criticName": "Charles Isherwood",
@@ -2273,9 +2319,9 @@
       "showId": "la-cage-aux-folles-1983",
       "showTitle": "La Cage aux Folles",
       "showYear": 1983,
-      "file": "talkinbroadway--unknown.json",
+      "file": "talkinbroadway--matthew-murray.json",
       "outlet": "Talkin' Broadway",
-      "criticName": "Unknown",
+      "criticName": "Matthew Murray",
       "publishDate": null,
       "confidence": "high",
       "suggestedShowId": "la-cage-aux-folles-2004",
@@ -2285,6 +2331,22 @@
         "year 2005 in text matches revival la-cage-aux-folles-2004"
       ],
       "textSnippet": "Theatre Review by Matthew Murray\n - December 9, 2004 \n\nLa Cage aux Folles Music and Lyrics by Jerry Herman. Book by Harvey Fierstein. Based on the play 'La Cage Aux Folles' by Jean Poiret. Directed by"
+    },
+    {
+      "showId": "the-glass-menagerie-1983",
+      "showTitle": "The Glass Menagerie",
+      "showYear": 1983,
+      "file": "nytimes--maya-phillips.json",
+      "outlet": "The New York Times",
+      "criticName": "Maya Phillips",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "revival text signals: revival, this production",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "THE new Broadway revival of ''The Glass Menagerie'' leaves much to be desired, but that fact doesn't diminish the largest aspect of the event. The spirits of Tennessee Williams and Jessica Tandy have "
     },
     {
       "showId": "the-tap-dance-kid-1983",

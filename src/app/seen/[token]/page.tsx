@@ -26,7 +26,7 @@ interface PageProps {
 export async function generateMetadata(props: PageProps): Promise<Metadata> {
   const params = await props.params;
   const data = await load(params.token);
-  if (data.status !== 'ok') return { ...privateShareMetadata, title: 'Theater diary' };
+  if (data.status !== 'ok') return { ...privateShareMetadata, title: 'Shows seen' };
   const title = diaryTitle(data.view.name);
   // Never note text here: previews travel to group chats.
   const description = `${diarySummary(data.view.showsSeen)} on Broadway Scorecard`;

@@ -148,5 +148,27 @@
       "ok": true,
       "msg": "Ran ingest-review-from-url.js successfully"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "still-needed",
+    "counts": {
+      "resolved": 1,
+      "still-needed": 1
+    },
+    "stillNeededReason": "op 8: re-ingested via ingest-urls on 2026-11-07 (success) but the CI fetch of this paywalled page still yields no text or a stub; it needs a browser html handoff (ingest-html-handoff) to recover (BRO-7092 hand check)",
+    "ops": [
+      {
+        "i": 6,
+        "verdict": "resolved",
+        "reason": "https://theatrevibe.co.uk/2026/09/25/review-the-last-ship-theatre-royal-drury-lane-2026/ is counted for the-last-ship-west-end-2026"
+      },
+      {
+        "i": 8,
+        "verdict": "still-needed",
+        "reason": "re-ingested via ingest-urls on 2026-11-07 (success) but the CI fetch of this paywalled page still yields no text or a stub; it needs a browser html handoff (ingest-html-handoff) to recover (BRO-7092 hand check)"
+      }
+    ]
+  }
 }

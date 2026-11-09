@@ -8,7 +8,7 @@ import { useCurrentMarket } from '@/hooks/useCurrentMarket';
 import { useIsOperaDomain } from '@/hooks/useIsOperaDomain';
 import { isOperaShowPath } from '@/lib/opera-show-ids';
 import { featureFlags } from '@/config/feature-flags';
-import { HUB_CITIES } from '@/lib/city-hub';
+import { HUB_CITIES, hubForPath } from '@/lib/city-hub';
 
 interface MarketStats {
   nyc: { openShows: number; theaters: number };
@@ -36,24 +36,30 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const isUkRegional = marketId === 'uk-regional';
-  const isHubPath = (slug: string) => pathname === `/tours/${slug}` || pathname.startsWith(`/tours/${slug}/`);
-  const isWestEnd = marketId === 'west-end' || isUkRegional;
-  const isOffWestEnd = marketId === 'off-west-end';
-  // Treat opera show pages as NOT off-broadway for the pill label, even though
-  // the URL-derived marketId is 'off-broadway' (shared routing convention).
+  const activeHub = hubForPath(pathname);
+  const isHubPath = (slug: string) => activeHub?.slug === slug;
+  // Treat opera show pages as NOT off-broadway / West End / Off-West End for the
+  // pill label, even though the URL-derived marketId says so (shared routing
+  // convention): ENO and Royal Opera House rows carry -west-end/-off-west-end
+  // slugs the same way Met rows carry -off-broadway (owner, 2026-11-08: opera
+  // does not count as West End).
+  const isWestEnd = (marketId === 'west-end' || isUkRegional) && !isOperaShowPage;
+  const isOffWestEnd = marketId === 'off-west-end' && !isOperaShowPage;
   const isOffBroadway = marketId === 'off-broadway' && !isOperaShowPage;
   // Regional (non-NYC US) shows: distinct pill label; dropdown links to the
   // pre-Broadway browse page (no dedicated hub yet).
   const isRegional = marketId === 'regional';
   // National tours (BRO-4211): own pill label; dropdown links to the tours browse page.
   // Flag-checked: with the flag off a /show/*-tour-YYYY URL is a 404 and must not read as "Tours".
-  const isTour = marketId === 'tour' && featureFlags.tour;
+  // Non-hub tour city pages (any other /tours/<city>) read as Tours too, not Broadway; hub pages name their city instead.
+  const isTourCityPath = pathname.startsWith('/tours/') && !activeHub;
+  const isTour = (marketId === 'tour' || isTourCityPath) && featureFlags.tour;
   // Don't apply opera domain branding when user has explicitly navigated to
   // another market (off-broadway, west-end, off-west-end, regional). The opera
   // domain flag only matters on opera-specific pages.
-  const isExplicitNonOperaMarket = isWestEnd || isOffWestEnd || isOffBroadway || isRegional || isTour;
+  const isExplicitNonOperaMarket = isWestEnd || isOffWestEnd || isOffBroadway || isRegional || isTour || !!activeHub;
   const isOpera = (isOperaDomain || isOperaShowPage || isOperaPage) && !isExplicitNonOperaMarket;
-  const isBroadway = !isWestEnd && !isOffWestEnd && !isOffBroadway && !isRegional && !isTour && !isOpera;
+  const isBroadway = !isWestEnd && !isOffWestEnd && !isOffBroadway && !isRegional && !isTour && !isOpera && !activeHub;
   const currentMarket = isWestEnd || isOffWestEnd ? 'west-end' : 'nyc';
 
   const closeDropdown = useCallback(() => setIsOpen(false), []);
@@ -62,7 +68,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
   // Close on route change
   useEffect(() => {
     setIsOpen(false);
-  }, [marketId]);
+  }, [marketId, activeHub?.slug]);
 
   return (
     <div className="flex items-center gap-2 sm:gap-3" ref={dropdownRef}>
@@ -76,7 +82,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
           the build and route checks cover that instead. */}
       <Link href={isOpera ? '/opera' : (isWestEnd || isOffWestEnd ? '/west-end' : '/')} className="flex items-center shrink-0 group ph-no-rageclick">
         {isOpera ? (
-          <span className="text-base min-[390px]:text-lg sm:text-3xl font-extrabold text-white tracking-tight">Opera<span className="bg-gradient-to-r from-amber-400 to-amber-500 bg-clip-text text-transparent">Scorecard</span></span>
+          <span className="text-base min-[390px]:text-lg sm:text-3xl font-extrabold text-white tracking-tight">Opera<span className="bg-gradient-to-r from-[#f0627a] to-[#c4213f] bg-clip-text text-transparent">Scorecard</span></span>
         ) : isWestEnd || isOffWestEnd ? (
           <span className="text-base min-[390px]:text-lg sm:text-3xl font-extrabold text-white tracking-tight">WestEnd<span className="bg-gradient-to-r from-pink-400 to-pink-500 bg-clip-text text-transparent">Scorecard</span></span>
         ) : (
@@ -94,7 +100,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
           ${isOpen
             ? 'bg-white/10 border-white/20 text-white'
             : isOpera
-              ? 'bg-amber-500/[0.12] border-amber-500/25 text-amber-300 hover:bg-amber-500/20'
+              ? 'bg-[#e0485f]/[0.12] border-[#e0485f]/25 text-[#f0627a] hover:bg-[#e0485f]/20'
               : isOffBroadway
                 ? 'bg-purple-500/[0.12] border-purple-500/25 text-purple-300 hover:bg-purple-500/20'
                 : isOffWestEnd
@@ -103,7 +109,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
                     ? 'bg-teal-500/[0.12] border-teal-500/25 text-teal-300 hover:bg-teal-500/20'
                   : isRegional
                     ? 'bg-emerald-500/[0.12] border-emerald-500/25 text-emerald-300 hover:bg-emerald-500/20'
-                    : isTour
+                    : isTour || activeHub
                       ? 'bg-sky-500/[0.12] border-sky-500/25 text-sky-300 hover:bg-sky-500/20'
                       : 'bg-white/[0.06] border-white/[0.12] text-gray-300 hover:bg-white/10 hover:text-white'
           }
@@ -112,7 +118,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
         aria-haspopup="listbox"
         aria-label="Switch market"
       >
-        {isOpera ? 'Opera' : isOffBroadway ? 'Off-Bway' : isOffWestEnd ? 'Off-WE' : isUkRegional ? 'UK Regional' : isRegional ? 'Regional' : isTour ? 'Tours' : currentMarket === 'nyc' ? 'Broadway' : 'West End'}
+        {isOpera ? 'Opera' : isOffBroadway ? 'Off-Bway' : isOffWestEnd ? 'Off-WE' : isUkRegional ? 'UK Regional' : isRegional ? 'Regional' : isTour ? 'Tours' : activeHub ? activeHub.hub.cardLabel : currentMarket === 'nyc' ? 'Broadway' : 'West End'}
         {/* Always visible — below 400px this used to be `hidden`, so the pill
             read as a plain label with no dropdown cue on narrow phones (task
             #78: rage clicks on "Broadway" traced to missing affordance here).
@@ -170,22 +176,22 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
           <Link
             href="/opera"
             className={`flex items-center justify-between px-3.5 py-3 rounded-lg transition-colors ${
-              isOpera ? 'bg-amber-500/[0.08]' : 'hover:bg-white/[0.04]'
+              isOpera ? 'bg-[#e0485f]/[0.08]' : 'hover:bg-white/[0.04]'
             }`}
             onClick={() => setIsOpen(false)}
           >
             <div className="flex items-center gap-2">
-              <span className={`w-1.5 h-1.5 rounded-full ${isOpera ? 'bg-amber-400 shadow-[0_0_6px_rgba(251,191,36,0.5)]' : 'bg-amber-500/60'}`} />
+              <span className={`w-1.5 h-1.5 rounded-full ${isOpera ? 'bg-[#e0485f] shadow-[0_0_6px_rgba(224,72,95,0.5)]' : 'bg-[#e0485f]/60'}`} />
               <div>
-                <div className={`flex items-center gap-1.5 text-sm font-semibold ${isOpera ? 'text-amber-200' : 'text-white'}`}>
+                <div className={`flex items-center gap-1.5 text-sm font-semibold ${isOpera ? 'text-[#f7a1b0]' : 'text-white'}`}>
                   OperaScorecard
-                  <span className="text-[9px] font-bold uppercase tracking-wider text-amber-400/70 border border-amber-400/30 rounded px-1 py-px">Beta</span>
+                  <span className="text-[9px] font-bold uppercase tracking-wider text-[#f0627a]/70 border border-[#f0627a]/30 rounded px-1 py-px">Beta</span>
                 </div>
-                <div className="text-[11px] text-fg-muted">Met Opera · New York</div>
+                <div className="text-[11px] text-fg-muted">New York · London</div>
               </div>
             </div>
             {isOpera && (
-              <svg className="w-4 h-4 text-amber-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <svg className="w-4 h-4 text-[#f0627a]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
               </svg>
             )}
@@ -299,8 +305,8 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
           )}
           {featureFlags.regional && Object.entries(HUB_CITIES).map(([slug, hub]) => {
             const hubStats = stats.hubs?.[slug];
-            if (!hubStats || hubStats.shows <= 0) return null;
             const isHub = isHubPath(slug);
+            if ((!hubStats || hubStats.shows <= 0) && !isHub) return null;
             return (
               <Fragment key={slug}>
                 <div className="h-px bg-white/[0.06] mx-2 my-1" />
@@ -316,7 +322,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
                     <span className={`w-1.5 h-1.5 rounded-full ${isHub ? 'bg-sky-400 shadow-[0_0_6px_rgba(56,189,248,0.5)]' : 'bg-sky-500/60'}`} />
                     <div>
                       <div className={`text-sm font-semibold ${isHub ? 'text-sky-200' : 'text-white'}`}>{hub.short} Theater</div>
-                      <div className="text-[11px] text-fg-muted">{hubStats.openShows} playing now · {hub.menuSub}</div>
+                      <div className="text-[11px] text-fg-muted">{hubStats ? `${hubStats.openShows} playing now · ${hub.menuSub}` : hub.menuSub}</div>
                     </div>
                   </div>
                   {isHub && (

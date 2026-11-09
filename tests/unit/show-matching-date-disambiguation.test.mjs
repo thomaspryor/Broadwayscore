@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // Unit tests for scripts/lib/show-matching.js's options.date disambiguation.
 // Regression coverage for the 2026-07-20 bug: matchTitleToShow() with no year/date
 // hint always picked whichever same-title production is open TODAY, corrupting

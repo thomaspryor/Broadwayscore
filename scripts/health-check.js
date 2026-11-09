@@ -36,6 +36,7 @@ const crypto = require('crypto');
 const { execSync, execFileSync } = require('child_process');
 const { getTodayJsonlPath } = require('./lib/exclusion-logger');
 const { classifyHealthCheck } = require('./lib/digest-audience');
+const { updateFirstSeen } = require('./lib/health-first-seen');
 const { computeCommercialModelDriftStatus } = require('./lib/commercial-model-drift');
 const { checkBizOgCoverage, RENDER_HINT: BIZ_OG_RENDER_HINT } = require('./lib/audit-biz-og-coverage');
 const { fitCheckStatus: waltzFitCheckStatus } = require('./lib/waltz-model-fit');
@@ -245,6 +246,17 @@ const AUTO_FIX_PLAYBOOK = [
   // means nothing is silently lost.
   // `ledger`: same BRO-2603 note as the dead-launch-rate entry above — also
   // sourced from dispatch-ledger.jsonl.
+  // BRO-7103: the recurrence detector's own dead-man. Pass carries the metric
+  // (root-cause share, recurring classes); warn only when the detector stops
+  // writing its snapshot, so a broken detector files a card like any monitor.
+  { match: /^Improvement: root-cause share$/, urgency: 'this-week',
+    ownerText: "The check that spots problems we keep fixing over and over has not run for two days, so repeat problems are not being turned into cause fixes. Nothing is needed from you.",
+    workerInstruction: "Run `node scripts/recurrence-detector.js` (dry run) and check the \"Recurrence detector\" step in data-health-check.yml; the snapshot is data/audit/recurrence-classes.json (BRO-7103)." },
+  // BRO-7138: same shape as the root-cause share row above: pass carries the
+  // metric, warn only when the nightly recheck stops writing summaries.
+  { match: /^Improvement: done claims that held$/, urgency: 'this-week',
+    ownerText: "The nightly check that re-tests finished work has not run for two days, so fixes that quietly stopped working are not being caught. Nothing is needed from you.",
+    workerInstruction: "Run `node scripts/autonomous-acceptance-recheck.js --dry-run` and check the \"Acceptance recheck (shadow mode)\" step in data-health-check.yml; the ledger is data/audit/autonomous-recheck-ledger.jsonl (BRO-7138)." },
   { match: /^Headless dispatch: success rate$/, urgency: 'this-week', ledger: DISPATCH_LEDGER_NAME,
     ownerText: "Background work sessions are succeeding less than 80% of the time. Unfinished work is retried, so nothing is lost. Nothing is needed from you.",
     workerInstruction: "Run `node scripts/audit-headless-outcome-rate.js` for the per-task breakdown, then investigate the headless dispatch success rate (card #1714). Judge any fix by this rate over the window, never by one clean dispatch." },
@@ -304,6 +316,10 @@ const AUTO_FIX_PLAYBOOK = [
   // generated from AUDIT_FRESHNESS_CHECKS so a new row can never ship without
   // its playbook entry (asserted in tests/unit/audit-freshness-checks.test.mjs).
   ...require('./lib/audit-freshness-checks').auditFreshnessPlaybookEntries(),
+  // BRO-7139: no workflow redispatch (re-running the whole health job to refresh
+  // one report-only ledger is not worth it); a worker investigates.
+  { match: /^Freshness: board-dispatch ledger$/, urgency: 'this-week',
+    humanAction: 'The nightly board report (which scheduled job owns each open card) has stopped writing its ledger. A fix session checks the board-dispatch job in data-health-check.yml; nothing is needed from the owner.' },
   // No `workflow` — there's no automated fix, this just needs a human to look
   // at the scoring workflow's polling. 'this-week' (not fix-now): a batch
   // between 12-48h in flight is within the vendor's normal turnaround, not an
@@ -330,8 +346,11 @@ const AUTO_FIX_PLAYBOOK = [
 
   // Quality — needs investigation
   { match: /^Quality: standingCoverage drift$/, urgency: 'this-week',
-    ownerText: "Some critic outlets may need to be added to or removed from the list of outlets that review every Broadway opening, based on what they actually cover. Nothing is needed from you.",
-    workerInstruction: "Check the standingCoverage drift and update outlet-registry.json." },
+    ownerText: "Some critic outlets may need to be added to or removed from the list of outlets that review every opening in a market, based on what they actually cover. Nothing is needed from you.",
+    workerInstruction: "Run node scripts/audit-standing-coverage.js --market=<market from the warning>; apply the change with an outlet-registry-flag plan that sets market to that market." },
+  { match: /^Quality: expected critics missing$/, urgency: 'this-week',
+    ownerText: "A critic that reviews nearly every opening has no review on the site for a show that opened recently. It is either missing from the site or the critic skipped the show. Nothing is needed from you.",
+    workerInstruction: "Run node scripts/audit-expected-critics.js; ingest each missing review or ack it with evidence that the outlet did not review the show." },
   { match: /^Quality: outlet feed staleness$/, urgency: 'this-week',
     ownerText: "A critic outlet's news feed stopped updating while the outlet keeps publishing reviews, so new reviews from it may arrive late. Nothing is needed from you.",
     workerInstruction: "Open the outlet-listing poller feed-health snapshot (OUTLET_FEED_HEALTH_REL in scripts/lib/outlet-listing-helpers.js), take each outlet in stale[] or failing[], probe a replacement with `node scripts/probe-outlet-feeds.js --outlets <id>` and update its OUTLET_STRATEGY_CONFIG entry in scripts/outlet-listing-poller.js (BRO-6352; BRO-6340 fixed thewrap/observer this way)." },
@@ -1357,10 +1376,11 @@ function checkQuality() {
       }
       const worst = findings[0];
       const hidden = findings.filter(f => f.starWonHidingContradiction).length;
+      const counters = findings.filter(f => f.galleryCounter).length;
       return {
         name: 'Quality: star-vs-score mismatch',
         status: 'warn',
-        message: `${findings.length} NEW review(s) whose explicit rating contradicts the score (worst: ${worst.showId} ${worst.outlet} ${worst.originalRating}→${worst.expected} vs LLM ${worst.llm}, gap ${worst.worstGap})${hidden ? `; ${hidden} star-won-hiding` : ''}${expiryNote}`,
+        message: `${findings.length} NEW review(s) whose explicit rating contradicts the score (worst: ${worst.showId} ${worst.outlet} ${worst.originalRating}→${worst.expected} vs LLM ${worst.llm}, gap ${worst.worstGap})${hidden ? `; ${hidden} star-won-hiding` : ''}${counters ? `; ${counters} gallery-counter "1/N" read as a rating` : ''}${expiryNote}`,
         hint: 'Run `node scripts/audit-star-score-mismatch.js` — likely a mis-extracted star (wrong show in a combined review column). Fix originalScore in review-texts + rescore, then `--write-baseline` to ack (acks expire after 90 days; `--renew-baseline=<key>` re-acks one key, bare `--renew-baseline` every listed key).',
       };
     }),
@@ -1647,6 +1667,32 @@ function checkQuality() {
     // that only reads the last row (the arm-yield 'unobserved' lesson). This
     // is the site's ONLY revenue stream: a stale/broken monitor is an error,
     // not a warn.
+    // BRO-7103: how much finished work fixed causes vs one more case of a
+    // repeat problem. recurrence-detector.js runs earlier in the same job.
+    runCheck('Improvement: root-cause share', () => {
+      const name = 'Improvement: root-cause share';
+      const snapFile = path.join(AUDIT_DIR, 'recurrence-classes.json');
+      if (!fs.existsSync(snapFile)) {
+        return { name, status: 'pass', message: 'Recurrence detector has not run yet' };
+      }
+      const snap = readJSON(snapFile);
+      const age = snap?.generatedAt ? hoursAgo(snap.generatedAt) : Infinity;
+      if (age > 48) {
+        return { name, status: 'warn', message: `Recurrence detector snapshot is ${formatAge(age)} old (>48h)`, hint: 'Check the "Recurrence detector" step in data-health-check.yml' };
+      }
+      return { name, status: 'pass', message: require('./lib/recurrence-classes.js').improvementLine(snap) };
+    }),
+
+    // BRO-7138: of the Done claims the nightly recheck could actually test,
+    // the share whose own check still passes (30 and 7 days). Checks that
+    // could not run on the recheck machine are counted apart, not as fails.
+    runCheck('Improvement: done claims that held', () => {
+      const name = 'Improvement: done claims that held';
+      const { entries } = require('./lib/autonomous-ledger.js').readEntries(path.join(AUDIT_DIR, 'autonomous-recheck-ledger.jsonl'));
+      const row = require('./lib/autonomous-recheck-core.js').doneClaimsHeldRow(entries);
+      return row.status === 'pass' ? { name, ...row } : { name, ...row, hint: 'Check the "Acceptance recheck (shadow mode)" step in data-health-check.yml' };
+    }),
+
     runCheck('Revenue: affiliate health', () => {
       const snapFile = path.join(AUDIT_DIR, 'affiliate-health.json');
       if (!fs.existsSync(snapFile)) {
@@ -2104,20 +2150,50 @@ function checkOutletHealth() {
       if (!core) {
         return { name: 'Quality: standingCoverage drift', status: 'pass', message: 'Skipped (core data not checked out)' };
       }
-      const { evaluateStandingCoverage } = require('./audit-standing-coverage');
-      const result = evaluateStandingCoverage(core.shows, core.reviews, core.outlets, Date.now());
-      const drifted = result.promote.length + result.demote.length;
+      // Per market (BRO-7166): West End and Off-Broadway have their own standing sets.
+      const { evaluateStandingCoverage, STANDING_MARKETS } = require('./audit-standing-coverage');
+      const parts = [];
+      let drifted = 0;
+      for (const category of STANDING_MARKETS) {
+        const result = evaluateStandingCoverage(core.shows, core.reviews, core.outlets, Date.now(), { category });
+        drifted += result.promote.length + result.demote.length;
+        if (result.promote.length) parts.push(`${category} promote: ${result.promote.join(', ')}`);
+        if (result.demote.length) parts.push(`${category} demote: ${result.demote.join(', ')}`);
+      }
       if (drifted === 0) {
         return { name: 'Quality: standingCoverage drift', status: 'pass', message: 'No standingCoverage drift' };
       }
-      const parts = [];
-      if (result.promote.length) parts.push(`promote: ${result.promote.join(', ')}`);
-      if (result.demote.length) parts.push(`demote: ${result.demote.join(', ')}`);
       return {
         name: 'Quality: standingCoverage drift',
         status: 'warn',
         message: `${drifted} outlet(s) drifted from outlet-registry.json standingCoverage flags (${parts.join('; ')})`,
-        hint: 'Run `node scripts/audit-standing-coverage.js` and update outlet-registry.json standingCoverage flags.',
+        hint: 'Run `node scripts/audit-standing-coverage.js --market=<market>` and apply an outlet-registry-flag plan with that market.',
+      };
+    }),
+
+    // Usual critics with no review of a recent opening (BRO-7166). The ledger's
+    // one-email-per-cell alert let School Girls / NY Post sit unasked for six
+    // weeks; this row repeats every day until the cell is live or acked as not
+    // reviewed. Advisory (warn only).
+    runCheck('Quality: expected critics missing', () => {
+      const name = 'Quality: expected critics missing';
+      if (!core) return { name, status: 'pass', message: 'Skipped (core data not checked out)' };
+      const { findExpectedCriticGaps } = require('./lib/expected-critics');
+      const { loadAcks } = require('./lib/t1-scoreboard');
+      const gaps = findExpectedCriticGaps({ shows: core.shows, reviews: core.reviews, outlets: core.outlets, acks: loadAcks(), nowMs: Date.now() })
+        .filter((g) => g.status === 'missing');
+      if (gaps.length === 0) return { name, status: 'pass', message: 'Every usual critic has reviewed (or is acked) for openings 4-42 days old' };
+      const byShow = new Map();
+      for (const g of gaps) {
+        if (!byShow.has(g.showId)) byShow.set(g.showId, []);
+        byShow.get(g.showId).push(g.outletId);
+      }
+      const list = [...byShow].slice(0, 8).map(([id, o]) => `${id} (${o.join(', ')})`).join('; ');
+      return {
+        name,
+        status: 'warn',
+        message: `${gaps.length} usual-critic review(s) missing across ${byShow.size} opening(s): ${list}${byShow.size > 8 ? '; ...' : ''}`,
+        hint: 'Run `node scripts/audit-expected-critics.js`; ingest the review, or `--ack=show::outlet --note="<evidence>"` when the outlet did not review it.',
       };
     }),
 
@@ -2971,19 +3047,13 @@ async function checkMainRedStreak(isCI) {
     // used (.github/workflows/test.yml) — not a new one keyed on
     // firstRedSha — so test.yml's "Resolve alert — main test.yml green
     // again" step (which resolves this key on every green run) keeps
-    // closing this one too. disposition:'human' (BRO-3865, changed from
-    // 'auto'): test.yml's push-triggered dispatch now files a PER-SIGNATURE
-    // 'auto' card per distinct failing job/step/test
-    // (scripts/route-main-streak-signatures.js, conditionKey
-    // 'test-yml:red:<job>:<hash>') instead of one shared 'auto' card under
-    // THIS key — so this aggregate condition is no longer "diagnose one
-    // failing test", it's "nobody's per-signature card is stemming a
-    // long-running red trunk", the same severity class as the
-    // 'test-yml:main-streak-escalation' human page below. 'test-yml:main-
-    // streak' was REMOVED from scripts/lib/page-worthy-alerts.js's
-    // allowlist 2026-09-23 (owner email-noise complaint), so this 'human'
-    // disposition is downgraded to the digest by the router — a red trunk is
-    // for the automated fixers, not an owner page. cooldownHours matches the escalation tier's 24h (NOT the old
+    // closing this one too. disposition:'digest' (BRO-7102; was 'human'
+    // since BRO-3865, which the page gate downgraded to the digest on every
+    // fire because 'test-yml:main-streak' left page-worthy-alerts.js on
+    // 2026-09-23). This aggregate row is the owner's digest view of a long red
+    // trunk; the action is route-main-streak-signatures.js's 6h escalation,
+    // which puts each still-failing signature's own card in front of a worker.
+    // cooldownHours matches the escalation tier's 24h (NOT the old
     // 6h — under 'auto' this key only ever paged once, since
     // findLinearDuplicate's tracker dedupe made every later hit
     // action:'silent' with no email at all; under 'human' there is no such
@@ -2998,7 +3068,11 @@ async function checkMainRedStreak(isCI) {
           description: assessment.alarm,
           hint: `git log ${assessment.firstRedSha} — start from the first red commit, not the latest push.`,
           severity: 'error',
-          disposition: 'human',
+          // BRO-7102: was 'human', which the page gate always turned into a
+          // digest line anyway. Say so: the digest line is for the owner to
+          // see; the work goes to each signature's own card, which
+          // route-main-streak-signatures.js escalates once red 6h+.
+          disposition: 'digest',
           cardAction: 'Fix',
           fields: [{ name: 'First red commit', value: assessment.firstRedSha || 'unknown' }],
           cooldownHours: 24,
@@ -3073,10 +3147,10 @@ function checkCiGreenRate(isCI, deps = {}) {
 function checkCiMidSetupCancels(deps = {}) {
   const NAME = 'Main: mid-setup cancels';
   if (!process.env.GH_TOKEN && !process.env.GITHUB_TOKEN) {
-    return [{ name: NAME, status: 'warn', message: 'Skipped — no GH_TOKEN available (local run)' }];
+    return [{ name: NAME, status: 'warn', message: 'Skipped — no GH_TOKEN available (local run)' }, headroomNoReading('no GH_TOKEN available (local run)')];
   }
   if (hasLowHeadroom()) {
-    return [{ name: NAME, status: 'warn', message: 'Skipped — low rate-limit headroom (~21 gh calls for a 20-run sample)' }];
+    return [{ name: NAME, status: 'warn', message: 'Skipped — low rate-limit headroom (~21 gh calls for a 20-run sample)' }, headroomNoReading('low rate-limit headroom')];
   }
   const exec = deps.exec || execFileSync;
   const script = path.join(__dirname, 'ci-health-check.sh');
@@ -3093,13 +3167,54 @@ function checkCiMidSetupCancels(deps = {}) {
   const summary = (stdout.match(/Mid-setup cancelled \(never validated\):\s+(\d+) \((\d+)%\)/) || []);
   const total = (stdout.match(/last (\d+) completed runs/) || [])[1];
   if (status === 0) {
-    return [{ name: NAME, status: 'pass', message: `${summary[2] ?? '?'}% of the last ${total ?? '?'} test.yml main runs cancelled mid-setup (threshold 30%)` }];
+    return [{ name: NAME, status: 'pass', message: `${summary[2] ?? '?'}% of the last ${total ?? '?'} test.yml main runs cancelled mid-setup (threshold 30%)` }, jobHeadroomRow(stdout, deps)];
   }
   if (status === 1) {
-    return [{ name: NAME, status: 'warn', message: `${summary[2] ?? '?'}% (${summary[1] ?? '?'} of ${total ?? '?'}) of the last test.yml main runs were cancelled before validating, above the 30% threshold. Check test.yml's per-sha concurrency block and run: node scripts/audit-workflow-concurrency.js` }];
+    return [{ name: NAME, status: 'warn', message: `${summary[2] ?? '?'}% (${summary[1] ?? '?'} of ${total ?? '?'}) of the last test.yml main runs were cancelled before validating, above the 30% threshold. Check test.yml's per-sha concurrency block and run: node scripts/audit-workflow-concurrency.js` }, jobHeadroomRow(stdout, deps)];
   }
   const detail = stderr.trim().split('\n')[0].slice(0, 120);
-  return [{ name: NAME, status: 'warn', message: `ci-health-check.sh failed (exit ${status}) — no reading: ${detail}` }];
+  return [{ name: NAME, status: 'warn', message: `ci-health-check.sh failed (exit ${status}) — no reading: ${detail}` },
+    headroomNoReading(`ci-health-check.sh failed (exit ${status})`)];
+}
+
+// The headroom row is present on EVERY path. A row missing from the snapshot reads as
+// "fixed" to check-health-row-absent.js, so an unmeasured day must be a warn row, never
+// an absent one (BRO-7102 stage 4 review).
+function headroomNoReading(why) {
+  return { name: JOB_HEADROOM_NAME, status: 'warn', message: `Skipped — ${why}; no reading` };
+}
+
+// --- Main: job time headroom (BRO-7102 stage 4) ---
+//
+// The class: a job's normal runtime creeps up to its `timeout-minutes`, runs are
+// killed at the limit and counted red with nothing broken. In the 30 days to
+// 2026-11-07 that was 74 of 79 cancelled main runs (test.yml Unit Tests, ~25 min
+// mean against a 30 min limit). This row reads the job durations ci-health-check.sh
+// already fetched (its JOB-DURATIONS: line, no extra API calls) and warns when any
+// test.yml job's p90 reaches 80% of its limit, while there is still room. ADVISORY
+// (CLAUDE.md §19): warn only. Limits come from this checkout's test.yml, so a local
+// run against an unlanded edit reads the edited limits.
+const JOB_HEADROOM_NAME = 'Main: job time headroom';
+function jobHeadroomRow(stdout, deps = {}) {
+  const NAME = JOB_HEADROOM_NAME;
+  const line = String(stdout || '').split('\n').find((l) => l.startsWith('JOB-DURATIONS: '));
+  let jobs;
+  try { jobs = JSON.parse(line.slice('JOB-DURATIONS: '.length)); } catch {
+    return { name: NAME, status: 'warn', message: 'ci-health-check.sh printed no JOB-DURATIONS line — no reading' };
+  }
+  const { readJobTimeouts, timeoutHeadroom } = require('./lib/cron-health');
+  let timeouts;
+  try { timeouts = deps.timeouts || readJobTimeouts('test.yml'); } catch (err) {
+    return { name: NAME, status: 'warn', message: `could not read test.yml timeouts — no reading: ${String(err && err.message).slice(0, 100)}` };
+  }
+  const rows = timeoutHeadroom(jobs, timeouts);
+  if (!rows.length) return { name: NAME, status: 'warn', message: `no test.yml job had 5+ timed runs in the sample (${jobs.length} jobs read) — no reading` };
+  const fmt = (r) => `${r.name} p90 ${r.p90Min.toFixed(0)} of ${r.timeoutMin} min (${Math.round(r.ratio * 100)}%, n=${r.n})`;
+  const tight = rows.filter((r) => r.tight);
+  if (tight.length) {
+    return { name: NAME, status: 'warn', message: `test.yml job(s) near their time limit: ${tight.map(fmt).join('; ')}. Runs killed at the limit count as red with nothing broken. Make the job faster or add a shard (as BRO-7113 did); do not just raise timeout-minutes.` };
+  }
+  return { name: NAME, status: 'pass', message: `every test.yml job's p90 is under 80% of its time limit (tightest: ${fmt(rows[0])})` };
 }
 
 // --- Auto-fix effectiveness (2026-08-10 incident) ---
@@ -5994,8 +6109,11 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
     subject,
     bannerText,
     consecutiveErrorDays: history.consecutiveErrorDays || 0,
-    errors: unfixedErrors.map(r => ({ name: r.name, message: r.message })),
-    warns: unfixedWarns.map(r => ({ name: r.name, message: r.message })),
+    errors: unfixedErrors.map(r => ({ name: r.name, message: r.message, firstSeen: (history.firstSeen || {})[r.name] || null })),
+    warns: unfixedWarns.map(r => ({ name: r.name, message: r.message, firstSeen: (history.firstSeen || {})[r.name] || null })),
+    // BRO-7040: rows that left the list since the last run, for the digest's
+    // single "Cleared since yesterday" line. {name: {at, firstSeen, status}}
+    cleared: history.cleared || {},
     // owner-alert-router's disposition='digest' queue (ship-check finding,
     // card #364): whatever it held only ever reaches the owner if it's
     // carried here. Losing it would silently reintroduce the exact bug card
@@ -6178,6 +6296,17 @@ async function checkNeverRunWorkflowHealth() {
 // Reads only committed audit files, so it lives in computeCoreHealthResults
 // where the live probe (check-health-row-absent --live) sees it; it used to
 // run in main()'s CI-only block and could never be verified fixed (BRO-4689).
+// BRO-7139: the nightly board-dispatch job is continue-on-error, so a stopped
+// dispatcher never reddens a run. This reads the committed ledger's last
+// scheduled (source 'ci') row. Pure rules: scripts/lib/board-dispatch-freshness.js.
+function checkBoardDispatchFreshness({ ledgerPath = path.join(AUDIT_DIR, 'board-dispatch.jsonl'), now = Date.now(), env = process.env } = {}) {
+  const { evaluateBoardDispatchFreshness, BOARD_DISPATCH_FRESHNESS_ROW } = require('./lib/board-dispatch-freshness');
+  return [runCheck(BOARD_DISPATCH_FRESHNESS_ROW, () => {
+    const ledgerText = fs.existsSync(ledgerPath) ? fs.readFileSync(ledgerPath, 'utf8') : null;
+    return evaluateBoardDispatchFreshness({ ledgerText, nowMs: now, disabled: env.BOARD_DISPATCH_DISABLED === 'true' });
+  })];
+}
+
 function checkReverseDiscovery() {
   try {
     const rdReport = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/reverse-discovery-candidates.json'), 'utf8'));
@@ -6200,6 +6329,7 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
   return [
     ...checkFreshness(),
     ...checkAuditFreshness(),
+    ...checkBoardDispatchFreshness(),
     ...checkPushVerification(),
     ...checkOpeningNightHistoryFreshness(),
     ...checkSync(),
@@ -6380,6 +6510,14 @@ async function main() {
   }
   history.lastRun = new Date().toISOString();
   history.results = allResults.map(r => ({ name: r.name, status: r.status, message: r.message }));
+  // BRO-7040: remember how long each warning/error has been open, so the
+  // morning digest can hold a warning back until it has lasted 48h.
+  {
+    const fs2 = updateFirstSeen(history, allResults, history.lastRun);
+    history.firstSeen = fs2.firstSeen;
+    history.cleared = fs2.cleared;
+    history.openStatus = fs2.openStatus;
+  }
   saveHistory(history);
 
   // Write per-system triage state files
@@ -6446,4 +6584,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { checkSync, reviewTextsSkipReason, evaluateOutletFeedHealth, checkScheduledFailureStreak, checkNeverRunWorkflowHealth, checkAPICredits, corpusAuditResults, generateApproveUrl, checkAuditFreshness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, starBandDriftResults, earlyPublishDatesResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkCiMidSetupCancels, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixEffectiveness, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift, checkCommercialPendingQueue, checkExemptCronLiveness, checkUncollectedStrands };
+module.exports = { checkBoardDispatchFreshness, checkSync, reviewTextsSkipReason, evaluateOutletFeedHealth, checkScheduledFailureStreak, checkNeverRunWorkflowHealth, checkAPICredits, corpusAuditResults, generateApproveUrl, checkAuditFreshness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, starBandDriftResults, earlyPublishDatesResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkCiMidSetupCancels, jobHeadroomRow, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixEffectiveness, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift, checkCommercialPendingQueue, checkExemptCronLiveness, checkUncollectedStrands, checkOutletHealth };

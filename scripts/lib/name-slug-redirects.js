@@ -1,8 +1,8 @@
 'use strict';
 
 /**
- * name-slug-redirects.js — 301s for the person/place URLs the S7-T3
- * diacritic fold moved (2026 data audit, S7-T3 follow-up).
+ * name-slug-redirects.js: 301s for retired person/place URLs from the S7-T3
+ * diacritic fold and combined creative credits (BRO-5406).
  *
  * Before S7-T3, src/lib/data-core.ts slugify() had no fold, so an accented
  * name's URL had a hyphen where the accent was: /creative/jos-quintero,
@@ -21,6 +21,8 @@
  *   builder has one — and emit {old → new} wherever they differ and the
  *   old slug is not itself a live page (a live page always wins; a redirect
  *   there would shadow it).
+ * Creative pages also replay the original team-name list, mapping each
+ * retired team URL to its first collaborator's live individual URL.
  *
  * The Noël/Noel Coward case falls out of that replay rather than a table:
  * "Noel Coward" takes `noel-coward`, "Noël Coward" gets `noel-coward-2`
@@ -39,6 +41,7 @@
  */
 
 const { slugify, legacySlugify, assignUniqueSlugs } = require('./url-slug');
+const { creativeCreditNames } = require('./creative-credit-names');
 const {
   broadwayShows,
   londonShows,
@@ -104,8 +107,25 @@ function familyRedirects(names, { numbered, extraLive = [] }) {
 function buildNameSlugRedirects({ shows, castEntries = [], complexSlugs = {} }) {
   const bway = broadwayShows(shows);
   const bwayIds = new Set(bway.map((s) => s.id));
+  const creativeNames = creativeNamesInPageOrder(bway);
+  const creativeSlugs = assignUniqueSlugs(creativeNames);
+  const creativeSlugByName = new Map(creativeNames.map((name, i) => [name, creativeSlugs[i]]));
+  const liveCreativeSlugs = new Set(creativeSlugs);
+  const retiredNames = creativeNamesInPageOrder(bway, { splitTeams: false });
+  const creative = {};
+  // Replay both generations of retired URLs. Current folded URLs win any
+  // conflict with older pre-fold aliases. Every target is a live individual,
+  // so a team with accents needs one hop rather than a redirect chain.
+  for (const rule of [slugify, legacySlugify]) {
+    assignUniqueSlugs(retiredNames, rule).forEach((oldSlug, i) => {
+      const target = creativeSlugByName.get(creativeCreditNames(retiredNames[i])[0]);
+      if (oldSlug && target && oldSlug !== target && !liveCreativeSlugs.has(oldSlug) && creative[oldSlug] === undefined) {
+        creative[oldSlug] = target;
+      }
+    });
+  }
   const families = {
-    creative: familyRedirects(creativeNamesInPageOrder(bway), { numbered: true }),
+    creative,
     theater: familyRedirects(broadwayTheaterNames(bway), { numbered: false }),
     westEndTheater: familyRedirects(stubTheaterNames(londonShows(shows)), {
       numbered: false,

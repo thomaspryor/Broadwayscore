@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/review-texts (read by the test); data/audit/wrong-article-verified.json (read by the test); data/shows.json (untracked core data); +2 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-4606: a wrong-article verdict from the daily LLM pass must never sit
 // unresolved. Every 'wrong-article' adjudication for a file's CURRENT text has
 // to be either flagged wrongShow (it leaves the scores) or hand-verified as a

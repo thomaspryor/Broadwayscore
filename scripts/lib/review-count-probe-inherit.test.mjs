@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * countLocalIncluded must count the reviews a returning show inherits from its
  * declared earlier-run entry (BRO-4759), or check-opening-night-drift reads

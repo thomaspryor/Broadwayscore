@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5239-c",
   "planId": "484b0ffb-5680-4671-a72b-09e01064c519",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-13T08:13:56.193Z",
   "submitter": {
     "name": null,
@@ -344,5 +344,22 @@
       "ok": true,
       "msg": "ballad-lines-off-west-end-2026/liamodell--liam-odell.json originalScore: \"3/5\" -> \"3/5\" (retracted originalScoreCorrectedFrom, originalScoreSource, scoreSource)"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 1
+    },
+    "ops": [
+      {
+        "i": 0,
+        "verdict": "resolved",
+        "reason": "present-laughter-2010/hollywood-reporter--david-rooney.json wrongProduction already true"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (1 resolved); per-op reasons in triage.ops"
 }

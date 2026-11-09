@@ -46,6 +46,7 @@ const CODE_ONLY_JOBS = {
   'design-tokens-lint': 'brand-tokens ↔ tailwind sync; reads only the repo',
   'typescript-check': 'tsc + next lint; reads only the repo',
   'unit-tests': 'manifest-driven unit tests; live-data assertions were moved to check-corpus-drift.yml (BRO-3425)',
+  'unit-test-shards': 'the node unit batch + scripts/lib tests split into parallel --test-shard slices (BRO-7113); same code-only tests unit-tests used to run serially',
   'data-safety-guards': 'catastrophe guards that mean real trouble when red (copyrighted text in the public repo, public show JSONs stripped, archives missing, text-quality floor) — deliberately blocking (BRO-3425)',
   'e2e-tests': 'builds and exercises the site; red means the build or a page broke',
   'visual-regression': 'snapshot diffs of our own pages (schedule/dispatch-only, but a CODE check)',

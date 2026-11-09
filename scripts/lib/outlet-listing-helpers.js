@@ -19,6 +19,7 @@ const { publishedStampToLocalDate } = require('./local-date');
 const { normalizeTitle, foldDiacritics } = require('./title-match');
 const { COMMON_WORD_SHOW_TITLES } = require('./multi-show-splitter');
 const { toDateMs } = require('./date-utils');
+const { decodeHtmlEntities: decodeEntities } = require('./text-cleaning');
 
 /**
  * Escape a string for use inside a RegExp.
@@ -126,7 +127,9 @@ function namesShowCredit(combined, show, nowMs = Date.now()) {
 //    (all-caps), so the name "Jack" or "jack of all trades" does not count;
 //  - if another active show at the same venue matched by its own title, the
 //    venue belongs to that show, not to this one (decided in findMatchingShows).
-const GENERIC_VENUES = new Set(['theatre', 'theater', 'tbd', 'tba', 'various', 'off broadway', 'broadway', 'west end', 'london', 'new york', 'online', 'virtual']);
+// Tour "venues" (BRO-6921): any page about any tour says "the North American tour".
+const GENERIC_VENUES = new Set(['theatre', 'theater', 'tbd', 'tba', 'various', 'off broadway', 'broadway', 'west end', 'london', 'new york', 'online', 'virtual',
+  'tour', 'touring', 'national tour', 'north american tour', 'us tour', 'us national tour', 'uk tour', 'uk and ireland tour', 'uk ireland tour']);
 function venuePhrase(show) {
   const norm = hyphenSpaced(show && show.venue);
   if (!norm || GENERIC_VENUES.has(norm)) return '';
@@ -185,6 +188,43 @@ const BOOKS_SECTION_RE = /(?:^|\/)books?\//i;
 function looksLikeBookReview(headline, urlSlug) {
   const text = `${headline || ''} ${String(urlSlug || '').replace(/[-_/]+/g, ' ')}`;
   return (BOOK_REVIEW_RE.test(text) || BOOKS_SECTION_RE.test(String(urlSlug || ''))) && !THEATRE_WORD_RE.test(text);
+}
+
+// Is the one-word title `word` (normalized, lowercase) a whole word of the URL path?
+function slugNamesWord(urlSlug, word) {
+  return ` ${hyphenSpaced(String(urlSlug || '').replace(/[/_.]+/g, ' '))} `.includes(` ${word} `);
+}
+
+// Does the headline write `word` with a capital first letter (or in capitals)?
+// A one-word title the headline writes only inside a hyphenated compound is not
+// named there: theupcoming's "Phoebe Waller-Bridge offers rent-free London flat"
+// filed to The Bridge (2026-11-04), because the slug "phoebe-waller-bridge-..."
+// splits on the hyphen. A slug that just repeats the compound adds nothing; one
+// that names the word elsewhere ("/the-bridge-review/") is its own evidence.
+// True hyphens only: an unspaced en dash is a separator.
+const HYPHENS = '\\u2010\\u2011-';
+function headlineOnlyInCompound(headline, word, urlSlug = '') {
+  const h = foldDiacritics(String(headline || '')).toLowerCase();
+  const w = foldDiacritics(word).toLowerCase();
+  if (!h || !w) return false;
+  const esc = w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  if (!new RegExp(`(^|[^a-z0-9])${esc}(?![a-z0-9])`).test(h)) return false;
+  const loose = new RegExp(`(^|[^a-z0-9${HYPHENS}])${esc}(?![a-z0-9]|[${HYPHENS}][a-z0-9])`);
+  if (loose.test(h)) return false;
+  if (!urlSlug) return true;
+  const compounds = (h.match(new RegExp(`[a-z0-9]+(?:[${HYPHENS}][a-z0-9]+)+`, 'g')) || [])
+    .map((c) => c.replace(new RegExp(`[${HYPHENS}]`, 'g'), '-'))
+    .filter((c) => c.split('-').includes(w));
+  let rest = foldDiacritics(String(urlSlug)).toLowerCase().replace(/[\u2010\u2011]/g, '-');
+  for (const c of compounds) rest = rest.split(c).join(' ');
+  return !slugNamesWord(rest, w);
+}
+function headlineCapitalizes(headline, word) {
+  const h = foldDiacritics(String(headline || ''));
+  const w = foldDiacritics(word);
+  const esc = (x) => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const cap = w.charAt(0).toUpperCase() + w.slice(1);
+  return new RegExp(`(^|[^A-Za-z])(${esc(cap)}|${esc(w.toUpperCase())})(?![A-Za-z])`).test(h);
 }
 
 function findMatchingShows(headline, urlSlug, activeShows, creditText = '', { nowMs = Date.now(), publishDate = null } = {}) {
@@ -249,7 +289,16 @@ function findMatchingShows(headline, urlSlug, activeShows, creditText = '', { no
       ok = !(tokens[0] === 'and' && at > 0);
       at = hay.indexOf(` ${norm} `, at + 1);
     }
-    if (!ok) {
+    // A one-word title found only in the headline (not the URL) must be written
+    // as a title there, capitalized: "this song cycle with heart" is not a
+    // review of "The Heart" (NYTG, BRO-6921). Slugs are lowercase, so a slug
+    // match (whole-word or glued, below) still counts on its own.
+    if (ok && tokens.length === 1 && !needsCredit && !slugNamesWord(urlSlug, norm)
+      && !headlineCapitalizes(headline, norm)) ok = false;
+    // Checked before the glued-segment fallback, which must not re-admit it ("/BridgeBuilding.html").
+    const compoundOnly = tokens.length === 1 && headlineOnlyInCompound(headline, norm, urlSlug);
+    if (compoundOnly) ok = false;
+    if (!ok && !compoundOnly) {
       const glued = foldDiacritics(norm).replace(/[^a-z0-9]/g, '');
       ok = glued.length >= 6 && tokens[0] !== 'and'
         // normalizeTitle drops a leading article; the glued URL keeps it.
@@ -274,8 +323,236 @@ function findMatchingShows(headline, urlSlug, activeShows, creditText = '', { no
 
   // A venue credit is void when another show at the same venue matched on its
   // own title: "Hamlet at St. Luke's Theatre ... soon" belongs to Hamlet.
-  return matches.filter((show) => !venueOnly.has(show)
+  const kept = matches.filter((show) => !venueOnly.has(show)
     || !matches.some((o) => o !== show && !venueOnly.has(o) && venuePhrase(o) === venuePhrase(show)));
+  return dropTitlesInsideLongerMatch(kept, headline ? hyphenSpaced(String(headline).replace(/[_/]+/g, ' ')) : combined);
+}
+
+// A title found only as part of a longer matched title is that longer show:
+// TheaterMania's "Review: Two Girls, ..." also matched "Girls" (a West End
+// show), and TSC's "School Girls; Or, ..." did the same (BRO-6921). The shorter
+// show is dropped only when every mention of it sits inside the longer title,
+// so "Girls and Two Girls: a double bill" keeps both.
+function dropTitlesInsideLongerMatch(shows, combined) {
+  if (shows.length < 2) return shows;
+  const norm = (s) => hyphenSpaced(String(s.title || '').replace(/[_/]+/g, ' '));
+  const hay = ` ${combined} `;
+  return shows.filter((show) => {
+    const n = norm(show);
+    const longer = shows.map(norm).filter((on) => on.length > n.length && ` ${on} `.includes(` ${n} `));
+    if (!longer.length || !hay.includes(` ${n} `)) return true;
+    let rest = hay;
+    for (const on of longer.sort((a, b) => b.length - a.length)) rest = rest.split(` ${on} `).join(' | ');
+    return rest.includes(` ${n} `);
+  });
+}
+
+// --- Page-confirmed matches (BRO-6921) ---
+// findMatchingShows needs the WHOLE stored title in the headline or slug, and a
+// one-word title under 5 letters also needs a credit there. Real off-Broadway
+// review items carry neither: NYSR's "Copperfield! Top-Drawer Musical Take on
+// the Dickens Classic" (stored title "Copperfield! The New Musical"), Vulture's
+// slug "anon-play-washburn-mcc-theater-review" ("ANON – a tempest at our kitchen
+// table"), TheaterMania's "Review: Fish, a Coming-of-Age Comedy About ISIS" and
+// Theater Scene's bare "Fish". Each was in the outlet's own feed and matched
+// nothing, so it reached the site only when a person ingested it.
+// Such an item becomes a CANDIDATE when a title form (the full title, or the
+// main title before a subtitle separator) appears as whole words, the item reads
+// as a review, and it was published inside the show's run window. A candidate
+// is filed only after the article page itself names one of the show's own
+// production credits (cast, director; a writer while the production is new) or
+// its venue: the same evidence the feed-only rule asks for, read from the page.
+
+// "ANON – a tempest…", "Copperfield! The New Musical", "Sweeney Todd: The Demon
+// Barber". The separator must be followed by more title, so "Oh, Mary!" keeps
+// its full form only.
+const SUBTITLE_SEP_RE = /\s+[-‐‑‒–—]\s+|[:!?;]\s+/;
+// Per show object and title: every feed item is checked against every active show.
+const titleFormsCache = new WeakMap();
+function titleForms(show) {
+  if (show && typeof show === 'object') {
+    const hit = titleFormsCache.get(show);
+    if (hit && hit.title === show.title) return hit.forms;
+    const forms = computeTitleForms(show);
+    titleFormsCache.set(show, { title: show.title, forms });
+    return forms;
+  }
+  return computeTitleForms(show);
+}
+function computeTitleForms(show) {
+  const full = hyphenSpaced(String((show && show.title) || '').replace(/[_/]+/g, ' '));
+  const forms = full ? [full] : [];
+  const parts = String((show && show.title) || '').split(SUBTITLE_SEP_RE);
+  if (parts.length > 1) {
+    const main = hyphenSpaced(parts[0].replace(/[_/]+/g, ' '));
+    if (main && main !== full && main.replace(/\s+/g, '').length >= 3 && !COMMON_WORD_SHOW_TITLES.has(main)) forms.push(main);
+  }
+  return forms;
+}
+
+// Whole-word, and an "&"-led form may not follow another word (findMatchingShows' rule).
+function formInHay(form, hay) {
+  const first = form.split(/\s+/)[0];
+  let at = hay.indexOf(` ${form} `);
+  while (at !== -1) {
+    if (!(first === 'and' && at > 0)) return true;
+    at = hay.indexOf(` ${form} `, at + 1);
+  }
+  return false;
+}
+
+// A headline that LEADS with the show's title is how outlets with a mixed
+// review/news category title their reviews (BRO-6921 follow-up): "Mint Theater
+// Company's Phyl: A Woman Ahead of Her Time" (Times Square Chronicles),
+// "'Kramer/Fauci' revives ..." and "Family affairs: 'Good Time Charlie' is
+// sweet but shallow" (Gay City News). Their news posts name a show mid-sentence
+// ("Qween Jean wins Tony Award for 'Cats: The Jellicle Ball'") or under a news
+// kicker ("Theatre News: ..."), which these shapes do not admit.
+const Q_OPEN = `'"\u2018\u201C`;
+const Q_ANY = `'"\u2018\u2019\u201C\u201D`;
+const POSSESSIVE = `(?:[^${Q_ANY}:]{1,60}?['\u2019]s\\s+)?`;
+// Inside quotes an apostrophe followed by a letter is part of the title
+// ("'Ain't No Mo''", "'Brooklyn's Bridge'"), not the closing quote.
+const QUOTED_BODY = `(?:[^'"\u2019\u201D]|['\u2019](?=[A-Za-z]))`;
+// An optional kicker before the quoted title ("Family affairs: 'Good Time
+// Charlie' ..."); news kickers fail NEWS_WORD_RE below.
+const REVIEW_KICKER = `(?:[^:${Q_ANY}]{1,40}:\\s*)?`;
+const LEAD_QUOTED_RE = new RegExp(`^${REVIEW_KICKER}${POSSESSIVE}[${Q_OPEN}](${QUOTED_BODY}{2,80})['"\u2019\u201D]`, 'i');
+const LEAD_COLON_RE = new RegExp(`^${POSSESSIVE}([^:${Q_ANY}]{2,80}?)\\s*:\\s`);
+const LEAD_COLON_WHOLE_RE = /^([^:]{2,100}?)\s*:\s/;
+// Title-led news: "Hamlet: Cast Announced for Spring", "Phyl Extends at the Mint".
+const NEWS_WORD_RE = /\b(?:news|cast(?:ing)?\s+(?:announced|set|change|update)|announce[ds]?|extends?|extension|tickets?|on sale|first look|photos?|video|trailer|clos(?:es|ing)|dies|died|obituary|transfers?|tour|lottery|rush|sets? (?:opening|dates?)|will (?:open|star|return)|to star|joins?|premieres? (?:date|set))\b/i;
+function headlineLooksLikeNews(headline) {
+  return NEWS_WORD_RE.test(decodeEntities(String(headline || '')));
+}
+function titleLedHeadline(headline, forms) {
+  const h = decodeEntities(String(headline || '')).trim();
+  if (!h || NEWS_WORD_RE.test(h)) return false;
+  const spaced = (x) => hyphenSpaced(String(x).replace(/[_/]+/g, ' '));
+  // The whole lead before the colon counts too ("August Wilson's Fences: ..."
+  // for a show titled that way); when a shorter show also matches the feed,
+  // dropTitlesInsideLongerMatch keeps only the longer one.
+  const whole = LEAD_COLON_WHOLE_RE.exec(h);
+  if (whole && forms.includes(spaced(whole[1]))) return true;
+  for (const re of [LEAD_QUOTED_RE, LEAD_COLON_RE]) {
+    const m = re.exec(h);
+    if (m && forms.includes(spaced(m[1]))) return true;
+  }
+  return false;
+}
+
+/**
+ * Does a mixed review/news feed item read as a review of this show? The word
+ * "review", a headline that is the bare title, or one that leads with the title
+ * (titleLedHeadline). Used for titleLedReviews outlets, whose feed also carries
+ * news naming the same shows ("A Few Good Men Meets the Press: ...").
+ */
+function itemReadsAsReview(item, show) {
+  const headline = String((item && item.headline) || '');
+  let slug = '';
+  try { slug = new URL(item.url).pathname; } catch { slug = String((item && item.url) || ''); }
+  if (REVIEW_WORD_RE.test(`${headline} ${slug} ${(item && item.description) || ''}`)) return true;
+  const forms = titleForms(show);
+  if (forms.some((f) => hyphenSpaced(decodeEntities(headline).replace(/[_/]+/g, ' ')) === f)) return true;
+  return titleLedHeadline(headline, forms);
+}
+
+/**
+ * Shows a feed item may be about that findMatchingShows could not file on the
+ * item alone. Each still needs pageConfirmsShow() on the article page.
+ *
+ * @param {object} item {headline, url, publishDate, description}
+ * @param {Array} activeShows
+ * @param {{alreadyMatched?: Array, reviewOnlyFeed?: boolean, nowMs?: number}} [opts]
+ *   reviewOnlyFeed: the outlet's feed (after its urlFilter) carries only reviews,
+ *   so a headline with no "review" word still counts as one (NYSR, Theater Scene).
+ *   titleLedReviews: the outlet's feed mixes reviews and news, and a headline that
+ *   leads with the title (titleLedHeadline) counts as a review (TSC, Gay City News).
+ * @returns {Array<{show: object, form: string}>}
+ */
+function findPageConfirmCandidates(item, activeShows, { alreadyMatched = [], reviewOnlyFeed = false, titleLedReviews = false, nowMs = Date.now() } = {}) {
+  const headline = String((item && item.headline) || '');
+  let slug = '';
+  try { slug = new URL(item.url).pathname; } catch { slug = String((item && item.url) || ''); }
+  if (looksLikeBookReview(headline, slug)) return [];
+  const hay = ` ${hyphenSpaced(headline.replace(/[_/]+/g, ' ') + ' ' + slug.replace(/[/_.]+/g, ' '))} `;
+  const rawText = `${headline} ${slug} ${(item && item.description) || ''}`;
+  const skip = new Set(alreadyMatched.map((s) => s.id));
+  const out = [];
+  for (const show of activeShows) {
+    if (skip.has(show.id)) continue;
+    const forms = titleForms(show);
+    if (!forms.length || COMMON_WORD_SHOW_TITLES.has(forms[0])) continue;
+    // A one-word form written only inside a hyphenated compound (Waller-Bridge,
+    // Sleight-of-Heart) is not named, as in findMatchingShows.
+    const form = forms.find((f) => formInHay(f, hay) && !(!f.includes(' ') && headlineOnlyInCompound(headline, f, slug)));
+    if (!form) continue;
+    // Sibling productions share a main title (Alvin Ailey's "Legacy" and "New
+    // Works" programmes, a run and its return): their credits and venue match
+    // too, so the page cannot tell them apart. Ambiguous forms are left to the
+    // full-title matcher.
+    // A dated item only needs to be told apart from siblings running then: a
+    // return engagement and its earlier run (Kramer/Fauci Feb vs Oct 2026) do
+    // not overlap, so the publish date settles which one an October review is of.
+    if (activeShows.some((o) => o.id !== show.id && titleForms(o).includes(form)
+      && (!item.publishDate || publishedInRunWindow(o, item.publishDate)))) continue;
+    // A review: the review-only feed, the word "review", or a headline that is the bare title.
+    const bare = forms.some((f) => hyphenSpaced(headline.replace(/[_/]+/g, ' ')) === f);
+    if (!reviewOnlyFeed && !bare && !(titleLedReviews && titleLedHeadline(headline, forms))
+      && !REVIEW_WORD_RE.test(rawText)) continue;
+    // Dated by the feed. An undated listing item could be a review of an earlier
+    // run of the same show (same cast, so the page check would pass), so it is a
+    // candidate only while the show runs now, and confirmOnPage then requires the
+    // page's own publish date to fall in the run window (needsPageDate).
+    if (item.publishDate) {
+      if (!publishedInRunWindow(show, item.publishDate)) continue;
+      out.push({ show, form });
+    } else {
+      if (!publishedInRunWindow(show, new Date(nowMs).toISOString().slice(0, 10))) continue;
+      out.push({ show, form, needsPageDate: true });
+    }
+  }
+  return out;
+}
+
+/** Visible text of an article page, entity-decoded, scripts and styles dropped. */
+function pageText(html) {
+  // Nav menus, sidebars ("more reviews" rails) and footers name other shows'
+  // casts, which must not confirm this one. Not <article>/<main>: TheaterMania
+  // puts the review body outside <article> and uses it only for sidebar teasers.
+  return decodeEntities(String(html || '')
+    .replace(/<(script|style|noscript)\b[^>]*>[\s\S]*?<\/\1>/gi, ' ')
+    .replace(/<(nav|aside|footer)\b[^>]*>[\s\S]*?<\/\1>/gi, ' ')
+    .replace(/<[^>]+>/g, ' '));
+}
+
+/**
+ * Does the article page name this production? A title form, plus one of its own
+ * credits (creditNames: cast, director, a writer while the production is new)
+ * as whole words. The venue counts only for a show with no credits on file,
+ * and only when no other running show shares that venue: the same rules
+ * namesShowVenue and findMatchingShows apply to a feed item.
+ *
+ * @param {string} text  visible page text (pageText)
+ * @param {object} show
+ * @param {{nowMs?: number, otherShows?: Array}} [opts] nowMs: when the item
+ *   was published (the young-production writer rule); otherShows: the shows
+ *   running now, for the shared-venue rule.
+ */
+function pageHay(text) { return ` ${hyphenSpaced(String(text || '').replace(/[_/]+/g, ' '))} `; }
+
+/** Does the page text carry one of the show's title forms at all? (A bot wall or paywall stub does not.) */
+function pageNamesTitle(text, show) { const hay = pageHay(text); return titleForms(show).some((f) => formInHay(f, hay)); }
+
+function pageConfirmsShow(text, show, { nowMs = Date.now(), otherShows = [] } = {}) {
+  const hay = pageHay(text);
+  if (!titleForms(show).some((f) => formInHay(f, hay))) return false;
+  const credits = creditNames(show, nowMs);
+  if (credits.length) return credits.some((n) => hay.includes(` ${n} `) || hay.includes(` ${n}s `));
+  const venue = venuePhrase(show);
+  // A one-word venue ("JACK", "Signature") is too common a word to prove anything from a page.
+  if (!venue || venue.split(/\s+/).length < 2 || !hay.includes(` ${venue} `)) return false;
+  return !otherShows.some((o) => o.id !== show.id && venuePhrase(o) === venue);
 }
 
 /**
@@ -467,7 +744,7 @@ function parseWpApiPosts(posts, cutoff) {
     // post.date is the site's local wall-clock stamp (no zone): its date part IS the calendar date.
     // Only the date_gmt fallback is UTC and needs converting (BRO-5499).
     const publishDate = post.date ? String(post.date).slice(0, 10) : publishedStampToLocalDate(`${String(post.date_gmt).slice(0, 19)}Z`, url);
-    items.push({ url, headline: headline.replace(/<[^>]+>/g, '').trim(), publishDate });
+    items.push({ url, headline: decodeEntities(headline.replace(/<[^>]+>/g, '')).trim(), publishDate });
   }
   return items;
 }
@@ -557,7 +834,7 @@ function extractListingUrls(html, domain) {
     if (path === '/' || path === '' || path.split('/').filter(Boolean).length < 2) continue;
     if (/\/(tag|category|author|page|search|about|contact|advertise|subscribe|calendar)\//i.test(path)) continue;
 
-    const headline = rawText.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+    const headline = decodeEntities(rawText.replace(/<[^>]+>/g, '')).replace(/\s+/g, ' ').trim();
     if (!headline || headline.length < 5) continue;
 
     // Dedup after headline check: image-only anchors (empty headline) must not
@@ -640,6 +917,8 @@ function isFeedStale({ newestFiltered, filteredCount, newestAny = null, oldestAn
 }
 
 module.exports = {
+  headlineOnlyInCompound,
+  publishedInRunWindow,
   OUTLET_FEED_HEALTH_REL,
   FEED_STALE_DAYS,
   OUTLET_ALIVE_DAYS,
@@ -650,6 +929,14 @@ module.exports = {
   namesShowVenue,
   looksLikeBookReview,
   findMatchingShows,
+  findPageConfirmCandidates,
+  titleLedHeadline,
+  itemReadsAsReview,
+  headlineLooksLikeNews,
+  pageConfirmsShow,
+  pageNamesTitle,
+  pageText,
+  titleForms,
   deriveQualifyingOutlets,
   mergeAlwaysOnOutlets,
   parseRssFeed,

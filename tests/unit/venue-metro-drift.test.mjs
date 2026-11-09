@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/uk-regional-venues.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-6515: data/venue-metros.json and data/uk-regional-venues.json must agree.
 // Lives in tests/unit because it reads a data file outside scripts/lib.
 import { test } from 'node:test';

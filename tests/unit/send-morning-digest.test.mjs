@@ -8,8 +8,28 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { summarizeBoardGateFailopen, readBoardGateFailopen } = require('../../scripts/lib/summarize-board-gate-failopen.js');
 const { buildHtml } = require('../../scripts/send-morning-digest.js');
+const { applySync } = require('../../scripts/lib/cloud-memory-merge.js');
+const { readConflictDigest } = require('../../scripts/lib/cloud-memory-conflicts.js');
 const now = new Date('2026-10-18T02:00:00Z');
 const event = (at, verdict, rc = 1) => `${at} session=fixture rc=${rc} verdict=${verdict} board=linear`;
+
+test('BRO-2557: a real sync conflict reaches the digest even with Mac-local checks disabled', t => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'digest-memory-conflict-'));
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  const src = path.join(dir, 'memory');
+  const dest = path.join(dir, 'cloud-memory');
+  fs.mkdirSync(src);
+  fs.mkdirSync(dest);
+  fs.writeFileSync(path.join(src, 'memo.md'), 'local version');
+  fs.writeFileSync(path.join(dest, 'memo.md'), 'cloud version');
+  applySync({ src, dest });
+  const sections = { memoryConflicts: readConflictDigest(dest) };
+  const html = buildHtml({ sections, now, skipMacLocal: true, loopDeadMsg: null });
+  assert.match(html, /Saved memory conflicts: 1 saved copy needs review/);
+  assert.match(html, /_conflicts\/memo.cloud-conflict-/);
+  assert.doesNotMatch(html, /local version|cloud version/);
+  assert.doesNotMatch(buildHtml({ now, loopDeadMsg: null }), /Saved memory conflicts/);
+});
 
 test('broken probe escalates even without any unreachable/erroring events', () => {
   const summary = summarizeBoardGateFailopen(event('2026-10-17T14:32:12Z', 'broken', 127), { now });

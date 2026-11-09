@@ -19,6 +19,9 @@
  * og:site_name / <title> when that spells the id or domain (the acceptance
  * rule is deriveOutletDisplayName's). --apply writes accepted names to
  * data/outlet-registry.json. Unaccepted rows are listed for a human.
+ *
+ * --apply-proposals=FILE [--write] (BRO-5507): apply hand-reviewed rows
+ * (data/audit/outlet-display-name-proposals.json) through a pending-fix plan.
  */
 
 const fs = require('fs');
@@ -120,9 +123,40 @@ async function fetchMastheads({ apply }) {
   }
 }
 
+/**
+ * --apply-proposals=FILE (BRO-5507): apply a hand-reviewed proposals file
+ * (data/audit/outlet-display-name-proposals.json). Dry run unless --write.
+ * Exits 1 when any row is refused, so a pending-fix plan reports it.
+ */
+function applyProposalsFile(file, { write }) {
+  const { applyDisplayNameProposals } = require('./lib/outlet-display-name-proposals');
+  const { outletFieldShapeErrors } = require('./lib/outlet-registry-field-shape');
+  const registryPath = path.join(ROOT, 'data', 'outlet-registry.json');
+  const registry = JSON.parse(fs.readFileSync(registryPath, 'utf8'));
+  const doc = JSON.parse(fs.readFileSync(path.resolve(ROOT, file), 'utf8'));
+  const result = applyDisplayNameProposals(registry, doc.proposals || []);
+  const shapeErrors = result.changed.flatMap((c) => outletFieldShapeErrors(c.outletId, registry.outlets[c.outletId]));
+  for (const c of result.changed) console.log(`  ${c.outletId}: ${c.action === 'rename' ? `"${c.from}" -> "${c.to}"` : `"${c.displayName}" stamped displayNameReviewed`}`);
+  for (const r of result.refused) console.log(`  REFUSED ${r.outletId}: ${r.reason}`);
+  for (const e of shapeErrors) console.log(`  SHAPE ${e}`);
+  const ok = !shapeErrors.length;
+  if (write && ok && result.changed.length) {
+    registry._meta = { ...(registry._meta || {}), lastUpdated: new Date().toISOString(), lastChange: `BRO-5507: ${result.changed.length} reviewed outlet display name(s) from ${path.basename(file)}` };
+    // No trailing newline: rebuild-all-reviews.js writes the registry that way.
+    fs.writeFileSync(registryPath, JSON.stringify(registry, null, 2));
+  }
+  console.log(`[audit-registry-slug-displaynames --apply-proposals] ${result.changed.length} changed${write && ok ? ' and written' : ' (dry run)'}, ${result.unchanged.length} already applied, ${result.refused.length} refused`);
+  if (result.refused.length || !ok) process.exitCode = 1;
+}
+
 function main() {
   if (hasHelpFlag(process.argv)) {
-    console.log('Usage: node scripts/audit-registry-slug-displaynames.js [--json] [--max=N] [--fetch [--apply]]');
+    console.log('Usage: node scripts/audit-registry-slug-displaynames.js [--json] [--max=N] [--fetch [--apply]] [--apply-proposals=FILE [--write]]');
+    return;
+  }
+  const proposalsArg = process.argv.find((a) => a.startsWith('--apply-proposals='));
+  if (proposalsArg) {
+    applyProposalsFile(proposalsArg.slice('--apply-proposals='.length), { write: process.argv.includes('--write') });
     return;
   }
   if (process.argv.includes('--fetch')) {

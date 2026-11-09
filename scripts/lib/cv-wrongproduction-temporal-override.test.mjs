@@ -81,3 +81,20 @@ test('a one-word slug variant of a multi-word title is not a mention', () => {
   assert.equal(run({ fullText: 'Cabaret is back and louder than ever. '.repeat(5), contentVerification: cv() }, { show }).severity, 'error');
   assert.equal(run({ fullText: 'Cabaret at the Kit Kat Club is back and louder than ever. '.repeat(3), contentVerification: cv() }, { show }).severity, 'warning');
 });
+
+// BRO-7058: King Lear (Off-Broadway) shipped a Chicago Reader review of a Chicago
+// staging because the opening-week override rescued it and this check then
+// downgraded it to a warning (title named in the lede). A different-city verdict
+// from the verifier must keep it a blocking error, in both the checklist run and
+// the lifetime sweep.
+test('override + different-city verdict => stays error even when the title is in the lede', () => {
+  const show = { id: 'king-lear-off-broadway-2026', title: 'King Lear', market: 'broadway', category: 'off-broadway', venue: 'The Secret Theatre', openingDate: '2026-10-01' };
+  const fullText = 'King Lear at Theater Wit is a bold new staging with a sharp lead. '.repeat(4);
+  const contentVerification = cv({ issues: ['Review is of a production at Theater Wit in Chicago, not The Secret Theatre'] });
+  assert.equal(run({ fullText, contentVerification }, { show }).severity, 'error');
+  assert.equal(run({ fullText, contentVerification }, { show, ctx: { setAsideHandled: true } }).severity, 'error');
+  // Same text without the city verdict is still the BRO-4427 warning (one-word-title guard aside).
+  const twoWord = { ...show, title: 'King Lear Revival' };
+  const lede = 'King Lear Revival at Theater Wit is a bold new staging with a sharp lead. '.repeat(4);
+  assert.equal(run({ fullText: lede, contentVerification: cv() }, { show: twoWord }).severity, 'warning');
+});

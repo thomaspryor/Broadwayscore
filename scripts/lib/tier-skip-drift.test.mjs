@@ -106,3 +106,17 @@ test('resolveDegradeConfig: garbage env values fall back to defaults, not NaN/0'
   assert.equal(cfg.minCalls, DEFAULT_DEGRADE_MIN_CALLS);
   assert.equal(cfg.threshold, DEFAULT_DEGRADE_THRESHOLD);
 });
+
+test('aggregateLedgerRows skips memo-skip rows, keeps credit-bearing ones (BRO-6898)', async () => {
+  const { createRequire } = await import('node:module');
+  const { aggregateLedgerRows } = createRequire(import.meta.url)('./tier-skip-drift.js');
+  const ts = '2026-11-03T00:00:00Z';
+  const agg = aggregateLedgerRows([
+    { host: 'ew.com', provider: 'scrapingbee', ts, success: true },
+    { host: 'ew.com', provider: 'scrapingbee', ts, success: false, status: 500 },
+    { host: 'ew.com', provider: 'scrapingbee', ts, success: false, fn: 'run-memo-skip', status: 'run-memo-skip', credits: 0 },
+    { host: 'ew.com', provider: 'scrapingbee', ts, success: false, fn: 'run-memo-skip', credits: 5 },
+    { host: 'ew.com', provider: 'scrapingbee', ts: '2026-01-01T00:00:00Z', success: false },
+  ], Date.parse('2026-11-01T00:00:00Z'));
+  assert.deepEqual(agg, { 'ew.com': { scrapingbee: { successes: 1, failures: 2 } } });
+});

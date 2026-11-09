@@ -193,4 +193,22 @@ function assertDigestInvariants(html, { health = null, subject, verifySecret } =
   return { ok: violations.length === 0, violations };
 }
 
-module.exports = { assertDigestInvariants, extractActionUrls, countFixThisButtons, DISPATCH_HOST, FORBIDDEN_HEADINGS, OWNER_TOP_FORBIDDEN };
+/**
+ * BRO-7075: checks on the email BODY alone (what the owner's inbox shows; the long report is an
+ * attachment). The all-sections check above cannot see a decision button that fell out of the body.
+ */
+function assertBodyInvariants(bodyHtml) {
+  const violations = [];
+  const html = String(bodyHtml || '');
+  const at = html.indexOf('Needs your attention');
+  if (at >= 0 && !/<a href="https?:\/\//.test(html.slice(at))) {
+    violations.push('"Needs your attention" is in the email body but carries no button or link there');
+  }
+  if (/Technical details|Automation queue/.test(html)) {
+    violations.push('technical report content leaked into the email body (it belongs in the attachment)');
+  }
+  if (/<details/i.test(html)) violations.push('email body uses <details>, which Gmail ignores');
+  return { ok: violations.length === 0, violations };
+}
+
+module.exports = { assertBodyInvariants, assertDigestInvariants, extractActionUrls, countFixThisButtons, DISPATCH_HOST, FORBIDDEN_HEADINGS, OWNER_TOP_FORBIDDEN };

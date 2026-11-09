@@ -85,6 +85,7 @@ jobs:
 
             bash scripts/lib/push-with-retry.sh
           fi
+      # severity-low-ok: manual workflow_dispatch only: the person who dispatched it is watching the run, and nothing scheduled or user-facing depends on it (experiment run, never touches live scores)
       - name: Notify on failure
         if: failure()
         uses: ./.github/actions/notify-failure

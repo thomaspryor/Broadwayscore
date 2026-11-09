@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (read by the test); data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // BRO-6690: audit-wet-archive-market.js --delete removes only non-london-show archives and only on a matching --expect.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';

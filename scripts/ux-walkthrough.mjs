@@ -36,6 +36,7 @@
 // Exit codes: 0 success, 1 fatal (auth/seed/capture failure), 2 review panel
 // fully failed (all 3 models errored — screenshots still captured).
 
+import './lib/llm-usage-install.js'; // LLM spend meter: keep it the first import (BRO-5043)
 import models from './lib/models.js';
 const { WALKTHROUGH_SONNET } = models;
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';

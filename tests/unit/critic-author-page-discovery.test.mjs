@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/critic-author-pages.json (read by the test); data/critic-registry.json (read by the test); data/reviews.json (read by the test); +1 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // TESTS-VS-DERIVED-DATA-EXEMPT: checks coverage of curated overrides using the shared active selection, without pinning review facts.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';

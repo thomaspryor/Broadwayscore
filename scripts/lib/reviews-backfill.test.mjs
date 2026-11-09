@@ -23,7 +23,9 @@ const IMAGE_RE = /\.(?:jpe?g|png|webp|avif)$/i;
 
 // Both kinds, each in any format: Matchbook had a thumbnail and no poster,
 // which is the 404 BRO-2684 fixed (BRO-5261 retro-review).
-test('every BRO-155 stub has thumbnail and poster art committed in public/images (any image format)', () => {
+// BRO-7097: a slim Codex worktree has no public/images/shows at all; skip there, the full tree still checks.
+const SHOW_IMAGES_PRESENT = fs.existsSync(path.join(REPO, 'public', 'images', 'shows'));
+test('every BRO-155 stub has thumbnail and poster art committed in public/images (any image format)', { skip: !SHOW_IMAGES_PRESENT && 'slim worktree: public/images/shows not checked out' }, () => {
   for (const id of STUBS) {
     const dir = path.join(REPO, 'public', 'images', 'shows', id);
     const files = fs.existsSync(dir) ? fs.readdirSync(dir).filter((f) => IMAGE_RE.test(f)) : [];

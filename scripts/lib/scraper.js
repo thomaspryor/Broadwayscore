@@ -22,6 +22,7 @@ const { isTransientScrapingdogError, parseScrapingdogHttpError } = require('./sd
 
 const https = require('https');
 require('./cloud-proxy'); // BRO-6258: route ScrapingBee through the cloud egress proxy
+require('./ipv4-connections'); // BRO-6872: no 250 ms happy-eyeballs cut-off (runners cannot reach IPv6)
 const path = require('path');
 const fs = require('fs');
 // playwright is lazy-loaded inside fetchWithPlaywright() so that merely
@@ -39,7 +40,7 @@ const {
 const { fetchWithCookiesPlain } = require('./fetch-plain');
 const { readEnvKeys } = require('./load-env');
 const { recordBdCall, recordSbCall, recordSdCall } = require('./bd-telemetry');
-const { sdBilledCredits } = require('./provider-telemetry');
+const { sdBilledCredits, RUN_MEMO_SKIP } = require('./provider-telemetry');
 const { shouldSkipScrapingdogAtRuntime, isSdQuotaHttpStatus } = require('./scrapingdog-ack');
 const { consultBrightData, getBrightDataRunStats } = require('./brightdata-caps');
 const { consultScrapingdog, getScrapingdogCapStats, pressNightCapStatus } = require('./scrapingdog-caps');
@@ -164,6 +165,12 @@ function _isChallengeOrGarbage(content) {
   if (content && /<title[^>]*>\s*(?:Just a moment(?:\.\.\.|…)|Attention Required!)/i.test(content)) return true;
   // Both Cloudflare managed-challenge script markers together never appear in a real article (same rule as bww-roundup-validator.js).
   if (content && content.includes('cf_chl_opt') && content.includes('challenge-platform')) return true;
+  // BRO-7090: a host bot-verification page ("One moment, please..." / "Please wait while
+  // your request is being verified", wsidchk script, reloads after 5s). theatreweekly.com
+  // served Scrapingdog a 12.7KB copy, over the <10KB gate below, so the chain stopped and
+  // the review was saved with no text. Title plus one page marker, so size-independent.
+  if (content && /<title[^>]*>\s*One moment, please(?:\.\.\.|…)?\s*<\/title>/i.test(content)
+    && (content.includes('wsidchk') || /request is being verified/i.test(content))) return true;
   // BRO-5874: a rendered HTML shell with almost no text (bachtrack.com served CI runners a
   // 175-char page that Playwright reported as Success, so the chain stopped before BD/SB).
   if (isNearEmptyHtmlShell(content)) return true;
@@ -1523,11 +1530,16 @@ function pageChainOrder(flags) {
  * @param {string} [options.countryCode] - 2-letter geo pin (SD country / SB country_code)
  * @returns {Promise<{content: string, format: string, source: string}>}
  */
+/** The name every free (direct) request sends: plain, identifying, never a browser's (BRO-6872). */
+const DIRECT_USER_AGENT = 'BroadwayScorecard/1.0';
+
 async function fetchPage(url, options = {}) {
   _lastUrlMismatchUrl = null; // BRO-6089: per-call state, never leaks from an earlier fetch
   url = require('./review-url-entity-decode').decodeUrlEntities(unwrapRedirectUrl(url)); // BRO-4403
   if (options.directOnly) {
-    const response = await fetch(url, { signal: AbortSignal.timeout(10000) });
+    // Our own name, as tryDirect sends: with none (undici's "node") The Stage answers 200 with an empty page, which read
+    // as "blocked" on all 193 lane reads of its reviews page in the 2026-11-04 replays (BRO-6872).
+    const response = await fetch(url, { headers: { 'User-Agent': DIRECT_USER_AGENT }, signal: AbortSignal.timeout(10000) });
     if (!response.ok) throw new Error(`Direct fetch failed: ${response.status}`);
     const content = await response.text();
     if (!content.trim() || _isChallengeOrGarbage(content)) throw new Error('Direct fetch returned empty or blocked content');
@@ -1602,7 +1614,7 @@ async function fetchPage(url, options = {}) {
       /^\/shows\/[^/]+\/?$/.test(requestedUrl.pathname)) {
     console.log('  → Trying direct DTLI fetch...');
     try {
-      const response = await fetch(url, { signal: AbortSignal.timeout(10000) });
+      const response = await fetch(url, { headers: { 'User-Agent': DIRECT_USER_AGENT }, signal: AbortSignal.timeout(10000) });
       if (response.ok) {
         const content = await response.text();
         if (!_isChallengeOrGarbage(content) && /<\/html\s*>/i.test(content) &&
@@ -1814,7 +1826,7 @@ function _recordRunMemo(host, outcomes) {
     for (const { tier, failures } of _runMemo.recordOutcome(host, outcomes)) {
       console.log(`  ⏭️  run memo: ${tier} failed ${failures}x on ${host} while a later tier succeeded — skipping it for the rest of this run`);
       const record = _RUN_MEMO_RECORDERS[tier];
-      if (record) record({ host, fn: 'run-memo-skip', success: false, status: 'run-memo-skip', credits: 0 });
+      if (record) record({ host, fn: RUN_MEMO_SKIP, success: false, status: RUN_MEMO_SKIP, credits: 0 });
     }
   } catch (err) {
     console.warn(`[scraper] run memo error (ignored): ${err.message}`);
@@ -1923,7 +1935,7 @@ async function fetchJSON(url, options = {}) {
     const proto = url.startsWith('https') ? https : require('http');
     const DIRECT_TIMEOUT_MS = 15000;
     const response = await new Promise((resolve, reject) => {
-      const req = proto.get(url, { headers: { 'User-Agent': 'BroadwayScorecard/1.0', ...headers }, timeout: DIRECT_TIMEOUT_MS }, (res) => {
+      const req = proto.get(url, { headers: { 'User-Agent': DIRECT_USER_AGENT, ...headers }, timeout: DIRECT_TIMEOUT_MS }, (res) => {
         if ([301, 302, 307, 308].includes(res.statusCode)) {
           // Resolve against the original URL (handles relative Location headers)
           // and pick the protocol client from the RESOLVED target, not the
@@ -1938,7 +1950,7 @@ async function fetchJSON(url, options = {}) {
           }
           const redirectUrl = redirectUrlObj.toString();
           const redirectProto = redirectUrlObj.protocol === 'https:' ? https : require('http');
-          const req2 = redirectProto.get(redirectUrl, { headers: { 'User-Agent': 'BroadwayScorecard/1.0', ...headers }, timeout: DIRECT_TIMEOUT_MS }, (res2) => {
+          const req2 = redirectProto.get(redirectUrl, { headers: { 'User-Agent': DIRECT_USER_AGENT, ...headers }, timeout: DIRECT_TIMEOUT_MS }, (res2) => {
             let d = ''; res2.on('data', c => d += c); res2.on('end', () => {
               if (res2.statusCode === 200) resolve(d); else reject(new Error(`HTTP ${res2.statusCode}`));
             });

@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * BRO-4502: ~45 reviews displayed junk critic names ("Read more articles by
  * Carol Rocamora", "Sam - Admin", "nick730", "National Theatre", "Huffington

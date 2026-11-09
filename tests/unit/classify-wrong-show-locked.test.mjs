@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
  * Verifies classify-wrong-show.js's 5 flag-write paths preserve PROTECTED
  * fields on locked files (S1-T3d). Writes target wrongShow + wrongShowReason

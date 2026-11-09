@@ -153,6 +153,148 @@ const VENUE_ALIASES = {
 };
 
 /**
+ * Sub-stages inside a bigger building (BRO-6923). Critics name the building
+ * ("at the Young Vic", "the National Theatre") while shows.json files the show
+ * at the stage ("The Maria Theatre", "Lyttelton Theatre"), so a venue check
+ * read the building name as a different production (Girls lost London Theatre,
+ * Theatre Weekly and The Recs reviews; Inter Alia lost 9).
+ *
+ * Deliberately NOT part of VENUE_ALIASES: findCanonical() maps one name to ONE
+ * canonical, and the National Theatre's three stages share a parent name, so a
+ * reverse lookup of the parent must never pick a single stage (it returns the
+ * whole stage list via stagesOfBuilding()). Every findCanonical consumer is
+ * therefore unaffected.
+ *
+ * stageKeys are normalized substrings matched on word boundaries against the
+ * shows.json venue string ("National Theatre (Olivier)", "The Other Palace -
+ * Studio"). Soho Theatre Walthamstow is a separate site and has no key.
+ */
+const PARENT_BUILDINGS = [
+  { parent: 'National Theatre', region: 'london',
+    parentNames: ['National Theatre', 'Royal National Theatre'],
+    stages: ['Lyttelton Theatre', 'Olivier Theatre', 'Dorfman Theatre'],
+    stageKeys: ['lyttelton', 'olivier', 'dorfman', 'cottesloe'] },
+  { parent: 'Young Vic', region: 'london',
+    parentNames: ['Young Vic', 'Young Vic Theatre'],
+    stages: ['The Maria', 'The Clare', 'Main House'],
+    stageKeys: ['the maria', 'maria theatre', 'maria studio', 'the clare', 'clare theatre', 'clare studio', 'young vic main house', 'young vic (main house)'] },
+  { parent: "Shakespeare's Globe", region: 'london',
+    parentNames: ["Shakespeare's Globe", 'Shakespeares Globe'],
+    stages: ['Sam Wanamaker Playhouse', "Shakespeare's Globe Theatre"],
+    stageKeys: ['wanamaker'] },
+  { parent: 'Hampstead Theatre', region: 'london',
+    parentNames: ['Hampstead Theatre'],
+    stages: ['Hampstead Theatre Downstairs', 'Hampstead Theatre Main Stage'],
+    stageKeys: ['hampstead theatre downstairs', 'hampstead downstairs'] },
+  { parent: 'Soho Theatre', region: 'london',
+    parentNames: ['Soho Theatre'],
+    stages: ['Soho Theatre Upstairs', 'Soho Theatre Downstairs'],
+    stageKeys: ['soho theatre upstairs', 'soho theatre downstairs'] },
+  { parent: 'The Other Palace', region: 'london',
+    parentNames: ['The Other Palace', 'Other Palace'],
+    stages: ['The Other Palace Studio', 'The Other Palace Main Auditorium'],
+    stageKeys: ['other palace studio', 'other palace - studio', 'other palace main'] },
+  { parent: 'Royal Court Theatre', region: 'london',
+    parentNames: ['Royal Court Theatre', 'Royal Court'],
+    stages: ['Jerwood Theatre Downstairs', 'Jerwood Theatre Upstairs'],
+    stageKeys: ['jerwood theatre downstairs', 'jerwood theatre upstairs', 'royal court jerwood'] },
+  // BRO-6945: NYC multi-stage buildings. Keys avoid bare generic words
+  // ("newman", "stage 2", "griffin") that other NYC venues also use.
+  { parent: 'Lincoln Center Theater', region: 'nyc',
+    parentNames: ['Lincoln Center Theater', 'Lincoln Center'],
+    stages: ['Vivian Beaumont Theater', 'Mitzi E. Newhouse Theater', 'Claire Tow Theater'],
+    stageKeys: ['vivian beaumont', 'mitzi e. newhouse', 'mitzi e newhouse', 'newhouse theater', 'newhouse theatre', 'claire tow'] },
+  { parent: 'The Public Theater', region: 'nyc',
+    parentNames: ['The Public Theater', 'Public Theater', 'Joseph Papp Public Theater'],
+    stages: ['Anspacher Theater', 'Newman Theater', 'Martinson', 'LuEsther Hall', 'Shiva Theater', 'Barbaralee Theater', 'Delacorte Theater'],
+    stageKeys: ['anspacher', 'luesther', 'martinson hall', 'martinson theater', 'shiva theater', 'barbaralee', 'delacorte', 'public theater/newman', 'public theater - newman', 'public theater newman'] },
+  { parent: 'Pershing Square Signature Center', region: 'nyc',
+    parentNames: ['Pershing Square Signature Center', 'The Pershing Square Signature Center', 'Signature Center', 'The Pershing Square Signature Theatre Center'],
+    stages: ['Irene Diamond Stage', 'Alice Griffin Jewel Box Theater', 'Romulus Linney Courtyard Theater'],
+    stageKeys: ['irene diamond', 'alice griffin', 'jewel box', 'romulus linney'] },
+  { parent: 'Atlantic Theater Company', region: 'nyc',
+    parentNames: ['Atlantic Theater Company', 'Atlantic Theater', 'Atlantic Theatre Company'],
+    stages: ['Linda Gross Theater', 'Stage 2'],
+    stageKeys: ['linda gross', 'atlantic stage 2', 'atlantic theater company/stage 2', 'atlantic theater company - stage 2', 'atlantic theater company stage 2'] },
+  { parent: 'Robert W. Wilson MCC Theater Space', region: 'nyc',
+    parentNames: ['MCC Theater Space', 'Robert W. Wilson MCC Theater Space', 'The Robert W. Wilson MCC Theater Space', 'MCC Theater', 'MCC Theatre'],
+    stages: ['Newman Mills Theater', 'Susan & Ronald Frankel Theater'],
+    stageKeys: ['newman mills', 'ronald frankel'] },
+  { parent: 'The Shed', region: 'nyc',
+    parentNames: ['The Shed', 'Shed'],
+    stages: ['The Griffin Theater', 'The McCourt'],
+    stageKeys: ['griffin theater at the shed', 'griffin theatre at the shed', 'griffin at the shed', 'kenneth c. griffin theater', 'kenneth c griffin theater'] },
+];
+
+function _stageKeyMatches(normVenue, key) {
+  const k = _normalize(key);
+  const i = normVenue.indexOf(k);
+  if (i < 0) return false;
+  const before = i === 0 ? ' ' : normVenue[i - 1];
+  const after = i + k.length >= normVenue.length ? ' ' : normVenue[i + k.length];
+  return !/[a-z0-9]/.test(before) && !/[a-z0-9]/.test(after);
+}
+
+// "Dorfman (Cottesloe)" must not list "Dorfman Theatre" as an OTHER stage.
+function _stageCore(x) {
+  return _normalize(x).replace(/\b(the|theatre|theater)\b/g, ' ').replace(/[()-]/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+function _regionOk(entry, market) {
+  const region = _marketToRegion(market);
+  return !region || !entry.region || entry.region === region;
+}
+
+/**
+ * If `venue` is a stage inside a bigger building, return that building.
+ * Returns null for the building itself and for unrelated venues.
+ * @returns {{ parent: string, parentNames: string[], stages: string[] } | null}
+ */
+function parentBuildingOf(venue, market) {
+  if (!venue) return null;
+  const n = _normalize(venue);
+  for (const b of PARENT_BUILDINGS) {
+    if (!_regionOk(b, market)) continue;
+    if (b.parentNames.some((p) => _normalize(p) === n)) continue; // the building itself
+    if (b.stageKeys.some((k) => _stageKeyMatches(n, k))) {
+      return { parent: b.parent, parentNames: b.parentNames.slice(), stages: b.stages.slice() };
+    }
+  }
+  return null;
+}
+
+/**
+ * Reverse lookup: given a building name, return ALL its stages (never one).
+ * Empty when `name` is not a known multi-stage building.
+ */
+function stagesOfBuilding(name, market) {
+  if (!name) return [];
+  const n = _normalize(name);
+  for (const b of PARENT_BUILDINGS) {
+    if (!_regionOk(b, market)) continue;
+    if (b.parentNames.some((p) => _normalize(p) === n)) return b.stages.slice();
+  }
+  return [];
+}
+
+/**
+ * Prompt text for a show filed at a stage (or at the building): tells the
+ * verifier that a review naming the building is NOT a different venue.
+ * Empty string when the venue is neither.
+ */
+function buildParentBuildingNote(venue, market) {
+  const p = parentBuildingOf(venue, market);
+  if (p) {
+    return `${venue} is one stage inside ${p.parent} (other stages: ${p.stages.filter((s) => { const c = _stageCore(s); return !c || !_stageCore(venue).includes(c); }).join(', ')}). A review that names "${p.parent}" instead of the stage is NOT by itself evidence of a different venue or production; still check the title, cast and dates`;
+  }
+  const stages = stagesOfBuilding(venue, market);
+  if (stages.length) {
+    return `${venue} is a building with several stages (${stages.join(', ')}); a review naming any one stage is NOT by itself evidence of a different production, but the same title can run on different stages as separate productions, so check the title, cast and dates`;
+  }
+  return '';
+}
+
+/**
  * Map a shows.json market/category value to an alias region.
  * 'west-end' / 'off-west-end' → 'london'; 'broadway' / 'off-broadway' → 'nyc'.
  * ABSENT market → null → no region filtering (legacy market-less callers).
@@ -240,6 +382,8 @@ function buildVenueContext(venue, market) {
     const aliasList = entry.aliases.join(', ');
     return `${venue} (${entry.label || 'formerly known as:'} ${aliasList}. ${entry.note})`;
   }
+  const buildingNote = buildParentBuildingNote(venue, market);
+  if (buildingNote) return `${venue} (${buildingNote})`;
   // shows.json can carry the OLD name while reviews use the new one (Rent 2026
   // is filed at the Duke of York's, reviewed at the Tom Stoppard): name the
   // building's other names from the alias side too.
@@ -289,4 +433,8 @@ module.exports = {
   hasAliases,
   buildVenueContext,
   otherVenueNames,
+  PARENT_BUILDINGS,
+  parentBuildingOf,
+  stagesOfBuilding,
+  buildParentBuildingNote,
 };

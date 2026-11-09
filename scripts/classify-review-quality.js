@@ -15,6 +15,7 @@
  */
 
 const fs = require('fs');
+const { hasExcerpt } = require('./lib/excerpt-fields');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
 
@@ -167,7 +168,7 @@ function determineSourceMethod(review) {
       return 'bww-roundup';
     }
     // If we have any excerpt but can't determine source
-    if (review.dtliExcerpt || review.showScoreExcerpt) {
+    if (hasExcerpt(review)) {
       return 'aggregator';
     }
   }

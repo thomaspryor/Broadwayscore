@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/outlet-registry.json (read by the test); data/reviews.json (read by the test). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // non-review-url-patterns.js — canonical not-a-review host/path patterns
 // shared between audit-show-review-gap.js's isReviewUrl() and the S5
 // adversarial probe's classifyNonReviewUrl() (task #907 ship-check finding:
@@ -35,6 +36,9 @@ test('namedNonReviewReason: venue production pages are named', () => {
 
 test('namedNonReviewReason: event listing pages are named', () => {
   assert.equal(namedNonReviewReason('https://middlesexcountyculture.com/event/the-car-man/'), 'event-listing');
+  // BRO-5829
+  assert.equal(namedNonReviewReason('https://www.newjerseystage.com/events/2026/10/31/george-street-playhouse-presents-the-unexpected-3rd-at-new-brunswick-performing-arts-center-nbpac-in-new-brunswick-nj-on-2026-10-31-200pm'), 'event-listing');
+  assert.equal(namedNonReviewReason('https://www.newjerseystage.com/articles3/2026/10/28/review-of-some-show/'), null);
 });
 
 test('namedNonReviewReason: host+path pairs only exclude the specific path, not the whole host', () => {
@@ -679,6 +683,78 @@ test('maybeUpgradeUrl: a merge refuses to swap a goldderby file url onto the rou
   assert.equal(file.url, before);
 });
 
+// BRO-7079: mergeReviews had no roundup guard, so the same swap went through
+// the merge path (replayed 2026-11-07: url swapped and old fields cleared).
+test('mergeReviews: refuses an aggregator-page url (swap or first-set), keeps metadata and a normal swap', () => {
+  const { mergeReviews } = require('./review-normalization.js');
+  const file = { outletId: 'goldderby', criticName: 'Ethan Alter', url: GD_NEWS, originalScore: 80, fullText: 'own text' };
+  const ctx = { showId: 'a-few-good-men-broadway-2026', script: 'test' };
+  const roundup = mergeReviews({ ...file }, { url: GD_ROUNDUP, originalScore: 60, fullText: 'roundup text', bwwExcerpt: 'excerpt' }, {}, ctx);
+  assert.equal(roundup.url, GD_NEWS);
+  assert.equal(roundup.originalScore, 80);
+  assert.equal(roundup.fullText, 'own text');
+  assert.equal(roundup.bwwExcerpt, 'excerpt'); // soft refusal: aggregator metadata still merges
+  const agg = mergeReviews({ ...file }, { url: 'https://www.show-score.com/broadway-shows/a-few-good-men' }, {}, ctx);
+  assert.equal(agg.url, GD_NEWS);
+  const firstSet = mergeReviews({ outletId: 'goldderby', criticName: 'Ethan Alter' }, { url: GD_ROUNDUP, fullText: 'roundup text' }, {}, ctx);
+  assert.ok(!firstSet.url);
+  assert.ok(!firstSet.fullText);
+  const normal = mergeReviews({ ...file }, { url: 'https://www.goldderby.com/theater/2026/a-few-good-men-broadway-review-ethan-alter/' }, {}, ctx);
+  assert.notEqual(normal.url, GD_NEWS);
+});
+
+// BRO-7091: a refused aggregator url copied the roundup's date and score
+// onto the critic's file (Black Swan BWW: roundup 2026-06-15 won over the
+// review's own 06-14). The byline still fills: gather-reviews renames the
+// file to that critic right after the merge (Unknown→named).
+test('mergeReviews: a refused aggregator-page url copies no publishDate or originalScore, still fills an Unknown byline', () => {
+  const { mergeReviews } = require('./review-normalization.js');
+  const ctx = { showId: 'black-swan-regional-2026', script: 'test' };
+  const roundupRow = {
+    url: 'https://www.broadwayworld.com/article/Review-Roundup-BLACK-SWAN-Opens-at-American-Repertory-Theater-20260615',
+    publishDate: '2026-06-15', criticName: 'R. Scott Reedy', originalScore: 70, originalRating: '3.5/5', bwwExcerpt: 'excerpt',
+  };
+  const OWN = 'https://www.broadwayworld.com/boston/article/Review-BLACK-SWAN-at-American-Repertory-Theater-20260614';
+  const swap = mergeReviews({ outletId: 'broadwayworld', criticName: 'Unknown', url: OWN }, { ...roundupRow }, {}, ctx);
+  assert.equal(swap.url, OWN);
+  assert.equal(swap.publishDate, undefined);
+  assert.equal(swap.criticName, 'R. Scott Reedy');
+  assert.equal(swap.originalScore, undefined);
+  assert.equal(swap.bwwExcerpt, 'excerpt'); // aggregator excerpt still merges
+  const firstSet = mergeReviews({ outletId: 'broadwayworld' }, { ...roundupRow }, {}, ctx);
+  assert.ok(!firstSet.url);
+  assert.equal(firstSet.publishDate, undefined);
+  assert.equal(firstSet.criticName, 'R. Scott Reedy');
+  assert.equal(firstSet.originalScore, undefined);
+  // control: a normal own-article url still fills all three
+  const own = mergeReviews({ outletId: 'broadwayworld', criticName: 'Unknown' },
+    { url: OWN, publishDate: '2026-06-14', criticName: 'R. Scott Reedy', originalScore: 70 }, {}, ctx);
+  assert.equal(own.publishDate, '2026-06-14');
+  assert.equal(own.criticName, 'R. Scott Reedy');
+  assert.equal(own.originalScore, 70);
+});
+
+test('revertBodyFromRefusedUrl: a refused aggregator first-set on a url-less file drops the roundup body and date (BRO-7091)', () => {
+  const { revertBodyFromRefusedUrl } = require('./review-file-writer.js');
+  const roundup = 'https://www.broadwayworld.com/article/Review-Roundup-BLACK-SWAN-Opens-at-American-Repertory-Theater-20260615';
+  const fields = { publishDate: '2026-06-15', fullText: 'roundup text' };
+  const existing = { outletId: 'broadwayworld', ...fields };
+  const keys = revertBodyFromRefusedUrl({ outletId: 'broadwayworld' }, existing, { url: roundup }, fields);
+  assert.deepEqual(keys.sort(), ['fullText', 'publishDate']);
+  assert.equal(existing.publishDate, undefined);
+  // a url-less file with a non-aggregator url is untouched (unchanged behavior)
+  const own = { outletId: 'x', ...fields };
+  assert.deepEqual(revertBodyFromRefusedUrl({ outletId: 'x' }, own, { url: 'https://www.goldderby.com/theater/2026/black-swan-review/' }, fields), []);
+});
+
+test('ingestBlockReason: a host outside the outlet registry is refused (BRO-6685)', () => {
+  const { ingestBlockReason } = require('./gap-ingest-policy.js');
+  const opts = { showIsWe: false, weGateOn: false, lowTrustSources: new Set(), serpCensusGateOn: false };
+  assert.equal(ingestBlockReason({ url: 'https://globalnews2.xyz/a-few-good-men-review', knownOutletId: null }, opts), 'unregistered-host');
+  assert.equal(ingestBlockReason({ url: 'https://globalnews2.xyz/a-few-good-men-review', knownOutletId: null, recoverableOutletId: 'x' }, opts), null);
+  assert.equal(ingestBlockReason({ url: 'https://www.nytimes.com/x.html', knownOutletId: 'nytimes' }, opts), null);
+});
+
 // BRO-6716: the gap audit tagged cited reviews from registered outlets as
 // 'unregistered-host' because their URLs used a Blogger country mirror or
 // Substack's shared link host. publicationHostOf maps both onto the host the
@@ -766,4 +842,109 @@ test('BRO-5489: britishtheatre.com locale /shows/ hubs and Sounds & Stage /show/
     'https://www.britishtheatre.com/posts/review-nye-national-theatre',
     'https://soundsandstage.com/mischief-theatre-strikes-again-with-hilarious-spy-spoof-the-comedy-about-spies-review/',
   ]) assert.notEqual(namedNonReviewReason(u), 'show-hub', u);
+});
+
+// BRO-6909: pages counted as reviews for the week of 2026-10-27 openings.
+test('forum, aggregator-repost and blog tag pages are listing pages, their reviews are not', () => {
+  const { listingPageUrlReason, classifyGapCandidateUrl: gap } = require('./non-review-url-patterns.js');
+  const bad = {
+    'https://theatreboard.co.uk/thread/16312/dogstar-hampstead-theatre': 'forum-thread',
+    'https://theatreboard.co.uk/thread/16298/stoker-wilde-wiltons-music-hall': 'forum-thread',
+    'https://ground.news/article/memoriam-review-by-thespyinthestalls-at-southwark-playhouse': 'news-aggregator-repost',
+    'https://cherylmarkosky.com/tag/english-national-opera/': 'tag-index-page',
+    'https://monstagigz.com/tag/triumph/': 'tag-index-page',
+    'https://firstnightmagazine.com/tag/franz-and-marie/': 'tag-index-page',
+  };
+  for (const [url, reason] of Object.entries(bad)) {
+    assert.equal(listingPageUrlReason(url), reason, url);
+    assert.notEqual(gap(url).ok, true, url);
+  }
+  for (const url of [
+    'https://monstagigz.com/2026/08/25/theatre-review-a-month-in-the-country-starring-sophie-okonedo-at-donmar-warehouse/',
+    'https://firstnightmagazine.com/2026/10/12/review-of-affluenza-noah-schnapps-stage-debut-is-no-stranger-thing-and-it-isnt-great-either/',
+    'https://thespyinthestalls.com/2026/10/the-revlon-girl/',
+    'https://twi-ny.com/tag/an-american-daughter/',
+  ]) assert.equal(listingPageUrlReason(url), null, url);
+});
+
+// BRO-5958 / BRO-7079: a BroadwayWorld "Previews:" feature counted as a review.
+test('listingPageUrlReason: BWW Previews/Interview/Photos features are not reviews; Review- and Review-Roundup are untouched here', () => {
+  const { listingPageUrlReason } = require('./non-review-url-patterns.js');
+  const { explainExclusion } = require('./review-guards.js');
+  const PREV = 'https://www.broadwayworld.com/off-broadway/article/Previews-ARIAS-WITH-A-TWIST-at-HERE-Arts-Center-20260918';
+  assert.equal(listingPageUrlReason(PREV), 'feature-not-review');
+  assert.equal(listingPageUrlReason('https://www.broadwayworld.com/article/Interview-Joey-Arias-Brings-ARIAS-WITH-A-TWIST-Home-20260901'), 'feature-not-review');
+  assert.equal(listingPageUrlReason('https://www.broadwayworld.com/article/Photos-First-Look-at-ARIAS-WITH-A-TWIST-20260918'), 'feature-not-review');
+  assert.equal(listingPageUrlReason('https://www.broadwayworld.com/off-broadway/article/Review-ARIAS-WITH-A-TWIST-at-HERE-20260925'), null);
+  assert.equal(listingPageUrlReason('https://www.broadwayworld.com/article/Review-Roundup-ARIAS-WITH-A-TWIST-at-Here-Arts-Center-20261005'), null);
+  assert.equal(listingPageUrlReason('https://www.broadwayworld.com/article/Mary-Poppins-Returns-20260918'), null);
+  if (typeof explainExclusion === 'function') {
+    assert.equal(explainExclusion({ url: PREV, outletId: 'broadwayworld', criticName: 'Peter Danish', llmScore: { score: 70 } }), 'listingPageUrl');
+  }
+});
+
+// BRO-7079 (BRO-4430 class): a live review whose url is a roundup/aggregator
+// page. The ingest and merge guards now refuse new ones; this ratchet catches
+// any that reach reviews.json another way. Baseline 0 (BRO-7091): the last
+// one, Black Swan BWW, was repaired by manual-entry-merge.js in the
+// 2026-11-07 rebuild.
+test('reviews.json: no new included review stores an aggregator-page url', () => {
+  const fs = require('fs');
+  const path = require('path');
+  const file = path.resolve('data/reviews.json');
+  if (!fs.existsSync(file)) return;
+  const { isAggregatorPageUrl } = require('./review-slot-guards.js');
+  const data = JSON.parse(fs.readFileSync(file, 'utf8'));
+  const rows = (Array.isArray(data) ? data : data.reviews).filter(r => r.url && isAggregatorPageUrl(r.url));
+  assert.equal(rows.length, 0, `aggregator-page urls on live reviews: ${rows.map(r => `${r.showId}/${r.outletId} ${r.url}`).join('; ')}`);
+});
+
+test('BRO-7081: dated event pages and bare /shows/<slug>/ hubs are listings, not owed reviews', () => {
+  const { listingPageUrlReason } = require('./non-review-url-patterns.js');
+  const bad = {
+    // BRO-6950: nine dated performance pages for Garry Starr: Classic Penguins.
+    'https://limelight-arts.com.au/event/garry-starr-classic-penguins-2/2026-06-25/': 'event-listing',
+    'https://limelight-arts.com.au/event/garry-starr-classic-penguins/2026-06-21/': 'event-listing',
+    'https://limelight-arts.com.au/event/a-beautiful-noise-the-neil-diamond-musical-2/2026-10-07/': 'event-listing',
+    // BRO-5134 / BRO-6731: Broadway Black show hub cited for Midnight.
+    'https://www.broadwayblack.com/shows/midnight/': 'show-hub',
+    'https://www.mirvish.com/shows/juliet': 'show-hub',
+  };
+  for (const [url, reason] of Object.entries(bad)) {
+    assert.equal(listingPageUrlReason(url), reason, url);
+    assert.notEqual(classifyGapCandidateUrl(url).ok, true, url);
+  }
+  for (const url of [
+    'https://didtheylikeit.com/shows/midnight/review-roundup/',
+    'https://www.dailymail.co.uk/home/event/article-10848817/ABBA-Voyage-review-electric-soul-touching-magical-trip-70s.html',
+    'https://www.newyorker.com/arts/events/theatre/brief-encounter-studio-54',
+    'https://exeuntnyc.com/reviews/review-garry-starr-classic-penguins-at-studio-seaview/',
+    'https://example.com/review/event/garry-starr/2026-06-25/',
+    'https://www.theatremonkey.com/show/midnight/',
+  ]) assert.equal(listingPageUrlReason(url), null, url);
+});
+
+test('BRO-7081: registered aggregator /shows/<slug> pages stay citation URLs, not show hubs', () => {
+  const { listingPageUrlReason } = require('./non-review-url-patterns.js');
+  for (const url of ['https://www.stagedoor.com/shows/some-show', 'https://stagedoor.com/shows/some-show/', 'https://www.show-score.com/shows/x']) {
+    assert.notEqual(listingPageUrlReason(url), 'show-hub', url);
+  }
+  assert.equal(listingPageUrlReason('https://notstagedoor.com/shows/some-show'), 'show-hub');
+  assert.equal(listingPageUrlReason('https://www.broadwayblack.com/shows/midnight/'), 'show-hub');
+});
+
+test('BRO-5629: "everything you need to know" explainers are guide articles, not reviews', () => {
+  const { listingPageUrlReason } = require('./non-review-url-patterns.js');
+  for (const url of [
+    'https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-dogstar',
+    'https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-girls-young-vic',
+    'https://www.oldvictheatre.com/news/things-you-need-to-know-about-martin-guerre/',
+  ]) {
+    assert.equal(listingPageUrlReason(url), 'guide-article', url);
+    assert.notEqual(classifyGapCandidateUrl(url).ok, true, url);
+  }
+  for (const url of [
+    'https://kiddoadventures.com/2026/06/04/review-beetlejuice-the-musical-london-everything-you-need-to-know-before-you-go/',
+    'https://www.washingtonpost.com/entertainment/theater_dance/my-daughter-enjoyed-broadways-frozen-what-more-do-you-need-to-know/2018/03/22/40aa9cea-2d17-11e8-911f-ca7f68bff0fc_story.html',
+  ]) assert.equal(listingPageUrlReason(url), null, url);
 });

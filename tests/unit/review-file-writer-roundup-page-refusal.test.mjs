@@ -1,3 +1,4 @@
+// LIVE-DATA-LANE: reads data/shows.json (untracked core data); data/critic-registry.json (untracked core data). Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 // TESTS-VS-DERIVED-DATA-EXEMPT: guard logic test — reads shows.json only for show-id existence, asserts writer refusal behavior, no hardcoded facts.
 // Guard E0 (review-file-writer.js): a roundup PAGE filed under the roundup
 // host's own outletId is refused at the createOrMergeReviewFile chokepoint.

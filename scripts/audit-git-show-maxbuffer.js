@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Flags execFileSync('git', ['show'|'cat-file'|'ls-tree'|'diff'|'log', ...])
+ * Flags execFileSync('git', ['show'|'cat-file'|'ls-tree'|'diff'|'log'|'ls-files', ...])
  * calls that set no maxBuffer (BRO-3156). Node's 1MB default throws ENOBUFS on
  * large tracked files (reviews.json is ~20k reviews; stage-latency.jsonl is
  * 28MB), and callers that catch-and-treat-as-absent then misreport a real file
@@ -27,10 +27,10 @@ const findings = scanTree(ROOT);
 if (process.argv.includes('--json')) {
   console.log(JSON.stringify(findings, null, 2));
 } else if (findings.length) {
-  console.error(`${findings.length} git ${'show/cat-file/ls-tree/diff/log'} call(s) without maxBuffer:`);
+  console.error(`${findings.length} git ${'show/cat-file/ls-tree/diff/log/ls-files'} call(s) without maxBuffer:`);
   for (const f of findings) console.error(`  ${f.file}:${f.line} [${f.sub}] ${f.snippet}`);
   console.error('Add { maxBuffer: 512 * 1024 * 1024 } (see scripts/audit-outlet-routing-diff.js).');
 } else {
-  console.log('OK: every execFileSync git show/cat-file/ls-tree/diff/log call sets maxBuffer');
+  console.log('OK: every execFileSync git show/cat-file/ls-tree/diff/log/ls-files call sets maxBuffer');
 }
 process.exit(findings.length ? 1 : 0);

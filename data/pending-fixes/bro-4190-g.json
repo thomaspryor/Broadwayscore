@@ -2,7 +2,7 @@
   "createdAt": "2026-10-12T08:50:40Z",
   "issueNumber": "bro-4190-g",
   "planId": "7a520f08-e449-4365-9b4a-c80771f18e91",
-  "status": "partial",
+  "status": "superseded",
   "submitter": {
     "name": null,
     "email": null
@@ -31,5 +31,22 @@
       "ok": false,
       "reason": "Review file not found: hercules-west-end-2025/british-theatre--howard-loxton.json"
     }
-  ]
+  ],
+  "triage": {
+    "card": "BRO-7092",
+    "at": "2026-11-07T20:58:07.982Z",
+    "verdict": "resolved",
+    "counts": {
+      "resolved": 1
+    },
+    "ops": [
+      {
+        "i": 0,
+        "verdict": "resolved",
+        "reason": "hercules-west-end-2025/british-theatre--howard-loxton.json url already (text)"
+      }
+    ]
+  },
+  "supersededAt": "2026-11-07T20:58:07.982Z",
+  "supersededReason": "BRO-7092 triage against current data: every undone op is already in place (1 resolved); per-op reasons in triage.ops"
 }

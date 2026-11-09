@@ -1,42 +1,66 @@
 {
-  "generatedAt": "2026-11-03T10:47:36.815Z",
+  "generatedAt": "2026-11-09T02:00:25.467Z",
   "phase": "done",
   "days": 21,
-  "shows": 86,
+  "shows": 73,
   "sources": {
     "theatermania": {
-      "queries": 51,
-      "listed": 18,
+      "queries": 46,
+      "listed": 19,
       "errors": 0
     },
     "whatsonstage": {
-      "queries": 35,
-      "listed": 10,
+      "queries": 27,
+      "listed": 8,
       "errors": 0
     },
     "nysr": {
-      "queries": 51,
-      "listed": 16,
+      "queries": 46,
+      "listed": 14,
       "errors": 0
     },
     "newyorktheater": {
-      "queries": 51,
-      "listed": 7,
+      "queries": 46,
+      "listed": 6,
       "errors": 0
     },
     "nytimes": {
       "queries": 4,
-      "listed": 1,
+      "listed": 2,
       "errors": 0
     },
     "theatre-reviews": {
-      "queries": 35,
-      "listed": 34,
+      "queries": 27,
+      "listed": 31,
       "errors": 0
     }
   },
   "listingTruncated": false,
-  "listed": 86,
-  "ingested": [],
-  "missing": []
+  "listed": 80,
+  "ingested": [
+    {
+      "showId": "msblackforpresident-off-broadway-2026",
+      "url": "https://www.theatermania.com/news/review-ms-blakk-for-president-a-drag-queens-long-shot-campaign-in-92_1859063/",
+      "ok": true
+    },
+    {
+      "showId": "king-lear-off-broadway-2026",
+      "url": "https://www.theatermania.com/news/review-anon-the-one-about-the-maga-neighbor-and-the-ugly-flag_1857163/",
+      "ok": true
+    },
+    {
+      "showId": "tristan-and-yseult-off-broadway-2026",
+      "url": "https://nystagereview.com/2026/11/08/tristan-yseult-a-hot-look-at-love-running-cold/",
+      "ok": true
+    }
+  ],
+  "missing": [
+    {
+      "source": "theatermania",
+      "showId": "king-lear-off-broadway-2026",
+      "outletId": "theatermania",
+      "url": "https://www.theatermania.com/news/review-anon-the-one-about-the-maga-neighbor-and-the-ugly-flag_1857163/",
+      "date": "2026-10-14"
+    }
+  ]
 }
