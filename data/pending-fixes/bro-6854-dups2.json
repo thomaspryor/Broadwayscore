@@ -1,0 +1,42 @@
+{
+  "issueNumber": "bro-6854-dups2",
+  "planId": "804df027-19c2-4a68-aba5-e905be3ec489",
+  "status": "pending",
+  "createdAt": "2026-11-09T07:58:17.475Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6854: retire 3 duplicate Boston rows minted by the city finder",
+    "steps": [
+      "retire-show",
+      "retire-show",
+      "retire-show"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "retire-show",
+        "id": "paranormal-activity-regional-2026",
+        "expectTitle": "Paranormal Activity",
+        "duplicateOf": "paranormal-activity-boston-regional-2026",
+        "reason": "BRO-6854: duplicate Boston row minted by the city finder; paranormal-activity-boston-regional-2026 holds the reviews"
+      },
+      {
+        "type": "retire-show",
+        "id": "rhinoceros-regional-2026",
+        "expectTitle": "Rhinoceros",
+        "duplicateOf": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+        "reason": "BRO-6854: duplicate Boston row minted by the city finder; the longer-id row holds the reviews"
+      },
+      {
+        "type": "retire-show",
+        "id": "purpose-huntington-regional-2026",
+        "expectTitle": "Purpose",
+        "duplicateOf": "purpose-regional-2026",
+        "reason": "BRO-6854: duplicate Boston row minted by the city finder; purpose-regional-2026 holds the reviews"
+      }
+    ]
+  }
+}
