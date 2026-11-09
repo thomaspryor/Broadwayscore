@@ -140,6 +140,19 @@ test('findCandidateGaps does not link unrelated venues on the shared word "playe
   assert.deepEqual(findCandidateGaps(shows, defs, isOffBroadway), {});
 });
 
+// BRO-7068: "square" alone is a place name. One Times Square (the Times Square
+// Skywalk) is not a room of the Pershing Square Signature Center.
+test('findCandidateGaps does not link unrelated venues on the shared word "square"', () => {
+  const shows = [
+    { venue: 'Pershing Square Signature Center', category: 'off-broadway' },
+    { venue: 'One Times Square', category: 'off-broadway' },
+  ];
+  const defs = {
+    'signature-theatre': { name: 'Signature Theatre', subVenueSlugs: ['pershing-square-signature-center'] },
+  };
+  assert.deepEqual(findCandidateGaps(shows, defs, isOffBroadway), {});
+});
+
 test('findCandidateGaps still flags a real distinguishing-token gap', () => {
   const shows = [
     { venue: 'Sgouros Hall East', category: 'off-broadway' },

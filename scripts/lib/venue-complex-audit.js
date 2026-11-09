@@ -51,6 +51,12 @@ const GENERIC_TOKENS = new Set([
   // variant is no longer flagged (its other tokens are generic too); if that
   // spelling ever appears in shows.json, add it to subVenueSlugs by hand.
   'players',
+  // BRO-7068 (2026-11-09): "square" is a place name (Times/Pershing/Union
+  // Square). The Times Square Skywalk at "One Times Square" false-positived
+  // against Signature's Pershing Square Signature Center on this token alone
+  // and turned Check Corpus Drift red. "Pershing" and "Signature" still
+  // identify Signature's rooms.
+  'square',
 ]);
 
 // BRO-3159: London-only ambiguity. Retain the distinguishing words (young,
