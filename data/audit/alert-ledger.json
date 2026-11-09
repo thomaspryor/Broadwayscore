@@ -36135,7 +36135,7 @@
       "resolveReason": "BRO-6873: signing fixture now uses the running clock; all 9 digest-inline-answers tests pass at baseline, +45 days and +365 days."
     },
     "time-bomb-tests:unit:tests/unit/owner-decision-notify.test.mjs::reconcileAnswered: a replayed visual approval writes the missing signed approval comment, once": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Time-bomb test armed: tests/unit/owner-decision-notify.test.mjs — reconcileAnswered: a replayed visual approval writes the missing signed approval comment, once",
       "firstSeen": "2026-11-02T23:23:10.750Z",
@@ -36145,7 +36145,9 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-6874"
+      "linearIdentifier": "BRO-6874",
+      "resolvedAt": "2026-11-09T08:04:27.232Z",
+      "resolveReason": "BRO-6874: fixed on main by 4b7910099de (BRO-7066). All 28 owner-decision-notify tests pass at the current clock, +45 days and +365 days; verified 2026-11-09."
     },
     "land:land/job/linear-BRO-6716-mvzso4yj": {
       "status": "resolved",
