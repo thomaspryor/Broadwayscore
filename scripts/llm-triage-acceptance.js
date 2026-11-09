@@ -28,6 +28,7 @@ const MIN_READY = 10;
 const MIN_JUDGED = 30;
 const MAX_WRONG = 0.05;
 const WEEKS = 4;
+const MAX_SNAPSHOT_AGE_MS = 2 * WEEK_MS;
 
 /** Monday 00:00 UTC of the row's week, as ms. */
 function weekStart(ms) {
@@ -39,14 +40,16 @@ function weekStart(ms) {
 function weeklySnapshots(rows) {
   const byWeek = new Map();
   for (const r of rows || []) {
-    if (!r || r.source !== 'ci' || r.error || !(r.v >= 2) || !r.groups) continue;
+    // A row without a numeric stuck count is skipped (it leaves a gap week, which fails),
+    // so a renamed or dropped group key can never read as "stuck shrank to 0".
+    if (!r || r.source !== 'ci' || r.error || !(r.v >= 2) || !r.groups || !Number.isFinite(r.groups.stuck)) continue;
     const t = Date.parse(r.ts);
     if (!Number.isFinite(t)) continue;
     const w = weekStart(t);
     const prev = byWeek.get(w);
     if (!prev || Date.parse(prev.ts) < t) byWeek.set(w, r);
   }
-  return [...byWeek.entries()].sort((a, b) => a[0] - b[0]).map(([week, r]) => ({ week, stuck: Number(r.groups.stuck) || 0, ready: Number(r.ready) || 0, ts: r.ts }));
+  return [...byWeek.entries()].sort((a, b) => a[0] - b[0]).map(([week, r]) => ({ week, stuck: Number(r.groups.stuck), ready: Number(r.ready) || 0, ts: r.ts }));
 }
 
 function stuckShrinks(snaps, weeks = WEEKS) {
@@ -60,13 +63,17 @@ function stuckShrinks(snaps, weeks = WEEKS) {
   return { pass: true, detail: `stuck ${last.map((s) => s.stuck).join(' -> ')}` };
 }
 
-function judge({ dispatchRows, auditRows, coverageOk }) {
+function judge({ dispatchRows, auditRows, coverageOk, now = Date.now() }) {
   const snaps = weeklySnapshots(dispatchRows);
   const latest = snaps[snaps.length - 1];
+  // Board criteria only count while the dispatcher is still writing: old rows from a
+  // dead cron must not keep passing.
+  const stale = latest && now - Date.parse(latest.ts) > MAX_SNAPSHOT_AGE_MS;
+  const staleDetail = latest ? `newest CI v2 snapshot is stale (${latest.ts})` : '';
   const cum = A.cumulativeJudgments(auditRows);
   const criteria = [
-    { name: 'stuck group shrinks 4 weeks running', ...stuckShrinks(snaps) },
-    { name: `ready >= ${MIN_READY}`, pass: !!latest && latest.ready >= MIN_READY, detail: latest ? `ready ${latest.ready} (${latest.ts})` : 'no CI v2 snapshot yet' },
+    { name: 'stuck group shrinks 4 weeks running', ...(stale ? { pass: false, detail: staleDetail } : stuckShrinks(snaps)) },
+    { name: `ready >= ${MIN_READY}`, pass: !!latest && !stale && latest.ready >= MIN_READY, detail: stale ? staleDetail : latest ? `ready ${latest.ready} (${latest.ts})` : 'no CI v2 snapshot yet' },
     { name: `audit wrong-rate < ${MAX_WRONG * 100}% over >= ${MIN_JUDGED}`, pass: cum.scored >= MIN_JUDGED && cum.wrongRate < MAX_WRONG,
       detail: `${cum.scored} scored, ${cum.wrong} wrong${cum.wrongRate == null ? '' : ` (${(cum.wrongRate * 100).toFixed(1)}%)`}` },
     { name: 'coverage test green', pass: !!coverageOk, detail: coverageOk ? 'board-handlers + board-dispatch tests pass' : 'tests fail' },

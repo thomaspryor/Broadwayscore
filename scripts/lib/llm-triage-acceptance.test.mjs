@@ -32,13 +32,34 @@ test('stuckShrinks: 4 consecutive weeks each strictly lower; flat, rising or a g
 const audit = (n, wrong) => [{ ts: new Date(MON).toISOString(), source: 'ci', items: Array.from({ length: n }, (_, i) => ({ id: `BRO-${i}`, nominatedTs: 't', verdict: 'keep', judgment: i < wrong ? 'wrong' : 'right' })) }];
 
 test('judge: all four criteria must pass; thresholds are exclusive where the plan says so', () => {
-  const good = { dispatchRows: [snap(0, 60), snap(1, 50), snap(2, 40), snap(3, 30, 10)], auditRows: audit(40, 1), coverageOk: true };
+  const good = { dispatchRows: [snap(0, 60), snap(1, 50), snap(2, 40), snap(3, 30, 10)], auditRows: audit(40, 1), coverageOk: true, now: MON + 3 * WEEK + 86400000 };
   assert.equal(ACC.judge(good).pass, true);
   assert.equal(ACC.judge({ ...good, auditRows: audit(29, 0) }).pass, false); // too few judged
   assert.equal(ACC.judge({ ...good, auditRows: audit(40, 2) }).pass, false); // 5.0% is not < 5%
   assert.equal(ACC.judge({ ...good, dispatchRows: [snap(0, 60), snap(1, 50), snap(2, 40), snap(3, 30, 9)] }).pass, false);
   assert.equal(ACC.judge({ ...good, coverageOk: false }).pass, false);
   assert.equal(ACC.judge({ dispatchRows: [], auditRows: [], coverageOk: true }).criteria[1].detail, 'no CI v2 snapshot yet');
+});
+
+test('judge: stale or stuck-less snapshots never pass the board criteria (review finding)', () => {
+  const rows = [snap(0, 60), snap(1, 50), snap(2, 40), snap(3, 30, 10)];
+  const base = { dispatchRows: rows, auditRows: audit(40, 1), coverageOk: true };
+  // Dispatcher died: newest row is 3 weeks old.
+  const stale = ACC.judge({ ...base, now: MON + 6 * WEEK });
+  assert.equal(stale.pass, false);
+  assert.equal(stale.criteria[0].pass, false);
+  assert.equal(stale.criteria[1].pass, false);
+  // A renamed or dropped stuck key must not read as "stuck 0".
+  const noStuck = (w) => ({ ...snap(w, 0), groups: { other: 3 } });
+  const dropped = ACC.judge({ ...base, dispatchRows: [snap(0, 10), noStuck(1), noStuck(2), noStuck(3)], now: MON + 3 * WEEK });
+  assert.equal(dropped.criteria[0].pass, false);
+  assert.equal(ACC.weeklySnapshots([{ ...snap(0, 0), groups: { stuck: null } }]).length, 0);
+});
+
+test('settledKeys: only CI audit rows settle a nomination (review finding)', () => {
+  const item = { id: 'BRO-9', nominatedTs: 't1', judgment: 'right' };
+  assert.equal(AUD.settledKeys([{ source: 'local', items: [item] }]).size, 0);
+  assert.equal(AUD.settledKeys([{ source: 'ci', items: [item] }]).has('BRO-9|t1'), true);
 });
 
 test('main reads the committed ledger paths and exits 1 until the bar is met', () => {
