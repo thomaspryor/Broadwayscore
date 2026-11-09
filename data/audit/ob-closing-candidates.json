@@ -1,11 +1,36 @@
 {
-  "generatedAt": "2026-11-02T21:15:30.872Z",
+  "generatedAt": "2026-11-09T21:50:59.720Z",
   "mode": "apply",
   "autoApplied": [],
-  "autoFilledFutureDates": [],
+  "autoFilledFutureDates": [
+    {
+      "showId": "king-lear-off-broadway-2026",
+      "proposedClosingDate": "2026-11-21",
+      "latestMentionedDate": "2026-11-21",
+      "confidence": "high",
+      "evidence": [
+        {
+          "reviewId": "king-lear-off-broadway-2026/new-city-stage--tristan-bruns.json",
+          "isoDate": "2026-11-21",
+          "quote": "runs through November 21"
+        },
+        {
+          "reviewId": "king-lear-off-broadway-2026/new-city-stage--tristan-bruns.json",
+          "isoDate": "2026-11-21",
+          "quote": "through November 21"
+        },
+        {
+          "reviewId": "king-lear-off-broadway-2026/third-coast-review--unknown.json",
+          "isoDate": "2026-11-21",
+          "quote": "thru November 21"
+        }
+      ],
+      "reason": "future-date-not-yet-closed"
+    }
+  ],
   "reviewTextSweep": {
-    "scanned": 63,
-    "showsWithNoTexts": 8,
+    "scanned": 70,
+    "showsWithNoTexts": 11,
     "candidates": [],
     "unconfirmed": [
       {
@@ -79,26 +104,6 @@
         ]
       },
       {
-        "showId": "tosca-off-broadway-2026",
-        "mentions": [
-          {
-            "reviewId": "tosca-off-broadway-2026/broadwayworld--alexandre-diaconu.json",
-            "isoDate": "2024-12-01",
-            "quote": "through December 1, 2024"
-          }
-        ]
-      },
-      {
-        "showId": "msblackforpresident-off-broadway-2026",
-        "mentions": [
-          {
-            "reviewId": "msblackforpresident-off-broadway-2026/nytimes--jesse-green.json",
-            "isoDate": "2019-07-14",
-            "quote": "Through July 14"
-          }
-        ]
-      },
-      {
         "showId": "our-sinatra-a-musical-celebration-off-broadway-2026",
         "mentions": [
           {
@@ -160,70 +165,6 @@
         "reason": "stale-evidence"
       },
       {
-        "showId": "heathers-the-musical-off-broadway-2025",
-        "proposedClosingDate": "2026-01-25",
-        "latestMentionedDate": "2026-09-06",
-        "confidence": "high",
-        "evidence": [
-          {
-            "reviewId": "heathers-the-musical-off-broadway-2025/amny--matt-windman.json",
-            "isoDate": "2026-01-25",
-            "quote": "Through Jan. 25"
-          },
-          {
-            "reviewId": "heathers-the-musical-off-broadway-2025/culturesauce--thom-geier.json",
-            "isoDate": "2026-01-25",
-            "quote": "through January 25, 2026"
-          },
-          {
-            "reviewId": "heathers-the-musical-off-broadway-2025/front-row-center--stanford-friedman.json",
-            "isoDate": "2026-01-25",
-            "quote": "Through January 25, 2026"
-          },
-          {
-            "reviewId": "heathers-the-musical-off-broadway-2025/mashable--kristy-puchko.json",
-            "isoDate": "2026-01-25",
-            "quote": "through Jan. 25, 2026"
-          },
-          {
-            "reviewId": "heathers-the-musical-off-broadway-2025/nysr--david-finkle.json",
-            "isoDate": "2026-01-25",
-            "quote": "runs through January 25, 2026"
-          },
-          {
-            "reviewId": "heathers-the-musical-off-broadway-2025/nyt-theater--jonathan-mandell.json",
-            "isoDate": "2026-01-25",
-            "quote": "through January 25, 2026"
-          },
-          {
-            "reviewId": "heathers-the-musical-off-broadway-2025/nytg--caroline-cao.json",
-            "isoDate": "2026-01-25",
-            "quote": "through January 25, 2026"
-          },
-          {
-            "reviewId": "heathers-the-musical-off-broadway-2025/off-off-online--jessica-taghap.json",
-            "isoDate": "2026-01-25",
-            "quote": "runs through Jan. 25, 2026"
-          },
-          {
-            "reviewId": "heathers-the-musical-off-broadway-2025/talkinbroadway--howard-miller.json",
-            "isoDate": "2026-01-25",
-            "quote": "through January 25, 2026"
-          },
-          {
-            "reviewId": "heathers-the-musical-off-broadway-2025/vulture--jackson-mchenry.json",
-            "isoDate": "2026-01-25",
-            "quote": "through January 25, 2026"
-          },
-          {
-            "reviewId": "heathers-the-musical-off-broadway-2025/vulture--jesse-green.json",
-            "isoDate": "2026-01-25",
-            "quote": "through January 25, 2026"
-          }
-        ],
-        "reason": "already-has-closing-date"
-      },
-      {
         "showId": "the-play-that-goes-wrong-off-broadway-2019",
         "proposedClosingDate": "2019-01-06",
         "latestMentionedDate": "2025-08-31",
@@ -259,14 +200,49 @@
             "quote": "through November 15"
           },
           {
+            "reviewId": "in-the-heights-off-broadway-2026/josh-at-the-movies--unknown.json",
+            "isoDate": "2026-11-15",
+            "quote": "through November 15th"
+          },
+          {
+            "reviewId": "in-the-heights-off-broadway-2026/newsbreak--fabianna-rincon.json",
+            "isoDate": "2026-11-15",
+            "quote": "run through Nov. 15"
+          },
+          {
             "reviewId": "in-the-heights-off-broadway-2026/nyt-theater--jonathan-mandell.json",
             "isoDate": "2026-11-15",
             "quote": "through November 15"
           },
           {
-            "reviewId": "in-the-heights-off-broadway-2026/seattle-times--unknown.json",
+            "reviewId": "in-the-heights-off-broadway-2026/nyt-theater--unknown.json",
+            "isoDate": "2026-11-15",
+            "quote": "through November 15"
+          },
+          {
+            "reviewId": "in-the-heights-off-broadway-2026/nyt-theater--unknown.json",
+            "isoDate": "2026-11-15",
+            "quote": "through November 15"
+          },
+          {
+            "reviewId": "in-the-heights-off-broadway-2026/seattle-times--fabianna-rincon.json",
             "isoDate": "2026-11-15",
             "quote": "run through Nov. 15"
+          },
+          {
+            "reviewId": "in-the-heights-off-broadway-2026/talkinbroadway--howard-miller.json",
+            "isoDate": "2026-11-15",
+            "quote": "Through November 15, 2026"
+          },
+          {
+            "reviewId": "in-the-heights-off-broadway-2026/theater-pizzazz--unknown.json",
+            "isoDate": "2026-11-15",
+            "quote": "through November 15th"
+          },
+          {
+            "reviewId": "in-the-heights-off-broadway-2026/theater-scene--tony-marinelli.json",
+            "isoDate": "2026-11-15",
+            "quote": "through November 15, 2026"
           },
           {
             "reviewId": "in-the-heights-off-broadway-2026/vulture--jackson-mchenry.json",
@@ -277,9 +253,43 @@
         "reason": "already-has-closing-date"
       },
       {
+        "showId": "the-unbelievers-off-broadway-2026",
+        "proposedClosingDate": "2026-11-29",
+        "latestMentionedDate": "2026-11-29",
+        "confidence": "high",
+        "evidence": [
+          {
+            "reviewId": "the-unbelievers-off-broadway-2026/culturesauce--thom-geier.json",
+            "isoDate": "2026-11-29",
+            "quote": "through November 29"
+          },
+          {
+            "reviewId": "the-unbelievers-off-broadway-2026/nysr--david-finkle.json",
+            "isoDate": "2026-11-29",
+            "quote": "runs through November 29"
+          },
+          {
+            "reviewId": "the-unbelievers-off-broadway-2026/nytg--christian-lewis.json",
+            "isoDate": "2026-11-29",
+            "quote": "through November 29"
+          },
+          {
+            "reviewId": "the-unbelievers-off-broadway-2026/theater-pizzazz--unknown.json",
+            "isoDate": "2026-11-29",
+            "quote": "through November 29th"
+          },
+          {
+            "reviewId": "the-unbelievers-off-broadway-2026/theater-scene--darryl-reilly.json",
+            "isoDate": "2026-11-29",
+            "quote": "through Nov 29, 2026"
+          }
+        ],
+        "reason": "already-has-closing-date"
+      },
+      {
         "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
         "proposedClosingDate": "2026-09-07",
-        "latestMentionedDate": "2026-09-07",
+        "latestMentionedDate": "2027-01-17",
         "confidence": "high",
         "evidence": [
           {
@@ -311,6 +321,45 @@
             "reviewId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theater-scene--darryl-reilly.json",
             "isoDate": "2026-09-07",
             "quote": "through September 7, 2026"
+          }
+        ],
+        "reason": "already-has-closing-date"
+      },
+      {
+        "showId": "well-see-off-broadway-2026",
+        "proposedClosingDate": "2026-11-29",
+        "latestMentionedDate": "2026-11-29",
+        "confidence": "high",
+        "evidence": [
+          {
+            "reviewId": "well-see-off-broadway-2026/culturesauce--thom-geier.json",
+            "isoDate": "2026-11-29",
+            "quote": "through November 29"
+          },
+          {
+            "reviewId": "well-see-off-broadway-2026/nysr--frank-scheck.json",
+            "isoDate": "2026-11-29",
+            "quote": "runs through November 29"
+          },
+          {
+            "reviewId": "well-see-off-broadway-2026/nysr--melissa-rose-bernardo.json",
+            "isoDate": "2026-11-29",
+            "quote": "runs through Nov. 29"
+          },
+          {
+            "reviewId": "well-see-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+            "isoDate": "2026-11-29",
+            "quote": "through November 29, 2026"
+          },
+          {
+            "reviewId": "well-see-off-broadway-2026/theater-pizzazz--samuel-l-leiter.json",
+            "isoDate": "2026-11-29",
+            "quote": "through November 29th"
+          },
+          {
+            "reviewId": "well-see-off-broadway-2026/vulture--sara-holdren.json",
+            "isoDate": "2026-11-29",
+            "quote": "through November 29"
           }
         ],
         "reason": "already-has-closing-date"
@@ -415,6 +464,99 @@
         "reason": "already-has-closing-date"
       },
       {
+        "showId": "the-verge-off-broadway-2026",
+        "proposedClosingDate": "2026-11-22",
+        "latestMentionedDate": "2027-11-29",
+        "confidence": "high",
+        "evidence": [
+          {
+            "reviewId": "the-verge-off-broadway-2026/culturesauce--thom-geier.json",
+            "isoDate": "2026-11-22",
+            "quote": "through November 22"
+          },
+          {
+            "reviewId": "the-verge-off-broadway-2026/nysr--michael-sommers.json",
+            "isoDate": "2026-11-22",
+            "quote": "runs through November 22"
+          },
+          {
+            "reviewId": "the-verge-off-broadway-2026/nytg--christian-lewis.json",
+            "isoDate": "2026-11-22",
+            "quote": "through November 22"
+          },
+          {
+            "reviewId": "the-verge-off-broadway-2026/nytimes--helen-shaw.json",
+            "isoDate": "2026-11-22",
+            "quote": "Through Nov. 22"
+          },
+          {
+            "reviewId": "the-verge-off-broadway-2026/talkinbroadway--howard-miller.json",
+            "isoDate": "2026-11-22",
+            "quote": "Through November 22, 2026"
+          },
+          {
+            "reviewId": "the-verge-off-broadway-2026/vulture--sara-holdren.json",
+            "isoDate": "2026-11-22",
+            "quote": "through November 22"
+          }
+        ],
+        "reason": "already-has-closing-date"
+      },
+      {
+        "showId": "clifford-odets-waiting-for-lefty-off-broadway-2026",
+        "proposedClosingDate": "2026-11-29",
+        "latestMentionedDate": "2026-11-29",
+        "confidence": "high",
+        "evidence": [
+          {
+            "reviewId": "clifford-odets-waiting-for-lefty-off-broadway-2026/front-row-center--tulis-mccall.json",
+            "isoDate": "2026-11-29",
+            "quote": "through November 29"
+          },
+          {
+            "reviewId": "clifford-odets-waiting-for-lefty-off-broadway-2026/nysr--michael-sommers.json",
+            "isoDate": "2026-11-29",
+            "quote": "runs through November 29"
+          },
+          {
+            "reviewId": "clifford-odets-waiting-for-lefty-off-broadway-2026/nysr--roma-torre.json",
+            "isoDate": "2026-11-29",
+            "quote": "runs through November 29"
+          },
+          {
+            "reviewId": "clifford-odets-waiting-for-lefty-off-broadway-2026/nytg--gillian-russo.json",
+            "isoDate": "2026-11-29",
+            "quote": "through November 29"
+          },
+          {
+            "reviewId": "clifford-odets-waiting-for-lefty-off-broadway-2026/nytimes--helen-shaw.json",
+            "isoDate": "2026-11-29",
+            "quote": "through Nov. 29"
+          },
+          {
+            "reviewId": "clifford-odets-waiting-for-lefty-off-broadway-2026/nytimes--tim-teeman.json",
+            "isoDate": "2026-11-29",
+            "quote": "Through Nov. 29"
+          },
+          {
+            "reviewId": "clifford-odets-waiting-for-lefty-off-broadway-2026/talkinbroadway--james-wilson.json",
+            "isoDate": "2026-11-29",
+            "quote": "Through November 29, 2026"
+          },
+          {
+            "reviewId": "clifford-odets-waiting-for-lefty-off-broadway-2026/theatrely--juan-a-ramirez.json",
+            "isoDate": "2026-11-29",
+            "quote": "through November 29, 2026"
+          },
+          {
+            "reviewId": "clifford-odets-waiting-for-lefty-off-broadway-2026/vulture--sara-holdren.json",
+            "isoDate": "2026-11-29",
+            "quote": "through November 29"
+          }
+        ],
+        "reason": "already-has-closing-date"
+      },
+      {
         "showId": "la-boheme-off-broadway-2026",
         "proposedClosingDate": "2026-10-31",
         "latestMentionedDate": "2026-10-31",
@@ -450,6 +592,11 @@
             "quote": "through Nov. 14"
           },
           {
+            "reviewId": "lincoln-in-the-bardo-off-broadway-2026/nysr--frank-scheck.json",
+            "isoDate": "2026-11-14",
+            "quote": "runs through November 14"
+          },
+          {
             "reviewId": "lincoln-in-the-bardo-off-broadway-2026/nytimes--joshua-barone.json",
             "isoDate": "2026-11-14",
             "quote": "Through Nov. 14"
@@ -482,6 +629,69 @@
             "reviewId": "medea-off-broadway-2026/new-york-classical-review--rick-perdian.json",
             "isoDate": "2026-11-21",
             "quote": "through November 21"
+          }
+        ],
+        "reason": "already-has-closing-date"
+      },
+      {
+        "showId": "tosca-off-broadway-2026",
+        "proposedClosingDate": "2026-11-20",
+        "latestMentionedDate": "2026-11-20",
+        "confidence": "high",
+        "evidence": [
+          {
+            "reviewId": "tosca-off-broadway-2026/new-york-classical-review--rick-perdian.json",
+            "isoDate": "2026-11-20",
+            "quote": "through November 20"
+          },
+          {
+            "reviewId": "tosca-off-broadway-2026/new-york-classical-review--unknown.json",
+            "isoDate": "2026-11-20",
+            "quote": "through November 20"
+          }
+        ],
+        "reason": "already-has-closing-date"
+      },
+      {
+        "showId": "msblackforpresident-off-broadway-2026",
+        "proposedClosingDate": "2026-11-29",
+        "latestMentionedDate": "2026-11-29",
+        "confidence": "high",
+        "evidence": [
+          {
+            "reviewId": "msblackforpresident-off-broadway-2026/culturesauce--thom-geier.json",
+            "isoDate": "2026-11-29",
+            "quote": "through November 29"
+          },
+          {
+            "reviewId": "msblackforpresident-off-broadway-2026/front-row-center--brittany-crowell.json",
+            "isoDate": "2026-11-29",
+            "quote": "through November 29"
+          },
+          {
+            "reviewId": "msblackforpresident-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
+            "isoDate": "2026-11-29",
+            "quote": "through November 29"
+          },
+          {
+            "reviewId": "msblackforpresident-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+            "isoDate": "2026-11-29",
+            "quote": "through November 29"
+          },
+          {
+            "reviewId": "msblackforpresident-off-broadway-2026/nytg--kyle-turner.json",
+            "isoDate": "2026-11-29",
+            "quote": "through November 29"
+          },
+          {
+            "reviewId": "msblackforpresident-off-broadway-2026/talkinbroadway--james-wilson.json",
+            "isoDate": "2026-11-29",
+            "quote": "Through November 29, 2026"
+          },
+          {
+            "reviewId": "msblackforpresident-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
+            "isoDate": "2026-11-29",
+            "quote": "through November 29th"
           }
         ],
         "reason": "already-has-closing-date"
@@ -533,6 +743,11 @@
             "quote": "Through November 15, 2026"
           },
           {
+            "reviewId": "king-of-the-yees-off-broadway-2026/the-100-word-review--unknown.json",
+            "isoDate": "2026-11-15",
+            "quote": "through Nov. 15, 2026"
+          },
+          {
             "reviewId": "king-of-the-yees-off-broadway-2026/theater-scene--tony-marinelli.json",
             "isoDate": "2026-11-15",
             "quote": "through November 15, 2026"
@@ -541,50 +756,6 @@
             "reviewId": "king-of-the-yees-off-broadway-2026/vulture--sara-holdren.json",
             "isoDate": "2026-11-15",
             "quote": "through November 15"
-          }
-        ],
-        "reason": "already-has-closing-date"
-      },
-      {
-        "showId": "phyl-off-broadway-2026",
-        "proposedClosingDate": "2026-11-07",
-        "latestMentionedDate": "2026-11-07",
-        "confidence": "high",
-        "evidence": [
-          {
-            "reviewId": "phyl-off-broadway-2026/frombroadway--rachel-graham.json",
-            "isoDate": "2026-11-07",
-            "quote": "through November 7, 2026"
-          },
-          {
-            "reviewId": "phyl-off-broadway-2026/nysr--michael-sommers.json",
-            "isoDate": "2026-11-07",
-            "quote": "runs through November 7"
-          },
-          {
-            "reviewId": "phyl-off-broadway-2026/off-off-online--deirdre-donovan.json",
-            "isoDate": "2026-11-07",
-            "quote": "through Nov. 7"
-          },
-          {
-            "reviewId": "phyl-off-broadway-2026/talkinbroadway--james-wilson.json",
-            "isoDate": "2026-11-07",
-            "quote": "Through November 7, 2026"
-          },
-          {
-            "reviewId": "phyl-off-broadway-2026/the-komisar-scoop--lucy-komisar.json",
-            "isoDate": "2026-11-07",
-            "quote": "closes Nov 7, 2026"
-          },
-          {
-            "reviewId": "phyl-off-broadway-2026/theater-scene--samuel-l-leiter.json",
-            "isoDate": "2026-11-07",
-            "quote": "through November 7, 2026"
-          },
-          {
-            "reviewId": "phyl-off-broadway-2026/this-week-in-new-york--unknown.json",
-            "isoDate": "2026-11-07",
-            "quote": "through November 7"
           }
         ],
         "reason": "already-has-closing-date"
@@ -664,6 +835,50 @@
         "reason": "already-has-closing-date"
       },
       {
+        "showId": "222-a-ghost-story-off-broadway-2026",
+        "proposedClosingDate": "2027-01-17",
+        "latestMentionedDate": "2027-01-17",
+        "confidence": "high",
+        "evidence": [
+          {
+            "reviewId": "222-a-ghost-story-off-broadway-2026/culturesauce--thom-geier.json",
+            "isoDate": "2027-01-17",
+            "quote": "through January 17"
+          },
+          {
+            "reviewId": "222-a-ghost-story-off-broadway-2026/frontmezzjunkies--unknown.json",
+            "isoDate": "2027-01-17",
+            "quote": "through January 17, 2027"
+          },
+          {
+            "reviewId": "222-a-ghost-story-off-broadway-2026/nysr--frank-scheck.json",
+            "isoDate": "2027-01-17",
+            "quote": "runs through January 17, 2027"
+          },
+          {
+            "reviewId": "222-a-ghost-story-off-broadway-2026/nytg--gillian-russo.json",
+            "isoDate": "2027-01-17",
+            "quote": "through January 17"
+          },
+          {
+            "reviewId": "222-a-ghost-story-off-broadway-2026/theatrely--kobi-kassal.json",
+            "isoDate": "2027-01-17",
+            "quote": "through Jan. 17"
+          },
+          {
+            "reviewId": "222-a-ghost-story-off-broadway-2026/theatrely--kobi-kassal.json",
+            "isoDate": "2027-01-17",
+            "quote": "runs through Jan. 17, 2027"
+          },
+          {
+            "reviewId": "222-a-ghost-story-off-broadway-2026/wsj--charles-isherwood.json",
+            "isoDate": "2027-01-17",
+            "quote": "closes Jan. 17, 2027"
+          }
+        ],
+        "reason": "already-has-closing-date"
+      },
+      {
         "showId": "midnight-off-broadway-2026",
         "proposedClosingDate": "2026-11-08",
         "latestMentionedDate": "2027-01-03",
@@ -693,6 +908,80 @@
             "reviewId": "midnight-off-broadway-2026/theater-scene--victor-gluck.json",
             "isoDate": "2026-11-08",
             "quote": "through November 8, 2026"
+          }
+        ],
+        "reason": "already-has-closing-date"
+      },
+      {
+        "showId": "tristan-and-yseult-off-broadway-2026",
+        "proposedClosingDate": "2026-11-22",
+        "latestMentionedDate": "2026-11-22",
+        "confidence": "high",
+        "evidence": [
+          {
+            "reviewId": "tristan-and-yseult-off-broadway-2026/culturesauce--thom-geier.json",
+            "isoDate": "2026-11-22",
+            "quote": "through November 22"
+          },
+          {
+            "reviewId": "tristan-and-yseult-off-broadway-2026/front-row-center--tom-storch.json",
+            "isoDate": "2026-11-22",
+            "quote": "through November 22nd"
+          },
+          {
+            "reviewId": "tristan-and-yseult-off-broadway-2026/front-row-center--tom-storch.json",
+            "isoDate": "2026-11-22",
+            "quote": "through November 22nd"
+          },
+          {
+            "reviewId": "tristan-and-yseult-off-broadway-2026/front-row-center--unknown.json",
+            "isoDate": "2026-11-22",
+            "quote": "through November 22nd"
+          },
+          {
+            "reviewId": "tristan-and-yseult-off-broadway-2026/front-row-center--unknown.json",
+            "isoDate": "2026-11-22",
+            "quote": "through November 22nd"
+          },
+          {
+            "reviewId": "tristan-and-yseult-off-broadway-2026/front-row-center--unknown.json",
+            "isoDate": "2026-11-22",
+            "quote": "through November 22nd"
+          },
+          {
+            "reviewId": "tristan-and-yseult-off-broadway-2026/front-row-center--unknown.json",
+            "isoDate": "2026-11-22",
+            "quote": "through November 22nd"
+          },
+          {
+            "reviewId": "tristan-and-yseult-off-broadway-2026/front-row-center--unknown.json",
+            "isoDate": "2026-11-22",
+            "quote": "through November 22nd"
+          },
+          {
+            "reviewId": "tristan-and-yseult-off-broadway-2026/nysr--david-finkle.json",
+            "isoDate": "2026-11-22",
+            "quote": "runs through November 22"
+          },
+          {
+            "reviewId": "tristan-and-yseult-off-broadway-2026/nytg--austin-fimmano.json",
+            "isoDate": "2026-11-22",
+            "quote": "through November 22"
+          },
+          {
+            "reviewId": "tristan-and-yseult-off-broadway-2026/nytg--austin-fimmano.json",
+            "isoDate": "2026-11-22",
+            "quote": "through November 22"
+          },
+          {
+            "reviewId": "tristan-and-yseult-off-broadway-2026/nytg--unknown.json",
+            "isoDate": "2026-11-22",
+            "quote": "through November 22"
+          },
+          {
+            "reviewId": "tristan-and-yseult-off-broadway-2026/nytg--unknown.json",
+            "isoDate": "2026-11-22",
+            "quote": "through November 22"
           }
         ],
         "reason": "already-has-closing-date"
@@ -769,7 +1058,7 @@
       {
         "showId": "the-hairy-ape-irish-repertory-theatre-off-broadway-2026",
         "proposedClosingDate": "2026-11-15",
-        "latestMentionedDate": "2026-11-15",
+        "latestMentionedDate": "2026-12-06",
         "confidence": "high",
         "evidence": [
           {
@@ -878,6 +1167,11 @@
           },
           {
             "reviewId": "delirium-off-broadway-2026/this-week-in-new-york--unknown.json",
+            "isoDate": "2026-11-07",
+            "quote": "through November 7"
+          },
+          {
+            "reviewId": "delirium-off-broadway-2026/vulture--sara-holdren.json",
             "isoDate": "2026-11-07",
             "quote": "through November 7"
           }
@@ -1066,45 +1360,6 @@
         "reason": "already-has-closing-date"
       },
       {
-        "showId": "aftermath-art-new-york-off-broadway-2026",
-        "proposedClosingDate": "2026-11-08",
-        "latestMentionedDate": "2026-11-08",
-        "confidence": "high",
-        "evidence": [
-          {
-            "reviewId": "aftermath-art-new-york-off-broadway-2026/frombroadway--kenji-fujishima.json",
-            "isoDate": "2026-11-08",
-            "quote": "through Sunday, November 8"
-          },
-          {
-            "reviewId": "aftermath-art-new-york-off-broadway-2026/nyt-theater--jonathan-mandell.json",
-            "isoDate": "2026-11-08",
-            "quote": "through November 8"
-          },
-          {
-            "reviewId": "aftermath-art-new-york-off-broadway-2026/off-off-online--unknown.json",
-            "isoDate": "2026-11-08",
-            "quote": "through Nov. 8"
-          },
-          {
-            "reviewId": "aftermath-art-new-york-off-broadway-2026/talkinbroadway--moshe-a-bloxenheim.json",
-            "isoDate": "2026-11-08",
-            "quote": "Through November 8, 2026"
-          },
-          {
-            "reviewId": "aftermath-art-new-york-off-broadway-2026/theater-pizzazz--ron-fassler.json",
-            "isoDate": "2026-11-08",
-            "quote": "through November 8th"
-          },
-          {
-            "reviewId": "aftermath-art-new-york-off-broadway-2026/theater-scene--darryl-reilly.json",
-            "isoDate": "2026-11-08",
-            "quote": "through November 8, 2026"
-          }
-        ],
-        "reason": "already-has-closing-date"
-      },
-      {
         "showId": "copperfield-the-new-musical-off-broadway-2026",
         "proposedClosingDate": "2026-12-06",
         "latestMentionedDate": "2026-12-06",
@@ -1124,6 +1379,11 @@
             "reviewId": "copperfield-the-new-musical-off-broadway-2026/josh-at-the-movies--joshua-m-hayes.json",
             "isoDate": "2026-12-06",
             "quote": "through December 6th, 2026"
+          },
+          {
+            "reviewId": "copperfield-the-new-musical-off-broadway-2026/la-voce-di-new-york--elise-nussbaum.json",
+            "isoDate": "2026-12-06",
+            "quote": "Through December 6"
           },
           {
             "reviewId": "copperfield-the-new-musical-off-broadway-2026/mashable--kristy-puchko.json",
@@ -1248,65 +1508,6 @@
         "reason": "already-has-closing-date"
       },
       {
-        "showId": "degenerates-off-broadway-2026",
-        "proposedClosingDate": "2026-10-18",
-        "latestMentionedDate": "2026-11-15",
-        "confidence": "high",
-        "evidence": [
-          {
-            "reviewId": "degenerates-off-broadway-2026/broadwayradio--james-marino.json",
-            "isoDate": "2026-10-18",
-            "quote": "through October 18, 2026"
-          },
-          {
-            "reviewId": "degenerates-off-broadway-2026/culturesauce--thom-geier.json",
-            "isoDate": "2026-10-18",
-            "quote": "through October 18"
-          },
-          {
-            "reviewId": "degenerates-off-broadway-2026/front-row-center--sarah-downs.json",
-            "isoDate": "2026-10-18",
-            "quote": "through October 18th"
-          },
-          {
-            "reviewId": "degenerates-off-broadway-2026/front-row-center--unknown.json",
-            "isoDate": "2026-10-18",
-            "quote": "through October 18th"
-          },
-          {
-            "reviewId": "degenerates-off-broadway-2026/nysr--michael-sommers.json",
-            "isoDate": "2026-10-18",
-            "quote": "runs through October 18"
-          },
-          {
-            "reviewId": "degenerates-off-broadway-2026/nyt-theater--jonathan-mandell.json",
-            "isoDate": "2026-10-18",
-            "quote": "through October 18"
-          },
-          {
-            "reviewId": "degenerates-off-broadway-2026/nytg--caroline-cao.json",
-            "isoDate": "2026-10-18",
-            "quote": "through October 18"
-          },
-          {
-            "reviewId": "degenerates-off-broadway-2026/playbill--unknown.json",
-            "isoDate": "2026-10-18",
-            "quote": "through October 18"
-          },
-          {
-            "reviewId": "degenerates-off-broadway-2026/talkinbroadway--marc-miller.json",
-            "isoDate": "2026-10-18",
-            "quote": "Through October 18, 2026"
-          },
-          {
-            "reviewId": "degenerates-off-broadway-2026/vulture--sara-holdren.json",
-            "isoDate": "2026-10-18",
-            "quote": "through October 18"
-          }
-        ],
-        "reason": "already-has-closing-date"
-      },
-      {
         "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
         "proposedClosingDate": "2027-01-03",
         "latestMentionedDate": "2027-01-27",
@@ -1316,6 +1517,11 @@
             "reviewId": "memoirs-of-amorous-gentlemen-off-broadway-2026/amnewscurtainraiser--unknown.json",
             "isoDate": "2027-01-03",
             "quote": "run through Jan. 3, 2027"
+          },
+          {
+            "reviewId": "memoirs-of-amorous-gentlemen-off-broadway-2026/amny--unknown.json",
+            "isoDate": "2027-01-03",
+            "quote": "runs through Jan. 3"
           },
           {
             "reviewId": "memoirs-of-amorous-gentlemen-off-broadway-2026/culturesauce--thom-geier.json",
@@ -1338,6 +1544,16 @@
             "quote": "through January 3rd, 2027"
           },
           {
+            "reviewId": "memoirs-of-amorous-gentlemen-off-broadway-2026/mashable--kristy-puchko.json",
+            "isoDate": "2027-01-03",
+            "quote": "through Jan. 3, 2027"
+          },
+          {
+            "reviewId": "memoirs-of-amorous-gentlemen-off-broadway-2026/mashable--unknown.json",
+            "isoDate": "2027-01-03",
+            "quote": "through Jan. 3, 2027"
+          },
+          {
             "reviewId": "memoirs-of-amorous-gentlemen-off-broadway-2026/nysr--david-finkle.json",
             "isoDate": "2027-01-03",
             "quote": "runs through January 3, 2027"
@@ -1351,6 +1567,21 @@
             "reviewId": "memoirs-of-amorous-gentlemen-off-broadway-2026/nytg--gillian-russo.json",
             "isoDate": "2027-01-03",
             "quote": "through January 3"
+          },
+          {
+            "reviewId": "memoirs-of-amorous-gentlemen-off-broadway-2026/off-off-online--deirdre-donovan.json",
+            "isoDate": "2027-01-03",
+            "quote": "through Jan. 3"
+          },
+          {
+            "reviewId": "memoirs-of-amorous-gentlemen-off-broadway-2026/off-off-online--unknown.json",
+            "isoDate": "2027-01-03",
+            "quote": "through Jan. 3"
+          },
+          {
+            "reviewId": "memoirs-of-amorous-gentlemen-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+            "isoDate": "2027-01-03",
+            "quote": "through Jan. 3, 2027"
           },
           {
             "reviewId": "memoirs-of-amorous-gentlemen-off-broadway-2026/playbill--meg-masseron.json",
@@ -1410,6 +1641,55 @@
         "reason": "already-has-closing-date"
       },
       {
+        "showId": "rope-off-broadway-2026",
+        "proposedClosingDate": "2026-12-06",
+        "latestMentionedDate": "2026-12-06",
+        "confidence": "high",
+        "evidence": [
+          {
+            "reviewId": "rope-off-broadway-2026/culturesauce--thom-geier.json",
+            "isoDate": "2026-12-06",
+            "quote": "through December 6"
+          },
+          {
+            "reviewId": "rope-off-broadway-2026/gay-city-news--david-kennerley.json",
+            "isoDate": "2026-12-06",
+            "quote": "Through December 6, 2026"
+          },
+          {
+            "reviewId": "rope-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
+            "isoDate": "2026-12-06",
+            "quote": "through December 6"
+          },
+          {
+            "reviewId": "rope-off-broadway-2026/nysr--michael-sommers.json",
+            "isoDate": "2026-12-06",
+            "quote": "runs through December 6"
+          },
+          {
+            "reviewId": "rope-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+            "isoDate": "2026-12-06",
+            "quote": "through December 6"
+          },
+          {
+            "reviewId": "rope-off-broadway-2026/nytg--kyle-turner.json",
+            "isoDate": "2026-12-06",
+            "quote": "through December 6"
+          },
+          {
+            "reviewId": "rope-off-broadway-2026/nytg--kyle-turner.json",
+            "isoDate": "2026-12-06",
+            "quote": "through December 6"
+          },
+          {
+            "reviewId": "rope-off-broadway-2026/theater-scene--darryl-reilly.json",
+            "isoDate": "2026-12-06",
+            "quote": "through December 6, 2026"
+          }
+        ],
+        "reason": "already-has-closing-date"
+      },
+      {
         "showId": "the-ask-off-broadway-2026",
         "proposedClosingDate": "2026-11-22",
         "latestMentionedDate": "2026-11-22",
@@ -1459,6 +1739,40 @@
             "reviewId": "the-ask-off-broadway-2026/theatrely--kobi-kassal.json",
             "isoDate": "2026-11-22",
             "quote": "run through November 22"
+          }
+        ],
+        "reason": "already-has-closing-date"
+      },
+      {
+        "showId": "parcel-from-america-off-broadway-2026",
+        "proposedClosingDate": "2026-11-22",
+        "latestMentionedDate": "2026-11-22",
+        "confidence": "high",
+        "evidence": [
+          {
+            "reviewId": "parcel-from-america-off-broadway-2026/irish-central--walter-murphy.json",
+            "isoDate": "2026-11-22",
+            "quote": "through November 22"
+          },
+          {
+            "reviewId": "parcel-from-america-off-broadway-2026/nitelifeexchange-com--nitelife-exchange.json",
+            "isoDate": "2026-11-22",
+            "quote": "through Monday, November 22"
+          },
+          {
+            "reviewId": "parcel-from-america-off-broadway-2026/off-off-online--marc-miller.json",
+            "isoDate": "2026-11-22",
+            "quote": "through Nov. 22"
+          },
+          {
+            "reviewId": "parcel-from-america-off-broadway-2026/talkinbroadway--moshe-a-bloxenheim.json",
+            "isoDate": "2026-11-22",
+            "quote": "Through November 22, 2026"
+          },
+          {
+            "reviewId": "parcel-from-america-off-broadway-2026/theater-scene--deb-miller.json",
+            "isoDate": "2026-11-22",
+            "quote": "Through November 22, 2026"
           }
         ],
         "reason": "already-has-closing-date"
@@ -1570,6 +1884,44 @@
         "reason": "already-has-closing-date"
       },
       {
+        "showId": "the-morbs-off-broadway-2026",
+        "proposedClosingDate": "2026-11-21",
+        "latestMentionedDate": "2026-11-21",
+        "confidence": "high",
+        "evidence": [
+          {
+            "reviewId": "the-morbs-off-broadway-2026/off-off-online--adrienne-onofri.json",
+            "isoDate": "2026-11-21",
+            "quote": "runs through Nov. 21"
+          },
+          {
+            "reviewId": "the-morbs-off-broadway-2026/theater-scene--victor-gluck.json",
+            "isoDate": "2026-11-21",
+            "quote": "through November 21, 2026"
+          },
+          {
+            "reviewId": "the-morbs-off-broadway-2026/this-week-in-new-york--unknown.json",
+            "isoDate": "2026-11-21",
+            "quote": "through November 21"
+          }
+        ],
+        "reason": "already-has-closing-date"
+      },
+      {
+        "showId": "the-blue-violinist-over-west-end-avenue-off-broadway-2026",
+        "proposedClosingDate": "2026-12-05",
+        "latestMentionedDate": "2026-12-05",
+        "confidence": "medium",
+        "evidence": [
+          {
+            "reviewId": "the-blue-violinist-over-west-end-avenue-off-broadway-2026/talkinbroadway--unknown.json",
+            "isoDate": "2026-12-05",
+            "quote": "Through December 5, 2026"
+          }
+        ],
+        "reason": "already-has-closing-date"
+      },
+      {
         "showId": "specimen-off-broadway-2026",
         "proposedClosingDate": "2026-06-06",
         "latestMentionedDate": "2026-11-21",
@@ -1599,30 +1951,34 @@
         "reason": "already-has-closing-date"
       },
       {
-        "showId": "the-kick-inside-off-broadway-2026",
-        "proposedClosingDate": "2026-11-07",
-        "latestMentionedDate": "2026-11-07",
-        "confidence": "high",
+        "showId": "broom-play-off-broadway-2026",
+        "proposedClosingDate": "2026-11-29",
+        "latestMentionedDate": "2026-11-29",
+        "confidence": "medium",
         "evidence": [
           {
-            "reviewId": "the-kick-inside-off-broadway-2026/off-off-online--nicole-colbert.json",
-            "isoDate": "2026-11-07",
-            "quote": "through Nov. 7"
+            "reviewId": "broom-play-off-broadway-2026/front-row-center--david-walters.json",
+            "isoDate": "2026-11-29",
+            "quote": "through November 29"
+          }
+        ],
+        "reason": "already-has-closing-date"
+      },
+      {
+        "showId": "the-steel-man-off-broadway-2026",
+        "proposedClosingDate": "2026-12-13",
+        "latestMentionedDate": "2026-12-13",
+        "confidence": "medium",
+        "evidence": [
+          {
+            "reviewId": "the-steel-man-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
+            "isoDate": "2026-12-13",
+            "quote": "through December 13"
           },
           {
-            "reviewId": "the-kick-inside-off-broadway-2026/off-off-online--unknown.json",
-            "isoDate": "2026-11-07",
-            "quote": "through Nov. 7"
-          },
-          {
-            "reviewId": "the-kick-inside-off-broadway-2026/theater-scene--tony-marinelli.json",
-            "isoDate": "2026-11-07",
-            "quote": "through November 7, 2026"
-          },
-          {
-            "reviewId": "the-kick-inside-off-broadway-2026/this-week-in-new-york--unknown.json",
-            "isoDate": "2026-11-07",
-            "quote": "through November 7"
+            "reviewId": "the-steel-man-off-broadway-2026/times-square-chronicles--suzanna-bowling.json",
+            "isoDate": "2026-12-13",
+            "quote": "through December 13th"
           }
         ],
         "reason": "already-has-closing-date"
@@ -1652,24 +2008,72 @@
         "reason": "already-has-closing-date"
       },
       {
-        "showId": "women-who-eat-off-broadway-2026",
-        "proposedClosingDate": "2026-11-08",
-        "latestMentionedDate": "2026-11-08",
-        "confidence": "medium",
+        "showId": "slanted-floors-off-broadway-2026",
+        "proposedClosingDate": "2026-11-29",
+        "latestMentionedDate": "2026-11-29",
+        "confidence": "high",
         "evidence": [
           {
-            "reviewId": "women-who-eat-off-broadway-2026/theaterlabnyc--orietta.json",
-            "isoDate": "2026-11-08",
-            "quote": "Final performance Sunday, November 8"
+            "reviewId": "slanted-floors-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+            "isoDate": "2026-11-29",
+            "quote": "through November 29"
+          },
+          {
+            "reviewId": "slanted-floors-off-broadway-2026/one-minute-critic--jerry-portwood.json",
+            "isoDate": "2026-11-29",
+            "quote": "through November 29, 2026"
           }
         ],
         "reason": "already-has-closing-date"
+      },
+      {
+        "showId": "the-charioteer-off-broadway-2026",
+        "proposedClosingDate": "2026-11-22",
+        "latestMentionedDate": "2026-11-22",
+        "confidence": "high",
+        "evidence": [
+          {
+            "reviewId": "the-charioteer-off-broadway-2026/off-off-online--unknown.json",
+            "isoDate": "2026-11-22",
+            "quote": "runs through Nov. 22"
+          },
+          {
+            "reviewId": "the-charioteer-off-broadway-2026/off-off-online--walter-murphy.json",
+            "isoDate": "2026-11-22",
+            "quote": "runs through Nov. 22"
+          }
+        ],
+        "reason": "already-has-closing-date"
+      },
+      {
+        "showId": "king-lear-off-broadway-2026",
+        "proposedClosingDate": "2026-11-21",
+        "latestMentionedDate": "2026-11-21",
+        "confidence": "high",
+        "evidence": [
+          {
+            "reviewId": "king-lear-off-broadway-2026/new-city-stage--tristan-bruns.json",
+            "isoDate": "2026-11-21",
+            "quote": "runs through November 21"
+          },
+          {
+            "reviewId": "king-lear-off-broadway-2026/new-city-stage--tristan-bruns.json",
+            "isoDate": "2026-11-21",
+            "quote": "through November 21"
+          },
+          {
+            "reviewId": "king-lear-off-broadway-2026/third-coast-review--unknown.json",
+            "isoDate": "2026-11-21",
+            "quote": "thru November 21"
+          }
+        ],
+        "reason": "future-date-not-yet-closed"
       }
     ]
   },
   "unmonitoredOpenShows": [],
   "todaytixStaleness": {
-    "checked": 51,
+    "checked": 64,
     "skipped": false,
     "candidates": []
   }
