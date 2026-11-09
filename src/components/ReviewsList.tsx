@@ -332,7 +332,7 @@ function ExternalLinkIcon({ className }: { className?: string }) {
 }
 
 const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop, showTiers = true }: { review: ReviewListItem; isLast: boolean; category?: string; hideStop?: boolean; showTiers?: boolean }) {
-  const { label: scoreLabel, colorScore } = getReviewBadgePresentation(review.verdict, review.reviewScore, category);
+  const { label: scoreLabel, colorScore } = getReviewBadgePresentation(review.reviewScore, category);
 
   // Phones show the date in the byline instead of the header row, which
   // otherwise squeezes the outlet name to a letter or two next to the tier
