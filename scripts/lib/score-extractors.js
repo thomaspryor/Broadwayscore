@@ -129,7 +129,7 @@ const FIRST_PERSON_SUBJECT = /\b(?:I|I'd|I'm|I'll|I've|we|we'd|we're|we'll|this\
 // of five stars, ..." / "The Stage: four stars."
 const RELAYED_PASSIVE_VERB = /\b(?:earned|earns|earning|received|receives|garnered|got|landed|picked\s+up)\b/i;
 const OTHER_SOURCE_NAMED = /\b(?:critic|critics|reviewer|reviewers)\b|\b(?:The\s+(?:Times|Sunday\s+Times|Telegraph|Guardian|Observer|Stage|Independent|Evening\s+Standard|Financial\s+Times|Daily\s+Mail|Mail\s+on\s+Sunday|Daily\s+Express|Sun|Arts\s*Desk|New\s+York\s+Times)|Time\s+Out|WhatsOnStage|Variety|Metro|iNews|Broadway\s*World)\b/;
-const OUTLET_LABEL_BEFORE = /(?:\bThe\s+(?:Times|Sunday\s+Times|Telegraph|Guardian|Observer|Stage|Independent|Evening\s+Standard|Financial\s+Times|Daily\s+Mail|Arts\s*Desk)|Time\s+Out|WhatsOnStage|Variety|Metro|iNews)(?:'s\s+[A-Z][\w'-]+(?:\s+[A-Z][\w'-]+)?)?\s*(?::|,\s*with|\s+with|\s*\()\s*$/;
+const OUTLET_LABEL_BEFORE = /(?:\bThe\s+(?:Times|Sunday\s+Times|Telegraph|Guardian|Observer|Stage|Independent|Evening\s+Standard|Financial\s+Times|Daily\s+Mail|Arts\s*Desk)|\bTime\s+Out|\bWhatsOnStage|\bVariety|\bMetro|\biNews)(?:'s\s+[A-Z][\w'-]+(?:\s+[A-Z][\w'-]+)?)?\s*(?::|,\s*with|\s+with|\s*\()\s*$/;
 // Any capitalised "The <Name>" straight before "(four stars)" is a relayed
 // label in a roundup ("The Daily Mirror (five stars): ..."); a critic's own
 // verdict line is "Rating:"/"Verdict:", never a parenthesised outlet name.
@@ -1256,8 +1256,18 @@ function extractGenericStarRating(html, text) {
     /([★☆]{3,5})/
   ];
 
+  // BRO-7080 ship-check: a run of only empty stars is skipped, so the unicode
+  // pattern must try every run (text first, then html), not just the first.
+  const firstFilledStarRun = (pattern) => {
+    const g = new RegExp(pattern.source, pattern.flags.includes('g') ? pattern.flags : pattern.flags + 'g');
+    for (const src of [text, html]) {
+      for (const m of String(src || '').matchAll(g)) if (/★/.test(m[1])) return m;
+    }
+    return null;
+  };
   for (const pattern of unambiguousPatterns) {
-    const match = text.match(pattern) || html.match(pattern);
+    const isStarRun = pattern.source === '([★☆]{3,5})';
+    const match = isStarRun ? firstFilledStarRun(pattern) : (text.match(pattern) || html.match(pattern));
     if (match) {
       if (match[1].includes('★') || match[1].includes('☆')) {
         const filled = (match[1].match(/★/g) || []).length;

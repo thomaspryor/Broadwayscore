@@ -31,3 +31,11 @@ test('a stored 0/N star rating pins no band; 1/5 and 2/5 still do', () => {
      detectBandFromReviewFile({ originalScore: '2/5 stars', outletId: 'camdennewjournal' }).band.floor],
     [30, 31]);
 });
+
+test('an empty decorative run before the real rating does not hide it (BRO-7080 ship-check)', () => {
+  const { extractGenericStarRating } = require('./score-extractors.js');
+  const r1 = extractGenericStarRating('Rate this: ☆☆☆☆☆ ... Our verdict ★★★★☆ a triumph', '');
+  assert.equal(r1 && r1.originalScore, '4/5 stars');
+  const r2 = extractGenericStarRating('Rate this: ☆☆☆☆☆', '<p>★★★☆☆</p>');
+  assert.equal(r2 && r2.originalScore, '3/5 stars');
+});

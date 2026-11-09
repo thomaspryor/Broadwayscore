@@ -83,9 +83,10 @@ function daysSince(dateStr, now) {
 // 'upcoming' with no dates and 5 clean review files (May 2026): the rebuild
 // skips upcoming shows, openSignalFromDiscovery needs a previewsStartDate,
 // and this audit looked only at 'announced', so nothing could ever see it.
-// A dated previews show is the update-show-status flip's job, and a
-// returning production's earlier-run reviews (priorRuns) are not evidence
-// the new run opened.
+// A previews show WITH a previewsStartDate is still flagged when in-run
+// reviews exist and openingDate is missing: the status flip needs an
+// openingDate, so nothing else fills it. A returning production's
+// earlier-run reviews (priorRuns) are not evidence the new run opened.
 const AUDITED_STATUSES = new Set(['announced', 'upcoming', 'previews']);
 function isAuditedStatus(status) { return AUDITED_STATUSES.has(status); }
 

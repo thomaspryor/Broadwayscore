@@ -269,7 +269,7 @@ async function main() {
     silencedByContamination,
   };
 
-  console.log(`audit-stale-announced-shows: ${flagged.length} stale 'announced' show(s) (stale-days=${STALE_DAYS})`);
+  console.log(`audit-stale-announced-shows: ${flagged.length} stale pre-open show(s) (announced, or upcoming/previews with in-run reviews and no openingDate) (stale-days=${STALE_DAYS})`);
   for (const f of flagged) {
     console.log(`  - ${f.id} (${f.title}): ${f.reasons.join('; ')}`);
   }
