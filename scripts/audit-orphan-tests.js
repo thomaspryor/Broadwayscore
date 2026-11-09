@@ -74,6 +74,8 @@ const ROOT = path.resolve(__dirname, '..');
 // that as "decay" would turn a success into a red main. Keep this map tiny and
 // only for tests whose correct home is a scheduled recheck, not the test suite.
 const EXEMPT_NEVER_CI = {
+  // BRO-7228 RECHECK-AFTER probe: live memory-conflict report, skipped until 2026-11-11.
+  'scripts/verify-memory-conflicts-cleared.test.mjs': 'BRO-7228',
   // BRO-7082 RECHECK-AFTER probe: live opening-grades file, skipped until 2026-11-09.
   'scripts/verify-opening-grades-live.test.mjs': 'BRO-7082',
   // BRO-7040 RECHECK-AFTER probe: live health snapshot, skipped until 2026-11-08.
