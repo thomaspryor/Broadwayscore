@@ -752,3 +752,18 @@ test('BRO-6742: BPN /podcasts/ episode pages are refused as podcast-episode, oth
   assert.equal(classifyReviewUrl('https://pod.wave.co/podcast/some-show/episode-1').ok, true);
   assert.equal(classifyReviewUrl('https://www.nytimes.com/2026/03/12/theater/giant-review.html').ok, true);
 });
+
+test('BRO-5489: britishtheatre.com locale /shows/ hubs and Sounds & Stage /show/ hubs are show-hub; their reviews are not', () => {
+  for (const u of [
+    'https://www.britishtheatre.com/shows/buffy-revamped',
+    'https://www.britishtheatre.com/pl/shows/buffy-revamped',
+    'https://www.britishtheatre.com/de/shows/buffy-revamped',
+    'https://www.britishtheatre.com/pt-br/shows/buffy-revamped',
+    'https://soundsandstage.com/show/buffy-revamped',
+  ]) assert.deepEqual(classifyGapCandidateUrl(u), { ok: false, reason: 'show-hub' }, u);
+  for (const u of [
+    'https://www.britishtheatre.com/pl/posts/review-to-kill-a-mockingbird-gielgud-theatre',
+    'https://www.britishtheatre.com/posts/review-nye-national-theatre',
+    'https://soundsandstage.com/mischief-theatre-strikes-again-with-hilarious-spy-spoof-the-comedy-about-spies-review/',
+  ]) assert.notEqual(namedNonReviewReason(u), 'show-hub', u);
+});

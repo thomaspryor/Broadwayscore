@@ -1,10 +1,10 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-27T10:20:01.978Z",
+    "generatedAt": "2026-11-03T12:47:00.721Z",
     "threshold": 40,
-    "showsScanned": 2747,
-    "reviewsScanned": 51255,
-    "duplicatesFound": 169,
+    "showsScanned": 4483,
+    "reviewsScanned": 66359,
+    "duplicatesFound": 127,
     "byMethod": {
       "similarity": [
         {
@@ -35,6 +35,21 @@
           "primaryScore": 87,
           "secondaryScore": 87,
           "scoreDiff": 0,
+          "textSource": "fullText"
+        },
+        {
+          "showId": "a-few-good-men-2026",
+          "method": "similarity",
+          "similarity": 86,
+          "primaryFile": "deadline--greg-evans.json",
+          "primaryOutlet": "Deadline",
+          "primaryCritic": "Greg Evans",
+          "secondaryFile": "globalnews2--unknown.json",
+          "secondaryOutlet": "globalnews2",
+          "secondaryCritic": "Unknown",
+          "primaryScore": 63,
+          "secondaryScore": 60,
+          "scoreDiff": 3,
           "textSource": "fullText"
         },
         {
@@ -98,18 +113,18 @@
           "textSource": "fullText"
         },
         {
-          "showId": "a-strange-loop-2022",
+          "showId": "a-strange-loop-regional-2026",
           "method": "similarity",
-          "similarity": 87,
-          "primaryFile": "rollingstone--brittani-samuel.json",
-          "primaryOutlet": "Rolling Stone",
-          "primaryCritic": "Brittani Samuel",
-          "secondaryFile": "queerty--matthew-wexler.json",
-          "secondaryOutlet": "Queerty",
-          "secondaryCritic": "Matthew Wexler",
-          "primaryScore": 88,
-          "secondaryScore": 86,
-          "scoreDiff": 2,
+          "similarity": 89,
+          "primaryFile": "broadwayworld--rachel-weinberg.json",
+          "primaryOutlet": "BroadwayWorld",
+          "primaryCritic": "Rachel Weinberg",
+          "secondaryFile": "rachelweinbergreviews--rachelrweinberg.json",
+          "secondaryOutlet": "Rachel Weinberg Reviews",
+          "secondaryCritic": "rachelrweinberg",
+          "primaryScore": 78,
+          "secondaryScore": 79,
+          "scoreDiff": 1,
           "textSource": "fullText"
         },
         {
@@ -128,21 +143,6 @@
           "textSource": "fullText"
         },
         {
-          "showId": "an-american-in-paris-2015",
-          "method": "similarity",
-          "similarity": 70,
-          "primaryFile": "huffpost--david-finkle.json",
-          "primaryOutlet": "Huffington Post",
-          "primaryCritic": "David Finkle",
-          "secondaryFile": "northjerseycom--robert-feldberg.json",
-          "secondaryOutlet": "NorthJersey.com",
-          "secondaryCritic": "Robert Feldberg",
-          "primaryScore": 69,
-          "secondaryScore": 70,
-          "scoreDiff": 1,
-          "textSource": "fullText"
-        },
-        {
           "showId": "anna-x-west-end-2021",
           "method": "similarity",
           "similarity": 93,
@@ -155,21 +155,6 @@
           "primaryScore": 92,
           "secondaryScore": 92,
           "scoreDiff": 0,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "appropriate-2023",
-          "method": "similarity",
-          "similarity": 83,
-          "primaryFile": "guardian--adrian-horton.json",
-          "primaryOutlet": "The Guardian",
-          "primaryCritic": "Adrian Horton",
-          "secondaryFile": "deadline--greg-evans.json",
-          "secondaryOutlet": "Deadline",
-          "secondaryCritic": "Greg Evans",
-          "primaryScore": 86,
-          "secondaryScore": 91,
-          "scoreDiff": 5,
           "textSource": "fullText"
         },
         {
@@ -188,6 +173,21 @@
           "textSource": "fullText"
         },
         {
+          "showId": "baby-off-west-end-2026",
+          "method": "similarity",
+          "similarity": 79,
+          "primaryFile": "the-theatre-times--aleks-sierz.json",
+          "primaryOutlet": "The Theatre Times",
+          "primaryCritic": "Aleks Sierz",
+          "secondaryFile": "sierz-co-uk--unknown.json",
+          "secondaryOutlet": "Aleks Sierz",
+          "secondaryCritic": "Unknown",
+          "primaryScore": 84,
+          "secondaryScore": 84,
+          "scoreDiff": 0,
+          "textSource": "fullText"
+        },
+        {
           "showId": "beautiful-the-carole-king-musical-2014",
           "method": "similarity",
           "similarity": 95,
@@ -200,6 +200,21 @@
           "primaryScore": 76,
           "secondaryScore": 74,
           "scoreDiff": 2,
+          "textSource": "fullText"
+        },
+        {
+          "showId": "billy-crystal-860-2026",
+          "method": "similarity",
+          "similarity": 83,
+          "primaryFile": "theater-life--david-sheward.json",
+          "primaryOutlet": "Theater Life",
+          "primaryCritic": "David Sheward",
+          "secondaryFile": "thedaviddesk2--davidsheward.json",
+          "secondaryOutlet": "Thedaviddesk2",
+          "secondaryCritic": "David.sheward",
+          "primaryScore": 88,
+          "secondaryScore": 79,
+          "scoreDiff": 9,
           "textSource": "fullText"
         },
         {
@@ -248,6 +263,21 @@
           "textSource": "fullText"
         },
         {
+          "showId": "come-from-away-moonlight-regional-2026",
+          "method": "similarity",
+          "similarity": 95,
+          "primaryFile": "broadwayworld--erinmarie-reiter.json",
+          "primaryOutlet": "BroadwayWorld",
+          "primaryCritic": "ErinMarie Reiter",
+          "secondaryFile": "talk-theatre-to-me--unknown.json",
+          "secondaryOutlet": "Talk Theatre to Me",
+          "secondaryCritic": "Unknown",
+          "primaryScore": 87,
+          "secondaryScore": 89,
+          "scoreDiff": 2,
+          "textSource": "fullText"
+        },
+        {
           "showId": "company-2006",
           "method": "similarity",
           "similarity": 78,
@@ -263,18 +293,33 @@
           "textSource": "fullText"
         },
         {
-          "showId": "cult-of-love-2024",
+          "showId": "cyrano-regional-2026",
           "method": "similarity",
-          "similarity": 98,
-          "primaryFile": "variety--aramide-tinubu.json",
-          "primaryOutlet": "Variety",
-          "primaryCritic": "Daniel D'Addario",
-          "secondaryFile": "hollywood-reporter--david-rooney.json",
-          "secondaryOutlet": "The Hollywood Reporter",
-          "secondaryCritic": "David Rooney",
-          "primaryScore": 75,
-          "secondaryScore": 67,
-          "scoreDiff": 8,
+          "similarity": 83,
+          "primaryFile": "broadwayworld--erinmarie-reiter.json",
+          "primaryOutlet": "BroadwayWorld",
+          "primaryCritic": "ErinMarie Reiter",
+          "secondaryFile": "talk-theatre-to-me--unknown.json",
+          "secondaryOutlet": "Talk Theatre to Me",
+          "secondaryCritic": "Unknown",
+          "primaryScore": 87,
+          "secondaryScore": 86,
+          "scoreDiff": 1,
+          "textSource": "fullText"
+        },
+        {
+          "showId": "dear-evan-hansen-cygnet-regional-2026",
+          "method": "similarity",
+          "similarity": 91,
+          "primaryFile": "broadwayworld--erinmarie-reiter.json",
+          "primaryOutlet": "BroadwayWorld",
+          "primaryCritic": "ErinMarie Reiter",
+          "secondaryFile": "talk-theatre-to-me--unknown.json",
+          "secondaryOutlet": "Talk Theatre to Me",
+          "secondaryCritic": "Unknown",
+          "primaryScore": 79,
+          "secondaryScore": 79,
+          "scoreDiff": 0,
           "textSource": "fullText"
         },
         {
@@ -290,36 +335,6 @@
           "primaryScore": 88,
           "secondaryScore": 83,
           "scoreDiff": 5,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "dog-mom-off-west-end-2026",
-          "method": "similarity",
-          "similarity": 71,
-          "primaryFile": "west-end-wilma--westendwilma.json",
-          "primaryOutlet": "West End Wilma",
-          "primaryCritic": "Westendwilma",
-          "secondaryFile": "onin--caitlin-neal.json",
-          "secondaryOutlet": "Onin",
-          "secondaryCritic": "Caitlin Neal",
-          "primaryScore": null,
-          "secondaryScore": null,
-          "scoreDiff": 0,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "dog-mom-off-west-end-2026",
-          "method": "similarity",
-          "similarity": 70,
-          "primaryFile": "whatsgoodtodo--unknown.json",
-          "primaryOutlet": "What's Good To Do",
-          "primaryCritic": "Unknown",
-          "secondaryFile": "onin--caitlin-neal.json",
-          "secondaryOutlet": "Onin",
-          "secondaryCritic": "Caitlin Neal",
-          "primaryScore": null,
-          "secondaryScore": null,
-          "scoreDiff": 0,
           "textSource": "fullText"
         },
         {
@@ -383,18 +398,18 @@
           "textSource": "fullText"
         },
         {
-          "showId": "farinelli-and-the-king-2017",
+          "showId": "fire-and-air-off-broadway-2018",
           "method": "similarity",
-          "similarity": 73,
-          "primaryFile": "dctheatrescene--jonathan-mandell.json",
-          "primaryOutlet": "DC Theatre Scene",
-          "primaryCritic": "Jonathan Mandell",
-          "secondaryFile": "broadwayworld--michael-dale.json",
-          "secondaryOutlet": "BroadwayWorld",
-          "secondaryCritic": "Michael Dale",
-          "primaryScore": 75,
-          "secondaryScore": 73,
-          "scoreDiff": 2,
+          "similarity": 76,
+          "primaryFile": "nytg--austin-yang.json",
+          "primaryOutlet": "New York Theatre Guide",
+          "primaryCritic": "Austin Yang",
+          "secondaryFile": "front-row-center--tulis-mccall.json",
+          "secondaryOutlet": "Front Row Center",
+          "secondaryCritic": "Tulis McCall",
+          "primaryScore": 60,
+          "secondaryScore": 70,
+          "scoreDiff": 10,
           "textSource": "fullText"
         },
         {
@@ -428,33 +443,18 @@
           "textSource": "fullText"
         },
         {
-          "showId": "grand-horizons-2020",
+          "showId": "good-night-oscar-regional-2026",
           "method": "similarity",
-          "similarity": 71,
-          "primaryFile": "dctheatrescene--jonathan-mandell.json",
-          "primaryOutlet": "DC Theatre Scene",
-          "primaryCritic": "Jonathan Mandell",
-          "secondaryFile": "broadwayworld--michael-dale.json",
-          "secondaryOutlet": "BroadwayWorld",
-          "secondaryCritic": "Michael Dale",
-          "primaryScore": 85,
-          "secondaryScore": 81,
-          "scoreDiff": 4,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "groundhog-day-2017",
-          "method": "similarity",
-          "similarity": 80,
-          "primaryFile": "latimes--charles-mcnulty.json",
-          "primaryOutlet": "Los Angeles Times",
-          "primaryCritic": "Charles McNulty",
-          "secondaryFile": "huffpost--steven-suskin.json",
-          "secondaryOutlet": "HuffPost",
-          "secondaryCritic": "Steven Suskin",
-          "primaryScore": 71,
-          "secondaryScore": 73,
-          "scoreDiff": 2,
+          "similarity": 89,
+          "primaryFile": "broadwayworld--erinmarie-reiter.json",
+          "primaryOutlet": "BroadwayWorld",
+          "primaryCritic": "ErinMarie Reiter",
+          "secondaryFile": "talk-theatre-to-me--unknown.json",
+          "secondaryOutlet": "Talk Theatre to Me",
+          "secondaryCritic": "Unknown",
+          "primaryScore": 88,
+          "secondaryScore": 88,
+          "scoreDiff": 0,
           "textSource": "fullText"
         },
         {
@@ -488,6 +488,36 @@
           "textSource": "fullText"
         },
         {
+          "showId": "guys-and-dolls-regional-2026",
+          "method": "similarity",
+          "similarity": 91,
+          "primaryFile": "broadwayworld--erinmarie-reiter.json",
+          "primaryOutlet": "BroadwayWorld",
+          "primaryCritic": "ErinMarie Reiter",
+          "secondaryFile": "talk-theatre-to-me--unknown.json",
+          "secondaryOutlet": "Talk Theatre to Me",
+          "secondaryCritic": "Unknown",
+          "primaryScore": 90,
+          "secondaryScore": 90,
+          "scoreDiff": 0,
+          "textSource": "fullText"
+        },
+        {
+          "showId": "ha-ha-ha-ha-ha-ha-ha-regional-2026",
+          "method": "similarity",
+          "similarity": 94,
+          "primaryFile": "broadwayworld--erinmarie-reiter.json",
+          "primaryOutlet": "BroadwayWorld",
+          "primaryCritic": "ErinMarie Reiter",
+          "secondaryFile": "talk-theatre-to-me--unknown.json",
+          "secondaryOutlet": "Talk Theatre to Me",
+          "secondaryCritic": "Unknown",
+          "primaryScore": 89,
+          "secondaryScore": 88,
+          "scoreDiff": 1,
+          "textSource": "fullText"
+        },
+        {
           "showId": "hadestown-west-end-2024",
           "method": "similarity",
           "similarity": 86,
@@ -500,51 +530,6 @@
           "primaryScore": 82,
           "secondaryScore": 81,
           "scoreDiff": 1,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "harry-potter-2021",
-          "method": "similarity",
-          "similarity": 79,
-          "primaryFile": "dctheatrescene--jonathan-mandell.json",
-          "primaryOutlet": "DC Theatre Scene",
-          "primaryCritic": "Jonathan Mandell",
-          "secondaryFile": "nyt-theater--unknown.json",
-          "secondaryOutlet": "New York Theater",
-          "secondaryCritic": "Unknown",
-          "primaryScore": 80,
-          "secondaryScore": 76,
-          "scoreDiff": 4,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "heathers-the-musical-off-west-end-2026",
-          "method": "similarity",
-          "similarity": 74,
-          "primaryFile": "notesfromrowh--helena6.json",
-          "primaryOutlet": "notesfromrowh",
-          "primaryCritic": "helena6",
-          "secondaryFile": "theatre-south-east--unknown.json",
-          "secondaryOutlet": "Theatre South East",
-          "secondaryCritic": "Unknown",
-          "primaryScore": 85,
-          "secondaryScore": 20,
-          "scoreDiff": 65,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "hells-kitchen-2024",
-          "method": "similarity",
-          "similarity": 83,
-          "primaryFile": "ap--mark-kennedy.json",
-          "primaryOutlet": "Associated Press",
-          "primaryCritic": "Mark Kennedy",
-          "secondaryFile": "showbiz411--roger-friedman.json",
-          "secondaryOutlet": "Showbiz411",
-          "secondaryCritic": "Roger Friedman",
-          "primaryScore": 50,
-          "secondaryScore": 74,
-          "scoreDiff": 24,
           "textSource": "fullText"
         },
         {
@@ -608,21 +593,6 @@
           "textSource": "fullText"
         },
         {
-          "showId": "jews-in-their-own-words-west-end-2022",
-          "method": "similarity",
-          "similarity": 79,
-          "primaryFile": "artsdesk--aleks-sierz.json",
-          "primaryOutlet": "The Arts Desk",
-          "primaryCritic": "Aleks Sierz",
-          "secondaryFile": "sierz-co-uk--unknown.json",
-          "secondaryOutlet": "Aleks Sierz",
-          "secondaryCritic": "Unknown",
-          "primaryScore": 60,
-          "secondaryScore": 72,
-          "scoreDiff": 12,
-          "textSource": "fullText"
-        },
-        {
           "showId": "kimberly-akimbo-2022",
           "method": "similarity",
           "similarity": 93,
@@ -653,21 +623,6 @@
           "textSource": "fullText"
         },
         {
-          "showId": "kinky-boots-2013",
-          "method": "similarity",
-          "similarity": 90,
-          "primaryFile": "latimes--charles-mcnulty.json",
-          "primaryOutlet": "Los Angeles Times",
-          "primaryCritic": "Charles McNulty",
-          "secondaryFile": "huffpost--michael-giltz.json",
-          "secondaryOutlet": "HuffPost",
-          "secondaryCritic": "Michael Giltz",
-          "primaryScore": 44,
-          "secondaryScore": 52,
-          "scoreDiff": 8,
-          "textSource": "fullText"
-        },
-        {
           "showId": "kramerfauci-st-anns-off-broadway-2026",
           "method": "similarity",
           "similarity": 94,
@@ -683,21 +638,6 @@
           "textSource": "fullText"
         },
         {
-          "showId": "lemons-lemons-lemons-lemons-lemons-west-end-2023",
-          "method": "similarity",
-          "similarity": 77,
-          "primaryFile": "artsdesk--aleks-sierz.json",
-          "primaryOutlet": "The Arts Desk",
-          "primaryCritic": "Aleks Sierz",
-          "secondaryFile": "sierz-co-uk--unknown.json",
-          "secondaryOutlet": "Aleks Sierz",
-          "secondaryCritic": "Unknown",
-          "primaryScore": 55,
-          "secondaryScore": 62,
-          "scoreDiff": 7,
-          "textSource": "fullText"
-        },
-        {
           "showId": "les-miserables-west-end-2021",
           "method": "similarity",
           "similarity": 74,
@@ -707,24 +647,54 @@
           "secondaryFile": "sierz-co-uk--alex-sierz.json",
           "secondaryOutlet": "Sierz Co Uk",
           "secondaryCritic": "Alex Sierz",
-          "primaryScore": 75,
+          "primaryScore": 80,
           "secondaryScore": 78,
-          "scoreDiff": 3,
+          "scoreDiff": 2,
           "textSource": "fullText"
         },
         {
-          "showId": "m-butterfly-2017",
+          "showId": "life-of-pi-tour-2024",
           "method": "similarity",
-          "similarity": 88,
-          "primaryFile": "huffpost--christian-lewis.json",
-          "primaryOutlet": "Huffington Post",
-          "primaryCritic": "Christian Lewis",
-          "secondaryFile": "stageandcinema--lynn-berk.json",
-          "secondaryOutlet": "Stage and Cinema",
-          "secondaryCritic": "Lynn Berk",
-          "primaryScore": 79,
-          "secondaryScore": 81,
-          "scoreDiff": 2,
+          "similarity": 82,
+          "primaryFile": "whats-up-newp--ken-abrams.json",
+          "primaryOutlet": "What's Up Newp",
+          "primaryCritic": "Ken Abrams",
+          "secondaryFile": "shotoe--unknown.json",
+          "secondaryOutlet": "shotoe",
+          "secondaryCritic": "Unknown",
+          "primaryScore": 93,
+          "secondaryScore": 93,
+          "scoreDiff": 0,
+          "textSource": "fullText"
+        },
+        {
+          "showId": "long-lost-off-broadway-2019",
+          "method": "similarity",
+          "similarity": 96,
+          "primaryFile": "theater-life--unknown.json",
+          "primaryOutlet": "Theater Life",
+          "primaryCritic": "Unknown",
+          "secondaryFile": "cultural-weekly--david-sheward.json",
+          "secondaryOutlet": "Cultural Weekly",
+          "secondaryCritic": "David Sheward",
+          "primaryScore": 78,
+          "secondaryScore": 77,
+          "scoreDiff": 1,
+          "textSource": "fullText"
+        },
+        {
+          "showId": "mama-im-a-big-girl-now-off-broadway-2024",
+          "method": "similarity",
+          "similarity": 94,
+          "primaryFile": "times-square-chronicles--ross.json",
+          "primaryOutlet": "Times Square Chronicles",
+          "primaryCritic": "Ross",
+          "secondaryFile": "frontmezzjunkies--unknown.json",
+          "secondaryOutlet": "Front Mezz Junkies",
+          "secondaryCritic": "Unknown",
+          "primaryScore": 88,
+          "secondaryScore": 87,
+          "scoreDiff": 1,
           "textSource": "fullText"
         },
         {
@@ -758,6 +728,21 @@
           "textSource": "fullText"
         },
         {
+          "showId": "mensa-regional-2026",
+          "method": "similarity",
+          "similarity": 95,
+          "primaryFile": "broadwayworld--erinmarie-reiter.json",
+          "primaryOutlet": "BroadwayWorld",
+          "primaryCritic": "ErinMarie Reiter",
+          "secondaryFile": "talk-theatre-to-me--unknown.json",
+          "secondaryOutlet": "Talk Theatre to Me",
+          "secondaryCritic": "Unknown",
+          "primaryScore": 75,
+          "secondaryScore": 75,
+          "scoreDiff": 0,
+          "textSource": "fullText"
+        },
+        {
           "showId": "mothers-and-sons-2014",
           "method": "similarity",
           "similarity": 96,
@@ -788,17 +773,17 @@
           "textSource": "fullText"
         },
         {
-          "showId": "oh-mary-west-end-2025",
+          "showId": "much-ado-about-nothing-regional-2026",
           "method": "similarity",
-          "similarity": 97,
-          "primaryFile": "daily-mail--patrick-marmion.json",
-          "primaryOutlet": "Daily Mail",
-          "primaryCritic": "Patrick Marmion",
-          "secondaryFile": "digital-journal--markos-papadatos.json",
-          "secondaryOutlet": "Digital Journal",
-          "secondaryCritic": "Markos Papadatos",
-          "primaryScore": 14,
-          "secondaryScore": 15,
+          "similarity": 84,
+          "primaryFile": "broadwayworld--erinmarie-reiter.json",
+          "primaryOutlet": "BroadwayWorld",
+          "primaryCritic": "ErinMarie Reiter",
+          "secondaryFile": "talk-theatre-to-me--unknown.json",
+          "secondaryOutlet": "Talk Theatre to Me",
+          "secondaryCritic": "Unknown",
+          "primaryScore": 85,
+          "secondaryScore": 86,
           "scoreDiff": 1,
           "textSource": "fullText"
         },
@@ -830,21 +815,6 @@
           "primaryScore": 82,
           "secondaryScore": 88,
           "scoreDiff": 6,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "on-your-feet-2015",
-          "method": "similarity",
-          "similarity": 79,
-          "primaryFile": "huffpost--fern-siegel.json",
-          "primaryOutlet": "HuffPost",
-          "primaryCritic": "Fern Siegel",
-          "secondaryFile": "nbcny--robert-kahn.json",
-          "secondaryOutlet": "NBC New York",
-          "secondaryCritic": "Robert Kahn",
-          "primaryScore": 81,
-          "secondaryScore": 81,
-          "scoreDiff": 0,
           "textSource": "fullText"
         },
         {
@@ -902,9 +872,9 @@
           "secondaryFile": "sierz-co-uk--unknown.json",
           "secondaryOutlet": "Aleks Sierz",
           "secondaryCritic": "Unknown",
-          "primaryScore": 56,
+          "primaryScore": 55,
           "secondaryScore": 63,
-          "scoreDiff": 7,
+          "scoreDiff": 8,
           "textSource": "fullText"
         },
         {
@@ -968,6 +938,21 @@
           "textSource": "fullText"
         },
         {
+          "showId": "rock-of-ages-regional-2026",
+          "method": "similarity",
+          "similarity": 92,
+          "primaryFile": "broadwayworld--erinmarie-reiter.json",
+          "primaryOutlet": "BroadwayWorld",
+          "primaryCritic": "ErinMarie Reiter",
+          "secondaryFile": "talk-theatre-to-me--unknown.json",
+          "secondaryOutlet": "Talk Theatre to Me",
+          "secondaryCritic": "Unknown",
+          "primaryScore": 88,
+          "secondaryScore": 88,
+          "scoreDiff": 0,
+          "textSource": "fullText"
+        },
+        {
           "showId": "school-girls-or-the-african-mean-girls-play-2026",
           "method": "similarity",
           "similarity": 91,
@@ -980,21 +965,6 @@
           "primaryScore": 88,
           "secondaryScore": 88,
           "scoreDiff": 0,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "sea-wall-a-life-2019",
-          "method": "similarity",
-          "similarity": 85,
-          "primaryFile": "national-review--kyle-smith.json",
-          "primaryOutlet": "National Review",
-          "primaryCritic": "Kyle Smith",
-          "secondaryFile": "theatre-reviews-limited--david-roberts.json",
-          "secondaryOutlet": "Theatre Reviews Limited",
-          "secondaryCritic": "David Roberts",
-          "primaryScore": 38,
-          "secondaryScore": 37,
-          "scoreDiff": 1,
           "textSource": "fullText"
         },
         {
@@ -1105,21 +1075,6 @@
         {
           "showId": "suffs-tour-2025",
           "method": "similarity",
-          "similarity": 77,
-          "primaryFile": "headtopics--clevelandscene.json",
-          "primaryOutlet": "headtopics",
-          "primaryCritic": "ClevelandScene",
-          "secondaryFile": "clevescene--gwendolyn-kochur.json",
-          "secondaryOutlet": "clevescene",
-          "secondaryCritic": "Gwendolyn Kochur",
-          "primaryScore": 78,
-          "secondaryScore": 77,
-          "scoreDiff": 1,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "suffs-tour-2025",
-          "method": "similarity",
           "similarity": 88,
           "primaryFile": "fairlyspiritual--douglas-bursch.json",
           "primaryOutlet": "fairlyspiritual",
@@ -1178,21 +1133,6 @@
           "textSource": "fullText"
         },
         {
-          "showId": "the-bands-visit-2017",
-          "method": "similarity",
-          "similarity": 99,
-          "primaryFile": "theater-life--isa-goldberg.json",
-          "primaryOutlet": "Theater Life",
-          "primaryCritic": "Isa Goldberg",
-          "secondaryFile": "off-script-with-dan-dwyer--dan-dwyer.json",
-          "secondaryOutlet": "Off Script with Dan Dwyer",
-          "secondaryCritic": "Dan Dwyer",
-          "primaryScore": 97,
-          "secondaryScore": 84,
-          "scoreDiff": 13,
-          "textSource": "fullText"
-        },
-        {
           "showId": "the-bridges-of-madison-county-2014",
           "method": "similarity",
           "similarity": 98,
@@ -1223,21 +1163,6 @@
           "textSource": "fullText"
         },
         {
-          "showId": "the-color-purple-2015",
-          "method": "similarity",
-          "similarity": 91,
-          "primaryFile": "theater-scene--darryl-reilly.json",
-          "primaryOutlet": "TheaterScene.net",
-          "primaryCritic": "Darryl Reilly",
-          "secondaryFile": "huffpost--steven-suskin.json",
-          "secondaryOutlet": "HuffPost",
-          "secondaryCritic": "Steven Suskin",
-          "primaryScore": 88,
-          "secondaryScore": 88,
-          "scoreDiff": 0,
-          "textSource": "fullText"
-        },
-        {
           "showId": "the-corn-is-green-west-end-2022",
           "method": "similarity",
           "similarity": 83,
@@ -1250,21 +1175,6 @@
           "primaryScore": 55,
           "secondaryScore": 62,
           "scoreDiff": 7,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "the-cottage-2023",
-          "method": "similarity",
-          "similarity": 96,
-          "primaryFile": "variety--naveen-kumar.json",
-          "primaryOutlet": "Variety",
-          "primaryCritic": "Naveen Kumar",
-          "secondaryFile": "new-york-sun--elysa-gardner.json",
-          "secondaryOutlet": "New York Sun",
-          "secondaryCritic": "Elysa Gardner",
-          "primaryScore": 42,
-          "secondaryScore": 56,
-          "scoreDiff": 14,
           "textSource": "fullText"
         },
         {
@@ -1294,21 +1204,6 @@
           "secondaryCritic": "Rachelrweinberg",
           "primaryScore": 66,
           "secondaryScore": 63,
-          "scoreDiff": 3,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "the-holy-rosenbergs-west-end-2026",
-          "method": "similarity",
-          "similarity": 71,
-          "primaryFile": "artsdesk--aleks-sierz.json",
-          "primaryOutlet": "The Arts Desk",
-          "primaryCritic": "Aleks Sierz",
-          "secondaryFile": "sierz-co-uk--unknown.json",
-          "secondaryOutlet": "Aleks Sierz",
-          "secondaryCritic": "Unknown",
-          "primaryScore": 78,
-          "secondaryScore": 81,
           "scoreDiff": 3,
           "textSource": "fullText"
         },
@@ -1343,21 +1238,6 @@
           "textSource": "fullText"
         },
         {
-          "showId": "the-music-man-2022",
-          "method": "similarity",
-          "similarity": 95,
-          "primaryFile": "slantmagazine--dan-rubins.json",
-          "primaryOutlet": "Slant Magazine",
-          "primaryCritic": "Dan Rubins",
-          "secondaryFile": "showbiz411--roger-friedman.json",
-          "secondaryOutlet": "Showbiz411",
-          "secondaryCritic": "Roger Friedman",
-          "primaryScore": 79,
-          "secondaryScore": 80,
-          "scoreDiff": 1,
-          "textSource": "fullText"
-        },
-        {
           "showId": "the-pianist-off-west-end-2026",
           "method": "similarity",
           "similarity": 96,
@@ -1368,8 +1248,8 @@
           "secondaryOutlet": "Theatre South East",
           "secondaryCritic": "Helena Featherstone",
           "primaryScore": 91,
-          "secondaryScore": 98,
-          "scoreDiff": 7,
+          "secondaryScore": 97,
+          "scoreDiff": 6,
           "textSource": "fullText"
         },
         {
@@ -1448,6 +1328,21 @@
           "textSource": "fullText"
         },
         {
+          "showId": "twenty-thousand-streets-off-west-end-2026",
+          "method": "similarity",
+          "similarity": 86,
+          "primaryFile": "artsdesk--aleks-sierz.json",
+          "primaryOutlet": "The Arts Desk",
+          "primaryCritic": "Aleks Sierz",
+          "secondaryFile": "sierz-co-uk--unknown.json",
+          "secondaryOutlet": "Aleks Sierz",
+          "secondaryCritic": "Unknown",
+          "primaryScore": 57,
+          "secondaryScore": 74,
+          "scoreDiff": 17,
+          "textSource": "fullText"
+        },
+        {
           "showId": "walden-west-end-2021",
           "method": "similarity",
           "similarity": 90,
@@ -1495,21 +1390,6 @@
           "textSource": "fullText"
         },
         {
-          "showId": "amazing-grace-2015",
-          "method": "fingerprint",
-          "similarity": 100,
-          "primaryFile": "huffpost--steven-suskin.json",
-          "primaryOutlet": "Huffington Post",
-          "primaryCritic": "Steven Suskin",
-          "secondaryFile": "jks-theatre-scene--jeff-kyler.json",
-          "secondaryOutlet": "JK's Theatre Scene",
-          "secondaryCritic": "Jeff Kyler",
-          "primaryScore": 52,
-          "secondaryScore": 59,
-          "scoreDiff": 7,
-          "textSource": "fullText"
-        },
-        {
           "showId": "bad-cinderella-2023",
           "method": "fingerprint",
           "similarity": 100,
@@ -1522,36 +1402,6 @@
           "primaryScore": 41,
           "secondaryScore": 20,
           "scoreDiff": 21,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "bandstand-2017",
-          "method": "fingerprint",
-          "similarity": 100,
-          "primaryFile": "huffpost--michael-giltz.json",
-          "primaryOutlet": "The Huffington Post",
-          "primaryCritic": "Michael Giltz",
-          "secondaryFile": "off-script-with-dan-dwyer--dan-dwyer.json",
-          "secondaryOutlet": "Off Script with Dan Dwyer",
-          "secondaryCritic": "Dan Dwyer",
-          "primaryScore": 82,
-          "secondaryScore": 79,
-          "scoreDiff": 3,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "bandstand-2017",
-          "method": "fingerprint",
-          "similarity": 100,
-          "primaryFile": "huffpost--michael-giltz.json",
-          "primaryOutlet": "The Huffington Post",
-          "primaryCritic": "Michael Giltz",
-          "secondaryFile": "stagezine--david-nounou.json",
-          "secondaryOutlet": "StageZine",
-          "secondaryCritic": "David NouNou",
-          "primaryScore": 82,
-          "secondaryScore": 79,
-          "scoreDiff": 3,
           "textSource": "fullText"
         },
         {
@@ -1570,108 +1420,18 @@
           "textSource": "fullText"
         },
         {
-          "showId": "charlie-and-the-chocolate-factory-2017",
+          "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
           "method": "fingerprint",
           "similarity": 100,
-          "primaryFile": "peconic-public-broadcasting--david-richardson.json",
-          "primaryOutlet": "peconic-public-broadcasting",
-          "primaryCritic": "David Richardson",
-          "secondaryFile": "simon-parris-man-in-chair--simon-parris.json",
-          "secondaryOutlet": "simon-parris-man-in-chair",
-          "secondaryCritic": "Simon Parris",
-          "primaryScore": 28,
-          "secondaryScore": 19,
-          "scoreDiff": 9,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "china-doll-2015",
-          "method": "fingerprint",
-          "similarity": 100,
-          "primaryFile": "variety--marilyn-stasio.json",
-          "primaryOutlet": "Variety",
-          "primaryCritic": "Marilyn Stasio",
-          "secondaryFile": "lighting-and-sound-america--david-barbour.json",
-          "secondaryOutlet": "Lighting & Sound America",
-          "secondaryCritic": "David Barbour",
-          "primaryScore": 40,
-          "secondaryScore": 44,
-          "scoreDiff": 4,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "exit-the-king-west-end-2018",
-          "method": "fingerprint",
-          "similarity": 100,
-          "primaryFile": "daily-mail--quentin-letts.json",
-          "primaryOutlet": "Daily Mail",
-          "primaryCritic": "Quentin Letts",
-          "secondaryFile": "times-uk--ann-treneman.json",
-          "secondaryOutlet": "The Times (UK)",
-          "secondaryCritic": "Ann Treneman",
-          "primaryScore": 25,
-          "secondaryScore": 44,
-          "scoreDiff": 19,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "groundhog-day-2017",
-          "method": "fingerprint",
-          "similarity": 100,
-          "primaryFile": "li-herald--elyse-trevers.json",
-          "primaryOutlet": "li-herald",
-          "primaryCritic": "Elyse Trevers",
-          "secondaryFile": "labor-press--leonard-golubchick.json",
-          "secondaryOutlet": "labor-press",
-          "secondaryCritic": "Leonard Golubchick",
-          "primaryScore": 78,
-          "secondaryScore": 81,
-          "scoreDiff": 3,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "head-over-heels-2018",
-          "method": "fingerprint",
-          "similarity": 100,
-          "primaryFile": "philadelphia-inquirer--toby-zinman.json",
-          "primaryOutlet": "The Philadelphia Inquirer",
-          "primaryCritic": "Toby Zinman",
-          "secondaryFile": "stage-left--robert-russo.json",
-          "secondaryOutlet": "Stage Left",
-          "secondaryCritic": "Robert Russo",
-          "primaryScore": 70,
-          "secondaryScore": 75,
-          "scoreDiff": 5,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "it-shoulda-been-you-2015",
-          "method": "fingerprint",
-          "similarity": 100,
-          "primaryFile": "jta--uriel-heilman.json",
-          "primaryOutlet": "jta",
-          "primaryCritic": "Uriel Heilman",
-          "secondaryFile": "simon-parris-man-in-chair--simon-parris.json",
-          "secondaryOutlet": "simon-parris-man-in-chair",
-          "secondaryCritic": "Simon Parris",
-          "primaryScore": 63,
-          "secondaryScore": 62,
-          "scoreDiff": 1,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "king-kong-2018",
-          "method": "fingerprint",
-          "similarity": 100,
-          "primaryFile": "broadwayworld--michael-dale.json",
-          "primaryOutlet": "BroadwayWorld",
-          "primaryCritic": "Michael Dale",
-          "secondaryFile": "florida-theater-on-stage--bill-hirschman.json",
-          "secondaryOutlet": "florida-theater-on-stage",
-          "secondaryCritic": "Bill Hirschman",
-          "primaryScore": 41,
-          "secondaryScore": 77,
-          "scoreDiff": 36,
+          "primaryFile": "telegraph--dominic-cavendish.json",
+          "primaryOutlet": "The Telegraph",
+          "primaryCritic": "Dominic Cavendish",
+          "secondaryFile": "sunday-telegraph--dominic-cavendish.json",
+          "secondaryOutlet": "Sunday Telegraph",
+          "secondaryCritic": "Dominic Cavendish",
+          "primaryScore": 94,
+          "secondaryScore": null,
+          "scoreDiff": 94,
           "textSource": "fullText"
         },
         {
@@ -1705,36 +1465,6 @@
           "textSource": "excerpts"
         },
         {
-          "showId": "network-2018",
-          "method": "fingerprint",
-          "similarity": 100,
-          "primaryFile": "vulture--jesse-green.json",
-          "primaryOutlet": "Vulture",
-          "primaryCritic": "Jesse Green",
-          "secondaryFile": "dailybeast--tim-teeman.json",
-          "secondaryOutlet": "The Daily Beast",
-          "secondaryCritic": "Tim Teeman",
-          "primaryScore": 80,
-          "secondaryScore": 86,
-          "scoreDiff": 6,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "next-fall-2010",
-          "method": "fingerprint",
-          "similarity": 100,
-          "primaryFile": "broadwayworld--stephanie-zacharek.json",
-          "primaryOutlet": "BroadwayWorld",
-          "primaryCritic": "Stephanie Zacharek",
-          "secondaryFile": "backstage--david-sheward.json",
-          "secondaryOutlet": "Back Stage",
-          "secondaryCritic": "David Sheward",
-          "primaryScore": 66,
-          "secondaryScore": 78,
-          "scoreDiff": 12,
-          "textSource": "excerpts"
-        },
-        {
           "showId": "oh-mary-west-end-2025",
           "method": "fingerprint",
           "similarity": 100,
@@ -1748,21 +1478,6 @@
           "secondaryScore": null,
           "scoreDiff": 0,
           "textSource": "excerpts"
-        },
-        {
-          "showId": "oliver-west-end-2024",
-          "method": "fingerprint",
-          "similarity": 100,
-          "primaryFile": "guardian--arifa-akbar.json",
-          "primaryOutlet": "The Guardian",
-          "primaryCritic": "Arifa Akbar",
-          "secondaryFile": "observer--susannah-clapp.json",
-          "secondaryOutlet": "The Observer",
-          "secondaryCritic": "Susannah Clapp",
-          "primaryScore": 81,
-          "secondaryScore": 83,
-          "scoreDiff": 2,
-          "textSource": "fullText"
         },
         {
           "showId": "promises-promises-2010",
@@ -1780,33 +1495,18 @@
           "textSource": "excerpts"
         },
         {
-          "showId": "queen-versailles-2025",
+          "showId": "rent-west-end-2026",
           "method": "fingerprint",
           "similarity": 100,
-          "primaryFile": "lighting-and-sound-america--david-barbour.json",
-          "primaryOutlet": "Lighting & Sound America",
-          "primaryCritic": "David Barbour",
-          "secondaryFile": "the-interested-bystander--cary-wong.json",
-          "secondaryOutlet": "The Interested Bystander",
-          "secondaryCritic": "Cary Wong",
-          "primaryScore": 63,
-          "secondaryScore": 50,
-          "scoreDiff": 13,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "six-2021",
-          "method": "fingerprint",
-          "similarity": 100,
-          "primaryFile": "lighting-and-sound-america--david-barbour.json",
-          "primaryOutlet": "Lighting & Sound America",
-          "primaryCritic": "David Barbour",
-          "secondaryFile": "theater-life--samuel-l-leiter.json",
-          "secondaryOutlet": "Theater Life",
-          "secondaryCritic": "Samuel L. Leiter",
+          "primaryFile": "camdennewjournal--unknown.json",
+          "primaryOutlet": "Camden New Journal",
+          "primaryCritic": "Unknown",
+          "secondaryFile": "islingtontribune--unknown.json",
+          "secondaryOutlet": "Islington Tribune",
+          "secondaryCritic": "Unknown",
           "primaryScore": 75,
-          "secondaryScore": 73,
-          "scoreDiff": 2,
+          "secondaryScore": 75,
+          "scoreDiff": 0,
           "textSource": "fullText"
         },
         {
@@ -1823,21 +1523,6 @@
           "secondaryScore": 77,
           "scoreDiff": 3,
           "textSource": "excerpts"
-        },
-        {
-          "showId": "the-crucible-west-end-2022",
-          "method": "fingerprint",
-          "similarity": 100,
-          "primaryFile": "daily-echo--kieran-doody.json",
-          "primaryOutlet": "Daily Echo",
-          "primaryCritic": "Kieran Doody",
-          "secondaryFile": "hampstead-highgate-express--charlotte-l-rose.json",
-          "secondaryOutlet": "Hampstead & Highgate Express",
-          "secondaryCritic": "Charlotte L Rose",
-          "primaryScore": 88,
-          "secondaryScore": 88,
-          "scoreDiff": 0,
-          "textSource": "fullText"
         },
         {
           "showId": "the-rocky-horror-show-2026",
@@ -1864,21 +1549,6 @@
           "secondaryFile": "ew--christian-holub.json",
           "secondaryOutlet": "Entertainment Weekly",
           "secondaryCritic": "Christian Holub",
-          "primaryScore": null,
-          "secondaryScore": null,
-          "scoreDiff": 0,
-          "textSource": "excerpts"
-        },
-        {
-          "showId": "walk-on-through-confessions-of-a-museum-novice-off-broadway-2023",
-          "method": "fingerprint",
-          "similarity": 100,
-          "primaryFile": "nydailynews--unknown.json",
-          "primaryOutlet": "New York Daily News",
-          "primaryCritic": "",
-          "secondaryFile": "nytg--joe-dziemianowicz.json",
-          "secondaryOutlet": "New York Theatre Guide",
-          "secondaryCritic": "Joe Dziemianowicz",
           "primaryScore": null,
           "secondaryScore": null,
           "scoreDiff": 0,
@@ -1932,66 +1602,6 @@
           "textSource": "fullText"
         },
         {
-          "showId": "art-west-end-2016",
-          "method": "similarity+llm",
-          "similarity": 50,
-          "primaryFile": "standard--fiona-mountford.json",
-          "primaryOutlet": "Evening Standard",
-          "primaryCritic": "Fiona Mountford",
-          "secondaryFile": "guardian--michael-billington.json",
-          "secondaryOutlet": "The Guardian",
-          "secondaryCritic": "Michael Billington",
-          "primaryScore": 76,
-          "secondaryScore": 85,
-          "scoreDiff": 9,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "beetlejuice-tour-2026",
-          "method": "similarity+llm",
-          "similarity": 60,
-          "primaryFile": "kc-studio--contributing-writer.json",
-          "primaryOutlet": "Kc Studio",
-          "primaryCritic": "Contributing Writer",
-          "secondaryFile": "the-pitch--brynn-weiss.json",
-          "secondaryOutlet": "The Pitch",
-          "secondaryCritic": "Brynn Weiss",
-          "primaryScore": 88,
-          "secondaryScore": 89,
-          "scoreDiff": 1,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "betrayal-2019",
-          "method": "similarity+llm",
-          "similarity": 62,
-          "primaryFile": "standard--henry-hitchings.json",
-          "primaryOutlet": "Evening Standard",
-          "primaryCritic": "Henry Hitchings",
-          "secondaryFile": "broadwayworld--michael-dale.json",
-          "secondaryOutlet": "BroadwayWorld",
-          "secondaryCritic": "Michael Dale",
-          "primaryScore": 83,
-          "secondaryScore": 83,
-          "scoreDiff": 0,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "bitter-wheat-west-end-2019",
-          "method": "similarity+llm",
-          "similarity": 62,
-          "primaryFile": "artsdesk--aleks-sierz.json",
-          "primaryOutlet": "The Arts Desk",
-          "primaryCritic": "Aleks Sierz",
-          "secondaryFile": "sierz-co-uk--unknown.json",
-          "secondaryOutlet": "Aleks Sierz",
-          "secondaryCritic": "Unknown",
-          "primaryScore": 7,
-          "secondaryScore": 19,
-          "scoreDiff": 12,
-          "textSource": "fullText"
-        },
-        {
           "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
           "method": "similarity+llm",
           "similarity": 63,
@@ -2004,21 +1614,6 @@
           "primaryScore": 56,
           "secondaryScore": 61,
           "scoreDiff": 5,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "ceilidh-the-musical-off-west-end-2026",
-          "method": "similarity+llm",
-          "similarity": 46,
-          "primaryFile": "theatrebookings--tube.json",
-          "primaryOutlet": "Theatre Bookings",
-          "primaryCritic": "Tube",
-          "secondaryFile": "lsbo--unknown.json",
-          "secondaryOutlet": "Lsbo",
-          "secondaryCritic": "Unknown",
-          "primaryScore": null,
-          "secondaryScore": null,
-          "scoreDiff": 0,
           "textSource": "fullText"
         },
         {
@@ -2037,21 +1632,6 @@
           "textSource": "fullText"
         },
         {
-          "showId": "cock-west-end-2022",
-          "method": "similarity+llm",
-          "similarity": 58,
-          "primaryFile": "artsdesk--aleks-sierz.json",
-          "primaryOutlet": "The Arts Desk",
-          "primaryCritic": "Aleks Sierz",
-          "secondaryFile": "sierz-co-uk--unknown.json",
-          "secondaryOutlet": "Aleks Sierz",
-          "secondaryCritic": "Unknown",
-          "primaryScore": 92,
-          "secondaryScore": 76,
-          "scoreDiff": 16,
-          "textSource": "fullText"
-        },
-        {
           "showId": "elling-2010",
           "method": "similarity+llm",
           "similarity": 44,
@@ -2063,21 +1643,6 @@
           "secondaryCritic": "David Rooney",
           "primaryScore": 42,
           "secondaryScore": 44,
-          "scoreDiff": 2,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "end-of-the-world-and-hard-boiled-wonderland-off-west-end-2026",
-          "method": "similarity+llm",
-          "similarity": 58,
-          "primaryFile": "guardian--arifa-akbar.json",
-          "primaryOutlet": "The Guardian",
-          "primaryCritic": "Arifa Akbar",
-          "secondaryFile": "soz6--unknown.json",
-          "secondaryOutlet": "soz6",
-          "secondaryCritic": "Unknown",
-          "primaryScore": 90,
-          "secondaryScore": 88,
           "scoreDiff": 2,
           "textSource": "fullText"
         },
@@ -2095,21 +1660,6 @@
           "secondaryScore": 76,
           "scoreDiff": 13,
           "textSource": "fullText"
-        },
-        {
-          "showId": "hold-on-to-me-darling-off-broadway-2024",
-          "method": "similarity+llm",
-          "similarity": 45,
-          "primaryFile": "dailybeast--unknown.json",
-          "primaryOutlet": "The Daily Beast",
-          "primaryCritic": "Unknown",
-          "secondaryFile": "timteeman--unknown.json",
-          "secondaryOutlet": "Timteeman",
-          "secondaryCritic": "",
-          "primaryScore": 78,
-          "secondaryScore": 75,
-          "scoreDiff": 3,
-          "textSource": "excerpts"
         },
         {
           "showId": "ilford-boy-west-end-2026",
@@ -2139,21 +1689,6 @@
           "primaryScore": 82,
           "secondaryScore": 65,
           "scoreDiff": 17,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "inter-alia-west-end-2026",
-          "method": "similarity+llm",
-          "similarity": 57,
-          "primaryFile": "daily-mail--patrick-marmion.json",
-          "primaryOutlet": "Daily Mail",
-          "primaryCritic": "Patrick Marmion",
-          "secondaryFile": "mail-on-sunday--robert-gore-langton.json",
-          "secondaryOutlet": "The Mail on Sunday",
-          "secondaryCritic": "Robert Gore Langton",
-          "primaryScore": 82,
-          "secondaryScore": null,
-          "scoreDiff": 82,
           "textSource": "fullText"
         },
         {
@@ -2187,48 +1722,18 @@
           "textSource": "fullText"
         },
         {
-          "showId": "north-by-northwest-regional-2026",
+          "showId": "oliver-west-end-2024",
           "method": "similarity+llm",
-          "similarity": 67,
-          "primaryFile": "localnewsmatters--jean-schiffman-bay-city-news.json",
-          "primaryOutlet": "Local News Matters",
-          "primaryCritic": "Jean Schiffman, Bay City News",
-          "secondaryFile": "sfgate--unknown.json",
-          "secondaryOutlet": "SFGate",
-          "secondaryCritic": "Unknown",
-          "primaryScore": 75,
-          "secondaryScore": 75,
+          "similarity": 52,
+          "primaryFile": "guardian--arifa-akbar.json",
+          "primaryOutlet": "The Guardian",
+          "primaryCritic": "Arifa Akbar",
+          "secondaryFile": "observer--susannah-clapp.json",
+          "secondaryOutlet": "Observer",
+          "secondaryCritic": "Susannah Clapp",
+          "primaryScore": 81,
+          "secondaryScore": 81,
           "scoreDiff": 0,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "oh-mary-west-end-2025",
-          "method": "similarity+llm",
-          "similarity": 45,
-          "primaryFile": "guardian-uk--unknown.json",
-          "primaryOutlet": "Guardian Uk",
-          "primaryCritic": "Unknown",
-          "secondaryFile": "standard--nick-curtis.json",
-          "secondaryOutlet": "Evening Standard",
-          "secondaryCritic": "Nick Curtis",
-          "primaryScore": 90,
-          "secondaryScore": 87,
-          "scoreDiff": 3,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "oleanna-west-end-2021",
-          "method": "similarity+llm",
-          "similarity": 67,
-          "primaryFile": "artsdesk--aleks-sierz.json",
-          "primaryOutlet": "The Arts Desk",
-          "primaryCritic": "Aleks Sierz",
-          "secondaryFile": "sierz-co-uk--unknown.json",
-          "secondaryOutlet": "Aleks Sierz",
-          "secondaryCritic": "Unknown",
-          "primaryScore": 77,
-          "secondaryScore": 92,
-          "scoreDiff": 15,
           "textSource": "fullText"
         },
         {
@@ -2262,48 +1767,18 @@
           "textSource": "fullText"
         },
         {
-          "showId": "scenes-with-girls-west-end-2020",
+          "showId": "prince-of-broadway-2017",
           "method": "similarity+llm",
-          "similarity": 68,
-          "primaryFile": "islingtontribune--unknown.json",
-          "primaryOutlet": "Islington Tribune",
+          "similarity": 59,
+          "primaryFile": "nytg--unknown.json",
+          "primaryOutlet": "New York Theatre Guide",
           "primaryCritic": "Unknown",
-          "secondaryFile": "camdennewjournal--clair-chapwell.json",
-          "secondaryOutlet": "Camden New Journal",
-          "secondaryCritic": "Clair Chapwell",
-          "primaryScore": 86,
-          "secondaryScore": 86,
+          "secondaryFile": "front-row-center--casey-curtis.json",
+          "secondaryOutlet": "Front Row Center",
+          "secondaryCritic": "Casey Curtis",
+          "primaryScore": 63,
+          "secondaryScore": 63,
           "scoreDiff": 0,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "slam-frank-off-broadway-2026",
-          "method": "similarity+llm",
-          "similarity": 64,
-          "primaryFile": "theater-life--david-sheward.json",
-          "primaryOutlet": "Theater Life",
-          "primaryCritic": "David Sheward",
-          "secondaryFile": "totaltheater1--unknown.json",
-          "secondaryOutlet": "Totaltheater1",
-          "secondaryCritic": "Unknown",
-          "primaryScore": 80,
-          "secondaryScore": 79,
-          "scoreDiff": 1,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "slam-frank-off-broadway-2026",
-          "method": "similarity+llm",
-          "similarity": 51,
-          "primaryFile": "totaltheater1--unknown.json",
-          "primaryOutlet": "Totaltheater1",
-          "primaryCritic": "Unknown",
-          "secondaryFile": "thedaviddesk2--davidsheward.json",
-          "secondaryOutlet": "Thedaviddesk2",
-          "secondaryCritic": "David.sheward",
-          "primaryScore": 79,
-          "secondaryScore": 81,
-          "scoreDiff": 2,
           "textSource": "fullText"
         },
         {
@@ -2337,36 +1812,6 @@
           "textSource": "fullText"
         },
         {
-          "showId": "the-cook-regional-2026",
-          "method": "similarity+llm",
-          "similarity": 68,
-          "primaryFile": "sfgate--unknown.json",
-          "primaryOutlet": "SFGate",
-          "primaryCritic": "Unknown",
-          "secondaryFile": "localnewsmatters--jean-schiffman-bay-city-news.json",
-          "secondaryOutlet": "Local News Matters",
-          "secondaryCritic": "Jean Schiffman, Bay City News",
-          "primaryScore": 62,
-          "secondaryScore": 62,
-          "scoreDiff": 0,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "the-hungry-ghost-off-west-end-2026",
-          "method": "similarity+llm",
-          "similarity": 51,
-          "primaryFile": "newearththeatre--new-earth-theatre.json",
-          "primaryOutlet": "newearththeatre",
-          "primaryCritic": "New Earth Theatre",
-          "secondaryFile": "chiswickcalendar--unknown.json",
-          "secondaryOutlet": "Chiswickcalendar",
-          "secondaryCritic": "Unknown",
-          "primaryScore": null,
-          "secondaryScore": null,
-          "scoreDiff": 0,
-          "textSource": "fullText"
-        },
-        {
           "showId": "the-outsiders-tour-2025",
           "method": "similarity+llm",
           "similarity": 60,
@@ -2379,21 +1824,6 @@
           "primaryScore": 85,
           "secondaryScore": 81,
           "scoreDiff": 4,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "the-play-that-goes-wrong-west-end-2021",
-          "method": "similarity+llm",
-          "similarity": 63,
-          "primaryFile": "telegraph--dominic-cavendish.json",
-          "primaryOutlet": "The Telegraph",
-          "primaryCritic": "Dominic Cavendish",
-          "secondaryFile": "sunday-telegraph--tim-walker.json",
-          "secondaryOutlet": "Sunday Telegraph",
-          "secondaryCritic": "Tim Walker",
-          "primaryScore": 74,
-          "secondaryScore": 74,
-          "scoreDiff": 0,
           "textSource": "fullText"
         },
         {
@@ -2412,21 +1842,6 @@
           "textSource": "fullText"
         },
         {
-          "showId": "till-the-stars-come-down-west-end-2024",
-          "method": "similarity+llm",
-          "similarity": 69,
-          "primaryFile": "artsdesk--aleks-sierz.json",
-          "primaryOutlet": "The Arts Desk",
-          "primaryCritic": "Aleks Sierz",
-          "secondaryFile": "sierz-co-uk--unknown.json",
-          "secondaryOutlet": "Aleks Sierz",
-          "secondaryCritic": "Unknown",
-          "primaryScore": 61,
-          "secondaryScore": 74,
-          "scoreDiff": 13,
-          "textSource": "fullText"
-        },
-        {
           "showId": "tina-the-tina-turner-musical-west-end-2018",
           "method": "similarity+llm",
           "similarity": 55,
@@ -2442,36 +1857,6 @@
           "textSource": "fullText"
         },
         {
-          "showId": "top-girls-west-end-2019",
-          "method": "similarity+llm",
-          "similarity": 67,
-          "primaryFile": "artsdesk--aleks-sierz.json",
-          "primaryOutlet": "The Arts Desk",
-          "primaryCritic": "Aleks Sierz",
-          "secondaryFile": "sierz-co-uk--unknown.json",
-          "secondaryOutlet": "Aleks Sierz",
-          "secondaryCritic": "Unknown",
-          "primaryScore": 96,
-          "secondaryScore": 87,
-          "scoreDiff": 9,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "touching-the-void-west-end-2019",
-          "method": "similarity+llm",
-          "similarity": 59,
-          "primaryFile": "artsdesk--aleks-sierz.json",
-          "primaryOutlet": "The Arts Desk",
-          "primaryCritic": "Aleks Sierz",
-          "secondaryFile": "sierz-co-uk--unknown.json",
-          "secondaryOutlet": "Aleks Sierz",
-          "secondaryCritic": "Unknown",
-          "primaryScore": 59,
-          "secondaryScore": 63,
-          "scoreDiff": 4,
-          "textSource": "fullText"
-        },
-        {
           "showId": "travesties-2018",
           "method": "similarity+llm",
           "similarity": 53,
@@ -2484,21 +1869,6 @@
           "primaryScore": 90,
           "secondaryScore": 86,
           "scoreDiff": 4,
-          "textSource": "fullText"
-        },
-        {
-          "showId": "trouble-in-mind-2021",
-          "method": "similarity+llm",
-          "similarity": 60,
-          "primaryFile": "washpost--soyica-diggs-colbert.json",
-          "primaryOutlet": "The Washington Post",
-          "primaryCritic": "Soyica Diggs Colbert",
-          "secondaryFile": "bloomberg--mark-kennedy.json",
-          "secondaryOutlet": "Bloomberg",
-          "secondaryCritic": "Mark Kennedy",
-          "primaryScore": 82,
-          "secondaryScore": 87,
-          "scoreDiff": 5,
           "textSource": "fullText"
         },
         {
@@ -2581,6 +1951,21 @@
       "textSource": "fullText"
     },
     {
+      "showId": "a-few-good-men-2026",
+      "method": "similarity",
+      "similarity": 86,
+      "primaryFile": "deadline--greg-evans.json",
+      "primaryOutlet": "Deadline",
+      "primaryCritic": "Greg Evans",
+      "secondaryFile": "globalnews2--unknown.json",
+      "secondaryOutlet": "globalnews2",
+      "secondaryCritic": "Unknown",
+      "primaryScore": 63,
+      "secondaryScore": 60,
+      "scoreDiff": 3,
+      "textSource": "fullText"
+    },
+    {
       "showId": "a-fine-idea-off-west-end-2026",
       "method": "similarity",
       "similarity": 89,
@@ -2656,18 +2041,18 @@
       "textSource": "fullText"
     },
     {
-      "showId": "a-strange-loop-2022",
+      "showId": "a-strange-loop-regional-2026",
       "method": "similarity",
-      "similarity": 87,
-      "primaryFile": "rollingstone--brittani-samuel.json",
-      "primaryOutlet": "Rolling Stone",
-      "primaryCritic": "Brittani Samuel",
-      "secondaryFile": "queerty--matthew-wexler.json",
-      "secondaryOutlet": "Queerty",
-      "secondaryCritic": "Matthew Wexler",
-      "primaryScore": 88,
-      "secondaryScore": 86,
-      "scoreDiff": 2,
+      "similarity": 89,
+      "primaryFile": "broadwayworld--rachel-weinberg.json",
+      "primaryOutlet": "BroadwayWorld",
+      "primaryCritic": "Rachel Weinberg",
+      "secondaryFile": "rachelweinbergreviews--rachelrweinberg.json",
+      "secondaryOutlet": "Rachel Weinberg Reviews",
+      "secondaryCritic": "rachelrweinberg",
+      "primaryScore": 78,
+      "secondaryScore": 79,
+      "scoreDiff": 1,
       "textSource": "fullText"
     },
     {
@@ -2701,21 +2086,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "amazing-grace-2015",
-      "method": "fingerprint",
-      "similarity": 100,
-      "primaryFile": "huffpost--steven-suskin.json",
-      "primaryOutlet": "Huffington Post",
-      "primaryCritic": "Steven Suskin",
-      "secondaryFile": "jks-theatre-scene--jeff-kyler.json",
-      "secondaryOutlet": "JK's Theatre Scene",
-      "secondaryCritic": "Jeff Kyler",
-      "primaryScore": 52,
-      "secondaryScore": 59,
-      "scoreDiff": 7,
-      "textSource": "fullText"
-    },
-    {
       "showId": "american-idiot-2010",
       "method": "similarity+llm",
       "similarity": 49,
@@ -2727,21 +2097,6 @@
       "secondaryCritic": "Frank Scheck",
       "primaryScore": 66,
       "secondaryScore": 65,
-      "scoreDiff": 1,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "an-american-in-paris-2015",
-      "method": "similarity",
-      "similarity": 70,
-      "primaryFile": "huffpost--david-finkle.json",
-      "primaryOutlet": "Huffington Post",
-      "primaryCritic": "David Finkle",
-      "secondaryFile": "northjerseycom--robert-feldberg.json",
-      "secondaryOutlet": "NorthJersey.com",
-      "secondaryCritic": "Robert Feldberg",
-      "primaryScore": 69,
-      "secondaryScore": 70,
       "scoreDiff": 1,
       "textSource": "fullText"
     },
@@ -2776,21 +2131,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "appropriate-2023",
-      "method": "similarity",
-      "similarity": 83,
-      "primaryFile": "guardian--adrian-horton.json",
-      "primaryOutlet": "The Guardian",
-      "primaryCritic": "Adrian Horton",
-      "secondaryFile": "deadline--greg-evans.json",
-      "secondaryOutlet": "Deadline",
-      "secondaryCritic": "Greg Evans",
-      "primaryScore": 86,
-      "secondaryScore": 91,
-      "scoreDiff": 5,
-      "textSource": "fullText"
-    },
-    {
       "showId": "archduke-west-end-2026",
       "method": "similarity",
       "similarity": 81,
@@ -2806,18 +2146,18 @@
       "textSource": "fullText"
     },
     {
-      "showId": "art-west-end-2016",
-      "method": "similarity+llm",
-      "similarity": 50,
-      "primaryFile": "standard--fiona-mountford.json",
-      "primaryOutlet": "Evening Standard",
-      "primaryCritic": "Fiona Mountford",
-      "secondaryFile": "guardian--michael-billington.json",
-      "secondaryOutlet": "The Guardian",
-      "secondaryCritic": "Michael Billington",
-      "primaryScore": 76,
-      "secondaryScore": 85,
-      "scoreDiff": 9,
+      "showId": "baby-off-west-end-2026",
+      "method": "similarity",
+      "similarity": 79,
+      "primaryFile": "the-theatre-times--aleks-sierz.json",
+      "primaryOutlet": "The Theatre Times",
+      "primaryCritic": "Aleks Sierz",
+      "secondaryFile": "sierz-co-uk--unknown.json",
+      "secondaryOutlet": "Aleks Sierz",
+      "secondaryCritic": "Unknown",
+      "primaryScore": 84,
+      "secondaryScore": 84,
+      "scoreDiff": 0,
       "textSource": "fullText"
     },
     {
@@ -2836,36 +2176,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "bandstand-2017",
-      "method": "fingerprint",
-      "similarity": 100,
-      "primaryFile": "huffpost--michael-giltz.json",
-      "primaryOutlet": "The Huffington Post",
-      "primaryCritic": "Michael Giltz",
-      "secondaryFile": "off-script-with-dan-dwyer--dan-dwyer.json",
-      "secondaryOutlet": "Off Script with Dan Dwyer",
-      "secondaryCritic": "Dan Dwyer",
-      "primaryScore": 82,
-      "secondaryScore": 79,
-      "scoreDiff": 3,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "bandstand-2017",
-      "method": "fingerprint",
-      "similarity": 100,
-      "primaryFile": "huffpost--michael-giltz.json",
-      "primaryOutlet": "The Huffington Post",
-      "primaryCritic": "Michael Giltz",
-      "secondaryFile": "stagezine--david-nounou.json",
-      "secondaryOutlet": "StageZine",
-      "secondaryCritic": "David NouNou",
-      "primaryScore": 82,
-      "secondaryScore": 79,
-      "scoreDiff": 3,
-      "textSource": "fullText"
-    },
-    {
       "showId": "beautiful-the-carole-king-musical-2014",
       "method": "similarity",
       "similarity": 95,
@@ -2881,48 +2191,18 @@
       "textSource": "fullText"
     },
     {
-      "showId": "beetlejuice-tour-2026",
-      "method": "similarity+llm",
-      "similarity": 60,
-      "primaryFile": "kc-studio--contributing-writer.json",
-      "primaryOutlet": "Kc Studio",
-      "primaryCritic": "Contributing Writer",
-      "secondaryFile": "the-pitch--brynn-weiss.json",
-      "secondaryOutlet": "The Pitch",
-      "secondaryCritic": "Brynn Weiss",
+      "showId": "billy-crystal-860-2026",
+      "method": "similarity",
+      "similarity": 83,
+      "primaryFile": "theater-life--david-sheward.json",
+      "primaryOutlet": "Theater Life",
+      "primaryCritic": "David Sheward",
+      "secondaryFile": "thedaviddesk2--davidsheward.json",
+      "secondaryOutlet": "Thedaviddesk2",
+      "secondaryCritic": "David.sheward",
       "primaryScore": 88,
-      "secondaryScore": 89,
-      "scoreDiff": 1,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "betrayal-2019",
-      "method": "similarity+llm",
-      "similarity": 62,
-      "primaryFile": "standard--henry-hitchings.json",
-      "primaryOutlet": "Evening Standard",
-      "primaryCritic": "Henry Hitchings",
-      "secondaryFile": "broadwayworld--michael-dale.json",
-      "secondaryOutlet": "BroadwayWorld",
-      "secondaryCritic": "Michael Dale",
-      "primaryScore": 83,
-      "secondaryScore": 83,
-      "scoreDiff": 0,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "bitter-wheat-west-end-2019",
-      "method": "similarity+llm",
-      "similarity": 62,
-      "primaryFile": "artsdesk--aleks-sierz.json",
-      "primaryOutlet": "The Arts Desk",
-      "primaryCritic": "Aleks Sierz",
-      "secondaryFile": "sierz-co-uk--unknown.json",
-      "secondaryOutlet": "Aleks Sierz",
-      "secondaryCritic": "Unknown",
-      "primaryScore": 7,
-      "secondaryScore": 19,
-      "scoreDiff": 12,
+      "secondaryScore": 79,
+      "scoreDiff": 9,
       "textSource": "fullText"
     },
     {
@@ -2986,36 +2266,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "ceilidh-the-musical-off-west-end-2026",
-      "method": "similarity+llm",
-      "similarity": 46,
-      "primaryFile": "theatrebookings--tube.json",
-      "primaryOutlet": "Theatre Bookings",
-      "primaryCritic": "Tube",
-      "secondaryFile": "lsbo--unknown.json",
-      "secondaryOutlet": "Lsbo",
-      "secondaryCritic": "Unknown",
-      "primaryScore": null,
-      "secondaryScore": null,
-      "scoreDiff": 0,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "charlie-and-the-chocolate-factory-2017",
-      "method": "fingerprint",
-      "similarity": 100,
-      "primaryFile": "peconic-public-broadcasting--david-richardson.json",
-      "primaryOutlet": "peconic-public-broadcasting",
-      "primaryCritic": "David Richardson",
-      "secondaryFile": "simon-parris-man-in-chair--simon-parris.json",
-      "secondaryOutlet": "simon-parris-man-in-chair",
-      "secondaryCritic": "Simon Parris",
-      "primaryScore": 28,
-      "secondaryScore": 19,
-      "scoreDiff": 9,
-      "textSource": "fullText"
-    },
-    {
       "showId": "charlie-and-the-chocolate-factory-2017",
       "method": "similarity+llm",
       "similarity": 65,
@@ -3028,21 +2278,6 @@
       "primaryScore": 77,
       "secondaryScore": 77,
       "scoreDiff": 0,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "china-doll-2015",
-      "method": "fingerprint",
-      "similarity": 100,
-      "primaryFile": "variety--marilyn-stasio.json",
-      "primaryOutlet": "Variety",
-      "primaryCritic": "Marilyn Stasio",
-      "secondaryFile": "lighting-and-sound-america--david-barbour.json",
-      "secondaryOutlet": "Lighting & Sound America",
-      "secondaryCritic": "David Barbour",
-      "primaryScore": 40,
-      "secondaryScore": 44,
-      "scoreDiff": 4,
       "textSource": "fullText"
     },
     {
@@ -3061,18 +2296,18 @@
       "textSource": "fullText"
     },
     {
-      "showId": "cock-west-end-2022",
-      "method": "similarity+llm",
-      "similarity": 58,
-      "primaryFile": "artsdesk--aleks-sierz.json",
-      "primaryOutlet": "The Arts Desk",
-      "primaryCritic": "Aleks Sierz",
-      "secondaryFile": "sierz-co-uk--unknown.json",
-      "secondaryOutlet": "Aleks Sierz",
+      "showId": "come-from-away-moonlight-regional-2026",
+      "method": "similarity",
+      "similarity": 95,
+      "primaryFile": "broadwayworld--erinmarie-reiter.json",
+      "primaryOutlet": "BroadwayWorld",
+      "primaryCritic": "ErinMarie Reiter",
+      "secondaryFile": "talk-theatre-to-me--unknown.json",
+      "secondaryOutlet": "Talk Theatre to Me",
       "secondaryCritic": "Unknown",
-      "primaryScore": 92,
-      "secondaryScore": 76,
-      "scoreDiff": 16,
+      "primaryScore": 87,
+      "secondaryScore": 89,
+      "scoreDiff": 2,
       "textSource": "fullText"
     },
     {
@@ -3091,18 +2326,33 @@
       "textSource": "fullText"
     },
     {
-      "showId": "cult-of-love-2024",
+      "showId": "cyrano-regional-2026",
       "method": "similarity",
-      "similarity": 98,
-      "primaryFile": "variety--aramide-tinubu.json",
-      "primaryOutlet": "Variety",
-      "primaryCritic": "Daniel D'Addario",
-      "secondaryFile": "hollywood-reporter--david-rooney.json",
-      "secondaryOutlet": "The Hollywood Reporter",
-      "secondaryCritic": "David Rooney",
-      "primaryScore": 75,
-      "secondaryScore": 67,
-      "scoreDiff": 8,
+      "similarity": 83,
+      "primaryFile": "broadwayworld--erinmarie-reiter.json",
+      "primaryOutlet": "BroadwayWorld",
+      "primaryCritic": "ErinMarie Reiter",
+      "secondaryFile": "talk-theatre-to-me--unknown.json",
+      "secondaryOutlet": "Talk Theatre to Me",
+      "secondaryCritic": "Unknown",
+      "primaryScore": 87,
+      "secondaryScore": 86,
+      "scoreDiff": 1,
+      "textSource": "fullText"
+    },
+    {
+      "showId": "dear-evan-hansen-cygnet-regional-2026",
+      "method": "similarity",
+      "similarity": 91,
+      "primaryFile": "broadwayworld--erinmarie-reiter.json",
+      "primaryOutlet": "BroadwayWorld",
+      "primaryCritic": "ErinMarie Reiter",
+      "secondaryFile": "talk-theatre-to-me--unknown.json",
+      "secondaryOutlet": "Talk Theatre to Me",
+      "secondaryCritic": "Unknown",
+      "primaryScore": 79,
+      "secondaryScore": 79,
+      "scoreDiff": 0,
       "textSource": "fullText"
     },
     {
@@ -3118,36 +2368,6 @@
       "primaryScore": 88,
       "secondaryScore": 83,
       "scoreDiff": 5,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "dog-mom-off-west-end-2026",
-      "method": "similarity",
-      "similarity": 71,
-      "primaryFile": "west-end-wilma--westendwilma.json",
-      "primaryOutlet": "West End Wilma",
-      "primaryCritic": "Westendwilma",
-      "secondaryFile": "onin--caitlin-neal.json",
-      "secondaryOutlet": "Onin",
-      "secondaryCritic": "Caitlin Neal",
-      "primaryScore": null,
-      "secondaryScore": null,
-      "scoreDiff": 0,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "dog-mom-off-west-end-2026",
-      "method": "similarity",
-      "similarity": 70,
-      "primaryFile": "whatsgoodtodo--unknown.json",
-      "primaryOutlet": "What's Good To Do",
-      "primaryCritic": "Unknown",
-      "secondaryFile": "onin--caitlin-neal.json",
-      "secondaryOutlet": "Onin",
-      "secondaryCritic": "Caitlin Neal",
-      "primaryScore": null,
-      "secondaryScore": null,
-      "scoreDiff": 0,
       "textSource": "fullText"
     },
     {
@@ -3211,36 +2431,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "end-of-the-world-and-hard-boiled-wonderland-off-west-end-2026",
-      "method": "similarity+llm",
-      "similarity": 58,
-      "primaryFile": "guardian--arifa-akbar.json",
-      "primaryOutlet": "The Guardian",
-      "primaryCritic": "Arifa Akbar",
-      "secondaryFile": "soz6--unknown.json",
-      "secondaryOutlet": "soz6",
-      "secondaryCritic": "Unknown",
-      "primaryScore": 90,
-      "secondaryScore": 88,
-      "scoreDiff": 2,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "exit-the-king-west-end-2018",
-      "method": "fingerprint",
-      "similarity": 100,
-      "primaryFile": "daily-mail--quentin-letts.json",
-      "primaryOutlet": "Daily Mail",
-      "primaryCritic": "Quentin Letts",
-      "secondaryFile": "times-uk--ann-treneman.json",
-      "secondaryOutlet": "The Times (UK)",
-      "secondaryCritic": "Ann Treneman",
-      "primaryScore": 25,
-      "secondaryScore": 44,
-      "scoreDiff": 19,
-      "textSource": "fullText"
-    },
-    {
       "showId": "expendable-west-end-2024",
       "method": "similarity",
       "similarity": 86,
@@ -3256,18 +2446,18 @@
       "textSource": "fullText"
     },
     {
-      "showId": "farinelli-and-the-king-2017",
+      "showId": "fire-and-air-off-broadway-2018",
       "method": "similarity",
-      "similarity": 73,
-      "primaryFile": "dctheatrescene--jonathan-mandell.json",
-      "primaryOutlet": "DC Theatre Scene",
-      "primaryCritic": "Jonathan Mandell",
-      "secondaryFile": "broadwayworld--michael-dale.json",
-      "secondaryOutlet": "BroadwayWorld",
-      "secondaryCritic": "Michael Dale",
-      "primaryScore": 75,
-      "secondaryScore": 73,
-      "scoreDiff": 2,
+      "similarity": 76,
+      "primaryFile": "nytg--austin-yang.json",
+      "primaryOutlet": "New York Theatre Guide",
+      "primaryCritic": "Austin Yang",
+      "secondaryFile": "front-row-center--tulis-mccall.json",
+      "secondaryOutlet": "Front Row Center",
+      "secondaryCritic": "Tulis McCall",
+      "primaryScore": 60,
+      "secondaryScore": 70,
+      "scoreDiff": 10,
       "textSource": "fullText"
     },
     {
@@ -3316,48 +2506,18 @@
       "textSource": "fullText"
     },
     {
-      "showId": "grand-horizons-2020",
+      "showId": "good-night-oscar-regional-2026",
       "method": "similarity",
-      "similarity": 71,
-      "primaryFile": "dctheatrescene--jonathan-mandell.json",
-      "primaryOutlet": "DC Theatre Scene",
-      "primaryCritic": "Jonathan Mandell",
-      "secondaryFile": "broadwayworld--michael-dale.json",
-      "secondaryOutlet": "BroadwayWorld",
-      "secondaryCritic": "Michael Dale",
-      "primaryScore": 85,
-      "secondaryScore": 81,
-      "scoreDiff": 4,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "groundhog-day-2017",
-      "method": "fingerprint",
-      "similarity": 100,
-      "primaryFile": "li-herald--elyse-trevers.json",
-      "primaryOutlet": "li-herald",
-      "primaryCritic": "Elyse Trevers",
-      "secondaryFile": "labor-press--leonard-golubchick.json",
-      "secondaryOutlet": "labor-press",
-      "secondaryCritic": "Leonard Golubchick",
-      "primaryScore": 78,
-      "secondaryScore": 81,
-      "scoreDiff": 3,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "groundhog-day-2017",
-      "method": "similarity",
-      "similarity": 80,
-      "primaryFile": "latimes--charles-mcnulty.json",
-      "primaryOutlet": "Los Angeles Times",
-      "primaryCritic": "Charles McNulty",
-      "secondaryFile": "huffpost--steven-suskin.json",
-      "secondaryOutlet": "HuffPost",
-      "secondaryCritic": "Steven Suskin",
-      "primaryScore": 71,
-      "secondaryScore": 73,
-      "scoreDiff": 2,
+      "similarity": 89,
+      "primaryFile": "broadwayworld--erinmarie-reiter.json",
+      "primaryOutlet": "BroadwayWorld",
+      "primaryCritic": "ErinMarie Reiter",
+      "secondaryFile": "talk-theatre-to-me--unknown.json",
+      "secondaryOutlet": "Talk Theatre to Me",
+      "secondaryCritic": "Unknown",
+      "primaryScore": 88,
+      "secondaryScore": 88,
+      "scoreDiff": 0,
       "textSource": "fullText"
     },
     {
@@ -3391,6 +2551,36 @@
       "textSource": "fullText"
     },
     {
+      "showId": "guys-and-dolls-regional-2026",
+      "method": "similarity",
+      "similarity": 91,
+      "primaryFile": "broadwayworld--erinmarie-reiter.json",
+      "primaryOutlet": "BroadwayWorld",
+      "primaryCritic": "ErinMarie Reiter",
+      "secondaryFile": "talk-theatre-to-me--unknown.json",
+      "secondaryOutlet": "Talk Theatre to Me",
+      "secondaryCritic": "Unknown",
+      "primaryScore": 90,
+      "secondaryScore": 90,
+      "scoreDiff": 0,
+      "textSource": "fullText"
+    },
+    {
+      "showId": "ha-ha-ha-ha-ha-ha-ha-regional-2026",
+      "method": "similarity",
+      "similarity": 94,
+      "primaryFile": "broadwayworld--erinmarie-reiter.json",
+      "primaryOutlet": "BroadwayWorld",
+      "primaryCritic": "ErinMarie Reiter",
+      "secondaryFile": "talk-theatre-to-me--unknown.json",
+      "secondaryOutlet": "Talk Theatre to Me",
+      "secondaryCritic": "Unknown",
+      "primaryScore": 89,
+      "secondaryScore": 88,
+      "scoreDiff": 1,
+      "textSource": "fullText"
+    },
+    {
       "showId": "hadestown-west-end-2024",
       "method": "similarity",
       "similarity": 86,
@@ -3404,81 +2594,6 @@
       "secondaryScore": 81,
       "scoreDiff": 1,
       "textSource": "fullText"
-    },
-    {
-      "showId": "harry-potter-2021",
-      "method": "similarity",
-      "similarity": 79,
-      "primaryFile": "dctheatrescene--jonathan-mandell.json",
-      "primaryOutlet": "DC Theatre Scene",
-      "primaryCritic": "Jonathan Mandell",
-      "secondaryFile": "nyt-theater--unknown.json",
-      "secondaryOutlet": "New York Theater",
-      "secondaryCritic": "Unknown",
-      "primaryScore": 80,
-      "secondaryScore": 76,
-      "scoreDiff": 4,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "head-over-heels-2018",
-      "method": "fingerprint",
-      "similarity": 100,
-      "primaryFile": "philadelphia-inquirer--toby-zinman.json",
-      "primaryOutlet": "The Philadelphia Inquirer",
-      "primaryCritic": "Toby Zinman",
-      "secondaryFile": "stage-left--robert-russo.json",
-      "secondaryOutlet": "Stage Left",
-      "secondaryCritic": "Robert Russo",
-      "primaryScore": 70,
-      "secondaryScore": 75,
-      "scoreDiff": 5,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "heathers-the-musical-off-west-end-2026",
-      "method": "similarity",
-      "similarity": 74,
-      "primaryFile": "notesfromrowh--helena6.json",
-      "primaryOutlet": "notesfromrowh",
-      "primaryCritic": "helena6",
-      "secondaryFile": "theatre-south-east--unknown.json",
-      "secondaryOutlet": "Theatre South East",
-      "secondaryCritic": "Unknown",
-      "primaryScore": 85,
-      "secondaryScore": 20,
-      "scoreDiff": 65,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "hells-kitchen-2024",
-      "method": "similarity",
-      "similarity": 83,
-      "primaryFile": "ap--mark-kennedy.json",
-      "primaryOutlet": "Associated Press",
-      "primaryCritic": "Mark Kennedy",
-      "secondaryFile": "showbiz411--roger-friedman.json",
-      "secondaryOutlet": "Showbiz411",
-      "secondaryCritic": "Roger Friedman",
-      "primaryScore": 50,
-      "secondaryScore": 74,
-      "scoreDiff": 24,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "hold-on-to-me-darling-off-broadway-2024",
-      "method": "similarity+llm",
-      "similarity": 45,
-      "primaryFile": "dailybeast--unknown.json",
-      "primaryOutlet": "The Daily Beast",
-      "primaryCritic": "Unknown",
-      "secondaryFile": "timteeman--unknown.json",
-      "secondaryOutlet": "Timteeman",
-      "secondaryCritic": "",
-      "primaryScore": 78,
-      "secondaryScore": 75,
-      "scoreDiff": 3,
-      "textSource": "excerpts"
     },
     {
       "showId": "holler-if-ya-hear-me-2014",
@@ -3571,48 +2686,18 @@
       "textSource": "fullText"
     },
     {
-      "showId": "inter-alia-west-end-2026",
-      "method": "similarity+llm",
-      "similarity": 57,
-      "primaryFile": "daily-mail--patrick-marmion.json",
-      "primaryOutlet": "Daily Mail",
-      "primaryCritic": "Patrick Marmion",
-      "secondaryFile": "mail-on-sunday--robert-gore-langton.json",
-      "secondaryOutlet": "The Mail on Sunday",
-      "secondaryCritic": "Robert Gore Langton",
-      "primaryScore": 82,
-      "secondaryScore": null,
-      "scoreDiff": 82,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "it-shoulda-been-you-2015",
+      "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
       "method": "fingerprint",
       "similarity": 100,
-      "primaryFile": "jta--uriel-heilman.json",
-      "primaryOutlet": "jta",
-      "primaryCritic": "Uriel Heilman",
-      "secondaryFile": "simon-parris-man-in-chair--simon-parris.json",
-      "secondaryOutlet": "simon-parris-man-in-chair",
-      "secondaryCritic": "Simon Parris",
-      "primaryScore": 63,
-      "secondaryScore": 62,
-      "scoreDiff": 1,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "jews-in-their-own-words-west-end-2022",
-      "method": "similarity",
-      "similarity": 79,
-      "primaryFile": "artsdesk--aleks-sierz.json",
-      "primaryOutlet": "The Arts Desk",
-      "primaryCritic": "Aleks Sierz",
-      "secondaryFile": "sierz-co-uk--unknown.json",
-      "secondaryOutlet": "Aleks Sierz",
-      "secondaryCritic": "Unknown",
-      "primaryScore": 60,
-      "secondaryScore": 72,
-      "scoreDiff": 12,
+      "primaryFile": "telegraph--dominic-cavendish.json",
+      "primaryOutlet": "The Telegraph",
+      "primaryCritic": "Dominic Cavendish",
+      "secondaryFile": "sunday-telegraph--dominic-cavendish.json",
+      "secondaryOutlet": "Sunday Telegraph",
+      "secondaryCritic": "Dominic Cavendish",
+      "primaryScore": 94,
+      "secondaryScore": null,
+      "scoreDiff": 94,
       "textSource": "fullText"
     },
     {
@@ -3661,36 +2746,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "king-kong-2018",
-      "method": "fingerprint",
-      "similarity": 100,
-      "primaryFile": "broadwayworld--michael-dale.json",
-      "primaryOutlet": "BroadwayWorld",
-      "primaryCritic": "Michael Dale",
-      "secondaryFile": "florida-theater-on-stage--bill-hirschman.json",
-      "secondaryOutlet": "florida-theater-on-stage",
-      "secondaryCritic": "Bill Hirschman",
-      "primaryScore": 41,
-      "secondaryScore": 77,
-      "scoreDiff": 36,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "kinky-boots-2013",
-      "method": "similarity",
-      "similarity": 90,
-      "primaryFile": "latimes--charles-mcnulty.json",
-      "primaryOutlet": "Los Angeles Times",
-      "primaryCritic": "Charles McNulty",
-      "secondaryFile": "huffpost--michael-giltz.json",
-      "secondaryOutlet": "HuffPost",
-      "secondaryCritic": "Michael Giltz",
-      "primaryScore": 44,
-      "secondaryScore": 52,
-      "scoreDiff": 8,
-      "textSource": "fullText"
-    },
-    {
       "showId": "kramerfauci-st-anns-off-broadway-2026",
       "method": "similarity",
       "similarity": 94,
@@ -3706,21 +2761,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "lemons-lemons-lemons-lemons-lemons-west-end-2023",
-      "method": "similarity",
-      "similarity": 77,
-      "primaryFile": "artsdesk--aleks-sierz.json",
-      "primaryOutlet": "The Arts Desk",
-      "primaryCritic": "Aleks Sierz",
-      "secondaryFile": "sierz-co-uk--unknown.json",
-      "secondaryOutlet": "Aleks Sierz",
-      "secondaryCritic": "Unknown",
-      "primaryScore": 55,
-      "secondaryScore": 62,
-      "scoreDiff": 7,
-      "textSource": "fullText"
-    },
-    {
       "showId": "les-miserables-west-end-2021",
       "method": "similarity",
       "similarity": 74,
@@ -3730,9 +2770,24 @@
       "secondaryFile": "sierz-co-uk--alex-sierz.json",
       "secondaryOutlet": "Sierz Co Uk",
       "secondaryCritic": "Alex Sierz",
-      "primaryScore": 75,
+      "primaryScore": 80,
       "secondaryScore": 78,
-      "scoreDiff": 3,
+      "scoreDiff": 2,
+      "textSource": "fullText"
+    },
+    {
+      "showId": "life-of-pi-tour-2024",
+      "method": "similarity",
+      "similarity": 82,
+      "primaryFile": "whats-up-newp--ken-abrams.json",
+      "primaryOutlet": "What's Up Newp",
+      "primaryCritic": "Ken Abrams",
+      "secondaryFile": "shotoe--unknown.json",
+      "secondaryOutlet": "shotoe",
+      "secondaryCritic": "Unknown",
+      "primaryScore": 93,
+      "secondaryScore": 93,
+      "scoreDiff": 0,
       "textSource": "fullText"
     },
     {
@@ -3751,18 +2806,18 @@
       "textSource": "fullText"
     },
     {
-      "showId": "m-butterfly-2017",
+      "showId": "long-lost-off-broadway-2019",
       "method": "similarity",
-      "similarity": 88,
-      "primaryFile": "huffpost--christian-lewis.json",
-      "primaryOutlet": "Huffington Post",
-      "primaryCritic": "Christian Lewis",
-      "secondaryFile": "stageandcinema--lynn-berk.json",
-      "secondaryOutlet": "Stage and Cinema",
-      "secondaryCritic": "Lynn Berk",
-      "primaryScore": 79,
-      "secondaryScore": 81,
-      "scoreDiff": 2,
+      "similarity": 96,
+      "primaryFile": "theater-life--unknown.json",
+      "primaryOutlet": "Theater Life",
+      "primaryCritic": "Unknown",
+      "secondaryFile": "cultural-weekly--david-sheward.json",
+      "secondaryOutlet": "Cultural Weekly",
+      "secondaryCritic": "David Sheward",
+      "primaryScore": 78,
+      "secondaryScore": 77,
+      "scoreDiff": 1,
       "textSource": "fullText"
     },
     {
@@ -3779,6 +2834,21 @@
       "secondaryScore": null,
       "scoreDiff": 80,
       "textSource": "excerpts"
+    },
+    {
+      "showId": "mama-im-a-big-girl-now-off-broadway-2024",
+      "method": "similarity",
+      "similarity": 94,
+      "primaryFile": "times-square-chronicles--ross.json",
+      "primaryOutlet": "Times Square Chronicles",
+      "primaryCritic": "Ross",
+      "secondaryFile": "frontmezzjunkies--unknown.json",
+      "secondaryOutlet": "Front Mezz Junkies",
+      "secondaryCritic": "Unknown",
+      "primaryScore": 88,
+      "secondaryScore": 87,
+      "scoreDiff": 1,
+      "textSource": "fullText"
     },
     {
       "showId": "manhunt-west-end-2025",
@@ -3826,6 +2896,21 @@
       "textSource": "excerpts"
     },
     {
+      "showId": "mensa-regional-2026",
+      "method": "similarity",
+      "similarity": 95,
+      "primaryFile": "broadwayworld--erinmarie-reiter.json",
+      "primaryOutlet": "BroadwayWorld",
+      "primaryCritic": "ErinMarie Reiter",
+      "secondaryFile": "talk-theatre-to-me--unknown.json",
+      "secondaryOutlet": "Talk Theatre to Me",
+      "secondaryCritic": "Unknown",
+      "primaryScore": 75,
+      "secondaryScore": 75,
+      "scoreDiff": 0,
+      "textSource": "fullText"
+    },
+    {
       "showId": "mothers-and-sons-2014",
       "method": "similarity",
       "similarity": 96,
@@ -3856,48 +2941,18 @@
       "textSource": "fullText"
     },
     {
-      "showId": "network-2018",
-      "method": "fingerprint",
-      "similarity": 100,
-      "primaryFile": "vulture--jesse-green.json",
-      "primaryOutlet": "Vulture",
-      "primaryCritic": "Jesse Green",
-      "secondaryFile": "dailybeast--tim-teeman.json",
-      "secondaryOutlet": "The Daily Beast",
-      "secondaryCritic": "Tim Teeman",
-      "primaryScore": 80,
-      "secondaryScore": 86,
-      "scoreDiff": 6,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "next-fall-2010",
-      "method": "fingerprint",
-      "similarity": 100,
-      "primaryFile": "broadwayworld--stephanie-zacharek.json",
+      "showId": "much-ado-about-nothing-regional-2026",
+      "method": "similarity",
+      "similarity": 84,
+      "primaryFile": "broadwayworld--erinmarie-reiter.json",
       "primaryOutlet": "BroadwayWorld",
-      "primaryCritic": "Stephanie Zacharek",
-      "secondaryFile": "backstage--david-sheward.json",
-      "secondaryOutlet": "Back Stage",
-      "secondaryCritic": "David Sheward",
-      "primaryScore": 66,
-      "secondaryScore": 78,
-      "scoreDiff": 12,
-      "textSource": "excerpts"
-    },
-    {
-      "showId": "north-by-northwest-regional-2026",
-      "method": "similarity+llm",
-      "similarity": 67,
-      "primaryFile": "localnewsmatters--jean-schiffman-bay-city-news.json",
-      "primaryOutlet": "Local News Matters",
-      "primaryCritic": "Jean Schiffman, Bay City News",
-      "secondaryFile": "sfgate--unknown.json",
-      "secondaryOutlet": "SFGate",
+      "primaryCritic": "ErinMarie Reiter",
+      "secondaryFile": "talk-theatre-to-me--unknown.json",
+      "secondaryOutlet": "Talk Theatre to Me",
       "secondaryCritic": "Unknown",
-      "primaryScore": 75,
-      "secondaryScore": 75,
-      "scoreDiff": 0,
+      "primaryScore": 85,
+      "secondaryScore": 86,
+      "scoreDiff": 1,
       "textSource": "fullText"
     },
     {
@@ -3916,63 +2971,18 @@
       "textSource": "excerpts"
     },
     {
-      "showId": "oh-mary-west-end-2025",
-      "method": "similarity",
-      "similarity": 97,
-      "primaryFile": "daily-mail--patrick-marmion.json",
-      "primaryOutlet": "Daily Mail",
-      "primaryCritic": "Patrick Marmion",
-      "secondaryFile": "digital-journal--markos-papadatos.json",
-      "secondaryOutlet": "Digital Journal",
-      "secondaryCritic": "Markos Papadatos",
-      "primaryScore": 14,
-      "secondaryScore": 15,
-      "scoreDiff": 1,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "oh-mary-west-end-2025",
-      "method": "similarity+llm",
-      "similarity": 45,
-      "primaryFile": "guardian-uk--unknown.json",
-      "primaryOutlet": "Guardian Uk",
-      "primaryCritic": "Unknown",
-      "secondaryFile": "standard--nick-curtis.json",
-      "secondaryOutlet": "Evening Standard",
-      "secondaryCritic": "Nick Curtis",
-      "primaryScore": 90,
-      "secondaryScore": 87,
-      "scoreDiff": 3,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "oleanna-west-end-2021",
-      "method": "similarity+llm",
-      "similarity": 67,
-      "primaryFile": "artsdesk--aleks-sierz.json",
-      "primaryOutlet": "The Arts Desk",
-      "primaryCritic": "Aleks Sierz",
-      "secondaryFile": "sierz-co-uk--unknown.json",
-      "secondaryOutlet": "Aleks Sierz",
-      "secondaryCritic": "Unknown",
-      "primaryScore": 77,
-      "secondaryScore": 92,
-      "scoreDiff": 15,
-      "textSource": "fullText"
-    },
-    {
       "showId": "oliver-west-end-2024",
-      "method": "fingerprint",
-      "similarity": 100,
+      "method": "similarity+llm",
+      "similarity": 52,
       "primaryFile": "guardian--arifa-akbar.json",
       "primaryOutlet": "The Guardian",
       "primaryCritic": "Arifa Akbar",
       "secondaryFile": "observer--susannah-clapp.json",
-      "secondaryOutlet": "The Observer",
+      "secondaryOutlet": "Observer",
       "secondaryCritic": "Susannah Clapp",
       "primaryScore": 81,
-      "secondaryScore": 83,
-      "scoreDiff": 2,
+      "secondaryScore": 81,
+      "scoreDiff": 0,
       "textSource": "fullText"
     },
     {
@@ -4018,21 +3028,6 @@
       "primaryScore": 91,
       "secondaryScore": 93,
       "scoreDiff": 2,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "on-your-feet-2015",
-      "method": "similarity",
-      "similarity": 79,
-      "primaryFile": "huffpost--fern-siegel.json",
-      "primaryOutlet": "HuffPost",
-      "primaryCritic": "Fern Siegel",
-      "secondaryFile": "nbcny--robert-kahn.json",
-      "secondaryOutlet": "NBC New York",
-      "secondaryCritic": "Robert Kahn",
-      "primaryScore": 81,
-      "secondaryScore": 81,
-      "scoreDiff": 0,
       "textSource": "fullText"
     },
     {
@@ -4090,9 +3085,9 @@
       "secondaryFile": "sierz-co-uk--unknown.json",
       "secondaryOutlet": "Aleks Sierz",
       "secondaryCritic": "Unknown",
-      "primaryScore": 56,
+      "primaryScore": 55,
       "secondaryScore": 63,
-      "scoreDiff": 7,
+      "scoreDiff": 8,
       "textSource": "fullText"
     },
     {
@@ -4141,6 +3136,21 @@
       "textSource": "fullText"
     },
     {
+      "showId": "prince-of-broadway-2017",
+      "method": "similarity+llm",
+      "similarity": 59,
+      "primaryFile": "nytg--unknown.json",
+      "primaryOutlet": "New York Theatre Guide",
+      "primaryCritic": "Unknown",
+      "secondaryFile": "front-row-center--casey-curtis.json",
+      "secondaryOutlet": "Front Row Center",
+      "secondaryCritic": "Casey Curtis",
+      "primaryScore": 63,
+      "secondaryScore": 63,
+      "scoreDiff": 0,
+      "textSource": "fullText"
+    },
+    {
       "showId": "promises-promises-2010",
       "method": "fingerprint",
       "similarity": 100,
@@ -4154,21 +3164,6 @@
       "secondaryScore": 73,
       "scoreDiff": 0,
       "textSource": "excerpts"
-    },
-    {
-      "showId": "queen-versailles-2025",
-      "method": "fingerprint",
-      "similarity": 100,
-      "primaryFile": "lighting-and-sound-america--david-barbour.json",
-      "primaryOutlet": "Lighting & Sound America",
-      "primaryCritic": "David Barbour",
-      "secondaryFile": "the-interested-bystander--cary-wong.json",
-      "secondaryOutlet": "The Interested Bystander",
-      "secondaryCritic": "Cary Wong",
-      "primaryScore": 63,
-      "secondaryScore": 50,
-      "scoreDiff": 13,
-      "textSource": "fullText"
     },
     {
       "showId": "rare-earth-mettle-west-end-2021",
@@ -4201,17 +3196,32 @@
       "textSource": "fullText"
     },
     {
-      "showId": "scenes-with-girls-west-end-2020",
-      "method": "similarity+llm",
-      "similarity": 68,
-      "primaryFile": "islingtontribune--unknown.json",
-      "primaryOutlet": "Islington Tribune",
+      "showId": "rent-west-end-2026",
+      "method": "fingerprint",
+      "similarity": 100,
+      "primaryFile": "camdennewjournal--unknown.json",
+      "primaryOutlet": "Camden New Journal",
       "primaryCritic": "Unknown",
-      "secondaryFile": "camdennewjournal--clair-chapwell.json",
-      "secondaryOutlet": "Camden New Journal",
-      "secondaryCritic": "Clair Chapwell",
-      "primaryScore": 86,
-      "secondaryScore": 86,
+      "secondaryFile": "islingtontribune--unknown.json",
+      "secondaryOutlet": "Islington Tribune",
+      "secondaryCritic": "Unknown",
+      "primaryScore": 75,
+      "secondaryScore": 75,
+      "scoreDiff": 0,
+      "textSource": "fullText"
+    },
+    {
+      "showId": "rock-of-ages-regional-2026",
+      "method": "similarity",
+      "similarity": 92,
+      "primaryFile": "broadwayworld--erinmarie-reiter.json",
+      "primaryOutlet": "BroadwayWorld",
+      "primaryCritic": "ErinMarie Reiter",
+      "secondaryFile": "talk-theatre-to-me--unknown.json",
+      "secondaryOutlet": "Talk Theatre to Me",
+      "secondaryCritic": "Unknown",
+      "primaryScore": 88,
+      "secondaryScore": 88,
       "scoreDiff": 0,
       "textSource": "fullText"
     },
@@ -4228,21 +3238,6 @@
       "primaryScore": 88,
       "secondaryScore": 88,
       "scoreDiff": 0,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "sea-wall-a-life-2019",
-      "method": "similarity",
-      "similarity": 85,
-      "primaryFile": "national-review--kyle-smith.json",
-      "primaryOutlet": "National Review",
-      "primaryCritic": "Kyle Smith",
-      "secondaryFile": "theatre-reviews-limited--david-roberts.json",
-      "secondaryOutlet": "Theatre Reviews Limited",
-      "secondaryCritic": "David Roberts",
-      "primaryScore": 38,
-      "secondaryScore": 37,
-      "scoreDiff": 1,
       "textSource": "fullText"
     },
     {
@@ -4291,21 +3286,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "six-2021",
-      "method": "fingerprint",
-      "similarity": 100,
-      "primaryFile": "lighting-and-sound-america--david-barbour.json",
-      "primaryOutlet": "Lighting & Sound America",
-      "primaryCritic": "David Barbour",
-      "secondaryFile": "theater-life--samuel-l-leiter.json",
-      "secondaryOutlet": "Theater Life",
-      "secondaryCritic": "Samuel L. Leiter",
-      "primaryScore": 75,
-      "secondaryScore": 73,
-      "scoreDiff": 2,
-      "textSource": "fullText"
-    },
-    {
       "showId": "slam-frank-off-broadway-2026",
       "method": "similarity",
       "similarity": 72,
@@ -4318,36 +3298,6 @@
       "primaryScore": 80,
       "secondaryScore": 81,
       "scoreDiff": 1,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "slam-frank-off-broadway-2026",
-      "method": "similarity+llm",
-      "similarity": 64,
-      "primaryFile": "theater-life--david-sheward.json",
-      "primaryOutlet": "Theater Life",
-      "primaryCritic": "David Sheward",
-      "secondaryFile": "totaltheater1--unknown.json",
-      "secondaryOutlet": "Totaltheater1",
-      "secondaryCritic": "Unknown",
-      "primaryScore": 80,
-      "secondaryScore": 79,
-      "scoreDiff": 1,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "slam-frank-off-broadway-2026",
-      "method": "similarity+llm",
-      "similarity": 51,
-      "primaryFile": "totaltheater1--unknown.json",
-      "primaryOutlet": "Totaltheater1",
-      "primaryCritic": "Unknown",
-      "secondaryFile": "thedaviddesk2--davidsheward.json",
-      "secondaryOutlet": "Thedaviddesk2",
-      "secondaryCritic": "David.sheward",
-      "primaryScore": 79,
-      "secondaryScore": 81,
-      "scoreDiff": 2,
       "textSource": "fullText"
     },
     {
@@ -4428,21 +3378,6 @@
     {
       "showId": "suffs-tour-2025",
       "method": "similarity",
-      "similarity": 77,
-      "primaryFile": "headtopics--clevelandscene.json",
-      "primaryOutlet": "headtopics",
-      "primaryCritic": "ClevelandScene",
-      "secondaryFile": "clevescene--gwendolyn-kochur.json",
-      "secondaryOutlet": "clevescene",
-      "secondaryCritic": "Gwendolyn Kochur",
-      "primaryScore": 78,
-      "secondaryScore": 77,
-      "scoreDiff": 1,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "suffs-tour-2025",
-      "method": "similarity",
       "similarity": 88,
       "primaryFile": "fairlyspiritual--douglas-bursch.json",
       "primaryOutlet": "fairlyspiritual",
@@ -4501,21 +3436,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "the-bands-visit-2017",
-      "method": "similarity",
-      "similarity": 99,
-      "primaryFile": "theater-life--isa-goldberg.json",
-      "primaryOutlet": "Theater Life",
-      "primaryCritic": "Isa Goldberg",
-      "secondaryFile": "off-script-with-dan-dwyer--dan-dwyer.json",
-      "secondaryOutlet": "Off Script with Dan Dwyer",
-      "secondaryCritic": "Dan Dwyer",
-      "primaryScore": 97,
-      "secondaryScore": 84,
-      "scoreDiff": 13,
-      "textSource": "fullText"
-    },
-    {
       "showId": "the-book-of-mormon-west-end-2024",
       "method": "similarity+llm",
       "similarity": 57,
@@ -4561,36 +3481,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "the-color-purple-2015",
-      "method": "similarity",
-      "similarity": 91,
-      "primaryFile": "theater-scene--darryl-reilly.json",
-      "primaryOutlet": "TheaterScene.net",
-      "primaryCritic": "Darryl Reilly",
-      "secondaryFile": "huffpost--steven-suskin.json",
-      "secondaryOutlet": "HuffPost",
-      "secondaryCritic": "Steven Suskin",
-      "primaryScore": 88,
-      "secondaryScore": 88,
-      "scoreDiff": 0,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "the-cook-regional-2026",
-      "method": "similarity+llm",
-      "similarity": 68,
-      "primaryFile": "sfgate--unknown.json",
-      "primaryOutlet": "SFGate",
-      "primaryCritic": "Unknown",
-      "secondaryFile": "localnewsmatters--jean-schiffman-bay-city-news.json",
-      "secondaryOutlet": "Local News Matters",
-      "secondaryCritic": "Jean Schiffman, Bay City News",
-      "primaryScore": 62,
-      "secondaryScore": 62,
-      "scoreDiff": 0,
-      "textSource": "fullText"
-    },
-    {
       "showId": "the-corn-is-green-west-end-2022",
       "method": "similarity",
       "similarity": 83,
@@ -4603,36 +3493,6 @@
       "primaryScore": 55,
       "secondaryScore": 62,
       "scoreDiff": 7,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "the-cottage-2023",
-      "method": "similarity",
-      "similarity": 96,
-      "primaryFile": "variety--naveen-kumar.json",
-      "primaryOutlet": "Variety",
-      "primaryCritic": "Naveen Kumar",
-      "secondaryFile": "new-york-sun--elysa-gardner.json",
-      "secondaryOutlet": "New York Sun",
-      "secondaryCritic": "Elysa Gardner",
-      "primaryScore": 42,
-      "secondaryScore": 56,
-      "scoreDiff": 14,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "the-crucible-west-end-2022",
-      "method": "fingerprint",
-      "similarity": 100,
-      "primaryFile": "daily-echo--kieran-doody.json",
-      "primaryOutlet": "Daily Echo",
-      "primaryCritic": "Kieran Doody",
-      "secondaryFile": "hampstead-highgate-express--charlotte-l-rose.json",
-      "secondaryOutlet": "Hampstead & Highgate Express",
-      "secondaryCritic": "Charlotte L Rose",
-      "primaryScore": 88,
-      "secondaryScore": 88,
-      "scoreDiff": 0,
       "textSource": "fullText"
     },
     {
@@ -4666,36 +3526,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "the-holy-rosenbergs-west-end-2026",
-      "method": "similarity",
-      "similarity": 71,
-      "primaryFile": "artsdesk--aleks-sierz.json",
-      "primaryOutlet": "The Arts Desk",
-      "primaryCritic": "Aleks Sierz",
-      "secondaryFile": "sierz-co-uk--unknown.json",
-      "secondaryOutlet": "Aleks Sierz",
-      "secondaryCritic": "Unknown",
-      "primaryScore": 78,
-      "secondaryScore": 81,
-      "scoreDiff": 3,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "the-hungry-ghost-off-west-end-2026",
-      "method": "similarity+llm",
-      "similarity": 51,
-      "primaryFile": "newearththeatre--new-earth-theatre.json",
-      "primaryOutlet": "newearththeatre",
-      "primaryCritic": "New Earth Theatre",
-      "secondaryFile": "chiswickcalendar--unknown.json",
-      "secondaryOutlet": "Chiswickcalendar",
-      "secondaryCritic": "Unknown",
-      "primaryScore": null,
-      "secondaryScore": null,
-      "scoreDiff": 0,
-      "textSource": "fullText"
-    },
-    {
       "showId": "the-importance-of-being-oscar-off-west-end-2026",
       "method": "similarity",
       "similarity": 86,
@@ -4726,21 +3556,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "the-music-man-2022",
-      "method": "similarity",
-      "similarity": 95,
-      "primaryFile": "slantmagazine--dan-rubins.json",
-      "primaryOutlet": "Slant Magazine",
-      "primaryCritic": "Dan Rubins",
-      "secondaryFile": "showbiz411--roger-friedman.json",
-      "secondaryOutlet": "Showbiz411",
-      "secondaryCritic": "Roger Friedman",
-      "primaryScore": 79,
-      "secondaryScore": 80,
-      "scoreDiff": 1,
-      "textSource": "fullText"
-    },
-    {
       "showId": "the-outsiders-tour-2025",
       "method": "similarity+llm",
       "similarity": 60,
@@ -4766,8 +3581,8 @@
       "secondaryOutlet": "Theatre South East",
       "secondaryCritic": "Helena Featherstone",
       "primaryScore": 91,
-      "secondaryScore": 98,
-      "scoreDiff": 7,
+      "secondaryScore": 97,
+      "scoreDiff": 6,
       "textSource": "fullText"
     },
     {
@@ -4798,21 +3613,6 @@
       "primaryScore": 77,
       "secondaryScore": 74,
       "scoreDiff": 3,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "the-play-that-goes-wrong-west-end-2021",
-      "method": "similarity+llm",
-      "similarity": 63,
-      "primaryFile": "telegraph--dominic-cavendish.json",
-      "primaryOutlet": "The Telegraph",
-      "primaryCritic": "Dominic Cavendish",
-      "secondaryFile": "sunday-telegraph--tim-walker.json",
-      "secondaryOutlet": "Sunday Telegraph",
-      "secondaryCritic": "Tim Walker",
-      "primaryScore": 74,
-      "secondaryScore": 74,
-      "scoreDiff": 0,
       "textSource": "fullText"
     },
     {
@@ -4891,21 +3691,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "till-the-stars-come-down-west-end-2024",
-      "method": "similarity+llm",
-      "similarity": 69,
-      "primaryFile": "artsdesk--aleks-sierz.json",
-      "primaryOutlet": "The Arts Desk",
-      "primaryCritic": "Aleks Sierz",
-      "secondaryFile": "sierz-co-uk--unknown.json",
-      "secondaryOutlet": "Aleks Sierz",
-      "secondaryCritic": "Unknown",
-      "primaryScore": 61,
-      "secondaryScore": 74,
-      "scoreDiff": 13,
-      "textSource": "fullText"
-    },
-    {
       "showId": "tina-the-tina-turner-musical-west-end-2018",
       "method": "similarity+llm",
       "similarity": 55,
@@ -4917,21 +3702,6 @@
       "secondaryCritic": "MichaelArditti",
       "primaryScore": 51,
       "secondaryScore": 42,
-      "scoreDiff": 9,
-      "textSource": "fullText"
-    },
-    {
-      "showId": "top-girls-west-end-2019",
-      "method": "similarity+llm",
-      "similarity": 67,
-      "primaryFile": "artsdesk--aleks-sierz.json",
-      "primaryOutlet": "The Arts Desk",
-      "primaryCritic": "Aleks Sierz",
-      "secondaryFile": "sierz-co-uk--unknown.json",
-      "secondaryOutlet": "Aleks Sierz",
-      "secondaryCritic": "Unknown",
-      "primaryScore": 96,
-      "secondaryScore": 87,
       "scoreDiff": 9,
       "textSource": "fullText"
     },
@@ -4951,21 +3721,6 @@
       "textSource": "fullText"
     },
     {
-      "showId": "touching-the-void-west-end-2019",
-      "method": "similarity+llm",
-      "similarity": 59,
-      "primaryFile": "artsdesk--aleks-sierz.json",
-      "primaryOutlet": "The Arts Desk",
-      "primaryCritic": "Aleks Sierz",
-      "secondaryFile": "sierz-co-uk--unknown.json",
-      "secondaryOutlet": "Aleks Sierz",
-      "secondaryCritic": "Unknown",
-      "primaryScore": 59,
-      "secondaryScore": 63,
-      "scoreDiff": 4,
-      "textSource": "fullText"
-    },
-    {
       "showId": "travesties-2018",
       "method": "similarity+llm",
       "similarity": 53,
@@ -4981,18 +3736,18 @@
       "textSource": "fullText"
     },
     {
-      "showId": "trouble-in-mind-2021",
-      "method": "similarity+llm",
-      "similarity": 60,
-      "primaryFile": "washpost--soyica-diggs-colbert.json",
-      "primaryOutlet": "The Washington Post",
-      "primaryCritic": "Soyica Diggs Colbert",
-      "secondaryFile": "bloomberg--mark-kennedy.json",
-      "secondaryOutlet": "Bloomberg",
-      "secondaryCritic": "Mark Kennedy",
-      "primaryScore": 82,
-      "secondaryScore": 87,
-      "scoreDiff": 5,
+      "showId": "twenty-thousand-streets-off-west-end-2026",
+      "method": "similarity",
+      "similarity": 86,
+      "primaryFile": "artsdesk--aleks-sierz.json",
+      "primaryOutlet": "The Arts Desk",
+      "primaryCritic": "Aleks Sierz",
+      "secondaryFile": "sierz-co-uk--unknown.json",
+      "secondaryOutlet": "Aleks Sierz",
+      "secondaryCritic": "Unknown",
+      "primaryScore": 57,
+      "secondaryScore": 74,
+      "scoreDiff": 17,
       "textSource": "fullText"
     },
     {
@@ -5024,21 +3779,6 @@
       "secondaryScore": 61,
       "scoreDiff": 2,
       "textSource": "fullText"
-    },
-    {
-      "showId": "walk-on-through-confessions-of-a-museum-novice-off-broadway-2023",
-      "method": "fingerprint",
-      "similarity": 100,
-      "primaryFile": "nydailynews--unknown.json",
-      "primaryOutlet": "New York Daily News",
-      "primaryCritic": "",
-      "secondaryFile": "nytg--joe-dziemianowicz.json",
-      "secondaryOutlet": "New York Theatre Guide",
-      "secondaryCritic": "Joe Dziemianowicz",
-      "primaryScore": null,
-      "secondaryScore": null,
-      "scoreDiff": 0,
-      "textSource": "excerpts"
     },
     {
       "showId": "water-for-elephants-tour-2025",
@@ -5313,6 +4053,22 @@
       ]
     },
     {
+      "showId": "amazing-grace-2015",
+      "method": "fingerprint",
+      "files": [
+        "jks-theatre-scene--jeff-kyler.json",
+        "huffpost--steven-suskin.json"
+      ],
+      "outlets": [
+        "JK's Theatre Scene",
+        "Huffington Post"
+      ],
+      "critics": [
+        "Jeff Kyler",
+        "Steven Suskin"
+      ]
+    },
+    {
       "showId": "an-act-of-god-2016",
       "method": "fingerprint",
       "files": [
@@ -5428,6 +4184,22 @@
       "showId": "avenue-q-west-end-2026",
       "method": "fingerprint",
       "files": [
+        "sunday-times--clive-davis.json",
+        "times-uk--matt-crocket.json"
+      ],
+      "outlets": [
+        "The Sunday Times",
+        "The Times (UK)"
+      ],
+      "critics": [
+        "Clive Davis",
+        "Matt Crocket"
+      ]
+    },
+    {
+      "showId": "avenue-q-west-end-2026",
+      "method": "fingerprint",
+      "files": [
         "times-uk--dominic-maxwell.json",
         "sunday-times--dominic-maxwell.json"
       ],
@@ -5438,23 +4210,6 @@
       "critics": [
         "Dominic Maxwell",
         "Dominic Maxwell"
-      ]
-    },
-    {
-      "showId": "back-to-the-future-west-end-2021",
-      "method": "similarity",
-      "similarity": 58,
-      "files": [
-        "daily-mail--patrick-marmion.json",
-        "mail-on-sunday--holly-williams.json"
-      ],
-      "outlets": [
-        "Daily Mail",
-        "The Mail on Sunday"
-      ],
-      "critics": [
-        "Patrick Marmion",
-        "Holly Williams"
       ]
     },
     {
@@ -5631,6 +4386,22 @@
       "critics": [
         "Unknown",
         "Unknown"
+      ]
+    },
+    {
+      "showId": "cardinal-off-broadway-2018",
+      "method": "fingerprint",
+      "files": [
+        "front-row-center--tulis-mccall.json",
+        "nytg--tulis-mccall.json"
+      ],
+      "outlets": [
+        "Front Row Center",
+        "New York Theatre Guide"
+      ],
+      "critics": [
+        "Tulis McCall",
+        "Tulis McCall"
       ]
     },
     {
@@ -5922,6 +4693,22 @@
       ]
     },
     {
+      "showId": "doctor-faustus-west-end-2016",
+      "method": "fingerprint",
+      "files": [
+        "observer--susannah-clapp.json",
+        "guardian--susannah-clapp.json"
+      ],
+      "outlets": [
+        "Observer",
+        "The Guardian"
+      ],
+      "critics": [
+        "Susannah Clapp",
+        "Susannah Clapp"
+      ]
+    },
+    {
       "showId": "don-quixote-west-end-2018",
       "method": "fingerprint",
       "files": [
@@ -5954,36 +4741,35 @@
       ]
     },
     {
-      "showId": "escape-to-margaritaville-2018",
+      "showId": "exit-the-king-west-end-2018",
       "method": "fingerprint",
       "files": [
-        "wolf-entertainment-guide--william-wolf.json",
-        "nytg--stanford-friedman.json"
+        "times-uk--ann-treneman.json",
+        "daily-mail--quentin-letts.json"
       ],
       "outlets": [
-        "Wolf Entertainment Guide",
-        "New York Theatre Guide"
+        "The Times (UK)",
+        "Daily Mail"
       ],
       "critics": [
-        "William Wolf",
-        "Stanford Friedman"
+        "Ann Treneman",
+        "Quentin Letts"
       ]
     },
     {
-      "showId": "escape-to-margaritaville-2018",
-      "method": "similarity",
-      "similarity": 56,
+      "showId": "falls-for-jodie-off-broadway-2026",
+      "method": "fingerprint",
       "files": [
-        "wolf-entertainment-guide--william-wolf.json",
-        "front-row-center--stanford-friedman.json"
+        "theater-pizzazz--alix-cohen.json",
+        "talkinbroadway--alix-cohen.json"
       ],
       "outlets": [
-        "Wolf Entertainment Guide",
-        "Front Row Center"
+        "Theater Pizzazz",
+        "Talkin' Broadway"
       ],
       "critics": [
-        "William Wolf",
-        "Stanford Friedman"
+        "Alix Cohen",
+        "Alix Cohen"
       ]
     },
     {
@@ -6115,6 +4901,22 @@
       ]
     },
     {
+      "showId": "follies-west-end-2017",
+      "method": "fingerprint",
+      "files": [
+        "observer--kate-kellaway.json",
+        "guardian--kate-kellaway.json"
+      ],
+      "outlets": [
+        "Observer",
+        "The Guardian"
+      ],
+      "critics": [
+        "Kate Kellaway",
+        "Kate Kellaway"
+      ]
+    },
+    {
       "showId": "fool-for-love-2015",
       "method": "fingerprint",
       "files": [
@@ -6182,6 +4984,22 @@
       "showId": "game-of-thrones-the-mad-king-regional-2026",
       "method": "fingerprint",
       "files": [
+        "theargus--unknown.json",
+        "herald--pa-news-agency.json"
+      ],
+      "outlets": [
+        "Theargus",
+        "The Herald (Glasgow)"
+      ],
+      "critics": [
+        "PA News Agency",
+        "PA News Agency"
+      ]
+    },
+    {
+      "showId": "game-of-thrones-the-mad-king-regional-2026",
+      "method": "fingerprint",
+      "files": [
         "thenorthernecho--pa-news-agency.json",
         "herald--pa-news-agency.json"
       ],
@@ -6224,23 +5042,6 @@
       "critics": [
         "Steven Ross",
         "Alison Walls"
-      ]
-    },
-    {
-      "showId": "ghost-the-musical-2012",
-      "method": "similarity",
-      "similarity": 77,
-      "files": [
-        "nytimes--ben-brantley.json",
-        "about-entertainment--charles-isherwood.json"
-      ],
-      "outlets": [
-        "The New York Times",
-        "About Entertainment"
-      ],
-      "critics": [
-        "Ben Brantley",
-        "Charles Isherwood"
       ]
     },
     {
@@ -6344,31 +5145,31 @@
       "method": "fingerprint",
       "files": [
         "times-square-chronicles--suzanna-bowling.json",
-        "frontmezzjunkies--unknown.json"
+        "frontmezzjunkies--steven-ross.json"
       ],
       "outlets": [
         "Times Square Chronicles",
         "Front Mezz Junkies"
       ],
       "critics": [
-        "Suzanna Bowling",
-        "Unknown"
+        "Steven Ross",
+        "Steven Ross"
       ]
     },
     {
-      "showId": "grace-pervades-west-end-2026",
+      "showId": "groundhog-day-2017",
       "method": "fingerprint",
       "files": [
-        "timeout--ghenet-pinderhughes-randall.json",
-        "standard--ghenet-pinderhughes-randall.json"
+        "li-herald--elyse-trevers.json",
+        "labor-press--leonard-golubchick.json"
       ],
       "outlets": [
-        "Time Out",
-        "Evening Standard"
+        "li-herald",
+        "labor-press"
       ],
       "critics": [
-        "Ghenet Pinderhughes Randall",
-        "Ghenet Pinderhughes Randall"
+        "Elyse Trevers",
+        "Leonard Golubchick"
       ]
     },
     {
@@ -6612,6 +5413,22 @@
       ]
     },
     {
+      "showId": "ilford-boy-west-end-2026",
+      "method": "fingerprint",
+      "files": [
+        "westminsterextra--unknown.json",
+        "islingtontribune--unknown.json"
+      ],
+      "outlets": [
+        "Westminster Extra",
+        "Islington Tribune"
+      ],
+      "critics": [
+        "Unknown",
+        "Unknown"
+      ]
+    },
+    {
       "showId": "in-transit-2016",
       "method": "fingerprint",
       "files": [
@@ -6657,6 +5474,22 @@
       "critics": [
         "Susannah Clapp",
         "Susannah Clapp"
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "method": "fingerprint",
+      "files": [
+        "sunday-times--dominic-maxwell.json",
+        "times-uk--clive-davis.json"
+      ],
+      "outlets": [
+        "The Sunday Times",
+        "The Times (UK)"
+      ],
+      "critics": [
+        "Dominic Maxwell",
+        "Clive Davis"
       ]
     },
     {
@@ -6740,6 +5573,22 @@
       ]
     },
     {
+      "showId": "king-kong-2018",
+      "method": "fingerprint",
+      "files": [
+        "florida-theater-on-stage--bill-hirschman.json",
+        "broadwayworld--michael-dale.json"
+      ],
+      "outlets": [
+        "florida-theater-on-stage",
+        "BroadwayWorld"
+      ],
+      "critics": [
+        "Bill Hirschman",
+        "Michael Dale"
+      ]
+    },
+    {
       "showId": "king-lear-2019",
       "method": "fingerprint",
       "files": [
@@ -6768,6 +5617,22 @@
       ],
       "critics": [
         "Unknown",
+        "Unknown"
+      ]
+    },
+    {
+      "showId": "leopoldstadt-2022",
+      "method": "fingerprint",
+      "files": [
+        "nydailynews--chris-jones.json",
+        "chicagotribune--unknown.json"
+      ],
+      "outlets": [
+        "New York Daily News",
+        "Chicago Tribune"
+      ],
+      "critics": [
+        "Chris Jones",
         "Unknown"
       ]
     },
@@ -6865,6 +5730,22 @@
       "critics": [
         "Robert Kahn",
         "Steven Suskin"
+      ]
+    },
+    {
+      "showId": "loves-labours-lost-globe-west-end-2026",
+      "method": "fingerprint",
+      "files": [
+        "islingtontribune--unknown.json",
+        "camdennewjournal--unknown.json"
+      ],
+      "outlets": [
+        "Islington Tribune",
+        "Camden New Journal"
+      ],
+      "critics": [
+        "Unknown",
+        "Unknown"
       ]
     },
     {
@@ -7076,6 +5957,22 @@
       ]
     },
     {
+      "showId": "network-west-end-2017",
+      "method": "fingerprint",
+      "files": [
+        "observer--susannah-clapp.json",
+        "guardian--susannah-clapp.json"
+      ],
+      "outlets": [
+        "Observer",
+        "The Guardian"
+      ],
+      "critics": [
+        "Susannah Clapp",
+        "Susannah Clapp"
+      ]
+    },
+    {
       "showId": "oklahoma-west-end-2023",
       "method": "fingerprint",
       "files": [
@@ -7121,6 +6018,22 @@
       "critics": [
         "Matthew Murray",
         "Lauren Yarger"
+      ]
+    },
+    {
+      "showId": "oliver-west-end-2024",
+      "method": "fingerprint",
+      "files": [
+        "the-sun--dominic-maxwell.json",
+        "sunday-times--dominic-maxwell.json"
+      ],
+      "outlets": [
+        "The Sunday Times",
+        "The Sunday Times"
+      ],
+      "critics": [
+        "Dominic Maxwell",
+        "Dominic Maxwell"
       ]
     },
     {
@@ -7224,7 +6137,7 @@
       "method": "fingerprint",
       "files": [
         "off-script-with-dan-dwyer--dan-dwyer.json",
-        "huffpost--huffington-post-steven-suskin.json"
+        "huffpost--steven-suskin.json"
       ],
       "outlets": [
         "Off Script with Dan Dwyer",
@@ -7240,7 +6153,7 @@
       "method": "fingerprint",
       "files": [
         "showbiz411--roger-friedman.json",
-        "huffpost--huffington-post-steven-suskin.json"
+        "huffpost--steven-suskin.json"
       ],
       "outlets": [
         "Showbiz411",
@@ -7252,35 +6165,19 @@
       ]
     },
     {
-      "showId": "race-2009",
+      "showId": "private-lives-west-end-2013",
       "method": "fingerprint",
       "files": [
-        "variety--marilyn-stasio.json",
-        "broadwayworld--michael-dale.json"
+        "standard--henry-hitchings.json",
+        "daily-mail--henry-hitchings.json"
       ],
       "outlets": [
-        "Variety",
-        "BroadwayWorld.com"
+        "Evening Standard",
+        "Daily Mail"
       ],
       "critics": [
-        "Marilyn Stasio",
-        "Michael Dale"
-      ]
-    },
-    {
-      "showId": "rent-west-end-2026",
-      "method": "fingerprint",
-      "files": [
-        "islingtontribune--unknown.json",
-        "camdennewjournal--unknown.json"
-      ],
-      "outlets": [
-        "Islington Tribune",
-        "Camden New Journal"
-      ],
-      "critics": [
-        "Unknown",
-        "Unknown"
+        "HenryHitchings",
+        "Henry Hitchings"
       ]
     },
     {
@@ -7393,6 +6290,22 @@
       "critics": [
         "Dan Dwyer",
         "Steven Suskin"
+      ]
+    },
+    {
+      "showId": "six-2021",
+      "method": "fingerprint",
+      "files": [
+        "theater-life--samuel-l-leiter.json",
+        "lighting-and-sound-america--david-barbour.json"
+      ],
+      "outlets": [
+        "Theater Life",
+        "Lighting & Sound America"
+      ],
+      "critics": [
+        "Samuel L. Leiter",
+        "David Barbour"
       ]
     },
     {
@@ -7572,23 +6485,6 @@
       ]
     },
     {
-      "showId": "the-devil-wears-prada-west-end-2024",
-      "method": "similarity",
-      "similarity": 99,
-      "files": [
-        "daily-mail--gina-kalsi.json",
-        "mail-on-sunday--robert-gore-langton.json"
-      ],
-      "outlets": [
-        "dailymail",
-        "The Mail on Sunday"
-      ],
-      "critics": [
-        "Gina Kalsi",
-        "Robert Gore-Langton"
-      ]
-    },
-    {
       "showId": "the-drifters-girl-west-end-2021",
       "method": "fingerprint",
       "files": [
@@ -7602,6 +6498,54 @@
       "critics": [
         "Susannah Clapp",
         "Susannah Clapp"
+      ]
+    },
+    {
+      "showId": "the-ferryman-2018",
+      "method": "fingerprint",
+      "files": [
+        "df-reviews--david-fox.json",
+        "reclining-standards--david-fox.json"
+      ],
+      "outlets": [
+        "Df Reviews",
+        "reclining-standards"
+      ],
+      "critics": [
+        "David Fox",
+        "David Fox"
+      ]
+    },
+    {
+      "showId": "the-ferryman-west-end-2017",
+      "method": "fingerprint",
+      "files": [
+        "observer--susannah-clapp.json",
+        "guardian--susannah-clapp.json"
+      ],
+      "outlets": [
+        "Observer",
+        "The Guardian"
+      ],
+      "critics": [
+        "Susannah Clapp",
+        "Susannah Clapp"
+      ]
+    },
+    {
+      "showId": "the-ferryman-west-end-2017",
+      "method": "fingerprint",
+      "files": [
+        "tribune--william-russell.json",
+        "the-spectator-uk--lloyd-evans.json"
+      ],
+      "outlets": [
+        "Tribune Magazine",
+        "The Spectator (UK)"
+      ],
+      "critics": [
+        "William Russell",
+        "Lloyd Evans"
       ]
     },
     {
@@ -8021,6 +6965,22 @@
       ]
     },
     {
+      "showId": "the-woodsman-off-broadway-2016",
+      "method": "fingerprint",
+      "files": [
+        "onstage-blog--joseph-verlezza.json",
+        "theatre-reviews-limited--david-roberts.json"
+      ],
+      "outlets": [
+        "OnStage Blog",
+        "Theatre Reviews Limited"
+      ],
+      "critics": [
+        "Joseph Verlezza",
+        "David Roberts"
+      ]
+    },
+    {
       "showId": "topdog-underdog-2022",
       "method": "fingerprint",
       "files": [
@@ -8117,23 +7077,6 @@
       ]
     },
     {
-      "showId": "waitress-west-end-2019",
-      "method": "similarity",
-      "similarity": 75,
-      "files": [
-        "islingtontribune--unknown.json",
-        "camdennewjournal--catherine-usher.json"
-      ],
-      "outlets": [
-        "Islingtontribune",
-        "Camden New Journal"
-      ],
-      "critics": [
-        "Unknown",
-        "Catherine Usher"
-      ]
-    },
-    {
       "showId": "war-horse-2011",
       "method": "fingerprint",
       "files": [
@@ -8179,6 +7122,22 @@
       "critics": [
         "David Gordon",
         "Greg Evans"
+      ]
+    },
+    {
+      "showId": "we-will-rock-you-regional-2026",
+      "method": "fingerprint",
+      "files": [
+        "talk-theatre-to-me--unknown.json",
+        "broadwayworld--erinmarie-reiter.json"
+      ],
+      "outlets": [
+        "Talk Theatre to Me",
+        "BroadwayWorld"
+      ],
+      "critics": [
+        "Unknown",
+        "ErinMarie Reiter"
       ]
     },
     {
@@ -8242,6 +7201,1466 @@
       ],
       "critics": [
         "Unknown",
+        "Unknown"
+      ]
+    }
+  ],
+  "wrongTextCandidates": [
+    {
+      "showId": "a-chorus-of-disapproval-west-end-2012",
+      "method": "similarity",
+      "similarity": 41,
+      "reason": "different-critics-unverified",
+      "files": [
+        "independent--paul-taylor.json",
+        "telegraph--charles-spencer.json"
+      ],
+      "outlets": [
+        "The Independent",
+        "The Telegraph"
+      ],
+      "critics": [
+        "Paul Taylor",
+        "Charles Spencer"
+      ]
+    },
+    {
+      "showId": "a-strange-loop-2022",
+      "method": "similarity",
+      "similarity": 87,
+      "reason": "different-critics-unverified",
+      "files": [
+        "queerty--matthew-wexler.json",
+        "rollingstone--brittani-samuel.json"
+      ],
+      "outlets": [
+        "Queerty",
+        "Rolling Stone"
+      ],
+      "critics": [
+        "Matthew Wexler",
+        "Brittani Samuel"
+      ]
+    },
+    {
+      "showId": "an-american-in-paris-2015",
+      "method": "similarity",
+      "similarity": 70,
+      "reason": "different-critics-unverified",
+      "files": [
+        "huffpost--david-finkle.json",
+        "northjerseycom--robert-feldberg.json"
+      ],
+      "outlets": [
+        "Huffington Post",
+        "NorthJersey.com"
+      ],
+      "critics": [
+        "David Finkle",
+        "Robert Feldberg"
+      ]
+    },
+    {
+      "showId": "an-american-in-paris-west-end-2017",
+      "method": "similarity",
+      "similarity": 41,
+      "reason": "different-critics-unverified",
+      "files": [
+        "express-uk--neil-norman.json",
+        "thestage--mark-shenton.json"
+      ],
+      "outlets": [
+        "Express (UK)",
+        "The Stage"
+      ],
+      "critics": [
+        "Neil Norman",
+        "Mark Shenton"
+      ]
+    },
+    {
+      "showId": "angels-bone-west-end-2026",
+      "method": "similarity",
+      "similarity": 43,
+      "reason": "different-critics-unverified",
+      "files": [
+        "artsdesk--unknown.json",
+        "theatrereviewsnorth--robert-beale.json"
+      ],
+      "outlets": [
+        "The Arts Desk",
+        "theatrereviewsnorth"
+      ],
+      "critics": [
+        "Unknown",
+        "Robert Beale"
+      ]
+    },
+    {
+      "showId": "art-west-end-2016",
+      "method": "similarity",
+      "similarity": 50,
+      "reason": "different-critics-unverified",
+      "files": [
+        "guardian--michael-billington.json",
+        "standard--fiona-mountford.json"
+      ],
+      "outlets": [
+        "The Guardian",
+        "Evening Standard"
+      ],
+      "critics": [
+        "Michael Billington",
+        "Fiona Mountford"
+      ]
+    },
+    {
+      "showId": "back-to-the-future-west-end-2021",
+      "method": "similarity",
+      "similarity": 58,
+      "reason": "different-critics-unverified",
+      "files": [
+        "daily-mail--patrick-marmion.json",
+        "mail-on-sunday--holly-williams.json"
+      ],
+      "outlets": [
+        "Daily Mail",
+        "The Mail on Sunday"
+      ],
+      "critics": [
+        "Patrick Marmion",
+        "Holly Williams"
+      ]
+    },
+    {
+      "showId": "bandstand-2017",
+      "method": "fingerprint",
+      "similarity": 100,
+      "reason": "different-critics-unverified",
+      "files": [
+        "huffpost--michael-giltz.json",
+        "off-script-with-dan-dwyer--dan-dwyer.json"
+      ],
+      "outlets": [
+        "The Huffington Post",
+        "Off Script with Dan Dwyer"
+      ],
+      "critics": [
+        "Michael Giltz",
+        "Dan Dwyer"
+      ]
+    },
+    {
+      "showId": "bandstand-2017",
+      "method": "fingerprint",
+      "similarity": 100,
+      "reason": "different-critics-unverified",
+      "files": [
+        "huffpost--michael-giltz.json",
+        "stagezine--david-nounou.json"
+      ],
+      "outlets": [
+        "The Huffington Post",
+        "StageZine"
+      ],
+      "critics": [
+        "Michael Giltz",
+        "David NouNou"
+      ]
+    },
+    {
+      "showId": "beetlejuice-tour-2026",
+      "method": "similarity",
+      "similarity": 60,
+      "reason": "different-critics-unverified",
+      "files": [
+        "kc-studio--contributing-writer.json",
+        "the-pitch--brynn-weiss.json"
+      ],
+      "outlets": [
+        "Kc Studio",
+        "The Pitch"
+      ],
+      "critics": [
+        "Contributing Writer",
+        "Brynn Weiss"
+      ]
+    },
+    {
+      "showId": "betrayal-2019",
+      "method": "similarity",
+      "similarity": 62,
+      "reason": "different-critics-unverified",
+      "files": [
+        "broadwayworld--michael-dale.json",
+        "standard--henry-hitchings.json"
+      ],
+      "outlets": [
+        "BroadwayWorld",
+        "Evening Standard"
+      ],
+      "critics": [
+        "Michael Dale",
+        "Henry Hitchings"
+      ]
+    },
+    {
+      "showId": "billy-crystal-860-2026",
+      "method": "similarity",
+      "similarity": 40,
+      "reason": "different-critics-unverified",
+      "files": [
+        "theater-life--david-sheward.json",
+        "totaltheater1--unknown.json"
+      ],
+      "outlets": [
+        "Theater Life",
+        "Totaltheater1"
+      ],
+      "critics": [
+        "David Sheward",
+        "Unknown"
+      ]
+    },
+    {
+      "showId": "billy-crystal-860-2026",
+      "method": "similarity",
+      "similarity": 40,
+      "reason": "different-critics-unverified",
+      "files": [
+        "thedaviddesk2--davidsheward.json",
+        "totaltheater1--unknown.json"
+      ],
+      "outlets": [
+        "Thedaviddesk2",
+        "Totaltheater1"
+      ],
+      "critics": [
+        "David.sheward",
+        "Unknown"
+      ]
+    },
+    {
+      "showId": "bitter-wheat-west-end-2019",
+      "method": "similarity",
+      "similarity": 62,
+      "reason": "different-critics-unverified",
+      "files": [
+        "artsdesk--aleks-sierz.json",
+        "sierz-co-uk--unknown.json"
+      ],
+      "outlets": [
+        "The Arts Desk",
+        "Aleks Sierz"
+      ],
+      "critics": [
+        "Aleks Sierz",
+        "Unknown"
+      ]
+    },
+    {
+      "showId": "ceilidh-the-musical-off-west-end-2026",
+      "method": "similarity",
+      "similarity": 46,
+      "reason": "different-critics-unverified",
+      "files": [
+        "lsbo--unknown.json",
+        "theatrebookings--tube.json"
+      ],
+      "outlets": [
+        "Lsbo",
+        "Theatre Bookings"
+      ],
+      "critics": [
+        "Unknown",
+        "Tube"
+      ]
+    },
+    {
+      "showId": "charlie-and-the-chocolate-factory-2017",
+      "method": "fingerprint",
+      "similarity": 100,
+      "reason": "different-critics-unverified",
+      "files": [
+        "peconic-public-broadcasting--david-richardson.json",
+        "simon-parris-man-in-chair--simon-parris.json"
+      ],
+      "outlets": [
+        "peconic-public-broadcasting",
+        "simon-parris-man-in-chair"
+      ],
+      "critics": [
+        "David Richardson",
+        "Simon Parris"
+      ]
+    },
+    {
+      "showId": "china-doll-2015",
+      "method": "fingerprint",
+      "similarity": 100,
+      "reason": "different-critics-unverified",
+      "files": [
+        "variety--marilyn-stasio.json",
+        "lighting-and-sound-america--david-barbour.json"
+      ],
+      "outlets": [
+        "Variety",
+        "Lighting & Sound America"
+      ],
+      "critics": [
+        "Marilyn Stasio",
+        "David Barbour"
+      ]
+    },
+    {
+      "showId": "cock-west-end-2022",
+      "method": "similarity",
+      "similarity": 58,
+      "reason": "different-critics-unverified",
+      "files": [
+        "artsdesk--aleks-sierz.json",
+        "sierz-co-uk--unknown.json"
+      ],
+      "outlets": [
+        "The Arts Desk",
+        "Aleks Sierz"
+      ],
+      "critics": [
+        "Aleks Sierz",
+        "Unknown"
+      ]
+    },
+    {
+      "showId": "cult-of-love-2024",
+      "method": "similarity",
+      "similarity": 98,
+      "reason": "different-critics-unverified",
+      "files": [
+        "hollywood-reporter--david-rooney.json",
+        "variety--aramide-tinubu.json"
+      ],
+      "outlets": [
+        "The Hollywood Reporter",
+        "Variety"
+      ],
+      "critics": [
+        "David Rooney",
+        "Daniel D'Addario"
+      ]
+    },
+    {
+      "showId": "dog-mom-off-west-end-2026",
+      "method": "similarity",
+      "similarity": 44,
+      "reason": "different-critics-unverified",
+      "files": [
+        "onin--caitlin-neal.json",
+        "rivertribe--lyndsay-kenwright.json"
+      ],
+      "outlets": [
+        "Onin",
+        "rivertribe"
+      ],
+      "critics": [
+        "Caitlin Neal",
+        "Lyndsay Kenwright"
+      ]
+    },
+    {
+      "showId": "dog-mom-off-west-end-2026",
+      "method": "similarity",
+      "similarity": 71,
+      "reason": "different-critics-unverified",
+      "files": [
+        "onin--caitlin-neal.json",
+        "west-end-wilma--westendwilma.json"
+      ],
+      "outlets": [
+        "Onin",
+        "West End Wilma"
+      ],
+      "critics": [
+        "Caitlin Neal",
+        "Westendwilma"
+      ]
+    },
+    {
+      "showId": "dog-mom-off-west-end-2026",
+      "method": "similarity",
+      "similarity": 70,
+      "reason": "different-critics-unverified",
+      "files": [
+        "onin--caitlin-neal.json",
+        "whatsgoodtodo--unknown.json"
+      ],
+      "outlets": [
+        "Onin",
+        "What's Good To Do"
+      ],
+      "critics": [
+        "Caitlin Neal",
+        "Unknown"
+      ]
+    },
+    {
+      "showId": "dog-mom-off-west-end-2026",
+      "method": "similarity",
+      "similarity": 46,
+      "reason": "different-critics-unverified",
+      "files": [
+        "rivertribe--lyndsay-kenwright.json",
+        "west-end-wilma--westendwilma.json"
+      ],
+      "outlets": [
+        "rivertribe",
+        "West End Wilma"
+      ],
+      "critics": [
+        "Lyndsay Kenwright",
+        "Westendwilma"
+      ]
+    },
+    {
+      "showId": "dog-mom-off-west-end-2026",
+      "method": "similarity",
+      "similarity": 45,
+      "reason": "different-critics-unverified",
+      "files": [
+        "rivertribe--lyndsay-kenwright.json",
+        "whatsgoodtodo--unknown.json"
+      ],
+      "outlets": [
+        "rivertribe",
+        "What's Good To Do"
+      ],
+      "critics": [
+        "Lyndsay Kenwright",
+        "Unknown"
+      ]
+    },
+    {
+      "showId": "end-of-the-world-and-hard-boiled-wonderland-off-west-end-2026",
+      "method": "similarity",
+      "similarity": 58,
+      "reason": "different-critics-unverified",
+      "files": [
+        "guardian--arifa-akbar.json",
+        "soz6--unknown.json"
+      ],
+      "outlets": [
+        "The Guardian",
+        "soz6"
+      ],
+      "critics": [
+        "Arifa Akbar",
+        "Unknown"
+      ]
+    },
+    {
+      "showId": "escape-to-margaritaville-2018",
+      "method": "fingerprint",
+      "similarity": 100,
+      "reason": "different-critics-unverified",
+      "files": [
+        "nytg--stanford-friedman.json",
+        "wolf-entertainment-guide--william-wolf.json"
+      ],
+      "outlets": [
+        "New York Theatre Guide",
+        "Wolf Entertainment Guide"
+      ],
+      "critics": [
+        "Stanford Friedman",
+        "William Wolf"
+      ]
+    },
+    {
+      "showId": "escape-to-margaritaville-2018",
+      "method": "similarity",
+      "similarity": 56,
+      "reason": "different-critics-unverified",
+      "files": [
+        "front-row-center--stanford-friedman.json",
+        "wolf-entertainment-guide--william-wolf.json"
+      ],
+      "outlets": [
+        "Front Row Center",
+        "Wolf Entertainment Guide"
+      ],
+      "critics": [
+        "Stanford Friedman",
+        "William Wolf"
+      ]
+    },
+    {
+      "showId": "farinelli-and-the-king-2017",
+      "method": "similarity",
+      "similarity": 73,
+      "reason": "different-critics-unverified",
+      "files": [
+        "broadwayworld--michael-dale.json",
+        "dctheatrescene--jonathan-mandell.json"
+      ],
+      "outlets": [
+        "BroadwayWorld",
+        "DC Theatre Scene"
+      ],
+      "critics": [
+        "Michael Dale",
+        "Jonathan Mandell"
+      ]
+    },
+    {
+      "showId": "first-date-2013",
+      "method": "similarity",
+      "similarity": 61,
+      "reason": "different-critics-unverified",
+      "files": [
+        "about-entertainment--charles-isherwood.json",
+        "nytimes--ben-brantley.json"
+      ],
+      "outlets": [
+        "About Entertainment",
+        "The New York Times"
+      ],
+      "critics": [
+        "Charles Isherwood",
+        "Ben Brantley"
+      ]
+    },
+    {
+      "showId": "funny-girl-west-end-2016",
+      "method": "similarity",
+      "similarity": 50,
+      "reason": "different-critics-unverified",
+      "files": [
+        "standard--fiona-mountford.json",
+        "timeout-london--louise-schwartzkoff.json"
+      ],
+      "outlets": [
+        "Evening Standard",
+        "Time Out London"
+      ],
+      "critics": [
+        "Fiona Mountford",
+        "Louise Schwartzkoff"
+      ]
+    },
+    {
+      "showId": "ghost-the-musical-2012",
+      "method": "similarity",
+      "similarity": 77,
+      "reason": "different-critics-unverified",
+      "files": [
+        "about-entertainment--charles-isherwood.json",
+        "nytimes--ben-brantley.json"
+      ],
+      "outlets": [
+        "About Entertainment",
+        "The New York Times"
+      ],
+      "critics": [
+        "Charles Isherwood",
+        "Ben Brantley"
+      ]
+    },
+    {
+      "showId": "grand-horizons-2020",
+      "method": "similarity",
+      "similarity": 71,
+      "reason": "different-critics-unverified",
+      "files": [
+        "broadwayworld--michael-dale.json",
+        "dctheatrescene--jonathan-mandell.json"
+      ],
+      "outlets": [
+        "BroadwayWorld",
+        "DC Theatre Scene"
+      ],
+      "critics": [
+        "Michael Dale",
+        "Jonathan Mandell"
+      ]
+    },
+    {
+      "showId": "groundhog-day-2017",
+      "method": "similarity",
+      "similarity": 80,
+      "reason": "different-critics-unverified",
+      "files": [
+        "huffpost--steven-suskin.json",
+        "latimes--charles-mcnulty.json"
+      ],
+      "outlets": [
+        "HuffPost",
+        "Los Angeles Times"
+      ],
+      "critics": [
+        "Steven Suskin",
+        "Charles McNulty"
+      ]
+    },
+    {
+      "showId": "harry-potter-2021",
+      "method": "similarity",
+      "similarity": 79,
+      "reason": "different-critics-unverified",
+      "files": [
+        "dctheatrescene--jonathan-mandell.json",
+        "nyt-theater--unknown.json"
+      ],
+      "outlets": [
+        "DC Theatre Scene",
+        "New York Theater"
+      ],
+      "critics": [
+        "Jonathan Mandell",
+        "Unknown"
+      ]
+    },
+    {
+      "showId": "head-over-heels-2018",
+      "method": "fingerprint",
+      "similarity": 100,
+      "reason": "different-critics-unverified",
+      "files": [
+        "philadelphia-inquirer--toby-zinman.json",
+        "stage-left--robert-russo.json"
+      ],
+      "outlets": [
+        "The Philadelphia Inquirer",
+        "Stage Left"
+      ],
+      "critics": [
+        "Toby Zinman",
+        "Robert Russo"
+      ]
+    },
+    {
+      "showId": "heathers-the-musical-off-west-end-2026",
+      "method": "similarity",
+      "similarity": 74,
+      "reason": "different-critics-unverified",
+      "files": [
+        "notesfromrowh--helena6.json",
+        "theatre-south-east--unknown.json"
+      ],
+      "outlets": [
+        "notesfromrowh",
+        "Theatre South East"
+      ],
+      "critics": [
+        "helena6",
+        "Unknown"
+      ]
+    },
+    {
+      "showId": "hells-kitchen-2024",
+      "method": "similarity",
+      "similarity": 83,
+      "reason": "different-critics-unverified",
+      "files": [
+        "ap--mark-kennedy.json",
+        "showbiz411--roger-friedman.json"
+      ],
+      "outlets": [
+        "Associated Press",
+        "Showbiz411"
+      ],
+      "critics": [
+        "Mark Kennedy",
+        "Roger Friedman"
+      ]
+    },
+    {
+      "showId": "hold-on-to-me-darling-off-broadway-2024",
+      "method": "similarity",
+      "similarity": 45,
+      "reason": "different-critics-unverified",
+      "files": [
+        "dailybeast--unknown.json",
+        "timteeman--unknown.json"
+      ],
+      "outlets": [
+        "The Daily Beast",
+        "Timteeman"
+      ],
+      "critics": [
+        "Unknown",
+        ""
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "method": "similarity",
+      "similarity": 57,
+      "reason": "different-critics-unverified",
+      "files": [
+        "daily-mail--patrick-marmion.json",
+        "mail-on-sunday--robert-gore-langton.json"
+      ],
+      "outlets": [
+        "Daily Mail",
+        "The Mail on Sunday"
+      ],
+      "critics": [
+        "Patrick Marmion",
+        "Robert Gore Langton"
+      ]
+    },
+    {
+      "showId": "it-shoulda-been-you-2015",
+      "method": "fingerprint",
+      "similarity": 100,
+      "reason": "different-critics-unverified",
+      "files": [
+        "jta--uriel-heilman.json",
+        "simon-parris-man-in-chair--simon-parris.json"
+      ],
+      "outlets": [
+        "jta",
+        "simon-parris-man-in-chair"
+      ],
+      "critics": [
+        "Uriel Heilman",
+        "Simon Parris"
+      ]
+    },
+    {
+      "showId": "jews-in-their-own-words-west-end-2022",
+      "method": "similarity",
+      "similarity": 79,
+      "reason": "different-critics-unverified",
+      "files": [
+        "artsdesk--aleks-sierz.json",
+        "sierz-co-uk--unknown.json"
+      ],
+      "outlets": [
+        "The Arts Desk",
+        "Aleks Sierz"
+      ],
+      "critics": [
+        "Aleks Sierz",
+        "Unknown"
+      ]
+    },
+    {
+      "showId": "kinky-boots-2013",
+      "method": "similarity",
+      "similarity": 90,
+      "reason": "different-critics-unverified",
+      "files": [
+        "huffpost--michael-giltz.json",
+        "latimes--charles-mcnulty.json"
+      ],
+      "outlets": [
+        "HuffPost",
+        "Los Angeles Times"
+      ],
+      "critics": [
+        "Michael Giltz",
+        "Charles McNulty"
+      ]
+    },
+    {
+      "showId": "labour-of-love-west-end-2017",
+      "method": "similarity",
+      "similarity": 48,
+      "reason": "different-critics-unverified",
+      "files": [
+        "sierz-co-uk--unknown.json",
+        "tribune--aleks-sierz.json"
+      ],
+      "outlets": [
+        "Aleks Sierz",
+        "Tribune Magazine"
+      ],
+      "critics": [
+        "Unknown",
+        "Aleks Sierz"
+      ]
+    },
+    {
+      "showId": "lemons-lemons-lemons-lemons-lemons-west-end-2023",
+      "method": "similarity",
+      "similarity": 77,
+      "reason": "different-critics-unverified",
+      "files": [
+        "artsdesk--aleks-sierz.json",
+        "sierz-co-uk--unknown.json"
+      ],
+      "outlets": [
+        "The Arts Desk",
+        "Aleks Sierz"
+      ],
+      "critics": [
+        "Aleks Sierz",
+        "Unknown"
+      ]
+    },
+    {
+      "showId": "m-butterfly-2017",
+      "method": "similarity",
+      "similarity": 88,
+      "reason": "different-critics-unverified",
+      "files": [
+        "huffpost--christian-lewis.json",
+        "stageandcinema--lynn-berk.json"
+      ],
+      "outlets": [
+        "Huffington Post",
+        "Stage and Cinema"
+      ],
+      "critics": [
+        "Christian Lewis",
+        "Lynn Berk"
+      ]
+    },
+    {
+      "showId": "midnight-movie-west-end-2019",
+      "method": "similarity",
+      "similarity": 63,
+      "reason": "different-critics-unverified",
+      "files": [
+        "artsdesk--aleks-sierz.json",
+        "sierz-co-uk--unknown.json"
+      ],
+      "outlets": [
+        "The Arts Desk",
+        "Aleks Sierz"
+      ],
+      "critics": [
+        "Aleks Sierz",
+        "Unknown"
+      ]
+    },
+    {
+      "showId": "nan-shepherd-naked-and-unashamed-pitlochry-festival-regional-2024",
+      "method": "similarity",
+      "similarity": 67,
+      "reason": "different-critics-unverified",
+      "files": [
+        "corrblimey--unknown.json",
+        "thereviewshub--reviewer-upload.json"
+      ],
+      "outlets": [
+        "Corrblimey",
+        "The Reviews Hub"
+      ],
+      "critics": [
+        "Unknown",
+        "Reviewer Upload"
+      ]
+    },
+    {
+      "showId": "nero-off-west-end-2026",
+      "method": "similarity",
+      "similarity": 45,
+      "reason": "different-critics-unverified",
+      "files": [
+        "curtaincallbway--unknown.json",
+        "south-london--michael-holland.json"
+      ],
+      "outlets": [
+        "Curtain Call",
+        "South London"
+      ],
+      "critics": [
+        "Unknown",
+        "Michael Holland"
+      ]
+    },
+    {
+      "showId": "network-2018",
+      "method": "fingerprint",
+      "similarity": 100,
+      "reason": "different-critics-unverified",
+      "files": [
+        "vulture--jesse-green.json",
+        "dailybeast--tim-teeman.json"
+      ],
+      "outlets": [
+        "Vulture",
+        "The Daily Beast"
+      ],
+      "critics": [
+        "Jesse Green",
+        "Tim Teeman"
+      ]
+    },
+    {
+      "showId": "north-by-northwest-regional-2026",
+      "method": "similarity",
+      "similarity": 67,
+      "reason": "different-critics-unverified",
+      "files": [
+        "localnewsmatters--jean-schiffman-bay-city-news.json",
+        "sfgate--unknown.json"
+      ],
+      "outlets": [
+        "Local News Matters",
+        "SFGate"
+      ],
+      "critics": [
+        "Jean Schiffman, Bay City News",
+        "Unknown"
+      ]
+    },
+    {
+      "showId": "oh-mary-west-end-2025",
+      "method": "similarity",
+      "similarity": 97,
+      "reason": "different-critics-unverified",
+      "files": [
+        "daily-mail--patrick-marmion.json",
+        "digital-journal--markos-papadatos.json"
+      ],
+      "outlets": [
+        "Daily Mail",
+        "Digital Journal"
+      ],
+      "critics": [
+        "Patrick Marmion",
+        "Markos Papadatos"
+      ]
+    },
+    {
+      "showId": "oh-mary-west-end-2025",
+      "method": "similarity",
+      "similarity": 45,
+      "reason": "different-critics-unverified",
+      "files": [
+        "guardian-uk--unknown.json",
+        "standard--nick-curtis.json"
+      ],
+      "outlets": [
+        "Guardian Uk",
+        "Evening Standard"
+      ],
+      "critics": [
+        "Unknown",
+        "Nick Curtis"
+      ]
+    },
+    {
+      "showId": "oleanna-west-end-2021",
+      "method": "similarity",
+      "similarity": 67,
+      "reason": "different-critics-unverified",
+      "files": [
+        "artsdesk--aleks-sierz.json",
+        "sierz-co-uk--unknown.json"
+      ],
+      "outlets": [
+        "The Arts Desk",
+        "Aleks Sierz"
+      ],
+      "critics": [
+        "Aleks Sierz",
+        "Unknown"
+      ]
+    },
+    {
+      "showId": "on-your-feet-2015",
+      "method": "similarity",
+      "similarity": 79,
+      "reason": "different-critics-unverified",
+      "files": [
+        "huffpost--fern-siegel.json",
+        "nbcny--robert-kahn.json"
+      ],
+      "outlets": [
+        "HuffPost",
+        "NBC New York"
+      ],
+      "critics": [
+        "Fern Siegel",
+        "Robert Kahn"
+      ]
+    },
+    {
+      "showId": "roleplay-off-west-end-2026",
+      "method": "similarity",
+      "similarity": 65,
+      "reason": "different-critics-unverified",
+      "files": [
+        "sierz-co-uk--unknown.json",
+        "the-theatre-times--aleks-sierz.json"
+      ],
+      "outlets": [
+        "Aleks Sierz",
+        "The Theatre Times"
+      ],
+      "critics": [
+        "Unknown",
+        "Aleks Sierz"
+      ]
+    },
+    {
+      "showId": "scenes-with-girls-west-end-2020",
+      "method": "similarity",
+      "similarity": 68,
+      "reason": "different-critics-unverified",
+      "files": [
+        "camdennewjournal--clair-chapwell.json",
+        "islingtontribune--unknown.json"
+      ],
+      "outlets": [
+        "Camden New Journal",
+        "Islington Tribune"
+      ],
+      "critics": [
+        "Clair Chapwell",
+        "Unknown"
+      ]
+    },
+    {
+      "showId": "sea-wall-a-life-2019",
+      "method": "similarity",
+      "similarity": 85,
+      "reason": "different-critics-unverified",
+      "files": [
+        "national-review--kyle-smith.json",
+        "theatre-reviews-limited--david-roberts.json"
+      ],
+      "outlets": [
+        "National Review",
+        "Theatre Reviews Limited"
+      ],
+      "critics": [
+        "Kyle Smith",
+        "David Roberts"
+      ]
+    },
+    {
+      "showId": "shucked-tour-2024",
+      "method": "similarity",
+      "similarity": 83,
+      "reason": "different-critics-unverified",
+      "files": [
+        "latin-life-denver--joe-contreras.json",
+        "maryland-theatre-guide--alyssa-mutterperi.json"
+      ],
+      "outlets": [
+        "Latin Life Denver",
+        "MD Theatre Guide"
+      ],
+      "critics": [
+        "Joe Contreras",
+        "Alyssa Mutterperi"
+      ]
+    },
+    {
+      "showId": "slam-frank-off-broadway-2026",
+      "method": "similarity",
+      "similarity": 64,
+      "reason": "different-critics-unverified",
+      "files": [
+        "theater-life--david-sheward.json",
+        "totaltheater1--unknown.json"
+      ],
+      "outlets": [
+        "Theater Life",
+        "Totaltheater1"
+      ],
+      "critics": [
+        "David Sheward",
+        "Unknown"
+      ]
+    },
+    {
+      "showId": "slam-frank-off-broadway-2026",
+      "method": "similarity",
+      "similarity": 51,
+      "reason": "different-critics-unverified",
+      "files": [
+        "thedaviddesk2--davidsheward.json",
+        "totaltheater1--unknown.json"
+      ],
+      "outlets": [
+        "Thedaviddesk2",
+        "Totaltheater1"
+      ],
+      "critics": [
+        "David.sheward",
+        "Unknown"
+      ]
+    },
+    {
+      "showId": "some-like-it-hot-tour-2024",
+      "method": "similarity",
+      "similarity": 85,
+      "reason": "different-critics-unverified",
+      "files": [
+        "localnewsmatters--leslie-katz-bay-city-news.json",
+        "piedmontexedra--leslie-katz.json"
+      ],
+      "outlets": [
+        "Local News Matters",
+        "Piedmont Exedra"
+      ],
+      "critics": [
+        "Leslie Katz, Bay City News",
+        "Leslie Katz"
+      ]
+    },
+    {
+      "showId": "suffs-tour-2025",
+      "method": "similarity",
+      "similarity": 77,
+      "reason": "different-critics-unverified",
+      "files": [
+        "clevescene--gwendolyn-kochur.json",
+        "headtopics--clevelandscene.json"
+      ],
+      "outlets": [
+        "clevescene",
+        "headtopics"
+      ],
+      "critics": [
+        "Gwendolyn Kochur",
+        "ClevelandScene"
+      ]
+    },
+    {
+      "showId": "the-bands-visit-2017",
+      "method": "similarity",
+      "similarity": 99,
+      "reason": "different-critics-unverified",
+      "files": [
+        "off-script-with-dan-dwyer--dan-dwyer.json",
+        "theater-life--isa-goldberg.json"
+      ],
+      "outlets": [
+        "Off Script with Dan Dwyer",
+        "Theater Life"
+      ],
+      "critics": [
+        "Dan Dwyer",
+        "Isa Goldberg"
+      ]
+    },
+    {
+      "showId": "the-color-purple-2015",
+      "method": "similarity",
+      "similarity": 91,
+      "reason": "different-critics-unverified",
+      "files": [
+        "huffpost--steven-suskin.json",
+        "theater-scene--darryl-reilly.json"
+      ],
+      "outlets": [
+        "HuffPost",
+        "TheaterScene.net"
+      ],
+      "critics": [
+        "Steven Suskin",
+        "Darryl Reilly"
+      ]
+    },
+    {
+      "showId": "the-cook-regional-2026",
+      "method": "similarity",
+      "similarity": 68,
+      "reason": "different-critics-unverified",
+      "files": [
+        "localnewsmatters--jean-schiffman-bay-city-news.json",
+        "sfgate--unknown.json"
+      ],
+      "outlets": [
+        "Local News Matters",
+        "SFGate"
+      ],
+      "critics": [
+        "Jean Schiffman, Bay City News",
+        "Unknown"
+      ]
+    },
+    {
+      "showId": "the-cottage-2023",
+      "method": "similarity",
+      "similarity": 96,
+      "reason": "different-critics-unverified",
+      "files": [
+        "new-york-sun--elysa-gardner.json",
+        "variety--naveen-kumar.json"
+      ],
+      "outlets": [
+        "New York Sun",
+        "Variety"
+      ],
+      "critics": [
+        "Elysa Gardner",
+        "Naveen Kumar"
+      ]
+    },
+    {
+      "showId": "the-crucible-west-end-2022",
+      "method": "fingerprint",
+      "similarity": 100,
+      "reason": "different-critics-unverified",
+      "files": [
+        "daily-echo--kieran-doody.json",
+        "hampstead-highgate-express--charlotte-l-rose.json"
+      ],
+      "outlets": [
+        "Daily Echo",
+        "Hampstead & Highgate Express"
+      ],
+      "critics": [
+        "Kieran Doody",
+        "Charlotte L Rose"
+      ]
+    },
+    {
+      "showId": "the-drifters-girl-west-end-2021",
+      "method": "similarity",
+      "similarity": 49,
+      "reason": "different-critics-unverified",
+      "files": [
+        "guardian--arifa-akbar.json",
+        "i-paper--fiona-mountford.json"
+      ],
+      "outlets": [
+        "The Guardian",
+        "The i"
+      ],
+      "critics": [
+        "Arifa Akbar",
+        "Fiona Mountford"
+      ]
+    },
+    {
+      "showId": "the-holy-rosenbergs-west-end-2026",
+      "method": "similarity",
+      "similarity": 71,
+      "reason": "different-critics-unverified",
+      "files": [
+        "artsdesk--aleks-sierz.json",
+        "sierz-co-uk--unknown.json"
+      ],
+      "outlets": [
+        "The Arts Desk",
+        "Aleks Sierz"
+      ],
+      "critics": [
+        "Aleks Sierz",
+        "Unknown"
+      ]
+    },
+    {
+      "showId": "the-hungry-ghost-off-west-end-2026",
+      "method": "similarity",
+      "similarity": 51,
+      "reason": "different-critics-unverified",
+      "files": [
+        "chiswickcalendar--unknown.json",
+        "newearththeatre--new-earth-theatre.json"
+      ],
+      "outlets": [
+        "Chiswickcalendar",
+        "newearththeatre"
+      ],
+      "critics": [
+        "Unknown",
+        "New Earth Theatre"
+      ]
+    },
+    {
+      "showId": "the-music-man-2022",
+      "method": "similarity",
+      "similarity": 95,
+      "reason": "different-critics-unverified",
+      "files": [
+        "showbiz411--roger-friedman.json",
+        "slantmagazine--dan-rubins.json"
+      ],
+      "outlets": [
+        "Showbiz411",
+        "Slant Magazine"
+      ],
+      "critics": [
+        "Roger Friedman",
+        "Dan Rubins"
+      ]
+    },
+    {
+      "showId": "the-normal-heart-west-end-2021",
+      "method": "similarity",
+      "similarity": 61,
+      "reason": "different-critics-unverified",
+      "files": [
+        "times-uk--clive-davis.json",
+        "whatsonstage--sarah-crompton.json"
+      ],
+      "outlets": [
+        "The Times (UK)",
+        "WhatsOnStage"
+      ],
+      "critics": [
+        "Clive Davis",
+        "Sarah Crompton"
+      ]
+    },
+    {
+      "showId": "the-play-that-goes-wrong-west-end-2021",
+      "method": "similarity",
+      "similarity": 63,
+      "reason": "different-critics-unverified",
+      "files": [
+        "sunday-telegraph--tim-walker.json",
+        "telegraph--dominic-cavendish.json"
+      ],
+      "outlets": [
+        "Sunday Telegraph",
+        "The Telegraph"
+      ],
+      "critics": [
+        "Tim Walker",
+        "Dominic Cavendish"
+      ]
+    },
+    {
+      "showId": "the-shark-is-broken-west-end-2021",
+      "method": "similarity",
+      "similarity": 54,
+      "reason": "different-critics-unverified",
+      "files": [
+        "guardian--ryan-gilbey.json",
+        "i-paper--sam-marlowe.json"
+      ],
+      "outlets": [
+        "The Guardian",
+        "The i"
+      ],
+      "critics": [
+        "Ryan Gilbey",
+        "Sam Marlowe"
+      ]
+    },
+    {
+      "showId": "till-the-stars-come-down-west-end-2024",
+      "method": "similarity",
+      "similarity": 69,
+      "reason": "different-critics-unverified",
+      "files": [
+        "artsdesk--aleks-sierz.json",
+        "sierz-co-uk--unknown.json"
+      ],
+      "outlets": [
+        "The Arts Desk",
+        "Aleks Sierz"
+      ],
+      "critics": [
+        "Aleks Sierz",
+        "Unknown"
+      ]
+    },
+    {
+      "showId": "top-girls-west-end-2019",
+      "method": "similarity",
+      "similarity": 67,
+      "reason": "different-critics-unverified",
+      "files": [
+        "artsdesk--aleks-sierz.json",
+        "sierz-co-uk--unknown.json"
+      ],
+      "outlets": [
+        "The Arts Desk",
+        "Aleks Sierz"
+      ],
+      "critics": [
+        "Aleks Sierz",
+        "Unknown"
+      ]
+    },
+    {
+      "showId": "total-immediate-collective-imminent-terrestrial-salvation-west-end-2019",
+      "method": "similarity",
+      "similarity": 65,
+      "reason": "different-critics-unverified",
+      "files": [
+        "artsdesk--aleks-sierz.json",
+        "sierz-co-uk--unknown.json"
+      ],
+      "outlets": [
+        "The Arts Desk",
+        "Aleks Sierz"
+      ],
+      "critics": [
+        "Aleks Sierz",
+        "Unknown"
+      ]
+    },
+    {
+      "showId": "touching-the-void-west-end-2019",
+      "method": "similarity",
+      "similarity": 59,
+      "reason": "different-critics-unverified",
+      "files": [
+        "artsdesk--aleks-sierz.json",
+        "sierz-co-uk--unknown.json"
+      ],
+      "outlets": [
+        "The Arts Desk",
+        "Aleks Sierz"
+      ],
+      "critics": [
+        "Aleks Sierz",
+        "Unknown"
+      ]
+    },
+    {
+      "showId": "trouble-in-mind-2021",
+      "method": "similarity",
+      "similarity": 60,
+      "reason": "different-critics-unverified",
+      "files": [
+        "bloomberg--mark-kennedy.json",
+        "washpost--soyica-diggs-colbert.json"
+      ],
+      "outlets": [
+        "Bloomberg",
+        "The Washington Post"
+      ],
+      "critics": [
+        "Mark Kennedy",
+        "Soyica Diggs Colbert"
+      ]
+    },
+    {
+      "showId": "twelfth-night-crucible-regional-2026",
+      "method": "similarity",
+      "similarity": 61,
+      "reason": "different-critics-unverified",
+      "files": [
+        "guardian--mark-fisher.json",
+        "soz6--unknown.json"
+      ],
+      "outlets": [
+        "The Guardian",
+        "Soz6"
+      ],
+      "critics": [
+        "Mark Fisher",
+        "Unknown"
+      ]
+    },
+    {
+      "showId": "waitress-west-end-2019",
+      "method": "similarity",
+      "similarity": 75,
+      "reason": "different-critics-unverified",
+      "files": [
+        "camdennewjournal--catherine-usher.json",
+        "islingtontribune--unknown.json"
+      ],
+      "outlets": [
+        "Camden New Journal",
+        "Islingtontribune"
+      ],
+      "critics": [
+        "Catherine Usher",
         "Unknown"
       ]
     }

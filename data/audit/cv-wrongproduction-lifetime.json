@@ -1,18 +1,22 @@
 {
-  "updatedAt": "2026-11-02T21:48:39.214Z",
-  "scanned": 4649,
-  "showsWithViolations": 169,
-  "totalViolations": 222,
-  "newSinceLastRun": 0,
+  "updatedAt": "2026-11-03T09:54:38.642Z",
+  "scanned": 4749,
+  "showsWithViolations": 171,
+  "totalViolations": 225,
+  "newSinceLastRun": 3,
   "handled": {
-    "temporal-override-low-confidence": 922,
+    "temporal-override-low-confidence": 938,
     "not-shipped": 54,
-    "duplicate-not-shipped": 53,
+    "duplicate-not-shipped": 54,
     "rebuild-skip-audit": 32,
     "manual-clear-reason": 12,
     "prior-run-or-tour-leg": 43
   },
-  "newViolationKeys": [],
+  "newViolationKeys": [
+    "a-world-elsewhere-off-west-end-2026::guardian--miriam-gillinson.json",
+    "love-love-love-off-broadway-2016::cititour--brian-scott-lipton.json",
+    "love-love-love-off-broadway-2016::show-showdown--elizabeth-wollman.json"
+  ],
   "violationKeys": [
     "cats-the-jellicle-ball-2026::nytg--kyle-turner.json",
     "ragtime-2025::america-magazine--weinert-kendt.json",
@@ -175,6 +179,7 @@
     "a-small-and-quiet-light-off-west-end-2026::plays-international--unknown.json",
     "sylvia-west-end-2023::standard--nick-curtis.json",
     "crybabies-the-scaring-off-west-end-2026::london-box-office--stuart-king.json",
+    "a-world-elsewhere-off-west-end-2026::guardian--miriam-gillinson.json",
     "operation-mincemeat-tour-2026::boston-globe--unknown.json",
     "spamalot-tour-2025::the-moderate-voice--dough-bursch.json",
     "a-beautiful-noise-the-neil-diamond-musical-tour-2024::broadwayworld--jarrod-michael.json",
@@ -230,6 +235,8 @@
     "the-upstart-crow-west-end-2020::timeout-london--unknown.json",
     "the-importance-of-being-earnest-west-end-2024::broadwayworld--unknown.json",
     "the-importance-of-being-earnest-west-end-2024::londontheatre1--unknown.json",
+    "love-love-love-off-broadway-2016::cititour--brian-scott-lipton.json",
+    "love-love-love-off-broadway-2016::show-showdown--elizabeth-wollman.json",
     "aint-done-bad-off-broadway-2024::theatre-reviews-limited--david-roberts.json",
     "angry-alan-off-broadway-2025::pages-on-stages--mason-pilevsky.json",
     "the-blood-quilt-off-broadway-2024::theater-scene--deirdre-donovan.json",
@@ -3240,6 +3247,27 @@
       ]
     },
     {
+      "showId": "a-world-elsewhere-off-west-end-2026",
+      "title": "A World Elsewhere",
+      "openingDate": "2026-07-25",
+      "message": "guardian/Miriam Gillinson (guardian--miriam-gillinson.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a valid review (opinion-bearing critique of a live theatrical performance), but it reviews the wrong production. — https://www.theguardian.com/stage/2026/jul/31/a-world-elsewhere-review-sam-wanamaker-theatre-globe",
+      "violations": [
+        {
+          "filename": "guardian--miriam-gillinson.json",
+          "url": "https://www.theguardian.com/stage/2026/jul/31/a-world-elsewhere-review-sam-wanamaker-theatre-globe",
+          "outletId": "guardian",
+          "criticName": "Miriam Gillinson",
+          "matchedBy": "url",
+          "cvConfidence": "high",
+          "cvReasoning": "This is a valid review (opinion-bearing critique of a live theatrical performance), but it reviews the wrong production.",
+          "cvIssues": [
+            "Reviewed venue is Globe theatre, not Sam Wanamaker Playhouse as expected",
+            "Review describes a Globe theatre and Splendid Productions co-production, not an Off-West End production at Sam Wanamaker Playhouse"
+          ]
+        }
+      ]
+    },
+    {
       "showId": "operation-mincemeat-tour-2026",
       "title": "Operation Mincemeat",
       "openingDate": "2026-09-20",
@@ -4294,6 +4322,40 @@
           "cvIssues": [
             "West End opening date mismatch: Expected 2024-11-28, but text states '20 November 2024 to 25 January 2025' (20 November ≠ 28 November)",
             "Review publish date is in the future relative to the production run (2026-10-11 is after the show closes 2025-01-25), which is impossible for a review written after seeing the show"
+          ]
+        }
+      ]
+    },
+    {
+      "showId": "love-love-love-off-broadway-2016",
+      "title": "Love, Love, Love",
+      "openingDate": "2016-10-19",
+      "message": "cititour/Brian Scott Lipton (cititour--brian-scott-lipton.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a legitimate theater review with critical assessment, but the production details do not match the expected Off-B — https://cititour.com/NYC_Broadway/Love-Love-Love/678\nshow-showdown/Elizabeth Wollman (show-showdown--elizabeth-wollman.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The scraped review explicitly states the production is 'currently running at the Roundabout' with cast Richard Armitage  — http://showshowdown.blogspot.com/2016/10/love-love-love.html",
+      "violations": [
+        {
+          "filename": "cititour--brian-scott-lipton.json",
+          "url": "https://cititour.com/NYC_Broadway/Love-Love-Love/678",
+          "outletId": "cititour",
+          "criticName": "Brian Scott Lipton",
+          "matchedBy": "url",
+          "cvConfidence": "high",
+          "cvReasoning": "This is a legitimate theater review with critical assessment, but the production details do not match the expected Off-B",
+          "cvIssues": [
+            "Opening date mismatch: Expected 2016-10-19, but scraped content shows 9/22/2016",
+            "Wrong production: Review is of the Broadway/Roundabout production (2016), not the Off-Broadway production expected with 10/19/2016 opening date"
+          ]
+        },
+        {
+          "filename": "show-showdown--elizabeth-wollman.json",
+          "url": "http://showshowdown.blogspot.com/2016/10/love-love-love.html",
+          "outletId": "show-showdown",
+          "criticName": "Elizabeth Wollman",
+          "matchedBy": "url",
+          "cvConfidence": "high",
+          "cvReasoning": "The scraped review explicitly states the production is 'currently running at the Roundabout' with cast Richard Armitage ",
+          "cvIssues": [
+            "Review evaluates a Roundabout production, not The Laura Pels Theatre at the Harold and Miriam Steinberg Center for Theatre",
+            "Expected venue is 'The Laura Pels Theatre at the Harold and Miriam Steinberg Center for Theatre' but scraped content states the show is 'currently running at the Roundabout'"
           ]
         }
       ]

@@ -1,22 +1,46 @@
 {
-  "generatedAt": "2026-11-02T21:38:04.899Z",
+  "generatedAt": "2026-11-03T09:45:07.550Z",
   "shadow": true,
-  "checkoutSha": "061b40ccaf9682841f3e72265319346bc606e3d8",
-  "totalCandidates": 300,
-  "eligibleCandidates": 99,
-  "checked": 29,
+  "checkoutSha": "ab0168a4331bd41337b2ed4bad9a4a7f98d906f4",
+  "totalCandidates": 396,
+  "eligibleCandidates": 115,
+  "checked": 30,
   "truncated": true,
   "fetchError": null,
   "counts": {
     "pass": 19,
-    "fail": 3,
+    "fail": 4,
     "unverifiable": 7
   },
   "alreadyDone": [
     {
-      "id": "BRO-6837",
-      "name": "Morning digest 2026-11-02: false 'no automatic fix confirmed' rows + root fixes (baseline drift, domain moves)",
-      "verifyCmd": "node --test scripts/lib/scheduled-closings.test.mjs",
+      "id": "BRO-6880",
+      "name": "Multi-show newspaper columns: isolate this show's section instead of rejecting as roundup (WaPo Imaginary Invalid)",
+      "verifyCmd": "node scripts/lib/verify-data-backfill.js --show=the-imaginary-invalid-2026 --reviews=23",
+      "detail": null
+    },
+    {
+      "id": "BRO-6877",
+      "name": "Keep past showtimes: archive every week's schedule and use it for diary entries",
+      "verifyCmd": "node --test tests/unit/show-schedule-history.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6863",
+      "name": "Press-night record: capture scoring time and the night's workflow runs so watchdog replays cover every stage",
+      "verifyCmd": "node --test scripts/press-night-record.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6840",
+      "name": "registrableDomain in review-normalization.js keeps its own ccTLD regex; use multipartSuffixOf",
+      "verifyCmd": "node --test scripts/lib/host-suffix-lists.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6839",
+      "name": "Digest: report-only rows covered by a differently-titled work card still read 'no automatic fix confirmed'",
+      "verifyCmd": "node --test scripts/lib/digest-autofix.test.mjs",
       "detail": null
     },
     {
@@ -29,6 +53,12 @@
       "id": "BRO-6801",
       "name": "Make OB/OWE press-night search actually fire + prove Stagedoor fix on a real London opening",
       "verifyCmd": "node --test tests/unit/press-window-serp.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6792",
+      "name": "Opening-date audit: 1 show need review (2026-11-01)",
+      "verifyCmd": "node scripts/lib/verify-data-backfill.js --show=billy-crystal-860-2026",
       "detail": null
     },
     {
@@ -47,12 +77,6 @@
       "id": "BRO-6773",
       "name": "Monthly Profitability Scorecard email: preview-only draft generator for the money list",
       "verifyCmd": "node --test tests/unit/money-monthly.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-6764",
-      "name": "Mac-to-cloud Phase 2b: cut the morning digest over to the GitHub Action (one email a day, dated, reversible)",
-      "verifyCmd": "node --test tests/unit/morning-digest-action.test.mjs tests/unit/mac-cloud-routines-verification.test.mjs tests/unit/mac-retired-reconciler.test.mjs",
       "detail": null
     },
     {
@@ -98,37 +122,19 @@
       "detail": null
     },
     {
-      "id": "BRO-6646",
-      "name": "Scraping spend alert: alarm on prepaid-credit exhaustion pace, not daily credits",
-      "verifyCmd": "node scripts/check-alert-condition-absent.js --key-b64 cHJvdmlkZXItc3BlbmQ6b3ZlcnNwZW5k",
-      "detail": null
-    },
-    {
       "id": "BRO-6599",
       "name": "audit-cross-show-url.js: 109 non-London unhandled hits are title-overlap false positives (A Beautiful Noise vs Beautiful etc.); teach it to skip them",
       "verifyCmd": "node --test scripts/lib/cross-show-url.test.mjs",
       "detail": null
-    },
-    {
-      "id": "BRO-6567",
-      "name": "Accessibility follow-ups to BRO-6553: web min text size (9-11px) + high-contrast mode on web and app",
-      "verifyCmd": "node --test tests/unit/text-contrast-guard.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-6564",
-      "name": "Show page money card: show estimated return range for closed win labels (match /biz table)",
-      "verifyCmd": "npx tsx --test tests/unit/commercial-display.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-6538",
-      "name": "London census: CDX pass for guardian, observer, thestage archive + T1 newspaper probes",
-      "verifyCmd": "node scripts/validate-data.js --strict",
-      "detail": null
     }
   ],
   "failing": [
+    {
+      "id": "BRO-6865",
+      "name": "commercial-pending-indecent-2017 — recoupment claim needs review",
+      "verifyCmd": "node scripts/check-review-item-resolved.js --claim=indecent-2017",
+      "detail": "OPEN: pending row indecent-2017 still waits\n"
+    },
     {
       "id": "BRO-6688",
       "name": "Delete stale failed land branch land/bro-6682-opening-night-leftovers",
@@ -139,7 +145,7 @@
       "id": "BRO-6590",
       "name": "Renew the NYT login cookie on the Mac Studio (NYT-S / nyt-a expired by 2026-10-27, poller NYT reviews cut at the paywall)",
       "verifyCmd": "node scripts/check-workflow-run-status.js --workflow=check-cookie-health.yml --expect=success",
-      "detail": "gh not authenticated and public API fallback failed: GET https://api.github.com/repos/thomaspryor/Broadwayscore/actions/workflows/check-cookie-health.yml/runs?per_page=1 -> HTTP 403\n"
+      "detail": "(gh not authenticated; read runs from the public GitHub API)\ncheck-cookie-health.yml: MISMATCH — most recent run concluded 'failure', expected 'success' (https://github.com/thomaspryor/Broadwayscore/actions/runs/41566254276)\n"
     },
     {
       "id": "BRO-6586",
@@ -171,7 +177,7 @@
       "id": "BRO-6724",
       "name": "Pre-existing red checks seen during BRO-6716: cross-outlet attribution suspect tests + audit-regex-patterns --full overages",
       "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 139864ms (timeout — no verdict)"
+      "detail": "check killed by SIGTERM after 132839ms (timeout — no verdict)"
     },
     {
       "id": "BRO-6681",
@@ -189,16 +195,16 @@
       "id": "BRO-6602",
       "name": "main test.yml red: Unit Tests / scripts/lib tests — matchSlugToShow 20 real fixtures + BRO-2281 Hackney Empire venue",
       "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 73904ms (timeout — no verdict)"
+      "detail": "check killed by SIGTERM after 62092ms (timeout — no verdict)"
     }
   ],
   "landedButOpen": [
     {
-      "id": "BRO-6837",
-      "name": "Morning digest 2026-11-02: false 'no automatic fix confirmed' rows + root fixes (baseline drift, domain moves)",
-      "branch": "land/bro-6837-cost",
-      "sha": "455de11e11477db08301d81c21570bcb0739ae13",
-      "landedAt": "2026-11-02T18:17:01.354Z"
+      "id": "BRO-6877",
+      "name": "Keep past showtimes: archive every week's schedule and use it for diary entries",
+      "branch": "land/bro-6877-lag-signed",
+      "sha": "201cc4a8ffb3c2e00b717709ed98052885dc369b",
+      "landedAt": "2026-11-03T04:12:40.828Z"
     },
     {
       "id": "BRO-6802",
@@ -227,13 +233,6 @@
       "branch": "land/bro-6773-audience-apply",
       "sha": "91e2216d4eb269f76d7bdabae18a7ee18a3e4a68",
       "landedAt": "2026-11-01T18:10:53.314Z"
-    },
-    {
-      "id": "BRO-6764",
-      "name": "Mac-to-cloud Phase 2b: cut the morning digest over to the GitHub Action (one email a day, dated, reversible)",
-      "branch": "land/bro-6764-catchup2",
-      "sha": "bd790fa6a63951095e42f3f87976ed70d18a95a5",
-      "landedAt": "2026-11-02T15:01:18.162Z"
     },
     {
       "id": "BRO-6763",
@@ -271,39 +270,11 @@
       "landedAt": "2026-10-30T22:48:34.402Z"
     },
     {
-      "id": "BRO-6646",
-      "name": "Scraping spend alert: alarm on prepaid-credit exhaustion pace, not daily credits",
-      "branch": "land/bro-6646-spend-pace",
-      "sha": "8227039083469d644e36ea5e326c8c9817de5504",
-      "landedAt": "2026-10-30T17:38:37.143Z"
-    },
-    {
       "id": "BRO-6599",
       "name": "audit-cross-show-url.js: 109 non-London unhandled hits are title-overlap false positives (A Beautiful Noise vs Beautiful etc.); teach it to skip them",
       "branch": "land/bro-6599-cross-show-canon",
       "sha": "88819d77d5934cc5eebb2b9dbbd8f56d813e1fa3",
       "landedAt": "2026-11-01T04:44:16.715Z"
-    },
-    {
-      "id": "BRO-6567",
-      "name": "Accessibility follow-ups to BRO-6553: web min text size (9-11px) + high-contrast mode on web and app",
-      "branch": "land/bro-6567-font-floor-b",
-      "sha": "d72a9f34f93cad7ec0cc7b048b0d030d437eb12c",
-      "landedAt": "2026-10-31T08:53:44.084Z"
-    },
-    {
-      "id": "BRO-6564",
-      "name": "Show page money card: show estimated return range for closed win labels (match /biz table)",
-      "branch": "land/codex-bro-6564",
-      "sha": "0f2198a9a40edfe49e8f70ed5258012c8b44fa6b",
-      "landedAt": "2026-10-30T08:33:33.052Z"
-    },
-    {
-      "id": "BRO-6538",
-      "name": "London census: CDX pass for guardian, observer, thestage archive + T1 newspaper probes",
-      "branch": "land/codex-bro-6538",
-      "sha": "f2acd8d4b066b481f93c7c18c6949ab3b037d563",
-      "landedAt": "2026-10-31T04:22:57.455Z"
     }
   ]
 }

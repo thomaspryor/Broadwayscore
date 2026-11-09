@@ -740,8 +740,13 @@ const PATTERNS = [
   ['wsj.com', /<section[^>]+id="article-body"[^>]*>([\s\S]*?)<\/section>/, 500],
   ['wsj.com', /<div[^>]+class="[^"]*article-content[^"]*"[^>]*>([\s\S]*?)<\/div>\s*<footer/, 500],
 
-  // Hollywood Reporter
-  ['hollywoodreporter.com', /<div[^>]+class="[^"]*lrv-a-wrapper[^"]*"[^>]*>([\s\S]*?)<\/div>\s*<\/section>/, 500],
+  // Hollywood Reporter: extractVarietyBody handles it first (PMC template, see extractArticleTextUnchecked). This entry
+  // is the backup, and its presence makes a miss return null instead of reaching the generic fallbacks. It captures from
+  // the first <p> inside div.a-content.lrv-a-floated-parent (skipping the share buttons) to the piano paywall slot or the
+  // after-content tags. The old lrv-a-wrapper pattern is deleted: it matched the header mega menu, so every THR review
+  // came back as ~1300 chars of chrome that the scorer refused (body_too_short), losing the Other Desert Cities review
+  // in the BRO-6872 replay. Null beats saving menu chrome.
+  ['hollywoodreporter.com', /<div[^>]+class="[^"]*\ba-content\b[^"]*lrv-a-floated-parent[^"]*"[^>]*>[\s\S]*?(<p[\s>][\s\S]*?)<div[^>]+(?:id="piano-paywall"|class="[^"]*a-article-after-content)/, 500],
 
   // TheaterMania — current Bootstrap layout (2026): review body lives in
   // <div class="news-content">, ending at <section class="featured-in-this-story">.
@@ -935,7 +940,9 @@ function extractArticleTextUnchecked(html, hostname, criticHint) {
   // of five Broadway reviews (2025-09 to 2026-10) where this extractor keeps the whole 5-9k review, ending at the
   // credits block (BRO-6066: the lane's Deadline review was refused by the scorer as body_too_short). Matched on the
   // host itself, and a miss still falls through to the generic patterns as before.
-  if (host.includes('variety.com') || /(?:^|\.)deadline\.com$/.test(host)) {
+  // The Hollywood Reporter is a PMC site on the same template (BRO-6872: the lane lost the Other Desert Cities review to
+  // chrome extraction). 4 live THR reviews, 2015-2026: 8.0-10.2k chars each, no related-story bleed.
+  if (host.includes('variety.com') || /(?:^|\.)(?:deadline|hollywoodreporter)\.com$/.test(host)) {
     const varietyText = extractVarietyBody(html);
     if (varietyText && varietyText.length >= 300) return varietyText;
   }

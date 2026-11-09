@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6854-sd-d",
   "planId": "afc67688-d570-46c6-befa-b38880056ba2",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-03T03:09:09.398Z",
   "submitter": {
     "name": null,
@@ -39,5 +39,14 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-03T03:22:04.456Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added topdog-underdog-old-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
 }

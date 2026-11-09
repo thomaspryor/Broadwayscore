@@ -69,8 +69,8 @@ test('tour candidates: page published long before the run is an earlier leg; und
   assert.equal(none.nonReview.length, 0);
 });
 
-test('festival-named page on a non-tour show is page-date vetted too (Edinburgh Fringe run before a London opening)', async () => {
-  const show = { category: 'off-west-end', openingDate: '2026-10-27', previewsStartDate: '2026-10-22' };
+test('festival-named page on a non-UK, non-tour show is page-date vetted too (Edinburgh Fringe run before a New York opening)', async () => {
+  const show = { category: 'off-broadway', openingDate: '2026-10-27', previewsStartDate: '2026-10-22' };
   const pages = {
     'https://r.com/edinburgh-fringe-review-roleplay': '<meta property="article:published_time" content="2026-08-14T09:00:00+00:00">',
     'https://r.com/roleplay-review': '<meta property="article:published_time" content="2026-08-14T09:00:00+00:00">',
@@ -211,4 +211,25 @@ test('vetting stops fetching once the run budget is exceeded and keeps the rest 
 
 test('ukTourLegUrl survives a malformed percent-escape in the path', () => {
   assert.doesNotThrow(() => noise.ukTourLegUrl('https://e.com/%E0%A4%A', { category: 'tour', venue: 'North American tour' }));
+});
+
+test('BRO-5489: a UK-market show page-date vets every census candidate (Buffy Revamped: a 2025 tour-date piece before the 2026 Lyric run)', async () => {
+  const show = { category: 'west-end', openingDate: null, previewsStartDate: '2026-10-12' };
+  const pages = {
+    'https://www.theatrereviewsnorth.com/post/buffy-revamped': '<meta property="article:published_time" content="2025-08-20T09:14:04.449Z"/>',
+    'https://x.com/buffy-revamped-lyric-review': '"datePublished":"2026-10-13T08:00:00Z"',
+    'https://x.com/undated': '<html></html>',
+  };
+  const missing = Object.keys(pages).map((url) => ({ url, serpCensus: true }));
+  missing.push({ url: 'https://x.com/not-census', serpCensus: false });
+  const fetched = [];
+  const out = await noise.vetTourCandidatesByPageDate(missing, show, { fetchPage: async (u) => { fetched.push(u); return { content: pages[u] }; } });
+  assert.deepEqual(out.nonReview.map((m) => m.url), ['https://www.theatrereviewsnorth.com/post/buffy-revamped']);
+  assert.equal(out.nonReview[0].nonReviewDetail, '2025-08-20');
+  assert.deepEqual(out.missing.map((m) => m.url), ['https://x.com/buffy-revamped-lyric-review', 'https://x.com/undated', 'https://x.com/not-census']);
+  assert.ok(!fetched.includes('https://x.com/not-census'));
+  for (const category of ['off-west-end', 'regional']) {
+    const o = await noise.vetTourCandidatesByPageDate(missing, { ...show, category }, { fetchPage: async (u) => ({ content: pages[u] }) });
+    assert.equal(o.nonReview.length, 1, category);
+  }
 });

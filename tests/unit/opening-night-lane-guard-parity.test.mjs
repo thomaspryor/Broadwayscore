@@ -80,3 +80,22 @@ test('an Independent roundup is still caught after the lane canonicalizes its ho
   assert.match(laneNonReviewReason({ url: canon, outletId: 'independent' }), /roundup/);
   assert.match(laneNonReviewReason({ url: raw, outletId: 'independent' }), /roundup/);
 });
+
+test('news about a show\'s reviews is refused on any host; real review slugs that say "reviews" are not (BRO-6872 replay)', () => {
+  const news = 'https://showbiz411.com/2026/10/19/update-800-a-ticket-other-desert-cities-with-julia-louis-dreyfus-allison-janney-ed-harris-gets-disappointing-opening-night-reviews';
+  for (const source of ['aggregator', 'outlet-index']) {
+    assert.match(laneNonReviewReason({ url: news, outletId: 'showbiz411', criticName: 'Roger Friedman', fullText: '', ...prov(source) }), /reception-news-not-review/);
+  }
+  assert.match(laneNonReviewReason({ url: 'https://example.com/2026/10/30/a-few-good-men-draws-mixed-reviews/', fullText: '' }), /reception-news/);
+  for (const url of [
+    'https://www.nj.com/entertainment/2019/03/kiss-me-kate-never-gets-out-of-first-gear-but-be-more-chill-has-charm-broadway-reviews.html',
+    'https://www.theatrely.com/post/gender-trouble-the-pass-hungry-women-review-roundup',
+    'https://showbiz411.com/2026/10/19/other-desert-cities-review-julia-louis-dreyfus-allison-janney',
+    // ship-check: a slug with its own "review" token, and "critics-reaction", are not reception news
+    'https://example.com/broadway-review-hamlet-gets-good-reviews',
+    'https://example.com/my-review-of-hamlet-pre-opening-night-reviews-embargo',
+    'https://example.com/critics-reaction-to-the-tonys',
+  ]) assert.equal(laneNonReviewReason({ url, fullText: '' }), null, url);
+  // A BWW "Review-Roundup-Critics-React" page is the roundup guard's, not reception news.
+  assert.match(laneNonReviewReason({ url: 'https://www.broadwayworld.com/article/Review-Roundup-Critics-React-to-HAMLET-20261020', fullText: '' }), /^roundup page/);
+});

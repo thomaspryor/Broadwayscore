@@ -1,12 +1,16 @@
 {
-  "updatedAt": "2026-11-02T21:51:11.145Z",
-  "scanned": 4649,
-  "showsWithViolations": 9,
-  "totalViolations": 9,
-  "newSinceLastRun": 0,
-  "newViolationKeys": [],
+  "updatedAt": "2026-11-03T09:57:09.471Z",
+  "scanned": 4749,
+  "showsWithViolations": 11,
+  "totalViolations": 11,
+  "newSinceLastRun": 2,
+  "newViolationKeys": [
+    "clifford-odets-waiting-for-lefty-off-broadway-2026",
+    "topdog-underdog-old-regional-2026"
+  ],
   "violationKeys": [
     "six-2021",
+    "clifford-odets-waiting-for-lefty-off-broadway-2026",
     "maria-stuarda-off-broadway-2026",
     "otello-off-broadway-2027",
     "parsifal-off-broadway-2027",
@@ -14,7 +18,8 @@
     "samson-et-dalila-off-broadway-2026",
     "the-revlon-girl-off-west-end-2026",
     "frida-a-self-portrait-regional-2026",
-    "wish-you-were-here-regional-2026"
+    "wish-you-were-here-regional-2026",
+    "topdog-underdog-old-regional-2026"
   ],
   "hits": [
     {
@@ -22,6 +27,15 @@
       "title": "SIX",
       "openingDate": "2021-10-03",
       "message": "six-2021 review text mentions \"revival\" 4x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "clifford-odets-waiting-for-lefty-off-broadway-2026",
+      "title": "Clifford Odets’ Waiting for Lefty",
+      "openingDate": "2026-11-02",
+      "message": "clifford-odets-waiting-for-lefty-off-broadway-2026 review text mentions \"revival\" 8x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -94,6 +108,15 @@
       "title": "Wish You Were Here",
       "openingDate": "2026-09-29",
       "message": "wish-you-were-here-regional-2026 shares canonical title with another show in the same market but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "topdog-underdog-old-regional-2026",
+      "title": "Topdog/Underdog",
+      "openingDate": "2026-10-01",
+      "message": "topdog-underdog-old-regional-2026 shares canonical title with another show in the same market but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]

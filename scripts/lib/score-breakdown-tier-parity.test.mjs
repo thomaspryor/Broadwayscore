@@ -83,6 +83,6 @@ test('rebuild and the reddit/email/social consumers read the verdict', () => {
   const read = f => readFileSync(join(root, f), 'utf8');
   assert.match(read('scripts/rebuild-all-reviews.js'), /verdictAppliesToSource\(source\)/);
   assert.match(read('scripts/lib/reddit-opening-post.js'), /getReviewBreakdownTierId\(r\.v, r\.s/);
-  assert.match(read('scripts/send-opening-night-broadcast.js'), /getReviewBreakdownTierId\(r\.verdict, r\.assignedScore/);
+  assert.match(read('scripts/send-opening-night-broadcast.js'), /countReviewVerdicts\(/);
   assert.match(read('src/app/show/[slug]/page.tsx'), /reviewScore: r\.reviewScore, verdict: r\.verdict/);
 });

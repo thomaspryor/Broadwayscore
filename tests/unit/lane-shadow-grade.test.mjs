@@ -45,10 +45,25 @@ test('the grade: recall, lane-only rows, the cross-host duplicate, score gaps, t
   assert.deepEqual(g.scoreGaps.map((d) => d.delta), [8]);
   assert.equal(g.timeToScoreMin.median, 20);
   assert.equal(g.pass, false);
-  assert.deepEqual(g.checks.filter((c) => !c.pass).map((c) => c.name), ['recall', 'duplicates']);
+  assert.equal(g.onTimeRecall, 0.75);
+  assert.deepEqual(g.checks.filter((c) => !c.pass).map((c) => c.name), ['onTimeRecall', 'duplicates']);
   // Two named nysr critics are two reviews.
   assert.ok(!g.duplicates.flat().some((r) => /nystagereview/.test(r.url)));
   assert.match(grade.gradeMarkdown(g), /FAIL/);
+});
+
+test('recall is gated on reviews dated by night + 1; a later magazine review is reported, not gated', () => {
+  const rep = { ...REPORT, reviews: [
+    ...REPORT.reviews.filter((r) => r.side === 'both' && r.outlet === 'nysr'),
+    rev('site-only', { url: 'https://www.newyorker.com/magazine/2026/11/09/x', outlet: 'The New Yorker', siteScore: 80, siteDate: '2026-11-02' }),
+    rev('site-only', { url: 'https://www.jkstheatrescene.com/2026/10/review.html', outlet: "JK's Theatre Scene", siteScore: 88, siteDate: '2026-10-30' }),
+    rev('site-only', { url: 'https://example.com/undated', outlet: 'Undated', siteScore: 70 }),
+  ] };
+  const g = grade.gradeShadowReport(rep);
+  assert.equal(g.recall, 0.4); // 2 of 5, all time
+  assert.equal(g.onTimeRecall, 0.5); // 2 of 4: the New Yorker (dated 11/02) is out; night+1 and undated stay in
+  assert.deepEqual(g.missed.filter((m) => m.late).map((m) => m.outlet), ['The New Yorker']);
+  assert.match(grade.gradeMarkdown(g), /dated 2026-11-02, after the night/);
 });
 
 test('publish errors fail the grade even at full recall', () => {

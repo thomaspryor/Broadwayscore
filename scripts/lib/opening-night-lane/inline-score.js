@@ -31,6 +31,20 @@ const { laneNonReviewReason } = require('./lane-guards');
 const { BODY_GATE_CHARS, MIN_SHORT_PARTIAL_CHARS } = require('../scorable-text');
 const { EXCERPT_FIELDS } = require('../excerpt-fields');
 const { getHardPaywallDomain, HARD_PAYWALL_FLOORS } = require('../paywall-completeness');
+const { OUTLET_HARD_MARKERS } = require('../paywall-detector');
+
+// Hosts whose page will not give a scraper the review text, so an aggregator excerpt may stand in for it: the
+// completeness hard paywalls (NYT, WSJ, ...), the detector's (FT, Telegraph), plus London and NY titles in neither
+// list. Open sites are not here: an excerpt scored 13-20 points off their full review (BRO-6872).
+const EXCERPT_FALLBACK_HOSTS = Object.freeze([...new Set([
+  ...Object.keys(HARD_PAYWALL_FLOORS), ...Object.keys(OUTLET_HARD_MARKERS),
+  'thetimes.com', 'thetimes.co.uk', 'newsday.com', 'bostonglobe.com',
+])]);
+function excerptMayScore(url) {
+  let h;
+  try { h = new URL(url).hostname.replace(/^www\./, '').toLowerCase(); } catch { return false; }
+  return EXCERPT_FALLBACK_HOSTS.some((d) => h === d || h.endsWith(`.${d}`));
+}
 
 // The ensemble refuses selected text under 50 chars (ensemble-scorer.ts prepareScoringInput): a shorter excerpt is no fallback.
 const MIN_EXCERPT_CHARS = 50;
@@ -133,8 +147,14 @@ function createInlineScoring({
     }
     gate('fetch', key);
     const aggregator = { ...(candidate.excerpts ? { excerpts: candidate.excerpts } : {}), ...(aggregatorFor(candidate) || {}) };
+    // An aggregator excerpt stands in for the review only on a paywall host (EXCERPT_FALLBACK_HOSTS: WSJ, NYT, Times, ...), where the page
+    // will never give the text. On an open site a failed or short fetch is a block or an extractor miss, and a one-line
+    // excerpt scored 20 points off the full review (BRO-6872: Talkin' Broadway 71 vs 91, the Independent 42 vs 55, The
+    // Hollywood Reporter 62 vs 42), so the review is held for the regular pipeline to collect in full.
+    // Every usable excerpt is kept on the row (buildLaneReview writes bwwExcerpt etc., as the regular pipeline does);
+    // only its use as a score stand-in is limited to paywall hosts.
     const excerpts = usableExcerpts(aggregator.excerpts);
-    const hasExcerpt = Object.keys(excerpts).length > 0;
+    const hasExcerpt = excerptMayScore(candidate.url) && Object.keys(excerpts).length > 0;
     const thumbScore = !!trust.paywallFallbackScore(aggregator);
     // aggregatorFor was never wired in the real lane, so this was always false and a paywalled WSJ review was lost for
     // good (BRO-6066). Discovery now carries each aggregator's excerpt on the candidate.
@@ -142,7 +162,7 @@ function createInlineScoring({
     // With no thumb or stars the scorer reads the excerpt (excerpt-only, exempt from its body gate); a thumb score is
     // set by the trust model and the scorer is not called.
     const excerptTier = hasExcerpt && !thumbScore ? { contentTier: 'excerpt' } : {};
-    const withExcerpts = (o) => (hasExcerpt ? { ...o, excerpts } : o);
+    const withExcerpts = (o) => (Object.keys(excerpts).length ? { ...o, excerpts } : o);
     const fallback = (why) => withExcerpts({ outlet: undefined, criticName: null, publishDate: null, fullText: '', aggregator, fallbackReason: why, ...excerptTier });
     try {
       const page = await fetchPage(candidate.fetchUrl || candidate.url);
@@ -150,7 +170,7 @@ function createInlineScoring({
       if (!html) throw new Error('fetchPage returned no content');
       const text = String(extractArticle(html, hostOf(candidate.url)) || '').trim();
       const meta = extractMeta(html, candidate.url) || {};
-      if (text.length < minTextChars && !canFallBack) throw new Error(`no extractable text (${text.length} chars) and no aggregator score or excerpt to fall back on`);
+      if (text.length < minTextChars && !canFallBack) throw new Error(`no extractable text (${text.length} chars) and no aggregator score or paywall excerpt to fall back on`);
       // Under the scorer's body gate the scorer rejects the text for good (body_too_short), so a teaser or a page the
       // extractor cut short is a FETCH problem: fetch again on the backoff (BRO-6066: Deadline's 956-char extraction and
       // WSJ's teaser were each lost after one attempt). On the last attempt what we have is scored as a partial copy
@@ -172,7 +192,7 @@ function createInlineScoring({
         shortLen.set(key, text.length);
         if (attempt < maxAttempts && !sameAsBefore) fail('fetch', key, new Error(`${why}; fetching again`));
         const partialOk = text.length >= MIN_SHORT_PARTIAL_CHARS;
-        if (!partialOk && !canFallBack) fail('fetch', key, new Error(`${why}, under the ${MIN_SHORT_PARTIAL_CHARS} a partial copy needs, and no aggregator score or excerpt`), true);
+        if (!partialOk && !canFallBack) fail('fetch', key, new Error(`${why}, under the ${MIN_SHORT_PARTIAL_CHARS} a partial copy needs, and no aggregator score or paywall excerpt`), true);
         const using = partialOk ? 'scoring it as a partial copy' : (thumbScore ? 'using the aggregator score' : 'scoring the aggregator excerpt');
         failures.appendFailure(ledgerDir, { show: show.id, night, reviewKey: key, stage: 'fetch', reason: `${why}; ${using}`, attempt, terminal: false, at: now() });
         if (partialOk) contentTier = 'truncated';
@@ -212,7 +232,9 @@ function createInlineScoring({
     const ctx = { showId: row.showId, showTitle: show.title, category: show.category, venue: show.venue, type: show.type, outletId: row.outletId, outlet: row.outlet, criticName: row.criticName, publishDate: row.publishDate, url: row.url, contentTier: (fetchedReview && fetchedReview.contentTier) || 'complete' };
     // The excerpt is the scorer's text only when there is no page text to score: page text is scored as it always was,
     // with no aggregator quote mixed in (text-quality.js would append it to a short body).
-    const hasExcerpts = Object.keys(excerpts).length > 0;
+    // Excerpts score a review only on a hard-paywall host (see fetchReview): an open site's page text the scorer refused
+    // is held for the regular pipeline, not replaced by a one-line quote (BRO-6872).
+    const hasExcerpts = Object.keys(excerpts).length > 0 && excerptMayScore(row.url);
     if (hasExcerpts && !row.fullText) ctx.excerpts = excerpts;
     let r;
     let fromExcerpt = false;
@@ -305,4 +327,4 @@ function realFetchPorts({ fetchPage = require('../scraper').fetchPage } = {}) {
 }
 
 module.exports = {
-  DEFAULT_RETRY_MS, usableExcerpts, isTeaserNotAReview, LaneRetryError, LanePermanentError, createInlineScoring, ensembleScoreText, realFetchPorts };
+  DEFAULT_RETRY_MS, usableExcerpts, excerptMayScore, EXCERPT_FALLBACK_HOSTS, isTeaserNotAReview, LaneRetryError, LanePermanentError, createInlineScoring, ensembleScoreText, realFetchPorts };

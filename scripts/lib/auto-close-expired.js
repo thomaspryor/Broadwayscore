@@ -25,13 +25,19 @@ function isStaleUkRegionalRun(show, today) {
   return age > UK_REGIONAL_NO_CLOSE_DAYS;
 }
 
-/** Returns [{id, closingDate, market}] for open shows past closingDate; mutates status only when apply=true. */
+/** Returns [{id, closingDate, market}] for open (or previews, BRO-5489) shows past closingDate; mutates status only when apply=true. */
 function closeExpiredShows(shows, { apply = false, now = new Date() } = {}) {
   const closedList = [];
   for (const show of Object.values(shows)) {
     const today = getMarketDate(show.category, now);
     const expired = show.closingDate && show.closingDate < today;
-    if (show.status === 'open' && (expired || isStaleUkRegionalRun(show, today))) {
+    // BRO-5489: a run that ends inside previews (a two-night engagement, a run
+    // cancelled before press night) has no openingDate, so it never became 'open'
+    // and sat in 'previews' past its closingDate: Buffy Revamped (Lyric, closed
+    // 2026-10-19) and four more on 2026-11-03, each still read as an in-window
+    // show by the opening-window review-gap alert. A sourced closingDate closes it.
+    const active = show.status === 'open' || (show.status === 'previews' && expired);
+    if (active && (expired || isStaleUkRegionalRun(show, today))) {
       closedList.push({ id: show.id, closingDate: show.closingDate || null, market: show.market || 'broadway' });
       if (apply) {
         show.status = 'closed';

@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6854-fix2",
   "planId": "eec4cee3-5df9-470f-8f73-639dfbf79a6e",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-03T02:37:04.901Z",
   "submitter": {
     "name": null,
@@ -112,5 +112,44 @@
         "description": "shows.json: mensa-regional-2026.images"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-03T03:07:53.408Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for a-room-in-the-castle-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for rent-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-hombres-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for isaacs-eye-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for cyrano-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for guys-and-dolls-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for mensa-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
 }

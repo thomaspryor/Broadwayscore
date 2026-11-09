@@ -240,3 +240,11 @@ test('BRO-6811: action.inheritReviews:false is honored on a non-opera crossLinkF
   assert.equal(applyAddShow(play, { show: base(), crossLinkFrom: 'cur', inheritReviews: false }).ok, true);
   assert.equal(play[0].priorRuns[0].inheritReviews, false);
 });
+
+test('refuses a local image pointer whose file is not on disk (BRO-6881)', () => {
+  const r = applyAddShow([], { show: { ...base(), images: { poster: '/images/shows/nope-xyz/poster.webp' } } }, { root: process.cwd() });
+  assert.equal(r.ok, false);
+  assert.match(r.reason, /not on disk/);
+  const ok = applyAddShow([], { show: { ...base(), images: { poster: null } } }, { root: process.cwd() });
+  assert.equal(ok.ok, true);
+});

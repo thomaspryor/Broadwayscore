@@ -1,29 +1,27 @@
 {
-  "generatedAt": "2026-11-02T13:45:59.179Z",
-  "total": 408,
-  "armedCount": 395,
-  "refusedCount": 13,
+  "generatedAt": "2026-11-03T12:58:15.199Z",
+  "total": 399,
+  "armedCount": 390,
+  "refusedCount": 9,
   "byKind": {
-    "no-section": 2,
-    "shape": 10,
-    "traversal": 1
+    "shape": 9
   },
   "refused": [
     {
-      "id": "BRO-6820",
-      "name": "Opening-night audit 2026-11-02",
+      "id": "BRO-6858",
+      "name": "Broadway press night hardening before Wanted (Nov 8): old-path watchdog, fast owner alert, fresh embargo, faster first-2h polling, credit preflight",
       "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6820/opening-night-audit-2026-11-02",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6858/broadway-press-night-hardening-before-wanted-nov-8-old-path-watchdog",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/press-night-record.js --show=wanted-2022 --night=2026-11-08 --check)",
+      "kind": "shape"
     },
     {
-      "id": "BRO-6810",
-      "name": "Tech Scorecard weekly port 2026-11-02",
+      "id": "BRO-6849",
+      "name": "11 scripts/lib/*.test.js files never run in CI (glob is *.test.mjs only)",
       "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6810/tech-scorecard-weekly-port-2026-11-02",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6849/11-scriptslibtestjs-files-never-run-in-ci-glob-is-testmjs-only",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node -e \"const n=require('fs').readdirSync('scripts/lib').filter(f=>f.endsWith('.test.js')).length;console.log(n);proces)",
+      "kind": "shape"
     },
     {
       "id": "BRO-6790",
@@ -42,14 +40,6 @@
       "kind": "shape"
     },
     {
-      "id": "BRO-6734",
-      "name": "Quiz onboarding QA round 2: city step off-design, touring-city users get NYC shows, two-tap import, production-question copy",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6734/quiz-onboarding-qa-round-2-city-step-off-design-touring-city-users-get",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node --test ../BroadwayScorecard-app/tests/unit/canvas-pairs.test.mjs)",
-      "kind": "traversal"
-    },
-    {
       "id": "BRO-6730",
       "name": "check-prod-deploy.js: fall back to the GitHub compare API when local ancestry is UNKNOWN (shallow cloud clone, VERCEL_TOKEN set)",
       "priority": null,
@@ -58,11 +48,11 @@
       "kind": "shape"
     },
     {
-      "id": "BRO-6728",
-      "name": "National tour pages show wrong information: 31 page problem(s) (city-row-unknown-show)",
+      "id": "BRO-6716",
+      "name": "Every-review backfill: resolve 175 aggregator-cited reviews not live across 1,007 shows opened in the last year, plus 397 shows never gap-audited",
       "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6728/national-tour-pages-show-wrong-information-31-page-problems-city-row",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-tour-pages.js --summary)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6716/every-review-backfill-resolve-175-aggregator-cited-reviews-not-live",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/slow-market-grade.js --show=<all 1,007 ids> --check (exit 1: 108 FAIL remain, owned by BRO-6742))",
       "kind": "shape"
     },
     {
@@ -82,41 +72,17 @@
       "kind": "shape"
     },
     {
-      "id": "BRO-6540",
-      "name": "National tour pages show wrong information: 1 page problem(s) (review-count-mismatch)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6540/national-tour-pages-show-wrong-information-1-page-problems-review",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-tour-pages.js --summary)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-6428",
-      "name": "West End history: seasons 2013-14 and 2012-13 (list-first + Guardian/WOS supply)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6428/west-end-history-seasons-2013-14-and-2012-13-list-first-guardianwos",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-we-historical-season.js --season=2013-2014)",
-      "kind": "shape"
-    },
-    {
       "id": "BRO-6275",
       "name": "Mac: sync pre-push-visual-gate.sh master copy to the narrowed UI pattern + visual-hold/visual-evidence exemption (BRO-6241)",
       "priority": null,
       "url": "https://linear.app/broadway-scorecard/issue/BRO-6275/mac-sync-pre-push-visual-gatesh-master-copy-to-the-narrowed-ui-pattern",
       "reason": "no acceptance-criteria command passed safe-form validation (first candidate: diff -q \\~/.claude/hooks/pre-push-visual-gate.sh .claude/hooks/pre-push-visual-gate.sh)",
       "kind": "shape"
-    },
-    {
-      "id": "BRO-6200",
-      "name": "Split the 'historical' tag: backfill marker collides with the 'historical' theme tag",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6200/split-the-historical-tag-backfill-marker-collides-with-the-historical",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node -e \"const s=require('./data/shows.json');const a=s.shows||s;const n=a.filter(x=>(x.tags||\\[\\]).includes('historical)",
-      "kind": "shape"
     }
   ],
   "ownerJudgmentLimbo": {
-    "total": 324,
-    "checked": 324,
+    "total": 329,
+    "checked": 329,
     "complete": true,
     "cards": [
       {
@@ -130,12 +96,39 @@
   },
   "missingCheckPaths": [
     {
-      "id": "BRO-6833",
-      "name": "City hubs on rails: one registry entry adds a US city (web menu/footer/stats, app market, feed city slug, runbook, wiring test)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6833/city-hubs-on-rails-one-registry-entry-adds-a-us-city-web",
-      "cmd": "npx tsx --test tests/unit/city-hub-wiring.test.ts",
+      "id": "BRO-6872",
+      "name": "Quarantined live test: run the opening-night lane (shadow, empty ledger) on past Broadway nights and grade vs the aggregator census",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6872/quarantined-live-test-run-the-opening-night-lane-shadow-empty-ledger",
+      "cmd": "test -f memory/opening-night-lane-shadow-grades.md",
       "missingPaths": [
-        "tests/unit/city-hub-wiring.test.ts"
+        "memory/opening-night-lane-shadow-grades.md"
+      ]
+    },
+    {
+      "id": "BRO-6862",
+      "name": "Lottery/rush: 'special' key from bwayrush scraper never shown (MTC $35, HipTix)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6862/lotteryrush-special-key-from-bwayrush-scraper-never-shown-mtc-dollar35",
+      "cmd": "node --test tests/unit/lottery-rush-special-key.test.mjs",
+      "missingPaths": [
+        "tests/unit/lottery-rush-special-key.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-6844",
+      "name": "Above-fold promo is the only tracked placement — no mid/lower-page promos",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6844/above-fold-promo-is-the-only-tracked-placement-no-midlower-page-promos",
+      "cmd": "node --test scripts/homepage-promo-tracking.test.mjs",
+      "missingPaths": [
+        "scripts/homepage-promo-tracking.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-6843",
+      "name": "Rage clicks on /my-shows page button — likely broken interaction",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6843/rage-clicks-on-my-shows-page-button-likely-broken-interaction",
+      "cmd": "node --test tests/unit/my-shows-button-interaction.test.mjs",
+      "missingPaths": [
+        "tests/unit/my-shows-button-interaction.test.mjs"
       ]
     },
     {
@@ -145,15 +138,6 @@
       "cmd": "test -f memory/next-city-hub-decision.md",
       "missingPaths": [
         "memory/next-city-hub-decision.md"
-      ]
-    },
-    {
-      "id": "BRO-6804",
-      "name": "Review-gap audit: false 'missing' reviews hide real misses (Time Out listings, album reviews, other productions)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6804/review-gap-audit-false-missing-reviews-hide-real-misses-time-out",
-      "cmd": "node --test scripts/audit-review-gap.test.mjs",
-      "missingPaths": [
-        "scripts/audit-review-gap.test.mjs"
       ]
     },
     {
@@ -181,15 +165,6 @@
       "cmd": "node --test tests/unit/e2e-failure-alert.test.mjs",
       "missingPaths": [
         "tests/unit/e2e-failure-alert.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-6729",
-      "name": "Align the remaining Positive/Mixed/Negative counters with the verdict-based breakdown bar (status page, opening-night-status, mobile bd, review list badges)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6729/align-the-remaining-positivemixednegative-counters-with-the-verdict",
-      "cmd": "node --test scripts/lib/verdict-alignment-parity.test.mjs",
-      "missingPaths": [
-        "scripts/lib/verdict-alignment-parity.test.mjs"
       ]
     },
     {
@@ -289,6 +264,15 @@
       "cmd": "test -f memory/west-end-broadway-links.json",
       "missingPaths": [
         "memory/west-end-broadway-links.json"
+      ]
+    },
+    {
+      "id": "BRO-6356",
+      "name": "TR wrong_show repair, part 3: 88 files still rejected after re-extract (parser keeps another show's text; merged files never get NO-RECORD)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6356/tr-wrong-show-repair-part-3-88-files-still-rejected-after-re-extract",
+      "cmd": "node --test scripts/lib/we-historical-tr-coverage.test.js scripts/lib/tr-pdf-parse.test.mjs",
+      "missingPaths": [
+        "scripts/lib/we-historical-tr-coverage.test.js"
       ]
     },
     {
@@ -406,6 +390,15 @@
       "cmd": "node --test scripts/audit-aggregator-health.test.mjs",
       "missingPaths": [
         "scripts/audit-aggregator-health.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-6097",
+      "name": "Theatre Record: recover missing reviews for 2016-2022 West End shows (PDF extraction under-yields)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6097/theatre-record-recover-missing-reviews-for-2016-2022-west-end-shows",
+      "cmd": "node --test scripts/lib/we-historical-tr-coverage.test.js",
+      "missingPaths": [
+        "scripts/lib/we-historical-tr-coverage.test.js"
       ]
     },
     {
@@ -778,15 +771,6 @@
       ]
     },
     {
-      "id": "BRO-3916",
-      "name": "P1: 2,511 dead pages are stored as reviews and mislabelled isNonReview — detector landed, corpus sweep not run",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3916/p1-2511-dead-pages-are-stored-as-reviews-and-mislabelled-isnonreview",
-      "cmd": "node --test scripts/lib/dead-page-content.test.mjs",
-      "missingPaths": [
-        "scripts/lib/dead-page-content.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-3902",
       "name": "P2: nothing measures GitHub Actions cache occupancy — rule (m) only catches run-id KEYS",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-3902/p2-nothing-measures-github-actions-cache-occupancy-rule-m-only-catches",
@@ -967,18 +951,5 @@
       ]
     }
   ],
-  "vacuousChecks": [
-    {
-      "id": "BRO-6803",
-      "name": "Opera: SFO The Monkey King has 3 unscored review files; score them or retire the row",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6803/opera-sfo-the-monkey-king-has-3-unscored-review-files-score-them-or",
-      "cmd": "test -f scripts/linear-brain.js",
-      "kind": "test-f-satisfied",
-      "polarity": "never-fails",
-      "paths": [
-        "scripts/linear-brain.js"
-      ],
-      "reason": "`test -f scripts/linear-brain.js` already passes on origin/main, so re-running it at Done time cannot distinguish finished work from untouched work"
-    }
-  ]
+  "vacuousChecks": []
 }

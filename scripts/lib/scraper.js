@@ -98,6 +98,17 @@ for (const group of DOMAIN_ALIAS_GROUPS) {
     }
   }
 }
+// Publisher host moves (independent.co.uk -> the-independent.com, thetimes.co.uk
+// -> thetimes.com). The new-host pages still declare the old host as canonical,
+// so without these pairs verifyFetchedUrl rejected every Independent fetch as
+// url_mismatch and the lane scored the 0-char aggregator excerpt (BRO-6872).
+// One list: review-normalization's URL_HOST_ALIASES, which dedupe already uses.
+for (const [a, b] of require('./review-normalization').URL_HOST_ALIASES) {
+  for (const [x, y] of [[a, b], [b, a]]) {
+    if (!DOMAIN_ALIASES.has(x)) DOMAIN_ALIASES.set(x, new Set());
+    DOMAIN_ALIASES.get(x).add(y);
+  }
+}
 
 // --- Public sites that should try free Playwright before paid APIs ---
 // Only includes domains that actually flow through scraper.js's fetchPage().

@@ -1532,6 +1532,10 @@ async function auditShow(show, opts = {}) {
       fetchPage: opts.fetchPageForVetting || ((u) => fetchPage(u, { skipVerify: true })),
     }, runBudget);
     const fp = opts.fetchPageForVetting || ((u) => fetchPage(u, { skipVerify: true }));
+    // BRO-5489: the page-date vet only reads rows tagged serpCensus, and that tag
+    // used to be set further down, so the vet never fired in a real run. Tag here
+    // with the same rule as the tagging loop below (census-only, not WE-cited).
+    for (const m of vetted.missing) if (m && serpCensusOnlyUrls.has(m.url) && !weRefUrls.has(m.url)) m.serpCensus = true;
     const tourVetted = await vetTourCandidatesByPageDate(vetted.missing, show, { fetchPage: fp }, runBudget);
     const nonReview = [...vetted.nonReview, ...tourVetted.nonReview];
     if (nonReview.length) {

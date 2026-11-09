@@ -149,16 +149,24 @@ function extractAnchors(html, pageUrl) {
  * Why a URL cannot be one production's review, or null when nothing rules it out.
  * `aggregatorCited`: an aggregator lists this link as a review. Some outlets file every review under /news/
  * (TheaterMania "/news/review-...", Time Out "/newyork/news/broadway-review-..."), so for a cited link a news segment
- * stands down when the slug itself says review and the URL is not a review roundup (BRO-6066). A feed or index find
- * under /news/ is still rejected: "/news/<show>-reviews-what-critics-say" carries the review word too.
+ * stands down when the slug itself says review and the URL is not a review roundup (BRO-6066). An uncited feed or index
+ * find under /news/ is still rejected: "/news/<show>-reviews-what-critics-say" carries the review word too.
+ * `vettedOutlet`: the find is tied to a registry outlet by its source (Google News <source url>, BRO-6872). It opens
+ * /news/ only for a slug that leads with the review ("review-860-...", "broadway-review-..."), never "week-in-review".
  */
-function nonReviewReason(url, { aggregatorCited = false } = {}) {
+const VETTED_NEWS_REVIEW_SLUG = /^(?:(?:off )?broadway |theat(?:er|re) )?review\b|\b(?:broadway|theat(?:er|re)) review\b/;
+function nonReviewReason(url, { aggregatorCited = false, vettedOutlet = false } = {}) {
   let u;
   try { u = new URL(url); } catch { return 'unparseable-url'; }
   if (u.pathname === '/' || u.pathname === '') return 'homepage';
   const segs = decodeURIComponent(u.pathname).toLowerCase().split('/').filter(Boolean);
   const words = segs.join(' ').replace(/[-_]+/g, ' ');
-  const citedNewsReview = (s) => s === 'news' && aggregatorCited && /\breview\b/.test(segs[segs.length - 1].replace(/[-_]+/g, ' ')) && !ROUNDUP_SLUG.test(words);
+  // A /news/ path whose last slug names a review counts when an aggregator cites it, or when the find is already tied to
+  // a registry outlet by its source (Google News <source url>): Time Out and TheaterMania file reviews under /news/, and
+  // the regular pipeline refuses /news/ only for unvetted SERP sources (domain-filters.js). BRO-6872.
+  const lastSlug = segs[segs.length - 1].replace(/[-_]+/g, ' ');
+  const newsReviewSlug = aggregatorCited ? /\breview\b/.test(lastSlug) : vettedOutlet && VETTED_NEWS_REVIEW_SLUG.test(lastSlug);
+  const citedNewsReview = (s) => s === 'news' && newsReviewSlug && !ROUNDUP_SLUG.test(words);
   // A /features/ section whose path names a review is a review (The Independent files its Broadway reviews under
   // /theatre-dance/features/; A Few Good Men 2026 was lost to this rule, BRO-6066). The regular pipeline's rule
   // (domain-filters.js isFeatureSectionReviewPath, BRO-6585), so the two paths agree; a round-up still never passes.
@@ -331,14 +339,41 @@ function pageDatedNear(html, openingDate, maxDays = FALLBACK_PAGE_MAX_DAYS) {
   return Number.isFinite(when) && Math.abs(when - open) <= maxDays * 86400e3;
 }
 
-/** DTLI show pages the sitemap offers for this show, newest-looking first: "<slug>-2", "<slug>-bway" before "<slug>". */
-function dtliSitemapPages(result) {
+const DTLI_SLUG_SUFFIX = /^-(?:\d{1,2}|bway|broadway|\d{4})$/;
+/**
+ * DTLI show pages the sitemap offers for this show, newest-looking first: "<slug>-2", "<slug>-bway" before "<slug>".
+ * With no title match, falls back to word runs of `show.title` that the sitemap lists (see below).
+ */
+function dtliSitemapPages(result, show) {
   const all = result && result.sitemapSlugs ? [...result.sitemapSlugs] : [];
   const out = [];
-  for (const c of (result && result.candidates) || []) {
-    const variants = all.filter((x) => x.startsWith(`${c.slug}-`) && /^-(?:\d{1,2}|bway|broadway|\d{4})$/.test(x.slice(c.slug.length)))
+  let candidates = (result && result.candidates) || [];
+  // No title match: DTLI may file the show under part of its title ("Billy Crystal 860" is "860-2"). Try the
+  // title's leading and trailing word runs that the sitemap really has, longest first. Each page is still kept only
+  // when it is dated at this opening, so an older show under that short name is never taken. A one-word run must
+  // carry a digit ("860"): a common word ("night", "two") could name another show opening the same week, and a
+  // dated page is admitted with its cited links. Not tried when a title match exists but is dated elsewhere.
+  if (!candidates.length && show && show.title) {
+    const words = require('../dtli-slug-discover').slugify(show.title).split('-').filter(Boolean);
+    const runs = [];
+    for (let n = words.length - 1; n >= 1; n--) runs.push(words.slice(0, n).join('-'), words.slice(words.length - n).join('-'));
+    const has = (slug) => all.some((x) => x === slug || (x.startsWith(`${slug}-`) && DTLI_SLUG_SUFFIX.test(x.slice(slug.length))));
+    // Multi-word: must not end on a filler word ("death-of"), nor start on one other than an article ("of-mice").
+    const filler = /^(the|a|an|and|of|in|on|at|to|for)$/;
+    const distinctive = (r) => {
+      const w = r.split('-');
+      if (w.length === 1) return /\d/.test(r) && r.length >= 3;
+      return !filler.test(w[w.length - 1]) && (/^(the|a|an)$/.test(w[0]) || !filler.test(w[0]));
+    };
+    candidates = runs.filter((r, i) => runs.indexOf(r) === i && distinctive(r) && has(r))
+      .map((slug) => ({ slug, listedOnly: true }));
+  }
+  for (const c of candidates) {
+    const variants = all.filter((x) => x.startsWith(`${c.slug}-`) && DTLI_SLUG_SUFFIX.test(x.slice(c.slug.length)))
       .sort((a, b) => b.localeCompare(a, undefined, { numeric: true }));
-    for (const slug of [...variants, c.slug]) if (!out.includes(slug)) out.push(slug);
+    // A fallback run gets at most 2 pages, so one run cannot use up the fetch cap before a later run is tried.
+    const pages = c.listedOnly ? [...variants, c.slug].filter((x) => all.includes(x)).slice(0, 2) : [...variants, c.slug];
+    for (const slug of pages) if (!out.includes(slug)) out.push(slug);
   }
   return out.map((slug) => `https://didtheylikeit.com/shows/${slug}/`);
 }
@@ -358,19 +393,22 @@ function dtliAdapter({ homeUrl = 'https://didtheylikeit.com/', findInSitemap } =
       if (!/sitemap_index\.xml$/.test(u) && !indexOk) return { ok: false, body: '' };
       try { const body = await fetchText(u); const ok = Boolean(body); if (/sitemap_index\.xml$/.test(u)) indexOk = ok; return { ok, body: body || '' }; } catch { return { ok: false, body: '' }; }
     };
-    return dtliSitemapPages(await dtli.discoverDtliSlug(show, { fetchSlugs: () => dtli.fetchDtliShowSlugIndex({ httpGet }) }));
+    return dtliSitemapPages(await dtli.discoverDtliSlug(show, { fetchSlugs: () => dtli.fetchDtliShowSlugIndex({ httpGet }) }), show);
   });
-  let found = null; let missesSince = 0; let asked = false;
+  // A page dated at another opening keeps that publish date, so it is not fetched again on later sitemap retries.
+  // An undated body (a challenge or error page) stays retryable.
+  let found = null; let missesSince = 0; let asked = false; const refused = new Set();
   const fromSitemap = async (show, fetchText) => {
     if (found) return found;
     if (asked && ++missesSince < DTLI_SITEMAP_RETRY_PASSES) return null;
     asked = true; missesSince = 0;
     let pages = [];
     try { pages = [].concat((await lookup(show, fetchText)) || []); } catch { pages = []; }
-    for (const page of pages.slice(0, DTLI_SITEMAP_MAX_PAGES)) {
+    for (const page of pages.filter((p) => !refused.has(p)).slice(0, DTLI_SITEMAP_MAX_PAGES)) {
       let html = '';
       try { html = await fetchText(page); } catch { continue; }
       if (pageDatedNear(html, show.openingDate)) { found = { page, html }; return found; }
+      if (html && extractPublishDate(html)) refused.add(page);
     }
     return null;
   };
@@ -607,7 +645,7 @@ const unescapeJs = (v) => String(v).replace(/\\u003d/gi, '=').replace(/\\u0026/g
  * wrapper's opaque token is never read, and a page full of unrelated links is not a destination): canonical, og:url,
  * meta refresh, a JS location, data-n-au, then a single distinct anchor.
  */
-function publisherUrlFromWrapperPage(html, sourceUrl, finalUrl) {
+function publisherUrlFromWrapperPage(html, sourceUrl, finalUrl, { vettedOutlet = false } = {}) {
   const sourceHost = hostOf(sourceUrl);
   if (!sourceHost) return null;
   const accept = (value) => {
@@ -628,11 +666,14 @@ function publisherUrlFromWrapperPage(html, sourceUrl, finalUrl) {
   // Google's JavaScript redirect is the answer (BRO-6066: Vulture, found by the regular pipeline only). It comes after the
   // canonical so a same-host login or consent redirect does not stand in for the article, and must not be a non-review path.
   const landed = finalUrl && accept(finalUrl);
-  if (landed && !nonReviewReason(landed)) return landed;
+  if (landed && !nonReviewReason(landed, { vettedOutlet })) return landed;
   const found = new Set();
   for (const m of s.matchAll(/data-n-au=["']([^"']+)["']/gi)) { const u = accept(m[1]); if (u) found.add(u); }
   for (const a of extractAnchors(s, 'https://news.google.com/')) { const u = accept(a.url); if (u) found.add(u); }
-  return found.size === 1 ? [...found][0] : null;
+  if (found.size === 1) return [...found][0];
+  // Last resort: a landed URL that names a review is returned even on a refused path, so the pass rejects it with a
+  // recorded reason instead of the find vanishing here (BRO-6872: Time Out and TheaterMania /news/ reviews left no trace).
+  return landed && hasReviewSignal(landed, '') ? landed : null;
 }
 
 /**
@@ -672,7 +713,13 @@ function googleNewsAdapter({ maxUnwrap = 8, decodeImpl = null, maxDecode = 3 * m
       }
       // The unwrap budget goes to national outlets first, as in google-news-rss.js: in feed order smaller outlets could use it
       // up before a national outlet's wrapper was opened (BRO-6066). Stable sort, so feed order holds within a tier.
-      items.sort((a, b) => a.tier - b.tier);
+      // Within that, an item never tried goes before a retry of one that failed: otherwise up to maxUnwrap failing wrappers
+      // take the whole budget for MAX_UNWRAP_TRIES passes before anything later in the feed is opened once (BRO-6872:
+      // the NYTG review sat past the eighth item in a 15-pass replay). Resolved items cost nothing and keep their place.
+      // Retries go fewest-tries first. Trade-off: a national wrapper that failed once waits behind new smaller outlets
+      // for a pass; keeping national retries first would let failing paywalled wrappers starve the feed again.
+      const triesOf = (it) => { const r = resolved.get(it.link); return r && !r.url ? r.tries : 0; };
+      items.sort((a, b) => triesOf(a) - triesOf(b) || a.tier - b.tier);
       const out = [];
       let unwrapped = 0;
       // Decodes call Google directly, outside the pass deadline's fetch wrapper, so they get their own count and time cap.
@@ -685,7 +732,7 @@ function googleNewsAdapter({ maxUnwrap = 8, decodeImpl = null, maxDecode = 3 * m
         if (decodeImpl && (!r || (!r.url && r.tries < MAX_UNWRAP_TRIES)) && decodes < maxDecode && now() < decodeUntil) {
           decodes++;
           const decoded = await decodeImpl(it.link).catch(() => null);
-          const url = decoded ? publisherUrlFromWrapperPage('', it.sourceUrl, decoded) : null;
+          const url = decoded ? publisherUrlFromWrapperPage('', it.sourceUrl, decoded, { vettedOutlet: true }) : null;
           if (url) { r = { url, tries: ((r && r.tries) || 0) + 1 }; resolved.set(it.link, r); }
         }
         if (!r || (!r.url && r.tries < MAX_UNWRAP_TRIES)) {
@@ -699,14 +746,14 @@ function googleNewsAdapter({ maxUnwrap = 8, decodeImpl = null, maxDecode = 3 * m
               // often never settles. Same selector google-news-rss.js uses.
               playwrightWaitForSelector: waitForPublisher(hostOf(it.sourceUrl)),
             });
-            url = typeof page === 'string' ? publisherUrlFromWrapperPage(page, it.sourceUrl) : publisherUrlFromWrapperPage(page && page.content, it.sourceUrl, page && page.finalUrl);
+            url = typeof page === 'string' ? publisherUrlFromWrapperPage(page, it.sourceUrl, null, { vettedOutlet: true }) : publisherUrlFromWrapperPage(page && page.content, it.sourceUrl, page && page.finalUrl, { vettedOutlet: true });
           } catch { /* counted below */ }
           r = { url, tries: ((r && r.tries) || 0) + 1 };
           resolved.set(it.link, r);
         }
         if (!r.url) continue;
         const date = feedDateInfo(it.pubDate, { atom: false });
-        out.push({ url: r.url, title: it.title, source: 'outlet-index', ...date, via: 'google-news' });
+        out.push({ url: r.url, title: it.title, source: 'outlet-index', ...date, via: 'google-news', vettedOutlet: true });
       }
       return out;
     },
@@ -721,6 +768,7 @@ const TB_DIRECT_PROBE_EVERY_MS = 15 * 60 * 1000;
 // TB is read through Browserbase (BRO-6073): navigation plus the Cloudflare challenge wait runs past 45 s; still under
 // the 90 s pass deadline, which caps it either way.
 const TB_FETCH_TIMEOUT_MS = 75000;
+const TB_PROBE_BATCH = 4; // named pages fetched side by side per probe (BRO-6872)
 /**
  * Broadway reviews are also filed as named pages ("/page/world/TheImaginaryInvalid.html") that no index lists on the night,
  * which is how the regular pipeline found The Imaginary Invalid (BRO-6066). Those names are built by tb-direct-url and
@@ -734,6 +782,7 @@ function talkinBroadwayAdapter({
 } = {}) {
   let lastProbeAt = -Infinity;
   let found = null; // the verified named page, once one is found
+  let probeTurn = 0; // which batch of names the next probe fetches, when there are more than TB_PROBE_BATCH
   async function probeNamedPages(show, fetchText) {
     if (found) return [found];
     if (now() - lastProbeAt < directProbeEveryMs) return [];
@@ -742,10 +791,20 @@ function talkinBroadwayAdapter({
     const year = String(show.openingDate || '').slice(0, 4);
     if (!/^\d{4}$/.test(year)) return [];
     let undated = null;
-    for (const url of buildTbCandidateUrls(show.title, year)) {
-      if (/\/index\.html?$/i.test(url)) continue;
-      let html;
-      try { html = await fetchText(url); } catch { continue; } // a missing page is the normal answer before it is filed
+    // Up to TB_PROBE_BATCH names are fetched at once and judged in candidate order. Fetched one by one, a missing page
+    // can take about a minute (the per-fetch timeout while a challenge is pending), so the 90 s pass deadline let only
+    // the first name be tried each probe and a later name could starve for hours (BRO-6872). In one Browserbase session
+    // the extra tabs cost no extra sessions; the cap bounds paid-scraper spend when the Browserbase route is off. Longer
+    // name lists (subtitled or comma titles) are covered over successive probes by rotating the batch.
+    const all = buildTbCandidateUrls(show.title, year).filter((url) => !/\/index\.html?$/i.test(url));
+    const start = all.length > TB_PROBE_BATCH ? (probeTurn * TB_PROBE_BATCH) % all.length : 0;
+    probeTurn++;
+    const picked = new Set(Array.from({ length: Math.min(TB_PROBE_BATCH, all.length) }, (_, k) => all[(start + k) % all.length]));
+    const names = all.filter((url) => picked.has(url)); // judged in the order tb-direct-url ranks them
+    const pages = await Promise.all(names.map((url) => fetchText(url).catch(() => null))); // a missing page is the normal answer before it is filed
+    for (const [i, url] of names.entries()) {
+      const html = pages[i];
+      if (typeof html !== 'string' || !html) continue;
       const verdict = verifyTbPage(html, { showTitle: show.title, openingDate: show.openingDate });
       if (!verdict.ok) continue;
       // TB prints the date in the byline ("Theatre Review by ... - October 22, 2026"), which verifyTbPage reads and the
@@ -986,14 +1045,16 @@ async function runDiscoveryPass({
     // A path rejected for an uncited sighting (a /news/ review Google News found first) is judged again now that it is
     // cited, since a citation is what lets a /news/ review through (BRO-6066).
     const citedNow = c.aggregatorCited && memoed && memoed.reason === 'non-review-path' && !nonReviewReason(c.url, { aggregatorCited: true });
-    const stands = memoed && !citedNow && (c.aggregatorCited ? AGGREGATOR_FINAL.has(memoed.reason) : FINAL_REASONS.has(memoed.reason));
-    if (stands || (memoed && memoed.attempts >= MAX_DATE_CHECK_ATTEMPTS && !c.aggregatorCited)) continue; // decided before
+    // Same for a vetted Google News find of a /news/ review an RSS feed or section index saw first (BRO-6872).
+    const vettedNow = c.vettedOutlet === true && memoed && memoed.reason === 'non-review-path' && !!resolveOutletFromUrl(c.url) && !nonReviewReason(c.url, { vettedOutlet: true });
+    const stands = memoed && !citedNow && !vettedNow && (c.aggregatorCited ? AGGREGATOR_FINAL.has(memoed.reason) : FINAL_REASONS.has(memoed.reason));
+    if (stands || (memoed && memoed.attempts >= MAX_DATE_CHECK_ATTEMPTS && !c.aggregatorCited && !vettedNow)) continue; // decided before
     // The deadline guards fetches only (the date check below). The checks before it are synchronous, so a candidate an
     // aggregator already cites is admitted even when the adapters ran long. Deferring every candidate on a late pass
     // starved the lane: each pass re-runs every adapter, so a night whose adapters take more than 90 s never admitted
     // anything (shadow run 39803830568, Billy Crystal 860: Google News link resolution took 108 s, 0 admitted).
 
-    const bad = nonReviewReason(c.url, { aggregatorCited: c.aggregatorCited === true });
+    const bad = nonReviewReason(c.url, { aggregatorCited: c.aggregatorCited === true, vettedOutlet: c.vettedOutlet === true && !!resolveOutletFromUrl(c.url) });
     if (bad) { reject(c, key, bad); continue; }
     if (c.source === 'aggregator') {
       // An aggregator page lists many links; only ones on a KNOWN outlet's host are taken, the rest are reported.
@@ -1063,7 +1124,7 @@ function recordDiscovered(ledgerDir, { show, night, admitted, now = Date.now() }
 module.exports = {
   SERP_AFTER_MS, SERP_COOLDOWN_MS, SERP_NIGHT_MAX, defaultLaneMissingOutlets, defaultLaneSectionIndexes, laneMissingOutlets,
   NON_REVIEW_HOSTS, WRAPPER_HOSTS, canonicalUrl, bodyScope, playbillArticleBody, bwwRoundupBody, storyCitedLinks, extractAnchors, citedExcerpts, extractCitedLinks, extractPublishDate,
-  nonReviewReason, hasReviewSignal, pageDatedNear, dtliSitemapPages, defaultLaneFeeds, bwwRoundupAdapter, dtliAdapter, rssAdapter, sectionIndexAdapter, showScoreAdapter, playbillVerdictAdapter, googleNewsAdapter, talkinBroadwayAdapter, serpAdapter,
+  nonReviewReason, hasReviewSignal, pageDatedNear, dtliSitemapPages, defaultLaneFeeds, bwwRoundupAdapter, dtliAdapter, rssAdapter, sectionIndexAdapter, showScoreAdapter, playbillVerdictAdapter, googleNewsAdapter, talkinBroadwayAdapter, TB_PROBE_BATCH, serpAdapter,
   publisherUrlFromWrapperPage, parseFeedEntries, fetchTextFrom, serpAllowed, memoPath, loadMemo, saveMemo,
   runDiscoveryPass, loadSeen, recordDiscovered,
 };

@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-03T02:31:18.948Z",
+  "generatedAt": "2026-11-03T12:41:23.611Z",
   "windowDays": 45,
-  "showsScanned": 248,
+  "showsScanned": 249,
   "gaps": [
     {
       "showId": "lincoln-in-the-bardo-off-broadway-2026",
@@ -21,10 +21,30 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=lincoln-in-the-bardo-off-broadway-2026",
       "firstSeen": "2026-10-25T17:52:33.957Z",
-      "fileAgeHours": 200.64448388888889,
+      "fileAgeHours": 210.81243583333332,
       "gapSeenAt": "2026-10-26T08:25:16.367Z",
-      "nonTerminalAgeHours": 186.10071694444446,
+      "nonTerminalAgeHours": 196.2686788888889,
       "needsManualRecovery": true
+    },
+    {
+      "showId": "msblackforpresident-off-broadway-2026",
+      "title": "Ms. Blakk for President",
+      "openingDate": "2026-11-01",
+      "file": "backstage--unknown.json",
+      "outletId": "backstage",
+      "tier": 2,
+      "type": "empty-body",
+      "recoverable": false,
+      "url": "https://www.backstage.com/forums/callback-corner/ms-blakk-president-2-38883/",
+      "recovery": null,
+      "recoveryCount": 3,
+      "forumLinkRecoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=msblackforpresident-off-broadway-2026 --url=https://www.backstage.com/forums/callback-corner/ms-blakk-president-2-38883/ --outlet=backstage   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-11-02T09:52:12.991Z",
+      "fileAgeHours": 26.81837,
+      "gapSeenAt": "2026-11-03T07:11:27.100Z",
+      "nonTerminalAgeHours": 5.499030833333333,
+      "needsManualRecovery": false
     },
     {
       "showId": "an-evening-with-an-immigrant-off-west-end-2026",
@@ -44,9 +64,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=an-evening-with-an-immigrant-off-west-end-2026 --url=https://www.thetimes.co.uk/article/an-evening-with-an-immigrant-review-emotional-tale-sold-short-by-its-presentation-r889z8vj2 --outlet=times-uk --critic=\"Clive Davis\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-02T13:39:16.086Z",
-      "fileAgeHours": 12.86696361111111,
+      "fileAgeHours": 23.03491222222222,
       "gapSeenAt": "2026-11-02T15:11:01.899Z",
-      "nonTerminalAgeHours": 11.338069166666667,
+      "nonTerminalAgeHours": 21.50603111111111,
       "needsManualRecovery": false
     }
   ],

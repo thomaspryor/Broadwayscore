@@ -33,7 +33,7 @@ const os = require('os');
 const path = require('path');
 const { spawnSync } = require('child_process');
 const R = require('./codex-runner.js');
-const { GATES, ADVISORY_GATES } = require('./land-gate-delta.js');
+const { GATES, ADVISORY_GATES, readGateResult, parseGateFailures } = require('./land-gate-delta.js');
 
 // Blocking gates left out of the default run, each with its reason. Every other gate land.yml
 // blocks on runs by default, so a new blocking gate is checked locally the day it is armed
@@ -87,6 +87,19 @@ function run(cmd, args, opts = {}) {
 const git = (...args) => run('git', args);
 
 class MutexTimeout extends Error {}
+
+// The gauntlet already persists stdout and stderr per gate. Surface diagnostics
+// before the potentially long base comparison, reusing the verdict's parsers.
+function printRedGates(dir, gates, label) {
+  for (const gate of gates) {
+    const result = readGateResult(dir, gate);
+    console.log(`land-local-check: ${label} ${gate}: ${path.join(dir, `${gate}.log`)}`);
+    const failures = result ? [...parseGateFailures(gate, result.text, result.root).values()] : [];
+    for (const failure of failures.slice(0, 5)) console.log(`  ${failure.file}::${failure.name}`);
+    if (failures.length > 5) console.log(`  ${failures.length - 5} more failure(s) in the log`);
+    if (!failures.length) console.log('  No individual failure parsed (missing result, crash or timeout); inspect the gate log.');
+  }
+}
 
 /**
  * The test files behind land-gate-delta.js's "NEW on the branch" lists, or null when a re-run
@@ -241,6 +254,7 @@ function main(argv = process.argv.slice(2)) {
       const b = run('bash', ['scripts/lib/land-gauntlet.sh', branchDir], { env: { ...env, GAUNTLET_GATES: opts.gates.join(',') }, stdio: ['ignore', 'ignore', 'inherit'] });
       if (!fs.existsSync(path.join(branchDir, 'meta.json'))) { console.error(`land-local-check: the gauntlet wrote no result (exit ${b.code}); see ${branchDir}`); return 1; }
       const red = run('node', ['scripts/lib/land-gate-delta.js', '--red-gates', branchDir, '--gates', opts.gates.join(',')]).stdout;
+      if (red) printRedGates(branchDir, red.split(','), 'HEAD');
       // BRO-6114: the base worktree shares this checkout's node_modules (never reinstalled, see
       // withBaseWorktree), so with changed deps the base would be judged on HEAD's packages and a
       // dependency regression would read as "red on base too". Skip it: with no base result
@@ -255,6 +269,7 @@ function main(argv = process.argv.slice(2)) {
         try {
           withBaseWorktree(ROOT, base, path.join(out, 'basewt'), (wt) => {
             run('bash', [copy, baseDir], { cwd: wt, env: { ...env, GAUNTLET_GATES: red }, stdio: ['ignore', 'ignore', 'inherit'] });
+            printRedGates(baseDir, red.split(',').filter((gate) => readGateResult(baseDir, gate)?.exit !== 0), 'base');
           });
         } catch (e) {
           // No base result: land-gate-delta fails safe on the missing base meta instead of this crashing.

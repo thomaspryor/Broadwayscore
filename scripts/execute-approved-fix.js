@@ -287,7 +287,7 @@ function executeAddCommercialEntry(action) {
 function executeAddShow(action) {
   const data = loadJsonFile('data/shows.json');
   const shows = data.shows || data;
-  const result = applyAddShow(shows, action);
+  const result = applyAddShow(shows, action, { root: ROOT });
   if (result.ok) saveJsonFile('data/shows.json', Array.isArray(data) ? shows : data);
   return result;
 }

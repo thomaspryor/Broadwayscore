@@ -15,6 +15,7 @@
  */
 
 const fs = require('fs');
+const { countReviewSentiments } = require('./lib/review-breakdown');
 const path = require('path');
 const { showBroadcastStatus } = require('./lib/broadcast-status');
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -41,7 +42,7 @@ function loadJSON(filePath) {
 function getSiteScore(showId) {
   const data = loadJSON(path.join(SITE_SHOWS_DIR, `${showId}.json`));
   if (!data || data.cs == null) return null;
-  return { score: data.cs, reviewCount: data.rc, positive: data.bd?.positive || 0, mixed: data.bd?.mixed || 0, negative: data.bd?.negative || 0 };
+  return { score: data.cs, reviewCount: data.rc, ...countReviewSentiments((data.rv || []).map(r => ({ reviewScore: r.s, verdict: r.v })), data.cat) };
 }
 
 // Whether the show has a published JSON in /public/data/shows (even below the score threshold).
@@ -111,15 +112,14 @@ function main() {
     const market = isLondonMarket(show.category) ? 'west-end' : 'broadway';
     const showRevs = reviewsArr.filter(r => r.showId === show.id && r.assignedScore > 0);
 
-    let t1 = 0, t2 = 0, t3 = 0, positive = 0, mixed = 0, negative = 0;
+    let t1 = 0, t2 = 0, t3 = 0;
+    const { positive, mixed, negative } = countReviewSentiments(
+      showRevs.map(r => ({ reviewScore: r.assignedScore, verdict: r.verdict })), show.category);
     for (const r of showRevs) {
       const tier = getTier(r.outletId);
       if (tier === 1) t1++;
       else if (tier === 2) t2++;
       else t3++;
-      if (r.assignedScore >= 75) positive++;
-      else if (r.assignedScore >= 55) mixed++;
-      else negative++;
     }
 
     const scoreResult = computeCriticScore(showRevs, outlets, show.category);

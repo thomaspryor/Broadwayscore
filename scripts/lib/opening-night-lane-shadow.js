@@ -129,7 +129,7 @@ function createLiveRecorder({ fetchLiveShow, showId, now = Date.now, logFile = n
       for (const r of rv) {
         const u = canonicalUrl(r && r.u);
         if (!u || firstLive.has(u)) continue;
-        const e = { at, score: r.s == null ? null : r.s, outlet: r.o || null, url: r.u };
+        const e = { at, score: r.s == null ? null : r.s, outlet: r.o || null, url: r.u, date: typeof r.d === 'string' ? r.d.slice(0, 10) : null };
         firstLive.set(u, e);
         appendJsonl(logFile, { key: u, ...e });
       }
@@ -197,6 +197,7 @@ function buildShadowReport({ show, night, ledgerDir, scores = [], rows = [], liv
       url: (e && e.url) || (l && (l.url || l.key)), outlet: (e && (e.outlet || e.outletId)) || (l && l.outlet) || null, critic: (e && e.critic) || null,
       laneDiscoveredAt: iso(e && e.discoveredAt), laneScoredAt: iso(scoredAt), siteLiveAt: iso(liveAt),
       laneScore: e && e.laneScore != null ? e.laneScore : null, siteScore: l && l.score != null ? l.score : null,
+      siteDate: (l && l.date) || null,
       laneTextChars: e && e.laneTextChars != null ? e.laneTextChars : null, laneContentTier: (e && e.laneContentTier) || null,
       scoredLeadMin: scoredAt != null && liveAt != null ? minutesBetween(scoredAt, liveAt) : null,
       // Already on the site at the first poll: the regular pipeline had it before the shadow started.

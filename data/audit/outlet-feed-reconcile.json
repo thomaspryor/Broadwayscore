@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-03T02:31:47.803Z",
+  "generatedAt": "2026-11-03T12:41:50.620Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -17,6 +17,11 @@
       "id": "tosca-english-national-opera-west-end-2026",
       "title": "Tosca - English National Opera",
       "openingDate": "2026-10-30"
+    },
+    {
+      "id": "clifford-odets-waiting-for-lefty-off-broadway-2026",
+      "title": "Clifford Odets’ Waiting for Lefty",
+      "openingDate": "2026-11-02"
     },
     {
       "id": "medea-off-broadway-2026",
@@ -125,10 +130,6 @@
       "reason": "no data/review-texts directory for this show"
     },
     {
-      "showId": "clifford-odets-waiting-for-lefty-off-broadway-2026",
-      "reason": "no data/review-texts directory for this show"
-    },
-    {
       "showId": "parcel-from-america-off-broadway-2026",
       "reason": "no data/review-texts directory for this show"
     },
@@ -168,9 +169,9 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 765,
-  "matchedGaps": 7,
-  "possibleGaps": 8,
+  "itemsScanned": 756,
+  "matchedGaps": 10,
+  "possibleGaps": 9,
   "gaps": [
     {
       "showId": "all-the-worlds-a-stage-regional-2026",
@@ -180,6 +181,15 @@
       "url": "https://stageandcinema.com/2026/10/30/all-the-worlds-a-stage-signature-review/",
       "headline": "Theater Review: ALL THE WORLD’S A STAGE (Signature Theatre / Arlington, VA )",
       "publishDate": "2026-10-31"
+    },
+    {
+      "showId": "king-hedley-ii-regional-2026",
+      "title": "King Hedley II",
+      "level": "matched",
+      "outletId": "stageandcinema",
+      "url": "https://stageandcinema.com/2026/11/02/king-hedley-ii-city-lit-review/",
+      "headline": "Theater Review: KING HEDLEY II (City Lit Theater / Chicago)",
+      "publishDate": "2026-11-03"
     },
     {
       "showId": "the-heart-off-broadway-2026",
@@ -204,18 +214,27 @@
       "title": "The Heart",
       "level": "matched",
       "outletId": "onin",
+      "url": "https://onin.london/carpo-expansion/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=carpo-expansion",
+      "headline": "carpo announces global expansion plans with London at the heart of its international journey",
+      "publishDate": "2026-11-03"
+    },
+    {
+      "showId": "the-heart-off-broadway-2026",
+      "title": "The Heart",
+      "level": "matched",
+      "outletId": "onin",
       "url": "https://onin.london/dolphin-house-spa/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=dolphin-house-spa",
       "headline": "Dolphin House Spa at Dolphin Square officially launches, bringing a new wellness retreat to the heart of Pimlico",
       "publishDate": "2026-11-02"
     },
     {
-      "showId": "the-lives-of-others-west-end-2026",
-      "title": "The Lives of Others",
+      "showId": "the-heart-off-broadway-2026",
+      "title": "The Heart",
       "level": "matched",
-      "outletId": "thereviewshub",
-      "url": "https://www.thereviewshub.com/the-lives-of-others-adelphi-theatre-london/",
-      "headline": "The Lives of Others – Adelphi Theatre, London",
-      "publishDate": "2026-11-02"
+      "outletId": "onin",
+      "url": "https://onin.london/world-heart-beat-announces-two-festive-evenings-of-music-and-celebration-at-embassy-gardens/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=world-heart-beat-announces-two-festive-evenings-of-music-and-celebration-at-embassy-gardens",
+      "headline": "World Heart Beat Announces Two Festive Evenings of Music and Celebration at Embassy Gardens",
+      "publishDate": "2026-11-03"
     },
     {
       "showId": "the-morbs-off-broadway-2026",
@@ -230,19 +249,28 @@
       "showId": "tosca-off-broadway-2026",
       "title": "Tosca",
       "level": "matched",
+      "outletId": "operawire",
+      "url": "https://operawire.com/cast-change-vanessa-goikoetxea-natalya-romaniw-join-semperoper-dresdens-tosca/",
+      "headline": "Cast Change: Vanessa Goikoetxea &#038; Natalya Romaniw Join Semperoper Dresden&#8217;s &#8216;Tosca&#8217;",
+      "publishDate": "2026-11-02"
+    },
+    {
+      "showId": "tosca-off-broadway-2026",
+      "title": "Tosca",
+      "level": "matched",
       "outletId": "london-unattached",
       "url": "https://www.london-unattached.com/tosca-english-national-opera/",
       "headline": "Tosca, English National Opera",
       "publishDate": "2026-11-01"
     },
     {
-      "showId": "the-heart-off-broadway-2026",
-      "title": "The Heart",
+      "showId": "clifford-odets-waiting-for-lefty-off-broadway-2026",
+      "title": "Clifford Odets’ Waiting for Lefty",
       "level": "possible",
-      "outletId": "fairypoweredproductions",
-      "url": "https://fairypoweredproductions.com/the-multiple-award-winning-critically-acclaimed-smash-hit-production-of-paddington-the-musical-extends-until-25-june-2028/",
-      "headline": "THE MULTIPLE AWARD-WINNING CRITICALLY ACCLAIMED SMASH-HIT PRODUCTION OF PADDINGTON THE MUSICAL EXTENDS UNTIL 25 JUNE 2028",
-      "publishDate": "2026-10-29"
+      "outletId": "theater-pizzazz",
+      "url": "https://theaterpizzazz.com/finally-waiting-for-lefty-has-arrived/",
+      "headline": "FINALLY: “WAITING FOR LEFTY” HAS ARRIVED",
+      "publishDate": "2026-11-02"
     },
     {
       "showId": "the-heart-off-broadway-2026",
@@ -297,6 +325,15 @@
       "url": "https://standard.co.uk/culture/theatre/the-lives-of-others-adelphi-theatre-review-keira-knightley-b1302949.html",
       "headline": "The Lives of Others review: Keira Knightley&#x27;s return is revolutionary",
       "publishDate": null
+    },
+    {
+      "showId": "the-moth-off-west-end-2026",
+      "title": "The Moth",
+      "level": "possible",
+      "outletId": "monstagigz",
+      "url": "https://monstagigz.com/2026/11/03/gig-review-knats-at-the-moth-club-hackney/",
+      "headline": "GIG REVIEW: Knats at The MOTH Club, Hackney",
+      "publishDate": "2026-11-02"
     },
     {
       "showId": "the-moth-off-west-end-2026",

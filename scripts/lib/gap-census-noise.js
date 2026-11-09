@@ -223,12 +223,18 @@ function pagePublishMs(html) {
 // rule is New-York-only, so a West End show's festival write-ups are judged by page date.
 const FESTIVAL_SLUG = /(edinburgh|edfringe|fringe)/i;
 const PAGE_DATE_GRACE_MS = 30 * 24 * 3600 * 1000;
+// BRO-5489: UK productions routinely arrive under one title from an Edinburgh
+// season or a regional tour (Buffy Revamped, Lyric Theatre 2026: the census cited
+// a 2025 Theatre Reviews North piece on its Newcastle tour date, slug
+// /post/buffy-revamped with no place or year). A page published before the run
+// cannot review it, so UK-market candidates are page-date vetted like a tour's.
+const PAGE_DATE_VET_CATEGORIES = new Set(['tour', 'west-end', 'off-west-end', 'regional']);
 const PAGE_DATE_VET_CAP = 6;
 
 /**
  * Touring productions run parallel legs under one title (a UK tour beside the
  * North American one), and a leg's review often carries no place or date in its
- * URL. For a tour's SERP-census-only candidates, read the page and drop one
+ * URL. For a tour's (or a UK-market show's, BRO-5489) SERP-census-only candidates, read the page and drop one
  * published more than 30 days before the run began: it reviews an earlier leg.
  * Capped per show so a noisy census cannot burn scrape credits; a failed or
  * undated page stays in `missing`.
@@ -240,12 +246,12 @@ const PAGE_DATE_VET_CAP = 6;
 async function vetTourCandidatesByPageDate(missing, show, deps, budget) {
   const start = Date.parse((show && (show.previewsStartDate || show.openingDate)) || '');
   if (!show || !Number.isFinite(start)) return { missing: missing || [], nonReview: [] };
-  const isTour = show.category === 'tour';
+  const vetAll = PAGE_DATE_VET_CATEGORIES.has(show.category);
   const kept = [];
   const nonReview = [];
   let fetched = 0;
   for (const m of (missing || [])) {
-    if (!m || m.serpCensus !== true || m.priorRun || fetched >= PAGE_DATE_VET_CAP || (budget && budget.exceeded()) || !(isTour || FESTIVAL_SLUG.test(m.url))) { kept.push(m); continue; }
+    if (!m || m.serpCensus !== true || m.priorRun || fetched >= PAGE_DATE_VET_CAP || (budget && budget.exceeded()) || !(vetAll || FESTIVAL_SLUG.test(m.url))) { kept.push(m); continue; }
     fetched++;
     let ms = null;
     try {

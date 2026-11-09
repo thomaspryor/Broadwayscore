@@ -104,3 +104,25 @@ test('missing or non-string titles are safe', () => {
   assert.equal(normalizeShowTitle({ id: 'x', title: null }).title, '');
   assert.equal(normalizeShowTitle(null).changed, false);
 });
+
+test('BRO-6268: a bare genre disambiguator is stripped without any venue vocabulary', () => {
+  // Theatricalia's "(musical)" was only stripped when an unrelated venue
+  // containing "Musical" happened to be in the corpus. No vocabulary here.
+  const r = normalizeShowTitle({
+    id: 'lend-me-a-tenor-musical-west-end-2011',
+    title: 'Lend Me a Tenor (Musical)',
+    venue: 'Gielgud Theatre',
+  }, { venueVocabulary: [] });
+  assert.equal(r.title, 'Lend Me a Tenor');
+  assert.deepEqual(r.steps.map(s => s.kind), ['genre-disambiguator']);
+  for (const t of ['Hamlet (play)', 'Carmen (opera)']) {
+    assert.equal(normalizeShowTitle({ title: t }, { venueVocabulary: [] }).changed, true, t);
+  }
+});
+
+test('BRO-6268: genre words that are part of the real title are left alone', () => {
+  for (const t of ['Matilda The Musical', 'The Play That Goes Wrong', '(Musical)', 'A Musical (Comedy) Night']) {
+    const r = normalizeShowTitle({ title: t }, { venueVocabulary: [] });
+    assert.equal(r.title, t, t);
+  }
+});

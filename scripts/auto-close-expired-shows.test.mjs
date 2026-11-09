@@ -58,3 +58,19 @@ test('UK regional open show with no closingDate closes after the stale window (B
   assert.equal(isStaleUkRegionalRun(uk('b2', '2026-07-11'), '2026-10-10'), true);
   assert.equal(isStaleUkRegionalRun({ category: 'broadway', openingDate: '2020-01-01' }, '2026-10-11'), false);
 });
+
+test('BRO-5489: a previews show past its closingDate closes; one with no or a future closingDate stays', () => {
+  const shows = {
+    p: { id: 'p', status: 'previews', closingDate: '2026-10-19', openingDate: null, category: 'west-end', _staleMissingSince: '2026-10-20' },
+    q: { id: 'q', status: 'previews', closingDate: '2026-12-01', category: 'west-end' },
+    r: { id: 'r', status: 'previews', category: 'regional', venue: 'Royal Exchange Theatre', openingDate: '2026-01-01' },
+    u: { id: 'u', status: 'upcoming', closingDate: '2026-10-19', category: 'broadway' },
+  };
+  const out = closeExpiredShows(shows, { apply: true, now: new Date('2026-11-03T12:00:00Z') });
+  assert.deepEqual(out.map((x) => x.id), ['p']);
+  assert.equal(shows.p.status, 'closed');
+  assert.equal(shows.p._staleMissingSince, undefined);
+  assert.equal(shows.q.status, 'previews');
+  assert.equal(shows.r.status, 'previews');
+  assert.equal(shows.u.status, 'upcoming');
+});
