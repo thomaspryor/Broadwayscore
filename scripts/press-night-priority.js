@@ -15,6 +15,7 @@
  * --apply only when it is `apply`; anything else is a dry run.
  * Exit 0 always on a plan or a no-op; 1 on a bad argument or an unreadable shows.json.
  */
+require('./lib/cli-help').exitOnHelp(module); // before any read, write or network call
 const fs = require('fs');
 const path = require('path');
 const { planPriority } = require('./lib/press-night-priority');
