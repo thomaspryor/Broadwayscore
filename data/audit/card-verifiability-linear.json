@@ -1,14 +1,47 @@
 {
-  "generatedAt": "2026-11-08T12:05:49.107Z",
-  "total": 332,
-  "armedCount": 322,
-  "refusedCount": 10,
+  "generatedAt": "2026-11-09T14:15:32.035Z",
+  "total": 361,
+  "armedCount": 348,
+  "refusedCount": 13,
   "byKind": {
-    "basename": 1,
-    "shape": 8,
-    "no-section": 1
+    "no-command": 1,
+    "no-section": 1,
+    "shape": 10,
+    "basename": 1
   },
   "refused": [
+    {
+      "id": "BRO-7231",
+      "name": "Tonight: lane shadow runs hog runners on a live-lane Broadway night (skip redundant and overlapping shadows)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7231/tonight-lane-shadow-runs-hog-runners-on-a-live-lane-broadway-night",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-7226",
+      "name": "Video Score card: title 'Video Score', drop tier label",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7226/video-score-card-title-video-score-drop-tier-label",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-7150",
+      "name": "Small changes take hours to land: refusals arrive after 20-30 min, catch them locally in seconds",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7150/small-changes-take-hours-to-land-refusals-arrive-after-20-30-min-catch",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/lib/land-timing-report.js --days=7 --check-targets)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-7143",
+      "name": "Paywalled-outlet recovery never runs automatically after cookies are refreshed (stale-cookie stubs pile up)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7143/paywalled-outlet-recovery-never-runs-automatically-after-cookies-are",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-paywall-recovery-wiring.js --check)",
+      "kind": "shape"
+    },
     {
       "id": "BRO-7049",
       "name": "Raise web sub-12px text (458 uses) to the 12px floor, section by section",
@@ -32,14 +65,6 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-6956/critic-coverage-audit-is-blind-in-cloud-muck-rack-fetch-fails-for",
       "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-critic-coverage.js --limit=3 prints no FETCH FAILED (muckrack) lines.)",
       "kind": "shape"
-    },
-    {
-      "id": "BRO-6949",
-      "name": "x",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6949/x",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
     },
     {
       "id": "BRO-6849",
@@ -91,12 +116,93 @@
     }
   ],
   "ownerJudgmentLimbo": {
-    "total": 256,
-    "checked": 256,
+    "total": 263,
+    "checked": 263,
     "complete": true,
     "cards": []
   },
   "missingCheckPaths": [
+    {
+      "id": "BRO-7230",
+      "name": "Morning digest: Reddit refresh cap starves moved drafts; probe finalize stamps complete after a skipped probe",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7230/morning-digest-reddit-refresh-cap-starves-moved-drafts-probe-finalize",
+      "cmd": "node --test scripts/lib/reddit-selection.test.mjs",
+      "missingPaths": [
+        "scripts/lib/reddit-selection.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-7229",
+      "name": "GSC 'Not found (404)' alert: regional show pages linked to nonexistent /theater/ venue pages",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7229/gsc-not-found-404-alert-regional-show-pages-linked-to-nonexistent",
+      "cmd": "node --test scripts/lib/venue-link-regional-guard.test.mjs",
+      "missingPaths": [
+        "scripts/lib/venue-link-regional-guard.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-7200",
+      "name": "Tech Scorecard weekly port 2026-11-09",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7200/tech-scorecard-weekly-port-2026-11-09",
+      "cmd": "test -f docs/PORTING.md",
+      "missingPaths": [
+        "docs/PORTING.md"
+      ]
+    },
+    {
+      "id": "BRO-7190",
+      "name": "Make WAKEPROMISE/OPENCLAIM advisory hits durable in cloud, then decide block mode",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7190/make-wakepromiseopenclaim-advisory-hits-durable-in-cloud-then-decide",
+      "cmd": "node --test scripts/lib/advisory-durability.test.mjs",
+      "missingPaths": [
+        "scripts/lib/advisory-durability.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-7169",
+      "name": "Land BRO-7163 F10 host-voucher sibling fix (flagged-recovery.js) after the Wanted/Blueberries lane freeze",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7169/land-bro-7163-f10-host-voucher-sibling-fix-flagged-recoveryjs-after",
+      "cmd": "node --test tests/unit/host-voucher-sibling-review.test.mjs",
+      "missingPaths": [
+        "tests/unit/host-voucher-sibling-review.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-7160",
+      "name": "Opening night: automatic post-lane review sweep, watchdog claim ordering, stub collection, stand-down outage hold (Wanted pre-flight findings)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7160/opening-night-automatic-post-lane-review-sweep-watchdog-claim-ordering",
+      "cmd": "node --test tests/unit/post-lane-sweep.test.mjs",
+      "missingPaths": [
+        "tests/unit/post-lane-sweep.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-7152",
+      "name": "Opening night live watch: move repeat passes out of the in-session sleep loop",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7152/opening-night-live-watch-move-repeat-passes-out-of-the-in-session",
+      "cmd": "node --test scripts/opening-night-watch.test.mjs",
+      "missingPaths": [
+        "scripts/opening-night-watch.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-7151",
+      "name": "Refresh the six annual awards scheduled tasks before March 8",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7151/refresh-the-six-annual-awards-scheduled-tasks-before-march-8",
+      "cmd": "node --test scripts/verify-annual-task-docs.test.mjs",
+      "missingPaths": [
+        "scripts/verify-annual-task-docs.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-7140",
+      "name": "Show published rating beside review date (web + app)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7140/show-published-rating-beside-review-date-web-app",
+      "cmd": "node --test tests/unit/rating-beside-date.test.mjs",
+      "missingPaths": [
+        "tests/unit/rating-beside-date.test.mjs"
+      ]
+    },
     {
       "id": "BRO-7060",
       "name": "Audit url_content_mismatch rejections for false positives (74 files from BRO-7055 re-collect)",
@@ -104,6 +210,15 @@
       "cmd": "node --test tests/unit/url-content-mismatch.test.mjs",
       "missingPaths": [
         "tests/unit/url-content-mismatch.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-6949",
+      "name": "x",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6949/x",
+      "cmd": "node --test tests/unit/session.test.mjs",
+      "missingPaths": [
+        "tests/unit/session.test.mjs"
       ]
     },
     {
@@ -293,15 +408,6 @@
       "cmd": "test -f scripts/post-recovery-checklist.mjs",
       "missingPaths": [
         "scripts/post-recovery-checklist.mjs"
-      ]
-    },
-    {
-      "id": "BRO-6098",
-      "name": "Aggregator health: fix The Stage (failing since Oct), Stagedoor (stopped June), LBO/BWW-London yield drops; add coverage-drop alarm",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6098/aggregator-health-fix-the-stage-failing-since-oct-stagedoor-stopped",
-      "cmd": "node --test scripts/audit-aggregator-health.test.mjs",
-      "missingPaths": [
-        "scripts/audit-aggregator-health.test.mjs"
       ]
     },
     {
