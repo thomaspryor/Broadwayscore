@@ -17,7 +17,7 @@
  *   node scripts/gap-recovery-driver.js --dry-run --outlet=thestage --verbose
  *   node scripts/gap-recovery-driver.js --limit=20 --outlet=thestage  # live
  *   node scripts/gap-recovery-driver.js --limit=20 --outlet=daily-mail,mail-on-sunday --class=NO_URL --strategy=URL_REDISCOVER
- *   node scripts/gap-recovery-driver.js --reconcile [--dry-run]        # reopen 'recovered' rows whose file is not complete
+ *   node scripts/gap-recovery-driver.js --reconcile [--dry-run]        # reopen 'recovered' rows whose recovered text is no longer on disk
  *
  * Options: --class=A,B  --show=ID  --strategy=X (only this strategy)  --recent-only
  *          --verbose (dry run: one line per candidate)  --json=PATH (dry run: plan to a file outside the repo)

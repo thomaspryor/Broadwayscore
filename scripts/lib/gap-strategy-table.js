@@ -20,6 +20,11 @@ const STRATEGY_FLAGS = Object.freeze({
   // `link`s as opaque google.com/url?q=CAES... tokens (no target url inside;
   // the redirect answers 200, not a 302), which url-discovery blocks as
   // non-review hosts. Re-measure after that is fixed before turning this on.
+  // RE-MEASURED 2026-11-09 after the opaque-link fix (BRO-7171 Stage 2b, same 20
+  // Mail files, empty SERP cache): 35 opaque links seen, 18 recovered, 17
+  // dropped, 0 reached the matcher; still 1 candidate / 0 fetched / 0 accepted,
+  // under the 30% bar, so this stays off. The Mail pool is proven-zero for
+  // another reason (serp-text-recovery-candidates.js: not indexed as reviews).
   URL_REDISCOVER: Object.freeze({ enabled: false, cost: 'S', note: 'discoverCorrectUrl + identity proof; search budget enforced in url-discovery' }),
   AGG_LINK: Object.freeze({ enabled: false, cost: 'F', note: 'unbuilt: aggregator outbound links unverified (revised plan item 1)' }),
 });
