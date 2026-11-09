@@ -132,3 +132,19 @@ test('verifyArticle rejects press-release posts and place-only theatre aliases',
   assert.equal(v.ok, false);
   assert.equal(v.reason, 'not-a-review');
 });
+
+test('jsonOf unwraps the <pre>-wrapped JSON a browser-tier fallback returns (sandiegostory wp-json, BRO-7239)', () => {
+  const wrapped = '<html><head><meta name="color-scheme" content="light dark"></head><body><pre>[{"date":"2026-09-29T11:53:48","link":"https:\\/\\/sandiegostory.com\\/a-post\\/","title":{"rendered":"Emotional &amp;#8217;Growth"}}]</pre></body></html>';
+  const rows = F.jsonOf({ content: wrapped });
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].link, 'https://sandiegostory.com/a-post/');
+  // plain JSON and junk still behave as before
+  assert.deepEqual(F.jsonOf({ content: '[{"a":1}]' }), [{ a: 1 }]);
+  assert.equal(F.jsonOf({ content: '<html>blocked</html>' }), null);
+  assert.equal(F.jsonOf(null), null);
+});
+
+test('jsonOf keeps plain JSON whose strings contain <pre> (BRO-7239)', () => {
+  const body = JSON.stringify([{ excerpt: { rendered: '<pre>x</pre>' } }]);
+  assert.deepEqual(F.jsonOf({ content: body }), [{ excerpt: { rendered: '<pre>x</pre>' } }]);
+});

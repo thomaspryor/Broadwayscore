@@ -25,6 +25,8 @@ const FEEDBACK_EDITABLE_FIELDS = {
     // BRO-5080: a date repair re-stamps where the date came from, so an
     // unconfirmed source can still be corrected by the daily date pass.
     'openingDateSource',
+    // BRO-7239: where a city-hub show's closingDate came from (free text naming the source, e.g. 'broadwayworld-regional-listing' or 'review text "through Oct. 18" (<url>)'; the literal 'estimated' marks a guess).
+    'closingDateSource',
     // Whole images object, compare-and-set; human-approved plans only (BRO-4380:
     // clearing another show's art). execute-approved-fix refuses cross-show paths.
     'images',

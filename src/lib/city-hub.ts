@@ -61,6 +61,16 @@ export interface HubShowLike {
   status?: string;
   openingDate?: string | null;
   closingDate?: string | null;
+  /** Where closingDate came from. 'estimated' means the run length is a guess, not a published date (BRO-7239). */
+  closingDateSource?: string | null;
+}
+
+/** Assumed run length for a local production whose closing date nobody has published. */
+export const ESTIMATED_RUN_DAYS = 42;
+
+/** True when the show's closing date was read from a source (theatre page, listing, review text), not flagged as a guess. */
+export function hasSourcedClosing(s: HubShowLike): boolean {
+  return !!s.closingDate && s.closingDateSource !== 'estimated';
 }
 
 export type HubPhase = 'now' | 'soon' | 'closed';
@@ -71,6 +81,9 @@ export function hubPhase(s: HubShowLike, today: string): HubPhase {
   const close = s.closingDate || '';
   if (s.status === 'closed') return 'closed';
   if (close && close < today) return 'closed';
+  // Flagged-estimated run: once past the assumed length it drops out of Now playing instead of
+  // staying there forever (BRO-7239). Only shows explicitly flagged 'estimated' are affected.
+  if (s.closingDateSource === 'estimated' && open && open <= today && addDays(open, ESTIMATED_RUN_DAYS) < today) return 'closed';
   if (s.status === 'previews') return 'now';
   if (open && open > today) return 'soon';
   if (s.status === 'upcoming') return 'soon';

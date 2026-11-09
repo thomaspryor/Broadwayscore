@@ -1,0 +1,268 @@
+{
+  "issueNumber": "bro-7239",
+  "planId": "aae681ad-f5dc-4cbd-ae10-4d7d1d333d03",
+  "status": "pending",
+  "createdAt": "2026-11-09T18:39:50.583Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "SD + Boston hub shows: sourced closing dates (66 shows) from their review articles; close Topdog/Underdog, Ripcord, Rhinoceros which ended (part 1 of 6)",
+    "steps": [
+      "shows.json: black-swan-regional-2026.closingDateSource",
+      "shows.json: wonder-regional-2026.closingDateSource",
+      "shows.json: the-family-album-regional-2026.closingDateSource",
+      "shows.json: 3-summers-of-lincoln-regional-2025.closingDateSource",
+      "shows.json: the-outsiders-world-premiere-regional-2023.closingDateSource",
+      "shows.json: two-strangers-carry-a-cake-across-new-york-at-art-regional-2025.closingDateSource",
+      "shows.json: paranormal-activity-boston-regional-2026.closingDateSource",
+      "shows.json: working-girl-la-jolla-regional-2025.closingDateSource",
+      "shows.json: rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026.closingDate",
+      "shows.json: rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026.closingDateSource",
+      "shows.json: rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026.status",
+      "shows.json: purpose-regional-2026.closingDateSource",
+      "shows.json: begin-again-regional-2026.closingDateSource",
+      "shows.json: a-room-in-the-castle-regional-2026.closingDate",
+      "shows.json: a-room-in-the-castle-regional-2026.closingDateSource",
+      "shows.json: purpose-lajolla-regional-2026.closingDate",
+      "shows.json: purpose-lajolla-regional-2026.closingDateSource",
+      "shows.json: seussical-regional-2026.closingDate",
+      "shows.json: seussical-regional-2026.closingDateSource",
+      "shows.json: kims-convenience-regional-2026.closingDate",
+      "shows.json: kims-convenience-regional-2026.closingDateSource",
+      "shows.json: rent-regional-2026.closingDate",
+      "shows.json: rent-regional-2026.closingDateSource",
+      "shows.json: the-hombres-regional-2026.closingDate",
+      "shows.json: the-hombres-regional-2026.closingDateSource"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "black-swan-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"Through July 12\" (https://www.bostonglobe.com/2026/06/11/arts/art-black-swan-melanie-moore/ ; https://www.boston.com/community/entertainment/2026/06/14/theater-review-black-swan-dazzles-with-stunning-choreography-despite-a-forgettable-score/)",
+        "description": "shows.json: black-swan-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "wonder-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through Feb. 8\" (https://www.bostonglobe.com/2025/12/30/arts/wonder-art-rj-palacio/ ; https://www.broadwayworld.com/boston/article/Review-American-Repertory-Theaters-World-Premiere-is-a-Musical-WONDER-20251231)",
+        "description": "shows.json: wonder-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-family-album-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through August 23rd\" (https://www.broadwayworld.com/san-diego/article/Review-THE-FAMILY-ALBUM-at-La-Jolla-Playhouse-20260728 ; https://fromanother0.com/the-family-album-from-waves-to-stage/)",
+        "description": "shows.json: the-family-album-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "3-summers-of-lincoln-regional-2025",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through April 6th\" (https://www.broadwayworld.com/san-diego/article/Review-3-SUMMERS-OF-LINCOLN-at-La-Jolla-Playhouse-20250305 ; https://www.sandiegouniontribune.com/2025/03/03/review-visceral-3-summers-of-lincoln-is-thrilling-and-thought-provoking/)",
+        "description": "shows.json: 3-summers-of-lincoln-regional-2025.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-outsiders-world-premiere-regional-2023",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through April 9\" (https://www.sandiegouniontribune.com/entertainment/theater/story/2023-03-06/review-la-jolla-playhouses-the-outsiders-a-faithful-tuneful-and-muscular-homage-to-classic-60s-tale)",
+        "description": "shows.json: the-outsiders-world-premiere-regional-2023.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through July 13\" (https://www.bostonglobe.com/2025/05/30/arts/two-strangers-carry-a-cake/ ; https://nystagereview.com/2025/06/05/from-massachusetts-two-strangers-carry-a-cake-across-new-york-and-fall-in-like/)",
+        "description": "shows.json: two-strangers-carry-a-cake-across-new-york-at-art-regional-2025.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "paranormal-activity-boston-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through July 30\" (https://www.boston.com/culture/entertainment/2026/07/19/theater-review-paranormal-activity-proves-horror-can-work-beyond-the-screen/ ; https://www.broadwayworld.com/boston/article/Review-A-Thrilling-PARANORMAL-ACTIVITY-20260716)",
+        "description": "shows.json: paranormal-activity-boston-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "working-girl-la-jolla-regional-2025",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"Through Dec. 14\" (https://www.latimes.com/entertainment-arts/story/2025-11-19/working-girl-review-jojo-levesque-may-be-only-reason-to-see-it ; https://www.sdjewishworld.com/2025/11/23/working-girl-takes-audience-back-to-the-80s/)",
+        "description": "shows.json: working-girl-la-jolla-regional-2025.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-09-27",
+        "description": "shows.json: rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through September 27\" (https://1minutecritic.com/john-turturro-paul-giamatti-rhinoceros-review-art/ ; https://www.bostonglobe.com/2026/08/22/arts/turturro-giamatti-maslany-rhinoceros-review/)",
+        "description": "shows.json: rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+        "field": "status",
+        "oldValue": "open",
+        "newValue": "closed",
+        "description": "shows.json: rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026.status"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "purpose-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"Through Oct. 11\" (https://www.bostonglobe.com/2026/09/17/arts/purpose-huntington/ ; https://www.broadwayworld.com/boston/article/Review-A-Play-With-PURPOSE-20261004)",
+        "description": "shows.json: purpose-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "begin-again-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through October 18th\" (https://www.broadwayworld.com/san-diego/article/Review-BEGIN-AGAIN-at-The-Old-Globe-20260919 ; https://www.broadwayworld.com/los-angeles/article/Review-BEGIN-AGAIN-at-the-Old-Globe-Theatre-20260925)",
+        "description": "shows.json: begin-again-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-room-in-the-castle-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-06-07",
+        "description": "shows.json: a-room-in-the-castle-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-room-in-the-castle-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through June 7\" (https://www.davidcoddon.com/theatre-reviews/stage-west-a-room-in-the-castle-at-moxie-theatre ; https://www.broadwayworld.com/san-diego/article/Review-A-ROOM-IN-THE-CASTLE-at-MOXIE-Theatre-20260516)",
+        "description": "shows.json: a-room-in-the-castle-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "purpose-lajolla-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-06-07",
+        "description": "shows.json: purpose-lajolla-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "purpose-lajolla-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through June 7\" (https://www.davidcoddon.com/theatre-reviews/stage-west-purpose-at-la-jolla-playhouse ; https://www.sandiegouniontribune.com/2026/05/18/review-purpose-a-funny-superbly-crafted-tale-of-a-family-that-has-lost-its-way/)",
+        "description": "shows.json: purpose-lajolla-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "seussical-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-06-07",
+        "description": "shows.json: seussical-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "seussical-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through June 7\" (https://www.sdjewishworld.com/2026/05/18/seussical-the-musical-is-pleasure-ical-but-arts-funding-is-not/ ; https://www.broadwayworld.com/san-diego/article/Review-SEUSSICAL-THE-MUSICA-at-San-Diego-Musical-Theatre-20260520)",
+        "description": "shows.json: seussical-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "kims-convenience-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-06-14",
+        "description": "shows.json: kims-convenience-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "kims-convenience-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through June 14\" (https://www.davidcoddon.com/theatre-reviews/stage-west-kims-convenience-at-the-old-globe-theatre ; https://www.broadwayworld.com/san-diego/article/Review-KIMS-CONVENIENCE-at-The-Old-Globe-20260522)",
+        "description": "shows.json: kims-convenience-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rent-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-06-28",
+        "description": "shows.json: rent-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rent-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through June 28\" (https://www.davidcoddon.com/theatre-reviews/stage-west-rent-at-diversionary-theatre ; https://www.broadwayworld.com/san-diego/article/Review-RENT-at-Diversionary-Theatre-20260531)",
+        "description": "shows.json: rent-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-hombres-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-06-21",
+        "description": "shows.json: the-hombres-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-hombres-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through June 21\" (https://www.davidcoddon.com/theatre-reviews/stage-west-the-hombres-at-the-old-globe ; https://www.broadwayworld.com/san-diego/article/Review-THE-HOMBRES-at-The-Old-Globe-20260606)",
+        "description": "shows.json: the-hombres-regional-2026.closingDateSource"
+      }
+    ]
+  }
+}

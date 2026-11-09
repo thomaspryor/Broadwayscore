@@ -137,7 +137,19 @@ function parseBwwReviewLinks(html, region) {
 
 // ---------------------------------------------------------------- outlet adapters
 
-const jsonOf = (r) => { try { return JSON.parse((r && r.content) || 'null'); } catch { return null; } };
+/**
+ * Parse a JSON API response from getPage. Some fallback providers (the browser tier that serves
+ * sites Scrapingdog 400s on, e.g. sandiegostory.com wp-json) return the body wrapped as
+ * `<html><body><pre>{json}</pre></body></html>`, with HTML-escaped entities. Unwrap before parsing (BRO-7239).
+ */
+const jsonOf = (r) => {
+  let raw = (r && r.content) || 'null';
+  // Plain JSON first: a valid body whose strings contain "<pre>" must not be sliced (BRO-7239 review).
+  try { return JSON.parse(raw); } catch { /* maybe browser-tier wrapped */ }
+  const pre = /<pre[^>]*>([\s\S]*?)<\/pre>/i.exec(raw);
+  if (pre) raw = pre[1].replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
+  try { return JSON.parse(raw); } catch { return null; }
+};
 
 /** Candidates from a candidate list where the title phrase appears in the candidate's title/slug. */
 function filterCandidates(cands, prod, window) {
@@ -389,5 +401,5 @@ function makeContext({ getPage, today, dayCache = {}, saveDayCache = () => {} })
 
 module.exports = {
   norm, hasPhrase, titleVariants, theatreAliases, looksLikeNonReview, parseBwwDates, parseBwwRegionalShows, parseBwwReviewLinks,
-  parseAnchors, extractByline, verifyArticle, windowFor, findReviews, makeContext, filterCandidates, ADAPTERS, addDays,
+  parseAnchors, extractByline, verifyArticle, windowFor, findReviews, makeContext, filterCandidates, ADAPTERS, addDays, jsonOf,
 };

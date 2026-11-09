@@ -1,0 +1,258 @@
+{
+  "issueNumber": "bro-7239-c",
+  "planId": "167842a1-45f2-421e-b2a1-1a4b3fc8e9f8",
+  "status": "pending",
+  "createdAt": "2026-11-09T18:39:50.583Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "SD + Boston hub shows: sourced closing dates (66 shows) from their review articles; close Topdog/Underdog, Ripcord, Rhinoceros which ended (part 3 of 6)",
+    "steps": [
+      "shows.json: ha-ha-ha-ha-ha-ha-ha-regional-2026.closingDate",
+      "shows.json: ha-ha-ha-ha-ha-ha-ha-regional-2026.closingDateSource",
+      "shows.json: much-ado-about-nothing-regional-2026.closingDate",
+      "shows.json: much-ado-about-nothing-regional-2026.closingDateSource",
+      "shows.json: guys-and-dolls-regional-2026.closingDate",
+      "shows.json: guys-and-dolls-regional-2026.closingDateSource",
+      "shows.json: we-will-rock-you-regional-2026.closingDate",
+      "shows.json: we-will-rock-you-regional-2026.closingDateSource",
+      "shows.json: ni-mi-madre-regional-2026.closingDate",
+      "shows.json: ni-mi-madre-regional-2026.closingDateSource",
+      "shows.json: rock-of-ages-regional-2026.closingDate",
+      "shows.json: rock-of-ages-regional-2026.closingDateSource",
+      "shows.json: mensa-regional-2026.closingDate",
+      "shows.json: mensa-regional-2026.closingDateSource",
+      "shows.json: theatre-people-or-the-angel-next-door-regional-2026.closingDate",
+      "shows.json: theatre-people-or-the-angel-next-door-regional-2026.closingDateSource",
+      "shows.json: come-from-away-moonlight-regional-2026.closingDate",
+      "shows.json: come-from-away-moonlight-regional-2026.closingDateSource",
+      "shows.json: dear-evan-hansen-cygnet-regional-2026.closingDate",
+      "shows.json: dear-evan-hansen-cygnet-regional-2026.closingDateSource",
+      "shows.json: a-black-billed-cuckoo-regional-2026.closingDate",
+      "shows.json: a-black-billed-cuckoo-regional-2026.closingDateSource",
+      "shows.json: good-night-oscar-regional-2026.closingDate",
+      "shows.json: good-night-oscar-regional-2026.closingDateSource"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ha-ha-ha-ha-ha-ha-ha-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-08-09",
+        "description": "shows.json: ha-ha-ha-ha-ha-ha-ha-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ha-ha-ha-ha-ha-ha-ha-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through August 9th\" (https://www.talktheatretome.com/theatre/ljphahaha ; https://www.sandiegouniontribune.com/2026/07/31/review-la-jolla-playhouses-ha-ha-ha-delivers-odd-solutions-to-all-the-worlds-problems/)",
+        "description": "shows.json: ha-ha-ha-ha-ha-ha-ha-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "much-ado-about-nothing-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-08-30",
+        "description": "shows.json: much-ado-about-nothing-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "much-ado-about-nothing-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through August 30\" (https://www.talktheatretome.com/theatre/oldglobemuchado ; https://www.davidcoddon.com/theatre-reviews/stage-west-much-ado-about-nothing-at-the-old-globe)",
+        "description": "shows.json: much-ado-about-nothing-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "guys-and-dolls-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-08-29",
+        "description": "shows.json: guys-and-dolls-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "guys-and-dolls-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through August 29th\" (https://www.talktheatretome.com/theatre/moonlightguysanddolls ; https://www.sandiegouniontribune.com/2026/08/13/review-moonlights-guys-and-dolls-a-classic-that-still-sparkles/)",
+        "description": "shows.json: guys-and-dolls-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "we-will-rock-you-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-09-20",
+        "description": "shows.json: we-will-rock-you-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "we-will-rock-you-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through September 20th\" (https://www.talktheatretome.com/theatre/nvawewillrockyou ; https://www.sandiegouniontribune.com/2026/08/16/review-with-queen-musical-come-for-the-music-not-the-script/)",
+        "description": "shows.json: we-will-rock-you-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ni-mi-madre-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-09-06",
+        "description": "shows.json: ni-mi-madre-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ni-mi-madre-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"until September 6\" (https://fromanother0.com/diversionarys-west-coast-premiere-of-ni-mi-madre/ ; https://www.sandiegouniontribune.com/2026/08/24/review-ni-mi-madre-an-eye-opening-portrait-of-a-complex-mom/)",
+        "description": "shows.json: ni-mi-madre-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rock-of-ages-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-09-13",
+        "description": "shows.json: rock-of-ages-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rock-of-ages-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through September 13th\" (https://www.talktheatretome.com/theatre/sdmtrockofages ; https://www.broadwayworld.com/san-diego/article/Review-ROCK-OF-AGES-at-San-Diego-Musical-Theatre-20260823)",
+        "description": "shows.json: rock-of-ages-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mensa-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-09-13",
+        "description": "shows.json: mensa-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mensa-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"until September 13\" (https://www.talktheatretome.com/theatre/onstangemensa ; https://fromanother0.com/onstage-playhouses-last-production-in-chula-vista/)",
+        "description": "shows.json: mensa-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "theatre-people-or-the-angel-next-door-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-09-20",
+        "description": "shows.json: theatre-people-or-the-angel-next-door-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "theatre-people-or-the-angel-next-door-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"Through Sept. 20\" (https://www.sandiegouniontribune.com/2026/09/01/review-scripps-ranch-theatres-people-delivers-fast-paced-fun/ ; https://stageandcinema.com/2026/09/04/theatre-people-scripps-ranch-theatre-review/)",
+        "description": "shows.json: theatre-people-or-the-angel-next-door-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "come-from-away-moonlight-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-09-26",
+        "description": "shows.json: come-from-away-moonlight-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "come-from-away-moonlight-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through Sept. 26\" (https://www.talktheatretome.com/theatre/moonlightcomefromaway ; https://www.sandiegouniontribune.com/2026/09/10/review-moonlights-moving-come-from-away-a-balm-for-the-soul/)",
+        "description": "shows.json: come-from-away-moonlight-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dear-evan-hansen-cygnet-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-10-11",
+        "description": "shows.json: dear-evan-hansen-cygnet-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dear-evan-hansen-cygnet-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through October 11th\" (https://www.talktheatretome.com/theatre/cygnetdearevanhansen ; https://www.broadwayworld.com/san-diego/article/Review-DEAR-EVAN-HANSEN-at-Cygnet-Theatre-20260913)",
+        "description": "shows.json: dear-evan-hansen-cygnet-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-black-billed-cuckoo-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-10-11",
+        "description": "shows.json: a-black-billed-cuckoo-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-black-billed-cuckoo-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"Through Oct. 11\" (https://www.sandiegouniontribune.com/2026/09/20/review-la-jolla-playhouses-sweet-black-billed-cuckoo-packed-with-humor-surprises/)",
+        "description": "shows.json: a-black-billed-cuckoo-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "good-night-oscar-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-10-11",
+        "description": "shows.json: good-night-oscar-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "good-night-oscar-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through October 11th\" (https://www.talktheatretome.com/theatre/ncrgoodnightoscar ; https://www.broadwayworld.com/san-diego/article/Review-GOOD-NIGHT-OSCAR-at-North-Coast-Repertory-Theatre-20260920)",
+        "description": "shows.json: good-night-oscar-regional-2026.closingDateSource"
+      }
+    ]
+  }
+}

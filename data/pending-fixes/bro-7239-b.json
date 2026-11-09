@@ -1,0 +1,258 @@
+{
+  "issueNumber": "bro-7239-b",
+  "planId": "1308663e-1b05-49ba-ba52-274057868c4f",
+  "status": "pending",
+  "createdAt": "2026-11-09T18:39:50.583Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "SD + Boston hub shows: sourced closing dates (66 shows) from their review articles; close Topdog/Underdog, Ripcord, Rhinoceros which ended (part 2 of 6)",
+    "steps": [
+      "shows.json: the-monsters-regional-2026.closingDate",
+      "shows.json: the-monsters-regional-2026.closingDateSource",
+      "shows.json: the-most-happy-fella-regional-2026.closingDate",
+      "shows.json: the-most-happy-fella-regional-2026.closingDateSource",
+      "shows.json: adult-storytime-a-caregivers-guide-to-the-blues-regional-2026.closingDate",
+      "shows.json: adult-storytime-a-caregivers-guide-to-the-blues-regional-2026.closingDateSource",
+      "shows.json: the-spongebob-musical-regional-2026.closingDate",
+      "shows.json: the-spongebob-musical-regional-2026.closingDateSource",
+      "shows.json: hairspray-regional-2026.closingDate",
+      "shows.json: hairspray-regional-2026.closingDateSource",
+      "shows.json: the-rise-and-fall-of-little-voice-regional-2026.closingDate",
+      "shows.json: the-rise-and-fall-of-little-voice-regional-2026.closingDateSource",
+      "shows.json: measure-for-measure-regional-2026.closingDate",
+      "shows.json: measure-for-measure-regional-2026.closingDateSource",
+      "shows.json: isaacs-eye-regional-2026.closingDate",
+      "shows.json: isaacs-eye-regional-2026.closingDateSource",
+      "shows.json: north-by-northwest-old-regional-2026.closingDate",
+      "shows.json: north-by-northwest-old-regional-2026.closingDateSource",
+      "shows.json: arcadia-regional-2026.closingDate",
+      "shows.json: arcadia-regional-2026.closingDateSource",
+      "shows.json: cyrano-regional-2026.closingDate",
+      "shows.json: cyrano-regional-2026.closingDateSource",
+      "shows.json: scapin-regional-2026.closingDate",
+      "shows.json: scapin-regional-2026.closingDateSource"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-monsters-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-06-28",
+        "description": "shows.json: the-monsters-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-monsters-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through June 28\" (https://www.davidcoddon.com/theatre-reviews/stage-west-the-monsters-at-la-jolla-playhouse ; https://www.broadwayworld.com/san-diego/article/Review-THE-MONSTERS-at-La-Jolla-Playhouse-20260606)",
+        "description": "shows.json: the-monsters-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-most-happy-fella-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-07-05",
+        "description": "shows.json: the-most-happy-fella-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-most-happy-fella-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through July 5\" (https://www.davidcoddon.com/theatre-reviews/stage-west-the-most-happy-fella-at-north-coast-repertory-theatre ; https://www.broadwayworld.com/san-diego/article/Review-THE-MOST-HAPPY-FELLA-at-North-Coast-Repertory-Theatre-20260607)",
+        "description": "shows.json: the-most-happy-fella-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "adult-storytime-a-caregivers-guide-to-the-blues-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-06-28",
+        "description": "shows.json: adult-storytime-a-caregivers-guide-to-the-blues-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "adult-storytime-a-caregivers-guide-to-the-blues-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through June 28\" (https://www.davidcoddon.com/theatre-reviews/stage-west-onword-theatres-adult-storytime-a-caregivers-guide-to-the-blues ; https://www.sandiegouniontribune.com/2026/06/13/review-adult-storytime-a-relatable-collection-of-caregivers-ups-downs/)",
+        "description": "shows.json: adult-storytime-a-caregivers-guide-to-the-blues-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-spongebob-musical-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-07-12",
+        "description": "shows.json: the-spongebob-musical-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-spongebob-musical-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through July 12\" (https://www.davidcoddon.com/theatre-reviews/stage-west-the-spongebob-musical-at-cygnet-theatre6252022 ; https://www.sandiegouniontribune.com/2026/06/15/review-cygnets-spongebob-musical-a-joyful-cartoon-come-to-life/)",
+        "description": "shows.json: the-spongebob-musical-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hairspray-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-07-19",
+        "description": "shows.json: hairspray-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hairspray-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through July 19\" (https://www.davidcoddon.com/theatre-reviews/stage-west-hairspray-at-new-village-arts ; https://www.sandiegouniontribune.com/2026/06/16/review-new-villages-hairspray-is-fun-but-uneven/)",
+        "description": "shows.json: hairspray-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-rise-and-fall-of-little-voice-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-07-03",
+        "description": "shows.json: the-rise-and-fall-of-little-voice-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-rise-and-fall-of-little-voice-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through July 3\" (https://www.davidcoddon.com/theatre-reviews/stage-west-backyard-renaissance-theatres-the-rise-and-fall-of-little-voice ; https://www.broadwayworld.com/san-diego/article/Review-THE-RISE-FALL-OF-LITTLE-VOICE-at-Backyard-Renaissance-20260625)",
+        "description": "shows.json: the-rise-and-fall-of-little-voice-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "measure-for-measure-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-07-12",
+        "description": "shows.json: measure-for-measure-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "measure-for-measure-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"Through July 12\" (https://www.sandiegouniontribune.com/2026/06/22/review-old-globes-measure-for-measure-a-twisty-power-struggle/ ; https://www.sdjewishworld.com/2026/06/22/old-globe-presents-measure-for-measure-in-balboa-park/)",
+        "description": "shows.json: measure-for-measure-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "isaacs-eye-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-07-19",
+        "description": "shows.json: isaacs-eye-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "isaacs-eye-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"Through July 19\" (https://www.sandiegouniontribune.com/2026/06/29/review-onstage-playhouses-isaacs-eye-a-blazing-fast-scientific-yarn/ ; https://fromanother0.com/onstage-playhouse-debuts-lucas-hnaths-isaacs-eye/)",
+        "description": "shows.json: isaacs-eye-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "north-by-northwest-old-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-08-02",
+        "description": "shows.json: north-by-northwest-old-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "north-by-northwest-old-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through Aug. 2\" (https://www.davidcoddon.com/theatre-reviews/stage-west-north-by-northwest-at-the-old-globe ; https://www.broadwayworld.com/san-diego/article/Review-NORTH-BY-NORTHWEST-at-The-Old-Globe-20260711)",
+        "description": "shows.json: north-by-northwest-old-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "arcadia-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-08-09",
+        "description": "shows.json: arcadia-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "arcadia-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"Through August 9\" (https://theatrereviewskurahashi.wordpress.com/2026/07/19/waltzing-through-time-in-arcadia-cygnet-theatres-arcadia/ ; https://www.broadwayworld.com/san-diego/article/Review-ARCADIA-at-Cygnet-Theatre-20260721)",
+        "description": "shows.json: arcadia-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cyrano-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-08-16",
+        "description": "shows.json: cyrano-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cyrano-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through August 16th\" (https://www.talktheatretome.com/theatre/oldglobcyrano ; https://www.davidcoddon.com/theatre-reviews/stage-west-cyrano-at-old-globe-theatre)",
+        "description": "shows.json: cyrano-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "scapin-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-08-23",
+        "description": "shows.json: scapin-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "scapin-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"Through Aug. 23\" (https://www.sandiegouniontribune.com/2026/07/28/review-in-north-coast-reps-scapin-the-actors-are-having-the-most-fun/ ; https://stageandcinema.com/2026/07/27/scapin-north-coast-rep-review/)",
+        "description": "shows.json: scapin-regional-2026.closingDateSource"
+      }
+    ]
+  }
+}
