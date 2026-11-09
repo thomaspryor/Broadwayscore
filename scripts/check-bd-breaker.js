@@ -34,6 +34,7 @@ const {
   effectiveCeilingForOpeningWindow,
   resolveOpeningWindowReservePerShow,
   breakerCalibrationVerdict,
+  chronicTripAlert,
 } = require('./lib/brightdata-caps');
 const { fetchBdZoneCostDay } = require('./lib/provider-billing');
 const { topCallers, LEDGER_PATH } = require('./lib/provider-telemetry');
@@ -50,7 +51,7 @@ if (hasHelpFlag(process.argv.slice(2))) {
 
 Env:
   BRIGHTDATA_TOKEN         required; without it the check no-ops
-  BD_BREAKER_CEILING       per-zone daily request ceiling (default 6000)
+  BD_BREAKER_CEILING       per-zone daily request ceiling (default 3500)
   BD_BREAKER_STATE_PATH    override the state file location (tests)
 `);
   process.exit(0);
@@ -60,6 +61,13 @@ const DRY_RUN = process.argv.includes('--dry-run');
 const STATE_PATH = process.env.BD_BREAKER_STATE_PATH
   || path.join(__dirname, '..', 'data', 'audit', 'bd-circuit-breaker.json');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
+
+function loadTransitionRows() {
+  try {
+    return fs.readFileSync(process.env.BD_TRANSITIONS_PATH || path.join(__dirname, '..', 'data', 'audit', 'breaker-transitions.jsonl'), 'utf8')
+      .split('\n').filter(Boolean).map((l) => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
+  } catch { return []; }
+}
 
 function loadState() {
   try {
@@ -123,12 +131,6 @@ async function main() {
     const billedReqs = billing ? billing.reqs : null;
     const verdict = shouldTripBreaker({ billedReqs, ceiling: effectiveCeiling });
 
-    try {
-      const rows = fs.readFileSync(path.join(__dirname, '..', 'data', 'audit', 'breaker-transitions.jsonl'), 'utf8')
-        .split('\n').filter(Boolean).map((l) => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
-      const cal = breakerCalibrationVerdict(rows, { conditionKey: `bd-circuit-breaker-${zone}` });
-      if (cal.miscalibrated) console.log(`${zone}: CALIBRATION WARNING — tripped on ${cal.tripDays} of the last 14 days; the ceiling is mis-sized (BRO-7202), resize it instead of filing per-day cards.`);
-    } catch { /* no history yet */ }
     console.log(`${zone}: ${billedReqs == null ? 'billing unknown' : `${billedReqs} reqs`}`
       + `${billing ? ` / $${billing.cost.toFixed(2)}` : ''} — ${verdict.reason}`
       + `${verdict.tripped ? ' → TRIPPED' : ''}`
@@ -234,9 +236,9 @@ async function main() {
     }
 
     const severity = breakerAlertSeverity({ tripped: change.tripped, openingWindowShows });
-    const title = change.tripped
-      ? `Bright Data daily breaker TRIPPED: ${change.zone} (${change.billedReqs}/${change.ceiling} reqs)`
-      : `Bright Data daily breaker cleared: ${change.zone}`;
+    const verdict = breakerCalibrationVerdict(loadTransitionRows(), { conditionKey });
+    const chronic = chronicTripAlert({ zone: change.zone, billedReqs: change.billedReqs, ceiling: change.ceiling, verdict });
+    const title = chronic.title;
     const description = change.tripped
       ? [
         `Zone ${change.zone} billed ${change.billedReqs} requests today against a ceiling of ${change.ceiling}.`,
@@ -260,7 +262,7 @@ async function main() {
       // line by the card #611 gate — deliberately: promoting it to a real page
       // is the owner's call, and the router logs the downgrade either way.
       disposition: severity === 'critical' ? 'human' : 'digest',
-      cooldownHours: 6,
+      cooldownHours: chronic.cooldownHours,
     });
     console.log(`Alert routed: ${severity} — ${title}`);
   }

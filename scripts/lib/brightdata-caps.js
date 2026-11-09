@@ -53,15 +53,15 @@ const path = require('path');
  * The breaker is meant to catch runaways, not to shape normal traffic — step it
  * down only after the "never trips on a normal day" RECHECK in the card.
  *
- * RE-SIZED 3500 -> 6000 (BRO-7202). From 2026-10-13 the opening-window reserve
- * (capped at MAX_RESERVE_SHARE) pinned the EFFECTIVE ceiling at 1750 all season,
- * below ordinary bulk traffic (1,771-3,634/day), so the breaker tripped on 25 of
- * 25 days and filed a card each time (8 in 30 days). Worst-case effective
- * ceiling is now 6000*(1-MAX_RESERVE_SHARE)=3000. The guard is
- * breakerCalibrationVerdict() below + its test: a limit that trips daily is
- * miscalibrated, not an alarm.
+ * BRO-7202: from 2026-10-13 the opening-window reserve (MAX_RESERVE_SHARE) held
+ * the EFFECTIVE ceiling at 1750 all season while real daily totals ran
+ * 1,100-3,800 (provider-spend-daily.jsonl), so the breaker tripped 25 of 25
+ * days and filed a card per trip (title carried the varying req count, so
+ * dedupe never matched). The spend bound is deliberately NOT raised here (a
+ * money decision, owner's call); chronic trips collapse to one stable weekly
+ * alert via breakerCalibrationVerdict() + chronicTripAlert() instead.
  */
-const DEFAULT_DAILY_REQ_CEILING = 6000;
+const DEFAULT_DAILY_REQ_CEILING = 3500;
 
 /**
  * Per-zone, per-show reservation (S2-T7 follow-up, task #1315): the request
@@ -310,11 +310,26 @@ function breakerAlertSeverity({ tripped, openingWindowShows }) {
  * @param {{conditionKey:string, windowDays?:number, maxTripDays?:number, now?:Date}} opts
  */
 function breakerCalibrationVerdict(rows, { conditionKey, windowDays = 14, maxTripDays = 5, now = new Date() }) {
-  const cutoff = utcDay(new Date(new Date(now).getTime() - windowDays * 86400000));
+  const cutoff = utcDay(new Date(new Date(now).getTime() - (windowDays - 1) * 86400000));
   const days = new Set((rows || [])
     .filter((r) => r && r.conditionKey === conditionKey && r.to === 'tripped' && r.day >= cutoff)
     .map((r) => r.day));
   return { tripDays: days.size, miscalibrated: days.size > maxTripDays };
+}
+
+/**
+ * Alert shape for a trip. Chronic (miscalibrated) breakers get ONE stable
+ * title + a 7-day cooldown so the card dedupes; acute trips keep the per-trip
+ * title and 6h cooldown.
+ */
+function chronicTripAlert({ zone, billedReqs, ceiling, verdict }) {
+  if (verdict && verdict.miscalibrated) {
+    return {
+      title: `Bright Data daily breaker keeps tripping: ${zone} (${verdict.tripDays} of last 14 days)`,
+      cooldownHours: 168,
+    };
+  }
+  return { title: `Bright Data daily breaker TRIPPED: ${zone} (${billedReqs}/${ceiling} reqs)`, cooldownHours: 6 };
 }
 
 // ---------- stateful consult (the single enforcement helper) -----------------
@@ -456,6 +471,7 @@ module.exports = {
   shouldTripBreaker,
   effectiveCeilingForOpeningWindow,
   breakerCalibrationVerdict,
+  chronicTripAlert,
   MAX_RESERVE_SHARE,
   isExemptCaller,
   checkPerRunBudget,

@@ -72,7 +72,7 @@ const DEFAULT_PER_SHOW = Object.freeze({
 const DEFAULT_CAPS = Object.freeze({
   scrapingbee: { totalCap: 5350000, softFloorPct: 0.5 }, // soft floor used as informational threshold
   // Opening night's own daily Bright Data allowance, independent of the bulk
-  // ceiling in brightdata-caps.js (6,000/zone). 3,000 covers ~12 shows on the
+  // ceiling in brightdata-caps.js (3,500/zone). 3,000 covers ~12 shows on the
   // busiest observed night with room to spare; exceeding it means something is
   // looping, not that a night is unusually large.
   brightdata: { dailyCap: 3000 },

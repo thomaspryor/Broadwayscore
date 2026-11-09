@@ -323,31 +323,36 @@ test('bulk scrapers are still NOT exempt by script name', () => {
   }
 });
 
-// ---- BRO-7202: ceiling must not sit below normal bulk traffic ---------------
-test('BRO-7202: worst-case effective ceiling clears 2,500 reqs/day (normal bulk traffic)', () => {
-  const worst = caps.effectiveCeilingForOpeningWindow({
-    ceiling: DEFAULT_DAILY_REQ_CEILING, openingWindowShows: 1000,
-  });
-  assert.ok(worst >= 2500, `worst-case effective ceiling ${worst} is below normal daily traffic; breaker would trip daily (BRO-7202)`);
-});
+// ---- BRO-7202: chronic trips must collapse to one stable alert --------------
+const _KEY = 'bd-circuit-breaker-web_unlocker2';
+const _rows = (n, now) => Array.from({ length: n }, (_, i) => ({
+  conditionKey: _KEY, to: 'tripped', day: utcDay(new Date(now.getTime() - i * 86400000)),
+}));
 
-test('BRO-7202: breakerCalibrationVerdict flags a breaker tripping most days', () => {
+test('BRO-7202: breakerCalibrationVerdict flags a breaker tripping most days (14-day window exact)', () => {
   const now = new Date('2026-11-09T12:00:00Z');
-  const key = 'bd-circuit-breaker-web_unlocker2';
-  const mk = (n) => Array.from({ length: n }, (_, i) => ({
-    conditionKey: key, to: 'tripped', day: utcDay(new Date(now.getTime() - i * 86400000)),
-  }));
-  assert.equal(caps.breakerCalibrationVerdict(mk(10), { conditionKey: key, now }).miscalibrated, true);
-  assert.equal(caps.breakerCalibrationVerdict(mk(2), { conditionKey: key, now }).miscalibrated, false);
-  assert.equal(caps.breakerCalibrationVerdict(mk(10), { conditionKey: 'other', now }).tripDays, 0);
+  assert.equal(caps.breakerCalibrationVerdict(_rows(10, now), { conditionKey: _KEY, now }).miscalibrated, true);
+  assert.equal(caps.breakerCalibrationVerdict(_rows(2, now), { conditionKey: _KEY, now }).miscalibrated, false);
+  assert.equal(caps.breakerCalibrationVerdict(_rows(10, now), { conditionKey: 'other', now }).tripDays, 0);
+  assert.equal(caps.breakerCalibrationVerdict(_rows(20, now), { conditionKey: _KEY, now }).tripDays, 14);
 });
 
-test('BRO-7202: replaying real Oct13-Nov9 unlocker history, the new floor trips far fewer days', () => {
+test('BRO-7202: chronic trips share ONE title regardless of req count, with a 7-day cooldown', () => {
+  const now = new Date('2026-11-09T12:00:00Z');
+  const verdict = caps.breakerCalibrationVerdict(_rows(10, now), { conditionKey: _KEY, now });
+  const a = caps.chronicTripAlert({ zone: 'web_unlocker2', billedReqs: 2019, ceiling: 1750, verdict });
+  const b = caps.chronicTripAlert({ zone: 'web_unlocker2', billedReqs: 2445, ceiling: 1750, verdict });
+  assert.equal(a.title, b.title, 'varying req counts in the title defeat card dedupe (BRO-7202)');
+  assert.equal(a.cooldownHours, 168);
+  const acute = caps.chronicTripAlert({ zone: 'web_unlocker2', billedReqs: 4000, ceiling: 3500, verdict: { miscalibrated: false } });
+  assert.match(acute.title, /4000\/3500/);
+  assert.equal(acute.cooldownHours, 6);
+});
+
+test('BRO-7202: replay of real transition history classifies the Oct13-Nov9 unlocker as chronic', () => {
   const f = path.join(path.dirname(new URL(import.meta.url).pathname), '..', '..', 'data', 'audit', 'breaker-transitions.jsonl');
-  if (!fs.existsSync(f)) return;
-  const rows = fs.readFileSync(f, 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l))
-    .filter((r) => r.conditionKey === 'bd-circuit-breaker-web_unlocker2' && r.to === 'tripped' && r.day >= '2026-10-13' && r.day <= '2026-11-09');
-  const newFloor = caps.effectiveCeilingForOpeningWindow({ ceiling: DEFAULT_DAILY_REQ_CEILING, openingWindowShows: 1000 });
-  const stillTrip = rows.filter((r) => r.units >= newFloor).length;
-  assert.ok(stillTrip <= rows.length * 0.4, `${stillTrip}/${rows.length} historical days would still trip`);
+  assert.ok(fs.existsSync(f));
+  const rows = fs.readFileSync(f, 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l));
+  const v = caps.breakerCalibrationVerdict(rows, { conditionKey: _KEY, now: new Date('2026-11-09T12:00:00Z') });
+  assert.equal(v.miscalibrated, true, `expected chronic, got ${v.tripDays} trip days`);
 });
