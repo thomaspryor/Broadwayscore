@@ -2,7 +2,7 @@
 // Covers .claude/hooks/lib/stall-stop-bootstrap.sh (fetch + stop), the VE_ONLY_CODES stall-only
 // mode of verify-edits.sh, and the WAKEPROMISE / OPENCLAIM auto-arm date. The BRO-6854 stop is the
 // real case: a child that said "KEEP OPEN" with nothing running.
-import test from 'node:test';
+import test, { after } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
@@ -12,8 +12,11 @@ import { spawnSyncStdinFile } from '../../tests/helpers/spawn-stdin-file.mjs';
 
 const REPO = path.resolve(new URL('.', import.meta.url).pathname, '..', '..');
 const BOOT = path.join(REPO, '.claude', 'hooks', 'lib', 'stall-stop-bootstrap.sh');
-const tmp = (p) => fs.mkdtempSync(path.join(os.tmpdir(), p));
-const run = (mode, env, input = '{}') => spawnSyncStdinFile('bash', [BOOT, mode], { input, encoding: 'utf8', env: { ...process.env, ...env }, timeout: 60000 });
+const scratchDirs = [];
+const tmp = (p) => { const dir = fs.mkdtempSync(path.join(os.tmpdir(), p)); scratchDirs.push(dir); return dir; };
+after(() => { for (const dir of scratchDirs) fs.rmSync(dir, { recursive: true, force: true }); });
+const suiteTmp = tmp('bsc-bootstrap-suite-');
+const run = (mode, env, input = '{}') => spawnSyncStdinFile('bash', [BOOT, mode], { input, encoding: 'utf8', env: { ...process.env, TMPDIR: suiteTmp, ...env }, timeout: 60000 });
 
 // A tiny stand-in for Broadwayscore: a runner that echoes what it was given.
 function fakeRepo() {
@@ -75,19 +78,89 @@ const lines = [
   { type: 'assistant', timestamp: ts(2), message: { role: 'assistant', content: [{ type: 'tool_use', id: 't2', name: 'Bash', input: { command: 'gh workflow run llm-ensemble-score.yml -f show_id=boston' } }] } },
   { type: 'user', timestamp: ts(2), message: { role: 'user', content: [{ type: 'tool_result', tool_use_id: 't2', content: 'Created workflow_dispatch event', is_error: false }] } },
 ];
-function stopThroughApp(lastMsg, env = {}, extraLines = []) {
+function stopThroughApp(lastMsg, env = {}, extraLines = [], repeats = 1, appBootstrap) {
   const home = tmp('bsc-e2e-'); fs.symlinkSync(REPO, path.join(home, 'Broadwayscore'));
   const app = tmp('bsc-app-'); spawnSync('git', ['init', '-q', app]);
+  if (appBootstrap !== undefined) {
+    fs.mkdirSync(path.join(app, '.claude/hooks'), { recursive: true });
+    fs.writeFileSync(path.join(app, '.claude/hooks/stall-stop-bootstrap.sh'), appBootstrap);
+  }
   const tp = path.join(home, 't.jsonl');
   fs.writeFileSync(tp, [...lines, ...extraLines].map((l) => JSON.stringify(l)).join('\n') + '\n');
-  const r = spawnSyncStdinFile('bash', [BOOT, 'stop'], {
-    input: JSON.stringify({ hook_event_name: 'Stop', cwd: app, transcript_path: tp, session_id: 'bro7194', stop_hook_active: false, last_assistant_message: lastMsg }),
-    encoding: 'utf8', timeout: 90000, killSignal: 'SIGKILL',
-    cwd: app,
-    env: { ...process.env, BSC_HOOKS_HOME: home, HOME: home, CLAUDE_CODE_REMOTE: 'true', CLAUDE_PROJECT_DIR: app, BOARD_GATE_DISABLED: '1', ...env },
-  });
-  return { status: r.status, stderr: r.stderr || '', stdout: r.stdout || '' };
+  const attempts = [];
+  for (let i = 0; i < repeats; i++) {
+    const r = spawnSyncStdinFile('bash', [BOOT, 'stop'], {
+      input: JSON.stringify({ hook_event_name: 'Stop', cwd: app, transcript_path: tp, session_id: 'bro7194', stop_hook_active: false, last_assistant_message: lastMsg }),
+      encoding: 'utf8', timeout: 90000, killSignal: 'SIGKILL',
+      cwd: app,
+      env: { ...process.env, BSC_HOOKS_HOME: home, HOME: home, TMPDIR: home, CLAUDE_CODE_REMOTE: 'true', CLAUDE_PROJECT_DIR: app, BOARD_GATE_DISABLED: '1', ...env },
+    });
+    attempts.push({ status: r.status, stderr: r.stderr || '', stdout: r.stdout || '' });
+  }
+  return repeats === 1 ? attempts[0] : attempts;
 }
+
+test('app and user Stop entries evaluate the same child turn only once', () => {
+  const attempts = stopThroughApp(CLOSING, {}, [], 2);
+  assert.deepEqual(attempts.map(r => r.status), [2, 0]);
+  assert.match(attempts[0].stderr, /child session with no human/);
+  assert.equal(attempts[1].stderr + attempts[1].stdout, '');
+});
+
+test('the shared runner detects app bootstrap drift once and still enforces the gate', () => {
+  const canonical = fs.readFileSync(BOOT, 'utf8');
+  const matching = stopThroughApp(CLOSING, {}, [], 1, canonical);
+  assert.equal(matching.status, 2);
+  assert.doesNotMatch(matching.stdout, /DRIFT/);
+  const drifted = stopThroughApp(CLOSING, {}, [], 2, canonical + '\n# stale app copy\n');
+  assert.deepEqual(drifted.map(r => r.status), [2, 0]);
+  assert.match(drifted[0].stdout, /bootstrap DRIFT/);
+  assert.match(drifted[0].stderr, /child session with no human/);
+  assert.equal(drifted[1].stdout + drifted[1].stderr, '');
+});
+
+test('missing jq warns, blocks a promise closing, and permits a retry', () => {
+  const bin = tmp('bsc-no-jq-');
+  for (const command of ['dirname', 'cat', 'grep']) {
+    fs.symlinkSync(spawnSync('which', [command], { encoding: 'utf8' }).stdout.trim(), path.join(bin, command));
+  }
+  const runner = path.join(REPO, '.claude/hooks/lib/home-hook-runner.sh');
+  for (const [message, retry, status] of [['All done.', false, 0], ["KEEP OPEN, I will check back.", false, 2], ['KEEP OPEN', true, 0]]) {
+    const r = spawnSyncStdinFile('/bin/bash', [runner, 'verify-edits.sh'], {
+      input: JSON.stringify({ hook_event_name: 'Stop', last_assistant_message: message, stop_hook_active: retry }),
+      encoding: 'utf8', env: { ...process.env, PATH: bin }, timeout: 10000,
+    });
+    assert.equal(r.status, status, r.stdout + r.stderr);
+    assert.match(r.stdout + r.stderr, /jq.*missing/i);
+  }
+});
+
+test('turn identity preserves changed closings, retries, transcript growth, sessions and full checks', () => {
+  const dir = tmp('bsc-turn-');
+  const transcript = path.join(dir, 'session.jsonl');
+  fs.writeFileSync(transcript, JSON.stringify(lines[0]) + '\n');
+  const payload = { hook_event_name: 'Stop', session_id: 'child', transcript_path: transcript, last_assistant_message: CLOSING, stop_hook_active: false };
+  const helper = path.join(REPO, 'scripts/lib/stall-stop-runner.sh');
+  const call = (changes = {}, codes = 'CHILDSTALL') => {
+    const r = spawnSyncStdinFile('bash', ['-c', 'hook=verify-edits.sh; input=$(cat); source "$1"; echo CHECK', 'probe', helper], {
+      input: JSON.stringify({ ...payload, ...changes }), encoding: 'utf8',
+      env: { ...process.env, TMPDIR: dir, VE_ONLY_CODES: codes }, timeout: 10000,
+    });
+    assert.equal(r.status, 0, r.stderr);
+    return r.stdout.trim();
+  };
+  assert.equal(call(), 'CHECK');
+  assert.equal(call(), '');
+  assert.equal(call({ last_assistant_message: CLOSING + ' More work pending.' }), 'CHECK');
+  assert.equal(call({ stop_hook_active: true }), 'CHECK');
+  fs.appendFileSync(transcript, JSON.stringify(lines[1]) + '\n');
+  assert.equal(call(), 'CHECK');
+  assert.equal(call({ session_id: 'other-child' }), 'CHECK');
+  assert.equal(call({}, ''), 'CHECK');
+  assert.equal(call({}, ''), 'CHECK');
+  assert.equal(call({ transcript_path: '' }), 'CHECK');
+  assert.equal(call({ session_id: '' }), 'CHECK');
+});
 
 test('e2e from an app-repo cwd: the BRO-6854 stop (child, KEEP OPEN, nothing running) is blocked', () => {
   const r = stopThroughApp(CLOSING);

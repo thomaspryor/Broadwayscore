@@ -25,9 +25,8 @@ hook="${1:-}"
 case "$hook" in ''|*/*) exit 0 ;; esac
 R="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." 2>/dev/null && pwd)" || exit 0
 [ -f "$R/.claude/hooks/$hook" ] || exit 0
-command -v jq >/dev/null 2>&1 || exit 0
-
 input=$(cat) || exit 0
+source "$R/scripts/lib/stall-stop-runner.sh"
 event=$(printf '%s' "$input" | jq -r '.hook_event_name // empty' 2>/dev/null)
 cwd=$(printf '%s' "$input" | jq -r '.cwd // empty' 2>/dev/null)
 [ -d "$cwd" ] || cwd="$PWD"
