@@ -433,3 +433,35 @@ test('BRO-7110: main() refuses an incomplete install before fetching or running 
   assert.ok(errors.some((m) => m.includes('node_modules is incomplete') && m.includes(gone) && m.includes('npm ci')), errors.join('\n'));
   assert.ok(!gitCalls.includes('fetch'), 'refused before git fetch');
 });
+
+// BRO-7186: false results from land tooling
+const { lowDiskMessage, looksLikeEnvFailure, landedOnMain, MIN_FREE_BYTES } = require('./land-check-resources.js');
+
+test('BRO-7186: under 3 GB free refuses; enough or unreadable does not', () => {
+  assert.match(lowDiskMessage(1024 ** 3), /1\.0 GB free before the run.*ENOSPC/s);
+  assert.equal(lowDiskMessage(MIN_FREE_BYTES), null);
+  assert.equal(lowDiskMessage(NaN), null);
+  assert.match(lowDiskMessage(0, { when: 'after the run' }), /after the run/);
+});
+
+test('BRO-7186: ENOSPC output is an environment failure', () => {
+  assert.ok(looksLikeEnvFailure('Error: ENOSPC: no space left on device, write'));
+  assert.ok(!looksLikeEnvFailure('AssertionError: expected 1'));
+});
+
+test('BRO-7186: a gone ref counts as landed from the ledger or a BRO-id commit on main', () => {
+  const now = Date.parse('2026-11-08T12:00:00Z');
+  const ago = (h) => new Date(now - h * 3600_000).toISOString();
+  const ref = 'land/bro-7137-fallback-date';
+  assert.deepEqual(landedOnMain({ ref, nowMs: now, ledgerRows: [{ branch: ref, sha: 'abc', ts: ago(1) }] }), { landed: true, sha: 'abc', via: 'landings ledger' });
+  const viaMsg = landedOnMain({ ref, nowMs: now, mainCommits: [{ sha: '13c0e6d', subject: 'fix(BRO-7137): fallbackDateForUndatedStub', ts: ago(2) }] });
+  assert.equal(viaMsg.sha, '13c0e6d');
+  assert.equal(landedOnMain({ ref, nowMs: now, ledgerRows: [{ branch: ref, sha: 'abc', ts: ago(9) }] }).landed, false);
+  assert.equal(landedOnMain({ ref, nowMs: now, mainCommits: [{ sha: 'x', subject: 'BRO-71370 other', ts: ago(1) }] }).landed, false);
+  assert.equal(landedOnMain({ ref: 'land/typo', nowMs: now, mainCommits: [{ sha: 'x', subject: 'BRO-7137', ts: ago(1) }] }).landed, false);
+});
+
+test('BRO-7186: parseMainLog reads git log rows', () => {
+  const { parseMainLog } = require('./land-check-resources.js');
+  assert.deepEqual(parseMainLog('abc\t2026-11-08T00:00:00Z\tfix(BRO-1): a\tb\n\n'), [{ sha: 'abc', ts: '2026-11-08T00:00:00Z', subject: 'fix(BRO-1): a\tb' }]);
+});
