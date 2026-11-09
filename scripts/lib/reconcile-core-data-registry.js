@@ -38,6 +38,25 @@ const fs = require('fs');
 const path = require('path');
 const { activeEntriesFor } = require('./core-data-merge-registry');
 const { TOMBSTONE_DIR, buildTombstoneRows, writeTombstones } = require('./merge-tombstones');
+const { dropRetiredShowReviews } = require('./retired-show-reviews');
+
+// BRO-7192: manual review rows of a retired show come back through the merge (it never drops
+// a manualEntry row), so drop them here, against the merged-time shows.json beside reviews.json.
+// Fails open: an unreadable registry or shows.json leaves the merge result as it is.
+function dropRetiredReviews(result) {
+  try {
+    const retired = JSON.parse(fs.readFileSync('retired-show-ids.json', 'utf8')).map((e) => e && e.id).filter(Boolean);
+    const live = (JSON.parse(fs.readFileSync('shows.json', 'utf8')).shows || []).map((s) => s.id);
+    const { kept, dropped } = dropRetiredShowReviews(result.merged.reviews || [], retired, live);
+    if (!dropped.length) return;
+    result.merged.reviews = kept;
+    if (result.merged._meta && result.merged._meta.stats) result.merged._meta.stats.totalReviews = kept.length;
+    if (result.stats) { result.stats.totalReviews = kept.length; result.stats.droppedRetired = dropped.length; }
+    console.error(`  dropped ${dropped.length} review row(s) of retired show(s): ${[...new Set(dropped.map((r) => r.showId))].join(', ')}`);
+  } catch (e) {
+    console.error(`  ::warning::retired-show review filter skipped (${String(e.message).slice(0, 120)})`);
+  }
+}
 
 function main() {
   const [snapshotDir, baseDir] = process.argv.slice(2);
@@ -60,6 +79,7 @@ function main() {
         try { base = JSON.parse(fs.readFileSync(path.join(baseDir, entry.file), 'utf8')); } catch { base = undefined; }
       }
       const result = entry.merge.length >= 3 ? entry.merge(ours, remote, base) : entry.merge(ours, remote);
+      if (entry.file === 'reviews.json') dropRetiredReviews(result);
       const after = JSON.stringify(result.merged, null, 2) + (entry.newline === false ? '' : '\n');
       // Audit BEFORE the unchanged-bytes early exit: the common production shape
       // is a clean local file plus a remote-only fossil the merge declines to

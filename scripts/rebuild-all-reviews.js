@@ -6439,7 +6439,8 @@ for (const sid of postDedupTouchedShows) {
     const currentReviewsPath = reviewsJsonPath; // already defined earlier in the script
     if (fs.existsSync(currentReviewsPath)) {
       const currentData = JSON.parse(fs.readFileSync(currentReviewsPath, 'utf8'));
-      const manualEntries = (currentData.reviews || []).filter(r => r.manualEntry === true);
+      // BRO-7192: a manual row of a show that is no longer in shows.json (retired) is not carried forward.
+      const manualEntries = (currentData.reviews || []).filter(r => r.manualEntry === true && (validShowIds.size === 0 || validShowIds.has(r.showId)));
       // Matching lives in scripts/lib/manual-entry-merge.js. This merge runs after
       // every dedup pass, so a missed match appends a permanent phantom duplicate —
       // the helper matches punctuation-insensitively and falls back to the URL.
