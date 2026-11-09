@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-09T05:21:31.810Z",
+  "timestamp": "2026-11-09T05:48:58.052Z",
   "stats": {
-    "totalReviews": 80766,
+    "totalReviews": 80816,
     "alreadyFlagged": 22102,
     "dateGuardCatches": 219,
-    "directorMismatch": 3593,
+    "directorMismatch": 3595,
     "tvFilmSignals": 2307,
     "londonSignals": 3653,
     "offBroadwaySignals": 751,
     "yearMismatch": 370,
-    "noPublishDate": 8384
+    "noPublishDate": 8390
   },
   "findings": [
     {
@@ -42931,6 +42931,32 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"amazon prime\""
+        }
+      ]
+    },
+    {
+      "showId": "merrily-we-roll-along-sullivan-regional-2026",
+      "file": "broadwayworld--r-scott-reedy.json",
+      "publishDate": "2026-06-21",
+      "url": "https://www.broadwayworld.com/boston/article/Review-Sullivan-Reps-MERRILY-WE-ROLL-ALONG-Shows-Sondheim-is-Worth-a-Second-Look-20260621",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"maria friedman\" from merrily-we-roll-along-2023"
+        }
+      ]
+    },
+    {
+      "showId": "merrily-we-roll-along-sullivan-regional-2026",
+      "file": "sleeplesscritic--the-sleepless-critic.json",
+      "publishDate": "2026-06-25",
+      "url": "https://sleeplesscritic.com/2026/06/25/review-risking-it-all-in-sullivan-reps-wry-and-reflective-merrily-we-roll-along/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from merrily-we-roll-along-1981"
         }
       ]
     },
