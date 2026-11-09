@@ -77,7 +77,7 @@ test('displayed link: an untruncated breadcrumb rebuilds the url; truncated or h
 test('resolveSerpLink: real link wins, then a real redirect_link, then the breadcrumb, else null', () => {
   assert.deepEqual(U.resolveSerpLink({ link: 'https://a.com/x', redirect_link: OPAQUE }), { url: 'https://a.com/x', reconstructed: false });
   assert.deepEqual(U.resolveSerpLink({ link: 'https://www.google.com/url?q=https%3A%2F%2Fb.com%2Fy&sa=U' }), { url: 'https://b.com/y', reconstructed: false });
-  assert.deepEqual(U.resolveSerpLink({ link: OPAQUE, displayed_link: 'https://c.com › reviews › z' }), { url: 'https://c.com/reviews/z', reconstructed: true });
+  assert.deepEqual(U.resolveSerpLink({ link: OPAQUE, displayed_link: 'https://c.com › reviews › z-review' }), { url: 'https://c.com/reviews/z-review', reconstructed: true });
   assert.equal(U.resolveSerpLink({ link: OPAQUE, displayed_link: 'https://c.com › reviews › z...' }), null);
   assert.equal(U.resolveSerpLink({ link: GOTO }), null);
 });
@@ -123,4 +123,35 @@ test('cache: opaque results cached before the fix are filtered on read; all-opaq
   sdOrganic = [{ link: 'https://live.com/review', title: 'live' }];
   const b = await run(allOpaque);
   assert.deepEqual(b.results.map((x) => x.url), ['https://live.com/review'], 'went live instead of serving tokens');
+});
+
+// ship-check fixes (BRO-7171 Stage 2b)
+test('resolveSerpLink only unwraps a google host or a relative link, never a url in a real link\'s query', () => {
+  assert.deepEqual(U.resolveSerpLink({ link: 'https://www.nytimes.com/a?ref=google.com&url=https://evil.com/x' }), { url: 'https://www.nytimes.com/a?ref=google.com&url=https://evil.com/x', reconstructed: false });
+  assert.deepEqual(U.resolveSerpLink({ link: '/url?q=https://real.com/review&sa=U' }), { url: 'https://real.com/review', reconstructed: false });
+});
+
+test('breadcrumb rebuild needs a slug-like last segment (site labels are not paths)', () => {
+  assert.equal(U.urlFromDisplayedLink('https://www.timeout.com › London › Theatre'), null);
+  assert.equal(U.urlFromDisplayedLink('https://www.timeout.com › london › theatre'), null);
+  assert.equal(U.urlFromDisplayedLink('https://nystagereview.com › 2026/04/12 › titanique-what-did-i-miss'), 'https://nystagereview.com/2026/04/12/titanique-what-did-i-miss');
+});
+
+test('dropUnresolvableSerpResults unwraps google /url?q=https wrappers instead of dropping them', () => {
+  const r = U.dropUnresolvableSerpResults([{ url: '/url?q=https://a.com/review' }, { url: 'https://www.google.com/url?q=https%3A%2F%2Fb.com%2Fr' }, { url: GOTO }]);
+  assert.deepEqual(r.results.map((x) => x.url), ['https://a.com/review', 'https://b.com/r']);
+  assert.equal(r.dropped, 1);
+});
+
+test('chain: an all-token Bright Data answer is not cached as an empty answer', async () => {
+  const query = `"All Token BD Show" review ${n++}`;
+  sdOrganic = [{ link: OPAQUE }];
+  bdOrganic = [{ link: GOTO }, { link: GOTO + 'x' }];
+  const first = await run(query);
+  assert.deepEqual(first.results, []);
+  calls.length = 0;
+  sdOrganic = [{ link: 'https://live.com/now', title: 'live' }];
+  const again = await run(query);
+  assert.ok(calls.length > 0, 'asked live again, no cached empty');
+  assert.deepEqual(again.results.map((x) => x.url), ['https://live.com/now']);
 });

@@ -3826,6 +3826,13 @@ function evaluateShowMentionGuard(review, cleanedText, cleanedWordCount, showChe
   if (typeof review?.showNotMentionedManualClear === 'string' && review.showNotMentionedManualClear.trim()) {
     return { action: 'skip', reason: 'human show-mention clear', repairStaleFlags: false };
   }
+  // BRO-7171 Stage 2b: gap-acceptance accepted this text because the fetched
+  // page's OWN headline (og:title/h1, never the url) names the show (The Stage
+  // only, whole-phrase + generic-title gate; see gap-acceptance headlineIdentity).
+  // A body that omits the title is then expected, not evidence of a wrong page.
+  if (typeof review?.showIdentityHeadline === 'string' && review.showIdentityHeadline.trim()) {
+    return { action: 'skip', reason: 'page headline names the show', repairStaleFlags: false };
+  }
   // Context-too-thin gate: heuristic is unreliable on short paywalled excerpts
   // where the lede may legitimately omit the show title (metaphorical opening,
   // anecdotal lede, performance-focused lede, etc.).

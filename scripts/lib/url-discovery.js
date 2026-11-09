@@ -1100,7 +1100,15 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
   // BRO-7171 Stage 2b: Bright Data / ScrapingBee return Google's relative
   // /goto?url=CAES... tokens too, with no breadcrumb to rebuild from. Drop them
   // here, the one point every BD/SB answer passes through.
-  const _readable = (rs) => (Array.isArray(rs) ? dropUnresolvableSerpResults(rs).results : rs);
+  // Tokens dropped here make an empty answer "unreadable", not "nothing found",
+  // so such an empty answer is never cached (see shouldCache below).
+  let _tokensDropped = 0;
+  const _readable = (rs) => {
+    if (!Array.isArray(rs)) return rs;
+    const d = dropUnresolvableSerpResults(rs);
+    _tokensDropped += d.dropped;
+    return d.results;
+  };
   let results = _readable(await withSpendFallback(_fallbackFrom, () => _withGeo(primary.fn)(query, primary.key, log, dateRange)));
   let provider = primary.name;
   if (fallback && (!results || results.length === 0)) {
@@ -1127,6 +1135,7 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
   // run's SB fallback for the cache TTL (cache poisoning across modes).
   const _chainTruncated = _skips.size > 0;
   const shouldCache = results !== null
+    && !(_tokensDropped > 0 && results.length === 0)
     && !(emptyAuthoritative === false && results.length === 0)
     && !(_chainTruncated && results.length === 0);
   if (shouldCache) {

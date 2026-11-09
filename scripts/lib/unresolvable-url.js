@@ -33,18 +33,19 @@ function isUnresolvableRedirectUrl(url) {
  */
 function isOpaqueGoogleRedirect(url) {
   if (!url) return false;
-  const s = String(url);
+  return isGoogleRedirectShape(url) && !unwrapGoogleRedirect(url);
+}
+
+/** A google-host or relative /url or /goto link (the only shapes we unwrap). */
+function isGoogleRedirectShape(url) {
+  const s = String(url || '');
   let parsed;
   try {
     parsed = new URL(s, 'https://www.google.com');
   } catch {
     return false;
   }
-  const relative = s.startsWith('/');
-  const googleHost = /(^|\.)google\.[a-z.]+$/i.test(parsed.hostname);
-  if (!relative && !googleHost) return false;
-  if (!/^\/(url|goto)$/.test(parsed.pathname)) return false;
-  return !unwrapGoogleRedirect(s);
+  return (s.startsWith('/') || /(^|\.)google\.[a-z.]+$/i.test(parsed.hostname)) && /^\/(url|goto)$/.test(parsed.pathname);
 }
 
 /** The http(s) target inside a google /url?q=https://... wrapper, else null. */
@@ -78,6 +79,11 @@ function urlFromDisplayedLink(displayed) {
   const origin = parts[0].replace(/\/+$/, '');
   if (!/^https?:\/\/[^/\s]+$/i.test(origin)) return null;
   if (parts.slice(1).some((p) => /\s/.test(p))) return null;
+  // Google often shows the site's own breadcrumb LABELS ("timeout.com › London ›
+  // Theatre"), not the path. Trust only a slug-like last segment: lowercase, and
+  // a hyphenated slug or an id with digits.
+  const last = parts[parts.length - 1];
+  if (/[A-Z]/.test(last) || !/[-\d]/.test(last)) return null;
   try {
     return new URL(`${origin}/${parts.slice(1).join('/')}`).toString();
   } catch {
@@ -95,7 +101,7 @@ function urlFromDisplayedLink(displayed) {
 function resolveSerpLink(r) {
   for (const raw of [r && (r.link || r.url), r && r.redirect_link]) {
     if (!raw) continue;
-    const unwrapped = /^\/|google\./i.test(raw) ? unwrapGoogleRedirect(raw) : null;
+    const unwrapped = isGoogleRedirectShape(raw) ? unwrapGoogleRedirect(raw) : null;
     if (unwrapped) return { url: unwrapped, reconstructed: false };
     if (!isUnresolvableRedirectUrl(raw)) return { url: raw, reconstructed: false };
   }
@@ -109,7 +115,13 @@ function resolveSerpLink(r) {
  */
 function dropUnresolvableSerpResults(results) {
   if (!Array.isArray(results)) return { results, dropped: 0 };
-  const kept = results.filter((r) => r && !isUnresolvableRedirectUrl(r.url));
+  const kept = [];
+  for (const r of results) {
+    if (!r) continue;
+    const target = isGoogleRedirectShape(r.url) ? unwrapGoogleRedirect(r.url) : null;
+    if (target) kept.push({ ...r, url: target });
+    else if (!isUnresolvableRedirectUrl(r.url)) kept.push(r);
+  }
   return { results: kept, dropped: results.length - kept.length };
 }
 

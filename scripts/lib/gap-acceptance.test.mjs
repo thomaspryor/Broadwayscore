@@ -254,6 +254,15 @@ test('headline identity: The Stage page headline names the show -> accepted; oth
 
     const ok = acceptRecoveredText(rec(), { rawText: body, headline }, c);
     assert.equal(ok.accept, true, ok.reason);
+    // The page evidence is carried out of the gate so the write can persist it; the weekly
+    // show-mention backfill (evaluateShowMentionGuard) honours it instead of re-flagging the
+    // body that omits the title (ship-check P1, BRO-7171 Stage 2b).
+    assert.equal(ok.identityHeadline, headline);
+    const { evaluateShowMentionGuard } = require('./review-guards.js');
+    const longBody = 'word '.repeat(400);
+    const noTitle = { valid: false, confidence: 'high', reason: 'show title not found in text' };
+    assert.equal(evaluateShowMentionGuard({}, longBody, 400, noTitle).action, 'null-text', 'without the field the guard flags');
+    assert.equal(evaluateShowMentionGuard({ showIdentityHeadline: headline }, longBody, 400, noTitle).action, 'skip');
     // no headline, wrong-show headline, or another outlet: still refused
     assert.equal(acceptRecoveredText(rec(), { rawText: body }, c).code, 'show_not_mentioned');
     const wrong = acceptRecoveredText(rec(), { rawText: body, headline: 'Hamlet review at Shakespeare’s Globe, London' }, c);
@@ -289,4 +298,10 @@ test('headline identity keeps the generic-title gate: a generic title needs venu
     const withVenue = acceptRecoveredText(rec, { rawText: body, headline: 'Love Story review at Hampstead Theatre, London' }, c);
     assert.equal(withVenue.accept, true, withVenue.reason);
   } finally { gt._resetCachesForTest(null); }
+});
+
+test('pageHeadline keeps apostrophes inside a double-quoted og:title', () => {
+  const { pageHeadline } = require('./gap-acceptance.js');
+  assert.equal(pageHeadline('<meta property="og:title" content="Peter Shaffer\'s Equus review">'), "Peter Shaffer's Equus review");
+  assert.equal(pageHeadline("<meta content='A \"quoted\" title' property='og:title'>"), 'A "quoted" title');
 });

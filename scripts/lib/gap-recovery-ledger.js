@@ -262,7 +262,8 @@ function reconcileRecovered(rows, readReview, nowIso = new Date().toISOString())
     // fallback for rows without bytesAfter.
     const onDisk = review && typeof review.fullText === 'string' ? review.fullText.length : 0;
     const hasBytes = Number.isFinite(last.bytesAfter) && last.bytesAfter > 0;
-    if (review && (hasBytes ? onDisk >= last.bytesAfter : tier === 'complete')) continue;
+    // 90%: a later whitespace/boilerplate trim of the recovered text is not a loss.
+    if (review && (hasBytes ? onDisk >= Math.floor(last.bytesAfter * 0.9) : tier === 'complete')) continue;
     out.push(makeRow({
       ts: nowIso,
       reviewKey: key,

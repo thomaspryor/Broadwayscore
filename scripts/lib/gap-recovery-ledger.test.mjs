@@ -112,6 +112,7 @@ test('reconcile: a recovery whose honest tier is truncated stays closed while it
   const rows = [row({ ts: iso(NOW - DAY), outcome: 'recovered', bytesAfter: 3156 })];
   const kept = { contentTier: 'truncated', fullText: 'x'.repeat(3156) };
   assert.equal(L.reconcileRecovered(rows, () => kept).length, 0, 'recovered text still on disk: no reopen');
+  assert.equal(L.reconcileRecovered(rows, () => ({ contentTier: 'truncated', fullText: 'x'.repeat(3100) })).length, 0, 'a small later trim is not a loss');
   const lost = L.reconcileRecovered(rows, () => ({ contentTier: 'stub', fullText: 'x'.repeat(200) }));
   assert.equal(lost.length, 1, 'text clobbered back to a stub: reopen');
   assert.equal(lost[0].reason, 'recovered_text_lost');

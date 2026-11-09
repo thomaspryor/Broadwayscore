@@ -126,9 +126,10 @@ function pageHeadline(html) {
   if (!html || typeof html !== 'string') return null;
   const decode = (s) => String(s).replace(/<[^>]+>/g, ' ').replace(/&amp;/g, '&').replace(/&#0?39;|&rsquo;|&#8217;/g, "'")
     .replace(/&quot;/g, '"').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim();
-  const og = /<meta[^>]+property=["']og:title["'][^>]*content=["']([^"']+)["']/i.exec(html)
-    || /<meta[^>]+content=["']([^"']+)["'][^>]*property=["']og:title["']/i.exec(html);
-  if (og && decode(og[1])) return decode(og[1]);
+  // The closing quote must match the opening one: "Peter Shaffer's Equus" is one title.
+  const og = /<meta[^>]+property=["']og:title["'][^>]*content=(["'])((?:(?!\1).)+)\1/i.exec(html)
+    || /<meta[^>]+content=(["'])((?:(?!\1).)+)\1[^>]*property=["']og:title["']/i.exec(html);
+  if (og && decode(og[2])) return decode(og[2]);
   const h1 = /<h1\b[^>]*>([\s\S]*?)<\/h1>/i.exec(html);
   return h1 && decode(h1[1]) ? decode(h1[1]) : null;
 }
@@ -228,9 +229,11 @@ function acceptRecoveredText(existing, candidate, ctx = {}) {
   // 5. Identity: show named, not a different article, byline not contradicted,
   //    date plausible for this production.
   const showTitle = deriveShowTitle(showId);
+  let identityHeadline = null;
   if (!validateShowMentioned(text, showTitle, showId).valid) {
     const hl = headlineIdentity({ outletId: existing.outletId, headline: candidate.headline, show: ctx.show, showTitle });
     if (!hl.ok) return refuse('show_not_mentioned', `show not mentioned: "${showTitle}"${hl.why ? ` (headline: ${hl.why})` : ''}`);
+    identityHeadline = String(candidate.headline).trim();
   }
   if (ctx.show) {
     const v = require('./wrong-article-screen').screenWrongArticle(text, ctx.show);
@@ -280,6 +283,7 @@ function acceptRecoveredText(existing, candidate, ctx = {}) {
     priorTier,
     urlChanged,
     identity,
+    identityHeadline,
   };
 }
 
@@ -463,6 +467,9 @@ function recoverReviewText({ filePath, rawText, url, headline = null, expectUrl,
     data.contentTierReason = decision.newTierReason || labels.contentTierReasonFallback || null;
     delete data.incompleteReason;
     delete data.incompleteDetail;
+    // Accepted on the page's own headline (body never prints the title): persist that
+    // evidence so evaluateShowMentionGuard does not re-flag the body as wrong-show.
+    if (decision.identityHeadline) data.showIdentityHeadline = decision.identityHeadline;
     if (beforeWrite) beforeWrite(data, decision);
     if (data.llmScore && data.llmScore.score) {
       require('./rescore-flagging').markRescoreNeeded(data, `fullText recovered via ${labels.sourceMethod}`, undefined, { requeue: true });
