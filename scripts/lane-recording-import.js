@@ -128,7 +128,7 @@ function main() {
 
     const counts = skippedSame ? { 'skipped-same': skippedSame } : {};
     let unread = 0;
-    const pre = imp.applyRetention(root, imp.KEEP_NIGHTS, preImportTotalBytes({ maxTotalBytes: imp.MAX_TOTAL_BYTES, maxNightBytes: imp.MAX_NIGHT_BYTES }, work.length));
+    const pre = imp.applyRetention(root, imp.KEEP_NIGHTS, preImportTotalBytes({ maxTotalBytes: imp.MAX_TOTAL_BYTES, maxNightBytes: imp.MAX_NIGHT_BYTES }, work.map((w) => imp.dirBytes(w.dir))));
     if (pre.length) console.log(`retention removed ${pre.length} older nights before importing: ${pre.join(', ')}`);
     for (const w of work) {
       const marker = markerFile(root, w.a);

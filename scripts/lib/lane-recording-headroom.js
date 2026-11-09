@@ -9,11 +9,13 @@ const MAX_INCOMING_NIGHTS = 4; // headroom is bounded so one huge backlog cannot
 
 /**
  * @param {{maxTotalBytes: number, maxNightBytes: number}} budgets the import module's MAX_TOTAL_BYTES / MAX_NIGHT_BYTES
- * @param {number} incoming how many artifacts are about to be imported
+ * @param {number|number[]} incoming how many artifacts are about to be imported, or each one's size in bytes (each is
+ *   reserved at most maxNightBytes, so a small or skipped artifact does not cost the archive a whole night)
  * @returns {number} the total the archive must be trimmed to before importing
  */
 function preImportTotalBytes({ maxTotalBytes, maxNightBytes }, incoming) {
-  const room = maxNightBytes * Math.min(Math.max(0, incoming), MAX_INCOMING_NIGHTS);
+  const sizes = Array.isArray(incoming) ? incoming.map((b) => Math.min(Math.max(0, Number(b) || 0), maxNightBytes)) : Array(Math.max(0, incoming | 0)).fill(maxNightBytes);
+  const room = sizes.sort((a, b) => b - a).slice(0, MAX_INCOMING_NIGHTS).reduce((t, b) => t + b, 0);
   return Math.max(0, maxTotalBytes - room);
 }
 

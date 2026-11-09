@@ -43,7 +43,9 @@ async function replayDiscovery(recording, { show, night, stepMin = 2, adapters =
   const { resolveOutletFromUrl } = require('./lib/review-normalization');
   const first = recording.entries.reduce((m, e) => (m === null || e.t < m.t ? e : m), null);
   if (!first) return { passes: 0, spanMin: 0, found: [], unrecorded: [], errors: [] };
-  const originMs = Date.parse(first.at) - first.t; // wall clock at recording offset 0
+  const atMs = Date.parse(first.at);
+  const originMs = (Number.isFinite(atMs) ? atMs : 0) - first.t; // wall clock at recording offset 0 (a row with no `at` falls back to epoch 0)
+  if (!(stepMin >= 1)) throw new Error('step-min must be at least 1');
   const start = startedAtMs == null ? originMs : startedAtMs;
   let clock = 0; // ms since offset 0 of the recording
   const now = () => originMs + clock;
@@ -69,8 +71,9 @@ async function replayDiscovery(recording, { show, night, stepMin = 2, adapters =
       const o = resolveOutletFromUrl(c.key) || resolveOutletFromUrl(c.url) || {};
       foundAt.set(c.key, {
         url: c.key, adapter: c.adapter, pass: passes, minute: Math.round(clock / MIN), at: new Date(now()).toISOString(),
-        outletId: c.outletId || o.outletId || null, outlet: c.outlet || o.outlet || o.name || null,
-        criticName: c.criticName || c.critic || null, publishDate: c.publishDate || null,
+        outletId: c.outletId || o.outletId || null, outlet: o.displayName || c.outlet || null,
+        // The critic is read from the article page in the scoring stage, which a recording does not hold: not replayable.
+        criticName: null, publishDate: c.publishDate || null,
         pullQuote: (c.excerpts && Object.values(c.excerpts)[0]) || c.excerpt || null, aggregatorCited: !!c.aggregatorCited,
       });
       seen.add(c.key);
@@ -81,26 +84,31 @@ async function replayDiscovery(recording, { show, night, stepMin = 2, adapters =
 
 /** Card completeness and the coverage rule over what was found. */
 function summarize(found, { market = 'broadway' } = {}) {
-  const { getOutletTier } = require('./lib/review-normalization');
   const { getMarketMinReviews } = require('./lib/min-reviews');
   const min = getMarketMinReviews(market);
-  const gaps = { outlet: [], critic: [], date: [], pullQuote: [] };
+  const gaps = { outlet: [], date: [], pullQuote: [] };
   for (const f of found) {
     if (!f.outlet) gaps.outlet.push(f.url);
-    if (!f.criticName) gaps.critic.push(f.url);
     if (!f.publishDate) gaps.date.push(f.url);
     if (!f.pullQuote) gaps.pullQuote.push(f.url);
   }
+  const { reviewsRemainingForScore } = require('./lib/min-reviews');
+  const { getOutletTier } = require('./lib/review-normalization');
   const ordered = [...found].sort((a, b) => a.minute - b.minute);
   const outlets = new Set();
+  let t12 = 0;
   let coverageMinute = null;
+  const unresolved = found.filter((f) => !f.outletId).length;
   for (const f of ordered) {
-    outlets.add(f.outletId || f.url);
-    if (coverageMinute === null && outlets.size >= min) coverageMinute = f.minute;
+    if (!f.outletId || outlets.has(f.outletId)) continue; // an unresolved outlet cannot be counted as a distinct review
+    outlets.add(f.outletId);
+    const t = getOutletTier(f.outletId);
+    if (t === 1 || t === 2) t12++;
+    if (coverageMinute === null && reviewsRemainingForScore(outlets.size, market, t12) === 0) coverageMinute = f.minute;
   }
   const tiers = {};
   for (const f of found) { const t = f.outletId ? getOutletTier(f.outletId) : null; tiers[t || 'unknown'] = (tiers[t || 'unknown'] || 0) + 1; }
-  return { foundCount: found.length, distinctOutlets: outlets.size, minReviewsRule: min, coverageMinute, tiers, gaps: Object.fromEntries(Object.entries(gaps).map(([k, v]) => [k, v.length])), gapUrls: gaps };
+  return { foundCount: found.length, distinctOutlets: outlets.size, unresolvedOutlets: unresolved, criticNote: 'critic is read from the article in the scoring stage; not in a recording', minReviewsRule: min, coverageMinute, tiers, gaps: Object.fromEntries(Object.entries(gaps).map(([k, v]) => [k, v.length])), gapUrls: gaps };
 }
 
 async function main() {

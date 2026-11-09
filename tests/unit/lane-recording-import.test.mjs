@@ -332,5 +332,6 @@ test('BRO-7167: the headroom is bounded and the import script uses it', () => {
   assert.equal(preImportTotalBytes({ maxTotalBytes: 1000, maxNightBytes: 10 }, 0), 1000);
   assert.equal(preImportTotalBytes({ maxTotalBytes: 1000, maxNightBytes: 10 }, 99), 1000 - 10 * MAX_INCOMING_NIGHTS);
   assert.equal(preImportTotalBytes({ maxTotalBytes: 5, maxNightBytes: 10 }, 1), 0);
-  assert.match(fs.readFileSync(fileURLToPath(new URL('../../scripts/lane-recording-import.js', import.meta.url)), 'utf8'), /preImportTotalBytes\(/);
+  assert.equal(preImportTotalBytes({ maxTotalBytes: 1000, maxNightBytes: 10 }, [3, 50, 0]), 1000 - 13, 'each artifact reserves its own size, capped at a night');
+  assert.match(fs.readFileSync(fileURLToPath(new URL('../../scripts/lane-recording-import.js', import.meta.url)), 'utf8'), /preImportTotalBytes\([^)]*work\.map\(\(w\) => imp\.dirBytes\(w\.dir\)\)\)/, 'the script sizes the headroom from the downloaded artifacts');
 });
