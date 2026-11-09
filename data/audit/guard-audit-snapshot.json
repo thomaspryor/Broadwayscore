@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-08T09:13:10.107Z",
+  "generatedAt": "2026-11-09T10:15:54.060Z",
   "window": {
-    "since": "2026-11-02",
-    "until": "2026-11-08"
+    "since": "2026-11-03",
+    "until": "2026-11-09"
   },
   "bannerText": "Spend guard audit (last 7 days): 0 defect(s), 1 cap drift(s).",
   "items": [
@@ -56,7 +56,7 @@
         "source": "opening-window-reserve",
         "from": "trip-row",
         "currentZero": false,
-        "median14d": 643,
+        "median14d": 802,
         "drift": false,
         "note": null
       }
@@ -166,7 +166,7 @@
         "caveat": null
       },
       "drift": {
-        "ceiling": 228052,
+        "ceiling": 217236,
         "source": "plan",
         "from": "state",
         "currentZero": false,
@@ -177,16 +177,6 @@
     }
   ],
   "spendByDay": {
-    "2026-10-26": {
-      "partial": false,
-      "guards": {
-        "bd-circuit-breaker-web_unlocker2": {
-          "usd": 0.0065,
-          "rows": 41,
-          "unpriced": 0
-        }
-      }
-    },
     "2026-10-27": {
       "partial": false,
       "guards": {
@@ -290,14 +280,18 @@
       "guards": {}
     },
     "2026-11-08": {
+      "partial": false,
+      "guards": {}
+    },
+    "2026-11-09": {
       "partial": true,
       "guards": {}
     }
   },
   "dailyBreakerPattern": {
     "window": {
-      "sinceDay": "2026-11-02",
-      "untilDay": "2026-11-08",
+      "sinceDay": "2026-11-03",
+      "untilDay": "2026-11-09",
       "days": 7
     },
     "providers": {

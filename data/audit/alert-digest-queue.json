@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "conditionKey": "priority-queue:overdue",
+    "title": "Overdue P0/P1 queue: 13 P0 older than 24h, 23 P1 older than 7d (still open — BRO-5613)",
+    "description": "Still firing after 37 notifications since it was filed. Tracked at BRO-5613.\n\n24 P0 open (13 older than 24h, oldest 14d); 56 P1 open (23 older than 7d); 358 open issues of any priority.\n\nOldest overdue P0s:\n- BRO-6290 (14d): iOS account deletion: revoke the Sign in with Apple token (App Review 5.1.1(v))\n- BRO-6302 (14d): BRO-6287 follow-through: land TR caption fix, CI re-extract, measure\n- BRO-6652 (10d): Press-night probe stamps who published, manual fixes and text-scored times; morning grade line uses them\n- BRO-6687 (9d): Rebuild off-Broadway / West End / off-West End review discovery for completeness (owner chose A 2026-10-31)\n- BRO-6716 (9d): Every-review backfill: resolve 175 aggregator-cited reviews not live across 1,007 shows opened in the last year, plus 397 shows never gap-audited\n- BRO-6751 (8d): Gap audit runs ~4-8x/day, not hourly: daily slow-market rechecks and the 30-day cap can't hold at ~13 shows/run\n- BRO-6858 (7d): Broadway press night hardening before Wanted (Nov 8): old-path watchdog, fast owner alert, fresh embargo, faster first-2h polling, credit preflight\n- BRO-7078 (2d): Opening retro: reviews stuck in pending or live late cannot recur\n- BRO-7080 (2d): Opening retro: wrong scores, wrong show records and other per-show errors cannot recur\n- BRO-7081 (2d): Opening retro: aggregator-cited reviews never discovered cannot recur",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-5613",
+    "fields": [],
+    "queuedAt": "2026-11-09T09:55:23.078Z"
+  },
+  {
+    "conditionKey": "coverage-holes:tosca-off-broadway-2026",
+    "title": "tosca-off-broadway-2026: 1 review(s) need a decision (rejected real review, score outside the critic's rating, or a teaser double-counting a critic)",
+    "description": "- rejected as not-a-review, verification says review: tosca-off-broadway-2026/broadwayworld--dc-felton.json\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating. Teaser: confirm the text only points to the full review, then set isNonReviewReason \"manual (not a review): teaser linking to <twin>\" and isNonReview true (model: bro-7131c.json).",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-09T09:56:18.101Z"
+  },
+  {
+    "conditionKey": "coverage-holes:dogstar-off-west-end-2026",
+    "title": "dogstar-off-west-end-2026: 1 review(s) need a decision (rejected real review, score outside the critic's rating, or a teaser double-counting a critic)",
+    "description": "- rejected as not-a-review, verification says review: dogstar-off-west-end-2026/theatreboard--unknown.json\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating. Teaser: confirm the text only points to the full review, then set isNonReviewReason \"manual (not a review): teaser linking to <twin>\" and isNonReview true (model: bro-7131c.json).",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-09T09:56:18.136Z"
+  },
+  {
+    "conditionKey": "coverage-holes:a-few-good-men-2026",
+    "title": "a-few-good-men-2026: 1 review(s) need a decision (rejected real review, score outside the critic's rating, or a teaser double-counting a critic)",
+    "description": "- rejected as not-a-review, verification says review: a-few-good-men-2026/cnn--david-mack.json\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating. Teaser: confirm the text only points to the full review, then set isNonReviewReason \"manual (not a review): teaser linking to <twin>\" and isNonReview true (model: bro-7131c.json).",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-09T09:56:18.162Z"
+  },
+  {
+    "conditionKey": "coverage-holes:the-moth-off-west-end-2026",
+    "title": "the-moth-off-west-end-2026: 1 review(s) need a decision (rejected real review, score outside the critic's rating, or a teaser double-counting a critic)",
+    "description": "- rejected as not-a-review, verification says review: the-moth-off-west-end-2026/letterboxd--unknown.json\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating. Teaser: confirm the text only points to the full review, then set isNonReviewReason \"manual (not a review): teaser linking to <twin>\" and isNonReview true (model: bro-7131c.json).",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-09T09:56:18.220Z"
+  },
+  {
+    "conditionKey": "provider-spend:overspend",
+    "title": "Scraping spend over budget (still open — BRO-5526)",
+    "description": "Still firing after 50 notifications since it was filed. Tracked at BRO-5526.\n\nDay 2026-11-08. Over budget: scrapingbee on pace to run out before renewal: ~19645 credits/day (4-day average) x 26 days to 2026-12-05 = 510764 > 171421 left. 2026-11-08 · Browserbase: $0.74 (181 sessions, 36.87min) · 2026-11-08 · Bright Data: $2.52 (57 serp / 1626 unlocker) · ScrapingBee: 15278 credits (78579 this cycle) · ScrapingDog: 117551 credits (374517 this cycle) · Browserbase attribution: 99% attributed — top callers (covers 99% of billed calls): collect-review-texts.js 132, bww-rr-discover.js 47, collect-talkinbroadway-index.js 1 · Bright Data attribution: 100% attributed — top callers (covers 87% of billed calls): collect-review-texts.js 501, opening-night-poller.js 337, audit-show-review-gap.js 274, gather-reviews.js 189, replay-pending-bylines.js 162 · ScrapingBee attribution: 100% attributed — top callers (covers 100% of billed credits): opening-night-poller.js 8553cr, gather-reviews.js 5290cr, scrape-show-score-audience.js 1335cr, collect-review-texts.js 1292cr, discover-opening-night-reviews.js 600cr · ScrapingDog attribution: 96% attributed — top callers (covers 69% of billed credits): gather-reviews.js 44093cr, audit-show-review-gap.js 15320cr, discover-opening-night-reviews.js 8326cr, collect-review-texts.js 6716cr, fetch-show-images-auto.js 6676cr · ⚠️ ScrapingDog top-caller coverage low: 69% of billed credits < 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight · 2026-11-08 · LLM APIs (metered estimate, not the full bill): Gemini est $0.12 (72 calls) · top: index.ts [LLM Ensemble Score Reviews] $0.12. Verification streak reset to 0.",
+    "severity": "error",
+    "url": null,
+    "decision": true,
+    "info": false,
+    "decisionPrompt": "Scraping spend over budget: scrapingbee on pace to run out before renewal: ~19645 credits/day (4-day average) x 26 days to 2026-12-05 = 510764 > 171421 left. Should I buy more credits (or raise the Bright Data line), or do you want scraping volume cut to stay within it?",
+    "model": null,
+    "tracked": "BRO-5526",
+    "fields": [],
+    "queuedAt": "2026-11-09T10:15:56.166Z"
+  }
+]
