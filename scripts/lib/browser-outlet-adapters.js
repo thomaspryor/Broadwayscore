@@ -96,6 +96,11 @@ const ADAPTERS = Object.freeze({
   // Stage 4: the other five recover-*-browser.js outlets. Profile names
   // (the adapter key) match the persistent profiles renew-cookies.js keeps.
   nyt: Object.freeze({
+    // Stage 4 live batch 2026-11-09: 4/20 accepted (20%, under the 30% bar).
+    // Most rejects were not_longer (the stored text already is the whole
+    // review: false truncation) or 404s on old urls; one accept was a
+    // multi-show London column (fixed by hand). Off for the nightly.
+    nightly: false,
     outletIds: ['nytimes'],
     cookieDomain: 'nytimes.com',
     testUrl: 'https://www.nytimes.com/2022/10/06/theater/1776-review-broadway.html',
@@ -162,6 +167,20 @@ function adapterFor(outletId) {
   return null;
 }
 
+/**
+ * Stage 4 30% rule, per adapter: an adapter whose measured live yield is under
+ * 30% sets `nightly: false` and the unattended run plans no BROWSER_SESSION
+ * for it. A manual run that names the outlet (--outlet=nytimes) still may.
+ * @param {string} outletId
+ * @param {{explicitOutlets?: Set<string>|string[]|null}} [o]
+ */
+function adapterUsable(outletId, { explicitOutlets = null } = {}) {
+  const a = adapterFor(outletId);
+  if (!a) return false;
+  if (a.nightly !== false) return true;
+  return !!explicitOutlets && [...explicitOutlets].includes(outletId);
+}
+
 function renewLockPath() {
   // The main checkout's data/cookies (worktrees have no cookie jar of their own).
   let root = null;
@@ -206,4 +225,4 @@ async function openSession(adapter) {
   }
 }
 
-module.exports = { ADAPTERS, adapterFor, openSession, extractThestage, gotoOrNotFound };
+module.exports = { ADAPTERS, adapterFor, adapterUsable, openSession, extractThestage, gotoOrNotFound };

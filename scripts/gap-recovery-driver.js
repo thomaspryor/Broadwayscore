@@ -88,7 +88,7 @@ const LABELS = {
 /** Build the candidate list with a strategy per review (no writes). */
 function planCandidates({ dir, shows, outlets, ledgerIndex, runGates }) {
   const { scanCorpus } = require('./lib/text-gap-metric');
-  const { adapterFor } = require('./lib/browser-outlet-adapters');
+  const { adapterUsable } = require('./lib/browser-outlet-adapters');
   const rg = require('./lib/review-guards');
   const { loadFailedFetches } = require('./lib/text-gap-metric');
   const ff = loadFailedFetches(dir);
@@ -120,7 +120,7 @@ function planCandidates({ dir, shows, outlets, ledgerIndex, runGates }) {
     const reselect = (extraGates = {}) => selectStrategy({
       gapClass: row.gapClass,
       hasUrl: !!review.url,
-      hasAdapter: !!adapterFor(review.outletId),
+      hasAdapter: adapterUsable(review.outletId, { explicitOutlets: OPTS.outlets }),
       // An unknown show date counts as 'recent' for ordering, but such shows
       // are often old: do not take ARCHIVE away from them.
       recency: row.dateKnown === false ? null : row.recency,

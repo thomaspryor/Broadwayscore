@@ -32,6 +32,21 @@ test('every recover-*-browser.js outlet has an adapter, keyed by its persistent 
   }
 });
 
+test('30% rule per adapter: a nightly:false adapter is planned only when the run names its outlet', () => {
+  assert.equal(A.ADAPTERS.nyt.nightly, false, 'NYT measured 4/20 live (20%)');
+  assert.equal(A.adapterUsable('nytimes'), false);
+  assert.equal(A.adapterUsable('nytimes', { explicitOutlets: new Set(['nytimes']) }), true);
+  assert.equal(A.adapterUsable('nytimes', { explicitOutlets: new Set(['thestage']) }), false);
+  assert.equal(A.adapterUsable('thestage'), true, 'The Stage measured 18/20');
+  assert.equal(A.adapterUsable('telegraph'), false);
+});
+
+test('the driver plans BROWSER_SESSION through adapterUsable, not bare adapterFor', async () => {
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(new URL('../gap-recovery-driver.js', import.meta.url), 'utf8');
+  assert.match(src, /hasAdapter:\s*adapterUsable\(review\.outletId,\s*\{\s*explicitOutlets:\s*OPTS\.outlets\s*\}\)/);
+});
+
 test('a 404/410 is reported as notFound (dead url), before any body read', async () => {
   for (const name of Object.keys(A.ADAPTERS)) {
     const page = fakePage({ status: 404 });

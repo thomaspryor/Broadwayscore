@@ -294,7 +294,11 @@ function acceptRecoveredText(existing, candidate, ctx = {}) {
 
   // 5. Identity: show named, not a different article, byline not contradicted,
   //    date plausible for this production.
-  const showTitle = deriveShowTitle(showId);
+  // The shows.json title, not the slug: the slug gives "life of pi tour",
+  // "n a" (N/A) and "44" (44 - The Obama Musical), which no review prints, so
+  // every tour / punctuated title was refused show_not_mentioned (Stage 4
+  // WaPo live batch 2026-11-09: 6 of 20). The slug form is only the fallback.
+  const showTitle = (ctx.show && ctx.show.title) || deriveShowTitle(showId);
   let identityHeadline = null;
   if (!validateShowMentioned(text, showTitle, showId).valid) {
     const hl = headlineIdentity({ outletId: existing.outletId, headline: candidate.headline, show: ctx.show, showTitle });

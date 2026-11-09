@@ -341,3 +341,14 @@ test('same-tier refetch that only gains page chrome is refused; one that gains t
   const real = acceptRecoveredText(prior, { rawText: `${REVIEW} ${MORE}` }, ctx);
   assert.equal(real.accept, true, real.reason);
 });
+
+test('show-mention uses the shows.json title, not the slug (tour / punctuated titles, Stage 4 WaPo batch)', () => {
+  const show = { id: 'life-of-pi-tour-2024', title: 'Life of Pi', openingDate: '2024-12-20' };
+  const body = 'Life of Pi arrives at the Kennedy Center with its tiger puppet intact, and the touring company finds real wonder in the lifeboat scenes. '.repeat(6);
+  const rec = { showId: show.id, outletId: 'washpost', criticName: 'Chris Klimek', url: 'https://www.washingtonpost.com/x/life-of-pi-tour-kennedy-center-review/', fullText: 'Short.', contentTier: 'excerpt' };
+  assert.equal(deriveShowTitle(show.id), 'life of pi tour', 'the slug form no review prints');
+  const d = acceptRecoveredText(rec, { rawText: body }, { showId: show.id, show });
+  assert.equal(d.accept, true, d.reason);
+  // without the shows.json entry the slug fallback still applies
+  assert.equal(acceptRecoveredText(rec, { rawText: body }, { showId: show.id }).code, 'show_not_mentioned');
+});
