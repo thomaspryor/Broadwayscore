@@ -1,8 +1,11 @@
 {
   "issueNumber": "bro-7245",
   "planId": "437d0167-0c31-4cc2-aecb-2fd4eea54a96",
-  "status": "pending",
-  "submitter": { "name": null, "email": null },
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
   "plan": {
     "summary": "BRO-7245: add a commercial entry for Legally Blonde (2007, Palace Theatre), which had none.",
     "steps": [
@@ -25,12 +28,29 @@
           "designationBasis": "reported-loss",
           "notes": "Commercial musical at the Palace Theatre (opened Apr 29, 2007; closed Oct 19, 2008 after 595 performances). Lead producer Hal Luftig put the total budget at $12.8M, including about $1.5M for a San Francisco tryout. Grossed about $56M on Broadway and closed without recouping, after grosses fell in fall 2008. No published source says how much of the capitalization came back; a '75% by closing' figure that circulates online traces only to a January 2008 forum projection. The national tour, the West End production and licensing pay royalties to the Broadway company, but no source reports the investors being made whole.",
           "sources": [
-            { "type": "trade", "url": "https://jrliebermancpa.com/wp-content/uploads/2011/07/BROADWAY-BUSINESS-WEALTH-MANAGER-2006.pdf", "date": "2006-09-01" },
-            { "type": "trade", "url": "https://www.dailyherald.com/20090506/lifestyle/creative-marketing-saved-chicago-bound-legally-blonde/", "date": "2009-05-06" }
+            {
+              "type": "trade",
+              "url": "https://jrliebermancpa.com/wp-content/uploads/2011/07/BROADWAY-BUSINESS-WEALTH-MANAGER-2006.pdf",
+              "date": "2006-09-01"
+            },
+            {
+              "type": "trade",
+              "url": "https://www.dailyherald.com/20090506/lifestyle/creative-marketing-saved-chicago-bound-legally-blonde/",
+              "date": "2009-05-06"
+            }
           ]
         },
         "description": "legally-blonde-2007: add commercial entry (Did Not Recoup, $12.8M capitalization)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-09T21:12:31.137Z",
+  "results": [
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added legally-blonde-2007 (Did Not Recoup)"
+    }
+  ],
+  "executedIn": "ci"
 }
