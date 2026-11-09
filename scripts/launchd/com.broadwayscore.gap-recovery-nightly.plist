@@ -13,8 +13,9 @@
          line plus ACTION-only alerts.
 
          GUI LaunchAgent (gui/$(id -u) domain): the subscriber-browser
-         strategy needs a logged-in, unlocked console session. When the screen
-         is locked, scripts/lib/gui-session.js says so, the browser attempts are
+         strategy needs a logged-in console session (a locked screen is fine,
+         BRO-7171 Stage 4: headed Chrome extracts while locked). Without one,
+         scripts/lib/gui-session.js says so, the browser attempts are
          recorded as browser_unavailable (non-evidence) and the free
          strategies (REFETCH_FREE, ARCHIVE) still run.
 

@@ -223,10 +223,13 @@ test('live preflight: no shows.json refuses the run; no cookie jar gates the bro
   assert.deepEqual(T.liveEnvironmentGates({ showsJsonReadable: true, cookieJarExists: true }), { fatal: null, runGates: {} });
 });
 
-test('GUI check: locked screen and missing console session are unavailable', () => {
+test('GUI check: a locked screen is usable (Stage 4); a missing console session is not', () => {
+  // Stage 2 refused a locked screen, so the 01:30 nightly never ran one browser attempt.
   const locked = '"IOConsoleUsers" = ({"kCGSSessionOnConsoleKey"=Yes,"kCGSSessionUserNameKey"="tom","CGSSessionScreenIsLocked"=Yes})';
   const open = '"IOConsoleUsers" = ({"kCGSSessionOnConsoleKey"=Yes,"kCGSSessionUserNameKey"="tom"})';
-  assert.deepEqual(parseIoregConsole(locked, 'tom'), { available: false, reason: 'screen_locked' });
+  const offConsole = '"IOConsoleUsers" = ({"kCGSSessionOnConsoleKey"=No,"kCGSSessionUserNameKey"="tom","CGSSessionScreenIsLocked"=Yes})';
+  assert.deepEqual(parseIoregConsole(locked, 'tom'), { available: true, reason: 'gui_ok_screen_locked' });
+  assert.equal(parseIoregConsole(offConsole, 'tom').reason, 'session_not_on_console');
   assert.deepEqual(parseIoregConsole(open, 'tom'), { available: true, reason: 'gui_ok' });
   assert.equal(parseIoregConsole(open, 'someone').reason, 'user_not_on_console');
   assert.equal(parseIoregConsole('', 'tom').reason, 'no_console_session');
