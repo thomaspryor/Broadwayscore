@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-09T05:48:58.052Z",
+  "timestamp": "2026-11-09T06:15:57.041Z",
   "stats": {
     "totalReviews": 80816,
-    "alreadyFlagged": 22102,
+    "alreadyFlagged": 22104,
     "dateGuardCatches": 219,
     "directorMismatch": 3595,
-    "tvFilmSignals": 2307,
+    "tvFilmSignals": 2306,
     "londonSignals": 3653,
     "offBroadwaySignals": 751,
     "yearMismatch": 370,
-    "noPublishDate": 8390
+    "noPublishDate": 8388
   },
   "findings": [
     {
@@ -6061,6 +6061,7 @@
     {
       "showId": "annie-regional-2026",
       "file": "broadwayworld--r-scott-reedy.json",
+      "score": 77,
       "publishDate": "2026-06-21",
       "url": "https://www.broadwayworld.com/boston/article/Review-ANNIE-at-Greater-Boston-Stage-Company-20260621",
       "findings": [
@@ -6079,6 +6080,7 @@
     {
       "showId": "annie-regional-2026",
       "file": "metrmag--unknown.json",
+      "score": 83,
       "publishDate": null,
       "url": "https://www.metrmag.com/latest-reviews/annie-the-musical-by-thomas-meehan-charles-strouse-and-martin-charnin-greater-boston-stage-company-stoneham-ma-review",
       "findings": [
@@ -6092,6 +6094,7 @@
     {
       "showId": "annie-regional-2026",
       "file": "theater-mirror--julie-anne-whitney.json",
+      "score": 72,
       "publishDate": "2026-06-04",
       "url": "https://www.theatermirror.net/?p=11258",
       "findings": [
@@ -18235,6 +18238,7 @@
     {
       "showId": "delirium-regional-2026",
       "file": "artsfuse--bill-marx.json",
+      "score": 89,
       "publishDate": "2026-06-28",
       "url": "https://artsfuse.org/330885/theater-review-arlekins-delirium-reimagines-ionesco-with-visual-flair-and-urgency/",
       "findings": [
@@ -18248,6 +18252,7 @@
     {
       "showId": "delirium-regional-2026",
       "file": "boston-globe--unknown.json",
+      "score": 90,
       "publishDate": "2026-06-25",
       "url": "https://www.bostonglobe.com/2026/06/25/arts/arlekin-delirium/",
       "findings": [
@@ -18261,6 +18266,7 @@
     {
       "showId": "delirium-regional-2026",
       "file": "stageandcinema--lynne-weiss.json",
+      "score": 89,
       "publishDate": "2026-06-26",
       "url": "https://stageandcinema.com/2026/06/26/delirium-review-arlekin-players/",
       "findings": [
@@ -18274,6 +18280,7 @@
     {
       "showId": "delirium-regional-2026",
       "file": "theater-mirror--julie-anne-whitney.json",
+      "score": 90,
       "publishDate": "2026-06-25",
       "url": "https://www.theatermirror.net/arlekin-players-delirium-is-a-rampantly-imaginative-work-that-will-leave-you-speechless/",
       "findings": [
@@ -18287,6 +18294,7 @@
     {
       "showId": "delirium-regional-2026",
       "file": "theater-mirror--michele-markarian.json",
+      "score": 90,
       "publishDate": "2026-06-27",
       "url": "https://www.theatermirror.net/delirium-strikes-all-the-right-raw-notes/",
       "findings": [
@@ -36670,19 +36678,6 @@
       ]
     },
     {
-      "showId": "joseph-and-the-amazing-technicolor-dreamcoat-north-regional-2026",
-      "file": "metrmag--unknown.json",
-      "publishDate": null,
-      "url": "https://www.metrmag.com/latest-reviews/a-christmas-story-the-musical-by-joseph-robinette-benj-pasek-and-justin-paul-calliope-productions-boylston-ma-review",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"hulu\""
-        }
-      ]
-    },
-    {
       "showId": "joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021",
       "file": "telegraph--claire-allfree.json",
       "score": 80,
@@ -42937,6 +42932,7 @@
     {
       "showId": "merrily-we-roll-along-sullivan-regional-2026",
       "file": "broadwayworld--r-scott-reedy.json",
+      "score": 79,
       "publishDate": "2026-06-21",
       "url": "https://www.broadwayworld.com/boston/article/Review-Sullivan-Reps-MERRILY-WE-ROLL-ALONG-Shows-Sondheim-is-Worth-a-Second-Look-20260621",
       "findings": [
@@ -42950,6 +42946,7 @@
     {
       "showId": "merrily-we-roll-along-sullivan-regional-2026",
       "file": "sleeplesscritic--the-sleepless-critic.json",
+      "score": 78,
       "publishDate": "2026-06-25",
       "url": "https://sleeplesscritic.com/2026/06/25/review-risking-it-all-in-sullivan-reps-wry-and-reflective-merrily-we-roll-along/",
       "findings": [
@@ -50294,6 +50291,7 @@
     {
       "showId": "paranormal-activity-boston-regional-2026",
       "file": "metrmag--unknown.json",
+      "score": 76,
       "publishDate": null,
       "url": "https://www.metrmag.com/latest-reviews/paranormal-activity-by-levin-holloway-emerson-colonial-theatre-boston-ma-review",
       "findings": [
@@ -50307,6 +50305,7 @@
     {
       "showId": "paranormal-activity-boston-regional-2026",
       "file": "netheatregeek--kitty-drexel.json",
+      "score": 79,
       "publishDate": "2026-07-17",
       "url": "https://www.netheatregeek.com/2026/07/17/alarm-goes-on-alarm-goes-off-paranormal-activity-play/",
       "findings": [
@@ -72077,6 +72076,7 @@
     {
       "showId": "the-mystery-of-irma-vep-regional-2026",
       "file": "boston-globe--unknown.json",
+      "score": 89,
       "publishDate": "2026-06-01",
       "url": "https://www.bostonglobe.com/2026/06/01/arts/central-square-theater-mystery-of-irma-vep/",
       "findings": [
