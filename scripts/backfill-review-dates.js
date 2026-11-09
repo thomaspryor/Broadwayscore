@@ -39,7 +39,7 @@ require('./lib/load-env').loadEnv();
 
 const { fetchPage } = require('./lib/scraper');
 const { safeWriteReview } = require('./lib/review-write-guard');
-const { runPublishDateBackfillTriage } = require('./lib/publish-date-backfill-triage');
+const { runPublishDateBackfillTriage, buildGateRevertedRecord } = require('./lib/publish-date-backfill-triage');
 const { listShowDirs } = require('./lib/list-show-dirs');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -276,6 +276,7 @@ async function main() {
 
   let extracted = 0, failed = 0, errors = 0;
   const touchedFiles = new Set();
+  const originals = new Map(); // rel path -> pre-write record (recheck/page-date writes)
 
   for (let i = 0; i < batch.length; i++) {
     const { show, file, url, filePath } = batch[i];
@@ -295,11 +296,14 @@ async function main() {
           if (textDate) {
             console.log(`  ✓ Date from text regex (no fetch needed): ${textDate}`);
             if (!dryRun) {
+              const original = JSON.parse(JSON.stringify(data));
               data.publishDate = textDate;
               data.dateSource = 'text-regex-backfill';
               const result = safeWriteReview(filePath, data);
               if (result && result.wrote === false) { failed++; continue; }
-              touchedFiles.add(path.relative(baseDir, filePath));
+              const rel = path.relative(baseDir, filePath);
+              touchedFiles.add(rel);
+              originals.set(rel, { original, pageDate: textDate, pageDateSource: 'text-regex-backfill' });
             }
             extracted++;
             continue;
@@ -386,6 +390,8 @@ async function main() {
             safeWriteReview(filePath, current);
           }
         } else if (!dryRun) {
+          // BRO-6707: kept so the contamination gate can revert just this file.
+          const original = JSON.parse(JSON.stringify(current));
           const data = current;
           if (recheckDates && data.publishDate !== date) console.log(`  → replaces ${data.publishDate} (${data.dateSource || 'no dateSource'})`);
           delete data.pageDateCandidate;
@@ -408,7 +414,9 @@ async function main() {
             extracted--;
             failed++;
           } else {
-            touchedFiles.add(path.relative(baseDir, filePath));
+            const rel = path.relative(baseDir, filePath);
+            touchedFiles.add(rel);
+            originals.set(rel, { original, pageDate: date, pageDateSource: dateSource });
           }
         }
       } else {
@@ -428,7 +436,21 @@ async function main() {
     }
   }
 
-  runPublishDateBackfillTriage({ touchedFiles, dryRun, repoRoot: path.resolve(__dirname, '..') });
+  // BRO-6707: a date this batch wrote that trips the contamination gate is reverted
+  // (kept as pageDateCandidate, marked attempted) instead of aborting the whole run.
+  const { reverted } = runPublishDateBackfillTriage({
+    touchedFiles, dryRun, repoRoot: path.resolve(__dirname, '..'),
+    revertBlockers: (rels) => {
+      for (const rel of rels) {
+        const saved = originals.get(rel);
+        if (!saved) throw new Error(`cannot revert ${rel}: no pre-write record`);
+        const record = buildGateRevertedRecord(saved.original, saved.pageDate, saved.pageDateSource, { recheck: recheckDates });
+        const result = safeWriteReview(path.join(baseDir, rel), record, { force: true, merge: false });
+        if (result && result.wrote === false) throw new Error(`cannot revert ${rel}: ${result.skipped || 'write refused'}`);
+      }
+    },
+  });
+  if (reverted.length) { extracted -= reverted.length; failed += reverted.length; }
 
   console.log(`\n=== SUMMARY ===`);
   console.log(`Processed: ${batch.length}`);

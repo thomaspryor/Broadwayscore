@@ -99,6 +99,6 @@ function isClassGExempt(data, show, filePath) {
 }
 
 module.exports = {
-  shouldBlockContaminationGate, STRICT_CLASSES, countStrictHits, isAlreadyExcludedFromScoring,
+  shouldBlockContaminationGate, STRICT_CLASSES, countStrictHits, countsTowardStrict, isAlreadyExcludedFromScoring,
   isClassGExempt,
 };
