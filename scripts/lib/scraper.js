@@ -158,6 +158,10 @@ const JS_REQUIRED_DOMAINS = new Set([
  * Success and wiped 29 shows' cast data twice).
  */
 function _isChallengeOrGarbage(content) {
+  // BRO-7158: Scrapingdog served web.archive.org id_ snapshots as raw zstd/gzip bytes decoded as
+  // text ("(\uFFFD/\uFFFD" zstd frame, "\x1f\uFFFD" gzip member). Unrecoverable, and no extractor
+  // can read it, so the chain must fall through to the next provider instead of stopping.
+  if (typeof content === 'string' && /^(?:\(\uFFFD\/\uFFFD|\x1f\uFFFD)/.test(content)) return true;
   // BRO-5725: the full Cloudflare managed-challenge page is ~29KB (inline JS), so
   // the <10KB gate below let it through as "Success (Playwright)". Its <title> is
   // always exactly "Just a moment..." and no real article is titled that, so this

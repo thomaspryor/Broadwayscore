@@ -96,3 +96,9 @@ test('BRO-5875: redirect wrappers and <pre> pages are not judged as empty shells
   assert.equal(s.isNearEmptyHtmlShell('<html><body><script>location.replace("https://x.com/a")</script></body></html>'), false);
   assert.equal(s.isNearEmptyHtmlShell('<html><body><pre>{"a":1}</pre></body></html>'), false);
 });
+
+test('BRO-7158: compressed binary decoded as text is garbage (zstd and gzip frames)', () => {
+  assert.equal(s.isChallengeOrGarbage('(\uFFFD/\uFFFD\u0000X\uFFFD\uFFFD' + 'x'.repeat(12000)), true);
+  assert.equal(s.isChallengeOrGarbage('\x1f\uFFFD\b\u0000' + 'x'.repeat(12000)), true);
+  assert.equal(s.isChallengeOrGarbage('<html><body>' + 'Real article text. '.repeat(900) + '</body></html>'), false);
+});
