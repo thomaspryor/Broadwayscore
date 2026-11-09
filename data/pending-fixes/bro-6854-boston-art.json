@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6854-boston-art",
   "planId": "4589e037-8902-4404-8560-3580e1140cc8",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-09T06:29:19.673Z",
   "submitter": {
     "name": null,
@@ -84,5 +84,34 @@
         "description": "shows.json: all-my-sons-regional-2026.images"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-09T06:40:15.210Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for eleanor-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for annie-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for merrily-we-roll-along-sullivan-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for paranormal-activity-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for all-my-sons-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
