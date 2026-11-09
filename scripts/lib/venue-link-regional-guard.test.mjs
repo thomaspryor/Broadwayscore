@@ -18,7 +18,10 @@ const FILES = [
 // A broadway-house link built from the show's own venue (not from a looked-up theater object).
 const VENUE_THEATER_LINK = /`\/theater\/\$\{(?:venueSlug|slugify\(foldVenueName\(show\.venue\)\))\}`/g;
 const WINDOW = 1200;
-const REGIONAL_EXCLUSION = /isRegional|category === 'regional'/;
+// A real branch condition ("|| isRegional", "isRegional ||", "isRegional ?"), not just a nearby mention.
+const REGIONAL_EXCLUSION = /\|\|\s*isRegional\b|\bisRegional\s*(?:\|\||\?)|category === 'regional'\s*(?:\|\||\?)/;
+// Tour shows have no house either; the same condition must exclude them.
+const TOUR_EXCLUSION = /\bisTour\b|category === 'tour'/;
 
 test('every show-page /theater/<venue> link sits behind a regional exclusion', () => {
   let seen = 0;
@@ -30,6 +33,7 @@ test('every show-page /theater/<venue> link sits behind a regional exclusion', (
       seen++;
       const before = src.slice(Math.max(0, m.index - WINDOW), m.index);
       assert.match(before, REGIONAL_EXCLUSION, `${rel}: /theater/ venue link has no regional exclusion within ${WINDOW} chars`);
+      assert.match(before, TOUR_EXCLUSION, `${rel}: /theater/ venue link has no tour exclusion within ${WINDOW} chars`);
     }
   }
   assert.ok(seen >= 3, `expected to find the 3 show-page venue links, found ${seen} (pattern drifted?)`);
