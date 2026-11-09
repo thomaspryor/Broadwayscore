@@ -152,9 +152,28 @@ async function buildCard(desc, outDir, { requirePoster = true, label = null, nam
 async function allowedChannels(buffer) {
   const all = tagChannels(await buffer.listChannels(), CHANNEL_SETS);
   const usable = all.filter(c => c.set && c.network && !c.isQueuePaused && !c.isDisconnected && !c.isLocked);
+  // Each missing channel says why (BRO-7188): "locked" and "removed" need different fixes in Buffer.
+  const why = id => {
+    const c = all.find(ch => ch.id === id);
+    if (!c) return 'removed from Buffer';
+    return [c.isDisconnected && 'disconnected', c.isLocked && 'locked', c.isQueuePaused && 'queue paused', !c.network && 'unknown network'].filter(Boolean).join(', ') || 'not usable';
+  };
   const missing = Object.entries(CHANNEL_SETS).flatMap(([set, ids]) => Object.entries(ids)
-    .filter(([, id]) => !usable.some(c => c.id === id)).map(([svc]) => channelKey(set, svc)));
-  return { usable, missing };
+    .filter(([, id]) => !usable.some(c => c.id === id)).map(([svc, id]) => `${channelKey(set, svc)} (${why(id)})`));
+  return { usable, missing, all };
+}
+
+/**
+ * BRO-7188: whether Buffer's plan explains a locked channel, for plan-alert.js (a later
+ * workflow step) to page the owner or re-arm. Written to BUFFER_PLAN_STATUS_FILE when
+ * set; run.js never loads the alert router itself, so scripts that reuse it need no
+ * email keys. Returns the problem to add to the run, or null.
+ */
+function recordPlanStatus(all) {
+  const status = require('./buffer').planLimitStatus(all);
+  const file = process.env.BUFFER_PLAN_STATUS_FILE;
+  if (file) fs.writeFileSync(file, JSON.stringify(status));
+  return status.state === 'alert' ? status.message : null;
 }
 
 /**
@@ -825,9 +844,13 @@ async function main() {
 
   let channels = [];
   if (live) {
-    const { usable, missing } = await allowedChannels(buffer);
+    const { usable, missing, all } = await allowedChannels(buffer);
     channels = usable;
-    if (missing.length) problems.push(`Buffer channel(s) not usable (disconnected, locked, paused or removed): ${missing.join(', ')}`);
+    // Before the all-locked throw below: a full plan lapse is when the page matters most.
+    const planProblem = recordPlanStatus(all);
+    if (planProblem) problems.push(planProblem);
+    if (missing.length) problems.push(`Buffer channel(s) not usable: ${missing.join(', ')}`);
+    if (!channels.length && planProblem) throw new Error(planProblem);
     if (!channels.length) throw new Error('none of the Buffer channels in config.js CHANNEL_SETS is usable');
     if (backlogSkipped.length) {
       const ymd = new Date(now).toISOString().slice(0, 10);
@@ -1031,4 +1054,4 @@ if (require.main === module) {
   main().catch(err => { console.error(`[autopost] ${err.stack || err.message}`); process.exit(1); });
 }
 
-module.exports = { buildRoundup, buildClosing, runRoundup, runClosingSoon, checkCaptions, MAX_SHOW_ATTEMPTS, unvalidated, describe, renderCompareFor, runLondonCompare, postCompare, breakdownFor, pendingRetries, abandonRetries, postsToVerify, writeLedger, loadContext, hostCard, buildCard, publishEvent, entryMarkers, briefChannels, briefBusyDays, briefQuotaNeed, runBrief, LEDGER_FILE };
+module.exports = { buildRoundup, buildClosing, runRoundup, runClosingSoon, checkCaptions, MAX_SHOW_ATTEMPTS, unvalidated, describe, renderCompareFor, runLondonCompare, postCompare, breakdownFor, pendingRetries, abandonRetries, postsToVerify, writeLedger, loadContext, hostCard, buildCard, publishEvent, entryMarkers, briefChannels, briefBusyDays, briefQuotaNeed, runBrief, recordPlanStatus, LEDGER_FILE };
