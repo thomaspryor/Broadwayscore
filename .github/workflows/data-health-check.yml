@@ -69,8 +69,8 @@ jobs:
     needs: health-check
     if: always()
     runs-on: ubuntu-latest
-    # 60 (was 30, then 55): the LLM triage step adds up to 12 min and the weekly audit 5 (BRO-7139); 60 keeps the ledger commit's push-budget margin with residual positive (281s, scripts/audit-push-retry-budgets.js).
-    timeout-minutes: 60
+    # 63 (was 30, then 55, 60): the LLM triage step adds up to 12 min, the model-question dry run 3 and the weekly audit 5 (BRO-7139); 63 keeps the ledger commit's push-budget margin with residual at 281s (scripts/audit-push-retry-budgets.js).
+    timeout-minutes: 63
     permissions:
       contents: write
       actions: read # llm-triage reads the run record of workflows a card names
@@ -111,7 +111,23 @@ jobs:
           APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
           GH_TOKEN: ${{ github.token }}
           LLM_TRIAGE_DISABLED: ${{ vars.LLM_TRIAGE_DISABLED }}
-        run: node scripts/llm-triage.js --queue --cap=10 --ask --deadline-min=8 --ledger=data/audit/llm-triage.jsonl
+        run: node scripts/llm-triage.js --queue --cap=10 --ask --deadline-min=8 --ledger=data/audit/llm-triage.jsonl --questions-out="$RUNNER_TEMP/llm-owner-questions.json"
+
+      - name: Owner-hold sweep with model questions (dry run)
+        # BRO-7139 Step 4: counts which of tonight's ask-owner questions the owner-hold sweep
+        # would accept (sanitized; only cards it already holds as needing a question; never
+        # overrides a release). The sweep refuses --apply with --model-questions, so this step
+        # cannot write Linear. The questions file lives in RUNNER_TEMP and is never committed.
+        # lint-allow-swallow: report-only and advisory (CLAUDE.md §19).
+        continue-on-error: true
+        timeout-minutes: 3
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          OWNER_HOLD_SWEEP_DISABLED: ${{ vars.OWNER_HOLD_SWEEP_DISABLED }}
+        run: |
+          f="$RUNNER_TEMP/llm-owner-questions.json"
+          if [ ! -s "$f" ]; then echo "no model questions tonight"; exit 0; fi
+          node scripts/owner-hold-sweep.js --model-questions "$f" --json
 
       - name: LLM triage audit (weekly, report-only)
         # BRO-7139 Step 3: once a week (self-throttled to one CI row per 6 days) re-checks up to

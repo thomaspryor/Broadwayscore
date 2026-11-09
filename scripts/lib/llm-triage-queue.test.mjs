@@ -148,3 +148,14 @@ test('CLI: a partial failure exits 0 but warns on the run page', async () => {
   assert.equal(code, 0);
   assert.ok(lines.some((l) => /^::warning::llm-triage: 1 of 2 cards errored/.test(l)), lines.join('\n'));
 });
+
+test('questionsFromResults: only parsed ask-owner verdicts with a question', () => {
+  const Q = require('./llm-triage-queue.js');
+  assert.deepEqual(Q.questionsFromResults([
+    { id: 'BRO-1', verdict: { verdict: 'ask-owner', question: 'DECISION NEEDED: a?' } },
+    { id: 'BRO-2', verdict: { verdict: 'keep' } },
+    { id: 'BRO-3', error: 'bad JSON' },
+    { id: 'BRO-4', verdict: { verdict: 'ask-owner' } },
+  ]), { 'BRO-1': 'DECISION NEEDED: a?' });
+  assert.deepEqual(Q.questionsFromResults(undefined), {});
+});

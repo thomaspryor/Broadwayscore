@@ -23,7 +23,7 @@ const { execFileSync } = require('child_process');
 const F = require('./lib/llm-triage-facts.js');
 const Q = require('./lib/llm-triage-queue.js');
 
-const USAGE = 'Usage: node scripts/llm-triage.js (--ids=BRO-1,BRO-2 | --queue [--cap=N]) [--ledger=FILE] [--deadline-min=N] [--prompts-dir=DIR] [--ask] [--out=FILE] [--run-verify] [--model=ID]';
+const USAGE = 'Usage: node scripts/llm-triage.js (--ids=BRO-1,BRO-2 | --queue [--cap=N]) [--ledger=FILE] [--deadline-min=N] [--prompts-dir=DIR] [--ask] [--out=FILE] [--questions-out=FILE] [--run-verify] [--model=ID]';
 const DEFAULT_MODEL = require('./lib/models.js').DISPATCH_SONNET;
 const REPO = 'thomaspryor/Broadwayscore';
 const ASK_TIMEOUT_MS = 90000;
@@ -35,6 +35,7 @@ function parseArgs(argv) {
     else if (a.startsWith('--ids=')) o.ids = a.slice(6).split(',').map((s) => s.trim()).filter(Boolean);
     else if (a.startsWith('--prompts-dir=')) o.promptsDir = a.slice(14);
     else if (a.startsWith('--out=')) o.out = a.slice(6);
+    else if (a.startsWith('--questions-out=')) o.questionsOut = a.slice(16);
     else if (a.startsWith('--model=')) o.model = a.slice(8);
     else if (a === '--ask') o.ask = true;
     else if (a === '--run-verify') o.runVerify = true;
@@ -246,6 +247,9 @@ async function main(argv = process.argv.slice(2), { graphql = null, now = new Da
   }
   const report = { generatedAt: now.toISOString(), model: opts.ask ? opts.model : null, reportOnly: true, results };
   if (opts.out) fs.writeFileSync(opts.out, JSON.stringify(report, null, 2) + '\n');
+  // BRO-7139 Step 4: ask-owner questions for owner-hold-sweep --model-questions. A temp file
+  // (RUNNER_TEMP in CI), never committed: it holds model text drawn from card text.
+  if (opts.questionsOut) fs.writeFileSync(opts.questionsOut, JSON.stringify(Q.questionsFromResults(results), null, 2) + '\n');
   // One bad card is a ledger row, not a red night; every card failing is. A partial failure
   // still shows on the run page as a warning annotation.
   const failed = results.filter((r) => r.error).length;

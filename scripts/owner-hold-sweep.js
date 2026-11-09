@@ -13,6 +13,9 @@
  *   node scripts/owner-hold-sweep.js --apply             write
  *   --release-cap N (25)   --question-cap N (5)   --questions FILE.json ({"BRO-1": "DECISION NEEDED: ..."})
  *   --only BRO-1,BRO-2     --json
+ *   --model-questions FILE.json  model-drafted questions from llm-triage.js --questions-out
+ *                     (BRO-7139 Step 4). Report-only: counted and sanitized, never written;
+ *                     refused together with --apply.
  * Kill switch: OWNER_HOLD_SWEEP_DISABLED=1. Hosted daily by .github/workflows/linear-unpark-drain.yml.
  */
 'use strict';
@@ -22,7 +25,7 @@ const { parseArgs } = require('./lib/cli-args.js');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = 'owner-hold-sweep.js — release or ask about owner-worded holds (BRO-6852).\n'
-  + '  (no flags) dry run   --apply write   --release-cap N   --question-cap N   --questions FILE.json   --only BRO-1,BRO-2   --json\n'
+  + '  (no flags) dry run   --apply write   --release-cap N   --question-cap N   --questions FILE.json   --model-questions FILE.json (report-only)   --only BRO-1,BRO-2   --json\n'
   + '  Kill switch: OWNER_HOLD_SWEEP_DISABLED=1';
 
 const intFlag = (v, d) => (Number.isFinite(Number(v)) && v !== undefined && v !== true && Number(v) >= 0 ? Number(v) : d);
@@ -33,8 +36,13 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     console.log('owner-hold-sweep: OWNER_HOLD_SWEEP_DISABLED is set, nothing done.');
     return null;
   }
-  const args = parseArgs(argv, { coerceBooleans: true, textFlags: ['release-cap', 'question-cap', 'questions', 'only'] });
+  const args = parseArgs(argv, { coerceBooleans: true, textFlags: ['release-cap', 'question-cap', 'questions', 'model-questions', 'only'] });
   const apply = args.apply === true;
+  if (apply && args['model-questions']) {
+    console.error('owner-hold-sweep: --model-questions is report-only (BRO-7139 Step 4); drop --apply.');
+    process.exitCode = 2;
+    return null;
+  }
   require('./lib/load-env').loadEnv();
   const sweep = require('./lib/owner-hold-sweep.js');
   const bc = require('./lib/board-categories.js');
@@ -53,12 +61,23 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   const byId = new Map(board.map((i) => [i.identifier, i]));
   const plan = sweep.planSweep(issues, { now, secret, releaseCap, questionCap, questions });
 
+  let model = null;
+  if (args['model-questions']) {
+    let mq = {};
+    try { mq = JSON.parse(fs.readFileSync(String(args['model-questions']), 'utf8')); } catch (e) { console.error(`owner-hold-sweep: cannot read --model-questions: ${e.message}`); }
+    model = sweep.planModelQuestions(plan, mq);
+  }
+
   const show = (tag, rows) => rows.forEach((r) => console.log(`${tag} ${r.identifier} P${r.priority} ${r.state} | ${String(r.title).slice(0, 60)} | ${r.why}`));
   show(apply ? 'release' : 'would release', plan.releases);
   show(apply ? 'ask' : 'would ask', plan.questions);
   show('needs a written question', plan.needsQuestion);
   show('leave', plan.leave);
   show('deferred', plan.deferred);
+  if (model) {
+    show('model question would ask', model.wouldAsk);
+    show('model question rejected', model.rejected);
+  }
 
   const done = { released: [], asked: [], failed: [], changed: [] };
   if (apply && (plan.releases.length || plan.questions.length)) {
@@ -102,10 +121,11 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     mode: apply ? 'apply' : 'dry-run', held: plan.held,
     release: plan.releases.length, ask: plan.questions.length, needsQuestion: plan.needsQuestion.length,
     leave: plan.leave.length, deferred: plan.deferred.length, ...(apply ? { done } : {}),
+    ...(model ? { model: { wouldAsk: model.wouldAsk.length, rejected: model.rejected.length, notHeld: model.notHeld.length } } : {}),
   };
   console.log(args.json ? JSON.stringify(summary) : `owner-hold-sweep: ${JSON.stringify(summary)}`);
   if (done.failed.length) process.exitCode = 1;
-  return { summary, plan };
+  return { summary, plan, model };
 }
 
 if (require.main === module) {

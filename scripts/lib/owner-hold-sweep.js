@@ -167,6 +167,46 @@ function planSweep(issues, { now = new Date(), secret = null, releaseCap = DEFAU
 }
 
 /** Description with the question appended (and the old gate wording left as is). */
+// Lines a consent or answer gate reads. A model-drafted question must never carry one:
+// pasted into the description it would read as the owner's answer or approval.
+const CONSENT_MARKER_RE = /(?:^|\n)\s*(?:[-*>]\s*)?(?:\*\*)?(?:OWNER-[A-Z-]+|DEFAULT-APPLIED|APPROVED|VISUAL-OK|UNPARKED|PARKED|ANSWERED)\b|answered by the owner|owner (?:approved|answered|said yes|agreed)/i;
+const MODEL_QUESTION_MAX = 1500;
+
+/**
+ * PURE. Clean a model-drafted DECISION NEEDED block (BRO-7139 Step 4). Model text is
+ * untrusted: control characters go, @mentions are defused, length is capped, and any
+ * consent/answer marker rejects the whole question (never forge consent).
+ * Returns { ok: true, text } or { ok: false, why }.
+ */
+function sanitizeModelQuestion(identifier, text) {
+  let t = String(text || '').replace(/\r\n?/g, '\n').replace(/[\u0000-\u0008\u000b-\u001f\u007f\u200b-\u200f\u202a-\u202e\u2060-\u2064\ufeff]/g, '').trim();
+  if (!t) return { ok: false, why: 'empty' };
+  if (t.length > MODEL_QUESTION_MAX) return { ok: false, why: 'too long' };
+  if (CONSENT_MARKER_RE.test(t)) return { ok: false, why: 'carries a consent or answer marker' };
+  t = t.replace(/(^|[^\w`])@(?=[\w-])/g, '$1');
+  if (!validQuestion(identifier, t)) return { ok: false, why: 'not a valid DECISION NEEDED block' };
+  return { ok: true, text: t };
+}
+
+/**
+ * PURE. Report-only view of model-drafted questions (BRO-7139 Step 4): which held cards
+ * the sweep would ask about if these were accepted. A model question only fills a card the
+ * classifier already marks owner-question with no hand-written question; it never
+ * overrides a release (that override is for questions a person wrote after reading the card).
+ */
+function planModelQuestions(plan, modelQuestions = {}) {
+  const out = { wouldAsk: [], rejected: [], notHeld: [] };
+  const needs = new Map(plan.needsQuestion.map((r) => [r.identifier, r]));
+  for (const [id, raw] of Object.entries(modelQuestions || {})) {
+    const row = needs.get(id);
+    if (!row) { out.notHeld.push({ identifier: id }); continue; }
+    const s = sanitizeModelQuestion(id, raw);
+    if (s.ok) out.wouldAsk.push({ ...row, question: s.text, source: 'model' });
+    else out.rejected.push({ ...row, why: s.why });
+  }
+  return out;
+}
+
 function withQuestion(description, question) {
   return `${String(description || '').trimEnd()}\n\n${String(question).trim()}\n`;
 }
@@ -174,4 +214,5 @@ function withQuestion(description, question) {
 module.exports = {
   SWEEP_TAG, DEFAULT_RELEASE_CAP, DEFAULT_QUESTION_CAP, SWEPT_COMMENT_RE,
   selectHolds, classifyHold, planSweep, releasedView, releaseComment, validQuestion, withQuestion,
+  sanitizeModelQuestion, planModelQuestions, CONSENT_MARKER_RE,
 };
