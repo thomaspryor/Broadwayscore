@@ -78,9 +78,11 @@ async function download(url) {
 }
 
 /** First usable art for a row: the listing image, else the production page's og:image. Returns a Buffer or null. */
+const seasonPages = new Set(Object.values(SEASON_SOURCES).flatMap((x) => x.pages || []));
 async function findArt(row, getPage) {
   const cands = [row.image];
-  for (const u of [row.pageUrl].filter(Boolean)) {
+  // A season page's og:image is the theatre's site-wide banner; only a production-specific page can supply art.
+  for (const u of [row.pageUrl].filter((x) => x && !/^https?:\/\/[^/]+\/?$/.test(x) && !seasonPages.has(x))) {
     const r = await getPage(u);
     const m = r && (/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i.exec(r.content) || /<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/i.exec(r.content));
     if (m) { try { cands.push(new URL(m[1].replace(/&amp;/g, '&'), r.finalUrl).href); } catch { /* skip */ } }
@@ -118,10 +120,15 @@ async function main() {
   const hubShows = shows.filter((s) => s.city === hubSlug);
 
   const taken = new Set(shows.map((s) => s.id));
+  const pending = [];
+  let retired = () => false;
+  try { retired = require('./lib/retired-show-ids').isRetiredId; } catch { /* registry missing */ }
   const pf = path.join(ROOT, 'data', 'pending-fixes');
-  if (fs.existsSync(pf)) for (const f of fs.readdirSync(pf)) { if (f.startsWith(planId)) continue; try { for (const a of JSON.parse(fs.readFileSync(path.join(pf, f), 'utf8')).plan.actions || []) if (a.show) taken.add(a.show.id); } catch { /* skip */ } }
+  if (fs.existsSync(pf)) for (const f of fs.readdirSync(pf)) { if (f.startsWith(planId)) continue; try { for (const a of JSON.parse(fs.readFileSync(path.join(pf, f), 'utf8')).plan.actions || []) if (a.show) { taken.add(a.show.id); pending.push(a.show); } } catch { /* skip */ } }
 
-  const bww = S.fromBwwRows(await bwwRows(city, getPage), city, today);
+  const bwwAll = await bwwRows(city, getPage);
+  if (!bwwAll.length) log.push('WARN: BroadwayWorld listing returned no rows');
+  const bww = S.fromBwwRows(bwwAll, city, today);
   const pages = await pageRows(city, getPage, log);
   const rows = S.mergeSeason([bww, pages]);
 
@@ -129,10 +136,10 @@ async function main() {
   const report = { city: city.key, today, read: { bww: bww.length, pages: pages.length }, added: [], existing: [], skipped: [] };
   const cands = [];
   for (const row of rows) {
-    const have = S.findExisting(row, hubShows);
+    const have = S.findExisting(row, [...hubShows, ...pending]);
     if (have) { report.existing.push(`${row.title} (${have.id})`); continue; }
     const id = S.showId(row, taken);
-    if (!id) { report.skipped.push(`${row.title}: id taken`); continue; }
+    if (!id || retired(id)) { report.skipped.push(`${row.title}: id taken or retired`); continue; }
     const art = await findArt(row, getPage);
     if (!art) { report.skipped.push(`${row.title}: no real image`); continue; }
     taken.add(id);

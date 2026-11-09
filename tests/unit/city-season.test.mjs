@@ -68,10 +68,27 @@ test('buildShow: sourced dates, upcoming vs open, regional id', () => {
   assert.equal(S.buildShow({ ...row, start: '2026-11-01' }, { id, hubSlug: 'san-diego-ca', hub, city: sd, today: TODAY }).status, 'open');
 });
 
-test('findExisting: matches by title, uses the venue to split same-title shows', () => {
-  const shows = [{ id: 'a', title: 'Cabaret', venue: 'New Village Arts, Carlsbad, CA' }, { id: 'b', title: 'Cabaret', venue: 'Cygnet Theatre, San Diego, CA' }];
-  assert.equal(S.findExisting({ title: 'Cabaret', theatre: 'Cygnet Theatre' }, shows).id, 'b');
-  assert.equal(S.findExisting({ title: 'Other', theatre: 'Cygnet Theatre' }, shows), null);
+test('findExisting: same title + overlapping year + theatre; a new year of an annual show is new', () => {
+  const shows = [
+    { id: 'a', title: 'Cabaret', venue: 'New Village Arts, Carlsbad, CA', openingDate: '2027-01-29', closingDate: '2027-03-14' },
+    { id: 'b', title: 'Cabaret', venue: 'Cygnet Theatre, San Diego, CA', openingDate: '2027-01-29', closingDate: '2027-03-14' },
+    { id: 'c', title: 'A Christmas Carol', venue: 'Cygnet Theatre, San Diego, CA', openingDate: '2025-12-01', closingDate: '2025-12-24' },
+  ];
+  assert.equal(S.findExisting({ title: 'Cabaret', theatre: 'Cygnet Theatre', start: '2027-02-01', end: '2027-03-01' }, shows).id, 'b');
+  assert.equal(S.findExisting({ title: 'Cabaret', theatre: 'Moxie Theatre', start: '2027-02-01', end: '2027-03-01' }, shows), null, 'other theatre');
+  assert.equal(S.findExisting({ title: 'A Christmas Carol', theatre: 'Cygnet Theatre', start: '2026-12-01', end: '2026-12-24' }, shows), null, 'new year');
+});
+
+test('resolveTheatre: a generic or student/rental venue never maps to a producing theatre', () => {
+  const bos = getFinder('boston');
+  for (const v of ['Boston', 'Stage', 'Farkas Hall', 'Boston Center for the Arts', 'Emerson Colonial Theatre', 'ArtsEmerson']) assert.equal(S.resolveTheatre(bos, v), null, v);
+  assert.equal(S.resolveTheatre(bos, 'Lyric Stage Company of Boston').name, 'Lyric Stage Company of Boston');
+});
+
+test('page rows: a word that merely starts like a month is not a date', () => {
+  const pageText = 'The Cottage closed last spring. Janet says hi.';
+  const rows = [{ title: 'The Cottage', start: '2027-01-05', end: '2027-02-01' }];
+  assert.equal(S.fromPageRows(rows, { theatre, pageText, pageUrl: 'https://x.org/', today: '2026-11-09' }).length, 0);
 });
 
 test('pageToText keeps each link next to its label', () => {
