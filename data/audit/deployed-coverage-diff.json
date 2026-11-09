@@ -1,49 +1,16 @@
 {
-  "generatedAt": "2026-11-09T19:33:13.633Z",
+  "generatedAt": "2026-11-09T20:23:30.160Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 314,
-  "clean": 311,
-  "defective": 3,
+  "checked": 313,
+  "clean": 308,
+  "defective": 5,
   "byType": {
-    "missing-from-prod": 1,
-    "score-drift": 1,
-    "unreachable": 2
+    "score-drift": 5,
+    "missing-from-prod": 1
   },
   "shows": [
-    {
-      "showId": "the-greatest-story-ever-off-broadway-2026",
-      "title": "The Greatest Story Ever",
-      "openingDate": "2026-10-29",
-      "ok": false,
-      "defects": [
-        {
-          "type": "unreachable",
-          "detail": "HTTP 404"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 0,
-      "deployedCount": null,
-      "firstDefectAt": "2026-11-09T19:33:07.407Z"
-    },
-    {
-      "showId": "women-who-eat-off-broadway-2026",
-      "title": "Women Who Eat",
-      "openingDate": "2026-10-22",
-      "ok": false,
-      "defects": [
-        {
-          "type": "unreachable",
-          "detail": "HTTP 404"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 0,
-      "deployedCount": null,
-      "firstDefectAt": "2026-11-09T19:33:07.407Z"
-    },
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
       "title": "Stranger Things: The First Shadow",
@@ -65,6 +32,70 @@
       "localCount": 34,
       "deployedCount": 33,
       "firstDefectAt": "2026-11-09T19:33:07.407Z"
+    },
+    {
+      "showId": "msblackforpresident-off-broadway-2026",
+      "title": "Ms. Blakk for President",
+      "openingDate": "2026-11-08",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 70.69 vs local 70.99 (Δ0.3)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 9,
+      "deployedCount": 10,
+      "firstDefectAt": "2026-11-09T20:23:24.505Z"
+    },
+    {
+      "showId": "nero-off-west-end-2026",
+      "title": "Nero",
+      "openingDate": "2026-11-06",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 40.22 vs local 40.46 (Δ0.24)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 17,
+      "deployedCount": 17,
+      "firstDefectAt": "2026-11-09T20:23:24.505Z"
+    },
+    {
+      "showId": "clifford-odets-waiting-for-lefty-off-broadway-2026",
+      "title": "Clifford Odets’ Waiting for Lefty",
+      "openingDate": "2026-11-02",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 71.96 vs local 71.69 (Δ0.27)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 13,
+      "deployedCount": 14,
+      "firstDefectAt": "2026-11-09T20:23:24.505Z"
+    },
+    {
+      "showId": "oliver-west-end-2024",
+      "title": "Oliver!",
+      "openingDate": "2025-01-14",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 84.74 vs local 84.82 (Δ0.08)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 21,
+      "deployedCount": 21,
+      "firstDefectAt": "2026-11-09T20:23:24.505Z"
     }
   ],
   "persistentDefective": 0,
