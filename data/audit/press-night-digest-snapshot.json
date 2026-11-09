@@ -1,29 +1,29 @@
 {
-  "generatedAt": "2026-11-09T06:05:46.818Z",
+  "generatedAt": "2026-11-09T10:21:32.506Z",
   "night": "2026-11-08",
   "counts": {
     "total": 3,
-    "passed": 0,
+    "passed": 1,
     "failed": 1,
-    "notGraded": 2
+    "notGraded": 1
   },
   "lines": [
     {
       "verdict": "FAIL",
-      "line": "Ms. Blakk for President: reviews not graded yet, still being checked; Reddit draft emailed to you is out of date (score 68 from 6 reviews, the site shows score 71 from 7 reviews). Failed."
+      "line": "Ms. Blakk for President: reviews not graded, the overnight check stopped before it finished; Reddit draft emailed to you is out of date (score 68 from 6 reviews, the site shows score 71 from 9 reviews). Failed."
     },
     {
-      "verdict": "PENDING",
-      "line": "The Steel Man: not graded yet, still being checked."
+      "verdict": "UNKNOWN",
+      "line": "The Steel Man: not graded, the overnight check stopped before it finished."
     },
     {
-      "verdict": "PENDING",
-      "line": "Wanted: not graded yet, still being checked; opening-night email draft not due until 9:00am; Reddit draft not due until 9:00am."
+      "verdict": "PASS",
+      "line": "Wanted: published by the regular pipeline; theatrely fixed by hand at 11:18pm; 20 of 20 reviews live by 12:00am; opening-night email draft not due until 9:00am, passed."
     }
   ],
   "scoreboard": {
-    "graded": 16,
-    "passed": 1,
+    "graded": 17,
+    "passed": 2,
     "passedOnOwn": 1
   },
   "missFirstSeen": {

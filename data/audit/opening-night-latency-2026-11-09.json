@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-09T06:44:56.886Z",
+  "generatedAt": "2026-11-09T10:21:14.298Z",
   "date": "2026-11-09",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 206895,
+  "entryCount": 232212,
   "shows": [
     {
       "showId": "speculations-off-west-end-2026",
@@ -3462,7 +3462,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1688294,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -3507,7 +3507,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 323066,
+        "scored-to-rebuilt": 453777,
         "rebuilt-to-deployed": 46144998
       },
       "reviews_over_15min": 0,
@@ -4288,13 +4288,13 @@
     },
     {
       "showId": "rope-off-broadway-2026",
-      "reviewCount": 13,
+      "reviewCount": 14,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 629097,
-        "scored-to-rebuilt": 293208,
+        "scored-to-rebuilt": 297407,
         "rebuilt-to-deployed": 86848713
       },
       "reviews_over_15min": 0,
@@ -14205,13 +14205,13 @@
     },
     {
       "showId": "msblackforpresident-off-broadway-2026",
-      "reviewCount": 7,
+      "reviewCount": 9,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 500614,
-        "scored-to-rebuilt": 842610,
+        "scored-to-rebuilt": 840097,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -15007,6 +15007,36 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1344816,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "middlemarch-rsc-regional-2026",
+      "reviewCount": 13,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1693742,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "rorschach-regional-2026",
+      "reviewCount": 7,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1006935,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
