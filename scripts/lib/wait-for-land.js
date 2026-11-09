@@ -69,6 +69,7 @@ const PROD_MAX_ERRORS = 3;
 // Error messages can contain entire API responses: firstLine bounds them
 // (shared with check-prod-deploy.js since BRO-6257).
 const { firstLine } = require('./log-lines');
+const { landedOnMain } = require('./land-check-resources');
 const { LANDINGS_REL, parseLandings, landedShaForTip } = require('./landings-ledger');
 
 // check-prod-deploy prints its verdict last. Preserve that line without
@@ -363,6 +364,19 @@ async function reportLandedSha(tip, { budgetMs = 150_000, io = {} } = {}) {
   return null;
 }
 
+// BRO-7186: read-only look at origin/main's landings ledger for a ref that is gone.
+function findLandedOnMain(ref, run) {
+  try {
+    if (!fetchMain()) return { landed: false };
+    let ledgerRows = [];
+    try { ledgerRows = mainLandingsRows(); } catch { /* ledger unreadable: not landed as far as we can tell */ }
+    return landedOnMain({ ref, ledgerRows, run, nowMs: Date.now() });
+  } catch (err) {
+    console.error(`${stamp()} could not check main for ${ref}: ${firstLine(err.message || err)}`);
+    return { landed: false };
+  }
+}
+
 async function main(argv) {
   const args = parseArgs(argv);
   if (!args) {
@@ -407,6 +421,15 @@ async function main(argv) {
         const code = await waitForProd({ siteFiles: v.before ? null : siteFiles, prodMin: args.prodMin });
         await reportLandedSha(tip);
         return code;
+      }
+      if (v.verdict === 'unknown' && !lastSha) {
+        // BRO-7186: land.yml may have landed and deleted the ref with no run found by name.
+        const found = findLandedOnMain(args.ref, run);
+        if (found.landed) {
+          console.log(`${stamp()} LANDED: ${args.ref} is gone from origin and ${found.sha} is on main (${found.via}) (${COMMIT_URL}${found.sha})`);
+          if (args.prodMin) return waitForProd({ siteFiles: null, prodMin: args.prodMin });
+          return 0;
+        }
       }
       if (v.verdict === 'unknown') {
         console.error(`${stamp()} UNKNOWN: ${args.ref} ${v.why}`);

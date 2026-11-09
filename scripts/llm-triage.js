@@ -21,13 +21,15 @@ const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const F = require('./lib/llm-triage-facts.js');
+const Q = require('./lib/llm-triage-queue.js');
 
-const USAGE = 'Usage: node scripts/llm-triage.js --ids=BRO-1,BRO-2 [--prompts-dir=DIR] [--ask] [--out=FILE] [--run-verify] [--model=ID]';
+const USAGE = 'Usage: node scripts/llm-triage.js (--ids=BRO-1,BRO-2 | --queue [--cap=N]) [--ledger=FILE] [--deadline-min=N] [--prompts-dir=DIR] [--ask] [--out=FILE] [--run-verify] [--model=ID]';
 const DEFAULT_MODEL = require('./lib/models.js').DISPATCH_SONNET;
 const REPO = 'thomaspryor/Broadwayscore';
+const ASK_TIMEOUT_MS = 90000;
 
 function parseArgs(argv) {
-  const o = { ids: [], promptsDir: null, ask: false, out: null, runVerify: false, model: DEFAULT_MODEL, help: false };
+  const o = { ids: [], promptsDir: null, ask: false, out: null, runVerify: false, model: DEFAULT_MODEL, help: false, queue: false, cap: Q.CAP, ledger: null, deadlineMin: null };
   for (const a of argv) {
     if (a === '--help' || a === '-h') o.help = true;
     else if (a.startsWith('--ids=')) o.ids = a.slice(6).split(',').map((s) => s.trim()).filter(Boolean);
@@ -36,13 +38,20 @@ function parseArgs(argv) {
     else if (a.startsWith('--model=')) o.model = a.slice(8);
     else if (a === '--ask') o.ask = true;
     else if (a === '--run-verify') o.runVerify = true;
+    else if (a === '--queue') o.queue = true;
+    else if (a.startsWith('--cap=')) { o.cap = Number(a.slice(6)); if (!Number.isInteger(o.cap) || o.cap < 1 || o.cap > Q.CAP) throw new Error(`--cap must be 1..${Q.CAP}`); }
+    else if (a.startsWith('--ledger=')) o.ledger = a.slice(9);
+    else if (a.startsWith('--deadline-min=')) { o.deadlineMin = Number(a.slice(15)); if (!(o.deadlineMin > 0)) throw new Error('--deadline-min must be > 0'); }
     else throw new Error(`unknown argument: ${a}`);
   }
   for (const id of o.ids) if (!/^BRO-\d+$/.test(id)) throw new Error(`not a card id: ${id}`);
+  if (o.queue && o.ids.length) throw new Error('--queue and --ids are exclusive');
+  // A ledger row without a verdict is noise the weekly audit would have to skip.
+  if (o.ledger && !o.ask) throw new Error('--ledger needs --ask');
   return o;
 }
 
-const ISSUE_FIELDS = 'id identifier title description priority url createdAt updatedAt state { name type } labels { nodes { name } } comments(first: 100, orderBy: createdAt) { nodes { body createdAt } }';
+const ISSUE_FIELDS = 'id identifier title description priority url createdAt updatedAt state { name type } labels { nodes { name } } comments(first: 100, orderBy: createdAt) { nodes { body createdAt } } history(first: 50) { nodes { createdAt fromState { name type } toState { name type } } }';
 
 /** Fetch cards by identifier in one aliased query. full=false fetches only title + state. */
 async function fetchIssues(graphql, ids, { full = true } = {}) {
@@ -98,6 +107,29 @@ function searchCommits(id, { env = process.env } = {}) {
   }
 }
 
+/**
+ * Completed runs of one workflow file, newest first: [{conclusion, created_at}], or null on
+ * any failure (null reads "unknown", never "no runs").
+ */
+function fetchWorkflowRuns(file, { env = process.env, limit = 20 } = {}) {
+  if (!/^[\w.-]+\.ya?ml$/.test(file)) return null;
+  const route = `repos/${REPO}/actions/workflows/${file}/runs?status=completed&per_page=${limit}`;
+  try {
+    let json;
+    const token = env.GITHUB_TOKEN || env.GH_TOKEN;
+    if (token) {
+      json = execFileSync('curl', ['-sS', '--fail-with-body', '--max-time', '30', `https://api.github.com/${route}`, '-H', `Authorization: Bearer ${token}`, '-H', 'Accept: application/vnd.github+json'], { encoding: 'utf8' });
+    } else {
+      json = execFileSync('gh', ['api', route], { encoding: 'utf8', timeout: 30000 });
+    }
+    const body = JSON.parse(json);
+    if (!body || !Array.isArray(body.workflow_runs)) return null;
+    return body.workflow_runs.map((r) => ({ conclusion: r.conclusion, created_at: r.created_at }));
+  } catch {
+    return null;
+  }
+}
+
 function readLedger(repoRoot) {
   try { return JSON.parse(fs.readFileSync(path.join(repoRoot, 'data/audit/alert-ledger.json'), 'utf8')); } catch { return null; }
 }
@@ -107,6 +139,8 @@ async function askClaude(prompt, { model, apiKey, fetchImpl = fetch }) {
     method: 'POST',
     headers: { 'content-type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01' },
     body: JSON.stringify({ model, max_tokens: 1500, messages: [{ role: 'user', content: prompt }] }),
+    // A hung call must not eat the nightly step's whole time budget.
+    signal: AbortSignal.timeout(ASK_TIMEOUT_MS),
   });
   const body = await res.json();
   if (!res.ok) throw new Error(`Anthropic ${res.status}: ${JSON.stringify(body).slice(0, 200)}`);
@@ -114,11 +148,14 @@ async function askClaude(prompt, { model, apiKey, fetchImpl = fetch }) {
   return finalResponseText(body.content);
 }
 
-async function main(argv = process.argv.slice(2), { graphql = null, now = new Date(), log = console.log, env = process.env, commitSearch = searchCommits, verifyRunner = null, ask = askClaude } = {}) {
+async function main(argv = process.argv.slice(2), { graphql = null, now = new Date(), log = console.log, env = process.env, commitSearch = searchCommits, verifyRunner = null, ask = askClaude, workflowRuns = fetchWorkflowRuns, clock = Date.now, recheckLedger = undefined } = {}) {
   let opts;
   try { opts = parseArgs(argv); } catch (e) { log(`${e.message}\n${USAGE}`); return 2; }
   if (opts.help) { log(USAGE); return 0; }
-  if (!opts.ids.length) { log(`--ids is required\n${USAGE}`); return 2; }
+  if (env.LLM_TRIAGE_DISABLED === 'true') { log('llm-triage: disabled by LLM_TRIAGE_DISABLED'); return 0; }
+  // The deadline counts from here, so the board and card fetches are inside it.
+  const startedAt = clock();
+  if (!opts.ids.length && !opts.queue) { log(`--ids or --queue is required\n${USAGE}`); return 2; }
   if (opts.ask && !env.ANTHROPIC_API_KEY) { log('--ask needs ANTHROPIC_API_KEY'); return 2; }
   const gql = graphql || require('./lib/linear-client.js').graphql;
   const repoRoot = path.resolve(__dirname, '..');
@@ -127,8 +164,16 @@ async function main(argv = process.argv.slice(2), { graphql = null, now = new Da
 
   const bc = require('./lib/board-categories.js');
   const openBoard = await bc.fetchOpenBoard({ graphql: gql });
-  const board = bc.categorizeBoard(openBoard, { now });
+  // Same inputs as board-dispatch.js, so the queue matches the board report's categories.
+  const board = bc.categorizeBoard(openBoard, { now, secret: env.APPROVAL_HMAC_SECRET || null, lastRecheckStatusById: bc.readRecheckLedgerStatuses(recheckLedger) });
   const categoryOf = new Map(board.cards.map((c) => [c.identifier, c.category]));
+  let ledgerText = '';
+  if (opts.ledger) { try { ledgerText = fs.readFileSync(opts.ledger, 'utf8'); } catch { ledgerText = ''; } }
+  if (opts.queue) {
+    const q = Q.selectQueue(board, Q.parseLedger(ledgerText), { nowMs, cap: opts.cap });
+    opts.ids = q.ids;
+    log(`llm-triage queue: ${q.ids.length} of ${q.eligible} llm-triage cards (${q.cooling} triaged in the last ${Q.COOLDOWN_DAYS} days)`);
+  }
 
   const issues = await fetchIssues(gql, opts.ids);
   const refIds = new Set();
@@ -143,15 +188,27 @@ async function main(argv = process.argv.slice(2), { graphql = null, now = new Da
   }
 
   if (opts.promptsDir) fs.mkdirSync(opts.promptsDir, { recursive: true });
+  const meta = { ts: now.toISOString(), source: env.GITHUB_ACTIONS === 'true' ? 'ci' : 'local', runId: env.GITHUB_RUN_ID || null, model: opts.ask ? opts.model : null };
+  let needsNewline = !!(ledgerText && !ledgerText.endsWith('\n'));
+  // One row per card as soon as it finishes: a step killed mid-run keeps the cards it did.
+  const appendLedger = (r) => {
+    if (!opts.ledger) return;
+    fs.mkdirSync(path.dirname(opts.ledger), { recursive: true });
+    fs.appendFileSync(opts.ledger, (needsNewline ? '\n' : '') + JSON.stringify(Q.ledgerRow(r, { ...meta, category: categoryOf.get(r.id) || null })) + '\n');
+    needsNewline = false;
+  };
+  const stopAt = opts.deadlineMin ? startedAt + opts.deadlineMin * 60000 : Infinity;
   const results = [];
   for (const id of opts.ids) {
+    if (clock() >= stopAt) { log(`llm-triage: deadline reached, ${opts.ids.length - results.length} card(s) left for the next run`); break; }
     const issue = issues.get(id);
-    if (!issue) { results.push({ id, error: 'card not found' }); log(`${id}: not found`); continue; }
+    if (!issue) { const miss = { id, error: 'card not found' }; results.push(miss); appendLedger(miss); log(`${id}: not found`); continue; }
     let row = { id };
     try {
       const verify = F.verifyCommandOf(issue);
       const verifyResult = verify.cmd && runVerify ? await runVerify(verify.cmd) : null;
       const commits = commitSearch(id, { env });
+      const runs = new Map(F.workflowFilesOf(issue, verify).map((f) => [f, workflowRuns(f, { env })]));
       const facts = F.buildFacts({
         issue,
         category: categoryOf.get(id) || (issue.state && issue.state.type === 'completed' ? 'done' : 'unknown'),
@@ -161,6 +218,7 @@ async function main(argv = process.argv.slice(2), { graphql = null, now = new Da
         overlaps: F.findOverlaps(issue, openBoard, { ledger }),
         condition: F.conditionFacts(issue, ledger),
         nowMs,
+        workflowRuns: runs,
       });
       if (commits === null) facts.LANDINGS = 'unknown (commit search failed)';
       const prompt = F.renderPrompt(facts, issue);
@@ -178,11 +236,16 @@ async function main(argv = process.argv.slice(2), { graphql = null, now = new Da
       row.error = `triage failed: ${e.message}`;
     }
     results.push(row);
+    appendLedger(row);
     log(`${id}: ${row.verdict ? row.verdict.verdict : (row.error || 'prompt rendered')}`);
   }
   const report = { generatedAt: now.toISOString(), model: opts.ask ? opts.model : null, reportOnly: true, results };
   if (opts.out) fs.writeFileSync(opts.out, JSON.stringify(report, null, 2) + '\n');
-  return results.some((r) => r.error) ? 1 : 0;
+  // One bad card is a ledger row, not a red night; every card failing is. A partial failure
+  // still shows on the run page as a warning annotation.
+  const failed = results.filter((r) => r.error).length;
+  if (failed && failed < results.length && env.GITHUB_ACTIONS) log(`::warning::llm-triage: ${failed} of ${results.length} cards errored (rows in the ledger)`);
+  return results.length && results.every((r) => r.error) ? 1 : 0;
 }
 
 if (require.main === module) {
@@ -190,4 +253,4 @@ if (require.main === module) {
   main().then((code) => exitFlushed(code), (e) => { console.error(e.stack || e.message); exitFlushed(1); });
 }
 
-module.exports = { parseArgs, fetchIssues, parseCommitSearch, searchCommits, main };
+module.exports = { parseArgs, fetchIssues, parseCommitSearch, searchCommits, fetchWorkflowRuns, main };

@@ -6,6 +6,7 @@
  *
  * Run: node scripts/llm-scoring/sanity-v6-single.mjs
  */
+import '../lib/llm-usage-install.js'; // LLM spend meter: keep it the first import (BRO-5043)
 import { createRequire } from 'module';
 import fs from 'fs';
 const require = createRequire(import.meta.url);

@@ -132,6 +132,7 @@ on:
       - 'scripts/check-workflow-run-status.js'
       - 'scripts/check-remote-branch-absent.js'
       - 'scripts/audit-london-census-coverage.js'
+      - 'scripts/audit-approved-fix-drift.js'
       - 'scripts/audit-artsdesk-banner.js'
       - 'scripts/audit-url-critic-slug-filenames.js'
       - 'scripts/export-cookies.js'
@@ -5052,6 +5053,7 @@ jobs:
         run: node scripts/resize-show-images.js --check-variants
 
       - name: Cross-show URL guard corpus regression (BRO-6910, advisory)
+        # strict-alert-exempt: PR check, the red check on the PR is the signal; a card per PR run would duplicate
         # Runs detectCrossShowUrlMismatch over every included review URL in
         # data/reviews.json. Each hit is a review gather-reviews would refuse
         # today, so a guard change that raises the count is about to drop real

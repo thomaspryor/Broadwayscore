@@ -136,10 +136,13 @@ jobs:
 
       - name: Commit refreshed report
         if: always()
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1' # union-merges the LLM spend ledger on rebase (BRO-5043)
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           # BRO-5146: the Notion report (card-verifiability.json) is no longer tracked.
+          git add data/audit/gemini-usage-ledger.jsonl 2>/dev/null || true # LLM spend meter rows (BRO-5043)
           git add data/audit/card-verifiability-linear.json
           if git diff --cached --quiet; then
             echo "No state change to commit"

@@ -23,7 +23,7 @@
  *   --max-wait-minutes  give up waiting for the mutex after N min (default 20): exit 4 with a
  *            warning, so a worker is never stranded behind another check
  * Exit: 0 no new failures | 1 new failures (printed) | 2 usage | 3 not ready (tracked
- *       changes, no common history with origin/main, or no local core data) | 4 skipped
+ *       changes, under 3 GB free disk (BRO-7186), no common history with origin/main, or no local core data) | 4 skipped
  *       (mutex wait timed out)
  */
 'use strict';
@@ -33,6 +33,7 @@ const os = require('os');
 const path = require('path');
 const { spawnSync } = require('child_process');
 const R = require('./codex-runner.js');
+const { lowDiskMessage, freeBytesOf, envFailureLogs } = require('./land-check-resources.js');
 const { GATES, ADVISORY_GATES, readGateResult, parseGateFailures } = require('./land-gate-delta.js');
 
 // Blocking gates left out of the default run, each with its reason. Every other gate land.yml
@@ -293,6 +294,9 @@ function main(argv = process.argv.slice(2)) {
       + `Both runs share this install, so every gate would fail on both sides and nothing could be judged. Reinstall first: (cd ${pkgs.owner} && npm ci)`);
     return 3;
   }
+  // BRO-7186: a full disk (ENOSPC) fails tests on the branch run and reads as new failures.
+  const lowDisk = lowDiskMessage(freeBytesOf(ROOT)) || lowDiskMessage(freeBytesOf(os.tmpdir()), { when: 'in the temp dir before the run' });
+  if (lowDisk) { console.error(lowDisk); return 3; }
   const fetch = git('fetch', '-q', 'origin', 'main');
   if (fetch.code !== 0) console.error(`land-local-check: git fetch failed, judging against the local origin/main (${fetch.stderr.split('\n').pop()})`);
   const head = git('rev-parse', 'HEAD').stdout;
@@ -343,6 +347,12 @@ function main(argv = process.argv.slice(2)) {
       const d = run('node', ['scripts/lib/land-gate-delta.js', '--base-dir', baseDir, '--branch-dir', branchDir, '--gates', opts.gates.join(','), '--base-source', depsChanged ? 'skipped: deps changed vs base (BRO-6114)' : red ? `ran locally for ${red}` : 'not needed (every gate green on HEAD)'], { stdio: ['ignore', 'pipe', 'inherit'] });
       console.log(d.stdout);
       let clean = d.code === 0;
+      // BRO-7186: disk filled during the run, or the raw gate logs show ENOSPC (on either side, clean or not):
+      // those failures are the machine's, not the branch's. The delta summary drops error text, so read the logs.
+      const enospc = envFailureLogs([branchDir, baseDir]);
+      const lowAfter = lowDiskMessage(freeBytesOf(ROOT), { when: 'after the run' }) || lowDiskMessage(freeBytesOf(os.tmpdir()), { when: 'in the temp dir after the run' })
+        || (enospc.length ? `land-local-check: ENOSPC (disk full) in ${enospc.join(', ')}. The run is not a valid verdict. Free space and re-run.` : null);
+      if (lowAfter) { console.error(lowAfter); return 3; }
       // A gauntlet test file failing under load can pass alone (2026-10-20: a duplicate-of-url
       // test failed in the gauntlet, then passed 16/16 twice by itself). Re-run the new failures'
       // files once, alone; clean only when every new failure is a test file and all of them pass.

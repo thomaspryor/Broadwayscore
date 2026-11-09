@@ -577,6 +577,15 @@ const CORE_DATA_MERGE_REGISTRY = [
     note: 'nightly report-only board dispatch rows: per-handler card counts and unowned gaps',
   },
   {
+    file: 'audit/llm-triage.jsonl',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-11-09 (BRO-7139): sole WRITER scripts/llm-triage.js --ledger (appends one row per triaged card; --ledger needs --ask), invoked only by data-health-check.yml\'s "LLM triage (report-only)" step in the board-dispatch job; that job\'s "Commit board dispatch ledger" step is the only git-add of the path. The job checks out main fresh, so the local copy already holds every earlier row. merge=union in .gitattributes. Residual risk: a hand run with --ledger pushed between checkout and push would lose its rows (report-only, accepted).',
+    note: 'nightly report-only llm-triage nominations (release/ask-owner/close-candidate/...) for cards no applying handler owns',
+  },
+  {
     file: 'audit/linear-archive-done.jsonl',
     surface: 'public-repo',
     status: 'single-writer',
@@ -2086,6 +2095,12 @@ const CORE_DATA_MERGE_REGISTRY = [
   // real per-entry union reconciliation, unlike apiFallbackSafe's fail-closed
   // whole-file overwrite, so multi-writer is not a disqualifier here.
   { file: 'audit/scraper-spend-ledger.jsonl', surface: 'public-repo', status: 'active', merge: mergeScraperSpendLedger, format: 'jsonl', apiFallbackMerge: true },
+  // BRO-5043 (2026-11-09): the LLM spend meter ledger. Every Gemini/OpenAI
+  // caller now writes it, and the jobs that run them stage it inside their
+  // existing commit steps, so it must not disqualify those steps' Git Data API
+  // fallback. Rows are whole-record unique (ts + runId + script + model), so
+  // the scraper ledger's full-record union merge fits as-is.
+  { file: 'audit/gemini-usage-ledger.jsonl', surface: 'public-repo', status: 'active', merge: mergeScraperSpendLedger, format: 'jsonl', apiFallbackMerge: true },
   // BRO-4521: apiFallbackMerge so data-health-check.yml's intermediate
   // commit steps can stage it (per-entry union merge, same as the ledgers
   // around it).

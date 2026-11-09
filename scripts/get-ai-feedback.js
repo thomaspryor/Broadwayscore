@@ -8,6 +8,7 @@
  * Or set the keys in your environment first.
  */
 
+require('./lib/llm-usage-install'); // LLM spend meter: before any client is built (BRO-5043)
 const fs = require('fs');
 const path = require('path');
 const { CLAUDE_SONNET, GPT4O } = require('./lib/models');

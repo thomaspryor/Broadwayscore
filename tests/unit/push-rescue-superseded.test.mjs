@@ -91,3 +91,50 @@ test('verifier verdicts, archive pointers, sources and bare details are never wa
   assert.equal(mainSupersedesRescue(j({ ...m, sources: ['bww'] }), j(m)), false, 'aggregator attribution at an equal tier');
   assert.equal(mainSupersedesRescue(j({ ...m, incompleteDetail: 'author mismatch: wrong critic' }), j(m)), false, 'detail with no reason');
 });
+
+// BRO-7173: owner-approved main_wins resolves main conflicts without a manual branch delete.
+const { parseMainWins, onlyMainConflicts } = createRequire(import.meta.url)('../../scripts/lib/push-rescue.js');
+const BR = 'push-rescue/20261108T182248Z-local-07cdde010f490dfd1a9b9968742475208519c8b7';
+const TIP = '744f3332cdbbc391cfa26d3c05fa029e3f02bbfb';
+test('mainWins turns main conflicts into logged skips, keeps other-rescue conflicts, still restores absent adds', () => {
+  const args = {
+    adds: ['s/a.json', 's/b.json', 's/c.json'],
+    mainBlob: new Map([['s/a.json', 'm']]),
+    touchedOnMain: new Set(),
+    rescueBlob: new Map([['s/a.json', 'r'], ['s/b.json', 'r2'], ['s/c.json', 'r3']]),
+    claimed: new Map([['s/b.json', 'other']]),
+  };
+  const before = replayPlan(args);
+  assert.deepEqual(before.conflicts.map((c) => c.path), ['s/a.json', 's/b.json']);
+  const p = replayPlan({ ...args, mainWins: true });
+  assert.deepEqual(p.conflicts.map((c) => c.path), ['s/b.json']);
+  assert.equal(p.keepForHuman, true);
+  assert.deepEqual(p.restore, ['s/c.json']);
+  const sk = p.skipped.find((x) => x.path === 's/a.json');
+  assert.equal(sk.rescueBlob, 'r');
+  assert.equal(sk.mainBlob, 'm');
+  const only = replayPlan({ ...args, adds: ['s/a.json'], mainWins: true });
+  assert.equal(only.keepForHuman, false);
+});
+test('parseMainWins needs branch@tip, strips refs/heads/, rejects junk', () => {
+  assert.equal(parseMainWins('').size, 0);
+  assert.equal(parseMainWins(`refs/heads/${BR}@${TIP.toUpperCase()}`).get(BR), TIP);
+  assert.throws(() => parseMainWins(BR), /tip sha/);
+  assert.throws(() => parseMainWins(`main@${TIP}`), /tip sha/);
+  assert.throws(() => parseMainWins(`${BR}@abc`), /tip sha/);
+});
+test('onlyMainConflicts: hint only when main_wins can settle the branch', () => {
+  assert.equal(onlyMainConflicts({ conflicts: [{ why: 'main holds a different version' }] }), true);
+  assert.equal(onlyMainConflicts({ conflicts: [{ why: 'another rescue branch holds a different version' }] }), false);
+  assert.equal(onlyMainConflicts({ conflicts: [{ why: 'main holds a different version' }], dropped: ['x'] }), false);
+  assert.equal(onlyMainConflicts({ conflicts: [] }), false);
+});
+test('mainWinsFor applies only when the live tip equals the approved tip', () => {
+  const { mainWinsFor } = createRequire(import.meta.url)('../../scripts/lib/push-rescue.js');
+  const map = parseMainWins(`${BR}@${TIP}`);
+  assert.deepEqual([...mainWinsFor([{ ref: BR, sha: TIP }], map).apply], [BR]);
+  const moved = mainWinsFor([{ ref: BR, sha: 'f'.repeat(40) }], map);
+  assert.equal(moved.apply.size, 0);
+  assert.equal(moved.notes[0].level, 'error');
+  assert.equal(mainWinsFor([], map).notes[0].level, 'warning');
+});

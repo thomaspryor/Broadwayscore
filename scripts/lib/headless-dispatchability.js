@@ -512,6 +512,7 @@ if (require.main === module) {
 module.exports = {
   ASYNC_WAIT_RES,
   commentClearsOwnerGate,
+  OWNER_ANSWERED_COMMENT_RE,
   visualAskOpen,
   BLOCKERS,
   UI_PATH_RE,

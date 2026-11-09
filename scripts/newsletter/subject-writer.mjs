@@ -21,6 +21,7 @@
 // draft is never held up. Kill switch: NEWSLETTER_AI_SUBJECT_DISABLED=true.
 //
 // Pure except for the two network calls, which tests replace via deps.
+import '../lib/llm-usage-install.js'; // LLM spend meter: keep it the first import (BRO-5043)
 import { createRequire } from 'node:module';
 const require_ = createRequire(import.meta.url);
 const { SOCIAL_WRITER, GPT55 } = require_('../lib/models.js');
@@ -127,6 +128,10 @@ export function buildPool(facts) {
     otherTitles: (facts.knownTitles || []).filter(t => t && t.length >= 4 && !titleNames.includes(t)
       && !facts.titles.some(x => mentions(x.title, t))),
     titleNames,
+    // This week's primary-market openings, the roundup's main story (owner,
+    // 2026-11-09). When there are any, the subject and the first sentence of
+    // the opening paragraph must be about them.
+    leadTitles: (facts.leadTitles || []).flatMap(t => titleForms(t)),
     edition: facts.edition,
   };
 }
@@ -153,6 +158,15 @@ export function checkCandidate(c, pool, recent = []) {
     const days = weekdaysIn(body).filter(d => !pool.weekdays.has(d));
     if (days.length) p.push(`${field} names a day the facts do not: ${days.join(', ')}`);
   }
+  const leads = pool.leadTitles || [];
+  if (leads.length) {
+    const namesLead = (t) => leads.some(l => mentions(t, l));
+    if (!namesLead(subject) && !/\b(?:open(?:s|ed|ing|ings)?|premieres?|debuts?|new shows?)\b/i.test(subject)) {
+      p.push("subject must be about this week's openings (name one, or say how the openings went); closings and other news go in the preview text or later in the paragraph");
+    }
+    const first = lede.split(/(?<=[.!?])\s+/)[0] || '';
+    if (!namesLead(first)) p.push("the opening paragraph's first sentence must name one of this week's openings");
+  }
   if (jaccard(subject, pre) > 0.5) p.push('preheader repeats the subject; it should add the next thing a reader wants to know');
   for (const r of recent) {
     if (!r) continue;
@@ -166,7 +180,9 @@ export function writerPrompt(pool, { recent = [], feedback = null, count = 6 } =
   const brand = pool.edition === 'west-end' ? 'West End Scorecard (London theatre)' : 'Broadway Scorecard (New York theatre)';
   return `You write the subject line, inbox preview text and opening paragraph for this week's ${brand} email newsletter. Subscribers are theatregoers deciding what to see. Never say today, tonight, tomorrow or this weekend: the send day can move, so name the weekday the facts give.
 
-Write ${count} candidates, each from a DIFFERENT angle. Angles to consider: last chance (a well-reviewed show closing soon, whenever it opened), the one to book, the split verdict, the surprise, the flop everyone was talking about, a perfect or record score, a famous title or name, what's coming next. Pick the angles the facts make strongest; a great show closing in a few days usually beats a count of openings.
+This is the weekly opening-night roundup. Its main story is THIS WEEK'S OPENINGS and how critics received them.${pool.leadTitles && pool.leadTitles.length ? ` Every subject line must be about this week's openings (lines starting "Opening:" that say "opened this week" in the ${pool.edition === 'west-end' ? 'West End or Off West End' : 'Broadway or Off-Broadway'}), and the opening paragraph must start with them.` : ''} A Broadway (or West End) opening outranks an Off-Broadway (or Off West End) one; a widely reviewed show outranks a thinly reviewed one. Closings, the rave and pan, box office and what's coming next are supporting news: use them in the preview text or later in the paragraph, never as the lead${pool.leadTitles && pool.leadTitles.length ? '' : ' unless the week had no openings'}.
+
+Write ${count} candidates, each from a DIFFERENT angle on the openings: the best-reviewed opening, the most-talked-about opening, the split verdict, the surprise, the flop, a perfect or record score, a famous title or name, how the week's openings went as a group.
 
 Rules:
 1. Every claim, number, name and day must come from the facts below. Don't round, don't embellish, don't add context the facts don't give. Opinions belong to critics ("critics loved it"), never to us.
@@ -196,7 +212,7 @@ Reply with only a JSON object: {"supported": true|false, "problems": ["<each uns
 }
 
 export function judgePrompt(pool, cands) {
-  return `You are the editor of a theatre newsletter choosing this week's subject line. Rank these candidates by how likely a theatregoer is to open the email AND feel it was worth it: a clear, specific reason to open now, natural human voice, short enough for a phone, honest. Penalize anything vague, generic, mechanical or that oversells.
+  return `You are the editor of a theatre newsletter choosing this week's subject line. This is the weekly opening-night roundup, so this week's openings are the story; prefer candidates that lead with them. Rank these candidates by how likely a theatregoer is to open the email AND feel it was worth it: a clear, specific reason to open now, natural human voice, short enough for a phone, honest. Penalize anything vague, generic, mechanical or that oversells.
 
 FACTS (for context):
 ${pool.sheet}

@@ -64,9 +64,19 @@ test('empty / missing registry does not throw', () => {
 const { inferOutletRegionFromCategories } = require('./outlet-region-map.js');
 const isLondonMarket = (c) => c === 'west-end' || c === 'off-west-end';
 
-test('infer: outlet seen only on London-market shows gets region london', () => {
-  assert.equal(inferOutletRegionFromCategories(['west-end'], isLondonMarket), 'london');
-  assert.equal(inferOutletRegionFromCategories(['west-end', 'off-west-end'], isLondonMarket), 'london');
+test('infer: unanimous London categories also need a UK domain or three distinct shows', () => {
+  assert.equal(inferOutletRegionFromCategories(['west-end'], isLondonMarket), null);
+  assert.equal(inferOutletRegionFromCategories(['west-end'], isLondonMarket, { domain: 'reviews.co.uk' }), 'london');
+  assert.equal(inferOutletRegionFromCategories(['west-end', 'off-west-end'], isLondonMarket,
+    { london: ['w1', 'w2', 'w3'] }), 'london');
+  for (const london of [['w1'], ['w1', 'w2'], ['w1', 'w1', 'w1']]) {
+    assert.equal(inferOutletRegionFromCategories(['west-end'], isLondonMarket, { london }), null);
+  }
+  for (const domain of ['reviews.ca', 'reviews.in', 'reviews.co.uk.example.com', 'londonreviews.com']) {
+    assert.equal(inferOutletRegionFromCategories(['west-end'], isLondonMarket, { domain }), null);
+  }
+  assert.equal(inferOutletRegionFromCategories(['west-end'], isLondonMarket,
+    { domain: 'reviews.co.uk', london: ['w1', 'w2', 'w3'], nyc: ['n1'] }), null);
 });
 
 test('infer: NYC-market evidence deliberately does NOT stamp a region (would disable urlIsUK fallback)', () => {
@@ -92,7 +102,8 @@ const { backfillMissingOutletRegions } = require('./outlet-region-map.js');
 test('backfill: fills region on a pre-existing region-less outlet with unanimous London evidence', () => {
   const outlets = { londonmumsmagazine: { displayName: 'Londonmumsmagazine', tier: 3, aliases: ['londonmumsmagazine'], domain: 'londonmumsmagazine.com' } };
   const categories = { londonmumsmagazine: new Set(['off-west-end']) };
-  const backfilled = backfillMissingOutletRegions(outlets, categories, isLondonMarket, '2026-08-15T00:00:00.000Z');
+  const backfilled = backfillMissingOutletRegions(outlets, categories, isLondonMarket, '2026-08-15T00:00:00.000Z',
+    { londonmumsmagazine: { london: new Set(['w1', 'w2', 'w3']) } });
   assert.deepEqual(backfilled, ['londonmumsmagazine']);
   assert.equal(outlets.londonmumsmagazine.region, 'london');
   assert.equal(outlets.londonmumsmagazine.regionInferredBy, 'backfillMissingOutletRegions (BRO-133)');
@@ -126,7 +137,7 @@ test('backfill: leaves outlets with mixed/no market evidence region-less', () =>
 
 test('backfill: mutates the outlets object in place and returns only the changed ids', () => {
   const outlets = {
-    a: { tier: 3 },
+    a: { tier: 3, domain: 'reviews.co.uk' },
     b: { tier: 3, region: 'us' },
   };
   const categories = { a: new Set(['off-west-end']) };
@@ -197,11 +208,61 @@ test('retract: counts distinct shows, not files', () => {
   assert.deepEqual(retractContradictedOutletRegions(outlets, { x: { nyc: ['n', 'n', 'n'] } }), []);
 });
 
-test('regionEvidenceMarket: London side is trustworthy-only', () => {
+test('regionEvidenceMarket: London evidence rejects unrelated wrong-production flags', () => {
   const base = { isLondonMarket: isLdn, trustworthyApartFromWrongProduction: true };
   assert.equal(regionEvidenceMarket({ ...base, category: 'west-end', trustworthy: true }), 'london');
   assert.equal(regionEvidenceMarket({ ...base, category: 'west-end', trustworthy: false,
     wrongProductionNote: 'Cross-market: London outlet "x" reviewing west-end show' }), null);
+});
+
+test('regionEvidenceMarket: only the forward guard assumption can bootstrap London evidence', () => {
+  const evidence = { isLondonMarket: isLdn, category: 'west-end', trustworthy: false,
+    trustworthyApartFromWrongProduction: true,
+    wrongProductionNote: 'Cross-market: US outlet "blog" reviewing London show' };
+  assert.equal(regionEvidenceMarket(evidence), 'london');
+  for (const blocker of [
+    { trustworthyApartFromWrongProduction: false },
+    { wrongProductionReason: 'manual review' },
+    { wrongProductionOverride: true },
+    { wrongProductionProvenance: 'content' },
+    { wrongProductionProvenance: 'manual' },
+    { humanReviewedWrongProduction: true },
+    { contentVerification: { wrongProduction: true } },
+    { rejectionReason: 'wrong_production', rejectedBy: 'ensemble-scoreability-check', rejectionAgreeCount: 2 },
+    { wrongProductionNote: `${evidence.wrongProductionNote}; confirmed wrong venue` },
+    { category: 'regional' },
+  ]) assert.equal(regionEvidenceMarket({ ...evidence, ...blocker }), null);
+  assert.equal(regionEvidenceMarket({ ...evidence, review: { ...evidence, humanReviewedWrongProduction: true } }), null);
+});
+
+test('backfill: a registered .com blog can reach three London shows despite forward-guard flags', () => {
+  const { evaluateForwardCrossMarketGuard, buildRegisteredOutletIds, buildOutletRegionMap } = require('./cross-market-guard');
+  const { isReviewContentTrustworthy } = require('./review-guards');
+  const registry = { outlets: { blog: { domain: 'reviewblog.com' } } };
+  const categories = { blog: new Set() };
+  const evidence = { blog: { london: new Set(), nyc: new Set() } };
+  for (const showId of ['w1', 'w2', 'w3']) {
+    const guard = evaluateForwardCrossMarketGuard({
+      outletRegionMap: buildOutletRegionMap(registry),
+      registeredOutletIds: buildRegisteredOutletIds(registry),
+      canonicalOutlet: 'blog', rawOutlet: 'blog', url: 'https://reviewblog.com/review',
+    });
+    assert.equal(guard.shouldFlag, true);
+    const review = { wrongProduction: guard.shouldFlag, wrongProductionNote: guard.reason };
+    const market = regionEvidenceMarket({ category: 'off-west-end', isLondonMarket: isLdn,
+      trustworthy: isReviewContentTrustworthy(review),
+      trustworthyApartFromWrongProduction: isReviewContentTrustworthy({ ...review, wrongProduction: false }),
+      wrongProductionNote: review.wrongProductionNote });
+    assert.equal(market, 'london');
+    categories.blog.add('off-west-end');
+    evidence.blog[market].add(showId);
+    const changed = backfillMissingOutletRegions(registry.outlets, categories, isLdn, 'T', evidence);
+    assert.deepEqual(changed, showId === 'w3' ? ['blog'] : []);
+  }
+  assert.equal(evaluateForwardCrossMarketGuard({
+    outletRegionMap: buildOutletRegionMap(registry), registeredOutletIds: buildRegisteredOutletIds(registry),
+    canonicalOutlet: 'blog', rawOutlet: 'blog', url: 'https://reviewblog.com/review',
+  }).shouldFlag, false);
 });
 
 test('regionEvidenceMarket: NYC side also counts the stale London-outlet flag', () => {

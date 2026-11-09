@@ -69,9 +69,11 @@ jobs:
     needs: health-check
     if: always()
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    # 55 (was 30): the LLM triage step adds up to 12 min; 55 keeps the push budget audit margin (>=15% plus residual) for the ledger commit.
+    timeout-minutes: 55
     permissions:
       contents: write
+      actions: read # llm-triage reads the run record of workflows a card names
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
@@ -94,6 +96,23 @@ jobs:
           BOARD_DISPATCH_DISABLED: ${{ vars.BOARD_DISPATCH_DISABLED }}
         run: node scripts/board-dispatch.js
 
+      - name: LLM triage (report-only)
+        # BRO-7139: reads up to 10 cards the board report puts in llm-triage's rows (card text
+        # is untrusted data to the prompt), appends one nomination row per card to
+        # data/audit/llm-triage.jsonl, never writes Linear. Stops starting cards at 9 min.
+        # Sonnet, about $0.20/night at 10 cards. Kill switch: vars.LLM_TRIAGE_DISABLED.
+        # lint-allow-swallow: report-only and advisory (CLAUDE.md §19); every row it managed
+        # is already in the ledger, and an all-failed night exits 1 (orange, visible).
+        continue-on-error: true
+        timeout-minutes: 12
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
+          GH_TOKEN: ${{ github.token }}
+          LLM_TRIAGE_DISABLED: ${{ vars.LLM_TRIAGE_DISABLED }}
+        run: node scripts/llm-triage.js --queue --cap=10 --ask --deadline-min=8 --ledger=data/audit/llm-triage.jsonl
+
       - name: Commit board dispatch ledger
         if: always()
         continue-on-error: true
@@ -104,7 +123,9 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          # One add per file: a missing pathspec fails the whole add (triage disabled or killed early).
           git add data/audit/board-dispatch.jsonl 2>/dev/null || true
+          git add data/audit/llm-triage.jsonl 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No board dispatch changes"
           else
@@ -242,7 +263,8 @@ jobs:
     # 13.6%, below the gate's 15%. 345min = 20700s keeps ~16% margin.
     # BRO-5769: 345->350 for the 1-min early-publish-date audit step (job-timeout-margin gate).
     # BRO-7131: 350->355 for the 5-min abandoned-review rescue step (job-timeout-margin gate).
-    timeout-minutes: 355
+    # BRO-7181: 355->365 for three --alert audit steps raised 1->3 min each (Linear calls; job-timeout-margin gate).
+    timeout-minutes: 365
     permissions:
       contents: write
       issues: write
@@ -432,6 +454,7 @@ jobs:
       - name: Commit digest + coverage snapshots (apiFallbackSafe)
         if: always()
         env:
+          PUSH_RECONCILE_MERGED_JSON: '1' # union-merges the LLM spend ledger on rebase (BRO-5043)
           PUSH_DEADLINE_SEC: '900'
           PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
           GIT_NET_TIMEOUT_SEC: '30'
@@ -439,6 +462,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/gemini-usage-ledger.jsonl 2>/dev/null || true # LLM spend meter rows (BRO-5043)
           git add data/audit/health-digest-snapshot.json 2>/dev/null || true
           git add data/audit/health-check-history.json 2>/dev/null || true
           git add data/audit/workflow-run-coverage.json 2>/dev/null || true
@@ -539,20 +563,32 @@ jobs:
       # BRO-4840: published scores vs the critic's own rating (daily, ~12s). Counts only go to the digest row.
       # Advisory first (CLAUDE.md rule 19): --strict makes the step red, continue-on-error keeps the job green until
       # the rebuilt reviews.json has been seen clean.
+      # BRO-7181: --alert files one worker card per condition (scripts/lib/audit-alert.js, disposition auto,
+      # warning, 20h cooldown) and clears it when clean; missing input never clears. Hygiene rule (ad) keeps it so.
       - name: Published score star-band audit
         if: always()
         continue-on-error: true
-        timeout-minutes: 1
-        run: node scripts/audit-star-band-drift.js --strict --counts=data/audit/star-band-drift.json
+        timeout-minutes: 3
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/audit-star-band-drift.js --strict --alert --counts=data/audit/star-band-drift.json
 
       # BRO-6046: one critic's review of a show shipped at an outlet AND its syndication primary
       # (e.g. an Observer column also filed as "guardian"), plus BRO-6054: one critic at two outlets
       # that syndication-pairs.js and scripts/config/same-critic-pairs-allowlist.json do not explain. Advisory first (CLAUDE.md rule 19).
+      # BRO-7181: --alert files one worker card per condition (scripts/lib/audit-alert.js, disposition auto,
+      # warning, 20h cooldown) and clears it when clean; missing input never clears. Hygiene rule (ad) keeps it so.
       - name: Syndicated critic pair audit
         if: always()
         continue-on-error: true
-        timeout-minutes: 1
-        run: node scripts/audit-syndicated-critic-pairs.js --strict
+        timeout-minutes: 3
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/audit-syndicated-critic-pairs.js --strict --alert
 
       # BRO-5510: dropped-by-wrong-twin reviews and stale-slot squatters on 2026+ shows (empty outlet slots only).
       # Advisory (CLAUDE.md rule 19): the script exits 0 unless --strict; continue-on-error keeps the job green.
@@ -565,11 +601,17 @@ jobs:
       # BRO-6056: outlets whose registry defaultCritic fills blank bylines although their
       # review-text files show several other named critics (set multiAuthor in
       # data/outlet-registry.json). Advisory first (CLAUDE.md rule 19).
+      # BRO-7181: --alert files one worker card per condition (scripts/lib/audit-alert.js, disposition auto,
+      # warning, 20h cooldown) and clears it when clean; missing input never clears. Hygiene rule (ad) keeps it so.
       - name: Default-critic diversity audit
         if: always()
         continue-on-error: true
-        timeout-minutes: 1
-        run: node scripts/audit-default-critic-diversity.js --strict
+        timeout-minutes: 3
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/audit-default-critic-diversity.js --strict --alert
 
       # BRO-6940: review files credited to one critic whose article prints a byline naming another critic
       # known at that outlet (Waiting for Lefty's NYSR review credited to Frank Scheck, article says
@@ -599,11 +641,18 @@ jobs:
 
       # BRO-7155: approved fixes (approvedFixes[] stamps) a later writer silently undid. Lists each unexplained
       # drift; restore with a pending-fix plan, then close the writer's hole. Advisory first (CLAUDE.md rule 19).
+      # BRO-7179: --alert files one worker card (owner-alert-router, disposition auto, key
+      # approved-fix-drift:unexplained) while drift exists and resolves the condition when clean.
+      # An 'auto' warning never emails; RESEND/OWNER_EMAIL only serve the router's Linear usage-limit page.
       - name: Approved-fix drift audit
         if: always()
         continue-on-error: true
-        timeout-minutes: 2
-        run: node scripts/audit-approved-fix-drift.js --strict
+        timeout-minutes: 3
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/audit-approved-fix-drift.js --strict --alert
 
       # BRO-6147: the daily batched decision email moved to owner-decision-emails.yml
       # (one email per decision, tap-to-answer buttons, every 20 minutes).

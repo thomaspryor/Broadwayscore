@@ -18,6 +18,7 @@
  *      showing the model both answers; its answer replaces the record)
  */
 
+require('./lib/llm-usage-install'); // LLM spend meter: before any client is built (BRO-5043)
 require('./lib/cli-help').exitOnHelp(module);
 
 const fs = require('fs');

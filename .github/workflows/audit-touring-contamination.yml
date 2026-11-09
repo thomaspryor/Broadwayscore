@@ -80,6 +80,7 @@ jobs:
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 300 # ledger commit step needs history to rebase (BRO-2388)
 
       - name: Checkout core data
         uses: ./.github/actions/checkout-core-data
@@ -185,6 +186,13 @@ jobs:
         run: |
           echo "Triggering rebuild to refresh reviews.json with new wrongProduction flags..."
           gh workflow run "Rebuild Reviews Data" -f reason="Touring contamination audit (${{ steps.inputs.outputs.market }}) applied flags"
+
+      - name: Commit LLM spend meter rows (BRO-5043)
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: audit-touring-contamination
 
       - name: Summary
         if: always()

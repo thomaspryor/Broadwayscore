@@ -56,6 +56,8 @@ data/audit/breaker-transitions.jsonl merge=union
 # the other append-only ledgers above.
 data/audit/scraper-spend-ledger.jsonl merge=union
 data/audit/gemini-usage-ledger.jsonl merge=union
+data/audit/board-dispatch.jsonl merge=union
+data/audit/llm-triage.jsonl merge=union
 data/audit/cross-show-url-holds.jsonl merge=union
 # BRO-5080: sourced fact-check sample answers, one row per checked show (append-only).
 data/audit/fact-check/*.jsonl merge=union
@@ -510,3 +512,8 @@ data/audit/coverage-adversarial-probe-trend.jsonl merge=union
 data/audit/routine-logs.jsonl merge=union
 # BRO-7118 prune ledger: keep this run snapshot
 data/audit/mobile-detail-prune-candidates.json merge=ours
+# BRO-7171 gap-recovery attempt ledger (scripts/lib/gap-recovery-ledger.js):
+# append-only, one O_APPEND row per attempt, never pruned. Every reader
+# (strategyState, reconcileRecovered, acceptedToday) groups by reviewKey and
+# re-sorts by each row's ts, so union's out-of-order append is harmless.
+data/audit/gap-recovery-attempts.jsonl merge=union

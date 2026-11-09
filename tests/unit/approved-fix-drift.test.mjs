@@ -4,6 +4,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import os from 'node:os';
+import { spawnSync } from 'node:child_process';
 import path from 'node:path';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
@@ -149,4 +151,81 @@ test('a held approval is not a drift', () => {
   const rec = godot();
   rec.approvedFixes = [stamp(rec, 'wrongShow', true)];
   assert.deepEqual(classifyRecord('s/a.json', rec, {}), []);
+});
+
+// BRO-7179: the daily audit files a worker card through owner-alert-router
+// when unexplained drift exists, and resolves the condition when it is clean.
+const { decideDriftAlert, DRIFT_ALERT_KEY } = require('../../scripts/lib/approved-fix-drift.js');
+
+function drift(i, extra = {}) {
+  return {
+    file: `show-${i}/outlet--critic.json`, field: 'wrongShow', current: null, explained: null,
+    stamp: { field: 'wrongShow', newValue: true, at: '2026-11-08T10:00:00Z', fixId: `fix-${i}`, note: 'reviewer note' },
+    ...extra,
+  };
+}
+
+test('decideDriftAlert: no unexplained drift resolves the condition', () => {
+  for (const input of [[], undefined, null]) {
+    const d = decideDriftAlert(input);
+    assert.equal(d.action, 'resolve');
+    assert.equal(d.conditionKey, 'approved-fix-drift:unexplained');
+  }
+});
+
+test('decideDriftAlert: unexplained drift routes an auto warning card with the agreed settings', () => {
+  const d = decideDriftAlert([drift(1)]);
+  assert.equal(d.action, 'route');
+  const a = d.alert;
+  assert.equal(a.conditionKey, DRIFT_ALERT_KEY);
+  assert.equal(a.conditionKey, 'approved-fix-drift:unexplained');
+  assert.equal(a.disposition, 'auto');
+  assert.equal(a.severity, 'warning');
+  assert.equal(a.cooldownHours, 20);
+  assert.match(a.description, /show-1\/outlet--critic\.json wrongShow: approved true at 2026-11-08T10:00:00Z \(fix fix-1\), now null/);
+  assert.ok(!/^P[0-3]/.test(a.title), 'title must not start with a priority prefix');
+});
+
+test('decideDriftAlert: the card never carries review text, only path/field/fixId/dates', () => {
+  const secret = 'SECRET REVIEW BODY the critic wrote';
+  const d = decideDriftAlert([drift(1, { fullText: secret, record: { fullText: secret, excerpt: secret }, stamp: { field: 'wrongShow', newValue: true, at: '2026-11-08', fixId: 'f', note: secret, oldValue: secret } })]);
+  const blob = JSON.stringify(d.alert);
+  assert.ok(!blob.includes('SECRET'), 'review text leaked into the alert');
+});
+
+test('decideDriftAlert: caps rows at 25 and states the overflow; key is stable across counts', () => {
+  const many = Array.from({ length: 30 }, (_, i) => drift(i));
+  const d = decideDriftAlert(many);
+  const rows = d.alert.description.split('\n').filter((l) => l.startsWith('- show-'));
+  assert.equal(rows.length, 25);
+  assert.match(d.alert.description, /and 5 more/);
+  assert.match(d.alert.title, /30 approved exclusion verdicts/);
+  assert.equal(d.alert.conditionKey, decideDriftAlert([drift(0)]).alert.conditionKey);
+});
+
+test('decideDriftAlert: the filed card is dispatchable (armed verify line)', () => {
+  const { buildCardNotes } = require('../../scripts/lib/owner-alert-router.js');
+  const { evaluateVerifiability } = require('../../scripts/lib/verify-gate.js');
+  const { alert } = decideDriftAlert([drift(1)]);
+  const v = evaluateVerifiability(buildCardNotes(alert));
+  assert.equal(v.armed, true, JSON.stringify(v));
+});
+
+test('decideDriftAlert: non-flag values are clamped, never echoed', () => {
+  const long = 'x'.repeat(500);
+  const { alert } = decideDriftAlert([drift(1, { current: long, stamp: { newValue: { text: 'BODY' }, at: 'a', fixId: 'f' } })]);
+  assert.ok(!alert.description.includes(long) && !alert.description.includes('BODY'));
+  assert.match(alert.description, /<string, not shown>/);
+});
+
+test('BRO-7179: an empty scan never resolves the alert condition', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'afd-empty-'));
+  fs.mkdirSync(path.join(dir, 'some-show-2020'));
+  fs.writeFileSync(path.join(dir, 'some-show-2020', 'a.json'), JSON.stringify({ url: 'x' }));
+  const r = spawnSync('node', [path.join(import.meta.dirname, '../../scripts/audit-approved-fix-drift.js'), `--dir=${dir}`, '--alert'], {
+    encoding: 'utf8', env: { ...process.env, LINEAR_API_KEY: '', HOME: dir },
+  });
+  assert.equal(r.status, 0);
+  assert.match(r.stderr, /scanned 0 files .* leaving the alert condition untouched/);
+  fs.rmSync(dir, { recursive: true, force: true });
 });

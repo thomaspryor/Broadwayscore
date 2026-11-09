@@ -124,4 +124,32 @@ function classifyRecord(file, record, { siblings } = {}) {
   return out;
 }
 
-module.exports = { EXCLUSION_FIELDS, ACKNOWLEDGED, latestStamp, classifyRecord, explainDuplicateOf };
+
+const { buildAuditAlert, clampCardValue } = require('./audit-alert');
+
+const DRIFT_ALERT_KEY = 'approved-fix-drift:unexplained';
+
+/**
+ * BRO-7179: the owner-alert-router decision for one audit run. Pure. `unexplained`
+ * is classifyRecord() output with `explained` false. Returns
+ * { action: 'resolve', conditionKey, reason } when nothing is unexplained, else
+ * { action: 'route', alert } for routeAlert(). The card names only the file
+ * path, field, fixId, dates and the flag values (clamped by clampCardValue,
+ * scripts/lib/audit-alert.js): never review text.
+ */
+function decideDriftAlert(unexplained) {
+  const list = Array.isArray(unexplained) ? unexplained : [];
+  return buildAuditAlert({
+    conditionKey: DRIFT_ALERT_KEY,
+    rows: list.map((d) => {
+      const s = d.stamp || {};
+      return `${d.file} ${d.field}: approved ${clampCardValue(s.newValue)} at ${s.at || '?'} (fix ${s.fixId || '?'}), now ${clampCardValue(d.current)}`;
+    }),
+    title: (n) => `Approved-fix drift: ${n} approved exclusion verdict${n === 1 ? '' : 's'} silently undone`,
+    intro: `The daily approved-fix drift audit found ${list.length} review-text file${list.length === 1 ? '' : 's'} whose newest approved-fix stamp no longer matches the field, with no later recorded decision explaining it.`,
+    hint: 'For each row: restore the approved value with node scripts/new-fix-plan.js --review-edit=<show>/<file>.json:<field>=<value>, then find and fix the writer that erased it. If a later decision is correct, add an ACKNOWLEDGED entry in scripts/lib/approved-fix-drift.js with the reason. Done when node scripts/audit-approved-fix-drift.js --strict exits 0.',
+    resolveReason: 'no unexplained approved-fix drift',
+  });
+}
+
+module.exports = { EXCLUSION_FIELDS, ACKNOWLEDGED, DRIFT_ALERT_KEY, latestStamp, classifyRecord, explainDuplicateOf, decideDriftAlert };

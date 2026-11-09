@@ -199,7 +199,7 @@ test('CLI main: one card that throws is recorded and the report is still written
     graphql, now: new Date(NOW), log: () => {}, env: {},
     commitSearch: (id) => { if (id === 'BRO-100') throw new Error('boom'); return null; },
   });
-  assert.equal(code, 1);
+  assert.equal(code, 0); // one bad card is a recorded row, not a red night (only every card failing exits 1)
   const rep = JSON.parse(fs.readFileSync(out, 'utf8'));
   assert.match(rep.results[0].error, /triage failed: boom/);
   assert.equal(rep.results[1].facts.LANDINGS, 'unknown (commit search failed)');
@@ -208,4 +208,85 @@ test('CLI main: one card that throws is recorded and the report is still written
   await assert.rejects(CLI.fetchIssues(down, ['BRO-1']), /Authentication/);
   const missing = async () => { throw new Error('Linear GraphQL error: Entity not found: Issue'); };
   assert.equal((await CLI.fetchIssues(missing, ['BRO-1'])).size, 0);
+});
+
+// BRO-7139 re-score round 2: three fact classes the 15-card truth table showed missing.
+test('stateHistoryFacts: a sweeper reopen of a worker close-out is labelled AUTOMATIC SWEEPER', () => {
+  const issue = card({
+    history: { nodes: [
+      { createdAt: '2026-10-26T02:04:00Z', fromState: { name: 'Done', type: 'completed' }, toState: { name: 'Todo', type: 'unstarted' } },
+      { createdAt: '2026-10-25T22:16:00Z', fromState: { name: 'In Progress', type: 'started' }, toState: { name: 'Done', type: 'completed' } },
+      { createdAt: '2026-10-25T06:15:00Z', fromState: { name: 'Todo', type: 'unstarted' }, toState: { name: 'In Progress', type: 'started' } },
+    ] },
+    comments: { nodes: [
+      { createdAt: '2026-10-26T02:04:30Z', body: 'Auto-corrected 2026-10-26 by reconcile-dead-completions: dead dispatch' },
+      { createdAt: '2026-10-25T22:16:10Z', body: '**Outcome** Filled section 5 of the plan doc' },
+    ] },
+  });
+  const s = F.stateHistoryFacts(issue);
+  assert.match(s, /closed Done \(comment: "\*\*Outcome\*\* Filled section 5/);
+  assert.match(s, /reopened to Todo by an AUTOMATIC SWEEPER/);
+  assert.doesNotMatch(s, /In Progress/); // open->open moves are not closes or reopens
+  const human = card({ ...issue, comments: { nodes: [{ createdAt: '2026-10-26T02:04:30Z', body: 'Reopening: the page still shows the old score' }] } });
+  assert.match(F.stateHistoryFacts(human), /reopened to Todo by a person or worker/);
+  assert.equal(F.stateHistoryFacts(card()), 'never closed');
+});
+
+test('workflowFilesOf: VERIFY --workflow first, then text mentions, capped at 3', () => {
+  const issue = card({ title: 'deploy.yml flaps', description: 'see a.yml b.yml c.yml docker-compose.yml' });
+  assert.deepEqual(F.workflowFilesOf(issue, { cmd: 'node scripts/check-workflow-run-status.js --workflow=x-y.yml --expect=success' }), ['x-y.yml', 'deploy.yml', 'a.yml']);
+  assert.deepEqual(F.workflowFilesOf(card(), { cmd: null }), []);
+});
+
+test('workflowRunFacts: the whole run record, split at the landing; a failed lookup is unknown', () => {
+  const runs = [
+    { conclusion: 'success', created_at: '2026-11-08T01:00:00Z' },
+    { conclusion: 'cancelled', created_at: '2026-11-07T01:00:00Z' },
+    { conclusion: 'failure', created_at: '2026-11-04T01:00:00Z' },
+  ];
+  const s = F.workflowRunFacts(new Map([['w.yml', runs], ['gone.yml', null]]), '2026-11-06T00:00:00Z');
+  assert.match(s, /w\.yml: last 3 completed runs 1 success, 1 cancelled, 1 failure/);
+  assert.match(s, /since the newest landing naming this card: 1 success, 1 cancelled/);
+  assert.match(s, /gone\.yml: unknown \(run lookup failed\)/);
+  assert.equal(F.workflowRunFacts(new Map(), null), 'none named');
+});
+
+test('renderCard over budget keeps the NEWEST comments and the description, drops the oldest', () => {
+  const comments = Array.from({ length: 30 }, (_, i) => ({ createdAt: `2026-10-${String(i + 1).padStart(2, '0')}T00:00:00Z`, body: `comment-${i + 1} ${'x'.repeat(1500)}` }));
+  const out = F.renderCard(card({ description: 'DESC-START', comments: { nodes: comments.slice().reverse() } }));
+  assert.ok(out.length <= F.CARD_BUDGET, `length ${out.length}`);
+  assert.match(out, /DESC-START/);
+  assert.match(out, /comment-30 /); // the newest survives
+  assert.doesNotMatch(out, /comment-1 /); // the oldest is dropped
+  assert.match(out, /older comment\(s\) omitted/);
+  const huge = F.renderCard(card({ comments: { nodes: [{ createdAt: '2026-10-01T00:00:00Z', body: `NEWEST ${'y'.repeat(40000)}` }] } }));
+  assert.ok(huge.length <= F.CARD_BUDGET);
+  assert.match(huge, /NEWEST/);
+});
+
+test('buildFacts + the real template carry STATE_HISTORY and WORKFLOW_RUNS', () => {
+  const issue = card();
+  const facts = F.buildFacts({ issue, category: 'other', verify: { cmd: null, status: 'none' }, verifyResult: null, commits: [], refStates: new Map(), overlaps: [], condition: { key: null, state: null }, nowMs: NOW, workflowRuns: new Map([['w.yml', []]]) });
+  const prompt = F.renderPrompt(facts, issue);
+  assert.match(prompt, /Closes and reopens .*: never closed/);
+  assert.match(prompt, /workflows this card names: w\.yml: no completed runs found/);
+});
+
+test('ownerAnswerFacts: an answered card says so, an open second question is flagged', () => {
+  const answered = { description: 'ANSWERED by the owner (see the "Owner decision" comment on this card).', comments: { nodes: [
+    { createdAt: '2026-11-08T19:26:00Z', body: '**Owner decision** (answered by the owner through the email link, 2026-11-08 UTC)\n\nChose: Approved\n\nDecision ref X' },
+  ] } };
+  assert.match(F.ownerAnswerFacts(answered), /answered on 2026-11-08: "Approved"; no question is left open/);
+  const reasked = { ...answered, description: 'DECISION NEEDED: a second thing?' };
+  assert.match(F.ownerAnswerFacts(reasked), /another DECISION NEEDED is still open/);
+  assert.equal(F.ownerAnswerFacts({ description: '', comments: { nodes: [{ createdAt: '2026-11-01T00:00:00Z', body: 'Owner decision is pending' }] } }), 'none');
+});
+
+test('AUTO_MOVE_RE: a worker writing "Reopened by me" is not an automatic sweeper', () => {
+  assert.equal(F.AUTO_MOVE_RE.test('Reopened by me, the fix did not hold'), false);
+  assert.equal(F.AUTO_MOVE_RE.test('Recovered the text by hand'), false);
+  assert.equal(F.AUTO_MOVE_RE.test('Reopening: the fix did not hold, the hourly sweep still flags it'), false);
+  assert.equal(F.AUTO_MOVE_RE.test('I checked reconcile-dead-completions by hand and it is wrong'), false);
+  assert.equal(F.AUTO_MOVE_RE.test('Auto-corrected 2026-11-01 by reconcile-dead-completions: dead dispatch'), true);
+  assert.equal(F.AUTO_MOVE_RE.test('Auto-reopened: done claim failed on main (reconcile-dead-completions)'), true);
 });

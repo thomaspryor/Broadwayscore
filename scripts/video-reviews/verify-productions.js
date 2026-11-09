@@ -31,6 +31,7 @@
  * LLM-based flags also need Gemini (GEMINI_API_KEY) to agree; without it they are not applied.
  */
 
+require('../lib/llm-usage-install'); // LLM spend meter: before any client is built (BRO-5043)
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('../lib/list-show-dirs');

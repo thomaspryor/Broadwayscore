@@ -25,6 +25,7 @@
  *
  * Integrated into rebuild via: .github/workflows/rebuild-reviews.yml
  */
+require('./lib/llm-usage-install'); // LLM spend meter: before any client is built (BRO-5043)
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const { getExcerpts } = require('./lib/excerpt-fields');
 const fs = require('fs');

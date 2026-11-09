@@ -190,20 +190,6 @@
     "queuedAt": "2026-11-08T13:30:30.697Z"
   },
   {
-    "conditionKey": "pending-unrecoverable:in-the-heights-off-broadway-2026",
-    "title": "1 review(s) for in-the-heights-off-broadway-2026 stuck in _pending with no text and no byline",
-    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nycitycenter-org--7d6014eb.json (nycitycenter-org): fetch failed: All scraping methods failed https://www.nycitycenter.org/pdps/2026-2027/in-the-heights34/",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-08T14:53:36.334Z"
-  },
-  {
     "conditionKey": "land:land/job/linear-BRO-7126-mw7xdyzq",
     "title": "Landing blocked: rebase red on land/job/linear-BRO-7126-mw7xdyzq",
     "description": "land.yml did not land land/job/linear-BRO-7126-mw7xdyzq: the rebase gate went red at 455dd07209. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-7126-mw7xdyzq @ 455dd07209 (origin/land/job/linear-BRO-7126-mw7xdyzq) → origin/main @ 9db0f8cc82 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 9db0f8cc82: Rebasing (1/3) Rebasing (2/3) Rebasing (3/3) error: could not apply 455dd072095... newsletter: exclude catch-ups from WE opener count (BRO-7126) hint: Resolve all conflicts manually, mark them as  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42490203961",
@@ -495,20 +481,6 @@
       }
     ],
     "queuedAt": "2026-11-08T17:53:22.862Z"
-  },
-  {
-    "conditionKey": "pending-unrecoverable:tristan-and-yseult-off-broadway-2026",
-    "title": "1 review(s) for tristan-and-yseult-off-broadway-2026 stuck in _pending with no text and no byline",
-    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nydailynews--39951290.json (nydailynews): fetch failed: All scraping methods failed http://www.nydailynews.com/entertainment/theater-arts/tristan-yseult-shines-brooklyn-article-1.2022234",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-08T17:42:05.149Z"
   },
   {
     "conditionKey": "land:land/job/linear-BRO-7137-mw8323fw",
@@ -1091,20 +1063,6 @@
     "queuedAt": "2026-11-08T22:09:38.267Z"
   },
   {
-    "conditionKey": "pending-unrecoverable:girls-off-west-end-2026",
-    "title": "1 review(s) for girls-off-west-end-2026 stuck in _pending with no text and no byline",
-    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nbcny--48004f36.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/adam-driver-whether-he-will-reprise-role-girls-revival/6569210/",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-08T22:18:45.730Z"
-  },
-  {
     "conditionKey": "land:land/bro-7161",
     "title": "Landing blocked: unit-tests-node red on land/bro-7161",
     "description": "land.yml did not land land/bro-7161: the unit-tests-node gate went red at 9f529e09fa. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42527948913",
@@ -1377,5 +1335,257 @@
     "testId": "tests/unit/cast-changes-real-data.test.mjs::no [AUTO-FLAGGED] entries older than 30 days in upcoming",
     "fields": [],
     "queuedAt": "2026-11-09T00:21:53.193Z"
+  },
+  {
+    "conditionKey": "land:land/worktree-agent-a2ea40cac568bc05a",
+    "title": "Landing blocked: scripts-lib-tests red on land/worktree-agent-a2ea40cac568bc05a",
+    "description": "land.yml did not land land/worktree-agent-a2ea40cac568bc05a: the scripts-lib-tests gate went red at 4a8c0900c6. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42543582892",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/worktree-agent-a2ea40cac568bc05a"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "4a8c0900c6423f17fe18c7521fe235ec45c65719"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42543582892"
+      }
+    ],
+    "queuedAt": "2026-11-09T01:34:18.121Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:in-the-heights-off-broadway-2026",
+    "title": "1 review(s) for in-the-heights-off-broadway-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nycitycenter-org--7d6014eb.json (nycitycenter-org): fetch failed: All scraping methods failed https://www.nycitycenter.org/pdps/2026-2027/in-the-heights34/",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-09T02:10:07.623Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:parcel-from-america-off-broadway-2026",
+    "title": "1 review(s) for parcel-from-america-off-broadway-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- irish-central--2f81a7ad.json (irish-central): fetch failed: All scraping methods failed https://www.irishcentral.com/opinion/others/parcel-from-america-theater-row.amp",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-09T02:10:27.548Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:tristan-and-yseult-off-broadway-2026",
+    "title": "1 review(s) for tristan-and-yseult-off-broadway-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nydailynews--39951290.json (nydailynews): fetch failed: All scraping methods failed http://www.nydailynews.com/entertainment/theater-arts/tristan-yseult-shines-brooklyn-article-1.2022234",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-09T02:11:04.710Z"
+  },
+  {
+    "conditionKey": "llm-scoring:daily-cost-breach",
+    "title": "LLM scoring daily spend over budget (still open — BRO-6732)",
+    "description": "Still firing after 20 notifications since it was filed. Tracked at BRO-6732.\n\nRolling 24h LLM scoring cost $11.32 exceeds the $10.00 llmScoringDailyUsd alarm line, across all GitHub runs.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-6732",
+    "fields": [],
+    "queuedAt": "2026-11-09T02:18:27.407Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red:run-data-validation",
+    "title": "Data audit failing: Run data validation",
+    "description": "The \"Run data validation\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42553945160",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Job",
+        "value": "Data Validation"
+      },
+      {
+        "name": "Step",
+        "value": "Run data validation"
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42553945160)"
+      }
+    ],
+    "queuedAt": "2026-11-09T03:33:12.493Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7181",
+    "title": "Landing blocked: rebase red on land/bro-7181",
+    "description": "land.yml did not land land/bro-7181: the rebase gate went red at d58be438d5. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42551919729",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7181"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "d58be438d5e53df7c4baacd24319211453909ca9"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42551919729"
+      }
+    ],
+    "queuedAt": "2026-11-09T02:44:32.446Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7183",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7183",
+    "description": "land.yml did not land land/bro-7183: the unit-tests-node gate went red at 4029707c35. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42552534037",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7183"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "4029707c35d1b125b0c6e52eb9e5bbe86eb4816c"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42552534037"
+      }
+    ],
+    "queuedAt": "2026-11-09T02:55:01.955Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7139-triage-nightly",
+    "title": "Landing blocked: merged-tree-tests red on land/bro-7139-triage-nightly",
+    "description": "land.yml did not land land/bro-7139-triage-nightly: the merged-tree-tests gate went red at 5109434346. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-7139-triage-nightly @ 5109434346 (origin/land/bro-7139-triage-nightly) → origin/main @ 92c57d97bc [land] train: + land/bro-6980-visual @ 319b983194 (2 commit(s)) [land] attempt 1/3: rebased onto 92c57d97bc, 16 file(s) changed (train: land/bro-7139-triage-nightly + land/bro-6980-visual) — running checks [land] train: ONE merged-tree re-check for 2 branch(es) (+7 test file(s) changed Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42550354462",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7139-triage-nightly"
+      },
+      {
+        "name": "gate",
+        "value": "merged-tree-tests"
+      },
+      {
+        "name": "tip",
+        "value": "5109434346dae3ada0bcd9144ac59dff01f80c23"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42550354462"
+      }
+    ],
+    "queuedAt": "2026-11-09T03:22:19.233Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-7186-mw8ny2ua",
+    "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-7186-mw8ny2ua",
+    "description": "land.yml did not land land/job/linear-BRO-7186-mw8ny2ua: the unit-tests-node gate went red at 0480fca48e. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42553852270",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-7186-mw8ny2ua"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "0480fca48e4940c845b2344f188917acbafcf6cc"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42553852270"
+      }
+    ],
+    "queuedAt": "2026-11-09T03:10:06.037Z"
+  },
+  {
+    "conditionKey": "llm-scoring:cost-repeat-signature",
+    "title": "LLM scoring repeated work detected",
+    "description": "Repeated scoring signatures in the last 24h (processed/input tokens): 1/4995 seen 3 times.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-09T03:41:22.853Z"
   }
 ]

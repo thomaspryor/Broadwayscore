@@ -47,7 +47,6 @@ const showsAllowlist = showsFilter ? new Set(showsFilter.split('=')[1].split(','
 
 const { loadCookiesForDomain } = require('./lib/cookie-loader');
 const { loadCandidates, processRecoveredText, stampDead, startRun, checkpoint } = require('./lib/browser-recovery-helpers');
-const { extractArticleText } = require('./lib/article-extractor');
 
 const CONFIG = {
   reportPath: path.join(__dirname, '..', 'data', 'audit', 'thestage-browser-recovery-report.json'),
@@ -58,25 +57,15 @@ const CONFIG = {
   delayMaxMs: 12000,
 };
 
-const TEST_URL = 'https://www.thestage.co.uk/reviews/a-midsummer-nights-dream-review-shakespeares-globe-london-emily-lim';
+// Extractor + auth-probe URL shared with the gap-recovery driver (BRO-7171).
+const { ADAPTERS } = require('./lib/browser-outlet-adapters');
+const TEST_URL = ADAPTERS.thestage.testUrl;
 
 function jitterDelay() {
   return CONFIG.delayMinMs + Math.random() * (CONFIG.delayMaxMs - CONFIG.delayMinMs);
 }
 
-async function extractArticle(page, url) {
-  await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
-  await page.waitForTimeout(1500);
-
-  const html = await page.content();
-  if (/verify you.re not a robot|access denied|too many requests/i.test(html)) {
-    return { error: 'Bot-check challenge detected' };
-  }
-  const text = extractArticleText(html, 'thestage.co.uk');
-  const title = await page.title();
-  if (!text) return { error: 'No article body element found (extractStageBody returned null — likely logged out)', title };
-  return { text, title, len: text.length };
-}
+const extractArticle = ADAPTERS.thestage.extract;
 
 async function main() {
   const cookies = loadCookiesForDomain('thestage.co.uk');
@@ -194,7 +183,7 @@ async function main() {
         fetchMethod: 'thestage-subscriber-browser-session',
         sourceMethod: 'thestage-subscriber-recovery-login',
         contentTierReasonFallback: 'Recovered via authenticated The Stage browser session (task #876)',
-      });
+      }, { headline: require('./lib/gap-acceptance').pageHeadline(result.html) });
       if (outcome.ok) {
         stats.recovered++;
         console.log(`  ✓ RECOVERED (${outcome.newLen} chars)`);

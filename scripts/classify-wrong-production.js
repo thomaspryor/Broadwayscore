@@ -31,6 +31,7 @@
  *
  * Integrated into rebuild via: scripts/rebuild-all-reviews.js (future)
  */
+require('./lib/llm-usage-install'); // LLM spend meter: before any client is built (BRO-5043)
 const fs = require('fs');
 const { getExcerpts } = require('./lib/excerpt-fields');
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');

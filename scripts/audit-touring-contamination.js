@@ -61,6 +61,7 @@
  *   data/audit/.touring-contamination-checkpoint.{market}.json (cleaned on completion)
  */
 
+require('./lib/llm-usage-install'); // LLM spend meter: before any client is built (BRO-5043)
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const { hasExcerpt, getExcerpts } = require('./lib/excerpt-fields');
 const { quarantineBody } = require('./lib/quarantine-body');

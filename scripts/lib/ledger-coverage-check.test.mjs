@@ -409,3 +409,45 @@ test('does NOT flag a script that only imports another export from scraper.js (n
     }
   );
 });
+
+// --- LLM spend meter ledger (BRO-5043 follow-up, owner 2026-11-08) ---
+const { findLlmUsageScripts, findMissingLlmUsageCommits } = require('./ledger-coverage-check.js');
+
+const llmJob = (stage) => `name: X
+on: workflow_dispatch
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - run: npx tsx scripts/llm-scoring/index.ts --limit=5
+      - run: |
+          ${stage}
+          git commit -m x
+`;
+
+test('LLM ledger: a job running a metered tsx script must stage the LLM usage ledger', () => {
+  const S = new Set(['llm-scoring/index.ts']);
+  assert.equal(findMissingLlmUsageCommits(llmJob('git add data/foo.json'), S).length, 1);
+  assert.equal(findMissingLlmUsageCommits(llmJob('git add data/audit/gemini-usage-ledger.jsonl 2>/dev/null || true'), S).length, 0);
+  assert.equal(findMissingLlmUsageCommits(llmJob('git add -u data/audit/'), S).length, 0, 'a data/audit/ sweep covers it');
+  assert.equal(findMissingLlmUsageCommits(llmJob('git add data/audit/scraper-spend-ledger.jsonl'), S).length, 1, 'the scraper ledger is a different file');
+  assert.equal(findMissingLlmUsageCommits(llmJob('git add data/foo.json'), new Set()).length, 0, 'unmetered scripts are ignored');
+});
+
+test('LLM ledger: reachability follows top-level requires, not lazy in-function ones', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'llm-reach-'));
+  fs.mkdirSync(path.join(dir, 'lib'));
+  fs.writeFileSync(path.join(dir, 'lib', 'llm-usage-install.js'), "'use strict';\n");
+  fs.writeFileSync(path.join(dir, 'lib', 'verifier.js'), "require('./llm-usage-install');\nmodule.exports = { hash: () => 1 };\n");
+  fs.writeFileSync(path.join(dir, 'entry.js'), "const v = require('./lib/verifier');\n");
+  fs.writeFileSync(path.join(dir, 'lazy.js'), "function f() {\n  return require('./lib/verifier').hash();\n}\n");
+  fs.writeFileSync(path.join(dir, 'plain.js'), "const fs = require('fs');\n");
+  fs.writeFileSync(path.join(dir, 'esm.mjs'), "import './lib/verifier.js';\n");
+  const S = findLlmUsageScripts(dir);
+  assert.ok(S.has('entry.js'));
+  assert.ok(S.has('esm.mjs'));
+  assert.ok(S.has('lib/verifier.js'));
+  assert.ok(!S.has('lazy.js'), 'lazy require for a hash helper must not flag the job');
+  assert.ok(!S.has('plain.js'));
+  fs.rmSync(dir, { recursive: true, force: true });
+});

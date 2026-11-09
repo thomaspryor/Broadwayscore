@@ -2,6 +2,7 @@
 // usage: node voscript.js <verdict|reveal|every|top5> <show-id | top5 list key> <outDir> [name]
 // Writes <outDir>/<name>.plan.json: the text-to-speech prompt plus the quotes it reads. render.js reads the plan,
 // re-checks every quote and number against the data, and cues each scene off the word the voice is saying.
+require('../lib/llm-usage-install'); // LLM spend meter: before any client is built (BRO-5043)
 const fs = require('fs'), path = require('path');
 const { getScoreTierId, SCORE_TIER_LABELS } = require('../lib/score-tiers.js');
 const { isBroadwayCategory } = require('../lib/venue-classification.js');
