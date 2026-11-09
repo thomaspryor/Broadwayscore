@@ -1,81 +1,26 @@
 {
-  "generatedAt": "2026-11-08T09:29:53.402Z",
+  "generatedAt": "2026-11-09T10:47:38.291Z",
   "staleDaysThreshold": 30,
   "reviewTextsAvailable": true,
-  "flaggedCount": 5,
-  "flagged": [
-    {
-      "id": "private-lives-2025",
-      "title": "Private Lives",
-      "venue": null,
-      "category": "broadway",
-      "previewsStartDate": null,
-      "openingDate": null,
-      "todaytixId": 43989,
-      "reasons": [
-        "data/review-texts/ has collected review file(s)"
-      ]
-    },
-    {
-      "id": "rope-drop-off-west-end-2026",
-      "title": "Rope Drop",
-      "venue": "The Other Palace",
-      "category": "off-west-end",
-      "previewsStartDate": null,
-      "openingDate": null,
-      "todaytixId": null,
-      "reasons": [
-        "data/review-texts/ has collected review file(s)"
-      ]
-    },
-    {
-      "id": "big-man-little-man-off-west-end-2026",
-      "title": "Big Man Little Man",
-      "venue": "The Other Palace",
-      "category": "off-west-end",
-      "previewsStartDate": null,
-      "openingDate": null,
-      "todaytixId": null,
-      "reasons": [
-        "data/review-texts/ has collected review file(s)"
-      ]
-    },
-    {
-      "id": "jerker-off-west-end-2026",
-      "title": "Jerker",
-      "venue": "Waterloo East Theatre",
-      "category": "off-west-end",
-      "previewsStartDate": null,
-      "openingDate": null,
-      "todaytixId": null,
-      "reasons": [
-        "data/review-texts/ has collected review file(s)"
-      ]
-    },
-    {
-      "id": "the-apology-west-end-2027",
-      "title": "The Apology",
-      "venue": "Royal Court",
-      "category": "west-end",
-      "previewsStartDate": null,
-      "openingDate": null,
-      "todaytixId": 48500,
-      "reasons": [
-        "data/review-texts/ has collected review file(s)"
-      ]
-    }
-  ],
+  "flaggedCount": 0,
+  "flagged": [],
   "postponedCount": 0,
   "postponed": [],
   "orphanAckCount": 0,
   "orphanAcks": [],
-  "silencedByContaminationCount": 10,
+  "silencedByContaminationCount": 12,
   "silencedByContamination": [
     {
       "id": "dreamgirls-2026",
       "title": "Dreamgirls",
       "reviewFiles": 4,
       "excludedFiles": 4
+    },
+    {
+      "id": "private-lives-2025",
+      "title": "Private Lives",
+      "reviewFiles": 32,
+      "excludedFiles": 32
     },
     {
       "id": "trouble-struggle-bubble-and-squeak-off-broadway-2026",
@@ -128,6 +73,12 @@
     {
       "id": "death-of-a-salesman-west-end-2026",
       "title": "Death of a Salesman",
+      "reviewFiles": 1,
+      "excludedFiles": 1
+    },
+    {
+      "id": "the-apology-west-end-2027",
+      "title": "The Apology",
       "reviewFiles": 1,
       "excludedFiles": 1
     }
