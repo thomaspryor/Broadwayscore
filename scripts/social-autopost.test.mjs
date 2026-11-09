@@ -1753,6 +1753,8 @@ test('plan limit: a lock the plan does not explain, an unlimited plan, or a chan
 
 test('plan limit: an unread plan neither pages nor re-arms', () => {
   assert.deepEqual(bufferLib.planLimitStatus([planCh('facebook', null, { isLocked: true }), planCh('bluesky', lapsed)]), { state: 'unknown' });
+  // One org unreadable must not hide another org that is plainly over its limit.
+  assert.equal(bufferLib.planLimitStatus([planCh('facebook', null, { isLocked: true }), planCh('bluesky', lapsed, { isLocked: true, organizationId: 'org2' })]).state, 'alert');
 });
 
 test('plan limit: routePlanStatus pages on a lapse, re-arms when clear, does nothing when unknown, never throws', async () => {

@@ -98,10 +98,10 @@ async function listChannels() {
  */
 function planLimitStatus(channels) {
   const ours = channels.filter(c => c.set);
-  if (ours.some(c => !c.orgPlan)) return { state: 'unknown' };
-  const over = c => c.orgPlan.limit !== null && c.orgPlan.limit !== undefined && c.orgPlan.channelCount > c.orgPlan.limit;
+  const over = c => !!c.orgPlan && c.orgPlan.limit !== null && c.orgPlan.limit !== undefined && c.orgPlan.channelCount > c.orgPlan.limit;
+  // A readable org over its limit pages even when another org's plan could not be read.
   const locked = ours.filter(c => c.isLocked && over(c));
-  if (!locked.length) return { state: 'clear' };
+  if (!locked.length) return ours.some(c => !c.orgPlan) ? { state: 'unknown' } : { state: 'clear' };
   const { limit, channelCount } = locked[0].orgPlan;
   const names = locked.map(c => c.key || c.service).join(', ');
   return {
