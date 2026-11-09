@@ -44,73 +44,38 @@ function publishConflictReport({ src, dest, now = new Date() }) {
   }
 }
 
-// BRO-7228: MEMORY.md is an index of pointer lines, so a saved mirror copy of
-// it never needs a human. Five of them sat in _conflicts/ for six weeks and
-// the morning digest flagged them daily. A copy is settled automatically:
-//   - pointers the local index already links  -> nothing to carry over
-//   - pointers to a memo that exists locally but is unlinked -> appended to the
-//     local index, as long as the index stays within its hard line cap
-//   - pointers to a memo that no longer exists -> dead, dropped
-// Settled copies move to _conflicts/_resolved/ (a subdirectory, so the report
-// above never counts them) and are never deleted. A copy that would push the
-// index past the cap stays put, because choosing what to trim is a judgment.
+// BRO-7228: MEMORY.md is a hand-trimmed index (180 lines / 20KB, hook-enforced,
+// "at cap: add => merge one"), so a saved mirror copy of it never needs a
+// human, and must never be written back into it: appending a pointer could
+// breach the byte cap or resurrect an entry the owner removed on purpose.
+// Cloud sessions still reach unindexed memos through INDEX.txt. Five copies sat
+// in _conflicts/ for six weeks and the morning digest flagged them daily, so
+// each sync moves them to _conflicts/_resolved/. That is a subdirectory, which
+// the report above never counts, and nothing is deleted: the copy survives.
+// Copies of any other memo still wait for review.
 const RESOLVED_DIR = '_resolved';
-const INDEX_NAME = 'MEMORY.md';
-const INDEX_LINE_CAP = 180;
 const COPY_RE = /^MEMORY\.cloud-conflict-.+\.md$/;
-const POINTER_RE = /^\s*[-*]\s+\[[^\]]*\]\(([^)\s]+\.md)\)/;
 
-function pointerTarget(line) {
-  const m = POINTER_RE.exec(line);
-  // A link out of the memory dir is not a memo pointer; never follow it.
-  return m && !m[1].includes('/') && !m[1].includes('..') ? m[1] : null;
-}
-
-function autoResolveIndexConflicts({ src }) {
-  const result = { resolved: [], kept: [], appended: [], indexChanged: false };
+function archiveIndexConflictCopies({ src }) {
+  const result = { archived: [] };
   const dir = path.join(src, CONFLICT_DIR);
-  const indexPath = path.join(src, INDEX_NAME);
   let names;
   try {
     names = fs.readdirSync(dir, { withFileTypes: true })
       .filter(e => e.isFile() && COPY_RE.test(e.name)).map(e => e.name).sort();
-    if (!fs.statSync(indexPath).isFile()) return result;
+    if (names.length) fs.mkdirSync(path.join(dir, RESOLVED_DIR), { recursive: true });
   } catch (err) {
     if (err.code === 'ENOENT') return result;
     throw err;
   }
   for (const name of names) {
-    const copyPath = path.join(dir, name);
-    let local = fs.readFileSync(indexPath, 'utf8');
-    const localLines = local.replace(/\n$/, '').split('\n');
-    const linked = new Set(localLines.map(pointerTarget).filter(Boolean));
-    const add = [];
-    for (const line of fs.readFileSync(copyPath, 'utf8').split('\n')) {
-      const target = pointerTarget(line);
-      if (!target || linked.has(target) || !fs.existsSync(path.join(src, target))) continue;
-      linked.add(target);
-      add.push(line.replace(/\s+$/, ''));
+    try {
+      fs.renameSync(path.join(dir, name), path.join(dir, RESOLVED_DIR, name));
+      result.archived.push(name);
+    } catch (err) {
+      // A parallel session-stop already moved it: that is the goal state.
+      if (err.code !== 'ENOENT') throw err;
     }
-    if (localLines.length + add.length > INDEX_LINE_CAP) {
-      result.kept.push(name);
-      continue;
-    }
-    if (add.length) {
-      // Re-read nothing here: this runs synchronously, so the index cannot
-      // change between the read above and this write.
-      const tmp = `${indexPath}.tmp-${process.pid}-${reportSeq++}`;
-      try {
-        fs.writeFileSync(tmp, `${local.replace(/\n*$/, '\n')}${add.join('\n')}\n`);
-        fs.renameSync(tmp, indexPath);
-      } finally {
-        fs.rmSync(tmp, { force: true });
-      }
-      result.appended.push(...add);
-      result.indexChanged = true;
-    }
-    fs.mkdirSync(path.join(dir, RESOLVED_DIR), { recursive: true });
-    fs.renameSync(copyPath, path.join(dir, RESOLVED_DIR, name));
-    result.resolved.push(name);
   }
   return result;
 }
@@ -148,6 +113,6 @@ function readConflictDigest(dest) {
 }
 
 module.exports = {
-  CONFLICT_DIR, REPORT_BASENAME, INDEX_NAME, INDEX_LINE_CAP, RESOLVED_DIR,
-  publishConflictReport, readConflictDigest, autoResolveIndexConflicts,
+  CONFLICT_DIR, REPORT_BASENAME, RESOLVED_DIR,
+  publishConflictReport, readConflictDigest, archiveIndexConflictCopies,
 };

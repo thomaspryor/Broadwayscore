@@ -52,7 +52,7 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const {
-  CONFLICT_DIR, INDEX_NAME, publishConflictReport, autoResolveIndexConflicts,
+  CONFLICT_DIR, publishConflictReport, archiveIndexConflictCopies,
 } = require('./cloud-memory-conflicts.js');
 
 const MANIFEST_VERSION = 1;
@@ -408,12 +408,12 @@ function applySync({ src, dest, manifestPath, dryRun = false, now = new Date(), 
     fs.rmSync(target, { force: true });
   }
 
-  // BRO-7228: settle saved MEMORY.md copies before the inventory is written,
-  // so the report and the digest only ever list copies that need a human. If
-  // pointer lines were carried into the local index, mirror it right away so
-  // the next sync sees src == dest rather than a fresh conflict.
-  const settled = autoResolveIndexConflicts({ src });
-  if (settled.indexChanged) copyAtomic(path.join(src, INDEX_NAME), path.join(dest, INDEX_NAME));
+  // BRO-7228: archive saved MEMORY.md copies before the inventory is written,
+  // so the report and the digest only list copies that need a human. Never
+  // fatal: a failure here must not skip the report or the manifest write.
+  let settled = { archived: [] };
+  try { settled = archiveIndexConflictCopies({ src }); }
+  catch (err) { settled = { archived: [], error: err.message }; }
 
   // Also inventory old conflict copies and clear the count after review.
   publishConflictReport({ src, dest, now });
