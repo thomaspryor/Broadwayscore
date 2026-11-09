@@ -19,6 +19,12 @@
  */
 const fs = require('fs');
 const path = require('path');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+if (require.main === module && hasHelpFlag(process.argv.slice(2))) {
+  console.log(fs.readFileSync(__filename, 'utf8').split('/**')[1].split('*/')[0].replace(/^ \* ?/gm, '').trim());
+  process.exit(0);
+}
 const og = require('./lib/opening-grade');
 const { historyFrom, loadCommits, loadFiles } = require('./grade-openings');
 const { citedUncollectedNow } = require('./lib/audit-show-review-gap');
