@@ -76,8 +76,9 @@ const HANDLERS = {
     does: 'monthly report of prose date-waits and old Backlog cards; never writes',
   },
   'llm-triage': {
-    script: 'scripts/llm-triage.js', workflow: null, invocation: null, mode: 'planned',
-    does: 'BRO-7139 Step 3: reads parked-for-another-reason cards and nominates release/ask/close (report-only first)',
+    script: 'scripts/llm-triage.js', workflow: '.github/workflows/data-health-check.yml',
+    invocation: 'node scripts/llm-triage.js --queue --cap=10 --ask --deadline-min=8 --ledger=data/audit/llm-triage.jsonl', mode: 'report-only',
+    does: 'nightly: reads up to 10 cards in its rows (7-day cooldown) and appends release/ask/close nominations to data/audit/llm-triage.jsonl; never writes Linear (BRO-7139)',
   },
 };
 

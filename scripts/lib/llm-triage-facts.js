@@ -20,6 +20,7 @@ const { isSafeCheckCommand, explainUnsafeCheckCommand } = require('./check-paths
 const { conditionKeyOf, conditionKeyFromLedger } = require('./board-closer.js');
 const { VERDICTS: RUN } = require('./close-time-verify.js');
 const { sortedComments } = require('./board-categories.js');
+const { OWNER_ANSWERED_COMMENT_RE } = require('./headless-dispatchability.js');
 
 const PROMPT_PATH = path.join(__dirname, 'llm-triage-prompt.md');
 const VERDICTS = ['close-candidate', 'blocked', 'release', 'ask-owner', 'recheck', 'keep'];
@@ -164,11 +165,108 @@ function lastWorkerComment(issue, nowMs) {
   return `${ageText(nowMs - Date.parse(c.createdAt))}: "${snippet}"`;
 }
 
+// Comment wording the board's automatic sweepers leave when they move a card. A reopen whose
+// nearby comment matches is a machine's move, not a person or a failing check (BRO-7139: a
+// worker closed BRO-5957 Done with a full close-out; reconcile-dead-completions reopened it
+// and the triage model read the reopen as "not finished").
+// Anchored at the comment's start only: a person writing "the hourly sweep still flags it" in a
+// reopen is a person, not a sweeper. reconcile-dead-completions posts "Auto-corrected ... by
+// reconcile-dead-completions", so the prefix list covers it.
+const AUTO_MOVE_RE = /^(\*\*)?(Auto-corrected|RECLAIMED-ABANDONED|Auto-reopened|Board dispatch|Stuck-card closer|Autonomous recheck)\b/i;
+const CLOSED_TYPES = new Set(['completed', 'canceled']);
+
+/**
+ * PURE. Closes and reopens from Linear's issue history, each with the comment written within
+ * 5 minutes of the move, so the model can tell a worker's close-out from a sweeper's reopen.
+ * Every session writes through the same Linear key, so the actor field cannot tell them apart.
+ */
+function stateHistoryFacts(issue) {
+  const moves = ((issue && issue.history && issue.history.nodes) || [])
+    .filter((h) => h && h.toState && h.fromState)
+    .filter((h) => CLOSED_TYPES.has(h.toState.type) !== CLOSED_TYPES.has(h.fromState.type))
+    .sort((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt));
+  if (!moves.length) return 'never closed';
+  const comments = sortedComments(issue);
+  const near = (at) => {
+    const t = Date.parse(at);
+    const c = comments.filter((x) => Math.abs(Date.parse(x.createdAt) - t) <= 5 * 60e3)
+      .sort((a, b) => Math.abs(Date.parse(a.createdAt) - t) - Math.abs(Date.parse(b.createdAt) - t))[0];
+    return c ? String(c.body || '').replace(/\s+/g, ' ').trim() : '';
+  };
+  return moves.slice(-4).map((h) => {
+    const when = String(h.createdAt).slice(0, 16).replace('T', ' ');
+    const body = near(h.createdAt);
+    if (CLOSED_TYPES.has(h.toState.type)) return `${when} closed ${h.toState.name}${body ? ` (comment: "${body.slice(0, 120)}")` : ' (no comment)'}`;
+    const who = !body ? 'by an unknown mover (no comment)' : (AUTO_MOVE_RE.test(body) ? 'by an AUTOMATIC SWEEPER' : 'by a person or worker');
+    return `${when} reopened to ${h.toState.name} ${who}${body ? ` (comment: "${body.slice(0, 120)}")` : ''}`;
+  }).join('; ');
+}
+
+const WORKFLOW_FILE_RE = /\b([a-z0-9][a-z0-9._-]*\.ya?ml)\b/gi;
+
+/** PURE. Workflow files the card's VERIFY or text names (max 3), VERIFY's --workflow first. */
+function workflowFilesOf(issue, verify) {
+  const out = [];
+  const add = (f) => { if (f && !out.includes(f) && out.length < 3) out.push(f); };
+  const m = String((verify && verify.cmd) || '').match(/--workflow[= ]([\w.-]+\.ya?ml)/);
+  if (m) add(m[1]);
+  for (const x of `${issue.title || ''}\n${cardText(issue)}`.matchAll(WORKFLOW_FILE_RE)) {
+    if (!/^(docker-compose|action|config|codecov|dependabot|pnpm-lock)\b/i.test(x[1])) add(x[1]);
+  }
+  return out;
+}
+
+/**
+ * PURE. runsByFile: Map file -> [{conclusion, created_at}] newest first (completed runs only),
+ * or null when the lookup failed. sinceIso: newest landing naming the card (or null).
+ * One newest run is a coin flip on a busy workflow; the model gets the whole recent record.
+ */
+function workflowRunFacts(runsByFile, sinceIso) {
+  if (!runsByFile || !runsByFile.size) return 'none named';
+  const since = Date.parse(sinceIso || '') || null;
+  const parts = [];
+  for (const [file, runs] of runsByFile) {
+    if (!runs) { parts.push(`${file}: unknown (run lookup failed)`); continue; }
+    if (!runs.length) { parts.push(`${file}: no completed runs found`); continue; }
+    const tally = (rs) => {
+      const t = {};
+      for (const r of rs) t[r.conclusion || 'unknown'] = (t[r.conclusion || 'unknown'] || 0) + 1;
+      return Object.entries(t).map(([k, v]) => `${v} ${k}`).join(', ');
+    };
+    let s = `${file}: last ${runs.length} completed runs ${tally(runs)} (newest ${String(runs[0].created_at).slice(0, 10)}, oldest ${String(runs[runs.length - 1].created_at).slice(0, 10)})`;
+    if (since) {
+      const after = runs.filter((r) => Date.parse(r.created_at) >= since);
+      s += after.length ? `; since the newest landing naming this card: ${tally(after)}` : '; no completed runs since the newest landing naming this card';
+    }
+    parts.push(s);
+  }
+  return parts.join('; ');
+}
+
+/**
+ * The owner's newest recorded answer on this card (the answer path's "**Owner decision**
+ * (answered by the owner ...)" comment), so the model never asks the same question again.
+ * BRO-7139 round 2: BRO-6810 was answered "Approved" and the model re-asked it.
+ */
+// Trust note: the owner-decision comment is matched by its text, not verified by its answer-link
+// HMAC, so anyone with write access to the Linear workspace could forge one. Accepted because
+// the workspace is private and a forged answer can only change a report-only nomination, which
+// the weekly audit re-checks against reality; nothing closes or releases a card from this fact.
+function ownerAnswerFacts(issue) {
+  const answers = sortedComments(issue).filter((c) => OWNER_ANSWERED_COMMENT_RE.test(String(c.body || '')));
+  if (!answers.length) return 'none';
+  const last = answers[answers.length - 1];
+  const chose = (String(last.body).match(/^[ \t]*Chose:[ \t]*(.+)$/im) || [])[1];
+  const stillAsking = /^[ \t]*(?:[-*>][ \t]+)?\**DECISION NEEDED\**[ \t]*:/im.test(String(issue.description || ''));
+  return `the owner answered on ${String(last.createdAt).slice(0, 10)}: "${String(chose || 'answer not recorded').trim().slice(0, 120)}"`
+    + (stillAsking ? '; another DECISION NEEDED is still open in the description' : '; no question is left open');
+}
+
 /**
  * Everything the prompt's FACTS block needs, as display strings.
  * refStates: Map id -> {state, title} for referencedIds (missing = unknown).
  */
-function buildFacts({ issue, category, verify, verifyResult, commits, refStates, overlaps, condition, nowMs }) {
+function buildFacts({ issue, category, verify, verifyResult, commits, refStates, overlaps, condition, nowMs, workflowRuns = null }) {
   const refs = referencedIds(cardText(issue), issue.identifier).slice(0, 8);
   const refLine = refs.length
     ? refs.map((id) => { const r = refStates && refStates.get(id); return r ? `${id} (${r.state}: ${String(r.title || '').slice(0, 60)})` : `${id} (state unknown)`; }).join('; ')
@@ -186,19 +284,46 @@ function buildFacts({ issue, category, verify, verifyResult, commits, refStates,
     REFERENCED_CARDS: refLine,
     OVERLAPS: (overlaps && overlaps.length) ? overlaps.map((o) => `${o.id} "${String(o.title).slice(0, 70)}" (${o.why})`).join('; ') : 'none',
     LAST_WORKER_COMMENT_AGE: lastWorkerComment(issue, nowMs),
+    STATE_HISTORY: stateHistoryFacts(issue),
+    OWNER_ANSWER: ownerAnswerFacts(issue),
+    WORKFLOW_RUNS: workflowRunFacts(workflowRuns, lands.length ? lands[0].date : null),
   };
 }
 
-/** The card as the model sees it: title, state, description, every comment with its date. */
-function renderCard(issue) {
+const CARD_BUDGET = 30000;
+const DESCRIPTION_BUDGET = 8000;
+
+/**
+ * The card as the model sees it: title, state, description, every comment with its date.
+ * Over CARD_BUDGET it keeps the description head and the NEWEST comments and drops the
+ * oldest ones with a marker. Cutting the tail instead lost the latest comments, which the
+ * prompt says override everything older (BRO-7139: BRO-5500 ended mid-comment).
+ */
+function renderCard(issue, budget = CARD_BUDGET) {
   const comments = sortedComments(issue);
-  return [
+  const head = [
     `# ${issue.identifier}: ${issue.title}`,
     `state: ${(issue.state && issue.state.name) || '?'}  priority: ${issue.priority ?? '?'}  created: ${String(issue.createdAt || '').slice(0, 10)}`,
     '',
-    String(issue.description || ''),
-    ...comments.map((c) => `\n--- comment ${String(c.createdAt || '').slice(0, 16)} ---\n${String(c.body || '')}`),
-  ].join('\n').slice(0, 30000);
+  ].join('\n');
+  const parts = comments.map((c) => `\n--- comment ${String(c.createdAt || '').slice(0, 16)} ---\n${String(c.body || '')}`);
+  let desc = String(issue.description || '');
+  const full = [head, desc, ...parts].join('\n');
+  if (full.length <= budget) return full;
+  if (desc.length > DESCRIPTION_BUDGET) desc = `${desc.slice(0, DESCRIPTION_BUDGET)}\n[description cut]`;
+  let room = budget - head.length - desc.length - 100;
+  const kept = [];
+  for (let i = parts.length - 1; i >= 0; i--) {
+    let p = parts[i];
+    if (p.length > room) {
+      if (kept.length) break;
+      p = `${p.slice(0, Math.max(0, room - 20))}\n[comment cut]`; // the newest comment alone is over budget
+    }
+    kept.unshift(p);
+    room -= p.length + 1;
+  }
+  const dropped = parts.length - kept.length;
+  return [head, desc, ...(dropped ? [`\n[${dropped} older comment(s) omitted for length]`] : []), ...kept].join('\n');
 }
 
 /** The prompt body (after the file's `---` header), placeholders filled. */
@@ -261,4 +386,6 @@ module.exports = {
   VERDICTS, OVERLAP_MIN, PROMPT_PATH,
   cardText, referencedIds, verifyCommandOf, verifyResultWord, verifyDetail, titleSimilarity, findOverlaps,
   conditionFacts, landingsAfter, lastWorkerComment, buildFacts, renderCard, renderPrompt, parseVerdict,
+  stateHistoryFacts,
+  ownerAnswerFacts, workflowFilesOf, workflowRunFacts, CARD_BUDGET, AUTO_MOVE_RE,
 };

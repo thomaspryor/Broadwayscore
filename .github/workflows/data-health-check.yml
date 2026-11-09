@@ -69,9 +69,11 @@ jobs:
     needs: health-check
     if: always()
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    # 55 (was 30): the LLM triage step adds up to 12 min; 55 keeps the push budget audit margin (>=15% plus residual) for the ledger commit.
+    timeout-minutes: 55
     permissions:
       contents: write
+      actions: read # llm-triage reads the run record of workflows a card names
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
@@ -94,6 +96,23 @@ jobs:
           BOARD_DISPATCH_DISABLED: ${{ vars.BOARD_DISPATCH_DISABLED }}
         run: node scripts/board-dispatch.js
 
+      - name: LLM triage (report-only)
+        # BRO-7139: reads up to 10 cards the board report puts in llm-triage's rows (card text
+        # is untrusted data to the prompt), appends one nomination row per card to
+        # data/audit/llm-triage.jsonl, never writes Linear. Stops starting cards at 9 min.
+        # Sonnet, about $0.20/night at 10 cards. Kill switch: vars.LLM_TRIAGE_DISABLED.
+        # lint-allow-swallow: report-only and advisory (CLAUDE.md §19); every row it managed
+        # is already in the ledger, and an all-failed night exits 1 (orange, visible).
+        continue-on-error: true
+        timeout-minutes: 12
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
+          GH_TOKEN: ${{ github.token }}
+          LLM_TRIAGE_DISABLED: ${{ vars.LLM_TRIAGE_DISABLED }}
+        run: node scripts/llm-triage.js --queue --cap=10 --ask --deadline-min=8 --ledger=data/audit/llm-triage.jsonl
+
       - name: Commit board dispatch ledger
         if: always()
         continue-on-error: true
@@ -104,7 +123,9 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          # One add per file: a missing pathspec fails the whole add (triage disabled or killed early).
           git add data/audit/board-dispatch.jsonl 2>/dev/null || true
+          git add data/audit/llm-triage.jsonl 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No board dispatch changes"
           else

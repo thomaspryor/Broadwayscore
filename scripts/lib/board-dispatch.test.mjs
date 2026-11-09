@@ -33,7 +33,7 @@ test('planDispatch: each card goes to every handler its category names; non-appl
   assert.deepEqual(p.handlers['owner-decision-emails'], { mode: 'apply', categories: ['waiting-owner'], count: 1, sample: ['BRO-1'] });
   assert.equal(p.handlers['linear-reclaim-abandoned'].count, 1);
   assert.equal(p.handlers['close-stuck-verified-cards'].count, 1);
-  assert.equal(p.handlers['llm-triage'].mode, 'planned');
+  assert.equal(p.handlers['llm-triage'].mode, 'report-only'); // BRO-7139 Step 2: nightly report-only in data-health-check.yml
   assert.deepEqual(p.gaps, [
     { category: 'app-repo', count: 2, sample: ['BRO-4', 'BRO-5'] },
     { category: 'mystery', count: 1, sample: ['BRO-6'] },
