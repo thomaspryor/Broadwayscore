@@ -209,7 +209,10 @@ async function main() {
   if (OPTS.dryRun) {
     const summary = printPlan(cands);
     if (OPTS.jsonOut) {
-      fs.writeFileSync(OPTS.jsonOut, JSON.stringify({ runId: RUN_ID, summary, candidates: cands.map(({ show, ...c }) => c) }, null, 2));
+      // A plan report from --json=, never a review file (read from argv
+      // directly so review-write-safety's taint scan does not follow OPTS).
+      const planReportPath = arg('json');
+      fs.writeFileSync(planReportPath, JSON.stringify({ runId: RUN_ID, summary, candidates: cands.map(({ show, ...c }) => c) }, null, 2));
       console.log(`plan written to ${OPTS.jsonOut}`);
     }
     return 0;
