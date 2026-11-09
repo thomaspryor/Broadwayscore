@@ -70,13 +70,14 @@ never_list=""
 if command -v node >/dev/null 2>&1; then
   never_list=$(node -e 'const skip=new Set(["land.yml","vercel-deploy.yml","opening-night-broadcast.yml","morning-digest-action.yml"]);console.log([...require(process.argv[1]).NEVER].map(f=>f.split("/").pop()).filter(f=>!skip.has(f)).join(" "))' "$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)/scripts/lib/press-night-priority.js" 2>/dev/null) || never_list=""
 fi
+[ -n "$never_list" ] || echo "land-cancel-guard: never-cancel list unavailable (node or press-night-priority.js), only the Land rule applies" >&2
 
 for run_id in $run_ids; do
 if [ -n "${LAND_CANCEL_GUARD_RUN_JSON:-}" ]; then run=$LAND_CANCEL_GUARD_RUN_JSON
 else run=$(timeout 15 gh api "repos/thomaspryor/Broadwayscore/actions/runs/$run_id" 2>/dev/null) || continue
 fi
 path=$(printf '%s' "$run" | jq -r '.path // empty' 2>/dev/null)
-wf=${path##*/}; wf=${wf%%@*}
+wf=${path%%@*}; wf=${wf##*/}
 for n in $never_list; do
   if [ "$wf" = "$n" ]; then
     echo "🛑 BLOCKED: run $run_id is a $n run, a never-cancel workflow (BRO-7232: cancelling press-night-clock.yml on Wanted night left the press-night chain dead for 3h16m). Leave it running. If it must stop, ask the owner, or create \$HOME/.claude/LAND_CANCEL_GUARD_OFF." >&2

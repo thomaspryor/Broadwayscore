@@ -116,3 +116,7 @@ test('exempt workflows stay cancellable: vercel-deploy (stale deploys) and the e
 test('the kill switch lets a never-cancel run be cancelled on purpose', () => {
   assert.equal(hook(bash('gh run cancel 42533347172'), run(ME, '.github/workflows/press-night-clock.yml'), { LAND_CANCEL_GUARD_OFF: '1' }).code, 0);
 });
+test('a run path carrying an @ref is still matched', () => {
+  const r = hook(bash('gh run cancel 42533347172'), run(ME, '.github/workflows/press-night-clock.yml@refs/heads/main'));
+  assert.equal(r.code, 2);
+});
