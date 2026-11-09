@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7165-b",
   "planId": "973259ab-05d8-42b5-8443-fcab4b03c8fe",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-09T07:03:47.906Z",
   "submitter": {
     "name": null,
@@ -176,5 +176,99 @@
         "description": "BRO-7165: byline printed in the stored text (Guillermo Nazara)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-09T08:13:55.719Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "murder-cathedral-off-west-end-2026/plays-international--unknown.json criticName: \"Unknown\" -> \"Jeremy Malies\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "night-city-off-west-end-2026/firstnightmagazine--unknown.json criticName: \"Unknown\" -> \"Guillermo Nazara\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "now-you-see-me-live-off-west-end-2026/firstnightmagazine--unknown.json criticName: \"Unknown\" -> \"Guillermo Nazara\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rent-west-end-2026/firstnightmagazine--unknown.json criticName: \"Unknown\" -> \"Guillermo Nazara\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "saint-joan-citizens-regional-2026/plays-international--unknown.json criticName: \"Ri-admin\" -> \"Mark Brown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "small-hotel-royal-bath-regional-2025/plays-international--unknown.json criticName: \"Ri-admin\" -> \"Simon Thomas\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "speculations-off-west-end-2026/plays-international--unknown.json criticName: \"Unknown\" -> \"Jeremy Malies\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tango-after-dark-off-west-end-2026/firstnightmagazine--unknown.json criticName: \"Unknown\" -> \"Guillermo Nazara\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-bridge-off-west-end-2026/firstnightmagazine--unknown.json criticName: \"Unknown\" -> \"Guillermo Nazara\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-caretaker-chichester-festival-regional-2024/plays-international--unknown.json criticName: \"Ri-admin\" -> \"Jeremy Malies\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-comedy-about-spies-west-end-2026/firstnightmagazine--unknown.json criticName: \"Unknown\" -> \"Guillermo Nazara\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-house-party-chichester-festival-regional-2024/plays-international--unknown.json criticName: \"Ri-admin\" -> \"Jeremy Malies\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-moth-off-west-end-2026/firstnightmagazine--unknown.json criticName: \"Unknown\" -> \"Guillermo Nazara\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-pianist-off-west-end-2026/firstnightmagazine--unknown.json criticName: \"Unknown\" -> \"Guillermo Nazara\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-revlon-girl-off-west-end-2026/a-youngish-perspective--unknown.json criticName: \"Unknown\" -> \"Holly A Coombes\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-spy-who-came-in-from-the-cold-chichester-festival-regional-2024/plays-international--unknown.json criticName: \"Ri-admin\" -> \"Jeremy Malies\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tosca-english-national-opera-west-end-2026/markaspen--unknown.json criticName: \"Unknown\" -> \"Claire Alexander\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "whos-afraid-of-virginia-woolf-west-end-2026/firstnightmagazine--unknown.json criticName: \"Unknown\" -> \"Guillermo Nazara\""
+    }
+  ],
+  "executedIn": "ci"
 }
