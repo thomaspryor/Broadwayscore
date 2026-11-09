@@ -18793,13 +18793,13 @@
       "title": "LLM scoring daily spend over budget",
       "firstSeen": "2026-10-15T09:31:55.528Z",
       "incidentOpenedAt": "2026-11-09T02:18:27.213Z",
-      "lastSeen": "2026-11-09T20:01:29.585Z",
+      "lastSeen": "2026-11-09T21:05:07.236Z",
       "lastNotifiedAt": "2026-11-09T02:18:27.213Z",
       "lastSurfacedAt": "2026-11-09T02:18:27.213Z",
       "notifyCount": 20,
       "cardId": null,
       "linearIdentifier": "BRO-6732",
-      "silentRefires": 42
+      "silentRefires": 44
     },
     "feedback-outcomes:2026-10-15T05:05:16.652944+00:00": {
       "status": "resolved",
@@ -38455,13 +38455,13 @@
       "title": "Auto-remediation gave up on dogstar-off-west-end-2026",
       "firstSeen": "2026-11-07T13:38:57.159Z",
       "incidentOpenedAt": "2026-11-07T13:38:57.159Z",
-      "lastSeen": "2026-11-09T17:38:32.873Z",
+      "lastSeen": "2026-11-09T20:45:12.621Z",
       "lastNotifiedAt": "2026-11-07T13:38:57.159Z",
       "lastSurfacedAt": "2026-11-07T13:38:57.159Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 18
+      "silentRefires": 19
     },
     "review-gap:opening-window:othello-bedlam-off-broadway-2026": {
       "status": "open",
@@ -39067,12 +39067,13 @@
       "title": "Land Dependabot PR #1182: chore(deps): Bump the all-updates group across 1 directory with 12 updates",
       "firstSeen": "2026-11-08T16:47:44.843Z",
       "incidentOpenedAt": "2026-11-08T16:47:44.843Z",
-      "lastSeen": "2026-11-08T16:47:44.843Z",
+      "lastSeen": "2026-11-09T21:03:39.935Z",
       "lastNotifiedAt": "2026-11-08T16:47:44.843Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-7136"
+      "linearIdentifier": "BRO-7136",
+      "silentRefires": 1
     },
     "land:land/bro-7132-rc-close-fields": {
       "status": "resolved",
@@ -40040,13 +40041,13 @@
       "title": "Auto-remediation gave up on msblackforpresident-off-broadway-2026",
       "firstSeen": "2026-11-09T13:27:53.955Z",
       "incidentOpenedAt": "2026-11-09T13:27:53.955Z",
-      "lastSeen": "2026-11-09T17:38:32.855Z",
+      "lastSeen": "2026-11-09T20:45:12.607Z",
       "lastNotifiedAt": "2026-11-09T13:27:53.955Z",
       "lastSurfacedAt": "2026-11-09T13:27:53.955Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "opening-night-remediation-exhausted-t1-missing:the-steel-man-off-broadway-2026": {
       "status": "open",
@@ -40054,13 +40055,13 @@
       "title": "Auto-remediation gave up on the-steel-man-off-broadway-2026",
       "firstSeen": "2026-11-09T13:27:54.410Z",
       "incidentOpenedAt": "2026-11-09T13:27:54.410Z",
-      "lastSeen": "2026-11-09T17:38:32.890Z",
+      "lastSeen": "2026-11-09T20:45:12.636Z",
       "lastNotifiedAt": "2026-11-09T13:27:54.410Z",
       "lastSurfacedAt": "2026-11-09T13:27:54.410Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "test-yml:data-validation-red:audit-critic-consensus-contamination": {
       "status": "resolved",
@@ -40171,13 +40172,13 @@
       "title": "Auto-remediation gave up on wanted-2022",
       "firstSeen": "2026-11-09T16:52:43.601Z",
       "incidentOpenedAt": "2026-11-09T16:52:43.601Z",
-      "lastSeen": "2026-11-09T17:38:32.835Z",
+      "lastSeen": "2026-11-09T20:45:12.591Z",
       "lastNotifiedAt": "2026-11-09T16:52:43.601Z",
       "lastSurfacedAt": "2026-11-09T16:52:43.601Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "land:land/bro-7238-syndication": {
       "status": "open",
@@ -40213,16 +40214,16 @@
       "firstSeen": "2026-11-09T20:22:26.713Z",
       "incidentOpenedAt": "2026-11-09T20:22:26.713Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-09T20:40:31.762Z",
+      "lastSeen": "2026-11-09T20:49:42.883Z",
       "lastNotifiedAt": "2026-11-09T20:22:26.713Z",
       "lastSurfacedAt": "2026-11-09T20:22:26.713Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "land:land/bro-7239-hub-closing-guard": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: scripts-lib-tests red on land/bro-7239-hub-closing-guard",
       "firstSeen": "2026-11-09T20:42:44.285Z",
@@ -40232,7 +40233,8 @@
       "lastSurfacedAt": "2026-11-09T20:42:44.285Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-09T21:15:56.240Z"
     }
   }
 }

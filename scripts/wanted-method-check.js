@@ -95,7 +95,14 @@ function profileRecording(recording) {
   let noBody = 0;
   let errors = 0;
   const ats = [];
-  for (const e of recording.entries) {
+  const notes = {};
+  let firstCappedAt = null;
+  let bodiesAfterCap = 0;
+  const ordered = [...recording.entries].sort((a, b) => a.t - b.t);
+  for (const e of ordered) {
+    if (e.note) notes[e.note] = (notes[e.note] || 0) + 1;
+    if (e.note === 'capped' && !firstCappedAt) firstCappedAt = e.at || null;
+    if (firstCappedAt && e.sha && e.note !== 'capped') bodiesAfterCap++;
     let h = 'unknown';
     try { h = new URL(e.url).host; } catch { /* keep unknown */ }
     const r = hosts[h] || (hosts[h] = { fetches: 0, withBody: 0, errors: 0 });
@@ -108,7 +115,7 @@ function profileRecording(recording) {
   return {
     firstAt: ats.length ? new Date(Math.min(...ats)).toISOString() : null,
     lastAt: ats.length ? new Date(Math.max(...ats)).toISOString() : null,
-    fetches: recording.entries.length, noBody, errors,
+    fetches: recording.entries.length, noBody, errors, notes, firstCappedAt, bodiesAfterCap,
     hosts: Object.fromEntries(Object.entries(hosts).sort((a, b) => b[1].fetches - a[1].fetches).slice(0, 40)),
   };
 }
