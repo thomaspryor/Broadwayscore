@@ -111,7 +111,8 @@ function planCandidates({ dir, shows, outlets, ledgerIndex, runGates }) {
       }
       return e;
     };
-    const sel = selectStrategy({
+    const owned = L.ownedRecordReason(review);
+    const sel = owned ? { strategy: null, skipped: [{ strategy: 'ANY', reason: owned }] } : selectStrategy({
       gapClass: row.gapClass,
       hasUrl: !!review.url,
       hasAdapter: !!adapterFor(review.outletId),
@@ -222,10 +223,13 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
   const ceiling = L.dailyCeiling();
   const tracker = createWriteTracker();
   const pendingInfo = new Map(); // reviewKey -> attempt info for the recovered row
+  const earlierPending = L.pendingPushInfo(rows); // accepted by an earlier run, not yet landed
   const landedKeys = new Set();
   const onLanded = (landed) => {
     const key = L.reviewKeyOf(landed.path);
-    const info = pendingInfo.get(key) || (landed.meta && landed.meta.source === 'gap-recovery-driver' && landed.meta.attempts && landed.meta.attempts[key]);
+    const info = pendingInfo.get(key)
+      || (landed.meta && landed.meta.source === 'gap-recovery-driver' && landed.meta.attempts && landed.meta.attempts[key])
+      || earlierPending.get(key);
     if (!info) return; // another script's pending entry
     L.appendRows([L.recoveredRowFromLanding(landed, info)], ledgerPath);
     landedKeys.add(key);
@@ -309,6 +313,10 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
         withReviewTextsLock(`gap-serp-count:${c.reviewKey}`, () => {
           const data = readReviewForUpdate(c.filePath);
           const patch = rg.recordSerpAttempt(c.show, { ...data, incompleteReason: L.serpGateReason(c.gapClass) });
+          // The driver sets no terminal state: keep the shared count/cooldown,
+          // never the permanent abandon flag (the count cap already stops us).
+          delete patch.serpDiscoveryAbandoned;
+          delete patch.staleWrongProductionRecoveryAbandoned;
           if (Object.keys(patch).length) {
             Object.assign(data, patch);
             persistReviewSnapshot({ filePath: c.filePath, data, trailingNewline: true });
@@ -330,8 +338,9 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
         labels, tracker, ctxOpts: { reviewTextsDir: dir }, show: c.show,
       });
       if (!r.ok) {
-        console.log(`  ✗ rejected (${r.code}): ${String(r.reason).slice(0, 160)}`);
-        record(c, strategy, { outcome: 'rejected', reason: r.code, url: got.url, bytesAfter: r.newLen, detail: { via: got.via, llmAsked: !!r.llmAsked } });
+        const outcome = L.outcomeForGateRefusal(r.code);
+        console.log(`  ✗ ${outcome} (${r.code}): ${String(r.reason).slice(0, 160)}`);
+        record(c, strategy, { outcome, reason: r.code, url: got.url, bytesAfter: r.newLen, detail: { via: got.via, llmAsked: !!r.llmAsked } });
         continue;
       }
       accepted++;
@@ -349,6 +358,12 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
     flush('final');
   } catch (e) {
     runError = e;
+    // Commit and push what was already accepted before stopping, so no text
+    // sits uncommitted with a pending_push row nothing will resolve. (Not after
+    // a push failure: that work is already committed and journaled.)
+    if (!(e instanceof ReviewTextsPushError)) {
+      try { flush('after-error'); } catch (e2) { console.error(`  [checkpoint after error] ${e2.message}`); if (e2 instanceof ReviewTextsPushError) runError = e2; }
+    }
   } finally {
     for (const s of sessions.values()) if (s && s.close) await s.close().catch(() => {});
   }

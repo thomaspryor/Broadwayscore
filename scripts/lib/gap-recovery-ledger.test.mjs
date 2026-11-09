@@ -171,6 +171,29 @@ test('candidate order: recent before historic, newest show first, cheaper strate
   assert.deepEqual(c, ['c', 'd', 'b', 'a']);
 });
 
+test('pendingPushInfo: an earlier run\'s unlanded acceptance can still get its recovered row', () => {
+  const rows = [
+    { ts: '2026-11-08T01:00:00Z', reviewKey: 'a/x.json', strategy: 'ARCHIVE', outcome: 'pending_push', gapClass: 'PAYWALL_PAGE', url: 'u', bytesAfter: 900, runId: 'r1' },
+    { ts: '2026-11-08T01:00:00Z', reviewKey: 'b/y.json', strategy: 'ARCHIVE', outcome: 'pending_push', runId: 'r1' },
+    { ts: '2026-11-08T02:00:00Z', reviewKey: 'b/y.json', strategy: 'ARCHIVE', outcome: 'recovered', runId: 'r1' },
+  ];
+  const m = L.pendingPushInfo(rows);
+  assert.deepEqual([...m.keys()], ['a/x.json']);
+  const row = L.recoveredRowFromLanding({ path: '/r/a/x.json', blob: 'abc' }, m.get('a/x.json'));
+  assert.equal(row.outcome, 'recovered');
+  assert.equal(row.strategy, 'ARCHIVE');
+  assert.equal(row.bytesAfter, 900);
+});
+
+test('write-path refusals are non-evidence; gate verdicts are evidence; owned records are skipped', () => {
+  for (const code of ['url_moved_during_fetch', 'write_refused', 'write_rolled_back']) assert.equal(L.outcomeForGateRefusal(code), 'non_evidence');
+  for (const code of ['show_not_mentioned', 'not_longer', 'garbage', 'paywall']) assert.equal(L.outcomeForGateRefusal(code), 'rejected');
+  assert.equal(L.ownedRecordReason({ manualContentTier: 'stub' }), 'manual_tier');
+  assert.equal(L.ownedRecordReason({ _locked: true }), 'locked');
+  assert.equal(L.ownedRecordReason({ wrongProduction: true }), 'excluded_record');
+  assert.equal(L.ownedRecordReason({ contentTier: 'excerpt' }), null);
+});
+
 test('live preflight: no shows.json refuses the run; no cookie jar gates the browser only', () => {
   assert.match(T.liveEnvironmentGates({ showsJsonReadable: false, cookieJarExists: true }).fatal, /generic-title gate/);
   const noJar = T.liveEnvironmentGates({ showsJsonReadable: true, cookieJarExists: false });

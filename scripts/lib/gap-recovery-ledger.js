@@ -270,7 +270,56 @@ function reconcileRecovered(rows, readReview, nowIso = new Date().toISOString())
   return out;
 }
 
+/**
+ * Attempt info for every review whose latest live row is 'pending_push': the
+ * fallback onLanded uses when a checkpoint lands work from an EARLIER run
+ * (retryPendingPushes restores carry no driver meta), so those texts still get
+ * their 'recovered' row instead of staying pending_push forever.
+ * @returns {Map<string, object>} reviewKey -> info for recoveredRowFromLanding
+ */
+function pendingPushInfo(rows) {
+  const out = new Map();
+  for (const [key, list] of indexRows(rows)) {
+    const last = liveRows(list).slice(-1)[0];
+    if (!last || last.outcome !== 'pending_push') continue;
+    out.set(key, {
+      reviewKey: key, gapClass: last.gapClass, strategy: last.strategy, url: last.url,
+      bytesBefore: last.bytesBefore, bytesAfter: last.bytesAfter, priorFullTextHash: last.priorFullTextHash, runId: last.runId,
+    });
+  }
+  return out;
+}
+
+// Refusals from the write path itself (a race with another writer, the safe
+// writer or the post-write check) say nothing about whether the source holds
+// the review: they never count toward a cap.
+const WRITE_PATH_REFUSALS = new Set(['url_moved_during_fetch', 'write_refused', 'write_rolled_back', 'dry_run_needs_llm']);
+
+/** Ledger outcome for a recoverReviewTextVerified refusal code. */
+function outcomeForGateRefusal(code) {
+  return WRITE_PATH_REFUSALS.has(code) ? 'non_evidence' : 'rejected';
+}
+
+/**
+ * Records a person or a verdict owns: the acceptance gate refuses them before
+ * looking at any text, so the driver must not spend a fetch on them.
+ * (Mirrors gap-acceptance step 1; manually_verified/blocklisted need context
+ * the planner lacks and are left to the gate.)
+ * @returns {string|null} skip reason
+ */
+function ownedRecordReason(review) {
+  if (!review) return null;
+  if (review._locked === true) return 'locked';
+  if (review.manualContentTier) return 'manual_tier';
+  if (review.wrongShow || review.wrongProduction) return 'excluded_record';
+  return null;
+}
+
 module.exports = {
+  pendingPushInfo,
+  outcomeForGateRefusal,
+  ownedRecordReason,
+  WRITE_PATH_REFUSALS,
   OUTCOMES,
   EVIDENCE_OUTCOMES,
   FETCH_STRATEGIES,

@@ -96,13 +96,18 @@ async function archive(c, deps = defaultDeps()) {
 async function browserSession(c, session) {
   if (!session) return { ok: false, outcome: 'browser_unavailable', reason: 'no_session' };
   let r;
-  try { r = await session.extract(c.url); } catch (e) { r = { error: e.message }; }
+  try { r = await session.extract(c.url); } catch (e) {
+    // A navigation timeout or a crashed page says nothing about the article.
+    return { ok: false, outcome: 'non_evidence', reason: `navigation_error: ${String(e.message).split('\n')[0].slice(0, 80)}` };
+  }
   if (r && r.text) return { ok: true, rawText: r.text, url: c.url, html: r.html || '', via: 'browser' };
+  // A bot-check page is the outlet blocking us, not evidence about the review.
+  if (/robot|denied|too many|bot-check/i.test(String(r && r.error))) return { ok: false, outcome: 'non_evidence', reason: 'bot_check' };
   if (session.probe) {
     const p = await session.probe().catch((e) => ({ error: e.message }));
     if (!p || p.error || !p.text) return { ok: false, outcome: 'auth_failed', reason: `session_lost: ${(p && p.error) || 'probe empty'}` };
   }
-  return { ok: false, outcome: 'rejected', reason: /robot|denied|too many/i.test(String(r && r.error)) ? 'bot_check' : 'extractor_null' };
+  return { ok: false, outcome: 'rejected', reason: 'extractor_null' };
 }
 
 /**

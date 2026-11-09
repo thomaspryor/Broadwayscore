@@ -67,6 +67,13 @@ test('BROWSER_SESSION: a lost session is auth_failed (non-evidence), not a rejec
   const nul = await S.browserSession(c, { extract: async () => ({ error: 'No article body' }), probe: async () => ({ text: 'x'.repeat(900) }) });
   assert.deepEqual(nul, { ok: false, outcome: 'rejected', reason: 'extractor_null' });
   assert.equal((await S.browserSession(c, null)).outcome, 'browser_unavailable');
+  // navigation failures and bot-checks are non-evidence even when the session is fine
+  const okProbe = async () => ({ text: 'x'.repeat(900) });
+  const nav = await S.browserSession(c, { extract: async () => { throw new Error('page.goto: Timeout 30000ms exceeded'); }, probe: okProbe });
+  assert.equal(nav.outcome, 'non_evidence');
+  assert.match(nav.reason, /^navigation_error/);
+  const bot = await S.browserSession(c, { extract: async () => ({ error: 'Bot-check challenge detected' }), probe: okProbe });
+  assert.deepEqual(bot, { ok: false, outcome: 'non_evidence', reason: 'bot_check' });
 });
 
 test('URL_REDISCOVER: unavailable SERP is non-evidence and does not spend the file budget; a miss does', async () => {
