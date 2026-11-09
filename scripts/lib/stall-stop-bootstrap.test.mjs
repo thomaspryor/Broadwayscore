@@ -156,3 +156,23 @@ test('stop before any fetch (first turn beat SessionStart, BRO-7194 probe) fetch
   assert.equal(s.status, 0, s.stderr);
   assert.match(s.stdout, /RUNNER hook=verify-edits\.sh only=.*stdin=\{"y":2\}/);
 });
+
+// BRO-7194 probe 2: the inline fetch left no runner and the Stop passed a "KEEP OPEN, I will check back" turn.
+test('no runner after the fetch: a promise-like closing fails CLOSED (exit 2) and the notice carries the fetch reason', () => {
+  const env = { BSC_HOOKS_HOME: tmp('bsc-empty-'), BSC_HOOKS_REPO_URL: 'file:///nonexistent-bsc-repo' };
+  const r = run('stop', env, JSON.stringify({ last_assistant_message: 'Waiting on a background job. KEEP OPEN, I will check back later.' }));
+  assert.equal(r.status, 2, r.stdout + r.stderr);
+  assert.match(r.stderr, /BLOCKED/);
+  assert.match(r.stderr, /rc=128/); // the real git error, not a bare "not installed"
+  assert.ok(fs.existsSync(path.join(env.BSC_HOOKS_HOME, '.bsc-hooks-fetch.log')));
+});
+
+test('no runner: the blocked retry (stop_hook_active) and non-promise closings pass with the reason in the notice', () => {
+  const env = { BSC_HOOKS_HOME: tmp('bsc-empty-'), BSC_HOOKS_REPO_URL: 'file:///nonexistent-bsc-repo' };
+  const retry = run('stop', env, JSON.stringify({ stop_hook_active: true, last_assistant_message: 'KEEP OPEN, I will check back.' }));
+  assert.equal(retry.status, 0);
+  assert.match(retry.stdout, /rc=128/);
+  const plain = run('stop', env, JSON.stringify({ last_assistant_message: 'All done, tests pass.' }));
+  assert.equal(plain.status, 0);
+  assert.match(plain.stdout, /not installed/);
+});
