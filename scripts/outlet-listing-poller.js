@@ -277,7 +277,8 @@ const OUTLET_STRATEGY_CONFIG = {
   // pageConfirmAll: general-arts feeds (film, books, Boston stages). A feed
   // match alone is not trusted here: every match must also page-confirm.
   artsfuse:                  { strategy: 'rss', url: 'https://artsfuse.org/feed/', titleFilter: /\b(theat(er|re)|review|stage|play|musical|off-broadway)\b/i, pageConfirmAll: true },
-  'exeunt-magazine':         { strategy: 'rss', url: 'https://exeuntnyc.com/feed/', pageConfirmAll: true },
+  // BRO-7217: the site-wide /feed/ went empty (0 items) when Exeunt moved reviews to a custom post type; /reviews/feed/ carries them.
+  'exeunt-magazine':         { strategy: 'rss', url: 'https://exeuntnyc.com/reviews/feed/', pageConfirmAll: true },
   // BRO-7051: frequent Off-Broadway / Off-West End reviewers that were SERP-only, so the
   // 3-hourly opening-window run (feed + listing only, no SERP) could not see them.
   // Feeds probed 200 with items on 2026-11-06 (probe-outlet-feeds.js). Mixed feeds page-confirm.
