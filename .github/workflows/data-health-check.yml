@@ -156,7 +156,9 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           # One add per file: a missing pathspec fails the whole add (triage disabled or killed early).
-          for f in data/audit/board-dispatch.jsonl data/audit/llm-triage.jsonl data/audit/llm-triage-audit.jsonl; do git add "$f" 2>/dev/null || true; done
+          git add data/audit/board-dispatch.jsonl 2>/dev/null || true
+          git add data/audit/llm-triage.jsonl 2>/dev/null || true
+          git add data/audit/llm-triage-audit.jsonl 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No board dispatch changes"
           else
