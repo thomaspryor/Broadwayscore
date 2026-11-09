@@ -1,0 +1,36 @@
+{
+  "issueNumber": "bro-7174",
+  "planId": "1912b8a1-8a7e-40ca-815c-89cb20b2ea1b",
+  "status": "pending",
+  "createdAt": "2026-11-09T07:00:21.957Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Restore two approved duplicate pointers erased by the orphan heal after their targets recovered",
+    "steps": [
+      "hells-kitchen-2024/thewrap--steve-pond.json: duplicateOf",
+      "she-loves-me-2016/nypost--johnny-oleksinski.json: duplicateOf"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "hells-kitchen-2024/thewrap--steve-pond.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "thewrap--robert-hofler.json",
+        "description": "hells-kitchen-2024/thewrap--steve-pond.json: duplicateOf"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "she-loves-me-2016/nypost--johnny-oleksinski.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "nypost--elisabeth-vincentelli.json",
+        "description": "she-loves-me-2016/nypost--johnny-oleksinski.json: duplicateOf"
+      }
+    ]
+  }
+}

@@ -33,6 +33,7 @@ const path = require('path');
 const { execSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { canRecoverReview } = require('./lib/approved-fix-writer-guards');
 
 const USAGE_TEXT = `Retroactive LLM Content Verification
 
@@ -133,6 +134,7 @@ function categorizeReviews(reviewFiles) {
 
       // RECOVER mode: re-evaluate flagged reviews with recoverable text
       if (!CLI.verifyOnly && (r.wrongProduction || r.wrongShow)) {
+        if (!canRecoverReview(r)) continue;
         // Skip wrongAttribution — those are typically correct
         if (r.wrongAttribution) continue;
         // url-proven (BRO-5015): no LLM read can clear it, so don't pay for one
@@ -293,6 +295,7 @@ async function processRecover(items) {
     const item = items[i];
     const show = showsMap.get(item.showId);
     const r = item.review;
+    if (!canRecoverReview(r)) continue;
 
     const label = `[${i + 1}/${items.length}] ${item.showId}/${item.file}`;
     const flagType = item.currentFlags.wrongProduction ? 'wrongProduction' : 'wrongShow';
@@ -332,6 +335,8 @@ async function processRecover(items) {
 
         if (!CLI.dryRun && (result.confidence === 'high' || result.confidence === 'medium')) {
           const data = readReviewForUpdate(item.filePath);
+          // Recheck the live record: approval may have landed during the LLM call.
+          if (!canRecoverReview(data)) continue;
           // The url itself proves another production (BRO-5015); an LLM reading
           // the body cannot outrank that, and its override would exempt the
           // file from the guard for good.

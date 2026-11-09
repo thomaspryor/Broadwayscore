@@ -97,6 +97,7 @@ const { classifyClassAContamination, buildSiblingOpeningsMap } = require('./lib/
 const { isPlaceholderRecord } = require('./lib/placeholder-byline');
 const { loadOutletRegistry } = require('./lib/review-normalization');
 const { foldDiacritics } = require('./lib/title-match');
+const { canRepairCircularPair } = require('./lib/approved-fix-writer-guards');
 
 /**
  * outlet-registry.json's outlets[outletId].defaultCritic, or null. Some solo
@@ -670,6 +671,9 @@ function audit() {
       if (seen.has(key)) continue;
       seen.add(key);
       const choice = chooseCanonicalForRebuild(file, d, sibName, sd, showDir);
+      const canonical = choice.canonical === file ? d : sd;
+      const loser = choice.loser === file ? d : sd;
+      if (!canRepairCircularPair(canonical, loser, choice.canonical)) continue;
       if (choice.skip) {
         // Class-A contaminated 2-cycle: leave it intact (both stay suppressed).
         // Not a repairable pair — excluded from report/gate/fix counts, but
@@ -702,6 +706,8 @@ function fix(pairs) {
 
     // --- Canonical: clear its duplicateOf. LOAD-MODIFY-SAVE the full object. ---
     const canon = JSON.parse(fs.readFileSync(canonPath, 'utf-8'));
+    const loser = JSON.parse(fs.readFileSync(loserPath, 'utf-8'));
+    if (!canRepairCircularPair(canon, loser, p.canonical)) continue;
     canon.duplicateClearReason =
       `fix-circular-duplicate-pairs.js on ${day}: canonical of mutual pair with ${p.loser} (${p.reason})`;
     canon.duplicateOf = null;
@@ -712,7 +718,6 @@ function fix(pairs) {
 
     // --- Loser: must point at the canonical. In a pure 2-cycle it already does
     // (that's what made the pair mutual), so this is a defensive repoint only. ---
-    const loser = JSON.parse(fs.readFileSync(loserPath, 'utf-8'));
     if (loser.duplicateOf !== p.canonical) {
       const wasPointingAt = loser.duplicateOf;
       loser.duplicateOf = p.canonical;

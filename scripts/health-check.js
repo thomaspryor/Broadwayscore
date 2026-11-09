@@ -42,6 +42,7 @@ const { checkBizOgCoverage, RENDER_HINT: BIZ_OG_RENDER_HINT } = require('./lib/a
 const { fitCheckStatus: waltzFitCheckStatus } = require('./lib/waltz-model-fit');
 const { revisitBarStatus } = require('./lib/recoupment-timing-report');
 const { summarizeMissedForHealth } = require('./lib/missed-broadcasts');
+const { approvedFixDriftResults } = require('./lib/approved-fix-drift-health');
 const { selectUnroutedVisitorRows } = require('./lib/start-now-filing.js');
 const { playbookWorkerHint, hasPlaybookAction, ownerDigestInstruction } = require('./lib/playbook-copy.js');
 const { untrackedPersistentRowsResult, ROW_NAME: UNTRACKED_ROWS_ROW_NAME } = require('./lib/untracked-persistent-rows.js');
@@ -5193,6 +5194,7 @@ function checkCoverageHoles() {
 // reaches nobody. Pure so tests can feed it.
 function corpusAuditResults(runs) {
   const out = [];
+  if (runs?.approvedFixDrift) out.push(...approvedFixDriftResults(runs.approvedFixDrift));
   const dup = runs && runs.duplicateFlag;
   const NAME = 'Data: duplicate-flag leaks (a wrong twin dropping a good review)';
   if (dup) {
@@ -5229,6 +5231,7 @@ function runCorpusAudit(script, args) {
 function checkCorpusAudits() {
   if (!fs.existsSync(path.join(__dirname, '..', 'data', 'review-texts'))) return [];
   return corpusAuditResults({
+    approvedFixDrift: runCorpusAudit('audit-approved-fix-drift.js', ['--json']),
     duplicateFlag: runCorpusAudit('audit-duplicate-flag-inheritance.js', []),
     squatters: runCorpusAudit('audit-stale-slot-squatters.js', ['--json']),
   });

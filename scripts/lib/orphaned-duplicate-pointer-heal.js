@@ -47,6 +47,7 @@ const { canonicalArticleKey } = require('./review-normalization.js');
 // value the caller already put on the object, so a caller that sets the pointer
 // itself bypasses the decision entirely.
 const { shouldMarkUrlCollisionDuplicate } = require('./review-write-guard.js');
+const { canChangeApprovedField } = require('./approved-fix-writer-guards');
 
 const SUBSTANTIVE_BODY_CHARS = 500;
 
@@ -129,6 +130,7 @@ function hasSubstantiveUnflaggedContent(data) {
  */
 function shouldClearOrphanedDuplicatePointer(loser, target) {
   if (!loser || !target) return false;
+  if (!canChangeApprovedField(loser, 'duplicateOf', null)) return false;
   if (!isTargetInvalidated(target)) return false;
   return hasSubstantiveUnflaggedContent(loser);
 }
@@ -273,6 +275,7 @@ function findUnjustifiedHealClears(records) {
     if (data.duplicateOf) continue; // pointer already live again — nothing to restore
     const targetFile = parseHealClearTarget(data.duplicateClearReason);
     if (!targetFile || targetFile === file) continue;
+    if (!canChangeApprovedField(data, 'duplicateOf', targetFile)) continue;
     const targetData = byFile.get(targetFile);
     if (!targetData) continue; // target gone — the clear stands
     if (isTargetInvalidated(targetData)) continue; // clear was justified
@@ -341,6 +344,8 @@ function findChainPointersThrough(records, throughFile) {
   for (const { file, data } of records || []) {
     if (!data || file === terminus) continue;
     if (data.duplicateOf !== throughFile) continue;
+    if (!canChangeApprovedField(data, 'duplicateOf', terminus)) continue;
+    if (data.duplicateTextOf === throughFile && !canChangeApprovedField(data, 'duplicateTextOf', terminus)) continue;
     const ownUrl = typeof data.url === 'string' ? canonicalArticleKey(data.url) : null;
     if (!ownUrl || ownUrl !== terminusUrl) continue;
     if (wouldCloseDuplicateCycle(file, terminus, byFile)) continue;

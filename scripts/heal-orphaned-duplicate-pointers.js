@@ -58,6 +58,7 @@ const {
   pickTextTwinSibling,
 } = require('./lib/orphaned-duplicate-pointer-heal');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { canChangeApprovedField } = require('./lib/approved-fix-writer-guards');
 
 const USAGE = `heal-orphaned-duplicate-pointers.js — Retro-heals duplicateOf/duplicateTextOf pointers orphaned by a later target-invalidation (BRO-3250, BRO-3336).
 
@@ -214,6 +215,7 @@ function revert(unjustified) {
     const showDir = path.join(REVIEW_TEXTS_DIR, o.showId);
     const filePath = path.join(showDir, o.loserFile);
     const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+    if (!canChangeApprovedField(data, 'duplicateOf', o.targetFile)) continue;
     data.duplicateOf = o.targetFile;
     // The reason fix() nulled, when the breadcrumb recorded it — inventing
     // 'url-collision-detected-at-write' over a real 'byline-explosion-collapse'
@@ -250,6 +252,8 @@ function flatten(chains) {
     const chainPath = path.join(REVIEW_TEXTS_DIR, c.showId, c.loserFile);
     const chainData = JSON.parse(fs.readFileSync(chainPath, 'utf-8'));
     const wasPointingAt = chainData.duplicateOf;
+    if (!canChangeApprovedField(chainData, 'duplicateOf', c.targetFile)) continue;
+    if (chainData.duplicateTextOf === wasPointingAt && !canChangeApprovedField(chainData, 'duplicateTextOf', c.targetFile)) continue;
     chainData.duplicateOf = c.targetFile;
     if (chainData.duplicateTextOf === wasPointingAt) chainData.duplicateTextOf = c.targetFile;
     chainData.duplicateClearReason = null;
@@ -284,6 +288,7 @@ function fix(orphans) {
     // BRO-4192: several writes below force past the guard, which also skips
     // the _locked preserve. A locked file is never the heal's to change.
     if (data._locked === true) { skippedLocked++; continue; }
+    if (!canChangeApprovedField(data, o.field, null)) continue;
     // BRO-4192: when the loser is itself excluded by the rebuild, clearing its
     // pointer changes nothing shipped, and the write guard re-marks it on the
     // same write (both records invalid → historical dedup). Leave it.
