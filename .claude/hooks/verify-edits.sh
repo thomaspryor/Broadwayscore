@@ -821,6 +821,11 @@ def _live_work():
             elif (name == 'Bash' and inp.get('run_in_background')) or name == 'Monitor':
                 # Only waits started since the owner's latest message: one that
                 # finished earlier with no notice must not count forever.
+                # A background Bash past its own timeout (max 2h) is dead (BRO-7183:
+                # BRO-6854's 2.5h-old poller read as live and it idled 6 days).
+                _st = _parse_ts(result_ts_by_id.get(tid, '')) if name == 'Bash' else None
+                if _st and now - _st > min(int(inp.get('timeout') or 1800000), 7200000) / 1000:
+                    continue
                 if ok and i > last_owner:
                     m = bg_id_re.search(res)
                     label = '%s "%s"' % (name, (inp.get('description') or inp.get('command') or '')[:50])

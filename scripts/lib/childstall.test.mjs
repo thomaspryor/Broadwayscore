@@ -228,3 +228,14 @@ test('e2e: a parent message delivered mid-turn (queued_command attachment) moves
   assert.equal(r.status, 2, r.stderr);
   assert.match(r.stderr, STALL_MSG);
 });
+test('e2e (cousin): WAKELESS no longer counts a background Bash past its timeout as live', () => {
+  const plain = bro6854Transcript();
+  plain[0] = userStr('Fix the Boston page.');
+  assert.match(runHook(plain).stderr, /nothing will wake it/);
+  const fresh = bro6854Transcript([
+    toolUse('t3', 'Bash', { command: 'gh run view 9', run_in_background: true, timeout: 7200000 }, 5),
+    toolRes('t3', 'Command running in background with ID: bfresh1. Output is being written to: /tmp/y', 5),
+  ]);
+  fresh[0] = userStr('Fix the Boston page.');
+  assert.doesNotMatch(runHook(fresh).stderr, /nothing will wake it/);
+});
