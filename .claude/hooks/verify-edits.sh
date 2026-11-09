@@ -474,6 +474,7 @@ def _is_owner_record(r, text):
 
 events = []  # list of (kind, payload)
 _user_prompts = []  # early user texts (CHILDWAIT: worker BUDGET: line)
+_report_back_prompt = []  # CHILDSTALL: an early prompt has a REPORT-BACK: line (full text, not the 6000-char copy)
 # kinds: 'tool' payload=(name,input,tool_use_id) | 'text' payload=str | 'result' payload=(tool_use_id, text)
 tool_results_by_id = {}
 result_ts_by_id = {}  # tool_use_id -> transcript timestamp of its result (scoring gate)
@@ -538,6 +539,7 @@ try:
                     events.append(('user_notice', content))
                     if len(_user_prompts) < 6 and not r.get('isMeta'):
                         _user_prompts.append(content[:6000])
+                        _report_back_prompt += ['REPORT-BACK:' in content]
                     # The owner's own typed prompt (origin.kind 'human'; older
                     # transcripts: no origin, not meta, not a <notice>). Stop-hook
                     # feedback is isMeta. Consumed by the chain gate only.
@@ -558,6 +560,7 @@ try:
                                      if isinstance(c, dict) and c.get('type') == 'text')
                 if _list_text and len(_user_prompts) < 6 and not r.get('isMeta'):
                     _user_prompts.append(_list_text[:6000])
+                    _report_back_prompt += ['REPORT-BACK:' in _list_text]
                 if _list_text and _is_owner_record(r, _list_text):
                     events.append(('user_human', ''))
                 for c in content:
@@ -1398,7 +1401,10 @@ if os.environ.get('PASSIVEOFFER_GATE_DISABLE', '0') != '1':
 # asked for, or a PR subscription. A NOT SAFE that waits on the owner
 # (DECISION NEEDED:, or a "You need to:" line that is not "nothing") needs no
 # wake. Kill switch WAKELESS_GATE_DISABLE=1. Fail-open.
-if os.environ.get('WAKELESS_GATE_DISABLE', '0') != '1':
+# A REPORT-BACK child is CHILDSTALL's (below): one block per stall, not two.
+_cs_on = (os.environ.get('CHILDSTALL_GATE_DISABLE', '0') != '1' and any(_report_back_prompt)
+          and os.environ.get('CLAUDE_CODE_REMOTE') == 'true')
+if os.environ.get('WAKELESS_GATE_DISABLE', '0') != '1' and not _cs_on:
     try:
         _wk_text, _wk_last = _closing()
         if (_KEEP_RE.match(_wk_last) and 'NO-VERIFY:' not in (_last_msg or '')
@@ -1421,14 +1427,17 @@ if os.environ.get('WAKELESS_GATE_DISABLE', '0') != '1':
 # `child-idle-watch.js watch` (an idle child never reports back). Decisions:
 # scripts/lib/child-session-wait-guard.js. Kill switches CHILDWAIT_GATE_DISABLE=1,
 # CHILDJOBS_GATE_DISABLE=1, CHILDWATCH_GATE_DISABLE=1.
-_CW_CODES = [c for c in ('CHILDWAIT', 'CHILDJOBS', 'CHILDWATCH')
-             if os.environ.get(c + '_GATE_DISABLE', '0') != '1' and not _ve_seen(c)]
+# CHILDSTALL (BRO-7183): a REPORT-BACK child ending ANY turn with nothing live
+# and no report or question sent to @parent since the parent's last message.
+_CW_ALL = ('CHILDSTALL', 'CHILDWAIT', 'CHILDJOBS', 'CHILDWATCH')
+_CW_CODES = [c for c in _CW_ALL if os.environ.get(c + '_GATE_DISABLE', '0') != '1' and not _ve_seen(c)]
 if _CW_CODES:
     try:
         _cw_text, _cw_last = _closing()
         _cw_js = os.path.join(os.environ.get('VE_REPO_ROOT', ''), 'scripts', 'lib', 'child-session-wait-guard.js')
-        if (_KEEP_RE.match(_cw_last) and 'NO-VERIFY:' not in (_last_msg or '')
-                and os.path.isfile(_cw_js) and not _owner_must_act(_cw_text)):
+        _cw_keep = bool(_KEEP_RE.match(_cw_last)) and not _owner_must_act(_cw_text)
+        _cw_stall = _cs_on and 'CHILDSTALL' in _CW_CODES
+        if 'NO-VERIFY:' not in (_last_msg or '') and os.path.isfile(_cw_js) and (_cw_keep or _cw_stall):
             import subprocess, time
             from datetime import datetime
             _cw_done = {m for k, p in events if k in ('user_notice', 'user_text')
@@ -1450,15 +1459,28 @@ if _CW_CODES:
                 except Exception:
                     _cw_ts = None
                 _cw_tools.append({'idx': _i, 'name': _nm, 'input': _inp, 'ok': _tid not in tool_error_ids,
-                                  'taskId': (_bm.group(1) or _bm.group(2)) if _bm else None, 'startedAt': _cw_ts})
+                                  'taskId': (_bm.group(1) or _bm.group(2)) if _bm else None, 'startedAt': _cw_ts,
+                                  'result': (tool_results_by_id.get(_tid, '') or '')[:300] if _nm == 'Bash' else ''})
+            # The parent's latest message (a cross-session delivery, also via
+            # ReadNotifications) or the owner's prompt: a report must follow it.
+            _cw_anchor = max([_j for _j, (_k, _p) in enumerate(events) if _k == 'user_human' or (
+                _k in ('user_notice', 'user_text') and '<cross-session-message' in (_p or '')) or (
+                _k == 'tool' and _p[0] == 'ReadNotifications'
+                and '<cross-session-message' in (tool_results_by_id.get(_p[2], '') or ''))] or [-1])
+            _cw_pids = sorted(set(re.findall(r'<cross-session-message from-session=\\?"([^"\\]+)', '\n'.join(
+                [_p for _k, _p in events if _k in ('user_notice', 'user_text')]
+                + [tool_results_by_id.get(_p[2], '') or '' for _k, _p in events if _k == 'tool' and _p[0] == 'ReadNotifications']))))
             _cw = subprocess.run(['node', _cw_js], capture_output=True, text=True, timeout=10, input=json.dumps({
                 'firstPrompt': '\n'.join(_user_prompts), 'closing': _cw_text + '\n' + _cw_last, 'tools': _cw_tools,
                 'done': sorted(_cw_done), 'env': {k: v for k, v in os.environ.items() if k.endswith('PARENT_SESSION_ID')},
-                'all': True, 'now': time.time() * 1000, 'skip': [c for c in ('CHILDWAIT', 'CHILDJOBS', 'CHILDWATCH') if c not in _CW_CODES],
-                'liveChildren': _live_work()['children']}))
+                'all': True, 'now': time.time() * 1000, 'skip': [c for c in _CW_ALL if c not in _CW_CODES],
+                'liveChildren': _live_work()['children'] if _cw_keep else [], 'keepOpen': _cw_keep, 'stall': _cw_stall,
+                'reportBack': True, 'anchor': _cw_anchor, 'parentIds': _cw_pids}))
             sys.stderr.write(('⚠️  CHILDWAIT: ' + _cw.stderr.strip()[:200] + '\n') if _cw.stderr.strip() else '')
             _cw_res = json.loads(_cw.stdout or '{}')
             if _cw_res.get('block') and (_cw_res.get('code') or 'CHILDWAIT') in _CW_CODES:
+                if _cw_res.get('wrongTool'):
+                    sys.stderr.write('   SendMessage was used for the report: it is the in-process teammate transport and never reaches the parent session.\n')
                 _ve_block(_cw_res.get('code') or 'CHILDWAIT')  # an older guard returns no code
     except Exception:
         pass  # fail-open
@@ -2456,6 +2478,11 @@ fi
 
 if [[ "$result" == "WAKELESS" ]]; then
   echo "🛑 BLOCKED: KEEP OPEN says this session is waiting on something, but nothing will wake it to check (BRO-5881: sessions sat 10-19 hours on 'I will check it at 14:56'). Before ending the turn, start the wait: a Bash with run_in_background: true and timeout up to 7200000 that polls until the thing finishes (land: node scripts/lib/wait-for-land.js land/<name> 60 --prod; a workflow run: loop on that run's own id (actions/runs/<id>), never on the newest run of the workflow, which another session may have started; a deploy: node scripts/check-prod-deploy.js <sha> --wait), or Monitor. Its exit wakes you; if it times out, start another. send_later is denied here (it prompts the owner's phone). If you are waiting on the owner, end ACTION NEEDED FROM YOU with a DECISION NEEDED block or a 'You need to:' line naming what they must do. If nothing is actually pending, finish the work or end SAFE TO ARCHIVE. Bypass: NO-VERIFY: <reason>." >&2
+  exit 2
+fi
+
+if [[ "$result" == "CHILDSTALL" ]]; then
+  echo "🛑 BLOCKED: this is a child session with no human (its prompt has a REPORT-BACK: line). Ending a turn with nothing running and nothing sent to your parent stops the work for good (BRO-7183: BRO-6854 wrote 'I'm continuing with the Boston pipeline', ended the turn and sat idle 6 days). Pick one: keep working in this turn; or start what you wait on as a Bash with run_in_background: true (timeout up to 7200000) or a Monitor, whose exit wakes you; or, if the card is finished, send the report: mcp__claude-code-remote__send_message with session_id \"@parent\" and a message starting \"REPORT-BACK BRO-N:\"; or, if you need an answer, send the question the same way (your parent's reply wakes you). SendMessage does NOT reach the parent, and text in your final message reaches nobody. Bypass: NO-VERIFY: <reason>. Kill switch CHILDSTALL_GATE_DISABLE=1." >&2
   exit 2
 fi
 

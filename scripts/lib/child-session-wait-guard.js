@@ -190,25 +190,77 @@ function parentWatchDecision(input) {
   return { block: true, reason: 'parent ends KEEP OPEN on a child session with no child-idle-watch running for it' };
 }
 
+// ─── Child stops with no wake and no report (CHILDSTALL, BRO-7183) ──────────
+// A create_session child has no human: ending a turn with nothing running and
+// nothing sent to its parent stops the work for good. BRO-6854 ended
+// "KEEP OPEN — Boston is mid-build" on 2026-11-03 03:50 with no live task and
+// idled 6 days; BRO-6833 sent its final report with SendMessage (the
+// in-process teammate transport), which never reached the parent. Applies to
+// any Stop of a child whose prompt carries a `REPORT-BACK:` line, whatever
+// the closing verdict says. It passes when, since the parent's latest message
+// (or the start), the child sent its parent a report or a question through
+// mcp__claude-code-remote__send_message, or when a background Bash/Monitor is
+// still live (its exit wakes the turn).
+const REMOTE_SEND_RE = /^mcp__(?:claude-code-remote|Claude_Code_Remote)__send_message$/;
+// What a report or a question to the parent looks like: the REPORT-BACK
+// prefix, the card id, a question, or an owner decision.
+const PARENT_REPORT_RE = /REPORT-BACK|\bBRO-\d+\b|\?|DECISION NEEDED|ACTION NEEDED|\bquestion\b/i;
+const MOVED_BG_RE = /moved to the background \(ID:/;
+
+/** @returns {{block: boolean, reason: string, wrongTool?: boolean}} */
+function childStallDecision(input) {
+  const { firstPrompt, env, tools = [], done = [], now = null, reportBack = false,
+    anchor = -1, parentIds = [], noVerify = false } = input || {};
+  const no = (reason) => ({ block: false, reason });
+  if (noVerify) return no('NO-VERIFY bypass');
+  if (!reportBack) return no('prompt has no REPORT-BACK: line');
+  if (!isChildSession({ firstPrompt, env })) return no('not a child session');
+  const parents = new Set(['@parent', ...parentIds.map(String),
+    String((env || {}).CLAUDE_PARENT_SESSION_ID || ''), String((env || {}).PARENT_SESSION_ID || '')].filter(Boolean));
+  const after = tools.filter((t) => t && t.idx > anchor);
+  const sent = after.some((t) => t.ok && REMOTE_SEND_RE.test(String(t.name || ''))
+    && parents.has(String((t.input || {}).session_id || ''))
+    && PARENT_REPORT_RE.test(String((t.input || {}).message || '')));
+  if (sent) return no('a report or question went to the parent after its latest message');
+  // A foreground Bash past its timeout is moved to the background and
+  // notifies on exit, the same as run_in_background (default 30 min cap).
+  const asBg = tools.map((t) => (t && t.name === 'Bash' && !(t.input || {}).run_in_background
+    && MOVED_BG_RE.test(String(t.result || '')) ? { ...t, input: { ...t.input, run_in_background: true, timeout: 0 } } : t));
+  if (liveBackground(asBg, done, { now }).length) return no('a background task or Monitor is live');
+  const wrongTool = after.some((t) => t && t.name === 'SendMessage');
+  return { block: true, wrongTool,
+    reason: 'child session ends its turn with nothing live and no report or question sent to @parent'
+      + (wrongTool ? ' (SendMessage was used; it does not reach the parent)' : '') };
+}
+
 /**
- * All three gates, first block wins. `skip` lists codes already blocked in
- * this Stop chain (or switched off); they are not re-evaluated.
+ * The child gates, first block wins. CHILDSTALL runs when `stall` is set;
+ * the three KEEP OPEN gates run unless `keepOpen` is false. `skip` lists
+ * codes already blocked in this Stop chain (or switched off); they are not
+ * re-evaluated.
  * @returns {{block: boolean, code: string|null, reason: string}}
  */
 function decideAll(input) {
   const skip = new Set((input && input.skip) || []);
   const reasons = [];
-  for (const [code, fn] of [['CHILDWAIT', childWaitDecision], ['CHILDJOBS', childJobsDecision], ['CHILDWATCH', parentWatchDecision]]) {
+  const gates = [];
+  // The older KEEP OPEN gates go first: their messages name the exact wait.
+  // CHILDSTALL (BRO-7183) is the catch-all for any closing.
+  if (!input || input.keepOpen !== false) {
+    gates.push(['CHILDWAIT', childWaitDecision], ['CHILDJOBS', childJobsDecision], ['CHILDWATCH', parentWatchDecision]);
+  }
+  if (input && input.stall) gates.push(['CHILDSTALL', childStallDecision]);
+  for (const [code, fn] of gates) {
     if (skip.has(code)) continue;
     const r = fn(input);
-    if (r.block) return { block: true, code, reason: r.reason };
+    if (r.block) return { block: true, code, reason: r.reason, wrongTool: !!r.wrongTool };
     reasons.push(code + ': ' + r.reason);
   }
   return { block: false, code: null, reason: reasons.join('; ') };
 }
 
 module.exports = { BG_DEFAULT_MS,
-  childWaitDecision, childJobsDecision, parentWatchDecision, decideAll,
+  childWaitDecision, childJobsDecision, parentWatchDecision, childStallDecision, decideAll,
   isChildSession, liveBackground, isDetached, CI_WAIT_RE, JOBS_WAIT_RE, CHILD_PROMPT_RE, WATCH_CMD_RE,
 };
 
