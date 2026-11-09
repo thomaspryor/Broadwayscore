@@ -939,6 +939,12 @@ function _effectiveSerpSkips(skipProviders) {
   return skips;
 }
 
+const { serpQueryBudgetAllows } = require('./serp-query-cap');
+let _serpQueryCount = 0;
+let _serpQueryCapLogged = false;
+function getSerpQueryCount() { return _serpQueryCount; }
+function _resetSerpQueryCountForTests() { _serpQueryCount = 0; _serpQueryCapLogged = false; }
+
 async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRange, preferSpeed, geoOverride, skipProviders, emptyAuthoritative = true, negativeCacheTtlMs = null, page = 0) {
   const _skips = _effectiveSerpSkips(skipProviders);
   // 24h disk cache — same query within TTL returns cached results, no API call.
@@ -1000,6 +1006,20 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
     log(`    ⛔ Press-night spend cap (${_pnCap.reason}) — no SERP providers called for this show`);
     return { results: null, provider: 'press-night-capped' };
   }
+
+  // Per-process live-query cap (SERP_QUERY_BUDGET, BRO-7171; default off).
+  // After both cache reads, so cached answers stay free; one count per query
+  // however many providers the chain below tries. null -> '__SERP_UNAVAILABLE__'
+  // (non-evidence: callers do not advance serpRetryCount on it).
+  const _qCap = serpQueryBudgetAllows(_serpQueryCount, process.env.SERP_QUERY_BUDGET);
+  if (!_qCap.allowed) {
+    if (!_serpQueryCapLogged) {
+      log(`    ⛔ SERP query budget reached (${_qCap.budget} live queries this process) — no SERP providers called`);
+      _serpQueryCapLogged = true;
+    }
+    return { results: null, provider: 'serp-query-capped' };
+  }
+  _serpQueryCount++;
 
   // Scrapingdog first (flag-gated, ~3x cheaper than BD SERP). On a real fetch
   // failure (null) it falls through to the existing BD/SB chain, which stays
@@ -2094,6 +2114,8 @@ async function serpImagesQuery(query, options = {}) {
 module.exports = {
   hasSerpProvider,
   _serpWithChainForTests: _serpWithChain,
+  getSerpQueryCount,
+  _resetSerpQueryCountForTests,
   OUTLET_DOMAINS,
   REGISTRY_DOMAIN_ALIASES,
   DOMAIN_REDIRECTS,
