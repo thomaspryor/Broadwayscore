@@ -88,3 +88,11 @@ test('helpers: quantile, addWeeks, consecutive weeks under break-even', () => {
   assert.equal(weeksBelowBreakEven([80, 90, 120, 50], 100), 2);
   assert.equal(weeksBelowBreakEven([null, 80], 100), 0);
 });
+
+test('formatMonthYear prints the estimate as a month, never a day', async () => {
+  const { formatMonthYear } = await import('../../src/lib/biz-format');
+  assert.equal(formatMonthYear('2027-01-24'), 'Jan 2027');
+  assert.equal(formatMonthYear('2026-12-13'), 'Dec 2026');
+  assert.equal(formatMonthYear(null), null);
+  assert.equal(formatMonthYear('soon'), null);
+});
