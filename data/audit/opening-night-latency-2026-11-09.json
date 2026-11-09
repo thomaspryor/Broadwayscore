@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-11-09T20:45:17.025Z",
+  "generatedAt": "2026-11-09T23:52:03.427Z",
   "date": "2026-11-09",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 257383,
+  "entryCount": 266970,
   "shows": [
     {
       "showId": "speculations-off-west-end-2026",
-      "reviewCount": 33,
+      "reviewCount": 34,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 3642040,
-        "scored-to-rebuilt": 461362,
+        "scored-to-rebuilt": 506369,
         "rebuilt-to-deployed": 173010489
       },
       "reviews_over_15min": 0,
@@ -3297,7 +3297,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 10356943,
-        "scored-to-rebuilt": 356986,
+        "scored-to-rebuilt": 228281,
         "rebuilt-to-deployed": 177796458
       },
       "reviews_over_15min": 0,
@@ -4333,13 +4333,13 @@
     },
     {
       "showId": "nero-off-west-end-2026",
-      "reviewCount": 17,
+      "reviewCount": 19,
       "median_e2e_ms": 183639129,
       "p90_e2e_ms": 194307878,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 428447,
-        "scored-to-rebuilt": 273044,
+        "scored-to-rebuilt": 339832,
         "rebuilt-to-deployed": 162344421
       },
       "reviews_over_15min": 5,
@@ -6489,13 +6489,13 @@
     },
     {
       "showId": "222-a-ghost-story-off-broadway-2026",
-      "reviewCount": 10,
+      "reviewCount": 11,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 1180998,
-        "scored-to-rebuilt": 254750,
+        "scored-to-rebuilt": 221747,
         "rebuilt-to-deployed": 161844035
       },
       "reviews_over_15min": 0,
@@ -10920,13 +10920,13 @@
     },
     {
       "showId": "a-streetcar-named-desire-crucible-regional-2025",
-      "reviewCount": 4,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1117952,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -14228,7 +14228,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 11741945,
-        "scored-to-rebuilt": 634790,
+        "scored-to-rebuilt": 876369,
         "rebuilt-to-deployed": 77053957
       },
       "reviews_over_15min": 2,
@@ -14254,7 +14254,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 11626882,
-        "scored-to-rebuilt": 634791,
+        "scored-to-rebuilt": 876369,
         "rebuilt-to-deployed": 68389355
       },
       "reviews_over_15min": 1,
@@ -14416,13 +14416,13 @@
     },
     {
       "showId": "msblackforpresident-off-broadway-2026",
-      "reviewCount": 10,
+      "reviewCount": 12,
       "median_e2e_ms": 42151856,
       "p90_e2e_ms": 42151856,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 500614,
-        "scored-to-rebuilt": 692017,
+        "collected-to-scored": 500823,
+        "scored-to-rebuilt": 435343,
         "rebuilt-to-deployed": 60459621
       },
       "reviews_over_15min": 1,
@@ -14857,13 +14857,13 @@
     },
     {
       "showId": "wanted-2022",
-      "reviewCount": 20,
+      "reviewCount": 21,
       "median_e2e_ms": 55992203,
       "p90_e2e_ms": 56021170,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 111581,
-        "scored-to-rebuilt": 633709,
+        "collected-to-scored": 1469007,
+        "scored-to-rebuilt": 631589,
         "rebuilt-to-deployed": 52280184
       },
       "reviews_over_15min": 11,
@@ -15003,13 +15003,13 @@
     },
     {
       "showId": "m-refractions-from-an-evil-act-regional-2026",
-      "reviewCount": 4,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 1801013,
+        "scored-to-rebuilt": 1803623,
         "rebuilt-to-deployed": 45159784
       },
       "reviews_over_15min": 0,
@@ -15159,7 +15159,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 1522767,
+        "scored-to-rebuilt": 1520070,
         "rebuilt-to-deployed": 45159790
       },
       "reviews_over_15min": 0,
@@ -15318,13 +15318,13 @@
     },
     {
       "showId": "oh-mary-tour-2026",
-      "reviewCount": 16,
+      "reviewCount": 17,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 2467147,
+        "collected-to-scored": 25157273,
+        "scored-to-rebuilt": 1792570,
         "rebuilt-to-deployed": 16895489
       },
       "reviews_over_15min": 0,
@@ -15677,21 +15677,6 @@
       "slowest_reviews": []
     },
     {
-      "showId": "buena-vista-social-club-tour-2026",
-      "reviewCount": 7,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
-        "rebuilt-to-deployed": null
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "reviewCount": 33,
       "median_e2e_ms": null,
@@ -15775,6 +15760,201 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1167579,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "girls-chance-music-off-broadway-2024",
+      "reviewCount": 10,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1117965,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "conversations-with-mother-off-broadway-2025",
+      "reviewCount": 14,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1117950,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "spamalot-2023",
+      "reviewCount": 32,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1117948,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-thanksgiving-play-2023",
+      "reviewCount": 30,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1117950,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "sweeney-todd-2023",
+      "reviewCount": 38,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1117948,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "bob-fosses-dancin-2023",
+      "reviewCount": 27,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1117941,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-inheritance-2019",
+      "reviewCount": 39,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1117939,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "a-dolls-house-part-2-2017",
+      "reviewCount": 58,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1117934,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "something-rotten-2015",
+      "reviewCount": 43,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1117936,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-audience-2015",
+      "reviewCount": 31,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1117936,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+      "reviewCount": 4,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 688507,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "i-became-we-off-broadway-2026",
+      "reviewCount": 11,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 2220531,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "stoker-wilde-off-west-end-2026",
+      "reviewCount": 2,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1335106,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
