@@ -70,6 +70,8 @@ function archiveIndexConflictCopies({ src }) {
   }
   for (const name of names) {
     try {
+      // rename() silently replaces an existing file; keep both instead.
+      if (fs.existsSync(path.join(dir, RESOLVED_DIR, name))) continue;
       fs.renameSync(path.join(dir, name), path.join(dir, RESOLVED_DIR, name));
       result.archived.push(name);
     } catch (err) {

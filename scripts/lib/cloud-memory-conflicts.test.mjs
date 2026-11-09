@@ -161,9 +161,11 @@ test('BRO-7228: a MEMORY.md conflict is archived with its content, the index is 
   assert.equal(fs.readFileSync(path.join(resolvedDir(f), saved), 'utf8'), mirror);
   assert.equal(JSON.parse(fs.readFileSync(f.reportPath, 'utf8')).conflictCount, 0);
   assert.equal(readConflictDigest(f.dest), null);
+  const reportBefore = fs.readFileSync(f.reportPath, 'utf8');
   const again = applySync({ ...f.args, now: new Date('2031-01-01') });
   assert.equal(again.conflictCopies.length, 0);
   assert.equal(fs.readdirSync(resolvedDir(f)).length, 1);
+  assert.equal(fs.readFileSync(f.reportPath, 'utf8'), reportBefore); // quiet sync: no churn
 });
 
 test('BRO-7228: old copies already sitting in _conflicts/ clear on the next sync', t => {
@@ -186,8 +188,12 @@ test('BRO-7228: old copies already sitting in _conflicts/ clear on the next sync
 test('BRO-7228: only MEMORY.md copies are archived; other memos still wait for review', t => {
   const f = fixture(t);
   f.conflict();
+  const dir = path.join(f.src, '_conflicts');
+  f.write(dir, 'MEMORY.cloud-conflict-a.md', 'index copy');
+  applySync(f.args);
+  assert.deepEqual(fs.readdirSync(resolvedDir(f)), ['MEMORY.cloud-conflict-a.md']);
+  assert.equal(JSON.parse(fs.readFileSync(f.reportPath, 'utf8')).conflictCount, 1);
   assert.match(readConflictDigest(f.dest).bannerText, /1 saved copy needs review/);
-  assert.equal(fs.existsSync(resolvedDir(f)), false);
 });
 
 test('BRO-7228: a copy a parallel sync already moved is not an error', t => {
@@ -209,4 +215,15 @@ test('BRO-7228: an archive failure never blocks the report or the manifest', t =
   assert.ok(result.settled.error);
   assert.equal(JSON.parse(fs.readFileSync(f.reportPath, 'utf8')).conflictCount, 1);
   assert.equal(fs.existsSync(f.args.manifestPath), true);
+});
+
+test('BRO-7228: an archived copy is never overwritten by a same-named one', t => {
+  const f = fixture(t);
+  const dir = path.join(f.src, '_conflicts');
+  fs.mkdirSync(path.join(dir, '_resolved'), { recursive: true });
+  f.write(path.join(dir, '_resolved'), 'MEMORY.cloud-conflict-a.md', 'first');
+  f.write(dir, 'MEMORY.cloud-conflict-a.md', 'second');
+  archiveIndexConflictCopies({ src: f.src });
+  assert.equal(fs.readFileSync(path.join(dir, '_resolved', 'MEMORY.cloud-conflict-a.md'), 'utf8'), 'first');
+  assert.equal(fs.readFileSync(path.join(dir, 'MEMORY.cloud-conflict-a.md'), 'utf8'), 'second');
 });
