@@ -17,6 +17,7 @@ const os = require('os');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const imp = require('./lib/lane-recorded-nights/recording-import');
+const { preImportTotalBytes } = require('./lib/lane-recording-headroom');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 if (require.main === module && hasHelpFlag(process.argv.slice(2))) {
@@ -127,7 +128,7 @@ function main() {
 
     const counts = skippedSame ? { 'skipped-same': skippedSame } : {};
     let unread = 0;
-    const pre = imp.applyRetention(root);
+    const pre = imp.applyRetention(root, imp.KEEP_NIGHTS, preImportTotalBytes({ maxTotalBytes: imp.MAX_TOTAL_BYTES, maxNightBytes: imp.MAX_NIGHT_BYTES }, work.length));
     if (pre.length) console.log(`retention removed ${pre.length} older nights before importing: ${pre.join(', ')}`);
     for (const w of work) {
       const marker = markerFile(root, w.a);

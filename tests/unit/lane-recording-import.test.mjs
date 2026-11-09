@@ -303,3 +303,34 @@ test('a recording written with another key version is refused, nothing is writte
   assert.match(r.detail, /key version/);
   assert.equal(allFiles(root).length, 0);
 });
+
+test('BRO-7167: trimming before the import leaves room for the incoming night, so a full archive still imports', async () => {
+  const { preImportTotalBytes } = require('../../scripts/lib/lane-recording-headroom.js');
+  const src = await makeArtifact();
+  const probe = tmp();
+  const first = imp.importRecording({ srcDir: src, root: probe, ...base, candidates: cands(), meta: meta() });
+  assert.equal(first.status, 'imported');
+  const nightBytes = first.storedBytes;
+  const root = tmp();
+  for (const n of ['2026-11-01', '2026-11-02', '2026-11-03']) {
+    fs.mkdirSync(path.join(root, 'old', n, 'shadow'), { recursive: true });
+    fs.writeFileSync(path.join(root, 'old', n, 'shadow', 'blob'), Buffer.alloc(nightBytes * 4, 1));
+  }
+  const maxTotalBytes = imp.dirBytes(root) + nightBytes - 1; // one byte short of fitting the new night
+  // Old behaviour: trim to the cap, then import -> refused (the production failure).
+  imp.applyRetention(root, imp.KEEP_NIGHTS, maxTotalBytes);
+  assert.equal(imp.importRecording({ srcDir: src, root, ...base, candidates: cands(), meta: meta(), maxTotalBytes }).status, 'over-budget');
+  // New behaviour: trim to the cap minus the incoming room, then import -> imported.
+  const target = preImportTotalBytes({ maxTotalBytes, maxNightBytes: nightBytes }, 1);
+  assert.equal(target, maxTotalBytes - nightBytes);
+  imp.applyRetention(root, imp.KEEP_NIGHTS, target);
+  assert.equal(imp.importRecording({ srcDir: src, root, ...base, candidates: cands(), meta: meta(), maxTotalBytes }).status, 'imported');
+});
+
+test('BRO-7167: the headroom is bounded and the import script uses it', () => {
+  const { preImportTotalBytes, MAX_INCOMING_NIGHTS } = require('../../scripts/lib/lane-recording-headroom.js');
+  assert.equal(preImportTotalBytes({ maxTotalBytes: 1000, maxNightBytes: 10 }, 0), 1000);
+  assert.equal(preImportTotalBytes({ maxTotalBytes: 1000, maxNightBytes: 10 }, 99), 1000 - 10 * MAX_INCOMING_NIGHTS);
+  assert.equal(preImportTotalBytes({ maxTotalBytes: 5, maxNightBytes: 10 }, 1), 0);
+  assert.match(fs.readFileSync(fileURLToPath(new URL('../../scripts/lane-recording-import.js', import.meta.url)), 'utf8'), /preImportTotalBytes\(/);
+});
