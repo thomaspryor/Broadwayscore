@@ -519,6 +519,12 @@ if (require.main === module) {
     say(`${result.conflicts.length} file(s) changed on BOTH sides — local version kept, mirror version preserved:`);
     for (const p of result.conflictCopies) say(`  preserved ${p}`);
   }
+  if (result.settled && result.settled.archived.length) {
+    say(`archived ${result.settled.archived.length} saved MEMORY.md copy(ies) to _conflicts/_resolved/ (index kept as-is; nothing deleted)`);
+  }
+  if (result.settled && result.settled.error) {
+    say(`WARNING could not archive saved MEMORY.md copies: ${result.settled.error} — they stay flagged in the digest`);
+  }
   if (verbose) {
     for (const n of result.copyToDest) say(`  copy   ${n}`);
     say(`${result.unchanged.length} file(s) already in sync`);
