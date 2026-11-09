@@ -40,7 +40,11 @@ const showDir = path.join(REVIEW_TEXTS_DIR, SHOW_ID);
 // across tests in this same file; reusing one url across tests would trip
 // its "URL already indexed" same-show dupe guard before ever reaching the
 // logic under test.
-const urlFor = (n) => `https://variety.com/2026/legit/reviews/becky-shaw-review-example-${n}/`;
+// BRO-7068: pid-suffixed like SHOW_ID. A fixture dir leaked into the real
+// corpus by an earlier run (__test-bro730-same-url-32091, committed to
+// review-texts on 2026-11-08) held the fixed url, so the index answered
+// 'crossShow' instead of 'duplicate'.
+const urlFor = (n) => `https://variety.com/2026/legit/reviews/becky-shaw-review-example-${process.pid}-${n}/`;
 
 function withTempShowDir(fn) {
   fs.mkdirSync(showDir, { recursive: true });
