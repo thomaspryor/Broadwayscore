@@ -10,7 +10,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const { tourAggregateProblems, directorsOf } = require('./tour-aggregate-rules.js');
-const { planUnlink, applyUnlink } = require('../unlink-tour-aggregate.js');
+const { planUnlink, applyUnlink } = require('./tour-aggregate-unlink.js');
 
 const gpAgg = { id: 'gun-and-powder-regional-2020', slug: 'gun-and-powder-regional-2020', category: 'regional', tags: ['regional', 'national-tour'], transferredTo: 'wanted-2022' };
 const gpSig = { id: 'gun-and-powder-signature-regional-2020', slug: 'gun-and-powder-signature-regional-2020', category: 'regional', tourParent: gpAgg.id, openingDate: '2020-02-05', creativeTeam: [{ name: 'Robert O’Hara', role: 'Director' }] };
