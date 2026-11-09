@@ -178,12 +178,39 @@ test('real ports: dispatch is off unless the env switch is set; with it on, fetc
   const undelivered = real.createRealPublishPorts({ ...base, env: {}, page: async () => ({ delivered: false }), autoFixFirstGate: async () => ({ email: true, preamble: 'p', markEscalated: async () => { marked2 += 1; } }) });
   await undelivered.pageLiveTimeout({ show: SHOW, night: '2026-10-30', missing: [U(2)], ms: 1_800_000 });
   assert.equal(marked2, 0, 'undelivered email: card not marked escalated');
-  // BRO-7232: while a fix card is open (email:false) nobody is paged; a gate crash pages like notify-failure does.
+  // BRO-7232: while a fix card is open (email:false) nobody is paged for a non-Broadway show; a gate crash pages like
+  // notify-failure does.
+  fs.writeFileSync(path.join(dir, 'data', 'shows.json'), JSON.stringify({ shows: [{ id: SHOW, category: 'off-broadway' }] }));
   const held = real.createRealPublishPorts({ ...base, env: {}, page: async (o) => { timeoutPages.push(o); }, autoFixFirstGate: async () => ({ email: false, action: 'file' }) });
   await held.pageLiveTimeout({ show: SHOW, night: '2026-10-30', missing: [U(2)], ms: 1_800_000 });
-  assert.equal(timeoutPages.length, 1, 'auto-fix-first holds the page');
+  assert.equal(timeoutPages.length, 1, 'auto-fix-first holds the page for a non-Broadway show');
+  // BRO-7235 (owner decision BRO-5479): a Broadway show emails right away even while the fix card is open.
+  fs.writeFileSync(path.join(dir, 'data', 'shows.json'), JSON.stringify({ shows: [{ id: SHOW, category: 'broadway' }] }));
+  let filed = 0;
+  const bway = real.createRealPublishPorts({ ...base, env: {}, page: async (o) => { timeoutPages.push(o); }, autoFixFirstGate: async () => { filed += 1; return { email: false, action: 'file' }; } });
+  await bway.pageLiveTimeout({ show: SHOW, night: '2026-10-30', missing: [U(2)], ms: 1_800_000 });
+  assert.equal(filed, 1, 'the auto-fix card is still filed');
+  assert.equal(timeoutPages.length, 2, 'a Broadway opening emails the owner right away');
+  assert.equal(timeoutPages[1].disposition, 'human');
+  timeoutPages.pop();
   const crashed = real.createRealPublishPorts({ ...base, env: {}, page: async (o) => { timeoutPages.push(o); }, autoFixFirstGate: async () => { throw new Error('linear down'); } });
   await crashed.pageLiveTimeout({ show: SHOW, night: '2026-10-30', missing: [U(2)], ms: 1_800_000 });
   assert.equal(timeoutPages.length, 2, 'a gate failure still pages');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('BRO-7235: isBroadwayLaneShow fails open, says no only for a known non-Broadway show', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7235-'));
+  fs.mkdirSync(path.join(dir, 'data'));
+  assert.equal(real.isBroadwayLaneShow('x-2026', dir), true, 'no shows.json: fail open');
+  assert.equal(real.isBroadwayLaneShow('x-off-broadway-2026', dir), false, 'market suffix');
+  assert.equal(real.isBroadwayLaneShow('x-west-end-2026', dir), false);
+  fs.writeFileSync(path.join(dir, 'data', 'shows.json'), JSON.stringify({ shows: [{ id: 'a-2026', category: 'west-end' }, { id: 'b-2026', category: 'broadway' }, { id: 'c-2026' }] }));
+  assert.equal(real.isBroadwayLaneShow('a-2026', dir), false);
+  assert.equal(real.isBroadwayLaneShow('b-2026', dir), true);
+  assert.equal(real.isBroadwayLaneShow('c-2026', dir), true, 'no category: fail open');
+  assert.equal(real.isBroadwayLaneShow('missing-2026', dir), true, 'unknown id: fail open');
+  // Real data: tonight's Broadway opening is Broadway.
+  assert.equal(real.isBroadwayLaneShow('here-there-are-blueberries-2026', path.join(path.dirname(new URL(import.meta.url).pathname), '..', '..')), true);
   fs.rmSync(dir, { recursive: true, force: true });
 });
