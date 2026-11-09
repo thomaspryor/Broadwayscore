@@ -1922,7 +1922,7 @@ function checkQuality() {
       }
       const silencedNote = `${snap.silencedByContaminationCount ?? 0} silenced by contamination`;
       if (snap.flaggedCount > 0) {
-        return { name, status: 'warn', message: `${snap.flaggedCount} show(s) still 'announced' after apparently opening (${silencedNote}, ${formatAge(age)} ago)`, hint: 'node scripts/audit-stale-announced-shows.js to see `flagged` and triage with --ack=<id> --ack-note="..."' };
+        return { name, status: 'warn', message: `${snap.flaggedCount} show(s) stuck announced/upcoming/previews after apparently opening (${silencedNote}, ${formatAge(age)} ago)`, hint: 'node scripts/audit-stale-announced-shows.js to see `flagged` and triage with --ack=<id> --ack-note="..."' };
       }
       return { name, status: 'pass', message: `No stale 'announced' shows (${silencedNote}, ${formatAge(age)} ago)` };
     }),

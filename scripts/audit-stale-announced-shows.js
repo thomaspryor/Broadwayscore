@@ -59,8 +59,10 @@ const {
   saveAcks,
   findOrphanAcks,
   evaluateAnnouncedShow,
+  isAuditedStatus,
   hasEvidenceOfOpening,
   describeOpeningEvidence,
+  evidenceSinceFor,
 } = require('./lib/stale-announced-audit');
 const { explainExclusion } = require('./lib/review-guards');
 const { createShowsWriteGuard } = require('./lib/shows-write-guard');
@@ -75,7 +77,10 @@ const REVIEWS_FILE = argValue('reviews-file') || path.join(DATA_DIR, 'reviews.js
 const PAGES_FIXTURE = argValue('pages-fixture');
 const NOW_OVERRIDE = argValue('now');
 const DEMOTE = argvEarly.includes('--demote');
-const REVIEW_TEXTS_DIR = path.join(DATA_DIR, 'review-texts');
+// REVIEW_TEXTS_DIR env: a worktree has no review-texts checkout, so a local
+// run was blind to the review signal (BRO-7080). Same override as the
+// contamination audit.
+const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR || path.join(DATA_DIR, 'review-texts');
 const AUDIT_FILE = path.join(DATA_DIR, 'audit', 'stale-announced-shows.json');
 
 const argv = process.argv.slice(2);
@@ -95,8 +100,8 @@ function loadJSON(file, fallback = null) {
   }
 }
 
-function hasPopulatedReviewTextsDir(showId, show) {
-  return hasEvidenceOfOpening(REVIEW_TEXTS_DIR, showId, explainExclusion, show);
+function hasPopulatedReviewTextsDir(showId, show, now = new Date()) {
+  return hasEvidenceOfOpening(REVIEW_TEXTS_DIR, showId, explainExclusion, show, { since: evidenceSinceFor(show, now) });
 }
 
 // Announced shows that have review files but ALL of them discounted as
@@ -142,8 +147,8 @@ async function main() {
       console.error(`--ack=${ACK_ID}: no show with this id in ${SHOWS_FILE}`);
       process.exit(1);
     }
-    if (show.status !== 'announced') {
-      console.error(`--ack=${ACK_ID}: show status is '${show.status}', not 'announced' — nothing to ack`);
+    if (!isAuditedStatus(show.status)) {
+      console.error(`--ack=${ACK_ID}: show status is '${show.status}', not one the audit covers — nothing to ack`);
       process.exit(1);
     }
     const acks = addAck(loadAcks(), ACK_ID, ACK_NOTE, new Date().toISOString());
@@ -178,8 +183,8 @@ async function main() {
       console.error(`--ack=${ACK_ID}: no show with this id in ${SHOWS_FILE}`);
       process.exit(1);
     }
-    if (show.status !== 'announced') {
-      console.error(`--ack=${ACK_ID}: show status is '${show.status}', not 'announced' — nothing to ack`);
+    if (!isAuditedStatus(show.status)) {
+      console.error(`--ack=${ACK_ID}: show status is '${show.status}', not one the audit covers — nothing to ack`);
       process.exit(1);
     }
     const acks = addAck(loadAcks(), ACK_ID, ACK_NOTE, new Date().toISOString());
@@ -211,12 +216,12 @@ async function main() {
   }
 
   for (const show of showsData.shows) {
-    if (show.status !== 'announced') continue;
+    if (!isAuditedStatus(show.status)) continue;
 
     const reasons = evaluateAnnouncedShow(show, {
       now,
       staleDays: STALE_DAYS,
-      hasReviews: hasPopulatedReviewTextsDir(show.id, show),
+      hasReviews: hasPopulatedReviewTextsDir(show.id, show, now),
       acks,
     });
 
@@ -226,6 +231,7 @@ async function main() {
         title: show.title,
         venue: show.venue || null,
         category: show.category || null,
+        status: show.status,
         previewsStartDate: show.previewsStartDate || null,
         openingDate: show.openingDate || null,
         todaytixId: show.todaytixId || null,
