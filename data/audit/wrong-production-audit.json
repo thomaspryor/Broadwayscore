@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-09T21:53:00.302Z",
+  "timestamp": "2026-11-09T22:11:02.182Z",
   "stats": {
     "totalReviews": 80934,
-    "alreadyFlagged": 22134,
-    "dateGuardCatches": 220,
+    "alreadyFlagged": 22135,
+    "dateGuardCatches": 219,
     "directorMismatch": 3580,
     "tvFilmSignals": 2303,
-    "londonSignals": 3653,
+    "londonSignals": 3652,
     "offBroadwaySignals": 752,
     "yearMismatch": 370,
-    "noPublishDate": 8439
+    "noPublishDate": 8437
   },
   "findings": [
     {
@@ -108756,24 +108756,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "julius-caesar-globe-off-west-end-2026",
-      "file": "london-theatre--olivia-rook.json",
-      "publishDate": "2026-10-06",
-      "url": "https://www.londontheatre.co.uk/theatre-news/news/casting-revealed-for-julius-caesar-at-the-sam-wanamaker-playhouse",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 31d before show (2026-10-06 vs 2026-11-06)"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
