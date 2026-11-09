@@ -28,3 +28,8 @@ test('the sibling-held review is returned so the gap row can be tagged prior-run
   assert.equal(out.length, 1);
   assert.equal(out[0]._housedOnShowId, may.id);
 });
+
+test('a fuzzy-title link keeps its declared run in the pre-window exemption list', () => {
+  const { preWindowExemptPriorRuns } = require('../../scripts/lib/prior-run-sibling.js');
+  assert.deepEqual(preWindowExemptPriorRuns(nov, [may, nov]), nov.priorRuns);
+});

@@ -59,7 +59,8 @@ function countLocalIncluded(showId, reviewTextsRoot = 'data/review-texts', show,
   // every returning show reads as "live ahead of local" drift.
   let inherited = 0;
   if (show && Array.isArray(allShows)) {
-    for (const { sibling } of findPriorRunSiblings(show, allShows)) {
+    for (const { sibling, carryReviews } of findPriorRunSiblings(show, allShows)) {
+      if (!carryReviews) continue; // rebuild carries nothing from an opted-out or title-style link
       const sibDir = path.join(reviewTextsRoot, sibling.id);
       if (!fs.existsSync(sibDir)) continue;
       for (const f of fs.readdirSync(sibDir).filter(n => n.endsWith('.json'))) {

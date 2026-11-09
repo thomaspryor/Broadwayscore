@@ -315,7 +315,7 @@ function findPriorRunSiblings(show, shows) {
     const fuzzyTitle = !explicit && baseTitle(other) !== base;
     if (fuzzyTitle && titleWordKey(other) !== titleWordKey(show)) continue;
     out.push({
-      sibling: other, run, explicit,
+      sibling: other, run, explicit, fuzzyTitle,
       // A fuzzy-title link trusts the sibling's own recorded run over the declared one: the
       // declared opening (Othello: 05-10) can sit after the reviews the sibling holds (05-03..07).
       window: fuzzyTitle ? siblingSpanWindow(run, other) : windowRunFor(run, other),
@@ -345,7 +345,7 @@ function findPriorRunSiblings(show, shows) {
  */
 function preWindowExemptPriorRuns(show, shows) {
   if (!show || !Array.isArray(show.priorRuns)) return show ? show.priorRuns : undefined;
-  const housed = new Set(findPriorRunSiblings(show, shows).filter(s => !s.carryReviews).map(s => s.run));
+  const housed = new Set(findPriorRunSiblings(show, shows).filter(s => !s.carryReviews && !s.fuzzyTitle).map(s => s.run));
   return housed.size ? show.priorRuns.filter(r => !housed.has(r)) : show.priorRuns;
 }
 
