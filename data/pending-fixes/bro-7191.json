@@ -1,0 +1,45 @@
+{
+  "issueNumber": "bro-7191",
+  "planId": "8c574a43-28ef-4017-aec4-fc007151e30f",
+  "status": "pending",
+  "createdAt": "2026-11-09T04:06:10.060Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Wanted: Slant humanReviewScore 55 (critic), Cititour publishDate, Talkin Broadway criticName",
+    "steps": [
+      "Critic Dan Rubins says 46 is too low for his Slant review; owner set 55",
+      "Cititour page dated 11/8/2026 in its text; opening-night lane left it null",
+      "Byline in full text: 'Theatre Review by Howard Miller - November 8, 2026'"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "wanted-2022/slantmagazine--dan-rubins--on-2026-11-08.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 55,
+        "description": "Critic Dan Rubins says 46 is too low for his Slant review; owner set 55"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "wanted-2022/cititour--brian-scott-lipton--on-2026-11-08.json",
+        "field": "publishDate",
+        "oldValue": null,
+        "newValue": "2026-11-08",
+        "description": "Cititour page dated 11/8/2026 in its text; opening-night lane left it null"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "wanted-2022/talkinbroadway--unknown--on-2026-11-08.json",
+        "field": "criticName",
+        "oldValue": null,
+        "newValue": "Howard Miller",
+        "description": "Byline in full text: 'Theatre Review by Howard Miller - November 8, 2026'"
+      }
+    ]
+  }
+}
