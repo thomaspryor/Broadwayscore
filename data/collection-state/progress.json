@@ -196,7 +196,8 @@
     "the-book-of-mormon-west-end-2024/musical-theatre-review--unknown.json",
     "matilda-the-musical-west-end-2021/guardian--lyn-gardner.json",
     "matilda-the-musical-west-end-2021/observer--imogen-carter.json",
-    "book-of-mormon-2011/financialtimes--brendan-lemon.json"
+    "book-of-mormon-2011/financialtimes--brendan-lemon.json",
+    "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json"
   ],
   "failed": [
     "the-visitors-off-broadway-2026/bobs-theater-blog--unknown.json",
@@ -240,7 +241,6 @@
     "long-days-journey-into-night-2016/whatsonstage--sarah-crompton.json",
     "speculations-off-west-end-2026/jonathan-baz--unknown.json",
     "speculations-off-west-end-2026/londonlivinglarge--london-living-large.json",
-    "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json",
     "the-heart-off-broadway-2026/frontmezzjunkies--unknown.json",
     "the-lives-of-others-west-end-2026/whatsonstage--alex-wood.json",
     "in-the-heights-off-broadway-2026/nypost--clive-barnes.json",
@@ -319,7 +319,14 @@
     "book-of-mormon-2011/vulture--jesse-green.json",
     "book-of-mormon-2011/deadline--unknown.json",
     "book-of-mormon-2011/new-jersey-newsroom--michael-sommers.json",
-    "book-of-mormon-2011/ap--mark-kennedy.json"
+    "book-of-mormon-2011/ap--mark-kennedy.json",
+    "iphigenie-en-tauride-english-national-opera-west-end-2026/bachtrack--mark-valencia.json",
+    "iphigenie-en-tauride-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "iphigenie-en-tauride-english-national-opera-west-end-2026/sunday-times--unknown.json",
+    "the-bridge-off-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "the-bridge-off-west-end-2026/theatreandtonic--emmie-newitt.json",
+    "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -431,7 +438,8 @@
       "witness-for-the-prosecution-off-west-end-2022/london-box-office--stuart-king.json",
       "witness-for-the-prosecution-off-west-end-2022/standard--henry-hitchings.json",
       "witness-for-the-prosecution-off-west-end-2022/west-end-wilma--unknown.json",
-      "book-of-mormon-2011/financialtimes--brendan-lemon.json"
+      "book-of-mormon-2011/financialtimes--brendan-lemon.json",
+      "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json"
     ],
     "amp": [],
     "browserbase": [
@@ -515,7 +523,7 @@
     ]
   },
   "startTime": "2026-11-09T11:44:21.676Z",
-  "lastProcessed": "book-of-mormon-2011/financialtimes--brendan-lemon.json",
+  "lastProcessed": "tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json",
   "log": [
     {
       "t": "2026-11-09T11:49:14.496Z",
@@ -560,6 +568,15 @@
       "t": "2026-11-09T11:56:15.965Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-09T15:26:33.803Z",
+      "event": "bb-session",
+      "session": "8dae3477",
+      "url": "https://bachtrack.com/review-iphigenie-en-tauride-turner-bates-rice-imbrailo-eng"
     }
+  ],
+  "recoveredAfterFailure": [
+    "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json"
   ]
 }
