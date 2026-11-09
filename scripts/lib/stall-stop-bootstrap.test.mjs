@@ -132,3 +132,20 @@ test('WAKEPROMISE / OPENCLAIM auto-arm: advisory before 2026-11-16, blocking fro
   assert.equal(one({ STALL_GATE_NOW: '2026-12-01T00:00:00Z', PROMISE_GATE_MODE: 'advisory' }), 0);
   assert.equal(one({ STALL_GATE_NOW: '2026-11-10T00:00:00Z', PROMISE_GATE_MODE: 'block' }), 2);
 });
+
+test('stall-only: a human-time-estimate phrase in the closing does not switch the stall gates off', () => {
+  const r = stopThroughApp(CLOSING + '\n\nThe remaining run should take a few hours.');
+  assert.equal(r.status, 2, 'must still block: ' + r.stderr + r.stdout);
+});
+
+test('stall-only: an unknown PROMISE_GATE_MODE value stays advisory even after the arm date', () => {
+  const promise = "Kicked off the scoring run. I'll check back once it finishes and post the results.";
+  const d = tmp('bsc-unk-'); const tp = path.join(d, 't.jsonl');
+  fs.writeFileSync(tp, JSON.stringify({ type: 'user', timestamp: ts(60), message: { role: 'user', content: 'run' } }) + '\n');
+  const r = spawnSyncStdinFile('bash', [path.join(REPO, '.claude/hooks/verify-edits.sh')], {
+    input: JSON.stringify({ transcript_path: tp, session_id: 'unk', stop_hook_active: false, last_assistant_message: promise }),
+    encoding: 'utf8', timeout: 60000, killSignal: 'SIGKILL',
+    env: { ...process.env, HOME: d, CLAUDE_CODE_REMOTE: '', BOARD_GATE_DISABLED: '1', SHIP_CHECK_COVERAGE_DISABLE: '1', PROMISE_GATE_MODE: 'log', STALL_GATE_NOW: '2026-12-01T00:00:00Z' },
+  });
+  assert.equal(r.status, 0, r.stderr);
+});

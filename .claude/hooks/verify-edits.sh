@@ -88,13 +88,13 @@ fi
 # containers whose cached setup was built after it landed). Cloud only; fails open; blocks at most 3 times per
 # session (the lib keeps its own budget). Kill switch SHIP_CHECK_COVERAGE_DISABLE=1. Pinned by
 # scripts/lib/review-coverage.test.mjs so a Mac-master sync cannot silently drop it.
-if [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ "${SHIP_CHECK_COVERAGE_DISABLE:-0}" != "1" ] \
+if [ -z "${VE_ONLY_CODES:-}" ] && [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ "${SHIP_CHECK_COVERAGE_DISABLE:-0}" != "1" ] \
    && [ -f "$VE_REPO_ROOT/scripts/lib/review-coverage.mjs" ] && command -v node >/dev/null 2>&1; then
   _rc_err=$(printf '%s' "$input" | node "$VE_REPO_ROOT/scripts/lib/review-coverage.mjs" --stop-hook 2>&1 >/dev/null)
   if [ $? -eq 2 ]; then printf '%s\n' "$_rc_err" >&2; exit 2; fi
 fi
 # BRO-6539: advisory check that a DECISION NEEDED is not already answered on its card (logic in decision-restate.js --stop-hook).
-if [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ -f "$VE_REPO_ROOT/scripts/lib/decision-restate.js" ] && command -v node >/dev/null 2>&1; then
+if [ -z "${VE_ONLY_CODES:-}" ] && [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ -f "$VE_REPO_ROOT/scripts/lib/decision-restate.js" ] && command -v node >/dev/null 2>&1; then
   _dr_err=$(printf '%s' "$input" | timeout 15 node "$VE_REPO_ROOT/scripts/lib/decision-restate.js" --stop-hook 2>&1 >/dev/null)
   if [ $? -eq 2 ]; then printf '%s\n' "$_dr_err" >&2; exit 2; fi
 fi
@@ -133,6 +133,8 @@ def _stall_gate_blocks(envvar):
     v = os.environ.get(envvar, '')
     if v in ('block', 'advisory', 'off'):
         return v == 'block'
+    if v:
+        return False  # unknown value: stay advisory, never silently arm
     import time
     return (os.environ.get('STALL_GATE_NOW') or time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())) >= _STALL_ARM_AFTER
 
@@ -1275,7 +1277,7 @@ for _i in range(len(events) - 1, -1, -1):
     if _k == 'text':
         _txt = _p or ''
         _m = _HUMAN_TIME_ESTIMATE_RE.search(_txt)
-        if _m and 'NO-VERIFY:' not in _txt and not _ve_seen('HUMAN_TIME_ESTIMATE'):
+        if _m and not _VE_ONLY and 'NO-VERIFY:' not in _txt and not _ve_seen('HUMAN_TIME_ESTIMATE'):
             print(f"HUMAN_TIME_ESTIMATE:{_m.group(1)}")
             sys.exit(0)
         break  # only the most recent assistant_text counts
@@ -2576,12 +2578,12 @@ if [[ "$result" == "WAKELESS" ]]; then
 fi
 
 if [[ "$result" == "WAKEPROMISE" ]]; then
-  echo "🛑 BLOCKED: your closing promises later action (\"I'll check back\", \"I'm continuing\") but nothing will wake this session to do it (BRO-7183: BRO-7074 sat 34h on a promise). Either do it now in this turn, or start the wait as a Bash with run_in_background: true (timeout up to 7200000) or a Monitor whose exit wakes you, or drop the promise and say what is left for the owner. Bypass: NO-VERIFY: <reason>. Mode switch PROMISE_GATE_MODE (unset = log only)." >&2
+  echo "🛑 BLOCKED: your closing promises later action (\"I'll check back\", \"I'm continuing\") but nothing will wake this session to do it (BRO-7183: BRO-7074 sat 34h on a promise). Either do it now in this turn, or start the wait as a Bash with run_in_background: true (timeout up to 7200000) or a Monitor whose exit wakes you, or drop the promise and say what is left for the owner. Bypass: NO-VERIFY: <reason>. Mode switch PROMISE_GATE_MODE (block|advisory|off; unset = advisory until 2026-11-16, then block)." >&2
   exit 2
 fi
 
 if [[ "$result" == "OPENCLAIM" ]]; then
-  echo "🛑 BLOCKED: no human is in this session (a routine) and it claimed a card this firing that is still open. Nothing comes back for it: the card sits In Progress until the reclaim sweep (BRO-7183: BRO-7074 sat 34h). Before stopping, close it (node scripts/linear-brain.js update BRO-N --state Done), report it (node scripts/linear-session.js report --issue=BRO-N --status=paused|in-review ...), or start what you wait on as a background Bash or Monitor. Bypass: NO-VERIFY: <reason>. Mode switch OPENCLAIM_GATE_MODE (unset = log only)." >&2
+  echo "🛑 BLOCKED: no human is in this session (a routine) and it claimed a card this firing that is still open. Nothing comes back for it: the card sits In Progress until the reclaim sweep (BRO-7183: BRO-7074 sat 34h). Before stopping, close it (node scripts/linear-brain.js update BRO-N --state Done), report it (node scripts/linear-session.js report --issue=BRO-N --status=paused|in-review ...), or start what you wait on as a background Bash or Monitor. Bypass: NO-VERIFY: <reason>. Mode switch OPENCLAIM_GATE_MODE (block|advisory|off; unset = advisory until 2026-11-16, then block)." >&2
   exit 2
 fi
 if [[ "$result" == "CHILDSTALL" ]]; then
