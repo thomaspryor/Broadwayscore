@@ -88,6 +88,10 @@ interface PhotoThumbRowProps {
   /** For accessible names ("Remove photo 2 from Hamilton"). */
   title: string;
   size?: keyof typeof SIZE;
+  /** Staged previews (nothing saved yet): ✕ removes at once, no Delete confirm (BRO-6980). */
+  instantRemove?: boolean;
+  /** Lock the row (no add, no remove) while a save is uploading (BRO-6980). */
+  disabled?: boolean;
 }
 
 /**
@@ -97,7 +101,7 @@ interface PhotoThumbRowProps {
  * "Discard" sits with the error text below the row.
  */
 export default function PhotoThumbRow({
-  photos = [], pending, canAdd, onAddFiles, onRetry, onDismiss, onDelete, notice, title, size = 'md',
+  photos = [], pending, canAdd, onAddFiles, onRetry, onDismiss, onDelete, notice, title, size = 'md', instantRemove = false, disabled = false,
 }: PhotoThumbRowProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [armed, setArmed] = useState<string | null>(null);
@@ -160,9 +164,10 @@ export default function PhotoThumbRow({
               // 44px tap area in the corner (the mobile minimum), 24px glyph.
               <button
                 type="button"
-                onClick={() => arm(photo.id)}
+                disabled={disabled}
+                onClick={() => (instantRemove ? confirmDelete(photo) : arm(photo.id))}
                 aria-label={`Remove photo ${i + 1} from ${title}`}
-                className="group/rm absolute top-0 right-0 w-11 h-11 flex items-start justify-end p-1 outline-none"
+                className="group/rm absolute top-0 right-0 w-11 h-11 flex items-start justify-end p-1 outline-none disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 <span className="w-6 h-6 rounded-full bg-black/60 text-white flex items-center justify-center group-hover/rm:bg-black/80 group-focus-visible/rm:ring-2 group-focus-visible/rm:ring-brand">
                   <XIcon className="w-3 h-3" />
@@ -196,9 +201,10 @@ export default function PhotoThumbRow({
           <li className={box}>
             <button
               type="button"
+              disabled={disabled}
               onClick={() => inputRef.current?.click()}
               aria-label={`Add photos to ${title}`}
-              className="w-full h-full rounded-lg border border-dashed border-white/20 bg-white/[0.03] text-gray-400 hover:text-white hover:border-white/40 flex flex-col items-center justify-center gap-0.5 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-brand"
+              className="w-full h-full rounded-lg border border-dashed border-white/20 bg-white/[0.03] text-gray-400 hover:text-white hover:border-white/40 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:text-gray-400 disabled:hover:border-white/20 flex flex-col items-center justify-center gap-0.5 transition-colors outline-none focus-visible:ring-2 focus-visible:ring-brand"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 5v14M5 12h14" />

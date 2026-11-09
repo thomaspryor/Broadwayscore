@@ -14,6 +14,9 @@ const TMP = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'gap-accept-')
 const SHOWS = path.join(TMP, 'shows.json');
 fs.writeFileSync(SHOWS, JSON.stringify([
   { id: 'joe-turners-come-and-gone-2026', title: "Joe Turner's Come and Gone", previewsStartDate: '2026-03-01', openingDate: '2026-03-15' },
+  { id: 'equus-off-west-end-2026', title: 'Equus', venue: 'Menier Chocolate Factory', previewsStartDate: '2026-05-08', openingDate: '2026-05-18' },
+  { id: 'love-story-off-west-end-2026', title: 'Love Story', venue: 'Hampstead Theatre', openingDate: '2026-04-10', cast: [{ name: 'Jane Smithers' }] },
+  { id: 'man-to-man-west-end-2026', title: 'Man to Man', venue: 'Wyndhams Theatre', openingDate: '2026-02-10' },
 ]));
 process.env.SHOWS_JSON_PATH = SHOWS;
 process.env.REVIEW_TEXTS_LOCK_PATH = path.join(TMP, 'review-texts.lock');
@@ -231,4 +234,74 @@ test('verified wrapper: a refused text never reaches prepareWrite', async () => 
   assert.equal(r.ok, false);
   assert.equal(r.code, 'too_short');
   assert.equal(prepared, 0);
+});
+
+// BRO-7171 Stage 2b: The Stage's body often never names the show; the page's
+// own headline (og:title / h1, never the url) may stand in, for thestage only.
+test('headline identity: The Stage page headline names the show -> accepted; other outlets and wrong headlines refused', () => {
+  const gt = require('./generic-title-matching.js');
+  gt._resetCachesForTest(new Map());
+  try {
+    const shows = JSON.parse(fs.readFileSync(SHOWS, 'utf8'));
+    const equus = shows.find((s) => s.id === 'equus-off-west-end-2026');
+    const body = 'Powerful and precise revival of Peter Shaffer’s equine psychodrama, staged with real control and a fine central performance. '.repeat(12);
+    const rec = (extra = {}) => ({ showId: equus.id, outletId: 'thestage', criticName: 'Holly OMahony', url: 'https://www.thestage.co.uk/reviews/equus-review-menier', fullText: 'Short.', contentTier: 'excerpt', ...extra });
+    const c = { showId: equus.id, show: equus };
+    const html = '<html><head><meta property="og:title" content="Equus review at the Menier Chocolate Factory, London"></head><body><h1>x</h1></body></html>';
+    const headline = gate.pageHeadline(html);
+    assert.equal(headline, 'Equus review at the Menier Chocolate Factory, London');
+    assert.equal(gate.pageHeadline('<h1 class="t">Hamlet <em>review</em></h1>'), 'Hamlet review');
+
+    const ok = acceptRecoveredText(rec(), { rawText: body, headline }, c);
+    assert.equal(ok.accept, true, ok.reason);
+    // The page evidence is carried out of the gate so the write can persist it; the weekly
+    // show-mention backfill (evaluateShowMentionGuard) honours it instead of re-flagging the
+    // body that omits the title (ship-check P1, BRO-7171 Stage 2b).
+    assert.equal(ok.identityHeadline, headline);
+    const { evaluateShowMentionGuard } = require('./review-guards.js');
+    const longBody = 'word '.repeat(400);
+    const noTitle = { valid: false, confidence: 'high', reason: 'show title not found in text' };
+    assert.equal(evaluateShowMentionGuard({}, longBody, 400, noTitle).action, 'null-text', 'without the field the guard flags');
+    assert.equal(evaluateShowMentionGuard({ showIdentityHeadline: headline }, longBody, 400, noTitle).action, 'skip');
+    // no headline, wrong-show headline, or another outlet: still refused
+    assert.equal(acceptRecoveredText(rec(), { rawText: body }, c).code, 'show_not_mentioned');
+    const wrong = acceptRecoveredText(rec(), { rawText: body, headline: 'Hamlet review at Shakespeare’s Globe, London' }, c);
+    assert.equal(wrong.code, 'show_not_mentioned');
+    assert.match(wrong.reason, /does not name the show/);
+    assert.equal(acceptRecoveredText(rec({ outletId: 'guardian' }), { rawText: body, headline }, c).code, 'show_not_mentioned');
+    // whole-phrase match, not a loose substring: "Man to Man" is not in "Mansfield to Manchester"
+    const mtm = shows.find((s) => s.id === 'man-to-man-west-end-2026');
+    const mtmRec = rec({ showId: mtm.id, url: 'https://www.thestage.co.uk/reviews/x' });
+    assert.equal(acceptRecoveredText(mtmRec, { rawText: body, headline: 'Mansfield to Manchester review' }, { showId: mtm.id, show: mtm }).code, 'show_not_mentioned');
+    assert.equal(acceptRecoveredText(mtmRec, { rawText: body, headline: 'Man to Man review at Wyndham’s Theatre' }, { showId: mtm.id, show: mtm }).accept, true);
+    // The Stage brackets part of a title ("Tartuffe (Remixed)"); normalizeTitle drops bracketed
+    // text, so the headline is also read with the brackets unwrapped (2b pilot false refusal).
+    const tr = { ...mtm, id: 'tartuffe-remixed-off-west-end-2026', title: 'Tartuffe Remixed' };
+    const trRec = rec({ showId: tr.id, url: 'https://www.thestage.co.uk/reviews/y' });
+    assert.equal(acceptRecoveredText(trRec, { rawText: body, headline: 'Tartuffe (Remixed) at Marylebone Theatre: The cast radiates' }, { showId: tr.id, show: tr }).accept, true);
+    assert.equal(acceptRecoveredText(trRec, { rawText: body, headline: 'Tartuffe at the National Theatre (review)' }, { showId: tr.id, show: tr }).code, 'show_not_mentioned', 'plain Tartuffe is another show');
+  } finally { gt._resetCachesForTest(null); }
+});
+
+test('headline identity keeps the generic-title gate: a generic title needs venue/cast/creative in the headline', () => {
+  const gt = require('./generic-title-matching.js');
+  gt._resetCachesForTest(new Map([['love', 12], ['story', 12]]));
+  try {
+    const shows = JSON.parse(fs.readFileSync(SHOWS, 'utf8'));
+    const ls = shows.find((s) => s.id === 'love-story-off-west-end-2026');
+    const body = 'A tender two-hander that earns its tears, with a warm central performance and smart staging throughout. '.repeat(12);
+    const rec = { showId: ls.id, outletId: 'thestage', criticName: 'Sam Marlowe', url: 'https://www.thestage.co.uk/reviews/ls', fullText: 'Short.', contentTier: 'excerpt' };
+    const c = { showId: ls.id, show: ls };
+    const bare = acceptRecoveredText(rec, { rawText: body, headline: 'Love Story review: a sweet romance' }, c);
+    assert.equal(bare.code, 'show_not_mentioned');
+    assert.match(bare.reason, /generic-title-uncorroborated/);
+    const withVenue = acceptRecoveredText(rec, { rawText: body, headline: 'Love Story review at Hampstead Theatre, London' }, c);
+    assert.equal(withVenue.accept, true, withVenue.reason);
+  } finally { gt._resetCachesForTest(null); }
+});
+
+test('pageHeadline keeps apostrophes inside a double-quoted og:title', () => {
+  const { pageHeadline } = require('./gap-acceptance.js');
+  assert.equal(pageHeadline('<meta property="og:title" content="Peter Shaffer\'s Equus review">'), "Peter Shaffer's Equus review");
+  assert.equal(pageHeadline("<meta content='A \"quoted\" title' property='og:title'>"), 'A "quoted" title');
 });

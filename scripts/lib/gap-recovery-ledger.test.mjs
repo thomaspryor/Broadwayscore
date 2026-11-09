@@ -106,6 +106,18 @@ test('reconcile: order in the file does not matter (union merge appends out of o
   assert.equal(L.reconcileRecovered(rows, () => ({ contentTier: 'excerpt' })).length, 1);
 });
 
+test('reconcile: a recovery whose honest tier is truncated stays closed while its text is on disk', () => {
+  // The Stage pilot (BRO-7171 Stage 2b): stub -> truncated recoveries were reopened on
+  // every reconcile only because the tier was not "complete", then re-fetched forever.
+  const rows = [row({ ts: iso(NOW - DAY), outcome: 'recovered', bytesAfter: 3156 })];
+  const kept = { contentTier: 'truncated', fullText: 'x'.repeat(3156) };
+  assert.equal(L.reconcileRecovered(rows, () => kept).length, 0, 'recovered text still on disk: no reopen');
+  assert.equal(L.reconcileRecovered(rows, () => ({ contentTier: 'truncated', fullText: 'x'.repeat(3100) })).length, 0, 'a small later trim is not a loss');
+  const lost = L.reconcileRecovered(rows, () => ({ contentTier: 'stub', fullText: 'x'.repeat(200) }));
+  assert.equal(lost.length, 1, 'text clobbered back to a stub: reopen');
+  assert.equal(lost[0].reason, 'recovered_text_lost');
+});
+
 test('recovered row only from a landing: carries the pushed blob and the attempt info', () => {
   const r = L.recoveredRowFromLanding({ path: 'show-a/thestage--x.json', blob: 'deadbeef', commit: 'c0ffee' }, { strategy: 'ARCHIVE', gapClass: 'PAYWALL_PAGE', bytesBefore: 10, bytesAfter: 900, priorFullTextHash: 'h' });
   assert.equal(r.outcome, 'recovered');

@@ -17,7 +17,7 @@
  *   node scripts/gap-recovery-driver.js --dry-run --outlet=thestage --verbose
  *   node scripts/gap-recovery-driver.js --limit=20 --outlet=thestage  # live
  *   node scripts/gap-recovery-driver.js --limit=20 --outlet=daily-mail,mail-on-sunday --class=NO_URL --strategy=URL_REDISCOVER
- *   node scripts/gap-recovery-driver.js --reconcile [--dry-run]        # reopen 'recovered' rows whose file is not complete
+ *   node scripts/gap-recovery-driver.js --reconcile [--dry-run]        # reopen 'recovered' rows whose recovered text is no longer on disk
  *
  * Options: --class=A,B  --show=ID  --strategy=X (only this strategy)  --recent-only
  *          --verbose (dry run: one line per candidate)  --json=PATH (dry run: plan to a file outside the repo)
@@ -168,7 +168,7 @@ function printPlan(cands) {
 async function runReconcile({ dir, ledgerPath }) {
   const rows = L.readRows(ledgerPath);
   const reopen = L.reconcileRecovered(rows, (key) => { try { return readJson(path.join(dir, key)); } catch { return null; } });
-  console.log(`reconcile: ${rows.length} ledger rows, ${reopen.length} recovered review(s) not complete on disk`);
+  console.log(`reconcile: ${rows.length} ledger rows, ${reopen.length} recovered review(s) whose recovered text is no longer on disk`);
   for (const r of reopen) console.log(`  reopen ${r.reviewKey} (${r.reason}, tier ${r.detail.tier})`);
   if (!OPTS.dryRun && reopen.length) L.appendRows(reopen, ledgerPath);
   return reopen;
@@ -355,6 +355,7 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
       };
       const r = await recoverReviewTextVerified({
         filePath: c.filePath, rawText: got.rawText, url: got.url, expectUrl: c.url || null,
+        headline: require('./lib/gap-acceptance').pageHeadline(got.html),
         labels, tracker, ctxOpts: { reviewTextsDir: dir }, show: c.show,
       });
       if (!r.ok) {

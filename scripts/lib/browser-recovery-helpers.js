@@ -105,13 +105,15 @@ function loadCandidates({ filePrefix, showsAllowlist, maxUrls = Infinity }) {
  * @param {object} candidate - from loadCandidates()
  * @param {string} rawText - text extracted from the live authenticated DOM
  * @param {object} labels - { fetchMethod, sourceMethod, contentTierReasonFallback }
- * @param {{dryRun?: boolean, tracker?: Set<string>}} [opts]
+ * @param {{dryRun?: boolean, tracker?: Set<string>, headline?: string}} [opts]  headline: the
+ *   fetched page's own og:title/h1 (gap-acceptance headlineIdentity, The Stage only)
  * @returns {{ok: boolean, code: string, reason?: string, newLen?: number}}
  */
 function processRecoveredText(candidate, rawText, labels, opts = {}) {
   const r = recoverReviewText({
     filePath: candidate.filePath,
     rawText,
+    headline: opts.headline || null,
     // The browser fetched candidate.url: refuse if another writer moved the
     // record's url meanwhile, so old-page text never lands under a new url.
     expectUrl: candidate.url || null,

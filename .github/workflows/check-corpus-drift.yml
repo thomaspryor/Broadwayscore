@@ -226,6 +226,7 @@ jobs:
           fi
 
       - name: Audit wrong-production reviews, UTC-shifted dates, UK Show Score audience (BRO-5499, advisory)
+        # strict-alert-exempt: BRO-7182 follow-up: three audits in one step, each needs its own card key
         if: always()
         continue-on-error: true # lands advisory first (BRO-2123)
         run: |
