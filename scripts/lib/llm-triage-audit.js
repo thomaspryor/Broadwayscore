@@ -50,7 +50,12 @@ function judgeNomination(row, out, { nowMs }) {
   if (v === 'close-candidate') {
     if (closedBefore) return { judgment: 'right', why: 'already-closed' };
     if (landedAfter == null) return { judgment: 'pending', why: 'landings-unknown' };
-    if (landedAfter) return { judgment: 'wrong', why: 'landing-after-nomination' };
+    if (landedAfter) {
+      // A landing followed by closing the card may be just the close-out commit: unknown, not wrong.
+      const lastLanding = Math.max(...works.map((l) => ms(l.date) || 0));
+      if (completedAt != null && completedAt > ts && completedAt >= lastLanding) return { judgment: 'pending', why: 'landed-then-closed' };
+      return { judgment: 'wrong', why: 'landing-after-nomination' };
+    }
     if (out.verify === 'fail') return { judgment: 'wrong', why: 'verify-fails-now' };
     if (age < CLOSE_SETTLE_DAYS * DAY_MS) return { judgment: 'pending', why: 'too-soon' };
     return { judgment: 'right', why: 'no-later-work' };
@@ -72,7 +77,7 @@ function judgeNomination(row, out, { nowMs }) {
     const end = ts + KEEP_WINDOW_DAYS * DAY_MS;
     if (works && works.some((l) => { const t = ms(l.date); return t != null && t > ts && t <= end; })) return { judgment: 'right', why: 'landed-in-window' };
     if (comments.some((c) => c.at > ts && c.at <= end && !isBotComment(c.body))) return { judgment: 'right', why: 'worker-active' };
-    if (closedAt != null && closedAt > ts && closedAt <= end) return { judgment: 'right', why: 'closed-in-window' };
+    if (completedAt != null && completedAt > ts && completedAt <= end) return { judgment: 'right', why: 'closed-in-window' };
     if (nowMs < end) return { judgment: 'pending', why: 'too-soon' };
     if (out.commentsTruncated) return { judgment: 'pending', why: 'comments-truncated' };
     if (works == null) return { judgment: 'pending', why: 'landings-unknown' };
@@ -110,17 +115,18 @@ function judgeNomination(row, out, { nowMs }) {
 const hash = (s) => { let h = 2166136261; for (const ch of String(s)) { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619); } return h >>> 0; };
 
 /**
- * Nominations to audit: CI rows with a verdict, at least MIN_AGE_DAYS old, latest per card,
- * a deterministic hash-ordered sample (stable week to week, so pending ones get re-judged).
- */
-/**
  * The 15 Step 0 cards the v3 prompt was tuned on (BRO-7139 Step 1 re-score). Their 14/15 is an
  * in-sample score, so the audit never samples them: the wrong-rate measures unseen cards only.
  */
 const TUNING_IDS = new Set(['BRO-6915', 'BRO-6810', 'BRO-5957', 'BRO-7095', 'BRO-7026', 'BRO-6737', 'BRO-6427', 'BRO-7028',
   'BRO-7041', 'BRO-7031', 'BRO-6608', 'BRO-5500', 'BRO-7107', 'BRO-6866', 'BRO-4061']);
 
-function sampleNominations(rows, { nowMs, n = SAMPLE, includeLocal = false, settled = new Set(), exclude = TUNING_IDS } = {}) {
+/**
+ * Nominations to audit: CI rows with a verdict, at least MIN_AGE_DAYS old, one unit per id|ts,
+ * skipping settled ones and the tuning set. Fewest earlier pending audits first (so items that
+ * never resolve rotate to the back instead of holding their slots), then a stable hash order.
+ */
+function sampleNominations(rows, { nowMs, n = SAMPLE, includeLocal = false, settled = new Set(), exclude = TUNING_IDS, tries = new Map() } = {}) {
   const seen = new Map();
   for (const r of rows || []) {
     if (!r || !r.verdict || !/^BRO-\d+$/.test(String(r.id))) continue;
@@ -131,13 +137,20 @@ function sampleNominations(rows, { nowMs, n = SAMPLE, includeLocal = false, sett
     const k = `${r.id}|${r.ts}`;
     if (!settled.has(k)) seen.set(k, r);
   }
-  return [...seen.values()].sort((a, b) => hash(`${a.id}|${a.ts}`) - hash(`${b.id}|${b.ts}`) || a.id.localeCompare(b.id) || a.ts.localeCompare(b.ts)).slice(0, n);
+  return [...seen.values()].sort((a, b) => (tries.get(`${a.id}|${a.ts}`) || 0) - (tries.get(`${b.id}|${b.ts}`) || 0) || hash(`${a.id}|${a.ts}`) - hash(`${b.id}|${b.ts}`) || a.id.localeCompare(b.id) || a.ts.localeCompare(b.ts)).slice(0, n);
 }
 
 /** id|ts keys an earlier audit already judged right or wrong (never re-sampled). */
 function settledKeys(auditRows) {
   const out = new Set();
   for (const r of auditRows || []) for (const i of (r && r.items) || []) if (i.judgment === 'right' || i.judgment === 'wrong') out.add(`${i.id}|${i.nominatedTs}`);
+  return out;
+}
+
+/** id|ts -> how many earlier audits left it pending (sampling rotates these to the back). */
+function pendingTries(auditRows) {
+  const out = new Map();
+  for (const r of auditRows || []) for (const i of (r && r.items) || []) if (i.judgment === 'pending') { const k = `${i.id}|${i.nominatedTs}`; out.set(k, (out.get(k) || 0) + 1); }
   return out;
 }
 
@@ -160,7 +173,7 @@ function auditRow(items, { ts, source, runId = null }) {
 
 /** True when the last CI audit is newer than THROTTLE_DAYS (the step runs nightly, audits weekly). */
 function auditedRecently(auditRows, nowMs, days = THROTTLE_DAYS) {
-  return (auditRows || []).some((r) => r && r.source === 'ci' && !r.error && r.judged > 0 && nowMs - (ms(r.ts) || 0) < days * DAY_MS);
+  return (auditRows || []).some((r) => r && r.source === 'ci' && !r.error && r.sampled > 0 && nowMs - (ms(r.ts) || 0) < days * DAY_MS);
 }
 
 /**
@@ -185,4 +198,4 @@ function cumulativeJudgments(auditRows, { includeLocal = false } = {}) {
   return { right, wrong, judged: right + wrong, scored, wrongRate: scored ? wrong / scored : null };
 }
 
-module.exports = { SAMPLE, TUNING_IDS, MIN_AGE_DAYS, AUDIT_LEDGER_PATH, THROTTLE_DAYS, isWorkLanding, judgeNomination, sampleNominations, settledKeys, auditRow, auditedRecently, cumulativeJudgments };
+module.exports = { SAMPLE, TUNING_IDS, MIN_AGE_DAYS, AUDIT_LEDGER_PATH, THROTTLE_DAYS, isWorkLanding, judgeNomination, sampleNominations, settledKeys, pendingTries, auditRow, auditedRecently, cumulativeJudgments };

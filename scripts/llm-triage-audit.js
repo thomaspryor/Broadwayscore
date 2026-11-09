@@ -62,13 +62,15 @@ async function fetchCards(graphql, ids, fields) {
   return out;
 }
 
-const closedAtOf = (n) => (n && (n.completedAt || n.canceledAt)) || null;
+// Only a card Linear shows as closed now counts as closed (a reopened card can keep a stale stamp).
+const closedAtOf = (n) => (n && n.state && /^(completed|canceled)$/.test(n.state.type) && (n.completedAt || n.canceledAt)) || null;
 
 // GitHub search allows 30 requests a minute; the triage step just before used some of it.
 const SEARCH_GAP_MS = 2100;
 const sleepSync = (msec) => Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, msec);
 
 async function main(argv = process.argv.slice(2), { graphql = null, now = new Date(), log = console.log, env = process.env, commitSearch = null, verifyRunner = null, clock = Date.now, pause = sleepSync } = {}) {
+  const startedAt = clock();
   if (env.LLM_TRIAGE_AUDIT_DISABLED === 'true') { log('llm-triage-audit: disabled (LLM_TRIAGE_AUDIT_DISABLED=true)'); return 0; }
   let opts;
   try { opts = parseArgs(argv); } catch (e) { console.error(e.message); return 2; }
@@ -77,7 +79,7 @@ async function main(argv = process.argv.slice(2), { graphql = null, now = new Da
   const prior = readRows(opts.out);
   if (!opts.force && source === 'ci' && A.auditedRecently(prior, nowMs)) { log('llm-triage-audit: audited under 6 days ago, skipping'); return 0; }
 
-  const sample = A.sampleNominations(readRows(opts.ledger), { nowMs, includeLocal: opts.includeLocal, settled: A.settledKeys(prior) });
+  const sample = A.sampleNominations(readRows(opts.ledger), { nowMs, includeLocal: opts.includeLocal, settled: A.settledKeys(prior), tries: A.pendingTries(prior) });
   const meta = { ts: now.toISOString(), source, runId: env.GITHUB_RUN_ID || null };
   const append = (row) => {
     if (!opts.write) return;
@@ -99,10 +101,11 @@ async function main(argv = process.argv.slice(2), { graphql = null, now = new Da
     return 1;
   }
 
-  const rawSearch = commitSearch || ((id) => require('./llm-triage.js').searchCommits(id, { env }));
+  const rawSearch = commitSearch || ((id) => require('./llm-triage.js').searchCommits(id, { env, requireComplete: true }));
   let searches = 0;
   const search = (id) => { if (searches++) pause(SEARCH_GAP_MS); return rawSearch(id); };
-  const stopAt = clock() + opts.deadlineSec * 1000;
+  // The deadline counts from the start of the run, so a slow Linear fetch shortens the search phase.
+  const stopAt = startedAt + opts.deadlineSec * 1000;
   let runVerify = verifyRunner;
   if (opts.runVerify && !runVerify) {
     const { makeVerifyCmdEvidence } = require('./lib/linear-cmd-execution.js');
@@ -116,7 +119,7 @@ async function main(argv = process.argv.slice(2), { graphql = null, now = new Da
     // Past the deadline the rest read pending, and the row is still written (a killed step writes nothing).
     if (clock() > stopAt) { items.push({ id: row.id, nominatedTs: row.ts, verdict: row.verdict, judgment: 'pending', why: 'deadline' }); continue; }
     if (!card) { items.push({ id: row.id, nominatedTs: row.ts, verdict: row.verdict, judgment: 'pending', why: 'card-missing' }); continue; }
-    const out = { closedAt: closedAtOf(card), completedAt: card.completedAt || null, comments: (card.comments && card.comments.nodes) || [],
+    const out = { closedAt: closedAtOf(card), completedAt: (card.state && card.state.type === 'completed' && card.completedAt) || null, comments: (card.comments && card.comments.nodes) || [],
       commentsTruncated: !!(card.comments && card.comments.pageInfo && card.comments.pageInfo.hasNextPage) };
     if (row.verdict === 'close-candidate' || row.verdict === 'keep') out.landings = search(row.id);
     if (row.blocked_on) out.blockerClosedAt = blockers.has(row.blocked_on) ? closedAtOf(blockers.get(row.blocked_on)) : undefined;
@@ -141,4 +144,4 @@ if (require.main === module) {
   main().then((code) => exitFlushed(code), (e) => { console.error(e.stack || e.message); exitFlushed(1); });
 }
 
-module.exports = { parseArgs, fetchCards, main };
+module.exports = { parseArgs, fetchCards, closedAtOf, main };

@@ -48,7 +48,8 @@ test('keep: a person or worker comment within 7 days is right; bot comments do n
   assert.equal(j({ verdict: 'keep' }, { comments: [] }).why, 'landings-unknown'); // no search result is not "no work"
   assert.equal(j({ verdict: 'keep' }, { comments: [], landings: [], commentsTruncated: true }).why, 'comments-truncated');
   assert.equal(j({ verdict: 'keep' }, { comments: [] }, T + 3 * DAY).judgment, 'pending');
-  assert.equal(j({ verdict: 'keep' }, { closedAt: at(4) }).why, 'closed-in-window');
+  assert.equal(j({ verdict: 'keep' }, { closedAt: at(4), completedAt: at(4) }).why, 'closed-in-window');
+  assert.notEqual(j({ verdict: 'keep' }, { closedAt: at(4), completedAt: null, landings: [] }).judgment, 'right'); // an auto-cancel is not work
 });
 
 test('ask-owner: an earlier answer with no new question is wrong; a later answer is right', () => {
@@ -72,7 +73,7 @@ test('recheck: needs a date; judged after it from VERIFY or closure', () => {
   assert.equal(j({ verdict: 'recheck', recheck_after: '2026-11-05' }, { verify: 'not-run' }).judgment, 'pending');
 });
 
-test('sampleNominations: CI rows only, latest per card, old enough, deterministic, capped', () => {
+test('sampleNominations: CI rows only, one unit per nomination, old enough, deterministic, capped', () => {
   const rows = [
     { id: 'BRO-1', ts: at(0), verdict: 'keep', source: 'ci' },
     { id: 'BRO-1', ts: at(2), verdict: 'release', source: 'ci' },
@@ -116,10 +117,10 @@ test('auditRow is text-free and pending never counts in the wrong-rate', () => {
 });
 
 test('auditedRecently throttles weekly on CI rows only; cumulativeJudgments counts each nomination once, newest wins', () => {
-  assert.equal(A.auditedRecently([{ ts: at(5), source: 'ci', judged: 3 }], NOW), true);
-  assert.equal(A.auditedRecently([{ ts: at(5), source: 'ci', judged: 0 }], NOW), false); // all-pending audits do not use up the week
-  assert.equal(A.auditedRecently([{ ts: at(3), source: 'ci', judged: 3 }], NOW), false);
-  assert.equal(A.auditedRecently([{ ts: at(9), source: 'local', judged: 3 }], NOW), false);
+  assert.equal(A.auditedRecently([{ ts: at(5), source: 'ci', sampled: 3 }], NOW), true);
+  assert.equal(A.auditedRecently([{ ts: at(5), source: 'ci', sampled: 0 }], NOW), false); // an empty audit does not use up the week
+  assert.equal(A.auditedRecently([{ ts: at(3), source: 'ci', sampled: 3 }], NOW), false);
+  assert.equal(A.auditedRecently([{ ts: at(9), source: 'local', sampled: 3 }], NOW), false);
   assert.equal(A.auditedRecently([{ ts: at(9), source: 'ci', error: 'down' }], NOW), false);
   const it = (id, judgment) => ({ id, nominatedTs: TS, verdict: 'keep', judgment });
   const c = A.cumulativeJudgments([
@@ -140,7 +141,7 @@ test('CLI: reads Linear only, appends one text-free row, throttles weekly in CI,
     { id: 'BRO-2', ts: TS, source: 'ci', verdict: 'blocked', blocked_on: 'BRO-3' },
   ].map((r) => JSON.stringify(r)).join('\n'));
   const cards = { 'BRO-1': { identifier: 'BRO-1', description: 'secret owner text', completedAt: null, comments: { nodes: [] } },
-    'BRO-2': { identifier: 'BRO-2', description: '', comments: { nodes: [] } }, 'BRO-3': { identifier: 'BRO-3', completedAt: at(-1) } };
+    'BRO-2': { identifier: 'BRO-2', description: '', comments: { nodes: [] } }, 'BRO-3': { identifier: 'BRO-3', completedAt: at(-1), state: { type: 'completed' } } };
   const queries = [];
   const graphql = async (q) => { queries.push(q); const d = {}; let i = 0; for (const m of q.matchAll(/issue\(id: "(BRO-\d+)"\)/g)) d[`i${i++}`] = cards[m[1]]; return d; };
   const env = { GITHUB_ACTIONS: 'true', GITHUB_RUN_ID: '5' };
@@ -165,4 +166,27 @@ test('CLI: reads Linear only, appends one text-free row, throttles weekly in CI,
   assert.ok(r2.items.some((i) => i.why === 'deadline'), JSON.stringify(r2.items));
   assert.equal(await CLI.main(args, { env: { LLM_TRIAGE_AUDIT_DISABLED: 'true' }, log: () => {} }), 0);
   assert.equal(await CLI.main(['--bogus'], { env: {}, log: () => {} }), 2);
+});
+
+test('review fixes: partial commit search is unknown, close-out commit is pending, stuck pending items rotate back', () => {
+  const T = require('../llm-triage.js');
+  const page = (total, n, extra = {}) => JSON.stringify({ total_count: total, items: Array.from({ length: n }, (_, k) => ({ sha: `s${k}`, commit: { message: 'x', committer: { date: at(k) } } })), ...extra });
+  assert.equal(T.parseCommitSearch(page(150, 100), { requireComplete: true }), null);
+  assert.equal(T.parseCommitSearch(page(2, 2, { incomplete_results: true }), { requireComplete: true }), null);
+  assert.equal(T.parseCommitSearch(page(2, 2), { requireComplete: true }).length, 2);
+  assert.equal(T.parseCommitSearch(page(150, 100)).length, 100); // the triage step keeps partial pages
+  const j = (row, out) => A.judgeNomination({ id: 'BRO-1', ts: TS, ...row }, out, { nowMs: NOW });
+  assert.equal(j({ verdict: 'close-candidate' }, { landings: [{ date: at(2), subject: 'BRO-1 close-out' }], completedAt: at(2.5), closedAt: at(2.5) }).why, 'landed-then-closed');
+  assert.equal(j({ verdict: 'close-candidate' }, { landings: [{ date: at(3), subject: 'fix (BRO-1)' }], completedAt: at(2), closedAt: at(2) }).why, 'landing-after-nomination');
+  const rows = ['BRO-11', 'BRO-12', 'BRO-13'].map((id) => ({ id, ts: TS, verdict: 'keep', source: 'ci' }));
+  const first = A.sampleNominations(rows, { nowMs: NOW, n: 1 })[0].id;
+  const tries = A.pendingTries([{ items: [{ id: first, nominatedTs: TS, judgment: 'pending' }] }]);
+  assert.notEqual(A.sampleNominations(rows, { nowMs: NOW, n: 1, tries })[0].id, first);
+});
+
+test('closedAtOf: a reopened card with a stale cancel stamp is open', () => {
+  const CLI = require('../llm-triage-audit.js');
+  assert.equal(CLI.closedAtOf({ canceledAt: at(1), state: { type: 'started' } }), null);
+  assert.equal(CLI.closedAtOf({ canceledAt: at(1), state: { type: 'canceled' } }), at(1));
+  assert.equal(CLI.closedAtOf({ completedAt: at(2), state: { type: 'completed' } }), at(2));
 });
