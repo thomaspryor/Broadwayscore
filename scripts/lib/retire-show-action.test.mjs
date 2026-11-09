@@ -367,8 +367,9 @@ test('duplicateOf: a city-finder row dated days before the kept press night reti
   // Finder row that carries its own previews or outlasts the kept run.
   assert.match(run(kept, { ...dup, previewsStartDate: '2026-08-05' })[0].reason, /revival or return run/);
   assert.match(run({ ...kept, closingDate: '2026-09-01' }, { ...dup, closingDate: '2026-10-01' })[0].reason, /revival or return run/);
-  // Finder row states a closing date but the kept row has none: it may outlast it, so refuse.
+  // Any closing date on the finder row (before or after the kept run) refuses.
   assert.match(run(kept, { ...dup, closingDate: '2026-09-20' })[0].reason, /revival or return run/);
+  assert.match(run(kept, { ...dup, closingDate: 'TBA' })[0].reason, /revival or return run/);
   // Reviews still block it.
   assert.match(applyRetireShow([{ ...kept }, { ...dup }], act, { retire, reviewCount: () => 2 }).reason, /2 review/);
 });
