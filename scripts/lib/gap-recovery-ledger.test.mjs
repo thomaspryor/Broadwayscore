@@ -145,6 +145,10 @@ test('daily ceiling: distinct reviews accepted today (ledger + this run), yester
   assert.equal(L.ceilingReached({ rows, nowMs: NOW, ceiling: 3, acceptedThisRun: 1 }), true);
   assert.equal(L.dailyCeiling({ GAP_RECOVERY_DAILY_CEILING: '7' }), 7);
   assert.equal(L.dailyCeiling({}), L.DEFAULT_DAILY_CEILING);
+  assert.equal(L.runCeiling({ GAP_RECOVERY_RUN_CEILING: '60' }), 60);
+  assert.equal(L.runCeiling({}), null);
+  // per-run cap: earlier rows today do not count
+  assert.equal(L.ceilingReached({ rows: [], nowMs: NOW, ceiling: 3, acceptedThisRun: 2 }), false);
 });
 
 test('strategy table: per-class order, skips with reasons, disabled flag removes a strategy', () => {
@@ -165,6 +169,11 @@ test('strategy table: per-class order, skips with reasons, disabled flag removes
   assert.deepEqual(s.skipped, [{ strategy: 'AGG_LINK', reason: 'disabled' }]);
   s = T.selectStrategy({ gapClass: 'TRUNCATED_OTHER', hasUrl: true, hasAdapter: false, eligible: (st) => (st === 'REFETCH_FREE' ? { ok: false, reason: 'cooldown' } : { ok: true }) });
   assert.equal(s.strategy, 'ARCHIVE');
+  // Stage 3 pilots: ARCHIVE 0/20 on recent shows, 9/20 on historic -> historic only.
+  s = T.selectStrategy({ gapClass: 'PAYWALL_PAGE', hasUrl: true, hasAdapter: false, recency: 'recent' });
+  assert.equal(s.strategy, null);
+  assert.deepEqual(s.skipped[1], { strategy: 'ARCHIVE', reason: 'disabled_recent' });
+  assert.equal(T.selectStrategy({ gapClass: 'PAYWALL_PAGE', hasUrl: true, hasAdapter: false, recency: 'historic' }).strategy, 'ARCHIVE');
   assert.equal(T.selectStrategy({ gapClass: 'FALSE_TRUNCATION_SUSPECT', hasUrl: true, hasAdapter: true }).strategy, null);
   assert.equal(T.selectStrategy({ gapClass: 'GARBAGE_PAGE', hasUrl: true, hasAdapter: true, only: 'URL_REDISCOVER', flags: on }).strategy, 'URL_REDISCOVER');
   assert.equal(T.selectStrategy({ gapClass: 'GARBAGE_PAGE', hasUrl: true, hasAdapter: true, only: 'URL_REDISCOVER' }).strategy, null);

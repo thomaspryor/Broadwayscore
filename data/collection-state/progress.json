@@ -14,7 +14,9 @@
     "speculations-off-west-end-2026/jonathan-baz--unknown.json",
     "speculations-off-west-end-2026/londonlivinglarge--london-living-large.json",
     "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
-    "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json"
+    "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json",
+    "well-see-off-broadway-2026/front-row-center--unknown.json",
+    "kelly-mccaughan-catholic-guilt-off-broadway-2026/broadway-baby--unknown.json"
   ],
   "failed": [
     "tosca-english-national-opera-west-end-2026/bachtrack--anna-bogdanova.json",
@@ -36,7 +38,12 @@
     "iphigenie-en-tauride-english-national-opera-west-end-2026/sunday-times--unknown.json",
     "nero-off-west-end-2026/times-uk--rachel-halliburton.json",
     "the-bridge-off-west-end-2026/cherylmarkosky--cherylmarkosky.json",
-    "the-bridge-off-west-end-2026/theatreandtonic--emmie-newitt.json"
+    "the-bridge-off-west-end-2026/theatreandtonic--emmie-newitt.json",
+    "the-heart-off-broadway-2026/variety--cynthia-littleton.json",
+    "the-heart-off-broadway-2026/frontmezzjunkies--unknown.json",
+    "in-the-heights-off-broadway-2026/nypost--clive-barnes.json",
+    "in-the-heights-off-broadway-2026/bloomberg--john-simon.json",
+    "i-became-we-off-broadway-2026/timeout--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -51,7 +58,8 @@
       "speculations-off-west-end-2026/jonathan-baz--unknown.json",
       "speculations-off-west-end-2026/londonlivinglarge--london-living-large.json",
       "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
-      "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json"
+      "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json",
+      "well-see-off-broadway-2026/front-row-center--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -69,10 +77,12 @@
     ],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "kelly-mccaughan-catholic-guilt-off-broadway-2026/broadway-baby--unknown.json"
+    ]
   },
   "startTime": "2026-11-09T02:36:35.280Z",
-  "lastProcessed": "tosca-english-national-opera-west-end-2026/bachtrack--peter-quantrill.json",
+  "lastProcessed": "i-became-we-off-broadway-2026/timeout--unknown.json",
   "log": [
     {
       "t": "2026-11-09T03:18:37.011Z",
@@ -168,6 +178,39 @@
       "event": "bb-session",
       "session": "9b0f2052",
       "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
+    },
+    {
+      "t": "2026-11-09T04:59:47.816Z",
+      "event": "bb-session",
+      "session": "9dd4523e",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655533"
+    },
+    {
+      "t": "2026-11-09T04:59:48.144Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-09T05:03:14.002Z",
+      "event": "bb-session",
+      "session": "fc79aac7",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655534"
+    },
+    {
+      "t": "2026-11-09T05:03:14.371Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-09T05:04:31.323Z",
+      "event": "bb-session",
+      "session": "1f639784",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655510"
+    },
+    {
+      "t": "2026-11-09T05:04:31.700Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }

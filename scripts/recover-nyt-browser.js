@@ -83,6 +83,8 @@ async function extractArticle(page, url) {
 }
 
 async function main() {
+  // BRO-7171 Stage 3: never overlap the nightly gap-recovery job or another recovery run.
+  require('./lib/browser-recovery-helpers').acquireRecoveryRunLock('recover-nyt-browser');
   const cookies = loadCookiesForDomain('nytimes.com');
   if (!cookies) {
     console.error('ERROR: no NYT cookies available. Run: node scripts/nyt-otp-login.js');

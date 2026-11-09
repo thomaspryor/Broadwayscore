@@ -11,9 +11,9 @@ const { earliestCaptureTimestamp, latestCaptureTimestamp } = require('./fetch-ar
 const ARTICLE = '<html><body><article>' + '<p>A real review paragraph about the show.</p>'.repeat(20) + '</article></body></html>';
 const deps = (o = {}) => ({
   fetchPage: async () => ({ content: ARTICLE, source: 'cookies-plain' }),
-  extractArticleText: (html) => (html.includes('<article>') ? 'A real review paragraph. '.repeat(30) : null),
+  extractArticleText: (html) => (html.includes('<article>') ? 'A real review paragraph. '.repeat(60) : null),
   isNotFoundHtml: (html) => /page not found/i.test(html),
-  earliestCaptureTimestamp: async () => '20200101000000',
+  listCaptureTimestamps: async () => ['20200101000000'],
   archiveSnapshotFetchUrl: (u, ts) => `https://web.archive.org/web/${ts}id_/${u}`,
   fetchText: async () => ARTICLE,
   discoverCorrectUrl: async () => 'https://example.com/new-review',
@@ -41,15 +41,63 @@ test('soft-404 template is non-evidence; an unextractable page is a rejection', 
   assert.equal(nul.outcome, 'rejected');
 });
 
-test('ARCHIVE: no capture is evidence, CDX down is not; the candidate keeps the stored url', async () => {
-  const none = await S.archive(c, deps({ earliestCaptureTimestamp: async () => null }));
-  assert.deepEqual(none, { ok: false, outcome: 'no_evidence', reason: 'no_snapshot' });
-  const down = await S.archive(c, deps({ earliestCaptureTimestamp: async (u, o) => { o.onError(new Error('CDX HTTP 503')); return null; } }));
+test('ARCHIVE: empty (no capture) is evidence, unavailable (CDX down) is not; the candidate keeps the stored url', async () => {
+  const none = await S.archive(c, deps({ listCaptureTimestamps: async () => [] }));
+  assert.deepEqual(none, { ok: false, outcome: 'no_evidence', reason: 'archive_empty' });
+  const down = await S.archive(c, deps({ listCaptureTimestamps: async (u, o) => { o.onError(new Error('CDX HTTP 503')); return []; } }));
   assert.equal(down.outcome, 'non_evidence');
-  const ok = await S.archive(c, deps());
+  assert.match(down.reason, /^archive_unavailable/);
+  const ok = await S.archive(c, deps({ listCaptureTimestamps: async () => ['20200101000000'] }));
   assert.equal(ok.ok, true);
   assert.equal(ok.url, c.url);
   assert.match(ok.via, /^archive:2020/);
+});
+
+// BRO-7171 Stage 3: the earliest capture of a paywalled article is often the
+// teaser (a paragraph + "subscribe"). Accepting it would mark the gap
+// recovered with a thin copy. Thin copies are skipped (same 1,000-char bar as
+// archiveCopyDisposition, BRO-5874) and the next distinct capture is tried.
+test('ARCHIVE: a thin earliest capture (teaser) is skipped for the next distinct capture', async () => {
+  const fetched = [];
+  const r = await S.archive(c, deps({
+    listCaptureTimestamps: async () => ['20190101000000', '20210101000000'],
+    fetchText: async (u) => { fetched.push(u); return u.includes('2019') ? '<html><article>teaser</article></html>' : ARTICLE; },
+    extractArticleText: (html) => (html.includes('teaser') ? 'Opening paragraph only. Subscribe to read more.' : 'A real review paragraph. '.repeat(60)),
+  }));
+  assert.equal(r.ok, true);
+  assert.match(r.via, /^archive:2021/);
+  assert.equal(fetched.length, 2);
+});
+
+test('ARCHIVE: every capture thin is a rejection (evidence), every snapshot unreachable is not', async () => {
+  const thin = await S.archive(c, deps({
+    listCaptureTimestamps: async () => ['20190101000000', '20200101000000'],
+    extractArticleText: () => 'Opening paragraph only. '.repeat(10),
+  }));
+  assert.deepEqual(thin, { ok: false, outcome: 'rejected', reason: 'archive_thin_copy' });
+  const unreachable = await S.archive(c, deps({
+    listCaptureTimestamps: async () => ['20190101000000'],
+    fetchText: async () => { throw new Error('HTTP 503'); },
+  }));
+  assert.equal(unreachable.outcome, 'non_evidence');
+  assert.match(unreachable.reason, /^archive_unavailable/);
+  // one capture thin, the other unreachable: the unreachable one may be the full copy
+  const mixed = await S.archive(c, deps({
+    listCaptureTimestamps: async () => ['20190101000000', '20200101000000'],
+    fetchText: async (u) => { if (u.includes('2020')) throw new Error('HTTP 503'); return ARTICLE; },
+    extractArticleText: () => 'Opening paragraph only. '.repeat(10),
+  }));
+  assert.equal(mixed.outcome, 'non_evidence');
+});
+
+test('listCaptureTimestamps: earliest-first distinct captures, no hardcoded year bound', async () => {
+  const { listCaptureTimestamps } = require('./fetch-archive-fallback.js');
+  let asked = '';
+  const ts = await listCaptureTimestamps('https://x.com/a', { limit: 3, fetchJson: async (u) => { asked = u; return [['timestamp'], ['20190101000000'], ['bad'], ['20240101000000']]; } });
+  assert.deepEqual(ts, ['20190101000000', '20240101000000']);
+  assert.match(asked, /collapse=digest/);
+  assert.match(asked, /limit=3/);
+  assert.doesNotMatch(asked, /[&?]to=/);
 });
 
 test('earliest vs latest CDX capture', async () => {

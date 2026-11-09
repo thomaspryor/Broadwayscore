@@ -139,6 +139,8 @@ function checkpoint(stats) {
 }
 
 async function main() {
+  // BRO-7171 Stage 3: never overlap the nightly gap-recovery job or another recovery run.
+  require('./lib/browser-recovery-helpers').acquireRecoveryRunLock('recover-wsj-browser');
   const cookies = loadCookiesForDomain('wsj.com');
   if (!cookies) {
     console.error('ERROR: no WSJ cookies available. Run: node scripts/wsj-otp-login.js');

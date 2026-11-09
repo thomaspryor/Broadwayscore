@@ -38,9 +38,22 @@ const FETCH_STRATEGIES = new Set(['REFETCH_FREE', 'BROWSER_SESSION', 'ARCHIVE'])
 // failed-fetch-policy reasons a no_evidence row may carry as-is.
 const FF_REASONS = new Set(['url_dead_404', 'url_dead_410', 'all_tiers_failed', 'all_tiers_timeout', 'fetch_error', 'garbage_content']);
 
+/**
+ * Machine-wide working ledger (BRO-7171 Stage 3): the nightly job seeds it
+ * from origin + the shared checkout and publishes it back with
+ * gap-recovery-publish (plumbing, no working tree). When it exists every run
+ * on this machine, nightly or manual, reads and appends the same rows, so a
+ * manual run never redoes a review the nightly accepted but has not yet
+ * published. The tracked data/audit copy is the published mirror.
+ */
+function stateLedgerPath() {
+  return path.join(require('os').homedir(), '.broadwayscore-state', 'gap-recovery', 'attempts.jsonl');
+}
+
 function ledgerPathDefault() {
-  return process.env.GAP_RECOVERY_LEDGER_PATH
-    || path.join(__dirname, '..', '..', 'data', 'audit', 'gap-recovery-attempts.jsonl');
+  if (process.env.GAP_RECOVERY_LEDGER_PATH) return process.env.GAP_RECOVERY_LEDGER_PATH;
+  if (!process.env.GITHUB_ACTIONS && !process.env.CI && fs.existsSync(stateLedgerPath())) return stateLedgerPath();
+  return path.join(__dirname, '..', '..', 'data', 'audit', 'gap-recovery-attempts.jsonl');
 }
 
 function reviewKeyOf(p) {
@@ -202,6 +215,12 @@ function dailyCeiling(env = process.env) {
 }
 
 /** True when today's accepted count (ledger + this run) has reached the ceiling. */
+/** Per-run accepted cap (GAP_RECOVERY_RUN_CEILING), or null when unset. */
+function runCeiling(env = process.env) {
+  const s = String(env.GAP_RECOVERY_RUN_CEILING || '').trim();
+  return /^\d+$/.test(s) ? Number(s) : null;
+}
+
 function ceilingReached({ rows, nowMs = Date.now(), ceiling, acceptedThisRun = 0 }) {
   return acceptedToday(rows, nowMs) + acceptedThisRun >= ceiling;
 }
@@ -333,6 +352,7 @@ module.exports = {
   FETCH_STRATEGIES,
   DEFAULT_DAILY_CEILING,
   ledgerPathDefault,
+  stateLedgerPath,
   reviewKeyOf,
   makeRow,
   appendRows,
@@ -345,6 +365,7 @@ module.exports = {
   serpGateReason,
   acceptedToday,
   dailyCeiling,
+  runCeiling,
   ceilingReached,
   killSwitchPath,
   killSwitchActive,

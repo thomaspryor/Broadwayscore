@@ -3204,7 +3204,7 @@ async function fetchFromArchiveCDX(url) {
   const isPaywalledSite = url.includes('newyorker.com') || url.includes('nytimes.com') || url.includes('wsj.com');
   const fromYear = isPaywalledSite ? '2008' : '2014';
   const snapshotLimit = isPaywalledSite ? 20 : 10;
-  const cdxUrl = `http://web.archive.org/cdx/search/cdx?url=${encodeURIComponent(url)}&output=json&limit=${snapshotLimit}&from=${fromYear}&to=2026`;
+  const cdxUrl = `http://web.archive.org/cdx/search/cdx?url=${encodeURIComponent(url)}&output=json&limit=${snapshotLimit}&from=${fromYear}`;
   const cdxResp = await axios.get(cdxUrl, { timeout: 15000 });
 
   const rows = cdxResp.data;

@@ -190,25 +190,119 @@ function parentWatchDecision(input) {
   return { block: true, reason: 'parent ends KEEP OPEN on a child session with no child-idle-watch running for it' };
 }
 
+// ─── Child stops with no wake and no report (CHILDSTALL, BRO-7183) ──────────
+// A create_session child has no human: ending a turn with nothing running and
+// nothing sent to its parent stops the work for good. BRO-6854 ended
+// "KEEP OPEN — Boston is mid-build" on 2026-11-03 03:50 with no live task and
+// idled 6 days; BRO-6833 sent its final report with SendMessage (the
+// in-process teammate transport), which never reached the parent. Applies to
+// any Stop of a child whose prompt carries a `REPORT-BACK:` line, whatever
+// the closing verdict says. It passes when, since the parent's latest message
+// (or the start), the child sent its parent a report or a question through
+// mcp__claude-code-remote__send_message, or when a background Bash/Monitor is
+// still live (its exit wakes the turn).
+const REMOTE_SEND_RE = /^mcp__(?:claude-code-remote|Claude_Code_Remote)__send_message$/;
+// What a report or a question to the parent looks like: the REPORT-BACK
+// prefix, the card id, a question, or an owner decision.
+// A report or a question the parent must answer. A status ping ("BRO-6854: SD landed,
+// starting Boston") is neither: no reply comes, so it must not count. A URL's ? is not a question.
+const PARENT_REPORT_RE = /REPORT-BACK|\?(?=\s|$)|DECISION NEEDED|ACTION NEEDED|\bquestion\b/i;
+const MOVED_BG_RE = /moved to the background \(ID:/;
+
+/** @returns {{block: boolean, reason: string, wrongTool?: boolean}} */
+function childStallDecision(input) {
+  const { firstPrompt, env, tools = [], done = [], now = null, reportBack = false,
+    anchor = -1, parentIds = [], noVerify = false, otherLive = false } = input || {};
+  const no = (reason) => ({ block: false, reason });
+  if (noVerify) return no('NO-VERIFY bypass');
+  if (!reportBack) return no('prompt has no REPORT-BACK: line');
+  if (!isChildSession({ firstPrompt, env })) return no('not a child session');
+  const parents = new Set(['@parent', ...parentIds.map(String),
+    String((env || {}).CLAUDE_PARENT_SESSION_ID || ''), String((env || {}).PARENT_SESSION_ID || '')].filter(Boolean));
+  const after = tools.filter((t) => t && t.idx > anchor);
+  const sent = after.some((t) => t.ok && REMOTE_SEND_RE.test(String(t.name || ''))
+    && parents.has(String((t.input || {}).session_id || ''))
+    && PARENT_REPORT_RE.test(String((t.input || {}).message || '')));
+  if (sent) return no('a report or question went to the parent after its latest message');
+  // A foreground Bash past its timeout is moved to the background and
+  // notifies on exit, the same as run_in_background (default 30 min cap).
+  const asBg = tools.map((t) => (t && t.name === 'Bash' && !(t.input || {}).run_in_background
+    && MOVED_BG_RE.test(String(t.result || '')) ? { ...t, input: { ...t.input, run_in_background: true, timeout: 0 } } : t));
+  if (liveBackground(asBg, done, { now }).length) return no('a background task or Monitor is live');
+  if (otherLive) return no('a background Agent, PR subscription or self-bound trigger will wake it');
+  const wrongTool = after.some((t) => t && t.name === 'SendMessage');
+  return { block: true, wrongTool,
+    reason: 'child session ends its turn with nothing live and no report or question sent to @parent'
+      + (wrongTool ? ' (SendMessage was used; it does not reach the parent)' : '') };
+}
+
+// OPENCLAIM (BRO-7183 phase 2): a session with no human (a routine reading
+// docs/cloud-routines/, or a prompt saying no human is watching) that claimed
+// a card in this firing must close, report or hand it off before it stops.
+// Nothing else ever comes back for it (BRO-7074 sat In Progress 34h).
+// A routine's own directive, not any mention: a human session that quotes a routine doc must not match.
+const NO_HUMAN_RE = /^\s*New [\w-]+ firing\b|\bRead docs\/cloud-routines\/\S+\.md\b[^\n]*\bfollow\b|\bfollow docs\/cloud-routines\/\S+\.md\b|\bno human is (?:watching|in the session)\b/i;
+const CLAIM_RE = /linear-session\.js\s+claim\b[^\n]*?--issue[= ](BRO-\d+)|linear-session\.js\s+claim\b[^\n]*--title\b|linear-brain\.js\s+create\b[^\n]*--self\b/i;
+const CLOSING_STATE_RE = /^(?:Done|In Review|Paused|Duplicate|Todo|Backlog|Canceled|Cancelled)$/i;
+const CREATED_RE = /\b(BRO-\d+)\b/;
+const CLOSE_RE = /linear-brain\.js\s+update\s+(BRO-\d+)\b[^\n]*--state[= ]["']?(?:Done|In Review|Paused|Duplicate|Todo|Backlog|Canceled|Cancelled)|linear-session\.js\s+(?:report|release)\b[^\n]*?--issue[= ](BRO-\d+)/gi;
+
+/** @returns {{block: boolean, reason: string, cards?: string[]}} */
+function openClaimDecision(input) {
+  const { firstPrompt = '', tools = [], done = [], now = null, anchor = -1, ocAnchor = null, noVerify = false, otherLive = false } = input || {};
+  const no = (reason) => ({ block: false, reason });
+  if (noVerify) return no('NO-VERIFY bypass');
+  if (!NO_HUMAN_RE.test(String(firstPrompt))) return no('a human may be in the session');
+  const after = tools.filter((t) => t && t.idx > (ocAnchor == null ? anchor : ocAnchor) && t.ok);
+  const claimed = new Set();
+  const closed = new Set();
+  for (const t of after) {
+    if (t.name === 'Bash') {
+      const cmd = String((t.input || {}).command || '');
+      const m = cmd.match(CLAIM_RE);
+      if (m) { const id = m[1] || (String(t.result || '').match(CREATED_RE) || [])[1]; if (id) claimed.add(id.toUpperCase()); }
+      for (const c of cmd.matchAll(CLOSE_RE)) closed.add(String(c[1] || c[2]).toUpperCase());
+    } else if (/save_issue$/.test(String(t.name || ''))) {
+      const { id, state } = t.input || {};
+      if (/^BRO-\d+$/i.test(String(id || '')) && CLOSING_STATE_RE.test(String(state || '').trim())) closed.add(String(id).toUpperCase());
+    }
+  }
+  const open = [...claimed].filter((id) => !closed.has(id));
+  if (!open.length) return no('no card claimed in this firing is left open');
+  if (after.some((t) => /create_session$/.test(String(t.name || '')))) return no('a child session took the work');
+  if (liveBackground(tools, done, { now }).length || otherLive) return no('a background task, Monitor or trigger will wake it');
+  return { block: true, cards: open, reason: `no-human session stops with ${open.join(', ')} claimed and still open` };
+}
+
 /**
- * All three gates, first block wins. `skip` lists codes already blocked in
- * this Stop chain (or switched off); they are not re-evaluated.
+ * The child gates, first block wins. CHILDSTALL runs when `stall` is set;
+ * the three KEEP OPEN gates run unless `keepOpen` is false. `skip` lists
+ * codes already blocked in this Stop chain (or switched off); they are not
+ * re-evaluated.
  * @returns {{block: boolean, code: string|null, reason: string}}
  */
 function decideAll(input) {
   const skip = new Set((input && input.skip) || []);
   const reasons = [];
-  for (const [code, fn] of [['CHILDWAIT', childWaitDecision], ['CHILDJOBS', childJobsDecision], ['CHILDWATCH', parentWatchDecision]]) {
+  const gates = [];
+  // The older KEEP OPEN gates go first: their messages name the exact wait.
+  // CHILDSTALL (BRO-7183) is the catch-all for any closing.
+  if (!input || input.keepOpen !== false) {
+    gates.push(['CHILDWAIT', childWaitDecision], ['CHILDJOBS', childJobsDecision], ['CHILDWATCH', parentWatchDecision]);
+  }
+  if (input && input.stall) gates.push(['CHILDSTALL', childStallDecision]);
+  if (input && input.openClaim) gates.push(['OPENCLAIM', openClaimDecision]);
+  for (const [code, fn] of gates) {
     if (skip.has(code)) continue;
     const r = fn(input);
-    if (r.block) return { block: true, code, reason: r.reason };
+    if (r.block) return { block: true, code, reason: r.reason, wrongTool: !!r.wrongTool, cards: r.cards };
     reasons.push(code + ': ' + r.reason);
   }
   return { block: false, code: null, reason: reasons.join('; ') };
 }
 
 module.exports = { BG_DEFAULT_MS,
-  childWaitDecision, childJobsDecision, parentWatchDecision, decideAll,
+  childWaitDecision, childJobsDecision, parentWatchDecision, childStallDecision, openClaimDecision, decideAll, NO_HUMAN_RE,
   isChildSession, liveBackground, isDetached, CI_WAIT_RE, JOBS_WAIT_RE, CHILD_PROMPT_RE, WATCH_CMD_RE,
 };
 

@@ -27,6 +27,39 @@ async function earliestCaptureTimestamp(url, opts = {}) {
   return captureTimestamp(url, 'earliest', opts);
 }
 
+/**
+ * Up to `limit` distinct-content 200 captures, earliest first (CDX
+ * collapse=digest drops byte-identical re-captures). No `to=` year bound: CDX
+ * defaults to "up to now", and a hardcoded year silently stops seeing new
+ * captures the January after it (BRO-7171 Stage 3). [] for none; a CDX failure
+ * also returns [] and is reported through opts.onError so callers can tell
+ * "archive empty" from "archive unavailable".
+ * @returns {Promise<string[]>} 14-digit timestamps
+ */
+async function listCaptureTimestamps(url, { limit = 5, fetchJson, onError } = {}) {
+  const get = fetchJson || defaultFetchJson;
+  const n = Math.max(1, Math.min(50, parseInt(limit, 10) || 5));
+  const cdx = `https://web.archive.org/cdx/search/cdx?url=${encodeURIComponent(url)}&output=json&fl=timestamp&filter=statuscode:200&collapse=digest&limit=${n}`;
+  try {
+    const rows = await get(cdx);
+    if (!Array.isArray(rows)) return [];
+    return rows.slice(1).map((r) => String(Array.isArray(r) ? r[0] : r)).filter((t) => /^\d{14}$/.test(t));
+  } catch (e) {
+    if (onError) onError(e);
+    return [];
+  }
+}
+
+async function defaultFetchJson(u) {
+  const ctl = new AbortController();
+  const t = setTimeout(() => ctl.abort(), 15000);
+  try {
+    const r = await fetch(u, { signal: ctl.signal });
+    if (!r.ok) throw new Error(`CDX HTTP ${r.status}`);
+    return await r.json();
+  } finally { clearTimeout(t); }
+}
+
 async function captureTimestamp(url, which, { fetchJson, onError } = {}) {
   const get = fetchJson || (async (u) => {
     const ctl = new AbortController();
@@ -93,4 +126,4 @@ function archiveCopyDisposition({ viaArchive, explicitSnapshot, stubOnFailure, t
 }
 
 module.exports = {
-  archiveCopyDisposition, fetchWithArchiveFallback, latestCaptureTimestamp, earliestCaptureTimestamp };
+  archiveCopyDisposition, fetchWithArchiveFallback, latestCaptureTimestamp, earliestCaptureTimestamp, listCaptureTimestamps };

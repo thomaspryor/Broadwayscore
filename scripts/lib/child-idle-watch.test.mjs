@@ -157,7 +157,7 @@ test('hook: a BRO-6518 child ending KEEP OPEN with no live background task is re
   }
   const ok = runHook(FX.firstPrompt, [...turnCalls(TURN2), { name: 'Bash', input: POLL.input, result: bgResult('bpoll') }], TURN2.closing);
   assert.equal(ok.status, 0, 'live background poll passes: ' + ok.stderr.slice(0, 400));
-  assert.equal(runHook(FX.firstPrompt, turnCalls(TURN1), TURN1.closing, { CHILDJOBS_GATE_DISABLE: '1' }).status, 0, 'kill switch');
+  assert.equal(runHook(FX.firstPrompt, turnCalls(TURN1), TURN1.closing, { CHILDJOBS_GATE_DISABLE: '1', CHILDSTALL_GATE_DISABLE: '1' }).status, 0, 'kill switch (CHILDSTALL, BRO-7183, would otherwise catch this stall too)');
 });
 
 test('hook: a parent ending KEEP OPEN on a live child needs a child-idle-watch', { skip: !fs.existsSync(HOOK) && 'no repo hook' }, () => {

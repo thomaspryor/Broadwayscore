@@ -19,11 +19,14 @@
  *   node scripts/gap-recovery-driver.js --limit=20 --outlet=daily-mail,mail-on-sunday --class=NO_URL --strategy=URL_REDISCOVER
  *   node scripts/gap-recovery-driver.js --reconcile [--dry-run]        # reopen 'recovered' rows whose recovered text is no longer on disk
  *
- * Options: --class=A,B  --show=ID  --strategy=X (only this strategy)  --recent-only
+ * Options: --class=A,B  --show=ID  --strategy=X (only this strategy)  --recent-only  --historic-only
  *          --verbose (dry run: one line per candidate)  --json=PATH (dry run: plan to a file outside the repo)
+ *          --summary=PATH (run stats as JSON, read by scripts/gap-recovery-nightly.js)
+ * Exit codes: 0 ok, 1 failed (incl. push failure), 2 refused live env, 3 another recovery run holds the run lock.
  * Env:
  *   GAP_RECOVERY_DISABLED=1 (or ~/.broadwayscore-state/gap-recovery-disabled)  kill switch
  *   GAP_RECOVERY_DAILY_CEILING=N   accepted reviews per UTC day (default 40)
+ *   GAP_RECOVERY_RUN_CEILING=N     accepted reviews in THIS run instead (the nightly job sets it)
  *   BD_REQ_BUDGET (default 25), SERP_QUERY_BUDGET (default 60): per-run spend caps
  *   TIME_BUDGET_MIN (default 60)   REVIEW_TEXTS_DIR   GAP_RECOVERY_LEDGER_PATH
  */
@@ -60,7 +63,9 @@ const OPTS = {
   show: arg('show'),
   only: arg('strategy'),
   recentOnly: flag('recent-only'),
+  historicOnly: flag('historic-only'),
   jsonOut: arg('json'),
+  summaryOut: arg('summary'),
   timeBudgetMs: (parseInt(process.env.TIME_BUDGET_MIN || '60', 10) || 60) * 60000,
 };
 
@@ -93,6 +98,7 @@ function planCandidates({ dir, shows, outlets, ledgerIndex, runGates }) {
     if (!row.open) continue;
     if (OPTS.classes && !OPTS.classes.has(row.gapClass)) continue;
     if (OPTS.recentOnly && row.recency !== 'recent') continue;
+    if (OPTS.historicOnly && row.recency === 'recent') continue;
     const reviewKey = `${row.showId}/${row.file}`;
     const filePath = path.join(dir, row.showId, row.file);
     let review;
@@ -118,6 +124,9 @@ function planCandidates({ dir, shows, outlets, ledgerIndex, runGates }) {
       gapClass: row.gapClass,
       hasUrl: !!review.url,
       hasAdapter: !!adapterFor(review.outletId),
+      // An unknown show date counts as 'recent' for ordering, but such shows
+      // are often old: do not take ARCHIVE away from them.
+      recency: row.dateKnown === false ? null : row.recency,
       eligible,
       runGates: { ...runGates, ...extraGates },
       only: OPTS.only,
@@ -165,12 +174,37 @@ function printPlan(cands) {
   return { byClass, byStrategy, byClassStrategy, skipReasons };
 }
 
+/** Stats for --summary (nightly reads it; never a review file). */
+const SUMMARY = { mode: null, attempted: 0, accepted: 0, landed: 0, byStrategy: {}, ceilingHit: false, pushFailed: false, authFailedOutlets: [], authOkOutlets: [], reopened: 0, error: null };
+function writeSummary() {
+  const p = arg('summary');
+  if (!p) return;
+  try { fs.mkdirSync(path.dirname(p), { recursive: true }); fs.writeFileSync(p, JSON.stringify(SUMMARY, null, 2)); } catch (e) { console.error(`summary write failed: ${e.message}`); }
+}
+
+/**
+ * Whole-run lock (recovery-run-lock): live runs and a writing reconcile never
+ * overlap another recovery run. The nightly entrypoint holds the lock itself
+ * and runs this driver as its child: GAP_RECOVERY_RUN_LOCK_PARENT=<its pid>.
+ * @returns {boolean} false when busy
+ */
+function takeRunLock(label) {
+  if (process.env.GAP_RECOVERY_RUN_LOCK_PARENT && process.env.GAP_RECOVERY_RUN_LOCK_PARENT === String(process.ppid)) return true;
+  const { acquireRunLock, RunLockBusyError } = require('./lib/recovery-run-lock');
+  try { acquireRunLock(label); return true; } catch (e) {
+    if (e instanceof RunLockBusyError) { console.log(`gap-recovery: ${e.message}; not running.`); return false; }
+    throw e;
+  }
+}
+
 async function runReconcile({ dir, ledgerPath }) {
   const rows = L.readRows(ledgerPath);
   const reopen = L.reconcileRecovered(rows, (key) => { try { return readJson(path.join(dir, key)); } catch { return null; } });
   console.log(`reconcile: ${rows.length} ledger rows, ${reopen.length} recovered review(s) whose recovered text is no longer on disk`);
   for (const r of reopen) console.log(`  reopen ${r.reviewKey} (${r.reason}, tier ${r.detail.tier})`);
   if (!OPTS.dryRun && reopen.length) L.appendRows(reopen, ledgerPath);
+  SUMMARY.mode = 'reconcile';
+  SUMMARY.reopened = reopen.length;
   return reopen;
 }
 
@@ -181,6 +215,7 @@ async function main() {
   const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
   const dir = process.env.REVIEW_TEXTS_DIR || resolveReviewTextsDir();
   const ledgerPath = L.ledgerPathDefault();
+  if (!OPTS.dryRun && !takeRunLock(OPTS.reconcile ? 'gap-recovery-driver --reconcile' : 'gap-recovery-driver')) return 3;
   if (OPTS.reconcile) { await runReconcile({ dir, ledgerPath }); return 0; }
 
   const showsRaw = readJson(showsPath());
@@ -207,6 +242,7 @@ async function main() {
 
   const cands = planCandidates({ dir, shows, outlets, ledgerIndex, runGates });
   if (OPTS.dryRun) {
+    SUMMARY.mode = 'dry_run';
     const summary = printPlan(cands);
     if (OPTS.jsonOut) {
       // A plan report from --json=, never a review file (read from argv
@@ -226,7 +262,11 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
   const { withReviewTextsLock } = require('./lib/review-texts-lock');
   const S = require('./lib/gap-strategies');
   const { adapterFor, openSession } = require('./lib/browser-outlet-adapters');
-  const ceiling = L.dailyCeiling();
+  // A per-run cap (the nightly job) replaces the per-UTC-day count, so manual
+  // runs earlier in the same UTC day do not eat the night's budget.
+  const runCeiling = L.runCeiling();
+  const ceiling = runCeiling != null ? runCeiling : L.dailyCeiling();
+  const ceilingRows = runCeiling != null ? [] : rows;
   const tracker = createWriteTracker();
   const pendingInfo = new Map(); // reviewKey -> attempt info for the recovered row
   const earlierPending = L.pendingPushInfo(rows); // accepted by an earlier run, not yet landed
@@ -247,7 +287,7 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
 
   const todo = cands.filter((c) => c.strategy);
   const work = OPTS.limit ? todo.slice(0, OPTS.limit) : todo;
-  console.log(`\n${todo.length} candidates with a strategy; running ${work.length}. Daily ceiling ${ceiling} (accepted today so far: ${L.acceptedToday(rows)}).`);
+  console.log(`\n${todo.length} candidates with a strategy; running ${work.length}. ${runCeiling != null ? `Run ceiling ${ceiling}` : `Daily ceiling ${ceiling} (accepted today so far: ${L.acceptedToday(rows)})`}.`);
 
   const stats = { attempted: 0, accepted: 0, byStrategy: {} };
   const sessions = new Map(); // adapter name -> session | {failed}
@@ -285,7 +325,7 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
     for (let i = 0; i < work.length; i++) {
       const c = work[i];
       if (Date.now() - start > OPTS.timeBudgetMs) { console.log('\nTime budget reached.'); break; }
-      if (L.ceilingReached({ rows, ceiling, acceptedThisRun: accepted })) { console.log(`\nDaily ceiling ${ceiling} reached.`); break; }
+      if (L.ceilingReached({ rows: ceilingRows, ceiling, acceptedThisRun: accepted })) { console.log(`\n${runCeiling != null ? 'Run' : 'Daily'} ceiling ${ceiling} reached.`); SUMMARY.ceilingHit = true; break; }
       if (L.killSwitchActive().active) { console.log('\nKill switch turned on mid-run; stopping.'); break; }
       // Browser preferred but no GUI: record the non-evidence row, then use the next strategy.
       for (const k of c.skipped) {
@@ -303,10 +343,18 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
         if (!sessions.has(ad.name)) {
           const o = gui.available ? await openSession(ad) : { ok: false, outcome: 'browser_unavailable', reason: 'gui' };
           sessions.set(ad.name, o.ok ? o.session : { failed: o });
+          if (o.ok) SUMMARY.authOkOutlets.push(ad.name);
+          else if (o.outcome === 'auth_failed') SUMMARY.authFailedOutlets.push(ad.name);
         }
         const s = sessions.get(ad.name);
         got = s.failed ? { ok: false, outcome: s.failed.outcome, reason: s.failed.reason } : await S.browserSession(c, s);
-        if (!got.ok && got.outcome === 'auth_failed' && !s.failed) { await s.close().catch(() => {}); sessions.set(ad.name, { failed: got }); }
+        if (!got.ok && got.outcome === 'auth_failed' && !s.failed) {
+          await s.close().catch(() => {});
+          sessions.set(ad.name, { failed: got });
+          // Logged in at the probe, lost mid-run: still a lost session tonight.
+          SUMMARY.authOkOutlets = SUMMARY.authOkOutlets.filter((n) => n !== ad.name);
+          if (!SUMMARY.authFailedOutlets.includes(ad.name)) SUMMARY.authFailedOutlets.push(ad.name);
+        }
         // A session-level failure (no session for the outlet this run) is
         // non-evidence: record it and fall through to the next eligible
         // strategy, so a broken login never starves ARCHIVE run after run.
@@ -389,6 +437,8 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
     for (const s of sessions.values()) if (s && s.close) await s.close().catch(() => {});
   }
 
+  Object.assign(SUMMARY, { mode: 'live', attempted: stats.attempted, accepted: stats.accepted, landed: landedKeys.size, byStrategy: stats.byStrategy, runId: RUN_ID });
+  if (runError) { SUMMARY.error = String(runError.message).slice(0, 300); SUMMARY.pushFailed = runError instanceof ReviewTextsPushError; }
   console.log('\n' + '='.repeat(60));
   console.log(`Run ${RUN_ID}: attempted ${stats.attempted}, accepted ${stats.accepted}, landed (recovered rows) ${landedKeys.size}`);
   for (const [s, b] of Object.entries(stats.byStrategy)) {
@@ -404,8 +454,9 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
 
 main()
   .then((code) => { process.exitCode = code || 0; })
-  .catch((e) => { console.error('FATAL:', e.stack || e.message); process.exitCode = 1; })
+  .catch((e) => { console.error('FATAL:', e.stack || e.message); if (!SUMMARY.error) SUMMARY.error = String(e.message).slice(0, 300); process.exitCode = 1; })
   .finally(() => {
+    writeSummary();
     // fetchPage's Playwright tiers keep a browser alive for reuse.
     let cleanup = null;
     try { if (require.cache[require.resolve('./lib/scraper')]) cleanup = require('./lib/scraper').cleanup; } catch { /* not loaded */ }

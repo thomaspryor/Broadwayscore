@@ -181,4 +181,14 @@ function checkpoint(stats, commitMessagePrefix, opts = {}) {
   return res;
 }
 
-module.exports = { loadCandidates, processRecoveredText, stampDead, startRun, checkpoint, RUN_WRITES, REVIEW_TEXTS_DIR };
+/**
+ * Take the whole-run recovery lock (recovery-run-lock.js) before a manual
+ * recover-*-browser.js run opens Chrome, so it never overlaps the nightly
+ * gap-recovery job (BRO-7171 Stage 3). Throws RunLockBusyError naming the
+ * holder; the scripts' main().catch prints it and exits non-zero.
+ */
+function acquireRecoveryRunLock(label) {
+  return require('./recovery-run-lock').acquireRunLock(label);
+}
+
+module.exports = { loadCandidates, processRecoveredText, stampDead, startRun, checkpoint, acquireRecoveryRunLock, RUN_WRITES, REVIEW_TEXTS_DIR };

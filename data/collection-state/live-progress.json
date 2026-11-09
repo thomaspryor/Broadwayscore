@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-11-09T03:42:04.044Z",
-  "processed": 15,
-  "failed": 20,
-  "successRate": "42.9%",
+  "updatedAt": "2026-11-09T05:05:50.239Z",
+  "processed": 17,
+  "failed": 25,
+  "successRate": "40.5%",
   "tierBreakdown": {
-    "playwright": 11,
+    "playwright": 12,
     "amp": 0,
     "browserbase": 4,
     "directCookies": 0,
@@ -12,27 +12,10 @@
     "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 1
   },
   "browserbaseSessions": 3,
   "recentActivity": [
-    {
-      "t": "2026-11-09T03:18:37.011Z",
-      "event": "bb-session",
-      "session": "6bc4a9c3",
-      "url": "https://www.nytimes.com/2026/11/06/theater/the-unbelievers-222-a-ghost-story-rev"
-    },
-    {
-      "t": "2026-11-09T03:18:37.384Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-09T03:18:54.464Z",
-      "event": "bb-session",
-      "session": "ea4e165e",
-      "url": "https://www.wsj.com/articles/the-unbelievers-and-2-22a-ghost-story-review-off-br"
-    },
     {
       "t": "2026-11-09T03:18:54.739Z",
       "event": "bb-cookie-inject",
@@ -110,6 +93,39 @@
       "event": "bb-session",
       "session": "9b0f2052",
       "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
+    },
+    {
+      "t": "2026-11-09T04:59:47.816Z",
+      "event": "bb-session",
+      "session": "9dd4523e",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655533"
+    },
+    {
+      "t": "2026-11-09T04:59:48.144Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-09T05:03:14.002Z",
+      "event": "bb-session",
+      "session": "fc79aac7",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655534"
+    },
+    {
+      "t": "2026-11-09T05:03:14.371Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-09T05:04:31.323Z",
+      "event": "bb-session",
+      "session": "1f639784",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655510"
+    },
+    {
+      "t": "2026-11-09T05:04:31.700Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
