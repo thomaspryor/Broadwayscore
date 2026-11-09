@@ -36,8 +36,12 @@
 /** Thresholds of adjusted gross / break-even, deepest first. */
 export const CLOSING_WATCH_THRESHOLDS = [0.6, 0.75, 0.9, 1] as const;
 
-/** Reported weeks a run needs before its ratio counts (skips the previews ramp). */
-export const CLOSING_WATCH_MIN_WEEKS = 8;
+/**
+ * Reported weeks a run needs before its ratio counts (one full 4-week average).
+ * Was 8; a leave-one-show-out backtest at 4 caught 77 closed shows instead of
+ * 68 with the same accuracy (70% inside the window, median miss 8 weeks).
+ */
+export const CLOSING_WATCH_MIN_WEEKS = 4;
 
 /** Observations (and closings among them) needed before we print a window. */
 export const CLOSING_WATCH_MIN_SAMPLE = 15;
