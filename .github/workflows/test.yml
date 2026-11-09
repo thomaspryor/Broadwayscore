@@ -3510,6 +3510,8 @@ on:
       - '.claude/hooks/block-prompting-remote-tools.sh'
       # BRO-6687 slow-market replay CLI (scripts/replay-slow-market-openings.test.mjs); a solo edit would otherwise trigger zero CI.
       - 'scripts/replay-slow-market-openings.js'
+      # BRO-7174 approved-fix writer guard (tests/unit/approved-fix-drift.test.mjs); a solo edit would otherwise trigger zero CI
+      - 'scripts/verify-existing-reviews.js'
   pull_request:
     branches: [main]
   schedule:
