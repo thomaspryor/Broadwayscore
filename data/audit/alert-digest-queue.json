@@ -1680,5 +1680,36 @@
       }
     ],
     "queuedAt": "2026-11-09T05:18:36.187Z"
+  },
+  {
+    "conditionKey": "land:land/worktree-agent-acd478c5d7b874726",
+    "title": "Landing blocked: actionlint-install red on land/worktree-agent-acd478c5d7b874726",
+    "description": "land.yml did not land land/worktree-agent-acd478c5d7b874726: the actionlint-install gate went red at 2bf2e79ae2. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42566574501",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/worktree-agent-acd478c5d7b874726"
+      },
+      {
+        "name": "gate",
+        "value": "actionlint-install"
+      },
+      {
+        "name": "tip",
+        "value": "2bf2e79ae2fdbe912071791689cfd0d58e0c17d1"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42566574501"
+      }
+    ],
+    "queuedAt": "2026-11-09T05:22:16.542Z"
   }
 ]
