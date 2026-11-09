@@ -176,3 +176,60 @@ test('manual dispatch success does not hide a failing cron; retired source may d
   assert.equal(H.workflowVerdict(onlyManual, { cadenceDays: 7, now }).status, 'ok');
   assert.deepEqual(H.retiredConsistency([{ id: 'x', label: 'X', retired: { reason: 'r' }, workflows: { 'gone.yml': 7 } }], {}), []);
 });
+
+test('every scheduled critic-aggregator feed is registered, including shared feeds', () => {
+  const expected = {
+    'theatre-reviews': ['scrape-theatre-reviews.yml', 'sweep-we-aggregators.yml'],
+    dtli: ['scrape-dtli-show-score.yml'],
+    'show-score': ['scrape-dtli-show-score.yml', 'refresh-show-score-opening-night.yml'],
+  };
+  for (const [id, workflows] of Object.entries(expected)) {
+    const source = H.SOURCES.find(s => s.id === id);
+    assert.ok(source, `${id} must be monitored`);
+    assert.deepEqual(Object.keys(source.workflows).sort(), workflows.sort());
+  }
+});
+
+test('readable empty run history alerts; unavailable history does not claim no runs', () => {
+  const sources = [{ id: 'a', label: 'A', workflows: { 'a.yml': 7 } }];
+  const input = { sources, shows: [], archives: null, scheduled: { 'a.yml': true }, now: NOW };
+  const { findings } = H.assess({ ...input, runs: { 'a.yml': [] } });
+  assert.deepEqual(findings.map(f => f.kind), ['workflow-no-runs']);
+  assert.deepEqual(H.assess({ ...input, runs: {} }).findings, []);
+  assert.deepEqual(H.assess({ ...input, runs: null }).findings, []);
+});
+
+test('shared workflow alert identity survives registry reordering', () => {
+  const sources = [
+    { id: 'lbo', label: 'LBO', workflows: { 'shared.yml': 1 } },
+    { id: 'bww', label: 'BWW', workflows: { 'shared.yml': 1 } },
+  ];
+  const input = {
+    shows: [], archives: null, now: NOW, scheduled: { 'shared.yml': true },
+    runs: { 'shared.yml': ['20', '21', '22'].map(d => run(`2026-10-${d}T00:00:00Z`, 'failure')) },
+  };
+  const forward = H.assess({ ...input, sources }).findings;
+  const reverse = H.assess({ ...input, sources: [...sources].reverse() }).findings;
+  assert.equal(forward.length, 1);
+  assert.deepEqual(forward, reverse);
+});
+
+test('alert resolution requires that exact source archive or workflow history', () => {
+  const sources = [
+    { id: 'a', label: 'A', workflows: { 'a.yml': 7 } },
+    { id: 'b', label: 'B', workflows: { 'b.yml': 7 } },
+  ];
+  const finding = { source: 'a', kind: 'workflow-no-runs', workflow: 'a.yml' };
+  const keys = H.resolvedConditionKeys([finding], sources, {
+    archives: { a: new Set() }, runs: { 'a.yml': [] },
+  });
+  assert.ok(keys.includes('aggregator-health:a:coverage-drop'));
+  assert.ok(!keys.includes('aggregator-health:b:coverage-drop'));
+  assert.ok(!keys.includes(H.conditionKey(finding)));
+  assert.ok(keys.includes('aggregator-health:a:workflow-failing:a.yml'));
+  assert.ok(!keys.includes('aggregator-health:b:workflow-failing:b.yml'));
+  const unavailable = H.resolvedConditionKeys([], sources, { archives: null, runs: null });
+  assert.ok(unavailable.every(k => /workflow-missing|retired-but-scheduled|schedule-removed/.test(k)));
+  const recovered = H.resolvedConditionKeys([], sources, { archives: null, runs: { 'a.yml': [] } });
+  assert.ok(recovered.includes(H.conditionKey(finding)));
+});

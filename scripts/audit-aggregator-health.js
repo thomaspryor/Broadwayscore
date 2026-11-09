@@ -15,9 +15,9 @@
 
 const fs = require('fs');
 const path = require('path');
-const { SOURCES, assess } = require('./lib/aggregator-health');
+const { SOURCES, assess, conditionKey, resolvedConditionKeys } = require('./lib/aggregator-health');
+const { loadRuns } = require('./lib/aggregator-health-inputs');
 const { isScheduledWorkflow } = require('./lib/cron-coverage');
-const { ghApiJson } = require('./lib/github-public-api');
 require('./lib/cli-help').exitOnHelp(module);
 
 const ROOT = path.join(__dirname, '..');
@@ -55,19 +55,6 @@ function loadScheduled(sources) {
   return out;
 }
 
-function loadRuns(sources, failed) {
-  const out = {};
-  let ok = 0;
-  for (const wf of new Set(sources.flatMap(s => Object.keys(s.workflows)))) {
-    try {
-      const body = ghApiJson(`repos/${REPO}/actions/workflows/${wf}/runs?per_page=30`);
-      out[wf] = (body.workflow_runs || []).map(r => ({ created_at: r.created_at, conclusion: r.conclusion, event: r.event }));
-      ok++;
-    } catch { failed.push(wf); /* skipped, not reported healthy */ }
-  }
-  return ok ? out : null;
-}
-
 /**
  * Route findings to the owner digest (same router as audit-coverage-holes --alert).
  * One condition per source+kind (+workflow), resolved when the finding clears.
@@ -76,26 +63,15 @@ function loadRuns(sources, failed) {
  */
 async function alertFindings(findings, sources, have) {
   const { routeAlert, resolveCondition } = require('./lib/owner-alert-router.js');
-  const keyOf = f => `aggregator-health:${f.source}:${f.kind}${f.workflow ? ':' + f.workflow : ''}`;
-  const live = new Set(findings.map(keyOf));
   let raised = 0;
   for (const f of findings) {
     try {
-      await routeAlert({ conditionKey: keyOf(f), title: f.message, description: `${f.message}\n\nMonitor: node scripts/audit-aggregator-health.js (BRO-6098). Coverage compares the last 2 full quarters with the 4 before; workflow checks use the last 30 runs.`, severity: 'warning', disposition: 'digest', cooldownHours: 20 });
+      await routeAlert({ conditionKey: conditionKey(f), title: f.message, description: `${f.message}\n\nMonitor: node scripts/audit-aggregator-health.js (BRO-6098). Coverage compares the last 2 full quarters with the 4 before; workflow checks use the last 30 scheduled runs.`, severity: 'warning', disposition: 'digest', cooldownHours: 20 });
       raised++;
-    } catch (err) { console.error(`[aggregator-health] alert failed for ${keyOf(f)}: ${err.message}`); process.exitCode = 1; }
+    } catch (err) { console.error(`[aggregator-health] alert failed for ${conditionKey(f)}: ${err.message}`); process.exitCode = 1; }
   }
-  // Registry-vs-workflow-file findings come from local files, so they are always readable.
-  for (const s of sources) for (const wf of Object.keys(s.workflows)) for (const kind of ['workflow-missing', 'retired-but-scheduled', 'schedule-removed']) {
-    const k = `aggregator-health:${s.id}:${kind}:${wf}`;
-    if (!live.has(k)) { try { resolveCondition(k, { reason: 'finding cleared' }); } catch { /* nothing open */ } }
-  }
-  for (const s of sources.filter(x => !x.retired)) {
-    for (const kind of ['coverage-drop', 'workflow-failing', 'workflow-idle', 'workflow-stale']) {
-      if (kind === 'coverage-drop' ? !have.coverage : !have.runs) continue; // unreadable input never resolves anything
-      const keys = kind === 'coverage-drop' ? [`aggregator-health:${s.id}:${kind}`] : Object.keys(s.workflows).map(w => `aggregator-health:${s.id}:${kind}:${w}`);
-      for (const k of keys) if (!live.has(k) && !have.failedWf.includes(k.split(':')[3])) { try { resolveCondition(k, { reason: 'finding cleared' }); } catch { /* nothing open */ } }
-    }
+  for (const k of resolvedConditionKeys(findings, sources, have)) {
+    try { resolveCondition(k, { reason: 'finding cleared' }); } catch { /* nothing open */ }
   }
   return raised;
 }
@@ -112,7 +88,7 @@ async function main() {
   const shows = loadShows();
   const failedWf = [];
   const archives = loadArchives(sources, shows);
-  const runs = args.includes('--no-runs') ? null : loadRuns(sources, failedWf);
+  const runs = args.includes('--no-runs') ? null : loadRuns(sources, failedWf, { repo: REPO });
   const { findings, report } = assess({ sources, shows, archives, runs, scheduled: loadScheduled(sources), now });
   const notes = [];
   if (!archives) notes.push('coverage skipped: data/aggregator-archive not present');
@@ -134,7 +110,7 @@ async function main() {
     for (const n of notes) console.log(`  note: ${n}`);
   }
   if (args.includes('--alert')) {
-    console.log(`alert: ${await alertFindings(findings, sources, { coverage: !!archives, runs: !!runs, failedWf })} finding(s) routed to the digest`);
+    console.log(`alert: ${await alertFindings(findings, sources, { archives, runs })} finding(s) routed to the digest`);
   }
   process.exit(strict && findings.length ? 1 : process.exitCode || 0);
 }
