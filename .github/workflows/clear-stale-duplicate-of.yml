@@ -73,10 +73,15 @@ jobs:
           echo "count=$COUNT" >> $GITHUB_OUTPUT
           echo "status=$STATUS" >> $GITHUB_OUTPUT
           # Don't fail the workflow on detection — the next step will fix.
+          # Exit 2 = corpus missing/empty (BRO-3549): nothing to fix or push, fail loud.
+          if [ "$STATUS" = "2" ]; then
+            echo "::error::audit could not scan the review-texts corpus (exit 2)"
+            exit 1
+          fi
           exit 0
 
       - name: Apply fix
-        if: steps.audit.outputs.status != '0' && inputs.dry_run != 'true'
+        if: steps.audit.outputs.status == '1' && inputs.dry_run != 'true'
         env:
           INPUT_FORCE_BULK: ${{ inputs.force_bulk }}
         run: |
@@ -90,7 +95,7 @@ jobs:
           fi
 
       - name: Push to private repo
-        if: steps.audit.outputs.status != '0' && inputs.dry_run != 'true'
+        if: steps.audit.outputs.status == '1' && inputs.dry_run != 'true'
         uses: ./.github/actions/push-review-texts
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
