@@ -229,3 +229,37 @@ test('BRO-7179: an empty scan never resolves the alert condition', () => {
   assert.match(r.stderr, /scanned 0 files .* leaving the alert condition untouched/);
   fs.rmSync(dir, { recursive: true, force: true });
 });
+
+// BRO-7174 class guard: the scheduled writers that clear duplicateOf /
+// wrongShow / wrongProduction outside review-guards.js stay wired to the
+// approved-fix writer guards (unit-tested in approved-fix-writers.test.mjs).
+const WRITERS = {
+  'scripts/lib/orphaned-duplicate-pointer-heal.js': /canChangeApprovedField\(/g,
+  'scripts/heal-orphaned-duplicate-pointers.js': /canChangeApprovedField\(/g,
+  'scripts/fix-circular-duplicate-pairs.js': /canRepairCircularPair\(/g,
+  'scripts/verify-existing-reviews.js': /canRecoverReview\(/g,
+};
+const MIN_CALLS = {
+  'scripts/lib/orphaned-duplicate-pointer-heal.js': 3, // clear, retraction restore, chain flatten
+  'scripts/heal-orphaned-duplicate-pointers.js': 3, // fix(), revert(), flatten()
+  'scripts/fix-circular-duplicate-pairs.js': 2,
+  'scripts/verify-existing-reviews.js': 3,
+};
+for (const [rel, re] of Object.entries(WRITERS)) {
+  test(`BRO-7174: ${rel} checks approved fixes before writing`, () => {
+    const src = fs.readFileSync(path.join(import.meta.dirname, '../..', rel), 'utf8');
+    assert.match(src, /require\(['"]\.\/(?:lib\/)?approved-fix-writer-guards['"]\)/);
+    assert.ok((src.match(re) || []).length >= MIN_CALLS[rel], `${rel}: expected ${MIN_CALLS[rel]}+ ${re.source} calls`);
+  });
+}
+
+test('BRO-7174: orphan heal and retraction keep an approved pointer (real decision functions)', () => {
+  const heal = require('../../scripts/lib/orphaned-duplicate-pointer-heal.js');
+  const text = 'A substantive theatre review. '.repeat(50);
+  const loser = { url: 'https://x.com/r', fullText: text, duplicateOf: 't.json' };
+  loser.approvedFixes = [stamp(loser, 'duplicateOf', 't.json')];
+  assert.equal(heal.shouldClearOrphanedDuplicatePointer(loser, { wrongShow: true }), false);
+  const cleared = { url: 'https://x.com/r', fullText: text, duplicateClearReason: heal.buildHealClearReason('2026-11-08', 't.json', 'x') };
+  cleared.approvedFixes = [stamp(cleared, 'duplicateOf', null)];
+  assert.deepEqual(heal.findUnjustifiedHealClears([{ file: 'a.json', data: cleared }, { file: 't.json', data: { url: 'https://x.com/r', fullText: text } }]), []);
+});

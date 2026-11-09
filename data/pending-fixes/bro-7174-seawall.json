@@ -1,0 +1,27 @@
+{
+  "issueNumber": "bro-7174-seawall",
+  "planId": "7c312502-92eb-453e-ba2b-1c47a385734d",
+  "status": "pending",
+  "createdAt": "2026-11-09T17:02:49.798Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "sea-wall-a-life-2019: restore the approved duplicateOf on the Brantley NYT review (cleared by orphan heal 2026-10-12, BRO-7174)",
+    "steps": [
+      "sea-wall-a-life-2019/nytimes--ben-brantley.json: duplicateOf"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "sea-wall-a-life-2019/nytimes--ben-brantley.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "nytimes--laura-collins-hughes.json",
+        "description": "sea-wall-a-life-2019/nytimes--ben-brantley.json: duplicateOf"
+      }
+    ]
+  }
+}
