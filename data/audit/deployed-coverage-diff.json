@@ -1,13 +1,32 @@
 {
-  "generatedAt": "2026-11-09T00:00:51.561Z",
+  "generatedAt": "2026-11-09T01:33:04.969Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 320,
-  "clean": 320,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 319,
+  "defective": 1,
+  "byType": {
+    "score-drift": 1
+  },
+  "shows": [
+    {
+      "showId": "aladdin-2014",
+      "title": "Aladdin",
+      "openingDate": "2014-03-20",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 69.68 vs local 69.87 (Δ0.19)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 40,
+      "deployedCount": 40,
+      "firstDefectAt": "2026-11-09T01:33:00.869Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

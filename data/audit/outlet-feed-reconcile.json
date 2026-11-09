@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-09T00:00:51.945Z",
+  "generatedAt": "2026-11-09T01:33:05.385Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -117,6 +117,10 @@
   "feedsChecked": 84,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -137,9 +141,9 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 829,
-  "matchedGaps": 6,
-  "possibleGaps": 3,
+  "itemsScanned": 822,
+  "matchedGaps": 2,
+  "possibleGaps": 4,
   "gaps": [
     {
       "showId": "222-a-ghost-story-off-broadway-2026",
@@ -160,42 +164,6 @@
       "publishDate": "2026-11-07"
     },
     {
-      "showId": "msblackforpresident-off-broadway-2026",
-      "title": "Ms. Blakk for President",
-      "level": "matched",
-      "outletId": "culturesauce",
-      "url": "https://culturesauce.com/ms-blakk-for-president-off-broadway-review/",
-      "headline": "&#8216;Ms. Blakk for President&#8217; sashays through an historic footnote (Off Broadway review)",
-      "publishDate": "2026-11-09"
-    },
-    {
-      "showId": "msblackforpresident-off-broadway-2026",
-      "title": "Ms. Blakk for President",
-      "level": "matched",
-      "outletId": "nyt-theater",
-      "url": "https://newyorktheater.me/2026/11/08/ms-blakk-for-president-review/",
-      "headline": "Ms. Blakk for President Review",
-      "publishDate": "2026-11-08"
-    },
-    {
-      "showId": "msblackforpresident-off-broadway-2026",
-      "title": "Ms. Blakk for President",
-      "level": "matched",
-      "outletId": "pages-on-stages",
-      "url": "https://pagesonstages.com/2026/11/08/ms-blakk-for-president/",
-      "headline": "Life of the Party",
-      "publishDate": "2026-11-09"
-    },
-    {
-      "showId": "msblackforpresident-off-broadway-2026",
-      "title": "Ms. Blakk for President",
-      "level": "matched",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/review-ms-blakk-for-president-a-drag-queens-long-shot-campaign-in-92_1859063/",
-      "headline": "Review: Ms. Blakk for President, a Drag Queen’s Long Shot Campaign in ’92",
-      "publishDate": "2026-11-08"
-    },
-    {
       "showId": "king-lear-off-broadway-2026",
       "title": "King Lear",
       "level": "possible",
@@ -203,6 +171,15 @@
       "url": "https://www.theguardian.com/culture/2026/nov/04/every-family-has-silences-kathryn-hunter-on-despair-desire-dislodgeable-limbs-and-her-acting-genius",
       "headline": "‘Every family has silences’: Kathryn Hunter on despair, desire, dislodgeable limbs – and her acting genius",
       "publishDate": "2026-11-04"
+    },
+    {
+      "showId": "nero-off-west-end-2026",
+      "title": "Nero",
+      "level": "possible",
+      "outletId": "musical-theatre-review",
+      "url": "https://musicaltheatrereview.com/nero-southwark-playhouse-elephant/",
+      "headline": "Nero – Southwark Playhouse Elephant",
+      "publishDate": "2026-11-08"
     },
     {
       "showId": "the-bridge-off-west-end-2026",
