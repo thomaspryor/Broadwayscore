@@ -672,4 +672,6 @@ module.exports = {
   TIER_RANK,
   MIN_TEXT_CHARS,
   novelProseChars,
+  MIN_NOVEL_PROSE_CHARS,
+  MIN_NOVEL_PROSE_FRAC,
 };
