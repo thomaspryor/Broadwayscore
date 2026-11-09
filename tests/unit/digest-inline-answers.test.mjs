@@ -12,7 +12,8 @@ const { renderNamedDigestBlock } = require('../../scripts/lib/autonomous-email-r
 const link = require('../../src/lib/owner-decision-link.js');
 
 const SECRET = 'test-secret-not-real';
-const NOW = new Date('2026-10-31T11:30:00Z');
+// Token verification uses the running clock, so signing must use it too.
+const NOW = new Date();
 const label = [{ name: 'awaiting-owner' }];
 const DECISION = [
   'DECISION NEEDED: Which data should we store?',

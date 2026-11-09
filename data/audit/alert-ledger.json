@@ -36120,7 +36120,7 @@
       "linearIdentifier": null
     },
     "time-bomb-tests:unit:tests/unit/digest-inline-answers.test.mjs::label plus decision block: one awaiting row with its options and a button per option": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Time-bomb test armed: tests/unit/digest-inline-answers.test.mjs — label plus decision block: one awaiting row with its options and a button per option",
       "firstSeen": "2026-11-02T23:23:09.016Z",
@@ -36130,7 +36130,9 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-6873"
+      "linearIdentifier": "BRO-6873",
+      "resolvedAt": "2026-11-09T06:58:47.814Z",
+      "resolveReason": "BRO-6873: signing fixture now uses the running clock; all 9 digest-inline-answers tests pass at baseline, +45 days and +365 days."
     },
     "time-bomb-tests:unit:tests/unit/owner-decision-notify.test.mjs::reconcileAnswered: a replayed visual approval writes the missing signed approval comment, once": {
       "status": "open",
