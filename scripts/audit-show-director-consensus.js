@@ -23,6 +23,7 @@
  * --soft           include SOFT findings (default: STRICT only — high precision)
  * --review-mode    include REVIEW findings (even more relaxed — for periodic manual review)
  * --limit=N        cap output to top N findings by suspiciousness (default: no cap)
+ * --alert        file/refresh ONE worker card for STRICT+ZERO findings (scripts/lib/audit-alert.js); clears when clean (BRO-7210)
  * --fail-on-strict exit 1 when STRICT findings exist (default off — advisory)
  * --min-reviews=N  only audit shows with at least N reviews (default: 8). 8 was chosen
  *                  after observing that mostly-flagged shows like beetlejuice-2022 (90/96
@@ -242,4 +243,12 @@ console.log(JSON.stringify(out, null, 2));
 // uncaught exception, so the workflow's `exit $AUDIT_EXIT` still catches real breakage.
 // ZERO findings were already non-blocking — large sample with 0 mentions is
 // suggestive but not always conclusive (e.g. devised theatre with no named director).
-process.exit(FAIL_ON_STRICT && strictCount > 0 ? 1 : 0);
+// BRO-7210: findings had no owner and sat unactioned for 30 days; --alert files one worker card.
+// Uses ALL findings (not the --limit slice) and never changes the exit code.
+(async () => {
+  if (argv.includes('--alert')) {
+    const { routeAuditDecisions } = require('./lib/audit-alert');
+    await routeAuditDecisions(require('./lib/director-consensus-alert').decideDirectorConsensusAlert(findings, scannedShows), 'audit-show-director-consensus');
+  }
+  process.exit(FAIL_ON_STRICT && strictCount > 0 ? 1 : 0);
+})();

@@ -54,6 +54,10 @@ jobs:
         id: audit
         env:
           INPUT_SEVERITY: ${{ github.event.inputs.severity || 'strict' }}
+          # BRO-7210: --alert files/clears one worker card (owner-alert-router); advisory, never changes the exit code
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
         run: |
           SEVERITY="${INPUT_SEVERITY}"
           FLAGS=""
@@ -67,7 +71,7 @@ jobs:
           # silently inherit future script default changes. 8 was chosen because
           # mostly-flagged shows (e.g. beetlejuice-2022 with 90/96 flagged) leave
           # a tiny unflagged sample that produces unreliable signals.
-          ARGS="--min-reviews=8 $FLAGS"
+          ARGS="--min-reviews=8 --alert $FLAGS"
           echo "Running: node scripts/audit-show-director-consensus.js $ARGS"
 
           # Run audit, capture output. The audit is advisory: it exits 0 even with
