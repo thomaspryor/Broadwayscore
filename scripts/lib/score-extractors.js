@@ -145,6 +145,20 @@ function isRelayedStarRating(source, matchIndex) {
   return RELAYED_PASSIVE_VERB.test(clause) && OTHER_SOURCE_NAMED.test(clause);
 }
 
+// BRO-7210: "two stars" is also plain cast prose ("with two stars, British actors
+// X and Y", "the two stars of the show"). A bare word-star match is not a rating
+// when the word before it is a determiner/preposition/verb that makes "stars" a
+// noun phrase, or when a nationality/"of the" noun follows ("two stars, British...").
+const CAST_STARS_PRECEDER = /(?:^|[\s>])(?:with|has|have|had|its|their|his|her|our|the|these|those|of|by|from|and|between|to|are|were|both|as)\s*(?:<[^>]*>\s*)*$/i;
+const CAST_STARS_FOLLOWER = /^\s*[,;:]?\s*(?:British|American|English|Irish|Scottish|Welsh|Australian|Canadian|Broadway|West End|Hollywood|of\s+(?:the|this|that)\b|who\b|whose\b|both\b)/i;
+function isCastStarsProse(source, matchIndex, matched) {
+  if (!source || !/^\s*(?:one|two|three|four|five)\b/i.test(matched)) return false;
+  const before = source.slice(Math.max(0, matchIndex - 40), matchIndex);
+  if (CAST_STARS_PRECEDER.test(before)) return true;
+  const after = source.slice(matchIndex + matched.length, matchIndex + matched.length + 40);
+  return CAST_STARS_FOLLOWER.test(after);
+}
+
 // First spelled-out star rating across `sources` that is not relayed from
 // another critic. Pattern order is outer (out-of-five before bare), then
 // source order, so callers keep their historical precedence. `anchored`
@@ -157,6 +171,7 @@ function findOwnWordStars(sources, { anchored = false } = {}) {
       for (const m of source.matchAll(new RegExp(pat.source, pat.flags + 'g'))) {
         if (anchored && !(m.index <= srcLen * 0.15 || m.index >= srcLen * 0.85)) continue;
         if (isRelayedStarRating(source, m.index)) continue;
+        if (isCastStarsProse(source, m.index, m[0])) continue;
         const rating = WORD_STAR_NUM[m[1].toLowerCase()];
         if (rating) return rating;
       }

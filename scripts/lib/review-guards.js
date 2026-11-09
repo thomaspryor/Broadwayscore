@@ -5204,6 +5204,20 @@ function isPreviewFirstLookPiece(data) {
 }
 
 /**
+ * BRO-7210: a submit-review-form record whose URL the form's own gate refuses
+ * (submissionNonReviewReason, shared with review-file-writer + the validator).
+ * Escape hatches: allowNonReviewUrl (human override stamped by ingest) and
+ * namedNonReviewUrlManualClear.
+ */
+function isRefusedSubmissionUrlRecord(data) {
+  return Boolean(
+    data && data.source === 'submit-review-form' && data.url &&
+    data.allowNonReviewUrl !== true && data.namedNonReviewUrlManualClear !== true &&
+    require('./non-review-url-patterns').submissionNonReviewReason(data.url)
+  );
+}
+
+/**
  * Named non-review URL rule (BRO-4101), as a pure predicate shared by
  * explainExclusion() AND rebuild-all-reviews.js's inline loop. Until
  * 2026-09-25 only explainExclusion had it, so the rule never reached
@@ -6002,6 +6016,11 @@ function explainExclusion(data, show, filePath, opts) {
   // about the URL or source. Same direct-check pattern as
   // wrongProductionManualClear elsewhere in this file.
   if (isNamedNonReviewUrlRecord(data)) return 'namedNonReviewUrl';
+  // BRO-7210: the writer refuses these URLs only for NEW submit-review-form files, so
+  // a file written before the rule (or by a path without it) stayed includable: 6
+  // letterboxd / cbsnews-video files sat unscored on live shows. Honour the form's
+  // refusal on the read side with the same shared decision.
+  if (isRefusedSubmissionUrlRecord(data)) return 'submissionRefusedUrl';
   // BRO-3135: body-less + aggregator-inherited score + no production evidence.
   // humanReviewScore is a human's verdict, so it is exempt.
   if (isBodylessAggregatorScoreUncorroborated(data, show)) return 'bodylessAggregatorScoreUncorroborated';
@@ -7130,6 +7149,7 @@ module.exports = {
   isIncludableForRebuild,
   hasIncludableSyndicationPrimary,
   isNamedNonReviewUrlRecord,
+  isRefusedSubmissionUrlRecord,
   isCancelledBeforeOpeningShow,
   isUnverifiableWebSearchRow,
   isLegacyWebSearchOnly,
