@@ -249,7 +249,11 @@ async function main(argv = process.argv.slice(2), { graphql = null, now = new Da
   if (opts.out) fs.writeFileSync(opts.out, JSON.stringify(report, null, 2) + '\n');
   // BRO-7139 Step 4: ask-owner questions for owner-hold-sweep --model-questions. A temp file
   // (RUNNER_TEMP in CI), never committed: it holds model text drawn from card text.
-  if (opts.questionsOut) fs.writeFileSync(opts.questionsOut, JSON.stringify(Q.questionsFromResults(results), null, 2) + '\n');
+  if (opts.questionsOut) {
+    const qs = Q.questionsFromResults(results);
+    // No file on a night with no questions: the dry-run step then skips its board read.
+    if (Object.keys(qs).length) fs.writeFileSync(opts.questionsOut, JSON.stringify(qs, null, 2) + '\n');
+  }
   // One bad card is a ledger row, not a red night; every card failing is. A partial failure
   // still shows on the run page as a warning annotation.
   const failed = results.filter((r) => r.error).length;

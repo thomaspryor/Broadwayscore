@@ -63,9 +63,10 @@ async function main(argv = process.argv.slice(2), deps = {}) {
 
   let model = null;
   if (args['model-questions']) {
-    let mq = {};
-    try { mq = JSON.parse(fs.readFileSync(String(args['model-questions']), 'utf8')); } catch (e) { console.error(`owner-hold-sweep: cannot read --model-questions: ${e.message}`); }
-    model = sweep.planModelQuestions(plan, mq);
+    let mq = {}; let parseError = false;
+    try { mq = JSON.parse(fs.readFileSync(String(args['model-questions']), 'utf8')); } catch (e) { parseError = true; console.error(`owner-hold-sweep: cannot read --model-questions: ${e.message}`); }
+    if (!mq || typeof mq !== 'object' || Array.isArray(mq)) { parseError = true; mq = {}; }
+    model = { ...sweep.planModelQuestions(plan, mq), parseError };
   }
 
   const show = (tag, rows) => rows.forEach((r) => console.log(`${tag} ${r.identifier} P${r.priority} ${r.state} | ${String(r.title).slice(0, 60)} | ${r.why}`));
@@ -121,7 +122,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     mode: apply ? 'apply' : 'dry-run', held: plan.held,
     release: plan.releases.length, ask: plan.questions.length, needsQuestion: plan.needsQuestion.length,
     leave: plan.leave.length, deferred: plan.deferred.length, ...(apply ? { done } : {}),
-    ...(model ? { model: { wouldAsk: model.wouldAsk.length, rejected: model.rejected.length, notHeld: model.notHeld.length } } : {}),
+    ...(model ? { model: { wouldAsk: model.wouldAsk.length, rejected: model.rejected.length, notHeld: model.notHeld.length, parseError: model.parseError } } : {}),
   };
   console.log(args.json ? JSON.stringify(summary) : `owner-hold-sweep: ${JSON.stringify(summary)}`);
   if (done.failed.length) process.exitCode = 1;

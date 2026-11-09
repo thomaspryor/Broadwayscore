@@ -169,7 +169,11 @@ function planSweep(issues, { now = new Date(), secret = null, releaseCap = DEFAU
 /** Description with the question appended (and the old gate wording left as is). */
 // Lines a consent or answer gate reads. A model-drafted question must never carry one:
 // pasted into the description it would read as the owner's answer or approval.
-const CONSENT_MARKER_RE = /(?:^|\n)\s*(?:[-*>]\s*)?(?:\*\*)?(?:OWNER-[A-Z-]+|DEFAULT-APPLIED|APPROVED|VISUAL-OK|UNPARKED|PARKED|ANSWERED)\b|answered by the owner|owner (?:approved|answered|said yes|agreed)/i;
+// Uppercase marker tokens are case-sensitive (prose like "Parked cards wait" or
+// "Owner-facing copy" stays legal); phrases any gate reads are case-insensitive anywhere.
+const LINE_LEAD = String.raw`^[ \t]*(?:(?:[-*+>]|\d+[.)])[ \t]*)?(?:\*\*|__)?[ \t]*`;
+const CONSENT_MARKER_RE = new RegExp(`${LINE_LEAD}(?:OWNER-[A-Z][A-Z-]*|DEFAULT-APPLIED|APPROVED|VISUAL-OK|UNPARKED|PARKED|ANSWERED)\\b`, 'm');
+const CONSENT_PHRASE_RE = /answered by the owner|owner (?:approved|answered|said yes|agreed|cleared)|not an owner decision|owner gate removed|owner approval/i;
 const MODEL_QUESTION_MAX = 1500;
 
 /**
@@ -179,10 +183,10 @@ const MODEL_QUESTION_MAX = 1500;
  * Returns { ok: true, text } or { ok: false, why }.
  */
 function sanitizeModelQuestion(identifier, text) {
-  let t = String(text || '').replace(/\r\n?/g, '\n').replace(/[\u0000-\u0008\u000b-\u001f\u007f\u200b-\u200f\u202a-\u202e\u2060-\u2064\ufeff]/g, '').trim();
+  let t = String(text || '').replace(/\r\n?|[\u0085\u2028\u2029]/g, '\n').replace(/[\u0000-\u0008\u000b-\u001f\u007f\u200b-\u200f\u202a-\u202e\u2060-\u2064\ufeff]/g, '').trim();
   if (!t) return { ok: false, why: 'empty' };
   if (t.length > MODEL_QUESTION_MAX) return { ok: false, why: 'too long' };
-  if (CONSENT_MARKER_RE.test(t)) return { ok: false, why: 'carries a consent or answer marker' };
+  if (CONSENT_MARKER_RE.test(t) || CONSENT_PHRASE_RE.test(t)) return { ok: false, why: 'carries a consent or answer marker' };
   t = t.replace(/(^|[^\w`])@(?=[\w-])/g, '$1');
   if (!validQuestion(identifier, t)) return { ok: false, why: 'not a valid DECISION NEEDED block' };
   return { ok: true, text: t };
@@ -214,5 +218,5 @@ function withQuestion(description, question) {
 module.exports = {
   SWEEP_TAG, DEFAULT_RELEASE_CAP, DEFAULT_QUESTION_CAP, SWEPT_COMMENT_RE,
   selectHolds, classifyHold, planSweep, releasedView, releaseComment, validQuestion, withQuestion,
-  sanitizeModelQuestion, planModelQuestions, CONSENT_MARKER_RE,
+  sanitizeModelQuestion, planModelQuestions, CONSENT_MARKER_RE, CONSENT_PHRASE_RE,
 };
