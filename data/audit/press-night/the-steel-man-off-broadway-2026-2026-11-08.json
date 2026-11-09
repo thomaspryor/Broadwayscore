@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "showId": "the-steel-man-off-broadway-2026",
+  "night": "2026-11-08",
+  "market": "off-broadway",
+  "embargoAt": "2026-11-09T03:00:00.000Z",
+  "embargoSource": "market-default",
+  "probe": {
+    "startedAt": "2026-11-09T02:30:05.332Z",
+    "endedAt": null,
+    "intervalMin": 5,
+    "samples": 16,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-11-09T03:45:09.310Z",
+    "lastOkSampleAt": "2026-11-09T03:45:09.310Z"
+  },
+  "firstLiveAt": "2026-11-09T02:30:05.332Z",
+  "firstLiveBaseline": true,
+  "lastLiveAt": "2026-11-09T02:30:05.332Z",
+  "liveCount": 1,
+  "liveCountAt": {
+    "1h": null,
+    "2h": null,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": null,
+    "2h": null,
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": "2026-11-08",
+    "precision": "approx",
+    "source": "prod-rv-publishDate",
+    "tierScope": "any"
+  },
+  "perReview": [
+    {
+      "key": "theater pizzazz|alix cohen",
+      "outlet": "Theater Pizzazz",
+      "critic": "Alix Cohen",
+      "tier": 3,
+      "publishAt": "2026-11-08",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-09T02:30:05.332Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    }
+  ],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 1,
+      "fetchedAt": "2026-11-09T03:46:20.867Z",
+      "censusNote": "no BWW roundup found"
+    }
+  },
+  "manualActions": [],
+  "publishedBy": {
+    "path": "regular",
+    "method": "lane-only-decision",
+    "checks": [
+      {
+        "at": "2026-11-09T03:46:20.942Z",
+        "label": "2h",
+        "standDown": false,
+        "reason": "market not lane-only"
+      }
+    ]
+  },
+  "fileState": {
+    "capturedAt": "2026-11-09T03:46:25.325Z",
+    "files": [
+      {
+        "file": "theater-pizzazz--alix-cohen.json",
+        "outletId": "theater-pizzazz",
+        "outlet": "Theater Pizzazz",
+        "critic": "Alix Cohen",
+        "firstSeenAt": "2026-11-08T19:45:11.871Z",
+        "scoredAt": "2026-11-08T19:58:52.814Z",
+        "publishDate": "2026-11-08",
+        "url": "theaterpizzazz.com/the-steel-man-two-generations-moving-on-from-trauma",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      }
+    ]
+  }
+}
