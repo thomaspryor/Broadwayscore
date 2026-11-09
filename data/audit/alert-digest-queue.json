@@ -1866,5 +1866,36 @@
       }
     ],
     "queuedAt": "2026-11-09T06:43:19.348Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6854-art2",
+    "title": "Landing blocked: resolve red on land/bro-6854-art2",
+    "description": "land.yml did not land land/bro-6854-art2: the resolve gate went red at d6c59dd581. The branch ref was left in place and nothing was pushed to main. First failure: REFUSED: resolve: land/bro-6854-art2 tip is 670298a3a3 (origin/land/bro-6854-art2), not the verified tip d6c59dd581 — a newer push superseded this landing; nothing pushed (attempts 0, 37.1s) Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42578195820",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6854-art2"
+      },
+      {
+        "name": "gate",
+        "value": "resolve"
+      },
+      {
+        "name": "tip",
+        "value": "d6c59dd581c78f102d704fe182cf44e5dca2f00a"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42578195820"
+      }
+    ],
+    "queuedAt": "2026-11-09T07:19:34.193Z"
   }
 ]
