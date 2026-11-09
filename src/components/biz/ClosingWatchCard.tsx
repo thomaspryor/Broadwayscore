@@ -90,7 +90,7 @@ export default function ClosingWatchCard({
       {basis && (
         <p className="text-xs text-fg-muted mt-3">
           Based on {basis.sample} past Broadway shows that ran this far under break-even: half closed within{' '}
-          {basis.medianWeeks} weeks, most within {basis.p75Weeks}.
+          {basis.medianWeeks} weeks, three in four within {basis.p75Weeks}.
         </p>
       )}
     </Link>

@@ -22,3 +22,10 @@ Decisions that came from it:
 
 When a session is unsure whether to show a guess where the record is silent,
 start from this purpose rather than asking the owner again.
+- Closing Watch (2026-11-09, BRO-7246): running shows with no announced
+  closing get our estimated closing month, calibrated on how long past shows
+  ran once under break-even. The owner, after a session asked whether a public
+  prediction was too risky: the scorecard "is not playing it safe ... we're
+  bringing it together and extrapolating from it and guessing from it to give
+  people information they wouldn't otherwise have." Asking was the mistake.
+
