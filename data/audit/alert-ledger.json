@@ -19489,7 +19489,7 @@
       "title": "Roundup gaps: 6 listed review(s) not captured across 2 show(s)",
       "firstSeen": "2026-10-16T17:15:04.341Z",
       "incidentOpenedAt": "2026-10-16T17:15:04.341Z",
-      "lastSeen": "2026-11-09T10:39:45.539Z",
+      "lastSeen": "2026-11-09T12:05:57.195Z",
       "lastNotifiedAt": "2026-11-09T06:26:01.256Z",
       "lastSurfacedAt": null,
       "notifyCount": 43,
@@ -19554,7 +19554,7 @@
         "here-there-are-blueberries-2026",
         "the-steel-man-off-broadway-2026"
       ],
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "land:land/bro-5478-land-hold-doc": {
       "status": "resolved",
@@ -37258,7 +37258,7 @@
       ]
     },
     "review-gap:opening-window:pulman-and-stilgoe-hooray-for-hollywood-off-west-end-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Review gap — \"Pulman & Stilgoe: Hooray For Hollywood\" missing 1 cited review(s)",
       "firstSeen": "2026-11-04T12:02:15.976Z",
@@ -37269,7 +37269,9 @@
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 2,
+      "resolvedAt": "2026-11-09T12:05:57.108Z",
+      "resolveReason": "review-gap: no uncollected cited reviews on the latest audit, only SERP-census gaps, or show id retired"
     },
     "test-yml:red:Unit Tests:2a99ef21": {
       "status": "resolved",
@@ -38419,12 +38421,13 @@
       "title": "Review gap — \"Othello (Bedlam)\" missing 2 cited review(s)",
       "firstSeen": "2026-11-07T15:26:56.754Z",
       "incidentOpenedAt": "2026-11-07T15:26:56.754Z",
-      "lastSeen": "2026-11-09T10:39:45.459Z",
+      "lastSeen": "2026-11-09T12:05:57.138Z",
       "lastNotifiedAt": "2026-11-09T10:39:45.459Z",
       "lastSurfacedAt": "2026-11-09T10:39:45.459Z",
       "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "land:land/bro-7081-discovery": {
       "status": "resolved",

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-09T10:40:40.396Z",
+  "generatedAt": "2026-11-09T12:06:37.850Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -118,6 +118,10 @@
   "feedsChecked": 84,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -138,8 +142,8 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 840,
-  "matchedGaps": 4,
+  "itemsScanned": 837,
+  "matchedGaps": 3,
   "possibleGaps": 4,
   "gaps": [
     {
@@ -164,18 +168,9 @@
       "showId": "nero-off-west-end-2026",
       "title": "Nero",
       "level": "matched",
-      "outletId": "south-london",
-      "url": "https://southlondon.co.uk/lifestyle/review-nero-southwark-playhouse/",
-      "headline": "Review: Nero @ Southwark Playhouse",
-      "publishDate": "2026-11-09"
-    },
-    {
-      "showId": "the-steel-man-off-broadway-2026",
-      "title": "The Steel Man",
-      "level": "matched",
-      "outletId": "times-square-chronicles",
-      "url": "https://t2conline.com/the-steel-man-when-the-sins-of-the-father-become-the-burden-of-the-son/",
-      "headline": "The Steel Man: When the Sins of the Father Become the Burden of the Son",
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/nero-musical-at-southwark-playhouse-elephant-review_1736407/",
+      "headline": "Nero musical at Southwark Playhouse Elephant – review",
       "publishDate": "2026-11-09"
     },
     {
