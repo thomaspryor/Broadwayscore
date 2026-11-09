@@ -1,94 +1,46 @@
 {
-  "generatedAt": "2026-11-09T02:41:59.919Z",
+  "generatedAt": "2026-11-09T04:01:48.446Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 320,
-  "clean": 315,
-  "defective": 5,
+  "clean": 318,
+  "defective": 2,
   "byType": {
-    "score-drift": 5
+    "score-drift": 2
   },
   "shows": [
     {
-      "showId": "nero-off-west-end-2026",
-      "title": "Nero",
-      "openingDate": "2026-11-06",
+      "showId": "the-unbelievers-off-broadway-2026",
+      "title": "The Unbelievers",
+      "openingDate": "2026-11-05",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 37.35 vs local 37.86 (Δ0.51)"
+          "detail": "deployed cs 70.34 vs local 70.46 (Δ0.12)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 13,
-      "deployedCount": 13,
-      "firstDefectAt": "2026-11-09T02:41:51.742Z"
+      "localCount": 14,
+      "deployedCount": 14,
+      "firstDefectAt": "2026-11-09T04:01:44.678Z"
     },
     {
-      "showId": "tristan-and-yseult-off-broadway-2026",
-      "title": "Tristan & Yseult",
-      "openingDate": "2026-11-01",
+      "showId": "the-verge-off-broadway-2026",
+      "title": "The Verge",
+      "openingDate": "2026-11-05",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 80.44 vs local 80.59 (Δ0.15)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 5,
-      "deployedCount": 5,
-      "firstDefectAt": "2026-11-09T02:41:51.742Z"
-    },
-    {
-      "showId": "king-hedley-ii-regional-2026",
-      "title": "King Hedley II",
-      "openingDate": "2026-10-26",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 76.56 vs local 76.27 (Δ0.29)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 9,
-      "deployedCount": 10,
-      "firstDefectAt": "2026-11-09T02:41:51.742Z"
-    },
-    {
-      "showId": "deep-heat-rivalry-off-west-end-2026",
-      "title": "Deep Heat Rivalry",
-      "openingDate": "2026-09-17",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 82.77 vs local 83.01 (Δ0.24)"
+          "detail": "deployed cs 58.87 vs local 58.63 (Δ0.24)"
         }
       ],
       "missingFromProd": [],
       "localCount": 12,
       "deployedCount": 12,
-      "firstDefectAt": "2026-11-09T02:41:51.742Z"
-    },
-    {
-      "showId": "oliver-west-end-2024",
-      "title": "Oliver!",
-      "openingDate": "2025-01-14",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 85.58 vs local 85.42 (Δ0.16)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 22,
-      "deployedCount": 22,
-      "firstDefectAt": "2026-11-09T02:41:51.742Z"
+      "firstDefectAt": "2026-11-09T04:01:44.678Z"
     }
   ],
   "persistentDefective": 0,
