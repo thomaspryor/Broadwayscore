@@ -124,4 +124,52 @@ function classifyRecord(file, record, { siblings } = {}) {
   return out;
 }
 
-module.exports = { EXCLUSION_FIELDS, ACKNOWLEDGED, latestStamp, classifyRecord, explainDuplicateOf };
+
+const DRIFT_ALERT_KEY = 'approved-fix-drift:unexplained';
+const DRIFT_ALERT_MAX_ROWS = 25;
+
+/**
+ * BRO-7179: the owner-alert-router call for one audit run. Pure. `unexplained`
+ * is classifyRecord() output with `explained` false. Returns
+ * { action: 'resolve', conditionKey, reason } when nothing is unexplained, else
+ * { action: 'route', alert } for routeAlert(). The card names only the file
+ * path, field, fixId, dates and the flag values: never review text.
+ */
+// Exclusion fields hold booleans or a sibling filename; anything else is
+// clamped so a malformed value can never carry text into a card.
+function flagValue(v) {
+  if (v === undefined || v === null || typeof v === 'boolean' || typeof v === 'number') return JSON.stringify(v === undefined ? null : v);
+  if (typeof v === 'string' && v.length <= 120 && !/\s{2}|\n/.test(v)) return JSON.stringify(v);
+  return `<${typeof v}, not shown>`;
+}
+
+function decideDriftAlert(unexplained) {
+  const list = Array.isArray(unexplained) ? unexplained : [];
+  if (!list.length) {
+    return { action: 'resolve', conditionKey: DRIFT_ALERT_KEY, reason: 'no unexplained approved-fix drift' };
+  }
+  const shown = list.slice(0, DRIFT_ALERT_MAX_ROWS);
+  const rows = shown.map((d) => {
+    const s = d.stamp || {};
+    return `- ${d.file} ${d.field}: approved ${flagValue(s.newValue)} at ${s.at || '?'} (fix ${s.fixId || '?'}), now ${flagValue(d.current)}`;
+  });
+  const more = list.length - shown.length;
+  if (more > 0) rows.push(`- ...and ${more} more (run the audit for the full list)`);
+  const n = list.length;
+  return {
+    action: 'route',
+    alert: {
+      conditionKey: DRIFT_ALERT_KEY,
+      title: `Approved-fix drift: ${n} approved exclusion verdict${n === 1 ? '' : 's'} silently undone`,
+      description: `The daily approved-fix drift audit found ${n} review-text file${n === 1 ? '' : 's'} whose newest approved-fix stamp no longer matches the field, with no later recorded decision explaining it. This list is the snapshot at filing; run the audit for the current one.\n\n${rows.join('\n')}`,
+      hint: 'For each row: restore the approved value with node scripts/new-fix-plan.js --review-edit=<show>/<file>.json:<field>=<value>, then find and fix the writer that erased it. If a later decision is correct, add an ACKNOWLEDGED entry in scripts/lib/approved-fix-drift.js with the reason. Done when node scripts/audit-approved-fix-drift.js --strict exits 0.',
+      severity: 'warning',
+      disposition: 'auto',
+      cooldownHours: 20,
+      // No custom `verify`: the router's fallback (check-alert-condition-absent.js on
+      // this key) is on verify-gate's allowlist, so the card stays dispatchable.
+    },
+  };
+}
+
+module.exports = { EXCLUSION_FIELDS, ACKNOWLEDGED, DRIFT_ALERT_KEY, latestStamp, classifyRecord, explainDuplicateOf, decideDriftAlert };

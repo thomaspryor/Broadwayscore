@@ -599,11 +599,18 @@ jobs:
 
       # BRO-7155: approved fixes (approvedFixes[] stamps) a later writer silently undid. Lists each unexplained
       # drift; restore with a pending-fix plan, then close the writer's hole. Advisory first (CLAUDE.md rule 19).
+      # BRO-7179: --alert files one worker card (owner-alert-router, disposition auto, key
+      # approved-fix-drift:unexplained) while drift exists and resolves the condition when clean.
+      # An 'auto' warning never emails; RESEND/OWNER_EMAIL only serve the router's Linear usage-limit page.
       - name: Approved-fix drift audit
         if: always()
         continue-on-error: true
-        timeout-minutes: 2
-        run: node scripts/audit-approved-fix-drift.js --strict
+        timeout-minutes: 3
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/audit-approved-fix-drift.js --strict --alert
 
       # BRO-6147: the daily batched decision email moved to owner-decision-emails.yml
       # (one email per decision, tap-to-answer buttons, every 20 minutes).

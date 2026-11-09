@@ -12,6 +12,8 @@
  *   node scripts/audit-approved-fix-drift.js --json     # machine output
  *   node scripts/audit-approved-fix-drift.js --all      # also list explained drifts
  *   node scripts/audit-approved-fix-drift.js --strict   # exit 1 when any unexplained drift
+ *   node scripts/audit-approved-fix-drift.js --alert    # file/refresh a worker card via owner-alert-router
+ *                                                       # (resolves the condition when clean; BRO-7179)
  *   --dir=<review-texts dir>                            # default data/review-texts
  *
  * Exit: 0 ok (or advisory), 1 unexplained drift with --strict, 2 no review texts.
@@ -21,7 +23,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { classifyRecord } = require('./lib/approved-fix-drift');
+const { classifyRecord, decideDriftAlert } = require('./lib/approved-fix-drift');
 const { listShowDirs } = require('./lib/list-show-dirs');
 
 const args = process.argv.slice(2);
@@ -33,10 +35,10 @@ function readJson(p) {
   try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch (_) { return null; }
 }
 
-function main() {
+async function main() {
   if (!fs.existsSync(DIR)) {
     console.error(`audit-approved-fix-drift: no review texts at ${DIR}`);
-    process.exit(2);
+    return 2;
   }
   const drifts = [];
   let scanned = 0;
@@ -78,7 +80,25 @@ function main() {
     if (flag('--all')) for (const d of explained) console.log(`  explained   ${d.file} ${d.field}: ${d.explained}`);
     if (unexplained.length) console.log('Restore each with node scripts/new-fix-plan.js --review-edit=<show>/<file>.json:<field>=<value>, then find the writer that erased it.');
   }
-  if (flag('--strict') && unexplained.length) process.exit(1);
+  if (flag('--alert')) {
+    // An alert failure is logged and never changes the audit's own exit code.
+    try {
+      const decision = decideDriftAlert(unexplained);
+      const router = require('./lib/owner-alert-router.js');
+      if (decision.action === 'resolve') router.resolveCondition(decision.conditionKey, { reason: decision.reason });
+      else {
+        const res = await router.routeAlert(decision.alert);
+        const r = res || {};
+        console.log(`alert: ${r.action || 'routed'}${r.linearIdentifier ? ` ${r.linearIdentifier}` : ''}${r.dispatchOk === false ? ` (card not filed: ${r.dispatchError || 'unknown error'})` : ''}`);
+      }
+    } catch (err) {
+      console.error(`audit-approved-fix-drift: alert failed: ${err.message}`);
+    }
+  }
+  return flag('--strict') && unexplained.length ? 1 : 0;
 }
 
-main();
+main().then((code) => { process.exitCode = code; }, (err) => {
+  console.error(`audit-approved-fix-drift: ${err.stack || err.message}`);
+  process.exitCode = 3;
+});
