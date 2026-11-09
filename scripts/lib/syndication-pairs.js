@@ -86,6 +86,9 @@ const PUBLISHING_GROUPS = [
   ['san-francisco-chronicle', 'sfgate'],
   // BRO-6054: content partnership; the i newspaper printed theartsdesk reviews (often cut down) in 2019.
   ['artsdesk', 'i-paper'],
+  // BRO-7237: Yahoo Entertainment reprints TheWrap's reviews under a yahoo.com URL (Robert Hofler's Wanted review,
+  // 2026-11-08, ran at both). Yahoo is the reprint; TheWrap is the original.
+  ['thewrap', 'yahoo'],
 ];
 
 function _isRealByline(criticName) {

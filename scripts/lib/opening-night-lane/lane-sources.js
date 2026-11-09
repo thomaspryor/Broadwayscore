@@ -115,6 +115,9 @@ const LANE_SOURCE_GAPS = {
   'la-voce-di-new-york': 'its feed carries the Italian edition only (one item, 2026-11-09) and /en/feed answers 403; Google News and SERP',
   '4columns': 'ceased publication 2026-06-26 (its feed says so); nothing new to find',
   'substack-com': 'not one outlet: substack.com/@profile posts from writers with no publication of their own; Google News and SERP',
+  // BRO-7237: Yahoo's theater reviews are reprints of TheWrap's (syndication-pairs.js drops the copy), so the TheWrap feed
+  // finds the original. Yahoo's entertainment feeds and review section answer 404 to the direct fetch (2026-11-09).
+  yahoo: "reprints TheWrap's review (the TheWrap theater feed finds the original; syndication-pairs.js drops the copy); its feeds answer 404 (2026-11-09)",
   nytimes: 'West End shows: the NYT Theater feed is read for Broadway only and nytimes.com/section/theater answers 403 (2026-11-04); Google News and SERP',
 };
 
