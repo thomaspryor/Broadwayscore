@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7080-director-consensus",
   "planId": "dbd1e1fb-cdc8-4878-9c3e-926715724292",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-09T10:51:07.278Z",
   "submitter": {
     "name": null,
@@ -126,5 +126,29 @@
         "description": "shows.json: here-there-are-blueberries-theatre-royal-stratford-east-off-west-end-2026.creativeTeam"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-09T12:01:20.649Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for the-saviors-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for evening-all-afternoon-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for just-for-us-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for here-there-are-blueberries-theatre-royal-stratford-east-off-west-end-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
