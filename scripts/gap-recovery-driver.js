@@ -168,7 +168,7 @@ function printPlan(cands) {
 async function runReconcile({ dir, ledgerPath }) {
   const rows = L.readRows(ledgerPath);
   const reopen = L.reconcileRecovered(rows, (key) => { try { return readJson(path.join(dir, key)); } catch { return null; } });
-  console.log(`reconcile: ${rows.length} ledger rows, ${reopen.length} recovered review(s) not complete on disk`);
+  console.log(`reconcile: ${rows.length} ledger rows, ${reopen.length} recovered review(s) whose recovered text is no longer on disk`);
   for (const r of reopen) console.log(`  reopen ${r.reviewKey} (${r.reason}, tier ${r.detail.tier})`);
   if (!OPTS.dryRun && reopen.length) L.appendRows(reopen, ledgerPath);
   return reopen;

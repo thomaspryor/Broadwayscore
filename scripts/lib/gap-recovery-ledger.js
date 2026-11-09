@@ -242,8 +242,9 @@ function recoveredRowFromLanding(landed, info = {}) {
 
 /**
  * Nightly reconcile (pure): every review whose latest row is 'recovered' but
- * whose file is no longer complete gets a 'reopened' row (which also resets its
- * strategy counts). A file that cannot be read reopens too.
+ * whose recovered text is no longer on disk (fullText shorter than the row's
+ * bytesAfter; tier !== complete for rows without bytesAfter) gets a 'reopened'
+ * row (which also resets its strategy counts). A file that cannot be read reopens too.
  * @param {Array} rows all ledger rows
  * @param {(reviewKey:string) => object|null} readReview
  * @returns {Array} reopen rows to append
@@ -255,14 +256,20 @@ function reconcileRecovered(rows, readReview, nowIso = new Date().toISOString())
     if (!last || last.outcome !== 'recovered') continue;
     const review = readReview(key);
     const tier = review ? review.contentTier || null : null;
-    if (tier === 'complete') continue;
+    // The recovery is intact while the text it wrote is still on disk. A recovered
+    // text may honestly be "truncated" (a paywalled outlet's partial body), so the
+    // tier alone is not the test when the row knows how much it wrote; tier is the
+    // fallback for rows without bytesAfter.
+    const onDisk = review && typeof review.fullText === 'string' ? review.fullText.length : 0;
+    const hasBytes = Number.isFinite(last.bytesAfter) && last.bytesAfter > 0;
+    if (review && (hasBytes ? onDisk >= last.bytesAfter : tier === 'complete')) continue;
     out.push(makeRow({
       ts: nowIso,
       reviewKey: key,
       gapClass: last.gapClass,
       strategy: last.strategy,
       outcome: 'reopened',
-      reason: review ? 'recovered_file_not_complete' : 'recovered_file_unreadable',
+      reason: !review ? 'recovered_file_unreadable' : hasBytes ? 'recovered_text_lost' : 'recovered_file_not_complete',
       url: last.url,
       detail: { tier, recoveredAt: last.ts, pushedBlob: last.pushedBlob || null },
     }));
