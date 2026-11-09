@@ -303,5 +303,32 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-09T13:27:54.410Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red:audit-critic-consensus-contamination",
+    "title": "Data audit failing: Audit critic-consensus contamination",
+    "description": "The \"Audit critic-consensus contamination\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42628721582",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Job",
+        "value": "Data Validation"
+      },
+      {
+        "name": "Step",
+        "value": "Audit critic-consensus contamination"
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42628721582)"
+      }
+    ],
+    "queuedAt": "2026-11-09T13:56:48.936Z"
   }
 ]
