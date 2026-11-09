@@ -1,0 +1,38 @@
+{
+  "issueNumber": "bro-7251-c",
+  "planId": "4cb41d9a-6fcd-408a-903e-7f189d7d2ff7",
+  "status": "pending",
+  "createdAt": "2026-11-09T23:52:27.339Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7251 correction: Schmigadoon closes 2027-04-04 (Broadway News second extension, 2026-09-08, adds 13 weeks to Jan 3); the earlier plan used the first extension",
+    "steps": [
+      "shows.json: schmigadoon-2026.closingDate",
+      "shows.json: schmigadoon-2026.closingDateSource"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "schmigadoon-2026",
+        "field": "closingDate",
+        "oldValue": "2027-04-04",
+        "newValue": "2027-04-04",
+        "description": "shows.json: schmigadoon-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "schmigadoon-2026",
+        "field": "closingDateSource",
+        "oldValue": "TodayTix (NYC (Broadway/OB))",
+        "newValue": "Broadway News second extension announcement 2026-09-08 (broadwaynews.com/exclusive-broadways-schmigadoon-announces-second-extension)",
+        "description": "shows.json: schmigadoon-2026.closingDateSource"
+      }
+    ]
+  }
+}
