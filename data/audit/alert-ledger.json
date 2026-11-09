@@ -39489,13 +39489,13 @@
       "firstSeen": "2026-11-09T03:33:12.490Z",
       "incidentOpenedAt": "2026-11-09T03:33:12.490Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-09T14:22:56.995Z",
+      "lastSeen": "2026-11-09T14:36:57.825Z",
       "lastNotifiedAt": "2026-11-09T03:33:12.490Z",
       "lastSurfacedAt": "2026-11-09T03:33:12.490Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 26
+      "silentRefires": 27
     },
     "gap:iphigenie-en-tauride-english-national-opera-west-end-2026/sunday-times--unknown.json": {
       "status": "open",
@@ -40017,7 +40017,7 @@
       "linearIdentifier": null
     },
     "test-yml:data-validation-red:audit-critic-consensus-contamination": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Data audit failing: Audit critic-consensus contamination",
       "firstSeen": "2026-11-09T13:56:48.935Z",
@@ -40029,7 +40029,9 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-11-09T14:36:57.803Z",
+      "resolveReason": "step passed"
     },
     "land:land/bro-6854-dups3": {
       "status": "open",
