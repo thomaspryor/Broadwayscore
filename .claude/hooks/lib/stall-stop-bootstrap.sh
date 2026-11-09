@@ -7,7 +7,7 @@
 #
 # Usage (from the app repo's .claude/settings.json):
 #   SessionStart: bash .claude/hooks/stall-stop-bootstrap.sh fetch   (clone/refresh; may take ~10s)
-#   Stop:         bash .claude/hooks/stall-stop-bootstrap.sh stop    (exec only; never clones)
+#   Stop:         bash .claude/hooks/stall-stop-bootstrap.sh stop    (execs; fetches inline first if the runner is still missing)
 # The app repo carries a byte-identical copy of this file (scripts/lib/stall-stop-bootstrap.test.mjs
 # checks the committed copy when BSC_APP_REPO points at it).
 #
@@ -54,6 +54,9 @@ case "$mode" in
     find_runner >/dev/null || msg "BRO-7194: hook runner missing after fetch, stall Stop gate NOT installed."
     exit 0 ;;
   stop)
+    # Cloud sessions can take their first turn before the SessionStart fetch finishes (BRO-7194 probe:
+    # a 5s turn ended with no runner). Fetch inline now; the atomic rename makes a race with it harmless.
+    find_runner >/dev/null || bash "$0" fetch >/dev/null 2>&1
     r="$(find_runner)" || { msg "BRO-7194: stall Stop gate not installed in this session (no hook runner under $HOME_DIR). Do not end a turn promising later work with nothing running."; exit 0; }
     VE_ONLY_CODES="$STALL_CODES" exec bash "$r" verify-edits.sh ;;
   *) exit 0 ;;

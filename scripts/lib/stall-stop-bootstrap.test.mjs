@@ -30,7 +30,7 @@ function fakeRepo() {
 }
 
 test('stop with no runner anywhere fails open and says the gate is missing', () => {
-  const r = run('stop', { BSC_HOOKS_HOME: tmp('bsc-empty-') });
+  const r = run('stop', { BSC_HOOKS_HOME: tmp('bsc-empty-'), BSC_HOOKS_REPO_URL: 'file:///nonexistent-bsc-repo' });
   assert.equal(r.status, 0);
   assert.match(r.stdout, /stall Stop gate not installed/);
 });
@@ -148,4 +148,11 @@ test('stall-only: an unknown PROMISE_GATE_MODE value stays advisory even after t
     env: { ...process.env, HOME: d, CLAUDE_CODE_REMOTE: '', BOARD_GATE_DISABLED: '1', SHIP_CHECK_COVERAGE_DISABLE: '1', PROMISE_GATE_MODE: 'log', STALL_GATE_NOW: '2026-12-01T00:00:00Z' },
   });
   assert.equal(r.status, 0, r.stderr);
+});
+
+test('stop before any fetch (first turn beat SessionStart, BRO-7194 probe) fetches inline and still runs the gate', () => {
+  const src = fakeRepo(); const home = tmp('bsc-inline-');
+  const s = run('stop', { BSC_HOOKS_HOME: home, BSC_HOOKS_REPO_URL: 'file://' + src }, '{"y":2}');
+  assert.equal(s.status, 0, s.stderr);
+  assert.match(s.stdout, /RUNNER hook=verify-edits\.sh only=.*stdin=\{"y":2\}/);
 });
