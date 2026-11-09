@@ -52,6 +52,21 @@ unreadable): start it anyway, the runner re-checks and waits its turn.
    verdict always gets its fix round, past --card-max-minutes, or in the next
    firing when this one has no time left. Do not touch .claude/worktrees/codex-runner*.
 
+## 1b. Stalled-session sweep (a few minutes, before the Claude lane)
+
+Cloud sessions that promised later work and went quiet leave their card In
+Progress; nothing else wakes them (BRO-7183). Every firing:
+1. `node scripts/linear-reclaim-abandoned.js --stalled-sessions > /tmp/stall.json 2> /tmp/stall.err; tail -1 /tmp/stall.err`
+   (In Progress cards idle 12h+ held by a cloud session). If the list is `[]`, skip to section 2.
+2. For each entry call `get_session` with its `sessionId`. Write `/tmp/stall-rows.json` as
+   `[{"card": "...", "sessionId": "...", "session": <the get_session result>}]`, or
+   `"error": "<the error text>"` in place of `session` when the call failed.
+3. `node scripts/linear-reclaim-abandoned.js --stall-act --from-json=/tmp/stall-rows.json`. It moves
+   cards whose session is gone back to Todo and records nudges (at most 5 of each per firing).
+4. For each result with `"action": "nudge"`, call `send_message` with its `sessionId` and its
+   `message`, exactly. Never send anything else to those sessions, and never interrupt one.
+Count the nudges and requeues in your final reply's first line.
+
 ## 2. Claude lane (up to 4 cards, in your own worktrees)
 
 Keep picking until 4 cards are finished or the pick comes back empty. A card
