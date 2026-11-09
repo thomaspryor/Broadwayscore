@@ -14,7 +14,7 @@
  * otherwise it is a double count or a wrong outlet attribution.
  *
  * Usage: node scripts/audit-syndicated-critic-pairs.js [--reviews=PATH] [--allowlist=PATH] [--strict]
- *   --strict   exit 1 when any syndicated or unexplained pair exists
+ *   --strict   exit 1 when any syndicated or unexplained pair exists (exit 3: unreadable input)
  *   --alert    file/refresh one worker card via owner-alert-router; clears it when clean (BRO-7181)
  */
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -129,7 +129,10 @@ async function main(argv) {
     console.log(`::warning::${u.showId}: ${u.criticName} ships as ${u.outlets.join(' and ')} (double count, wrong attribution, or allowlist it)`);
   }
   if (stale.length) console.log(`[syndicated-critic-pairs] info: ${stale.length} allowlist entr${stale.length === 1 ? 'y no longer matches' : 'ies no longer match'}: ${stale.map(e => `${e.showId}/${e.critic}`).join(', ')}`);
-  if (argv.includes('--alert')) await routeAuditDecisions(decideSyndicatedPairAlert(pairs, unexplained), 'audit-syndicated-critic-pairs');
+  // An empty corpus (failed rebuild) or a fixture override is not a clean scan: never resolve the card on it.
+  if (argv.includes('--alert') && (reviewsArg || !Array.isArray(reviews) || !reviews.length)) {
+    console.log('[syndicated-critic-pairs] --alert skipped: fixture input or empty reviews.json');
+  } else if (argv.includes('--alert')) await routeAuditDecisions(decideSyndicatedPairAlert(pairs, unexplained), 'audit-syndicated-critic-pairs');
   return (pairs.length || unexplained.length) && argv.includes('--strict') ? 1 : 0;
 }
 

@@ -123,3 +123,12 @@ test('rule (ad): every workflow in the repo is clean (the class cannot come back
     assert.match(dh, new RegExp(`${s.replace('.', '\\.')} --strict --alert`), `${s} runs with --alert`);
   }
 });
+
+test('rule (ad): flag-name boundaries, per-command --alert, quoted true, accurate line number', () => {
+  assert.equal(findStrictAdvisoryWithoutAlert(step('        continue-on-error: true\n        run: node scripts/audit-x.js --strict-ids')).length, 0, '--strict-ids is not --strict');
+  assert.equal(findStrictAdvisoryWithoutAlert(step('        continue-on-error: true\n        run: node scripts/audit-x.js --strict --alert-only')).length, 1, '--alert-only is not --alert');
+  assert.equal(findStrictAdvisoryWithoutAlert(step('        continue-on-error: true\n        run: |\n          node a.js --strict --alert\n          node b.js --strict')).length, 1, 'one --alert does not cover a sibling command');
+  assert.equal(findStrictAdvisoryWithoutAlert(step('        continue-on-error: "true"\n        run: node a.js --strict')).length, 1);
+  const [h] = findStrictAdvisoryWithoutAlert(step('        continue-on-error: true\n        # note\n        run: node a.js --strict  # trailing'));
+  assert.equal(h.lineNum, 8);
+});

@@ -20,7 +20,7 @@
  *                                                             clears it when clean, never on missing input (BRO-7181)
  *
  * Exit: 0 clean (or no review-texts checkout, with a warning), 1 --strict and
- * outlets listed, 2 bad input (unreadable registry, or a checkout with no files).
+ * outlets listed, 2 bad input (unreadable registry, or a checkout with no files), 3 crash.
  */
 'use strict';
 

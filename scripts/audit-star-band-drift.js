@@ -118,4 +118,7 @@ const strictFail = process.argv.includes('--strict') && (out.publishedOutOfBand.
     await routeAuditDecisions(decideStarBandAlerts(out), 'audit-star-band-drift');
   }
   process.exitCode = strictFail ? 1 : 0;
-})();
+})().catch((err) => {
+  console.error(`audit-star-band-drift: alert step failed: ${err.stack || err.message}`);
+  process.exitCode = 3;
+});

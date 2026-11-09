@@ -544,7 +544,7 @@ jobs:
       - name: Published score star-band audit
         if: always()
         continue-on-error: true
-        timeout-minutes: 1
+        timeout-minutes: 3
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
@@ -559,7 +559,7 @@ jobs:
       - name: Syndicated critic pair audit
         if: always()
         continue-on-error: true
-        timeout-minutes: 1
+        timeout-minutes: 3
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
@@ -582,7 +582,7 @@ jobs:
       - name: Default-critic diversity audit
         if: always()
         continue-on-error: true
-        timeout-minutes: 1
+        timeout-minutes: 3
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}

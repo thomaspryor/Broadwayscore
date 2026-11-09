@@ -1533,16 +1533,20 @@ function findEolNodeVersions(raw) {
  * Comments are ignored when matching, including trailing `# ...` on a line.
  */
 const STRICT_ALERT_EXEMPT_RE = /#[ \t]*strict-alert-exempt:[ \t]*\S/;
+const STRICT_FLAG_RE = /(?:^|\s)--strict(?![\w-])/;
+const ALERT_FLAG_RE = /(?:^|\s)--alert(?![\w-])/;
 function findStrictAdvisoryWithoutAlert(raw) {
   const hits = [];
   for (const step of splitWorkflowSteps(raw)) {
     const body = step.lines.join('\n');
     if (STRICT_ALERT_EXEMPT_RE.test(body)) continue;
-    const code = stripComments(step.lines).map((l) => l.replace(/\s+#.*$/, ''));
-    if (!code.some((l) => /^\s*continue-on-error:\s*true\s*$/.test(l))) continue;
-    const idx = code.findIndex((l) => /(?:^|\s)--strict\b/.test(l));
-    if (idx === -1 || code.some((l) => /(?:^|\s)--alert\b/.test(l))) continue;
-    const lineOffset = step.lines.indexOf(code[idx]) === -1 ? 0 : step.lines.indexOf(code[idx]);
+    // Per original line (keeps line numbers right): drop full-line and trailing comments.
+    const code = step.lines.map((l) => (/^\s*#/.test(l) ? '' : l.replace(/\s+#.*$/, '')));
+    if (!code.some((l) => /^\s*continue-on-error:\s*["']?true["']?\s*$/.test(l))) continue;
+    // Each --strict command line needs its own --alert (one --alert must not cover a sibling command).
+    const lineOffset = code.findIndex((l) => STRICT_FLAG_RE.test(l) && !ALERT_FLAG_RE.test(l));
+    if (lineOffset === -1) continue;
+    const idx = lineOffset;
     hits.push({ name: step.name, lineNum: step.startLine + lineOffset + 1, text: code[idx].trim() });
   }
   return hits;
