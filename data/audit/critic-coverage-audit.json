@@ -4,10 +4,10 @@
     "name": "Elysa Gardner",
     "outlet": "usatoday",
     "tier": 2,
-    "total": 453,
-    "lastDate": "2026-10-29",
+    "total": 459,
+    "lastDate": "2026-11-09",
     "externalCount": 112,
-    "ourCount": 417,
+    "ourCount": 424,
     "missingCount": 73,
     "missing": [
       {
@@ -667,54 +667,11 @@
           "nysr"
         ]
       }
-    ]
-  },
-  {
-    "slug": "sara-holdren",
-    "name": "Sara Holdren",
-    "outlet": "vulture",
-    "tier": 1,
-    "total": 242,
-    "lastDate": "2026-10-29",
-    "externalCount": 50,
-    "ourCount": 236,
-    "missingCount": 4,
-    "missing": [
+    ],
+    "errors": [
       {
-        "url": "https://www.vulture.com/article/theater-reviews-june-off-broadway-shows-to-see.html",
-        "title": "June’s Off Broadway Productions to See",
-        "date": "2026-06-14",
-        "source": "vulture",
-        "sources": [
-          "vulture"
-        ]
-      },
-      {
-        "url": "https://www.vulture.com/article/theater-review-moby-dick-robert-wilson-bam.html",
-        "title": "Robert Wilson’s Last Voyage: Moby Dick",
-        "date": "2026-04-30",
-        "source": "vulture",
-        "sources": [
-          "vulture"
-        ]
-      },
-      {
-        "url": "https://www.vulture.com/article/theater-review-chekhov-ivanov-defilippis-new-american-ensemble.html",
-        "title": "A Production of Chekhov’s Ivanov That I Wish Everyone Could See",
-        "date": "2026-03-23",
-        "source": "vulture",
-        "sources": [
-          "vulture"
-        ]
-      },
-      {
-        "url": "https://www.vulture.com/article/aya-ogawa-meat-suit-theater-review.html",
-        "title": "Meat Suit: A Review From Inside the Belly of the Beast",
-        "date": "2026-02-25",
-        "source": "vulture",
-        "sources": [
-          "vulture"
-        ]
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/elysa-gardner/articles: All scraping methods failed"
       }
     ]
   },
@@ -723,10 +680,10 @@
     "name": "Helen Shaw",
     "outlet": "vulture",
     "tier": 1,
-    "total": 203,
-    "lastDate": "2026-11-01",
+    "total": 210,
+    "lastDate": "2026-11-09",
     "externalCount": 33,
-    "ourCount": 177,
+    "ourCount": 186,
     "missingCount": 4,
     "missing": [
       {
@@ -765,6 +722,12 @@
           "vulture"
         ]
       }
+    ],
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/helen-shaw/articles: All scraping methods failed"
+      }
     ]
   },
   {
@@ -772,7 +735,7 @@
     "name": "Jackson McHenry",
     "outlet": "vulture",
     "tier": 1,
-    "total": 158,
+    "total": 166,
     "lastDate": "2026-10-30",
     "externalCount": 50,
     "ourCount": 144,
@@ -814,6 +777,58 @@
           "vulture"
         ]
       }
+    ],
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/jackson-mchenry/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "sara-holdren",
+    "name": "Sara Holdren",
+    "outlet": "vulture",
+    "tier": 1,
+    "total": 248,
+    "lastDate": "2026-11-05",
+    "externalCount": 50,
+    "ourCount": 239,
+    "missingCount": 3,
+    "missing": [
+      {
+        "url": "https://www.vulture.com/article/theater-reviews-june-off-broadway-shows-to-see.html",
+        "title": "June’s Off Broadway Productions to See",
+        "date": "2026-06-14",
+        "source": "vulture",
+        "sources": [
+          "vulture"
+        ]
+      },
+      {
+        "url": "https://www.vulture.com/article/theater-review-moby-dick-robert-wilson-bam.html",
+        "title": "Robert Wilson’s Last Voyage: Moby Dick",
+        "date": "2026-04-30",
+        "source": "vulture",
+        "sources": [
+          "vulture"
+        ]
+      },
+      {
+        "url": "https://www.vulture.com/article/theater-review-chekhov-ivanov-defilippis-new-american-ensemble.html",
+        "title": "A Production of Chekhov’s Ivanov That I Wish Everyone Could See",
+        "date": "2026-03-23",
+        "source": "vulture",
+        "sources": [
+          "vulture"
+        ]
+      }
+    ],
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/sara-holdren/articles: All scraping methods failed"
+      }
     ]
   },
   {
@@ -821,10 +836,10 @@
     "name": "Maya Phillips",
     "outlet": "nytimes",
     "tier": 1,
-    "total": 34,
+    "total": 36,
     "lastDate": "2025-09-10",
     "externalCount": 10,
-    "ourCount": 31,
+    "ourCount": 33,
     "missingCount": 3,
     "missing": [
       {
@@ -854,6 +869,12 @@
           "nyt"
         ]
       }
+    ],
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/maya-phillips/articles: All scraping methods failed"
+      }
     ]
   },
   {
@@ -861,10 +882,10 @@
     "name": "Laura Collins-Hughes",
     "outlet": "nytimes",
     "tier": 1,
-    "total": 90,
-    "lastDate": "2026-10-21",
+    "total": 91,
+    "lastDate": "2026-11-06",
     "externalCount": 10,
-    "ourCount": 76,
+    "ourCount": 83,
     "missingCount": 1,
     "missing": [
       {
@@ -876,16 +897,28 @@
           "nyt"
         ]
       }
+    ],
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/laura-collins-hughes/articles: All scraping methods failed"
+      }
     ]
   },
   {
-    "slug": "jonathan-mandell",
-    "name": "Jonathan Mandell",
-    "outlet": "nyt-theater",
+    "slug": "chris-jones",
+    "name": "Chris Jones",
+    "outlet": "chicagotribune",
     "tier": 2,
-    "total": 656,
-    "lastDate": "2026-10-29",
-    "error": "no-articles-found"
+    "total": 910,
+    "lastDate": "2026-11-09",
+    "error": "fetch-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/chris-jones/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "charles-isherwood",
@@ -893,200 +926,377 @@
     "outlet": "wsj",
     "tier": 1,
     "total": 543,
-    "lastDate": "2026-10-29",
-    "error": "no-articles-found"
+    "lastDate": "2026-11-05",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/charles-isherwood/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "jonathan-mandell",
+    "name": "Jonathan Mandell",
+    "outlet": "nyt-theater",
+    "tier": 2,
+    "total": 668,
+    "lastDate": "2026-11-09",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/jonathan-mandell/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "david-barbour",
     "name": "David Barbour",
     "outlet": "lighting-and-sound-america",
     "tier": 2,
-    "total": 600,
-    "lastDate": "2026-10-29",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "chris-jones",
-    "name": "Chris Jones",
-    "outlet": "chicagotribune",
-    "tier": 2,
-    "total": 898,
-    "lastDate": "2026-10-29",
-    "error": "no-articles-found"
+    "total": 606,
+    "lastDate": "2026-11-05",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/david-barbour/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "jesse-green",
     "name": "Jesse Green",
     "outlet": "nytimes",
     "tier": 1,
-    "total": 484,
+    "total": 486,
     "lastDate": "2026-10-27",
     "externalCount": 11,
-    "ourCount": 377,
+    "ourCount": 409,
     "missingCount": 0,
-    "missing": []
+    "missing": [],
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/jesse-green/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "joe-dziemianowicz",
     "name": "Joe Dziemianowicz",
     "outlet": "nydailynews",
     "tier": 2,
-    "total": 493,
+    "total": 496,
     "lastDate": "2026-10-21",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "robert-hofler",
-    "name": "Robert Hofler",
-    "outlet": "thewrap",
-    "tier": 2,
-    "total": 495,
-    "lastDate": "2026-10-30",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/joe-dziemianowicz/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "matt-windman",
     "name": "Matt Windman",
     "outlet": "amny",
     "tier": 2,
-    "total": 496,
-    "lastDate": "2026-10-21",
-    "error": "no-articles-found"
+    "total": 497,
+    "lastDate": "2026-11-08",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/matt-windman/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "robert-hofler",
+    "name": "Robert Hofler",
+    "outlet": "thewrap",
+    "tier": 2,
+    "total": 498,
+    "lastDate": "2026-11-09",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/robert-hofler/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "david-rooney",
     "name": "David Rooney",
     "outlet": "hollywood-reporter",
     "tier": 1,
-    "total": 462,
+    "total": 463,
     "lastDate": "2026-04-15",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/david-rooney/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "zachary-stewart",
     "name": "Zachary Stewart",
     "outlet": "theatermania",
     "tier": 2,
-    "total": 414,
-    "lastDate": "2026-10-29",
-    "error": "no-articles-found"
+    "total": 421,
+    "lastDate": "2026-11-09",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/zachary-stewart/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "adam-feldman",
     "name": "Adam Feldman",
     "outlet": "timeout",
     "tier": 1,
-    "total": 409,
+    "total": 412,
     "lastDate": "2026-10-30",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "dominic-cavendish",
-    "name": "Dominic Cavendish",
-    "outlet": "telegraph",
-    "tier": 1,
-    "total": 377,
-    "lastDate": "2026-11-01",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/adam-feldman/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "brian-scott-lipton",
     "name": "Brian Scott Lipton",
     "outlet": "cititour",
     "tier": 2,
-    "total": 377,
-    "lastDate": "2026-10-29",
-    "error": "no-articles-found"
+    "total": 382,
+    "lastDate": "2026-11-08",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/brian-scott-lipton/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "dominic-cavendish",
+    "name": "Dominic Cavendish",
+    "outlet": "telegraph",
+    "tier": 1,
+    "total": 380,
+    "lastDate": "2026-11-05",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/dominic-cavendish/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "andrzej-lukowski",
     "name": "Andrzej Lukowski",
     "outlet": "timeout-london",
     "tier": 1,
-    "total": 377,
-    "lastDate": "2026-10-14",
-    "error": "no-articles-found"
+    "total": 379,
+    "lastDate": "2026-11-05",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/andrzej-lukowski/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "samuel-l-leiter",
     "name": "Samuel L. Leiter",
     "outlet": "theater-life",
     "tier": 2,
-    "total": 382,
-    "lastDate": "2026-10-31",
-    "error": "no-articles-found"
+    "total": 391,
+    "lastDate": "2026-11-07",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/samuel-l-leiter/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "victor-gluck",
     "name": "Victor Gluck",
     "outlet": "theater-scene",
     "tier": 2,
-    "total": 338,
-    "lastDate": "2026-10-31",
-    "error": "no-articles-found"
+    "total": 343,
+    "lastDate": "2026-11-05",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/victor-gluck/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "david-sheward",
     "name": "David Sheward",
     "outlet": "theater-life",
     "tier": 2,
-    "total": 340,
-    "lastDate": "2026-10-31",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "sarah-hemming",
-    "name": "Sarah Hemming",
-    "outlet": "financialtimes",
-    "tier": 1,
-    "total": 330,
+    "total": 353,
     "lastDate": "2026-11-02",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/david-sheward/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "nick-curtis",
     "name": "Nick Curtis",
     "outlet": "standard",
     "tier": 1,
-    "total": 346,
-    "lastDate": "2026-11-02",
-    "error": "no-articles-found"
+    "total": 352,
+    "lastDate": "2026-11-05",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/nick-curtis/articles: All scraping methods failed"
+      }
+    ]
   },
   {
-    "slug": "david-cote",
-    "name": "David Cote",
-    "outlet": "timeout",
+    "slug": "sarah-hemming",
+    "name": "Sarah Hemming",
+    "outlet": "financialtimes",
     "tier": 1,
-    "total": 319,
-    "lastDate": "2026-10-05",
-    "error": "no-articles-found"
+    "total": 338,
+    "lastDate": "2026-11-03",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/sarah-hemming/articles: All scraping methods failed"
+      }
+    ]
   },
   {
-    "slug": "sarah-crompton",
-    "name": "Sarah Crompton",
-    "outlet": "whatsonstage",
-    "tier": 2,
-    "total": 313,
-    "lastDate": "2026-11-01",
-    "error": "no-articles-found"
+    "slug": "arifa-akbar",
+    "name": "Arifa Akbar",
+    "outlet": "guardian",
+    "tier": 1,
+    "total": 316,
+    "lastDate": "2026-11-06",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/arifa-akbar/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "david-finkle",
     "name": "David Finkle",
     "outlet": "nysr",
     "tier": 2,
-    "total": 326,
-    "lastDate": "2026-10-21",
-    "error": "no-articles-found"
+    "total": 336,
+    "lastDate": "2026-11-08",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/david-finkle/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "frank-scheck",
+    "name": "Frank Scheck",
+    "outlet": "nysr",
+    "tier": 2,
+    "total": 317,
+    "lastDate": "2026-11-05",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/frank-scheck/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "david-cote",
+    "name": "David Cote",
+    "outlet": "timeout",
+    "tier": 1,
+    "total": 330,
+    "lastDate": "2026-10-05",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/david-cote/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "tim-teeman",
     "name": "Tim Teeman",
     "outlet": "dailybeast",
     "tier": 2,
-    "total": 312,
-    "lastDate": "2026-09-14",
-    "error": "no-articles-found"
+    "total": 315,
+    "lastDate": "2026-11-03",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/tim-teeman/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "elisabeth-vincentelli",
+    "name": "Elisabeth Vincentelli",
+    "outlet": "nypost",
+    "tier": 2,
+    "total": 300,
+    "lastDate": "2026-10-29",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/elisabeth-vincentelli/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "sarah-crompton",
+    "name": "Sarah Crompton",
+    "outlet": "whatsonstage",
+    "tier": 2,
+    "total": 314,
+    "lastDate": "2026-11-01",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/sarah-crompton/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "clive-davis",
@@ -1094,98 +1304,119 @@
     "outlet": "times-uk",
     "tier": 1,
     "total": 300,
-    "lastDate": "2026-11-01",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "frank-scheck",
-    "name": "Frank Scheck",
-    "outlet": "nysr",
-    "tier": 2,
-    "total": 306,
-    "lastDate": "2026-10-29",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "elisabeth-vincentelli",
-    "name": "Elisabeth Vincentelli",
-    "outlet": "nypost",
-    "tier": 2,
-    "total": 297,
-    "lastDate": "2026-10-29",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "arifa-akbar",
-    "name": "Arifa Akbar",
-    "outlet": "guardian",
-    "tier": 1,
-    "total": 311,
-    "lastDate": "2026-10-29",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "roma-torre",
-    "name": "Roma Torre",
-    "outlet": "ny1",
-    "tier": 2,
-    "total": 254,
-    "lastDate": "2026-10-21",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "stuart-king",
-    "name": "Stuart King",
-    "outlet": "london-box-office",
-    "tier": 2,
-    "total": 289,
-    "lastDate": "2026-11-01",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "fiona-mountford",
-    "name": "Fiona Mountford",
-    "outlet": "i-paper",
-    "tier": 1,
-    "total": 255,
-    "lastDate": "2026-10-21",
-    "error": "no-articles-found"
+    "lastDate": "2026-11-06",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/clive-davis/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "howard-miller",
     "name": "Howard Miller",
     "outlet": "talkinbroadway",
     "tier": 2,
-    "total": 264,
-    "lastDate": "2026-10-29",
-    "error": "no-articles-found"
+    "total": 274,
+    "lastDate": "2026-11-08",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/howard-miller/articles: All scraping methods failed"
+      }
+    ]
   },
   {
-    "slug": "mark-kennedy",
-    "name": "Mark Kennedy",
-    "outlet": "ap",
-    "tier": 1,
-    "total": 243,
-    "lastDate": "2025-11-09",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "susannah-clapp",
-    "name": "Susannah Clapp",
-    "outlet": "observer",
+    "slug": "roma-torre",
+    "name": "Roma Torre",
+    "outlet": "ny1",
     "tier": 2,
-    "total": 246,
-    "lastDate": "2026-10-23",
-    "error": "no-articles-found"
+    "total": 260,
+    "lastDate": "2026-11-09",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/roma-torre/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "fiona-mountford",
+    "name": "Fiona Mountford",
+    "outlet": "i-paper",
+    "tier": 1,
+    "total": 254,
+    "lastDate": "2026-10-21",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/fiona-mountford/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "stuart-king",
+    "name": "Stuart King",
+    "outlet": "london-box-office",
+    "tier": 2,
+    "total": 292,
+    "lastDate": "2026-11-05",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/stuart-king/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "michael-billington",
     "name": "Michael Billington",
     "outlet": "guardian",
     "tier": 1,
-    "total": 243,
+    "total": 252,
     "lastDate": "2026-10-19",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/michael-billington/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "mark-kennedy",
+    "name": "Mark Kennedy",
+    "outlet": "ap",
+    "tier": 1,
+    "total": 245,
+    "lastDate": "2025-11-09",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/mark-kennedy/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "greg-evans",
+    "name": "Greg Evans",
+    "outlet": "deadline",
+    "tier": 1,
+    "total": 247,
+    "lastDate": "2026-11-09",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/greg-evans/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "patrick-marmion",
@@ -1194,61 +1425,163 @@
     "tier": 1,
     "total": 232,
     "lastDate": "2026-10-30",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "lloyd-evans",
-    "name": "Lloyd Evans",
-    "outlet": "the-spectator-uk",
-    "tier": 2,
-    "total": 238,
-    "lastDate": "2026-10-29",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/patrick-marmion/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "michael-dale",
     "name": "Michael Dale",
     "outlet": "broadwayworld",
     "tier": 2,
-    "total": 226,
+    "total": 230,
     "lastDate": "2026-10-16",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/michael-dale/articles: All scraping methods failed"
+      }
+    ]
   },
   {
-    "slug": "greg-evans",
-    "name": "Greg Evans",
-    "outlet": "deadline",
-    "tier": 1,
-    "total": 239,
-    "lastDate": "2026-10-29",
-    "error": "no-articles-found"
+    "slug": "susannah-clapp",
+    "name": "Susannah Clapp",
+    "outlet": "observer",
+    "tier": 2,
+    "total": 244,
+    "lastDate": "2026-10-23",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/susannah-clapp/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "lloyd-evans",
+    "name": "Lloyd Evans",
+    "outlet": "the-spectator-uk",
+    "tier": 2,
+    "total": 240,
+    "lastDate": "2026-11-05",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/lloyd-evans/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "michael-sommers",
     "name": "Michael Sommers",
     "outlet": "nysr",
     "tier": 2,
-    "total": 213,
-    "lastDate": "2026-10-29",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "dominic-maxwell",
-    "name": "Dominic Maxwell",
-    "outlet": "times-uk",
-    "tier": 1,
-    "total": 225,
-    "lastDate": "2026-10-28",
-    "error": "no-articles-found"
+    "total": 223,
+    "lastDate": "2026-11-09",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/michael-sommers/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "steven-suskin",
     "name": "Steven Suskin",
     "outlet": "huffpost",
     "tier": 2,
-    "total": 222,
+    "total": 225,
     "lastDate": "2026-09-28",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/steven-suskin/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "dominic-maxwell",
+    "name": "Dominic Maxwell",
+    "outlet": "times-uk",
+    "tier": 1,
+    "total": 224,
+    "lastDate": "2026-10-28",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/dominic-maxwell/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "sam-marlowe",
+    "name": "Sam Marlowe",
+    "outlet": "thestage",
+    "tier": 1,
+    "total": 195,
+    "lastDate": "2026-11-05",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/sam-marlowe/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "melissa-rose-bernardo",
+    "name": "Melissa Rose Bernardo",
+    "outlet": "nysr",
+    "tier": 2,
+    "total": 205,
+    "lastDate": "2026-11-04",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/melissa-rose-bernardo/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "alexis-soloski",
+    "name": "Alexis Soloski",
+    "outlet": "guardian",
+    "tier": 1,
+    "total": 197,
+    "lastDate": "2026-11-01",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/alexis-soloski/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "matt-wolf",
+    "name": "Matt Wolf",
+    "outlet": "london-theatre",
+    "tier": 2,
+    "total": 204,
+    "lastDate": "2026-11-07",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/matt-wolf/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "johnny-oleksinski",
@@ -1256,62 +1589,44 @@
     "outlet": "nypost",
     "tier": 2,
     "total": 195,
-    "lastDate": "2026-10-29",
-    "error": "no-articles-found"
+    "lastDate": "2026-11-04",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/johnny-oleksinski/articles: All scraping methods failed"
+      }
+    ]
   },
   {
-    "slug": "matt-wolf",
-    "name": "Matt Wolf",
-    "outlet": "london-theatre",
-    "tier": 2,
-    "total": 196,
-    "lastDate": "2026-11-02",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "melissa-rose-bernardo",
-    "name": "Melissa Rose Bernardo",
-    "outlet": "nysr",
-    "tier": 2,
-    "total": 201,
-    "lastDate": "2026-10-29",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "sam-marlowe",
-    "name": "Sam Marlowe",
+    "slug": "mark-shenton",
+    "name": "Mark Shenton",
     "outlet": "thestage",
     "tier": 1,
-    "total": 194,
-    "lastDate": "2026-10-28",
-    "error": "no-articles-found"
+    "total": 170,
+    "lastDate": "2025-05-10",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/mark-shenton/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "alice-saville",
     "name": "Alice Saville",
     "outlet": "independent",
     "tier": 1,
-    "total": 189,
+    "total": 190,
     "lastDate": "2026-11-02",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "alexis-soloski",
-    "name": "Alexis Soloski",
-    "outlet": "guardian",
-    "tier": 1,
-    "total": 193,
-    "lastDate": "2026-10-29",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "david-gordon",
-    "name": "David Gordon",
-    "outlet": "theatermania",
-    "tier": 2,
-    "total": 166,
-    "lastDate": "2026-10-29",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/alice-saville/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "marianka-swain",
@@ -1320,52 +1635,58 @@
     "tier": 2,
     "total": 181,
     "lastDate": "2026-11-02",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/marianka-swain/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "david-gordon",
+    "name": "David Gordon",
+    "outlet": "theatermania",
+    "tier": 2,
+    "total": 169,
+    "lastDate": "2026-11-04",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/david-gordon/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "juan-a-ramirez",
     "name": "Juan A. Ramirez",
     "outlet": "theatrely",
     "tier": 2,
-    "total": 150,
-    "lastDate": "2026-10-30",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "mark-shenton",
-    "name": "Mark Shenton",
-    "outlet": "thestage",
-    "tier": 1,
-    "total": 165,
-    "lastDate": "2025-05-10",
-    "error": "no-articles-found"
+    "total": 152,
+    "lastDate": "2026-11-02",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/juan-a-ramirez/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "catey-sullivan",
     "name": "Catey Sullivan",
     "outlet": "chicago-sun-times",
     "tier": 2,
-    "total": 162,
-    "lastDate": "2026-09-02",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "chris-omaweng",
-    "name": "Chris Omaweng",
-    "outlet": "londontheatre1",
-    "tier": 2,
-    "total": 136,
-    "lastDate": "2026-10-30",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "tim-bano",
-    "name": "Tim Bano",
-    "outlet": "thestage",
-    "tier": 1,
-    "total": 133,
-    "lastDate": "2026-10-20",
-    "error": "no-articles-found"
+    "total": 164,
+    "lastDate": "2026-11-01",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/catey-sullivan/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "robert-gore-langton",
@@ -1374,25 +1695,73 @@
     "tier": 1,
     "total": 147,
     "lastDate": "2026-09-20",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/robert-gore-langton/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "charles-mcnulty",
     "name": "Charles McNulty",
     "outlet": "latimes",
     "tier": 1,
-    "total": 140,
+    "total": 147,
     "lastDate": "2026-10-29",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/charles-mcnulty/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "dave-fargnoli",
     "name": "Dave Fargnoli",
     "outlet": "thestage",
     "tier": 1,
-    "total": 133,
+    "total": 135,
     "lastDate": "2026-11-02",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/dave-fargnoli/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "chris-omaweng",
+    "name": "Chris Omaweng",
+    "outlet": "londontheatre1",
+    "tier": 2,
+    "total": 140,
+    "lastDate": "2026-11-07",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/chris-omaweng/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "brittani-samuel",
+    "name": "Brittani Samuel",
+    "outlet": "broadwaynews",
+    "tier": 1,
+    "total": 117,
+    "lastDate": "2026-07-14",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/brittani-samuel/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "howard-loxton",
@@ -1401,25 +1770,73 @@
     "tier": 2,
     "total": 118,
     "lastDate": "2026-03-17",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/howard-loxton/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "tim-bano",
+    "name": "Tim Bano",
+    "outlet": "thestage",
+    "tier": 1,
+    "total": 132,
+    "lastDate": "2026-10-20",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/tim-bano/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "michael-musto",
     "name": "Michael Musto",
     "outlet": "village-voice",
     "tier": 2,
-    "total": 124,
+    "total": 125,
     "lastDate": "2026-04-23",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/michael-musto/articles: All scraping methods failed"
+      }
+    ]
   },
   {
-    "slug": "brittani-samuel",
-    "name": "Brittani Samuel",
-    "outlet": "broadwaynews",
-    "tier": 1,
-    "total": 116,
-    "lastDate": "2026-07-14",
-    "error": "no-articles-found"
+    "slug": "marc-miller",
+    "name": "Marc Miller",
+    "outlet": "talkinbroadway",
+    "tier": 2,
+    "total": 117,
+    "lastDate": "2026-11-05",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/marc-miller/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "rex-reed",
+    "name": "Rex Reed",
+    "outlet": "observer",
+    "tier": 2,
+    "total": 117,
+    "lastDate": "2025-08-11",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/rex-reed/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "isa-goldberg",
@@ -1428,70 +1845,103 @@
     "tier": 2,
     "total": 110,
     "lastDate": "2026-05-05",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "rex-reed",
-    "name": "Rex Reed",
-    "outlet": "observer",
-    "tier": 2,
-    "total": 113,
-    "lastDate": "2025-08-11",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/isa-goldberg/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "pete-hempstead",
     "name": "Pete Hempstead",
     "outlet": "theatermania",
     "tier": 2,
-    "total": 115,
-    "lastDate": "2026-10-26",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "marc-miller",
-    "name": "Marc Miller",
-    "outlet": "talkinbroadway",
-    "tier": 2,
-    "total": 112,
-    "lastDate": "2026-10-30",
-    "error": "no-articles-found"
+    "total": 116,
+    "lastDate": "2026-11-04",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/pete-hempstead/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "emily-mcclanathan",
     "name": "Emily McClanathan",
     "outlet": "chicagotribune",
     "tier": 2,
-    "total": 104,
-    "lastDate": "2026-10-19",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "aleks-sierz",
-    "name": "Aleks Sierz",
-    "outlet": "artsdesk",
-    "tier": 2,
-    "total": 108,
-    "lastDate": "2026-10-30",
-    "error": "no-articles-found"
+    "total": 105,
+    "lastDate": "2026-10-26",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/emily-mcclanathan/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "aliya-al-hassan",
     "name": "Aliya Al-Hassan",
     "outlet": "broadwayworld",
     "tier": 2,
-    "total": 107,
-    "lastDate": "2026-11-01",
-    "error": "no-articles-found"
+    "total": 108,
+    "lastDate": "2026-11-03",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/aliya-al-hassan/articles: All scraping methods failed"
+      }
+    ]
   },
   {
-    "slug": "claire-allfree",
-    "name": "Claire Allfree",
-    "outlet": "telegraph",
-    "tier": 1,
+    "slug": "aleks-sierz",
+    "name": "Aleks Sierz",
+    "outlet": "artsdesk",
+    "tier": 2,
+    "total": 110,
+    "lastDate": "2026-11-04",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/aleks-sierz/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "dan-rubins",
+    "name": "Dan Rubins",
+    "outlet": "slantmagazine",
+    "tier": 2,
     "total": 104,
-    "lastDate": "2026-10-23",
-    "error": "no-articles-found"
+    "lastDate": "2026-11-09",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/dan-rubins/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "joey-sims",
+    "name": "Joey Sims",
+    "outlet": "theatrely",
+    "tier": 2,
+    "total": 100,
+    "lastDate": "2026-11-08",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/joey-sims/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "holly-o-mahony",
@@ -1500,124 +1950,142 @@
     "tier": 1,
     "total": 103,
     "lastDate": "2026-10-29",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/holly-o-mahony/articles: All scraping methods failed"
+      }
+    ]
   },
   {
-    "slug": "joey-sims",
-    "name": "Joey Sims",
-    "outlet": "theatrely",
+    "slug": "gary-naylor",
+    "name": "Gary Naylor",
+    "outlet": "artsdesk",
     "tier": 2,
-    "total": 98,
-    "lastDate": "2026-10-29",
-    "error": "no-articles-found"
+    "total": 100,
+    "lastDate": "2026-11-06",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/gary-naylor/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "claire-allfree",
+    "name": "Claire Allfree",
+    "outlet": "telegraph",
+    "tier": 1,
+    "total": 103,
+    "lastDate": "2026-10-23",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/claire-allfree/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "maryam-philpott",
     "name": "Maryam Philpott",
     "outlet": "thereviewshub",
     "tier": 2,
-    "total": 93,
-    "lastDate": "2026-10-29",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "dan-rubins",
-    "name": "Dan Rubins",
-    "outlet": "slantmagazine",
-    "tier": 2,
-    "total": 100,
-    "lastDate": "2026-10-20",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "gary-naylor",
-    "name": "Gary Naylor",
-    "outlet": "broadwayworld",
-    "tier": 2,
-    "total": 91,
-    "lastDate": "2026-10-16",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "james-wilson",
-    "name": "James Wilson",
-    "outlet": "talkinbroadway",
-    "tier": 2,
-    "total": 92,
-    "lastDate": "2026-10-22",
-    "error": "no-articles-found"
+    "total": 96,
+    "lastDate": "2026-11-08",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/maryam-philpott/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "darryl-reilly",
     "name": "Darryl Reilly",
     "outlet": "theater-scene",
     "tier": 2,
-    "total": 89,
-    "lastDate": "2026-10-24",
-    "error": "no-articles-found"
+    "total": 91,
+    "lastDate": "2026-11-05",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/darryl-reilly/articles: All scraping methods failed"
+      }
+    ]
   },
   {
-    "slug": "nicole-serratore",
-    "name": "Nicole Serratore",
-    "outlet": "thestage",
-    "tier": 1,
-    "total": 82,
-    "lastDate": "2026-10-23",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "anya-ryan",
-    "name": "Anya Ryan",
-    "outlet": "london-theatre",
+    "slug": "james-wilson",
+    "name": "James Wilson",
+    "outlet": "talkinbroadway",
     "tier": 2,
-    "total": 83,
-    "lastDate": "2026-10-21",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "rachel-weinberg",
-    "name": "Rachel Weinberg",
-    "outlet": "broadwayworld",
-    "tier": 2,
-    "total": 81,
-    "lastDate": "2026-10-15",
-    "error": "no-articles-found"
+    "total": 95,
+    "lastDate": "2026-11-08",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/james-wilson/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "paulanne-simmons",
     "name": "Paulanne Simmons",
     "outlet": "theater-life",
     "tier": 2,
-    "total": 85,
-    "lastDate": "2026-10-27",
-    "error": "no-articles-found"
+    "total": 86,
+    "lastDate": "2026-11-04",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/paulanne-simmons/articles: All scraping methods failed"
+      }
+    ]
   },
   {
-    "slug": "joel-benjamin",
-    "name": "Joel Benjamin",
-    "outlet": "theater-scene",
-    "tier": 2,
-    "total": 78,
-    "lastDate": "2025-08-15",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "gillian-russo",
-    "name": "Gillian Russo",
-    "outlet": "nytg",
-    "tier": 2,
-    "total": 80,
-    "lastDate": "2026-10-19",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "mark-fisher",
-    "name": "Mark Fisher",
-    "outlet": "guardian",
+    "slug": "nicole-serratore",
+    "name": "Nicole Serratore",
+    "outlet": "thestage",
     "tier": 1,
-    "total": 79,
-    "lastDate": "2026-10-18",
+    "total": 85,
+    "lastDate": "2026-10-23",
     "error": "no-articles-found"
+  },
+  {
+    "slug": "david-benedict",
+    "name": "David Benedict",
+    "outlet": "variety",
+    "tier": 1,
+    "total": 86,
+    "lastDate": "2026-10-19",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/david-benedict/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "anya-ryan",
+    "name": "Anya Ryan",
+    "outlet": "london-theatre",
+    "tier": 2,
+    "total": 84,
+    "lastDate": "2026-11-02",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/anya-ryan/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "frank-rizzo",
@@ -1626,106 +2094,223 @@
     "tier": 1,
     "total": 80,
     "lastDate": "2026-08-25",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/frank-rizzo/articles: All scraping methods failed"
+      }
+    ]
   },
   {
-    "slug": "david-benedict",
-    "name": "David Benedict",
-    "outlet": "variety",
-    "tier": 1,
-    "total": 78,
-    "lastDate": "2026-10-19",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "tony-marinelli",
-    "name": "Tony Marinelli",
-    "outlet": "theater-scene",
+    "slug": "rachel-weinberg",
+    "name": "Rachel Weinberg",
+    "outlet": "broadwayworld",
     "tier": 2,
-    "total": 74,
-    "lastDate": "2026-10-27",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "tom-wicker",
-    "name": "Tom Wicker",
-    "outlet": "thestage",
-    "tier": 1,
-    "total": 77,
-    "lastDate": "2026-10-20",
-    "error": "no-articles-found"
+    "total": 82,
+    "lastDate": "2026-11-02",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/rachel-weinberg/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "christopher-kelly",
     "name": "Christopher Kelly",
     "outlet": "njcom",
     "tier": 2,
-    "total": 77,
+    "total": 80,
     "lastDate": "2026-03-24",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/christopher-kelly/articles: All scraping methods failed"
+      }
+    ]
   },
   {
-    "slug": "lane-williamson",
-    "name": "Lane Williamson",
-    "outlet": "exeunt-magazine",
+    "slug": "gillian-russo",
+    "name": "Gillian Russo",
+    "outlet": "nytg",
     "tier": 2,
-    "total": 68,
-    "lastDate": "2026-10-22",
-    "error": "no-articles-found"
+    "total": 82,
+    "lastDate": "2026-11-05",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/gillian-russo/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "joel-benjamin",
+    "name": "Joel Benjamin",
+    "outlet": "theater-scene",
+    "tier": 2,
+    "total": 79,
+    "lastDate": "2025-08-15",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/joel-benjamin/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "mark-fisher",
+    "name": "Mark Fisher",
+    "outlet": "guardian",
+    "tier": 1,
+    "total": 78,
+    "lastDate": "2026-10-18",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/mark-fisher/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "tony-marinelli",
+    "name": "Tony Marinelli",
+    "outlet": "theater-scene",
+    "tier": 2,
+    "total": 76,
+    "lastDate": "2026-11-07",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/tony-marinelli/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "scott-matthewman",
     "name": "Scott Matthewman",
     "outlet": "thereviewshub",
     "tier": 2,
-    "total": 74,
-    "lastDate": "2026-10-28",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "steven-oxman",
-    "name": "Steven Oxman",
-    "outlet": "chicago-sun-times",
-    "tier": 2,
-    "total": 72,
-    "lastDate": "2026-09-29",
-    "error": "no-articles-found"
+    "total": 77,
+    "lastDate": "2026-11-05",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/scott-matthewman/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "cindy-marcolina",
     "name": "Cindy Marcolina",
     "outlet": "broadwayworld",
     "tier": 2,
-    "total": 73,
+    "total": 72,
     "lastDate": "2026-10-27",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/cindy-marcolina/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "tom-wicker",
+    "name": "Tom Wicker",
+    "outlet": "thestage",
+    "tier": 1,
+    "total": 76,
+    "lastDate": "2026-10-20",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/tom-wicker/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "lane-williamson",
+    "name": "Lane Williamson",
+    "outlet": "exeunt-magazine",
+    "tier": 2,
+    "total": 71,
+    "lastDate": "2026-11-07",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/lane-williamson/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "steven-oxman",
+    "name": "Steven Oxman",
+    "outlet": "chicago-sun-times",
+    "tier": 2,
+    "total": 75,
+    "lastDate": "2026-11-03",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/steven-oxman/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "natasha-tripney",
     "name": "Natasha Tripney",
     "outlet": "thestage",
     "tier": 1,
-    "total": 67,
+    "total": 68,
     "lastDate": "2025-10-16",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/natasha-tripney/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "alex-wood",
     "name": "Alex Wood",
     "outlet": "whatsonstage",
     "tier": 2,
-    "total": 66,
+    "total": 67,
     "lastDate": "2026-10-21",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/alex-wood/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "hayley-levitt",
     "name": "Hayley Levitt",
     "outlet": "theatermania",
     "tier": 2,
-    "total": 66,
-    "lastDate": "2026-10-21",
-    "error": "no-articles-found"
+    "total": 67,
+    "lastDate": "2026-11-09",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/hayley-levitt/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "alun-hood",
@@ -1734,16 +2319,13 @@
     "tier": 2,
     "total": 67,
     "lastDate": "2026-10-23",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "joseph-pisano",
-    "name": "Joseph Pisano",
-    "outlet": "theater-scene",
-    "tier": 2,
-    "total": 62,
-    "lastDate": "2026-10-27",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/alun-hood/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "ann-treneman",
@@ -1752,25 +2334,103 @@
     "tier": 1,
     "total": 64,
     "lastDate": "2026-07-18",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "loren-noveck",
-    "name": "Loren Noveck",
-    "outlet": "exeunt-magazine",
-    "tier": 2,
-    "total": 63,
-    "lastDate": "2026-10-27",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/ann-treneman/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "kenji-fujishima",
     "name": "Kenji Fujishima",
     "outlet": "theatermania",
     "tier": 2,
-    "total": 66,
+    "total": 67,
+    "lastDate": "2026-11-05",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/kenji-fujishima/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "alexander-cohen",
+    "name": "Alexander Cohen",
+    "outlet": "broadwayworld",
+    "tier": 2,
+    "total": 63,
+    "lastDate": "2026-10-21",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/alexander-cohen/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "loren-noveck",
+    "name": "Loren Noveck",
+    "outlet": "exeunt-magazine",
+    "tier": 2,
+    "total": 65,
+    "lastDate": "2026-11-06",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/loren-noveck/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "theo-bosanquet",
+    "name": "Theo Bosanquet",
+    "outlet": "whatsonstage",
+    "tier": 2,
+    "total": 60,
+    "lastDate": "2026-11-09",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/theo-bosanquet/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "kyle-turner",
+    "name": "Kyle Turner",
+    "outlet": "nytg",
+    "tier": 2,
+    "total": 62,
+    "lastDate": "2026-11-08",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/kyle-turner/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "joseph-pisano",
+    "name": "Joseph Pisano",
+    "outlet": "theater-scene",
+    "tier": 2,
+    "total": 62,
     "lastDate": "2026-10-27",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/joseph-pisano/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "keith-mckenna",
@@ -1779,106 +2439,133 @@
     "tier": 2,
     "total": 60,
     "lastDate": "2026-10-30",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "alexander-cohen",
-    "name": "Alexander Cohen",
-    "outlet": "broadwayworld",
-    "tier": 2,
-    "total": 62,
-    "lastDate": "2026-10-21",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "theo-bosanquet",
-    "name": "Theo Bosanquet",
-    "outlet": "whatsonstage",
-    "tier": 2,
-    "total": 59,
-    "lastDate": "2026-10-30",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "kyle-turner",
-    "name": "Kyle Turner",
-    "outlet": "nytg",
-    "tier": 2,
-    "total": 59,
-    "lastDate": "2026-10-26",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/keith-mckenna/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "raven-snook",
     "name": "Raven Snook",
     "outlet": "timeout",
     "tier": 1,
-    "total": 58,
-    "lastDate": "2026-10-17",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "julia-rank",
-    "name": "Julia Rank",
-    "outlet": "london-theatre",
-    "tier": 2,
-    "total": 57,
-    "lastDate": "2026-10-23",
-    "error": "no-articles-found"
+    "total": 59,
+    "lastDate": "2026-11-04",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/raven-snook/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "fergus-morgan",
     "name": "Fergus Morgan",
     "outlet": "thestage",
     "tier": 1,
-    "total": 57,
+    "total": 58,
     "lastDate": "2026-10-16",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/fergus-morgan/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "amelia-merrill",
     "name": "Amelia Merrill",
     "outlet": "nytg",
     "tier": 2,
-    "total": 58,
-    "lastDate": "2026-10-29",
-    "error": "no-articles-found"
+    "total": 59,
+    "lastDate": "2026-11-04",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/amelia-merrill/articles: All scraping methods failed"
+      }
+    ]
   },
   {
-    "slug": "caroline-cao",
-    "name": "Caroline Cao",
-    "outlet": "nytg",
+    "slug": "julia-rank",
+    "name": "Julia Rank",
+    "outlet": "london-theatre",
     "tier": 2,
-    "total": 57,
-    "lastDate": "2026-10-29",
-    "error": "no-articles-found"
+    "total": 58,
+    "lastDate": "2026-11-05",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/julia-rank/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "sandy-macdonald",
     "name": "Sandy MacDonald",
     "outlet": "nysr",
     "tier": 2,
-    "total": 56,
-    "lastDate": "2026-10-25",
-    "error": "no-articles-found"
+    "total": 57,
+    "lastDate": "2026-11-03",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/sandy-macdonald/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "helen-hawkins",
     "name": "Helen Hawkins",
     "outlet": "artsdesk",
     "tier": 2,
-    "total": 55,
-    "lastDate": "2026-10-23",
-    "error": "no-articles-found"
+    "total": 57,
+    "lastDate": "2026-11-02",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/helen-hawkins/articles: All scraping methods failed"
+      }
+    ]
   },
   {
-    "slug": "matt-trueman",
-    "name": "Matt Trueman",
-    "outlet": "variety",
+    "slug": "caroline-cao",
+    "name": "Caroline Cao",
+    "outlet": "nytg",
+    "tier": 2,
+    "total": 58,
+    "lastDate": "2026-11-09",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/caroline-cao/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "holly-williams",
+    "name": "Holly Williams",
+    "outlet": "thestage",
     "tier": 1,
     "total": 56,
-    "lastDate": "2026-07-15",
-    "error": "no-articles-found"
+    "lastDate": "2026-09-09",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/holly-williams/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "richard-maguire",
@@ -1887,34 +2574,88 @@
     "tier": 2,
     "total": 54,
     "lastDate": "2026-10-17",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "dave-quinn",
-    "name": "Dave Quinn",
-    "outlet": "people",
-    "tier": 2,
-    "total": 51,
-    "lastDate": "2026-10-21",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/richard-maguire/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "austin-fimmano",
     "name": "Austin Fimmano",
     "outlet": "nytg",
     "tier": 2,
-    "total": 51,
-    "lastDate": "2026-10-29",
-    "error": "no-articles-found"
+    "total": 52,
+    "lastDate": "2026-11-06",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/austin-fimmano/articles: All scraping methods failed"
+      }
+    ]
   },
   {
-    "slug": "holly-williams",
-    "name": "Holly Williams",
-    "outlet": "thestage",
+    "slug": "matt-trueman",
+    "name": "Matt Trueman",
+    "outlet": "variety",
     "tier": 1,
+    "total": 56,
+    "lastDate": "2026-07-15",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/matt-trueman/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "dave-quinn",
+    "name": "Dave Quinn",
+    "outlet": "people",
+    "tier": 2,
     "total": 55,
-    "lastDate": "2026-09-09",
-    "error": "no-articles-found"
+    "lastDate": "2026-10-21",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/dave-quinn/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "mark-lawson",
+    "name": "Mark Lawson",
+    "outlet": "guardian",
+    "tier": 1,
+    "total": 47,
+    "lastDate": "2026-10-20",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/mark-lawson/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "rachel-halliburton",
+    "name": "Rachel Halliburton",
+    "outlet": "artsdesk",
+    "tier": 2,
+    "total": 45,
+    "lastDate": "2026-11-08",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/rachel-halliburton/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "paul-vale",
@@ -1923,7 +2664,13 @@
     "tier": 1,
     "total": 49,
     "lastDate": "2026-10-26",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/paul-vale/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "allison-considine",
@@ -1932,43 +2679,28 @@
     "tier": 2,
     "total": 46,
     "lastDate": "2026-10-19",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/allison-considine/articles: All scraping methods failed"
+      }
+    ]
   },
   {
-    "slug": "rachel-halliburton",
-    "name": "Rachel Halliburton",
-    "outlet": "artsdesk",
-    "tier": 2,
-    "total": 45,
-    "lastDate": "2026-10-15",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "mark-lawson",
-    "name": "Mark Lawson",
-    "outlet": "guardian",
+    "slug": "diane-snyder",
+    "name": "Diane Snyder",
+    "outlet": "telegraph",
     "tier": 1,
     "total": 45,
-    "lastDate": "2026-10-20",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "clementine-scott",
-    "name": "Clementine Scott",
-    "outlet": "broadwayworld",
-    "tier": 2,
-    "total": 44,
-    "lastDate": "2026-10-26",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "olivia-rook",
-    "name": "Olivia Rook",
-    "outlet": "london-theatre",
-    "tier": 2,
-    "total": 43,
-    "lastDate": "2026-10-02",
-    "error": "no-articles-found"
+    "lastDate": "2025-04-04",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/diane-snyder/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "david-jays",
@@ -1977,43 +2709,103 @@
     "tier": 1,
     "total": 42,
     "lastDate": "2026-10-08",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/david-jays/articles: All scraping methods failed"
+      }
+    ]
   },
   {
-    "slug": "diane-snyder",
-    "name": "Diane Snyder",
-    "outlet": "telegraph",
-    "tier": 1,
-    "total": 44,
-    "lastDate": "2025-04-04",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "shehrazade-zafar-arif",
-    "name": "Shehrazade Zafar-Arif",
-    "outlet": "london-box-office",
+    "slug": "clementine-scott",
+    "name": "Clementine Scott",
+    "outlet": "broadwayworld",
     "tier": 2,
-    "total": 40,
-    "lastDate": "2026-10-30",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "bob-verini",
-    "name": "Bob Verini",
-    "outlet": "nysr",
-    "tier": 2,
-    "total": 39,
-    "lastDate": "2026-08-23",
-    "error": "no-articles-found"
+    "total": 45,
+    "lastDate": "2026-11-04",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/clementine-scott/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "kate-kellaway",
     "name": "Kate Kellaway",
     "outlet": "observer",
     "tier": 2,
-    "total": 42,
+    "total": 43,
     "lastDate": "2026-07-17",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/kate-kellaway/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "bob-verini",
+    "name": "Bob Verini",
+    "outlet": "nysr",
+    "tier": 2,
+    "total": 40,
+    "lastDate": "2026-08-23",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/bob-verini/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "patrick-ryan",
+    "name": "Patrick Ryan",
+    "outlet": "usatoday",
+    "tier": 2,
+    "total": 40,
+    "lastDate": "2026-10-29",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/patrick-ryan/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "olivia-rook",
+    "name": "Olivia Rook",
+    "outlet": "london-theatre",
+    "tier": 2,
+    "total": 42,
+    "lastDate": "2026-10-02",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/olivia-rook/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "shehrazade-zafar-arif",
+    "name": "Shehrazade Zafar-Arif",
+    "outlet": "london-box-office",
+    "tier": 2,
+    "total": 41,
+    "lastDate": "2026-11-05",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/shehrazade-zafar-arif/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "adrian-horton",
@@ -2022,16 +2814,43 @@
     "tier": 1,
     "total": 39,
     "lastDate": "2026-04-13",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/adrian-horton/articles: All scraping methods failed"
+      }
+    ]
   },
   {
-    "slug": "patrick-ryan",
-    "name": "Patrick Ryan",
-    "outlet": "usatoday",
+    "slug": "franco-milazzo",
+    "name": "Franco Milazzo",
+    "outlet": "broadwayworld",
     "tier": 2,
     "total": 38,
-    "lastDate": "2026-10-29",
-    "error": "no-articles-found"
+    "lastDate": "2026-10-26",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/franco-milazzo/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "erinmarie-reiter",
+    "name": "ErinMarie Reiter",
+    "outlet": "broadwayworld",
+    "tier": 2,
+    "total": 37,
+    "lastDate": "2026-10-01",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/erinmarie-reiter/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "tina-st-angelo-wetzel",
@@ -2040,7 +2859,13 @@
     "tier": 2,
     "total": 37,
     "lastDate": "2025-06-26",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/tina-st-angelo-wetzel/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "kate-wyver",
@@ -2049,16 +2874,58 @@
     "tier": 1,
     "total": 37,
     "lastDate": "2026-10-21",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/kate-wyver/articles: All scraping methods failed"
+      }
+    ]
   },
   {
-    "slug": "franco-milazzo",
-    "name": "Franco Milazzo",
-    "outlet": "broadwayworld",
+    "slug": "vera-liber",
+    "name": "Vera Liber",
+    "outlet": "british-theatre",
     "tier": 2,
-    "total": 37,
-    "lastDate": "2026-10-26",
-    "error": "no-articles-found"
+    "total": 34,
+    "lastDate": "2026-11-07",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/vera-liber/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "matt-barton",
+    "name": "Matt Barton",
+    "outlet": "thestage",
+    "tier": 1,
+    "total": 34,
+    "lastDate": "2026-10-31",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/matt-barton/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "rachel-graham",
+    "name": "Rachel Graham",
+    "outlet": "theatermania",
+    "tier": 2,
+    "total": 32,
+    "lastDate": "2026-11-05",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/rachel-graham/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "chris-wiegand",
@@ -2067,43 +2934,13 @@
     "tier": 1,
     "total": 34,
     "lastDate": "2026-10-08",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "kobi-kassal",
-    "name": "Kobi Kassal",
-    "outlet": "theatrely",
-    "tier": 2,
-    "total": 33,
-    "lastDate": "2026-08-25",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "matt-barton",
-    "name": "Matt Barton",
-    "outlet": "thestage",
-    "tier": 1,
-    "total": 33,
-    "lastDate": "2026-10-31",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "emlyn-travis",
-    "name": "Emlyn Travis",
-    "outlet": "ew",
-    "tier": 2,
-    "total": 32,
-    "lastDate": "2026-08-25",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "rachel-graham",
-    "name": "Rachel Graham",
-    "outlet": "theatermania",
-    "tier": 2,
-    "total": 31,
-    "lastDate": "2026-10-22",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/chris-wiegand/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "david-kaufman",
@@ -2112,34 +2949,28 @@
     "tier": 2,
     "total": 31,
     "lastDate": "2025-03-02",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/david-kaufman/articles: All scraping methods failed"
+      }
+    ]
   },
   {
-    "slug": "vera-liber",
-    "name": "Vera Liber",
-    "outlet": "british-theatre",
+    "slug": "emlyn-travis",
+    "name": "Emlyn Travis",
+    "outlet": "ew",
     "tier": 2,
     "total": 32,
-    "lastDate": "2026-10-21",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "john-cutler",
-    "name": "John Cutler",
-    "outlet": "thereviewshub",
-    "tier": 2,
-    "total": 28,
-    "lastDate": "2026-10-27",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "aramide-tinubu",
-    "name": "Aramide Tinubu",
-    "outlet": "variety",
-    "tier": 1,
-    "total": 26,
-    "lastDate": "2026-10-19",
-    "error": "no-articles-found"
+    "lastDate": "2026-08-25",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/emlyn-travis/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "john-groves",
@@ -2148,16 +2979,103 @@
     "tier": 2,
     "total": 28,
     "lastDate": "2026-11-01",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/john-groves/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "demetrios-matheou",
     "name": "Demetrios Matheou",
     "outlet": "artsdesk",
     "tier": 2,
+    "total": 30,
+    "lastDate": "2026-11-02",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/demetrios-matheou/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "kobi-kassal",
+    "name": "Kobi Kassal",
+    "outlet": "theatrely",
+    "tier": 2,
+    "total": 31,
+    "lastDate": "2026-08-25",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/kobi-kassal/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "john-cutler",
+    "name": "John Cutler",
+    "outlet": "thereviewshub",
+    "tier": 2,
     "total": 29,
-    "lastDate": "2026-09-02",
-    "error": "no-articles-found"
+    "lastDate": "2026-11-03",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/john-cutler/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "aramide-tinubu",
+    "name": "Aramide Tinubu",
+    "outlet": "variety",
+    "tier": 1,
+    "total": 27,
+    "lastDate": "2026-11-09",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/aramide-tinubu/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "isobel-lewis",
+    "name": "Isobel Lewis",
+    "outlet": "independent",
+    "tier": 1,
+    "total": 25,
+    "lastDate": "2026-10-20",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/isobel-lewis/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "shania-russell",
+    "name": "Shania Russell",
+    "outlet": "ew",
+    "tier": 2,
+    "total": 27,
+    "lastDate": "2026-11-09",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/shania-russell/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "alan-fitter",
@@ -2166,16 +3084,43 @@
     "tier": 2,
     "total": 26,
     "lastDate": "2026-10-16",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/alan-fitter/articles: All scraping methods failed"
+      }
+    ]
   },
   {
-    "slug": "ryan-leeds",
-    "name": "Ryan Leeds",
-    "outlet": "broadway-blog",
+    "slug": "ron-simpson",
+    "name": "Ron Simpson",
+    "outlet": "whatsonstage",
     "tier": 2,
-    "total": 24,
+    "total": 25,
     "lastDate": "2026-10-19",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/ron-simpson/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "terry-eastham",
+    "name": "Terry Eastham",
+    "outlet": "londontheatre1",
+    "tier": 2,
+    "total": 25,
+    "lastDate": "2026-10-09",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/terry-eastham/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "georgina-brown",
@@ -2184,16 +3129,46 @@
     "tier": 1,
     "total": 25,
     "lastDate": "2026-10-29",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/georgina-brown/articles: All scraping methods failed"
+      }
+    ]
   },
   {
-    "slug": "shania-russell",
-    "name": "Shania Russell",
-    "outlet": "ew",
+    "slug": "ryan-leeds",
+    "name": "Ryan Leeds",
+    "outlet": "broadway-blog",
     "tier": 2,
-    "total": 26,
-    "lastDate": "2026-04-12",
-    "error": "no-articles-found"
+    "total": 24,
+    "lastDate": "2026-10-19",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/ryan-leeds/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "houman-barekat",
+    "name": "Houman Barekat",
+    "outlet": "nytimes",
+    "tier": 1,
+    "total": 24,
+    "lastDate": "2026-11-02",
+    "externalCount": 10,
+    "ourCount": 25,
+    "missingCount": 0,
+    "missing": [],
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/houman-barekat/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "mary-beer",
@@ -2202,25 +3177,28 @@
     "tier": 2,
     "total": 23,
     "lastDate": "2026-09-13",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/mary-beer/articles: All scraping methods failed"
+      }
+    ]
   },
   {
-    "slug": "isobel-lewis",
-    "name": "Isobel Lewis",
-    "outlet": "independent",
-    "tier": 1,
-    "total": 23,
-    "lastDate": "2026-10-20",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "ron-simpson",
-    "name": "Ron Simpson",
-    "outlet": "whatsonstage",
+    "slug": "r-scott-reedy",
+    "name": "R. Scott Reedy",
+    "outlet": "broadwayworld",
     "tier": 2,
-    "total": 24,
-    "lastDate": "2026-10-19",
-    "error": "no-articles-found"
+    "total": 23,
+    "lastDate": "2026-10-21",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/r-scott-reedy/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "dalton-ross",
@@ -2229,25 +3207,28 @@
     "tier": 2,
     "total": 23,
     "lastDate": "2026-09-28",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/dalton-ross/articles: All scraping methods failed"
+      }
+    ]
   },
   {
-    "slug": "zac-thriffiley",
-    "name": "Zac Thriffiley",
-    "outlet": "broadwayworld",
+    "slug": "mike-davis",
+    "name": "Mike Davis",
+    "outlet": "chicago-sun-times",
     "tier": 2,
     "total": 22,
-    "lastDate": "2025-09-07",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "stephen-bates",
-    "name": "Stephen Bates",
-    "outlet": "thereviewshub",
-    "tier": 2,
-    "total": 22,
-    "lastDate": "2025-12-10",
-    "error": "no-articles-found"
+    "lastDate": "2026-11-04",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/mike-davis/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "patrick-christiano",
@@ -2256,28 +3237,43 @@
     "tier": 2,
     "total": 22,
     "lastDate": "2026-04-24",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/patrick-christiano/articles: All scraping methods failed"
+      }
+    ]
   },
   {
-    "slug": "houman-barekat",
-    "name": "Houman Barekat",
-    "outlet": "nytimes",
-    "tier": 1,
-    "total": 23,
-    "lastDate": "2026-09-03",
-    "externalCount": 10,
-    "ourCount": 23,
-    "missingCount": 0,
-    "missing": []
-  },
-  {
-    "slug": "mike-davis",
-    "name": "Mike Davis",
-    "outlet": "chicago-sun-times",
+    "slug": "natalie-o-donoghue",
+    "name": "Natalie O'Donoghue",
+    "outlet": "broadwayworld",
     "tier": 2,
-    "total": 21,
-    "lastDate": "2026-10-23",
-    "error": "no-articles-found"
+    "total": 22,
+    "lastDate": "2026-10-06",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/natalie-o-donoghue/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "zac-thriffiley",
+    "name": "Zac Thriffiley",
+    "outlet": "broadwayworld",
+    "tier": 2,
+    "total": 22,
+    "lastDate": "2025-09-07",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/zac-thriffiley/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "miriam-sallon",
@@ -2286,7 +3282,28 @@
     "tier": 2,
     "total": 21,
     "lastDate": "2026-10-28",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/miriam-sallon/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "stephen-bates",
+    "name": "Stephen Bates",
+    "outlet": "thereviewshub",
+    "tier": 2,
+    "total": 22,
+    "lastDate": "2025-12-10",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/stephen-bates/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "sonny-waheed",
@@ -2295,25 +3312,43 @@
     "tier": 2,
     "total": 21,
     "lastDate": "2026-10-16",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/sonny-waheed/articles: All scraping methods failed"
+      }
+    ]
   },
   {
-    "slug": "terry-eastham",
-    "name": "Terry Eastham",
-    "outlet": "londontheatre1",
+    "slug": "cameron-kelsall",
+    "name": "Cameron Kelsall",
+    "outlet": "exeunt-magazine",
     "tier": 2,
     "total": 22,
-    "lastDate": "2026-10-09",
-    "error": "no-articles-found"
+    "lastDate": "2026-10-25",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/cameron-kelsall/articles: All scraping methods failed"
+      }
+    ]
   },
   {
-    "slug": "rosemary-waugh",
-    "name": "Rosemary Waugh",
-    "outlet": "thestage",
-    "tier": 1,
+    "slug": "toby-zinman",
+    "name": "Toby Zinman",
+    "outlet": "philadelphia-inquirer",
+    "tier": 2,
     "total": 20,
-    "lastDate": "2025-03-31",
-    "error": "no-articles-found"
+    "lastDate": "2026-04-09",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/toby-zinman/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "miriam-gibson",
@@ -2322,16 +3357,28 @@
     "tier": 2,
     "total": 21,
     "lastDate": "2026-05-17",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/miriam-gibson/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "clare-brennan",
     "name": "Clare Brennan",
-    "outlet": "guardian",
-    "tier": 1,
-    "total": 20,
-    "lastDate": "2026-04-19",
-    "error": "no-articles-found"
+    "outlet": "observer",
+    "tier": 2,
+    "total": 21,
+    "lastDate": "2025-12-20",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/clare-brennan/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "debbie-gilpin",
@@ -2340,7 +3387,13 @@
     "tier": 2,
     "total": 20,
     "lastDate": "2026-10-30",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/debbie-gilpin/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "gareth-carr",
@@ -2349,7 +3402,28 @@
     "tier": 2,
     "total": 20,
     "lastDate": "2026-10-02",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/gareth-carr/articles: All scraping methods failed"
+      }
+    ]
+  },
+  {
+    "slug": "david-chadderton",
+    "name": "David Chadderton",
+    "outlet": "british-theatre",
+    "tier": 2,
+    "total": 20,
+    "lastDate": "2026-11-04",
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/david-chadderton/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "kimberly-ramirez",
@@ -2358,7 +3432,13 @@
     "tier": 2,
     "total": 20,
     "lastDate": "2026-10-14",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/kimberly-ramirez/articles: All scraping methods failed"
+      }
+    ]
   },
   {
     "slug": "catherine-love",
@@ -2367,15 +3447,12 @@
     "tier": 1,
     "total": 20,
     "lastDate": "2026-10-17",
-    "error": "no-articles-found"
-  },
-  {
-    "slug": "cameron-kelsall",
-    "name": "Cameron Kelsall",
-    "outlet": "exeunt-magazine",
-    "tier": 2,
-    "total": 20,
-    "lastDate": "2026-09-21",
-    "error": "no-articles-found"
+    "error": "all-sources-failed",
+    "errors": [
+      {
+        "source": "muckrack",
+        "error": "muckrack https://muckrack.com/catherine-love/articles: All scraping methods failed"
+      }
+    ]
   }
 ]
