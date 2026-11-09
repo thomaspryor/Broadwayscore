@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-09T19:30:20.685Z",
+  "timestamp": "2026-11-09T19:52:56.097Z",
   "stats": {
-    "totalReviews": 80896,
+    "totalReviews": 80900,
     "alreadyFlagged": 22125,
     "dateGuardCatches": 219,
-    "directorMismatch": 3579,
+    "directorMismatch": 3580,
     "tvFilmSignals": 2303,
     "londonSignals": 3652,
     "offBroadwaySignals": 754,
     "yearMismatch": 370,
-    "noPublishDate": 8438
+    "noPublishDate": 8439
   },
   "findings": [
     {
@@ -20190,6 +20190,19 @@
       "score": 85,
       "publishDate": "2010-11-23",
       "url": "http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/end-of-the-rainbow-trafalgar-studios-london-2144093.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"terry johnson\" from end-of-the-rainbow-2012"
+        }
+      ]
+    },
+    {
+      "showId": "end-of-the-rainbow-west-end-2010",
+      "file": "telegraph--charles-spencer.json",
+      "publishDate": "2010-11-23",
+      "url": "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/8154022/End-of-the-Rainbow-Trafalgar-Studios-review.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
