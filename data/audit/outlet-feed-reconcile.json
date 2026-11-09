@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-09T06:26:43.489Z",
+  "generatedAt": "2026-11-09T07:56:25.165Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -118,10 +118,6 @@
   "feedsChecked": 84,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -142,8 +138,8 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 830,
-  "matchedGaps": 3,
+  "itemsScanned": 837,
+  "matchedGaps": 4,
   "possibleGaps": 4,
   "gaps": [
     {
@@ -163,6 +159,15 @@
       "url": "https://t2conline.com/222-a-ghost-story-the-loudest-thing-in-the-room-isnt-the-ghost/",
       "headline": "2:22 – A Ghost Story: The Loudest Thing in the Room Isn’t the Ghost",
       "publishDate": "2026-11-07"
+    },
+    {
+      "showId": "nero-off-west-end-2026",
+      "title": "Nero",
+      "level": "matched",
+      "outletId": "south-london",
+      "url": "https://southlondon.co.uk/lifestyle/review-nero-southwark-playhouse/",
+      "headline": "Review: Nero @ Southwark Playhouse",
+      "publishDate": "2026-11-09"
     },
     {
       "showId": "the-steel-man-off-broadway-2026",

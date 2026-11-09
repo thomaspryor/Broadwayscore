@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-11-09T06:26:00.733Z",
+  "generatedAt": "2026-11-09T07:55:47.387Z",
   "windowDays": 1095,
-  "targets": 678,
-  "auditedThisRun": 23,
-  "carriedForward": 2244,
+  "targets": 673,
+  "auditedThisRun": 40,
+  "carriedForward": 2249,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 633,
-    "missingCurrentRun": 1146,
+    "withGap": 634,
+    "missingCurrentRun": 1140,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 893,
-    "totalRecoverable": 53,
+    "totalFlaggedMisses": 896,
+    "totalRecoverable": 55,
     "totalRecovered": 98,
     "humanExcluded": 25,
-    "automatedExcluded": 981,
-    "automatedExcludedListed": 703,
-    "priorProductionCitations": 6308
+    "automatedExcluded": 983,
+    "automatedExcludedListed": 706,
+    "priorProductionCitations": 6326
   },
   "results": [
     {
@@ -9476,6 +9476,58 @@
       "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
+      "showId": "a-room-in-the-castle-regional-2026",
+      "title": "A Room in the Castle",
+      "openingDate": "2026-05-16",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "recoveryResults": [
+        {
+          "url": "https://www.davidcoddon.com/theatre-reviews/stage-west-a-room-in-the-castle-at-moxie-theatre",
+          "host": "davidcoddon.com",
+          "file": "stage-west--unknown.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "Fetch failed: fetch failed: All scraping methods failed; no archive.org capture",
+          "recoveryCount": 1,
+          "uncited": true
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-09T07:55:47.387Z"
+    },
+    {
       "showId": "a-sign-of-the-times-off-broadway-2024",
       "title": "A Sign of the Times",
       "openingDate": "2024-02-22",
@@ -11619,7 +11671,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
+            "results": 3,
             "accepted": 0,
             "error": null
           },
@@ -11629,7 +11681,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 8,
+            "results": 3,
             "accepted": 0,
             "error": null
           },
@@ -11639,7 +11691,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
+            "results": 3,
             "accepted": 0,
             "error": null
           },
@@ -11649,7 +11701,7 @@
             "page": 1,
             "geo": "gb",
             "ok": true,
-            "results": 10,
+            "results": 1,
             "accepted": 0,
             "error": null
           },
@@ -11659,7 +11711,7 @@
             "page": 2,
             "geo": "gb",
             "ok": true,
-            "results": 10,
+            "results": 4,
             "accepted": 0,
             "error": null
           }
@@ -11670,12 +11722,10 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 41,
+        "count": 7,
         "byReason": {
-          "non-review-host": 38,
-          "aggregator-internal-nav": 1,
-          "non-stage-review": 1,
-          "write-path-blocked": 1
+          "non-review-host": 6,
+          "no-review-evidence": 1
         }
       },
       "dedupedVariants": [],
@@ -11690,7 +11740,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-08T23:59:25.776Z"
+      "computedAt": "2026-11-09T07:55:47.387Z"
     },
     {
       "showId": "a-tupperware-of-ashes-west-end-2024",
@@ -23449,6 +23499,45 @@
         "candidateCount": 0
       },
       "computedAt": "2026-09-17T23:23:55.518Z"
+    },
+    {
+      "showId": "an-ideal-husband-off-west-end-2026",
+      "title": "An Ideal Husband",
+      "openingDate": "2026-05-12",
+      "status": "closed",
+      "category": "off-west-end",
+      "previewsStartDate": "2026-05-07",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-09T07:55:47.387Z"
     },
     {
       "showId": "an-ideal-husband-west-end-2026",
@@ -35931,6 +36020,44 @@
         "candidateCount": 0
       },
       "computedAt": "2026-11-04T04:19:43.534Z"
+    },
+    {
+      "showId": "ascent-regional-2026",
+      "title": "Ascent",
+      "openingDate": "2026-05-12",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-09T07:55:47.387Z"
     },
     {
       "showId": "ashland-avenue-regional-2025",
@@ -48462,6 +48589,7 @@
       "openingDate": "2026-09-13",
       "status": "closed",
       "category": "off-broadway",
+      "previewsStartDate": "2026-09-13",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [],
       "dirFiles": 0,
@@ -48487,11 +48615,12 @@
         "missing": [],
         "suppressedMissing": [],
         "candidates": [],
-        "censusSchema": 3,
+        "censusSchema": 4,
+        "excluded": [],
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-11-09T07:55:47.387Z"
     },
     {
       "showId": "big-man-little-man-off-west-end-2026",
@@ -50734,6 +50863,141 @@
         "candidateCount": 0
       },
       "computedAt": "2026-10-31T17:07:08.919Z"
+    },
+    {
+      "showId": "blood-brothers-off-west-end-2026",
+      "title": "Blood Brothers",
+      "openingDate": "2026-05-12",
+      "status": "closed",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.thestage.co.uk/reviews/blood-brothers-review",
+        "https://www.allthatdazzles.co.uk/post/review-blood-brothers-new-wimbledon-theatre---uk-tour",
+        "https://everything-theatre.co.uk/2025/03/review-blood-brothers-new-wimbledon-theatre-2/"
+      ],
+      "dirFiles": 1,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "https://www.allthatdazzles.co.uk/post/review-blood-brothers-new-wimbledon-theatre---uk-tour",
+          "host": "allthatdazzles.co.uk",
+          "knownOutletId": "all-that-dazzles-uk",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2025-03-06",
+          "sources": [
+            {
+              "source": "show-score",
+              "sourceUrl": "https://www.show-score.com/uk/london/off-west-end-shows/blood-brothers"
+            }
+          ]
+        },
+        {
+          "url": "https://everything-theatre.co.uk/2025/03/review-blood-brothers-new-wimbledon-theatre-2/",
+          "host": "everything-theatre.co.uk",
+          "knownOutletId": "everything-theatre",
+          "sources": [
+            {
+              "source": "show-score",
+              "sourceUrl": "https://www.show-score.com/uk/london/off-west-end-shows/blood-brothers"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "show-score-url-year"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.thestage.co.uk/reviews/blood-brothers-review",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thestage--paul-vale.json",
+              "flag": "clean",
+              "urlInDir": "https://www.thestage.co.uk/reviews/blood-brothers-review"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "tourContaminationInText"
+          ],
+          "sources": [
+            {
+              "source": "show-score",
+              "sourceUrl": "https://www.show-score.com/uk/london/off-west-end-shows/blood-brothers"
+            }
+          ],
+          "listingDate": "2026-05-14",
+          "listingSource": "show-score",
+          "reverify": true
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 1,
+      "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.allthatdazzles.co.uk/post/review-blood-brothers-new-wimbledon-theatre---uk-tour",
+          "host": "allthatdazzles.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://everything-theatre.co.uk/2025/03/review-blood-brothers-new-wimbledon-theatre-2/",
+          "host": "everything-theatre.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "thestage",
+            "outlet": "thestage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thestage.co.uk/reviews/blood-brothers-review"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.thestage.co.uk/reviews/blood-brothers-review",
+            "outletId": "thestage",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-09T07:55:47.387Z"
+          }
+        ],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 1
+      },
+      "computedAt": "2026-11-09T07:55:47.387Z"
     },
     {
       "showId": "blood-brothers-west-end-2026",
@@ -54065,6 +54329,44 @@
       "computedAt": "2026-08-13T08:23:28.238Z"
     },
     {
+      "showId": "brigadoon-regional-2026",
+      "title": "Brigadoon",
+      "openingDate": "2026-05-18",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-09T07:55:47.387Z"
+    },
+    {
       "showId": "broadway-bounty-hunter-off-broadway-2019",
       "title": "Broadway Bounty Hunter",
       "openingDate": "2019-07-23",
@@ -54804,6 +55106,7 @@
       "previewsStartDate": "2026-11-05",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://thefrontrowcenter.com/2026/11/broom-play",
         "https://thefrontrowcenter.com/2026/11/broom-play/",
         "https://emmareed.net/review-room-broom/"
       ],
@@ -54839,8 +55142,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 1,
+            "results": 2,
+            "accepted": 0,
             "error": null
           },
           {
@@ -54849,7 +55152,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 4,
             "accepted": 0,
             "error": null
           },
@@ -54859,8 +55162,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 0,
+            "results": 4,
+            "accepted": 1,
             "error": null
           },
           {
@@ -54869,7 +55172,7 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 4,
             "accepted": 0,
             "error": null
           },
@@ -54879,7 +55182,7 @@
             "page": 2,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 4,
             "accepted": 0,
             "error": null
           }
@@ -54890,12 +55193,13 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 45,
+        "count": 14,
         "byReason": {
-          "non-review-host": 40,
-          "aggregator-internal-nav": 3,
-          "venue-production-page": 1,
-          "event-listing": 1
+          "non-review-host": 10,
+          "ticketing-listing": 1,
+          "event-listing": 1,
+          "aggregator-internal-nav": 1,
+          "bare-host": 1
         }
       },
       "dedupedVariants": [],
@@ -54926,6 +55230,12 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://thefrontrowcenter.com/2026/11/broom-play",
+            "outletId": "thefrontrowcenter.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-09T07:55:47.387Z"
+          },
+          {
             "url": "https://thefrontrowcenter.com/2026/11/broom-play/",
             "outletId": "thefrontrowcenter.com",
             "state": "live",
@@ -54944,7 +55254,7 @@
         "liveCount": 1,
         "candidateCount": 2
       },
-      "computedAt": "2026-11-08T23:59:25.776Z"
+      "computedAt": "2026-11-09T07:55:47.387Z"
     },
     {
       "showId": "buddy-the-buddy-holly-story-regional-2026",
@@ -61509,6 +61819,139 @@
         "candidateCount": 23
       },
       "computedAt": "2026-10-31T08:36:58.086Z"
+    },
+    {
+      "showId": "care-off-west-end-2026",
+      "title": "CARE",
+      "openingDate": "2026-05-19",
+      "status": "closed",
+      "category": "off-west-end",
+      "previewsStartDate": "2026-05-11",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.londontheatre.co.uk/reviews/care-review-young-vic",
+        "https://www.standard.co.uk/culture/theatre/care-at-young-vic-review-b1283041.html",
+        "https://www.timeout.com/london/theatre/care-1-review",
+        "https://www.telegraph.co.uk/theatre/what-to-see/care-young-vic-review/",
+        "https://www.whatsonstage.com/news/alexander-zeldins-care-at-the-young-vic-review_1722077/",
+        "https://www.thestage.co.uk/reviews/care-review-young-vic-london-alexander-zeldin"
+      ],
+      "dirFiles": 32,
+      "dirClean": 18,
+      "inReviewsJson": 21,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "theartsdesk.com",
+          "count": 1
+        },
+        {
+          "host": "broadwayworld.com",
+          "count": 1
+        },
+        {
+          "host": "everything-theatre.co.uk",
+          "count": 1
+        },
+        {
+          "host": "ft.com",
+          "count": 1
+        },
+        {
+          "host": "theguardian.com",
+          "count": 1
+        },
+        {
+          "host": "inews.co.uk",
+          "count": 1
+        },
+        {
+          "host": "londonboxoffice.co.uk",
+          "count": 1
+        },
+        {
+          "host": "londontheatre1.com",
+          "count": 1
+        },
+        {
+          "host": "thereviewshub.com",
+          "count": 1
+        },
+        {
+          "host": "theupcoming.co.uk",
+          "count": 1
+        },
+        {
+          "host": "thetimes.com",
+          "count": 1
+        },
+        {
+          "host": "westendbestfriend.co.uk",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "complete",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.londontheatre.co.uk/reviews/care-review-young-vic",
+            "outletId": "londontheatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-09T07:55:47.387Z"
+          },
+          {
+            "url": "https://www.standard.co.uk/culture/theatre/care-at-young-vic-review-b1283041.html",
+            "outletId": "standard.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-09T07:55:47.387Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/care-1-review",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-09T07:55:47.387Z"
+          },
+          {
+            "url": "https://www.telegraph.co.uk/theatre/what-to-see/care-young-vic-review/",
+            "outletId": "telegraph.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-09T07:55:47.387Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/alexander-zeldins-care-at-the-young-vic-review_1722077/",
+            "outletId": "whatsonstage.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-09T07:55:47.387Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/care-review-young-vic-london-alexander-zeldin",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-09T07:55:47.387Z"
+          }
+        ],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 6,
+        "candidateCount": 6
+      },
+      "computedAt": "2026-11-09T07:55:47.387Z"
     },
     {
       "showId": "care-west-end-2026",
@@ -78002,6 +78445,44 @@
         "candidateCount": 0
       },
       "computedAt": "2026-11-03T07:10:54.955Z"
+    },
+    {
+      "showId": "dancing-shoes-oran-mor-regional-2025",
+      "title": "Dancing Shoes",
+      "openingDate": "2025-03-26",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-09T07:55:47.387Z"
     },
     {
       "showId": "daniels-husband-off-west-end-2025",
@@ -95569,7 +96050,7 @@
         "liveCount": 2,
         "candidateCount": 4
       },
-      "computedAt": "2026-11-09T06:26:00.733Z"
+      "computedAt": "2026-11-09T07:55:47.387Z"
     },
     {
       "showId": "doll-day-afternoon-off-broadway-2026",
@@ -103455,6 +103936,361 @@
       "computedAt": "2026-11-01T12:15:42.242Z"
     },
     {
+      "showId": "end-of-the-rainbow-off-west-end-2026",
+      "title": "End of the Rainbow",
+      "openingDate": "2026-05-15",
+      "status": "closed",
+      "category": "off-west-end",
+      "previewsStartDate": "2026-05-15",
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-END-OF-THE-RAINBOW-Opens-on-Broadway-All-the-Reviews-20120403"
+      ],
+      "aggregatorListedUrls": [
+        "http://theater.nytimes.com/2012/04/03/theater/reviews/end-of-the-rainbow-on-judy-garland-at-belasco-theater.html",
+        "http://www.huffingtonpost.com/huff-wires/20120402/us-theater-review-end-of-the-rainbow/",
+        "http://online.wsj.com/article/SB10001424052702303816504577319301583029494.html",
+        "http://www.hollywoodreporter.com/review/end-of-the-rainbow-theater-review-306891",
+        "http://www.timeout.com/newyork/theater/end-of-the-rainbow-belasco-theatre-march-24-2012-1",
+        "http://www.backstage.com/bso/reviews-ny-theatre-broadway/ny-review-end-of-the-rainbow-1006650352.story",
+        "http://www.amny.com/urbanite-1.812039/theater-review-end-of-the-rainbow-2-5-stars-1.3639008",
+        "http://www.newjerseynewsroom.com/new-york-theater/review-end-of-the-rainbow-reveals-trash"
+      ],
+      "dirFiles": 40,
+      "dirClean": 22,
+      "inReviewsJson": 23,
+      "missing": [
+        {
+          "url": "http://www.huffingtonpost.com/huff-wires/20120402/us-theater-review-end-of-the-rainbow/",
+          "host": "huffingtonpost.com",
+          "knownOutletId": "huffpost",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-END-OF-THE-RAINBOW-Opens-on-Broadway-All-the-Reviews-20120403"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/end-of-the-rainbow-theater-review-306891",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-END-OF-THE-RAINBOW-Opens-on-Broadway-All-the-Reviews-20120403"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.amny.com/urbanite-1.812039/theater-review-end-of-the-rainbow-2-5-stars-1.3639008",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-END-OF-THE-RAINBOW-Opens-on-Broadway-All-the-Reviews-20120403"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.newjerseynewsroom.com/new-york-theater/review-end-of-the-rainbow-reveals-trash",
+          "host": "newjerseynewsroom.com",
+          "knownOutletId": "new-jersey-newsroom",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-END-OF-THE-RAINBOW-Opens-on-Broadway-All-the-Reviews-20120403"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "ayoungishperspective.co.uk",
+          "count": 1
+        },
+        {
+          "host": "allthatdazzles.co.uk",
+          "count": 1
+        },
+        {
+          "host": "broadwayworld.com",
+          "count": 1
+        },
+        {
+          "host": "everything-theatre.co.uk",
+          "count": 1
+        },
+        {
+          "host": "flickermagazine.art",
+          "count": 1
+        },
+        {
+          "host": "frontmezzjunkies.com",
+          "count": 1
+        },
+        {
+          "host": "theguardian.com",
+          "count": 1
+        },
+        {
+          "host": "jacktheladmag.com",
+          "count": 1
+        },
+        {
+          "host": "londontheatre.co.uk",
+          "count": 1
+        },
+        {
+          "host": "mrcarlwoodward.com",
+          "count": 1
+        },
+        {
+          "host": "musicaltheatrereview.com",
+          "count": 1
+        },
+        {
+          "host": "northwestend.com",
+          "count": 1
+        },
+        {
+          "host": "radiotimes.com",
+          "count": 1
+        },
+        {
+          "host": "standard.co.uk",
+          "count": 1
+        },
+        {
+          "host": "therecs.co.uk",
+          "count": 1
+        },
+        {
+          "host": "theatreandtonic.co.uk",
+          "count": 1
+        },
+        {
+          "host": "thereviewshub.com",
+          "count": 1
+        },
+        {
+          "host": "thestage.co.uk",
+          "count": 1
+        },
+        {
+          "host": "westendbestfriend.co.uk",
+          "count": 1
+        },
+        {
+          "host": "westendwilma.com",
+          "count": 1
+        },
+        {
+          "host": "whatsonstage.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "http://theater.nytimes.com/2012/04/03/theater/reviews/end-of-the-rainbow-on-judy-garland-at-belasco-theater.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--ben-brantley.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://theater.nytimes.com/2012/04/03/theater/reviews/end-of-the-rainbow-on-judy-garland-at-belasco-theater.html?ref=theater"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-END-OF-THE-RAINBOW-Opens-on-Broadway-All-the-Reviews-20120403"
+            }
+          ],
+          "reverify": false
+        },
+        {
+          "url": "http://online.wsj.com/article/SB10001424052702303816504577319301583029494.html",
+          "host": "wsj.com",
+          "knownOutletId": "wsj",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "wsj--terry-teachout.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://online.wsj.com/article/SB10001424052702303816504577319301583029494.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-END-OF-THE-RAINBOW-Opens-on-Broadway-All-the-Reviews-20120403"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "http://www.timeout.com/newyork/theater/end-of-the-rainbow-belasco-theatre-march-24-2012-1",
+          "host": "timeout.com",
+          "knownOutletId": "timeout",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "timeout--adam-feldman.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.timeout.com/newyork/theater/end-of-the-rainbow-belasco-theatre-march-24-2012-1"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-END-OF-THE-RAINBOW-Opens-on-Broadway-All-the-Reviews-20120403"
+            }
+          ],
+          "reverify": false
+        },
+        {
+          "url": "http://www.backstage.com/bso/reviews-ny-theatre-broadway/ny-review-end-of-the-rainbow-1006650352.story",
+          "host": "backstage.com",
+          "knownOutletId": "backstage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "backstage--david-sheward.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.backstage.com/bso/reviews-ny-theatre-broadway/ny-review-end-of-the-rainbow-1006650352.story"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-END-OF-THE-RAINBOW-Opens-on-Broadway-All-the-Reviews-20120403"
+            }
+          ],
+          "reverify": false
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 275,
+        "byReason": {
+          "non-review-host": 15,
+          "not-http-url": 38,
+          "aggregator-internal-nav": 212,
+          "aggregator-section-root": 5,
+          "podcast-episode": 1,
+          "roundup-page": 4
+        }
+      },
+      "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-END-OF-THE-RAINBOW-Opens-on-Broadway-All-the-Reviews-20120403",
+          "publishDate": "2012-04-03"
+        }
+      ],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "http://www.huffingtonpost.com/huff-wires/20120402/us-theater-review-end-of-the-rainbow/",
+          "host": "huffingtonpost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/end-of-the-rainbow-theater-review-306891",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.amny.com/urbanite-1.812039/theater-review-end-of-the-rainbow-2-5-stars-1.3639008",
+          "host": "amny.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.newjerseynewsroom.com/new-york-theater/review-end-of-the-rainbow-reveals-trash",
+          "host": "newjerseynewsroom.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-09T07:55:47.387Z"
+    },
+    {
       "showId": "end-of-the-rainbow-west-end-2026",
       "title": "End of the Rainbow",
       "openingDate": "2026-05-15",
@@ -105864,6 +106700,222 @@
         "candidateCount": 1
       },
       "computedAt": "2026-10-31T17:58:22.702Z"
+    },
+    {
+      "showId": "equus-off-west-end-2026",
+      "title": "Equus",
+      "openingDate": "2026-05-18",
+      "status": "closed",
+      "category": "off-west-end",
+      "previewsStartDate": "2026-05-08",
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-reviews-for-london-revival-of-equus"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.standard.co.uk/go/london/theatre/equus-review-west-end-trafalgar-studios-a4190751.html",
+        "https://www.telegraph.co.uk/theatre/what-to-see/equus-trafalgar-studios-review-saddle-splendid-revival/",
+        "https://www.theupcoming.co.uk/2019/07/16/equus-at-trafalgar-studios-theatre-review/"
+      ],
+      "dirFiles": 34,
+      "dirClean": 20,
+      "inReviewsJson": 21,
+      "missing": [
+        {
+          "url": "https://www.standard.co.uk/go/london/theatre/equus-review-west-end-trafalgar-studios-a4190751.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-london-revival-of-equus"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/equus-trafalgar-studios-review-saddle-splendid-revival/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-london-revival-of-equus"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "allthatdazzles.co.uk",
+          "count": 1
+        },
+        {
+          "host": "britishtheatreguide.info",
+          "count": 1
+        },
+        {
+          "host": "broadwayworld.com",
+          "count": 1
+        },
+        {
+          "host": "everything-theatre.co.uk",
+          "count": 1
+        },
+        {
+          "host": "flickermagazine.art",
+          "count": 1
+        },
+        {
+          "host": "theguardian.com",
+          "count": 1
+        },
+        {
+          "host": "independent.co.uk",
+          "count": 1
+        },
+        {
+          "host": "jonathanbaz.com",
+          "count": 1
+        },
+        {
+          "host": "londontheatre.co.uk",
+          "count": 1
+        },
+        {
+          "host": "monstagigz.com",
+          "count": 1
+        },
+        {
+          "host": "partially-obstructed-view.blogspot.com",
+          "count": 1
+        },
+        {
+          "host": "readaboutstuff.com",
+          "count": 1
+        },
+        {
+          "host": "thejc.com",
+          "count": 1
+        },
+        {
+          "host": "theatreweekly.com",
+          "count": 1
+        },
+        {
+          "host": "theatreandtonic.co.uk",
+          "count": 1
+        },
+        {
+          "host": "thereviewshub.com",
+          "count": 1
+        },
+        {
+          "host": "thestage.co.uk",
+          "count": 1
+        },
+        {
+          "host": "timeout.com",
+          "count": 1
+        },
+        {
+          "host": "thetimes.com",
+          "count": 1
+        },
+        {
+          "host": "whatsonstage.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.theupcoming.co.uk/2019/07/16/equus-at-trafalgar-studios-theatre-review/",
+          "host": "theupcoming.co.uk",
+          "knownOutletId": "theupcoming",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theupcoming--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theupcoming.co.uk/2019/07/16/equus-at-trafalgar-studios-theatre-review/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-london-revival-of-equus"
+            }
+          ],
+          "reverify": false
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 106,
+        "byReason": {
+          "non-review-host": 20,
+          "not-http-url": 6,
+          "aggregator-internal-nav": 64,
+          "aggregator-section-root": 4,
+          "production-database-listing": 11,
+          "non-stage-review": 1
+        }
+      },
+      "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/read-reviews-for-london-revival-of-equus",
+          "publishDate": "2019-07-16"
+        }
+      ],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.standard.co.uk/go/london/theatre/equus-review-west-end-trafalgar-studios-a4190751.html",
+          "host": "standard.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/equus-trafalgar-studios-review-saddle-splendid-revival/",
+          "host": "telegraph.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-09T07:55:47.387Z"
     },
     {
       "showId": "equus-west-end-2026",
@@ -110257,6 +111309,302 @@
         "candidateCount": 1
       },
       "computedAt": "2026-11-03T03:31:41.115Z"
+    },
+    {
+      "showId": "exit-the-king-regional-2026",
+      "title": "Exit The King",
+      "openingDate": "2026-05-13",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [
+        "https://playbill.com/article/what-did-critics-think-of-rhys-ifans-in-exit-the-king",
+        "https://www.broadwayworld.com/article/Review-Roundup-Patrick-Marbers-EXIT-THE-KING-with-Rhys-Ifans-20180730"
+      ],
+      "aggregatorListedUrls": [
+        "https://theartsdesk.com/theatre/exit-king-national-theatre-review-vivid-brilliant-production-somehow-leaves-you-feeling",
+        "https://www.standard.co.uk/go/london/theatre/exit-the-king-review-rhys-ifans-commands-as-unreachable-despot-but-this-tragicomedy-is-overblown-a3896701.html",
+        "https://www.theguardian.com/stage/2018/jul/29/exit-the-king-olivier-marber-pity-royal-court-mullarkey-river-stage-festival-review",
+        "https://www.hollywoodreporter.com/review/exit-king-theater-review-1129943",
+        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/exit-the-king-review-rhys-ifans-national-theatre-patrick-marber-ionesco-indira-varma-a8464351.html",
+        "https://www.londontheatre.co.uk/reviews/review-exit-the-king-starring-rhys-ifans-at-the-national-theatre",
+        "https://www.thestage.co.uk/reviews/2018/exit-the-king-rhys-ifans-review-at-national-theatre-london/",
+        "https://www.thetimes.co.uk/article/theatre-review-exit-the-king-national-theatre-pity-royal-court-they-re-so-utterly-absurd-d72qp20p6"
+      ],
+      "dirFiles": 7,
+      "dirClean": 7,
+      "inReviewsJson": 7,
+      "missing": [
+        {
+          "url": "https://theartsdesk.com/theatre/exit-king-national-theatre-review-vivid-brilliant-production-somehow-leaves-you-feeling",
+          "host": "theartsdesk.com",
+          "knownOutletId": "artsdesk",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/what-did-critics-think-of-rhys-ifans-in-exit-the-king"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Patrick-Marbers-EXIT-THE-KING-with-Rhys-Ifans-20180730"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.standard.co.uk/go/london/theatre/exit-the-king-review-rhys-ifans-commands-as-unreachable-despot-but-this-tragicomedy-is-overblown-a3896701.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/what-did-critics-think-of-rhys-ifans-in-exit-the-king"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Patrick-Marbers-EXIT-THE-KING-with-Rhys-Ifans-20180730"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2018/jul/29/exit-the-king-olivier-marber-pity-royal-court-mullarkey-river-stage-festival-review",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/what-did-critics-think-of-rhys-ifans-in-exit-the-king"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Patrick-Marbers-EXIT-THE-KING-with-Rhys-Ifans-20180730"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/exit-king-theater-review-1129943",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/what-did-critics-think-of-rhys-ifans-in-exit-the-king"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Patrick-Marbers-EXIT-THE-KING-with-Rhys-Ifans-20180730"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/exit-the-king-review-rhys-ifans-national-theatre-patrick-marber-ionesco-indira-varma-a8464351.html",
+          "host": "independent.co.uk",
+          "knownOutletId": "independent",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/what-did-critics-think-of-rhys-ifans-in-exit-the-king"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Patrick-Marbers-EXIT-THE-KING-with-Rhys-Ifans-20180730"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/review-exit-the-king-starring-rhys-ifans-at-the-national-theatre",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/what-did-critics-think-of-rhys-ifans-in-exit-the-king"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Patrick-Marbers-EXIT-THE-KING-with-Rhys-Ifans-20180730"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/2018/exit-the-king-rhys-ifans-review-at-national-theatre-london/",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/what-did-critics-think-of-rhys-ifans-in-exit-the-king"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Patrick-Marbers-EXIT-THE-KING-with-Rhys-Ifans-20180730"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thetimes.co.uk/article/theatre-review-exit-the-king-national-theatre-pity-royal-court-they-re-so-utterly-absurd-d72qp20p6",
+          "host": "thetimes.co.uk",
+          "knownOutletId": "sunday-times",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/what-did-critics-think-of-rhys-ifans-in-exit-the-king"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Patrick-Marbers-EXIT-THE-KING-with-Rhys-Ifans-20180730"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "coloradoboulevard.net",
+          "count": 1
+        },
+        {
+          "host": "larchmontbuzz.com",
+          "count": 1
+        },
+        {
+          "host": "latheatrix.com",
+          "count": 1
+        },
+        {
+          "host": "latimes.com",
+          "count": 1
+        },
+        {
+          "host": "stageraw.com",
+          "count": 1
+        },
+        {
+          "host": "stagescenela.com",
+          "count": 1
+        },
+        {
+          "host": "hollywoodtimes.net",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 413,
+        "byReason": {
+          "non-review-host": 35,
+          "not-http-url": 56,
+          "aggregator-internal-nav": 252,
+          "aggregator-section-root": 9,
+          "podcast-episode": 1,
+          "roundup-page": 48,
+          "production-database-listing": 11,
+          "non-stage-review": 1
+        }
+      },
+      "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/what-did-critics-think-of-rhys-ifans-in-exit-the-king",
+          "publishDate": "2018-07-30"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Patrick-Marbers-EXIT-THE-KING-with-Rhys-Ifans-20180730",
+          "publishDate": "2018-07-30"
+        }
+      ],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://theartsdesk.com/theatre/exit-king-national-theatre-review-vivid-brilliant-production-somehow-leaves-you-feeling",
+          "host": "theartsdesk.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.standard.co.uk/go/london/theatre/exit-the-king-review-rhys-ifans-commands-as-unreachable-despot-but-this-tragicomedy-is-overblown-a3896701.html",
+          "host": "standard.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2018/jul/29/exit-the-king-olivier-marber-pity-royal-court-mullarkey-river-stage-festival-review",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/exit-king-theater-review-1129943",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/exit-the-king-review-rhys-ifans-national-theatre-patrick-marber-ionesco-indira-varma-a8464351.html",
+          "host": "independent.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/review-exit-the-king-starring-rhys-ifans-at-the-national-theatre",
+          "host": "londontheatre.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/2018/exit-the-king-rhys-ifans-review-at-national-theatre-london/",
+          "host": "thestage.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thetimes.co.uk/article/theatre-review-exit-the-king-national-theatre-pity-royal-court-they-re-so-utterly-absurd-d72qp20p6",
+          "host": "thetimes.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-09T07:55:47.387Z"
     },
     {
       "showId": "fabulation-or-the-re-education-of-undine-off-broadway-2024",
@@ -117219,6 +118567,44 @@
       "computedAt": "2026-11-02T23:10:09.112Z"
     },
     {
+      "showId": "fremont-ave-regional-2026",
+      "title": "Fremont Ave.",
+      "openingDate": "2026-05-08",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-09T07:55:47.387Z"
+    },
+    {
       "showId": "frida-a-self-portrait-regional-2026",
       "title": "Frida...A Self Portrait",
       "openingDate": "2026-10-14",
@@ -121043,7 +122429,12 @@
         "liveCount": 20,
         "candidateCount": 25
       },
-      "computedAt": "2026-11-08T10:24:55.308Z"
+      "computedAt": "2026-11-08T10:24:55.308Z",
+      "quarantine": {
+        "nextState": "incomplete:18:25",
+        "since": "2026-11-09T07:55:47.598Z",
+        "lastAt": "2026-11-09T07:55:47.598Z"
+      }
     },
     {
       "showId": "garsides-career-off-broadway-2025",
@@ -148963,7 +150354,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-08T23:59:25.776Z"
+      "computedAt": "2026-11-09T07:55:47.387Z"
     },
     {
       "showId": "heart-of-rock-and-roll-2024",
@@ -153953,9 +155344,8 @@
       "previewsStartDate": "2026-11-02",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.theatermania.com/news/find-out-the-real-story-behind-broadways-here-there-are-blueberries_1859045/",
         "https://mildconcern.substack.com/p/theatre-reviews-here-there-are-blueberries",
-        "https://exeuntnyc.com/reviews/review-here-there-are-blueberries-at-new-york-theatre-workshop/"
+        "https://www.theatermania.com/news/find-out-the-real-story-behind-broadways-here-there-are-blueberries_1859045/"
       ],
       "dirFiles": 10,
       "dirClean": 0,
@@ -153966,20 +155356,6 @@
           "host": "mildconcern.substack.com",
           "knownOutletId": "mildconcern",
           "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
-          "url": "https://exeuntnyc.com/reviews/review-here-there-are-blueberries-at-new-york-theatre-workshop/",
-          "host": "exeuntnyc.com",
-          "knownOutletId": "exeunt-magazine",
-          "serpCensus": true,
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2024-05-16",
           "sources": [
             {
               "source": "serp-census",
@@ -154033,15 +155409,6 @@
       "dedupedVariants": [],
       "automatedExcludedListed": 1,
       "unextractable": [],
-      "weIngestBlocked": [
-        {
-          "url": "https://exeuntnyc.com/reviews/review-here-there-are-blueberries-at-new-york-theatre-workshop/",
-          "host": "exeuntnyc.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        }
-      ],
       "ingestResults": [
         {
           "url": "https://mildconcern.substack.com/p/theatre-reviews-here-there-are-blueberries",
@@ -154100,7 +155467,7 @@
         "liveCount": 0,
         "candidateCount": 2
       },
-      "computedAt": "2026-11-09T06:26:00.733Z"
+      "computedAt": "2026-11-09T07:55:47.387Z"
     },
     {
       "showId": "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026",
@@ -165831,6 +167198,45 @@
         "candidateCount": 0
       },
       "computedAt": "2026-11-01T00:22:16.175Z"
+    },
+    {
+      "showId": "im-not-being-funny-off-west-end-2026",
+      "title": "I’m Not Being Funny",
+      "openingDate": "2026-05-11",
+      "status": "closed",
+      "category": "off-west-end",
+      "previewsStartDate": "2026-05-07",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-09T07:55:47.387Z"
     },
     {
       "showId": "im-not-being-funny-west-end-2026",
@@ -183283,7 +184689,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-08T23:59:25.776Z"
+      "computedAt": "2026-11-09T07:55:47.387Z"
     },
     {
       "showId": "kathy-and-stella-solve-a-murder-west-end-2024",
@@ -227775,6 +229181,44 @@
       "computedAt": "2026-10-28T15:05:14.854Z"
     },
     {
+      "showId": "millennials-are-killing-musicals-regional-2026",
+      "title": "Millennials Are Killing Musicals",
+      "openingDate": "2026-05-04",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-09T07:55:47.387Z"
+    },
+    {
       "showId": "million-dollar-quartet-christmas-regional-2025",
       "title": "Million Dollar Quartet Christmas",
       "openingDate": "2025-11-13",
@@ -231180,7 +232624,12 @@
         "liveCount": 7,
         "candidateCount": 29
       },
-      "computedAt": "2026-10-26T05:26:34.334Z"
+      "computedAt": "2026-10-26T05:26:34.334Z",
+      "quarantine": {
+        "nextState": "incomplete:9:11",
+        "since": "2026-11-09T07:55:47.598Z",
+        "lastAt": "2026-11-09T07:55:47.598Z"
+      }
     },
     {
       "showId": "mlimas-tale-off-broadway-2018",
@@ -231722,6 +233171,45 @@
         "candidateCount": 0
       },
       "computedAt": "2026-10-31T21:45:18.470Z"
+    },
+    {
+      "showId": "mother-courage-and-her-children-globe-off-west-end-2026",
+      "title": "Mother Courage and Her Children",
+      "openingDate": "2026-05-15",
+      "status": "closed",
+      "category": "off-west-end",
+      "previewsStartDate": "2026-05-07",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-09T07:55:47.387Z"
     },
     {
       "showId": "mother-courage-and-her-children-globe-west-end-2026",
@@ -236229,96 +237717,29 @@
       "status": "open",
       "category": "off-broadway",
       "previewsStartDate": "2026-10-22",
-      "aggregatorArticles": [
-        "https://playbill.com/article/read-reviews-for-tarell-alvin-mccraneys-ms-blakk-for-president"
-      ],
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.chicagoreader.com/chicago/ms-blakk-for-president-steppenwolf/Content",
-        "https://chicago.suntimes.com/2019/6/4/18652634/ms-blakk-for-president-review-steppenwolf-chicago-powerfully-moving-and-fun",
-        "https://www.nytimes.com/2019/06/04/theater/ms-blakk-for-president-review-tarell-mccraney.html",
         "https://newyorktheater.me/2026/11/08/ms-blakk-for-president-review/",
-        "https://t2conline.com/ms-blakk-for-president-all-that-glitter-is-not-political-gold/",
         "https://pagesonstages.com/2026/11/08/ms-blakk-for-president",
-        "https://talkinbroadway.com/page/ob/11_08_26b.html",
-        "https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play",
         "https://www.newyorktheatreguide.com/reviews/ms-blakk-for-president-off-broadway-review",
         "https://newyorktheater.me/2026/11/08/ms-blakk-for-president-review",
-        "https://www.theguardian.com/stage/nov/ms-blakk-for-president-play",
         "https://www.theatermania.com/news/review-ms-blakk-for-president-a-drag-queens-long-shot-campaign-in-92_1859063/",
-        "https://www.theguardian.com/stage/2026/nov/05/ms-blakk-for-president-play",
         "https://www.theatermania.com/news/wayne-brady-to-play-drag-queen-presidential-candidate-in-ms-blakk-for-president_1835442/",
-        "https://aroundthetownchicago.com/theatre-reviews/ms-blakk-for-president",
         "https://therecs.co.uk/ms-blakk-for-president/",
+        "https://www.theatermania.com/news/ato-blankson-wood-to-replace-wayne-brady-in-ms-blakk-for-president_1855437/",
+        "https://t2conline.com/ms-blakk-for-president-all-that-glitter-is-not-political-gold/",
+        "https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play",
+        "https://www.theguardian.com/stage/nov/ms-blakk-for-president-play",
+        "https://aroundthetownchicago.com/theatre-reviews/ms-blakk-for-president",
         "https://storefrontrebellion.substack.com/p/sr-review-ms-blakk-for-president",
         "https://essilfie.substack.com/p/review-ms-blakk-for-president",
         "https://variety.com/2026/legit/news/wayne-brady-starring-tina-landau-tarell-alvin-mccraney-ms-blakk-for-president-vineyard-theatre-1236736622/",
-        "https://www.theatermania.com/news/ato-blankson-wood-to-replace-wayne-brady-in-ms-blakk-for-president_1855437/"
+        "https://www.theguardian.com/stage/2026/nov/05/ms-blakk-for-president-play"
       ],
-      "dirFiles": 13,
-      "dirClean": 7,
-      "inReviewsJson": 7,
+      "dirFiles": 15,
+      "dirClean": 8,
+      "inReviewsJson": 8,
       "missing": [
-        {
-          "url": "https://chicago.suntimes.com/2019/6/4/18652634/ms-blakk-for-president-review-steppenwolf-chicago-powerfully-moving-and-fun",
-          "host": "suntimes.com",
-          "knownOutletId": "chicago-sun-times",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/read-reviews-for-tarell-alvin-mccraneys-ms-blakk-for-president"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://t2conline.com/ms-blakk-for-president-all-that-glitter-is-not-political-gold/",
-          "host": "t2conline.com",
-          "knownOutletId": "times-square-chronicles",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
-          "url": "https://talkinbroadway.com/page/ob/11_08_26b.html",
-          "host": "talkinbroadway.com",
-          "knownOutletId": "talkinbroadway",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
-          "url": "https://www.theguardian.com/stage/nov/ms-blakk-for-president-play",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
         {
           "url": "https://aroundthetownchicago.com/theatre-reviews/ms-blakk-for-president",
           "host": "aroundthetownchicago.com",
@@ -236380,64 +237801,62 @@
       ],
       "flaggedMisses": [
         {
-          "url": "https://www.chicagoreader.com/chicago/ms-blakk-for-president-steppenwolf/Content",
-          "host": "chicagoreader.com",
-          "knownOutletId": "chicago-reader",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
+          "url": "https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "recoverable": true,
+          "recoverableFile": "guardian--unknown.json",
+          "recoverableOutletId": "guardian",
+          "recoverableCritic": "Unknown",
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "chicago-reader--dan-jakes.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.chicagoreader.com/chicago/ms-blakk-for-president-steppenwolf/Content?oid=70761615"
+              "file": "guardian--unknown.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
-            "wrongProduction"
+            "noTextOrScoreSignal"
           ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
           "sources": [
             {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/read-reviews-for-tarell-alvin-mccraneys-ms-blakk-for-president"
+              "source": "serp-census",
+              "sourceUrl": null
             }
           ],
-          "reverify": false
+          "serpCensus": true,
+          "reverify": true
         },
         {
-          "url": "https://www.nytimes.com/2019/06/04/theater/ms-blakk-for-president-review-tarell-mccraney.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
+          "url": "https://www.theguardian.com/stage/nov/ms-blakk-for-president-play",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "recoverable": true,
+          "recoverableFile": "guardian--unknown.json",
+          "recoverableOutletId": "guardian",
+          "recoverableCritic": "Unknown",
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "nytimes--jesse-green.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.nytimes.com/2019/06/04/theater/ms-blakk-for-president-review-tarell-mccraney.html"
+              "file": "guardian--unknown.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
-            "wrongProduction"
+            "noTextOrScoreSignal"
           ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
           "sources": [
             {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/read-reviews-for-tarell-alvin-mccraneys-ms-blakk-for-president"
+              "source": "serp-census",
+              "sourceUrl": null
             }
           ],
-          "reverify": false
+          "serpCensus": true,
+          "reverify": true
         },
         {
           "url": "https://www.theguardian.com/stage/2026/nov/05/ms-blakk-for-president-play",
@@ -236472,106 +237891,17 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Ms. Blakk for President\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Ms. Blakk for President\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 5,
-            "accepted": 5,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Ms. Blakk for President\" review vineyard",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 5,
-            "accepted": 3,
-            "error": null
-          },
-          {
-            "arm": "scoped2",
-            "query": "\"Ms. Blakk for President\" Landau review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 4,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Ms. Blakk for President Vineyard Theatre review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 3,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Ms. Blakk for President Vineyard Theatre review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 4,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Ms. Blakk for President Vineyard Theatre review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 4,
-            "accepted": 1,
-            "error": null
-          }
-        ],
-        "queriesOk": 6,
-        "queriesTotal": 6,
-        "resultCount": 12,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 111,
-        "byReason": {
-          "non-review-host": 25,
-          "aggregator-internal-nav": 63,
-          "not-http-url": 5,
-          "production-database-listing": 11,
-          "aggregator-section-root": 4,
-          "non-stage-review": 1,
-          "census-junk-host": 1,
-          "roundup-page": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "priorRunArticles": [
-        {
-          "url": "https://playbill.com/article/read-reviews-for-tarell-alvin-mccraneys-ms-blakk-for-president",
-          "publishDate": "2019-06-05"
-        }
-      ],
-      "automatedExcludedListed": 1,
+      "automatedExcludedListed": 3,
       "unextractable": [],
       "weIngestBlocked": [
-        {
-          "url": "https://chicago.suntimes.com/2019/6/4/18652634/ms-blakk-for-president-review-steppenwolf-chicago-powerfully-moving-and-fun",
-          "host": "suntimes.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
         {
           "url": "https://storefrontrebellion.substack.com/p/sr-review-ms-blakk-for-president",
           "host": "storefrontrebellion.substack.com",
@@ -236589,64 +237919,19 @@
       ],
       "ingestResults": [
         {
-          "url": "https://t2conline.com/ms-blakk-for-president-all-that-glitter-is-not-political-gold/",
-          "host": "t2conline.com",
-          "outletId": "times-square-chronicles",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://talkinbroadway.com/page/ob/11_08_26b.html",
-          "host": "talkinbroadway.com",
-          "outletId": "talkinbroadway",
+          "url": "https://variety.com/2026/legit/news/wayne-brady-starring-tina-landau-tarell-alvin-mccraney-ms-blakk-for-president-vineyard-theatre-1236736622/",
+          "host": "variety.com",
+          "outletId": "variety",
           "provisional": false,
           "ok": false,
-          "noop": false,
+          "noop": true,
           "conflict": false,
           "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
+          "expected": true,
+          "expectedReason": "pre-opening-non-review",
           "unclassified": false,
           "zeroChar": false,
-          "reason": "Fetch failed: fetch failed: All scraping methods failed; no archive.org capture"
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play",
-          "host": "theguardian.com",
-          "outletId": "guardian",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=theguardian.com): Scrapingdog HTTP 404: {\"message\":\"This URL does not exist or the url is wrong.\"}\nFetch failed: live page is the site's not-found template; no archive.org capture"
-        },
-        {
-          "url": "https://www.theguardian.com/stage/nov/ms-blakk-for-president-play",
-          "host": "theguardian.com",
-          "outletId": "guardian",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=theguardian.com): Scrapingdog HTTP 404: {\"message\":\"This URL does not exist or the url is wrong.\"}\nFetch failed: live page is the site's not-found template; no archive.org capture"
+          "reason": "msblackforpresident-off-broadway-2026: https://variety.com/2026/legit/news/wayne-brady-starring-tina-landau-tarell-alvin-mccraney-ms-blakk-for-president-vineyard-theatre-1236736622/ is dated before this show's opening on a review outlet and its URL has no review/critic word, so it was read as a pre-opening news, feature or interview page (BRO-6588, non-review-url-patterns.js preOpeningNonReviewReason). Expected rejection; if it IS an early-published review, ingest it with --allow-non-review-url."
         },
         {
           "url": "https://aroundthetownchicago.com/theatre-reviews/ms-blakk-for-president",
@@ -236664,44 +237949,34 @@
           "reason": "msblackforpresident-off-broadway-2026: https://aroundthetownchicago.com/theatre-reviews/ms-blakk-for-president has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
         }
       ],
-      "ingestSkippedByCap": [
+      "ingestSkippedByCap": [],
+      "recoveryResults": [
         {
-          "url": "https://variety.com/2026/legit/news/wayne-brady-starring-tina-landau-tarell-alvin-mccraney-ms-blakk-for-president-vineyard-theatre-1236736622/",
-          "host": "variety.com",
-          "outletId": "variety"
+          "url": "https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play",
+          "host": "theguardian.com",
+          "file": "guardian--unknown.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=theguardian.com): Scrapingdog HTTP 404: {\"message\":\"This URL does not exist or the url is wrong.\"}\nFetch failed: live page is the site's not-found template; no archive.org capture",
+          "recoveryCount": 1
+        },
+        {
+          "url": "https://www.theguardian.com/stage/nov/ms-blakk-for-president-play",
+          "host": "theguardian.com",
+          "file": "guardian--unknown.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=theguardian.com): Scrapingdog HTTP 404: {\"message\":\"This URL does not exist or the url is wrong.\"}\nFetch failed: live page is the site's not-found template; no archive.org capture",
+          "recoveryCount": 2
         }
       ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "times-square-chronicles",
-            "outlet": "times-square-chronicles",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://t2conline.com/ms-blakk-for-president-all-that-glitter-is-not-political-gold/"
-          },
-          {
-            "outletId": "talkinbroadway",
-            "outlet": "talkinbroadway",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://talkinbroadway.com/page/ob/11_08_26b.html"
-          },
-          {
-            "outletId": "guardian",
-            "outlet": "guardian",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play"
-          },
-          {
-            "outletId": "guardian",
-            "outlet": "guardian",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theguardian.com/stage/nov/ms-blakk-for-president-play"
-          },
           {
             "outletId": "around-the-town-chicago",
             "outlet": "around-the-town-chicago",
@@ -236729,6 +238004,20 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://variety.com/2026/legit/news/wayne-brady-starring-tina-landau-tarell-alvin-mccraney-ms-blakk-for-president-vineyard-theatre-1236736622/"
+          },
+          {
+            "outletId": "guardian",
+            "outlet": "guardian",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play"
+          },
+          {
+            "outletId": "guardian",
+            "outlet": "guardian",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theguardian.com/stage/nov/ms-blakk-for-president-play"
           },
           {
             "outletId": "guardian",
@@ -236790,30 +238079,8 @@
           },
           {
             "url": "https://t2conline.com/ms-blakk-for-president-all-that-glitter-is-not-political-gold/",
-            "outletId": "times-square-chronicles",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-09T06:26:00.733Z"
-          },
-          {
-            "url": "https://talkinbroadway.com/page/ob/11_08_26b.html",
-            "outletId": "talkinbroadway",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-09T06:26:00.733Z"
-          },
-          {
-            "url": "https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play",
-            "outletId": "guardian",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-09T06:26:00.733Z"
-          },
-          {
-            "url": "https://www.theguardian.com/stage/nov/ms-blakk-for-president-play",
-            "outletId": "guardian",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "t2conline.com",
+            "state": "live",
             "firstSeenAt": "2026-11-09T06:26:00.733Z"
           },
           {
@@ -236845,6 +238112,20 @@
             "firstSeenAt": "2026-11-01T02:12:48.530Z"
           },
           {
+            "url": "https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play",
+            "outletId": "guardian",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-09T06:26:00.733Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/nov/ms-blakk-for-president-play",
+            "outletId": "guardian",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-09T06:26:00.733Z"
+          },
+          {
             "url": "https://www.theguardian.com/stage/2026/nov/05/ms-blakk-for-president-play",
             "outletId": "guardian",
             "state": "GAP",
@@ -236854,10 +238135,10 @@
         ],
         "censusSchema": 4,
         "excluded": [],
-        "liveCount": 5,
-        "candidateCount": 12
+        "liveCount": 6,
+        "candidateCount": 11
       },
-      "computedAt": "2026-11-09T06:26:00.733Z"
+      "computedAt": "2026-11-09T07:55:47.387Z"
     },
     {
       "showId": "much-ado-about-nothing-globe-off-west-end-2026",
@@ -245289,6 +246570,44 @@
       "computedAt": "2026-11-01T00:22:16.175Z"
     },
     {
+      "showId": "north-by-northwest-york-royal-regional-2025",
+      "title": "North By Northwest",
+      "openingDate": "2025-03-27",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-09T07:55:47.387Z"
+    },
+    {
       "showId": "north-star-off-broadway-2026",
       "title": "North Star",
       "openingDate": "2026-06-03",
@@ -247031,6 +248350,44 @@
         "candidateCount": 1
       },
       "computedAt": "2026-10-22T15:09:01.446Z"
+    },
+    {
+      "showId": "of-mice-and-men-octagon-regional-2025",
+      "title": "Of Mice and Men",
+      "openingDate": "2025-03-28",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-09T07:55:47.387Z"
     },
     {
       "showId": "office-hour-off-broadway-2017",
@@ -260152,7 +261509,7 @@
         "liveCount": 1,
         "candidateCount": 4
       },
-      "computedAt": "2026-11-08T23:59:25.776Z"
+      "computedAt": "2026-11-09T07:55:47.387Z"
     },
     {
       "showId": "othello-off-broadway-2016",
@@ -279717,145 +281074,50 @@
       "computedAt": "2026-11-03T01:31:50.133Z"
     },
     {
-      "showId": "purpose-regional-2026",
+      "showId": "purpose-lajolla-regional-2026",
       "title": "Purpose",
-      "openingDate": "2026-09-16",
+      "openingDate": "2026-05-18",
       "status": "closed",
       "category": "regional",
       "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-Phylicia-Rashad-Directs-PURPOSE-By-Branden-Jacobs-Jenkins-On-Broadway-20250317"
+        "https://playbill.com/article/read-the-reviews-for-purpose-on-broadway"
       ],
       "aggregatorListedUrls": [
-        "https://www.nytimes.com/2025/03/17/theater/purpose-review.html",
-        "https://variety.com/2025/legit/reviews/purpose-review-broadway-1236339772/",
-        "https://www.vulture.com/article/purpose-branden-jacobs-jenkins-theater-review.html",
-        "https://www.wsj.com/articles/purpose-review-dramatic-overdrive-on-broadway-41ba9476",
-        "https://www.timeout.com/newyork/theater/purpose-broadway-review-phylicia-rashad-branden-jacobs-jenkins",
-        "https://www.thewrap.com/purpose-broadway-review-branden-jacobs-jenkins/",
-        "https://www.newyorktheatreguide.com/reviews/purpose-broadway-review",
-        "https://www.nydailynews.com/2025/03/17/broadway-review-branden-jacobs-jenkins-purpose-eviscerates-powerful-black-family/",
-        "https://www.theguardian.com/stage/2025/mar/17/purpose-play-review",
-        "https://www.theatrely.com/post/an-american-family-finding-its-purpose-review",
-        "https://nystagereview.com/2025/03/17/purpose-the-painful-legacy-of-dreams-deferred/",
         "https://cititour.com/NYC_Broadway/Purpose/1284",
-        "https://nystagereview.com/2025/03/17/purpose-tough-new-branden-jacobs-jenkins-tragicomedy-loses-sight-of-purpose/",
-        "https://www.washingtonpost.com/entertainment/theater/2025/03/17/purpose-broadway-review/",
         "https://www.thedailybeast.com/why-purpose-is-the-most-explosive-family-drama-on-broadway/",
-        "https://www.broadwaynews.com/the-broadway-review-purpose-investigates-the-messy-men-and-women-who-become-monuments/",
+        "https://thefrontrowcenter.com/2025/03/purpose/",
+        "https://www.theguardian.com/stage/2025/mar/17/purpose-play-review",
+        "https://www.vulture.com/article/purpose-branden-jacobs-jenkins-theater-review.html",
+        "https://www.nydailynews.com/2025/03/17/broadway-review-branden-jacobs-jenkins-purpose-eviscerates-powerful-black-family/",
         "https://nypost.com/2025/03/17/entertainment/purpose-review-a-hilarious-and-blistering-family-clash-on-broadway/",
+        "https://nystagereview.com/2025/03/17/purpose-the-painful-legacy-of-dreams-deferred/",
+        "https://nystagereview.com/2025/03/17/purpose-tough-new-branden-jacobs-jenkins-tragicomedy-loses-sight-of-purpose/",
         "https://www.nysun.com/article/with-purpose-branden-jacobs-jenkins-secures-spot-as-broadways-most-scathingly-entertaining-chronicler-of-family-and-social-dysfunction",
-        "https://www.hollywoodreporter.com/lifestyle/arts/purpose-review-phylicia-rashad-1236166923/",
-        "https://www.newyorker.com/magazine/2025/03/31/vanya-and-purpose-theatre-review",
-        "https://www.broadwayworld.com/boston/article/Review-A-Play-With-PURPOSE-20261004",
-        "https://www.metrmag.com/latest-reviews/purpose-by-branden-jacobs-jenkins-huntington-theatre-company-boston-ma-review",
-        "https://www.bostonglobe.com/2026/09/17/arts/purpose-huntington/",
-        "https://baystatebanner.com/2026/10/01/purpose-presents-powerful-complicated-family-dynamics/",
-        "https://www.theatermirror.net/huntingtons-purpose-lacks-a-sense-of-purpose/",
-        "https://artsfuse.org/334471/theater-review-legacy-turns-toxic-in-branden-jacobs-jenkinss-purpose/",
-        "https://thepoplarreview.substack.com/p/purpose-at-the-huntington-theatres",
-        "https://www.boston-theater.com/shows/calderwood-pavilion/purpose",
-        "https://www.atlanta-theater.com/shows/alliance-theatre/purpose",
-        "https://www.metrmag.com/upcoming-shows/purpose-by-branden-jacobs-jenkins-huntington-theatre-company-boston-ma"
+        "https://newyorktheater.me/2025/03/17/purpose-broadway-review/",
+        "https://www.newyorktheatreguide.com/reviews/purpose-broadway-review",
+        "https://www.nytimes.com/2025/03/17/theater/purpose-review.html",
+        "https://www.theatermania.com/news/review-purpose-an-explosive-new-family-drama-on-broadway_1767756/",
+        "https://www.theatrely.com/post/an-american-family-finding-its-purpose-review",
+        "https://www.timeout.com/newyork/theater/purpose-broadway-review-phylicia-rashad-branden-jacobs-jenkins",
+        "https://variety.com/2025/legit/reviews/purpose-review-broadway-1236339772/",
+        "https://www.wsj.com/articles/purpose-review-dramatic-overdrive-on-broadway-41ba9476",
+        "https://www.washingtonpost.com/entertainment/theater/2025/03/17/purpose-broadway-review/",
+        "https://www.thewrap.com/purpose-broadway-review-branden-jacobs-jenkins/"
       ],
-      "dirFiles": 25,
-      "dirClean": 10,
-      "inReviewsJson": 15,
+      "dirFiles": 8,
+      "dirClean": 6,
+      "inReviewsJson": 6,
       "missing": [
-        {
-          "url": "https://www.nytimes.com/2025/03/17/theater/purpose-review.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://variety.com/2025/legit/reviews/purpose-review-broadway-1236339772/",
-          "host": "variety.com",
-          "knownOutletId": "variety",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.vulture.com/article/purpose-branden-jacobs-jenkins-theater-review.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.wsj.com/articles/purpose-review-dramatic-overdrive-on-broadway-41ba9476",
-          "host": "wsj.com",
-          "knownOutletId": "wsj",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/purpose-broadway-review-phylicia-rashad-branden-jacobs-jenkins",
-          "host": "timeout.com",
-          "knownOutletId": "timeout",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thewrap.com/purpose-broadway-review-branden-jacobs-jenkins/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/purpose-broadway-review",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nydailynews.com/2025/03/17/broadway-review-branden-jacobs-jenkins-purpose-eviscerates-powerful-black-family/",
-          "host": "nydailynews.com",
-          "knownOutletId": "nydailynews",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2025/mar/17/purpose-play-review",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theatrely.com/post/an-american-family-finding-its-purpose-review",
-          "host": "theatrely.com",
-          "knownOutletId": "theatrely",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://nystagereview.com/2025/03/17/purpose-the-painful-legacy-of-dreams-deferred/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
         {
           "url": "https://cititour.com/NYC_Broadway/Purpose/1284",
           "host": "cititour.com",
           "knownOutletId": "cititour",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://nystagereview.com/2025/03/17/purpose-tough-new-branden-jacobs-jenkins-tragicomedy-loses-sight-of-purpose/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.washingtonpost.com/entertainment/theater/2025/03/17/purpose-broadway-review/",
-          "host": "washingtonpost.com",
-          "knownOutletId": "washpost",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-purpose-on-broadway"
+            }
+          ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -279864,42 +281126,776 @@
           "host": "thedailybeast.com",
           "knownOutletId": "dailybeast",
           "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-purpose-on-broadway"
+            }
+          ]
         },
         {
-          "url": "https://www.broadwaynews.com/the-broadway-review-purpose-investigates-the-messy-men-and-women-who-become-monuments/",
-          "host": "broadwaynews.com",
-          "knownOutletId": "broadwaynews",
+          "url": "https://thefrontrowcenter.com/2025/03/purpose/",
+          "host": "thefrontrowcenter.com",
+          "knownOutletId": "front-row-center",
           "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-purpose-on-broadway"
+            }
+          ]
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2025/mar/17/purpose-play-review",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-purpose-on-broadway"
+            }
+          ]
+        },
+        {
+          "url": "https://www.vulture.com/article/purpose-branden-jacobs-jenkins-theater-review.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-purpose-on-broadway"
+            }
+          ]
+        },
+        {
+          "url": "https://www.nydailynews.com/2025/03/17/broadway-review-branden-jacobs-jenkins-purpose-eviscerates-powerful-black-family/",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-purpose-on-broadway"
+            }
+          ]
         },
         {
           "url": "https://nypost.com/2025/03/17/entertainment/purpose-review-a-hilarious-and-blistering-family-clash-on-broadway/",
           "host": "nypost.com",
           "knownOutletId": "nypost",
           "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-purpose-on-broadway"
+            }
+          ]
+        },
+        {
+          "url": "https://nystagereview.com/2025/03/17/purpose-the-painful-legacy-of-dreams-deferred/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-purpose-on-broadway"
+            }
+          ]
+        },
+        {
+          "url": "https://nystagereview.com/2025/03/17/purpose-tough-new-branden-jacobs-jenkins-tragicomedy-loses-sight-of-purpose/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-purpose-on-broadway"
+            }
+          ]
         },
         {
           "url": "https://www.nysun.com/article/with-purpose-branden-jacobs-jenkins-secures-spot-as-broadways-most-scathingly-entertaining-chronicler-of-family-and-social-dysfunction",
           "host": "nysun.com",
           "knownOutletId": "new-york-sun",
           "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-purpose-on-broadway"
+            }
+          ]
         },
         {
-          "url": "https://www.hollywoodreporter.com/lifestyle/arts/purpose-review-phylicia-rashad-1236166923/",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter",
+          "url": "https://newyorktheater.me/2025/03/17/purpose-broadway-review/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-purpose-on-broadway"
+            }
+          ]
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/purpose-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-purpose-on-broadway"
+            }
+          ]
+        },
+        {
+          "url": "https://www.nytimes.com/2025/03/17/theater/purpose-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-purpose-on-broadway"
+            }
+          ]
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-purpose-an-explosive-new-family-drama-on-broadway_1767756/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-purpose-on-broadway"
+            }
+          ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.newyorker.com/magazine/2025/03/31/vanya-and-purpose-theatre-review",
-          "host": "newyorker.com",
-          "knownOutletId": "newyorker",
+          "url": "https://www.theatrely.com/post/an-american-family-finding-its-purpose-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-purpose-on-broadway"
+            }
+          ]
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/purpose-broadway-review-phylicia-rashad-branden-jacobs-jenkins",
+          "host": "timeout.com",
+          "knownOutletId": "timeout",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-purpose-on-broadway"
+            }
+          ]
+        },
+        {
+          "url": "https://variety.com/2025/legit/reviews/purpose-review-broadway-1236339772/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-purpose-on-broadway"
+            }
+          ]
+        },
+        {
+          "url": "https://www.wsj.com/articles/purpose-review-dramatic-overdrive-on-broadway-41ba9476",
+          "host": "wsj.com",
+          "knownOutletId": "wsj",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-purpose-on-broadway"
+            }
+          ]
+        },
+        {
+          "url": "https://www.washingtonpost.com/entertainment/theater/2025/03/17/purpose-broadway-review/",
+          "host": "washingtonpost.com",
+          "knownOutletId": "washpost",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-purpose-on-broadway"
+            }
+          ]
+        },
+        {
+          "url": "https://www.thewrap.com/purpose-broadway-review-branden-jacobs-jenkins/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-purpose-on-broadway"
+            }
+          ]
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "broadwayworld.com",
+          "count": 1
+        },
+        {
+          "host": "fromanother0.com",
+          "count": 1
+        },
+        {
+          "host": "sdjewishworld.com",
+          "count": 1
+        },
+        {
+          "host": "sandiegoreader.com",
+          "count": 1
+        },
+        {
+          "host": "sandiegouniontribune.com",
+          "count": 1
+        },
+        {
+          "host": "theatrereviewskurahashi.wordpress.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 114,
+        "byReason": {
+          "non-review-host": 21,
+          "not-http-url": 6,
+          "aggregator-internal-nav": 70,
+          "aggregator-section-root": 4,
+          "bare-host": 1,
+          "production-database-listing": 11,
+          "non-stage-review": 1
+        }
+      },
+      "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/read-the-reviews-for-purpose-on-broadway",
+          "publishDate": "2025-03-17"
+        }
+      ],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://cititour.com/NYC_Broadway/Purpose/1284",
+          "host": "cititour.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thedailybeast.com/why-purpose-is-the-most-explosive-family-drama-on-broadway/",
+          "host": "thedailybeast.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://thefrontrowcenter.com/2025/03/purpose/",
+          "host": "thefrontrowcenter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2025/mar/17/purpose-play-review",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.vulture.com/article/purpose-branden-jacobs-jenkins-theater-review.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nydailynews.com/2025/03/17/broadway-review-branden-jacobs-jenkins-purpose-eviscerates-powerful-black-family/",
+          "host": "nydailynews.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nypost.com/2025/03/17/entertainment/purpose-review-a-hilarious-and-blistering-family-clash-on-broadway/",
+          "host": "nypost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nystagereview.com/2025/03/17/purpose-the-painful-legacy-of-dreams-deferred/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nystagereview.com/2025/03/17/purpose-tough-new-branden-jacobs-jenkins-tragicomedy-loses-sight-of-purpose/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nysun.com/article/with-purpose-branden-jacobs-jenkins-secures-spot-as-broadways-most-scathingly-entertaining-chronicler-of-family-and-social-dysfunction",
+          "host": "nysun.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://newyorktheater.me/2025/03/17/purpose-broadway-review/",
+          "host": "newyorktheater.me",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/purpose-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2025/03/17/theater/purpose-review.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-purpose-an-explosive-new-family-drama-on-broadway_1767756/",
+          "host": "theatermania.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theatrely.com/post/an-american-family-finding-its-purpose-review",
+          "host": "theatrely.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/purpose-broadway-review-phylicia-rashad-branden-jacobs-jenkins",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://variety.com/2025/legit/reviews/purpose-review-broadway-1236339772/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.wsj.com/articles/purpose-review-dramatic-overdrive-on-broadway-41ba9476",
+          "host": "wsj.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.washingtonpost.com/entertainment/theater/2025/03/17/purpose-broadway-review/",
+          "host": "washingtonpost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thewrap.com/purpose-broadway-review-branden-jacobs-jenkins/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
+      "recoveryResults": [
+        {
+          "url": "https://www.davidcoddon.com/theatre-reviews/stage-west-purpose-at-la-jolla-playhouse",
+          "host": "davidcoddon.com",
+          "file": "stage-west--unknown.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "spawnSync node ETIMEDOUT | ⚠️  Scrapingdog failed (dynamic=false, domain=web.archive.org): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.",
+          "recoveryCount": 1,
+          "uncited": true
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-09T07:55:47.387Z"
+    },
+    {
+      "showId": "purpose-regional-2026",
+      "title": "Purpose",
+      "openingDate": "2026-09-16",
+      "status": "closed",
+      "category": "regional",
+      "previewsStartDate": "2026-09-10",
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-the-reviews-for-purpose-on-broadway"
+      ],
+      "aggregatorListedUrls": [
+        "https://cititour.com/NYC_Broadway/Purpose/1284",
+        "https://www.thedailybeast.com/why-purpose-is-the-most-explosive-family-drama-on-broadway/",
+        "https://thefrontrowcenter.com/2025/03/purpose/",
+        "https://www.theguardian.com/stage/2025/mar/17/purpose-play-review",
+        "https://www.vulture.com/article/purpose-branden-jacobs-jenkins-theater-review.html",
+        "https://www.nydailynews.com/2025/03/17/broadway-review-branden-jacobs-jenkins-purpose-eviscerates-powerful-black-family/",
+        "https://nypost.com/2025/03/17/entertainment/purpose-review-a-hilarious-and-blistering-family-clash-on-broadway/",
+        "https://nystagereview.com/2025/03/17/purpose-the-painful-legacy-of-dreams-deferred/",
+        "https://nystagereview.com/2025/03/17/purpose-tough-new-branden-jacobs-jenkins-tragicomedy-loses-sight-of-purpose/",
+        "https://www.nysun.com/article/with-purpose-branden-jacobs-jenkins-secures-spot-as-broadways-most-scathingly-entertaining-chronicler-of-family-and-social-dysfunction",
+        "https://newyorktheater.me/2025/03/17/purpose-broadway-review/",
+        "https://www.newyorktheatreguide.com/reviews/purpose-broadway-review",
+        "https://www.nytimes.com/2025/03/17/theater/purpose-review.html",
+        "https://www.theatermania.com/news/review-purpose-an-explosive-new-family-drama-on-broadway_1767756/",
+        "https://www.theatrely.com/post/an-american-family-finding-its-purpose-review",
+        "https://www.timeout.com/newyork/theater/purpose-broadway-review-phylicia-rashad-branden-jacobs-jenkins",
+        "https://variety.com/2025/legit/reviews/purpose-review-broadway-1236339772/",
+        "https://www.wsj.com/articles/purpose-review-dramatic-overdrive-on-broadway-41ba9476",
+        "https://www.washingtonpost.com/entertainment/theater/2025/03/17/purpose-broadway-review/",
+        "https://www.thewrap.com/purpose-broadway-review-branden-jacobs-jenkins/",
+        "https://www.broadwayworld.com/boston/article/Review-A-Play-With-PURPOSE-20261004",
+        "https://www.metrmag.com/latest-reviews/purpose-by-branden-jacobs-jenkins-huntington-theatre-company-boston-ma-review",
+        "https://www.bostonglobe.com/2026/09/17/arts/purpose-huntington/",
+        "https://baystatebanner.com/2026/10/01/purpose-presents-powerful-complicated-family-dynamics/",
+        "https://www.theatermirror.net/huntingtons-purpose-lacks-a-sense-of-purpose/",
+        "https://artsfuse.org/334471/theater-review-legacy-turns-toxic-in-branden-jacobs-jenkinss-purpose/",
+        "https://thepoplarreview.substack.com/p/purpose-at-the-huntington-theatres",
+        "https://www.atlanta-theater.com/shows/alliance-theatre/purpose"
+      ],
+      "dirFiles": 25,
+      "dirClean": 10,
+      "inReviewsJson": 15,
+      "missing": [
+        {
+          "url": "https://cititour.com/NYC_Broadway/Purpose/1284",
+          "host": "cititour.com",
+          "knownOutletId": "cititour",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-purpose-on-broadway"
+            }
+          ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thedailybeast.com/why-purpose-is-the-most-explosive-family-drama-on-broadway/",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-purpose-on-broadway"
+            }
+          ]
+        },
+        {
+          "url": "https://thefrontrowcenter.com/2025/03/purpose/",
+          "host": "thefrontrowcenter.com",
+          "knownOutletId": "front-row-center",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-purpose-on-broadway"
+            }
+          ]
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2025/mar/17/purpose-play-review",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-purpose-on-broadway"
+            }
+          ]
+        },
+        {
+          "url": "https://www.vulture.com/article/purpose-branden-jacobs-jenkins-theater-review.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-purpose-on-broadway"
+            }
+          ]
+        },
+        {
+          "url": "https://www.nydailynews.com/2025/03/17/broadway-review-branden-jacobs-jenkins-purpose-eviscerates-powerful-black-family/",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-purpose-on-broadway"
+            }
+          ]
+        },
+        {
+          "url": "https://nypost.com/2025/03/17/entertainment/purpose-review-a-hilarious-and-blistering-family-clash-on-broadway/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-purpose-on-broadway"
+            }
+          ]
+        },
+        {
+          "url": "https://nystagereview.com/2025/03/17/purpose-the-painful-legacy-of-dreams-deferred/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-purpose-on-broadway"
+            }
+          ]
+        },
+        {
+          "url": "https://nystagereview.com/2025/03/17/purpose-tough-new-branden-jacobs-jenkins-tragicomedy-loses-sight-of-purpose/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-purpose-on-broadway"
+            }
+          ]
+        },
+        {
+          "url": "https://www.nysun.com/article/with-purpose-branden-jacobs-jenkins-secures-spot-as-broadways-most-scathingly-entertaining-chronicler-of-family-and-social-dysfunction",
+          "host": "nysun.com",
+          "knownOutletId": "new-york-sun",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-purpose-on-broadway"
+            }
+          ]
+        },
+        {
+          "url": "https://newyorktheater.me/2025/03/17/purpose-broadway-review/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-purpose-on-broadway"
+            }
+          ]
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/purpose-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-purpose-on-broadway"
+            }
+          ]
+        },
+        {
+          "url": "https://www.nytimes.com/2025/03/17/theater/purpose-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-purpose-on-broadway"
+            }
+          ]
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-purpose-an-explosive-new-family-drama-on-broadway_1767756/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-purpose-on-broadway"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatrely.com/post/an-american-family-finding-its-purpose-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-purpose-on-broadway"
+            }
+          ]
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/purpose-broadway-review-phylicia-rashad-branden-jacobs-jenkins",
+          "host": "timeout.com",
+          "knownOutletId": "timeout",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-purpose-on-broadway"
+            }
+          ]
+        },
+        {
+          "url": "https://variety.com/2025/legit/reviews/purpose-review-broadway-1236339772/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-purpose-on-broadway"
+            }
+          ]
+        },
+        {
+          "url": "https://www.wsj.com/articles/purpose-review-dramatic-overdrive-on-broadway-41ba9476",
+          "host": "wsj.com",
+          "knownOutletId": "wsj",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-purpose-on-broadway"
+            }
+          ]
+        },
+        {
+          "url": "https://www.washingtonpost.com/entertainment/theater/2025/03/17/purpose-broadway-review/",
+          "host": "washingtonpost.com",
+          "knownOutletId": "washpost",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-purpose-on-broadway"
+            }
+          ]
+        },
+        {
+          "url": "https://www.thewrap.com/purpose-broadway-review-branden-jacobs-jenkins/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-purpose-on-broadway"
+            }
+          ]
         }
       ],
       "dirOnly": [
@@ -279917,33 +281913,6 @@
         }
       ],
       "flaggedMisses": [
-        {
-          "url": "https://www.boston-theater.com/shows/calderwood-pavilion/purpose",
-          "host": "boston-theater.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "boston-theater--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.boston-theater.com/shows/calderwood-pavilion/purpose"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "non-review"
-          ],
-          "serpCensus": true,
-          "reverify": false
-        },
         {
           "url": "https://www.atlanta-theater.com/shows/alliance-theatre/purpose",
           "host": "atlanta-theater.com",
@@ -279964,35 +281933,14 @@
           "basis": [
             "rejectionReason"
           ],
-          "serpCensus": true,
-          "reverify": true
-        },
-        {
-          "url": "https://www.metrmag.com/upcoming-shows/purpose-by-branden-jacobs-jenkins-huntington-theatre-company-boston-ma",
-          "host": "metrmag.com",
-          "knownOutletId": "metrmag",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
+          "sources": [
             {
-              "file": "metrmag--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.metrmag.com/upcoming-shows/purpose-by-branden-jacobs-jenkins-huntington-theatre-company-boston-ma"
+              "source": "serp-census",
+              "sourceUrl": null
             }
           ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "non-review"
-          ],
           "serpCensus": true,
-          "reverify": false
+          "reverify": true
         }
       ],
       "citedNoUrl": [],
@@ -280002,24 +281950,184 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 265,
+        "count": 114,
         "byReason": {
-          "not-http-url": 40,
-          "non-review-host": 15,
-          "aggregator-internal-nav": 203,
-          "aggregator-section-root": 6,
-          "write-path-blocked": 1
+          "non-review-host": 21,
+          "not-http-url": 6,
+          "aggregator-internal-nav": 70,
+          "aggregator-section-root": 4,
+          "bare-host": 1,
+          "production-database-listing": 11,
+          "non-stage-review": 1
         }
       },
       "dedupedVariants": [],
       "priorRunArticles": [
         {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-Phylicia-Rashad-Directs-PURPOSE-By-Branden-Jacobs-Jenkins-On-Broadway-20250317",
+          "url": "https://playbill.com/article/read-the-reviews-for-purpose-on-broadway",
           "publishDate": "2025-03-17"
         }
       ],
       "automatedExcludedListed": 1,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://cititour.com/NYC_Broadway/Purpose/1284",
+          "host": "cititour.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thedailybeast.com/why-purpose-is-the-most-explosive-family-drama-on-broadway/",
+          "host": "thedailybeast.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://thefrontrowcenter.com/2025/03/purpose/",
+          "host": "thefrontrowcenter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2025/mar/17/purpose-play-review",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.vulture.com/article/purpose-branden-jacobs-jenkins-theater-review.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nydailynews.com/2025/03/17/broadway-review-branden-jacobs-jenkins-purpose-eviscerates-powerful-black-family/",
+          "host": "nydailynews.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nypost.com/2025/03/17/entertainment/purpose-review-a-hilarious-and-blistering-family-clash-on-broadway/",
+          "host": "nypost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nystagereview.com/2025/03/17/purpose-the-painful-legacy-of-dreams-deferred/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nystagereview.com/2025/03/17/purpose-tough-new-branden-jacobs-jenkins-tragicomedy-loses-sight-of-purpose/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nysun.com/article/with-purpose-branden-jacobs-jenkins-secures-spot-as-broadways-most-scathingly-entertaining-chronicler-of-family-and-social-dysfunction",
+          "host": "nysun.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://newyorktheater.me/2025/03/17/purpose-broadway-review/",
+          "host": "newyorktheater.me",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/purpose-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2025/03/17/theater/purpose-review.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-purpose-an-explosive-new-family-drama-on-broadway_1767756/",
+          "host": "theatermania.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theatrely.com/post/an-american-family-finding-its-purpose-review",
+          "host": "theatrely.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/purpose-broadway-review-phylicia-rashad-branden-jacobs-jenkins",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://variety.com/2025/legit/reviews/purpose-review-broadway-1236339772/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.wsj.com/articles/purpose-review-dramatic-overdrive-on-broadway-41ba9476",
+          "host": "wsj.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.washingtonpost.com/entertainment/theater/2025/03/17/purpose-broadway-review/",
+          "host": "washingtonpost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thewrap.com/purpose-broadway-review-branden-jacobs-jenkins/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
+      "recoveryResults": [
+        {
+          "url": "https://deadline.com/feature/broadway-show-reviews-2024-2025-season-1236284911/",
+          "host": "deadline.com",
+          "file": "deadline--greg-evans.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "Refusing to ingest — https://deadline.com/feature/broadway-show-reviews-2024-2025-season-1236284911/ matches a known non-review domain (ticket/listing/social/reference/venue/PR-firm). See scripts/lib/domain-filters.js.",
+          "recoveryCount": 2,
+          "uncited": true
+        }
+      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -280084,22 +282192,11 @@
           }
         ],
         "censusSchema": 4,
-        "excluded": [
-          {
-            "url": "https://www.boston-theater.com/shows/calderwood-pavilion/purpose",
-            "host": "boston-theater.com",
-            "reason": "confirmed-non-review"
-          },
-          {
-            "url": "https://www.metrmag.com/upcoming-shows/purpose-by-branden-jacobs-jenkins-huntington-theatre-company-boston-ma",
-            "host": "metrmag.com",
-            "reason": "confirmed-non-review"
-          }
-        ],
+        "excluded": [],
         "liveCount": 7,
         "candidateCount": 8
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-11-09T07:55:47.387Z"
     },
     {
       "showId": "pygmalion-off-broadway-2025",
@@ -296070,6 +298167,44 @@
       }
     },
     {
+      "showId": "seussical-regional-2026",
+      "title": "Seussical",
+      "openingDate": "2026-05-18",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-09T07:55:47.387Z"
+    },
+    {
       "showId": "seussical-theatre-young-audiences-off-broadway-2026",
       "title": "Seussical ™ – Theatre Young Audiences",
       "openingDate": "2026-10-18",
@@ -297263,6 +299398,45 @@
         "candidateCount": 0
       },
       "computedAt": "2026-10-31T20:08:59.197Z"
+    },
+    {
+      "showId": "sherlock-holmes-off-west-end-2026",
+      "title": "Sherlock Holmes",
+      "openingDate": "2026-05-14",
+      "status": "closed",
+      "category": "off-west-end",
+      "previewsStartDate": "2026-05-02",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-09T07:55:47.387Z"
     },
     {
       "showId": "sherlock-holmes-west-end-2026",
@@ -339600,9 +341774,9 @@
         "https://www.petersommer.com/blog/another-thing/motya-charioteer",
         "https://www.banderasnews.com/1008/entbk-charioteer.htm"
       ],
-      "dirFiles": 2,
-      "dirClean": 1,
-      "inReviewsJson": 1,
+      "dirFiles": 3,
+      "dirClean": 2,
+      "inReviewsJson": 2,
       "missing": [
         {
           "url": "https://www.petersommer.com/blog/another-thing/motya-charioteer",
@@ -339630,6 +341804,10 @@
         }
       ],
       "dirOnly": [
+        {
+          "host": "nytimes.com",
+          "count": 1
+        },
         {
           "host": "offoffonline.com",
           "count": 1
@@ -339707,7 +341885,7 @@
         "liveCount": 0,
         "candidateCount": 2
       },
-      "computedAt": "2026-11-08T23:59:25.776Z"
+      "computedAt": "2026-11-09T07:55:47.387Z"
     },
     {
       "showId": "the-cherry-orchard-park-avenue-armory-off-broadway-2026",
@@ -364920,6 +367098,44 @@
       "computedAt": "2026-09-20T01:54:21.561Z"
     },
     {
+      "showId": "the-kelton-hill-fair-tron-regional-2025",
+      "title": "The Kelton Hill Fair",
+      "openingDate": "2025-03-28",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-09T07:55:47.387Z"
+    },
+    {
       "showId": "the-kick-inside-off-broadway-2026",
       "title": "The Kick Inside",
       "openingDate": "2026-10-23",
@@ -380571,6 +382787,44 @@
         "candidateCount": 5
       },
       "computedAt": "2026-11-01T17:41:14.610Z"
+    },
+    {
+      "showId": "the-physicists-regional-2026",
+      "title": "The Physicists",
+      "openingDate": "2026-05-18",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-09T07:55:47.387Z"
     },
     {
       "showId": "the-pianist-off-west-end-2026",
@@ -396743,7 +398997,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-11-09T06:26:00.733Z"
+      "computedAt": "2026-11-09T07:55:47.387Z"
     },
     {
       "showId": "the-story-olivier-west-end-2026",
@@ -401539,7 +403793,12 @@
         "liveCount": 9,
         "candidateCount": 9
       },
-      "computedAt": "2026-11-08T23:59:25.776Z"
+      "computedAt": "2026-11-08T23:59:25.776Z",
+      "quarantine": {
+        "nextState": "complete:8:8",
+        "since": "2026-11-09T07:55:47.598Z",
+        "lastAt": "2026-11-09T07:55:47.598Z"
+      }
     },
     {
       "showId": "the-very-hungry-caterpillar-interactive-show-off-broadway-2026",
@@ -402172,10 +404431,9 @@
       "openingDate": "2026-09-13",
       "status": "closed",
       "category": "regional",
+      "previewsStartDate": "2026-09-09",
       "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-Tony-Kushner-Adapts-THE-VISIT-at-The-National-Theatre-20200214",
-        "https://www.broadwayworld.com/article/Review-Roundup-THE-VISIT-Opens-on-Broadway-Updating-LIVE-20150423",
-        "https://www.broadwayworld.com/article/Review-Roundup-Williamstown-Theatre-Festivals-THE-VISIT-Starring-Chita-Rivera-20140804"
+        "https://www.broadwayworld.com/article/Review-Roundup-Tony-Kushner-Adapts-THE-VISIT-at-The-National-Theatre-20200214"
       ],
       "aggregatorListedUrls": [
         "https://www.nytimes.com/2020/02/13/arts/the-visit-review-national-theatre-tony-kushner.html",
@@ -402187,28 +404445,7 @@
         "https://www.thestage.co.uk/reviews/2020/the-visit-review-lesley-manville-national-theatre-london/",
         "https://www.timeout.com/london/theatre/the-visit-review",
         "https://www.theupcoming.co.uk/2020/02/14/the-visit-at-the-national-theatre-a-thrilling-take-on-durrenmatts-classic-theatre-review/",
-        "https://variety.com/2020/legit/reviews/the-visit-review-lesley-manville-national-theatre-1203505201/",
-        "http://www.nytimes.com/2015/04/24/theater/review-chita-rivera-stars-in-kander-and-ebbs-the-visit.html",
-        "http://ktar.com/41/1828225/Review-The-Visit-on-Broadway-is-chillingly-good",
-        "http://variety.com/2015/legit/reviews/visit-review-broadway-chita-rivera-1201478480/",
-        "http://www.hollywoodreporter.com/review/chita-rivera-visit-theater-review-791063",
-        "http://www.usatoday.com/story/life/theater/2015/04/23/the-visit-broadway-review/26182573/",
-        "http://www.newsday.com/entertainment/theater/the-visit-review-chita-rivera-in-a-stunning-show-1.10314774",
-        "http://www.wsj.com/articles/the-visit-review-as-long-as-the-lady-is-paying-1429835402",
-        "http://www.timeout.com/newyork/theater/the-visit-1",
-        "http://www.nbcnewyork.com/entertainment/the-scene/Chita-Rivera-The-Visit-Review-300828061.html",
-        "http://www.nydailynews.com/entertainment/theater-arts/visit-review-chita-rivera-kander-ebb-musical-article-1.2194813",
-        "http://nypost.com/2015/04/23/chita-rivera-gets-her-diva-broadway-return-in-the-visit/",
-        "http://www.amny.com/entertainment/the-visit-theater-review-2-5-stars-1.10323585",
-        "http://www.vulture.com/2015/04/theater-reviews-the-visit.html",
-        "http://deadline.com/2015/04/the-visit-airline-highway-broadway-review-1201414889/",
-        "http://www.thewrap.com/the-visit-theater-review-chita-rivera-and-roger-rees-perform-a-gripping-dance-of-death/",
-        "http://www.chicagotribune.com/entertainment/theater/broadway/sc-the-visit-broadway-review-20150423-column.html",
-        "http://dcmetrotheaterarts.com/2015/04/23/the-visit-at-the-lyceum-in-new-york-city/",
-        "https://www.theguardian.com/stage/2015/apr/24/the-visit-review-kander-and-ebb-musical-chita-rivera-broadway",
-        "http://www.ctnow.com/arts-theater/hc-review-visit-0805-20140805,0,1747528.story",
-        "http://berkshireonstage.com/2014/08/03/the-visit-with-chita-rivera-gets-an-epic-production-at-williamstown-theatre-festival/",
-        "http://variety.com/2014/legit/reviews/theater-review-the-visit-chita-rivera-williamstown-1201274930/"
+        "https://variety.com/2020/legit/reviews/the-visit-review-lesley-manville-national-theatre-1203505201/"
       ],
       "dirFiles": 10,
       "dirClean": 4,
@@ -402218,6 +404455,12 @@
           "url": "https://www.nytimes.com/2020/02/13/arts/the-visit-review-national-theatre-tony-kushner.html",
           "host": "nytimes.com",
           "knownOutletId": "nytimes",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Tony-Kushner-Adapts-THE-VISIT-at-The-National-Theatre-20200214"
+            }
+          ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -402225,6 +404468,12 @@
           "url": "https://www.telegraph.co.uk/theatre/what-to-see/visit-national-theatre-reviewlesley-manville-confirms-one-all/",
           "host": "telegraph.co.uk",
           "knownOutletId": "sunday-telegraph",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Tony-Kushner-Adapts-THE-VISIT-at-The-National-Theatre-20200214"
+            }
+          ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -402232,6 +404481,12 @@
           "url": "https://www.standard.co.uk/go/london/theatre/the-visit-review-national-theatre-tony-kushner-lesley-manville-a4361846.html",
           "host": "standard.co.uk",
           "knownOutletId": "standard",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Tony-Kushner-Adapts-THE-VISIT-at-The-National-Theatre-20200214"
+            }
+          ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -402239,6 +404494,12 @@
           "url": "https://www.dailymail.co.uk/tvshowbiz/article-8002565/Revenge-dish-best-served-four-hours-PATRICK-MARMION-reviews-Visit.html",
           "host": "dailymail.co.uk",
           "knownOutletId": "mail-on-sunday",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Tony-Kushner-Adapts-THE-VISIT-at-The-National-Theatre-20200214"
+            }
+          ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -402246,6 +404507,12 @@
           "url": "https://www.thetimes.co.uk/edition/times2/the-visit-review-manville-is-monstrous-in-this-nightmarish-tale-wjsdkzvww",
           "host": "thetimes.co.uk",
           "knownOutletId": "sunday-times",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Tony-Kushner-Adapts-THE-VISIT-at-The-National-Theatre-20200214"
+            }
+          ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -402253,6 +404520,12 @@
           "url": "https://www.theguardian.com/stage/2020/feb/14/the-visit-review-tony-kushner-olivier-london",
           "host": "theguardian.com",
           "knownOutletId": "guardian",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Tony-Kushner-Adapts-THE-VISIT-at-The-National-Theatre-20200214"
+            }
+          ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -402260,6 +404533,12 @@
           "url": "https://www.thestage.co.uk/reviews/2020/the-visit-review-lesley-manville-national-theatre-london/",
           "host": "thestage.co.uk",
           "knownOutletId": "thestage",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Tony-Kushner-Adapts-THE-VISIT-at-The-National-Theatre-20200214"
+            }
+          ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -402267,6 +404546,12 @@
           "url": "https://www.timeout.com/london/theatre/the-visit-review",
           "host": "timeout.com",
           "knownOutletId": "timeout-london",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Tony-Kushner-Adapts-THE-VISIT-at-The-National-Theatre-20200214"
+            }
+          ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -402274,139 +404559,12 @@
           "url": "https://www.theupcoming.co.uk/2020/02/14/the-visit-at-the-national-theatre-a-thrilling-take-on-durrenmatts-classic-theatre-review/",
           "host": "theupcoming.co.uk",
           "knownOutletId": "theupcoming",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.nytimes.com/2015/04/24/theater/review-chita-rivera-stars-in-kander-and-ebbs-the-visit.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://ktar.com/41/1828225/Review-The-Visit-on-Broadway-is-chillingly-good",
-          "host": "ktar.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.hollywoodreporter.com/review/chita-rivera-visit-theater-review-791063",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.usatoday.com/story/life/theater/2015/04/23/the-visit-broadway-review/26182573/",
-          "host": "usatoday.com",
-          "knownOutletId": "usatoday",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.newsday.com/entertainment/theater/the-visit-review-chita-rivera-in-a-stunning-show-1.10314774",
-          "host": "newsday.com",
-          "knownOutletId": "newsday",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.wsj.com/articles/the-visit-review-as-long-as-the-lady-is-paying-1429835402",
-          "host": "wsj.com",
-          "knownOutletId": "wsj",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.timeout.com/newyork/theater/the-visit-1",
-          "host": "timeout.com",
-          "knownOutletId": "timeout",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.nbcnewyork.com/entertainment/the-scene/Chita-Rivera-The-Visit-Review-300828061.html",
-          "host": "nbcnewyork.com",
-          "knownOutletId": "nbcny",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.nydailynews.com/entertainment/theater-arts/visit-review-chita-rivera-kander-ebb-musical-article-1.2194813",
-          "host": "nydailynews.com",
-          "knownOutletId": "nydailynews",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://nypost.com/2015/04/23/chita-rivera-gets-her-diva-broadway-return-in-the-visit/",
-          "host": "nypost.com",
-          "knownOutletId": "nypost",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.amny.com/entertainment/the-visit-theater-review-2-5-stars-1.10323585",
-          "host": "amny.com",
-          "knownOutletId": "amny",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.vulture.com/2015/04/theater-reviews-the-visit.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://deadline.com/2015/04/the-visit-airline-highway-broadway-review-1201414889/",
-          "host": "deadline.com",
-          "knownOutletId": "deadline",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.thewrap.com/the-visit-theater-review-chita-rivera-and-roger-rees-perform-a-gripping-dance-of-death/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.chicagotribune.com/entertainment/theater/broadway/sc-the-visit-broadway-review-20150423-column.html",
-          "host": "chicagotribune.com",
-          "knownOutletId": "chicagotribune",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://dcmetrotheaterarts.com/2015/04/23/the-visit-at-the-lyceum-in-new-york-city/",
-          "host": "dcmetrotheaterarts.com",
-          "knownOutletId": "dc-theater-arts",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2015/apr/24/the-visit-review-kander-and-ebb-musical-chita-rivera-broadway",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.ctnow.com/arts-theater/hc-review-visit-0805-20140805,0,1747528.story",
-          "host": "ctnow.com",
-          "knownOutletId": "ct-now",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://berkshireonstage.com/2014/08/03/the-visit-with-chita-rivera-gets-an-epic-production-at-williamstown-theatre-festival/",
-          "host": "berkshireonstage.com",
-          "knownOutletId": "berkshire-on-stage",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Tony-Kushner-Adapts-THE-VISIT-at-The-National-Theatre-20200214"
+            }
+          ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         }
@@ -402433,13 +404591,14 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 839,
+        "count": 286,
         "byReason": {
-          "not-http-url": 137,
-          "non-review-host": 46,
-          "aggregator-internal-nav": 641,
-          "aggregator-section-root": 13,
-          "roundup-page": 2
+          "non-review-host": 15,
+          "not-http-url": 57,
+          "aggregator-internal-nav": 205,
+          "aggregator-section-root": 5,
+          "podcast-episode": 1,
+          "roundup-page": 3
         }
       },
       "dedupedVariants": [],
@@ -402447,18 +404606,77 @@
         {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-Tony-Kushner-Adapts-THE-VISIT-at-The-National-Theatre-20200214",
           "publishDate": "2020-02-14"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-THE-VISIT-Opens-on-Broadway-Updating-LIVE-20150423",
-          "publishDate": "2015-04-23"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-Williamstown-Theatre-Festivals-THE-VISIT-Starring-Chita-Rivera-20140804",
-          "publishDate": "2014-08-04"
         }
       ],
       "automatedExcludedListed": 0,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.nytimes.com/2020/02/13/arts/the-visit-review-national-theatre-tony-kushner.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/visit-national-theatre-reviewlesley-manville-confirms-one-all/",
+          "host": "telegraph.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.standard.co.uk/go/london/theatre/the-visit-review-national-theatre-tony-kushner-lesley-manville-a4361846.html",
+          "host": "standard.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.dailymail.co.uk/tvshowbiz/article-8002565/Revenge-dish-best-served-four-hours-PATRICK-MARMION-reviews-Visit.html",
+          "host": "dailymail.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thetimes.co.uk/edition/times2/the-visit-review-manville-is-monstrous-in-this-nightmarish-tale-wjsdkzvww",
+          "host": "thetimes.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2020/feb/14/the-visit-review-tony-kushner-olivier-london",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/2020/the-visit-review-lesley-manville-national-theatre-london/",
+          "host": "thestage.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/the-visit-review",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theupcoming.co.uk/2020/02/14/the-visit-at-the-national-theatre-a-thrilling-take-on-durrenmatts-classic-theatre-review/",
+          "host": "theupcoming.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "complete",
         "missing": [],
@@ -402469,18 +404687,6 @@
             "outletId": "variety.com",
             "state": "live",
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "http://variety.com/2015/legit/reviews/visit-review-broadway-chita-rivera-1201478480/",
-            "outletId": "variety.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "http://variety.com/2014/legit/reviews/theater-review-the-visit-chita-rivera-williamstown-1201274930/",
-            "outletId": "variety.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
           }
         ],
         "censusSchema": 4,
@@ -402488,7 +404694,7 @@
         "liveCount": 1,
         "candidateCount": 1
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-11-09T07:55:47.387Z"
     },
     {
       "showId": "the-visitors-off-broadway-2026",
@@ -402527,7 +404733,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-09T06:26:00.733Z"
+      "computedAt": "2026-11-09T07:55:47.387Z"
     },
     {
       "showId": "the-wanderers-off-broadway-2023",
@@ -414332,7 +416538,12 @@
         "liveCount": 11,
         "candidateCount": 14
       },
-      "computedAt": "2026-11-08T19:53:16.797Z"
+      "computedAt": "2026-11-08T19:53:16.797Z",
+      "quarantine": {
+        "nextState": "incomplete:10:14",
+        "since": "2026-11-09T07:55:47.598Z",
+        "lastAt": "2026-11-09T07:55:47.598Z"
+      }
     },
     {
       "showId": "tosca-off-broadway-2026",
@@ -415491,7 +417702,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-08T23:59:25.776Z"
+      "computedAt": "2026-11-09T07:55:47.387Z"
     },
     {
       "showId": "transcendency-rising-short-plays-about-defying-limitations-off-broadway-2026",
@@ -416574,7 +418785,12 @@
         "liveCount": 3,
         "candidateCount": 12
       },
-      "computedAt": "2026-11-08T17:40:40.263Z"
+      "computedAt": "2026-11-08T17:40:40.263Z",
+      "quarantine": {
+        "nextState": "incomplete:5:10",
+        "since": "2026-11-09T07:55:47.598Z",
+        "lastAt": "2026-11-09T07:55:47.598Z"
+      }
     },
     {
       "showId": "tristan-and-yseult-royal-bath-regional-2026",
@@ -427951,40 +430167,35 @@
       "status": "open",
       "category": "broadway",
       "previewsStartDate": "2026-10-15",
-      "aggregatorArticles": [],
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-WANTED-Opens-on-Broadway-20261108",
+        "https://playbill.com/article/reviews-what-are-the-critics-saying-about-wanted-on-broadway"
+      ],
       "aggregatorListedUrls": [
+        "https://www.nytimes.com/2026/11/08/theater/wanted-review-passing-pfeiffer-ledisi-luke-james.html",
+        "https://1minutecritic.com/wanted-broadway-musical-review/",
+        "https://newyorktheater.me/2026/11/08/wanted-broadway-review/",
+        "https://nystagereview.com/2026/11/08/wanted-a-musical-shootout-with-serious-vocal-firepower/",
+        "https://variety.com/2026/legit/reviews/wanted-broadway-review-1236941816/",
+        "https://www.theguardian.com/stage/2026/nov/09/wanted-broadway-musical-review",
+        "https://www.newyorktheatreguide.com/reviews/wanted-broadway-review",
+        "https://deadline.com/2026/11/wanted-musical-broadway-review-1237214464/",
+        "https://culturesauce.com/wanted-musical-broadway-review/",
+        "https://www.slantmagazine.com/theater/wanted-review-broadway-musical/",
+        "https://ew.com/wanted-review-gunslinging-sisters-take-broadway-by-storm-in-powerhouse-musical-12243698",
+        "https://www.thewrap.com/creative-content/theater/wanted-broadway-review/",
+        "https://www.purewow.com/entertainment/wanted-broadway-review",
+        "https://www.chicagotribune.com/2026/11/08/review-wanted-legend-sisters-clarke-broadway/",
+        "https://nystagereview.com/2026/11/08/wanted-two-sisters-carry-a-gun-across-texas/",
+        "https://www.theatermania.com/news/review-wanted-isnt-a-perfect-shot-but-its-leading-ladies-are_1859103/",
         "https://www.theatermania.com/news/watch-inside-wanted-on-broadway-with-stars-solea-pfeiffer-liisi-lafontaine-ledisi-more_1857127/",
         "https://www.timeout.com/newyork/theater/wanted",
         "https://stageandstreetnyc.com/broadway/shows/wanted/"
       ],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
+      "dirFiles": 21,
+      "dirClean": 20,
+      "inReviewsJson": 20,
       "missing": [
-        {
-          "url": "https://www.theatermania.com/news/watch-inside-wanted-on-broadway-with-stars-solea-pfeiffer-liisi-lafontaine-ledisi-more_1857127/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/wanted",
-          "host": "timeout.com",
-          "knownOutletId": "timeout",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
         {
           "url": "https://stageandstreetnyc.com/broadway/shows/wanted/",
           "host": "stageandstreetnyc.com",
@@ -427998,80 +430209,88 @@
           ]
         }
       ],
-      "dirOnly": [],
-      "flaggedMisses": [],
+      "dirOnly": [
+        {
+          "host": "cititour.com",
+          "count": 1
+        },
+        {
+          "host": "nysun.com",
+          "count": 1
+        },
+        {
+          "host": "talkinbroadway.com",
+          "count": 1
+        },
+        {
+          "host": "theatrely.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.theatermania.com/news/watch-inside-wanted-on-broadway-with-stars-solea-pfeiffer-liisi-lafontaine-ledisi-more_1857127/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatermania--seth-walters.json",
+              "flag": "nonReview",
+              "urlInDir": "https://www.theatermania.com/news/watch-inside-wanted-on-broadway-with-stars-solea-pfeiffer-liisi-lafontaine-ledisi-more_1857127/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "nonReview"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Wanted\" Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Wanted\" Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Wanted\" review james",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Wanted James Earl Jones Theatre review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Wanted James Earl Jones Theatre review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Wanted James Earl Jones Theatre review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 1,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 48,
+        "count": 400,
         "byReason": {
-          "non-review-host": 44,
-          "aggregator-internal-nav": 1,
-          "ticketing-reseller": 3
+          "non-review-host": 35,
+          "not-http-url": 96,
+          "aggregator-internal-nav": 247,
+          "aggregator-section-root": 10,
+          "podcast-episode": 1,
+          "bare-host": 1,
+          "production-database-listing": 9,
+          "non-stage-review": 1
         }
       },
       "dedupedVariants": [],
+      "nonReviewCandidates": [
+        {
+          "url": "https://www.timeout.com/newyork/theater/wanted",
+          "host": "timeout.com",
+          "knownOutletId": "timeout",
+          "nonReviewVerdict": "timeout-listing-blurb",
+          "nonReviewDetail": "unauthored-and-pre-opening"
+        }
+      ],
       "automatedExcludedListed": 0,
       "unextractable": [],
       "weIngestBlocked": [
@@ -428083,56 +430302,11 @@
           "censusGateOn": true
         }
       ],
-      "ingestResults": [
-        {
-          "url": "https://www.theatermania.com/news/watch-inside-wanted-on-broadway-with-stars-solea-pfeiffer-liisi-lafontaine-ledisi-more_1857127/",
-          "host": "theatermania.com",
-          "outletId": "theatermania",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/wanted",
-          "host": "timeout.com",
-          "outletId": "timeout",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "timeout-listing-capsule",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "wanted-2022: https://www.timeout.com/newyork/theater/wanted is a Time Out listing capsule, not a review (lib/timeout-capsule.js). Expected rejection; no action needed unless Time Out later publishes a full review at this URL, which a later audit will then ingest."
-        }
-      ],
+      "ingestResults": [],
       "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "theatermania",
-            "outlet": "theatermania",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatermania.com/news/watch-inside-wanted-on-broadway-with-stars-solea-pfeiffer-liisi-lafontaine-ledisi-more_1857127/"
-          },
-          {
-            "outletId": "timeout",
-            "outlet": "timeout",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.timeout.com/newyork/theater/wanted"
-          },
           {
             "outletId": "stageandstreetnyc.com",
             "outlet": "stageandstreetnyc.com",
@@ -428144,17 +430318,105 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.theatermania.com/news/watch-inside-wanted-on-broadway-with-stars-solea-pfeiffer-liisi-lafontaine-ledisi-more_1857127/",
-            "outletId": "theatermania",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-09T01:56:34.845Z"
+            "url": "https://www.nytimes.com/2026/11/08/theater/wanted-review-passing-pfeiffer-ledisi-luke-james.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-09T07:55:47.387Z"
+          },
+          {
+            "url": "https://1minutecritic.com/wanted-broadway-musical-review/",
+            "outletId": "1minutecritic.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-09T07:55:47.387Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2026/11/08/wanted-broadway-review/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-11-09T07:55:47.387Z"
+          },
+          {
+            "url": "https://nystagereview.com/2026/11/08/wanted-a-musical-shootout-with-serious-vocal-firepower/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-09T07:55:47.387Z"
+          },
+          {
+            "url": "https://variety.com/2026/legit/reviews/wanted-broadway-review-1236941816/",
+            "outletId": "variety.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-09T07:55:47.387Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2026/nov/09/wanted-broadway-musical-review",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-09T07:55:47.387Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/wanted-broadway-review",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-09T07:55:47.387Z"
+          },
+          {
+            "url": "https://deadline.com/2026/11/wanted-musical-broadway-review-1237214464/",
+            "outletId": "deadline.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-09T07:55:47.387Z"
+          },
+          {
+            "url": "https://culturesauce.com/wanted-musical-broadway-review/",
+            "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-09T07:55:47.387Z"
+          },
+          {
+            "url": "https://www.slantmagazine.com/theater/wanted-review-broadway-musical/",
+            "outletId": "slantmagazine.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-09T07:55:47.387Z"
+          },
+          {
+            "url": "https://ew.com/wanted-review-gunslinging-sisters-take-broadway-by-storm-in-powerhouse-musical-12243698",
+            "outletId": "ew.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-09T07:55:47.387Z"
+          },
+          {
+            "url": "https://www.thewrap.com/creative-content/theater/wanted-broadway-review/",
+            "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-09T07:55:47.387Z"
+          },
+          {
+            "url": "https://www.purewow.com/entertainment/wanted-broadway-review",
+            "outletId": "purewow.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-09T07:55:47.387Z"
+          },
+          {
+            "url": "https://www.chicagotribune.com/2026/11/08/review-wanted-legend-sisters-clarke-broadway/",
+            "outletId": "chicagotribune.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-09T07:55:47.387Z"
+          },
+          {
+            "url": "https://nystagereview.com/2026/11/08/wanted-two-sisters-carry-a-gun-across-texas/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-09T07:55:47.387Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-wanted-isnt-a-perfect-shot-but-its-leading-ladies-are_1859103/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-09T07:55:47.387Z"
           },
           {
             "url": "https://www.timeout.com/newyork/theater/wanted",
-            "outletId": "timeout",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "timeout.com",
+            "state": "live",
             "firstSeenAt": "2026-11-08T13:30:30.102Z"
           },
           {
@@ -428166,11 +430428,22 @@
           }
         ],
         "censusSchema": 4,
-        "excluded": [],
-        "liveCount": 0,
-        "candidateCount": 3
+        "excluded": [
+          {
+            "url": "https://www.timeout.com/newyork/theater/wanted",
+            "host": "timeout.com",
+            "reason": "timeout-listing-blurb"
+          },
+          {
+            "url": "https://www.theatermania.com/news/watch-inside-wanted-on-broadway-with-stars-solea-pfeiffer-liisi-lafontaine-ledisi-more_1857127/",
+            "host": "theatermania.com",
+            "reason": "confirmed-non-review"
+          }
+        ],
+        "liveCount": 16,
+        "candidateCount": 17
       },
-      "computedAt": "2026-11-09T01:56:34.845Z"
+      "computedAt": "2026-11-09T07:55:47.387Z"
     },
     {
       "showId": "war-horse-west-end-2026",
@@ -428246,6 +430519,44 @@
         "candidateCount": 0
       },
       "computedAt": "2026-11-07T22:30:40.713Z"
+    },
+    {
+      "showId": "warsaw-regional-2026",
+      "title": "Warsaw",
+      "openingDate": "2026-05-06",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-09T07:55:47.387Z"
     },
     {
       "showId": "watch-me-walk-off-broadway-2026",
@@ -438664,6 +440975,7 @@
       "openingDate": "2026-09-13",
       "status": "closed",
       "category": "regional",
+      "previewsStartDate": "2026-09-09",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [],
       "dirFiles": 0,
@@ -438689,11 +441001,12 @@
         "missing": [],
         "suppressedMissing": [],
         "candidates": [],
-        "censusSchema": 3,
+        "censusSchema": 4,
+        "excluded": [],
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-11-09T07:55:47.387Z"
     },
     {
       "showId": "windfall-regional-2026",
@@ -438775,40 +441088,31 @@
       "openingDate": "2025-03-24",
       "status": "closed",
       "category": "off-broadway",
-      "aggregatorArticles": [],
+      "previewsStartDate": "2025-03-06",
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-the-reviews-for-wine-in-the-wilderness-off-broadway-directed-by-lachanze"
+      ],
       "aggregatorListedUrls": [
+        "https://www.thedailybeast.com/review-denzel-washingtons-daughter-shines-in-broadways-wine-in-the-wilderness/",
+        "https://nystagereview.com/2025/03/24/wine-in-the-wilderness-alice-childress-reads-the-black-bougie-gaze/",
+        "https://www.nysun.com/article/olivia-washington-leads-a-flawless-ensemble-in-a-cant-miss-off-broadway-revival-of-wine-in-the-wilderness",
         "https://www.newyorktheatreguide.com/reviews/wine-in-the-wilderness-off-broadway-review",
+        "https://www.nytimes.com/2025/03/25/theater/wine-in-the-wilderness-review.html",
         "https://www.theatermania.com/news/review-wine-in-the-wilderness-another-ahead-of-its-time-drama-by-alice-childress_1768447/",
         "https://www.talkinbroadway.com/page/ob/03_24_25b.html",
         "https://www.theatrereviews.com/off-broadway-review-wine-in-the-wilderness-at-classic-stage-company-extended-through-saturday-april-19-2025/"
       ],
-      "dirFiles": 11,
+      "dirFiles": 12,
       "dirClean": 11,
       "inReviewsJson": 11,
       "missing": [],
       "dirOnly": [
-        {
-          "host": "thedailybeast.com",
-          "count": 1
-        },
         {
           "host": "exeuntnyc.com",
           "count": 1
         },
         {
           "host": "frontmezzjunkies.com",
-          "count": 1
-        },
-        {
-          "host": "nysun.com",
-          "count": 1
-        },
-        {
-          "host": "nystagereview.com",
-          "count": 1
-        },
-        {
-          "host": "nytimes.com",
           "count": 1
         },
         {
@@ -438824,8 +441128,16 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 111,
+        "byReason": {
+          "non-review-host": 21,
+          "not-http-url": 6,
+          "aggregator-internal-nav": 64,
+          "aggregator-section-root": 4,
+          "roundup-page": 2,
+          "production-database-listing": 11,
+          "non-stage-review": 3
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
@@ -438836,10 +441148,34 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://www.thedailybeast.com/review-denzel-washingtons-daughter-shines-in-broadways-wine-in-the-wilderness/",
+            "outletId": "thedailybeast.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-09T07:55:47.387Z"
+          },
+          {
+            "url": "https://nystagereview.com/2025/03/24/wine-in-the-wilderness-alice-childress-reads-the-black-bougie-gaze/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-09T07:55:47.387Z"
+          },
+          {
+            "url": "https://www.nysun.com/article/olivia-washington-leads-a-flawless-ensemble-in-a-cant-miss-off-broadway-revival-of-wine-in-the-wilderness",
+            "outletId": "nysun.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-09T07:55:47.387Z"
+          },
+          {
             "url": "https://www.newyorktheatreguide.com/reviews/wine-in-the-wilderness-off-broadway-review",
             "outletId": "newyorktheatreguide.com",
             "state": "live",
             "firstSeenAt": "2026-11-01T14:12:38.091Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2025/03/25/theater/wine-in-the-wilderness-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-09T07:55:47.387Z"
           },
           {
             "url": "https://www.theatermania.com/news/review-wine-in-the-wilderness-another-ahead-of-its-time-drama-by-alice-childress_1768447/",
@@ -438862,10 +441198,10 @@
         ],
         "censusSchema": 4,
         "excluded": [],
-        "liveCount": 4,
-        "candidateCount": 4
+        "liveCount": 8,
+        "candidateCount": 8
       },
-      "computedAt": "2026-11-01T14:12:38.091Z"
+      "computedAt": "2026-11-09T07:55:47.387Z"
     },
     {
       "showId": "winters-bench-regional-2026",
@@ -441577,29 +443913,34 @@
     }
   ],
   "staleness": {
-    "at": "2026-11-09T06:26:00.733Z",
+    "at": "2026-11-09T07:55:47.386Z",
     "reserveEvery": 4,
     "reservedAttempted": [
-      "ceilidh-the-musical-off-west-end-2026",
-      "i-became-we-off-broadway-2026",
-      "heartbreak-house-regional-2026"
+      "tosca-english-national-opera-west-end-2026",
+      "mj-the-musical-west-end-2024",
+      "purpose-regional-2026",
+      "big-feelings-off-broadway-2026",
+      "the-visit-regional-2026",
+      "wild-child-regional-2026"
     ],
     "catalogueReserveEvery": 8,
     "catalogueAttempted": [
-      "the-distrikt-of-lake-michigun-regional-2025",
-      "sunny-afternoon-the-story-of-the-kinks-regional-2025",
-      "alfred-hitchcock-presents-the-musical-royal-bath-regional-2025"
+      "of-mice-and-men-octagon-regional-2025",
+      "the-kelton-hill-fair-tron-regional-2025",
+      "north-by-northwest-york-royal-regional-2025",
+      "dancing-shoes-oran-mor-regional-2025",
+      "wine-in-the-wilderness-off-broadway-2025"
     ],
-    "neverAuditedDueAtStart": 441,
+    "neverAuditedDueAtStart": 438,
     "oldestDueRowAtStart": {
       "showId": "mj-the-musical-west-end-2024",
       "computedAt": "2026-10-26T05:26:34.334Z",
-      "ageHours": 336.7
+      "ageHours": 338.2
     },
     "oldestDueRowAfterRun": {
-      "showId": "mj-the-musical-west-end-2024",
-      "computedAt": "2026-10-26T05:26:34.334Z",
-      "ageHours": 337
+      "showId": "the-humanities-regional-2026",
+      "computedAt": "2026-10-31T17:07:08.919Z",
+      "ageHours": 206.8
     }
   }
 }

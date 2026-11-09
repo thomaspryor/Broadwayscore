@@ -1899,6 +1899,20 @@
     "queuedAt": "2026-11-09T07:19:34.193Z"
   },
   {
+    "conditionKey": "review-gap:blast-radius-refused",
+    "title": "Review-gap audit refused to write — 21.7% of shows changed coverage state (still open — BRO-5516)",
+    "description": "Still firing after 87 notifications since it was filed. Tracked at BRO-5516.\n\nreview-gap blast radius 21.7% (5/23 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: garry-starr-classic-penguins-off-west-end-2026, mj-the-musical-west-end-2024, the-verge-off-broadway-2026, tosca-english-national-opera-west-end-2026, tristan-and-yseult-off-broadway-2026\n\nPARTIAL write: the other 40 show(s) audited this run were NOT risky and were persisted normally. Only the 5 changed show(s) above were quarantined (kept at their prior entry). Check the scraper/SERP providers and the core-data checkout, then re-run. To force the quarantined show(s) through as-is: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-5516",
+    "fields": [],
+    "queuedAt": "2026-11-09T07:55:48.068Z"
+  },
+  {
     "conditionKey": "land:land/bro-7197-nonreview-census",
     "title": "Landing blocked: actionlint-install red on land/bro-7197-nonreview-census",
     "description": "land.yml did not land land/bro-7197-nonreview-census: the actionlint-install gate went red at 30fba5de1f. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42580466176",

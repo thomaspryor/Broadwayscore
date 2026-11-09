@@ -1,13 +1,80 @@
 {
-  "generatedAt": "2026-11-09T06:26:43.218Z",
+  "generatedAt": "2026-11-09T07:56:24.824Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 323,
-  "clean": 323,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 319,
+  "defective": 4,
+  "byType": {
+    "score-drift": 4
+  },
+  "shows": [
+    {
+      "showId": "the-unbelievers-off-broadway-2026",
+      "title": "The Unbelievers",
+      "openingDate": "2026-11-05",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 70.46 vs local 70.34 (Δ0.12)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 14,
+      "deployedCount": 14,
+      "firstDefectAt": "2026-11-09T07:56:17.093Z"
+    },
+    {
+      "showId": "speculations-off-west-end-2026",
+      "title": "Speculations",
+      "openingDate": "2026-11-05",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 46.92 vs local 47.01 (Δ0.09)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 33,
+      "deployedCount": 33,
+      "firstDefectAt": "2026-11-09T07:56:17.093Z"
+    },
+    {
+      "showId": "derren-brown-only-human-off-west-end-2026",
+      "title": "Derren Brown: Only Human",
+      "openingDate": "2026-10-22",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 82.82 vs local 82.75 (Δ0.07)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 27,
+      "deployedCount": 27,
+      "firstDefectAt": "2026-11-09T07:56:17.093Z"
+    },
+    {
+      "showId": "the-pianist-off-west-end-2026",
+      "title": "The Pianist",
+      "openingDate": "2026-10-22",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 71.29 vs local 71.36 (Δ0.07)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 37,
+      "deployedCount": 37,
+      "firstDefectAt": "2026-11-09T07:56:17.093Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
