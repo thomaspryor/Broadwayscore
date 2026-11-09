@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7094",
   "planId": "d141eb9a-31ee-4fdf-ab6c-3337f6b4333a",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-09T21:39:17.553Z",
   "submitter": {
     "name": null,
@@ -23,5 +23,14 @@
         "description": "the-price-2017/nytimes--ben-brantley.json: publishDate"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-09T23:18:09.770Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-price-2017/nytimes--ben-brantley.json publishDate: \"February 16, 2017\" -> \"2017-03-17\""
+    }
+  ],
+  "executedIn": "ci"
 }
