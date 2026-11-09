@@ -69,7 +69,7 @@ const PROD_MAX_ERRORS = 3;
 // Error messages can contain entire API responses: firstLine bounds them
 // (shared with check-prod-deploy.js since BRO-6257).
 const { firstLine } = require('./log-lines');
-const { landedOnMain, parseMainLog } = require('./land-check-resources');
+const { landedOnMain } = require('./land-check-resources');
 const { LANDINGS_REL, parseLandings, landedShaForTip } = require('./landings-ledger');
 
 // check-prod-deploy prints its verdict last. Preserve that line without
@@ -364,14 +364,13 @@ async function reportLandedSha(tip, { budgetMs = 150_000, io = {} } = {}) {
   return null;
 }
 
-// BRO-7186: read-only look at origin/main's ledger and recent subjects for a ref that is gone.
-function findLandedOnMain(ref) {
+// BRO-7186: read-only look at origin/main's landings ledger for a ref that is gone.
+function findLandedOnMain(ref, run) {
   try {
     if (!fetchMain()) return { landed: false };
-    const mainCommits = parseMainLog(execFileSync('git', ['log', 'origin/main', '--since=6 hours ago', '--format=%H%x09%cI%x09%s', '-n', '400'], { encoding: 'utf8', maxBuffer: 16 << 20, timeout: 60_000 }));
     let ledgerRows = [];
-    try { ledgerRows = mainLandingsRows(); } catch { /* ledger unreadable: commit subjects still count */ }
-    return landedOnMain({ ref, ledgerRows, mainCommits });
+    try { ledgerRows = mainLandingsRows(); } catch { /* ledger unreadable: not landed as far as we can tell */ }
+    return landedOnMain({ ref, ledgerRows, run, nowMs: Date.now() });
   } catch (err) {
     console.error(`${stamp()} could not check main for ${ref}: ${firstLine(err.message || err)}`);
     return { landed: false };
@@ -425,9 +424,10 @@ async function main(argv) {
       }
       if (v.verdict === 'unknown' && !lastSha) {
         // BRO-7186: land.yml may have landed and deleted the ref with no run found by name.
-        const found = findLandedOnMain(args.ref);
+        const found = findLandedOnMain(args.ref, run);
         if (found.landed) {
           console.log(`${stamp()} LANDED: ${args.ref} is gone from origin and ${found.sha} is on main (${found.via}) (${COMMIT_URL}${found.sha})`);
+          if (args.prodMin) return waitForProd({ siteFiles: null, prodMin: args.prodMin });
           return 0;
         }
       }

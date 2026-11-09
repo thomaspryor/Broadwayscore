@@ -28,25 +28,35 @@ function looksLikeEnvFailure(text) {
 
 const RECENT_MS = 6 * 3600_000;
 
-/**
- * Was land ref `ref` already landed on main although the ref is gone and no run
- * was found by name? ledgerRows: parsed landings.jsonl rows ({branch, sha, ts});
- * mainCommits: [{sha, subject, ts?}] recent origin/main commits (train riders get
- * no ledger row, and land.yml rebases so the pushed sha is not on main).
- * -> { landed: true, sha, via } | { landed: false }
- */
-function landedOnMain({ ref, ledgerRows = [], mainCommits = [], nowMs = Date.now() }) {
-  const rows = ledgerRows
-    .filter((r) => r && r.branch === ref && r.sha && (!r.ts || nowMs - Date.parse(r.ts) < RECENT_MS))
-    .sort((a, b) => String(a.ts).localeCompare(String(b.ts)));
-  if (rows.length) return { landed: true, sha: rows[rows.length - 1].sha, via: 'landings ledger' };
-  const bro = /\bbro-(\d{3,6})\b/i.exec(ref);
-  if (bro) {
-    const re = new RegExp(`\\bBRO-${bro[1]}\\b`, 'i');
-    const hit = mainCommits.find((c) => re.test(c.subject || '') && (!c.ts || nowMs - Date.parse(c.ts) < RECENT_MS));
-    if (hit) return { landed: true, sha: hit.sha, via: `main commit naming BRO-${bro[1]}` };
+/** Raw gate logs (<gate>.log) under dirs that show ENOSPC -> list of file paths. */
+function envFailureLogs(dirs, { readdir = require('fs').readdirSync, read = require('fs').readFileSync, path = require('path') } = {}) {
+  const hits = [];
+  for (const dir of dirs) {
+    let names = [];
+    try { names = readdir(dir); } catch { continue; }
+    for (const n of names.filter((x) => x.endsWith('.log'))) {
+      try { if (looksLikeEnvFailure(read(path.join(dir, n), 'utf8'))) hits.push(path.join(dir, n)); } catch { /* unreadable: skip */ }
+    }
   }
-  return { landed: false };
+  return hits;
+}
+
+/**
+ * Was land ref `ref` already landed on main although the ref is gone and the
+ * run lookup by name found nothing? Only a landings-ledger row naming this exact
+ * branch within 6h counts (a BRO id in a commit subject does not: cards land
+ * more than once, and reverts / follow-ups cite the same id).
+ * run: the latest land run found for the ref, or null; a red/cancelled run
+ * means the ref was refused, never landed. -> { landed, sha?, tip?, via? }
+ */
+function landedOnMain({ ref, ledgerRows = [], run = null, nowMs = Date.now() }) {
+  if (run && run.conclusion && run.conclusion !== 'success') return { landed: false };
+  const rows = ledgerRows
+    .filter((r) => r && r.branch === ref && r.sha && r.ts && nowMs - Date.parse(r.ts) < RECENT_MS)
+    .sort((a, b) => String(a.ts).localeCompare(String(b.ts)));
+  if (!rows.length) return { landed: false };
+  const row = rows[rows.length - 1];
+  return { landed: true, sha: row.sha, tip: row.tip || null, via: 'landings ledger' };
 }
 
 /** Parse `git log --format=%H%x09%cI%x09%s` output -> [{sha, ts, subject}] */
@@ -57,4 +67,4 @@ function parseMainLog(text) {
   });
 }
 
-module.exports = { parseMainLog, MIN_FREE_BYTES, lowDiskMessage, freeBytesOf, looksLikeEnvFailure, landedOnMain };
+module.exports = { envFailureLogs, parseMainLog, MIN_FREE_BYTES, lowDiskMessage, freeBytesOf, looksLikeEnvFailure, landedOnMain };

@@ -435,7 +435,7 @@ test('BRO-7110: main() refuses an incomplete install before fetching or running 
 });
 
 // BRO-7186: false results from land tooling
-const { lowDiskMessage, looksLikeEnvFailure, landedOnMain, MIN_FREE_BYTES } = require('./land-check-resources.js');
+const { lowDiskMessage, looksLikeEnvFailure, landedOnMain, envFailureLogs, MIN_FREE_BYTES } = require('./land-check-resources.js');
 
 test('BRO-7186: under 3 GB free refuses; enough or unreadable does not', () => {
   assert.match(lowDiskMessage(1024 ** 3), /1\.0 GB free before the run.*ENOSPC/s);
@@ -449,16 +449,25 @@ test('BRO-7186: ENOSPC output is an environment failure', () => {
   assert.ok(!looksLikeEnvFailure('AssertionError: expected 1'));
 });
 
-test('BRO-7186: a gone ref counts as landed from the ledger or a BRO-id commit on main', () => {
+test('BRO-7186: a gone ref counts as landed only via an exact-branch recent ledger row and no red run', () => {
   const now = Date.parse('2026-11-08T12:00:00Z');
   const ago = (h) => new Date(now - h * 3600_000).toISOString();
   const ref = 'land/bro-7137-fallback-date';
-  assert.deepEqual(landedOnMain({ ref, nowMs: now, ledgerRows: [{ branch: ref, sha: 'abc', ts: ago(1) }] }), { landed: true, sha: 'abc', via: 'landings ledger' });
-  const viaMsg = landedOnMain({ ref, nowMs: now, mainCommits: [{ sha: '13c0e6d', subject: 'fix(BRO-7137): fallbackDateForUndatedStub', ts: ago(2) }] });
-  assert.equal(viaMsg.sha, '13c0e6d');
-  assert.equal(landedOnMain({ ref, nowMs: now, ledgerRows: [{ branch: ref, sha: 'abc', ts: ago(9) }] }).landed, false);
-  assert.equal(landedOnMain({ ref, nowMs: now, mainCommits: [{ sha: 'x', subject: 'BRO-71370 other', ts: ago(1) }] }).landed, false);
-  assert.equal(landedOnMain({ ref: 'land/typo', nowMs: now, mainCommits: [{ sha: 'x', subject: 'BRO-7137', ts: ago(1) }] }).landed, false);
+  const row = { branch: ref, sha: 'abc', tip: 't1', ts: ago(1) };
+  assert.deepEqual(landedOnMain({ ref, nowMs: now, ledgerRows: [row] }), { landed: true, sha: 'abc', tip: 't1', via: 'landings ledger' });
+  assert.equal(landedOnMain({ ref, nowMs: now, ledgerRows: [{ ...row, ts: ago(9) }] }).landed, false);
+  assert.equal(landedOnMain({ ref, nowMs: now, ledgerRows: [{ ...row, ts: undefined }] }).landed, false);
+  assert.equal(landedOnMain({ ref: 'land/other', nowMs: now, ledgerRows: [row] }).landed, false);
+  assert.equal(landedOnMain({ ref, nowMs: now, ledgerRows: [row], run: { conclusion: 'failure' } }).landed, false);
+  assert.equal(landedOnMain({ ref, nowMs: now, ledgerRows: [row], run: { conclusion: 'success' } }).landed, true);
+});
+
+test('BRO-7186: envFailureLogs finds ENOSPC in raw gate logs, not in clean ones', () => {
+  const d = mkdtempSync(join(tmpdir(), 'enospc-'));
+  writeFileSync(join(d, 'a.log'), 'ok 1\n'); writeFileSync(join(d, 'b.log'), 'Error: ENOSPC: no space left');
+  const hits = envFailureLogs([d, join(d, 'missing')]);
+  assert.deepEqual(hits, [join(d, 'b.log')]);
+  rmSync(d, { recursive: true });
 });
 
 test('BRO-7186: parseMainLog reads git log rows', () => {
