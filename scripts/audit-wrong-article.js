@@ -124,7 +124,7 @@ function findSuspects(textsDir, shows) {
       try { j = JSON.parse(fs.readFileSync(path.join(textsDir, showId, f), 'utf8')); } catch { continue; }
       if (!j.fullText || (j.llmScore?.score ?? j.assignedScore) == null) continue;
       let included;
-      try { included = isIncludableForRebuild(j); } catch { continue; }
+      try { included = isIncludableForRebuild(j, show, path.join(textsDir, showId, f)); } catch { continue; }
       if (included !== true) continue;
       scanned++;
       const r = screenWrongArticle(j.fullText, show);
