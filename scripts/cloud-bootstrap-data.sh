@@ -110,7 +110,13 @@ cloud_core_copies() {
   have="$(cat data/.core-data-sha 2>/dev/null)"
   linked="$(find data -maxdepth 1 -name '*.json' -lname "$CORE_HOME/*" 2>/dev/null | head -1)"
   case "${BSC_SESSION_EVENT:-startup}" in
-    compact|clear) [ -n "$linked" ] || return 0 ;;
+    compact|clear)
+      # BRO-7187: copies are kept on purpose, but say so when they are behind the
+      # clone; a stale copy once reached a card as a "live" duplicate show.
+      if [ -z "$linked" ] && [ -n "$have" ] && [ -n "$head" ] && [ "$head" != "$have" ]; then
+        log "WARN: data/*.json copies are from core data ${have:0:8}, the clone is at ${head:0:8}. Before treating data as live, run: bash scripts/setup-local-data.sh --link-only"
+      fi
+      [ -n "$linked" ] || return 0 ;;
     *) [ -n "$linked" ] || [ "$head" != "$have" ] || return 0 ;;
   esac
   run_bounded 120 bash "$SCRIPT_DIR/setup-local-data.sh" --link-only 2>&1 \
