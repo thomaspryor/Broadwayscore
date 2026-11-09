@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6854-bos",
   "planId": "61ac6cfb-7fa3-446f-91f3-4af6b5ad5bb2",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-11-09T02:32:41.240Z",
   "submitter": {
     "name": null,
@@ -614,5 +614,130 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-09T02:58:34.053Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added something-rotten-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added oedipus-el-rey-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-mystery-of-irma-vep-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added annie-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added eureka-day-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": false,
+      "duplicateOf": "black-swan-regional-2026",
+      "reason": "add-show: \"black-swan-american-regional-2026\" duplicates existing \"black-swan-regional-2026\" (Exact title match: \"Black Swan\"); if it is a genuinely distinct production list \"black-swan-regional-2026\" in the action's distinctFrom"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added on-your-feet-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added delirium-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added merrily-we-roll-along-sullivan-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added in-old-age-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added joseph-and-the-amazing-technicolor-dreamcoat-north-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added paranormal-activity-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-new-era-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added buyer-and-cellar-hub-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-midsummer-nights-dream-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added m-refractions-from-an-evil-act-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added rock-of-ages-north-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added rhinoceros-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added eleanor-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added purpose-huntington-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added come-from-away-north-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added all-my-sons-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added covenant-speakeasy-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added shear-madness-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
