@@ -1,46 +1,94 @@
 {
-  "generatedAt": "2026-11-09T02:00:55.459Z",
+  "generatedAt": "2026-11-09T02:41:59.919Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 320,
-  "clean": 318,
-  "defective": 2,
+  "clean": 315,
+  "defective": 5,
   "byType": {
-    "score-drift": 2
+    "score-drift": 5
   },
   "shows": [
     {
-      "showId": "iphigenie-en-tauride-english-national-opera-west-end-2026",
-      "title": "Iphigenie en Tauride - English National Opera",
+      "showId": "nero-off-west-end-2026",
+      "title": "Nero",
       "openingDate": "2026-11-06",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 69.5 vs local 67.6 (Δ1.9)"
+          "detail": "deployed cs 37.35 vs local 37.86 (Δ0.51)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 6,
-      "deployedCount": 6,
-      "firstDefectAt": "2026-11-09T02:00:46.586Z"
+      "localCount": 13,
+      "deployedCount": 13,
+      "firstDefectAt": "2026-11-09T02:41:51.742Z"
     },
     {
-      "showId": "aladdin-2014",
-      "title": "Aladdin",
-      "openingDate": "2014-03-20",
+      "showId": "tristan-and-yseult-off-broadway-2026",
+      "title": "Tristan & Yseult",
+      "openingDate": "2026-11-01",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 69.68 vs local 69.87 (Δ0.19)"
+          "detail": "deployed cs 80.44 vs local 80.59 (Δ0.15)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 40,
-      "deployedCount": 40,
-      "firstDefectAt": "2026-11-09T02:00:46.586Z"
+      "localCount": 5,
+      "deployedCount": 5,
+      "firstDefectAt": "2026-11-09T02:41:51.742Z"
+    },
+    {
+      "showId": "king-hedley-ii-regional-2026",
+      "title": "King Hedley II",
+      "openingDate": "2026-10-26",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 76.56 vs local 76.27 (Δ0.29)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 9,
+      "deployedCount": 10,
+      "firstDefectAt": "2026-11-09T02:41:51.742Z"
+    },
+    {
+      "showId": "deep-heat-rivalry-off-west-end-2026",
+      "title": "Deep Heat Rivalry",
+      "openingDate": "2026-09-17",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 82.77 vs local 83.01 (Δ0.24)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 12,
+      "deployedCount": 12,
+      "firstDefectAt": "2026-11-09T02:41:51.742Z"
+    },
+    {
+      "showId": "oliver-west-end-2024",
+      "title": "Oliver!",
+      "openingDate": "2025-01-14",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 85.58 vs local 85.42 (Δ0.16)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 22,
+      "deployedCount": 22,
+      "firstDefectAt": "2026-11-09T02:41:51.742Z"
     }
   ],
   "persistentDefective": 0,

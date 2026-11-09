@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-09T01:57:13.849Z",
+  "generatedAt": "2026-11-09T02:41:30.925Z",
   "windowDays": 45,
   "showsScanned": 243,
   "gaps": [
@@ -11,20 +11,16 @@
       "outletId": "sunday-times",
       "tier": 1,
       "type": "empty-body",
-      "recoverable": true,
+      "recoverable": false,
       "url": "https://www.thetimes.com/culture/classical-opera/article/iphigenie-en-tauride-review-youve-never-seen-a-family-reunion-like-this-hmwx2kkh2",
-      "recovery": {
-        "attempted": true,
-        "ok": false,
-        "reason": "⚠️  outletId drift detected — operator input \"sunday-times\" resolved to \"sunday-times\" but URL domain maps to canonical \"times-uk\". Using URL-derived canonical.\nArticle extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
-      },
-      "recoveryCount": 2,
+      "recovery": null,
+      "recoveryCount": 3,
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=iphigenie-en-tauride-english-national-opera-west-end-2026 --url=https://www.thetimes.com/culture/classical-opera/article/iphigenie-en-tauride-review-youve-never-seen-a-family-reunion-like-this-hmwx2kkh2 --outlet=sunday-times   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-08T22:39:44.349Z",
-      "fileAgeHours": 3.2901327777777776,
+      "fileAgeHours": 4.028512222222222,
       "gapSeenAt": "2026-11-09T00:00:26.432Z",
-      "nonTerminalAgeHours": 1.9465047222222223,
+      "nonTerminalAgeHours": 2.6845813888888888,
       "needsManualRecovery": false
     }
   ],

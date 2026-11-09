@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-09T02:00:55.893Z",
+  "generatedAt": "2026-11-09T02:42:00.285Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -140,9 +140,13 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "londonpubtheatres",
+      "error": "Client network socket disconnected before secure TLS connection was established"
     }
   ],
-  "itemsScanned": 822,
+  "itemsScanned": 810,
   "matchedGaps": 3,
   "possibleGaps": 5,
   "gaps": [
