@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-09T06:05:32.207Z",
+  "generatedAt": "2026-11-09T06:44:56.886Z",
   "date": "2026-11-09",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 203082,
+  "entryCount": 206895,
   "shows": [
     {
       "showId": "speculations-off-west-end-2026",
@@ -431,8 +431,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 534877,
-        "scored-to-rebuilt": 274884,
+        "collected-to-scored": 93627695,
+        "scored-to-rebuilt": 385481,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -4303,13 +4303,13 @@
     },
     {
       "showId": "nero-off-west-end-2026",
-      "reviewCount": 13,
+      "reviewCount": 14,
       "median_e2e_ms": 82585129,
       "p90_e2e_ms": 93253878,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 468514,
-        "scored-to-rebuilt": 275978,
+        "scored-to-rebuilt": 273044,
         "rebuilt-to-deployed": 66445247
       },
       "reviews_over_15min": 5,
@@ -14211,7 +14211,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 500614,
-        "scored-to-rebuilt": 845123,
+        "scored-to-rebuilt": 842610,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -14721,7 +14721,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1920625,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -14736,7 +14736,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1875290,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -14745,13 +14745,13 @@
     },
     {
       "showId": "eleanor-regional-2026",
-      "reviewCount": 4,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1841475,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -14766,7 +14766,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1820979,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -14781,7 +14781,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1801013,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -14796,7 +14796,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1776802,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -14811,7 +14811,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1754435,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -14826,7 +14826,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1737347,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -14835,13 +14835,13 @@
     },
     {
       "showId": "paranormal-activity-boston-regional-2026",
-      "reviewCount": 2,
+      "reviewCount": 8,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1720881,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -14856,7 +14856,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1707958,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -14871,7 +14871,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1686089,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -14886,7 +14886,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1603097,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -14901,7 +14901,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1574047,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -14916,7 +14916,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1548544,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -14925,13 +14925,13 @@
     },
     {
       "showId": "black-swan-regional-2026",
-      "reviewCount": 2,
+      "reviewCount": 13,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1522767,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -14946,7 +14946,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1496979,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -14961,7 +14961,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1457051,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -14976,7 +14976,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1422758,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -14991,7 +14991,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1393360,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -15006,7 +15006,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1344816,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
