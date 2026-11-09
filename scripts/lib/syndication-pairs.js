@@ -62,7 +62,7 @@ function isSecondaryOutlet(criticName, outletId) {
 }
 
 /**
- * Publishing groups (BRO-2406): outlets under common ownership that reprint a
+ * Publishing groups (BRO-2406): outlets under common ownership or a reprint partnership that reprint a
  * staff critic's review. Order = primacy (first = original publisher). Applies
  * to ANY critic with a real byline, not only critics hand-listed in
  * KNOWN_SYNDICATION_PAIRS — the third Chris Jones/Chicago Tribune recurrence
