@@ -248,7 +248,11 @@ console.log(JSON.stringify(out, null, 2));
 (async () => {
   if (argv.includes('--alert')) {
     const { routeAuditDecisions } = require('./lib/audit-alert');
+    // stdout is the audit's JSON (the workflow pipes it to jq): alert log lines must not land in it.
+    const realLog = console.log; console.log = console.error;
+    try {
     await routeAuditDecisions(require('./lib/director-consensus-alert').decideDirectorConsensusAlert(findings, scannedShows), 'audit-show-director-consensus');
+    } finally { console.log = realLog; }
   }
   process.exit(FAIL_ON_STRICT && strictCount > 0 ? 1 : 0);
 })();

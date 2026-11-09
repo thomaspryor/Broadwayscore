@@ -75,3 +75,17 @@ test('a real verdict "Four stars, a rousing evening." is still read', () => {
   const t = `${filler}\n\nFour stars, a rousing evening.`;
   assert.equal(extractGenericStarRating(t, t).originalScore, '4/5 stars');
 });
+
+// BRO-7210 second-opinion regressions: real verdicts the first cut dropped.
+test('real verdicts survive the cast-prose filter', () => {
+  for (const line of [
+    'It deserves every one of its five stars.',
+    'This production takes a leap to four stars.',
+    'The Stage verdict: Four stars. Broadway transfer likely.',
+    'Three stars: who knew a revival could feel this fresh?',
+  ]) {
+    const t = `${filler}\n\n${line}`;
+    const r = extractGenericStarRating(t, t);
+    assert.ok(r && /^[345]\/5/.test(r.originalScore), `${line} -> ${JSON.stringify(r)}`);
+  }
+});

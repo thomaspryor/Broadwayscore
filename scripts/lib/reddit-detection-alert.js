@@ -8,7 +8,8 @@
  * audit-alert.js, and a good run clears it. Pure.
  */
 const DETECTION_ALERT_KEY = 'reddit-drafts:posted-detection-down';
-const DETECTION_FAILURE_THRESHOLD = 3;
+// The drafter runs hourly: 24 skipped runs is about a day of outage, not a blip.
+const DETECTION_FAILURE_THRESHOLD = 24;
 
 /** Consecutive skipped runs after this run. */
 function nextFailureStreak(prevStreak, ok) {

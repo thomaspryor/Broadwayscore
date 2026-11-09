@@ -379,6 +379,7 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git add data/audit/gemini-usage-ledger.jsonl 2>/dev/null || true # LLM spend meter rows (BRO-5043)
           git add -f data/audit/reddit-post-drafts.json 2>/dev/null || true
+          git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl 2>/dev/null || true # BRO-7210 card cooldown/resolve state
           if ! git diff --cached --quiet; then
             git commit -m "data: Update Reddit opening-post drafts [automated]"
             bash scripts/lib/push-with-retry.sh

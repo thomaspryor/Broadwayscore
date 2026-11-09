@@ -149,12 +149,15 @@ function isRelayedStarRating(source, matchIndex) {
 // X and Y", "the two stars of the show"). A bare word-star match is not a rating
 // when the word before it is a determiner/preposition/verb that makes "stars" a
 // noun phrase, or when a nationality/"of the" noun follows ("two stars, British...").
-const CAST_STARS_PRECEDER = /(?:^|[\s>])(?:with|has|have|had|its|their|his|her|our|the|these|those|of|by|from|and|between|to|are|were|both|as)\s*(?:<[^>]*>\s*)*$/i;
+const CAST_STARS_PRECEDER = /(?:^|[\s>])(?:with|the|these|those|both|between)\s*(?:<[^>]*>\s*)*$/i;
 const CAST_STARS_FOLLOWER = /^\s*[,;:]?\s*(?:British|American|English|Irish|Scottish|Welsh|Australian|Canadian|Broadway|West End|Hollywood|of\s+(?:the|this|that)\b|who\b|whose\b|both\b)/i;
 function isCastStarsProse(source, matchIndex, matched) {
   if (!source || !/^\s*(?:one|two|three|four|five)\b/i.test(matched)) return false;
   const before = source.slice(Math.max(0, matchIndex - 40), matchIndex);
   if (CAST_STARS_PRECEDER.test(before)) return true;
+  // Only a comma-ended match continues the same sentence; "Four stars. Broadway transfer
+  // likely." ends in a full stop and its next sentence says nothing about this rating.
+  if (!/,\s*$/.test(matched)) return false;
   const after = source.slice(matchIndex + matched.length, matchIndex + matched.length + 40);
   return CAST_STARS_FOLLOWER.test(after);
 }
