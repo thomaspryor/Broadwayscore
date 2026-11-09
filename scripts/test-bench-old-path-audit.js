@@ -41,6 +41,21 @@ function pressNightWithObserved(record, night) {
   return { ...(record || {}), embargoAt: observedAt };
 }
 
+/**
+ * How many live reviews existed at the embargo plus 1h, 3h and 24h, against the final count, and the hours to the first
+ * one. A file's time is firstSeenAt (the review-texts commit that first held it), so this is collection time, not the
+ * outlet's publish time. Files with no firstSeenAt cannot be placed and are counted in `unplaced`. Pure.
+ */
+function liveCurve(liveFiles, embargoMs) {
+  const at = (f) => { const t = Date.parse(f.firstSeenAt); return Number.isFinite(t) ? t : null; };
+  const placed = liveFiles.map(at).filter((t) => t != null).sort((a, b) => a - b);
+  const within = (h) => placed.filter((t) => t <= embargoMs + h * 3600000).length;
+  return {
+    firstLiveHours: placed.length ? Math.round(((placed[0] - embargoMs) / 3600000) * 10) / 10 : null,
+    plus1h: within(1), plus3h: within(3), plus24h: within(24), final: liveFiles.length, unplaced: liveFiles.length - placed.length,
+  };
+}
+
 function main() {
   const nightsPath = path.resolve(ROOT, arg('nights') || 'data/audit/test-bench/nights.json');
   const nightsDoc = readJson(nightsPath, null);
@@ -80,7 +95,8 @@ function main() {
     const g = og.gradeOpening({ ...base, pressNight: pressNightWithObserved(record, night) });
     // A spurious cluster must not silently change the grade: keep the grade on the recorded/estimated embargo beside it.
     const onRecord = night.embargoCorrected ? og.gradeOpening({ ...base, pressNight: record }) : null;
-    return { ...g, embargoFrom: night.observed.source === 'observed-cluster' ? 'observed publish cluster' : g.embargoFrom,
+    const liveCurveOut = liveCurve(files.filter((f) => og.isLiveFile(f, show, rtDir)), Date.parse(g.embargoAt));
+    return { ...g, liveCurve: liveCurveOut, embargoFrom: night.observed.source === 'observed-cluster' ? 'observed publish cluster' : g.embargoFrom,
       embargoCorrected: Boolean(night.embargoCorrected), estimateAt: night.estimate.at, shiftMin: night.observed.shiftMin,
       onRecordEmbargo: onRecord && { verdict: onRecord.verdict, line: og.gradeLine(onRecord) } };
   }).sort((a, b) => b.openingDate.localeCompare(a.openingDate) || a.showId.localeCompare(b.showId));
@@ -98,4 +114,4 @@ function main() {
 }
 
 if (require.main === module) main();
-module.exports = { pressNightWithObserved };
+module.exports = { pressNightWithObserved, liveCurve };
