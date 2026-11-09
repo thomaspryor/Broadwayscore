@@ -6093,7 +6093,11 @@ function explainExclusion(data, show, filePath, opts) {
     {
       const outletSynd = require('./review-normalization').normalizeOutlet(data.outletId || data.outlet || '');
       const synd = require('./syndication-pairs');
-      const syndPrimaries = synd.getSyndicationPrimaries(data.criticName, outletSynd);
+      let sameCriticOutlets;
+      if (synd.SYNDICATION_PORTAL_OUTLETS.includes(outletSynd)) {
+        try { sameCriticOutlets = synd.sameCriticOutletsFrom(require('fs').readdirSync(require('path').dirname(filePath)), data.criticName); } catch { /* unreadable dir: no portal rule */ }
+      }
+      const syndPrimaries = synd.getSyndicationPrimaries(data.criticName, outletSynd, { sameCriticOutlets });
       if (syndPrimaries.length) {
         let hasPrimary = false;
         try {

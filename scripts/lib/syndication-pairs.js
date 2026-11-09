@@ -88,6 +88,9 @@ const PUBLISHING_GROUPS = [
   ['artsdesk', 'i-paper'],
 ];
 
+// Outlet ids of aggregator portals (review-normalization.js SYNDICATION_PORTAL_HOSTS: yahoo.com, msn.com, aol.com).
+const SYNDICATION_PORTAL_OUTLETS = Object.freeze(['yahoo', 'msn', 'aol']);
+
 function _isRealByline(criticName) {
   const c = String(criticName || '').toLowerCase().trim();
   return !!c && !/^(unknown|staff|n\/a|none|anonymous)$/.test(c);
@@ -98,7 +101,7 @@ function _isRealByline(criticName) {
  * `outletId` would merely be reprinting. Empty array = outletId is not a
  * syndicated secondary. Union of the per-critic map and publishing groups.
  */
-function getSyndicationPrimaries(criticName, outletId) {
+function getSyndicationPrimaries(criticName, outletId, { sameCriticOutlets } = {}) {
   if (!_isRealByline(criticName) || !outletId) return [];
   const out = new Set();
   const cfg = getSyndicationConfig(criticName);
@@ -107,6 +110,26 @@ function getSyndicationPrimaries(criticName, outletId) {
     const i = group.indexOf(outletId);
     if (i > 0) group.slice(0, i).forEach(o => out.add(o));
   }
+  // BRO-7238: a portal carries other publishers' reviews, so a portal copy defers to ANY other outlet that holds the
+  // same critic's review of the same show. Only callers that know those outlets (a show dir scan) pass them.
+  if (SYNDICATION_PORTAL_OUTLETS.includes(outletId) && Array.isArray(sameCriticOutlets)) {
+    for (const o of sameCriticOutlets) if (o && o !== outletId && !SYNDICATION_PORTAL_OUTLETS.includes(o)) out.add(o);
+  }
+  return [...out];
+}
+
+/**
+ * Outlet ids of the same critic's other files in a show directory
+ * (`<outlet>--<criticSlug>[-n].json`), for the portal rule above.
+ * @param {string[]} fileNames
+ * @param {string} criticName
+ */
+function sameCriticOutletsFrom(fileNames, criticName) {
+  const slug = criticFileSlug(criticName);
+  if (!slug) return [];
+  const re = new RegExp(`^(.+?)--${slug.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?:-\\d+)?\\.json$`);
+  const out = new Set();
+  for (const f of fileNames || []) { const m = re.exec(f); if (m) out.add(m[1]); }
   return [...out];
 }
 
@@ -217,6 +240,6 @@ function hasLiveSyndicationPrimary(showDir, primaries, criticName, { fileNames, 
 
 module.exports = {
   criticFileSlug, isPrimaryFileFor, isLiveSyndicationPrimary, hasLiveSyndicationPrimary,
-  KNOWN_SYNDICATION_PAIRS, PUBLISHING_GROUPS, getSyndicationConfig, isSecondaryOutlet,
+  KNOWN_SYNDICATION_PAIRS, PUBLISHING_GROUPS, SYNDICATION_PORTAL_OUTLETS, sameCriticOutletsFrom, getSyndicationConfig, isSecondaryOutlet,
   getSyndicationPrimaries, isCrossOutletSyndicationPair, isRenameCollisionPair,
 };
