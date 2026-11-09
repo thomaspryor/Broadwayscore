@@ -373,11 +373,10 @@ _STATUS_RE = re.compile(_VERDICT_PREFIX + r'(?:SAFE TO ARCHIVE|SAFE TO EXIT|KEEP
 _LEGACY_STATUS_RE = re.compile(_VERDICT_PREFIX + r'(?:NOT )?SAFE TO EXIT\b')
 # A promise of later action in closing prose (WAKEPROMISE, BRO-7183). First person only:
 # "the routine will continue" is a description, not this session's promise.
-_PROMISE_RE = re.compile(r"\b(?:I['\u2019]?ll|I will|I['\u2019]?m going to|I am going to)\s+(?:check back|check in|check on (?:it|that|this)"
-                         r"|come back|report back|follow up|keep an eye|keep watching|keep monitoring|monitor (?:it|this|that|the)\b"
-                         r"|continue (?:to (?:monitor|watch|check)|once|when|after)\b"
-                         r"|pick (?:it|this|that) (?:back )?up)|\bI['\u2019]?m (?:continuing|monitoring|watching (?:it|the|for))\b"
-                         r"|\bonce (?:it|that|this|the \w+) (?:finishes|lands|passes|completes|is done)\b[^.\n]{0,40}\bI['\u2019]?ll\b", re.I)
+try:  # one pattern source shared with scripts/lib/stall-stop-gate.js (BRO-7195)
+    _PROMISE_RE = re.compile(json.load(open(os.path.join(os.environ.get('VE_REPO_ROOT', ''), 'scripts', 'lib', 'wake-promise-patterns.json')))['promise'], re.I)
+except Exception:
+    _PROMISE_RE = re.compile(r'(?!)')  # fail-open: never matches
 _VERDICT_TOKEN_RE = re.compile(r'\b(?:(?:NOT )?SAFE TO (?:EXIT|ARCHIVE)|KEEP OPEN|ACTION NEEDED FROM YOU)\b')
 
 def _owner_must_act(text, strict=False):
