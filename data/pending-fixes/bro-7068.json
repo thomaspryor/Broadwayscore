@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7068",
   "planId": "6eb4b5a1-0813-42d0-8559-6372d9ca9ea8",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-09T07:18:50.169Z",
   "submitter": {
     "name": null,
@@ -124,5 +124,79 @@
         "description": "Rope Drop ran a 5-6 Sep 2026 limited run at The Other Palace Studio (theotherpalace.co.uk/rope-drop, theatreweekly.com listing); All That Dazzles review dated 2026-09-07"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-09T08:36:49.348Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted __test-bro730-same-url-32091/variety--brent-lang.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted __test-bro730-same-url-32091/variety--rebecca-rubin.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted __test-bro2749-west-end-68817-2026/hollywood-reporter--fixture-critic.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted __test-bro2749-west-end-97905-2026/hollywood-reporter--fixture-critic.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "private-lives-2025/boston-globe--don-aucoin.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "private-lives-2025/huffpost--michael-giltz.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "private-lives-2025/latimes--philip-brandes.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "private-lives-2025/nytimes--unknown.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "private-lives-2025/talkinbroadway--unknown.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "private-lives-2025/variety--frank-rizzo.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-apology-west-end-2027/london-box-office--stuart-king.json wrongProduction: null -> true"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for rope-drop-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for rope-drop-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for rope-drop-off-west-end-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
