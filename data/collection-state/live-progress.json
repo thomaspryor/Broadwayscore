@@ -1,19 +1,64 @@
 {
-  "updatedAt": "2026-11-09T11:50:13.871Z",
-  "processed": 3,
-  "failed": 3,
-  "successRate": "50.0%",
+  "updatedAt": "2026-11-09T11:56:45.696Z",
+  "processed": 6,
+  "failed": 12,
+  "successRate": "33.3%",
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 3,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingdog": 1,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 1
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 4,
+  "recentActivity": [
+    {
+      "t": "2026-11-09T11:49:14.496Z",
+      "event": "bb-session",
+      "session": "a887395b",
+      "url": "https://www.nytimes.com/2026/11/06/theater/the-unbelievers-222-a-ghost-story-rev"
+    },
+    {
+      "t": "2026-11-09T11:49:14.814Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-09T11:51:08.670Z",
+      "event": "bb-session",
+      "session": "2201c2e8",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655533"
+    },
+    {
+      "t": "2026-11-09T11:51:08.991Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-09T11:54:30.009Z",
+      "event": "bb-session",
+      "session": "b7c40fc6",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655534"
+    },
+    {
+      "t": "2026-11-09T11:54:30.298Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-09T11:56:15.679Z",
+      "event": "bb-session",
+      "session": "a0dc01ce",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655510"
+    },
+    {
+      "t": "2026-11-09T11:56:15.965Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ]
 }

@@ -2,21 +2,37 @@
   "processed": [
     "nero-off-west-end-2026/musical-theatre-review--angela-thomas.json",
     "nero-off-west-end-2026/south-london--unknown.json",
-    "dogstar-off-west-end-2026/theatreboard--unknown.json"
+    "jest-to-impress-off-broadway-2026/donyc--unknown.json",
+    "the-unbelievers-off-broadway-2026/nytimes--laura-collins-hughes.json",
+    "222-a-ghost-story-off-broadway-2026/consequence--alex-young.json",
+    "kelly-mccaughan-catholic-guilt-off-broadway-2026/broadway-baby--unknown.json"
   ],
   "failed": [
     "the-visitors-off-broadway-2026/bobs-theater-blog--unknown.json",
     "the-visitors-off-broadway-2026/boston-globe--unknown.json",
-    "msblackforpresident-off-broadway-2026/guardian--unknown.json"
+    "jest-to-impress-off-broadway-2026/chelmsfordtheatre--genre.json",
+    "medea-off-broadway-2026/express-uk--neil-norman.json",
+    "msblackforpresident-off-broadway-2026/guardian--unknown.json",
+    "222-a-ghost-story-off-broadway-2026/theatrely--kobi-kassal.json",
+    "222-a-ghost-story-off-broadway-2026/talkinbroadway--unknown.json",
+    "the-unbelievers-off-broadway-2026/bobs-theater-blog--unknown.json",
+    "the-verge-off-broadway-2026/talkinbroadway--unknown.json",
+    "parcel-from-america-off-broadway-2026/talkinbroadway--unknown.json",
+    "a-few-good-men-2026/variety--anna-tingley.json",
+    "a-few-good-men-2026/goldderby--ethan-alter.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "nero-off-west-end-2026/south-london--unknown.json",
-      "dogstar-off-west-end-2026/theatreboard--unknown.json"
+      "jest-to-impress-off-broadway-2026/donyc--unknown.json",
+      "222-a-ghost-story-off-broadway-2026/consequence--alex-young.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-unbelievers-off-broadway-2026/nytimes--laura-collins-hughes.json",
+      "the-unbelievers-off-broadway-2026/nytimes--laura-collins-hughes.json"
+    ],
     "directCookies": [],
     "scrapingdog": [
       "nero-off-west-end-2026/musical-theatre-review--angela-thomas.json"
@@ -24,9 +40,56 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "kelly-mccaughan-catholic-guilt-off-broadway-2026/broadway-baby--unknown.json"
+    ]
   },
   "startTime": "2026-11-09T11:44:21.676Z",
-  "lastProcessed": "msblackforpresident-off-broadway-2026/guardian--unknown.json",
-  "log": []
+  "lastProcessed": "kelly-mccaughan-catholic-guilt-off-broadway-2026/broadway-baby--unknown.json",
+  "log": [
+    {
+      "t": "2026-11-09T11:49:14.496Z",
+      "event": "bb-session",
+      "session": "a887395b",
+      "url": "https://www.nytimes.com/2026/11/06/theater/the-unbelievers-222-a-ghost-story-rev"
+    },
+    {
+      "t": "2026-11-09T11:49:14.814Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-09T11:51:08.670Z",
+      "event": "bb-session",
+      "session": "2201c2e8",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655533"
+    },
+    {
+      "t": "2026-11-09T11:51:08.991Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-09T11:54:30.009Z",
+      "event": "bb-session",
+      "session": "b7c40fc6",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655534"
+    },
+    {
+      "t": "2026-11-09T11:54:30.298Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-09T11:56:15.679Z",
+      "event": "bb-session",
+      "session": "a0dc01ce",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655510"
+    },
+    {
+      "t": "2026-11-09T11:56:15.965Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ]
 }
