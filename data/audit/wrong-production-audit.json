@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-09T15:31:56.174Z",
+  "timestamp": "2026-11-09T16:47:48.217Z",
   "stats": {
-    "totalReviews": 80853,
-    "alreadyFlagged": 22117,
+    "totalReviews": 80855,
+    "alreadyFlagged": 22119,
     "dateGuardCatches": 219,
-    "directorMismatch": 3582,
+    "directorMismatch": 3581,
     "tvFilmSignals": 2307,
     "londonSignals": 3655,
     "offBroadwaySignals": 754,
     "yearMismatch": 370,
-    "noPublishDate": 8394
+    "noPublishDate": 8392
   },
   "findings": [
     {
@@ -50301,19 +50301,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "paranormal-activity-regional-2026",
-      "file": "boston-globe--unknown.json",
-      "publishDate": "2026-10-07",
-      "url": "https://www.bostonglobe.com/2026/10/07/arts/paranormal-activity-stranger-things-horror-theater/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"felix barrett\" from paranormal-activity-west-end-2025"
         }
       ]
     },
