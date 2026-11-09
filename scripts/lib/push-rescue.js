@@ -38,7 +38,8 @@
  * dispatch replay-push-rescue.yml with main_wins=<branch>@<tip sha>
  * (PUSH_RESCUE_MAIN_WINS, comma-separated). The tip sha binds the approval to
  * the branch content that was reviewed; a branch that moved is left alone.
- * Each overridden path logs both blob shas before prune deletes the branch.
+ * Each overridden path logs both blob shas, and prune saves the branch tip as
+ * tag push-rescue-archive/<branch suffix> before deleting it (no tag, no delete).
  */
 
 const fs = require('fs');
@@ -208,6 +209,22 @@ function parseMainWins(str) {
   return out;
 }
 
+/**
+ * Which listed branches main_wins applies to: approved tip must equal the live tip.
+ * @returns {{apply: Set<string>, notes: {level: string, msg: string}[]}}
+ */
+function mainWinsFor(refs, mainWins) {
+  const apply = new Set();
+  const notes = [];
+  for (const [ref, tip] of mainWins) {
+    const live = refs.find((e) => e.ref === ref);
+    if (!live) notes.push({ level: 'warning', msg: `main_wins names ${ref}, which no longer exists` });
+    else if (live.sha !== tip) notes.push({ level: 'error', msg: `main_wins for ${ref} was approved at ${tip} but the branch is at ${live.sha}; not applied` });
+    else { apply.add(ref); notes.push({ level: 'notice', msg: `main_wins applies to ${ref} at ${tip}: main's copy wins every conflicting path` }); }
+  }
+  return { apply, notes };
+}
+
 /** True when every reason a kept branch needs a person is a main conflict main_wins can settle. */
 function onlyMainConflicts(r) {
   return (r.conflicts || []).length > 0 && r.conflicts.every((c) => c.why === MAIN_CONFLICT_WHY) && !(r.dropped || []).length;
@@ -295,21 +312,21 @@ function replayOne({ sha, ref, info }, claimed, mainWins = false) {
 
 function cliReplay(args) {
   const manifestPath = (args.find((a) => a.startsWith('--manifest=')) || '').slice('--manifest='.length);
-  const mainWins = parseMainWins(process.env.PUSH_RESCUE_MAIN_WINS);
+  let mainWins;
+  try { mainWins = parseMainWins(process.env.PUSH_RESCUE_MAIN_WINS); } catch (e) {
+    console.log(`::error::${annotate(e.message)}`);
+    process.exit(2);
+  }
   const refs = listRescueRefs();
   const manifest = { refs: [], failed: [] };
-  for (const [ref, tip] of mainWins) {
-    const live = refs.find((e) => e.ref === ref);
-    if (!live) console.log(`::warning::push-rescue: main_wins names ${ref}, which no longer exists`);
-    else if (live.sha !== tip) console.log(`::error::push-rescue: main_wins for ${ref} was approved at ${tip} but the branch is at ${live.sha}; not applied`);
-    else console.log(`push-rescue: main_wins applies to ${ref} at ${tip}: main's copy wins every conflicting path`);
-  }
+  const mw = mainWinsFor(refs, mainWins);
+  for (const n of mw.notes) console.log(`::${n.level}::push-rescue: ${annotate(n.msg)}`);
   const claimed = new Map();
   if (refs.length === 0) console.log('push-rescue: no rescue branches');
   for (const entry of refs) {
     if (!entry.info) { console.log(`::warning::push-rescue: ignoring malformed branch ${entry.ref}`); continue; }
     try {
-      manifest.refs.push(replayOne(entry, claimed, mainWins.get(entry.ref) === entry.sha));
+      manifest.refs.push(replayOne(entry, claimed, mw.apply.has(entry.ref)));
     } catch (e) {
       // One bad branch must not block the others; the job fails at the end.
       manifest.failed.push(entry.ref);
@@ -356,6 +373,16 @@ function cliPrune(args) {
   const ok = prunable(manifest, (p) => blobAt('origin/main', p));
   for (const r of ok) {
     // Delete only the tip this replay read (a branch that moved since is kept for the next run).
+    // A branch main_wins overrode is the only copy of those files: tag its tip first.
+    if ((r.skipped || []).some((x) => x.why === MAIN_WINS_WHY)) {
+      const tag = `refs/tags/push-rescue-archive/${r.ref.slice(RESCUE_PREFIX.length)}`;
+      const t = git(['push', 'origin', `${r.tip}:${tag}`], { timeout: netTimeoutMs() });
+      if (t.status !== 0 && !/already exists/.test(t.stderr || '')) {
+        console.log(`::warning::push-rescue: kept ${r.ref}: could not archive it as ${tag} (${annotate((t.stderr || '').trim().slice(0, 200))})`);
+        continue;
+      }
+      console.log(`push-rescue: archived ${r.ref} at ${r.tip} as ${tag}`);
+    }
     const lease = r.tip ? [`--force-with-lease=refs/heads/${r.ref}:${r.tip}`] : [];
     const d = git(['push', ...lease, 'origin', `:refs/heads/${r.ref}`], { timeout: netTimeoutMs() });
     if (d.status !== 0) {
@@ -377,13 +404,13 @@ function cliPrune(args) {
   if (human.length) {
     console.log(`::error::push-rescue: ${human.length} rescue branch(es) need a person: ${human.map((r) => r.ref).join(', ')}`);
     for (const r of human.filter(onlyMainConflicts)) {
-      console.log(`push-rescue: if the owner picks main's copy for ${r.ref}, dispatch replay-push-rescue.yml with main_wins=${r.ref}@${r.tip}`);
+      console.log(`::notice::push-rescue: if the owner picks main's copy for ${r.ref}, dispatch replay-push-rescue.yml with main_wins=${r.ref}@${r.tip}`);
     }
     process.exitCode = 1;
   }
 }
 
-module.exports = { RESCUE_PREFIX, isRecoverablePath, parseNameStatusZ, recoverableAdds, rescueRefName, parseRescueRef, replayPlan, prunable, mainSupersedesRescue, parseMainWins, onlyMainConflicts, MAIN_CONFLICT_WHY };
+module.exports = { RESCUE_PREFIX, isRecoverablePath, parseNameStatusZ, recoverableAdds, rescueRefName, parseRescueRef, replayPlan, prunable, mainSupersedesRescue, parseMainWins, mainWinsFor, onlyMainConflicts, MAIN_CONFLICT_WHY };
 
 if (require.main === module) {
   const [cmd, ...rest] = process.argv.slice(2);

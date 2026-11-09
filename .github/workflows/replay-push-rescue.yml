@@ -8,6 +8,9 @@ name: Replay Push Rescue
 # on main. Before this, a lost push of a new review was a digest line and the
 # review stayed off the site (opening-night-poller run 41013824281).
 # The first step is one ls-remote; without a rescue branch the run stops there.
+# A branch kept for a conflict with main fails every hour; once the owner picks
+# main's copy, dispatch with main_wins=<branch>@<tip sha> (the failing run prints
+# it). Prune then archives the tip as tag push-rescue-archive/... and deletes it.
 
 on:
   schedule:
