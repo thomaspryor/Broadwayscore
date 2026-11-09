@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7080-announced-old-reviews",
   "planId": "79010fed-d548-4c52-9ed6-ba9e49573aaa",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-11-09T10:59:40.288Z",
   "submitter": {
     "name": null,
@@ -68,5 +68,39 @@
         "description": "the-apology-west-end-2027/london-box-office--stuart-king.json: wrongShow"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-09T12:02:35.862Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-apology-west-end-2027/london-box-office--stuart-king.json wrongShow: null -> true"
+    }
+  ],
+  "executedIn": "ci"
 }
