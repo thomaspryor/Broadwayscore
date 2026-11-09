@@ -762,7 +762,7 @@ function Inner({
       {/* Action cluster — user buttons + tickets share ONE space-y-2 group so
           every gap in the button stack is identical (the old split put 16px
           above Get Tickets but 8px below it — owner report, 2026-07-17). */}
-      <div className="space-y-2">
+      <div className="lg:space-y-2 max-lg:flex max-lg:flex-col max-lg:gap-2" data-testid="hero-action-cluster">
       {/* Action buttons row — same geometry as the ticket buttons below
           (h-10 / rounded-lg / horizontal icon+label); a taller rounder shape
           here read as mismatched (owner report, 2026-07-17). */}
@@ -966,6 +966,10 @@ function Inner({
           on mobile it pushed content too far down. Desktop keeps it next
           to the Get Tickets CTA where there's horizontal room. Full info
           for both viewports lives in the Discount Tickets card below. */}
+      {/* Below lg the ticket CTA leads the cluster, above the rate/list buttons
+          (owner decision 2026-11-09: tickets are the revenue button). At lg+ the
+          order and spacing are unchanged. */}
+      <div className="order-first max-lg:flex max-lg:flex-col max-lg:gap-2 lg:order-none lg:space-y-2" data-testid="hero-ticket-cta-slot">
       <ShowPageTicketCTA
         showName={show.title}
         showId={show.id}
@@ -986,6 +990,7 @@ function Inner({
         {/* Keep the standalone lottery pill when no purchase link is available. */}
         {!isClosed && !(sortedTicketLinks.length > 0 || Boolean(show.officialUrl)) && lotteryPill('inline-flex self-start')}
       </ShowPageTicketCTA>
+      </div>{/* /ticket cta slot */}
       </div>{/* /action cluster */}
     </div>
   );
