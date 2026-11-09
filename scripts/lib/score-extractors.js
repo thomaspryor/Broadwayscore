@@ -914,7 +914,41 @@ function wosStarScope(html) {
  *          The Independent, The Times, Financial Times, Daily Mail, The Arts Desk,
  *          Musical Theatre Review, London Theatre, All That Dazzles, etc.
  */
-function extractUKStarRating(html, text) {
+const UNICODE_STAR_GROUP_RE = /(?:[★☆]\s*){2,5}/g;
+
+function hasMultipleStarGroups(text) {
+  return typeof text === 'string' && (text.match(UNICODE_STAR_GROUP_RE) || []).length >= 2;
+}
+
+/** The star group whose lead-in (text since the previous group) names showTitle; null unless exactly one. */
+function pickUnicodeStarsForShow(text, showTitle) {
+  if (!showTitle || !hasMultipleStarGroups(text)) return null;
+  const { normalizeShowLabel } = require('./known-show-titles');
+  // "Beaches, A New Musical" is named "Beaches" in prose: try the pre-subtitle head too.
+  const wants = [...new Set([showTitle, String(showTitle).split(/[,:\u2013\u2014-]\s/)[0]].map(normalizeShowLabel).filter(Boolean))];
+  if (!wants.length) return null;
+  const groups = [...text.matchAll(UNICODE_STAR_GROUP_RE)];
+  const segOf = (m, i) => text.slice(i > 0 ? groups[i - 1].index + groups[i - 1][0].length : 0, m.index);
+  // 1) "Title (★★☆☆☆)" style: exactly one group whose immediate lead-in names the show.
+  const named = groups.filter((m, i) => {
+    const nb = normalizeShowLabel(segOf(m, i).slice(-80));
+    return wants.some((w) => nb.includes(w));
+  });
+  if (named.length === 1) return [named[0][0], named[0][0]];
+  if (named.length > 1) return null;
+  // 2) "review text ... ★★★★★ Venue, dates" style: the verdict ends its own section,
+  //    so the section that mentions the show most (unique maximum) is this show's.
+  const counts = groups.map((m, i) => {
+    const nb = normalizeShowLabel(segOf(m, i));
+    return Math.max(...wants.map((w) => nb.split(w).length - 1));
+  });
+  const best = Math.max(...counts);
+  if (best < 2 || counts.filter((c) => c === best).length !== 1) return null;
+  const g = groups[counts.indexOf(best)][0];
+  return [g, g];
+}
+
+function extractUKStarRating(html, text, showTitle) {
   html = stripStyleStarGlyphs(html || ''); // BRO-305: icon CSS stars are not a rating
   // 1. Structured data: JSON-LD ("ratingValue": 5) or meta/itemprop ("ratingValue" content="5")
   const jsonLdMatch = html.match(/"ratingValue"\s*:\s*"?(\d+(?:\.\d+)?)"?/) ||
@@ -1098,7 +1132,11 @@ function extractUKStarRating(html, text) {
   }
 
   // 5. Unicode stars in text or HTML (consecutive or space-separated)
-  const unicodeMatch = text.match(/((?:[★☆]\s*){2,5})/) || html.match(/((?:[★☆]\s*){2,5})/);
+  // BRO-7221: a combined multi-show column (The Times "State of Broadway") prints
+  // one "Title (★★☆☆☆)" group per show. Taking the first group gave Beaches
+  // Schmigadoon!'s 5/5. With 2+ groups and a known show, take only the group
+  // whose lead-in names this show, else abstain from this step.
+  const unicodeMatch = pickUnicodeStarsForShow(text, showTitle) || (hasMultipleStarGroups(text) && showTitle ? null : (text.match(/((?:[★☆]\s*){2,5})/) || html.match(/((?:[★☆]\s*){2,5})/)));
   if (unicodeMatch) {
     const stars = unicodeMatch[1].replace(/\s/g, '');
     const filled = (stars.match(/★/g) || []).length;
