@@ -125,3 +125,16 @@ test('an earlier subject for the same issue is reused only while it still checks
   const moved = { ...facts, lines: facts.lines.map(l => l.replace('Critic Score 83', 'Critic Score 82')) };
   assert.equal(reusable(prev, moved), null);
 });
+
+test('short form of a long title counts as that show, not as other shows inside it (live run, 2026-11-09)', () => {
+  const f = {
+    edition: 'broadway',
+    lines: ['Closing soon: School Girls; Or, The African Mean Girls Play, Broadway. Final performance Sunday, Nov 15. Critic Score 84 (Critical Gold) from 34 reviews.'],
+    titles: [{ id: 's', slug: 's', title: 'School Girls; Or, The African Mean Girls Play' }],
+    knownTitles: ['School Girls; Or, The African Mean Girls Play', 'Girls', 'Mean Girls', 'Hamilton'],
+  };
+  const p = buildPool(f);
+  const c = { angle: 'last chance', subject: 'School Girls closes Sunday, Nov 15', preheader: 'Critics gave it Critical Gold at 84 from 34 reviews.', lede: 'School Girls (84) ends its Broadway run Sunday, Nov 15, and critics loved it all the way.' };
+  assert.deepEqual(checkCandidate(c, p), []);
+  assert.match(checkCandidate({ ...c, lede: c.lede + ' Hamilton plays on.' }, p).join(), /Hamilton/);
+});

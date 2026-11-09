@@ -101,11 +101,18 @@ const firstWords = (t, n = 2) => foldDiacritics(String(t || '')).toLowerCase().r
  *   lines are complete, true sentences built by generate.mjs from data the
  *   email renders; titles are the shows those lines name.
  */
+/** A title plus its short forms: "School Girls; Or, The African Mean Girls Play" -> also "School Girls". */
+export function titleForms(title) {
+  const t = String(title || '').trim();
+  const short = t.split(/\s*[:;(]\s*|\s+-\s+/)[0].trim();
+  return short && short !== t && short.length >= 4 ? [t, short] : [t];
+}
+
 export function buildPool(facts) {
   const sheet = facts.lines.map(l => `- ${l}`).join('\n');
-  const titleNames = facts.titles.map(t => t.title);
+  const titleNames = facts.titles.flatMap(t => titleForms(t.title));
   // Show lines only: the coverage-dates line would vouch for any weekday.
-  const showLines = facts.lines.filter(l => facts.titles.some(t => mentions(l, t.title))).join('\n');
+  const showLines = facts.lines.filter(l => titleNames.some(t => mentions(l, t))).join('\n');
   const bare = stripTitles(sheet, titleNames);
   return {
     sheet,
@@ -115,7 +122,11 @@ export function buildPool(facts) {
     titles: facts.titles,
     // Every show title the site knows (generate.mjs passes them): naming one
     // that is not in the facts rejects the candidate.
-    otherTitles: (facts.knownTitles || []).filter(t => t && t.length >= 4 && !titleNames.includes(t)),
+    // A known title that sits inside one of this email's titles ("Mean Girls"
+    // in "School Girls; Or, The African Mean Girls Play") is not another show.
+    otherTitles: (facts.knownTitles || []).filter(t => t && t.length >= 4 && !titleNames.includes(t)
+      && !facts.titles.some(x => mentions(x.title, t))),
+    titleNames,
     edition: facts.edition,
   };
 }
@@ -131,13 +142,13 @@ export function checkCandidate(c, pool, recent = []) {
   for (const [field, text] of [['subject', subject], ['preheader', pre], ['lede', lede]]) {
     // Titles out first: a dash, "!" or number inside a title ("Iphigenie en
     // Tauride - English National Opera", "2:22") is not our prose.
-    const body = stripTitles(text, pool.titles.map(t => t.title));
+    const body = stripTitles(text, pool.titleNames || pool.titles.map(t => t.title));
     for (const [re, what] of BANNED) if (re.test(body)) p.push(`${field} contains ${what}`);
     const stray = [...new Set(numbersIn(body).filter(n => !pool.numbers.has(n)))];
     if (stray.length) p.push(`${field} has numbers that are not in the facts: ${stray.join(', ')}`);
     const badDates = datesIn(body).filter(d => !pool.dates.has(d));
     if (badDates.length) p.push(`${field} names a date the facts do not`);
-    const others = (pool.otherTitles || []).filter(t => mentions(text, t));
+    const others = (pool.otherTitles || []).filter(t => mentions(body, t));
     if (others.length) p.push(`${field} names a show that is not in this email: ${others.slice(0, 3).join(', ')}`);
     const days = weekdaysIn(body).filter(d => !pool.weekdays.has(d));
     if (days.length) p.push(`${field} names a day the facts do not: ${days.join(', ')}`);
@@ -235,7 +246,7 @@ export function aiSubjectDisabledReason(env = process.env) {
 
 /** Shows (from the pool) a text names, for the lede-in-body gate. */
 export function showsNamed(text, pool) {
-  return pool.titles.filter(t => mentions(text, t.title)).map(({ id, slug, title }) => ({ id, slug, title }));
+  return pool.titles.filter(t => titleForms(t.title).some(f => mentions(text, f))).map(({ id, slug, title }) => ({ id, slug, title }));
 }
 
 /**
