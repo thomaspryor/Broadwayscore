@@ -12,7 +12,16 @@
  * it; nothing is guessed from the outlet, the url or the show.
  */
 
-const { extractBylineFromText, printedPerson, PRINTED_NAME } = require('./byline-from-text');
+const { extractBylineFromText } = require('./byline-from-text');
+
+// A printed person name: 2 to 4 capitalised words, matched case-sensitively.
+const PRINTED_NAME = String.raw`\p{Lu}[\p{L}'’-]*\.?(?:\s+\p{Lu}[\p{L}'’-]*\.?){1,3}`;
+const NOT_PERSON_RE = /\b(?:theatre|theater|review|reviews|reviewer|photo|photos|photography|picture|pictures|credit|more|updated|published|posted|rating|stars?|share|admin|staff|team|editor|news|magazine|london|the|vic|night|hall|house|street|royal|court|palace|park|centre|center|studio|arts|festival|show|opening|press|preview|gala|west|end)\b/i;
+function printedPerson(raw) {
+  const name = String(raw || '').replace(/\s+/g, ' ').trim().replace(/[.,;:]+$/, '');
+  if (!name || NOT_PERSON_RE.test(name)) return null;
+  return name;
+}
 const { isJunkCriticName } = require('./byline-recovery');
 
 // Values that are labels, not people. isJunkCriticName covers CMS handles and
@@ -63,7 +72,11 @@ function extractMarkAspenByline(text) {
     const three = `${two} ${m[3]}`;
     if (String(text).replace(/\s+/g, ' ').split(three).length > 2) return printedPerson(three);
   }
-  return /['’]s$/.test(m[2]) ? null : printedPerson(two);
+  if (/['’]s$/.test(m[2])) return null;
+  // Two capitalised words after "Review by" may be a name plus a sentence start ("Claire Tosca has"):
+  // only trust it when the same two words are printed again (the closing credit).
+  if (String(text).replace(/\s+/g, ' ').split(two).length < 3) return null;
+  return printedPerson(two);
 }
 
 // First Night Magazine: the credit closes the article, "... following link . By Guillermo Nazara Share this: ..."
@@ -72,7 +85,7 @@ function extractFirstNightByline(text) {
   const m = new RegExp(String.raw`\bBy\s+(${PRINTED_NAME}?)\s+Share this\b`, 'u').exec(tail);
   if (!m) return null;
   // "Photos By Marc Brenner Share this:" is a photo credit, not the critic.
-  if (/\b(?:photos?|photography|photographs?|images?|pictures?|credits?|illustrations?|design|designed)\s*(?:\w+\s+)?$/i.test(tail.slice(Math.max(0, m.index - 30), m.index))) return null;
+  if (/\b(?:written|directed|music|lyrics|book|choreograph\w*|adapted|devised|photos?|photography|photographs?|images?|pictures?|credits?|illustrations?|design(?:ed)?|costumes?|lighting|sound|produced|set)\s*(?:\w+\s+)?$/i.test(tail.slice(Math.max(0, m.index - 30), m.index))) return null;
   return printedPerson(m[1]);
 }
 
@@ -88,7 +101,21 @@ function extractAYoungishByline(text) {
   return m ? printedPerson(m[1]) : null;
 }
 
+// Plays International: "<Show> at <Venue> Jeremy Malies in central London ★★☆☆☆ 8 November 2026".
+// A place word must follow in/on and the rating or dateline must follow the place, so an
+// actor-in-show phrase ("Mark Brown in Waiting for Godot 3 March 2026") never qualifies.
+const PI_PLACE = String.raw`(?:London|Sussex|Clydeside|England|Scotland|Wales|Ireland|Yorkshire|Kent|Surrey|Essex|Bath|Bristol|Manchester|Edinburgh|Glasgow|Cornwall|Devon|Norfolk|Suffolk|Midlands|Coast|Bank|End|Country|Isles|Cumbria|Lancashire|Oxfordshire|Hampshire)`;
+const PI_BYLINE_ANY_RE = new RegExp(String.raw`(\p{Lu}[\p{L}'’-]+(?:\s+\p{Lu}[\p{L}'’-]+){1,2})\s+(?:in|on)\s+(?:the\s+)?(?:[\p{L}'’-]+\s+){0,2}?${PI_PLACE}\s*(?:[★☆*]|\d{1,2}\s+${MONTH}\s+\d{4})`, 'u');
+function extractPlaysInternationalAny(text) {
+  const head = String(text || '').slice(0, 300).replace(/\s+/g, ' ');
+  const m = PI_BYLINE_ANY_RE.exec(head);
+  if (!m) return null;
+  const words = m[1].split(' ');
+  return printedPerson(words.slice(-2).join(' '));
+}
+
 const OUTLET_HEAD_EXTRACTORS = {
+  'plays-international': extractPlaysInternationalAny,
   markaspen: extractMarkAspenByline,
   firstnightmagazine: extractFirstNightByline,
   'a-youngish-perspective': extractAYoungishByline,

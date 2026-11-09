@@ -10,7 +10,6 @@
   "plan": {
     "summary": "BRO-7165: name the critic the stored text prints (Plays International, First Night Magazine, A Youngish Perspective, markaspen) instead of Unknown (part 1 of 2)",
     "steps": [
-      "BRO-7165: byline printed in the stored text (Simon Thomas)",
       "BRO-7165: byline printed in the stored text (Jeremy Malies)",
       "BRO-7165: byline printed in the stored text (Maryam Philpott)",
       "BRO-7165: byline printed in the stored text (Guillermo Nazara)",
@@ -38,14 +37,6 @@
     ],
     "riskLevel": "low",
     "actions": [
-      {
-        "type": "review-field-edit",
-        "file": "1984-royal-bath-regional-2024/plays-international--unknown.json",
-        "field": "criticName",
-        "oldValue": "Ri-admin",
-        "newValue": "Simon Thomas",
-        "description": "BRO-7165: byline printed in the stored text (Simon Thomas)"
-      },
       {
         "type": "review-field-edit",
         "file": "a-midsummer-nights-dream-chichester-festival-regional-2026/plays-international--unknown.json",

@@ -70,3 +70,15 @@ test('BRO-7165 review: refuses sentence words, photo credits', async () => {
   assert.equal(extractFirstNightByline('Great show. Photos By Marc Brenner Share this: x'), null);
   assert.equal((extractFirstNightByline('Great show. By Guillermo Nazara Share this: x') || {}), 'Guillermo Nazara');
 });
+
+test('BRO-7165 ship-check: negative cases stay unnamed', async () => {
+  const { extractCriticFromFullText: x } = (await import('node:module')).createRequire(import.meta.url)('../../scripts/lib/critic-byline-backfill.js');
+  assert.equal(x('firstnightmagazine', 'Cast list. Written By Torben Betts Share this:'), null);
+  assert.equal(x('firstnightmagazine', 'Cast list. Directed By Trevor Nunn Share this:'), null);
+  assert.equal(x('a-youngish-perspective', 'at the Young Vic June 1, 2026 review'), null);
+  assert.equal(x('a-youngish-perspective', 'Opening Night March 5, 2026 review'), null);
+  assert.equal(x('markaspen', 'Tosca Review by Claire Tosca has been staged'), null);
+  assert.equal(x('plays-international', 'Waiting for Godot Mark Brown in Waiting for Godot 3 March 2026 great'), null);
+  assert.equal(x('plays-international', 'Speculations at Marylebone Theatre Jeremy Malies in central London ★★☆☆☆ 8 November 2026 text').name, 'Jeremy Malies');
+  assert.equal(x('plays-international', 'X at Y Mark Brown on Clydeside ★★★★☆ 3 May 2026 text').name, 'Mark Brown');
+});
