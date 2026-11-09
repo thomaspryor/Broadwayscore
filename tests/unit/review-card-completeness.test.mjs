@@ -178,10 +178,11 @@ test('a show-listing footer is never a pull quote (Cititour on Wanted, The Count
 });
 
 test('every registered outlet has a display name the lane accepts (no id-shaped displayName)', () => {
-  // 12 outlets (oklahoman, masslive, 3views, ...) carried their own id as displayName, so the lane held every review
+  // 11 outlets (oklahoman, masslive, 3views, ...) carried their own id as displayName, so the lane held every review
   // from them as "no outlet" and the site showed the lowercase id. Sentinel ids (junk parses) are excluded on purpose.
   const { isSentinelOutletId } = require('../../scripts/lib/review-normalization.js');
   const outlets = require('../../data/outlet-registry.json').outlets;
-  const bad = Object.keys(outlets).filter((id) => !isSentinelOutletId(id) && !card.outletDisplayName(id));
+  // displayNameReviewed marks a verified lowercase brand ("letterboxd", BRO-6991): a human chose it, so it stays.
+  const bad = Object.keys(outlets).filter((id) => !isSentinelOutletId(id) && !outlets[id].displayNameReviewed && !card.outletDisplayName(id));
   assert.deepEqual(bad, []);
 });
