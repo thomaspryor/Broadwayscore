@@ -15,7 +15,7 @@
  * Mac-held cards (BRO-7195, hourly from launchd com.broadwayscore.mac-stall-sweep):
  *   --mac-stall-sweep [--dry-run] [--threshold-hours=12]   In Progress cards idle 12h+ claimed by a local
  *       session on THIS machine whose session is not running, whose transcript has not changed in 12h and
- *       whose card has no dispatch-ledger row in 24h go back to Todo (Backlog after repeated reclaims).
+ *       whose card has no dispatch-ledger row in 26h go back to Todo (Backlog after repeated reclaims).
  *       Rules: localStallAction in scripts/lib/stalled-session-sweep.js. Same kill switch.
  *
  * Fails closed: if the land/ refs can't be read, it exits 1 before any write.
@@ -121,13 +121,26 @@ function localSessionView() {
   const lastLedgerMs = (card, id) => {
     let last = null;
     for (const r of ledgerRows) {
-      if (r.taskId !== `linear:${card}` && r.sessionId !== id) continue;
+      if (r.taskId !== `linear:${card}` && String(r.sessionId || '').toLowerCase() !== String(id).toLowerCase()) continue;
       const t = Date.parse(r.ts);
       if (Number.isFinite(t) && (last === null || t > last)) last = t;
     }
     return last;
   };
-  return { hostNames, liveIds: readLiveSessionIds(), psText, transcriptMtimeMs, lastLedgerMs, ledgerRead: ledgerRows.length > 0 };
+  // readLiveSessionIds skips a torn row silently; one unreadable row could be the live session, so refuse.
+  const registry = path.join(os.homedir(), '.claude', 'sessions');
+  let registryComplete = true;
+  const liveCwds = [];
+  try {
+    for (const n of fs.readdirSync(registry).filter((x) => x.endsWith('.json'))) {
+      try {
+        const row = JSON.parse(fs.readFileSync(path.join(registry, n), 'utf8'));
+        if (typeof row.sessionId !== 'string') registryComplete = false;
+        else if (row.cwd) { try { process.kill(row.pid, 0); liveCwds.push(String(row.cwd)); } catch (e) { if (e.code === 'EPERM') liveCwds.push(String(row.cwd)); } }
+      } catch { registryComplete = false; }
+    }
+  } catch { registryComplete = false; }
+  return { hostNames, liveIds: registryComplete ? readLiveSessionIds() : null, liveCwds, psText, transcriptMtimeMs, lastLedgerMs, ledgerRead: ledgerRows.length > 0 };
 }
 
 async function macStallSweep() {
@@ -157,7 +170,7 @@ async function macStallSweep() {
     try {
       const { issue, named, entry } = await stallEntry(linear, card, refs, nowMs, idleMs, true);
       if (entry.action !== 'check-local') { results.push({ card, action: 'skip', reason: entry.reason }); continue; }
-      const d = S.localStallAction({ entry, hostNames: view.hostNames, liveIds: view.liveIds, psText: view.psText,
+      const d = S.localStallAction({ entry, hostNames: view.hostNames, liveIds: view.liveIds, liveCwds: view.liveCwds, psText: view.psText,
         transcriptMtimeMs: view.transcriptMtimeMs(entry.sessionId), lastLedgerMs: view.lastLedgerMs(card, entry.sessionId), nowMs, idleMs });
       if (d.action === 'skip') { results.push({ card, action: 'skip', sessionId: entry.sessionId, reason: d.reason }); continue; }
       if (named.length) {
@@ -167,6 +180,12 @@ async function macStallSweep() {
       if (requeues >= S.MAX_REQUEUES_PER_RUN) { results.push({ card, action: 'skip', reason: 'requeue cap for this run' }); continue; }
       requeues += 1;
       if (!dry) {
+        // Re-read right before writing: the hourly reclaim or a dispatcher may have moved or re-claimed it.
+        const fresh = await stallEntry(linear, card, refs, Date.now(), idleMs, true);
+        if (fresh.entry.action !== 'check-local' || fresh.entry.sessionId !== entry.sessionId) {
+          results.push({ card, action: 'skip', reason: `changed before the write (${fresh.entry.reason || 'new claim'})` });
+          continue;
+        }
         // Move first, then comment: the comment carries the reclaim marker (same order as main()).
         await linear.updateIssue(issue.id, { stateId: stateId(entry.requeueTo) });
         await linear.createComment(issue.id, S.buildStallRequeueComment(entry, d.reason, nowMs));
@@ -176,6 +195,7 @@ async function macStallSweep() {
       results.push({ card, action: 'error', reason: String(err.message).split('\n')[0] });
     }
   }
+  if (results.some((r) => r.action === 'error')) process.exitCode = 1;
   const tally = {};
   for (const r of results) tally[r.action] = (tally[r.action] || 0) + 1;
   console.error(`mac-stall-sweep: ${candidates.length} In Progress cards idle ${Math.round(idleMs / 3600000)}h+; ${JSON.stringify(tally)}${dry ? ' (dry-run: nothing written)' : ''}`);
@@ -267,7 +287,13 @@ async function stallAct() {
   console.log(JSON.stringify(results, null, 1));
 }
 
+// Unknown flags are refused: before BRO-7195 an unrecognised mode fell through to the ordinary 48h
+// reclaim, so a reverted mode left on a launchd job would have moved every abandoned card.
+const KNOWN_FLAGS = /^--(?:dry-run|max=\d+|stalled-sessions|stall-act|from-json(?:=.*)?|threshold-hours(?:=.*)?|mac-stall-sweep|help)$|^-h$/;
 async function main() {
+  const args = process.argv.slice(2);
+  const unknown = args.filter((a, i) => a.startsWith('-') && !KNOWN_FLAGS.test(a) && !(i > 0 && /^--(?:from-json|threshold-hours)$/.test(args[i - 1])));
+  if (unknown.length) { console.error(`unknown flag(s): ${unknown.join(' ')}\n${USAGE}`); process.exit(2); }
   if (process.argv.includes('--stalled-sessions') || process.argv.includes('--stall-act') || process.argv.includes('--mac-stall-sweep')) {
     if (/^(1|true)$/i.test(process.env.STALL_SWEEP_DISABLE || '')) { console.error('STALL_SWEEP_DISABLE set: stalled-session sweep disabled'); console.log('[]'); return; }
     if (!process.env.LINEAR_API_KEY) throw new Error('LINEAR_API_KEY not set');

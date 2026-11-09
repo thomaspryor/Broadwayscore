@@ -11,8 +11,8 @@
            node scripts/linear-reclaim-abandoned.js mac-stall-sweep mode
 
          An In Progress card idle 12h+ whose claiming local session is not running, whose
-         transcript has not changed in 12h, and whose card has no dispatch-ledger row in 24h
-         (bsc-reconcile may still resume it) goes back to Todo (Backlog after repeated reclaims),
+         transcript has not changed in 12h, and whose card has no dispatch-ledger row in 26h
+         (bsc-reconcile may still resume it within its 24h lookback) goes back to Todo (Backlog after repeated reclaims),
          with the RECLAIM marker comment. At most 5 per run. Rules: localStallAction in
          scripts/lib/stalled-session-sweep.js.
 

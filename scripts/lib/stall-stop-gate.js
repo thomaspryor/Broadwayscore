@@ -9,9 +9,10 @@
  * Stop list, and none of those had the check. ~/.claude/hooks/stall-stop-gate.sh runs this file with
  * `--stop-hook` from that list, so every Mac session gets it.
  *
- * Inside a Broadwayscore checkout the repo hook owns WAKEPROMISE (advisory there unless
- * PROMISE_GATE_MODE=block), so this gate steps aside: two copies would block twice, or turn the repo's
- * advisory check into a hard block by the back door.
+ * It runs in Broadwayscore checkouts too: on the Mac the repo copy of verify-edits.sh exits at its first
+ * lines whenever ~/.claude/hooks/verify-edits.sh exists (it always does here), and that global copy has
+ * no WAKEPROMISE, so without this gate Mac Broadwayscore sessions (headless job workers included) had no
+ * check at all. Cloud has no ~/.claude/hooks, so the two never both run.
  *
  * Decision (pure, wakePromiseDecision): block when the final closing matches the shared pattern
  * (wake-promise-patterns.json, also read by the repo hook), it is not a question to the owner, it holds
@@ -40,6 +41,7 @@ const YOU_NEED_RE = /^\W*You need to:?\s*(.*)$/gim;
 const NOTHING_RE = /^\W*(?:nothing|n\/?a|none|no(?: action)?\b|$)/i;
 const DEFAULT_BG_TIMEOUT_MS = 2 * 60 * 60 * 1000; // a background task with no notice after 2h is not coming back
 const WAKE_SLACK_MS = 10 * 60 * 1000;
+const AGENT_MAX_MS = 6 * 60 * 60 * 1000; // a background agent silent 6h is not coming back either
 const BG_TOOLS = new Set(['Bash', 'Monitor', 'Agent', 'Task', 'Workflow']);
 
 function textOf(content) {
@@ -144,10 +146,12 @@ function liveWork({ tools, notified = new Set(), stopped = new Set(), nowMs = Da
     if (!background) continue;
     if (t.result === undefined) { live.push(`${t.name} (no result yet)`); continue; }
     // A foreground-completed agent returns its report inline.
-    if (isAgent && /\bsubagent_tokens\b|<usage>|\[Subagent hand-back\]/.test(t.result)) continue;
+    // Only an explicit async launch receipt makes an agent live (a long foreground report is truncated, so
+    // the absence of its usage footer proves nothing).
+    if (isAgent && !/\b(?:launched successfully|working in the background|running in the background|launched in the background)\b|^Async agent launched/i.test(t.result)) continue;
     if (notified.has(t.id) || (t.taskId && (notified.has(t.taskId) || stopped.has(t.taskId)))) continue;
     const budget = Number(t.input.timeout) > 0 ? Number(t.input.timeout) : DEFAULT_BG_TIMEOUT_MS;
-    if (t.at && nowMs - t.at > Math.max(budget, DEFAULT_BG_TIMEOUT_MS) && !isAgent) continue; // past its timeout
+    if (t.at && nowMs - t.at > (isAgent ? AGENT_MAX_MS : Math.max(budget, DEFAULT_BG_TIMEOUT_MS))) continue; // past its timeout
     live.push(`${t.name} ${t.taskId || t.id}`);
   }
   return live;
@@ -176,23 +180,11 @@ function wakePromiseDecision({ closing, live }) {
   // Quoted text is a description of a promise ("sessions end on \"I'll check back\""), not this session's own.
   const m = unquoted(text).match(PROMISE_RE);
   if (!m) return { block: false, reason: 'no promise of later action' };
-  const lastPara = text.trim().split(/\n\s*\n/).pop() || '';
+  const lastPara = (text.trim().split(/\n\s*\n/).pop() || '').replace(/https?:\/\/\S+/g, ' '); // a URL's ? is not a question
   if (lastPara.includes('?')) return { block: false, reason: 'ends on a question to the owner (the reply wakes it)' };
   if (ownerMustAct(text)) return { block: false, reason: 'waits on the owner (DECISION NEEDED / You need to:)' };
   if (live && live.length) return { block: false, reason: `live: ${live.slice(0, 3).join(', ')}`, phrase: m[0] };
   return { block: true, reason: 'promises later action with nothing running to wake the session', phrase: m[0] };
-}
-
-/** A Broadwayscore checkout (its repo hook already runs WAKEPROMISE). */
-function isBroadwayscoreCheckout(cwd) {
-  let d = path.resolve(cwd || '.');
-  for (let i = 0; i < 40; i += 1) {
-    if (fs.existsSync(path.join(d, '.claude', 'hooks', 'verify-edits.sh')) && fs.existsSync(path.join(d, 'scripts', 'lib', 'wake-promise-patterns.json'))) return true;
-    const up = path.dirname(d);
-    if (up === d) return false;
-    d = up;
-  }
-  return false;
 }
 
 function stateDir() { return path.join(os.homedir(), '.claude', 'state'); }
@@ -231,10 +223,11 @@ function runStopHook(input, env = process.env, nowMs = Date.now()) {
   if (env.WAKEPROMISE_GATE_DISABLE === '1') return { code: 0 };
   const tp = input && input.transcript_path;
   if (!tp || !fs.existsSync(tp)) return { code: 0 };
-  if (isBroadwayscoreCheckout(input.cwd || process.cwd())) return { code: 0, reason: 'Broadwayscore checkout: the repo Stop hook owns WAKEPROMISE' };
   const parsed = parseTranscript(fs.readFileSync(tp, 'utf8'));
   const live = liveWork({ ...parsed, nowMs });
-  const d = wakePromiseDecision({ closing: parsed.closing, live });
+  // The harness hands over the final text directly; the transcript may not have it flushed yet (verify-edits.sh).
+  const closing = typeof input.last_assistant_message === 'string' && input.last_assistant_message.trim() ? input.last_assistant_message : parsed.closing;
+  const d = wakePromiseDecision({ closing, live });
   if (!d.block) return { code: 0, reason: d.reason };
   const sessionId = String(input.session_id || env.CLAUDE_CODE_SESSION_ID || path.basename(tp, '.jsonl')).replace(/[^0-9A-Za-z_-]/g, '');
   const advisory = env.STALL_STOP_GATE_MODE === 'advisory';
@@ -272,4 +265,4 @@ if (require.main === module) {
   try { process.exitCode = main(process.argv.slice(2)); } catch { process.exitCode = 0; }
 }
 
-module.exports = { parseTranscript, liveWork, wakePromiseDecision, runStopHook, isBroadwayscoreCheckout, isHumanPrompt, PROMISE_RE };
+module.exports = { parseTranscript, liveWork, wakePromiseDecision, runStopHook, isHumanPrompt, PROMISE_RE };

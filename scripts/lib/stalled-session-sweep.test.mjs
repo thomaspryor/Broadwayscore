@@ -137,7 +137,9 @@ test('BRO-7195: a Mac-held card is left alone when anything says the session may
   const skip = (o) => S.localStallAction({ entry: e, ...view(o) });
   assert.match(skip({ liveIds: new Set([LSID]) }).reason, /still running/);
   assert.match(skip({ psText: `claude --resume ${LSID} --print` }).reason, /running process/);
-  assert.match(skip({ lastLedgerMs: NOW - 16 * H }).reason, /dispatch ledger/); // bsc-reconcile may still resume it (24h)
+  assert.match(skip({ lastLedgerMs: NOW - 25 * H }).reason, /dispatch ledger/); // bsc-reconcile may still resume it (24h + margin)
+  assert.match(skip({ liveCwds: ['/Users/x/Broadwayscore/.claude/worktrees/job-linear-BRO-7006-mvzz'] }).reason, /worktree/);
+  assert.equal(skip({ liveCwds: ['/Users/x/Broadwayscore/.claude/worktrees/job-linear-BRO-70061-a'] }).action, 'requeue');
   assert.match(skip({ transcriptMtimeMs: NOW - 2 * H }).reason, /recently/);
   assert.match(skip({ transcriptMtimeMs: null }).reason, /no transcript/);
   assert.match(skip({ liveIds: null }).reason, /registry unreadable/);

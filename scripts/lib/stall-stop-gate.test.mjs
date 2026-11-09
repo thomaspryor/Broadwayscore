@@ -67,8 +67,12 @@ test('a ScheduleWakeup armed in an EARLIER turn still counts until it fires (rev
 });
 
 test('a background Agent with no report yet is live; a foreground report is not', () => {
-  const bg = [human('go'), call('a1', 'Agent', { prompt: 'review', description: 'r' }, 1), result('a1', 'Async agent launched. agentId: ag1', 1), say("I'll report back when the review lands.", 2)];
+  const bg = [human('go'), call('a1', 'Agent', { prompt: 'review', description: 'r' }, 1), result('a1', 'Async agent launched successfully. agentId: ag1abcde', 1), say("I'll report back when the review lands.", 2)];
   assert.equal(decide(bg).block, false);
+  assert.equal(decide(bg, 1 + 7 * 60).block, true, 'a background agent silent 6h+ is not live');
+  // Codex review: a foreground agent with the flag omitted and a long (truncated) report is not live.
+  const longFg = [human('go'), call('a1', 'Agent', { prompt: 'review', description: 'r' }, 1), result('a1', 'x'.repeat(5000) + ' <usage>', 3), say("I'll report back.", 4)];
+  assert.equal(decide(longFg).block, true);
   const fg = [human('go'), call('a1', 'Agent', { prompt: 'review', description: 'r', run_in_background: false }, 1), result('a1', 'Findings... agentId: ag1 <usage>subagent_tokens: 5</usage>', 3), say("I'll report back.", 4)];
   assert.equal(decide(fg).block, true);
 });
@@ -100,7 +104,6 @@ test('pattern parity: the repo hook and this gate read the same pattern file and
   assert.deepEqual(corpus.map((s) => G.PROMISE_RE.test(s)), [true, true, true, true, false, false, true, true]);
 });
 
-test('isBroadwayscoreCheckout: this checkout yes, a scratch dir no', () => {
-  assert.equal(G.isBroadwayscoreCheckout(path.join(REPO_ROOT, 'scripts')), true);
-  assert.equal(G.isBroadwayscoreCheckout(fs.mkdtempSync('/tmp/bro7195-unit-')), false);
+test('a URL with ? in the last paragraph is not a question', () => {
+  assert.equal(decide([human('go'), say("I'll check back.\n\nRun: https://github.com/x/actions/runs?id=9", 1)]).block, true);
 });

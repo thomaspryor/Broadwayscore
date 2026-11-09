@@ -378,7 +378,7 @@ test('BRO-7195 e2e: a Mac session in a scratch repo ending "I will check back" w
   assert.equal(macGateRun([...tx, macHuman('and the other repo?'), macSay("Started it. I'll report back.")], { cwd, home }).status, 2);
 });
 
-test('BRO-7195 e2e: the Mac gate passes live work, advisory mode, the kill switch, and steps aside in Broadwayscore', () => {
+test('BRO-7195 e2e: the Mac gate passes live work, advisory mode and the kill switch, and covers Broadwayscore too', () => {
   const cwd = scratchRepo();
   const home = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7195-home-'));
   const live = [macHuman('run it'),
@@ -389,6 +389,14 @@ test('BRO-7195 e2e: the Mac gate passes live work, advisory mode, the kill switc
   const idle = [macHuman('x'), macSay('Done for now. I will check back later.')];
   assert.equal(macGateRun(idle, { cwd, home, env: { STALL_STOP_GATE_MODE: 'advisory' } }).status, 0);
   assert.equal(macGateRun(idle, { cwd, home, env: { WAKEPROMISE_GATE_DISABLE: '1' } }).status, 0);
-  assert.equal(macGateRun(idle, { cwd: REPO_ROOT, home }).status, 0, 'inside Broadwayscore the repo hook owns WAKEPROMISE');
+  // On the Mac the repo verify-edits.sh self-skips (a global copy exists) and that copy has no WAKEPROMISE.
+  assert.equal(macGateRun(idle, { cwd: REPO_ROOT, home: fs.mkdtempSync(path.join(os.tmpdir(), 'bro7195-home-')) }).status, 2);
+  // The harness's last_assistant_message wins over a transcript that has not flushed the closing yet.
+  const unflushed = [macHuman('x'), macSay('Working on it.')];
+  const r = spawnSyncStdinFile('node', [MAC_GATE, '--stop-hook'], { encoding: 'utf8', cwd, timeout: 30000,
+    input: JSON.stringify({ session_id: 'bro7195-flush', transcript_path: (() => { const f = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'bro7195-tx-')), 't.jsonl'); fs.writeFileSync(f, unflushed.map((l) => JSON.stringify(l)).join('\n') + '\n'); return f; })(),
+      cwd, last_assistant_message: 'Pushed. I will check back once CI finishes.' }),
+    env: { ...process.env, HOME: fs.mkdtempSync(path.join(os.tmpdir(), 'bro7195-home-')), WAKEPROMISE_GATE_DISABLE: '', STALL_STOP_GATE_MODE: '' } });
+  assert.equal(r.status, 2, r.stderr);
   assert.equal(macGateRun(idle, { cwd, home }).status, 2);
 });

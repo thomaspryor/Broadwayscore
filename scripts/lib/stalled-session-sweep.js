@@ -35,8 +35,8 @@ const CLOUD_CLAIM_RE = /^Claimed by https:\/\/claude\.ai\/code\/(session_[A-Za-z
 // "a session on <host>" ref names no session, so it can never be checked and is left to the 48h reclaim.
 const LOCAL_CLAIM_RE = /^Claimed by local session ([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}) on (\S+?)\.? at /i;
 // A dispatch-ledger row for the card this recent means the Mac dispatcher may still resume or retry it
-// (bsc-reconcile RESUME_LOOKBACK_MS): requeueing then would hand the card to a second worker (BRO-7133 shape).
-const LOCAL_LEDGER_QUIET_MS = 24 * HOUR_MS;
+// (bsc-reconcile RESUME_LOOKBACK_MS, plus margin): requeueing then would hand the card to a second worker (BRO-7133 shape).
+const LOCAL_LEDGER_QUIET_MS = 26 * HOUR_MS; // 24h lookback + margin
 const ANY_CLAIM_RE = /^Claimed by /;
 // Only a get_session answer that names the session as missing. A bare "not found" or 404 can come from
 // a proxy or a wrong tool name, and requeueing a live card on that would hand its work to a second worker.
@@ -97,11 +97,13 @@ function stalledSessionAction({ entry, session, error, notFound, nowMs }) {
  * get_session; the session registry (~/.claude/sessions/<pid>.json, scratchpad-retention.readLiveSessionIds)
  * and the transcript's last write are what it can see. No nudge: typing into an idle cmux tab is not
  * safe, so a live session is left alone (the owner can see it; the 48h reclaim still applies).
- * @param {{entry:object, hostNames:string[], liveIds:?Set<string>, psText?:string, transcriptMtimeMs:?number,
- *          lastLedgerMs:?number, nowMs:number, idleMs?:number}} p
+ * liveCwds: working dirs of live registry sessions. A tab that ran /clear works on under a NEW session id,
+ * so a live session sitting in the card's worktree (its path names the card) also counts as alive.
+ * @param {{entry:object, hostNames:string[], liveIds:?Set<string>, liveCwds?:string[], psText?:string,
+ *          transcriptMtimeMs:?number, lastLedgerMs:?number, nowMs:number, idleMs?:number}} p
  * @returns {{action:'requeue'|'skip', reason:string}}
  */
-function localStallAction({ entry, hostNames, liveIds, psText = '', transcriptMtimeMs, lastLedgerMs, nowMs, idleMs = STALL_IDLE_MS }) {
+function localStallAction({ entry, hostNames, liveIds, liveCwds = [], psText = '', transcriptMtimeMs, lastLedgerMs, nowMs, idleMs = STALL_IDLE_MS }) {
   if (!entry || entry.action !== 'check-local') return { action: 'skip', reason: 'not-a-local-entry' };
   const host = String(entry.host || '').toLowerCase().replace(/\.local$/, '');
   const mine = (hostNames || []).map((h) => String(h || '').toLowerCase().replace(/\.local$/, '')).filter(Boolean);
@@ -110,6 +112,8 @@ function localStallAction({ entry, hostNames, liveIds, psText = '', transcriptMt
   const id = String(entry.sessionId).toLowerCase();
   if (liveIds.has(id)) return { action: 'skip', reason: 'session process still running' };
   if (String(psText).toLowerCase().includes(id)) return { action: 'skip', reason: 'a running process names the session (resume?)' };
+  const cardRe = new RegExp(`(?:^|[^0-9a-z])${String(entry.card).toLowerCase()}(?![0-9])`);
+  if (liveCwds.some((c) => cardRe.test(String(c).toLowerCase()))) return { action: 'skip', reason: 'a live session is working in the card\'s worktree' };
   if (Number.isFinite(lastLedgerMs) && nowMs - lastLedgerMs < LOCAL_LEDGER_QUIET_MS) {
     return { action: 'skip', reason: 'dispatch ledger activity in the last 24h (the dispatcher may resume it)' };
   }
