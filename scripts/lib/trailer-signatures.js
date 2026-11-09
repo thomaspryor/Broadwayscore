@@ -188,8 +188,48 @@ function stripStageCriticBio(text) {
   return SENTENCE_END_RE.test(body) && body.length >= RELATED_MIN_REMAINING ? body : text;
 }
 
+// ---------------------------------------------------------------------------
+// The Times / Sunday Times: the review ends with a listing footer, then often a
+// promo line. Real endings (BRO-7171 Stage 4, times-uk live batch: 12 of 20
+// "truncated" files already held the whole review):
+//   "... tightens the noose. ★★★★☆ Ambassadors Theatre, London, to Aug 1, theambassadorstheatre.co.uk 110min"
+//   "... Not while we have Beverlys.★★★★☆120minTo October 12, stratfordeast.com\n\nFollow @timesculture to read the latest reviews"
+//   "... How British is that?Box office: 020 7565 5000, royalcourttheatre.com, to November 16\n\nSave ... Promoted Content"
+//   "... ★★☆☆☆ London Coliseum, to Dec 11, eno.org\n\nLove classical music and opera? Get access to ... Facebook group"
+// Promo lines go first; then a short footer that opens with a star rating,
+// "Box office:" or "To <Month> <day>" and carries a domain, a run date or the
+// stars. Stripped only when what precedes it ends a sentence and is review-length.
+// ---------------------------------------------------------------------------
+const TIMES_PROMO_RE = /\s*(?:Follow @timesculture[^\n]{0,80}|Save\b[\s\S]{0,40}?Promoted Content|Promoted Content|What have you enjoyed at the theatre recently\?[^\n]{0,120}|Love classical music and opera\?[^\n]{0,160})\s*$/;
+const TIMES_FOOTER_START_RE = /★|Box office:|\bTo (?:[A-Z][a-z]{2,8} \d{1,2}|\d{1,2} [A-Z][a-z]{2,8})\b/g;
+const TIMES_FOOTER_MAX = 240;
+const TIMES_FOOTER_EVIDENCE_RE = /★|\b[a-z0-9-]+\.(?:co\.uk|org\.uk|com|org|net|london|uk)\b|\b[Tt]o (?:[A-Z][a-z]{2,8} \d{1,2}|\d{1,2} [A-Z][a-z]{2,8})\b/;
+
+function stripTimesFooter(text) {
+  if (!text || typeof text !== 'string') return text;
+  let t = text.replace(/\s+$/, '');
+  for (let i = 0; i < 3; i++) {
+    const p = t.replace(TIMES_PROMO_RE, '');
+    if (p === t) break;
+    t = p;
+  }
+  const from = Math.max(0, t.length - TIMES_FOOTER_MAX);
+  TIMES_FOOTER_START_RE.lastIndex = from;
+  let m;
+  while ((m = TIMES_FOOTER_START_RE.exec(t)) !== null) {
+    const footer = t.slice(m.index);
+    const body = t.slice(0, m.index).replace(/\s+$/, '');
+    // the footer is a listing, not prose: no full sentence inside it
+    const prose = /[a-z]{2,}[.!?]["'”’]?\s+[A-Z][a-z]+ [a-z]+ [a-z]+/.test(footer);
+    if (!prose && TIMES_FOOTER_EVIDENCE_RE.test(footer) && SENTENCE_END_RE.test(body) && body.length >= RELATED_MIN_REMAINING) return body;
+  }
+  return t === text.replace(/\s+$/, '') ? text : (SENTENCE_END_RE.test(t) && t.length >= RELATED_MIN_REMAINING ? t : text);
+}
+
 // Outlet-scoped strippers (outletId is the registry id on the review file).
 const OUTLET_TRAILER_STRIPPERS = Object.freeze({
+  'times-uk': stripTimesFooter,
+  'sunday-times': stripTimesFooter,
   thestage: stripStageCriticBio,
   'one-minute-critic': stripRelatedPostHeadlines,
   thefourthwalsh: stripFourthWalshInfoBlock,
@@ -222,6 +262,7 @@ module.exports = {
   stripFourthWalshInfoBlock,
   stripRelatedPostHeadlines,
   stripStageCriticBio,
+  stripTimesFooter,
   stripGuardianTopicsFooter,
   stripOutletTrailer,
   stripKnownTrailers,

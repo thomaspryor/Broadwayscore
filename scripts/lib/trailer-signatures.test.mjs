@@ -76,6 +76,34 @@ test('The Stage: a closing critic bio is a trailer; a cut-off review or a prose 
   assert.equal(T.stripStageCriticBio(cut), cut);
 });
 
+test('The Times: listing footer + promo line are a trailer; a cut-off review is not (BRO-7171 Stage 4)', () => {
+  // real endings (times-uk / sunday-times files, 2026-11-09)
+  const endings = [
+    ' ★★★★☆ Ambassadors Theatre, London, to Aug 1, theambassadorstheatre.co.uk 110min',
+    '★★★★☆120minTo October 12, stratfordeast.com\n\nFollow @timesculture to read the latest reviews',
+    'Box office: 020 7565 5000, royalcourttheatre.com, to November 16\n\nSave \n \n\n \n \n\n \n Promoted Content',
+    ' ★★☆☆☆ London Coliseum, to Dec 11, eno.org\n\nLove classical music and opera? Get access to exclusive interviews and join the conversation in our Facebook group',
+    ' 50min Southwark Playhouse Elephant, London, to Dec 5, southwarkplayhouse.co.uk\n\nWhat have you enjoyed at the theatre recently? Let us know in the comments below',
+    ' To December 17, royalcourttheatre.com\n\nFollow @timesculture on Twitter to read the latest reviews\n\nSave\n \n\n \n \n\n \n Promoted Content',
+  ];
+  for (const e of endings.slice(0, 4).concat(endings[5])) {
+    assert.equal(T.stripTimesFooter(BODY + e), BODY, JSON.stringify(e));
+    assert.equal(tier(BODY + e, 'times-uk').contentTier, 'complete', JSON.stringify(e));
+    assert.equal(tier(BODY + e, 'sunday-times').contentTier, 'complete');
+  }
+  // only for the Times outlets
+  assert.notEqual(tier(BODY + endings[1], 'guardian').contentTier, 'complete');
+  // a review cut off mid-sentence keeps its footer and stays truncated
+  const cut = `${BODY.slice(0, -1)} and the lead brings a snarl${endings[0]}`;
+  assert.equal(T.stripTimesFooter(cut), cut);
+  // a cut-off review with only a promo line: promo goes, still not a sentence end
+  const cutPromo = `${BODY.slice(0, -1)} who brings a snarl\n\nFollow @timesculture to read the latest reviews`;
+  assert.notEqual(tier(cutPromo, 'times-uk').contentTier, 'complete');
+  // prose after a star is not a footer
+  const prose = `${BODY} ★ The cast is superb. Everyone should go and see this show tonight.`;
+  assert.equal(T.stripTimesFooter(prose), prose);
+});
+
 test('one-minute-critic: a cut-off final paragraph is not a headline (codex finding)', () => {
   const cut = BODY + '\n\nThe final act\n\nThe lead actor finally begins to';
   assert.equal(T.stripRelatedPostHeadlines(cut), cut);

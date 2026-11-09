@@ -153,6 +153,12 @@ const ADAPTERS = Object.freeze({
     },
   }),
   thetimes: Object.freeze({
+    // Stage 4 live batch 2026-11-09 (times-uk): 0/20 accepted. 12 not_longer:
+    // the stored text already was the whole review, read as truncated because
+    // of the listing footer + promo line (fixed in trailer-signatures
+    // stripTimesFooter: 39 files flip to complete on the next rebuild); 6
+    // extractor_null. Off for the nightly.
+    nightly: false,
     outletIds: ['times-uk', 'sunday-times'],
     cookieDomain: 'thetimes.co.uk',
     testUrl: 'https://www.thetimes.com/culture/theatre-dance/article/1536-review-theatre-henry-viii-anne-boleyn-v6hg7frjb',
