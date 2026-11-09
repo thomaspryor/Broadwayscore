@@ -1773,5 +1773,36 @@
       }
     ],
     "queuedAt": "2026-11-09T06:09:46.028Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7189-video-critic-score",
+    "title": "Landing blocked: actionlint-install red on land/bro-7189-video-critic-score",
+    "description": "land.yml did not land land/bro-7189-video-critic-score: the actionlint-install gate went red at 55ba31ee22. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42572461655",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7189-video-critic-score"
+      },
+      {
+        "name": "gate",
+        "value": "actionlint-install"
+      },
+      {
+        "name": "tip",
+        "value": "55ba31ee22b8df2b9079f956d0b0b23ee5135b0e"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42572461655"
+      }
+    ],
+    "queuedAt": "2026-11-09T06:23:43.027Z"
   }
 ]
