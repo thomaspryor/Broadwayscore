@@ -914,7 +914,16 @@ function wosStarScope(html) {
  *          The Independent, The Times, Financial Times, Daily Mail, The Arts Desk,
  *          Musical Theatre Review, London Theatre, All That Dazzles, etc.
  */
+// BRO-7221: only The Times prints one star group per show in a combined column; other
+// UK outlets' extra groups are related-review chrome, so they keep the first-group rule.
+const extractTimesColumnStarRating = (html, text, showTitle) => extractUKStarRating(html, text, showTitle, { multiShowColumn: true });
+
 const UNICODE_STAR_GROUP_RE = /(?:[★☆]\s*){2,5}/g;
+
+function countWord(hay, w) {
+  const re = new RegExp(`(?<![a-z0-9])${w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![a-z0-9])`, 'g');
+  return (hay.match(re) || []).length;
+}
 
 function hasMultipleStarGroups(text) {
   return typeof text === 'string' && (text.match(UNICODE_STAR_GROUP_RE) || []).length >= 2;
@@ -925,14 +934,16 @@ function pickUnicodeStarsForShow(text, showTitle) {
   if (!showTitle || !hasMultipleStarGroups(text)) return null;
   const { normalizeShowLabel } = require('./known-show-titles');
   // "Beaches, A New Musical" is named "Beaches" in prose: try the pre-subtitle head too.
-  const wants = [...new Set([showTitle, String(showTitle).split(/[,:\u2013\u2014-]\s/)[0]].map(normalizeShowLabel).filter(Boolean))];
+  const head = String(showTitle).split(/[,:\u2013\u2014-]\s/)[0];
+  const wants = [...new Set([showTitle, head.trim().split(/\s+/).length >= 2 || head.trim().length >= 6 ? head : null].filter(Boolean).map(normalizeShowLabel).filter(Boolean))];
   if (!wants.length) return null;
   const groups = [...text.matchAll(UNICODE_STAR_GROUP_RE)];
-  const segOf = (m, i) => text.slice(i > 0 ? groups[i - 1].index + groups[i - 1][0].length : 0, m.index);
+  // Scraped headers glue words ("The Front PageThe Broadhurst"): split at lower->Upper so whole-word matching still sees the title.
+  const segOf = (m, i) => text.slice(i > 0 ? groups[i - 1].index + groups[i - 1][0].length : 0, m.index).replace(/([a-z])([A-Z])/g, '$1 $2');
   // 1) "Title (★★☆☆☆)" style: exactly one group whose immediate lead-in names the show.
   const named = groups.filter((m, i) => {
     const nb = normalizeShowLabel(segOf(m, i).slice(-80));
-    return wants.some((w) => nb.includes(w));
+    return wants.some((w) => countWord(nb, w) > 0);
   });
   if (named.length === 1) return [named[0][0], named[0][0]];
   if (named.length > 1) return null;
@@ -940,7 +951,7 @@ function pickUnicodeStarsForShow(text, showTitle) {
   //    so the section that mentions the show most (unique maximum) is this show's.
   const counts = groups.map((m, i) => {
     const nb = normalizeShowLabel(segOf(m, i));
-    return Math.max(...wants.map((w) => nb.split(w).length - 1));
+    return Math.max(...wants.map((w) => countWord(nb, w)));
   });
   const best = Math.max(...counts);
   if (best < 2 || counts.filter((c) => c === best).length !== 1) return null;
@@ -948,7 +959,7 @@ function pickUnicodeStarsForShow(text, showTitle) {
   return [g, g];
 }
 
-function extractUKStarRating(html, text, showTitle) {
+function extractUKStarRating(html, text, showTitle, opts) {
   html = stripStyleStarGlyphs(html || ''); // BRO-305: icon CSS stars are not a rating
   // 1. Structured data: JSON-LD ("ratingValue": 5) or meta/itemprop ("ratingValue" content="5")
   const jsonLdMatch = html.match(/"ratingValue"\s*:\s*"?(\d+(?:\.\d+)?)"?/) ||
@@ -1136,7 +1147,7 @@ function extractUKStarRating(html, text, showTitle) {
   // one "Title (★★☆☆☆)" group per show. Taking the first group gave Beaches
   // Schmigadoon!'s 5/5. With 2+ groups and a known show, take only the group
   // whose lead-in names this show, else abstain from this step.
-  const unicodeMatch = pickUnicodeStarsForShow(text, showTitle) || (hasMultipleStarGroups(text) && showTitle ? null : (text.match(/((?:[★☆]\s*){2,5})/) || html.match(/((?:[★☆]\s*){2,5})/)));
+  const unicodeMatch = (opts && opts.multiShowColumn ? pickUnicodeStarsForShow(text, showTitle) : null) || (opts && opts.multiShowColumn && hasMultipleStarGroups(text) && showTitle ? null : (text.match(/((?:[★☆]\s*){2,5})/) || html.match(/((?:[★☆]\s*){2,5})/)));
   if (unicodeMatch) {
     const stars = unicodeMatch[1].replace(/\s/g, '');
     const filled = (stars.match(/★/g) || []).length;
@@ -1637,10 +1648,10 @@ const OUTLET_EXTRACTORS = {
   'the-independent': extractUKStarRating,
   'the-independent-uk': extractUKStarRating,
   'independent': extractUKStarRating,
-  'the-times': extractUKStarRating,
-  'the-times-uk': extractUKStarRating,
-  'times-uk': extractUKStarRating,
-  'the-times-clive-davis': extractUKStarRating,
+  'the-times': extractTimesColumnStarRating,
+  'the-times-uk': extractTimesColumnStarRating,
+  'times-uk': extractTimesColumnStarRating,
+  'the-times-clive-davis': extractTimesColumnStarRating,
   'financial-times': extractUKStarRating,
   'financial-times-uk': extractUKStarRating,
   'financialtimes': extractUKStarRating,

@@ -31,3 +31,21 @@ test('times-uk end-of-section verdicts: the section that discusses the show wins
   assert.equal(extractScore('', col, 'times-uk', 'Giant').normalizedScore, 100);
   assert.equal(extractScore('', col, 'times-uk', 'My Master Builder').normalizedScore, 20);
 });
+
+test('whole-word title match: "Proof" is not "waterproof"; "Oh, Mary!" head is not "oh"', () => {
+  const t1 = 'This waterproof staging is lovely. (★★★★★) ' + 'Proof (★★☆☆☆) is dull. ' + 'x '.repeat(60);
+  assert.equal(extractScore('', t1, 'times-uk', 'Proof').normalizedScore, 40);
+  const t2 = 'Although John liked it, Oh, Mary! (★★★★☆) is a hoot. Cats (★★☆☆☆) is not. ' + 'x '.repeat(60);
+  assert.equal(extractScore('', t2, 'times-uk', 'Oh, Mary!').normalizedScore, 80);
+});
+
+test('non-Times UK outlets keep the first-group rule (related-review chrome)', () => {
+  const t = '★★★★☆ A fine Hamilton night. Hamilton Hamilton Hamilton. More reviews: Cats ★★☆☆☆ ' + 'x '.repeat(60);
+  assert.equal(extractScore('', t, 'standard', 'Hamilton').normalizedScore, 80);
+  assert.equal(extractScore('', t, 'whatsonstage', 'Hamilton').normalizedScore, 80);
+});
+
+test('glued scraped header ("TimesHamiltonVictoria Palace") still finds the show', () => {
+  const t = 'The TimesHamiltonVictoria Palace, London★★★★☆ ' + 'Hamilton dazzles. '.repeat(4) + 'Related reviews Cats Palladium ★★☆☆☆ ' + 'x '.repeat(40);
+  assert.equal(extractScore('', t, 'times-uk', 'Hamilton').normalizedScore, 80);
+});
