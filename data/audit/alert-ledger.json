@@ -26896,13 +26896,13 @@
       "firstSeen": "2026-10-24T23:08:26.440Z",
       "incidentOpenedAt": "2026-10-31T00:35:50.727Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-08T22:05:06.199Z",
+      "lastSeen": "2026-11-09T00:21:53.278Z",
       "lastNotifiedAt": "2026-11-08T16:02:55.270Z",
       "lastSurfacedAt": "2026-11-05T12:32:07.725Z",
       "notifyCount": 13,
       "cardId": null,
       "linearIdentifier": "BRO-7013",
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "test-yml:red:Unit Tests:196541b4": {
       "status": "resolved",
@@ -29421,12 +29421,13 @@
       "firstSeen": "2026-10-28T10:58:13.736Z",
       "incidentOpenedAt": "2026-11-08T22:05:06.585Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-08T22:05:06.585Z",
+      "lastSeen": "2026-11-09T00:21:53.602Z",
       "lastNotifiedAt": "2026-11-08T22:05:06.585Z",
       "lastSurfacedAt": "2026-11-08T22:05:06.585Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "land:land/job/linear-BRO-6114-mvs1f793": {
       "status": "resolved",
@@ -37713,12 +37714,13 @@
       "firstSeen": "2026-11-06T04:56:22.650Z",
       "incidentOpenedAt": "2026-11-08T22:05:06.150Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-08T22:05:06.150Z",
+      "lastSeen": "2026-11-09T00:21:53.214Z",
       "lastNotifiedAt": "2026-11-08T22:05:06.150Z",
       "lastSurfacedAt": "2026-11-08T22:05:06.150Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "live-data-test:tests/unit/drain-unknown-outlets-live-data.test.mjs::tests/unit/drain-unknown-outlets-live-data.test.mjs": {
       "status": "resolved",
@@ -38731,13 +38733,13 @@
       "firstSeen": "2026-11-08T06:47:11.004Z",
       "incidentOpenedAt": "2026-11-08T06:47:11.004Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-08T22:05:06.073Z",
+      "lastSeen": "2026-11-09T00:21:53.091Z",
       "lastNotifiedAt": "2026-11-08T06:47:11.004Z",
       "lastSurfacedAt": "2026-11-08T06:47:11.004Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "live-data-test:scripts/audit-stale-announced-shows.test.mjs::BRO-93 acceptance: current shows.json produces zero stale announced flags": {
       "status": "open",
@@ -38746,13 +38748,13 @@
       "firstSeen": "2026-11-08T06:47:11.040Z",
       "incidentOpenedAt": "2026-11-08T06:47:11.040Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-08T22:05:06.091Z",
+      "lastSeen": "2026-11-09T00:21:53.125Z",
       "lastNotifiedAt": "2026-11-08T06:47:11.040Z",
       "lastSurfacedAt": "2026-11-08T06:47:11.040Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "live-data-test:scripts/verify-contamination-gate.test.mjs::scripts/verify-contamination-gate.test.mjs": {
       "status": "open",
@@ -38761,13 +38763,13 @@
       "firstSeen": "2026-11-08T06:47:11.073Z",
       "incidentOpenedAt": "2026-11-08T06:47:11.073Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-08T22:05:06.108Z",
+      "lastSeen": "2026-11-09T00:21:53.154Z",
       "lastNotifiedAt": "2026-11-08T06:47:11.073Z",
       "lastSurfacedAt": "2026-11-08T06:47:11.073Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "live-data-test:tests/unit/audit-stale-baseline-detection.test.mjs::audit-cv-flag-contradiction.js: baseline holds no stale entries": {
       "status": "open",
@@ -38776,13 +38778,13 @@
       "firstSeen": "2026-11-08T06:47:11.105Z",
       "incidentOpenedAt": "2026-11-08T06:47:11.105Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-08T22:05:06.129Z",
+      "lastSeen": "2026-11-09T00:21:53.173Z",
       "lastNotifiedAt": "2026-11-08T06:47:11.105Z",
       "lastSurfacedAt": "2026-11-08T06:47:11.105Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "live-data-test:tests/unit/validate-data-push-refusal-sentinel.test.mjs::tests/unit/validate-data-push-refusal-sentinel.test.mjs": {
       "status": "open",
@@ -38791,13 +38793,13 @@
       "firstSeen": "2026-11-08T06:47:11.124Z",
       "incidentOpenedAt": "2026-11-08T06:47:11.124Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-08T22:05:06.183Z",
+      "lastSeen": "2026-11-09T00:21:53.257Z",
       "lastNotifiedAt": "2026-11-08T06:47:11.124Z",
       "lastSurfacedAt": "2026-11-08T06:47:11.124Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "live-data-test:tests/unit/wrong-article-llm-flagging.test.mjs::every confirmed wrong article is flagged wrongShow or hand-verified # TODO advisory (BRO-4606)": {
       "status": "open",
@@ -38806,13 +38808,13 @@
       "firstSeen": "2026-11-08T06:47:11.393Z",
       "incidentOpenedAt": "2026-11-08T06:47:11.393Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-08T22:05:06.608Z",
+      "lastSeen": "2026-11-09T00:21:53.634Z",
       "lastNotifiedAt": "2026-11-08T06:47:11.393Z",
       "lastSurfacedAt": "2026-11-08T06:47:11.393Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "land:land/bro-7102-job-headroom": {
       "status": "open",
@@ -39216,12 +39218,13 @@
       "firstSeen": "2026-11-08T22:05:06.167Z",
       "incidentOpenedAt": "2026-11-08T22:05:06.167Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-08T22:05:06.167Z",
+      "lastSeen": "2026-11-09T00:21:53.239Z",
       "lastNotifiedAt": "2026-11-08T22:05:06.167Z",
       "lastSurfacedAt": "2026-11-08T22:05:06.167Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "test-yml:red:Unit Test Shard:0e0a79a5": {
       "status": "resolved",
@@ -39371,6 +39374,20 @@
       "lastSeen": "2026-11-08T23:52:35.227Z",
       "lastNotifiedAt": "2026-11-08T23:52:35.227Z",
       "lastSurfacedAt": "2026-11-08T23:52:35.227Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "live-data-test:tests/unit/cast-changes-real-data.test.mjs::no [AUTO-FLAGGED] entries older than 30 days in upcoming": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Live-data test failing: no [AUTO-FLAGGED] entries older than 30 days in upcoming (tests/unit/cast-changes-real-data.test.mjs)",
+      "firstSeen": "2026-11-09T00:21:53.192Z",
+      "incidentOpenedAt": "2026-11-09T00:21:53.192Z",
+      "deferredAuto": true,
+      "lastSeen": "2026-11-09T00:21:53.192Z",
+      "lastNotifiedAt": "2026-11-09T00:21:53.192Z",
+      "lastSurfacedAt": "2026-11-09T00:21:53.192Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
