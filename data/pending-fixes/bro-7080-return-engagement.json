@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7080-return-engagement",
   "planId": "6d64b994-6aa2-4c8e-b3e3-9b9b1a5aa948",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-09T10:53:16.032Z",
   "submitter": {
     "name": null,
@@ -94,5 +94,49 @@
         "description": "shows.json: chewing-gum-dreams-off-west-end-2026.isRevival"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-09T12:00:55.041Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for degenerates-dec-jan-off-broadway-2026 (tags: [])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for sacrilegious-off-west-end-2027 (tags: [])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for arias-with-a-twist-off-broadway-2026 (tags: [\"revival\"])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for the-whoopi-monologues-off-broadway-2026 (tags: [\"revival\"])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for much-ado-about-nothing-2026 (tags: [\"lottery\",\"rush\",\"revival\"])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for the-full-monty-2027 (tags: [\"upcoming\",\"revival\"])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-off-west-end-2026 (tags: [\"revival\"])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for chewing-gum-dreams-off-west-end-2026 (tags: [\"revival\"])"
+    }
+  ],
+  "executedIn": "ci"
 }
