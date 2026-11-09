@@ -9,7 +9,11 @@
     "speculations-off-west-end-2026/jonathan-baz--unknown.json",
     "speculations-off-west-end-2026/londonlivinglarge--london-living-large.json",
     "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
-    "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json"
+    "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json",
+    "ceilidh-the-musical-off-west-end-2026/guardian--emma-john.json",
+    "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json",
+    "ceilidh-the-musical-off-west-end-2026/musical-theatre-review--angela-thomas.json",
+    "ceilidh-the-musical-off-west-end-2026/islingtontribune--unknown.json"
   ],
   "failed": [
     "iphigenie-en-tauride-english-national-opera-west-end-2026/bachtrack--mark-valencia.json",
@@ -18,7 +22,8 @@
     "the-bridge-off-west-end-2026/cherylmarkosky--cherylmarkosky.json",
     "the-bridge-off-west-end-2026/theatreandtonic--emmie-newitt.json",
     "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
-    "tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json"
+    "tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json",
+    "ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -30,14 +35,18 @@
       "speculations-off-west-end-2026/jonathan-baz--unknown.json",
       "speculations-off-west-end-2026/londonlivinglarge--london-living-large.json",
       "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
-      "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json"
+      "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json",
+      "ceilidh-the-musical-off-west-end-2026/guardian--emma-john.json",
+      "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json",
+      "ceilidh-the-musical-off-west-end-2026/islingtontribune--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingdog": [
       "msblackforpresident-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
-      "nero-off-west-end-2026/musical-theatre-review--angela-thomas.json"
+      "nero-off-west-end-2026/musical-theatre-review--angela-thomas.json",
+      "ceilidh-the-musical-off-west-end-2026/musical-theatre-review--angela-thomas.json"
     ],
     "scrapingbee": [],
     "brightdata": [],
@@ -45,12 +54,18 @@
     "archive": []
   },
   "startTime": "2026-11-09T22:31:25.156Z",
-  "lastProcessed": "tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json",
+  "lastProcessed": "ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
   "log": [
     {
       "t": "2026-11-09T22:48:39.830Z",
       "event": "bb-session",
       "session": "14c7f8ce",
+      "url": "https://bachtrack.com/review-iphigenie-en-tauride-turner-bates-rice-imbrailo-eng"
+    },
+    {
+      "t": "2026-11-09T23:49:51.022Z",
+      "event": "bb-session",
+      "session": "67e5e548",
       "url": "https://bachtrack.com/review-iphigenie-en-tauride-turner-bates-rice-imbrailo-eng"
     }
   ]
