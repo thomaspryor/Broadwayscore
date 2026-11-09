@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6854-dups4",
   "planId": "3733d472-6526-471d-b475-a284769cb25c",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-09T15:14:41.062Z",
   "submitter": {
     "name": null,
@@ -29,5 +29,19 @@
         "reason": "BRO-6854: duplicate Boston row minted by the city finder; paranormal-activity-boston-regional-2026 holds the reviews"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-09T15:23:46.098Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted paranormal-activity-regional-2026/boston-globe--unknown.json"
+    },
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired paranormal-activity-regional-2026 (\"Paranormal Activity\" @ Emerson Colonial Theatre, Boston, MA)"
+    }
+  ],
+  "executedIn": "ci"
 }
