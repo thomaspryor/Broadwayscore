@@ -11,6 +11,8 @@ test('an empty recording replays to nothing without throwing', async () => {
   const r = await replayDiscovery(rec([]), { show: SHOWS['wanted-2022'], night: '2026-11-08' });
   assert.deepEqual(r.found, []);
   assert.equal(r.passes, 0);
+  assert.deepEqual(r.rejections, {});
+  assert.deepEqual(r.unknownHosts, []);
 });
 
 test('a recording with one blank aggregator page runs every pass, finds nothing, and marks unrecorded urls', async () => {

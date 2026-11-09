@@ -34,7 +34,7 @@ const arg = (n, d = null) => {
 /**
  * Replay discovery over `recording` every `stepMin` virtual minutes. Pure given its inputs (no network: every fetch is
  * served from the recording; a URL it never recorded is a 404).
- * @returns {Promise<{passes: number, spanMin: number, found: object[], unrecorded: string[], errors: object[]}>}
+ * @returns {Promise<{passes: number, spanMin: number, found: object[], unrecorded: string[], errors: object[], rejections: object, rejectedSample: object[], unknownHosts: string[]}>}
  */
 async function replayDiscovery(recording, { show, night, stepMin = 2, adapters = null, startedAtMs = null } = {}) {
   const d = require('./lib/opening-night-lane/discovery');
@@ -42,7 +42,7 @@ async function replayDiscovery(recording, { show, night, stepMin = 2, adapters =
   const { replayFetchFrom } = require('./lib/lane-recorded-nights/recording-night');
   const { resolveOutletFromUrl } = require('./lib/review-normalization');
   const first = recording.entries.reduce((m, e) => (m === null || e.t < m.t ? e : m), null);
-  if (!first) return { passes: 0, spanMin: 0, found: [], unrecorded: [], errors: [] };
+  if (!first) return { passes: 0, spanMin: 0, found: [], unrecorded: [], errors: [], rejections: {}, rejectedSample: [], unknownHosts: [] };
   const atMs = Date.parse(first.at);
   const originMs = (Number.isFinite(atMs) ? atMs : 0) - first.t; // wall clock at recording offset 0 (a row with no `at` falls back to epoch 0)
   if (!(stepMin >= 1)) throw new Error('step-min must be at least 1');
@@ -58,6 +58,8 @@ async function replayDiscovery(recording, { show, night, stepMin = 2, adapters =
   const memo = { rejected: {} };
   const foundAt = new Map();
   const errors = [];
+  const rejectedByKey = new Map(); // url -> {adapter, reason} (latest verdict)
+  const unknownHosts = new Set();
   let passes = 0;
   for (clock = 0; clock <= recording.spanMs + stepMin * MIN; clock += stepMin * MIN) {
     passes++;
@@ -66,6 +68,8 @@ async function replayDiscovery(recording, { show, night, stepMin = 2, adapters =
       missingOutlets: d.laneMissingOutlets({ show, seen, adaptersConfig: {} }), deadlineMs: 60e3,
     });
     for (const e of pass.errors || []) if (!errors.some((x) => x.adapter === e.adapter && x.error === e.error)) errors.push(e);
+    for (const r of pass.rejected || []) rejectedByKey.set(r.url, { adapter: r.adapter, reason: r.reason });
+    for (const h of pass.unknownHosts || []) unknownHosts.add(h);
     for (const c of pass.admitted || []) {
       if (foundAt.has(c.key)) continue;
       const o = resolveOutletFromUrl(c.key) || resolveOutletFromUrl(c.url) || {};
@@ -79,7 +83,10 @@ async function replayDiscovery(recording, { show, night, stepMin = 2, adapters =
       seen.add(c.key);
     }
   }
-  return { passes, spanMin: Math.round(recording.spanMs / MIN), found: [...foundAt.values()], unrecorded: [...unrecorded], errors };
+  const rejections = {};
+  for (const v of rejectedByKey.values()) { const k = `${v.adapter}:${v.reason}`; rejections[k] = (rejections[k] || 0) + 1; }
+  const rejectedSample = [...rejectedByKey.entries()].slice(0, 25).map(([url, v]) => ({ url, ...v }));
+  return { passes, spanMin: Math.round(recording.spanMs / MIN), found: [...foundAt.values()], unrecorded: [...unrecorded], errors, rejections, rejectedSample, unknownHosts: [...unknownHosts].slice(0, 30) };
 }
 
 /** What the recording itself holds: window, per-host fetch counts and how many bodies were stored. Urls/hosts/counts only. */
