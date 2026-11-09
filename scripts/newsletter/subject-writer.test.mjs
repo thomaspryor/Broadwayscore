@@ -138,3 +138,18 @@ test('short form of a long title counts as that show, not as other shows inside 
   assert.deepEqual(checkCandidate(c, p), []);
   assert.match(checkCandidate({ ...c, lede: c.lede + ' Hamilton plays on.' }, p).join(), /Hamilton/);
 });
+
+test('openings lead: with this week\'s openings in the facts, a closings-only subject or first sentence is rejected (owner, 2026-11-09)', () => {
+  const f = { ...facts, leadTitles: ['The Bridge'] };
+  const p = buildPool(f);
+  const closingLead = { angle: 'last chance', subject: 'The Revlon Girl closes Saturday', preheader: 'Critics gave it an 83. Plus The Bridge, at the Bush.', lede: 'The Revlon Girl (83) closes Saturday at the Park Theatre. The Bridge (76) opened Tuesday at the Bush.' };
+  const probs = checkCandidate(closingLead, p).join();
+  assert.match(probs, /subject must be about this week's openings/);
+  assert.match(probs, /first sentence must name one of this week's openings/);
+  const openingLead = { angle: 'best opening', subject: 'The Bridge is the week\'s standout', preheader: 'Critics scored it 76. The Revlon Girl (83) closes Saturday.', lede: 'The Bridge (76) opened Tuesday at the Bush, and critics liked it. The Revlon Girl (83) closes Saturday.' };
+  assert.deepEqual(checkCandidate(openingLead, p), []);
+  // A group angle on the openings is fine without a title.
+  assert.ok(!checkCandidate({ ...openingLead, subject: 'How the week\'s London openings landed' }, p).some(x => /subject must/.test(x)));
+  // No openings this week: closings may lead.
+  assert.deepEqual(checkCandidate(closingLead, buildPool(facts)), []);
+});

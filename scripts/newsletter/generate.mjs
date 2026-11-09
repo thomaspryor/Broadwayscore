@@ -3262,8 +3262,8 @@ function buildSubjectFacts() {
   const scoreBit = (s, a) => `Critic Score ${Math.round(a.raw ?? a.avg)} (${scoreTier(a.avg, s.category)?.label || 'scored'}) from ${a.count} reviews`;
   lines.push(`The email covers the week of ${DAY(weekStartStr)} to ${DAY(weekEndStr)}.`);
   lines.push(IS_WE
-    ? 'Editorial: this is the London edition. Lead with London theatre (West End and Off West End). Opera and Broadway have their own sections lower down and should not lead.'
-    : 'Editorial: this is the New York edition. Lead with Broadway and Off-Broadway. London and opera have their own sections lower down and should not lead.');
+    ? 'Editorial: this is the London edition. Lead with this week\'s London openings (West End and Off West End). Opera and Broadway have their own sections lower down and should not lead.'
+    : 'Editorial: this is the New York edition. Lead with this week\'s Broadway and Off-Broadway openings. London and opera have their own sections lower down and should not lead.');
   const editionSections = IS_WE ? ['london-openings', 'also-opened-recently', 'broadway-we', 'opera-openings']
     : ['broadway-openings', 'offbroadway-openings', 'out-of-town-openings', 'london-openings', 'opera-openings', 'new-tour-scores'];
   const seen = new Set();
@@ -3314,7 +3314,10 @@ function buildSubjectFacts() {
   }
   const knownTitles = shows.filter(s => ['open', 'previews'].includes(s.status) || (s.openingDate && s.openingDate >= _daysBefore(120)))
     .map(s => s.title).filter(Boolean);
-  return { edition: EDITION, lines, titles: [...titles.values()], knownTitles };
+  // This week's openings in this edition's own market: the roundup's lead story.
+  const leadTitles = [...seen].map(id => shows.find(x => x.id === id))
+    .filter(s => s && primaryCats.includes(s.category) && !isOperaShow(s) && inWeek(s.openingDate)).map(s => s.title);
+  return { edition: EDITION, lines, titles: [...titles.values()], knownTitles, leadTitles };
 }
 
 // The subject on this issue's Resend draft when it differs from the one this
