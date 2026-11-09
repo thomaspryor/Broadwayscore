@@ -714,6 +714,17 @@ test('claimProblems: a true "zero mixed" count and pronouns about actors pass (B
   assert.equal(ok('Jesse Green says she was moved.').length, 1);
 });
 
+test('claimProblems: a critic named by surname only still trips the pronoun rule (BRO-7080 replay of BRO-6676)', () => {
+  const facts = { buckets: { mixed: 1 }, bestQuotes: [{ critic: 'Elisabeth Vincentelli', outlet: 'The New York Times' }], worstQuotes: [{ critic: 'Jesse Green' }] };
+  const run = (t) => lib.claimProblems({ title: 't', body: t, suggestedReply: '' }, facts);
+  assert.equal(run('Vincentelli loved it; she called it a jolt.').length, 1);
+  assert.equal(run('Green was cooler, though he liked the band.').length, 1);
+  // Surname inside another word is not the critic.
+  assert.deepEqual(run('The evergreen score shines and she sells it.'), []);
+  // First names alone are not matched (too common).
+  assert.deepEqual(run('Jesse, the lead, says she was moved.'), []);
+});
+
 test('aggregatorGapHold: priorRun entries and duplicates do not hold (BRO-6676 review)', () => {
   const r = { computedAt: new Date().toISOString(), missing: [{ knownOutletId: 'x', priorRun: true }, { knownOutletId: 'nyt' }, { knownOutletId: 'nyt' }] };
   assert.deepEqual(lib.aggregatorGapHold(r).missing, ['nyt']);

@@ -893,7 +893,11 @@ const PRONOUN = /\b(he|she)\b/i; // subject pronouns only: "calling his voice" i
 function claimProblems(draft, facts) {
   const out = [];
   const people = [facts.bestQuotes, facts.worstQuotes, [facts.loneDissenter]].flat().filter(Boolean)
-    .map(c => c.critic).filter(Boolean).map(n => String(n).toLowerCase()); // critics only: "he" after an outlet name is usually an actor
+    .map(c => c.critic).filter(Boolean).map(n => String(n).toLowerCase()) // critics only: "he" after an outlet name is usually an actor
+    // BRO-7080: a draft naming the critic by surname only ("Vincentelli loved it;
+    // she called it...") slipped past the full-name match.
+    .flatMap(n => [n, ...n.split(/\s+/).slice(1).filter(t => t.length >= 4)]);
+  const namedIn = (sent) => people.some(n => new RegExp(`(?<![\\p{L}])${n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![\\p{L}])`, 'iu').test(sent));
   for (const [where, text] of [['title', draft.title], ['body', draft.body], ['suggestedReply', draft.suggestedReply]]) {
     const mixedZero = Number(facts && facts.buckets && facts.buckets.mixed) === 0;
     const claimText = text.replace(/https?:\/\/\S+/g, '')
@@ -901,7 +905,7 @@ function claimProblems(draft, facts) {
       .replace(mixedZero ? /\b(?:zero|0)\s+mixed\b(?=\s*(?:,|and\b|or\b|\.|$))/gim : /$^/, '');
     if (NO_MIXED_CLAIM.test(claimText)) out.push(`${where} claims there are no mixed reviews; describe what critics wrote instead`);
     for (const sent of text.split(/(?<=[.!?])\s+/)) {
-      if (PRONOUN.test(sent) && people.some(n => sent.toLowerCase().includes(n))) {
+      if (PRONOUN.test(sent) && namedIn(sent)) {
         out.push(`${where} uses a pronoun for a critic ("${sent.slice(0, 50)}"); use their name or "the review"`);
         break;
       }
