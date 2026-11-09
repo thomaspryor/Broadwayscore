@@ -355,7 +355,13 @@ function cliPrune(args) {
   gitOk(['fetch', '--no-tags', '--depth=1', 'origin', '+refs/heads/main:refs/remotes/origin/main'], { timeout: netTimeoutMs() * 2 });
   const ok = prunable(manifest, (p) => blobAt('origin/main', p));
   for (const r of ok) {
-    gitOk(['push', 'origin', '--delete', `refs/heads/${r.ref}`], { timeout: netTimeoutMs() });
+    // Delete only the tip this replay read (a branch that moved since is kept for the next run).
+    const lease = r.tip ? [`--force-with-lease=refs/heads/${r.ref}:${r.tip}`] : [];
+    const d = git(['push', ...lease, 'origin', `:refs/heads/${r.ref}`], { timeout: netTimeoutMs() });
+    if (d.status !== 0) {
+      console.log(`::warning::push-rescue: kept ${r.ref}: delete refused (${annotate((d.stderr || '').trim().slice(0, 200))}); the next run retries`);
+      continue;
+    }
     console.log(`push-rescue: deleted ${r.ref}${r.modified && r.modified.length ? ` (its ${r.modified.length} modified/deleted path(s) were not replayed: ${r.modified.slice(0, 5).join(', ')})` : ''}`);
   }
   for (const r of (manifest.refs || []).filter((x) => !ok.includes(x))) {
