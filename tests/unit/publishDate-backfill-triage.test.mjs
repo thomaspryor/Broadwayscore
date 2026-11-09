@@ -149,3 +149,13 @@ test('buildGateRevertedRecord keeps the old date, holds the page date as a candi
   assert.equal(undated.dateBackfillAttempted, 'T');
   assert.equal(undated.dateRecheckAttempted, undefined);
 });
+
+test('findGateBlockers: with a class A leak in the batch, an unrelated C hit on another touched file is not reverted', () => {
+  const hits = {
+    ...leak,
+    C_domain_mismatch: [{ showId: 'a', file: 'c-only.json' }],
+  };
+  assert.deepEqual(findGateBlockers({ hits }, [KRAMER, 'a/c-only.json']), [KRAMER]);
+  // no A leak: strict C alone still counts
+  assert.deepEqual(findGateBlockers({ hits: { C_domain_mismatch: hits.C_domain_mismatch } }, ['a/c-only.json']), ['a/c-only.json']);
+});

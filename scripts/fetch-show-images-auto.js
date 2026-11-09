@@ -2084,7 +2084,7 @@ async function verifyAndCollect(images, show, tierName, verifyCtx) {
 
   // Fix 3: Track production photos as fallback instead of rejecting outright, but only a still the
   // verifier found nothing else wrong with: one it calls another production's stays rejected (BRO-6703).
-  if (result.imageType === 'production_still' && !isCleanProductionStill(result)) {
+  if (result.imageType === 'production_still' && isRegionalRow(show) && !isCleanProductionStill(result)) {
     console.log(`   ✗ REJECTED (production photo of another production): ${result.description} [${(result.issues || []).join(', ')}]`);
     verifyCtx.rejected = (verifyCtx.rejected || 0) + 1;
     return null;

@@ -25,6 +25,7 @@ function scopeCrossProductionIssues(issues, touchedFiles) {
 function findGateBlockers(audit, touchedFiles) {
   const scope = new Set(touchedFiles || []);
   const out = new Set();
+  const hardOut = new Set(); // class A / A2: what the gate itself trips on
   const hits = (audit && audit.hits) || {};
   for (const [key, arr] of Object.entries(hits)) {
     const cls = key.split('_')[0];
@@ -32,11 +33,15 @@ function findGateBlockers(audit, touchedFiles) {
     for (const h of arr) {
       if (!h || !h.showId || !countsTowardStrict(cls, h)) continue;
       for (const f of [h.file, h.file1, h.file2]) {
-        if (f && scope.has(`${h.showId}/${f}`)) out.add(`${h.showId}/${f}`);
+        if (!f || !scope.has(`${h.showId}/${f}`)) continue;
+        out.add(`${h.showId}/${f}`);
+        if (cls === 'A' || cls === 'A2') hardOut.add(`${h.showId}/${f}`);
       }
     }
   }
-  return [...out].sort();
+  // A batch with a class A leak reverts only those files: a single C/E/F hit on
+  // another touched file comes from the domain or an empty body, not the date.
+  return [...(hardOut.size ? hardOut : out)].sort();
 }
 
 /**
