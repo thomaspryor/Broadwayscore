@@ -1165,6 +1165,7 @@ function decideInclusion(review, show, guards, filePath) {
     return { included: false, reason: 'namedNonReviewUrl' };
   }
   // BRO-7210: mirrors rebuild-all-reviews.js's skippedSubmissionRefusedUrl (same predicate).
+  // The predicate reads review.source, review.url, review.allowNonReviewUrl and review.namedNonReviewUrlManualClear.
   if (typeof guards.isRefusedSubmissionUrlRecord === 'function' && guards.isRefusedSubmissionUrlRecord(review)) {
     return { included: false, reason: 'submissionRefusedUrl' };
   }
