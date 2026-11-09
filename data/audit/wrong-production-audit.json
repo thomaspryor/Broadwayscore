@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-09T00:45:52.427Z",
+  "timestamp": "2026-11-09T01:13:43.720Z",
   "stats": {
-    "totalReviews": 80625,
-    "alreadyFlagged": 22087,
+    "totalReviews": 80635,
+    "alreadyFlagged": 22093,
     "dateGuardCatches": 219,
-    "directorMismatch": 3564,
-    "tvFilmSignals": 2296,
-    "londonSignals": 3639,
-    "offBroadwaySignals": 749,
+    "directorMismatch": 3571,
+    "tvFilmSignals": 2303,
+    "londonSignals": 3650,
+    "offBroadwaySignals": 752,
     "yearMismatch": 368,
-    "noPublishDate": 8384
+    "noPublishDate": 8388
   },
   "findings": [
     {
@@ -4790,6 +4790,20 @@
     },
     {
       "showId": "american-psycho-off-west-end-2026",
+      "file": "thestage--sam-marlowe.json",
+      "score": 57,
+      "publishDate": "2026-02-02",
+      "url": "https://www.thestage.co.uk/reviews/american-psycho-review-almeida-theatre-london",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rupert goold\" from american-psycho-2016"
+        }
+      ]
+    },
+    {
+      "showId": "american-psycho-off-west-end-2026",
       "file": "timeout-london--andrzej-lukowski.json",
       "score": 82,
       "publishDate": "2026-02-01",
@@ -7504,6 +7518,19 @@
       ]
     },
     {
+      "showId": "bank-of-dave-the-musical-lowry-regional-2026",
+      "file": "thestage--matt-barton.json",
+      "publishDate": "2026-05-08",
+      "url": "https://www.thestage.co.uk/reviews/bank-of-dave-the-musical-review-the-lowry-salford-rob-madge",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "barcelona-west-end-2024",
       "file": "british-theatre--howard-loxton.json",
       "score": 76,
@@ -7929,6 +7956,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "beaches-2026",
+      "file": "times-uk--clive-davis.json",
+      "score": 45,
+      "publishDate": null,
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/state-of-broadway-2026-96cq9lwrh",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"apple tv\""
         }
       ]
     },
@@ -11723,6 +11764,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"debbie allen\" from cat-on-a-hot-tin-roof-2008"
+        }
+      ]
+    },
+    {
+      "showId": "cat-on-a-hot-tin-roof-west-end-2017",
+      "file": "nytimes--ben-brantley.json",
+      "score": 89,
+      "publishDate": "2017-07-26T09:07:48-04:00",
+      "url": "https://www.nytimes.com/2017/07/25/theater/cat-on-a-hot-tin-roof-sienna-miller-london-review.html?partner=rss&emc=rss",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rob ashford\" from cat-on-a-hot-tin-roof-2013"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
@@ -17861,6 +17921,34 @@
     },
     {
       "showId": "death-of-england-closing-time-west-end-2024",
+      "file": "thestage--sam-marlowe.json",
+      "score": 64,
+      "publishDate": "2024-08-29",
+      "url": "https://www.thestage.co.uk/reviews/death-of-england-closing-time-review-sohoplace-london-erin-doherty-and-sharon-duncan-brewster-clint-dyer-roy-williams",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"clint dyer\" from death-of-england-delroy-west-end-2020"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-england-closing-time-west-end-2024",
+      "file": "thestage--unknown.json",
+      "score": 78,
+      "publishDate": "2024-08-29",
+      "url": "https://www.thestage.co.uk/reviews/death-of-england-closing-time-review-sohoplace-london-erin-doherty-and-sharon-duncan-brewster-clint-dyer-roy-williams",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"clint dyer\" from death-of-england-delroy-west-end-2020"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-england-closing-time-west-end-2024",
       "file": "whatsonstage--alun-hood.json",
       "score": 65,
       "publishDate": "2024-08-29",
@@ -18024,6 +18112,19 @@
       "score": 82,
       "publishDate": "2026-09-17",
       "url": "https://theatreweekly.com/review-deep-heat-rivalry-at-the-other-palace-studio/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "deep-heat-rivalry-off-west-end-2026",
+      "file": "thestage--paul-vale.json",
+      "publishDate": "2026-09-21",
+      "url": "https://www.thestage.co.uk/reviews/deep-heat-rivalry-review-the-other-palace-london",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -24020,6 +24121,20 @@
       "score": 78,
       "publishDate": "2026-08-10",
       "url": "https://www.thenorthernecho.co.uk/news/national/26449545.game-thrones-mad-king-reviews-hail-titanic-display-theatre-magic/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "game-of-thrones-the-mad-king-regional-2026",
+      "file": "times-uk--clive-davis.json",
+      "score": 36,
+      "publishDate": "8/10/2026",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/game-of-thrones-the-mad-king-review-stage-version-lacks-pace-sex-and-gore-cz8qgzhrw",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -33095,6 +33210,20 @@
       "score": 91,
       "publishDate": "2025-07-24",
       "url": "https://www.thereviewshub.com/inter-alia-national-theatre-london/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from inter-alia-2026"
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2025",
+      "file": "thestage--sam-marlowe.json",
+      "score": 39,
+      "publishDate": "2025-07-24",
+      "url": "https://www.thestage.co.uk/reviews/inter-alia-review-lyttelton-national-theatre-london-rosamund-pike-suzie-miller",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -42426,6 +42555,20 @@
       "score": 36,
       "publishDate": "2022-12-12",
       "url": "https://www.theatrely.com/post/merrily-we-roll-along-sondheims-sisyphus-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"maria friedman\" from merrily-we-roll-along-2023"
+        }
+      ]
+    },
+    {
+      "showId": "merrily-we-roll-along-off-broadway-2022",
+      "file": "thestage--nicole-serratore.json",
+      "score": null,
+      "publishDate": "2022-12-12",
+      "url": "https://www.thestage.co.uk/reviews/merrily-we-roll-along-review-new-york-theatre-workshop-stephen-sondheim-jonathan-groff-daniel-radcliffe",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -55582,6 +55725,11 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
@@ -69160,6 +69308,19 @@
       ]
     },
     {
+      "showId": "the-guy-who-didnt-like-musicals-west-end-2026",
+      "file": "thestage--tom-wicker.json",
+      "publishDate": "2026-05-18",
+      "url": "https://thestage.co.uk/reviews/the-guy-who-didnt-like-musicals-review-apollo-theatre-london-starkid",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "the-heart-off-broadway-2026",
       "file": "lighting-and-sound-america--david-barbour.json",
       "score": 87,
@@ -69644,6 +69805,20 @@
       "score": 62,
       "publishDate": "2011-04-25",
       "url": "http://theater.nytimes.com/2011/04/26/theater/reviews/the-house-of-blue-leaves-with-ben-stiller-and-edie-falco-review.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry zaks\" from the-house-of-blue-leaves-1986"
+        }
+      ]
+    },
+    {
+      "showId": "the-house-of-blue-leaves-2011",
+      "file": "nytimes--unknown.json",
+      "score": 41,
+      "publishDate": "April 25, 2011",
+      "url": "https://theater.nytimes.com/2011/04/26/theater/reviews/the-house-of-blue-leaves-with-ben-stiller-and-edie-falco-review.html?adxnnl=1&ref=theater&adxnnlx=1303784480-tY77evBC2AGZ/4XBamyPLg",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -75290,6 +75465,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"jim sharman\" from the-rocky-horror-show-1975"
+        }
+      ]
+    },
+    {
+      "showId": "the-rocky-horror-show-2026",
+      "file": "nytimes--charlotte-dulany.json",
+      "score": null,
+      "publishDate": "2026-04-24",
+      "url": "https://www.nytimes.com/2026/04/24/theater/6-shows-our-theater-critics-are-talking-about.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"apple tv\""
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"minetta lane\""
         }
       ]
     },
@@ -84609,6 +84803,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "wolf-hall-parts-one-and-two-2015",
+      "file": "nytimes--ben-brantley.json",
+      "score": 75,
+      "publishDate": "2015-04-09",
+      "url": "https://www.nytimes.com/2015/04/10/theater/review-wolf-hall-the-stage-version-untangles-tudor-history-with-relish.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -94356,6 +94564,20 @@
     },
     {
       "showId": "cleansed-off-west-end-2026",
+      "file": "thestage--tom-wicker.json",
+      "score": 55,
+      "publishDate": "2026-07-30",
+      "url": "https://www.thestage.co.uk/reviews/cleansed-review-almeida-theatre-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "cleansed-off-west-end-2026",
       "file": "times-uk--clive-davis.json",
       "score": 17,
       "publishDate": "2026-07-29",
@@ -103408,6 +103630,19 @@
     },
     {
       "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
+      "file": "nytimes--ben-brantley.json",
+      "publishDate": "2016-07-25",
+      "url": "https://www.nytimes.com/2016/07/26/theater/review-harry-potter-and-the-cursed-child-casts-a-spell-onstage.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "harry-potter-and-the-cursed-child-both-parts-west-end-2021",
       "file": "the-spectator-uk--lloyd-evans.json",
       "score": 25,
       "publishDate": "2016-08-06",
@@ -104721,6 +104956,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "high-society-off-west-end-2026",
+      "file": "thestage--neil-norman.json",
+      "score": 77,
+      "publishDate": "June 4th, 2026",
+      "url": "https://www.thestage.co.uk/reviews/high-society-review-barbican-theatre-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
@@ -106384,6 +106633,19 @@
     },
     {
       "showId": "indian-ink-off-west-end-2025",
+      "file": "thestage--unknown.json",
+      "publishDate": "2025-12-17",
+      "url": "https://www.thestage.co.uk/reviews/indian-ink-review-hampstead-theatre-london-tom-stoppard-felicity-kendal-ruby-ashbourne-serkis-gavi-singh-chera",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "indian-ink-off-west-end-2025",
       "file": "times-uk--clive-davis.json",
       "score": 54,
       "publishDate": "2025-12-16",
@@ -107426,6 +107688,20 @@
       "score": 94,
       "publishDate": "April 21, 2011",
       "url": "https://www.nytimes.com/2011/04/22/theater/reviews/jerusalem-with-mark-rylance-review.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "jerusalem-2011",
+      "file": "nytimes--unknown.json",
+      "score": null,
+      "publishDate": "2011-04-22",
+      "url": "https://www.nytimes.com/2011/04/22/theater/reviews/jerusalem-with-mark-rylance-review.html?eafs_enabled=false",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -122014,6 +122290,20 @@
       ]
     },
     {
+      "showId": "sister-act-2011",
+      "file": "nytimes--charles-isherwood.json",
+      "score": 45,
+      "publishDate": "2011-04-21T08:23:12-04:00",
+      "url": "http://theater.nytimes.com/2011/04/21/theater/reviews/sister-act-comes-to-broadway-review.html?ref=theater",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "sisters-regional-2026",
       "file": "nytimes--elisabeth-vincentelli.json",
       "score": null,
@@ -129402,6 +129692,20 @@
       ]
     },
     {
+      "showId": "the-goat-or-who-is-sylvia-west-end-2017",
+      "file": "nytimes--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.nytimes.com/2017/04/24/theater/london-theater-consent-goat.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "the-government-inspector-chichester-festival-regional-2025",
       "file": "theatreandtonic--rosie.json",
       "score": 62,
@@ -131017,6 +131321,20 @@
       ]
     },
     {
+      "showId": "the-land-of-the-living-west-end-2025",
+      "file": "thestage--unknown.json",
+      "score": 76,
+      "publishDate": null,
+      "url": "https://www.thestage.co.uk/reviews/the-land-of-the-living-review-national-theatre-london-stephen-daldry-juliet-stevenson",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
       "showId": "the-last-bimbo-of-the-apocalypse-off-broadway-2025",
       "file": "nytg--amelia-merrill.json",
       "score": 74,
@@ -131063,6 +131381,20 @@
       "file": "thestage--tom-wicker.json",
       "score": 72,
       "publishDate": "2025-02-27",
+      "url": "https://www.thestage.co.uk/reviews/the-last-laugh-review-noel-coward-theatre-london-paul-hendy-tommy-cooper",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-last-laugh-west-end-2025",
+      "file": "thestage--unknown.json",
+      "score": 72,
+      "publishDate": null,
       "url": "https://www.thestage.co.uk/reviews/the-last-laugh-review-noel-coward-theatre-london-paul-hendy-tommy-cooper",
       "findings": [
         {
@@ -135672,6 +136004,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "the-unbelievers-off-broadway-2026",
+      "file": "nytimes--laura-collins-hughes.json",
+      "score": 78,
+      "publishDate": "2026-11-06",
+      "url": "https://www.nytimes.com/2026/11/06/theater/the-unbelievers-222-a-ghost-story-review-ambrose.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
         }
       ]
     },
@@ -140639,6 +140985,20 @@
       "file": "standard--unknown.json",
       "publishDate": "July 27th, 2023",
       "url": "https://www.standard.co.uk/culture/theatre/theatre-podcast-frankie-bridge-regents-park-cage-aux-folles-word-play-royal-court-b1100465.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "word-play-west-end-2023",
+      "file": "thestage--natasha-tripney.json",
+      "score": 62,
+      "publishDate": "July 27th, 2023",
+      "url": "https://www.thestage.co.uk/reviews/word-play-review-jerwood-theatre-upstairs-royal-court-theatre-london-rabiah-hussain",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

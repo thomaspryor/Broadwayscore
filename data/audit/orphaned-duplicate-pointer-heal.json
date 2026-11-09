@@ -1,7 +1,7 @@
 {
-  "generated": "2026-11-09T00:32:14.601Z",
+  "generated": "2026-11-09T01:04:48.280Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 45,
+  "count": 47,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -130,6 +130,13 @@
       "field": "duplicateOf"
     },
     {
+      "showId": "la-traviata-off-broadway-2026",
+      "loserFile": "sunday-times--richard-morrison.json",
+      "targetFile": "times-uk--richard-morrison-chief-culture-writer.json",
+      "reason": "orphaned-duplicate-heal: times-uk--richard-morrison-chief-culture-writer.json was flagged invalid after sunday-times--richard-morrison.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
       "showId": "lost-atoms-off-west-end-2026",
       "loserFile": "standard--unknown.json",
       "targetFile": "standard--nick-curtis.json",
@@ -183,6 +190,13 @@
       "loserFile": "the-sun--dominic-maxwell.json",
       "targetFile": "sunday-times--dominic-maxwell.json",
       "reason": "orphaned-duplicate-heal: sunday-times--dominic-maxwell.json was flagged invalid after the-sun--dominic-maxwell.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "oliver-west-end-2024",
+      "loserFile": "thestage--matthew-hemley.json",
+      "targetFile": "thestage--matt-hemley.json",
+      "reason": "orphaned-duplicate-heal: thestage--matt-hemley.json was flagged invalid after thestage--matthew-hemley.json was pointed at it",
       "field": "duplicateOf"
     },
     {
