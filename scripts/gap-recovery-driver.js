@@ -112,20 +112,23 @@ function planCandidates({ dir, shows, outlets, ledgerIndex, runGates }) {
       return e;
     };
     const owned = L.ownedRecordReason(review);
-    const sel = owned ? { strategy: null, skipped: [{ strategy: 'ANY', reason: owned }] } : selectStrategy({
+    // Re-selection with extra run gates: a browser session that fails at run
+    // time falls through to the next strategy instead of starving it.
+    const reselect = (extraGates = {}) => selectStrategy({
       gapClass: row.gapClass,
       hasUrl: !!review.url,
       hasAdapter: !!adapterFor(review.outletId),
       eligible,
-      runGates,
+      runGates: { ...runGates, ...extraGates },
       only: OPTS.only,
     });
+    const sel = owned ? { strategy: null, skipped: [{ strategy: 'ANY', reason: owned }] } : reselect();
     out.push({
       reviewKey, filePath, showId: row.showId, file: row.file, outletId: review.outletId || row.outletId,
       outlet: review.outlet, criticName: review.criticName, source: review.source, url: review.url || null,
       gapClass: row.gapClass, subclass: row.subclass, recency: row.recency,
       showDate: (show && (show.openingDate || show.previewsStartDate)) || null,
-      show, strategy: sel.strategy, skipped: sel.skipped, bytesBefore: (review.fullText || '').length,
+      show, strategy: sel.strategy, skipped: sel.skipped, bytesBefore: (review.fullText || '').length, reselect: owned ? null : reselect,
     });
   }
   out.sort(compareCandidates);
@@ -287,15 +290,12 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
           record(c, 'BROWSER_SESSION', { outcome: 'browser_unavailable', reason: k.reason });
         }
       }
-      const strategy = c.strategy;
+      let strategy = c.strategy;
       stats.attempted++;
       console.log(`\n[${i + 1}/${work.length}] ${c.reviewKey} ${c.gapClass} -> ${strategy}`);
 
       let got;
-      if (strategy === 'REFETCH_FREE') got = await S.refetchFree(c);
-      else if (strategy === 'ARCHIVE') got = await S.archive(c);
-      else if (strategy === 'URL_REDISCOVER') got = await S.urlRediscover(c, serpKeys);
-      else if (strategy === 'BROWSER_SESSION') {
+      if (strategy === 'BROWSER_SESSION') {
         const ad = adapterFor(c.outletId);
         if (!sessions.has(ad.name)) {
           const o = gui.available ? await openSession(ad) : { ok: false, outcome: 'browser_unavailable', reason: 'gui' };
@@ -304,7 +304,24 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
         const s = sessions.get(ad.name);
         got = s.failed ? { ok: false, outcome: s.failed.outcome, reason: s.failed.reason } : await S.browserSession(c, s);
         if (!got.ok && got.outcome === 'auth_failed' && !s.failed) { await s.close().catch(() => {}); sessions.set(ad.name, { failed: got }); }
-      } else got = { ok: false, outcome: 'non_evidence', reason: `strategy_unbuilt:${strategy}` };
+        // A session-level failure (no session for the outlet this run) is
+        // non-evidence: record it and fall through to the next eligible
+        // strategy, so a broken login never starves ARCHIVE run after run.
+        const failed = sessions.get(ad.name).failed;
+        if (!got.ok && failed && c.reselect) {
+          record(c, 'BROWSER_SESSION', { outcome: got.outcome, reason: got.reason });
+          const next = c.reselect({ BROWSER_SESSION: { ok: false, reason: `${failed.outcome}:${failed.reason}` } }).strategy;
+          if (!next) { console.log(`  ✗ ${got.outcome} (${got.reason}); no fallback strategy`); continue; }
+          console.log(`  browser ${got.outcome} (${got.reason}); falling back to ${next}`);
+          strategy = next;
+          got = null;
+        }
+      }
+      if (got) { /* browser result above */ }
+      else if (strategy === 'REFETCH_FREE') got = await S.refetchFree(c);
+      else if (strategy === 'ARCHIVE') got = await S.archive(c);
+      else if (strategy === 'URL_REDISCOVER') got = await S.urlRediscover(c, serpKeys);
+      else got = { ok: false, outcome: 'non_evidence', reason: `strategy_unbuilt:${strategy}` };
 
       // URL rediscovery spends the file's own SERP budget (shared serpRetryCount).
       if (strategy === 'URL_REDISCOVER' && got.serpRan) {
