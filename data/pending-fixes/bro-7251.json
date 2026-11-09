@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7251",
   "planId": "9f3c92ce-51e7-43a1-b310-621f8c34e5d2",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-09T22:36:57.863Z",
   "submitter": {
     "name": null,
@@ -74,5 +74,39 @@
         "description": "shows.json: just-in-time-2025.closingDateSource"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-09T23:34:39.602Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for the-rocky-horror-show-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for the-rocky-horror-show-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for operation-mincemeat-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for operation-mincemeat-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for just-in-time-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for just-in-time-2025"
+    }
+  ],
+  "executedIn": "ci"
 }
