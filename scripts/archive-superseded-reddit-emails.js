@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 /**
  * archive-superseded-reddit-emails.js: archive the older Reddit draft emails
- * in the owner's Gmail inbox, keeping the newest per show and subreddit.
+ * in the owner's Gmail inbox, keeping the newest per show and subreddit, and
+ * every such email once it is more than 7 days old.
  * Logic and rationale: scripts/lib/reddit-email-archive.js.
  *
  *   node scripts/archive-superseded-reddit-emails.js            # archive them

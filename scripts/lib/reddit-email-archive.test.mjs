@@ -130,7 +130,7 @@ const INBOX = [
 
 test('sweep archives only the superseded ids, removing only the INBOX label', async () => {
   const { fetchImpl, calls } = fakeGmail({ messages: INBOX });
-  const r = await a.sweep({ env: ENV, fetchImpl, log: () => {} });
+  const r = await a.sweep({ now: () => 10000, env: ENV, fetchImpl, log: () => {} });
   assert.equal(r.archived, 1);
   const patch = calls.filter((c) => c.path.endsWith('/batchModify'));
   assert.equal(patch.length, 1);
@@ -139,7 +139,7 @@ test('sweep archives only the superseded ids, removing only the INBOX label', as
 
 test('sweep --dry-run changes nothing', async () => {
   const { fetchImpl, calls } = fakeGmail({ messages: INBOX });
-  const r = await a.sweep({ env: ENV, fetchImpl, dryRun: true, log: () => {} });
+  const r = await a.sweep({ now: () => 10000, env: ENV, fetchImpl, dryRun: true, log: () => {} });
   assert.equal(r.archived, 0);
   assert.equal(r.wouldArchive, 1);
   assert.equal(calls.filter((c) => c.method === 'POST' && c.path.endsWith('/batchModify')).length, 0);
@@ -147,44 +147,44 @@ test('sweep --dry-run changes nothing', async () => {
 
 test('sweep with nothing superseded makes no write call', async () => {
   const { fetchImpl, calls } = fakeGmail({ messages: [INBOX[0], INBOX[2]] });
-  const r = await a.sweep({ env: ENV, fetchImpl, log: () => {} });
+  const r = await a.sweep({ now: () => 10000, env: ENV, fetchImpl, log: () => {} });
   assert.equal(r.archived, 0);
   assert.equal(calls.filter((c) => c.path.endsWith('/batchModify')).length, 0);
 });
 
 test('a read-only key is reported as such, not as a generic failure', async () => {
   const { fetchImpl } = fakeGmail({ messages: INBOX, patchStatus: 403, patchBody: { error: { status: 'PERMISSION_DENIED', message: 'Request had insufficient authentication scopes.' } } });
-  await assert.rejects(() => a.sweep({ env: ENV, fetchImpl, log: () => {} }), a.GmailScopeError);
+  await assert.rejects(() => a.sweep({ now: () => 10000, env: ENV, fetchImpl, log: () => {} }), a.GmailScopeError);
 });
 
 test('missing credentials fail with a plain message and no network call', async () => {
   const fetchImpl = async () => { throw new Error('should not be called'); };
-  await assert.rejects(() => a.sweep({ env: {}, fetchImpl, log: () => {} }), /not set/);
+  await assert.rejects(() => a.sweep({ now: () => 10000, env: {}, fetchImpl, log: () => {} }), /not set/);
 });
 
 test('a refused token refresh surfaces the Google error code only', async () => {
   const fetchImpl = async () => ({ ok: false, status: 400, json: async () => ({ error: 'invalid_grant', error_description: 'secret-ish detail' }) });
-  await assert.rejects(() => a.sweep({ env: ENV, fetchImpl, log: () => {} }), (e) => /invalid_grant/.test(e.message) && !/secret-ish/.test(e.message));
+  await assert.rejects(() => a.sweep({ now: () => 10000, env: ENV, fetchImpl, log: () => {} }), (e) => /invalid_grant/.test(e.message) && !/secret-ish/.test(e.message));
 });
 
 const READONLY = 'https://www.googleapis.com/auth/gmail.readonly';
 
 test('a read-only key is caught from its granted scope before any write is attempted', async () => {
   const { fetchImpl, calls } = fakeGmail({ messages: INBOX, scope: READONLY });
-  await assert.rejects(() => a.sweep({ env: ENV, fetchImpl, log: () => {} }), a.GmailScopeError);
+  await assert.rejects(() => a.sweep({ now: () => 10000, env: ENV, fetchImpl, log: () => {} }), a.GmailScopeError);
   assert.equal(calls.filter((c) => c.path.endsWith('/batchModify')).length, 0);
 });
 
 test('a read-only key can still do a dry run, so the plan can be checked before the renewal', async () => {
   const { fetchImpl } = fakeGmail({ messages: INBOX, scope: READONLY });
-  const r = await a.sweep({ env: ENV, fetchImpl, dryRun: true, log: () => {} });
+  const r = await a.sweep({ now: () => 10000, env: ENV, fetchImpl, dryRun: true, log: () => {} });
   assert.equal(r.wouldArchive, 1);
 });
 
 test('a 403 rate limit is not mistaken for a read-only key', async () => {
   const body = { error: { status: 'PERMISSION_DENIED', message: 'Rate Limit Exceeded', errors: [{ reason: 'userRateLimitExceeded' }] } };
   const { fetchImpl } = fakeGmail({ messages: INBOX, patchStatus: 403, patchBody: body });
-  await assert.rejects(() => a.sweep({ env: ENV, fetchImpl, log: () => {} }), (e) => !(e instanceof a.GmailScopeError) && /403/.test(e.message));
+  await assert.rejects(() => a.sweep({ now: () => 10000, env: ENV, fetchImpl, log: () => {} }), (e) => !(e instanceof a.GmailScopeError) && /403/.test(e.message));
 });
 
 test('the sweep waits for the just-sent email, then archives its predecessor', async () => {
@@ -192,7 +192,7 @@ test('the sweep waits for the just-sent email, then archives its predecessor', a
   const withNew = [...INBOX, msg('n42', newest, 5000)];
   const { fetchImpl, calls } = fakeGmail({ messages: INBOX, messagesAt: (n) => (n >= 3 ? withNew : INBOX) });
   let slept = 0;
-  const r = await a.sweep({ env: ENV, fetchImpl, expectSubjects: [newest], sleep: async () => { slept++; }, log: () => {} });
+  const r = await a.sweep({ now: () => 10000, env: ENV, fetchImpl, expectSubjects: [newest], sleep: async () => { slept++; }, log: () => {} });
   assert.equal(slept, 2);
   assert.deepEqual(r.missing, []);
   const patch = JSON.parse(calls.find((c) => c.path.endsWith('/batchModify')).body);
@@ -202,7 +202,7 @@ test('the sweep waits for the just-sent email, then archives its predecessor', a
 test('if the just-sent email never shows, the sweep gives up waiting without failing or over-archiving', async () => {
   const { fetchImpl, calls } = fakeGmail({ messages: INBOX });
   const logs = [];
-  const r = await a.sweep({ env: ENV, fetchImpl, expectSubjects: ['Updated Reddit post: Nero (99/100) for r/TheWestEnd'], waitMs: 30000, sleep: async () => {}, log: (m) => logs.push(m) });
+  const r = await a.sweep({ now: () => 10000, env: ENV, fetchImpl, expectSubjects: ['Updated Reddit post: Nero (99/100) for r/TheWestEnd'], waitMs: 30000, sleep: async () => {}, log: (m) => logs.push(m) });
   assert.equal(r.missing.length, 1);
   assert.ok(logs.some((l) => /not in the inbox/.test(l)));
   assert.deepEqual(JSON.parse(calls.find((c) => c.path.endsWith('/batchModify')).body).ids, ['n41']);
@@ -252,7 +252,7 @@ test('sweep reads the show id header from Gmail and uses it', async () => {
     { ...msg('a1', 'Updated Reddit post: Hamlet (60/100) for r/TheWestEnd', 1000), showId: 'x' },
     { ...msg('b1', 'Updated Reddit post: Hamlet (61/100) for r/TheWestEnd', 2000), showId: 'y' },
   ] });
-  const r = await a.sweep({ env: ENV, fetchImpl, log: () => {} });
+  const r = await a.sweep({ now: () => 10000, env: ENV, fetchImpl, log: () => {} });
   assert.equal(r.archived, 0);
   assert.ok(calls.some((c) => c.path.includes('/messages/a1')));
 });
@@ -260,7 +260,7 @@ test('sweep reads the show id header from Gmail and uses it', async () => {
 test('sweep follows Gmail result pages and sees an email on the second page', async () => {
   const many = Array.from({ length: 5 }, (_, i) => msg(`m${i}`, `Updated Reddit post: Nero (4${i}/100) for r/TheWestEnd`, 1000 + i));
   const { fetchImpl, calls } = fakeGmail({ messages: many, pageSize: 2 });
-  const r = await a.sweep({ env: ENV, fetchImpl, log: () => {} });
+  const r = await a.sweep({ now: () => 10000, env: ENV, fetchImpl, log: () => {} });
   assert.equal(r.candidates, 5);
   assert.equal(r.archived, 4);
   assert.equal(JSON.parse(calls.find((c) => c.path.endsWith('/batchModify')).body).ids.includes('m4'), false);
@@ -270,6 +270,47 @@ test('while waiting for a just-sent email, messages already read are not fetched
   const early = [msg('n40', 'Updated Reddit post: Nero (40/100) for r/TheWestEnd', 1000)];
   const late = [...early, msg('n41', 'Updated Reddit post: Nero (41/100) for r/TheWestEnd', 2000)];
   const { fetchImpl, calls } = fakeGmail({ messages: late, messagesAt: (n) => (n >= 3 ? late : early) });
-  await a.sweep({ env: ENV, fetchImpl, log: () => {}, sleep: async () => {}, expectSubjects: ['Updated Reddit post: Nero (41/100) for r/TheWestEnd'] });
+  await a.sweep({ now: () => 10000, env: ENV, fetchImpl, log: () => {}, sleep: async () => {}, expectSubjects: ['Updated Reddit post: Nero (41/100) for r/TheWestEnd'] });
   assert.equal(calls.filter((c) => c.path.endsWith('/messages/n40')).length, 1);
+});
+
+// ---- 7-day expiry (owner 2026-11-09: "they should stop after 7 days") ----
+
+const DAY = 86400000;
+const NOW = 1_800_000_000_000;
+
+test('an email older than 7 days is archived even when it is the only or newest one of its draft', () => {
+  const m = [
+    msg('old-only', 'Reddit post ready: Midnight (74/100) for r/offbroadwayNYC', NOW - 18 * DAY),
+    msg('old-newest', 'Updated Reddit post: Phyl (80/100) for r/offbroadwayNYC', NOW - 8 * DAY),
+    msg('fresh', 'Updated Reddit post: Nero (40/100) for r/TheWestEnd', NOW - 1 * DAY),
+  ];
+  const p = a.planArchive(m, { nowMs: NOW });
+  assert.deepEqual(p.archive.sort(), ['old-newest', 'old-only']);
+  assert.deepEqual(p.keep, ['fresh']);
+});
+
+test('exactly 7 days old is still kept, and an older email never revives a group', () => {
+  const m = [
+    msg('edge', 'Updated Reddit post: Medea (76/100) for r/offbroadwayNYC', NOW - 7 * DAY),
+    msg('stale', 'Updated Reddit post: Medea (74/100) for r/offbroadwayNYC', NOW - 9 * DAY),
+  ];
+  const p = a.planArchive(m, { nowMs: NOW });
+  assert.deepEqual(p.keep, ['edge']);
+  assert.deepEqual(p.archive, ['stale']);
+});
+
+test('without a clock, planArchive applies no age rule (the old behaviour)', () => {
+  const m = [msg('x', 'Updated Reddit post: Medea (76/100) for r/offbroadwayNYC', 1)];
+  assert.deepEqual(a.planArchive(m).archive, []);
+});
+
+test('sweep archives an expired email and only removes the INBOX label', async () => {
+  const { fetchImpl, calls } = fakeGmail({ messages: [
+    msg('old', 'Reddit post ready: Midnight (74/100) for r/offbroadwayNYC', NOW - 18 * DAY),
+    msg('new', 'Updated Reddit post: Nero (40/100) for r/TheWestEnd', NOW - DAY),
+  ] });
+  const r = await a.sweep({ env: ENV, fetchImpl, log: () => {}, now: () => NOW });
+  assert.equal(r.archived, 1);
+  assert.deepEqual(JSON.parse(calls.find((c) => c.path.endsWith('/batchModify')).body), { ids: ['old'], removeLabelIds: ['INBOX'] });
 });

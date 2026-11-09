@@ -10,6 +10,10 @@
  * or more "Updated" emails and a "Still ready" reminder in the inbox at once.
  * Only the newest is useful, since each later one carries the redrafted text.
  *
+ * Also archived: any such email older than 7 days (MAX_AGE_DAYS), even the newest
+ * of its draft. The drafts stop being emailed after a few days, so the last one
+ * would otherwise sit in the inbox forever.
+ *
  * Design: a SWEEP, not a per-send hook. It lists the inbox, groups the emails
  * by (show, subreddit), keeps the newest of each group and archives the rest.
  * Re-running changes nothing, a missed run is caught by the next one, and no
@@ -37,6 +41,8 @@ const GMAIL = 'https://gmail.googleapis.com/gmail/v1/users/me';
 // Gmail search for the candidates. The exact filtering happens in code below.
 const LIST_QUERY = `in:inbox from:${SENDER} (subject:"Reddit post" OR subject:"Still ready to post")`;
 const MAX_MESSAGES = 500;
+// Owner 2026-11-09: these emails should leave the inbox after 7 days, even the newest of a draft.
+const MAX_AGE_DAYS = 7;
 const FETCH_CONCURRENCY = 8;
 // The sweep runs seconds after Resend accepted the last email, and Gmail may not
 // have it yet. Wait up to this long for the emails the caller just sent.
@@ -58,14 +64,18 @@ function isOurSender(from) {
 /**
  * Which message ids to archive.
  * @param {Array<{id:string, subject:string, from:string, internalDate:number|string}>} messages inbox messages
+ * @param {{ nowMs?: number, maxAgeDays?: number }} [opts] an email older than maxAgeDays is archived even when it is the newest of its draft; no nowMs means no age rule
  * @returns {{ archive: string[], keep: string[], groups: number }}
  */
-function planArchive(messages) {
+function planArchive(messages, { nowMs = null, maxAgeDays = MAX_AGE_DAYS } = {}) {
   const groups = new Map();
+  const expired = [];
   for (const m of messages || []) {
     if (!m || !isOurSender(m.from)) continue;
     const p = parseDraftSubject(m.subject);
     if (!p) continue;
+    const at = Number(m.internalDate) || 0;
+    if (nowMs !== null && at && nowMs - at > maxAgeDays * 86400000) { expired.push(m.id); continue; }
     const key = `${p.showTitle.toLowerCase()}\u0000${p.subreddit}`;
     if (!groups.has(key)) groups.set(key, []);
     groups.get(key).push({ id: m.id, at: Number(m.internalDate) || 0, showId: String(m.showId || '').trim() });
@@ -79,7 +89,7 @@ function planArchive(messages) {
     if (ids.size <= 1) { sets.push(list); continue; }
     for (const id of ids) sets.push(list.filter((x) => x.showId === id));
   }
-  const archive = [];
+  const archive = [...expired];
   const keep = [];
   for (const list of sets) {
     // Newest first; the id breaks a same-millisecond tie so the choice is stable.
@@ -174,7 +184,7 @@ async function listCandidates(fetchImpl, token, cache = new Map()) {
  * @param {Function} [opts.log]
  * @returns {Promise<{ candidates:number, groups:number, archived:number, wouldArchive:number, dryRun:boolean, missing:string[] }>}
  */
-async function sweep({ env = process.env, fetchImpl = fetch, dryRun = false, expectSubjects = [], waitMs = DEFAULT_WAIT_MS, sleep = (ms) => new Promise((r) => setTimeout(r, ms)), log = console.log } = {}) {
+async function sweep({ env = process.env, fetchImpl = fetch, dryRun = false, expectSubjects = [], waitMs = DEFAULT_WAIT_MS, sleep = (ms) => new Promise((r) => setTimeout(r, ms)), log = console.log, now = Date.now } = {}) {
   const { token, scope } = await accessToken(env, fetchImpl);
   const cache = new Map();
   let messages = await listCandidates(fetchImpl, token, cache);
@@ -189,8 +199,8 @@ async function sweep({ env = process.env, fetchImpl = fetch, dryRun = false, exp
   // Not fatal: the older emails stay one more round and the next sweep archives them.
   if (missing.length) log(`::warning::${missing.length} just-sent email(s) not in the inbox after ${Math.round(waitMs / 1000)}s; their predecessors are archived on the next sweep`);
 
-  const plan = planArchive(messages);
-  log(`${messages.length} Reddit draft email(s) in the inbox across ${plan.groups} draft(s); ${plan.archive.length} superseded`);
+  const plan = planArchive(messages, { nowMs: now() });
+  log(`${messages.length} Reddit draft email(s) in the inbox across ${plan.groups} draft(s); ${plan.archive.length} to archive (superseded or over ${MAX_AGE_DAYS} days old)`);
   // The refresh response names the granted scopes. A key without gmail.modify cannot
   // write, so say so before trying instead of after a 403.
   if (plan.archive.length && !dryRun && scope && !scope.split(/\s+/).includes(MODIFY_SCOPE)) {
@@ -208,4 +218,4 @@ async function sweep({ env = process.env, fetchImpl = fetch, dryRun = false, exp
   return { candidates: messages.length, groups: plan.groups, archived: dryRun ? 0 : plan.archive.length, wouldArchive: plan.archive.length, dryRun, missing };
 }
 
-module.exports = { SENDER, LEADS, MODIFY_SCOPE, SHOW_HEADER, MAX_MESSAGES, LIST_QUERY, parseDraftSubject, isOurSender, planArchive, sweep, listCandidates, GmailScopeError };
+module.exports = { SENDER, LEADS, MODIFY_SCOPE, SHOW_HEADER, MAX_MESSAGES, MAX_AGE_DAYS, LIST_QUERY, parseDraftSubject, isOurSender, planArchive, sweep, listCandidates, GmailScopeError };
