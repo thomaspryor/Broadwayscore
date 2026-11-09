@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-11-09T02:41:44.679Z",
+  "runDate": "2026-11-09T10:55:07.088Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "the-imaginary-invalid-2026,the-kick-inside-off-broadway-2026,a-few-good-men-2026,tosca-english-national-opera-west-end-2026",
+    "showFilter": "wanted-2022,iphigenie-en-tauride-english-national-opera-west-end-2026,msblackforpresident-off-broadway-2026,nero-off-west-end-2026,broom-play-off-broadway-2026,the-steel-man-off-broadway-2026,dr-seuss-how-the-grinch-stole-christmas-tour-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,53 +12,55 @@
   },
   "summary": {
     "processed": 2,
-    "failed": 7,
+    "failed": 2,
     "skipped": 0,
-    "successRate": "22.2%"
+    "successRate": "50.0%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 0,
+    "scrapingdog": 1,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 8,
-    "tier1Success": 3,
+    "tier1Attempts": 3,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 5,
-    "tier1_9Success": 3,
-    "tier2Attempts": 2,
-    "tier2Success": 0,
-    "tier3Attempts": 3,
-    "tier3Success": 1,
-    "tier3_6Attempts": 2,
+    "tier1_9Attempts": 2,
+    "tier1_9Success": 1,
+    "tier2Attempts": 3,
+    "tier2Success": 1,
+    "tier3Attempts": 2,
+    "tier3Success": 0,
+    "tier3_6Attempts": 1,
     "tier3_6Success": 0,
     "tier4Attempts": 3,
     "tier4Success": 0,
-    "totalFailed": 7,
+    "totalFailed": 2,
     "scrapingBeePageCredits": 11,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoveryAttempts": 1,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
     "processed": 2,
-    "failed": 7,
+    "failed": 2,
     "shows": [
-      "a-few-good-men-2026",
-      "tosca-english-national-opera-west-end-2026"
+      "iphigenie-en-tauride-english-national-opera-west-end-2026",
+      "msblackforpresident-off-broadway-2026",
+      "nero-off-west-end-2026",
+      "wanted-2022"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -67,56 +69,40 @@
     }
   },
   "processed": [
-    "tosca-english-national-opera-west-end-2026/closeupculture--unknown.json",
-    "tosca-english-national-opera-west-end-2026/standard--unknown.json"
+    "wanted-2022/cititour--unknown.json",
+    "nero-off-west-end-2026/musical-theatre-review--angela-thomas.json"
   ],
   "failed": [
-    "tosca-english-national-opera-west-end-2026/bachtrack--anna-bogdanova.json",
-    "tosca-english-national-opera-west-end-2026/bachtrack--clare-varney.json",
-    "tosca-english-national-opera-west-end-2026/bachtrack--peter-quantrill.json",
-    "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
-    "tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json",
-    "a-few-good-men-2026/variety--anna-tingley.json",
-    "a-few-good-men-2026/goldderby--ethan-alter.json"
+    "msblackforpresident-off-broadway-2026/guardian--unknown.json",
+    "iphigenie-en-tauride-english-national-opera-west-end-2026/sunday-times--unknown.json"
   ],
   "cumulativeResumedState": {
     "processed": [
-      "tosca-english-national-opera-west-end-2026/closeupculture--unknown.json",
-      "tosca-english-national-opera-west-end-2026/standard--unknown.json"
+      "wanted-2022/cititour--unknown.json",
+      "nero-off-west-end-2026/musical-theatre-review--angela-thomas.json"
     ],
     "failed": [
-      "tosca-english-national-opera-west-end-2026/bachtrack--anna-bogdanova.json",
-      "tosca-english-national-opera-west-end-2026/bachtrack--clare-varney.json",
-      "tosca-english-national-opera-west-end-2026/bachtrack--peter-quantrill.json",
-      "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
-      "tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json",
-      "a-few-good-men-2026/variety--anna-tingley.json",
-      "a-few-good-men-2026/goldderby--ethan-alter.json"
+      "msblackforpresident-off-broadway-2026/guardian--unknown.json",
+      "iphigenie-en-tauride-english-national-opera-west-end-2026/sunday-times--unknown.json"
     ]
   },
   "tierDetails": {
-    "playwright": [
-      "tosca-english-national-opera-west-end-2026/closeupculture--unknown.json",
-      "tosca-english-national-opera-west-end-2026/standard--unknown.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [],
-    "scrapingbee": [],
+    "scrapingdog": [
+      "nero-off-west-end-2026/musical-theatre-review--angela-thomas.json"
+    ],
+    "scrapingbee": [
+      "wanted-2022/cititour--unknown.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
   "failuresByOutlet": {
-    "Cheryl Markosky": {
-      "count": 1,
-      "domain": "cherylmarkosky.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Times (UK)": {
+    "The Sunday Times": {
       "count": 1,
       "domain": "thetimes.com",
       "hasCredentials": false,
@@ -124,5 +110,11 @@
       "isKnownBlocked": false
     }
   },
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "msblackforpresident-off-broadway-2026/guardian--unknown.json",
+      "oldUrl": "https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play",
+      "newUrl": "https://www.theguardian.com/stage/2026/nov/05/ms-blakk-for-president-play"
+    }
+  ]
 }
