@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7191-b",
   "planId": "c5d867bb-8e24-4a13-b1bd-b1a5dd1de39c",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-09T04:23:04.236Z",
   "submitter": {
     "name": null,
@@ -32,5 +32,19 @@
         "description": "wanted-2022/theatermania--seth-walters.json: isNonReview"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-09T04:43:33.834Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "wanted-2022/theatermania--seth-walters.json isNonReviewReason: null -> \"manual (not a review): TheaterMania video news feature from 2026-10-14, a month before opening\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "wanted-2022/theatermania--seth-walters.json isNonReview: null -> true"
+    }
+  ],
+  "executedIn": "ci"
 }
