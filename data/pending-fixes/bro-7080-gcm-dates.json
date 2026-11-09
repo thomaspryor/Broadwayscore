@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7080-gcm-dates",
   "planId": "b597cf79-7da5-41a8-ae26-39b449d57413",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-09T10:51:23.299Z",
   "submitter": {
     "name": null,
@@ -44,5 +44,24 @@
         "description": "shows.json: girls-chance-music-off-broadway-2024.status"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-09T12:00:48.072Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for girls-chance-music-off-broadway-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for girls-chance-music-off-broadway-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for girls-chance-music-off-broadway-2024"
+    }
+  ],
+  "executedIn": "ci"
 }
