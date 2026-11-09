@@ -58,9 +58,9 @@ test('workflow: --no-wait + poll, superseded gates every post-deploy step', () =
   assert.match(y, /node scripts\/vercel-wait-deployment\.js/);
   assert.match(y, /echo "superseded=true" >> "\$GITHUB_OUTPUT"/);
   const gated = y.match(/steps\.deploy\.outputs\.superseded != 'true'/g) || [];
-  assert.equal(gated.length, 5, 'smoke, playwright setup+test, watermark, sitemap');
+  assert.equal(gated.length, 6, 'smoke, playwright setup+test, watermark, reddit due check, sitemap');
   for (const name of ['Smoke test production', 'Setup Playwright', 'Content smoke test (Playwright)',
-    'Dispatch async watermark + stage-latency update', 'Notify search engines of updated sitemap']) {
+    'Dispatch async watermark + stage-latency update', 'Dispatch Reddit draft due check (after prod deploy)', 'Notify search engines of updated sitemap']) {
     const i = y.indexOf(`- name: ${name}\n`);
     assert.ok(i > 0, name);
     assert.match(y.slice(i, i + 200), /superseded != 'true'/, `${name} gated`);
