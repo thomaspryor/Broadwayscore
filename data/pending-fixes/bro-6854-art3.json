@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6854-art3",
   "planId": "32f70a9c-8e0d-480e-a43f-7555a43ec5a8",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-09T15:02:06.483Z",
   "submitter": {
     "name": null,
@@ -104,5 +104,34 @@
         "description": "shows.json: shear-madness-regional-2026.images"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-09T15:14:55.203Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for dear-evan-hansen-cygnet-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for mensa-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for we-will-rock-you-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-family-album-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for shear-madness-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
