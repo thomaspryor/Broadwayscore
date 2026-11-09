@@ -1,0 +1,568 @@
+{
+  "issueNumber": "bro-7250",
+  "planId": "02dd630a-d6a9-4cf5-b013-8115749fdd20",
+  "status": "pending",
+  "createdAt": "2026-11-09T22:14:30.115Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7250: add 18 local professional productions (San Diego 9, Boston 9) from theatre season pages and BroadwayWorld, with sourced dates and real art",
+    "steps": [
+      "add as-you-like-it-regional-2026",
+      "add the-cottage-regional-2026",
+      "add arrowhead-regional-2026",
+      "add grim-regional-2026",
+      "add how-to-write-a-holiday-regional-2026",
+      "add vineland-place-regional-2027",
+      "add cabaret-regional-2027",
+      "add lumin-by-emma-gibson-regional-2027",
+      "add particle-fever-regional-2027",
+      "add 1972-regional-2026",
+      "add the-getaway-driver-central-regional-2026",
+      "add peter-pan-goes-wrong-regional-2026",
+      "add adia-and-clora-snatch-joy-regional-2026",
+      "add a-christmas-carol-a-musical-ghost-story-regional-2026",
+      "add mexodus-regional-2026",
+      "add charles-dickens-a-christmas-carol-regional-2026",
+      "add little-bear-ridge-road-regional-2027",
+      "add the-mirror-crackd-regional-2027"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-show",
+        "description": "add as-you-like-it-regional-2026",
+        "show": {
+          "id": "as-you-like-it-regional-2026",
+          "title": "As You Like It",
+          "slug": "as-you-like-it-regional-2026",
+          "venue": "New Village Arts, Carlsbad, CA",
+          "status": "open",
+          "type": "play",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2026-10-16",
+          "openingDateSource": "theatre-season-page",
+          "closingDate": "2026-11-29",
+          "closingDateSource": "theatre-season-page",
+          "discoverySource": "cityfinder-san-diego",
+          "localOnly": true,
+          "city": "san-diego-ca",
+          "discoveredAt": "2026-11-09",
+          "evidenceUrls": [
+            "https://newvillagearts.org/as-you-like-it/",
+            "https://www.broadwayworld.com/san-diego/regional/As-You-Like-It-4404520"
+          ],
+          "images": {
+            "poster": "/images/shows/as-you-like-it-regional-2026/poster.webp",
+            "thumbnail": "/images/shows/as-you-like-it-regional-2026/thumbnail.webp"
+          }
+        }
+      },
+      {
+        "type": "add-show",
+        "description": "add the-cottage-regional-2026",
+        "show": {
+          "id": "the-cottage-regional-2026",
+          "title": "The Cottage",
+          "slug": "the-cottage-regional-2026",
+          "venue": "North Coast Repertory Theatre, Solana Beach, CA",
+          "status": "open",
+          "type": "play",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2026-10-28",
+          "openingDateSource": "theatre-season-page",
+          "closingDate": "2026-12-06",
+          "closingDateSource": "theatre-season-page",
+          "discoverySource": "cityfinder-san-diego",
+          "localOnly": true,
+          "city": "san-diego-ca",
+          "discoveredAt": "2026-11-09",
+          "evidenceUrls": [
+            "https://northcoastrep.org/production/the-cottage/",
+            "https://www.broadwayworld.com/san-diego/regional/The-Cottage-4404772-4404772"
+          ],
+          "images": {
+            "poster": "/images/shows/the-cottage-regional-2026/poster.webp",
+            "thumbnail": "/images/shows/the-cottage-regional-2026/thumbnail.webp"
+          }
+        }
+      },
+      {
+        "type": "add-show",
+        "description": "add arrowhead-regional-2026",
+        "show": {
+          "id": "arrowhead-regional-2026",
+          "title": "Arrowhead",
+          "slug": "arrowhead-regional-2026",
+          "venue": "Diversionary Theatre, San Diego, CA",
+          "status": "upcoming",
+          "type": "play",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2026-11-12",
+          "openingDateSource": "theatre-season-page",
+          "closingDate": "2026-12-06",
+          "closingDateSource": "theatre-season-page",
+          "discoverySource": "cityfinder-san-diego",
+          "localOnly": true,
+          "city": "san-diego-ca",
+          "discoveredAt": "2026-11-09",
+          "evidenceUrls": [
+            "https://www.diversionary.org/arrowhead",
+            "https://www.broadwayworld.com/san-diego/regional/Arrowhead"
+          ],
+          "images": {
+            "poster": "/images/shows/arrowhead-regional-2026/poster.webp",
+            "thumbnail": "/images/shows/arrowhead-regional-2026/thumbnail.webp"
+          }
+        }
+      },
+      {
+        "type": "add-show",
+        "description": "add grim-regional-2026",
+        "show": {
+          "id": "grim-regional-2026",
+          "title": "GRIM",
+          "slug": "grim-regional-2026",
+          "venue": "La Jolla Playhouse, La Jolla, CA",
+          "status": "upcoming",
+          "type": "musical",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2026-11-27",
+          "openingDateSource": "theatre-season-page",
+          "closingDate": "2026-12-13",
+          "closingDateSource": "theatre-season-page",
+          "discoverySource": "cityfinder-san-diego",
+          "localOnly": true,
+          "city": "san-diego-ca",
+          "discoveredAt": "2026-11-09",
+          "evidenceUrls": [
+            "https://lajollaplayhouse.org/show/grim/",
+            "https://www.broadwayworld.com/san-diego/regional/GRIM"
+          ],
+          "images": {
+            "poster": "/images/shows/grim-regional-2026/poster.webp",
+            "thumbnail": "/images/shows/grim-regional-2026/thumbnail.webp"
+          }
+        }
+      },
+      {
+        "type": "add-show",
+        "description": "add how-to-write-a-holiday-regional-2026",
+        "show": {
+          "id": "how-to-write-a-holiday-regional-2026",
+          "title": "How to Write a Holiday",
+          "slug": "how-to-write-a-holiday-regional-2026",
+          "venue": "North Coast Repertory Theatre, Solana Beach, CA",
+          "status": "upcoming",
+          "type": "play",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2026-12-16",
+          "openingDateSource": "theatre-season-page",
+          "closingDate": "2026-12-27",
+          "closingDateSource": "theatre-season-page",
+          "discoverySource": "cityfinder-san-diego",
+          "localOnly": true,
+          "city": "san-diego-ca",
+          "discoveredAt": "2026-11-09",
+          "evidenceUrls": [
+            "https://northcoastrep.org/production/how-to-write-a-holiday/",
+            "https://www.broadwayworld.com/san-diego/regional/How-to-Write-a-Holiday-4418391-4418391"
+          ],
+          "images": {
+            "poster": "/images/shows/how-to-write-a-holiday-regional-2026/poster.webp",
+            "thumbnail": "/images/shows/how-to-write-a-holiday-regional-2026/thumbnail.webp"
+          }
+        }
+      },
+      {
+        "type": "add-show",
+        "description": "add vineland-place-regional-2027",
+        "show": {
+          "id": "vineland-place-regional-2027",
+          "title": "Vineland Place",
+          "slug": "vineland-place-regional-2027",
+          "venue": "North Coast Repertory Theatre, Solana Beach, CA",
+          "status": "upcoming",
+          "type": "play",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2027-01-06",
+          "openingDateSource": "theatre-season-page",
+          "closingDate": "2027-01-31",
+          "closingDateSource": "theatre-season-page",
+          "discoverySource": "cityfinder-san-diego",
+          "localOnly": true,
+          "city": "san-diego-ca",
+          "discoveredAt": "2026-11-09",
+          "evidenceUrls": [
+            "https://northcoastrep.org/production/vineland-place/"
+          ],
+          "images": {
+            "poster": "/images/shows/vineland-place-regional-2027/poster.webp",
+            "thumbnail": "/images/shows/vineland-place-regional-2027/thumbnail.webp"
+          }
+        }
+      },
+      {
+        "type": "add-show",
+        "description": "add cabaret-regional-2027",
+        "show": {
+          "id": "cabaret-regional-2027",
+          "title": "Cabaret",
+          "slug": "cabaret-regional-2027",
+          "venue": "New Village Arts, Carlsbad, CA",
+          "status": "upcoming",
+          "type": "musical",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2027-01-29",
+          "openingDateSource": "theatre-season-page",
+          "closingDate": "2027-03-14",
+          "closingDateSource": "theatre-season-page",
+          "discoverySource": "cityfinder-san-diego",
+          "localOnly": true,
+          "city": "san-diego-ca",
+          "discoveredAt": "2026-11-09",
+          "evidenceUrls": [
+            "https://newvillagearts.org/cabaret/"
+          ],
+          "images": {
+            "poster": "/images/shows/cabaret-regional-2027/poster.webp",
+            "thumbnail": "/images/shows/cabaret-regional-2027/thumbnail.webp"
+          }
+        }
+      },
+      {
+        "type": "add-show",
+        "description": "add lumin-by-emma-gibson-regional-2027",
+        "show": {
+          "id": "lumin-by-emma-gibson-regional-2027",
+          "title": "Lumin By Emma Gibson",
+          "slug": "lumin-by-emma-gibson-regional-2027",
+          "venue": "Moxie Theatre, San Diego, CA",
+          "status": "upcoming",
+          "type": "play",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2027-02-14",
+          "openingDateSource": "theatre-season-page",
+          "closingDate": "2027-03-14",
+          "closingDateSource": "theatre-season-page",
+          "discoverySource": "cityfinder-san-diego",
+          "localOnly": true,
+          "city": "san-diego-ca",
+          "discoveredAt": "2026-11-09",
+          "evidenceUrls": [
+            "https://moxietheatre.com/shows/lumin/"
+          ],
+          "images": {
+            "poster": "/images/shows/lumin-by-emma-gibson-regional-2027/poster.webp",
+            "thumbnail": "/images/shows/lumin-by-emma-gibson-regional-2027/thumbnail.webp"
+          }
+        }
+      },
+      {
+        "type": "add-show",
+        "description": "add particle-fever-regional-2027",
+        "show": {
+          "id": "particle-fever-regional-2027",
+          "title": "Particle Fever",
+          "slug": "particle-fever-regional-2027",
+          "venue": "La Jolla Playhouse, La Jolla, CA",
+          "status": "upcoming",
+          "type": "musical",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2027-02-17",
+          "openingDateSource": "theatre-season-page",
+          "closingDate": "2027-03-21",
+          "closingDateSource": "theatre-season-page",
+          "discoverySource": "cityfinder-san-diego",
+          "localOnly": true,
+          "city": "san-diego-ca",
+          "discoveredAt": "2026-11-09",
+          "evidenceUrls": [
+            "https://lajollaplayhouse.org/show/particle-fever/",
+            "https://www.broadwayworld.com/san-diego/regional/Particle-Fever-4413460"
+          ],
+          "images": {
+            "poster": "/images/shows/particle-fever-regional-2027/poster.webp",
+            "thumbnail": "/images/shows/particle-fever-regional-2027/thumbnail.webp"
+          }
+        }
+      },
+      {
+        "type": "add-show",
+        "description": "add 1972-regional-2026",
+        "show": {
+          "id": "1972-regional-2026",
+          "title": "1972",
+          "slug": "1972-regional-2026",
+          "venue": "American Repertory Theater, Cambridge, MA",
+          "status": "open",
+          "type": "musical",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2026-10-27",
+          "openingDateSource": "theatre-season-page",
+          "closingDate": "2026-12-06",
+          "closingDateSource": "theatre-season-page",
+          "discoverySource": "cityfinder-boston",
+          "localOnly": true,
+          "city": "boston-ma",
+          "discoveredAt": "2026-11-09",
+          "evidenceUrls": [
+            "https://americanrepertorytheater.org/shows-events/1972-a-rock-opera/",
+            "https://www.broadwayworld.com/boston/regional/1972"
+          ],
+          "images": {
+            "poster": "/images/shows/1972-regional-2026/poster.webp",
+            "thumbnail": "/images/shows/1972-regional-2026/thumbnail.webp"
+          }
+        }
+      },
+      {
+        "type": "add-show",
+        "description": "add the-getaway-driver-central-regional-2026",
+        "show": {
+          "id": "the-getaway-driver-central-regional-2026",
+          "title": "The Getaway Driver",
+          "slug": "the-getaway-driver-central-regional-2026",
+          "venue": "Central Square Theater, Cambridge, MA",
+          "status": "open",
+          "type": "play",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2026-10-29",
+          "openingDateSource": "theatre-season-page",
+          "closingDate": "2026-11-29",
+          "closingDateSource": "theatre-season-page",
+          "discoverySource": "cityfinder-boston",
+          "localOnly": true,
+          "city": "boston-ma",
+          "discoveredAt": "2026-11-09",
+          "evidenceUrls": [
+            "http://www.centralsquaretheater.org/shows/the-getaway-driver/"
+          ],
+          "images": {
+            "poster": "/images/shows/the-getaway-driver-central-regional-2026/poster.webp",
+            "thumbnail": "/images/shows/the-getaway-driver-central-regional-2026/thumbnail.webp"
+          }
+        }
+      },
+      {
+        "type": "add-show",
+        "description": "add peter-pan-goes-wrong-regional-2026",
+        "show": {
+          "id": "peter-pan-goes-wrong-regional-2026",
+          "title": "Peter Pan Goes Wrong",
+          "slug": "peter-pan-goes-wrong-regional-2026",
+          "venue": "Lyric Stage Company of Boston, Boston, MA",
+          "status": "upcoming",
+          "type": "play",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2026-11-13",
+          "openingDateSource": "theatre-season-page",
+          "closingDate": "2026-12-31",
+          "closingDateSource": "theatre-season-page",
+          "discoverySource": "cityfinder-boston",
+          "localOnly": true,
+          "city": "boston-ma",
+          "discoveredAt": "2026-11-09",
+          "evidenceUrls": [
+            "https://www.lyricstage.com/production/peter-pan-goes-wrong/"
+          ],
+          "images": {
+            "poster": "/images/shows/peter-pan-goes-wrong-regional-2026/poster.webp",
+            "thumbnail": "/images/shows/peter-pan-goes-wrong-regional-2026/thumbnail.webp"
+          }
+        }
+      },
+      {
+        "type": "add-show",
+        "description": "add adia-and-clora-snatch-joy-regional-2026",
+        "show": {
+          "id": "adia-and-clora-snatch-joy-regional-2026",
+          "title": "Adia & Clora Snatch Joy",
+          "slug": "adia-and-clora-snatch-joy-regional-2026",
+          "venue": "Huntington Theatre Company, Boston, MA",
+          "status": "upcoming",
+          "type": "play",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2026-11-24",
+          "openingDateSource": "theatre-season-page",
+          "closingDate": "2026-12-13",
+          "closingDateSource": "theatre-season-page",
+          "discoverySource": "cityfinder-boston",
+          "localOnly": true,
+          "city": "boston-ma",
+          "discoveredAt": "2026-11-09",
+          "evidenceUrls": [
+            "https://www.huntingtontheatre.org/whats-on/adia-clora-snatch-joy/",
+            "https://www.broadwayworld.com/boston/regional/Adia-Clora-Snatch-Joy-4370463"
+          ],
+          "images": {
+            "poster": "/images/shows/adia-and-clora-snatch-joy-regional-2026/poster.webp",
+            "thumbnail": "/images/shows/adia-and-clora-snatch-joy-regional-2026/thumbnail.webp"
+          }
+        }
+      },
+      {
+        "type": "add-show",
+        "description": "add a-christmas-carol-a-musical-ghost-story-regional-2026",
+        "show": {
+          "id": "a-christmas-carol-a-musical-ghost-story-regional-2026",
+          "title": "A CHRISTMAS CAROL A Musical Ghost Story",
+          "slug": "a-christmas-carol-a-musical-ghost-story-regional-2026",
+          "venue": "North Shore Music Theatre, Beverly, MA",
+          "status": "upcoming",
+          "type": "musical",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2026-12-03",
+          "openingDateSource": "theatre-season-page",
+          "closingDate": "2026-12-23",
+          "closingDateSource": "theatre-season-page",
+          "discoverySource": "cityfinder-boston",
+          "localOnly": true,
+          "city": "boston-ma",
+          "discoveredAt": "2026-11-09",
+          "evidenceUrls": [
+            "https://nsmt.org/achristmascarol.html"
+          ],
+          "images": {
+            "poster": "/images/shows/a-christmas-carol-a-musical-ghost-story-regional-2026/poster.webp",
+            "thumbnail": "/images/shows/a-christmas-carol-a-musical-ghost-story-regional-2026/thumbnail.webp"
+          }
+        }
+      },
+      {
+        "type": "add-show",
+        "description": "add mexodus-regional-2026",
+        "show": {
+          "id": "mexodus-regional-2026",
+          "title": "Mexodus",
+          "slug": "mexodus-regional-2026",
+          "venue": "American Repertory Theater, Cambridge, MA",
+          "status": "upcoming",
+          "type": "play",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2026-12-04",
+          "openingDateSource": "theatre-season-page",
+          "closingDate": "2027-01-10",
+          "closingDateSource": "theatre-season-page",
+          "discoverySource": "cityfinder-boston",
+          "localOnly": true,
+          "city": "boston-ma",
+          "discoveredAt": "2026-11-09",
+          "evidenceUrls": [
+            "https://americanrepertorytheater.org/shows-events/mexodus/",
+            "https://www.broadwayworld.com/boston/regional/Mexodus-4408128"
+          ],
+          "images": {
+            "poster": "/images/shows/mexodus-regional-2026/poster.webp",
+            "thumbnail": "/images/shows/mexodus-regional-2026/thumbnail.webp"
+          }
+        }
+      },
+      {
+        "type": "add-show",
+        "description": "add charles-dickens-a-christmas-carol-regional-2026",
+        "show": {
+          "id": "charles-dickens-a-christmas-carol-regional-2026",
+          "title": "Charles Dickens’ “A Christmas Carol”",
+          "slug": "charles-dickens-a-christmas-carol-regional-2026",
+          "venue": "Commonwealth Shakespeare Company, Boston, MA",
+          "status": "upcoming",
+          "type": "play",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2026-12-11",
+          "openingDateSource": "theatre-season-page",
+          "closingDate": "2026-12-20",
+          "closingDateSource": "theatre-season-page",
+          "discoverySource": "cityfinder-boston",
+          "localOnly": true,
+          "city": "boston-ma",
+          "discoveredAt": "2026-11-09",
+          "evidenceUrls": [
+            "https://commshakes.org/production/scrooge26/"
+          ],
+          "images": {
+            "poster": "/images/shows/charles-dickens-a-christmas-carol-regional-2026/poster.webp",
+            "thumbnail": "/images/shows/charles-dickens-a-christmas-carol-regional-2026/thumbnail.webp"
+          }
+        }
+      },
+      {
+        "type": "add-show",
+        "description": "add little-bear-ridge-road-regional-2027",
+        "show": {
+          "id": "little-bear-ridge-road-regional-2027",
+          "title": "LITTLE BEAR RIDGE ROAD",
+          "slug": "little-bear-ridge-road-regional-2027",
+          "venue": "SpeakEasy Stage Company, Boston, MA",
+          "status": "upcoming",
+          "type": "play",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2027-01-29",
+          "openingDateSource": "theatre-season-page",
+          "closingDate": "2027-02-20",
+          "closingDateSource": "theatre-season-page",
+          "discoverySource": "cityfinder-boston",
+          "localOnly": true,
+          "city": "boston-ma",
+          "discoveredAt": "2026-11-09",
+          "evidenceUrls": [
+            "https://speakeasystage.com/shows/2027/01/little-bear-ridge-road/",
+            "https://www.broadwayworld.com/boston/regional/Little-Bear-Ridge-Road-4381675"
+          ],
+          "images": {
+            "poster": "/images/shows/little-bear-ridge-road-regional-2027/poster.webp",
+            "thumbnail": "/images/shows/little-bear-ridge-road-regional-2027/thumbnail.webp"
+          }
+        }
+      },
+      {
+        "type": "add-show",
+        "description": "add the-mirror-crackd-regional-2027",
+        "show": {
+          "id": "the-mirror-crackd-regional-2027",
+          "title": "The Mirror Crack’d",
+          "slug": "the-mirror-crackd-regional-2027",
+          "venue": "Lyric Stage Company of Boston, Boston, MA",
+          "status": "upcoming",
+          "type": "play",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2027-02-05",
+          "openingDateSource": "theatre-season-page",
+          "closingDate": "2027-02-28",
+          "closingDateSource": "theatre-season-page",
+          "discoverySource": "cityfinder-boston",
+          "localOnly": true,
+          "city": "boston-ma",
+          "discoveredAt": "2026-11-09",
+          "evidenceUrls": [
+            "https://www.lyricstage.com/production/agatha-christies-the-mirror-crackd/"
+          ],
+          "images": {
+            "poster": "/images/shows/the-mirror-crackd-regional-2027/poster.webp",
+            "thumbnail": "/images/shows/the-mirror-crackd-regional-2027/thumbnail.webp"
+          }
+        }
+      }
+    ]
+  }
+}
