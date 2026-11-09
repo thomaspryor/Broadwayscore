@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7191",
   "planId": "8c574a43-28ef-4017-aec4-fc007151e30f",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-09T04:06:10.060Z",
   "submitter": {
     "name": null,
@@ -41,5 +41,24 @@
         "description": "Byline in full text: 'Theatre Review by Howard Miller - November 8, 2026'"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-09T04:15:59.324Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "wanted-2022/slantmagazine--dan-rubins--on-2026-11-08.json humanReviewScore: null -> 55"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "wanted-2022/cititour--brian-scott-lipton--on-2026-11-08.json publishDate: null -> \"2026-11-08\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "wanted-2022/talkinbroadway--unknown--on-2026-11-08.json criticName: null -> \"Howard Miller\""
+    }
+  ],
+  "executedIn": "ci"
 }
