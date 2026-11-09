@@ -37817,13 +37817,13 @@
       "firstSeen": "2026-11-06T04:56:22.650Z",
       "incidentOpenedAt": "2026-11-09T15:43:11.726Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-09T18:52:52.806Z",
+      "lastSeen": "2026-11-09T19:38:00.769Z",
       "lastNotifiedAt": "2026-11-09T15:43:11.726Z",
       "lastSurfacedAt": "2026-11-09T15:43:11.726Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "live-data-test:tests/unit/drain-unknown-outlets-live-data.test.mjs::tests/unit/drain-unknown-outlets-live-data.test.mjs": {
       "status": "resolved",
@@ -38838,13 +38838,13 @@
       "firstSeen": "2026-11-08T06:47:11.004Z",
       "incidentOpenedAt": "2026-11-08T06:47:11.004Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-09T18:52:52.748Z",
+      "lastSeen": "2026-11-09T19:38:00.701Z",
       "lastNotifiedAt": "2026-11-09T13:43:08.337Z",
       "lastSurfacedAt": "2026-11-09T13:43:08.337Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "live-data-test:scripts/audit-stale-announced-shows.test.mjs::BRO-93 acceptance: current shows.json produces zero stale announced flags": {
       "status": "resolved",
@@ -38870,12 +38870,13 @@
       "firstSeen": "2026-11-08T06:47:11.073Z",
       "incidentOpenedAt": "2026-11-09T18:52:52.778Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-09T18:52:52.778Z",
+      "lastSeen": "2026-11-09T19:38:00.735Z",
       "lastNotifiedAt": "2026-11-09T18:52:52.778Z",
       "lastSurfacedAt": "2026-11-09T18:52:52.778Z",
       "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "live-data-test:tests/unit/audit-stale-baseline-detection.test.mjs::audit-cv-flag-contradiction.js: baseline holds no stale entries": {
       "status": "resolved",
@@ -38901,12 +38902,13 @@
       "firstSeen": "2026-11-08T06:47:11.124Z",
       "incidentOpenedAt": "2026-11-09T18:52:52.865Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-09T18:52:52.865Z",
+      "lastSeen": "2026-11-09T19:38:00.809Z",
       "lastNotifiedAt": "2026-11-09T18:52:52.865Z",
       "lastSurfacedAt": "2026-11-09T18:52:52.865Z",
       "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "live-data-test:tests/unit/wrong-article-llm-flagging.test.mjs::every confirmed wrong article is flagged wrongShow or hand-verified # TODO advisory (BRO-4606)": {
       "status": "resolved",
@@ -38999,7 +39001,7 @@
       "resolveReason": "live-data test green"
     },
     "live-data-test:tests/unit/morning-digest-quiet.test.mjs::plain wording: no visitor-facing health check shows its raw name (BRO-7047)": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Live-data test failing: plain wording: no visitor-facing health check shows its raw name (BRO-7047) (tests/unit/morning-digest-quiet.test.mjs)",
       "firstSeen": "2026-11-08T11:49:18.563Z",
@@ -39011,7 +39013,9 @@
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 3,
+      "resolvedAt": "2026-11-09T19:38:00.831Z",
+      "resolveReason": "live-data test green"
     },
     "land:land/job/linear-BRO-7126-mw7xdyzq": {
       "status": "resolved",
@@ -40020,13 +40024,13 @@
       "firstSeen": "2026-11-09T13:43:08.396Z",
       "incidentOpenedAt": "2026-11-09T13:43:08.396Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-09T18:52:52.827Z",
+      "lastSeen": "2026-11-09T19:38:00.790Z",
       "lastNotifiedAt": "2026-11-09T13:43:08.396Z",
       "lastSurfacedAt": "2026-11-09T13:43:08.396Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "opening-night-remediation-exhausted-t1-missing:msblackforpresident-off-broadway-2026": {
       "status": "open",
