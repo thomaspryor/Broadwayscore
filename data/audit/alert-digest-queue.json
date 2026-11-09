@@ -1428,7 +1428,7 @@
     "title": "Data audit failing: Run data validation",
     "description": "The \"Run data validation\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
     "severity": "warning",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42553251494",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42553945160",
     "decision": false,
     "info": false,
     "decisionPrompt": null,
@@ -1445,10 +1445,10 @@
       },
       {
         "name": "Run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42553251494)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42553945160)"
       }
     ],
-    "queuedAt": "2026-11-09T03:32:44.003Z"
+    "queuedAt": "2026-11-09T03:33:12.493Z"
   },
   {
     "conditionKey": "land:land/bro-7181",
