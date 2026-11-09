@@ -1,63 +1,63 @@
 {
-  "runDate": "2026-11-09T22:35:25.072Z",
+  "runDate": "2026-11-09T22:34:59.538Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 60,
     "priority": "all",
-    "showFilter": "msblackforpresident-off-broadway-2026",
+    "showFilter": "the-steel-man-off-broadway-2026",
     "aggressive": true,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
-    "failed": 2,
+    "processed": 0,
+    "failed": 1,
     "skipped": 0,
-    "successRate": "60.0%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 1,
+    "scrapingdog": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 5,
-    "tier1Success": 2,
+    "tier1Attempts": 1,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 1,
-    "tier1_9Success": 1,
+    "tier1_9Attempts": 0,
+    "tier1_9Success": 0,
     "tier2Attempts": 0,
     "tier2Success": 0,
     "tier3Attempts": 0,
     "tier3Success": 0,
     "tier3_6Attempts": 1,
     "tier3_6Success": 0,
-    "tier4Attempts": 3,
+    "tier4Attempts": 1,
     "tier4Success": 0,
-    "totalFailed": 2,
+    "totalFailed": 1,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
-    "urlDiscoverySuccess": 1,
+    "urlDiscoveryAttempts": 0,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 3,
-    "failed": 2,
+    "processed": 0,
+    "failed": 1,
     "shows": [
-      "msblackforpresident-off-broadway-2026"
+      "the-steel-man-off-broadway-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -65,37 +65,22 @@
       "failed": 0
     }
   },
-  "processed": [
-    "msblackforpresident-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
-    "msblackforpresident-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-    "msblackforpresident-off-broadway-2026/theater-pizzazz--unknown.json"
-  ],
+  "processed": [],
   "failed": [
-    "msblackforpresident-off-broadway-2026/guardian--unknown.json",
-    "msblackforpresident-off-broadway-2026/talkinbroadway--unknown.json"
+    "the-steel-man-off-broadway-2026/talkinbroadway--unknown.json"
   ],
   "cumulativeResumedState": {
-    "processed": [
-      "msblackforpresident-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
-      "msblackforpresident-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-      "msblackforpresident-off-broadway-2026/theater-pizzazz--unknown.json"
-    ],
+    "processed": [],
     "failed": [
-      "msblackforpresident-off-broadway-2026/guardian--unknown.json",
-      "msblackforpresident-off-broadway-2026/talkinbroadway--unknown.json"
+      "the-steel-man-off-broadway-2026/talkinbroadway--unknown.json"
     ]
   },
   "tierDetails": {
-    "playwright": [
-      "msblackforpresident-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-      "msblackforpresident-off-broadway-2026/theater-pizzazz--unknown.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [
-      "msblackforpresident-off-broadway-2026/new-york-notebook--sandy-macdonald.json"
-    ],
+    "scrapingdog": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
@@ -110,11 +95,5 @@
       "isKnownBlocked": true
     }
   },
-  "urlDiscoveries": [
-    {
-      "reviewId": "msblackforpresident-off-broadway-2026/guardian--unknown.json",
-      "oldUrl": "https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play",
-      "newUrl": "https://www.theguardian.com/stage/2026/nov/05/ms-blakk-for-president-play"
-    }
-  ]
+  "urlDiscoveries": []
 }
