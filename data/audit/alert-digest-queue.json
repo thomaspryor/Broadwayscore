@@ -1804,5 +1804,36 @@
       }
     ],
     "queuedAt": "2026-11-09T06:23:43.027Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7196-registry-names",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-7196-registry-names",
+    "description": "land.yml did not land land/bro-7196-registry-names: the scripts-lib-tests gate went red at 5b180effae. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42574222300",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7196-registry-names"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "5b180effaebe84eafcfe1aa7778a298e5950ad35"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42574222300"
+      }
+    ],
+    "queuedAt": "2026-11-09T06:43:19.348Z"
   }
 ]
