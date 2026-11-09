@@ -234,3 +234,12 @@ test('BRO-7153: no cited reviews and no search hits renders nothing; no cited re
     'X: no aggregator-cited reviews yet — 1 unverified search hit, may be other productions');
   assert.strictEqual(coverageDigestLine({ ...base, missing: [], censusVerdict: { verdict: 'incomplete', liveCount: 1, candidateCount: 1, censusSchema: 4 } }), null);
 });
+
+test('BRO-7153: a cited miss outside the census pool still renders (census count 0)', () => {
+  const line = coverageDigestLine({
+    title: 'Y', showId: 'y',
+    censusVerdict: { verdict: 'incomplete', liveCount: 0, candidateCount: 0, censusSchema: 4 },
+    missing: [{ url: 'https://nytimes.com/2026/11/02/theater/y-review.html', knownOutletId: 'nytimes' }],
+  });
+  assert.strictEqual(line, 'Y: 0 of 1 known reviews live — 1 being fetched');
+});

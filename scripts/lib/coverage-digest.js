@@ -32,7 +32,9 @@ function coverageStatus(result) {
   if (!cv || cv.verdict === 'no-census-yet') return null;
   const liveCount = Number.isInteger(cv.liveCount) ? cv.liveCount : 0;
   const candidateCount = Number.isInteger(cv.candidateCount) ? cv.candidateCount : 0;
-  if (candidateCount === 0 || liveCount >= candidateCount) return null;
+  const v2 = cv.censusSchema >= PRIOR_RUN_OUTSIDE_POOL_SINCE_SCHEMA;
+  // v2: cited misses can exist outside the census pool, so judged below.
+  if (!v2 && (candidateCount === 0 || liveCount >= candidateCount)) return null;
 
   const missing = Array.isArray(result.missing) ? result.missing : [];
   const excluded = missing.filter((m) => m && m.priorRun);
@@ -95,7 +97,7 @@ function coverageStatus(result) {
   // being fetched" was false. Same fix as BRO-7147's opening grade: known =
   // live + aggregator-cited still missing (citedUncollectedNow, census-tagged
   // rows excluded). Census-only hits are shown as a separate "possible" number.
-  if (cv.censusSchema >= PRIOR_RUN_OUTSIDE_POOL_SINCE_SCHEMA) {
+  if (v2) {
     const cited = citedUncollectedNow(result) || 0;
     const knownCount = liveCount + cited;
     const possible = Math.max(0, candidateCount - liveCount - cited);
