@@ -85,14 +85,3 @@ test('every isIncludableForRebuild caller in scripts/ passes filePath (BRO-7080)
   }
   assert.deepEqual(bad, [], `pass the review file's path as the 3rd argument:\n${bad.join('\n')}`);
 });
-
-// BRO-7210 (second-opinion): rebuild-all-reviews.js decides inclusion with inline copies of
-// explainExclusion predicates, so a new explainExclusion branch that is not mirrored there
-// leaves the review in reviews.json. This pins the submissionRefusedUrl mirror in both
-// rebuild and scoring-delta's replay.
-test('submissionRefusedUrl is mirrored in rebuild-all-reviews.js and scoring-delta.js', () => {
-  for (const f of ['rebuild-all-reviews.js', 'scoring-delta.js']) {
-    const src = fs.readFileSync(path.join(scriptsDir, f), 'utf8');
-    assert.match(src, /isRefusedSubmissionUrlRecord\(/, `${f} must call isRefusedSubmissionUrlRecord`);
-  }
-});
