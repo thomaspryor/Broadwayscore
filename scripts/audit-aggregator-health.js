@@ -15,7 +15,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { SOURCES, assess, conditionKey, resolvedConditionKeys } = require('./lib/aggregator-health');
+const { SOURCES, assess, conditionKey, resolvedConditionKeys, archiveSteps } = require('./lib/aggregator-health');
 const { loadRuns } = require('./lib/aggregator-health-inputs');
 const { isScheduledWorkflow } = require('./lib/cron-coverage');
 require('./lib/cli-help').exitOnHelp(module);
@@ -55,6 +55,18 @@ function loadScheduled(sources) {
   return out;
 }
 
+/** workflow file -> { checkout, push } of data/aggregator-archive (BRO-6098). */
+function loadArchiveSteps(sources, wfDir = WF_DIR) {
+  const out = {};
+  for (const s of sources) {
+    for (const wf of Object.keys(s.workflows)) {
+      const p = path.join(wfDir, wf);
+      if (fs.existsSync(p)) out[wf] = archiveSteps(fs.readFileSync(p, 'utf8'));
+    }
+  }
+  return out;
+}
+
 /**
  * Route findings to the owner digest (same router as audit-coverage-holes --alert).
  * One condition per source+kind (+workflow), resolved when the finding clears.
@@ -89,7 +101,8 @@ async function main() {
   const failedWf = [];
   const archives = loadArchives(sources, shows);
   const runs = args.includes('--no-runs') ? null : loadRuns(sources, failedWf, { repo: REPO });
-  const { findings, report } = assess({ sources, shows, archives, runs, scheduled: loadScheduled(sources), now });
+  const archiveStepsByWorkflow = loadArchiveSteps(sources);
+  const { findings, report } = assess({ sources, shows, archives, runs, scheduled: loadScheduled(sources), archiveStepsByWorkflow, now });
   const notes = [];
   if (!archives) notes.push('coverage skipped: data/aggregator-archive not present');
   if (!runs) notes.push('workflow history skipped: GitHub API unavailable or --no-runs');
@@ -110,10 +123,10 @@ async function main() {
     for (const n of notes) console.log(`  note: ${n}`);
   }
   if (args.includes('--alert')) {
-    console.log(`alert: ${await alertFindings(findings, sources, { archives, runs })} finding(s) routed to the digest`);
+    console.log(`alert: ${await alertFindings(findings, sources, { archives, runs, archiveStepsByWorkflow })} finding(s) routed to the digest`);
   }
   process.exit(strict && findings.length ? 1 : process.exitCode || 0);
 }
 
 if (require.main === module) main().catch(e => { console.error(e.message); process.exit(1); });
-module.exports = { loadScheduled };
+module.exports = { loadScheduled, loadArchiveSteps };

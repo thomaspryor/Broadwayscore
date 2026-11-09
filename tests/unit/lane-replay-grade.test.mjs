@@ -79,3 +79,10 @@ test('a source page that errored is reported but is not a lane failure on its ow
   assert.deepEqual(g.runProblems, []);
   assert.deepEqual(g.sourceErrors, [err]);
 });
+
+test('a paywall teaser still held for an excerpt at the end of the night is a lane problem (BRO-7159)', async () => {
+  const g = await night([5, 12], { awaiting: ['https://www.wsj.com/arts-culture/theater/grade-test-review-1'] });
+  assert.equal(g.sameNight.status, 'fail');
+  assert.deepEqual(g.runProblems, ['paywall teaser still awaiting an excerpt: https://www.wsj.com/arts-culture/theater/grade-test-review-1']);
+  assert.equal(g.verdict, 'FAIL');
+});

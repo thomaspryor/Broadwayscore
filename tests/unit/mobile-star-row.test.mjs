@@ -4,7 +4,7 @@
 // app has. A first tap on a star opens the rating panel pre-filled. These checks
 // pin the parts a later edit could silently break: the row is phones-only, the
 // Rate it button yields to it only on phones, the tap targets stay at or above
-// the 44px touch minimum, and focus has somewhere visible to return to.
+// the 44px touch minimum, and the row neither flashes nor accepts stray keys.
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -17,13 +17,21 @@ const stars = readFileSync(join(ROOT, 'src/components/user/StarRating.tsx'), 'ut
 
 describe('mobile web star row on the show page', () => {
   test('only offered for a first rating on a show the viewer could have seen', () => {
-    assert.match(hero, /const showMobileStars = showRateButton && !hasRating;/);
+    // The decision lives in src/lib/mobile-star-row.ts (behaviour tested in mobile-star-row-state.test.ts);
+    // here we only pin that the hero uses it, and feeds it the signed-out local rating and the loaded flag.
+    assert.match(hero, /getMobileStarRowState\(\{ showRateButton, hasRating, hasLocalRating: !!localRating, ratingStateKnown \}\)/);
+    assert.match(hero, /const showMobileStars = mobileStarState !== 'hidden';/);
+    assert.match(hero, /\.finally\(\(\) => setReviewsLoadedFor\(uid\)\)/);
   });
 
   test('row is phones-only and reuses the poster-stars pick handler with fill sizing', () => {
     const row = hero.match(/\{userFeaturesEnabled && showMobileStars && \([\s\S]*?\n      \)\}/);
     assert.ok(row, 'star row block not found');
-    assert.match(row[0], /className="sm:hidden /);
+    assert.match(row[0], /sm:hidden /);
+    // While the viewer's ratings are still loading the row keeps its space but cannot be seen or tapped.
+    assert.match(row[0], /mobileStarState === 'pending' \? 'invisible'/);
+    assert.match(row[0], /inert=\{mobileStarState === 'pending'\}/);
+    assert.match(row[0], /arrowKeys=\{false\}/);
     assert.match(row[0], /onRatingChange=\{handlePosterStarsPick\}/);
     assert.match(row[0], /\bfill\b/);
   });
@@ -44,8 +52,8 @@ describe('mobile web star row on the show page', () => {
     assert.ok(px >= 44, `star button is ${px}px tall, below the 44px touch minimum`);
   });
 
-  test('focus returns to the first star when the hidden Rate it button cannot take it', () => {
-    assert.match(hero, /mobileStarsRef\.current\?\.querySelector<HTMLButtonElement>\('button'\)\?\.focus\(\)/);
-    assert.match(hero, /ref=\{mobileStarsRef\}/);
+  test('arrowKeys=false really stops arrow presses from committing a rating', () => {
+    assert.match(stars, /arrowKeys = true/);
+    assert.match(stars, /if \(readOnly \|\| !arrowKeys\) return;/);
   });
 });

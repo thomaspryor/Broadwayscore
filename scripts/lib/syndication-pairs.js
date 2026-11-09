@@ -36,6 +36,9 @@ const KNOWN_SYNDICATION_PAIRS = {
   'thom geier': { primary: 'thewrap', secondary: ['culturesauce'] },
   // NY1 aired a broadcast version of Cote's Time Out New York review ("Contributing critic David Cote of Time Out New York").
   'david cote': { primary: 'timeout', secondary: ['ny1'] },
+  // BRO-7080: Sheward's Theater Life review is reprinted (most sentences verbatim)
+  // on TotalTheater, whose body prints "Critic: David Sheward (Oct. 2026)."
+  'david sheward': { primary: 'theater-life', secondary: ['totaltheater1'] },
 };
 
 /**

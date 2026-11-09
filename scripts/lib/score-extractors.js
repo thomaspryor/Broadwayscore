@@ -121,13 +121,45 @@ const BARE_WORD_STARS = new RegExp(`(?<!out${WGAP}of${WGAP})\\b(one|two|three|fo
 // Awards, and it garners four out of five stars" (the critic's own rating).
 const RELAYED_STAR_VERB = /\b(?:[Gg]ave|[Gg]ives|[Gg]iven|[Gg]iving|[Aa]warded|awards|[Aa]warding|[Hh]anded|hands|[Bb]estowed|[Rr]ated|rates|[Ss]cored)\b/;
 const FIRST_PERSON_SUBJECT = /\b(?:I|I'd|I'm|I'll|I've|we|we'd|we're|we'll|this\s+reviewer|this\s+critic)\b/;
+// BRO-7080: relay wordings the giving-verb list missed. "earned/received/got"
+// only relay when the clause names another critic or outlet ("The Times
+// critic said it earned four out of five stars"); with the show as subject
+// ("it garners four out of five stars") they are the critic's own verdict.
+// And an outlet label straight before the stars: "The Telegraph, with four out
+// of five stars, ..." / "The Stage: four stars."
+const RELAYED_PASSIVE_VERB = /\b(?:earned|earns|earning|received|receives|garnered|got|landed|picked\s+up)\b/i;
+const OTHER_SOURCE_NAMED = /\b(?:critic|critics|reviewer|reviewers)\b|\b(?:The\s+(?:Times|Sunday\s+Times|Telegraph|Guardian|Observer|Stage|Independent|Evening\s+Standard|Financial\s+Times|Daily\s+Mail|Mail\s+on\s+Sunday|Daily\s+Express|Sun|Arts\s*Desk|New\s+York\s+Times)|Time\s+Out|WhatsOnStage|Variety|Metro|iNews|Broadway\s*World)\b/;
+const OUTLET_LABEL_BEFORE = /(?:\bThe\s+(?:Times|Sunday\s+Times|Telegraph|Guardian|Observer|Stage|Independent|Evening\s+Standard|Financial\s+Times|Daily\s+Mail|Arts\s*Desk)|\bTime\s+Out|\bWhatsOnStage|\bVariety|\bMetro|\biNews)(?:'s\s+[A-Z][\w'-]+(?:\s+[A-Z][\w'-]+)?)?\s*(?::|,\s*with|\s+with|\s*\()\s*$/;
+// Any capitalised "The <Name>" straight before "(four stars)" is a relayed
+// label in a roundup ("The Daily Mirror (five stars): ..."); a critic's own
+// verdict line is "Rating:"/"Verdict:", never a parenthesised outlet name.
+const NAMED_PAREN_BEFORE = /\bThe(?:\s+[A-Z][\w'&.-]*){1,3}\s*\(\s*$/;
 function isRelayedStarRating(source, matchIndex) {
   if (!source || !(matchIndex > 0)) return false;
   const before = source.slice(Math.max(0, matchIndex - 240), matchIndex);
   const sentenceStart = Math.max(before.lastIndexOf('. '), before.lastIndexOf('! '), before.lastIndexOf('? '), before.lastIndexOf('\n'), before.lastIndexOf('>'));
   const clause = sentenceStart >= 0 ? before.slice(sentenceStart + 1) : before;
-  if (!RELAYED_STAR_VERB.test(clause)) return false;
-  return !FIRST_PERSON_SUBJECT.test(clause);
+  if (FIRST_PERSON_SUBJECT.test(clause)) return false;
+  if (OUTLET_LABEL_BEFORE.test(clause) || NAMED_PAREN_BEFORE.test(clause)) return true;
+  if (RELAYED_STAR_VERB.test(clause)) return true;
+  return RELAYED_PASSIVE_VERB.test(clause) && OTHER_SOURCE_NAMED.test(clause);
+}
+
+// BRO-7210: "two stars" is also plain cast prose ("with two stars, British actors
+// X and Y", "the two stars of the show"). A bare word-star match is not a rating
+// when the word before it is a determiner/preposition/verb that makes "stars" a
+// noun phrase, or when a nationality/"of the" noun follows ("two stars, British...").
+const CAST_STARS_PRECEDER = /(?:^|[\s>])(?:with|the|these|those|both|between)\s*(?:<[^>]*>\s*)*$/i;
+const CAST_STARS_FOLLOWER = /^\s*[,;:]?\s*(?:British|American|English|Irish|Scottish|Welsh|Australian|Canadian|Hollywood|of\s+(?:the|this|that)\b|who\b|whose\b)/i;
+function isCastStarsProse(source, matchIndex, matched) {
+  if (!source || !/^\s*(?:one|two|three|four|five)\b/i.test(matched) || /out/i.test(matched)) return false;
+  const before = source.slice(Math.max(0, matchIndex - 40), matchIndex);
+  if (CAST_STARS_PRECEDER.test(before)) return true;
+  // Only a comma-ended match continues the same sentence; "Four stars. Broadway transfer
+  // likely." ends in a full stop and its next sentence says nothing about this rating.
+  if (!/,\s*$/.test(matched)) return false;
+  const after = source.slice(matchIndex + matched.length, matchIndex + matched.length + 40);
+  return CAST_STARS_FOLLOWER.test(after);
 }
 
 // First spelled-out star rating across `sources` that is not relayed from
@@ -142,6 +174,7 @@ function findOwnWordStars(sources, { anchored = false } = {}) {
       for (const m of source.matchAll(new RegExp(pat.source, pat.flags + 'g'))) {
         if (anchored && !(m.index <= srcLen * 0.15 || m.index >= srcLen * 0.85)) continue;
         if (isRelayedStarRating(source, m.index)) continue;
+        if (isCastStarsProse(source, m.index, m[0])) continue;
         const rating = WORD_STAR_NUM[m[1].toLowerCase()];
         if (rating) return rating;
       }
@@ -881,7 +914,52 @@ function wosStarScope(html) {
  *          The Independent, The Times, Financial Times, Daily Mail, The Arts Desk,
  *          Musical Theatre Review, London Theatre, All That Dazzles, etc.
  */
-function extractUKStarRating(html, text) {
+// BRO-7221: only The Times prints one star group per show in a combined column; other
+// UK outlets' extra groups are related-review chrome, so they keep the first-group rule.
+const extractTimesColumnStarRating = (html, text, showTitle) => extractUKStarRating(html, text, showTitle, { multiShowColumn: true });
+
+const UNICODE_STAR_GROUP_RE = /(?:[★☆]\s*){2,5}/g;
+
+function countWord(hay, w) {
+  const re = new RegExp(`(?<![a-z0-9])${w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![a-z0-9])`, 'g');
+  return (hay.match(re) || []).length;
+}
+
+function hasMultipleStarGroups(text) {
+  return typeof text === 'string' && (text.match(UNICODE_STAR_GROUP_RE) || []).length >= 2;
+}
+
+/** The star group whose lead-in (text since the previous group) names showTitle; null unless exactly one. */
+function pickUnicodeStarsForShow(text, showTitle) {
+  if (!showTitle || !hasMultipleStarGroups(text)) return null;
+  const { normalizeShowLabel } = require('./known-show-titles');
+  // "Beaches, A New Musical" is named "Beaches" in prose: try the pre-subtitle head too.
+  const head = String(showTitle).split(/[,:\u2013\u2014-]\s/)[0];
+  const wants = [...new Set([showTitle, head.trim().split(/\s+/).length >= 2 || head.trim().length >= 6 ? head : null].filter(Boolean).map(normalizeShowLabel).filter(Boolean))];
+  if (!wants.length) return null;
+  const groups = [...text.matchAll(UNICODE_STAR_GROUP_RE)];
+  // Scraped headers glue words ("The Front PageThe Broadhurst"): split at lower->Upper so whole-word matching still sees the title.
+  const segOf = (m, i) => text.slice(i > 0 ? groups[i - 1].index + groups[i - 1][0].length : 0, m.index).replace(/([a-z])([A-Z])/g, '$1 $2');
+  // 1) "Title (★★☆☆☆)" style: exactly one group whose immediate lead-in names the show.
+  const named = groups.filter((m, i) => {
+    const nb = normalizeShowLabel(segOf(m, i).slice(-80));
+    return wants.some((w) => countWord(nb, w) > 0);
+  });
+  if (named.length === 1) return [named[0][0], named[0][0]];
+  if (named.length > 1) return null;
+  // 2) "review text ... ★★★★★ Venue, dates" style: the verdict ends its own section,
+  //    so the section that mentions the show most (unique maximum) is this show's.
+  const counts = groups.map((m, i) => {
+    const nb = normalizeShowLabel(segOf(m, i));
+    return Math.max(...wants.map((w) => countWord(nb, w)));
+  });
+  const best = Math.max(...counts);
+  if (best < 2 || counts.filter((c) => c === best).length !== 1) return null;
+  const g = groups[counts.indexOf(best)][0];
+  return [g, g];
+}
+
+function extractUKStarRating(html, text, showTitle, opts) {
   html = stripStyleStarGlyphs(html || ''); // BRO-305: icon CSS stars are not a rating
   // 1. Structured data: JSON-LD ("ratingValue": 5) or meta/itemprop ("ratingValue" content="5")
   const jsonLdMatch = html.match(/"ratingValue"\s*:\s*"?(\d+(?:\.\d+)?)"?/) ||
@@ -1065,7 +1143,11 @@ function extractUKStarRating(html, text) {
   }
 
   // 5. Unicode stars in text or HTML (consecutive or space-separated)
-  const unicodeMatch = text.match(/((?:[★☆]\s*){2,5})/) || html.match(/((?:[★☆]\s*){2,5})/);
+  // BRO-7221: a combined multi-show column (The Times "State of Broadway") prints
+  // one "Title (★★☆☆☆)" group per show. Taking the first group gave Beaches
+  // Schmigadoon!'s 5/5. With 2+ groups and a known show, take only the group
+  // whose lead-in names this show, else abstain from this step.
+  const unicodeMatch = (opts && opts.multiShowColumn ? pickUnicodeStarsForShow(text, showTitle) : null) || (opts && opts.multiShowColumn && hasMultipleStarGroups(text) && showTitle ? null : (text.match(/((?:[★☆]\s*){2,5})/) || html.match(/((?:[★☆]\s*){2,5})/)));
   if (unicodeMatch) {
     const stars = unicodeMatch[1].replace(/\s/g, '');
     const filled = (stars.match(/★/g) || []).length;
@@ -1241,11 +1323,27 @@ function extractGenericStarRating(html, text) {
     /([★☆]{3,5})/
   ];
 
+  // BRO-7080 ship-check: a run of only empty stars is skipped, so the unicode
+  // pattern must try every run (text first, then html), not just the first.
+  const firstFilledStarRun = (pattern) => {
+    const g = new RegExp(pattern.source, pattern.flags.includes('g') ? pattern.flags : pattern.flags + 'g');
+    for (const src of [text, html]) {
+      for (const m of String(src || '').matchAll(g)) if (/★/.test(m[1])) return m;
+    }
+    return null;
+  };
   for (const pattern of unambiguousPatterns) {
-    const match = text.match(pattern) || html.match(pattern);
+    const isStarRun = pattern.source === '([★☆]{3,5})';
+    const match = isStarRun ? firstFilledStarRun(pattern) : (text.match(pattern) || html.match(pattern));
     if (match) {
       if (match[1].includes('★') || match[1].includes('☆')) {
         const filled = (match[1].match(/★/g) || []).length;
+        // BRO-7080: a run of only empty stars ("☆☆☆☆") is page decoration or a
+        // site that draws its filled star as ☆ (theatre-south-east, Camden New
+        // Journal), never a 0-star verdict. It pinned three published reviews
+        // to a 0-30 band (Beetlejuice WE 21, "the wait was worth it").
+        // findStarGroups already refuses full === 0.
+        if (filled === 0) continue;
         const hasEmpty = match[1].includes('☆');
         // If both filled and empty stars shown, total = filled + empty
         // If only filled stars (no ☆), assume /5 scale (standard for theatre reviews)
@@ -1550,10 +1648,10 @@ const OUTLET_EXTRACTORS = {
   'the-independent': extractUKStarRating,
   'the-independent-uk': extractUKStarRating,
   'independent': extractUKStarRating,
-  'the-times': extractUKStarRating,
-  'the-times-uk': extractUKStarRating,
-  'times-uk': extractUKStarRating,
-  'the-times-clive-davis': extractUKStarRating,
+  'the-times': extractTimesColumnStarRating,
+  'the-times-uk': extractTimesColumnStarRating,
+  'times-uk': extractTimesColumnStarRating,
+  'the-times-clive-davis': extractTimesColumnStarRating,
   'financial-times': extractUKStarRating,
   'financial-times-uk': extractUKStarRating,
   'financialtimes': extractUKStarRating,

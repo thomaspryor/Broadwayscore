@@ -95,4 +95,18 @@ function ledgerRow(result, { ts, source, runId = null, model = null, category = 
   };
 }
 
-module.exports = { CAP, COOLDOWN_DAYS, ERROR_COOLDOWN_DAYS, LEDGER_PATH, ownedCategories, parseLedger, selectQueue, ledgerRow };
+/**
+ * PURE. { BRO-N: question } for every parsed ask-owner verdict (BRO-7139 Step 4). The
+ * consumer (owner-hold-sweep --model-questions) sanitizes and decides; this only selects.
+ */
+function questionsFromResults(results) {
+  const out = {};
+  for (const r of results || []) {
+    const v = r && r.verdict;
+    if (v && v.verdict === 'ask-owner' && typeof v.question === 'string' && r.id) out[r.id] = v.question;
+  }
+  return out;
+}
+
+module.exports = {
+  questionsFromResults, CAP, COOLDOWN_DAYS, ERROR_COOLDOWN_DAYS, LEDGER_PATH, ownedCategories, parseLedger, selectQueue, ledgerRow };

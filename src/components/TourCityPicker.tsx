@@ -63,7 +63,7 @@ function StopRow({ stop, show }: { stop: CityAgendaStop; show: BrowseShow }) {
         {img && <img src={getOptimizedImageUrl(img, 'card')} alt="" loading="lazy" decoding="async" className="w-full h-full object-cover" />}
       </div>
       <div className="flex-1 min-w-0">
-        <Link href={`/show/${show.slug}`} className="block font-semibold text-white text-sm sm:text-base leading-tight hover:text-brand transition-colors line-clamp-2">
+        <Link href={`/show/${show.slug}`} className="font-semibold text-white text-sm sm:text-base leading-tight hover:text-brand transition-colors line-clamp-2">
           {show.title}
         </Link>
         <div className="flex items-center gap-2 text-xs sm:text-sm text-fg-muted mt-0.5">

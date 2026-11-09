@@ -351,10 +351,11 @@ jobs:
       - name: Install actionlint
         if: steps.plan.outputs.skip_gauntlet != 'true'
         id: actionlint
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           ACTIONLINT_VERSION=1.7.7
-          curl -sL "https://github.com/rhysd/actionlint/releases/download/v${ACTIONLINT_VERSION}/actionlint_${ACTIONLINT_VERSION}_linux_amd64.tar.gz" | tar xz
-          sudo mv actionlint /usr/local/bin/
+          bash scripts/lib/install-release-binary.sh rhysd/actionlint "v${ACTIONLINT_VERSION}" "actionlint_${ACTIONLINT_VERSION}_linux_amd64.tar.gz" actionlint
 
       - name: Stage the branch's gauntlet harness
         if: steps.plan.outputs.skip_gauntlet != 'true'

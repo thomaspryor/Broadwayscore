@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-09T04:41:07.897Z",
+  "generatedAt": "2026-11-09T13:46:58.385Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -523,10 +523,6 @@
         {
           "name": "LondonTheatre1",
           "isDualMarket": false
-        },
-        {
-          "name": "London Box Office",
-          "isDualMarket": false
         }
       ],
       "timeline": [
@@ -930,23 +926,23 @@
       "status": "open",
       "slug": "wanted",
       "thumbnail": "/images/shows/wanted-2022/thumbnail.webp",
-      "siteScore": 59.24,
-      "liveScore": 59,
-      "scoreDrift": -0.240000000000002,
+      "siteScore": 59.72,
+      "liveScore": 60,
+      "scoreDrift": 0.28000000000000114,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 19,
+      "total": 20,
       "t1": 4,
-      "t2": 12,
+      "t2": 13,
       "t3": 3,
       "positive": 8,
-      "mixed": 7,
+      "mixed": 8,
       "negative": 4,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 19,
+        "highConfidence": 20,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1250,6 +1246,18 @@
           "m": 7,
           "n": 4,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-11-09T05:21:50.316Z",
+          "rc": 20,
+          "s": 59.72,
+          "t1": 4,
+          "t2": 13,
+          "t3": 3,
+          "p": 8,
+          "m": 8,
+          "n": 4,
+          "bc": "waiting"
         }
       ]
     },
@@ -1263,27 +1271,26 @@
       "status": "open",
       "slug": "msblackforpresident",
       "thumbnail": "/images/shows/msblackforpresident-off-broadway-2026/thumbnail.jpg",
-      "siteScore": 71.68,
-      "liveScore": 72,
-      "scoreDrift": 0.3199999999999932,
+      "siteScore": 70.99,
+      "liveScore": 71,
+      "scoreDrift": 0.010000000000005116,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 7,
+      "total": 9,
       "t1": 0,
-      "t2": 3,
-      "t3": 4,
-      "positive": 5,
-      "mixed": 2,
+      "t2": 4,
+      "t3": 5,
+      "positive": 6,
+      "mixed": 3,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "7/12 total",
-          "T1:0/3",
-          "hi-conf:6/8"
+          "9/12 total",
+          "T1:0/3"
         ],
-        "highConfidence": 6,
+        "highConfidence": 9,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1345,10 +1352,6 @@
           "isDualMarket": false
         },
         {
-          "name": "The Guardian",
-          "isDualMarket": true
-        },
-        {
           "name": "Broadway News",
           "isDualMarket": false
         }
@@ -1408,10 +1411,6 @@
         },
         {
           "name": "Theatrely",
-          "isDualMarket": false
-        },
-        {
-          "name": "Talkin' Broadway",
           "isDualMarket": false
         },
         {
@@ -1651,6 +1650,42 @@
           "m": 2,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-11-09T05:49:19.089Z",
+          "rc": 7,
+          "s": 71.26,
+          "t1": 0,
+          "t2": 3,
+          "t3": 4,
+          "p": 5,
+          "m": 2,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-09T07:14:56.653Z",
+          "rc": 8,
+          "s": 70.11,
+          "t1": 0,
+          "t2": 3,
+          "t3": 5,
+          "p": 5,
+          "m": 3,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-09T09:39:01.780Z",
+          "rc": 9,
+          "s": 70.99,
+          "t1": 0,
+          "t2": 4,
+          "t3": 5,
+          "p": 6,
+          "m": 3,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -1665,27 +1700,27 @@
       "slug": "the-steel-man",
       "thumbnail": "/images/shows/the-steel-man-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,
-      "liveScore": 66,
+      "liveScore": 64,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 4,
+      "reviewsNeeded": 3,
       "siteFileExists": true,
-      "total": 1,
+      "total": 2,
       "t1": 0,
       "t2": 0,
-      "t3": 1,
+      "t3": 2,
       "positive": 0,
-      "mixed": 1,
+      "mixed": 2,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/12 total",
+          "2/12 total",
           "T1:0/3",
           "T2:0/3",
-          "hi-conf:1/8"
+          "hi-conf:2/8"
         ],
-        "highConfidence": 1,
+        "highConfidence": 2,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -2039,6 +2074,18 @@
           "t3": 1,
           "p": 0,
           "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-09T12:16:09.483Z",
+          "rc": 2,
+          "s": 64,
+          "t1": 0,
+          "t2": 0,
+          "t3": 2,
+          "p": 0,
+          "m": 2,
           "n": 0,
           "bc": "waiting"
         }
@@ -2444,9 +2491,9 @@
       "status": "open",
       "slug": "iphigenie-en-tauride-english-national-opera-west-end",
       "thumbnail": "/images/shows/iphigenie-en-tauride-english-national-opera-west-end-2026/thumbnail.jpg",
-      "siteScore": 68.5,
-      "liveScore": 70,
-      "scoreDrift": 1.5,
+      "siteScore": 69,
+      "liveScore": 71,
+      "scoreDrift": 2,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -2663,6 +2710,18 @@
           "m": 2,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-11-09T08:39:52.669Z",
+          "rc": 6,
+          "s": 69,
+          "t1": 1,
+          "t2": 2,
+          "t3": 3,
+          "p": 4,
+          "m": 2,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -2676,25 +2735,25 @@
       "status": "open",
       "slug": "nero-off-west-end",
       "thumbnail": "/images/shows/nero-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 37.35,
-      "liveScore": 37,
-      "scoreDrift": -0.3500000000000014,
+      "siteScore": 37.99,
+      "liveScore": 38,
+      "scoreDrift": 0.00999999999999801,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 13,
+      "total": 14,
       "t1": 1,
       "t2": 4,
-      "t3": 8,
+      "t3": 9,
       "positive": 3,
-      "mixed": 2,
+      "mixed": 3,
       "negative": 8,
       "readiness": {
         "ready": false,
         "reasons": [
           "T1:1/3"
         ],
-        "highConfidence": 12,
+        "highConfidence": 13,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -2996,6 +3055,42 @@
           "t3": 8,
           "p": 3,
           "m": 2,
+          "n": 8,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-09T06:39:29.327Z",
+          "rc": 14,
+          "s": 38.63,
+          "t1": 1,
+          "t2": 4,
+          "t3": 9,
+          "p": 3,
+          "m": 3,
+          "n": 8,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-09T07:14:56.653Z",
+          "rc": 14,
+          "s": 38.52,
+          "t1": 1,
+          "t2": 4,
+          "t3": 9,
+          "p": 3,
+          "m": 3,
+          "n": 8,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-09T09:06:59.474Z",
+          "rc": 14,
+          "s": 37.99,
+          "t1": 1,
+          "t2": 4,
+          "t3": 9,
+          "p": 3,
+          "m": 3,
           "n": 8,
           "bc": "waiting"
         }

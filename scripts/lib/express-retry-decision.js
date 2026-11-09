@@ -68,7 +68,7 @@ function hasRealText(r) {
  *   one retry" (the latter should alert, not silently re-enqueue).
  */
 function shouldRetryExpress({ reviewFiles, show, isRetry }) {
-  const scoreable = (reviewFiles || []).filter((r) => isIncludableForRebuild(r, show || {}));
+  const scoreable = (reviewFiles || []).filter((r) => isIncludableForRebuild(r, show || {}, r && r.__filePath));
   let thin;
   let reason;
   if (scoreable.length === 0) {

@@ -167,7 +167,11 @@ test('the production driver persists scored reviews before publishing and skips 
   assert.deepEqual(first.errors, []);
   assert.equal(first.published[0].verified.length, 1);
   assert.equal(savedRows()[0].fullText, text.trim());
-  assert.deepEqual(doc.reviews, savedRows(), 'publish exactly the persisted record');
+  // BRO-7196: publish exactly the persisted record plus the card's display fields (outlet name, the rebuild's quote).
+  const { pullQuote, ...published } = doc.reviews[0];
+  assert.deepEqual(published, { ...savedRows()[0], outlet: 'The Guardian' }, 'publish exactly the persisted record');
+  assert.ok(pullQuote && pullQuote.length >= 20, 'the published card carries a pull quote');
+  assert.equal(savedRows()[0].pullQuote, undefined, 'the quote never lands on the review file');
   assert.ok(ledger.readLedger(ledgerDir, show.id, NIGHT).events.some(e => e.stage === 'scored'));
   const restarted = await deps.runNight({ shouldStop: () => false });
   assert.equal(restarted.admitted.length, 0);
@@ -280,4 +284,15 @@ test('BRO-5201 laneAdapters: one clock drives every adapter that reads time', as
   t += 60 * 60 * 1000;
   await tb.discover({ show, night: '2026-10-20', fetchText }).catch(() => {});
   assert.ok(probes > first, 'an hour later on the injected clock, it probes again');
+});
+
+test('a held paywall teaser and an incomplete card both page, side by side, on an otherwise clean night (BRO-7159 + BRO-7196)', async () => {
+  const h = harness({ runNight: async () => ({ passes: 4, admitted: [{}], published: [], errors: [], failed: [], unpublished: [],
+    quoteless: [{ key: 'tb', missing: ['quote'] }], awaiting: ['wsj.com/arts/wanted-review'] }) });
+  const out = await h.run();
+  assert.equal(out.exit, 0, 'neither is an unpublished scored row');
+  assert.equal(h.calls.pages.length, 1);
+  assert.match(h.calls.pages[0].title, /1 incomplete card\(s\), 1 awaiting an excerpt/);
+  assert.match(h.calls.pages[0].description, /paywall teaser still awaiting an excerpt .*wsj\.com/);
+  assert.match(h.calls.pages[0].description, /incomplete card \(no quote\): tb/);
 });

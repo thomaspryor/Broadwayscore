@@ -161,8 +161,9 @@ function scoredOutletsByShow() {
 // A sibling file for the same outlet that WILL reach reviews.json (canonical
 // predicate) — covers the scoring→rebuild window where reviews.json is stale.
 // SCORED axis = isIncludableForRebuild (flag/context filters) AND hasValidScore.
-function fileCountsAsScored(d, show) {
-  return isIncludableForRebuild(d, show) && hasValidScore(d);
+// filePath lets the syndication-secondary / duplicateOf rules see siblings (BRO-5701 cousin, BRO-7080).
+function fileCountsAsScored(d, show, filePath) {
+  return isIncludableForRebuild(d, show, filePath) && hasValidScore(d);
 }
 
 // One _blocklist.json read per show per run, not per recovered file.
@@ -210,7 +211,7 @@ function recoverFromOwnUrl(showId, fileName, d, show, decision = ownUrlRecoveryD
   try {
     const fp = path.join(REVIEW_TEXTS_DIR, showId, fileName);
     const fresh = JSON.parse(fs.readFileSync(fp, 'utf8'));
-    if (!(fresh.fullText && fresh.fullText.length >= 400) && !fileCountsAsScored(fresh, show)) {
+    if (!(fresh.fullText && fresh.fullText.length >= 400) && !fileCountsAsScored(fresh, show, fp)) {
       fresh.aggUrlRecoveryCount = nextRecoveryCount(fresh);
       fresh.aggUrlRecoveryAt = new Date().toISOString();
       safeWriteReview(fp, fresh);
@@ -332,7 +333,7 @@ async function main() {
 
     const scoredOutlets = new Set(scoredMap.get(show.id) || []);
     for (const [f, d] of parsed) {
-      if (fileCountsAsScored(d, show)) scoredOutlets.add(f.split('--')[0]);
+      if (fileCountsAsScored(d, show, path.join(dir, f))) scoredOutlets.add(f.split('--')[0]);
     }
 
     for (const [f, d] of parsed) {

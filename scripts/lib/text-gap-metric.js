@@ -24,6 +24,7 @@ const INCOMPLETE_REASON_ENUM = Object.freeze([
   'wrong_content', 'url_dead', 'scraper_garbage', 'paywall', 'url_content_mismatch', 'no_url',
   'route_capped', 'scraper_timeout', 'code_error', 'bot_blocked', 'roundup_only', 'partial_text',
   'not_attempted', 'unknown', 'multi_show_section_not_found', 'non_review', 'unrecoverable',
+  'permanently_unavailable',
 ]);
 
 /**
@@ -74,6 +75,7 @@ function scanCorpus({ dir, shows, outlets = {}, nowMs, outletFilter = null, show
     if (showFilter && showId !== showFilter) continue;
     let names;
     try { names = fs.readdirSync(path.join(dir, showId)); } catch { continue; }
+    const showRows = [];
     for (const name of names) {
       if (!name.endsWith('.json')) continue;
       if (!isReviewTextFile(name)) { excludedSidecars++; continue; }
@@ -88,16 +90,45 @@ function scanCorpus({ dir, shows, outlets = {}, nowMs, outletFilter = null, show
         nowMs,
       });
       const reason = review.incompleteReason;
-      rows.push({
+      const row = {
         showId,
         file: name,
         outletId: review.outletId || '?',
         ...g,
         polluted: !!reason && !INCOMPLETE_REASON_ENUM.includes(reason),
-      });
+      };
+      rows.push(row);
+      showRows.push({ row, review });
     }
+    excludeUnknownStubsBesideNamed(showRows);
   }
   return { rows, excludedSidecars, filesRead, unreadable };
+}
+
+/**
+ * The rebuild drops an "unknown"/"unnamed" critic file when an included named
+ * critic file exists at the same canonical outlet (rebuild-all-reviews.js
+ * skippedUnknownCriticDedup), so such a stub never reaches the site and is
+ * not a gap. BRO-7171 Stage 4: ~150 of 331 recent NO_URL rows were
+ * nyc-theatre `--unknown` stubs (no url, no text) beside the named file, e.g.
+ * school-girls-or-the-african-mean-girls-play-2026/nytimes--unknown.json next
+ * to nytimes--helen-shaw.json. Uses the rebuild's own outlet key. Mutates rows.
+ */
+function excludeUnknownStubsBesideNamed(showRows) {
+  const { normalizeOutlet } = require('./review-normalization');
+  const { isUnknownCritic } = require('./within-show-dedup');
+  const key = (r) => normalizeOutlet(r.outletId || r.outlet || '');
+  const namedIncluded = new Set();
+  for (const { row, review } of showRows) {
+    if (row.gapClass !== 'EXCLUDED' && !isUnknownCritic(review)) namedIncluded.add(key(review));
+  }
+  for (const { row, review } of showRows) {
+    if (row.gapClass === 'EXCLUDED' || !isUnknownCritic(review)) continue;
+    if (!namedIncluded.has(key(review))) continue;
+    row.gapClass = 'EXCLUDED';
+    row.subclass = 'unknown_stub_named_sibling';
+    row.open = false;
+  }
 }
 
 function bump(obj, key, n = 1) { obj[key] = (obj[key] || 0) + n; }

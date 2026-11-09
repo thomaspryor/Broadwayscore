@@ -58,34 +58,8 @@ function jitterDelay() {
   return CONFIG.delayMinMs + Math.random() * (CONFIG.delayMaxMs - CONFIG.delayMinMs);
 }
 
-async function extractArticle(page, url) {
-  await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
-  await page.waitForTimeout(1800); // let client-side entitlement hydration resolve
-
-  return page.evaluate(() => {
-    const bodyText = document.body?.innerText || '';
-    if (/unusual activity|verify you.re not a robot|access denied/i.test(bodyText)) {
-      return { error: 'Bot-check challenge detected' };
-    }
-    // .article-body only wraps the lede teaser on some WaPo templates (269
-    // chars vs 6693 in <article> on the same page, confirmed live
-    // 2026-08-02) — pick whichever candidate selector yields the MOST text
-    // rather than trusting selector specificity.
-    const candidates = [
-      'article[data-qa="article-body"]',
-      '[itemprop="articleBody"]',
-      '.article-body',
-      'article',
-    ]
-      .map((sel) => document.querySelector(sel))
-      .filter(Boolean)
-      .map((el) => el.innerText || '');
-    const text = candidates.reduce((best, t) => (t.length > best.length ? t : best), '');
-    const title = document.title || '';
-    if (!text) return { error: 'No article body element found', title };
-    return { text, title, len: text.length };
-  });
-}
+// One extractor shared with the nightly gap-recovery driver (BRO-7171 Stage 4).
+const extractArticle = require('./lib/browser-outlet-adapters').ADAPTERS.wapo.extract;
 
 async function main() {
   // BRO-7171 Stage 3: never overlap the nightly gap-recovery job or another recovery run.

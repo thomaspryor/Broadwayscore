@@ -122,6 +122,14 @@ test('BROWSER_SESSION: a lost session is auth_failed (non-evidence), not a rejec
   assert.match(nav.reason, /^navigation_error/);
   const bot = await S.browserSession(c, { extract: async () => ({ error: 'Bot-check challenge detected' }), probe: okProbe });
   assert.deepEqual(bot, { ok: false, outcome: 'non_evidence', reason: 'bot_check' });
+  // Stage 4: WSJ's DataDome label is a bot-check too
+  const dd = await S.browserSession(c, { extract: async () => ({ error: 'DataDome challenge detected' }), probe: okProbe });
+  assert.deepEqual(dd, { ok: false, outcome: 'non_evidence', reason: 'bot_check' });
+  // Stage 4: a 404 to a logged-in session is evidence the url is dead, not a lost session
+  let probed = false;
+  const nf = await S.browserSession(c, { extract: async () => ({ error: 'HTTP 404 not found', notFound: true, status: 404 }), probe: async () => { probed = true; return { text: 'x'.repeat(900) }; } });
+  assert.deepEqual(nf, { ok: false, outcome: 'no_evidence', reason: 'url_not_found_404' });
+  assert.equal(probed, false);
 });
 
 test('URL_REDISCOVER: unavailable SERP is non-evidence and does not spend the file budget; a miss does', async () => {

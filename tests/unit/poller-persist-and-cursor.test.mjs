@@ -38,3 +38,10 @@ test('F06: pre-SERP pass skips results already persisted at settle, and a persis
   assert.match(src, /settledReviews\.has\(r\)/);
   assert.match(src, /persist-on-completion failed/);
 });
+
+test('BRO-7176: --dry-run leaves poller-backoff and roundup-miss ledgers untouched (source guard)', () => {
+  const fn = src.slice(src.indexOf('function saveBackoffState'), src.indexOf('function computeNextBackoffDelayMs'));
+  assert.match(fn, /if \(DRY_RUN\) return;/, 'saveBackoffState must no-op on dry run');
+  assert.match(src, /discovery\.via === 'not-found' && !DRY_RUN/, 'BWW roundup miss ledger gated');
+  assert.match(src, /if \(!DRY_RUN\) trMiss\.recordTrMiss/, 'TR miss ledger gated');
+});

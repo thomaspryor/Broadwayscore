@@ -1,21 +1,22 @@
 {
-  "updatedAt": "2026-11-08T09:26:53.671Z",
-  "scanned": 4770,
-  "showsWithViolations": 171,
-  "totalViolations": 225,
-  "newSinceLastRun": 3,
+  "updatedAt": "2026-11-09T10:43:55.586Z",
+  "scanned": 4794,
+  "showsWithViolations": 167,
+  "totalViolations": 223,
+  "newSinceLastRun": 4,
   "handled": {
-    "temporal-override-low-confidence": 957,
-    "not-shipped": 55,
+    "temporal-override-low-confidence": 966,
+    "not-shipped": 56,
     "duplicate-not-shipped": 57,
     "rebuild-skip-audit": 32,
     "manual-clear-reason": 12,
-    "prior-run-or-tour-leg": 42
+    "prior-run-or-tour-leg": 43
   },
   "newViolationKeys": [
-    "the-sound-inside-2019::njcom--christopher-kelly.json",
-    "operation-mincemeat-west-end-2024::thereviewshub--the-reviews-hub-scotland.json",
-    "nero-off-west-end-2026::theatre-weekly--greg-stewart.json"
+    "oliver-west-end-2024::financialtimes--financial-times.json",
+    "oliver-west-end-2024::financialtimes--sarah-hemming.json",
+    "a-small-and-quiet-light-off-west-end-2026::plays-international--maryam-philpott.json",
+    "ghosts-off-broadway-2025::times-uk--clive-davis.json"
   ],
   "violationKeys": [
     "cats-the-jellicle-ball-2026::nytg--kyle-turner.json",
@@ -26,7 +27,6 @@
     "a-dolls-house-2023::talkinbroadway--matthew-murray.json",
     "between-riverside-and-crazy-2022::vulture--jackson-mchenry.json",
     "1776-2022::nydailynews--chris-jones.json",
-    "into-the-woods-2022::thestage--neil-norman.json",
     "funny-girl-2022::theatermania--hayley-levitt.json",
     "paradise-square-2022::theater-life--samuel-l-leiter.json",
     "the-sound-inside-2019::njcom--christopher-kelly.json",
@@ -107,18 +107,16 @@
     "heathers-the-musical-off-broadway-2025::theatrely--kobi-kassal.json",
     "mother-russia-off-broadway-2026::the-interested-bystander--cary-wong.json",
     "music-city-off-broadway-2026::new-york-sun--elysa-gardner.json",
-    "blackout-songs-off-broadway-2026::one-minute-critic--emily-chackerian.json",
-    "spare-parts-off-broadway-2026::theatermania--zachary-stewart.json",
     "girl-interrupted-off-broadway-2026::theatrely--joey-sims.json",
     "zack-off-broadway-2026::stageandcinema--paola-bellu.json",
     "zack-off-broadway-2026::theater-scene--marc-miller.json",
-    "calf-scramble-off-broadway-2026::theatermania--hayley-levitt.json",
-    "an-ark-off-broadway-2026::one-minute-critic--matthew-wexler.json",
     "el-ultimo-sueno-de-frida-y-diego-off-broadway-2026::new-york-classical-review--george-grella.json",
     "tru-off-broadway-2026::nysr--david-finkle.json",
     "oh-mary-west-end-2025::financialtimes--sarah-hemming.json",
     "the-devil-wears-prada-west-end-2024::broadwayworld--aliya-al-hassan.json",
     "mj-the-musical-west-end-2024::timeout-london--andrzej-lukowski.json",
+    "oliver-west-end-2024::financialtimes--financial-times.json",
+    "oliver-west-end-2024::financialtimes--sarah-hemming.json",
     "oliver-west-end-2024::sunday-telegraph--dominic-cavendish.json",
     "grace-pervades-west-end-2026::whatsonstage--kris-hallett.json",
     "all-my-sons-west-end-2025::guardian--arifa-akbar.json",
@@ -178,7 +176,7 @@
     "les-miserables-arena-concert-spectacular-off-broadway-2026::cititour--brian-scott-lipton.json",
     "les-miserables-arena-concert-spectacular-off-broadway-2026::nypost--johnny-oleksinski.json",
     "a-small-and-quiet-light-off-west-end-2026::artsdesk--aleks-sierz.json",
-    "a-small-and-quiet-light-off-west-end-2026::plays-international--unknown.json",
+    "a-small-and-quiet-light-off-west-end-2026::plays-international--maryam-philpott.json",
     "sylvia-west-end-2023::standard--nick-curtis.json",
     "crybabies-the-scaring-off-west-end-2026::london-box-office--stuart-king.json",
     "operation-mincemeat-tour-2026::boston-globe--unknown.json",
@@ -238,6 +236,7 @@
     "love-love-love-off-broadway-2016::cititour--brian-scott-lipton.json",
     "love-love-love-off-broadway-2016::show-showdown--elizabeth-wollman.json",
     "aint-done-bad-off-broadway-2024::theatre-reviews-limited--david-roberts.json",
+    "ghosts-off-broadway-2025::times-uk--clive-davis.json",
     "angry-alan-off-broadway-2025::pages-on-stages--mason-pilevsky.json",
     "the-blood-quilt-off-broadway-2024::theater-scene--deirdre-donovan.json",
     "sunny-afternoon-west-end-2014::standard--fiona-mountford.json",
@@ -396,27 +395,6 @@
           "cvIssues": [
             "Critic byline is Chris Jones, but Chris Jones is the Chicago Tribune theater critic, not a New York Daily News critic",
             "Review states the show 'opened Thursday at the Roundabout Theatre' — this phrasing and venue description does not match the expected 2022-10-06 opening at American Airlines Theatre / Todd Haimes Theatre"
-          ]
-        }
-      ]
-    },
-    {
-      "showId": "into-the-woods-2022",
-      "title": "Into the Woods",
-      "openingDate": "2022-07-10",
-      "message": "thestage/Neil Norman (thestage--neil-norman.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 46d of opening, likely correct production] This is a legitimate theater review with critical as — https://www.thestage.co.uk/long-reviews/into-the-woods-directed-by-terry-gilliam-review-at-theatre-royal-bath",
-      "violations": [
-        {
-          "filename": "thestage--neil-norman.json",
-          "url": "https://www.thestage.co.uk/long-reviews/into-the-woods-directed-by-terry-gilliam-review-at-theatre-royal-bath",
-          "outletId": "thestage",
-          "criticName": "Neil Norman",
-          "matchedBy": "url",
-          "cvConfidence": "low",
-          "cvReasoning": "[OVERRIDE: review within 46d of opening, likely correct production] This is a legitimate theater review with critical as",
-          "cvIssues": [
-            "Review evaluates a production at Theatre Royal Bath, not the Broadway production at St. James Theatre",
-            "The scraped text explicitly states the show 'was originally slated to open at the Old Vic in April this year' but 'was abruptly cancelled' and 'The show now makes its premiere at Theatre Royal Bath'"
           ]
         }
       ]
@@ -1908,47 +1886,6 @@
       ]
     },
     {
-      "showId": "blackout-songs-off-broadway-2026",
-      "title": "Blackout Songs",
-      "openingDate": "2026-01-15",
-      "message": "one-minute-critic/Emily Chackerian (one-minute-critic--emily-chackerian.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The review explicitly states that the production is 'Off-Broadway', not Broadway. The review is also truncated. — https://1minutecritic.com/blackout-songs-off-broadway-review/",
-      "violations": [
-        {
-          "filename": "one-minute-critic--emily-chackerian.json",
-          "url": "https://1minutecritic.com/blackout-songs-off-broadway-review/",
-          "outletId": "one-minute-critic",
-          "criticName": "Emily Chackerian",
-          "matchedBy": "url",
-          "cvConfidence": "high",
-          "cvReasoning": "The review explicitly states that the production is 'Off-Broadway', not Broadway. The review is also truncated.",
-          "cvIssues": [
-            "Wrong Production"
-          ]
-        }
-      ]
-    },
-    {
-      "showId": "spare-parts-off-broadway-2026",
-      "title": "Spare Parts",
-      "openingDate": "2026-03-08",
-      "message": "theatermania/Zachary Stewart (theatermania--zachary-stewart.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The review explicitly states that the production is at Theatre Row, which is an Off-Broadway venue. The content is also  — https://www.theatermania.com/news/review-spare-parts-asks-can-you-buy-immortality_1826985/",
-      "violations": [
-        {
-          "filename": "theatermania--zachary-stewart.json",
-          "url": "https://www.theatermania.com/news/review-spare-parts-asks-can-you-buy-immortality_1826985/",
-          "outletId": "theatermania",
-          "criticName": "Zachary Stewart",
-          "matchedBy": "url",
-          "cvConfidence": "high",
-          "cvReasoning": "The review explicitly states that the production is at Theatre Row, which is an Off-Broadway venue. The content is also ",
-          "cvIssues": [
-            "Wrong production: The review is for an Off-Broadway production at Theatre Row, not a Broadway production.",
-            "Truncated: The scraped content is truncated."
-          ]
-        }
-      ]
-    },
-    {
       "showId": "girl-interrupted-off-broadway-2026",
       "title": "Girl, Interrupted",
       "openingDate": "2026-06-04",
@@ -1997,47 +1934,6 @@
           "cvReasoning": "The scraped content reviews a revival of 'Zack' by Harold Brighouse, which is not the same as the Off-Broadway productio",
           "cvIssues": [
             "Review is for a different production titled 'Zack' by Harold Brighouse, not the Off-Broadway show 'ZACK' expected."
-          ]
-        }
-      ]
-    },
-    {
-      "showId": "calf-scramble-off-broadway-2026",
-      "title": "Calf Scramble",
-      "openingDate": "2026-03-10",
-      "message": "theatermania/Hayley Levitt (theatermania--hayley-levitt.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The review is for an Off-Broadway production at 59E59 Theaters, not a Broadway production. The article is also truncated — https://www.theatermania.com/news/review-in-calf-scramble-teen-angst-meets-the-future-farmers-of-america_1829071/",
-      "violations": [
-        {
-          "filename": "theatermania--hayley-levitt.json",
-          "url": "https://www.theatermania.com/news/review-in-calf-scramble-teen-angst-meets-the-future-farmers-of-america_1829071/",
-          "outletId": "theatermania",
-          "criticName": "Hayley Levitt",
-          "matchedBy": "url",
-          "cvConfidence": "high",
-          "cvReasoning": "The review is for an Off-Broadway production at 59E59 Theaters, not a Broadway production. The article is also truncated",
-          "cvIssues": [
-            "wrongProduction"
-          ]
-        }
-      ]
-    },
-    {
-      "showId": "an-ark-off-broadway-2026",
-      "title": "An Ark",
-      "openingDate": "2026-01-21",
-      "message": "one-minute-critic/Matthew Wexler (one-minute-critic--matthew-wexler.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The scraped review critiques 'An Ark' at The Shed, which is an Off-Broadway venue in Manhattan, not a Broadway theater.  — https://1minutecritic.com/ian-mckellen-an-ark-shed-review/",
-      "violations": [
-        {
-          "filename": "one-minute-critic--matthew-wexler.json",
-          "url": "https://1minutecritic.com/ian-mckellen-an-ark-shed-review/",
-          "outletId": "one-minute-critic",
-          "criticName": "Matthew Wexler",
-          "matchedBy": "url",
-          "cvConfidence": "high",
-          "cvReasoning": "The scraped review critiques 'An Ark' at The Shed, which is an Off-Broadway venue in Manhattan, not a Broadway theater. ",
-          "cvIssues": [
-            "Wrong production: Review describes 'An Ark' at The Shed, which is an Off-Broadway venue (520 W 42nd St), not a Broadway theater. The Shed is a not-for-profit arts center in Hell's Kitchen, not on the Broadway theater circuit.",
-            "Truncated: Review ends mid-thought with orphaned text ('Carrie Coon and Namir Smallwood scratch more than an itch in Tracy Letts' 'Bug'...') indicating incomplete scrape or paywall cutoff."
           ]
         }
       ]
@@ -2149,9 +2045,35 @@
     {
       "showId": "oliver-west-end-2024",
       "title": "Oliver!",
-      "openingDate": "2024-12-14",
-      "message": "sunday-telegraph/Dominic Cavendish (sunday-telegraph--dominic-cavendish.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a review of the Chichester Festival Theatre production of Oliver!, which is a pre-West End tryout. The critic is — https://www.telegraph.co.uk/theatre/what-to-see/oliver-chichester-festival-theatre-review/",
+      "openingDate": "2025-01-14",
+      "message": "financialtimes/Financial Times (financialtimes--financial-times.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This review is of the pre-West End Chichester Festival Theatre co-production that later transferred to the West End, not — https://www.ft.com/content/5d090f58-85f0-4c9b-91d6-548211db880c\nfinancialtimes/Sarah Hemming (financialtimes--sarah-hemming.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a valid review, but it explicitly states the production 'originated as a Chichester Festival Theatre co-producti — https://www.ft.com/content/5d090f58-85f0-4c9b-91d6-548211db880c\nsunday-telegraph/Dominic Cavendish (sunday-telegraph--dominic-cavendish.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a review of the Chichester Festival Theatre production of Oliver!, which is a pre-West End tryout. The critic is — https://www.telegraph.co.uk/theatre/what-to-see/oliver-chichester-festival-theatre-review/",
       "violations": [
+        {
+          "filename": "financialtimes--financial-times.json",
+          "url": "https://www.ft.com/content/5d090f58-85f0-4c9b-91d6-548211db880c",
+          "outletId": "financialtimes",
+          "criticName": "Financial Times",
+          "matchedBy": "url",
+          "cvConfidence": "high",
+          "cvReasoning": "This review is of the pre-West End Chichester Festival Theatre co-production that later transferred to the West End, not",
+          "cvIssues": [
+            "Review describes pre-West End production at Chichester Festival Theatre, not the West End transfer",
+            "Text explicitly states: 'It originated as a Chichester Festival Theatre co-production last summer'"
+          ]
+        },
+        {
+          "filename": "financialtimes--sarah-hemming.json",
+          "url": "https://www.ft.com/content/5d090f58-85f0-4c9b-91d6-548211db880c",
+          "outletId": "financialtimes",
+          "criticName": "Sarah Hemming",
+          "matchedBy": "url",
+          "cvConfidence": "high",
+          "cvReasoning": "This is a valid review, but it explicitly states the production 'originated as a Chichester Festival Theatre co-producti",
+          "cvIssues": [
+            "Review describes Chichester Festival Theatre co-production ('it originated as a Chichester Festival Theatre co-production last summer'), not the West End production",
+            "Text is truncated mid-sentence at 3617 characters"
+          ]
+        },
         {
           "filename": "sunday-telegraph--dominic-cavendish.json",
           "url": "https://www.telegraph.co.uk/theatre/what-to-see/oliver-chichester-festival-theatre-review/",
@@ -2505,7 +2427,7 @@
       "showId": "operation-mincemeat-west-end-2024",
       "title": "Operation Mincemeat",
       "openingDate": "2023-05-09",
-      "message": "the-recs/Unknown (the-recs--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a genuine review with critical assessment (5-star rating), but the critic attended and is evaluating the Edinbur — https://therecs.co.uk/operation-mincemeat-touring/\nthereviewshub/The Reviews Hub - Scotland (thereviewshub--the-reviews-hub-scotland.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a valid theater review, but it reviews a touring production of Operation Mincemeat, not the West End run at Fort — https://www.thereviewshub.com/operation-mincemeat-kings-theatre-edinburgh/",
+      "message": "the-recs/Unknown (the-recs--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a genuine review with critical assessment (5-star rating), but the critic attended and is evaluating the Edinbur — https://therecs.co.uk/operation-mincemeat-touring/\nthereviewshub/The Reviews Hub - Scotland (thereviewshub--the-reviews-hub-scotland.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a well-written review of Operation Mincemeat, but it reviews the touring production of the show, not the West En — https://www.thereviewshub.com/operation-mincemeat-kings-theatre-edinburgh/",
       "violations": [
         {
           "filename": "the-recs--unknown.json",
@@ -2527,10 +2449,10 @@
           "criticName": "The Reviews Hub - Scotland",
           "matchedBy": "url",
           "cvConfidence": "high",
-          "cvReasoning": "This is a valid theater review, but it reviews a touring production of Operation Mincemeat, not the West End run at Fort",
+          "cvReasoning": "This is a well-written review of Operation Mincemeat, but it reviews the touring production of the show, not the West En",
           "cvIssues": [
-            "Review evaluates a touring production, not the West End run at Fortune Theatre",
-            "Critic explicitly states 'on tour' and references 'this touring cast'"
+            "Review evaluates a TOURING production, not the West End run at Fortune Theatre",
+            "Critic explicitly states 'touring cast' and references 'when it tours back to Edinburgh next year'"
           ]
         }
       ]
@@ -3212,7 +3134,7 @@
       "showId": "a-small-and-quiet-light-off-west-end-2026",
       "title": "A Small And Quiet Light",
       "openingDate": "2026-09-27",
-      "message": "artsdesk/Aleks Sierz (artsdesk--aleks-sierz.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: This is a legitimate theater review, but it reviews the Chichester Festival Theatre production that opened in August, no — https://theartsdesk.com/theatre/small-and-quiet-light-orange-tree-theatre-review-disappointingly-superficial-and-slender\nplays-international/Unknown (plays-international--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: The scraped review evaluates the Chichester Festival Theatre production, where the play premiered in August 2026. While  — https://playsinternational.org.uk/a-small-and-quiet-light-orange-tree-theatre/",
+      "message": "artsdesk/Aleks Sierz (artsdesk--aleks-sierz.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: This is a legitimate theater review, but it reviews the Chichester Festival Theatre production that opened in August, no — https://theartsdesk.com/theatre/small-and-quiet-light-orange-tree-theatre-review-disappointingly-superficial-and-slender\nplays-international/Maryam Philpott (plays-international--maryam-philpott.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: The scraped review evaluates the Chichester Festival Theatre production, where the play premiered in August 2026. While  — https://playsinternational.org.uk/a-small-and-quiet-light-orange-tree-theatre/",
       "violations": [
         {
           "filename": "artsdesk--aleks-sierz.json",
@@ -3228,10 +3150,10 @@
           ]
         },
         {
-          "filename": "plays-international--unknown.json",
+          "filename": "plays-international--maryam-philpott.json",
           "url": "https://playsinternational.org.uk/a-small-and-quiet-light-orange-tree-theatre/",
           "outletId": "plays-international",
-          "criticName": "Unknown",
+          "criticName": "Maryam Philpott",
           "matchedBy": "url",
           "cvConfidence": "low",
           "cvReasoning": "The scraped review evaluates the Chichester Festival Theatre production, where the play premiered in August 2026. While ",
@@ -4373,6 +4295,27 @@
           "cvIssues": [
             "Venue mismatch: Review describes performance at Irene Diamond Stage, but expected venue is Signature Center",
             "No critic byline found in scraped content (expected: David Roberts from Theatre Reviews Limited)"
+          ]
+        }
+      ]
+    },
+    {
+      "showId": "ghosts-off-broadway-2025",
+      "title": "Ghosts",
+      "openingDate": "2025-03-10",
+      "message": "times-uk/Clive Davis (times-uk--clive-davis.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 38d of opening, likely correct production] The scraped review clearly states it is reviewing 'G — https://www.thetimes.com/culture/theatre-dance/article/ghosts-review-lyric-theatre-09sj92lkg",
+      "violations": [
+        {
+          "filename": "times-uk--clive-davis.json",
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/ghosts-review-lyric-theatre-09sj92lkg",
+          "outletId": "times-uk",
+          "criticName": "Clive Davis",
+          "matchedBy": "url",
+          "cvConfidence": "low",
+          "cvReasoning": "[OVERRIDE: review within 38d of opening, likely correct production] The scraped review clearly states it is reviewing 'G",
+          "cvIssues": [
+            "Review is of a London West End production (Lyric Hammersmith), not an Off-Broadway production",
+            "Venue is explicitly named as 'Lyric Hammersmith in London'"
           ]
         }
       ]

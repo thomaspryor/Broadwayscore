@@ -375,6 +375,7 @@ function decideSameArticleNamedTwin(incomingText, keptAtOutlet) {
 }
 
 module.exports = {
+  identityTokens,
   decideSameArticleNamedTwin,
   SAME_ARTICLE_MIN_COVERAGE,
   decidePlaceholderBylineTwin,

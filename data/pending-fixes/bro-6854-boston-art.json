@@ -1,0 +1,117 @@
+{
+  "issueNumber": "bro-6854-boston-art",
+  "planId": "4589e037-8902-4404-8560-3580e1140cc8",
+  "status": "applied",
+  "createdAt": "2026-11-09T06:29:19.673Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Boston: set production art on five shows image search could not match (BRO-6854)",
+    "steps": [
+      "shows.json: eleanor-regional-2026.images",
+      "shows.json: annie-regional-2026.images",
+      "shows.json: merrily-we-roll-along-sullivan-regional-2026.images",
+      "shows.json: paranormal-activity-regional-2026.images",
+      "shows.json: all-my-sons-regional-2026.images"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "eleanor-regional-2026",
+        "field": "images",
+        "oldValue": null,
+        "newValue": {
+          "poster": "/images/shows/eleanor-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/eleanor-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/eleanor-regional-2026/hero.webp"
+        },
+        "description": "shows.json: eleanor-regional-2026.images"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "annie-regional-2026",
+        "field": "images",
+        "oldValue": null,
+        "newValue": {
+          "poster": "/images/shows/annie-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/annie-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/annie-regional-2026/hero.webp"
+        },
+        "description": "shows.json: annie-regional-2026.images"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "merrily-we-roll-along-sullivan-regional-2026",
+        "field": "images",
+        "oldValue": null,
+        "newValue": {
+          "poster": "/images/shows/merrily-we-roll-along-sullivan-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/merrily-we-roll-along-sullivan-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/merrily-we-roll-along-sullivan-regional-2026/hero.webp"
+        },
+        "description": "shows.json: merrily-we-roll-along-sullivan-regional-2026.images"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "paranormal-activity-regional-2026",
+        "field": "images",
+        "oldValue": null,
+        "newValue": {
+          "poster": "/images/shows/paranormal-activity-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/paranormal-activity-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/paranormal-activity-regional-2026/hero.webp"
+        },
+        "description": "shows.json: paranormal-activity-regional-2026.images"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "all-my-sons-regional-2026",
+        "field": "images",
+        "oldValue": null,
+        "newValue": {
+          "poster": "/images/shows/all-my-sons-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/all-my-sons-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/all-my-sons-regional-2026/hero.webp"
+        },
+        "description": "shows.json: all-my-sons-regional-2026.images"
+      }
+    ]
+  },
+  "executedAt": "2026-11-09T06:40:15.210Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for eleanor-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for annie-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for merrily-we-roll-along-sullivan-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for paranormal-activity-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for all-my-sons-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

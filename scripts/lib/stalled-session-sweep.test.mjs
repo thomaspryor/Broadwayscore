@@ -105,3 +105,49 @@ test('review fixes: only a structured or session-named not-found requeues; Backl
   assert.match(S.buildStallRequeueComment(back, 'x', NOW), RECLAIM_TO_BACKLOG_RE);
   assert.equal(isMachineComment(S.buildStallNudgeComment(e, NOW)), true);
 });
+
+// BRO-7195: Mac-held cards. The 2026-11-09 board had 8 of 9 stale In Progress cards claimed as
+// "Claimed by local session <uuid> on Toms-Mac-Studio.local at ..."; the cloud sweep skipped all 8.
+const LSID = '37ba01ba-7659-47b4-9c28-ec96e16caf42';
+const localClaim = (at, host = 'Toms-Mac-Studio.local') => ({ body: `Claimed by local session ${LSID} on ${host} at ${at}.`, createdAt: at });
+const localEntry = (o = {}) => S.stalledSessionEntry({
+  issue: card({ identifier: 'BRO-7006', ...(o.issue || {}) }), comments: o.comments || [localClaim(ago(41 * H))], landRefs: [], nowMs: NOW, local: true,
+});
+const view = (o = {}) => ({ hostNames: ['Toms-Mac-Studio.local', 'Toms-Mac-Studio'], liveIds: new Set(), psText: '', transcriptMtimeMs: NOW - 40 * H, lastLedgerMs: NOW - 41 * H, nowMs: NOW, ...o });
+
+test('BRO-7195 replay: a Mac-held card whose session is gone (40h quiet, no ledger row in 24h) is requeued', () => {
+  const e = localEntry();
+  assert.equal(e.action, 'check-local');
+  assert.equal(e.sessionId, LSID);
+  assert.equal(e.host, 'Toms-Mac-Studio.local');
+  const d = S.localStallAction({ entry: e, ...view() });
+  assert.equal(d.action, 'requeue');
+  assert.match(S.buildStallRequeueComment(e, d.reason, NOW), new RegExp(`^${RECLAIM_MARKER}`));
+});
+
+test('BRO-7195: the cloud sweep still skips local claims, and a local entry is never a cloud check', () => {
+  assert.equal(entryFor({ comments: [localClaim(ago(41 * H))] }).reason, 'not-a-cloud-session');
+  assert.equal(S.stalledSessionAction({ entry: localEntry(), session: idleSession(40), nowMs: NOW }).action, 'skip');
+  assert.equal(localEntry({ comments: [claim(ago(23 * H))] }).reason, 'not-a-local-session');
+  assert.equal(localEntry({ comments: [{ body: `Claimed by a session on Toms-Mac-Studio.local at ${ago(41 * H)}`, createdAt: ago(41 * H) }] }).reason, 'not-a-local-session');
+});
+
+test('BRO-7195: a Mac-held card is left alone when anything says the session may still be working', () => {
+  const e = localEntry();
+  const skip = (o) => S.localStallAction({ entry: e, ...view(o) });
+  assert.match(skip({ liveIds: new Set([LSID]) }).reason, /still running/);
+  assert.match(skip({ psText: `claude --resume ${LSID} --print` }).reason, /running process/);
+  assert.match(skip({ lastLedgerMs: NOW - 25 * H }).reason, /dispatch ledger/); // bsc-reconcile may still resume it (24h + margin)
+  assert.match(skip({ liveCwds: ['/Users/x/Broadwayscore/.claude/worktrees/job-linear-BRO-7006-mvzz'] }).reason, /worktree/);
+  assert.equal(skip({ liveCwds: ['/Users/x/Broadwayscore/.claude/worktrees/job-linear-BRO-70061-a'] }).action, 'requeue');
+  assert.match(skip({ transcriptMtimeMs: NOW - 2 * H }).reason, /recently/);
+  assert.match(skip({ transcriptMtimeMs: null }).reason, /no transcript/);
+  assert.match(skip({ liveIds: null }).reason, /registry unreadable/);
+  assert.match(skip({ hostNames: ['Toms-MacBook-Air'] }).reason, /another machine/);
+  // LocalHostName (no .local) still matches the claim's hostname.
+  assert.equal(skip({ hostNames: ['Toms-Mac-Studio'] }).action, 'requeue');
+});
+
+test('BRO-7195: the reclaim exclusions still apply to local claims (owner card, NO-RECLAIM)', () => {
+  assert.equal(localEntry({ issue: { description: 'NO-RECLAIM: long soak' } }).action, 'skip');
+});

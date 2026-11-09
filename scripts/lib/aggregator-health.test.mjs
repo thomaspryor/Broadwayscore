@@ -233,3 +233,37 @@ test('alert resolution requires that exact source archive or workflow history', 
   const recovered = H.resolvedConditionKeys([], sources, { archives: null, runs: { 'a.yml': [] } });
   assert.ok(recovered.includes(H.conditionKey(finding)));
 });
+
+test('archivePersistence: a feed workflow that never checks out or pushes the archive is flagged (BRO-6098 The Stage)', () => {
+  const sources = [
+    { id: 'thestage-roundups', label: 'The Stage roundups', workflows: { 'ts.yml': 7 } },
+    { id: 'gone', label: 'Gone', workflows: { 'gone.yml': 7 }, retired: { on: '2026-06-25', reason: 'shut' } },
+  ];
+  const before = H.archiveSteps('jobs:\n  s:\n    steps:\n      # uses: ./.github/actions/checkout-aggregator-archive\n      - uses: ./.github/actions/push-review-texts\n');
+  assert.deepEqual(before, { checkout: false, push: false }); // a commented-out step does not count
+  const f = H.archivePersistence(sources, { 'ts.yml': before, 'gone.yml': before });
+  assert.equal(f.length, 1);
+  assert.equal(f[0].kind, 'archive-not-persisted');
+  assert.match(f[0].message, /checkout-aggregator-archive or push-aggregator-archive/);
+  const after = H.archiveSteps('      - uses: ./.github/actions/checkout-aggregator-archive\n      - uses: ./.github/actions/push-aggregator-archive\n');
+  assert.deepEqual(H.archivePersistence(sources, { 'ts.yml': after }), []);
+  assert.deepEqual(H.archivePersistence(sources, { 'ts.yml': { checkout: true, push: false } }).map(x => x.message.includes('push-aggregator-archive')), [true]);
+  // wired into assess() and resolvable only when the workflow text was read
+  const { findings } = H.assess({ sources, shows: [], archives: null, runs: null, scheduled: { 'ts.yml': true }, archiveStepsByWorkflow: { 'ts.yml': before } });
+  assert.deepEqual(findings.map(x => x.kind), ['archive-not-persisted']);
+  assert.ok(H.resolvedConditionKeys([], sources, { archives: null, runs: null, archiveStepsByWorkflow: { 'ts.yml': after } })
+    .includes('aggregator-health:thestage-roundups:archive-not-persisted:ts.yml'));
+  assert.ok(!H.resolvedConditionKeys([], sources, { archives: null, runs: null })
+    .includes('aggregator-health:thestage-roundups:archive-not-persisted:ts.yml'));
+});
+
+test('real registry: every active feed workflow checks out and pushes data/aggregator-archive', () => {
+  const steps = {};
+  for (const s of H.SOURCES) {
+    for (const wf of Object.keys(s.workflows)) {
+      const p = path.join(ROOT, '.github', 'workflows', wf);
+      if (fs.existsSync(p)) steps[wf] = H.archiveSteps(fs.readFileSync(p, 'utf8'));
+    }
+  }
+  assert.deepEqual(H.archivePersistence(H.SOURCES, steps), []);
+});

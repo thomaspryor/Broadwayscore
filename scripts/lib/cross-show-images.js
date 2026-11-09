@@ -33,6 +33,9 @@ const ALLOWED_SHARED_IMAGES = {
   'jane-eyre-rose-kingston-off-west-end-2026': { owner: 'jane-eyre-off-west-end-2026', reason: 'Caird/Gordon production, Southwark then Rose Kingston' },
   'les-miserables-2014': { owner: 'les-miserables-1987', reason: 'the Cosette logo is the brand art of every Mackintosh production' },
   '1536-west-end-2026': { owner: '1536-off-west-end-2026', reason: 'Almeida production and its Ambassadors transfer' },
+  // BRO-7192: the 2020 premiere is a separate production, no longer linked through a false tour
+  // roll-up; no 2020 art exists, so it shows the musical's key art (Wanted).
+  'gun-and-powder-signature-regional-2020': { owner: 'wanted-2022', reason: 'same musical (Gun & Powder, retitled Wanted); no separate 2020 key art' },
   'the-pass-off-west-end-2026': { owner: 'the-pass-off-broadway-2026', reason: 'same production' },
 };
 

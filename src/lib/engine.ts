@@ -312,6 +312,7 @@ export interface ComputedShow {
   // Fails open: absent when the audit file/kill switch/no stamp yet.
   cov?: { state: string; liveCount: number; candidateCount: number; computedAt: string | null };
   scorePublicSince?: string | null;
+  // True when the owner acked the coverage gap OR the hold's ceiling is reached (coverage-floor.js coverageHoldReleased).
   coverageAcked?: boolean;
   priorRuns?: PriorRun[];
 }

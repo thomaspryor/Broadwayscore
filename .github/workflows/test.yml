@@ -42,6 +42,8 @@ on:
       - 'scripts/re-extract-talkin-broadway-reviews.js'
       # BRO-6663: tests/unit/lane-recording-import.test.mjs
       - 'scripts/lane-recording-import.js'
+      # BRO-7199: tests/unit/opening-night-lane-sources.test.mjs requires its per-show coverage check.
+      - 'scripts/lane-on-time-outlets.js'
       # BRO-6620: tests/unit/lane-only-markets.test.mjs runs these and pins the workflow wiring.
       - 'scripts/lane-only-markets.js'
       - 'scripts/lane-stood-down-page.js'
@@ -133,6 +135,7 @@ on:
       - 'scripts/check-remote-branch-absent.js'
       - 'scripts/audit-london-census-coverage.js'
       - 'scripts/audit-approved-fix-drift.js'
+      - 'scripts/audit-aggregator-health.js' # BRO-6098: audit-aggregator-health.test.mjs
       - 'scripts/audit-artsdesk-banner.js'
       - 'scripts/audit-url-critic-slug-filenames.js'
       - 'scripts/export-cookies.js'
@@ -467,6 +470,10 @@ on:
       - 'scripts/board-dispatch.js'
       # scripts/lib/llm-triage-facts.test.mjs (BRO-7139 report-only LLM triage CLI)
       - 'scripts/llm-triage.js'
+      # scripts/lib/llm-triage-audit.test.mjs (BRO-7139 Step 3 weekly audit CLI)
+      - 'scripts/llm-triage-audit.js'
+      # scripts/lib/llm-triage-acceptance.test.mjs (BRO-7139 Step 3 acceptance judge)
+      - 'scripts/llm-triage-acceptance.js'
       # tests/unit/detect-venue-transfers.test.mjs
       - 'scripts/detect-venue-transfers.js'
       # tests/unit/promote-historical-auto.test.mjs
@@ -3584,10 +3591,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
       - name: Install actionlint
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           ACTIONLINT_VERSION=1.7.7
-          curl -sL "https://github.com/rhysd/actionlint/releases/download/v${ACTIONLINT_VERSION}/actionlint_${ACTIONLINT_VERSION}_linux_amd64.tar.gz" | tar xz
-          sudo mv actionlint /usr/local/bin/
+          bash scripts/lib/install-release-binary.sh rhysd/actionlint "v${ACTIONLINT_VERSION}" "actionlint_${ACTIONLINT_VERSION}_linux_amd64.tar.gz" actionlint
       - name: Setup Node (for orphan-test audit)
         uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:

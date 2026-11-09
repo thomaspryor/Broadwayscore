@@ -41,6 +41,7 @@ const REMEDIATION_COVERAGE = {
   'orphan-scoresource.check.js': 'tests/unit/opening-night-checks-remediation-coverage.test.mjs',
   'placeholder-synopsis.check.js': 'tests/unit/opening-night-checks-metadata-completeness.test.mjs',
   'publish-date-pre-opening.check.js': 'tests/unit/opening-night-checks-remediation-coverage.test.mjs',
+  'review-cards-complete.check.js': 'tests/unit/review-card-completeness.test.mjs',
   'review-count-match.check.js': 'scripts/opening-night-checklist.test.mjs',
   'revival-unverified.check.js': 'tests/unit/opening-night-checks-metadata-completeness.test.mjs',
   'roundup-url-mismatch.check.js': 'tests/unit/opening-night-checks-juan-a-ramirez-bypass.test.mjs',

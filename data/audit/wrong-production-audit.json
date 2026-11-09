@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-09T04:40:46.445Z",
+  "timestamp": "2026-11-09T13:46:44.392Z",
   "stats": {
-    "totalReviews": 80762,
-    "alreadyFlagged": 22101,
+    "totalReviews": 80828,
+    "alreadyFlagged": 22113,
     "dateGuardCatches": 219,
-    "directorMismatch": 3593,
-    "tvFilmSignals": 2307,
-    "londonSignals": 3652,
+    "directorMismatch": 3581,
+    "tvFilmSignals": 2306,
+    "londonSignals": 3655,
     "offBroadwaySignals": 751,
     "yearMismatch": 370,
-    "noPublishDate": 8385
+    "noPublishDate": 8391
   },
   "findings": [
     {
@@ -3895,7 +3895,7 @@
     },
     {
       "showId": "alfred-hitchcock-presents-the-musical-royal-bath-regional-2025",
-      "file": "plays-international--unknown.json",
+      "file": "plays-international--simon-thomas.json",
       "score": 57,
       "publishDate": "2025-03-29",
       "url": "https://playsinternational.org.uk/alfred-hitchcock-presents-the-musical-theatre-royal-bath/",
@@ -6061,6 +6061,7 @@
     {
       "showId": "annie-regional-2026",
       "file": "broadwayworld--r-scott-reedy.json",
+      "score": 77,
       "publishDate": "2026-06-21",
       "url": "https://www.broadwayworld.com/boston/article/Review-ANNIE-at-Greater-Boston-Stage-Company-20260621",
       "findings": [
@@ -6079,6 +6080,7 @@
     {
       "showId": "annie-regional-2026",
       "file": "metrmag--unknown.json",
+      "score": 83,
       "publishDate": null,
       "url": "https://www.metrmag.com/latest-reviews/annie-the-musical-by-thomas-meehan-charles-strouse-and-martin-charnin-greater-boston-stage-company-stoneham-ma-review",
       "findings": [
@@ -6092,6 +6094,7 @@
     {
       "showId": "annie-regional-2026",
       "file": "theater-mirror--julie-anne-whitney.json",
+      "score": 72,
       "publishDate": "2026-06-04",
       "url": "https://www.theatermirror.net/?p=11258",
       "findings": [
@@ -8968,7 +8971,7 @@
     },
     {
       "showId": "billy-crystal-860-2026",
-      "file": "totaltheater1--unknown.json",
+      "file": "totaltheater1--david-sheward.json",
       "score": 85,
       "publishDate": "2026-10-26",
       "url": "https://totaltheater1.wordpress.com/2026/10/26/billy-crystal-860/",
@@ -18235,6 +18238,7 @@
     {
       "showId": "delirium-regional-2026",
       "file": "artsfuse--bill-marx.json",
+      "score": 89,
       "publishDate": "2026-06-28",
       "url": "https://artsfuse.org/330885/theater-review-arlekins-delirium-reimagines-ionesco-with-visual-flair-and-urgency/",
       "findings": [
@@ -18248,6 +18252,7 @@
     {
       "showId": "delirium-regional-2026",
       "file": "boston-globe--unknown.json",
+      "score": 90,
       "publishDate": "2026-06-25",
       "url": "https://www.bostonglobe.com/2026/06/25/arts/arlekin-delirium/",
       "findings": [
@@ -18261,6 +18266,7 @@
     {
       "showId": "delirium-regional-2026",
       "file": "stageandcinema--lynne-weiss.json",
+      "score": 89,
       "publishDate": "2026-06-26",
       "url": "https://stageandcinema.com/2026/06/26/delirium-review-arlekin-players/",
       "findings": [
@@ -18274,6 +18280,7 @@
     {
       "showId": "delirium-regional-2026",
       "file": "theater-mirror--julie-anne-whitney.json",
+      "score": 90,
       "publishDate": "2026-06-25",
       "url": "https://www.theatermirror.net/arlekin-players-delirium-is-a-rampantly-imaginative-work-that-will-leave-you-speechless/",
       "findings": [
@@ -18287,6 +18294,7 @@
     {
       "showId": "delirium-regional-2026",
       "file": "theater-mirror--michele-markarian.json",
+      "score": 90,
       "publishDate": "2026-06-27",
       "url": "https://www.theatermirror.net/delirium-strikes-all-the-right-raw-notes/",
       "findings": [
@@ -30180,6 +30188,20 @@
       ]
     },
     {
+      "showId": "hay-fever-west-end-2026",
+      "file": "thestage--the-stage.json",
+      "score": 55,
+      "publishDate": "2026-10-02",
+      "url": "https://www.thestage.co.uk/reviews/hay-fever-review-wyndhams-theatre-london-noel-coward-christine-baranski-richard-e-grant",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "head-over-heels-2018",
       "file": "medium--christian-lewis.json",
       "score": 58,
@@ -30448,20 +30470,6 @@
       "file": "timeout--adam-feldman.json",
       "score": 82,
       "publishDate": "2026-05-27",
-      "url": "https://www.timeout.com/newyork/news/theater-review-the-heated-rivalry-musical-shoots-and-scores-052726",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 2\""
-        }
-      ]
-    },
-    {
-      "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
-      "file": "timeout--unknown.json",
-      "score": 77,
-      "publishDate": null,
       "url": "https://www.timeout.com/newyork/news/theater-review-the-heated-rivalry-musical-shoots-and-scores-052726",
       "findings": [
         {
@@ -31132,61 +31140,6 @@
     },
     {
       "showId": "here-there-are-blueberries-theatre-royal-stratford-east-off-west-end-2026",
-      "file": "all-that-dazzles-uk--matthew-plampton.json",
-      "score": 95,
-      "publishDate": "February 13th, 2026",
-      "url": "https://www.allthatdazzles.co.uk/post/review-here-there-are-blueberries-stratford-east",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"moisés kaufman\" from here-there-are-blueberries-2026"
-        }
-      ]
-    },
-    {
-      "showId": "here-there-are-blueberries-theatre-royal-stratford-east-off-west-end-2026",
-      "file": "broadwayworld--cindy-marcolina.json",
-      "score": 50,
-      "publishDate": "2026-02-12",
-      "url": "https://www.broadwayworld.com/westend/article/Review-HERE-THERE-ARE-BLUEBERRIES-Stratford-East-20260212",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"moisés kaufman\" from here-there-are-blueberries-2026"
-        }
-      ]
-    },
-    {
-      "showId": "here-there-are-blueberries-theatre-royal-stratford-east-off-west-end-2026",
-      "file": "guardian--arifa-akbar.json",
-      "score": 95,
-      "publishDate": "2026-02-13",
-      "url": "https://www.theguardian.com/stage/2026/feb/13/here-there-are-blueberries-review-theatre-royal-stratford-east-london",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"moisés kaufman\" from here-there-are-blueberries-2026"
-        }
-      ]
-    },
-    {
-      "showId": "here-there-are-blueberries-theatre-royal-stratford-east-off-west-end-2026",
-      "file": "mildconcern--tim-brandon.json",
-      "publishDate": "2026-02-22",
-      "url": "https://mildconcern.substack.com/p/theatre-reviews-here-there-are-blueberries",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"moisés kaufman\" from here-there-are-blueberries-2026"
-        }
-      ]
-    },
-    {
-      "showId": "here-there-are-blueberries-theatre-royal-stratford-east-off-west-end-2026",
       "file": "standard--nick-curtis.json",
       "score": 77,
       "publishDate": "February 12th, 2026",
@@ -31195,96 +31148,7 @@
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"moisés kaufman\" from here-there-are-blueberries-2026"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
           "detail": "Mentions director \"amy marie seidel\" from here-there-are-blueberries-2026"
-        }
-      ]
-    },
-    {
-      "showId": "here-there-are-blueberries-theatre-royal-stratford-east-off-west-end-2026",
-      "file": "the-jewish-chronicle--john-nathan.json",
-      "score": 76,
-      "publishDate": "2026-02-17",
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"moisés kaufman\" from here-there-are-blueberries-2026"
-        }
-      ]
-    },
-    {
-      "showId": "here-there-are-blueberries-theatre-royal-stratford-east-off-west-end-2026",
-      "file": "theatre-weekly--mia-bai.json",
-      "score": 82,
-      "publishDate": "2026-02-12",
-      "url": "https://theatreweekly.com/review-here-there-are-blueberries-at-stratford-east/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"moisés kaufman\" from here-there-are-blueberries-2026"
-        }
-      ]
-    },
-    {
-      "showId": "here-there-are-blueberries-theatre-royal-stratford-east-off-west-end-2026",
-      "file": "thestage--holly-omahony.json",
-      "score": 41,
-      "publishDate": "2026-02-12",
-      "url": "https://www.thestage.co.uk/reviews/here-there-are-blueberries-review-theatre-royal-stratford-east-london",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"moisés kaufman\" from here-there-are-blueberries-2026"
-        }
-      ]
-    },
-    {
-      "showId": "here-there-are-blueberries-theatre-royal-stratford-east-off-west-end-2026",
-      "file": "timeout-london--anya-ryan.json",
-      "score": 44,
-      "publishDate": "February 12th, 2026",
-      "url": "https://www.timeout.com/london/theatre/here-there-are-blueberries-review",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"moisés kaufman\" from here-there-are-blueberries-2026"
-        }
-      ]
-    },
-    {
-      "showId": "here-there-are-blueberries-theatre-royal-stratford-east-off-west-end-2026",
-      "file": "times-uk--dominic-maxwell.json",
-      "score": 92,
-      "publishDate": "February 12th, 2026",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/here-there-are-blueberries-review-stratford-london-0zrdrzlj3",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"moisés kaufman\" from here-there-are-blueberries-2026"
-        }
-      ]
-    },
-    {
-      "showId": "here-there-are-blueberries-theatre-royal-stratford-east-off-west-end-2026",
-      "file": "whatsonstage--alun-hood.json",
-      "score": 77,
-      "publishDate": "2026-02-12",
-      "url": "https://www.whatsonstage.com/news/here-there-are-blueberries-at-stratford-east-review_1711989/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"moisés kaufman\" from here-there-are-blueberries-2026"
         }
       ]
     },
@@ -36670,19 +36534,6 @@
       ]
     },
     {
-      "showId": "joseph-and-the-amazing-technicolor-dreamcoat-north-regional-2026",
-      "file": "metrmag--unknown.json",
-      "publishDate": null,
-      "url": "https://www.metrmag.com/latest-reviews/a-christmas-story-the-musical-by-joseph-robinette-benj-pasek-and-justin-paul-calliope-productions-boylston-ma-review",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"hulu\""
-        }
-      ]
-    },
-    {
       "showId": "joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021",
       "file": "telegraph--claire-allfree.json",
       "score": 80,
@@ -37044,7 +36895,7 @@
     {
       "showId": "kelly-mccaughan-catholic-guilt-off-broadway-2026",
       "file": "broadway-baby--unknown.json",
-      "score": 93,
+      "score": 95,
       "publishDate": null,
       "url": "https://broadwaybaby.com/shows/kelly-mccaughan-catholic-guilt/808297",
       "findings": [
@@ -42931,6 +42782,34 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"amazon prime\""
+        }
+      ]
+    },
+    {
+      "showId": "merrily-we-roll-along-sullivan-regional-2026",
+      "file": "broadwayworld--r-scott-reedy.json",
+      "score": 79,
+      "publishDate": "2026-06-21",
+      "url": "https://www.broadwayworld.com/boston/article/Review-Sullivan-Reps-MERRILY-WE-ROLL-ALONG-Shows-Sondheim-is-Worth-a-Second-Look-20260621",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"maria friedman\" from merrily-we-roll-along-2023"
+        }
+      ]
+    },
+    {
+      "showId": "merrily-we-roll-along-sullivan-regional-2026",
+      "file": "sleeplesscritic--the-sleepless-critic.json",
+      "score": 78,
+      "publishDate": "2026-06-25",
+      "url": "https://sleeplesscritic.com/2026/06/25/review-risking-it-all-in-sullivan-reps-wry-and-reflective-merrily-we-roll-along/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from merrily-we-roll-along-1981"
         }
       ]
     },
@@ -49637,6 +49516,20 @@
       ]
     },
     {
+      "showId": "pacific-overtures-off-broadway-2017",
+      "file": "wsj--terry-teachout.json",
+      "score": null,
+      "publishDate": "May 4th, 2017",
+      "url": "https://www.wsj.com/articles/pacific-overtures-review-shortening-sondheim-1493944200",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"amon miyamoto\" from pacific-overtures-2004"
+        }
+      ]
+    },
+    {
       "showId": "paddington-the-musical-west-end-2025",
       "file": "fairypoweredproductions--unknown.json",
       "publishDate": "2026-10-29",
@@ -50268,6 +50161,7 @@
     {
       "showId": "paranormal-activity-boston-regional-2026",
       "file": "metrmag--unknown.json",
+      "score": 76,
       "publishDate": null,
       "url": "https://www.metrmag.com/latest-reviews/paranormal-activity-by-levin-holloway-emerson-colonial-theatre-boston-ma-review",
       "findings": [
@@ -50281,6 +50175,7 @@
     {
       "showId": "paranormal-activity-boston-regional-2026",
       "file": "netheatregeek--kitty-drexel.json",
+      "score": 79,
       "publishDate": "2026-07-17",
       "url": "https://www.netheatregeek.com/2026/07/17/alarm-goes-on-alarm-goes-off-paranormal-activity-play/",
       "findings": [
@@ -53920,34 +53815,6 @@
       "score": 78,
       "publishDate": "November 17, 2011",
       "url": "https://www.nytimes.com/2011/11/18/theater/reviews/kim-cattrall-stars-in-private-lives-review.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"howard davies\" from private-lives-2002"
-        }
-      ]
-    },
-    {
-      "showId": "private-lives-2025",
-      "file": "huffpost--michael-giltz.json",
-      "score": 80,
-      "publishDate": "2011-11-19",
-      "url": "https://www.huffpost.com/entry/private-lives-broadway-review_b_1102882",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "private-lives-2025",
-      "file": "nytimes--unknown.json",
-      "score": null,
-      "publishDate": "November 17, 2011",
-      "url": "http://theater.nytimes.com/2011/11/18/theater/reviews/kim-cattrall-stars-in-private-lives-review.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -67707,31 +67574,11 @@
       ]
     },
     {
-      "showId": "the-family-album-lajolla-regional-2026",
-      "file": "from-another-zero--alejandra-enciso.json",
-      "score": 78,
-      "publishDate": "2026-07-31",
-      "url": "https://fromanother0.com/the-family-album-from-waves-to-stage/",
+      "showId": "the-family-album-regional-2026",
+      "file": "playbill--andrew-gans.json",
+      "publishDate": "2026-08-07",
+      "url": "https://playbill.com/article/video-watch-highlights-from-the-family-album-musical-at-the-la-jolla-playhouse",
       "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jess mcleod\" from the-family-album-regional-2026"
-        }
-      ]
-    },
-    {
-      "showId": "the-family-album-lajolla-regional-2026",
-      "file": "san-diego-story--david-dixon.json",
-      "score": 79,
-      "publishDate": "2026-07-31",
-      "url": "https://sandiegostory.com/an-emotionally-truthful-la-jolla-playhouse-musical/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jess mcleod\" from the-family-album-regional-2026"
-        },
         {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
@@ -67740,24 +67587,11 @@
       ]
     },
     {
-      "showId": "the-family-album-lajolla-regional-2026",
-      "file": "talk-theatre-to-me--unknown.json",
-      "score": 89,
-      "publishDate": "2026-07-27",
-      "url": "https://www.talktheatretome.com/theatre/ljpthefamilyalbum",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jess mcleod\" from the-family-album-regional-2026"
-        }
-      ]
-    },
-    {
       "showId": "the-family-album-regional-2026",
-      "file": "playbill--andrew-gans.json",
-      "publishDate": "2026-08-07",
-      "url": "https://playbill.com/article/video-watch-highlights-from-the-family-album-musical-at-the-la-jolla-playhouse",
+      "file": "san-diego-story--david-dixon.json",
+      "score": 79,
+      "publishDate": "2026-07-31",
+      "url": "https://sandiegostory.com/an-emotionally-truthful-la-jolla-playhouse-musical/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -69668,7 +69502,7 @@
     {
       "showId": "the-guy-who-didnt-like-musicals-west-end-2026",
       "file": "thestage--tom-wicker.json",
-      "score": 61,
+      "score": 65,
       "publishDate": "2026-05-18",
       "url": "https://thestage.co.uk/reviews/the-guy-who-didnt-like-musicals-review-apollo-theatre-london-starkid",
       "findings": [
@@ -72051,6 +71885,7 @@
     {
       "showId": "the-mystery-of-irma-vep-regional-2026",
       "file": "boston-globe--unknown.json",
+      "score": 89,
       "publishDate": "2026-06-01",
       "url": "https://www.bostonglobe.com/2026/06/01/arts/central-square-theater-mystery-of-irma-vep/",
       "findings": [
@@ -79690,6 +79525,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"emma rice\" from tristan-and-yseult-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "triumph-off-west-end-2026",
+      "file": "thestage--david-benedict.json",
+      "score": 75,
+      "publishDate": "2026-10-19",
+      "url": "https://www.thestage.co.uk/reviews/triumph-review-almeida-theatre-london-caryl-churchill",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -97542,7 +97391,7 @@
     },
     {
       "showId": "double-bill-tell-me-straight-and-aggy-off-west-end-2026",
-      "file": "firstnightmagazine--unknown.json",
+      "file": "firstnightmagazine--guillermo-nazara.json",
       "score": 14,
       "publishDate": "2026-10-20",
       "url": "https://firstnightmagazine.com/2026/10/20/review-of-tell-me-straight-aggy-double-bill-is-twice-as-bad/",
@@ -98869,7 +98718,7 @@
     {
       "showId": "equus-off-west-end-2026",
       "file": "thestage--holly-omahony.json",
-      "score": 79,
+      "score": 82,
       "publishDate": "2026-05-22",
       "url": "https://www.thestage.co.uk/reviews/equus-review-menier-chocolate-factory-london-lindsay-posner",
       "findings": [
@@ -100881,7 +100730,7 @@
     {
       "showId": "garry-starr-classic-penguins-off-west-end-2026",
       "file": "thestage--paul-vale.json",
-      "score": 82,
+      "score": 81,
       "publishDate": "2026-10-26",
       "url": "https://www.thestage.co.uk/reviews/garry-starr-classic-penguins-review-damien-warren-smith-the-other-palace",
       "findings": [
@@ -101647,7 +101496,7 @@
     },
     {
       "showId": "golden-boy-off-west-end-2026",
-      "file": "firstnightmagazine--unknown.json",
+      "file": "firstnightmagazine--guillermo-nazara.json",
       "score": 78,
       "publishDate": "2026-09-22",
       "url": "https://firstnightmagazine.com/2026/09/22/review-of-golden-boy-2026-almeida-striking-revival-pulls-no-punches-back-and-its-a-theatrical-heavyweight/",
@@ -105180,7 +105029,7 @@
     },
     {
       "showId": "high-society-off-west-end-2026",
-      "file": "firstnightmagazine--unknown.json",
+      "file": "firstnightmagazine--guillermo-nazara.json",
       "score": 77,
       "publishDate": "2026-06-06",
       "url": "https://firstnightmagazine.com/2026/06/06/review-of-high-society-2026-barbican-flimsy-narrative-rides-high-on-spectacle-and-thats-alright-with-me/",
@@ -106253,6 +106102,20 @@
     },
     {
       "showId": "ilford-boy-off-west-end-2026",
+      "file": "cultural-capital--unknown.json",
+      "score": 87,
+      "publishDate": "2026-10-19",
+      "url": "https://maryamphilpottblog.wordpress.com/2026/10/19/ilford-boy-donmar-warehouse/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "ilford-boy-off-west-end-2026",
       "file": "guardian--kate-wyver.json",
       "score": 60,
       "publishDate": "2026-10-21",
@@ -106386,7 +106249,7 @@
         {
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"almeida\""
+          "detail": "Mentions London venue: \"donmar warehouse\""
         }
       ]
     },
@@ -108775,7 +108638,7 @@
     },
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
-      "file": "firstnightmagazine--unknown.json",
+      "file": "firstnightmagazine--guillermo-nazara.json",
       "score": 63,
       "publishDate": "2026-04-07",
       "url": "https://firstnightmagazine.com/2026/04/07/review-of-john-proctor-is-the-villain-revisionist-play-is-a-crucible-of-ideas-but-the-narrative-is-a-witchs-brew/",
@@ -112611,7 +112474,7 @@
     },
     {
       "showId": "martin-guerre-west-end-2026",
-      "file": "firstnightmagazine--unknown.json",
+      "file": "firstnightmagazine--guillermo-nazara.json",
       "score": 62,
       "publishDate": "2026-10-22",
       "url": "https://firstnightmagazine.com/2026/10/22/review-of-martin-guerre-old-vic-2026-new-revival-features-more-historical-accuracy-but-loses-its-identity/",
@@ -113176,6 +113039,20 @@
       "score": 94,
       "publishDate": "2026-04-29",
       "url": "https://theatreweekly.com/review-mass-at-donmar-warehouse/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "mass-off-west-end-2026",
+      "file": "times-uk--clive-davis.json",
+      "score": null,
+      "publishDate": "2026-04-30",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/mass-review-donmar-warehouse-lqnms25hk",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -115796,7 +115673,7 @@
     },
     {
       "showId": "night-city-off-west-end-2026",
-      "file": "firstnightmagazine--unknown.json",
+      "file": "firstnightmagazine--guillermo-nazara.json",
       "score": 76,
       "publishDate": "2026-09-16",
       "url": "https://firstnightmagazine.com/2026/09/16/__trashed-2/",
@@ -117207,7 +117084,7 @@
     {
       "showId": "oliver-west-end-2024",
       "file": "guardian--susannah-clapp.json",
-      "score": 78,
+      "score": 77,
       "publishDate": "2025-01-19",
       "url": "https://www.theguardian.com/stage/2025/jan/19/the-week-in-theatre-oliver-lionel-bart-matthew-bourne-gielgud-theatre-review-the-devil-may-care-bernard-shaw-southwark-playhouse-mark-giesser-national-theatre-of-wales-michael-sheen",
       "findings": [
@@ -118229,6 +118106,19 @@
       "score": 72,
       "publishDate": "2025-11-29",
       "url": "https://loureviews.blog/2025/11/29/theatre-review-porn-play-royal-court-upstairs/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "p-rn-play-west-end-2025",
+      "file": "nytimes--houman-barekat.json",
+      "publishDate": "2025-12-10",
+      "url": "https://www.nytimes.com/2025/12/10/arts/smartphones-onstage-porn-play-the-maids-evita.html?eafs_enabled=false",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -125589,7 +125479,7 @@
     },
     {
       "showId": "tango-after-dark-off-west-end-2026",
-      "file": "firstnightmagazine--unknown.json",
+      "file": "firstnightmagazine--guillermo-nazara.json",
       "publishDate": "2026-11-08",
       "url": "https://firstnightmagazine.com/2026/11/08/german-cornejo-talks-tango-after-dark-tango-is-so-much-more-than-just-a-dance/",
       "findings": [
@@ -135507,7 +135397,7 @@
     {
       "showId": "the-shitheads-west-end-2026",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 66,
+      "score": 65,
       "publishDate": "February 13th, 2026",
       "url": "https://www.whatsonstage.com/news/the-shtheads-at-the-royal-court-review_1712175/",
       "findings": [
@@ -140884,7 +140774,7 @@
     },
     {
       "showId": "whos-afraid-of-virginia-woolf-west-end-2026",
-      "file": "firstnightmagazine--unknown.json",
+      "file": "firstnightmagazine--guillermo-nazara.json",
       "score": 94,
       "publishDate": "2026-10-01",
       "url": "https://firstnightmagazine.com/2026/10/01/review-of-whos-afraid-of-virginia-woolf-soho-place-2026-billy-crudup-and-gillian-anderson-are-the-hottest-hateful-couple-in-town/",

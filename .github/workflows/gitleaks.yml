@@ -51,11 +51,11 @@ jobs:
           fetch-depth: 1
 
       - name: Install gitleaks
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           VERSION=8.21.2
-          curl -sL "https://github.com/gitleaks/gitleaks/releases/download/v${VERSION}/gitleaks_${VERSION}_linux_x64.tar.gz" \
-            | tar -xz -C /tmp gitleaks
-          sudo mv /tmp/gitleaks /usr/local/bin/gitleaks
+          bash scripts/lib/install-release-binary.sh gitleaks/gitleaks "v${VERSION}" "gitleaks_${VERSION}_linux_x64.tar.gz" gitleaks
           gitleaks version
 
       # Scan 1 — what is in the code RIGHT NOW, regardless of when it landed.

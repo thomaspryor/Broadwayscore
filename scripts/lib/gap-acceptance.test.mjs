@@ -63,6 +63,10 @@ test('refuses short, paywalled, off-topic and not-longer texts with the old stat
   const notLonger = acceptRecoveredText(base({ fullText: GOOD + ' extra words here.', contentTier: 'complete' }), { rawText: GOOD }, ctx);
   assert.equal(notLonger.code, 'not_longer');
   assert.match(notLonger.reason, /not longer/);
+
+  // same tier, a few characters more (first nightly: 2487 -> 2489): not a recovery
+  const tiny = acceptRecoveredText(base({ fullText: GOOD, contentTier: 'complete' }), { rawText: GOOD + ' More.' }, ctx);
+  assert.equal(tiny.code, 'not_materially_longer');
 });
 
 test('date-implausible publishDate is refused (task #915 class)', () => {
@@ -152,7 +156,7 @@ test('a recovery clears the stale dead-candidate stamp, including on a second re
   // Re-stamped dead later, then recovered again: the clear must work again.
   onDisk.incompleteReason = 'bot_blocked';
   fs.writeFileSync(c.filePath, JSON.stringify(onDisk, null, 2) + '\n');
-  const r2 = gate.recoverReviewText({ filePath: c.filePath, rawText: `${GOOD} A closing line that makes this text longer still.`, labels });
+  const r2 = gate.recoverReviewText({ filePath: c.filePath, rawText: `${GOOD} ${REVIEW} ${MORE}`, labels }); // new prose, not a repeated line (Stage 4 novel-prose bar)
   assert.equal(r2.ok, true, r2.reason);
   onDisk = JSON.parse(fs.readFileSync(c.filePath, 'utf8'));
   assert.equal(onDisk.incompleteReason, undefined);
@@ -304,4 +308,65 @@ test('pageHeadline keeps apostrophes inside a double-quoted og:title', () => {
   const { pageHeadline } = require('./gap-acceptance.js');
   assert.equal(pageHeadline('<meta property="og:title" content="Peter Shaffer\'s Equus review">'), "Peter Shaffer's Equus review");
   assert.equal(pageHeadline("<meta content='A \"quoted\" title' property='og:title'>"), 'A "quoted" title');
+});
+
+// BRO-7171 Stage 4: same-tier gains must be new PROSE. Fixtures shaped on real
+// accepts from the first nightly (londonlivinglarge listing block, Guardian
+// related headline, Islington Tribune related-articles teaser).
+const REVIEW = [
+  "Joe Turner's Come and Gone opens in a Pittsburgh boarding house where every lodger is waiting for someone who may never come back.",
+  'The director keeps the long first act at a low simmer, so that when Herald Loomis finally breaks the floorboards seem to give way under the whole audience.',
+  'Seth and Bertha argue about biscuits and rent with the ease of a couple who have rehearsed the same quarrel for twenty years.',
+  'Bynum, the conjure man, is played with a sly, unhurried warmth that makes his talk of binding songs sound like plain common sense.',
+].join(' ');
+const MORE = [
+  'The second act belongs to Loomis, whose search for his wife has hardened into something closer to a curse than a hope.',
+  'When he finally stands in the doorway with Martha, the reunion the play has promised all evening turns out to be a release rather than a homecoming.',
+  'It is a demanding, generous evening, and the cast never lets the poetry of the text harden into speechifying.',
+].join(' ');
+const LISTING = 'Joe Turner’s Come and Gone Barrymore Theatre | Mar 1 - Jun 21, 2026 Get link Facebook X Pinterest Email Other Apps (c) Photo by Joan Marcus Tue - Sat: 7 pm, Wed & Sat: 2 pm Barrymore Theatre Nearest station: 50 St Map & Location: 243 W 47th St, New York, NY 10036 March Activities April Activities Theatre Get link Facebook X Pinterest Email Other Apps';
+const RELATED = 'Share this story Categories Theatre Related articles Canonbury low traffic neighbourhood plans continue to divide residents and businesses as the council prepares a final consultation on the scheme next month';
+
+test('novel prose: a chrome or related-article gain is not prose; new review paragraphs are', () => {
+  assert.equal(gate.novelProseChars(REVIEW, `${REVIEW} ${LISTING}`), 0);
+  assert.equal(gate.novelProseChars(REVIEW, `${REVIEW} ${RELATED}`), 0);
+  assert.equal(gate.novelProseChars(REVIEW, `${REVIEW} Giant step back in elections: Trump says he was only kidding.`), 0);
+  assert.ok(gate.novelProseChars(REVIEW, `${REVIEW} ${MORE}`) >= 300);
+});
+
+test('same-tier refetch that only gains page chrome is refused; one that gains the missing paragraphs is accepted', () => {
+  const prior = base({ fullText: REVIEW, contentTier: 'truncated' });
+  const chrome = acceptRecoveredText(prior, { rawText: `${REVIEW} ${LISTING} ${RELATED}` }, ctx);
+  assert.equal(chrome.code, 'not_materially_longer', chrome.reason);
+  const real = acceptRecoveredText(prior, { rawText: `${REVIEW} ${MORE}` }, ctx);
+  assert.equal(real.accept, true, real.reason);
+});
+
+test('ship-check: a tier-up made of chrome is refused too, and the rollback uses the same bar', () => {
+  // real shape: londonpubtheatres accepts gained an iubenda cookie banner that
+  // ends in a full stop, so the "truncated" file classified complete.
+  const cut = `${REVIEW} London pub theatres magazine is published in Rickmansworth by London Pub Theatres Magazine Ltd ISSN 2977-6724`;
+  const banner = 'We and selected third parties use cookies or similar technologies for technical purposes and, with your consent, for other purposes as specified in the cookie policy . Use the “Accept” button to consent. Use the “Reject” button to continue without accepting.';
+  const prior = base({ fullText: cut, contentTier: 'truncated' });
+  const d = acceptRecoveredText(prior, { rawText: `${cut}\n\n${banner}` }, ctx);
+  assert.equal(d.code, 'not_materially_longer', d.reason);
+  // a real ending still passes on a tier-up
+  assert.equal(acceptRecoveredText(prior, { rawText: `${cut} ${MORE}` }, ctx).accept, true);
+  const v = gate.novelProseVerdict(cut, `${cut}\n\n${banner}`);
+  assert.equal(v.ok, false);
+  const { chromeRollbackDecision } = require('./gap-rollback.js');
+  const src = require('node:fs').readFileSync(new URL('./gap-rollback.js', import.meta.url), 'utf8');
+  assert.match(src, /novelProseVerdict\(prior\.fullText, current\.fullText\)/);
+  assert.equal(typeof chromeRollbackDecision, 'function');
+});
+
+test('show-mention uses the shows.json title, not the slug (tour / punctuated titles, Stage 4 WaPo batch)', () => {
+  const show = { id: 'life-of-pi-tour-2024', title: 'Life of Pi', openingDate: '2024-12-20' };
+  const body = 'Life of Pi arrives at the Kennedy Center with its tiger puppet intact, and the touring company finds real wonder in the lifeboat scenes. '.repeat(6);
+  const rec = { showId: show.id, outletId: 'washpost', criticName: 'Chris Klimek', url: 'https://www.washingtonpost.com/x/life-of-pi-tour-kennedy-center-review/', fullText: 'Short.', contentTier: 'excerpt' };
+  assert.equal(deriveShowTitle(show.id), 'life of pi tour', 'the slug form no review prints');
+  const d = acceptRecoveredText(rec, { rawText: body }, { showId: show.id, show });
+  assert.equal(d.accept, true, d.reason);
+  // without the shows.json entry the slug fallback still applies
+  assert.equal(acceptRecoveredText(rec, { rawText: body }, { showId: show.id }).code, 'show_not_mentioned');
 });

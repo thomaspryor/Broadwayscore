@@ -1,7 +1,7 @@
 {
   "system": "main",
   "status": "warn",
-  "lastChecked": "2026-11-08T09:07:13.285Z",
+  "lastChecked": "2026-11-09T09:53:09.450Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -14,7 +14,7 @@
     {
       "name": "Main: green rate",
       "status": "warn",
-      "message": "rate 45.5% (green 209 / red 250, 459 runs, 72 hung (cancelled >= 10 min, counted red)), 7d trend from 41.6%, day 0 of 14 at ≥80% → FAIL"
+      "message": "rate 60.5% (green 283 / red 185, 470 runs, 2 cancelled, 73 hung (cancelled >= 10 min, counted red)), 7d trend from 44.7%, day 0 of 14 at ≥80% → FAIL"
     },
     {
       "name": "Main: mid-setup cancels",
@@ -23,8 +23,8 @@
     },
     {
       "name": "Main: job time headroom",
-      "status": "warn",
-      "message": "test.yml job(s) near their time limit: Unit Tests p90 30 of 30 min (100%, n=20). Runs killed at the limit count as red with nothing broken. Make the job faster or add a shard (as BRO-7113 did); do not just raise timeout-minutes."
+      "status": "pass",
+      "message": "every test.yml job's p90 is under 80% of its time limit (tightest: Unit Tests p90 11 of 30 min (38%, n=20))"
     }
   ]
 }

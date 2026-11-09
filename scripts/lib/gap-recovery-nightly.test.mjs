@@ -112,3 +112,16 @@ test('nightlyCeiling: env override, conservative default 60', () => {
   assert.equal(N.nightlyCeiling({ GAP_RECOVERY_NIGHTLY_CEILING: '25' }), 25);
   assert.equal(N.nightlyCeiling({ GAP_RECOVERY_NIGHTLY_CEILING: 'lots' }), 60);
 });
+
+test('digest: an unanswered owner batch is named by count and file, never by ids (Stage 4)', () => {
+  const counts = { openTotal: 100, openRecent: 40, needsDecision: 800 };
+  const ownerBatch = { date: '2026-11-09', count: 805, file: '/Users/x/Documents/claude-outputs/gap-recovery-owner-batch-2026-11-09.md' };
+  const row = N.buildNightlyRow({ runId: 'r', status: 'ran', summary: { landed: 3 }, counts, prevRows: [], ceiling: 60, nowMs: NOW, ownerBatch });
+  assert.deepEqual(row.ownerBatchPending, { count: 805, date: '2026-11-09', file: 'gap-recovery-owner-batch-2026-11-09.md' });
+  const line = N.renderDigestLine([row], NOW);
+  assert.match(line, /805 older ones are waiting for your yes or no \(gap-recovery-owner-batch-2026-11-09\.md in your claude-outputs folder\)/);
+  assert.doesNotMatch(line, /\/Users\//);
+  const none = N.buildNightlyRow({ runId: 'r', status: 'ran', summary: { landed: 3 }, counts, prevRows: [], ceiling: 60, nowMs: NOW });
+  assert.equal(none.ownerBatchPending, null);
+  assert.match(N.renderDigestLine([none], NOW), /800 older ones have run out of automatic options/);
+});

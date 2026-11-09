@@ -125,6 +125,15 @@ function clearFailureFlags(data, opts = {}) {
     }
   }
 
+  // BRO-7171 Stage 4: a terminal "text cannot be recovered" record is moot once
+  // the full text is here. Retire it with its breadcrumb so a rebase restore
+  // does not bring it back (review-write-guard CLEAR_BREADCRUMBS).
+  if (data.textUnrecoverable && data.contentTier === 'complete') {
+    delete data.textUnrecoverable;
+    data.textUnrecoverableClearReason = `text recovered (${new Date().toISOString()})`;
+    cleared.push('textUnrecoverable');
+  }
+
   // rejectionReason/rejectedBy: clear ONLY text-fetch rejections (garbage_text) —
   // semantic rejections (wrong_production, wrong_show, not_a_review) describe content
   // issues that text length does not resolve. Clearing them let a Vulture FILM review

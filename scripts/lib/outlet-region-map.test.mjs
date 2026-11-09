@@ -171,11 +171,47 @@ test('retract: NYC shows outnumber London shows -> region removed, marked correc
   assert.deepEqual(backfillMissingOutletRegions(outlets, { outinjersey: new Set(['west-end']) }, isLdn), []);
 });
 
-test('retract: any London show keeps the stamp (stale NYC flags may be true positives)', () => {
-  const outlets = { olr: { region: 'london', regionInferredBy: 'b' } };
-  assert.deepEqual(retractContradictedOutletRegions(outlets, { olr: { london: ['w1'], nyc: ['n1', 'n2', 'n3'] } }), []);
-  assert.equal(outlets.olr.region, 'london');
-  assert.equal(outlets.olr.isDualMarket, undefined);
+test('retract: a stamp that clears the bar keeps it while any London show exists', () => {
+  // UK domain, or 3+ London shows: stale NYC flags may be true positives.
+  const outlets = {
+    ukdomain: { region: 'london', regionInferredBy: 'b', domain: 'reviews.co.uk' },
+    threeshows: { region: 'london', regionInferredBy: 'b', domain: 'blog.com' },
+  };
+  const ev = {
+    ukdomain: { london: ['w1'], nyc: ['n1', 'n2', 'n3'] },
+    threeshows: { london: ['w1', 'w2', 'w3'], nyc: ['n1', 'n2', 'n3', 'n4'] },
+  };
+  assert.deepEqual(retractContradictedOutletRegions(outlets, ev), []);
+  for (const id of Object.keys(outlets)) assert.equal(outlets[id].region, 'london', id);
+});
+
+// The card's title case: a pre-bar BRO-133 stamp from ONE West End review on a
+// US .com domain. Before BRO-5896's weak-stamp route, its one London show kept
+// the stamp forever and every NYC review it wrote was flagged and dropped.
+test('retract: a weak legacy stamp outvoted by NYC shows is retracted', () => {
+  const outlets = { usblog: { region: 'london', regionInferredBy: 'backfillMissingOutletRegions (BRO-133)', domain: 'usblog.com' } };
+  const r = retractContradictedOutletRegions(outlets, { usblog: { london: ['w1'], nyc: ['n1', 'n2'] } }, 'T');
+  assert.deepEqual(r, [{ id: 'usblog', londonShows: 1, nycShows: 2 }]);
+  assert.equal(outlets.usblog.region, undefined);
+  assert.match(outlets.usblog.regionCorrectedBy, /2 NYC show\(s\) vs 1 London/);
+});
+
+test('retract: a weak stamp is kept on a tie or London majority', () => {
+  const outlets = {
+    tie: { region: 'london', regionInferredBy: 'b', domain: 'x.com' },
+    ldn: { region: 'london', regionInferredBy: 'b', domain: 'y.com' },
+  };
+  const ev = { tie: { london: ['w1', 'w2'], nyc: ['n1', 'n2'] }, ldn: { london: ['w1', 'w2'], nyc: ['n1'] } };
+  assert.deepEqual(retractContradictedOutletRegions(outlets, ev), []);
+});
+
+test('meetsLondonStampBar: UK domain or three London shows', () => {
+  const { meetsLondonStampBar } = require('./outlet-region-map.js');
+  assert.equal(meetsLondonStampBar('reviews.co.uk', 0), true);
+  assert.equal(meetsLondonStampBar('x.london', 1), true);
+  assert.equal(meetsLondonStampBar('londonblog.com', 2), false);
+  assert.equal(meetsLondonStampBar(null, 3), true);
+  assert.equal(meetsLondonStampBar(undefined, 2), false);
 });
 
 test('retract: a single NYC show is not enough', () => {
@@ -281,4 +317,10 @@ test('regionEvidenceMarket: other categories are no evidence', () => {
   for (const category of ['regional', 'tour', undefined]) {
     assert.equal(regionEvidenceMarket({ isLondonMarket: isLdn, category, trustworthy: true, trustworthyApartFromWrongProduction: true }), null);
   }
+});
+
+test('retract: a .com outlet with a UK domain alias clears the bar and is kept (theatreboard case)', () => {
+  const outlets = { tb: { region: 'london', regionInferredBy: 'b', domain: 'theatreboard.com', domainAliases: ['theatreboard.co.uk'] } };
+  assert.deepEqual(retractContradictedOutletRegions(outlets, { tb: { london: ['w1'], nyc: ['n1', 'n2'] } }), []);
+  assert.equal(outlets.tb.region, 'london');
 });

@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-09T04:27:11.728Z",
+  "generated": "2026-11-09T13:38:19.044Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
   "count": 46,
   "orphans": [
@@ -64,6 +64,13 @@
       "loserFile": "ap--unknown.json",
       "targetFile": "ap--mark-kennedy.json",
       "reason": "orphaned-duplicate-heal: ap--mark-kennedy.json was flagged invalid after ap--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "derren-brown-only-human-off-west-end-2026",
+      "loserFile": "north-west-end--unknown.json",
+      "targetFile": "north-west-end--zain-russell.json",
+      "reason": "orphaned-duplicate-heal: north-west-end--zain-russell.json was flagged invalid after north-west-end--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -190,13 +197,6 @@
       "loserFile": "the-sun--dominic-maxwell.json",
       "targetFile": "sunday-times--dominic-maxwell.json",
       "reason": "orphaned-duplicate-heal: sunday-times--dominic-maxwell.json was flagged invalid after the-sun--dominic-maxwell.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "private-lives-2025",
-      "loserFile": "nytimes--unknown.json",
-      "targetFile": "nytimes--ben-brantley.json",
-      "reason": "orphaned-duplicate-heal: nytimes--ben-brantley.json was flagged invalid after nytimes--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {

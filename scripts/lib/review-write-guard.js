@@ -430,6 +430,12 @@ const PROTECTED_FIELDS = [
   'clearBreadcrumbRetracted',
   'clearBreadcrumbRetractedAt',
   'clearBreadcrumbRetractedFields',
+  // BRO-7171 Stage 4: the terminal "text cannot be recovered" record
+  // (gap-terminal.js) is an owner/evidence decision a rebase must not drop;
+  // clearing it needs textUnrecoverableClearReason (CLEAR_BREADCRUMBS below),
+  // and a url change clears it (url-change-invariant URL_DERIVED_FIELDS).
+  'textUnrecoverable',
+  'textUnrecoverableClearReason',
   // NOTE: incompleteReason + incompleteDetail are intentionally NOT in this list.
   // They are derived fields that rebuild re-classifies every run. Having them here
   // caused stale 'wrong_content' flags to be preserved even after collect-review-texts.js
@@ -1073,6 +1079,9 @@ const CLEAR_BREADCRUMBS = {
   crossOutletSimilarity: (d) => !_isEmptyValue(d.crossOutletClearReason),
   crossOutletMethod: (d) => !_isEmptyValue(d.crossOutletClearReason),
   crossOutletFlaggedAt: (d) => !_isEmptyValue(d.crossOutletClearReason),
+  // BRO-7171 Stage 4: a terminal record withdrawn on purpose (owner reversed it,
+  // or the text turned up) by scripts/gap-terminal.js --clear or clearFailureFlags.
+  textUnrecoverable: (d) => !_isEmptyValue(d.textUnrecoverableClearReason),
   isNotReview: _isNotReviewCleared,
   // BRO-6742: a tombstoned url the record has since adopted as its own (an
   // interview slot giving way to the same critic's review) is no longer a

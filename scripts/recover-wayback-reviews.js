@@ -1260,6 +1260,18 @@ async function main() {
 // Process recovered text — quality gate + file update
 // ============================================================================
 
+let _showsById = null;
+function showMetaFor(showId) {
+  if (!_showsById) {
+    _showsById = new Map();
+    try {
+      const parsed = JSON.parse(fs.readFileSync(CONFIG.showsPath, 'utf8'));
+      for (const s of (Array.isArray(parsed) ? parsed : (parsed.shows || []))) if (s && s.id) _showsById.set(s.id, s);
+    } catch { /* falls back to the slug title */ }
+  }
+  return _showsById.get(showId) || null;
+}
+
 async function processRecoveredText(candidate, text, html, archiveData) {
   // Clean the text
   let cleanedText = cleanText(text);
@@ -1286,7 +1298,8 @@ async function processRecoveredText(candidate, text, html, archiveData) {
   }
 
   // Show-mention check — validateShowMentioned returns {valid, confidence, reason}
-  const showTitle = candidate.showId.replace(/-\d{4}$/, '').replace(/-/g, ' ');
+  // shows.json title, not the slug ("life of pi tour" is never printed; BRO-7171 Stage 4)
+  const showTitle = require('./lib/review-guards').pickShowTitleForHeuristic(candidate.showId, showMetaFor(candidate.showId));
   const mentionResult = validateShowMentioned(cleanedText, showTitle, candidate.showId);
   if (!mentionResult.valid) {
     console.log(`    Show not mentioned in text: "${showTitle}"`);
@@ -1402,7 +1415,7 @@ async function processRecoveredText(candidate, text, html, archiveData) {
 // Entry point
 // ============================================================================
 
-module.exports = { extractTextFromHtml };
+module.exports = { extractTextFromHtml, showMetaFor };
 
 if (require.main === module) {
   // --help/-h checked BEFORE any candidate loading or network/fs work (cousin

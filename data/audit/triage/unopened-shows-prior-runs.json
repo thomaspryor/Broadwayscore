@@ -1,22 +1,16 @@
 {
-  "generatedAt": "2026-11-07T09:08:02.007Z",
+  "generatedAt": "2026-11-09T10:44:29.115Z",
   "linearIssue": "BRO-80",
-  "scannedShows": 5926,
+  "scannedShows": 5948,
   "flaggedShows": 50,
-  "flaggedFiles": 173,
-  "readmissionRiskFiles": 2,
+  "flaggedFiles": 174,
+  "readmissionRiskFiles": 1,
   "readmissionRisks": [
     {
-      "showId": "private-lives-2025",
-      "file": "huffpost--michael-giltz.json",
-      "publishDate": "2011-11-19",
-      "outletId": "huffpost"
-    },
-    {
-      "showId": "private-lives-2025",
-      "file": "talkinbroadway--unknown.json",
-      "publishDate": "2011-11-17",
-      "outletId": "talkinbroadway"
+      "showId": "midnight-in-the-garden-of-good-and-evil-2024",
+      "file": "wsj--charles-isherwood.json",
+      "publishDate": "2024-07-25",
+      "outletId": "wsj"
     }
   ],
   "unevaluatedFiles": 0,
@@ -273,7 +267,7 @@
       "previewsStartDate": null,
       "openingDate": null,
       "verdict": "likely-contamination",
-      "reasoning": "12/14 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
+      "reasoning": "14/14 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
         "count": 14,
         "distinctYears": [
@@ -281,7 +275,7 @@
           2023
         ],
         "spanDays": 4167,
-        "flaggedCount": 12,
+        "flaggedCount": 14,
         "venueMentionCount": 0
       },
       "suggestedPriorRun": null,
@@ -313,28 +307,15 @@
           "evaluationError": null
         },
         {
-          "file": "guardian--susannah-clapp.json",
+          "file": "huffpost--michael-giltz.json",
           "readmissionRisk": "durably-excluded",
           "beforeReason": "wrongProduction",
           "afterReason": "wrongProduction",
-          "outletId": "guardian",
-          "criticName": "Susannah Clapp",
-          "publishDate": "2023-04-15",
-          "url": "https://www.theguardian.com/stage/2023/apr/23/the-week-in-theatre-dancing-at-lughnasa-private-lives-review",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "huffpost--michael-giltz.json",
-          "readmissionRisk": "readmits-on-open",
-          "beforeReason": "prematureForUnopenedShow",
-          "afterReason": null,
           "outletId": "huffpost",
           "criticName": "Michael Giltz",
           "publishDate": "2011-11-19",
           "url": "https://www.huffpost.com/entry/private-lives-broadway-review_b_1102882",
-          "wrongProduction": false,
+          "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
         },
@@ -378,6 +359,19 @@
           "evaluationError": null
         },
         {
+          "file": "observer--susannah-clapp.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "observer",
+          "criticName": "Susannah Clapp",
+          "publishDate": "2023-04-15",
+          "url": "https://www.theguardian.com/stage/2023/apr/23/the-week-in-theatre-dancing-at-lughnasa-private-lives-review",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
           "file": "standard--nick-curtis.json",
           "readmissionRisk": "durably-excluded",
           "beforeReason": "wrongProduction",
@@ -392,14 +386,14 @@
         },
         {
           "file": "talkinbroadway--unknown.json",
-          "readmissionRisk": "readmits-on-open",
-          "beforeReason": "prematureForUnopenedShow",
-          "afterReason": null,
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
           "outletId": "talkinbroadway",
           "criticName": "Unknown",
           "publishDate": "2011-11-17",
           "url": "https://www.talkinbroadway.com/world/PrivateLives2011.html",
-          "wrongProduction": false,
+          "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
         },
@@ -532,19 +526,6 @@
           "evaluationError": null
         },
         {
-          "file": "guardian--susannah-clapp.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "guardian",
-          "criticName": "Susannah Clapp",
-          "publishDate": "2025-03-07",
-          "url": "https://www.theguardian.com/stage/2025/mar/16/the-week-in-theatre-the-seagull-chekhov-thomas-ostermeier-barbican-cate-blanchett-emma-corrin-tom-burke-james-graham-young-vic-adam-penfold-nottingham-playhouse-review",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
           "file": "i-paper--fiona-mountford.json",
           "readmissionRisk": "durably-excluded",
           "beforeReason": "wrongProduction",
@@ -566,6 +547,19 @@
           "criticName": "Jessie Thompson",
           "publishDate": "2022-07-08",
           "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/emilia-clarke-the-seagull-review-b2118781.html",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "observer--susannah-clapp.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "observer",
+          "criticName": "Susannah Clapp",
+          "publishDate": "2025-03-07",
+          "url": "https://www.theguardian.com/stage/2025/mar/16/the-week-in-theatre-the-seagull-chekhov-thomas-ostermeier-barbican-cate-blanchett-emma-corrin-tom-burke-james-graham-young-vic-adam-penfold-nottingham-playhouse-review",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
@@ -711,19 +705,6 @@
           "evaluationError": null
         },
         {
-          "file": "guardian--susannah-clapp.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "guardian",
-          "criticName": "Susannah Clapp",
-          "publishDate": "2022-12-07",
-          "url": "https://www.theguardian.com/stage/2022/dec/11/orlando-review-garrick-emma-corrin-neil-bartlett-michael-grandage-deborah-findlay-hex-olivier-national-rufus-norris",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
           "file": "independent--jessie-thompson.json",
           "readmissionRisk": "durably-excluded",
           "beforeReason": "wrongProduction",
@@ -732,6 +713,19 @@
           "criticName": "Jessie Thompson",
           "publishDate": "2022-12-07",
           "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/orlando-review-emma-corrin-b2239076.html",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "observer--susannah-clapp.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "observer",
+          "criticName": "Susannah Clapp",
+          "publishDate": "2022-12-07",
+          "url": "https://www.theguardian.com/stage/2022/dec/11/orlando-review-garrick-emma-corrin-neil-bartlett-michael-grandage-deborah-findlay-hex-olivier-national-rufus-norris",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
@@ -2014,6 +2008,68 @@
       ]
     },
     {
+      "showId": "midnight-in-the-garden-of-good-and-evil-2024",
+      "title": "Midnight in the Garden of Good and Evil",
+      "market": "broadway",
+      "status": "announced",
+      "venue": null,
+      "previewsStartDate": null,
+      "openingDate": null,
+      "verdict": "likely-contamination",
+      "reasoning": "2/3 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
+      "stats": {
+        "count": 3,
+        "distinctYears": [
+          2024
+        ],
+        "spanDays": 15,
+        "flaggedCount": 2,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "splash-magazines--jessie-bond.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "splash-magazines",
+          "criticName": "Jessie Bond",
+          "publishDate": "2024-07-09T13:09:20-04:00",
+          "url": "https://chicago.splashmags.com/index.php/2024/07/midnight-in-the-garden-of-good-and-evil-review-immaculate-vibes/#gsc.tab=0",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "variety--steven-oxman.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "variety",
+          "criticName": "Steven Oxman",
+          "publishDate": "2024-07-09T13:09:20-04:00",
+          "url": "https://variety.com/2024/legit/reviews/midnight-in-the-garden-of-good-and-evil-review-musical-goodman-theatre-1236063818/",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "wsj--charles-isherwood.json",
+          "readmissionRisk": "readmits-on-open",
+          "beforeReason": "prematureForUnopenedShow",
+          "afterReason": null,
+          "outletId": "wsj",
+          "criticName": "Charles Isherwood",
+          "publishDate": "2024-07-25",
+          "url": "https://www.wsj.com/articles/midnight-in-the-garden-of-good-and-evil-review-chicago-goodman-j-harrison-ghee-jason-robert-brown-taylor-mac-4c080607",
+          "wrongProduction": false,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
       "showId": "dreamgirls-2026",
       "title": "Dreamgirls",
       "market": "broadway",
@@ -2256,55 +2312,6 @@
           "criticName": "Stuart King",
           "publishDate": "2025-08-08",
           "url": "https://www.londonboxoffice.co.uk/news/post/romeo-juliet-stratford-east-review",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
-      "showId": "midnight-in-the-garden-of-good-and-evil-2024",
-      "title": "Midnight in the Garden of Good and Evil",
-      "market": "broadway",
-      "status": "announced",
-      "venue": null,
-      "previewsStartDate": null,
-      "openingDate": null,
-      "verdict": "likely-contamination",
-      "reasoning": "2/2 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
-      "stats": {
-        "count": 2,
-        "distinctYears": [
-          2024
-        ],
-        "spanDays": 0,
-        "flaggedCount": 2,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "splash-magazines--jessie-bond.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "splash-magazines",
-          "criticName": "Jessie Bond",
-          "publishDate": "2024-07-09T13:09:20-04:00",
-          "url": "https://chicago.splashmags.com/index.php/2024/07/midnight-in-the-garden-of-good-and-evil-review-immaculate-vibes/#gsc.tab=0",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "variety--steven-oxman.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "variety",
-          "criticName": "Steven Oxman",
-          "publishDate": "2024-07-09T13:09:20-04:00",
-          "url": "https://variety.com/2024/legit/reviews/midnight-in-the-garden-of-good-and-evil-review-musical-goodman-theatre-1236063818/",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null

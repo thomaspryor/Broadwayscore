@@ -1,18 +1,60 @@
 {
-  "generatedAt": "2026-11-08T09:21:13.983Z",
+  "generatedAt": "2026-11-09T10:26:52.311Z",
   "shadow": true,
-  "checkoutSha": "2bb8fc91cefd0771211de92694cdae917eb273c3",
-  "totalCandidates": 334,
-  "eligibleCandidates": 88,
-  "checked": 27,
+  "checkoutSha": "99b58c3121111486d40180a24b845646cfa3af11",
+  "totalCandidates": 349,
+  "eligibleCandidates": 90,
+  "checked": 30,
   "truncated": true,
   "fetchError": null,
   "counts": {
-    "pass": 20,
-    "fail": 3,
-    "unverifiable": 4
+    "pass": 23,
+    "fail": 5,
+    "unverifiable": 2
   },
   "alreadyDone": [
+    {
+      "id": "BRO-7193",
+      "name": "P2: 6 corpus-drift audits report clean/drift (not crash) when review-texts is missing",
+      "verifyCmd": "node --test tests/unit/check-corpus-drift.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-7182",
+      "name": "Route the 5 remaining advisory --strict audits to worker cards (BRO-7181 cousins)",
+      "verifyCmd": "node --test tests/unit/strict-audit-alerts.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-7175",
+      "name": "Ingest the 21 expected-critics missing reviews (BRO-7166 audit)",
+      "verifyCmd": "node --test tests/unit/expected-critics.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-7174",
+      "name": "Approved duplicateOf/wrongShow survive the dedupe writers, and approved-fix drift reaches the digest",
+      "verifyCmd": "node --test tests/unit/approved-fix-drift.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-7162",
+      "name": "External review: poller and opening-discovery silent drops (F01,F04,F06,F07,F08,F14)",
+      "verifyCmd": "node --test tests/unit/serp-provider-unavailable.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-7145",
+      "name": "Audit 2 months of openings that needed hands: is each root cause fixed systematically?",
+      "verifyCmd": "node --test tests/unit/opening-grade.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-7129",
+      "name": "Opening grade: SERP census counts other cities' productions of classic titles (King Lear '0 of 13 known' were Manchester/London/Chicago/New Orleans/Texas)",
+      "verifyCmd": "node --test scripts/lib/census-other-place.test.mjs",
+      "detail": null
+    },
     {
       "id": "BRO-7114",
       "name": "Arm auto-revert of breaking landings (BRO-7102 stage 2 runs in shadow mode)",
@@ -50,15 +92,9 @@
       "detail": null
     },
     {
-      "id": "BRO-7033",
-      "name": "P1: Opening night miss: The Verge (2026-11-05)",
-      "verifyCmd": "node scripts/slow-market-grade.js --opened-from=2026-11-05 --opened-to=2026-11-05 --check-gaps",
-      "detail": null
-    },
-    {
-      "id": "BRO-7028",
-      "name": "Auto-fix: Opening Night Orchestrator Failed",
-      "verifyCmd": "node scripts/check-workflow-run-status.js --workflow=opening-night-orchestrator.yml --expect=success",
+      "id": "BRO-6986",
+      "name": "Auto-fix (second try): Opening Night Poller Failed",
+      "verifyCmd": "node scripts/check-workflow-run-status.js --workflow=opening-night-poller.yml --expect=success",
       "detail": null
     },
     {
@@ -68,9 +104,15 @@
       "detail": null
     },
     {
-      "id": "BRO-6939",
-      "name": "Onboarding follow-ups: audit new tours' art in CI, keep genre tags through a lost-push redo",
-      "verifyCmd": "node scripts/validate-data.js --strict",
+      "id": "BRO-6947",
+      "name": "Printed-byline follow-ups: auto-fill for outlets without registry critics, triage 341 unlisted, 14 destination-exists",
+      "verifyCmd": "node --test scripts/lib/printed-byline-conflict.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6944",
+      "name": "iOS: signed-out rating Save shows no sign-in sheet and strands the user on the show page",
+      "verifyCmd": "npx tsc --noEmit",
       "detail": null
     },
     {
@@ -83,12 +125,6 @@
       "id": "BRO-6904",
       "name": "Daily Mail review files whose url points at a different review (low text overlap)",
       "verifyCmd": "node --test scripts/lib/dailymail-url-discovery.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-6901",
-      "name": "Regional (UK/DC/Chicago) shows still missing images: root cause + systematic fix",
-      "verifyCmd": "node scripts/validate-data.js --strict",
       "detail": null
     },
     {
@@ -110,31 +146,19 @@
       "detail": null
     },
     {
-      "id": "BRO-6802",
-      "name": "P1: Broadway press-night race is failing (first review 87-100 min after embargo vs 30-min bar); lane cutover stalled; 6 Broadway openings Nov 9-19",
-      "verifyCmd": "node scripts/lib/verify-data-backfill.js --show=here-there-are-blueberries-2026",
-      "detail": null
-    },
-    {
       "id": "BRO-6801",
       "name": "Make OB/OWE press-night search actually fire + prove Stagedoor fix on a real London opening",
       "verifyCmd": "node --test tests/unit/press-window-serp.test.mjs",
       "detail": null
-    },
-    {
-      "id": "BRO-6761",
-      "name": "Older-years every-review sweep: gap-audit ~2,400 never-checked shows opened >1 year ago, Broadway first (owner chose A 2026-11-01)",
-      "verifyCmd": "node scripts/lib/verify-data-backfill.js --show=appropriate-2023,and-juliet-2022 --reviews=2",
-      "detail": null
-    },
-    {
-      "id": "BRO-6737",
-      "name": "Video captions: tagged link on Facebook, link in bio on TikTok/Instagram, YouTube description link (per-channel)",
-      "verifyCmd": "node --test scripts/test-video-captions.test.mjs",
-      "detail": null
     }
   ],
   "failing": [
+    {
+      "id": "BRO-7113",
+      "name": "Unit Tests job: cut runtime back under 20 min (shard or speed up the no-data-dependency batch)",
+      "verifyCmd": "node scripts/ci-green-rate.js --days 7",
+      "detail": "CI green rate — thomaspryor/Broadwayscore test.yml on main, push runs, last 7d (2026-11-02T10:23Z → 2026-11-09T10:23Z)\n  completed 468 | green 285 | red 181 | cancelled 2 | other 0 | reruns collapsed 0\n  longest green streak 34 | longest red streak 34 | current streak: green x21\n  red episodes 49 | red→green latency median: 29.7 min (49 samples)\n  date        total green red  canc other\n  2026-11-"
+    },
     {
       "id": "BRO-7055",
       "name": "Re-collect 262 review files stored as scraper_garbage (multi-show check) across 216 shows, after BRO-7053 detector fix",
@@ -142,10 +166,16 @@
       "detail": "FAIL 262: show missing; scored reviews 0 < 262\n"
     },
     {
-      "id": "BRO-6944",
-      "name": "iOS: signed-out rating Save shows no sign-in sheet and strands the user on the show page",
-      "verifyCmd": "npx tsc --noEmit",
-      "detail": "src/lib/data-actors.ts(22,26): error TS2307: Cannot find module '../../data/cast-manifest.json' or its corresponding type declarations.\nsrc/lib/data-cast-obc.ts(12,26): error TS2307: Cannot find module '../../data/cast-manifest.json' or its corresponding type declarations.\nsrc/lib/data-tony-nominees.ts(32,32): error TS2307: Cannot find module '../../data/actor-slugs.json' or its corresponding type"
+      "id": "BRO-7033",
+      "name": "P1: Opening night miss: The Verge (2026-11-05)",
+      "verifyCmd": "node scripts/slow-market-grade.js --opened-from=2026-11-05 --opened-to=2026-11-05 --check-gaps",
+      "detail": "gap audit generated 2026-11-09T09:27:30.273Z\nPASS     the-unbelievers-off-broadway-2026: 14 live, 0 cited not live; info: 0 census candidate(s), 0 exclusion(s) confirmed correct; audited 2026-11-09T09:27:30.273Z\n         frequent outlets with nothing for this show: off-off-online\nPASS     tango-after-dark-off-west-end-2026: 7 live, 0 cited not live; info: 0 census candidate(s), 0 exclusion(s) conf"
+    },
+    {
+      "id": "BRO-6901",
+      "name": "Regional (UK/DC/Chicago) shows still missing images: root cause + systematic fix",
+      "verifyCmd": "node scripts/validate-data.js --strict",
+      "detail": "⚠️  WARNING: Tour \"the-bodyguard-tour-2026\" has no tourOf but 2 non-tour show(s) share its title (the-bodyguard-west-end-2016, the-bodyguard-west-end-2012); set tourOf if it tours one of them\n❌ ERROR: Shared ibdbUrl https://www.ibdb.com/broadway-production/three-days-of-rain-403589 across 2 shows: three-days-of-rain-2006, three-days-of-rain-2026 — each IBDB production maps to one show; null the st"
     },
     {
       "id": "BRO-6794",
@@ -166,21 +196,44 @@
       "name": "Social autopost: AI-written review posts from a ranked fact pool (Claude writes, GPT-5.5 fact-checks)",
       "verifyCmd": "node --test scripts/verify-social-ai-live-post.test.mjs",
       "detail": "ran no passing tests (all skipped or none ran)"
-    },
-    {
-      "id": "BRO-6932",
-      "name": "Social autopost: quiet-day backfill of older settled shows (Off-Broadway mostly)",
-      "verifyCmd": "node --test scripts/verify-bro-6932-recheck.test.mjs",
-      "detail": "ran no passing tests (all skipped or none ran)"
-    },
-    {
-      "id": "BRO-6724",
-      "name": "Pre-existing red checks seen during BRO-6716: cross-outlet attribution suspect tests + audit-regex-patterns --full overages",
-      "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 41070ms (timeout — no verdict)"
     }
   ],
   "landedButOpen": [
+    {
+      "id": "BRO-7175",
+      "name": "Ingest the 21 expected-critics missing reviews (BRO-7166 audit)",
+      "branch": "land/bro-7175-acks",
+      "sha": "5f8c8df034e7ca4d45ed7b7179230747e409f051",
+      "landedAt": "2026-11-09T01:45:36.923Z"
+    },
+    {
+      "id": "BRO-7174",
+      "name": "Approved duplicateOf/wrongShow survive the dedupe writers, and approved-fix drift reaches the digest",
+      "branch": "land/codex-bro-7174",
+      "sha": "655182680c317e4ffc5eb9dc55af2da2a020c616",
+      "landedAt": "2026-11-09T08:41:57.237Z"
+    },
+    {
+      "id": "BRO-7162",
+      "name": "External review: poller and opening-discovery silent drops (F01,F04,F06,F07,F08,F14)",
+      "branch": "land/bro-7162-discovery",
+      "sha": "02967c76f84247191f390d07662f92fa0869aacc",
+      "landedAt": "2026-11-08T23:39:22.078Z"
+    },
+    {
+      "id": "BRO-7145",
+      "name": "Audit 2 months of openings that needed hands: is each root cause fixed systematically?",
+      "branch": "land/bro-7145-audit-v2",
+      "sha": "97ab900455cde70e26b4aa93e878908793589b1b",
+      "landedAt": "2026-11-08T21:21:04.832Z"
+    },
+    {
+      "id": "BRO-7129",
+      "name": "Opening grade: SERP census counts other cities' productions of classic titles (King Lear '0 of 13 known' were Manchester/London/Chicago/New Orleans/Texas)",
+      "branch": "land/bro-7129-census-place",
+      "sha": "b4d567558013eb2a3743a73ac97e680724c0a1b3",
+      "landedAt": "2026-11-08T17:21:21.621Z"
+    },
     {
       "id": "BRO-7105",
       "name": "Recurrence detector follow-ups: group by files touched, root-card lookup past 365 days, local --apply lock",
@@ -210,6 +263,13 @@
       "landedAt": "2026-11-07T21:49:39.716Z"
     },
     {
+      "id": "BRO-6986",
+      "name": "Auto-fix (second try): Opening Night Poller Failed",
+      "branch": "land/job/linear-BRO-6986-mw2m5j4d",
+      "sha": "581634ab9a0938efa2d9e8ac2822472fce30e595",
+      "landedAt": "2026-11-04T22:03:11.730Z"
+    },
+    {
       "id": "BRO-6972",
       "name": "P1: Opening night miss: We'll See (2026-11-03)",
       "branch": "land/bro-6972-uncovered-first",
@@ -217,18 +277,18 @@
       "landedAt": "2026-11-04T20:32:02.535Z"
     },
     {
-      "id": "BRO-6939",
-      "name": "Onboarding follow-ups: audit new tours' art in CI, keep genre tags through a lost-push redo",
-      "branch": "land/codex-bro-6939",
-      "sha": "d5cf7cb53df52a65818c590e50475505816b1e62",
-      "landedAt": "2026-11-05T22:24:25.170Z"
+      "id": "BRO-6947",
+      "name": "Printed-byline follow-ups: auto-fill for outlets without registry critics, triage 341 unlisted, 14 destination-exists",
+      "branch": "land/bro-6947-corpus-byline-labels",
+      "sha": "c5cc4ff6847651a46a06327e79d4682889e87fd4",
+      "landedAt": "2026-11-08T04:56:05.081Z"
     },
     {
-      "id": "BRO-6901",
-      "name": "Regional (UK/DC/Chicago) shows still missing images: root cause + systematic fix",
-      "branch": "land/bro-6901-session-cost",
-      "sha": "b4e516950800ecb32407ef0f165151e1b0ebecb4",
-      "landedAt": "2026-11-03T19:48:31.859Z"
+      "id": "BRO-6944",
+      "name": "iOS: signed-out rating Save shows no sign-in sheet and strands the user on the show page",
+      "branch": "land/bro-6944-cost",
+      "sha": "d9aefb7a128657e6e60d5a5e4eac235705f24080",
+      "landedAt": "2026-11-04T02:02:24.172Z"
     },
     {
       "id": "BRO-6886",
@@ -245,32 +305,11 @@
       "landedAt": "2026-11-03T04:12:40.828Z"
     },
     {
-      "id": "BRO-6802",
-      "name": "P1: Broadway press-night race is failing (first review 87-100 min after embargo vs 30-min bar); lane cutover stalled; 6 Broadway openings Nov 9-19",
-      "branch": "land/bro-6802-cost2",
-      "sha": "35b980a5d68060d193fc23c1c78589885a9ce67d",
-      "landedAt": "2026-11-02T05:56:05.079Z"
-    },
-    {
       "id": "BRO-6801",
       "name": "Make OB/OWE press-night search actually fire + prove Stagedoor fix on a real London opening",
       "branch": "land/bro-6801-6687",
       "sha": "0cdd2db73cfb83136911179c50411df59a94afa5",
       "landedAt": "2026-11-02T17:40:19.636Z"
-    },
-    {
-      "id": "BRO-6761",
-      "name": "Older-years every-review sweep: gap-audit ~2,400 never-checked shows opened >1 year ago, Broadway first (owner chose A 2026-11-01)",
-      "branch": "land/bro-6761-cost2",
-      "sha": "c57259baf6503648673d2e58b7016d7e76ca8972",
-      "landedAt": "2026-11-01T21:32:17.532Z"
-    },
-    {
-      "id": "BRO-6737",
-      "name": "Video captions: tagged link on Facebook, link in bio on TikTok/Instagram, YouTube description link (per-channel)",
-      "branch": "land/bro-6737-video-clean2",
-      "sha": "11f4cc38b7d71e57dac7ffb1d8a08c85082cbad5",
-      "landedAt": "2026-11-01T15:07:57.966Z"
     }
   ]
 }

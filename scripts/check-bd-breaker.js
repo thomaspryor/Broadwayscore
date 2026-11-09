@@ -33,6 +33,8 @@ const {
   utcDay,
   effectiveCeilingForOpeningWindow,
   resolveOpeningWindowReservePerShow,
+  breakerCalibrationVerdict,
+  chronicTripAlert,
 } = require('./lib/brightdata-caps');
 const { fetchBdZoneCostDay } = require('./lib/provider-billing');
 const { topCallers, LEDGER_PATH } = require('./lib/provider-telemetry');
@@ -59,6 +61,13 @@ const DRY_RUN = process.argv.includes('--dry-run');
 const STATE_PATH = process.env.BD_BREAKER_STATE_PATH
   || path.join(__dirname, '..', 'data', 'audit', 'bd-circuit-breaker.json');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
+
+function loadTransitionRows() {
+  try {
+    return fs.readFileSync(process.env.BD_TRANSITIONS_PATH || path.join(__dirname, '..', 'data', 'audit', 'breaker-transitions.jsonl'), 'utf8')
+      .split('\n').filter(Boolean).map((l) => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
+  } catch { return []; }
+}
 
 function loadState() {
   try {
@@ -227,9 +236,9 @@ async function main() {
     }
 
     const severity = breakerAlertSeverity({ tripped: change.tripped, openingWindowShows });
-    const title = change.tripped
-      ? `Bright Data daily breaker TRIPPED: ${change.zone} (${change.billedReqs}/${change.ceiling} reqs)`
-      : `Bright Data daily breaker cleared: ${change.zone}`;
+    const verdict = breakerCalibrationVerdict(loadTransitionRows(), { conditionKey });
+    const chronic = chronicTripAlert({ zone: change.zone, billedReqs: change.billedReqs, ceiling: change.ceiling, verdict });
+    const title = chronic.title;
     const description = change.tripped
       ? [
         `Zone ${change.zone} billed ${change.billedReqs} requests today against a ceiling of ${change.ceiling}.`,
@@ -253,7 +262,7 @@ async function main() {
       // line by the card #611 gate — deliberately: promoting it to a real page
       // is the owner's call, and the router logs the downgrade either way.
       disposition: severity === 'critical' ? 'human' : 'digest',
-      cooldownHours: 6,
+      cooldownHours: chronic.cooldownHours,
     });
     console.log(`Alert routed: ${severity} — ${title}`);
   }

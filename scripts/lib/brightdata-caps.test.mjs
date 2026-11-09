@@ -322,3 +322,37 @@ test('bulk scrapers are still NOT exempt by script name', () => {
     assert.equal(isExemptCaller(s, list, 'Gather Review Data'), false, s);
   }
 });
+
+// ---- BRO-7202: chronic trips must collapse to one stable alert --------------
+const _KEY = 'bd-circuit-breaker-web_unlocker2';
+const _rows = (n, now) => Array.from({ length: n }, (_, i) => ({
+  conditionKey: _KEY, to: 'tripped', day: utcDay(new Date(now.getTime() - i * 86400000)),
+}));
+
+test('BRO-7202: breakerCalibrationVerdict flags a breaker tripping most days (14-day window exact)', () => {
+  const now = new Date('2026-11-09T12:00:00Z');
+  assert.equal(caps.breakerCalibrationVerdict(_rows(10, now), { conditionKey: _KEY, now }).miscalibrated, true);
+  assert.equal(caps.breakerCalibrationVerdict(_rows(2, now), { conditionKey: _KEY, now }).miscalibrated, false);
+  assert.equal(caps.breakerCalibrationVerdict(_rows(10, now), { conditionKey: 'other', now }).tripDays, 0);
+  assert.equal(caps.breakerCalibrationVerdict(_rows(20, now), { conditionKey: _KEY, now }).tripDays, 14);
+});
+
+test('BRO-7202: chronic trips share ONE title regardless of req count, with a 7-day cooldown', () => {
+  const now = new Date('2026-11-09T12:00:00Z');
+  const verdict = caps.breakerCalibrationVerdict(_rows(10, now), { conditionKey: _KEY, now });
+  const a = caps.chronicTripAlert({ zone: 'web_unlocker2', billedReqs: 2019, ceiling: 1750, verdict });
+  const b = caps.chronicTripAlert({ zone: 'web_unlocker2', billedReqs: 2445, ceiling: 1750, verdict });
+  assert.equal(a.title, b.title, 'varying req counts in the title defeat card dedupe (BRO-7202)');
+  assert.equal(a.cooldownHours, 168);
+  const acute = caps.chronicTripAlert({ zone: 'web_unlocker2', billedReqs: 4000, ceiling: 3500, verdict: { miscalibrated: false } });
+  assert.match(acute.title, /4000\/3500/);
+  assert.equal(acute.cooldownHours, 6);
+});
+
+test('BRO-7202: replay of real transition history classifies the Oct13-Nov9 unlocker as chronic', () => {
+  const f = path.join(path.dirname(new URL(import.meta.url).pathname), '..', '..', 'data', 'audit', 'breaker-transitions.jsonl');
+  assert.ok(fs.existsSync(f));
+  const rows = fs.readFileSync(f, 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l));
+  const v = caps.breakerCalibrationVerdict(rows, { conditionKey: _KEY, now: new Date('2026-11-09T12:00:00Z') });
+  assert.equal(v.miscalibrated, true, `expected chronic, got ${v.tripDays} trip days`);
+});

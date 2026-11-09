@@ -57,13 +57,21 @@ test('WSJ: the paywall teaser judged not_a_review waits for BWW\'s excerpt (Play
   assert.equal(wsj[1].chars, 0, 'the excerpt is the only text');
 });
 
-test('WSJ with no aggregator excerpt all night is still a failure for good, not a score from the teaser', async () => {
-  const r = await replay({ bwwFromPass: 99, passes: 14 }); // five tries on the 30 s, 2, 5, 10 min backoff: about 18 minutes
-  assert.ok(!has(r, 'wsj'));
-  const f = r.failed.find((x) => x.key.includes('wsj.com'));
-  assert.ok(f, JSON.stringify(r.failed));
-  assert.match(f.reason, /paywall teaser \(not_a_review\); waiting for an aggregator excerpt/);
+test('WSJ with no aggregator excerpt all night is held awaiting one, never failed for good and never scored from the teaser (BRO-7159)', async () => {
+  const r = await replay({ bwwFromPass: 999, passes: 60 }); // two hours of passes, long past the old 18-minute retry budget
+  assert.ok(!has(r, 'wsj'), 'never scored from the teaser');
+  assert.ok(!r.failed.some((x) => x.key.includes('wsj.com')), `not a failure for good: ${JSON.stringify(r.failed)}`);
+  assert.ok(r.awaiting.some((k) => k.includes('wsj.com')), `reported as awaiting an excerpt: ${JSON.stringify(r.awaiting)}`);
   assert.equal(r.scorerCalls.filter((c) => /wsj\.com/.test(c.url)).length, 1, 'the teaser is judged once, never re-sent to the models');
+});
+
+// BRO-7159 (Wanted pre-flight): the WSJ excerpt can land on BWW's roundup long after the old five-try budget ran out
+// (about 18 minutes). The review must still end scored from it.
+test('an early WSJ teaser plus an aggregator excerpt that lands 90 minutes later ends scored (BRO-7159)', async () => {
+  const r = await replay({ bwwFromPass: 46, passes: 52 }); // 2-minute passes: BWW's roundup (with the excerpt) from about +90 min
+  assert.ok(has(r, 'wsj'), `scored: failed ${JSON.stringify(r.failed)}; awaiting ${JSON.stringify(r.awaiting)}`);
+  assert.deepEqual(r.scorerCalls.filter((c) => /wsj\.com/.test(c.url)).map((c) => c.tier), ['complete', 'excerpt']);
+  assert.ok(!r.awaiting.some((k) => k.includes('wsj.com')));
 });
 
 test('The Independent\'s /features/ review is admitted; the shared rule with domain-filters.js still refuses a features interview or round-up', async () => {
@@ -90,7 +98,7 @@ test('New York Theater comes from its own feed when no BWW roundup is found all 
   assert.ok(!has(off, 'nytheater'), 'with neither source it is not found: the feed is what finds it');
 });
 
-test('the lane reads the regular pipeline\'s feed list plus its own direct-only list, every feed within ceil(n / 24) passes', async () => {
+test('the lane reads the regular pipeline\'s feed list plus its own direct-only list, every feed within two passes', async () => {
   const feeds = d.defaultLaneFeeds(SHOW);
   assert.ok(feeds.some((f) => f.url === NYT_FEED));
   // BRO-6872: on-time outlets the regular list lacks come from lane-sources.js LANE_FEEDS, fetched direct only.
@@ -98,7 +106,10 @@ test('the lane reads the regular pipeline\'s feed list plus its own direct-only 
   assert.ok(!feeds.some((f) => /whatsonstage|standard\.co\.uk|theatreweekly/.test(f.url)), 'West End feeds are not read for a Broadway show');
   const asked = new Set();
   const adapter = d.rssAdapter();
-  for (let i = 0; i < Math.ceil(feeds.length / 24); i++) await adapter.discover({ show: SHOW, fetchText: async (u) => { asked.add(u); return '<rss></rss>'; } });
+  // Each kind rotates in its own window; both must cycle within two passes so no feed waits longer than every other pass.
+  const passes = Math.max(Math.ceil(feeds.filter((f) => !f.directOnly).length / d.MAX_FEEDS_PER_PASS), Math.ceil(feeds.filter((f) => f.directOnly).length / d.MAX_DIRECT_FEEDS_PER_PASS));
+  assert.ok(passes <= 2, `a feed is read only every ${passes} passes: widen the window or trim the list`);
+  for (let i = 0; i < passes; i++) await adapter.discover({ show: SHOW, fetchText: async (u) => { asked.add(u); return '<rss></rss>'; } });
   assert.deepEqual([...asked].sort(), feeds.map((f) => f.url).sort());
 });
 
@@ -127,18 +138,21 @@ function wsjScoring({ page, url = U.wsj, now }) {
 }
 const EXCERPT = { bwwExcerpt: `Charles Isherwood, ${quote('wsj')}` };
 
-test('a teaser wait counts one attempt per try, and an excerpt seen while the score is backing off is kept', async () => {
+test('a teaser the scorer judged is held (one record, never terminal), and an excerpt seen on a later pass is kept and scored (BRO-7159)', async () => {
   let t = T0;
   const { sc, calls, dir, url } = wsjScoring({ page: TEASER, now: () => t });
   try {
     const row = () => ({ url, fullText: TEASER, showId: SHOW.id });
     const got = await sc.fetchReview({ url });
-    await assert.rejects(sc.scoreReview(row(), got), (e) => e.name === 'LaneRetryError' && /attempt 1\/5/.test(e.message));
+    await assert.rejects(sc.scoreReview(row(), got), (e) => e.name === 'LaneAwaitingEvidenceError' && !e.permanent);
+    // Re-offered with no excerpt: held again, before any fetch or model call, with no second failure record.
+    for (let i = 0; i < 6; i++) { t += 120000; await assert.rejects(sc.fetchReview({ url }), (e) => e.awaiting === true && !e.permanent); }
     const recs = fs.readFileSync(path.join(dir, fs.readdirSync(dir).find((f) => f.includes('failures'))), 'utf8').trim().split('\n');
-    assert.equal(recs.length, 1, 'one failure record per try, not two');
-    // Five seconds later (inside the 30 s backoff) BWW cites it with a quote: the fetch is cached, the score still waits...
+    assert.equal(recs.length, 1, 'the hold is recorded once, not once per pass');
+    assert.equal(JSON.parse(recs[0]).terminal, false);
+    // BWW cites it with a quote: the cached fetch takes it...
     t += 5000;
-    await assert.rejects(sc.fetchReview({ url, excerpts: EXCERPT }), (e) => e.name === 'LaneRetryError');
+    await sc.fetchReview({ url, excerpts: EXCERPT });
     // ...and the next try, with no aggregator re-citing it, still has the quote.
     t += 60000;
     const again = await sc.fetchReview({ url });

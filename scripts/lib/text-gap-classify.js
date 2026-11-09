@@ -111,9 +111,10 @@ function noUrlSubclass(review, outletInfo) {
   return hasExcerpt(review) ? 'AGG_REF' : 'BARE';
 }
 
-function hasTerminalRecord(review) {
-  const t = review.textUnrecoverable;
-  return !!(t && typeof t === 'object' && t.reason && t.decidedAt && Array.isArray(t.evidence) && t.evidence.length);
+// One validity predicate (gap-terminal.validateTerminal): a stale, unapproved,
+// url-changed or recent-show record is not terminal.
+function hasTerminalRecord(review, recency = null) {
+  return require('./gap-terminal').validateTerminal(review, { recency }).valid;
 }
 
 /**
@@ -146,7 +147,7 @@ function classifyTextGap(review, ffEntry = null, ctx = {}) {
   if (review.isNonReview) return done('EXCLUDED', 'nonReview');
   // Complete is closed, but a leftover failed-fetches row is surfaced (metric.completeWithFailedFetchRow).
   if (review.contentTier === 'complete') return done('COMPLETE', ffEntry ? 'with_failed_fetch_row' : null);
-  if (hasTerminalRecord(review)) return done('TERMINAL', review.textUnrecoverable.reason);
+  if (hasTerminalRecord(review, dateKnown ? recency : null)) return done('TERMINAL', review.textUnrecoverable.reason);
 
   if (isFalseTruncationSuspect(review)) return done('FALSE_TRUNCATION_SUSPECT');
 

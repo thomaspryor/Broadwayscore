@@ -81,6 +81,8 @@ const URL_DERIVED_FIELDS = Array.from(new Set([
   'isRoundupArticle', 'isCombinedReview',
   'wrongProductionAutoCleared', 'wrongProductionAutoClearedAt',
   'urlPlaceholderSuspect',
+  // BRO-7171 Stage 4: "the OLD url's text cannot be recovered" says nothing about a new url.
+  'textUnrecoverable',
   // rediscover-review-urls.js Phase 2 refusal of THIS url's redirect; moot once the url moves.
   'redirectRefused',
   // Salvaged from the old URL's walled page (walled-page-meta.js).

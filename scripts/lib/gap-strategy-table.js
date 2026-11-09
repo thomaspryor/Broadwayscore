@@ -45,7 +45,14 @@ const CLASS_STRATEGIES = Object.freeze({
   DEFERRED: ['REFETCH_FREE', 'BROWSER_SESSION', 'ARCHIVE'],
   GARBAGE_PAGE: ['REFETCH_FREE', 'BROWSER_SESSION', 'ARCHIVE', 'URL_REDISCOVER'],
   URL_DEAD: ['ARCHIVE', 'URL_REDISCOVER'],
-  URL_WRONG_PAGE: ['URL_REDISCOVER'],
+  // Stage 4: most URL_WRONG_PAGE rows hold the RIGHT url and failed the
+  // show-mention check on a bad earlier fetch (teaser, registration wall):
+  // The Stage 60 recent rows extract fine in the subscriber browser;
+  // theupcoming / city-am / theatre-reviews-limited / herald / standard pass on
+  // a free refetch. So the stored url is re-tried first, but only when
+  // storedUrlWorthRetry passes (selectStrategy's `storedUrlOk`); the
+  // acceptance gate still decides identity from the text.
+  URL_WRONG_PAGE: ['REFETCH_FREE', 'BROWSER_SESSION', 'URL_REDISCOVER'],
   NO_URL: ['AGG_LINK', 'URL_REDISCOVER'],
   FALSE_TRUNCATION_SUSPECT: [],
   UNCLASSIFIED: [],
@@ -66,8 +73,14 @@ const URL_STRATEGIES = new Set(['REFETCH_FREE', 'BROWSER_SESSION', 'ARCHIVE']);
  * @param {string|null} [a.only] restrict to one strategy
  * @returns {{strategy: string|null, skipped: Array<{strategy:string, reason:string}>}}
  */
-function selectStrategy({ gapClass, hasUrl, hasAdapter, recency = null, eligible = () => ({ ok: true, reason: 'not_gated' }), runGates = {}, flags = STRATEGY_FLAGS, only = null }) {
-  const order = CLASS_STRATEGIES[gapClass] || [];
+function selectStrategy({ gapClass, hasUrl, hasAdapter, recency = null, storedUrlOk = { ok: true, reason: 'not_gated' }, eligible = () => ({ ok: true, reason: 'not_gated' }), runGates = {}, flags = STRATEGY_FLAGS, only = null }) {
+  let order = CLASS_STRATEGIES[gapClass] || [];
+  // Subscriber outlet (Stage 4): a free refetch of a hard-paywalled page
+  // returns the teaser, so the browser goes first; the free refetch stays as
+  // the fallback when the browser is unavailable or auth fails.
+  if (hasAdapter && order.indexOf('REFETCH_FREE') >= 0 && order.indexOf('BROWSER_SESSION') > order.indexOf('REFETCH_FREE')) {
+    order = ['BROWSER_SESSION', ...order.filter((s) => s !== 'BROWSER_SESSION')];
+  }
   const skipped = [];
   for (const s of order) {
     if (only && s !== only) continue;
@@ -75,6 +88,9 @@ function selectStrategy({ gapClass, hasUrl, hasAdapter, recency = null, eligible
     if (!f || !f.enabled) { skipped.push({ strategy: s, reason: 'disabled' }); continue; }
     if (f.historicOnly && recency === 'recent') { skipped.push({ strategy: s, reason: 'disabled_recent' }); continue; }
     if (URL_STRATEGIES.has(s) && !hasUrl) { skipped.push({ strategy: s, reason: 'no_url' }); continue; }
+    if (gapClass === 'URL_WRONG_PAGE' && URL_STRATEGIES.has(s) && storedUrlOk && !storedUrlOk.ok) {
+      skipped.push({ strategy: s, reason: storedUrlOk.reason }); continue;
+    }
     if (s === 'BROWSER_SESSION' && !hasAdapter) { skipped.push({ strategy: s, reason: 'no_adapter' }); continue; }
     const g = runGates[s];
     if (g && !g.ok) { skipped.push({ strategy: s, reason: g.reason }); continue; }
@@ -86,6 +102,49 @@ function selectStrategy({ gapClass, hasUrl, hasAdapter, recency = null, eligible
 }
 
 const ms = (v) => { const t = Date.parse(v || ''); return Number.isFinite(t) ? t : 0; };
+
+/**
+ * Is a URL_WRONG_PAGE record's STORED url worth re-fetching (Stage 4)? A
+ * cheap pre-filter only, never an identity decision (CLAUDE.md §3: no
+ * metadata from urls; the acceptance gate judges the fetched text):
+ *   - the show has started previews (a review of a show that has not begun
+ *     is a different production: the Globe Seagull row holds a 2026 Barbican
+ *     Seagull url, show previews 2027-01-15);
+ *   - the url path is not proven to name another show or venue, using the
+ *     guards the collector already applies (review-guards isUrlTitleMismatch
+ *     / isVenueMismatch): deadline / variety / latimes rows point at
+ *     unrelated news (Ben Affleck AI, a podcast) and need url rediscovery.
+ * Pure (no IO).
+ * @returns {{ok:boolean, reason:string}}
+ */
+function storedUrlWorthRetry({ url, show, nowMs = Date.now() }) {
+  if (!url) return { ok: false, reason: 'no_url' };
+  if (!show) return { ok: false, reason: 'show_unknown' };
+  const starts = [show.previewsStartDate, show.openingDate].map(ms).filter(Boolean);
+  if (starts.length && Math.min(...starts) > nowMs) return { ok: false, reason: 'show_not_started' };
+  const rg = require('./review-guards');
+  if (rg.isUrlTitleMismatch(url, show.title).isMismatch) return { ok: false, reason: 'url_names_other_show' };
+  if (rg.isVenueMismatch(url, show.venue, show.category).isMismatch) return { ok: false, reason: 'url_names_other_venue' };
+  return { ok: true, reason: 'url_not_contradicted' };
+}
+
+/**
+ * The collector's fetch gate (review-guards.shouldRetryFetch on the
+ * failed-fetches.json entry) as seen by the gap engine's free refetch. Only
+ * the cooldown blocks: 'abandoned' / 'max_retries_reached' mean the
+ * COLLECTOR's route is spent, and the gap engine retries under its own ledger
+ * cap (gap-recovery-ledger.strategyEligibility). Stage 4 measured plain fetch
+ * working today on stage-west, londonlivinglarge, liamodell,
+ * plays-international and all-that-dazzles-uk rows the old gate skipped.
+ * @param {{shouldRetry:boolean, reason:string}} collectorDecision
+ * @returns {{ok:boolean, reason:string}}
+ */
+function collectorRefetchGate(collectorDecision) {
+  if (collectorDecision && !collectorDecision.shouldRetry && collectorDecision.reason === 'cooldown') {
+    return { ok: false, reason: 'collector_cooldown' };
+  }
+  return { ok: true, reason: 'collector_route_spent_or_open' };
+}
 
 /**
  * Candidate order: recent shows (<=2y) first, then newest show first, then
@@ -120,4 +179,4 @@ function liveEnvironmentGates({ showsJsonReadable, cookieJarExists }) {
   return { fatal, runGates };
 }
 
-module.exports = { STRATEGY_FLAGS, CLASS_STRATEGIES, selectStrategy, compareCandidates, liveEnvironmentGates };
+module.exports = { STRATEGY_FLAGS, CLASS_STRATEGIES, selectStrategy, compareCandidates, liveEnvironmentGates, storedUrlWorthRetry, collectorRefetchGate };

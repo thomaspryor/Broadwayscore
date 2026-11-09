@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-09T05:03:46.155Z",
+  "generatedAt": "2026-11-09T13:46:04.861Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -118,10 +118,6 @@
   "feedsChecked": 84,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -142,9 +138,9 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 830,
+  "itemsScanned": 839,
   "matchedGaps": 4,
-  "possibleGaps": 5,
+  "possibleGaps": 4,
   "gaps": [
     {
       "showId": "222-a-ghost-story-off-broadway-2026",
@@ -165,21 +161,21 @@
       "publishDate": "2026-11-07"
     },
     {
-      "showId": "msblackforpresident-off-broadway-2026",
-      "title": "Ms. Blakk for President",
+      "showId": "nero-off-west-end-2026",
+      "title": "Nero",
       "level": "matched",
-      "outletId": "times-square-chronicles",
-      "url": "https://t2conline.com/ms-blakk-for-president-all-that-glitter-is-not-political-gold/",
-      "headline": "Ms. Blakk for President: All That Glitter Is Not Political Gold",
+      "outletId": "south-london",
+      "url": "https://southlondon.co.uk/lifestyle/review-nero-southwark-playhouse/",
+      "headline": "Review: Nero @ Southwark Playhouse",
       "publishDate": "2026-11-09"
     },
     {
-      "showId": "the-steel-man-off-broadway-2026",
-      "title": "The Steel Man",
+      "showId": "nero-off-west-end-2026",
+      "title": "Nero",
       "level": "matched",
-      "outletId": "times-square-chronicles",
-      "url": "https://t2conline.com/the-steel-man-when-the-sins-of-the-father-become-the-burden-of-the-son/",
-      "headline": "The Steel Man: When the Sins of the Father Become the Burden of the Son",
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/nero-musical-at-southwark-playhouse-elephant-review_1736407/",
+      "headline": "Nero musical at Southwark Playhouse Elephant – review",
       "publishDate": "2026-11-09"
     },
     {
@@ -190,15 +186,6 @@
       "url": "https://www.theguardian.com/culture/2026/nov/04/every-family-has-silences-kathryn-hunter-on-despair-desire-dislodgeable-limbs-and-her-acting-genius",
       "headline": "‘Every family has silences’: Kathryn Hunter on despair, desire, dislodgeable limbs – and her acting genius",
       "publishDate": "2026-11-04"
-    },
-    {
-      "showId": "nero-off-west-end-2026",
-      "title": "Nero",
-      "level": "possible",
-      "outletId": "musical-theatre-review",
-      "url": "https://musicaltheatrereview.com/nero-southwark-playhouse-elephant/",
-      "headline": "Nero – Southwark Playhouse Elephant",
-      "publishDate": "2026-11-08"
     },
     {
       "showId": "the-bridge-off-west-end-2026",

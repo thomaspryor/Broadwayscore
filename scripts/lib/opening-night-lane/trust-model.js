@@ -1,4 +1,5 @@
 'use strict';
+const { outletDisplayName } = require('../review-completeness');
 /**
  * Trust model for the opening-night lane's review files (BRO-4782, epic BRO-4210; design:
  * docs/opening-night-autonomy-review-2026-09-28.md section 6, "Trust model for the night").
@@ -186,7 +187,8 @@ function buildLaneReview({
   const provenance = buildLaneProvenance({ show: showId, night, source, seenAt });
   const text = typeof fullText === 'string' ? fullText.trim() : '';
   const review = {
-    showId, outletId, outlet: outlet || outletId, criticName: criticName || null, url, publishDate,
+    // BRO-7196: the registry's display name, never the raw id (Wanted showed "chicagotribune" on its cards).
+    showId, outletId, outlet: outletDisplayName(outletId) || outlet || outletId, criticName: criticName || null, url, publishDate,
     fullText: text, source: 'opening-night-lane',
     [PROVENANCE_KEY]: provenance, productionVerified: PRODUCTION_VERIFIED,
   };

@@ -443,6 +443,80 @@ function fullTextNamesVenueAndTitleWords(fullTexts, show, venueRe, mentionRe) {
   });
 }
 
+/**
+ * Competing-show attribution (BRO-7204). The URL slug and the "names the show
+ * by title" tests are proxies: a headline URL ("/it-takes-a-woman-2/") on a
+ * review whose body says "Dolly Levi" but never the string "Hello, Dolly" fails
+ * both, so every new outlet/URL shape produced a fresh "mismatch" and a fresh
+ * card (BRO-4697, 5438, 5536, 5693, 6524, 7121). Absence of the title is not
+ * evidence of contamination; contamination is text that is about ANOTHER show.
+ * So the last test asks who the saved full text is about: it clears when one
+ * distinctive word of this show's title recurs (OWN_MIN_MENTIONS+) and no other
+ * show's whole title is named more often. Text about a different show names that
+ * show, so it loses; a roundup/column naming rivals loses; generic title words
+ * ("murder", "love") are not distinctive and never clear on their own.
+ */
+const OWN_MIN_MENTIONS = 2;
+const DISTINCTIVE_MAX_TITLES = 3;
+const RIVAL_SINGLE_WORD_MIN = 5;
+const normWords = (s) => foldDiacritics(String(s || '')).toLowerCase()
+  .replace(/['\u2018\u2019\u02bc`]/g, '').split(/[^a-z0-9]+/).filter(Boolean);
+
+const titleIndexCache = new WeakMap();
+function buildTitleIndex(shows) {
+  if (titleIndexCache.has(shows)) return titleIndexCache.get(shows);
+  const wordTitles = new Map();   // word -> Set(normalized title)
+  const titles = new Set();       // normalized titles
+  for (const s of shows) {
+    const w = normWords(s.title);
+    if (w.length === 0) continue;
+    const key = w.join(' ');
+    titles.add(key);
+    for (const x of new Set(w)) {
+      if (!wordTitles.has(x)) wordTitles.set(x, new Set());
+      wordTitles.get(x).add(key);
+    }
+  }
+  const lengths = [...new Set([...titles].map(t => t.split(' ').length))].filter(n => n >= 2);
+  const idx = { wordTitles, titles, lengths };
+  titleIndexCache.set(shows, idx);
+  return idx;
+}
+
+function fullTextAboutThisShow(fullTexts, show, shows) {
+  if (!fullTexts || !Array.isArray(shows) || shows.length === 0) return false;
+  const { wordTitles, titles, lengths } = buildTitleIndex(shows);
+  const ownKey = normWords(show.title).join(' ');
+  const own = significantTitleWords(show).map(w => normWords(w).join(''))
+    .filter(w => w && (wordTitles.get(w) || new Set()).size <= DISTINCTIVE_MAX_TITLES);
+  if (own.length === 0) return false;
+  return fullTexts.some((text) => {
+    if (typeof text !== 'string' || !text) return false;
+    const words = normWords(text);
+    const counts = new Map();
+    for (const w of words) counts.set(w, (counts.get(w) || 0) + 1);
+    const ownScore = Math.max(...own.map(w => (counts.get(w) || 0) + (counts.get(w + 's') || 0) + (counts.get(w + 'es') || 0)));
+    if (ownScore < OWN_MIN_MENTIONS) return false;
+    let rivalScore = 0;
+    const bump = (key) => {
+      if (key === ownKey) return;
+      const n = (rivalCounts.get(key) || 0) + 1;
+      rivalCounts.set(key, n);
+      if (n > rivalScore) rivalScore = n;
+    };
+    const rivalCounts = new Map();
+    for (const w of words) if (w.length >= RIVAL_SINGLE_WORD_MIN && titles.has(w)) bump(w);
+    for (const n of lengths) {
+      for (let i = 0; i + n <= words.length; i++) {
+        const key = words.slice(i, i + n).join(' ');
+        if (titles.has(key)) bump(key);
+      }
+    }
+    // Strictly more: a tie between this show and a rival is not attribution.
+    return ownScore > rivalScore;
+  });
+}
+
 function run(show, context) {
   const reviews = context.reviewsDoc[show.id] || [];
   if (reviews.length === 0) {
@@ -484,6 +558,7 @@ function run(show, context) {
     if (sourceTextNamesShow(segs, mentionRe)
         || fullTextNamesShowRepeatedly(fullTexts, repeatRe)
         || fullTextNamesVenueAndTitleWords(fullTexts, show, venueRe, mentionRe)
+        || fullTextAboutThisShow(fullTexts, show, context.shows)
         || roundupNamesShow(sourceTextByUrl.roundupUrls.get(urlKey(review.url)), wholeTitleSlugs, show.openingDate)) { textConfirmed++; continue; }
     if ((!segs || segs.length === 0) && isIdOnlyCmsUrl(urlSlug)) {
       opaqueSkipped.push({ outletId: review.outletId, url: review.url });
@@ -542,5 +617,5 @@ module.exports = {
   name, description, run, urlSearchSlug, buildAcceptSlugs, urlMentionsAnySlug,
   isOpaqueUrlSlug, isIdOnlyCmsUrl, buildMentionRegex, sourceTextNamesShow,
   fullTextNamesShowRepeatedly, buildVenueRegex, fullTextNamesVenueAndTitleWords,
-  loadSourceTextByUrl, roundupNamesShow, urlKey,
+  loadSourceTextByUrl, roundupNamesShow, urlKey, fullTextAboutThisShow,
 };

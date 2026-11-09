@@ -1,0 +1,67 @@
+{
+  "issueNumber": "bro-7080-gcm-dates",
+  "planId": "b597cf79-7da5-41a8-ae26-39b449d57413",
+  "status": "applied",
+  "createdAt": "2026-11-09T10:51:23.299Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Girls Chance Music opened 2026-05-28 at the Vineyard and ran through 2026-06-21 (NY Stage Review, Roma Torre); row sat 'upcoming' with no dates so its 5 reviews never published (BRO-7080 stale pre-open audit)",
+    "steps": [
+      "shows.json: girls-chance-music-off-broadway-2024.openingDate",
+      "shows.json: girls-chance-music-off-broadway-2024.closingDate",
+      "shows.json: girls-chance-music-off-broadway-2024.status"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "girls-chance-music-off-broadway-2024",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-05-28",
+        "description": "shows.json: girls-chance-music-off-broadway-2024.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "girls-chance-music-off-broadway-2024",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-06-21",
+        "description": "shows.json: girls-chance-music-off-broadway-2024.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "girls-chance-music-off-broadway-2024",
+        "field": "status",
+        "oldValue": "upcoming",
+        "newValue": "closed",
+        "description": "shows.json: girls-chance-music-off-broadway-2024.status"
+      }
+    ]
+  },
+  "executedAt": "2026-11-09T12:00:48.072Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for girls-chance-music-off-broadway-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for girls-chance-music-off-broadway-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for girls-chance-music-off-broadway-2024"
+    }
+  ],
+  "executedIn": "ci"
+}

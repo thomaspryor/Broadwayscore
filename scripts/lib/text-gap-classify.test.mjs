@@ -57,10 +57,15 @@ test('COMPLETE is not a gap', () => {
   assert.equal(r.open, false);
 });
 
-test('TERMINAL needs a record with reason, date and evidence', () => {
-  const rec = { reason: 'ARTICLE_GONE', decidedAt: '2026-11-01', evidence: ['run1:a1'] };
-  expectClass(classify(base({ textUnrecoverable: rec })), 'TERMINAL', 'ARTICLE_GONE');
-  assert.notEqual(classify(base({ textUnrecoverable: { reason: 'ARTICLE_GONE' } })).gapClass, 'TERMINAL');
+test('TERMINAL needs a record that gap-terminal.validateTerminal accepts (Stage 4)', () => {
+  const { buildTerminalRecord } = require('./gap-terminal.js');
+  const rec = buildTerminalRecord({ review: base(), reason: 'URL_DEAD_NO_ARCHIVE', decidedBy: 'owner', approvedBy: 'owner: approve all', evidence: ['run1:a1'], nowIso: '2026-11-01T00:00:00Z' });
+  expectClass(classify(base({ textUnrecoverable: rec })), 'TERMINAL', 'URL_DEAD_NO_ARCHIVE');
+  // the pre-Stage-4 shape and an unapproved owner reason are not terminal
+  assert.notEqual(classify(base({ textUnrecoverable: { reason: 'ARTICLE_GONE', decidedAt: '2026-11-01', evidence: ['run1:a1'] } })).gapClass, 'TERMINAL');
+  assert.notEqual(classify(base({ textUnrecoverable: { ...rec, approvedBy: undefined } })).gapClass, 'TERMINAL');
+  // a recent show is never terminal
+  assert.notEqual(classify(base({ textUnrecoverable: rec }), null, { show: { openingDate: '2026-03-01' } }).gapClass, 'TERMINAL');
   assert.ok(CLOSED_CLASSES.includes('TERMINAL'));
 });
 

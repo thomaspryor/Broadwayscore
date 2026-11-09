@@ -88,13 +88,13 @@ fi
 # containers whose cached setup was built after it landed). Cloud only; fails open; blocks at most 3 times per
 # session (the lib keeps its own budget). Kill switch SHIP_CHECK_COVERAGE_DISABLE=1. Pinned by
 # scripts/lib/review-coverage.test.mjs so a Mac-master sync cannot silently drop it.
-if [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ "${SHIP_CHECK_COVERAGE_DISABLE:-0}" != "1" ] \
+if [ -z "${VE_ONLY_CODES:-}" ] && [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ "${SHIP_CHECK_COVERAGE_DISABLE:-0}" != "1" ] \
    && [ -f "$VE_REPO_ROOT/scripts/lib/review-coverage.mjs" ] && command -v node >/dev/null 2>&1; then
   _rc_err=$(printf '%s' "$input" | node "$VE_REPO_ROOT/scripts/lib/review-coverage.mjs" --stop-hook 2>&1 >/dev/null)
   if [ $? -eq 2 ]; then printf '%s\n' "$_rc_err" >&2; exit 2; fi
 fi
 # BRO-6539: advisory check that a DECISION NEEDED is not already answered on its card (logic in decision-restate.js --stop-hook).
-if [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ -f "$VE_REPO_ROOT/scripts/lib/decision-restate.js" ] && command -v node >/dev/null 2>&1; then
+if [ -z "${VE_ONLY_CODES:-}" ] && [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ -f "$VE_REPO_ROOT/scripts/lib/decision-restate.js" ] && command -v node >/dev/null 2>&1; then
   _dr_err=$(printf '%s' "$input" | timeout 15 node "$VE_REPO_ROOT/scripts/lib/decision-restate.js" --stop-hook 2>&1 >/dev/null)
   if [ $? -eq 2 ]; then printf '%s\n' "$_dr_err" >&2; exit 2; fi
 fi
@@ -117,8 +117,48 @@ def _ve_key(code):
 def _ve_seen(code):
     return _ve_key(code) in _VE_SKIP
 
+# BRO-7194: VE_ONLY_CODES=A|B restricts the verdict to those gates (app-repo cloud
+# sessions run only the stall gates; the rest of this chain judges Broadwayscore work).
+_VE_ONLY = set(c for c in os.environ.get('VE_ONLY_CODES', '').split('|') if c)
+
+def _ve_allowed(code):
+    return not _VE_ONLY or _ve_key(code) in _VE_ONLY
+
+# BRO-7194 auto-arm: WAKEPROMISE / OPENCLAIM landed advisory on 2026-11-09 (BRO-7183, §19)
+# and block from _STALL_ARM_AFTER unless the env var says 'advisory' or 'off' (kill switch).
+# 'block' arms early. STALL_GATE_NOW is the test clock.
+_STALL_ARM_AFTER = '2026-11-16T00:00:00Z'
+
+def _stall_gate_blocks(envvar):
+    v = os.environ.get(envvar, '')
+    if v in ('block', 'advisory', 'off'):
+        return v == 'block'
+    if v:
+        return False  # unknown value: stay advisory, never silently arm
+    import time
+    return (os.environ.get('STALL_GATE_NOW') or time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())) >= _STALL_ARM_AFTER
+
+def _stall_advisory_post(kind, detail):
+    # Cloud: ~/.claude/state dies with the container (BRO-7190), so the hit also goes to a
+    # card comment, once per session and kind, detached and bounded. Failure is silent.
+    if os.environ.get('CLAUDE_CODE_REMOTE') != 'true' or not os.environ.get('LINEAR_API_KEY'):
+        return
+    try:
+        import subprocess, tempfile
+        sid = os.environ.get('CLAUDE_CODE_SESSION_ID', '') or 'nosession'
+        mark = os.path.join(tempfile.gettempdir(), 'stall-advisory-%s-%s' % (kind, sid))
+        if os.path.exists(mark):
+            return
+        open(mark, 'w').close()
+        root = os.environ.get('CLAUDE_PROJECT_DIR') or os.getcwd()
+        subprocess.Popen(['timeout', '10', 'node', os.path.join(root, 'scripts', 'linear-brain.js'), 'update', 'BRO-7190', '--comment',
+                          '%s-ADVISORY: session %s %s' % (kind, sid, str(detail)[:300])],
+                         cwd=root, stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, start_new_session=True)
+    except Exception:
+        pass
+
 def _ve_block(code):
-    if _ve_seen(code):
+    if _ve_seen(code) or not _ve_allowed(code):
         return
     print(code)
     sys.exit(0)
@@ -126,6 +166,8 @@ def _ve_block(code):
 def _ve_final(code):
     if _ve_seen(code):
         code = _chain_or_ok()
+    if not _ve_allowed(code):
+        code = 'OK'
     print(code)
     sys.exit(0)
 
@@ -373,11 +415,10 @@ _STATUS_RE = re.compile(_VERDICT_PREFIX + r'(?:SAFE TO ARCHIVE|SAFE TO EXIT|KEEP
 _LEGACY_STATUS_RE = re.compile(_VERDICT_PREFIX + r'(?:NOT )?SAFE TO EXIT\b')
 # A promise of later action in closing prose (WAKEPROMISE, BRO-7183). First person only:
 # "the routine will continue" is a description, not this session's promise.
-_PROMISE_RE = re.compile(r"\b(?:I['\u2019]?ll|I will|I['\u2019]?m going to|I am going to)\s+(?:check back|check in|check on (?:it|that|this)"
-                         r"|come back|report back|follow up|keep an eye|keep watching|keep monitoring|monitor (?:it|this|that|the)\b"
-                         r"|continue (?:to (?:monitor|watch|check)|once|when|after)\b"
-                         r"|pick (?:it|this|that) (?:back )?up)|\bI['\u2019]?m (?:continuing|monitoring|watching (?:it|the|for))\b"
-                         r"|\bonce (?:it|that|this|the \w+) (?:finishes|lands|passes|completes|is done)\b[^.\n]{0,40}\bI['\u2019]?ll\b", re.I)
+try:  # one pattern source shared with scripts/lib/stall-stop-gate.js (BRO-7195)
+    _PROMISE_RE = re.compile(json.load(open(os.path.join(os.environ.get('VE_REPO_ROOT', ''), 'scripts', 'lib', 'wake-promise-patterns.json')))['promise'], re.I)
+except Exception:
+    _PROMISE_RE = re.compile(r'(?!)')  # fail-open: never matches
 _VERDICT_TOKEN_RE = re.compile(r'\b(?:(?:NOT )?SAFE TO (?:EXIT|ARCHIVE)|KEEP OPEN|ACTION NEEDED FROM YOU)\b')
 
 def _owner_must_act(text, strict=False):
@@ -1236,7 +1277,7 @@ for _i in range(len(events) - 1, -1, -1):
     if _k == 'text':
         _txt = _p or ''
         _m = _HUMAN_TIME_ESTIMATE_RE.search(_txt)
-        if _m and 'NO-VERIFY:' not in _txt and not _ve_seen('HUMAN_TIME_ESTIMATE'):
+        if _m and not _VE_ONLY and 'NO-VERIFY:' not in _txt and not _ve_seen('HUMAN_TIME_ESTIMATE'):
             print(f"HUMAN_TIME_ESTIMATE:{_m.group(1)}")
             sys.exit(0)
         break  # only the most recent assistant_text counts
@@ -1438,9 +1479,10 @@ if os.environ.get('WAKELESS_GATE_DISABLE', '0') != '1' and not _cs_on:
                 and not _owner_must_act(_wk_text)):
             _lw = _live_work()
             if not (_lw['triggers'] or _lw['agents'] or _lw['children'] or _lw['waits'] or _lw['pr_watch']):
-                if os.environ.get('PROMISE_GATE_MODE') == 'block':
+                if _stall_gate_blocks('PROMISE_GATE_MODE'):
                     _ve_block("WAKEPROMISE")
-                else:
+                elif os.environ.get('PROMISE_GATE_MODE') != 'off':
+                    _stall_advisory_post('WAKEPROMISE', _PROMISE_RE.search(_wk_text).group(0))
                     try:
                         import time
                         _pd = os.path.join(os.path.expanduser('~'), '.claude', 'state')
@@ -1519,7 +1561,11 @@ if _CW_CODES:
                 'otherLive': bool((_cw_stall or _oc_on) and (lambda w: w['agents'] or w['pr_watch'] or w['triggers'])(_live_work()))}))
             sys.stderr.write(('⚠️  CHILDWAIT: ' + _cw.stderr.strip()[:200] + '\n') if _cw.stderr.strip() else '')
             _cw_res = json.loads(_cw.stdout or '{}')
-            if _cw_res.get('code') == 'OPENCLAIM' and os.environ.get('OPENCLAIM_GATE_MODE') != 'block':
+            if _cw_res.get('code') == 'OPENCLAIM' and _stall_gate_blocks('OPENCLAIM_GATE_MODE'):
+                _ve_block('OPENCLAIM')
+            elif _cw_res.get('code') == 'OPENCLAIM':
+              if os.environ.get('OPENCLAIM_GATE_MODE') != 'off':
+                _stall_advisory_post('OPENCLAIM', _cw_res.get('cards'))
                 _pd = os.path.join(os.path.expanduser('~'), '.claude', 'state')
                 os.makedirs(_pd, exist_ok=True)
                 with open(os.path.join(_pd, 'open-claim-advisory.jsonl'), 'a') as _pf:
@@ -1751,7 +1797,7 @@ def _chain_or_ok():
     # Runs at each OK exit below, so the chain never takes the Stop hook's one
     # block ahead of UNVERIFIED / UNSHIPCHECKED / scoring / visual-QA (the
     # stop_hook_active guard lets the second Stop through).
-    if os.environ.get('CLOUD_CHAIN_GATE_DISABLE', '0') == '1':
+    if os.environ.get('CLOUD_CHAIN_GATE_DISABLE', '0') == '1' or _VE_ONLY:
         return 'OK'
     try:
         r = _chain_result() or 'OK'
@@ -2353,6 +2399,10 @@ if generic_verified:
 _ve_final(f"UNVERIFIED:{basename}")
 PYEOF
 )
+# BRO-7194: stall-only mode (app-repo cloud sessions): any verdict outside the list passes.
+if [ -n "${VE_ONLY_CODES:-}" ]; then
+  case "|$VE_ONLY_CODES|" in *"|${result%%:*}|"*) ;; *) result=OK ;; esac
+fi
 
 # Per-gate loop guard (see LOOP GUARD above). The ledger key mirrors python's
 # _ve_key(): the code, or for the finish chain NOCHAIN:<missing steps>.
@@ -2528,12 +2578,12 @@ if [[ "$result" == "WAKELESS" ]]; then
 fi
 
 if [[ "$result" == "WAKEPROMISE" ]]; then
-  echo "🛑 BLOCKED: your closing promises later action (\"I'll check back\", \"I'm continuing\") but nothing will wake this session to do it (BRO-7183: BRO-7074 sat 34h on a promise). Either do it now in this turn, or start the wait as a Bash with run_in_background: true (timeout up to 7200000) or a Monitor whose exit wakes you, or drop the promise and say what is left for the owner. Bypass: NO-VERIFY: <reason>. Mode switch PROMISE_GATE_MODE (unset = log only)." >&2
+  echo "🛑 BLOCKED: your closing promises later action (\"I'll check back\", \"I'm continuing\") but nothing will wake this session to do it (BRO-7183: BRO-7074 sat 34h on a promise). Either do it now in this turn, or start the wait as a Bash with run_in_background: true (timeout up to 7200000) or a Monitor whose exit wakes you, or drop the promise and say what is left for the owner. Bypass: NO-VERIFY: <reason>. Mode switch PROMISE_GATE_MODE (block|advisory|off; unset = advisory until 2026-11-16, then block)." >&2
   exit 2
 fi
 
 if [[ "$result" == "OPENCLAIM" ]]; then
-  echo "🛑 BLOCKED: no human is in this session (a routine) and it claimed a card this firing that is still open. Nothing comes back for it: the card sits In Progress until the reclaim sweep (BRO-7183: BRO-7074 sat 34h). Before stopping, close it (node scripts/linear-brain.js update BRO-N --state Done), report it (node scripts/linear-session.js report --issue=BRO-N --status=paused|in-review ...), or start what you wait on as a background Bash or Monitor. Bypass: NO-VERIFY: <reason>. Mode switch OPENCLAIM_GATE_MODE (unset = log only)." >&2
+  echo "🛑 BLOCKED: no human is in this session (a routine) and it claimed a card this firing that is still open. Nothing comes back for it: the card sits In Progress until the reclaim sweep (BRO-7183: BRO-7074 sat 34h). Before stopping, close it (node scripts/linear-brain.js update BRO-N --state Done), report it (node scripts/linear-session.js report --issue=BRO-N --status=paused|in-review ...), or start what you wait on as a background Bash or Monitor. Bypass: NO-VERIFY: <reason>. Mode switch OPENCLAIM_GATE_MODE (block|advisory|off; unset = advisory until 2026-11-16, then block)." >&2
   exit 2
 fi
 if [[ "$result" == "CHILDSTALL" ]]; then

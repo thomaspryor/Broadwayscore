@@ -18,5 +18,6 @@ process.exit(runLifetimeSweep({
   // 3 distinct URL mismatches; the default handler reported 1 until fixed).
   extractViolations: (result) => (result.details && result.details.mismatches) || [],
   violationKey: (showId, v) => v.url ? `${showId}::${v.url}` : showId,
+  needsShows: true,
   argv: process.argv.slice(2),
 }));

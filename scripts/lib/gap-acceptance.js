@@ -30,6 +30,8 @@ const crypto = require('crypto');
 
 const TIER_RANK = { invalid: 0, stub: 1, excerpt: 2, truncated: 3, complete: 4 };
 const MIN_TEXT_CHARS = 300;
+const MIN_MATERIAL_GAIN_CHARS = 100;
+const MIN_MATERIAL_GAIN_FRAC = 0.03;
 const EXCERPT_IDENTITY_MIN = 0.5;
 
 function sha256(text) {
@@ -58,6 +60,82 @@ function cleanCandidateText(rawText, { url, showId }) {
   if (iso.action === 'refuse') return { refused: true };
   text = iso.text;
   return { refused: false, text };
+}
+
+// Novel-prose gain (BRO-7171 Stage 4). The raw-length bar let a same-url
+// refetch "recover" a review by gaining page chrome: of the first 97 accepted
+// recoveries 71 stayed truncated, and diffing each against its pre-recovery
+// text showed most gains were share buttons ("Get link Facebook X"), listing
+// blocks (dates, tube station, map), ticket calendars, newsletter footers or a
+// related-article teaser (Guardian Ceilidh +22 chars = a Trump headline).
+// Words of the candidate count as novel when no 6-word shingle containing
+// them occurs in the prior text (both tokenized by review-text-identity's
+// identityTokens, which also drops boilerplate lines). A novel run counts as
+// prose only with >= 12 words, under a quarter of them chrome words or bare
+// numbers, cut at a "related articles"-style marker.
+const NOVEL_SHINGLE = 6;
+const NOVEL_MIN_RUN_WORDS = 12;
+const NOVEL_MAX_CHROME_FRAC = 0.25;
+const MIN_NOVEL_PROSE_CHARS = 300;
+const MIN_NOVEL_PROSE_FRAC = 0.15;
+const CHROME_WORDS = new Set((
+  'share shares facebook twitter x pinterest email whatsapp linkedin reddit tumblr bluesky threads link copied get other apps '
+  + 'subscribe subscribed subscribing newsletter newsletters sign signup login log comments comment post posted tags tagged '
+  + 'categories category related articles article read more views view tickets ticket book booking buy box office '
+  + 'map location nearest tube station photo photos photography credit image images advertisement skip opens new window tab '
+  + 'follow followers people previous next mon tue wed thu fri sat sun am pm until runs price prices details info information '
+  + 'visit website rating reviewer reviewed author min listen audio loading home menu search privacy cookie cookies policy '
+  + 'rights reserved copyright click here unsubscribe footer jan feb mar apr jun jul aug sep sept oct nov dec january february '
+  + 'march april june july august september october november december'
+).split(/\s+/));
+const RELATED_MARKER_RE = /\b(?:related (?:articles|posts|stories|content|reading)|more (?:news|stories|from|things to do)|you (?:may|might) also like|popular posts|latest news|recommended for you|read next|trending now)\b/;
+
+/**
+ * Characters of genuinely new prose the candidate adds over the prior text.
+ * Pure. @returns {number}
+ */
+function novelProseChars(priorText, candidateText) {
+  const { identityTokens } = require('./review-text-identity');
+  const words = (t) => identityTokens(String(t || '')).map((x) => x.w);
+  const pw = words(priorText);
+  const seen = new Set();
+  for (let i = 0; i + NOVEL_SHINGLE <= pw.length; i++) seen.add(pw.slice(i, i + NOVEL_SHINGLE).join(' '));
+  const cw = words(candidateText);
+  const covered = new Array(cw.length).fill(false);
+  for (let i = 0; i + NOVEL_SHINGLE <= cw.length; i++) {
+    if (seen.has(cw.slice(i, i + NOVEL_SHINGLE).join(' '))) for (let j = i; j < i + NOVEL_SHINGLE; j++) covered[j] = true;
+  }
+  const runs = [];
+  let run = [];
+  for (let i = 0; i < cw.length; i++) {
+    if (!covered[i]) run.push(cw[i]);
+    else if (run.length) { runs.push(run); run = []; }
+  }
+  if (run.length) runs.push(run);
+  let chars = 0;
+  for (const r0 of runs) {
+    let r = r0;
+    const joined = r.join(' ');
+    const m = RELATED_MARKER_RE.exec(joined);
+    if (m) r = joined.slice(0, m.index).trim().split(' ').filter(Boolean);
+    if (r.length < NOVEL_MIN_RUN_WORDS) continue;
+    const chrome = r.filter((w) => CHROME_WORDS.has(w) || /^\d+$/.test(w)).length;
+    if (chrome / r.length > NOVEL_MAX_CHROME_FRAC) continue;
+    chars += r.join(' ').length;
+  }
+  return chars;
+}
+
+/**
+ * The one novel-prose bar, shared by the acceptance gate (gate 9) and the
+ * chrome rollback (gap-rollback.js) so the two can never disagree. Pure.
+ * @returns {{ok: boolean, novel: number, need: number}}
+ */
+function novelProseVerdict(priorText, candidateText) {
+  const prior = String(priorText || '');
+  const novel = novelProseChars(prior, candidateText);
+  const need = Math.max(MIN_NOVEL_PROSE_CHARS, Math.ceil(prior.length * MIN_NOVEL_PROSE_FRAC));
+  return { ok: novel >= need, novel, need };
 }
 
 function cleanedLength(text) {
@@ -228,7 +306,11 @@ function acceptRecoveredText(existing, candidate, ctx = {}) {
 
   // 5. Identity: show named, not a different article, byline not contradicted,
   //    date plausible for this production.
-  const showTitle = deriveShowTitle(showId);
+  // The shows.json title, not the slug: the slug gives "life of pi tour",
+  // "n a" (N/A) and "44" (44 - The Obama Musical), which no review prints, so
+  // every tour / punctuated title was refused show_not_mentioned (Stage 4
+  // WaPo live batch 2026-11-09: 6 of 20). The slug form is only the fallback.
+  const showTitle = (ctx.show && ctx.show.title) || deriveShowTitle(showId);
   let identityHeadline = null;
   if (!validateShowMentioned(text, showTitle, showId).valid) {
     const hl = headlineIdentity({ outletId: existing.outletId, headline: candidate.headline, show: ctx.show, showTitle });
@@ -271,6 +353,25 @@ function acceptRecoveredText(existing, candidate, ctx = {}) {
   if (newTier === 'invalid') return refuse('tier_invalid', `garbage content: classifies invalid (${tierResult.tierReason || tierResult.reason || ''})`.trim());
   if (priorTier && TIER_RANK[priorTier] !== undefined && TIER_RANK[newTier] < TIER_RANK[priorTier]) {
     return refuse('tier_downgrade', `tier downgrade ${priorTier} -> ${newTier}`);
+  }
+  // 8. Material gain (BRO-7171 Stage 3, first nightly: 12 of 60 accepts gained
+  //    under 50 chars, e.g. 2487 -> 2489 bytes, still truncated). A same-tier
+  //    re-fetch that adds a few characters recovers nothing: it would burn the
+  //    nightly ceiling and be reported to the owner as a recovered review.
+  const tierUp = !priorTier || TIER_RANK[priorTier] === undefined || TIER_RANK[newTier] > TIER_RANK[priorTier];
+  const minGain = Math.max(MIN_MATERIAL_GAIN_CHARS, Math.ceil(priorLen * MIN_MATERIAL_GAIN_FRAC));
+  if (priorLen > 0 && !tierUp && text.length - priorLen < minGain) {
+    return refuse('not_materially_longer', `not materially longer than existing (+${text.length - priorLen} chars, need ${minGain} or a better tier)`);
+  }
+  // 9. The gain must be new prose, not page chrome (Stage 4). A tier-up is no
+  //    exemption: chrome that ends in a full stop (a cookie banner, a booking
+  //    line) flips truncated -> complete. Ship-check audit 2026-11-09: all 16
+  //    tier-up accepts under this bar were chrome or a repeated review.
+  if (priorLen > 0) {
+    const v = novelProseVerdict(existing.fullText, text);
+    if (!v.ok) {
+      return refuse('not_materially_longer', `no material new prose (${v.novel} chars of new prose, need ${v.need}); the gain is page chrome`);
+    }
   }
 
   return {
@@ -588,4 +689,8 @@ module.exports = {
   sha256,
   TIER_RANK,
   MIN_TEXT_CHARS,
+  novelProseChars,
+  MIN_NOVEL_PROSE_CHARS,
+  MIN_NOVEL_PROSE_FRAC,
+  novelProseVerdict,
 };

@@ -52,6 +52,15 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
+      # BRO-6098: without this (and the push below) every archived round-up
+      # page was lost with the runner. The 2026-11-03 run fetched 153 pages and
+      # persisted none, so the private archive stayed at 37 stale pages and the
+      # aggregator-health monitor read The Stage's coverage as collapsing.
+      - name: Checkout aggregator-archive (private repo)
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
       - name: Setup Node.js
         uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
@@ -145,6 +154,13 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Update from scrape-thestage-roundups'
+
+      - name: Push aggregator-archive to private repo
+        if: always() && inputs.dry_run != true
+        uses: ./.github/actions/push-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: The Stage roundups aggregator archive'
 
       - name: Trigger rebuild
         if: always() && inputs.dry_run != true

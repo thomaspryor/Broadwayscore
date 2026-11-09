@@ -259,6 +259,10 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           RESEND_SHOWS: ${{ inputs.resend_shows }}
+          # BRO-7210: persistent posted-detection outage files a worker card
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
         run: |
           ARGS=""
           if [ "${{ inputs.dry_run }}" = "true" ]; then
@@ -375,6 +379,7 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git add data/audit/gemini-usage-ledger.jsonl 2>/dev/null || true # LLM spend meter rows (BRO-5043)
           git add -f data/audit/reddit-post-drafts.json 2>/dev/null || true
+          git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl 2>/dev/null || true # BRO-7210 card cooldown/resolve state
           if ! git diff --cached --quiet; then
             git commit -m "data: Update Reddit opening-post drafts [automated]"
             bash scripts/lib/push-with-retry.sh

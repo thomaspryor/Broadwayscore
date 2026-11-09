@@ -159,8 +159,8 @@ async function replayNight({ passes = 4, everyMin = 2, fetchOpts, site: useSite 
       tuning: { maxPasses: passes, passIntervalMs: everyMin * MIN, startedAt: T0 },
     });
     const res = await runNight();
-    // Discovered = scored, plus anything the runner set aside (a syndicated copy) or gave up on.
-    const keys = new Set([...res.admitted.map((x) => x.key), ...res.skipped.map((x) => x.key), ...res.failed.map((x) => x.key)]);
+    // Discovered = scored, plus anything the runner set aside (a syndicated copy), gave up on, or still holds for an excerpt.
+    const keys = new Set([...res.admitted.map((x) => x.key), ...res.skipped.map((x) => x.key), ...res.failed.map((x) => x.key), ...(res.awaiting || [])]);
     let graded = null;
     if (site) {
       // Graded at +4h after the embargo (the gate needs a capture at least 3h30m after it), from the files on disk now.

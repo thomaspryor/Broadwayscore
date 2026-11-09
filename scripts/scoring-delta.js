@@ -172,7 +172,7 @@ const FLAG_FIELDS = new Set([
   'wrongAttribution', 'isNonReview', 'fabricatedEntry', 'contentTier',
   'rejectedAt', 'incompleteReason', 'duplicateOf', 'assignedScore',
   'wrongProductionManualClear', 'humanReviewedWrongProduction',
-  'namedNonReviewUrlManualClear', 'source', 'url',
+  'namedNonReviewUrlManualClear', 'allowNonReviewUrl', 'source', 'url',
   // skippedListingPage's hatches.
   'listingPageUrlManualClear',
   // BRO-4890: isUnverifiableWebSearchRow reads the whole source list and the human score overrides.
@@ -1164,6 +1164,11 @@ function decideInclusion(review, show, guards, filePath) {
   if (typeof guards.isNamedNonReviewUrlRecord === 'function' && guards.isNamedNonReviewUrlRecord(review)) {
     return { included: false, reason: 'namedNonReviewUrl' };
   }
+  // BRO-7210: mirrors rebuild-all-reviews.js's skippedSubmissionRefusedUrl (same predicate).
+  // The predicate reads review.source, review.url, review.allowNonReviewUrl and review.namedNonReviewUrlManualClear.
+  if (typeof guards.isRefusedSubmissionUrlRecord === 'function' && guards.isRefusedSubmissionUrlRecord(review)) {
+    return { included: false, reason: 'submissionRefusedUrl' };
+  }
   // Mirrors rebuild-all-reviews.js's skippedListingPage (same predicate). Its
   // pattern list is data, so a new forum / repost / tag-page host changes no
   // function source; each side reads its own copy of non-review-url-patterns.js
@@ -1760,6 +1765,7 @@ function main() {
         // Edits inside non-review-url-patterns.js / unvetted-serp-sources.js are
         // NOT visible here — use a direct corpus scan for those.
         && (baseline.isNamedNonReviewUrlRecord?.toString() || '') === (working.isNamedNonReviewUrlRecord?.toString() || '')
+        && (baseline.isRefusedSubmissionUrlRecord?.toString() || '') === (working.isRefusedSubmissionUrlRecord?.toString() || '')
         // BRO-4890: show-level never-opened exclusion and the unverifiable search-row rule.
         && (baseline.isCancelledBeforeOpeningShow?.toString() || '') === (working.isCancelledBeforeOpeningShow?.toString() || '')
         && (baseline.isUnverifiableWebSearchRow?.toString() || '') === (working.isUnverifiableWebSearchRow?.toString() || '')

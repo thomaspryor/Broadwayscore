@@ -258,6 +258,7 @@ function buildShadowReport({ show, night, ledgerDir, scores = [], rows = [], liv
     laneErrorsByAdapter: errorsByAdapter(result ? result.errors : []),
     laneFailed: result ? (result.failed || []).map((f) => f.key || f) : [],
     laneSkipped: result ? (result.skipped || []) : [],
+    laneAwaiting: result ? (result.awaiting || []) : [], // paywall teasers still held for an excerpt at the end (BRO-7159)
     livePolls: live.polls, livePollFailures: live.failures,
     totals: { laneScored: count('both') + count('lane-only'), siteLive: count('both') + count('site-only'), both: count('both'), laneOnly: count('lane-only'), siteOnly: count('site-only') },
     firstLaneScoredAt: firstOf('laneScoredAt'), firstSiteLiveAt: firstOf('siteLiveAt'),
@@ -301,7 +302,7 @@ function reportMarkdown(rep) {
     `- First review: lane scored ${rep.firstLaneScoredAt || 'none'}, site live ${rep.firstSiteLiveAt || 'none'}.`,
     `- Median lead, site live minus lane scored (minutes, positive = lane earlier; an upper bound, since a real lane still has to publish): ${na(rep.medianScoredLeadMin)}.`,
     `- Mean absolute score difference on shared reviews: ${na(rep.meanAbsScoreDiff)}.`,
-    `- Lane errors: ${na(rep.laneErrors)}; permanently failed: ${rep.laneFailed.length}.`,
+    `- Lane errors: ${na(rep.laneErrors)}; permanently failed: ${rep.laneFailed.length}; paywall teasers still awaiting an excerpt: ${(rep.laneAwaiting || []).length}.`,
     ...Object.entries(rep.laneErrorsByAdapter || {}).map(([a, v]) => `  - ${a}: ${v.count}x, first: ${v.first}`),
     ...(atStart ? [`- ${atStart} reviews were already live when the shadow started (site time = start; left out of the median).`] : []),
     ...(late ? [`- ${late} reviews were scored after minute ${REAL_NIGHT_WINDOW_MIN}, past a real night's window.`] : []),

@@ -115,7 +115,7 @@ function countGuardExcluded(showId) {
         //    double-credit one file (ship-check finding); isIncludableForRebuild
         //    (review-guards.js) is the canonical flag gate — the former mirror
         //    passesFlagFilters() was deleted 2026-07-21 (T1-retrieval S1-T4).
-        if (isPrematureReviewForUnopenedShow(d, show) && hasValidScore(d) && isIncludableForRebuild(d, show)) n++;
+        if (isPrematureReviewForUnopenedShow(d, show) && hasValidScore(d) && isIncludableForRebuild(d, show, path.join(REVIEW_TEXTS_DIR, showId, f))) n++;
       } catch { /* unreadable file — not evidence either way */ }
     }
   } catch { return 0; }

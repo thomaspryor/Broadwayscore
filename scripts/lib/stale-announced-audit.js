@@ -53,7 +53,7 @@ function saveAcks(acks) {
  */
 function findOrphanAcks(shows, acks) {
   const status = new Map((shows || []).map((s) => [s.id, s.status]));
-  return (acks || []).filter((a) => a && status.get(a.id) !== 'announced');
+  return (acks || []).filter((a) => a && !isAuditedStatus(status.get(a.id)));
 }
 
 function daysSince(dateStr, now) {
@@ -77,10 +77,28 @@ function daysSince(dateStr, now) {
  * @param opts { now: Date, staleDays: number, hasReviews: boolean, acks: array }
  * @returns {string[]} reasons (empty = not flagged, including because it's acked)
  */
+// BRO-7080: statuses the audit covers. 'announced' gets every signal below;
+// 'upcoming'/'previews' only the review-evidence one, and only with no
+// openingDate and no priorRuns. girls-chance-music-off-broadway-2024 sat in
+// 'upcoming' with no dates and 5 clean review files (May 2026): the rebuild
+// skips upcoming shows, openSignalFromDiscovery needs a previewsStartDate,
+// and this audit looked only at 'announced', so nothing could ever see it.
+// A previews show WITH a previewsStartDate is still flagged when in-run
+// reviews exist and openingDate is missing: the status flip needs an
+// openingDate, so nothing else fills it. A returning production's
+// earlier-run reviews (priorRuns) are not evidence the new run opened.
+const AUDITED_STATUSES = new Set(['announced', 'upcoming', 'previews']);
+function isAuditedStatus(status) { return AUDITED_STATUSES.has(status); }
+
 function evaluateAnnouncedShow(show, opts) {
   const { now, staleDays, hasReviews, acks } = opts || {};
-  if (!show || show.status !== 'announced') return [];
+  if (!show || !isAuditedStatus(show.status)) return [];
   if (isAcked(show.id, acks)) return [];
+  if (show.status !== 'announced') {
+    const hasPriorRuns = Array.isArray(show.priorRuns) && show.priorRuns.length > 0;
+    if (show.openingDate || hasPriorRuns || !hasReviews) return [];
+    return [`status '${show.status}' with no openingDate, but data/review-texts/ has collected review file(s)`];
+  }
 
   const reasons = [];
   const previewsPastDays = show.previewsStartDate ? daysSince(show.previewsStartDate, now) : null;
@@ -148,8 +166,8 @@ function isEvidenceOfOpening(data, explainExclusion, show) {
  * @param {object} [show] the show record, forwarded to explainExclusion
  * @returns {boolean}
  */
-function hasEvidenceOfOpening(reviewTextsDir, showId, explainExclusion, show) {
-  return describeOpeningEvidence(reviewTextsDir, showId, explainExclusion, show).hasEvidence;
+function hasEvidenceOfOpening(reviewTextsDir, showId, explainExclusion, show, opts) {
+  return describeOpeningEvidence(reviewTextsDir, showId, explainExclusion, show, opts).hasEvidence;
 }
 
 /**
@@ -165,7 +183,24 @@ function hasEvidenceOfOpening(reviewTextsDir, showId, explainExclusion, show) {
  *
  * @returns {{hasEvidence: boolean, reviewFiles: number, excludedFiles: number}}
  */
-function describeOpeningEvidence(reviewTextsDir, showId, explainExclusion, show) {
+/**
+ * Earliest publishDate a review may carry to count as evidence that an
+ * 'upcoming'/'previews' show opened (BRO-7080). Those statuses routinely hold
+ * an older production's reviews collected before the wrong-production flag
+ * lands (jackals-off-broadway-2026 held 2014/2017 Woyzeck reviews), so only
+ * reviews dated inside this run count: on/after previewsStartDate, or within
+ * the last year when the show has no dates at all. 'announced' keeps its
+ * original undated rule (null).
+ * @returns {string|null} YYYY-MM-DD
+ */
+function evidenceSinceFor(show, now) {
+  if (!show || show.status === 'announced') return null;
+  if (show.previewsStartDate) return String(show.previewsStartDate).slice(0, 10);
+  return new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+}
+
+function describeOpeningEvidence(reviewTextsDir, showId, explainExclusion, show, opts = {}) {
+  const since = opts.since || null;
   const dir = path.join(reviewTextsDir, showId);
   let files;
   try {
@@ -186,7 +221,9 @@ function describeOpeningEvidence(reviewTextsDir, showId, explainExclusion, show)
       hasEvidence = true;
       continue;
     }
-    if (isEvidenceOfOpening(data, explainExclusion, show)) hasEvidence = true;
+    const dated = typeof data.publishDate === 'string' ? data.publishDate.slice(0, 10) : '';
+    const inRun = !since || (/^\d{4}-\d{2}-\d{2}$/.test(dated) && dated >= since);
+    if (inRun && isEvidenceOfOpening(data, explainExclusion, show)) hasEvidence = true;
     else excluded++;
   }
   return { hasEvidence, reviewFiles: files.length, excludedFiles: excluded };
@@ -201,8 +238,11 @@ module.exports = {
   saveAcks,
   daysSince,
   evaluateAnnouncedShow,
+  isAuditedStatus,
+  AUDITED_STATUSES,
   isEvidenceOfOpening,
   hasEvidenceOfOpening,
   describeOpeningEvidence,
+  evidenceSinceFor,
   NOT_EVIDENCE_OF_OPENING,
 };

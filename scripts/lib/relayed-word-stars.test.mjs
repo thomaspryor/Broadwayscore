@@ -47,3 +47,46 @@ test('isRelayedStarRating reads only the match\'s own sentence', () => {
   const s = 'Awarding the show three stars, the critic praised the lead.';
   assert.equal(isRelayedStarRating(s, at(s, 'three')), true);
 });
+
+// BRO-7080 replay of BRO-6905: relay wordings the giving-verb list missed.
+test('relayed: earned/with/label/paren forms; own verdicts still read (BRO-7080)', () => {
+  const { extractScore } = require('./score-extractors.js');
+  const read = (t) => { const r = extractScore('', t, 'theargus'); return r ? r.originalScore : null; };
+  for (const t of [
+    'The Times critic said it earned four out of five stars.',
+    'The Telegraph, with four out of five stars, called it a triumph.',
+    'The Stage: four stars.',
+    'The Telegraph (four stars) called it irresistible. The Daily Mirror (five stars): a joy.',
+  ]) assert.equal(read(t), null, t);
+  for (const t of [
+    'Ahead of the upcoming Tony Awards, and it garners four out of five stars.',
+    'Rating: Four out of five stars.',
+    'I would give it four out of five stars.',
+  ]) assert.equal(read(t), '4/5 stars', t);
+});
+
+// BRO-7210: cast prose is not a rating ("with two stars, British actors ...").
+test('"two stars, British..." cast prose is not a word-star rating', () => {
+  const t = `${filler}\n\nThe revival arrives with two stars, British actors Jo Smith and Al Jones, leading a large ensemble.\n\n${filler}`;
+  assert.equal(extractGenericStarRating(t, t), null);
+  const t2 = `${filler}\n\nThe two stars of the show are superb.\n\n${filler}`;
+  assert.equal(extractGenericStarRating(t2, t2), null);
+});
+test('a real verdict "Four stars, a rousing evening." is still read', () => {
+  const t = `${filler}\n\nFour stars, a rousing evening.`;
+  assert.equal(extractGenericStarRating(t, t).originalScore, '4/5 stars');
+});
+
+// BRO-7210 second-opinion regressions: real verdicts the first cut dropped.
+test('real verdicts survive the cast-prose filter', () => {
+  for (const line of [
+    'It deserves every one of its five stars.',
+    'This production takes a leap to four stars.',
+    'The Stage verdict: Four stars. Broadway transfer likely.',
+    'Three stars: who knew a revival could feel this fresh?',
+  ]) {
+    const t = `${filler}\n\n${line}`;
+    const r = extractGenericStarRating(t, t);
+    assert.ok(r && /^[345]\/5/.test(r.originalScore), `${line} -> ${JSON.stringify(r)}`);
+  }
+});

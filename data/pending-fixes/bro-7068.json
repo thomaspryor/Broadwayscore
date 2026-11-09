@@ -1,0 +1,202 @@
+{
+  "issueNumber": "bro-7068",
+  "planId": "6eb4b5a1-0813-42d0-8559-6372d9ca9ea8",
+  "status": "applied",
+  "createdAt": "2026-11-09T07:18:50.169Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Corpus drift: remove leaked test fixtures, flag wrong-production reviews on two announced shows, close Rope Drop (ran 5-6 Sep 2026)",
+    "steps": [
+      "Delete 4 leaked __test-* fixture files (commit 92a8335cd, git add -A checkpoint)",
+      "Flag 6 private-lives-2025 and 1 the-apology-west-end-2027 review files wrongProduction",
+      "Close Rope Drop: opened 2026-09-05, closed 2026-09-06"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "__test-bro730-same-url-32091/variety--brent-lang.json",
+        "description": "Test fixture leaked into the corpus by a git add -A checkpoint (WSJ browser recovery, 2026-11-08, since scoped by BRO-7171); collides with review-file-creation-same-url-check.test.mjs"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "__test-bro730-same-url-32091/variety--rebecca-rubin.json",
+        "description": "Leaked test fixture (same commit 92a8335cd)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "__test-bro2749-west-end-68817-2026/hollywood-reporter--fixture-critic.json",
+        "description": "Leaked test fixture from international-trade-cross-market.test.mjs (same commit 92a8335cd)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "__test-bro2749-west-end-97905-2026/hollywood-reporter--fixture-critic.json",
+        "description": "Leaked test fixture from international-trade-cross-market.test.mjs (same commit 92a8335cd)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "private-lives-2025/boston-globe--don-aucoin.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Review of an earlier Private Lives production (2006-2012, other cities); private-lives-2025 is an announced Broadway revival that has not opened. Siblings in the dir are already wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "private-lives-2025/huffpost--michael-giltz.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Review of an earlier Private Lives production (2006-2012, other cities); private-lives-2025 is an announced Broadway revival that has not opened. Siblings in the dir are already wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "private-lives-2025/latimes--philip-brandes.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Review of an earlier Private Lives production (2006-2012, other cities); private-lives-2025 is an announced Broadway revival that has not opened. Siblings in the dir are already wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "private-lives-2025/nytimes--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Review of an earlier Private Lives production (2006-2012, other cities); private-lives-2025 is an announced Broadway revival that has not opened. Siblings in the dir are already wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "private-lives-2025/talkinbroadway--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Review of an earlier Private Lives production (2006-2012, other cities); private-lives-2025 is an announced Broadway revival that has not opened. Siblings in the dir are already wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "private-lives-2025/variety--frank-rizzo.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Review of an earlier Private Lives production (2006-2012, other cities); private-lives-2025 is an announced Broadway revival that has not opened. Siblings in the dir are already wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-apology-west-end-2027/london-box-office--stuart-king.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "2022-09-23 LBO review of the Arcola production; the-apology-west-end-2027 is the 2027 Royal Court run (announced)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rope-drop-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-09-05",
+        "description": "Rope Drop ran a 5-6 Sep 2026 limited run at The Other Palace Studio (theotherpalace.co.uk/rope-drop, theatreweekly.com listing); All That Dazzles review dated 2026-09-07"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rope-drop-off-west-end-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-09-06",
+        "description": "Rope Drop ran a 5-6 Sep 2026 limited run at The Other Palace Studio (theotherpalace.co.uk/rope-drop, theatreweekly.com listing); All That Dazzles review dated 2026-09-07"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rope-drop-off-west-end-2026",
+        "field": "status",
+        "oldValue": "announced",
+        "newValue": "closed",
+        "description": "Rope Drop ran a 5-6 Sep 2026 limited run at The Other Palace Studio (theotherpalace.co.uk/rope-drop, theatreweekly.com listing); All That Dazzles review dated 2026-09-07"
+      }
+    ]
+  },
+  "executedAt": "2026-11-09T08:36:49.348Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted __test-bro730-same-url-32091/variety--brent-lang.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted __test-bro730-same-url-32091/variety--rebecca-rubin.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted __test-bro2749-west-end-68817-2026/hollywood-reporter--fixture-critic.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted __test-bro2749-west-end-97905-2026/hollywood-reporter--fixture-critic.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "private-lives-2025/boston-globe--don-aucoin.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "private-lives-2025/huffpost--michael-giltz.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "private-lives-2025/latimes--philip-brandes.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "private-lives-2025/nytimes--unknown.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "private-lives-2025/talkinbroadway--unknown.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "private-lives-2025/variety--frank-rizzo.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-apology-west-end-2027/london-box-office--stuart-king.json wrongProduction: null -> true"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for rope-drop-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for rope-drop-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for rope-drop-off-west-end-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

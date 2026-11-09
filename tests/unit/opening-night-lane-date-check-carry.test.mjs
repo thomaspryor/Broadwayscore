@@ -221,3 +221,35 @@ test('a dated find admitted without a date check leaves the pending set', async 
   assert.equal((await runWith(adapter, fetchText, memo)).admitted.length, 0, 'not re-entered from pending');
   assert.equal(calls, 0);
 });
+
+// BRO-7159 (Wanted pre-flight): slow adapters that eat the whole pass deadline every pass meant an undated section-index
+// find was deferred before its date check ever started, pass after pass, so it was never admitted. A few checks may
+// still start after the deadline (bounded by the fetch cap); the next pass reads their answer from the carry.
+test('adapters that eat the pass deadline every pass: a valid undated section-index find is still admitted (BRO-7159)', async () => {
+  const slow = { name: 'slow-roundup', kind: 'aggregator', phase: 'cheap', discover: async () => { await sleep(80); return []; } };
+  let calls = 0;
+  const fetchText = async (url) => { if (url !== TB) throw new Error('404'); calls++; await sleep(30); return PAGE; };
+  const memo = { rejected: {} };
+  const run = (opts = {}) => d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + 3600000, startedAt: T0, adapters: [slow, tbIndex()], fetchText, memo, deadlineMs: 40, ...opts });
+  const admitted = [];
+  for (let i = 0; i < 4 && !admitted.length; i++) {
+    const r = await run();
+    assert.equal(r.deadlineHit, true, 'every pass runs out of time in the adapters');
+    admitted.push(...r.admitted.map((a) => a.key));
+    await sleep(100); // the pass interval: a check started late answers before the next pass
+  }
+  assert.deepEqual(admitted, [KEY]);
+  assert.equal(calls, 1, 'one paid fetch: started late once, read from the carry');
+  assert.deepEqual(memo.rejected, {}, 'no strikes');
+});
+
+test('late date-check starts are bounded per pass (BRO-7159)', async () => {
+  const urls = Array.from({ length: 6 }, (_, i) => tbUrl(`late${i}`));
+  const slow = { name: 'slow-roundup', kind: 'aggregator', phase: 'cheap', discover: async () => { await sleep(60); return []; } };
+  const started = [];
+  const fetchText = async (url) => { started.push(url); await sleep(20); return PAGE; };
+  const r = await d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + 3600000, startedAt: T0, adapters: [slow, many(urls)], fetchText, memo: { rejected: {} }, deadlineMs: 30 });
+  assert.equal(r.deadlineHit, true);
+  assert.equal(started.length, d.LATE_DATE_CHECK_STARTS, 'only the reserved few start after the deadline');
+  assert.equal(r.deferredDateChecks.length, urls.length, 'every find is carried to the next pass');
+});

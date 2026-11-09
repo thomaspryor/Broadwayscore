@@ -23,7 +23,7 @@ const { execFileSync } = require('child_process');
 const F = require('./lib/llm-triage-facts.js');
 const Q = require('./lib/llm-triage-queue.js');
 
-const USAGE = 'Usage: node scripts/llm-triage.js (--ids=BRO-1,BRO-2 | --queue [--cap=N]) [--ledger=FILE] [--deadline-min=N] [--prompts-dir=DIR] [--ask] [--out=FILE] [--run-verify] [--model=ID]';
+const USAGE = 'Usage: node scripts/llm-triage.js (--ids=BRO-1,BRO-2 | --queue [--cap=N]) [--ledger=FILE] [--deadline-min=N] [--prompts-dir=DIR] [--ask] [--out=FILE] [--questions-out=FILE] [--run-verify] [--model=ID]';
 const DEFAULT_MODEL = require('./lib/models.js').DISPATCH_SONNET;
 const REPO = 'thomaspryor/Broadwayscore';
 const ASK_TIMEOUT_MS = 90000;
@@ -35,6 +35,7 @@ function parseArgs(argv) {
     else if (a.startsWith('--ids=')) o.ids = a.slice(6).split(',').map((s) => s.trim()).filter(Boolean);
     else if (a.startsWith('--prompts-dir=')) o.promptsDir = a.slice(14);
     else if (a.startsWith('--out=')) o.out = a.slice(6);
+    else if (a.startsWith('--questions-out=')) o.questionsOut = a.slice(16);
     else if (a.startsWith('--model=')) o.model = a.slice(8);
     else if (a === '--ask') o.ask = true;
     else if (a === '--run-verify') o.runVerify = true;
@@ -83,25 +84,30 @@ async function fetchIssues(graphql, ids, { full = true } = {}) {
  * not a search result (a 403 rate limit or 422 returns {"message": ...}).
  * null means "unknown", never "no landings".
  */
-function parseCommitSearch(json) {
+function parseCommitSearch(json, { requireComplete = false } = {}) {
   let body;
   try { body = JSON.parse(json); } catch { return null; }
   if (!body || !Array.isArray(body.items)) return null;
+  // A partial page (more matches than returned, or GitHub's own incomplete flag) cannot prove "no later landing".
+  if (requireComplete && (body.incomplete_results || (Number.isFinite(body.total_count) && body.total_count > body.items.length))) return null;
   return body.items.map((it) => ({ sha: it.sha, date: it.commit && it.commit.committer && it.commit.committer.date, subject: String((it.commit && it.commit.message) || '').split('\n')[0] }));
 }
 
-/** Commits on the default branch naming the card: [{sha, date, subject}]. null on any failure. */
-function searchCommits(id, { env = process.env } = {}) {
+/**
+ * Commits on the default branch naming the card, newest first (up to 100): [{sha, date, subject}].
+ * null on any failure, and with requireComplete also when the result is partial.
+ */
+function searchCommits(id, { env = process.env, requireComplete = false } = {}) {
   const q = `repo:${REPO} "${id}"`;
   try {
     let json;
     const token = env.GITHUB_TOKEN || env.GH_TOKEN;
     if (token) {
-      json = execFileSync('curl', ['-sS', '--fail-with-body', '--max-time', '30', '-G', 'https://api.github.com/search/commits', '--data-urlencode', `q=${q}`, '-H', `Authorization: Bearer ${token}`, '-H', 'Accept: application/vnd.github+json'], { encoding: 'utf8' });
+      json = execFileSync('curl', ['-sS', '--fail-with-body', '--max-time', '30', '-G', 'https://api.github.com/search/commits', '--data-urlencode', `q=${q}`, '--data-urlencode', 'sort=committer-date', '--data-urlencode', 'order=desc', '--data-urlencode', 'per_page=100', '-H', `Authorization: Bearer ${token}`, '-H', 'Accept: application/vnd.github+json'], { encoding: 'utf8' });
     } else {
-      json = execFileSync('gh', ['api', '-X', 'GET', 'search/commits', '-f', `q=${q}`], { encoding: 'utf8', timeout: 30000 });
+      json = execFileSync('gh', ['api', '-X', 'GET', 'search/commits', '-f', `q=${q}`, '-f', 'sort=committer-date', '-f', 'order=desc', '-f', 'per_page=100'], { encoding: 'utf8', timeout: 30000 });
     }
-    return parseCommitSearch(json);
+    return parseCommitSearch(json, { requireComplete });
   } catch (e) {
     return null;
   }
@@ -241,6 +247,13 @@ async function main(argv = process.argv.slice(2), { graphql = null, now = new Da
   }
   const report = { generatedAt: now.toISOString(), model: opts.ask ? opts.model : null, reportOnly: true, results };
   if (opts.out) fs.writeFileSync(opts.out, JSON.stringify(report, null, 2) + '\n');
+  // BRO-7139 Step 4: ask-owner questions for owner-hold-sweep --model-questions. A temp file
+  // (RUNNER_TEMP in CI), never committed: it holds model text drawn from card text.
+  if (opts.questionsOut) {
+    const qs = Q.questionsFromResults(results);
+    // No file on a night with no questions: the dry-run step then skips its board read.
+    if (Object.keys(qs).length) fs.writeFileSync(opts.questionsOut, JSON.stringify(qs, null, 2) + '\n');
+  }
   // One bad card is a ledger row, not a red night; every card failing is. A partial failure
   // still shows on the run page as a warning annotation.
   const failed = results.filter((r) => r.error).length;

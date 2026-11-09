@@ -1747,6 +1747,8 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove, onRate }: {
               }}
               size="sm"
               hideLabel
+              // A pick navigates/opens the editor at once, so arrow keys must not fire it.
+              arrowKeys={false}
             />
           </span>
           )}

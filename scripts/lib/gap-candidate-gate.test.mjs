@@ -250,3 +250,26 @@ test('undated wrongProduction file with a high-confidence venue verdict is prior
   assert.strictEqual(flaggedFilePriorRunDate([{ wrongProduction: true, publishDate: '2026-10-16', contentVerification: cv }], show), 'venue-verified:Skylight Theatre in Los Feliz');
   assert.strictEqual(flaggedFilePriorRunDate([{ wrongShow: true, contentVerification: cv }], show), null);
 });
+
+// BRO-7080 replay of BRO-4527: The Secret Circus files that passed both gates.
+test('what\'s-on /event(s)/ listings are refused; real /event/ reviews are not (BRO-7080)', () => {
+  const nr = require('./non-review-url-patterns.js');
+  for (const u of [
+    'https://flopbox.net/city/new-york/event/the-secret-circus-musical-kG6ZXddx',
+    'https://donyc.com/events/2026/9/27/the-secret-circus-musical-tickets',
+    'https://mommypoppins.com/new-york-city-kids/event/events/the-secret-circus-at-the-soho-playhouse',
+    'https://events.newyorkfamily.com/event/the-secret-circus-musical/',
+    'https://www.afridiziak.com/offers/access-17-tickets-to-see-intermission-youths-julius-caesar',
+  ]) {
+    assert.equal(nr.classifyGapCandidateUrl(u).ok, false, u);
+    assert.equal(nr.submissionNonReviewReason(u), 'event-listing', u);
+  }
+  for (const u of [
+    'https://www.newyorker.com/arts/events/theatre/brief-encounter-studio-54',
+    'https://www.dailymail.co.uk/home/event/article-5202903/Hamilton-review-Original-witty-great-tunes.html',
+    'https://mommypoppins.com/kids/review-very-hungry-caterpillar-childrens-show-soars-in-nyc',
+  ]) {
+    assert.equal(nr.classifyGapCandidateUrl(u).ok, true, u);
+    assert.equal(nr.submissionNonReviewReason(u), null, u);
+  }
+});

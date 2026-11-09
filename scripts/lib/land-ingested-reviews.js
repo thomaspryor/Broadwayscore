@@ -13,6 +13,7 @@
  * land BEFORE the dispatch (order is part of the contract, locked by test).
  */
 
+const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 const { execErrorDetail } = require('./exec-error-detail');
@@ -27,6 +28,16 @@ const { pushWithRetry } = require('./push-with-retry');
 function revertHeldShows(reviewTextsDir) {
   const guard = require('./opening-night-lane/lease-guard');
   return guard.revertLeasedChanges(reviewTextsDir, guard.revertableShowIds().revert); // unknown reverts nothing (BRO-6672)
+}
+
+// A byline rename moves a file written in this same run, so its pre-rename path is neither on disk
+// nor tracked, and `git add -- <that path>` aborts the whole add ("pathspec did not match"), which
+// stranded every file in the run (BRO-6854: 24 Boston shows ingested, none pushed).
+function existsOrTracked(dir, rel) {
+  if (fs.existsSync(path.join(dir, rel))) return true;
+  try {
+    return String(execSync(`git -C "${dir}" ls-files -- "${rel}"`, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] })).trim() !== '';
+  } catch { return false; }
 }
 
 const refusePush = () => ({ ok: false, code: null, stderr: 'pushRetry not injected alongside a stub exec' });
@@ -58,6 +69,7 @@ function pushReviewTexts({
   // BRO-6648: this commits before any push-time enforce runs, so the lease check is here.
   // Stub-exec tests get no lease check unless they inject one.
   leaseRevert = exec === execSync ? revertHeldShows : () => [],
+  pathKnown = exec === execSync ? existsOrTracked : () => true,
 }) {
   if (!isCheckout(reviewTextsDir)) {
     const error = `not the review-texts clone: ${reviewTextsDir}`;
@@ -84,11 +96,13 @@ function pushReviewTexts({
     relPaths = relPaths.filter((p) => !reverted.has(p.split(path.sep).join('/')));
     if (!relPaths.length) return { pushed: true, leaseHeld: true };
   }
+  relPaths = relPaths.filter((p) => pathKnown(reviewTextsDir, p));
   const q = relPaths.map((p) => `"${p}"`).join(' ');
   try {
     // Stage only what this run touched; -A so a renamed-away path is a deletion.
-    exec(`git -C "${reviewTextsDir}" add -A -- ${q}`, { stdio: 'pipe' });
-    const status = String(exec(`git -C "${reviewTextsDir}" status --porcelain -- ${q}`, { encoding: 'utf8' }) || '').trim();
+    // An empty list must skip both git calls: an empty pathspec means the whole tree.
+    if (relPaths.length) exec(`git -C "${reviewTextsDir}" add -A -- ${q}`, { stdio: 'pipe' });
+    const status = relPaths.length ? String(exec(`git -C "${reviewTextsDir}" status --porcelain -- ${q}`, { encoding: 'utf8' }) || '').trim() : '';
     if (status) {
       exec(`git -C "${reviewTextsDir}" commit -m ${JSON.stringify(message)}`, { stdio: 'pipe' });
     } else {

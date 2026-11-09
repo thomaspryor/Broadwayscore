@@ -651,7 +651,7 @@ test('BRO-6073: a fetch that hangs is abandoned at its deadline and its page clo
 
 // BRO-6872: the lane's fetch has no WSJ subscriber login, so a short WSJ page is the teaser. It was scored as a 300-999
 // char "partial copy" on the last attempt; it is now held unscored until an aggregator excerpt or score arrives.
-test('a paywall teaser with no excerpt is held unscored, never scored as a partial copy', async () => {
+test('a paywall teaser with no excerpt is held unscored, never scored as a partial copy, and never given up on (BRO-7159)', async () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro6872-wsj-hold-'));
   try {
     let t = NIGHT_START; const scored = [];
@@ -663,15 +663,18 @@ test('a paywall teaser with no excerpt is held unscored, never scored as a parti
     const cand = { url: 'https://www.wsj.com/arts-culture/theater/hold-broadway-review-abc123' };
     await assert.rejects(sc.fetchReview(cand), inl.LaneRetryError);
     t += 1000;
-    // Same length twice: an open site would be scored as a partial copy here. The teaser is held instead.
-    await assert.rejects(sc.fetchReview(cand), (e) => e instanceof inl.LaneRetryError && /paywall teaser, held unscored/.test(e.message));
-    t += 1000;
-    await assert.rejects(sc.fetchReview(cand), inl.LanePermanentError, 'bounded: the retries run out, the regular pipeline collects it');
+    // Same length twice: an open site would be scored as a partial copy here. The teaser is held instead, awaiting an
+    // excerpt or rating. BRO-7159: the hold is not a retry budget; it never turns into a failure for good, so an
+    // excerpt that lands an hour later still gets the review scored.
+    for (let i = 0; i < 8; i++) {
+      await assert.rejects(sc.fetchReview(cand), (e) => e instanceof inl.LaneAwaitingEvidenceError && e.awaiting && !e.permanent && /paywall teaser/.test(e.message));
+      t += 2 * 60 * 1000;
+    }
     assert.deepEqual(scored, [], 'the teaser never reaches the scorer');
     const recs = lf.readFailures(dir, 'wsj-hold-2026', '2026-10-18').failures;
-    assert.equal(recs.length, 3);
-    assert.ok(recs.every((f) => !/scoring it as a partial copy/.test(f.reason)));
-    assert.match(recs[1].reason, /paywall teaser, held unscored/);
+    assert.equal(recs.length, 2, 'the hold is recorded once, not once per pass');
+    assert.ok(recs.every((f) => !f.terminal && !/scoring it as a partial copy/.test(f.reason)));
+    assert.match(recs[1].reason, /paywall teaser; awaiting an aggregator excerpt or rating/);
   } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5 }); }
 });
 
@@ -707,7 +710,7 @@ test('a held paywall teaser takes an aggregator excerpt that arrives on a later 
     const url = 'https://www.wsj.com/arts-culture/theater/late-broadway-review-jkl012';
     await assert.rejects(sc.fetchReview({ url }), inl.LaneRetryError);
     t += 1000;
-    await assert.rejects(sc.fetchReview({ url }), /paywall teaser, held unscored/);
+    await assert.rejects(sc.fetchReview({ url }), inl.LaneAwaitingEvidenceError);
     t += 1000;
     const got = await sc.fetchReview({ url, excerpts: { dtliExcerpt: 'The critic called the production a confident, beautifully acted revival.' } });
     assert.equal(got.fullText, '');

@@ -15,6 +15,8 @@
  * Usage:
  *   node scripts/opening-night-poller.js --show=show-id-2026
  *   node scripts/opening-night-poller.js --show=show-id-2026 --dry-run
+ *     (dry run writes no backoff state and no roundup-miss ledgers; the spend ledger still
+ *      records real provider spend)
  *   node scripts/opening-night-poller.js --show=show-id-2026 --skip-serp
  *   node scripts/opening-night-poller.js --show=show-id-2026 --skip-site-search
  *   node scripts/opening-night-poller.js --lane-live-smoke --show=show-id --url=archived-review-url [--out=empty-sandbox]
@@ -27,6 +29,8 @@
  */
 
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
+const { urllessStubSlots, attachSerpUrlsToStubs, pickStubOutletsForCycle, URLLESS_STUB_SERP_PER_CYCLE } = require('./lib/urlless-stub-serp'); // BRO-7171 Stage 4
+const { updateFileUrlWithInvariant } = require('./lib/url-change-invariant');
 const fs = require('fs');
 const path = require('path');
 const { beginPressNightSpend } = require('./lib/spend-purpose');
@@ -148,6 +152,8 @@ function loadBackoffState(showId) {
 }
 
 function saveBackoffState(showId, state) {
+  // BRO-7176: a --dry-run must not leave a live show backed off.
+  if (DRY_RUN) return;
   if (!fs.existsSync(BACKOFF_DIR)) fs.mkdirSync(BACKOFF_DIR, { recursive: true });
   const p = path.join(BACKOFF_DIR, `${showId}.json`);
   fs.writeFileSync(p, JSON.stringify(state, null, 2));
@@ -731,7 +737,7 @@ async function runAggregators(show) {
             // a temporary Browserbase/SD outage. 'section-only' means
             // reviews.php was never even tried (skipReviewsPhp) — also not
             // a confident answer. See discoverBwwRoundupUrl's via contract.
-            if (discovery.via === 'not-found') {
+            if (discovery.via === 'not-found' && !DRY_RUN) { // BRO-7176: dry run writes no miss ledger
               try {
                 const { recordRoundupMiss } = require('./lib/bww-roundup-persistence.js');
                 recordRoundupMiss(show.id);
@@ -1012,7 +1018,7 @@ async function runAggregators(show) {
           }
         } else {
           console.log('  theatre.reviews: no roundup found');
-          try { trMiss.recordTrMiss(show, trStats); } catch { /* ledger write is best-effort */ }
+          try { if (!DRY_RUN) trMiss.recordTrMiss(show, trStats); } catch { /* ledger write is best-effort */ }
         }
       }
     } catch (err) {
@@ -2039,6 +2045,25 @@ async function pollShow(show) {
         missingOutlets = rotateMissingOutlets(missingOutlets, nextSerpOutletOffset);
       }
     }
+    // BRO-7171 Stage 4: a url-less stub (review known only from an aggregator
+    // quote) counts as found above, so SERP never looked for its link. Queue
+    // those outlets first; a hit is attached to the stub after the SERP call.
+    const urllessSlots = urllessStubSlots(path.join(REVIEW_TEXTS_DIR, SHOW_ID), {
+      inWindow: isInDiscoveryUnblockWindow(show),
+      isReviewTextFile,
+    });
+    if (urllessSlots.size > 0) {
+      const reg = JSON.parse(fs.readFileSync(OUTLET_REGISTRY_PATH, 'utf8'));
+      const allOutlets = reg.outlets || reg;
+      const queued = new Set(missingOutlets.map((o) => o.id.toLowerCase()));
+      const stubAll = [...urllessSlots.keys()].filter((id) => !queued.has(id) && allOutlets[id]);
+      // At most URLLESS_STUB_SERP_PER_CYCLE per cycle, rotating hourly, so stubs
+      // never crowd the outlets that are really missing out of the 12-call budget.
+      const stubOutlets = pickStubOutletsForCycle(stubAll, URLLESS_STUB_SERP_PER_CYCLE, Math.floor(Date.now() / 3600000))
+        .map((id) => ({ id, name: allOutlets[id].displayName || id, tier: allOutlets[id].tier || 3, domain: allOutlets[id].domain }));
+      missingOutlets = [...missingOutlets, ...stubOutlets];
+      console.log(`  [url-less stubs: ${urllessSlots.size} in window, ${stubOutlets.length}/${stubAll.length} queued for SERP this cycle]`);
+    }
     if (missingOutlets.length > 0) {
       // Daily SERP-SESSION cap (Sprint 1, scripts/lib/serp-session-cap.js). A hard per-show +
       // daily-global ceiling on SERP-running cycles, consulted for ALL SERP runs (burst or
@@ -2117,6 +2142,15 @@ async function pollShow(show) {
       }
       const serpStats = {};
       serpResults = await runSERPBackup(show, missingOutlets, knownUrls, serpStats);
+      if (DRY_RUN && urllessSlots.size > 0 && serpResults.length > 0) {
+        console.log('  [url-less stub] dry run: links not attached');
+      } else if (urllessSlots.size > 0 && serpResults.length > 0) {
+        const att = attachSerpUrlsToStubs(serpResults, urllessSlots, (fp, u) => updateFileUrlWithInvariant(
+          fp, u, { urlSource: 'opening-night-poller-serp', urlUpdatedAt: new Date().toISOString() }, { stampOnNoop: true }));
+        serpResults = att.remaining;
+        for (const a of att.attached) console.log(`  [url-less stub] link attached: ${path.basename(a.filePath)} <- ${a.url}`);
+        for (const r of att.refused) console.log(`  [url-less stub] link refused by the url invariant: ${path.basename(r.filePath)} <- ${r.url}`);
+      }
       if (show.category === 'off-west-end') {
         nextSerpOutletOffset = advanceSerpOutletOffset(nextSerpOutletOffset, serpStats.consumed, missingOutlets.length);
       }

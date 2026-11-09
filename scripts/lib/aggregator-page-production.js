@@ -111,4 +111,50 @@ function checkAggregatorPageProduction({ html, show, pageDate } = {}) {
   return { corroborated: false, reason: 'no usable page date and no venue to match', pageDate: date || null };
 }
 
-module.exports = { checkAggregatorPageProduction, extractPageDateFromHtml, venueTokens };
+/**
+ * BRO-6098: a title-only match on a revived title picks the most recent
+ * production ("no year hint, picking recent"), and the date guard above then
+ * drops the page. On the 2026-11-03 The Stage run that threw away 40+ real
+ * round-ups of earlier productions (Much Ado 2025, The Seagull 2025, ...).
+ * The page's own publish date is the year hint the slug lacks: re-match the
+ * title with it and keep the page only when the new production's run
+ * actually contains that date (same guard, so it can never reroute into
+ * another out-of-run production).
+ *
+ * @param {{ html: string, show: object, rematch: (date: string) => object|null }} args
+ *   rematch(pageDate) returns the production the title matches for that date.
+ * @returns {{ show: object, prod: object, rerouted: boolean, from?: string }}
+ */
+function resolveProductionByPageDate({ html, show, rematch } = {}) {
+  // Reroute only on the page's OWN publish date (og/JSON-LD scoped to the page),
+  // never the first datePublished in the HTML, which can be a related article's.
+  const ownDate = require('./article-extractor').extractPublishDate(html, '') || null;
+  const prod = checkAggregatorPageProduction({ html, show, pageDate: ownDate });
+  if (!ownDate || !prod.outOfRun || !prod.pageDate || typeof rematch !== 'function') return { show, prod, rerouted: false };
+  const alt = rematch(prod.pageDate);
+  if (!alt || !show || alt.id === show.id) return { show, prod, rerouted: false };
+  const altProd = checkAggregatorPageProduction({ html, show: alt, pageDate: prod.pageDate });
+  if (altProd.outOfRun || !altProd.corroborated) return { show, prod, rerouted: false };
+  return { show: alt, prod: altProd, rerouted: true, from: show.id };
+}
+
+/** The page's own URL (canonical link, then og:url), or null. */
+function canonicalUrlFromHtml(html) {
+  const s = String(html || '');
+  const m = s.match(/<link[^>]+rel=["']canonical["'][^>]*href=["']([^"']+)["']/i)
+    || s.match(/<link[^>]+href=["']([^"']+)["'][^>]*rel=["']canonical["']/i)
+    || s.match(/property=["']og:url["'][^>]*content=["']([^"']+)["']/i);
+  return m ? m[1] : null;
+}
+
+/** Same page? Ignores scheme, www., query/hash, trailing slash and case. */
+function sameRoundupUrl(a, b) {
+  const norm = (u) => String(u || '').trim().toLowerCase()
+    .replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/[?#].*$/, '').replace(/\/+$/, '');
+  return !!a && !!b && norm(a) === norm(b);
+}
+
+module.exports = {
+  checkAggregatorPageProduction, extractPageDateFromHtml, venueTokens,
+  resolveProductionByPageDate, canonicalUrlFromHtml, sameRoundupUrl,
+};

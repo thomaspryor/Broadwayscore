@@ -165,7 +165,7 @@ function decideAlerts({ authFailedStreak = 0, authOutlets = [], pendingStuck = 0
  * @param {Array} a.ledgerRows all ledger rows after the run
  * @param {Array} a.prevRows earlier nightly rows
  */
-function buildNightlyRow({ runId, status, summary, counts, reopened = 0, ledgerRows = [], prevRows = [], ceiling, nowMs = Date.now(), driverExit = 0 }) {
+function buildNightlyRow({ runId, status, summary, counts, reopened = 0, ledgerRows = [], prevRows = [], ceiling, nowMs = Date.now(), driverExit = 0, ownerBatch = null }) {
   const s = summary || {};
   // Streaks carry across busy/disabled/dry nights and count failed nights too.
   const base = summary ? lastSummaryRow(prevRows) : null;
@@ -196,6 +196,10 @@ function buildNightlyRow({ runId, status, summary, counts, reopened = 0, ledgerR
     ceiling,
     ceilingHit: !!s.ceilingHit,
     pushFailed: !!s.pushFailed,
+    // Stage 4: an unanswered owner batch (gap-terminal.js --owner-batch): count + file name only.
+    ownerBatchPending: ownerBatch && Number.isFinite(Number(ownerBatch.count))
+      ? { count: Number(ownerBatch.count), date: ownerBatch.date || null, file: ownerBatch.file ? path.basename(String(ownerBatch.file)) : null }
+      : null,
   };
   row.alerts = status === 'dry_run' || status === 'disabled' ? [] : decideAlerts({
     authFailedStreak, authOutlets: authFailedOutlets, pendingStuck, pushFailed: row.pushFailed,
@@ -234,7 +238,12 @@ function renderDigestLine(rows, nowMs = Date.now()) {
     bits.push(`${fmt(last.openRecent)} reviews of recent shows still lack their full text${change}`);
   }
   bits.push(`${fmt(last.recovered || 0)} recovered last night`);
-  if (Number.isFinite(last.needsDecision)) bits.push(`${fmt(last.needsDecision)} older ones ${last.needsDecision === 1 ? 'has' : 'have'} run out of automatic options and will need your decision`);
+  const ob = last.ownerBatchPending;
+  if (ob && ob.count > 0) {
+    bits.push(`${fmt(ob.count)} older ones are waiting for your yes or no${ob.file ? ` (${ob.file} in your claude-outputs folder)` : ''}`);
+  } else if (Number.isFinite(last.needsDecision)) {
+    bits.push(`${fmt(last.needsDecision)} older ones ${last.needsDecision === 1 ? 'has' : 'have'} run out of automatic options and will need your decision`);
+  }
   let line = `Review texts: ${bits.join('; ')}.`;
   if (last.status === 'failed' && !(last.alerts || []).some((a) => a.key === 'run_failed')) line += ' The nightly run stopped with an error.';
   const alerts = (last.alerts || []).map((a) => a.text).filter(Boolean);

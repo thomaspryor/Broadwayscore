@@ -123,7 +123,7 @@ test('the same teaser with no excerpt still fails visibly (nothing to score)', a
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });
 
-test('200-299 chars: the scorer refuses even a partial copy, so the last attempt scores the excerpt, or fails without one', async () => {
+test('200-299 chars: the scorer refuses even a partial copy, so the last attempt scores the excerpt, or holds it without one (BRO-7159)', async () => {
   const text = 'A short teaser of the review that the paywall lets through. '.repeat(4).slice(0, 250);
   for (const withExcerpt of [true, false]) {
     const dir = tmp();
@@ -143,8 +143,10 @@ test('200-299 chars: the scorer refuses even a partial copy, so the last attempt
         assert.equal(got.fullText, '', 'text the scorer would refuse is not sent');
         assert.match(lf.readFailures(dir, SHOW.id, NIGHT).failures.at(-1).reason, /scoring the aggregator excerpt/);
       } else {
-        await assert.rejects(sc.fetchReview(cand), (e) => e.permanent === true && /paywall teaser, held unscored/.test(e.message));
+        // Held, never terminal: a later excerpt can still score it (BRO-7159).
+        await assert.rejects(sc.fetchReview(cand), (e) => e.awaiting === true && !e.permanent && /paywall teaser/.test(e.message));
         assert.deepEqual(scored, [], 'never sent to a scorer that would refuse it');
+        assert.equal(lf.readFailures(dir, SHOW.id, NIGHT).failures.some((f) => f.terminal), false, 'no terminal record');
       }
     } finally { fs.rmSync(dir, { recursive: true, force: true }); }
   }
@@ -355,13 +357,13 @@ test('a WSJ page the scorer calls garbage_text rescores from the excerpt, or wai
     assert.equal(res.extra.contentTier, 'excerpt');
     assert.deepEqual(calls, ['complete', 'excerpt']);
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
-  // No excerpt yet: a retry (a later aggregator pass may print one), never a final verdict, and the models are not paid again.
+  // No excerpt yet: held awaiting one (BRO-7159: never a final verdict, however long it takes), and the models are not paid again.
   const dir2 = tmp();
   try {
     let paid = 0;
     const sc = scoring({ dir: dir2, extract: () => body, scoreText: async () => { paid++; return { rejected: true, rejection: 'garbage_text' }; } });
     const got = await sc.fetchReview(WSJ_CAND);
-    await assert.rejects(sc.scoreReview({ url: WSJ, fullText: got.fullText, showId: SHOW.id }, { ...got, excerpts: {} }), (e) => e instanceof inl.LaneRetryError && /waiting for an aggregator excerpt/.test(e.message));
+    await assert.rejects(sc.scoreReview({ url: WSJ, fullText: got.fullText, showId: SHOW.id }, { ...got, excerpts: {} }), (e) => e instanceof inl.LaneAwaitingEvidenceError && e.awaiting && !e.permanent && /awaiting an aggregator excerpt/.test(e.message));
     assert.equal(paid, 1);
   } finally { fs.rmSync(dir2, { recursive: true, force: true }); }
   // An open site's garbage_text stays a verdict.

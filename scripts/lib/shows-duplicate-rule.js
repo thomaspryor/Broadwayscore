@@ -136,4 +136,52 @@ function newDuplicateFindings(before, after) {
   return found.filter((f) => !oldKeys.has(pairKey(f)) && !renamed(f));
 }
 
-module.exports = { findDuplicateShows, newDuplicateFindings, duplicateOfCandidate, formatFinding, isTestFixture, rowsSharingKey };
+// Words too common to narrow the neighbourhood a new row is compared with.
+const FRAGMENT_STOP = new Set(['the', 'and', 'for', 'with', 'musical', 'play', 'new', 'off', 'broadway', 'west', 'end']);
+const fragmentWords = (t) => String(t || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase()
+  .split(/[^a-z0-9]+/).filter((w) => w.length >= 3 && !FRAGMENT_STOP.has(w));
+
+/**
+ * BRO-7080 (replay of BRO-4503 / BRO-5557): rows NEW in `after` whose title is
+ * a fragment of an existing row's at the same venue or room with overlapping
+ * dates ("Motherfucker" @ Soho Playhouse Main Stage beside "Jena Friedman:
+ * Motherfucker" @ SoHo Playhouse; "Matthew Bourne's Cinderella" beside
+ * "Matthew Bourne's New Adventures - Cinderella"). The key-index rule above
+ * never pairs them (no shared exact/slug/id/normalized title), so the save
+ * guard let promoters that bypass add-show-action write them, and only the
+ * daily audit caught the split reviews days later. Same detector as
+ * add-show-action.newRowDuplicate. A pair either row lists in distinctFrom is
+ * a declared distinct production. Dry run 2026-11-09: 0 hits across the 843
+ * live (announced/upcoming/previews/open) rows.
+ * @returns {{show: Object, existing: Object, reason: string}[]}
+ */
+function newRowFragmentFindings(before, after) {
+  const { findTitleFragmentDupes } = require('./show-duplicate-detection');
+  const rows = partitionShowRows(after || []).valid.filter((s) => !isTestFixture(s));
+  if (typeof before === 'function') before = before();
+  const beforeIds = new Set((before || []).map((s) => s && s.id));
+  // Nothing on disk (a fresh file) is not "adding" every row; the prebuild rule covers it.
+  if (!beforeIds.size) return [];
+  const added = rows.filter((s) => !beforeIds.has(s.id));
+  if (!added.length) return [];
+  const byWord = new Map();
+  for (const r of rows) for (const w of new Set(fragmentWords(r.title))) {
+    if (!byWord.has(w)) byWord.set(w, []);
+    byWord.get(w).push(r);
+  }
+  const out = [];
+  for (const show of added) {
+    const declared = new Set(Array.isArray(show.distinctFrom) ? show.distinctFrom : []);
+    const near = new Set();
+    for (const w of new Set(fragmentWords(show.title))) for (const r of byWord.get(w) || []) if (r !== show) near.add(r);
+    for (const other of near) {
+      if (declared.has(other.id) || (Array.isArray(other.distinctFrom) && other.distinctFrom.includes(show.id))) continue;
+      if (getMarketPool(other.category) !== getMarketPool(show.category)) continue;
+      const hit = findTitleFragmentDupes([show, other])[0];
+      if (hit) { out.push({ show, existing: other, reason: 'title fragment at the same venue with overlapping dates' }); break; }
+    }
+  }
+  return out;
+}
+
+module.exports = { findDuplicateShows, newDuplicateFindings, newRowFragmentFindings, duplicateOfCandidate, formatFinding, isTestFixture, rowsSharingKey };
