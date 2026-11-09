@@ -59,27 +59,8 @@ function jitterDelay() {
   return CONFIG.delayMinMs + Math.random() * (CONFIG.delayMaxMs - CONFIG.delayMinMs);
 }
 
-async function extractArticle(page, url) {
-  url = url.split('?gaa_')[0];
-  await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
-  await page.waitForTimeout(1800); // let client-side entitlement hydration resolve
-
-  return page.evaluate(() => {
-    const bodyText = document.body?.innerText || '';
-    if (/access denied|verify you.re not a robot/i.test(bodyText)) {
-      return { error: 'Bot-check challenge detected' };
-    }
-    const article =
-      document.querySelector('[data-testid="BodyWrapper"]') ||
-      document.querySelector('[data-testid="ArticleBodyWrapper"]') ||
-      document.querySelector('.body__inner-container') ||
-      document.querySelector('article');
-    const text = article ? article.innerText : '';
-    const title = document.title || '';
-    if (!text) return { error: 'No article body element found', title };
-    return { text, title, len: text.length };
-  });
-}
+// One extractor shared with the nightly gap-recovery driver (BRO-7171 Stage 4).
+const extractArticle = require('./lib/browser-outlet-adapters').ADAPTERS.newyorker.extract;
 
 async function main() {
   // BRO-7171 Stage 3: never overlap the nightly gap-recovery job or another recovery run.

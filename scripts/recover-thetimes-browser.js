@@ -43,7 +43,6 @@ const showsAllowlist = showsFilter ? new Set(showsFilter.split('=')[1].split(','
 
 const { loadCookiesForDomain } = require('./lib/cookie-loader');
 const { loadCandidates, processRecoveredText, stampDead, startRun, checkpoint } = require('./lib/browser-recovery-helpers');
-const { extractArticleText } = require('./lib/article-extractor');
 
 const CONFIG = {
   reportPath: path.join(__dirname, '..', 'data', 'audit', 'thetimes-browser-recovery-report.json'),
@@ -60,19 +59,8 @@ function jitterDelay() {
   return CONFIG.delayMinMs + Math.random() * (CONFIG.delayMaxMs - CONFIG.delayMinMs);
 }
 
-async function extractArticle(page, url) {
-  await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
-  await page.waitForTimeout(1500);
-
-  const html = await page.content();
-  if (/verify you.re not a robot|access denied|too many requests/i.test(html)) {
-    return { error: 'Bot-check challenge detected' };
-  }
-  const text = extractArticleText(html, 'thetimes.com');
-  const title = await page.title();
-  if (!text) return { error: 'No article body element found (extractTimesBody returned null — likely logged out)', title };
-  return { text, title, len: text.length };
-}
+// One extractor shared with the nightly gap-recovery driver (BRO-7171 Stage 4).
+const extractArticle = require('./lib/browser-outlet-adapters').ADAPTERS.thetimes.extract;
 
 async function main() {
   // BRO-7171 Stage 3: never overlap the nightly gap-recovery job or another recovery run.

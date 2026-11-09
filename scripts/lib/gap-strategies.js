@@ -135,8 +135,11 @@ async function browserSession(c, session) {
     return { ok: false, outcome: 'non_evidence', reason: `navigation_error: ${String(e.message).split('\n')[0].slice(0, 80)}` };
   }
   if (r && r.text) return { ok: true, rawText: r.text, url: c.url, html: r.html || '', via: 'browser' };
+  // The outlet answered 404/410 to a logged-in session: evidence the stored url
+  // is dead (Stage 4; it used to fall through to a probe and read as rejected).
+  if (r && r.notFound) return { ok: false, outcome: 'no_evidence', reason: `url_not_found_${r.status || 404}` };
   // A bot-check page is the outlet blocking us, not evidence about the review.
-  if (/robot|denied|too many|bot-check/i.test(String(r && r.error))) return { ok: false, outcome: 'non_evidence', reason: 'bot_check' };
+  if (/robot|denied|too many|bot-check|challenge/i.test(String(r && r.error))) return { ok: false, outcome: 'non_evidence', reason: 'bot_check' };
   if (session.probe) {
     const p = await session.probe().catch((e) => ({ error: e.message }));
     if (!p || p.error || !p.text) return { ok: false, outcome: 'auth_failed', reason: `session_lost: ${(p && p.error) || 'probe empty'}` };

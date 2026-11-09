@@ -243,8 +243,13 @@ test('URL_WRONG_PAGE retries the stored url first when nothing contradicts it (S
   const stageUrl = 'https://www.thestage.co.uk/reviews/the-master-builder-review-old-vic-london';
   const ok = T.storedUrlWorthRetry({ url: stageUrl, show, nowMs: now });
   assert.equal(ok.ok, true);
-  const sel = T.selectStrategy({ gapClass: 'URL_WRONG_PAGE', hasUrl: true, hasAdapter: true, storedUrlOk: ok });
-  assert.equal(sel.strategy, 'REFETCH_FREE');
+  // subscriber outlet: browser first; free refetch is the fallback when the browser is gated
+  assert.equal(T.selectStrategy({ gapClass: 'URL_WRONG_PAGE', hasUrl: true, hasAdapter: true, storedUrlOk: ok }).strategy, 'BROWSER_SESSION');
+  assert.equal(T.selectStrategy({ gapClass: 'URL_WRONG_PAGE', hasUrl: true, hasAdapter: true, storedUrlOk: ok,
+    runGates: { BROWSER_SESSION: { ok: false, reason: 'browser_unavailable:x' } } }).strategy, 'REFETCH_FREE');
+  // free outlet: refetch first
+  assert.equal(T.selectStrategy({ gapClass: 'URL_WRONG_PAGE', hasUrl: true, hasAdapter: false, storedUrlOk: ok }).strategy, 'REFETCH_FREE');
+  assert.equal(T.selectStrategy({ gapClass: 'TRUNCATED_OTHER', hasUrl: true, hasAdapter: false }).strategy, 'REFETCH_FREE');
   // deadline row pointing at unrelated news: rediscovery only (disabled -> none)
   const news = T.storedUrlWorthRetry({ url: 'https://deadline.com/2026/05/ben-affleck-artificial-intelligence-startup-1236123456/', show, nowMs: now });
   assert.deepEqual(news, { ok: false, reason: 'url_names_other_show' });

@@ -74,7 +74,13 @@ const URL_STRATEGIES = new Set(['REFETCH_FREE', 'BROWSER_SESSION', 'ARCHIVE']);
  * @returns {{strategy: string|null, skipped: Array<{strategy:string, reason:string}>}}
  */
 function selectStrategy({ gapClass, hasUrl, hasAdapter, recency = null, storedUrlOk = { ok: true, reason: 'not_gated' }, eligible = () => ({ ok: true, reason: 'not_gated' }), runGates = {}, flags = STRATEGY_FLAGS, only = null }) {
-  const order = CLASS_STRATEGIES[gapClass] || [];
+  let order = CLASS_STRATEGIES[gapClass] || [];
+  // Subscriber outlet (Stage 4): a free refetch of a hard-paywalled page
+  // returns the teaser, so the browser goes first; the free refetch stays as
+  // the fallback when the browser is unavailable or auth fails.
+  if (hasAdapter && order.indexOf('REFETCH_FREE') >= 0 && order.indexOf('BROWSER_SESSION') > order.indexOf('REFETCH_FREE')) {
+    order = ['BROWSER_SESSION', ...order.filter((s) => s !== 'BROWSER_SESSION')];
+  }
   const skipped = [];
   for (const s of order) {
     if (only && s !== only) continue;

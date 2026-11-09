@@ -68,23 +68,8 @@ function jitterDelay() {
   return CONFIG.delayMinMs + Math.random() * (CONFIG.delayMaxMs - CONFIG.delayMinMs);
 }
 
-async function extractArticle(page, url) {
-  url = url.split('?gaa_')[0];
-  await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
-  await page.waitForTimeout(1800); // let client-side entitlement hydration resolve
-
-  return page.evaluate(() => {
-    const bodyText = document.body?.innerText || '';
-    if (/verification required|slide right to secure/i.test(bodyText)) {
-      return { error: 'DataDome challenge detected' };
-    }
-    const article = document.querySelector('article');
-    const text = article ? article.innerText : '';
-    const title = document.title || '';
-    if (!text) return { error: 'No article element found', title };
-    return { text, title, len: text.length };
-  });
-}
+// One extractor shared with the nightly gap-recovery driver (BRO-7171 Stage 4).
+const extractArticle = require('./lib/browser-outlet-adapters').ADAPTERS.wsj.extract;
 
 function loadCandidates() {
   const dirs = listShowDirs(CONFIG.reviewTextsDir);
