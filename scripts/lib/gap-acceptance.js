@@ -564,6 +564,14 @@ function fabricatedFlagClearDecision({ filePath, preDiscovery, fetchedText, url,
   if (!url || !fetchedText) return { clear: false, via: null, reason: 'no url or text' };
   const ctx = buildAcceptanceContext(filePath, preDiscovery, url, { llmIdentityVerified: llmVerified === true, reviewTextsDir: reviewTextsDir || undefined });
   ctx.pageByline = pageByline(html, preDiscovery.outletId);
+  // Same refusals acceptRecoveredText applies before its identity proof
+  // (steps 2 and 6): blocklisted url, a url move the invariant refuses (e.g.
+  // the url belongs to another critic's file), a page dated to another
+  // production. Second-opinion P1, 2026-11-10.
+  if (ctx.blocklisted) return { clear: false, via: null, reason: 'blocklisted url' };
+  if (ctx.urlChangeRefusal) return { clear: false, via: null, reason: `url change refused: ${ctx.urlChangeRefusal}` };
+  const late = pageDateRefusal(pagePublishDate(html, url), preDiscovery, ctx.show);
+  if (late) return { clear: false, via: null, reason: `date implausible: ${late}` };
   const showId = preDiscovery.showId || path.basename(path.dirname(filePath));
   const cleaned = cleanCandidateText(fetchedText, { url, showId }).text || '';
   const p = proveIdentity(preDiscovery, cleaned, url, ctx);

@@ -175,3 +175,25 @@ test('planUrlFindWork: priority recent > tier > newest; paid slots keep their pl
   // zero free slots = the old behaviour (cap only)
   assert.equal(UFL.planUrlFindWork(work, { paidSlots: 2, freeSlots: 0, tierOf }).filter((c) => c.strategy === 'URL_FIND').length, 2);
 });
+
+// Second-opinion P2 (2026-11-10): a failed BROWSER_SESSION that falls back to
+// URL_FIND ran it paid-capable and uncounted, ahead of the planned top N.
+test('fallbackUrlFindSlot: a fallback-reached URL_FIND takes a paid slot only while one is left; the driver uses it', async () => {
+  const { createRequire } = await import('node:module');
+  const req = createRequire(import.meta.url);
+  const UFL = req('./gap-url-find.js');
+  assert.equal(typeof UFL.fallbackUrlFindSlot, 'function');
+  assert.deepEqual(UFL.fallbackUrlFindSlot({ plannedStrategy: 'BROWSER_SESSION', freeOnly: undefined, paidUsed: 12, paidMax: 12 }), { freeOnly: true, paidUsed: 12 });
+  assert.deepEqual(UFL.fallbackUrlFindSlot({ plannedStrategy: 'BROWSER_SESSION', freeOnly: undefined, paidUsed: 3, paidMax: 12 }), { freeOnly: false, paidUsed: 4 });
+  // planned URL_FIND was counted at the top of the loop: not counted twice
+  assert.deepEqual(UFL.fallbackUrlFindSlot({ plannedStrategy: 'URL_FIND', freeOnly: false, paidUsed: 5, paidMax: 12 }), { freeOnly: false, paidUsed: 5 });
+  assert.deepEqual(UFL.fallbackUrlFindSlot({ plannedStrategy: 'URL_FIND', freeOnly: true, paidUsed: 12, paidMax: 12 }), { freeOnly: true, paidUsed: 12 });
+  const fs = req('fs');
+  const driver = fs.readFileSync(new URL('../gap-recovery-driver.js', import.meta.url), 'utf8');
+  assert.ok(driver.includes('fallbackUrlFindSlot('), 'driver must route URL_FIND through fallbackUrlFindSlot');
+  assert.ok(!driver.includes('freeOnly: c.urlFindFreeOnly === true'), 'freeOnly must come from the slot, not the plan alone');
+  // a run refused by the lock never publishes
+  const lockAt = driver.indexOf("takeRunLock(OPTS.reconcile");
+  const setAt = driver.indexOf('RUN_LEDGER = ledgerPath');
+  assert.ok(lockAt > 0 && setAt > lockAt, 'RUN_LEDGER is set only after the run lock is held');
+});

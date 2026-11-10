@@ -7908,13 +7908,17 @@ async function processReview(review) {
         });
         if (d.clear) {
           const post = readReviewForUpdate(review.filePath);
-          if (post.fabricatedEntry === true) {
+          // Only when the file now holds the url that was proven: the
+          // invariant can refuse the move, leaving the old url on disk.
+          if (post.fabricatedEntry === true && post.url === review.url) {
             post.fabricatedEntry = false;
             post.fabricatedClearedReason = `real review text accepted at ${review.url} (collector serp, ${d.via}, ${new Date().toISOString()}); was: ${post.fabricatedReason || 'flagged'}`;
             post.fabricatedReason = null;
             persistReviewSnapshot({ filePath: review.filePath, data: post, trailingNewline: true });
+            console.log(`    ✓ invented-url flag cleared: ${d.via}`);
+          } else if (post.url !== review.url) {
+            console.log(`    ⚠ invented-url flag kept: stored url is ${post.url}, not the proven ${review.url}`);
           }
-          console.log(`    ✓ invented-url flag cleared: ${d.via}`);
         } else {
           console.log(`    ⚠ invented-url flag kept: ${d.reason}`);
         }

@@ -38,7 +38,10 @@ const BODY_WRONG_SHOW = /^(Write guard \(BRO-4383\)|LLM:|Collector LLM)|page not
 const BODY_WRONG_PRODUCTION = /^(LLM:|Collector LLM)|page not found|\b404\b/i;
 
 const FAMILIES = {
-  isNonReview: ['isNonReview', 'isNonReviewReason', 'nonReviewType', 'nonReviewClassifiedBy'],
+  // classifiedAt goes too: classify-non-reviews --incremental skips any file
+  // that has it, so leaving it would keep the recovered body from ever being
+  // read by the classifier (second-opinion P2, 2026-11-10).
+  isNonReview: ['isNonReview', 'isNonReviewReason', 'nonReviewType', 'nonReviewClassifiedBy', 'classifiedAt'],
   nonReviewFlag: ['nonReviewFlag', 'nonReviewType', 'nonReviewEvidence', 'nonReviewFlaggedAt', 'nonReviewMethod'],
   wrongShow: ['wrongShow', 'wrongShowReason', 'wrongShowAt'],
   wrongProduction: ['wrongProduction', 'wrongProductionReason', 'wrongProductionNote'],
@@ -73,7 +76,14 @@ function errorPageVerdictBasis(d) {
   const put = (kind, bodyBased) => (bodyBased && !human ? out.voidable : out.blocking).push(kind);
   if (d.duplicateOf) out.blocking.push('duplicateOf');
   if (d.isRoundupArticle) out.blocking.push('isRoundupArticle');
-  if (d.isNonReview === true) put('isNonReview', true);
+  // Verdicts about the slot or attribution, not the stored body: a new body
+  // does not answer them (and an invented url must never be archive-fetched).
+  for (const k of ['fabricatedEntry', 'wrongAttribution', 'showNotMentioned', 'wrongArticle', 'wrongFullText']) {
+    if (d[k] === true) out.blocking.push(k);
+  }
+  // A classifier verdict (model-stamped, or reasonless) read the body; a typed
+  // reason with no classifier came from a hand fix or a url sweep.
+  if (d.isNonReview === true) put('isNonReview', !d.isNonReviewReason || !!d.nonReviewClassifiedBy);
   if (d.nonReviewFlag === true) put('nonReviewFlag', true);
   if (d.wrongShow === true && !(d.wrongShowManualClear === true || d.wrongShowOverride === true)) {
     put('wrongShow', BODY_WRONG_SHOW.test(String(d.wrongShowReason || '')));
@@ -120,6 +130,12 @@ function isErrorPageVoidedField(field, local, committed) {
   if (!v || !v.prior || !Object.prototype.hasOwnProperty.call(v.prior, field)) return false;
   if (local[field] != null && local[field] !== false) return false;
   if (!committed || committed[field] == null) return false;
+  // The committed copy is already past this void (it carries the same
+  // breadcrumb), so its non-empty value was set on the new body: a re-flag.
+  // A boolean re-flag equals the voided prior, so value equality alone cannot
+  // tell them apart (second-opinion P1, 2026-11-10).
+  const cv = committed.errorPageVerdictVoid;
+  if (cv && cv.at && cv.at === v.at) return false;
   return JSON.stringify(committed[field]) === JSON.stringify(v.prior[field]);
 }
 

@@ -74,3 +74,37 @@ test('void: verdicts move into the breadcrumb (null-assigned), the push restore 
   // human-owned: no-op
   assert.deepEqual(E.voidErrorPageVerdicts(rec({ ...GEMINI, _locked: true })), []);
 });
+
+test('re-flag: a same-value flag set after the void (committed carries the breadcrumb) is never treated as voided', () => {
+  const d = rec(GEMINI);
+  E.voidErrorPageVerdicts(d, { at: '2026-11-10T00:00:00Z' });
+  // committed = after the void, then the classifier re-flagged the new body with the same boolean
+  const reflagged = { ...JSON.parse(JSON.stringify(d)), isNonReview: true, nonReviewType: 'news' };
+  // push restore: local (void, no re-flag) vs origin (re-flag) -> must restore
+  assert.equal(G.isIntentionalClear('isNonReview', d, reflagged), false);
+  assert.equal(G.isIntentionalClear('nonReviewType', d, reflagged), false);
+  // safeWriteReview stale-replay: existing already past the void -> a replayed null is stale
+  assert.equal(E.isErrorPageVoidedField('isNonReview', d, reflagged), false);
+  // the original void write (committed = pre-void) is still honoured
+  assert.equal(E.isErrorPageVoidedField('isNonReview', d, rec(GEMINI)), true);
+});
+
+test('blocking: slot/attribution verdicts are not answered by a new body', () => {
+  for (const k of ['fabricatedEntry', 'wrongAttribution', 'showNotMentioned', 'wrongArticle', 'wrongFullText']) {
+    assert.equal(E.isErrorPageVerdictOnly(rec({ ...GEMINI, [k]: true })), false, k);
+  }
+  const fab = C.classifyTextGap(rec({ isNonReview: true, fabricatedEntry: true }), null, {});
+  assert.notEqual(fab.gapClass, 'URL_DEAD');
+});
+
+test('void clears classifiedAt so the classifier re-reads the recovered body', () => {
+  const d = rec({ ...GEMINI, classifiedAt: '2026-04-30T00:00:00Z' });
+  E.voidErrorPageVerdicts(d, { at: '2026-11-10T00:00:00Z' });
+  assert.equal(d.classifiedAt, null);
+  assert.equal(d.errorPageVerdictVoid.prior.classifiedAt, '2026-04-30T00:00:00Z');
+});
+
+test('isNonReview with a typed reason and no classifier (hand fix / url sweep) is not voidable', () => {
+  assert.equal(E.isErrorPageVerdictOnly(rec({ isNonReview: true, isNonReviewReason: 'Fix BRO-3482: wrong url, not a review' })), false);
+  assert.equal(E.isErrorPageVerdictOnly(rec({ isNonReview: true, isNonReviewReason: 'x', nonReviewClassifiedBy: 'gemini' })), true);
+});

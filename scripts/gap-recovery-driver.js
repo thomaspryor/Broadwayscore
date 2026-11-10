@@ -220,8 +220,9 @@ async function main() {
   const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
   const dir = process.env.REVIEW_TEXTS_DIR || resolveReviewTextsDir();
   const ledgerPath = L.ledgerPathDefault();
-  RUN_LEDGER = ledgerPath;
   if (!OPTS.dryRun && !takeRunLock(OPTS.reconcile ? 'gap-recovery-driver --reconcile' : 'gap-recovery-driver')) return 3;
+  // Only a run that holds the lock publishes at exit (a refused run wrote nothing).
+  RUN_LEDGER = ledgerPath;
   if (OPTS.reconcile) { await runReconcile({ dir, ledgerPath }); return 0; }
 
   const showsRaw = readJson(showsPath());
@@ -426,7 +427,12 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
           .flatMap((r) => [...(r.outcome === 'rejected' && r.url ? [r.url] : []), ...((r.detail && r.detail.refusedCandidates) || [])]));
         // GAP_URL_FIND_METHODS narrows a bulk run to the methods with measured yield.
         const methods = process.env.GAP_URL_FIND_METHODS ? process.env.GAP_URL_FIND_METHODS.split(',').map((m) => m.trim()).filter(Boolean) : null;
-        got = await S.urlFind(c, { dir, rootDir: ROOT, serpKeys, refusedUrls, methods, freeOnly: c.urlFindFreeOnly === true });
+        // A fallback-reached URL_FIND takes a paid slot only while one is left.
+        const slot = require('./lib/gap-url-find').fallbackUrlFindSlot({
+          plannedStrategy: c.strategy, freeOnly: c.urlFindFreeOnly, paidUsed: urlFindRuns, paidMax: URL_FIND_MAX_PER_RUN,
+        });
+        urlFindRuns = slot.paidUsed;
+        got = await S.urlFind(c, { dir, rootDir: ROOT, serpKeys, refusedUrls, methods, freeOnly: slot.freeOnly });
       }
       else got = { ok: false, outcome: 'non_evidence', reason: `strategy_unbuilt:${strategy}` };
 

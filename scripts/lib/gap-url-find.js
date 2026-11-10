@@ -663,9 +663,23 @@ function planUrlFindWork(work, { paidSlots, freeSlots = 0, tierOf }) {
   return out;
 }
 
+/**
+ * A URL_FIND the driver reaches by falling back from another strategy (a
+ * failed BROWSER_SESSION's reselect) was never planned, so it never took a
+ * paid slot. It takes one while any are left, else it runs free-only. Pure.
+ * @returns {{freeOnly:boolean, paidUsed:number}}
+ */
+function fallbackUrlFindSlot({ plannedStrategy, freeOnly, paidUsed, paidMax }) {
+  if (freeOnly === true) return { freeOnly: true, paidUsed };
+  if (plannedStrategy === 'URL_FIND') return { freeOnly: false, paidUsed }; // counted when planned
+  if (paidUsed >= paidMax) return { freeOnly: true, paidUsed };
+  return { freeOnly: false, paidUsed: paidUsed + 1 };
+}
+
 module.exports = {
   urlFindPriority,
   planUrlFindWork,
+  fallbackUrlFindSlot,
   probeLedgerRow,
   buildCorpusIndex, outletHosts, fetchCandidateText, fetchRefusedOnEvidence, methodNotApplicable, urlFindProgress, urlFindEligibility, METHOD_DONE, URL_FIND_POLICY, fetchIndexWithRetry,
   METHODS, SITEMAP_ADAPTERS, titleTokens, pathWords, slugTitleScore, dateWindow, learnOutletProfile, extractOutboundLinks,

@@ -534,6 +534,28 @@ test('fabricatedFlagClearDecision: an invented-url flag clears only on the gap-a
   assert.equal(gate.fabricatedFlagClearDecision({ filePath: c2.filePath, preDiscovery: { ...pre2, fabricatedEntry: false }, fetchedText: named, url: realUrl, llmVerified: true }).clear, false);
 });
 
+// Second-opinion P1 (2026-11-10): the decision ran only proveIdentity and
+// ignored the refusals acceptRecoveredText checks first. Excerpt coverage alone
+// then cleared the flag on a url another critic's file already owns.
+test('fabricatedFlagClearDecision applies the url-change and date refusals before the identity proof', () => {
+  const realUrl = 'https://www.nytimes.com/2026/03/16/theater/joe-turner-review-real.html';
+  const c = candidateFile({ fabricatedEntry: true, source: 'web-search', url: null, dtliExcerpt: GOOD.slice(0, 240) });
+  const pre = JSON.parse(fs.readFileSync(c.filePath, 'utf8'));
+  // another critic's file in the same show already holds this url
+  fs.writeFileSync(path.join(path.dirname(c.filePath), 'nytimes--maya-phillips.json'),
+    JSON.stringify(base({ criticName: 'Maya Phillips', url: realUrl }), null, 2) + '\n');
+  const owned = gate.fabricatedFlagClearDecision({ filePath: c.filePath, preDiscovery: pre, fetchedText: GOOD, url: realUrl, llmVerified: true });
+  assert.equal(owned.clear, false, JSON.stringify(owned));
+  assert.match(owned.reason, /url change refused/);
+  // a page dated years before the production
+  const c3 = candidateFile({ fabricatedEntry: true, source: 'web-search', url: null, dtliExcerpt: GOOD.slice(0, 240) });
+  const pre3 = JSON.parse(fs.readFileSync(c3.filePath, 'utf8'));
+  const oldHtml = '<script type="application/ld+json">{"@type":"NewsArticle","datePublished":"2009-04-17T15:00:00Z"}</script>';
+  const dated = gate.fabricatedFlagClearDecision({ filePath: c3.filePath, preDiscovery: pre3, fetchedText: GOOD, url: realUrl, html: oldHtml, llmVerified: true });
+  assert.equal(dated.clear, false, JSON.stringify(dated));
+  assert.match(dated.reason, /date implausible/);
+});
+
 // Class guard (BRO-7171 item b): an invented-url flag clears ONLY behind the
 // gap-acceptance identity proof. Any new writer that sets it false/undefined/
 // null or deletes it fails here until it routes through fabricatedFlagClearDecision
@@ -562,6 +584,8 @@ test('class guard: fabricatedEntry is cleared only behind the identity proof', (
   assert.deepEqual(bad, []);
   const collector = fs.readFileSync(path.join(root, 'collect-review-texts.js'), 'utf8');
   assert.ok(collector.includes('fabricatedFlagClearDecision('), 'collector clear must go through fabricatedFlagClearDecision');
+  assert.ok(collector.includes('post.fabricatedEntry === true && post.url === review.url'),
+    'collector clears only when the stored url is the proven one (the invariant can refuse the move)');
 });
 
 // BRO-7171 item (a): a review excluded on a saved error page is recovered, and
