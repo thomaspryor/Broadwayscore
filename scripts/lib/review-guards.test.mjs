@@ -659,3 +659,85 @@ test('isRejectedByReasonExclusion: human wrong-production clear overrides wrong_
   // A non-true flag value is not a clear.
   assert.equal(isRejectedByReasonExclusion({ ...rejected, wrongProductionManualClear: 'yes' }), true);
 });
+
+/* BRO-7331: stale CV-promoted isNonReview that outlived a url-correction refetch.
+ * Fixture mirrors BRO-7326 frankie dailybeast--tim-teeman (synthetic filler body, no review text).
+ * The scorer skips flagged files, so the "independent ensemble score" the CV-promoted branch wants
+ * can never arrive; a corrected-url refetch re-verified as a review has to release the flag itself. */
+const { contentHash: cvContentHash } = require('./content-verifier.js');
+const BRO7331_BODY = Array.from({ length: 400 }, (_, i) => `word${i}`).join(' ');
+function bro7331Fixture(over = {}) {
+  return {
+    showId: 'frankie-and-johnny-in-the-clair-de-lune-2019',
+    outletId: 'dailybeast',
+    url: 'https://example.com/frankie-review',
+    urlCorrectedFrom: 'https://example.com/frankie-review?via=twitter_page',
+    fullText: BRO7331_BODY,
+    contentTier: 'complete',
+    textFetchedAt: '2026-11-10T10:00:00.000Z',
+    isNonReview: true,
+    isNonReviewReason: 'CV-promoted (not a review): This is a preview excerpt of the old page.',
+    contentVerificationPromoted: 'rebuild: promoted from contentVerification (llm:claude-haiku, high)',
+    contentVerification: {
+      isValid: true, articleType: 'review', articleTypeConfidence: 'high', confidence: 'high',
+      wrongArticle: false, wrongProduction: false, isFilmTv: false,
+      verifiedAt: '2026-11-10T10:00:05.000Z', contentHash: cvContentHash(BRO7331_BODY),
+    },
+    ...over,
+  };
+}
+
+test('BRO-7331: corrected-url refetch re-verified as a review releases a CV-promoted isNonReview and the scorer can score it', () => {
+  const d = bro7331Fixture();
+  assert.equal(isNonReviewDemotedByFreshCV(d, { forScoring: true }), true);
+  assert.equal(isIncludableForRebuild(d, undefined, undefined, { forScoring: true }), true);
+  // Rebuild keeps excluding it until the scorer has read the corrected page (no score, or only an older low-confidence one).
+  assert.equal(isNonReviewDemotedByFreshCV(d), false);
+  const oldScore = { score: 89, confidence: 'low' };
+  assert.equal(isNonReviewDemotedByFreshCV(bro7331Fixture({ llmScore: oldScore, assignedScore: 89, llmMetadata: { scoredAt: '2026-10-25T10:00:00.000Z' } })), false);
+  // Once the ensemble scores the corrected page with confidence, it counts for rebuild too.
+  assert.equal(isNonReviewDemotedByFreshCV(bro7331Fixture({ llmScore: { score: 80, confidence: 'high' }, llmMetadata: { scoredAt: '2026-11-11T10:00:00.000Z' } })), true);
+});
+
+test('BRO-7331: previousUrl alone records the correction when urlCorrectedFrom echoes the new url', () => {
+  const d = bro7331Fixture({ urlCorrectedFrom: 'https://example.com/frankie-review', previousUrl: 'https://example.com/old-listing' });
+  assert.equal(isNonReviewDemotedByFreshCV(d, { forScoring: true }), true);
+});
+
+test('BRO-7331: safeguards keep a real non-review excluded', () => {
+  const guards = {
+    'no recorded url correction': { urlCorrectedFrom: undefined },
+    'correction field only echoes the current url': { urlCorrectedFrom: 'https://example.com/frankie-review' },
+    'body under 300 words': { fullText: 'short body', contentVerification: { ...bro7331Fixture().contentVerification, contentHash: cvContentHash('short body') } },
+    'CV describes a different body (hash mismatch)': { contentVerification: { ...bro7331Fixture().contentVerification, contentHash: 'deadbeef' } },
+    'CV clean verdict was refused by a clear guard': { contentVerification: { ...bro7331Fixture().contentVerification, clearRefusal: { codes: ['same-url-collision'] } } },
+    'CV says wrong production': { contentVerification: { ...bro7331Fixture().contentVerification, wrongProduction: true } },
+    'CV says film/tv': { contentVerification: { ...bro7331Fixture().contentVerification, isFilmTv: true } },
+    'CV low confidence': { contentVerification: { ...bro7331Fixture().contentVerification, articleTypeConfidence: 'low', confidence: 'low' } },
+    'CV older than the fetch': { textFetchedAt: '2026-11-10T10:01:00.000Z' },
+    'live wrongShow flag': { wrongShow: true },
+    'body parked in wrongFullText, no live text': { fullText: '', wrongFullText: BRO7331_BODY },
+    'human-set flag': { isNonReviewReason: 'manual (not a review): forum thread' },
+    'classifier-set flag with no CV-promoted provenance still needs its own proof': { isNonReviewReason: 'gemini: not a review', classifiedAt: '2026-11-10T11:00:00.000Z' },
+  };
+  for (const [why, over] of Object.entries(guards)) {
+    assert.equal(isNonReviewDemotedByFreshCV(bro7331Fixture(over), { forScoring: true }), false, why);
+  }
+});
+
+test('BRO-7331: a pending refetch or text older than the url rewrite is still the old page, never released', () => {
+  assert.equal(isNonReviewDemotedByFreshCV(bro7331Fixture({ needsRefetch: true }), { forScoring: true }), false);
+  assert.equal(isNonReviewDemotedByFreshCV(bro7331Fixture({ urlUpdatedAt: '2026-11-10T12:00:00.000Z' }), { forScoring: true }), false);
+  assert.equal(isNonReviewDemotedByFreshCV(bro7331Fixture({ rejectedAt: '2026-11-10T09:00:00.000Z' }), { forScoring: true }), false);
+});
+
+test('BRO-7331: a not_a_review stamped before the correction no longer excludes a released file, a consensus one still does', () => {
+  const { isRejectedByReasonExclusion } = require('./review-guards.js');
+  assert.equal(isRejectedByReasonExclusion(bro7331Fixture({ rejectionReason: 'not_a_review' }), { forScoring: true }), false);
+  assert.equal(isRejectedByReasonExclusion(bro7331Fixture({ rejectionReason: 'not_a_review', rejectedBy: 'ensemble-scoreability-check', rejectionAgreeCount: 2 }), { forScoring: true }), true);
+  // Helper alone must not release a non-review typed CV (the exclusion path ANDs it with other demotion routes).
+  const { isUrlCorrectedReverifiedReview } = require('./review-guards.js');
+  const cv = bro7331Fixture().contentVerification;
+  assert.equal(isUrlCorrectedReverifiedReview(bro7331Fixture({ contentVerification: { ...cv, articleType: 'news' } })), false);
+  assert.equal(isUrlCorrectedReverifiedReview(bro7331Fixture({ contentVerification: { ...cv, articleTypeConfidence: 'low', confidence: 'low' } })), false);
+});
