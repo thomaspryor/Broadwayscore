@@ -2066,3 +2066,50 @@ jobs:
             -f alert_title="Daily Data Health Check Crashed" \
             -f alert_context='{"note":"Health check script crashed — BSC Daily email may not have sent."}' \
             -f run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+  # BRO-7329: quiet review-forecast pilot. Appends one dated row per upcoming Broadway show to
+  # ledger/YYYY-MM-DD.jsonl in the PRIVATE core-data repo (a committed forecast in this public repo
+  # would be a published claim) and a grade row 14 days after opening. No LLM calls. Own job so the
+  # health-check push budgets stay untouched. Advisory (CLAUDE.md §19): a failed night shows orange.
+  # Output is counts only (--quiet): the public Actions log must never carry an unopened-show forecast.
+  review-forecast-pilot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          sparse: 'false'
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: 22
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit --no-fund
+      - name: Record forecast, audience and Reddit rows (advisory)
+        id: record
+        # lint-allow-swallow: advisory pilot (CLAUDE.md §19); a failed night is orange and leaves a gap in the ledger dates.
+        continue-on-error: true
+        timeout-minutes: 25
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
+          REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
+        run: node scripts/record-review-forecast-pilot.mjs --dir=/tmp/core-data-checkout/review-forecast-pilot --quiet
+      - name: Push pilot rows to the private core-data repo
+        if: steps.record.outcome == 'success'
+        # lint-allow-swallow: advisory pilot (CLAUDE.md §19).
+        continue-on-error: true
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: review-forecast pilot rows ${{ github.run_id }}"
