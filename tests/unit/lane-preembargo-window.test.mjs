@@ -164,3 +164,24 @@ test('workflows: the lane job reads the night-wait output, the switch workflow o
   assert.equal((live.match(/vars\.LANE_PREEMBARGO_DIRECT_ONLY/g) || []).length, 1, 'night-wait is the only reader of the variable');
   assert.match(fs.readFileSync(new URL('../../.github/workflows/opening-night-lane-switch.yml', import.meta.url), 'utf8'), /LANE_PREEMBARGO_DIRECT_ONLY\]/);
 });
+
+test('laneStartMs: an embargo before 19:30 local starts at the normal embargo - 30 min; small-hours embargoes use the evening before', () => {
+  const pw = require('../../scripts/lib/opening-night-lane/preembargo-window.js');
+  const e1900 = Date.parse('2026-11-11T00:00:00Z'); // 19:00 New York
+  assert.equal(pw.laneStartMs({ embargoMs: e1900, timeZone: 'America/New_York', enabled: true }), e1900 - 30 * 60000);
+  const e0130 = Date.parse('2026-11-11T01:30:00Z'); // 20:30 New York
+  assert.equal(pw.laneStartMs({ embargoMs: e0130, timeZone: 'America/New_York', enabled: true }), Date.parse('2026-11-11T00:30:00Z'));
+});
+
+test('guardPorts marks in-window pages laneDirectOnly; inline scoring defers a short one without an attempt', async () => {
+  const pw = require('../../scripts/lib/opening-night-lane/preembargo-window.js');
+  const inline = require('../../scripts/lib/opening-night-lane/inline-score.js');
+  const g = pw.guardPorts({ enabled: true, fetchPage: async () => ({ content: '<html></html>' }), search: async () => [], isActive: () => true });
+  assert.equal((await g.fetchPage('https://a')).laneDirectOnly, true);
+  let clock = 0;
+  const s = inline.createInlineScoring({ show: { id: 'x', title: 'X' }, night: '2026-11-11', ledgerDir: require('node:fs').mkdtempSync(require('node:path').join(require('node:os').tmpdir(), 'pe9-')), now: () => clock, fetchPage: g.fetchPage, extractArticle: () => 'short', extractMeta: () => ({}), scoreText: async () => ({ score: 50 }), allShows: [] });
+  for (let i = 0; i < 8; i++) {
+    clock += 60000;
+    await assert.rejects(s.fetchReview({ url: 'https://www.timeout.com/newyork/theater/x-review', key: 'k' }), (e) => e.name !== 'LanePermanentError' && /deferred/.test(e.message));
+  }
+});

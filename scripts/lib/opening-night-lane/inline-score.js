@@ -169,7 +169,7 @@ function createInlineScoring({
     // BRO-7280: a fetch that failed because the pre-embargo window withheld the paid tiers is no attempt: try again soon.
     if (e && e.laneDeferred && !permanent) {
       const prior = state.get(id) || { attempts: 0, nextAt: 0, terminal: false };
-      prior.nextAt = now() + 30 * 1000;
+      prior.nextAt = now() + require('./preembargo-window').DEFER_RETRY_MS;
       state.set(id, prior);
       throw new LaneRetryError(`${stage} deferred (pre-embargo direct-only window), retry at ${new Date(prior.nextAt).toISOString()}: ${String((e && e.message) || e)}`);
     }
@@ -249,6 +249,9 @@ function createInlineScoring({
       // Read off the page whatever text is kept: a rating printed beside a teaser is still the critic's.
       let rating = null;
       try { rating = ratingFields(extractRating(html, text, { url: candidate.url, outletId: candidate.outletId, showTitle: show.title })); } catch { /* no rating is not a failure */ }
+      // BRO-7280: a short page fetched direct-only inside the pre-embargo window may be a block page the paid tiers would get past:
+      // retry once the window closes, never spend an attempt or a same-length strike on it.
+      if (page.laneDirectOnly && text.length < BODY_GATE_CHARS && !(text.length < minTextChars && thumbScore)) fail('fetch', key, Object.assign(new Error(`short page (${text.length} chars) fetched direct-only`), { laneDeferred: true }));
       if (text.length < minTextChars && !canFallBack) throw new Error(`no extractable text (${text.length} chars) and no aggregator score or paywall excerpt to fall back on`);
       // Under the scorer's body gate the scorer rejects the text for good (body_too_short), so a teaser or a page the
       // extractor cut short is a FETCH problem: fetch again on the backoff (BRO-6066: Deadline's 956-char extraction and
@@ -313,7 +316,7 @@ function createInlineScoring({
       // A hard paywall (401/403) is a paywall, not an outage: a T1 review with an aggregator score is never rejected for
       // it (trust-model paywallFallbackScore), so take the fallback now instead of retrying a door that stays shut. An
       // excerpt-only fallback retries first (a proxy's 403 is often transient) and is taken when the retries run out.
-      if (thumbScore && (e && (e.status === 401 || e.status === 403 || /\b40[13]\b/.test(String(e.message))))) {
+      if (thumbScore && !(e && e.laneDeferred) && (e && (e.status === 401 || e.status === 403 || /\b40[13]\b/.test(String(e.message))))) {
         failures.appendFailure(ledgerDir, { show: show.id, night, reviewKey: key, stage: 'fetch', reason: `${String(e.message)} (paywall: using the aggregator score)`, attempt: 1, terminal: false, at: now() });
         const out = fallback('paywall');
         fetched.set(key, out);

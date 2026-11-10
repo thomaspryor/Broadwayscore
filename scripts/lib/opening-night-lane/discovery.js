@@ -1505,6 +1505,7 @@ async function runDiscoveryPass({
               }
               continue;
             }
+            if (e && e.laneDeferred) continue; // BRO-7280: the pre-embargo window withheld the paid tiers: no strike, tried again next pass
             dateFail(key);
             continue;
           }

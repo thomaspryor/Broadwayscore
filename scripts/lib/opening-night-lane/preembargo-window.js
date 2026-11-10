@@ -49,6 +49,10 @@ function localWallClockMs(refMs, timeZone, hhmm = START_LOCAL) {
   return guess;
 }
 
+function localHour(ms, timeZone) {
+  return Number(new Intl.DateTimeFormat('en-GB', { timeZone, hour: '2-digit', hourCycle: 'h23' }).format(new Date(ms)));
+}
+
 /**
  * When the lane starts. Flag off: embargo - 30 min, as always. Flag on: 19:30 local on the embargo's local day, but no
  * earlier than embargo - 90 min and never later than embargo - 30 min. Pure.
@@ -59,7 +63,7 @@ function laneStartMs({ embargoMs, timeZone, enabled }) {
   let local;
   try {
     local = localWallClockMs(embargoMs, timeZone);
-    if (local >= embargoMs) local = localWallClockMs(embargoMs - 24 * 60 * MIN, timeZone); // a post-midnight embargo: 19:30 the evening before
+    if (local >= embargoMs && new Date(embargoMs).getTime() && localHour(embargoMs, timeZone) < 12) local = localWallClockMs(embargoMs - 24 * 60 * MIN, timeZone); // a small-hours embargo: 19:30 the evening before
   } catch { return normal; }
   return Math.min(normal, Math.max(local, embargoMs - MAX_LEAD_MIN * MIN));
 }
@@ -83,7 +87,7 @@ function guardPorts({ enabled, fetchPage, search, isActive }) {
   return {
     fetchPage: async (url, opts = {}) => {
       if (!isActive()) return fetchPage(url, opts);
-      try { return await fetchPage(url, { ...opts, directOnly: true }); } catch (e) { throw deferred(e, 'direct-only fetch in the pre-embargo window'); }
+      try { const r = await fetchPage(url, { ...opts, directOnly: true }); return r && typeof r === 'object' ? { ...r, laneDirectOnly: true } : r; } catch (e) { throw deferred(e, 'direct-only fetch in the pre-embargo window'); }
     },
     search: async (query, ...rest) => {
       if (isActive()) throw deferred(new Error('SERP refused: pre-embargo window'), 'paid SERP in the pre-embargo window');
