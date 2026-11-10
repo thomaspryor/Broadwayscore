@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-10T03:04:09.966Z",
+  "timestamp": "2026-11-10T03:49:27.487Z",
   "stats": {
-    "totalReviews": 81028,
-    "alreadyFlagged": 22174,
+    "totalReviews": 81035,
+    "alreadyFlagged": 22177,
     "dateGuardCatches": 219,
-    "directorMismatch": 3582,
+    "directorMismatch": 3583,
     "tvFilmSignals": 2280,
-    "londonSignals": 3655,
+    "londonSignals": 3657,
     "offBroadwaySignals": 752,
     "yearMismatch": 364,
-    "noPublishDate": 8441
+    "noPublishDate": 8440
   },
   "findings": [
     {
@@ -14197,7 +14197,7 @@
       "file": "londontheatre1--mary-beer.json",
       "score": 92,
       "publishDate": "2021-07-04",
-      "url": null,
+      "url": "https://www.londontheatre1.com/reviews/constellations-at-the-vaudeville-theatre-london-review/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -42458,6 +42458,20 @@
       "score": 88,
       "publishDate": "2022-12-12",
       "url": "https://www.timeout.com/newyork/theater/merrily-we-roll-along-revival-review-jonathan-groff-daniel-radcliffe",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"maria friedman\" from merrily-we-roll-along-2023"
+        }
+      ]
+    },
+    {
+      "showId": "merrily-we-roll-along-off-broadway-2022",
+      "file": "timteeman--unknown.json",
+      "score": 85,
+      "publishDate": null,
+      "url": "https://www.timteeman.com/2022/12/12/merrily-we-roll-along-a-slice-of-stunning-sondheim-starring-daniel-radcliffe/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -117297,6 +117311,19 @@
     },
     {
       "showId": "operation-mincemeat-west-end-2024",
+      "file": "fairypoweredproductions--unknown.json",
+      "publishDate": "2026-11-09",
+      "url": "https://fairypoweredproductions.com/operation-mincemeat-adds-34000-extra-tickets-to-uk-and-ireland-tour-extension-following-phenomenal-demand/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-west-end-2024",
       "file": "guardian--emma-john.json",
       "score": 82,
       "publishDate": "2023-05-10",
@@ -129355,6 +129382,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"brooklyn academy\""
+        }
+      ]
+    },
+    {
+      "showId": "the-full-monty-west-end-2014",
+      "file": "express-uk--simon-edge.json",
+      "score": 46,
+      "publishDate": "2014-02-26",
+      "url": "https://www.express.co.uk/entertainment/theatre/461864/The-Full-Monty-at-the-Noel-Coward-Theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },

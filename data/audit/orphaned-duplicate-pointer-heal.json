@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-10T02:54:53.380Z",
+  "generated": "2026-11-10T03:36:06.783Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
   "count": 47,
   "orphans": [
@@ -326,10 +326,10 @@
       "field": "duplicateOf"
     },
     {
-      "showId": "the-devil-wears-prada-west-end-2024",
-      "loserFile": "daily-mail--sonia-horon.json",
-      "targetFile": "mail-on-sunday--sonia-horon.json",
-      "reason": "orphaned-duplicate-heal: mail-on-sunday--sonia-horon.json was flagged invalid after daily-mail--sonia-horon.json was pointed at it (duplicateTextOf)",
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "loserFile": "times-uk--clive-davis.json",
+      "targetFile": "times-uk--dominic-maxwell.json",
+      "reason": "orphaned-duplicate-heal: times-uk--dominic-maxwell.json was flagged invalid after times-uk--clive-davis.json was pointed at it (duplicateTextOf)",
       "field": "duplicateTextOf"
     }
   ]
