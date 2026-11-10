@@ -23,7 +23,8 @@ export default function NearBreakEvenList({ shows }: { shows: NearBreakEvenShow[
       <h3 className="text-lg font-semibold text-white mb-1">Close to break-even</h3>
       <p className="text-gray-400 text-sm mb-3">
         Running shows up to 10% above our estimated break-even, or up to 10% under it only because it&apos;s a slow time
-        of year. No closing estimate: they could tip either way.
+        of year. No closing estimate: they could tip either way. Shows marked New have fewer than four weeks of grosses,
+        mostly previews, so it&apos;s too early to judge.
       </p>
       <div className="card rounded-xl divide-y divide-white/5">
         {shows.map((show) => (
@@ -33,7 +34,14 @@ export default function NearBreakEvenList({ shows }: { shows: NearBreakEvenShow[
             className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 px-4 py-3 hover:bg-surface-overlay focus-ring transition-colors"
             data-testid="near-breakeven-row"
           >
-            <span className="font-medium text-white">{show.title}</span>
+            <span className="flex items-center gap-2">
+              <span className="font-medium text-white">{show.title}</span>
+              {show.isNew && (
+                <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-surface-overlay text-fg-muted whitespace-nowrap">
+                  New, too early to judge
+                </span>
+              )}
+            </span>
             <span className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
               <span className="text-fg-muted whitespace-nowrap">
                 {formatCurrency(show.avgWeeklyGross)} vs ~{formatCurrency(show.breakEven)}
@@ -42,9 +50,11 @@ export default function NearBreakEvenList({ shows }: { shows: NearBreakEvenShow[
                 ~{(show.seasonCleared ? Math.floor : Math.round)(show.breakEvenRatio * 100)}% of break-even
                 {show.seasonCleared ? ' (slow season)' : ''}
               </span>
-              <span className={getTrendColor(show.trend, false)}>
-                <span aria-hidden="true">{getTrendIcon(show.trend, false)}</span> {TREND_LABELS[show.trend]}
-              </span>
+              {!show.isNew && (
+                <span className={getTrendColor(show.trend, false)}>
+                  <span aria-hidden="true">{getTrendIcon(show.trend, false)}</span> {TREND_LABELS[show.trend]}
+                </span>
+              )}
             </span>
           </Link>
         ))}

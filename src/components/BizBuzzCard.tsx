@@ -86,7 +86,9 @@ function ClosingOutlookNote({ outlook }: { outlook: ClosingOutlook }) {
       <span className="block text-gray-300 mt-0.5">
         {outlook.kind === 'watch'
           ? `No closing announced, but grosses are running at ~${pct}% of our estimated break-even. `
-          : `No closing announced. Grosses are running at ~${pct}% of our estimated break-even${outlook.seasonCleared ? ' in a slow time of year' : ''}, so it could tip either way.`}
+          : outlook.isNew
+            ? `New show, too early to judge. Its first weeks, mostly previews, are running at ~${pct}% of our estimated break-even.`
+            : `No closing announced. Grosses are running at ~${pct}% of our estimated break-even${outlook.seasonCleared ? ' in a slow time of year' : ''}, so it could tip either way.`}
         {outlook.kind === 'watch' &&
           (median
             ? `Our estimate: likely closes around ${median}${early || late ? ` (likely ${early ?? 'soon'} to ${late ?? 'later'})` : ''}.`
