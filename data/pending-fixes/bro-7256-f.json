@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7256-f",
   "planId": "fed4bfd2-d72b-4fc9-b269-bdd67eff7d0a",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-10T07:07:24.402Z",
   "submitter": {
     "name": null,
@@ -58,5 +58,34 @@
         "description": "Stage Raw review lists Easy Rhino Productions Through August 2"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-10T07:47:04.909Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "anastasia-regional-2026/oc-register--christopher-smith.json humanReviewScore: null -> 72"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "anastasia-regional-2026/oc-register--christopher-smith.json humanReviewNote: null -> \"BRO-7256: critic rating 3 of 4 stars, band 71-90; LLM read 63 from tone\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rorschach-regional-2026/theatreinla--unknown.json isNonReviewReason: null -> \"manual (not a review): theatreinla.com page aggregates ratings and excerpts from several outlets for Rorschach\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rorschach-regional-2026/theatreinla--unknown.json isNonReview: null -> true"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for clown-sh-t-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
