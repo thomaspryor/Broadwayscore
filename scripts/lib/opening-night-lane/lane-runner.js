@@ -67,13 +67,17 @@ function loadDone(ledgerDir, show, night, onDiskUrls = []) {
 async function runLaneNight({
   show, night, openingDate, timeZone, adapters, fetchText, ledgerDir, fetchReview, scoreReview, publishPorts, makePublishPorts, dryRun = false,
   onDiskUrls = [], onDiskRows = [], maxInflight = 2, midPassPublishAfterMs = 5 * 60 * 1000, midPassTickMs = Math.min(midPassPublishAfterMs, 30 * 1000), now, wait, forkClock, latency = {}, passIntervalMs = 2 * 60 * 1000, maxPasses = 1000, windowMs = 6 * 60 * 60 * 1000,
-  startedAt, serpClockStartMs, publishTimeoutMs, pollMs, reviewTextsDir, shouldStop = () => false, abandonPending = () => false, missingOutlets = [],
+  startedAt, serpClockStartMs, publishTimeoutMs, pollMs, reviewTextsDir, shouldStop = () => false, abandonPending = () => false, missingOutlets = [], settleComparative = null,
 } = {}) {
   for (const [k, v] of Object.entries({ show, night, adapters, fetchText, ledgerDir, fetchReview, scoreReview, now, wait })) {
     if (v === undefined || v === null) throw new Error(`lane-runner: ${k} is required`);
   }
   if (!publishPorts && !makePublishPorts) throw new Error('lane-runner: publishPorts or makePublishPorts is required');
   const persistReview = reviewTextsDir ? createLaneReviewWriter({ reviewTextsDir, show, night }) : null;
+  // BRO-7283: file name <-> review key of every row this run persisted, so a settle that moves a sibling's score can
+  // find the queued or published row to send again. `settledNotes` is the report of what the settle did (summary page).
+  const fileToKey = new Map();
+  const settled = { runs: 0, rescored: [], failed: [] };
   const t0 = startedAt === undefined ? now() : startedAt;
   const seen = loadDone(ledgerDir, show.id, night, onDiskUrls);
   const memo = discovery.loadMemo(ledgerDir, show.id, night); // survives a restart: final rejections are not re-fetched
@@ -241,7 +245,25 @@ async function runLaneNight({
         if (row.contentTier === 'truncated' && fetched.paywallTruncation) Object.assign(row, fetched.paywallTruncation);
         if (persistReview) {
           // The guarded writer can preserve a human correction. Publish precisely what survived on disk.
-          row = persistReview(row).row;
+          const persisted = persistReview(row);
+          row = persisted.row;
+          const base = require('path').basename(persisted.file);
+          fileToKey.set(base, a.key);
+          // BRO-7283: the same within-band comparative pass the regular pipeline runs hours later (and moves scores
+          // with). Run here, the published score is the settled one and that later pass finds the group settled.
+          // A failure publishes the isolated scores, exactly as before this existed.
+          if (settleComparative) {
+            try {
+              const res = await settleComparative({ file: base });
+              settled.runs++;
+              for (const c of (res && res.changed) || []) {
+                if (c.file === base) row = JSON.parse(require('fs').readFileSync(persisted.file, 'utf8'));
+                else if (fileToKey.has(c.file)) settled.rescored.push({ key: fileToKey.get(c.file), file: c.file });
+                settled.moved = (settled.moved || 0) + 1;
+              }
+              for (const u of (res && res.unsettled) || []) settled.failed.push({ file: base, reason: String(u.reason).slice(0, 160) });
+            } catch (e) { settled.failed.push({ file: base, reason: String((e && e.message) || e).slice(0, 160) }); }
+          }
         }
         // BRO-7196: publish the card row (outlet display name, display byline, the rebuild's pull quote), not the bare
         // file row; the quote stays off the file, where pullQuote means a human editor's pick. A row the rebuild would
@@ -267,6 +289,17 @@ async function runLaneNight({
           if (!stagedRemovals.some((x) => x.key === live.key)) stagedRemovals.push({ key: live.key, criticName: q.criticName, outletId: q.outletId, primaryKey: a.key, primaryOutlet: row.outletId });
         }
         pending.push({ key: a.key, row, scoredAt: now() });
+        // BRO-7283: siblings whose score the settle just moved ride in this batch: swapped in place when still queued,
+        // queued again (marked `rescored`, so publish waits for the new score to be live) when already on the site.
+        for (const sib of settled.rescored.splice(0)) {
+          const file = [...fileToKey].find(([, k]) => k === sib.key)?.[0];
+          if (!file || sib.key === a.key) continue;
+          let sibRow;
+          try { sibRow = card.toCardRow(JSON.parse(require('fs').readFileSync(require('path').join(reviewTextsDir, show.id, file), 'utf8')), show); } catch { continue; }
+          const queued = pending.find((q) => q.key === sib.key);
+          if (queued) queued.row = sibRow;
+          else pending.push({ key: sib.key, row: sibRow, scoredAt: now(), rescored: true });
+        }
         taken.add(`${criticKey(row.criticName)}|${row.outletId}`);
         seen.add(a.key);
         awaiting.delete(a.key);
@@ -304,7 +337,7 @@ async function runLaneNight({
       else await Promise.race(inflight);
     }
   }
-  return { passes, admitted, published, errors, failed, skipped, removedCopies, quoteless, unpublished: pending.map((r) => r.key), awaiting: [...awaiting], stopped };
+  return { passes, admitted, published, errors, failed, skipped, removedCopies, quoteless, unpublished: pending.map((r) => r.key), awaiting: [...awaiting], stopped, settle: settleComparative ? { runs: settled.runs, moved: settled.moved || 0, failed: settled.failed } : null };
 }
 
 module.exports = { runLaneNight, loadDone };

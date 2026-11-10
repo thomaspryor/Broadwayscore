@@ -55,7 +55,7 @@ function buildAdapters(fixture, now) {
 // scripts/lib .js requires are left out, as the rehearsal stubs the scorer and an edit there would only churn the
 // record (BRO-6276), except scripts/lib/models.js: it names the models the night scores with, and a swap must disarm. The shadow entry stays out on purpose (opening-night-lane-shadow.js header). The Browserbase
 // route (browserbase-fetch.js, BRO-6073) is in this folder, so the folder walk already covers it.
-const LANE_EXTRA_FILES = ['scripts/opening-night-lane.js', 'scripts/opening-night-lane-rehearse.js', '.github/workflows/opening-night-lane-live.yml', 'scripts/lib/models.js'];
+const LANE_EXTRA_FILES = ['scripts/opening-night-lane.js', 'scripts/opening-night-lane-rehearse.js', '.github/workflows/opening-night-lane-live.yml', 'scripts/lib/models.js', 'scripts/llm-scoring/comparative-core.ts'];
 const LANE_SCORER_ROOT = 'scripts/llm-scoring/ensemble-scorer.ts';
 
 /**
@@ -173,6 +173,7 @@ async function runRehearsal({ fixture, workDir, keep = false, scoreReview, regen
     const run = await runLaneNight({
       show, night, openingDate: fixture.openingDate, timeZone: fixture.timeZone, adapters: buildAdapters(fixture, now), fetchText, ledgerDir,
       fetchReview, scoreReview: scoreReview || ((row, fetched) => fetched.score), makePublishPorts, forkClock, maxInflight, dryRun: true,
+      settleComparative: async () => ({ changed: [], unsettled: [] }), // BRO-7283: the rehearsal runs the settle call path with a no-op pass
       reviewTextsDir: path.join(dir, 'review-texts'),
       now, wait, latency: lat, passIntervalMs: lat.passIntervalMs, windowMs: Math.max(45 * 60 * 1000, ...(fixture.waves || []).map((w) => w.afterMs + 15 * 60 * 1000)), startedAt: startMs, pollMs: lat.pollMs, publishTimeoutMs: maxMs,
     });

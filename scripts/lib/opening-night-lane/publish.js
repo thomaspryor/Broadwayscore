@@ -158,14 +158,19 @@ async function publishLaneReviews({ show, night, rows, ledgerDir, ports, now = (
 
   // Only rows that actually landed are awaited: a row the merge kept out (a manual correction won) will never show up.
   const pending = new Map(rows.filter((r) => landed.has(r.row)).map((r) => [canonicalUrl(r.row.url), r.key]));
+  // BRO-7283: a row re-published because its score moved (the comparative settle) is already live under its URL, so the
+  // URL alone would verify it before the new score deployed. It is verified once the live entry carries the new score.
+  const wantScore = new Map(rows.filter((r) => landed.has(r.row) && r.rescored === true && Number.isFinite(r.row.assignedScore)).map((r) => [canonicalUrl(r.row.url), r.row.assignedScore]));
   const verified = [];
   let timedOut = false;
   for (;;) {
     let live = null;
     try { live = await ports.fetchLiveShow(show); } catch { live = null; } // a failed poll is a missed poll, not a failure
     const liveUrls = new Set(((live && live.rv) || []).map((x) => canonicalUrl(x && x.u)).filter(Boolean));
+    const liveScore = new Map(((live && live.rv) || []).map((x) => [canonicalUrl(x && x.u), x && x.s]));
     for (const [url, key] of [...pending]) {
       if (!liveUrls.has(url)) continue;
+      if (wantScore.has(url) && liveScore.get(url) !== wantScore.get(url)) continue; // live, but still the old score
       log(key, 'verified-live'); verified.push(key); pending.delete(url);
     }
     if (!pending.size) break;
