@@ -102,10 +102,11 @@ function splitShell(cmd) {
  * subject of each `git commit` that did not fail, and the `message` of the connector's GitHub
  * file-push tools (the cloud landing path has no git commit command).
  */
-export function commitSubjects(events) {
+export function commitSubjects(events, upTo = events.length - 1) {
   const results = new Map(events.filter((e) => e.kind === 'tool_result').map((e) => [e.tool_use_id, e]));
   const out = [];
-  for (const e of events) {
+  for (const [i, e] of events.entries()) {
+    if (i > upTo) break;
     if (e.kind !== 'assistant_tool_use') continue;
     const r = results.get(e.id);
     if (!r) continue;
@@ -198,7 +199,7 @@ export function stopHookDecision({ lastMessage = '', events = null, env = proces
   const titles = cardTitles(events);
   // BRO-7301: titles describe symptoms, so a bug card often has no fix word. A feature-looking
   // title is only trusted when the commits it landed do not read as fixes either.
-  if (titles.length && !titles.some((t) => isFixCard({ title: t })) && !commitSubjects(events.slice(0, Math.max(...landedPushIndices(events)) + 1)).some(subjectReadsAsFix)) return { decision: 'allow', reason: 'not a fix card' };
+  if (titles.length && !titles.some((t) => isFixCard({ title: t })) && !commitSubjects(events, Math.max(...landedPushIndices(events))).some(subjectReadsAsFix)) return { decision: 'allow', reason: 'not a fix card' };
   if (hasRootCauseAnswer(answerTexts(events, lastMessage))) return { decision: 'allow', reason: 'rule-21 answer stated' };
   return { decision: 'block', reason: 'landed a fix with no rule-21 answer', message: MESSAGE };
 }
