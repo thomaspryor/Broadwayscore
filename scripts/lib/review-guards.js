@@ -6101,6 +6101,8 @@ function explainExclusion(data, show, filePath, opts) {
       const outletSynd = require('./review-normalization').normalizeOutlet(data.outletId || data.outlet || '');
       const synd = require('./syndication-pairs');
       const listDir = () => { try { return require('fs').readdirSync(require('path').dirname(filePath)); } catch { return []; } }; // unreadable dir: no portal rule
+      // BRO-7327: a stub primary is the copy when a complete secondary exists (mirrors rebuild).
+      if (synd.hasFullerSecondary(require('path').dirname(filePath), require('path').basename(filePath), data)) return 'knownSyndicationSecondary';
       const syndPrimaries = synd.getSyndicationPrimariesInDir(data.criticName, outletSynd, listDir, require('./review-normalization').normalizeOutlet);
       if (syndPrimaries.length) {
         let hasPrimary = false;

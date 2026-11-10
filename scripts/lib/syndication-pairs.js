@@ -267,13 +267,49 @@ function hasLiveSyndicationPrimary(showDir, primaries, criticName, { fileNames, 
       const pPath = path.join(showDir, f);
       const p = JSON.parse(fs.readFileSync(pPath, 'utf8'));
       if (p.criticName && criticFileSlug(p.criticName) !== criticFileSlug(criticName)) return false;
+      // BRO-7327: a stub primary does not shield the complete secondary it only teases.
+      if (hasFullerSecondary(showDir, f, p)) return false;
       return isLiveSyndicationPrimary(p) && (!extraCheck || !!extraCheck(p, pPath));
     } catch { return false; }
   });
 }
 
+const STUB_PRIMARY_TIERS = new Set(['truncated', 'excerpt', 'stub']);
+
+/**
+ * BRO-7327: true when `primaryData` (a KNOWN_SYNDICATION_PAIRS primary file) is only a
+ * stub (truncated/excerpt/stub tier) and a sibling secondary file for the same critic
+ * is a live, scored, complete copy. Mandell's New York Theater post for grand-horizons-2020
+ * was a ~150-word teaser ("Posted in ... DC Theatre Scene") ingested from Show Score, yet it
+ * shielded the full 982-word DC Theatre Scene review, so the live site carried the stub (77)
+ * and lost the complete review (85). The stub then yields: it is the copy, the complete
+ * secondary is the review.
+ * @param {string} showDir
+ * @param {string} primaryFileName
+ * @param {object} primaryData parsed primary file
+ * @param {{fileNames?: string[]}} [opts]
+ */
+function hasFullerSecondary(showDir, primaryFileName, primaryData, { fileNames } = {}) {
+  if (!primaryData || !STUB_PRIMARY_TIERS.has(primaryData.contentTier) || primaryData.manualContentTier) return false;
+  const critic = primaryData.criticName;
+  const config = getSyndicationConfig(critic);
+  if (!config || !isPrimaryFileFor(primaryFileName, [config.primary], critic)) return false;
+  const fs = require('fs');
+  const path = require('path');
+  let names;
+  try { names = fileNames || fs.readdirSync(showDir); } catch { return false; }
+  return names.some((f) => {
+    if (!isPrimaryFileFor(f, config.secondary, critic)) return false;
+    try {
+      const sec = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
+      if (sec.criticName && criticFileSlug(sec.criticName) !== criticFileSlug(critic)) return false;
+      return sec.contentTier === 'complete' && typeof sec.assignedScore === 'number' && isLiveSyndicationPrimary(sec);
+    } catch { return false; }
+  });
+}
+
 module.exports = {
-  criticFileSlug, isPrimaryFileFor, isLiveSyndicationPrimary, hasLiveSyndicationPrimary,
+  criticFileSlug, isPrimaryFileFor, isLiveSyndicationPrimary, hasLiveSyndicationPrimary, hasFullerSecondary,
   KNOWN_SYNDICATION_PAIRS, PUBLISHING_GROUPS, SYNDICATION_PORTAL_OUTLETS, sameCriticOutletsFrom, getSyndicationPrimariesInDir, getSyndicationConfig, isSecondaryOutlet,
   getSyndicationPrimaries, isCrossOutletSyndicationPair, isRenameCollisionPair,
 };
