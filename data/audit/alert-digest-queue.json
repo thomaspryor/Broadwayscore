@@ -471,5 +471,36 @@
       }
     ],
     "queuedAt": "2026-11-10T14:27:42.424Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7297-deadline-alert",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-7297-deadline-alert",
+    "description": "land.yml did not land land/bro-7297-deadline-alert: the scripts-lib-tests gate went red at 87c6832d7b. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42834739508",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7297-deadline-alert"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "87c6832d7b73da0d80e3388828b76371426f3a73"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42834739508"
+      }
+    ],
+    "queuedAt": "2026-11-10T14:35:39.402Z"
   }
 ]
