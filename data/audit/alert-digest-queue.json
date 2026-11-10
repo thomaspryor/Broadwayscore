@@ -1737,5 +1737,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-10T21:34:52.216Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-7327-mwb61lfb",
+    "title": "Landing blocked: resolve red on land/job/linear-BRO-7327-mwb61lfb",
+    "description": "land.yml did not land land/job/linear-BRO-7327-mwb61lfb: the resolve gate went red at 0d5ce0262e. The branch ref was left in place and nothing was pushed to main. First failure: REFUSED: resolve: land/job/linear-BRO-7327-mwb61lfb tip is cdcb5ae202 (origin/land/job/linear-BRO-7327-mwb61lfb), not the verified tip 0d5ce0262e — a newer push superseded this landing; nothing pushed (attempts 0, 39.3s) Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42902835443",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-7327-mwb61lfb"
+      },
+      {
+        "name": "gate",
+        "value": "resolve"
+      },
+      {
+        "name": "tip",
+        "value": "0d5ce0262e934fce61c269d78c2d910ba4fac7c3"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42902835443"
+      }
+    ],
+    "queuedAt": "2026-11-10T21:44:28.254Z"
   }
 ]
