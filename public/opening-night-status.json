@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-10T17:34:51.228Z",
+  "generatedAt": "2026-11-10T18:02:05.889Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -565,9 +565,9 @@
       "status": "open",
       "slug": "dogstar-off-west-end",
       "thumbnail": "/images/shows/dogstar-off-west-end-2026/thumbnail.webp",
-      "siteScore": 65.8,
-      "liveScore": 66,
-      "scoreDrift": 0.20000000000000284,
+      "siteScore": 66.53,
+      "liveScore": 67,
+      "scoreDrift": 0.46999999999999886,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -575,16 +575,15 @@
       "t1": 0,
       "t2": 5,
       "t3": 3,
-      "positive": 5,
-      "mixed": 3,
+      "positive": 6,
+      "mixed": 2,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "T1:0/3",
-          "hi-conf:5/6"
+          "T1:0/3"
         ],
-        "highConfidence": 5,
+        "highConfidence": 8,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -778,6 +777,18 @@
           "t3": 3,
           "p": 5,
           "m": 3,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-10T18:02:05.889Z",
+          "rc": 8,
+          "s": 66.53,
+          "t1": 0,
+          "t2": 5,
+          "t3": 3,
+          "p": 6,
+          "m": 2,
           "n": 0,
           "bc": "waiting"
         }
