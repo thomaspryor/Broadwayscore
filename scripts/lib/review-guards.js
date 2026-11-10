@@ -6096,7 +6096,7 @@ function explainExclusion(data, show, filePath, opts) {
   // Chris Jones's chicagotribune review is primary, nydailynews is secondary.
   // Needs filePath (like duplicateOf above) to scan sibling files — opt-in,
   // skipped when filePath is undefined.
-  if (filePath && data.criticName) {
+  if (filePath && data.criticName && !(opts && opts.ignoreKnownSyndication)) {
     {
       const outletSynd = require('./review-normalization').normalizeOutlet(data.outletId || data.outlet || '');
       const synd = require('./syndication-pairs');

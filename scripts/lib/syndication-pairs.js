@@ -274,6 +274,7 @@ function hasLiveSyndicationPrimary(showDir, primaries, criticName, { fileNames, 
   });
 }
 
+const _fullerInFlight = new Set();
 const STUB_PRIMARY_TIERS = new Set(['truncated', 'excerpt', 'stub']);
 
 /**
@@ -298,14 +299,20 @@ function hasFullerSecondary(showDir, primaryFileName, primaryData, { fileNames }
   const path = require('path');
   let names;
   try { names = fileNames || fs.readdirSync(showDir); } catch { return false; }
-  return names.some((f) => {
-    if (!isPrimaryFileFor(f, config.secondary, critic)) return false;
-    try {
-      const sec = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
-      if (sec.criticName && criticFileSlug(sec.criticName) !== criticFileSlug(critic)) return false;
-      return sec.contentTier === 'complete' && typeof sec.assignedScore === 'number' && isLiveSyndicationPrimary(sec);
-    } catch { return false; }
-  });
+  // Conservative on purpose (BRO-7327 review): exactly ONE secondary file for this critic may exist
+  // (two complete secondaries would both ship once the primary stands aside = double count), and it
+  // must itself be includable by the full rebuild gate chain (else both copies would be dropped).
+  const secFiles = names.filter((f) => isPrimaryFileFor(f, config.secondary, critic));
+  if (secFiles.length !== 1) return false;
+  const secPath = path.join(showDir, secFiles[0]);
+  if (_fullerInFlight.has(secPath)) return false; // explainExclusion(sec) -> hasLive... -> back here
+  _fullerInFlight.add(secPath);
+  try {
+    const sec = JSON.parse(fs.readFileSync(secPath, 'utf8'));
+    if (sec.criticName && criticFileSlug(sec.criticName) !== criticFileSlug(critic)) return false;
+    if (!(sec.contentTier === 'complete' && typeof sec.assignedScore === 'number' && isLiveSyndicationPrimary(sec))) return false;
+    return require('./review-guards').explainExclusion(sec, undefined, secPath, { ignoreKnownSyndication: true }) === null;
+  } catch { return false; } finally { _fullerInFlight.delete(secPath); }
 }
 
 module.exports = {

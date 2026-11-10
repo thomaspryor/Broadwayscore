@@ -9,7 +9,7 @@ const require = createRequire(import.meta.url);
 const synd = require('./syndication-pairs.js');
 const guards = require('./review-guards.js');
 
-const base = { showId: 'x-2020', criticName: 'Jonathan Mandell', assignedScore: 80 };
+const base = { showId: 'x-2020', criticName: 'Jonathan Mandell', assignedScore: 80, fullText: 'A full review. '.repeat(120), isFullReview: true };
 function mkdir(primary, secondary) {
   const d = fs.mkdtempSync(path.join(os.tmpdir(), 'synd-stub-'));
   if (primary) fs.writeFileSync(path.join(d, 'nyt-theater--jonathan-mandell.json'), JSON.stringify({ ...base, outletId: 'nyt-theater', outlet: 'New York Theater', ...primary }));
@@ -48,4 +48,15 @@ test('non-syndicated critic unaffected', () => {
   const d = fs.mkdtempSync(path.join(os.tmpdir(), 'synd-stub-'));
   fs.writeFileSync(path.join(d, 'nyt-theater--someone-else.json'), JSON.stringify({ ...base, criticName: 'Someone Else', outletId: 'nyt-theater', contentTier: 'truncated' }));
   assert.equal(synd.hasFullerSecondary(d, 'nyt-theater--someone-else.json', read(d, 'nyt-theater--someone-else.json')), false);
+});
+
+test('two complete secondaries: stub primary keeps shielding (no double count)', () => {
+  const d = mkdir({ contentTier: 'truncated' }, { contentTier: 'complete' });
+  fs.writeFileSync(path.join(d, 'faster-times--jonathan-mandell.json'), JSON.stringify({ ...base, outletId: 'faster-times', contentTier: 'complete' }));
+  assert.equal(synd.hasFullerSecondary(d, 'nyt-theater--jonathan-mandell.json', read(d, 'nyt-theater--jonathan-mandell.json')), false);
+});
+
+test('complete secondary excluded by another gate (rejectionReason): stub primary stays', () => {
+  const d = mkdir({ contentTier: 'truncated' }, { contentTier: 'complete', rejectionReason: 'not a review' });
+  assert.equal(synd.hasFullerSecondary(d, 'nyt-theater--jonathan-mandell.json', read(d, 'nyt-theater--jonathan-mandell.json')), false);
 });

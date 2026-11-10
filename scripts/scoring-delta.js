@@ -1369,6 +1369,10 @@ function decideInclusion(review, show, guards, filePath) {
   // criticName/outletId/outlet identify the primary in this side's directory.
   if (filePath) {
     const synd = guards.__syndicationLib || require('./lib/syndication-pairs');
+    // BRO-7327: a stub primary yields to a complete secondary (mirrors rebuild-all-reviews.js).
+    if (typeof synd.hasFullerSecondary === 'function' && synd.hasFullerSecondary(path.dirname(filePath), path.basename(filePath), review)) {
+      return { included: false, reason: 'knownSyndicationSecondary' };
+    }
     const normalize = guards.__dedupNormalizeOutlet || normalizeOutletCanonical;
     const primaries = (synd.getSyndicationPrimariesInDir || synd.getSyndicationPrimaries).call(synd, review.criticName, normalize(review.outletId || review.outlet || ''),
       () => { try { return require('fs').readdirSync(require('path').dirname(filePath)); } catch { return []; } }, normalize);
