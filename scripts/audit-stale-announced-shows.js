@@ -258,9 +258,9 @@ async function main() {
 
   // BRO-7277: carry firstFlaggedAt from the prior snapshot so the digest can
   // tell lag that clears on its own from a flag that needs a human.
-  let prevFlagged = [];
-  try { prevFlagged = JSON.parse(fs.readFileSync(AUDIT_FILE, 'utf8')).flagged || []; } catch { /* first run */ }
-  const flaggedStamped = carryFirstFlagged(prevFlagged, flagged, now.toISOString());
+  let prevSnap = null;
+  try { prevSnap = JSON.parse(fs.readFileSync(AUDIT_FILE, 'utf8')); } catch { /* first run */ }
+  const { flagged: flaggedStamped, history: firstFlaggedHistory } = carryFirstFlagged(prevSnap, flagged, now.toISOString(), !reviewTextsAvailable);
 
   const report = {
     generatedAt: now.toISOString(),
@@ -268,6 +268,7 @@ async function main() {
     reviewTextsAvailable,
     flaggedCount: flagged.length,
     flagged: flaggedStamped,
+    firstFlaggedHistory,
     postponedCount: postponed.length,
     postponed,
     orphanAckCount: orphanAcks.length,

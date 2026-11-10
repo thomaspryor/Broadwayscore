@@ -243,12 +243,22 @@ const GRACE_DAYS = 5;
  * snapshot when the same show was flagged there (so the stamp survives daily
  * re-runs and resets once a show drops out of the flagged set).
  */
-function carryFirstFlagged(prevFlagged, nowFlagged, nowIso) {
-  const prev = new Map();
-  for (const f of Array.isArray(prevFlagged) ? prevFlagged : []) {
+function carryFirstFlagged(prevSnap, nowFlagged, nowIso, degraded = false) {
+  const prev = new Map(Object.entries((prevSnap && prevSnap.firstFlaggedHistory) || {}));
+  for (const f of Array.isArray(prevSnap && prevSnap.flagged) ? prevSnap.flagged : []) {
     if (f && f.id && f.firstFlaggedAt) prev.set(f.id, f.firstFlaggedAt);
   }
-  return (nowFlagged || []).map(f => ({ ...f, firstFlaggedAt: prev.get(f.id) || nowIso }));
+  const flagged = (nowFlagged || []).map(f => ({ ...f, firstFlaggedAt: prev.get(f.id) || nowIso }));
+  // A run without review-texts (this one or the previous) drops every
+  // review-driven flag, so absence there is not recovery: keep the stamps as
+  // history so the 5-day clock is not restarted by a degraded run.
+  const keep = degraded || (prevSnap && prevSnap.reviewTextsAvailable === false);
+  const history = {};
+  if (keep) {
+    const now = new Set(flagged.map(f => f.id));
+    for (const [id, t] of prev) if (!now.has(id)) history[id] = t;
+  }
+  return { flagged, history };
 }
 
 /** Split flagged rows into persistent (flagged >= graceDays) and settling. */
@@ -269,7 +279,7 @@ const CHECK_NAME = 'Data quality: stale announced shows';
 /** Digest result for a fresh snapshot with flagged rows (age handling stays with the caller). */
 function staleAnnouncedFlagResult(snap, ageHours, now, graceDays = GRACE_DAYS) {
   const name = CHECK_NAME;
-  const age = `${Math.round(ageHours)}h`;
+  const age = `${Math.round(ageHours)}h`; // short form; caller's formatAge is not importable here
   const silencedNote = `${snap.silencedByContaminationCount ?? 0} silenced by contamination`;
   const { persistent, settling } = partitionByGrace(snap.flagged || [], now, graceDays);
   if (persistent.length > 0) {

@@ -30,9 +30,22 @@ test('no flags passes clean', () => {
 });
 
 test('carryFirstFlagged keeps the original stamp and resets for new shows', () => {
-  const out = carryFirstFlagged([{ id: 'a', firstFlaggedAt: '2026-11-01T00:00:00Z' }], [{ id: 'a' }, { id: 'c' }], '2026-11-10T00:00:00Z');
-  assert.equal(out[0].firstFlaggedAt, '2026-11-01T00:00:00Z');
-  assert.equal(out[1].firstFlaggedAt, '2026-11-10T00:00:00Z');
+  const { flagged } = carryFirstFlagged({ flagged: [{ id: 'a', firstFlaggedAt: '2026-11-01T00:00:00Z' }] }, [{ id: 'a' }, { id: 'c' }], '2026-11-10T00:00:00Z');
+  assert.equal(flagged[0].firstFlaggedAt, '2026-11-01T00:00:00Z');
+  assert.equal(flagged[1].firstFlaggedAt, '2026-11-10T00:00:00Z');
+});
+
+test('a degraded (no review-texts) run does not restart the clock', () => {
+  const day1 = { flagged: [{ id: 'a', firstFlaggedAt: '2026-11-01T00:00:00Z' }] };
+  const degraded = carryFirstFlagged(day1, [], '2026-11-05T00:00:00Z', true);
+  assert.deepEqual(degraded.history, { a: '2026-11-01T00:00:00Z' });
+  const next = carryFirstFlagged({ flagged: [], firstFlaggedHistory: degraded.history, reviewTextsAvailable: false }, [{ id: 'a' }], '2026-11-06T00:00:00Z');
+  assert.equal(next.flagged[0].firstFlaggedAt, '2026-11-01T00:00:00Z');
+});
+
+test('a healthy run that no longer flags a show forgets it', () => {
+  const r = carryFirstFlagged({ flagged: [{ id: 'a', firstFlaggedAt: '2026-11-01T00:00:00Z' }] }, [], '2026-11-05T00:00:00Z', false);
+  assert.deepEqual(r.history, {});
 });
 
 test('replay of the 30-day history: every transient flag run stays silent, persistent one warns', () => {
