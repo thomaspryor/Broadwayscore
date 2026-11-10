@@ -1410,5 +1410,33 @@
       }
     ],
     "queuedAt": "2026-11-10T04:42:23.742Z"
+  },
+  {
+    "conditionKey": "opening-night-publish-date-pre-opening:missing:the-visitors-off-broadway-2026",
+    "title": "Shipped review missing publishDate on The Visitors",
+    "description": "nytg/Allison Considine SHIPPED with no publishDate — cannot confirm post-opening: https://www.newyorktheatreguide.com/reviews/the-visitors-off-broadway-review",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-10T05:14:28.095Z"
+  },
+  {
+    "conditionKey": "opening-night-cv-wrongproduction-unhandled-here-there-are-blueberries-2026",
+    "title": "Unhandled CV.wrongProduction on Here There Are Blueberries",
+    "description": "nyt-theater/Jonathan Mandell (nyt-theater--jonathan-mandell.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This article reviews the New York Theater Workshop production of 'Here There Are Blueberries' (Off-Broadway, running thr — https://newyorktheater.me/2024/05/07/here-there-are-blueberries-theater-review/\nthewrap/Robert Hofler (thewrap--robert-hofler.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a valid theater review with critical assessment, but it reviews the off-Broadway New York Theatre Workshop produ — https://www.thewrap.com/here-there-are-blueberries-off-broadway-review/",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-10T05:14:31.350Z"
   }
 ]
