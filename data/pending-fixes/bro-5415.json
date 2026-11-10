@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5415",
   "planId": "52994f77-227b-43c8-8744-c35b165b0c67",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-10T05:36:55.895Z",
   "submitter": {
     "name": null,
@@ -50,5 +50,29 @@
         "description": "stranger-things-2024/variety--david-benedict.json: duplicateOf. Same Broadway url and near-identical text as variety--frank-rizzo.json; the Variety page JSON-LD author is Frank Rizzo. Already flagged wrongProduction; reviews.json credits Rizzo."
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-10T06:42:53.009Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "antigone-this-play-i-read-in-high-school-off-broadway-2026/nysr--melissa-rose-bernardo.json duplicateOf: null -> \"nysr--michael-sommers.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cats-the-jellicle-ball-2026/thewrap--jason-clark.json duplicateOf: null -> \"thewrap--robert-hofler.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "heathers-the-musical-off-west-end-2026/west-end-best-friend--cara-brazier.json duplicateOf: null -> \"west-end-best-friend--nick-wayne.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stranger-things-2024/variety--david-benedict.json duplicateOf: null -> \"variety--frank-rizzo.json\""
+    }
+  ],
+  "executedIn": "ci"
 }
