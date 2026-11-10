@@ -54,6 +54,15 @@ describe('slug-mismatch: Show Score provenance', () => {
     const r = run({ [MOTHER.id]: row('a', u1), 'other-show': row('b', u2) }, u1);
     assert.strictEqual(r.ok, false);
   });
+  it('treats a smart-quote/case variant of the same blurb as a copy', () => {
+    const r = run({ [MOTHER.id]: row('"Come for the acting"'), 'sumo-off-broadway-2025': row('\u201cCome for the Acting\u201d') });
+    assert.strictEqual(r.ok, false);
+  });
+  it('never vouches for a landing page', () => {
+    const u = 'https://www.talkinbroadway.com/page/world/index.html';
+    const r = run({ [MOTHER.id]: row('a', u), 'other-show': row('b', u) }, u);
+    assert.strictEqual(r.ok, false);
+  });
   it('flags when no Show Score file exists', () => {
     const r = check.run(MOTHER, { reviewTextsRoot: '/nonexistent', showScorePath: '/nonexistent/ss.json',
       reviewsDoc: { [MOTHER.id]: [{ outletId: 'o', criticName: 'c', url: URL }] } });

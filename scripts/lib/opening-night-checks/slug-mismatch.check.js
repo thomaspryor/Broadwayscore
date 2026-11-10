@@ -403,7 +403,10 @@ function roundupNamesShow(roundupUrls, wholeTitleSlugs, openingDate) {
  */
 const showScoreCache = new Map();
 function loadShowScoreDoc(file) {
-  if (showScoreCache.has(file)) return showScoreCache.get(file);
+  let mtime = 0;
+  try { mtime = fs.statSync(file).mtimeMs; } catch { /* missing */ }
+  const cacheKey = `${file}@${mtime}`;
+  if (showScoreCache.has(cacheKey)) return showScoreCache.get(cacheKey);
   let doc = null;
   try { doc = JSON.parse(fs.readFileSync(file, 'utf8')); } catch { /* no file: nothing vouches */ }
   const byUrl = new Map();   // normalized url -> [{ showId, excerpt }]
@@ -415,7 +418,7 @@ function loadShowScoreDoc(file) {
       byUrl.get(k).push({ showId: id, excerpt: String(r.excerpt || '').trim() });
     }
   }
-  showScoreCache.set(file, byUrl);
+  showScoreCache.set(cacheKey, byUrl);
   return byUrl;
 }
 function showScoreUrlKey(url) {
@@ -427,13 +430,17 @@ function showScoreVouches(showId, url, file) {
   if (!file) return false;
   const rows = loadShowScoreDoc(file).get(showScoreUrlKey(url));
   if (!rows) return false;
+  // A landing page (".../index.html", a bare root) is listed under unrelated
+  // shows; it is no post with sections, so it vouches for nothing.
+  if (/(^|\/)(index\.html?)?$/i.test(showScoreUrlKey(url).replace(/^[^/]*/, ''))) return false;
   const mine = rows.find(r => r.showId === showId);
   if (!mine || !mine.excerpt) return false;
+  const norm = (t) => t.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
   // Capsule signature: at least one OTHER show lists the same post with a
   // different blurb. A URL listed under this show alone (a Musto column filed
   // against a revival) is the contamination the check exists to catch.
   const others = rows.filter(r => r.showId !== showId);
-  return others.length > 0 && !others.some(r => r.excerpt === mine.excerpt);
+  return others.length > 0 && !others.some(r => norm(r.excerpt) === norm(mine.excerpt));
 }
 
 /**
