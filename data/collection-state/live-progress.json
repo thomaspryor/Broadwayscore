@@ -1,21 +1,43 @@
 {
-  "updatedAt": "2026-11-10T03:13:35.144Z",
-  "processed": 133,
-  "failed": 71,
-  "successRate": "65.2%",
+  "updatedAt": "2026-11-10T03:17:14.766Z",
+  "processed": 192,
+  "failed": 111,
+  "successRate": "63.4%",
   "tierBreakdown": {
-    "playwright": 92,
+    "playwright": 117,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 11,
-    "scrapingbee": 4,
-    "brightdata": 5,
+    "scrapingdog": 15,
+    "scrapingbee": 8,
+    "brightdata": 4,
     "archiveToday": 0,
-    "archive": 20
+    "archive": 45
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 16,
   "recentActivity": [
+    {
+      "t": "2026-11-10T02:05:36.288Z",
+      "event": "bb-session",
+      "session": "c0f00557",
+      "url": "https://www.talkinbroadway.com/page/regional/chicago/ch944.html"
+    },
+    {
+      "t": "2026-11-10T02:05:36.912Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-10T02:07:06.662Z",
+      "event": "bb-session",
+      "session": "53206c7b",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655418"
+    },
+    {
+      "t": "2026-11-10T02:07:07.320Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
     {
       "t": "2026-11-10T02:12:15.667Z",
       "event": "bb-session",
@@ -84,48 +106,27 @@
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-11-10T03:08:19.395Z",
+      "t": "2026-11-10T02:59:02.340Z",
       "event": "bb-session",
-      "session": "90c0f458",
-      "url": "https://www.nytimes.com/2026/11/06/theater/the-unbelievers-222-a-ghost-story-rev"
+      "session": "4c9610fb",
+      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
     },
     {
-      "t": "2026-11-10T03:08:20.020Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-10T03:08:20.225Z",
-      "event": "bb-session",
-      "session": "828d8602",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655599"
-    },
-    {
-      "t": "2026-11-10T03:08:20.820Z",
+      "t": "2026-11-10T02:59:03.011Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     },
     {
-      "t": "2026-11-10T03:08:36.763Z",
+      "t": "2026-11-10T03:00:48.774Z",
       "event": "bb-session",
-      "session": "54d5b886",
-      "url": "https://www.nytimes.com/2026/11/06/theater/the-unbelievers-222-a-ghost-story-rev"
+      "session": "1a7a3e44",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
     },
     {
-      "t": "2026-11-10T03:08:37.337Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-10T03:10:53.181Z",
+      "t": "2026-11-10T03:00:58.054Z",
       "event": "bb-session",
-      "session": "08bc305e",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655533"
-    },
-    {
-      "t": "2026-11-10T03:10:54.225Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
+      "session": "79a13826",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
     }
   ]
 }
