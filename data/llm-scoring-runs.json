@@ -1,5 +1,62 @@
 [
   {
+    "startedAt": "2026-11-08T17:51:32.562Z",
+    "completedAt": "2026-11-08T17:51:38.739Z",
+    "totalReviews": 51,
+    "processed": 1,
+    "skipped": 50,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 6093,
+      "output": 305,
+      "cacheRead": 3807,
+      "cacheWrite": 0,
+      "total": 15177
+    },
+    "costUsd": 0.0229484,
+    "runId": "42506443258",
+    "source": "index",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-11-08T17:56:35.170Z",
+    "completedAt": "2026-11-08T17:56:35.206Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "42506443258",
+    "source": "comparative-rescore",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-11-08T18:02:06.559Z",
+    "completedAt": "2026-11-08T18:02:06.561Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "42506165209",
+    "source": "comparative-rescore",
+    "errorDetails": []
+  },
+  {
     "startedAt": "2026-11-08T18:12:47.117Z",
     "completedAt": "2026-11-08T18:13:05.374Z",
     "totalReviews": 80857,
@@ -461016,33 +461073,8 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-10T00:18:00.134Z",
-    "completedAt": "2026-11-10T00:18:16.066Z",
-    "totalReviews": 4,
-    "processed": 3,
-    "skipped": 0,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 20437,
-      "output": 895,
-      "cacheRead": 11421,
-      "cacheWrite": 0,
-      "total": 48902
-    },
-    "costUsd": 0.07492470000000001,
-    "runId": "42726382900",
-    "source": "index",
-    "errorDetails": [
-      {
-        "showId": "the-getaway-driver-central-regional-2026",
-        "outletId": "consequence",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-11-10T00:23:12.473Z",
-    "completedAt": "2026-11-10T00:23:12.474Z",
+    "startedAt": "2026-11-10T00:32:55.761Z",
+    "completedAt": "2026-11-10T00:32:55.763Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -461055,61 +461087,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "42726382900",
-    "source": "comparative-rescore",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-11-10T00:28:04.702Z",
-    "completedAt": "2026-11-10T00:30:56.737Z",
-    "totalReviews": 81285,
-    "processed": 26,
-    "skipped": 81248,
-    "errors": 3,
-    "tokensUsed": {
-      "input": 211844,
-      "output": 9394,
-      "cacheRead": 125631,
-      "cacheWrite": 3807,
-      "total": 523382
-    },
-    "costUsd": 0.396241175,
-    "runId": "42727506181",
-    "source": "index",
-    "errorDetails": [
-      {
-        "showId": "an-enemy-of-the-people-west-end-2024",
-        "outletId": "times-uk",
-        "error": "Review text too short or missing"
-      },
-      {
-        "showId": "alterations-west-end-2025",
-        "outletId": "thestage",
-        "error": "Review text too short or missing"
-      },
-      {
-        "showId": "the-years-west-end-2025",
-        "outletId": "thestage",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-11-10T00:31:15.056Z",
-    "completedAt": "2026-11-10T00:31:22.104Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "42727506181",
+    "runId": "42726400725",
     "source": "comparative-rescore",
     "errorDetails": []
   }
