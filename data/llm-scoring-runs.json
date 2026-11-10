@@ -360472,21 +360472,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-10T20:01:24.402Z",
-    "completedAt": "2026-11-10T20:01:36.571Z",
-    "totalReviews": 41,
-    "processed": 2,
-    "skipped": 39,
+    "startedAt": "2026-11-10T20:01:20.193Z",
+    "completedAt": "2026-11-10T20:01:26.118Z",
+    "totalReviews": 56,
+    "processed": 1,
+    "skipped": 55,
     "errors": 0,
     "tokensUsed": {
-      "input": 13143,
-      "output": 601,
-      "cacheRead": 7614,
+      "input": 6143,
+      "output": 335,
+      "cacheRead": 3807,
       "cacheWrite": 0,
-      "total": 31889
+      "total": 15322
     },
-    "costUsd": 0.048814899999999994,
-    "runId": "42889943977",
+    "costUsd": 0.023399500000000004,
+    "runId": "42889923632",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -375632,8 +375632,8 @@
         "ourDistribution": {
           "up": 27,
           "flat": 12,
-          "down": 16,
-          "total": 55
+          "down": 17,
+          "total": 56
         },
         "dtliDistribution": {
           "up": 3,
@@ -375642,7 +375642,7 @@
           "total": 4
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Down thumbs differ by 29% (ours: 29%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Down thumbs differ by 30% (ours: 30%, theirs: 0%)"
       },
       {
         "showId": "fish-off-broadway-2026",
@@ -387640,10 +387640,10 @@
       {
         "showId": "mother-play-2024",
         "ourDistribution": {
-          "up": 24,
+          "up": 22,
           "flat": 13,
           "down": 2,
-          "total": 39
+          "total": 37
         },
         "dtliDistribution": {
           "up": 7,
@@ -387658,7 +387658,7 @@
           "total": 13
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 33% (ours: 33%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 35% (ours: 35%, theirs: 0%)"
       },
       {
         "showId": "mother-russia-off-broadway-2026",
@@ -411751,21 +411751,21 @@
     ]
   },
   {
-    "startedAt": "2026-11-10T20:06:33.815Z",
-    "completedAt": "2026-11-10T20:06:33.867Z",
-    "totalReviews": 0,
-    "processed": 0,
+    "startedAt": "2026-11-10T20:06:22.831Z",
+    "completedAt": "2026-11-10T20:06:29.399Z",
+    "totalReviews": 3,
+    "processed": 3,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 0,
-      "output": 0,
+      "input": 9225,
+      "output": 621,
       "cacheRead": 0,
       "cacheWrite": 0,
-      "total": 0
+      "total": 9846
     },
-    "costUsd": 0,
-    "runId": "42889943977",
+    "costUsd": 0.0242311,
+    "runId": "42889923632",
     "source": "comparative-rescore",
     "errorDetails": []
   }
