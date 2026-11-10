@@ -5981,7 +5981,15 @@ if (fs.existsSync(reviewsJsonPath) && process.env.URL_WIPE_HOLD_DISABLED !== 'tr
       newRows: allReviews,
       reviewTextsDir,
       skipShowIds: leasedShowIds,
+      validShowIds,
+      // Hold only files whose sole build-time exclusion was skippedNoScore (the wipe).
+      onlyNoScoreExcluded: (sid, f) => {
+        const ex = (stats.byShow[sid] && stats.byShow[sid].exclusions || []).filter(e => path.basename(String(e.file)) === f);
+        return ex.length > 0 && ex.every(e => e.reason === 'skippedNoScore');
+      },
     });
+    const soon = heldDetails.filter(d => d.expiringSoon);
+    if (soon.length) console.warn(`  ::warning::[URL-WIPE HOLD] ${soon.length} held review(s) expire within 24h and are still unscored; they will leave the site (${soon.slice(0, 5).map(d => d.showId + '/' + d.outletId).join(', ')})`);
     if (held.length) {
       for (const r of held) allReviews.push(r);
       allReviews.sort((a, b) => (a.showId !== b.showId ? a.showId.localeCompare(b.showId) : (a.outlet || '').localeCompare(b.outlet || '')));

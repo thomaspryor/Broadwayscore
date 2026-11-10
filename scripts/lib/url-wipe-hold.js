@@ -58,6 +58,7 @@ function holdRefusal(d, nowMs, windowMs) {
   if (!c || !c.at) return 'no-url-change-stamp';
   const at = Date.parse(c.at);
   if (!Number.isFinite(at)) return 'bad-stamp';
+  if (at > nowMs + 60 * 60 * 1000) return 'future-stamp';
   if (nowMs - at > windowMs) return 'stamp-expired';
   if (hasScoreSignal(d)) return 'has-score-signal';
   if (hasExclusionFlag(d)) return 'exclusion-flag';
@@ -74,11 +75,14 @@ function holdRefusal(d, nowMs, windowMs) {
  * @param {Set<string>} [o.skipShowIds] shows not rebuilt here (leased): never touched
  * @returns {{held: object[], heldDetails: object[], skipped: Map<string, number>}}
  */
-function findUrlWipeHolds({ previousRows, newRows, reviewTextsDir, nowMs = Date.now(), windowMs = DEFAULT_WINDOW_MS, skipShowIds = new Set() }) {
+function findUrlWipeHolds({ previousRows, newRows, reviewTextsDir, nowMs = Date.now(), windowMs = DEFAULT_WINDOW_MS, skipShowIds = new Set(), validShowIds = null, onlyNoScoreExcluded = null }) {
   const present = new Set(newRows.map(rowKey));
+  const showOutlet = (r) => `${r.showId}|${String(r.outletId || r.outlet || '').toLowerCase()}`;
+  const outletPresent = new Set(newRows.map(showOutlet));
   const droppedByShow = new Map();
   for (const r of previousRows || []) {
     if (!r || !r.showId || skipShowIds.has(r.showId)) continue;
+    if (validShowIds && !validShowIds.has(r.showId)) continue; // retired show: never revive
     if (present.has(rowKey(r))) continue;
     if (!droppedByShow.has(r.showId)) droppedByShow.set(r.showId, []);
     droppedByShow.get(r.showId).push(r);
@@ -108,6 +112,12 @@ function findUrlWipeHolds({ previousRows, newRows, reviewTextsDir, nowMs = Date.
       const pick = candidates.find(({ d }) => d._urlChangedClear) || candidates[0];
       const why = holdRefusal(pick.d, nowMs, windowMs);
       if (why) { bump(why); continue; }
+      // The new build already has this outlet for the show (e.g. critic name spelled
+      // differently): shipping the old row too would duplicate it.
+      if (outletPresent.has(showOutlet(row))) { bump('outlet-already-present'); continue; }
+      // Only the wipe may explain the drop: every other build-time gate (dedup, URL/year,
+      // cross-show, held shows) must have stayed silent for this file.
+      if (onlyNoScoreExcluded && !onlyNoScoreExcluded(showId, pick.f)) { bump('other-build-gate'); continue; }
       held.push(row);
       heldDetails.push({
         showId,
@@ -117,6 +127,8 @@ function findUrlWipeHolds({ previousRows, newRows, reviewTextsDir, nowMs = Date.
         assignedScore: row.assignedScore,
         clearedAt: pick.d._urlChangedClear.at,
         needsRefetch: pick.d.needsRefetch === true,
+        expiresAt: new Date(Date.parse(pick.d._urlChangedClear.at) + windowMs).toISOString(),
+        expiringSoon: Date.parse(pick.d._urlChangedClear.at) + windowMs - nowMs < 24 * 3600 * 1000,
       });
     }
   }

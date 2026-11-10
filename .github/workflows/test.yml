@@ -5013,6 +5013,11 @@ jobs:
       - name: Ordinal publishDate guard parity (BRO-2836)
         run: node scripts/test-ordinal-publishdate-guards.js
 
+      - name: URL-wipe hold class guard (BRO-7304)
+        # New gate lands advisory first (CLAUDE.md section 19); fixture-only, no core data.
+        continue-on-error: true
+        run: node scripts/test-url-wipe-hold.js
+
       - name: Run slow network-dependent unit tests
         # opening-night-checks-skeleton.test.mjs no longer touches the network
         # here (BRO-2778, verified 2026-10-12: 3/3 pass in ~1-8s with every

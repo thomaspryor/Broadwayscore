@@ -32,4 +32,18 @@ assert.strictEqual(r.skipped.get('no-source-file'), 1);
 assert.strictEqual(findUrlWipeHolds({ previousRows: prev, newRows: [row('s1', 'observer', 'David Cote')], reviewTextsDir: dir, nowMs: now }).held.length, 0);
 // Leased show is never touched.
 assert.strictEqual(findUrlWipeHolds({ previousRows: prev, newRows: [], reviewTextsDir: dir, nowMs: now, skipShowIds: new Set(['s1']) }).held.length, 0);
+// Retired show (not in shows.json) is never revived.
+assert.strictEqual(findUrlWipeHolds({ previousRows: prev, newRows: [], reviewTextsDir: dir, nowMs: now, validShowIds: new Set(['other']) }).held.length, 0);
+// Only the wipe may explain the drop: another build-time gate on the file blocks the hold.
+assert.strictEqual(findUrlWipeHolds({ previousRows: prev, newRows: [], reviewTextsDir: dir, nowMs: now, onlyNoScoreExcluded: () => false }).held.length, 0);
+assert.strictEqual(findUrlWipeHolds({ previousRows: prev, newRows: [], reviewTextsDir: dir, nowMs: now, onlyNoScoreExcluded: (s, f) => f === 'wiped.json' }).held.length, 1);
+// Same outlet already in the new build under a different critic spelling: no duplicate.
+assert.strictEqual(findUrlWipeHolds({ previousRows: prev, newRows: [row('s1', 'observer', 'D. Cote')], reviewTextsDir: dir, nowMs: now }).held.length, 0);
+// Future-dated stamp never holds; expiry flag set near the window end.
+put('s2', 'future', { outletId: 'x', criticName: 'F', _urlChangedClear: stamp('2027-01-01T00:00:00Z') });
+assert.strictEqual(findUrlWipeHolds({ previousRows: [row('s2', 'x', 'F')], newRows: [], reviewTextsDir: dir, nowMs: now }).held.length, 0);
+put('s3', 'late', { outletId: 'y', criticName: 'G', _urlChangedClear: stamp('2026-11-06T00:00:00Z') });
+const late = findUrlWipeHolds({ previousRows: [row('s3', 'y', 'G')], newRows: [], reviewTextsDir: dir, nowMs: now });
+assert.strictEqual(late.heldDetails[0].expiringSoon, true);
+fs.rmSync(dir, { recursive: true, force: true });
 console.log('url-wipe-hold: all assertions passed');
