@@ -1,0 +1,3505 @@
+{
+ "city": "los-angeles-ca",
+ "today": "2026-11-10",
+ "models": {
+  "gemini": "gemini-2.5-flash",
+  "openai": "gpt-5-mini"
+ },
+ "itemsChecked": {
+  "shows": 62,
+  "images": 58,
+  "publishedReviews": 193,
+  "excludedFiles": 14,
+  "reviewsWithoutText": 11,
+  "tourStops": 14,
+  "coverageShows": 42,
+  "totalShows": 62,
+  "totalPublished": 193
+ },
+ "flaggedByGemini": 115,
+ "flaggedByOpenAI": 103,
+ "flaggedLocalChecks": 14,
+ "flaggedAny": 133,
+ "flaggedByBoth": 92,
+ "triagedItems": 101,
+ "confirmed": 52,
+ "falsePositives": 49,
+ "fixed": 8,
+ "remaining": [
+  {
+   "item": "image:the-visit-regional-2026",
+   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
+  },
+  {
+   "item": "image:act-your-age-regional-2026",
+   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
+  },
+  {
+   "item": "image:crossing-delancey-regional-2026",
+   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
+  },
+  {
+   "item": "image:fremont-ave-regional-2026",
+   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
+  },
+  {
+   "item": "image:buyer-and-cellar-regional-2026",
+   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
+  },
+  {
+   "item": "image:ironbound-regional-2026",
+   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
+  },
+  {
+   "item": "image:the-physicists-regional-2026",
+   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
+  },
+  {
+   "item": "image:soul-sacrifice-regional-2026",
+   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
+  },
+  {
+   "item": "image:lakefront-regional-2026",
+   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
+  },
+  {
+   "item": "image:painted-ponies-regional-2026",
+   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
+  },
+  {
+   "item": "image:a-dolls-house-part-2-regional-2026",
+   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
+  },
+  {
+   "item": "image:dracula-the-musical-regional-2026",
+   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
+  },
+  {
+   "item": "image:melt-regional-2026",
+   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
+  },
+  {
+   "item": "image:winters-bench-regional-2026",
+   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
+  },
+  {
+   "item": "image:aktion-t4-regional-2026",
+   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
+  },
+  {
+   "item": "image:hangman-regional-2026",
+   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
+  },
+  {
+   "item": "image:kaiju-regional-2026",
+   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
+  },
+  {
+   "item": "image:crone-creed-regional-2026",
+   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
+  },
+  {
+   "item": "image:saint-megan-regional-2026",
+   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
+  },
+  {
+   "item": "image:rorschach-regional-2026",
+   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
+  },
+  {
+   "item": "image:heartbreak-house-regional-2026",
+   "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
+  },
+  {
+   "item": "coverage:the-visit-regional-2026",
+   "reason": "Review URL verified live and title-matched but absent from our corpus; ingest of registry-known outlets dispatched, others need outlet registry entries."
+  },
+  {
+   "item": "coverage:joseph-and-the-amazing-technicolor-dreamcoat-regional-2026",
+   "reason": "Review URL verified live and title-matched but absent from our corpus; ingest of registry-known outlets dispatched, others need outlet registry entries."
+  },
+  {
+   "item": "coverage:catch-me-if-you-can-regional-2026",
+   "reason": "Review URL verified live and title-matched but absent from our corpus; ingest of registry-known outlets dispatched, others need outlet registry entries."
+  },
+  {
+   "item": "coverage:the-full-monty-regional-2026",
+   "reason": "Review URL verified live and title-matched but absent from our corpus; ingest of registry-known outlets dispatched, others need outlet registry entries."
+  },
+  {
+   "item": "coverage:frankenstein-resurrection-regional-2026",
+   "reason": "Review URL verified live and title-matched but absent from our corpus; ingest of registry-known outlets dispatched, others need outlet registry entries."
+  },
+  {
+   "item": "coverage:applause-regional-2026",
+   "reason": "Review URL verified live and title-matched but absent from our corpus; ingest of registry-known outlets dispatched, others need outlet registry entries."
+  },
+  {
+   "item": "coverage:how-high-the-moon-regional-2026",
+   "reason": "Review URL verified live and title-matched but absent from our corpus; ingest of registry-known outlets dispatched, others need outlet registry entries."
+  },
+  {
+   "item": "coverage:painted-ponies-regional-2026",
+   "reason": "Review URL verified live and title-matched but absent from our corpus; ingest of registry-known outlets dispatched, others need outlet registry entries."
+  },
+  {
+   "item": "coverage:heroes-of-the-fourth-turning-regional-2026",
+   "reason": "Review URL verified live and title-matched but absent from our corpus; ingest of registry-known outlets dispatched, others need outlet registry entries."
+  },
+  {
+   "item": "coverage:a-case-for-the-existence-of-god-regional-2026",
+   "reason": "Review URL verified live and title-matched but absent from our corpus; ingest of registry-known outlets dispatched, others need outlet registry entries."
+  },
+  {
+   "item": "coverage:conscience-regional-2026",
+   "reason": "Review URL verified live and title-matched but absent from our corpus; ingest of registry-known outlets dispatched, others need outlet registry entries."
+  },
+  {
+   "item": "coverage:the-swan-regional-2026",
+   "reason": "Review URL verified live and title-matched but absent from our corpus; ingest of registry-known outlets dispatched, others need outlet registry entries."
+  },
+  {
+   "item": "coverage:pericles-regional-2026",
+   "reason": "Review URL verified live and title-matched but absent from our corpus; ingest of registry-known outlets dispatched, others need outlet registry entries."
+  },
+  {
+   "item": "coverage:the-best-medicine-regional-2026",
+   "reason": "Review URL verified live and title-matched but absent from our corpus; ingest of registry-known outlets dispatched, others need outlet registry entries."
+  },
+  {
+   "item": "coverage:the-dance-and-the-railroad-regional-2026",
+   "reason": "Review URL verified live and title-matched but absent from our corpus; ingest of registry-known outlets dispatched, others need outlet registry entries."
+  },
+  {
+   "item": "coverage:the-case-book-of-c-auguste-dupin-regional-2026",
+   "reason": "Review URL verified live and title-matched but absent from our corpus; ingest of registry-known outlets dispatched, others need outlet registry entries."
+  },
+  {
+   "item": "coverage:wives-regional-2026",
+   "reason": "Review URL verified live and title-matched but absent from our corpus; ingest of registry-known outlets dispatched, others need outlet registry entries."
+  },
+  {
+   "item": "coverage:texas-sodomy-regional-2026",
+   "reason": "Review URL verified live and title-matched but absent from our corpus; ingest of registry-known outlets dispatched, others need outlet registry entries."
+  },
+  {
+   "item": "coverage:hangman-regional-2026",
+   "reason": "Review URL verified live and title-matched but absent from our corpus; ingest of registry-known outlets dispatched, others need outlet registry entries."
+  },
+  {
+   "item": "coverage:the-feel-good-story-america-needs-right-now-regional-2026",
+   "reason": "Review URL verified live and title-matched but absent from our corpus; ingest of registry-known outlets dispatched, others need outlet registry entries."
+  },
+  {
+   "item": "coverage:kaiju-regional-2026",
+   "reason": "Review URL verified live and title-matched but absent from our corpus; ingest of registry-known outlets dispatched, others need outlet registry entries."
+  },
+  {
+   "item": "coverage:rorschach-regional-2026",
+   "reason": "Review URL verified live and title-matched but absent from our corpus; ingest of registry-known outlets dispatched, others need outlet registry entries."
+  },
+  {
+   "item": "coverage:heartbreak-house-regional-2026",
+   "reason": "Review URL verified live and title-matched but absent from our corpus; ingest of registry-known outlets dispatched, others need outlet registry entries."
+  }
+ ],
+ "untriaged": 32,
+ "flags": [
+  {
+   "kind": "show",
+   "id": "the-visit-regional-2026",
+   "label": "The Visit",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-09-13 / page 2026-09-09"
+  },
+  {
+   "kind": "show",
+   "id": "the-visit-regional-2026",
+   "label": "The Visit",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-09-13 / page 2026-09-09"
+  },
+  {
+   "kind": "image",
+   "id": "the-visit-regional-2026",
+   "label": "The Visit",
+   "model": "gemini",
+   "code": "image-not-key-art",
+   "detail": "A movie poster for 'The Visit' by M. Night Shyamalan, featuring 'Grandma's Rules' and bloody handprints on a cross-stitch background."
+  },
+  {
+   "kind": "show",
+   "id": "exit-the-king-regional-2026",
+   "label": "Exit The King",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-05-13 / page 2026-05-09"
+  },
+  {
+   "kind": "show",
+   "id": "exit-the-king-regional-2026",
+   "label": "Exit The King",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-05-03, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "exit-the-king-regional-2026",
+   "label": "Exit The King",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-05-13 / page 2026-05-03"
+  },
+  {
+   "kind": "show",
+   "id": "primary-trust-regional-2026",
+   "label": "Primary Trust",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-05-29 / page 2026-05-20"
+  },
+  {
+   "kind": "show",
+   "id": "primary-trust-regional-2026",
+   "label": "Primary Trust",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-05-20, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "primary-trust-regional-2026",
+   "label": "Primary Trust",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-05-29 / page 2026-05-20"
+  },
+  {
+   "kind": "show",
+   "id": "millennials-are-killing-musicals-regional-2026",
+   "label": "Millennials Are Killing Musicals",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-04-30, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "brigadoon-regional-2026",
+   "label": "Brigadoon",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-05-13, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "brigadoon-regional-2026",
+   "label": "Brigadoon",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-05-18 / page 2026-05-13"
+  },
+  {
+   "kind": "show",
+   "id": "brigadoon-regional-2026",
+   "label": "Brigadoon",
+   "model": "openai",
+   "code": "preview-date-missing",
+   "detail": "page 2026-05-13, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "anastasia-regional-2026",
+   "label": "Anastasia",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-06-05, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "anastasia-regional-2026",
+   "label": "Anastasia",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-06-08 / page 2026-06-19"
+  },
+  {
+   "kind": "show",
+   "id": "angry-raucous-and-shamelessly-gorgeous-regional-2026",
+   "label": "Angry, Raucous, and Shamelessly Gorgeous",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-06-10, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "angry-raucous-and-shamelessly-gorgeous-regional-2026",
+   "label": "Angry, Raucous, and Shamelessly Gorgeous",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-06-19 / page 2026-06-10"
+  },
+  {
+   "kind": "show",
+   "id": "joseph-and-the-amazing-technicolor-dreamcoat-regional-2026",
+   "label": "Joseph and the Amazing Technicolor Dreamcoat",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-07-10, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "joseph-and-the-amazing-technicolor-dreamcoat-regional-2026",
+   "label": "Joseph and the Amazing Technicolor Dreamcoat",
+   "model": "openai",
+   "code": "page-not-this-production",
+   "detail": ""
+  },
+  {
+   "kind": "show",
+   "id": "catch-me-if-you-can-regional-2026",
+   "label": "Catch Me If You Can",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-09-17, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "catch-me-if-you-can-regional-2026",
+   "label": "Catch Me If You Can",
+   "model": "openai",
+   "code": "preview-date-missing",
+   "detail": "page 2026-09-17, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "the-full-monty-regional-2026",
+   "label": "The Full Monty",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-07-31 / page 2026-07-17"
+  },
+  {
+   "kind": "show",
+   "id": "the-full-monty-regional-2026",
+   "label": "The Full Monty",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-07-31 / page 2026-07-17"
+  },
+  {
+   "kind": "show",
+   "id": "frankenstein-resurrection-regional-2026",
+   "label": "Frankenstein: Resurrection",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-09-25 / page 2026-09-11"
+  },
+  {
+   "kind": "show",
+   "id": "frankenstein-resurrection-regional-2026",
+   "label": "Frankenstein: Resurrection",
+   "model": "gemini",
+   "code": "closing-date",
+   "detail": "ours 2026-09-30 / page 2026-11-01"
+  },
+  {
+   "kind": "show",
+   "id": "frankenstein-resurrection-regional-2026",
+   "label": "Frankenstein: Resurrection",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-09-25 / page 2026-09-11"
+  },
+  {
+   "kind": "show",
+   "id": "frankenstein-resurrection-regional-2026",
+   "label": "Frankenstein: Resurrection",
+   "model": "openai",
+   "code": "closing-date",
+   "detail": "ours 2026-09-30 / page 2026-11-01"
+  },
+  {
+   "kind": "show",
+   "id": "red-regional-2026",
+   "label": "Red",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-06-10, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "red-regional-2026",
+   "label": "Red",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-06-16 / page 2026-06-10"
+  },
+  {
+   "kind": "show",
+   "id": "red-regional-2026",
+   "label": "Red",
+   "model": "openai",
+   "code": "preview-date-missing",
+   "detail": "page 2026-06-10, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "hymn-regional-2026",
+   "label": "Hymn",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-04-29, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "hymn-regional-2026",
+   "label": "Hymn",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-05-03 / page 2026-04-29"
+  },
+  {
+   "kind": "show",
+   "id": "hymn-regional-2026",
+   "label": "Hymn",
+   "model": "openai",
+   "code": "preview-date-missing",
+   "detail": "page 2026-04-30, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "cassatt-regional-2026",
+   "label": "Cassatt",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-06-01 / page 2026-05-29"
+  },
+  {
+   "kind": "show",
+   "id": "warsaw-regional-2026",
+   "label": "Warsaw",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-05-06 / page 2026-05-01"
+  },
+  {
+   "kind": "show",
+   "id": "warsaw-regional-2026",
+   "label": "Warsaw",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-04-28, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "warsaw-regional-2026",
+   "label": "Warsaw",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-05-06 / page 2026-04-29"
+  },
+  {
+   "kind": "show",
+   "id": "act-your-age-regional-2026",
+   "label": "Act Your Age",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-06-02 / page 2026-05-22"
+  },
+  {
+   "kind": "show",
+   "id": "act-your-age-regional-2026",
+   "label": "Act Your Age",
+   "model": "gemini",
+   "code": "closing-date",
+   "detail": "ours 2026-06-21 / page 2026-06-14"
+  },
+  {
+   "kind": "show",
+   "id": "act-your-age-regional-2026",
+   "label": "Act Your Age",
+   "model": "openai",
+   "code": "page-not-this-production",
+   "detail": ""
+  },
+  {
+   "kind": "image",
+   "id": "act-your-age-regional-2026",
+   "label": "Act Your Age",
+   "model": "gemini",
+   "code": "image-not-key-art",
+   "detail": "A blurry photo of the Two Roads Theatre exterior with its marquee displaying multiple event listings."
+  },
+  {
+   "kind": "image",
+   "id": "act-your-age-regional-2026",
+   "label": "Act Your Age",
+   "model": "openai",
+   "code": "image-not-key-art",
+   "detail": "Photograph of the Two Roads Theatre building and marquee, not specific key art for a particular production."
+  },
+  {
+   "kind": "image",
+   "id": "act-your-age-regional-2026",
+   "label": "Act Your Age",
+   "model": "openai",
+   "code": "image-other-title",
+   "detail": "image text \"TWO ROADS THEATRE\" / show \"Act Your Age\""
+  },
+  {
+   "kind": "show",
+   "id": "crossing-delancey-regional-2026",
+   "label": "Crossing Delancey",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-05-26 / page 2026-05-21"
+  },
+  {
+   "kind": "image",
+   "id": "crossing-delancey-regional-2026",
+   "label": "Crossing Delancey",
+   "model": "local",
+   "code": "no-poster",
+   "detail": "show has no images.poster"
+  },
+  {
+   "kind": "show",
+   "id": "ascent-regional-2026",
+   "label": "Ascent",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-05-12 / page 2026-05-09"
+  },
+  {
+   "kind": "show",
+   "id": "ascent-regional-2026",
+   "label": "Ascent",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-05-12 / page 2026-05-09"
+  },
+  {
+   "kind": "show",
+   "id": "fremont-ave-regional-2026",
+   "label": "Fremont Ave.",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-05-08 / page 2026-04-25"
+  },
+  {
+   "kind": "show",
+   "id": "fremont-ave-regional-2026",
+   "label": "Fremont Ave.",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-04-25, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "fremont-ave-regional-2026",
+   "label": "Fremont Ave.",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-05-08 / page 2026-05-01"
+  },
+  {
+   "kind": "show",
+   "id": "fremont-ave-regional-2026",
+   "label": "Fremont Ave.",
+   "model": "openai",
+   "code": "preview-date-missing",
+   "detail": "page 2026-04-25, ours empty"
+  },
+  {
+   "kind": "image",
+   "id": "fremont-ave-regional-2026",
+   "label": "Fremont Ave.",
+   "model": "gemini",
+   "code": "image-not-key-art",
+   "detail": "A night shot of the South Coast Repertory theatre building with its name illuminated above a reflective body of water."
+  },
+  {
+   "kind": "image",
+   "id": "fremont-ave-regional-2026",
+   "label": "Fremont Ave.",
+   "model": "openai",
+   "code": "image-not-key-art",
+   "detail": "Nighttime photo of the South Coast Repertory theatre building with its lights reflected in a pool."
+  },
+  {
+   "kind": "image",
+   "id": "fremont-ave-regional-2026",
+   "label": "Fremont Ave.",
+   "model": "openai",
+   "code": "image-other-title",
+   "detail": "image text \"SOUTH COAST\" / show \"Fremont Ave.\""
+  },
+  {
+   "kind": "image",
+   "id": "buyer-and-cellar-regional-2026",
+   "label": "Buyer & Cellar",
+   "model": "gemini",
+   "code": "image-not-key-art",
+   "detail": "A logo for The Victory Theatre Center featuring white text and a red wavy line on a black background."
+  },
+  {
+   "kind": "image",
+   "id": "buyer-and-cellar-regional-2026",
+   "label": "Buyer & Cellar",
+   "model": "openai",
+   "code": "image-not-key-art",
+   "detail": "Black banner featuring The Victory Theatre Center logo in white with a red stylized 'V'."
+  },
+  {
+   "kind": "image",
+   "id": "buyer-and-cellar-regional-2026",
+   "label": "Buyer & Cellar",
+   "model": "openai",
+   "code": "image-other-title",
+   "detail": "image text \"THE VICTORY THEATRE CENTER\" / show \"Buyer & Cellar\""
+  },
+  {
+   "kind": "image",
+   "id": "ironbound-regional-2026",
+   "label": "Ironbound",
+   "model": "gemini",
+   "code": "image-not-key-art",
+   "detail": "A white building with 'THE MADNANI THEATER' sign, decorated with red and white balloons and a red ribbon, suggesting an opening event."
+  },
+  {
+   "kind": "image",
+   "id": "ironbound-regional-2026",
+   "label": "Ironbound",
+   "model": "openai",
+   "code": "image-not-key-art",
+   "detail": "Photograph of the exterior of The Madnani Theater featuring a ribbon-cutting and red and white balloons."
+  },
+  {
+   "kind": "image",
+   "id": "ironbound-regional-2026",
+   "label": "Ironbound",
+   "model": "openai",
+   "code": "image-other-title",
+   "detail": "image text \"THE MADNANI THEATER\" / show \"Ironbound\""
+  },
+  {
+   "kind": "show",
+   "id": "the-physicists-regional-2026",
+   "label": "The Physicists",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-05-18 / page 2026-05-21"
+  },
+  {
+   "kind": "show",
+   "id": "the-physicists-regional-2026",
+   "label": "The Physicists",
+   "model": "openai",
+   "code": "page-not-this-production",
+   "detail": "“closes the season and runs from May 7-June 20.”"
+  },
+  {
+   "kind": "show",
+   "id": "the-physicists-regional-2026",
+   "label": "The Physicists",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-05-18 / page 2026-05-07"
+  },
+  {
+   "kind": "image",
+   "id": "the-physicists-regional-2026",
+   "label": "The Physicists",
+   "model": "openai",
+   "code": "image-not-key-art",
+   "detail": "Photograph of a white Mediterranean-style theatre building entrance (The Ivy Substation) with palm trees and a small marquee, not specific poster art."
+  },
+  {
+   "kind": "show",
+   "id": "grangeville-regional-2026",
+   "label": "Grangeville",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-06-01 / page 2026-05-29"
+  },
+  {
+   "kind": "show",
+   "id": "limonade-tous-les-jours-a-paris-love-story-regional-2026",
+   "label": "Limonade Tous les Jours: A Paris Love Story",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-05-26 / page 2026-05-22"
+  },
+  {
+   "kind": "show",
+   "id": "a-time-to-kill-regional-2026",
+   "label": "A Time To Kill",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-05-26 / page 2026-05-22"
+  },
+  {
+   "kind": "show",
+   "id": "a-time-to-kill-regional-2026",
+   "label": "A Time To Kill",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-05-26 / page 2026-05-22"
+  },
+  {
+   "kind": "show",
+   "id": "soul-sacrifice-regional-2026",
+   "label": "Soul Sacrifice",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-06-01 / page 2026-05-29"
+  },
+  {
+   "kind": "show",
+   "id": "soul-sacrifice-regional-2026",
+   "label": "Soul Sacrifice",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-05-28, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "soul-sacrifice-regional-2026",
+   "label": "Soul Sacrifice",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-06-01 / page 2026-05-29"
+  },
+  {
+   "kind": "image",
+   "id": "soul-sacrifice-regional-2026",
+   "label": "Soul Sacrifice",
+   "model": "gemini",
+   "code": "image-not-key-art",
+   "detail": "A photo of the exterior of Casa 0101 Theater, featuring signs for 'Acting Class' and 'Boyle Heights Latina Independent Film Extravaganza'."
+  },
+  {
+   "kind": "image",
+   "id": "soul-sacrifice-regional-2026",
+   "label": "Soul Sacrifice",
+   "model": "openai",
+   "code": "image-not-key-art",
+   "detail": "Photograph of the Casa 0101 theater facade/mural with website text, chalkboard signage, and floral arrangements at the entrance."
+  },
+  {
+   "kind": "image",
+   "id": "soul-sacrifice-regional-2026",
+   "label": "Soul Sacrifice",
+   "model": "openai",
+   "code": "image-other-title",
+   "detail": "image text \"CASA0101.ORG\" / show \"Soul Sacrifice\""
+  },
+  {
+   "kind": "show",
+   "id": "applause-regional-2026",
+   "label": "Applause",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-07-25 / page 2026-10-17"
+  },
+  {
+   "kind": "show",
+   "id": "applause-regional-2026",
+   "label": "Applause",
+   "model": "gemini",
+   "code": "closing-date",
+   "detail": "ours 2026-08-30 / page 2027-11-22"
+  },
+  {
+   "kind": "show",
+   "id": "lakefront-regional-2026",
+   "label": "Lakefront",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-08-04 / page 2026-07-23"
+  },
+  {
+   "kind": "show",
+   "id": "lakefront-regional-2026",
+   "label": "Lakefront",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-08-04 / page 2026-07-23"
+  },
+  {
+   "kind": "image",
+   "id": "lakefront-regional-2026",
+   "label": "Lakefront",
+   "model": "local",
+   "code": "no-poster",
+   "detail": "show has no images.poster"
+  },
+  {
+   "kind": "show",
+   "id": "how-high-the-moon-regional-2026",
+   "label": "How High the Moon",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-07-28 / page 2026-07-24"
+  },
+  {
+   "kind": "show",
+   "id": "how-high-the-moon-regional-2026",
+   "label": "How High the Moon",
+   "model": "openai",
+   "code": "page-not-this-production",
+   "detail": "How High the Moon\n\nSunday, August 16, 2026"
+  },
+  {
+   "kind": "show",
+   "id": "how-high-the-moon-regional-2026",
+   "label": "How High the Moon",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-07-28 / page 2026-08-16"
+  },
+  {
+   "kind": "show",
+   "id": "painted-ponies-regional-2026",
+   "label": "Painted Ponies",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-06-29 / page 2026-06-20"
+  },
+  {
+   "kind": "show",
+   "id": "painted-ponies-regional-2026",
+   "label": "Painted Ponies",
+   "model": "openai",
+   "code": "page-not-this-production",
+   "detail": ""
+  },
+  {
+   "kind": "image",
+   "id": "painted-ponies-regional-2026",
+   "label": "Painted Ponies",
+   "model": "gemini",
+   "code": "image-not-key-art",
+   "detail": "An exterior view of the Ruskin Group Theatre Co. entrance with its red oval sign."
+  },
+  {
+   "kind": "image",
+   "id": "painted-ponies-regional-2026",
+   "label": "Painted Ponies",
+   "model": "gemini",
+   "code": "image-other-title",
+   "detail": "image text \"RUSKIN GROUP THEATRE CO.\" / show \"Painted Ponies\""
+  },
+  {
+   "kind": "image",
+   "id": "painted-ponies-regional-2026",
+   "label": "Painted Ponies",
+   "model": "openai",
+   "code": "image-not-key-art",
+   "detail": "Photograph of the Ruskin Group Theatre entrance sign and seating—generic venue image, not key art for 'Painted Ponies'."
+  },
+  {
+   "kind": "image",
+   "id": "painted-ponies-regional-2026",
+   "label": "Painted Ponies",
+   "model": "openai",
+   "code": "image-other-title",
+   "detail": "image text \"RUSKIN GROUP THEATRE CO.\" / show \"Painted Ponies\""
+  },
+  {
+   "kind": "show",
+   "id": "clown-sh-t-regional-2026",
+   "label": "Clown Sh*t",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-07-21 / page 2026-01-23"
+  },
+  {
+   "kind": "show",
+   "id": "clown-sh-t-regional-2026",
+   "label": "Clown Sh*t",
+   "model": "gemini",
+   "code": "closing-date",
+   "detail": "ours 2026-08-03 / page 2026-02-02"
+  },
+  {
+   "kind": "show",
+   "id": "clown-sh-t-regional-2026",
+   "label": "Clown Sh*t",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-01-23, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "clown-sh-t-regional-2026",
+   "label": "Clown Sh*t",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-07-21 / page 2026-01-23"
+  },
+  {
+   "kind": "show",
+   "id": "a-dolls-house-part-2-regional-2026",
+   "label": "A Doll's House Part 2",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-07-16, ours empty"
+  },
+  {
+   "kind": "image",
+   "id": "a-dolls-house-part-2-regional-2026",
+   "label": "A Doll's House Part 2",
+   "model": "local",
+   "code": "no-poster",
+   "detail": "show has no images.poster"
+  },
+  {
+   "kind": "show",
+   "id": "ma-raineys-black-bottom-regional-2026-a-noise-within",
+   "label": "Ma Rainey's Black Bottom",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-09-01 / page 2026-08-29"
+  },
+  {
+   "kind": "show",
+   "id": "ma-raineys-black-bottom-regional-2026-a-noise-within",
+   "label": "Ma Rainey's Black Bottom",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-08-23, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "ma-raineys-black-bottom-regional-2026-a-noise-within",
+   "label": "Ma Rainey's Black Bottom",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-09-01 / page 2026-08-29"
+  },
+  {
+   "kind": "show",
+   "id": "ma-raineys-black-bottom-regional-2026-a-noise-within",
+   "label": "Ma Rainey's Black Bottom",
+   "model": "openai",
+   "code": "preview-date-missing",
+   "detail": "page 2026-08-23, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "the-arsonists-regional-2026",
+   "label": "The Arsonists",
+   "model": "gemini",
+   "code": "closing-date",
+   "detail": "ours 2026-09-20 / page 2026-09-27"
+  },
+  {
+   "kind": "show",
+   "id": "the-arsonists-regional-2026",
+   "label": "The Arsonists",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-09-01, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "the-arsonists-regional-2026",
+   "label": "The Arsonists",
+   "model": "gemini",
+   "code": "category",
+   "detail": "page says touring production"
+  },
+  {
+   "kind": "show",
+   "id": "dracula-the-musical-regional-2026",
+   "label": "Dracula: The Musical",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-08-11 / page 2025-08-08"
+  },
+  {
+   "kind": "show",
+   "id": "dracula-the-musical-regional-2026",
+   "label": "Dracula: The Musical",
+   "model": "gemini",
+   "code": "closing-date",
+   "detail": "ours 2026-08-23 / page 2025-08-31"
+  },
+  {
+   "kind": "show",
+   "id": "dracula-the-musical-regional-2026",
+   "label": "Dracula: The Musical",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-08-11 / page 2026-08-06"
+  },
+  {
+   "kind": "image",
+   "id": "dracula-the-musical-regional-2026",
+   "label": "Dracula: The Musical",
+   "model": "gemini",
+   "code": "image-not-key-art",
+   "detail": "The logo for The Nocturne Theatre features a golden, ornate crescent moon on a black background."
+  },
+  {
+   "kind": "image",
+   "id": "dracula-the-musical-regional-2026",
+   "label": "Dracula: The Musical",
+   "model": "gemini",
+   "code": "image-other-title",
+   "detail": "image text \"THE NOCTURNE THEATRE\" / show \"Dracula: The Musical\""
+  },
+  {
+   "kind": "image",
+   "id": "dracula-the-musical-regional-2026",
+   "label": "Dracula: The Musical",
+   "model": "openai",
+   "code": "image-not-key-art",
+   "detail": "A stylized gold crescent moon logo with ornate filigree and the words 'The Nocturne Theatre' on a black background."
+  },
+  {
+   "kind": "image",
+   "id": "dracula-the-musical-regional-2026",
+   "label": "Dracula: The Musical",
+   "model": "openai",
+   "code": "image-other-title",
+   "detail": "image text \"The Nocturne Theatre\" / show \"Dracula: The Musical\""
+  },
+  {
+   "kind": "show",
+   "id": "heroes-of-the-fourth-turning-regional-2026",
+   "label": "Heroes of the Fourth Turning",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-08-18 / page 2026-08-14"
+  },
+  {
+   "kind": "show",
+   "id": "heroes-of-the-fourth-turning-regional-2026",
+   "label": "Heroes of the Fourth Turning",
+   "model": "openai",
+   "code": "page-not-this-production",
+   "detail": ""
+  },
+  {
+   "kind": "show",
+   "id": "a-case-for-the-existence-of-god-regional-2026",
+   "label": "A Case for the Existence of God",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-09-10 / page 2026-08-30"
+  },
+  {
+   "kind": "show",
+   "id": "a-case-for-the-existence-of-god-regional-2026",
+   "label": "A Case for the Existence of God",
+   "model": "gemini",
+   "code": "closing-date",
+   "detail": "ours 2026-10-11 / page 2026-11-21"
+  },
+  {
+   "kind": "show",
+   "id": "a-case-for-the-existence-of-god-regional-2026",
+   "label": "A Case for the Existence of God",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-08-30, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "a-case-for-the-existence-of-god-regional-2026",
+   "label": "A Case for the Existence of God",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-09-10 / page 2026-08-30"
+  },
+  {
+   "kind": "show",
+   "id": "a-case-for-the-existence-of-god-regional-2026",
+   "label": "A Case for the Existence of God",
+   "model": "openai",
+   "code": "closing-date",
+   "detail": "ours 2026-10-11 / page 2026-11-21"
+  },
+  {
+   "kind": "show",
+   "id": "a-case-for-the-existence-of-god-regional-2026",
+   "label": "A Case for the Existence of God",
+   "model": "openai",
+   "code": "preview-date-missing",
+   "detail": "page 2026-08-30, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "in-the-tomb-of-ten-thousand-calendars-regional-2026",
+   "label": "In the Tomb of Ten Thousand Calendars",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-08-27, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "in-the-tomb-of-ten-thousand-calendars-regional-2026",
+   "label": "In the Tomb of Ten Thousand Calendars",
+   "model": "openai",
+   "code": "preview-date-missing",
+   "detail": "page 2026-08-27, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "conscience-regional-2026",
+   "label": "Conscience",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-08-26, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "conscience-regional-2026",
+   "label": "Conscience",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-08-29 / page 2026-08-26"
+  },
+  {
+   "kind": "show",
+   "id": "conscience-regional-2026",
+   "label": "Conscience",
+   "model": "openai",
+   "code": "preview-date-missing",
+   "detail": "page 2026-08-26, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "the-swan-regional-2026",
+   "label": "The Swan",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-08-26 / page 2026-08-21"
+  },
+  {
+   "kind": "show",
+   "id": "the-swan-regional-2026",
+   "label": "The Swan",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-08-26 / page 2026-08-21"
+  },
+  {
+   "kind": "show",
+   "id": "pericles-regional-2026",
+   "label": "Pericles",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-08-30 / page 2026-08-20"
+  },
+  {
+   "kind": "show",
+   "id": "pericles-regional-2026",
+   "label": "Pericles",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-08-30 / page 2026-08-20"
+  },
+  {
+   "kind": "show",
+   "id": "pericles-regional-2026",
+   "label": "Pericles",
+   "model": "openai",
+   "code": "preview-date-missing",
+   "detail": "page 2026-08-20, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "green-corridors-regional-2026-city-garage-theatre",
+   "label": "Green Corridors",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-08-25 / page 2026-08-22"
+  },
+  {
+   "kind": "show",
+   "id": "green-corridors-regional-2026-city-garage-theatre",
+   "label": "Green Corridors",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-08-21, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "a-number-regional-2026",
+   "label": "A Number",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-09-23 / page 2026-09-18"
+  },
+  {
+   "kind": "show",
+   "id": "a-number-regional-2026",
+   "label": "A Number",
+   "model": "openai",
+   "code": "page-not-this-production",
+   "detail": ""
+  },
+  {
+   "kind": "show",
+   "id": "september-10-regional-2026",
+   "label": "September 10",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-09-15 / page 2026-09-11"
+  },
+  {
+   "kind": "show",
+   "id": "the-best-medicine-regional-2026",
+   "label": "The Best Medicine",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-10-14 / page 2026-10-10"
+  },
+  {
+   "kind": "show",
+   "id": "the-best-medicine-regional-2026",
+   "label": "The Best Medicine",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-10-07, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "the-best-medicine-regional-2026",
+   "label": "The Best Medicine",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-10-14 / page 2026-10-10"
+  },
+  {
+   "kind": "show",
+   "id": "the-best-medicine-regional-2026",
+   "label": "The Best Medicine",
+   "model": "openai",
+   "code": "preview-date-missing",
+   "detail": "page 2026-10-07, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "the-best-medicine-regional-2026",
+   "label": "The Best Medicine",
+   "model": "local",
+   "code": "closing-unsourced",
+   "detail": "closingDateSource missing"
+  },
+  {
+   "kind": "show",
+   "id": "christie-in-love-regional-2026",
+   "label": "Christie In Love",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-08-31 / page 2026-08-28"
+  },
+  {
+   "kind": "show",
+   "id": "christie-in-love-regional-2026",
+   "label": "Christie In Love",
+   "model": "openai",
+   "code": "page-not-this-production",
+   "detail": ""
+  },
+  {
+   "kind": "show",
+   "id": "the-dance-and-the-railroad-regional-2026",
+   "label": "The Dance and the Railroad",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-10-01, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "the-dance-and-the-railroad-regional-2026",
+   "label": "The Dance and the Railroad",
+   "model": "openai",
+   "code": "preview-date-missing",
+   "detail": "page 2026-10-01, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "melt-regional-2026",
+   "label": "Melt",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-09-24, ours empty"
+  },
+  {
+   "kind": "image",
+   "id": "melt-regional-2026",
+   "label": "Melt",
+   "model": "openai",
+   "code": "image-other-title",
+   "detail": "image text \"What If?\" / show \"Melt\""
+  },
+  {
+   "kind": "show",
+   "id": "winters-bench-regional-2026",
+   "label": "Winter's Bench",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-08-29, ours empty"
+  },
+  {
+   "kind": "image",
+   "id": "winters-bench-regional-2026",
+   "label": "Winter's Bench",
+   "model": "gemini",
+   "code": "image-not-key-art",
+   "detail": "The image displays the logo for 24th Street Theatre, featuring a stylized '24' in a blue circle, with the theatre's name and slogan 'More Than Just Plays'."
+  },
+  {
+   "kind": "image",
+   "id": "winters-bench-regional-2026",
+   "label": "Winter's Bench",
+   "model": "gemini",
+   "code": "image-other-title",
+   "detail": "image text \"24th Street Theatre\" / show \"Winter's Bench\""
+  },
+  {
+   "kind": "image",
+   "id": "winters-bench-regional-2026",
+   "label": "Winter's Bench",
+   "model": "openai",
+   "code": "image-not-key-art",
+   "detail": "A simple banner-style logo for 24th Street Theatre with the slogan 'More Than Just Plays', not specific key art for a production."
+  },
+  {
+   "kind": "image",
+   "id": "winters-bench-regional-2026",
+   "label": "Winter's Bench",
+   "model": "openai",
+   "code": "image-other-title",
+   "detail": "image text \"24th Street Theatre\nMore Than Just Plays\" / show \"Winter's Bench\""
+  },
+  {
+   "kind": "show",
+   "id": "the-case-book-of-c-auguste-dupin-regional-2026",
+   "label": "The Case-Book of C. Auguste Dupin",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-09-23 / page 2026-09-17"
+  },
+  {
+   "kind": "show",
+   "id": "the-case-book-of-c-auguste-dupin-regional-2026",
+   "label": "The Case-Book of C. Auguste Dupin",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-09-23 / page 2026-09-17"
+  },
+  {
+   "kind": "show",
+   "id": "aktion-t4-regional-2026",
+   "label": "Aktion T4",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-09-08 / page 2026-09-02"
+  },
+  {
+   "kind": "show",
+   "id": "aktion-t4-regional-2026",
+   "label": "Aktion T4",
+   "model": "openai",
+   "code": "page-not-this-production",
+   "detail": ""
+  },
+  {
+   "kind": "image",
+   "id": "aktion-t4-regional-2026",
+   "label": "Aktion T4",
+   "model": "gemini",
+   "code": "image-not-key-art",
+   "detail": "The image displays the logo for Thymele Arts, with the words 'THYMELE' in dark blue on a yellow background and 'ARTS' in yellow on a dark blue background, separated by a diagonal line."
+  },
+  {
+   "kind": "image",
+   "id": "aktion-t4-regional-2026",
+   "label": "Aktion T4",
+   "model": "gemini",
+   "code": "image-other-title",
+   "detail": "image text \"THYMELE ARTS\" / show \"Aktion T4\""
+  },
+  {
+   "kind": "image",
+   "id": "aktion-t4-regional-2026",
+   "label": "Aktion T4",
+   "model": "openai",
+   "code": "image-not-key-art",
+   "detail": "Diagonal yellow and blue graphic featuring the bold text 'THYMELE ARTS', appears to be a company logo or banner rather than key art for a specific production."
+  },
+  {
+   "kind": "image",
+   "id": "aktion-t4-regional-2026",
+   "label": "Aktion T4",
+   "model": "openai",
+   "code": "image-other-title",
+   "detail": "image text \"THYMELE ARTS\" / show \"Aktion T4\""
+  },
+  {
+   "kind": "show",
+   "id": "wives-regional-2026",
+   "label": "Wives",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-10-08, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "wives-regional-2026",
+   "label": "Wives",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-10-13 / page 2026-10-08"
+  },
+  {
+   "kind": "show",
+   "id": "the-trail-to-oregon-regional-2026",
+   "label": "The Trail to Oregon!",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-09-12 / page 2026-08-28"
+  },
+  {
+   "kind": "show",
+   "id": "the-trail-to-oregon-regional-2026",
+   "label": "The Trail to Oregon!",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-09-12 / page 2026-08-28"
+  },
+  {
+   "kind": "show",
+   "id": "the-trail-to-oregon-regional-2026",
+   "label": "The Trail to Oregon!",
+   "model": "openai",
+   "code": "category",
+   "detail": "page says touring production"
+  },
+  {
+   "kind": "show",
+   "id": "texas-sodomy-regional-2026",
+   "label": "Texas Sodomy",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-09-10, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "texas-sodomy-regional-2026",
+   "label": "Texas Sodomy",
+   "model": "openai",
+   "code": "page-not-this-production",
+   "detail": ""
+  },
+  {
+   "kind": "show",
+   "id": "hangman-regional-2026",
+   "label": "Hangman",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-09-20 / page 2026-08-29"
+  },
+  {
+   "kind": "show",
+   "id": "hangman-regional-2026",
+   "label": "Hangman",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-08-28, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "hangman-regional-2026",
+   "label": "Hangman",
+   "model": "gemini",
+   "code": "title",
+   "detail": "ours \"Hangman\" / page \"Hangmen\""
+  },
+  {
+   "kind": "show",
+   "id": "hangman-regional-2026",
+   "label": "Hangman",
+   "model": "openai",
+   "code": "page-not-this-production",
+   "detail": "Aug. 29 – Sept. 26, 2026"
+  },
+  {
+   "kind": "show",
+   "id": "hangman-regional-2026",
+   "label": "Hangman",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-09-20 / page 2026-08-29"
+  },
+  {
+   "kind": "show",
+   "id": "hangman-regional-2026",
+   "label": "Hangman",
+   "model": "openai",
+   "code": "title",
+   "detail": "ours \"Hangman\" / page \"HANGMEN\""
+  },
+  {
+   "kind": "image",
+   "id": "hangman-regional-2026",
+   "label": "Hangman",
+   "model": "local",
+   "code": "no-poster",
+   "detail": "show has no images.poster"
+  },
+  {
+   "kind": "show",
+   "id": "kaiju-regional-2026",
+   "label": "Kaiju",
+   "model": "gemini",
+   "code": "closing-date",
+   "detail": "ours 2026-11-22 / page 2026-11-01"
+  },
+  {
+   "kind": "show",
+   "id": "kaiju-regional-2026",
+   "label": "Kaiju",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-09-22, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "kaiju-regional-2026",
+   "label": "Kaiju",
+   "model": "openai",
+   "code": "preview-date-missing",
+   "detail": "page 2026-09-22, ours empty"
+  },
+  {
+   "kind": "image",
+   "id": "kaiju-regional-2026",
+   "label": "Kaiju",
+   "model": "gemini",
+   "code": "image-not-key-art",
+   "detail": "A man holding a microphone sits next to a woman with curly red hair who is pointing."
+  },
+  {
+   "kind": "show",
+   "id": "kaiju-regional-2026",
+   "label": "Kaiju",
+   "model": "local",
+   "code": "closing-unsourced",
+   "detail": "closingDateSource missing"
+  },
+  {
+   "kind": "show",
+   "id": "spiders-web-regional-2026",
+   "label": "Spider's Web",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-09-29 / page 2026-09-25"
+  },
+  {
+   "kind": "show",
+   "id": "spiders-web-regional-2026",
+   "label": "Spider's Web",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-09-29 / page 2026-09-25"
+  },
+  {
+   "kind": "show",
+   "id": "crone-creed-regional-2026",
+   "label": "Crone Creed",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-10-05 / page 2026-09-30"
+  },
+  {
+   "kind": "show",
+   "id": "crone-creed-regional-2026",
+   "label": "Crone Creed",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-10-05 / page 2026-09-30"
+  },
+  {
+   "kind": "image",
+   "id": "crone-creed-regional-2026",
+   "label": "Crone Creed",
+   "model": "gemini",
+   "code": "image-not-key-art",
+   "detail": "An exterior view of the El Portal Theatre marquee and sidewalk at dusk."
+  },
+  {
+   "kind": "image",
+   "id": "crone-creed-regional-2026",
+   "label": "Crone Creed",
+   "model": "openai",
+   "code": "image-not-key-art",
+   "detail": "Street-level photo of a historic theater marquee and entrance on a palm-lined boulevard."
+  },
+  {
+   "kind": "show",
+   "id": "saint-megan-regional-2026",
+   "label": "Saint Megan",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-10-14 / page 2026-10-10"
+  },
+  {
+   "kind": "show",
+   "id": "saint-megan-regional-2026",
+   "label": "Saint Megan",
+   "model": "gemini",
+   "code": "closing-date",
+   "detail": "ours 2026-11-15 / page 2026-11-22"
+  },
+  {
+   "kind": "show",
+   "id": "saint-megan-regional-2026",
+   "label": "Saint Megan",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-10-04, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "saint-megan-regional-2026",
+   "label": "Saint Megan",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-10-14 / page 2026-10-10"
+  },
+  {
+   "kind": "image",
+   "id": "saint-megan-regional-2026",
+   "label": "Saint Megan",
+   "model": "gemini",
+   "code": "image-not-key-art",
+   "detail": "An exterior shot of the Matrix Theatre building, featuring its name on the roof and marquee, with blank panels where show titles would be displayed."
+  },
+  {
+   "kind": "image",
+   "id": "saint-megan-regional-2026",
+   "label": "Saint Megan",
+   "model": "openai",
+   "code": "image-not-key-art",
+   "detail": "Photograph of the Matrix Theatre entrance and marquee reading 'Matrix Theatre Company' with blank poster panels."
+  },
+  {
+   "kind": "image",
+   "id": "saint-megan-regional-2026",
+   "label": "Saint Megan",
+   "model": "openai",
+   "code": "image-other-title",
+   "detail": "image text \"MATRIX THEATRE COMPANY\" / show \"Saint Megan\""
+  },
+  {
+   "kind": "show",
+   "id": "saint-megan-regional-2026",
+   "label": "Saint Megan",
+   "model": "local",
+   "code": "closing-unsourced",
+   "detail": "closingDateSource missing"
+  },
+  {
+   "kind": "show",
+   "id": "rorschach-regional-2026",
+   "label": "Rorschach",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-10-20 / page 2026-10-17"
+  },
+  {
+   "kind": "show",
+   "id": "rorschach-regional-2026",
+   "label": "Rorschach",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-10-15, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "rorschach-regional-2026",
+   "label": "Rorschach",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-10-20 / page 2026-10-15"
+  },
+  {
+   "kind": "image",
+   "id": "rorschach-regional-2026",
+   "label": "Rorschach",
+   "model": "gemini",
+   "code": "image-not-key-art",
+   "detail": "An audience claps for a person seated on a couch on stage in an intimate theatre setting."
+  },
+  {
+   "kind": "image",
+   "id": "rorschach-regional-2026",
+   "label": "Rorschach",
+   "model": "openai",
+   "code": "image-not-key-art",
+   "detail": "A generic photo of a small black-box theatre audience and a couch onstage, not specific promotional art for a particular production."
+  },
+  {
+   "kind": "show",
+   "id": "rorschach-regional-2026",
+   "label": "Rorschach",
+   "model": "local",
+   "code": "closing-unsourced",
+   "detail": "closingDateSource missing"
+  },
+  {
+   "kind": "show",
+   "id": "heartbreak-house-regional-2026",
+   "label": "Heartbreak House",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-10-21 / page 2026-10-17"
+  },
+  {
+   "kind": "show",
+   "id": "heartbreak-house-regional-2026",
+   "label": "Heartbreak House",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-10-11, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "heartbreak-house-regional-2026",
+   "label": "Heartbreak House",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-10-21 / page 2026-10-11"
+  },
+  {
+   "kind": "image",
+   "id": "heartbreak-house-regional-2026",
+   "label": "Heartbreak House",
+   "model": "gemini",
+   "code": "image-not-key-art",
+   "detail": "A black and white logo featuring a stylized white figure in a dynamic pose within a black square, with the word 'ANTAEUS' below."
+  },
+  {
+   "kind": "image",
+   "id": "heartbreak-house-regional-2026",
+   "label": "Heartbreak House",
+   "model": "openai",
+   "code": "image-not-key-art",
+   "detail": "Black-and-white Antaeus Theatre logo with a stylized human figure, serving as a company logo rather than key art for Heartbreak House."
+  },
+  {
+   "kind": "image",
+   "id": "heartbreak-house-regional-2026",
+   "label": "Heartbreak House",
+   "model": "openai",
+   "code": "image-other-title",
+   "detail": "image text \"ANTAEUS\" / show \"Heartbreak House\""
+  },
+  {
+   "kind": "show",
+   "id": "heartbreak-house-regional-2026",
+   "label": "Heartbreak House",
+   "model": "local",
+   "code": "closing-unsourced",
+   "detail": "closingDateSource missing"
+  },
+  {
+   "kind": "review",
+   "id": "anastasia-regional-2026|https://www.ocregister.com/2026/06/09/review-anastasia-in-la-mirada-is-boisterous-fun-but-ultimately-underwhelms|christopher smith",
+   "label": "Anastasia | OC Register / Christopher Smith",
+   "model": "gemini",
+   "code": "star-band",
+   "detail": "article prints 3 stars (of a possible 4) should score 71-90, scored 63"
+  },
+  {
+   "kind": "review",
+   "id": "anastasia-regional-2026|https://www.theshowreport.org/post/review-anastasia-the-musical-la-mirada-theatre-mccoy-rigby-entertainment|theshowreport",
+   "label": "Anastasia | The Show Report / TheShowReport",
+   "model": "gemini",
+   "code": "byline",
+   "detail": "ours \"TheShowReport\" / article \"CHRIS DANIELS\""
+  },
+  {
+   "kind": "review",
+   "id": "anastasia-regional-2026|https://www.theshowreport.org/post/review-anastasia-the-musical-la-mirada-theatre-mccoy-rigby-entertainment|theshowreport",
+   "label": "Anastasia | The Show Report / TheShowReport",
+   "model": "openai",
+   "code": "byline",
+   "detail": "ours \"TheShowReport\" / article \"Chris Daniels\""
+  },
+  {
+   "kind": "review",
+   "id": "crossing-delancey-regional-2026|https://stageraw.com/crossing-delancey|iris mann",
+   "label": "Crossing Delancey | Stage Raw / Iris Mann",
+   "model": "openai",
+   "code": "wrong-production",
+   "detail": "Theatre 40, 241 S. Moreno Dr., Beverly Hills."
+  },
+  {
+   "kind": "review",
+   "id": "hangman-regional-2026|https://stageandcinema.com/2026/09/19/hangmen-long-beach-playhouse-review|michael m landman karny",
+   "label": "Hangman | Stage and Cinema / Michael M. Landman-Karny",
+   "model": "openai",
+   "code": "wrong-production",
+   "detail": "Hangmen Long Beach Playhouse Studio Theatre, Long Beach Playhouse, 5021 E. Anaheim St. in "
+  },
+  {
+   "kind": "review",
+   "id": "heartbreak-house-regional-2026|https://stageraw.com/stage-raw-youth-journalism-review-heartbreak-house|steven morris",
+   "label": "Heartbreak House | Stage Raw / Steven Morris",
+   "model": "gemini",
+   "code": "byline",
+   "detail": "ours \"Steven Morris\" / article \"Kayden J. Merritt\""
+  },
+  {
+   "kind": "review",
+   "id": "heartbreak-house-regional-2026|https://stageraw.com/stage-raw-youth-journalism-review-heartbreak-house|steven morris",
+   "label": "Heartbreak House | Stage Raw / Steven Morris",
+   "model": "openai",
+   "code": "byline",
+   "detail": "ours \"Steven Morris\" / article \"By Kayden J. Merritt\""
+  },
+  {
+   "kind": "review",
+   "id": "how-high-the-moon-regional-2026|https://stagescenela.com/2026/08/how-high-the-moon|",
+   "label": "How High the Moon | StageSceneLA / null",
+   "model": "openai",
+   "code": "wrong-production",
+   "detail": "Theatre West, 3333 Cahuenga Blvd. West, Los Angeles."
+  },
+  {
+   "kind": "review",
+   "id": "joseph-and-the-amazing-technicolor-dreamcoat-regional-2026|https://stagescenela.com/2026/07/joseph-and-the-amazing-technicolor-dreamcoat-8|",
+   "label": "Joseph and the Amazing Technicolor Dreamcoat | StageSceneLA / null",
+   "model": "local",
+   "code": "pull-quote-not-in-text",
+   "detail": "This radically reinvented The Amazing Technicolor Dreamcoat is about as fabulous as it gets."
+  },
+  {
+   "kind": "review",
+   "id": "lakefront-regional-2026|https://stageraw.com/stage-raw-review-lakefront|lovell estell iii",
+   "label": "Lakefront | Stage Raw / Lovell Estell III",
+   "model": "gemini",
+   "code": "wrong-production",
+   "detail": "Theatre 40, 241 S. Moreno Dr., At the Mary Levin Culter Theatre on The Beverly Hills High "
+  },
+  {
+   "kind": "review",
+   "id": "lakefront-regional-2026|https://stageraw.com/stage-raw-review-lakefront|lovell estell iii",
+   "label": "Lakefront | Stage Raw / Lovell Estell III",
+   "model": "openai",
+   "code": "wrong-production",
+   "detail": "Theatre 40, 241 S. Moreno Dr., At the Mary Levin Culter Theatre on The Beverly Hills High "
+  },
+  {
+   "kind": "review",
+   "id": "limonade-tous-les-jours-a-paris-love-story-regional-2026|https://stagescenela.com/2026/05/limonade-tous-les-jours-a-paris-love-story|",
+   "label": "Limonade Tous les Jours: A Paris Love Story | StageSceneLA / null",
+   "model": "local",
+   "code": "pull-quote-not-in-text",
+   "detail": "It's all très charmant (but also très talky), which is why audiences will thank producer Charles A. Duncombe and director Frédérique Michel "
+  },
+  {
+   "kind": "review",
+   "id": "primary-trust-regional-2026|https://www.latimes.com/entertainment-arts/story/2026-05-29/primary-trust-eboni-booth-mark-taper-forum-knud-adams-review|charles mcnulty",
+   "label": "Primary Trust | Los Angeles Times / Charles McNulty",
+   "model": "local",
+   "code": "pull-quote-not-in-text",
+   "detail": "\"Primary Trust\" is a tonic for ailing spirits."
+  },
+  {
+   "kind": "review",
+   "id": "rorschach-regional-2026|https://www.theatreinla.com/rorschach/reviews/11446|",
+   "label": "Rorschach | Theatre in LA / null",
+   "model": "gemini",
+   "code": "non-review:roundup",
+   "detail": "This article is a roundup of review snippets for a single production, not a single review itself."
+  },
+  {
+   "kind": "review",
+   "id": "rorschach-regional-2026|https://www.theatreinla.com/rorschach/reviews/11446|",
+   "label": "Rorschach | Theatre in LA / null",
+   "model": "openai",
+   "code": "non-review:roundup",
+   "detail": "Aggregated page showing multiple reviews for the world premiere of Rorschach at Skylight Theatre in Los Angeles, with mostly favorable recommendations."
+  },
+  {
+   "kind": "review",
+   "id": "the-physicists-regional-2026|https://stageraw.com/stage-raw-review-the-physicists|lovell estell iii",
+   "label": "The Physicists | Stage Raw / Lovell Estell III",
+   "model": "gemini",
+   "code": "wrong-production",
+   "detail": "The Actor’s Gang, 9070 Venice Blvd., Culver City"
+  },
+  {
+   "kind": "review",
+   "id": "the-physicists-regional-2026|https://stageraw.com/stage-raw-review-the-physicists|lovell estell iii",
+   "label": "The Physicists | Stage Raw / Lovell Estell III",
+   "model": "openai",
+   "code": "wrong-production",
+   "detail": "The Actor’s Gang, 9070 Venice Blvd., Culver City: Thurs-Sat. 8 pm, Sun., May 31 and June 7"
+  },
+  {
+   "kind": "review",
+   "id": "the-visit-regional-2026|https://stageraw.com/stage-raw-review-the-visit|steven morris",
+   "label": "The Visit | Stage Raw / Steven Morris",
+   "model": "gemini",
+   "code": "non-review:roundup",
+   "detail": "The article reviews two productions, 'The Visit' and 'The Arsonists', providing a positive assessment for 'The Visit'."
+  },
+  {
+   "kind": "review",
+   "id": "the-visit-regional-2026|https://stageraw.com/stage-raw-review-the-visit|steven morris",
+   "label": "The Visit | Stage Raw / Steven Morris",
+   "model": "openai",
+   "code": "non-review:roundup",
+   "detail": "The article compares and reviews both The Visit at Pasadena Playhouse and The Arsonists at The Skylight, praising the Pasadena production."
+  },
+  {
+   "kind": "review",
+   "id": "wives-regional-2026|https://stageraw.com/stage-raw-review-wives|julyza commodore",
+   "label": "Wives | Stage Raw / Julyza Commodore",
+   "model": "gemini",
+   "code": "wrong-production",
+   "detail": "this Southern California premiere at East West Players"
+  },
+  {
+   "kind": "review",
+   "id": "wives-regional-2026|https://stageraw.com/stage-raw-review-wives|julyza commodore",
+   "label": "Wives | Stage Raw / Julyza Commodore",
+   "model": "openai",
+   "code": "wrong-production",
+   "detail": "East West Players, 120 N. Judge John Aiso Street; Mon & Fri., 7:30 pm; Sat., 8 pm; Sun., 5"
+  },
+  {
+   "kind": "excluded",
+   "id": "the-visit-regional-2026/latimes--jenelle-riley.json",
+   "label": "The Visit | the-visit-regional-2026/latimes--jenelle-riley.json",
+   "model": "openai",
+   "code": "excluded-looks-valid",
+   "detail": "The Visit Where: Pasadena Playhouse, 39 S. El Molino Ave., Pasadena | flags on file: "
+  },
+  {
+   "kind": "excluded",
+   "id": "frankenstein-resurrection-regional-2026/broadwayworld--harker-jones.json",
+   "label": "Frankenstein: Resurrection | frankenstein-resurrection-regional-2026/broadwayworld--harker-jones.json",
+   "model": "gemini",
+   "code": "excluded-looks-valid",
+   "detail": "FRANKENSTEIN: RESURRECTION comes alive at the Nocturne Theatre, 324 N. Orange Street, in G | flags on file: "
+  },
+  {
+   "kind": "excluded",
+   "id": "frankenstein-resurrection-regional-2026/broadwayworld--harker-jones.json",
+   "label": "Frankenstein: Resurrection | frankenstein-resurrection-regional-2026/broadwayworld--harker-jones.json",
+   "model": "openai",
+   "code": "excluded-looks-valid",
+   "detail": "FRANKENSTEIN: RESURRECTION comes alive at the Nocturne Theatre, 324 N. Orange Street, in G | flags on file: "
+  },
+  {
+   "kind": "show",
+   "id": "a-case-for-the-existence-of-god-regional-2026",
+   "label": "A Case for the Existence of God",
+   "model": "local",
+   "code": "review-text-later-closing",
+   "detail": "ours 2026-10-11 / review text says through 2026-11-01 (broadwayworld 2026-09-18)"
+  },
+  {
+   "kind": "show",
+   "id": "a-case-for-the-existence-of-god-regional-2026",
+   "label": "A Case for the Existence of God",
+   "model": "local",
+   "code": "review-text-later-closing",
+   "detail": "ours 2026-10-11 / review text says through 2026-11-21 (stage-raw 2026-09-07)"
+  },
+  {
+   "kind": "show",
+   "id": "a-case-for-the-existence-of-god-regional-2026",
+   "label": "A Case for the Existence of God",
+   "model": "local",
+   "code": "review-text-later-closing",
+   "detail": "ours 2026-10-11 / review text says through 2026-11-21 (stagescenela 2026-09-22)"
+  },
+  {
+   "kind": "show",
+   "id": "painted-ponies-regional-2026",
+   "label": "Painted Ponies",
+   "model": "local",
+   "code": "review-text-later-closing",
+   "detail": "ours 2026-07-19 / review text says through 2026-08-09 (stage-raw 2026-06-29)"
+  },
+  {
+   "kind": "show",
+   "id": "saint-megan-regional-2026",
+   "label": "Saint Megan",
+   "model": "local",
+   "code": "review-text-later-closing",
+   "detail": "ours 2026-11-15 / review text says through 2026-11-22 (artsbeatla 2026-10-13)"
+  },
+  {
+   "kind": "show",
+   "id": "saint-megan-regional-2026",
+   "label": "Saint Megan",
+   "model": "local",
+   "code": "review-text-later-closing",
+   "detail": "ours 2026-11-15 / review text says through 2026-11-22 (discoverhollywood 2026-10-21)"
+  },
+  {
+   "kind": "show",
+   "id": "saint-megan-regional-2026",
+   "label": "Saint Megan",
+   "model": "local",
+   "code": "review-text-later-closing",
+   "detail": "ours 2026-11-15 / review text says through 2026-11-22 (splash-magazines 2026-10-30)"
+  },
+  {
+   "kind": "tour",
+   "id": "waitress-tour-2026|2027-04-20|Pantages Theatre",
+   "label": "Waitress @ Pantages Theatre",
+   "model": "openai",
+   "code": "tour-dates",
+   "detail": "ours 2027-04-20..2027-04-25 / source 2018-08-02..2018-08-26 AUGUST 2 - 26, 2018"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-visit-regional-2026",
+   "label": "The Visit",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Broadway World (Los Angeles) / Harker Jones 2026-09-16 https://www.broadwayworld.com/los-angeles/article/Review-THE-VISIT-at-Pasadena-Playhouse-20260916"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-visit-regional-2026",
+   "label": "The Visit",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "ArtsBeatLA / Terry Morgan 2026-09-14 https://artsbeatla.com/2026/09/pasadena-playhouse-presents-the-visit/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-visit-regional-2026",
+   "label": "The Visit",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "itsnotaboutme.tv / Travis Michael Holder 2026-09-17 https://itsnotaboutme.tv/news/2026/09/17/theatre-the-visit/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-visit-regional-2026",
+   "label": "The Visit",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "StageSceneLA / Steven Stanley 2026-09-13 https://stagescenela.com/2026/09/the-visit/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-visit-regional-2026",
+   "label": "The Visit",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "California Highways / null 2026-09-28 https://cahighways.org/wordpress/?p=30000"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-visit-regional-2026",
+   "label": "The Visit",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "The Hollywood Times / John Lavitt 2026-09-16 https://thehollywoodtimes.today/the-legacy-of-bertolt-brecht-collides-with-billionaires-in-the-visit-at-pasadena-playhouse/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-visit-regional-2026",
+   "label": "The Visit",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Los Angeles Drama Critics Circle / Terry Morgan 2026-09-26 https://ladramacritics.com/the-visit-pasadena-playhouse/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-visit-regional-2026",
+   "label": "The Visit",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Los Angeles Drama Critics Circle / Travis Michael Holder 2026-09-26 https://ladramacritics.com/the-visit-pasadena-playhouse/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-visit-regional-2026",
+   "label": "The Visit",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Los Angeles Drama Critics Circle / Jonas Schwartz 2026-09-26 https://ladramacritics.com/the-visit-pasadena-playhouse/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-visit-regional-2026",
+   "label": "The Visit",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Broadway World (Los Angeles) / Harker Jones 2026-09-16 https://www.broadwayworld.com/los-angeles/article/review-the-visit-at-pasadena-playhouse-20260916"
+  },
+  {
+   "kind": "coverage",
+   "id": "joseph-and-the-amazing-technicolor-dreamcoat-regional-2026",
+   "label": "Joseph and the Amazing Technicolor Dreamcoat",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Stage Raw / Joel Beers 2026-07-15 https://stageraw.com/2026/07/15/joseph-and-the-amazing-technicolor-dreamcoat/"
+  },
+  {
+   "kind": "coverage",
+   "id": "joseph-and-the-amazing-technicolor-dreamcoat-regional-2026",
+   "label": "Joseph and the Amazing Technicolor Dreamcoat",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "The Show Report / Chris Daniels 2026-07-13 https://theshowreport.org/2026/07/13/review-joseph-and-the-amazing-technicolor-dreamcoat-musical-theatre-west-carpenter-performing-arts-center/"
+  },
+  {
+   "kind": "coverage",
+   "id": "joseph-and-the-amazing-technicolor-dreamcoat-regional-2026",
+   "label": "Joseph and the Amazing Technicolor Dreamcoat",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "BroadwayWorld / Michael Quintos 2026-07-19 https://www.broadwayworld.com/los-angeles/article/Review-JOSEPH-AND-THE-AMAZING-TECHNICOLOR-DREAMCOAT-at-Musical-Theatre-West-20260719"
+  },
+  {
+   "kind": "coverage",
+   "id": "joseph-and-the-amazing-technicolor-dreamcoat-regional-2026",
+   "label": "Joseph and the Amazing Technicolor Dreamcoat",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Random Lengths News / Greggory Moore 2026-07-16 https://www.randomlengthsnews.com/archives/2026/07/16/a-joseph-and-the-amazing-technicolor-dreamcoat-that-works-for-an-andrew-lloyd-webber-hater/"
+  },
+  {
+   "kind": "coverage",
+   "id": "joseph-and-the-amazing-technicolor-dreamcoat-regional-2026",
+   "label": "Joseph and the Amazing Technicolor Dreamcoat",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Socalthrills.com / Russell Tom 2026-07-13 https://socalthrills.com/2026/07/13/musical-review-joseph-and-the-amazing-technicolor-dreamcoat/"
+  },
+  {
+   "kind": "coverage",
+   "id": "joseph-and-the-amazing-technicolor-dreamcoat-regional-2026",
+   "label": "Joseph and the Amazing Technicolor Dreamcoat",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Long Beach Post / Anita W. Harris 2026-07-17 https://lbpost.com/life/arts-culture/musical-theatre-wests-glitzy-joseph-and-the-amazing-technicolor-dreamcoat-has-younger-audiences-in-mind/"
+  },
+  {
+   "kind": "coverage",
+   "id": "joseph-and-the-amazing-technicolor-dreamcoat-regional-2026",
+   "label": "Joseph and the Amazing Technicolor Dreamcoat",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "We Live Entertainment / Kevin Taft 2026-07-24 https://weliveentertainment.com/theater/theater-review-a-dazzling-cast-shines-through-a-frayed-joseph-and-the-amazing-technicolor-dreamcoat/"
+  },
+  {
+   "kind": "coverage",
+   "id": "joseph-and-the-amazing-technicolor-dreamcoat-regional-2026",
+   "label": "Joseph and the Amazing Technicolor Dreamcoat",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Stage Raw / Joel Beers 2026-07-15 https://stageraw.com/stage-raw-review-joseph-and-the-amazing-technicolor-dreamcoat/"
+  },
+  {
+   "kind": "coverage",
+   "id": "joseph-and-the-amazing-technicolor-dreamcoat-regional-2026",
+   "label": "Joseph and the Amazing Technicolor Dreamcoat",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "BroadwayWorld (Los Angeles) / Michael Quintos 2026-07-19 https://www.broadwayworld.com/los-angeles/article/Review-JOSEPH-AND-THE-AMAZING-TECHNICOLOR-DREAMCOAT-at-Musical-Theatre-West-20260719"
+  },
+  {
+   "kind": "coverage",
+   "id": "joseph-and-the-amazing-technicolor-dreamcoat-regional-2026",
+   "label": "Joseph and the Amazing Technicolor Dreamcoat",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Long Beach Post (Eat. See. Do.) / Anita W. Harris 2026-07-17 https://lbpost.com/esd/eat-see-do-2/see/musical-theatre-wests-glitzy-joseph-and-the-amazing-technicolor-dreamcoat-has-younger-audiences-in-mind/"
+  },
+  {
+   "kind": "coverage",
+   "id": "joseph-and-the-amazing-technicolor-dreamcoat-regional-2026",
+   "label": "Joseph and the Amazing Technicolor Dreamcoat",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "TheShowReport / Chris Daniels 2026-07-13 https://www.theshowreport.org/post/review-joseph-and-the-amazing-technicolor-dreamcoat-musical-theatre-west-carpenter-performing-art"
+  },
+  {
+   "kind": "coverage",
+   "id": "joseph-and-the-amazing-technicolor-dreamcoat-regional-2026",
+   "label": "Joseph and the Amazing Technicolor Dreamcoat",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "We Live Entertainment / Kevin Taft 2026-07-24 https://weliveentertainment.com/we-live-entertainment/theater-review-dazzling-cast-shines-frayed-joseph-amazing-technicolor-dreamcoat/"
+  },
+  {
+   "kind": "coverage",
+   "id": "catch-me-if-you-can-regional-2026",
+   "label": "Catch Me If You Can",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Angeles Stage / Don Shirley 2026-10-09 https://angelesstage.substack.com/p/let-them-see-more-la-theater-less-ai"
+  },
+  {
+   "kind": "coverage",
+   "id": "catch-me-if-you-can-regional-2026",
+   "label": "Catch Me If You Can",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "LAexcites.com /  2026-09-23 https://laexcites.com/2026/09/23/catch-me-if-you-can-musical-lands-at-the-colony-theatre-in-burbank/"
+  },
+  {
+   "kind": "coverage",
+   "id": "catch-me-if-you-can-regional-2026",
+   "label": "Catch Me If You Can",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Accessibly Live Off-Line / Rich Borowy 2026-09-20 https://accessiblyliveoffline.com/2026/09/20/honor-and-respect-first-fame-later-if-at-all/"
+  },
+  {
+   "kind": "coverage",
+   "id": "catch-me-if-you-can-regional-2026",
+   "label": "Catch Me If You Can",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "LAist /  2026-09-23 https://laist.com/news/arts-and-culture/best-things-to-do-los-angeles-southern-california-this-weekend-sept-23-29-2026"
+  },
+  {
+   "kind": "coverage",
+   "id": "catch-me-if-you-can-regional-2026",
+   "label": "Catch Me If You Can",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Gardena Valley News / Shari Barrett 2026-09-24 https://www.gardenavalleynews.com/dazzling-and-energetic-catch-me-if-you-can-stage-musical-at-the-colony-theatre/"
+  },
+  {
+   "kind": "coverage",
+   "id": "catch-me-if-you-can-regional-2026",
+   "label": "Catch Me If You Can",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Culver City News / Shari Barrett 2026-09-24 https://www.culvercitynews.org/dazzling-and-energetic-catch-me-if-you-can-stage-musical-at-the-colony-theatre/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-full-monty-regional-2026",
+   "label": "The Full Monty",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Gardena Valley News / Shari Barrett 2026-08-06 https://gardenavalleynews.org/talented-cast-performs-the-full-monty-at-the-nocturne-theatre-in-glendale/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-full-monty-regional-2026",
+   "label": "The Full Monty",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Culver City News / Shari Barrett 2026-08-06 https://www.culvercitynews.org/talented-cast-performs-the-full-monty-at-the-nocturne-theatre-in-glendale/"
+  },
+  {
+   "kind": "coverage",
+   "id": "frankenstein-resurrection-regional-2026",
+   "label": "Frankenstein: Resurrection",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Immersive Scene Los Angeles /  2026-09-20 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEWPxOcmvM4vgRrqIm99SygFEdtnaThT2lSB4HJGIUWz04ijIu9DUvjd8vDUSIbiubxXI3tiQw-gwu33wUjJxiQWFGX0pWde6GwrQVsTe-231I4vm1AWSyrRtQ-F5n14MQdl4I-ZNoRg2SMKqmDJOT2Pj4xoRYOc2AhoPyITBvraj3nCYbk2C2mBQ=="
+  },
+  {
+   "kind": "coverage",
+   "id": "frankenstein-resurrection-regional-2026",
+   "label": "Frankenstein: Resurrection",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "TicketHoldersLA / Travis Michael Holder 2026-09-16 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFiNgIc7b8ov7NigNALs6TWjxmAMp6ekvfzs8AtxL00Pk9TunK62sFxvNwL6_-ji9rB-gpt4O58EX_9DNNgkaHQl0ghRgxc1GpjQCLwEALdEoQ0WZYviq01umTb9KynuXiOqqmJ35D7FrmtBJtQ"
+  },
+  {
+   "kind": "coverage",
+   "id": "frankenstein-resurrection-regional-2026",
+   "label": "Frankenstein: Resurrection",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "BroadwayWorld /  2026-09-23 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGDdr_gVwAjFFL5CfvRScvj2KHXRW0e0q5UEXkra_YF8N790jtxIaZawvQvIZ1bgF3M_2M0GMxGqPSWshdwq2hs787cBpt1VEkLHDFTHdd9-giXIpK9QGXg73VyRpitQ5qJdaeI_ZdNR0c86Gtu_6XwfdKETTLqBwmiKCVIr_PDWKWjkd_joF_G1IhDcG9Uf-KGld4sQQwsCrQusEyDwJrhKWYMU9A_oG6A3Q=="
+  },
+  {
+   "kind": "coverage",
+   "id": "frankenstein-resurrection-regional-2026",
+   "label": "Frankenstein: Resurrection",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Stage Scene LA / Steven Stanley 2026-09-25 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFsEd7lga_oOtr6_0HOqXZQahOEL_JrtLBRVY12CwkFt6NGJ422EdPs9mneCOZ0j_HF7cKHluzotGndREdUl-Vjp9tdhmSqO52FogCCn2zp4hNTF4T3CnQk-IewxjowfU0sHeNBDOfdnTochVXTEz3yhUnjERir_A=="
+  },
+  {
+   "kind": "coverage",
+   "id": "frankenstein-resurrection-regional-2026",
+   "label": "Frankenstein: Resurrection",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "ACCESSIBLY LIVE OFF-LINE / Rich Borowy 2026-09-20 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEF5-6zyx7MJKGt4D7ujsZ7nqr7SO_ljZMDkSWquES8gaG71Ga2nRQATDFgdVsyMnPx2wqG2NyEuv5caeiu4zGW15f6m_Ik_LygYV0eiLCj9W7Dg7hSDg2dUDrrSOc172X-k35epu91kYnsB8N8gjp926J2KQU1Y4h07RVJjhBDCixSHs0M32XH72NeDASavoW7zSssETiB-ZW9lELvAFI="
+  },
+  {
+   "kind": "coverage",
+   "id": "frankenstein-resurrection-regional-2026",
+   "label": "Frankenstein: Resurrection",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "BroadwayWorld (Los Angeles) / Harker Jones 2026-09-23 https://www.broadwayworld.com/los-angeles/article/review-frankenstein-resurrection-at-nocturne-theatre-20260923"
+  },
+  {
+   "kind": "coverage",
+   "id": "frankenstein-resurrection-regional-2026",
+   "label": "Frankenstein: Resurrection",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "NoHo Arts District / Samantha Simmonds-Ronceros 2026-09-18 https://nohoartsdistrict.com/frankenstein-resurrection-nocturne-theatre-review/"
+  },
+  {
+   "kind": "coverage",
+   "id": "frankenstein-resurrection-regional-2026",
+   "label": "Frankenstein: Resurrection",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Los Angeles Drama Critics Circle (post linking TicketHoldersLA) / Travis Michael Holder (TicketHoldersLA) 2026-09-16 https://ladramacriticscircle.com/frankenstein-resurrection-the-nocturne-theatre/"
+  },
+  {
+   "kind": "coverage",
+   "id": "frankenstein-resurrection-regional-2026",
+   "label": "Frankenstein: Resurrection",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Immersive Scene Los Angeles / ThomM 2026-11-07 https://www.immersivescenelosangeles.com/post/review-frankenstein-resurrection"
+  },
+  {
+   "kind": "coverage",
+   "id": "frankenstein-resurrection-regional-2026",
+   "label": "Frankenstein: Resurrection",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Halloween Scene Los Angeles / thom8261 2026-11-06 https://www.halloweenscenelosangeles.com/post/review-frankenstein-resurrection"
+  },
+  {
+   "kind": "coverage",
+   "id": "grangeville-regional-2026",
+   "label": "Grangeville",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Broadway World (Los Angeles) / Shari Barrett 2026-06-05 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGz09NT0rcHNp460CNjPo9X1o3SSQTjsGymklEUhRdqhJuPRnFj7JInWKuessA6iW9F1AiDLjz3xMUI0x0mmENtI-xgcvlij22up6N7hIOxCLo9m-MqzyqHVZKZNAJz316_2c53sNG8CZHmoidnQQtleI0wh1g-2_rj0QyZnEt3W3jIRA1bBEmR7HPihD6HxpSZUyb9W73uahL3XYX4UF6l_oWlzrhfMakRwF6eNvMKXFk04JK-gLkodiLLBAsmoYxuaAk="
+  },
+  {
+   "kind": "coverage",
+   "id": "grangeville-regional-2026",
+   "label": "Grangeville",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "ArtsBeatLA / Terry Morgan 2026-06-02 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEE7rQFtOhocOyE2kH-vxJmwyhwLKxpRGlvWjmqT0JUJhbRowS2xKK1zAS7fmTUFLpsLWNxHm5QJZp7vflJIBKouk8iV29V-ekAuM6t6P2fOkbhcRYqLAnAp7G4GhFpzmzoZWjZctCX2gPA"
+  },
+  {
+   "kind": "coverage",
+   "id": "grangeville-regional-2026",
+   "label": "Grangeville",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Los Angeles Times / Charles McNulty 2026-06-03 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFmG0s6RmSkzjCyNpplrw9P6AkP1Uw-K-Dv_SbPyBM3ZYUooA43OFCcgY3gG7xn8TzhfxyLk4f04BxdegbKluxGrCCuWlEMhT_v3gE07PcdZKb30pYHvMsmTzVxxABMvk_nRZzGeEC5qeYrs4JZc4rkVhhE9FO9TEmzEYr4FkbBxPXOHJBeYw5sqGL2XYOPhDC4tCMl-GoMFQPLohFqi4wZqbupYnRApoGG8xAWq6I="
+  },
+  {
+   "kind": "coverage",
+   "id": "grangeville-regional-2026",
+   "label": "Grangeville",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Stage Raw / F. Kathleen Foley 2026-06-01 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGxGPeaqFJ3riAL8a_BKwXde9CyYqlKASh0Yb4tI4NIXk2Ad7Z3ixoRLtYgth2-VAO7clFp8uK8v2RngeSBjK4PLWyEoknlliaZe80tSiz0yrp95PAjWbX5W49Ggy5B6fDCyhHcSKLK4LbznFCN"
+  },
+  {
+   "kind": "coverage",
+   "id": "grangeville-regional-2026",
+   "label": "Grangeville",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Glamgical / null 2026-05-30 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGHCkyjwpyNXobzsGY6Grh-9T6SjFuGUd84uvOjRRzB_MFyaFTmTZHqUE_Mw7CxZib7eB55Kwd_09xxcvXoYNdqNk-cyVslrg77gFJEouBVIdPniIrDO4Ty6TFf34f9trJgqYd1MXsZeaoDr1U="
+  },
+  {
+   "kind": "coverage",
+   "id": "grangeville-regional-2026",
+   "label": "Grangeville",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Stage Scene LA / Steven Stanley 2026-05-29 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQE7LJ561-frSHWOttjC3jvIMmXPEy6V3MRa--N7nXpiF0LnsXa2JOUUpanAzoeJzWgdQwmcHbFxwy5WAfEI-OcC0RQztVIdrjMs_cH4Mzhhkc_CO1MXDuAec_PvDXr2Ljh4dCSPzW6pIQ="
+  },
+  {
+   "kind": "coverage",
+   "id": "grangeville-regional-2026",
+   "label": "Grangeville",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Discover Hollywood Magazine / null 2026-06-05 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHZh3sWMkXlllNEvp8cNoZJzeBnGQxVbWeCksEGVH32L-WldrSe25Eu1rvQ1fMSxrP9tgNcNPz5IH07Ek90ImejXrzTgTPvhVWSLDkriNW6UY3sRY9tExEUa4wYI_IiM3EsVedIpLQuuejQ7_AbRDdJYC5YTLMh9An_B3kCwLc="
+  },
+  {
+   "kind": "coverage",
+   "id": "grangeville-regional-2026",
+   "label": "Grangeville",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "The Downey Patriot / null 2026-06-17 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGJmhKqoVtlccwGt_SUVeKhIwc2EcvdE9IpsQoFH93td5ZTB51YI628SaaEBiix0-6YbUVetU79ApjBek5UHxo47HuAYUiktyCd-X0I53kEDfpcVYWEAPnNs4lx3q6IcnsPi_tXipxsZU1SGBtm8PlryRX-zRfJgs_77fNM9gyl27V2US_V1FiEBzO2Z560uxu9"
+  },
+  {
+   "kind": "coverage",
+   "id": "grangeville-regional-2026",
+   "label": "Grangeville",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Joe Straw #9 / Joe Straw 2026-07-03 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEn1EHb_Tbu--lZBVRZq2M3B4dmUPpeLJszeRUXWKHbVSuNgbx44WLZTu8UE8_AdHDiCGq-RfFTzzY5w1J060lAMV_8VYXoKE1YkKWhO64DAYotqsFO1FUy5HgmpR0m7vHhAgGfu7UURUl6L3BC4Y-fB_sqUCVcx3xUvlqnxJem-u94Kdjp"
+  },
+  {
+   "kind": "coverage",
+   "id": "applause-regional-2026",
+   "label": "Applause",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Los Angeles Drama Critics Circle / Ed Rampell (Hollywood Progressive) 2026-08-01 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHU9RzFWoizE5qyY7GxlSVJz00f-DOIkNh0DMkZVKL7iBwHL-Rjv1ooh92I991X-n-ekwqhCW45dYh2NEFSnaWoaYryLYUeYhruF0VM0o1yT3-YiL_nkF6MvpKZDljhV5hVS-ruMorHyFS2ygAESuUKCns="
+  },
+  {
+   "kind": "coverage",
+   "id": "applause-regional-2026",
+   "label": "Applause",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Los Angeles Drama Critics Circle / Elaine Mura (Splash Magazines) 2026-08-01 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHU9RzFWoizE5qyY7GxlSVJz00f-DOIkNh0DMkZVKL7iBwHL-Rjv1ooh92I991X-n-ekwqhCW45dYh2NEFSnaWoaYryLYUeYhruF0VM0o1yT3-YiL_nkF6MvpKZDljhV5hVS-ruMorHyFS2ygAESuUKCns="
+  },
+  {
+   "kind": "coverage",
+   "id": "applause-regional-2026",
+   "label": "Applause",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Stage Raw / Steven Leigh Morris 2026-07-30 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQF1EblVUrKblkWefdIkFBo-5pl1k3ga02PlBRXExCXz-eunIAKMnBcCjPmIg4KMbD8XjkAhTVIiKB5WsM-e1repqvjS9F7aagwfV5GthTpeOTF3aQ1sc3UHGT_JQTJUdaMz88YdldleoBg="
+  },
+  {
+   "kind": "coverage",
+   "id": "applause-regional-2026",
+   "label": "Applause",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Broadway World (Los Angeles) / Andrew Child 2026-07-25 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEGH9rGkSJPYjAPMxsEX0mA1OjLOTBxr63q5Zwj78NTFonnnOBGSmWPuIUBmWSCVvzBL6H9Tq2yZB7TxaVbd8br-Ilewj0Xp0cp2Ufoy5uRgmabVKVka6KlReiX5-XvUJeF0-GWlOLe4R7BU8uc06vzXr6U0RFm4A2aAsFzVAJrxXVtBzJSB2sfiNkTc78Lxu8eOIafpw=="
+  },
+  {
+   "kind": "coverage",
+   "id": "applause-regional-2026",
+   "label": "Applause",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "People's World / Ed Rampell 2026-07-29 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFaMLZeNDH4bhdPChbCeoL9o_WaOANvdRFBlzqeDDDeN74W3vp8PscAE960qpPY2nWEfgsv6yaN8I8BjNzDsotCcjMmZU_75mpkTr-UKjn9c3Nkrt8RhljicgvdN58-9IBohYi5n9uOjUPJSFeaKWAWxrnmWzJ5krp763Ny2zqYqoZCI33lxxhInjHPBGg="
+  },
+  {
+   "kind": "coverage",
+   "id": "applause-regional-2026",
+   "label": "Applause",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "StageSceneLA / Steven Stanley 2026-07-25 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFIeyY6ohBmw_wjMFepPQfvMK1e5PBwmNsp-mzu7lxiGum_X7g69YR6AuGxHPPPZDAMZV2stphfJOT_efAYLryN9gvMFwZfdfUIw9EIA_UZMKw76o3BnUwoMiTgVThBN13vto9Fss2Ds5WIPtM="
+  },
+  {
+   "kind": "coverage",
+   "id": "applause-regional-2026",
+   "label": "Applause",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "BroadwayWorld (Los Angeles) / Andrew Child 2026-07-25 https://www.broadwayworld.com/los-angeles/article/Review-APPLAUSE-at-The-Group-Rep-20260725"
+  },
+  {
+   "kind": "coverage",
+   "id": "applause-regional-2026",
+   "label": "Applause",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "People's World / Ed Rampell 2026-07-29 https://peoplesworld.org/article/applause-musical-review-an-impressive-revival/"
+  },
+  {
+   "kind": "coverage",
+   "id": "lakefront-regional-2026",
+   "label": "Lakefront",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Broadway World (Los Angeles) / BWW Reviewer 2026-07-30 https://www.broadwayworld.com/los-angeles/article/Review-Norm-Fosters-LAKEFRONT-US-Premiere-Engagement-at-Theatre-40-20260730"
+  },
+  {
+   "kind": "coverage",
+   "id": "lakefront-regional-2026",
+   "label": "Lakefront",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "itsnotaboutme.tv / Karen Salkin 2026-07-29 https://itsnotaboutme.tv/2026/07/29/theatre-lakefront/"
+  },
+  {
+   "kind": "coverage",
+   "id": "lakefront-regional-2026",
+   "label": "Lakefront",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "BroadwayWorld (Los Angeles) / Shari Barrett 2026-07-30 https://www.broadwayworld.com/los-angeles/article/Review-Norm-Fosters-LAKEFRONT-US-Premiere-Engagement-at-Theatre-40-20260730"
+  },
+  {
+   "kind": "coverage",
+   "id": "how-high-the-moon-regional-2026",
+   "label": "How High the Moon",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Stage Raw / Joel Beers 2026-07-29 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEW6cR9x6NLXcM85WyYsoGc8u7VU8IT1Wf7yzNpIVeIZIUj-bDDxNGOifzdjvxXvHSfbab0yDDIMbOY2Vw-1nSJ3_EUsZSX0Km7o5Xs3-9_R8-0tHp9lFrHeZ-_LRM7A3FF6YOWgLchOK6uJPvO_E6zXc-X"
+  },
+  {
+   "kind": "coverage",
+   "id": "how-high-the-moon-regional-2026",
+   "label": "How High the Moon",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Angeles Stage / Don Shirley 2026-08-04 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQE55EZN4Kxsr5YF9lZHEge-j0Qj8AxhR6CZUwawymPHZXs4gl-BZyzuCqU357kTHj-pUqsE5s8fLrNLayvcyrXp-80FzULlAwpfNiHFrlLFoLx86jH_yAenL199qdWa3Zp6nD1Ueq-X7AskMouE0zc="
+  },
+  {
+   "kind": "coverage",
+   "id": "how-high-the-moon-regional-2026",
+   "label": "How High the Moon",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "StageSceneLA / Steven Stanley 2026-08-01 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHb07TiH9U2PjJLKJa6nDaPNfumhGu_VK38R3asFgOlCZ2p3s_pwjTogixNicGKg2UsQh3hIoBmQh2ejiIxb8qi36XLSH8r_zYgMLV2apGL341pNqIrufwYFQio_x0itpx05i7nUgaDfXUuUUr5wg=="
+  },
+  {
+   "kind": "coverage",
+   "id": "how-high-the-moon-regional-2026",
+   "label": "How High the Moon",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Curtain Up / Bonnie Priever 2026-08-08 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFMXK1BOStjRMqCIeypcVH7PNUudeuWtJjYCyTRmXvkdeCDRfQ0turLTiNpEWkUe6kOu6e6q7mm6bO935WMZ9WcUPdKTGrGF9SplY5T3wN7jlOC9TYn_ucVrGs_LA_d75aaC_-EPz1i9I4RSC6-iAmm"
+  },
+  {
+   "kind": "coverage",
+   "id": "how-high-the-moon-regional-2026",
+   "label": "How High the Moon",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "NoHo Arts District / Samantha Simmonds-Ronceros 2026-07-30 https://nohoartsdistrict.com/how-high-the-moon-review/"
+  },
+  {
+   "kind": "coverage",
+   "id": "how-high-the-moon-regional-2026",
+   "label": "How High the Moon",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Angeles Stage (Don Shirley) / Don Shirley 2026-08-04 https://angelestage.substack.com/p/local-local-local"
+  },
+  {
+   "kind": "coverage",
+   "id": "painted-ponies-regional-2026",
+   "label": "Painted Ponies",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "TicketHoldersLA / Travis Michael Holder 2026-07-08 https://www.ladramacritics.com/2026/07/08/painted-ponies-ruskin-group-theatre/"
+  },
+  {
+   "kind": "coverage",
+   "id": "painted-ponies-regional-2026",
+   "label": "Painted Ponies",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Splash Magazines / Elaine Mura 2026-07-08 https://www.ladramacritics.com/2026/07/08/painted-ponies-ruskin-group-theatre/"
+  },
+  {
+   "kind": "coverage",
+   "id": "painted-ponies-regional-2026",
+   "label": "Painted Ponies",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Angeles Stage / Don Shirley 2026-07-08 https://www.ladramacritics.com/2026/07/08/painted-ponies-ruskin-group-theatre/"
+  },
+  {
+   "kind": "coverage",
+   "id": "painted-ponies-regional-2026",
+   "label": "Painted Ponies",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "The Downey Patriot / Alistair Hunter 2026-07-15 https://www.thedowneypatriot.com/articles/painted-ponies-delivers-a-powerful-portrait-of-grief-and-hope"
+  },
+  {
+   "kind": "coverage",
+   "id": "a-dolls-house-part-2-regional-2026",
+   "label": "A Doll's House Part 2",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Random Lengths News / Greggory Moore 2026-08-XX https://www.randomlengthsnews.com/archives/2026/08/xx/a-dolls-house-part-2-is-well-you-know-what-they-say-about-sequels/"
+  },
+  {
+   "kind": "coverage",
+   "id": "ma-raineys-black-bottom-regional-2026-a-noise-within",
+   "label": "Ma Rainey's Black Bottom",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Broadway World (Los Angeles) / Evan Henerson 2026-09-05 https://www.broadwayworld.com/los-angeles/article/Review-MA-RAINEYS-BLACK-BOTTOM-at-A-Noise-Within-20260905"
+  },
+  {
+   "kind": "coverage",
+   "id": "ma-raineys-black-bottom-regional-2026-a-noise-within",
+   "label": "Ma Rainey's Black Bottom",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "News4usonline / Dennis J. Freeman 2026-09-18 https://news4usonline.com/2026/09/ma-raineys-black-bottom-excels/"
+  },
+  {
+   "kind": "coverage",
+   "id": "ma-raineys-black-bottom-regional-2026-a-noise-within",
+   "label": "Ma Rainey's Black Bottom",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "itsnotaboutme.tv / Karen Salkin 2026-09-02 https://itsnotaboutme.tv/news/theatre-ma-raineys-black-bottom/"
+  },
+  {
+   "kind": "coverage",
+   "id": "ma-raineys-black-bottom-regional-2026-a-noise-within",
+   "label": "Ma Rainey's Black Bottom",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "People's World / Ed Rampell 2026-09-02 https://www.peoplesworld.org/article/ma-raineys-black-bottom-play-review-a-soulful-and-haunting-must-see-performance/"
+  },
+  {
+   "kind": "coverage",
+   "id": "ma-raineys-black-bottom-regional-2026-a-noise-within",
+   "label": "Ma Rainey's Black Bottom",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Los Angeles Drama Critics Circle / Ed Rampell (Hollywood Progressive) 2026-09-18 https://ladramacritics.com/2026/09/18/ma-raineys-black-bottom-a-noise-within/"
+  },
+  {
+   "kind": "coverage",
+   "id": "ma-raineys-black-bottom-regional-2026-a-noise-within",
+   "label": "Ma Rainey's Black Bottom",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Angeles Stage / Don Shirley 2026-09-04 https://angelesstage.com/2026/09/04/emergencies-plays-on-precipices-by-don-shirley/"
+  },
+  {
+   "kind": "coverage",
+   "id": "ma-raineys-black-bottom-regional-2026-a-noise-within",
+   "label": "Ma Rainey's Black Bottom",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "BroadwayWorld (Los Angeles) / Evan Henerson 2026-09-05 https://www.broadwayworld.com/los-angeles/article/Review-MA-RAINEYS-BLACK-BOTTOM-at-A-Noise-Within-20260905"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-arsonists-regional-2026",
+   "label": "The Arsonists",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Broadway World (Los Angeles) / Harker Jones 2026-09-08 https://www.broadwayworld.com/los-angeles/article/Review-THE-ARSONISTS-at-Skylight-Theatre-20260908"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-arsonists-regional-2026",
+   "label": "The Arsonists",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Hollywood Times / Robert St. Martin 2026-09-05 https://thehollywoodtimes.today/the-arsonists-a-provocative-absurdist-comedy-by-max-frisch-at-the-skylight-theatre/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-arsonists-regional-2026",
+   "label": "The Arsonists",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Discover Hollywood Magazine / Amalisha HuEck 2026-09-10 https://discoverhollywoodmagazine.com/the-arsonists-skylight-theatre/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-arsonists-regional-2026",
+   "label": "The Arsonists",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "TicketHoldersLA / Travis Michael Holder 2026-09-18 https://travismichaelholder.com/review-archives-summer-2026-to/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-arsonists-regional-2026",
+   "label": "The Arsonists",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Broadway World (Los Angeles) / Harker Jones 2026-09-08 https://www.broadwayworld.com/los-angeles/article/Review-THE-ARSONISTS-at-Skylight-Theatre-20260908"
+  },
+  {
+   "kind": "coverage",
+   "id": "dracula-the-musical-regional-2026",
+   "label": "Dracula: The Musical",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Broadway World (Los Angeles) / Shari Barrett 2026-08-12 https://www.broadwayworld.com/los-angeles/article/Review-Immersive-Rock-Opera-DRACULA-THE-MUSICAL-at-Nocturne-Theatre-20260812"
+  },
+  {
+   "kind": "coverage",
+   "id": "dracula-the-musical-regional-2026",
+   "label": "Dracula: The Musical",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Accessibly Live Off-Line / Travis Michael Holder 2026-08-09 https://accessiblyliveoff-line.com/review-archives-summer-2026-to/"
+  },
+  {
+   "kind": "coverage",
+   "id": "dracula-the-musical-regional-2026",
+   "label": "Dracula: The Musical",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Stage and Cinema / Ernest Kearney 2026-08-12 https://www.stagenewsonline.com/dracula-the-musical-nocturne-theatre-review/"
+  },
+  {
+   "kind": "coverage",
+   "id": "dracula-the-musical-regional-2026",
+   "label": "Dracula: The Musical",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "StageScene LA / Steven Stanley 2026-08-10 https://stagescenela.com/2026/08/dracula-the-musical-2/"
+  },
+  {
+   "kind": "coverage",
+   "id": "dracula-the-musical-regional-2026",
+   "label": "Dracula: The Musical",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "BroadwayWorld (Los Angeles) / Shari Barrett 2026-08-12 https://www.broadwayworld.com/los-angeles/article/Review-Immersive-Rock-Opera-DRACULA-THE-MUSICAL-at-Nocturne-Theatre-20260812"
+  },
+  {
+   "kind": "coverage",
+   "id": "heroes-of-the-fourth-turning-regional-2026",
+   "label": "Heroes of the Fourth Turning",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Broadway World / Harker Jones 2026-08-18 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHnVqZfKssxJOp4aDjMjyQzaCyO106zTdJQU3uWXfsBSwUPdXo_gzG9CGOVB5uMrKJIOkGWNxjPB5N98w9k6w-tRijMmmPcPcTmyODKvIyFychnLkWXfg6vRf2dEEnfKd5fx_EMTe4fTLxezUIX8srXOowYLV7OlpAGBXgIkyldYNOhKkHaM6hdZI_62f_tcC2AmfRS8_9cCjUZPqePF-_LO6o69F7w7kr91_7jEPxxFr4="
+  },
+  {
+   "kind": "coverage",
+   "id": "heroes-of-the-fourth-turning-regional-2026",
+   "label": "Heroes of the Fourth Turning",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Stage Raw / F. Kathleen Foley 2026-08-18 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEMgovPkd9_7P5SUk9THuluXtI-qalMlsBWHPOOx_DjmuUxX70zl-2ibMfsFuGLrdjON3Vk3GvmKFCxZ9HH6hAgYnj4HZAzV3xvio5dZrNcSEqzS-3Lc5Tjxpkg5mebl8n7-e1BwleOPrul0tsoVyfaMT3Qk5cVlCqzZBAXyLRvgA=="
+  },
+  {
+   "kind": "coverage",
+   "id": "heroes-of-the-fourth-turning-regional-2026",
+   "label": "Heroes of the Fourth Turning",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Stage Takes / null 2026-08-22 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHTxSH2KUHAW5_k0MJZn8D0nE7kvxPZR0i2xRR-1y1BAGcWRsaEjCWl-e_-b2gIsPrNML4KpMYFTsmYI3WXeAwVohiZhk_6IvlxlmlsXbw-ljmq"
+  },
+  {
+   "kind": "coverage",
+   "id": "heroes-of-the-fourth-turning-regional-2026",
+   "label": "Heroes of the Fourth Turning",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "LA Hidden Gems / Dan Ruth 2026-08-28 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEecPiVBj1WBMQN9UjQG8FvvebjFZwOgDrTqYX4xmnRRLIxhk44NmfaBJbsAEfCaY7BwATqFYvC-vhn2ZzDjIoXEziWdOf4aNSKkOTpF96OhaTzhN5iZo7ZOFpG1qJZyD9H4zB8EZOKRg6YD8kB383DACk7ES17JMBbI86a1hETWHvTElF-ZBXxdjXG4Y6F46fKqm7PcIOxrcsJUjxFo0Q--Nl7bnTokUrf"
+  },
+  {
+   "kind": "coverage",
+   "id": "heroes-of-the-fourth-turning-regional-2026",
+   "label": "Heroes of the Fourth Turning",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "BroadwayWorld (Los Angeles) / Harker Jones 2026-08-18 https://www.broadwayworld.com/los-angeles/article/Review-HEROES-OF-THE-FOURTH-TURNING-at-Broadwater-Black-Box-20260818"
+  },
+  {
+   "kind": "coverage",
+   "id": "heroes-of-the-fourth-turning-regional-2026",
+   "label": "Heroes of the Fourth Turning",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Stage Takes / Stage Takes 2026-08-22 https://stagetakes.com/2026/08/22/heroes-of-the-fourth-turning-by-catharsis-theater-collective/"
+  },
+  {
+   "kind": "coverage",
+   "id": "a-case-for-the-existence-of-god-regional-2026",
+   "label": "A Case for the Existence of God",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Stage Raw / F. Kathleen Foley 2026-09-08 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFdrw_FjBK74LSvdI-KIBLJCsIvDruSPUpbhdEg58CB7CoVGPuTLxpOucx69HpXOOxoKqBEcXVGQY7c3DJQ1e0RXJdUNkbdog88usSyZuep1imms9G7uYBeA6MtN0eVnELg8P_x4Z31AV438X3ZKW5vZwvdHGGjgbzKNm7dhdnXVA=="
+  },
+  {
+   "kind": "coverage",
+   "id": "a-case-for-the-existence-of-god-regional-2026",
+   "label": "A Case for the Existence of God",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Los Angeles Times / Charles McNulty 2026-09-09 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFnmqZh791j5yjDByW3q7Ao1-Nde1LKEZh6se07Pkb2ciDNcCmkzaj8Hmax0RvV3PBFALIhsNSg2zI_cWSJLM6SF4UT27oGySSpJiVeNdBODxXH14RjcS1k1ddS7TllpLjK-QID6zvXWT_k_tLBhsF2YkVVnk1EddFWzsQRUTc85Rv4DfkMvTXrtZGMGNl4c6PCFwVIe2xj69d6cN8BHGZK1n_BbxZPshhDgjBhgK9wHhrrWVs="
+  },
+  {
+   "kind": "coverage",
+   "id": "a-case-for-the-existence-of-god-regional-2026",
+   "label": "A Case for the Existence of God",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Broadway World (Los Angeles) / Evan Henerson 2026-09-18 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEYf2GuKOXrJrMa7ehQHjQvDsTaXBpsIgan1gsJomnMZJxppJ_0pxBmgQTepop1xMzgo0dOXkSVaXk_7eQrWXnE9qAJSAXjgNEXfy2i5yNVNq8uujgE5tRiSkNxcffOswEBVkqVPXy956aegvIKxssl3x0KZ6sSCH4-WR9lxnqVL7yqy46M34yk2rlPYF-dpeeMxo1t1cuCMzbjYpYiPA17MiOFl6krlPhQJ5Z5J1aENj_Q4Rub9kK_bPHwygeubfebepc="
+  },
+  {
+   "kind": "coverage",
+   "id": "a-case-for-the-existence-of-god-regional-2026",
+   "label": "A Case for the Existence of God",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Stage Scene LA / Steven Stanley 2026-09-21 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH7mzIgJ3Sie1SNzbEuGkFkvRYzX_zmbJDzVlebSDCQ-nteSR6k-rkHpAph0KHC_RpjF4qzI4w9C69YJfOYv7WG5rWJTYhUZcf4zz8lHfLVj-sYEMNPFSB4u9VBQcmXH8nUQ6GMShbFyxG3Y8d77RY1CHlKoewwZEUfRzw="
+  },
+  {
+   "kind": "coverage",
+   "id": "a-case-for-the-existence-of-god-regional-2026",
+   "label": "A Case for the Existence of God",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Stage Raw / Kayden J. Merritt 2026-10-13 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEDE3tHaq3D0R4Um2m39xKT7WVbclf6VWe01MTKUb5NVUdsghGPxOptY3trS-jYB052KVWGQxHl7v_KuTEm7akWpZ5fHRT7YVGQrM4vZsnLg_4YY6_DPilx0PWamZieiMX32k76VCjTKG1AR2p8NNX08Z2QO7mIjAiQ-N8D3uUtiebbaRDfk_ghDSI="
+  },
+  {
+   "kind": "coverage",
+   "id": "a-case-for-the-existence-of-god-regional-2026",
+   "label": "A Case for the Existence of God",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "ArtsBeatLA / Terry Morgan 2026-09-07 https://www.artsbeatla.com/2026/09/a-case-for-the-existence-of-god/"
+  },
+  {
+   "kind": "coverage",
+   "id": "in-the-tomb-of-ten-thousand-calendars-regional-2026",
+   "label": "In the Tomb of Ten Thousand Calendars",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "BroadwayWorld / Tracey Paleo 2026-08-30 https://www.broadwayworld.com/los-angeles/article/Review-IN-THE-TOMB-OF-TEN-THOUSAND-CALENDARS-at-Moving-Arts-Theatre-20260830"
+  },
+  {
+   "kind": "coverage",
+   "id": "in-the-tomb-of-ten-thousand-calendars-regional-2026",
+   "label": "In the Tomb of Ten Thousand Calendars",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Gia On The Move / Tracey Paleo 2026-09-01 https://www.la-drama-critics.com/in-the-tomb-of-ten-thousand-calendars-moving-arts/"
+  },
+  {
+   "kind": "coverage",
+   "id": "in-the-tomb-of-ten-thousand-calendars-regional-2026",
+   "label": "In the Tomb of Ten Thousand Calendars",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Angeles Stage / Don Shirley 2026-09-04 https://angelesstage.com/2026/09/04/emergencies-plays-on-precipices/"
+  },
+  {
+   "kind": "coverage",
+   "id": "in-the-tomb-of-ten-thousand-calendars-regional-2026",
+   "label": "In the Tomb of Ten Thousand Calendars",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Theatre Notes / Amalisha HuEck 2026-09-18 https://theatrenotes.com/in-the-tomb-of-ten-thousand-calendars-moving-arts-theatre/"
+  },
+  {
+   "kind": "coverage",
+   "id": "in-the-tomb-of-ten-thousand-calendars-regional-2026",
+   "label": "In the Tomb of Ten Thousand Calendars",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "BroadwayWorld (Los Angeles) / Tracey Paleo 2026-08-30 https://www.broadwayworld.com/los-angeles/article/review-in-the-tomb-of-ten-thousand-calendars-at-moving-arts-theatre-20260830"
+  },
+  {
+   "kind": "coverage",
+   "id": "conscience-regional-2026",
+   "label": "Conscience",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Stage Raw / Joel Beers 2026-09-09 https://stageraw.com/2026/09/09/conscience/"
+  },
+  {
+   "kind": "coverage",
+   "id": "conscience-regional-2026",
+   "label": "Conscience",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Hollywood Progressive / Ed Rampell 2026-08-31 https://www.peoplesworld.org/article/conscience-play-review-great-political-art-focusing-on-mccarthyism-of-past-and-present/"
+  },
+  {
+   "kind": "coverage",
+   "id": "conscience-regional-2026",
+   "label": "Conscience",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "LAexcites.com / Imaan Jalali 2026-08-29 https://laexcites.com/2026/08/29/review-conscience-carries-the-weight-of-its-conviction-at-ict/"
+  },
+  {
+   "kind": "coverage",
+   "id": "conscience-regional-2026",
+   "label": "Conscience",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Long Beach Post / Anita W. Harris 2026-09-03 https://lbpost.com/life/arts-culture/2026/09/03/a-play-about-standing-on-your-morals-during-mccarthys-red-scare-hits-home-today-in-international-city-theatres-conscience/"
+  },
+  {
+   "kind": "coverage",
+   "id": "conscience-regional-2026",
+   "label": "Conscience",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Stage Raw / Joel Beers 2026-09-09 https://stageraw.com/stage-raw-review-conscience/"
+  },
+  {
+   "kind": "coverage",
+   "id": "conscience-regional-2026",
+   "label": "Conscience",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "LAexcites / Imaan Jalali 2026-08-29 https://laexcites.com/2026/08/29/review-conscience-international-city-theatre-long-beach/"
+  },
+  {
+   "kind": "coverage",
+   "id": "conscience-regional-2026",
+   "label": "Conscience",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "OnTheReels (Substack) / R.C. Samo 2026-09-12 https://www.onthereels.com/p/conscience-loses-its-historical-focus"
+  },
+  {
+   "kind": "coverage",
+   "id": "conscience-regional-2026",
+   "label": "Conscience",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "People's World / Ed Rampell 2026-08-31 https://www.peoplesworld.org/article/conscience-play-review-great-political-art-focusing-on-mccarthys-red-scare/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-swan-regional-2026",
+   "label": "The Swan",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Random Lengths News / Greggory Moore 2026-09-09 https://www.randomlengthsnews.com/archives/2026/09/09/the-swan-hyping-the-transformative-possibilities-of-love/77389"
+  },
+  {
+   "kind": "coverage",
+   "id": "pericles-regional-2026",
+   "label": "Pericles",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Los Angeles Times / Charles McNulty 2026-09-05 https://www.latimes.com/arts/theater/story/2026-09-05/pericles-review-boston-court-pasadena-charles-mcnulty"
+  },
+  {
+   "kind": "coverage",
+   "id": "pericles-regional-2026",
+   "label": "Pericles",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Los Angeles Times / Charles McNulty 2026-09-05 https://www.latimes.com/entertainment-arts/story/2026-09-05/pericles-theater-review-shakespeare-ellen-mclaughlin-boston-court"
+  },
+  {
+   "kind": "coverage",
+   "id": "green-corridors-regional-2026-city-garage-theatre",
+   "label": "Green Corridors",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "South East European Film Festival / Allie Rigby 2026-08-24 https://seefilmla.org/review-green-corridors/"
+  },
+  {
+   "kind": "coverage",
+   "id": "green-corridors-regional-2026-city-garage-theatre",
+   "label": "Green Corridors",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Travis Michael Holder / Travis Michael Holder 2026-08-28 https://travismichaelholder.com/review-archives-summer-2026-to/"
+  },
+  {
+   "kind": "coverage",
+   "id": "green-corridors-regional-2026-city-garage-theatre",
+   "label": "Green Corridors",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Angeles Stage / Don Shirley 2026-09-04 https://angelesstage.com/2026/09/04/emergencies-plays-on-precipices/"
+  },
+  {
+   "kind": "coverage",
+   "id": "green-corridors-regional-2026-city-garage-theatre",
+   "label": "Green Corridors",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Night-Tinted Glasses / Zahir Blue 2026-09-24 https://nighttintedglasses.blogspot.com/2026/09/green-corridors-review.html"
+  },
+  {
+   "kind": "coverage",
+   "id": "green-corridors-regional-2026-city-garage-theatre",
+   "label": "Green Corridors",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "LA Theatre Beat / Steve Zall and Sid Fish 2026-10-01 https://latheatrebeat.com/2026/10/01/scene-in-la-october-2026-by-steve-zall-and-sid-fish/"
+  },
+  {
+   "kind": "coverage",
+   "id": "a-number-regional-2026",
+   "label": "A Number",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Stage Raw / Lovell Estell III 2026-09-23 https://events.thestagecrafts.com/projects/15047"
+  },
+  {
+   "kind": "coverage",
+   "id": "a-number-regional-2026",
+   "label": "A Number",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "The Hollywood Times / Dominique Minor 2026-09-28 https://thehollywoodtimes.today/a-number-confronts-identity-parenthood-and-free-will-at-the-madnani-theater/"
+  },
+  {
+   "kind": "coverage",
+   "id": "a-number-regional-2026",
+   "label": "A Number",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Discover Hollywood Magazine / Amalisha HuEck 2026-10-02 https://discoverhollywoodmagazine.com/a-number-madnani-theatre/"
+  },
+  {
+   "kind": "coverage",
+   "id": "a-number-regional-2026",
+   "label": "A Number",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "West Virginia Digital News /  2026-11-02 https://westvirginiadigitalnews.com/2026/11/02/a-number-at-the-madnani-theater/"
+  },
+  {
+   "kind": "coverage",
+   "id": "september-10-regional-2026",
+   "label": "September 10",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "The Hollywood Times / Dominique Minor 2026-09-16 https://thehollywoodtimes.today/september-10-written-by-art-shulman-marks-the-25th-anniversary-of-the-9-11-attacks-and-brings-audiences-together-to-celebrate-remember-and-grieve-the-loos-of-life-in-the-united-states/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-best-medicine-regional-2026",
+   "label": "The Best Medicine",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Stage Raw / Molly McLean 2026-10-14 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHxpyYi9Q3Ge-yHUhDXnP3sMD_BugAYVF0SbkAoMGJ2yVUsgUnK01l4YXGy__pEpsE5ROITcZ4oAUk6SkGZSGpJulTn71OW8ASbNI2yn8wxrprJY67O9DRwyGr9CmtC-qksjfbQvG4zVdhm40UhkkcUbrmA"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-best-medicine-regional-2026",
+   "label": "The Best Medicine",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Discover Hollywood Magazine / Amalisha HuEck 2026-11-06 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEiPoPp187VIkMCfUJXRnYnMiTUxUCwqoV-CdNmNv6LCgKofNYDf3G5UXD8l9sue89EcusYQqRzGuO-bGM0XsljgBUwXPJ-1AXzr5nssARfXbwMTNdm2TZia0Gp6TqL2pOjSSuVsc6U_JKLoRoEHf-x2GGLWUG4-917ogtadXls"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-best-medicine-regional-2026",
+   "label": "The Best Medicine",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Stage and Cinema / Ernest Kearney 2026-10-17 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFgxrv7KKB4pSt1TxYQ-ctudRogvn1-Yb95fALMZ-_ieckMFt0F1nhq-c0ODefD6Ac4gMERCucukQ2_oueHz6v203lBh3Nu0Th5qDroxmEY4i549X7W96ZzaiwUD6-A6lr0Z58AMX5RaywtIJeqc_U="
+  },
+  {
+   "kind": "coverage",
+   "id": "the-best-medicine-regional-2026",
+   "label": "The Best Medicine",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Palisadian-Post / Libby Motika 2026-10-20 https://palipost.com/the-best-medicine-explores-parkinsons-disease-in-solo-show/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-dance-and-the-railroad-regional-2026",
+   "label": "The Dance and the Railroad",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Broadway World (Los Angeles) / Evan Henerson 2026-10-26 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFuiQymqBZIMCw4TFErq-0El8lDiubMAIlXSxXP74NZ6WeVl1e8bFxm0TmDH2nJYgX7209U2JXp4zjZWPIrR5q0x3-nT5LhwkvXsm1dO6Cxe4APS9RYS43DBNgU0Ce96jfKFI4NOXjPplxAy81YTp3WqoQx6q_oyYo46hueWV7c-tj0cvyAWkzYMArhBErsPpk8SbA42aiccaYgASSCVcMdX2U9uNe2ECfpdQo-FCJS1XjBcId6Krx4"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-dance-and-the-railroad-regional-2026",
+   "label": "The Dance and the Railroad",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Politics, Money, Culture / Marilyn Fuss 2026-10-25 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFL3g3AJvO4xi2A33SfuChjeN4r8u4fzvXkinYmndGYhYiyVlptXxnuPQt8mSF2T7M5VV_uxU36Ym0m0FxgFAvXK8RKy1qVlUs-6TaTY6mtJhZI9bV-W6PSWyMchwYfmG88wo8ch8F8zJeQHKeICbFBEXbOsxqMTrY0LFNPvPE7S-by4zxzQoFPFvrp7xPNAe1jdynLL-DXp5ZpV8gep44zuOEbzRjcYFQjSqUVtMm6hYr_AuKxhuGe4PS_xqs_RdCURkcxsq8W"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-dance-and-the-railroad-regional-2026",
+   "label": "The Dance and the Railroad",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "L.A. Dance Chronicle / Tam Warner 2026-10-15 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQG6WfkAPrHs7Q9zp6ORi3Suf743MTzf9lg_GIKso1MNVqo02o7-Q8yGWpPXHA32rWuQg0cW8fHO8f5ZPMN084J1JB6s4WN82KOffgHJ65Lk2xJ1c9t8YSDlVPZuh-T1gi7VOy38rq0glZ5jCqU6oLI-e5Y_jVgs8udn1hEnXW7CbSAR2BDiWzLTebyPKMjA9FvI3TSjAyyJLw=="
+  },
+  {
+   "kind": "coverage",
+   "id": "the-dance-and-the-railroad-regional-2026",
+   "label": "The Dance and the Railroad",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "StageSceneLA / Steven Stanley 2026-10-03 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFIcRNO_A0pEd5pofc0-n8JDS0dqqzLfoX3xyUdUG7qOMFR29u4jIZKma9IXglDoyPFqOEbOqYD59-cQZ3CttXqTN5xNOCwE7eZyU3WIelcwV8HtxyjrQdRfQzd1MaHYIxifH94Vnp7gOZeib8i5ZREtgcP9dZN"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-dance-and-the-railroad-regional-2026",
+   "label": "The Dance and the Railroad",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "ColoradoBoulevard.net / Marilyn Fuss 2026-10-10 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQG7Be4fjRnKXgSp4REEfNw7ASW0SZnFT2y1S314TK8qeVA5LPMD-_TMZ1Arz4Q__tzBaNbrZ1bE7wYISI5LIlsZCAsvusN64RPno6lluVvvr4pEhH9mXpoKeQbazyXOg-AeI-B_IYG-TrbaW9WWsnOiGHsvNtje3Noi05MYVkJVL3CN-uhMYbKfqxo="
+  },
+  {
+   "kind": "coverage",
+   "id": "the-dance-and-the-railroad-regional-2026",
+   "label": "The Dance and the Railroad",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "L.A. Dance Chronicle / Tam Warner 2026-10-15 https://www.ladancechronicle.com/the-dance-and-the-railroad-at-the-los-angeles-theater-center/"
+  },
+  {
+   "kind": "coverage",
+   "id": "melt-regional-2026",
+   "label": "Melt",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Broadway World (Los Angeles) / Edmund Whelan 2026-09-27 https://www.broadwayworld.com/los-angeles/article/Review-MELT-THE-PLAY-returns-triumphantly-to-The-Marilyn-Theatre-20260927"
+  },
+  {
+   "kind": "coverage",
+   "id": "melt-regional-2026",
+   "label": "Melt",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "The Hollywood Times / Juan Markos 2026-09-26 https://thehollywoodtimes.today/melt-is-a-must-see-show-the-acting-is-phenomenal-and-like-life-itself-it-is-moving-funny-and-unpredictable/"
+  },
+  {
+   "kind": "coverage",
+   "id": "melt-regional-2026",
+   "label": "Melt",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Broadway World (Los Angeles) / Edmund Whelan 2026-09-27 https://www.broadwayworld.com/los-angeles/article/Review-MELT-THE-PLAY-returns-triumphantly-to-The-Marilyn-Theatre-20260927"
+  },
+  {
+   "kind": "coverage",
+   "id": "melt-regional-2026",
+   "label": "Melt",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Stage Raw / Julyza Commodore 2026-09-30 https://stageraw.com/stage-raw-review-melt/"
+  },
+  {
+   "kind": "coverage",
+   "id": "winters-bench-regional-2026",
+   "label": "Winter's Bench",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Stage Raw / Madison Mellon 2026-09-08 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEJNL48Wzq61M6KGbOLU4tNPmI3wF6DIxb1qL6ihWYIRpRlwxHh8OCtwJlXx5INC3rKj7l9lK2Fv7qDQcn7CtDUuAjo2GrGNv568Sz4VajPaTa6nstmGP3WY-re1MjJAFi0xeKK_G_7x0vEQFfpphI="
+  },
+  {
+   "kind": "coverage",
+   "id": "winters-bench-regional-2026",
+   "label": "Winter's Bench",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Splash Magazines (via Los Angeles Drama Critics Circle) / Elaine Mura 2026-10-21 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHiM64h2dqqvi84eDGavkLkrWJmSjjk3qL375Q2PmL1LknM0x-o-qCzs-9y98Ba_Xid9x3FtYS6r7dipKmJ8py0uhjcjWxOyQV7SSJ2IyKSRs4r2xU9YPgRfcNCRN336aByDxCNrNkERs_CMltFC9a4fURcYm8E5cmSZ-Z1R0Q="
+  },
+  {
+   "kind": "coverage",
+   "id": "winters-bench-regional-2026",
+   "label": "Winter's Bench",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Discover Hollywood Magazine / Amalisha HuEck 2026-10-01 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFcmeVhKb5GJkfySLv81Jm8A8g_7HGK_K3Pu3XxLF7UCspAjybqlCdasRZmjiK40AM2eFcdKl0Q5C5xqBI8BffK4DyOk5Dj238N4qktQZXsJ6ktbVt0qKpZyOXahZto19tnbq03lpzPx6a53hp-pp-PlAeFoEQNHnTUP5tNwLLl"
+  },
+  {
+   "kind": "coverage",
+   "id": "winters-bench-regional-2026",
+   "label": "Winter's Bench",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Hollywood Times / Robert St. Martin 2026-09-08 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFc7v0GYHCyFGbeRXcFUOJOzrV4L71Nm4uLJPd7DUVZexwwz9t_2ZK41k1Dn61KTiAgCN_IiNHEiNGsbDaxW448fypcoKsJV3ffYMxfOg48oLVoK5TrYUUyg5lbRw889rL4u4Eed2kzGlvG2aN0UYFW2gz1jnktMMH20uvKfGpEhSc5PFlYvYr8QZfv5gxpkDgnGFOXtyhvw462IVgZlLAlngMm0w="
+  },
+  {
+   "kind": "coverage",
+   "id": "winters-bench-regional-2026",
+   "label": "Winter's Bench",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Stage and Cinema (via Theatre In Los Angeles) / Ernest Kearney 2026-09-08 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHK4F9DW3AZXokDU6I-v1d3fqXEZqqrZjT0AIOOxQ2BsqUPk4lNSQGDW2-ixp-v9mnEjZKaWrpVEEtjKiF8uc4O2560-kdmusPCH9RHKwy80Ps4SAt86vKf4RhA5oU70tavHA6jovQ6cETrYImTouhi2LNH"
+  },
+  {
+   "kind": "coverage",
+   "id": "winters-bench-regional-2026",
+   "label": "Winter's Bench",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Larchmont Buzz (via Theatre In Los Angeles) / Laura Foti Cohen 2026-09-08 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHK4F9DW3AZXokDU6I-v1d3fqXEZqqrZjT0AIOOxQ2BsqUPk4lNSQGDW2-ixp-v9mnEjZKaWrpVEEtjKiF8uc4O2560-kdmusPCH9RHKwy80Ps4SAt86vKf4RhA5oU70tavHA6jovQ6cETrYImTouhi2LNH"
+  },
+  {
+   "kind": "coverage",
+   "id": "winters-bench-regional-2026",
+   "label": "Winter's Bench",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Splash Magazines / Elaine Mura 2026-10-20 https://splashmags.com/2026/10/winters-bench-magic-and-memories/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-case-book-of-c-auguste-dupin-regional-2026",
+   "label": "The Case-Book of C. Auguste Dupin",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Stage Raw / Asa Fris 2026-09-23 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGiOgfxu4_L5cyMiR0Uqd_bIyzUMAGe_V3OhGTkNlC22U-A21qA8nRFyt5ZtxLMt5ou9fPynWQwL5JzqmPdBaE1I3jo4VLTD3xnPtr8u7wocvm4bxVse9Gs-B72dD4RMIglDs5fHCSO8tzT0Lz9PP7_hPTsZ793_NLJWdYIhJQaS6O3"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-case-book-of-c-auguste-dupin-regional-2026",
+   "label": "The Case-Book of C. Auguste Dupin",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "The Hollywood Times / Cameron Knight 2026-09-19 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGMvszafJcl2Lq3xb-1QfEQd_8mt1BbFddxv9dNwScYymr0-kXbsRVi3Y0tWlap_Tv1aITUwmDvOEKExxGkIn-cxWkAkRmphPF_eG79BxSGkLKDnnWCOsn4P2X-ZOSlfw5uqO9WZeDSd1k2_o1cxtY7cVsLeTndRTFNojZ7SQGFBdAY4dg7DkwaTz5NpKQqPBjRK6z3lNfrASUxdQEI_qebPX9VQRVY6BSNb6omHw2752kcKhCUpHgl1aDFrtUiUMrc1LJ-0n0"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-case-book-of-c-auguste-dupin-regional-2026",
+   "label": "The Case-Book of C. Auguste Dupin",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "LA Theatre Bites /  2026-10-18 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEnUDJxMlBsp2F9V08ujZufNqP-Iv5cU-lUNdQhQb2MOoVJRlZIrRkbaYGdVF1S87828bBr8J-e7eVd7gKF9BZ7xbtuEKY8F-5X29Ofl6sK0BK_RfWZMFu8WMQNV4KxRigf_DEZ5tQQabe1d-QJdI55gdLrFfA-J24uWh-2eLqPesQaKawJceqOwH7DYFw4ZevA7iv7ni83Xfr3"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-case-book-of-c-auguste-dupin-regional-2026",
+   "label": "The Case-Book of C. Auguste Dupin",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "The Hollywood Times / Cameron Knight 2026-09-19 https://hollywoodtimes.net/michael-mullen-makes-poes-first-detective-impossible-to-ignore-in-theatre-40s-the-case-book-of-c-auguste-dupin/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-case-book-of-c-auguste-dupin-regional-2026",
+   "label": "The Case-Book of C. Auguste Dupin",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "It's Not About Me / Karen Salkin 2026-09-25 https://itsnotaboutme.tv/news/theatre-the-case-book-of-c-auguste-dupin/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-case-book-of-c-auguste-dupin-regional-2026",
+   "label": "The Case-Book of C. Auguste Dupin",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Accessibly Live (Off-Line) /  2026-09-27 https://accessiblyliveoffline.wordpress.com/2026/09/27/three-and-a-half-decades-after-the-fact/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-case-book-of-c-auguste-dupin-regional-2026",
+   "label": "The Case-Book of C. Auguste Dupin",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Theatre In LA /  2026-09-23 https://www.theatreinla.com/the-case-book-of-c-auguste-dupin/11417/"
+  },
+  {
+   "kind": "coverage",
+   "id": "wives-regional-2026",
+   "label": "Wives",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Los Angeles Times / Charles McNulty 2026-10-13 https://www.latimes.com/entertainment/arts/story/2026-10-13/wives-review-east-west-players-david-henry-hwang-theater"
+  },
+  {
+   "kind": "coverage",
+   "id": "wives-regional-2026",
+   "label": "Wives",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Splash Magazines / Elaine Mura 2026-10-19 https://www.ladcc.org/2026/10/19/wives-east-west-players/"
+  },
+  {
+   "kind": "coverage",
+   "id": "wives-regional-2026",
+   "label": "Wives",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Los Angeles Times / Charles McNulty 2026-10-13 https://www.latimes.com/entertainment-arts/story/2026-10-13/wives-theater-review-east-west-players"
+  },
+  {
+   "kind": "coverage",
+   "id": "texas-sodomy-regional-2026",
+   "label": "Texas Sodomy",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "NoHo Arts District / Samantha Simmonds-Ronceros 2026-09-17 https://nohoartsdistrict.com/texas-sodomy-theatre-review-whitefire-theatre/"
+  },
+  {
+   "kind": "coverage",
+   "id": "hangman-regional-2026",
+   "label": "Hangman",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Random Lengths News / Greggory Moore 2026-09-03 https://www.randomlengthsnews.com/archives/2026/09/03/hangmen-is-lesser-mcdonagh-imperfectly-staged-but-still-fun/77317/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-feel-good-story-america-needs-right-now-regional-2026",
+   "label": "The Feel Good Story America Needs Right Now",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "LAexcites.com / Imaan Jalali 2026-11-02 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEdDxIJ0loZ78Fd8XIQlsswX33j46WNZqs-MWi2iFjexFQ47FeLEzLBB4IdXLcQP-gPNwyeGB6O-tPpb5Vqrx9W4uAayUfuehDUdng59rMGRsYOMGNHTK6XRnbC6-yZkfkOihEAB9VrYYSCTaWuvxcqdxK2iNXV-a_3O7PdpbZLZdXHSCluZwKeMKVDnG5nRpAMrsepyNx_SYh8pr0="
+  },
+  {
+   "kind": "coverage",
+   "id": "the-feel-good-story-america-needs-right-now-regional-2026",
+   "label": "The Feel Good Story America Needs Right Now",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Discover Hollywood Magazine /  2026-10-08 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGJkj2qcmJgrd3YttjxsayMu31JbwCqW8y-ys6Ju0WS6ignDTYk7Vw8wpXBmQNtzeBpTNKYQrBwWB86hbkhA5UEw7hjYuo9uxcy5evqE5-RB2wFB_8jB5CPp4tvlCh4VCfnvsoWcazH1byi1VBoYQ9ydHBTGqDMVVY9sqrWeum0kbELRfn9j3bI_rrcFA2TcsxRhr8aN_c="
+  },
+  {
+   "kind": "coverage",
+   "id": "the-feel-good-story-america-needs-right-now-regional-2026",
+   "label": "The Feel Good Story America Needs Right Now",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "StageSceneLA / Steven Stanley 2026-10-02 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGRzWwbbMEmrhqJ3dtvhEj_SCENEtM1oF3sslMbFn98OYxajZK7BSQpOVvr5Ab90K9U0gSU3JQ1n4SBkpGraA71bqOFH6nV75jeDC7763huFrf3K6LrTYE4MwcGQFPmrQym1pBs1FS0aHi-Yfi0-BCQL4NbysVfDuIma_FDMirsXe3Zp-HSGxKI"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-feel-good-story-america-needs-right-now-regional-2026",
+   "label": "The Feel Good Story America Needs Right Now",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "ACCESSIBLY LIVE OFF-LINE /  2026-10-04 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQETCk4Ds5TR-CIlsttyRQvdFKnLN6tJVF86n0TqkHbitoho5XUzlSsfdiM2jZescdsrbxyp-rAdnOdZx2YJmJoP8bnw9iV_iBpvmi879ASsXD-AXDfXqeWIz1nGVeA9Co6huGnxaC0u"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-feel-good-story-america-needs-right-now-regional-2026",
+   "label": "The Feel Good Story America Needs Right Now",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Angeles Stage / Don Shirley 2026-10-09 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHzHS9HNXTNQ2itfxJbwmPiYwF6vcyJtYz3_bJf7M1VDmslTBF5hgHNYptONNeYXUY6tErdBb9Y9liS-bByNTfSBikS-kp51LL9EXh2WdQ-3_np0V3ihzBDcyiPdTI8LuhVCpD1TGpvFRsenH_Igrso9QnJkdj6sWrKLbEeEFUv"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-feel-good-story-america-needs-right-now-regional-2026",
+   "label": "The Feel Good Story America Needs Right Now",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "NoHoArtsDistrict.com / Samantha Simmonds-Ronceros 2026-10-08 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEfiZsaohrhHtWI1gN-ttWto6kJYiT2CNY5wgniRbkzunRV8gboIUAyn2WvW9ig6XDGdQCGDP6GmajXH7Rj7uNBhhP23ZtVqK_PTvZTVRvTGuopQibYx4O6bAMagqBUu5-P7DjRtGxS40Nse9OL3iz-w5YOUpevSbBGmPDS_yJdAEztxGK3Sr3K9urp"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-feel-good-story-america-needs-right-now-regional-2026",
+   "label": "The Feel Good Story America Needs Right Now",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "NoHo Arts District / Samantha Simmonds-Ronceros 2026-10-08 https://nohoartsdistrict.com/the-feel-good-story-america-needs-right-now-review/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-feel-good-story-america-needs-right-now-regional-2026",
+   "label": "The Feel Good Story America Needs Right Now",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "LAexcites / Imaan Jalali 2026-11-02 https://laexcites.com/2026/11/02/review-theatre-west-the-feel-good-story-america-needs-right-now/"
+  },
+  {
+   "kind": "coverage",
+   "id": "kaiju-regional-2026",
+   "label": "Kaiju",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "TicketHoldersLA / Travis Michael Holder 2026-10-26 https://www.ticketholdersla.com/current-reviews/"
+  },
+  {
+   "kind": "coverage",
+   "id": "kaiju-regional-2026",
+   "label": "Kaiju",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Splash Magazines / Elaine Mura 2026-10-26 https://www.splashmagazines.com/index.php/2026/10/26/kaiju-a-wildly-creative-and-audacious-production-at-the-road-theatre/"
+  },
+  {
+   "kind": "coverage",
+   "id": "kaiju-regional-2026",
+   "label": "Kaiju",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Los Angeles Drama Critics Circle (review roundup page) / LADCC Critics 2026-10-07 https://ladramacriticscircle.com/kaiju-the-road-theatre-company/"
+  },
+  {
+   "kind": "coverage",
+   "id": "crone-creed-regional-2026",
+   "label": "Crone Creed",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Entertainment Today / Margie Barron 2026-10-14 https://www.entertainmenttoday.net/review-crone-creed-intense-good-vs-evil-timeless-saga/"
+  },
+  {
+   "kind": "coverage",
+   "id": "rorschach-regional-2026",
+   "label": "Rorschach",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "The Nerds of Color / The Nerds of Color 2026-11-06 https://thenerdsofcolor.org/2026/11/06/a-los-angeles-theatre-review-rorschach/"
+  },
+  {
+   "kind": "coverage",
+   "id": "heartbreak-house-regional-2026",
+   "label": "Heartbreak House",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "LA Theatre Bites / Patrick Chavis 2026-10-20 https://latheatrebites.com/2026/10/20/heartbreak-house-antaeus-theatre-company-review/"
+  },
+  {
+   "kind": "coverage",
+   "id": "heartbreak-house-regional-2026",
+   "label": "Heartbreak House",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "LA Drama Critics Circle (aggregated reviews) / LADCC Critics 2026-10-26 https://ladramacriticscircle.com/heartbreak-house-antaeus-theatre-company/"
+  }
+ ],
+ "pages": {
+  "hub": {
+   "problems": [
+    {
+     "code": "missing-from-section",
+     "section": "closed",
+     "title": "a case for the existence of god"
+    },
+    {
+     "code": "wrong-section",
+     "section": "now",
+     "title": "a case for the existence of god"
+    },
+    {
+     "code": "wrong-section",
+     "section": "closed",
+     "title": "frankenstein resurrection"
+    }
+   ],
+   "status": 200,
+   "counts": {
+    "now": 8,
+    "soon": 11,
+    "closed": 26
+   },
+   "expectedLocal": {
+    "now": 5,
+    "soon": 0,
+    "closedRecent": 12,
+    "archive": 45
+   }
+  },
+  "app": {
+   "feedStatus": 200,
+   "feedCount": 63,
+   "webCount": 62,
+   "problems": [],
+   "byDesignUnscoredClosed": []
+  }
+ }
+}

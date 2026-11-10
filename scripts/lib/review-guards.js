@@ -762,6 +762,9 @@ function hasStrongDifferentProductionSignal(data, show) {
  */
 function cvFlagVetoedInWindow(data, show, kind, ctx = {}) {
   if (!data || !show) return false;
+  // BRO-7155: a person's wrongShow/wrongProduction verdict is never vetoed.
+  if (kind === 'wrongShow' && require('./wrong-production-autoclear').isWrongShowHeld(data)) return false;
+  if (kind === 'wrongProduction' && require('./wrong-production-autoclear').isWrongProductionHeld(data)) return false;
   if (ctx && ctx.urlFiledUnderOtherShow === true) return false;
   // BRO-7050: one automated classifier verdict never hides an aggregator-listed
   // or full-text-scored review (same safety carve-outs as below, no window test).
@@ -920,6 +923,42 @@ function isPrematureReviewForUnopenedShow(data, show, nowMs = Date.now()) {
     return publishMs < startMs - PRE_OPENING_LEAD_DAYS * 86400000;
   }
   return publishMs < nowMs - UNSCHEDULED_MAX_AGE_DAYS * 86400000;
+}
+
+// BRO-7210: ingest-side counterpart of isPrematureReviewForUnopenedShow. That read-side
+// guard covers only never-opened rows with a 120d window; an announced/new row also gets
+// an OLD production's review attached at ingest (the-apology-west-end-2027 took a 2022
+// London Box Office review of a different production; private-lives-2025 took five
+// 2011/2012 reviews). A review published more than a year BEFORE the row's first date is
+// never this production's, whatever the row's status. Dry run over 79,432 files: 2,285
+// match, 2,238 already excluded elsewhere, 47 would have been newly refused.
+const OLD_PRODUCTION_LEAD_DAYS = 365;
+/**
+ * Pure. Returns 'oldProductionReview' when `publishDate` is more than
+ * OLD_PRODUCTION_LEAD_DAYS before the row's earliest show date, else null.
+ * Silent (null) for rows with declared priorRuns/tourLegs, no usable show date or
+ * review date, and writes carrying a human override.
+ * @param {{publishDate?: string, wrongProductionManualClear?: boolean, wrongProductionOverride?: boolean, humanReviewedWrongProduction?: boolean, allowEarlyDate?: boolean, humanReviewedEarlyPublish?: boolean, allowCrossMarket?: boolean}} review
+ * @param {object|null|undefined} show
+ * @returns {string|null}
+ */
+function oldProductionReviewReason(review, show) {
+  if (!review || !show) return null;
+  if (Array.isArray(show.priorRuns) && show.priorRuns.some(r => r && (r.openingDate || r.closingDate || r.previewsStartDate))) return null;
+  if (Array.isArray(show.tourLegs) && show.tourLegs.some(l => l && (l.startDate || l.endDate))) return null;
+  if (
+    review.wrongProductionManualClear === true || review.wrongProductionOverride === true ||
+    review.humanReviewedWrongProduction === false || review.allowEarlyDate === true ||
+    review.humanReviewedEarlyPublish === true || review.allowCrossMarket === true
+  ) return null;
+  const du = require('./date-utils');
+  const publishMs = du.toDateMs(review.publishDate);
+  if (isNaN(publishMs)) return null;
+  const start = require('./date-guard').earliestShowDate(show);
+  if (!start) return null;
+  const startMs = du.toDateMs(start);
+  if (isNaN(startMs)) return null;
+  return publishMs < startMs - OLD_PRODUCTION_LEAD_DAYS * 86400000 ? 'oldProductionReview' : null;
 }
 
 /**
@@ -1141,6 +1180,7 @@ function cvWrongProductionIsVenueCarveout(cv, show, publishDate, cvLowButStrong 
  */
 function isVenueCarveoutPersistedWrongProduction(data, show) {
   if (!data || data.wrongProduction !== true) return false;
+  if (require('./wrong-production-autoclear').isWrongProductionHeld(data)) return false; // BRO-7155: a held wrongProduction is a person's verdict
   const reason = String(data.wrongProductionReason || '');
   if (reason && !/^CV-promoted:/.test(reason)) return false;
   if (data.wrongProductionNote) return false;
@@ -2066,6 +2106,7 @@ const INDIVIDUAL_REVIEW_URL_PATTERNS = [
 
 function isLikelyStaleRoundupFlag(data) {
   if (!data || data.isRoundupArticle !== true) return false;
+  if (require('./approved-fix-flag').hasApprovedFlag(data, 'isRoundupArticle')) return false; // BRO-7155
   const fullText = (data.fullText || '').trim();
   if (fullText.length < 800) return false;
   const url = data.url || '';
@@ -2492,6 +2533,7 @@ function _wrongShowTitleTokens(s) {
  */
 function isLikelyStaleWrongShow(data, show) {
   if (!data || data.wrongShow !== true) return false;
+  if (require('./wrong-production-autoclear').isWrongShowHeld(data)) return false; // BRO-7155: an approved wrongShow is a person's verdict
   if (!show || !show.title || String(show.title).length < 5) return false;
 
   const fullText = String(data.fullText || '').trim();
@@ -2621,6 +2663,7 @@ function isLikelyStaleWrongShow(data, show) {
  */
 function isLikelyStaleWrongProduction(data, show) {
   if (!data || data.wrongProduction !== true) return false;
+  if (require('./wrong-production-autoclear').isWrongProductionHeld(data)) return false; // BRO-7155: a held wrongProduction is a person's verdict
   if (!show || !show.title || String(show.title).length < 5) return false;
 
   // Already manually cleared — don't double-process; the sweep would be a no-op.
@@ -2776,6 +2819,7 @@ function isLikelyStaleWrongProduction(data, show) {
  */
 function isStaleCvPromotedWrongProduction(data, cvIsStale) {
   if (!data || data.wrongProduction !== true) return false;
+  if (require('./wrong-production-autoclear').isWrongProductionHeld(data)) return false; // BRO-7155: a held wrongProduction is a person's verdict
   if (cvIsStale) return false;
 
   // Provenance gate: only self-heal flags CV itself set (or the contamination
@@ -2993,6 +3037,7 @@ function isStaleCvPromotedWrongShow(data, cvIsStale) {
  */
 function isMisFamilyCvPromotedWrongShow(data, { cvIsStale = false, urlFiledUnderOtherShow = false } = {}) {
   if (!data || data.wrongShow !== true) return false;
+  if (require('./wrong-production-autoclear').isWrongShowHeld(data)) return false; // BRO-7155: an approved wrongShow is a person's verdict
   if (cvIsStale || urlFiledUnderOtherShow) return false;
   if (!/^CV-promoted: /.test(String(data.wrongShowReason || ''))) return false;
   // A person's clear (wrongShowCleared) is NOT a bar here, unlike BRO-168: it
@@ -3027,6 +3072,7 @@ const NON_ARTICLE_URL_RE = /[?&](?:s|preview|preview_id)=|\/(?:search|tag|tags|c
  */
 function isStaleGenericHomepageWrongShow(data, show, { urlFiledUnderOtherShow = false } = {}) {
   if (!data || data.wrongShow !== true || urlFiledUnderOtherShow) return false;
+  if (require('./wrong-production-autoclear').isWrongShowHeld(data)) return false; // BRO-7155: an approved wrongShow is a person's verdict
   if (!/^Generic homepage URL/i.test(String(data.wrongShowReason || ''))) return false;
   if (data.wrongShowNote || data.humanReviewedWrongShow === true) return false;
   let u;
@@ -3127,6 +3173,7 @@ function ensembleScoredSinceCv(data) {
  */
 function isStaleCvNonReviewVerdictOverruled(data) {
   if (!data || data.rejectedAt) return false;
+  if (require('./approved-fix-flag').hasApprovedFlag(data, 'isNonReview')) return false; // BRO-7155
   if (data.manualReviewedBy || data.manualNonReviewSet === true || data.manualNonReviewBy
     || data.nonReviewOverride || data._locked === true || data.manualContentTier
     || /^manual \(not a review\)/i.test(String(data.isNonReviewReason || ''))) return false;
@@ -3196,6 +3243,7 @@ function isStaleCvNonReviewVerdictOverruled(data) {
  */
 function isNonReviewDemotedByFreshCV(data) {
   if (!data || data.isNonReview !== true) return false;
+  if (require('./approved-fix-flag').hasApprovedFlag(data, 'isNonReview')) return false; // BRO-7155
   // A human/monitor-set flag is never demoted: the freshness checks below only
   // make sense for LLM/CV-set flags (BRO-3415, a forum thread stayed scored).
   if (data.manualReviewedBy || data.manualNonReviewSet === true || data.manualNonReviewBy
@@ -3286,6 +3334,7 @@ function isNonReviewDemotedByFreshCV(data) {
  */
 function isLikelyStaleSuspectedMisattribution(data, registry) {
   if (!data || data.suspectedMisattribution !== true) return false;
+  if (require('./approved-fix-flag').hasApprovedFlag(data, 'suspectedMisattribution')) return false; // BRO-7155
   if (!registry || typeof registry !== 'object') return false;
   if (Object.keys(registry).length === 0) return false; // Empty-registry fail-safe.
   const criticName = (data.criticName || '').trim();
@@ -3812,6 +3861,13 @@ function evaluateShowMentionGuard(review, cleanedText, cleanedWordCount, showChe
   // wrong page, so neither setter re-flags or quarantines it.
   if (typeof review?.showNotMentionedManualClear === 'string' && review.showNotMentionedManualClear.trim()) {
     return { action: 'skip', reason: 'human show-mention clear', repairStaleFlags: false };
+  }
+  // BRO-7171 Stage 2b: gap-acceptance accepted this text because the fetched
+  // page's OWN headline (og:title/h1, never the url) names the show (The Stage
+  // only, whole-phrase + generic-title gate; see gap-acceptance headlineIdentity).
+  // A body that omits the title is then expected, not evidence of a wrong page.
+  if (typeof review?.showIdentityHeadline === 'string' && review.showIdentityHeadline.trim()) {
+    return { action: 'skip', reason: 'page headline names the show', repairStaleFlags: false };
   }
   // Context-too-thin gate: heuristic is unreliable on short paywalled excerpts
   // where the lede may legitimately omit the show title (metaphorical opening,
@@ -4433,7 +4489,11 @@ function shouldRetryFetch(show, review, failureEntry) {
   if (!review || typeof review !== 'object') return { shouldRetry: true, reason: 'not_gated' };
   if (!failureEntry) return { shouldRetry: true, reason: 'not_gated' };
 
-  // Permanent gate — once set, only a human unsets.
+  // Permanent gate for the COLLECTOR — once set, only a human unsets it. The
+  // gap-recovery driver (BRO-7171 Stage 4) deliberately reads 'abandoned' and
+  // 'max_retries_reached' as "the collector's own route is spent", not as
+  // evidence about the URL, and re-tries from the Mac's residential IP under
+  // its own ledger cap (gap-recovery-ledger REFETCH_FREE: 3 tries, backoff).
   if (review.fetchDiscoveryAbandoned === true) {
     return { shouldRetry: false, reason: 'abandoned' };
   }
@@ -5177,6 +5237,20 @@ function isPreviewFirstLookPiece(data) {
   if (cvNonReviewHumanCleared(data)) return false;
   const head = String(data.fullText || '').slice(0, 4000);
   return FIRST_LOOK_SELF_DESCRIPTION.test(head) && STILL_IN_PREVIEWS.test(head);
+}
+
+/**
+ * BRO-7210: a submit-review-form record whose URL the form's own gate refuses
+ * (submissionNonReviewReason, shared with review-file-writer + the validator).
+ * Escape hatches: allowNonReviewUrl (human override stamped by ingest) and
+ * namedNonReviewUrlManualClear.
+ */
+function isRefusedSubmissionUrlRecord(data) {
+  return Boolean(
+    data && data.source === 'submit-review-form' && data.url &&
+    data.allowNonReviewUrl !== true && data.namedNonReviewUrlManualClear !== true &&
+    require('./non-review-url-patterns').submissionNonReviewReason(data.url)
+  );
 }
 
 /**
@@ -5978,6 +6052,11 @@ function explainExclusion(data, show, filePath, opts) {
   // about the URL or source. Same direct-check pattern as
   // wrongProductionManualClear elsewhere in this file.
   if (isNamedNonReviewUrlRecord(data)) return 'namedNonReviewUrl';
+  // BRO-7210: the writer refuses these URLs only for NEW submit-review-form files, so
+  // a file written before the rule (or by a path without it) stayed includable: 6
+  // letterboxd / cbsnews-video files sat unscored on live shows. Honour the form's
+  // refusal on the read side with the same shared decision.
+  if (isRefusedSubmissionUrlRecord(data)) return 'submissionRefusedUrl';
   // BRO-3135: body-less + aggregator-inherited score + no production evidence.
   // humanReviewScore is a human's verdict, so it is exempt.
   if (isBodylessAggregatorScoreUncorroborated(data, show)) return 'bodylessAggregatorScoreUncorroborated';
@@ -6014,7 +6093,8 @@ function explainExclusion(data, show, filePath, opts) {
     {
       const outletSynd = require('./review-normalization').normalizeOutlet(data.outletId || data.outlet || '');
       const synd = require('./syndication-pairs');
-      const syndPrimaries = synd.getSyndicationPrimaries(data.criticName, outletSynd);
+      const listDir = () => { try { return require('fs').readdirSync(require('path').dirname(filePath)); } catch { return []; } }; // unreadable dir: no portal rule
+      const syndPrimaries = synd.getSyndicationPrimariesInDir(data.criticName, outletSynd, listDir, require('./review-normalization').normalizeOutlet);
       if (syndPrimaries.length) {
         let hasPrimary = false;
         try {
@@ -6188,8 +6268,9 @@ function explainExclusion(data, show, filePath, opts) {
 function hasIncludableSyndicationPrimary(data, show, filePath, { primaries, requireScore = false, opts } = {}) {
   if (!data || !filePath) return false;
   const synd = require('./syndication-pairs');
-  const prims = primaries || synd.getSyndicationPrimaries(data.criticName,
-    require('./review-normalization').normalizeOutlet(data.outletId || data.outlet || ''));
+  const norm = require('./review-normalization').normalizeOutlet;
+  const listDir = () => { try { return require('fs').readdirSync(require('path').dirname(filePath)); } catch { return []; } };
+  const prims = primaries || synd.getSyndicationPrimariesInDir(data.criticName, norm(data.outletId || data.outlet || ''), listDir, norm);
   if (!prims.length) return false;
   return synd.hasLiveSyndicationPrimary(require('path').dirname(filePath), prims, data.criticName, {
     extraCheck: (p, pPath) => (!requireScore || hasValidScore(p)) && explainExclusion(p, show, pPath, opts) === null,
@@ -7001,6 +7082,7 @@ module.exports = {
   soloVerdictHeld,
   isSameTitleDifferentYearFalsePositive,
   isPrematureReviewForUnopenedShow,
+  oldProductionReviewReason,
   PRE_OPENING_LEAD_DAYS,
   UNSCHEDULED_MAX_AGE_DAYS,
   applyVenueClassificationCarveout,
@@ -7106,6 +7188,7 @@ module.exports = {
   isIncludableForRebuild,
   hasIncludableSyndicationPrimary,
   isNamedNonReviewUrlRecord,
+  isRefusedSubmissionUrlRecord,
   isCancelledBeforeOpeningShow,
   isUnverifiableWebSearchRow,
   isLegacyWebSearchOnly,

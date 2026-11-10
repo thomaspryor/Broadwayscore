@@ -56,6 +56,24 @@ test('extractBodyByline: rejects headlines, chrome, show titles and mid-text cre
   assert.equal(extractBodyByline(null), null);
 });
 
+test('extractBodyByline: TotalTheater "Critic: <Name>" credits header at the top (BRO-7080)', () => {
+  // Real fullText heads, data/review-texts/*/totaltheater1--unknown.json.
+  const fish = 'Fish TotalTheater October 16, 2026 off-Broadway – WP Theater & Signature Theater at WP Theater: 2162 Broadway. Oct. 11-Oct. 25, 2026. Dark Comedy. Author: Melis Aker. Director: Tatiana Pandiani. Critic: David Sheward (Oct. 2026). **** Melis Aker’s Fish (a';
+  const billy = 'Billy Crystal: 860 TotalTheater October 26, 2026 Broadway – Imperial Theater: 249 West 45 Street. Oct. 21, 2026-Jan. 3, 2027. Solo Autobiography. Author/Cast: Billy Crystal. Director: Scott Ellis. 90 min. Critic: David Sheward (Oct. 2026). **** The numbers in the title';
+  const dow = 'Regional – Houston, TX: national tour at Hobby Center: 800 Bagby Street. Score: Eddie Perfect. Book: Scott Brown & Anthony King. Director: Catie Davis (tour). Original: Alex Timbers. Critic: David Dow Bentley (Nov. 2026). I have a confession to make.';
+  assert.equal(extractBodyByline(fish + ' Long review prose. '.repeat(60)), 'David Sheward');
+  assert.equal(extractBodyByline(billy, { showTitle: 'Billy Crystal: 860' }), 'David Sheward');
+  assert.equal(extractBodyByline(dow), 'David Dow Bentley');
+  assert.equal(extractBylineFromText('totaltheater1', fish).name, 'David Sheward');
+});
+
+test('extractBodyByline: "Critic:" in prose or deep in the text is not a credit (BRO-7080)', () => {
+  assert.equal(extractBodyByline('He was the critic: a fierce one, and fair.'), null);
+  assert.equal(extractBodyByline('The Critic: Jane Doe.'), null);
+  assert.equal(extractBodyByline('Critic: David Sheward wrote that the show was long.'), null);
+  assert.equal(extractBodyByline('An opening paragraph. ' + 'More prose here. '.repeat(50) + 'Critic: David Sheward (Oct. 2026). ' + 'Tail prose. '.repeat(30)), null);
+});
+
 test('extractBylineFromText: falls back to the trailing credit for any outlet', () => {
   assert.deepEqual(extractBylineFromText('london-theatre-reviews', 'Great show.\n\nReview: Oliver Popa Photos: Mark Senior'), { name: 'Oliver Popa', known: true });
   assert.equal(extractBylineFromText('london-theatre-reviews', 'Great show with no credit.'), null);

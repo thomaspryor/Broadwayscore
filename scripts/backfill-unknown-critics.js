@@ -55,6 +55,7 @@ const { resolveOutletFromUrl, getOutletDisplayName } = require('./lib/review-nor
 const { fetchPage, cleanup: cleanupScraper } = require('./lib/scraper');
 const { isJunkCriticName, nameFromJunkCriticName } = require('./lib/byline-recovery');
 const { extractBylineFromText } = require('./lib/byline-from-text');
+const { extractCriticFromFullText, needsCriticBackfill } = require('./lib/critic-byline-backfill');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
@@ -128,7 +129,7 @@ function scanReviewFiles() {
         // BRO-4502: a junk byline ("Read more articles by X", "Sam - Admin",
         // "nick730") is as unnamed as Unknown; Phase B re-reads it through the
         // same guarded applyPageByline path.
-        if ((!data.criticName || data.criticName === 'Unknown' || isJunkCriticName(data.criticName)) && data.url) {
+        if (needsCriticBackfill(data.criticName) && data.url) {
           unknownCritics.push(entry);
         }
       } catch {}
@@ -348,6 +349,9 @@ function orderCriticCandidates(entries, { openShowIds = new Set(), now = Date.no
     const attempt = d.criticBackfillAttempt;
     const at = attempt && Date.parse(attempt.at);
     if (!at) return true;
+    // BRO-7165: a cooldown exists to avoid re-fetching a page; a name the stored text already
+    // prints costs no fetch, so a no-author stamp from before a pattern existed must not hide it.
+    if (attempt.result === 'no-author' && attempt.textV !== 2 && d.fullText && extractCriticFromFullText(u.outletId || d.outletId, d.fullText, { showTitle: d.showTitle })) return true;
     const days = attempt.result === 'fetch-error' ? FETCH_ERROR_RETRY_DAYS : retryDays;
     return at <= now - days * 24 * 3600 * 1000;
   });
@@ -374,7 +378,7 @@ function loadOpenShowIds() {
 
 function stampAttempt(u, result) {
   if (dryRun) return;
-  u.data.criticBackfillAttempt = { at: new Date().toISOString(), result };
+  u.data.criticBackfillAttempt = { at: new Date().toISOString(), result, textV: 2 }; // textV 2 (BRO-7165): stored-text patterns already tried, the cooldown bypass fires once
   const r = safeWriteReview(u.filePath, u.data);
   if (r && r.lockedSkipped) lockedSkipCount++;
 }
@@ -435,8 +439,11 @@ async function phaseB(unknownCritics) {
     } else if (u.data.fullText) {
       // Outlets that print the critic as a credit line in the article (South London "writes X",
       // All That Dazzles "Review by X", Time Out "Written by X <role>"): read it from the text first.
+      // BRO-7165: then the head/closing-credit patterns (markaspen, firstnightmagazine,
+      // a-youngish-perspective, Plays International in any town) before the generic HTML guess.
       const printed = extractBylineFromText(u.outletId, u.data.fullText);
       const fromText = (printed && printed.known && printed.name)
+        || (extractCriticFromFullText(u.outletId, u.data.fullText, { showTitle: u.data.showTitle }) || {}).name
         || extractAuthorFromHtml(u.data.fullText, u.data.fullText, { url: u.url });
       if (fromText && !isRejectName(fromText)) stored = { critic: fromText, method: 'stored-text' };
     }

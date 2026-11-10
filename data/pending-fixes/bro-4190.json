@@ -150,14 +150,14 @@
     }
   ],
   "triage": {
-    "card": "BRO-7092",
-    "at": "2026-11-07T20:58:07.982Z",
+    "card": "BRO-7094",
+    "at": "2026-11-09T21:40:12.459Z",
     "verdict": "still-needed",
     "counts": {
       "resolved": 1,
       "still-needed": 1
     },
-    "stillNeededReason": "op 8: re-ingested via ingest-urls on 2026-11-07 (success) but the CI fetch of this paywalled page still yields no text or a stub; it needs a browser html handoff (ingest-html-handoff) to recover (BRO-7092 hand check)",
+    "stillNeededReason": "op 8: OWNER-ONLY: WSJ review is still absent for la-boheme-off-broadway-2026. The 2026-11-07 ingest failed to recover it; an authenticated browser HTML handoff or renewed outlet cookies is needed (BRO-6590/BRO-5628). No retry performed.",
     "ops": [
       {
         "i": 6,
@@ -167,7 +167,7 @@
       {
         "i": 8,
         "verdict": "still-needed",
-        "reason": "re-ingested via ingest-urls on 2026-11-07 (success) but the CI fetch of this paywalled page still yields no text or a stub; it needs a browser html handoff (ingest-html-handoff) to recover (BRO-7092 hand check)"
+        "reason": "OWNER-ONLY: WSJ review is still absent for la-boheme-off-broadway-2026. The 2026-11-07 ingest failed to recover it; an authenticated browser HTML handoff or renewed outlet cookies is needed (BRO-6590/BRO-5628). No retry performed."
       }
     ]
   }

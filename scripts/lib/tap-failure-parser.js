@@ -96,6 +96,21 @@ function parseTapOutput(tapOutput, treeRoot) {
       continue;
     }
     const notOk = /^\s*not ok \d+ - (.+?)\s*$/.exec(line);
+    // TAP directive: `not ok N - name # TODO reason` is an expected failure and
+    // does not fail the run (node:test's `todo` option; node escapes a literal
+    // `#` in a test name as `\#`, so an unescaped `# TODO` is always the
+    // directive). Counting it made check-corpus-drift's router file the
+    // advisory wrong-article test as a NEW failure (BRO-7068).
+    if (notOk && /(?:^|[^\\])#\s*TODO\b/i.test(notOk[1])) {
+      sawTap = true;
+      last = null;
+      if (pending) { // the previous failure never carried a location
+        failures.set(`?::${pending}`, { file: '?', name: pending });
+        unlocated++;
+        pending = null;
+      }
+      continue;
+    }
     if (notOk) {
       sawTap = true;
       pending = notOk[1];

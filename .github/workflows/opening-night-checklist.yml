@@ -425,6 +425,7 @@ jobs:
         # ./.github/actions/setup-node step above (configure-git: true).
         if: always()
         env:
+          PUSH_RECONCILE_MERGED_JSON: '1' # union-merges the LLM spend ledger on rebase (BRO-5043)
           # BRO-369 (Codex adversarial review finding): before this fix, this
           # step ran on push-with-retry.sh's unbounded-relative-to-the-job
           # defaults (240s local + auto-scaled fallback up to 6 attempts) —
@@ -464,6 +465,7 @@ jobs:
           # available for them, same as before this split.
           git add data/audit/opening-night-latency-*.json 2>/dev/null || true
           git add data/audit/stage-latency.jsonl 2>/dev/null || true
+          git add data/audit/gemini-usage-ledger.jsonl 2>/dev/null || true # LLM spend meter rows (BRO-5043)
           git add data/audit/alert-ledger.json 2>/dev/null || true
           git add data/audit/alert-digest-queue.json 2>/dev/null || true
           # alert-router-attempts.jsonl (BRO-3671/BRO-3662): logDispatchAttempt()

@@ -16,12 +16,16 @@ const SHOW = { id: 'test-show-2026', title: 'Test Show', category: 'broadway', o
 const EMB = '2026-10-30T02:00:00.000Z'; // 22:00 New York on Oct 29
 const NOW = Date.parse('2026-11-20T00:00:00Z');
 const BOT = { author: 'GitHub Action', email: 'action@github.com' };
+// BRO-7161: live now means rebuild-includable, so fixtures carry a real body.
+const BODY = 'A sharp, funny and moving night at the theater. '.repeat(20);
 const files = [
-  { _file: 'test-show-2026/nytimes--a.json', firstSeenAt: '2026-10-30T02:30:00Z', ingestOrigin: 'automated' },
-  { _file: 'test-show-2026/variety--b.json', firstSeenAt: '2026-10-30T03:00:00Z' },
+  { _file: 'test-show-2026/nytimes--a.json', firstSeenAt: '2026-10-30T02:30:00Z', ingestOrigin: 'automated', fullText: BODY },
+  { _file: 'test-show-2026/variety--b.json', firstSeenAt: '2026-10-30T03:00:00Z', fullText: BODY },
 ];
 const routine = { sha: 'aaaaaaaa11', at: '2026-10-30T03:00:00Z', ...BOT, subject: 'data: Opening night poller — collected review texts', files: ['test-show-2026/variety--b.json'] };
-const grade = (extra) => og.gradeOpening({ show: SHOW, files, commits: [routine], nowMs: NOW, ...extra });
+// BRO-7161: a clean grade needs a fresh missing-review audit row.
+const AUDIT = { gapResult: { showId: SHOW.id, computedAt: '2026-11-19T00:00:00Z' }, missingCited: 0 };
+const grade = (extra) => og.gradeOpening({ show: SHOW, files, commits: [routine], nowMs: NOW, ...AUDIT, ...extra });
 
 test('a pipeline-only opening ran on its own', () => {
   const g = grade({});
@@ -90,12 +94,12 @@ test('no live reviews, excluded files, open window wording, known count', () => 
   assert.equal(grade({ files: [{ _file: 'test-show-2026/a--b.json', wrongShow: true }] }).verdict, 'no-reviews');
   // BRO-7147: known = live + aggregator-cited reviews still missing; the census
   // candidateCount (other productions' URLs included) is reference only.
-  const open = grade({ nowMs: Date.parse('2026-11-01T00:00:00Z'), gapResult: { censusVerdict: { candidateCount: 9 } }, missingCited: 3 });
+  const open = grade({ nowMs: Date.parse('2026-11-01T00:00:00Z'), gapResult: { ...AUDIT.gapResult, censusVerdict: { candidateCount: 9 } }, missingCited: 3 });
   assert.equal(open.windowClosed, false);
   assert.equal(open.known, 5);
   assert.equal(open.censusCandidates, 9);
   assert.match(og.gradeLine(open), /2 reviews live of 5 cited, ran on its own so far\./);
-  assert.doesNotMatch(og.gradeLine(grade({ gapResult: { censusVerdict: { candidateCount: 9 } }, missingCited: 0 })), /cited/, 'nothing missing, no denominator');
+  assert.doesNotMatch(og.gradeLine(grade({ gapResult: { ...AUDIT.gapResult, censusVerdict: { candidateCount: 9 } }, missingCited: 0 })), /cited/, 'nothing missing, no denominator');
 });
 
 test('West End embargo estimate is 22:00 London', () => {
@@ -138,7 +142,7 @@ const rp = require(path.join(repoRoot, 'scripts/lib/review-provenance.js'));
 const inWin = '2026-10-30T03:00:00Z';
 
 test('a wrongProduction clear stamped by clear-stale-wrong-production-flags.js is not a hand step', () => {
-  const f = { _file: 'test-show-2026/thestage--a.json', firstSeenAt: inWin, wrongProductionManualClear: true, wrongProductionOverrideSetBy: 'clear-stale-wrong-production-flags.js' };
+  const f = { _file: 'test-show-2026/thestage--a.json', firstSeenAt: inWin, fullText: BODY, wrongProductionManualClear: true, wrongProductionOverrideSetBy: 'clear-stale-wrong-production-flags.js' };
   assert.deepEqual(rp.handSteps(f).gating, []);
   assert.equal(grade({ files: [f] }).verdict, 'on-its-own');
 });

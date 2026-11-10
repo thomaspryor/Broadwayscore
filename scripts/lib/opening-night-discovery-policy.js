@@ -62,6 +62,50 @@ function rotateMissingOutlets(outlets, offset = 0) {
   return [...outlets.slice(start), ...outlets.slice(0, start)];
 }
 
+/**
+ * BRO-7162 F08: next rotation cursor. Advance by the outlets the SERP pass actually reached, never by the
+ * budget: a pass that stopped at its deadline, had no keys, or crashed before the first outlet used to
+ * move the cursor a full budget and skip those outlets for good. Zero consumed leaves the cursor in place.
+ */
+function advanceSerpOutletOffset(offset, consumed, listLength) {
+  if (!listLength || !Number.isFinite(consumed) || consumed <= 0) return Math.max(0, offset || 0);
+  return (Math.max(0, offset || 0) + consumed) % listLength;
+}
+
+/**
+ * BRO-7162 F07: how many SERP calls Strategy 1 (per-outlet site search) may spend. It keeps up to two
+ * calls for the news (2) and broad web (2b) queries, never more than half the budget, and always at
+ * least one call when the budget allows any. The total per-run cap is unchanged.
+ */
+function strategyOneCap(budget) {
+  if (!Number.isFinite(budget) || budget <= 0) return 0;
+  const reserve = Math.min(2, Math.floor(budget / 2));
+  return Math.max(1, budget - reserve);
+}
+
+/**
+ * Order Strategy 1 targets: one entry per DOMAIN (the registry lists each outlet plus aliases, so the raw
+ * list has ~8 ids per domain), main outlets rotated by `runIndex * cap` so successive runs cover
+ * contiguous windows and reach every domain within ceil(L / cap) runs, and specialists placed inside the
+ * first `cap` entries so they cannot be pushed past the cap by a long general list.
+ */
+function planStrategyOneTargets(mainIds, specialistIds, domainOf, { cap, specialistSlots = 2, runIndex = 0 } = {}) {
+  const seen = new Set();
+  const uniq = ids => ids.filter(id => {
+    const d = domainOf(id);
+    if (!d || seen.has(d)) return false;
+    seen.add(d);
+    return true;
+  });
+  const main = uniq(mainIds);
+  const spec = uniq(specialistIds);
+  const start = main.length ? (Math.abs(runIndex) * Math.max(1, cap || 1)) % main.length : 0;
+  const rotated = [...main.slice(start), ...main.slice(0, start)];
+  const reserveSpec = Math.min(spec.length, Math.max(0, specialistSlots));
+  const head = Math.max(0, (Number.isFinite(cap) ? cap : rotated.length) - reserveSpec);
+  return [...rotated.slice(0, head), ...spec, ...rotated.slice(head)];
+}
+
 const STALLED_STUB_MAX_HOURS = 72;
 const STUB_EXCLUDED_FLAGS = ['wrongShow', 'wrongProduction', 'isRoundupArticle', 'duplicateOf', 'fabricatedEntry', 'isNonReview'];
 
@@ -99,4 +143,4 @@ function warnStalledReviewStubs(show, showDir, { now = new Date(), log = console
   return stalled;
 }
 
-module.exports = { selectMissingT1T2Outlets, getLondonSupplementalOutlets, reviewSearchKeyword, rotateMissingOutlets, STALLED_STUB_MAX_HOURS, findStalledReviewStubs, warnStalledReviewStubs };
+module.exports = { selectMissingT1T2Outlets, getLondonSupplementalOutlets, reviewSearchKeyword, rotateMissingOutlets, advanceSerpOutletOffset, strategyOneCap, planStrategyOneTargets, STALLED_STUB_MAX_HOURS, findStalledReviewStubs, warnStalledReviewStubs };

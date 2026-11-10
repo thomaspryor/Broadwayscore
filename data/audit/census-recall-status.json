@@ -1,56 +1,56 @@
 {
-  "generatedAt": "2026-11-02T20:58:22.225Z",
+  "generatedAt": "2026-11-09T21:40:42.711Z",
   "verdict": "regressed",
-  "reason": "scoped: recall 0.115 vs 0.267 median over 4 prior run(s) — down 0.152 (threshold 0.15), yield 1.4 vs 3.367 URLs/show",
+  "reason": "scoped: recall 0.111 vs 0.267 median over 4 prior run(s) — down 0.156 (threshold 0.15), yield 1.4 vs 3.3 URLs/show",
   "regressions": [
     {
       "level": "families",
       "arm": "scoped",
       "baseline": 0.267,
-      "current": 0.115,
-      "drop": 0.152,
+      "current": 0.111,
+      "drop": 0.156,
       "rule": "week-on-week",
-      "reason": "recall 0.115 vs 0.267 median over 4 prior run(s) — down 0.152 (threshold 0.15), yield 1.4 vs 3.367 URLs/show"
+      "reason": "recall 0.111 vs 0.267 median over 4 prior run(s) — down 0.156 (threshold 0.15), yield 1.4 vs 3.3 URLs/show"
     }
   ],
   "comparedArms": 3,
-  "trendEntries": 11,
+  "trendEntries": 12,
   "latest": {
-    "date": "2026-11-02",
-    "generatedAt": "2026-11-02T20:58:22.225Z",
+    "date": "2026-11-09",
+    "generatedAt": "2026-11-09T21:40:42.711Z",
     "naivePages": 2,
     "shows": 5,
     "informativeShows": 5,
     "excluded": {
-      "settling": 6
+      "settling": 7
     },
-    "truthUrls": 61,
-    "onDiskUrls": 53,
-    "newFromNaive": 7,
+    "truthUrls": 63,
+    "onDiskUrls": 48,
+    "newFromNaive": 13,
     "families": {
-      "naive": 0.328,
-      "onDisk": 0.869,
-      "scoped": 0.115
+      "naive": 0.381,
+      "onDisk": 0.762,
+      "scoped": 0.111
     },
     "arms": {
-      "naive-p0": 0.23,
-      "naive-p1": 0.164,
-      "onDisk": 0.869,
-      "scoped-q0": 0.049,
-      "scoped-q1": 0.082
+      "naive-p0": 0.143,
+      "naive-p1": 0.238,
+      "onDisk": 0.762,
+      "scoped-q0": 0.111,
+      "scoped-q1": 0.016
     },
-    "combinedRecall": 0.885,
+    "combinedRecall": 0.794,
     "familyYield": {
-      "naive": 4,
-      "onDisk": 10.6,
+      "naive": 4.8,
+      "onDisk": 9.6,
       "scoped": 1.4
     },
     "armYield": {
-      "naive-p0": 2.8,
-      "naive-p1": 2,
-      "onDisk": 10.6,
-      "scoped-q0": 0.6,
-      "scoped-q1": 1
+      "naive-p0": 1.8,
+      "naive-p1": 3,
+      "onDisk": 9.6,
+      "scoped-q0": 1.4,
+      "scoped-q1": 0.2
     },
     "armsFailed": {
       "naive-p0": 0,
@@ -62,39 +62,48 @@
     "unavailableArms": [],
     "byCategory": {
       "off-broadway": {
-        "shows": 1,
-        "truthUrls": 6,
+        "shows": 2,
+        "truthUrls": 17,
         "families": {
-          "naive": 0.5,
-          "onDisk": 1,
-          "scoped": 0.167
+          "naive": 0.647,
+          "onDisk": 0.412,
+          "scoped": 0.118
         }
       },
       "off-west-end": {
-        "shows": 3,
-        "truthUrls": 38,
+        "shows": 1,
+        "truthUrls": 30,
         "families": {
-          "naive": 0.421,
-          "onDisk": 0.816,
-          "scoped": 0.158
+          "naive": 0.333,
+          "onDisk": 0.933,
+          "scoped": 0.167
         }
       },
       "tour": {
         "shows": 1,
-        "truthUrls": 17,
+        "truthUrls": 4,
         "families": {
-          "naive": 0.059,
-          "onDisk": 0.941,
+          "naive": 0.75,
+          "onDisk": 0.25,
+          "scoped": 0
+        }
+      },
+      "west-end": {
+        "shows": 1,
+        "truthUrls": 12,
+        "families": {
+          "naive": 0,
+          "onDisk": 1,
           "scoped": 0
         }
       }
     },
     "sampleIds": [
-      "dogstar-off-west-end-2026",
-      "a-beautiful-noise-the-neil-diamond-musical-tour-2026",
-      "stoker-wilde-off-west-end-2026",
-      "specimen-off-broadway-2026",
-      "the-moth-off-west-end-2026"
+      "broom-play-off-broadway-2026",
+      "dr-seuss-how-the-grinch-stole-christmas-tour-2026",
+      "nero-off-west-end-2026",
+      "iphigenie-en-tauride-english-national-opera-west-end-2026",
+      "king-lear-off-broadway-2026"
     ]
   }
 }

@@ -230,3 +230,18 @@ test('noReviewsExpected pair is plan-editable but not offered to feedback writes
   assert.equal(applyDataEdit(data, why).ok, true);
   assert.equal(data.shows[0].noReviewsExpected, true);
 });
+
+test('closingExtensions: chain shape and ordering are enforced (BRO-7252)', () => {
+  const ev = (from, to) => ({ announcedAt: '2026-05-12', from, to, source: 'press' });
+  const mk = () => ({ shows: [{ id: 'm-2025', status: 'open', closingDate: '2027-07-04' }] });
+  const act = (newValue) => ({ file: 'shows.json', showId: 'm-2025', field: 'closingExtensions', oldValue: null, newValue });
+  const good = [ev('2026-07-12', '2027-02-14'), ev('2027-02-14', '2027-07-04')];
+  const data = mk();
+  const r = applyDataEdit(data, act(good));
+  assert.equal(r.ok, true, r.reason);
+  assert.deepEqual(data.shows[0].closingExtensions, good);
+  assert.equal(applyDataEdit(mk(), act('nope')).ok, false);
+  assert.equal(applyDataEdit(mk(), act([ev('2027-02-14', '2027-02-14')])).ok, false, 'to must be later than from');
+  assert.equal(applyDataEdit(mk(), act([ev(null, '2027-07-04'), ev(null, '2027-02-14')])).ok, false, 'chain must increase');
+  assert.equal(applyDataEdit(mk(), act([{ ...ev(null, '2027-07-04'), extra: 1 }])).ok, false, 'unknown key refused');
+});

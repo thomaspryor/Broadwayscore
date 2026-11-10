@@ -25,7 +25,9 @@ const { keyOf, urlKeyOf, resolveConflict } = require('../merge-reviews-json');
 const { isLaneReview } = require('./trust-model');
 
 const DEFAULT_POLL_MS = 15 * 1000;
-const DEFAULT_TIMEOUT_MS = 20 * 60 * 1000; // matches the ledger's first acceptance bar
+// BRO-7232: the live site build takes 14-23 min on a normal night, so the "not live" page waits past it (30 min). The
+// ledger's 20 min acceptance bar (ledger.js DEFAULT_MAX_MS) is unchanged and still reports a slow batch on its own.
+const DEFAULT_TIMEOUT_MS = 30 * 60 * 1000;
 
 /**
  * Merge incoming rows for ONE show into a reviews.json document. Pure. Rows of every other show are returned

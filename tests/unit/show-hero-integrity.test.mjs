@@ -52,7 +52,8 @@ test('helper: related() separates the BRO-4251 groups and keeps same-title runs 
   assert.equal(related('the-minutes-2022', 'the-phantom-of-the-opera-1988'), false);
   assert.equal(related('les-miserables-1987', 'les-miserables-2014'), true);
   assert.equal(related('the-last-ship-off-broadway-2026', 'the-last-ship-west-end-2026'), true);
-  assert.equal(related('wanted-2022', 'gun-and-powder-regional-2020'), true);
+  assert.equal(related('wanted-2022', 'gun-and-powder-paper-mill-regional-2024'), true);
+  assert.equal(related('wanted-2022', 'gun-and-powder-signature-regional-2020'), true);
   assert.equal(related('harry-potter-2021', 'harry-potter-and-the-cursed-child-2021'), true);
   assert.equal(related('paranormal-activity-2026', 'paranormal-activity-boston-regional-2026'), true);
   assert.equal(related('the-lion-king-1997', 'the-lion-in-winter-2026'), false);

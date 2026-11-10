@@ -1473,6 +1473,22 @@ function _createOrMergeReviewFile(showId, input, options = {}) {
     if (refusal) return refusal;
   }
 
+  // --- Guard: old-production review on a newer row (BRO-7210) ---
+  // A review dated over a year before the row's first date is another production's.
+  // NEW files only (a merge into a vetted file is never blocked); a cited aggregator
+  // score row is exempt like the guards above. Overrides: allowEarlyDate,
+  // humanReviewedEarlyPublish, wrongProductionManualClear, declared priorRuns.
+  if (!(existing && existing.data) && !fs.existsSync(filepath)
+    && !isAggregatorReviewSource(input.source) && !hasPreservableAggregatorScore(fields)
+    && fields.humanReviewScore == null) {
+    const oldReason = require('./review-guards').oldProductionReviewReason(
+      { ...input, ...fields, publishDate: fields.publishDate || input.publishDate }, _getShowById(showId));
+    if (oldReason) {
+      console.warn(`  ⛔ Refusing old-production review: ${input.url || filepath} (dated ${fields.publishDate || input.publishDate}, over a year before ${showId} starts)`);
+      return { action: 'skipped', reason: oldReason, guardRefused: true };
+    }
+  }
+
   // --- Guard: undated The Stage stub (BRO-7084) ---
   // No year in the URL, no body (paywall) and no date: nothing ties it to this
   // production. Callers date it from the page first (discovery-prefetch); with

@@ -381,6 +381,9 @@ async function main() {
 
   if (has('finalize')) {
     rec.probe.endedAt = new Date().toISOString();
+    const incomplete = lib.probeIncompleteReason(rec);
+    if (incomplete) { rec.probe.incompleteReason = incomplete; console.log(`::warning::press-night probe incomplete: ${incomplete}`); }
+    else delete rec.probe.incompleteReason;
     rec.firstOutletPublishAt = lib.firstOutletPublish(rec);
     writeRecord(file, rec);
     printVerdict(lib.evaluateCheck(rec), has('json'), rec);

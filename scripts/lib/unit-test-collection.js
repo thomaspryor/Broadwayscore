@@ -87,6 +87,10 @@ const TESTS_UNIT_QUARANTINE = new Map([
     'BRO-6404 (BRO-4434 pattern): live npm registry advisory feed can change without a code change, so it must not gate land. Run by the card VERIFY command; EXEMPT_NEVER_CI in audit-orphan-tests.js.',
   ],
   [
+    'tests/unit/page-furniture-extractors.test.mjs',
+    'BRO-7171 — DOES run at its own advisory test.yml step ("Page furniture class guard (BRO-7171, advisory)", continue-on-error: true). CLAUDE.md section 19: new gates land advisory first, so an extractor regression must not block the unit batch.',
+  ],
+  [
     'tests/unit/rendered-copy-voice.test.mjs',
     'BRO-5812 \u2014 DOES run at its own advisory test.yml step ("Rendered copy voice guard (BRO-5812, advisory)", continue-on-error: true). CLAUDE.md section 19: new gates land advisory first, so a voice-rule regression must not block the unit batch.',
   ],

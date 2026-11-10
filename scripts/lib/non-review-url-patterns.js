@@ -299,6 +299,15 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // held The Body of Mary's TheaterMania slot and blocked the real review
   // (BRO-4430).
   { host: /(^|\.)theatermania\.com$/, path: /^\/news\/(?:cast-announced|casting-announced|full-cast-announced)-/i, reason: 'cast-announcement' },
+  // BRO-7197: TheaterMania video features ("Watch: Inside Wanted on Broadway...") sit under /news/ beside the real
+  // reviews (/news/review-...). On Wanted's opening night (2026-11-08) one held a census slot pre-embargo and the gap
+  // audit ingested it as Seth Walters' "review". 0 of 634 reviews.json theatermania /news/ rows use either prefix
+  // (checked 2026-11-09). The 7-digit id keeps pre-2020 reviews of "Watch on the Rhine" (/news/watch-on-the-rhine_80029/) out. allSources: a video page is not a review whoever cited it.
+  { host: /(^|\.)theatermania\.com$/, path: /^\/news\/(?:watch|video)-[^/]*_\d{7,}\/?$/i, reason: 'video-feature', allSources: true },
+  // BRO-7197: Stage and Street's /<section>/shows/<slug>/ and /broadway/(off-broadway|theaters|resources)/<slug>/ pages are show/venue guides ("WANTED Broadway Musical: Tickets, Cast
+  // & Reviews"), never one critic's review. The SERP census listed Wanted's on its opening night. 0 reviews.json rows
+  // carry this host (2026-11-09).
+  { host: /(^|\.)stageandstreetnyc\.com$/, path: /^\/(?:(?:[^/]+\/)?shows|broadway\/(?:off-broadway|theaters|resources))\/[^/]+\/?$/i, reason: 'venue-production-page', allSources: true },
   // Sixth wave (task #1073, 2026-08-05 — Pass/Disruption/Vessel coverage audit):
   // BWW /shows/{id}/... (cast/synopsis/videos) pages are listing pages, never
   // reviews — the-vessel had one ingested via SERP as a "review" whose 920-char
@@ -530,6 +539,17 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // /<slug>-review/; britishtheatre /review-...; didtheylikeit /shows/<show>/<review>/).
   { host: /(^|\.)stagebuddy\.com$/, path: /^\/event\//i, reason: 'event-listing' },
   { host: /(^|\.)chiswickcalendar\.co\.uk$/, path: /^\/event\//i, reason: 'event-listing' },
+  // BRO-7080 replay of BRO-4527 (The Secret Circus): what's-on / family
+  // listing hosts whose /event(s)/ pages passed both URL gates and were held
+  // out only by a paid LLM not_a_review verdict the refetch kept clearing.
+  // Host-scoped: newyorker /arts/events/theatre/ and dailymail /home/event/
+  // are real reviews (28 published rows have an /event(s)/ path).
+  { host: /(^|\.)donyc\.com$/, path: /^\/events\//i, reason: 'event-listing' },
+  { host: /(^|\.)flopbox\.(?:net|org|com)$/, path: /\/event\//i, reason: 'event-listing' },
+  { host: /(^|\.)mommypoppins\.com$/, path: /\/event\/events\//i, reason: 'event-listing' },
+  { host: /^events\.newyorkfamily\.com$/, path: /^\/event\//i, reason: 'event-listing' },
+  // Afridiziak /offers/ is a ticket-discount post (Julius Caesar, Globe 2026).
+  { host: /(^|\.)afridiziak\.com$/, path: /^\/offers\//i, reason: 'event-listing' },
   // BRO-5489: the same hub is served under a locale prefix (/pl/shows/, /de/shows/);
   // the census cited four of them as Buffy Revamped's missing reviews. Locale
   // reviews live at /<lang>/posts/ (22 in reviews.json), which this never matches.
@@ -1124,7 +1144,7 @@ const INGEST_REFUSED_URL_REASONS = new Set([
   'ticketing-reseller', 'ticketing-listing', 'venue-production-page',
   'production-database-listing', 'access-listings-page', 'talent-agency-credit-page',
   'institutional-press-release', 'pr-firm-press-release', 'ugc-platform',
-  'non-stage-review', 'podcast-episode',
+  'non-stage-review', 'podcast-episode', 'video-feature',
 ]);
 
 /** The refusal reason ingest-review-from-url.js would give this URL, or null. */

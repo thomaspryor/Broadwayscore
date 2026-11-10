@@ -256,7 +256,15 @@ function run(root = path.join(__dirname, '..')) {
   const scripts = {};
   for (const [k, v] of Object.entries(all)) if (!/\/(lib|codex)\//.test(k) && !/\.test\./.test(k)) scripts[k] = v;
   const workflows = readTree(path.join(root, '.github/workflows'), ['.yml', '.yaml'], '.github/workflows');
-  return findOrphanedWrites(scripts, workflows, EXEMPT);
+  const actions = {};
+  const actionsDir = path.join(root, '.github/actions');
+  for (const name of fs.existsSync(actionsDir) ? fs.readdirSync(actionsDir) : []) {
+    for (const f of ['action.yml', 'action.yaml']) {
+      const p = path.join(actionsDir, name, f);
+      if (fs.existsSync(p)) actions[name] = fs.readFileSync(p, 'utf8');
+    }
+  }
+  return findOrphanedWrites(scripts, workflows, EXEMPT, undefined, actions);
 }
 
 if (require.main === module) {

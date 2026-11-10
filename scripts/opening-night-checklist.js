@@ -518,6 +518,7 @@ async function main() {
   const context = {
     reviewsDoc,
     reviewTextsRoot: REVIEW_TEXTS_ROOT,
+    showScorePath: path.join(DATA_DIR, 'show-score.json'),
     driftState,
     criticConsensusDoc,
     now,

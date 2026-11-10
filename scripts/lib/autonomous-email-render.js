@@ -245,6 +245,7 @@ const PLAIN_HEALTH = [
   [/^Secrets/, () => 'An API key or login may be expiring'],
   [/^Data freshness/, () => 'Some open shows are missing a poster, synopsis, or ticket link'],
   [/^Stuck pipeline/, () => 'A data pipeline looks stalled'],
+  [/^Data: approved-fix drift/, () => 'Some review fixes you approved were silently undone by a later data update'],
   // Visitor-facing rows the owner-first top block names (2026-09-24 digest
   // rework). Each regex is SPECIFIC to one check: renderAutofixBlock dedups
   // on this function's output, so a broad family regex would collapse
@@ -299,6 +300,7 @@ const PLAIN_HEALTH = [
   [/^Data: closed national tours reopened automatically/, () => 'Closed national tours were reopened automatically'],
   [/^Data: closed national tour lists new dates/, () => 'A closed national tour is listing new dates'],
   [/^Quality: standingCoverage drift/, () => 'The share of reviews found for each show is drifting'],
+  [/^Quality: expected critics missing/, () => 'A critic who reviews nearly every opening has no review of a new show yet'],
   [/^Quality: coverageExpectation drift/, () => 'Expected review counts for some shows are drifting'],
   [/^Quality: outlet-heartbeat red flags/, () => 'Some review outlets look like they stopped publishing'],
   [/^Quality: outlet feed staleness/, () => 'Some outlet feeds have not updated in a while'],

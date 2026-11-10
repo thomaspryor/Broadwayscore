@@ -78,7 +78,7 @@ function recoverableQuote(data, showTitle, showStatus, exclusion) {
   // so its excerpt is not "recoverable" however clean it looks (BRO-5798, Fiddler / Time Out London).
   if (exclusion && exclusion.show && !isIncludableForRebuild(data, exclusion.show, exclusion.filePath)) return null;
   // BRO-6439: the rebuild runs applyScoreRelevantMigrations before finalizePullQuote, which can recover
-  // fullText from garbageFullText (aladdin-2014/ap: soccer headlines from a cross-show duplicate). Skipping
+  // fullText from garbageFullText (aladdin-2014/ap: soccer headlines, now skipped via showNotMentioned). Skipping
   // that step here judged the pre-migration file, so the backfill and live-data test called a file
   // "recoverable" that the rebuild then (correctly) ships with no quote. Same migration, on a copy.
   const migrated = { ...data };

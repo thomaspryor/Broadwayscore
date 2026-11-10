@@ -1,9 +1,9 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-11-07T08:11:14.193Z",
+    "lastUpdated": "2026-11-08T22:20:13.459Z",
     "version": "2.1.0",
-    "lastChange": "BRO-5507: 48 reviewed outlet display name(s) from outlet-display-name-proposals-bro-5246.json"
+    "lastChange": "BRO-6122: standingCoverage[off-broadway] promote theatermania (BRO-7166: measured 3-season coverage clears the promote bar)"
   },
   "outlets": {
     "westendtheatre": {
@@ -308,7 +308,8 @@
       "accessModel": "free",
       "standingCoverage": true,
       "standingMarkets": [
-        "broadway"
+        "broadway",
+        "off-broadway"
       ]
     },
     "broadwayworld": {
@@ -324,7 +325,11 @@
         "broadwayworld.com"
       ],
       "domain": "broadwayworld.com",
-      "accessModel": "free"
+      "accessModel": "free",
+      "standingCoverage": true,
+      "standingMarkets": [
+        "west-end"
+      ]
     },
     "deadline": {
       "displayName": "Deadline",
@@ -2172,7 +2177,11 @@
       "domain": "whatsonstage.com",
       "region": "london",
       "accessModel": "free",
-      "starScale": 5
+      "starScale": 5,
+      "standingCoverage": true,
+      "standingMarkets": [
+        "west-end"
+      ]
     },
     "theater-news-online": {
       "displayName": "Theater News Online",
@@ -5986,7 +5995,7 @@
       "domain": "hellobeautiful.com"
     },
     "3views": {
-      "displayName": "3views",
+      "displayName": "3Views",
       "tier": 3,
       "aliases": [
         "3views"
@@ -8319,7 +8328,11 @@
       ],
       "domain": "londontheatre.co.uk",
       "region": "london",
-      "accessModel": "free"
+      "accessModel": "free",
+      "standingCoverage": true,
+      "standingMarkets": [
+        "west-end"
+      ]
     },
     "londontheatre1": {
       "displayName": "LondonTheatre1",
@@ -8355,7 +8368,11 @@
       ],
       "domain": "timeout.com",
       "accessModel": "free",
-      "starScale": 5
+      "starScale": 5,
+      "standingCoverage": true,
+      "standingMarkets": [
+        "west-end"
+      ]
     },
     "daily-mail": {
       "displayName": "Daily Mail",
@@ -8682,7 +8699,11 @@
       "accessModel": "paywalled",
       "displayName": "The Stage",
       "domain": "thestage.co.uk",
-      "starScale": 5
+      "starScale": 5,
+      "standingCoverage": true,
+      "standingMarkets": [
+        "west-end"
+      ]
     },
     "everything-theatre": {
       "tier": 3,
@@ -10719,7 +10740,7 @@
       "displayNameSource": "homepage"
     },
     "today": {
-      "displayName": "today",
+      "displayName": "TODAY",
       "tier": 3,
       "aliases": [
         "today"
@@ -10745,7 +10766,7 @@
       "displayNameSource": "homepage"
     },
     "raring2go": {
-      "displayName": "raring2go",
+      "displayName": "Raring2Go",
       "tier": 3,
       "aliases": [
         "raring2go"
@@ -10777,15 +10798,15 @@
       "displayNameReviewed": true
     },
     "marquee": {
-      "displayName": "marquee",
+      "displayName": "Marquee",
       "tier": 3,
       "aliases": [
         "marquee"
       ],
       "domain": "marquee.tv",
-      "region": "london",
-      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
-      "regionInferredAt": "2026-08-18T14:28:06.532Z"
+      "isDualMarket": true,
+      "regionCorrectedBy": "BRO-5896",
+      "regionCorrectedEvidence": "Global performing-arts streaming platform, including international theatre; https://www.marquee.tv/help/article/what-is-marquee-tv (checked 2026-11-09). London-only inference is inappropriate for worldwide streamed productions."
     },
     "myreviewer": {
       "displayName": "MyReviewer.com",
@@ -10862,7 +10883,7 @@
       "displayNameSource": "homepage"
     },
     "scorebig": {
-      "displayName": "scorebig",
+      "displayName": "ScoreBig",
       "tier": 3,
       "aliases": [
         "scorebig"
@@ -10894,7 +10915,7 @@
       "displayNameSource": "manual"
     },
     "oklahoman": {
-      "displayName": "oklahoman",
+      "displayName": "The Oklahoman",
       "tier": 3,
       "aliases": [
         "oklahoman"
@@ -10942,7 +10963,7 @@
       "displayNameSource": "homepage"
     },
     "donyc": {
-      "displayName": "donyc",
+      "displayName": "DoNYC",
       "tier": 3,
       "aliases": [
         "donyc"
@@ -11029,7 +11050,7 @@
       "displayNameSource": "homepage"
     },
     "stuborder": {
-      "displayName": "stuborder",
+      "displayName": "StubOrder",
       "tier": 3,
       "aliases": [
         "stuborder"
@@ -11055,7 +11076,7 @@
       "displayNameSource": "homepage-reviewed"
     },
     "masslive": {
-      "displayName": "masslive",
+      "displayName": "MassLive",
       "tier": 3,
       "aliases": [
         "masslive"
@@ -11072,7 +11093,9 @@
       "displayNameSource": "homepage"
     },
     "ipswich24": {
-      "displayName": "ipswich24",
+      "displayName": "Ipswich24",
+      "displayNameReviewed": true,
+      "displayNameEvidence": "homepage title: Ipswich24 Magazine (2026-11-09)",
       "tier": 3,
       "aliases": [
         "ipswich24"
@@ -12544,9 +12567,9 @@
         "bnn"
       ],
       "domain": "bnn.network",
-      "region": "london",
-      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
-      "regionInferredAt": "2026-10-09T01:54:45.140Z"
+      "isDualMarket": true,
+      "regionCorrectedBy": "BRO-5896",
+      "regionCorrectedEvidence": "BNN Breaking was based in Hong Kong and aggregated international news; https://en.wikipedia.org/wiki/BNN_Breaking and https://mediabiasfactcheck.com/bnn-breaking-bias-and-credibility/ (checked 2026-11-09). One West End show did not establish a London outlet."
     },
     "the-culture-pages": {
       "displayName": "The Culture Pages",
@@ -13549,9 +13572,9 @@
         "grandgoldman"
       ],
       "domain": "grandgoldman.com",
-      "region": "london",
-      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
-      "regionInferredAt": "2026-10-20T11:51:11.037Z"
+      "isDualMarket": true,
+      "regionCorrectedBy": "BRO-5896",
+      "regionCorrectedEvidence": "Global news and travel publication covering international destinations, not a London theatre outlet; https://grandgoldman.com/ and https://grandgoldman.com/pages/careers (checked 2026-11-09). Corpus includes regional coverage as well as two London shows."
     },
     "omahamagazine": {
       "displayName": "Omaha Magazine",
@@ -15106,7 +15129,7 @@
       "domain": "cleverock.com"
     },
     "8asians": {
-      "displayName": "8asians",
+      "displayName": "8Asians",
       "tier": 3,
       "aliases": [
         "8asians"

@@ -58,6 +58,11 @@ data/audit/breaker-transitions.jsonl merge=union
 # the other append-only ledgers above.
 data/audit/scraper-spend-ledger.jsonl merge=union
 data/audit/gemini-usage-ledger.jsonl merge=union
+# OpenAI-leg A/B shard records (append-only, one writer per shard, 2026-11)
+data/audit/openai-leg-ab/*.jsonl merge=union
+data/audit/board-dispatch.jsonl merge=union
+data/audit/llm-triage.jsonl merge=union
+data/audit/llm-triage-audit.jsonl merge=union
 data/audit/cross-show-url-holds.jsonl merge=union
 # BRO-5080: sourced fact-check sample answers, one row per checked show (append-only).
 data/audit/fact-check/*.jsonl merge=union
@@ -512,3 +517,17 @@ data/audit/coverage-adversarial-probe-trend.jsonl merge=union
 data/audit/routine-logs.jsonl merge=union
 # BRO-7118 prune ledger: keep this run snapshot
 data/audit/mobile-detail-prune-candidates.json merge=ours
+# BRO-7171 gap-recovery attempt ledger (scripts/lib/gap-recovery-ledger.js):
+# append-only, one O_APPEND row per attempt, never pruned. Every reader
+# (strategyState, reconcileRecovered, acceptedToday) groups by reviewKey and
+# re-sorts by each row's ts, so union's out-of-order append is harmless.
+data/audit/gap-recovery-attempts.jsonl merge=union
+# BRO-7171 Stage 3 nightly summary rows (scripts/lib/gap-recovery-nightly.js):
+# counts-only, one row per night, read by the morning digest; readers sort by ts.
+data/audit/gap-recovery-nightly.jsonl merge=union
+# BRO-7162 discovery slot-collision queue (scripts/discover-opening-night-reviews.js):
+# appendFileSync only, never pruned or rewritten, and no script or src reader (grep of
+# scripts/, src/, .github/ finds only the writer and the workflow's git add), so a union
+# can neither resurrect a pruned row nor disturb a reader. Landed without an attribute,
+# which failed audit-ledger-merge-attrs.test.mjs's repo-wide check (BRO-7263).
+data/audit/discovery-slot-collisions.jsonl merge=union

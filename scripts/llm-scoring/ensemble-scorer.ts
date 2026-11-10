@@ -13,7 +13,7 @@ import { ReviewTextFile, ScoredReviewFile, SimplifiedLLMResult, ModelScore, Ense
 import { PROMPT_VERSION, buildPromptV5, SYSTEM_PROMPT_V5, buildSystemPromptV6, clampScoreToBand, ScoreBand } from './config';
 import { buildScoringInput, ReviewInputData, ScoringInput } from './input-builder';
 const { EXCERPT_FIELDS } = require('../lib/excerpt-fields');
-const { GPT4O, GPT54_MINI } = require('../lib/models');
+const { SCORING_OPENAI } = require('../lib/models');
 const { detectBandFromReviewFile, shouldUseAnchoredMode } = require('../lib/star-reliability');
 import { ensembleScore, toModelScore, applyTailStretch } from './ensemble';
 
@@ -38,6 +38,13 @@ export interface EnsembleScoringOptions {
   // a band is set, Kimi is skipped (3-model ensemble) to prevent it
   // from voting against V6-prompted siblings using V5 rubric. Add Kimi
   // override + remove this skip in a follow-up before Phase 4 rescore.
+  /**
+   * Experiment only (OpenAI-leg migration A/B, 2026-11): also run this OpenAI
+   * model on every review and attach the result finalised with it swapped in
+   * as EnsembleResult.shadow. Claude/Gemini outputs are shared, so the shadow
+   * differs from the control ONLY in the OpenAI leg. Unset in production.
+   */
+  shadowOpenaiModel?: 'gpt-4o-mini' | 'gpt-4o' | 'gpt-5.4-mini';
 }
 
 /**
@@ -160,6 +167,7 @@ function showRecordFor(showId: string): any {
 export class EnsembleReviewScorer {
   private claudeScorer: ReviewScorer;
   private openaiScorer: OpenAIReviewScorer;
+  private shadowOpenaiScorer: OpenAIReviewScorer | null;
   private geminiScorer: GeminiScorer | null;
   private kimiScorer: KimiScorer | null;
   private options: EnsembleScoringOptions;
@@ -174,13 +182,12 @@ export class EnsembleReviewScorer {
   ) {
     this.options = {
       claudeModel: options.claudeModel || 'claude-sonnet-4-6',
-      // NOT swapped to GPT54_MINI: task #504 A/B (n=24 real reviews, 2026-07-26)
-      // failed the rule-13 gate hard — Mixed bucket collapsed 29%->0%, max bucket
-      // shift 29.2pp (limit 5pp). gpt-5.4-mini polarizes scores away from the
-      // middle instead of just being a cheaper gpt-4o. Keep gpt-4o as the
-      // scoring-path default; GPT54_MINI stays wired for --openai-model= testing
-      // once the V5 prompt is recalibrated for it. See card #504 for the full readout.
-      openaiModel: options.openaiModel || GPT4O,
+      // The scoring pin SCORING_OPENAI (models.js), still gpt-4o. Task #504's
+      // A/B (n=24, 2026-07-26) of gpt-5.4-mini failed the rule-13 gate (Mixed
+      // bucket 29%->0%, max shift 29.2pp); a full-pipeline re-test on ~1,000
+      // past reviews is planned before gpt-4o retires on 2027-01-14. The pin
+      // moves only when that A/B passes.
+      openaiModel: options.openaiModel || SCORING_OPENAI,
       geminiModel: options.geminiModel || 'gemini-2.5-flash',
       kimiModel: options.kimiModel || 'moonshotai/kimi-k2.5',
       maxDelta: options.maxDelta ?? 15,
@@ -197,6 +204,10 @@ export class EnsembleReviewScorer {
       model: this.options.openaiModel,
       verbose: this.options.verbose
     });
+
+    this.shadowOpenaiScorer = options.shadowOpenaiModel
+      ? new OpenAIReviewScorer(openaiApiKey, { model: options.shadowOpenaiModel, verbose: this.options.verbose })
+      : null;
 
     // Gemini is optional - enables 3-model mode if provided
     if (geminiApiKey) {
@@ -396,10 +407,34 @@ export class EnsembleReviewScorer {
       );
     }
 
-    // Run all models in parallel
-    const results = await Promise.all(promises);
+    // Experiment only: the shadow OpenAI leg runs alongside, same prompt.
+    const shadowPromise: Promise<ModelOutcome> | null = this.shadowOpenaiScorer
+      ? this.shadowOpenaiScorer.scoreReviewV5(reviewText, context, systemPromptOverride)
+        .then(outcome => ({
+          model: 'openai' as const,
+          result: outcome.success && !outcome.rejected ? outcome.result! : null,
+          error: outcome.error,
+          rejected: outcome.rejected,
+          rejection: outcome.rejection,
+          rejectionReasoning: outcome.rejectionReasoning
+        }))
+        .catch(err => ({ model: 'openai' as const, result: null, error: err.message }))
+      : null;
 
-    return this.combineOutcomes(results, band);
+    // Run all models in parallel
+    const [results, shadowOutcome] = await Promise.all([Promise.all(promises), shadowPromise]);
+
+    const combined = this.combineOutcomes(results, band);
+    if (shadowOutcome) {
+      const swapped = results.map(r => (r.model === 'openai' ? shadowOutcome : r));
+      combined.shadow = this.combineOutcomes(swapped, band);
+      // The OpenAI leg's own status in each arm: a leg error leaves a valid
+      // 2-model ensemble behind, so the A/B must see it separately.
+      const legStatus = (o?: ModelOutcome) => ({ ok: !!(o && o.result), rejected: !!(o && o.rejected), error: o && !o.result && !o.rejected ? String(o.error || 'no_result').slice(0, 200) : undefined });
+      combined.openaiLeg = legStatus(results.find(r => r.model === 'openai'));
+      combined.shadow.openaiLeg = legStatus(shadowOutcome);
+    }
+    return combined;
   }
 
   /**
@@ -733,6 +768,10 @@ export class EnsembleReviewScorer {
   ): ScoreReviewFileResult {
     const { scoringInput, band, anchoredBandScoreSource } = prep;
 
+    // Experiment only: stretch the shadow here, before any early return, so a
+    // shadow that scored is stretched even when the control was rejected.
+    if (ensembleResult.shadow) ensembleResult.shadow = applyTailStretch(ensembleResult.shadow, anchoredBandScoreSource);
+
     // Check for rejection (v5.2+)
     if (ensembleResult.rejected) {
       return {
@@ -774,7 +813,9 @@ export class EnsembleReviewScorer {
     // flag-off change). Applied here, the one point both the sync and --batch paths
     // share, so the stored per-model scores stay raw and re-ensemble-scores.ts
     // can reapply it idempotently.
+    const shadowStretched = ensembleResult.shadow;
     ensembleResult = applyTailStretch(ensembleResult, anchoredBandScoreSource);
+    if (shadowStretched) ensembleResult.shadow = shadowStretched; // stretched once, above
 
     // Post-scoring hallucination guard: if the LLM admitted it had no real review
     // content and invented a score, refuse to write the result.
@@ -872,6 +913,9 @@ export class EnsembleReviewScorer {
         kimiScore: ensembleResult.modelResults.kimi?.score ?? null,
         claudeBucket: ensembleResult.modelResults.claude?.bucket,
         openaiBucket: ensembleResult.modelResults.openai?.bucket,
+        // Which OpenAI model produced openaiScore, so a review scored before and
+        // after an OpenAI-leg migration can be told apart (and rolled back).
+        ...(ensembleResult.modelResults.openai ? { openaiModel: this.options.openaiModel } : {}),
         geminiBucket: ensembleResult.modelResults.gemini?.bucket,
         kimiBucket: ensembleResult.modelResults.kimi?.bucket,
         scoreDelta: this.calculateScoreDelta(ensembleResult),

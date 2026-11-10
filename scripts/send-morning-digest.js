@@ -1769,6 +1769,18 @@ async function main() {
       if (bits.length) overnightLine = `Overnight: ${bits.join(', ')}.`;
     }
   } catch { /* optional */ }
+  // BRO-7171 Stage 3: ONE aggregated review-text recovery line (open recent
+  // gaps, change since the night before, recovered, needs decision, and only
+  // ACTION alerts), from the counts-only rows the Mac's nightly job publishes
+  // to data/audit/gap-recovery-nightly.jsonl. Fail-soft; null before the job's
+  // first run.
+  try {
+    const N = require('./lib/gap-recovery-nightly.js');
+    const gapLine = N.renderDigestLine(N.readNightlyRows(path.join(REPO, N.NIGHTLY_REL)));
+    if (gapLine) overnightLine = overnightLine ? `${overnightLine} ${gapLine}` : gapLine;
+  } catch (err) {
+    console.error(`[digest] WARN review-text recovery line skipped: ${String(err.message).slice(0, 120)}`);
+  }
 
   const now = new Date();
   // BRO-5168: Linear's view of automated-fix throughput for the stalled banner.

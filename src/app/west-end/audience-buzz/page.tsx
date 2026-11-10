@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { getAllShows } from '@/lib/data-core';
+import { getWestEndShows } from '@/lib/data-core';
 import { getAudienceBuzz, getAudienceBuzzLastUpdated, getTotalAudienceReviews, getAudienceGrade } from '@/lib/data-audience';
 import { generateBreadcrumbSchema, marketAlternates, BASE_URL, WEST_END_OG_IMAGE } from '@/lib/seo';
 import { AudienceBuzzTable } from '@/components/SortableAudienceBuzzTable';
@@ -44,8 +44,9 @@ const gradeScale = [
 ];
 
 export default function WestEndAudienceBuzzPage() {
-  // West End only — exclude Off-West End
-  const allShows = getAllShows().filter(s => s.category === 'west-end');
+  // West End only — exclude Off-West End. getWestEndShows() keeps opera (ENO at
+  // the Coliseum) out, as getBroadwayShows() does for the Broadway buzz page.
+  const allShows = getWestEndShows().filter(s => s.category === 'west-end');
   const lastUpdated = getAudienceBuzzLastUpdated();
   const marketSources = getSourcesForMarket('west-end');
 

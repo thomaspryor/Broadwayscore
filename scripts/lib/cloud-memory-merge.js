@@ -51,7 +51,9 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
-const { CONFLICT_DIR, publishConflictReport } = require('./cloud-memory-conflicts.js');
+const {
+  CONFLICT_DIR, publishConflictReport, archiveIndexConflictCopies,
+} = require('./cloud-memory-conflicts.js');
 
 const MANIFEST_VERSION = 1;
 const MANIFEST_BASENAME = 'cloud-memory-sync-manifest.json';
@@ -406,6 +408,13 @@ function applySync({ src, dest, manifestPath, dryRun = false, now = new Date(), 
     fs.rmSync(target, { force: true });
   }
 
+  // BRO-7228: archive saved MEMORY.md copies before the inventory is written,
+  // so the report and the digest only list copies that need a human. Never
+  // fatal: a failure here must not skip the report or the manifest write.
+  let settled = { archived: [] };
+  try { settled = archiveIndexConflictCopies({ src }); }
+  catch (err) { settled = { archived: [], error: err.message }; }
+
   // Also inventory old conflict copies and clear the count after review.
   publishConflictReport({ src, dest, now });
 
@@ -419,7 +428,7 @@ function applySync({ src, dest, manifestPath, dryRun = false, now = new Date(), 
     writeManifest(manifestPath, finalHashes, dest);
   }
 
-  return { ...plan, conflictCopies, skipped, manifestPath, dryRun: false };
+  return { ...plan, conflictCopies, skipped, settled, manifestPath, dryRun: false };
 }
 
 /**
@@ -509,6 +518,12 @@ if (require.main === module) {
   if (result.conflicts.length) {
     say(`${result.conflicts.length} file(s) changed on BOTH sides — local version kept, mirror version preserved:`);
     for (const p of result.conflictCopies) say(`  preserved ${p}`);
+  }
+  if (result.settled && result.settled.archived.length) {
+    say(`archived ${result.settled.archived.length} saved MEMORY.md copy(ies) to _conflicts/_resolved/ (index kept as-is; nothing deleted)`);
+  }
+  if (result.settled && result.settled.error) {
+    say(`WARNING could not archive saved MEMORY.md copies: ${result.settled.error} — they stay flagged in the digest`);
   }
   if (verbose) {
     for (const n of result.copyToDest) say(`  copy   ${n}`);

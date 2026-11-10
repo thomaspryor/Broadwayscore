@@ -23,6 +23,7 @@ import { ownerDiaryPayload, selectSharedDiary } from '@/lib/shared-diary/select'
 import { getShowStubsByIds } from '@/lib/show-stubs';
 import { Poster, PosterGridCard, SectionBand, UpcomingListRow, ViewModeToggle, bookabilityLabel, formatPillDate, type ViewMode } from '@/components/user/upcoming-cards';
 import { localToday, formatShowDate } from '@/lib/date-utils';
+import { formatClosingLabel, isRepeatedlyExtended } from '@/lib/closing-label';
 import { isWatchlistEntryRated, selectToBeRatedWatchlistEntries, selectUpcomingWatchlistEntries } from '@/lib/diary-upcoming';
 
 import { useToastSafe } from '@/components/ui/Toast';
@@ -80,6 +81,7 @@ function decodeShow(raw: Record<string, unknown>): ShowLookup {
     previewDate: (raw.pd as string) || null,
     openingDate: (raw.od as string) || null,
     closingDate: (raw.cd as string) || null,
+    closingExtensionCount: typeof raw.ce === 'number' ? raw.ce : undefined,
     compositeScore: null,
     posterUrl: (raw.p as string) || null,
     diaryOnly: !!raw.dy,
@@ -1574,7 +1576,7 @@ function WatchlistCard({ entry, show, onRate }: {
     else onRate({ id: entry.show_id, title }, planRateOpts(entry));
   };
 
-  const isClosingSoon = show?.closingDate && (() => {
+  const isClosingSoon = show?.closingDate && !isRepeatedlyExtended(show) && (() => {
     const closing = new Date(show.closingDate!);
     const now = new Date();
     const fourWeeks = 28 * 24 * 60 * 60 * 1000;
@@ -1683,7 +1685,7 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove, onRate }: {
   // "no date at all" (not yet booked), which incorrectly showed rate stars.
   const canRate = !!entry.planned_date && !isFutureDated;
 
-  const isClosingSoon = show?.closingDate && (() => {
+  const isClosingSoon = show?.closingDate && !isRepeatedlyExtended(show) && (() => {
     const closing = new Date(show.closingDate!);
     const now = new Date();
     const fourWeeks = 28 * 24 * 60 * 60 * 1000;
@@ -1714,7 +1716,7 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove, onRate }: {
         )}
         {show?.closingDate && (
           <p className="text-xs text-fg-muted mt-1">
-            Closes {formatShowDate(show.closingDate)}
+            {formatClosingLabel(show.status === 'closed' ? { closingDate: show.closingDate } : show, formatShowDate(show.closingDate))}
           </p>
         )}
       </div>
@@ -1747,6 +1749,8 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove, onRate }: {
               }}
               size="sm"
               hideLabel
+              // A pick navigates/opens the editor at once, so arrow keys must not fire it.
+              arrowKeys={false}
             />
           </span>
           )}

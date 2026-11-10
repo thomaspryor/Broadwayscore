@@ -350,3 +350,26 @@ test('nonProduction: a previews row with no openingDate (an open-ended attractio
   assert.equal(r.ok, true, r.reason);
   assert.deepEqual(shows.map(s => s.id), ['keep-me-2026']);
 });
+
+test('duplicateOf: a city-finder row dated days before the kept press night retires; other drift refuses (BRO-6854)', () => {
+  const { retire } = scratch();
+  const kept = { id: 'rhinoceros-boston-2026', title: 'Rhinoceros', venue: 'Huntington Theatre', market: 'boston', status: 'open', provisional: true, previewsStartDate: '2026-08-14', openingDate: '2026-08-21' };
+  const dup = { id: 'rhinoceros-regional-2026', title: 'Rhinoceros', venue: 'Huntington Theatre', market: 'boston', status: 'closed', discoverySource: 'cityfinder-boston', openingDate: '2026-08-11' };
+  const act = { id: dup.id, expectTitle: dup.title, reason: 'finder duplicate', duplicateOf: kept.id };
+  const run = (k, d) => { const shows = [{ ...k }, { ...d }]; return [applyRetireShow(shows, act, { retire, reviewCount: none }), shows]; };
+  const [ok, shows] = run(kept, dup);
+  assert.equal(ok.ok, true, ok.reason);
+  assert.deepEqual(shows.map(s => s.id), [kept.id]);
+  // Not a finder row: still a revival/return run.
+  assert.match(run(kept, { ...dup, discoverySource: 'manual' })[0].reason, /revival or return run/);
+  // Too far before the kept run (a different, earlier production).
+  assert.match(run(kept, { ...dup, openingDate: '2026-06-01' })[0].reason, /revival or return run/);
+  // Finder row that carries its own previews or outlasts the kept run.
+  assert.match(run(kept, { ...dup, previewsStartDate: '2026-08-05' })[0].reason, /revival or return run/);
+  assert.match(run({ ...kept, closingDate: '2026-09-01' }, { ...dup, closingDate: '2026-10-01' })[0].reason, /revival or return run/);
+  // Any closing date on the finder row (before or after the kept run) refuses.
+  assert.match(run(kept, { ...dup, closingDate: '2026-09-20' })[0].reason, /revival or return run/);
+  assert.match(run(kept, { ...dup, closingDate: 'TBA' })[0].reason, /revival or return run/);
+  // Reviews still block it.
+  assert.match(applyRetireShow([{ ...kept }, { ...dup }], act, { retire, reviewCount: () => 2 }).reason, /2 review/);
+});

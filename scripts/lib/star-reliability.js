@@ -355,6 +355,11 @@ function detectBandFromReviewFile(data) {
     if (num || pct) {
       const stars = parseFloat(num ? num[1] : pct[1]);
       const max = num ? parseFloat(num[2]) : 100;
+      // BRO-7080: "0/N stars" is only ever the unicode extractor reading a run
+      // of empty ☆ glyphs (the numeric paths need a rating of 1+). It is not
+      // a verdict, so it gets no band: three published reviews were pinned to
+      // 0-30 by it. Already-stored values need this, not just the extractor fix.
+      if (num && stars === 0 && /star/i.test(raw)) continue;
       if (Number.isFinite(stars) && Number.isFinite(max) && stars >= 0 && max > 0 && stars <= max) {
         const fraction = stars / max;
         let band;

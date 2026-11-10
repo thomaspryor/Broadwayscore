@@ -21,6 +21,8 @@ export interface ShowCardShow {
   hubProduction?: boolean;
   openingDate: string;
   closingDate?: string;
+  /** BRO-7252: how many times the run has been extended; 1+ renders "Extended through" instead of "Closes". */
+  closingExtensionCount?: number;
   previewsStartDate?: string;
   status: string;
   type: string;

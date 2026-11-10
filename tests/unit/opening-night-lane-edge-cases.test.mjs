@@ -68,7 +68,10 @@ test('zero links: a BWW roundup with only deal and podcast cards is a named sour
   // The runner keeps the first 200 characters of an adapter error, which still names the page and the link count.
   assert.match(bww[0].error, /^bww-roundup: roundup https:\/\/www\.broadwayworld\.com\/.* parsed to 1 cited link/);
   assert.ok(r.graded.sourceErrors.some((e) => e.adapter === 'bww-roundup'), 'graded as a source error');
-  assert.deepEqual(r.graded.runProblems, [], 'a source error alone is not a lane failure');
+  // The source error itself is not a lane problem. What it cost the lane is: WSJ's paywall teaser never got the
+  // roundup excerpt it waits for, so it is still held at the end of the night and graded as such (BRO-7159).
+  assert.deepEqual(r.graded.runProblems.filter((p) => !/^paywall teaser still awaiting an excerpt: \S*wsj\.com\//.test(p)), [], 'a source error alone is not a lane failure');
+  assert.equal(r.graded.runProblems.length, 1, `runProblems: ${JSON.stringify(r.graded.runProblems)}`);
   // What the broken source cost is graded, not hidden: WSJ is cited only by that roundup, so it never went live and
   // same-night completeness fails on it (the full night, with the roundup readable, grades PASS).
   assert.equal(r.live.length, 21);

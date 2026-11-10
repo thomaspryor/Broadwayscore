@@ -724,14 +724,20 @@ function parseArgs(): ScoringPipelineOptions & {
 
   const outdated = args.includes('--outdated');
 
-  // Task #504 (2026-07-26): ensemble OpenAI leg model, overridable for the
-  // gpt-4o vs gpt-5.4-mini A/B comparison. Default STAYS gpt-4o — the A/B
-  // (n=24 real reviews) failed the rule-13 gate: Mixed bucket collapsed
-  // 29%->0%, max bucket shift 29.2pp (limit 5pp). Pass --openai-model=gpt-5.4-mini
-  // to experiment further once the V5 prompt is recalibrated for it.
-  const { GPT4O } = require('../lib/models');
+  // Ensemble OpenAI leg model. Default is the scoring pin SCORING_OPENAI
+  // (models.js), which moves only after a passing A/B (CLAUDE.md §13);
+  // --openai-model= overrides it for experiments. Validated against the models
+  // the shared request builder knows (llm-batch.js OPENAI_REQUEST_PROFILES), so
+  // a typo fails here instead of on the first API call.
+  const { SCORING_OPENAI } = require('../lib/models');
+  const { openaiScoringModels } = require('../lib/llm-batch.js');
   const openaiModelArg = args.find(a => a.startsWith('--openai-model='));
-  const openaiModel = (openaiModelArg ? openaiModelArg.split('=')[1] : GPT4O) as 'gpt-4o-mini' | 'gpt-4o' | 'gpt-5.4-mini';
+  const openaiModelRaw = openaiModelArg ? openaiModelArg.split('=')[1] : SCORING_OPENAI;
+  if (!openaiScoringModels().includes(openaiModelRaw)) {
+    console.error(`--openai-model=${openaiModelRaw} is not a known OpenAI scoring model (known: ${openaiScoringModels().join(', ')})`);
+    process.exit(2);
+  }
+  const openaiModel = openaiModelRaw as 'gpt-4o-mini' | 'gpt-4o' | 'gpt-5.4-mini';
 
   const ensembleSourceArg = args.find(a => a.startsWith('--ensemble-source='));
   const ensembleSource = ensembleSourceArg ? ensembleSourceArg.split('=')[1] : undefined;
@@ -2510,8 +2516,8 @@ async function main(): Promise<void> {
       // estimate BEFORE spending it — the batch-mode analogue of --max-cost's
       // per-call circuit breaker, which cannot apply here.
       const estUsage = estimateBatchUsage(requests);
-      const estCost = __estimateCost(estUsage as any, { claudeModelName: options.model, batch: true });
-      const syncCost = __estimateCost(estUsage as any, { claudeModelName: options.model });
+      const estCost = __estimateCost(estUsage as any, { claudeModelName: options.model, openaiModelName: options.openaiModel, batch: true });
+      const syncCost = __estimateCost(estUsage as any, { claudeModelName: options.model, openaiModelName: options.openaiModel });
       console.log(`\n📦 Submitting batch: ${pendingBatchItems.length} reviews × ${cfg.geminiEnabled ? 3 : 2} vendors`);
       console.log(
         `   Estimated cost (batch-discounted, upper bound): $${estCost.toFixed(4)} — vs $${syncCost.toFixed(4)} synchronous`
@@ -2643,8 +2649,8 @@ async function main(): Promise<void> {
     };
     // BRO-5047: a batch run's urgent reviews were scored synchronously, at full rate.
     const breakdown = batchMode
-      ? __mixedCostBreakdown(usageForCost, syncUsageInBatchRun, { claudeModelName: options.model })
-      : __costBreakdown(usageForCost, { claudeModelName: options.model, batch: false });
+      ? __mixedCostBreakdown(usageForCost, syncUsageInBatchRun, { claudeModelName: options.model, openaiModelName: options.openaiModel })
+      : __costBreakdown(usageForCost, { claudeModelName: options.model, openaiModelName: options.openaiModel, batch: false });
     const costParts = [`Claude: $${breakdown.claude.toFixed(4)}`, `OpenAI: $${breakdown.openai.toFixed(4)}`];
     if (ensembleUsage.gemini) costParts.push(`Gemini: $${breakdown.gemini.toFixed(4)}`);
     if (ensembleUsage.kimi) costParts.push(`Kimi: $${breakdown.kimi.toFixed(4)}`);

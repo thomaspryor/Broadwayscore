@@ -44,9 +44,22 @@
  * abandonedMs: an age limit that also recovers locks with recycled live PIDs.
  * Other callers retain the age AND dead-PID rule above.
  *
+ * Opt-ins for callers that need a stricter contract (BRO-7171, the
+ * review-texts repo lock in review-texts-lock.js). All default to the
+ * behaviour above, so existing callers are unchanged:
+ *   body(): the lock file contents (default `${pid} ${iso}`). Must still start
+ *     with the holder pid so readLockPid() keeps working.
+ *   holderAlive(contents): replaces the bare PID-liveness check, e.g. to also
+ *     compare the process start time and catch a recycled PID.
+ *   throwOnTimeout: throw (err.code 'ELOCKTIMEOUT', or the fs error for an
+ *     unwritable lock dir) instead of running fn(false) unlocked.
+ *   sleepWait: wait with Atomics.wait instead of a CPU spin (long waits).
+ *
  * @param {string} lockPath
  * @param {(held: boolean) => any} fn
- * @param {{timeoutMs?: number, staleMs?: number, waitMs?: number, abandonedMs?: number}} [opts]
+ * @param {{timeoutMs?: number, staleMs?: number, waitMs?: number, abandonedMs?: number,
+ *   body?: () => string, holderAlive?: (contents: string) => boolean,
+ *   throwOnTimeout?: boolean, sleepWait?: boolean}} [opts]
  */
 'use strict';
 
@@ -71,9 +84,30 @@ function readLockPid(lockPath) {
   catch { return null; }
 }
 
-function isStale(lockPath, staleMs, abandonedMs) {
+function defaultHolderAlive(contents) {
+  return pidAlive(parsePid(contents));
+}
+
+function isStale(lockPath, staleMs, abandonedMs, holderAlive = defaultHolderAlive) {
   const ageMs = Date.now() - fs.statSync(lockPath).mtimeMs;
-  return ageMs > abandonedMs || (ageMs > staleMs && !pidAlive(readLockPid(lockPath)));
+  if (ageMs > abandonedMs) return true;
+  if (ageMs <= staleMs) return false;
+  let contents = '';
+  try { contents = fs.readFileSync(lockPath, 'utf8'); } catch { /* unreadable: judged by the pid parse below */ }
+  return !holderAlive(contents, { mtimeMs: Date.now() - ageMs });
+}
+
+function defaultBody() {
+  return `${process.pid} ${new Date().toISOString()}\n`;
+}
+
+function pause(ms, sleepWait) {
+  if (sleepWait) {
+    Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms);
+    return;
+  }
+  const until = Date.now() + ms;
+  while (Date.now() < until) { /* spin */ }
 }
 
 /**
@@ -110,7 +144,7 @@ function clearAbandonedGate(gatePath, staleMs, abandonedMs) {
  * in place. Never unlink/rename lockPath before claiming: its absence would
  * allow a normal wx contender to become a second holder (task #1024).
  */
-function claimStaleLockInPlace(lockPath, stealGatePath, staleMs, abandonedMs) {
+function claimStaleLockInPlace(lockPath, stealGatePath, staleMs, abandonedMs, holderAlive = defaultHolderAlive, body = defaultBody) {
   // A fresh name per attempt also fences a cleaner that observed a previous
   // generation of this directory. Release must never recursively remove it.
   const marker = path.join(stealGatePath, randomUUID());
@@ -123,9 +157,9 @@ function claimStaleLockInPlace(lockPath, stealGatePath, staleMs, abandonedMs) {
     // any second marker must withdraw before its holder can claim the lock.
     const owners = fs.readdirSync(stealGatePath);
     if (owners.length !== 1 || owners[0] !== path.basename(marker)) return false;
-    if (!isStale(lockPath, staleMs, abandonedMs)) return false;
+    if (!isStale(lockPath, staleMs, abandonedMs, holderAlive)) return false;
 
-    const claim = `${process.pid} ${new Date().toISOString()}\n`;
+    const claim = body();
     fs.writeFileSync(lockPath, claim);
     const held = fs.readFileSync(lockPath, 'utf8') === claim;
     if (held) console.error(`[file-lock] recovered abandoned lock in place: ${lockPath}`);
@@ -138,6 +172,9 @@ function claimStaleLockInPlace(lockPath, stealGatePath, staleMs, abandonedMs) {
 
 function withFileLock(lockPath, fn, opts = {}) {
   const { timeoutMs = 30000, staleMs = 5 * 60 * 1000, waitMs = 100, abandonedMs = Infinity } = opts;
+  const holderAlive = opts.holderAlive || defaultHolderAlive;
+  const body = opts.body || defaultBody;
+  let acquireError = null;
   const stealGatePath = `${lockPath}.steal-gate`;
   const deadline = Date.now() + timeoutMs;
   let held = false;
@@ -151,28 +188,35 @@ function withFileLock(lockPath, fn, opts = {}) {
       clearAbandonedGate(stealGatePath, staleMs, abandonedMs);
       if (!fs.existsSync(stealGatePath)) continue;
       mustTry = false;
-      const until = Date.now() + waitMs;
-      while (Date.now() < until) { /* spin */ }
+      pause(waitMs, opts.sleepWait);
       continue;
     }
     mustTry = false;
     try {
-      fs.writeFileSync(lockPath, `${process.pid} ${new Date().toISOString()}\n`, { flag: 'wx' });
+      fs.writeFileSync(lockPath, body(), { flag: 'wx' });
       held = true;
       break;
     } catch (e) {
-      if (e.code !== 'EEXIST') { held = false; break; } // unwritable dir etc — proceed unlocked
+      if (e.code !== 'EEXIST') { held = false; acquireError = e; break; } // unwritable dir etc — proceed unlocked
       try {
-        if (isStale(lockPath, staleMs, abandonedMs)) {
-          if (claimStaleLockInPlace(lockPath, stealGatePath, staleMs, abandonedMs)) { held = true; break; }
+        if (isStale(lockPath, staleMs, abandonedMs, holderAlive)) {
+          if (claimStaleLockInPlace(lockPath, stealGatePath, staleMs, abandonedMs, holderAlive, body)) { held = true; break; }
         }
       } catch { /* vanished or lost the claim race — fall through and retry */ }
       // Busy-wait: this runs at most once per lock acquisition on a
       // millisecond-scale critical section, so a short synchronous spin is
       // simpler than making the whole write path async.
-      const until = Date.now() + waitMs;
-      while (Date.now() < until) { /* spin */ }
+      pause(waitMs, opts.sleepWait);
     }
+  }
+  if (!held && opts.throwOnTimeout) {
+    if (acquireError) throw acquireError;
+    let holder = '';
+    try { holder = fs.readFileSync(lockPath, 'utf8').trim(); } catch { /* released meanwhile */ }
+    const err = new Error(`file-lock: timed out after ${timeoutMs}ms waiting for ${lockPath} (holder: ${holder || 'unknown'})`);
+    err.code = 'ELOCKTIMEOUT';
+    err.holder = holder;
+    throw err;
   }
   try {
     return fn(held);
@@ -184,4 +228,49 @@ function withFileLock(lockPath, fn, opts = {}) {
   }
 }
 
-module.exports = { withFileLock, pidAlive, readLockPid };
+/**
+ * Non-blocking, fail-CLOSED variant for "skip this run if busy" locks
+ * (cookie-renew, the gap-recovery run lock). One attempt: wx-create, else
+ * claim a stale lock IN PLACE under the steal gate (never unlink-then-wx: two
+ * waiters that both saw the dead holder would both win, BRO-7171).
+ *
+ * Stale = older than abandonedMs, or older than staleMs and
+ * !holderAlive(contents, {mtimeMs}). Defaults: staleMs 0 (a dead PID is stale
+ * at once), abandonedMs Infinity.
+ *
+ * @returns {Function|null} release (removes the lock only while it still holds
+ *   this call's body), or null when a live holder or a concurrent claim owns it.
+ */
+function tryAcquireFileLock(lockPath, opts = {}) {
+  const { staleMs = 0, abandonedMs = Infinity } = opts;
+  const holderAlive = opts.holderAlive || defaultHolderAlive;
+  const stamp = opts.body || defaultBody;
+  const body = stamp(); // fixed per call: release compares against it
+  const stealGatePath = `${lockPath}.steal-gate`;
+  fs.mkdirSync(path.dirname(lockPath), { recursive: true });
+  if (fs.existsSync(stealGatePath)) {
+    clearAbandonedGate(stealGatePath, staleMs, abandonedMs);
+    if (fs.existsSync(stealGatePath)) return null; // someone is claiming right now
+  }
+  let held = false;
+  try {
+    fs.writeFileSync(lockPath, body, { flag: 'wx' });
+    held = true;
+  } catch (e) {
+    if (e.code !== 'EEXIST') throw e;
+    try {
+      if (isStale(lockPath, staleMs, abandonedMs, holderAlive)) {
+        held = claimStaleLockInPlace(lockPath, stealGatePath, staleMs, abandonedMs, holderAlive, () => body);
+      }
+    } catch { held = false; } // vanished or lost the claim race
+  }
+  if (!held) return null;
+  let released = false;
+  return () => {
+    if (released) return;
+    released = true;
+    try { if (fs.readFileSync(lockPath, 'utf8') === body) fs.unlinkSync(lockPath); } catch { /* gone */ }
+  };
+}
+
+module.exports = { withFileLock, tryAcquireFileLock, pidAlive, readLockPid };

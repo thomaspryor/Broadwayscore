@@ -34,7 +34,8 @@ const { execSync } = require('child_process');
 const { classifyContentTier, isGarbageContent, validateShowMentioned, countWords } = require('./lib/content-quality');
 const { pushWithRetry } = require('./lib/push-with-retry.js');
 const { markReviewTextsPushed } = require('./lib/review-texts-pushed-marker.js'); // BRO-5308
-const { listUnpushedReviewFiles, startPressNightScoring } = require('./lib/press-night-scoring-trigger'); // BRO-6886
+const { startPressNightScoring } = require('./lib/press-night-scoring-trigger'); // BRO-6886
+const { checkpointReviewTexts: checkpointRtWrites, retryPendingPushes, createWriteTracker } = require('./lib/review-texts-checkpoint'); // BRO-7171
 const { cleanText, stripTrailingJunk } = require('./lib/text-cleaning');
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
 const { generateReviewFilename } = require('./lib/review-normalization');
@@ -197,7 +198,7 @@ async function queryCDX(url) {
   if (cleanUrl !== url) {
     console.log(`  CDX normalized: ${cleanUrl.substring(0, 100)}...`);
   }
-  const cdxUrl = `https://web.archive.org/cdx/search/cdx?url=${encodeURIComponent(cleanUrl)}&output=json&limit=10&from=2005&to=2026`;
+  const cdxUrl = `https://web.archive.org/cdx/search/cdx?url=${encodeURIComponent(cleanUrl)}&output=json&limit=10&from=2005`;
 
   const response = await httpGet(cdxUrl, 30000);
   if (response.statusCode !== 200) {
@@ -854,33 +855,29 @@ function loadNotAttemptedCandidates() {
 // checkpointed at all. Committing every few recoveries shrinks the exposure
 // window from tens of minutes to a couple.
 
+// BRO-7171: commit + push ONLY the files this run wrote (RUN_WRITES), under
+// the machine-wide review-texts lock, through review-texts-checkpoint.js.
+// The old whole-tree `git add -A` swept up whatever another local writer had
+// half-written, and a failed push was a console WARNING while the run kept
+// counting recoveries. A failed push now throws (the commit stays recorded
+// as pending and the next run's retryPendingPushes pushes it).
+const RT_DIR = path.join(__dirname, '..', 'data', 'review-texts');
+const RUN_WRITES = createWriteTracker();
+
 function checkpointReviewTexts(stats) {
-  const reviewTextsDir = path.join(__dirname, '..', 'data', 'review-texts');
-  try {
-    execSync('git add -A', { cwd: reviewTextsDir, stdio: 'pipe' });
-    try {
-      execSync('git diff --staged --quiet', { cwd: reviewTextsDir, stdio: 'pipe' });
-      return; // no changes
-    } catch { /* has staged changes */ }
-    execSync(`git commit -m "data: Wayback recovery checkpoint - ${stats.recovered} recovered so far"`, { cwd: reviewTextsDir, stdio: 'pipe' });
-    // Push through the shared helper (task #420). The hand-rolled
-    // `git pull --rebase -X theirs` + restore-protected-fields + 3-attempt loop
-    // this replaced carried NO depth bound, and the review-texts checkout is
-    // shallow by default (.github/actions/checkout-review-texts, fetch-depth:
-    // 1) — from a shallow clone that pull makes upload-pack send the whole
-    // repo instead of the delta (#466). The helper runs the same
-    // lib/restore-protected-fields.js and adds the #394/#464/#543 fixes.
-    const pushedReviewFiles = listUnpushedReviewFiles(reviewTextsDir); // BRO-6886
-    const rtPush = pushWithRetry({ cwd: reviewTextsDir, branch: 'main', retries: 3 });
-    if (rtPush.ok) {
-      markReviewTextsPushed(); // BRO-5308: final push-review-texts reports pushed=true
-      startPressNightScoring(pushedReviewFiles); // BRO-6886: score new press-night reviews now, not at job end
-      console.log('  [Checkpoint] review-texts pushed');
-      return;
-    }
-    console.log(`  [Checkpoint] WARNING: review-texts push failed: ${rtPush.stderr.split('\n').slice(-3).join(' ')}`);
-  } catch (e) {
-    console.log(`  [Checkpoint] review-texts error: ${e.message.slice(0, 200)}`);
+  if (!RUN_WRITES.size) return;
+  const res = checkpointRtWrites({
+    repoDir: RT_DIR,
+    paths: RUN_WRITES,
+    message: `data: Wayback recovery checkpoint - ${stats.recovered} recovered so far`,
+  });
+  RUN_WRITES.clear();
+  if (res.pushed) {
+    markReviewTextsPushed(); // BRO-5308: final push-review-texts reports pushed=true
+    // BRO-6886: score new press-night reviews now, not at job end.
+    const landedReviews = res.landed.map((p) => p.rel).filter((rel) => rel.endsWith('.json'));
+    startPressNightScoring(landedReviews);
+    console.log(`  [Checkpoint] review-texts pushed (${res.landed.length} file(s))`);
   }
 }
 
@@ -925,6 +922,8 @@ async function main() {
 
   if (CONFIG.dryRun) console.log('*** DRY RUN — no files will be modified ***\n');
   if (CONFIG.sourceMode !== 'failed-fetches') console.log(`Source mode: ${CONFIG.sourceMode}\n`);
+  // BRO-7171: land an earlier run's unpushed checkpoint before new work.
+  if (!CONFIG.dryRun && fs.existsSync(path.join(RT_DIR, '.git'))) retryPendingPushes({ repoDir: RT_DIR });
 
   const candidates = CONFIG.sourceMode === 'incomplete'
     ? loadIncompleteCandidates()
@@ -1173,6 +1172,7 @@ async function main() {
         return !recoveredSet.has(id);
       });
       fs.writeFileSync(CONFIG.failedFetchesPath, JSON.stringify(filtered, null, 2) + '\n');
+      RUN_WRITES.add(CONFIG.failedFetchesPath);
       console.log(`  Removed ${ff.length - filtered.length} entries (${filtered.length} remaining)`);
     } catch (e) {
       console.log(`  Error cleaning failed-fetches.json: ${e.message}`);
@@ -1260,6 +1260,18 @@ async function main() {
 // Process recovered text — quality gate + file update
 // ============================================================================
 
+let _showsById = null;
+function showMetaFor(showId) {
+  if (!_showsById) {
+    _showsById = new Map();
+    try {
+      const parsed = JSON.parse(fs.readFileSync(CONFIG.showsPath, 'utf8'));
+      for (const s of (Array.isArray(parsed) ? parsed : (parsed.shows || []))) if (s && s.id) _showsById.set(s.id, s);
+    } catch { /* falls back to the slug title */ }
+  }
+  return _showsById.get(showId) || null;
+}
+
 async function processRecoveredText(candidate, text, html, archiveData) {
   // Clean the text
   let cleanedText = cleanText(text);
@@ -1286,7 +1298,8 @@ async function processRecoveredText(candidate, text, html, archiveData) {
   }
 
   // Show-mention check — validateShowMentioned returns {valid, confidence, reason}
-  const showTitle = candidate.showId.replace(/-\d{4}$/, '').replace(/-/g, ' ');
+  // shows.json title, not the slug ("life of pi tour" is never printed; BRO-7171 Stage 4)
+  const showTitle = require('./lib/review-guards').pickShowTitleForHeuristic(candidate.showId, showMetaFor(candidate.showId));
   const mentionResult = validateShowMentioned(cleanedText, showTitle, candidate.showId);
   if (!mentionResult.valid) {
     console.log(`    Show not mentioned in text: "${showTitle}"`);
@@ -1395,6 +1408,7 @@ async function processRecoveredText(candidate, text, html, archiveData) {
 
   // Write updated file
   fs.writeFileSync(candidate.filePath, JSON.stringify(data, null, 2) + '\n');
+  RUN_WRITES.add(candidate.filePath);
   return true;
 }
 
@@ -1402,7 +1416,7 @@ async function processRecoveredText(candidate, text, html, archiveData) {
 // Entry point
 // ============================================================================
 
-module.exports = { extractTextFromHtml };
+module.exports = { extractTextFromHtml, showMetaFor };
 
 if (require.main === module) {
   // --help/-h checked BEFORE any candidate loading or network/fs work (cousin

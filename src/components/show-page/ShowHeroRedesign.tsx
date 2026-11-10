@@ -46,6 +46,7 @@ import {
 } from '@/components/show-cards';
 import MiniStars from '@/components/user/Stars';
 import StarRating from '@/components/user/StarRating';
+import { getMobileStarRowState } from '@/lib/mobile-star-row';
 import WatchlistPlanCard, { PlanRow, DateTile } from '@/components/user/WatchlistPlanCard';
 import { buildPlannedShowEvent } from '@/lib/calendar-event';
 import RatingEditor, { type RatingEditorSaveData } from '@/components/user/RatingEditor';
@@ -91,7 +92,6 @@ import type { UserReview, PendingAction } from '@/types/user';
 import type { ShowRanks } from '@/lib/data-show-ranks';
 import HeroRankLine from '@/components/show-page/HeroRankLine';
 import LimitedRunBadge from '@/components/show-page/LimitedRunBadge';
-import CiteScoreControl from '@/components/show-page/CiteScoreControl';
 import ShowPageAddToListButton from '@/components/user/ShowPageAddToListButton';
 import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
 import { shouldShowReviewsSyncing } from '../../../scripts/lib/show-page-provisional-state';
@@ -196,17 +196,18 @@ function Inner({
 
   const [ratePanelOpen, setRatePanelOpen] = useState(false);
   const [editingReview, setEditingReview] = useState<UserReview | null>(null);
+  // Which signed-in user's ratings for this show have finished loading (null = none yet).
+  const [reviewsLoadedFor, setReviewsLoadedFor] = useState<string | null>(null);
   const rateBtnRef = useRef<HTMLButtonElement>(null);
   // Return focus to the rate button when the editor closes — the inline
   // (desktop) editor is not a Modal, so nothing else restores focus and it
   // falls to <body>, stranding keyboard/screen-reader users (audit P2).
-  // On phones the Rate it button is display:none while the star row shows, so
-  // focus goes to the first star instead (focus on a hidden button is a no-op).
-  const mobileStarsRef = useRef<HTMLDivElement>(null);
+  // On phones the Rate it button is display:none while the star row shows (focus on
+  // a hidden button is a no-op, so skip it): the editor is a Modal there, and the
+  // Modal itself returns focus to the star that opened it (BRO-7074).
   const refocusRateBtn = () => requestAnimationFrame(() => {
     const btn = rateBtnRef.current;
     if (btn && btn.offsetParent !== null) btn.focus();
-    else mobileStarsRef.current?.querySelector<HTMLButtonElement>('button')?.focus();
   });
 
   // ?rate=1 / ?stars=N / ?edit=1 deep-link helpers (kept compatible with /my-shows entry points).
@@ -231,8 +232,11 @@ function Inner({
   const hasRating = ratingCount > 0;
   // Keep "Log another viewing" for a show already rated; hide a first "Rate it" until it could have been seen.
   const showRateButton = seeable || hasRating;
-  // Phone star row: only for a first rating on a show the viewer could have seen.
-  const showMobileStars = showRateButton && !hasRating;
+  // Phone star row: only for a first rating on a show the viewer could have seen,
+  // and only once we know they have not already rated it (see mobile-star-row.ts).
+  const ratingStateKnown = isAuthenticated ? reviewsLoadedFor === user?.id : !authLoading;
+  const mobileStarState = getMobileStarRowState({ showRateButton, hasRating, hasLocalRating: !!localRating, ratingStateKnown });
+  const showMobileStars = mobileStarState !== 'hidden';
   const isMulti = ratingCount > 1;
   const { isSavedLocally, toggleLocal } = useLocalWatchlist();
   // Signed out, "Want to See" saves on this device (BRO-4616).
@@ -276,7 +280,8 @@ function Inner({
   // Load on auth
   useEffect(() => {
     if (isAuthenticated && user) {
-      getReviewsForShow(show.id);
+      const uid = user.id;
+      getReviewsForShow(show.id).finally(() => setReviewsLoadedFor(uid));
       getWatchlist();
       getLists();
     }
@@ -661,7 +666,6 @@ function Inner({
               )}
             </div>
           )}
-          {hasEnoughCriticReviews && <CiteScoreControl show={show} className="hidden lg:block pt-1" />}
         </div>
       </div>
 
@@ -728,7 +732,6 @@ function Inner({
         </p>
       )}
 
-      {hasEnoughCriticReviews && <CiteScoreControl show={show} className="lg:hidden -mt-1" />}
 
       {/* Distribution bar — both modes; spans full width under the header. */}
       {hasEnoughCriticReviews && criticReviewsForBar.length > 0 && (
@@ -759,7 +762,7 @@ function Inner({
       {/* Action cluster — user buttons + tickets share ONE space-y-2 group so
           every gap in the button stack is identical (the old split put 16px
           above Get Tickets but 8px below it — owner report, 2026-07-17). */}
-      <div className="space-y-2">
+      <div className="flex flex-col gap-2" data-testid="hero-action-cluster">
       {/* Action buttons row — same geometry as the ticket buttons below
           (h-10 / rounded-lg / horizontal icon+label); a taller rounder shape
           here read as mismatched (owner report, 2026-07-17). */}
@@ -767,49 +770,64 @@ function Inner({
           a rated show keeps "Log another viewing" and the rating card. A tap seeds
           the same fresh rating panel as the poster stars (handlePosterStarsPick). */}
       {userFeaturesEnabled && showMobileStars && (
-        <div ref={mobileStarsRef} className="sm:hidden rounded-lg border border-white/10 bg-white/5 px-3 pt-2.5 pb-2">
-          <p className="text-[11px] font-semibold uppercase tracking-widest text-fg-muted mb-1">Tap to rate</p>
-          <StarRating rating={null} onRatingChange={handlePosterStarsPick} size="lg" hideLabel fill />
+        <div
+          // 'pending' keeps the row's height but hides and disables it, so there is no
+          // flash or layout jump while we learn whether this viewer already rated.
+          className={`sm:hidden rounded-lg border border-white/10 bg-white/5 px-3 pt-2.5 pb-1.5 text-center ${mobileStarState === 'pending' ? 'invisible' : ''}`}
+          inert={mobileStarState === 'pending'}
+          aria-hidden={mobileStarState === 'pending' ? true : undefined}
+        >
+          {/* Same label style as the buttons below (14px / semibold / white / sentence case,
+              centered). Owner decision 2026-11-10: it was 11px muted ALL CAPS, left aligned. */}
+          <p className="text-sm font-semibold text-white mb-1">Tap to rate</p>
+          {/* Stars grouped in the middle (owner pick "3b", 2026-11-10); each button is still a
+              full fifth of this narrower row, so the tap targets stay 44px+ wide. */}
+          <div className="mx-auto w-full max-w-[240px]">
+            <StarRating rating={null} onRatingChange={handlePosterStarsPick} size="lg" hideLabel fill arrowKeys={false} />
+          </div>
         </div>
       )}
       {userFeaturesEnabled && (
+        // Phones never get an auto-width column: rows are two equal columns, and "Log another
+        // viewing" (too long for half a phone row at 14px) takes its own full-width row, so every
+        // label fits (reviewer caught the overflow, 2026-11-10).
         <div className={`grid gap-2 ${showRateButton
           ? (isAuthenticated
-              ? (showMobileStars ? 'grid-cols-[1fr_auto] sm:grid-cols-[1fr_1fr_auto]' : 'grid-cols-[1fr_1fr_auto]')
+              ? 'grid-cols-2 sm:grid-cols-[1fr_1fr_auto]'
               : (showMobileStars ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-2'))
-          : (isAuthenticated ? 'grid-cols-[1fr_auto]' : 'grid-cols-1')}`}>
+          : (isAuthenticated ? 'grid-cols-2 sm:grid-cols-[1fr_auto]' : 'grid-cols-1')}`}>
           <button
             type="button"
             onClick={handleWantToSee}
-            className={`flex items-center justify-center gap-1.5 h-10 px-2 rounded-lg border transition-all whitespace-nowrap ${
+            className={`flex items-center justify-center gap-1.5 h-10 sm:h-12 px-2 rounded-lg border transition-all whitespace-nowrap ${
               onWatchlist
                 ? 'bg-brand/10 border-brand text-brand'
                 : 'bg-white/10 border-white/15 text-white hover:bg-white/15 hover:border-white/25'
-            }`}
+            } ${!isAuthenticated && showRateButton && hasRating ? 'col-span-2 sm:col-span-1' : ''}`}
           >
             <svg className="w-4 h-4 shrink-0" fill={onWatchlist ? 'currentColor' : 'none'} viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
             </svg>
-            <span className="text-xs sm:text-sm font-semibold">{getWatchlistCtaLabel({ onWatchlist, hasRating, isClosed })}</span>
+            <span className="text-sm font-semibold">{getWatchlistCtaLabel({ onWatchlist, hasRating, isClosed })}</span>
           </button>
           {showRateButton && (
           <button
             type="button"
             ref={rateBtnRef}
             onClick={handleRateIt}
-            className={`${showMobileStars ? 'hidden sm:flex' : 'flex'} items-center justify-center gap-1.5 h-10 px-2 rounded-lg border bg-white/10 border-white/15 text-white hover:bg-white/15 hover:border-white/25 transition-all whitespace-nowrap`}
+            className={`${showMobileStars ? 'hidden sm:flex' : 'flex'} ${hasRating ? 'col-span-2 order-last sm:col-span-1 sm:order-none' : ''} items-center justify-center gap-1.5 h-10 sm:h-12 px-2 rounded-lg border bg-white/10 border-white/15 text-white hover:bg-white/15 hover:border-white/25 transition-all whitespace-nowrap`}
           >
             <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
             </svg>
-            <span className="text-xs sm:text-sm font-semibold">
+            <span className="text-sm font-semibold">
               {!hasRating ? 'Rate it' : 'Log another viewing'}
             </span>
           </button>
           )}
           {/* Custom lists, signed-in only: for signed-out visitors it was a third
               control that led straight to a sign-in wall (owner, 2026-10-06).
-              Icon-only below sm so the two primary buttons keep their width. */}
+              Reads "Add to list" on phones, "List" from sm up. */}
           {isAuthenticated && <ShowPageAddToListButton showId={show.id} variant="hero" />}
         </div>
       )}
@@ -957,6 +975,11 @@ function Inner({
           on mobile it pushed content too far down. Desktop keeps it next
           to the Get Tickets CTA where there's horizontal room. Full info
           for both viewports lives in the Discount Tickets card below. */}
+      {/* The ticket CTA leads the cluster at every width, above the rate/list
+          buttons (owner decisions 2026-11-09 and 2026-11-10: tickets are the
+          revenue button). From sm up it is a 56px bar; the Lottery pill sits
+          beside it at lg+. Guard: tests/unit/hero-tickets-first.test.mjs. */}
+      <div className="order-first flex flex-col gap-2 empty:hidden" data-testid="hero-ticket-cta-slot">
       <ShowPageTicketCTA
         showName={show.title}
         showId={show.id}
@@ -971,12 +994,13 @@ function Inner({
         officialUrl={show.officialUrl}
         pageType="show"
         splitVariant
-        primaryButtonClassName="w-full lg:w-auto lg:self-start inline-flex items-center justify-center gap-1.5 h-10 px-5 rounded-lg bg-gradient-brand text-white font-bold text-sm leading-none hover:shadow-glow-sm hover:scale-[1.01] active:scale-[0.99] transition-all whitespace-nowrap"
-        secondaryAfter={lotteryPill('hidden lg:inline-flex')}
+        primaryButtonClassName="w-full lg:flex-1 lg:min-w-[16rem] inline-flex items-center justify-center gap-1.5 h-10 sm:h-14 px-5 rounded-lg bg-gradient-brand text-[#1a1208] font-bold sm:font-extrabold text-sm sm:text-[17px] leading-none hover:shadow-glow-sm hover:scale-[1.01] active:scale-[0.99] transition-all whitespace-nowrap"
+        secondaryAfter={lotteryPill('hidden lg:inline-flex lg:h-14')}
       >
         {/* Keep the standalone lottery pill when no purchase link is available. */}
         {!isClosed && !(sortedTicketLinks.length > 0 || Boolean(show.officialUrl)) && lotteryPill('inline-flex self-start')}
       </ShowPageTicketCTA>
+      </div>{/* /ticket cta slot */}
       </div>{/* /action cluster */}
     </div>
   );

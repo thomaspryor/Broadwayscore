@@ -480,6 +480,7 @@ lint_workflows() {
     audit-delete-without-breadcrumb \
     audit-linear-issuecreate-chokepoint \
     audit-launchd-stale-sync-guard \
+    audit-launchd-plist-path \
     audit-gate-corpus-guard-coverage \
     audit-invisible-verification \
     audit-fetchpage-cleanup \

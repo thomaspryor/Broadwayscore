@@ -3,7 +3,7 @@
  */
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { sectionHubShows, hubPhase, hubVenue, CLOSED_LIMIT, RECENT_DAYS } from '../../src/lib/city-hub';
+import { sectionHubShows, hubPhase, hasSourcedClosing, ESTIMATED_RUN_DAYS, hubVenue, CLOSED_LIMIT, RECENT_DAYS } from '../../src/lib/city-hub';
 import { outletMetro, localCriticStat } from '../../src/lib/outlet-metro';
 import { citySlug } from '../../src/lib/tour-cities';
 
@@ -107,4 +107,18 @@ test('DC hub: a closed run that opened before 2026-05-01 is left off; open and u
   assert.deepEqual(s.closedRecent.map(x => x.id), ['new-closed']);
   assert.deepEqual([...s.now, ...s.soon].map(x => x.id).sort(), ['old-open', 'soon']);
   assert.equal(s.archive.length, 0);
+});
+
+test('estimated run length: a flagged-estimated open show leaves Now playing after 42 days (BRO-7239)', () => {
+  assert.equal(ESTIMATED_RUN_DAYS, 42);
+  const est = (open: string) => ({ id: 'e', status: 'open', openingDate: open, closingDateSource: 'estimated' });
+  assert.equal(hubPhase(est('2026-10-20'), TODAY), 'now');
+  assert.equal(hubPhase(est('2026-01-01'), TODAY), 'closed');
+  // a sourced closing date in the future keeps it playing however long the run
+  assert.equal(hubPhase({ id: 's', status: 'open', openingDate: '2026-01-01', closingDate: '2026-12-31', closingDateSource: 'theatre-page' }, TODAY), 'now');
+  // shows without the flag (other hubs) are unchanged
+  assert.equal(hubPhase({ id: 'o', status: 'open', openingDate: '2026-01-01' }, TODAY), 'now');
+  assert.equal(hasSourcedClosing({ id: 'x', closingDate: '2026-12-01', closingDateSource: 'estimated' }), false);
+  assert.equal(hasSourcedClosing({ id: 'x', closingDate: '2026-12-01', closingDateSource: 'theatre-page' }), true);
+  assert.equal(hasSourcedClosing({ id: 'x' }), false);
 });

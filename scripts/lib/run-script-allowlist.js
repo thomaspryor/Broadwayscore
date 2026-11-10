@@ -89,6 +89,10 @@ const ALLOWED_SCRIPTS = [
   // BRO-7061: cut the theartsdesk.com support banner and trailing Image label from stored texts
   // (incl. _pending). Plans pass --apply --expect=N.
   'strip-artsdesk-banner.js',
+  // BRO-7192: take a false tourParent roll-up apart (refuses a real tour; drops only review rows
+  // that are copies of a leg's). Plans pass --aggregate=<id> --transfer-leg=<id> --apply --expect=N
+  // and follow it with a retire-show of the aggregate.
+  'unlink-tour-aggregate.js',
   'strip-variety-promo-bleed.js', // BRO-5254: strip Variety promo modules from stored texts
   'strip-leading-site-nav.js', // BRO-5859: cut site nav menus / Stage and Cinema footer from stored texts
   // BRO-5080: West End historical rows whose openingDate is a WhatsOnStage
@@ -110,6 +114,9 @@ const ALLOWED_SCRIPTS = [
   // BRO-5507: apply hand-reviewed outlet display names to outlet-registry.json. Plans pass
   // --apply-proposals=data/audit/outlet-display-name-proposals.json --write; exits 1 on any refused row.
   'audit-registry-slug-displaynames.js',
+  // BRO-7257: remove named stale manualEntry rows from reviews.json (a manual row always beats its
+  // pipeline twin in the snapshot merge). Needs --row=show:outlet:critic_name:score, --apply --expect=N.
+  'retire-stale-manual-rows.js',
 ];
 
 /** Why the executor would refuse this run-script name, or null. */

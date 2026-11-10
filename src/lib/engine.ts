@@ -85,6 +85,9 @@ export interface RawShow {
   venue: string;
   openingDate: string;
   closingDate: string | null;
+  /** BRO-7252: extension history (see closing-label.ts). */
+  closingExtensions?: Array<{ announcedAt: string | null; from: string | null; to: string; source?: string | null }>;
+  closingExtensionCount?: number;
   status: string;
   type: string;
   category?: string;  // 'broadway', 'off-broadway', 'west-end', etc — required at data-entry (validate-data.js); a missing value is treated as neither Broadway nor Off-Broadway, see data-core.ts isBroadwayShow()
@@ -260,6 +263,9 @@ export interface ComputedShow {
   venue: string;
   openingDate: string;
   closingDate: string | null;
+  /** BRO-7252: extension history (see closing-label.ts). */
+  closingExtensions?: Array<{ announcedAt: string | null; from: string | null; to: string; source?: string | null }>;
+  closingExtensionCount?: number;
   status: string;
   type: string;
   category?: string;  // 'broadway', 'off-broadway', 'west-end', etc — required at data-entry (validate-data.js); a missing value is treated as neither Broadway nor Off-Broadway, see data-core.ts isBroadwayShow()
@@ -312,6 +318,7 @@ export interface ComputedShow {
   // Fails open: absent when the audit file/kill switch/no stamp yet.
   cov?: { state: string; liveCount: number; candidateCount: number; computedAt: string | null };
   scorePublicSince?: string | null;
+  // True when the owner acked the coverage gap OR the hold's ceiling is reached (coverage-floor.js coverageHoldReleased).
   coverageAcked?: boolean;
   priorRuns?: PriorRun[];
 }
@@ -673,6 +680,8 @@ export function computeShowData(
     venue: show.venue,
     openingDate: show.openingDate,
     closingDate: show.closingDate,
+    closingExtensions: show.closingExtensions && show.closingExtensions.length ? show.closingExtensions : undefined,
+    closingExtensionCount: show.closingExtensionCount && show.closingExtensionCount > 0 ? show.closingExtensionCount : undefined,
     status: effectiveShowStatus(show, today),
     type: show.type,
     category: show.category,

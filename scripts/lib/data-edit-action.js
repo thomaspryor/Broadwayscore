@@ -108,6 +108,16 @@ function applyDataEdit(data, action, { root = ROOT } = {}) {
       if (castProblem) return { ok: false, reason: castProblem };
     }
 
+    if (field === 'closingExtensionCount' && !(Number.isInteger(newValue) && newValue >= 0 && newValue < 100)) {
+      return { ok: false, reason: `closingExtensionCount: must be an integer 0-99, got ${JSON.stringify(newValue)}` };
+    }
+
+    if (field === 'closingExtensions') {
+      const { closingExtensionsValueProblem } = require('./feedback-pipeline-fields.js');
+      const problem = closingExtensionsValueProblem(newValue);
+      if (problem) return { ok: false, reason: problem };
+    }
+
     if (field === 'noPlaybillProductionPage' || field === 'ibdbRevivalChecked') {
       if (newValue !== true) return { ok: false, reason: `${field}: plans may only set true` };
     }

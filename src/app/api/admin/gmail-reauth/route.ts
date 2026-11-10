@@ -28,7 +28,7 @@ export const maxDuration = 15;
  * Start of the one-tap Gmail renewal. Only a link signed with
  * APPROVAL_HMAC_SECRET (minted by gmail-reauth.yml onto the Linear card) gets
  * through; it then pins a CSRF state + PKCE verifier in a short-lived cookie
- * and sends the browser to Google's consent screen for gmail.readonly.
+ * and sends the browser to Google's consent screen for gmail.modify.
  * If Google does not accept our callback URL yet, it shows the one-time setup
  * step instead (add the URL in Google settings, then Continue = this link).
  */

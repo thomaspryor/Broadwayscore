@@ -1,66 +1,145 @@
 {
-  "schemaVersion": 1,
-  "generatedAt": "2026-11-08T13:36:46.165Z",
+  "schemaVersion": 3,
+  "generatedAt": "2026-11-09T10:22:27.023Z",
   "generator": "scripts/grade-openings.js (BRO-7082)",
-  "from": "2026-10-25",
-  "to": "2026-11-08",
+  "from": "2026-10-26",
+  "to": "2026-11-09",
   "windowHours": {
     "before": 72,
     "after": 168
   },
-  "historyFrom": "2026-10-14T13:36:33.000Z",
-  "commitsScanned": 2274,
+  "historyFrom": "2026-10-15T10:23:34.000Z",
+  "commitsScanned": 2395,
   "summary": {
     "broadway": {
-      "openings": 2,
+      "openings": 3,
       "onItsOwn": 0,
-      "neededHands": 1,
+      "neededHands": 2,
       "neededHandsIngestOnly": 0,
+      "incomplete": 0,
       "noReviews": 1,
+      "noReviewsClosed": 0,
+      "coverageUnknown": 0,
       "notGradable": 0
     },
     "off-broadway": {
-      "openings": 26,
-      "onItsOwn": 14,
-      "neededHands": 7,
-      "neededHandsIngestOnly": 2,
-      "noReviews": 5,
+      "openings": 30,
+      "onItsOwn": 13,
+      "neededHands": 8,
+      "neededHandsIngestOnly": 1,
+      "incomplete": 2,
+      "noReviews": 7,
+      "noReviewsClosed": 6,
+      "coverageUnknown": 0,
       "notGradable": 0
     },
     "west-end": {
       "openings": 3,
-      "onItsOwn": 1,
+      "onItsOwn": 0,
       "neededHands": 2,
       "neededHandsIngestOnly": 1,
+      "incomplete": 1,
       "noReviews": 0,
+      "noReviewsClosed": 0,
+      "coverageUnknown": 0,
       "notGradable": 0
     },
     "off-west-end": {
-      "openings": 13,
-      "onItsOwn": 7,
-      "neededHands": 5,
+      "openings": 14,
+      "onItsOwn": 4,
+      "neededHands": 7,
       "neededHandsIngestOnly": 2,
-      "noReviews": 1,
+      "incomplete": 1,
+      "noReviews": 2,
+      "noReviewsClosed": 1,
+      "coverageUnknown": 0,
       "notGradable": 0
     }
   },
   "grades": [
+    {
+      "showId": "dogstar-off-west-end-2026",
+      "title": "Dogstar",
+      "category": "off-west-end",
+      "openingDate": "2026-11-09",
+      "embargoAt": "2026-11-09T22:00:00.000Z",
+      "embargoFrom": "22:00 local estimate",
+      "windowEnd": "2026-11-16T22:00:00.000Z",
+      "windowClosed": false,
+      "live": 0,
+      "lateLive": 0,
+      "known": 0,
+      "missing": 0,
+      "censusCandidates": 5,
+      "hoursToLive": null,
+      "verdict": "no-reviews",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "here-there-are-blueberries-2026",
+      "title": "Here There Are Blueberries",
+      "category": "broadway",
+      "openingDate": "2026-11-09",
+      "embargoAt": "2026-11-10T03:00:00.000Z",
+      "embargoFrom": "22:00 local estimate",
+      "windowEnd": "2026-11-17T03:00:00.000Z",
+      "windowClosed": false,
+      "live": 0,
+      "lateLive": 0,
+      "known": 0,
+      "missing": 0,
+      "censusCandidates": 4,
+      "hoursToLive": null,
+      "verdict": "no-reviews",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "the-visitors-off-broadway-2026",
+      "title": "The Visitors",
+      "category": "off-broadway",
+      "openingDate": "2026-11-09",
+      "embargoAt": "2026-11-10T03:00:00.000Z",
+      "embargoFrom": "22:00 local estimate",
+      "windowEnd": "2026-11-17T03:00:00.000Z",
+      "windowClosed": false,
+      "live": 0,
+      "lateLive": 0,
+      "known": 0,
+      "missing": 0,
+      "censusCandidates": 1,
+      "hoursToLive": null,
+      "verdict": "no-reviews",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
     {
       "showId": "msblackforpresident-off-broadway-2026",
       "title": "Ms. Blakk for President",
       "category": "off-broadway",
       "openingDate": "2026-11-08",
       "embargoAt": "2026-11-09T03:00:00.000Z",
-      "embargoFrom": "22:00 local estimate",
+      "embargoFrom": "press-night record",
       "windowEnd": "2026-11-16T03:00:00.000Z",
       "windowClosed": false,
-      "live": 1,
-      "known": 8,
-      "hoursToLive": null,
+      "live": 9,
+      "lateLive": 0,
+      "known": 9,
+      "missing": 0,
+      "censusCandidates": 11,
+      "hoursToLive": -0.1,
       "verdict": "on-its-own",
       "onlyIngestDispatches": false,
       "signals": [],
-      "historyCovers": true
+      "historyCovers": true,
+      "expectedMissing": null
     },
     {
       "showId": "the-steel-man-off-broadway-2026",
@@ -68,16 +147,20 @@
       "category": "off-broadway",
       "openingDate": "2026-11-08",
       "embargoAt": "2026-11-09T03:00:00.000Z",
-      "embargoFrom": "22:00 local estimate",
+      "embargoFrom": "press-night record",
       "windowEnd": "2026-11-16T03:00:00.000Z",
       "windowClosed": false,
-      "live": 0,
+      "live": 1,
+      "lateLive": 0,
       "known": 1,
+      "missing": 0,
+      "censusCandidates": 2,
       "hoursToLive": null,
-      "verdict": "no-reviews",
+      "verdict": "on-its-own",
       "onlyIngestDispatches": false,
       "signals": [],
-      "historyCovers": true
+      "historyCovers": true,
+      "expectedMissing": null
     },
     {
       "showId": "wanted-2022",
@@ -85,16 +168,69 @@
       "category": "broadway",
       "openingDate": "2026-11-08",
       "embargoAt": "2026-11-09T03:00:00.000Z",
-      "embargoFrom": "22:00 local estimate",
+      "embargoFrom": "press-night record",
       "windowEnd": "2026-11-16T03:00:00.000Z",
       "windowClosed": false,
-      "live": 0,
-      "known": 2,
+      "live": 20,
+      "lateLive": 0,
+      "known": 20,
+      "missing": 0,
+      "censusCandidates": 16,
+      "hoursToLive": 0.3,
+      "verdict": "needed-hands",
+      "onlyIngestDispatches": false,
+      "signals": [
+        {
+          "kind": "ingest-dispatch",
+          "at": "2026-11-09T04:18:11.000Z",
+          "outletId": "theatrely",
+          "cause": "discovery-gap",
+          "source": "adfc4da3 ingest-urls: 1 review(s) for wanted-2022"
+        },
+        {
+          "kind": "approved-fix",
+          "at": "2026-11-09T04:15:59.298Z",
+          "file": "wanted-2022/cititour--brian-scott-lipton--on-2026-11-08.json",
+          "outletId": "cititour",
+          "cause": "date-guard",
+          "fields": [
+            "publishDate"
+          ]
+        },
+        {
+          "kind": "hand-step",
+          "at": "2026-11-09T03:02:30.818Z",
+          "file": "wanted-2022/slantmagazine--dan-rubins.json",
+          "outletId": "slantmagazine",
+          "cause": "scoring-by-hand",
+          "steps": [
+            "humanReviewScore"
+          ]
+        }
+      ],
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "broom-play-off-broadway-2026",
+      "title": "Broom Play",
+      "category": "off-broadway",
+      "openingDate": "2026-11-07",
+      "embargoAt": "2026-11-08T03:00:00.000Z",
+      "embargoFrom": "22:00 local estimate",
+      "windowEnd": "2026-11-15T03:00:00.000Z",
+      "windowClosed": false,
+      "live": 1,
+      "lateLive": 0,
+      "known": 1,
+      "missing": 0,
+      "censusCandidates": 2,
       "hoursToLive": null,
-      "verdict": "no-reviews",
+      "verdict": "on-its-own",
       "onlyIngestDispatches": false,
       "signals": [],
-      "historyCovers": true
+      "historyCovers": true,
+      "expectedMissing": null
     },
     {
       "showId": "iphigenie-en-tauride-english-national-opera-west-end-2026",
@@ -105,8 +241,11 @@
       "embargoFrom": "press-night record",
       "windowEnd": "2026-11-13T21:00:00.000Z",
       "windowClosed": false,
-      "live": 5,
-      "known": null,
+      "live": 6,
+      "lateLive": 0,
+      "known": 6,
+      "missing": 0,
+      "censusCandidates": 1,
       "hoursToLive": null,
       "verdict": "needed-hands",
       "onlyIngestDispatches": true,
@@ -115,10 +254,12 @@
           "kind": "ingest-dispatch",
           "at": "2026-11-07T15:01:55.000Z",
           "outletId": "all-that-dazzles-uk",
+          "cause": "discovery-gap",
           "source": "5a9cabec ingest-urls: 2 review(s) for iphigenie-en-tauride-english-national-opera-west-end-2026"
         }
       ],
-      "historyCovers": true
+      "historyCovers": true,
+      "expectedMissing": null
     },
     {
       "showId": "nero-off-west-end-2026",
@@ -129,13 +270,25 @@
       "embargoFrom": "22:00 local estimate",
       "windowEnd": "2026-11-13T22:00:00.000Z",
       "windowClosed": false,
-      "live": 13,
-      "known": 8,
+      "live": 14,
+      "lateLive": 0,
+      "known": 14,
+      "missing": 0,
+      "censusCandidates": 15,
       "hoursToLive": null,
-      "verdict": "on-its-own",
+      "verdict": "needed-hands",
       "onlyIngestDispatches": false,
-      "signals": [],
-      "historyCovers": true
+      "signals": [
+        {
+          "kind": "hand-commit",
+          "at": "2026-11-09T03:51:16.000Z",
+          "outletId": "musical-theatre-review",
+          "cause": "discovery-gap",
+          "source": "9491cfe4 feat: gap-recovery driver checkpoint 5 - 5 accepted (BRO-7171 Stage 2)"
+        }
+      ],
+      "historyCovers": true,
+      "expectedMissing": null
     },
     {
       "showId": "222-a-ghost-story-off-broadway-2026",
@@ -146,26 +299,39 @@
       "embargoFrom": "press-night record",
       "windowEnd": "2026-11-13T03:00:00.000Z",
       "windowClosed": false,
-      "live": 15,
-      "known": 10,
+      "live": 11,
+      "lateLive": 0,
+      "known": 11,
+      "missing": 0,
+      "censusCandidates": 13,
       "hoursToLive": 1.6,
       "verdict": "needed-hands",
-      "onlyIngestDispatches": true,
+      "onlyIngestDispatches": false,
       "signals": [
+        {
+          "kind": "hand-commit",
+          "at": "2026-11-09T07:51:26.000Z",
+          "outletId": "wsj",
+          "cause": "discovery-gap",
+          "source": "80656c4e feat: gap-recovery driver final - 1 accepted (BRO-7171 Stage 2)"
+        },
         {
           "kind": "ingest-dispatch",
           "at": "2026-11-06T17:12:09.000Z",
           "outletId": "wsj",
+          "cause": "discovery-gap",
           "source": "e2a2d3fd ingest-urls: 1 review(s) for the-unbelievers-off-broadway-2026"
         },
         {
           "kind": "ingest-dispatch",
           "at": "2026-11-06T16:57:43.000Z",
           "outletId": "new-york-sun",
+          "cause": "discovery-gap",
           "source": "f515cff3 ingest-urls: 1 review(s) for 222-a-ghost-story-off-broadway-2026"
         }
       ],
-      "historyCovers": true
+      "historyCovers": true,
+      "expectedMissing": null
     },
     {
       "showId": "king-lear-off-broadway-2026",
@@ -176,8 +342,11 @@
       "embargoFrom": "press-night record",
       "windowEnd": "2026-11-13T03:00:00.000Z",
       "windowClosed": false,
-      "live": 2,
-      "known": 10,
+      "live": 0,
+      "lateLive": 0,
+      "known": 0,
+      "missing": 0,
+      "censusCandidates": 5,
       "hoursToLive": null,
       "verdict": "needed-hands",
       "onlyIngestDispatches": false,
@@ -186,6 +355,8 @@
           "kind": "approved-fix",
           "at": "2026-11-07T04:52:14.421Z",
           "file": "king-lear-off-broadway-2026/chicago-reader--amanda-finn.json",
+          "outletId": "chicago-reader",
+          "cause": "wrong-label",
           "fields": [
             "wrongProduction"
           ]
@@ -194,12 +365,15 @@
           "kind": "approved-fix",
           "at": "2026-11-07T04:52:14.578Z",
           "file": "king-lear-off-broadway-2026/new-city-stage--tristan-bruns.json",
+          "outletId": "new-city-stage",
+          "cause": "wrong-label",
           "fields": [
             "wrongProduction"
           ]
         }
       ],
-      "historyCovers": true
+      "historyCovers": true,
+      "expectedMissing": null
     },
     {
       "showId": "speculations-off-west-end-2026",
@@ -210,22 +384,32 @@
       "embargoFrom": "22:00 local estimate",
       "windowEnd": "2026-11-12T22:00:00.000Z",
       "windowClosed": false,
-      "live": 30,
-      "known": 29,
+      "live": 33,
+      "lateLive": 0,
+      "known": 33,
+      "missing": 0,
+      "censusCandidates": 34,
       "hoursToLive": null,
       "verdict": "needed-hands",
       "onlyIngestDispatches": false,
       "signals": [
         {
-          "kind": "hand-step",
-          "at": "2026-11-06T18:02:57.756Z",
-          "file": "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
-          "steps": [
-            "wrongProductionManualClear"
-          ]
+          "kind": "hand-commit",
+          "at": "2026-11-09T04:56:48.000Z",
+          "outletId": "adventuresintheatreland",
+          "cause": "discovery-gap",
+          "source": "99f27abd feat: gap-recovery driver checkpoint 5 - 5 accepted (BRO-7171 Stage 2)"
+        },
+        {
+          "kind": "hand-commit",
+          "at": "2026-11-09T03:51:16.000Z",
+          "outletId": "adventuresintheatreland",
+          "cause": "discovery-gap",
+          "source": "9491cfe4 feat: gap-recovery driver checkpoint 5 - 5 accepted (BRO-7171 Stage 2)"
         }
       ],
-      "historyCovers": true
+      "historyCovers": true,
+      "expectedMissing": null
     },
     {
       "showId": "tango-after-dark-off-west-end-2026",
@@ -236,13 +420,28 @@
       "embargoFrom": "22:00 local estimate",
       "windowEnd": "2026-11-12T22:00:00.000Z",
       "windowClosed": false,
-      "live": 4,
-      "known": 4,
+      "live": 7,
+      "lateLive": 0,
+      "known": 7,
+      "missing": 0,
+      "censusCandidates": 10,
       "hoursToLive": null,
-      "verdict": "on-its-own",
+      "verdict": "needed-hands",
       "onlyIngestDispatches": false,
-      "signals": [],
-      "historyCovers": true
+      "signals": [
+        {
+          "kind": "approved-fix",
+          "at": "2026-11-08T16:43:24.873Z",
+          "file": "tango-after-dark-off-west-end-2026/theatreandtonic--emmie-newitt.json",
+          "outletId": "theatreandtonic",
+          "cause": "wrong-label",
+          "fields": [
+            "wrongProduction"
+          ]
+        }
+      ],
+      "historyCovers": true,
+      "expectedMissing": null
     },
     {
       "showId": "the-unbelievers-off-broadway-2026",
@@ -253,38 +452,60 @@
       "embargoFrom": "press-night record",
       "windowEnd": "2026-11-13T03:00:00.000Z",
       "windowClosed": false,
-      "live": 15,
-      "known": 9,
+      "live": 14,
+      "lateLive": 0,
+      "known": 14,
+      "missing": 0,
+      "censusCandidates": 9,
       "hoursToLive": 1.5,
       "verdict": "needed-hands",
       "onlyIngestDispatches": false,
       "signals": [
         {
           "kind": "hand-commit",
+          "at": "2026-11-09T07:23:27.000Z",
+          "outletId": "nytimes",
+          "cause": "discovery-gap",
+          "source": "11f18855 feat: gap-recovery driver final - 4 accepted (BRO-7171 Stage 2)"
+        },
+        {
+          "kind": "hand-commit",
+          "at": "2026-11-08T18:56:07.000Z",
+          "outletId": "nytimes",
+          "cause": "discovery-gap",
+          "source": "d6b21599 feat: NYT browser recovery - 16 reviews recovered (task #831)"
+        },
+        {
+          "kind": "hand-commit",
           "at": "2026-11-06T14:57:33.000Z",
           "outletId": "timeout",
+          "cause": "attribution",
           "source": "dc3961ec BRO-7041: clear ensemble rejection of the BWW excerpt on the re-credited Time Out row so it refetches"
         },
         {
           "kind": "hand-commit",
           "at": "2026-11-06T13:57:13.000Z",
           "outletId": "timeout",
+          "cause": "attribution",
           "source": "b1c2f86c BRO-7041: re-credit unbelievers Time Out review to Billy McEntee (page byline)"
         },
         {
           "kind": "ingest-dispatch",
           "at": "2026-11-06T17:12:09.000Z",
           "outletId": "wsj",
+          "cause": "discovery-gap",
           "source": "e2a2d3fd ingest-urls: 1 review(s) for the-unbelievers-off-broadway-2026"
         },
         {
           "kind": "ingest-dispatch",
           "at": "2026-11-06T17:05:03.000Z",
           "outletId": "theater-pizzazz",
+          "cause": "discovery-gap",
           "source": "b3069eca ingest-urls: 2 review(s) for the-unbelievers-off-broadway-2026"
         }
       ],
-      "historyCovers": true
+      "historyCovers": true,
+      "expectedMissing": null
     },
     {
       "showId": "the-verge-off-broadway-2026",
@@ -295,13 +516,25 @@
       "embargoFrom": "press-night record",
       "windowEnd": "2026-11-13T03:00:00.000Z",
       "windowClosed": false,
-      "live": 13,
-      "known": 8,
+      "live": 12,
+      "lateLive": 0,
+      "known": 12,
+      "missing": 0,
+      "censusCandidates": 10,
       "hoursToLive": 1.5,
-      "verdict": "on-its-own",
+      "verdict": "needed-hands",
       "onlyIngestDispatches": false,
-      "signals": [],
-      "historyCovers": true
+      "signals": [
+        {
+          "kind": "hand-commit",
+          "at": "2026-11-08T18:56:07.000Z",
+          "outletId": "nytimes",
+          "cause": "discovery-gap",
+          "source": "d6b21599 feat: NYT browser recovery - 16 reviews recovered (task #831)"
+        }
+      ],
+      "historyCovers": true,
+      "expectedMissing": null
     },
     {
       "showId": "parcel-from-america-off-broadway-2026",
@@ -312,13 +545,17 @@
       "embargoFrom": "press-night record",
       "windowEnd": "2026-11-12T03:00:00.000Z",
       "windowClosed": false,
-      "live": 7,
-      "known": 7,
+      "live": 6,
+      "lateLive": 0,
+      "known": 6,
+      "missing": 0,
+      "censusCandidates": 7,
       "hoursToLive": 0.8,
       "verdict": "on-its-own",
       "onlyIngestDispatches": false,
       "signals": [],
-      "historyCovers": true
+      "historyCovers": true,
+      "expectedMissing": null
     },
     {
       "showId": "rope-off-broadway-2026",
@@ -330,12 +567,16 @@
       "windowEnd": "2026-11-11T03:00:00.000Z",
       "windowClosed": false,
       "live": 14,
-      "known": 12,
+      "lateLive": 0,
+      "known": 14,
+      "missing": 0,
+      "censusCandidates": 13,
       "hoursToLive": 2.1,
       "verdict": "on-its-own",
       "onlyIngestDispatches": false,
       "signals": [],
-      "historyCovers": true
+      "historyCovers": true,
+      "expectedMissing": null
     },
     {
       "showId": "the-bridge-off-west-end-2026",
@@ -346,13 +587,25 @@
       "embargoFrom": "press-night record",
       "windowEnd": "2026-11-10T21:00:00.000Z",
       "windowClosed": false,
-      "live": 31,
-      "known": 28,
+      "live": 25,
+      "lateLive": 0,
+      "known": 25,
+      "missing": 0,
+      "censusCandidates": 28,
       "hoursToLive": null,
-      "verdict": "on-its-own",
+      "verdict": "needed-hands",
       "onlyIngestDispatches": false,
-      "signals": [],
-      "historyCovers": true
+      "signals": [
+        {
+          "kind": "hand-commit",
+          "at": "2026-11-09T07:03:03.000Z",
+          "outletId": "theatreandtonic",
+          "cause": "discovery-gap",
+          "source": "6ba6e62a feat: gap-recovery driver checkpoint 5 - 5 accepted (BRO-7171 Stage 2)"
+        }
+      ],
+      "historyCovers": true,
+      "expectedMissing": null
     },
     {
       "showId": "well-see-off-broadway-2026",
@@ -364,12 +617,16 @@
       "windowEnd": "2026-11-11T03:00:00.000Z",
       "windowClosed": false,
       "live": 12,
-      "known": 6,
+      "lateLive": 0,
+      "known": 12,
+      "missing": 0,
+      "censusCandidates": 8,
       "hoursToLive": 2.1,
       "verdict": "on-its-own",
       "onlyIngestDispatches": false,
       "signals": [],
-      "historyCovers": true
+      "historyCovers": true,
+      "expectedMissing": null
     },
     {
       "showId": "clifford-odets-waiting-for-lefty-off-broadway-2026",
@@ -380,8 +637,11 @@
       "embargoFrom": "press-night record",
       "windowEnd": "2026-11-10T03:00:00.000Z",
       "windowClosed": false,
-      "live": 15,
-      "known": 10,
+      "live": 14,
+      "lateLive": 0,
+      "known": 14,
+      "missing": 0,
+      "censusCandidates": 10,
       "hoursToLive": 1.9,
       "verdict": "needed-hands",
       "onlyIngestDispatches": false,
@@ -390,18 +650,22 @@
           "kind": "ingest-dispatch",
           "at": "2026-11-03T23:06:57.000Z",
           "outletId": "cititour",
+          "cause": "discovery-gap",
           "source": "40fdd1d5 ingest-urls: 2 review(s) for clifford-odets-waiting-for-lefty-off-broadway-2026"
         },
         {
           "kind": "approved-fix",
           "at": "2026-11-04T08:13:21.683Z",
           "file": "clifford-odets-waiting-for-lefty-off-broadway-2026/theater-pizzazz--ron-fassler.json",
+          "outletId": "theater-pizzazz",
+          "cause": "date-guard",
           "fields": [
             "publishDate"
           ]
         }
       ],
-      "historyCovers": true
+      "historyCovers": true,
+      "expectedMissing": null
     },
     {
       "showId": "slanted-floors-off-broadway-2026",
@@ -413,12 +677,16 @@
       "windowEnd": "2026-11-10T03:00:00.000Z",
       "windowClosed": false,
       "live": 3,
+      "lateLive": 0,
       "known": 3,
+      "missing": 0,
+      "censusCandidates": 3,
       "hoursToLive": null,
       "verdict": "on-its-own",
       "onlyIngestDispatches": false,
       "signals": [],
-      "historyCovers": true
+      "historyCovers": true,
+      "expectedMissing": null
     },
     {
       "showId": "the-morbs-off-broadway-2026",
@@ -429,13 +697,17 @@
       "embargoFrom": "press-night record",
       "windowEnd": "2026-11-10T03:00:00.000Z",
       "windowClosed": false,
-      "live": 5,
-      "known": 3,
+      "live": 4,
+      "lateLive": 0,
+      "known": 4,
+      "missing": 0,
+      "censusCandidates": 3,
       "hoursToLive": null,
       "verdict": "on-its-own",
       "onlyIngestDispatches": false,
       "signals": [],
-      "historyCovers": true
+      "historyCovers": true,
+      "expectedMissing": null
     },
     {
       "showId": "the-blue-violinist-over-west-end-avenue-off-broadway-2026",
@@ -445,14 +717,18 @@
       "embargoAt": "2026-11-02T03:00:00.000Z",
       "embargoFrom": "press-night record",
       "windowEnd": "2026-11-09T03:00:00.000Z",
-      "windowClosed": false,
+      "windowClosed": true,
       "live": 5,
-      "known": 2,
+      "lateLive": 0,
+      "known": 5,
+      "missing": 0,
+      "censusCandidates": 2,
       "hoursToLive": null,
       "verdict": "on-its-own",
       "onlyIngestDispatches": false,
       "signals": [],
-      "historyCovers": true
+      "historyCovers": true,
+      "expectedMissing": null
     },
     {
       "showId": "tosca-off-broadway-2026",
@@ -462,9 +738,12 @@
       "embargoAt": "2026-11-02T03:00:00.000Z",
       "embargoFrom": "press-night record",
       "windowEnd": "2026-11-09T03:00:00.000Z",
-      "windowClosed": false,
-      "live": 4,
-      "known": 11,
+      "windowClosed": true,
+      "live": 1,
+      "lateLive": 0,
+      "known": 1,
+      "missing": 0,
+      "censusCandidates": 13,
       "hoursToLive": null,
       "verdict": "needed-hands",
       "onlyIngestDispatches": false,
@@ -473,12 +752,62 @@
           "kind": "approved-fix",
           "at": "2026-11-02T07:52:03.630Z",
           "file": "tosca-off-broadway-2026/zeal-nyc--herman-spencer.json",
+          "outletId": "zeal-nyc",
+          "cause": "wrong-label",
           "fields": [
             "wrongProduction"
           ]
         }
       ],
-      "historyCovers": true
+      "historyCovers": true,
+      "expectedMissing": null
+    },
+    {
+      "showId": "tristan-and-yseult-off-broadway-2026",
+      "title": "Tristan & Yseult",
+      "category": "off-broadway",
+      "openingDate": "2026-11-01",
+      "embargoAt": "2026-11-02T03:00:00.000Z",
+      "embargoFrom": "22:00 local estimate",
+      "windowEnd": "2026-11-09T03:00:00.000Z",
+      "windowClosed": true,
+      "live": 5,
+      "lateLive": 0,
+      "known": 5,
+      "missing": 0,
+      "censusCandidates": 10,
+      "hoursToLive": null,
+      "verdict": "on-its-own",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true,
+      "expectedMissing": [
+        {
+          "outletId": "theatermania",
+          "name": "TheaterMania"
+        }
+      ]
+    },
+    {
+      "showId": "violets-magic-glasses-off-broadway-2026",
+      "title": "Violet’s Magic Glasses",
+      "category": "off-broadway",
+      "openingDate": "2026-11-01",
+      "embargoAt": "2026-11-02T03:00:00.000Z",
+      "embargoFrom": "22:00 local estimate",
+      "windowEnd": "2026-11-09T03:00:00.000Z",
+      "windowClosed": true,
+      "live": 0,
+      "lateLive": 0,
+      "known": 0,
+      "missing": 0,
+      "censusCandidates": 0,
+      "hoursToLive": null,
+      "verdict": "no-reviews",
+      "onlyIngestDispatches": false,
+      "signals": [],
+      "historyCovers": true,
+      "expectedMissing": null
     },
     {
       "showId": "medea-off-broadway-2026",
@@ -489,13 +818,22 @@
       "embargoFrom": "press-night record",
       "windowEnd": "2026-11-07T02:00:00.000Z",
       "windowClosed": true,
-      "live": 6,
-      "known": 11,
+      "live": 5,
+      "lateLive": 0,
+      "known": 5,
+      "missing": 0,
+      "censusCandidates": 11,
       "hoursToLive": null,
       "verdict": "on-its-own",
       "onlyIngestDispatches": false,
       "signals": [],
-      "historyCovers": true
+      "historyCovers": true,
+      "expectedMissing": [
+        {
+          "outletId": "theatermania",
+          "name": "TheaterMania"
+        }
+      ]
     },
     {
       "showId": "specimen-off-broadway-2026",
@@ -507,12 +845,16 @@
       "windowEnd": "2026-11-07T02:00:00.000Z",
       "windowClosed": true,
       "live": 4,
+      "lateLive": 0,
       "known": 4,
+      "missing": 0,
+      "censusCandidates": 4,
       "hoursToLive": null,
       "verdict": "on-its-own",
       "onlyIngestDispatches": false,
       "signals": [],
-      "historyCovers": true
+      "historyCovers": true,
+      "expectedMissing": null
     },
     {
       "showId": "stoker-wilde-off-west-end-2026",
@@ -523,13 +865,17 @@
       "embargoFrom": "22:00 local estimate",
       "windowEnd": "2026-11-06T22:00:00.000Z",
       "windowClosed": true,
-      "live": 4,
-      "known": 5,
+      "live": 1,
+      "lateLive": 0,
+      "known": 1,
+      "missing": 0,
+      "censusCandidates": 5,
       "hoursToLive": null,
       "verdict": "on-its-own",
       "onlyIngestDispatches": false,
       "signals": [],
-      "historyCovers": true
+      "historyCovers": true,
+      "expectedMissing": null
     },
     {
       "showId": "the-moth-off-west-end-2026",
@@ -540,13 +886,17 @@
       "embargoFrom": "press-night record",
       "windowEnd": "2026-11-06T21:00:00.000Z",
       "windowClosed": true,
-      "live": 18,
-      "known": 17,
+      "live": 15,
+      "lateLive": 1,
+      "known": 15,
+      "missing": 0,
+      "censusCandidates": 18,
       "hoursToLive": 3.3,
-      "verdict": "on-its-own",
+      "verdict": "incomplete",
       "onlyIngestDispatches": false,
       "signals": [],
-      "historyCovers": true
+      "historyCovers": true,
+      "expectedMissing": null
     },
     {
       "showId": "times-square-skywalk-off-broadway-2026",
@@ -558,12 +908,16 @@
       "windowEnd": "2026-11-07T02:00:00.000Z",
       "windowClosed": true,
       "live": 0,
-      "known": 1,
+      "lateLive": 0,
+      "known": 0,
+      "missing": 0,
+      "censusCandidates": 2,
       "hoursToLive": null,
       "verdict": "no-reviews",
       "onlyIngestDispatches": false,
       "signals": [],
-      "historyCovers": true
+      "historyCovers": true,
+      "expectedMissing": null
     },
     {
       "showId": "tosca-english-national-opera-west-end-2026",
@@ -574,8 +928,11 @@
       "embargoFrom": "22:00 local estimate",
       "windowEnd": "2026-11-06T22:00:00.000Z",
       "windowClosed": true,
-      "live": 23,
-      "known": 15,
+      "live": 17,
+      "lateLive": 4,
+      "known": 17,
+      "missing": 0,
+      "censusCandidates": 15,
       "hoursToLive": null,
       "verdict": "needed-hands",
       "onlyIngestDispatches": false,
@@ -584,6 +941,8 @@
           "kind": "hand-step",
           "at": "2026-11-02T20:36:35.064Z",
           "file": "tosca-english-national-opera-west-end-2026/a-youngish-perspective--unknown.json",
+          "outletId": "a-youngish-perspective",
+          "cause": "wrong-label",
           "steps": [
             "wrongProductionManualClear"
           ]
@@ -592,6 +951,8 @@
           "kind": "approved-fix",
           "at": "2026-11-04T02:41:00.359Z",
           "file": "tosca-english-national-opera-west-end-2026/guardian--flora-willson.json",
+          "outletId": "guardian",
+          "cause": "wrong-label",
           "fields": [
             "wrongProduction"
           ]
@@ -600,6 +961,8 @@
           "kind": "hand-step",
           "at": "2026-11-01T02:10:11.552Z",
           "file": "tosca-english-national-opera-west-end-2026/london-theatre--cheryl-markosky.json",
+          "outletId": "london-theatre",
+          "cause": "wrong-label",
           "steps": [
             "wrongProductionManualClear"
           ]
@@ -608,6 +971,8 @@
           "kind": "hand-step",
           "at": "2026-11-01T02:11:18.236Z",
           "file": "tosca-english-national-opera-west-end-2026/sunday-telegraph--nicholas-kenyon.json",
+          "outletId": "sunday-telegraph",
+          "cause": "wrong-label",
           "steps": [
             "wrongProductionManualClear"
           ]
@@ -616,6 +981,8 @@
           "kind": "hand-step",
           "at": "2026-11-01T17:00:29.802Z",
           "file": "tosca-english-national-opera-west-end-2026/theatre-weekly--unknown.json",
+          "outletId": "theatre-weekly",
+          "cause": "wrong-label",
           "steps": [
             "wrongProductionManualClear"
           ]
@@ -624,6 +991,8 @@
           "kind": "hand-step",
           "at": "2026-11-01T16:59:59.618Z",
           "file": "tosca-english-national-opera-west-end-2026/thereviewshub--maryam-philpott.json",
+          "outletId": "thereviewshub",
+          "cause": "wrong-label",
           "steps": [
             "wrongProductionManualClear"
           ]
@@ -632,6 +1001,8 @@
           "kind": "hand-step",
           "at": "2026-11-02T20:35:45.537Z",
           "file": "tosca-english-national-opera-west-end-2026/thestage--george-hall.json",
+          "outletId": "thestage",
+          "cause": "wrong-label",
           "steps": [
             "wrongProductionManualClear"
           ]
@@ -640,12 +1011,24 @@
           "kind": "hand-step",
           "at": "2026-11-01T17:45:55.242Z",
           "file": "tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json",
+          "outletId": "times-uk",
+          "cause": "wrong-label",
           "steps": [
             "wrongProductionManualClear"
           ]
         }
       ],
-      "historyCovers": true
+      "historyCovers": true,
+      "expectedMissing": [
+        {
+          "outletId": "timeout-london",
+          "name": "Time Out London"
+        },
+        {
+          "outletId": "whatsonstage",
+          "name": "WhatsOnStage"
+        }
+      ]
     },
     {
       "showId": "a-few-good-men-2026",
@@ -656,8 +1039,11 @@
       "embargoFrom": "press-night record",
       "windowEnd": "2026-11-06T02:00:00.000Z",
       "windowClosed": true,
-      "live": 44,
-      "known": 25,
+      "live": 29,
+      "lateLive": 2,
+      "known": 29,
+      "missing": 0,
+      "censusCandidates": 26,
       "hoursToLive": 2.8,
       "verdict": "needed-hands",
       "onlyIngestDispatches": false,
@@ -666,18 +1052,22 @@
           "kind": "ingest-dispatch",
           "at": "2026-10-30T08:42:13.000Z",
           "outletId": "new-york-sun",
+          "cause": "discovery-gap",
           "source": "17203104 ingest-urls: 1 review(s) for a-few-good-men-2026"
         },
         {
           "kind": "ingest-dispatch",
           "at": "2026-10-30T04:45:37.000Z",
           "outletId": "thewrap",
+          "cause": "discovery-gap",
           "source": "d2aad044 ingest-urls: 1 review(s) for a-few-good-men-2026"
         },
         {
           "kind": "approved-fix",
           "at": "2026-10-30T05:04:04.078Z",
           "file": "a-few-good-men-2026/cititour--brian-scott-lipton.json",
+          "outletId": "cititour",
+          "cause": "date-guard",
           "fields": [
             "publishDate"
           ]
@@ -686,12 +1076,15 @@
           "kind": "approved-fix",
           "at": "2026-10-30T13:28:27.380Z",
           "file": "a-few-good-men-2026/new-york-sun--elysa-gardner.json",
+          "outletId": "new-york-sun",
+          "cause": "date-guard",
           "fields": [
             "publishDate"
           ]
         }
       ],
-      "historyCovers": true
+      "historyCovers": true,
+      "expectedMissing": null
     },
     {
       "showId": "ceilidh-the-musical-off-west-end-2026",
@@ -702,8 +1095,11 @@
       "embargoFrom": "22:00 local estimate",
       "windowEnd": "2026-11-05T22:00:00.000Z",
       "windowClosed": true,
-      "live": 26,
-      "known": 28,
+      "live": 20,
+      "lateLive": 1,
+      "known": 20,
+      "missing": 0,
+      "censusCandidates": 28,
       "hoursToLive": null,
       "verdict": "needed-hands",
       "onlyIngestDispatches": true,
@@ -712,10 +1108,12 @@
           "kind": "ingest-dispatch",
           "at": "2026-11-02T14:22:13.000Z",
           "outletId": "thereviewshub",
+          "cause": "discovery-gap",
           "source": "b0c9ca41 ingest-urls: 1 review(s) for ceilidh-the-musical-off-west-end-2026"
         }
       ],
-      "historyCovers": true
+      "historyCovers": true,
+      "expectedMissing": null
     },
     {
       "showId": "ivy-day-off-broadway-2026",
@@ -727,12 +1125,16 @@
       "windowEnd": "2026-11-06T02:00:00.000Z",
       "windowClosed": true,
       "live": 0,
-      "known": null,
+      "lateLive": 0,
+      "known": 0,
+      "missing": 0,
+      "censusCandidates": 0,
       "hoursToLive": null,
       "verdict": "no-reviews",
       "onlyIngestDispatches": false,
       "signals": [],
-      "historyCovers": true
+      "historyCovers": true,
+      "expectedMissing": null
     },
     {
       "showId": "kelly-mccaughan-catholic-guilt-off-broadway-2026",
@@ -744,12 +1146,16 @@
       "windowEnd": "2026-11-06T02:00:00.000Z",
       "windowClosed": true,
       "live": 1,
-      "known": 3,
+      "lateLive": 1,
+      "known": 1,
+      "missing": 0,
+      "censusCandidates": 3,
       "hoursToLive": null,
-      "verdict": "on-its-own",
+      "verdict": "incomplete",
       "onlyIngestDispatches": false,
       "signals": [],
-      "historyCovers": true
+      "historyCovers": true,
+      "expectedMissing": null
     },
     {
       "showId": "showstopper-the-kids-show-off-west-end-2026",
@@ -761,12 +1167,16 @@
       "windowEnd": "2026-11-05T22:00:00.000Z",
       "windowClosed": true,
       "live": 1,
-      "known": 3,
+      "lateLive": 0,
+      "known": 1,
+      "missing": 0,
+      "censusCandidates": 3,
       "hoursToLive": null,
       "verdict": "on-its-own",
       "onlyIngestDispatches": false,
       "signals": [],
-      "historyCovers": true
+      "historyCovers": true,
+      "expectedMissing": null
     },
     {
       "showId": "the-greatest-story-ever-off-broadway-2026",
@@ -778,12 +1188,16 @@
       "windowEnd": "2026-11-06T02:00:00.000Z",
       "windowClosed": true,
       "live": 0,
-      "known": null,
+      "lateLive": 0,
+      "known": 0,
+      "missing": 0,
+      "censusCandidates": 0,
       "hoursToLive": null,
       "verdict": "no-reviews",
       "onlyIngestDispatches": false,
       "signals": [],
-      "historyCovers": true
+      "historyCovers": true,
+      "expectedMissing": null
     },
     {
       "showId": "the-heart-off-broadway-2026",
@@ -794,8 +1208,11 @@
       "embargoFrom": "press-night record",
       "windowEnd": "2026-11-06T02:00:00.000Z",
       "windowClosed": true,
-      "live": 27,
-      "known": 16,
+      "live": 21,
+      "lateLive": 0,
+      "known": 21,
+      "missing": 0,
+      "censusCandidates": 16,
       "hoursToLive": 1.7,
       "verdict": "needed-hands",
       "onlyIngestDispatches": false,
@@ -804,42 +1221,50 @@
           "kind": "hand-commit",
           "at": "2026-10-30T23:09:00.000Z",
           "outletId": "nydailynews",
+          "cause": "wrong-label",
           "source": "225406a9 BRO-6670: remove stale bro-4953 NY Daily News stub on The Heart (null URL, Heart of Rock and Roll excerpt) so a real NYDN review ca"
         },
         {
           "kind": "hand-commit",
           "at": "2026-10-30T23:08:13.000Z",
           "outletId": "cititour",
+          "cause": "date-guard",
           "source": "5e5a5c10 BRO-6670: set publishDate on The Heart Cititour so collected-before-previews guard stops re-flagging it"
         },
         {
           "kind": "hand-commit",
           "at": "2026-10-30T22:54:52.000Z",
           "outletId": "cititour",
+          "cause": "wrong-label",
           "source": "6616aad8 BRO-6670: drop stale combinedWith heart-of-rock-and-roll-2024 on The Heart Cititour review"
         },
         {
           "kind": "hand-commit",
           "at": "2026-10-30T22:25:34.000Z",
           "outletId": "nytg",
+          "cause": "wrong-label",
           "source": "d66dffa4 BRO-6670: clear stale bro-4953 wrongShow lock on The Heart NYT/NYTG/TheaterMania (real reviews now at these URLs)"
         },
         {
           "kind": "ingest-dispatch",
           "at": "2026-10-30T22:29:43.000Z",
           "outletId": "theatermania",
+          "cause": "discovery-gap",
           "source": "790b6925 ingest-urls: 1 review(s) for the-heart-off-broadway-2026"
         },
         {
           "kind": "ingest-dispatch",
           "at": "2026-10-30T22:21:01.000Z",
           "outletId": "nytg",
+          "cause": "discovery-gap",
           "source": "4c8871a2 ingest-urls: 4 review(s) for the-heart-off-broadway-2026"
         },
         {
           "kind": "approved-fix",
           "at": "2026-10-30T22:54:52.118Z",
           "file": "the-heart-off-broadway-2026/cititour--brian-scott-lipton.json",
+          "outletId": "cititour",
+          "cause": "date-guard",
           "fields": [
             "combinedWith",
             "publishDate"
@@ -849,6 +1274,8 @@
           "kind": "approved-fix",
           "at": "2026-10-30T22:25:34.669Z",
           "file": "the-heart-off-broadway-2026/nytg--caroline-cao.json",
+          "outletId": "nytg",
+          "cause": "wrong-label",
           "fields": [
             "wrongShow"
           ]
@@ -857,6 +1284,8 @@
           "kind": "approved-fix",
           "at": "2026-10-30T22:25:34.669Z",
           "file": "the-heart-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
+          "outletId": "nytimes",
+          "cause": "wrong-label",
           "fields": [
             "wrongShow"
           ]
@@ -865,12 +1294,15 @@
           "kind": "approved-fix",
           "at": "2026-10-30T22:25:34.669Z",
           "file": "the-heart-off-broadway-2026/theatermania--zachary-stewart.json",
+          "outletId": "theatermania",
+          "cause": "wrong-label",
           "fields": [
             "wrongShow"
           ]
         }
       ],
-      "historyCovers": true
+      "historyCovers": true,
+      "expectedMissing": null
     },
     {
       "showId": "the-lives-of-others-west-end-2026",
@@ -881,13 +1313,17 @@
       "embargoFrom": "press-night record",
       "windowEnd": "2026-11-05T21:00:00.000Z",
       "windowClosed": true,
-      "live": 37,
-      "known": 34,
+      "live": 29,
+      "lateLive": 2,
+      "known": 29,
+      "missing": 0,
+      "censusCandidates": 34,
       "hoursToLive": null,
-      "verdict": "on-its-own",
+      "verdict": "incomplete",
       "onlyIngestDispatches": false,
       "signals": [],
-      "historyCovers": true
+      "historyCovers": true,
+      "expectedMissing": null
     },
     {
       "showId": "ghost-notes-off-broadway-2026",
@@ -898,13 +1334,17 @@
       "embargoFrom": "22:00 local estimate",
       "windowEnd": "2026-11-05T02:00:00.000Z",
       "windowClosed": true,
-      "live": 1,
-      "known": 1,
+      "live": 0,
+      "lateLive": 0,
+      "known": 0,
+      "missing": 0,
+      "censusCandidates": 1,
       "hoursToLive": null,
-      "verdict": "on-its-own",
+      "verdict": "no-reviews",
       "onlyIngestDispatches": false,
       "signals": [],
-      "historyCovers": true
+      "historyCovers": true,
+      "expectedMissing": null
     },
     {
       "showId": "in-the-heights-off-broadway-2026",
@@ -915,8 +1355,11 @@
       "embargoFrom": "press-night record",
       "windowEnd": "2026-11-05T02:00:00.000Z",
       "windowClosed": true,
-      "live": 16,
-      "known": 10,
+      "live": 9,
+      "lateLive": 4,
+      "known": 9,
+      "missing": 0,
+      "censusCandidates": 10,
       "hoursToLive": null,
       "verdict": "needed-hands",
       "onlyIngestDispatches": true,
@@ -925,10 +1368,12 @@
           "kind": "ingest-dispatch",
           "at": "2026-10-30T22:56:54.000Z",
           "outletId": "vulture",
+          "cause": "discovery-gap",
           "source": "78dc0a18 ingest-urls: 1 review(s) for in-the-heights-off-broadway-2026"
         }
       ],
-      "historyCovers": true
+      "historyCovers": true,
+      "expectedMissing": null
     },
     {
       "showId": "starstuff-off-broadway-2026",
@@ -940,12 +1385,16 @@
       "windowEnd": "2026-11-05T02:00:00.000Z",
       "windowClosed": true,
       "live": 0,
-      "known": null,
+      "lateLive": 0,
+      "known": 0,
+      "missing": 0,
+      "censusCandidates": 0,
       "hoursToLive": null,
       "verdict": "no-reviews",
       "onlyIngestDispatches": false,
       "signals": [],
-      "historyCovers": true
+      "historyCovers": true,
+      "expectedMissing": null
     },
     {
       "showId": "the-revlon-girl-off-west-end-2026",
@@ -957,21 +1406,16 @@
       "windowEnd": "2026-11-04T21:00:00.000Z",
       "windowClosed": true,
       "live": 17,
-      "known": 19,
+      "lateLive": 0,
+      "known": 17,
+      "missing": 0,
+      "censusCandidates": 19,
       "hoursToLive": null,
-      "verdict": "needed-hands",
+      "verdict": "on-its-own",
       "onlyIngestDispatches": false,
-      "signals": [
-        {
-          "kind": "hand-step",
-          "at": "2026-10-29T17:23:10.834Z",
-          "file": "the-revlon-girl-off-west-end-2026/thestage--holly-omahony.json",
-          "steps": [
-            "wrongProductionManualClear"
-          ]
-        }
-      ],
-      "historyCovers": true
+      "signals": [],
+      "historyCovers": true,
+      "expectedMissing": null
     },
     {
       "showId": "franky-off-west-end-2026",
@@ -983,12 +1427,16 @@
       "windowEnd": "2026-11-03T22:00:00.000Z",
       "windowClosed": true,
       "live": 0,
-      "known": null,
+      "lateLive": 0,
+      "known": 0,
+      "missing": 0,
+      "censusCandidates": 0,
       "hoursToLive": null,
       "verdict": "no-reviews",
       "onlyIngestDispatches": false,
       "signals": [],
-      "historyCovers": true
+      "historyCovers": true,
+      "expectedMissing": null
     },
     {
       "showId": "girls-off-west-end-2026",
@@ -999,8 +1447,11 @@
       "embargoFrom": "22:00 local estimate",
       "windowEnd": "2026-11-03T22:00:00.000Z",
       "windowClosed": true,
-      "live": 26,
-      "known": 15,
+      "live": 18,
+      "lateLive": 0,
+      "known": 18,
+      "missing": 0,
+      "censusCandidates": 14,
       "hoursToLive": null,
       "verdict": "needed-hands",
       "onlyIngestDispatches": false,
@@ -1009,34 +1460,22 @@
           "kind": "hand-commit",
           "at": "2026-10-30T12:41:29.000Z",
           "outletId": "the-recs",
+          "cause": "wrong-label",
           "source": "96bfc880 BRO-6625: restore wrongProduction on the-recs (ensemble unanimous)"
-        },
-        {
-          "kind": "hand-step",
-          "at": "2026-10-30T16:53:14.593Z",
-          "file": "girls-off-west-end-2026/british-theatre--keith-mckenna.json",
-          "steps": [
-            "wrongProductionManualClear"
-          ]
         },
         {
           "kind": "hand-step",
           "at": "2026-10-28T11:44:17.027Z",
           "file": "girls-off-west-end-2026/theatre-weekly--matthew-plampton.json",
-          "steps": [
-            "wrongProductionManualClear"
-          ]
-        },
-        {
-          "kind": "hand-step",
-          "at": "2026-10-29T14:13:30.769Z",
-          "file": "girls-off-west-end-2026/theatreandtonic--emmie-newitt.json",
+          "outletId": "theatre-weekly",
+          "cause": "wrong-label",
           "steps": [
             "wrongProductionManualClear"
           ]
         }
       ],
-      "historyCovers": true
+      "historyCovers": true,
+      "expectedMissing": null
     },
     {
       "showId": "i-became-we-off-broadway-2026",
@@ -1047,13 +1486,17 @@
       "embargoFrom": "press-night record",
       "windowEnd": "2026-11-04T02:00:00.000Z",
       "windowClosed": true,
-      "live": 12,
-      "known": 7,
+      "live": 9,
+      "lateLive": 1,
+      "known": 9,
+      "missing": 0,
+      "censusCandidates": 7,
       "hoursToLive": 0.3,
-      "verdict": "on-its-own",
+      "verdict": "incomplete",
       "onlyIngestDispatches": false,
       "signals": [],
-      "historyCovers": true
+      "historyCovers": true,
+      "expectedMissing": null
     },
     {
       "showId": "memoriam-off-west-end-2026",
@@ -1064,8 +1507,11 @@
       "embargoFrom": "press-night record",
       "windowEnd": "2026-11-03T21:00:00.000Z",
       "windowClosed": true,
-      "live": 32,
-      "known": 29,
+      "live": 27,
+      "lateLive": 0,
+      "known": 27,
+      "missing": 0,
+      "censusCandidates": 29,
       "hoursToLive": 2.5,
       "verdict": "needed-hands",
       "onlyIngestDispatches": true,
@@ -1074,10 +1520,12 @@
           "kind": "ingest-dispatch",
           "at": "2026-10-29T19:10:08.000Z",
           "outletId": "british-theatre",
+          "cause": "discovery-gap",
           "source": "38bc2354 ingest-urls: 11 review(s) for memoriam-off-west-end-2026"
         }
       ],
-      "historyCovers": true
+      "historyCovers": true,
+      "expectedMissing": null
     },
     {
       "showId": "roleplay-off-west-end-2026",
@@ -1089,12 +1537,16 @@
       "windowEnd": "2026-11-03T22:00:00.000Z",
       "windowClosed": true,
       "live": 15,
-      "known": 21,
+      "lateLive": 0,
+      "known": 15,
+      "missing": 0,
+      "censusCandidates": 20,
       "hoursToLive": null,
       "verdict": "on-its-own",
       "onlyIngestDispatches": false,
       "signals": [],
-      "historyCovers": true
+      "historyCovers": true,
+      "expectedMissing": null
     },
     {
       "showId": "hospital-hour-off-broadway-2026",
@@ -1105,13 +1557,17 @@
       "embargoFrom": "press-night record",
       "windowEnd": "2026-11-03T02:00:00.000Z",
       "windowClosed": true,
-      "live": 5,
-      "known": 5,
+      "live": 3,
+      "lateLive": 0,
+      "known": 3,
+      "missing": 0,
+      "censusCandidates": 5,
       "hoursToLive": 2.8,
       "verdict": "on-its-own",
       "onlyIngestDispatches": false,
       "signals": [],
-      "historyCovers": true
+      "historyCovers": true,
+      "expectedMissing": null
     }
   ]
 }

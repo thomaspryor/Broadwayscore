@@ -397,6 +397,10 @@ jobs:
           git add data/audit/alert-ledger.json 2>/dev/null || true
           git add data/audit/alert-digest-queue.json 2>/dev/null || true
           git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          # discovery-slot-collisions.jsonl (BRO-7162): discover-opening-night-
+          # reviews.js queues URLs whose filename slot is already taken here
+          # instead of dropping them; unstaged it would vanish with the runner.
+          git add data/audit/discovery-slot-collisions.jsonl 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No ledger changes to commit"
           else

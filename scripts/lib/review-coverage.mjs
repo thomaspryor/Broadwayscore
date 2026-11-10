@@ -46,6 +46,7 @@
 // Exit: 0 complete, 3 incomplete, 2 transcript not found. Fails open (exit 0) on internal error
 // for hook use (--json, --stop-hook), never for --record.
 
+import './llm-usage-install.js'; // LLM spend meter: keep it the first import (BRO-5043)
 import { createHash } from 'node:crypto';
 import fs from 'node:fs';
 import os from 'node:os';

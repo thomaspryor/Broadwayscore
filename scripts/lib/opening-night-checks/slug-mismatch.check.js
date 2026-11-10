@@ -5,6 +5,7 @@ const path = require('path');
 const { titleToSlug, KNOWN_ALIASES } = require('../show-matching.js');
 const { foldDiacritics } = require('../title-match.js');
 const { slugify: urlSlugify } = require('../url-slug.js');
+const { toDateMs } = require('../date-utils.js');
 
 const name = 'slug-mismatch';
 const description = 'Review URL slug does not mention show slug or any known alias (cross-show contamination)';
@@ -152,6 +153,10 @@ function buildAcceptSlugs(show, { titleWords = true } = {}) {
   // significant words as their own accept-slug, still boundary-matched like
   // every other entry, so it can't swallow an unrelated substring.
   if (significantWords.length >= 2) slugs.add(significantWords.join(''));
+  // The whole title glued INCLUDING its short words ("Building the Wall" ->
+  // curtainup.com/buildingthewall17.html, BRO-7223): the join above drops "the".
+  const squashed = title.toLowerCase().replace(/[^a-z0-9]/g, '');
+  if (squashed.length >= 8 && /[a-z]/.test(squashed)) slugs.add(squashed);
 
   return Array.from(slugs).filter(Boolean);
 }
@@ -189,6 +194,9 @@ const STRUCTURAL_PATH_WORDS = new Set([
   'p', 'id', 'view', 'node', 'index', 'amp', 'www', 'html', 'htm', 'php',
   // londontheatrereviews.co.uk/post.cfm?p=<id>: an id-only query URL (BRO-5438)
   'post', 'cfm',
+  // thetimes.co.uk/tto/arts/stage/theatre/article2924370.ece: section folders
+  // plus a numeric id, no title words (BRO-7223)
+  'tto', 'ece', 'arts', 'stage', 'theatre', 'theater',
   // talkinbroadway.com/page/ob/02_24_26b.html: date-only review pages, the
   // path never carries a title (BRO-6524)
   'page',
@@ -383,6 +391,71 @@ function roundupNamesShow(roundupUrls, wholeTitleSlugs, openingDate) {
   });
 }
 
+
+/**
+ * Show Score provenance (BRO-7121). A capsule post that covers several shows
+ * ("theater-reviews-ambitious-sumo.html" also reviews Conversations with Mother)
+ * has one URL and a slug for one show. Show Score files it under each show it
+ * reviews, with a blurb per show. When THIS show's Show Score page lists the
+ * URL with an excerpt that no other show's page repeats for that URL, the
+ * aggregator vouches for the attribution (same idea as the BWW roundup rule).
+ * An identical blurb under two shows is a copy, not a section, and a URL listed
+ * under this show alone has no sibling section, so neither vouches.
+ */
+const SHOW_SCORE_DATE_WINDOW_DAYS = 120;
+const showScoreCache = new Map();
+function loadShowScoreDoc(file) {
+  let mtime = 0;
+  try { mtime = fs.statSync(file).mtimeMs; } catch { /* missing */ }
+  const cacheKey = `${file}@${mtime}`;
+  if (showScoreCache.has(cacheKey)) return showScoreCache.get(cacheKey);
+  let doc = null;
+  try { doc = JSON.parse(fs.readFileSync(file, 'utf8')); } catch { /* no file: nothing vouches */ }
+  const byUrl = new Map();   // normalized url -> [{ showId, excerpt }]
+  for (const [id, entry] of Object.entries((doc && doc.shows) || {})) {
+    for (const r of (entry && entry.criticReviews) || []) {
+      if (!r || !r.url) continue;
+      const k = showScoreUrlKey(r.url);
+      if (!byUrl.has(k)) byUrl.set(k, []);
+      byUrl.get(k).push({ showId: id, excerpt: String(r.excerpt || '').trim() });
+    }
+  }
+  showScoreCache.set(cacheKey, byUrl);
+  return byUrl;
+}
+function showScoreUrlKey(url) {
+  // Only Blogger's mobile flag and fragments are noise; other query strings
+  // (viewpage.aspx?record=7314) identify the page.
+  return urlKey(url).replace(/#.*$/, '').replace(/[?&]m=[01]$/, '').replace(/\/$/, '').toLowerCase();
+}
+function showScoreVouches(showId, url, file, { openingDate, publishDate, hasSavedText } = {}) {
+  if (!file) return false;
+  // Saved text was already judged by the text tests above; Show Score never
+  // overrides it (its classic error is show B's blurb under show A's URL).
+  if (hasSavedText) return false;
+  // Same production: a Show Score mislink to a revival years away vouches nothing.
+  if (openingDate && publishDate) {
+    const days = Math.abs(toDateMs(publishDate) - toDateMs(openingDate)) / 86400000;
+    // NaN (an unparseable date) fails the comparison and refuses to vouch.
+    if (!(days <= SHOW_SCORE_DATE_WINDOW_DAYS)) return false;
+  }
+  const rows = loadShowScoreDoc(file).get(showScoreUrlKey(url));
+  if (!rows) return false;
+  // Only an editorial post vouches: its last path segment is a hyphenated
+  // headline slug (3+ words). Landing pages, category and id-only pages are
+  // listed under unrelated shows and carry no per-show sections.
+  const lastSeg = showScoreUrlKey(url).replace(/\?.*$/, '').split('/').filter(Boolean).pop() || '';
+  if (lastSeg.replace(/\.(html?|php|aspx?)$/i, '').split('-').filter(Boolean).length < 3) return false;
+  const mine = rows.find(r => r.showId === showId);
+  if (!mine || !mine.excerpt) return false;
+  const norm = (t) => t.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  // Capsule signature: at least one OTHER show lists the same post with a
+  // different blurb. A URL listed under this show alone (a Musto column filed
+  // against a revival) is the contamination the check exists to catch.
+  const others = rows.filter(r => r.showId !== showId);
+  return others.length > 0 && !others.some(r => norm(r.excerpt) === norm(mine.excerpt));
+}
+
 /**
  * Regex for the show's venue name: the part before the first comma
  * ("Theater Wit, Chicago, IL" -> "Theater Wit"), a leading "The" optional and
@@ -443,6 +516,80 @@ function fullTextNamesVenueAndTitleWords(fullTexts, show, venueRe, mentionRe) {
   });
 }
 
+/**
+ * Competing-show attribution (BRO-7204). The URL slug and the "names the show
+ * by title" tests are proxies: a headline URL ("/it-takes-a-woman-2/") on a
+ * review whose body says "Dolly Levi" but never the string "Hello, Dolly" fails
+ * both, so every new outlet/URL shape produced a fresh "mismatch" and a fresh
+ * card (BRO-4697, 5438, 5536, 5693, 6524, 7121). Absence of the title is not
+ * evidence of contamination; contamination is text that is about ANOTHER show.
+ * So the last test asks who the saved full text is about: it clears when one
+ * distinctive word of this show's title recurs (OWN_MIN_MENTIONS+) and no other
+ * show's whole title is named more often. Text about a different show names that
+ * show, so it loses; a roundup/column naming rivals loses; generic title words
+ * ("murder", "love") are not distinctive and never clear on their own.
+ */
+const OWN_MIN_MENTIONS = 2;
+const DISTINCTIVE_MAX_TITLES = 3;
+const RIVAL_SINGLE_WORD_MIN = 5;
+const normWords = (s) => foldDiacritics(String(s || '')).toLowerCase()
+  .replace(/['\u2018\u2019\u02bc`]/g, '').split(/[^a-z0-9]+/).filter(Boolean);
+
+const titleIndexCache = new WeakMap();
+function buildTitleIndex(shows) {
+  if (titleIndexCache.has(shows)) return titleIndexCache.get(shows);
+  const wordTitles = new Map();   // word -> Set(normalized title)
+  const titles = new Set();       // normalized titles
+  for (const s of shows) {
+    const w = normWords(s.title);
+    if (w.length === 0) continue;
+    const key = w.join(' ');
+    titles.add(key);
+    for (const x of new Set(w)) {
+      if (!wordTitles.has(x)) wordTitles.set(x, new Set());
+      wordTitles.get(x).add(key);
+    }
+  }
+  const lengths = [...new Set([...titles].map(t => t.split(' ').length))].filter(n => n >= 2);
+  const idx = { wordTitles, titles, lengths };
+  titleIndexCache.set(shows, idx);
+  return idx;
+}
+
+function fullTextAboutThisShow(fullTexts, show, shows) {
+  if (!fullTexts || !Array.isArray(shows) || shows.length === 0) return false;
+  const { wordTitles, titles, lengths } = buildTitleIndex(shows);
+  const ownKey = normWords(show.title).join(' ');
+  const own = significantTitleWords(show).map(w => normWords(w).join(''))
+    .filter(w => w && (wordTitles.get(w) || new Set()).size <= DISTINCTIVE_MAX_TITLES);
+  if (own.length === 0) return false;
+  return fullTexts.some((text) => {
+    if (typeof text !== 'string' || !text) return false;
+    const words = normWords(text);
+    const counts = new Map();
+    for (const w of words) counts.set(w, (counts.get(w) || 0) + 1);
+    const ownScore = Math.max(...own.map(w => (counts.get(w) || 0) + (counts.get(w + 's') || 0) + (counts.get(w + 'es') || 0)));
+    if (ownScore < OWN_MIN_MENTIONS) return false;
+    let rivalScore = 0;
+    const bump = (key) => {
+      if (key === ownKey) return;
+      const n = (rivalCounts.get(key) || 0) + 1;
+      rivalCounts.set(key, n);
+      if (n > rivalScore) rivalScore = n;
+    };
+    const rivalCounts = new Map();
+    for (const w of words) if (w.length >= RIVAL_SINGLE_WORD_MIN && titles.has(w)) bump(w);
+    for (const n of lengths) {
+      for (let i = 0; i + n <= words.length; i++) {
+        const key = words.slice(i, i + n).join(' ');
+        if (titles.has(key)) bump(key);
+      }
+    }
+    // Strictly more: a tie between this show and a rival is not attribution.
+    return ownScore > rivalScore;
+  });
+}
+
 function run(show, context) {
   const reviews = context.reviewsDoc[show.id] || [];
   if (reviews.length === 0) {
@@ -484,7 +631,11 @@ function run(show, context) {
     if (sourceTextNamesShow(segs, mentionRe)
         || fullTextNamesShowRepeatedly(fullTexts, repeatRe)
         || fullTextNamesVenueAndTitleWords(fullTexts, show, venueRe, mentionRe)
-        || roundupNamesShow(sourceTextByUrl.roundupUrls.get(urlKey(review.url)), wholeTitleSlugs, show.openingDate)) { textConfirmed++; continue; }
+        || fullTextAboutThisShow(fullTexts, show, context.shows)
+        || roundupNamesShow(sourceTextByUrl.roundupUrls.get(urlKey(review.url)), wholeTitleSlugs, show.openingDate)
+        || showScoreVouches(show.id, review.url, context.showScorePath, {
+          openingDate: show.openingDate, publishDate: review.publishDate, hasSavedText: !!(fullTexts && fullTexts.length),
+        })) { textConfirmed++; continue; }
     if ((!segs || segs.length === 0) && isIdOnlyCmsUrl(urlSlug)) {
       opaqueSkipped.push({ outletId: review.outletId, url: review.url });
       continue;
@@ -542,5 +693,5 @@ module.exports = {
   name, description, run, urlSearchSlug, buildAcceptSlugs, urlMentionsAnySlug,
   isOpaqueUrlSlug, isIdOnlyCmsUrl, buildMentionRegex, sourceTextNamesShow,
   fullTextNamesShowRepeatedly, buildVenueRegex, fullTextNamesVenueAndTitleWords,
-  loadSourceTextByUrl, roundupNamesShow, urlKey,
+  loadSourceTextByUrl, roundupNamesShow, urlKey, fullTextAboutThisShow,
 };

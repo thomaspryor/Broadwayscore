@@ -28,9 +28,7 @@
  */
 
 const fs = require('fs');
-const { readReviewForUpdate, persistReviewSnapshot } = require('./lib/persist-review-snapshot');
 const path = require('path');
-const { execSync } = require('child_process');
 
 const args = process.argv.slice(2);
 if (args.some(a => a === '--help' || a === '-h' || a.startsWith('--help='))) {
@@ -47,15 +45,14 @@ const dryRun = args.includes('--dry-run') || process.env.DRY_RUN === 'true';
 const showsFilter = args.find(a => a.startsWith('--shows='));
 const showsAllowlist = showsFilter ? new Set(showsFilter.split('=')[1].split(',')) : null;
 
-const { classifyContentTier, isGarbageContent, validateShowMentioned, countWords } = require('./lib/content-quality');
-const { cleanText, stripTrailingJunk } = require('./lib/text-cleaning');
 const { loadCookiesForDomain } = require('./lib/cookie-loader');
-const { checkDatePlausibility } = require('./lib/browser-recovery-helpers');
+// The gate, the locked writes and the scoped commit/push are shared with every
+// other recovery script (BRO-7171); this file keeps only its WSJ specifics.
+const { processRecoveredText, stampDead, startRun, checkpoint: sharedCheckpoint, REVIEW_TEXTS_DIR } = require('./lib/browser-recovery-helpers');
 const { listShowDirs } = require('./lib/list-show-dirs');
-const { markRescoreNeeded } = require('./lib/rescore-flagging');
 
 const CONFIG = {
-  reviewTextsDir: path.join(__dirname, '..', 'data', 'review-texts'),
+  reviewTextsDir: REVIEW_TEXTS_DIR,
   reportPath: path.join(__dirname, '..', 'data', 'audit', 'wsj-browser-recovery-report.json'),
   minTextLength: 300,
   delayMinMs: 6000,
@@ -66,28 +63,15 @@ const CONFIG = {
 };
 
 const TEST_URL = 'https://www.wsj.com/articles/smash-review-an-inside-broadway-musical-bdcafc62';
+const AUTH_MIN_CHARS = 1500;
+const { resolveBrowserMiss } = require('./lib/browser-outlet-adapters');
 
 function jitterDelay() {
   return CONFIG.delayMinMs + Math.random() * (CONFIG.delayMaxMs - CONFIG.delayMinMs);
 }
 
-async function extractArticle(page, url) {
-  url = url.split('?gaa_')[0];
-  await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
-  await page.waitForTimeout(1800); // let client-side entitlement hydration resolve
-
-  return page.evaluate(() => {
-    const bodyText = document.body?.innerText || '';
-    if (/verification required|slide right to secure/i.test(bodyText)) {
-      return { error: 'DataDome challenge detected' };
-    }
-    const article = document.querySelector('article');
-    const text = article ? article.innerText : '';
-    const title = document.title || '';
-    if (!text) return { error: 'No article element found', title };
-    return { text, title, len: text.length };
-  });
-}
+// One extractor shared with the nightly gap-recovery driver (BRO-7171 Stage 4).
+const extractArticle = require('./lib/browser-outlet-adapters').ADAPTERS.wsj.extract;
 
 function loadCandidates() {
   const dirs = listShowDirs(CONFIG.reviewTextsDir);
@@ -131,94 +115,19 @@ function loadCandidates() {
   return candidates.slice(0, CONFIG.maxUrls);
 }
 
-function processRecoveredText(candidate, rawText) {
-  let cleanedText = cleanText(rawText);
-  cleanedText = stripTrailingJunk(cleanedText, 'wsj');
-  if (cleanedText.length < CONFIG.minTextLength) {
-    return { ok: false, reason: `too short after cleaning (${cleanedText.length})` };
-  }
-
-  const garbageCheck = isGarbageContent(cleanedText);
-  if (garbageCheck.isGarbage) {
-    return { ok: false, reason: `garbage content: ${garbageCheck.reason}` };
-  }
-
-  const showTitle = candidate.showId.replace(/-\d{4}$/, '').replace(/-(west-end|off-broadway|regional)$/, '').replace(/-/g, ' ');
-  const mentionResult = validateShowMentioned(cleanedText, showTitle, candidate.showId);
-  if (!mentionResult.valid) {
-    return { ok: false, reason: `show not mentioned: "${showTitle}"` };
-  }
-
-  const data = readReviewForUpdate(candidate.filePath);
-  if (data.fullText && data.fullText.length >= cleanedText.length) {
-    return { ok: false, reason: `not longer than existing (${data.fullText.length} >= ${cleanedText.length})` };
-  }
-
-  // Date-plausibility guard (task #915) — see browser-recovery-helpers.js
-  // checkDatePlausibility for rationale. This file predates that shared
-  // helper (WSJ was the original implementation it was generalized from) so
-  // it calls the shared check directly rather than duplicating the logic.
-  const dateRejection = checkDatePlausibility(candidate, data);
-  if (dateRejection) {
-    return { ok: false, reason: dateRejection };
-  }
-
-  data.fullText = cleanedText;
-  data.isFullReview = cleanedText.length > 1500;
-  data.textWordCount = countWords(cleanedText);
-  data.textFetchedAt = new Date().toISOString();
-  data.fetchMethod = 'wsj-subscriber-browser-session';
-  data.sourceMethod = 'wsj-subscriber-recovery-otp-login';
-
-  const tierResult = classifyContentTier(data);
-  data.contentTier = tierResult.contentTier || tierResult.tier;
-  data.contentTierReason = tierResult.tierReason || tierResult.reason || 'Recovered via authenticated WSJ browser session (task #779)';
-
-  if (data.llmScore?.score) {
-    markRescoreNeeded(data, 'fullText recovered via WSJ subscriber browser session (task #779)', undefined, { requeue: true });
-  }
-
-  persistReviewSnapshot({ filePath: candidate.filePath, data: data, trailingNewline: true });
-  return { ok: true, newLen: cleanedText.length };
-}
-
-const PUSH_WITH_RETRY = path.join(__dirname, 'lib', 'push-with-retry.sh');
+const WSJ_LABELS = {
+  fetchMethod: 'wsj-subscriber-browser-session',
+  sourceMethod: 'wsj-subscriber-recovery-otp-login',
+  contentTierReasonFallback: 'Recovered via authenticated WSJ browser session (task #779)',
+};
 
 function checkpoint(stats) {
-  if (dryRun) return;
-  const reviewTextsRepo = CONFIG.reviewTextsDir;
-  try {
-    execSync('git add -A', { stdio: 'pipe', cwd: reviewTextsRepo });
-    try {
-      execSync('git diff --staged --quiet', { stdio: 'pipe', cwd: reviewTextsRepo });
-      return; // nothing staged
-    } catch {} // non-zero = there ARE staged changes
-    const msg = `feat: WSJ browser recovery - ${stats.recovered} reviews recovered (task #779)`;
-    execSync(`git commit -m "${msg}"`, { stdio: 'pipe', cwd: reviewTextsRepo });
-    for (let i = 0; i < 5; i++) {
-      try {
-        // unbounded-fetch-ok: cwd is data/review-texts — the SEPARATE broadway-review-texts
-        // clone, not this repo's shallow checkout, so the #420 2.1GB whole-repo fetch cannot
-        // happen here. Same separate-repo carve-out reconcile-coverage.js encodes in
-        // stepCdIntoSeparateRepo(). This script is also local-only (no workflow invokes it).
-        execSync('git pull --rebase origin main', { stdio: 'pipe', cwd: reviewTextsRepo, timeout: 30000 });
-        execSync('git push origin main', { stdio: 'pipe', cwd: reviewTextsRepo, timeout: 30000 });
-        console.log(`  [Checkpoint] Pushed (${stats.recovered} recovered so far)`);
-        return;
-      } catch {
-        try { execSync('git rebase --abort', { stdio: 'pipe', cwd: reviewTextsRepo }); } catch {}
-        const delay = 3000 + Math.random() * 5000;
-        const start = Date.now();
-        while (Date.now() - start < delay) {}
-      }
-    }
-    console.log('  [Checkpoint] WARNING: could not push after 5 attempts');
-  } catch (e) {
-    console.log(`  [Checkpoint] Error: ${e.message}`);
-  }
+  return sharedCheckpoint({ ...stats, dryRun }, 'WSJ browser recovery');
 }
 
 async function main() {
+  // BRO-7171 Stage 3: never overlap the nightly gap-recovery job or another recovery run.
+  require('./lib/browser-recovery-helpers').acquireRecoveryRunLock('recover-wsj-browser');
   const cookies = loadCookiesForDomain('wsj.com');
   if (!cookies) {
     console.error('ERROR: no WSJ cookies available. Run: node scripts/wsj-otp-login.js');
@@ -232,7 +141,8 @@ async function main() {
   // Real installed Chrome + a persistent profile is what worked for login
   // (scripts/wsj-otp-login.js); reuse the identical launch strategy here.
   const { chromium } = require('playwright');
-  const PROFILE_DIR = '/tmp/wsj-recovery-browser-profile';
+  // BRO-7171 plan item 8: the outlet's shared persistent profile (renew lock held).
+  const PROFILE_DIR = require('./lib/cookie-renew').claimOutletProfile('wsj', { legacy: ['/tmp/wsj-recovery-browser-profile', '/tmp/wsj-otp-browser-profile', '/tmp/wsj-browser-profile'] }).dir;
   const launchOpts = {
     headless: false,
     viewport: { width: 1280, height: 900 },
@@ -267,7 +177,7 @@ async function main() {
 
   console.log('Testing authentication...');
   const testResult = await extractArticle(page, TEST_URL);
-  if (testResult.error || !testResult.text || testResult.len < 1500) {
+  if (testResult.error || !testResult.text || testResult.len < AUTH_MIN_CHARS) {
     console.error(`Auth test FAILED: ${testResult.error || `only ${testResult.len || 0} chars`}`);
     console.error('Cookies may be expired. Re-run: node scripts/wsj-otp-login.js');
     await context.close();
@@ -280,6 +190,11 @@ async function main() {
     return;
   }
 
+  // Push/restore anything an earlier run committed but could not land
+  // (BRO-7171). Throws on a still-failing push: no new work on a backlog.
+  if (!dryRun) {
+    try { startRun(); } catch (e) { await context.close(); throw e; }
+  }
   const candidates = loadCandidates();
   console.log(`\n${candidates.length} candidates to process.\n`);
   if (candidates.length === 0) {
@@ -291,66 +206,83 @@ async function main() {
   const deadEntries = [];
   const startTime = Date.now();
 
-  for (let i = 0; i < candidates.length; i++) {
-    if (Date.now() - startTime > CONFIG.timeBudgetMs) {
-      console.log(`\nTime budget reached (${CONFIG.timeBudgetMin || CONFIG.timeBudgetMs / 60000}min) — stopping cleanly.`);
-      break;
-    }
-
-    const c = candidates[i];
-    console.log(`[${i + 1}/${candidates.length}] ${c.showId} (${c.contentTier}, ${c.existingChars} chars existing)`);
-
-    if (i > 0) await page.waitForTimeout(jitterDelay());
-
-    let result;
-    try {
-      result = await extractArticle(page, c.url);
-    } catch (e) {
-      result = { error: e.message };
-    }
-
-    if (result.error || !result.text) {
-      const reason = result.error || 'no text extracted';
-      console.log(`  ✗ ${reason}`);
-      stats.dead++;
-      deadEntries.push({ reviewId: c.reviewId, url: c.url, reason });
-      if (!dryRun) {
-        const data = readReviewForUpdate(c.filePath);
-        // incompleteReason is a controlled-vocabulary field (see scripts/lib/incomplete-reason.js)
-        // that collect-review-texts.js/gather-reviews.js gate SERP re-discovery eligibility on
-        // ('wrong_content' -> needsSerpDiscovery). A free-text string here silently disables that
-        // downstream auto-recovery until the next rebuild-all-reviews.js recomputes it — use the
-        // real enum value instead, with our diagnostic in incompleteDetail.
-        data.incompleteReason = reason === 'DataDome challenge detected' ? 'bot_blocked' : 'wrong_content';
-        data.incompleteDetail = `wsj-browser-recovery: ${reason} (${new Date().toISOString()})`;
-        persistReviewSnapshot({ filePath: c.filePath, data: data, trailingNewline: true });
+  // A failed push (ReviewTextsPushError) or lock timeout stops the run, but
+  // the report is still written and the browser still closed (BRO-7171).
+  let runError = null;
+  try {
+    for (let i = 0; i < candidates.length; i++) {
+      if (Date.now() - startTime > CONFIG.timeBudgetMs) {
+        console.log(`\nTime budget reached (${CONFIG.timeBudgetMin || CONFIG.timeBudgetMs / 60000}min) — stopping cleanly.`);
+        break;
       }
-      continue;
+
+      const c = candidates[i];
+      console.log(`[${i + 1}/${candidates.length}] ${c.showId} (${c.contentTier}, ${c.existingChars} chars existing)`);
+
+      if (i > 0) await page.waitForTimeout(jitterDelay());
+
+      let result;
+      try {
+        result = await extractArticle(page, c.url);
+      } catch (e) {
+        result = { error: e.message };
+      }
+
+      if (result.error || !result.text) {
+        // BRO-7171: a bot check, an access wall or a lost session is never
+        // evidence about the review: skip it, or stop the run, never stamp it.
+        const miss = await resolveBrowserMiss(result, { probe: () => extractArticle(page, TEST_URL), minAuthChars: AUTH_MIN_CHARS });
+        if (miss.action === 'stop') { console.log(`  ✗ ${result.error || 'no text extracted'}; ${miss.reason}: stopping the run`); stats.sessionLost = miss.reason; break; }
+        if (miss.action === 'skip') { console.log(`  ✗ ${result.error || 'no text extracted'} (${miss.reason}; not evidence, not stamped)`); stats.skipped = (stats.skipped || 0) + 1; continue; }
+        const reason = result.error || 'no text extracted';
+        console.log(`  ✗ ${reason}`);
+        stats.dead++;
+        deadEntries.push({ reviewId: c.reviewId, url: c.url, reason });
+        if (!dryRun) {
+          // incompleteReason is a controlled-vocabulary field (see scripts/lib/incomplete-reason.js)
+          // that collect-review-texts.js/gather-reviews.js gate SERP re-discovery eligibility on
+          // ('wrong_content' -> needsSerpDiscovery). A free-text string here silently disables that
+          // downstream auto-recovery until the next rebuild-all-reviews.js recomputes it — use the
+          // real enum value instead, with our diagnostic in incompleteDetail.
+          stampDead(c, {
+            incompleteReason: reason === 'DataDome challenge detected' ? 'bot_blocked' : 'wrong_content',
+            incompleteDetail: `wsj-browser-recovery: ${reason} (${new Date().toISOString()})`,
+          });
+        }
+        continue;
+      }
+
+      if (dryRun) {
+        console.log(`  [DRY RUN] would process ${result.len} chars`);
+        continue;
+      }
+
+      const outcome = processRecoveredText(c, result.text, WSJ_LABELS);
+      if (outcome.ok) {
+        stats.recovered++;
+        console.log(`  ✓ RECOVERED (${outcome.newLen} chars)`);
+        if (stats.recovered % CONFIG.checkpointInterval === 0) checkpoint(stats);
+      } else {
+        if (outcome.code === 'too_short') {
+          const miss = await resolveBrowserMiss(result, { probe: () => extractArticle(page, TEST_URL), minAuthChars: AUTH_MIN_CHARS, refusalCode: 'too_short' });
+          if (miss.action === 'stop') { console.log(`  ✗ ${outcome.reason}; ${miss.reason}: stopping the run`); stats.sessionLost = miss.reason; break; }
+        }
+        console.log(`  ✗ ${outcome.reason}`);
+        if (outcome.reason.includes('too short')) stats.tooShort++;
+        else if (outcome.reason.includes('garbage')) stats.garbage++;
+        else if (outcome.reason.includes('not mentioned')) stats.notMentioned++;
+        else if (outcome.reason.includes('not longer')) stats.notLonger++;
+        else stats.blocked++;
+      }
     }
 
-    if (dryRun) {
-      console.log(`  [DRY RUN] would process ${result.len} chars`);
-      continue;
-    }
-
-    const outcome = processRecoveredText(c, result.text);
-    if (outcome.ok) {
-      stats.recovered++;
-      console.log(`  ✓ RECOVERED (${outcome.newLen} chars)`);
-      if (stats.recovered % CONFIG.checkpointInterval === 0) checkpoint(stats);
-    } else {
-      console.log(`  ✗ ${outcome.reason}`);
-      if (outcome.reason.includes('too short')) stats.tooShort++;
-      else if (outcome.reason.includes('garbage')) stats.garbage++;
-      else if (outcome.reason.includes('not mentioned')) stats.notMentioned++;
-      else if (outcome.reason.includes('not longer')) stats.notLonger++;
-      else stats.blocked++;
-    }
+    // Tracker-driven: also lands dead-candidate stamps when nothing was recovered.
+    if (!dryRun) checkpoint(stats);
+  } catch (e) {
+    runError = e;
   }
 
-  if (stats.recovered > 0 && !dryRun) checkpoint(stats);
-
-  fs.writeFileSync(CONFIG.reportPath, JSON.stringify({ ...stats, deadEntries, timestamp: new Date().toISOString(), dryRun }, null, 2) + '\n');
+  fs.writeFileSync(CONFIG.reportPath, JSON.stringify({ ...stats, deadEntries, timestamp: new Date().toISOString(), error: runError ? runError.message : null, dryRun }, null, 2) + '\n');
 
   console.log(`\n${'='.repeat(60)}`);
   console.log('Summary');
@@ -358,9 +290,12 @@ async function main() {
   console.log(`  Candidates: ${stats.total}`);
   console.log(`  Recovered:  ${stats.recovered}`);
   console.log(`  Dead (stamped incompleteReason): ${stats.dead}`);
+  if (stats.sessionLost) console.log(`  Session lost mid-run (${stats.sessionLost}): stopped, nothing stamped after it`);
+  if (stats.skipped) console.log(`  Skipped (bot check / access wall, not evidence): ${stats.skipped}`);
   console.log(`  Too short: ${stats.tooShort}  Garbage: ${stats.garbage}  Not mentioned: ${stats.notMentioned}  Not longer: ${stats.notLonger}`);
 
   await context.close();
+  if (runError) throw runError;
 }
 
 main().catch(err => {

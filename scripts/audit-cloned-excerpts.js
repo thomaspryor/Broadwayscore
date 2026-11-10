@@ -30,6 +30,7 @@
 
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
+const { assertReviewTextCorpus, exitIfCorpusNotScanned } = require('./lib/corpus-scan-guard');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
@@ -222,6 +223,8 @@ function apply(p, showDir) {
 function run(argv) {
   const dir = arg(argv, 'review-texts-dir') || process.env.REVIEW_TEXTS_DIR || resolveReviewTextsDir();
   const only = arg(argv, 'show');
+  try { assertReviewTextCorpus(dir); } catch (err) { exitIfCorpusNotScanned(err); }
+
   const liveOnly = argv.includes('--live-only');
   const doApply = argv.includes('--apply');
   const liveIdx = buildLiveIndex(JSON.parse(fs.readFileSync(REVIEWS_JSON, 'utf8')).reviews);

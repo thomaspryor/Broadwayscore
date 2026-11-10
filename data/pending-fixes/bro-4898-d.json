@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4898-d",
   "planId": "bd6b152d-8b35-4c24-bba4-2b361b237a50",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-13T02:58:14.229Z",
   "submitter": {
     "name": null,
@@ -242,14 +242,12 @@
     }
   ],
   "triage": {
-    "card": "BRO-7092",
-    "at": "2026-11-07T20:58:07.982Z",
-    "verdict": "still-needed",
+    "card": "BRO-7094",
+    "at": "2026-11-09T21:40:12.459Z",
+    "verdict": "obsolete",
     "counts": {
-      "obsolete": 2,
-      "still-needed": 2
+      "obsolete": 4
     },
-    "stillNeededReason": "op 12: execute-approved-fix refuses review-field-edit of allowEarlyDate (not an allowed field); clearing it needs that field allowlisted or a dedicated op (BRO-7092 hand check); op 16: execute-approved-fix refuses review-field-edit of allowEarlyDate (not an allowed field); clearing it needs that field allowlisted or a dedicated op (BRO-7092 hand check)",
     "ops": [
       {
         "i": 11,
@@ -258,8 +256,8 @@
       },
       {
         "i": 12,
-        "verdict": "still-needed",
-        "reason": "execute-approved-fix refuses review-field-edit of allowEarlyDate (not an allowed field); clearing it needs that field allowlisted or a dedicated op (BRO-7092 hand check)"
+        "verdict": "obsolete",
+        "reason": "BRO-7094: supersede this optional allowEarlyDate clear. whatsonstage--rachel-agyekum.json already has approved wrongProduction=true (2026-10-13) for the 2025 Kingston run and no matching reviews.json row. Keep the exclusion; do not widen the shared field allowlist. allowEarlyDate remains true."
       },
       {
         "i": 15,
@@ -268,9 +266,11 @@
       },
       {
         "i": 16,
-        "verdict": "still-needed",
-        "reason": "execute-approved-fix refuses review-field-edit of allowEarlyDate (not an allowed field); clearing it needs that field allowlisted or a dedicated op (BRO-7092 hand check)"
+        "verdict": "obsolete",
+        "reason": "BRO-7094: supersede this optional allowEarlyDate clear. times-uk--clive-davis.json already has approved wrongProduction=true (2026-10-13) for the prior production and no matching reviews.json row. Keep the exclusion; do not widen the shared field allowlist. allowEarlyDate remains true."
       }
     ]
-  }
+  },
+  "supersededAt": "2026-11-09T21:40:12.459Z",
+  "supersededReason": "BRO-7094: current-data hand check settled every remaining op; see triage.ops for evidence. Original actions and execution results retained."
 }

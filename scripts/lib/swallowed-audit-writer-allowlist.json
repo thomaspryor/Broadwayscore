@@ -135,5 +135,11 @@
     "step": "Opening grades (BRO-7082)",
     "script": "scripts/grade-openings.js",
     "reason": "Advisory grade (BRO-7082, lands advisory per CLAUDE.md 19). The file is a pure derivation rebuilt from scratch each run from shows.json and review-texts git history, so a failed run loses nothing; the next daily run rewrites it, and a stale file is flagged by the digest banner."
+  },
+  {
+    "workflow": "city-finder-daily.yml",
+    "step": "List season productions (plan + art)",
+    "script": "scripts/city-season-sync.js",
+    "reason": "BRO-7250 advisory listing step (rule 19: new steps land non-blocking). Its audit report data/audit/city-season-<city>.json is a derivation re-read from the theatre pages on the next daily run, a failed run only delays new listings, and the 'Warn when season step failed' step below it surfaces the failure."
   }
 ]

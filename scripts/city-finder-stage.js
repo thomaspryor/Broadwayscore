@@ -15,7 +15,9 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const { fetchPage, cleanup } = require('./lib/scraper');
+const { closingFields, ESTIMATED_RUN_DAYS } = require('./lib/run-end-from-text');
 const F = require('./lib/city-review-finder');
+const { stagedTitle } = require('./lib/staged-title');
 const { getFinder } = require('./lib/city-finder-config');
 const { sanitizeVenueForWrite } = require('./lib/venue-classification');
 
@@ -26,6 +28,12 @@ const normUrl = (u) => String(u).toLowerCase().replace(/^https?:\/\/(www\.)?/, '
 const SLUG_YEAR = (d) => String(d).slice(0, 4);
 
 const slugify = (t) => String(t).toLowerCase().replace(/&/g, ' and ').replace(/['’]/g, '').normalize('NFKD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+
+function stagedTitleLogged(id, title) {
+  const r = stagedTitle(id, title);
+  if (r.manualReview) console.error(`WARN shouted title needs manual review: ${title} (${id})`);
+  return r.title;
+}
 
 function theatreOf(city, name) {
   const n = F.norm(name);
@@ -123,7 +131,9 @@ function emit() {
   const [hubSlug, hub] = hubEntry;
   const actions = [];
   const skipped = [];
+  const haveProd = new Set(shows.filter((s) => s.localOnly).map((s) => `${F.norm(s.title)}|${F.norm(s.venue || '').split(' ').slice(0, 2).join(' ')}`));
   for (const p of staged.productions) {
+    if (haveProd.has(`${F.norm(p.title)}|${F.norm(p.theatre).split(' ').slice(0, 2).join(' ')}`)) { skipped.push(`${p.title} (already a show)`); continue; }
     const openNow = p.end && p.end >= today && p.start <= today;
     if (p.reviews.length < min && !(openNow && p.reviews.length >= 2)) { skipped.push(`${p.title} (${p.reviews.length} reviews)`); continue; }
     const opening = p.firstReview && p.firstReview < p.start && p.startSource !== 'bww' ? p.firstReview : p.start;
@@ -131,9 +141,9 @@ function emit() {
     if (taken.has(id)) id = `${slugify(p.title)}-${slugify(p.theatre).replace(/^the-/, '').split('-').slice(0, /^the /i.test(p.theatre) || !/^la /i.test(p.theatre) ? 1 : 2).join('')}-regional-${SLUG_YEAR(opening)}`;
     if (taken.has(id)) { skipped.push(`${p.title} (id taken)`); continue; }
     taken.add(id);
-    const closed = p.end ? p.end < today : (Date.parse(today) - Date.parse(opening)) / 86400000 > 42;
+    const closed = p.end ? p.end < today : (Date.parse(today) - Date.parse(opening)) / 86400000 > ESTIMATED_RUN_DAYS;
     const show = {
-      id, title: p.title, slug: id,
+      id, title: stagedTitleLogged(id, p.title), slug: id,
       venue: sanitizeVenueForWrite(`${p.theatre}, ${p.city || city.defaultCity || 'San Diego'}, ${city.state}`),
       status: closed ? 'closed' : 'open',
       type: /\b(musical|rent|hairspray|mean girls|cher show|rock of ages|guys and dolls|come from away|evan hansen|seussical|spongebob|most happy fella|american rhythm|we will rock you|carrie|charlie and the chocolate factory)\b/i.test(p.title) ? 'musical' : 'play',
@@ -145,7 +155,8 @@ function emit() {
       discoveredAt: today,
       evidenceUrls: [p.bwwUrl, ...p.reviews.slice(0, 2).map((r) => r.url)].filter(Boolean).slice(0, 3),
     };
-    if (p.end) show.closingDate = p.end;
+    // BRO-7239: a closing date is only written with its source; no source means the run length is a guess, flagged as such.
+    Object.assign(show, closingFields(p.end, p.end ? 'broadwayworld-regional-listing' : null));
     if (p.image) show.image = p.image;
     actions.push({ type: 'add-show', show, description: `add ${id}` });
   }

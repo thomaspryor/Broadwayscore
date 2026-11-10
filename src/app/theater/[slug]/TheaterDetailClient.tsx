@@ -4,6 +4,7 @@ import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { ScoreBadge, FormatPill, ProductionPill, ToggleBar, ScoreToggle } from '@/components/show-cards';
+import { formatClosingLabel } from '@/lib/closing-label';
 import { getBroadwayDuration, formatShowDate, getShowYear } from '@/lib/date-utils';
 
 export interface TheaterShow {
@@ -12,6 +13,7 @@ export interface TheaterShow {
   title: string;
   openingDate: string;
   closingDate?: string;
+  closingExtensionCount?: number;
   status: string;
   type: string;
   isRevival?: boolean;
@@ -149,7 +151,7 @@ export default function TheaterDetailClient({ shows }: { shows: TheaterShow[] })
                       )}
                       {show.closingDate && (
                         <span className="text-amber-400">
-                          · Closes {formatShowDate(show.closingDate)}
+                          · {formatClosingLabel(show, formatShowDate(show.closingDate))}
                         </span>
                       )}
                     </>;

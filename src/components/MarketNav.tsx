@@ -38,10 +38,13 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
   const isUkRegional = marketId === 'uk-regional';
   const activeHub = hubForPath(pathname);
   const isHubPath = (slug: string) => activeHub?.slug === slug;
-  const isWestEnd = marketId === 'west-end' || isUkRegional;
-  const isOffWestEnd = marketId === 'off-west-end';
-  // Treat opera show pages as NOT off-broadway for the pill label, even though
-  // the URL-derived marketId is 'off-broadway' (shared routing convention).
+  // Treat opera show pages as NOT off-broadway / West End / Off-West End for the
+  // pill label, even though the URL-derived marketId says so (shared routing
+  // convention): ENO and Royal Opera House rows carry -west-end/-off-west-end
+  // slugs the same way Met rows carry -off-broadway (owner, 2026-11-08: opera
+  // does not count as West End).
+  const isWestEnd = (marketId === 'west-end' || isUkRegional) && !isOperaShowPage;
+  const isOffWestEnd = marketId === 'off-west-end' && !isOperaShowPage;
   const isOffBroadway = marketId === 'off-broadway' && !isOperaShowPage;
   // Regional (non-NYC US) shows: distinct pill label; dropdown links to the
   // pre-Broadway browse page (no dedicated hub yet).
@@ -184,7 +187,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
                   OperaScorecard
                   <span className="text-[9px] font-bold uppercase tracking-wider text-[#f0627a]/70 border border-[#f0627a]/30 rounded px-1 py-px">Beta</span>
                 </div>
-                <div className="text-[11px] text-fg-muted">Met Opera · New York</div>
+                <div className="text-[11px] text-fg-muted">New York · London</div>
               </div>
             </div>
             {isOpera && (

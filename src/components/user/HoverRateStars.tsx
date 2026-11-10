@@ -85,6 +85,9 @@ export default function HoverRateStars({ showId, show, showHref, starSize = 'xs'
         size={starSize}
         expandHitTarget
         hideLabel
+        // Every pick leaves the page (or opens the editor), so an arrow key nudging
+        // the focused star would commit 0.5 by accident. Enter/Space still pick.
+        arrowKeys={false}
       />
     </div>
   );

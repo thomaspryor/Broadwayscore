@@ -35,3 +35,11 @@ test('no runs, no rows', () => {
   assert.deepEqual(corpusAuditResults({}), []);
   assert.deepEqual(corpusAuditResults(null), []);
 });
+
+test('BRO-7174: approved-fix drift becomes a warning in the digest results', () => {
+  const [row] = corpusAuditResults({ approvedFixDrift: { status: 0,
+    output: JSON.stringify({ unexplainedCount: 2, scannedWithApprovedFixes: 2773 }) } });
+  assert.equal(row.name, 'Data: approved-fix drift');
+  assert.equal(row.status, 'warn');
+  assert.match(row.message, /^2 unexplained/);
+});

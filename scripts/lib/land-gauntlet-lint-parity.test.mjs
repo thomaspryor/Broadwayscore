@@ -65,8 +65,14 @@ function missingFlags(pairs, gauntlet) {
 }
 
 // [script, mode] pairs for `bash scripts/X.sh <mode>`.
+// Tool installers in the lint-workflows job are setup, not lint modes: the
+// gauntlet installs its own tools (an argument there is a repo name, not a mode).
+const SETUP_SCRIPTS = new Set(['lib/install-release-binary.sh']);
+
 function bashModes(testYml) {
-  return [...lintWorkflowsText(testYml).matchAll(/bash scripts\/([\w./-]+?\.sh)[ \t]+([\w-]+)/g)].map((m) => [m[1], m[2]]);
+  return [...lintWorkflowsText(testYml).matchAll(/bash scripts\/([\w./-]+?\.sh)[ \t]+([\w-]+)/g)]
+    .map((m) => [m[1], m[2]])
+    .filter(([s]) => !SETUP_SCRIPTS.has(s));
 }
 
 // A gauntlet mode counts when it is called literally, or listed in the

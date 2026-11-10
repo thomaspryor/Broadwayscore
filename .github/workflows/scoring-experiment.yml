@@ -12,6 +12,31 @@ on:
           - all
           - comprehensive
           - prompt-variations
+          - openai-leg-shadow
+      sample:
+        description: 'openai-leg-shadow: sample size (past reviews)'
+        required: false
+        default: '1000'
+      limit:
+        description: 'openai-leg-shadow: max reviews per shard (smoke run: 5)'
+        required: false
+        default: ''
+      shadow_model:
+        description: 'openai-leg-shadow: second OpenAI model (gpt-4o = noise floor run)'
+        required: false
+        default: 'gpt-5.4-mini'
+        type: choice
+        options:
+          - gpt-5.4-mini
+          - gpt-4o
+      open_shows:
+        description: 'openai-leg-shadow: score EVERY review of N open shows instead of a corpus sample (blank = sample)'
+        required: false
+        default: ''
+      label:
+        description: 'openai-leg-shadow: results file prefix, data/audit/openai-leg-ab/<label>-shard-N.jsonl (blank = shard-N.jsonl). A gpt-4o shadow run is a NOISE FLOOR: read its flips/moved, ignore its gates.'
+        required: false
+        default: ''
 
 env:
   ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
@@ -24,6 +49,7 @@ permissions:
 
 jobs:
   run-experiment:
+    if: ${{ github.event.inputs.experiment != 'openai-leg-shadow' }}
     runs-on: ubuntu-latest
     timeout-minutes: 60
 
@@ -93,3 +119,81 @@ jobs:
           title: 'Scoring Experiment Failed'
           severity: 'low'
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+
+  # OpenAI-leg migration A/B on past reviews (owner plan 2026-11-09; gpt-4o
+  # retires 2027-01-14). Read-only against review files: each shard writes one
+  # JSONL of control-vs-shadow finals to data/audit/openai-leg-ab/ and commits
+  # only that (plus the LLM spend ledger). Report:
+  #   npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/openai-leg-shadow.ts --report data/audit/openai-leg-ab
+  openai-leg-shadow:
+    if: ${{ github.event.inputs.experiment == 'openai-leg-shadow' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 300
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: ./.github/actions/setup-node
+      - name: Results file
+        id: dir
+        env:
+          INPUT_LABEL: ${{ github.event.inputs.label }}
+        run: |
+          # One folder (already merge=union + verified in audit-ledger-merge-attrs.js);
+          # runs are told apart by file prefix.
+          case "$INPUT_LABEL" in ''|*[!a-z0-9-]*) [ -z "$INPUT_LABEL" ] || { echo "::error::label must be [a-z0-9-]"; exit 1; } ;; esac
+          echo "file=data/audit/openai-leg-ab/${INPUT_LABEL:+$INPUT_LABEL-}shard-${{ matrix.shard }}.jsonl" >> "$GITHUB_OUTPUT"
+      - name: Score shard ${{ matrix.shard }} (control gpt-4o vs shadow ${{ github.event.inputs.shadow_model || 'gpt-5.4-mini' }})
+        env:
+          INPUT_SAMPLE: ${{ github.event.inputs.sample }}
+          INPUT_LIMIT: ${{ github.event.inputs.limit }}
+          INPUT_SHADOW: ${{ github.event.inputs.shadow_model }}
+          INPUT_OPEN_SHOWS: ${{ github.event.inputs.open_shows }}
+          OUT_FILE: ${{ steps.dir.outputs.file }}
+        run: |
+          EXTRA=""
+          if [ -n "$INPUT_LIMIT" ]; then EXTRA="$EXTRA --limit=$INPUT_LIMIT"; fi
+          if [ -n "$INPUT_OPEN_SHOWS" ]; then EXTRA="$EXTRA --open-shows=$INPUT_OPEN_SHOWS"; fi
+          npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/openai-leg-shadow.ts \
+            --sample="${INPUT_SAMPLE:-1000}" --seed=20261109 --shard=${{ matrix.shard }} --shards=4 \
+            --concurrency=4 --shadow-model="${INPUT_SHADOW:-gpt-5.4-mini}" \
+            --out="$OUT_FILE" $EXTRA
+      - name: Upload shard
+        if: always()
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
+        with:
+          name: openai-leg-ab${{ github.event.inputs.label && format('-{0}', github.event.inputs.label) || '' }}-shard-${{ matrix.shard }}
+          path: ${{ steps.dir.outputs.file }}
+          if-no-files-found: warn
+      - name: Commit shard
+        if: always()
+        continue-on-error: true
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
+          OUT_FILE: ${{ steps.dir.outputs.file }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          [ -n "$OUT_FILE" ] && git add "$OUT_FILE" 2>/dev/null || true
+          git add data/audit/gemini-usage-ledger.jsonl 2>/dev/null || true # LLM spend meter rows (BRO-5043)
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "data: OpenAI-leg A/B shard ${{ matrix.shard }} [skip ci]"
+            bash scripts/lib/push-with-retry.sh
+          fi

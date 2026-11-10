@@ -14,6 +14,8 @@ export const REGION_METRO: Record<string, string> = {
   chicago: 'chicago-il',
   'washington-dc': 'washington-dc',
   'los-angeles': 'los-angeles-ca',
+  'san-diego': 'san-diego-ca',
+  boston: 'boston-ma',
 };
 
 export function outletMetro(entry: OutletMetroEntry | null | undefined): string | null {

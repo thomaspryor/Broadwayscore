@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4431-e",
   "planId": "ca57f7e7-78c4-4e1d-a714-4c0765727b4f",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-01T00:10:00.000Z",
   "submitter": {
     "name": null,
@@ -68,14 +68,12 @@
     }
   ],
   "triage": {
-    "card": "BRO-7092",
-    "at": "2026-11-07T20:58:07.982Z",
-    "verdict": "still-needed",
+    "card": "BRO-7094",
+    "at": "2026-11-09T21:40:12.459Z",
+    "verdict": "resolved",
     "counts": {
-      "resolved": 2,
-      "still-needed": 1
+      "resolved": 3
     },
-    "stillNeededReason": "op 1: re-ingested via ingest-urls on 2026-11-07 (success) but the CI fetch of this paywalled page still yields no text or a stub; it needs a browser html handoff (ingest-html-handoff) to recover (BRO-7092 hand check)",
     "ops": [
       {
         "i": 0,
@@ -84,8 +82,8 @@
       },
       {
         "i": 1,
-        "verdict": "still-needed",
-        "reason": "re-ingested via ingest-urls on 2026-11-07 (success) but the CI fetch of this paywalled page still yields no text or a stub; it needs a browser html handoff (ingest-html-handoff) to recover (BRO-7092 hand check)"
+        "verdict": "resolved",
+        "reason": "BRO-7094: times-uk--unknown.json now has 2538 characters, contentTier complete, originalScore 3/5 stars, and one matching row in reviews.json. Text fetched 2026-11-08T20:25:44.136Z; no new ingest needed."
       },
       {
         "i": 2,
@@ -93,5 +91,7 @@
         "reason": "https://www.thetimes.com/culture/theatre-dance/article/the-standard-of-living-review-mxq2c5hnx is counted for the-standard-of-living-west-end-2026"
       }
     ]
-  }
+  },
+  "supersededAt": "2026-11-09T21:40:12.459Z",
+  "supersededReason": "BRO-7094: current-data hand check settled every remaining op; see triage.ops for evidence. Original actions and execution results retained."
 }

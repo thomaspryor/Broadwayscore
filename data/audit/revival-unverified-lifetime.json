@@ -1,14 +1,16 @@
 {
-  "updatedAt": "2026-11-08T09:29:41.633Z",
-  "scanned": 4770,
-  "showsWithViolations": 12,
-  "totalViolations": 12,
-  "newSinceLastRun": 1,
+  "updatedAt": "2026-11-09T10:47:00.820Z",
+  "scanned": 4794,
+  "showsWithViolations": 14,
+  "totalViolations": 14,
+  "newSinceLastRun": 2,
   "newViolationKeys": [
-    "the-royale-regional-2026"
+    "wicked-2003",
+    "rope-off-broadway-2026"
   ],
   "violationKeys": [
     "six-2021",
+    "wicked-2003",
     "tosca-english-national-opera-west-end-2026",
     "maria-stuarda-off-broadway-2026",
     "otello-off-broadway-2027",
@@ -16,6 +18,7 @@
     "der-rosenkavalier-off-broadway-2027",
     "samson-et-dalila-off-broadway-2026",
     "the-revlon-girl-off-west-end-2026",
+    "rope-off-broadway-2026",
     "frida-a-self-portrait-regional-2026",
     "wish-you-were-here-regional-2026",
     "the-royale-regional-2026",
@@ -27,6 +30,15 @@
       "title": "SIX",
       "openingDate": "2021-10-03",
       "message": "six-2021 review text mentions \"revival\" 4x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "wicked-2003",
+      "title": "Wicked",
+      "openingDate": "2003-10-30",
+      "message": "wicked-2003 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -90,6 +102,15 @@
       "title": "The Revlon Girl",
       "openingDate": "2026-10-28",
       "message": "the-revlon-girl-off-west-end-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "rope-off-broadway-2026",
+      "title": "Rope",
+      "openingDate": "2026-11-03",
+      "message": "rope-off-broadway-2026 review text mentions \"revival\" 4x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]

@@ -54,8 +54,9 @@ async function main() {
     for (const p of census.productions.slice(0, limit)) {
       const prod = { title: p.title, theatre: p.theatre, start: p.openingDate, end: null, aliases: [] };
       const res = await F.findReviews(prod, city, ctx);
-      const have = new Set(res.reviews.map((r) => r.url.replace(/\/$/, '')));
-      const want = p.reviews.filter((r) => r.url).map((r) => r.url.replace(/\/$/, ''));
+      const key = (u) => { try { const x = new URL(u); return x.hostname.replace(/^www\./, '') + '|' + (x.pathname.replace(/\/$/, '').split('/').pop() || x.search); } catch { return u; } };
+      const have = new Set(res.reviews.map((r) => key(r.url)));
+      const want = p.reviews.filter((r) => r.url).map((r) => key(r.url));
       const got = want.filter((u) => have.has(u));
       truth += want.length; hit += got.length; extra += [...have].filter((u) => !want.includes(u)).length;
       rows.push({ title: p.title, want: want.length, got: got.length, found: res.reviews.length, missed: want.filter((u) => !have.has(u)), extra: [...have].filter((u) => !want.includes(u)), rejected: res.rejected.length });

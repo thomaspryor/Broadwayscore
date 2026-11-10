@@ -22,6 +22,7 @@
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
+const { checkpointReviewTexts, retryPendingPushes } = require('./lib/review-texts-checkpoint'); // BRO-7171
 
 function parseArgs() {
   const a = process.argv.slice(2);
@@ -71,13 +72,15 @@ function main() {
   let showDirs = opts.shows.length ? opts.shows : listShowDirs(opts.dir);
   let stamped = 0, skipped = 0, missingDate = 0, processed = 0;
   let sinceCommit = 0;
+  // BRO-7171: commit + push only the files this run stamped, under the
+  // machine-wide lock (review-texts-checkpoint.js), never a whole-tree add.
+  const batchWrites = new Set();
+  if (!opts.dryRun && opts.commit) retryPendingPushes({ repoDir: opts.dir });
 
   const commitBatch = () => {
     if (opts.dryRun || !opts.commit || sinceCommit === 0) return;
-    try {
-      execFileSync('git', ['-C', opts.dir, 'add', '-A'], { stdio: 'ignore' });
-      execFileSync('git', ['-C', opts.dir, 'commit', '-m', `backfill: firstSeenAt (${stamped} stamped) [skip ci]`], { stdio: 'ignore' });
-    } catch (_) { /* nothing staged / commit no-op */ }
+    checkpointReviewTexts({ repoDir: opts.dir, paths: batchWrites, message: `backfill: firstSeenAt (${stamped} stamped) [skip ci]` });
+    batchWrites.clear();
     sinceCommit = 0;
   };
 
@@ -98,6 +101,7 @@ function main() {
       if (!opts.dryRun) {
         data.firstSeenAt = chosen;
         fs.writeFileSync(abs, JSON.stringify(data, null, 2));
+        batchWrites.add(abs);
         sinceCommit++;
       }
       stamped++; processed++;

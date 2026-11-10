@@ -183,7 +183,7 @@ test('runLaneNight with abandonPending publishes nothing and reports the queue a
     show, night: NIGHT, openingDate: NIGHT, ledgerDir: dir, fetchText: async () => '', maxPasses: 1,
     adapters: [{ name: 'a', kind: 'aggregator', phase: 'main',
       discover: async () => [{ url: 'https://www.theguardian.com/stage/2026/oct/20/test-show-review', outletId: 'guardian', source: 'aggregator', aggregatorCited: true }] }],
-    fetchReview: async () => ({ outletId: 'guardian', outlet: 'The Guardian', criticName: 'Test Critic', fullText: 'A delight. '.repeat(80), publishDate: NIGHT }),
+    fetchReview: async () => ({ outletId: 'guardian', outlet: 'The Guardian', criticName: 'Test Critic', fullText: 'The cast is sharp and the staging moves with real wit, and the second act lands every joke it sets up. '.repeat(8), publishDate: NIGHT }),
     scoreReview: async () => 80,
     publishPorts: { updateReviews: async () => { updates++; throw new Error('must not publish'); }, regenShow: async () => {}, deploy: async () => {}, fetchLiveShow: async () => ({ rv: [] }) },
     now: () => Date.parse(`${NIGHT}T23:00:00Z`), wait: async () => {}, abandonPending: () => true,

@@ -51,11 +51,11 @@ jobs:
           fetch-depth: 1
 
       - name: Install gitleaks
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           VERSION=8.21.2
-          curl -sL "https://github.com/gitleaks/gitleaks/releases/download/v${VERSION}/gitleaks_${VERSION}_linux_x64.tar.gz" \
-            | tar -xz -C /tmp gitleaks
-          sudo mv /tmp/gitleaks /usr/local/bin/gitleaks
+          bash scripts/lib/install-release-binary.sh gitleaks/gitleaks "v${VERSION}" "gitleaks_${VERSION}_linux_x64.tar.gz" gitleaks
           gitleaks version
 
       # Scan 1 — what is in the code RIGHT NOW, regardless of when it landed.
@@ -94,8 +94,12 @@ jobs:
           path: gitleaks-*.sarif
           if-no-files-found: ignore
 
+      # Only when the first Checkout never populated the tree. Cone-mode
+      # sparse-checkout with a FILE entry fails on a populated tree ("is not a
+      # directory", exit 128, every failure 2026-10-31..11-08) but works on a
+      # fresh one. Guard: tests/unit/audit-workflow-hygiene-sparse-recheckout.test.mjs.
       - name: Checkout for notify action
-        if: failure()
+        if: failure() && hashFiles('.github/actions/notify-failure/action.yml') == ''
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           sparse-checkout: |

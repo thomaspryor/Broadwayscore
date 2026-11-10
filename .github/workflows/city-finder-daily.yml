@@ -1,0 +1,188 @@
+name: City Finder Daily
+run-name: 'City finder daily pickup'
+
+# BRO-6854: city hubs without a Theatre-In-X roundup (San Diego, Boston) find their reviews with the multi-source
+# finder (scripts/lib/city-review-finder.js, every fetch through fetchPage). This pickup runs the finder over
+# productions open now or opened in the last 21 days, then sends review URLs not yet on file for shows we already
+# have to ingest-urls.yml (one dispatch-ingest-batch call for all cities, one scoring run).
+# The finder never writes shows: its candidates go to data/audit/city-finder-daily-<city>.json. Season productions
+# (BRO-7250, step below) are added only through a pending-fix plan and execute-approved-fix.
+# Advisory: the dispatch step is continue-on-error. Kill switch: repo variable CITY_FINDER_DISPATCH=false
+# (the finder and its report still run). BRO-7250 adds a season-listing step (CITY_SEASON_SYNC=false switches it off).
+
+on:
+  schedule:
+    - cron: '47 10 * * *'
+  workflow_dispatch:
+    inputs:
+      dispatch:
+        description: 'Send new review URLs to ingest (false = report only)'
+        required: false
+        default: 'true'
+        type: choice
+        options: ['true', 'false']
+
+permissions:
+  # contents: write: commits the audit files and the dispatched-URL list via push-with-retry.sh.
+  contents: write
+  # actions: write: dispatch-ingest-batch.js dispatches ingest-urls.yml and llm-ensemble-score.yml.
+  actions: write
+
+concurrency:
+  group: city-finder-daily
+  cancel-in-progress: false
+
+jobs:
+  pickup:
+    name: Find and dispatch new city reviews
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    env:
+      SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+      SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+      SCRAPER_USE_SCRAPINGDOG: '1'
+      BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+      BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+          # The push happens after a long dispatch wait: depth 1000 keeps push-with-retry.sh's shallow boundary
+          # an ancestor of main (as press-night-probe.yml does).
+          fetch-depth: 1000
+
+      - name: Setup Node
+        uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: List finder cities
+        id: cities
+        run: |
+          CITIES=$(node -e "const h=require('./data/city-hubs.json').hubs;console.log(Object.values(h).filter(x=>x.finder&&x.finder.key).map(x=>x.finder.key).join(' '))")
+          [ -n "$CITIES" ] || { echo "::error::no hub with finder.key in data/city-hubs.json"; exit 1; }
+          echo "cities=$CITIES" >> "$GITHUB_OUTPUT"
+
+      - name: Run the finder per city
+        id: find
+        run: |
+          OK=""
+          for C in ${{ steps.cities.outputs.cities }}; do
+            if node scripts/city-finder-daily.js --city="$C" --plan="/tmp/city-finder-ingest-$C.json"; then OK="$OK $C"; else echo "::warning::finder failed for $C"; fi
+          done
+          echo "ok=$OK" >> "$GITHUB_OUTPUT"
+          [ -n "$OK" ] || { echo "::error::finder failed for every city"; exit 1; }
+
+      - name: Merge ingest plans
+        id: merge
+        run: |
+          node -e '
+            const fs = require("fs");
+            const merged = {};
+            for (const c of process.argv.slice(1)) {
+              const p = JSON.parse(fs.readFileSync(`/tmp/city-finder-ingest-${c}.json`, "utf8"));
+              for (const [id, urls] of Object.entries(p)) merged[id] = (merged[id] || []).concat(urls);
+            }
+            fs.writeFileSync("/tmp/city-finder-ingest-all.json", JSON.stringify(merged));
+            const n = Object.values(merged).reduce((a, v) => a + v.length, 0);
+            fs.appendFileSync(process.env.GITHUB_OUTPUT, `urls=${n}\n`);
+            console.log(`${n} new review URLs across ${Object.keys(merged).length} shows`);
+          ' ${{ steps.find.outputs.ok }}
+
+      - name: Dispatch ingest + scoring (one batch for all cities)
+        id: dispatch
+        if: steps.merge.outputs.urls != '0' && inputs.dispatch != 'false' && vars.CITY_FINDER_DISPATCH != 'false'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node scripts/dispatch-ingest-batch.js --plan=/tmp/city-finder-ingest-all.json --checkpoint=/tmp/city-finder-ckpt.json
+
+      - name: Warn when dispatch failed
+        if: steps.dispatch.outcome == 'failure'
+        run: echo "::warning::City finder dispatch failed; URLs were not marked dispatched and will be retried next run"
+
+      - name: Mark dispatched URLs
+        if: steps.dispatch.outcome == 'success'
+        run: |
+          for C in ${{ steps.find.outputs.ok }}; do
+            node scripts/city-finder-mark-dispatched.js --city="$C" --plan="/tmp/city-finder-ingest-$C.json"
+          done
+
+      # BRO-7250: list the local professional productions on each theatre's season page (running now or opening in ~3 months)
+      # before any review exists. Season rows come from scripts/city-season-sync.js (LLM-read, every row checked against the
+      # page text, real art only), go to shows.json through a pending-fix plan and execute-approved-fix, never a direct write.
+      # Advisory: continue-on-error. Kill switch: repo variable CITY_SEASON_SYNC=false. Cap: 8 new shows per run.
+      - name: List season productions (plan + art)
+        id: season
+        if: vars.CITY_SEASON_SYNC != 'false'
+        continue-on-error: true
+        timeout-minutes: 40
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # A plan that landed but was never dispatched (push or dispatch failed on an earlier day) is dispatched first.
+          for F in data/pending-fixes/bro-7250-d*.json; do
+            [ -f "$F" ] || continue
+            if [ "$(node -p "require('./$F').status")" = "pending" ]; then
+              P=$(basename "$F" .json)
+              echo "Re-dispatching undispatched plan $P"
+              gh workflow run execute-approved-fix.yml -f issue_number="$P" -f plan_id="$(node -p "require('./$F').planId")" -f mode=apply || echo "::warning::re-dispatch of $P failed"
+            fi
+          done
+          ARGS=""
+          for C in ${{ steps.cities.outputs.cities }}; do
+            if node scripts/city-season-sync.js --city="$C" --id="bro-7250-$C" --apply --max=8 --out="/tmp/season-$C.json"; then ARGS="$ARGS --actions=/tmp/season-$C.json"; else echo "::warning::season sync failed for $C"; fi
+          done
+          N=0
+          for C in ${{ steps.cities.outputs.cities }}; do
+            [ -f "/tmp/season-$C.json" ] && N=$((N + $(node -p "require('/tmp/season-$C.json').length")))
+          done
+          echo "new=$N" >> "$GITHUB_OUTPUT"
+          [ "$N" != "0" ] || { echo "No new season productions"; exit 0; }
+          PLAN="bro-7250-d$(date -u +%y%m%d)"
+          node scripts/new-fix-plan.js --id="$PLAN" --summary="BRO-7250: $N local productions from theatre season pages" $ARGS
+          PLAN_ID=$(node -p "require('./data/pending-fixes/$PLAN.json').planId")
+          trap 'git reset -q -- data/pending-fixes public/images/shows 2>/dev/null || true' ERR
+          git add -A -- "data/pending-fixes/$PLAN.json" public/images/shows 'data/audit/city-season-*.json'
+          git commit -m "data: season productions plan $PLAN [skip ci]"
+          bash scripts/lib/push-with-retry.sh
+          gh workflow run execute-approved-fix.yml -f issue_number="$PLAN" -f plan_id="$PLAN_ID" -f mode=apply
+
+      - name: Warn when season step failed
+        if: steps.season.outcome == 'failure'
+        run: echo "::warning::City season listing failed; no season productions were added today"
+
+      - name: Commit reports
+        if: always()
+        run: |
+          git add -A -- 'data/audit/city-finder-*.json'
+          if git diff --staged --quiet; then
+            echo "No report changes"
+          else
+            git commit -m "data: city finder daily pickup [skip ci]"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: city-finder-daily
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'City Finder Daily Failed'
+          description: 'The daily city review pickup failed (finder, report commit), so new San Diego and Boston reviews were not picked up today.'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

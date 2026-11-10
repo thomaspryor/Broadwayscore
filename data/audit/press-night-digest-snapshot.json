@@ -1,16 +1,29 @@
 {
-  "generatedAt": "2026-11-08T06:47:10.675Z",
-  "night": "2026-11-07",
+  "generatedAt": "2026-11-10T05:14:47.860Z",
+  "night": "2026-11-09",
   "counts": {
-    "total": 0,
+    "total": 3,
     "passed": 0,
     "failed": 0,
-    "notGraded": 0
+    "notGraded": 3
   },
-  "lines": [],
+  "lines": [
+    {
+      "verdict": "UNKNOWN",
+      "line": "Dogstar: not graded, could not check when the first review went live or the critics list at the 2-hour mark or which reviews came in that night."
+    },
+    {
+      "verdict": "PENDING",
+      "line": "Here There Are Blueberries: not graded yet, still being checked; opening-night email draft not due until 9:00am."
+    },
+    {
+      "verdict": "PENDING",
+      "line": "The Visitors: not graded yet, still being checked."
+    }
+  ],
   "scoreboard": {
-    "graded": 16,
-    "passed": 1,
+    "graded": 17,
+    "passed": 2,
     "passedOnOwn": 1
   },
   "missFirstSeen": {}

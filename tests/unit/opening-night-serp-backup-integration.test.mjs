@@ -31,6 +31,8 @@ require.cache[urlDiscoveryPath] = {
       return null; // "not found" — keeps runSERPBackup iterating through outlets
     },
     OUTLET_DOMAINS: {},
+    // BRO-7162 F14: the poller gates on the shared hasSerpProvider; mirror its SB/BD behaviour here.
+    hasSerpProvider: () => !!(process.env.SCRAPINGBEE_API_KEY || process.env.BRIGHTDATA_TOKEN),
   },
 };
 

@@ -12,6 +12,7 @@
  *
  * Usage: node scripts/review-factcheck/check.js --model=gemini|openai [--only=..] [--concurrency=4] [--max-usd=20]
  */
+require('../lib/llm-usage-install'); // LLM spend meter: before any client is built (BRO-5043)
 const fs = require('fs');
 const os = require('os');
 const path = require('path');

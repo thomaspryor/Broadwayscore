@@ -44,6 +44,8 @@ export interface ShowMetadata {
   venue: string;
   openingDate: string; // ISO date
   closingDate?: string; // ISO date, if announced/known
+  /** BRO-7252: each time closingDate was pushed later (appended by scripts/lib/closing-date-guard.js). */
+  closingExtensions?: Array<{ announcedAt: string | null; from: string | null; to: string; source?: string | null }>;
   status: ShowStatus;
   type: 'musical' | 'play' | 'special';
   category?: ShowCategory; // 'broadway', 'off-broadway', 'west-end', etc — required at data-entry (validate-data.js); a missing value is treated as neither Broadway nor Off-Broadway, see data-core.ts isBroadwayShow()

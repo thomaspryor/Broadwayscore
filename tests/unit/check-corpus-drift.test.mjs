@@ -167,3 +167,84 @@ test('BRO-3549: no AUDITS entry lists exit 1 (drift) as a crash code', () => {
   const bad = AUDITS.filter((a) => !Array.isArray(a.crashCodes) || a.crashCodes.includes(1)).map((a) => a.name);
   assert.deepEqual(bad, []);
 });
+
+// BRO-3549: derived from each script's source, so a NEW AUDITS entry is covered
+// without anyone remembering to add it to a hand-kept list. A script that pulls
+// in scripts/lib/corpus-scan-guard.js can refuse a missing/empty corpus; unless
+// its entry lists 2 (CORPUS_NOT_SCANNED_EXIT_CODE) as a crash code, that refusal
+// is read as ordinary drift and can escalate an infra failure into a card.
+// An entry that keeps crashCodes without 2 must be named here with the reason.
+const ACCEPTED_CORPUS_MISSING_AS_DRIFT = {
+  // Documented on the entry: corpus-missing exits 1, shown as drift (same as aggregator-truth).
+  'review-contamination': 'monitor-only; tradeoff documented on its AUDITS entry',
+  // --check reads the committed census summary and never scans the corpus; the
+  // guard only runs in its scan mode. A missing/stale summary is real drift (1).
+  'exclusion-mirror': '--check mode does not scan the corpus',
+};
+
+test('BRO-3549: every AUDITS script using corpus-scan-guard lists exit 2 as a crash code (or is an accepted tradeoff)', () => {
+  const fs = require('node:fs');
+  const path = require('node:path');
+  const { CORPUS_NOT_SCANNED_EXIT_CODE } = require('../../scripts/lib/corpus-scan-guard.js');
+  const scriptsDir = path.resolve(import.meta.dirname, '../../scripts');
+  const missing = [];
+  const sharedCodeMissing = [];
+  for (const a of AUDITS) {
+    const src = fs.readFileSync(path.join(scriptsDir, a.script), 'utf8');
+    if (!/corpus-scan-guard/.test(src)) continue;
+    const listsCode = a.crashCodes.includes(CORPUS_NOT_SCANNED_EXIT_CODE);
+    // Using the shared exit code means the script DOES exit 2 on a missing corpus:
+    // no tradeoff is possible, the entry must list it.
+    if (/exitIfCorpusNotScanned|CORPUS_NOT_SCANNED_EXIT_CODE/.test(src) && !listsCode) sharedCodeMissing.push(a.name);
+    if (!listsCode && !ACCEPTED_CORPUS_MISSING_AS_DRIFT[a.name]) missing.push(a.name);
+  }
+  assert.deepEqual(sharedCodeMissing, [], 'these scripts exit 2 on a missing corpus but their AUDITS entry does not list 2 in crashCodes');
+  assert.deepEqual(missing, [],
+    'make the script exit CORPUS_NOT_SCANNED_EXIT_CODE (exitIfCorpusNotScanned) and add 2 to crashCodes, ' +
+    'or add the entry to ACCEPTED_CORPUS_MISSING_AS_DRIFT with the reason');
+  // Allowlist hygiene: a stale exemption must not linger after an entry is fixed or removed.
+  for (const name of Object.keys(ACCEPTED_CORPUS_MISSING_AS_DRIFT)) {
+    const a = AUDITS.find((x) => x.name === name);
+    assert.ok(a, `ACCEPTED_CORPUS_MISSING_AS_DRIFT names ${name}, which is no longer in AUDITS`);
+    assert.equal(a.crashCodes.includes(CORPUS_NOT_SCANNED_EXIT_CODE), false, `${name} now lists 2; drop its exemption`);
+  }
+});
+
+// BRO-7193: deriving coverage only from existing guard imports misses the audits
+// that never adopted it. Every review-texts reader must now make that decision.
+const ACCEPTED_CUSTOM_CORPUS_GUARDS = {
+  'backfill-amaze-review-flags': 'Optional historical probe skips absent review texts; reviews.json assertions still run.',
+  'regex-fp': '--full catches corpus-load errors and exits 2.',
+  'run-contamination': 'loadCorpus errors exit 3, registered in crashCodes.',
+  'cast-vs-reviews': 'Missing corpus exits 2 before the scan.',
+  'body-date-mismatch': 'Missing corpus or zero files exits 3.',
+  'phantom-text-stars': 'Missing corpus exits 3.',
+  'shared-url-quote': 'Missing corpus exits 2 before the scan.',
+  'review-pair-anomalies': 'Missing corpus exits 2 before the scan.',
+  'unknown-outlets': 'Missing corpus or registry exits 2.',
+  'review-key-duplicates': 'Missing corpus exits 2 before the scan.',
+  'stuck-rescore-flags': 'Missing corpus exits 2 in the CLI catch.',
+  'stale-score-input': 'Missing corpus exits 2 in the CLI catch.',
+  'orphaned-wrongprod-provenance': 'Missing corpus exits 2 before the scan.',
+  'counted-review-integrity': 'Missing corpus exits 2 before the scan.',
+  'flagged-in-window': 'Same counted-review-integrity CLI with --flagged.',
+  'orphan-review-folders': 'Missing corpus exits 2 in the CLI catch.',
+};
+
+test('BRO-7193: every AUDITS review-texts reader uses the corpus guard or has an explicit exemption', () => {
+  const fs = require('node:fs');
+  const path = require('node:path');
+  const sources = new Map(AUDITS.map(a => [a.name,
+    fs.readFileSync(path.resolve(import.meta.dirname, '../../scripts', a.script), 'utf8')]));
+  const readers = AUDITS.filter(a => /review-texts|reviewTextsDir|REVIEW_TEXTS_DIR/.test(sources.get(a.name)));
+  const unguarded = readers.filter(a => !/corpus-scan-guard/.test(sources.get(a.name)) &&
+    !ACCEPTED_CUSTOM_CORPUS_GUARDS[a.name]).map(a => a.name);
+  assert.deepEqual(unguarded, [], 'Adopt corpus-scan-guard and register its crash code, or document an exemption.');
+  for (const [name, reason] of Object.entries(ACCEPTED_CUSTOM_CORPUS_GUARDS)) {
+    const audit = readers.find(a => a.name === name);
+    assert.ok(audit, `${name}: stale corpus-guard exemption`);
+    assert.ok(reason.length > 20, `${name}: explain the custom policy`);
+    assert.doesNotMatch(sources.get(name), /corpus-scan-guard/, `${name}: remove the exemption after adopting the guard`);
+    if (!name.startsWith('backfill-')) assert.ok(audit.crashCodes.length > 0, `${name}: register the custom crash code`);
+  }
+});

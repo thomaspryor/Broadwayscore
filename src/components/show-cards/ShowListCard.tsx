@@ -11,6 +11,7 @@ import { isNonTheatricalGenre } from '@/lib/genre';
 import { hasEnoughReviews } from '@/config/score-buckets';
 import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
 import { getRunAgeLabel, getRunLength, formatOpeningDate, getDurationSuffix, formatShowDate } from '@/lib/date-utils';
+import { formatClosingLabel } from '@/lib/closing-label';
 import { shortCity } from '@/lib/tour-schedule';
 import { getMarketLabel, isLondonMarket } from '@/lib/market-utils';
 import { isOperaShow, getOperaHouseSuffix, getOperaMarketLabel } from '@/lib/show-market';
@@ -222,7 +223,7 @@ const ShowListCard = memo(function ShowListCard({
             })()}
             {show.status === 'open' && show.closingDate && (
               <span className="text-amber-400" suppressHydrationWarning>
-                {getRunAgeLabel(show.openingDate, category, undefined, durationSuffix) && '·'} Closes {formatShowDate(show.closingDate)}
+                {getRunAgeLabel(show.openingDate, category, undefined, durationSuffix) && '·'} {formatClosingLabel(show, formatShowDate(show.closingDate))}
               </span>
             )}
             {(show.status === 'previews' || show.status === 'upcoming' || show.status === 'announced') && show.openingDate && (
@@ -311,7 +312,7 @@ const ShowListCard = memo(function ShowListCard({
               return duration ? <span suppressHydrationWarning>{duration}</span> : null;
             })()}
             {show.closingDate && (
-              <span className="text-amber-400" suppressHydrationWarning>{getRunAgeLabel(show.openingDate, category, undefined, durationSuffix) ? ' · ' : ''}Closes {formatOpeningDate(show.closingDate)}</span>
+              <span className="text-amber-400" suppressHydrationWarning>{getRunAgeLabel(show.openingDate, category, undefined, durationSuffix) ? ' · ' : ''}{formatClosingLabel(show, formatOpeningDate(show.closingDate))}</span>
             )}
           </>
         )}

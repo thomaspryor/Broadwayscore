@@ -866,3 +866,14 @@ test('first-live: with only excluded reviews live there is no first-live (null),
   rec.fileState.files.push({ outletId: 'guardian', includable: true });
   assert.equal(lib.firstNightLive(rec).at, at(9));
 });
+
+// BRO-7230 class guard: finalize must be able to tell a full +6h probe from one that was skipped or died.
+test('probeIncompleteReason: full window is null; skipped or short probes get a reason', () => {
+  const embargo = '2026-11-10T03:00:00.000Z';
+  const mk = (lastSampleAt) => ({ embargoAt: embargo, probe: { lastSampleAt } });
+  assert.equal(lib.probeIncompleteReason(mk('2026-11-10T09:00:00.000Z')), null);
+  assert.equal(lib.probeIncompleteReason(mk('2026-11-10T08:50:00.000Z')), null);
+  assert.match(lib.probeIncompleteReason(mk('2026-11-10T05:00:00.000Z')), /stopped at \+2\.0h of 6h/);
+  assert.match(lib.probeIncompleteReason(mk(null)), /no samples/);
+  assert.equal(lib.probeIncompleteReason(null), null);
+});

@@ -25,7 +25,6 @@
  */
 
 const fs = require('fs');
-const { readReviewForUpdate, persistReviewSnapshot } = require('./lib/persist-review-snapshot');
 const path = require('path');
 
 const args = process.argv.slice(2);
@@ -43,8 +42,7 @@ const showsFilter = args.find(a => a.startsWith('--shows='));
 const showsAllowlist = showsFilter ? new Set(showsFilter.split('=')[1].split(',')) : null;
 
 const { loadCookiesForDomain } = require('./lib/cookie-loader');
-const { loadCandidates, processRecoveredText, checkpoint } = require('./lib/browser-recovery-helpers');
-const { extractArticleText } = require('./lib/article-extractor');
+const { loadCandidates, processRecoveredText, stampDead, startRun, checkpoint } = require('./lib/browser-recovery-helpers');
 
 const CONFIG = {
   reportPath: path.join(__dirname, '..', 'data', 'audit', 'thetimes-browser-recovery-report.json'),
@@ -56,26 +54,19 @@ const CONFIG = {
 };
 
 const TEST_URL = 'https://www.thetimes.com/culture/theatre-dance/article/1536-review-theatre-henry-viii-anne-boleyn-v6hg7frjb';
+const AUTH_MIN_CHARS = 500;
+const { resolveBrowserMiss } = require('./lib/browser-outlet-adapters');
 
 function jitterDelay() {
   return CONFIG.delayMinMs + Math.random() * (CONFIG.delayMaxMs - CONFIG.delayMinMs);
 }
 
-async function extractArticle(page, url) {
-  await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
-  await page.waitForTimeout(1500);
-
-  const html = await page.content();
-  if (/verify you.re not a robot|access denied|too many requests/i.test(html)) {
-    return { error: 'Bot-check challenge detected' };
-  }
-  const text = extractArticleText(html, 'thetimes.com');
-  const title = await page.title();
-  if (!text) return { error: 'No article body element found (extractTimesBody returned null — likely logged out)', title };
-  return { text, title, len: text.length };
-}
+// One extractor shared with the nightly gap-recovery driver (BRO-7171 Stage 4).
+const extractArticle = require('./lib/browser-outlet-adapters').ADAPTERS.thetimes.extract;
 
 async function main() {
+  // BRO-7171 Stage 3: never overlap the nightly gap-recovery job or another recovery run.
+  require('./lib/browser-recovery-helpers').acquireRecoveryRunLock('recover-thetimes-browser');
   const cookies = loadCookiesForDomain('thetimes.co.uk');
   if (!cookies) {
     console.error('ERROR: no Times UK cookies available. Run: node scripts/thetimes-login.js');
@@ -84,7 +75,8 @@ async function main() {
   console.log(`Loaded ${cookies.length} Times UK cookies.`);
 
   const { chromium } = require('playwright');
-  const PROFILE_DIR = '/tmp/thetimes-recovery-browser-profile';
+  // BRO-7171 plan item 8: the outlet's shared persistent profile (renew lock held).
+  const PROFILE_DIR = require('./lib/cookie-renew').claimOutletProfile('thetimes', { legacy: ['/tmp/thetimes-recovery-browser-profile', '/tmp/thetimes-login-browser-profile'] }).dir;
   const launchOpts = {
     headless: false,
     viewport: { width: 1280, height: 900 },
@@ -117,7 +109,7 @@ async function main() {
 
   console.log('Testing authentication...');
   const testResult = await extractArticle(page, TEST_URL);
-  if (testResult.error || !testResult.text || testResult.len < 500) {
+  if (testResult.error || !testResult.text || testResult.len < AUTH_MIN_CHARS) {
     console.error(`Auth test FAILED: ${testResult.error || `only ${testResult.len || 0} chars`}`);
     console.error('Cookies may be expired. Re-run: node scripts/thetimes-login.js');
     await context.close();
@@ -132,6 +124,9 @@ async function main() {
 
   let candidates;
   try {
+    // Push/restore anything an earlier run committed but could not land
+    // (BRO-7171). Throws on a still-failing push: no new work on a backlog.
+    if (!dryRun) startRun();
     // The Sunday Times shares the thetimes.com paywall (BRO-5137 split it into its own outlet).
     candidates = loadCandidates({ filePrefix: ['times-uk', 'sunday-times'], showsAllowlist, maxUrls: CONFIG.maxUrls });
   } catch (e) {
@@ -148,63 +143,78 @@ async function main() {
   const deadEntries = [];
   const startTime = Date.now();
 
-  for (let i = 0; i < candidates.length; i++) {
-    if (Date.now() - startTime > CONFIG.timeBudgetMs) {
-      console.log(`\nTime budget reached — stopping cleanly.`);
-      break;
-    }
-
-    const c = candidates[i];
-    console.log(`[${i + 1}/${candidates.length}] ${c.showId} (${c.contentTier}, ${c.existingChars} chars existing)`);
-
-    if (i > 0) await page.waitForTimeout(jitterDelay());
-
-    let result;
-    try {
-      result = await extractArticle(page, c.url);
-    } catch (e) {
-      result = { error: e.message };
-    }
-
-    if (result.error || !result.text) {
-      console.log(`  ✗ ${result.error || 'no text extracted'}`);
-      stats.dead++;
-      deadEntries.push({ reviewId: c.reviewId, url: c.url, reason: result.error || 'no text extracted' });
-      if (!dryRun) {
-        const data = readReviewForUpdate(c.filePath);
-        data.incompleteReason = `thetimes-browser-recovery: ${result.error || 'no text extracted'} (${new Date().toISOString()})`;
-        persistReviewSnapshot({ filePath: c.filePath, data: data, trailingNewline: true });
+  // A failed push (ReviewTextsPushError) or lock timeout stops the run, but
+  // the report is still written and the browser still closed (BRO-7171).
+  let runError = null;
+  try {
+    for (let i = 0; i < candidates.length; i++) {
+      if (Date.now() - startTime > CONFIG.timeBudgetMs) {
+        console.log(`\nTime budget reached — stopping cleanly.`);
+        break;
       }
-      continue;
+
+      const c = candidates[i];
+      console.log(`[${i + 1}/${candidates.length}] ${c.showId} (${c.contentTier}, ${c.existingChars} chars existing)`);
+
+      if (i > 0) await page.waitForTimeout(jitterDelay());
+
+      let result;
+      try {
+        result = await extractArticle(page, c.url);
+      } catch (e) {
+        result = { error: e.message };
+      }
+
+      if (result.error || !result.text) {
+        // BRO-7171: a bot check, an access wall or a lost session is never
+        // evidence about the review: skip it, or stop the run, never stamp it.
+        const miss = await resolveBrowserMiss(result, { probe: () => extractArticle(page, TEST_URL), minAuthChars: AUTH_MIN_CHARS });
+        if (miss.action === 'stop') { console.log(`  ✗ ${result.error || 'no text extracted'}; ${miss.reason}: stopping the run`); stats.sessionLost = miss.reason; break; }
+        if (miss.action === 'skip') { console.log(`  ✗ ${result.error || 'no text extracted'} (${miss.reason}; not evidence, not stamped)`); stats.skipped = (stats.skipped || 0) + 1; continue; }
+        console.log(`  ✗ ${result.error || 'no text extracted'}`);
+        stats.dead++;
+        deadEntries.push({ reviewId: c.reviewId, url: c.url, reason: result.error || 'no text extracted' });
+        if (!dryRun) {
+          stampDead(c, { incompleteReason: `thetimes-browser-recovery: ${result.error || 'no text extracted'} (${new Date().toISOString()})` });
+        }
+        continue;
+      }
+
+      if (dryRun) {
+        console.log(`  [DRY RUN] would process ${result.len} chars`);
+        continue;
+      }
+
+      const outcome = processRecoveredText(c, result.text, {
+        fetchMethod: 'thetimes-subscriber-browser-session',
+        sourceMethod: 'thetimes-subscriber-recovery-login',
+        contentTierReasonFallback: 'Recovered via authenticated Times UK browser session (task #919)',
+      });
+      if (outcome.ok) {
+        stats.recovered++;
+        console.log(`  ✓ RECOVERED (${outcome.newLen} chars)`);
+        if (stats.recovered % CONFIG.checkpointInterval === 0) checkpoint(stats, 'Times UK browser recovery');
+      } else {
+        if (outcome.code === 'too_short') {
+          const miss = await resolveBrowserMiss(result, { probe: () => extractArticle(page, TEST_URL), minAuthChars: AUTH_MIN_CHARS, refusalCode: 'too_short' });
+          if (miss.action === 'stop') { console.log(`  ✗ ${outcome.reason}; ${miss.reason}: stopping the run`); stats.sessionLost = miss.reason; break; }
+        }
+        console.log(`  ✗ ${outcome.reason}`);
+        if (outcome.reason.includes('too short')) stats.tooShort++;
+        else if (outcome.reason.includes('garbage')) stats.garbage++;
+        else if (outcome.reason.includes('not mentioned')) stats.notMentioned++;
+        else if (outcome.reason.includes('not longer')) stats.notLonger++;
+        else stats.blocked++;
+      }
     }
 
-    if (dryRun) {
-      console.log(`  [DRY RUN] would process ${result.len} chars`);
-      continue;
-    }
-
-    const outcome = processRecoveredText(c, result.text, {
-      fetchMethod: 'thetimes-subscriber-browser-session',
-      sourceMethod: 'thetimes-subscriber-recovery-login',
-      contentTierReasonFallback: 'Recovered via authenticated Times UK browser session (task #919)',
-    });
-    if (outcome.ok) {
-      stats.recovered++;
-      console.log(`  ✓ RECOVERED (${outcome.newLen} chars)`);
-      if (stats.recovered % CONFIG.checkpointInterval === 0) checkpoint(stats, 'Times UK browser recovery');
-    } else {
-      console.log(`  ✗ ${outcome.reason}`);
-      if (outcome.reason.includes('too short')) stats.tooShort++;
-      else if (outcome.reason.includes('garbage')) stats.garbage++;
-      else if (outcome.reason.includes('not mentioned')) stats.notMentioned++;
-      else if (outcome.reason.includes('not longer')) stats.notLonger++;
-      else stats.blocked++;
-    }
+    // Tracker-driven: also lands dead-candidate stamps when nothing was recovered.
+    if (!dryRun) checkpoint(stats, 'Times UK browser recovery');
+  } catch (e) {
+    runError = e;
   }
 
-  if (stats.recovered > 0 && !dryRun) checkpoint(stats, 'Times UK browser recovery');
-
-  fs.writeFileSync(CONFIG.reportPath, JSON.stringify({ ...stats, deadEntries, timestamp: new Date().toISOString() }, null, 2) + '\n');
+  fs.writeFileSync(CONFIG.reportPath, JSON.stringify({ ...stats, deadEntries, timestamp: new Date().toISOString(), error: runError ? runError.message : null }, null, 2) + '\n');
 
   console.log(`\n${'='.repeat(60)}`);
   console.log('Summary');
@@ -212,9 +222,12 @@ async function main() {
   console.log(`  Candidates: ${stats.total}`);
   console.log(`  Recovered:  ${stats.recovered}`);
   console.log(`  Dead (stamped incompleteReason): ${stats.dead}`);
+  if (stats.sessionLost) console.log(`  Session lost mid-run (${stats.sessionLost}): stopped, nothing stamped after it`);
+  if (stats.skipped) console.log(`  Skipped (bot check / access wall, not evidence): ${stats.skipped}`);
   console.log(`  Too short: ${stats.tooShort}  Garbage: ${stats.garbage}  Not mentioned: ${stats.notMentioned}  Not longer: ${stats.notLonger}`);
 
   await context.close();
+  if (runError) throw runError;
 }
 
 main().catch(err => {

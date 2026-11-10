@@ -8,13 +8,14 @@
  *   2. Registry aliases that name a known look-alike host (the nysepost root cause).
  *   3. LIVE reviews whose outletId is not in the registry (undecided provisional).
  *   4. Scoreable corpus files (data/review-texts incl. _pending) whose outletId is
- *      not in the registry: a provisional outlet with no decision. Skipped, with a
- *      notice, when the private corpus is not on disk (cloud/worktree).
+ *      not in the registry: a provisional outlet with no decision.
+ *      A missing or empty private corpus exits 2 (could not run).
  *
  * Usage:
  *   node scripts/audit-outlet-identity-hygiene.js [--strict] [--json] [--review-texts=<dir>]
  */
 const fs = require('fs');
+const { assertReviewTextCorpus, exitIfCorpusNotScanned } = require('./lib/corpus-scan-guard');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
@@ -30,6 +31,8 @@ const strict = args.includes('--strict');
 const asJson = args.includes('--json');
 const dirArg = args.find((a) => a.startsWith('--review-texts='));
 const textsDir = dirArg ? dirArg.split('=')[1] : path.join(ROOT, 'data', 'review-texts');
+try { assertReviewTextCorpus(textsDir); } catch (err) { exitIfCorpusNotScanned(err); }
+
 
 const registry = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'outlet-registry.json'), 'utf8'));
 const reviews = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'reviews.json'), 'utf8')).reviews || [];

@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-11-08T22:07:05.591Z",
+    "generatedAt": "2026-11-10T08:51:42.634Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 156,
+    "totalFlagged": 155,
     "highConfidence": 9,
-    "mediumConfidence": 147,
+    "mediumConfidence": 146,
     "lowConfidence": 0,
-    "reassignable": 54
+    "reassignable": 52
   },
   "results": [
     {
@@ -706,10 +706,9 @@
       "confidence": "medium",
       "suggestedShowId": null,
       "signals": [
-        "publishDate 2014 is 26 years after original opening 1988",
-        "modern references: twitter"
+        "publishDate 2014 is 26 years after original opening 1988"
       ],
-      "textSnippet": "NYC Events, Restaurants, Music, & Nightlife\n\nTwitter\nX\nPinterest\nThreads\nSnapchat\nWhatsApp\nMessage\nEmail\n\nTickets from $26\n Buy Tickets\n\nCititour.com Review\n The chandelier still swings over the audie"
+      "textSnippet": "NYC Events, Restaurants, Music, & Nightlife\n\nX\nSnapchat\nMessage\n\nCititour.com Review\n The chandelier still swings over the audience, the gondola still floats in the mist, and the music of the night st"
     },
     {
       "showId": "the-phantom-of-the-opera-1988",
@@ -785,21 +784,6 @@
         "publishDate 2014 is 26 years after original opening 1988"
       ],
       "textSnippet": "https://www.nytimes.com/2014/08/18/theater/the-phantom-of-the-opera-retains-its-luster.htmlGive this articleAdvertisement\n\nIs there a truism more rarely true than the notion that absence makes the hea"
-    },
-    {
-      "showId": "the-phantom-of-the-opera-1988",
-      "showTitle": "The Phantom of the Opera",
-      "showYear": 1988,
-      "file": "nytimes--frank-rich.json",
-      "outlet": "New York Times",
-      "criticName": "Frank Rich",
-      "publishDate": "1988-01-27",
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "modern references: streaming"
-      ],
-      "textSnippet": "https://www.nytimes.com/1988/01/27/theater/stage-phantom-of-the-opera.htmlShare full articleAdvertisement\n\nIT may be possible to have a terrible time at ''The Phantom of the Opera,'' but you'll have t"
     },
     {
       "showId": "the-phantom-of-the-opera-1988",
@@ -1046,7 +1030,7 @@
         "year 1982 in text matches revival nine-1982",
         "no publishDate + revival signals + revivals exist"
       ],
-      "textSnippet": "The Internet Theater Magazine of Reviews, Features,\n Annotated Listings\n\nThe Cast Changes -- But the Show Goes On\n By Elyse Sommer \n \n \n \n \n \n Eartha Kitt as the flamboyant Liliane La Fleur\n\n(Photo: J"
+      "textSnippet": "The Internet Theater Magazine of Reviews, Features,\n Annotated Listings\n\nThe Cast Changes -- But the Show Goes On\n By Elyse Sommer\n\n Eartha Kitt as the flamboyant Liliane La Fleur\n\n(Photo: Joan Marcus"
     },
     {
       "showId": "nine-2003",
@@ -1247,22 +1231,7 @@
       "signals": [
         "revival text signals: revival, this production"
       ],
-      "textSnippet": "The Internet Theater Magazine of Reviews, Features,\n Annotated Listings\n\nNYC Weather \n \n \n \n A \n CurtainUp Review\n\nCharles Shaughnessy (center) as Caldwell B. Cladwell/\n (l-r) Lawrence E. Street, Jame"
-    },
-    {
-      "showId": "urinetown-2001",
-      "showTitle": "Urinetown",
-      "showYear": 2001,
-      "file": "theatermania--greg-bauer.json",
-      "outlet": "TheaterMania",
-      "criticName": "Greg Bauer",
-      "publishDate": "2001-09-21",
-      "confidence": "medium",
-      "suggestedShowId": "urinetown-regional-2025",
-      "signals": [
-        "year 2025 in text matches revival urinetown-regional-2025"
-      ],
-      "textSnippet": "Urinetown smells like a hit! As you probably know, the show has moved from Off-Broadway to Broadway following its initial production at the 1999 New York International Fringe Festival; it's now playin"
+      "textSnippet": "The Internet Theater Magazine of Reviews, Features,\n Annotated Listings\n\nNYC Weather\n\n A\n CurtainUp Review\n\nCharles Shaughnessy (center) as Caldwell B. Cladwell/\n (l-r) Lawrence E. Street, James Moye,"
     },
     {
       "showId": "dance-of-death-2001",
@@ -1569,6 +1538,22 @@
       "textSnippet": "Tethered to a window washer’s platform and all but edible in a powder-blue monkey suit and bow tie, Matthew Broderick descends the brightly lit side of a sleek Manhattan office building, reading the t"
     },
     {
+      "showId": "the-rose-tattoo-1995",
+      "showTitle": "The Rose Tattoo",
+      "showYear": 1995,
+      "file": "nytimes--maya-phillips.json",
+      "outlet": "The New York Times",
+      "criticName": "Maya Phillips",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "revival text signals: revival, this production",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "The spumante wine that is brought out to inaugurate one of the funniest seductions in theater history isn't the only thing bubbling in the revival of \"The Rose Tattoo\" that opened last night at the Ci"
+    },
+    {
       "showId": "falsettos-1992",
       "showTitle": "Falsettos",
       "showYear": 1992,
@@ -1644,24 +1629,6 @@
         "modern references: hamilton"
       ],
       "textSnippet": "ASTAGE representation of Dracula is a challenge not so much to modern performers as to the modern audience. It comes to us with a stake through its heart, beyond real revival although capable of usefu"
-    },
-    {
-      "showId": "pacific-overtures-1976",
-      "showTitle": "Pacific Overtures",
-      "showYear": 1976,
-      "file": "wsj--terry-teachout.json",
-      "outlet": "The Wall Street Journal",
-      "criticName": "Terry Teachout",
-      "publishDate": null,
-      "confidence": "medium",
-      "suggestedShowId": "pacific-overtures-off-broadway-2017",
-      "signals": [
-        "revival text signals: revival, this production",
-        "year 2017 in text matches revival pacific-overtures-off-broadway-2017",
-        "year 2004 in text matches revival pacific-overtures-2004",
-        "no publishDate + revival signals + revivals exist"
-      ],
-      "textSnippet": "By \n\nTerry Teachout\n\nMay 4, 2017 8:30 pm ET\n\n1\nGift unlocked article\nKelvin Moon Loh, Austin Ku, George Takei, Marc Oka and Thom Sesma in ‘Pacific Overtures.’ JOAN MARCUS\n\nNew York\n\nWhenever John Doyl"
     },
     {
       "showId": "the-merchant-of-venice-1973",
@@ -2091,6 +2058,21 @@
       "textSnippet": "The directors Michael DeFilippis, Dmitry Krymov and Aleksandr Molochnikov all infuse their current productions with a burning, modern rage.\n\nIn “Burnout Paradise,” four performers try ambitious tasks "
     },
     {
+      "showId": "gore-vidals-the-best-man-2000",
+      "showTitle": "Gore Vidal's The Best Man",
+      "showYear": 2000,
+      "file": "variety--charles-isherwood.json",
+      "outlet": "Variety",
+      "criticName": "Charles Isherwood",
+      "publishDate": "2000-09-18",
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "revival text signals: revival, new revival"
+      ],
+      "textSnippet": "The fall season on Broadway gets off to an unsteady start with the new revival of Gore Vidal's \"The Best Man.\" A political drama-cum-civics lesson that takes place behind the scenes at a presidential "
+    },
+    {
       "showId": "a-class-act-2001",
       "showTitle": "A Class Act",
       "showYear": 2001,
@@ -2414,7 +2396,7 @@
         "modern references: twitter",
         "no publishDate + revival signals + revivals exist"
       ],
-      "textSnippet": "GET TICKETS HELP, PICK ME A SHOW! BROADWAY OFF-BROADWAY TOURS WEST END GROUP BOOKING OTHER NY STAGES \n UNITED STATES BROADWAY NATIONAL TOURS ALABAMA - Birmingham ALASKA - Anchorage ARIZONA - Mesa ARIZ"
+      "textSnippet": "GET TICKETS HELP, PICK ME A SHOW! BROADWAY OFF-BROADWAY TOURS WEST END GROUP BOOKING OTHER NY STAGES\n UNITED STATES BROADWAY NATIONAL TOURS ALABAMA - Birmingham ALASKA - Anchorage ARIZONA - Mesa ARIZO"
     }
   ]
 }

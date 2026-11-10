@@ -107,7 +107,11 @@ function loadReviewFiles(showId) {
     .filter((f) => f.endsWith('.json'))
     .map((f) => {
       try {
-        return JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
+        const d = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
+        // Non-enumerable, so it is never written back (BRO-7080: the inclusion
+        // predicate needs the path for syndication-secondary/duplicateOf).
+        Object.defineProperty(d, '__filePath', { value: path.join(dir, f), enumerable: false });
+        return d;
       } catch {
         return null;
       }
@@ -218,7 +222,7 @@ async function cmdEvaluate() {
   // BRO-5953: inside the press-night window, fewer than 3 scored reviews is a
   // retry even when the real-text ratio looks fine (Billy Crystal 860, 1/1).
   const pressNight = shouldRetryForThinPressNight({
-    scoredCount: reviewFiles.filter((r) => isIncludableForRebuild(r, show || {})).length,
+    scoredCount: reviewFiles.filter((r) => isIncludableForRebuild(r, show || {}, r.__filePath)).length,
     window: show ? computeWindow({ ...show, category: show.category || 'broadway' }, { now: new Date(nowIso) }) : null,
     now: new Date(nowIso),
     isRetry,

@@ -22,6 +22,7 @@ const https = require('https');
 const { extractStatusFromHtml } = require('./lib/show-score-status');
 const { shouldTrustShowScoreClosed } = require('./lib/showscore-closure-guard');
 const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
+const { isTodayTixBookingHorizon } = require('./lib/closing-date-evidence');
 const { hasBookableEvidence, buildBlockedReopenRecord, formatBlockedReopensSummary } = require('./lib/todaytix-reopen-guard');
 const { countByShow, isStuckInPreviews, reviewsPredateRun, openingDateStillAhead, openSignalFromReviews, openSignalFromDiscovery, chooseOpeningDateBackfill, estimatePressNight } = require('./lib/opening-signal');
 const { previewsFallbackOpening, PREVIEWS_FALLBACK_GRACE_DAYS } = require('./lib/opening-date-fallback');
@@ -232,9 +233,14 @@ async function refreshTodayTixDates(data, updates, opts = {}) {
         console.error(`  ⚠️  WARNING: TodayTix ${loc.label} returned 0 shows — API may be down or format changed`);
       }
 
+      const feedEndDates = ttShows.map(t => (t.endDate === 'null' ? null : t.endDate || null)).filter(Boolean).map(d => String(d).slice(0, 10));
       for (const ttShow of ttShows) {
         if (hasBookableEvidence(ttShow)) seenTtIds.add(String(ttShow.id));
         const ttEndDate = ttShow.endDate === 'null' ? null : ttShow.endDate || null;
+        // BRO-7251: a far-out date shared by several shows is the on-sale window,
+        // not an announced closing. Skip it for the extension/discovered writes
+        // below only (the reopen path keeps the raw date).
+        const ttDateIsHorizon = !!ttEndDate && isTodayTixBookingHorizon(String(ttEndDate).slice(0, 10), feedEndDates, new Date().toISOString().slice(0, 10));
         const normTtTitle = (ttShow.displayName || ttShow.name || '').toLowerCase().replace(/[^a-z0-9]/g, '');
 
         // Try to match within each category this location covers
@@ -287,7 +293,7 @@ async function refreshTodayTixDates(data, updates, opts = {}) {
               if (!dryRun) {
                 closedMatch.status = 'open';
                 if (ttEndDate) {
-                  writeClosingDate(closedMatch, ttEndDate, `update-show-status reopen (${new Date().toISOString().slice(0,10)})`);
+                  writeClosingDate(closedMatch, ttEndDate, `update-show-status reopen (${new Date().toISOString().slice(0,10)})`, { recordExtension: false });
                 } else if (canWriteClosingDate(closedMatch)) {
                   delete closedMatch.closingDate;
                 }
@@ -321,6 +327,7 @@ async function refreshTodayTixDates(data, updates, opts = {}) {
         }
 
         if (!ttEndDate) continue; // Open-ended run, skip date updates
+        if (ttDateIsHorizon) continue; // BRO-7251: booking horizon, not a closing
 
         // Compare dates: only update if TodayTix date is LATER (extension)
         if (match.closingDate && ttEndDate > match.closingDate) {

@@ -13,7 +13,7 @@ run-name: 'Press night clock ${{ inputs.fired }}'
 # by the orchestrator's "Keep the press-night clock running" step (any tick) and by the scheduled wake-ups the owning
 # session sets, so a broken chain heals without a person. Concurrency: one run at a time, a newer dispatch queues.
 #
-# Advisory first (CLAUDE.md §19): adds no CI gate. To stop the chain, cancel the running hop and delete queued ones.
+# Advisory first (CLAUDE.md §19): adds no CI gate. To stop the chain, cancel the running hop and delete queued ones (land-cancel-guard.sh refuses that cancel, BRO-7232: create $HOME/.claude/LAND_CANCEL_GUARD_OFF first).
 #
 # hygiene-run-budget-ok: one bounded sleep per hop (<= 5h inside a 345-minute job); the chain ends when no kick is left in the 10-day horizon.
 

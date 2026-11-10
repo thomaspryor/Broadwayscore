@@ -102,7 +102,7 @@ async function completeGrant(env, fetchImpl = fetch, nowMs = Date.now()) {
     return { ok: false, reason: 'Google did not accept the approval.' };
   }
   if (!tok.refresh_token) return { ok: false, reason: 'Google did not return a long-lived key.' };
-  if (tok.scope && !g.grantedScopeOk(tok.scope)) return { ok: false, reason: 'Gmail read access was not granted.' };
+  if (tok.scope && !g.grantedScopeOk(tok.scope)) return { ok: false, reason: 'Gmail access (read and archive) was not granted.' };
 
   const prof = await fetchImpl(PROFILE_URL, { signal: AbortSignal.timeout(20000), headers: { Authorization: `Bearer ${tok.access_token}` } });
   let profile = {};

@@ -211,6 +211,16 @@ async function main() {
     attributionCoverageMin: thresholds.attributionCoverageMin ?? 0.8,
   });
 
+  // BRO-5043: LLM API (Gemini + OpenAI) spend line for the morning digest.
+  // Record only, and never allowed to break the scraper-spend snapshot.
+  try {
+    const llm = require('./lib/llm-usage-summary');
+    const title = llm.digestTitle(llm.readRows(), DAY);
+    if (title) snapshot.items.push({ title });
+  } catch (err) {
+    console.log(`::warning::LLM spend digest line skipped: ${err.message}`);
+  }
+
   console.log(`[provider-spend] ${DAY}: ${snapshot.bannerText}`);
   for (const item of snapshot.items) console.log(`  ${item.title}`);
 

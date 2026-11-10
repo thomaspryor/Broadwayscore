@@ -1,7 +1,7 @@
 {
-  "generated": "2026-11-08T22:07:39.049Z",
+  "generated": "2026-11-10T08:52:37.129Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 45,
+  "count": 46,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -67,10 +67,10 @@
       "field": "duplicateOf"
     },
     {
-      "showId": "dirty-great-love-story-west-end-2017",
-      "loserFile": "standard--naomi-ackerman.json",
-      "targetFile": "standard--unknown.json",
-      "reason": "orphaned-duplicate-heal: standard--unknown.json was flagged invalid after standard--naomi-ackerman.json was pointed at it",
+      "showId": "derren-brown-only-human-off-west-end-2026",
+      "loserFile": "north-west-end--unknown.json",
+      "targetFile": "north-west-end--zain-russell.json",
+      "reason": "orphaned-duplicate-heal: north-west-end--zain-russell.json was flagged invalid after north-west-end--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -130,6 +130,13 @@
       "field": "duplicateOf"
     },
     {
+      "showId": "la-traviata-off-broadway-2026",
+      "loserFile": "times-uk--richard-morrison.json",
+      "targetFile": "sunday-times--richard-morrison.json",
+      "reason": "orphaned-duplicate-heal: sunday-times--richard-morrison.json was flagged invalid after times-uk--richard-morrison.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
       "showId": "lost-atoms-off-west-end-2026",
       "loserFile": "standard--unknown.json",
       "targetFile": "standard--nick-curtis.json",
@@ -186,13 +193,6 @@
       "field": "duplicateOf"
     },
     {
-      "showId": "private-lives-2025",
-      "loserFile": "nytimes--unknown.json",
-      "targetFile": "nytimes--ben-brantley.json",
-      "reason": "orphaned-duplicate-heal: nytimes--ben-brantley.json was flagged invalid after nytimes--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
       "showId": "proof-2026",
       "loserFile": "nytimes--sarah-bahr.json",
       "targetFile": "nytimes--helen-shaw.json",
@@ -246,6 +246,13 @@
       "loserFile": "financialtimes--unknown.json",
       "targetFile": "financialtimes--louise-levene.json",
       "reason": "orphaned-duplicate-heal: financialtimes--louise-levene.json was flagged invalid after financialtimes--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "the-devil-wears-prada-west-end-2024",
+      "loserFile": "daily-mail--sonia-horon.json",
+      "targetFile": "mail-on-sunday--sonia-horon.json",
+      "reason": "orphaned-duplicate-heal: mail-on-sunday--sonia-horon.json was flagged invalid after daily-mail--sonia-horon.json was pointed at it",
       "field": "duplicateOf"
     },
     {

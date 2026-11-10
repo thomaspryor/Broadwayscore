@@ -134,6 +134,17 @@ for (const show of shows) {
   }
 }
 
+// Retired duplicate ids ("duplicate of <kept-id>") keep resolving to the kept show
+// (BRO-7210). retired-show-ids.json is core data; a checkout without it adds none.
+{
+  const retiredPath = process.env.SLUG_REDIRECTS_RETIRED_PATH || path.join(path.dirname(showsPath), 'retired-show-ids.json');
+  if (fs.existsSync(retiredPath)) {
+    const retired = JSON.parse(fs.readFileSync(retiredPath, 'utf8'));
+    const taken = new Set([...existingSlugs, ...Object.keys(redirects)]);
+    Object.assign(redirects, require('./lib/retired-id-redirects').deriveRetiredIdRedirects(retired, shows, taken));
+  }
+}
+
 // Critic-slug aliases: retired /critics/<slug> URLs → canonical slug. A
 // missing registry is an empty map (a checkout without core data still
 // builds); a malformed one throws and fails prebuild on purpose. Chains are

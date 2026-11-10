@@ -714,6 +714,17 @@ test('claimProblems: a true "zero mixed" count and pronouns about actors pass (B
   assert.equal(ok('Jesse Green says she was moved.').length, 1);
 });
 
+test('claimProblems: a critic named by surname only still trips the pronoun rule (BRO-7080 replay of BRO-6676)', () => {
+  const facts = { buckets: { mixed: 1 }, bestQuotes: [{ critic: 'Elisabeth Vincentelli', outlet: 'The New York Times' }], worstQuotes: [{ critic: 'Jesse Green' }] };
+  const run = (t) => lib.claimProblems({ title: 't', body: t, suggestedReply: '' }, facts);
+  assert.equal(run('Vincentelli loved it; she called it a jolt.').length, 1);
+  assert.equal(run('Green was cooler, though he liked the band.').length, 1);
+  // Surname inside another word is not the critic.
+  assert.deepEqual(run('The evergreen score shines and she sells it.'), []);
+  // First names alone are not matched (too common).
+  assert.deepEqual(run('Jesse, the lead, says she was moved.'), []);
+});
+
 test('aggregatorGapHold: priorRun entries and duplicates do not hold (BRO-6676 review)', () => {
   const r = { computedAt: new Date().toISOString(), missing: [{ knownOutletId: 'x', priorRun: true }, { knownOutletId: 'nyt' }, { knownOutletId: 'nyt' }] };
   assert.deepEqual(lib.aggregatorGapHold(r).missing, ['nyt']);
@@ -740,4 +751,33 @@ test('BRO-6676: a draft held for an aggregator gap is not emailed or resent', ()
   assert.equal(mail.dueEmails(held, now).length, 0);
   assert.equal(mail.resendEmails(held, ['s']).due.length, 0);
   assert.equal(mail.dueEmails(free, now).length, 1, 'without the flag the same draft is due');
+});
+
+// BRO-7230 class guard: 2026-11-09 08:39Z the 5-refresh cap went to four lint-only drafts (numbers unchanged)
+// and the draft whose score and review count had moved sat 9h stale. Moved refreshes rank first.
+test('a refresh whose numbers moved is never starved by lint-only refreshes under the cap (BRO-7230)', () => {
+  const lintOnly = ['l1', 'l2', 'l3', 'l4', 'l5'];
+  const ids = [...lintOnly, 'moved'];
+  const shows = ids.map(id => ({ ...show, id, slug: id, title: id }));
+  const slims = new Map(ids.map(id => [id, slim({ cs: id === 'moved' ? 60 : 95, n: id === 'moved' ? 14 : 30 })]));
+  const base = { status: 'ready', source: 'claude', subreddit: 'TheWestEnd', body: 'old', createdAt: '2026-09-28T06:00:00Z', emailedAt: '2026-09-28T06:00:00Z' };
+  const facts = id => lib.buildFacts(shows.find(s => s.id === id), slims.get(id), []);
+  const drafts = Object.fromEntries(ids.map(id => {
+    const f = facts(id);
+    return id === 'moved'
+      ? [id, { ...base, title: `${id} old`, score: f.score - 3, reviewCount: f.reviewCount - 2, emailedScore: f.score - 3, emailedReviewCount: f.reviewCount - 2 }]
+      : [id, { ...base, title: `${id} old`, score: f.score, reviewCount: f.reviewCount, emailedScore: f.score, emailedReviewCount: f.reviewCount }];
+  }));
+  const picked = lib.selectCandidates({ shows, slims, drafts: { drafts }, peersByMarket: {}, today: '2026-09-29' });
+  assert.equal(picked.length, lib.MAX_REFRESHES_PER_RUN);
+  assert.ok(picked.some(c => c.show.id === 'moved'), 'moved refresh picked despite lower notability');
+  assert.equal(picked[0].show.id, 'moved', 'moved refresh ranks first');
+});
+
+test('numbersMovedSince compares against the emailed numbers even for unstamped drafts (BRO-7230)', () => {
+  const sent = { emailedAt: '2026-09-28T06:00:00Z', score: 68, reviewCount: 6 };
+  assert.equal(lib.numbersMovedSince(sent, { score: 71, reviewCount: 9 }), true, 'unstamped, un-reminded');
+  assert.equal(lib.numbersMovedSince({ ...sent, reminderAt: '2026-09-29T06:00:00Z' }, { score: 71, reviewCount: 9 }), true, 'unstamped, reminded');
+  assert.equal(lib.numbersMovedSince(sent, { score: 68, reviewCount: 6 }), false);
+  assert.equal(lib.numbersMovedSince(undefined, { score: 1, reviewCount: 1 }), false);
 });

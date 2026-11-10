@@ -1,23 +1,23 @@
 #!/usr/bin/env node
 /**
- * Gemini spend by workflow, last N days (BRO-5043). Reads
- * data/audit/gemini-usage-ledger.jsonl; merge=union leaves it unordered, so
- * rows are filtered by ts, never by position. Unknown tokens are shown as
- * unknown calls, not zero. Coverage is partial: see gemini-usage-ledger.js.
- *   node scripts/gemini-usage-summary.js [--days=7]
+ * LLM API spend (Gemini + OpenAI) by provider and caller, last N days
+ * (BRO-5043). Reads data/audit/gemini-usage-ledger.jsonl; merge=union leaves
+ * it unordered, so rows are filtered by ts, never by position. Unknown tokens
+ * are shown as unpriced calls, not zero. Estimates from list prices.
+ *   node scripts/gemini-usage-summary.js [--days=7] [--top=15]
  */
-const fs = require('fs');
-const { LEDGER_PATH } = require('./lib/gemini-usage-ledger');
-const days = Number((process.argv.find(a => a.startsWith('--days=')) || '--days=7').split('=')[1]) || 7;
-const cutoff = Date.now() - days * 86400000;
-let rows = [];
-try { rows = fs.readFileSync(process.env.GEMINI_USAGE_LEDGER_PATH || LEDGER_PATH, 'utf8').split('\n').filter(Boolean).map(l => { try { return JSON.parse(l); } catch { return null; } }).filter(r => r && Date.parse(r.ts) >= cutoff); } catch { /* none yet */ }
-const by = {};
-for (const r of rows) {
-  const k = r.workflow || 'unknown';
-  const a = by[k] || (by[k] = { calls: 0, unknownCalls: 0, usd: 0 });
-  a.calls += r.calls || 0; a.unknownCalls += r.unknownCalls || 0; a.usd += r.costUsd || 0;
+const { readRows, summarize } = require('./lib/llm-usage-summary');
+
+const arg = (name, dflt) => Number((process.argv.find((a) => a.startsWith(`--${name}=`)) || `--${name}=${dflt}`).split('=')[1]) || dflt;
+const days = arg('days', 7);
+const top = arg('top', 15);
+const s = summarize(readRows(), { fromMs: Date.now() - days * 86400000 });
+console.log(`LLM API spend, last ${days}d (estimate; grounding priced as an upper bound):`);
+for (const [p, a] of Object.entries(s.providers)) {
+  console.log(`  ${p}: $${a.usd.toFixed(2)} over ${a.calls} calls (${a.groundedCalls} grounded/search, ${a.dupCalls} repeats, ${a.unknownCalls} unpriced) = $${(a.usd / days).toFixed(2)}/day`);
 }
-const list = Object.entries(by).sort((x, y) => y[1].usd - x[1].usd);
-console.log(`Gemini spend by workflow, last ${days}d (estimate, partial coverage): ${rows.length} rows`);
-for (const [w, a] of list) console.log(`  ${w}: $${a.usd.toFixed(2)} over ${a.calls} calls (${a.unknownCalls} with unknown tokens)`);
+console.log(`Top ${top} callers:`);
+for (const c of s.callers.slice(0, top)) {
+  const extra = `${c.groundedCalls ? `, ${c.groundedCalls} grounded` : ''}${c.dupCalls ? `, ${c.dupCalls} repeats` : ''}${c.unknownCalls ? `, ${c.unknownCalls} unpriced` : ''}`;
+  console.log(`  $${c.usd.toFixed(2)}  ${c.provider}  ${c.script}  [${c.workflow}]  ${c.calls} calls${extra}`);
+}

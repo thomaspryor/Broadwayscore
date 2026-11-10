@@ -23,7 +23,7 @@ on:
         default: 'strict'
 
 permissions:
-  contents: read
+  contents: write # BRO-7210: commits the alert ledger so the card can resolve
   actions: read
 
 jobs:
@@ -126,6 +126,31 @@ jobs:
           fi
 
           exit $AUDIT_EXIT
+
+      # BRO-7210: findings sat unactioned for 30 days. One worker card per run state
+      # (owner-alert-router); advisory, its own step so it never changes the audit's result.
+      - name: File worker card for findings
+        if: always()
+        continue-on-error: true
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/alert-director-consensus.js /tmp/audit-output.json
+
+      - name: Commit alert state
+        if: always()
+        continue-on-error: true
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No alert state changes"
+          else
+            git commit -m "data: director consensus alert state [skip ci]"
+            bash scripts/lib/push-with-retry.sh
+          fi
 
       - name: Upload audit output
         if: always()

@@ -40,9 +40,25 @@ const BOT_IDENTITY = ['-c', 'user.name=opening-night-lane', '-c', 'user.email=op
 /** Push errors can echo the authenticated clone URL (CI clones with a token in it); never pass that on to logs. */
 const redact = (text) => String(text || '').replace(/\/\/[^@\s/]+@/g, '//***@').slice(0, 2000);
 
+/**
+ * BRO-7235 (owner decision BRO-5479, 2026-10-16: "A except for Broadway openings. I want to know then."): is the lane's
+ * show a Broadway show? Fail-open like scripts/poller-failure-audience.js: only an id with a non-Broadway market suffix,
+ * or a shows.json record whose category is set and is not 'broadway', says no. An unreadable shows.json says yes.
+ */
+function isBroadwayLaneShow(showId, repoDir) {
+  if (/-(off-broadway|west-end|off-west-end)-\d{4}$/.test(String(showId || ''))) return false;
+  try {
+    const doc = JSON.parse(fs.readFileSync(path.join(repoDir, 'data', 'shows.json'), 'utf8'));
+    const list = Array.isArray(doc) ? doc : (doc && doc.shows) || [];
+    const rec = list.find((x) => x && x.id === showId);
+    if (rec && rec.category && rec.category !== 'broadway') return false;
+  } catch { /* fail open: the owner asked to hear on Broadway nights */ }
+  return true;
+}
+
 function createRealPublishPorts({
   show, repoDir, coreDir, holder, baseUrl = DEFAULT_BASE_URL, remote = 'origin', branch = 'main', attempts = 5,
-  now, exec = execFileSync, regen, readLeases = leaseStore.readRemote, fetchImpl, night, dispatchDeploy, page, env = process.env,
+  now, exec = execFileSync, regen, readLeases = leaseStore.readRemote, fetchImpl, night, dispatchDeploy, page, autoFixFirstGate, env = process.env,
   sleep = (ms) => new Promise((r) => setTimeout(r, ms)),
 } = {}) {
   for (const [k, v] of Object.entries({ show, repoDir, coreDir, holder })) if (!v) throw new Error(`real-ports: ${k} is required`);
@@ -105,6 +121,7 @@ function createRealPublishPorts({
   // The path is built at run time on purpose: laneCodeFiles() follows literal require()s into the arm hash, and an alert
   // router edit must not disarm the lane (driver.test.mjs).
   const pageAlert = page || ((o) => require(['..', 'owner-alert-router'].join('/')).routeAlert({ severity: 'critical', disposition: 'human', cooldownHours: 12, ...o }));
+  const autoFixGate = autoFixFirstGate || ((o) => require(['..', 'auto-fix-first'].join('/')).gate(o));
   const deployer = dispatcher ? deployPort.createDeployPort({ show, night, dispatch: dispatcher, page: pageAlert, now }) : null;
   const liveFetch = publish.fetchLiveShowFrom(baseUrl, fetchImpl ? { fetchImpl } : {});
 
@@ -137,14 +154,26 @@ function createRealPublishPorts({
       return doc;
     },
     async pageLiveTimeout({ show: s, night: n, missing, ms }) {
-      await pageAlert({
+      // BRO-7232: auto-fix-first (BRO-5477). A slow build is normal, so a worker card is filed first and the owner is
+      // emailed only when that fix does not hold. Any gate error means email now (same as notify-failure).
+      // BRO-7235: a Broadway show emails right away anyway (owner decision BRO-5479; press-night-watchdog only observes
+      // on lane nights, so this is the owner's only prompt signal). The card is still filed.
+      const conditionKey = `lane-live-timeout:${s}:${n || night || 'night'}`;
+      const title = `Lane publish for ${s} not live after ${Math.round(ms / 60000)} min`;
+      const description = `${missing.length} review(s) pushed to core data are still missing from the live show JSON. The lane keeps its lease and re-queues them with the next batch.`;
+      let gated = null;
+      try { gated = await autoFixGate({ key: conditionKey, alertTitle: title, alertDescription: description }); } catch { gated = null; }
+      if (gated && gated.email === false && !isBroadwayLaneShow(s || show, repoDir)) return;
+      const sent = await pageAlert({
         disposition: 'human',
-        conditionKey: `lane-live-timeout:${s}:${n || night || 'night'}`,
-        title: `Lane publish for ${s} not live after ${Math.round(ms / 60000)} min`,
-        description: `${missing.length} review(s) pushed to core data are still missing from the live show JSON. The lane keeps its lease and re-queues them with the next batch.`,
+        conditionKey,
+        title,
+        description: gated && gated.preamble ? `${gated.preamble}\n\n${description}` : description,
       });
+      // Mark the card escalated only when the email was delivered (an undelivered one must stay retryable).
+      if (gated && typeof gated.markEscalated === 'function' && sent && sent.delivered) { try { await gated.markEscalated(); } catch { /* the email already went */ } }
     },
   };
 }
 
-module.exports = { DEFAULT_BASE_URL, createRealPublishPorts };
+module.exports = { DEFAULT_BASE_URL, createRealPublishPorts, isBroadwayLaneShow };

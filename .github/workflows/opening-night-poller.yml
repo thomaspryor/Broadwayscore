@@ -719,7 +719,7 @@ jobs:
           # post-checkout — a `[ ! -f ... ]` clause on it is always false and made
           # this early exit unreachable. git diff --cached --quiet below still
           # short-circuits correctly; dropped the dead clause.
-          if [ ! -d data/audit/poller-backoff ] && [ ! -f data/audit/serp-burst-ledger.json ] && [ ! -f data/audit/serp-session-ledger.json ] && [ ! -f data/audit/bww-roundup-miss-ledger.jsonl ] && [ ! -f data/audit/scraper-spend-ledger.jsonl ]; then
+          if [ ! -d data/audit/poller-backoff ] && [ ! -f data/audit/serp-burst-ledger.json ] && [ ! -f data/audit/serp-session-ledger.json ] && [ ! -f data/audit/bww-roundup-miss-ledger.jsonl ] && [ ! -f data/audit/scraper-spend-ledger.jsonl ] && [ ! -f data/audit/gemini-usage-ledger.jsonl ]; then
             echo "No backoff/ledger state to commit"
             exit 0
           fi
@@ -735,6 +735,7 @@ jobs:
           # never aborts this step under `bash -e` — staging is best-effort; the commit below
           # only fires if something actually got staged. (Ledgers are rewritten on UTC rollover,
           # never deleted, so the `-f` guard never needs to stage a deletion.)
+          git add data/audit/gemini-usage-ledger.jsonl 2>/dev/null || true # LLM spend meter rows (BRO-5043)
           git add data/audit/poller-backoff/ 2>/dev/null || true
           { [ -f data/audit/serp-burst-ledger.json ] && git add data/audit/serp-burst-ledger.json; } || true
           { [ -f data/audit/serp-session-ledger.json ] && git add data/audit/serp-session-ledger.json; } || true
@@ -792,7 +793,7 @@ jobs:
           node "$GITHUB_WORKSPACE/scripts/opening-night-lease.js" sync || true
           node "$GITHUB_WORKSPACE/scripts/opening-night-lease.js" enforce --dir="$GITHUB_WORKSPACE/data/review-texts" || \
             echo "::warning::opening-night lease enforce failed to run"
-          git add -A
+          node "$GITHUB_WORKSPACE/scripts/lib/stage-review-texts.js" # BRO-7171 scoped staging
           git diff --cached --quiet && exit 0
           git commit -m "data: Opening night poller — new reviews discovered [skip ci]"
           bash ../../scripts/lib/push-with-retry.sh 20 main
@@ -889,7 +890,7 @@ jobs:
           node "$GITHUB_WORKSPACE/scripts/opening-night-lease.js" sync || true
           node "$GITHUB_WORKSPACE/scripts/opening-night-lease.js" enforce --dir="$GITHUB_WORKSPACE/data/review-texts" || \
             echo "::warning::opening-night lease enforce failed to run"
-          git add -A
+          node "$GITHUB_WORKSPACE/scripts/lib/stage-review-texts.js" # BRO-7171 scoped staging
           git diff --cached --quiet && exit 0
           git commit -m "data: Opening night poller — collected review texts"
           bash ../../scripts/lib/push-with-retry.sh 5 main
@@ -926,7 +927,7 @@ jobs:
           node "$GITHUB_WORKSPACE/scripts/opening-night-lease.js" sync || true
           node "$GITHUB_WORKSPACE/scripts/opening-night-lease.js" enforce --dir="$GITHUB_WORKSPACE/data/review-texts" || \
             echo "::warning::opening-night lease enforce failed to run"
-          git add -A
+          node "$GITHUB_WORKSPACE/scripts/lib/stage-review-texts.js" # BRO-7171 scoped staging
           git diff --cached --quiet && exit 0
           git commit -m "data: Opening night poller — flagged combined reviews"
           bash ../../scripts/lib/push-with-retry.sh 5 main
@@ -1030,7 +1031,7 @@ jobs:
           node "$GITHUB_WORKSPACE/scripts/opening-night-lease.js" sync || true
           node "$GITHUB_WORKSPACE/scripts/opening-night-lease.js" enforce --dir="$GITHUB_WORKSPACE/data/review-texts" || \
             echo "::warning::opening-night lease enforce failed to run"
-          git add -A
+          node "$GITHUB_WORKSPACE/scripts/lib/stage-review-texts.js" # BRO-7171 scoped staging
           git diff --cached --quiet && exit 0
           git commit -m "data: Opening night poller — scored reviews"
           bash ../../scripts/lib/push-with-retry.sh 5 main

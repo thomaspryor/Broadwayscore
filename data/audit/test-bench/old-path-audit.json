@@ -1,0 +1,3626 @@
+{
+ "generatedAt": "2026-11-09T20:50:29.393Z",
+ "generator": "scripts/test-bench-old-path-audit.js (BRO-7167)",
+ "nights": "data/audit/test-bench/nights.json",
+ "historyFrom": "full",
+ "commitsScanned": 4439,
+ "missingShows": [],
+ "summary": {
+  "broadway": {
+   "openings": 20,
+   "onItsOwn": 0,
+   "neededHands": 20,
+   "neededHandsIngestOnly": 0,
+   "incomplete": 0,
+   "noReviews": 0,
+   "noReviewsClosed": 0,
+   "coverageUnknown": 0,
+   "notGradable": 0
+  },
+  "off-broadway": {
+   "openings": 0,
+   "onItsOwn": 0,
+   "neededHands": 0,
+   "neededHandsIngestOnly": 0,
+   "incomplete": 0,
+   "noReviews": 0,
+   "noReviewsClosed": 0,
+   "coverageUnknown": 0,
+   "notGradable": 0
+  },
+  "west-end": {
+   "openings": 0,
+   "onItsOwn": 0,
+   "neededHands": 0,
+   "neededHandsIngestOnly": 0,
+   "incomplete": 0,
+   "noReviews": 0,
+   "noReviewsClosed": 0,
+   "coverageUnknown": 0,
+   "notGradable": 0
+  },
+  "off-west-end": {
+   "openings": 0,
+   "onItsOwn": 0,
+   "neededHands": 0,
+   "neededHandsIngestOnly": 0,
+   "incomplete": 0,
+   "noReviews": 0,
+   "noReviewsClosed": 0,
+   "coverageUnknown": 0,
+   "notGradable": 0
+  }
+ },
+ "grades": [
+  {
+   "showId": "a-few-good-men-2026",
+   "title": "A Few Good Men",
+   "category": "broadway",
+   "openingDate": "2026-10-29",
+   "embargoAt": "2026-10-30T03:00:00.000Z",
+   "embargoFrom": "observed publish cluster",
+   "windowEnd": "2026-11-06T03:00:00.000Z",
+   "windowClosed": true,
+   "live": 30,
+   "lateLive": 2,
+   "known": 30,
+   "missing": 0,
+   "censusCandidates": 27,
+   "hoursToLive": 1.8,
+   "verdict": "needed-hands",
+   "onlyIngestDispatches": false,
+   "signals": [
+    {
+     "kind": "ingest-dispatch",
+     "at": "2026-10-30T08:42:13.000Z",
+     "outletId": "new-york-sun",
+     "cause": "discovery-gap",
+     "source": "17203104 ingest-urls: 1 review(s) for a-few-good-men-2026"
+    },
+    {
+     "kind": "ingest-dispatch",
+     "at": "2026-10-30T04:45:37.000Z",
+     "outletId": "thewrap",
+     "cause": "discovery-gap",
+     "source": "d2aad044 ingest-urls: 1 review(s) for a-few-good-men-2026"
+    },
+    {
+     "kind": "approved-fix",
+     "at": "2026-10-30T05:04:04.078Z",
+     "file": "a-few-good-men-2026/cititour--brian-scott-lipton.json",
+     "outletId": "cititour",
+     "cause": "date-guard",
+     "fields": [
+      "publishDate"
+     ]
+    },
+    {
+     "kind": "approved-fix",
+     "at": "2026-10-30T13:28:27.380Z",
+     "file": "a-few-good-men-2026/new-york-sun--elysa-gardner.json",
+     "outletId": "new-york-sun",
+     "cause": "date-guard",
+     "fields": [
+      "publishDate"
+     ]
+    }
+   ],
+   "historyCovers": true,
+   "expectedMissing": null,
+   "liveCurve": {
+    "firstLiveHours": -1.4,
+    "plus1h": 20,
+    "plus3h": 20,
+    "plus24h": 23,
+    "final": 31,
+    "unplaced": 2
+   },
+   "embargoCorrected": true,
+   "estimateAt": "2026-10-30T02:00:00.000Z",
+   "shiftMin": 60,
+   "onRecordEmbargo": {
+    "verdict": "needed-hands",
+    "line": "A Few Good Men (Broadway, opened Oct 29): 30 reviews live (2 more added after opening week), needed a person or a Claude session (4 fixes by hand: review missed by discovery (new-york-sun, thewrap); publish-date guard (cititour, new-york-sun))."
+   }
+  },
+  {
+   "showId": "the-imaginary-invalid-2026",
+   "title": "The Imaginary Invalid",
+   "category": "broadway",
+   "openingDate": "2026-10-22",
+   "embargoAt": "2026-10-23T02:00:00.000Z",
+   "embargoFrom": "observed publish cluster",
+   "windowEnd": "2026-10-30T02:00:00.000Z",
+   "windowClosed": true,
+   "live": 22,
+   "lateLive": 9,
+   "known": 22,
+   "missing": 0,
+   "censusCandidates": 26,
+   "hoursToLive": 1.5,
+   "verdict": "needed-hands",
+   "onlyIngestDispatches": false,
+   "signals": [
+    {
+     "kind": "hand-step",
+     "at": "2026-10-23T02:36:10.287Z",
+     "file": "the-imaginary-invalid-2026/nydailynews--chris-jones.json",
+     "outletId": "nydailynews",
+     "cause": "scoring-by-hand",
+     "steps": [
+      "humanReviewScore"
+     ]
+    },
+    {
+     "kind": "hand-step",
+     "at": "2026-10-23T02:57:17.702Z",
+     "file": "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+     "outletId": "thewrap",
+     "cause": "other",
+     "steps": [
+      "ingest:execute-approved-fix"
+     ]
+    }
+   ],
+   "historyCovers": true,
+   "expectedMissing": null,
+   "liveCurve": {
+    "firstLiveHours": -23.9,
+    "plus1h": 17,
+    "plus3h": 18,
+    "plus24h": 20,
+    "final": 30,
+    "unplaced": 0
+   },
+   "embargoCorrected": false,
+   "estimateAt": "2026-10-23T02:00:00.000Z",
+   "shiftMin": 0,
+   "onRecordEmbargo": null
+  },
+  {
+   "showId": "billy-crystal-860-2026",
+   "title": "Billy Crystal 860",
+   "category": "broadway",
+   "openingDate": "2026-10-21",
+   "embargoAt": "2026-10-22T02:00:00.000Z",
+   "embargoFrom": "observed publish cluster",
+   "windowEnd": "2026-10-29T02:00:00.000Z",
+   "windowClosed": true,
+   "live": 27,
+   "lateLive": 8,
+   "known": 27,
+   "missing": 0,
+   "censusCandidates": 27,
+   "hoursToLive": null,
+   "verdict": "needed-hands",
+   "onlyIngestDispatches": false,
+   "signals": [
+    {
+     "kind": "hand-commit",
+     "at": "2026-10-26T14:41:02.000Z",
+     "outletId": "harunaenterprisesltd",
+     "cause": "discovery-gap",
+     "source": "1ad5333b BRO-5823: delete Time Out mirror ingested as outlet harunaenterprisesltd (content-farm host)"
+    },
+    {
+     "kind": "ingest-dispatch",
+     "at": "2026-10-22T16:12:15.000Z",
+     "outletId": "talkinbroadway",
+     "cause": "discovery-gap",
+     "source": "2e80324f ingest-urls: 1 review(s) for billy-crystal-860-2026"
+    },
+    {
+     "kind": "ingest-dispatch",
+     "at": "2026-10-22T04:00:51.000Z",
+     "outletId": null,
+     "cause": "discovery-gap",
+     "source": "10c6d1cc data: Ingest URLs for billy-crystal-860-2026"
+    },
+    {
+     "kind": "ingest-dispatch",
+     "at": "2026-10-22T03:17:30.000Z",
+     "outletId": null,
+     "cause": "discovery-gap",
+     "source": "d2f4b5ac data: Ingest URLs for billy-crystal-860-2026"
+    }
+   ],
+   "historyCovers": true,
+   "expectedMissing": null,
+   "liveCurve": {
+    "firstLiveHours": -16.4,
+    "plus1h": 2,
+    "plus3h": 21,
+    "plus24h": 22,
+    "final": 34,
+    "unplaced": 2
+   },
+   "embargoCorrected": false,
+   "estimateAt": "2026-10-22T02:00:00.000Z",
+   "shiftMin": 0,
+   "onRecordEmbargo": null
+  },
+  {
+   "showId": "other-desert-cities-2026",
+   "title": "Other Desert Cities",
+   "category": "broadway",
+   "openingDate": "2026-10-18",
+   "embargoAt": "2026-10-19T04:00:00.000Z",
+   "embargoFrom": "observed publish cluster",
+   "windowEnd": "2026-10-26T04:00:00.000Z",
+   "windowClosed": true,
+   "live": 36,
+   "lateLive": 11,
+   "known": 36,
+   "missing": 0,
+   "censusCandidates": 36,
+   "hoursToLive": null,
+   "verdict": "needed-hands",
+   "onlyIngestDispatches": false,
+   "signals": [
+    {
+     "kind": "hand-commit",
+     "at": "2026-10-19T19:25:36.000Z",
+     "outletId": "talkinbroadway",
+     "cause": "discovery-gap",
+     "source": "13d8172f other-desert-cities-2026: Talkin Broadway manual pull quote (fallback showed credits header)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-10-19T13:57:33.000Z",
+     "outletId": "nydailynews",
+     "cause": "duplicate-identity",
+     "source": "6ad906a8 other-desert-cities-2026: nydailynews Chris Jones is the syndicated copy of his chicagotribune review (duplicateOf); unblocks broad"
+    }
+   ],
+   "historyCovers": true,
+   "expectedMissing": null,
+   "liveCurve": {
+    "firstLiveHours": 0.8,
+    "plus1h": 18,
+    "plus3h": 25,
+    "plus24h": 30,
+    "final": 46,
+    "unplaced": 1
+   },
+   "embargoCorrected": true,
+   "estimateAt": "2026-10-19T02:00:00.000Z",
+   "shiftMin": 120,
+   "onRecordEmbargo": {
+    "verdict": "needed-hands",
+    "line": "Other Desert Cities (Broadway, opened Oct 18): 36 reviews live (11 more added after opening week), needed a person or a Claude session (2 fixes by hand: review missed by discovery (talkinbroadway); duplicate or URL identity (nydailynews))."
+   }
+  },
+  {
+   "showId": "school-girls-or-the-african-mean-girls-play-2026",
+   "title": "School Girls; Or, The African Mean Girls Play",
+   "category": "broadway",
+   "openingDate": "2026-09-28",
+   "embargoAt": "2026-09-29T01:30:00.000Z",
+   "embargoFrom": "observed publish cluster",
+   "windowEnd": "2026-10-06T01:30:00.000Z",
+   "windowClosed": true,
+   "live": 29,
+   "lateLive": 6,
+   "known": 29,
+   "missing": 0,
+   "censusCandidates": 16,
+   "hoursToLive": null,
+   "verdict": "needed-hands",
+   "onlyIngestDispatches": false,
+   "signals": [
+    {
+     "kind": "hand-commit",
+     "at": "2026-09-29T22:49:24.000Z",
+     "outletId": "nytimes",
+     "cause": "other",
+     "source": "266837e3 reclean-truncated --apply: 3 complete reviews mislabelled truncated (trailing venue/listings text; BRO-4387 classifier fix)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-09-29T15:57:21.000Z",
+     "outletId": "talkinbroadway",
+     "cause": "wrong-label",
+     "source": "55811e52 school-girls: clear false wrongProduction on TB/James Wilson; restore Theatrely/Joey Sims fullText"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-09-29T03:12:41.000Z",
+     "outletId": "culturesauce",
+     "cause": "discovery-gap",
+     "source": "81e118b3 data: School Girls 2026 \u2014 ingest Culture Sauce (Thom Geier, 4/5) and a Guardian stub (Juan A. Ramirez); blocklist the five 2023 Lon"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-09-29T03:11:52.000Z",
+     "outletId": "guardian",
+     "cause": "wrong-label",
+     "source": "9a5fd883 data: School Girls 2026 \u2014 drop the five 2023 Lyric Hammersmith files and blocklist their URLs (stale-flag collision blocked the 202"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-09-29T03:07:46.000Z",
+     "outletId": "chicagotribune",
+     "cause": "other",
+     "source": "08e1ee8d data: School Girls 2026 \u2014 name the Chicago Tribune stub after its critic (Chris Jones, per the BWW roundup)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-09-29T02:08:18.000Z",
+     "outletId": "theatermania",
+     "cause": "attribution",
+     "source": "ebe270a6 data: School Girls 2026 \u2014 drop a misattributed TheaterMania file (Falls for Jodie review) and two byline-less NYSR pending stubs"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-09-29T01:11:16.000Z",
+     "outletId": "talkinbroadway",
+     "cause": "other",
+     "source": "b89de1d2 data: School Girls 2026 \u2014 lock the Talkin' Broadway stub for the night (text fetch times out, eats the 12-min collect step)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-09-28T19:50:45.000Z",
+     "outletId": "newyorker",
+     "cause": "other",
+     "source": "3c4c44ae data: School Girls 2026 \u2014 blocklist the New Yorker Goings On listing and drop its stub (BRO-4208)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-09-28T16:22:38.000Z",
+     "outletId": null,
+     "cause": "other",
+     "source": "13396949 data: School Girls 2026 \u2014 blocklist TheWrap's 2017 MCC review and drop its _pending stub (BRO-4208)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-09-28T15:54:38.000Z",
+     "outletId": "manhattantheatreclub",
+     "cause": "content-tier",
+     "source": "23e7e49e data: School Girls 2026 \u2014 drop two non-review files and blocklist their URLs (BRO-4208)"
+    },
+    {
+     "kind": "ingest-dispatch",
+     "at": "2026-09-29T04:49:12.000Z",
+     "outletId": null,
+     "cause": "discovery-gap",
+     "source": "b27534b0 data: Ingest URLs for school-girls-or-the-african-mean-girls-play-2026"
+    },
+    {
+     "kind": "hand-step",
+     "at": "2026-09-29T03:12:37.225Z",
+     "file": "school-girls-or-the-african-mean-girls-play-2026/culturesauce--thom-geier.json",
+     "outletId": "culturesauce",
+     "cause": "wrong-label",
+     "steps": [
+      "wrongProductionManualClear",
+      "humanReviewScore"
+     ]
+    },
+    {
+     "kind": "hand-step",
+     "at": "2026-09-29T03:12:40.845Z",
+     "file": "school-girls-or-the-african-mean-girls-play-2026/guardian--juan-a-ramirez.json",
+     "outletId": "guardian",
+     "cause": "wrong-label",
+     "steps": [
+      "wrongProductionManualClear"
+     ]
+    },
+    {
+     "kind": "hand-step",
+     "at": "2026-09-29T01:40:33.883Z",
+     "file": "school-girls-or-the-african-mean-girls-play-2026/thewrap--robert-hofler.json",
+     "outletId": "thewrap",
+     "cause": "scoring-by-hand",
+     "steps": [
+      "humanReviewScore"
+     ]
+    },
+    {
+     "kind": "approved-fix",
+     "at": "2026-09-29T09:17:08.447Z",
+     "file": "school-girls-or-the-african-mean-girls-play-2026/timeout-london--alice-saville.json",
+     "outletId": "timeout-london",
+     "cause": "date-guard",
+     "fields": [
+      "publishDate"
+     ]
+    }
+   ],
+   "historyCovers": true,
+   "expectedMissing": null,
+   "liveCurve": {
+    "firstLiveHours": -2.3,
+    "plus1h": 10,
+    "plus3h": 19,
+    "plus24h": 22,
+    "final": 34,
+    "unplaced": 0
+   },
+   "embargoCorrected": true,
+   "estimateAt": "2026-09-29T02:00:00.000Z",
+   "shiftMin": -30,
+   "onRecordEmbargo": {
+    "verdict": "needed-hands",
+    "line": "School Girls; Or, The African Mean Girls Play (Broadway, opened Sep 28): 29 reviews live (6 more added after opening week), needed a person or a Claude session (15 fixes by hand: other fix (nytimes, chicagotribune, talkinbroadway, ...); wrong-production or wrong-show flag (talkinbroadway, guardian, culturesauce); review missed by discovery (culturesauce); critic or outlet attribution (theatermania); content tier or non-review flag (manhattantheatreclub); score set by hand (thewrap); publish-date guard (timeout-london))."
+   }
+  },
+  {
+   "showId": "paranormal-activity-2026",
+   "title": "Paranormal Activity",
+   "category": "broadway",
+   "openingDate": "2026-08-25",
+   "embargoAt": "2026-08-26T01:00:00.000Z",
+   "embargoFrom": "observed publish cluster",
+   "windowEnd": "2026-09-02T01:00:00.000Z",
+   "windowClosed": true,
+   "live": 32,
+   "lateLive": 12,
+   "known": 32,
+   "missing": 0,
+   "censusCandidates": 26,
+   "hoursToLive": null,
+   "verdict": "needed-hands",
+   "onlyIngestDispatches": false,
+   "signals": [
+    {
+     "kind": "hand-commit",
+     "at": "2026-08-27T02:25:47.000Z",
+     "outletId": "lighting-and-sound-america",
+     "cause": "discovery-gap",
+     "source": "786f457d data: recover L&SA David Barbour text for paranormal-activity-2026 (asp-URL collection failure)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-08-27T02:00:06.000Z",
+     "outletId": "goldderby",
+     "cause": "other",
+     "source": "c226cb24 fix(paranormal-activity-2026): flag Gold Derby critics-roundup as isRoundupArticle"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-08-26T22:37:49.000Z",
+     "outletId": "nytimes",
+     "cause": "content-tier",
+     "source": "6554e091 fix(paranormal): clear false-positive ensemble not_a_review on NYT Helen Shaw"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-08-26T18:23:01.000Z",
+     "outletId": "new-york-notebook",
+     "cause": "attribution",
+     "source": "01538871 Re-attribute Sandy MacDonald late review: vulture -> new-york-notebook (paranormal-activity-2026)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-08-26T16:45:40.000Z",
+     "outletId": "vulture",
+     "cause": "attribution",
+     "source": "e23a020c fix(paranormal): block Substack review misattributed to Vulture T1"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-08-26T14:43:28.000Z",
+     "outletId": "chicagotribune",
+     "cause": "duplicate-identity",
+     "source": "c17db5ea paranormal-activity: remove Chicago Tribune syndication duplicate (3rd recurrence)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-08-26T13:25:28.000Z",
+     "outletId": "theatermania",
+     "cause": "discovery-gap",
+     "source": "f37bc9fc fix: flag TheaterMania review for rescore \u2014 fullText landed after its excerpt-based score, stuck stale"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-08-26T12:59:22.000Z",
+     "outletId": "chicagotribune",
+     "cause": "duplicate-identity",
+     "source": "1254ebf9 fix: delete Chicago Tribune syndication duplicate of Chris Jones (2nd recurrence)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-08-26T12:24:34.000Z",
+     "outletId": "chicagotribune",
+     "cause": "duplicate-identity",
+     "source": "a379b202 fix(paranormal): remove Chicago Tribune syndication duplicate of NYDN Chris Jones"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-08-26T07:34:59.000Z",
+     "outletId": "theater-pizzazz",
+     "cause": "attribution",
+     "source": "f706c9bc fix(paranormal-activity-2026): backfill Ron Fassler byline on Theater Pizzazz survivor"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-08-26T06:41:20.000Z",
+     "outletId": "dtli",
+     "cause": "attribution",
+     "source": "3d04f4cd fix(paranormal-activity-2026): flag DTLI aggregator page as roundup; dedupe People same-URL byline pair"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-08-26T06:17:59.000Z",
+     "outletId": "showriz",
+     "cause": "other",
+     "source": "970dde7f fix(paranormal-activity-2026): delete showriz--unknown (verbatim self-repost of variety--frank-rizzo)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-08-26T05:36:12.000Z",
+     "outletId": "showriz",
+     "cause": "duplicate-identity",
+     "source": "d64ca809 fix(paranormal-activity-2026): mark showriz--unknown as duplicateOf variety--frank-rizzo"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-08-26T04:43:13.000Z",
+     "outletId": "theatermania",
+     "cause": "wrong-label",
+     "source": "46025a6a fix(paranormal-activity-2026): allowTourSignal on TheaterMania review \u2014 tourContaminationInText false positive"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-08-26T04:08:02.000Z",
+     "outletId": "cititour",
+     "cause": "discovery-gap",
+     "source": "bc65c7e0 ingest: full text for Cititour + 14 excerpt-tier Paranormal Activity Broadway reviews; fix TalkinBroadway multi-show extraction bug"
+    },
+    {
+     "kind": "hand-step",
+     "at": "2026-08-25T09:22:31.796Z",
+     "file": "paranormal-activity-2026/deadline--greg-evans.json",
+     "outletId": "deadline",
+     "cause": "wrong-label",
+     "steps": [
+      "wrongProductionManualClear"
+     ]
+    },
+    {
+     "kind": "hand-step",
+     "at": "2026-08-26T16:10:48.476Z",
+     "file": "paranormal-activity-2026/new-york-notebook--sandy-macdonald.json",
+     "outletId": "new-york-notebook",
+     "cause": "wrong-label",
+     "steps": [
+      "wrongProductionManualClear"
+     ]
+    },
+    {
+     "kind": "hand-step",
+     "at": "2026-08-26T01:18:54.500Z",
+     "file": "paranormal-activity-2026/nytimes--helen-shaw.json",
+     "outletId": "nytimes",
+     "cause": "wrong-label",
+     "steps": [
+      "wrongProductionManualClear"
+     ]
+    }
+   ],
+   "historyCovers": true,
+   "expectedMissing": null,
+   "liveCurve": {
+    "firstLiveHours": -37.7,
+    "plus1h": 15,
+    "plus3h": 19,
+    "plus24h": 21,
+    "final": 43,
+    "unplaced": 0
+   },
+   "embargoCorrected": true,
+   "estimateAt": "2026-08-26T02:00:00.000Z",
+   "shiftMin": -60,
+   "onRecordEmbargo": {
+    "verdict": "needed-hands",
+    "line": "Paranormal Activity (Broadway, opened Aug 25): 32 reviews live (12 more added after opening week), needed a person or a Claude session (18 fixes by hand: review missed by discovery (lighting-and-sound-america, theatermania, cititour); other fix (goldderby, showriz); content tier or non-review flag (nytimes); critic or outlet attribution (new-york-notebook, vulture, theater-pizzazz, ...); duplicate or URL identity (chicagotribune, showriz); wrong-production or wrong-show flag (theatermania, deadline, new-york-notebook, ...))."
+   }
+  },
+  {
+   "showId": "celebrity-autobiography-2026",
+   "title": "Celebrity Autobiography",
+   "category": "broadway",
+   "openingDate": "2026-05-18",
+   "embargoAt": "2026-05-19T02:00:00.000Z",
+   "embargoFrom": "22:00 local estimate",
+   "windowEnd": "2026-05-26T02:00:00.000Z",
+   "windowClosed": true,
+   "live": 13,
+   "lateLive": 1,
+   "known": 13,
+   "missing": 0,
+   "censusCandidates": 10,
+   "hoursToLive": null,
+   "verdict": "needed-hands",
+   "onlyIngestDispatches": false,
+   "signals": [
+    {
+     "kind": "hand-commit",
+     "at": "2026-05-20T19:32:30.000Z",
+     "outletId": "the-recs",
+     "cause": "other",
+     "source": "00328a2f the-recs/celebrity-autobiography-2026: fix star scale 4/4\u21924/5 (80 not 100)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-05-20T19:08:38.000Z",
+     "outletId": "cititour",
+     "cause": "scoring-by-hand",
+     "source": "266803e7 celebrity-autobiography-2026: correct critic names + manual score override"
+    }
+   ],
+   "historyCovers": true,
+   "expectedMissing": null,
+   "liveCurve": {
+    "firstLiveHours": 2191.5,
+    "plus1h": 0,
+    "plus3h": 0,
+    "plus24h": 0,
+    "final": 14,
+    "unplaced": 13
+   },
+   "embargoCorrected": false,
+   "estimateAt": "2026-05-19T02:00:00.000Z",
+   "shiftMin": 0,
+   "onRecordEmbargo": null
+  },
+  {
+   "showId": "the-lost-boys-2026",
+   "title": "The Lost Boys",
+   "category": "broadway",
+   "openingDate": "2026-04-26",
+   "embargoAt": "2026-04-27T02:00:00.000Z",
+   "embargoFrom": "observed publish cluster",
+   "windowEnd": "2026-05-04T02:00:00.000Z",
+   "windowClosed": true,
+   "live": 43,
+   "lateLive": 0,
+   "known": 43,
+   "missing": 0,
+   "censusCandidates": 33,
+   "hoursToLive": null,
+   "verdict": "needed-hands",
+   "onlyIngestDispatches": false,
+   "signals": [
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T04:08:31.000Z",
+     "outletId": "cititour",
+     "cause": "discovery-gap",
+     "source": "1f85ae6a data: Fix criticName \"Scott Lipton\" -> \"Brian Scott Lipton\" (Lost Boys 2026 Issue #11 \u2014 byline parser captured starting from \"Scott"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T04:08:30.000Z",
+     "outletId": "new-york-sun",
+     "cause": "attribution",
+     "source": "aa3a35f8 data: Fix criticName \"ELYSA GARDNER\" -> \"Elysa Gardner\" (Lost Boys 2026 Issue #11 \u2014 page byline rendered ALL-CAPS, normalize to Tit"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T04:08:29.000Z",
+     "outletId": "variety",
+     "cause": "attribution",
+     "source": "f71ef281 data: Delete stale variety--frank-rizzo-plus-icon.json (renamed to variety--frank-rizzo.json, Lost Boys 2026 Issue #11 \u2014 byline par"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T04:08:29.000Z",
+     "outletId": "variety",
+     "cause": "attribution",
+     "source": "a3b6d5bc data: Rename variety--frank-rizzo-plus-icon.json -> variety--frank-rizzo.json + fix criticName \"Frank Rizzo"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T04:04:38.000Z",
+     "outletId": "nytimes",
+     "cause": "scoring-by-hand",
+     "source": "f40fcd1c manual: re-lock Helen Shaw pullQuote (was wiped between commits) + override keyPhrases with positive quote"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T03:25:48.000Z",
+     "outletId": "nytimes",
+     "cause": "other",
+     "source": "f5d3c0fa manual: set pullQuote on nytimes--helen-shaw (chrome-leak/sentiment-mismatch fix)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T03:25:46.000Z",
+     "outletId": "amny",
+     "cause": "other",
+     "source": "8ea15fd6 manual: set pullQuote on amny--matt-windman (chrome-leak/sentiment-mismatch fix)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T03:25:45.000Z",
+     "outletId": "exeunt-magazine",
+     "cause": "other",
+     "source": "ff9fbbf5 manual: set pullQuote on exeunt-magazine--loren-noveck (chrome-leak/sentiment-mismatch fix)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T03:07:14.000Z",
+     "outletId": "one-minute-critic",
+     "cause": "other",
+     "source": "d33c7e98 manual: lock one-minute-critic--bobby-mcguire to 80"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T03:07:12.000Z",
+     "outletId": "culturesauce",
+     "cause": "other",
+     "source": "4c1cb00e manual: lock culturesauce--thom-geier to 80"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T03:07:11.000Z",
+     "outletId": "timeout",
+     "cause": "other",
+     "source": "8498f136 manual: lock timeout--adam-feldman to 80"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T03:07:09.000Z",
+     "outletId": "nysr",
+     "cause": "other",
+     "source": "266d9faf manual: lock nysr--roma-torre to 60"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T03:07:08.000Z",
+     "outletId": "nysr",
+     "cause": "other",
+     "source": "09312c3d manual: lock nysr--frank-scheck to 60"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T03:07:06.000Z",
+     "outletId": "ew",
+     "cause": "other",
+     "source": "87673c3e manual: lock ew--dalton-ross to 88"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T03:07:05.000Z",
+     "outletId": "exeunt-magazine",
+     "cause": "other",
+     "source": "26059c5a manual: lock exeunt-magazine--loren-noveck to 60"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T03:07:03.000Z",
+     "outletId": "amny",
+     "cause": "other",
+     "source": "213b2146 manual: lock amny--matt-windman to 45"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T03:04:15.000Z",
+     "outletId": "new-york-sun",
+     "cause": "scoring-by-hand",
+     "source": "70d8cd56 manual: lock new-york-sun--elysa-gardner score to 50 (LLM ensemble was overridden \u2014 see reasoning)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T03:04:14.000Z",
+     "outletId": "thewrap",
+     "cause": "scoring-by-hand",
+     "source": "0ed616ba manual: lock thewrap--robert-hofler score to 55 (LLM ensemble was overridden \u2014 see reasoning)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T03:04:12.000Z",
+     "outletId": "nytimes",
+     "cause": "scoring-by-hand",
+     "source": "24444f94 manual: lock nytimes--helen-shaw score to 78 (LLM ensemble was overridden \u2014 see reasoning)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T03:03:14.000Z",
+     "outletId": "exeunt-magazine",
+     "cause": "discovery-gap",
+     "source": "2866d885 data: Ingest exeunt-magazine / loren-noveck for the-lost-boys-2026 (admin UI)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T02:27:04.000Z",
+     "outletId": "theatermania",
+     "cause": "discovery-gap",
+     "source": "35e77da6 data: Ingest theatermania / pete-hempstead for the-lost-boys-2026 (admin UI)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T02:24:13.000Z",
+     "outletId": "nypost",
+     "cause": "discovery-gap",
+     "source": "e45ce3e6 data: Ingest nypost / johnny-oleksinski for the-lost-boys-2026 (admin UI)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T02:23:43.000Z",
+     "outletId": "culturesauce",
+     "cause": "discovery-gap",
+     "source": "37f9ea71 data: Ingest culturesauce / thom-geier for the-lost-boys-2026 (admin UI)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T02:23:07.000Z",
+     "outletId": "cititour",
+     "cause": "discovery-gap",
+     "source": "5a8c52d8 data: Ingest cititour / brian-scott-lipton for the-lost-boys-2026 (admin UI)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T02:23:02.000Z",
+     "outletId": "timeout",
+     "cause": "other",
+     "source": "e7f4f8df manual: TimeOut Adam Feldman 4/5 = 80 (UI outlet-detector bug for timeout.com/newyork/news/)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T02:22:40.000Z",
+     "outletId": "one-minute-critic",
+     "cause": "discovery-gap",
+     "source": "99adeb87 data: Ingest one-minute-critic / bobby-mcguire for the-lost-boys-2026 (admin UI)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T02:19:23.000Z",
+     "outletId": "nytimes",
+     "cause": "discovery-gap",
+     "source": "79a04916 data: Ingest nytimes / helen-shaw for the-lost-boys-2026 (admin UI)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T02:18:52.000Z",
+     "outletId": "nytg",
+     "cause": "discovery-gap",
+     "source": "76f01730 data: Ingest nytg / caroline-cao for the-lost-boys-2026 (admin UI)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T02:17:06.000Z",
+     "outletId": "ew",
+     "cause": "discovery-gap",
+     "source": "cd12d9cd data: Ingest ew / dalton-ross for the-lost-boys-2026 (admin UI)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T02:16:36.000Z",
+     "outletId": "people",
+     "cause": "discovery-gap",
+     "source": "8a16c076 data: Ingest people / dave-quinn for the-lost-boys-2026 (admin UI)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T02:15:14.000Z",
+     "outletId": "slantmagazine",
+     "cause": "discovery-gap",
+     "source": "aca63d80 data: Ingest slantmagazine / dan-rubins for the-lost-boys-2026 (admin UI)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T02:14:52.000Z",
+     "outletId": "new-york-sun",
+     "cause": "discovery-gap",
+     "source": "ae76d94b data: Ingest new-york-sun / elysa-gardner for the-lost-boys-2026 (admin UI)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T02:14:20.000Z",
+     "outletId": "theatrely",
+     "cause": "discovery-gap",
+     "source": "0276bae6 data: Ingest theatrely / andrew-martini for the-lost-boys-2026 (admin UI)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T02:13:59.000Z",
+     "outletId": "thewrap",
+     "cause": "discovery-gap",
+     "source": "53aecd02 data: Ingest thewrap / robert-hofler for the-lost-boys-2026 (admin UI)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T02:13:02.000Z",
+     "outletId": "nydailynews",
+     "cause": "discovery-gap",
+     "source": "66d19c66 data: Ingest nydailynews / chris-jones for the-lost-boys-2026 (admin UI)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T02:12:45.000Z",
+     "outletId": "deadline",
+     "cause": "discovery-gap",
+     "source": "b6c4e0cb data: Ingest deadline / greg-evans for the-lost-boys-2026 (admin UI)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T02:12:07.000Z",
+     "outletId": "vulture",
+     "cause": "discovery-gap",
+     "source": "29b0601a data: Ingest vulture / sara-holdren for the-lost-boys-2026 (admin UI)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T02:12:06.000Z",
+     "outletId": "variety",
+     "cause": "discovery-gap",
+     "source": "a84eaadc data: Ingest variety / frank-rizzo-plus-icon for the-lost-boys-2026 (admin UI)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T02:12:05.000Z",
+     "outletId": "amny",
+     "cause": "discovery-gap",
+     "source": "0137d101 data: Ingest amny / matt-windman for the-lost-boys-2026 (admin UI)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T02:12:05.000Z",
+     "outletId": "cote-notices",
+     "cause": "discovery-gap",
+     "source": "a2af308d data: Ingest cote-notices / david-cote for the-lost-boys-2026 (admin UI)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T02:12:04.000Z",
+     "outletId": "nysr",
+     "cause": "discovery-gap",
+     "source": "96f2d4a4 data: Ingest nysr / roma-torre for the-lost-boys-2026 (admin UI)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T02:12:03.000Z",
+     "outletId": "nysr",
+     "cause": "discovery-gap",
+     "source": "b4df9d86 data: Ingest nysr / frank-scheck for the-lost-boys-2026 (admin UI)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T02:11:05.000Z",
+     "outletId": "vulture",
+     "cause": "discovery-gap",
+     "source": "66375670 data: Ingest vulture / sara-holdren for the-lost-boys-2026 (admin UI)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T02:11:04.000Z",
+     "outletId": "variety",
+     "cause": "discovery-gap",
+     "source": "6322835b data: Ingest variety / frank-rizzo-plus-icon for the-lost-boys-2026 (admin UI)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T02:11:03.000Z",
+     "outletId": "amny",
+     "cause": "discovery-gap",
+     "source": "b52824b5 data: Ingest amny / matt-windman for the-lost-boys-2026 (admin UI)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T02:11:02.000Z",
+     "outletId": "cote-notices",
+     "cause": "discovery-gap",
+     "source": "9d40b3e3 data: Ingest cote-notices / david-cote for the-lost-boys-2026 (admin UI)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T02:11:02.000Z",
+     "outletId": "nysr",
+     "cause": "discovery-gap",
+     "source": "22af9b4e data: Ingest nysr / roma-torre for the-lost-boys-2026 (admin UI)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T02:11:01.000Z",
+     "outletId": "nysr",
+     "cause": "discovery-gap",
+     "source": "2b0314d6 data: Ingest nysr / frank-scheck for the-lost-boys-2026 (admin UI)"
+    }
+   ],
+   "historyCovers": true,
+   "expectedMissing": null,
+   "liveCurve": {
+    "firstLiveHours": null,
+    "plus1h": 0,
+    "plus3h": 0,
+    "plus24h": 0,
+    "final": 42,
+    "unplaced": 42
+   },
+   "embargoCorrected": false,
+   "estimateAt": "2026-04-27T02:00:00.000Z",
+   "shiftMin": 0,
+   "onRecordEmbargo": null
+  },
+  {
+   "showId": "joe-turners-come-and-gone-2026",
+   "title": "Joe Turner's Come and Gone",
+   "category": "broadway",
+   "openingDate": "2026-04-25",
+   "embargoAt": "2026-04-26T02:00:00.000Z",
+   "embargoFrom": "observed publish cluster",
+   "windowEnd": "2026-05-03T02:00:00.000Z",
+   "windowClosed": true,
+   "live": 32,
+   "lateLive": 5,
+   "known": 32,
+   "missing": 0,
+   "censusCandidates": 22,
+   "hoursToLive": null,
+   "verdict": "needed-hands",
+   "onlyIngestDispatches": false,
+   "signals": [
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-28T22:35:18.000Z",
+     "outletId": "broadwayworld",
+     "cause": "other",
+     "source": "77f7f67e data: fix 2 strict contamination hits unblocking Test Suite"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T04:27:34.000Z",
+     "outletId": "nyt-theater",
+     "cause": "other",
+     "source": "2f6e838c data(joe-turner): re-fetch Jonathan Mandell with chrome-stripped extractor"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T01:51:54.000Z",
+     "outletId": "chicagotribune",
+     "cause": "other",
+     "source": "729865a4 data: NY Sun + NYT Theater + Chicago Tribune Joe Turner reviews (scraper fix)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T15:51:56.000Z",
+     "outletId": "culturesauce",
+     "cause": "discovery-gap",
+     "source": "50f65a6e data: Re-recover Culture Sauce text (push-action now patched to prevent strip)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T15:42:35.000Z",
+     "outletId": "culturesauce",
+     "cause": "scoring-by-hand",
+     "source": "0b2e23e5 data: Fetch real Culture Sauce / Thom Geier text + clear LLM score"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T15:40:53.000Z",
+     "outletId": "culturesauce",
+     "cause": "attribution",
+     "source": "af8cc899 data: Strip misattributed cititour text from culturesauce--thom-geier (revert to BWW excerpt)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T04:09:03.000Z",
+     "outletId": "wsj",
+     "cause": "other",
+     "source": "69d9fe6a data: Lock down wsj--charles-isherwood.json for opening night (no future overwrites)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T04:09:02.000Z",
+     "outletId": "vulture",
+     "cause": "other",
+     "source": "44e7a1c7 data: Lock down vulture--sara-holdren.json for opening night (no future overwrites)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T04:09:02.000Z",
+     "outletId": "variety",
+     "cause": "other",
+     "source": "082bf231 data: Lock down variety--aramide-tinubu.json for opening night (no future overwrites)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T04:09:01.000Z",
+     "outletId": "timeout",
+     "cause": "other",
+     "source": "28fa5533 data: Lock down timeout--raven-snook.json for opening night (no future overwrites)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T04:09:00.000Z",
+     "outletId": "thewrap",
+     "cause": "other",
+     "source": "f5965b33 data: Lock down thewrap--robert-hofler.json for opening night (no future overwrites)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T04:08:59.000Z",
+     "outletId": "theatrely",
+     "cause": "other",
+     "source": "307fe427 data: Lock down theatrely--joey-sims.json for opening night (no future overwrites)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T04:08:58.000Z",
+     "outletId": "theatermania",
+     "cause": "other",
+     "source": "b07c5d39 data: Lock down theatermania--dan-rubins.json for opening night (no future overwrites)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T04:08:58.000Z",
+     "outletId": "playbill",
+     "cause": "other",
+     "source": "1ed978f3 data: Lock down playbill--unknown.json for opening night (no future overwrites)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T04:08:57.000Z",
+     "outletId": "nytimes",
+     "cause": "other",
+     "source": "f5178b83 data: Lock down nytimes--helen-shaw.json for opening night (no future overwrites)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T04:08:56.000Z",
+     "outletId": "nytg",
+     "cause": "other",
+     "source": "2b749671 data: Lock down nytg--austin-fimmano.json for opening night (no future overwrites)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T04:08:55.000Z",
+     "outletId": "nysr",
+     "cause": "other",
+     "source": "c0952878 data: Lock down nysr--melissa-rose-bernardo.json for opening night (no future overwrites)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T04:08:55.000Z",
+     "outletId": "nysr",
+     "cause": "other",
+     "source": "43496462 data: Lock down nysr--frank-scheck.json for opening night (no future overwrites)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T04:08:54.000Z",
+     "outletId": "nypost",
+     "cause": "other",
+     "source": "7c3a4b32 data: Lock down nypost--johnny-oleksinski.json for opening night (no future overwrites)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T04:08:53.000Z",
+     "outletId": "nydailynews",
+     "cause": "other",
+     "source": "415d1b39 data: Lock down nydailynews--chris-jones.json for opening night (no future overwrites)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T04:08:52.000Z",
+     "outletId": "guardian",
+     "cause": "other",
+     "source": "77728c3e data: Lock down guardian--juan-a-ramirez.json for opening night (no future overwrites)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T04:08:51.000Z",
+     "outletId": "frontmezzjunkies",
+     "cause": "content-tier",
+     "source": "05a0d8e1 data: Lock down frontmezzjunkies--ross.json for opening night (no future overwrites)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T04:08:51.000Z",
+     "outletId": "deadline",
+     "cause": "other",
+     "source": "c1351612 data: Lock down deadline--greg-evans.json for opening night (no future overwrites)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T04:08:50.000Z",
+     "outletId": "culturesauce",
+     "cause": "other",
+     "source": "c4f57d0c data: Lock down culturesauce--thom-geier.json for opening night (no future overwrites)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T04:08:49.000Z",
+     "outletId": "cititour",
+     "cause": "wrong-label",
+     "source": "a6cda32c data: Lock down cititour--brian-scott-lipton.json for opening night (no future overwrites)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T03:31:01.000Z",
+     "outletId": "vulture",
+     "cause": "discovery-gap",
+     "source": "c56276ed data: Vulture/Sara Holdren \u2014 full text from user paste"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T03:30:06.000Z",
+     "outletId": "timeout",
+     "cause": "discovery-gap",
+     "source": "081d4358 data: Fetch + restore fullText for timeout--raven-snook.json (will trigger LLM rescore)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T03:30:05.000Z",
+     "outletId": "guardian",
+     "cause": "discovery-gap",
+     "source": "e4b175db data: Fetch + restore fullText for guardian--juan-a-ramirez.json (will trigger LLM rescore)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T03:30:00.000Z",
+     "outletId": "frontmezzjunkies",
+     "cause": "discovery-gap",
+     "source": "c9df6177 data: Fetch + restore fullText for frontmezzjunkies--ross.json (will trigger LLM rescore)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T03:26:01.000Z",
+     "outletId": "nytimes",
+     "cause": "discovery-gap",
+     "source": "d65c52cd data: NYT Helen Shaw \u2014 full text + Critics_Pick + clear LLM score for re-scoring"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T03:22:17.000Z",
+     "outletId": "nytimes",
+     "cause": "other",
+     "source": "875a26c7 data: Set NYT Critics Pick designation on Helen Shaw / Joe Turner"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T03:19:29.000Z",
+     "outletId": "nypost",
+     "cause": "discovery-gap",
+     "source": "ed6c2129 data: Re-recover nypost--johnny-oleksinski.json fullText (rebuild stripped it)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T03:09:15.000Z",
+     "outletId": "culturesauce",
+     "cause": "other",
+     "source": "b8bdb753 data: Remove culturesauce--unknown (merged into thom-geier)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T03:09:14.000Z",
+     "outletId": "culturesauce",
+     "cause": "other",
+     "source": "05b8fa26 data: Merge culturesauce--unknown into thom-geier (dedup)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T02:59:18.000Z",
+     "outletId": "cititour",
+     "cause": "discovery-gap",
+     "source": "9efcc24f data: Recover cititour fullText"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T02:59:16.000Z",
+     "outletId": "nypost",
+     "cause": "other",
+     "source": "5bff043d data: Relocate nypost--johnny-oleksinski.json \u2192 joe-turners-come-and-gone-2026 (admin UI misdetection)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T02:52:21.000Z",
+     "outletId": "variety",
+     "cause": "discovery-gap",
+     "source": "af1c9fd1 data: Recover lost user-submitted fullText/score for variety--aramide-tinubu.json"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T02:52:18.000Z",
+     "outletId": "thewrap",
+     "cause": "discovery-gap",
+     "source": "88635344 data: Recover lost user-submitted fullText/score for thewrap--robert-hofler.json"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T02:52:17.000Z",
+     "outletId": "theatrely",
+     "cause": "discovery-gap",
+     "source": "6042b0ba data: Recover lost user-submitted fullText/score for theatrely--joey-sims.json"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T02:52:12.000Z",
+     "outletId": "nysr",
+     "cause": "discovery-gap",
+     "source": "7fe81808 data: Recover lost user-submitted fullText/score for nysr--melissa-rose-bernardo.json"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T02:52:07.000Z",
+     "outletId": "deadline",
+     "cause": "discovery-gap",
+     "source": "68e9a2c5 data: Recover lost user-submitted fullText/score for deadline--greg-evans.json"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T02:45:05.000Z",
+     "outletId": "wsj",
+     "cause": "discovery-gap",
+     "source": "1eda7b1e data: Ingest wsj / charles-isherwood for joe-turners-come-and-gone-2026 (admin UI)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T02:29:49.000Z",
+     "outletId": "cititour",
+     "cause": "discovery-gap",
+     "source": "b54f545f data: Ingest cititour / brian-scott-lipton for joe-turners-come-and-gone-2026 (admin UI)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T02:28:49.000Z",
+     "outletId": "theatrely",
+     "cause": "other",
+     "source": "8e3fa874 data: Relocate theatrely--joey-sims.json \u2192 joe-turners-come-and-gone-2026 (admin UI misdetection)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T02:28:47.000Z",
+     "outletId": "thewrap",
+     "cause": "other",
+     "source": "47c28f60 data: Relocate thewrap--robert-hofler.json \u2192 joe-turners-come-and-gone-2026 (admin UI misdetection)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T02:28:45.000Z",
+     "outletId": "deadline",
+     "cause": "other",
+     "source": "50638a14 data: Relocate deadline--greg-evans.json \u2192 joe-turners-come-and-gone-2026 (admin UI misdetection)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T02:28:44.000Z",
+     "outletId": "variety",
+     "cause": "other",
+     "source": "c4b5387e data: Relocate variety--aramide-tinubu.json \u2192 joe-turners-come-and-gone-2026 (admin UI misdetection)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T02:28:42.000Z",
+     "outletId": "nysr",
+     "cause": "other",
+     "source": "8638e466 data: Relocate nysr--frank-scheck.json \u2192 joe-turners-come-and-gone-2026 (admin UI misdetection)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T02:28:41.000Z",
+     "outletId": "nysr",
+     "cause": "other",
+     "source": "72af94e0 data: Relocate nysr--melissa-rose-bernardo.json \u2192 joe-turners-come-and-gone-2026 (admin UI misdetection)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T02:23:10.000Z",
+     "outletId": "theatermania",
+     "cause": "discovery-gap",
+     "source": "d85794ed data: Ingest theatermania / dan-rubins for joe-turners-come-and-gone-2026 (admin UI)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T02:21:45.000Z",
+     "outletId": "nydailynews",
+     "cause": "discovery-gap",
+     "source": "355dc984 data: Ingest nydailynews / chris-jones for joe-turners-come-and-gone-2026 (admin UI)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T02:21:43.000Z",
+     "outletId": "nytg",
+     "cause": "discovery-gap",
+     "source": "9910d491 data: Ingest nytg / austin-fimmano for joe-turners-come-and-gone-2026 (admin UI)"
+    }
+   ],
+   "historyCovers": true,
+   "expectedMissing": null,
+   "liveCurve": {
+    "firstLiveHours": 4269.5,
+    "plus1h": 0,
+    "plus3h": 0,
+    "plus24h": 0,
+    "final": 36,
+    "unplaced": 31
+   },
+   "embargoCorrected": false,
+   "estimateAt": "2026-04-26T02:00:00.000Z",
+   "shiftMin": 0,
+   "onRecordEmbargo": null
+  },
+  {
+   "showId": "the-rocky-horror-show-2026",
+   "title": "The Rocky Horror Show",
+   "category": "broadway",
+   "openingDate": "2026-04-23",
+   "embargoAt": "2026-04-24T01:30:00.000Z",
+   "embargoFrom": "observed publish cluster",
+   "windowEnd": "2026-05-01T01:30:00.000Z",
+   "windowClosed": true,
+   "live": 37,
+   "lateLive": 8,
+   "known": 37,
+   "missing": 0,
+   "censusCandidates": 30,
+   "hoursToLive": null,
+   "verdict": "needed-hands",
+   "onlyIngestDispatches": false,
+   "signals": [
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T02:28:46.000Z",
+     "outletId": "deadline",
+     "cause": "other",
+     "source": "d27ca577 data: Remove deadline--greg-evans.json from the-rocky-horror-show-2026 (relocated to joe-turner)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T02:21:46.000Z",
+     "outletId": "deadline",
+     "cause": "discovery-gap",
+     "source": "cfd23fc5 data: Ingest deadline / greg-evans for the-rocky-horror-show-2026 (admin UI)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T01:23:28.000Z",
+     "outletId": "jks-theatre-scene",
+     "cause": "discovery-gap",
+     "source": "7ab18ee7 data: Ingest jks-theatre-scene / jeff-kready for the-rocky-horror-show-2026 (admin UI)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-25T22:49:08.000Z",
+     "outletId": "the-queer-review",
+     "cause": "discovery-gap",
+     "source": "1ddad2da data: Ingest the-queer-review / james-kleinmann for the-rocky-horror-show-2026 (admin UI)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-24T16:26:51.000Z",
+     "outletId": "nysr",
+     "cause": "other",
+     "source": "7a8c2f6a the-rocky-horror-show-2026: revert NYSR Sommers 50\u219240 (matches explicit 2/5 stars from source \u2014 DTLI sideways thumb was misleading)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-24T14:22:27.000Z",
+     "outletId": "nypost",
+     "cause": "scoring-by-hand",
+     "source": "3ac65145 data: Backfill Rocky Horror 2026 NYP originalScore (2.5/4 stars = 63/100) via extractNYPostScore \u2014 parent 34b637c5-416f-81fc-8c87-e"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-24T14:12:45.000Z",
+     "outletId": "amny",
+     "cause": "other",
+     "source": "a1d2bb83 data: RHPS 2026 DTLI thumb backfill for year-suffix filenames"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-24T13:50:19.000Z",
+     "outletId": "deadline",
+     "cause": "other",
+     "source": "cdf3d64a data: RHPS 2026 DTLI thumb case normalization"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-24T13:24:11.000Z",
+     "outletId": "cote-notices",
+     "cause": "other",
+     "source": "bf3601e8 the-rocky-horror-show-2026: quarantine cote-notices--david-finkle dupe (URL ?triedRedirect= variant of david-cote-2026; BWW RR crit"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-24T04:39:28.000Z",
+     "outletId": "nytimes",
+     "cause": "scoring-by-hand",
+     "source": "f38bb6fd the-rocky-horror-show-2026: lock Helen Shaw at 82 across humanReviewScore + llmScore.score + assignedScore (CP override)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-24T04:17:11.000Z",
+     "outletId": "nytimes",
+     "cause": "scoring-by-hand",
+     "source": "059d704f the-rocky-horror-show-2026: lock Helen Shaw at 82 (provisional=false) \u2014 CP designation override"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-24T04:09:01.000Z",
+     "outletId": "cote-notices",
+     "cause": "other",
+     "source": "e07eed63 fix(outlet-ids): canonicalize SIX edge-boston + Rocky Horror cote-notices"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-24T04:01:00.000Z",
+     "outletId": "amny",
+     "cause": "wrong-label",
+     "source": "67e9057e the-rocky-horror-show-2026: delete 22 stale wrongProduction files from 2014 Rocky boxer musical (prevent future poller merge-bug co"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-24T03:30:42.000Z",
+     "outletId": "amny",
+     "cause": "other",
+     "source": "3cbaeab0 the-rocky-horror-show-2026: bump Helen Shaw 78\u219282 (CP), add DTLI verdict quotes as keyPhrases + pressQuote on all 23 files"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-24T02:52:24.000Z",
+     "outletId": "cititour",
+     "cause": "wrong-label",
+     "source": "3d713903 the-rocky-horror-show-2026: add Cititour (Lipton, 55) + bump NYSR Sommers 40\u219250 per DTLI thumb sanity check"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-24T02:51:04.000Z",
+     "outletId": "amny",
+     "cause": "discovery-gap",
+     "source": "9aaef518 the-rocky-horror-show-2026: add manual humanReviewScore for 11 LLM-pending + add amNY (Windman) & TheWrap (Hofler) reviews"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-24T02:41:46.000Z",
+     "outletId": "cote-notices",
+     "cause": "discovery-gap",
+     "source": "3ada5fce the-rocky-horror-show-2026: dedupe (keep manual-ingest -2026 files), add protectedFields on poller-kept"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-24T02:38:36.000Z",
+     "outletId": "chicagotribune",
+     "cause": "discovery-gap",
+     "source": "ad38edcd the-rocky-horror-show-2026: manual ingest of 18 opening-night reviews"
+    }
+   ],
+   "historyCovers": true,
+   "expectedMissing": null,
+   "liveCurve": {
+    "firstLiveHours": 3424.5,
+    "plus1h": 0,
+    "plus3h": 0,
+    "plus24h": 0,
+    "final": 44,
+    "unplaced": 36
+   },
+   "embargoCorrected": true,
+   "estimateAt": "2026-04-24T02:00:00.000Z",
+   "shiftMin": -30,
+   "onRecordEmbargo": {
+    "verdict": "needed-hands",
+    "line": "The Rocky Horror Show (Broadway, opened Apr 23): 37 reviews live (8 more added after opening week), needed a person or a Claude session (18 fixes by hand: other fix (deadline, nysr, amny, ...); review missed by discovery (deadline, jks-theatre-scene, the-queer-review, ...); score set by hand (nypost, nytimes); wrong-production or wrong-show flag (amny, cititour))."
+   }
+  },
+  {
+   "showId": "beaches-2026",
+   "title": "Beaches, A New Musical",
+   "category": "broadway",
+   "openingDate": "2026-04-22",
+   "embargoAt": "2026-04-23T03:00:00.000Z",
+   "embargoFrom": "observed publish cluster",
+   "windowEnd": "2026-04-30T03:00:00.000Z",
+   "windowClosed": true,
+   "live": 30,
+   "lateLive": 8,
+   "known": 30,
+   "missing": 0,
+   "censusCandidates": 11,
+   "hoursToLive": null,
+   "verdict": "needed-hands",
+   "onlyIngestDispatches": false,
+   "signals": [
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T02:59:17.000Z",
+     "outletId": "nypost",
+     "cause": "other",
+     "source": "dc628bd8 data: Remove nypost--johnny-oleksinski from beaches-2026"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-26T02:24:57.000Z",
+     "outletId": "nypost",
+     "cause": "discovery-gap",
+     "source": "57bf5185 data: Ingest nypost / johnny-oleksinski for beaches-2026 (admin UI)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-24T13:28:21.000Z",
+     "outletId": "ew",
+     "cause": "scoring-by-hand",
+     "source": "89c3d699 beaches-2026: correct EW Grade B- from 78 \u2192 72 (per canonical scripts/lib/score-conversion-rules.js)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-24T04:21:12.000Z",
+     "outletId": "nytimes",
+     "cause": "discovery-gap",
+     "source": "bb31f487 beaches-2026: add NYT dtliThumb=Down (missed by normalization hyphen bug)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-24T04:20:40.000Z",
+     "outletId": "chicagotribune",
+     "cause": "other",
+     "source": "069b723b beaches-2026: retroactive dtliThumb backfill on 16 DTLI-covered reviews (Down\u00d79, Meh\u00d76, Up\u00d71)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-24T03:56:27.000Z",
+     "outletId": "mashable",
+     "cause": "discovery-gap",
+     "source": "06625157 beaches-2026: add Mashable (Kristy Puchko) \u2014 23rd review"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-24T03:40:48.000Z",
+     "outletId": "talkinbroadway",
+     "cause": "other",
+     "source": "421c1f01 beaches-2026: clear TB Howard Miller placeholder (retry \u2014 previous clear didn't land)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-24T03:16:09.000Z",
+     "outletId": "talkinbroadway",
+     "cause": "other",
+     "source": "9acc3fc1 beaches-2026: clear TB Howard Miller placeholder (42 \u2192 LLM 48)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-24T03:02:34.000Z",
+     "outletId": "talkinbroadway",
+     "cause": "discovery-gap",
+     "source": "9649316f beaches-2026: add provisional humanReviewScore=42 on TB Howard Miller (mixed-negative pending LLM)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-24T02:53:10.000Z",
+     "outletId": "talkinbroadway",
+     "cause": "discovery-gap",
+     "source": "a85cc492 beaches-2026: add Talkin' Broadway (Howard Miller) \u2014 22nd critic review"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-23T04:43:47.000Z",
+     "outletId": "chicagotribune",
+     "cause": "discovery-gap",
+     "source": "35cf2578 beaches-2026: add per-file protectedFields array to 21 reviews (locks allowTourSignal + human-review overrides against poller/CI ov"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-23T04:32:42.000Z",
+     "outletId": "chicagotribune",
+     "cause": "scoring-by-hand",
+     "source": "65f1826a beaches-2026: restore LLM scores on 5 files that my reset+rsync wiped + clear matching placeholders (LLM wins)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-23T04:32:01.000Z",
+     "outletId": "chicagotribune",
+     "cause": "wrong-label",
+     "source": "c32bb915 beaches-2026: set allowTourSignal=true on TheaterMania (false positive \u2014 forward-looking tour mention, not a tour review)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-23T04:20:52.000Z",
+     "outletId": "chicagotribune",
+     "cause": "wrong-label",
+     "source": "aa3b470e beaches-2026: set all 8 manual-review protection fields (was missing 5 \u2014 rebuild silently dropped 4 placeholders + tour false-posit"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-23T04:05:51.000Z",
+     "outletId": "deadline",
+     "cause": "scoring-by-hand",
+     "source": "9c6dbac6 beaches-2026: clear 9 provisional humanReviewScore where LLM landed (LLM takes over). 5 placeholders remain pending LLM: ChiTrib, J"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-23T04:04:00.000Z",
+     "outletId": "chicagotribune",
+     "cause": "scoring-by-hand",
+     "source": "8506d340 beaches-2026: provisional humanReviewScore on 14 unscored reviews (manual estimates, marked humanReviewScoreProvisional:true)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-23T03:54:01.000Z",
+     "outletId": "ew",
+     "cause": "other",
+     "source": "f3ee49c3 beaches-2026: replace People + EW stubs with full articles (EW Grade B-=78)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-23T03:52:51.000Z",
+     "outletId": "ew",
+     "cause": "discovery-gap",
+     "source": "a747494f beaches-2026: add People (Dave Quinn) + EW (Sarah Hearon, Grade B-=78) from BWW Review Roundup excerpts"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-23T03:49:51.000Z",
+     "outletId": "chicagotribune",
+     "cause": "discovery-gap",
+     "source": "70ad4b0f beaches-2026: manual ingest of 19 opening-night reviews (NYT, Variety, Guardian, Time Out, Deadline, TheWrap, Theatrely, NYT Theate"
+    },
+    {
+     "kind": "hand-step",
+     "at": "2026-04-22T23:49:51-04:00",
+     "file": "beaches-2026/culturesauce--thom-geier.json",
+     "outletId": "culturesauce",
+     "cause": "wrong-label",
+     "steps": [
+      "wrongProductionManualClear",
+      "humanReviewScore"
+     ]
+    },
+    {
+     "kind": "hand-step",
+     "at": "2026-04-23T03:30:19Z",
+     "file": "beaches-2026/deadline--greg-evans.json",
+     "outletId": "deadline",
+     "cause": "wrong-label",
+     "steps": [
+      "wrongProductionManualClear"
+     ]
+    },
+    {
+     "kind": "hand-step",
+     "at": "2026-04-22T23:52:51-04:00",
+     "file": "beaches-2026/ew--sarah-hearon.json",
+     "outletId": "ew",
+     "cause": "wrong-label",
+     "steps": [
+      "wrongProductionManualClear",
+      "humanReviewScore"
+     ]
+    },
+    {
+     "kind": "hand-step",
+     "at": "2026-04-23T03:30:19Z",
+     "file": "beaches-2026/exeunt-magazine--cameron-kelsall.json",
+     "outletId": "exeunt-magazine",
+     "cause": "wrong-label",
+     "steps": [
+      "wrongProductionManualClear"
+     ]
+    },
+    {
+     "kind": "hand-step",
+     "at": "2026-04-22T23:49:51-04:00",
+     "file": "beaches-2026/guardian--richard-lawson.json",
+     "outletId": "guardian",
+     "cause": "wrong-label",
+     "steps": [
+      "wrongProductionManualClear",
+      "humanReviewScore"
+     ]
+    },
+    {
+     "kind": "hand-step",
+     "at": "2026-04-22T23:49:51-04:00",
+     "file": "beaches-2026/josh-at-the-movies--joshua-m-hayes.json",
+     "outletId": "josh-at-the-movies",
+     "cause": "wrong-label",
+     "steps": [
+      "wrongProductionManualClear"
+     ]
+    },
+    {
+     "kind": "hand-step",
+     "at": "2026-04-23T23:56:27-04:00",
+     "file": "beaches-2026/mashable--kristy-puchko.json",
+     "outletId": "mashable",
+     "cause": "wrong-label",
+     "steps": [
+      "wrongProductionManualClear"
+     ]
+    },
+    {
+     "kind": "hand-step",
+     "at": "2026-04-23T03:30:19Z",
+     "file": "beaches-2026/nysr--bob-verini.json",
+     "outletId": "nysr",
+     "cause": "wrong-label",
+     "steps": [
+      "wrongProductionManualClear",
+      "humanReviewScore"
+     ]
+    },
+    {
+     "kind": "hand-step",
+     "at": "2026-04-23T03:30:19Z",
+     "file": "beaches-2026/nysr--david-finkle.json",
+     "outletId": "nysr",
+     "cause": "wrong-label",
+     "steps": [
+      "wrongProductionManualClear",
+      "humanReviewScore"
+     ]
+    },
+    {
+     "kind": "hand-step",
+     "at": "2026-04-23T03:30:19Z",
+     "file": "beaches-2026/nyt-theater--jonathan-mandell.json",
+     "outletId": "nyt-theater",
+     "cause": "wrong-label",
+     "steps": [
+      "wrongProductionManualClear"
+     ]
+    },
+    {
+     "kind": "hand-step",
+     "at": "2026-04-23T03:30:19Z",
+     "file": "beaches-2026/nytg--joe-dziemianowicz.json",
+     "outletId": "nytg",
+     "cause": "wrong-label",
+     "steps": [
+      "wrongProductionManualClear"
+     ]
+    },
+    {
+     "kind": "hand-step",
+     "at": "2026-04-23T03:30:19Z",
+     "file": "beaches-2026/nytimes--laura-collins-hughes.json",
+     "outletId": "nytimes",
+     "cause": "wrong-label",
+     "steps": [
+      "wrongProductionManualClear"
+     ]
+    },
+    {
+     "kind": "hand-step",
+     "at": "2026-04-22T23:49:51-04:00",
+     "file": "beaches-2026/one-minute-critic--lindsay-b-davis.json",
+     "outletId": "one-minute-critic",
+     "cause": "wrong-label",
+     "steps": [
+      "wrongProductionManualClear",
+      "humanReviewScore"
+     ]
+    },
+    {
+     "kind": "hand-step",
+     "at": "2026-04-22T23:52:51-04:00",
+     "file": "beaches-2026/people--dave-quinn.json",
+     "outletId": "people",
+     "cause": "wrong-label",
+     "steps": [
+      "wrongProductionManualClear"
+     ]
+    },
+    {
+     "kind": "hand-step",
+     "at": "2026-04-22T23:49:51-04:00",
+     "file": "beaches-2026/slantmagazine--dan-rubins.json",
+     "outletId": "slantmagazine",
+     "cause": "wrong-label",
+     "steps": [
+      "wrongProductionManualClear"
+     ]
+    },
+    {
+     "kind": "hand-step",
+     "at": "2026-04-23T22:53:10-04:00",
+     "file": "beaches-2026/talkinbroadway--howard-miller.json",
+     "outletId": "talkinbroadway",
+     "cause": "wrong-label",
+     "steps": [
+      "wrongProductionManualClear"
+     ]
+    },
+    {
+     "kind": "hand-step",
+     "at": "2026-04-22T23:49:51-04:00",
+     "file": "beaches-2026/theatermania--zachary-stewart.json",
+     "outletId": "theatermania",
+     "cause": "wrong-label",
+     "steps": [
+      "wrongProductionManualClear"
+     ]
+    },
+    {
+     "kind": "hand-step",
+     "at": "2026-04-23T03:30:19Z",
+     "file": "beaches-2026/theatrely--juan-a-ramirez.json",
+     "outletId": "theatrely",
+     "cause": "wrong-label",
+     "steps": [
+      "wrongProductionManualClear"
+     ]
+    },
+    {
+     "kind": "hand-step",
+     "at": "2026-04-23T03:30:19Z",
+     "file": "beaches-2026/thewrap--robert-hofler.json",
+     "outletId": "thewrap",
+     "cause": "wrong-label",
+     "steps": [
+      "wrongProductionManualClear"
+     ]
+    },
+    {
+     "kind": "hand-step",
+     "at": "2026-04-23T03:30:19Z",
+     "file": "beaches-2026/timeout--adam-feldman.json",
+     "outletId": "timeout",
+     "cause": "wrong-label",
+     "steps": [
+      "wrongProductionManualClear"
+     ]
+    },
+    {
+     "kind": "hand-step",
+     "at": "2026-04-23T03:30:19Z",
+     "file": "beaches-2026/variety--frank-rizzo.json",
+     "outletId": "variety",
+     "cause": "wrong-label",
+     "steps": [
+      "wrongProductionManualClear"
+     ]
+    }
+   ],
+   "historyCovers": true,
+   "expectedMissing": null,
+   "liveCurve": {
+    "firstLiveHours": -1262.7,
+    "plus1h": 21,
+    "plus3h": 21,
+    "plus24h": 22,
+    "final": 37,
+    "unplaced": 1
+   },
+   "embargoCorrected": true,
+   "estimateAt": "2026-04-23T02:00:00.000Z",
+   "shiftMin": 60,
+   "onRecordEmbargo": {
+    "verdict": "needed-hands",
+    "line": "Beaches, A New Musical (Broadway, opened Apr 22): 30 reviews live (8 more added after opening week), needed a person or a Claude session (40 fixes by hand: other fix (nypost, chicagotribune, talkinbroadway, ...); review missed by discovery (nypost, nytimes, mashable, ...); score set by hand (ew, chicagotribune, deadline); wrong-production or wrong-show flag (chicagotribune, culturesauce, deadline, ...))."
+   }
+  },
+  {
+   "showId": "the-balusters-2026",
+   "title": "The Balusters",
+   "category": "broadway",
+   "openingDate": "2026-04-21",
+   "embargoAt": "2026-04-22T01:30:00.000Z",
+   "embargoFrom": "observed publish cluster",
+   "windowEnd": "2026-04-29T01:30:00.000Z",
+   "windowClosed": true,
+   "live": 36,
+   "lateLive": 3,
+   "known": 36,
+   "missing": 0,
+   "censusCandidates": 27,
+   "hoursToLive": null,
+   "verdict": "needed-hands",
+   "onlyIngestDispatches": false,
+   "signals": [
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-25T16:44:24.000Z",
+     "outletId": "nysr",
+     "cause": "attribution",
+     "source": "7ee65812 fix: criticName 'Rose Bernardo' -> 'Melissa Rose Bernardo' (4 files)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-22T13:34:29.000Z",
+     "outletId": "talkinbroadway",
+     "cause": "attribution",
+     "source": "12d09ac1 the-balusters-2026: fix Talkin' Broadway byline (Unknown \u2192 Howard Miller)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-22T04:56:43.000Z",
+     "outletId": "cote-notices",
+     "cause": "other",
+     "source": "5b266b5a the-balusters-2026: unblock Cote Notices from regex exclusion"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-22T04:32:44.000Z",
+     "outletId": "cote-notices",
+     "cause": "scoring-by-hand",
+     "source": "a32976f1 the-balusters-2026: align humanReviewScore with LLM ensemble directly"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-22T04:24:56.000Z",
+     "outletId": "cote-notices",
+     "cause": "scoring-by-hand",
+     "source": "e9c4b2c5 the-balusters-2026: calibrate scores + reinforce protection"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-22T04:10:27.000Z",
+     "outletId": "vulture",
+     "cause": "discovery-gap",
+     "source": "48f85e2e the-balusters-2026: add humanPullQuote to Vulture review"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-22T04:05:15.000Z",
+     "outletId": "vulture",
+     "cause": "discovery-gap",
+     "source": "2d3c7e01 the-balusters-2026: add Vulture (Jackson McHenry) \u2014 missed by discovery, on DTLI but not BWW RR"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-22T03:51:51.000Z",
+     "outletId": "cote-notices",
+     "cause": "discovery-gap",
+     "source": "96ca751e the-balusters-2026: opening-night review recovery"
+    }
+   ],
+   "historyCovers": true,
+   "expectedMissing": null,
+   "liveCurve": {
+    "firstLiveHours": 4527.8,
+    "plus1h": 0,
+    "plus3h": 0,
+    "plus24h": 0,
+    "final": 39,
+    "unplaced": 36
+   },
+   "embargoCorrected": true,
+   "estimateAt": "2026-04-22T02:00:00.000Z",
+   "shiftMin": -30,
+   "onRecordEmbargo": {
+    "verdict": "needed-hands",
+    "line": "The Balusters (Broadway, opened Apr 21): 36 reviews live (3 more added after opening week), needed a person or a Claude session (8 fixes by hand: critic or outlet attribution (nysr, talkinbroadway); other fix (cote-notices); score set by hand (cote-notices); review missed by discovery (vulture, cote-notices))."
+   }
+  },
+  {
+   "showId": "schmigadoon-2026",
+   "title": "Schmigadoon!",
+   "category": "broadway",
+   "openingDate": "2026-04-20",
+   "embargoAt": "2026-04-21T02:00:00.000Z",
+   "embargoFrom": "observed publish cluster",
+   "windowEnd": "2026-04-28T02:00:00.000Z",
+   "windowClosed": true,
+   "live": 44,
+   "lateLive": 10,
+   "known": 44,
+   "missing": 0,
+   "censusCandidates": 31,
+   "hoursToLive": null,
+   "verdict": "needed-hands",
+   "onlyIngestDispatches": false,
+   "signals": [
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T20:16:42.000Z",
+     "outletId": "av-club",
+     "cause": "discovery-gap",
+     "source": "a8ae1b13 schmigadoon-2026: add 3 more manual-ingest reviews (StageZine/Harrah, The Recs/Cook, AV Club/Gillis)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-27T16:26:17.000Z",
+     "outletId": "pages-on-stages",
+     "cause": "discovery-gap",
+     "source": "aa9b2435 schmigadoon-2026: add 3 manual-ingest reviews (Contending/Avella, Pages on Stages/Pilevsky, Komisar Scoop/Komisar)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-24T13:44:14.000Z",
+     "outletId": "the-jewish-voice-and-opinion",
+     "cause": "discovery-gap",
+     "source": "0264fa46 schmigadoon-2026: add Two Sues On the Aisle review (The Jewish Voice and Opinion, 5/5)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-24T04:48:56.000Z",
+     "outletId": "the-jewish-voice-and-opinion",
+     "cause": "discovery-gap",
+     "source": "b3cdd458 data: Add Jewish Voice and Opinion review for Schmigadoon! (humanReviewScore=100)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-23T12:57:56.000Z",
+     "outletId": "josh-at-the-movies",
+     "cause": "discovery-gap",
+     "source": "8d557b4f schmigadoon-2026: ingest josh-at-the-movies Schmigadoon review (published 2026-04-20, missed by pipeline due to null-domain registr"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-23T03:43:41.000Z",
+     "outletId": "theatre-reviews-limited",
+     "cause": "other",
+     "source": "f423e8bc schmigadoon-2026: trim TRL tail to avoid article-boundary false positive (re-apply)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-23T03:04:23.000Z",
+     "outletId": "theatre-reviews-limited",
+     "cause": "other",
+     "source": "ad8a7af5 schmigadoon-2026: extract TRL article text + populate critic name"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-23T03:03:29.000Z",
+     "outletId": "culturesauce",
+     "cause": "other",
+     "source": "01dd470c schmigadoon-2026: populate critic names (Philip Mutz/Purewow, Thom Geier/Culture Sauce)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-23T02:30:53.000Z",
+     "outletId": "culturesauce",
+     "cause": "discovery-gap",
+     "source": "26b6e801 schmigadoon-2026: ingest 3 reader-submitted reviews (Purewow, Culture Sauce, Theatre Reviews Limited)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-22T13:14:57.000Z",
+     "outletId": "nydailynews",
+     "cause": "wrong-label",
+     "source": "d2ec7a6a fix(schmigadoon): flag Playbill roundup + clear NYDN wrongProduction FP"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-22T04:49:56.000Z",
+     "outletId": "talkinbroadway",
+     "cause": "other",
+     "source": "2aa02b08 rescue: Schmigadoon Talkin' Broadway review from _pending strand"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-21T16:43:35.000Z",
+     "outletId": "amny",
+     "cause": "other",
+     "source": "2d40319c fix(schmig): correct amny bwwRoundupUrl from EBT to Schmig"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-21T16:39:48.000Z",
+     "outletId": "cititour",
+     "cause": "wrong-label",
+     "source": "e23f8184 fix(schmig): clear CV false positive on cititour/Scott Lipton review"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-21T14:17:44.000Z",
+     "outletId": "nytimes",
+     "cause": "scoring-by-hand",
+     "source": "08871992 lock(schmig): Vincentelli NYT humanReviewScore=89 for full protection"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-21T13:47:42.000Z",
+     "outletId": "nypost",
+     "cause": "scoring-by-hand",
+     "source": "02602874 fix(schmig): lock nypost score 50 + fix string assignedScore type"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-21T13:45:38.000Z",
+     "outletId": "theatrely",
+     "cause": "wrong-label",
+     "source": "308b618d fix(schmig): clear stale flaggedForReview on Kassal Theatrely"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-21T13:44:35.000Z",
+     "outletId": "frontmezzjunkies",
+     "cause": "attribution",
+     "source": "1f768845 fix(schmig): exclude 2 misattributed files from live scores"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-21T13:41:23.000Z",
+     "outletId": "nytimes",
+     "cause": "wrong-label",
+     "source": "dc3b86f6 fix(schmig): clear Vincentelli NYT false-positive wrongProduction"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-21T13:24:51.000Z",
+     "outletId": "guardian",
+     "cause": "other",
+     "source": "4af7a507 schmig: fix Guardian star, TheWrap contamination, NY Sun false-positive"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-21T04:33:28.000Z",
+     "outletId": "amny",
+     "cause": "other",
+     "source": "8980796b schmig: populate DTLI + BWW thumbs from re-run scrapers"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-21T04:16:02.000Z",
+     "outletId": "guardian",
+     "cause": "attribution",
+     "source": "ff33d13c fix(schmigadoon): correct Guardian byline Soloski \u2192 Hassenger"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-21T03:43:17.000Z",
+     "outletId": "chicagotribune",
+     "cause": "other",
+     "source": "e5e6fead schmigadoon: nuke EBT bwwExcerpts from 25 review files"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-21T03:39:58.000Z",
+     "outletId": "timeout",
+     "cause": "discovery-gap",
+     "source": "8906859b schmigadoon: fix timeout EBT contamination, ingest real Schmig content"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-21T03:28:09.000Z",
+     "outletId": "culturesauce",
+     "cause": "wrong-label",
+     "source": "83d1edbe schmigadoon: flag culturesauce as wrongShow (EBT content under Schmig showId)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-21T03:24:32.000Z",
+     "outletId": "deadline",
+     "cause": "scoring-by-hand",
+     "source": "78613784 schmigadoon: convert 5 manual scores from fake-llmScore to humanReviewScore (P0b)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-21T03:20:11.000Z",
+     "outletId": "deadline",
+     "cause": "discovery-gap",
+     "source": "0078252a schmigadoon-2026: add manual LLM scores to 5 Schmig reviews (deadline, people, theatrely, vulture, wsj); flag 3 non-reviews (playbi"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-21T03:15:57.000Z",
+     "outletId": "nyt-theater",
+     "cause": "wrong-label",
+     "source": "79570b01 schmigadoon-2026: re-apply wrongShow flag to nyt-theater--jonathan-mandell (EBT content) after rebase cleared it"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-21T03:15:01.000Z",
+     "outletId": "deadline",
+     "cause": "wrong-label",
+     "source": "1a5d4c65 schmigadoon-2026: URGENT - manually ingest 7 user-provided reviews + clear false wrongShow/wrongProduction flags on Deadline/Theatr"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-21T03:05:19.000Z",
+     "outletId": "chicagotribune",
+     "cause": "wrong-label",
+     "source": "992c5ad8 schmigadoon-2026: flag 11 Every Brilliant Thing SERP artifacts as wrongShow (URGENT - were showing on live site)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-21T02:56:48.000Z",
+     "outletId": "culturesauce",
+     "cause": "discovery-gap",
+     "source": "79003420 schmigadoon-2026: fix EW (was Every Brilliant Thing URL), Hofler (correct URL + full text), CultureSauce score"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-21T02:49:28.000Z",
+     "outletId": "culturesauce",
+     "cause": "discovery-gap",
+     "source": "ac683552 feat(schmigadoon): add 5 missing BWW RR reviews (Guardian 3/5, NYSR Sommers 4/5, NYSR Verini 4/5, NewYorkTheater Mandell, CultureSa"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-21T02:44:27.000Z",
+     "outletId": "thewrap",
+     "cause": "other",
+     "source": "1a64a46a fix(schmigadoon): flag thewrap--jason-clark.json as 2021 Apple TV+ series review (wrong production)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-21T02:25:18.000Z",
+     "outletId": "nytimes",
+     "cause": "other",
+     "source": "82af3f6f manual: add NYT Critic's Pick \u2014 Schmigadoon (Vincentelli)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-21T01:51:27.000Z",
+     "outletId": "av-club",
+     "cause": "other",
+     "source": "63414861 chore(schmigadoon-2026): clear TV-series reviews before opening night"
+    }
+   ],
+   "historyCovers": true,
+   "expectedMissing": null,
+   "liveCurve": {
+    "firstLiveHours": 3496,
+    "plus1h": 0,
+    "plus3h": 0,
+    "plus24h": 0,
+    "final": 53,
+    "unplaced": 43
+   },
+   "embargoCorrected": false,
+   "estimateAt": "2026-04-21T02:00:00.000Z",
+   "shiftMin": 0,
+   "onRecordEmbargo": null
+  },
+  {
+   "showId": "fallen-angels-2026",
+   "title": "Fallen Angels",
+   "category": "broadway",
+   "openingDate": "2026-04-19",
+   "embargoAt": "2026-04-20T00:00:00.000Z",
+   "embargoFrom": "observed publish cluster",
+   "windowEnd": "2026-04-27T00:00:00.000Z",
+   "windowClosed": true,
+   "live": 35,
+   "lateLive": 2,
+   "known": 35,
+   "missing": 0,
+   "censusCandidates": 15,
+   "hoursToLive": null,
+   "verdict": "needed-hands",
+   "onlyIngestDispatches": false,
+   "signals": [
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-25T16:44:24.000Z",
+     "outletId": "nysr",
+     "cause": "attribution",
+     "source": "7ee65812 fix: criticName 'Rose Bernardo' -> 'Melissa Rose Bernardo' (4 files)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-22T14:05:47.000Z",
+     "outletId": "talkinbroadway",
+     "cause": "other",
+     "source": "cd46b4a7 data: fix 9 review-contamination audit hits (B/C/E/F strict)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-20T22:18:30.000Z",
+     "outletId": "talkinbroadway",
+     "cause": "other",
+     "source": "a36db97d fix(fallen-angels-2026): TB URL fallenangels2026.html \u2192 FallenAngels.html"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-20T14:26:20.000Z",
+     "outletId": "nytg",
+     "cause": "wrong-label",
+     "source": "b7d891c0 data(fallen-angels-2026): delete stale nytg gillian-russo stub"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-20T03:06:23.000Z",
+     "outletId": "theatermania",
+     "cause": "discovery-gap",
+     "source": "7993ed95 data(fa-2026): TM pull quote \u2014 drop 'But' hedge opener so guard accepts it"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-20T03:00:30.000Z",
+     "outletId": "theatermania",
+     "cause": "discovery-gap",
+     "source": "4046d05b data(fa-2026): fix TheWrap URL (404 \u2192 200) + add TM pull quote"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-20T02:39:08.000Z",
+     "outletId": "amny",
+     "cause": "other",
+     "source": "d84b1534 data(fa-2026): protection fields + NYTG critic rename"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-20T02:13:10.000Z",
+     "outletId": "nypost",
+     "cause": "other",
+     "source": "801e8932 data(fallen-angels): add NY Post Oleksinski (63, 2.5/4) + correct TheaterMania URL"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-20T02:12:20.000Z",
+     "outletId": "theatermania",
+     "cause": "discovery-gap",
+     "source": "4fefb68b data(fallen-angels): add TheaterMania Kenji Fujishima review (85)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-20T02:09:34.000Z",
+     "outletId": "guardian",
+     "cause": "discovery-gap",
+     "source": "a89a4e7b data(fallen-angels): manual ingestion \u2014 Bernardo, Guardian, WSJ, Talkin' Broadway with humanReviewScore + protection fields"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-20T01:54:46.000Z",
+     "outletId": "cititour",
+     "cause": "other",
+     "source": "8bc745fa Opening night: add Cote/Hofler/Sommers/Lipton manual entries for Fallen Angels"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-20T01:35:50.000Z",
+     "outletId": "one-minute-critic",
+     "cause": "discovery-gap",
+     "source": "a1b994ef Add 1 Minute Critic reviews (Matthew Wexler) for Ragtime + 3 current Broadway shows"
+    }
+   ],
+   "historyCovers": true,
+   "expectedMissing": null,
+   "liveCurve": {
+    "firstLiveHours": 4612.9,
+    "plus1h": 0,
+    "plus3h": 0,
+    "plus24h": 0,
+    "final": 36,
+    "unplaced": 34
+   },
+   "embargoCorrected": true,
+   "estimateAt": "2026-04-20T02:00:00.000Z",
+   "shiftMin": -120,
+   "onRecordEmbargo": {
+    "verdict": "needed-hands",
+    "line": "Fallen Angels (Broadway, opened Apr 19): 35 reviews live (2 more added after opening week), needed a person or a Claude session (13 fixes by hand: other fix (nytg, talkinbroadway, amny, ...); critic or outlet attribution (nysr); wrong-production or wrong-show flag (nytg); review missed by discovery (theatermania, guardian, one-minute-critic))."
+   }
+  },
+  {
+   "showId": "proof-2026",
+   "title": "Proof",
+   "category": "broadway",
+   "openingDate": "2026-04-16",
+   "embargoAt": "2026-04-17T02:00:00.000Z",
+   "embargoFrom": "observed publish cluster",
+   "windowEnd": "2026-04-24T02:00:00.000Z",
+   "windowClosed": true,
+   "live": 31,
+   "lateLive": 2,
+   "known": 31,
+   "missing": 0,
+   "censusCandidates": 25,
+   "hoursToLive": null,
+   "verdict": "needed-hands",
+   "onlyIngestDispatches": false,
+   "signals": [
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-19T22:22:54.000Z",
+     "outletId": "one-minute-critic",
+     "cause": "discovery-gap",
+     "source": "1b278afb add: 1minute critic Matthew Wexler review for proof-2026"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-19T20:31:40.000Z",
+     "outletId": "nysr",
+     "cause": "duplicate-identity",
+     "source": "8ac841de fix(proof-2026): break circular duplicateOf for 2 NYT/NYSR pairs"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-19T18:14:21.000Z",
+     "outletId": "nydailynews",
+     "cause": "duplicate-identity",
+     "source": "28632398 fix(proof-2026): protect isSyndicatedDuplicate + duplicateOf from pipeline overwrites"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-17T14:57:19.000Z",
+     "outletId": "cititour",
+     "cause": "wrong-label",
+     "source": "d9147fc9 rescue(proof): Cititour Scott Lipton \u2014 rejected as garbage_text was false positive"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-17T11:45:53.000Z",
+     "outletId": "vulture",
+     "cause": "scoring-by-hand",
+     "source": "8342b260 score(proof): Vulture ensemble rescore 52 \u2192 58 (Mixed, not Negative)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-17T11:37:32.000Z",
+     "outletId": "chicagotribune",
+     "cause": "scoring-by-hand",
+     "source": "9387b06d feat(proof): rescue Vulture (Sara Holdren, score 52) + dedup 4 SERP alt-URL stubs"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-17T11:33:56.000Z",
+     "outletId": "chicagotribune",
+     "cause": "duplicate-identity",
+     "source": "b1652e38 fix(proof): merge Chris Jones Chicago Tribune + NYDN syndication (score \u2192 90)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-17T04:31:21.000Z",
+     "outletId": "guardian",
+     "cause": "other",
+     "source": "c9f5a058 fix(proof): Guardian 57 \u2192 60 (explicit 3/5 stars)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-17T04:26:59.000Z",
+     "outletId": "new-york-sun",
+     "cause": "scoring-by-hand",
+     "source": "ecb2d5eb fix(proof): set llmPullQuote (top-priority field) on all manual pullquote overrides"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-17T04:20:25.000Z",
+     "outletId": "new-york-sun",
+     "cause": "other",
+     "source": "050d487f fix(proof): set clean pullquotes for NYSR + New York Sun (were empty)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-17T04:19:02.000Z",
+     "outletId": "talkinbroadway",
+     "cause": "other",
+     "source": "51bdd1ab fix(proof): replace off-topic Talkin' Broadway pullquote with Miller's actual verdict"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-17T04:17:04.000Z",
+     "outletId": "wsj",
+     "cause": "other",
+     "source": "0cdeed01 rescue(proof): WSJ Charles Isherwood \u2014 file was locked with wrong Becky Shaw URL"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-17T04:08:52.000Z",
+     "outletId": "theatermania",
+     "cause": "other",
+     "source": "cceae536 fix(proof): replace TheaterMania internal-note bwwExcerpt that leaked to live site"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-17T04:08:22.000Z",
+     "outletId": "nytimes",
+     "cause": "other",
+     "source": "456ec57f fix(proof): manually replace NYT Helen Shaw pullquote (hedge opener praising only performances)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-17T03:50:26.000Z",
+     "outletId": "culturesauce",
+     "cause": "wrong-label",
+     "source": "6d8779ba fix(proof): final pre-rebuild cleanup \u2014 clear stale flags + replace TM nav chrome"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-17T03:48:24.000Z",
+     "outletId": "nysr",
+     "cause": "scoring-by-hand",
+     "source": "be2755c1 fix(proof): NYSR 5-star \u2192 use humanReviewScore override (not originalScore)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-17T03:47:18.000Z",
+     "outletId": "nytimes",
+     "cause": "scoring-by-hand",
+     "source": "9c22f0d4 fix(proof): user-directed score corrections for NYT + TheaterMania"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-17T03:41:15.000Z",
+     "outletId": "culturesauce",
+     "cause": "wrong-label",
+     "source": "40b07587 fix(proof): rescue Culturesauce + clear stale flags + correct NYSR Suskin URL"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-17T03:14:24.000Z",
+     "outletId": "talkinbroadway",
+     "cause": "other",
+     "source": "d1233635 add(proof-2026): Talkin' Broadway \u2014 found URL pattern Proof26.html (2-digit year)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-17T03:11:27.000Z",
+     "outletId": "new-york-sun",
+     "cause": "other",
+     "source": "60c31fca fix(proof-2026): rescue nydailynews + add theatermania (DTLI-confirmed) + harden new-york-sun"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-17T03:09:26.000Z",
+     "outletId": "cititour",
+     "cause": "wrong-label",
+     "source": "eb35515c fix(proof-2026): emergency single-model scoring for last 2 unscored (new-york-sun, cititour)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-17T03:01:47.000Z",
+     "outletId": "new-york-sun",
+     "cause": "other",
+     "source": "399aa44f fix(proof-2026): re-fetch new-york-sun text + lock"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-17T03:00:07.000Z",
+     "outletId": "nyt-theater",
+     "cause": "other",
+     "source": "f7814d10 fix(proof-2026): re-fetch nyt-theater text after poller clobber (3rd time)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-17T02:57:19.000Z",
+     "outletId": "chicagotribune",
+     "cause": "other",
+     "source": "070170c0 fix(proof-2026): re-fetch clobbered text + lock ALL 15 reviews"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-17T02:55:21.000Z",
+     "outletId": "deadline",
+     "cause": "scoring-by-hand",
+     "source": "88e213d0 harden(proof-2026): lock 9 scored files via per-file protectedFields"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-17T02:53:51.000Z",
+     "outletId": "deadline",
+     "cause": "discovery-gap",
+     "source": "ff55d5d2 recover(proof-2026): restore 9 scored reviews clobbered by 2nd poller run"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-17T02:51:56.000Z",
+     "outletId": "cititour",
+     "cause": "other",
+     "source": "d5aca477 fix(proof-2026): stub + text-fetch 2 missing BWW RR entries"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-17T02:48:35.000Z",
+     "outletId": "chicagotribune",
+     "cause": "other",
+     "source": "7fa54ca4 fix(proof-2026): fetch text manually for 4 LLM-FP rescued reviews"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-17T02:45:59.000Z",
+     "outletId": "chicagotribune",
+     "cause": "wrong-label",
+     "source": "e0158dc2 fix(proof-2026): rescue 4 false-positive LLM wrongProduction flags"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-17T02:40:59.000Z",
+     "outletId": "frontmezzjunkies",
+     "cause": "wrong-label",
+     "source": "c13051e7 fix(proof-2026): flag pre-opening preview article + garbage constructed-URL as wrongProduction"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-17T01:48:42.000Z",
+     "outletId": "theatermania",
+     "cause": "wrong-label",
+     "source": "ee87dcab fix(proof-2026): mark theatermania as wrongShow \u2014 pre-opening interview blocking review re-discovery"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-17T01:39:17.000Z",
+     "outletId": "nytimes",
+     "cause": "wrong-label",
+     "source": "e9eaac9f fix(proof-2026): mark NYT + Variety as wrongProduction \u2014 wrong URLs blocking re-discovery"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-17T01:25:09.000Z",
+     "outletId": "nysr",
+     "cause": "other",
+     "source": "a65a4281 fix(contamination): clear 5 STRICT audit issues"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-17T00:16:46.000Z",
+     "outletId": "wsj",
+     "cause": "wrong-label",
+     "source": "5e2da461 fix(data): flag Becky Shaw WSJ review misfiled on proof-2026"
+    }
+   ],
+   "historyCovers": true,
+   "expectedMissing": null,
+   "liveCurve": {
+    "firstLiveHours": 3991.1,
+    "plus1h": 0,
+    "plus3h": 0,
+    "plus24h": 0,
+    "final": 33,
+    "unplaced": 31
+   },
+   "embargoCorrected": false,
+   "estimateAt": "2026-04-17T02:00:00.000Z",
+   "shiftMin": 0,
+   "onRecordEmbargo": null
+  },
+  {
+   "showId": "the-fear-of-13-2026",
+   "title": "The Fear of 13",
+   "category": "broadway",
+   "openingDate": "2026-04-15",
+   "embargoAt": "2026-04-16T03:00:00.000Z",
+   "embargoFrom": "observed publish cluster",
+   "windowEnd": "2026-04-23T03:00:00.000Z",
+   "windowClosed": true,
+   "live": 31,
+   "lateLive": 4,
+   "known": 31,
+   "missing": 0,
+   "censusCandidates": 27,
+   "hoursToLive": null,
+   "verdict": "needed-hands",
+   "onlyIngestDispatches": false,
+   "signals": [
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-18T03:42:37.000Z",
+     "outletId": "guardian",
+     "cause": "duplicate-identity",
+     "source": "c57c2224 fix: mark 2 more url-collision duplicates to clear C2_url_multi_critic CI failures"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-17T02:47:25.000Z",
+     "outletId": "guardian",
+     "cause": "discovery-gap",
+     "source": "76faebeb fix(the-fear-of-13-2026): add humanReviewScore=60 for Guardian Horton (3/5 stars, protected from gather overwrite)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-17T01:34:45.000Z",
+     "outletId": "guardian",
+     "cause": "scoring-by-hand",
+     "source": "4af8347f fix(the-fear-of-13-2026): set Guardian Horton originalScore 3/5 stars; mark TimeOut as no-score"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-17T01:25:09.000Z",
+     "outletId": "talkinbroadway",
+     "cause": "other",
+     "source": "a65a4281 fix(contamination): clear 5 STRICT audit issues"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-16T04:57:04.000Z",
+     "outletId": "deadline",
+     "cause": "discovery-gap",
+     "source": "bc7368f5 data: Fear of 13 - all 16 non-star reviews now ensemble-scored (stripped hacky overrides, Deadline full text+ensemble)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-16T04:51:35.000Z",
+     "outletId": "deadline",
+     "cause": "wrong-label",
+     "source": "a8d3b60a data: Fear of 13 21 reviews - fixed NYSR dup text, Deadline wrongShow, Finkle 4/5"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-16T04:42:52.000Z",
+     "outletId": "cititour",
+     "cause": "other",
+     "source": "ca1bec14 resolve conflicts"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-16T04:36:41.000Z",
+     "outletId": "cititour",
+     "cause": "scoring-by-hand",
+     "source": "60552677 data: Fear of 13 explicit star ratings"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-16T04:28:53.000Z",
+     "outletId": "cititour",
+     "cause": "scoring-by-hand",
+     "source": "08abd5b5 data: Fear of 13 - 20 scored reviews with humanReviewScore bypass"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-16T04:03:35.000Z",
+     "outletId": "chicagotribune",
+     "cause": "other",
+     "source": "cb5ba58e data: Fear of 13 final batch - clean flags, fix NYSR URLs, add excerpts"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-16T03:51:37.000Z",
+     "outletId": "chicagotribune",
+     "cause": "other",
+     "source": "e06d2a3d fix: resolve all conflict markers in Fear of 13 files"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-16T03:47:55.000Z",
+     "outletId": "chicagotribune",
+     "cause": "scoring-by-hand",
+     "source": "7a2158a2 data: 8 more scored reviews for Fear of 13 (23 total)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-16T03:33:22.000Z",
+     "outletId": "broadwayworld",
+     "cause": "scoring-by-hand",
+     "source": "1e78869f data: 15 scored reviews for Fear of 13 + cleanup"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-16T03:18:43.000Z",
+     "outletId": "culturesauce",
+     "cause": "other",
+     "source": "ac0d849b data: 10 new reviews + 1 fix from BWW RR extraction for Fear of 13"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-16T03:10:21.000Z",
+     "outletId": "talkinbroadway",
+     "cause": "discovery-gap",
+     "source": "36e206fe data: add Talkin' Broadway review (Howard Miller) for Fear of 13"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-16T03:07:01.000Z",
+     "outletId": "broadwayworld",
+     "cause": "other",
+     "source": "4c5889a7 fix: remove BWW Alexander Cohen review - West End 2024, not Broadway 2026"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-16T02:46:12.000Z",
+     "outletId": "broadwayworld",
+     "cause": "other",
+     "source": "f8a4cc26 fix: clear poisoned preview-period files for Fear of 13 opening night"
+    }
+   ],
+   "historyCovers": true,
+   "expectedMissing": null,
+   "liveCurve": {
+    "firstLiveHours": 3611.6,
+    "plus1h": 0,
+    "plus3h": 0,
+    "plus24h": 0,
+    "final": 34,
+    "unplaced": 30
+   },
+   "embargoCorrected": true,
+   "estimateAt": "2026-04-16T02:00:00.000Z",
+   "shiftMin": 60,
+   "onRecordEmbargo": {
+    "verdict": "needed-hands",
+    "line": "The Fear of 13 (Broadway, opened Apr 15): 31 reviews live (4 more added after opening week), needed a person or a Claude session (17 fixes by hand: duplicate or URL identity (guardian); review missed by discovery (guardian, deadline, talkinbroadway); score set by hand (guardian, cititour, chicagotribune, ...); other fix (talkinbroadway, cititour, chicagotribune, ...); wrong-production or wrong-show flag (deadline))."
+   }
+  },
+  {
+   "showId": "titanique-2026",
+   "title": "Titanique",
+   "category": "broadway",
+   "openingDate": "2026-04-12",
+   "embargoAt": "2026-04-13T02:00:00.000Z",
+   "embargoFrom": "observed publish cluster",
+   "windowEnd": "2026-04-20T02:00:00.000Z",
+   "windowClosed": true,
+   "live": 32,
+   "lateLive": 13,
+   "known": 32,
+   "missing": 0,
+   "censusCandidates": 31,
+   "hoursToLive": null,
+   "verdict": "needed-hands",
+   "onlyIngestDispatches": false,
+   "signals": [
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-15T15:26:10.000Z",
+     "outletId": "thewrap",
+     "cause": "other",
+     "source": "73966d22 fix: add missing showId to titanique-2026/thewrap--robert-hofler.json"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-13T11:56:36.000Z",
+     "outletId": "guardian",
+     "cause": "other",
+     "source": "20b0bc65 fix: Guardian 3/5=60, NYT 68 (DTLI calibration)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-13T11:55:20.000Z",
+     "outletId": "theatermania",
+     "cause": "wrong-label",
+     "source": "e56247f8 fix: Clear stale contentTier:invalid on TheaterMania titanique-2026"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-13T11:50:47.000Z",
+     "outletId": "theatermania",
+     "cause": "scoring-by-hand",
+     "source": "005e3ba2 fix: Score TheaterMania (Zachary Stewart) for titanique-2026"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-13T03:42:14.000Z",
+     "outletId": "guardian",
+     "cause": "discovery-gap",
+     "source": "e5422cc9 fix: Guardian 68\u219276, clearly positive per full text + BWW thumb"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-13T03:39:44.000Z",
+     "outletId": "chicagotribune",
+     "cause": "wrong-label",
+     "source": "3ae10255 fix: Score Guardian+ChicagoTrib locally, clear Guardian wrongProd"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-13T03:25:02.000Z",
+     "outletId": "chicagotribune",
+     "cause": "other",
+     "source": "1448d46d fix: Collect text for Guardian/NYPost/ChicagoTrib + calibrate NYT(70) NY Theater(50)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-13T03:18:23.000Z",
+     "outletId": "nyt-theater",
+     "cause": "other",
+     "source": "471af0cc fix: Calibrate NYT (66\u219270) and NY Theater (63\u219250) against BWW RR thumbs"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-13T03:09:46.000Z",
+     "outletId": "chicagotribune",
+     "cause": "wrong-label",
+     "source": "51524a68 fix: Clear stale wrongProduction on NYPost + ChicagoTrib (URLs are 2026 Broadway)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-13T03:05:54.000Z",
+     "outletId": "nysr",
+     "cause": "other",
+     "source": "97bb0e2c fix: NYSR David Finkle is 2/5 stars not 3/5 \u2014 unicode extraction swapped with Sommers"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-13T03:05:08.000Z",
+     "outletId": "nysr",
+     "cause": "other",
+     "source": "f651f8e8 fix: NYSR Michael Sommers is 3/5 stars not 2/5 \u2014 unicode extraction error"
+    }
+   ],
+   "historyCovers": true,
+   "expectedMissing": null,
+   "liveCurve": {
+    "firstLiveHours": 3688,
+    "plus1h": 0,
+    "plus3h": 0,
+    "plus24h": 0,
+    "final": 44,
+    "unplaced": 31
+   },
+   "embargoCorrected": false,
+   "estimateAt": "2026-04-13T02:00:00.000Z",
+   "shiftMin": 0,
+   "onRecordEmbargo": null
+  },
+  {
+   "showId": "death-of-a-salesman-2026",
+   "title": "Death of a Salesman",
+   "category": "broadway",
+   "openingDate": "2026-04-09",
+   "embargoAt": "2026-04-10T02:00:00.000Z",
+   "embargoFrom": "observed publish cluster",
+   "windowEnd": "2026-04-17T02:00:00.000Z",
+   "windowClosed": true,
+   "live": 33,
+   "lateLive": 2,
+   "known": 33,
+   "missing": 0,
+   "censusCandidates": 29,
+   "hoursToLive": null,
+   "verdict": "needed-hands",
+   "onlyIngestDispatches": false,
+   "signals": [
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-10T17:42:27.000Z",
+     "outletId": "variety",
+     "cause": "duplicate-identity",
+     "source": "3badaf17 data: Mark variety--payton-turkeltaub as duplicate of naveen-kumar"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-10T17:38:06.000Z",
+     "outletId": "chicagotribune",
+     "cause": "discovery-gap",
+     "source": "3f28da08 data: DoaS 2026 Apr-12 prep \u2014 recover 1, protect 16"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-10T10:46:17.000Z",
+     "outletId": "people",
+     "cause": "wrong-label",
+     "source": "9d686c69 fix: TheWrap rescore + People rescore + Variety dedup/outlet/wrongShow"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-10T10:37:34.000Z",
+     "outletId": "theatermania",
+     "cause": "wrong-label",
+     "source": "ac45acf3 fix: TheaterMania wrongProduction:false (was re-flagged by audit, blocking LLM scoring)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-10T10:26:41.000Z",
+     "outletId": "theatermania",
+     "cause": "wrong-label",
+     "source": "91a07c95 fix: TheaterMania text + TheWrap rescore + variety wrongShow"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-10T10:07:45.000Z",
+     "outletId": "hollywood-reporter",
+     "cause": "scoring-by-hand",
+     "source": "6f2d65f4 fix: Restore text + mark needsRescore on 12 DoaS files for LLM scoring"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-10T04:33:48.000Z",
+     "outletId": "wsj",
+     "cause": "scoring-by-hand",
+     "source": "71be9275 fix: WSJ \u2014 add visible metadata text (OG desc), confirms rave score 92"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-10T04:31:19.000Z",
+     "outletId": "variety",
+     "cause": "wrong-label",
+     "source": "077e2ace fix: WSJ humanReviewScore 92 (rave per title) + re-flag variety wrongShow"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-10T04:28:46.000Z",
+     "outletId": "nytimes",
+     "cause": "discovery-gap",
+     "source": "769b8e9d fix: NYT pull quote \u2014 use 'triumph' quote instead of staging concern"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-10T04:27:16.000Z",
+     "outletId": "amny",
+     "cause": "scoring-by-hand",
+     "source": "f0f1b806 fix: Restore Slant + mark all manually-handled files for LLM rescore"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-10T04:22:06.000Z",
+     "outletId": "thewrap",
+     "cause": "scoring-by-hand",
+     "source": "4209d689 fix: TheWrap humanReviewScore 52 + restore text (re-apply after rebase loss)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-10T04:13:53.000Z",
+     "outletId": "variety",
+     "cause": "wrong-label",
+     "source": "8a8d3bf4 fix: Clear stale wrongShowReason on variety--naveen-kumar (URL was updated)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-10T04:08:01.000Z",
+     "outletId": "one-minute-critic",
+     "cause": "other",
+     "source": "4f3eac56 fix: Re-flag persistent merge-loop issues for DoaS 2026"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-10T04:05:52.000Z",
+     "outletId": "vulture",
+     "cause": "wrong-label",
+     "source": "1ab41bdf fix: Add humanReviewedWrongProduction:false to vulture for opening night protection"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-10T04:03:13.000Z",
+     "outletId": "chicagotribune",
+     "cause": "duplicate-identity",
+     "source": "7efa1326 fix: Dedupe Chris Jones syndication + restore CT text for DoaS 2026"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-10T03:40:42.000Z",
+     "outletId": "amny",
+     "cause": "other",
+     "source": "4e8ec2d9 fix: NYT Critics Pick + add AMNY Matt Windman for DoaS 2026"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-10T03:35:21.000Z",
+     "outletId": "vulture",
+     "cause": "duplicate-identity",
+     "source": "cf56ef85 fix: Remove self-duplicateOf from vulture--sara-holdren"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-10T03:19:23.000Z",
+     "outletId": "guardian",
+     "cause": "other",
+     "source": "1f13a97f fix: Manually create 3 missing DoaS 2026 reviews from BWW RR"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-10T03:11:48.000Z",
+     "outletId": "chicagotribune",
+     "cause": "wrong-label",
+     "source": "7a858247 fix: Preemptive humanReviewedWrongProduction:false on DoaS 2026 reviews"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-10T03:07:14.000Z",
+     "outletId": "hollywood-reporter",
+     "cause": "other",
+     "source": "9e87ef18 fix: Opening night corrections for DoaS 2026 (5 issues)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-10T02:51:36.000Z",
+     "outletId": "one-minute-critic",
+     "cause": "wrong-label",
+     "source": "c6e27e54 fix: Dedupe 2 same-URL pairs + re-flag variety wrongShow for DoaS 2026"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-10T01:55:40.000Z",
+     "outletId": "latimes",
+     "cause": "wrong-label",
+     "source": "19877474 fix: Flag 3 non-review files as wrongShow for DoaS 2026"
+    }
+   ],
+   "historyCovers": true,
+   "expectedMissing": null,
+   "liveCurve": {
+    "firstLiveHours": 4395.2,
+    "plus1h": 0,
+    "plus3h": 0,
+    "plus24h": 0,
+    "final": 35,
+    "unplaced": 33
+   },
+   "embargoCorrected": false,
+   "estimateAt": "2026-04-10T02:00:00.000Z",
+   "shiftMin": 0,
+   "onRecordEmbargo": null
+  },
+  {
+   "showId": "cats-the-jellicle-ball-2026",
+   "title": "CATS: The Jellicle Ball",
+   "category": "broadway",
+   "openingDate": "2026-04-07",
+   "embargoAt": "2026-04-08T01:00:00.000Z",
+   "embargoFrom": "observed publish cluster",
+   "windowEnd": "2026-04-15T01:00:00.000Z",
+   "windowClosed": true,
+   "live": 39,
+   "lateLive": 6,
+   "known": 39,
+   "missing": 0,
+   "censusCandidates": 29,
+   "hoursToLive": null,
+   "verdict": "needed-hands",
+   "onlyIngestDispatches": false,
+   "signals": [
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-12T21:40:52.000Z",
+     "outletId": "culturesauce",
+     "cause": "scoring-by-hand",
+     "source": "7f270a38 fix: Correct Culture Sauce and Guardian scores to match explicit star ratings"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-12T20:33:14.000Z",
+     "outletId": "nytimes",
+     "cause": "other",
+     "source": "bfc1d2ab fix: Restore NYT Helen Shaw review for Cats Jellicle Ball"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-10T20:13:17.000Z",
+     "outletId": "observer",
+     "cause": "attribution",
+     "source": "d97c5f00 fix: Remove duplicate cats-the-jellicle-ball-2026 Observer file (misattributed Guardian review; canonical is guardian--richard-laws"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-08T21:24:46.000Z",
+     "outletId": "playbill",
+     "cause": "wrong-label",
+     "source": "4f28a10b fix: Restore TB text+score, re-flag Playbill wrongShow (both with humanReview protection)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-08T21:13:02.000Z",
+     "outletId": "talkinbroadway",
+     "cause": "duplicate-identity",
+     "source": "2d3e689c fix: Delete TB stub file entirely (duplicateOf not preventing dedup collision)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-08T20:34:30.000Z",
+     "outletId": "nysr",
+     "cause": "other",
+     "source": "37d4bff1 fix: Restore NYSR 5/5 stars + NYT Critics_Pick designation"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-08T20:32:05.000Z",
+     "outletId": "nytimes",
+     "cause": "other",
+     "source": "d7992b6b fix: Set designation=Critics_Pick on NYT (rebuild checks this field, not isCriticsPick)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-08T20:18:54.000Z",
+     "outletId": "talkinbroadway",
+     "cause": "duplicate-identity",
+     "source": "16f0314a fix: Flag TB stub as duplicate (was blocking real TB review from rebuild)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-08T14:49:09.000Z",
+     "outletId": "nytimes",
+     "cause": "discovery-gap",
+     "source": "0da0cc61 data: NYT full text collected (9K chars via SB premium) + flag for rescore"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-08T14:22:48.000Z",
+     "outletId": "nytimes",
+     "cause": "other",
+     "source": "ea894990 fix: Mark NYT as truncated so collector retries with cookies"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-08T06:13:53.000Z",
+     "outletId": "observer",
+     "cause": "other",
+     "source": "76f10665 fix: Guardian review - keep as observer filename, set outletKey=guardian with date protection"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-08T05:24:36.000Z",
+     "outletId": "nysr",
+     "cause": "duplicate-identity",
+     "source": "3aecb66c fix: Flag NYSR Bernardo as duplicate (same review as Sommers)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-08T05:24:03.000Z",
+     "outletId": "thewrap",
+     "cause": "duplicate-identity",
+     "source": "5d2c055d fix: Flag Variety news article + TheWrap duplicate"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-08T05:22:16.000Z",
+     "outletId": "guardian",
+     "cause": "wrong-label",
+     "source": "bc69f639 fix: Guardian is Broadway review not wrongProd (humanReviewed protection)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-08T05:21:04.000Z",
+     "outletId": "usatoday",
+     "cause": "discovery-gap",
+     "source": "a0f547d2 data: Add USA Today full text (Patrick Ryan) for Cats"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-08T05:14:05.000Z",
+     "outletId": "nydailynews",
+     "cause": "duplicate-identity",
+     "source": "035f8d58 fix: Flag NYDN as syndication duplicate of Chicago Tribune (Chris Jones)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-08T05:05:21.000Z",
+     "outletId": "nytimes",
+     "cause": "other",
+     "source": "45859f72 fix: Clear garbage rejection on NYT (truncated but valid review)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-08T05:00:04.000Z",
+     "outletId": "nytg",
+     "cause": "other",
+     "source": "6cfd8423 fix: Rename Wolf Entertainment Guide \u2192 NYTG (Kyle Turner Broadway review)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-08T04:55:32.000Z",
+     "outletId": "nytimes",
+     "cause": "scoring-by-hand",
+     "source": "2edc6a04 flag: 3 manual scores need ensemble rescore"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-08T04:39:23.000Z",
+     "outletId": "playbill",
+     "cause": "other",
+     "source": "93a36544 fix: Flag Playbill as feature article, not a review"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-08T04:37:13.000Z",
+     "outletId": "slantmagazine",
+     "cause": "discovery-gap",
+     "source": "2285c95e data: Add Slant Magazine review (Dan Rubins, 92) for Cats"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-08T04:34:51.000Z",
+     "outletId": "usatoday",
+     "cause": "wrong-label",
+     "source": "b44deaa5 fix: Flag garbage USA Today 404 as wrongShow"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-08T04:29:44.000Z",
+     "outletId": "chicagotribune",
+     "cause": "scoring-by-hand",
+     "source": "e7e81846 fix: Score NYT, Playbill, TB reviews for Cats (manual GPT-4o)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-08T03:55:21.000Z",
+     "outletId": "cititour",
+     "cause": "wrong-label",
+     "source": "07545080 fix: CiTiTour clean review text"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-08T03:47:50.000Z",
+     "outletId": "cititour",
+     "cause": "wrong-label",
+     "source": "24577507 data: Fix Guardian (was wrongProd), add CiTiTour + CultureSauce Broadway reviews"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-08T03:44:22.000Z",
+     "outletId": "nytg",
+     "cause": "discovery-gap",
+     "source": "580ea083 data: Add NYTG Broadway review (Kyle Turner) for Cats"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-08T03:41:46.000Z",
+     "outletId": "thewrap",
+     "cause": "discovery-gap",
+     "source": "0596f02a data: Add TheWrap Broadway review (Robert Hofler) for Cats"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-08T03:39:59.000Z",
+     "outletId": "timeout",
+     "cause": "scoring-by-hand",
+     "source": "de965563 fix: Set Time Out 5/5 stars for Cats (LLM scored wrong from pre-opening text)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-08T03:28:00.000Z",
+     "outletId": "guardian",
+     "cause": "discovery-gap",
+     "source": "c349eb94 data: Add Guardian, USA Today, New York Theater reviews for Cats"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-08T03:26:05.000Z",
+     "outletId": "billboard",
+     "cause": "discovery-gap",
+     "source": "f11ea2b4 data: Add T1 reviews + TB text for Cats: The Jellicle Ball"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-08T03:23:19.000Z",
+     "outletId": "nytimes",
+     "cause": "other",
+     "source": "cc1215fb data: Collect T1 reviews - NYT (Helen Shaw) + Vulture (Jackson McHenry)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-08T02:16:08.000Z",
+     "outletId": "chicagotribune",
+     "cause": "other",
+     "source": "6c753a78 data: Collect Broadway opening night reviews for Cats: The Jellicle Ball"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-07T20:17:53.000Z",
+     "outletId": "vulture",
+     "cause": "other",
+     "source": "1b2b0393 fix: Repair corrupted JSON + flag OB reviews properly"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-07T20:16:08.000Z",
+     "outletId": "vulture",
+     "cause": "wrong-label",
+     "source": "f8c51910 fix: Flag OB reviews as wrongProduction + null fake dates"
+    }
+   ],
+   "historyCovers": true,
+   "expectedMissing": null,
+   "liveCurve": {
+    "firstLiveHours": 2822.1,
+    "plus1h": 0,
+    "plus3h": 0,
+    "plus24h": 0,
+    "final": 43,
+    "unplaced": 37
+   },
+   "embargoCorrected": true,
+   "estimateAt": "2026-04-08T02:00:00.000Z",
+   "shiftMin": -60,
+   "onRecordEmbargo": {
+    "verdict": "needed-hands",
+    "line": "CATS: The Jellicle Ball (Broadway, opened Apr 7): 39 reviews live (6 more added after opening week), needed a person or a Claude session (34 fixes by hand: score set by hand (culturesauce, nytimes, chicagotribune, ...); other fix (nytimes, nysr, observer, ...); critic or outlet attribution (observer); wrong-production or wrong-show flag (playbill, guardian, usatoday, ...); duplicate or URL identity (talkinbroadway, nysr, thewrap, ...); review missed by discovery (nytimes, usatoday, slantmagazine, ...))."
+   }
+  },
+  {
+   "showId": "becky-shaw-2026",
+   "title": "Becky Shaw",
+   "category": "broadway",
+   "openingDate": "2026-04-06",
+   "embargoAt": "2026-04-07T02:00:00.000Z",
+   "embargoFrom": "observed publish cluster",
+   "windowEnd": "2026-04-14T02:00:00.000Z",
+   "windowClosed": true,
+   "live": 20,
+   "lateLive": 12,
+   "known": 20,
+   "missing": 0,
+   "censusCandidates": 24,
+   "hoursToLive": null,
+   "verdict": "needed-hands",
+   "onlyIngestDispatches": false,
+   "signals": [
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-08T14:40:51.000Z",
+     "outletId": "nytimes",
+     "cause": "scoring-by-hand",
+     "source": "a08ce940 data: Remove wrong humanReviewScore on NYT + Variety (no manual score was given)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-08T04:34:54.000Z",
+     "outletId": "culturesauce",
+     "cause": "wrong-label",
+     "source": "084fb343 data: Clear wrongShow on Culture Sauce (correct URL, correct text)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-07T18:39:33.000Z",
+     "outletId": "timeout",
+     "cause": "scoring-by-hand",
+     "source": "3b83c4bf data: Remove wrong humanReviewScore=89 on Time Out \u2014 5/5 stars = 100 is correct"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-07T12:43:30.000Z",
+     "outletId": "timeout",
+     "cause": "scoring-by-hand",
+     "source": "d675d53b data: Time Out humanReviewScore=89 (5/5 stars was converting to 100)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-07T12:33:09.000Z",
+     "outletId": "nytg",
+     "cause": "wrong-label",
+     "source": "d45f35ec data: NYTG nuclear fix \u2014 clear ALL wrongProduction paths"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-07T06:18:53.000Z",
+     "outletId": "nytg",
+     "cause": "wrong-label",
+     "source": "cf8a4e44 data: NYTG use wrongProductionManualClear (standard field)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-07T06:17:29.000Z",
+     "outletId": "nytg",
+     "cause": "wrong-label",
+     "source": "81fbb62e data: NYTG clear wrongProduction (manually verified correct)"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-07T05:17:07.000Z",
+     "outletId": "nytg",
+     "cause": "wrong-label",
+     "source": "da7b7b02 data: NYTG final fix \u2014 humanReviewScore=63, wrongShow=false, text restored"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-07T05:14:52.000Z",
+     "outletId": "talkinbroadway",
+     "cause": "scoring-by-hand",
+     "source": "eadf907c data: TB humanReviewScore=82, critic Howard Miller"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-07T04:51:43.000Z",
+     "outletId": "timeout",
+     "cause": "scoring-by-hand",
+     "source": "1d3ea525 fix: Extract 8 TimeOut star ratings from existing review text"
+    },
+    {
+     "kind": "hand-commit",
+     "at": "2026-04-07T04:51:30.000Z",
+     "outletId": "nytg",
+     "cause": "wrong-label",
+     "source": "5ddbef02 data: NYTG fix \u2014 restore text, clear wrongShow, keep humanReviewScore=63"
+    },
+    {
+     "kind": "hand-step",
+     "at": "2026-04-06T11:05:52Z",
+     "file": "becky-shaw-2026/culturesauce--thom-geier.json",
+     "outletId": "culturesauce",
+     "cause": "wrong-label",
+     "steps": [
+      "wrongProductionManualClear"
+     ]
+    },
+    {
+     "kind": "hand-step",
+     "at": "2026-04-06T23:37:09-04:00",
+     "file": "becky-shaw-2026/guardian--adrian-horton.json",
+     "outletId": "guardian",
+     "cause": "scoring-by-hand",
+     "steps": [
+      "humanReviewScore"
+     ]
+    },
+    {
+     "kind": "hand-step",
+     "at": "2026-04-06T23:37:09-04:00",
+     "file": "becky-shaw-2026/nytg--kyle-turner.json",
+     "outletId": "nytg",
+     "cause": "wrong-label",
+     "steps": [
+      "wrongProductionManualClear",
+      "humanReviewScore"
+     ]
+    },
+    {
+     "kind": "hand-step",
+     "at": "2026-04-07T05:31:53Z",
+     "file": "becky-shaw-2026/talkinbroadway--howard-miller.json",
+     "outletId": "talkinbroadway",
+     "cause": "scoring-by-hand",
+     "steps": [
+      "humanReviewScore"
+     ]
+    }
+   ],
+   "historyCovers": true,
+   "expectedMissing": null,
+   "liveCurve": {
+    "firstLiveHours": -14.9,
+    "plus1h": 1,
+    "plus3h": 15,
+    "plus24h": 16,
+    "final": 32,
+    "unplaced": 0
+   },
+   "embargoCorrected": false,
+   "estimateAt": "2026-04-07T02:00:00.000Z",
+   "shiftMin": 0,
+   "onRecordEmbargo": null
+  }
+ ]
+}

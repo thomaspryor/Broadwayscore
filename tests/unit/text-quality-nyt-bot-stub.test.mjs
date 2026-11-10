@@ -159,7 +159,9 @@ test('getBestTextForScoring returns high confidence for a real complete review (
 });
 
 test('BRO-2610: comment-form "enable JavaScript" chrome does not cut the review off', () => {
-  const text = REVIEW_PROSE + '\n\nPlease enable JavaScript in your browser to complete this form.\n\n' + REVIEW_PROSE;
+  // Second half differs from the first: an identical copy is a repeated
+  // paragraph that page-furniture.js drops (BRO-7171), which is not this test.
+  const text = REVIEW_PROSE + '\n\nPlease enable JavaScript in your browser to complete this form.\n\n' + REVIEW_PROSE.replace(/\./g, '!');
   const result = getBestTextForScoring({ showId: 't', outletId: 'queerty', fullText: text });
   assert.ok(result.text && result.text.length > REVIEW_PROSE.length * 1.5,
     `review text after the comment-form chrome was dropped (len ${result.text && result.text.length})`);

@@ -17,6 +17,7 @@ const os = require('os');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const imp = require('./lib/lane-recorded-nights/recording-import');
+const { preImportTotalBytes, isHarmlessOverBudget } = require('./lib/lane-recording-headroom');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 if (require.main === module && hasHelpFlag(process.argv.slice(2))) {
@@ -70,6 +71,11 @@ function discoverArtifacts({ repo, lookbackDays, ghApi = gh, now = Date.now, wor
   return [...best.values()];
 }
 
+const archivedNights = (root) => {
+  const out = [];
+  try { for (const s of fs.readdirSync(root, { withFileTypes: true })) if (s.isDirectory() && !s.name.startsWith('_')) for (const n of fs.readdirSync(path.join(root, s.name), { withFileTypes: true })) if (n.isDirectory() && !n.name.endsWith('.importing')) out.push(n.name); } catch { /* empty archive */ }
+  return out;
+};
 const markerFile = (root, a) => path.join(root, '_undecryptable', `${a.name}.json`);
 
 function main() {
@@ -127,7 +133,7 @@ function main() {
 
     const counts = skippedSame ? { 'skipped-same': skippedSame } : {};
     let unread = 0;
-    const pre = imp.applyRetention(root);
+    const pre = imp.applyRetention(root, imp.KEEP_NIGHTS, preImportTotalBytes({ maxTotalBytes: imp.MAX_TOTAL_BYTES, maxNightBytes: imp.MAX_NIGHT_BYTES }, work.map((w) => imp.dirBytes(w.dir))));
     if (pre.length) console.log(`retention removed ${pre.length} older nights before importing: ${pre.join(', ')}`);
     for (const w of work) {
       const marker = markerFile(root, w.a);
@@ -147,6 +153,8 @@ function main() {
         red++;
       } else if (r.status === 'no-keys') {
         unread++;
+      } else if (isHarmlessOverBudget(r, w.p.night, archivedNights(root))) {
+        console.log(`::warning::${tag}: over budget and older than every retained night, so retention would drop it anyway; skipped`);
       } else if (r.status === 'error' || r.status === 'over-budget') {
         console.log(`::error::${tag}: ${r.status}: ${r.detail}`);
         red++;

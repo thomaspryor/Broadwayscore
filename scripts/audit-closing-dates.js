@@ -51,6 +51,7 @@ const path = require('path');
 const { fetchPage, cleanup } = require('./lib/scraper');
 const { discoverAnnouncedClosingDate } = require('./lib/closing-date-discovery');
 const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
+const { classifyScheduleEvidence, AMBIGUOUS_DELTA_THRESHOLD_DAYS } = require('./lib/closing-date-evidence');
 const { classifyMissingSchedule, possiblyClosedPressAgreement } = require('./lib/closing-audit-classify');
 const { pageMatchesShowTitle } = require('./lib/show-title-match');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
@@ -74,7 +75,6 @@ const argv = process.argv.slice(2);
 const DRY_RUN = argv.includes('--dry-run');
 const SHOWS_FILTER = (argv.find(a => a.startsWith('--shows=')) || '').replace('--shows=', '').split(',').filter(Boolean);
 const timeBudget = createRunBudget(parseTimeBudgetMin(argv));
-const AMBIGUOUS_DELTA_THRESHOLD_DAYS = 30;
 // "Possibly closed early" signal: broadway.com gives us no future performances
 // for a show whose stored closingDate claims it still runs for at least this
 // many more days. Two shapes, both routed through classifyMissingSchedule():
@@ -94,7 +94,6 @@ const POSSIBLY_CLOSED_MIN_DAYS = 5;
 // likely a parseScheduleDates() false-positive (e.g. promo banner showing
 // the 2027 Tony Awards date) than a real extension. Fall through to
 // ambiguous review instead of writing a fabricated date.
-const MAX_AUTO_EXTENSION_DAYS = 180;
 // Triple-signal auto-fix: when broadway.com schedule + press article + LLM
 // extraction agree within ±7 days, auto-apply the new closingDate. Bounds
 // hallucination risk: a single wrong article can't move the date unless the
@@ -273,7 +272,7 @@ async function notifyLinear(ambiguous, todayStr) {
       }
       return row;
     }
-    const action = a.action === 'EXTENSION_EXCEEDS_CAP_NEEDS_REVIEW' ? 'EXTENSION-CAP' : 'EARLIER';
+    const action = (a.action === 'EXTENSION_EXCEEDS_CAP_NEEDS_REVIEW' || a.action === 'EXTENSION_SCHEDULE_ONLY_NEEDS_REVIEW') ? 'EXTENSION-UNCONFIRMED' : 'EARLIER';
     let line = `- **${a.id}** (${action}): stored=${a.stored}, broadway.com schedule ends ${a.latestScheduled} (${a.delta}d). ${a.url}`;
     if (a.tripleSignalConflict) {
       const c = a.tripleSignalConflict;
@@ -290,7 +289,7 @@ async function notifyLinear(ambiguous, todayStr) {
 
   const notes = [
     '## Problem',
-    `Closing-date audit found ${ambiguous.length} show(s) where stored closingDate disagrees with broadway.com schedule by more than ${AMBIGUOUS_DELTA_THRESHOLD_DAYS} days. Could be either (a) calendar window short and stored is correct, or (b) show actually closing earlier than stored.`,
+    `Closing-date audit found ${ambiguous.length} show(s) where stored closingDate disagrees with broadway.com schedule (earlier by more than ${AMBIGUOUS_DELTA_THRESHOLD_DAYS} days, or later and unconfirmed by press: EXTENSION-UNCONFIRMED rows are usually the ticket-booking horizon, not a closing). Could be either (a) calendar window short and stored is correct, or (b) show actually closing earlier than stored.`,
     '',
     '## Shows flagged',
     rows,
@@ -437,23 +436,15 @@ async function main() {
         continue;
       }
 
-      const delta = Math.round((new Date(r.latest) - new Date(stored)) / 86400000);
-      if (delta > 0 && delta > MAX_AUTO_EXTENSION_DAYS) {
-        // Suspiciously large jump — likely a parseScheduleDates() false-positive
-        // (unrelated date on the page). Surface to human instead of auto-applying.
-        ambiguous.push({ ...verdict, delta, action: 'EXTENSION_EXCEEDS_CAP_NEEDS_REVIEW' });
-      } else if (delta > 0) {
-        if (!canWriteClosingDate(show)) {
-          // Human override in effect — log the extension finding but don't write.
-          // The audit report still records it for transparency.
-          extensions.push({ ...verdict, delta, action: 'EXTENSION_HUMAN_PROTECTED', skipped: true });
-        } else {
-          extensions.push({ ...verdict, delta, action: 'EXTENSION' });
-          if (!DRY_RUN) {
-            writeClosingDate(show, r.latest, `broadway.com schedule (audit ${TODAY})`, { todayStr: TODAY });
-          }
-        }
-      } else if (delta < 0 && Math.abs(delta) > AMBIGUOUS_DELTA_THRESHOLD_DAYS) {
+      // BRO-7251: schedule evidence alone never writes. For an open-ended run the
+      // last scheduled date is the ticket-booking horizon, not an announced close.
+      // An extension is flagged for review; the press-cluster pass below writes it
+      // only when credible press agrees.
+      const cls = classifyScheduleEvidence(stored, r.latest);
+      const delta = cls.delta;
+      if (cls.action === 'EXTENSION_EXCEEDS_CAP_NEEDS_REVIEW' || cls.action === 'EXTENSION_SCHEDULE_ONLY_NEEDS_REVIEW') {
+        ambiguous.push({ ...verdict, delta, action: cls.action });
+      } else if (cls.action === 'NEEDS_HUMAN_REVIEW') {
         // Schedule ends earlier than stored. Could be: (a) calendar
         // window short, stored is the real future close; (b) show actually
         // closing earlier than announced. We can't tell from this signal
@@ -492,7 +483,7 @@ async function main() {
     // corroborate, so they use possiblyClosedPressAgreement() below instead of
     // the ±7d schedule check.
     const byUrgency = ambiguous
-      .filter(a => a.action === 'NEEDS_HUMAN_REVIEW' || a.action === 'EXTENSION_EXCEEDS_CAP_NEEDS_REVIEW' || a.action === 'POSSIBLY_CLOSED_NEEDS_REVIEW')
+      .filter(a => a.action === 'NEEDS_HUMAN_REVIEW' || a.action === 'EXTENSION_EXCEEDS_CAP_NEEDS_REVIEW' || a.action === 'EXTENSION_SCHEDULE_ONLY_NEEDS_REVIEW' || a.action === 'POSSIBLY_CLOSED_NEEDS_REVIEW')
       // stored=null (no-closingDate possibly-closed rows) sorts LAST, not as
       // epoch-0 first — genuine stored-close retractions are the urgent ones.
       .sort((a, b) => (a.stored ? new Date(a.stored).getTime() : Infinity) - (b.stored ? new Date(b.stored).getTime() : Infinity))

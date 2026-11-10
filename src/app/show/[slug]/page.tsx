@@ -19,7 +19,7 @@ import { getCriticsTakeDisplayMode } from '../../../../scripts/lib/critics-take-
 import { getPriorRunLabel } from '../../../../scripts/lib/prior-run-label';
 import { getLotteryRush } from '@/lib/data-lottery';
 import { getShowSchedule, getScheduleCurrentMonday, getShowShowtimeIds } from '@/lib/data-showtimes';
-import { getShowCommercial, getRecoupmentTrend, getShowBoxOfficeV2, getBoxOfficeFacts } from '@/lib/data-commercial';
+import { getShowCommercial, getRecoupmentTrend, getClosingOutlook, getShowBoxOfficeV2, getBoxOfficeFacts } from '@/lib/data-commercial';
 import { toBoxOfficeV2Card, toFactsCard, showsBreakEven } from '@/lib/box-office-v2-display';
 import { toPublicShowCommercial, hasCommercialCard } from '@/lib/commercial-display';
 import { getCastChanges } from '@/lib/data-cast';
@@ -472,6 +472,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
   const showtimeIds = getShowShowtimeIds(show.id);
   const castTonyMap = featureFlags.castPages ? getShowCastTonyMap(show.id) : {};
   const recoupmentTrend = featureFlags.commercial ? getRecoupmentTrend(show.slug) : 'unknown';
+  const closingOutlook = featureFlags.commercial && show.category === 'broadway' ? getClosingOutlook(show.slug) : null;
   // A hidden London id (ABBA Arena) has no /west-end/theater page: render the venue as text, not a 404 link (BRO-5970).
   const londonVenueHidden = HIDDEN_LONDON_IDS.has(show.id);
   const venueSlug = show.venue ? slugify(foldVenueName(show.venue)) : null;
@@ -1072,7 +1073,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
               1. Critic Reviews
               1.5. Ad slot (AdSlot, client; usually renders nothing)
             BELOW FOLD (ShowPageBelowFold lazy chunk):
-              2. Video Reviews
+              2. Video Score (VideoReviewsShelf)
               3. Audience Scorecard
               4. Awards Scorecard
               5. Box Office Scorecard
@@ -1104,6 +1105,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
           commercial={commercial}
           boxOfficeFacts={boxOfficeFacts}
           breakEvenCard={breakEvenCard}
+          closingOutlook={closingOutlook}
           recoupmentTrend={recoupmentTrend}
           ranks={ranks}
           ranksByFormat={ranksByFormat}

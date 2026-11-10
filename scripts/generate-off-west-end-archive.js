@@ -25,11 +25,7 @@
  */
 
 const { generateMarketArchive } = require('./lib/generate-market-archive');
-const { isNonTheatricalGenre } = require('./lib/genre-classification');
-
-function isLondonCategory(category) {
-  return category === 'west-end' || category === 'off-west-end';
-}
+const { belongsOnOffWestEndArchive } = require('./lib/london-listing');
 
 // Shows deliberately excluded from the West End / Off-West End hubs. Same Set
 // src/lib/data-core.ts imports, so the archive cannot drift from the hub
@@ -39,8 +35,7 @@ const { HIDDEN_LONDON_IDS } = require('./lib/page-name-sources');
 generateMarketArchive({
   outputFilename: 'off-west-end-archive.json',
   entryCategory: 'off-west-end',
-  belongsToMarket: show => show.category === 'off-west-end' ||
-    (isNonTheatricalGenre(show.genre) && isLondonCategory(show.category)),
+  belongsToMarket: belongsOnOffWestEndArchive,
   excludeIds: HIDDEN_LONDON_IDS,
   label: 'Off-West End',
 });

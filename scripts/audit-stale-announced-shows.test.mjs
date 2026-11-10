@@ -154,3 +154,44 @@ test('findOrphanAcks: flags acks whose show is missing or no longer announced', 
   assert.deepEqual(findOrphanAcks(shows, []), []);
   assert.deepEqual(findOrphanAcks(shows, null), []);
 });
+
+// BRO-7080: girls-chance-music-off-broadway-2024 sat in 'upcoming' with no
+// dates and 5 clean review files; the audit only looked at 'announced'.
+test('upcoming/previews with no openingDate and collected reviews are flagged (BRO-7080)', () => {
+  const opts = { now: NOW, staleDays: STALE_DAYS, hasReviews: true, acks: [] };
+  const gcm = { id: 'girls-chance-music-off-broadway-2024', status: 'upcoming', previewsStartDate: null, openingDate: null };
+  assert.equal(evaluateAnnouncedShow(gcm, opts).length, 1);
+  assert.equal(evaluateAnnouncedShow({ ...gcm, status: 'previews' }, opts).length, 1);
+  // A dated show is the status flip's job; no reviews is just a future show.
+  assert.deepEqual(evaluateAnnouncedShow({ ...gcm, openingDate: '2026-06-01' }, opts), []);
+  assert.deepEqual(evaluateAnnouncedShow(gcm, { ...opts, hasReviews: false }), []);
+  // A returning production's earlier-run reviews are not evidence this run opened.
+  assert.deepEqual(evaluateAnnouncedShow({ ...gcm, priorRuns: [{ venue: 'x' }] }, opts), []);
+  // Acks still silence it; open shows are never audited.
+  assert.deepEqual(evaluateAnnouncedShow(gcm, { ...opts, acks: [{ id: gcm.id }] }), []);
+  assert.deepEqual(evaluateAnnouncedShow({ ...gcm, status: 'open' }, opts), []);
+  // An ack on an upcoming show is not an orphan.
+  assert.deepEqual(findOrphanAcks([gcm], [{ id: gcm.id }]), []);
+});
+
+test('evidenceSinceFor: upcoming/previews count only in-run reviews; announced keeps undated rule (BRO-7080)', async () => {
+  const { evidenceSinceFor, describeOpeningEvidence } = require('./lib/stale-announced-audit.js');
+  const fs = await import('node:fs'); const os = await import('node:os'); const path = await import('node:path');
+  assert.equal(evidenceSinceFor({ status: 'announced' }, NOW), null);
+  assert.equal(evidenceSinceFor({ status: 'previews', previewsStartDate: '2026-11-04' }, NOW), '2026-11-04');
+  assert.equal(evidenceSinceFor({ status: 'upcoming' }, NOW), '2025-08-20');
+  // Replay: jackals-off-broadway-2026 held 2014/2017 Woyzeck reviews; an
+  // undated file is not in-run either. Only a 2026 review counts.
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7080-'));
+  fs.mkdirSync(path.join(dir, 'jackals'));
+  const w = (n, d) => fs.writeFileSync(path.join(dir, 'jackals', n), JSON.stringify(d));
+  w('a.json', { publishDate: '2017-05-24', url: 'https://www.theguardian.com/stage/2017/may/24/woyzeck-review' });
+  w('b.json', { url: 'https://www.standard.co.uk/woyzeck-review' });
+  const explain = () => null;
+  const show = { id: 'jackals', status: 'upcoming' };
+  assert.equal(describeOpeningEvidence(dir, 'jackals', explain, show, { since: evidenceSinceFor(show, NOW) }).hasEvidence, false);
+  assert.equal(describeOpeningEvidence(dir, 'jackals', explain, show).hasEvidence, true);
+  w('c.json', { publishDate: '2026-05-28', url: 'https://nystagereview.com/2026/05/28/jackals' });
+  assert.equal(describeOpeningEvidence(dir, 'jackals', explain, show, { since: evidenceSinceFor(show, NOW) }).hasEvidence, true);
+  fs.rmSync(dir, { recursive: true, force: true });
+});

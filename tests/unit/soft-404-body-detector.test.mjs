@@ -63,6 +63,35 @@ test('short real text containing a weak signature is not flagged', () => {
   assert.equal(isSoft404Body('Page not found. Home Search Menu Subscribe'), true);
 });
 
+// BRO-7171 corpus scan 2026-11-10: real saved bodies the rules missed (26 files),
+// each then judged as a review (13 USA Today reviews dropped as "news").
+// Openings copied from the files; padded with nav chrome to their real length.
+const NAV = ' Home News Sports Entertainment Subscribe Sign in Search Menu Privacy Contact Latest News'.repeat(22);
+const SAVED_ERROR_PAGES = {
+  usatoday: "Page Not Found (404) | USA TODAY America's birthday 8-week series Discover PLAY Check home prices U.S. Politics Sports Entertainment Life Money Travel Opinion Crossword" + NAV, // guys-and-dolls-2009/usatoday--elysa-gardner.json
+  newsday: 'The page you requested is not available. The page you are looking for might have been removed, had its name changed, or is temporarily unavailable. Please try the following:',
+  seattletimes: 'The page you were looking for couldn’t be found, or may have been moved. Be sure to check your spelling in the address field in your browser.',
+  inews: "Page Not Found We are sorry to say that you have found our 'sorry' page while visiting inews You may be attempting to get to a page that doesn't exist",
+  dispatch: "404 PAGE NOT FOUND Sorry, the link you're trying to access is either broken or no longer exists. Please use the search bar or take a look at some of our trending stories below." + NAV.slice(0, 900),
+  offoffonline: "We couldn't find the page you were looking for. This is either because: There is an error in the URL entered into your web browser.",
+  victoriaadvocate: 'Page Not Found | The Victoria Advocate You are using an outdated browser. Please upgrade your browser or activate Google Chrome Frame to improve your experience. Log out Log in Register' + NAV,
+  culturesauce: "Error 404 Oops! That page can't be found. It looks like nothing was found at this location. Maybe try one of the links below or a search?" + NAV,
+  nytg: "404 Admit one Seat not found · row 404 Curtain's down on this page We couldn't find what you were after — but Broadway and Off-Broadway are still very much open.",
+  nydailynews: 'Page not found &#8211; New York Daily News Skip to content All Sections Subscribe Now 46&deg;F Monday, April 27th 2026 Daily News e-Edition' + NAV,
+};
+
+test('saved error pages from the BRO-7171 corpus scan are detected', () => {
+  for (const [site, body] of Object.entries(SAVED_ERROR_PAGES)) {
+    assert.ok(body.length <= 2500, `${site} fixture within the detector's length cap`);
+    assert.equal(isSoft404Body(body), true, site);
+  }
+});
+
+test('real reviews that mention a missing page or open on "Page" are not flagged', () => {
+  assert.equal(isSoft404Body('Page Not Found, the new comedy at the Public, is a sharp satire of internet life. The cast is terrific and the ending lands.'), false);
+  assert.equal(isSoft404Body('The heroine discovers that the page you requested is gone from the ledger, and so begins a thriller. ' + 'A taut evening. '.repeat(100)), false);
+});
+
 test('soft_404 cooldown backs off by repeat count', () => {
   const a = recordFetchAttempt(null, { fetchSoft404Count: 0 }, { failureReason: 'soft_404' });
   const b = recordFetchAttempt(null, { fetchSoft404Count: 3 }, { failureReason: 'soft_404' });

@@ -1,30 +1,30 @@
 {
-  "generatedAt": "2026-11-08T21:42:29.272Z",
+  "generatedAt": "2026-11-10T08:46:31.575Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 322,
-  "clean": 321,
+  "checked": 317,
+  "clean": 316,
   "defective": 1,
   "byType": {
     "score-drift": 1
   },
   "shows": [
     {
-      "showId": "speculations-off-west-end-2026",
-      "title": "Speculations",
-      "openingDate": "2026-11-05",
+      "showId": "here-there-are-blueberries-2026",
+      "title": "Here There Are Blueberries",
+      "openingDate": "2026-11-09",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 47.52 vs local 47.36 (Δ0.16)"
+          "detail": "deployed cs 80.55 vs local 81.01 (Δ0.46)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 32,
-      "deployedCount": 32,
-      "firstDefectAt": "2026-11-08T21:42:25.062Z"
+      "localCount": 17,
+      "deployedCount": 17,
+      "firstDefectAt": "2026-11-10T08:46:26.855Z"
     }
   ],
   "persistentDefective": 0,

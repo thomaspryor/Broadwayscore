@@ -258,6 +258,18 @@ jobs:
         with:
           configure-git: 'true'
 
+      # fetchPage's free Playwright tier and discovery's Google News unwrap (discovery.js preferPlaywright) need a
+      # local browser; without one every fetch falls through to paid providers and News links stay unresolved
+      # (Wanted 2026-11-08 pre-flight review). optional: a failed install is a warning and the lane runs without it,
+      # as in opening-night-poller.yml; optional also deletes a partial browser so the shared cache key is never saved
+      # broken (BRO-6021). Listed in gather-shard-continue-on-error.test.mjs OPTED_IN. The composite bounds its own
+      # install with `timeout`.
+      - name: Setup Playwright
+        continue-on-error: true
+        uses: ./.github/actions/setup-playwright
+        with:
+          optional: 'true'
+
       - name: Checkout core data (root JSON only)
         uses: ./.github/actions/checkout-core-data
         with:
@@ -284,6 +296,11 @@ jobs:
           OPENING_NIGHT_LANE_WINDOW_MIN: '270'
           # BRO-6649: each publish batch dispatches the deploy itself (deploy-port.js); gh needs a token for it.
           OPENING_NIGHT_LANE_DEPLOY_DISPATCH: '1'
+          # Per-call and per-review LLM budgets, the poller's values (opening-night-poller.yml, BRO-6549). Without them
+          # llm-call-budget.js allows 300s per call and no review budget, so one hung model call stalls every review
+          # behind it for up to 5 min on press night (Wanted 2026-11-08 pre-flight review).
+          LLM_CALL_TIMEOUT_MS: '60000'
+          LLM_REVIEW_BUDGET_MS: '150000'
           GH_TOKEN: ${{ github.token }}
           SHOW: ${{ inputs.show }}
           NIGHT: ${{ inputs.night }}

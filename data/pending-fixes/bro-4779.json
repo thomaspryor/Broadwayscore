@@ -32,18 +32,18 @@
     }
   ],
   "triage": {
-    "card": "BRO-7092",
-    "at": "2026-11-07T20:58:07.982Z",
+    "card": "BRO-7094",
+    "at": "2026-11-09T21:40:12.459Z",
     "verdict": "still-needed",
     "counts": {
       "still-needed": 1
     },
-    "stillNeededReason": "op 0: read-only recount (bro-7092-b, run 42412802580) now finds 156 sibling-misfiled archive pages, against the 60 this plan was approved for; a bulk archive delete of 156 needs a fresh plan with --expect=156 after a spot check (BRO-7092 hand check)",
+    "stillNeededReason": "op 0: BRO-7094: archive is not mounted in this worker (data/aggregator-archive absent), so no recount or five-page spot check is possible. The last verified count is 156 in run 42412802580. Requires an archive-enabled worker to spot-check five and prepare the fresh guarded deletion plan; --expect=60 must not be replayed. Archive deletion is outside the allowed worker action types.",
     "ops": [
       {
         "i": 0,
         "verdict": "still-needed",
-        "reason": "read-only recount (bro-7092-b, run 42412802580) now finds 156 sibling-misfiled archive pages, against the 60 this plan was approved for; a bulk archive delete of 156 needs a fresh plan with --expect=156 after a spot check (BRO-7092 hand check)"
+        "reason": "BRO-7094: archive is not mounted in this worker (data/aggregator-archive absent), so no recount or five-page spot check is possible. The last verified count is 156 in run 42412802580. Requires an archive-enabled worker to spot-check five and prepare the fresh guarded deletion plan; --expect=60 must not be replayed. Archive deletion is outside the allowed worker action types."
       }
     ]
   }

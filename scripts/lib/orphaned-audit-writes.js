@@ -101,14 +101,33 @@ function workflowInvokes(yaml, scriptRel) {
  * scripts: {rel: source}; workflows: {name: yaml}; exempt: {"script|file": reason}.
  * Returns orphaned writes: invoked by >=1 workflow, staged by none of them.
  */
-function findOrphanedWrites(scripts, workflows, exempt = {}, gateWorkflows = GATE_WORKFLOWS) {
+/** Paths staged by the local composite actions (`uses: ./.github/actions/<name>`) a workflow calls. */
+function compositeActionSpecs(yaml, actions) {
+  const specs = [];
+  const re = /uses:\s*\.\/\.github\/actions\/([\w.-]+)/g;
+  let m;
+  while ((m = re.exec(yaml))) {
+    const src = actions[m[1]];
+    if (src) specs.push(...extractGitAddSpecs(stripComments(src)).filter((s) => s !== '-A'));
+  }
+  return specs;
+}
+
+/**
+ * actions: {name: action.yml source} for ./.github/actions/<name>. A workflow
+ * that commits a ledger through a composite (commit-scraper-spend-ledger)
+ * stages it there; before BRO-7171 a whole-tree `git add -A` elsewhere in the
+ * workflow (in a nested review-texts checkout) hid that from this audit.
+ * A composite's bare `-A` is not counted (it runs in its own checkout dir).
+ */
+function findOrphanedWrites(scripts, workflows, exempt = {}, gateWorkflows = GATE_WORKFLOWS, actions = {}) {
   const out = [];
   // Only workflows that commit can lose a write by not staging it. Parsed once.
   const committing = Object.entries(workflows)
     .filter(([n]) => !gateWorkflows.some((g) => n.endsWith(`/${g}`) || n === g))
     .map(([n, y]) => [n, stripComments(y)])
     .filter(([, y]) => commitsDirectly(y))
-    .map(([n, y]) => ({ name: n, yaml: y, specs: extractGitAddSpecs(y) }));
+    .map(([n, y]) => ({ name: n, yaml: y, specs: [...extractGitAddSpecs(y), ...compositeActionSpecs(y, actions)] }));
   for (const [rel, source] of Object.entries(scripts)) {
     const files = extractAuditWrites(source);
     if (!files.length) continue;

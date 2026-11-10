@@ -25,9 +25,8 @@ hook="${1:-}"
 case "$hook" in ''|*/*) exit 0 ;; esac
 R="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." 2>/dev/null && pwd)" || exit 0
 [ -f "$R/.claude/hooks/$hook" ] || exit 0
-command -v jq >/dev/null 2>&1 || exit 0
-
 input=$(cat) || exit 0
+source "$R/scripts/lib/stall-stop-runner.sh"
 event=$(printf '%s' "$input" | jq -r '.hook_event_name // empty' 2>/dev/null)
 cwd=$(printf '%s' "$input" | jq -r '.cwd // empty' 2>/dev/null)
 [ -d "$cwd" ] || cwd="$PWD"
@@ -35,7 +34,8 @@ cwd=$(printf '%s' "$input" | jq -r '.cwd // empty' 2>/dev/null)
 common_dir() { git -C "$1" rev-parse --path-format=absolute --git-common-dir 2>/dev/null; }
 OURS="$(common_dir "$R")"
 [ -n "$OURS" ] || exit 0
-[ "$(common_dir "$cwd")" = "$OURS" ] && grep -q "\.claude/hooks/$hook" "$(git -C "$cwd" rev-parse --show-toplevel)/.claude/settings.json" 2>/dev/null && exit 0  # BRO-6126: project settings already run it
+[ "$hook" = session-start.sh ] && command -v node >/dev/null 2>&1 && node "$R/scripts/lib/hook-liveness.js" --runner "$R/.claude/hooks/lib/home-hook-runner.sh" 2>/dev/null  # BRO-7180: before the dedupe, which would hide a total misfire
+P="${CLAUDE_PROJECT_DIR:-$cwd}"; [ "$(common_dir "$P")" = "$OURS" ] && grep -q "\.claude/hooks/$hook" "$(git -C "$P" rev-parse --show-toplevel)/.claude/settings.json" 2>/dev/null && exit 0  # BRO-6126: the SESSION dir's project settings already run it (not the cwd: a /home/user session in a worktree ran no hook)
 # in_other_repo DIR: true when DIR is inside a git repo that is not this one
 # (worktrees of this repo share its common dir, so they count as ours).
 in_other_repo() {
@@ -99,4 +99,4 @@ if [ "$(common_dir "$cwd")" = "$OURS" ] || [ -n "$tool_event" ]; then
 else
   cd "$R" || exit 0
 fi
-printf '%s' "$input" | exec bash "$R/.claude/hooks/$hook"
+[ -n "${HOOK_RUNNER_PROBE:-}" ] && [ "$(printf '%s' "$input" | jq -r '.tool_input.command // empty' 2>/dev/null)" = __hook_runner_probe__ ] && { echo HOOK-RUNNER-PROBE-EXEC; exit 0; }; printf '%s' "$input" | exec bash "$R/.claude/hooks/$hook"  # BRO-7180 liveness probe (scripts/lib/hook-liveness.js)

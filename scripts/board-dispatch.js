@@ -22,7 +22,8 @@ const { planDispatch } = require('./lib/board-handlers.js');
 
 const USAGE = 'Usage: node scripts/board-dispatch.js [--json] [--write|--no-write] [--ledger=<file>]';
 // Bump when a row's shape changes, so readers of the ledger can tell old rows from new ones.
-const LEDGER_VERSION = 1;
+// v2 (BRO-7139 Step 3): adds groups {key: exclusive count} and ready, for the acceptance judge.
+const LEDGER_VERSION = 2;
 const DEFAULT_LEDGER = path.join(__dirname, '..', 'data', 'audit', 'board-dispatch.jsonl');
 
 function parseArgs(argv) {
@@ -67,7 +68,16 @@ function ledgerRow(plan, { now, broken = 0, env = process.env } = {}) {
     answeredCheck: plan.answeredCheck || null,
     handlers: Object.fromEntries(Object.entries(plan.handlers).map(([id, h]) => [id, { mode: h.mode, categories: h.categories, count: h.count, sample: h.sample }])),
     gaps: plan.gaps,
+    groups: plan.groups || null,
+    ready: plan.ready == null ? null : plan.ready,
   };
+}
+
+/** Group and ready counts for the ledger: the stuck group must shrink and ready reach 10 (BRO-7139 acceptance). */
+function boardCounts(report) {
+  const groups = Object.fromEntries(bc.groupBoard(report).map((g) => [g.key, g.exclusive]));
+  const readyRow = (report.categories || []).find((c) => c.key === 'ready');
+  return { groups, ready: readyRow ? readyRow.exclusive : 0 };
 }
 
 async function main(argv = process.argv.slice(2), { graphql = null, now = new Date(), log = console.log, env = process.env, recheckLedger = undefined } = {}) {
@@ -89,7 +99,7 @@ async function main(argv = process.argv.slice(2), { graphql = null, now = new Da
   }
   const broken = bc.countUncategorizable(report);
   if (broken) console.error(`[board-dispatch] WARN ${broken} card(s) could not be categorized (counted under Other)`);
-  const plan = { ...planDispatch(report), answeredCheck: report.answeredCheck };
+  const plan = { ...planDispatch(report), answeredCheck: report.answeredCheck, ...boardCounts(report) };
   const row = ledgerRow(plan, { now, broken, env });
   if (write) appendRow(opts.ledger, row);
   else if (!opts.json) log(`[board-dispatch] not writing the ledger (local run; pass --write to append)`);
@@ -105,4 +115,4 @@ async function main(argv = process.argv.slice(2), { graphql = null, now = new Da
 
 if (require.main === module) main().then((code) => { process.exitCode = code; });
 
-module.exports = { main, parseArgs, shouldWrite, ledgerRow, runSource };
+module.exports = { main, parseArgs, shouldWrite, ledgerRow, runSource, boardCounts };

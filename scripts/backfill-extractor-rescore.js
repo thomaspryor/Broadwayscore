@@ -234,7 +234,7 @@ outer: for (const showId of showDirs) {
     examined++;
 
     const archiveHtml = loadArchiveHtml(data.archivePath);
-    const result = extractScore(archiveHtml || '', data.fullText, outletId);
+    const result = extractScore(archiveHtml || '', data.fullText, outletId, require('./lib/known-show-titles').showTitleForId(data.showId || path.basename(dir)));
 
     if (!result || result.normalizedScore == null) {
       skipped.noResult++;

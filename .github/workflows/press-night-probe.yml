@@ -126,6 +126,9 @@ jobs:
         timeout-minutes: 2
         env:
           GH_TOKEN: ${{ github.token }}
+          # BRO-7231: the plan live-reads LANE_ONLY_MARKETS with this (GITHUB_TOKEN cannot read repo variables, BRO-6639).
+          # No shadow when the night lane covers the show or another covered show's lane window overlaps; unread = no shadow.
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
           # Fail closed: if any list call fails the dedupe cannot be trusted, so skip rather than risk a second full window.
           ACTIVE=""

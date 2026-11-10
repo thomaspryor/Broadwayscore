@@ -53,8 +53,24 @@ function onlyFunctionWordsInserted(oldWords, newWords) {
   return i === o.length && inserted.length > 0 && inserted.every(w => FUNCTION_WORDS.has(w));
 }
 
+/** True when the titles have the same word count and exactly one word differs by a single letter (a misspelling, e.g. "Hangman" -> "Hangmen", BRO-7256). */
+function oneLetterTypo(o, n) {
+  const a = o.split(' ');
+  const b = n.split(' ');
+  if (a.length !== b.length) return false;
+  const diff = a.map((w, i) => [w, b[i]]).filter(([x, y]) => x !== y);
+  if (diff.length !== 1) return false;
+  const [x, y] = diff[0];
+  if (x.length < 5 || y.length < 5 || Math.abs(x.length - y.length) > 1) return false;
+  // one substitution, insertion or deletion
+  let i = 0;
+  while (i < x.length && i < y.length && x[i] === y[i]) i++;
+  if (x.length === y.length) return x.slice(i + 1) === y.slice(i + 1);
+  return x.length > y.length ? x.slice(i + 1) === y.slice(i) : x.slice(i) === y.slice(i + 1);
+}
+
 /** Why oldTitle -> newTitle is not a cosmetic repair, or null when it is. */
-function retitleProblem(oldTitle, newTitle, otherTitles = []) {
+function retitleProblem(oldTitle, newTitle, otherTitles = [], sameCityTitles = otherTitles) {
   if (typeof newTitle !== 'string' || !newTitle.trim() || newTitle !== newTitle.trim()) return 'newTitle must be a non-empty trimmed string';
   if (newTitle.length > 200) return 'newTitle is longer than 200 characters';
   if (newTitle === oldTitle) return 'newTitle equals the current title';
@@ -83,6 +99,10 @@ function retitleProblem(oldTitle, newTitle, otherTitles = []) {
   // Restoring dropped function words must not land on a title another row already holds
   // (that is a duplicate row, not a typo).
   if (o.split(' ').length >= 2 && onlyFunctionWordsInserted(o, n) && !otherTitles.some(t => words(t) === n)) return null;
+  // A one-letter misspelling of one long word, when no other row in the same city already holds the corrected title
+  // (other productions of the same show in other markets legitimately share it).
+  // The plan's reason must cite the source that spells it correctly.
+  if (oneLetterTypo(o, n) && !sameCityTitles.some(t => words(t) === n)) return null;
   return `"${newTitle}" is not a cosmetic repair of "${oldTitle}" (only case, punctuation, a trailing slug counter, a trailing ' on Broadway' tag or dropped function words may change)`;
 }
 
@@ -95,7 +115,8 @@ function applyRetitleShow(shows, action) {
   if (!row) return { ok: false, reason: `retitle-show: no show with id "${a.id}"` };
   if (row.title !== a.expectTitle) return { ok: false, reason: `retitle-show ${a.id}: title is "${row.title}", plan expected "${a.expectTitle}" — refused` };
   const others = shows.filter(s => s && s.id !== row.id).map(s => s.title);
-  const why = retitleProblem(row.title, a.newTitle, others);
+  const sameCity = row.city ? shows.filter(s => s && s.id !== row.id && s.city === row.city).map(s => s.title) : others;
+  const why = retitleProblem(row.title, a.newTitle, others, sameCity);
   if (why) return { ok: false, reason: `retitle-show ${a.id}: ${why}` };
   row.title = a.newTitle;
   return { ok: true, msg: `retitled ${a.id}: "${a.expectTitle}" -> "${a.newTitle}"` };

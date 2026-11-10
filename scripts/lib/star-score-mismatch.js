@@ -38,7 +38,7 @@ const { parseRating } = require('./score-conversion-rules');
 const { listShowDirs } = require('./list-show-dirs');
 const { isIntentionalClear } = require('./review-write-guard');
 const { detectBandFromReviewFile, isUncorroboratedGenericStar } = require('./star-reliability');
-const { getSyndicationPrimaries } = require('./syndication-pairs');
+const { getSyndicationPrimaries, getSyndicationPrimariesInDir } = require('./syndication-pairs');
 const { isGalleryCounterRating } = require('./gallery-counter');
 
 // A gap this large between an explicit critic rating and the site's independent
@@ -128,8 +128,9 @@ function humanScoreResolvesBand(review) {
 // A secondary whose primary is missing, excluded or unscored still alerts.
 function isShieldedSyndicatedCopy(review, filePath, show) {
   const { normalizeOutlet } = require('./review-normalization');
-  const primaries = getSyndicationPrimaries(review && review.criticName,
-    normalizeOutlet((review && (review.outletId || review.outlet)) || ''));
+  const primaries = getSyndicationPrimariesInDir(review && review.criticName,
+    normalizeOutlet((review && (review.outletId || review.outlet)) || ''),
+    () => { try { return require('fs').readdirSync(require('path').dirname(filePath)); } catch { return []; } }, normalizeOutlet);
   if (!primaries.length) return false;
   try {
     return require('./review-guards').hasIncludableSyndicationPrimary(review, show || null, filePath, { primaries, requireScore: true });

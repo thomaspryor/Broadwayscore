@@ -5,6 +5,7 @@
  * Tests 4 different prompting strategies on the same reviews to find the most accurate approach.
  */
 
+import '../lib/llm-usage-install.js'; // LLM spend meter: keep it the first import (BRO-5043)
 import Anthropic from '@anthropic-ai/sdk';
 import OpenAI from 'openai';
 import { GoogleGenerativeAI } from '@google/generative-ai';

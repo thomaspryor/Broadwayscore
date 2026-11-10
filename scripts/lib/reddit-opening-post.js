@@ -394,6 +394,16 @@ function numbersMoved(d) {
   return d.score !== was.score || d.reviewCount !== was.reviewCount;
 }
 
+/** The numbers a fresh draft would show differ from the last email for this stored draft (BRO-7230). */
+function numbersMovedSince(prev, facts) {
+  if (!prev || !prev.emailedAt) return false;
+  // Baseline first: emailedNumbers() falls back to the draft's own score, so overwriting it with the new
+  // facts before the lookup would compare the draft with itself on unstamped drafts.
+  const was = emailedNumbers(prev);
+  if (![was.score, was.reviewCount, facts.score, facts.reviewCount].every(Number.isFinite)) return false;
+  return facts.score !== was.score || facts.reviewCount !== was.reviewCount;
+}
+
 /**
  * A second, bigger audience worth a crosspost to r/Broadway (282k):
  *  - every Off-Broadway show (primary is the smaller r/offbroadwayNYC, and
@@ -462,13 +472,19 @@ function selectCandidates({ shows, slims, drafts, peersByMarket, today, seenLook
     if (!forceShowId && prev && !isRetryableDraft(prev) && prev.subreddit === facts.subreddit && lintDraft(prev, facts).ok) continue; // unsent but still accurate
     // Off-West End shows only when they'd carry a post on their own.
     if (!forceShowId && market === 'off-west-end' && notability(facts) < 25) continue;
-    out.push({ show, facts, notability: notability(facts), refresh: awaitsUpdate(prev, nowMs) });
+    const refresh = awaitsUpdate(prev, nowMs);
+    // BRO-7230: a refresh whose displayed numbers moved is the one the owner is waiting on; a
+    // lint-only refresh (text no longer matches) can wait. Ranked first below so the cap never starves it.
+    const moved = refresh && numbersMovedSince(prev, facts);
+    out.push({ show, facts, notability: notability(facts), refresh, moved });
   }
   // New openings first. The per-run caps limit how many NEW posts the owner
   // gets a day; refreshes sit outside them, since a starved refresh means the
   // reminder or update goes out with the first email's numbers (Rent reminded
   // at 15 reviews with 30 live, BRO-5083).
-  out.sort((a, b) => (a.refresh - b.refresh) || (b.notability - a.notability));
+  // Among refreshes, drafts whose numbers moved go first (BRO-7230: on 2026-11-09 08:39Z four lint-only
+  // refreshes took the 5 slots and the moved Ms. Blakk draft sat 9h stale).
+  out.sort((a, b) => (a.refresh - b.refresh) || (b.moved - a.moved) || (b.notability - a.notability));
   if (forceShowId) return out;
   const picked = [];
   let fresh = 0;
@@ -893,7 +909,11 @@ const PRONOUN = /\b(he|she)\b/i; // subject pronouns only: "calling his voice" i
 function claimProblems(draft, facts) {
   const out = [];
   const people = [facts.bestQuotes, facts.worstQuotes, [facts.loneDissenter]].flat().filter(Boolean)
-    .map(c => c.critic).filter(Boolean).map(n => String(n).toLowerCase()); // critics only: "he" after an outlet name is usually an actor
+    .map(c => c.critic).filter(Boolean).map(n => String(n).toLowerCase()) // critics only: "he" after an outlet name is usually an actor
+    // BRO-7080: a draft naming the critic by surname only ("Vincentelli loved it;
+    // she called it...") slipped past the full-name match.
+    .flatMap(n => [n, ...n.split(/\s+/).slice(1).filter(t => t.length >= 4)]);
+  const namedIn = (sent) => people.some(n => new RegExp(`(?<![\\p{L}])${n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![\\p{L}])`, 'iu').test(sent));
   for (const [where, text] of [['title', draft.title], ['body', draft.body], ['suggestedReply', draft.suggestedReply]]) {
     const mixedZero = Number(facts && facts.buckets && facts.buckets.mixed) === 0;
     const claimText = text.replace(/https?:\/\/\S+/g, '')
@@ -901,7 +921,7 @@ function claimProblems(draft, facts) {
       .replace(mixedZero ? /\b(?:zero|0)\s+mixed\b(?=\s*(?:,|and\b|or\b|\.|$))/gim : /$^/, '');
     if (NO_MIXED_CLAIM.test(claimText)) out.push(`${where} claims there are no mixed reviews; describe what critics wrote instead`);
     for (const sent of text.split(/(?<=[.!?])\s+/)) {
-      if (PRONOUN.test(sent) && people.some(n => sent.toLowerCase().includes(n))) {
+      if (PRONOUN.test(sent) && namedIn(sent)) {
         out.push(`${where} uses a pronoun for a critic ("${sent.slice(0, 50)}"); use their name or "the review"`);
         break;
       }
@@ -1159,8 +1179,10 @@ module.exports = {
   normTitle,
   emailedNumbers,
   numbersMoved,
+  numbersMovedSince,
   carryOverState,
   MAX_UPDATE_EMAILS,
+  MAX_REFRESHES_PER_RUN,
   buildUserPrompt,
   pickRecentExamples,
   lintDraft,

@@ -120,7 +120,7 @@ const { applyMultiShowFanoutToFile } = require('./lib/multi-show-review-fanout')
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
 // BRO-912: shared byline-anchored extractor (article-extractor.js) — aliased
 // to avoid colliding with this file's own Playwright-DOM extractArticleText(page).
-const { extractArticleText: extractArticleTextFromHtml, extractZoxNewsBody, extractVarietyBody, isDedicatedExtractorHost, isExclusiveExtractorHost } = require('./lib/article-extractor');
+const { extractArticleText: extractArticleTextFromHtml, extractZoxNewsBody, extractVarietyBody, isDedicatedExtractorHost, isExclusiveExtractorHost, hasOutletExtractor } = require('./lib/article-extractor');
 
 // Text cleaning (entity decoding, junk stripping)
 const { cleanText, stripTrailingJunk, TRAILING_JUNK_PATTERNS, hasStrippableConsentLayer } = require('./lib/text-cleaning');
@@ -674,7 +674,7 @@ function laneHeld(rec, guard) {
 const UNRELIABLE_TITLE_OUTLETS = new Set(['pages-on-stages']);
 
 // Domain alias matching — imported from shared lib (scraper.js)
-const { domainMatchesExpected, checkScrapingBeeCredits, getScraperStats, fetchWithScrapingdog, isTollbitGate } = require('./lib/scraper');
+const { domainMatchesExpected, checkScrapingBeeCredits, getScraperStats, fetchWithScrapingdog, isTollbitGate, isChallengeOrGarbage } = require('./lib/scraper');
 const { isSoft404Body } = require('./lib/soft-404-body');
 const { shouldCountFailure, isPermanentlyFailed, shouldReopenStaleContentMismatch, classifyFetchFailure, routeCapFromBrowserbaseError, applyRouteCapDeferralLimit, isRouteCapCooldownActive, effectiveFailureReason, isOwnCodeException } = require('./lib/failed-fetch-policy');
 const { consultBrightData } = require('./lib/brightdata-caps');
@@ -2649,6 +2649,9 @@ async function fetchWithScrapingdogText(url) {
   if (isBlocked(html)) {
     throw new Error('CAPTCHA detected (scrapingdog)');
   }
+  if (isChallengeOrGarbage(html)) {
+    throw new Error('Scrapingdog returned garbage (BRO-7158)');
+  }
   const text = extractTextFromHtml(html, url);
   if (text && text.length > 500) {
     stats.tier1_9Success++;
@@ -3204,7 +3207,7 @@ async function fetchFromArchiveCDX(url) {
   const isPaywalledSite = url.includes('newyorker.com') || url.includes('nytimes.com') || url.includes('wsj.com');
   const fromYear = isPaywalledSite ? '2008' : '2014';
   const snapshotLimit = isPaywalledSite ? 20 : 10;
-  const cdxUrl = `http://web.archive.org/cdx/search/cdx?url=${encodeURIComponent(url)}&output=json&limit=${snapshotLimit}&from=${fromYear}&to=2026`;
+  const cdxUrl = `http://web.archive.org/cdx/search/cdx?url=${encodeURIComponent(url)}&output=json&limit=${snapshotLimit}&from=${fromYear}`;
   const cdxResp = await axios.get(cdxUrl, { timeout: 15000 });
 
   const rows = cdxResp.data;
@@ -4043,6 +4046,7 @@ async function fetchReviewText(review) {
       candidate: { ...accepted, _onSuccess: tier.onSuccess ? () => tier.onSuccess(review, result) : null },
       url,
       criticName: review.criticName || review.critic, // queued reviews carry `critic`
+      category: review.category, // Off-Broadway NYT floor (BRO-7171)
     });
     if (paywallDecision.action === 'continue') {
       const a = paywallDecision.assessment;
@@ -4188,7 +4192,7 @@ async function extractArticleText(page) {
   // BRO-6872: the browser path never consulted the tested per-host extractors,
   // so L&SA's A Few Good Men review was saved without its last paragraphs and
   // with the magazine's address footer (5375 chars vs the dedicated 5772).
-  if (!isDedicatedExtractorHost(currentUrl)) return domText;
+  if (!isDedicatedExtractorHost(currentUrl) && !(require('./lib/page-furniture').pageFurnitureEnabled() && hasOutletExtractor(currentUrl))) return domText;
   const html = await page.content().catch(() => '');
   return preferDedicatedText(domText, decodeBloxRot47(html), currentUrl);
 }
@@ -4204,15 +4208,64 @@ async function extractArticleText(page) {
 // paragraphs and kept the address footer, while the dedicated extractor got
 // the whole review. Both the HTML path and the browser path now run the
 // dedicated extractor on every dedicated host and keep it when it is longer.
+//
+// BRO-7171 Stage 5: "keep the longer" let the generic pass win whenever its
+// page chrome made it longer: The Stage's dedicated body drops the bio,
+// subscription pitch and copyright, so the generic copy that kept them was
+// longer and was saved. And only DEDICATED_EXTRACTOR_HOSTS consulted the
+// outlet extractors at all, so Deadline/THR (Related Stories runs),
+// WhatsOnStage/TheaterMania (Latest Reviews, tag lists), Vulture (comment and
+// shopping widgets) and every other outlet with a PATTERNS row were saved by
+// the generic pass. Now any host with an outlet extractor runs it, and the
+// generic text wins only when it holds material prose the outlet extractor
+// missed (the same novel-prose bar the gap-acceptance gate uses), not when it
+// is merely longer. Kill switch: PAGE_FURNITURE_DISABLED=true restores the
+// old rule.
 function preferDedicatedText(generic, html, url) {
   const base = String(generic || '');
-  if (!url || !html || !isDedicatedExtractorHost(url)) return base;
+  const legacy = !require('./lib/page-furniture').pageFurnitureEnabled();
+  const eligible = legacy ? isDedicatedExtractorHost(url) : (isDedicatedExtractorHost(url) || hasOutletExtractor(url));
+  if (!url || !html || !eligible) return base;
   let dedicated = null;
-  try { dedicated = extractArticleTextFromHtml(html, url); } catch { dedicated = null; }
+  // Non-dedicated hosts take only an outlet-specific extraction: the
+  // extractor's own generic fallbacks are no better than this file's.
+  const opts = isDedicatedExtractorHost(url) ? {} : { outletOnly: true };
+  try { dedicated = extractArticleTextFromHtml(html, url, undefined, opts); } catch { dedicated = null; }
   // Exclusive host: the generic pass is the bug (it keeps the support banner), so a dedicated miss is a failed
   // extraction, never a banner-prefixed save.
   if (isExclusiveExtractorHost(url)) return dedicated || '';
-  return dedicated && dedicated.length > base.length ? dedicated : base;
+  if (legacy) return dedicated && dedicated.length > base.length ? dedicated : base;
+  return chooseOutletOrGeneric(dedicated, base).text;
+}
+
+/**
+ * Outlet extractor vs generic pass (BRO-7171 Stage 5). Pure.
+ * @returns {{text: string, source: 'outlet'|'generic', novel: number}}
+ */
+function chooseOutletOrGeneric(dedicated, generic) {
+  const base = String(generic || '');
+  if (!dedicated) return { text: base, source: 'generic', novel: 0 };
+  if (!base.trim()) return { text: dedicated, source: 'outlet', novel: 0 };
+  const { novelProseVerdict } = require('./lib/novel-prose');
+  // Judge both bodies as they will be stored. Raw, a cookie-consent dialog
+  // (WhatsOnStage's IAB vendor list: 9,690 chars of long sentences) passed
+  // as "novel prose" and the generic copy won; the save path strips that
+  // dialog anyway, so it must not count.
+  const { textAsStored } = require('./lib/stored-text-form');
+  const asStored = (t) => { try { return textAsStored(t) || t; } catch { return t; } };
+  const d = asStored(dedicated);
+  const g = asStored(base);
+  const v = novelProseVerdict(d, g);
+  if (v.ok) return { text: base, source: 'generic', novel: v.novel };
+  // Superset: the generic body holds all of the outlet body plus extra
+  // non-chrome words (a dropped closing verdict, even "An unmissable
+  // triumph."). The 300-char bar above is for unrelated bodies; for a strict
+  // superset losing prose is the worse failure (pre-BRO-7171 the longer text
+  // always won), so a 3-word run is enough.
+  const { novelProseChars } = require('./lib/novel-prose');
+  const extra = novelProseChars(d, g, { minRunWords: 3 });
+  if (extra > 0 && novelProseChars(g, d) === 0) return { text: base, source: 'generic', novel: extra };
+  return { text: dedicated, source: 'outlet', novel: v.novel };
 }
 
 function extractTextFromHtml(html, url) {
@@ -5868,7 +5921,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       const isProxy = PROXY_METHODS.has(data.sourceMethod);
       let truncReason = null;
       if (isProxy && isHardPaywallUrl(data.url)) {
-        const pa = assessPaywallCompleteness(data.fullText, data.url, { criticName: data.criticName || review.criticName });
+        const pa = assessPaywallCompleteness(data.fullText, data.url, { criticName: data.criticName || review.criticName, category: data.category || review.category });
         if (!pa.complete) {
           truncReason = `Paywall truncation: ${pa.reasons.join(', ')} for ${urlHost} (source: ${data.sourceMethod})`;
         }
@@ -6269,7 +6322,7 @@ function pushReviewTextsCheckpoint(processed) {
 
     // ROOT-CAUSE GUARD (2026-05-27, mirrors .github/actions/push-review-texts):
     // the review-texts data repo contains ONLY JSON review files — never
-    // symlinks. A stray symlink committed via `git add -A` from a local
+    // symlinks. A stray symlink committed via a whole-tree add from a local
     // session once dangled in CI and crashed the collection pipeline for
     // ~8h. This checkpoint previously never reached here in practice (the
     // REVIEW_TEXTS_TOKEN gate above silently no-op'd on every workflow this
@@ -6290,14 +6343,15 @@ function pushReviewTextsCheckpoint(processed) {
       console.log(`::warning::checkpoint: opening-night lease enforce failed to run (${e.message.split('\n')[0]})`);
     }
 
-    // Stage all changes
-    execSync('git add -A', { cwd: rtDir, stdio: 'pipe' });
+    // BRO-7171: scoped staging (tracked changes + new review JSON), never a
+    // whole-tree add that would sweep stray screenshots/temp files in.
+    require('./lib/stage-review-texts').stageReviewTexts(rtDir);
 
-    // BRO-2559: `git add -A` stages a deletion for ANY tracked file this
+    // BRO-2559: staging tracked changes (`add -u`) stages a deletion for ANY tracked file this
     // job's local working copy happens to be missing — regardless of why
     // (this checkpoint runs mid-collection on whatever subset of shows the
     // process touched; a file this job never fetched into its own working
-    // tree is indistinguishable to `git add -A` from one someone deleted on
+    // tree is indistinguishable to git from one someone deleted on
     // purpose). A hand-flagged wrongProduction/wrongShow verdict living only
     // in that file is silently discarded the moment this commits — safe
     // WriteReview never runs, so its disk-level protection never gets a
@@ -7467,13 +7521,17 @@ async function processReview(review) {
         // fabricatedEntry recovery, where the existing url is empty or broken
         // — the invariant doesn't apply (nothing to clear), but the discovered
         // url and the fabricated-flag clears must still persist.
+        // The invented-url flag (fabricatedEntry) is NOT cleared here: a search
+        // hit is not proof. It clears after the fetch, only on the
+        // gap-acceptance identity proof (fabricatedFlagClearDecision, BRO-7171).
+        // The record as it was before the flip keeps the proof inputs (old
+        // excerpts, print text) that the invariant is about to clear.
+        if (review.fabricatedEntry === true) {
+          try { review._preDiscoverySnapshot = readReviewForUpdate(review.filePath); } catch { /* proof then fails closed */ }
+        }
         updateFileUrlWithInvariant(review.filePath, discoveredUrl, {
           urlDiscoveredAt: new Date().toISOString(),
           urlDiscoveryMethod: 'google-serp-reason-recovery',
-          // Clear fabricated flags on successful URL discovery (undefined
-          // values are dropped by JSON serialization = deletion).
-          fabricatedEntry: undefined,
-          fabricatedReason: undefined,
         }, { stampOnNoop: true, oldUrlProvenWrong: true });
       } catch (e) {}
       review._urlCosmeticOnly = review._urlCosmeticOnly !== false && !isDifferentArticleRecovery(review.url, discoveredUrl);
@@ -7590,7 +7648,7 @@ async function processReview(review) {
         // A COMPLETE re-fetch always wins over a stored partial; only a
         // partial one has to be strictly longer (ship-check P2, BRO-4334).
         const notLonger = result.partial && review._paywallRecheck && storedLen > 0 && (result.text || '').length <= storedLen;
-        if (notLonger || shouldKeepStoredText({ storedText: stored.fullText, newText: result.text, url: review.url, criticName: stored.criticName || review.criticName })) {
+        if (notLonger || shouldKeepStoredText({ storedText: stored.fullText, newText: result.text, url: review.url, criticName: stored.criticName || review.criticName, category: stored.category || review.category })) {
           console.log(`  ↺ Re-fetch (${result.text.length} chars via ${result.method}) is no better than the stored text (${storedLen} chars) — keeping stored text`);
           // A stored text still labelled 'complete' is re-labelled truncated so
           // reviews.json / the opening-window refetch see it as incomplete.
@@ -7835,6 +7893,37 @@ async function processReview(review) {
         if (updated) console.log(`    → URL updated: ${review._previousUrl} → ${review.url}`);
       } catch (e) {
         console.log(`    ⚠ Could not persist URL discovery: ${e.message}`);
+      }
+    }
+
+    // An invented-url row found by search: the flag clears only when the
+    // stored page passes the gap-acceptance identity proof; otherwise it stays
+    // and the row goes on to URL_FIND (BRO-7171 item b).
+    if (review._urlDiscovered && review._preDiscoverySnapshot && review.filePath) {
+      try {
+        const { fabricatedFlagClearDecision } = require('./lib/gap-acceptance');
+        const d = fabricatedFlagClearDecision({
+          filePath: review.filePath, preDiscovery: review._preDiscoverySnapshot, fetchedText: result.text, url: review.url,
+          html: result.html || null, llmVerified: !!(contentVerification && discoveredPageVerdict(contentVerification).accept),
+        });
+        if (d.clear) {
+          const post = readReviewForUpdate(review.filePath);
+          // Only when the file now holds the url that was proven: the
+          // invariant can refuse the move, leaving the old url on disk.
+          if (post.fabricatedEntry === true && post.url === review.url) {
+            post.fabricatedEntry = false;
+            post.fabricatedClearedReason = `real review text accepted at ${review.url} (collector serp, ${d.via}, ${new Date().toISOString()}); was: ${post.fabricatedReason || 'flagged'}`;
+            post.fabricatedReason = null;
+            persistReviewSnapshot({ filePath: review.filePath, data: post, trailingNewline: true });
+            console.log(`    ✓ invented-url flag cleared: ${d.via}`);
+          } else if (post.url !== review.url) {
+            console.log(`    ⚠ invented-url flag kept: stored url is ${post.url}, not the proven ${review.url}`);
+          }
+        } else {
+          console.log(`    ⚠ invented-url flag kept: ${d.reason}`);
+        }
+      } catch (e) {
+        console.log(`    ⚠ invented-url flag kept (proof failed: ${e.message})`);
       }
     }
 
@@ -8607,7 +8696,7 @@ function exitIfStuckAfterMain(graceMs = 20000) {
 }
 
 module.exports = {
-  reviewTimeoutMs, pushReviewTextsCheckpoint, commitChanges, extractTextFromHtml, preferDedicatedText, extractArticleText, findReviewsToProcess, dropLeasedReviews, updateReviewJson, verifyFetchedContent };
+  reviewTimeoutMs, pushReviewTextsCheckpoint, commitChanges, extractTextFromHtml, extractTextFromHtmlGeneric, preferDedicatedText, chooseOutletOrGeneric, extractArticleText, findReviewsToProcess, dropLeasedReviews, updateReviewJson, verifyFetchedContent };
 
 // Run (guarded so scripts/collect-review-texts.test.mjs can require() this
 // file for pushReviewTextsCheckpoint() without kicking off a real collection

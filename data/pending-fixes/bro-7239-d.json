@@ -1,0 +1,382 @@
+{
+  "issueNumber": "bro-7239-d",
+  "planId": "894e59b6-1b71-410f-b4a0-4a61254ec1ad",
+  "status": "applied",
+  "createdAt": "2026-11-09T18:39:50.583Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "SD + Boston hub shows: sourced closing dates (66 shows) from their review articles; close Topdog/Underdog, Ripcord, Rhinoceros which ended (part 4 of 6)",
+    "steps": [
+      "shows.json: ripcord-regional-2026.closingDate",
+      "shows.json: ripcord-regional-2026.closingDateSource",
+      "shows.json: ripcord-regional-2026.status",
+      "shows.json: topdog-underdog-old-regional-2026.closingDate",
+      "shows.json: topdog-underdog-old-regional-2026.closingDateSource",
+      "shows.json: topdog-underdog-old-regional-2026.status",
+      "shows.json: something-rotten-regional-2026.closingDate",
+      "shows.json: something-rotten-regional-2026.closingDateSource",
+      "shows.json: oedipus-el-rey-regional-2026.closingDate",
+      "shows.json: oedipus-el-rey-regional-2026.closingDateSource",
+      "shows.json: the-mystery-of-irma-vep-regional-2026.closingDate",
+      "shows.json: the-mystery-of-irma-vep-regional-2026.closingDateSource",
+      "shows.json: annie-regional-2026.closingDate",
+      "shows.json: annie-regional-2026.closingDateSource",
+      "shows.json: eureka-day-regional-2026.closingDate",
+      "shows.json: eureka-day-regional-2026.closingDateSource",
+      "shows.json: on-your-feet-regional-2026.closingDate",
+      "shows.json: on-your-feet-regional-2026.closingDateSource",
+      "shows.json: delirium-regional-2026.closingDate",
+      "shows.json: delirium-regional-2026.closingDateSource",
+      "shows.json: merrily-we-roll-along-sullivan-regional-2026.closingDate",
+      "shows.json: merrily-we-roll-along-sullivan-regional-2026.closingDateSource",
+      "shows.json: in-old-age-regional-2026.closingDate",
+      "shows.json: in-old-age-regional-2026.closingDateSource"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ripcord-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-11-01",
+        "description": "shows.json: ripcord-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ripcord-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"Through Nov. 1\" (https://www.sandiegouniontribune.com/2026/10/13/review-roustabouts-ripcord-a-laugh-filled-tale-about-aging-with-grace/ ; https://www.sdjewishworld.com/2026/10/15/191378/)",
+        "description": "shows.json: ripcord-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ripcord-regional-2026",
+        "field": "status",
+        "oldValue": "open",
+        "newValue": "closed",
+        "description": "shows.json: ripcord-regional-2026.status"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "topdog-underdog-old-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-10-18",
+        "description": "shows.json: topdog-underdog-old-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "topdog-underdog-old-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"Through Oct. 18\" (https://www.sandiegouniontribune.com/2026/10/02/review-old-globes-thrilling-topdog-underdog-comes-up-aces/ ; https://stageandcinema.com/2026/10/05/topdog-underdog-old-globe/)",
+        "description": "shows.json: topdog-underdog-old-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "topdog-underdog-old-regional-2026",
+        "field": "status",
+        "oldValue": "open",
+        "newValue": "closed",
+        "description": "shows.json: topdog-underdog-old-regional-2026.status"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "something-rotten-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-06-07",
+        "description": "shows.json: something-rotten-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "something-rotten-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through June 7\" (https://www.wbur.org/news/2026/05/05/lyric-stage-something-rotten-theater-review ; https://www.broadwayworld.com/article/Review-SOMETHING-ROTTEN-is-Anything-But-at-Lyric-Stage-Boston-20260514)",
+        "description": "shows.json: something-rotten-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "oedipus-el-rey-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-06-14",
+        "description": "shows.json: oedipus-el-rey-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "oedipus-el-rey-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through June 14\" (https://www.wbur.org/news/2026/05/15/the-huntington-oedipus-el-rey-theater-review ; https://www.broadwayworld.com/article/Review-The-Huntingtons-OEDIPUS-EL-REY-Turns-Tragedy-Into-Triumph-20260520)",
+        "description": "shows.json: oedipus-el-rey-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-mystery-of-irma-vep-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-06-21",
+        "description": "shows.json: the-mystery-of-irma-vep-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-mystery-of-irma-vep-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"Through June 21\" (https://www.bostonglobe.com/2026/06/01/arts/central-square-theater-mystery-of-irma-vep/ ; https://www.wbur.org/news/2026/06/02/central-square-theater-mystery-of-irma-vep-review)",
+        "description": "shows.json: the-mystery-of-irma-vep-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "annie-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-06-28",
+        "description": "shows.json: annie-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "annie-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through June 28\" (https://www.broadwayworld.com/boston/article/Review-ANNIE-at-Greater-Boston-Stage-Company-20260621 ; https://www.theatermirror.net/?p=11258)",
+        "description": "shows.json: annie-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "eureka-day-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-06-28",
+        "description": "shows.json: eureka-day-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "eureka-day-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through June 28\" (https://www.broadwayworld.com/article/Review-EUREKA-DAY-is-a-Tempest-in-a-Vaccination-Teapot-20260609 ; https://www.metrmag.com/latest-reviews/eureka-day-by-jonathan-spector-huntington-theatre-company-boston-ma-review)",
+        "description": "shows.json: eureka-day-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "on-your-feet-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-06-14",
+        "description": "shows.json: on-your-feet-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "on-your-feet-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through June 14\" (https://www.bostonglobe.com/2026/06/08/arts/gloria-estefan-on-your-feet-north-shore-music-theater/ ; https://www.broadwayworld.com/boston/article/Review-Emilio-and-Gloria-Estefan-Musical-Will-Have-You-ON-YOUR-FEET-in-Beverly-20260610)",
+        "description": "shows.json: on-your-feet-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "delirium-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-07-02",
+        "description": "shows.json: delirium-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "delirium-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through July 2\" (https://artsfuse.org/330885/theater-review-arlekins-delirium-reimagines-ionesco-with-visual-flair-and-urgency/ ; https://sleeplesscritic.com/2026/06/30/review-featuring-a-superb-comedic-pair-chaos-ensues-with-boundless-creativity-in-arlekins-exceptional-delirium/)",
+        "description": "shows.json: delirium-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "merrily-we-roll-along-sullivan-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-06-27",
+        "description": "shows.json: merrily-we-roll-along-sullivan-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "merrily-we-roll-along-sullivan-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through June 27\" (https://www.broadwayworld.com/article/Review-Sullivan-Reps-MERRILY-WE-ROLL-ALONG-Shows-Sondheim-is-Worth-a-Second-Look-20260621 ; https://sleeplesscritic.com/2026/06/25/review-risking-it-all-in-sullivan-reps-wry-and-reflective-merrily-we-roll-along/)",
+        "description": "shows.json: merrily-we-roll-along-sullivan-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "in-old-age-regional-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-06-28",
+        "description": "shows.json: in-old-age-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "in-old-age-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through June 28\" (https://www.wbur.org/news/2026/06/23/front-porch-arts-collective-ufot-cycle-in-old-age-review ; https://www.bostonglobe.com/2026/06/22/arts/in-old-age-mfoniso-udofia/)",
+        "description": "shows.json: in-old-age-regional-2026.closingDateSource"
+      }
+    ]
+  },
+  "executedAt": "2026-11-09T20:15:56.563Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for ripcord-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for ripcord-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for ripcord-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for topdog-underdog-old-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for topdog-underdog-old-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for topdog-underdog-old-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for something-rotten-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for something-rotten-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for oedipus-el-rey-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for oedipus-el-rey-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for the-mystery-of-irma-vep-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for the-mystery-of-irma-vep-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for annie-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for annie-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for eureka-day-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for eureka-day-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for on-your-feet-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for on-your-feet-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for delirium-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for delirium-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for merrily-we-roll-along-sullivan-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for merrily-we-roll-along-sullivan-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for in-old-age-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for in-old-age-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

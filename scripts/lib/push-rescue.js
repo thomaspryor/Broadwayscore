@@ -33,6 +33,13 @@
  * or another rescue holds different content at the path), a file the
  * ownership gate dropped, is kept and named every hour
  * until a human resolves it. PUSH_RESCUE_DISABLE=1 turns off `rescue`.
+ *
+ * Resolving one: once the owner picks main's copy of every conflicting file,
+ * dispatch replay-push-rescue.yml with main_wins=<branch>@<tip sha>
+ * (PUSH_RESCUE_MAIN_WINS, comma-separated). The tip sha binds the approval to
+ * the branch content that was reviewed; a branch that moved is left alone.
+ * Each overridden path logs both blob shas, and prune saves the branch tip as
+ * tag push-rescue-archive/<branch suffix> before deleting it (no tag, no delete).
  */
 
 const fs = require('fs');
@@ -97,6 +104,22 @@ const IDENTITY_KEYS = ['showId', 'outletId', 'criticName', 'originalScore', 'ass
 const isEmpty = (v) => v == null || v === '' || v === false || (Array.isArray(v) && v.length === 0);
 const canon = (v) => JSON.stringify(v, (k, x) => (x && typeof x === 'object' && !Array.isArray(x)
   ? Object.fromEntries(Object.keys(x).sort().map((key) => [key, x[key]])) : x));
+// Fetch-STATE reasons (retry bookkeeping a fuller copy clears). Verdict reasons
+// (wrong_content, non_review, scraper_garbage, url_content_mismatch...) are
+// read by scoring (is-scoreable.ts, compute-composite.js) and never waived.
+const FETCH_STATE_REASONS = new Set(['not_attempted', 'paywall', 'bot_blocked', 'scraper_timeout',
+  'partial_text', 'url_dead', 'route_capped', 'no_url', 'no_text', 'code_error']);
+// Retry/fetch bookkeeping a later run rewrites. Used only by the no-text rule.
+// Not here: contentVerification(+Promoted) hold the verifier's wrongArticle
+// verdict (rebuild-helpers.js reads it) and archivePath points at saved HTML.
+const BOOKKEEPING_KEYS = new Set(['fetchRetryAfter', 'fetchDiscoveryAbandoned', 'textRetryAttemptedAt',
+  'fetchMethod', 'fetchAttempts', 'fetchTier', 'criticBackfillAttempt', 'textFetchedAt']);
+const UNKNOWN_CRITIC = /^\s*(unknown|unnamed)?\s*$/i;
+// A detail with no reason may be verdict text, so only a known fetch-state reason waives it.
+const isFetchStateOnly = (a) => FETCH_STATE_REASONS.has(a.incompleteReason);
+// An excerpt-tier file keeps its text in *Excerpt fields, not fullText.
+const hasNoTextToLose = (a, b) => isEmpty(a.fullText)
+  && Object.keys(a).every((k) => !/Excerpt$/.test(k) || isEmpty(a[k]) || canon(a[k]) === canon(b[k]));
 function mainSupersedesRescue(rescueText, mainText) {
   let a; let b;
   try { a = JSON.parse(rescueText); b = JSON.parse(mainText); } catch { return false; }
@@ -107,11 +130,30 @@ function mainSupersedesRescue(rescueText, mainText) {
   if (!ua || ua !== normUrl(b.url)) return false;
   const ra = TIER_RANK[a.contentTier];
   const rb = TIER_RANK[b.contentTier];
+  // A placeholder critic on the RESCUE that main later named is not a conflict.
+  const idDiffers = (k) => !isEmpty(a[k]) && !isEmpty(b[k]) && JSON.stringify(a[k]) !== JSON.stringify(b[k])
+    && !(k === 'criticName' && typeof a[k] === 'string' && UNKNOWN_CRITIC.test(a[k]));
+  if (IDENTITY_KEYS.some(idDiffers)) return false;
+  const waivable = (k) => CONTENT_KEYS.has(k)
+    || ((k === 'incompleteReason' || k === 'incompleteDetail') && isFetchStateOnly(a))
+    || (k === 'criticName' && UNKNOWN_CRITIC.test(String(a[k])));
+  // BRO-7173: a rescued copy with no text (no fullText, excerpts equal to
+  // main's) loses nothing to main at an equal or higher tier (or one main
+  // judged invalid), provided every other value it holds matches main or is
+  // retry bookkeeping a later run rewrote.
+  // Only ever widens: when it does not apply, the older rule below decides.
+  // Of the content keys only the tier itself (and its reason) may differ, and
+  // only when main's is higher or invalid; sources/dateSource must match.
+  const mainAhead = rb > ra || b.contentTier === 'invalid';
+  const noTextWaivable = (k) => k === 'url' || BOOKKEEPING_KEYS.has(k)
+    || ((k === 'contentTier' || k === 'contentTierReason') && mainAhead)
+    || (k !== 'contentTier' && k !== 'contentTierReason' && !CONTENT_KEYS.has(k) && waivable(k));
+  if (ra !== undefined && rb !== undefined && hasNoTextToLose(a, b) && (rb >= ra || b.contentTier === 'invalid')
+    && Object.keys(a).every((k) => isEmpty(a[k]) || canon(a[k]) === canon(b[k]) || noTextWaivable(k))) return true;
   // Identical text on main, whatever tier the pipeline gave it since, loses nothing.
   const sameText = typeof a.fullText === 'string' && a.fullText !== '' && a.fullText === b.fullText;
   if (!sameText && (ra === undefined || rb === undefined || rb <= ra)) return false;
-  if (IDENTITY_KEYS.some((k) => !isEmpty(a[k]) && !isEmpty(b[k]) && JSON.stringify(a[k]) !== JSON.stringify(b[k]))) return false;
-  return Object.keys(a).every((k) => CONTENT_KEYS.has(k) || isEmpty(a[k]) || !isEmpty(b[k]));
+  return Object.keys(a).every((k) => waivable(k) || isEmpty(a[k]) || !isEmpty(b[k]));
 }
 
 /**
@@ -125,7 +167,7 @@ function mainSupersedesRescue(rescueText, mainText) {
  *   claimed: paths an earlier branch in the same replay already restored.
  *   Nothing on main is ever overwritten or resurrected.
  */
-function replayPlan({ adds, mainBlob, touchedOnMain, rescueBlob, claimed = new Map(), superseded = () => false }) {
+function replayPlan({ adds, mainBlob, touchedOnMain, rescueBlob, claimed = new Map(), superseded = () => false, mainWins = false }) {
   const restore = [];
   const skipped = [];
   const conflicts = [];
@@ -134,7 +176,8 @@ function replayPlan({ adds, mainBlob, touchedOnMain, rescueBlob, claimed = new M
     if (mainBlob.has(p)) {
       if (mainBlob.get(p) === ours) skipped.push({ path: p, why: 'already on main' });
       else if (superseded(p)) skipped.push({ path: p, why: 'main holds the same review, further along' });
-      else conflicts.push({ path: p, why: 'main holds a different version' });
+      else if (mainWins) skipped.push({ path: p, why: MAIN_WINS_WHY, rescueBlob: ours, mainBlob: mainBlob.get(p) });
+      else conflicts.push({ path: p, why: MAIN_CONFLICT_WHY });
     } else if (touchedOnMain.has(p)) skipped.push({ path: p, why: 'changed on main since the rescue (e.g. drained or moved)' });
     else if (claimed.has(p)) {
       if (claimed.get(p) === ours) skipped.push({ path: p, why: 'restored from another rescue branch' });
@@ -142,6 +185,49 @@ function replayPlan({ adds, mainBlob, touchedOnMain, rescueBlob, claimed = new M
     } else restore.push(p);
   }
   return { restore, skipped, conflicts, keepForHuman: conflicts.length > 0 };
+}
+
+const MAIN_WINS_WHY = 'owner chose main over this rescue copy (main_wins)';
+const MAIN_CONFLICT_WHY = 'main holds a different version';
+
+/**
+ * Parse PUSH_RESCUE_MAIN_WINS: comma-separated `<branch>@<40-hex tip sha>`.
+ * Throws on any malformed token (before anything is replayed).
+ * @returns {Map<string,string>} branch name (no refs/heads/) -> tip sha
+ */
+function parseMainWins(str) {
+  const out = new Map();
+  for (const raw of String(str || '').split(',').map((t) => t.trim()).filter(Boolean)) {
+    const at = raw.lastIndexOf('@');
+    const ref = (at > 0 ? raw.slice(0, at) : raw).replace(/^refs\/heads\//, '');
+    const sha = at > 0 ? raw.slice(at + 1).toLowerCase() : '';
+    if (!REF_RE.test(ref) || !/^[0-9a-f]{40}$/.test(sha)) {
+      throw new Error(`push-rescue: main_wins entry '${raw}' must be <push-rescue branch>@<40-char tip sha>`);
+    }
+    out.set(ref, sha);
+  }
+  return out;
+}
+
+/**
+ * Which listed branches main_wins applies to: approved tip must equal the live tip.
+ * @returns {{apply: Set<string>, notes: {level: string, msg: string}[]}}
+ */
+function mainWinsFor(refs, mainWins) {
+  const apply = new Set();
+  const notes = [];
+  for (const [ref, tip] of mainWins) {
+    const live = refs.find((e) => e.ref === ref);
+    if (!live) notes.push({ level: 'warning', msg: `main_wins names ${ref}, which no longer exists` });
+    else if (live.sha !== tip) notes.push({ level: 'error', msg: `main_wins for ${ref} was approved at ${tip} but the branch is at ${live.sha}; not applied` });
+    else { apply.add(ref); notes.push({ level: 'notice', msg: `main_wins applies to ${ref} at ${tip}: main's copy wins every conflicting path` }); }
+  }
+  return { apply, notes };
+}
+
+/** True when every reason a kept branch needs a person is a main conflict main_wins can settle. */
+function onlyMainConflicts(r) {
+  return (r.conflicts || []).length > 0 && r.conflicts.every((c) => c.why === MAIN_CONFLICT_WHY) && !(r.dropped || []).length;
 }
 
 function git(args, opts = {}) {
@@ -192,7 +278,7 @@ function blobAt(rev, p) {
   return r.status === 0 ? r.stdout.trim() : null;
 }
 
-function replayOne({ sha, ref, info }, claimed) {
+function replayOne({ sha, ref, info }, claimed, mainWins = false) {
   gitOk(['fetch', '--no-tags', '--depth=1', 'origin', sha, info.base], { timeout: netTimeoutMs() * 2 });
   const baseTime = Number(gitOk(['show', '-s', '--format=%ct', info.base]).trim());
   // Main's history since the rescue's base, so a path a later commit
@@ -213,27 +299,34 @@ function replayOne({ sha, ref, info }, claimed) {
     && gitOk(['log', '-1', '--format=%H', `--since=${since}`, 'origin/main', '--', p]).trim() !== ''));
   const show = (rev, p) => { const r = git(['show', `${rev}:${p}`]); return r.status === 0 ? r.stdout : ''; };
   const superseded = (p) => mainSupersedesRescue(show(sha, p), show('origin/main', p));
-  const plan = replayPlan({ adds, mainBlob, touchedOnMain: touched, rescueBlob, claimed, superseded });
+  const plan = replayPlan({ adds, mainBlob, touchedOnMain: touched, rescueBlob, claimed, superseded, mainWins });
   for (const p of plan.restore) {
     fs.mkdirSync(path.dirname(p), { recursive: true });
     fs.writeFileSync(p, gitOk(['show', `${sha}:${p}`]));
     claimed.set(p, rescueBlob.get(p));
   }
   console.log(`push-rescue: ${ref}: restoring ${plan.restore.length}, skipping ${plan.skipped.length}, conflicts ${plan.conflicts.length}${modified.length ? `, ${modified.length} modified/deleted path(s) not replayed` : ''}`);
-  for (const x of [...plan.skipped, ...plan.conflicts]) console.log(`  ${plan.conflicts.includes(x) ? 'CONFLICT' : 'skip'} ${x.path}: ${x.why}`);
-  return { ref, restored: plan.restore, restoredBlobs: Object.fromEntries(plan.restore.map((p) => [p, rescueBlob.get(p)])), skipped: plan.skipped, conflicts: plan.conflicts, keepForHuman: plan.keepForHuman, modified: modified.slice(0, 50) };
+  for (const x of [...plan.skipped, ...plan.conflicts]) console.log(`  ${plan.conflicts.includes(x) ? 'CONFLICT' : 'skip'} ${x.path}: ${x.why}${x.rescueBlob ? ` (rescue blob ${x.rescueBlob}, main blob ${x.mainBlob}; branch tip ${sha})` : ''}`);
+  return { ref, tip: sha, restored: plan.restore, restoredBlobs: Object.fromEntries(plan.restore.map((p) => [p, rescueBlob.get(p)])), skipped: plan.skipped, conflicts: plan.conflicts, keepForHuman: plan.keepForHuman, modified: modified.slice(0, 50) };
 }
 
 function cliReplay(args) {
   const manifestPath = (args.find((a) => a.startsWith('--manifest=')) || '').slice('--manifest='.length);
+  let mainWins;
+  try { mainWins = parseMainWins(process.env.PUSH_RESCUE_MAIN_WINS); } catch (e) {
+    console.log(`::error::${annotate(e.message)}`);
+    process.exit(2);
+  }
   const refs = listRescueRefs();
   const manifest = { refs: [], failed: [] };
+  const mw = mainWinsFor(refs, mainWins);
+  for (const n of mw.notes) console.log(`::${n.level}::push-rescue: ${annotate(n.msg)}`);
   const claimed = new Map();
   if (refs.length === 0) console.log('push-rescue: no rescue branches');
   for (const entry of refs) {
     if (!entry.info) { console.log(`::warning::push-rescue: ignoring malformed branch ${entry.ref}`); continue; }
     try {
-      manifest.refs.push(replayOne(entry, claimed));
+      manifest.refs.push(replayOne(entry, claimed, mw.apply.has(entry.ref)));
     } catch (e) {
       // One bad branch must not block the others; the job fails at the end.
       manifest.failed.push(entry.ref);
@@ -279,7 +372,23 @@ function cliPrune(args) {
   gitOk(['fetch', '--no-tags', '--depth=1', 'origin', '+refs/heads/main:refs/remotes/origin/main'], { timeout: netTimeoutMs() * 2 });
   const ok = prunable(manifest, (p) => blobAt('origin/main', p));
   for (const r of ok) {
-    gitOk(['push', 'origin', '--delete', `refs/heads/${r.ref}`], { timeout: netTimeoutMs() });
+    // Delete only the tip this replay read (a branch that moved since is kept for the next run).
+    // A branch main_wins overrode is the only copy of those files: tag its tip first.
+    if ((r.skipped || []).some((x) => x.why === MAIN_WINS_WHY)) {
+      const tag = `refs/tags/push-rescue-archive/${r.ref.slice(RESCUE_PREFIX.length)}`;
+      const t = git(['push', 'origin', `${r.tip}:${tag}`], { timeout: netTimeoutMs() });
+      if (t.status !== 0 && !/already exists/.test(t.stderr || '')) {
+        console.log(`::warning::push-rescue: kept ${r.ref}: could not archive it as ${tag} (${annotate((t.stderr || '').trim().slice(0, 200))})`);
+        continue;
+      }
+      console.log(`push-rescue: archived ${r.ref} at ${r.tip} as ${tag}`);
+    }
+    const lease = r.tip ? [`--force-with-lease=refs/heads/${r.ref}:${r.tip}`] : [];
+    const d = git(['push', ...lease, 'origin', `:refs/heads/${r.ref}`], { timeout: netTimeoutMs() });
+    if (d.status !== 0) {
+      console.log(`::warning::push-rescue: kept ${r.ref}: delete refused (${annotate((d.stderr || '').trim().slice(0, 200))}); the next run retries`);
+      continue;
+    }
     console.log(`push-rescue: deleted ${r.ref}${r.modified && r.modified.length ? ` (its ${r.modified.length} modified/deleted path(s) were not replayed: ${r.modified.slice(0, 5).join(', ')})` : ''}`);
   }
   for (const r of (manifest.refs || []).filter((x) => !ok.includes(x))) {
@@ -294,11 +403,14 @@ function cliPrune(args) {
   const human = (manifest.refs || []).filter((r) => r.keepForHuman);
   if (human.length) {
     console.log(`::error::push-rescue: ${human.length} rescue branch(es) need a person: ${human.map((r) => r.ref).join(', ')}`);
+    for (const r of human.filter(onlyMainConflicts)) {
+      console.log(`::notice::push-rescue: if the owner picks main's copy for ${r.ref}, dispatch replay-push-rescue.yml with main_wins=${r.ref}@${r.tip}`);
+    }
     process.exitCode = 1;
   }
 }
 
-module.exports = { RESCUE_PREFIX, isRecoverablePath, parseNameStatusZ, recoverableAdds, rescueRefName, parseRescueRef, replayPlan, prunable, mainSupersedesRescue };
+module.exports = { RESCUE_PREFIX, isRecoverablePath, parseNameStatusZ, recoverableAdds, rescueRefName, parseRescueRef, replayPlan, prunable, mainSupersedesRescue, parseMainWins, mainWinsFor, onlyMainConflicts, MAIN_CONFLICT_WHY };
 
 if (require.main === module) {
   const [cmd, ...rest] = process.argv.slice(2);

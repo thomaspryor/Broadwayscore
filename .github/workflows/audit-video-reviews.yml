@@ -72,8 +72,11 @@ jobs:
           node scripts/video-reviews/audit-before-share.js "${ARGS[@]}"
 
       - name: Commit audit report
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1' # union-merges the LLM spend ledger on rebase (BRO-5043)
         run: |
           set -euo pipefail
+          git add data/audit/gemini-usage-ledger.jsonl 2>/dev/null || true # LLM spend meter rows (BRO-5043)
           git add data/audit/video-review-audit.json
           if git diff --cached --quiet; then
             echo "No changes to audit report."

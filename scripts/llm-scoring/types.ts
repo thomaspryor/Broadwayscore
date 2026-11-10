@@ -138,6 +138,15 @@ export interface ModelScore {
  * Result from 3-model ensemble scoring
  */
 export interface EnsembleResult {
+  /**
+   * Experiment only (EnsembleScoringOptions.shadowOpenaiModel): the same review
+   * finalised with a second OpenAI model swapped in for the OpenAI leg, through
+   * the identical combine/clamp/tail-stretch path. Never persisted: review
+   * files are built field by field from the control result.
+   */
+  shadow?: EnsembleResult;
+  /** Experiment only (shadow mode): the OpenAI leg's own outcome in this arm. */
+  openaiLeg?: { ok: boolean; rejected: boolean; error?: string };
   /** Final score (from ensemble logic) */
   score: number;
   /** Final bucket */
@@ -316,6 +325,8 @@ export interface ScoredReviewFile extends ReviewTextFile {
     /** Bucket from each model (v5+) */
     claudeBucket?: Bucket;
     openaiBucket?: Bucket;
+    /** OpenAI model that produced openaiScore (absent on reviews scored before 2026-11). */
+    openaiModel?: string;
     geminiBucket?: Bucket;
     kimiBucket?: Bucket;
     scoreDelta: number;

@@ -24,6 +24,8 @@ import { formatGoldListDate, RankBadge, ValueBadge, AudienceGradeBadge } from '@
 import { GoldListBadge } from '@/components/gold-list/GoldListBadge';
 import { GoldListNav } from '@/components/gold-list/GoldListNav';
 import Breadcrumb from '@/components/Breadcrumb';
+import { formatClosingLabel } from '@/lib/closing-label';
+import { getShowById } from '@/lib/data-core';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
@@ -206,7 +208,7 @@ export default async function GoldListSeasonPage(props: { params: Promise<{ list
                     ) : entry.closingDate ? (
                       <>
                         <span className={entry.status === 'closed' ? 'text-fg-muted' : 'text-amber-400'}>
-                          {entry.status === 'closed' ? 'Closed' : 'Closes'} {formatGoldListDate(entry.closingDate)}
+                          {entry.status === 'closed' ? `Closed ${formatGoldListDate(entry.closingDate)}` : formatClosingLabel({ closingDate: entry.closingDate, closingExtensionCount: getShowById(entry.showId)?.closingExtensionCount }, formatGoldListDate(entry.closingDate))}
                         </span>
                         {entry.openingDate && (
                           <span className="text-fg-muted"> · Opened {formatGoldListDate(entry.openingDate)}</span>

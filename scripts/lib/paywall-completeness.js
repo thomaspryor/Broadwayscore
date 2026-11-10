@@ -30,7 +30,8 @@
  */
 
 const { cleanText } = require('./text-quality');
-const { TRUNCATION_SIGNALS } = require('./content-quality');
+const { TRUNCATION_SIGNALS, isNewYorkerCapsule } = require('./content-quality');
+const { stripPageFurniture } = require('./page-furniture');
 
 // Per-domain character floors for texts WITHOUT an info-box ending.
 // Derived from the review-texts corpus (2026-09-29, contentTier=complete):
@@ -43,6 +44,30 @@ const HARD_PAYWALL_FLOORS = Object.freeze({
   'chicagotribune.com': 3000,
   'wsj.com': 2500,
 });
+
+// Off-Broadway reviews are much shorter than Broadway ones, so the all-NYT
+// floor (4,500) sat near the Off-Broadway MEDIAN and labelled whole reviews
+// truncated (BRO-7171: The Moors, 4,487 chars, matched the archived page's
+// last paragraph). Corpus 2026-11-09, contentTier=complete, cleaned length:
+//   nyt broadway p10 4,890 (n=860); nyt off-broadway p10 3,367 / med 4,921 (n=393).
+// Keyed by show category; anything not listed uses HARD_PAYWALL_FLOORS.
+const CATEGORY_FLOORS = Object.freeze({
+  'nytimes.com': Object.freeze({ 'off-broadway': 3300, 'off-west-end': 3300 }),
+});
+
+// A New Yorker "Goings On About Town" listing is a whole capsule of roughly
+// 100-250 words; the 4,000-char magazine floor never fits it. Recognised by
+// its text (section label, title, "By ...", date), never by URL.
+const CAPSULE_FLOOR = 500;
+
+// Lines that only the END of a whole article carries (BRO-7171 hand check):
+// the NYT staff bio, the archived ArtsBeat footer, and the New Yorker
+// print-edition line. Like the info box, they prove the capture reached the end.
+const ARTICLE_END_PATTERNS = [
+  /\b(?:is|was) (?:a|an|the) [^.]{0,80}\b(?:critic|reporter|writer|editor|correspondent|columnist)\b[^.]{0,60}\b(?:for|at|of) the (?:new york )?times\.?\s*$/i,
+  /\bartsbeat, a blog about arts and culture, has been archived\.[^.]{0,80}\.?\s*$/i,
+  /\bpublished in the print edition of the [^.]{3,60}(?:issue|edition)\.?\s*$/i,
+];
 
 // Texts at least this multiple of the floor may end without punctuation.
 const CHROME_TOLERANT_MULTIPLIER = 1.5;
@@ -140,17 +165,22 @@ function stripTrailingByline(text, criticName) {
  */
 function assessPaywallCompleteness(text, url, opts = {}) {
   const domain = getHardPaywallDomain(url);
-  const raw = typeof text === 'string' ? text : '';
+  let raw = typeof text === 'string' ? text : '';
   if (!domain) {
     return {
       hardPaywall: false, domain: null, floor: null, length: raw.length,
       complete: true, infoBoxEnding: false, bylineStripped: false, reasons: [],
     };
   }
-  const floor = HARD_PAYWALL_FLOORS[domain];
+  const capsule = domain === 'newyorker.com' && isNewYorkerCapsule(raw);
+  const categoryFloor = CATEGORY_FLOORS[domain] && opts.category ? CATEGORY_FLOORS[domain][opts.category] : undefined;
+  const floor = capsule ? CAPSULE_FLOOR : (categoryFloor || HARD_PAYWALL_FLOORS[domain]);
   const reasons = [];
 
   if (BOT_STUB_PATTERNS.some((p) => p.test(raw))) reasons.push('bot_wall_stub');
+  // Page furniture (an NYT recirculation module, share bars) after the info
+  // box hid the ending this check looks for (BRO-7171).
+  if (stripPageFurniture) raw = stripPageFurniture(raw, { anchors: false });
 
   // Endings are judged on the RAW text (byline + page furniture stripped,
   // whitespace collapsed): cleanText()'s stripTrailingJunk can chop the info
@@ -168,7 +198,8 @@ function assessPaywallCompleteness(text, url, opts = {}) {
   if (PAYWALL_TAIL_RE.test(rawBody.slice(-600))) reasons.push('paywall_prompt');
 
   const tail = rawBody.slice(-300);
-  const infoBoxEnding = INFO_BOX_ENDING_PATTERNS.some((p) => p.test(tail));
+  const infoBoxEnding = INFO_BOX_ENDING_PATTERNS.some((p) => p.test(tail))
+    || ARTICLE_END_PATTERNS.some((p) => p.test(tail));
   const endsWithPunctuation = /[.!?"'”’)\]]\s*$/.test(rawBody);
 
   if (!infoBoxEnding) {
@@ -216,8 +247,8 @@ function isBetterCandidate(candidate, incumbent) {
  *   'continue' → try the next tier; `best` is the better of best/candidate
  *                (with `.assessment` attached) to fall back to at the end.
  */
-function decideTierResult({ best = null, candidate, url, criticName } = {}) {
-  const assessment = assessPaywallCompleteness(candidate && candidate.text, url, { criticName });
+function decideTierResult({ best = null, candidate, url, criticName, category } = {}) {
+  const assessment = assessPaywallCompleteness(candidate && candidate.text, url, { criticName, category });
   if (!assessment.hardPaywall || assessment.complete) {
     return { action: 'accept', best, assessment };
   }
@@ -281,7 +312,7 @@ function needsPaywallRecheck(data, nowMs = Date.now()) {
   // pull old files back into the window.
   const seen = Date.parse(data.firstSeenAt || '');
   if (!Number.isFinite(seen) || nowMs - seen > RECHECK_WINDOW_MS) return false;
-  return !assessPaywallCompleteness(data.fullText, data.url, { criticName: data.criticName }).complete;
+  return !assessPaywallCompleteness(data.fullText, data.url, { criticName: data.criticName, category: data.category }).complete;
 }
 
 const PAYWALL_TRUNCATION_REASON_RE = /^Paywall truncation:/;
@@ -334,7 +365,7 @@ function applyPaywallTierOverride(data, tierResult, nowMs = Date.now()) {
   const seen = Date.parse(data.firstSeenAt || '');
   const inWindow = Number.isFinite(seen) && nowMs - seen <= RECHECK_WINDOW_MS;
   if (!labelled && !inWindow) return tierResult;
-  const a = assessPaywallCompleteness(data.fullText, data.url, { criticName: data.criticName });
+  const a = assessPaywallCompleteness(data.fullText, data.url, { criticName: data.criticName, category: data.category });
   if (a.complete) return tierResult;
   const reason = `Paywall truncation: ${a.reasons.join(', ')} for ${a.domain} (source: ${data.sourceMethod || data.fetchMethod})`;
   return { ...tierResult, contentTier: 'truncated', tierReason: reason, paywallOverride: true };
@@ -348,7 +379,7 @@ function truncatedTierPatch(data) {
   if (!data || data.contentTier !== 'complete' || !data.fullText) return null;
   if (!isHardPaywallUrl(data.url)) return null;
   if (!SCRAPED_SOURCE_METHODS.has(data.sourceMethod || data.fetchMethod)) return null;
-  const a = assessPaywallCompleteness(data.fullText, data.url, { criticName: data.criticName });
+  const a = assessPaywallCompleteness(data.fullText, data.url, { criticName: data.criticName, category: data.category });
   if (a.complete) return null;
   const reason = `Paywall truncation: ${a.reasons.join(', ')} for ${a.domain} (source: ${data.sourceMethod || data.fetchMethod})`;
   return {
@@ -366,10 +397,10 @@ function truncatedTierPatch(data) {
  * be kept instead of overwriting it with the new (still partial) result?
  * True when the stored text is at least as good by the same ranking.
  */
-function shouldKeepStoredText({ storedText, newText, url, criticName } = {}) {
+function shouldKeepStoredText({ storedText, newText, url, criticName, category } = {}) {
   if (!storedText || !isHardPaywallUrl(url)) return false;
-  const stored = { assessment: assessPaywallCompleteness(storedText, url, { criticName }) };
-  const fresh = { assessment: assessPaywallCompleteness(newText, url, { criticName }) };
+  const stored = { assessment: assessPaywallCompleteness(storedText, url, { criticName, category }) };
+  const fresh = { assessment: assessPaywallCompleteness(newText, url, { criticName, category }) };
   return !isBetterCandidate(fresh, stored);
 }
 

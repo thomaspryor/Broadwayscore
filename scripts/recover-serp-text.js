@@ -37,22 +37,19 @@
  *   --force-exhausted  Override the proven-zero-sweep guard (see below)
  */
 
-const { isolateMultiShowSectionForShowId } = require('./lib/multi-show-section-extract');
 const fs = require('fs');
-const { AGGREGATOR_FIELDS } = require('./lib/rediscovery-candidate');
 const path = require('path');
-const { execSync } = require('child_process');
 
-const { classifyContentTier, isGarbageContent, validateShowMentioned, countWords } = require('./lib/content-quality');
-const { cleanText, stripTrailingJunk } = require('./lib/text-cleaning');
+const { cleanText } = require('./lib/text-cleaning');
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
 const { setExtractedScore } = require('./lib/score-routing');
 const { extractArticleText } = require('./lib/article-extractor');
 const { discoverCorrectUrl, OUTLET_DOMAINS, REGISTRY_DOMAIN_ALIASES } = require('./lib/url-discovery');
 const { evaluateCandidate, buildDomainOutletIds, isProvenZeroSweep } = require('./lib/serp-text-recovery-candidates');
-const { updateFileUrlWithInvariant } = require('./lib/url-change-invariant');
 const { fetchPage, unwrapRedirectUrl, cleanup } = require('./lib/scraper');
-const { markRescoreNeeded } = require('./lib/rescore-flagging');
+// One gate + one locked write for every recovery route (BRO-7171).
+const { recoverReviewTextVerified } = require('./lib/gap-acceptance');
+const { checkpointReviewTexts: landReviewTexts, retryPendingPushes, createWriteTracker } = require('./lib/review-texts-checkpoint');
 
 const args = process.argv.slice(2);
 const getArg = (name) => {
@@ -97,56 +94,23 @@ if (!args.includes('--force-exhausted') && isProvenZeroSweep({ domain: CONFIG.do
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 // Commit + push data/review-texts periodically DURING the run, not just at the
-// end. A long local run (30-60 min for 100+ candidates) leaves every recovered
-// file sitting uncommitted the whole time — this machine also runs scheduled
-// local automation (launchd: autonomous-nightly, backfill-gather) against the
-// SAME checkout, and a concurrent write to the same file is a filesystem race
-// git can't protect against (no conflict is ever raised — whoever's write
-// lands last on disk wins, and `git add` only ever sees the current state).
-// 2026-07-19: a ~40min New Yorker run recovered 22 files; only 6 survived to
-// the final commit because most were silently overwritten mid-run before this
-// script ever got to `git add`. Committing every few recoveries shrinks that
-// exposure window from ~40 min to a couple of minutes.
+// end: a long local run left recovered files uncommitted for ~40 min while
+// other local automation wrote the same checkout (2026-07-19: 22 recovered,
+// 6 survived). BRO-7171: every write now happens under the shared
+// review-texts lock, and this commits ONLY the files this run wrote (no
+// `git add -A` sweeping up another writer's half-done edits). A failed push
+// THROWS: the run stops, the commit is recorded as pending, and the next run
+// pushes or restores it before doing anything new.
+const RUN_WRITES = createWriteTracker();
+
 function checkpointReviewTexts(label) {
-  try {
-    execSync('git add -A', { cwd: CONFIG.reviewTextsDir, stdio: 'pipe' });
-    try {
-      execSync('git diff --staged --quiet', { cwd: CONFIG.reviewTextsDir, stdio: 'pipe' });
-      return; // nothing to commit
-    } catch { /* has staged changes */ }
-    execSync(`git commit -m "data: ${label} checkpoint"`, { cwd: CONFIG.reviewTextsDir, stdio: 'pipe' });
-    for (let attempt = 1; attempt <= 3; attempt++) {
-      try {
-        execSync('git pull --rebase -X theirs origin main', { cwd: CONFIG.reviewTextsDir, stdio: 'pipe' });
-        // -X theirs favors the LOCAL (this script's) commits on conflicting hunks
-        // per rebase semantics, but this codebase has documented, incident-backed
-        // evidence that concurrent writes to the same JSON file's fields still get
-        // dropped in practice — restore-protected-fields.js is the established
-        // safety net (same pattern as rediscover-review-urls.js's
-        // pushReviewTextsCheckpoint). Re-applies fullText and other protected
-        // fields from pre-rebase HEAD if the rebase silently lost them.
-        try {
-          const restoreScriptPath = path.resolve(__dirname, 'lib', 'restore-protected-fields.js');
-          const restored = execSync(`node "${restoreScriptPath}" origin/main`, { cwd: CONFIG.reviewTextsDir, encoding: 'utf8', stdio: 'pipe' }).trim();
-          if (parseInt(restored, 10) > 0) {
-            console.log(`  [checkpoint] restored protected fields in ${restored} file(s) after rebase`);
-            execSync('git add -A', { cwd: CONFIG.reviewTextsDir, stdio: 'pipe' });
-            execSync('git commit --amend --no-edit', { cwd: CONFIG.reviewTextsDir, stdio: 'pipe', env: { ...process.env, GIT_EDITOR: 'true' } });
-          }
-        } catch (restoreErr) {
-          console.log(`  [checkpoint] restore-protected-fields failed: ${restoreErr.message.slice(0, 200)}`);
-        }
-        execSync('git push origin main', { cwd: CONFIG.reviewTextsDir, stdio: 'pipe' });
-        console.log(`  [checkpoint] pushed review-texts (attempt ${attempt})`);
-        return;
-      } catch (e) {
-        try { execSync('git rebase --abort', { cwd: CONFIG.reviewTextsDir, stdio: 'pipe' }); } catch {}
-        if (attempt === 3) console.log(`  [checkpoint] WARNING: failed to push after 3 attempts: ${e.message.slice(0, 200)}`);
-      }
-    }
-  } catch (e) {
-    console.log(`  [checkpoint] error: ${e.message.slice(0, 200)}`);
-  }
+  if (!RUN_WRITES.size) return null;
+  const paths = [...RUN_WRITES];
+  const res = landReviewTexts({ repoDir: CONFIG.reviewTextsDir, paths, expected: RUN_WRITES.expected, message: `data: ${label} checkpoint` });
+  for (const p of paths) { RUN_WRITES.delete(p); RUN_WRITES.expected.delete(p); }
+  console.log(`  [checkpoint] ${res.pushed ? 'pushed' : 'nothing new to push'}; ${res.landed.length} file(s) confirmed on origin/main`);
+  for (const n of res.notLanded) console.log(`  [checkpoint] NOT on origin/main after push: ${n.rel}`);
+  return res;
 }
 
 function loadExhausted() {
@@ -232,6 +196,7 @@ function loadCandidates() {
 
       const show = shows[data.showId] || {};
       candidates.push({
+        show,
         filePath,
         reviewId: `${showDir}/${file}`,
         showId: data.showId,
@@ -277,104 +242,61 @@ async function fetchAndExtract(url) {
 }
 
 /**
- * Quality-gate + write recovered text into the candidate's file.
- * newUrl === candidate.url means no URL change (in-place text upgrade).
+ * Gate + write recovered text into the candidate's file through the shared
+ * acceptRecoveredText gate (BRO-7171). newUrl === candidate.url means no URL
+ * change (in-place text upgrade). Paid calls (LLM identity, score
+ * extraction) run OUTSIDE the review-texts lock, between a decide-only pass
+ * and the locked write, which re-reads the file and re-runs the gate
+ * (gap-acceptance.recoverReviewTextVerified, shared with the gap-recovery driver).
  */
 async function processRecovered(candidate, text, html, newUrl, method) {
-  let cleanedText = stripTrailingJunk(text, candidate.outletId);
-  // Multi-show posts: isolate before any length/upgrade guard or URL rewrite.
-  {
-    const iso = isolateMultiShowSectionForShowId(newUrl || candidate.url, cleanedText, candidate.showId);
-    if (iso.action === 'refuse') return { ok: false, reason: 'multi-show post: no unique section for this show' };
-    cleanedText = iso.text;
+  const labels = {
+    fetchMethod: `serp-text-recovery-${method}`,
+    sourceMethod: 'serp-text-recovery',
+    contentTierReasonFallback: 'Recovered via SERP text recovery',
+    urlDiscoveryMethod: 'google-serp',
+  };
+  const url = newUrl || candidate.url;
+  const r = await recoverReviewTextVerified({
+    filePath: candidate.filePath,
+    rawText: text,
+    url,
+    // The record must still carry the url this candidate was built from; a
+    // concurrent writer that moved it wins and this recovery is refused.
+    expectUrl: candidate.url || null,
+    labels,
+    dryRun: CONFIG.dryRun,
+    tracker: RUN_WRITES,
+    ctxOpts: { reviewTextsDir: CONFIG.reviewTextsDir },
+    show: candidate.show || null,
+    prepareWrite: async (decision) => {
+      let scoreResult = null;
+      try {
+        scoreResult = await extractExplicitScore({ text: decision.cleanedText, html: html || '', outletId: candidate.outletId, showId: candidate.showId });
+      } catch { /* score is optional */ }
+      if (!scoreResult) return null;
+      return (data) => {
+        const { field } = setExtractedScore(data, {
+          value: scoreResult.originalScore,
+          normalizedValue: scoreResult.normalizedScore,
+          source: scoreResult.source,
+        });
+        console.log(`    Found ${field}: ${scoreResult.originalScore} (${scoreResult.normalizedScore}/100)`);
+      };
+    },
+  });
+  if (r.code === 'dry_run_needs_llm') {
+    console.log(`    [DRY RUN] Would ask the LLM identity check, then write if it confirms (${method})`);
+    return { ok: false, reason: 'dry_run_needs_llm' };
   }
-
-  if (cleanedText.length < CONFIG.minTextLength) {
-    console.log(`    Too short after cleaning: ${cleanedText.length} chars`);
-    return { ok: false, reason: 'too_short' };
+  if (!r.ok) {
+    console.log(`    Refused (${r.code}): ${r.reason}`);
+    return { ok: false, reason: r.code };
   }
-  if (cleanedText.length <= candidate.existingTextLength) {
-    console.log(`    Not longer than existing (${cleanedText.length} <= ${candidate.existingTextLength})`);
-    return { ok: false, reason: 'not_longer' };
-  }
-
-  const garbageCheck = isGarbageContent(cleanedText);
-  if (garbageCheck.isGarbage) {
-    console.log(`    Garbage content: ${garbageCheck.reason}`);
-    return { ok: false, reason: 'garbage' };
-  }
-
-  const showTitle = candidate.showId.replace(/-\d{4}$/, '').replace(/-/g, ' ');
-  const mentionResult = validateShowMentioned(cleanedText, showTitle, candidate.showId);
-  if (!mentionResult.valid) {
-    console.log(`    Show not mentioned: "${showTitle}"`);
-    return { ok: false, reason: 'wrong_show' };
-  }
-
   if (CONFIG.dryRun) {
-    console.log(`    [DRY RUN] Would write ${cleanedText.length} chars (${method})`);
+    console.log(`    [DRY RUN] Would write ${r.newLen} chars (${method})`);
     return { ok: true, reason: 'dry_run' };
   }
-
-  const metadata = {
-    textFetchedAt: new Date().toISOString(),
-    fetchMethod: `serp-text-recovery-${method}`,
-  };
-
-  let data;
-  if (newUrl !== candidate.url) {
-    // stampOnNoop: a canonical-equivalent rewrite (protocol/tracking-param-only
-    // diff) makes updateFileUrlWithInvariant return null even though it's not a
-    // refusal — without stampOnNoop that silently drops the recovery and
-    // blacklists a perfectly good URL (mirrors rediscover-review-urls.js's
-    // fallback branch, which hits the same ambiguity).
-    const updated = updateFileUrlWithInvariant(candidate.filePath, newUrl, {
-      ...metadata,
-      urlDiscoveredAt: metadata.textFetchedAt,
-      urlDiscoveryMethod: 'google-serp',
-      // Same review at its current address: aggregator excerpts/stars/score
-      // describe the review and survive the move (rediscover-review-urls.js rule;
-      // without this the BRO-4131 score-loss guard refuses the move).
-    }, { stampOnNoop: true, preserveFields: new Set(AGGREGATOR_FIELDS) });
-    if (!updated) {
-      console.log(`    URL-invariant write refused (cross-outlet, aggregator page, other critic's url, or unreadable)`);
-      return { ok: false, reason: 'invariant_refused' };
-    }
-    data = updated;
-  } else {
-    data = JSON.parse(fs.readFileSync(candidate.filePath, 'utf8'));
-  }
-
-  data.fullText = cleanedText;
-  data.isFullReview = cleanedText.length > 1500;
-  data.textWordCount = countWords(cleanedText);
-  data.textFetchedAt = metadata.textFetchedAt;
-  data.fetchMethod = metadata.fetchMethod;
-  data.sourceMethod = 'serp-text-recovery';
-  delete data.incompleteReason;
-  delete data.incompleteDetail;
-
-  const tierResult = classifyContentTier(data);
-  data.contentTier = tierResult.contentTier || tierResult.tier;
-  data.contentTierReason = tierResult.tierReason || tierResult.reason || 'Recovered via SERP text recovery';
-
-  try {
-    const scoreResult = await extractExplicitScore({ text: cleanedText, html: html || '', outletId: candidate.outletId, showId: candidate.showId });
-    if (scoreResult) {
-      const { field } = setExtractedScore(data, {
-        value: scoreResult.originalScore,
-        normalizedValue: scoreResult.normalizedScore,
-        source: scoreResult.source,
-      });
-      console.log(`    Found ${field}: ${scoreResult.originalScore} (${scoreResult.normalizedScore}/100)`);
-    }
-  } catch {}
-
-  if (data.llmScore && data.llmScore.score) {
-    markRescoreNeeded(data, 'fullText recovered via SERP text recovery', undefined, { requeue: true });
-  }
-
-  fs.writeFileSync(candidate.filePath, JSON.stringify(data, null, 2) + '\n');
   return { ok: true, reason: method };
 }
 
@@ -389,6 +311,13 @@ async function main() {
     console.log('  Note: no SERP keys configured — will only retry existing URLs, no rediscovery.');
   }
 
+  if (!CONFIG.dryRun) {
+    // Push/restore what an earlier run committed but could not land
+    // (BRO-7171). Throws on a still-failing push: no new work on a backlog.
+    const pending = retryPendingPushes({ repoDir: CONFIG.reviewTextsDir });
+    if (pending.entries) console.log(`  [pending] ${pending.entries} earlier checkpoint(s): ${pending.landed.length} landed, ${pending.restored.length} restored, ${pending.notLanded.length} not landed`);
+  }
+
   const candidates = loadCandidates();
   if (candidates.length === 0) {
     console.log('\nNo candidates to process.');
@@ -398,93 +327,101 @@ async function main() {
   const exhausted = loadExhausted();
   const stats = { recovered: 0, sameUrl: 0, serpRediscovered: 0, notFound: 0, tooShort: 0, garbage: 0, wrongShow: 0, notLonger: 0, fetchFailed: 0 };
 
-  for (let i = 0; i < candidates.length; i++) {
-    const c = candidates[i];
-    console.log(`\n[${i + 1}/${candidates.length}] ${c.reviewId} (${c.criticName})`);
-    console.log(`  URL: ${c.url}`);
+  // A failed push (ReviewTextsPushError) or lock timeout stops the run; the
+  // summary still prints before the error propagates (BRO-7171).
+  let runError = null;
+  try {
+    for (let i = 0; i < candidates.length; i++) {
+      const c = candidates[i];
+      console.log(`\n[${i + 1}/${candidates.length}] ${c.reviewId} (${c.criticName})`);
+      console.log(`  URL: ${c.url}`);
 
-    // Step 1: try re-fetching the existing URL directly (skipped when the
-    // file has no url at all — nothing to re-fetch, go straight to SERP).
-    let recovered = false;
-    if (c.url) {
-      const existingFetch = await fetchAndExtract(c.url);
-      if (existingFetch) {
-        const result = await processRecovered(c, existingFetch.text, existingFetch.html, c.url, 'same-url');
-        if (result.ok) {
-          console.log(`  ✓ RECOVERED via same-url re-fetch`);
-          stats.recovered++;
-          stats.sameUrl++;
-          recovered = true;
-        } else {
-          stats[result.reason] = (stats[result.reason] || 0) + 1;
-        }
-      } else {
-        console.log(`  → Existing URL fetch failed/empty`);
-      }
-    } else {
-      console.log(`  → No existing URL, going straight to SERP rediscovery`);
-    }
-
-    // Step 2: SERP rediscovery if same-url didn't work.
-    if (!recovered && (CONFIG.scrapingBeeKey || CONFIG.brightDataKey)) {
-      const newUrl = await discoverCorrectUrl(
-        { showId: c.showId, outletId: c.outletId, outlet: c.outlet, url: c.url, criticName: c.criticName },
-        CONFIG.scrapingBeeKey,
-        { brightDataKey: CONFIG.brightDataKey }
-      );
-
-      if (newUrl === '__SERP_UNAVAILABLE__') {
-        console.log(`  ⚠ SERP providers unavailable`);
-      } else if (!newUrl) {
-        console.log(`  → No SERP match found`);
-        stats.notFound++;
-      } else {
-        // Defensive unwrap: a BD Web Unlocker HTML-regex result is normally
-        // already unwrapped at discovery time, but this is the same guard
-        // review-write-guard.js applies at its write chokepoint — cheap
-        // insurance against ever persisting a google.com/url?q=... wrapper.
-        const cleanUrl = unwrapRedirectUrl(newUrl);
-        console.log(`  → SERP found: ${cleanUrl}`);
-        const rediscoveredFetch = await fetchAndExtract(cleanUrl);
-        if (rediscoveredFetch) {
-          const result = await processRecovered(c, rediscoveredFetch.text, rediscoveredFetch.html, cleanUrl, 'serp-rediscovery');
+      // Step 1: try re-fetching the existing URL directly (skipped when the
+      // file has no url at all — nothing to re-fetch, go straight to SERP).
+      let recovered = false;
+      if (c.url) {
+        const existingFetch = await fetchAndExtract(c.url);
+        if (existingFetch) {
+          const result = await processRecovered(c, existingFetch.text, existingFetch.html, c.url, 'same-url');
           if (result.ok) {
-            console.log(`  ✓ RECOVERED via SERP rediscovery`);
+            console.log(`  ✓ RECOVERED via same-url re-fetch`);
             stats.recovered++;
-            stats.serpRediscovered++;
+            stats.sameUrl++;
             recovered = true;
           } else {
             stats[result.reason] = (stats[result.reason] || 0) + 1;
           }
         } else {
-          console.log(`  → Rediscovered URL fetch failed/empty`);
-          stats.fetchFailed++;
+          console.log(`  → Existing URL fetch failed/empty`);
+        }
+      } else {
+        console.log(`  → No existing URL, going straight to SERP rediscovery`);
+      }
+
+      // Step 2: SERP rediscovery if same-url didn't work.
+      if (!recovered && (CONFIG.scrapingBeeKey || CONFIG.brightDataKey)) {
+        const newUrl = await discoverCorrectUrl(
+          { showId: c.showId, outletId: c.outletId, outlet: c.outlet, url: c.url, criticName: c.criticName },
+          CONFIG.scrapingBeeKey,
+          { brightDataKey: CONFIG.brightDataKey }
+        );
+
+        if (newUrl === '__SERP_UNAVAILABLE__') {
+          console.log(`  ⚠ SERP providers unavailable`);
+        } else if (!newUrl) {
+          console.log(`  → No SERP match found`);
+          stats.notFound++;
+        } else {
+          // Defensive unwrap: a BD Web Unlocker HTML-regex result is normally
+          // already unwrapped at discovery time, but this is the same guard
+          // review-write-guard.js applies at its write chokepoint — cheap
+          // insurance against ever persisting a google.com/url?q=... wrapper.
+          const cleanUrl = unwrapRedirectUrl(newUrl);
+          console.log(`  → SERP found: ${cleanUrl}`);
+          const rediscoveredFetch = await fetchAndExtract(cleanUrl);
+          if (rediscoveredFetch) {
+            const result = await processRecovered(c, rediscoveredFetch.text, rediscoveredFetch.html, cleanUrl, 'serp-rediscovery');
+            if (result.ok) {
+              console.log(`  ✓ RECOVERED via SERP rediscovery`);
+              stats.recovered++;
+              stats.serpRediscovered++;
+              recovered = true;
+            } else {
+              stats[result.reason] = (stats[result.reason] || 0) + 1;
+            }
+          } else {
+            console.log(`  → Rediscovered URL fetch failed/empty`);
+            stats.fetchFailed++;
+          }
         }
       }
+
+      if (!recovered && !CONFIG.dryRun && c.url) {
+        exhausted[c.url] = { reason: 'recovery_exhausted', lastAttempt: new Date().toISOString() };
+      }
+
+      if (!CONFIG.dryRun && (i + 1) % 5 === 0) {
+        saveExhausted(exhausted);
+        checkpointReviewTexts(`SERP text recovery (${CONFIG.outlet || CONFIG.domain}, ${i + 1}/${candidates.length})`);
+        console.log(`\n  [checkpoint] ${stats.recovered}/${i + 1} recovered so far`);
+      }
+
+      await sleep(CONFIG.itemDelayMs);
     }
 
-    if (!recovered && !CONFIG.dryRun && c.url) {
-      exhausted[c.url] = { reason: 'recovery_exhausted', lastAttempt: new Date().toISOString() };
-    }
-
-    if (!CONFIG.dryRun && (i + 1) % 5 === 0) {
+    if (!CONFIG.dryRun) {
       saveExhausted(exhausted);
-      checkpointReviewTexts(`SERP text recovery (${CONFIG.outlet || CONFIG.domain}, ${i + 1}/${candidates.length})`);
-      console.log(`\n  [checkpoint] ${stats.recovered}/${i + 1} recovered so far`);
+      checkpointReviewTexts(`SERP text recovery (${CONFIG.outlet || CONFIG.domain}, final)`);
     }
-
-    await sleep(CONFIG.itemDelayMs);
-  }
-
-  if (!CONFIG.dryRun) {
-    saveExhausted(exhausted);
-    checkpointReviewTexts(`SERP text recovery (${CONFIG.outlet || CONFIG.domain}, final)`);
+  } catch (e) {
+    runError = e;
   }
 
   console.log('\n' + '='.repeat(60));
   console.log('SUMMARY');
   console.log('='.repeat(60));
   console.log(JSON.stringify(stats, null, 2));
+  if (runError) throw runError;
 }
 
 main()

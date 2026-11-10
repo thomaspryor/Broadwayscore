@@ -95,7 +95,7 @@
  *     that inline `git commit`s on the root checkout and also pushes (bare
  *     `git push` or `push-with-retry.sh`), but has ZERO `git add` anywhere in
  *     the job — including via one of the shared helper scripts that perform
- *     the add internally (`stage-data-changes.sh`, `git-add-existing.sh`,
+ *     the add internally (`stage-data-changes.sh`, `git-add-existing.sh`, `stage-review-texts.js`,
  *     `safe-sync-review-texts.sh`, `sync-audit-checkout.sh`). Unlike rule
  *     (f)'s advisory posture, this one is unambiguous regardless of what the
  *     commit was meant to capture: a commit step with nothing ever staged is
@@ -264,6 +264,7 @@ const {
   findMissingTopLevelPermissions,
   findUnpinnedActionUses,
   findEolNodeVersions,
+  findStrictAdvisoryWithoutAlert,
 } = require('./lib/audit-workflow-hygiene-rules');
 const { scanWorkflow: scanPaidProviders } = require('./lib/paid-provider-push-scan');
 const { execFileSync } = require('child_process');
@@ -854,6 +855,7 @@ async function main() {
     noTopLevelPermissions: [],
     unpinnedUses: [],
     eolNodeVersion: [],
+    strictWithoutAlert: [],
     dispatchNoActionsWrite: [],
     scriptNoDispatchToken: [],
     stageWithoutCommit: [],
@@ -1051,6 +1053,12 @@ async function main() {
     if (!raw.includes('hygiene-node-ok:')) {
       const hits = findEolNodeVersions(raw);
       if (hits.length > 0) violations.eolNodeVersion.push({ file, hits });
+    }
+
+    // ── Rule (ad): advisory --strict audit with no --alert (BRO-7181) ─
+    {
+      const hits = findStrictAdvisoryWithoutAlert(raw);
+      if (hits.length > 0) violations.strictWithoutAlert.push({ file, hits });
     }
 
     // ── Rule (p): staged files pushed with no commit in between (BRO-4897) ─
@@ -1285,6 +1293,7 @@ async function main() {
     violations.noTopLevelPermissions.length +
     violations.unpinnedUses.length +
     violations.eolNodeVersion.length +
+    violations.strictWithoutAlert.length +
     violations.dispatchNoActionsWrite.length +
     violations.scriptNoDispatchToken.length +
     violations.stageWithoutCommit.length +
@@ -1589,6 +1598,18 @@ async function main() {
     }
     console.error('\nFix: node-version: \'22\' (or the shared ./.github/actions/setup-node composite).');
     console.error('Exempt: add  # hygiene-node-ok: <reason>  anywhere in the file.\n');
+  }
+
+  if (violations.strictWithoutAlert.length) {
+    console.error('── (ad) Advisory --strict audit with no --alert ─');
+    console.error('Under continue-on-error a --strict audit only turns its own step red inside a');
+    console.error('green job; nobody reads that, so findings sit unworked (BRO-7179/7181).\n');
+    for (const { file, hits } of violations.strictWithoutAlert) {
+      console.error(`  • ${file}`);
+      for (const h of hits) console.error(`      line ${h.lineNum} (${h.name}): ${h.text}`);
+    }
+    console.error('\nFix: add --alert and route findings to a worker card with scripts/lib/audit-alert.js.');
+    console.error('Exempt: add  # strict-alert-exempt: <reason>  inside the step.\n');
   }
 
   if (violations.dispatchNoActionsWrite.length) {

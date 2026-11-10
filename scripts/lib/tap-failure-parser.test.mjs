@@ -123,3 +123,23 @@ test('parseTapOutput: quoted-scalar payload unescapes YAML quotes and rewrites t
   ].join('\n');
   assert.equal(parseTapOutput(tap, '/r').failures.get('a.test.mjs::t').payload, "it's under <root>/x");
 });
+
+// BRO-7068: node:test `todo` emits `not ok N - name # TODO reason`, an expected
+// failure that does not fail the run. It must not enter the failure set, or the
+// corpus-drift router files an advisory test as a NEW failure.
+test('parseTapOutput: a `# TODO` not-ok is not a failure; an escaped \\# in a name still is', () => {
+  const tap = [
+    'not ok 1 - every confirmed wrong article is flagged # TODO advisory (BRO-4606)',
+    '  ---',
+    "  location: '/repo/tests/unit/wrong-article-llm-flagging.test.mjs:30:1'",
+    "  error: 'Expected values to be strictly deep-equal'",
+    '  ...',
+    'not ok 2 - title mentions \\# TODO literally',
+    "  location: '/repo/tests/unit/x.test.mjs:5:1'",
+    '# tests 2',
+    '# fail 1',
+  ].join('\n');
+  const { failures, unlocated } = parseTapOutput(tap, '/repo');
+  assert.deepEqual([...failures.keys()], ['tests/unit/x.test.mjs::title mentions \\# TODO literally']);
+  assert.equal(unlocated, 0);
+});

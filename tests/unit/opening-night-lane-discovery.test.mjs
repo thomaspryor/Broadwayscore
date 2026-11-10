@@ -1078,6 +1078,10 @@ const LANE_SOURCE_SAMPLE_REVIEW = {
   'the-interested-bystander': 'https://www.interestedbystander.com/2026/07/theater-review-walk-on-moon-is-old.html',
   'jks-theatre-scene': 'https://www.jkstheatrescene.com/2026/10/review-few-good-men.html',
   'bobs-theater-blog': 'https://gotham-playgoer.blogspot.com/2026/10/a-few-good-men.html',
+  'washington-square-news': 'https://nyunews.com/arts/performance/2026/10/30/a-few-good-men/',
+  'the-queer-review': 'https://thequeerreview.com/2026/04/23/theatre-review-the-rocky-horror-show-studio-54-broadway/',
+  w42st: 'https://w42st.com/post/michael-musto-reviews-titanique-smigadoon-rocky-horror-show/',
+  forward: 'https://forward.com/culture/theater/705688/operation-mincemeat-musical-review-ewen-montagu-jewish/',
 };
 test('guard: every lane index and feed outlet has a real review URL the path gate admits as its adapter offers it', () => {
   const ls = require('../../scripts/lib/opening-night-lane/lane-sources.js');
@@ -1094,6 +1098,48 @@ test('guard: every lane index and feed outlet has a real review URL the path gat
     const vettedOutlet = own && !!resolveOutletFromUrl(url);
     assert.equal(d.nonReviewReason(url, { vettedOutlet, outletListed }), null, `${id}: ${url} (vetted ${vettedOutlet})`);
   }
+});
+
+// The sample review's headline as its feed carries it, for feeds whose sample URL has no review word: the feed item is
+// judged on URL plus headline (looksReviewLike), so a feed whose reviews say "review" in neither never admits one.
+// 4Columns (BRO-7199 ship-check) was added with show-titled headlines like "Bug" and would have found nothing.
+const LANE_FEED_SAMPLE_HEADLINE = {
+  'washington-square-news': ['Review: ‘A Few Good Men’ fails to meet the moment', 'A Few Good Men'],
+  'the-recs': ['The Hunger Games on Stage ★★★★', 'The Hunger Games: On Stage'],
+  'new-york-notebook': ['*** Oedipus', 'Oedipus'],
+  // Review-only hosts (REVIEW_WITHOUT_WORD_HOSTS) and Bob's (titledReviews): the show's title in the slug or headline vouches.
+  'pages-on-stages': ['', 'The Imaginary Invalid'],
+  'theater-life': ['', 'A Good Day to Me Not to You'],
+  'front-row-center': ['', 'Copperfield! The New Musical'],
+  'bobs-theater-blog': ['A Few Good Men', 'A Few Good Men'],
+};
+// Feeds kept although most of their reviews carry no review word: each finds the ones that do; the regular gather finds the rest.
+const LANE_FEED_HEADLINE_LIMITED = {
+  frontmezzjunkies: 'headlines are the show plus a phrase; also posts show-titled non-reviews, so its host cannot vouch (REVIEW_WITHOUT_WORD_HOSTS)',
+  'the-contending': 'film-first site whose stage reviews are plain headlines ("... Belongs On Broadway"); kept for the ones that say review',
+};
+test('guard: every lane feed\'s sample review passes the review filter as its feed item would (URL plus headline)', () => {
+  const ls = require('../../scripts/lib/opening-night-lane/lane-sources.js');
+  const { headlineIsShowTitle } = d;
+  const failing = [];
+  for (const feed of ls.LANE_FEEDS) {
+    if (LANE_FEED_HEADLINE_LIMITED[feed.outletId]) continue;
+    const url = LANE_SOURCE_SAMPLE_REVIEW[feed.outletId];
+    const [title, showTitle] = LANE_FEED_SAMPLE_HEADLINE[feed.outletId] || ['', ''];
+    // As rssAdapter flags its own items (reviewsOnly, or titledReviews with a headline that is the show title alone).
+    const reviewSignalGiven = !!(feed.reviewsOnly || (feed.titledReviews && headlineIsShowTitle(title, showTitle)));
+    if (!d.looksReviewLike({ url, title, reviewSignalGiven }, { title: showTitle })) failing.push(`${feed.outletId}: ${url} "${title}"`);
+  }
+  assert.deepEqual(failing, [], 'feed reviews the lane would refuse not-review-like: add the real headline to LANE_FEED_SAMPLE_HEADLINE, '
+    + 'set titledReviews/reviewsOnly, or move the outlet to LANE_SOURCE_GAPS');
+  for (const id of Object.keys(LANE_FEED_HEADLINE_LIMITED)) assert.ok(ls.LANE_FEEDS.some((f) => f.outletId === id), `${id} is no longer a lane feed: drop it from LANE_FEED_HEADLINE_LIMITED`);
+});
+
+test('star marks are a review signal; a starred word in prose is not', () => {
+  assert.equal(d.hasReviewSignal('https://therecs.co.uk/zamboni/', 'Zamboni – A Play, A Pie and A Pint ★★★★'), true);
+  assert.equal(d.hasReviewSignal('https://newyorknotebook.substack.com/p/rope', '*** Rope'), true);
+  assert.equal(d.hasReviewSignal('https://x.org/a-claim/', 'A **bold** claim'), false);
+  assert.equal(d.hasReviewSignal('https://4columns.org/cote-david/bug', 'Bug'), false);
 });
 
 test('a Google News sighting of an L&SA story first keeps the parser\'s listing claim, and a stale path memo is re-judged', async () => {

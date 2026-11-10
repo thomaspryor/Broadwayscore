@@ -10,6 +10,7 @@
 
 const { buildShowTitleVariants, normalizeForMention, countVariant, findVariantSpans, textMentionsTitle, textMentionsShortTitle } = require('./show-title-variants');
 const { hasExcerpt: hasAnyExcerpt, getLongestExcerpt } = require('./excerpt-fields');
+const { stripKnownTrailers, trailerFixesEnabled } = require('./trailer-signatures');
 
 /**
  * Patterns that indicate ad blocker messages
@@ -2187,19 +2188,34 @@ function _stripExemptedChromeLines(text) {
 }
 
 /**
+ * True when the text ends on sentence punctuation. A curly closing quote counts
+ * when it follows . ! or ? (`...saying anything.”`): the old ASCII-only class
+ * read that as a cut-off, and it only hid behind a trailer that happened to end
+ * in a full stop (a Guardian `• At the Royal Court, London, until 27 July.`).
+ */
+function endsWithSentencePunctuation(s) {
+  return /[.!?"'")\]]$/.test(s) || (trailerFixesEnabled() && /[.!?][”’]$/.test(s));
+}
+
+/**
  * Strip a trailing venue address ("Hayes Theater 240 West 44th Street New York,
  * NY 10036") or "Listings and ticket information can be found here" line so the
  * ending-punctuation check judges the review prose, not the trailer (BRO-4387).
  * Only strips when the trailer is short and follows a punctuated sentence end,
  * so a review truncated mid-sentence right before an address stays flagged.
  */
-function stripVenueListingsTrailer(text) {
+function stripVenueListingsTrailer(text, outletId) {
   let t = text;
-  for (let i = 0; i < 2; i++) {
+  for (let i = 0; i < 3; i++) {
     const listings = t.replace(/\s*Listings?\s+and\s+ticket\s+information\s+can\s+be\s+found\s+here\.?\s*$/i, '');
     if (listings !== t) { t = listings; continue; }
     const addr = /([.!?]["'\u201d\u2019)]?)\s+(?:[A-Z0-9][\w'’&-]*,?\s+){1,10}(?:NY|NJ|CT)\s+\d{5}(?:-\d{4})?\s*$/.exec(t);
     if (addr) { t = t.slice(0, addr.index + addr[1].length); continue; }
+    // UK `• At the Almeida, London, until 7 June` listing bullets, thefourthwalsh's
+    // production-info block, one-minute-critic's related-post headlines
+    // (scripts/lib/trailer-signatures.js, shared with stripTrailingJunk).
+    const known = stripKnownTrailers(t, outletId);
+    if (known !== t) { t = known; continue; }
     break;
   }
   return t;
@@ -2210,7 +2226,7 @@ function stripVenueListingsTrailer(text) {
  * @param {string} text - Text to analyze
  * @returns {{ signals: string[], severeCount: number, moderateCount: number, likelyTruncated: boolean }}
  */
-function detectTruncationSignals(text) {
+function detectTruncationSignals(text, opts = {}) {
   if (!text) return { signals: [], severeCount: 0, moderateCount: 0, likelyTruncated: false };
 
   const signals = [];
@@ -2282,8 +2298,8 @@ function detectTruncationSignals(text) {
   // ends with proper punctuation before the footer.
   // Venue-address / "Listings and ticket information" trailers (stagebuddy,
   // theatreweekly) are not review prose: judge the ending on what precedes them.
-  const trimmed = stripVenueListingsTrailer(text.trim());
-  if (!hasFooterJunk && trimmed.length > 100 && !/[.!?"'"")\]]$/.test(trimmed) && !/[.!?]\s*[A-DF][+-]?$/.test(trimmed)) {
+  const trimmed = stripVenueListingsTrailer(text.trim(), opts && opts.outletId);
+  if (!hasFooterJunk && trimmed.length > 100 && !endsWithSentencePunctuation(trimmed) && !/[.!?]\s*[A-DF][+-]?$/.test(trimmed)) {
     signals.push('no_ending_punctuation');
     moderateCount++;
   }
@@ -2352,6 +2368,23 @@ function hasBotStubTruncationSignal(data) {
 function countWords(text) {
   if (!text) return 0;
   return text.trim().split(/\s+/).filter(w => w.length > 0).length;
+}
+
+/**
+ * New Yorker "Goings On About Town" capsule, recognised from its own text:
+ * a section label, the title, "By <critic>" and the date, within the first
+ * 400 characters (page chrome may be glued in front: "...MenuNow Playing").
+ * "Openings and Previews" blurbs are not reviews and are left out.
+ * BRO-7171: these whole ~150-250-word capsules were labelled truncated
+ * because their prose misses hasOpinionLanguage()'s vocabulary.
+ *
+ * @param {string} text
+ * @returns {boolean}
+ */
+const NEW_YORKER_CAPSULE_HEAD_RE = /(?:the theatre|now playing|opera|classical music|dance)\s*.{1,120}?\s*by\s*(?:the new yorker|[A-Z][\p{L}.'’-]+(?:\s+[A-Z][\p{L}.'’-]+){1,3})\s*(?:january|february|march|april|may|june|july|august|september|october|november|december)\s+\d{1,2},\s+(?:19|20)\d{2}/iu;
+function isNewYorkerCapsule(text) {
+  if (!text || typeof text !== 'string') return false;
+  return NEW_YORKER_CAPSULE_HEAD_RE.test(text.slice(0, 400).replace(/\s+/g, ' '));
 }
 
 /**
@@ -2572,12 +2605,12 @@ function classifyContentTier(review) {
   }
 
   // Now we have fullText with 100+ chars - check if complete or truncated
-  const truncation = detectTruncationSignals(fullText);
+  const truncation = detectTruncationSignals(fullText, { outletId: review.outletId });
 
   // T1: COMPLETE - Full review with no truncation issues
   // Check ending - allow URLs, ticket info at end (common footer pattern)
-  const trimmed = stripVenueListingsTrailer(fullText.trim()); // BRO-4387: venue/listings trailer is not review prose
-  let hasProperEnding = /[.!?"'"")\]]$/.test(trimmed) ||
+  const trimmed = stripVenueListingsTrailer(fullText.trim(), review.outletId); // BRO-4387: venue/listings trailer is not review prose
+  let hasProperEnding = endsWithSentencePunctuation(trimmed) ||
     /\.(com|org|net|co\.uk)\/?$/.test(trimmed) ||
     /[.!?]\s*[A-DF][+-]?$/.test(trimmed);
 
@@ -2593,7 +2626,7 @@ function classifyContentTier(review) {
     }
     // Check if text before footer has proper ending
     const beforeFooter = fullText.slice(0, fullText.length - 500 + earliestFooter).trim();
-    if (/[.!?"'"")\]]$/.test(beforeFooter)) {
+    if (endsWithSentencePunctuation(beforeFooter)) {
       hasProperEnding = true;
     }
   }
@@ -2654,6 +2687,21 @@ function classifyContentTier(review) {
       wordCount,
       truncationSignals: [],
       tierReason: 'Short but structurally complete review'
+    };
+  }
+
+  // Path 3b (BRO-7171): a New Yorker listing capsule is whole at 100-250
+  // words. Its own head (section label, "By", date) is the evidence that the
+  // opinion-vocabulary proxy stands in for, the same reasoning as the
+  // trusted-capture relaxation above. Every other Path 3 check still applies.
+  if (review.outletId === 'newyorker' && wordCount >= 100 && hasProperEnding &&
+      truncation.severeCount === 0 && truncation.moderateCount === 0 &&
+      path3SignalsOk && looseExcerptCheck && isNewYorkerCapsule(fullText)) {
+    return {
+      contentTier: 'complete',
+      wordCount,
+      truncationSignals: [],
+      tierReason: 'New Yorker listing capsule'
     };
   }
 
@@ -4330,4 +4378,5 @@ module.exports = { isSiteWideAuthorSource, isSiteWideAuthorAccount,
   HORROR_FILM_PATTERNS,
   // Opinion language detection — used by content-verifier shouldDeferCvWrongShow
   hasOpinionLanguage,
+  isNewYorkerCapsule,
 };

@@ -121,6 +121,24 @@ function evidenceDuplicate(kept, row, evidenceUrl) {
   return [...titleStems(row.title)].some(w => kw.has(w));
 }
 
+// BRO-6854: a city-finder row (discoverySource "cityfinder-*") carries only a rough
+// openingDate taken from a listing page, often days before the press night the kept row
+// states. It still names the same run when it has no previews/closing date of its own
+// beyond the kept run, and its date is at most FINDER_DRIFT_DAYS before the kept start.
+const FINDER_DRIFT_DAYS = 14;
+function finderDriftRun(kept, row) {
+  if (typeof row.discoverySource !== 'string' || !row.discoverySource.startsWith('cityfinder-')) return false;
+  if (isoOrNull(row.previewsStartDate)) return false;
+  const keptStart = isoOrNull(kept.previewsStartDate) || isoOrNull(kept.openingDate);
+  const rowStart = isoOrNull(row.openingDate);
+  if (!keptStart || !rowStart || rowStart >= keptStart) return false;
+  const gapDays = (Date.parse(keptStart) - Date.parse(rowStart)) / 86400000;
+  if (gapDays > FINDER_DRIFT_DAYS) return false;
+  // A finder row that states any closing date is a run of its own (it may have ended before the kept run began): refuse.
+  if (row.closingDate) return false;
+  return true;
+}
+
 function duplicateRefusal(row, duplicateOf, shows, reviewCount, evidenceUrl) {
   if (typeof duplicateOf !== 'string' || !ID_RE.test(duplicateOf) || duplicateOf === row.id) return 'duplicateOf must name another show id';
   const kept = shows.find(s => s && s.id === duplicateOf);
@@ -132,7 +150,7 @@ function duplicateRefusal(row, duplicateOf, shows, reviewCount, evidenceUrl) {
   if (normalizeTitle(kept.title) !== normalizeTitle(row.title) && !isStrictTitleSubset(kept, row) && !ticketDup && !evidenceDup) return `title "${row.title}" does not match "${kept.title}"`;
   if (!sameHouse(kept.venue, row.venue)) return `venue "${row.venue}" is not the same house as "${kept.venue}"`;
   if ((kept.market || null) !== (row.market || null)) return `market ${row.market} differs from ${kept.market}`;
-  if (!evidenceDup && !sameRun(kept, row, ticketDup)) return `run dates do not fall inside ${duplicateOf}'s run (a revival or return run is not a duplicate)`;
+  if (!evidenceDup && !sameRun(kept, row, ticketDup) && !finderDriftRun(kept, row)) return `run dates do not fall inside ${duplicateOf}'s run (a revival or return run is not a duplicate)`;
   if (typeof reviewCount !== 'function') return 'review count unavailable';
   const n = reviewCount(row.id);
   if (n !== 0) return `${row.id} has ${n} review(s): move them before retiring`;

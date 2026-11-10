@@ -75,7 +75,7 @@ const { inheritUrlFromDuplicateLosers } = require('./lib/duplicate-fold-url');
 const { siblingRatingForClamp } = require('./lib/sibling-rating-inherit');
 const { detectBandFromReviewFile } = require('./lib/star-reliability');
 const { displayedOriginalRating } = require('./lib/displayed-original-rating');
-const { decideEarlyFileExclusion, isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, multiShowSplitGroup, isMultiShowSplitSibling, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasIncludableSyndicationPrimary, isRejectedByReasonExclusion, isFullTextWrongAuthorActive, isRejectedAtExclusion, isRegistrationWallStubExclusion, duplicateOfInheritedFlag, duplicateOfRefIsCopy, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, isMisFamilyCvPromotedWrongShow, isStaleGenericHomepageWrongShow, isStaleBulkTitleWrongShow, computeCvIsStale, applyVenueClassificationCarveout, cvWrongProductionIsVenueCarveout, isVenueCarveoutPersistedWrongProduction, isOwnCastEvidencePersistedWrongProduction, isEnsembleCategoryQuibbleRejection, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, soloVerdictHeld, isNamedNonReviewUrlRecord, isCancelledBeforeOpeningShow, isUnverifiableWebSearchRow, isPreviewFirstLookPiece, isCombinedReviewOfOtherMemberOnly, isBodylessAggregatorScoreUncorroborated, cvNonReviewHumanCleared, cvWrongArticleFamily, cvArticleTypeNonReview, cvArticleTypeVerdictIsPartialWindow, cvWrongArticlePromotion, wrongShowCleared, wrongShowExplicitlyCleared, evaluateLateDateGuard, evaluateUrlYearGuard, evaluateDirectorGuard } = require('./lib/review-guards');
+const { decideEarlyFileExclusion, isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, multiShowSplitGroup, isMultiShowSplitSibling, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasIncludableSyndicationPrimary, isRejectedByReasonExclusion, isFullTextWrongAuthorActive, isRejectedAtExclusion, isRegistrationWallStubExclusion, duplicateOfInheritedFlag, duplicateOfRefIsCopy, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, isMisFamilyCvPromotedWrongShow, isStaleGenericHomepageWrongShow, isStaleBulkTitleWrongShow, computeCvIsStale, applyVenueClassificationCarveout, cvWrongProductionIsVenueCarveout, isVenueCarveoutPersistedWrongProduction, isOwnCastEvidencePersistedWrongProduction, isEnsembleCategoryQuibbleRejection, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, soloVerdictHeld, isNamedNonReviewUrlRecord, isRefusedSubmissionUrlRecord, isCancelledBeforeOpeningShow, isUnverifiableWebSearchRow, isPreviewFirstLookPiece, isCombinedReviewOfOtherMemberOnly, isBodylessAggregatorScoreUncorroborated, cvNonReviewHumanCleared, cvWrongArticleFamily, cvArticleTypeNonReview, cvArticleTypeVerdictIsPartialWindow, cvWrongArticlePromotion, wrongShowCleared, wrongShowExplicitlyCleared, evaluateLateDateGuard, evaluateUrlYearGuard, evaluateDirectorGuard } = require('./lib/review-guards');
 const { ownShowTextEvidence } = require('./lib/own-show-text-evidence');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { isSoft404Body } = require('./lib/soft-404-body');
@@ -131,7 +131,7 @@ const { guardPublishDate, evaluateDatelessRevivalGuard, earliestShowDate, evalua
 const { rebuildPreWindowHold } = require('./lib/date-guard-hold');
 const { isAwaitingUrlCorrectionRefetch, shouldWithholdStaleExclusionFlag } = require('./lib/stale-flag-after-url-correction');
 const { safeWriteReview, writeReviewOrThrow, invalidateWrongProductionAutoClear, invalidateWrongShowAutoClear, retractScriptWrongProductionClear } = require('./lib/review-write-guard');
-const { KNOWN_SYNDICATION_PAIRS, getSyndicationPrimaries, hasLiveSyndicationPrimary } = require('./lib/syndication-pairs');
+const { KNOWN_SYNDICATION_PAIRS, getSyndicationPrimaries, getSyndicationPrimariesInDir, hasLiveSyndicationPrimary } = require('./lib/syndication-pairs');
 const { checkExcerptDuplicate } = require('./lib/excerpt-fingerprint-dedup');
 const { createClaimLedger, primaryFilesFor, unknownOutletShadowTargets, orderAfterDependencies, syndicationShieldDecision, shadowShieldDecision } = require('./lib/dedup-survivor');
 const { logExclusion: _sharedLogExclusion } = require('./lib/exclusion-logger');
@@ -2888,19 +2888,22 @@ showDirs.forEach(showId => {
       // below so an outlet whose reviews are currently excluded still contributes
       // to its own region inference. See outletShowCategoriesRaw's declaration above.
       //
-      // Trustworthiness gate is isReviewContentTrustworthy() (task #1553,
-      // scripts/lib/review-guards.js) — see its JSDoc for the full rationale on why
-      // wrongProduction is excluded UNCONDITIONALLY (a second-pass Claude review
-      // found 16 real false positives — US regional outlets like Entertainment
-      // Tonight, Edmonton Journal, KUTV — from an earlier version that kept counting
-      // wrongProduction:true evidence). Outlets whose ONLY reviews are
-      // wrongProduction-flagged stay region-less here — strictly safer than a wrong
-      // stamp, and they still get the isUkUrl fallback plus the chance to earn
-      // evidence from a future non-flagged review.
+      // Reject wrong-production evidence except the region guard's own circular
+      // assumption. Otherwise a newly registered London blog on a .com domain
+      // loses its evidence before reaching the three-show inference threshold.
       {
         const rawOutletForCategory = (data.outletId || data.outlet || '').toLowerCase();
         const cat = showCategoryMap[showId];
-        if (rawOutletForCategory && cat && isReviewContentTrustworthy(data)) {
+        if (rawOutletForCategory && cat) {
+          const trustworthy = isReviewContentTrustworthy(data);
+          const market = regionEvidenceMarket({
+            trustworthy,
+            trustworthyApartFromWrongProduction: isReviewContentTrustworthy({ ...data, wrongProduction: false }),
+            category: cat,
+            isLondonMarket,
+            review: data,
+            urlIsUk: !!data.url && isUkOutletUrl(data.url),
+          });
           // normalizeOutletCanonical matches the key allReviews/newOutlets register
           // brand-new outlets under (line ~2015); OUTLET_CANONICAL_ID_MAP resolves
           // ALIASES back to an already-registered outlet's actual registry key.
@@ -2913,25 +2916,11 @@ showDirs.forEach(showId => {
           const canonicalOutletForCategory = normalizeOutletCanonical(rawOutletForCategory);
           const canonicalId = OUTLET_CANONICAL_ID_MAP[canonicalOutletForCategory]
             || OUTLET_CANONICAL_ID_MAP[rawOutletForCategory] || canonicalOutletForCategory;
-          (outletShowCategoriesRaw[canonicalId] = outletShowCategoriesRaw[canonicalId] || new Set()).add(cat);
-        }
-        // BRO-5896: per-market distinct-show evidence for retracting a wrong
-        // london stamp. Wider than the trustworthy gate above on the NYC side
-        // only; see regionEvidenceMarket in lib/outlet-region-map.js.
-        if (rawOutletForCategory && cat) {
-          const market = regionEvidenceMarket({
-            trustworthy: isReviewContentTrustworthy(data),
-            trustworthyApartFromWrongProduction: isReviewContentTrustworthy({ ...data, wrongProduction: false }),
-            category: cat,
-            isLondonMarket,
-            wrongProductionNote: data.wrongProductionNote,
-            urlIsUk: !!data.url && isUkOutletUrl(data.url),
-          });
+          if (trustworthy || market === 'london') {
+            (outletShowCategoriesRaw[canonicalId] = outletShowCategoriesRaw[canonicalId] || new Set()).add(cat);
+          }
           if (market) {
-            const canonicalOutletForEvidence = normalizeOutletCanonical(rawOutletForCategory);
-            const evidenceId = OUTLET_CANONICAL_ID_MAP[canonicalOutletForEvidence]
-              || OUTLET_CANONICAL_ID_MAP[rawOutletForCategory] || canonicalOutletForEvidence;
-            const ev = (outletMarketShowsRaw[evidenceId] = outletMarketShowsRaw[evidenceId] || { london: new Set(), nyc: new Set() });
+            const ev = (outletMarketShowsRaw[canonicalId] = outletMarketShowsRaw[canonicalId] || { london: new Set(), nyc: new Set() });
             ev[market].add(showId);
           }
         }
@@ -3855,6 +3844,13 @@ showDirs.forEach(showId => {
         stats.skippedNamedNonReviewUrl = (stats.skippedNamedNonReviewUrl || 0) + 1;
         return;
       }
+      // BRO-7210: a submit-review-form record whose URL the form itself refuses
+      // (same predicate as explainExclusion's submissionRefusedUrl branch).
+      if (isRefusedSubmissionUrlRecord(data)) {
+        logExclusion("skippedSubmissionRefusedUrl", showId, file, data);
+        stats.skippedSubmissionRefusedUrl = (stats.skippedSubmissionRefusedUrl || 0) + 1;
+        return;
+      }
 
       // BRO-3135: body-less file whose star was inherited from an aggregator
       // roundup, with no venue/cast evidence it belongs to THIS production.
@@ -4396,7 +4392,7 @@ showDirs.forEach(showId => {
       {
         const criticSynd = (data.criticName || '').toLowerCase().trim();
         const outletSynd = normalizeOutletCanonical(data.outletId || data.outlet || '');
-        const syndPrimaries = getSyndicationPrimaries(criticSynd, outletSynd);
+        const syndPrimaries = getSyndicationPrimariesInDir(criticSynd, outletSynd, files, normalizeOutletCanonical);
         if (syndPrimaries.length) {
           // Skip the secondary only if a primary copy actually ships. Primaries
           // are processed first (orderAfterDependencies above), so this is
@@ -6071,7 +6067,7 @@ if (fs.existsSync(reviewsJsonPath)) {
                 if (!wouldBeExcluded) {
                   const criticLc = (d.criticName || '').toLowerCase().trim();
                   const outletLc = normalizeOutletCanonical(d.outletId || d.outlet || '');
-                  const prims = getSyndicationPrimaries(criticLc, outletLc);
+                  const prims = getSyndicationPrimariesInDir(criticLc, outletLc, () => fs.readdirSync(showDir), normalizeOutletCanonical);
                   if (prims.length && hasIncludableSyndicationPrimary(d, showById[showId], path.join(showDir, f), { primaries: prims })) wouldBeExcluded = true;
                 }
                 if (wouldBeExcluded) {
@@ -6450,7 +6446,8 @@ for (const sid of postDedupTouchedShows) {
     const currentReviewsPath = reviewsJsonPath; // already defined earlier in the script
     if (fs.existsSync(currentReviewsPath)) {
       const currentData = JSON.parse(fs.readFileSync(currentReviewsPath, 'utf8'));
-      const manualEntries = (currentData.reviews || []).filter(r => r.manualEntry === true);
+      // BRO-7192: a manual row of a show that is no longer in shows.json (retired) is not carried forward.
+      const manualEntries = (currentData.reviews || []).filter(r => r.manualEntry === true && (validShowIds.size === 0 || validShowIds.has(r.showId)));
       // Matching lives in scripts/lib/manual-entry-merge.js. This merge runs after
       // every dedup pass, so a missed match appends a permanent phantom duplicate —
       // the helper matches punctuation-insensitively and falls back to the URL.
@@ -7475,7 +7472,7 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
   if (retractedOutlets.length > 0) {
     console.log(`\n↩️  RETRACTED wrong region:'london' on ${retractedOutlets.length} outlet(s) (BRO-5896): ${retractedOutlets.map(r => `${r.id} (${r.nycShows} NYC / ${r.londonShows} London shows)`).join(', ')}`);
   }
-  const backfilledOutlets = backfillMissingOutletRegions(outletRegistry.outlets, outletShowCategories, isLondonMarket);
+  const backfilledOutlets = backfillMissingOutletRegions(outletRegistry.outlets, outletShowCategories, isLondonMarket, undefined, outletMarketShowsRaw);
 
   // Staged ids were NOT written to the registry — counting them here would
   // rewrite + commit data/outlet-registry.json on every one of ~20 workflows'

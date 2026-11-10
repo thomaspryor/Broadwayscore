@@ -105,11 +105,13 @@ jobs:
         if: always() && (steps.readiness.outcome == 'success' || steps.readiness.outcome == 'failure')
         continue-on-error: true
         env:
+          PUSH_RECONCILE_MERGED_JSON: '1' # union-merges the LLM spend ledger on rebase (BRO-5043)
           PUSH_DEADLINE_SEC: '600'
           GIT_NET_TIMEOUT_SEC: '30'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/gemini-usage-ledger.jsonl 2>/dev/null || true # LLM spend meter rows (BRO-5043)
           git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No ledger changes"

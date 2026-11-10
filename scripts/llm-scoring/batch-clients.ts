@@ -12,6 +12,7 @@
  * blast radius of the live nightly scoring pipeline).
  */
 
+import '../lib/llm-usage-install.js'; // LLM spend meter: keep it the first import (BRO-5043)
 import Anthropic from '@anthropic-ai/sdk';
 
 // AbortSignal.timeout bounds the whole request including the body, so batch

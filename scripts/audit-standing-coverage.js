@@ -33,10 +33,15 @@
  * New Yorker) are never promoted: a GAP cell we can never close by fetching
  * is noise in the dispatch path, not a signal.
  *
- * Standing coverage is Broadway-only by construction — computeShowCells()
- * gates the pseudo-source on `category === 'broadway'`, so a West End outlet
- * flagged here would do nothing. West End completeness has its own gate
- * (memory/project_we_completeness_gate.md).
+ * Markets (BRO-7166): membership is per market. `standingMarkets` lists the
+ * markets an outlet earned, each measured on that market's own openings with
+ * the same promote/demote bars (--market=west-end etc.). The T1 ledger's
+ * pseudo-source still applies only to category 'broadway' (computeShowCells
+ * gates it, so a West End member never enters the dispatch path); the other
+ * markets feed the advisory expected-critics alarm
+ * (scripts/lib/expected-critics.js). Outlet ids are folded per market
+ * (`timeout` reviews on a London show count for `timeout-london`), the same
+ * '-london' fold review-census.js outletVariants applies.
  *
  * Card #640 extends the same measured-evidence approach to coverageExpectation
  * (the "this outlet does NOT review theatre" / evidence-of-active-coverage
@@ -86,10 +91,12 @@ function isoDaysBefore(nowMs, days) {
  * @param {object[]} shows shows.json rows
  * @param {object[]} reviews reviews.json rows
  * @param {number} nowMs
- * @param {{category?: string}} [opts] market to measure (default broadway; BRO-6687 grades the slow markets)
+ * @param {{category?: string, foldOutletId?: (id: string) => string}} [opts] market to measure
+ *   (default broadway; BRO-6687 grades the slow markets). foldOutletId maps a review's outlet id
+ *   onto the id the market measures (BRO-7166 '-london' fold); identity when omitted.
  * @returns {{scored: object[], allShows: string[], outletsByShow: Map<string,Set<string>>}}
  */
-function computeSeasonWindows(shows, reviews, nowMs, { category = 'broadway' } = {}) {
+function computeSeasonWindows(shows, reviews, nowMs, { category = 'broadway', foldOutletId = null } = {}) {
   const seasons = [];
   for (let i = 0; i < SEASONS; i++) {
     const end = isoDaysBefore(nowMs, i * SEASON_DAYS);
@@ -115,7 +122,7 @@ function computeSeasonWindows(shows, reviews, nowMs, { category = 'broadway' } =
   for (const id of inWindowIds) outletsByShow.set(id, new Set());
   for (const r of reviews) {
     const set = r && outletsByShow.get(r.showId);
-    if (set) set.add(r.outletId);
+    if (set) set.add(foldOutletId ? foldOutletId(r.outletId) : r.outletId);
   }
   // Drop shows that drew no real press — see MIN_PRESS_OUTLETS.
   for (const season of seasons) {
@@ -151,23 +158,53 @@ function measureOutletCoverage(outletId, scored, allShows, outletsByShow) {
   return { hasEvidence: true, overall, minSeason, latestSeason, seasonRates };
 }
 
+/** Markets that carry a standing set (BRO-7166). Regional/tour openings are too sparse to measure. */
+const STANDING_MARKETS = ['broadway', 'west-end', 'off-broadway', 'off-west-end'];
+const LONDON_MARKETS = new Set(['west-end', 'off-west-end']);
+
+/** Registry markets an outlet is standing in; a legacy flag without the array means Broadway. */
+function standingMarketsOf(o) {
+  if (!o || o.standingCoverage !== true) return [];
+  return Array.isArray(o.standingMarkets) ? o.standingMarkets : ['broadway'];
+}
+
+function isStandingIn(o, category) {
+  return standingMarketsOf(o).includes(category);
+}
+
 /**
- * Pure: measured Broadway coverage per T1/T2 outlet + the registry drift it implies.
+ * Outlet-id fold for one market (BRO-7166): on a London show a `timeout`
+ * review is the `timeout-london` desk, the same '-london' fold
+ * review-census.js outletVariants applies. Identity for New York markets.
+ */
+function marketFold(outlets, category) {
+  if (!LONDON_MARKETS.has(category)) return null;
+  const has = (id) => Object.prototype.hasOwnProperty.call(outlets || {}, id);
+  return (id) => (id && !id.endsWith('-london') && has(`${id}-london`) ? `${id}-london` : id);
+}
+
+/**
+ * Pure: measured coverage of one market's openings per T1/T2 outlet + the registry drift it implies.
+ * Membership is per market (standingMarkets); category defaults to broadway.
  * @param {object[]} shows shows.json rows
  * @param {object[]} reviews reviews.json rows
  * @param {object} outlets outlet-registry.json `outlets` map
  * @param {number} nowMs
- * @returns {{rows: object[], promote: string[], demote: string[], seasons: object[]}}
+ * @param {{category?: string}} [opts]
+ * @returns {{category: string, rows: object[], promote: string[], demote: string[], seasons: object[]}}
  */
-function evaluateStandingCoverage(shows, reviews, outlets, nowMs) {
-  const { scored, allShows, outletsByShow } = computeSeasonWindows(shows, reviews, nowMs);
+function evaluateStandingCoverage(shows, reviews, outlets, nowMs, { category = 'broadway' } = {}) {
+  const { scored, allShows, outletsByShow } = computeSeasonWindows(shows, reviews, nowMs, {
+    category,
+    foldOutletId: marketFold(outlets, category),
+  });
 
   const rows = [];
   const promote = [];
   const demote = [];
   for (const [outletId, o] of Object.entries(outlets || {})) {
     if (!o || typeof o.tier !== 'number' || o.tier > MAX_TIER) continue;
-    const flagged = !!o.standingCoverage;
+    const flagged = isStandingIn(o, category);
     const unfetchable = CI_UNFETCHABLE_OUTLETS.has(outletId);
     const measured = measureOutletCoverage(outletId, scored, allShows, outletsByShow);
     const { overall, minSeason, latestSeason, seasonRates } = measured;
@@ -183,7 +220,7 @@ function evaluateStandingCoverage(shows, reviews, outlets, nowMs) {
     rows.push({ outletId, tier: o.tier, flagged, unfetchable, overall, minSeason, latestSeason, seasonRates });
   }
   rows.sort((a, b) => b.overall - a.overall || a.outletId.localeCompare(b.outletId));
-  return { rows, promote: promote.sort(), demote: demote.sort(), seasons: scored.map((s) => ({ label: s.label, shows: s.shows.length })) };
+  return { category, rows, promote: promote.sort(), demote: demote.sort(), seasons: scored.map((s) => ({ label: s.label, shows: s.shows.length })) };
 }
 
 /**
@@ -279,8 +316,8 @@ function printCoverageExpectationReport(result) {
 function main() {
   const args = process.argv.slice(2);
   if (hasHelpFlag(args)) {
-    console.log('Usage: node scripts/audit-standing-coverage.js [--json] [--strict] [--coverage-expectation]');
-    console.log('  Reports measured Broadway coverage per T1/T2 outlet and any');
+    console.log('Usage: node scripts/audit-standing-coverage.js [--market=broadway|west-end|off-broadway|off-west-end] [--json] [--strict] [--coverage-expectation]');
+    console.log('  Reports measured coverage per T1/T2 outlet, per market (all markets by default), and any');
     console.log('  outlet-registry.json standingCoverage drift. Read-only.');
     console.log('  --coverage-expectation: report coverageExpectation claim drift instead');
     console.log('    (card #640) — every outlet with coverageExpectation set, classified');
@@ -305,24 +342,41 @@ function main() {
     process.exit(strict && result.needsReprobe.length ? 1 : 0);
   }
 
-  const result = evaluateStandingCoverage(shows, reviews, outlets, Date.now());
+  const marketArg = (args.find((a) => a.startsWith('--market=')) || '').slice('--market='.length);
+  if (marketArg && !STANDING_MARKETS.includes(marketArg)) {
+    console.error(`Unknown --market=${marketArg} (one of ${STANDING_MARKETS.join(', ')})`);
+    process.exit(2);
+  }
+  const markets = marketArg ? [marketArg] : STANDING_MARKETS;
+  const results = markets.map((category) => evaluateStandingCoverage(shows, reviews, outlets, Date.now(), { category }));
 
   if (jsonOut) {
-    console.log(JSON.stringify(result, null, 2));
+    console.log(JSON.stringify(marketArg ? results[0] : results, null, 2));
   } else {
-    console.log(`=== standingCoverage audit — ${result.seasons.map((s) => `${s.label} (${s.shows} shows)`).join(', ')} ===`);
-    console.log('  all%  ' + result.seasons.map((_, i) => `S${i + 1}`.padStart(5)).join('') + '  tier  flag  outlet');
-    for (const r of result.rows) {
-      if (r.overall < 0.5 && !r.flagged) continue; // long tail of selective outlets — never candidates
-      const pct = (p) => `${(p * 100).toFixed(0)}%`.padStart(5);
-      console.log(`  ${pct(r.overall)}  ${r.seasonRates.map((s) => pct(s.rate)).join('')}  t${r.tier}   ${r.flagged ? ' ✓  ' : '    '}  ${r.outletId}${r.unfetchable ? '  (CI-unfetchable)' : ''}`);
+    for (const result of results) {
+      console.log(`=== standingCoverage audit [${result.category}] — ${result.seasons.map((s) => `${s.label} (${s.shows} shows)`).join(', ') || '(no measurable seasons)'} ===`);
+      console.log('  all%  ' + result.seasons.map((_, i) => `S${i + 1}`.padStart(5)).join('') + '  tier  flag  outlet');
+      for (const r of result.rows) {
+        if (r.overall < 0.5 && !r.flagged) continue; // long tail of selective outlets — never candidates
+        const pct = (p) => `${(p * 100).toFixed(0)}%`.padStart(5);
+        console.log(`  ${pct(r.overall)}  ${r.seasonRates.map((s) => pct(s.rate)).join('')}  t${r.tier}   ${r.flagged ? ' ✓  ' : '    '}  ${r.outletId}${r.unfetchable ? '  (CI-unfetchable)' : ''}`);
+      }
+      console.log('');
+      console.log(`  promote (unflagged, clears the bar): ${result.promote.length ? result.promote.join(', ') : '(none)'}`);
+      console.log(`  demote  (flagged, below the floor):  ${result.demote.length ? result.demote.join(', ') : '(none)'}`);
+      console.log('');
     }
-    console.log('');
-    console.log(`  promote (unflagged, clears the bar): ${result.promote.length ? result.promote.join(', ') : '(none)'}`);
-    console.log(`  demote  (flagged, below the floor):  ${result.demote.length ? result.demote.join(', ') : '(none)'}`);
+    if (results.length > 1) {
+      // One closing block for every market, so a `tail` of the output (the
+      // audit-critic-coverage.yml step summary) keeps Broadway's drift too.
+      console.log('=== drift summary (all markets) ===');
+      for (const r of results) {
+        console.log(`  ${r.category.padEnd(13)} promote: ${r.promote.join(', ') || '(none)'} | demote: ${r.demote.join(', ') || '(none)'}`);
+      }
+    }
   }
 
-  const drifted = result.promote.length + result.demote.length;
+  const drifted = results.reduce((n, r) => n + r.promote.length + r.demote.length, 0);
   process.exit(strict && drifted ? 1 : 0);
 }
 
@@ -330,6 +384,10 @@ if (require.main === module) main();
 
 module.exports = {
   evaluateStandingCoverage,
+  STANDING_MARKETS,
+  standingMarketsOf,
+  isStandingIn,
+  marketFold,
   evaluateCoverageExpectationDrift,
   classifyCoverageExpectationDrift,
   measureOutletCoverage,

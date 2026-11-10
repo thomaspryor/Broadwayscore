@@ -259,6 +259,10 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           RESEND_SHOWS: ${{ inputs.resend_shows }}
+          # BRO-7210: persistent posted-detection outage files a worker card
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
         run: |
           ARGS=""
           if [ "${{ inputs.dry_run }}" = "true" ]; then
@@ -355,6 +359,8 @@ jobs:
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           RESEND_SHOWS: ${{ inputs.resend_shows }}
+          # Subjects of this run's emails, for the archive step below to wait on.
+          SENT_SUBJECTS_FILE: ${{ runner.temp }}/reddit-sent-subjects.txt
         run: |
           ARGS=""
           if [ "${{ inputs.dry_run }}" = "true" ]; then
@@ -368,16 +374,41 @@ jobs:
 
       - name: Commit drafts
         if: always()
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1' # union-merges the LLM spend ledger on rebase (BRO-5043)
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
+          git add data/audit/gemini-usage-ledger.jsonl 2>/dev/null || true # LLM spend meter rows (BRO-5043)
           git add -f data/audit/reddit-post-drafts.json 2>/dev/null || true
+          git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl 2>/dev/null || true # BRO-7210 card cooldown/resolve state
           if ! git diff --cached --quiet; then
             git commit -m "data: Update Reddit opening-post drafts [automated]"
             bash scripts/lib/push-with-retry.sh
           else
             echo "No changes to Reddit opening-post drafts"
           fi
+
+      # Owner ask 2026-11-09: an Updated / Still-ready email replaces the older one for
+      # the same draft, so archive the older ones (Inbox label only; scripts/lib/
+      # reddit-email-archive.js). After the commit so Gmail latency never delays the
+      # stamp push. continue-on-error: the emails are already sent and a failure here
+      # (for example a key not yet renewed for gmail.modify) must not fail the job.
+      # A dry-run dispatch only lists what it would archive.
+      - name: Archive superseded Reddit draft emails
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        env:
+          GMAIL_CLIENT_ID: ${{ secrets.GMAIL_CLIENT_ID }}
+          GMAIL_CLIENT_SECRET: ${{ secrets.GMAIL_CLIENT_SECRET }}
+          GMAIL_REFRESH_TOKEN: ${{ secrets.GMAIL_REFRESH_TOKEN }}
+          SENT_SUBJECTS_FILE: ${{ runner.temp }}/reddit-sent-subjects.txt
+        run: |
+          ARGS="--expect-file=$SENT_SUBJECTS_FILE"
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            ARGS="$ARGS --dry-run"
+          fi
+          node scripts/archive-superseded-reddit-emails.js $ARGS
 
       - name: Notify on failure
         if: failure()

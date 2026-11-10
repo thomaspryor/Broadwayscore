@@ -1,3 +1,4 @@
+import { getClosingExtensionCount } from '@/lib/closing-label';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { Metadata } from 'next';
@@ -102,6 +103,7 @@ export default async function LondonTheaterPage(props: { params: Promise<{ slug:
       title: show.title,
       openingDate: show.openingDate || show.previewsStartDate || '',
       closingDate: show.closingDate ?? undefined,
+      closingExtensionCount: getClosingExtensionCount(show) || undefined,
       status: show.status,
       type: show.type,
       isRevival: show.isRevival ?? undefined,

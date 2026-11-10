@@ -604,6 +604,20 @@ test('workflow checks: run only when workflows change, block on exit 1, fail ope
   assert.ok(WORKFLOW_PATH_RE.test('scripts/lib/audit-push-retry-budgets.js'));
   assert.ok(WORKFLOW_PATH_RE.test('.github/actions/x/action.yml') && WORKFLOW_PATH_RE.test('scripts/lib/push-with-retry.sh'));
   assert.match(blockMessage({ target: 'land/x', base: 'main', workflows: bad }), /generate-workflow-dependencies\.js --check fails on the landing tree/);
+  // BRO-7150: once base's land-rebase.sh regenerates DEPENDENCIES.md, a stale doc alone warns; other checks still block.
+  const depsIdx = WORKFLOW_CHECKS.findIndex((c) => c.args[0] === 'scripts/generate-workflow-dependencies.js');
+  const onlyDeps = (i, call) => (call === 1 && i === depsIdx ? 1 : 0);
+  calls.length = 0;
+  assert.equal(checkWorkflowChecks({ base: 'main', tip: 'HEAD', cwd: d, run: stub(onlyDeps) }).status, 'fail', 'base cannot regenerate yet: still blocks');
+  sh(d, 'git checkout -q main');
+  write(d, 'scripts/lib/land-rebase.sh', 'refresh_generated_docs() { :; }\n');
+  sh(d, 'git add -A && git commit -qm helper && git checkout -q feat');
+  calls.length = 0;
+  const warned = checkWorkflowChecks({ base: 'main', tip: 'HEAD', cwd: d, run: stub(onlyDeps) });
+  assert.equal(warned.status, 'clean');
+  assert.match(warned.warnings.join('\n'), /regenerates it during the land/);
+  calls.length = 0;
+  assert.equal(checkWorkflowChecks({ base: 'main', tip: 'HEAD', cwd: d, run: stub((i, call) => (call === 1 ? 1 : 0)) }).status, 'fail', 'the other checks still block');
   // a check that crashes (exit 2) or times out never blocks
   assert.equal(checkWorkflowChecks({ base: 'main', tip: 'HEAD', cwd: d, run: stub(124) }).status, 'clean');
   assert.equal(checkWorkflowChecks({ base: 'main', tip: 'HEAD', cwd: d, run: () => ({ error: new Error('ETIMEDOUT'), status: null }) }).status, 'clean'); // no rc files written
@@ -823,4 +837,41 @@ test('localCheckWarning: none/new-failures/not-ready warn on a code change; clea
   createRequire(import.meta.url)(path.join(wt, 'scripts/lib/land-local-check-log.js')).recordVerdict(wt, 0);
   v = push();
   assert.ok(!v.warnings.some((w) => /land-local-check/.test(w)), JSON.stringify(v.warnings));
+});
+
+// BRO-7150: the land.yml unit tests for the diff run on the rebased tip before the push; a new
+// failure blocks, anything inconclusive (timeout, crash, an older tree) only skips.
+test('fastTestsCheck: blocks new failures on the rebased tip; skips, advisory and kill switch never block', async () => {
+  const { fastTestsCheck, runHook } = await import('../../scripts/lib/land-preflight.mjs');
+  const { wt } = landFixture();
+  sh(wt, 'git reset -q --hard origin/main && mkdir -p scripts/lib && echo "module.exports = 1;" > scripts/lib/x.js && git add -A && git commit -qm code');
+  const tip = sh(wt, 'git rev-parse HEAD').trim();
+  const rebase = { status: 'clean', tip };
+  const failing = { status: 'fail', ran: 27, ms: 61000, newFailures: [{ gate: 'unit-tests-node', file: 'tests/unit/a.test.mjs', name: 'keeps the cap' }] };
+  let seen = null;
+  const runner = (res, extra = {}) => ({ run: (cmd, args) => { seen = args; return { status: res.status === 'fail' ? 1 : 0, stdout: JSON.stringify(res) }; }, ...extra });
+  const r = fastTestsCheck({ root: wt, rebase, env: {}, seams: runner(failing) });
+  assert.equal(r.status, 'fail');
+  assert.match(r.message, /tests\/unit\/a\.test\.mjs :: keeps the cap/);
+  assert.match(r.message, /NO-LAND-PREFLIGHT/);
+  assert.equal(seen[seen.indexOf('--tip') + 1], tip, 'judges the rebased tip');
+  assert.ok(seen.includes('--worktree'), 'never runs in the session checkout');
+  assert.equal(fastTestsCheck({ root: wt, rebase, env: { LAND_FAST_TESTS_ADVISORY: '1' }, seams: runner(failing) }).status, 'clean');
+  assert.match(fastTestsCheck({ root: wt, rebase, env: { LAND_FAST_TESTS_ADVISORY: '1' }, seams: runner(failing) }).warning, /advisory/);
+  assert.equal(fastTestsCheck({ root: wt, rebase, env: { LAND_FAST_TESTS_DISABLE: '1' }, seams: runner(failing) }).status, 'off');
+  assert.equal(fastTestsCheck({ root: wt, rebase: { status: 'conflict' }, env: {}, seams: runner(failing) }).status, 'skip');
+  assert.equal(fastTestsCheck({ root: wt, rebase, env: {}, seams: runner({ status: 'skip', reason: 'unit-tests-node timed out' }) }).status, 'skip');
+  assert.equal(fastTestsCheck({ root: wt, rebase, env: {}, seams: { run: () => ({ status: null, signal: 'SIGTERM', stdout: '' }) } }).status, 'skip', 'killed: no verdict');
+  assert.equal(fastTestsCheck({ root: wt, rebase, env: {}, seams: { run: () => { throw new Error('boom'); } } }).status, 'skip');
+  assert.equal(fastTestsCheck({ root: wt, rebase, env: {}, seams: runner(failing, { changedFiles: ['docs/a.md'] }) }).status, 'skip', 'docs-only diff');
+  assert.equal(fastTestsCheck({ root: wt, rebase, env: {} }).status, 'skip', 'a tree without land-fast-tests.js');
+  // Through the hook: a clean preflight plus a fast-test failure is a block with the failure in the message.
+  const push = (seams) => runHook({ command: 'git push origin HEAD:refs/heads/land/feat', cwd: wt, env: ENV, seams: { coordinator: () => [], ...seams } });
+  let v = push({ fastTests: runner(failing) });
+  assert.equal(v.decision, 'block', JSON.stringify(v.results?.[0]?.detail?.fastTests));
+  assert.match(v.message, /land\.yml would refuse this push/);
+  v = push({ fastTests: runner({ status: 'clean', ran: 27, ms: 30000, newFailures: [] }) });
+  assert.notEqual(v.decision, 'block');
+  v = push({ fastTests: runner(failing), localCheck: { latestVerdict: () => ({ verdict: 'clean' }) } });
+  assert.notEqual(v.decision, 'block', 'a clean full land-local-check verdict for this tip stands');
 });

@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6054",
   "planId": "b941ba14-903f-42eb-8241-7d7c77ba0e25",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-23T09:39:30.027Z",
   "submitter": {
     "name": null,
@@ -370,24 +370,25 @@
   ],
   "executedIn": "ci",
   "triage": {
-    "card": "BRO-7092",
-    "at": "2026-11-07T20:58:07.982Z",
-    "verdict": "still-needed",
+    "card": "BRO-7094",
+    "at": "2026-11-09T21:40:12.459Z",
+    "verdict": "obsolete",
     "counts": {
-      "still-needed": 2
+      "obsolete": 2
     },
-    "stillNeededReason": "op 8: the write guard rolled this edit back because it also rewrote duplicateOf/duplicateReason; the record needs a hand check before a retry (BRO-7092 hand check); op 10: the write guard rolled this edit back because it also rewrote duplicate fields; the record needs a hand check before a retry (BRO-7092 hand check)",
     "ops": [
       {
         "i": 8,
-        "verdict": "still-needed",
-        "reason": "the write guard rolled this edit back because it also rewrote duplicateOf/duplicateReason; the record needs a hand check before a retry (BRO-7092 hand check)"
+        "verdict": "obsolete",
+        "reason": "BRO-7094: later applied BRO-6054-d deliberately cleared wrongAttribution and duplicateOf after correcting the byline. Current criticName is Brian Scott Lipton (approved 2026-10-27), wrongAttribution=false, and one row is counted. Replaying this older exclusion would undo that repair."
       },
       {
         "i": 10,
-        "verdict": "still-needed",
-        "reason": "the write guard rolled this edit back because it also rewrote duplicate fields; the record needs a hand check before a retry (BRO-7092 hand check)"
+        "verdict": "obsolete",
+        "reason": "BRO-7094: later applied BRO-6054-d deliberately replaced Jesse Green with Unknown and cleared wrongAttribution and duplicateOf. Current wrongAttribution=false and one Vulture row is counted with no named critic. Replaying this older exclusion would undo that repair."
       }
     ]
-  }
+  },
+  "supersededAt": "2026-11-09T21:40:12.459Z",
+  "supersededReason": "BRO-7094: current-data hand check settled every remaining op; see triage.ops for evidence. Original actions and execution results retained."
 }

@@ -335,7 +335,7 @@ async function main() {
       dateUpdated = true;
     }
     if (dates.closingDate && !show.closingDate && isDatePlausible(dates.closingDate, show) && canWriteClosingDate(show)) {
-      if (!DRY_RUN) writeClosingDate(show, dates.closingDate, 'Wikipedia infobox');
+      if (!DRY_RUN) writeClosingDate(show, dates.closingDate, 'Wikipedia infobox', { recordExtension: false });
       parts.push(`closing=${dates.closingDate}`);
       dateUpdated = true;
     }

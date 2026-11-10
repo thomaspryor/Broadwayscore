@@ -137,6 +137,7 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           SOCIAL_AI_CAPTIONS_DISABLED: ${{ vars.SOCIAL_AI_CAPTIONS_DISABLED }}
           SOCIAL_AI_CAPTIONS_FORCE: ${{ inputs.ai_captions }}
+          BUFFER_PLAN_STATUS_FILE: ${{ runner.temp }}/buffer-plan.json # BRO-7188, read by the next step
         run: |
           ARGS=(--out=/tmp/social-autopost)
           if [ -n "$INPUT_BRIEF" ]; then ARGS+=("--brief=$INPUT_BRIEF")
@@ -146,6 +147,17 @@ jobs:
           elif [ "$INPUT_DRY_RUN" = "true" ]; then ARGS+=(--dry-run)
           fi
           node scripts/social-autopost/run.js "${ARGS[@]}"
+
+      - name: Page the owner if the Buffer plan locked channels
+        # BRO-7188: a lapsed or downgraded Buffer plan locks channels and only the owner
+        # can pay; this workflow's own failures only reach the digest. Email keys live on
+        # this step alone, so run.js (reused by other scripts) never needs them.
+        if: always() && steps.check.outputs.due != '0' && steps.check.outputs.due != ''
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: node scripts/social-autopost/plan-alert.js "$RUNNER_TEMP/buffer-plan.json"
 
       - name: Upload cards
         if: always() && steps.check.outputs.render != '0' && steps.check.outputs.render != ''
@@ -161,10 +173,17 @@ jobs:
         # it, so a later failure in the same run must still land the record (or the
         # next run would find it again; buffer.js findExistingPost is the backstop).
         if: always() && inputs.dry_run != true && !inputs.show
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1' # union-merges the LLM spend ledger on rebase (BRO-5043)
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
+          git add data/audit/gemini-usage-ledger.jsonl 2>/dev/null || true # LLM spend meter rows (BRO-5043)
           [ -f data/social-autopost-ledger.json ] && git add data/social-autopost-ledger.json
+          # The owner-alert cooldown (BRO-7188); push-with-retry.sh reconciles these on rebase.
+          for f in data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl; do
+            [ -e "$f" ] && git add "$f" || true
+          done
           if git diff --cached --quiet; then
             echo "No changes to the social autopost ledger"
           else

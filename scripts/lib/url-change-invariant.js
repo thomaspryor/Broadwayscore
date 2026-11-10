@@ -81,8 +81,14 @@ const URL_DERIVED_FIELDS = Array.from(new Set([
   'isRoundupArticle', 'isCombinedReview',
   'wrongProductionAutoCleared', 'wrongProductionAutoClearedAt',
   'urlPlaceholderSuspect',
+  // BRO-7171 Stage 4: "the OLD url's text cannot be recovered" says nothing about a new url.
+  'textUnrecoverable',
   // rediscover-review-urls.js Phase 2 refusal of THIS url's redirect; moot once the url moves.
   'redirectRefused',
+  // The OLD url's 404/410 (rediscover-review-urls Phase 2, gap-recovery
+  // driver). text-gap-classify reads it as URL_DEAD, so a stale one would
+  // mark a corrected url dead (BRO-7171).
+  'httpStatus',
   // Salvaged from the old URL's walled page (walled-page-meta.js).
   'outletStandfirst', 'outletHeadline', 'walledPageMetaAt', 'walledPageMetaCheckedAt',
   // Headline + standfirst of the OLD page (page-meta-evidence.js, BRO-5794) and its recheck stamps.
@@ -589,15 +595,21 @@ function wouldDiscardScore(existing, opts = {}) {
   return !(kept('originalScore') && kept('aggregatorStars'));
 }
 
-function updateFileUrlWithInvariant(filePath, newUrl, metadata = {}, opts = {}) {
-  const fs = require('fs');
+/**
+ * Why moving `existing` (the record at filePath) to newUrl must be refused, or
+ * null when it may move. Shared by updateFileUrlWithInvariant (which logs and
+ * returns null on a refusal) and the gap-acceptance gate (BRO-7171), which
+ * must decide BEFORE anything is written: a refusal found after the old text
+ * was cleared is a lost review. Reads sibling files in filePath's dir (the
+ * other-critic ownership check); writes nothing.
+ * @param {string} filePath
+ * @param {object} existing  record on disk
+ * @param {string} newUrl
+ * @param {{preserveFields?: Set<string>, oldUrlProvenWrong?: boolean}} [opts]
+ * @returns {{reason: string, details: object}|null}
+ */
+function urlChangeRefusal(filePath, existing, newUrl, opts = {}) {
   const path = require('path');
-  let existing;
-  try {
-    existing = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-  } catch {
-    return null;
-  }
   const canonicalMove = urlCanonicallyChanged(existing.url, newUrl);
   // Cross-outlet refusal: never move a file's URL onto a domain the registry
   // maps to a different outlet (that this outlet doesn't own). Mirrors the
@@ -611,15 +623,7 @@ function updateFileUrlWithInvariant(filePath, newUrl, metadata = {}, opts = {}) 
   if (existing.outletId && typeof newUrl === 'string' && newUrl !== existing.url) {
     const { isCrossOutletUrl } = require('./review-normalization');
     if (isCrossOutletUrl(existing.outletId, newUrl)) {
-      const { logExclusion } = require('./exclusion-logger');
-      logExclusion({
-        script: 'url-change-invariant',
-        showId: existing.showId || 'unknown',
-        file: path.basename(filePath),
-        reason: 'skippedCrossOutletMerge',
-        details: { existingUrl: existing.url, incomingUrl: newUrl, outletId: existing.outletId, criticName: existing.criticName },
-      });
-      return null;
+      return { reason: 'skippedCrossOutletMerge', details: { existingUrl: existing.url, incomingUrl: newUrl, outletId: existing.outletId, criticName: existing.criticName } };
     }
   }
   // BRO-4430: these callers repair ONE critic's slot, so two more urls are
@@ -638,15 +642,7 @@ function updateFileUrlWithInvariant(filePath, newUrl, metadata = {}, opts = {}) 
     const refusal = isAggregatorPageUrl(newUrl) ? 'skippedAggregatorPageUrl'
       : owner ? 'skippedUrlOwnedByOtherCritic' : null;
     if (refusal) {
-      const { logExclusion } = require('./exclusion-logger');
-      logExclusion({
-        script: 'url-change-invariant',
-        showId: existing.showId || 'unknown',
-        file: path.basename(filePath),
-        reason: refusal,
-        details: { existingUrl: existing.url, incomingUrl: newUrl, outletId: existing.outletId, criticName: existing.criticName, owner },
-      });
-      return null;
+      return { reason: refusal, details: { existingUrl: existing.url, incomingUrl: newUrl, outletId: existing.outletId, criticName: existing.criticName, owner } };
     }
   }
   // Score-loss refusal (BRO-4131, maybeUpgradeUrl's BRO-4128 twin): a move
@@ -656,13 +652,38 @@ function updateFileUrlWithInvariant(filePath, newUrl, metadata = {}, opts = {}) 
   // caller keeps the score (preserveFields: same review at a new address) or
   // the old url is known wrong (flags on disk, or opts.oldUrlProvenWrong).
   if (canonicalMove && wouldDiscardScore(existing, opts)) {
+    return { reason: 'skippedScoreLossUrlSwap', details: { existingUrl: existing.url, incomingUrl: newUrl, originalScore: existing.originalScore, aggregatorStars: existing.aggregatorStars } };
+  }
+  return null;
+}
+
+// Unique per writer: a fixed `${filePath}.tmp` collided between concurrent
+// writers of the same review (BRO-7171 review), and a dot-prefixed name keeps a
+// crash leftover out of review-file globs.
+function _tmpPathFor(filePath) {
+  const path = require('path');
+  return path.join(path.dirname(filePath), `.${path.basename(filePath)}.tmp-${process.pid}-${Math.random().toString(36).slice(2, 10)}`);
+}
+
+function updateFileUrlWithInvariant(filePath, newUrl, metadata = {}, opts = {}) {
+  const fs = require('fs');
+  const path = require('path');
+  let existing;
+  try {
+    existing = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+  } catch {
+    return null;
+  }
+  const canonicalMove = urlCanonicallyChanged(existing.url, newUrl);
+  const refused = urlChangeRefusal(filePath, existing, newUrl, opts);
+  if (refused) {
     const { logExclusion } = require('./exclusion-logger');
     logExclusion({
       script: 'url-change-invariant',
       showId: existing.showId || 'unknown',
       file: path.basename(filePath),
-      reason: 'skippedScoreLossUrlSwap',
-      details: { existingUrl: existing.url, incomingUrl: newUrl, originalScore: existing.originalScore, aggregatorStars: existing.aggregatorStars },
+      reason: refused.reason,
+      details: refused.details,
     });
     return null;
   }
@@ -675,7 +696,7 @@ function updateFileUrlWithInvariant(filePath, newUrl, metadata = {}, opts = {}) 
     const stamped = { ...existing, ...metadata };
     if (existing.url && existing.url !== newUrl) stamped.previousUrl = existing.url;
     stamped.url = newUrl;
-    const tmp = `${filePath}.tmp`;
+    const tmp = _tmpPathFor(filePath);
     fs.writeFileSync(tmp, JSON.stringify(stamped, null, 2) + '\n');
     fs.renameSync(tmp, filePath);
     return stamped;
@@ -685,7 +706,7 @@ function updateFileUrlWithInvariant(filePath, newUrl, metadata = {}, opts = {}) 
     fileLabel: path.basename(filePath),
     preserveFields: opts.preserveFields || null,
   });
-  const tmpPath = `${filePath}.tmp`;
+  const tmpPath = _tmpPathFor(filePath);
   fs.writeFileSync(tmpPath, JSON.stringify(updated, null, 2) + '\n');
   fs.renameSync(tmpPath, filePath);
   if (inv.cleared.includes('llmScore')) {
@@ -736,6 +757,7 @@ module.exports = {
   isDifferentArticleRecovery,
   isUrlFlipFlop,
   updateFileUrlWithInvariant,
+  urlChangeRefusal,
   wouldDiscardScore,
   removeLlmScoreSidecar: _removeLlmScoreSidecar,
   NEW_ERA_FETCH_FIELDS,

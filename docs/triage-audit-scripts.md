@@ -95,6 +95,7 @@ review-texts finds hits, promote that script to (a).
 | Script | Why it stays manual |
 | --- | --- |
 | `audit-always-commit-after-validate.js` | advisory workflow linter (BRO-5293); exits 0 by design, rule 19 forbids arming it |
+| `audit-page-furniture.js` | BRO-7171 read-only furniture survey of the private review-texts corpus and local raw-page archives; the CI class guard is `tests/unit/page-furniture-extractors.test.mjs`, so this stays a manual diagnostic |
 | `audit-cast-matching.js` | one-shot re-evaluation of cast files against new IBDB matching rules |
 | `audit-critic-listing-parity.js` | one-shot parity check for decideCriticListingPromotion (task 995); sprint-scoped |
 | `audit-critic-name-apostrophe.js` | read-only sweep for BRO-5444 truncated critic names; promote to (a) if a run with review-texts finds hits |
@@ -222,3 +223,6 @@ No new cron, fetch, LLM request or API call is introduced by this classification
 | `audit-malformed-review-urls.js` | BRO-5162 read-only sweep of review-text files whose url is not an absolute http(s) url with a dotted host, and which of them ship in reviews.json; needs the private review-texts corpus, so run it through cloud-run-script. Standing prevention is the write-time guard in review-write-guard. |
 | `audit-route-alert.js` | BRO-2454 read-only sweep of routeAlert() call sites for write-before-notify ordering; standing prevention is the real-tree gate in scripts/lib/audit-route-alert-core.test.mjs, which CI runs. The CLI is for manual review. |
 | `audit-pending-promotion-latency.js` | BRO-7032 read-only measure of how long press-night no-byline stubs sat in _pending before replay promotion; needs the private review-texts corpus. Used as the card's recheck command after a press night; logic is covered by scripts/lib/pending-promotion-latency.test.mjs, which CI runs. |
+| `audit-text-gaps.js` | Zero-gap plan 1B read-only text-gap metric over the private review-texts corpus (class/outlet/recency counts, writes data/audit/text-gap-metric.json); needs the corpus, so it is the manual measure before and after a recovery run. Logic is covered by scripts/lib/text-gap-classify.test.mjs and text-gap-metric.test.mjs, which CI runs. |
+| `audit-false-truncation-dryrun.js` | Zero-gap plan 1C read-only dry run: which truncated review-text files the trailer fix would re-tier to complete on the next rebuild, per outlet with sample endings; needs the private corpus and never writes review data. Logic is covered by scripts/lib/trailer-signatures.test.mjs, which CI runs. |
+| `audit-city-hub-dual-model.js` | BRO-7256 on-demand pre-launch audit of one city hub by GPT and Gemini (blind extraction, JS comparison); run by hand per city, costs model spend, so never scheduled. |

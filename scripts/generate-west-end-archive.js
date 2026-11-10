@@ -13,7 +13,7 @@
  * the user searches.
  *
  * Market membership mirrors getWestEndShows() in src/lib/data-core.ts:
- * belongsOnWestEndListing() (west-end or off-west-end category, theatrical
+ * belongsOnWestEndListing() (west-end or off-west-end category, not opera, theatrical
  * genre) minus HIDDEN_LONDON_IDS. Each entry keeps its own category so search
  * results badge Off-West End shows correctly, and the review floor follows
  * the per-category MIN_REVIEWS_FOR_SCORE_* constants in
@@ -25,7 +25,7 @@
  */
 
 const { generateMarketArchive } = require('./lib/generate-market-archive');
-const { isNonTheatricalGenre } = require('./lib/genre-classification');
+const { belongsOnWestEndArchive } = require('./lib/london-listing');
 const { HIDDEN_LONDON_IDS } = require('./lib/page-name-sources');
 
 const MIN_REVIEWS_WEST_END = 5;
@@ -34,9 +34,7 @@ const MIN_REVIEWS_OFF_WEST_END = 3;
 generateMarketArchive({
   outputFilename: 'west-end-archive.json',
   entryCategory: show => show.category,
-  belongsToMarket: show =>
-    (show.category === 'west-end' || show.category === 'off-west-end') &&
-    !isNonTheatricalGenre(show.genre),
+  belongsToMarket: belongsOnWestEndArchive,
   excludeIds: HIDDEN_LONDON_IDS,
   minReviews: show => (show.category === 'off-west-end' ? MIN_REVIEWS_OFF_WEST_END : MIN_REVIEWS_WEST_END),
   label: 'West End',

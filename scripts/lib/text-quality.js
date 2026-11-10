@@ -8,6 +8,7 @@
 // Excerpt field names — imported from excerpt-fields.js (single source of truth).
 // The objects add display names for use in getBestTextForScoring().
 const { EXCERPT_FIELDS: _EXCERPT_FIELD_NAMES } = require('./excerpt-fields');
+const { stripKnownTrailers, trailerFixesEnabled } = require('./trailer-signatures');
 // Bot-wall stub patterns (NYT anti-bot JS-loader + verify-access interstitial) —
 // imported from content-quality.js rather than re-declared here (BRO-36). This
 // module's own truncation/cleaning logic is a separate code path from
@@ -141,8 +142,12 @@ function checkTruncation(text) {
 
   const signals = [];
 
+  // Known page trailers (UK listing bullet, Guardian topics footer) are not review
+  // prose: end-anchored patterns judge what precedes them. Identity when the kill
+  // switch TRAILER_FIXES_DISABLED=true is set.
+  const judged = stripKnownTrailers(text);
   for (const pattern of TRUNCATION_PATTERNS) {
-    if (pattern.test(text)) {
+    if (pattern.test(judged)) {
       signals.push(pattern.toString());
     }
   }
@@ -160,8 +165,11 @@ function checkTruncation(text) {
   }
 
   // Check for abrupt ending (no sentence-final punctuation in last 20 chars)
-  const ending = text.slice(-20).trim();
-  if (ending && !/[.!?]["']?\s*$/.test(ending)) {
+  // Known page trailers (UK listing bullet, Guardian topics footer) carry no
+  // full stop and are not review prose: judge the ending of what precedes them.
+  const ending = judged.slice(-20).trim();
+  const endRe = trailerFixesEnabled() ? /[.!?]["'\u201d\u2019]?\s*$/ : /[.!?]["']?\s*$/;
+  if (ending && !endRe.test(ending)) {
     // But not if it ends with a quote attribution or similar
     if (!/["']\s*$/.test(ending) && !/—\s*\w+\s*$/.test(ending)) {
       signals.push('no-final-punctuation');
@@ -218,6 +226,20 @@ function checkCorruption(text) {
  */
 function stripTrailingJunk(text) {
   if (!text) return text;
+  // Page furniture (share bars, related-story runs, comment/ticket widgets,
+  // newsletter/paywall/donation lines, repeated paragraphs) comes from the ONE
+  // shared module the save path also uses (BRO-7171), so the detector, the
+  // stored-text cleaner and this scoring view cannot drift apart again. The
+  // anchor lists below stay separate on purpose: they are an assessment cut
+  // (verdict detection, scoring input), and swapping them for
+  // text-cleaning.js's storage cut changes the scoring text of 15,891 of
+  // 67,983 stored reviews (643 lose >10%), a rule-13 A/B, not a refactor.
+  // The furniture pass runs AFTER the anchors (end of this function), never
+  // before: the anchors' back-half guard is a ratio of the text length, so
+  // removing furniture first moved a mid-review "Headline: Text" match past
+  // 60% and cut real prose (Vulture Parade 2023 lost 3,190 chars in the
+  // ship-check corpus replay). After, the scoring view can only lose
+  // furniture lines relative to the pre-BRO-7171 cut.
 
   // High-confidence anchors — definitively junk, NEVER legitimate review content.
   // Bypass the back-half guard (these patterns are specific enough to avoid false positives).
@@ -304,7 +326,9 @@ function stripTrailingJunk(text) {
     cleaned = cleaned.slice(0, match.index);
   }
 
-  return cleaned.trim();
+  // Furniture the anchors above did not cut (BRO-7171 ship-check): the first
+  // pass kept tail anchors so these cuts could fire; nothing anchors now.
+  return require('./page-furniture').stripPageFurniture(cleaned.trim(), { anchors: false });
 }
 
 /**

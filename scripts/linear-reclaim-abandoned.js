@@ -6,6 +6,18 @@
  *
  * Usage: node scripts/linear-reclaim-abandoned.js [--dry-run] [--max=N]
  *
+ * Stalled-session sweep (BRO-7183, run by the board-workers routine, docs/cloud-routines/board-workers.md):
+ *   --stalled-sessions [--threshold-hours=12]   JSON list of In Progress cards idle 12h+ held by a cloud session
+ *   --stall-act --from-json=<file> [--dry-run]  file: [{card, session|error}] from get_session; requeues the
+ *                                               gone ones, records nudges, prints [{card, action, sessionId, message}]
+ *   Rules: scripts/lib/stalled-session-sweep.js. Kill switch: STALL_SWEEP_DISABLE=1.
+ *
+ * Mac-held cards (BRO-7195, hourly from launchd com.broadwayscore.mac-stall-sweep):
+ *   --mac-stall-sweep [--dry-run] [--threshold-hours=12]   In Progress cards idle 12h+ claimed by a local
+ *       session on THIS machine whose session is not running, whose transcript has not changed in 12h and
+ *       whose card has no dispatch-ledger row in 26h go back to Todo (Backlog after repeated reclaims).
+ *       Rules: localStallAction in scripts/lib/stalled-session-sweep.js. Same kill switch.
+ *
  * Fails closed: if the land/ refs can't be read, it exits 1 before any write.
  * Kill switch: LINEAR_RECLAIM_KILL_SWITCH=1 (repo variable).
  */
@@ -15,7 +27,7 @@
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
-const USAGE = 'usage: node scripts/linear-reclaim-abandoned.js [--dry-run] [--max=N]';
+const USAGE = 'usage: node scripts/linear-reclaim-abandoned.js [--dry-run] [--max=N] | --stalled-sessions [--threshold-hours=12] | --stall-act --from-json=<file> [--threshold-hours=12] [--dry-run] | --mac-stall-sweep [--threshold-hours=12] [--dry-run]';
 if (hasHelpFlag(process.argv.slice(2))) {
   console.log(USAGE);
   process.exit(0);
@@ -68,7 +80,226 @@ function dispatchInFlight() {
   return runs.some((r) => r.status !== 'completed');
 }
 
+function flagValue(name) {
+  const i = process.argv.indexOf(name);
+  if (i >= 0 && i + 1 < process.argv.length) return process.argv[i + 1];
+  return (process.argv.find((a) => a.startsWith(`${name}=`)) || '').slice(name.length + 1);
+}
+
+/** Fresh card + the land refs naming it -> stalled-session entry (or skip). */
+async function stallEntry(linear, identifier, refs, nowMs, idleMs, local = false) {
+  const { landRefCardNumber } = require('./lib/cloud-worker-pick.js');
+  const { stalledSessionEntry } = require('./lib/stalled-session-sweep.js');
+  const { issue } = await linear.graphql(ISSUE_QUERY, { id: identifier }, { timeoutMs: 15000, maxAttempts: 2 });
+  if (!issue) return { issue: null, named: [], entry: { action: 'skip', reason: 'not-found' } };
+  const n = Number(String(issue.identifier).split('-')[1]);
+  const named = refs.filter((r) => landRefCardNumber(r.ref) === n).map((r) => ({ ref: r.ref, lastActivityAt: lastActivityAt(r) }));
+  return { issue, named, entry: stalledSessionEntry({ issue, comments: issue.comments.nodes, landRefs: named, nowMs, idleMs, local }) };
+}
+
+/** This machine's view of local sessions (BRO-7195): host names, live session ids, ps text, transcripts, ledger. */
+function localSessionView() {
+  const fs = require('fs');
+  const os = require('os');
+  const path = require('path');
+  const { readLiveSessionIds } = require('./lib/scratchpad-retention.js');
+  const hostNames = [os.hostname()];
+  try { hostNames.push(execFileSync('scutil', ['--get', 'LocalHostName'], { encoding: 'utf8', timeout: 5000 }).trim()); } catch { /* not macOS */ }
+  let psText = '';
+  try { psText = execFileSync('ps', ['-axo', 'args='], { encoding: 'utf8', timeout: 10000, maxBuffer: 32 * 1024 * 1024 }); } catch { psText = null; }
+  const projects = path.join(os.homedir(), '.claude', 'projects');
+  let projectDirs = [];
+  try { projectDirs = fs.readdirSync(projects); } catch { /* none */ }
+  const transcriptMtimeMs = (id) => {
+    let newest = null;
+    for (const d of projectDirs) {
+      try { const m = fs.statSync(path.join(projects, d, `${id}.jsonl`)).mtimeMs; if (newest === null || m > newest) newest = m; } catch { /* absent */ }
+    }
+    return newest;
+  };
+  const ledgerRows = require('./lib/dispatch-ledger.js').readEntries();
+  const lastLedgerMs = (card, id) => {
+    let last = null;
+    for (const r of ledgerRows) {
+      if (r.taskId !== `linear:${card}` && String(r.sessionId || '').toLowerCase() !== String(id).toLowerCase()) continue;
+      const t = Date.parse(r.ts);
+      if (Number.isFinite(t) && (last === null || t > last)) last = t;
+    }
+    return last;
+  };
+  // readLiveSessionIds skips a torn row silently; one unreadable row could be the live session, so refuse.
+  const registry = path.join(os.homedir(), '.claude', 'sessions');
+  let registryComplete = true;
+  const liveCwds = [];
+  try {
+    for (const n of fs.readdirSync(registry).filter((x) => x.endsWith('.json'))) {
+      try {
+        const row = JSON.parse(fs.readFileSync(path.join(registry, n), 'utf8'));
+        if (typeof row.sessionId !== 'string') registryComplete = false;
+        else if (row.cwd) { try { process.kill(row.pid, 0); liveCwds.push(String(row.cwd)); } catch (e) { if (e.code === 'EPERM') liveCwds.push(String(row.cwd)); } }
+      } catch { registryComplete = false; }
+    }
+  } catch { registryComplete = false; }
+  return { hostNames, liveIds: registryComplete ? readLiveSessionIds() : null, liveCwds, psText, transcriptMtimeMs, lastLedgerMs, ledgerRead: ledgerRows.length > 0 };
+}
+
+async function macStallSweep() {
+  const linear = require('./lib/linear-client.js');
+  const S = require('./lib/stalled-session-sweep.js');
+  const { findReclaimCandidates } = require('./lib/linear-reclaim-abandoned.js');
+  const idleMs = stallIdleMs();
+  const nowMs = Date.now();
+  const view = localSessionView();
+  // Fail closed: without ps or the ledger, "not running" and "no recent dispatch" cannot be trusted.
+  if (view.psText === null || !view.ledgerRead || !view.liveIds) {
+    console.error(`mac-stall-sweep: cannot read ${view.psText === null ? 'ps' : !view.liveIds ? 'the session registry' : 'the dispatch ledger'}; nothing done`);
+    console.log('[]');
+    process.exitCode = 1;
+    return;
+  }
+  const issues = await linear.listOpenIssuesWithDescriptions();
+  const candidates = findReclaimCandidates(issues, { nowMs, idleMs }).filter((i) => i.state.name === 'In Progress');
+  const refs = candidates.length ? landRefs() : [];
+  const team = candidates.length ? (await linear.getTeam()).states.nodes : [];
+  const stateId = (name) => { const s = team.find((x) => x.name === name); if (!s) throw new Error(`no "${name}" state`); return s.id; };
+  const results = [];
+  let requeues = 0;
+  let landDispatchLive = null;
+  for (const c of candidates) {
+    const card = c.identifier;
+    try {
+      const { issue, named, entry } = await stallEntry(linear, card, refs, nowMs, idleMs, true);
+      if (entry.action !== 'check-local') { results.push({ card, action: 'skip', reason: entry.reason }); continue; }
+      const d = S.localStallAction({ entry, hostNames: view.hostNames, liveIds: view.liveIds, liveCwds: view.liveCwds, psText: view.psText,
+        transcriptMtimeMs: view.transcriptMtimeMs(entry.sessionId), lastLedgerMs: view.lastLedgerMs(card, entry.sessionId), nowMs, idleMs });
+      if (d.action === 'skip') { results.push({ card, action: 'skip', sessionId: entry.sessionId, reason: d.reason }); continue; }
+      if (named.length) {
+        if (landDispatchLive === null) landDispatchLive = dispatchInFlight();
+        if (landDispatchLive) { results.push({ card, action: 'skip', reason: 'land ref with a dispatched Land run in flight' }); continue; }
+      }
+      if (requeues >= S.MAX_REQUEUES_PER_RUN) { results.push({ card, action: 'skip', reason: 'requeue cap for this run' }); continue; }
+      requeues += 1;
+      if (!dry) {
+        // Re-read right before writing: the hourly reclaim or a dispatcher may have moved or re-claimed it.
+        const fresh = await stallEntry(linear, card, refs, Date.now(), idleMs, true);
+        if (fresh.entry.action !== 'check-local' || fresh.entry.sessionId !== entry.sessionId) {
+          results.push({ card, action: 'skip', reason: `changed before the write (${fresh.entry.reason || 'new claim'})` });
+          continue;
+        }
+        // Move first, then comment: the comment carries the reclaim marker (same order as main()).
+        await linear.updateIssue(issue.id, { stateId: stateId(entry.requeueTo) });
+        await linear.createComment(issue.id, S.buildStallRequeueComment(entry, d.reason, nowMs));
+      }
+      results.push({ card, action: 'requeue', to: entry.requeueTo, sessionId: entry.sessionId, idleHours: entry.idleHours, reason: d.reason });
+    } catch (err) {
+      results.push({ card, action: 'error', reason: String(err.message).split('\n')[0] });
+    }
+  }
+  if (results.some((r) => r.action === 'error')) process.exitCode = 1;
+  const tally = {};
+  for (const r of results) tally[r.action] = (tally[r.action] || 0) + 1;
+  console.error(`mac-stall-sweep: ${candidates.length} In Progress cards idle ${Math.round(idleMs / 3600000)}h+; ${JSON.stringify(tally)}${dry ? ' (dry-run: nothing written)' : ''}`);
+  console.log(JSON.stringify(results, null, 1));
+}
+
+function stallIdleMs() {
+  const { STALL_IDLE_MS } = require('./lib/stalled-session-sweep.js');
+  const hours = Number(flagValue('--threshold-hours'));
+  return Number.isFinite(hours) && hours > 0 ? hours * 3600000 : STALL_IDLE_MS;
+}
+
+async function stalledList() {
+  const linear = require('./lib/linear-client.js');
+  const { findReclaimCandidates } = require('./lib/linear-reclaim-abandoned.js');
+  const idleMs = stallIdleMs();
+  const nowMs = Date.now();
+  const issues = await linear.listOpenIssuesWithDescriptions();
+  const candidates = findReclaimCandidates(issues, { nowMs, idleMs }).filter((i) => i.state.name === 'In Progress');
+  const refs = candidates.length ? landRefs() : [];
+  const out = [];
+  const tally = {};
+  for (const c of candidates) {
+    try {
+      const { entry } = await stallEntry(linear, c.identifier, refs, nowMs, idleMs);
+      if (entry.action === 'check') out.push(entry);
+      else tally[entry.reason] = (tally[entry.reason] || 0) + 1;
+    } catch (err) {
+      tally.error = (tally.error || 0) + 1;
+      console.error(`${c.identifier}: could not read (${String(err.message).split('\n')[0]})`);
+    }
+  }
+  console.error(`stalled-sessions: ${candidates.length} In Progress cards idle ${Math.round(idleMs / 3600000)}h+, ${out.length} held by a cloud session; skipped ${JSON.stringify(tally)}`);
+  console.log(JSON.stringify(out, null, 1));
+}
+
+async function stallAct() {
+  const fs = require('fs');
+  const linear = require('./lib/linear-client.js');
+  const S = require('./lib/stalled-session-sweep.js');
+  const file = flagValue('--from-json');
+  if (!file) { console.error(USAGE); process.exit(2); }
+  const rows = JSON.parse(fs.readFileSync(file, 'utf8'));
+  if (!Array.isArray(rows)) throw new Error('--from-json must hold an array of {card, session|error}');
+  const nowMs = Date.now();
+  const refs = landRefs();
+  const team = (await linear.getTeam()).states.nodes;
+  const stateId = (name) => { const s = team.find((x) => x.name === name); if (!s) throw new Error(`no "${name}" state`); return s.id; };
+  const results = [];
+  const idleMs = stallIdleMs();
+  let landDispatchLive = null;
+  let nudges = 0;
+  let requeues = 0;
+  for (const row of rows) {
+    const card = row && row.card;
+    try {
+      // Re-read: the session may have woken (or someone closed the card) since the list.
+      const { issue, named, entry } = await stallEntry(linear, card, refs, nowMs, idleMs);
+      if (entry.action !== 'check') { results.push({ card, action: 'skip', reason: entry.reason }); continue; }
+      if (!row.sessionId) { results.push({ card, action: 'skip', reason: 'row has no sessionId: copy it from the list output' }); continue; }
+      if (row.sessionId !== entry.sessionId) { results.push({ card, action: 'skip', reason: 'claim changed since the list' }); continue; }
+      // Same guard as main(): a dispatched Land run lists under main, so a card with a land ref may be landing now.
+      if (named.length) {
+        if (landDispatchLive === null) landDispatchLive = dispatchInFlight();
+        if (landDispatchLive) { results.push({ card, action: 'skip', reason: 'land ref with a dispatched Land run in flight' }); continue; }
+      }
+      const d = S.stalledSessionAction({ entry, session: row.session, error: row.error, notFound: row.notFound, nowMs });
+      if (d.action === 'nudge' && nudges >= S.MAX_NUDGES_PER_RUN) { results.push({ card, action: 'skip', reason: 'nudge cap for this firing' }); continue; }
+      if (d.action === 'requeue' && requeues >= S.MAX_REQUEUES_PER_RUN) { results.push({ card, action: 'skip', reason: 'requeue cap for this firing' }); continue; }
+      if (d.action === 'skip') { results.push({ card, action: 'skip', reason: d.reason }); continue; }
+      if (d.action === 'requeue') {
+        requeues += 1;
+        if (!dry) {
+          // Move first, then comment: the comment carries the reclaim marker (same order as main()).
+          await linear.updateIssue(issue.id, { stateId: stateId(entry.requeueTo) });
+          await linear.createComment(issue.id, S.buildStallRequeueComment(entry, d.reason, nowMs));
+        }
+        results.push({ card, action: 'requeue', to: entry.requeueTo, sessionId: entry.sessionId, idleHours: entry.idleHours, reason: d.reason });
+        continue;
+      }
+      nudges += 1;
+      if (!dry) await linear.createComment(issue.id, S.buildStallNudgeComment(entry, nowMs));
+      results.push({ card, action: 'nudge', sessionId: entry.sessionId, idleHours: entry.idleHours, reason: d.reason, message: S.buildStallNudgeMessage(entry) });
+    } catch (err) {
+      results.push({ card, action: 'error', reason: String(err.message).split('\n')[0] });
+    }
+  }
+  if (dry) console.error('dry-run: nothing written');
+  console.log(JSON.stringify(results, null, 1));
+}
+
+// Unknown flags are refused: before BRO-7195 an unrecognised mode fell through to the ordinary 48h
+// reclaim, so a reverted mode left on a launchd job would have moved every abandoned card.
+const KNOWN_FLAGS = /^--(?:dry-run|max=\d+|stalled-sessions|stall-act|from-json(?:=.*)?|threshold-hours(?:=.*)?|mac-stall-sweep|help)$|^-h$/;
 async function main() {
+  const args = process.argv.slice(2);
+  const unknown = args.filter((a, i) => a.startsWith('-') && !KNOWN_FLAGS.test(a) && !(i > 0 && /^--(?:from-json|threshold-hours)$/.test(args[i - 1])));
+  if (unknown.length) { console.error(`unknown flag(s): ${unknown.join(' ')}\n${USAGE}`); process.exit(2); }
+  if (process.argv.includes('--stalled-sessions') || process.argv.includes('--stall-act') || process.argv.includes('--mac-stall-sweep')) {
+    if (/^(1|true)$/i.test(process.env.STALL_SWEEP_DISABLE || '')) { console.error('STALL_SWEEP_DISABLE set: stalled-session sweep disabled'); console.log('[]'); return; }
+    if (!process.env.LINEAR_API_KEY) throw new Error('LINEAR_API_KEY not set');
+    if (process.argv.includes('--mac-stall-sweep')) return macStallSweep();
+    return process.argv.includes('--stall-act') ? stallAct() : stalledList();
+  }
   if (/^(1|true)$/i.test(process.env.LINEAR_RECLAIM_KILL_SWITCH || '')) { console.log('LINEAR_RECLAIM_KILL_SWITCH set: reclaim disabled'); return; }
   if (!process.env.LINEAR_API_KEY) throw new Error('LINEAR_API_KEY not set');
   const linear = require('./lib/linear-client.js');

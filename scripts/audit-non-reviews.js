@@ -22,6 +22,7 @@
  *   --force          Re-check files already flagged
  */
 
+require('./lib/llm-usage-install'); // LLM spend meter: before any client is built (BRO-5043)
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const { getExcerpts } = require('./lib/excerpt-fields');
 const fs = require('fs');
@@ -56,7 +57,7 @@ const AUDIT_DIR = path.join(__dirname, '../data/audit');
 // version adds the wrong-page newspaper-OCR signals (weather/sports/listings).
 const { NON_REVIEW_PATTERNS, REVIEW_INDICATORS, heuristicClassify } = require('./lib/non-review-patterns');
 const { GEMINI_FLASH } = require('./lib/models');
-const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
+const { assertCorpusScanned, exitIfCorpusNotScanned } = require('./lib/corpus-scan-guard');
 const { listShowDirs } = require('./lib/list-show-dirs');
 
 // ============================================================
@@ -144,6 +145,16 @@ async function main() {
   console.log(`Mode: ${DRY_RUN ? 'DRY RUN' : 'LIVE'} | LLM: ${SKIP_LLM ? 'OFF' : 'ON'}`);
   if (SHOW_FILTER) console.log(`Show filter: ${SHOW_FILTER}`);
   console.log('');
+
+  // BRO-3549: a missing corpus root used to throw ENOENT out of listShowDirs and
+  // exit 1, the same code as real drift, so check-corpus-drift.js could not tell
+  // "private repo not checked out" from "a scored non-review appeared". Exit with
+  // the shared "could not run" code (2) instead.
+  try {
+    assertCorpusScanned(0, { corpusRootMissing: !fs.existsSync(REVIEW_TEXTS_DIR) });
+  } catch (e) {
+    exitIfCorpusNotScanned(e);
+  }
 
   const shows = listShowDirs(REVIEW_TEXTS_DIR)
     .filter(d => !SHOW_FILTER || d === SHOW_FILTER);
@@ -303,9 +314,7 @@ async function main() {
   try {
     assertCorpusScanned(filesExamined, { gate: STRICT || GATE });
   } catch (e) {
-    if (!(e instanceof CorpusNotScannedError)) throw e;
-    console.error(`\nFAIL: ${e.message}`);
-    process.exit(1);
+    exitIfCorpusNotScanned(e); // BRO-3549: 2 = could not run, never 1 (drift)
   }
 
   // CI gate: fail only on DEFINITIVE wrong-page / junk classes — these never have

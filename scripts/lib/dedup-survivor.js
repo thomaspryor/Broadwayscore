@@ -23,7 +23,7 @@
  *    secondary (and unknown-outlet shadow) is processed after the files it
  *    defers to, so it is skipped only when one of them really survived.
  */
-const { getSyndicationPrimaries, isPrimaryFileFor } = require('./syndication-pairs');
+const { getSyndicationPrimaries, isPrimaryFileFor, getSyndicationPrimariesInDir } = require('./syndication-pairs');
 
 /**
  * Per-file transactional claims on the dedup maps/sets. begin() at the top of
@@ -81,7 +81,7 @@ function createClaimLedger() {
 function primaryFilesFor(file, meta, files) {
   if (!meta || !meta.criticName || !meta.outletKey) return [];
   const critic = String(meta.criticName).toLowerCase().trim();
-  const primaries = getSyndicationPrimaries(critic, meta.outletKey);
+  const primaries = getSyndicationPrimariesInDir(critic, meta.outletKey, files, require('./review-normalization').normalizeOutlet);
   if (!primaries.length) return [];
   return files.filter(f => f !== file && isPrimaryFileFor(f, primaries, critic));
 }

@@ -42,6 +42,7 @@ const { checkBizOgCoverage, RENDER_HINT: BIZ_OG_RENDER_HINT } = require('./lib/a
 const { fitCheckStatus: waltzFitCheckStatus } = require('./lib/waltz-model-fit');
 const { revisitBarStatus } = require('./lib/recoupment-timing-report');
 const { summarizeMissedForHealth } = require('./lib/missed-broadcasts');
+const { approvedFixDriftResults } = require('./lib/approved-fix-drift-health');
 const { selectUnroutedVisitorRows } = require('./lib/start-now-filing.js');
 const { playbookWorkerHint, hasPlaybookAction, ownerDigestInstruction } = require('./lib/playbook-copy.js');
 const { untrackedPersistentRowsResult, ROW_NAME: UNTRACKED_ROWS_ROW_NAME } = require('./lib/untracked-persistent-rows.js');
@@ -316,6 +317,10 @@ const AUTO_FIX_PLAYBOOK = [
   // generated from AUDIT_FRESHNESS_CHECKS so a new row can never ship without
   // its playbook entry (asserted in tests/unit/audit-freshness-checks.test.mjs).
   ...require('./lib/audit-freshness-checks').auditFreshnessPlaybookEntries(),
+  // BRO-7139: no workflow redispatch (re-running the whole health job to refresh
+  // one report-only ledger is not worth it); a worker investigates.
+  { match: /^Freshness: board-dispatch ledger$/, urgency: 'this-week',
+    humanAction: 'The nightly board report (which scheduled job owns each open card) has stopped writing its ledger. A fix session checks the board-dispatch job in data-health-check.yml; nothing is needed from the owner.' },
   // No `workflow` — there's no automated fix, this just needs a human to look
   // at the scoring workflow's polling. 'this-week' (not fix-now): a batch
   // between 12-48h in flight is within the vendor's normal turnaround, not an
@@ -342,8 +347,11 @@ const AUTO_FIX_PLAYBOOK = [
 
   // Quality — needs investigation
   { match: /^Quality: standingCoverage drift$/, urgency: 'this-week',
-    ownerText: "Some critic outlets may need to be added to or removed from the list of outlets that review every Broadway opening, based on what they actually cover. Nothing is needed from you.",
-    workerInstruction: "Check the standingCoverage drift and update outlet-registry.json." },
+    ownerText: "Some critic outlets may need to be added to or removed from the list of outlets that review every opening in a market, based on what they actually cover. Nothing is needed from you.",
+    workerInstruction: "Run node scripts/audit-standing-coverage.js --market=<market from the warning>; apply the change with an outlet-registry-flag plan that sets market to that market." },
+  { match: /^Quality: expected critics missing$/, urgency: 'this-week',
+    ownerText: "A critic that reviews nearly every opening has no review on the site for a show that opened recently. It is either missing from the site or the critic skipped the show. Nothing is needed from you.",
+    workerInstruction: "Run node scripts/audit-expected-critics.js; ingest each missing review or ack it with evidence that the outlet did not review the show." },
   { match: /^Quality: outlet feed staleness$/, urgency: 'this-week',
     ownerText: "A critic outlet's news feed stopped updating while the outlet keeps publishing reviews, so new reviews from it may arrive late. Nothing is needed from you.",
     workerInstruction: "Open the outlet-listing poller feed-health snapshot (OUTLET_FEED_HEALTH_REL in scripts/lib/outlet-listing-helpers.js), take each outlet in stale[] or failing[], probe a replacement with `node scripts/probe-outlet-feeds.js --outlets <id>` and update its OUTLET_STRATEGY_CONFIG entry in scripts/outlet-listing-poller.js (BRO-6352; BRO-6340 fixed thewrap/observer this way)." },
@@ -1914,7 +1922,7 @@ function checkQuality() {
       }
       const silencedNote = `${snap.silencedByContaminationCount ?? 0} silenced by contamination`;
       if (snap.flaggedCount > 0) {
-        return { name, status: 'warn', message: `${snap.flaggedCount} show(s) still 'announced' after apparently opening (${silencedNote}, ${formatAge(age)} ago)`, hint: 'node scripts/audit-stale-announced-shows.js to see `flagged` and triage with --ack=<id> --ack-note="..."' };
+        return { name, status: 'warn', message: `${snap.flaggedCount} show(s) stuck announced/upcoming/previews after apparently opening (${silencedNote}, ${formatAge(age)} ago)`, hint: 'node scripts/audit-stale-announced-shows.js to see `flagged` and triage with --ack=<id> --ack-note="..."' };
       }
       return { name, status: 'pass', message: `No stale 'announced' shows (${silencedNote}, ${formatAge(age)} ago)` };
     }),
@@ -2143,20 +2151,50 @@ function checkOutletHealth() {
       if (!core) {
         return { name: 'Quality: standingCoverage drift', status: 'pass', message: 'Skipped (core data not checked out)' };
       }
-      const { evaluateStandingCoverage } = require('./audit-standing-coverage');
-      const result = evaluateStandingCoverage(core.shows, core.reviews, core.outlets, Date.now());
-      const drifted = result.promote.length + result.demote.length;
+      // Per market (BRO-7166): West End and Off-Broadway have their own standing sets.
+      const { evaluateStandingCoverage, STANDING_MARKETS } = require('./audit-standing-coverage');
+      const parts = [];
+      let drifted = 0;
+      for (const category of STANDING_MARKETS) {
+        const result = evaluateStandingCoverage(core.shows, core.reviews, core.outlets, Date.now(), { category });
+        drifted += result.promote.length + result.demote.length;
+        if (result.promote.length) parts.push(`${category} promote: ${result.promote.join(', ')}`);
+        if (result.demote.length) parts.push(`${category} demote: ${result.demote.join(', ')}`);
+      }
       if (drifted === 0) {
         return { name: 'Quality: standingCoverage drift', status: 'pass', message: 'No standingCoverage drift' };
       }
-      const parts = [];
-      if (result.promote.length) parts.push(`promote: ${result.promote.join(', ')}`);
-      if (result.demote.length) parts.push(`demote: ${result.demote.join(', ')}`);
       return {
         name: 'Quality: standingCoverage drift',
         status: 'warn',
         message: `${drifted} outlet(s) drifted from outlet-registry.json standingCoverage flags (${parts.join('; ')})`,
-        hint: 'Run `node scripts/audit-standing-coverage.js` and update outlet-registry.json standingCoverage flags.',
+        hint: 'Run `node scripts/audit-standing-coverage.js --market=<market>` and apply an outlet-registry-flag plan with that market.',
+      };
+    }),
+
+    // Usual critics with no review of a recent opening (BRO-7166). The ledger's
+    // one-email-per-cell alert let School Girls / NY Post sit unasked for six
+    // weeks; this row repeats every day until the cell is live or acked as not
+    // reviewed. Advisory (warn only).
+    runCheck('Quality: expected critics missing', () => {
+      const name = 'Quality: expected critics missing';
+      if (!core) return { name, status: 'pass', message: 'Skipped (core data not checked out)' };
+      const { findExpectedCriticGaps } = require('./lib/expected-critics');
+      const { loadAcks } = require('./lib/t1-scoreboard');
+      const gaps = findExpectedCriticGaps({ shows: core.shows, reviews: core.reviews, outlets: core.outlets, acks: loadAcks(), nowMs: Date.now() })
+        .filter((g) => g.status === 'missing');
+      if (gaps.length === 0) return { name, status: 'pass', message: 'Every usual critic has reviewed (or is acked) for openings 4-42 days old' };
+      const byShow = new Map();
+      for (const g of gaps) {
+        if (!byShow.has(g.showId)) byShow.set(g.showId, []);
+        byShow.get(g.showId).push(g.outletId);
+      }
+      const list = [...byShow].slice(0, 8).map(([id, o]) => `${id} (${o.join(', ')})`).join('; ');
+      return {
+        name,
+        status: 'warn',
+        message: `${gaps.length} usual-critic review(s) missing across ${byShow.size} opening(s): ${list}${byShow.size > 8 ? '; ...' : ''}`,
+        hint: 'Run `node scripts/audit-expected-critics.js`; ingest the review, or `--ack=show::outlet --note="<evidence>"` when the outlet did not review it.',
       };
     }),
 
@@ -5156,6 +5194,7 @@ function checkCoverageHoles() {
 // reaches nobody. Pure so tests can feed it.
 function corpusAuditResults(runs) {
   const out = [];
+  if (runs?.approvedFixDrift) out.push(...approvedFixDriftResults(runs.approvedFixDrift));
   const dup = runs && runs.duplicateFlag;
   const NAME = 'Data: duplicate-flag leaks (a wrong twin dropping a good review)';
   if (dup) {
@@ -5192,6 +5231,7 @@ function runCorpusAudit(script, args) {
 function checkCorpusAudits() {
   if (!fs.existsSync(path.join(__dirname, '..', 'data', 'review-texts'))) return [];
   return corpusAuditResults({
+    approvedFixDrift: runCorpusAudit('audit-approved-fix-drift.js', ['--json']),
     duplicateFlag: runCorpusAudit('audit-duplicate-flag-inheritance.js', []),
     squatters: runCorpusAudit('audit-stale-slot-squatters.js', ['--json']),
   });
@@ -6259,6 +6299,17 @@ async function checkNeverRunWorkflowHealth() {
 // Reads only committed audit files, so it lives in computeCoreHealthResults
 // where the live probe (check-health-row-absent --live) sees it; it used to
 // run in main()'s CI-only block and could never be verified fixed (BRO-4689).
+// BRO-7139: the nightly board-dispatch job is continue-on-error, so a stopped
+// dispatcher never reddens a run. This reads the committed ledger's last
+// scheduled (source 'ci') row. Pure rules: scripts/lib/board-dispatch-freshness.js.
+function checkBoardDispatchFreshness({ ledgerPath = path.join(AUDIT_DIR, 'board-dispatch.jsonl'), now = Date.now(), env = process.env } = {}) {
+  const { evaluateBoardDispatchFreshness, BOARD_DISPATCH_FRESHNESS_ROW } = require('./lib/board-dispatch-freshness');
+  return [runCheck(BOARD_DISPATCH_FRESHNESS_ROW, () => {
+    const ledgerText = fs.existsSync(ledgerPath) ? fs.readFileSync(ledgerPath, 'utf8') : null;
+    return evaluateBoardDispatchFreshness({ ledgerText, nowMs: now, disabled: env.BOARD_DISPATCH_DISABLED === 'true' });
+  })];
+}
+
 function checkReverseDiscovery() {
   try {
     const rdReport = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/reverse-discovery-candidates.json'), 'utf8'));
@@ -6281,6 +6332,7 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
   return [
     ...checkFreshness(),
     ...checkAuditFreshness(),
+    ...checkBoardDispatchFreshness(),
     ...checkPushVerification(),
     ...checkOpeningNightHistoryFreshness(),
     ...checkSync(),
@@ -6535,4 +6587,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { checkSync, reviewTextsSkipReason, evaluateOutletFeedHealth, checkScheduledFailureStreak, checkNeverRunWorkflowHealth, checkAPICredits, corpusAuditResults, generateApproveUrl, checkAuditFreshness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, starBandDriftResults, earlyPublishDatesResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkCiMidSetupCancels, jobHeadroomRow, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixEffectiveness, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift, checkCommercialPendingQueue, checkExemptCronLiveness, checkUncollectedStrands };
+module.exports = { checkBoardDispatchFreshness, checkSync, reviewTextsSkipReason, evaluateOutletFeedHealth, checkScheduledFailureStreak, checkNeverRunWorkflowHealth, checkAPICredits, corpusAuditResults, generateApproveUrl, checkAuditFreshness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, starBandDriftResults, earlyPublishDatesResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkCiMidSetupCancels, jobHeadroomRow, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixEffectiveness, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift, checkCommercialPendingQueue, checkExemptCronLiveness, checkUncollectedStrands, checkOutletHealth };

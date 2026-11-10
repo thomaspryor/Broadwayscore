@@ -72,8 +72,10 @@ function buildOutletMaps(reg) {
  * reviews wrongProduction on the very London shows it was discovered from
  * (task #817: liamodell/jonathan-baz on Now You See Me Live, 2026-08-04).
  *
- * Only returns 'london' when the market evidence is unanimously London; anything
- * else returns null (leave region unset — same behavior as before). A 'us'
+ * Only returns 'london' when categories are unanimously London AND the registry
+ * domain is UK-specific or at least three distinct London shows support it.
+ * NYC evidence vetoes either route, including the reverse guard's stale flags.
+ * Anything else returns null. A 'us'
  * inference is deliberately NOT made: the cross-market guard's US-side behavior
  * is already the default for region-less outlets, and stamping region:'us'
  * would disable the guard's urlIsUK domain fallback for that outlet's future
@@ -82,13 +84,32 @@ function buildOutletMaps(reg) {
  *
  * @param {string[]} categories - show categories the outlet's reviews are filed under
  * @param {(cat: string) => boolean} isLondonMarket - venue-classification.js's predicate
+ * @param {{domain?: string, london?: Iterable<string>, nyc?: Iterable<string>}} [evidence]
  * @returns {'london'|null}
  */
-function inferOutletRegionFromCategories(categories, isLondonMarket) {
+function inferOutletRegionFromCategories(categories, isLondonMarket, evidence = {}) {
   const cats = [...new Set((categories || []).filter(Boolean))];
   if (cats.length === 0) return null;
-  if (cats.every(c => isLondonMarket(c))) return 'london';
-  return null;
+  if (!cats.every(c => isLondonMarket(c)) || new Set(evidence.nyc || []).size > 0) return null;
+  return meetsLondonStampBar(evidence.domain, new Set(evidence.london || []).size) ? 'london' : null;
+}
+
+/**
+ * The evidence bar a london stamp must clear (BRO-5896): a UK-specific
+ * registered domain, or at least three distinct London shows. Uses the
+ * registered domain, never article URL paths or words such as "london" in a
+ * .com hostname. One imported review is not enough. Shared by the inference
+ * above and by retractContradictedOutletRegions, which may retract a stamp
+ * that falls below this bar once NYC evidence outweighs it.
+ * @param {string|null|undefined} domain
+ * @param {number} londonShowCount - distinct London shows
+ * @param {string[]} [aliases] - registry domainAliases; a UK alias counts as a UK domain
+ * @returns {boolean}
+ */
+function meetsLondonStampBar(domain, londonShowCount, aliases) {
+  const isUk = (d) => /^[a-z0-9.-]+\.(?:uk|london|wales|scot)$/i.test(d || '');
+  const ukDomain = isUk(domain) || (Array.isArray(aliases) && aliases.some(isUk));
+  return ukDomain || londonShowCount >= 3;
 }
 
 /**
@@ -124,9 +145,10 @@ function inferOutletRegionFromCategories(categories, isLondonMarket) {
  * @param {Record<string, Set<string>|string[]>} outletShowCategories - outlet id -> show categories it's been reviewed under
  * @param {(cat: string) => boolean} isLondonMarket
  * @param {string} [nowIso] - injectable clock for tests; defaults to new Date().toISOString()
+ * @param {Record<string, {london?: Iterable<string>, nyc?: Iterable<string>}>} [outletMarketShows]
  * @returns {string[]} ids that were backfilled with region:'london'
  */
-function backfillMissingOutletRegions(outlets, outletShowCategories, isLondonMarket, nowIso) {
+function backfillMissingOutletRegions(outlets, outletShowCategories, isLondonMarket, nowIso, outletMarketShows = {}) {
   const backfilled = [];
   for (const [id, info] of Object.entries(outlets || {})) {
     // regionCorrectedBy: a human correction, or a retraction by
@@ -134,7 +156,8 @@ function backfillMissingOutletRegions(outlets, outletShowCategories, isLondonMar
     // retracted stamp would come straight back on the next run (BRO-5896).
     if (!info || info.region || info.isDualMarket || info.regionCorrectedBy) continue;
     const inferredRegion = inferOutletRegionFromCategories(
-      [...(outletShowCategories[id] || [])], isLondonMarket);
+      [...(outletShowCategories[id] || [])], isLondonMarket,
+      { ...outletMarketShows[id], domain: info.domain });
     if (inferredRegion) {
       info.region = inferredRegion;
       info.regionInferredBy = 'backfillMissingOutletRegions (BRO-133)';
@@ -152,7 +175,9 @@ function backfillMissingOutletRegions(outlets, outletShowCategories, isLondonMar
  * rebuild's per-file loop.
  *
  * - London: a London-category show (west-end / off-west-end) AND trustworthy
- *   content (isReviewContentTrustworthy). Never a wrongProduction file.
+ *   content, or only the forward guard's own "Cross-market: US outlet" flag.
+ *   Counting that flag prevents a new non-UK-domain London blog from losing its
+ *   evidence after registration, before it reaches the three-show threshold.
  * - NYC: a broadway / off-broadway show AND either trustworthy content, or a
  *   file whose wrongProduction flag is the reverse guard's own
  *   "Cross-market: London outlet" note on a non-UK URL. That flag is the
@@ -162,7 +187,9 @@ function backfillMissingOutletRegions(outlets, outletShowCategories, isLondonMar
  *
  * @param {{trustworthy: boolean, trustworthyApartFromWrongProduction: boolean,
  *          category: string, isLondonMarket: (c: string) => boolean,
- *          wrongProductionNote?: string, urlIsUk?: boolean}} p
+ *          wrongProductionNote?: string, urlIsUk?: boolean,
+ *          wrongProductionReason?: string, wrongProductionOverride?: boolean,
+ *          wrongProductionProvenance?: string, review?: object}} p
  *   trustworthyApartFromWrongProduction: isReviewContentTrustworthy with the
  *   wrongProduction flag ignored (so wrongShow / fabricated / roundup still bar it)
  * @returns {'london'|'nyc'|null}
@@ -170,11 +197,21 @@ function backfillMissingOutletRegions(outlets, outletShowCategories, isLondonMar
 function regionEvidenceMarket(p) {
   const cat = p.category;
   if (!cat) return null;
-  if (p.isLondonMarket(cat)) return p.trustworthy ? 'london' : null;
+  const review = p.review || p;
+  if (p.isLondonMarket(cat)) {
+    const { isWrongProductionHeld, hasEnsembleConsensus } = require('./wrong-production-autoclear');
+    const forwardGuardOnly = p.trustworthyApartFromWrongProduction
+      && !review.wrongProductionReason && !review.wrongProductionOverride
+      && review.wrongProductionProvenance !== 'content'
+      && !isWrongProductionHeld(review) && !hasEnsembleConsensus(review, 'wrong_production')
+      && review.contentVerification?.wrongProduction !== true
+      && /^Cross-market: US outlet "[^"]+" reviewing London show$/.test(review.wrongProductionNote || '');
+    return p.trustworthy || forwardGuardOnly ? 'london' : null;
+  }
   if (cat !== 'broadway' && cat !== 'off-broadway') return null;
   if (p.trustworthy) return 'nyc';
   const staleLondonFlag = p.trustworthyApartFromWrongProduction && !p.urlIsUk
-    && String(p.wrongProductionNote || '').startsWith('Cross-market: London outlet');
+    && String(review.wrongProductionNote || '').startsWith('Cross-market: London outlet');
   return staleLondonFlag ? 'nyc' : null;
 }
 
@@ -190,19 +227,21 @@ function regionEvidenceMarket(p) {
  * trustworthy evidence the stamp was built from, so the bad stamp kept
  * looking unanimous: the evidence loop fed itself.
  *
- * The caller therefore counts NYC evidence more widely than London evidence:
+ * The caller therefore counts each guard's own region-assumption flags:
  * a Broadway / off-Broadway review whose only problem is the stale "London
  * outlet" flag (non-UK URL) counts as NYC evidence here, while London
- * evidence stays trustworthy-only (wrongProduction-flagged London-show files
- * are the title-collision false positives isReviewContentTrustworthy was
- * written to keep out). Evidence is counted in distinct SHOWS, not files, so
+ * evidence admits the forward guard's own flag, but not other wrong-production
+ * findings such as title collisions. Evidence is counted in distinct SHOWS, not files, so
  * several critics or duplicate files on one show weigh once.
  *
- * Retracts only on a clean contradiction: 2+ NYC shows and no London show. Any
- * London show keeps the stamp, because then the stale-flagged NYC files may be
- * true positives (a UK blog on a .com domain whose London review was filed
- * under the Broadway id), which isUkOutletUrl cannot tell apart; those are
- * left to a human via scripts/audit-london-outlet-flags.js. Only stamps
+ * Retracts on 2+ NYC shows and either no London show (a clean contradiction)
+ * or a weak stamp outvoted: one below meetsLondonStampBar (non-UK domain,
+ * under three London shows) with more NYC shows than London ones. A stamp
+ * that clears the bar keeps it while any London show exists, because then the
+ * stale-flagged NYC files may be true positives (a UK blog on a .com domain
+ * whose London review was filed under the Broadway id), which isUkOutletUrl
+ * cannot tell apart; those are left to a human via
+ * scripts/audit-london-outlet-flags.js. Only stamps
  * this module made (regionInferredBy) are touched; hand-set regions never are.
  * The retracted outlet goes region-less and is marked regionCorrectedBy, so
  * backfillMissingOutletRegions never re-stamps it and the rebuild's reverse
@@ -223,11 +262,20 @@ function retractContradictedOutletRegions(outlets, outletMarketShows, nowIso) {
     const ev = (outletMarketShows || {})[id] || {};
     const londonShows = new Set(ev.london || []).size;
     const nycShows = new Set(ev.nyc || []).size;
-    // Only a clean contradiction acts: no London show left and 2+ NYC shows.
-    // With any London show, the stale-flagged NYC files may be true positives
-    // (a UK .com blog's London review filed under the Broadway id), and
-    // isUkOutletUrl cannot tell; a human decides those (audit-london-outlet-flags.js).
-    if (londonShows > 0 || nycShows < 2) continue;
+    // Acts on 2+ NYC shows and either no London show left (a clean
+    // contradiction), or a WEAK stamp outvoted: one that would not clear
+    // today's stamp bar (non-UK domain, under three London shows) with more
+    // NYC shows than London ones. Pre-bar BRO-133 stamps were made from a
+    // single West End review; without the weak-stamp route a US outlet with
+    // one London review kept the stamp forever and lost every NYC review.
+    // A stamp that clears the bar (UK domain, or 3+ London shows) keeps it
+    // whenever any London show exists: its stale-flagged NYC files may be
+    // true positives (a UK .com blog's London review filed under the
+    // Broadway id), which isUkOutletUrl cannot tell; a human decides those
+    // (audit-london-outlet-flags.js).
+    if (nycShows < 2) continue;
+    const weakOutvoted = !meetsLondonStampBar(info.domain, londonShows, info.domainAliases) && nycShows > londonShows;
+    if (londonShows > 0 && !weakOutvoted) continue;
     delete info.region;
     info.regionCorrectedBy = `retractContradictedOutletRegions (BRO-5896): ${nycShows} NYC show(s) vs ${londonShows} London show(s) contradict the ${info.regionInferredBy} london stamp`;
     info.regionCorrectedAt = nowIso || new Date().toISOString();
@@ -332,6 +380,7 @@ function isWestEndLocalRegion(region) {
 module.exports = {
   buildOutletMaps,
   inferOutletRegionFromCategories,
+  meetsLondonStampBar,
   backfillMissingOutletRegions,
   retractContradictedOutletRegions,
   regionEvidenceMarket,

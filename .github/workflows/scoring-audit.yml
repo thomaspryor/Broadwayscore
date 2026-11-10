@@ -131,6 +131,7 @@ jobs:
           # BRO-5962: scoring-audit.md is gitignored (/data/audit/*.md), so a plain `git add`
           # of it exited 1 on every run since March. It is staged on its own with -f; the rest
           # go through git-add-existing.sh, which stages each path alone.
+          git add data/audit/gemini-usage-ledger.jsonl 2>/dev/null || true # LLM spend meter rows (BRO-5043)
           git add -f data/audit/scoring-audit.md
           bash scripts/lib/git-add-existing.sh data/audit/scoring-audit.json data/audit/scoring-audit-history.json data/audit/needs-human-review.json data/audit/rebuild-score-drift.json
           # BRO-4405: the rebuild above auto-registers / stages outlets; without

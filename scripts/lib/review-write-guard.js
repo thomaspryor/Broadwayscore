@@ -237,6 +237,10 @@ const PROTECTED_FIELDS = [
   // _previousWrongFlags — isIntentionalClear() keys on it, so losing it on a
   // rebase would let the restore resurrect old-URL-derived flags/scores.
   '_urlChangedClear',
+  // error-page-verdict.js breadcrumb (BRO-7171): verdicts judged on a saved
+  // error page, voided when real text was accepted. isIntentionalClear() keys
+  // on it; lost on a rebase, the restore would resurrect the voided verdicts.
+  'errorPageVerdictVoid',
   'wrongAttribution',
   'wrongAttributionReason',
   'manualContentTier',
@@ -430,6 +434,12 @@ const PROTECTED_FIELDS = [
   'clearBreadcrumbRetracted',
   'clearBreadcrumbRetractedAt',
   'clearBreadcrumbRetractedFields',
+  // BRO-7171 Stage 4: the terminal "text cannot be recovered" record
+  // (gap-terminal.js) is an owner/evidence decision a rebase must not drop;
+  // clearing it needs textUnrecoverableClearReason (CLEAR_BREADCRUMBS below),
+  // and a url change clears it (url-change-invariant URL_DERIVED_FIELDS).
+  'textUnrecoverable',
+  'textUnrecoverableClearReason',
   // NOTE: incompleteReason + incompleteDetail are intentionally NOT in this list.
   // They are derived fields that rebuild re-classifies every run. Having them here
   // caused stale 'wrong_content' flags to be preserved even after collect-review-texts.js
@@ -1028,6 +1038,21 @@ function _rejectionSelfHealedMatches(d, committed) {
     && (h.rejectionReasoning || null) === (committed.rejectionReasoning || null);
 }
 
+// BRO-7171: gap-acceptance.js recoverReviewText replaced the text and stamped
+// textRecoveryProvenance {newFullTextHash, at}. Its deletion of the stale
+// incompleteReason/incompleteDetail is honored only while that stamp names
+// the text being written and is newer than the committed copy's stamp.
+function _textRecoveredFresh(d, committed) {
+  const p = d && d.textRecoveryProvenance;
+  if (!p || typeof d.fullText !== 'string' || !p.newFullTextHash) return false;
+  if (require('crypto').createHash('sha256').update(d.fullText).digest('hex') !== p.newFullTextHash) return false;
+  const at = Date.parse(p.at);
+  if (!Number.isFinite(at)) return false;
+  const prior = committed && committed.textRecoveryProvenance;
+  const priorAt = prior ? Date.parse(prior.at) : NaN;
+  return !Number.isFinite(priorAt) || at > priorAt;
+}
+
 const CLEAR_BREADCRUMBS = {
   duplicateOf: (d) => !_isEmptyValue(d.duplicateClearReason),
   // duplicateTextOf (task #1624, found by ship-check codebase review): the
@@ -1058,6 +1083,9 @@ const CLEAR_BREADCRUMBS = {
   crossOutletSimilarity: (d) => !_isEmptyValue(d.crossOutletClearReason),
   crossOutletMethod: (d) => !_isEmptyValue(d.crossOutletClearReason),
   crossOutletFlaggedAt: (d) => !_isEmptyValue(d.crossOutletClearReason),
+  // BRO-7171 Stage 4: a terminal record withdrawn on purpose (owner reversed it,
+  // or the text turned up) by scripts/gap-terminal.js --clear or clearFailureFlags.
+  textUnrecoverable: (d) => !_isEmptyValue(d.textUnrecoverableClearReason),
   isNotReview: _isNotReviewCleared,
   // BRO-6742: a tombstoned url the record has since adopted as its own (an
   // interview slot giving way to the same critic's review) is no longer a
@@ -1088,6 +1116,8 @@ const CLEAR_BREADCRUMBS = {
     'incompleteReason', 'incompleteDetail', 'llmPullQuote', 'wordCount', 'trNoRecordForProduction', 'stuckRescoreCleared', 'stuckRescoreClearedAt', 'wrongShowReason', 'wrongShowNote'].map((k) => [k, _trWrongProductionTextReplaced])),
   ...Object.fromEntries(['rejectedAt', 'rejectedBy', 'rejectionReason', 'rejectionReasoning'].map((k) => [k,
     (d, committed) => _trWrongProductionTextReplaced(d, committed) || _rejectionSelfHealedMatches(d, committed)])),
+  ...Object.fromEntries(['incompleteReason', 'incompleteDetail'].map((k) => [k,
+    (d, committed) => _trWrongProductionTextReplaced(d, committed) || _textRecoveredFresh(d, committed)])),
   crossOutletVerified: _clearBreadcrumbRetracted('crossOutletVerified'),
   // crossOutletVerifiedNote (task #1624, found by ship-check codebase review):
   // shares the SAME field-scope key as crossOutletVerified above — every
@@ -1256,9 +1286,16 @@ function _deliberateTextTrim(field, localData, committedData) {
   // A breadcrumb that names the text it produced (BRO-5198 toLength) only
   // covers that text: a later fetch replacing it is not a deliberate trim.
   if (typeof t.toLength === 'number' && localData.fullText.length !== t.toLength) return false;
-  return !!committedData && typeof committedData.fullText === 'string'
+  const lengthMatch = !!committedData && typeof committedData.fullText === 'string'
     && committedData.fullText.length === t.fromLength
     && committedData.fullText.length > localData.fullText.length;
+  if (!lengthMatch) return false;
+  // BRO-7171: a breadcrumb that names the exact prior text by hash covers only
+  // that text; a different body of the same length is a real re-collection.
+  if (typeof t.priorFullTextHash === 'string') {
+    return require('crypto').createHash('sha256').update(committedData.fullText).digest('hex') === t.priorFullTextHash;
+  }
+  return true;
 }
 
 // The breadcrumb half alone. safeWriteReview's own merge uses this: there the
@@ -1268,6 +1305,10 @@ function _isBreadcrumbClear(field, localData, committedData) {
   if (!localData) return false;
   const pred = CLEAR_BREADCRUMBS[field];
   if (typeof pred === 'function' && pred(localData, committedData)) return true;
+  // BRO-7171: a verdict judged on a saved error page, voided when real text was
+  // accepted (errorPageVerdictVoid). Restore-scope only, and only while the
+  // committed copy holds exactly the voided value; not a human clear.
+  if (require('./error-page-verdict').isErrorPageVoidedField(field, localData, committedData)) return true;
   return _urlChangeCleared(field, localData, committedData);
 }
 
@@ -1542,6 +1583,38 @@ function stripDowJonesChromeForWrite(filePath, newData) {
   for (const f of ['textWordCount', 'wordCount']) if (typeof out[f] === 'number') out[f] = words;
   console.log(`[review-write-guard] ${label}: cut ${incoming.length - stripped.length} chars of Dow Jones page chrome from fullText`);
   return out;
+}
+
+/**
+ * Replace a review file atomically: write a unique dot-prefixed temp file in
+ * the same directory, then rename over the target (BRO-7171). A crash or a
+ * concurrent reader never sees a half-written JSON. The target is resolved
+ * through symlinks first so a rename never replaces a link with a file.
+ * @param {string} filePath
+ * @param {string} contents
+ */
+function writeReviewFileAtomic(filePath, contents) {
+  let target = filePath;
+  try { target = fs.realpathSync(filePath); } catch (e) { if (e.code !== 'ENOENT') throw e; }
+  if (target === filePath) {
+    // A dangling file symlink: write through it like writeFileSync did,
+    // never replace the link with a plain file.
+    try {
+      if (fs.lstatSync(filePath).isSymbolicLink()) target = path.resolve(path.dirname(filePath), fs.readlinkSync(filePath));
+    } catch { /* not there yet */ }
+  }
+  if (target === filePath) {
+    // New file: resolve its directory (data/review-texts is a symlink).
+    try { target = path.join(fs.realpathSync(path.dirname(filePath)), path.basename(filePath)); } catch { /* dir missing: write fails below */ }
+  }
+  const tmp = path.join(path.dirname(target), `.${path.basename(target)}.tmp-${process.pid}-${Math.random().toString(36).slice(2, 10)}`);
+  try {
+    fs.writeFileSync(tmp, contents);
+    fs.renameSync(tmp, target);
+  } catch (e) {
+    try { fs.unlinkSync(tmp); } catch { /* never created */ }
+    throw e;
+  }
 }
 
 function safeWriteReview(filePath, newData, options = {}) {
@@ -2133,9 +2206,17 @@ function safeWriteReview(filePath, newData, options = {}) {
           const manualMerge = options.manualUrlChangeFields
             ? require('./manual-review-fields').prepareManualUrlChangeFields(newData, options.manualUrlChangeFields)
             : null;
+          // options.preserveUrlDerivedFields (BRO-7171): a recovery that PROVED
+          // the new url is the same review (gap-acceptance identity proof)
+          // keeps the review's aggregator excerpts/stars across the move, the
+          // rule recover-serp-text/rediscover-review-urls already applied via
+          // updateFileUrlWithInvariant's preserveFields.
+          const preserveUrlDerived = Array.isArray(options.preserveUrlDerivedFields) && options.preserveUrlDerivedFields.length
+            ? new Set([...(manualMerge && manualMerge.preserveFields ? manualMerge.preserveFields : []), ...options.preserveUrlDerivedFields])
+            : (manualMerge && manualMerge.preserveFields);
           const inv = applyUrlChangeInvariant(existing, newData, {
             fileLabel: path.basename(filePath),
-            preserveFields: manualMerge && manualMerge.preserveFields,
+            preserveFields: preserveUrlDerived,
           });
           // BRO-3151: equality with the old body is not evidence of stale
           // content when a manual ingest explicitly supplied that body. Apply
@@ -2715,7 +2796,7 @@ function safeWriteReview(filePath, newData, options = {}) {
   // creation. Never guessed from where the process runs; never blocks the write.
   if (!fs.existsSync(filePath)) require('./review-provenance').stampIngestOrigin(newData);
 
-  fs.writeFileSync(filePath, JSON.stringify(newData, null, 2) + '\n');
+  writeReviewFileAtomic(filePath, JSON.stringify(newData, null, 2) + '\n');
   return { wrote: true, preserved, lockedSkipped, ...(autoFlaggedWrongProduction ? { autoFlaggedWrongProduction: true } : {}) };
 }
 
@@ -3997,4 +4078,4 @@ function flagSiblingEraDateOnPersist(filePath, priorRecord, record) {
   return { flagged: true, detail };
 }
 
-module.exports = { safeWriteReview, flagSiblingEraDateOnPersist, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, isExcludedIgnoringDuplicate, shouldMarkUrlCollisionDuplicate, shouldMarkPostCorrectionDuplicate, wouldFormDuplicateCycle, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, preserveFlaggedFields, protectStagedDeletions, PROTECTED_FIELDS, CLEAR_BREADCRUMBS, CLEARABLE_VERDICT_FLAGS, isIntentionalClear, invalidateWrongProductionAutoClear, retractScriptWrongProductionClear, isScriptWrongProductionClear, WRONG_PRODUCTION_CLEAR_MARKERS, retractScriptWrongShowClear, isScriptWrongShowClear, WRONG_SHOW_CLEAR_MARKERS, isFreshWrongProductionAutoClear: _freshWrongProductionAutoClear, invalidateWrongShowAutoClear, isFreshWrongShowAutoClear: _freshWrongShowAutoClear, _setShowsCacheForTest, SUBSTANTIVE_BODY_CHARS, NEAR_EMPTY_BODY_CHARS, _flipFlopShouldTakeIncoming, writeReviewOrThrow };
+module.exports = { safeWriteReview, writeReviewFileAtomic, flagSiblingEraDateOnPersist, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, isExcludedIgnoringDuplicate, shouldMarkUrlCollisionDuplicate, shouldMarkPostCorrectionDuplicate, wouldFormDuplicateCycle, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, preserveFlaggedFields, protectStagedDeletions, PROTECTED_FIELDS, CLEAR_BREADCRUMBS, CLEARABLE_VERDICT_FLAGS, isIntentionalClear, invalidateWrongProductionAutoClear, retractScriptWrongProductionClear, isScriptWrongProductionClear, WRONG_PRODUCTION_CLEAR_MARKERS, retractScriptWrongShowClear, isScriptWrongShowClear, WRONG_SHOW_CLEAR_MARKERS, isFreshWrongProductionAutoClear: _freshWrongProductionAutoClear, invalidateWrongShowAutoClear, isFreshWrongShowAutoClear: _freshWrongShowAutoClear, _setShowsCacheForTest, SUBSTANTIVE_BODY_CHARS, NEAR_EMPTY_BODY_CHARS, _flipFlopShouldTakeIncoming, writeReviewOrThrow };

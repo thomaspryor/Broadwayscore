@@ -235,7 +235,7 @@ function loadExcludedMap() {
 }
 
 // City hubs that get their own block (src/lib/city-hub.ts HUB_CITIES).
-const CITY_REGIONS = { 'chicago-il': 'chicago', 'washington-dc': 'dc', 'los-angeles-ca': 'la' };
+const CITY_REGIONS = { 'chicago-il': 'chicago', 'washington-dc': 'dc', 'los-angeles-ca': 'la', 'san-diego-ca': 'sandiego', 'boston-ma': 'boston' };
 
 function regionOf(market, show = {}) {
   if (market === 'broadway' || market === 'off-broadway') return 'nyc';
@@ -758,6 +758,8 @@ const REGION_BRAND = {
   chicago:  { label: 'Chicago',   color: '#60a5fa', subtitle: 'Tryouts · Local', hub: 'chicago-il' },
   dc:       { label: 'Washington DC', color: '#f87171', subtitle: 'Tryouts · Local', hub: 'washington-dc' },
   la:       { label: 'Los Angeles', color: '#fbbf24', subtitle: 'Tryouts · Local', hub: 'los-angeles-ca' },
+  sandiego: { label: 'San Diego', color: '#2dd4bf', subtitle: 'Tryouts · Local', hub: 'san-diego-ca' },
+  boston:   { label: 'Boston', color: '#fb923c', subtitle: 'Tryouts · Local', hub: 'boston-ma' },
   tour:     { label: '🚌 National Tours', color: '#34d399', subtitle: 'Tour launches' },
   other:    { label: 'Other', color: '#9ca3af', subtitle: 'Other markets' },
 };

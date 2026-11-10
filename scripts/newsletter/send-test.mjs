@@ -54,7 +54,14 @@ const metaPath = `${OUT_DIR}/${SLUG}.meta.json`;
 
 const htmlRaw = fs.readFileSync(htmlPath, 'utf8');
 const unsubUrl = buildUnsubscribeUrl(RECIPIENT, EDITION);
-const html = htmlRaw.replace(/\{\{\{RESEND_UNSUBSCRIBE_URL\}\}\}/g, unsubUrl);
+let html = htmlRaw.replace(/\{\{\{RESEND_UNSUBSCRIBE_URL\}\}\}/g, unsubUrl);
+// Owner-only subject options (BRO-7168): the preview shows the runners-up from
+// subject-writer.mjs. This script only ever emails the owner, never a broadcast.
+try {
+  const { subjectAlternatesBox, injectSubjectBox } = await import('./subject-alternates-box.mjs');
+  const box = subjectAlternatesBox(JSON.parse(fs.readFileSync(metaPath, 'utf8')));
+  if (box) html = injectSubjectBox(html, box);
+} catch (e) { if (e && e.code !== 'ENOENT') console.warn('subject options box skipped:', e.message); }
 
 // Subject comes from the generator's meta.json sidecar (machine-readable,
 // includes per-section fired/skipped report). Falls back to HTML-comment

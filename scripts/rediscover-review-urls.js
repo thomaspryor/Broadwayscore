@@ -31,7 +31,7 @@ const { pushWithRetry } = require('./lib/push-with-retry.js');
 const { markReviewTextsPushed } = require('./lib/review-texts-pushed-marker.js'); // BRO-5308
 const { listUnpushedReviewFiles, startPressNightScoring } = require('./lib/press-night-scoring-trigger'); // BRO-6886
 const { listShowDirs } = require('./lib/list-show-dirs');
-const { hasUsableText, isPlausibleArticleRedirect, AGGREGATOR_FIELDS } = require('./lib/rediscovery-candidate');
+const { hasUsableText, isPlausibleArticleRedirect, AGGREGATOR_FIELDS, httpStatusUpdate } = require('./lib/rediscovery-candidate');
 
 // ---------------------------------------------------------------------------
 // CONFIG
@@ -333,7 +333,7 @@ function pushReviewTextsCheckpoint(message) {
     const remoteUrl = `https://x-access-token:${process.env.REVIEW_TEXTS_TOKEN}@github.com/thomaspryor/broadway-review-texts.git`;
     try { execSync(`git remote set-url origin "${remoteUrl}"`, { cwd: rtDir, stdio: 'pipe' }); }
     catch { try { execSync(`git remote add origin "${remoteUrl}"`, { cwd: rtDir, stdio: 'pipe' }); } catch {} }
-    execSync('git add -A', { cwd: rtDir, stdio: 'pipe' });
+    require('./lib/stage-review-texts').stageReviewTexts(rtDir); // BRO-7171 scoped staging
     try { execSync('git diff --staged --quiet', { cwd: rtDir, stdio: 'pipe' }); return; }
     catch { /* has changes */ }
     execSync(`git commit -m "${message}"`, { cwd: rtDir, stdio: 'pipe' });
@@ -511,10 +511,21 @@ async function runPhase2(candidates) {
         }
       } else if (status === 200) {
         stats.phase2.urlsOk++;
+        // The page is back: a stored 404/410 for this url is stale (BRO-7171).
+        const body = (c.data.httpStatus === 404 || c.data.httpStatus === 410) ? await response.text().catch(() => '') : null;
+        if (httpStatusUpdate(c.data, status, body)) {
+          stats.phase2.deadCleared = (stats.phase2.deadCleared || 0) + 1;
+          if (CONFIG.dryRun) console.log(`  [200] ${c.reviewId}: stored httpStatus ${c.data.httpStatus} is stale, would clear`);
+          else {
+            delete c.data.httpStatus;
+            persistReviewSnapshot({ filePath: c.filePath, data: c.data, trailingNewline: true });
+          }
+        }
       } else if (status === 404 || status === 410) {
         // Mark for Phase 3
-        if (!CONFIG.dryRun) {
-          c.data.httpStatus = status;
+        const upd = httpStatusUpdate(c.data, status);
+        if (!CONFIG.dryRun && upd) {
+          c.data.httpStatus = upd.set;
           persistReviewSnapshot({ filePath: c.filePath, data: c.data });
         }
         stats.phase2.dead404++;
@@ -545,7 +556,7 @@ async function runPhase2(candidates) {
   console.log(`\nPhase 2 complete:`);
   console.log(`  Scanned: ${stats.phase2.scanned}`);
   console.log(`  Redirects found: ${stats.phase2.redirectsFound}`);
-  console.log(`  URLs OK (200): ${stats.phase2.urlsOk}`);
+  console.log(`  URLs OK (200): ${stats.phase2.urlsOk} (stale stored 404/410 cleared: ${stats.phase2.deadCleared || 0})`);
   console.log(`  Dead (404/410): ${stats.phase2.dead404}`);
   console.log(`  Paywall (403/503): ${stats.phase2.paywall}`);
   console.log(`  Errors: ${stats.phase2.errors}`);

@@ -4,7 +4,7 @@
     "audit-star-bands.js": {
       "bucket": "a",
       "rank": 1,
-      "reason": "CLAUDE.md §3 star-band invariant; core data only; live run today shows 1 review out of band (scoreSource originalScore-priority0)"
+      "reason": "CLAUDE.md \u00a73 star-band invariant; core data only; live run today shows 1 review out of band (scoreSource originalScore-priority0)"
     },
     "audit-announced-cast.js": {
       "bucket": "a",
@@ -60,6 +60,11 @@
       "bucket": "b",
       "rank": 0,
       "reason": "BRO-5805 read-only sweep, needs the private review-texts corpus (cloud-run-script --review-texts); --gate mode is not wired; promote to (a) if a run with review-texts finds hits"
+    },
+    "audit-page-furniture.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "BRO-7171 read-only furniture survey; needs the private review-texts corpus and local raw-page archives; CI class guard is tests/unit/page-furniture-extractors.test.mjs"
     },
     "audit-feature-as-review.js": {
       "bucket": "b",
@@ -469,6 +474,20 @@
       "bucket": "b",
       "rank": 99,
       "reason": "BRO-7032 read-only measure of how long press-night no-byline stubs sat in _pending before replay promotion; needs the private review-texts corpus. Used as the card's recheck command after a press night; logic is covered by scripts/lib/pending-promotion-latency.test.mjs, which CI runs."
+    },
+    "audit-text-gaps.js": {
+      "bucket": "b",
+      "rank": 99,
+      "reason": "Zero-gap plan 1B read-only text-gap metric over the private review-texts corpus (class/outlet/recency counts, writes data/audit/text-gap-metric.json); needs the corpus, so it is the manual measure before and after a recovery run. Logic is covered by scripts/lib/text-gap-classify.test.mjs and text-gap-metric.test.mjs, which CI runs."
+    },
+    "audit-false-truncation-dryrun.js": {
+      "bucket": "b",
+      "rank": 99,
+      "reason": "Zero-gap plan 1C read-only dry run: which truncated review-text files the trailer fix would re-tier to complete on the next rebuild, per outlet with sample endings; needs the private corpus and never writes review data. Logic is covered by scripts/lib/trailer-signatures.test.mjs, which CI runs."
+    },
+    "audit-city-hub-dual-model.js": {
+      "bucket": "b",
+      "reason": "On-demand pre-launch audit of one city hub by GPT and Gemini (BRO-7256); run by hand per city, costs model spend so never scheduled."
     }
   }
 }

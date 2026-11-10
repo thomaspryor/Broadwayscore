@@ -39,9 +39,12 @@ jobs:
 
       - name: Commit results
         if: always()
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1' # union-merges the LLM spend ledger on rebase (BRO-5043)
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/gemini-usage-ledger.jsonl 2>/dev/null || true # LLM spend meter rows (BRO-5043)
           git add data/aeo/ 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "No AEO changes to commit."

@@ -55,6 +55,9 @@ const lookup = relevantShows.map(show => {
   if (show.category) entry.c = show.category;
   if (show.openingDate) entry.od = show.openingDate;
   if (show.closingDate) entry.cd = show.closingDate;
+  // BRO-7252: extension count so My Shows can read "Extended through" instead of "Closes".
+  const ceN = Math.max(Array.isArray(show.closingExtensions) ? show.closingExtensions.length : 0, Number.isInteger(show.closingExtensionCount) ? show.closingExtensionCount : 0);
+  if (ceN > 0) entry.ce = ceN;
   // Bookability signals for watchlist labels (owner, 2026-07-20): previews
   // start date + a tickets-on-sale bit for not-yet-open shows with links.
   if (show.previewsStartDate) entry.pd = show.previewsStartDate;

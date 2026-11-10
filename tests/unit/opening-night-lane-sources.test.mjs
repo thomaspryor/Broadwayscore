@@ -178,3 +178,16 @@ test('NYT on a West End night is a stated gap, not a silent miss (its Theater fe
   assert.deepEqual(cov.missing, []);
   assert.match(cov.gaps.nytimes || "", /Broadway only/);
 });
+
+test('last 10 Broadway openings (when data/reviews.json is present): every on-time outlet in each final set has a source or a gap (BRO-7199)', (t) => {
+  const p = (f) => path.join(ROOT, 'data', f);
+  if (!fs.existsSync(p('reviews.json')) || !fs.existsSync(p('shows.json'))) { t.skip('no local core data'); return; }
+  const { perShow } = require('../../scripts/lane-on-time-outlets.js');
+  let reviews = JSON.parse(fs.readFileSync(p('reviews.json'), 'utf8'));
+  let shows = JSON.parse(fs.readFileSync(p('shows.json'), 'utf8'));
+  reviews = Array.isArray(reviews) ? reviews : (reviews.reviews || Object.values(reviews));
+  shows = Array.isArray(shows) ? shows : (shows.shows || Object.values(shows));
+  const log = console.log; const lines = []; console.log = (m) => lines.push(m);
+  let code; try { code = perShow(reviews, shows, { count: 10, until: new Date().toISOString().slice(0, 10) }); } finally { console.log = log; }
+  assert.equal(code, 0, `on-time outlets with no lane source:\n${lines.filter((l) => /ON TIME/.test(l)).join('\n')}`);
+});

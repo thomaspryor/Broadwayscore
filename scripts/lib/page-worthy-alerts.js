@@ -46,7 +46,7 @@
 const PAGE_WORTHY_PREFIXES = [
   'press-night:stuck:', // press-night-watchdog.js (BRO-6858): on a Broadway press night a found review is not live 15 min after it was found and no pipeline run is moving it (the watchdog's one automatic retry already went out)
   'press-night:preflight:', // press-night-preflight.js (BRO-6858): 24h / 3h before a Broadway embargo, a scraper credit, LLM key or secret the night needs is failing
-  'lane-live-timeout:', // opening-night lane (real-ports.js, BRO-6649): a publish pushed to core data is still not on the live site after 20 minutes on a press night
+  'lane-live-timeout:', // opening-night lane (real-ports.js, BRO-6649): a publish pushed to core data is still not on the live site after 30 minutes on a press night (BRO-7232: files an auto-fix card first, emails only if that fix fails)
   'on-monitor-launch-failed-', // opening-night-monitor-launch.js: the launcher could not start a monitor session tonight
   'on-monitor-auth-failed-', // opening-night-monitor-launch.js: claude auth preflight failed — zero coverage tonight
   'on-monitor-auth-starved-sustained-', // opening-night-monitor-launch.js: Mac too starved to start ANY pass for 3 ticks (~1h) in an opening window (BRO-4141; single blips go to digest as on-monitor-auth-starved-)
@@ -133,6 +133,10 @@ const PAGE_WORTHY_CONDITION_KEYS = new Set([
   // BRO-6764: the Mac's checkout-sync heartbeat went quiet (off / FileVault login screen). Own key
   // so the digest check re-arming cannot resolve it. Emitted from check-morning-digest-sent.js.
   'mac:checkin-heartbeat-dead',
+  // BRO-7188: Buffer's plan lapsed or was downgraded and locked our social channels
+  // (2026-11-08: 6h of failed posting, digest-only, nobody knew). Only the owner can
+  // pay. Emitted by scripts/social-autopost/run.js reportPlanLimit().
+  'social:buffer-plan-limit',
 
   // Owner request 2026-10-05 (BRO-4719): "How will I ever know that they're
   // waiting on me for a decision? I didn't even know they existed!" and "don't
@@ -312,6 +316,7 @@ const OWNER_ACTIONS = {
   'alert-router:usage-limit-exceeded': 'Raise or reset the Linear plan limit (a billing decision only you can make).',
   'mac:morning-digest-missing': 'Nothing is needed from you. The morning email did not send; the failed run is flagged for a fix.',
   'mac:checkin-heartbeat-dead': 'Check the Mac is on, awake and signed in.',
+  'social:buffer-plan-limit': 'Renew or upgrade the Buffer plan (a billing decision only you can make).',
   'owner-decisions:new': 'Answer the decision.',
   // BRO-5542: test-ugc-roundtrip.yml starts a START-NOW fix card first and the
   // email says whether it did; the owner has nothing to do either way.
@@ -354,7 +359,7 @@ const OWNER_ACTIONS = {
   'press-night:stuck:': 'Nothing is needed from you. You asked to hear within 15 minutes when a Broadway press-night review is found but not on the site; the watchdog already retried once and the details are below.',
   'press-night:preflight:': 'Top up or renew the account named below before tonight\'s Broadway opening (a scraper or AI account is out of credit or its key stopped working).',
   'press-night-clock.yml': 'Nothing is needed from you. You asked to hear when the press-night clock breaks within a day of a Broadway opening; it restarts itself on the next orchestrator tick.',
-  'lane-live-timeout:': 'Check that the show page has its new reviews; if not, tell the coordinator session so it can run the old publish path.',
+  'lane-live-timeout:': 'Nothing is needed from you. A worker session is already checking why a new review took too long to reach the show page, and the lane retries it on its own.',
   'broadcast:never-sent:': 'Send the opening-night email; it never went out.',
   // BRO-5477: files a worker card first and emails only when that automatic
   // fix failed or never started.

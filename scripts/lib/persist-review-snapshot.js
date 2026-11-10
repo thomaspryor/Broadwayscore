@@ -139,10 +139,32 @@ function persistReviewSnapshot(review, log = console.log) {
   // run landed live (maybe-happy-ending-2024 / theatrely--joey-sims).
   let priorOnDisk = null;
   try { priorOnDisk = JSON.parse(fs.readFileSync(review.filePath, 'utf8')); } catch { /* new file */ }
-  require('./review-write-guard').flagSiblingEraDateOnPersist(review.filePath, priorOnDisk, merged);
-  fs.writeFileSync(review.filePath, JSON.stringify(merged, null, 2) + (review.trailingNewline ? '\n' : ''));
+  const guard = require('./review-write-guard');
+  guard.flagSiblingEraDateOnPersist(review.filePath, priorOnDisk, merged);
+  // Atomic (BRO-7171): a crash mid-write must never leave a torn review file.
+  guard.writeReviewFileAtomic(review.filePath, JSON.stringify(merged, null, 2) + (review.trailingNewline ? '\n' : ''));
   adoptSnapshot(review, merged);
   return result;
+}
+
+/**
+ * persistReviewSnapshot's three-way merge, then the write goes through
+ * safeWriteReview (protected fields, _locked, url-change invariant, wrong-
+ * article and date guards, atomic rename) instead of a raw write. Used by the
+ * gap-acceptance gate (BRO-7171) so a recovered text gets every write-time
+ * guard. Returns safeWriteReview's result plus the merge flags; review.data
+ * adopts what was written only when it wrote.
+ * @param {{filePath:string, data:object, snapshot?:object}} review
+ * @param {object} [options] safeWriteReview options (merge defaults to true)
+ */
+function persistReviewViaSafeWrite(review, options = {}, log = console.log) {
+  const { merged, ...mergeResult } = prepareReviewSnapshot(review, log);
+  const { safeWriteReview } = require('./review-write-guard');
+  const write = safeWriteReview(review.filePath, merged, { merge: true, ...options });
+  if (write && write.wrote) {
+    try { adoptSnapshot(review, JSON.parse(fs.readFileSync(review.filePath, 'utf8'))); } catch { /* re-read failed; caller re-reads */ }
+  }
+  return { ...mergeResult, ...(write || {}) };
 }
 
 // The collector can identify the byline midway through an update. Merge at
@@ -158,4 +180,4 @@ function renameReviewSnapshot(review, newPath, options = {}, log = console.log) 
   return result;
 }
 
-module.exports = { readReviewForUpdate, renameReviewSnapshot, mergeOntoDisk, persistReviewSnapshot, RECOVERED_SCORE_FIELDS };
+module.exports = { readReviewForUpdate, renameReviewSnapshot, mergeOntoDisk, persistReviewSnapshot, persistReviewViaSafeWrite, RECOVERED_SCORE_FIELDS };

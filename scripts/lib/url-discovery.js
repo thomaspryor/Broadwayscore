@@ -28,6 +28,7 @@ const { evaluateSerpAcceptance, downgradeBaselineUrl } = require('./serp-review-
 const { isTransientScrapingdogError, scrapingdogErrorMessage } = require('./sd-transient-error');
 const { isTimeOutLondonListing } = require('./timeout-london-url');
 const { isBlockedReviewUrl } = require('./domain-filters');
+const { resolveSerpLink, dropUnresolvableSerpResults } = require('./unresolvable-url');
 const { recordBdCall, recordSdCall, recordSbCall } = require('./bd-telemetry');
 const { sdBilledCredits, withSpendFallback, withSpendShow, withSpendOutlet } = require('./provider-telemetry');
 const { consultBrightData } = require('./brightdata-caps');
@@ -495,6 +496,7 @@ async function _serpViaScrapingdog(query, log, dateRange, geo, preferSpeed, page
 
   const axios = require('axios');
   attempt.ran = true;
+  const callAttempt = attempt; // the retry loop below shadows `attempt`
   let q = query;
   if (dateRange) {
     const fmtD = d => d.toISOString().split('T')[0];
@@ -530,11 +532,24 @@ async function _serpViaScrapingdog(query, log, dateRange, geo, preferSpeed, page
       _scrapingdogBreakerOpenedAt = null;
       // credits reflects actual attempts made — a retried call bills twice.
       recordSdCall({ host: 'serp.scrapingdog', fn: 'serp', success: true, status: 200, credits: SD_SERP_CREDITS_PER_CALL * attemptsMade, breaker: _serpBreakerSnapshot(_scrapingdogSerpFailures, _scrapingdogBreakerOpenedAt, isProbe) });
-      return organic.slice(0, 10).map(r => ({
-        url: r.link || r.url || '',
-        title: r.title || '',
-        snippet: r.description || r.snippet || '',
-      })).filter(r => r.url);
+      // BRO-7171 Stage 2b: `link` is often an opaque google.com/url?q=CAES...
+      // token now. Recover the page URL from the result's other fields, else
+      // drop it and report the count so the chain does not take an all-token
+      // answer as "Google found nothing".
+      const out = [];
+      for (const r of organic.slice(0, 10)) {
+        const resolved = resolveSerpLink(r);
+        if (!resolved) { callAttempt.opaque = (callAttempt.opaque || 0) + 1; continue; }
+        if (resolved.url !== (r.link || r.url)) callAttempt.recovered = (callAttempt.recovered || 0) + 1;
+        out.push({
+          url: resolved.url,
+          title: r.title || '',
+          snippet: r.description || r.snippet || '',
+          ...(resolved.reconstructed ? { urlReconstructed: true } : {}),
+        });
+      }
+      if (callAttempt.opaque || callAttempt.recovered) log(`    ⚠ Scrapingdog SERP: opaque Google redirect links: ${callAttempt.recovered || 0} recovered, ${callAttempt.opaque || 0} dropped (no recoverable target)`);
+      return out;
     } catch (error) {
       lastError = error;
       const status = error.response?.status;
@@ -928,9 +943,13 @@ function serpChainOrder(preferSpeed, skips = new Set()) {
  * have let the poller's fresh discovery get permanently cached as "no
  * results" by SD's very first empty answer, silently hiding reviews published
  * within the 24h SERP cache TTL. Extracted for testability per CLAUDE.md rule 15.
+ *
+ * opaqueDropped (BRO-7171 Stage 2b): an [] produced by dropping Google's opaque
+ * redirect tokens is not "Google found nothing"; it is "Google found results we
+ * could not read", so it is never authoritative.
  */
-function shouldAcceptEmptyScrapingdogSerp(sdResults, emptyAuthoritative) {
-  return sdResults !== null && sdResults.length === 0 && emptyAuthoritative !== false;
+function shouldAcceptEmptyScrapingdogSerp(sdResults, emptyAuthoritative, opaqueDropped = 0) {
+  return sdResults !== null && sdResults.length === 0 && emptyAuthoritative !== false && !(opaqueDropped > 0);
 }
 
 function _effectiveSerpSkips(skipProviders) {
@@ -938,6 +957,12 @@ function _effectiveSerpSkips(skipProviders) {
   if (process.env.SERP_NO_SB === '1') skips.add('scrapingbee');
   return skips;
 }
+
+const { serpQueryBudgetAllows } = require('./serp-query-cap');
+let _serpQueryCount = 0;
+let _serpQueryCapLogged = false;
+function getSerpQueryCount() { return _serpQueryCount; }
+function _resetSerpQueryCountForTests() { _serpQueryCount = 0; _serpQueryCapLogged = false; }
 
 async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRange, preferSpeed, geoOverride, skipProviders, emptyAuthoritative = true, negativeCacheTtlMs = null, page = 0) {
   const _skips = _effectiveSerpSkips(skipProviders);
@@ -970,9 +995,14 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
   // emptyAuthoritative:false (press night): a cached EMPTY answer written before
   // the reviews were indexed must not win (BRO-5914), so fall through to live.
   const _cachedEmptyStale = !emptyAuthoritative && cached && Array.isArray(cached.results) && cached.results.length === 0;
-  if (cached && !_cachedEmptyStale) {
+  // BRO-7171 Stage 2b: entries cached before opaque-token filtering may hold
+  // google /url?q=CAES... or /goto tokens. Serve the readable rest; an entry that
+  // was ALL tokens is a miss (asking live beats serving 24h of nothing).
+  const _cachedClean = cached && Array.isArray(cached.results) ? dropUnresolvableSerpResults(cached.results) : null;
+  const _cachedAllOpaque = !!_cachedClean && _cachedClean.dropped > 0 && _cachedClean.results.length === 0;
+  if (cached && !_cachedEmptyStale && !_cachedAllOpaque) {
     log(`    📦 SERP cache hit: "${query.slice(0, 60)}..."`);
-    return { results: cached.results, provider: `${cached.provider}-cached` };
+    return { results: _cachedClean ? _cachedClean.results : cached.results, provider: `${cached.provider}-cached` };
   }
 
   // Short negative-result cache (T11): opt-in only, via negativeCacheTtlMs from
@@ -1001,6 +1031,20 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
     return { results: null, provider: 'press-night-capped' };
   }
 
+  // Per-process live-query cap (SERP_QUERY_BUDGET, BRO-7171; default off).
+  // After both cache reads, so cached answers stay free; one count per query
+  // however many providers the chain below tries. null -> '__SERP_UNAVAILABLE__'
+  // (non-evidence: callers do not advance serpRetryCount on it).
+  const _qCap = serpQueryBudgetAllows(_serpQueryCount, process.env.SERP_QUERY_BUDGET);
+  if (!_qCap.allowed) {
+    if (!_serpQueryCapLogged) {
+      log(`    ⛔ SERP query budget reached (${_qCap.budget} live queries this process) — no SERP providers called`);
+      _serpQueryCapLogged = true;
+    }
+    return { results: null, provider: 'serp-query-capped' };
+  }
+  _serpQueryCount++;
+
   // Scrapingdog first (flag-gated, ~3x cheaper than BD SERP). On a real fetch
   // failure (null) it falls through to the existing BD/SB chain, which stays
   // as the safety net.
@@ -1021,14 +1065,15 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
     // empty commonly means "review hasn't published yet," so it must still
     // fall through to BD/SB rather than being cached/accepted as a final
     // answer. NOT gated on preferSpeed — see shouldAcceptEmptyScrapingdogSerp.
-    if (shouldAcceptEmptyScrapingdogSerp(sdResults, emptyAuthoritative)) {
+    if (shouldAcceptEmptyScrapingdogSerp(sdResults, emptyAuthoritative, sdAttempt.opaque)) {
       log('    ✓ Scrapingdog SERP: 0 organic results — accepting as authoritative, skipping BD/SB');
       _serpCache.set(query, cacheOpts, { results: [], provider: 'scrapingdog-empty' });
       return { results: [], provider: 'scrapingdog-empty' };
     }
     // Reaching BD/SB after an SD request really went out: tag their ledger
     // rows (BRO-3344). A skipped SD (breaker/quota/cap) is not a fallback.
-    if (sdAttempt.ran) _fallbackFrom = 'scrapingdog';
+    // An all-opaque SD answer is tagged apart from an SD failure (provider-telemetry).
+    if (sdAttempt.ran) _fallbackFrom = sdAttempt.opaque > 0 && Array.isArray(sdResults) ? 'scrapingdog-opaque' : 'scrapingdog';
   }
 
   const _entries = {
@@ -1052,10 +1097,22 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
     ? fn(q, k, l, dr, bdGeo, page)
     : fn(q, k, l, dr, page));
 
-  let results = await withSpendFallback(_fallbackFrom, () => _withGeo(primary.fn)(query, primary.key, log, dateRange));
+  // BRO-7171 Stage 2b: Bright Data / ScrapingBee return Google's relative
+  // /goto?url=CAES... tokens too, with no breadcrumb to rebuild from. Drop them
+  // here, the one point every BD/SB answer passes through.
+  // Tokens dropped here make an empty answer "unreadable", not "nothing found",
+  // so such an empty answer is never cached (see shouldCache below).
+  let _tokensDropped = 0;
+  const _readable = (rs) => {
+    if (!Array.isArray(rs)) return rs;
+    const d = dropUnresolvableSerpResults(rs);
+    _tokensDropped += d.dropped;
+    return d.results;
+  };
+  let results = _readable(await withSpendFallback(_fallbackFrom, () => _withGeo(primary.fn)(query, primary.key, log, dateRange)));
   let provider = primary.name;
   if (fallback && (!results || results.length === 0)) {
-    const fbResults = await withSpendFallback(primary.key ? primary.name : _fallbackFrom, () => _withGeo(fallback.fn)(query, fallback.key, log, dateRange));
+    const fbResults = _readable(await withSpendFallback(primary.key ? primary.name : _fallbackFrom, () => _withGeo(fallback.fn)(query, fallback.key, log, dateRange)));
     if (fbResults && fbResults.length > 0) {
       results = fbResults;
       provider = fallback.name;
@@ -1078,6 +1135,7 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
   // run's SB fallback for the cache TTL (cache poisoning across modes).
   const _chainTruncated = _skips.size > 0;
   const shouldCache = results !== null
+    && !(_tokensDropped > 0 && results.length === 0)
     && !(emptyAuthoritative === false && results.length === 0)
     && !(_chainTruncated && results.length === 0);
   if (shouldCache) {
@@ -1812,6 +1870,19 @@ function validateUrlDomain(url, outletId) {
 }
 
 /**
+ * BRO-7162 F14: is any SERP provider configured? serpQuery's chain starts with ScrapingDog, but the old gate
+ * looked only at ScrapingBee/Bright Data, so a ScrapingDog-only environment was refused before the chain ran.
+ * Callers use this instead of testing SCRAPINGBEE_API_KEY / BRIGHTDATA_TOKEN themselves.
+ */
+function hasSerpProvider(opts = {}) {
+  const sb = opts.scrapingBeeKey ?? process.env.SCRAPINGBEE_API_KEY;
+  const bd = opts.brightDataKey ?? process.env.BRIGHTDATA_TOKEN;
+  const sdKey = opts.scrapingdogKey ?? process.env.SCRAPINGDOG_API_KEY;
+  const sdOn = opts.useScrapingdog ?? (process.env.SCRAPER_USE_SCRAPINGDOG !== '0');
+  return !!(sb || bd || (sdKey && sdOn));
+}
+
+/**
  * General-purpose Google SERP query.
  * Provider chain: Bright Data (cheap) → ScrapingBee (25 credits/query fallback).
  * With preferSpeed=true: ScrapingBee first → Bright Data fallback.
@@ -1850,8 +1921,8 @@ async function serpQuery(query, options = {}) {
   // read past page 1, where niche outlets actually rank (task #872).
   const page = Number.isInteger(options.page) && options.page > 0 ? options.page : 0;
 
-  if (!sbKey && !bdKey) {
-    log('    ⚠ No SERP API keys available (SCRAPINGBEE_API_KEY / BRIGHTDATA_TOKEN)');
+  if (!hasSerpProvider({ scrapingBeeKey: sbKey, brightDataKey: bdKey })) {
+    log('    ⚠ No SERP API keys available (SCRAPINGBEE_API_KEY / BRIGHTDATA_TOKEN / SCRAPINGDOG_API_KEY)');
     return null;
   }
 
@@ -2079,7 +2150,10 @@ async function serpImagesQuery(query, options = {}) {
 }
 
 module.exports = {
+  hasSerpProvider,
   _serpWithChainForTests: _serpWithChain,
+  getSerpQueryCount,
+  _resetSerpQueryCountForTests,
   OUTLET_DOMAINS,
   REGISTRY_DOMAIN_ALIASES,
   DOMAIN_REDIRECTS,

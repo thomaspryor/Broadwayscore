@@ -73,7 +73,24 @@ test('absent verdicts and invalid scores do not manufacture negative reviews', (
   assert.deepEqual(countReviewVerdicts([null, undefined, NaN, Infinity].map(reviewScore => ({ reviewScore }))),
     { rave: 0, positive: 0, mixed: 0, negative: 0 });
   assert.deepEqual(countReviewSentiments([]), { positive: 0, mixed: 0, negative: 0 });
-  assert.equal(getReviewBadgePresentation('bogus', 67).label, 'Positive');
+  assert.equal(getReviewBadgePresentation(67).label, 'Positive');
+});
+
+test('review badges follow the number, not the verdict (owner 2026-11-09)', () => {
+  // TheWrap on Wanted: 59 with a Mixed verdict must look like every other 59.
+  assert.deepEqual(getReviewBadgePresentation(59), { label: 'Mixed', colorScore: 59 });
+  assert.equal(getReviewBadgePresentation(84, 'west-end').label, 'Positive');
+  assert.equal(getReviewBadgePresentation(91).label, 'Rave');
+  assert.equal(getReviewBadgePresentation(59).colorScore, 59);
+  assert.equal(getReviewBadgePresentation(null).label, 'Unscored');
+  assert.equal(getReviewBadgePresentation.length, 2, 'badge takes (score, category); a verdict argument would bring back verdict colors');
+  // A stale (verdict, score, category) call would read the verdict string as the score and render "Unscored".
+  assert.equal(getReviewBadgePresentation('mixed').label, 'Unscored');
+  const { execFileSync } = require('node:child_process');
+  const calls = execFileSync('git', ['grep', '-n', 'getReviewBadgePresentation(', '--', 'src', 'scripts'], { cwd: new URL('../../', import.meta.url), encoding: 'utf8' })
+    .split('\n').filter(l => l && !l.includes('.test.') && !l.includes('function getReviewBadgePresentation'));
+  assert.ok(calls.length >= 1, 'the show page still renders badges through this helper');
+  for (const line of calls) assert.doesNotMatch(line, /getReviewBadgePresentation\([^)]*verdict/, `badge call passes a verdict: ${line}`);
 });
 
 test('opening-night stats retain missing-site fallback and readiness filtering', () => {
@@ -102,16 +119,22 @@ test('opening-night stats retain missing-site fallback and readiness filtering',
   assert.equal(empty.score, null);
 });
 
-test('actual review badges use verdict labels and colors, retaining the numeric score and size', () => {
+test('review badges are colored and labeled by the number, whatever the verdict (owner 2026-11-09)', () => {
   const rows = cases[0].reviews.map((review, index) => ({ ...review,
     outletId: `outlet-${index}`, outlet: `Outlet ${index}`, outletBadge: null,
     url: null, publishDate: '2026-10-29', tier: 2,
   }));
-  const html = renderToStaticMarkup(React.createElement(ReviewsList, { reviews: rows }));
-  for (const [score, label, color] of [[67, 'Mixed', 'score-tepid'], [53, 'Mixed', 'score-tepid'],
-    [90, 'Negative', 'score-skip'], [80, 'Rave', 'score-must-see'], [60, 'Positive', 'score-great']]) {
-    assert.match(html, new RegExp(`class="[^"]*w-11 h-11 sm:w-12 sm:h-12[^"]*${color}"[^>]*aria-label="Score: ${score} - ${label}"`));
+  const badge = html => [...html.matchAll(/class="[^"]*w-11 h-11 sm:w-12 sm:h-12[^"]*?(score-[a-z-]+)"[^>]*aria-label="Score: (\d+) - (\w+)"/g)]
+    .map(m => ({ color: m[1], score: Number(m[2]), label: m[3] }));
+  const found = badge(renderToStaticMarkup(React.createElement(ReviewsList, { reviews: rows })));
+  assert.equal(found.length, rows.length);
+  for (const b of found) {
+    assert.equal(b.label, getReviewBadgePresentation(b.score).label, `score ${b.score} label`);
   }
+  // The same review with its verdict removed renders the same badge (TheWrap 59 on Wanted).
+  const noVerdict = badge(renderToStaticMarkup(React.createElement(ReviewsList, { reviews: rows.map(r => ({ ...r, verdict: undefined })) })));
+  assert.deepEqual(noVerdict, found);
+  assert.ok(found.some(b => b.score === 90 && b.label === 'Rave' && b.color === 'score-must-see'), 'a 90 the critic called Negative still reads Rave by number');
 });
 
 test('status and email callers normalize source rows into the shared counter', () => {

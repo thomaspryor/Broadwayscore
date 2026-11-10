@@ -1,7 +1,7 @@
 {
   "system": "cron",
   "status": "warn",
-  "lastChecked": "2026-11-08T09:07:13.285Z",
+  "lastChecked": "2026-11-09T09:53:09.450Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -13,18 +13,18 @@
     },
     {
       "name": "Cron: Rebuild Reviews",
-      "status": "pass",
-      "message": "1h ago, success"
+      "status": "warn",
+      "message": "Last run still running (started 0h ago)"
     },
     {
       "name": "Cron: Collect Review Texts",
-      "status": "warn",
-      "message": "Last run still running (started 1h ago)"
+      "status": "pass",
+      "message": "3h ago, success"
     },
     {
       "name": "Cron: LLM Ensemble Score",
       "status": "pass",
-      "message": "1h ago, success"
+      "message": "0h ago, success"
     },
     {
       "name": "Cron: Test Suite",
@@ -34,47 +34,47 @@
     {
       "name": "Cron: Opening Night Broadcast",
       "status": "pass",
-      "message": "2h ago, success"
+      "message": "1h ago, success"
     },
     {
       "name": "Cron: Update Lottery/Rush",
       "status": "pass",
-      "message": "1d ago, success"
+      "message": "2d ago, success"
     },
     {
       "name": "Cron: Weekly Grosses",
       "status": "pass",
-      "message": "4d ago, success"
+      "message": "5d ago, success"
     },
     {
       "name": "Cron: Update Show Score",
       "status": "pass",
-      "message": "10h ago, success"
+      "message": "2h ago, success"
     },
     {
       "name": "Cron: Update Mezzanine",
       "status": "pass",
-      "message": "7h ago, success"
+      "message": "2h ago, success"
     },
     {
       "name": "Cron: Update Cast Changes",
       "status": "pass",
-      "message": "18h ago, success"
+      "message": "2d ago, success"
     },
     {
       "name": "Cron: NYT Critics Picks",
       "status": "pass",
-      "message": "21h ago, success"
+      "message": "22h ago, success"
     },
     {
       "name": "Cron: Weekly Video Reviews",
       "status": "pass",
-      "message": "6d ago, success"
+      "message": "7d ago, success"
     },
     {
       "name": "Cron: Weekly Show Origins",
       "status": "pass",
-      "message": "6d ago, success"
+      "message": "7d ago, success"
     },
     {
       "name": "Cron: Reverse Discovery",
@@ -84,12 +84,12 @@
     {
       "name": "Cron: Cron Health Watchdog",
       "status": "pass",
-      "message": "16h ago, ran (failure; liveness-only check)"
+      "message": "16h ago, ran (success; liveness-only check)"
     },
     {
       "name": "Cron: Affiliate Link Integrity",
       "status": "pass",
-      "message": "5d ago, success"
+      "message": "6d ago, success"
     },
     {
       "name": "Cron: Cloud Memory Reconcile",
@@ -99,12 +99,12 @@
     {
       "name": "Cron: exempt-cron liveness",
       "status": "warn",
-      "message": "2 of 139 exempt scheduled workflow(s) stopped starting: detect-revivals-ibdb.yml (last start 425h ago, limit 192h); scrape-bww-reviews.yml (last start 497h ago, limit 192h)."
+      "message": "3 of 140 exempt scheduled workflow(s) stopped starting: detect-revivals-ibdb.yml (last start 450h ago, limit 192h); scrape-bww-reviews.yml (last start 521h ago, limit 192h); scrape-new-aggregators.yml (last start 62h ago, limit 48h)."
     },
     {
       "name": "Cron: failing every scheduled run",
       "status": "warn",
-      "message": "4 of 145 scheduled workflow(s) failed their last 3 scheduled runs: audit-provisional-venues.yml (5+ in a row, last 2026-11-07); backfill-review-dates.yml (5+ in a row, last 2026-11-07); detect-revivals-ibdb.yml (3+ in a row, last 2026-10-21); sweep-image-variants.yml (5+ in a row, last 2026-11-07)."
+      "message": "5 of 146 scheduled workflow(s) failed their last 3 scheduled runs: audit-provisional-venues.yml (5+ in a row, last 2026-11-08); backfill-review-dates.yml (5+ in a row, last 2026-11-08); detect-revivals-ibdb.yml (3+ in a row, last 2026-10-21); lane-recording-import.yml (3+ in a row, last 2026-11-08); sweep-image-variants.yml (5+ in a row, last 2026-11-08)."
     }
   ]
 }

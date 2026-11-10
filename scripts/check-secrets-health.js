@@ -21,6 +21,7 @@
  * Exit code: 0 = all pass, 1 = failures detected
  */
 
+require('./lib/llm-usage-install'); // LLM spend meter: before any client is built (BRO-5043)
 const https = require('https');
 require('./lib/cloud-proxy'); // BRO-6258: ScrapingBee needs the sandbox proxy in cloud
 const { classifyPatToken, legacyTokenWarning, FINE_GRAINED_REPOS } = require('./lib/pat-token-type');

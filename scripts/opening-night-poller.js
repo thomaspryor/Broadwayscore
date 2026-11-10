@@ -15,6 +15,8 @@
  * Usage:
  *   node scripts/opening-night-poller.js --show=show-id-2026
  *   node scripts/opening-night-poller.js --show=show-id-2026 --dry-run
+ *     (dry run writes no backoff state and no roundup-miss ledgers; the spend ledger still
+ *      records real provider spend)
  *   node scripts/opening-night-poller.js --show=show-id-2026 --skip-serp
  *   node scripts/opening-night-poller.js --show=show-id-2026 --skip-site-search
  *   node scripts/opening-night-poller.js --lane-live-smoke --show=show-id --url=archived-review-url [--out=empty-sandbox]
@@ -27,6 +29,8 @@
  */
 
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
+const { urllessStubSlots, attachSerpUrlsToStubs, pickStubOutletsForCycle, URLLESS_STUB_SERP_PER_CYCLE } = require('./lib/urlless-stub-serp'); // BRO-7171 Stage 4
+const { updateFileUrlWithInvariant } = require('./lib/url-change-invariant');
 const fs = require('fs');
 const path = require('path');
 const { beginPressNightSpend } = require('./lib/spend-purpose');
@@ -50,7 +54,7 @@ const { serpDeadlineSec, serpTimeLeft } = require('./lib/poller-serp-deadline');
 const POLLER_START_MS = Date.now();
 const { discoverGoogleNewsReviews } = require('./lib/google-news-rss');
 const { searchOutletSites, selectApplicableSiteSearchOutlets, SITE_SEARCH_ENDPOINTS } = require('./lib/site-search-discovery');
-const { discoverCorrectUrl, OUTLET_DOMAINS } = require('./lib/url-discovery');
+const { discoverCorrectUrl, OUTLET_DOMAINS, hasSerpProvider } = require('./lib/url-discovery');
 // 1 Minute Critic direct-discovery. Its RSS feed isn't in rss-discovery.js's
 // outlet list, and the T3 SERP fallback below is Broadway-only, so without
 // this per-show hook OMC coverage relies entirely on aggregator pickup —
@@ -76,7 +80,7 @@ const { discoverTrRoundupHtml } = require('./lib/tr-roundup-discover');
 const { discoverWetRoundupRows } = require('./lib/wet-roundup-discover');
 const { tryTbDirectUrl } = require('./lib/tb-direct-url');
 const { isInOpeningWindow, nextPollDelayMs } = require('./lib/opening-window-backoff');
-const { getLondonSupplementalOutlets, rotateMissingOutlets, warnStalledReviewStubs } = require('./lib/opening-night-discovery-policy');
+const { getLondonSupplementalOutlets, rotateMissingOutlets, advanceSerpOutletOffset, warnStalledReviewStubs } = require('./lib/opening-night-discovery-policy');
 const {
   DEFAULT_SERP_BURST_CONFIG,
   DEFAULT_BW_SERP_BURST_CONFIG,
@@ -93,7 +97,7 @@ const { maybeAlertSerpBurstTripwire } = require('./lib/serp-burst-tripwire');
 const { getFoundOutletIds, isInDiscoveryUnblockWindow } = require('./lib/found-outlet-ids');
 const { addClaimedOutletIds, buildStagedoorRow } = require('./lib/outlet-coverage-claim'); // BRO-6762: url-less stagedoor rows must not claim an outlet
 const { isPressWindowSerpSlot } = require('./lib/press-window-serp');
-const { DEFAULT_GIVEUP_THRESHOLD, isOutletGivenUp, updateOutletMisses } = require('./lib/js-outlet-giveup');
+const { DEFAULT_GIVEUP_THRESHOLD, isOutletGivenUp, updateOutletMisses, countableMissIds } = require('./lib/js-outlet-giveup');
 
 // Paths
 const DATA_DIR = path.join(__dirname, '..', 'data');
@@ -148,6 +152,8 @@ function loadBackoffState(showId) {
 }
 
 function saveBackoffState(showId, state) {
+  // BRO-7176: a --dry-run must not leave a live show backed off.
+  if (DRY_RUN) return;
   if (!fs.existsSync(BACKOFF_DIR)) fs.mkdirSync(BACKOFF_DIR, { recursive: true });
   const p = path.join(BACKOFF_DIR, `${showId}.json`);
   fs.writeFileSync(p, JSON.stringify(state, null, 2));
@@ -731,7 +737,7 @@ async function runAggregators(show) {
             // a temporary Browserbase/SD outage. 'section-only' means
             // reviews.php was never even tried (skipReviewsPhp) — also not
             // a confident answer. See discoverBwwRoundupUrl's via contract.
-            if (discovery.via === 'not-found') {
+            if (discovery.via === 'not-found' && !DRY_RUN) { // BRO-7176: dry run writes no miss ledger
               try {
                 const { recordRoundupMiss } = require('./lib/bww-roundup-persistence.js');
                 recordRoundupMiss(show.id);
@@ -1012,7 +1018,7 @@ async function runAggregators(show) {
           }
         } else {
           console.log('  theatre.reviews: no roundup found');
-          try { trMiss.recordTrMiss(show, trStats); } catch { /* ledger write is best-effort */ }
+          try { if (!DRY_RUN) trMiss.recordTrMiss(show, trStats); } catch { /* ledger write is best-effort */ }
         }
       }
     } catch (err) {
@@ -1390,7 +1396,7 @@ async function runOMC(showId, show, market) {
  * @param {string} [openingDate] - Show's opening date. Passed to date-aware endpoints (e.g. TheaterMania).
  * @param {Object} [show] - Full show object; passed to applies() predicates (e.g. opera-only outlets).
  */
-async function runSiteSearch(showTitle, missingOutletIds, knownUrls, market = 'broadway', openingDate = null, show = null) {
+async function runSiteSearch(showTitle, missingOutletIds, knownUrls, market = 'broadway', openingDate = null, show = null, outcomes = null) {
   console.log('\n[Layer 3] Site Search...');
 
   // Only search outlets that have site-search configs AND are missing
@@ -1410,11 +1416,13 @@ async function runSiteSearch(showTitle, missingOutletIds, knownUrls, market = 'b
       market,
       openingDate,
       show,
+      outcomes,
     });
     console.log(`  [Layer 3 Total] ${results.length} reviews from site search`);
     return results;
   } catch (err) {
     console.log(`  Site search error: ${err.message}`);
+    if (outcomes) for (const id of searchable) outcomes[id] = 'failed'; // BRO-7162 F04: an error is not a miss
     return [];
   }
 }
@@ -1445,10 +1453,13 @@ function isBrightDataAllowedForShow(show) {
 /**
  * Run Layer 4: SERP Backup
  */
-async function runSERPBackup(show, missingOutlets, knownUrls) {
+async function runSERPBackup(show, missingOutlets, knownUrls, stats = null) {
   console.log('\n[Layer 4] SERP Backup...');
+  // BRO-7162 F08: report how many outlets of the list were really reached so the caller advances its
+  // rotation cursor by that many, not by the budget. Stays 0 when the run stopped before the first one.
+  if (stats) stats.consumed = 0;
 
-  if (!process.env.SCRAPINGBEE_API_KEY && !process.env.BRIGHTDATA_TOKEN) {
+  if (!hasSerpProvider()) {
     console.log('  Skipped: no SERP API keys');
     return [];
   }
@@ -1469,6 +1480,7 @@ async function runSERPBackup(show, missingOutlets, knownUrls) {
       console.log(`  SERP stopped: ${deadlineSec}s wall-clock deadline reached (${calls} calls) — saving discovered reviews first`);
       break;
     }
+    if (stats) stats.consumed++;
     if (!outlet.domain) continue;
 
     try {
@@ -1753,14 +1765,38 @@ async function pollShow(show) {
     ? selectApplicableSiteSearchOutlets(market, show, new Set(), false)
     : [];
 
+  // BRO-7162 F06: persist each layer the moment it settles. Promise.allSettled is a barrier, so one
+  // slow layer (aggregators can run for minutes) used to hold every other layer's finds in memory
+  // until the 600s kill discarded them. processDiscoveredReviews dedupes through knownUrls, so
+  // incremental calls are idempotent and the later pre-SERP pass only sees what is still new.
+  const processOpts = { allowOffBroadway: isOffBroadway, allowWestEnd: isWestEnd, allowOpera: show.type === 'opera', allowRegional: isRegional };
+  const layerTotals = { created: 0, skipped: 0, rejected: 0 };
+  // Review objects already handled at settle; the pre-SERP pass skips them so a rejected or already-existing
+  // result is not written, counted or logged a second time (rejections never enter knownUrls).
+  const settledReviews = new WeakSet();
+  const persistLayerOnSettle = (label, promise) => promise.then((results) => {
+    if (Array.isArray(results) && results.length > 0) {
+      try {
+        const r = processDiscoveredReviews(SHOW_ID, results, knownUrls, processOpts);
+        for (const item of results) if (item && typeof item === 'object') settledReviews.add(item);
+        layerTotals.created += r.created; layerTotals.skipped += r.skipped; layerTotals.rejected += r.rejected;
+        console.log(`  [${label}] persisted on completion: ${r.created} created, ${r.skipped} skipped, ${r.rejected} rejected`);
+      } catch (e) {
+        // Keep the layer's results so the pre-SERP pass still gets them (and fails loudly there if it must).
+        console.error(`  [${label}] persist-on-completion failed (${e.message}); results kept for the pre-SERP pass`);
+      }
+    }
+    return results;
+  });
+
   const [aggSettled, rssSettled, ssrSettled, omcSettled, googleNewsSettled] = await Promise.allSettled([
-    runAggregators(show),
-    runRSSFeeds(show.title, knownUrls, show.openingDate || null, market),
-    ssrSiteSearchIds.length > 0
+    persistLayerOnSettle('Layer 1', runAggregators(show)),
+    persistLayerOnSettle('Layer 2', runRSSFeeds(show.title, knownUrls, show.openingDate || null, market)),
+    persistLayerOnSettle('Layer 3 SSR', ssrSiteSearchIds.length > 0
       ? runSiteSearch(show.title, ssrSiteSearchIds, knownUrls, market, show.openingDate || null, show)
-      : Promise.resolve([]),
-    SKIP_OMC ? Promise.resolve([]) : runOMC(SHOW_ID, show, market),
-    discoverGoogleNewsReviews(show, { knownUrls, verbose: true }),
+      : Promise.resolve([])),
+    persistLayerOnSettle('Layer 2b', SKIP_OMC ? Promise.resolve([]) : runOMC(SHOW_ID, show, market)),
+    persistLayerOnSettle('google-news-rss', discoverGoogleNewsReviews(show, { knownUrls, verbose: true })),
   ]);
   const aggResults = aggSettled.status === 'fulfilled' ? aggSettled.value : (console.log(`  [Layer 1] ERROR: ${aggSettled.reason?.message}`), []);
   const rssResults = rssSettled.status === 'fulfilled' ? rssSettled.value : (console.log(`  [Layer 2] ERROR: ${rssSettled.reason?.message}`), []);
@@ -1812,10 +1848,12 @@ async function pollShow(show) {
       console.log(`  [JS outlet give-up] ${givenUpIds.length} outlet(s) past the miss threshold but still attempted (${FORCE_SERP ? '--force-serp' : 'inside opening window'}): ${givenUpIds.join(', ')}`);
     }
     if (missingJsIds.length > 0) {
-      jsSiteSearchResults = await runSiteSearch(show.title, missingJsIds, knownUrls, market, show.openingDate || null, show);
+      const jsOutcomes = {};
+      jsSiteSearchResults = await runSiteSearch(show.title, missingJsIds, knownUrls, market, show.openingDate || null, show, jsOutcomes);
       if (process.env.SCRAPINGBEE_API_KEY) {
         const foundEffectiveIds = new Set(jsSiteSearchResults.filter(r => r.outletId).map(r => r.outletId.toLowerCase()));
-        const attemptedEffectiveIds = missingJsIds.map(id => (SITE_SEARCH_ENDPOINTS[id].outletIdOverride || id).toLowerCase());
+        // BRO-7162 F04: only searches that completed count toward give-up; errors/timeouts are skipped.
+        const attemptedEffectiveIds = countableMissIds(missingJsIds, jsOutcomes, id => (SITE_SEARCH_ENDPOINTS[id].outletIdOverride || id).toLowerCase());
         jsOutletMisses = updateOutletMisses(jsOutletMisses, attemptedEffectiveIds, foundEffectiveIds);
       }
     }
@@ -1944,10 +1982,16 @@ async function pollShow(show) {
   // The workflow kills this process at 600s, and one SERP outlet can run for
   // minutes on provider timeouts. Write what we already found first so a kill
   // during SERP can no longer discard it (Other Desert Cities 2026 lost 36).
-  const processOpts = { allowOffBroadway: isOffBroadway, allowWestEnd: isWestEnd, allowOpera: show.type === 'opera', allowRegional: isRegional };
-  const preSerpDiscovered = [...aggResults, ...rssResults, ...siteSearchResults, ...omcResults, ...googleNewsResults];
+  const preSerpDiscovered = [...aggResults, ...rssResults, ...siteSearchResults, ...omcResults, ...googleNewsResults]
+    .filter(r => !(r && typeof r === 'object' && settledReviews.has(r)));
   console.log(`\n━━━ Processing ${preSerpDiscovered.length} discovered reviews (before SERP) ━━━`);
-  const preSerp = processDiscoveredReviews(SHOW_ID, preSerpDiscovered, knownUrls, processOpts);
+  const preSerpPass = processDiscoveredReviews(SHOW_ID, preSerpDiscovered, knownUrls, processOpts);
+  // Layers 1-3 were already persisted as they settled; fold those counts in so the summary stays whole.
+  const preSerp = {
+    created: layerTotals.created + preSerpPass.created,
+    skipped: layerTotals.skipped + preSerpPass.skipped,
+    rejected: layerTotals.rejected + preSerpPass.rejected,
+  };
 
   let serpResults = [];
   if ((!SKIP_SERP && shouldRunSerp()) || serpBurstActive) {
@@ -2000,6 +2044,25 @@ async function pollShow(show) {
       if (show.category === 'off-west-end') {
         missingOutlets = rotateMissingOutlets(missingOutlets, nextSerpOutletOffset);
       }
+    }
+    // BRO-7171 Stage 4: a url-less stub (review known only from an aggregator
+    // quote) counts as found above, so SERP never looked for its link. Queue
+    // those outlets first; a hit is attached to the stub after the SERP call.
+    const urllessSlots = urllessStubSlots(path.join(REVIEW_TEXTS_DIR, SHOW_ID), {
+      inWindow: isInDiscoveryUnblockWindow(show),
+      isReviewTextFile,
+    });
+    if (urllessSlots.size > 0) {
+      const reg = JSON.parse(fs.readFileSync(OUTLET_REGISTRY_PATH, 'utf8'));
+      const allOutlets = reg.outlets || reg;
+      const queued = new Set(missingOutlets.map((o) => o.id.toLowerCase()));
+      const stubAll = [...urllessSlots.keys()].filter((id) => !queued.has(id) && allOutlets[id]);
+      // At most URLLESS_STUB_SERP_PER_CYCLE per cycle, rotating hourly, so stubs
+      // never crowd the outlets that are really missing out of the 12-call budget.
+      const stubOutlets = pickStubOutletsForCycle(stubAll, URLLESS_STUB_SERP_PER_CYCLE, Math.floor(Date.now() / 3600000))
+        .map((id) => ({ id, name: allOutlets[id].displayName || id, tier: allOutlets[id].tier || 3, domain: allOutlets[id].domain }));
+      missingOutlets = [...missingOutlets, ...stubOutlets];
+      console.log(`  [url-less stubs: ${urllessSlots.size} in window, ${stubOutlets.length}/${stubAll.length} queued for SERP this cycle]`);
     }
     if (missingOutlets.length > 0) {
       // Daily SERP-SESSION cap (Sprint 1, scripts/lib/serp-session-cap.js). A hard per-show +
@@ -2077,9 +2140,19 @@ async function pollShow(show) {
           rotation: sessionLedger.perShow[SHOW_ID] || 0,
         });
       }
-      serpResults = await runSERPBackup(show, missingOutlets, knownUrls);
+      const serpStats = {};
+      serpResults = await runSERPBackup(show, missingOutlets, knownUrls, serpStats);
+      if (DRY_RUN && urllessSlots.size > 0 && serpResults.length > 0) {
+        console.log('  [url-less stub] dry run: links not attached');
+      } else if (urllessSlots.size > 0 && serpResults.length > 0) {
+        const att = attachSerpUrlsToStubs(serpResults, urllessSlots, (fp, u) => updateFileUrlWithInvariant(
+          fp, u, { urlSource: 'opening-night-poller-serp', urlUpdatedAt: new Date().toISOString() }, { stampOnNoop: true }));
+        serpResults = att.remaining;
+        for (const a of att.attached) console.log(`  [url-less stub] link attached: ${path.basename(a.filePath)} <- ${a.url}`);
+        for (const r of att.refused) console.log(`  [url-less stub] link refused by the url invariant: ${path.basename(r.filePath)} <- ${r.url}`);
+      }
       if (show.category === 'off-west-end') {
-        nextSerpOutletOffset = (nextSerpOutletOffset + SERP_BUDGET) % missingOutlets.length;
+        nextSerpOutletOffset = advanceSerpOutletOffset(nextSerpOutletOffset, serpStats.consumed, missingOutlets.length);
       }
       } // end: daily SERP-session cap allowed
     } else {

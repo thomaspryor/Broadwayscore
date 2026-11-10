@@ -277,7 +277,8 @@ const OUTLET_STRATEGY_CONFIG = {
   // pageConfirmAll: general-arts feeds (film, books, Boston stages). A feed
   // match alone is not trusted here: every match must also page-confirm.
   artsfuse:                  { strategy: 'rss', url: 'https://artsfuse.org/feed/', titleFilter: /\b(theat(er|re)|review|stage|play|musical|off-broadway)\b/i, pageConfirmAll: true },
-  'exeunt-magazine':         { strategy: 'rss', url: 'https://exeuntnyc.com/feed/', pageConfirmAll: true },
+  // BRO-7217: the site-wide /feed/ went empty (0 items) when Exeunt moved reviews to a custom post type; /reviews/feed/ carries them.
+  'exeunt-magazine':         { strategy: 'rss', url: 'https://exeuntnyc.com/reviews/feed/', pageConfirmAll: true },
   // BRO-7051: frequent Off-Broadway / Off-West End reviewers that were SERP-only, so the
   // 3-hourly opening-window run (feed + listing only, no SERP) could not see them.
   // Feeds probed 200 with items on 2026-11-06 (probe-outlet-feeds.js). Mixed feeds page-confirm.
@@ -908,7 +909,7 @@ async function main() {
   const censusWrite = /^(1|true)$/i.test(process.env.CENSUS_LISTING_WRITE || '');
   const censusOnly = new Set();
   const hasFeedEntry = (id) => !!(WP_API_CONFIG[id] || OUTLET_STRATEGY_CONFIG[id]);
-  const censusStats = { outlets: 0, items: 0, wouldAdd: 0, added: 0, reasons: {} };
+  const censusStats = { outlets: 0, items: 0, wouldAdd: 0, added: 0, reasons: {}, incomplete: [] };
   // Paid retries stay capped per run (CENSUS_PROXY_MAX, default 6) so a blocked index cannot fan out into dozens of paid child fetches.
   let censusProxyLeft = Math.max(0, parseInt(process.env.CENSUS_PROXY_MAX || '6', 10) || 0);
   const censusDeps = { fetchText: (u, label, ok, o) => { const want = (o && o.proxyRetry) || label === 'sitemap'; const use = want && censusProxyLeft > 0; if (use) censusProxyLeft--; return fetchXmlWithProxyRetry(u, label, ok, { proxyRetry: use, timeoutMs: 30000 }); }, fetchViaSitemap }; // a sitemap that blocks the plain fetch (406) goes through the poller's own fetchPage retry
@@ -1084,7 +1085,12 @@ async function main() {
       if (why.use) {
         try {
           const have = new Set(articles.map(a => { try { return normalizeUrl(a.url); } catch { return a.url; } }));
-          const got = (await censusListing.enumerateCensusItems(outletId, cutoff, censusDeps))
+          const detail = await censusListing.enumerateCensusItemsDetailed(outletId, cutoff, censusDeps);
+          if (!detail.complete) {
+            censusStats.incomplete.push(outletId);
+            console.warn(`  ⚠ [census] ${outletId}: listing read INCOMPLETE (${['failed', 'capped', 'partial', 'skipped'].flatMap(k => (detail[k] || []).map(x => `${k}: ${x}`)).slice(0, 4).join('; ')})`);
+          }
+          const got = detail.items
             .filter(a => { try { return !have.has(normalizeUrl(a.url)); } catch { return true; } });
           console.log(`  [census] ${why.reason}: ${got.length} extra item(s) from the census source in the lookback`);
           censusStats.outlets++; censusStats.items += got.length; censusStats.reasons[why.reason] = (censusStats.reasons[why.reason] || 0) + 1;
@@ -1151,7 +1157,7 @@ async function main() {
       if (candidates.length > 0) {
         const confirmed = await confirmOnPage(url, candidates, viaCensus ? censusPageStats : pageConfirmStats, {
           activeShows: showPool, publishDate, maxFetches: viaCensus ? censusPageBase + CENSUS_PAGE_MAX : PAGE_CONFIRM_MAX_FETCHES,
-          titleOnly: viaCensus ? (show) => censusListing.censusTitleOnly({ url, headline, publishDate }, show, showPool) : null, unconfirmedCache: censusDry ? null : unconfirmedCache,
+          titleOnly: viaCensus ? (show) => censusListing.censusTitleOnly({ url, headline, publishDate }, show, showPool, { siblingOk: (o) => censusListing.censusMarketOk(outletId, o, outletMarkets) }) : null, unconfirmedCache: censusDry ? null : unconfirmedCache,
           // A dry run never spends paid scraper fetches: plain fetch only.
           fetcher: itemDry ? (u => fetchSimple(u, 20000)) : viaCensus ? censusFetch.fetcher : fetchArticleHtml,
         });
@@ -1214,7 +1220,7 @@ async function main() {
   console.log(`New stubs: ${totalNewStubs}`);
   if (win) console.log(`OPENING_WINDOW_STATS fetches=${windowFetches} paid=${paidBudget.used} paidRefused=${paidBudget.refused} cap=${paidBudget.max}`);
   if (pageConfirmStats.overBudget > 0) console.warn(`⚠ Page-confirm budget (${PAGE_CONFIRM_MAX_FETCHES} pages${paidBudget && paidBudget.refused ? ', paid cap ' + paidBudget.max : ''}) ran out: ${pageConfirmStats.overBudget} candidate(s) not checked this run`);
-  console.log(`Census listing (BRO-7076): ${censusStats.outlets} outlet(s) read, ${censusStats.items} extra item(s), ${censusStats.wouldAdd} would-add, ${censusStats.added} added; page-confirm ${censusPageStats.fetched} fetched/${censusPageStats.confirmed} confirmed/${censusPageStats.overBudget} over cap; paid ${censusFetch.stats.paid}/${censusFetch.stats.paidRefused} refused; add cap ${CENSUS_MAX_ADDS}; mode=${censusDisabled ? 'disabled' : censusWrite ? 'write' : 'report-only'}; reasons=${JSON.stringify(censusStats.reasons)}`);
+  console.log(`Census listing (BRO-7076): ${censusStats.outlets} outlet(s) read, ${censusStats.items} extra item(s), ${censusStats.wouldAdd} would-add, ${censusStats.added} added; page-confirm ${censusPageStats.fetched} fetched/${censusPageStats.confirmed} confirmed/${censusPageStats.overBudget} over cap; paid ${censusFetch.stats.paid}/${censusFetch.stats.paidRefused} refused; add cap ${CENSUS_MAX_ADDS}; mode=${censusDisabled ? 'disabled' : censusWrite ? 'write' : 'report-only'}; reasons=${JSON.stringify(censusStats.reasons)}; incomplete=${censusStats.incomplete.length}${censusStats.incomplete.length ? ' [' + censusStats.incomplete.join(',') + ']' : ''}`);
   console.log(`Page-confirm (BRO-6921): ${pageConfirmStats.fetched} pages fetched, ${pageConfirmStats.confirmed} confirmed, ${pageConfirmStats.unconfirmed} not confirmed, ${pageConfirmStats.overBudget} over budget, ${pageConfirmStats.failed} fetch failures`);
   if (outletsFailed > 0) console.warn(`Outlets with errors: ${outletsFailed}`);
   if (serpOnlyEmpty.length > 0) {

@@ -21,11 +21,9 @@ const HERO = read('src/components/show-page/ShowHeroRedesign.tsx');
 
 const TESTIDS = [
   'tour-trust-line',
-  'on-tour-line',
   'regional-trust-line',
   'tour-parent-line',
   'tour-stops-line',
-  'tryout-link-line',
 ];
 
 test('every trust line is defined in ShowTrustLines', () => {
@@ -50,4 +48,22 @@ test('legacy header renders ShowTrustLines', () => {
 test('redesigned hero receives ShowTrustLines and renders it', () => {
   assert.ok(PAGE.includes('trustLines={<ShowTrustLines show={show} />}'), 'RedesignOn hero no longer gets trustLines');
   assert.match(HERO, /data-testid="hero-trust-lines">\{trustLines\}</);
+});
+
+// Owner decision 2026-11-09: the Broadway page's top card must not carry the
+// "Pre-Broadway tryout" line. Tryouts live in "Other Productions" below the fold.
+test('top card has no Pre-Broadway tryout line', () => {
+  assert.ok(!TRUST_LINES.includes('Pre-Broadway tryout'), 'tryout line is back in ShowTrustLines.tsx');
+  assert.ok(!TRUST_LINES.includes('tryout-link-line'), 'tryout-link-line is back in ShowTrustLines.tsx');
+});
+
+// Owner decision 2026-11-10 (BRO-7259): the Broadway page's top card must not
+// carry the blue "On tour" / "National tour" line. It shipped with the tour
+// launch (BRO-4211 Phase D) without the owner approving it on its own.
+test('top card has no On tour / National tour line', () => {
+  assert.ok(!TRUST_LINES.includes('on-tour-line'), 'on-tour-line is back in ShowTrustLines.tsx');
+  assert.ok(!TRUST_LINES.includes('on-tour-link'), 'on-tour-link is back in ShowTrustLines.tsx');
+  assert.ok(!TRUST_LINES.includes('getToursOf'), 'ShowTrustLines.tsx reads getToursOf again');
+  assert.ok(!PAGE.includes('on-tour-line'), 'on-tour-line is inline in page.tsx');
+  assert.ok(!HERO.includes('on-tour-line'), 'on-tour-line is in ShowHeroRedesign.tsx');
 });

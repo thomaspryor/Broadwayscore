@@ -146,14 +146,14 @@ test('v2 verdict: a prior-production citation never eats a "being fetched" slot'
     showId: 'the-car-man-west-end-2026',
     censusVerdict: { verdict: 'incomplete', liveCount: 11, candidateCount: 14, censusSchema: 2 },
     missing: [
-      { url: 'a', host: 'a.com' },
-      { url: 'b', host: 'b.com' },
-      { url: 'c', host: 'c.com', priorRun: true },
+      { url: 'https://a.com/review-x', host: 'a.com' },
+      { url: 'https://b.com/review-x', host: 'b.com' },
+      { url: 'https://c.com/review-x', host: 'c.com', priorRun: true },
     ],
   });
   assert.strictEqual(
     line,
-    "The Car Man: 11 of 14 known reviews live — 3 being fetched — separately, 1 (older production) on file from outside this run's candidate pool",
+    "The Car Man: 11 of 13 known reviews live — 2 being fetched, 1 unverified search hit, may be other productions — separately, 1 (older production) on file from outside this run's candidate pool",
   );
 });
 
@@ -189,10 +189,57 @@ test('a v2 verdict ignores the candidate list entirely — outside by constructi
       censusSchema: 2,
       candidates: [{ url: 'a' }, { url: 'b' }, { url: 'c' }],
     },
-    missing: [{ url: 'b', host: 'b.com' }, { url: 'c', host: 'c.com', priorRun: true }],
+    missing: [{ url: 'https://b.com/review-x', host: 'b.com' }, { url: 'https://c.com/review-x', host: 'c.com', priorRun: true }],
   });
   assert.strictEqual(
     line,
-    "Legacy Show: 1 of 3 known reviews live — 2 being fetched — separately, 1 (older production) on file from outside this run's candidate pool",
+    "Legacy Show: 1 of 2 known reviews live — 1 being fetched, 1 unverified search hit, may be other productions — separately, 1 (older production) on file from outside this run's candidate pool",
   );
+});
+
+// BRO-7153: Tosca Off-Broadway 2026 snapshot (2026-11-08). The SERP census pool
+// held a 2018 Met Tosca, Royal Opera House, an album review, Chicago, Oxford and a
+// film listing: none are the off-Broadway run. The line must not call them known.
+test('BRO-7153: census-only candidates from other productions are not "known reviews"', () => {
+  const cand = (outletId, url, state = 'GAP') => ({ outletId, url, state });
+  const serp = (url) => ({ url, serpCensus: true });
+  const urls = [
+    'https://www.express.co.uk/entertainment/theatre/911185/Puccini-Tosca-opera-Royal-Opera-House-Jonathan-Kent',
+    'https://theclassicreview.com/album-reviews/review-puccini-tosca-buratto/',
+    'https://aroundthetownchicago.com/theatre-reviews/tosca-reviewed-by-jacob-davis/',
+    'https://bachtrack.com/review-tosca-terfel-giannattasio-pirgu-oxford-interational-opera-september-2026',
+    'https://www.viewlogue.com/film/the-metropolitan-opera-tosca',
+  ];
+  const result = {
+    title: 'Tosca',
+    showId: 'tosca-off-broadway-2026',
+    censusVerdict: {
+      verdict: 'incomplete', liveCount: 1, candidateCount: 11, censusSchema: 4,
+      candidates: [cand('newyorkclassicalreview.com', 'http://newyorkclassicalreview.com/2018/01/yoncheva-triumphs-in-premiere-of-mets-new-and-dazzling-tosca/', 'live'), ...urls.map((u, i) => cand(`o${i}`, u))],
+    },
+    missing: urls.map(serp),
+  };
+  const line = coverageDigestLine(result);
+  assert.doesNotMatch(line, /of 11/);
+  assert.doesNotMatch(line, /10 being fetched/);
+  assert.match(line, /^Tosca: 1 of 1 known reviews live — 10 unverified search hits, may be other productions$/);
+  // A genuinely aggregator-cited miss is still "being fetched".
+  const cited = coverageDigestLine({ ...result, missing: [...result.missing, { url: 'https://nytimes.com/2026/11/02/theater/tosca-review.html', knownOutletId: 'nytimes' }] });
+  assert.match(cited, /^Tosca: 1 of 2 known reviews live — 1 being fetched, 9 unverified/);
+});
+
+test('BRO-7153: no cited reviews and no search hits renders nothing; no cited reviews yet reads plainly', () => {
+  const base = { title: 'X', showId: 'x', missing: [{ url: 'https://a.com/x', serpCensus: true }] };
+  assert.strictEqual(coverageDigestLine({ ...base, censusVerdict: { verdict: 'incomplete', liveCount: 0, candidateCount: 1, censusSchema: 4 } }),
+    'X: no aggregator-cited reviews yet — 1 unverified search hit, may be other productions');
+  assert.strictEqual(coverageDigestLine({ ...base, missing: [], censusVerdict: { verdict: 'incomplete', liveCount: 1, candidateCount: 1, censusSchema: 4 } }), null);
+});
+
+test('BRO-7153: a cited miss outside the census pool still renders (census count 0)', () => {
+  const line = coverageDigestLine({
+    title: 'Y', showId: 'y',
+    censusVerdict: { verdict: 'incomplete', liveCount: 0, candidateCount: 0, censusSchema: 4 },
+    missing: [{ url: 'https://nytimes.com/2026/11/02/theater/y-review.html', knownOutletId: 'nytimes' }],
+  });
+  assert.strictEqual(line, 'Y: 0 of 1 known reviews live — 1 being fetched');
 });

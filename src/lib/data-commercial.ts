@@ -8,11 +8,15 @@
 // unit-tested with fixtures; this module only feeds them data.
 
 import type { RawShow } from './engine';
+import { isRepeatedlyExtended } from './closing-label';
 import type {
   ShowCommercial,
   SeasonStats,
   ApproachingRecoupmentShow,
   AtRiskShow,
+  ClosingWatchShow,
+  NearBreakEvenShow,
+  ClosingOutlook,
   RecentRecoupmentShow,
   RecentClosing,
   UpcomingClosing,
@@ -64,6 +68,8 @@ import { buildSeasonProfiles, buildRecoupFindings, compareSeason, hasKnownOutcom
 import fs from 'fs';
 import path from 'path';
 import { getMarketDate } from './date-utils';
+import { isTopTonyWinner } from './data-awards';
+import { bankedShareSeries, calibrateClosingWatch, seasonalIndexSeries, adjustedRatioSeries, estimateClosing, isBoxOfficeDriven, isOnClosingWatch, isNearBreakEven, holdsAtLowerBreakEven, addWeeks, weeksBelowBreakEven as countWeeksBelowBreakEven, type ClosingObservation } from './closing-watch';
 import { isLossDesignation } from '../../scripts/lib/commercial-designations';
 import { conversionOf, isConvertedToCommercial, commercialRunWeeks, recoupClockStart } from '../../scripts/lib/commercial-conversion';
 import {
@@ -755,6 +761,8 @@ export function getShowsAtRisk(): AtRiskShow[] {
       modelHoldLabel: getModelHoldLabel({ ...data, status: show.status }),
       trend: getRecoupmentTrend(slug),
       closingDate: isFutureDate(show.closingDate) ? show.closingDate ?? null : null,
+      closingExtensions: show.closingExtensions ?? null,
+      closingExtensionCount: show.closingExtensionCount ?? null,
     });
   }
 
@@ -763,6 +771,172 @@ export function getShowsAtRisk(): AtRiskShow[] {
     const deficitB = b.breakEven - b.avgWeeklyGross;
     return deficitB - deficitA;
   });
+}
+
+/** Week-ending keys of the March 2020 shutdown: a run that ended there did not close on box office. */
+const COVID_SHUTDOWN = /^2020-03-/;
+
+/** Every reported week, oldest first. */
+const WEEK_KEYS_OLDEST_FIRST = [...WEEK_KEYS_NEWEST_FIRST].reverse();
+
+let seasonalIndex: number[] | null = null;
+let closingCalibration: ClosingObservation[][] | null = null;
+
+/** Market seasonal index per week, oldest first (seasonalIndexSeries over gross per reporting show). */
+function getSeasonalIndex(): number[] {
+  if (seasonalIndex) return seasonalIndex;
+  const perShow = WEEK_KEYS_OLDEST_FIRST.map((key) => {
+    const rows = Object.values(grossesHistory.weeks[key] ?? {}).filter((r) => r?.gross && r.gross > 0);
+    return rows.length ? rows.reduce((sum, r) => sum + (r.gross as number), 0) / rows.length : null;
+  });
+  seasonalIndex = seasonalIndexSeries(perShow);
+  return seasonalIndex;
+}
+
+function weeklyGrossesOldestFirst(slug: string): Array<number | null> {
+  return WEEK_KEYS_OLDEST_FIRST.map((key) => grossesHistory.weeks[key]?.[slug]?.gross ?? null);
+}
+
+/**
+ * BRO-7246: spells under each break-even threshold across every
+ * box-office-driven Broadway run with a break-even: closed runs end at their
+ * closing, running ones are censored at the latest week (so shows that dipped
+ * and survived count). Computed once per build.
+ */
+export function getClosingWatchCalibration(): ClosingObservation[][] {
+  if (closingCalibration) return closingCalibration;
+  const seasonal = getSeasonalIndex();
+  const runs: Array<{ ratios: Array<number | null>; closed: boolean; banked: Array<number | null> }> = [];
+  for (const [slug, data] of Object.entries(commercial.shows)) {
+    const show = rawShows.find((s) => s.slug === slug);
+    if (!show || !isBoxOfficeDriven(data.designation, show.limitedRun)) continue;
+    const closed = show.status === 'closed';
+    if (!closed && !isRunningStatus(show.status)) continue;
+    const breakEven = getBreakEven(data);
+    if (!breakEven) continue;
+    const weekly = weeklyGrossesOldestFirst(slug);
+    let last = -1;
+    weekly.forEach((g, i) => { if (g) last = i; });
+    if (last < 0 || (closed && COVID_SHUTDOWN.test(WEEK_KEYS_OLDEST_FIRST[last]))) continue;
+    // A closed run ends at its last reported week; a running one at the latest week.
+    const span = closed ? weekly.slice(0, last + 1) : weekly;
+    runs.push({
+      ratios: adjustedRatioSeries(span, seasonal, breakEven),
+      closed,
+      banked: bankedShareSeries(span, breakEven, data.capitalization),
+    });
+  }
+  closingCalibration = calibrateClosingWatch(runs);
+  return closingCalibration;
+}
+
+/**
+ * BRO-7246 Closing Watch: running shows with no closing date ahead whose
+ * 4-week average gross is under break-even (as printed and after the seasonal
+ * adjustment), deepest shortfall first, each with our estimated closing window.
+ */
+export function getClosingWatch(): ClosingWatchShow[] {
+  const calibration = getClosingWatchCalibration();
+  const seasonal = getSeasonalIndex();
+  const today = getMarketDate();
+  const latestWeek = WEEK_KEYS_NEWEST_FIRST[0];
+  const results: ClosingWatchShow[] = [];
+
+  for (const [slug, data] of Object.entries(commercial.shows)) {
+    const show = rawShows.find((s) => s.slug === slug);
+    if (!show || !isRunningStatus(show.status)) continue;
+    const breakEven = getBreakEven(data);
+    if (!breakEven) continue;
+    const weekly = weeklyGrossesOldestFirst(slug);
+    const avgGross = trailingAverageGross(getRecentGrosses(slug, 4));
+    const ratios = adjustedRatioSeries(weekly, seasonal, breakEven);
+    let adjustedRatio: number | null = null;
+    for (let i = ratios.length - 1; i >= 0 && adjustedRatio == null; i--) adjustedRatio = ratios[i];
+    if (!isOnClosingWatch({
+      status: show.status,
+      designation: data.designation,
+      limitedRun: show.limitedRun,
+      closingDate: show.closingDate,
+      closingExtensions: show.closingExtensions,
+      closingExtensionCount: show.closingExtensionCount,
+      today,
+      avgGross,
+      breakEven,
+      adjustedRatio,
+    })) continue;
+
+    const estimate = estimateClosing(ratios, calibration, bankedShareSeries(weekly, breakEven, data.capitalization));
+    results.push({
+      slug,
+      title: show.title,
+      season: getSeason(show.openingDate) || 'Unknown',
+      avgWeeklyGross: avgGross as number,
+      breakEven,
+      breakEvenRatio: (avgGross as number) / breakEven,
+      weeksBelowBreakEven: countWeeksBelowBreakEven([...weekly].reverse(), breakEven),
+      trend: getRecoupmentTrend(slug),
+      recouped: data.recouped === true,
+      holdsAtLowerBreakEven: holdsAtLowerBreakEven(avgGross as number, breakEven, adjustedRatio as number),
+      topTonyWinner: isTopTonyWinner(show.id),
+      likelyClosing: estimate && latestWeek ? {
+        early: estimate.p25 != null ? addWeeks(latestWeek, estimate.p25) : null,
+        median: addWeeks(latestWeek, estimate.median),
+        late: estimate.p75 != null ? addWeeks(latestWeek, estimate.p75) : null,
+      } : null,
+      basis: estimate ? {
+        sample: estimate.sample,
+        closings: estimate.closings,
+        weeksUnder: estimate.weeksUnder,
+        thresholdPct: Math.round(estimate.threshold * 100),
+        medianWeeks: estimate.median,
+        cushion: estimate.cushion,
+        young: estimate.young,
+      } : null,
+    });
+  }
+
+  return results.sort((a, b) => a.breakEvenRatio - b.breakEvenRatio);
+}
+
+let closingOutlooks: Map<string, ClosingOutlook> | null = null;
+/** One show's Closing Watch / Close to break-even line for its show page (BRO-7246). Built once per process. */
+export function getClosingOutlook(slug: string): ClosingOutlook | null {
+  if (!closingOutlooks) {
+    const m = new Map<string, ClosingOutlook>();
+    for (const s of getClosingWatch()) m.set(s.slug, { kind: 'watch', breakEvenRatio: s.breakEvenRatio, likelyClosing: s.likelyClosing });
+    for (const s of getNearBreakEven()) if (!m.has(s.slug)) m.set(s.slug, { kind: 'near', breakEvenRatio: s.breakEvenRatio, seasonCleared: s.seasonCleared });
+    closingOutlooks = m;
+  }
+  return closingOutlooks.get(slug) ?? null;
+}
+
+/** "Close to break-even" (BRO-7246): running shows just above break-even, or under it only in a slow season. */
+export function getNearBreakEven(): NearBreakEvenShow[] {
+  const seasonal = getSeasonalIndex();
+  const today = getMarketDate();
+  const results: NearBreakEvenShow[] = [];
+  for (const [slug, data] of Object.entries(commercial.shows)) {
+    const show = rawShows.find((s) => s.slug === slug);
+    if (!show || !isRunningStatus(show.status)) continue;
+    const breakEven = getBreakEven(data);
+    if (!breakEven) continue;
+    const weekly = weeklyGrossesOldestFirst(slug);
+    const avgGross = trailingAverageGross(getRecentGrosses(slug, 4));
+    const ratios = adjustedRatioSeries(weekly, seasonal, breakEven);
+    let adjustedRatio: number | null = null;
+    for (let i = ratios.length - 1; i >= 0 && adjustedRatio == null; i--) adjustedRatio = ratios[i];
+    if (!isNearBreakEven({ status: show.status, designation: data.designation, limitedRun: show.limitedRun, closingDate: show.closingDate, closingExtensions: show.closingExtensions, closingExtensionCount: show.closingExtensionCount, today, avgGross, breakEven, adjustedRatio })) continue;
+    results.push({
+      slug,
+      title: show.title,
+      avgWeeklyGross: avgGross as number,
+      breakEven,
+      breakEvenRatio: (avgGross as number) / breakEven,
+      seasonCleared: (avgGross as number) < breakEven,
+      trend: getRecoupmentTrend(slug),
+    });
+  }
+  return results.sort((a, b) => a.breakEvenRatio - b.breakEvenRatio);
 }
 
 /**
@@ -860,6 +1034,8 @@ export function getUpcomingClosings(): UpcomingClosing[] {
 
   for (const show of rawShows) {
     if (show.status !== 'open' || !show.closingDate) continue;
+    // BRO-7252: a run that keeps extending has no announced closing.
+    if (isRepeatedlyExtended(show)) continue;
 
     const closingDate = new Date(show.closingDate);
     if (isNaN(closingDate.getTime())) continue;
@@ -915,9 +1091,13 @@ function toCommercialShowRow(slug: string, show: RawShow, data: ShowCommercial):
   const grossData = getShowGrosses(slug);
   const running = isRunningStatus(show.status);
   const weeks = recoupWeeks(slug, data, show);
+  const upcomingClose = running && isFutureDate(show.closingDate);
   return {
     slug,
     title: show.title,
+    closingDate: upcomingClose ? show.closingDate ?? null : null,
+    closingExtensions: upcomingClose ? show.closingExtensions ?? null : null,
+    closingExtensionCount: upcomingClose ? show.closingExtensionCount ?? null : null,
     status: show.status,
     designation: data.designation,
     capitalization: data.capitalization,

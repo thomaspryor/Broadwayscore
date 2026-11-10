@@ -52,6 +52,9 @@ const fs = require('fs');
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
 const { readCrossShowUrlRows } = require('./lib/cross-show-url-ledger'); // BRO-6910
+const { trackedPendingFiles } = require('./lib/pending-coverage'); // BRO-7163 F11
+const { isOpaqueArticleUrl, headlineAsUrl } = require('./lib/opaque-article-url'); // BRO-7163 F02
+const { weUrlIsPriorRun } = require('./lib/we-prior-run'); // BRO-7163 F09
 const { isAggregatorBlind, majorOutletCountFor } = require('./lib/aggregator-blind'); // BRO-6910
 const cheerio = require('cheerio');
 const { execSync, execFileSync } = require('child_process');
@@ -964,7 +967,14 @@ function isOwnVenueUrl(u, show) {
 function acceptSerpCensusResult(sr, { show, showInfo, priorVetted = false }) {
   const u = sr && (sr.url || sr.link);
   if (!u || !isReviewUrl(u)) return null;
-  const passing = matchingTitleVariants(u, show, { context: 'census' });
+  let passing = matchingTitleVariants(u, show, { context: 'census' });
+  // BRO-7163 F02: an opaque URL (story.asp?ID=48291) has no title tokens to match. The SERP headline
+  // stands in, but only on an outlet we know, so a random host's opaque page is not accepted on a headline alone.
+  if (!passing.length && isOpaqueArticleUrl(u) && sr.title
+      && (getKnownDomainMap().has(registrableHost(hostOf(u))) || getKnownDomainMap().has(publicationHostOf(u)))) {
+    const hu = headlineAsUrl(sr.title);
+    if (hu) passing = matchingTitleVariants(hu, show, { context: 'census' });
+  }
   if (!passing.length) return null;
   // BRO-5732: fail closed. An unregistered host must show review-shaped evidence
   // (url/title/snippet), not merely avoid every known-bad pattern. `priorVetted`:
@@ -1111,7 +1121,17 @@ async function extractAggregatorReviewUrls(articleUrl, show) {
   $('a[href]').each((_, el) => {
     const href = $(el).attr('href') || '';
     if (!isReviewUrl(href)) return;
-    if (!urlMatchesShowTitle(href, show, { context: 'article-link' })) return;
+    if (!urlMatchesShowTitle(href, show, { context: 'article-link' })) {
+      // BRO-7163 F02: an opaque href (story.asp?ID=48291) is judged on its link text / list item instead.
+      if (!isOpaqueArticleUrl(href)) return;
+      // Same bar as the SERP path: only a registered outlet host may be accepted on headline evidence.
+      let hrefAbs = href;
+      try { hrefAbs = new URL(href, 'https://base.invalid').href; } catch { /* keep raw */ }
+      if (!(getKnownDomainMap().has(registrableHost(hostOf(hrefAbs))) || getKnownDomainMap().has(publicationHostOf(hrefAbs)))) return;
+      const blockText = ($(el).closest('li,p,tr,dd,dt').first().text() || '').replace(/\s+/g, ' ').slice(0, 400);
+      const hu = headlineAsUrl(`${$(el).text()} ${blockText}`);
+      if (!hu || !urlMatchesShowTitle(hu, show, { context: 'article-link' })) return;
+    }
     urls.add(normalizeReviewUrl(href));
   });
   // Production identity (2026-07-11): urlMatchesShow filters wrong SHOWS, not
@@ -1176,6 +1196,12 @@ function explainFileExclusion(d, show) {
 
 const { lastNewReviewAt, hasRecentReviewActivity } = require('./lib/collection-phase');
 
+// A closed show stays auditable through the window plus a week of grace (BRO-7163 F05).
+const CLOSED_GRACE_DAYS = 7;
+function closedShowStillInWindow(diffDays, windowDays) {
+  return diffDays >= -3 && diffDays <= windowDays + CLOSED_GRACE_DAYS;
+}
+
 function isShowEligible(show) {
   // Recency falls back openingDate → previewsStartDate. This used to be a bare
   // `if (!show.openingDate) return false`, which made this audit — the one whose
@@ -1188,10 +1214,14 @@ function isShowEligible(show) {
   if (recencyDate === NO_DATE_SENTINEL) return false;
   // --include-closed: also audit closed shows (one-time back-catalogue backfill).
   // Without it, only currently open/previews shows are checked (the default cron).
-  if (!includeClosed && !['open', 'previews'].includes(show.status)) return false;
   const opened = new Date(recencyDate);
   const today = new Date();
   const diffDays = (today - opened) / 86400000;
+  // BRO-7163 F05: a short-run show that closed inside (or just after) the opening window is still
+  // owed its late reviews. Without this a 12-day Off-West End run left the audit the day it closed.
+  if (!includeClosed && !['open', 'previews'].includes(show.status)) {
+    return show.status === 'closed' && closedShowStillInWindow(diffDays, windowDays);
+  }
   // Eligible if opened within window OR in pre-opening (<=3 days from now)
   if (diffDays >= -3 && diffDays <= windowDays) return true;
   // BRO-4770: a show past the window stays in scope while it is still collecting
@@ -1381,8 +1411,17 @@ async function auditShow(show, opts = {}) {
               page: step.page,
               geo: step.geo,
             });
+            // BRO-7162 F14: serpQuery returns null when every provider is unavailable. That is a failed
+            // query, not an empty answer; recording it ok:true let a dead provider stamp the cooldown.
+            if (serpResults === null) {
+              queryStatus.push({
+                arm: step.arm, query: step.query, page: step.page, geo: step.geo,
+                ok: false, results: 0, accepted: 0, error: 'serp-provider-unavailable',
+              });
+              continue;
+            }
             let accepted = 0;
-            for (const sr of (serpResults || [])) {
+            for (const sr of serpResults) {
               const url = acceptSerpCensusResult(sr, { show, showInfo });
               if (url && !serpCensusUrls.has(url)) accepted++;
               if (url) serpCensusUrls.add(url);
@@ -1630,6 +1669,7 @@ async function auditShow(show, opts = {}) {
         // February NYT review would hide a new nytimes.com review of the return.
         dirFilesAll.filter(d => !d._exactMatchOnly && (!d.url || classifyReviewUrl(d.url).ok)),
         d => isCoveredFile(d, show),
+        aggUrl, // BRO-7163 F10: a sibling review on the same host must not vouch for this one
       );
     if (dirFiles.length === 0) {
       // Before calling it missing: is this the SAME outlet's review we already
@@ -1858,7 +1898,7 @@ async function auditShow(show, opts = {}) {
           m.weRefStarsSource = starRow.source;
         }
       }
-      if (weRefPriorRunUrls.has(m.url)) m.priorRun = true;
+      if (weUrlIsPriorRun(m.url, weRefPriorRunUrls, weRefUrlSources)) m.priorRun = true; // BRO-7163 F09: current-run corroboration wins
       // Broadway-path production identity: cited only by a prior production's
       // dated aggregator article → permanently report-only (TKAM 2018 class).
       if (bwPriorRunUrls.has(m.url)) { m.priorRun = true; m.priorRunSource = 'aggregator-article-date'; }
@@ -1910,7 +1950,13 @@ async function auditShow(show, opts = {}) {
     try {
       const pendingDir = path.join(REVIEW_TEXTS_DIR, '_pending', show.id);
       if (fs.existsSync(pendingDir)) {
-        pendingOutlets = new Set(fs.readdirSync(pendingDir).filter(f => f.endsWith('.json')).map(f => outletKey(normalizeOutletId(f.split('--')[0]))));
+        // BRO-7163 F11: only a strand a recovery path works (no-byline) is "tracked elsewhere"; a
+        // date_implausible / cross_market file can never go live and must not hide the citation.
+        const pendingFiles = fs.readdirSync(pendingDir).filter(f => f.endsWith('.json')).map(f => {
+          let rec = null; try { rec = JSON.parse(fs.readFileSync(path.join(pendingDir, f), 'utf8')); } catch { /* unreadable: not tracked */ }
+          return { name: f, rec };
+        });
+        pendingOutlets = new Set(trackedPendingFiles(pendingFiles).map(f => outletKey(normalizeOutletId(f.name.split('--')[0]))));
       }
     } catch { /* pending scan is best-effort */ }
     const seenOutlets = new Set();
@@ -3858,4 +3904,4 @@ if (require.main === module) {
 // REVIEW_TEXTS_DIR before requiring this module.
 // main + USAGE are exported so scripts/audit-show-review-gap.test.mjs can
 // prove --help never falls through to a real gh call (task #266).
-module.exports = { urlMatchesShowTitle, matchingTitleVariants, auditShow, dropRoundupsOwnedByOtherShows, roundupOwnerMap, planRoundupGapAlerts, openLegacyRoundupGapKeys, buildRoundupGapAlert, syncRollupCard, ROUNDUP_GAP_ROLLUP_KEY, isInVerdictWindow, findAggregatorArticles, urlMatchesShow, namesLongerShowTitle, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap, isReviewUrl, normalizeReviewUrl, gapUrlIdentity, classifyShowFile, isCoveredFile, bumpRecoveryCount, acceptSerpCensusResult, otherProductionUrlSignal, computeResidualCounts, currentRunUncollected, alertUncollected, openingWindowClearedKeys, main, USAGE, dispatchGatherFor };
+module.exports = { urlMatchesShowTitle, matchingTitleVariants, auditShow, dropRoundupsOwnedByOtherShows, roundupOwnerMap, planRoundupGapAlerts, openLegacyRoundupGapKeys, buildRoundupGapAlert, syncRollupCard, ROUNDUP_GAP_ROLLUP_KEY, isInVerdictWindow, findAggregatorArticles, urlMatchesShow, namesLongerShowTitle, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap, isReviewUrl, normalizeReviewUrl, gapUrlIdentity, classifyShowFile, isCoveredFile, bumpRecoveryCount, acceptSerpCensusResult, isShowEligible, closedShowStillInWindow, otherProductionUrlSignal, computeResidualCounts, currentRunUncollected, alertUncollected, openingWindowClearedKeys, main, USAGE, dispatchGatherFor };

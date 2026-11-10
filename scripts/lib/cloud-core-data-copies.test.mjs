@@ -102,13 +102,15 @@ test('cloud bootstrap: converts snapshot links, re-copies on startup when the cl
 
     fs.writeFileSync(path.join(fx.clone, 'shows.json'), JSON.stringify({ f: 'shows.json', v: 2 }));
     git(fx.clone, 'commit', '-qam', 'v2');
-    run(fx, 'cloud-bootstrap-data.sh', [], { ...cloud, BSC_SESSION_EVENT: 'compact' });
+    const compactOut = run(fx, 'cloud-bootstrap-data.sh', [], { ...cloud, BSC_SESSION_EVENT: 'compact' });
     assert.deepEqual(read(shows), { f: 'shows.json', v: 1 }, 'compact must not overwrite the session copy');
+    assert.match(compactOut, /WARN: data\/\*\.json copies are from core data .* --link-only/, 'compact warns that the kept copy is behind the clone (BRO-7187)');
     assert.deepEqual(findStaleCopies({ dataDir: fx.data, coreDataDir: fx.clone, files: getLocalSymlinkFiles() }), ['shows.json'], 'stale check sees the cloud copy');
 
     run(fx, 'cloud-bootstrap-data.sh', [], { ...cloud, BSC_SESSION_EVENT: 'startup' });
     assert.deepEqual(read(shows), { f: 'shows.json', v: 2 });
     assert.deepEqual(findStaleCopies({ dataDir: fx.data, coreDataDir: fx.clone, files: getLocalSymlinkFiles() }), []);
+    assert.doesNotMatch(run(fx, 'cloud-bootstrap-data.sh', [], { ...cloud, BSC_SESSION_EVENT: 'compact' }), /copies are from core data/, 'no WARN when copies match the clone');
     assert.deepEqual(execFileSync('git', ['-C', fx.clone, 'status', '--porcelain'], { encoding: 'utf8' }), '', 'clone untouched');
   } finally { fs.rmSync(fx.root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });

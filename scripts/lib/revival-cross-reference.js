@@ -1,7 +1,9 @@
 'use strict';
+// venue-write-guard-ok: venue is copied into in-memory comparison records for the return-engagement check (BRO-7080); nothing here writes shows.json.
 
 const { isBroadwayCategory } = require('./venue-classification');
 const { foldDiacritics } = require('./title-match');
+const { canonicalVenue, sameVenueOrRoom } = require('./show-duplicate-detection');
 
 // Full normalized title (no subtitle stripping) to avoid false positives —
 // e.g. "Seagull: True Story" should NOT match "The Seagull". foldDiacritics
@@ -32,7 +34,11 @@ function buildExistingTitleMap(shows) {
     const norm = normalizeRevivalTitle(s.title);
     if (norm.length < 4) continue; // skip very short titles to avoid false matches (art, bug, etc.)
     if (!map.has(norm)) map.set(norm, []);
-    map.get(norm).push({ type: s.type, id: s.id, category: s.category, title: s.title, creativeTeam: s.creativeTeam });
+    map.get(norm).push({
+      type: s.type, id: s.id, category: s.category, title: s.title, creativeTeam: s.creativeTeam,
+      venue: s.venue, previewsStartDate: s.previewsStartDate, openingDate: s.openingDate,
+      isRevival: s.isRevival === true || (Array.isArray(s.tags) && s.tags.includes('revival')),
+    });
   }
   return map;
 }
@@ -123,6 +129,37 @@ function shouldAcceptIbdbRevival(result, show) {
   return !!(result && result.isRevival) && !describesNewWork(show);
 }
 
+// BRO-7080 (class of BRO-4436): a same-title row in the same market at the
+// same house that started within the last ~12 months is the SAME production
+// coming back (Degenerates at Playwrights Horizons, Sep-Nov 2026 then
+// Dec 2026-Jan 2027), not a revival of it; it inherits the earlier run's own
+// isRevival. "Company/Room" venues compare at the
+// building too ("Playwrights Horizons/Peter Jay Sharp Theater" vs
+// "Playwrights Horizons"). Undated sides stay revivals (no evidence).
+const RETURN_ENGAGEMENT_MAX_DAYS = 366;
+function venueKeys(v) {
+  const full = canonicalVenue({ venue: v });
+  const building = canonicalVenue({ venue: String(v || '').split('/')[0] });
+  return [full, building].filter(Boolean);
+}
+function sameHouseForReturn(a, b) {
+  const ka = venueKeys(a);
+  const kb = venueKeys(b);
+  return ka.some(x => kb.some(y => sameVenueOrRoom(x, y)));
+}
+function runStartDate(s) {
+  const d = (s && (s.previewsStartDate || s.openingDate)) || null;
+  return typeof d === 'string' && /^\d{4}-\d{2}-\d{2}/.test(d) ? Date.parse(d.slice(0, 10)) : null;
+}
+function isReturnEngagement(show, earlier) {
+  if (!earlier || normMarket(earlier.category) !== normMarket(show.category)) return false;
+  if (!sameHouseForReturn(show.venue, earlier.venue)) return false;
+  const a = runStartDate(earlier);
+  const b = runStartDate(show);
+  if (a == null || b == null || a > b) return false;
+  return (b - a) / 86400000 <= RETURN_ENGAGEMENT_MAX_DAYS;
+}
+
 /**
  * Cross-reference a newly discovered show's title against existing shows.json
  * entries (BRO-2023). A same-title match in a DIFFERENT market (e.g. a West
@@ -143,18 +180,19 @@ function detectRevivalByTitleCrossReference(show, existingTitleMap) {
     // shares the name. Candidates whose authors differ are dropped one by one,
     // so a genuine earlier production is still found behind an unrelated one.
     const compatible = others.filter(c => !writersConflict(show.creativeTeam, c.creativeTeam));
-    return { match: pickBestMatch(compatible, show), collided: others.length > 0 && compatible.length === 0, first: others[0] || null };
+    const returnOf = compatible.find(c => isReturnEngagement(show, c)) || null;
+    return { match: returnOf || pickBestMatch(compatible, show), returnOf, collided: others.length > 0 && compatible.length === 0, first: others[0] || null };
   };
   const none = { isRevival: false, detectedType: null, confidence: null, match: null, isTransfer: false };
 
   const fullKey = normalizeRevivalTitle(show.title);
-  let { match, collided, first } = lookup(fullKey);
+  let { match, returnOf, collided, first } = lookup(fullKey);
   if (!match && !collided) {
     // Try base title (before colon, dash, or parens) — only if 5+ chars to avoid false positives
     const base = show.title.replace(/\s*[:(\-–—].*/g, '').trim();
     const normBase = normalizeRevivalTitle(base);
     if (normBase.length >= 5 && normBase !== fullKey) {
-      ({ match, collided, first } = lookup(normBase));
+      ({ match, returnOf, collided, first } = lookup(normBase));
     }
   }
   if (!match && !collided) return none;
@@ -165,6 +203,16 @@ function detectRevivalByTitleCrossReference(show, existingTitleMap) {
     return { ...none, match: m, isTransfer: normMarket(m.category) !== normMarket(show.category), rejected: 'title-collision' };
   }
 
+  // A return run carries the earlier run's own status: a new play coming back
+  // stays new, a returning revival (the Met's La Boheme, season after season)
+  // stays a revival.
+  if (returnOf) {
+    if (returnOf.isRevival) {
+      return { isRevival: true, detectedType: returnOf.type || null, confidence: 'high', match: returnOf, isTransfer: false, returnEngagement: true };
+    }
+    return { ...none, match: returnOf, rejected: 'return-engagement', returnEngagement: true };
+  }
+
   const sameMarket = normMarket(match.category) === normMarket(show.category);
   if (sameMarket) {
     return { isRevival: true, detectedType: match.type || null, confidence: 'high', match, isTransfer: false };
@@ -172,4 +220,4 @@ function detectRevivalByTitleCrossReference(show, existingTitleMap) {
   return { isRevival: false, detectedType: null, confidence: null, match, isTransfer: true };
 }
 
-module.exports = { normalizeRevivalTitle, buildExistingTitleMap, detectRevivalByTitleCrossReference, writersConflict, describesNewWork, shouldAcceptIbdbRevival };
+module.exports = { isReturnEngagement, normalizeRevivalTitle, buildExistingTitleMap, detectRevivalByTitleCrossReference, writersConflict, describesNewWork, shouldAcceptIbdbRevival };

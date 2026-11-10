@@ -27,7 +27,8 @@
  * `--expect`. "3 consecutive successes" = --limit=3 --expect=success
  * --min-match=3; "at most 1 failure in last 5" = --limit=5 --expect=failure
  * --max-match=1; "none cancelled in last 20" = --limit=20 --expect=cancelled
- * --max-match=0. Without --limit the single most-recent-run check is unchanged.
+ * --max-match=0. Without --limit it checks the single most recent FINISHED run
+ * (a queued or in-progress run has no conclusion yet and is skipped).
  *
  * Usage:
  *   node scripts/check-workflow-run-status.js --workflow=<name.yml or "Display Name"> \
@@ -66,7 +67,14 @@ function parseCount(v, name, min) {
 function evaluate(runs, { expect, limit, minMatch, maxMatch }) {
   if (!Array.isArray(runs) || runs.length === 0) return { ok: false, message: 'No runs found' };
   if (limit === undefined) {
-    const run = runs[0];
+    // The newest FINISHED run. A queued/in-progress run has no conclusion yet,
+    // so counting it made the check flip to MISMATCH every time the workflow
+    // started a new run (opening-night-poller.yml: pass,pass,fail,fail,fail
+    // back to back, 2026-11-08 flaky simulation).
+    // A stuck run is hidden only until GitHub ends it (job timeout 6h, queue
+    // 24h); it then concludes 'cancelled' and this check reports it.
+    const run = runs.find((r) => r.conclusion);
+    if (!run) return { ok: false, message: 'No finished runs found' };
     const ok = run.conclusion === expect;
     return { ok, message: `${ok ? 'MATCH' : 'MISMATCH'} — most recent run concluded '${run.conclusion || run.status}'${ok ? '' : `, expected '${expect}'`} (${run.url})` };
   }
@@ -188,7 +196,7 @@ async function main(argv) {
   }
 
   const args = ['run', 'list', '--workflow', workflow, '--limit', String(limit || 1), '--json', 'conclusion,status,headBranch,url'];
-  if (limit !== undefined) args.push('--status', 'completed');
+  args.push('--status', 'completed');
   if (branch) args.push('--branch', branch);
 
   let stdout;
@@ -201,7 +209,7 @@ async function main(argv) {
       process.exit(1);
     }
     try {
-      runs = await fetchWorkflowRuns({ workflow, branch, limit: limit || 1, completedOnly: limit !== undefined });
+      runs = await fetchWorkflowRuns({ workflow, branch, limit: limit || 1, completedOnly: true });
       console.error('(gh not authenticated; read runs from the public GitHub API)');
     } catch (e) {
       console.error(`gh not authenticated and public API fallback failed: ${e.message}${e.cause ? ` (${e.cause.code || e.cause.message})` : ''}`);

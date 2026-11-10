@@ -103,7 +103,7 @@ for (const f of files) {
   catch { excluded.push({ file: f, reason: 'parse error' }); continue; }
 
   // Must pass rebuild inclusion gate
-  if (!isIncludableForRebuild(data, show)) {
+  if (!isIncludableForRebuild(data, show, path.join(showDir, f))) {
     const reason = getExclusionReason(data);
     excluded.push({ file: f, reason, data });
     continue;

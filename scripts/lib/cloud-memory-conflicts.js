@@ -44,6 +44,44 @@ function publishConflictReport({ src, dest, now = new Date() }) {
   }
 }
 
+// BRO-7228: MEMORY.md is a hand-trimmed index (180 lines / 20KB, hook-enforced,
+// "at cap: add => merge one"), so a saved mirror copy of it never needs a
+// human, and must never be written back into it: appending a pointer could
+// breach the byte cap or resurrect an entry the owner removed on purpose.
+// Cloud sessions still reach unindexed memos through INDEX.txt. Five copies sat
+// in _conflicts/ for six weeks and the morning digest flagged them daily, so
+// each sync moves them to _conflicts/_resolved/. That is a subdirectory, which
+// the report above never counts, and nothing is deleted: the copy survives.
+// Copies of any other memo still wait for review.
+const RESOLVED_DIR = '_resolved';
+const COPY_RE = /^MEMORY\.cloud-conflict-.+\.md$/;
+
+function archiveIndexConflictCopies({ src }) {
+  const result = { archived: [] };
+  const dir = path.join(src, CONFLICT_DIR);
+  let names;
+  try {
+    names = fs.readdirSync(dir, { withFileTypes: true })
+      .filter(e => e.isFile() && COPY_RE.test(e.name)).map(e => e.name).sort();
+    if (names.length) fs.mkdirSync(path.join(dir, RESOLVED_DIR), { recursive: true });
+  } catch (err) {
+    if (err.code === 'ENOENT') return result;
+    throw err;
+  }
+  for (const name of names) {
+    try {
+      // rename() silently replaces an existing file; keep both instead.
+      if (fs.existsSync(path.join(dir, RESOLVED_DIR, name))) continue;
+      fs.renameSync(path.join(dir, name), path.join(dir, RESOLVED_DIR, name));
+      result.archived.push(name);
+    } catch (err) {
+      // A parallel session-stop already moved it: that is the goal state.
+      if (err.code !== 'ENOENT') throw err;
+    }
+  }
+  return result;
+}
+
 // An unresolved conflict does not expire: it needs review even if the Mac
 // has stopped syncing. Missing reports are normal before the first conflict.
 function readConflictDigest(dest) {
@@ -76,4 +114,7 @@ function readConflictDigest(dest) {
   };
 }
 
-module.exports = { CONFLICT_DIR, REPORT_BASENAME, publishConflictReport, readConflictDigest };
+module.exports = {
+  CONFLICT_DIR, REPORT_BASENAME, RESOLVED_DIR,
+  publishConflictReport, readConflictDigest, archiveIndexConflictCopies,
+};

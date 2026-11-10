@@ -82,21 +82,21 @@ const NO_RECLAIM_RE = /^\s*NO-RECLAIM\s*:/im;
 const OWNER_CARD_RE = /\u{1F451}|^\W*OWNER\b/u;
 
 /** Skip reason from the list fields alone (state, updatedAt, title, description), or null. */
-function reclaimListSkipReason(issue, nowMs) {
+function reclaimListSkipReason(issue, nowMs, idleMs = RECLAIM_IDLE_MS) {
   if (!issue || !issue.state || issue.state.type !== 'started') return 'not-started';
   if (/review/i.test(issue.state.name || '') && !isRealInReview(issue)) return 'in-review';
   const ms = Date.parse(issue.updatedAt);
   if (!Number.isFinite(ms)) return 'no-updated-at';
-  if (nowMs - ms < RECLAIM_IDLE_MS) return 'recent';
+  if (nowMs - ms < idleMs) return 'recent';
   if (OWNER_CARD_RE.test(issue.title || '')) return 'owner-card';
   if (NO_RECLAIM_RE.test(issue.description || '')) return 'opted-out';
   return null;
 }
 
 /** Started cards idle past RECLAIM_IDLE_MS that pass the list rules, oldest first (uncapped: the caller caps moves). */
-function findReclaimCandidates(issues, { nowMs }) {
+function findReclaimCandidates(issues, { nowMs, idleMs = RECLAIM_IDLE_MS }) {
   return (Array.isArray(issues) ? issues : [])
-    .filter((iss) => reclaimListSkipReason(iss, nowMs) == null)
+    .filter((iss) => reclaimListSkipReason(iss, nowMs, idleMs) == null)
     .sort((a, b) => Date.parse(a.updatedAt) - Date.parse(b.updatedAt));
 }
 
@@ -153,16 +153,17 @@ function reclaimCount(comments) {
  * @param {Array<{ref:string, lastActivityAt:?string}>} p.landRefs - land/ refs naming this card;
  *   lastActivityAt is the latest Land run's update time, or the tip's commit date with no run, null if unknown
  * @param {number} p.nowMs
+ * @param {number} [p.idleMs] - idle window (default RECLAIM_IDLE_MS; the stalled-session sweep passes 12h)
  * @returns {{action:'skip', reason:string} | {action:'todo'|'backlog', reclaims:number, staleRefs:string[], idleHours:number}}
  */
-function reclaimDecision({ issue, comments, landRefs, nowMs }) {
-  const listReason = reclaimListSkipReason(issue, nowMs);
+function reclaimDecision({ issue, comments, landRefs, nowMs, idleMs = RECLAIM_IDLE_MS }) {
+  const listReason = reclaimListSkipReason(issue, nowMs, idleMs);
   if (listReason) return { action: 'skip', reason: listReason };
   const list = Array.isArray(comments) ? comments : [];
   if (list.length >= COMMENT_CAP) return { action: 'skip', reason: 'comments-truncated' };
   const newestComment = Math.max(-Infinity, ...list.map((c) => Date.parse(c && c.createdAt)).filter(Number.isFinite));
   const lastActivityMs = Math.max(Date.parse(issue.updatedAt), newestComment);
-  if (nowMs - lastActivityMs < RECLAIM_IDLE_MS) return { action: 'skip', reason: 'recent-comment' };
+  if (nowMs - lastActivityMs < idleMs) return { action: 'skip', reason: 'recent-comment' };
   const isInReview = /review/i.test(issue.state.name || '');
   if (isInReview) {
     const why = inReviewSkipReason(issue, list);

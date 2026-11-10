@@ -42,6 +42,10 @@ on:
       - 'scripts/re-extract-talkin-broadway-reviews.js'
       # BRO-6663: tests/unit/lane-recording-import.test.mjs
       - 'scripts/lane-recording-import.js'
+      # BRO-7167: tests/unit/wanted-method-check.test.mjs
+      - 'scripts/wanted-method-check.js'
+      # BRO-7199: tests/unit/opening-night-lane-sources.test.mjs requires its per-show coverage check.
+      - 'scripts/lane-on-time-outlets.js'
       # BRO-6620: tests/unit/lane-only-markets.test.mjs runs these and pins the workflow wiring.
       - 'scripts/lane-only-markets.js'
       - 'scripts/lane-stood-down-page.js'
@@ -132,6 +136,8 @@ on:
       - 'scripts/check-workflow-run-status.js'
       - 'scripts/check-remote-branch-absent.js'
       - 'scripts/audit-london-census-coverage.js'
+      - 'scripts/audit-approved-fix-drift.js'
+      - 'scripts/audit-aggregator-health.js' # BRO-6098: audit-aggregator-health.test.mjs
       - 'scripts/audit-artsdesk-banner.js'
       - 'scripts/audit-url-critic-slug-filenames.js'
       - 'scripts/export-cookies.js'
@@ -464,6 +470,12 @@ on:
       - 'scripts/sweep-recovered-alert-cards.js'
       # scripts/lib/board-dispatch.test.mjs (BRO-7139 nightly board dispatch report)
       - 'scripts/board-dispatch.js'
+      # scripts/lib/llm-triage-facts.test.mjs (BRO-7139 report-only LLM triage CLI)
+      - 'scripts/llm-triage.js'
+      # scripts/lib/llm-triage-audit.test.mjs (BRO-7139 Step 3 weekly audit CLI)
+      - 'scripts/llm-triage-audit.js'
+      # scripts/lib/llm-triage-acceptance.test.mjs (BRO-7139 Step 3 acceptance judge)
+      - 'scripts/llm-triage-acceptance.js'
       # tests/unit/detect-venue-transfers.test.mjs
       - 'scripts/detect-venue-transfers.js'
       # tests/unit/promote-historical-auto.test.mjs
@@ -996,6 +1008,10 @@ on:
       # proposal). Colocated *.test.mjs runs in the scripts/lib/*.test.mjs
       # glob; path-listed so a solo edit triggers CI.
       - 'scripts/generate-remediation-plan.js'
+      # BRO-7167: test bench steps 1-2. scripts/test-bench-*.test.mjs run in the scripts/*.test.mjs glob; path-listed so a
+      # solo edit to either script triggers CI (audit-toplevel-script-test-yml-coverage).
+      - 'scripts/test-bench-publish-times.js'
+      - 'scripts/test-bench-old-path-audit.js'
       # Plan-refusal auto-dispatch (task #755): what generate-remediation-plan.js
       # does when the LLM planner refuses — files a P1 card instead of a dead-end
       # email. Colocated *.test.mjs runs in the scripts/lib/*.test.mjs glob;
@@ -2101,6 +2117,10 @@ on:
       # helpers are covered via tests/unit/collect-review-texts-rename-helper.test.mjs
       # under the tests/** trigger, but a solo edit to the file got ZERO CI).
       - 'scripts/collect-review-texts.js'
+      # BRO-7171: top-level scripts named by colocated class guards
+      # (browser-recovery-checkpoint.test.mjs, try-file-lock-race.test.mjs).
+      - 'scripts/migrate-add-core-data-push.js'
+      - 'scripts/dispatch-ingest-batch.js'
       # BRO-1431: colocated test (stale-flag neutralization on body
       # replacement — wrongProduction/contentVerification/contentTier).
       # Root-level scripts/*.test.mjs files are NOT globbed — registered in
@@ -3354,6 +3374,14 @@ on:
       # above (scripts/lib/** / scripts/launchd/**) — only these two
       # top-level, un-globbed paths need explicit listing.
       - 'scripts/audit-launchd-stale-sync-guard.js'
+      # launchd plist PATH lint (zero-gap plan G7): lib + test sit under the
+      # scripts/lib/** glob; only the top-level audit needs listing.
+      - 'scripts/audit-launchd-plist-path.js'
+      # Text-gap metric + false-truncation dry-run (zero-gap plan 1B/1C): libs,
+      # trailer-signatures and their tests sit under scripts/lib/**; only the two
+      # top-level read-only CLIs need listing.
+      - 'scripts/audit-text-gaps.js'
+      - 'scripts/audit-false-truncation-dryrun.js'
       # Linear-issue dispatcher (task #1303): fetches a Linear issue and
       # launches a Claude Code worker on it, reusing bsc-next.js's cmux/
       # headless launch primitives. dispatch-guards.js (task #1303 plan
@@ -3573,10 +3601,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
       - name: Install actionlint
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           ACTIONLINT_VERSION=1.7.7
-          curl -sL "https://github.com/rhysd/actionlint/releases/download/v${ACTIONLINT_VERSION}/actionlint_${ACTIONLINT_VERSION}_linux_amd64.tar.gz" | tar xz
-          sudo mv actionlint /usr/local/bin/
+          bash scripts/lib/install-release-binary.sh rhysd/actionlint "v${ACTIONLINT_VERSION}" "actionlint_${ACTIONLINT_VERSION}_linux_amd64.tar.gz" actionlint
       - name: Setup Node (for orphan-test audit)
         uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
@@ -4011,6 +4040,15 @@ jobs:
         # separately as BRO-2254. Waive a specific reviewed-safe line with
         # a trailing `# launchd-stale-sync-ok: <reason>` comment.
         run: node scripts/audit-launchd-stale-sync-guard.js
+
+      - name: Audit — launchd plist bare command without PATH
+        if: always() && steps.deps.outcome == 'success'
+        # A plist that runs bare `node`/`gh` with no EnvironmentVariables.PATH and
+        # no `bash -lc` exits 127 under launchd's PATH=/usr/bin:/bin:/usr/sbin:/sbin:
+        # the WSJ monthly cookie refresh did that and never ran. Blocking from the
+        # start (not advisory): it reads only tracked scripts/launchd/*.plist, so it
+        # cannot flap on bot-driven data, and it is clean on all 26 plists today.
+        run: node scripts/audit-launchd-plist-path.js
 
       - name: Audit — gate corpus-guard coverage
         if: always() && steps.deps.outcome == 'success'
@@ -5004,6 +5042,30 @@ jobs:
           node scripts/audit-direct-github-api.js
           node --test --test-timeout 120000 tests/unit/gh-api-wrapper.test.mjs
 
+      - name: Page furniture class guard (BRO-7171, advisory)
+        # Every outlet extractor, run on saved real pages
+        # (tests/fixtures/page-furniture/), must hand the save path a body with
+        # no share bars, related-story runs, newsletter/paywall/consent lines,
+        # booking or copyright lines. Advisory first (CLAUDE.md section 19);
+        # promote to blocking once it has run clean on main.
+        continue-on-error: true
+        # Offline by design: the extractor runs on saved fixtures, so the
+        # fetch/LLM keys the collector can read are deliberately blank here.
+        env:
+          BRIGHTDATA_TOKEN: ''
+          BROWSERBASE_API_KEY: ''
+          BROWSERBASE_PROJECT_ID: ''
+          GUARDIAN_API_KEY: ''
+          REVIEW_TEXTS_TOKEN: ''
+          SCRAPINGBEE_API_KEY: ''
+          SCRAPINGDOG_API_KEY: ''
+        run: |
+          set +e
+          node --test --test-timeout 120000 tests/unit/page-furniture-extractors.test.mjs 2>&1 | tee /tmp/page-furniture.log
+          rc=${PIPESTATUS[0]}
+          bash scripts/lib/summarize-failing-tests.sh "page furniture" /tmp/page-furniture.log "$rc" warning
+          exit "$rc"
+
       - name: Rendered copy voice guard (BRO-5812, advisory)
         # Owner voice rules for on-screen copy: no em dashes, no AI-flavored
         # phrases in JSX text or string literals under src/app and
@@ -5033,6 +5095,7 @@ jobs:
         run: node scripts/resize-show-images.js --check-variants
 
       - name: Cross-show URL guard corpus regression (BRO-6910, advisory)
+        # strict-alert-exempt: PR check, the red check on the PR is the signal; a card per PR run would duplicate
         # Runs detectCrossShowUrlMismatch over every included review URL in
         # data/reviews.json. Each hit is a review gather-reviews would refuse
         # today, so a guard change that raises the count is about to drop real

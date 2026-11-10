@@ -50,7 +50,7 @@ export async function GET(req: NextRequest): Promise<Response> {
     return clearCookie(reauthPage('Could Not Verify', 'Google did not send an approval. Nothing was changed. Tap the link again.', 400));
   }
   if (!reauth.grantedScopeOk(sp.get('scope'))) {
-    return clearCookie(reauthPage('Gmail Not Ticked', 'Google did not grant read access to Gmail. Tap the link again and leave the Gmail box ticked.', 200));
+    return clearCookie(reauthPage('Gmail Not Ticked', 'Google did not grant access to Gmail. Tap the link again and leave the Gmail box ticked.', 200));
   }
 
   const secret = process.env.APPROVAL_HMAC_SECRET;

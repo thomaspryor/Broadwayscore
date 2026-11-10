@@ -1,8 +1,13 @@
 {
-  "generatedAt": "2026-11-08T21:42:29.708Z",
+  "generatedAt": "2026-11-10T08:46:32.022Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
+    {
+      "id": "wanted-2022",
+      "title": "Wanted",
+      "openingDate": "2026-11-08"
+    },
     {
       "id": "the-unbelievers-off-broadway-2026",
       "title": "The Unbelievers",
@@ -12,11 +17,6 @@
       "id": "tango-after-dark-off-west-end-2026",
       "title": "Tango After Dark",
       "openingDate": "2026-11-05"
-    },
-    {
-      "id": "well-see-off-broadway-2026",
-      "title": "We'll See",
-      "openingDate": "2026-11-03"
     },
     {
       "id": "the-verge-off-broadway-2026",
@@ -29,9 +29,9 @@
       "openingDate": "2026-11-06"
     },
     {
-      "id": "clifford-odets-waiting-for-lefty-off-broadway-2026",
-      "title": "Clifford Odets’ Waiting for Lefty",
-      "openingDate": "2026-11-02"
+      "id": "cloud-9-west-end-2026",
+      "title": "Cloud 9",
+      "openingDate": "2026-11-10"
     },
     {
       "id": "msblackforpresident-off-broadway-2026",
@@ -54,11 +54,6 @@
       "openingDate": "2026-11-05"
     },
     {
-      "id": "the-bridge-off-west-end-2026",
-      "title": "The Bridge",
-      "openingDate": "2026-11-03"
-    },
-    {
       "id": "nero-off-west-end-2026",
       "title": "Nero",
       "openingDate": "2026-11-06"
@@ -69,11 +64,6 @@
       "openingDate": "2026-11-09"
     },
     {
-      "id": "rope-off-broadway-2026",
-      "title": "Rope",
-      "openingDate": "2026-11-03"
-    },
-    {
       "id": "parcel-from-america-off-broadway-2026",
       "title": "Parcel from America",
       "openingDate": "2026-11-04"
@@ -82,11 +72,6 @@
       "id": "speculations-off-west-end-2026",
       "title": "Speculations",
       "openingDate": "2026-11-05"
-    },
-    {
-      "id": "the-morbs-off-broadway-2026",
-      "title": "The Morbs",
-      "openingDate": "2026-11-02"
     },
     {
       "id": "broom-play-off-broadway-2026",
@@ -104,9 +89,9 @@
       "openingDate": "2026-11-06"
     },
     {
-      "id": "slanted-floors-off-broadway-2026",
-      "title": "Slanted Floors",
-      "openingDate": "2026-11-02"
+      "id": "the-charioteer-off-broadway-2026",
+      "title": "The Charioteer",
+      "openingDate": "2026-11-08"
     },
     {
       "id": "king-lear-off-broadway-2026",
@@ -114,24 +99,23 @@
       "openingDate": "2026-11-05"
     },
     {
-      "id": "adirondack-chair-circle-regional-2026",
-      "title": "Adirondack Chair Circle",
-      "openingDate": "2026-11-02"
-    },
-    {
       "id": "the-niceties-regional-2026",
       "title": "The Niceties",
       "openingDate": "2026-11-04"
-    }
-  ],
-  "skipped": [
+    },
     {
-      "showId": "wanted-2022",
-      "reason": "no data/review-texts directory for this show"
+      "id": "the-snow-queen-regional-2026",
+      "title": "The Snow Queen",
+      "openingDate": "2026-11-07"
     }
   ],
+  "skipped": [],
   "feedsChecked": 84,
   "feedsFailed": [
+    {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
     {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
@@ -151,11 +135,15 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "londonpubtheatres",
+      "error": "Timeout fetching https://www.londonpubtheatres.com/feed/rss2"
     }
   ],
-  "itemsScanned": 824,
-  "matchedGaps": 2,
-  "possibleGaps": 3,
+  "itemsScanned": 838,
+  "matchedGaps": 6,
+  "possibleGaps": 2,
   "gaps": [
     {
       "showId": "222-a-ghost-story-off-broadway-2026",
@@ -176,6 +164,42 @@
       "publishDate": "2026-11-07"
     },
     {
+      "showId": "dogstar-off-west-end-2026",
+      "title": "Dogstar",
+      "level": "matched",
+      "outletId": "the-recs",
+      "url": "https://therecs.co.uk/dogstar-hampstead-theatre/",
+      "headline": "Dogstar &#8211; Hampstead Theatre ★★★★",
+      "publishDate": "2026-11-10"
+    },
+    {
+      "showId": "nero-off-west-end-2026",
+      "title": "Nero",
+      "level": "matched",
+      "outletId": "readaboutstuff",
+      "url": "https://readaboutstuff.com/2026/11/10/review-nero-southwark-playhouse-elephant-london/",
+      "headline": "Review: Nero &#8211; Southwark Playhouse Elephant, London",
+      "publishDate": "2026-11-10"
+    },
+    {
+      "showId": "nero-off-west-end-2026",
+      "title": "Nero",
+      "level": "matched",
+      "outletId": "south-london",
+      "url": "https://southlondon.co.uk/lifestyle/review-nero-southwark-playhouse/",
+      "headline": "Review: Nero @ Southwark Playhouse",
+      "publishDate": "2026-11-09"
+    },
+    {
+      "showId": "the-verge-off-broadway-2026",
+      "title": "The Verge",
+      "level": "matched",
+      "outletId": "stageandcinema",
+      "url": "https://stageandcinema.com/2026/11/09/the-verge-review-fiasco-theater-public/",
+      "headline": "Off-Broadway Review: THE VERGE (Fiasco Theater / The Public Theater)",
+      "publishDate": "2026-11-09"
+    },
+    {
       "showId": "king-lear-off-broadway-2026",
       "title": "King Lear",
       "level": "possible",
@@ -185,22 +209,13 @@
       "publishDate": "2026-11-04"
     },
     {
-      "showId": "the-bridge-off-west-end-2026",
-      "title": "The Bridge",
+      "showId": "wanted-2022",
+      "title": "Wanted",
       "level": "possible",
-      "outletId": "monstagigz",
-      "url": "https://monstagigz.com/2026/11/01/preview-9-reasons-why-we-cant-wait-for-november-2026-starring-pride/",
-      "headline": "PREVIEW: 9 reasons why we can&#8217;t wait for November 2026 starring Pride",
-      "publishDate": "2026-11-01"
-    },
-    {
-      "showId": "the-bridge-off-west-end-2026",
-      "title": "The Bridge",
-      "level": "possible",
-      "outletId": "standard",
-      "url": "https://standard.co.uk/culture/theatre/the-oresteia-at-the-bridge-review-b1290028.html",
-      "headline": "The Oresteia at the Bridge: Thrillingly stripped back and bloody",
-      "publishDate": null
+      "outletId": "west-end-best-friend",
+      "url": "https://www.westendbestfriend.co.uk/news/review-jim-carusos-cast-party-with-billy-stritch-at-the-piano-crazy-coqs",
+      "headline": "Review: JIM CARUSO'S CAST PARTY WITH BILLY STRITCH AT THE PIANO, Crazy Coqs",
+      "publishDate": "2026-11-05"
     }
   ]
 }

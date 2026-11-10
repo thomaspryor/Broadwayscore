@@ -219,3 +219,16 @@ test('resolveCriticName prefers the recovered name only when the normalized byli
   assert.deepEqual(resolveCriticName('Unknown', undefined), { name: 'Unknown', recovered: false }, 'no recovery available keeps the literal "Unknown" string, matching prior behavior');
   assert.deepEqual(resolveCriticName(null, null), { name: null, recovered: false });
 });
+
+// BRO-7080 replay of BRO-4874: a run-dates line glued onto the surname.
+test('glued "Runs" suffix is junk at display and stripped at capture (BRO-7080)', async () => {
+  const { isJunkCriticName } = require('./byline-recovery.js');
+  const { normalizeBylineCapture } = require('./byline-normalization.js');
+  assert.equal(isJunkCriticName('Emma KaabachiRuns'), true);
+  assert.equal(isJunkCriticName('Florit ShoihetRuns'), true);
+  assert.equal(isJunkCriticName('Florit Shoihet'), false);
+  assert.equal(isJunkCriticName('Damon Runyon'), false);
+  assert.equal(normalizeBylineCapture('Florit ShoihetRuns until 12 December'), 'Florit Shoihet');
+  assert.equal(normalizeBylineCapture('Emma KaabachiRuns'), 'Emma Kaabachi');
+  assert.equal(normalizeBylineCapture('Jo Runs'), 'Jo Runs');
+});

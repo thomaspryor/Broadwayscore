@@ -1,5 +1,6 @@
 'use client';
 
+import { formatClosingLabelCompact, isRepeatedlyExtended } from '@/lib/closing-label';
 import { useMemo, useCallback, useState, useRef, useEffect, startTransition, Suspense } from 'react';
 import { audienceSortScore } from '@/lib/audience-grade-utils';
 import { replaceLocationSearch } from '@/lib/hooks/useLocationSearch';
@@ -30,6 +31,7 @@ export interface WestEndShow {
   venue: string;
   openingDate: string;
   closingDate?: string;
+  closingExtensionCount?: number;
   previewsStartDate?: string;
   status: string;
   type: string;
@@ -63,6 +65,8 @@ interface WestEndPageClientProps {
   rushShows?: WestEndShow[];
   /** Scored productions at flagship UK houses outside London (BRO-5103). */
   beyondLondonShows?: WestEndShow[];
+  /** ENO + Royal Opera House productions: own section, never in the West End list (owner, 2026-11-08). */
+  operaShows?: WestEndShow[];
   /** Open-show counts for the market pills */
   marketOpenCounts: { westEnd: number; offWestEnd: number };
   awardWinnerSets?: AwardWinnerSets;
@@ -155,7 +159,7 @@ function filtersFromParams(initialSearchParams: URLSearchParams) {
 }
 
 // Inner component that uses searchParams
-function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotteryShows = [], rushShows = [], beyondLondonShows = [], marketOpenCounts, awardWinnerSets, archiveHash, skipAboveFold = false, renderedAt }: WestEndPageClientProps) {
+function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotteryShows = [], rushShows = [], beyondLondonShows = [], operaShows = [], marketOpenCounts, awardWinnerSets, archiveHash, skipAboveFold = false, renderedAt }: WestEndPageClientProps) {
   const nowMs = useHydrationSafeNow(renderedAt);
 
   const [filters, setFilters] = useState(() => filtersFromParams(new URLSearchParams()));
@@ -326,12 +330,13 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotter
     return shows
       .filter(show => {
         if (show.status !== 'open' || !show.closingDate) return false;
+        if (isRepeatedlyExtended(show)) return false; // BRO-7252: no announced closing
         const closing = new Date(show.closingDate);
         const diffDays = Math.ceil((closing.getTime() - nowMs) / (1000 * 60 * 60 * 24));
         return diffDays > 0 && diffDays <= 90 && weHasEnoughReviews(show);
       })
       .sort((a, b) => new Date(a.closingDate!).getTime() - new Date(b.closingDate!).getTime())
-      .map(s => ({ ...s, subtitle: `Closes ${shortDate(s.closingDate!)}`, subtitleColor: 'text-amber-400' }));
+      .map(s => ({ ...s, subtitle: formatClosingLabelCompact(s, shortDate(s.closingDate!)), subtitleColor: 'text-amber-400' }));
   }, [shows, nowMs]);
 
   const bestOffWestEnd = useMemo(() => {
@@ -829,6 +834,8 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotter
       <div className="mt-8 pt-8 border-t border-white/5">
         <FeaturedRow title="Top Plays" subtitle="Ranked by critical consensus" shows={topPlays} />
         <FeaturedRow title="Best Off-West End" subtitle="Top-rated shows outside the West End proper" shows={bestOffWestEnd} />
+        {/* Opera has its own section, as on the Broadway homepage (below Best Off-Broadway). */}
+        <FeaturedRow title="Opera in London" subtitle="English National Opera and the Royal Opera House" shows={operaShows} minShows={1} viewAllHref="/opera" />
         <FeaturedRow title="Beyond London" subtitle="Major UK productions outside the capital" shows={beyondLondonShows} minShows={1} viewAllHref="/browse/beyond-london" />
         <FeaturedRow title="Olivier Award Winning Shows" subtitle="Current productions that have won Olivier Awards" shows={olivierWinners} />
         <FeaturedRow title="West End Lotteries" subtitle="Enter for a chance at discounted tickets" shows={lotteryShows} />

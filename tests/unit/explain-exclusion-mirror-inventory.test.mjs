@@ -37,6 +37,8 @@ const INVENTORY = {
   isLikelyStaleRoundupFlag: 'live',
   isLikelyStaleSuspectedMisattribution: 'live',
   isNamedNonReviewUrlRecord: 'live',
+  // BRO-7210: rebuild-all-reviews.js calls it for the submit-review-form refusal.
+  isRefusedSubmissionUrlRecord: 'live',
   isNonReviewDemotedByFreshCV: 'live',
   isPrematureReviewForUnopenedShow: 'live',
   // BRO-5795: rebuild and explainExclusion both call this stale-flag check.

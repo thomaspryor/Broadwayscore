@@ -454,6 +454,7 @@ function parseReportArgs(argv) {
 }
 
 module.exports = {
+  sortedComments,
   CATEGORIES, GROUPS, groupBoard, REAL_BLOCK_RE, lastRecheckStatuses, readRecheckLedgerStatuses,
   cardTraits, categorizeBoard, importantAndStuck, ownerGatedNoQuestion, flowFromInflow, snapshotOf, compareReports,
   countUncategorizable, flowLine, formatMarkdown, formatCompareMarkdown, parseReportArgs,

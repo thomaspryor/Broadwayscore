@@ -144,7 +144,7 @@ function buildShowState(showId, gatherError) {
       try { r = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8')); }
       catch { continue; }
       totalReviews++;
-      if (isIncludableForRebuild(r)) reviewCount++;
+      if (isIncludableForRebuild(r, undefined, path.join(dir, file))) reviewCount++;
       if ((r.criticName || 'Unknown') === 'Unknown') unknownCriticCount++;
       if (r.wrongProduction === true && !r.wrongProductionManualClear) wrongProductionCount++;
     }

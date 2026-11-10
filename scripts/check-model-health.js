@@ -12,6 +12,7 @@
  * Exit code: 0 = all pass, 1 = one or more models dead or key missing
  */
 
+require('./lib/llm-usage-install'); // LLM spend meter: before any client is built (BRO-5043)
 const https = require('https');
 const path = require('path');
 const MODELS = require('./lib/models');

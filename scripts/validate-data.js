@@ -23,6 +23,7 @@ const path = require('path');
 const { showsMissingOrigin, ORIGIN_GRACE_DAYS } = require('./lib/show-origins');
 const { tourImageProblems, tourLinkProblems } = require('./lib/tour-family');
 const { transferLinkProblems } = require('./lib/transfer-link-rules');
+const { tourAggregateProblems } = require('./lib/tour-aggregate-rules');
 const { findCrossShowImages, CROSS_SHOW_IMAGES_BASELINE } = require('./lib/cross-show-images');
 const { findSharedSources } = require('./lib/shared-image-source');
 const { auditDuplicateImages } = require('./lib/duplicate-images');
@@ -394,6 +395,16 @@ function validateNoDuplicates(shows) {
     const transferProblems = transferLinkProblems(shows);
     for (const p of transferProblems) error(p);
     if (transferProblems.length === 0) ok('All transfer pairs (transferOf/transferredTo) reciprocal');
+  }
+
+  // Tour roll-ups (tourParent, BRO-7192): an aggregate may only group the legs of ONE
+  // touring production. Gun & Powder's 2020 Signature and 2024 Paper Mill runs (different
+  // directors, four years apart) were grouped as a "national tour" and their reviews
+  // shown twice. Advisory first (CLAUDE.md §19): arm it as an error once the live data is clean.
+  {
+    const tourAggProblems = tourAggregateProblems(shows);
+    for (const p of tourAggProblems) warn(p);
+    if (tourAggProblems.length === 0) ok('Every tourParent roll-up groups the legs of one production');
   }
 
   // National tours (category:'tour', BRO-4211, BRO-4931): a tour names the
@@ -790,6 +801,16 @@ function validateDates(shows) {
     if (show.closingDate && !isValidDate(show.closingDate)) {
       error(`Show "${show.title}" has invalid closingDate: "${show.closingDate}"`);
       issues++;
+    }
+    // BRO-7252: extension history must be a well-formed chain (shape + ordering).
+    if (show.closingExtensions != null) {
+      const extProblem = require('./lib/feedback-pipeline-fields.js').closingExtensionsValueProblem(show.closingExtensions);
+      if (extProblem) {
+        error(`Show "${show.title}" (${show.id}) ${extProblem}`);
+        issues++;
+      } else if (show.closingExtensions.length && show.closingDate && show.closingExtensions[show.closingExtensions.length - 1].to !== show.closingDate) {
+        warn(`Show "${show.title}" (${show.id}) closingDate ${show.closingDate} differs from the last recorded extension (${show.closingExtensions[show.closingExtensions.length - 1].to}): the date moved without an extension event`);
+      }
     }
     if (show.previewsStartDate && !isValidDate(show.previewsStartDate)) {
       error(`Show "${show.title}" has invalid previewsStartDate: "${show.previewsStartDate}"`);
@@ -1685,6 +1706,15 @@ function validateShowTypes(shows) {
     if (show.isRevival === false && Array.isArray(show.tags) && show.tags.includes('revival')) {
       error(`Show "${show.title}" (${show.id}) has isRevival:false but a "revival" tag — engine.ts ORs the tag in, so the flag is ignored. Remove the tag or set isRevival:true.`);
       issues++;
+    }
+
+    // Mirror of the check above (BRO-7080): engine.ts reads isRevival:true as a
+    // revival, so a "new" tag on the same row shows a revival labelled new
+    // (Arias with a Twist 2026: isRevival:true, tags:["new"]).
+    if (show.isRevival === true && Array.isArray(show.tags) && show.tags.includes('new')) {
+      // Advisory first (CLAUDE.md §19): the bro-7080-return-engagement plan
+      // clears the 6 live rows; promote to error() once it has applied.
+      warn(`Show "${show.title}" (${show.id}) has isRevival:true but a "new" tag — self-contradictory. Remove the tag or set isRevival:false.`);
     }
 
     // A show tagged both "new" and "revival" is self-contradictory — a later

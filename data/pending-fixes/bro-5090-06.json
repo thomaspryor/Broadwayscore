@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5090-06",
   "planId": "37902f51-8caf-4db1-98f6-8be6410afcd1",
-  "status": "partial",
+  "status": "superseded",
   "createdAt": "2026-10-12T11:57:00.096Z",
   "submitter": {
     "name": null,
@@ -145,19 +145,20 @@
     }
   ],
   "triage": {
-    "card": "BRO-7092",
-    "at": "2026-11-07T20:58:07.982Z",
-    "verdict": "still-needed",
+    "card": "BRO-7094",
+    "at": "2026-11-09T21:40:12.459Z",
+    "verdict": "obsolete",
     "counts": {
-      "still-needed": 1
+      "obsolete": 1
     },
-    "stillNeededReason": "op 0: the write guard rolled this publishDate edit back because it also rewrote duplicateReason; the record needs a hand check before a retry (BRO-7092 hand check)",
     "ops": [
       {
         "i": 0,
-        "verdict": "still-needed",
-        "reason": "the write guard rolled this publishDate edit back because it also rewrote duplicateReason; the record needs a hand check before a retry (BRO-7092 hand check)"
+        "verdict": "obsolete",
+        "reason": "BRO-7094: replaced by pending data/pending-fixes/bro-7094.json, one compare-and-set publishDate edit. Real-data replay now succeeds and preserves duplicateOf/duplicateReason. The correction is queued, not applied to private data."
       }
     ]
-  }
+  },
+  "supersededAt": "2026-11-09T21:40:12.459Z",
+  "supersededReason": "BRO-7094: remaining date edit replaced by pending bro-7094; execution is still required."
 }

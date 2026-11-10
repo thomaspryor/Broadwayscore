@@ -113,7 +113,11 @@ describe('buildOpenAIBatchLine', () => {
     assert.strictEqual(line.method, 'POST');
     assert.strictEqual(line.url, '/v1/chat/completions');
     assert.strictEqual(line.body.model, 'gpt-4o');
-    assert.strictEqual(line.body.max_tokens, 500);
+    // max_completion_tokens for every model (shared openaiChatBody): gpt-5.x
+    // rejects max_tokens with HTTP 400, gpt-4o accepts either.
+    assert.strictEqual(line.body.max_completion_tokens, 500);
+    assert.strictEqual(line.body.max_tokens, undefined);
+    assert.strictEqual(line.body.reasoning_effort, undefined, 'gpt-4o bodies carry no reasoning field');
     assert.strictEqual(line.body.temperature, 0.3);
     assert.deepStrictEqual(line.body.messages, [
       { role: 'system', content: SAMPLE.systemPrompt },
@@ -920,5 +924,69 @@ describe('resume provenance guards (task #516 ship-check)', () => {
       systemPromptOverride: 'V6 SYSTEM PROMPT WITH A HARD BAND CONSTRAINT',
     };
     assert.notStrictEqual(computeInputHash(plain.prep), computeInputHash(withBand));
+  });
+});
+
+// OpenAI-leg migration A/B (2026-11): the shadow leg must change ONLY the
+// OpenAI input to the one combine path, and production (no shadow option)
+// must be untouched.
+describe('shadowOpenaiModel (experiment-only OpenAI-leg swap)', () => {
+  function stubbed(shadowModel, { claude, openai, gemini, shadow }) {
+    const scorer = new EnsembleReviewScorer('sk-ant-fake', 'sk-fake', 'fake-gemini', undefined,
+      shadowModel ? { verbose: false, shadowOpenaiModel: shadowModel } : { verbose: false });
+    const ok = (r) => async () => r;
+    scorer.claudeScorer.scoreReviewV5 = ok(claude);
+    scorer.openaiScorer.scoreReviewV5 = ok(openai);
+    scorer.geminiScorer.scoreReview = ok(gemini);
+    if (scorer.shadowOpenaiScorer) scorer.shadowOpenaiScorer.scoreReviewV5 = ok(shadow);
+    return scorer;
+  }
+  const legs = {
+    claude: { success: true, result: llmResult({ score: 70 }) },
+    openai: { success: true, result: llmResult({ score: 72 }) },
+    gemini: { success: true, result: llmResult({ score: 74 }) },
+    shadow: { success: true, result: llmResult({ score: 40 }) },
+  };
+
+  test('the ensemble OpenAI leg defaults to the SCORING_OPENAI pin', () => {
+    const { SCORING_OPENAI } = require('../lib/models.js');
+    const scorer = new EnsembleReviewScorer('sk-ant-fake', 'sk-fake', 'fake-gemini', undefined, { verbose: false });
+    assert.strictEqual(scorer.getBatchConfig().openaiModel, SCORING_OPENAI);
+  });
+
+  test('a shadow leg ERROR is reported on the arm even though the 2-model ensemble still scores', async () => {
+    const r = await stubbed('gpt-5.4-mini', { ...legs, shadow: { success: false, error: '400 unsupported_parameter' } }).scoreReview('text', 'ctx');
+    assert.ok(r.shadow.score > 0, 'Claude + Gemini still produce a score');
+    assert.deepStrictEqual(r.shadow.openaiLeg, { ok: false, rejected: false, error: '400 unsupported_parameter' });
+    assert.strictEqual(r.openaiLeg.ok, true);
+  });
+
+  test('no shadow option: no shadow result (production path unchanged)', async () => {
+    const r = await stubbed(null, legs).scoreReview('text', 'ctx');
+    assert.strictEqual(r.shadow, undefined);
+  });
+
+  test('control equals the plain ensemble; shadow equals combineOutcomes with only the OpenAI leg swapped', async () => {
+    const scorer = stubbed('gpt-5.4-mini', legs);
+    const r = await scorer.scoreReview('text', 'ctx');
+    const plain = await stubbed(null, legs).scoreReview('text', 'ctx');
+    assert.strictEqual(r.score, plain.score);
+    const expected = scorer.combineOutcomes([
+      { model: 'claude', result: legs.claude.result },
+      { model: 'openai', result: legs.shadow.result },
+      { model: 'gemini', result: legs.gemini.result },
+    ]);
+    assert.strictEqual(r.shadow.score, expected.score);
+    assert.strictEqual(r.shadow.modelResults.claude.score, 70);
+    assert.strictEqual(r.shadow.modelResults.openai.score, 40);
+  });
+
+  test('a shadow rejection flows through the same rejection rules', async () => {
+    const scorer = stubbed('gpt-5.4-mini', { ...legs,
+      claude: { success: true, rejected: true, rejection: 'wrong_show', rejectionReasoning: 'x' },
+      shadow: { success: true, rejected: true, rejection: 'wrong_show', rejectionReasoning: 'x' } });
+    const r = await scorer.scoreReview('text', 'ctx');
+    assert.notStrictEqual(r.rejected, true, 'control: one rejection degrades to 2 models');
+    assert.strictEqual(r.shadow.rejected, true, 'shadow: two rejections = consensus rejection');
   });
 });

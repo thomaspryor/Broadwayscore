@@ -14,6 +14,7 @@
  *   FORMSPREE_SUBSCRIBER_API_KEY, FORMSPREE_SUBSCRIBER_FORM_ID
  *   GH_TOKEN or GITHUB_TOKEN (for workflow run checks)
  */
+require('./lib/llm-usage-install'); // LLM spend meter: before any client is built (BRO-5043)
 const fs = require('fs');
 const path = require('path');
 const https = require('https');

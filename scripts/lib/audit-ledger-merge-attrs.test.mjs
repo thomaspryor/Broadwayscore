@@ -113,7 +113,7 @@ test('a data/audit union ledger declared only by a glob still needs a VERIFIED e
 
 test('findStaleVerifiedUnionPatterns flags a pattern matching no tracked file', () => {
   assert.deepEqual(findStaleVerifiedUnionPatterns([]), VERIFIED_UNION_LEDGERS.map((e) => e.pattern));
-  assert.deepEqual(findStaleVerifiedUnionPatterns(['data/opening-night-timeline/x.jsonl', 'data/audit/fact-check/x.jsonl']), []);
+  assert.deepEqual(findStaleVerifiedUnionPatterns(['data/opening-night-timeline/x.jsonl', 'data/audit/fact-check/x.jsonl', 'data/audit/openai-leg-ab/shard-0.jsonl']), []);
 });
 
 test('VERIFIED_UNION_LEDGERS entries are well-formed', () => {

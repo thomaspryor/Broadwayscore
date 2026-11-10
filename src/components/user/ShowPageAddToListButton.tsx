@@ -9,13 +9,13 @@ import { featureFlags } from '@/config/feature-flags';
 
 interface ShowPageAddToListButtonProps {
   showId: string;
-  /** 'hero' matches the redesigned hero's h-10 action buttons (icon-only on mobile). */
+  /** 'hero' matches the redesigned hero's action buttons ("Add to list" on phones, "List" from sm). */
   variant?: 'default' | 'hero';
 }
 
 const TRIGGER_CLASS: Record<NonNullable<ShowPageAddToListButtonProps['variant']>, string> = {
   default: 'inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border transition-all duration-200 bg-surface-overlay border-white/10 text-gray-300 hover:text-white hover:bg-white/10 cursor-pointer',
-  hero: 'flex items-center justify-center gap-1.5 h-10 w-10 sm:w-auto sm:px-4 rounded-lg border transition-all bg-white/10 border-white/15 text-white hover:bg-white/15 hover:border-white/25 cursor-pointer whitespace-nowrap',
+  hero: 'flex items-center justify-center gap-1.5 h-10 w-full px-2 sm:h-12 sm:w-auto sm:px-4 rounded-lg border transition-all bg-white/10 border-white/15 text-white hover:bg-white/15 hover:border-white/25 cursor-pointer whitespace-nowrap',
 };
 
 export default function ShowPageAddToListButton({ showId, variant = 'default' }: ShowPageAddToListButtonProps) {
@@ -146,7 +146,14 @@ export default function ShowPageAddToListButton({ showId, variant = 'default' }:
         <svg className={variant === 'hero' ? 'w-4 h-4 shrink-0' : 'w-3.5 h-3.5'} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 10h16M4 14h10m-4 4h4m2-2v4m0 0h-4m4 0h4" />
         </svg>
-        <span className={variant === 'hero' ? 'hidden sm:inline text-xs sm:text-sm font-semibold' : 'hidden sm:inline'}>List</span>
+        {variant === 'hero' ? (
+          <span className="text-sm font-semibold">
+            <span className="sm:hidden">Add to list</span>
+            <span className="hidden sm:inline">List</span>
+          </span>
+        ) : (
+          <span className="hidden sm:inline">List</span>
+        )}
       </button>
 
       {open && (

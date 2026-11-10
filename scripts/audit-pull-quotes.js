@@ -30,6 +30,7 @@
 'use strict';
 
 const fs = require('fs');
+const { assertReviewTextCorpus, exitIfCorpusNotScanned } = require('./lib/corpus-scan-guard');
 const path = require('path');
 
 // --help must be handled before anything reads data (CLAUDE.md / task #498).
@@ -221,6 +222,8 @@ function findBadPullQuotes(reviews, reviewTextsDir, textsByShow = new Map()) {
 }
 
 function main() {
+  try { assertReviewTextCorpus(REVIEW_TEXTS_DIR); } catch (err) { exitIfCorpusNotScanned(err); }
+
   const since = arg('since');
   const onlyShow = arg('show');
   const doParity = process.argv.includes('--parity');

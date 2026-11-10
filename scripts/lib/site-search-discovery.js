@@ -1443,6 +1443,7 @@ async function fetchJsSearchHtml(config, url, deps = {}) {
  * @param {Object} options
  * @param {boolean} options.verbose - Log progress
  * @param {boolean} options.skipJs - Skip JS-rendered endpoints (save ScrapingBee credits)
+ * @param {Object} [options.outcomes] - out-param: outletId -> 'found'|'confirmed-empty'|'failed'|'not-attempted' (BRO-7162 F04)
  * @param {string} options.openingDate - Show's opening date (YYYY-MM-DD). Passed to
  *   fetchAndParse implementations that support date-window filtering (e.g. TheaterMania).
  * @param {Object} [options.show] - Full show object for applies() predicate evaluation.
@@ -1455,6 +1456,7 @@ async function searchOutletSite(outletId, showTitle, options = {}) {
   const { verbose = false, skipJs = false, market = 'broadway', openingDate = null, show = null } = options;
   const config = SITE_SEARCH_ENDPOINTS[outletId];
   if (!config) return [];
+  if (options.outcomes) options.outcomes[outletId] = 'not-attempted'; // overwritten once a search actually runs
   // Clean title for search queries (strip suffixes, normalize quotes/ampersands)
   const searchTitle = cleanSearchTitle(showTitle);
 
@@ -1568,11 +1570,14 @@ async function searchOutletSite(outletId, showTitle, options = {}) {
     if (verbose) {
       console.log(`    Site search [${config.name}]: ${results.length} result(s)`);
     }
+    // BRO-7162 F04: a completed search is evidence; an error (below) is not.
+    if (options.outcomes) options.outcomes[outletId] = results.length ? 'found' : 'confirmed-empty';
     return results;
   } catch (err) {
     if (verbose) {
       console.log(`    Site search [${config.name}]: ${err.message}`);
     }
+    if (options.outcomes) options.outcomes[outletId] = 'failed';
     return []; // Non-fatal — SERP layer will catch this outlet
   }
 }
@@ -1591,13 +1596,13 @@ async function searchOutletSite(outletId, showTitle, options = {}) {
  * @returns {Promise<Array<{url, outletId, outlet, source}>>}
  */
 async function searchOutletSites(showTitle, outletIds, options = {}) {
-  const { knownUrls = new Set(), verbose = false, skipJs = false, market = 'broadway', openingDate = null, show = null } = options;
+  const { knownUrls = new Set(), verbose = false, skipJs = false, market = 'broadway', openingDate = null, show = null, outcomes = null } = options;
   const results = [];
 
   for (const outletId of outletIds) {
     if (!SITE_SEARCH_ENDPOINTS[outletId]) continue;
 
-    const found = await searchOutletSite(outletId, showTitle, { verbose, skipJs, market, openingDate, show });
+    const found = await searchOutletSite(outletId, showTitle, { verbose, skipJs, market, openingDate, show, outcomes });
     for (const result of found) {
       if (!knownUrls.has(result.url)) {
         results.push(result);

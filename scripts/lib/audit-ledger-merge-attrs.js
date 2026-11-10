@@ -247,7 +247,7 @@ const EXEMPT_LEDGERS = [
       'fixture edit.',
   },
   {
-    file: 'scripts/lib/fixtures/recheck-real-fails-2026-11.jsonl',
+    file: 'tests/fixtures/recheck-real-fails-2026-11.jsonl',
     reason:
       '2026-11-08 (BRO-7138): static snapshot of real recheck-ledger fail rows ' +
       'read by check-env-cause / recheck-route tests. Hand-captured once, never ' +
@@ -256,6 +256,16 @@ const EXEMPT_LEDGERS = [
   },
 ];
 
+// BRO-7256: city-hub dual-model audit caches. the city-hub dual-model audit script keeps the LAST row per key on read and
+// rewrites a cache file when a mode re-runs a cached row, so a union merge could resurrect superseded rows;
+// one-off audit run by one session, so there is no concurrent writer.
+{
+  const reason = '2026-11-10 (BRO-7256): the city-hub dual-model audit script is last-row-wins per key and rewrites its cache on re-run, so union could resurrect superseded rows; single manual writer.';
+  for (const city of ['washington-dc', 'los-angeles-ca']) {
+    for (const k of ['coverage', 'images', 'reviews', 'shows', 'tours']) EXEMPT_LEDGERS.push({ file: `data/audit/city-hub-dual/${city}/${k}.jsonl`, reason });
+  }
+  EXEMPT_LEDGERS.push({ file: 'data/audit/city-hub-dual/spend.jsonl', reason });
+}
 // BRO-5951 cross-model audit caches: single-writer one-off audit outputs. readRows()
 // in scripts/audit-review-crossmodel.js keeps the LAST row per key and the reverify
 // subcommand rewrites whole files, so a union merge could resurrect superseded rows.
@@ -326,6 +336,18 @@ const VERIFIED_UNION_LEDGERS = [
       'parseTimelineJsonl(), which re-sorts by the explicit `t` timestamp and ' +
       'collapses exact-duplicate lines. Worst case after that is one redundant ' +
       'snapshot row, a cosmetic sparkline point on a noindex status page.',
+  },
+  {
+    pattern: 'data/audit/openai-leg-ab/*.jsonl',
+    reason:
+      '2026-11-09 (BRO-7263): declared union by the .gitattributes glob, never reviewed per ' +
+      'file. Readers checked by grepping "openai-leg-ab" across scripts/, src/, .github/: ' +
+      'only scripts/llm-scoring/openai-leg-shadow.ts reads the shards (the --report path ' +
+      'and the resume skip-set at the --out file). Criterion (a)/(b): both key rows by ' +
+      'record id (resume builds a Set of ids; the report folds into a Map keyed by id ' +
+      'before computeReport), so a duplicated row is detected, warned about and collapsed by id ' +
+      '(only two runs writing different results for one id could make order matter; resume ' +
+      'skips done ids, and this is a shadow A/B).',
   },
   {
     pattern: 'data/audit/fact-check/*.jsonl',
