@@ -91,6 +91,7 @@ const SLOW_TESTS = new Set([
   'tests/unit/rebuild-fast-push-retry.test.mjs',
   'tests/unit/validate-data-dry-run.test.mjs',
   'tests/unit/validate-data-push-refusal-sentinel.test.mjs',
+  'tests/unit/validate-data-push-refusal-sentinel-clean.test.mjs',
   'tests/unit/verify-edits-prefix.test.mjs',
 ]);
 // Invariants left out of the LOCAL run only: run-push-audits.test.mjs spends ~80s of its 87s
