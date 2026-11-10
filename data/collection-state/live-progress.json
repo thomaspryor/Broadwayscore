@@ -1,19 +1,77 @@
 {
-  "updatedAt": "2026-11-10T10:20:04.799Z",
-  "processed": 3,
-  "failed": 0,
-  "successRate": "100.0%",
+  "updatedAt": "2026-11-10T13:30:04.007Z",
+  "processed": 56,
+  "failed": 47,
+  "successRate": "54.4%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 40,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 2,
+    "scrapingdog": 4,
+    "scrapingbee": 5,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 6
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 7,
+  "recentActivity": [
+    {
+      "t": "2026-11-10T12:59:09.388Z",
+      "event": "bb-session",
+      "session": "b3b7dd58",
+      "url": "https://www.temptalkinbroadway.com/Spamalot23.html"
+    },
+    {
+      "t": "2026-11-10T13:12:17.082Z",
+      "event": "bb-session",
+      "session": "19d84c55",
+      "url": "https://www.talkinbroadway.com/page/regional/chicago/ch944.html"
+    },
+    {
+      "t": "2026-11-10T13:12:17.399Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-10T13:13:08.922Z",
+      "event": "bb-session",
+      "session": "5dc9bf29",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655418"
+    },
+    {
+      "t": "2026-11-10T13:13:09.225Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-10T13:16:10.952Z",
+      "event": "bb-session",
+      "session": "26828d34",
+      "url": "https://www.independent.co.uk/bulletin/culture/keira-knightley-theatre-the-lives"
+    },
+    {
+      "t": "2026-11-10T13:16:11.338Z",
+      "event": "bb-cookie-inject",
+      "domain": "independent.co.uk"
+    },
+    {
+      "t": "2026-11-10T13:18:31.069Z",
+      "event": "bb-session",
+      "session": "26771796",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-11-10T13:24:52.822Z",
+      "event": "bb-session",
+      "session": "9f8c7531",
+      "url": "https://publictheater.org/productions/season/2627/the-curious-case-of-benjamin-b"
+    },
+    {
+      "t": "2026-11-10T13:25:09.380Z",
+      "event": "bb-session",
+      "session": "1c1a40d3",
+      "url": "https://publictheater.org/productions/season/2627/the-curious-case-of-benjamin-b"
+    }
+  ]
 }
