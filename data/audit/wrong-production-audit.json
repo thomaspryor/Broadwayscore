@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-10T12:24:31.497Z",
+  "timestamp": "2026-11-10T13:38:01.811Z",
   "stats": {
-    "totalReviews": 81149,
-    "alreadyFlagged": 22191,
+    "totalReviews": 81168,
+    "alreadyFlagged": 22197,
     "dateGuardCatches": 219,
-    "directorMismatch": 3602,
-    "tvFilmSignals": 2288,
-    "londonSignals": 3661,
+    "directorMismatch": 3606,
+    "tvFilmSignals": 2287,
+    "londonSignals": 3660,
     "offBroadwaySignals": 753,
     "yearMismatch": 364,
-    "noPublishDate": 8422
+    "noPublishDate": 8423
   },
   "findings": [
     {
@@ -1144,6 +1144,32 @@
       "score": 82,
       "publishDate": "2025-06-25",
       "url": "https://www.broadwayworld.com/phoenix/article/Review-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-at-Broadway-In-Tucson-20250625",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael mayer\" from a-beautiful-noise-the-neil-diamond-musical-2022"
+        }
+      ]
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
+      "file": "buffalorising--anthony-higgins.json",
+      "publishDate": "2025-04-10",
+      "url": "https://www.buffalorising.com/2025/04/a-beautiful-noise-at-sheas-strikes-gold-with-longtime-fans-of-neil-diamonds-iconic-songbook/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael mayer\" from a-beautiful-noise-the-neil-diamond-musical-2022"
+        }
+      ]
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
+      "file": "chicago-sun-times--catey-sullivan.json",
+      "publishDate": "2024-11-14",
+      "url": "https://chicago.suntimes.com/theater/2024/11/14/a-beautiful-noise-neil-diamond-musical-review-chicago-theater-great-music-mundane-script",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -8251,6 +8277,7 @@
     {
       "showId": "becoming-nancy-birmingham-rep-regional-2024",
       "file": "guardian--arifa-akbar.json",
+      "score": 39,
       "publishDate": "2024-10-15",
       "url": "https://www.theguardian.com/stage/2024/oct/15/becoming-nancy-review-coming-out-musical-birmingham-rep",
       "findings": [
@@ -9386,6 +9413,7 @@
     {
       "showId": "book-of-mormon-tour-2022",
       "file": "broadwayworld--lynn-beaver.json",
+      "score": 94,
       "publishDate": "2023-11-15",
       "url": "https://www.broadwayworld.com/austin/article/Review-THE-BOOK-OF-MORMON-Rocks-Bass-Concert-Hall-20231115",
       "findings": [
@@ -9775,6 +9803,7 @@
     {
       "showId": "book-of-mormon-tour-2022",
       "file": "wtlgomag--unknown.json",
+      "score": 64,
       "publishDate": "2023-12-14",
       "url": "https://wtlgomag.com/2023/12/14/review-the-book-of-mormon-at-the-broward-center-for-the-performing-arts/",
       "findings": [
@@ -9890,7 +9919,7 @@
     {
       "showId": "boop-tour-2026",
       "file": "leagueofcincytheatres--shelby-colman.json",
-      "score": 75,
+      "score": 84,
       "publishDate": null,
       "url": "https://www.leagueofcincytheatres.info/review-boop-the-musical-bursts-into-color-on-aronoff-stage/",
       "findings": [
@@ -11848,7 +11877,7 @@
     {
       "showId": "cat-on-a-hot-tin-roof-2013",
       "file": "hollywood-reporter--unknown.json",
-      "score": null,
+      "score": 43,
       "publishDate": "2013-01-17",
       "url": "https://www.hollywoodreporter.com/news/general-news/scarlett-johansson-cat-on-a-hot-tin-roof-413384/",
       "findings": [
@@ -12882,6 +12911,7 @@
     {
       "showId": "cheapo-oran-mor-regional-2025",
       "file": "thestage--fergus-morgan.json",
+      "score": 63,
       "publishDate": "2025-10-01",
       "url": "https://www.thestage.co.uk/reviews/cheapo-review-oran-mor-glasgow-a-play-a-pie-and-a-pint",
       "findings": [
@@ -26072,7 +26102,7 @@
     {
       "showId": "golden-boy-off-west-end-2026",
       "file": "london-theatre--unknown.json",
-      "score": 82,
+      "score": 77,
       "publishDate": "2026-09-16",
       "url": "https://www.londontheatre.co.uk/reviews/golden-boy-review-josh-oconnor",
       "findings": [
@@ -30063,7 +30093,7 @@
     {
       "showId": "hay-fever-west-end-2026",
       "file": "thestage--the-stage.json",
-      "score": 55,
+      "score": 63,
       "publishDate": "2026-10-02",
       "url": "https://www.thestage.co.uk/reviews/hay-fever-review-wyndhams-theatre-london-noel-coward-christine-baranski-richard-e-grant",
       "findings": [
@@ -31664,20 +31694,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"al pacino\" from hughie-1996"
-        }
-      ]
-    },
-    {
-      "showId": "human-things-off-broadway-2026",
-      "file": "deadline--glenn-garner.json",
-      "score": null,
-      "publishDate": "2026-10-02",
-      "url": "https://deadline.com/2026/10/ben-affleck-used-ai-lots-of-things-animals-1237145166/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -43611,6 +43627,7 @@
     {
       "showId": "moulin-rouge-tour-2022",
       "file": "broadwayworld--deborah-bostock-kelley.json",
+      "score": 90,
       "publishDate": "2024-02-10",
       "url": "https://www.broadwayworld.com/tampa/article/Review-MOULIN-ROUGE-THE-MUSICAL-at-Straz-Center-20240210",
       "findings": [
@@ -43720,6 +43737,19 @@
     },
     {
       "showId": "moulin-rouge-tour-2022",
+      "file": "columbus-dispatch--michael-grossberg.json",
+      "publishDate": "2023-12-28",
+      "url": "https://www.dispatch.com/story/entertainment/theater/2023/12/28/moulin-rouge-musical-set-to-open-in-columbus-for-2-week-run/71960495007/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"alex timbers\" from moulin-rouge-2019"
+        }
+      ]
+    },
+    {
+      "showId": "moulin-rouge-tour-2022",
       "file": "columbus-dispatch--unknown.json",
       "publishDate": "2023-12-28",
       "url": "https://www.dispatch.com/story/entertainment/theater/2023/12/28/moulin-rouge-musical-set-to-open-in-columbus-for-2-week-run/71960495007/",
@@ -43747,7 +43777,22 @@
     },
     {
       "showId": "moulin-rouge-tour-2022",
+      "file": "hotchka--chuck-duncan.json",
+      "score": 91,
+      "publishDate": "2023-12-06",
+      "url": "https://hotchka.com/moulin-rouge-the-musical-tour-review-baltimore-hippodrome",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"alex timbers\" from moulin-rouge-2019"
+        }
+      ]
+    },
+    {
+      "showId": "moulin-rouge-tour-2022",
       "file": "hotchka--unknown.json",
+      "score": 91,
       "publishDate": "2023-12-06",
       "url": "https://hotchka.com/moulin-rouge-the-musical-tour-review-baltimore-hippodrome",
       "findings": [
@@ -43988,6 +44033,7 @@
     {
       "showId": "mrs-doubtfire-tour-2023",
       "file": "broadwayworld--roy-berko.json",
+      "score": 81,
       "publishDate": "2024-01-11",
       "url": "https://www.broadwayworld.com/cleveland/article/Review-MRS-DOUBTFIRE-TOURING-COMPANY-at-Key-Bank-Broadway-Series-Connor-Palace-20240111",
       "findings": [
@@ -44034,6 +44080,7 @@
     {
       "showId": "mrs-doubtfire-tour-2023",
       "file": "clevescene--christine-howey.json",
+      "score": 41,
       "publishDate": "2024-01-12",
       "url": "https://www.clevescene.com/arts/mrs-doubtfire-musical-now-at-playhouse-square-feels-shopworn-43495812/",
       "findings": [
@@ -52007,6 +52054,7 @@
     {
       "showId": "pippin-regional-2026",
       "file": "dc-theater-arts--lisa-traiger.json",
+      "score": 90,
       "publishDate": "2026-05-23",
       "url": "https://dctheaterarts.org/2026/05/23/theres-magic-at-play-in-signature-theatres-dazzling-pippin",
       "findings": [
@@ -57382,7 +57430,7 @@
     {
       "showId": "smash-2025",
       "file": "chicagotribune--unknown.json",
-      "score": null,
+      "score": 39,
       "publishDate": "2025-04-10",
       "url": "https://www.chicagotribune.com/2025/04/10/review-in-its-remake-of-the-tv-series-smash-on-broadway-is-anything-but/",
       "findings": [
@@ -57457,7 +57505,7 @@
     {
       "showId": "smash-2025",
       "file": "exeunt-magazine--unknown.json",
-      "score": null,
+      "score": 78,
       "publishDate": "2025-04-17",
       "url": "https://exeuntnyc.com/reviews/review-smash-at-the-imperial-theatre/",
       "findings": [
@@ -79478,7 +79526,7 @@
     {
       "showId": "triumph-off-west-end-2026",
       "file": "thestage--david-benedict.json",
-      "score": 75,
+      "score": 74,
       "publishDate": "2026-10-19",
       "url": "https://www.thestage.co.uk/reviews/triumph-review-almeida-theatre-london-caryl-churchill",
       "findings": [
@@ -81277,6 +81325,7 @@
     {
       "showId": "venus-regional-2026",
       "file": "broadwayworld--morgan-musselman.json",
+      "score": 89,
       "publishDate": "2026-09-16",
       "url": "https://www.broadwayworld.com/washington-dc/article/Review-VENUS-at-Woolly-Mammoth-20260916",
       "findings": [
@@ -93997,7 +94046,7 @@
     {
       "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
       "file": "telegraph--dominic-cavendish.json",
-      "score": 37,
+      "score": 41,
       "publishDate": "2026-09-21",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/catarina-and-the-beauty-of-killing-fascists-review/",
       "findings": [
@@ -94781,19 +94830,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"barbican\""
-        }
-      ]
-    },
-    {
-      "showId": "cloud-9-west-end-2026",
-      "file": "theatre-weekly--unknown.json",
-      "publishDate": "2026-11-09",
-      "url": "https://theatreweekly.com/first-look-images-released-for-caryl-churchills-cloud-9-at-the-national-theatre/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -97255,6 +97291,7 @@
     {
       "showId": "dog-man-the-musical-off-west-end-2026",
       "file": "muddystilettos--unknown.json",
+      "score": 81,
       "publishDate": null,
       "url": "https://london.muddystilettos.co.uk/things-to-do/arts-culture/dog-man-the-musical-2/",
       "findings": [
@@ -98103,6 +98140,7 @@
     {
       "showId": "electra-persona-west-end-2026",
       "file": "muddystilettos--muddy-stilettos.json",
+      "score": 85,
       "publishDate": null,
       "url": "https://london.muddystilettos.co.uk/things-to-do/arts-culture/electra-persona/",
       "findings": [
@@ -101537,7 +101575,7 @@
     {
       "showId": "golden-boy-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 76,
+      "score": 77,
       "publishDate": "2026-09-16",
       "url": "https://www.londonboxoffice.co.uk/news/post/golden-boy-almeida-theatre-review",
       "findings": [
@@ -101551,7 +101589,7 @@
     {
       "showId": "golden-boy-off-west-end-2026",
       "file": "londonlivinglarge--london-living-large.json",
-      "score": 75,
+      "score": 79,
       "publishDate": "2026-09-18",
       "url": "https://www.londonlivinglarge.com/2026/09/golden-boy-almeida-theatre-sep-8-oct-31.html",
       "findings": [
@@ -101620,7 +101658,7 @@
     {
       "showId": "golden-boy-off-west-end-2026",
       "file": "plays-international--neil-dowden.json",
-      "score": 82,
+      "score": 81,
       "publishDate": "2026-09-18",
       "url": "https://playsinternational.org.uk/golden-boy-almeida-theatre/",
       "findings": [
@@ -101634,7 +101672,7 @@
     {
       "showId": "golden-boy-off-west-end-2026",
       "file": "plays-international--unknown.json",
-      "score": 82,
+      "score": 81,
       "publishDate": "2026-09-18",
       "url": "https://playsinternational.org.uk/golden-boy-almeida-theatre/",
       "findings": [
@@ -101718,7 +101756,7 @@
     {
       "showId": "golden-boy-off-west-end-2026",
       "file": "theatreandtonic--phil.json",
-      "score": 86,
+      "score": 87,
       "publishDate": "2026-09-17",
       "url": "https://theatreandtonic.co.uk/blog/golden-boy-at-almeida-theatre-review",
       "findings": [
@@ -104018,7 +104056,7 @@
     {
       "showId": "hay-fever-west-end-2026",
       "file": "everything-theatre--owen-thomas-james.json",
-      "score": 58,
+      "score": 56,
       "publishDate": "2026-10-04",
       "url": "https://everything-theatre.co.uk/2026/10/review-hay-fever-wyndhams-theatre/",
       "findings": [
@@ -104032,7 +104070,7 @@
     {
       "showId": "hay-fever-west-end-2026",
       "file": "guardian--emma-john.json",
-      "score": 62,
+      "score": 60,
       "publishDate": "2026-10-02",
       "url": "https://www.theguardian.com/stage/2026/oct/02/hay-fever-review-richard-e-grant-christine-baranski-wyndhams-theatre-london",
       "findings": [
@@ -104059,7 +104097,7 @@
     {
       "showId": "hay-fever-west-end-2026",
       "file": "independent--alice-saville.json",
-      "score": 57,
+      "score": 56,
       "publishDate": "2026-10-02",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/hay-fever-review-richard-e-grant-christine-baranski-b3060249.html",
       "findings": [
@@ -104184,7 +104222,7 @@
     {
       "showId": "hay-fever-west-end-2026",
       "file": "theupcoming--emilia-gould.json",
-      "score": 79,
+      "score": 77,
       "publishDate": "2026-10-01",
       "url": "https://www.theupcoming.co.uk/2026/10/02/hay-fever-at-wyndhams-theatre-theatre-review/",
       "findings": [
@@ -104198,7 +104236,7 @@
     {
       "showId": "hay-fever-west-end-2026",
       "file": "timeout-london--andrzej-lukowski.json",
-      "score": 57,
+      "score": 58,
       "publishDate": "2026-10-02",
       "url": "https://www.timeout.com/london/news/hay-fever-review-richard-e-grant-noel-coward-100126",
       "findings": [
@@ -104212,7 +104250,7 @@
     {
       "showId": "hay-fever-west-end-2026",
       "file": "times-uk--dominic-maxwell.json",
-      "score": 63,
+      "score": 62,
       "publishDate": "2026-10-01",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/hay-fever-review-west-end-richard-e-grant-d6qdnnzpl",
       "findings": [
@@ -106213,14 +106251,14 @@
     {
       "showId": "ilford-boy-off-west-end-2026",
       "file": "revstanstheatreblog--unknown.json",
-      "score": 91,
+      "score": 94,
       "publishDate": "2026-10-25",
       "url": "https://revstanstheatreblog.co.uk/2026/10/25/review-ilford-boy-donmar-warehouse/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"donmar warehouse\""
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -117063,7 +117101,7 @@
     {
       "showId": "oliver-west-end-2024",
       "file": "daily-mail--georgina-brown.json",
-      "score": 94,
+      "score": 93,
       "publishDate": "2024-07-26",
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-13674445/Oliver-review-Dickens-writes-GEORGINA-BROWN.html",
       "findings": [
@@ -117124,7 +117162,7 @@
     {
       "showId": "oliver-west-end-2024",
       "file": "standard--unknown.json",
-      "score": 97,
+      "score": 95,
       "publishDate": "January 15th, 2025",
       "url": "https://www.standard.co.uk/culture/theatre/oliver-gielgud-theatre-review-cameron-mackintosh-matthew-bourne-b1204920.html",
       "findings": [
@@ -117179,7 +117217,7 @@
     {
       "showId": "oliver-west-end-2024",
       "file": "theatre-weekly--unknown.json",
-      "score": 96,
+      "score": 94,
       "publishDate": null,
       "url": "https://theatreweekly.com/review-oliver-at-the-gielgud-theatre-london/",
       "findings": [
@@ -125325,7 +125363,7 @@
     {
       "showId": "sylvia-west-end-2023",
       "file": "daily-mail--patrick-marmion.json",
-      "score": 77,
+      "score": 61,
       "publishDate": "2023-02-15",
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-11761329/A-Shadow-Cabinet-minister-ruined-lust-tragedy-PATRICK-MARMION-reviews-Phaedra.html",
       "findings": [
@@ -125381,7 +125419,7 @@
     {
       "showId": "sylvia-west-end-2023",
       "file": "times-uk--clive-davis.json",
-      "score": 55,
+      "score": 60,
       "publishDate": "2023-02-15",
       "url": "https://www.thetimes.co.uk/article/sylvia-review-beverley-knight-shines-in-a-stodgy-suffragette-show-2fln5l2qv",
       "findings": [
@@ -130234,6 +130272,7 @@
     {
       "showId": "the-guilty-off-west-end-2026",
       "file": "plays-international--jeremy-malies.json",
+      "score": 89,
       "publishDate": null,
       "url": "https://playsinternational.org.uk/the-guilty-donmar-warehouse/",
       "findings": [
@@ -138922,7 +138961,7 @@
     {
       "showId": "triumph-off-west-end-2026",
       "file": "artsdesk--unknown.json",
-      "score": 82,
+      "score": 80,
       "publishDate": "2026-10-23",
       "url": "https://theartsdesk.com/theatre/triumph-golden-boy-almeida-theatre-almeida-fires-multiple-cylinders",
       "findings": [
@@ -139661,6 +139700,7 @@
     {
       "showId": "venus-regional-2026",
       "file": "city-cast-dc--chris-klimek.json",
+      "score": 72,
       "publishDate": "2026-09-28",
       "url": "https://dc.citycast.fm/theater-reviews/woolly-mammoth-venus",
       "findings": [
@@ -141090,6 +141130,7 @@
     {
       "showId": "wish-you-were-here-regional-2026",
       "file": "city-cast-dc--chris-klimek.json",
+      "score": 80,
       "publishDate": "2026-10-20",
       "url": "https://dc.citycast.fm/theater-reviews/wish-you-were-here-sanaz-toossi",
       "findings": [
