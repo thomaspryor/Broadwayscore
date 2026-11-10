@@ -60,3 +60,9 @@ test('complete secondary excluded by another gate (rejectionReason): stub primar
   const d = mkdir({ contentTier: 'truncated' }, { contentTier: 'complete', rejectionReason: 'not a review' });
   assert.equal(synd.hasFullerSecondary(d, 'nyt-theater--jonathan-mandell.json', read(d, 'nyt-theater--jonathan-mandell.json')), false);
 });
+
+test('publishing-group sibling for same critic blocks the yield (no double ship)', () => {
+  const d = mkdir({ contentTier: 'truncated' }, { contentTier: 'complete' });
+  fs.writeFileSync(path.join(d, 'sfgate--jonathan-mandell.json'), JSON.stringify({ ...base, outletId: 'sfgate', contentTier: 'complete' }));
+  assert.equal(synd.hasFullerSecondary(d, 'nyt-theater--jonathan-mandell.json', read(d, 'nyt-theater--jonathan-mandell.json')), false);
+});

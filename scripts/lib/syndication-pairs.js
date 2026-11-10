@@ -275,6 +275,18 @@ function hasLiveSyndicationPrimary(showDir, primaries, criticName, { fileNames, 
 }
 
 const _fullerInFlight = new Set();
+let _showMap = null;
+/** Show record for show-dependent gates (closing-date guards); null map entry = unknown show (conservative: caller treats as excluded by explainExclusion). */
+function _showFor(id) {
+  if (!_showMap) {
+    _showMap = new Map();
+    try {
+      const j = JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '../../data/shows.json'), 'utf8'));
+      for (const sh of (j.shows || j)) _showMap.set(sh.id, sh);
+    } catch { /* no shows.json: undefined show, as before */ }
+  }
+  return _showMap.get(id);
+}
 const STUB_PRIMARY_TIERS = new Set(['truncated', 'excerpt', 'stub']);
 
 /**
@@ -302,8 +314,11 @@ function hasFullerSecondary(showDir, primaryFileName, primaryData, { fileNames }
   // Conservative on purpose (BRO-7327 review): exactly ONE secondary file for this critic may exist
   // (two complete secondaries would both ship once the primary stands aside = double count), and it
   // must itself be includable by the full rebuild gate chain (else both copies would be dropped).
-  const secFiles = names.filter((f) => isPrimaryFileFor(f, config.secondary, critic));
-  if (secFiles.length !== 1) return false;
+  // Count EVERY other-outlet file for this critic (publishing-group siblings also ship), not only config.secondary.
+  const slug = criticFileSlug(critic);
+  const others = names.filter((f) => f.endsWith('.json') && (f.startsWith('') && new RegExp(`--${slug}(-\\d+)?\\.json$`).test(f)) && !isPrimaryFileFor(f, [config.primary], critic));
+  const secFiles = others.filter((f) => isPrimaryFileFor(f, config.secondary, critic));
+  if (others.length !== 1 || secFiles.length !== 1) return false;
   const secPath = path.join(showDir, secFiles[0]);
   if (_fullerInFlight.has(secPath)) return false; // explainExclusion(sec) -> hasLive... -> back here
   _fullerInFlight.add(secPath);
@@ -311,7 +326,9 @@ function hasFullerSecondary(showDir, primaryFileName, primaryData, { fileNames }
     const sec = JSON.parse(fs.readFileSync(secPath, 'utf8'));
     if (sec.criticName && criticFileSlug(sec.criticName) !== criticFileSlug(critic)) return false;
     if (!(sec.contentTier === 'complete' && typeof sec.assignedScore === 'number' && isLiveSyndicationPrimary(sec))) return false;
-    return require('./review-guards').explainExclusion(sec, undefined, secPath, { ignoreKnownSyndication: true }) === null;
+    const guards = require('./review-guards');
+    if (!guards.hasValidScore(sec)) return false; // a publishable score, not just any number
+    return guards.explainExclusion(sec, _showFor(sec.showId), secPath, { ignoreKnownSyndication: true }) === null;
   } catch { return false; } finally { _fullerInFlight.delete(secPath); }
 }
 
