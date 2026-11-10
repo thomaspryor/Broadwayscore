@@ -8,6 +8,7 @@
  * Default: every file with a bwwExcerpt that contradicts its text. --autocleared-only: only those
  * whose wrongProduction flag was script-cleared (wrongProductionAutoCleared set).
  */
+const { listShowDirs } = require('./lib/list-show-dirs');
 const fs = require('fs');
 const path = require('path');
 const { bwwExcerptContradictsText } = require('./lib/wrong-production-autoclear');
@@ -21,9 +22,8 @@ const root = dirArg || path.join(__dirname, '..', 'data', 'review-texts');
 const autoOnly = args.includes('--autocleared-only');
 const rows = [];
 let scanned = 0;
-for (const show of fs.existsSync(root) ? fs.readdirSync(root) : []) {
+for (const show of fs.existsSync(root) ? listShowDirs(root, { silent: true }) : []) {
   const dir = path.join(root, show);
-  if (!fs.statSync(dir).isDirectory()) continue;
   for (const f of fs.readdirSync(dir)) {
     if (!f.endsWith('.json') || f.startsWith('_')) continue;
     let d; try { d = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch (_) { continue; }
