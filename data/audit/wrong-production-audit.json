@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-10T05:59:47.930Z",
+  "timestamp": "2026-11-10T06:46:09.466Z",
   "stats": {
     "totalReviews": 81086,
-    "alreadyFlagged": 22189,
+    "alreadyFlagged": 22190,
     "dateGuardCatches": 219,
-    "directorMismatch": 3596,
-    "tvFilmSignals": 2283,
+    "directorMismatch": 3599,
+    "tvFilmSignals": 2284,
     "londonSignals": 3658,
     "offBroadwaySignals": 750,
     "yearMismatch": 364,
-    "noPublishDate": 8424
+    "noPublishDate": 8422
   },
   "findings": [
     {
@@ -144,6 +144,20 @@
       "file": "telegraph--dominic-cavendish.json",
       "publishDate": null,
       "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lyndsey turner\" from 1536-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "1536-off-west-end-2026",
+      "file": "thestage--sam-marlowe.json",
+      "score": 77,
+      "publishDate": "2025-05-18",
+      "url": "https://www.thestage.co.uk/reviews/1536-review-almeida-theatre-london-ava-pickett-lyndsey-turner",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -12839,6 +12853,19 @@
       ]
     },
     {
+      "showId": "cheapo-oran-mor-regional-2025",
+      "file": "thestage--fergus-morgan.json",
+      "publishDate": "2025-10-01",
+      "url": "https://www.thestage.co.uk/reviews/cheapo-review-oran-mor-glasgow-a-play-a-pie-and-a-pint",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "chess-2025",
       "file": "lighting-and-sound-america--david-barbour.json",
       "score": 66,
@@ -24661,6 +24688,20 @@
     },
     {
       "showId": "giant-west-end-2025",
+      "file": "thestage--laurie-yule.json",
+      "score": 75,
+      "publishDate": "2025-05-02",
+      "url": "https://www.thestage.co.uk/reviews/giant-review-harold-pinter-theatre-london-john-lithgow-mark-rosenblatt-nicholas-hytner",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"nicholas hytner\" from giant-2026"
+        }
+      ]
+    },
+    {
+      "showId": "giant-west-end-2025",
       "file": "timeout-london--tim-bano.json",
       "score": 95,
       "publishDate": "2025-05-02",
@@ -33325,6 +33366,20 @@
       "score": 79,
       "publishDate": "2026-04-08",
       "url": "https://www.thereviewshub.com/inter-alia-wyndhams-theatre-london/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from inter-alia-2026"
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "thestage--holly-omahony.json",
+      "score": 54,
+      "publishDate": "2026-04-08",
+      "url": "https://www.thestage.co.uk/reviews/inter-alia-review-wyndhams-theatre-london",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -65250,7 +65305,7 @@
         {
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions year 2016 (2x) more than 2026 (1x). 2016 matches production: the-children-west-end-2016"
+          "detail": "Mentions year 2016 (2x) more than 2026 (0x). 2016 matches production: the-children-west-end-2016"
         }
       ]
     },
