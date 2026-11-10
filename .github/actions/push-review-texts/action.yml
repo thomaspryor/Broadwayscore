@@ -496,11 +496,15 @@ runs:
                     THEIR_LEN=$(echo "$THEIR_CONTENT" | python3 -c "import sys,json;print(len(json.load(sys.stdin).get('fullText','') or ''))" 2>/dev/null || echo "0")
                   fi
 
-                  if [ "$OUR_LEN" -gt "$THEIR_LEN" ] 2>/dev/null; then
+                  # BRO-7171: same winner rule as the field merge (a chrome-gain
+                  # rollback beats the longer chrome text it undoes; a newer fetch
+                  # beats an older longer body). Length only if the helper fails.
+                  WIN=$(node ../../scripts/lib/review-json-three-way-merge.js --whole-file-winner "$f" 2>/dev/null) || WIN=""
+                  if [ "$WIN" = "workflow" ] || { [ -z "$WIN" ] && [ "$OUR_LEN" -gt "$THEIR_LEN" ] 2>/dev/null; }; then
                     git show REBASE_HEAD:"$f" > "$f" 2>/dev/null
                     git add "$f"
                     KEPT_OURS=$((KEPT_OURS + 1))
-                    echo "  $f: kept ours (${OUR_LEN} chars > ${THEIR_LEN} chars)"
+                    echo "  $f: kept ours (${WIN:-length}; ${OUR_LEN} vs ${THEIR_LEN} chars)"
                   else
                     # Use explicit `git show HEAD:` — NOT `git checkout --theirs`.
                     # During a REBASE git inverts ours/theirs: --theirs means the
@@ -519,7 +523,7 @@ runs:
                     fi
                     git add "$f"
                     KEPT_THEIRS=$((KEPT_THEIRS + 1))
-                    echo "  $f: kept remote (${THEIR_LEN} chars >= ${OUR_LEN} chars)"
+                    echo "  $f: kept remote (${WIN:-length}; ${THEIR_LEN} vs ${OUR_LEN} chars)"
                   fi
                 elif [[ "$f" == "failed-fetches.json" ]]; then
                   # Merge failed-fetches arrays: union by reviewId, keep newer (ours) entries

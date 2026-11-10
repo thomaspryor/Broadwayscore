@@ -60,12 +60,14 @@ const _sha = (t) => require('crypto').createHash('sha256').update(String(t == nu
 // AND its older textFetchedAt, so recency alone would let the chrome text it
 // undoes win back. A side stamped rolledBack wins only against a side whose
 // fullText is exactly the chrome text named by its own provenance
-// (newFullTextHash); against any other text (a real refetch) recency decides.
+// (newFullTextHash), and only while its own text is still the restored prior
+// (priorFullTextHash), so stale provenance carried onto later text never wins.
+// Against any other text (a real refetch) recency decides.
 function rollbackWins(a, b) {
   const rb = (x, y) => {
     const p = x && x.textRecoveryProvenance;
-    return !!(p && p.rolledBack && p.newFullTextHash && typeof y.fullText === 'string'
-      && _sha(x.fullText) !== p.newFullTextHash && _sha(y.fullText) === p.newFullTextHash);
+    return !!(p && p.rolledBack && p.newFullTextHash && p.priorFullTextHash && typeof y.fullText === 'string'
+      && _sha(x.fullText) === p.priorFullTextHash && _sha(y.fullText) === p.newFullTextHash);
   };
   if (rb(a, b)) return 'a';
   if (rb(b, a)) return 'b';
@@ -142,9 +144,30 @@ function mergeReviewJson(base, upstream, workflow, opts = {}) {
   return { merged: JSON.parse(JSON.stringify(out)), winner, conflicts, groupFrom: groupBothChanged ? winner : null };
 }
 
+/**
+ * Whole-file pick for the action's fallback (three-way merge crashed or the
+ * path is not three-way mergeable): same winner rule as the field merge
+ * (rollback, then recency, then fullText length; ties -> upstream). An
+ * unparsable side counts as an empty record. BRO-7171: a length-only pick
+ * undid every chrome-gain rollback, because the chrome text is always longer.
+ * @returns {'workflow'|'upstream'}
+ */
+function wholeFileWinner(upstreamText, workflowText) {
+  const parse = (t) => { try { const j = JSON.parse(t); return _isObj(j) ? j : {}; } catch { return {}; } };
+  return _pickWinner(parse(upstreamText), parse(workflowText), 'upstream');
+}
+
 function _cli() {
   const { execFileSync } = require('child_process');
   const fs = require('fs');
+  const wf = process.argv.indexOf('--whole-file-winner');
+  if (wf !== -1) {
+    // Mid-rebase: HEAD = upstream (+ replayed), REBASE_HEAD = this workflow's commit.
+    const p = process.argv[wf + 1];
+    const show = (ref) => { try { return execFileSync('git', ['show', `${ref}:${p}`], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], maxBuffer: 1 << 28 }); } catch { return ''; } };
+    process.stdout.write(wholeFileWinner(show('HEAD'), show('REBASE_HEAD')) + '\n');
+    return;
+  }
   const tieArg = process.argv.find((a) => a.startsWith('--tie='));
   const tie = tieArg && tieArg.split('=')[1] === 'upstream' ? 'upstream' : 'workflow';
   const git = (args, input) => execFileSync('git', args, {
@@ -182,4 +205,4 @@ if (require.main === module) {
   try { _cli(); } catch (e) { process.stderr.write(`review-json-three-way-merge: ${e.message}\n`); }
 }
 
-module.exports = { mergeReviewJson, TEXT_STATE_GROUP, fresherTextWins, rollbackWins };
+module.exports = { mergeReviewJson, TEXT_STATE_GROUP, fresherTextWins, rollbackWins, wholeFileWinner };
