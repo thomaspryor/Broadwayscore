@@ -1,4 +1,5 @@
 // BRO-7304 class guard: a URL-move wipe must not drop a live review from reviews.json.
+require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs'), os = require('os'), path = require('path'), assert = require('assert');
 const { findUrlWipeHolds } = require('./lib/url-wipe-hold');
 

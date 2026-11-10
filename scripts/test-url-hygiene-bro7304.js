@@ -1,3 +1,4 @@
+require('./lib/cli-help').exitOnHelp(module);
 const assert = require('assert');
 const { normalizeUrl } = require('./lib/review-normalization');
 const { urlCanonicallyChanged } = require('./lib/url-change-invariant');

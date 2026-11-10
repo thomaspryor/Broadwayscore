@@ -590,6 +590,8 @@ on:
       - 'scripts/lint-design-tokens.js'
       - 'scripts/lint-font-floor.js'
       - 'scripts/test-email-broadcast.js'
+      - 'scripts/test-url-wipe-hold.js' # BRO-7304
+      - 'scripts/test-url-hygiene-bro7304.js' # BRO-7304
       - 'scripts/test-ordinal-publishdate-guards.js'
       - 'scripts/test-temporal-override-regression.js'
       - 'scripts/validate-archive-productions.js'
