@@ -1876,6 +1876,8 @@ function main() {
         // content-verifier.js, which no other comparison here loads.
         && (baseline.isCvPartialWindowAdvisory?.toString() || '') === (working.isCvPartialWindowAdvisory?.toString() || '')
         && (baseline.ensembleScoredSinceCv?.toString() || '') === (working.ensembleScoredSinceCv?.toString() || '')
+        // BRO-7331: the corrected-url refetch release the CV-promoted branch delegates to.
+        && (baseline.isUrlCorrectedReverifiedReview?.toString() || '') === (working.isUrlCorrectedReverifiedReview?.toString() || '')
         // BRO-6233: the CV wrongArticle routing decideInclusion replays, its
         // helpers, the mirror's high-confidence rule and the deferral.
         && (baseline.cvWrongArticlePromotion?.toString() || '') === (working.cvWrongArticlePromotion?.toString() || '')

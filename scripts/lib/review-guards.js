@@ -3202,6 +3202,42 @@ function isStaleCvNonReviewVerdictOverruled(data) {
 }
 
 /**
+ * BRO-7331: the stale CV-promoted isNonReview that outlived a url correction.
+ * The promotion read the OLD url's page; the url was then corrected, the
+ * corrected page refetched and a fresh CV read exactly that body as a review.
+ * isNonReviewDemotedByFreshCV wants an ensemble score for this provenance, but
+ * the scorer skips flagged files, so the score can never come (BRO-7326
+ * Daily Beast frankie had to be cleared by hand). Narrow on purpose: needs a
+ * recorded url correction, a CV whose contentHash matches the stored body,
+ * a real body (>= 300 words, live in fullText, not parked in wrongFullText),
+ * no other exclusion flag, and no unanimous ensemble not-a-review rejection.
+ * Self-contained: checks the CV is a high-confidence valid review itself (callers differ).
+ * Release is scoring-only until an ensemble score newer than the CV exists (see the caller).
+ * @param {object} data
+ * @returns {boolean}
+ */
+function isUrlCorrectedReverifiedReview(data) {
+  // Some writers stamp urlCorrectedFrom with the NEW url (Totoro visit-london); previousUrl then holds the old one.
+  if (!data || ![data.urlCorrectedFrom, data.previousUrl].some(u => typeof u === 'string' && u && u !== data.url)) return false;
+  const cv = data.contentVerification;
+  if (!cv || cv.wrongProduction === true || cv.isFilmTv === true) return false;
+  if (cv.articleType !== 'review' || cv.isValid === false || cv.wrongArticle === true || cv.clearRefusal) return false;
+  if ((cv.articleTypeConfidence || cv.confidence) !== 'high') return false;
+  if (data.wrongShow === true || data.wrongProduction === true || data.isRoundupArticle === true) return false;
+  if (data.rejectionReason && data.rejectionReason !== 'not_a_review') return false;
+  // The body must come from the corrected url: a pending refetch, or text fetched before the rewrite, is still the OLD page
+  // and a CV on it would be CV against CV (second-opinion finding).
+  if (data.needsRefetch === true || data.rejectedAt) return false;
+  const wpa = require('./wrong-production-autoclear');
+  if (wpa.isTextStaleRelativeToUrlRewrite(data) || wpa.hasEnsembleConsensus(data, 'not_a_review')) return false;
+  const body = typeof data.fullText === 'string' ? data.fullText : '';
+  if (body.split(/\s+/).filter(Boolean).length < 300) return false;
+  // lazy: content-verifier requires this module
+  if (!cv.contentHash || cv.contentHash !== require('./content-verifier').contentHash(body)) return false;
+  return true;
+}
+
+/**
  * Demote a stale isNonReview flag when a NEWER, high-confidence
  * contentVerification pass affirms the article IS a review — the Telegraph
  * class (task #1255, Notion 3b9637c5). isNonReview is set almost entirely by
@@ -3248,7 +3284,7 @@ function isStaleCvNonReviewVerdictOverruled(data) {
  * @param {object} data - Review-text JSON
  * @returns {boolean} true when the isNonReview flag should be ignored
  */
-function isNonReviewDemotedByFreshCV(data) {
+function isNonReviewDemotedByFreshCV(data, opts) {
   if (!data || data.isNonReview !== true) return false;
   if (require('./approved-fix-flag').hasApprovedFlag(data, 'isNonReview')) return false; // BRO-7155
   // A human/monitor-set flag is never demoted: the freshness checks below only
@@ -3290,7 +3326,13 @@ function isNonReviewDemotedByFreshCV(data) {
   if (isCvPromotedProvenance) {
     // No classifiedAt exists for this family — require independent
     // corroboration instead of trusting recency we can't prove.
-    return hasHighConfidenceLlmScore(data);
+    // BRO-7331: a score can never arrive for a flagged file (the scorer skips
+    // it), so a corrected-url refetch re-verified as a review is corroboration
+    // enough to let the scorer read it; its score then stands on its own.
+    // Scoring-only until the ensemble has scored the corrected page: an older (or low-confidence) score belongs to the
+    // old url's page and must not reach rebuild (ship-check finding, rolling-thunder theater-life).
+    return hasHighConfidenceLlmScore(data)
+      || (isUrlCorrectedReverifiedReview(data) && (!!(opts && opts.forScoring) || ensembleScoredSinceCv(data)));
   }
 
   if (data.classifiedAt) {
@@ -5469,6 +5511,9 @@ function isRejectedByReasonExclusion(data, opts) {
     if (data.rejectionReason === 'not_a_review'
       && /^CV-promoted \(not a review\):/.test(String(data.isNonReviewReason || ''))
       && isStaleCvNonReviewVerdictOverruled(data)) return false;
+    // BRO-7331: same for a not_a_review stamped before a url correction whose refetch was re-verified as a review.
+    if (data.rejectionReason === 'not_a_review' && isNonReviewDemotedByFreshCV(data, opts)
+      && isUrlCorrectedReverifiedReview(data)) return false;
     // BRO-5238: a human wrong-production clear (wrongProductionManualClear /
     // wrongProductionOverride / humanReviewedWrongProduction:false) overrides a
     // 'wrong_production' rejection, exactly as isRejectedAtExclusion already
@@ -6068,7 +6113,7 @@ function explainExclusion(data, show, filePath, opts) {
   // humanReviewScore is a human's verdict, so it is exempt.
   if (isBodylessAggregatorScoreUncorroborated(data, show)) return 'bodylessAggregatorScoreUncorroborated';
   if (
-    ((data.isNonReview === true && !isNonReviewDemotedByFreshCV(data) && !isCvPartialWindowAdvisory(data, opts)) ||
+    ((data.isNonReview === true && !isNonReviewDemotedByFreshCV(data, opts) && !isCvPartialWindowAdvisory(data, opts)) ||
     data.isNotReview === true ||
     data.nonReviewFlag === true ||
     data.nonReviewContent === true) && !laneOk('nonReview')
@@ -7132,6 +7177,7 @@ module.exports = {
   isStaleBulkTitleWrongShow,
   computeCvIsStale,
   isNonReviewDemotedByFreshCV,
+  isUrlCorrectedReverifiedReview,
   isStaleCvNonReviewVerdictOverruled,
   isCvPartialWindowAdvisory,
   ensembleScoredSinceCv,
