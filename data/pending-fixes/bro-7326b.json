@@ -1,0 +1,36 @@
+{
+  "issueNumber": "bro-7326b",
+  "planId": "82100e08-6890-46ef-80b9-d6aed0b82c1f",
+  "status": "pending",
+  "createdAt": "2026-11-10T22:22:49.256Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7326: clear stale CV-promoted isNonReview on Daily Beast Teeman frankie-2019 after refetch from corrected url (fresh CV: review, high, 1264 words)",
+    "steps": [
+      "frankie-and-johnny-in-the-clair-de-lune-2019/dailybeast--tim-teeman.json: nonReviewManualClear",
+      "frankie-and-johnny-in-the-clair-de-lune-2019/dailybeast--tim-teeman.json: isNonReview"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "frankie-and-johnny-in-the-clair-de-lune-2019/dailybeast--tim-teeman.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "frankie-and-johnny-in-the-clair-de-lune-2019/dailybeast--tim-teeman.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "frankie-and-johnny-in-the-clair-de-lune-2019/dailybeast--tim-teeman.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "frankie-and-johnny-in-the-clair-de-lune-2019/dailybeast--tim-teeman.json: isNonReview"
+      }
+    ]
+  }
+}
