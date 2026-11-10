@@ -16,6 +16,9 @@
  */
 function showsMarketBadge(category, isOpera) {
   if (isOpera) return false;
+  // Intentionally NOT isBroadwayCategory: this module is bundled into client
+  // components, and venue-classification.js pulls in path/__dirname + data JSON.
+  // Same semantics (missing category = Broadway).
   if (!category || category === 'broadway') return false;
   return true;
 }
