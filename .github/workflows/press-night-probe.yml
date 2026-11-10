@@ -380,6 +380,8 @@ jobs:
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          # BRO-6863: --label=end lists the night's runs of the five watched workflows into the record (actions: read).
+          GH_TOKEN: ${{ github.token }}
         run: node scripts/press-night-record.js --show="$SHOW_ID" --night="$NIGHT" --capture-reference --label=end
 
       - name: Finalize and print verdict

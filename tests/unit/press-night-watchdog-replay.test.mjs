@@ -6,7 +6,7 @@ import fs from 'node:fs';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { replayNight, runsAt, projectNight, chainShifts } = require('../../scripts/press-night-watchdog-replay.js');
+const { replayNight, runsAt, projectNight, chainShifts, pickRuns } = require('../../scripts/press-night-watchdog-replay.js');
 const { normalizeOutlet } = require('../../scripts/lib/review-normalization');
 const norm = (o) => (o ? normalizeOutlet(String(o)) || String(o).toLowerCase() : null);
 const load = (p) => JSON.parse(fs.readFileSync(new URL(`../../${p}`, import.meta.url), 'utf8'));
@@ -74,4 +74,42 @@ test('chainShifts: only a sleep that starts inside [embargo, +2h] is shortened; 
   // 152.. also starts 17 min after 135 ended, but 135 already has its follower.
   const shifts = chainShifts([run(-80, -20), run(-5, 60), run(75, 135), run(150, 210), run(152, 200)], E).map((r) => r.shift);
   assert.deepEqual(shifts, [0, 0, 10, 10, 0]);
+});
+
+// BRO-6863: the record carries scoredAt / in-core and the night's runs, so the replay reaches rebuild and deploy.
+const E = Date.parse('2026-11-09T03:00:00Z');
+const atm = (m) => new Date(E + m * 60000).toISOString();
+const synthetic = (fileExtra = {}) => ({
+  showId: 'syn', night: '2026-11-08', embargoAt: atm(0),
+  fileState: { files: [{ outletId: 'nytimes', critic: 'A', includable: true, firstSeenAt: atm(0), ...fileExtra }] },
+  perReview: [{ outlet: 'The New York Times', critic: 'A', firstLiveAt: atm(60) }],
+});
+const synRuns = [
+  { workflow: 'opening-night-orchestrator.yml', status: 'completed', conclusion: 'success', displayTitle: 'Opening Night Orchestrator (broadway)', startedAt: atm(-10), updatedAt: atm(150) },
+  { workflow: 'rebuild-fast.yml', status: 'completed', conclusion: 'success', displayTitle: 'Rebuild', startedAt: atm(8), updatedAt: atm(14) },
+];
+
+test('replay from a record with scoredAt + in-core: a rebuilt review not yet live sits in deploy, so deploy is retried', () => {
+  const r = replayNight({ record: synthetic({ scoredAt: atm(5), inCoreAtEnd: true }), runs: synRuns, normOutlet: norm });
+  assert.deepEqual(r.dispatches.map((d) => `${d.atMin}:${d.type}:${d.stage}`), ['20:dispatch:deploy']);
+});
+
+test('replay: scored but not rebuilt reads rebuild, then deploy once the rebuild ends; a record without scoredAt still reads score', () => {
+  const late = [synRuns[0], { ...synRuns[1], startedAt: atm(40), updatedAt: atm(45) }];
+  assert.deepEqual(replayNight({ record: synthetic({ scoredAt: atm(5), inCoreAtEnd: true }), runs: late, normOutlet: norm }).dispatches.map((d) => `${d.atMin}:${d.stage}`), ['20:rebuild', '50:deploy']);
+  assert.deepEqual(replayNight({ record: synthetic(), runs: synRuns, normOutlet: norm }).dispatches.map((d) => `${d.atMin}:${d.stage}`), ['20:score']);
+});
+
+test('pickRuns: --runs wins, then the record\'s complete runs, then the fixture (warning on an incomplete record), then none', () => {
+  const files = { 'given.json': ['g'], 'fixture.json': ['f'] };
+  const io = { exists: (p) => p in files, read: (p) => files[p], fixturePath: 'fixture.json' };
+  const complete = { pipelineRuns: { complete: true, runs: ['r'] } };
+  const partial = { pipelineRuns: { complete: false, runs: [], errors: [{ workflow: 'rebuild-fast.yml', error: 'x' }] } };
+  assert.deepEqual(pickRuns({ record: complete, runsArg: 'given.json', ...io }), { runs: ['g'], source: 'given.json' });
+  assert.match(pickRuns({ record: complete, runsArg: 'missing.json', ...io }).error, /no runs file/);
+  assert.deepEqual(pickRuns({ record: complete, runsArg: null, ...io }), { runs: ['r'], source: 'record' });
+  const p = pickRuns({ record: partial, runsArg: null, ...io });
+  assert.deepEqual(p.runs, ['f']);
+  assert.match(p.warning, /incomplete \(rebuild-fast.yml\)/);
+  assert.equal(pickRuns({ record: {}, runsArg: null, ...io, fixturePath: 'none.json' }).runs, null);
 });

@@ -39,7 +39,7 @@ function gh(args, timeout = 30000) {
 
 function recentRuns() {
   const out = [];
-  for (const workflow of ['opening-night-orchestrator.yml', 'opening-night-poller.yml', 'llm-ensemble-score.yml', 'rebuild-fast.yml', 'vercel-deploy.yml']) {
+  for (const workflow of require('./lib/press-night-runs').WATCHED_WORKFLOWS) { // the same five the record keeps (BRO-6863)
     try {
       const rows = JSON.parse(gh(['run', 'list', `--workflow=${workflow}`, '--limit', '20', '--json', 'status,conclusion,displayTitle,createdAt,updatedAt,databaseId']));
       for (const r of rows) out.push({ workflow, ...r });

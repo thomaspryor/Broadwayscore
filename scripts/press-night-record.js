@@ -13,12 +13,16 @@
  *                        label reads no-census-yet (unknown, never a pass).
  *                        Census = archived roundups plus the BWW roundup fetched live by this
  *                        script (BRO-6067: no other workflow had archived it by +2h). --label=end
- *                        also fills a missing +2h coverage from the record's live timeline.
+ *                        also fills a missing +2h coverage from the record's live timeline, and (BRO-6863)
+ *                        stamps perReview[].scoredAt, fileState.files[].inCoreAtEnd and the night's runs of the
+ *                        five watched workflows (pipelineRuns, gh api: needs GH_TOKEN) for the watchdog replay.
  *   --import-lane-shadow=DIR  fold a lane-shadow artifact (opening-night-lane-live.yml) into the
  *                        record: finer site-live times and the first lane discovery (publish bound).
  *   --rebuild-reference  recompute +2h and end coverage from the live timeline against a census
  *                        built now (backfill for a night whose census was missing).
  *   --finalize           mark the probe ended and print a summary.
+ *   --stamp-pipeline     backfill (BRO-6863): perReview[].scoredAt and the night's watched-workflow runs only
+ *                        (needs GH_TOKEN); in-core is not stamped, since today's reviews.json is not the night's.
  *   --auto-log-manual    log hand fixes from review-texts commits in the night window (BRO-6661)
  *   --log-manual         log a hand fix made during the night (BRO-6652): --at=ISO [--outlet-id=ID]
  *                        [--outlet=Name] [--kind=hand-fix] --source="card or comment". The night then never
@@ -207,6 +211,48 @@ async function buildCensus(rec, show) {
 
 function hasCoverage(ref) { return !!(ref && ref.coverage != null); }
 
+/** Core reviews.json rows of the show, or null when core data is not checked out (unknown, never "none in core"). */
+function readCoreRows(showId) {
+  try {
+    const raw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'reviews.json'), 'utf8'));
+    const all = Array.isArray(raw) ? raw : raw.reviews;
+    return Array.isArray(all) ? all.filter((r) => r.showId === showId).map((r) => ({ outletId: r.outletId, outlet: r.outlet, criticName: r.criticName })) : null;
+  } catch (_) { return null; }
+}
+
+/** One watched workflow's runs created in [from, to] (REST, paginated). Throws on any gh failure. */
+function listWorkflowRuns(workflow, from, to) {
+  const repo = process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore';
+  const q = `repos/${repo}/actions/workflows/${workflow}/runs?per_page=100&created=${encodeURIComponent(`${from}..${to}`)}`;
+  const out = require('child_process').execFileSync('gh', ['api', '--paginate', q, '--jq', '.workflow_runs[] | {status,conclusion,display_title,run_started_at,created_at,updated_at}'],
+    { encoding: 'utf8', timeout: 60000, maxBuffer: 16 * 1024 * 1024, stdio: ['ignore', 'pipe', 'pipe'] });
+  return out.split('\n').filter(Boolean).map((l) => JSON.parse(l));
+}
+
+/**
+ * BRO-6863: at --label=end, keep what the watchdog replay needs to replay the score/rebuild/deploy stages:
+ * perReview[].scoredAt + fileState.files[].inCoreAtEnd, and the night's runs of the watched workflows. Never fails the capture.
+ */
+function stampPipeline(rec, { withCore = true } = {}) {
+  const pnr = require('./lib/press-night-runs');
+  const { normalizeOutlet } = require('./lib/review-normalization');
+  const normOutlet = (o) => (o ? normalizeOutlet(String(o)) || String(o).toLowerCase() : null);
+  try {
+    const n = pnr.stampReviewTimes(rec, withCore ? readCoreRows(rec.showId) : null, normOutlet);
+    console.log(`[press-night] scoredAt stamped on ${n.scored}/${n.reviews} live review(s); ${n.coreKnown ? `${n.inCore}/${n.files} file(s) in core reviews.json` : withCore ? 'core reviews.json not available' : 'in-core not stamped (backfill)'}`);
+  } catch (e) { console.log(`::warning::press-night scoredAt stamp failed: ${String(e.message || e).slice(0, 160)}`); }
+  const win = pnr.runsWindow(rec.embargoAt);
+  if (!win) return;
+  const listing = {};
+  for (const wf of pnr.WATCHED_WORKFLOWS) {
+    try { listing[wf] = { runs: listWorkflowRuns(wf, win.listFrom, win.listTo) }; } catch (e) { listing[wf] = { error: String(e.stderr || e.message || e).split('\n')[0] }; }
+  }
+  const next = pnr.pipelineRunsFrom(listing, win, new Date().toISOString());
+  rec.pipelineRuns = pnr.mergePipelineRuns(rec.pipelineRuns, next);
+  if (next.complete) console.log(`[press-night] pipeline runs recorded: ${next.runs.length} run(s) of ${pnr.WATCHED_WORKFLOWS.length} workflows, ${win.from} to ${win.to}`);
+  else console.log(`::warning::press-night pipeline runs incomplete (${next.errors.map((e) => `${e.workflow}: ${e.error}`).join('; ').slice(0, 300)})${rec.pipelineRuns === next ? '' : '; kept the earlier complete capture'}`);
+}
+
 async function main() {
   if (hasHelpFlag(args)) { usage(); return 0; }
   if (has('list-due')) return listDue();
@@ -333,6 +379,7 @@ async function main() {
       ref = { status: 'error', error: String(e.message || e).slice(0, 200), source: null, count: 0, covered: null, coverage: null, missing: [], fetchedAt };
     }
     rec.reference[label] = ref;
+    if (label === 'end') stampPipeline(rec);
     // The +2h census was missing (roundup not out or not fetchable then), or thinner than this one: judge +2h
     // on the live timeline against this later, fuller census (a bigger denominator is the stricter answer).
     const ref2 = rec.reference['2h'];
@@ -347,6 +394,14 @@ async function main() {
     writeRecord(file, rec);
     console.log(`[press-night] reference ${label}: ${ref.status}${ref.coverage != null ? ` coverage=${ref.coverage} (${ref.covered}/${ref.count})` : ''}${note ? `; census: ${note}` : ''}`);
     return ref.status === 'error' ? 1 : 0;
+  }
+
+  if (has('stamp-pipeline')) {
+    // BRO-6863 backfill for a night recorded before --label=end kept the runs. Today's reviews.json is not the night's,
+    // so in-core is not stamped; the replay then treats a scored review that went live as in core from its rebuild.
+    stampPipeline(rec, { withCore: false });
+    writeRecord(file, rec);
+    return rec.pipelineRuns && rec.pipelineRuns.complete ? 0 : 1;
   }
 
   if (has('log-manual')) {
