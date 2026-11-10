@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7125-c",
   "planId": "7d67d5a3-174f-464c-93a7-8b053c02a01d",
-  "status": "applied",
+  "status": "partial",
   "createdAt": "2026-11-10T03:17:57.230036Z",
   "submitter": {
     "name": null,
@@ -32,17 +32,17 @@
       }
     ]
   },
-  "executedAt": "2026-11-10T03:42:50.627Z",
+  "executedAt": "2026-11-10T03:51:07.302Z",
   "results": [
     {
       "action": "review-field-edit",
-      "ok": true,
-      "msg": "kramerfauci-st-anns-off-broadway-2026/one-minute-critic--matthew-wexler.json publishDate: \"2026-10-01\" -> \"2026-10-06\""
+      "ok": false,
+      "reason": "publishDate: current value doesn't match expected (data changed since plan was created)"
     },
     {
       "action": "review-field-edit",
-      "ok": true,
-      "msg": "kramerfauci-st-anns-off-broadway-2026/one-minute-critic--matthew-wexler.json dateSource: \"llm-scoring\" -> \"html-page\""
+      "ok": false,
+      "reason": "dateSource: current value doesn't match expected (data changed since plan was created)"
     }
   ],
   "executedIn": "ci"
