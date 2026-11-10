@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-10T05:36:01.785Z",
+  "timestamp": "2026-11-10T05:59:47.930Z",
   "stats": {
-    "totalReviews": 81087,
+    "totalReviews": 81086,
     "alreadyFlagged": 22189,
     "dateGuardCatches": 219,
     "directorMismatch": 3596,
-    "tvFilmSignals": 2282,
+    "tvFilmSignals": 2283,
     "londonSignals": 3658,
     "offBroadwaySignals": 750,
     "yearMismatch": 364,
-    "noPublishDate": 8423
+    "noPublishDate": 8424
   },
   "findings": [
     {
@@ -58423,6 +58423,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "something-rotten-2015",
+      "file": "ap--mark-kennedy.json",
+      "score": 91,
+      "publishDate": "April 22, 2015",
+      "url": "https://abcnews.go.com/Entertainment/wireStory/review-fresh-hysterical-rotten-30515797",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
