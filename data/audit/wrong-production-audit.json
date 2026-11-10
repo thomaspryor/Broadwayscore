@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-10T22:17:49.198Z",
+  "timestamp": "2026-11-10T22:34:15.665Z",
   "stats": {
-    "totalReviews": 81307,
+    "totalReviews": 81334,
     "alreadyFlagged": 22220,
     "dateGuardCatches": 219,
     "directorMismatch": 3606,
     "tvFilmSignals": 2286,
-    "londonSignals": 3664,
+    "londonSignals": 3666,
     "offBroadwaySignals": 752,
     "yearMismatch": 364,
-    "noPublishDate": 8466
+    "noPublishDate": 8477
   },
   "findings": [
     {
@@ -103230,6 +103230,19 @@
       ]
     },
     {
+      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
+      "file": "monstagigz--unknown.json",
+      "publishDate": "2026-11-10",
+      "url": "https://monstagigz.com/2026/11/10/theatre-review-hamlet-hail-to-the-thief-at-the-barbican/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
       "showId": "hamlet-off-broadway-2026",
       "file": "la-voce-di-new-york--jk-clarke.json",
       "score": 89,
@@ -111503,6 +111516,19 @@
       "file": "maryland-theatre-guide--unknown.json",
       "publishDate": "2026-10-22",
       "url": "https://mdtheatreguide.com/2026/10/a-quick-5-with-jessica-crouch-actor-in-mamma-mia-at-the-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "mamma-mia-tour-2026",
+      "file": "metro-weekly--ryan-leeds.json",
+      "publishDate": "2026-11-04",
+      "url": "https://www.metroweekly.com/2026/11/mamma-mia-husbands-tony-clements-rob-hancock/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
