@@ -270,3 +270,26 @@ test('free refetch: only the collector cooldown blocks; abandoned / max retries 
   assert.equal(T.collectorRefetchGate({ shouldRetry: false, reason: 'max_retries_reached' }).ok, true);
   assert.equal(T.collectorRefetchGate({ shouldRetry: true, reason: 'not_gated' }).ok, true);
 });
+
+// BRO-7171 leftover: rows with the same ts had no order (Array.sort on ts only;
+// a union merge appends the other side's rows after ours, so file order is not
+// lifecycle order). A pending_push and its recovered row written in the same
+// millisecond could index as [recovered, pending_push], leaving the review
+// "pending" forever (pendingPushInfo) and invisible to reconcile.
+test('indexRows: equal timestamps order by lifecycle, then per-process seq', () => {
+  const ts = iso(NOW);
+  const pending = row({ ts, outcome: 'pending_push', runId: 'r1' });
+  const recovered = row({ ts, outcome: 'recovered', runId: 'r1' });
+  const reopened = row({ ts, outcome: 'reopened' });
+  // File order as a union merge can leave it: later lifecycle first.
+  const list = L.indexRows([reopened, recovered, pending]).get(KEY);
+  assert.deepEqual(list.map((r) => r.outcome), ['pending_push', 'recovered', 'reopened']);
+  assert.equal(L.pendingPushInfo([recovered, pending]).size, 0, 'a landed review is not still pending');
+  // Two attempt rows of one run in the same ms keep their write order via seq.
+  const a = row({ ts, outcome: 'no_evidence', strategy: 'ARCHIVE', runId: 'r2' });
+  const b = row({ ts, outcome: 'rejected', strategy: 'ARCHIVE', runId: 'r2' });
+  assert.ok(b.seq > a.seq, 'makeRow stamps a monotonic seq');
+  assert.deepEqual(L.indexRows([b, a]).get(KEY).map((r) => r.outcome), ['no_evidence', 'rejected']);
+  // appendRows keeps a caller-supplied seq/ts (rows re-published verbatim).
+  assert.equal(L.makeRow({ ...a }).seq, a.seq);
+});
