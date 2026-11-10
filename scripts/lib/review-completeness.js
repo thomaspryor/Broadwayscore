@@ -117,7 +117,8 @@ const OPENING_CHARS = 120;
 /**
  * The critic the row's own evidence names: its byline, else a critic the outlet registry lists for the outlet printed
  * at the head of the text (printed-byline-conflict.js, the regular collector's fill rule), else a byline the text opens
- * with ("Review by <Name>"). null when nothing names one; the caller holds the review rather than guess.
+ * with ("Review by <Name>"), else the outlet's registry laneFallbackCritic (outletFallbackCritic). null when nothing
+ * names one; the caller holds the review rather than guess.
  */
 function cardCriticName(row) {
   const r = row || {};
