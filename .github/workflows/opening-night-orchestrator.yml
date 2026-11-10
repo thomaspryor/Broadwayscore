@@ -649,6 +649,17 @@ jobs:
           INPUT_BWW_ROUNDUP_URL: ${{ inputs.bww_roundup_url }}
           # BRO-7198 kill switch: 'true' restores the pre-2026-11-10 dispatch (auto-discovery only for multi-show selections).
           POLLER_PER_SHOW_DISABLED: ${{ vars.POLLER_PER_SHOW_DISABLED }}
+          # BRO-7306: every value this script needs comes in through env. The script must hold NO ${{ }}:
+          # GitHub evaluates a run block that contains one as a single expression with a size cap, and BRO-7198
+          # grew this block past it, which made the whole workflow file invalid (no run could start) for a day.
+          MAX_ITERATIONS_OR_DEFAULT: ${{ inputs.max_iterations || 10 }}
+          POLL_INTERVAL_OR_DEFAULT: ${{ inputs.poll_interval_minutes || 15 }}
+          INPUT_MAX_ITERATIONS: ${{ inputs.max_iterations }}
+          INPUT_POLL_INTERVAL_MINUTES: ${{ inputs.poll_interval_minutes }}
+          INPUT_FAST_PATH: ${{ inputs.fast_path }}
+          FIND_SHOWS: ${{ steps.find.outputs.shows }}
+          FIND_LOOKBACK: ${{ steps.find.outputs.lookback }}
+          STEP_MARKET: ${{ steps.market.outputs.market }}
         run: |
           # 2026-05-16: cut 16 → 10 to reduce duplicate aggregator+SERP fetches.
           # With SERP_DEFER_ITERATIONS=8, iterations 1-8 are aggregator-only (no SERP),
@@ -657,7 +668,7 @@ jobs:
           # coverage during the first 80 min (the window when most reviews drop) is
           # unchanged. Early-exit on broadcast-complete still applies. Manual dispatches
           # can override with -f max_iterations=16.
-          MAX_ITERATIONS=${{ inputs.max_iterations || 10 }}
+          MAX_ITERATIONS=$MAX_ITERATIONS_OR_DEFAULT
           # BRO-66: scheduled (cron) runs never populate `inputs.*`, so this
           # fallback — not the workflow_dispatch default of 15 above — is the
           # cadence every opening night actually runs at. It used to fall back
@@ -667,9 +678,9 @@ jobs:
           # calls from checkout-core-data + checkout-review-texts per poller
           # dispatch, and that PAT has a flat 5000 req/hr ceiling shared by
           # every workflow using it. 15min matches the documented safe default.
-          POLL_INTERVAL=${{ inputs.poll_interval_minutes || 15 }}
-          SHOWS="${{ steps.find.outputs.shows }}"
-          MARKET="${{ steps.market.outputs.market }}"
+          POLL_INTERVAL=$POLL_INTERVAL_OR_DEFAULT
+          SHOWS="$FIND_SHOWS"
+          MARKET="$STEP_MARKET"
 
           # Check maintenance mode — pause orchestrator during manual corrections.
           # Variable formats:
@@ -824,9 +835,9 @@ jobs:
               echo "⏳ auto poller run $PREV_POLLER_RUN_ID still active — not stacking another (BRO-2358)"
             else
               pre=$(gh run list --workflow=opening-night-poller.yml --limit=1 --json databaseId -q '.[0].databaseId' 2>/dev/null || echo "")
-              gh workflow run opening-night-poller.yml -f lookback_days=${{ steps.find.outputs.lookback }} $POLLER_ARGS || {
+              gh workflow run opening-night-poller.yml -f lookback_days=$FIND_LOOKBACK $POLLER_ARGS || {
                 echo "⚠️ Failed to dispatch auto poller, retrying in 30s..."; sleep 30
-                gh workflow run opening-night-poller.yml -f lookback_days=${{ steps.find.outputs.lookback }} $POLLER_ARGS || true
+                gh workflow run opening-night-poller.yml -f lookback_days=$FIND_LOOKBACK $POLLER_ARGS || true
               }
               rid=$(find_new_run "$pre" "auto")
               if [ -n "$rid" ]; then PREV_POLLER_RUN_ID="$rid"; echo "Found auto poller run: $rid (not waiting on it)"; fi
@@ -853,7 +864,7 @@ jobs:
             done
           }
           plan_dispatch
-          if { [ "$PLAN_MODE" = "parallel" ] || { [[ "$SHOWS" == *,* ]] && [ "${POLLER_PER_SHOW_DISABLED:-}" != "true" ]; }; } && [ -z "${{ inputs.max_iterations }}" ]; then
+          if { [ "$PLAN_MODE" = "parallel" ] || { [[ "$SHOWS" == *,* ]] && [ "${POLLER_PER_SHOW_DISABLED:-}" != "true" ]; }; } && [ -z "$INPUT_MAX_ITERATIONS" ]; then
             MAX_ITERATIONS=48
             echo "parallel dispatch: loop runs to the wall-clock DEADLINE (max_iterations raised $BASE_MAX_ITERATIONS -> $MAX_ITERATIONS)"
           fi
@@ -879,7 +890,7 @@ jobs:
             # task #1759 (no longer readable via this repo's Contents API) —
             # the private data repo is the authoritative, continuously-synced
             # copy (checkout-core-data/push-core-data), so read it there.
-            SENT_JSON=$(GH_TOKEN="${{ secrets.REVIEW_TEXTS_TOKEN }}" gh api repos/thomaspryor/broadway-scorecard-data/contents/opening-night-sent.json --jq '.content' 2>/dev/null | base64 -d 2>/dev/null || echo '{}')
+            SENT_JSON=$(GH_TOKEN="$VARS_TOKEN" gh api repos/thomaspryor/broadway-scorecard-data/contents/opening-night-sent.json --jq '.content' 2>/dev/null | base64 -d 2>/dev/null || echo '{}')
             ALL_DONE=true
             IFS=',' read -ra CHECK_SHOWS <<< "$SHOWS"
             for SID in "${CHECK_SHOWS[@]}"; do
@@ -934,7 +945,7 @@ jobs:
             fi
 
             # Fast path: inline rebuild+deploy (default true for orchestrator dispatches)
-            FAST_PATH="${{ inputs.fast_path }}"
+            FAST_PATH="$INPUT_FAST_PATH"
             if [ "$FAST_PATH" = "true" ] || [ -z "$FAST_PATH" ]; then
               POLLER_ARGS="$POLLER_ARGS -f fast_path=true"
             fi
@@ -984,10 +995,10 @@ jobs:
               }
             else
               # Multiple shows — let poller auto-discover
-              gh workflow run opening-night-poller.yml -f lookback_days=${{ steps.find.outputs.lookback }} $POLLER_ARGS || {
+              gh workflow run opening-night-poller.yml -f lookback_days=$FIND_LOOKBACK $POLLER_ARGS || {
                 echo "⚠️ Failed to dispatch poller, retrying in 30s..."
                 sleep 30
-                gh workflow run opening-night-poller.yml -f lookback_days=${{ steps.find.outputs.lookback }} $POLLER_ARGS || true
+                gh workflow run opening-night-poller.yml -f lookback_days=$FIND_LOOKBACK $POLLER_ARGS || true
               }
             fi
 
@@ -1028,7 +1039,7 @@ jobs:
               # (scripts/lib/press-night-poll-plan.js). An explicit poll_interval_minutes input always wins; any
               # error prints POLL_INTERVAL. For Broadway the poller's capped hourly SERP sweep overrides the SERP deferral above.
               SLEEP_MIN=$(timeout 30 node scripts/lib/press-night-poll-plan.js --shows="$SHOWS" --default="$POLL_INTERVAL" \
-                --override="${{ inputs.poll_interval_minutes }}" 2>/tmp/poll-plan.err) || SLEEP_MIN=$POLL_INTERVAL
+                --override="$INPUT_POLL_INTERVAL_MINUTES" 2>/tmp/poll-plan.err) || SLEEP_MIN=$POLL_INTERVAL
               cat /tmp/poll-plan.err 2>/dev/null || true
               case "$SLEEP_MIN" in ''|*[!0-9]*) SLEEP_MIN=$POLL_INTERVAL ;; esac
               echo "Sleeping ${SLEEP_MIN} minutes until next iteration..."
