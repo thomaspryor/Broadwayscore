@@ -35,6 +35,10 @@ test('passes with CLASS-GUARD, PREVENTION or NO-ROOT-CAUSE in chat', () => {
 test('passes when the answer is in the Linear Outcome comment, not the chat', () => {
   const viaCli = use('l1', 'Bash', { command: "node scripts/linear-brain.js update BRO-1 --state Done --comment \"$(cat <<'EOF'\nOutcome.\nROOT-CAUSE: importer trusted URL slugs\nCLASS-GUARD: scripts/lib/import-guard.test.mjs\nEOF\n)\"" });
   assert.equal(d([...FIX_CARD, ...LAND, viaCli, ok('l1')]), 'allow');
+  const inline = use('l4', 'Bash', { command: 'node scripts/linear-brain.js update BRO-1 --comment "CLASS-GUARD: scripts/lib/inline.test.mjs" --state Done' });
+  assert.equal(d([...FIX_CARD, ...LAND, inline, ok('l4')]), 'allow', 'an inline single-line --comment counts');
+  const report = use('l5', 'Bash', { command: "node scripts/linear-session.js report --status=done --summary='NO-ROOT-CAUSE: one manual row typo fixed'" });
+  assert.equal(d([...FIX_CARD, ...LAND, report, ok('l5')]), 'allow');
   const viaMcp = use('l2', 'mcp__Linear__save_comment', { issueId: 'BRO-1', body: 'Outcome\n- CLASS-GUARD: scripts/lib/a.test.mjs' });
   assert.equal(d([...FIX_CARD, ...LAND, viaMcp, ok('l2')]), 'allow');
   const viaUuid = use('l3', 'mcp__0a1b2c3d-1111-2222-3333-444455556666__save_comment', { body: 'NO-ROOT-CAUSE: single bad row from a manual edit' });
@@ -51,6 +55,8 @@ test('stays quiet when nothing landed, on feature cards, off cloud, with the kil
   assert.equal(d([...FIX_CARD]), 'allow');
   assert.equal(d([...FEATURE_CARD, ...LAND]), 'allow');
   assert.equal(d([...FEATURE_CARD, ...FIX_CARD, ...LAND]), 'block', 'any fix card in the session is checked');
+  const parked = use('c3', 'Bash', { command: 'node scripts/linear-brain.js create "Search broken on mobile" --park "found in passing"' });
+  assert.equal(d([...FEATURE_CARD, parked, ok('c3'), ...LAND]), 'allow', 'a bug filed for someone else does not make a feature session a fix');
   assert.equal(d([...FIX_CARD, ...LAND], SAFE, {}), 'allow');
   assert.equal(d([...FIX_CARD, ...LAND], SAFE, { ...CLOUD, ROOT_CAUSE_STOP_DISABLE: '1' }), 'allow');
   assert.equal(d([...FIX_CARD, ...LAND], 'Waiting on CI.\n\nKEEP OPEN — land run in progress'), 'allow');
@@ -69,6 +75,12 @@ test('only real landings count: refused, dry-run and delete pushes do not; MCP l
   assert.deepEqual(landedPushIndices([use('m', 'mcp__github__create_branch', { branch: 'land/y' }), ok('m')]), [0]);
   assert.deepEqual(landedPushIndices([use('m', 'mcp__github__actions_run_trigger', { workflow_id: 'land.yml' }), ok('m')]), [0]);
   assert.deepEqual(landedPushIndices([use('m', 'mcp__github__create_branch', { branch: 'claude/y' }), ok('m')]), []);
+  assert.deepEqual(landedPushIndices([use('x', 'Bash', { command: 'git push origin HEAD:refs/heads/land/x 2>&1 | tail -5' }), ok('x', ' ! [rejected]        HEAD -> land/x (fetch first)\nerror: failed to push some refs')]), [], 'a piped push git refused');
+  assert.deepEqual(landedPushIndices([use('m', 'mcp__github__actions_run_trigger', { workflow_id: 'land-ref-prune.yml' }), ok('m')]), [], 'land-* helper workflows are not landings');
+  assert.deepEqual(landedPushIndices([use('m', 'mcp__github__actions_run_trigger', { workflow_id: 'visual-approval-land.yml' }), ok('m')]), []);
+  assert.deepEqual(landedPushIndices(ev('gh workflow run land.yml -f ref=land/x')), [0]);
+  assert.deepEqual(landedPushIndices(ev('node scripts/cloud-dispatch.js land.yml --ref main')), [0]);
+  assert.deepEqual(landedPushIndices([use('m', 'mcp__github__push_files', { branch: 'land/z', files: [] }), ok('m')]), [0]);
 });
 
 test('helpers: titles from CLI and connector creates; answer texts include Linear writes', () => {

@@ -235,6 +235,10 @@ const BOARD_READ_RE = new RegExp(`${BOARD_CMD_POS}(?:node\\s+)?\\S*linear-brain\
 const BOARD_READ_TOOL_RE = /linear.*__list_issues$|^mcp__[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}__list_issues$/i;
 const LINEAR_DONE_RE = /linear-brain\.js\s+update\s+BRO-\d+[^\n]*--state[=\s]+["']?Done|linear-session\.js\s+report\b[^\n]*--status[=\s]+["']?done\b/i;
 const LAND_PUSH_RE = /\bgit\b[^\n;&|]*\bpush\b[^\n;&|]*\bland\//;
+// The land workflow itself (land.yml), not its land-* helpers (land-ref-prune.yml, visual-approval-land.yml, ...).
+const LAND_WORKFLOW_RE = /(?:^|\/)land\.ya?ml$/;
+const LAND_DISPATCH_CMD_RE = /(?:\bgh\s+workflow\s+run|cloud-dispatch\.js)\s+(?:\S*\/)?land\.ya?ml\b/;
+const LAND_PUSH_REFUSED_RE = /\[(?:remote )?rejected\]|^error: failed to push|^fatal: /m;
 
 /**
  * Indices of the events where this session landed code: a `git push … land/<name>` that really
@@ -254,10 +258,13 @@ export function landedPushIndices(events) {
       const push = LAND_PUSH_RE.exec(c);
       // Judge the push segment only: `git push … land/x | tail -n 20` must not read as a dry run.
       const segment = push ? c.slice(push.index).split(/[;&|\n]/)[0] : '';
-      if (push && !/--dry-run|\s-n\s|--delete\b|\s-d\s|\s:(?:refs\/heads\/)?land\//.test(segment)) out.push(i);
-    } else if (e.name === 'mcp__github__create_branch' && String(e.input?.branch || '').startsWith('land/')) {
+      // A piped push exits 0 even when git refused it, so read the output too.
+      const refused = LAND_PUSH_REFUSED_RE.test(String(r.content || ''));
+      if (push && !refused && !/--dry-run|\s-n\s|--delete\b|\s-d\s|\s:(?:refs\/heads\/)?land\//.test(segment)) out.push(i);
+      else if (LAND_DISPATCH_CMD_RE.test(c)) out.push(i);
+    } else if (/^mcp__github__(?:create_branch|push_files|create_or_update_file)$/.test(e.name || '') && String(e.input?.branch || '').startsWith('land/')) {
       out.push(i);
-    } else if (e.name === 'mcp__github__actions_run_trigger' && /\bland\b/.test(String(e.input?.workflow_id || ''))) {
+    } else if (e.name === 'mcp__github__actions_run_trigger' && LAND_WORKFLOW_RE.test(String(e.input?.workflow_id || ''))) {
       out.push(i);
     }
   });

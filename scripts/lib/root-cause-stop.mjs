@@ -39,19 +39,26 @@ const { parseRootCauseBlock, isFixCard, ROOT_CAUSE_CLOSE_BLOCKING_FROM } = requi
 
 const MIN_REASON = 10;
 const NO_PREVENTION_RE = /^[ \t>*_-]*NO-PREVENTION(?:\*\*|__)?[ \t]*:(?:\*\*|__)?[ \t]*(\S.*)$/im;
-const LINEAR_WRITE_CMD_RE = /linear-brain\.js\s+(?:update|comment)\b|linear-session\.js\s+report\b/;
+const LINEAR_WRITE_CMD_RE = /linear-brain\.js\s+update\b|linear-session\.js\s+report\b/;
 // The Linear connector is mcp__Linear__* locally and mcp__<uuid>__* in some cloud containers.
 const LINEAR_COMMENT_TOOL_RE = /(?:linear.*__|^mcp__[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}__)save_comment$/i;
 const LINEAR_ISSUE_TOOL_RE = /(?:linear.*__|^mcp__[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}__)save_issue$/i;
 const CREATE_TITLE_RE = /linear-brain\.js\s+create\s+(?:"((?:[^"\\]|\\.)*)"|'([^']*)')/g;
 
-/** PURE. Titles of the cards this session created (only creations name a title). */
+/**
+ * PURE. Titles of the cards this session created to work on itself (only creations name a title).
+ * A card filed for someone else (--park / --dispatch) is not this session's work, so it never
+ * makes a feature session look like a fix.
+ */
 export function cardTitles(events) {
   const titles = [];
   for (const e of events) {
     if (e.kind !== 'assistant_tool_use') continue;
     if (e.name === 'Bash') {
-      for (const m of String(e.input?.command || '').matchAll(CREATE_TITLE_RE)) titles.push(m[1] ?? m[2]);
+      for (const seg of String(e.input?.command || '').split(/\n|&&|;/)) {
+        if (/\s--(?:park|dispatch)\b/.test(seg)) continue;
+        for (const m of seg.matchAll(CREATE_TITLE_RE)) titles.push(m[1] ?? m[2]);
+      }
     } else if (LINEAR_ISSUE_TOOL_RE.test(e.name || '') && !e.input?.id && e.input?.title) {
       titles.push(String(e.input.title));
     }
@@ -65,7 +72,10 @@ export function answerTexts(events, lastMessage = '') {
   for (const e of events) {
     if (e.kind === 'assistant_text') out.push(e.text || '');
     else if (e.kind === 'assistant_tool_use') {
-      if (e.name === 'Bash' && LINEAR_WRITE_CMD_RE.test(String(e.input?.command || ''))) out.push(String(e.input.command).replace(/\\n/g, '\n'));
+      if (e.name === 'Bash' && LINEAR_WRITE_CMD_RE.test(String(e.input?.command || ''))) {
+        // Start each flag value on its own line, so an inline `--comment "CLASS-GUARD: x"` reads as a field line.
+        out.push(String(e.input.command).replace(/\\n/g, '\n').replace(/--(?:comment|body|notes|summary)[=\s]+(?:\$\(cat\s*<<-?\s*)?["']?/g, '\n'));
+      }
       else if (LINEAR_COMMENT_TOOL_RE.test(e.name || '')) out.push(String(e.input?.body || ''));
     }
   }
@@ -93,7 +103,7 @@ const MESSAGE = [
   'Add ONE of these, either as a line in the closing message or in the Linear Outcome comment for the card:',
   '  CLASS-GUARD: <path of the test, check or guard that fails if this class of bug comes back>',
   '  NO-ROOT-CAUSE: <why this was a spot fix, 10+ chars>',
-  'If what you landed were one-record patches (data edits that fix a row, not the cause), find the cause and fix it now. If you cannot, say plainly to the owner in the closing message that these were spot fixes and what would cause the same problem again.',
+  'If what you landed were one-record patches (data edits that fix a row, not the cause), find the cause and fix it now. If you cannot, put the NO-ROOT-CAUSE line in the Linear Outcome comment AND tell the owner in plain words in the chat that these were spot fixes and what could cause the same problem again. Plain prose alone does not satisfy this check.',
 ].join('\n');
 
 /**
