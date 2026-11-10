@@ -8,6 +8,7 @@ import { getVisibleTicketLinks } from './ticket-utils';
 import { SOCIAL_ACCOUNTS, type SocialPlatform } from '@/config/branding';
 import { AUTHOR } from '@/config/author';
 import { formatShowDate } from './date-utils';
+import { formatClosingLabel, isRepeatedlyExtended } from './closing-label';
 import { shortCity, stopPlace, stopKey, type TourNowNext, type TourStop } from './tour-schedule';
 import { isTourScored, isTourScoreHidden } from './tour-listing';
 import { displaysCriticScore } from './critic-score-display';
@@ -862,7 +863,7 @@ export function generateBrowseFAQSchema(
 
   // Q: Shows closing soon (if relevant)
   const closingShows = shows.filter(s => {
-    if (!s.closingDate || s.status !== 'open') return false;
+    if (!s.closingDate || s.status !== 'open' || isRepeatedlyExtended(s)) return false;
     const closing = new Date(s.closingDate);
     const now = new Date();
     const diffDays = Math.ceil((closing.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
@@ -870,7 +871,7 @@ export function generateBrowseFAQSchema(
   });
   if (closingShows.length > 0) {
     const closingStr = closingShows.slice(0, 3).map(s =>
-      `${s.title} (closes ${formatShowDate(s.closingDate, { month: 'long', day: 'numeric', year: 'numeric' })})`
+      `${s.title} (${formatClosingLabel(s, formatShowDate(s.closingDate, { month: 'long', day: 'numeric', year: 'numeric' })).replace(/^Closes/, 'closes')})`
     ).join(', ');
     faqs.push({
       question: `Which of these shows are closing soon?`,

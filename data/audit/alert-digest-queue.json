@@ -261,20 +261,6 @@
     "queuedAt": "2026-11-09T13:27:54.410Z"
   },
   {
-    "conditionKey": "pending-unrecoverable:in-the-heights-off-broadway-2026",
-    "title": "1 review(s) for in-the-heights-off-broadway-2026 stuck in _pending with no text and no byline",
-    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nycitycenter-org--7d6014eb.json (nycitycenter-org): fetch failed: All scraping methods failed https://www.nycitycenter.org/pdps/2026-2027/in-the-heights34/",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-09T14:01:03.240Z"
-  },
-  {
     "conditionKey": "corpus-drift:orphan-show-ids",
     "title": "Corpus drift: public/data/shows/{id}.json existing for an id no longer in shows.json",
     "description": "check-corpus-drift.js audit \"orphan-show-ids\" (node scripts/audit-orphan-show-ids.js) has been drifting. Latest output:\n\nFound 1 orphan show ID(s):\n\nSlim show files (1) — not in shows.json:\n  public/data/shows/the-family-album-lajolla-regional-2026.json\n\nRun with --fix to delete orphan slim files. audience-buzz/show-score require manual rename.",
@@ -632,20 +618,6 @@
     "testId": "tests/unit/validate-data-push-refusal-sentinel.test.mjs::tests/unit/validate-data-push-refusal-sentinel.test.mjs",
     "fields": [],
     "queuedAt": "2026-11-09T18:52:52.865Z"
-  },
-  {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 21 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +15 more). Checked 2026-11-09.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-09T19:17:45.645Z"
   },
   {
     "conditionKey": "traffic:ga4-engaged-sessions",
@@ -1048,20 +1020,6 @@
     "queuedAt": "2026-11-10T01:30:07.345Z"
   },
   {
-    "conditionKey": "pending-unrecoverable:harry-potter-and-the-cursed-child-one-part-west-end-2026",
-    "title": "1 review(s) for harry-potter-and-the-cursed-child-one-part-west-end-2026 stuck in _pending with no text and no byline",
-    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--unknown.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/harry-potter-and-the-cursed-child-review-at-palace-theatre-london--new-cast-equals-the-original",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-10T01:30:37.714Z"
-  },
-  {
     "conditionKey": "pending-unrecoverable:the-pianist-off-west-end-2026",
     "title": "1 review(s) for the-pianist-off-west-end-2026 stuck in _pending with no text and no byline",
     "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--5e07c019.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/the-pianist-review-park-theatre-london",
@@ -1138,6 +1096,48 @@
     "queuedAt": "2026-11-10T01:57:51.954Z"
   },
   {
+    "conditionKey": "pending-unrecoverable:in-the-heights-off-broadway-2026",
+    "title": "1 review(s) for in-the-heights-off-broadway-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nycitycenter-org--7d6014eb.json (nycitycenter-org): fetch failed: All scraping methods failed https://www.nycitycenter.org/pdps/2026-2027/in-the-heights34/",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-10T02:09:19.797Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:well-see-off-broadway-2026",
+    "title": "1 review(s) for well-see-off-broadway-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- publictheaterorg--6991e48c.json (publictheaterorg): no byline in page and no recoverable body https://publictheater.org/productions/season/2627/well-see/",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-10T02:09:33.202Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:tristan-and-yseult-off-broadway-2026",
+    "title": "1 review(s) for tristan-and-yseult-off-broadway-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nydailynews--39951290.json (nydailynews): fetch failed: All scraping methods failed http://www.nydailynews.com/entertainment/theater-arts/tristan-yseult-shines-brooklyn-article-1.2022234",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-10T02:10:18.167Z"
+  },
+  {
     "conditionKey": "land:land/worktree-agent-afd565c7f47d93af0",
     "title": "Landing blocked: unit-tests-node red on land/worktree-agent-afd565c7f47d93af0",
     "description": "land.yml did not land land/worktree-agent-afd565c7f47d93af0: the unit-tests-node gate went red at 555764b417. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42741134169",
@@ -1167,5 +1167,157 @@
       }
     ],
     "queuedAt": "2026-11-10T02:24:45.624Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:harry-potter-and-the-cursed-child-one-part-west-end-2026",
+    "title": "1 review(s) for harry-potter-and-the-cursed-child-one-part-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--unknown.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/harry-potter-and-the-cursed-child-review-at-palace-theatre-london--new-cast-equals-the-original",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-10T02:42:13.317Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7252",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7252",
+    "description": "land.yml did not land land/bro-7252: the unit-tests-node gate went red at d6c9ff2a65. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42743489638",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7252"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "d6c9ff2a653a4d452bdcc958da27075474b1485b"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42743489638"
+      }
+    ],
+    "queuedAt": "2026-11-10T02:57:37.855Z"
+  },
+  {
+    "conditionKey": "land:land/worktree-agent-a034341a2b2130352",
+    "title": "Landing blocked: unit-tests-tsx red on land/worktree-agent-a034341a2b2130352",
+    "description": "land.yml did not land land/worktree-agent-a034341a2b2130352: the unit-tests-tsx gate went red at cf8a9e2982. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42744148961",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/worktree-agent-a034341a2b2130352"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-tsx"
+      },
+      {
+        "name": "tip",
+        "value": "cf8a9e2982f6e5787935fc176bf83dbfd5a201df"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42744148961"
+      }
+    ],
+    "queuedAt": "2026-11-10T03:13:08.893Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7121-slug-showscore",
+    "title": "Landing blocked: toplevel-regression red on land/bro-7121-slug-showscore",
+    "description": "land.yml did not land land/bro-7121-slug-showscore: the toplevel-regression gate went red at 2227878280. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42746802747",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7121-slug-showscore"
+      },
+      {
+        "name": "gate",
+        "value": "toplevel-regression"
+      },
+      {
+        "name": "tip",
+        "value": "2227878280c1261b77b0060e5564fbcdf8b65f5b"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42746802747"
+      }
+    ],
+    "queuedAt": "2026-11-10T03:32:53.872Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 21 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +15 more). Checked 2026-11-10.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-10T03:54:15.459Z"
+  },
+  {
+    "conditionKey": "land:land/near-breakeven",
+    "title": "Landing blocked: rebase red on land/near-breakeven",
+    "description": "land.yml did not land land/near-breakeven: the rebase gate went red at 23d746ab90. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/near-breakeven @ 23d746ab90 (origin/land/near-breakeven) → origin/main @ 5aea002ed1 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ bfb036e703: Rebasing (1/1) error: could not apply 23d746ab90b... feat(biz): Close to break-even list, and Closing Watch line on each show's Profitability Scorecard (BRO-7246) hint: Resolve all conflicts manually, mark them as resolved w Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42747126089",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/near-breakeven"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "23d746ab90b83a3821af78dff6661e295edaba70"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42747126089"
+      }
+    ],
+    "queuedAt": "2026-11-10T03:42:24.269Z"
   }
 ]

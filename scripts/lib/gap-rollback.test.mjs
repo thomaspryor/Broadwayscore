@@ -27,7 +27,7 @@ test('chrome-only gain rolls back to the prior text and tier, keeping everything
   assert.equal(d.ok, true);
   assert.equal(d.patch.fullText, BODY);
   assert.equal(d.patch.contentTier, undefined, 'tier is left to the rebuild write-back');
-  assert.equal(d.patch.textFetchedAt, '2026-11-09T00:00:00Z');
+  assert.equal(d.patch.textFetchedAt, null, 'prior had no stamp: none is invented, the accept stamp is cleared');
   assert.equal(d.patch.incompleteReason, 'truncated');
   assert.equal(d.patch.llmScore, undefined, 'score fields are not touched');
   assert.equal(d.patch.textRecoveryProvenance.rolledBack.reason, 'chrome_gain');
@@ -46,6 +46,54 @@ test('the rollback survives a rebase over a CI tier write-back (review-json merg
   const { merged } = mergeReviewJson(base, upstream, workflow);
   assert.equal(merged.fullText, BODY, 'restored text wins the merge');
   assert.ok(merged.textRecoveryProvenance.rolledBack);
+  assert.equal(merged.textFetchedAt, '2026-10-01T00:00:00Z', 'the restored text keeps its own fetch time');
+});
+
+// BRO-7171 leftover: stamping the rollback "now" made restored OLD text look
+// like the freshest fetch, so it beat any genuinely newer refetch a CI job
+// landed between the accept and the rollback (merge loss). The rollback now
+// restores the prior stamp; the merge driver prefers it only over the exact
+// chrome text it undoes (provenance.newFullTextHash).
+test('rollback restores the prior fetch time and never beats a newer real refetch', () => {
+  const { mergeReviewJson, fresherTextWins } = require('./review-json-three-way-merge.js');
+  const { prior, current } = pair(BODY + CHROME);
+  prior.textFetchedAt = '2026-10-01T00:00:00Z';
+  const base = { ...current, textFetchedAt: '2026-11-08T02:00:00Z' };
+  const d = chromeRollbackDecision({ current: base, prior, nowIso: '2026-11-09T07:00:00Z' });
+  assert.equal(d.patch.textFetchedAt, '2026-10-01T00:00:00Z');
+  assert.equal(d.patch.textRecoveryProvenance.rolledBack.at, '2026-11-09T07:00:00Z');
+  const workflow = { ...base, ...d.patch };
+  // A collector refetched the article after the accept and got a different, real text.
+  const REAL = BODY + ' The revival closes with a quiet, devastating final image that the cast earns. '.repeat(3);
+  const upstream = { ...base, fullText: REAL, contentTier: 'complete', textFetchedAt: '2026-11-08T20:00:00Z' };
+  const { merged } = mergeReviewJson(base, upstream, workflow);
+  assert.equal(merged.fullText, REAL, 'a newer real refetch is not overwritten by restored old text');
+  // Against the chrome text itself (same hash the provenance names) the rollback wins both ways round.
+  const chromeSide = { ...base, textFetchedAt: '2026-11-09T09:00:00Z' };
+  assert.equal(fresherTextWins(workflow, chromeSide), 'a');
+  assert.equal(fresherTextWins(chromeSide, workflow), 'b');
+});
+
+test('stale rollback provenance on a later text never wins the merge', () => {
+  const { fresherTextWins } = require('./review-json-three-way-merge.js');
+  const { prior, current } = pair(BODY + CHROME);
+  const d = chromeRollbackDecision({ current, prior, nowIso: '2026-11-09T07:00:00Z' });
+  // Someone later replaced the restored text but kept the provenance.
+  const later = { ...current, ...d.patch, fullText: BODY + ' A different later text entirely, not the prior. '.repeat(3), textFetchedAt: '2026-10-02T00:00:00Z' };
+  const chromeSide = { ...current, textFetchedAt: '2026-11-09T09:00:00Z' };
+  assert.equal(fresherTextWins(later, chromeSide), 'b', 'recency decides once the text is not the restored prior');
+});
+
+test('whole-file fallback (merge crashed) keeps the rollback over the longer chrome text', () => {
+  const { wholeFileWinner } = require('./review-json-three-way-merge.js');
+  const { prior, current } = pair(BODY + CHROME);
+  prior.textFetchedAt = '2026-10-01T00:00:00Z';
+  const d = chromeRollbackDecision({ current: { ...current, textFetchedAt: '2026-11-08T02:00:00Z' }, prior, nowIso: '2026-11-09T07:00:00Z' });
+  const workflow = JSON.stringify({ ...current, ...d.patch });
+  const upstream = JSON.stringify({ ...current, textFetchedAt: '2026-11-08T02:00:00Z', wordCount: 333 });
+  assert.equal(wholeFileWinner(upstream, workflow), 'workflow');
+  assert.equal(wholeFileWinner('{bad json', JSON.stringify({ fullText: 'x' })), 'workflow', 'unparsable side counts as empty');
+  assert.equal(wholeFileWinner(JSON.stringify({ fullText: 'abc' }), JSON.stringify({ fullText: 'abc' })), 'upstream', 'tie keeps upstream');
 });
 
 test('a stamp whose text was lost in a rebase is retried, not treated as done', () => {

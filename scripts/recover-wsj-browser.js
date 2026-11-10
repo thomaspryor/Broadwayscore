@@ -139,7 +139,8 @@ async function main() {
   // Real installed Chrome + a persistent profile is what worked for login
   // (scripts/wsj-otp-login.js); reuse the identical launch strategy here.
   const { chromium } = require('playwright');
-  const PROFILE_DIR = '/tmp/wsj-recovery-browser-profile';
+  // BRO-7171 plan item 8: the outlet's shared persistent profile (renew lock held).
+  const PROFILE_DIR = require('./lib/cookie-renew').claimOutletProfile('wsj', { legacy: ['/tmp/wsj-recovery-browser-profile', '/tmp/wsj-otp-browser-profile', '/tmp/wsj-browser-profile'] }).dir;
   const launchOpts = {
     headless: false,
     viewport: { width: 1280, height: 900 },

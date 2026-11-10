@@ -337,6 +337,9 @@ export interface ClosingWatchInput {
   breakEven: number | null;
   /** Latest seasonally adjusted ratio, null when the run is too new. */
   adjustedRatio: number | null;
+  /** Recorded closing-date extensions (BRO-7252). 2+ means the closingDate is only the latest extension, not an announced final. */
+  closingExtensions?: ReadonlyArray<unknown> | null;
+  closingExtensionCount?: number | null;
 }
 
 /**
@@ -349,7 +352,8 @@ export function isOnClosingWatch(input: ClosingWatchInput): boolean {
   if (input.status !== 'open' && input.status !== 'previews') return false;
   if (!isBoxOfficeDriven(input.designation, input.limitedRun)) return false;
   const close = (input.closingDate ?? '').slice(0, 10);
-  if (/^\d{4}-\d{2}-\d{2}$/.test(close) && close >= input.today) return false;
+  const repeatedlyExtended = Math.max(input.closingExtensions?.length ?? 0, input.closingExtensionCount ?? 0) >= 2;
+  if (!repeatedlyExtended && /^\d{4}-\d{2}-\d{2}$/.test(close) && close >= input.today) return false;
   if (input.avgGross == null || input.breakEven == null || input.breakEven <= 0) return false;
   if (input.adjustedRatio == null || input.adjustedRatio >= 1) return false;
   return input.avgGross < input.breakEven;

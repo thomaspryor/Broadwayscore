@@ -6272,7 +6272,7 @@ function pushReviewTextsCheckpoint(processed) {
 
     // ROOT-CAUSE GUARD (2026-05-27, mirrors .github/actions/push-review-texts):
     // the review-texts data repo contains ONLY JSON review files — never
-    // symlinks. A stray symlink committed via `git add -A` from a local
+    // symlinks. A stray symlink committed via a whole-tree add from a local
     // session once dangled in CI and crashed the collection pipeline for
     // ~8h. This checkpoint previously never reached here in practice (the
     // REVIEW_TEXTS_TOKEN gate above silently no-op'd on every workflow this
@@ -6293,14 +6293,15 @@ function pushReviewTextsCheckpoint(processed) {
       console.log(`::warning::checkpoint: opening-night lease enforce failed to run (${e.message.split('\n')[0]})`);
     }
 
-    // Stage all changes
-    execSync('git add -A', { cwd: rtDir, stdio: 'pipe' });
+    // BRO-7171: scoped staging (tracked changes + new review JSON), never a
+    // whole-tree add that would sweep stray screenshots/temp files in.
+    require('./lib/stage-review-texts').stageReviewTexts(rtDir);
 
-    // BRO-2559: `git add -A` stages a deletion for ANY tracked file this
+    // BRO-2559: staging tracked changes (`add -u`) stages a deletion for ANY tracked file this
     // job's local working copy happens to be missing — regardless of why
     // (this checkpoint runs mid-collection on whatever subset of shows the
     // process touched; a file this job never fetched into its own working
-    // tree is indistinguishable to `git add -A` from one someone deleted on
+    // tree is indistinguishable to git from one someone deleted on
     // purpose). A hand-flagged wrongProduction/wrongShow verdict living only
     // in that file is silently discarded the moment this commits — safe
     // WriteReview never runs, so its disk-level protection never gets a

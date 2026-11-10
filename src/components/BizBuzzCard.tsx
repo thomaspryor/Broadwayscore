@@ -38,6 +38,8 @@ import RecoupmentProgressBar from './RecoupmentProgressBar';
 import AnalystEstimateCredit from './biz/AnalystEstimateCredit';
 import EstimatedReturnLine from './biz/EstimatedReturnLine';
 import MoneyGate from './biz/MoneyGate';
+import { getClosingLabel, type ClosingExtension } from '@/lib/closing-label';
+import { formatDataDate } from '@/lib/biz-format';
 import dynamic from 'next/dynamic';
 import type { BoxOfficeV2Card } from '@/lib/box-office-v2-display';
 
@@ -55,6 +57,9 @@ interface BizBuzzCardProps {
   showStatus?: 'open' | 'closed' | 'previews' | 'upcoming';
   /** Show closing date (YYYY-MM-DD): lets a recoup report month after closing read "reported" (BRO-5779). */
   closingDate?: string | null;
+  /** Extension history (BRO-7252): a run extended 2+ times reads "Extended through" instead of "Closes". */
+  closingExtensions?: ReadonlyArray<ClosingExtension> | null;
+  closingExtensionCount?: number | null;
   allTimeGross?: number | null;
   /** BRO-5007 v3 break-even section (unreleased): null unless commercial && boxOfficeV2 and it has something to show. */
   breakEvenCard?: BoxOfficeV2Card | null;
@@ -165,7 +170,7 @@ function TrendIndicator({ trend }: { trend: RecoupmentTrend }) {
   );
 }
 
-export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross, showStatus, allTimeGross, breakEvenCard = null, closingDate }: BizBuzzCardProps) {
+export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross, showStatus, allTimeGross, breakEvenCard = null, closingDate, closingExtensions, closingExtensionCount }: BizBuzzCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   void showTitle;
 
@@ -259,6 +264,11 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
         </Link>
       </p>
 
+      {(showStatus === 'open' || showStatus === 'previews') && closingDate && closingDate >= new Date().toISOString().slice(0, 10) && (
+        <p className="text-xs text-fg-muted m-0 mb-3" data-testid="biz-closing-label">
+          {getClosingLabel({ closingDate, closingExtensions, closingExtensionCount }, formatDataDate(closingDate) ?? closingDate).text}
+        </p>
+      )}
       {/* Everything below the heading is free with an email (BRO-6210). */}
       {/* No paywall JSON-LD here: it would mark the whole show page not free
           for one small section (BRO-6210 review). /biz pages carry it. */}

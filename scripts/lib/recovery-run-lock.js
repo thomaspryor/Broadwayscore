@@ -57,22 +57,22 @@ function acquireRunLock(label, opts = {}) {
   const { holderAlive, processStartTime } = require('./review-texts-lock');
   fs.mkdirSync(path.dirname(p), { recursive: true });
   const body = `${process.pid} ${JSON.stringify({ pid: process.pid, procStart: processStartTime(process.pid), host: os.hostname(), label, acquiredAt: new Date().toISOString() })}\n`;
+  // A dead holder's lock is claimed in place under file-lock's steal gate
+  // (BRO-7171): read-compare-unlink was not atomic, so a second waiter could
+  // unlink the first one's fresh lock and two drivers would run (the daily
+  // ceiling overshoot needed exactly that).
+  const { tryAcquireFileLock } = require('./file-lock');
   for (let attempt = 0; attempt < 3; attempt++) {
-    try {
-      const fd = fs.openSync(p, 'wx');
-      try { fs.writeSync(fd, body); } finally { fs.closeSync(fd); }
+    const rel = tryAcquireFileLock(p, {
+      body: () => body,
+      holderAlive: (contents, m) => holderAlive(contents, { ...m, ...(opts.probe || {}) }),
+    });
+    if (rel) {
       held = { path: p, body };
       process.once('exit', release);
       return release;
-    } catch (e) {
-      if (e.code !== 'EEXIST') throw e;
     }
-    let contents = '';
-    let mtimeMs = Date.now();
-    try { contents = fs.readFileSync(p, 'utf8'); mtimeMs = fs.statSync(p).mtimeMs; } catch { continue; } // vanished: retry
-    if (holderAlive(contents, { mtimeMs, ...(opts.probe || {}) })) throw new RunLockBusyError(parse(contents));
-    // Dead holder: remove only if the file still holds what we judged stale.
-    try { if (fs.readFileSync(p, 'utf8') === contents) fs.unlinkSync(p); } catch { /* raced: retry */ }
+    if (fs.existsSync(p)) break; // live holder (or a concurrent claim won): busy
   }
   throw new RunLockBusyError(parse((() => { try { return fs.readFileSync(p, 'utf8'); } catch { return ''; } })()));
 }

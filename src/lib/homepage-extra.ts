@@ -17,6 +17,7 @@ import { createShowSerializer } from '@/lib/serialize-show';
 import { hasEnoughReviews } from '@/config/score-buckets';
 import type { HomepageShow, FeaturedRowData } from '@/components/HomePageClient';
 import { formatShowDate } from '@/lib/date-utils';
+import { formatClosingLabel, isRepeatedlyExtended } from '@/lib/closing-label';
 import { displaysCriticScore } from '@/lib/critic-score-display';
 
 export interface HomepageExtra {
@@ -93,12 +94,14 @@ export function buildHomepageExtra(): HomepageExtra {
   const closingSoonShowsList = allShows
     .filter(s => {
       if (s.status !== 'open' || !s.closingDate) return false;
+      // BRO-7252: a run extended 2+ times has no announced closing, so it is not "closing soon".
+      if (isRepeatedlyExtended(s)) return false;
       const closing = new Date(s.closingDate);
       const diffDays = Math.ceil((closing.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
       return diffDays > 0 && diffDays <= 120;
     })
     .sort((a, b) => new Date(a.closingDate!).getTime() - new Date(b.closingDate!).getTime())
-    .map(s => ({ ...serializeShow(s), subtitle: `Closes ${shortDate(s.closingDate!)}`, subtitleColor: 'text-amber-400' }));
+    .map(s => ({ ...serializeShow(s), subtitle: formatClosingLabel(s, shortDate(s.closingDate!)), subtitleColor: 'text-amber-400' }));
 
   const jukeboxMusicalsList = allShows
     .filter(s => s.status === 'open' && s.tags?.some(t => t.toLowerCase() === 'jukebox'))

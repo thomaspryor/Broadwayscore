@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-11-10T01:39:32.499Z",
+    "generatedAt": "2026-11-10T03:35:12.393Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 156,
+    "totalFlagged": 155,
     "highConfidence": 9,
-    "mediumConfidence": 147,
+    "mediumConfidence": 146,
     "lowConfidence": 0,
-    "reassignable": 53
+    "reassignable": 52
   },
   "results": [
     {
@@ -706,10 +706,9 @@
       "confidence": "medium",
       "suggestedShowId": null,
       "signals": [
-        "publishDate 2014 is 26 years after original opening 1988",
-        "modern references: twitter"
+        "publishDate 2014 is 26 years after original opening 1988"
       ],
-      "textSnippet": "NYC Events, Restaurants, Music, & Nightlife\n\nTwitter\nX\nPinterest\nThreads\nSnapchat\nWhatsApp\nMessage\nEmail\n\nTickets from $26\n Buy Tickets\n\nCititour.com Review\n The chandelier still swings over the audie"
+      "textSnippet": "NYC Events, Restaurants, Music, & Nightlife\n\nX\nSnapchat\nMessage\n\nCititour.com Review\n The chandelier still swings over the audience, the gondola still floats in the mist, and the music of the night st"
     },
     {
       "showId": "the-phantom-of-the-opera-1988",
@@ -1046,7 +1045,7 @@
         "year 1982 in text matches revival nine-1982",
         "no publishDate + revival signals + revivals exist"
       ],
-      "textSnippet": "The Internet Theater Magazine of Reviews, Features,\n Annotated Listings\n\nThe Cast Changes -- But the Show Goes On\n By Elyse Sommer \n \n \n \n \n \n Eartha Kitt as the flamboyant Liliane La Fleur\n\n(Photo: J"
+      "textSnippet": "The Internet Theater Magazine of Reviews, Features,\n Annotated Listings\n\nThe Cast Changes -- But the Show Goes On\n By Elyse Sommer\n\n Eartha Kitt as the flamboyant Liliane La Fleur\n\n(Photo: Joan Marcus"
     },
     {
       "showId": "nine-2003",
@@ -1247,22 +1246,7 @@
       "signals": [
         "revival text signals: revival, this production"
       ],
-      "textSnippet": "The Internet Theater Magazine of Reviews, Features,\n Annotated Listings\n\nNYC Weather \n \n \n \n A \n CurtainUp Review\n\nCharles Shaughnessy (center) as Caldwell B. Cladwell/\n (l-r) Lawrence E. Street, Jame"
-    },
-    {
-      "showId": "urinetown-2001",
-      "showTitle": "Urinetown",
-      "showYear": 2001,
-      "file": "theatermania--greg-bauer.json",
-      "outlet": "TheaterMania",
-      "criticName": "Greg Bauer",
-      "publishDate": "2001-09-21",
-      "confidence": "medium",
-      "suggestedShowId": "urinetown-regional-2025",
-      "signals": [
-        "year 2025 in text matches revival urinetown-regional-2025"
-      ],
-      "textSnippet": "Urinetown smells like a hit! As you probably know, the show has moved from Off-Broadway to Broadway following its initial production at the 1999 New York International Fringe Festival; it's now playin"
+      "textSnippet": "The Internet Theater Magazine of Reviews, Features,\n Annotated Listings\n\nNYC Weather\n\n A\n CurtainUp Review\n\nCharles Shaughnessy (center) as Caldwell B. Cladwell/\n (l-r) Lawrence E. Street, James Moye,"
     },
     {
       "showId": "dance-of-death-2001",
@@ -2411,7 +2395,7 @@
         "modern references: twitter",
         "no publishDate + revival signals + revivals exist"
       ],
-      "textSnippet": "GET TICKETS HELP, PICK ME A SHOW! BROADWAY OFF-BROADWAY TOURS WEST END GROUP BOOKING OTHER NY STAGES \n UNITED STATES BROADWAY NATIONAL TOURS ALABAMA - Birmingham ALASKA - Anchorage ARIZONA - Mesa ARIZ"
+      "textSnippet": "GET TICKETS HELP, PICK ME A SHOW! BROADWAY OFF-BROADWAY TOURS WEST END GROUP BOOKING OTHER NY STAGES\n UNITED STATES BROADWAY NATIONAL TOURS ALABAMA - Birmingham ALASKA - Anchorage ARIZONA - Mesa ARIZO"
     }
   ]
 }

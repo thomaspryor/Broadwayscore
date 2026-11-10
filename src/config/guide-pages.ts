@@ -2,6 +2,7 @@
 // Defines editorial landing pages targeting high-volume SEO queries
 // These are richer than browse pages: LLM editorial intros, critic consensus, ticket CTAs
 
+import { isRepeatedlyExtended } from '@/lib/closing-label';
 import { ComputedShow } from '@/lib/engine';
 import { isAnnouncedCurrent } from '@/config/browse-pages';
 import { getVisibleTicketLinks } from '@/lib/ticket-utils';
@@ -162,7 +163,7 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
     metaDescriptionTemplate: 'Don\'t miss these {count} Broadway shows before they close! Productions ending their runs in the next 120 days as of {monthYear}.',
     introFallback: 'Time is running out to see these Broadway shows. {count} productions are closing within the next few months. Don\'t let these slip away. Book your tickets now.',
     filter: (show) => {
-      if (show.status !== 'open' || !show.closingDate) return false;
+      if (show.status !== 'open' || !show.closingDate || isRepeatedlyExtended(show)) return false;
       const closing = new Date(show.closingDate);
       const now = new Date();
       const diffDays = Math.ceil((closing.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));

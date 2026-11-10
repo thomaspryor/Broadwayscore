@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-11-10T02:50:20.420Z",
+  "updatedAt": "2026-11-10T03:49:07.557Z",
   "shows": {
     "parcel-from-america-off-broadway-2026": {
       "openingDate": "2026-11-04",
@@ -736,6 +736,12 @@
       "openingDate": "2026-11-08",
       "snapshot": [
         {
+          "outletId": "talkinbroadway",
+          "criticName": "Moshe A. Bloxenheim",
+          "url": "https://www.talkinbroadway.com/page/ob/11_08_26.html",
+          "scored": true
+        },
+        {
           "outletId": "theater-pizzazz",
           "criticName": "Alix Cohen",
           "url": "https://theaterpizzazz.com/the-steel-man-two-generations-moving-on-from-trauma/",
@@ -914,6 +920,12 @@
           "criticName": "Aramide Tinubu",
           "url": "https://variety.com/2026/legit/reviews/wanted-broadway-review-1236941816/",
           "scored": true
+        },
+        {
+          "outletId": "vulture",
+          "criticName": "Sara Holdren",
+          "url": "https://www.vulture.com/article/theater-review-angelica-cheri-ross-baum-wanted-broadway.html",
+          "scored": true
         }
       ],
       "lastAlertAt": "2026-11-09T16:47:27.317Z"
@@ -1010,12 +1022,31 @@
     },
     "the-visitors-off-broadway-2026": {
       "openingDate": "2026-11-09",
-      "snapshot": [],
+      "snapshot": [
+        {
+          "outletId": "culturesauce",
+          "criticName": "Thom Geier",
+          "url": "https://culturesauce.com/the-visitors-bryna-turner-off-broadway-review/",
+          "scored": true
+        },
+        {
+          "outletId": "nysr",
+          "criticName": "Michael Sommers",
+          "url": "https://nystagereview.com/2026/11/09/the-visitors-playing-the-organ/",
+          "scored": true
+        }
+      ],
       "lastAlertAt": null
     },
     "dogstar-off-west-end-2026": {
       "openingDate": "2026-11-09",
       "snapshot": [
+        {
+          "outletId": "broadwayworld",
+          "criticName": "Clementine Scott",
+          "url": "https://www.broadwayworld.com/westend/article/Review-DOGSTAR-Hampstead-Theatre-20261109",
+          "scored": true
+        },
         {
           "outletId": "london-box-office",
           "criticName": "Stuart King",
@@ -1029,9 +1060,99 @@
       "openingDate": "2026-11-09",
       "snapshot": [
         {
+          "outletId": "one-minute-critic",
+          "criticName": "Matthew Wexler",
+          "url": "https://1minutecritic.com/here-there-are-blueberries-broadway-review/",
+          "scored": true
+        },
+        {
+          "outletId": "chicagotribune",
+          "criticName": "Chris Jones",
+          "url": "https://www.chicagotribune.com/2026/11/09/review-here-blueberries-broadway/",
+          "scored": true
+        },
+        {
+          "outletId": "culturesauce",
+          "criticName": "Thom Geier",
+          "url": "https://culturesauce.com/here-there-are-blueberries-broadway-review/",
+          "scored": true
+        },
+        {
+          "outletId": "deadline",
+          "criticName": "Greg Evans",
+          "url": "https://deadline.com/2026/11/here-there-are-blueberries-broadway-review-1237216680/",
+          "scored": true
+        },
+        {
+          "outletId": "nypost",
+          "criticName": "Johnny Oleksinski",
+          "url": "https://nypost.com/2026/11/09/entertainment/here-there-are-blueberries-review-holocaust-docu-drama-is-chilling-and-riveting/",
+          "scored": true
+        },
+        {
+          "outletId": "nysr",
+          "criticName": "Frank Scheck",
+          "url": "https://nystagereview.com/2026/11/09/here-there-are-blueberries-riveting-documentary-theater/",
+          "scored": true
+        },
+        {
+          "outletId": "nysr",
+          "criticName": "David Finkle",
+          "url": "https://nystagereview.com/2026/11/09/here-there-are-blueberries-tough-but-necessary-holocaust-view/",
+          "scored": true
+        },
+        {
+          "outletId": "nyt-theater",
+          "criticName": "Jonathan Mandell",
+          "url": "https://newyorktheater.me/2026/11/09/here-there-are-blueberries-broadway-review/",
+          "scored": true
+        },
+        {
+          "outletId": "nytg",
+          "criticName": "Christian Lewis",
+          "url": "https://www.newyorktheatreguide.com/reviews/here-there-are-blueberries-broadway-review",
+          "scored": true
+        },
+        {
           "outletId": "talkinbroadway",
           "criticName": "Howard Miller",
           "url": "https://www.talkinbroadway.com/page/world/HereThereAreBlueberries.html",
+          "scored": true
+        },
+        {
+          "outletId": "new-york-sun",
+          "criticName": "Elysa Gardner",
+          "url": "https://www.nysun.com/article/here-there-are-blueberries-finds-new-urgency-in-an-unflinching-reckoning-with-nazi-evil",
+          "scored": true
+        },
+        {
+          "outletId": "nytimes",
+          "criticName": "Helen Shaw",
+          "url": "https://www.nytimes.com/2026/11/09/theater/here-there-are-blueberries-review-holocaust.html",
+          "scored": true
+        },
+        {
+          "outletId": "theatermania",
+          "criticName": "Hayley Levitt",
+          "url": "https://www.theatermania.com/news/review-here-there-are-blueberries-takes-a-snapshot-of-the-banality-of-evil_1859174/",
+          "scored": true
+        },
+        {
+          "outletId": "theatrely",
+          "criticName": "Joey Sims",
+          "url": "https://www.theatrely.com/post/an-incredibly-strong-ensemble-with-here-there-are-blueberries-review",
+          "scored": true
+        },
+        {
+          "outletId": "thewrap",
+          "criticName": "Robert Hofler",
+          "url": "https://www.thewrap.com/creative-content/theater/here-there-are-blueberries-broadway-review/",
+          "scored": true
+        },
+        {
+          "outletId": "vulture",
+          "criticName": "Jackson McHenry",
+          "url": "https://www.vulture.com/article/theater-review-here-there-are-blueberries-kaufman-gronich-broadway.html",
           "scored": true
         }
       ],

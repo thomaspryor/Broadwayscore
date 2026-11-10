@@ -4,6 +4,7 @@ import { useMemo, useCallback, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { getOptimizedImageUrl } from '@/lib/images';
+import { formatClosingLabel } from '@/lib/closing-label';
 import { getMarketLabel } from '@/lib/venue-classification';
 import { getAudienceGrade, hasEnoughAudienceReviews } from '@/lib/audience-grade-utils';
 import ShowImage from '@/components/ShowImage';
@@ -22,6 +23,7 @@ export interface NVPShow {
   isRevival: boolean;
   openingDate: string;
   closingDate?: string;
+  closingExtensionCount?: number;
   images?: {
     thumbnail?: string;
     poster?: string;
@@ -324,7 +326,7 @@ function NVPPageInner({ shows, offBroadway }: { shows: NVPShow[]; offBroadway: N
                       <>Opens {formatOpeningDate(show.openingDate)}</>
                     ) : show.closingDate ? (
                       <>
-                        <span className="text-amber-400">{show.status === 'closed' ? 'Closed' : 'Closes'} {formatOpeningDate(show.closingDate)}</span>
+                        <span className="text-amber-400">{show.status === 'closed' ? `Closed ${formatOpeningDate(show.closingDate)}` : formatClosingLabel(show, formatOpeningDate(show.closingDate))}</span>
                         <span className="text-fg-muted"> • Opened {formatOpeningDate(show.openingDate)}</span>
                       </>
                     ) : (

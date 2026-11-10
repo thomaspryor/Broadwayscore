@@ -1,4 +1,5 @@
 import { getAudienceBuzz, hasEnoughAudienceReviews, hasFullConfidenceAudienceReviews, getAudienceGrade } from '@/lib/data-audience';
+import { getClosingExtensionCount, type ClosingExtension } from '@/lib/closing-label';
 import type { ShowCardShow } from '@/components/show-cards/types';
 import { getTourNowNextForShow, getTourTicketLinks } from '@/lib/data-tour-schedule';
 
@@ -20,6 +21,8 @@ export function serializeShowForClient(
     venue: string;
     openingDate: string;
     closingDate?: string | null;
+    closingExtensions?: ReadonlyArray<ClosingExtension> | null;
+    closingExtensionCount?: number | null;
     previewsStartDate?: string | null;
     status: string;
     type: string;
@@ -62,6 +65,7 @@ export function serializeShowForClient(
     venue: show.venue,
     openingDate: show.openingDate,
     closingDate: show.closingDate ?? undefined,
+    closingExtensionCount: getClosingExtensionCount(show) || undefined,
     previewsStartDate: show.previewsStartDate ?? undefined,
     status: show.status,
     type: show.type,

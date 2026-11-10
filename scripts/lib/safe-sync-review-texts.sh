@@ -41,6 +41,16 @@ RESTORE_JS="$SCRIPT_DIR/restore-protected-fields.js"
 source "$SCRIPT_DIR/rebase-guards.sh"
 
 cd "$REPO_DIR"
+REPO_DIR="$(pwd)" # absolute, so the lock re-exec below (run from this cwd) still finds it
+
+# BRO-7171: the review-texts checkout is shared with local recovery runs;
+# rebase + push it only under the machine-wide review-texts lock (re-exec
+# under `review-texts-lock.js run`; the child sees the inherited hold). The
+# core-data repo is not covered by that lock and runs as before.
+if [ "$(basename "$(git rev-parse --show-toplevel)")" = "broadway-review-texts" ] \
+   && ! node "$SCRIPT_DIR/review-texts-lock.js" held; then
+  exec node "$SCRIPT_DIR/review-texts-lock.js" run -- bash "$SCRIPT_DIR/$(basename "${BASH_SOURCE[0]}")" "$REPO_DIR" "$BRANCH"
+fi
 
 # Safety 1: refuse to run if the working tree has unstaged diff to protected
 # file types. Caller should stage + commit first.
@@ -105,7 +115,9 @@ for attempt in $(seq 1 "$MAX_RETRIES"); do
         COUNT=$(node "$RESTORE_JS" "origin/$BRANCH" 2>&1 | tail -1)
         if [ "$COUNT" -gt 0 ] 2>/dev/null; then
           echo "  Restored protected fields in $COUNT file(s)."
-          git add -A
+          # BRO-7171: the restore only rewrites tracked files; stage just those
+          # (a whole-tree add swept stray untracked files into the amend).
+          git add -u
           if ! git diff --cached --quiet; then
             bash "$SCRIPT_DIR/commit-or-amend.sh" "origin/$BRANCH" >/dev/null 2>&1 || true
           fi

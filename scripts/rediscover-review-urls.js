@@ -333,7 +333,7 @@ function pushReviewTextsCheckpoint(message) {
     const remoteUrl = `https://x-access-token:${process.env.REVIEW_TEXTS_TOKEN}@github.com/thomaspryor/broadway-review-texts.git`;
     try { execSync(`git remote set-url origin "${remoteUrl}"`, { cwd: rtDir, stdio: 'pipe' }); }
     catch { try { execSync(`git remote add origin "${remoteUrl}"`, { cwd: rtDir, stdio: 'pipe' }); } catch {} }
-    execSync('git add -A', { cwd: rtDir, stdio: 'pipe' });
+    require('./lib/stage-review-texts').stageReviewTexts(rtDir); // BRO-7171 scoped staging
     try { execSync('git diff --staged --quiet', { cwd: rtDir, stdio: 'pipe' }); return; }
     catch { /* has changes */ }
     execSync(`git commit -m "${message}"`, { cwd: rtDir, stdio: 'pipe' });

@@ -6,6 +6,8 @@ import { ELIGIBILITY_MARKERS, isShowOpenForDrafter, isDraftOpen, isDraftClosed, 
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getScoreLabel, getScoreColor, getScoreBgColor } from '@/config/score-buckets';
 import FantasyOwnershipTag from '@/components/fantasy/FantasyOwnershipTag';
+import { formatClosingLabel } from '@/lib/closing-label';
+import { getShowById } from '@/lib/data-core';
 
 // Regenerated every 15 minutes: the draft-window lines and "already open"
 // lists change at midnight ET, and waiting for the next deploy (up to 6h)
@@ -79,7 +81,7 @@ function ShowCard({ show, variant = 'default' }: { show: { id: string } & Fantas
         </div>
         <div className="flex items-center gap-2 mt-1 flex-wrap text-sm text-gray-300">
           {show.openingDate && <span>{opened ? 'Opened' : 'Opens'} {shortDate(show.openingDate)}</span>}
-          {show.closingDate && <span>&middot; closes {shortDate(show.closingDate)}</span>}
+          {show.closingDate && <span>&middot; {formatClosingLabel({ closingDate: show.closingDate, closingExtensionCount: getShowById(show.id)?.closingExtensionCount }, shortDate(show.closingDate)).replace(/^Closes/, 'closes')}</span>}
           {show.criticScore != null && <ScorePill score={show.criticScore} />}
           {show.audienceGrade && (
             <span>Audience: {show.audienceGrade}</span>

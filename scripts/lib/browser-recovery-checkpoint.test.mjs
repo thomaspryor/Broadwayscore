@@ -90,3 +90,85 @@ test('local review-texts recovery scripts never `git add -A` or push directly', 
   }
   assert.deepEqual(offenders, []);
 });
+
+// BRO-7171 class guard, every writer: no whole-tree add anywhere in scripts/
+// or .github/ (workflows, composite actions). A whole-tree add commits
+// whatever sits in the checkout (screenshots, *.mergetmp, another local
+// writer's half-written file). Review-texts writers stage through
+// stage-review-texts.js (CI, whole checkout) or review-texts-checkpoint.js
+// (the paths a run wrote). Pathspec-scoped adds (`git add -A lane-recordings`,
+// `git add -A -- <paths>`) are fine. Allowlist = other repos, with the reason.
+const WHOLE_TREE_ADD = /\bgit(?:\s+-C\s+\S+)?\s+add\s+(?:-A|--all|\.)(?=\s*(?:$|&&|\|\||;|\)|'|"|`|2>|>))|['"]add['"]\s*,\s*['"](?:-A|--all|\.)['"]\s*\]/;
+const WHOLE_TREE_ALLOW = {
+  '.github/actions/push-core-data/action.yml': 'core-data repo checkout (/tmp/core-data-checkout), not review-texts',
+  'scripts/migrate-add-core-data-push.js': 'string match on workflow text, does not run git',
+  'scripts/autonomous-run.js': 'commits inside its own main-repo task worktree (retired autonomous loop), never review-texts',
+};
+function walkFiles(dir, re) {
+  return fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => {
+    const p = path.join(dir, e.name);
+    if (e.isDirectory()) return ['node_modules', '.git'].includes(e.name) ? [] : walkFiles(p, re);
+    return re.test(e.name) && !/\.test\.(m?js|sh)$/.test(e.name) ? [p] : []; // tests build their own scratch repos
+  });
+}
+/** Offending `file:line` for whole-tree adds (comment lines ignored). Exported shape for the red check below. */
+export function wholeTreeAdds(repoRoot) {
+  const files = [
+    ...walkFiles(path.join(repoRoot, 'scripts'), /\.(c?js|mjs|sh)$/),
+    ...walkFiles(path.join(repoRoot, '.github'), /\.ya?ml$/),
+  ];
+  const hits = [];
+  for (const f of files) {
+    const rel = path.relative(repoRoot, f);
+    if (WHOLE_TREE_ALLOW[rel]) continue;
+    fs.readFileSync(f, 'utf8').split('\n').forEach((l, i) => {
+      if (/^\s*(#|\/\/|\*)/.test(l)) return;
+      if (WHOLE_TREE_ADD.test(l)) hits.push(`${rel}:${i + 1}: ${l.trim().slice(0, 90)}`);
+    });
+  }
+  return hits;
+}
+
+test('no review-texts writer (local or CI) stages with a whole-tree add', () => {
+  const repoRoot = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..', '..');
+  assert.deepEqual(wholeTreeAdds(repoRoot), [], 'stage with scripts/lib/stage-review-texts.js or review-texts-checkpoint.js');
+});
+
+test('the whole-tree-add matcher catches the shapes the writers used and passes scoped adds', () => {
+  for (const bad of [
+    "execSync('git add -A', { cwd: rtDir, stdio: 'pipe' });",
+    "          git add -A",
+    "execSync('cd data/review-texts && git add -A && git commit -m x', {});",
+    "execFileSync('git', ['-C', opts.dir, 'add', '-A'], { stdio: 'ignore' });",
+    "      git add -A 2>/dev/null || true",
+    "  git add .",
+  ]) assert.ok(WHOLE_TREE_ADD.test(bad), bad);
+  for (const ok of [
+    "git add -A lane-recordings",
+    "git add -A -- \"data/pending-fixes/$PLAN.json\"",
+    "git(repo, ['add', '-A', '--', ...rels]);",
+    "git add -u",
+    "git add data/audit/",
+  ]) assert.ok(!WHOLE_TREE_ADD.test(ok), ok);
+});
+
+// Local committing writers of the shared ~/broadway-review-texts checkout go
+// through review-texts-checkpoint.js (lock, scoped staging, a failed push
+// throws) and land an earlier run's pending push first.
+test('local committing review-texts writers use the checkpoint, never push directly', () => {
+  const scriptsDir = path.join(path.dirname(new URL(import.meta.url).pathname), '..');
+  const offenders = [];
+  for (const f of ['recover-wayback-reviews.js', 'recover-talkinbroadway-forum-links.js', 'batch-correct-reviews.js', 'clean-orphan-pending.js', 'backfill-first-seen.js', 'manual-review-direct.js']) {
+    const src = fs.readFileSync(path.join(scriptsDir, f), 'utf8').split('\n').filter((l) => !/^\s*(\/\/|\*)/.test(l)).join('\n');
+    if (!/review-texts-checkpoint/.test(src)) offenders.push(`${f}: not routed through review-texts-checkpoint.js`);
+    // Pushes of the review-texts checkout must come from the checkpoint. (manual-review-direct
+    // also pushes the core-data repo with `cd ${coreDataDir} && ... git push`.)
+    const rtPush = src.split('\n').filter((l) => /git push|push-with-retry|pushWithRetry\(/.test(l) && !/require\(|coreDataDir|cwd: path\.join\(__dirname, '\.\.'\)/.test(l));
+    if (rtPush.length) offenders.push(`${f}: pushes directly (${rtPush[0].trim().slice(0, 80)})`);
+  }
+  // Shell tools that rebase/commit review-texts hold the lock via `review-texts-lock.js run`.
+  for (const f of ['sync-review-texts.sh', 'fix-review-file.sh', 'lib/safe-sync-review-texts.sh']) {
+    if (!/review-texts-lock\.js" run --/.test(fs.readFileSync(path.join(scriptsDir, f), 'utf8'))) offenders.push(`${f}: not under the review-texts lock`);
+  }
+  assert.deepEqual(offenders, []);
+});

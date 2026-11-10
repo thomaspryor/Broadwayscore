@@ -4,7 +4,7 @@
     "audit-star-bands.js": {
       "bucket": "a",
       "rank": 1,
-      "reason": "CLAUDE.md §3 star-band invariant; core data only; live run today shows 1 review out of band (scoreSource originalScore-priority0)"
+      "reason": "CLAUDE.md \u00a73 star-band invariant; core data only; live run today shows 1 review out of band (scoreSource originalScore-priority0)"
     },
     "audit-announced-cast.js": {
       "bucket": "a",
@@ -479,6 +479,10 @@
       "bucket": "b",
       "rank": 99,
       "reason": "Zero-gap plan 1C read-only dry run: which truncated review-text files the trailer fix would re-tier to complete on the next rebuild, per outlet with sample endings; needs the private corpus and never writes review data. Logic is covered by scripts/lib/trailer-signatures.test.mjs, which CI runs."
+    },
+    "audit-city-hub-dual-model.js": {
+      "bucket": "b",
+      "reason": "On-demand pre-launch audit of one city hub by GPT and Gemini (BRO-7256); run by hand per city, costs model spend so never scheduled."
     }
   }
 }

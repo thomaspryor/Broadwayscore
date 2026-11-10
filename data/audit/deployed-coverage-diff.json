@@ -1,96 +1,13 @@
 {
-  "generatedAt": "2026-11-10T02:49:50.783Z",
+  "generatedAt": "2026-11-10T03:18:01.640Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 314,
-  "clean": 309,
-  "defective": 5,
-  "byType": {
-    "score-drift": 5
-  },
-  "shows": [
-    {
-      "showId": "parcel-from-america-off-broadway-2026",
-      "title": "Parcel from America",
-      "openingDate": "2026-11-04",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 70.69 vs local 71.58 (Δ0.89)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 6,
-      "deployedCount": 7,
-      "firstDefectAt": "2026-11-10T02:49:45.850Z"
-    },
-    {
-      "showId": "well-see-off-broadway-2026",
-      "title": "We'll See",
-      "openingDate": "2026-11-03",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 75.58 vs local 74.88 (Δ0.7)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 11,
-      "deployedCount": 12,
-      "firstDefectAt": "2026-11-10T02:49:45.850Z"
-    },
-    {
-      "showId": "rope-off-broadway-2026",
-      "title": "Rope",
-      "openingDate": "2026-11-03",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 58.59 vs local 59.2 (Δ0.61)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 14,
-      "deployedCount": 14,
-      "firstDefectAt": "2026-11-10T02:49:45.850Z"
-    },
-    {
-      "showId": "in-the-heights-off-broadway-2026",
-      "title": "In the Heights",
-      "openingDate": "2026-10-28",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 76.77 vs local 76.87 (Δ0.1)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 13,
-      "deployedCount": 13,
-      "firstDefectAt": "2026-11-10T01:31:30.971Z"
-    },
-    {
-      "showId": "cadel-lungs-on-legs-off-west-end-2026",
-      "title": "Cadel: Lungs On Legs",
-      "openingDate": "2026-10-16",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 77.6 vs local 76.63 (Δ0.97)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 16,
-      "deployedCount": 17,
-      "firstDefectAt": "2026-11-10T02:49:45.850Z"
-    }
-  ],
+  "clean": 314,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

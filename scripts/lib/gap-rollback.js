@@ -11,11 +11,13 @@
  */
 const { sha256, novelProseVerdict } = require('./gap-acceptance');
 
-// The text fields recoverReviewText writes (gap-acceptance.js), minus three:
-// - textFetchedAt is stamped NOW. The review-texts merge driver
-//   (review-json-three-way-merge, TEXT_STATE_GROUP) keeps the side with the
-//   newer textFetchedAt when a CI rebuild touched the same file; restoring the
-//   older stamp made the chrome text win the rebase (first live run: 103/105).
+// The text fields recoverReviewText writes (gap-acceptance.js), minus two:
+// - textFetchedAt is restored to the prior text's own stamp below (not "now":
+//   a now-stamp made restored OLD text beat any genuinely newer refetch a CI
+//   job landed meanwhile). The merge driver instead prefers a rolled-back side
+//   over exactly the chrome text it undoes (review-json-three-way-merge
+//   rollbackWins: other side's fullText hash === provenance.newFullTextHash),
+//   which is what kept the first live run from losing 103/105 to the rebase.
 // - contentTier / contentTierReason stay: the driver refuses a fresher side
 //   whose tier is worse, and the rebuild's tier write-back reclassifies the
 //   restored text anyway (classifyTierWriteBack).
@@ -42,7 +44,9 @@ function chromeRollbackDecision({ current, prior, nowIso = new Date().toISOStrin
   if (realProse) return { ok: false, reason: 'real_new_prose', novel, need };
   const patch = {};
   for (const f of TEXT_FIELDS) if (prior[f] !== undefined) patch[f] = prior[f];
-  patch.textFetchedAt = nowIso;
+  // Restore the prior stamp. No prior stamp -> null (the writer Object.assigns,
+  // so omitting it would leave the accept's newer stamp on the old text).
+  patch.textFetchedAt = prior.textFetchedAt || null;
   patch.textRecoveryProvenance = { ...prov, rolledBack: { at: nowIso, reason: 'chrome_gain', novelProseChars: novel, needed: need, priorTextFetchedAt: prior.textFetchedAt || null } };
   return { ok: true, patch, novel, need };
 }

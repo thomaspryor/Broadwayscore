@@ -583,6 +583,9 @@ export interface ApproachingRecoupmentShow {
 export interface AtRiskShow {
   slug: string;
   title: string;
+  /** BRO-7252: press-recorded extensions so the /biz card reads "Extended through". */
+  closingExtensions?: Array<{ announcedAt: string | null; from: string | null; to: string; source?: string | null }> | null;
+  closingExtensionCount?: number | null;
   season: string;
   capitalization: number | null;
   /** isEstimatedCapitalization(): true when the record flags its capitalization as an estimate or cites no publishable source (prints "~"). */
@@ -656,6 +659,11 @@ export interface RecentRecoupmentShow {
 export interface CommercialShowRow {
   slug: string;
   title: string;
+  /** Announced closing date of a running show (YYYY-MM-DD), null when none or already past (BRO-7252). */
+  closingDate?: string | null;
+  /** Press-recorded closing extensions, so /biz can say "Extended through" (BRO-7252). */
+  closingExtensions?: Array<{ announcedAt: string | null; from: string | null; to: string; source?: string | null }> | null;
+  closingExtensionCount?: number | null;
   /** shows.json status ('open' | 'previews' | 'closed' | ...). */
   status: string;
   designation: import('@/config/commercial').CommercialDesignation;

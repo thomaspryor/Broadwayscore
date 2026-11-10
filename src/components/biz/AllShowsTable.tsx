@@ -21,7 +21,7 @@ import {
   getTrendIcon,
 } from '@/config/commercial';
 import type { CommercialShowRow } from '@/lib/data-types';
-import { formatCurrency, formatCapitalization, weeklyCostLabel } from '@/lib/biz-format';
+import { formatCurrency, formatCapitalization, weeklyCostLabel, formatDataDate } from '@/lib/biz-format';
 import {
   getRecoupedCellSummary,
   getDesignationDisplay,
@@ -35,6 +35,7 @@ import {
 } from '@/lib/commercial-display';
 import { isRunningStatus } from '@/lib/commercial-metrics';
 import RecoupmentProgressBar from '@/components/RecoupmentProgressBar';
+import { getClosingLabel } from '@/lib/closing-label';
 import AnalystEstimateCredit from '@/components/biz/AnalystEstimateCredit';
 import EstimatedReturnLine from '@/components/biz/EstimatedReturnLine';
 
@@ -347,6 +348,11 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
                     >
                       <RowLinkArrow label={show.title} />
                     </Link>
+                    {running && show.closingDate && (
+                      <div className="text-xs text-fg-muted whitespace-nowrap" data-testid="biz-closing-label">
+                        {getClosingLabel(show, formatDataDate(show.closingDate) ?? show.closingDate).text}
+                      </div>
+                    )}
                   </td>
                   <td className="py-3 px-4">
                     <RecoupedCell show={show} />

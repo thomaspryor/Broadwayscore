@@ -183,6 +183,6 @@ console.log(`✅ Wrote ${written} files. ${failed} failed.`);
 console.log('');
 console.log('Next steps:');
 console.log('  1. cd data/review-texts && git status      # confirm the diff');
-console.log('  2. cd data/review-texts && git add -A && git commit -m "data: backfill lockedReason for pre-2026-04-27 manual locks"');
+console.log('  2. bash scripts/sync-review-texts.sh "data: backfill lockedReason for pre-2026-04-27 manual locks"');
 console.log('  3. cd data/review-texts && git push');
 console.log('  4. gh workflow run "Rebuild Reviews (Fast)"   # regenerate locks.json + reviews.json');

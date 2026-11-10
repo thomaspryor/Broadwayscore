@@ -293,7 +293,7 @@ async function refreshTodayTixDates(data, updates, opts = {}) {
               if (!dryRun) {
                 closedMatch.status = 'open';
                 if (ttEndDate) {
-                  writeClosingDate(closedMatch, ttEndDate, `update-show-status reopen (${new Date().toISOString().slice(0,10)})`);
+                  writeClosingDate(closedMatch, ttEndDate, `update-show-status reopen (${new Date().toISOString().slice(0,10)})`, { recordExtension: false });
                 } else if (canWriteClosingDate(closedMatch)) {
                   delete closedMatch.closingDate;
                 }

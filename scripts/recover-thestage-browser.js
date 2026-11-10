@@ -78,7 +78,8 @@ async function main() {
   console.log(`Loaded ${cookies.length} The Stage cookies.`);
 
   const { chromium } = require('playwright');
-  const PROFILE_DIR = '/tmp/thestage-recovery-browser-profile';
+  // BRO-7171 plan item 8: the outlet's shared persistent profile (renew lock held).
+  const PROFILE_DIR = require('./lib/cookie-renew').claimOutletProfile('thestage', { legacy: ['/tmp/thestage-recovery-browser-profile'] }).dir;
   const launchOpts = {
     headless: false,
     viewport: { width: 1280, height: 900 },

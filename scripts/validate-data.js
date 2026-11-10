@@ -802,6 +802,16 @@ function validateDates(shows) {
       error(`Show "${show.title}" has invalid closingDate: "${show.closingDate}"`);
       issues++;
     }
+    // BRO-7252: extension history must be a well-formed chain (shape + ordering).
+    if (show.closingExtensions != null) {
+      const extProblem = require('./lib/feedback-pipeline-fields.js').closingExtensionsValueProblem(show.closingExtensions);
+      if (extProblem) {
+        error(`Show "${show.title}" (${show.id}) ${extProblem}`);
+        issues++;
+      } else if (show.closingExtensions.length && show.closingDate && show.closingExtensions[show.closingExtensions.length - 1].to !== show.closingDate) {
+        warn(`Show "${show.title}" (${show.id}) closingDate ${show.closingDate} differs from the last recorded extension (${show.closingExtensions[show.closingExtensions.length - 1].to}): the date moved without an extension event`);
+      }
+    }
     if (show.previewsStartDate && !isValidDate(show.previewsStartDate)) {
       error(`Show "${show.title}" has invalid previewsStartDate: "${show.previewsStartDate}"`);
       issues++;

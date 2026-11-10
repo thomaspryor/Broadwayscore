@@ -63,6 +63,8 @@ class ReviewTextsLandingError extends ReviewTextsPushError {
 function createWriteTracker() {
   const s = new Set();
   s.expected = new Map();
+  // Paths the run deleted on purpose; also add them to the set itself.
+  s.deleted = new Set();
   return s;
 }
 
@@ -107,11 +109,22 @@ function blobOrNull(repo, rev, rel) {
   try { return git(repo, ['rev-parse', '--verify', '--quiet', `${rev}:${rel}`]).trim() || null; } catch { return null; }
 }
 
-/** Repo-relative path through the data/review-texts symlink. */
+/**
+ * Repo-relative path through the data/review-texts symlink. A deleted path's
+ * parent may be gone too (a cleanup that removed the emptied show dir), so
+ * resolve through the nearest ancestor that still exists.
+ */
 function relPath(realRepo, absPath) {
-  let p;
-  try { p = fs.realpathSync(absPath); } catch {
-    p = path.join(fs.realpathSync(path.dirname(absPath)), path.basename(absPath));
+  let base = path.resolve(absPath);
+  const tail = [];
+  let p = null;
+  while (p === null) {
+    try { p = path.join(fs.realpathSync(base), ...tail); } catch {
+      const up = path.dirname(base);
+      if (up === base) throw new Error(`review-texts-checkpoint: cannot resolve ${absPath}`);
+      tail.unshift(path.basename(base));
+      base = up;
+    }
   }
   const rel = path.relative(realRepo, p);
   if (!rel || rel.startsWith('..') || path.isAbsolute(rel)) throw new Error(`review-texts-checkpoint: ${absPath} is outside ${realRepo}`);
@@ -145,6 +158,9 @@ function runPush(repo, opts) {
     const out = execFileSync('bash', [opts.pushScript || PUSH_WITH_RETRY, String(opts.retries || 5)], {
       cwd: repo, env, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: opts.pushTimeoutMs || 12 * 60 * 1000, maxBuffer: 64 * 1024 * 1024,
     });
+    // BRO-5308: a CI job that pushed review-texts mid-run tells
+    // push-review-texts so the scoring/rebuild gate still fires (no-op off CI).
+    try { require('./review-texts-pushed-marker').markReviewTextsPushed(); } catch { /* fail-open */ }
     return { ok: true, output: out };
   } catch (e) {
     return { ok: false, status: e.status, output: `${e.stdout || ''}${e.stderr || ''}`.slice(-4000) };
@@ -161,7 +177,12 @@ function refreshOrigin(repo) {
 function confirmLanding(repo, paths) {
   const check = () => paths.map((p) => {
     const remote = showOrNull(repo, 'origin/main', p.rel);
-    return { ...p, landedBlob: blobOrNull(repo, 'origin/main', p.rel), landed: remote !== null && contentKey(remote) === p.fullTextHash };
+    // A run that deleted a file (committed content null) has landed when
+    // origin/main no longer has it either (BRO-7171 local writers delete files).
+    const landed = p.fullTextHash == null && p.committedKey == null
+      ? remote === null
+      : remote !== null && contentKey(remote) === p.fullTextHash;
+    return { ...p, landedBlob: blobOrNull(repo, 'origin/main', p.rel), landed };
   });
   let res = check();
   if (res.some((r) => !r.landed)) {
@@ -187,6 +208,8 @@ function fireLanded(onLanded, landed, entry) {
  * @param {object} args
  * @param {string} args.repoDir         review-texts checkout (symlink ok)
  * @param {Iterable<string>} args.paths absolute paths this run wrote
+ * @param {Iterable<string>} [args.deleted] paths the run deleted on purpose
+ *                                      (default paths.deleted from createWriteTracker)
  * @param {string} args.message         commit message
  * @param {(landed: object) => void} [args.onLanded]
  * @param {object} [args.meta]          carried into the pending entry and onLanded
@@ -195,10 +218,12 @@ function fireLanded(onLanded, landed, entry) {
  * @param {object} [args.pushEnv]
  * @returns {{committed: boolean, pushed: boolean, commit: string|null, landed: object[], notLanded: object[]}}
  */
-function checkpointReviewTexts({ repoDir, paths, expected, message, onLanded, meta, pendingPath = pendingPathDefault(), pushScript, pushEnv, retries }) {
+function checkpointReviewTexts({ repoDir, paths, expected, deleted, message, onLanded, meta, pendingPath = pendingPathDefault(), pushScript, pushEnv, retries }) {
   const repo = fs.realpathSync(repoDir);
   const expectedByRel = new Map();
-  const allRels = [...new Set([...paths].map((p) => {
+  const deletedSet = deleted || paths.deleted;
+  const deletedRels = new Set(deletedSet ? [...deletedSet].map((p) => relPath(repo, p)) : []);
+  const allRels = [...new Set([...paths, ...(deletedSet || [])].map((p) => {
     const rel = relPath(repo, p);
     if (expected && expected.has(p)) expectedByRel.set(rel, expected.get(p));
     return rel;
@@ -207,8 +232,10 @@ function checkpointReviewTexts({ repoDir, paths, expected, message, onLanded, me
   return withReviewTextsLock(`checkpoint:${message.slice(0, 60)}`, () => {
     // A path that is gone and was never committed would make `git add` fail
     // and wedge every later checkpoint of the run; there is nothing to land.
+    // That is a lost write, unless the run deleted it on purpose (`deleted`):
+    // removing a file that was never committed is a no-op, not a failure.
     const rels = allRels.filter((rel) => fs.existsSync(path.join(repo, rel)) || blobOrNull(repo, 'HEAD', rel));
-    const vanished = allRels.filter((rel) => !rels.includes(rel)).map((rel) => ({ rel, abs: path.join(repo, rel), landed: false, why: 'file vanished before commit' }));
+    const vanished = allRels.filter((rel) => !rels.includes(rel) && !deletedRels.has(rel)).map((rel) => ({ rel, abs: path.join(repo, rel), landed: false, why: 'file vanished before commit' }));
     if (!rels.length) return { committed: false, pushed: false, commit: null, landed: [], notLanded: vanished };
     git(repo, ['add', '-A', '--', ...rels]);
     const hasStagedChanges = !gitOk(repo, ['diff', '--cached', '--quiet', '--', ...rels]);

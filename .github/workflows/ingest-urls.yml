@@ -162,7 +162,7 @@ jobs:
           # there leaves a clean tree with an unpushed commit. Push that too,
           # then dispatch the scoring/rebuild the script held back.
           AHEAD=$(git rev-list --count origin/main..HEAD 2>/dev/null || echo 0)
-          if git diff --quiet && git diff --cached --quiet && [ "$AHEAD" = "0" ]; then
+          if git diff --quiet && git diff --cached --quiet && [ "$AHEAD" = "0" ] && [ -z "$(git ls-files --others --exclude-standard | head -1)" ]; then
             echo "No changes to commit"
           else
             git config user.name "github-actions[bot]"
@@ -171,7 +171,7 @@ jobs:
             node "$GITHUB_WORKSPACE/scripts/opening-night-lease.js" sync || true
             node "$GITHUB_WORKSPACE/scripts/opening-night-lease.js" enforce --dir="$GITHUB_WORKSPACE/data/review-texts" || \
               echo "::warning::opening-night lease enforce failed to run"
-            git add -A
+            node "$GITHUB_WORKSPACE/scripts/lib/stage-review-texts.js" # BRO-7171 scoped staging
             # BRO-7082: a named (scheduled) caller tags the subject so the opening
             # grade does not count it as a hand dispatch; caller is slug-checked.
             SUBJ="data: Ingest URLs for ${INPUT_SHOW_ID}"

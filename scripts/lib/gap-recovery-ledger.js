@@ -61,6 +61,11 @@ function reviewKeyOf(p) {
   return parts.slice(-2).join('/');
 }
 
+// Per-process write order: rows written in the same millisecond keep the order
+// they were made in (indexRows tiebreak). Seeded from the clock so two runs'
+// seqs do not collide in a meaningful way; only same-ts rows ever compare it.
+let _seq = Date.now() * 1000;
+
 /** Normalise + validate one row. Throws on an unknown outcome or missing key. */
 function makeRow(r) {
   if (!r || !r.reviewKey) throw new Error('gap-recovery-ledger: reviewKey required');
@@ -78,6 +83,7 @@ function makeRow(r) {
     priorFullTextHash: r.priorFullTextHash || null,
     pushedBlob: r.pushedBlob || null,
   };
+  row.seq = Number.isFinite(r.seq) ? r.seq : ++_seq;
   if (r.retryAfter) row.retryAfter = r.retryAfter;
   if (r.abandoned) row.abandoned = true;
   if (r.runId) row.runId = r.runId;
@@ -107,14 +113,25 @@ function readRows(file = ledgerPathDefault()) {
 
 const tsMs = (r) => { const t = Date.parse(r.ts || ''); return Number.isFinite(t) ? t : 0; };
 
-/** Rows grouped by reviewKey, each list sorted by ts. */
+// Same-ts tiebreak: an attempt precedes its acceptance, an acceptance precedes
+// its landing, a landing precedes a reopen of it.
+const LIFECYCLE_RANK = { pending_push: 1, recovered: 2, reopened: 3 };
+const lifeRank = (r) => LIFECYCLE_RANK[r.outcome] || 0;
+const seqOf = (r) => (Number.isFinite(r.seq) ? r.seq : 0);
+
+/** Total order for one review's rows: ts, then lifecycle rank, then write seq. */
+function compareRows(a, b) {
+  return (tsMs(a) - tsMs(b)) || (lifeRank(a) - lifeRank(b)) || (seqOf(a) - seqOf(b));
+}
+
+/** Rows grouped by reviewKey, each list in compareRows order (never file order). */
 function indexRows(rows) {
   const m = new Map();
   for (const r of rows) {
     if (!m.has(r.reviewKey)) m.set(r.reviewKey, []);
     m.get(r.reviewKey).push(r);
   }
-  for (const list of m.values()) list.sort((a, b) => tsMs(a) - tsMs(b));
+  for (const list of m.values()) list.sort(compareRows);
   return m;
 }
 
@@ -223,6 +240,19 @@ function runCeiling(env = process.env) {
 
 function ceilingReached({ rows, nowMs = Date.now(), ceiling, acceptedThisRun = 0 }) {
   return acceptedToday(rows, nowMs) + acceptedThisRun >= ceiling;
+}
+
+/**
+ * Ceiling check for the NEXT attempt, read fresh from the shared ledger file
+ * (BRO-7171): a start-of-run snapshot plus this run's own count never saw
+ * another run's accepts, so two runs could each take the full daily ceiling.
+ * Daily mode counts every accept in the file today (this run's pending_push
+ * rows are already there); run mode (GAP_RECOVERY_RUN_CEILING) is a per-run
+ * cap and counts only this run.
+ */
+function ceilingReachedNow({ file = ledgerPathDefault(), ceiling, runMode = false, acceptedThisRun = 0, nowMs = Date.now() }) {
+  if (runMode) return acceptedThisRun >= ceiling;
+  return acceptedToday(readRows(file), nowMs) >= ceiling;
 }
 
 function killSwitchPath() {
@@ -358,6 +388,7 @@ module.exports = {
   appendRows,
   readRows,
   indexRows,
+  compareRows,
   liveRows,
   strategyState,
   evidenceStamp,
@@ -367,6 +398,7 @@ module.exports = {
   dailyCeiling,
   runCeiling,
   ceilingReached,
+  ceilingReachedNow,
   killSwitchPath,
   killSwitchActive,
   recoveredRowFromLanding,

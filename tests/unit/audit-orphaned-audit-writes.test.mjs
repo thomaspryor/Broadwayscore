@@ -31,6 +31,16 @@ test('flags the BRO-182 shape: invoked, committed, never staged', () => {
   assert.deepEqual(lib.findOrphanedWrites({ 'scripts/foo.js': SRC }, { 'wf.yml': WF('git add data/audit/x.json') }), []);
 });
 
+// BRO-7171: a ledger committed through a local composite action is staged
+// there; a composite's bare `-A` (its own checkout dir) covers nothing here.
+test('a local composite action that git-adds the file stages it', () => {
+  const wf = WF('git add data/shows.json') + '      - uses: ./.github/actions/commit-ledger\n';
+  const flagged = lib.findOrphanedWrites({ 'scripts/foo.js': SRC }, { 'wf.yml': wf });
+  assert.equal(flagged.length, 1, 'without the action source it is still an orphan');
+  assert.deepEqual(lib.findOrphanedWrites({ 'scripts/foo.js': SRC }, { 'wf.yml': wf }, {}, undefined, { 'commit-ledger': 'runs:\n  steps:\n    - run: git add data/audit/x.json || true\n' }), []);
+  assert.equal(lib.findOrphanedWrites({ 'scripts/foo.js': SRC }, { 'wf.yml': wf }, {}, undefined, { 'commit-ledger': 'runs:\n  steps:\n    - run: git add -A\n' }).length, 1);
+});
+
 test('non-committing workflows, gate workflows and exemptions are not flagged', () => {
   const noCommit = 'steps:\n  - run: node scripts/foo.js\n';
   assert.deepEqual(lib.findOrphanedWrites({ 'scripts/foo.js': SRC }, { 'wf.yml': noCommit }), []);
