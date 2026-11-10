@@ -22,6 +22,14 @@ const root = dirArg || path.join(__dirname, '..', 'data', 'review-texts');
 const autoOnly = args.includes('--autocleared-only');
 const rows = [];
 let scanned = 0;
+const words = (t) => String(t || '').toLowerCase().replace(/&#?[a-z0-9]+;/g, ' ').normalize('NFD').replace(/[\u0300-\u036f]/g, '').split(/[^a-z0-9]+/).filter((w) => w.length >= 4);
+// Metadata-only similarity: share of the excerpt's 4+ letter words that appear in the stored text.
+// Low overlap = a different article (real cousin); high overlap = a trimmed or reworded excerpt (benign).
+function overlap(d) {
+  const ex = words(d.bwwExcerpt); if (!ex.length) return null;
+  const have = new Set(words(d.fullText));
+  return Math.round((100 * ex.filter((w) => have.has(w)).length) / ex.length);
+}
 for (const show of fs.existsSync(root) ? listShowDirs(root, { silent: true }) : []) {
   const dir = path.join(root, show);
   for (const f of fs.readdirSync(dir)) {
@@ -30,7 +38,7 @@ for (const show of fs.existsSync(root) ? listShowDirs(root, { silent: true }) : 
     scanned++;
     if (!bwwExcerptContradictsText(d)) continue;
     if (autoOnly && !d.wrongProductionAutoCleared) continue;
-    rows.push({ show, file: f, url: d.url || null, publishDate: d.publishDate || null, wrongProduction: !!d.wrongProduction,
+    rows.push({ show, file: f, overlapPct: overlap(d), textChars: String(d.fullText || '').length, url: d.url || null, publishDate: d.publishDate || null, wrongProduction: !!d.wrongProduction,
       autoCleared: d.wrongProductionAutoCleared ? String(d.wrongProductionAutoCleared).slice(0, 70) : null });
   }
 }
