@@ -162,7 +162,7 @@ test('workflows: the lane job reads the night-wait output, the switch workflow o
   assert.match(live, /OPENING_NIGHT_LANE_WINDOW_MIN: '270'/);
   assert.match(live, /LANE_PREEMBARGO_DIRECT_ONLY: \$\{\{ needs\.night-wait\.outputs\.preembargo \}\}/);
   assert.equal((live.match(/vars\.LANE_PREEMBARGO_DIRECT_ONLY/g) || []).length, 1, 'night-wait is the only reader of the variable');
-  assert.match(fs.readFileSync(new URL('../../.github/workflows/opening-night-lane-switch.yml', import.meta.url), 'utf8'), /LANE_PREEMBARGO_DIRECT_ONLY\]/);
+  assert.match(fs.readFileSync(new URL('../../.github/workflows/opening-night-lane-switch.yml', import.meta.url), 'utf8'), /LANE_PREEMBARGO_DIRECT_ONLY, LANE_COMPARATIVE_SETTLE_ENABLED\]/);
 });
 
 test('laneStartMs: an embargo before 19:30 local starts at the normal embargo - 30 min; small-hours embargoes use the evening before', () => {
