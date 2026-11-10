@@ -183,7 +183,7 @@ function settleRunDates(row, range, pageUrl) {
   // A range that does not even overlap what the sources said is another production's (a sidebar, "also playing").
   if (range && !(range.first <= row.end && range.end >= row.start)) range = null;
   if (range) {
-    return { row: { ...row, start: range.opening, end: range.end, source: 'theatre-show-page', dateNote: `production page "${range.snippet}" (${pageUrl})` }, held: null };
+    return { row: { ...row, start: range.opening, end: range.end, firstPerformance: range.first, source: 'theatre-show-page', dateNote: `production page "${range.snippet}" (${pageUrl})` }, held: null };
   }
   if (row.dateConflict) return { row, held: `sources disagree on the run (${Object.entries(row.dateConflict).map(([k, v]) => `${k} ${v}`).join(' vs ')}) and the production page printed none` };
   return { row, held: null };

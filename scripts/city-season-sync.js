@@ -158,7 +158,7 @@ async function main() {
     const { row, held } = await settleDates(merged, getPage);
     if (held) { report.skipped.push(`${row.title}: held, ${held}`); continue; }
     if (row !== merged && (row.start !== merged.start || row.end !== merged.end)) log.push(`${row.title}: production page run ${row.start}..${row.end} replaces ${merged.start}..${merged.end}`);
-    if (!S.usableWindow(row, today)) { report.skipped.push(`${row.title}: production page run ${row.start}..${row.end} is outside the window`); continue; }
+    if (!S.usableWindow({ ...row, start: row.firstPerformance || row.start }, today)) { report.skipped.push(`${row.title}: production page run ${row.start}..${row.end} is outside the window`); continue; }
     const have = S.findExisting(row, [...hubShows, ...pending]);
     if (have) { report.existing.push(`${row.title} (${have.id})`); continue; }
     const id = S.showId(row, taken);
