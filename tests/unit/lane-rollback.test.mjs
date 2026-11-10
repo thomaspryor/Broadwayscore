@@ -216,7 +216,7 @@ test('workflow wiring', () => {
   assert.match(on, /^\s+workflow_dispatch:/m);
   assert.doesNotMatch(on, /schedule:|workflow_run:|push:|pull_request:|repository_dispatch:/);
   const variable = y.slice(y.indexOf('      variable:'), y.indexOf('      value:'));
-  assert.match(variable, /options: \[LANE_ONLY_MARKETS, LANE_STANDDOWN, LANE_PREEMBARGO_DIRECT_ONLY\]/);
+  assert.match(variable, /options: \[LANE_ONLY_MARKETS, LANE_STANDDOWN, LANE_PREEMBARGO_DIRECT_ONLY, LANE_COMPARATIVE_SETTLE_ENABLED\]/);
   const mode = y.slice(y.indexOf('      mode:'), y.indexOf('      show:'));
   assert.doesNotMatch(mode, /^\s+default:/m, 'mode must be named on every dispatch');
   assert.doesNotMatch(y, /^concurrency:/m, 'a newer dispatch must never drop a queued rollback');
