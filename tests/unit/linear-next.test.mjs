@@ -723,6 +723,9 @@ test('buildLinearSeed: names the issue, links it, and instructs comment + In Rev
   // deliberately ignores blocked/paused reports).
   assert.match(seed, /--status=blocked/);
   assert.match(seed, /"In Review"/);
+  // BRO-7116: a headless dispatch no longer claims the card after the run, so
+  // the worker must claim it itself or the card never shows as held.
+  assert.match(seed, /node scripts\/linear-session\.js claim --issue=BRO-123/);
 });
 
 test('buildLinearSeed: falls back to a placeholder when description is empty', () => {

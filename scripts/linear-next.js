@@ -39,9 +39,11 @@
  * check on (b) still catches it even if (a) never landed.
  *
  * On a successful dispatch: posts "Dispatched <correlationId> to <ref> at
- * <ts>" as a comment on the issue and moves it to the team's "started"-type
- * workflow state (In Progress) — so a second, accidental dispatch is visible
- * on the Linear board itself, not just in a local ledger file.
+ * <ts>" as a comment on the issue. In cmux mode it also moves the issue to the
+ * team's "started"-type workflow state (In Progress), so a second, accidental
+ * dispatch is visible on the board. Headless mode posts the comment only: the
+ * run has already ended, the worker claims and closes its own card, and a
+ * post-run state write clobbered a worker's Paused close (BRO-7116).
  *
  * Usage:
  *   node scripts/linear-next.js --id BRO-123                 DEFAULT (BRO-3652): supervised headless job (bsc-runner
