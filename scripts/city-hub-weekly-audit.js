@@ -70,7 +70,7 @@ function fileCard(card) {
   const prefix = card.title.split(':')[0];
   const dedup = spawnSync('node', [brain, 'find', prefix], { encoding: 'utf8', timeout: 60_000, cwd: ROOT });
   if (dedup.status === 0 && dedup.stdout && dedup.stdout.trim() !== 'null') { console.log(`  card: "${prefix}" already open, not filed again`); return 'existing'; }
-  const c = spawnSync('node', [brain, 'create', card.title, '--priority', '2', '--notes', card.body, '--park', 'Weekly city-hub audit finding: a worker checks each source before any data edit'], { encoding: 'utf8', timeout: 60_000, cwd: ROOT });
+  const c = spawnSync('node', [brain, 'create', card.title, '--priority', '2', '--notes', card.body, '--dispatch'], { encoding: 'utf8', timeout: 400_000, cwd: ROOT });
   if (c.status !== 0) throw new Error(`linear-brain create failed (exit ${c.status}): ${(c.stderr || c.stdout || '').slice(0, 400)}`);
   const m = (c.stderr || '').match(/__BOARD_CARD_ID__=([A-Z]+-\d+)/);
   return m ? m[1] : 'filed';
@@ -107,7 +107,7 @@ async function auditCity(city, maxUsd) {
   let cardFailed = false;
   summary.card = null;
   if (card) {
-    const r = await W.fileWithRetry(() => fileCard(card));
+    const r = await W.fileWithRetry(() => fileCard(card), { attempts: 2, baseMs: 30000 }) /* linear-brain retries 429s itself (5 x 60s) */;
     summary.card = r.card;
     if (r.error) { cardFailed = true; summary.cardError = r.error; console.log(`::warning::${city}: card not filed (${r.error.slice(0, 200)}); findings left unseen so next run retries`); }
   }
