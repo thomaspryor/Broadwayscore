@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7256-d",
   "planId": "ca074d76-6c4a-4ffb-8878-2d1482f09d37",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-10T05:54:04.940Z",
   "submitter": {
     "name": null,
@@ -41,5 +41,24 @@
         "description": "Lock the clear"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-10T07:01:54.054Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for sally-and-tom-regional-2026"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sally-and-tom-regional-2026/washpost--thomas-floyd.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sally-and-tom-regional-2026/washpost--thomas-floyd.json wrongProductionManualClear: null -> true"
+    }
+  ],
+  "executedIn": "ci"
 }
