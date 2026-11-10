@@ -3,7 +3,7 @@
     "postedDetection": "ok",
     "postedDetectionFailingSince": null,
     "description": "Reddit \"reviews are in\" post drafts for Broadway, WE/OWE/OB openings (BRO-4333). Written by scripts/draft-reddit-opening-posts.js, shown in the opening digest email.",
-    "lastRun": "2026-11-10T02:45:52.296Z"
+    "lastRun": "2026-11-10T02:53:16.498Z"
   },
   "drafts": {
     "delirium-off-broadway-2026": {
@@ -3081,28 +3081,30 @@
       "notability": 7,
       "createdAt": "2026-11-07T03:15:25.213Z",
       "status": "ready",
-      "source": "template",
-      "lintProblems": [
-        "body has number 3 that is not in the fact sheet"
-      ],
-      "title": "7 reviews are in for Parcel from America. 71/100",
-      "body": "It opened at Theatre Row - Theatre Three, and I found 7 reviews: 1 rave, 4 positive, 1 mixed, 1 negative. That works out to a 71/100.\n\nThis heartwarming Irish musical about community and emigration in 1950s Ireland earns mostly positive reviews for its pitch-perfect storytelling, though one critic finds it disappointing despite the charming premise.\n\nAudiences are at a B (across Show Score, Mezzanine, and Reddit).\n\nI haven't seen it yet. Anyone been?\n\nhttps://broadwayscorecard.com/show/parcel-from-america-off-broadway",
-      "why": "Template fallback: plain roundup with the score, breakdown and critic consensus.",
-      "expectedPushback": "Someone may say numbers can't capture theater.",
-      "suggestedReply": "Totally fair, the number is just a quick way to see where critics landed. Which review do you think got it most right?",
+      "source": "claude-sonnet-5-5",
+      "lintProblems": [],
+      "title": "7 reviews are in for Parcel from America. 71/100, and Talkin' Broadway thinks it ought to be extended through Christmas",
+      "body": "I found 7 reviews: 1 rave, 4 positive, 1 mixed, 1 negative.\n\nIt's a show about community and emigration in 1950s Ireland, and most of the critics found it warm and sincere. Moshe A. Bloxenheim at Talkin' Broadway called it \"a nice bit of musical theatre with a great ensemble performance\" and said it's just the right fare for the holidays. Meanwhile Deb Miller at Theater Scene wrote that for anyone who wants \"a sincere human story that considers the impact of emigration,\" this one is sure to touch your heart. One critic was disappointed despite the charming premise, so it's not unanimous.\n\nAudiences are at a B (across Show Score, Mezzanine, and Reddit).\n\nhttps://broadwayscorecard.com/show/parcel-from-america-off-broadway\n\nI haven't seen this one yet, but a sweet, small show sounds pretty good to me right now. Anyone seen it?",
+      "why": "It leads with the show and the number, then lets two critics' own words carry the warm, holiday-friendly tone, with Tom's casual leaning-toward-going closer and one real question for the sub.",
+      "expectedPushback": "Seven reviews is hardly enough to hang a score on, and a 'nice bit of theatre' quote isn't exactly a ringing endorsement.",
+      "suggestedReply": "Fair, seven is a small pile, so I'd take the number as a rough snapshot and read the quotes. The Critic Score is just a weighted average of the published critic reviews.",
       "personalLines": [
-        "I haven't seen it yet, and now I really want to.",
-        "Still undecided on going to this one."
+        "I haven't seen this one yet, and I'm leaning toward going.",
+        "I haven't seen this one yet, so I remain undecided on going.",
+        "I haven't seen this one yet. Sounds sweet, but I'm not sure it's for me."
       ],
-      "submitUrl": "https://www.reddit.com/r/offbroadwayNYC/submit?type=TEXT&title=7+reviews+are+in+for+Parcel+from+America.+71%2F100&text=It+opened+at+Theatre+Row+-+Theatre+Three%2C+and+I+found+7+reviews%3A+1+rave%2C+4+positive%2C+1+mixed%2C+1+negative.+That+works+out+to+a+71%2F100.%0A%0AThis+heartwarming+Irish+musical+about+community+and+emigration+in+1950s+Ireland+earns+mostly+positive+reviews+for+its+pitch-perfect+storytelling%2C+though+one+critic+finds+it+disappointing+despite+the+charming+premise.%0A%0AAudiences+are+at+a+B+%28across+Show+Score%2C+Mezzanine%2C+and+Reddit%29.%0A%0AI+haven%27t+seen+it+yet.+Anyone+been%3F%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Fparcel-from-america-off-broadway",
-      "oldRedditSubmitUrl": "https://old.reddit.com/r/offbroadwayNYC/submit?selftext=true&title=7+reviews+are+in+for+Parcel+from+America.+71%2F100&text=It+opened+at+Theatre+Row+-+Theatre+Three%2C+and+I+found+7+reviews%3A+1+rave%2C+4+positive%2C+1+mixed%2C+1+negative.+That+works+out+to+a+71%2F100.%0A%0AThis+heartwarming+Irish+musical+about+community+and+emigration+in+1950s+Ireland+earns+mostly+positive+reviews+for+its+pitch-perfect+storytelling%2C+though+one+critic+finds+it+disappointing+despite+the+charming+premise.%0A%0AAudiences+are+at+a+B+%28across+Show+Score%2C+Mezzanine%2C+and+Reddit%29.%0A%0AI+haven%27t+seen+it+yet.+Anyone+been%3F%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Fparcel-from-america-off-broadway",
+      "submitUrl": "https://www.reddit.com/r/offbroadwayNYC/submit?type=TEXT&title=7+reviews+are+in+for+Parcel+from+America.+71%2F100%2C+and+Talkin%27+Broadway+thinks+it+ought+to+be+extended+through+Christmas&text=I+found+7+reviews%3A+1+rave%2C+4+positive%2C+1+mixed%2C+1+negative.%0A%0AIt%27s+a+show+about+community+and+emigration+in+1950s+Ireland%2C+and+most+of+the+critics+found+it+warm+and+sincere.+Moshe+A.+Bloxenheim+at+Talkin%27+Broadway+called+it+%22a+nice+bit+of+musical+theatre+with+a+great+ensemble+performance%22+and+said+it%27s+just+the+right+fare+for+the+holidays.+Meanwhile+Deb+Miller+at+Theater+Scene+wrote+that+for+anyone+who+wants+%22a+sincere+human+story+that+considers+the+impact+of+emigration%2C%22+this+one+is+sure+to+touch+your+heart.+One+critic+was+disappointed+despite+the+charming+premise%2C+so+it%27s+not+unanimous.%0A%0AAudiences+are+at+a+B+%28across+Show+Score%2C+Mezzanine%2C+and+Reddit%29.%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Fparcel-from-america-off-broadway%0A%0AI+haven%27t+seen+this+one+yet%2C+but+a+sweet%2C+small+show+sounds+pretty+good+to+me+right+now.+Anyone+seen+it%3F",
+      "oldRedditSubmitUrl": "https://old.reddit.com/r/offbroadwayNYC/submit?selftext=true&title=7+reviews+are+in+for+Parcel+from+America.+71%2F100%2C+and+Talkin%27+Broadway+thinks+it+ought+to+be+extended+through+Christmas&text=I+found+7+reviews%3A+1+rave%2C+4+positive%2C+1+mixed%2C+1+negative.%0A%0AIt%27s+a+show+about+community+and+emigration+in+1950s+Ireland%2C+and+most+of+the+critics+found+it+warm+and+sincere.+Moshe+A.+Bloxenheim+at+Talkin%27+Broadway+called+it+%22a+nice+bit+of+musical+theatre+with+a+great+ensemble+performance%22+and+said+it%27s+just+the+right+fare+for+the+holidays.+Meanwhile+Deb+Miller+at+Theater+Scene+wrote+that+for+anyone+who+wants+%22a+sincere+human+story+that+considers+the+impact+of+emigration%2C%22+this+one+is+sure+to+touch+your+heart.+One+critic+was+disappointed+despite+the+charming+premise%2C+so+it%27s+not+unanimous.%0A%0AAudiences+are+at+a+B+%28across+Show+Score%2C+Mezzanine%2C+and+Reddit%29.%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Fparcel-from-america-off-broadway%0A%0AI+haven%27t+seen+this+one+yet%2C+but+a+sweet%2C+small+show+sounds+pretty+good+to+me+right+now.+Anyone+seen+it%3F",
       "crosspostSubreddit": "Broadway",
-      "crosspostSubmitUrl": "https://www.reddit.com/r/Broadway/submit?type=TEXT&title=7+reviews+are+in+for+Parcel+from+America.+71%2F100&text=It+opened+at+Theatre+Row+-+Theatre+Three%2C+and+I+found+7+reviews%3A+1+rave%2C+4+positive%2C+1+mixed%2C+1+negative.+That+works+out+to+a+71%2F100.%0A%0AThis+heartwarming+Irish+musical+about+community+and+emigration+in+1950s+Ireland+earns+mostly+positive+reviews+for+its+pitch-perfect+storytelling%2C+though+one+critic+finds+it+disappointing+despite+the+charming+premise.%0A%0AAudiences+are+at+a+B+%28across+Show+Score%2C+Mezzanine%2C+and+Reddit%29.%0A%0AI+haven%27t+seen+it+yet.+Anyone+been%3F%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Fparcel-from-america-off-broadway",
+      "crosspostSubmitUrl": "https://www.reddit.com/r/Broadway/submit?type=TEXT&title=7+reviews+are+in+for+Parcel+from+America.+71%2F100%2C+and+Talkin%27+Broadway+thinks+it+ought+to+be+extended+through+Christmas&text=I+found+7+reviews%3A+1+rave%2C+4+positive%2C+1+mixed%2C+1+negative.%0A%0AIt%27s+a+show+about+community+and+emigration+in+1950s+Ireland%2C+and+most+of+the+critics+found+it+warm+and+sincere.+Moshe+A.+Bloxenheim+at+Talkin%27+Broadway+called+it+%22a+nice+bit+of+musical+theatre+with+a+great+ensemble+performance%22+and+said+it%27s+just+the+right+fare+for+the+holidays.+Meanwhile+Deb+Miller+at+Theater+Scene+wrote+that+for+anyone+who+wants+%22a+sincere+human+story+that+considers+the+impact+of+emigration%2C%22+this+one+is+sure+to+touch+your+heart.+One+critic+was+disappointed+despite+the+charming+premise%2C+so+it%27s+not+unanimous.%0A%0AAudiences+are+at+a+B+%28across+Show+Score%2C+Mezzanine%2C+and+Reddit%29.%0A%0Ahttps%3A%2F%2Fbroadwayscorecard.com%2Fshow%2Fparcel-from-america-off-broadway%0A%0AI+haven%27t+seen+this+one+yet%2C+but+a+sweet%2C+small+show+sounds+pretty+good+to+me+right+now.+Anyone+seen+it%3F",
       "emailedAt": "2026-11-10T02:46:51.982Z",
       "reminderAt": "2026-11-10T02:46:51.982Z",
       "emailedScore": 71,
       "emailedReviewCount": 7,
-      "updateCount": 2
+      "updateCount": 2,
+      "refreshedAt": "2026-11-10T02:53:16.498Z",
+      "previousScore": 71,
+      "previousReviewCount": 7
     },
     "speculations-off-west-end-2026": {
       "showId": "speculations-off-west-end-2026",
