@@ -1,7 +1,7 @@
 name: Opening-night lane switch
 run-name: 'Opening-night lane switch ${{ inputs.action }} ${{ inputs.variable }} ${{ inputs.show }} ${{ inputs.mode }} ${{ inputs.request_id }}'
 
-# BRO-6622 (cutover card 8). The one way a session changes the opening-night lane's two repo variables, and the lane
+# BRO-6622 (cutover card 8). The one way a session changes the opening-night lane's repo variables, and the lane
 # rollback. Cloud sessions get 403 on repo variables, so they dispatch this workflow (mcp__github__actions_run_trigger)
 # instead of asking the owner to click. workflow_dispatch only, never a cron.
 #
