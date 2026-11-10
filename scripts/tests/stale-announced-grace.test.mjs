@@ -35,22 +35,19 @@ test('carryFirstFlagged keeps the original stamp and resets for new shows', () =
   assert.equal(flagged[1].firstFlaggedAt, '2026-11-10T00:00:00Z');
 });
 
-test('a degraded (no review-texts) run does not restart the clock', () => {
-  const day1 = { flagged: [{ id: 'a', firstFlaggedAt: '2026-11-01T00:00:00Z' }] };
-  const degraded = carryFirstFlagged(day1, [], '2026-11-05T00:00:00Z', true);
-  assert.deepEqual(degraded.history, { a: '2026-11-01T00:00:00Z' });
-  const next = carryFirstFlagged({ flagged: [], firstFlaggedHistory: degraded.history, reviewTextsAvailable: false }, [{ id: 'a' }], '2026-11-06T00:00:00Z');
-  assert.equal(next.flagged[0].firstFlaggedAt, '2026-11-01T00:00:00Z');
-});
-
-test('a healthy run that no longer flags a show forgets it', () => {
-  const r = carryFirstFlagged({ flagged: [{ id: 'a', firstFlaggedAt: '2026-11-01T00:00:00Z' }] }, [], '2026-11-05T00:00:00Z', false);
-  assert.deepEqual(r.history, {});
+test('a show missing for a few runs keeps its clock (blip), then is forgotten after the history window', () => {
+  const day1 = { generatedAt: '2026-11-01T00:00:00Z', flagged: [{ id: 'a', firstFlaggedAt: '2026-11-01T00:00:00Z' }] };
+  const blip = carryFirstFlagged(day1, [], '2026-11-04T00:00:00Z');
+  assert.equal(blip.history.a.firstFlaggedAt, '2026-11-01T00:00:00Z');
+  const back = carryFirstFlagged({ generatedAt: '2026-11-04T00:00:00Z', flagged: [], firstFlaggedHistory: blip.history }, [{ id: 'a' }], '2026-11-05T00:00:00Z');
+  assert.equal(back.flagged[0].firstFlaggedAt, '2026-11-01T00:00:00Z');
+  const gone = carryFirstFlagged({ generatedAt: '2026-11-04T00:00:00Z', flagged: [], firstFlaggedHistory: blip.history }, [], '2026-11-12T00:00:00Z');
+  assert.deepEqual(gone.history, {});
 });
 
 test('replay of the 30-day history: every transient flag run stays silent, persistent one warns', () => {
   // Real runs: private-lives-2025 / death-of-a-salesman cleared within 4 daily snapshots.
   const flagged = [{ id: 'death-of-a-salesman-west-end-2026', firstFlaggedAt: '2026-10-21T06:00:00Z' }];
-  assert.equal(staleAnnouncedFlagResult({ flagged }, 3, new Date('2026-10-24T06:00:00Z')).status, 'pass');
-  assert.equal(staleAnnouncedFlagResult({ flagged }, 3, new Date('2026-10-27T06:00:00Z')).status, 'warn');
+  assert.equal(staleAnnouncedFlagResult({ flagged }, 3, new Date('2026-10-22T06:00:00Z')).status, 'pass');
+  assert.equal(staleAnnouncedFlagResult({ flagged }, 3, new Date('2026-10-24T06:00:00Z')).status, 'warn');
 });

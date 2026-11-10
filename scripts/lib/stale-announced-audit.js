@@ -236,27 +236,35 @@ function describeOpeningEvidence(reviewTextsDir, showId, explainExclusion, show,
 // history: every flag but the ones that needed a data fix cleared in <= 4
 // daily snapshots). A warn per transient flag meant one card per lag window.
 // Only a flag that outlives the pipeline's own catch-up is worth a card.
-const GRACE_DAYS = 5;
+// 2 days, not longer: the owner-alert router already defers filing a card
+// until a warn has persisted 72h (deferFilingHours in health-check.js), and
+// the digest reads the previous day's snapshot, so the real delay is ~6 days.
+const GRACE_DAYS = 2;
+const HISTORY_DAYS = 7;
 
 /**
  * Stamp each flagged row with `firstFlaggedAt`, carried over from the previous
  * snapshot when the same show was flagged there (so the stamp survives daily
  * re-runs and resets once a show drops out of the flagged set).
  */
-function carryFirstFlagged(prevSnap, nowFlagged, nowIso, degraded = false) {
-  const prev = new Map(Object.entries((prevSnap && prevSnap.firstFlaggedHistory) || {}));
+function carryFirstFlagged(prevSnap, nowFlagged, nowIso) {
+  const prev = new Map(); // id -> { firstFlaggedAt, lastSeenAt }
+  const hist = (prevSnap && prevSnap.firstFlaggedHistory) || {};
+  for (const [id, v] of Object.entries(hist)) if (v && v.firstFlaggedAt) prev.set(id, v);
   for (const f of Array.isArray(prevSnap && prevSnap.flagged) ? prevSnap.flagged : []) {
-    if (f && f.id && f.firstFlaggedAt) prev.set(f.id, f.firstFlaggedAt);
+    if (f && f.id && f.firstFlaggedAt) prev.set(f.id, { firstFlaggedAt: f.firstFlaggedAt, lastSeenAt: prevSnap.generatedAt || nowIso });
   }
-  const flagged = (nowFlagged || []).map(f => ({ ...f, firstFlaggedAt: prev.get(f.id) || nowIso }));
-  // A run without review-texts (this one or the previous) drops every
-  // review-driven flag, so absence there is not recovery: keep the stamps as
-  // history so the 5-day clock is not restarted by a degraded run.
-  const keep = degraded || (prevSnap && prevSnap.reviewTextsAvailable === false);
+  const flagged = (nowFlagged || []).map(f => ({ ...f, firstFlaggedAt: prev.get(f.id)?.firstFlaggedAt || nowIso }));
+  // A show can drop out of the flagged set without being fixed (a degraded or
+  // partial review-texts checkout, a wrong-production flag set then cleared,
+  // ack then unack). Keep its stamp for HISTORY_DAYS so the clock is not
+  // restarted by every blip.
+  const seenNow = new Set(flagged.map(f => f.id));
   const history = {};
-  if (keep) {
-    const now = new Set(flagged.map(f => f.id));
-    for (const [id, t] of prev) if (!now.has(id)) history[id] = t;
+  for (const [id, v] of prev) {
+    if (seenNow.has(id)) continue;
+    const last = Date.parse(v.lastSeenAt || nowIso);
+    if (Number.isFinite(last) && Date.parse(nowIso) - last <= HISTORY_DAYS * 86400000) history[id] = v;
   }
   return { flagged, history };
 }

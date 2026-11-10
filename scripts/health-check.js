@@ -1895,6 +1895,7 @@ function checkQuality() {
     // flaggedCount would defeat that.
     //
     // BRO-7277: warns only on flags >= GRACE_DAYS old (staleAnnouncedFlagResult); newer ones are flip lag.
+    // (below: persistent flags only; flaggedCount still counts settling ones.)
     // Warns on flaggedCount TOTAL, not a newSinceLastRun delta (unlike the
     // cv-wrongproduction/4-sweep checks above) — deliberately: this audit has
     // a per-show --ack mechanism (evaluateAnnouncedShow excludes acked shows
