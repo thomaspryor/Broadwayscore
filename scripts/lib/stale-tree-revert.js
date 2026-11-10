@@ -26,6 +26,9 @@ const { execFileSync } = require('child_process');
 
 const DEFAULT_DEPTH = 60;      // earlier versions of each file to compare against
 const DEFAULT_MIN_FILES = 3;   // restored files in ONE commit before it is flagged
+// A stale checkout is days old, not years: bounding the walk keeps a rarely
+// edited file from walking the whole history (~0.6s/file unbounded).
+const LOOKBACK = '120.days.ago';
 
 function isIntentionalRevert(subject) {
   return /^revert\b/i.test(String(subject || '').trim());
@@ -60,7 +63,7 @@ function blobAt(rev, path) {
 function historyBlobs(rev, path, depth) {
   let out = '';
   try {
-    out = git(['log', `-n${depth + 1}`, '--format=', '--raw', '--no-abbrev', '--no-renames', rev, '--', path],
+    out = git(['log', `-n${depth + 1}`, `--since=${LOOKBACK}`, '--format=', '--raw', '--no-abbrev', '--no-renames', rev, '--', path],
       { stdio: ['ignore', 'pipe', 'ignore'] });
   } catch { return []; }
   const blobs = [];
