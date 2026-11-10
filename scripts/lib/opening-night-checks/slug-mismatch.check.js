@@ -590,6 +590,55 @@ function fullTextAboutThisShow(fullTexts, show, shows) {
   });
 }
 
+/**
+ * Contamination evidence in the URL itself (BRO-7204, second pass). A mismatch
+ * only means the URL and saved text never name THIS show, which is true of
+ * nearly every headline URL ("/a-can-of-worms/", "/PATRICK-MARMION-mute-cute")
+ * on a correctly filed review. Cross-show contamination in this pipeline means
+ * a review of ANOTHER show in shows.json got attached here, and its URL then
+ * usually names that show ("/dolly-parton-on-broadway-9-to-5" filed under
+ * Waiting for Godot, BRO-7121). Returns the other show's normalized title, or
+ * null. Multi-word titles only (two or more non-article words): one-word
+ * titles ("Chicago", "Company", "Other") are ordinary words in a path. A title
+ * contained in this show's own title, or containing it, is the same family
+ * ("Dog Man" vs "Dog Man: The Musical") and never counts.
+ */
+const TITLE_ARTICLES = new Set(['the', 'a', 'an']);
+const urlTitleIndexCache = new WeakMap();
+function buildUrlTitleIndex(shows) {
+  if (urlTitleIndexCache.has(shows)) return urlTitleIndexCache.get(shows);
+  const titles = new Set();
+  for (const s of shows) {
+    const w = normWords(s && s.title);
+    if (w.filter(x => !TITLE_ARTICLES.has(x)).length >= 2) titles.add(w.join(' '));
+  }
+  const idx = { titles, lengths: [...new Set([...titles].map(t => t.split(' ').length))] };
+  urlTitleIndexCache.set(shows, idx);
+  return idx;
+}
+
+function urlNamesOtherShow(url, show, shows) {
+  if (!url || !Array.isArray(shows) || shows.length === 0) return null;
+  const { titles, lengths } = buildUrlTitleIndex(shows);
+  const own = normWords(show && show.title).join(' ');
+  const pad = (s) => ` ${s} `;
+  const words = normWords(urlSearchSlug(url));
+  for (const n of lengths) {
+    for (let i = 0; i + n <= words.length; i++) {
+      const key = words.slice(i, i + n).join(' ');
+      if (!titles.has(key) || !own) continue;
+      if (pad(own).includes(pad(key)) || pad(key).includes(pad(own))) continue;
+      return key;
+    }
+  }
+  return null;
+}
+
+// The lifetime sweep's isActionable rule (audit-slug-mismatch-lifetime.js).
+function isContaminationEvidence(mismatch) {
+  return !!(mismatch && mismatch.namesOtherShow);
+}
+
 function run(show, context) {
   const reviews = context.reviewsDoc[show.id] || [];
   if (reviews.length === 0) {
@@ -645,6 +694,10 @@ function run(show, context) {
       criticName: review.criticName,
       url: review.url,
       urlSlug,
+      // Positive contamination evidence (or null: unattributed, no evidence
+      // either way). The lifetime sweep's digest row warns only on new hits
+      // that carry it (BRO-7204).
+      namesOtherShow: urlNamesOtherShow(review.url, show, context.shows),
     });
   }
 
@@ -694,4 +747,5 @@ module.exports = {
   isOpaqueUrlSlug, isIdOnlyCmsUrl, buildMentionRegex, sourceTextNamesShow,
   fullTextNamesShowRepeatedly, buildVenueRegex, fullTextNamesVenueAndTitleWords,
   loadSourceTextByUrl, roundupNamesShow, urlKey, fullTextAboutThisShow,
+  urlNamesOtherShow, isContaminationEvidence,
 };

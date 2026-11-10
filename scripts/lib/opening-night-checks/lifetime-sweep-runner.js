@@ -68,6 +68,11 @@ function defaultViolationKey(showId, violation) {
  * @param {string[]} config.argv            - process.argv.slice(2)
  * @param {string} [config.extraUsage]      - extra usage text specific to this check
  * @param {function(Array): Object} [config.summarizeHits] - additional report fields (no change to verdicts)
+ * @param {function(Object): boolean} [config.isActionable] - (violation) => true when the hit carries
+ *        positive evidence of the bypass class. When set, the snapshot also records
+ *        newActionableSinceLastRun / actionableViolations, and the digest row warns on
+ *        those instead of on every new key (BRO-7204: a hit with no evidence either way
+ *        is backlog, not news).
  * @returns {number} exit code
  */
 function runLifetimeSweep(config) {
@@ -83,6 +88,7 @@ function runLifetimeSweep(config) {
     argv,
     extraUsage = '',
     summarizeHits = () => ({}),
+    isActionable = null,
   } = config;
 
   const SNAPSHOT_PATH = path.join(AUDIT_DIR, snapshotBasename);
@@ -184,9 +190,23 @@ run's snapshot shows up.
   const totalViolations = hits.reduce((n, h) => n + h.violations.length, 0);
   const summary = summarizeHits(hits);
   const currentKeys = new Set();
+  const actionableKeys = new Set();
   for (const h of hits) {
-    for (const v of h.violations) currentKeys.add(violationKey(h.showId, v));
+    for (const v of h.violations) {
+      const key = violationKey(h.showId, v);
+      currentKeys.add(key);
+      if (isActionable && isActionable(v)) actionableKeys.add(key);
+    }
   }
+  const actionableFields = (newKeys) => {
+    if (!isActionable) return {};
+    const newActionable = newKeys.filter((k) => actionableKeys.has(k));
+    return {
+      actionableViolations: actionableKeys.size,
+      newActionableSinceLastRun: newActionable.length,
+      newActionableKeys: newActionable.slice(0, 50),
+    };
+  };
 
   let newSinceLastRun = currentKeys.size;
   let newViolationKeys = [...currentKeys];
@@ -210,6 +230,7 @@ run's snapshot shows up.
         totalViolations,
         newSinceLastRun,
         newViolationKeys: newViolationKeys.slice(0, 50),
+        ...actionableFields(newViolationKeys),
         violationKeys: [...currentKeys],
         hits,
         ...summary,
@@ -225,11 +246,12 @@ run's snapshot shows up.
       showsWithViolations: hits.length,
       totalViolations,
       newSinceLastRun,
+      ...actionableFields(newViolationKeys),
       hits,
       ...summary,
     }, null, 2));
   } else {
-    console.log(`${checkModule.name} lifetime sweep (${taskRef}): ${scanned} show(s) with review-texts scanned, ${hits.length} show(s) with unhandled violations (${totalViolations} review(s), ${newSinceLastRun} new since last run).`);
+    console.log(`${checkModule.name} lifetime sweep (${taskRef}): ${scanned} show(s) with review-texts scanned, ${hits.length} show(s) with unhandled violations (${totalViolations} review(s), ${newSinceLastRun} new since last run${isActionable ? `, ${actionableFields(newViolationKeys).newActionableSinceLastRun} of them with contamination evidence` : ''}).`);
     for (const h of hits) {
       console.log(`\n-- ${h.title} (${h.showId}), opened ${h.openingDate || 'unknown'} --`);
       console.log(`  ${h.message.split('\n').join('\n  ')}`);

@@ -62,6 +62,7 @@ const { isPageWorthyWorkflow } = require('./lib/page-worthy-alerts.js');
 const { summarizeRepeatFailures, enrichRepeatFailureSteps, repeatFailureLabel, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS } = require('./lib/workflow-repeat-failures.js');
 const { assessAutofixEffectiveness, CHECK_NAME: AUTOFIX_EFFECTIVENESS_CHECK_NAME } = require('./lib/autofix-effectiveness');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { lifetimeSweepRowResult } = require('./lib/lifetime-sweep-row.js');
 const { isBroadwayCategory } = require('./lib/venue-classification');
 const { assessMainRedStreak } = require('./lib/main-red-streak.js');
 
@@ -1842,18 +1843,11 @@ function checkQuality() {
       },
     ].map(({ name, snapFile, scriptName, stepName, unit }) => runCheck(name, () => {
       const snapPath = path.join(AUDIT_DIR, snapFile);
-      if (!fs.existsSync(snapPath)) {
-        return { name, status: 'warn', message: 'No lifetime-sweep snapshot yet (cron not yet run)', hint: `node scripts/${scriptName}` };
-      }
-      const snap = readJSON(snapPath);
-      const age = snap?.updatedAt ? hoursAgo(snap.updatedAt) : Infinity;
-      if (age > 48) {
-        return { name, status: 'error', message: `Lifetime-sweep snapshot is ${formatAge(age)} old (>48h) — the daily sweep itself has stopped running`, hint: `Check the "${stepName}" step in data-health-check.yml` };
-      }
-      if (snap.newSinceLastRun > 0) {
-        return { name, status: 'warn', message: `${snap.newSinceLastRun} NEW ${unit} since last run (${snap.totalViolations} total across ${snap.showsWithViolations} show(s), ${formatAge(age)} ago)`, hint: `node scripts/${scriptName} --json to triage; check newViolationKeys in the snapshot for which ones are new` };
-      }
-      return { name, status: 'pass', message: `No new violations since last run (${snap.totalViolations} known baseline across ${snap.scanned} show(s), ${formatAge(age)} ago)` };
+      const snap = fs.existsSync(snapPath) ? readJSON(snapPath) : null;
+      const ageHours = snap?.updatedAt ? hoursAgo(snap.updatedAt) : Infinity;
+      // BRO-7204: an evidence-aware snapshot warns only on new hits with
+      // contamination evidence (scripts/lib/lifetime-sweep-row.js).
+      return lifetimeSweepRowResult({ name, snap, ageHours, scriptName, stepName, unit, formatAge });
     })),
 
     // Missed opening-night broadcast sweep (BRO-2934). The dead-man half of
