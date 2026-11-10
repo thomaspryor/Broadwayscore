@@ -322,6 +322,7 @@ async function checkPages(L) {
 }
 
 // ---------- report ----------
+function saveAuditJson(dest, obj) { A.writeAuditJson(dest, obj); }
 function triageFile(city) { const f = path.join(ROOT, 'data', 'audit', 'city-hub-dual', city, 'triage.json'); return fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, 'utf8')) : { items: {} }; }
 
 function computeFlags(L) {
@@ -432,9 +433,9 @@ async function main() {
     console.log(JSON.stringify(brief, null, 1));
     if (arg('write')) {
       const d = path.join(ROOT, 'data', 'audit', 'city-hub-dual', city); fs.mkdirSync(d, { recursive: true });
-      fs.writeFileSync(path.join(d, 'scorecard.json'), JSON.stringify(sc, null, 1));
+      saveAuditJson(path.join(d, 'scorecard.json'), sc);
     }
-    if (arg('flags')) fs.writeFileSync(arg('flags'), JSON.stringify(sc.flags, null, 1));
+    if (arg('flags')) saveAuditJson(arg('flags'), sc.flags);
   } else throw new Error(`unknown mode ${mode}`);
   if (spend.calls) {
     console.error(`spend: $${spend.usd.toFixed(3)} (gemini $${spend.gemini.toFixed(3)}, openai $${spend.openai.toFixed(3)}, ${spend.calls} calls)`);
