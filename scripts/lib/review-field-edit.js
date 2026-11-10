@@ -190,6 +190,33 @@ function wrongAuthorFlagEvidenceGone(record) {
   return !!who && who.length >= 3 && text.trim().length >= 500 && !fold(text).includes(fold(who));
 }
 
+/**
+ * BRO-7326: `v` is `current` with only tracking params removed (normalizeUrl treats
+ * both as one article, so the url-change invariant will not wipe anything).
+ */
+function trackingStripRepair(current, v) {
+  if (typeof current !== 'string' || typeof v !== 'string' || !current || !v || current === v) return false;
+  if (!/^https?:\/\//i.test(current) || !/^https?:\/\//i.test(v)) return false;
+  const { normalizeUrl } = require('./review-normalization');
+  return normalizeUrl(current) === normalizeUrl(v) && v.length < current.length;
+}
+
+/**
+ * BRO-7326: the current url is provably not this critic's review when the content
+ * verifier read it (high confidence) as a different kind of article (interview,
+ * preview, feature) and it is not valid. The repair target must stay on the same
+ * host, so this can only swap a wrong article for the outlet's own review.
+ */
+function verifiedNonReviewSameHost(record, v) {
+  const cv = record && record.contentVerification;
+  if (!cv || cv.isValid !== false || cv.wrongArticle !== true || cv.confidence !== 'high') return false;
+  if (!cv.articleType || cv.articleType === 'review') return false;
+  try {
+    const host = (u) => new URL(u).hostname.replace(/^www\./, '').toLowerCase();
+    return host(record.url) === host(v);
+  } catch { return false; }
+}
+
 const FIELD_VALUE_CHECKS = {
   fullTextWrongAuthor: (v, record) => (v === false && record.fullTextWrongAuthor === true && wrongAuthorFlagEvidenceGone(record)
     ? null : 'fullTextWrongAuthor may only be cleared (false), when the stored fullText (500+ chars) no longer names the author the flag detected'),
@@ -298,6 +325,9 @@ const FIELD_VALUE_CHECKS = {
     // (real BWW review paths like /article/BWW-Review-... fail that check).
     const repair = require('./relative-review-url').classifyRelativeUrl(current, record.outletId).fixedUrl;
     if (repair && v === repair) return null;
+    // BRO-7326: the stored url is the review's own article plus a tracking param
+    // (?via=twitter_page). Same article, so the strip needs no provably-wrong proof.
+    if (trackingStripRepair(current, v)) return null;
     const currentAggregator = isAggregatorPageUrl(current);
     // BRO-5183: a legacy web-search row the scorer already excludes for want of
     // page text holds a url that step made up (outlet 404 pages, patterned
@@ -314,7 +344,8 @@ const FIELD_VALUE_CHECKS = {
       || (current && !!listingPageUrlReason(current))
       || ctx.currentUrlOwnedByOtherCritic === true
       || ctx.currentUrlOwnedByOtherShow === true
-      || unverifiedSearchUrl;
+      || unverifiedSearchUrl
+      || verifiedNonReviewSameHost(record, v);
     if (!currentWrong) return 'url: the current url is not provably wrong (aggregator, non-review page, another critic\'s review, another show\'s review, or an unverified legacy web-search url)';
     if (v === '') {
       // BRO-5374: '' keeps the text (it is not a url change for the invariant).

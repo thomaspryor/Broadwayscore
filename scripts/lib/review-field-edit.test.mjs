@@ -1034,3 +1034,29 @@ test('fullTextWrongAuthor: clear-only, and only when the detected author is gone
   // Never set true through a plan.
   assert.equal(applyReviewFieldEdit({ ...rec, fullTextWrongAuthor: false }, { field: 'fullTextWrongAuthor', oldValue: false, newValue: true }, stamp).ok, false);
 });
+
+// BRO-7326: url repairs for two files a pre-fix writer corrupted (Daily Beast ?via=twitter_page, Vulture wrong article).
+test('url edit: stripping a tracking param is allowed, other changes on a real url are not', () => {
+  const base = 'https://www.thedailybeast.com/frankie-review';
+  const rec = { outletId: 'dailybeast', url: `${base}?via=twitter_page` };
+  const ok = applyReviewFieldEdit(rec, { field: 'url', oldValue: rec.url, newValue: base }, stamp);
+  assert.equal(ok.ok, true, ok.reason);
+  assert.equal(ok.record.url, base);
+  assert.equal(ok.record.needsRefetch, true);
+  const other = applyReviewFieldEdit(rec, { field: 'url', oldValue: rec.url, newValue: `${base}-2` }, stamp);
+  assert.equal(other.ok, false);
+});
+
+test('url edit: a high-confidence verified non-review article url may be swapped for a same-host url only', () => {
+  const rec = {
+    outletId: 'vulture', url: 'https://www.vulture.com/2019/11/diablo-cody-interview.html',
+    contentVerification: { isValid: false, wrongArticle: true, confidence: 'high', articleType: 'interview' },
+  };
+  const good = applyReviewFieldEdit(rec, { field: 'url', oldValue: rec.url, newValue: 'https://www.vulture.com/2019/12/review-jagged-little-pill.html' }, stamp);
+  assert.equal(good.ok, true, good.reason);
+  const otherHost = applyReviewFieldEdit(rec, { field: 'url', oldValue: rec.url, newValue: 'https://www.nytimes.com/2019/12/05/theater/review-jagged.html' }, stamp);
+  assert.equal(otherHost.ok, false);
+  const real = { ...rec, contentVerification: { ...rec.contentVerification, articleType: 'review' } };
+  const refused = applyReviewFieldEdit(real, { field: 'url', oldValue: real.url, newValue: 'https://www.vulture.com/2019/12/review-jagged-little-pill.html' }, stamp);
+  assert.equal(refused.ok, false);
+});

@@ -1,0 +1,54 @@
+{
+  "issueNumber": "bro-7326",
+  "planId": "fc389ff4-81e7-4f05-9a2a-ff7fbdeab559",
+  "status": "pending",
+  "createdAt": "2026-11-10T20:58:09.265Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7326: repair url on Daily Beast frankie-2019 (tracking param) and Vulture jagged-2019 (wrong article url); clear the false pre-opening wrongProduction on the Vulture review's real-url file so it counts once; collector refetches",
+    "steps": [
+      "frankie-and-johnny-in-the-clair-de-lune-2019/dailybeast--tim-teeman.json: url",
+      "jagged-little-pill-2019/vulture--jackson-mchenry.json: url",
+      "jagged-little-pill-2019/vulture--helen-shaw.json: wrongProductionManualClear",
+      "jagged-little-pill-2019/vulture--helen-shaw.json: wrongProduction"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "frankie-and-johnny-in-the-clair-de-lune-2019/dailybeast--tim-teeman.json",
+        "field": "url",
+        "oldValue": "https://www.thedailybeast.com/frankie-and-johnny-in-the-clair-de-lune-audra-mcdonald-and-michael-shannons-chemistry-burns-up-broadway?via=twitter_page",
+        "newValue": "https://www.thedailybeast.com/frankie-and-johnny-in-the-clair-de-lune-audra-mcdonald-and-michael-shannons-chemistry-burns-up-broadway",
+        "description": "frankie-and-johnny-in-the-clair-de-lune-2019/dailybeast--tim-teeman.json: url"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jagged-little-pill-2019/vulture--jackson-mchenry.json",
+        "field": "url",
+        "oldValue": "https://www.vulture.com/2019/11/diablo-cody-jagged-little-pill-musical.html",
+        "newValue": "https://www.vulture.com/2019/12/review-jagged-little-pill-is-missing-the-essence-of-alanis.html",
+        "description": "jagged-little-pill-2019/vulture--jackson-mchenry.json: url"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jagged-little-pill-2019/vulture--helen-shaw.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "jagged-little-pill-2019/vulture--helen-shaw.json: wrongProductionManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jagged-little-pill-2019/vulture--helen-shaw.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "jagged-little-pill-2019/vulture--helen-shaw.json: wrongProduction"
+      }
+    ]
+  }
+}
