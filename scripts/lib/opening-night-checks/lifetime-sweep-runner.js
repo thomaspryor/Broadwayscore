@@ -147,7 +147,7 @@ run's snapshot shows up.
     console.error(`FAIL: could not read ${REVIEWS_PATH}: ${e.message}`);
     return 1;
   }
-  const context = { reviewTextsRoot: REVIEW_TEXTS_DIR, reviewsDoc };
+  const context = { reviewTextsRoot: REVIEW_TEXTS_DIR, reviewsDoc, showScorePath: path.join(ROOT, 'data', 'show-score.json') };
   if (needsShows) context.shows = allShows;
 
   // "scanned" reflects directories actually present on disk (mirrors
