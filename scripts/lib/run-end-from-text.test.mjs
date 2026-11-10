@@ -44,3 +44,29 @@ test('pickRunEnd counts a date once per site (boilerplate repeats do not outvote
   ];
   assert.equal(pickRunEnd(cands), '2026-02-08');
 });
+
+// BRO-7319 (a): a single review's "extended through" must not move a closing date.
+const { laterAnnouncedRunEnd } = require('./run-end-from-text.js');
+const tx = (text, url) => ({ text, url, articleDate: '2026-10-05' });
+const SHOW = { opening: '2026-10-01', closing: '2026-10-25' };
+
+test('one host saying "extended through" does not move the date (writer default)', () => {
+  assert.equal(laterAnnouncedRunEnd(SHOW, { texts: [tx('The show was extended through Nov 8.', 'https://a.com/1')] }), null);
+});
+test('two hosts naming the same date move it, kind extended only when both used the extended cue', () => {
+  const both = laterAnnouncedRunEnd(SHOW, { texts: [tx('extended through Nov 8', 'https://a.com/1'), tx('extended through Nov 8', 'https://b.com/2')] });
+  assert.equal(both.date, '2026-11-08'); assert.equal(both.kind, 'extended');
+  const mixed = laterAnnouncedRunEnd(SHOW, { texts: [tx('extended through Nov 8', 'https://a.com/1'), tx('runs through Nov 8', 'https://b.com/2')] });
+  assert.equal(mixed.date, '2026-11-08'); assert.equal(mixed.kind, 'text');
+});
+test('two hosts on different dates do not combine', () => {
+  assert.equal(laterAnnouncedRunEnd(SHOW, { texts: [tx('extended through Nov 8', 'https://a.com/1'), tx('extended through Nov 15', 'https://b.com/2')] }), null);
+});
+test('the theatre listing alone still moves the date; audit minSites:1 still sees a single host', () => {
+  assert.equal(laterAnnouncedRunEnd(SHOW, { texts: [], listing: { date: '2026-11-01', url: 'https://t.org/p' } }).kind, 'listing');
+  assert.equal(laterAnnouncedRunEnd(SHOW, { texts: [tx('extended through Nov 8', 'https://a.com/1')] }, { minSites: 1 }).date, '2026-11-08');
+});
+test('latest of several two-host dates wins', () => {
+  const r = laterAnnouncedRunEnd(SHOW, { texts: [tx('through Nov 1', 'https://a.com/1'), tx('through Nov 1', 'https://b.com/2'), tx('through Nov 8', 'https://c.com/3'), tx('through Nov 8', 'https://d.com/4')] });
+  assert.equal(r.date, '2026-11-08');
+});

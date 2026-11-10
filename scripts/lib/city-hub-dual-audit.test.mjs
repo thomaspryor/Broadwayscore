@@ -133,3 +133,16 @@ test('BRO-7274: DC/LA hub review hosts from the coverage audit resolve to a regi
     if (u.includes('capitalcommunitynews')) assert.equal(r.outletId || r.id, 'hillrag');
   }
 });
+
+// BRO-7319 (c): a page that prints the first performance as "opening" is not a wrong press-opening date.
+test('opening-date: page run start a few days before our press opening is not flagged; real mismatches still are', () => {
+  const show = { title: 'Hundred Days', venue: 'Keegan Theatre', openingDate: '2026-10-14', closingDate: '2026-11-15' };
+  const base = { pageIsAboutProduction: 'yes', title: 'Hundred Days', venue: 'Keegan Theatre', closing: '2026-11-15' };
+  const codes = (ex) => A.showFlags(show, { ...base, ...ex }).map((f) => f.code).filter((c) => !c.startsWith('preview-date'));
+  assert.deepEqual(codes({ opening: '2026-10-08' }), []);                                   // run start 6 days earlier
+  assert.deepEqual(codes({ opening: '2026-10-08', previewStart: '2026-10-08' }), []);       // same date given as both
+  assert.ok(codes({ opening: '2026-09-20' }).includes('opening-date'));                    // 24 days earlier: too far
+  assert.ok(codes({ opening: '2026-10-08', previewStart: '2026-10-02' }).includes('opening-date')); // page has its own preview split
+  assert.ok(codes({ opening: '2026-10-20' }).includes('opening-date'));                    // our opening BEFORE the page's
+  assert.equal(A.openingIsRunStartArtifact({ openingDate: '2026-12-01' }, { opening: '2026-10-08', closing: '2026-11-15' }), false);
+});

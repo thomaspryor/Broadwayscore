@@ -154,7 +154,8 @@ function manualUrlIsAggregatorOverOwn(manual, twin) {
  * @param {object[]} reviews - mutated in place
  * @param {object[]} manualEntries
  * @param {(url: string) => string|null} normalizeUrl
- * @returns {{preserved: number, appended: number, matchedByUrl: number, matchedCrossOutlet: number, refusedRoundup: string[]}}
+ * @param {{baseline?: Set<string>|null, priorHeld?: object[]}} opts  held = unprovenanced rows displaced by a scored twin (full rows)
+ * @returns {{held: object[], preserved: number, appended: number, matchedByUrl: number, matchedCrossOutlet: number, refusedRoundup: string[]}}
  */
 function mergeManualEntries(reviews, manualEntries, normalizeUrl, opts = {}) {
   let preserved = 0;
@@ -163,9 +164,16 @@ function mergeManualEntries(reviews, manualEntries, normalizeUrl, opts = {}) {
   let matchedCrossOutlet = 0;
   const refusedRoundup = [];
   const unprovenanced = [];
+  const held = [];
   const baseline = opts.baseline || null;
 
-  for (const manual of manualEntries) {
+  // BRO-7319: rows held on an earlier rebuild (opts.priorHeld, kept in reviews.json _meta) are candidates again, so a
+  // hand row displaced by a scored twin is re-evaluated every rebuild instead of vanishing. A current row with the
+  // same key supersedes its held copy (it was re-entered, e.g. with --reason).
+  const liveKeys = new Set(manualEntries.map(manualEntryKey));
+  const candidates = manualEntries.concat((opts.priorHeld || []).filter(r => r && !liveKeys.has(manualEntryKey(r))));
+
+  for (const manual of candidates) {
     const twin = findPipelineTwin(manual, reviews, normalizeUrl);
 
     if (twin && twin.review.scoreSource === 'human-review') continue;
@@ -175,7 +183,11 @@ function mergeManualEntries(reviews, manualEntries, normalizeUrl, opts = {}) {
     // critic and score through every rebuild). It is reported; the pipeline row stands.
     if (baseline && !hasManualProvenance(manual) && !baseline.has(manualEntryKey(manual))) {
       unprovenanced.push(manualEntryKey(manual));
-      if (twin && Number.isFinite(twin.review.assignedScore)) continue;
+      if (twin && Number.isFinite(twin.review.assignedScore)) {
+        // keep the full row: the pipeline row stands now, but the human's correction is never lost
+        if (!held.some(h => manualEntryKey(h) === manualEntryKey(manual))) held.push(manual);
+        continue;
+      }
     }
 
     if (twin && isUnknownByline(manual.criticName)
@@ -225,7 +237,7 @@ function mergeManualEntries(reviews, manualEntries, normalizeUrl, opts = {}) {
     // nothing scoreable — appending here would duplicate, so do nothing.
   }
 
-  return { preserved, appended, matchedByUrl, matchedCrossOutlet, refusedRoundup, unprovenanced };
+  return { preserved, appended, matchedByUrl, matchedCrossOutlet, refusedRoundup, unprovenanced, held };
 }
 
 /** Grandfather / report key of a manual row. */

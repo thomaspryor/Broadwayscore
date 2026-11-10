@@ -53,3 +53,38 @@ test('the CI check flags exactly the unexplained, non-grandfathered rows', () =>
   assert.deepEqual(unprovenancedRows(rows, []), [manualEntryKey(hand())]);
   assert.deepEqual(unprovenancedRows(rows, [manualEntryKey(hand())]), []);
 });
+
+// BRO-7319 (b): a displaced hand row is held (full row), carried across rebuilds, and never lost or duplicated.
+test('the displaced hand row is returned in full as held', () => {
+  const { reviews, r } = run(hand(), new Set());
+  assert.equal(reviews.length, 1);
+  assert.equal(r.held.length, 1);
+  assert.equal(r.held[0].criticName, 'Robert Israel');
+  assert.equal(r.held[0].assignedScore, 40);
+});
+test('a prior held row is re-evaluated on the next rebuild and held again (not lost when reviews.json lost it)', () => {
+  const reviews = [pipeline()];
+  const r = mergeManualEntries(reviews, [], norm, { baseline: new Set(), priorHeld: [hand()] });
+  assert.equal(r.held.length, 1);
+  assert.equal(reviews.length, 1);
+  assert.equal(reviews[0].criticName, 'Martin Copenhaver');
+});
+test('a held row re-entered with a reason supersedes its held copy: restored once, not held again, not duplicated', () => {
+  const reentered = hand({ manualEntryReason: 'Critic byline confirmed from the print edition' });
+  const reviews = [pipeline()];
+  const r = mergeManualEntries(reviews, [reentered], norm, { baseline: new Set(), priorHeld: [hand()] });
+  assert.equal(r.held.length, 0);
+  assert.equal(reviews.length, 1);
+  assert.equal(reviews[0].criticName, 'Robert Israel');
+});
+test('a held row whose pipeline twin is gone is appended once (no duplicate with later rebuilds)', () => {
+  const reviews = [];
+  const r = mergeManualEntries(reviews, [], norm, { baseline: new Set(), priorHeld: [hand()] });
+  assert.equal(reviews.length, 1);
+  assert.equal(r.held.length, 0);
+});
+test('legacy path (no baseline) holds nothing and drops nothing', () => {
+  const reviews = [pipeline()];
+  const r = mergeManualEntries(reviews, [hand()], norm, {});
+  assert.deepEqual(r.held, []);
+});

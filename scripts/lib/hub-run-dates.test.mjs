@@ -32,13 +32,6 @@ const CASES = {
       T('stagescenela.com', '7657 Melrose Avenue, Los Angeles. Through November 15. Mondays, Fridays'),
     ],
   },
-  'carla-hall-please-underestimate-me-regional-2026': {
-    opening: '2026-06-14', before: '2026-07-12', fixed: '2026-07-26',
-    texts: [
-      T('broadwayworld.com', 'Please Underestimate Me runs through July 12, 2026 at Olney Theatre Center'),
-      T('mdtheatreguide.com', 'Carla Hall in "Please Underestimate Me" EXTENDED through July 26, 2026 in the Mulitz-Gudelsky'),
-    ],
-  },
   // Every stored review quotes the original run; only the listing page carries the extension.
   'the-arsonists-regional-2026': {
     opening: '2026-09-05', before: '2026-09-20', fixed: '2026-09-27',
@@ -61,6 +54,18 @@ const CASES = {
     texts: [T('stageraw.com', 'Easy Rhino Productions Through August 2 RECOMMENDED')],
   },
 };
+
+// BRO-7319 (a): the Carla Hall extension was on ONE site (mdtheatreguide). The writer no longer moves a date on a
+// single review's "EXTENDED through"; the audit (minSites 1) still reports it so a human or a 2nd source settles it.
+test('replay carla-hall: single-site extension is held by the writer but still visible to the audit', () => {
+  const texts = [
+    T('broadwayworld.com', 'Please Underestimate Me runs through July 12, 2026 at Olney Theatre Center'),
+    T('mdtheatreguide.com', 'Carla Hall in "Please Underestimate Me" EXTENDED through July 26, 2026 in the Mulitz-Gudelsky'),
+  ];
+  const show = { opening: '2026-06-14', closing: '2026-07-12' };
+  assert.equal(laterAnnouncedRunEnd(show, { texts }), null);
+  assert.equal(laterAnnouncedRunEnd(show, { texts }, { minSites: 1 }).date, '2026-07-26');
+});
 
 for (const [id, c] of Object.entries(CASES)) {
   test(`replay ${id}: ${c.before} -> ${c.fixed || 'unchanged'}`, () => {

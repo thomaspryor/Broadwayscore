@@ -6551,6 +6551,9 @@ for (const sid of postDedupTouchedShows) {
 // Preserve manualEntry reviews from the current reviews.json that the pipeline didn't produce.
 // These are direct corrections added via manual-review-direct.js. They survive until the pipeline
 // produces a version with scoreSource='human-review' (meaning the source file was processed).
+// BRO-7319: hand rows displaced by a scored twin are kept (full rows) in reviews.json _meta.heldManualEntries, which is private
+// like the rest of reviews.json (they carry pullQuote text). Only replaced when the merge actually ran; any skip or error keeps the prior list.
+let heldManualEntries = [];
 {
   try {
     const currentReviewsPath = reviewsJsonPath; // already defined earlier in the script
@@ -6563,8 +6566,12 @@ for (const sid of postDedupTouchedShows) {
       // the helper matches punctuation-insensitively and falls back to the URL.
       // BRO-7291 class 5: rows without a recorded reason lose to a scored pipeline twin unless grandfathered.
       const baseline = loadManualEntryBaseline(); // null when absent: legacy behaviour
-      const { preserved, appended, matchedByUrl, refusedRoundup = [], unprovenanced = [] } =
-        mergeManualEntries(allReviews, manualEntries, normalizeUrlForDedup, { baseline });
+      const priorHeld = ((currentData._meta || {}).heldManualEntries || []).filter(r => validShowIds.size === 0 || validShowIds.has(r.showId));
+      heldManualEntries = priorHeld; // until the merge below succeeds
+      const { preserved, appended, matchedByUrl, refusedRoundup = [], unprovenanced = [], held = [] } =
+        mergeManualEntries(allReviews, manualEntries, normalizeUrlForDedup, { baseline, priorHeld });
+      heldManualEntries = held;
+      if (held.length) console.warn(`⚠️  ${held.length} hand row(s) held in reviews.json _meta.heldManualEntries (pipeline row stands; re-enter with --reason to restore).`);
       for (const key of unprovenanced) {
         console.warn(`⚠️  Manual entry without a recorded reason (not grandfathered): ${key}. Re-enter it with manual-review-direct.js --reason=...`);
       }
@@ -6598,6 +6605,7 @@ const output = {
     description: "Critic reviews - raw input data",
     lastUpdated: new Date().toISOString(),
     reviewTextsScannedAt,
+    ...(heldManualEntries.length ? { heldManualEntries } : {}),
     notes: "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     stats: {
       totalReviews: stats.totalReviews,

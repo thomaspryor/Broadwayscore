@@ -48,7 +48,11 @@ function provenanceFor(showIds) {
   const reviews = readJson('data/reviews.json', { reviews: [] });
   const { unprovenancedRows, BASELINE } = require('./check-manual-entry-provenance');
   const base = readJson(BASELINE, { keys: [] }); // read-only: the baseline is hand-maintained
-  const rows = unprovenancedRows(reviews.reviews || reviews, base.keys).filter((k) => showIds.has(k.split('|')[0]));
+  const { manualEntryKey } = require('./lib/manual-entry-merge');
+  const live = unprovenancedRows(reviews.reviews || reviews, base.keys);
+  // BRO-7319: rows displaced by a scored twin live in _meta.heldManualEntries; they still count as flagged, once per key.
+  const held = ((reviews._meta || {}).heldManualEntries || []).map(manualEntryKey);
+  const rows = [...new Set([...live, ...held])].filter((k) => showIds.has(k.split('|')[0]));
   return { unprovenanced: rows.length, rows };
 }
 

@@ -93,7 +93,7 @@ const hostOf = (u) => { try { return new URL(u).hostname.replace(/^www\./, ''); 
  *             listing = the run end printed on the theatre's / listing site's own page for this production.
  * The listing and the latest "extended through" sentence outrank plain review text (a review keeps quoting the
  * original run after an extension); otherwise pickRunEnd decides. Only moves later, by more than `slackDays`
- * and at most `maxDays`; plain review text needs `minSites` (2) distinct sites agreeing. An earlier date in a review is almost always the original run, never a shortening.
+ * and at most `maxDays`; any text-derived date (extended or plain) needs `minSites` (2) distinct hosts naming the same date; the audit passes 1 so single-host extensions stay visible. An earlier date in a review is almost always the original run, never a shortening.
  * @returns {{ date: string, source: string, kind: 'listing'|'extended'|'text' } | null}
  */
 function laterAnnouncedRunEnd(show, evidence, opts = {}) {
@@ -107,17 +107,23 @@ function laterAnnouncedRunEnd(show, evidence, opts = {}) {
     for (const c of runEndCandidates(String(t.text || ''), { opening, articleDate: t.articleDate || null })) cands.push({ ...c, url: t.url || null });
   }
   const listing = evidence && evidence.listing && evidence.listing.date && evidence.listing.date >= opening ? evidence.listing : null;
-  const ext = cands.filter((c) => c.extended).sort((a, b) => a.date.localeCompare(b.date)).pop();
-  let best = null;
-  if (listing || ext) {
-    best = [listing && { date: listing.date, urls: [listing.url], kind: 'listing' }, ext && { date: ext.date, urls: [ext.url], kind: 'extended' }]
-      .filter(Boolean).sort((a, b) => a.date.localeCompare(b.date) || (a.kind === 'listing' ? 1 : -1)).pop();
-  } else {
-    const d = pickRunEnd(cands);
-    const urls = [...new Set(cands.filter((c) => c.date === d).map((c) => c.url))];
-    // a plain "through <date>" needs two independent sites: one blog's typo or stale sidebar is not an extension
-    if (d && new Set(urls.map((u, i) => hostOf(u) || `#${i}`)).size >= minSites) best = { date: d, urls, kind: 'text' };
-  }
+  // BRO-7319: one review's "extended through <date>" no longer moves a date. A text-derived date needs
+  // `minSites` distinct hosts naming the SAME date (any mix of cues); only the theatre's own listing stands alone.
+  // kind is 'extended' only when `minSites` hosts used the extended cue, so a plain mention never force-overwrites
+  // a pinned humanCorrectedClosingDate in harvest-hub-run-dates.js. Several qualifying dates: the latest wins.
+  const byDate = new Map();
+  cands.forEach((c, i) => {
+    const e = byDate.get(c.date) || { all: new Set(), ext: new Set(), urls: [] };
+    const h = hostOf(c.url) || `#${i}`;
+    e.all.add(h);
+    if (c.extended) e.ext.add(h);
+    if (c.url && !e.urls.includes(c.url)) e.urls.push(c.url);
+    byDate.set(c.date, e);
+  });
+  const textBest = [...byDate.entries()].filter(([, e]) => e.all.size >= minSites).sort((x, y) => x[0].localeCompare(y[0])).pop();
+  const text = textBest && { date: textBest[0], urls: textBest[1].urls, kind: textBest[1].ext.size >= minSites ? 'extended' : 'text' };
+  const best = [listing && { date: listing.date, urls: [listing.url], kind: 'listing' }, text]
+    .filter(Boolean).sort((a, b) => a.date.localeCompare(b.date) || (a.kind === 'listing' ? 1 : -1)).pop() || null;
   if (!best) return null;
   if (show.closing) {
     const gap = daysBetween(show.closing, best.date);
