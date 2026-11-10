@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7326c",
   "planId": "166e81ed-5d3e-4a4b-a574-deb16f8990de",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-10T23:06:10.638Z",
   "submitter": {
     "name": null,
@@ -23,5 +23,14 @@
         "description": "jagged-little-pill-2019/vulture--jackson-mchenry.json: url"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-10T23:13:38.849Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jagged-little-pill-2019/vulture--jackson-mchenry.json url: \"https://www.vulture.com/2019/12/review-jagged-little-pill-is-missing-the-essence-of-alanis.html\" -> \"https://www.vulture.com/2019/11/diablo-cody-jagged-little-pill-musical.html\""
+    }
+  ],
+  "executedIn": "ci"
 }
