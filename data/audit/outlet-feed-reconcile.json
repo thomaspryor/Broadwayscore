@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-10T00:14:23.338Z",
+  "generatedAt": "2026-11-10T01:31:39.409Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -27,6 +27,11 @@
       "id": "iphigenie-en-tauride-english-national-opera-west-end-2026",
       "title": "Iphigenie en Tauride - English National Opera",
       "openingDate": "2026-11-06"
+    },
+    {
+      "id": "cloud-9-west-end-2026",
+      "title": "Cloud 9",
+      "openingDate": "2026-11-10"
     },
     {
       "id": "msblackforpresident-off-broadway-2026",
@@ -104,12 +109,7 @@
       "openingDate": "2026-11-07"
     }
   ],
-  "skipped": [
-    {
-      "showId": "cloud-9-west-end-2026",
-      "reason": "no data/review-texts directory for this show"
-    }
-  ],
+  "skipped": [],
   "feedsChecked": 84,
   "feedsFailed": [
     {
@@ -137,9 +137,9 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 840,
+  "itemsScanned": 842,
   "matchedGaps": 3,
-  "possibleGaps": 3,
+  "possibleGaps": 4,
   "gaps": [
     {
       "showId": "222-a-ghost-story-off-broadway-2026",
@@ -184,6 +184,15 @@
       "outletId": "lighting-and-sound-america",
       "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=TO9BBB",
       "headline": "Theatre&#32;in&#32;Review:&#32;Ms.&#32;Blakk&#32;for&#32;President&#32;(Vineyard&#32;Theatre)",
+      "publishDate": "2026-11-09"
+    },
+    {
+      "showId": "wanted-2022",
+      "title": "Wanted",
+      "level": "possible",
+      "outletId": "vulture",
+      "url": "https://www.vulture.com/article/theater-review-angelica-cheri-ross-baum-wanted-broadway.html",
+      "headline": null,
       "publishDate": "2026-11-09"
     },
     {
