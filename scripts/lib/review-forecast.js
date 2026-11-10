@@ -27,6 +27,7 @@
 
 'use strict';
 
+// venue-write-guard-ok: x.venue is a numeric model feature (shrunk venue track record), not a show venue write
 const LAG_DAYS = 3; // an earlier show only counts once it opened at least this long before
 const PERSON_SHRINK_K = 3; // pseudo-shows of "average" added to every person's record
 const VENUE_SHRINK_K = 5;
