@@ -12,6 +12,9 @@ const fs = require('fs');
 const path = require('path');
 const { bwwExcerptContradictsText } = require('./lib/wrong-production-autoclear');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+const USAGE = 'audit-roundup-excerpt-mismatch.js [--autocleared-only] [--dir=PATH]  read-only scan, metadata only';
+if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 const args = process.argv.slice(2);
 const dirArg = (args.find((a) => a.startsWith('--dir=')) || '').slice(6);
 const root = dirArg || path.join(__dirname, '..', 'data', 'review-texts');

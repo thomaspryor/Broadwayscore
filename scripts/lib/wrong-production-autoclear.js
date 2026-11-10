@@ -18,6 +18,7 @@
 
 const { parseDate, toDateMs } = require('./date-utils');
 const { evaluateCollectedBeforePreviews, isCollectedBeforePreviewsHold } = require('./collected-before-previews');
+const { foldDiacritics } = require('./url-slug');
 
 // Review-lag grace on the CLOSE/END side of a declared priorRuns or tourLegs
 // window (BRO-2561). Critics routinely file 1-7 days after a run's final
@@ -801,7 +802,9 @@ function shouldAutoClearWrongShowUkUrl(data, { isLondonMarketShow, isUkOutletUrl
  * roundup brought along says nothing about that text, so it must not release the hold.
  */
 function bwwExcerptContradictsText(data) {
-  const norm = (t) => String(t || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  // Same normalisation on both sides: fold diacritics first (task #648), drop HTML entities
+  // (&amp; &#8217;) that only one side may carry, then keep lowercase alphanumerics.
+  const norm = (t) => foldDiacritics(String(t || '')).toLowerCase().replace(/&#?[a-z0-9]+;/g, ' ').replace(/[^a-z0-9]+/g, ' ').trim();
   const text = norm(data && data.fullText);
   if (text.length < 200 || !data.bwwExcerpt) return false;
   const frags = String(data.bwwExcerpt).split(/\.\.\.|\u2026/).map(norm).filter((f) => f.length >= 25);

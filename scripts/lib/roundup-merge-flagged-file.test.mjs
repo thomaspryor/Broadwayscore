@@ -83,3 +83,9 @@ test('outlet stays open after the roundup excerpt stub (-2) exists next to the f
   }));
   assert.deepEqual([...getFlaggedOnlyOutletIds(SHOW, { reviewTextsDir: base })], []);
 });
+
+test('excerpt match survives diacritics and HTML entities on either side', () => {
+  const body = 'Café Müller opens with a quiet duet and the staging is tender. '.repeat(6) + 'A rousing finale &amp; a standing ovation follow.';
+  const data = { fullText: body, bwwExcerpt: 'Cafe Muller opens with a quiet duet and the staging is tender... a rousing finale & a standing ovation follow' };
+  assert.equal(bwwExcerptContradictsText(data), false);
+});
