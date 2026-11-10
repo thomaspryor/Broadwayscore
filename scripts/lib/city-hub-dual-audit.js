@@ -236,7 +236,11 @@ function laterRunEnd(text, closing, slackDays = 3) {
   return later.length ? later.sort().pop() : null;
 }
 
+/** Audit report output (never a review-text file). */
+function writeAuditJson(dest, obj) { require('fs').writeFileSync(dest, JSON.stringify(obj, null, 1)); }
+
 module.exports = {
+  writeAuditJson,
   runEndsInText, laterRunEnd,
   addDays, daysBetween, hubPhase, sectionHubShows, fold, parseJson, starsFromRating, bandForStars,
   starBandProblem, verdictProblem, quoteInText, bylineMatches, dateDiffDays, reviewFlags, showFlags,
