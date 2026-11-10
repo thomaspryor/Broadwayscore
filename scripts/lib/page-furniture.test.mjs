@@ -143,3 +143,27 @@ test('chooseOutletOrGeneric: outlet text wins unless the generic pass adds real 
   assert.strictEqual(chooseOutletOrGeneric(BODY, `${BODY}\n\n${extra}`).source, 'generic');
   assert.strictEqual(chooseOutletOrGeneric('', BODY).text, BODY);
 });
+
+test('chooseOutletOrGeneric: generic superset with a dropped short verdict paragraph wins', () => {
+  const verdict = 'In the end the production earns its standing ovation, a rare evening where every risk the director takes pays off.';
+  assert.ok(verdict.length < 300);
+  const r = chooseOutletOrGeneric(BODY, `${BODY}\n\n${verdict}`);
+  assert.strictEqual(r.source, 'generic');
+  // Not a superset (outlet has prose the generic lacks): outlet keeps it.
+  const other = 'An entirely different opening paragraph about the set design and the orchestra, which the generic pass never saw at all.';
+  assert.strictEqual(chooseOutletOrGeneric(`${other}\n\n${BODY}`, `${BODY}\n\n${verdict}`).source, 'outlet');
+});
+
+test('copyright rule leaves an enumerated "(c)" point alone', () => {
+  assert.strictEqual(PF.lineFurnitureCategory('(c) the second act sags badly'), null);
+  assert.strictEqual(PF.lineFurnitureCategory('(c) 2024 Guardian News & Media Limited'), 'copyright');
+});
+
+test('cleanRecord chains an earlier trim breadcrumb under previous', () => {
+  const text = 'A real review paragraph about the production that runs long enough to count as prose for the stripper, with a verdict.\n\nShare on Facebook';
+  const prior = { reason: 'BRO-5141 earlier trim', fromLength: 9999, toLength: text.length, at: '2026-01-01T00:00:00Z' };
+  const res = cleanRecord({ fullText: text, fullTextTrimmed: prior }, '2026-11-09T00:00:00Z');
+  assert.ok(res, 'furniture found');
+  assert.deepStrictEqual(res.record.fullTextTrimmed.previous, prior);
+  assert.strictEqual(res.record.fullTextTrimmed.reason, TRIM_REASON);
+});

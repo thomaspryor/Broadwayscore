@@ -47,6 +47,12 @@ function cleanRecord(d, at) {
     priorFullTextHash: crypto.createHash('sha256').update(d.fullText).digest('hex'),
     categories: [...new Set(removed.map((r) => r.category))].sort(),
   };
+  // Keep one level of history: an earlier deliberate trim's breadcrumb is
+  // chained, not lost (the write guard reads only the top-level fields).
+  if (d.fullTextTrimmed && typeof d.fullTextTrimmed === 'object') {
+    const { previous, ...prev } = d.fullTextTrimmed; // eslint-disable-line no-unused-vars
+    out.fullTextTrimmed.previous = prev;
+  }
   return { record: out, removed };
 }
 

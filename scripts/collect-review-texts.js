@@ -4252,8 +4252,16 @@ function chooseOutletOrGeneric(dedicated, generic) {
   // dialog anyway, so it must not count.
   const { textAsStored } = require('./lib/stored-text-form');
   const asStored = (t) => { try { return textAsStored(t) || t; } catch { return t; } };
-  const v = novelProseVerdict(asStored(dedicated), asStored(base));
-  return v.ok ? { text: base, source: 'generic', novel: v.novel } : { text: dedicated, source: 'outlet', novel: v.novel };
+  const d = asStored(dedicated);
+  const g = asStored(base);
+  const v = novelProseVerdict(d, g);
+  if (v.ok) return { text: base, source: 'generic', novel: v.novel };
+  // Superset: the generic body holds all of the outlet body plus at least
+  // one real prose run (a dropped closing/verdict paragraph). The 300-char
+  // bar above is for unrelated bodies; a strict superset only needs a run.
+  const { novelProseChars } = require('./lib/gap-acceptance');
+  if (v.novel > 0 && novelProseChars(g, d) === 0) return { text: base, source: 'generic', novel: v.novel };
+  return { text: dedicated, source: 'outlet', novel: v.novel };
 }
 
 function extractTextFromHtml(html, url) {

@@ -84,8 +84,10 @@ function main() {
       bump(stats.byOutlet, d.outletId || '?');
       bump(stats.byWriter, d.fetchMethod || d.sourceMethod || 'unknown');
       let tb = null; let ta = null;
-      try { tb = classifyContentTier(d).contentTier; ta = classifyContentTier(res.record).contentTier; } catch { /* tier unknown */ }
-      const refusal = tierChangeRefusal(tb, ta);
+      let refusal = null;
+      try { tb = classifyContentTier(d).contentTier; ta = classifyContentTier(res.record).contentTier; } catch { refusal = 'tier-unknown'; }
+      // Unknown tier is a refusal, not a pass (apply re-classifies and would throw).
+      refusal = refusal || tierChangeRefusal(tb, ta);
       if (refusal) {
         // Leave the record as it is (see tierChangeRefusal).
         stats.changed--;
@@ -136,30 +138,39 @@ function applyRows(rows, stats) {
     if (res.notLanded.length) throw new Error(`checkpoint did not land: ${res.notLanded.slice(0, 5).map((n) => n.rel).join(', ')}`);
     tracker = createWriteTracker();
   };
-  for (const row of rows) {
-    const ok = withReviewTextsLock(`page-furniture:${row.rel}`, () => {
-      // Fresh read under the lock: another writer may have changed the text
-      // since the scan. Clean what is on disk now, not the scanned copy.
-      let fresh;
-      try { fresh = JSON.parse(fs.readFileSync(row.file, 'utf8')); } catch { return false; }
-      const res = cleanRecord(fresh, row.record.fullTextTrimmed.at);
-      if (!res) return null;
-      const { classifyContentTier } = require('./lib/content-quality');
-      if (tierChangeRefusal(classifyContentTier(fresh).contentTier, classifyContentTier(res.record).contentTier)) return null;
-      const w = safeWriteReview(row.file, res.record, { force: true });
-      const after = JSON.parse(fs.readFileSync(row.file, 'utf8'));
-      if ((w && w.wrote === false) || after.fullText !== res.record.fullText) {
-        console.log(`  ✗ ${row.rel}: write did not stick (${(w && (w.skipped || w.reason)) || 'text differs after write'})`);
-        return false;
-      }
-      tracker.add(path.resolve(row.file));
-      return true;
-    });
-    if (ok === true) stats.written++;
-    else if (ok === false) stats.failed++;
-    if (tracker.size >= BATCH) flush();
+  // try/finally: a throw mid-batch must still checkpoint what was already
+  // written, or the data repo holds uncommitted edits a rebase can clobber.
+  try {
+    for (const row of rows) {
+      const ok = withReviewTextsLock(`page-furniture:${row.rel}`, () => {
+        // Fresh read under the lock: another writer may have changed the text
+        // since the scan. Clean what is on disk now, not the scanned copy.
+        try {
+          const fresh = JSON.parse(fs.readFileSync(row.file, 'utf8'));
+          const res = cleanRecord(fresh, row.record.fullTextTrimmed.at);
+          if (!res) return null;
+          const { classifyContentTier } = require('./lib/content-quality');
+          if (tierChangeRefusal(classifyContentTier(fresh).contentTier, classifyContentTier(res.record).contentTier)) return null;
+          const w = safeWriteReview(row.file, res.record, { force: true });
+          const after = JSON.parse(fs.readFileSync(row.file, 'utf8'));
+          if (after.fullText === res.record.fullText) tracker.add(path.resolve(row.file));
+          if ((w && w.wrote === false) || after.fullText !== res.record.fullText) {
+            console.log(`  ✗ ${row.rel}: write did not stick (${(w && (w.skipped || w.reason)) || 'text differs after write'})`);
+            return false;
+          }
+          return true;
+        } catch (e) {
+          console.log(`  ✗ ${row.rel}: ${e.message}`);
+          return false;
+        }
+      });
+      if (ok === true) stats.written++;
+      else if (ok === false) stats.failed++;
+      if (tracker.size >= BATCH) flush();
+    }
+  } finally {
+    flush();
   }
-  flush();
   console.log(`applied: ${stats.written} written, ${stats.failed} failed`);
 }
 

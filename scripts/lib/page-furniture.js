@@ -146,7 +146,9 @@ const BOILERPLATE_RES = [
 
 // Copyright / publisher lines. Bounded length so a prose sentence that opens
 // with "Copyright" is never a match.
-const COPYRIGHT_RE = /^(?:©|\(c\)|copyright\b)[^\n]{0,140}$/i;
+// "(c)" counts only before a year or "copyright": a critic's enumerated
+// point ("(c) the second act sags") is prose.
+const COPYRIGHT_RE = /^(?:©|\(c\)\s*(?:(?:19|20)\d{2}|copyright\b)|copyright\b)[^\n]{0,140}$/i;
 const COPYRIGHT_WORDY_GUARD = /\b(?:law|lawsuit|infring|estate|owns? the|holder|claim|dispute)\w*/i;
 
 const REPEAT_MIN = 80;
