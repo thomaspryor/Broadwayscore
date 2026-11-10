@@ -564,6 +564,492 @@
     "queuedAt": "2026-11-10T15:18:33.746Z"
   },
   {
+    "conditionKey": "test-yml:data-validation-red:checkout-review-texts-private-repo",
+    "title": "Data audit failing: Checkout review-texts (private repo)",
+    "description": "The \"Checkout review-texts (private repo)\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42845160378",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Job",
+        "value": "Data Validation"
+      },
+      {
+        "name": "Step",
+        "value": "Checkout review-texts (private repo)"
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42845160378)"
+      }
+    ],
+    "queuedAt": "2026-11-10T15:36:09.221Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red:run-explainexclusion-corpus-parity-needs-review-texts",
+    "title": "Data audit failing: Run explainExclusion corpus parity (needs review-texts)",
+    "description": "The \"Run explainExclusion corpus parity (needs review-texts)\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42845160378",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Job",
+        "value": "Data Validation"
+      },
+      {
+        "name": "Step",
+        "value": "Run explainExclusion corpus parity (needs review-texts)"
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42845160378)"
+      }
+    ],
+    "queuedAt": "2026-11-10T15:36:09.244Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red:run-autoclear-vs-ensemble-corpus-test-needs-review-texts",
+    "title": "Data audit failing: Run autoclear-vs-ensemble corpus test (needs review-texts)",
+    "description": "The \"Run autoclear-vs-ensemble corpus test (needs review-texts)\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42845160378",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Job",
+        "value": "Data Validation"
+      },
+      {
+        "name": "Step",
+        "value": "Run autoclear-vs-ensemble corpus test (needs review-texts)"
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42845160378)"
+      }
+    ],
+    "queuedAt": "2026-11-10T15:36:09.264Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red:run-aggregator-domain-tld-parity-corpus-scan-needs-review-texts",
+    "title": "Data audit failing: Run aggregator-domain TLD parity corpus scan (needs review-texts)",
+    "description": "The \"Run aggregator-domain TLD parity corpus scan (needs review-texts)\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42845160378",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Job",
+        "value": "Data Validation"
+      },
+      {
+        "name": "Step",
+        "value": "Run aggregator-domain TLD parity corpus scan (needs review-texts)"
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42845160378)"
+      }
+    ],
+    "queuedAt": "2026-11-10T15:36:09.283Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red:run-wrongshow-auto-clear-ensemble-corpus-scan-needs-review-texts",
+    "title": "Data audit failing: Run wrongShow auto-clear ensemble corpus scan (needs review-texts)",
+    "description": "The \"Run wrongShow auto-clear ensemble corpus scan (needs review-texts)\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42845160378",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Job",
+        "value": "Data Validation"
+      },
+      {
+        "name": "Step",
+        "value": "Run wrongShow auto-clear ensemble corpus scan (needs review-texts)"
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42845160378)"
+      }
+    ],
+    "queuedAt": "2026-11-10T15:36:09.302Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red:run-frankie-2002-cleanup-regression-guard-needs-review-texts",
+    "title": "Data audit failing: Run frankie-2002 cleanup regression guard (needs review-texts)",
+    "description": "The \"Run frankie-2002 cleanup regression guard (needs review-texts)\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42845160378",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Job",
+        "value": "Data Validation"
+      },
+      {
+        "name": "Step",
+        "value": "Run frankie-2002 cleanup regression guard (needs review-texts)"
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42845160378)"
+      }
+    ],
+    "queuedAt": "2026-11-10T15:36:09.319Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red:run-review-text-folder-orphan-guard-needs-review-texts",
+    "title": "Data audit failing: Run review-text folder orphan guard (needs review-texts)",
+    "description": "The \"Run review-text folder orphan guard (needs review-texts)\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42845160378",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Job",
+        "value": "Data Validation"
+      },
+      {
+        "name": "Step",
+        "value": "Run review-text folder orphan guard (needs review-texts)"
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42845160378)"
+      }
+    ],
+    "queuedAt": "2026-11-10T15:36:09.337Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red:run-bro-1397-prior-run-former-cast-sweep-needs-review-texts",
+    "title": "Data audit failing: Run BRO-1397 prior-run former-cast sweep (needs review-texts)",
+    "description": "The \"Run BRO-1397 prior-run former-cast sweep (needs review-texts)\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42845160378",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Job",
+        "value": "Data Validation"
+      },
+      {
+        "name": "Step",
+        "value": "Run BRO-1397 prior-run former-cast sweep (needs review-texts)"
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42845160378)"
+      }
+    ],
+    "queuedAt": "2026-11-10T15:36:09.363Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red:run-bro-3092-addams-wsj-dedup-acceptance-test-needs-review-texts",
+    "title": "Data audit failing: Run BRO-3092 addams WSJ dedup acceptance test (needs review-texts)",
+    "description": "The \"Run BRO-3092 addams WSJ dedup acceptance test (needs review-texts)\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42845160378",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Job",
+        "value": "Data Validation"
+      },
+      {
+        "name": "Step",
+        "value": "Run BRO-3092 addams WSJ dedup acceptance test (needs review-texts)"
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42845160378)"
+      }
+    ],
+    "queuedAt": "2026-11-10T15:36:09.381Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red:run-data-validation",
+    "title": "Data audit failing: Run data validation",
+    "description": "The \"Run data validation\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42845160378",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Job",
+        "value": "Data Validation"
+      },
+      {
+        "name": "Step",
+        "value": "Run data validation"
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42845160378)"
+      }
+    ],
+    "queuedAt": "2026-11-10T15:36:09.400Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red:audit-review-contamination",
+    "title": "Data audit failing: Audit review contamination",
+    "description": "The \"Audit review contamination\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42845160378",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Job",
+        "value": "Data Validation"
+      },
+      {
+        "name": "Step",
+        "value": "Audit review contamination"
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42845160378)"
+      }
+    ],
+    "queuedAt": "2026-11-10T15:36:09.420Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red:run-self-contradictory-clear-drain-acceptance-test-needs-review-texts",
+    "title": "Data audit failing: Run self-contradictory-clear drain acceptance test (needs review-texts)",
+    "description": "The \"Run self-contradictory-clear drain acceptance test (needs review-texts)\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42845160378",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Job",
+        "value": "Data Validation"
+      },
+      {
+        "name": "Step",
+        "value": "Run self-contradictory-clear drain acceptance test (needs review-texts)"
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42845160378)"
+      }
+    ],
+    "queuedAt": "2026-11-10T15:36:09.437Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red:audit-non-review-content-weather-sports-junk-pages",
+    "title": "Data audit failing: Audit non-review content (weather/sports/junk pages)",
+    "description": "The \"Audit non-review content (weather/sports/junk pages)\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42845160378",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Job",
+        "value": "Data Validation"
+      },
+      {
+        "name": "Step",
+        "value": "Audit non-review content (weather/sports/junk pages)"
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42845160378)"
+      }
+    ],
+    "queuedAt": "2026-11-10T15:36:09.457Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red:audit-critic-consensus-contamination",
+    "title": "Data audit failing: Audit critic-consensus contamination",
+    "description": "The \"Audit critic-consensus contamination\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42845160378",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Job",
+        "value": "Data Validation"
+      },
+      {
+        "name": "Step",
+        "value": "Audit critic-consensus contamination"
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42845160378)"
+      }
+    ],
+    "queuedAt": "2026-11-10T15:36:09.477Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red:audit-outlet-registry-gaps",
+    "title": "Data audit failing: Audit outlet-registry gaps",
+    "description": "The \"Audit outlet-registry gaps\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42845160378",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Job",
+        "value": "Data Validation"
+      },
+      {
+        "name": "Step",
+        "value": "Audit outlet-registry gaps"
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42845160378)"
+      }
+    ],
+    "queuedAt": "2026-11-10T15:36:09.494Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red:audit-stale-duplicateof-flags",
+    "title": "Data audit failing: Audit stale duplicateOf flags",
+    "description": "The \"Audit stale duplicateOf flags\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42845160378",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Job",
+        "value": "Data Validation"
+      },
+      {
+        "name": "Step",
+        "value": "Audit stale duplicateOf flags"
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42845160378)"
+      }
+    ],
+    "queuedAt": "2026-11-10T15:36:09.511Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red:audit-fully-unsuppressed-same-url-clusters",
+    "title": "Data audit failing: Audit fully-unsuppressed same-URL clusters",
+    "description": "The \"Audit fully-unsuppressed same-URL clusters\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42845160378",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Job",
+        "value": "Data Validation"
+      },
+      {
+        "name": "Step",
+        "value": "Audit fully-unsuppressed same-URL clusters"
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42845160378)"
+      }
+    ],
+    "queuedAt": "2026-11-10T15:36:09.530Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red:validate-review-text-files",
+    "title": "Data audit failing: Validate review-text files",
+    "description": "The \"Validate review-text files\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42845160378",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Job",
+        "value": "Data Validation"
+      },
+      {
+        "name": "Step",
+        "value": "Validate review-text files"
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42845160378)"
+      }
+    ],
+    "queuedAt": "2026-11-10T15:36:09.547Z"
+  },
+  {
     "conditionKey": "land:land/bro-7291",
     "title": "Landing blocked: rebase red on land/bro-7291",
     "description": "land.yml did not land land/bro-7291: the rebase gate went red at e70c3d463c. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42845013040",
