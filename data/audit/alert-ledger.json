@@ -41341,7 +41341,7 @@
       "silentRefires": 2
     },
     "test-yml:red:Data Safety Guards:a8821160": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Data Safety Guards / Checkout review-texts (private repo)",
       "firstSeen": "2026-11-10T16:11:46.081Z",
@@ -41351,7 +41351,15 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-7299"
+      "linearIdentifier": "BRO-7299",
+      "dispatch": {
+        "requestedAt": "2026-11-10T16:01:58.301Z",
+        "mode": "dispatch-at-filing",
+        "runId": "42848438036",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42848438036"
+      },
+      "resolvedAt": "2026-11-10T16:18:45.645Z",
+      "resolveReason": "job-green"
     },
     "land:land/inbox-digest-cost": {
       "status": "open",
@@ -41365,7 +41373,26 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 1
+    },
+    "test-yml:red:E2E Tests:a8821160": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: E2E Tests / Checkout review-texts (private repo)",
+      "firstSeen": "2026-11-10T16:18:45.724Z",
+      "incidentOpenedAt": "2026-11-10T16:18:45.724Z",
+      "lastSeen": "2026-11-10T16:18:45.724Z",
+      "lastNotifiedAt": "2026-11-10T16:18:45.724Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-7300",
+      "dispatch": {
+        "requestedAt": "2026-11-10T16:18:45.724Z",
+        "mode": "dispatch-at-filing",
+        "runId": "42851176852",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42851176852"
+      }
     },
     "opening-night-remediation-exhausted-t1-missing:the-visitors-off-broadway-2026": {
       "status": "open",
