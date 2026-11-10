@@ -54,7 +54,9 @@ function loadMarkets(): Map<string, string> {
   try {
     const raw = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
     const shows = Array.isArray(raw) ? raw : raw.shows || [];
-    for (const s of shows) m.set(s.id, String(s.market || s.category || 'unknown'));
+    // category separates Broadway / Off-Broadway / West End / Off-West End / regional;
+    // market is the coarser city and only a fallback.
+    for (const s of shows) m.set(s.id, String(s.category || s.market || 'unknown'));
   } catch { /* market 'unknown' */ }
   return m;
 }
@@ -64,6 +66,9 @@ function population(): Candidate[] {
   const markets = loadMarkets();
   const out: Candidate[] = [];
   for (const show of listShowDirs(REVIEW_TEXTS_DIR)) {
+    // '_'-prefixed folders (e.g. _superseded-misattributed) hold quarantined
+    // files, not live reviews: never part of the population (trial run 2026-11-10).
+    if (show.startsWith('_') || show.startsWith('.')) continue;
     const dir = path.join(REVIEW_TEXTS_DIR, show);
     for (const f of fs.readdirSync(dir).filter(isReviewTextFile).sort()) {
       let d: any;
