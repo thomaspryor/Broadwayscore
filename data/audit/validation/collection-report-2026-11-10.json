@@ -1,51 +1,51 @@
 {
-  "runDate": "2026-11-10T18:06:52.474Z",
+  "runDate": "2026-11-10T18:08:06.377Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 1000,
     "priority": "all",
-    "showFilter": "grand-horizons-2020",
+    "showFilter": "jagged-little-pill-2019",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 11,
+    "processed": 18,
     "failed": 2,
     "skipped": 0,
-    "successRate": "84.6%"
+    "successRate": "90.0%"
   },
   "tierBreakdown": {
-    "playwright": 8,
+    "playwright": 9,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 0,
-    "brightdata": 2,
+    "scrapingdog": 1,
+    "scrapingbee": 1,
+    "brightdata": 3,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 4
   },
   "statistics": {
-    "tier1Attempts": 9,
-    "tier1Success": 8,
+    "tier1Attempts": 11,
+    "tier1Success": 10,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier1_9Attempts": 1,
-    "tier1_9Success": 0,
-    "tier2Attempts": 1,
-    "tier2Success": 0,
-    "tier3Attempts": 3,
-    "tier3Success": 2,
-    "tier3_6Attempts": 1,
+    "tier1_9Success": 1,
+    "tier2Attempts": 3,
+    "tier2Success": 1,
+    "tier3Attempts": 4,
+    "tier3Success": 3,
+    "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 3,
-    "tier4Success": 1,
+    "tier4Attempts": 5,
+    "tier4Success": 2,
     "totalFailed": 2,
-    "scrapingBeePageCredits": 1,
+    "scrapingBeePageCredits": 2,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -54,10 +54,10 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 11,
+    "processed": 18,
     "failed": 2,
     "shows": [
-      "grand-horizons-2020"
+      "jagged-little-pill-2019"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -66,74 +66,89 @@
     }
   },
   "processed": [
-    "grand-horizons-2020/variety--marilyn-stasio.json",
-    "grand-horizons-2020/broadwaynews--charles-isherwood.json",
-    "grand-horizons-2020/timeout--adam-feldman.json",
-    "grand-horizons-2020/nyt-theater--jonathan-mandell.json",
-    "grand-horizons-2020/theatermania--zachary-stewart.json",
-    "grand-horizons-2020/theatre-reviews-limited--david-roberts.json",
-    "grand-horizons-2020/amny--matt-windman.json",
-    "grand-horizons-2020/artsfuse--unknown.json",
-    "grand-horizons-2020/exeunt-magazine--unknown.json",
-    "grand-horizons-2020/talkinbroadway--unknown.json",
-    "grand-horizons-2020/theater-scene--joseph-pisano.json"
+    "jagged-little-pill-2019/nydailynews--chris-jones.json",
+    "jagged-little-pill-2019/dailybeast--tim-teeman.json",
+    "jagged-little-pill-2019/guardian--alexis-soloski.json",
+    "jagged-little-pill-2019/nytimes--jesse-green.json",
+    "jagged-little-pill-2019/vulture--jackson-mchenry.json",
+    "jagged-little-pill-2019/nyt-theater--jonathan-mandell.json",
+    "jagged-little-pill-2019/broadwaynews--charles-isherwood.json",
+    "jagged-little-pill-2019/nypost--johnny-oleksinski.json",
+    "jagged-little-pill-2019/forward--unknown.json",
+    "jagged-little-pill-2019/theatrely--juan-a-ramirez.json",
+    "jagged-little-pill-2019/artsfuse--unknown.json",
+    "jagged-little-pill-2019/consequence--unknown.json",
+    "jagged-little-pill-2019/exeunt-magazine--unknown.json",
+    "jagged-little-pill-2019/forbes--hal-rubenstein.json",
+    "jagged-little-pill-2019/nbcny--unknown.json",
+    "jagged-little-pill-2019/talkinbroadway--unknown.json",
+    "jagged-little-pill-2019/usatoday--unknown.json",
+    "jagged-little-pill-2019/whatsonstage--unknown.json"
   ],
   "failed": [
-    "grand-horizons-2020/theater-news-online--brian-scott-lipton.json",
-    "grand-horizons-2020/theatres-leiter-side--samuel-l-leiter.json"
+    "jagged-little-pill-2019/theater-news-online--joe-dziemianowicz.json",
+    "jagged-little-pill-2019/frontmezzjunkies--unknown.json"
   ],
   "cumulativeResumedState": {
     "processed": [
-      "grand-horizons-2020/variety--marilyn-stasio.json",
-      "grand-horizons-2020/broadwaynews--charles-isherwood.json",
-      "grand-horizons-2020/timeout--adam-feldman.json",
-      "grand-horizons-2020/nyt-theater--jonathan-mandell.json",
-      "grand-horizons-2020/theatermania--zachary-stewart.json",
-      "grand-horizons-2020/theatre-reviews-limited--david-roberts.json",
-      "grand-horizons-2020/amny--matt-windman.json",
-      "grand-horizons-2020/artsfuse--unknown.json",
-      "grand-horizons-2020/exeunt-magazine--unknown.json",
-      "grand-horizons-2020/talkinbroadway--unknown.json",
-      "grand-horizons-2020/theater-scene--joseph-pisano.json"
+      "jagged-little-pill-2019/nydailynews--chris-jones.json",
+      "jagged-little-pill-2019/dailybeast--tim-teeman.json",
+      "jagged-little-pill-2019/guardian--alexis-soloski.json",
+      "jagged-little-pill-2019/nytimes--jesse-green.json",
+      "jagged-little-pill-2019/vulture--jackson-mchenry.json",
+      "jagged-little-pill-2019/nyt-theater--jonathan-mandell.json",
+      "jagged-little-pill-2019/broadwaynews--charles-isherwood.json",
+      "jagged-little-pill-2019/nypost--johnny-oleksinski.json",
+      "jagged-little-pill-2019/forward--unknown.json",
+      "jagged-little-pill-2019/theatrely--juan-a-ramirez.json",
+      "jagged-little-pill-2019/artsfuse--unknown.json",
+      "jagged-little-pill-2019/consequence--unknown.json",
+      "jagged-little-pill-2019/exeunt-magazine--unknown.json",
+      "jagged-little-pill-2019/forbes--hal-rubenstein.json",
+      "jagged-little-pill-2019/nbcny--unknown.json",
+      "jagged-little-pill-2019/talkinbroadway--unknown.json",
+      "jagged-little-pill-2019/usatoday--unknown.json",
+      "jagged-little-pill-2019/whatsonstage--unknown.json"
     ],
     "failed": [
-      "grand-horizons-2020/theater-news-online--brian-scott-lipton.json",
-      "grand-horizons-2020/theatres-leiter-side--samuel-l-leiter.json"
+      "jagged-little-pill-2019/theater-news-online--joe-dziemianowicz.json",
+      "jagged-little-pill-2019/frontmezzjunkies--unknown.json"
     ]
   },
   "tierDetails": {
     "playwright": [
-      "grand-horizons-2020/timeout--adam-feldman.json",
-      "grand-horizons-2020/nyt-theater--jonathan-mandell.json",
-      "grand-horizons-2020/theatermania--zachary-stewart.json",
-      "grand-horizons-2020/theatre-reviews-limited--david-roberts.json",
-      "grand-horizons-2020/amny--matt-windman.json",
-      "grand-horizons-2020/artsfuse--unknown.json",
-      "grand-horizons-2020/exeunt-magazine--unknown.json",
-      "grand-horizons-2020/theater-scene--joseph-pisano.json"
+      "jagged-little-pill-2019/guardian--alexis-soloski.json",
+      "jagged-little-pill-2019/nyt-theater--jonathan-mandell.json",
+      "jagged-little-pill-2019/broadwaynews--charles-isherwood.json",
+      "jagged-little-pill-2019/nypost--johnny-oleksinski.json",
+      "jagged-little-pill-2019/artsfuse--unknown.json",
+      "jagged-little-pill-2019/consequence--unknown.json",
+      "jagged-little-pill-2019/exeunt-magazine--unknown.json",
+      "jagged-little-pill-2019/nbcny--unknown.json",
+      "jagged-little-pill-2019/whatsonstage--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [],
-    "scrapingbee": [],
+    "scrapingdog": [
+      "jagged-little-pill-2019/forbes--hal-rubenstein.json"
+    ],
+    "scrapingbee": [
+      "jagged-little-pill-2019/theatrely--juan-a-ramirez.json"
+    ],
     "brightdata": [
-      "grand-horizons-2020/variety--marilyn-stasio.json",
-      "grand-horizons-2020/talkinbroadway--unknown.json"
+      "jagged-little-pill-2019/dailybeast--tim-teeman.json",
+      "jagged-little-pill-2019/vulture--jackson-mchenry.json",
+      "jagged-little-pill-2019/usatoday--unknown.json"
     ],
     "archiveToday": [],
     "archive": [
-      "grand-horizons-2020/broadwaynews--charles-isherwood.json"
+      "jagged-little-pill-2019/nydailynews--chris-jones.json",
+      "jagged-little-pill-2019/nytimes--jesse-green.json",
+      "jagged-little-pill-2019/forward--unknown.json",
+      "jagged-little-pill-2019/talkinbroadway--unknown.json"
     ]
   },
-  "failuresByOutlet": {
-    "Theatre's Leiter Side": {
-      "count": 1,
-      "domain": "slleiter.blogspot.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
