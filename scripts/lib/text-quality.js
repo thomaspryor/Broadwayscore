@@ -226,6 +226,20 @@ function checkCorruption(text) {
  */
 function stripTrailingJunk(text) {
   if (!text) return text;
+  // Page furniture (share bars, related-story runs, comment/ticket widgets,
+  // newsletter/paywall/donation lines, repeated paragraphs) comes from the ONE
+  // shared module the save path also uses (BRO-7171), so the detector, the
+  // stored-text cleaner and this scoring view cannot drift apart again. The
+  // anchor lists below stay separate on purpose: they are an assessment cut
+  // (verdict detection, scoring input), and swapping them for
+  // text-cleaning.js's storage cut changes the scoring text of 15,891 of
+  // 67,983 stored reviews (643 lose >10%), a rule-13 A/B, not a refactor.
+  // The furniture pass runs AFTER the anchors (end of this function), never
+  // before: the anchors' back-half guard is a ratio of the text length, so
+  // removing furniture first moved a mid-review "Headline: Text" match past
+  // 60% and cut real prose (Vulture Parade 2023 lost 3,190 chars in the
+  // ship-check corpus replay). After, the scoring view can only lose
+  // furniture lines relative to the pre-BRO-7171 cut.
 
   // High-confidence anchors — definitively junk, NEVER legitimate review content.
   // Bypass the back-half guard (these patterns are specific enough to avoid false positives).
@@ -312,7 +326,9 @@ function stripTrailingJunk(text) {
     cleaned = cleaned.slice(0, match.index);
   }
 
-  return cleaned.trim();
+  // Furniture the anchors above did not cut (BRO-7171 ship-check): the first
+  // pass kept tail anchors so these cuts could fire; nothing anchors now.
+  return require('./page-furniture').stripPageFurniture(cleaned.trim(), { anchors: false });
 }
 
 /**

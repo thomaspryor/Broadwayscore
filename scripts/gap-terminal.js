@@ -38,9 +38,9 @@ const OUT_DIR = path.join(os.homedir(), 'Documents', 'claude-outputs');
 const TODAY = new Date().toISOString().slice(0, 10);
 const GROUP_LETTER = { PAYWALL_NO_ACCESS: 'A', URL_DEAD_NO_ARCHIVE: 'B', NOT_FINDABLE: 'C' };
 const GROUP_PLAIN = {
-  PAYWALL_NO_ACCESS: 'Telegraph reviews we can no longer open (subscription cancelled in July)',
+  PAYWALL_NO_ACCESS: 'Paywalled reviews that every way in failed to open (plain fetch with our saved login, paid scraper, subscriber browser where we have one, Internet Archive)',
   URL_DEAD_NO_ARCHIVE: 'Reviews whose web page is gone and the Internet Archive never saved a copy',
-  NOT_FINDABLE: 'Older reviews we only know from a quote on a review-roundup site, with no link to the original',
+  NOT_FINDABLE: 'Older reviews we only know from a quote, where every search for the original link came up empty (review-roundup links, the outlet\'s own sitemap, Internet Archive, Common Crawl, Google, guessed addresses)',
 };
 
 function readJson(p) { return JSON.parse(fs.readFileSync(p, 'utf8')); }
@@ -97,7 +97,9 @@ async function build() {
   const hostFor = (row) => hostOf(row.url) || ((outlets[row.outletId] || {}).domain || null);
   const hosts = new Set(rows.filter((r) => r.recency === 'historic' && !r.strategy).map(hostFor).filter(Boolean));
   const deadHosts = await deadHostsFor(hosts);
-  return { groups: GT.groupTerminalCandidates(rows, byKey, { deadHosts, hostFor }), hostsChecked: hosts.size, deadHosts };
+  const { adapterUsable } = require('./lib/browser-outlet-adapters');
+  const hasAdapter = (row) => { try { return adapterUsable(row.outletId); } catch { return false; } };
+  return { groups: GT.groupTerminalCandidates(rows, byKey, { deadHosts, hostFor, hasAdapter }), hostsChecked: hosts.size, deadHosts };
 }
 
 function printGroups({ groups, hostsChecked, deadHosts }) {
@@ -200,17 +202,21 @@ function writeOwnerBatch(groups) {
     `# Reviews we cannot get the full text of (${TODAY})`,
     '',
     `${total} older reviews (shows that opened more than two years ago) have no route left to recover their full text.`,
-    'If you approve a group, those reviews stop counting as missing text. They still count toward each show\'s score at their current weight, using the quote we already have. Nothing is deleted. Reviews of shows from the last two years are never on this list.',
+    ...(total ? ['If you approve a group, those reviews stop counting as missing text. They still count toward each show\'s score at their current weight, using the quote we already have. Nothing is deleted. Reviews of shows from the last two years are never on this list.'] : []),
     '',
   ];
   for (const [g, list] of Object.entries(items)) {
     if (!list.length) continue;
     lines.push(`## Group ${GROUP_LETTER[g]}: ${GROUP_PLAIN[g]} (${list.length})`, '');
-    for (const it of list.slice(0, 8)) lines.push(`- ${it.reviewKey.replace(/\.json$/, '').replace('/', ': ')}`);
-    if (list.length > 8) lines.push(`- and ${list.length - 8} more`);
+    // Every review with what was tried (owner: no write-off without the evidence).
+    for (const it of list) {
+      lines.push(`- ${it.reviewKey.replace(/\.json$/, '').replace('/', ': ')}`);
+      for (const e of it.evidence) lines.push(`  - tried: ${e}`);
+    }
     lines.push('');
   }
-  lines.push('## How to answer', '', 'Reply with one line, for example: `approve A, C` or `approve none`.', '');
+  if (total) lines.push('## How to answer', '', 'Reply with one line, for example: `approve A, C` or `approve none`.', '');
+  else lines.push('Nothing to approve today. Every review still missing its full text has at least one search or fetch left that has not run to the end, and the nightly job keeps trying them. A review only comes to you once every route has been tried and logged.', '');
   const md = path.join(OUT_DIR, `gap-recovery-owner-batch-${TODAY}.md`);
   fs.writeFileSync(md, lines.join('\n'));
   // Read by the morning digest's gap-recovery line.
@@ -234,7 +240,17 @@ async function main() {
     if (!approve.length) { console.error('--approve=A,B (or --approve=none) is required'); return 1; }
     const batch = readJson(arg('apply-owner-batch'));
     const groups = Object.entries(GROUP_LETTER).filter(([, l]) => approve.includes(l)).map(([g]) => g);
-    const items = groups.flatMap((g) => batch.items[g] || []);
+    // Re-judge today: an approved item is written only if it is STILL in the
+    // same group under the current evidence rules. A batch built by an older
+    // rule (2026-11-09: 780 NOT_FINDABLE with no per-method ledger evidence) or
+    // a review a later night found a link for must not be written off on an
+    // old approval (ship-check P1).
+    const now = (await build()).groups.owner;
+    const stillIn = new Map(groups.flatMap((g) => (now[g] || []).map(({ row, evidence }) => [`${g}|${row.reviewKey}`, evidence])));
+    const asked = groups.flatMap((g) => batch.items[g] || []);
+    const items = asked.filter((it) => stillIn.has(`${it.reason}|${it.reviewKey}`))
+      .map((it) => ({ ...it, evidence: stillIn.get(`${it.reason}|${it.reviewKey}`) }));
+    if (asked.length !== items.length) console.log(`apply: ${asked.length - items.length} of ${asked.length} approved item(s) no longer qualify today; not written`);
     if (!takeLock('gap-terminal --apply-owner-batch')) return 3;
     writeRecords(items, { decidedBy: 'owner', approvedBy, label: `owner batch ${approve.join(',')}` });
     try { fs.unlinkSync(path.join(STATE_DIR, 'owner-batch-pending.json')); } catch { /* none */ }

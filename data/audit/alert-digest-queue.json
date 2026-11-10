@@ -1020,20 +1020,6 @@
     "queuedAt": "2026-11-10T01:30:07.345Z"
   },
   {
-    "conditionKey": "pending-unrecoverable:the-pianist-off-west-end-2026",
-    "title": "1 review(s) for the-pianist-off-west-end-2026 stuck in _pending with no text and no byline",
-    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--5e07c019.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/the-pianist-review-park-theatre-london",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-10T01:30:43.120Z"
-  },
-  {
     "conditionKey": "land:land/bro-7257",
     "title": "Landing blocked: unit-tests-node red on land/bro-7257",
     "description": "land.yml did not land land/bro-7257: the unit-tests-node gate went red at 8e36de3b60. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42737379974",
@@ -1167,20 +1153,6 @@
       }
     ],
     "queuedAt": "2026-11-10T02:24:45.624Z"
-  },
-  {
-    "conditionKey": "pending-unrecoverable:harry-potter-and-the-cursed-child-one-part-west-end-2026",
-    "title": "1 review(s) for harry-potter-and-the-cursed-child-one-part-west-end-2026 stuck in _pending with no text and no byline",
-    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--unknown.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/harry-potter-and-the-cursed-child-review-at-palace-theatre-london--new-cast-equals-the-original",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-10T02:42:13.317Z"
   },
   {
     "conditionKey": "land:land/bro-7252",
@@ -1319,5 +1291,124 @@
       }
     ],
     "queuedAt": "2026-11-10T03:42:24.269Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:here-there-are-blueberries-2026",
+    "title": "Review gap — \"Here There Are Blueberries\" missing 11 cited review(s)",
+    "description": "Here There Are Blueberries (here-there-are-blueberries-2026): 11 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=here-there-are-blueberries-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-10T04:23:20.804Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-visitors-off-broadway-2026",
+    "title": "Review gap — \"The Visitors\" missing 1 cited review(s)",
+    "description": "The Visitors (the-visitors-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-visitors-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-10T04:23:20.845Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:parcel-from-america-off-broadway-2026",
+    "title": "1 review(s) for parcel-from-america-off-broadway-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- irish-central--2f81a7ad.json (irish-central): fetch failed: All scraping methods failed https://www.irishcentral.com/opinion/others/parcel-from-america-theater-row.amp",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-10T04:06:34.735Z"
+  },
+  {
+    "conditionKey": "live-data-test:scripts/audit-cross-outlet-attributions.test.mjs::no unreviewed cross-outlet attribution suspects remain",
+    "title": "Live-data test failing: no unreviewed cross-outlet attribution suspects remain (scripts/audit-cross-outlet-attributions.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"no unreviewed cross-outlet attribution suspects remain\" in scripts/audit-cross-outlet-attributions.test.mjs is red against the live corpus.\n\nunreviewed cross-outlet suspects remain (first 5): [\n{\n\"file\": \"wanted-2022/nytg--jonathan-mandell.json\",\n\"criticName\": \"Jonathan Mandell\",\n\"defaultCriticOf\": [\n\"nyt-theater\",\n\"faster-times\"\n],\n\"source\": \"bww-roundup\",\n\"url\": null\n}\n]\n\n1 !== 0\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "scripts/audit-cross-outlet-attributions.test.mjs::no unreviewed cross-outlet attribution suspects remain",
+    "fields": [],
+    "queuedAt": "2026-11-10T04:13:19.636Z"
+  },
+  {
+    "conditionKey": "land:land/worktree-agent-ac55ac6c5eeaee060",
+    "title": "Landing blocked: scripts-lib-tests red on land/worktree-agent-ac55ac6c5eeaee060",
+    "description": "land.yml did not land land/worktree-agent-ac55ac6c5eeaee060: the scripts-lib-tests gate went red at b0ffe24460. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42750530370",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/worktree-agent-ac55ac6c5eeaee060"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "b0ffe24460f103e48829a201403580c50532adc1"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42750530370"
+      }
+    ],
+    "queuedAt": "2026-11-10T04:12:35.199Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7257-b",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7257-b",
+    "description": "land.yml did not land land/bro-7257-b: the unit-tests-node gate went red at ead7e9e4ae. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42756095956",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7257-b"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "ead7e9e4ae3e55c45415b27af443827683661932"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42756095956"
+      }
+    ],
+    "queuedAt": "2026-11-10T04:42:23.742Z"
   }
 ]

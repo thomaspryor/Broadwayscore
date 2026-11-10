@@ -10,6 +10,7 @@
  */
 
 const { stripOutletTrailer, stripFourthWalshInfoBlock, trailerFixesEnabled } = require('./trailer-signatures');
+const { stripPageFurniture, pageFurnitureEnabled } = require('./page-furniture');
 
 /**
  * Decode ALL HTML entities properly
@@ -387,10 +388,15 @@ function stripSiteChrome(text) {
  */
 function stripTrailingJunk(text, outletId) {
   if (!text) return text;
-  const cleaned = stripTrailingJunkCore(text);
+  // Furniture first: a mid-article "Related Stories" run removed as a block
+  // can no longer anchor the cut-to-end Related Stories pattern below and
+  // take the rest of the review with it (BRO-7171 Stage 5).
+  // Tail-guarded first so the cut-to-end patterns still see their trailing
+  // anchors; the full pass after the core takes what they leave.
+  const cleaned = stripTrailingJunkCore(stripPageFurniture(text, { tailGuard: true }));
   // Unlike tiering, this result is SAVED to review files, so the kill switch must cover it.
   if (!trailerFixesEnabled()) return cleaned;
-  return stripOutletTrailer(stripFourthWalshInfoBlock(cleaned), outletId);
+  return stripOutletTrailer(stripFourthWalshInfoBlock(stripPageFurniture(cleaned, { anchors: false })), outletId);
 }
 
 function stripTrailingJunkCore(text) {
@@ -618,6 +624,15 @@ function cleanText(text) {
   // Step 4: Collapse whitespace runs
   // Multiple spaces/tabs on same line → single space
   cleaned = cleaned.replace(/[^\S\n\r]+/g, ' ');
+  if (pageFurnitureEnabled()) {
+    // Whitespace-only lines (" \n \n \n" from DOM innerText) kept every
+    // paragraph gap past the 3+ newline collapse below (BRO-7171 Stage 5).
+    cleaned = cleaned.replace(/[^\S\n]+\n/g, '\n');
+    // Step 4b: page furniture (share bars, related-story runs, comment and
+    // ticket widgets, newsletter/paywall/donation lines, copyright lines,
+    // repeated paragraphs): see page-furniture.js.
+    cleaned = stripPageFurniture(cleaned, { tailGuard: true });
+  }
   // 3+ consecutive newlines → 2 newlines (preserve paragraph breaks)
   cleaned = cleaned.replace(/\n{3,}/g, '\n\n');
 

@@ -34,7 +34,7 @@ const path = require('path');
 
 const OUTCOMES = Object.freeze(['recovered', 'pending_push', 'rejected', 'no_evidence', 'non_evidence', 'auth_failed', 'browser_unavailable', 'reopened']);
 const EVIDENCE_OUTCOMES = new Set(['rejected', 'no_evidence']);
-const FETCH_STRATEGIES = new Set(['REFETCH_FREE', 'BROWSER_SESSION', 'ARCHIVE']);
+const FETCH_STRATEGIES = new Set(['REFETCH_FREE', 'BROWSER_SESSION', 'ARCHIVE', 'PAID_FETCH']);
 // failed-fetch-policy reasons a no_evidence row may carry as-is.
 const FF_REASONS = new Set(['url_dead_404', 'url_dead_410', 'all_tiers_failed', 'all_tiers_timeout', 'fetch_error', 'garbage_content']);
 
@@ -350,7 +350,8 @@ function pendingPushInfo(rows) {
 // Refusals from the write path itself (a race with another writer, the safe
 // writer or the post-write check) say nothing about whether the source holds
 // the review: they never count toward a cap.
-const WRITE_PATH_REFUSALS = new Set(['url_moved_during_fetch', 'write_refused', 'write_rolled_back', 'dry_run_needs_llm']);
+// identity_check_unavailable: the LLM identity check errored (no verdict).
+const WRITE_PATH_REFUSALS = new Set(['url_moved_during_fetch', 'write_refused', 'write_rolled_back', 'dry_run_needs_llm', 'identity_check_unavailable']);
 
 /** Ledger outcome for a recoverReviewTextVerified refusal code. */
 function outcomeForGateRefusal(code) {
