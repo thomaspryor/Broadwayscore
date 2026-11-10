@@ -171,7 +171,9 @@ function checkTruncation(text) {
   const endRe = trailerFixesEnabled() ? /[.!?]["'\u201d\u2019]?\s*$/ : /[.!?]["']?\s*$/;
   if (ending && !endRe.test(ending)) {
     // But not if it ends with a quote attribution or similar
-    if (!/["']\s*$/.test(ending) && !/—\s*\w+\s*$/.test(ending)) {
+    // A closing "Tickets available at https://..." link is a clean ending (BRO-7272).
+    const closesWithLink = /\b(?:at|on|via|from|visit|see)\s+https?:\/\/\S+\s*$/i.test(judged.slice(-200));
+    if (!closesWithLink && !/["']\s*$/.test(ending) && !/—\s*\w+\s*$/.test(ending)) {
       signals.push('no-final-punctuation');
     }
   }
@@ -335,6 +337,8 @@ function stripTrailingJunk(text) {
   // guard applies, and it runs AFTER pass 2: cutting it earlier shortened the text and let the older pass-2 anchors
   // (colon headlines, "Recommended") fire on real prose that was no longer in the back 40%.
   const footerFurniture = [
+    // Related-interviews list at the foot of a blog page (readaboutstuff): three or more "Interview: X discusses 'Y'" items run to the end.
+    /\s+(?:Interview: [^']{3,80} discusses '[^']{3,160}'\s*){3,}$/,
     // WordPress sharing bar head. cleanText may already have removed the button names, leaving "Share this: (Opens in new window)".
     /\s+Share this:\s/,
     // BRO-7272: these also sit at the TOP of a page (under the subhead), so they need the back-half guard.
@@ -365,7 +369,10 @@ function endsProperlyWithPunctuation(text) {
   if (!text) return false;
   const trimmed = text.trim();
   // Ends with . ! ? optionally followed by closing quote
-  return /[.!?]["']?\s*$/.test(trimmed);
+  if (/[.!?]["']?\s*$/.test(trimmed)) return true;
+  // A closing ticket/booking link ("Tickets available at https://.../") ends a review
+  // cleanly (BRO-7272). Only a full URL after "at/on/via/:" counts, so a cut-off sentence still fails.
+  return /\b(?:at|on|via|from|visit|see|:)\s+https?:\/\/\S+$/i.test(trimmed);
 }
 
 /**
