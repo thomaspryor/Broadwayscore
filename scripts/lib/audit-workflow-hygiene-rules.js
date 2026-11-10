@@ -1623,7 +1623,88 @@ function findSparseFileRecheckouts(raw) {
   return hits;
 }
 
+/**
+ * Rule (ae), BRO-7306: a `run:` block that contains any `${{ }}` is evaluated
+ * by GitHub as ONE expression, `format('<whole script>', <each expression>)`,
+ * and an expression has a hard size cap ("Exceeded max expression length
+ * 21000"). Past the cap the workflow FILE is invalid: no schedule, dispatch or
+ * push run can start, every push on every branch records an instant failed run
+ * named by the file path, and nothing pages because no job ever runs.
+ * BRO-7198 added 97 lines to opening-night-orchestrator.yml's Polling loop,
+ * which held 12 expressions; the orchestrator could not start for a day.
+ *
+ * A block with NO expression is a plain string and is not capped this way, so
+ * the durable fix is always the same: pass values in through the step's
+ * `env:` and keep the big script expression-free.
+ *
+ * The size is counted in UTF-8 bytes of the expanded format() call (bytes are
+ * never fewer than characters, so this errs on the early side), and the rule
+ * fires at EXPRESSION_BLOCK_WARN_BYTES, well before the cap, so the block that
+ * trips it is still a working one.
+ *
+ * Known undercounts (none present in the tree when the rule landed): a `}}`
+ * inside a string literal in an expression ends the match early, and a line
+ * that reads `run:` inside another block scalar or a heredoc splits the block.
+ * Only `run:` is measured; a `with:` input (github-script `script:`) goes
+ * through the same format() but the largest one holding an expression was
+ * under 3,000 bytes.
+ */
+const EXPRESSION_MAX_LENGTH = 21000;
+const EXPRESSION_BLOCK_WARN_BYTES = 19000;
+const EXPRESSION_RE = /\$\{\{([\s\S]*?)\}\}/g;
+
+/** Bytes of the format() expression GitHub builds for `text`; 0 when it holds no `${{ }}`. */
+function expressionExpandedBytes(text) {
+  const expressions = [];
+  let literal = '';
+  let last = 0;
+  EXPRESSION_RE.lastIndex = 0;
+  let m;
+  while ((m = EXPRESSION_RE.exec(text)) !== null) {
+    literal += text.slice(last, m.index) + `\u0000${expressions.length}\u0000`;
+    expressions.push(m[1].trim());
+    last = m.index + m[0].length;
+  }
+  if (expressions.length === 0) return 0;
+  literal += text.slice(last);
+  const escaped = literal
+    .replace(/'/g, "''")
+    .replace(/\{/g, '{{')
+    .replace(/\}/g, '}}')
+    .replace(/\u0000(\d+)\u0000/g, '{$1}');
+  const expanded = `format('${escaped}'${expressions.map((e) => `, ${e}`).join('')})`;
+  return Buffer.byteLength(expanded, 'utf8');
+}
+
+/** The script text of a block from extractRunBlocks, as YAML hands it to the runner (block indentation removed). */
+function runBlockText(block) {
+  const indents = block.lines.filter((l) => l.text.trim() !== '').map((l) => indentOf(l.text));
+  const strip = indents.length ? Math.min(...indents) : 0;
+  return block.lines.map((l) => l.text.slice(Math.min(strip, indentOf(l.text)))).join('\n');
+}
+
+function findOversizedExpressionRunBlocks(raw, { warnBytes = EXPRESSION_BLOCK_WARN_BYTES } = {}) {
+  const hits = [];
+  for (const block of extractRunBlocks(raw, { includeInline: true })) {
+    const text = runBlockText(block);
+    const bytes = expressionExpandedBytes(text);
+    if (bytes <= warnBytes) continue;
+    const firstExpr = block.lines.find((l) => l.text.includes('${{'));
+    hits.push({
+      lineNum: block.lines[0].lineNum,
+      bytes,
+      expressions: (text.match(EXPRESSION_RE) || []).length,
+      firstExpressionLine: firstExpr ? firstExpr.lineNum : block.lines[0].lineNum,
+    });
+  }
+  return hits;
+}
+
 module.exports = {
+  expressionExpandedBytes,
+  findOversizedExpressionRunBlocks,
+  EXPRESSION_MAX_LENGTH,
+  EXPRESSION_BLOCK_WARN_BYTES,
   findSparseFileRecheckouts,
   findMissingTopLevelPermissions,
   findUnpinnedActionUses,
