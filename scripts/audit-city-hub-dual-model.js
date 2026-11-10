@@ -100,7 +100,9 @@ function loadCache(city, kind) {
 /** A row where a model call failed (API error, or the --max-usd cap) is not cached, so the next run asks again. */
 const failedCall = (row) => ['gemini', 'openai'].some((m) => row[m] && typeof row[m]._raw === 'string' && row[m]._raw.startsWith('ERROR '));
 // Model output can echo article bylines with emails (BRO-7322); data/audit/ is public, so redact before persisting.
-function appendCache(city, kind, row) { if (failedCall(row)) return; fs.appendFileSync(cacheFile(city, kind), `${JSON.stringify(redactEmailsDeep(row))}\n`); }
+// Redact only model outputs: id/recHash/textHash/url are cache keys and must stay byte-identical.
+const redactModelOutputs = (row) => { const o = { ...row }; for (const m of ['gemini', 'openai']) if (o[m]) o[m] = redactEmailsDeep(o[m]); return o; };
+function appendCache(city, kind, row) { if (failedCall(row)) return; fs.appendFileSync(cacheFile(city, kind), `${JSON.stringify(redactModelOutputs(row))}\n`); }
 
 // ---------- source text ----------
 const UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126 Safari/537.36';
