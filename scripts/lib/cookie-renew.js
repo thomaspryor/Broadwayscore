@@ -95,7 +95,19 @@ function claimOutletProfile(outlet, { legacy = [] } = {}) {
     err.code = 'EPROFILEBUSY';
     throw err;
   }
-  process.once('exit', release);
+  // The lock is held for the whole run, and acquireLock treats a lock older
+  // than LOCK_STALE_MS (2h) as abandoned. A live long run (gap driver,
+  // recovery batch) keeps its mtime fresh so a second run cannot claim it and
+  // open Chrome on the same profile. Touches only while the body is still ours.
+  const lp = renewLockPath();
+  let ownBody = null;
+  try { ownBody = fs.readFileSync(lp, 'utf8'); } catch { /* touched below only if readable */ }
+  const beat = setInterval(() => {
+    try { if (ownBody !== null && fs.readFileSync(lp, 'utf8') === ownBody) { const t = new Date(); fs.utimesSync(lp, t, t); } } catch { /* lock gone */ }
+  }, Number(process.env.COOKIE_RENEW_HEARTBEAT_MS) || 10 * 60 * 1000);
+  beat.unref();
+  const stop = () => { clearInterval(beat); release(); };
+  process.once('exit', stop);
   const dir = profileDir(outlet);
   try {
     const empty = !fs.existsSync(dir) || fs.readdirSync(dir).length === 0;
@@ -114,7 +126,7 @@ function claimOutletProfile(outlet, { legacy = [] } = {}) {
     console.warn(`[profile] ${outlet}: legacy profile copy failed (${e.message}); starting a fresh profile`);
     fs.mkdirSync(dir, { recursive: true });
   }
-  const claim = { dir, release: () => { _claimed.delete(outlet); release(); } };
+  const claim = { dir, release: () => { _claimed.delete(outlet); stop(); } };
   _claimed.set(outlet, claim);
   return claim;
 }

@@ -150,6 +150,22 @@ test('run: the child inherits the hold; exit code passes through; released after
   assert.equal(fs.existsSync(lock.lockPath()), false, 'released after run');
 });
 
+// Ship-check: a node holder that shells out to a locked tool (sync-review-texts.sh
+// calls `held`, else re-execs under `run`) must hand the hold down, not wait 30 min on itself.
+test('a child spawned inside withReviewTextsLock sees the hold as its own', () => {
+  const env = cliEnv();
+  const outer = `const L = require(${JSON.stringify(CLI)}); const { spawnSync } = require('child_process');
+    L.withReviewTextsLock('outer', () => {
+      const r = spawnSync(process.execPath, [${JSON.stringify(CLI)}, 'held'], { env: process.env });
+      console.log('HELD_EXIT=' + r.status);
+    }, { timeoutMs: 2000 });
+    console.log('AFTER=' + (process.env.${'REVIEW_TEXTS_LOCK_TOKEN'} || 'unset'));`;
+  const r = spawnSync(process.execPath, ['-e', outer], { env, encoding: 'utf8' });
+  assert.equal(r.status, 0, r.stderr);
+  assert.match(r.stdout, /HELD_EXIT=0/);
+  assert.match(r.stdout, /AFTER=unset/, 'token cleared after release');
+});
+
 test('run: another process (even with a forged token) waits for the hold', () => {
   const env = cliEnv();
   const holder = spawn(process.execPath, [CLI, 'run', '--', 'sleep', '3'], { env, stdio: 'ignore' });

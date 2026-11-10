@@ -41,8 +41,9 @@ const reset = () => { for (const p of [S.spoolPath(), S.metaPath()]) fs.rmSync(p
 
 test('off CI the router queues into the spool, never the tracked checkout file', () => {
   reset();
-  const env = { ...process.env, ALERT_DIGEST_SPOOL_PATH: S.spoolPath(), ALERT_LEDGER_PATH: path.join(TMP, 'ledger.json') };
-  delete env.CI; delete env.GITHUB_ACTIONS; delete env.ALERT_DIGEST_QUEUE_PATH;
+  // Spool mode is Mac-only by platform; force it so this also runs on Linux CI.
+  const env = { ...process.env, ALERT_DIGEST_SPOOL_PATH: S.spoolPath(), ALERT_LEDGER_PATH: path.join(TMP, 'ledger.json'), ALERT_DIGEST_FORCE_SPOOL: '1' };
+  delete env.CI; delete env.GITHUB_ACTIONS; delete env.ALERT_DIGEST_QUEUE_PATH; delete env.CLAUDE_CODE_REMOTE;
   const tracked = path.join(here, '..', '..', REL);
   const before = fs.existsSync(tracked) ? fs.readFileSync(tracked, 'utf8') : null;
   const r = spawnSync(process.execPath, ['-e', `
@@ -52,6 +53,21 @@ test('off CI the router queues into the spool, never the tracked checkout file',
   assert.deepEqual(S.readSpool().map((x) => x.conditionKey), ['mac:test']);
   const after = fs.existsSync(tracked) ? fs.readFileSync(tracked, 'utf8') : null;
   assert.equal(after, before, 'the shared checkout queue file is untouched');
+});
+
+// Ship-check: only the Mac runs sync-audit-checkout.sh (the flusher). A cloud
+// Claude session must keep the tracked queue it commits, not an ephemeral spool.
+test('queue location: Mac spools; a cloud session (CLAUDE_CODE_REMOTE) and CI use the tracked file', () => {
+  const where = (extra) => {
+    const env = { ...process.env, ...extra };
+    for (const k of ['CI', 'GITHUB_ACTIONS', 'ALERT_DIGEST_QUEUE_PATH', 'ALERT_DIGEST_FORCE_SPOOL', 'CLAUDE_CODE_REMOTE']) if (!(k in extra)) delete env[k];
+    const r = spawnSync(process.execPath, ['-e', `console.log(require(${JSON.stringify(path.join(here, 'owner-alert-router.js'))})._DIGEST_QUEUE_PATH)`], { env, encoding: 'utf8' });
+    assert.equal(r.status, 0, r.stderr);
+    return r.stdout.trim();
+  };
+  assert.ok(where({ CLAUDE_CODE_REMOTE: 'true' }).endsWith(REL), 'cloud session');
+  assert.ok(where({ GITHUB_ACTIONS: 'true' }).endsWith(REL), 'CI');
+  assert.equal(where({}).endsWith(REL), process.platform !== 'darwin', 'local: spool on the Mac only');
 });
 
 test('flush merges into origin, trims the spool, and a landed in-flight flush is never re-pushed', () => {

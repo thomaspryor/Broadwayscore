@@ -152,6 +152,7 @@ for (const cn of criticNames) {
       if (!fs.existsSync(newFp)) {
         fs.renameSync(fp, newFp);
         RUN_WRITES.add(newFp);
+        RUN_WRITES.deleted.add(fp);
         console.log(`  ✓ ${targetFile} → ${newFilename}: critic "${oldName}" → "${cn.name}"`);
       } else {
         console.log(`  ✓ ${targetFile}: critic "${oldName}" → "${cn.name}" (file not renamed — target exists)`);

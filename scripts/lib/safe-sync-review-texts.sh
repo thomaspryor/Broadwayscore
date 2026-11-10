@@ -41,6 +41,7 @@ RESTORE_JS="$SCRIPT_DIR/restore-protected-fields.js"
 source "$SCRIPT_DIR/rebase-guards.sh"
 
 cd "$REPO_DIR"
+REPO_DIR="$(pwd)" # absolute, so the lock re-exec below (run from this cwd) still finds it
 
 # BRO-7171: the review-texts checkout is shared with local recovery runs;
 # rebase + push it only under the machine-wide review-texts lock (re-exec

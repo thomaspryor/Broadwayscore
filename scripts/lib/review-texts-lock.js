@@ -162,7 +162,14 @@ function withReviewTextsLock(label, fn, opts = {}) {
   return withFileLock(p, () => {
     _depth = 1;
     _heldLabel = label;
-    try { return fn(); } finally { _depth = 0; _heldLabel = null; }
+    // Any child spawned inside the hold (e.g. sync-review-texts.sh, which
+    // re-execs under `run` unless `held`) inherits it instead of waiting on us.
+    const prevToken = process.env[TOKEN_ENV];
+    process.env[TOKEN_ENV] = _token;
+    try { return fn(); } finally {
+      _depth = 0; _heldLabel = null;
+      if (prevToken === undefined) delete process.env[TOKEN_ENV]; else process.env[TOKEN_ENV] = prevToken;
+    }
   }, {
     timeoutMs: opts.timeoutMs != null ? opts.timeoutMs : DEFAULT_TIMEOUT_MS,
     staleMs: 0,

@@ -50,6 +50,22 @@ test('a second process cannot open the profile while another holds it', async ()
   assert.equal(r2.stdout.trim(), 'GOT', 'a dead holder is taken over');
 });
 
+// Ship-check: the renew lock counts as abandoned after 2h by mtime, and a
+// profile claim holds it for the whole run. Without a heartbeat a second run
+// claimed a LIVE 2h+ holder's lock and opened Chrome on the same profile.
+test('a live holder past 2h keeps the profile: the held lock is heartbeated', async () => {
+  const hbEnv = { ...env, COOKIE_RENEW_HEARTBEAT_MS: '100' };
+  const holder = spawn(process.execPath, ['-e', `require(${JSON.stringify(LIB)}).claimOutletProfile('nyt'); console.log('HELD'); setTimeout(() => {}, 20000);`], { env: hbEnv });
+  await new Promise((res) => holder.stdout.once('data', res));
+  const old = new Date(Date.now() - 3 * 3600_000);
+  fs.utimesSync(env.COOKIE_RENEW_LOCK_PATH, old, old); // as if acquired 3h ago
+  await new Promise((res) => setTimeout(res, 400));
+  const r = claimIn(`try { C.claimOutletProfile('nyt'); console.log('GOT'); } catch (e) { console.log(e.code); }`);
+  assert.equal(r.stdout.trim(), 'EPROFILEBUSY', 'live holder kept its profile');
+  holder.kill('SIGKILL');
+  await new Promise((res) => holder.once('exit', res));
+});
+
 // Class guard: no script opens a Chrome profile under /tmp any more.
 test('class guard: no /tmp Chrome profiles in scripts/', () => {
   const repo = path.resolve(here, '..', '..');

@@ -137,13 +137,18 @@ const LEDGER_PATH = process.env.ALERT_LEDGER_PATH
 // is a machine-local spool (same bare-array format) that
 // scripts/lib/alert-digest-spool.js publishes into origin's tracked queue
 // every checkout-sync tick.
-const DIGEST_SPOOL_MODE = !process.env.ALERT_DIGEST_QUEUE_PATH && !isCIExecution();
+// Only the Mac runs sync-audit-checkout.sh (the spool's flusher): a cloud
+// Claude session (Linux, CLAUDE_CODE_REMOTE) keeps writing the tracked queue
+// file it commits itself, instead of an ephemeral spool nothing would flush.
+const DIGEST_SPOOL_MODE = !process.env.ALERT_DIGEST_QUEUE_PATH && !isCIExecution()
+  && (process.env.ALERT_DIGEST_FORCE_SPOOL === '1'
+    || (process.platform === 'darwin' && process.env.CLAUDE_CODE_REMOTE !== 'true'));
 // Under node:test the real queue/spool may not be written without an override.
 const DIGEST_QUEUE_OVERRIDE_ENV = DIGEST_SPOOL_MODE ? 'ALERT_DIGEST_SPOOL_PATH' : 'ALERT_DIGEST_QUEUE_PATH';
 const DIGEST_QUEUE_PATH = process.env.ALERT_DIGEST_QUEUE_PATH
-  || (isCIExecution()
-    ? path.join(REPO_ROOT, 'data', 'audit', 'alert-digest-queue.json')
-    : require('./alert-digest-spool').spoolPath());
+  || (DIGEST_SPOOL_MODE
+    ? require('./alert-digest-spool').spoolPath()
+    : path.join(REPO_ROOT, 'data', 'audit', 'alert-digest-queue.json'));
 // Append-only attempt log for disposition='auto' dispatches — logs EVERY
 // attempt (success or failure), unlike the ledger above which only ever
 // records successes (a failed dispatch is deliberately not written there, so

@@ -241,6 +241,33 @@ test('a tracked deletion and a rename land: no throw, origin matches', () => {
   assert.deepEqual(readPending(env.pendingPath), []);
 });
 
+// clean-orphan-pending shape (ship-check): it deletes every file in a show
+// dir, then the dir itself. Before the fix relPath threw ENOENT on the gone
+// parent, and a deleted never-committed file threw "vanished" after the push.
+test('deleted on purpose: emptied-and-removed dir lands; an untracked deletion is a no-op', () => {
+  const env = setup();
+  const dirPath = path.join(env.local, 'show-2026');
+  const other = path.join(dirPath, 'variety--b.json');
+  const untracked = path.join(env.local, '_pending', 'show-2026', 'never-committed.json');
+  fs.mkdirSync(path.dirname(untracked), { recursive: true });
+  fs.writeFileSync(untracked, review('pending'));
+  fs.unlinkSync(env.file);
+  fs.unlinkSync(other);
+  fs.rmdirSync(dirPath);
+  fs.unlinkSync(untracked);
+  fs.rmdirSync(path.dirname(untracked));
+  const tracker = createWriteTracker();
+  for (const p of [env.file, other, untracked]) { tracker.add(p); tracker.deleted.add(p); }
+  const res = checkpointReviewTexts({ repoDir: env.local, paths: tracker, message: 'cleanup: test', pendingPath: env.pendingPath, pushScript: env.pushScript });
+  assert.equal(res.pushed, true);
+  assert.deepEqual(res.notLanded, []);
+  assert.equal(originHas(env, REL), null);
+  assert.equal(originHas(env, 'show-2026/variety--b.json'), null);
+  // Without `deleted`, a never-committed gone path is still a lost write (unchanged contract).
+  const lone = checkpointReviewTexts({ repoDir: env.local, paths: [path.join(env.local, 'x--gone.json')], message: 'feat: test', pendingPath: env.pendingPath, pushScript: env.pushScript });
+  assert.deepEqual(lone.notLanded.map((r) => r.why), ['file vanished before commit']);
+});
+
 test('nothing changed: no commit, no throw, landed confirmed by content', () => {
   const env = setup();
   const res = checkpointReviewTexts({ repoDir: env.local, paths: [env.file], message: 'feat: test', pendingPath: env.pendingPath, pushScript: env.pushScript });

@@ -89,9 +89,9 @@ async function fetchPageWithRetry(url, attempts = 3) {
 // file), under the machine-wide lock, via review-texts-checkpoint.js. The old
 // whole-tree `git add -A` swept other writers' half-written files into this
 // commit, and a failed push was only a WARNING. A failed push now throws.
-function checkpointReviewTexts(label, paths) {
+function checkpointReviewTexts(label, paths, deleted = []) {
   if (!fs.existsSync(path.join(reviewTextsDir, '.git'))) return; // --data-dir scratch copy
-  const res = checkpointRtWrites({ repoDir: reviewTextsDir, paths, message: `data: ${label} checkpoint` });
+  const res = checkpointRtWrites({ repoDir: reviewTextsDir, paths, deleted, message: `data: ${label} checkpoint` });
   if (res.pushed) console.log('  [checkpoint] pushed review-texts');
 }
 
@@ -168,7 +168,7 @@ async function run() {
       } else {
         fs.unlinkSync(filePath);
         console.log(`  chat-reply thread (not a review): deleted stub ${path.join(showDir, file)}`);
-        checkpointReviewTexts(`recover-talkinbroadway-forum-links (${showId} chat-reply stub removed)`, [filePath]);
+        checkpointReviewTexts(`recover-talkinbroadway-forum-links (${showId} chat-reply stub removed)`, [], [filePath]);
       }
       skipped++;
       continue;
@@ -242,7 +242,8 @@ async function run() {
       }
     }
     succeeded++;
-    checkpointReviewTexts(`recover-talkinbroadway-forum-links (${showId})`, [filePath, path.resolve(newFilePath)]);
+    const huskGone = !fs.existsSync(filePath);
+    checkpointReviewTexts(`recover-talkinbroadway-forum-links (${showId})`, huskGone ? [path.resolve(newFilePath)] : [filePath, path.resolve(newFilePath)], huskGone ? [filePath] : []);
   }
 
   console.log(`\nDone. ${succeeded} succeeded, ${failed} failed, ${skipped} skipped.`);

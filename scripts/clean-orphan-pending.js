@@ -84,11 +84,12 @@ function loadMainReviewFiles(showId) {
 // the machine-wide lock (review-texts-checkpoint.js). The old whole-tree
 // `git add -A` swept other writers' half-written files into the commit, and
 // the commit was never pushed. A failed push throws.
-function perShowCommit(showId, deleted, promoted, touched) {
+function perShowCommit(showId, deleted, promoted, written, removed) {
   if (!CONFIG.execute) return;
   if (deleted.length === 0 && promoted.length === 0) return;
   const msg = `cleanup: ${showId} _pending orphans (${deleted.length} deleted${promoted.length ? `, ${promoted.length} promoted` : ''})`;
-  checkpointReviewTexts({ repoDir: REVIEW_TEXTS_DIR, paths: touched, message: msg });
+  // `removed` = files deleted on purpose: an untracked one is a no-op, not a lost write.
+  checkpointReviewTexts({ repoDir: REVIEW_TEXTS_DIR, paths: written, deleted: removed, message: msg });
   console.log(`  ✓ committed + pushed ${showId}`);
 }
 
@@ -121,7 +122,7 @@ async function main() {
     if (pendingFiles.length === 0) continue;
 
     const mainFiles = loadMainReviewFiles(showId);
-    const showDeleted = [], showPromoted = [], touched = [];
+    const showDeleted = [], showPromoted = [], written = [], removed = [];
 
     console.log(`\n${showId} (${pendingFiles.length} pending, ${mainFiles.length} main):`);
     for (const { file, path: fpath } of pendingFiles) {
@@ -135,7 +136,7 @@ async function main() {
         console.log(`  − ${file} → DELETE: ${decision.reason}`);
         totalDeleted++;
         showDeleted.push(file);
-        if (CONFIG.execute) { fs.unlinkSync(fpath); touched.push(fpath); }
+        if (CONFIG.execute) { fs.unlinkSync(fpath); removed.push(fpath); }
       } else if (decision.action === 'promote') {
         console.log(`  ↑ ${file} → PROMOTE to ${decision.target.filename}: ${decision.reason}`);
         totalPromoted++;
@@ -143,7 +144,8 @@ async function main() {
         if (CONFIG.execute) {
           fs.writeFileSync(decision.target.path, fs.readFileSync(fpath));
           fs.unlinkSync(fpath);
-          touched.push(decision.target.path, fpath);
+          written.push(decision.target.path);
+          removed.push(fpath);
         }
       } else {
         if (CONFIG.verbose) console.log(`  = ${file} → keep: ${decision.reason}`);
@@ -151,12 +153,13 @@ async function main() {
       }
     }
 
-    // Clean up empty show dir
+    // Commit before removing the emptied show dir (git tracks no dirs, so the
+    // rmdir needs no commit of its own).
+    perShowCommit(showId, showDeleted, showPromoted, written, removed);
+
     if (CONFIG.execute && showDeleted.length + showPromoted.length === pendingFiles.length) {
       try { fs.rmdirSync(pendingShowDir); console.log(`  ✓ removed empty ${pendingShowDir}`); } catch {}
     }
-
-    perShowCommit(showId, showDeleted, showPromoted, touched);
   }
 
   console.log(`\n=== SUMMARY ===`);
