@@ -216,8 +216,9 @@ test('struggling shows with an announced closing are "closing before recouping",
     { slug: 'stranger-things', closingDate: '2027-01-03' },
     { slug: 'no-closing', closingDate: null },
     { slug: 'two-strangers', closingDate: '2026-11-29' },
+    { slug: 'schmigadoon', closingDate: '2027-04-04', closingExtensionCount: 3 },
   ];
   const { closing, atRisk } = splitStruggling(shows);
   assert.deepEqual(closing.map((s) => s.slug), ['stranger-things', 'two-strangers']);
-  assert.deepEqual(atRisk.map((s) => s.slug), ['no-closing']);
+  assert.deepEqual(atRisk.map((s) => s.slug), ['no-closing', 'schmigadoon']);
 });

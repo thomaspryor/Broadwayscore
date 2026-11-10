@@ -421,11 +421,18 @@ export function weeksBelowBreakEven(grossesNewestFirst: Array<number | null>, br
 /**
  * Owner 2026-11-10: a struggling show that has already announced its closing is
  * no longer "at risk" (the outcome is known), so /biz lists it as "Closing
- * Before Recouping" instead. Order within each group is kept.
+ * Before Recouping" instead. Order within each group is kept. A run extended
+ * twice or more stays "at risk": its date is the latest extension.
  */
-export function splitStruggling<T extends { closingDate: string | null }>(shows: T[]): { closing: T[]; atRisk: T[] } {
+export function splitStruggling<T extends {
+  closingDate: string | null;
+  closingExtensions?: ReadonlyArray<unknown> | null;
+  closingExtensionCount?: number | null;
+}>(shows: T[]): { closing: T[]; atRisk: T[] } {
+  // closingDate here is already a future date; a run extended twice or more has no real closing (BRO-7252).
+  const announced = (s: T) => !!s.closingDate && Math.max(s.closingExtensions?.length ?? 0, s.closingExtensionCount ?? 0) < 2;
   return {
-    closing: shows.filter((s) => !!s.closingDate),
-    atRisk: shows.filter((s) => !s.closingDate),
+    closing: shows.filter(announced),
+    atRisk: shows.filter((s) => !announced(s)),
   };
 }
