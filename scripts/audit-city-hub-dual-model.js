@@ -439,7 +439,7 @@ function computeFlags(L) {
   }
   for (const s of L.shows) {
     const d = V.showVenueDisagreement(s, textsBy.get(s.id) || [], cityVenues);
-    if (d) add('show', s.id, s.title, 'local', [{ code: 'venue-contradicted', detail: `ours ${s.venue} / ${d.outlets.length} outlets name ${d.venue}: ${d.outlets.join(', ')}`, fix: { field: 'venue', value: d.venue } }]);
+    if (d) add('show', s.id, s.title, 'local', [{ code: 'venue-contradicted', detail: `ours ${s.venue} / ${d.outlets.length} outlets name ${d.venue}: ${d.outlets.join(', ')}`, ...(d.stored ? { fix: { field: 'venue', value: d.stored } } : {}) }]);
   }
   // BRO-7291 class 4: a title typo copied from a listing ("Hangman" staged, every review prints "Hangmen").
   const T = require('./lib/title-spelling-check');

@@ -60,9 +60,12 @@ function ingestPlan(gaps, resolve, { perShow = 6, status = null } = {}) {
   const candidates = {};
   let redirects = 0;
   let dead = 0;
+  let roundups = 0;
+  const { isRoundupUrl } = require('./review-guards'); // the same test rebuild applies: a listing never ingests
   for (const g of gaps) {
     const h = host(g.url);
     if (REDIRECT_HOSTS.test(h)) { redirects++; continue; }
+    if (isRoundupUrl(g.url).isRoundup) { roundups++; continue; }
     if (status && DEAD_STATUS.has(status.get(g.url))) { dead++; continue; }
     const o = resolve(g.url);
     if (o && o.outletId) {
@@ -72,7 +75,7 @@ function ingestPlan(gaps, resolve, { perShow = 6, status = null } = {}) {
       (candidates[h] || (candidates[h] = { outlet: g.outlet, urls: [] })).urls.push({ showId: g.showId, url: g.url });
     }
   }
-  return { plan, registryCandidates: candidates, redirects, dead };
+  return { plan, registryCandidates: candidates, redirects, dead, roundups };
 }
 
 /**

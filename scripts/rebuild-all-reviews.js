@@ -4203,9 +4203,10 @@ showDirs.forEach(showId => {
       // BRO-7291 class 3: a city-hub regional show's review that is about the same title at another theatre
       // in another state (come-from-away-north: a Sharon Playhouse, CT review filed under North Shore, MA).
       // 0 false positives across 6,662 hub reviews (both hits were the real cases).
-      const regionalVenue = regionalVenueMismatch(data, showById[showId]);
+      // A human clear (wrongProductionManualClear / Override / allowCrossMarket) keeps the review, as at every sibling guard.
+      const regionalVenue = shouldSkipWrongProductionAudit(data) ? null : regionalVenueMismatch(data, showById[showId]);
       if (regionalVenue) {
-        if (!data.wrongProduction && !shouldSkipWrongProductionAudit(data) && !skipStaleFlagWrite(data)) {
+        if (!data.wrongProduction && !skipStaleFlagWrite(data)) {
           // [GUARD:REGIONAL-VENUE-MISMATCH]
           data.wrongProduction = true;
           invalidateWrongProductionAutoClear(data);

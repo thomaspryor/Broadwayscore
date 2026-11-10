@@ -127,3 +127,15 @@ test('one site alone cannot move a date with plain "through" text (needs two sit
   assert.equal(laterAnnouncedRunEnd({ opening: '2026-06-20', closing: '2026-07-19' }, { texts }), null);
   assert.equal(laterAnnouncedRunEnd({ opening: '2026-06-20', closing: '2026-07-19' }, { texts }, { minSites: 1 }).date, '2026-08-09');
 });
+
+test('replay hayward-regional-2026: a hand-entered date with no source moves, but is not logged as a later-announced extension', () => {
+  const show = { id: 'hayward-regional-2026', status: 'open', openingDate: '2026-10-14', closingDate: '2026-11-15' };
+  const r = laterAnnouncedRunEnd({ opening: '2026-10-14', closing: '2026-11-15' }, { texts: [], listing: { date: '2026-11-22', url: 'https://www.theatreinla.com/hayward/3/' } });
+  assert.equal(applyRunEnd(show, r, '2026-11-10'), 'written');
+  assert.equal(show.closingDate, '2026-11-22');
+  assert.ok(!(show.closingExtensions || []).length, 'no recorded source: the old date was never announced, so this is a correction');
+  const sourced = { ...show, closingDate: '2026-11-15', closingDateSource: 'theatreinla listing' };
+  delete sourced.closingExtensions;
+  applyRunEnd(sourced, r, '2026-11-10');
+  assert.equal((sourced.closingExtensions || []).length, 1, 'a sourced date moving later is an extension');
+});

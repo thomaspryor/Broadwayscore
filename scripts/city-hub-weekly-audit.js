@@ -3,7 +3,11 @@
 /**
  * Weekly dual-model audit of every launched city hub (BRO-7291 class 8). Runs in audit-review-quality.yml (Tuesdays).
  *
- *   node scripts/city-hub-weekly-audit.js [--city=<hub>] [--max-usd=2] [--no-llm] [--dry-run] [--today=YYYY-MM-DD]
+ *   node scripts/city-hub-weekly-audit.js [--city=<hub>] [--max-usd=2] [--no-llm] [--dry-run] [--open] [--today=YYYY-MM-DD]
+ *
+ * --max-usd caps the WHOLE run (split evenly across the hubs audited, then a third per audit mode).
+ * --open counts every current finding triage has not settled (ignores last week's "seen" list) and exits 1 when any
+ *   remain: the check a weekly card's VERIFY line runs, so it cannot pass just because this week's run saw them.
  *
  * Per launched hub (data/city-hubs.json launched: true), or only --city:
  *   1. unless --no-llm: scripts/audit-city-hub-dual-model.js shows, reviews and coverage (--refresh-days=14), each
@@ -16,7 +20,7 @@
  *        all of them -> ONE Linear card per city per week (deduped on the title).
  *   4. data/audit/city-hub-dual/<city>/weekly.json (this week's findings; next week's "seen" list), scorecard.json,
  *      ingest-plan.json (coverage gaps in dispatch-ingest-batch.js format).
- * --dry-run writes nothing outside a report on stdout and files nothing. Exit 0 unless the script itself breaks.
+ * --dry-run writes nothing outside a report on stdout and files nothing. Exit 0 unless the script itself breaks (or --open, above).
  */
 require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
@@ -88,7 +92,7 @@ async function auditCity(city, maxUsd) {
   const sc = M.scorecard(L, triage);
   const findings = W.findingsFromFlags(sc.flags);
   const prev = readJson(`data/audit/city-hub-dual/${city}/weekly.json`, { findingKeys: [] });
-  const fresh = W.newFindings(findings, prev.findingKeys, triage);
+  const fresh = W.newFindings(findings, flag('open') ? [] : prev.findingKeys, triage);
   const provenance = provenanceFor(new Set(L.shows.map((s) => s.id)));
   const week = W.isoWeek(TODAY);
   const byClass = Object.fromEntries([1, 2, 3, 4, 6].map((c) => [c, findings.filter((f) => f.cls === c).length]));
@@ -113,7 +117,7 @@ async function main() {
   const launched = Object.entries(hubs).filter(([, h]) => h.launched === true).map(([k]) => k);
   const only = arg('city', null);
   const cities = only ? [only] : launched;
-  const maxUsd = Number(arg('max-usd', 2));
+  const maxUsd = Number(arg('max-usd', 2)) / Math.max(1, cities.length); // --max-usd is the whole-run cap
   const out = [];
   for (const c of cities) {
     try { out.push(await auditCity(c, maxUsd)); } catch (e) { console.log(`::warning::${c}: ${e.message}`); out.push({ city: c, error: e.message }); }
@@ -122,6 +126,8 @@ async function main() {
   if (process.env.GITHUB_STEP_SUMMARY) {
     fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, `\n### City hub dual-model audit\n${out.map((s) => `- ${s.city}: ${s.error ? `error ${s.error}` : `${s.findings} findings, ${s.newFindings} new, class 5 ${s.provenance}${s.card ? `, card ${s.card}` : ''}`}`).join('\n')}\n`);
   }
+  // --open is the weekly card's VERIFY: it fails while any finding is unsettled (or a hub could not be audited)
+  if (flag('open') && out.some((s) => s.error || s.newFindings > 0 || s.provenance > 0)) process.exit(1);
 }
 
 module.exports = { auditCity };

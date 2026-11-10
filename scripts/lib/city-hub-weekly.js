@@ -96,7 +96,8 @@ function cardFor(city, week, fresh, { planId = null, provenance = null } = {}) {
   lines.push('## Resolution steps');
   if (planId) lines.push(`1. The deterministic rows are in pending-fix plan \`${planId}\`: check each against its source, then apply it with execute-approved-fix.yml.`);
   lines.push(`${planId ? 2 : 1}. For the other rows, open the source; a confirmed problem is fixed through a pending-fix plan, a false lead is recorded in data/audit/city-hub-dual/${city}/triage.json (verdict false-positive) so it never comes back.`, '');
-  lines.push('## Acceptance criteria', `- \`node scripts/city-hub-weekly-audit.js --city=${city} --no-llm --dry-run\` reports 0 new findings.`, '', `VERIFY: node scripts/city-hub-weekly-audit.js --city=${city} --no-llm --dry-run`, '', `_Auto-filed by scripts/city-hub-weekly-audit.js (${week})._`);
+  // --open ignores last week's seen list, so the check only passes once each finding is fixed or triaged false-positive
+  lines.push('## Acceptance criteria', `- \`node scripts/city-hub-weekly-audit.js --city=${city} --no-llm --dry-run --open\` exits 0 (no unsettled findings).`, '', `VERIFY: node scripts/city-hub-weekly-audit.js --city=${city} --no-llm --dry-run --open`, '', `_Auto-filed by scripts/city-hub-weekly-audit.js (${week})._`);
   return { title: `City hub audit ${city} ${week}: ${fresh.length + (prov ? 1 : 0)} new finding(s)`, body: lines.join('\n') };
 }
 

@@ -75,3 +75,10 @@ test('outletHint lists the hub outlets by review count (replaces the hand list o
   const rows = [{ outlet: 'DC Theater Arts' }, { outlet: 'DC Theater Arts' }, { outlet: 'DC Theater Arts' }, { outlet: 'The Washington Post' }, { outlet: 'The Washington Post' }, { outletId: 'mdtheatreguide' }];
   assert.equal(C.outletHint(rows, 2), 'DC Theater Arts, The Washington Post');
 });
+
+test('replay los-angeles-ca: a TheatreInLA production listing is a roundup, never planned for ingest', () => {
+  const gaps = [{ showId: 'dupin', url: 'https://www.theatreinla.com/the-case-book-of-c-auguste-dupin/11417/' }, { showId: 'dupin', url: 'https://www.washingtonpost.com/a/1' }];
+  const r = C.ingestPlan(gaps, resolveOutletFromUrl);
+  assert.equal(r.roundups, 1);
+  assert.deepEqual(r.plan.dupin.map((x) => x.url), ['https://www.washingtonpost.com/a/1']);
+});

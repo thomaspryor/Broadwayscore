@@ -56,6 +56,7 @@ test('replay octet-regional-2026: stored Goodman Theatre, outlets agree on Raven
   const hit = showVenueDisagreement(show, [r('chicago-reader'), r('chicagotribune'), r('new-city-stage')], ['Raven Theatre, Chicago, IL', 'Goodman Theatre, Chicago, IL']);
   assert.ok(hit);
   assert.match(hit.venue, /Raven Theatre/);
+  assert.equal(hit.stored, 'Raven Theatre, Chicago, IL', 'the fix writes the stored venue string, not the outlet spelling');
   assert.equal(hit.outlets.length, 3);
   // a producing company that is not a known city venue is not evidence the building is wrong
   assert.equal(showVenueDisagreement(show, [r('a'), r('b')], ['Steppenwolf Theatre, Chicago, IL']), null);

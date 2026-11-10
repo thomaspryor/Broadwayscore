@@ -69,7 +69,12 @@ function applyRunEnd(show, decision, todayStr, log = () => {}) {
     // An extension past a hand-fixed date: record it, move the date, keep the pin on the new value.
     recordClosingExtension(show, decision.date, decision.source, todayStr);
     writeClosingDate(show, decision.date, decision.source, { force: true, recordExtension: false, todayStr, log });
-  } else if (!writeClosingDate(show, decision.date, decision.source, { todayStr, log })) {
+  } else if (!writeClosingDate(show, decision.date, decision.source, {
+    todayStr, log,
+    // A later date announced after ours is an extension; a date read from review text that replaces an
+    // unsourced/estimated one is a correction, and must not show as "Extended through" on the site.
+    recordExtension: decision.kind !== 'text' && !!show.closingDateSource && !/estimat/i.test(String(show.closingDateSource)),
+  })) {
     return 'pinned';
   }
   if (show.status === 'closed' && decision.date >= todayStr) show.status = 'open';

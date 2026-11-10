@@ -67,5 +67,5 @@ test('card: null when nothing is new; otherwise one card naming the plan and a V
   assert.match(c.body, /### Class 1: stale closing date \(1\)/);
   assert.match(c.body, /### Class 5: unprovenanced hand-entered row \(2\)/);
   assert.match(c.body, /bro-7291-chicago-il-2026-w46/);
-  assert.match(c.body, /^VERIFY: node scripts\/city-hub-weekly-audit\.js --city=chicago-il --no-llm --dry-run$/m);
+  assert.match(c.body, /^VERIFY: node scripts\/city-hub-weekly-audit\.js --city=chicago-il --no-llm --dry-run --open$/m);
 });

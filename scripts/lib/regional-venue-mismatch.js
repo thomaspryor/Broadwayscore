@@ -102,7 +102,9 @@ function showVenueDisagreement(show, reviews, cityVenues = []) {
   if (!show || !show.localOnly || !show.venue) return null;
   if (/^(?:live online|online|virtual|streaming|various|tba|tbd)\b/i.test(show.venue)) return null; // placeholder, not a building
   const ours = ownVenueKeys(show.venue);
-  const known = new Set(cityVenues.filter((v) => v && v !== show.venue).flatMap(ownVenueKeys));
+  // key -> the stored venue string it came from ("Raven Theatre, Chicago, IL"), so a fix writes the stored form
+  const known = new Map();
+  for (const v of cityVenues) if (v && v !== show.venue) for (const k of ownVenueKeys(v)) if (!known.has(k)) known.set(k, v);
   const by = new Map();
   let namesOurs = 0;
   for (const r of reviews || []) {
@@ -111,12 +113,12 @@ function showVenueDisagreement(show, reviews, cityVenues = []) {
     if (ours.some((k) => namesKey(fold(text), k))) { namesOurs++; continue; } // company + our building (TUTA at Bramble)
     const top = otherVenueNamed(text, r.url, show, 2);
     if (!top || !known.has(top.key)) continue;
-    if (!by.has(top.key)) by.set(top.key, { venue: top.venue, outlets: new Set() });
+    if (!by.has(top.key)) by.set(top.key, { venue: top.venue, stored: known.get(top.key), outlets: new Set() });
     by.get(top.key).outlets.add(r.outletId || r.url);
   }
   const best = [...by.values()].sort((a, b) => b.outlets.size - a.outlets.size)[0];
   if (!best || best.outlets.size < 2 || best.outlets.size <= namesOurs) return null;
-  return { venue: best.venue, outlets: [...best.outlets] };
+  return { venue: best.venue, stored: best.stored, outlets: [...best.outlets] };
 }
 
 module.exports = { regionalVenueMismatch, showVenueDisagreement, ownVenueKeys };
