@@ -333,7 +333,7 @@ const OWNER_ACTIONS = {
   'broadcast:draft-creation-failed:': 'Send the opening-night email yourself; the draft was not created.',
   'broadcast:owner-notification-failed:': 'Send the opening-night email yourself; the reminder to you failed.',
   'broadcast:draft-unsent:': 'Send the opening-night email draft.',
-  'broadcast:deadline-draft:': 'Send the opening-night email draft before the deadline.',
+  'broadcast:deadline-draft:': 'Read the list below first. Send the draft from Resend only once everything on it looks right.',
   'cookie-renew:needs-human:': 'Re-capture the expired login cookie (needs your login).',
   'check-morning-digest-sent.yml': 'Check the Mac is on, awake and signed in.',
   'opening-night-broadcast.yml': 'Send the opening-night email yourself.',

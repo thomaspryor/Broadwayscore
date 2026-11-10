@@ -7,6 +7,8 @@ import assert from 'node:assert/strict';
 import {
   isOnClosingWatch,
   isNearBreakEven,
+  isNewNearOrBelowBreakEven,
+  isNewShow,
   splitStruggling,
   isBoxOfficeDriven,
   finalRunStart,
@@ -221,4 +223,28 @@ test('struggling shows with an announced closing are "closing before recouping",
   const { closing, atRisk } = splitStruggling(shows);
   assert.deepEqual(closing.map((s) => s.slug), ['stranger-things', 'two-strangers']);
   assert.deepEqual(atRisk.map((s) => s.slug), ['no-closing', 'schmigadoon']);
+});
+
+test('new show too early to judge: fewer than 4 weeks, under or near break-even, listed as New (owner 2026-11-10)', () => {
+  // Wanted, Nov 2026: 3 preview weeks averaging ~$528K vs ~$700K, no season-adjusted figure yet.
+  const wanted = { ...base, avgGross: 528_000, breakEven: 700_000, adjustedRatio: null, weeksBelow: 3 };
+  assert.equal(isNewNearOrBelowBreakEven(wanted), true);
+  assert.equal(isNearBreakEven(wanted), false); // the established rule still needs 4 weeks
+  assert.equal(isNewNearOrBelowBreakEven({ ...wanted, avgGross: 700_000 * 1.2 }), false); // comfortably above
+  // Still New with a 4th week: the tag lasts NEW_SHOW_WEEKS after opening, not until a 4th week posts.
+  assert.equal(isNewNearOrBelowBreakEven({ ...wanted, adjustedRatio: 0.75, openingDate: '2026-11-08', today: '2026-11-24' }), true);
+  assert.equal(isNewNearOrBelowBreakEven({ ...wanted, openingDate: '2026-11-08', today: '2027-01-10' }), false); // 9 weeks in
+  assert.equal(isNewNearOrBelowBreakEven({ ...wanted, closingDate: '2027-01-03' }), false); // announced closing
+  assert.equal(isNewNearOrBelowBreakEven({ ...wanted, limitedRun: true }), false);
+  assert.equal(isNewNearOrBelowBreakEven({ ...wanted, status: 'closed' }), false);
+  // Opened Nov 8, 2026: New. A long-running show back from a break with few weeks: not New.
+  assert.equal(isNewNearOrBelowBreakEven({ ...wanted, openingDate: '2026-11-08', today: '2026-11-10' }), true);
+  assert.equal(isNewNearOrBelowBreakEven({ ...wanted, openingDate: '2019-03-01', today: '2026-11-10' }), false);
+  assert.equal(isNewNearOrBelowBreakEven({ ...wanted, openingDate: null }), true); // still in previews
+});
+
+test('isNewShow: within 8 weeks of opening or not yet opened', () => {
+  assert.equal(isNewShow('2026-11-08', '2027-01-03'), true);
+  assert.equal(isNewShow('2026-11-08', '2027-01-04'), false);
+  assert.equal(isNewShow(null, '2026-11-10'), true);
 });

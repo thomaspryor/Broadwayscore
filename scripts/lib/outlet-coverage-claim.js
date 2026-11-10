@@ -10,17 +10,22 @@
  */
 const URLLESS_NON_ACTIONABLE_SOURCES = new Set(['stagedoor']);
 
-function claimsOutletCoverage(row) {
+function claimsOutletCoverage(row, flaggedOnlyOutletIds) {
   if (!row || !row.outletId) return false;
   const hasUrl = typeof row.url === 'string' && row.url.trim() !== '';
   if (hasUrl) return true;
+  // BRO-7293: an outlet whose only files on disk are flagged (an earlier production's
+  // review) has no review of THIS production. A url-less roundup excerpt for it is not a
+  // URL to collect, so it must not mark the outlet found and switch off site search and
+  // SERP for the real review (Cititour, Here There Are Blueberries: missed overnight).
+  if (flaggedOnlyOutletIds && flaggedOnlyOutletIds.has(String(row.outletId).toLowerCase())) return false;
   return !URLLESS_NON_ACTIONABLE_SOURCES.has(String(row.source || '').toLowerCase());
 }
 
 /** Add the outlet ids of rows that may claim coverage to `set` (lowercased). Returns set. */
-function addClaimedOutletIds(set, rows) {
+function addClaimedOutletIds(set, rows, flaggedOnlyOutletIds) {
   for (const r of rows || []) {
-    if (claimsOutletCoverage(r)) set.add(String(r.outletId).toLowerCase());
+    if (claimsOutletCoverage(r, flaggedOnlyOutletIds)) set.add(String(r.outletId).toLowerCase());
   }
   return set;
 }

@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-11-08T22:20:13.459Z",
+    "lastUpdated": "2026-11-10T15:17:21.217Z",
     "version": "2.1.0",
     "lastChange": "BRO-7274: register 17 DC/LA regional outlets (+domainAliases on thehollywoodtimes, hillrag) for BRO-7256 coverage-gap ingest"
   },
@@ -15461,6 +15461,14 @@
       ],
       "domain": "dc.citycast.fm",
       "accessModel": "free"
+    },
+    "theatrestorm": {
+      "displayName": "TheatreStorm",
+      "tier": 3,
+      "aliases": [
+        "theatrestorm"
+      ],
+      "domain": "theatrestorm.com"
     }
   },
   "_aliasIndex": {

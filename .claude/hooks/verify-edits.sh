@@ -98,6 +98,10 @@ if [ -z "${VE_ONLY_CODES:-}" ] && [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ -f
   _dr_err=$(printf '%s' "$input" | timeout 15 node "$VE_REPO_ROOT/scripts/lib/decision-restate.js" --stop-hook 2>&1 >/dev/null)
   if [ $? -eq 2 ]; then printf '%s\n' "$_dr_err" >&2; exit 2; fi
 fi
+# BRO-7294: rule 21 at SAFE TO ARCHIVE (root-cause-stop.mjs: cloud only, fails open, own block budget, kill ROOT_CAUSE_STOP_DISABLE=1).
+if [ -z "${VE_ONLY_CODES:-}" ] && [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ "${ROOT_CAUSE_STOP_DISABLE:-0}" != "1" ] && [ -f "$VE_REPO_ROOT/scripts/lib/root-cause-stop.mjs" ] && command -v node >/dev/null 2>&1; then
+  _rcs_err=$(printf '%s' "$input" | timeout 15 node "$VE_REPO_ROOT/scripts/lib/root-cause-stop.mjs" --stop-hook 2>&1 >/dev/null); if [ $? -eq 2 ]; then printf '%s\n' "$_rcs_err" >&2; exit 2; fi
+fi
 result=$(python3 - "$transcript" <<'PYEOF'
 import hashlib, json, sys, os, re, shlex
 

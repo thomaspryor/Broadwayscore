@@ -33,4 +33,30 @@ function findMatchingReviewFile(files, outletNorm, criticNorm, normalizeOutlet) 
 function matchesOutletCriticFile(file, outletNorm, criticNorm, normalizeOutlet) {
   return findMatchingReviewFile([file], outletNorm, criticNorm, normalizeOutlet) === file;
 }
-module.exports = { findMatchingReviewFile, matchesOutletCriticFile };
+
+/**
+ * BRO-7293: may a url-less roundup excerpt attach to this file? Not when the file is
+ * flagged wrongProduction/wrongShow or a duplicate pointer: those hold an earlier
+ * production's review, and the excerpt (and the date it brings) would make the old text
+ * look like the new review (Cititour/Lipton NYTW 2024 review shown for the Broadway run).
+ * Unreadable file = not flagged (the caller's own read decides).
+ */
+function isFlaggedForRoundupMerge(filePath) {
+  try {
+    const d = JSON.parse(require('fs').readFileSync(filePath, 'utf8'));
+    return !!(d.wrongProduction || d.wrongShow || d.duplicateOf);
+  } catch (_) { return false; }
+}
+
+/** `<outlet>--<critic>.json` -> first free `<outlet>--<critic>-2.json`, `-3`, ... (the critic match accepts `-<n>`). */
+function uniqueReviewFilename(showDir, filename) {
+  const fs = require('fs'); const path = require('path');
+  if (!fs.existsSync(path.join(showDir, filename))) return filename;
+  const base = filename.replace(/\.json$/, '');
+  for (let n = 2; n < 100; n++) {
+    const cand = `${base}-${n}.json`;
+    if (!fs.existsSync(path.join(showDir, cand))) return cand;
+  }
+  return filename;
+}
+module.exports = { findMatchingReviewFile, matchesOutletCriticFile, isFlaggedForRoundupMerge, uniqueReviewFilename };

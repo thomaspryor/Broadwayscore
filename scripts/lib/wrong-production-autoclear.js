@@ -18,6 +18,7 @@
 
 const { parseDate, toDateMs } = require('./date-utils');
 const { evaluateCollectedBeforePreviews, isCollectedBeforePreviewsHold } = require('./collected-before-previews');
+const { foldDiacritics } = require('./url-slug');
 
 // Review-lag grace on the CLOSE/END side of a declared priorRuns or tourLegs
 // window (BRO-2561). Critics routinely file 1-7 days after a run's final
@@ -794,6 +795,23 @@ function shouldAutoClearWrongShowUkUrl(data, { isLondonMarketShow, isUkOutletUrl
  *   (parsed publishDate or YYYYMMDD URL date)
  * @returns {boolean}
  */
+/**
+ * BRO-7293: the BWW roundup excerpt quotes the review this file is supposed to hold. When
+ * the stored text has none of it, the file holds a different article (an earlier
+ * production's review the excerpt was attached to by outlet + critic). A date the
+ * roundup brought along says nothing about that text, so it must not release the hold.
+ */
+function bwwExcerptContradictsText(data) {
+  // Same normalisation on both sides: fold diacritics first (task #648), drop HTML entities
+  // (&amp; &#8217;) that only one side may carry, then keep lowercase alphanumerics.
+  const norm = (t) => foldDiacritics(String(t || '')).toLowerCase().replace(/&#?[a-z0-9]+;/g, ' ').replace(/[^a-z0-9]+/g, ' ').trim();
+  const text = norm(data && data.fullText);
+  if (text.length < 200 || !data.bwwExcerpt) return false;
+  const frags = String(data.bwwExcerpt).split(/\.\.\.|\u2026/).map(norm).filter((f) => f.length >= 25);
+  if (!frags.length) return false;
+  return !frags.some((f) => text.includes(f.slice(0, 60)));
+}
+
 function shouldAutoClearDatelessRevival(data, { hasUsableDate } = {}) {
   if (!data || data.wrongProduction !== true) return false;
   const note = data.wrongProductionNote || '';
@@ -817,6 +835,7 @@ function shouldAutoClearDatelessRevival(data, { hasUsableDate } = {}) {
     || data.humanReviewedWrongProduction === false;
   if (humanOverride) return true;
   if (hasEnsembleConsensus(data, 'wrong_production')) return false;
+  if (bwwExcerptContradictsText(data)) return false; // BRO-7293
   return !!hasUsableDate;
 }
 
@@ -1310,6 +1329,7 @@ function shouldAutoClearStaleLondonOutletCrossMarket(data, ctx = {}) {
 }
 
 module.exports = {
+  bwwExcerptContradictsText,
   DATE_GUARD_PREFIXES,
   locationFlagsStaleAfterMove,
   showIdDirMismatchNote,

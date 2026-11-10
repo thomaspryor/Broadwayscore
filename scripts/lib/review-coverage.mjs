@@ -235,6 +235,48 @@ const BOARD_READ_RE = new RegExp(`${BOARD_CMD_POS}(?:node\\s+)?\\S*linear-brain\
 const BOARD_READ_TOOL_RE = /linear.*__list_issues$|^mcp__[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}__list_issues$/i;
 const LINEAR_DONE_RE = /linear-brain\.js\s+update\s+BRO-\d+[^\n]*--state[=\s]+["']?Done|linear-session\.js\s+report\b[^\n]*--status[=\s]+["']?done\b/i;
 const LAND_PUSH_RE = /\bgit\b[^\n;&|]*\bpush\b[^\n;&|]*\bland\//;
+// The land workflow itself (land.yml), not its land-* helpers (land-ref-prune.yml, visual-approval-land.yml, ...).
+const LAND_WORKFLOW_RE = /(?:^|\/)land\.ya?ml$/;
+const LAND_DISPATCH_CMD_RE = /(?:\bgh\s+workflow\s+run|cloud-dispatch\.js)\s+(?:\S*\/)?land\.ya?ml\b/;
+const LAND_PUSH_REFUSED_RE = /\[(?:remote )?rejected\]|^error: failed to push|^fatal: /m;
+
+/**
+ * Indices of the events where this session landed code: a `git push … land/<name>` that really
+ * ran (not a dry run, a delete, or one a hook blocked), or an MCP landing (create_branch of
+ * land/<name>, a dispatch of the land workflow). Shared with root-cause-stop.mjs (BRO-7294).
+ * -> number[]
+ */
+export function landedPushIndices(events) {
+  const answers = new Map(events.filter((e) => e.kind === 'tool_result').map((e) => [e.tool_use_id, e]));
+  const out = [];
+  events.forEach((e, i) => {
+    if (e.kind !== 'assistant_tool_use') return;
+    const r = answers.get(e.id);
+    if (!r || r.isError) return;
+    if (e.name === 'Bash') {
+      const c = String(e.input?.command || '');
+      const push = LAND_PUSH_RE.exec(c);
+      // Judge the push segment only: `git push … land/x | tail -n 20` must not read as a dry run.
+      const segment = push ? c.slice(push.index).split(/[;&|\n]/)[0] : '';
+      // A piped push exits 0 even when git refused it, so read the output too.
+      const refused = LAND_PUSH_REFUSED_RE.test(String(r.content || ''));
+      if (push && !refused && !/--dry-run|\s-n\s|--delete\b|\s-d\s|\s:(?:refs\/heads\/)?land\//.test(segment)) out.push(i);
+      else if (LAND_DISPATCH_CMD_RE.test(c)) out.push(i);
+    } else if (/^mcp__github__(?:create_branch|push_files|create_or_update_file)$/.test(e.name || '') && String(e.input?.branch || '').startsWith('land/')) {
+      out.push(i);
+    } else if (e.name === 'mcp__github__actions_run_trigger' && LAND_WORKFLOW_RE.test(String(e.input?.workflow_id || ''))) {
+      out.push(i);
+    }
+  });
+  return out;
+}
+
+/** Does the message's last meaningful line claim SAFE TO ARCHIVE (legacy SAFE TO EXIT)? Fenced code is ignored. */
+export function claimsSafeToArchive(message) {
+  const text = String(message || '').replace(/```[\s\S]*?```/g, '');
+  const lines = text.split('\n').map((l) => l.trim().replace(/^[*_>#\s•-]+/, '').replace(/[*_\s]+$/, '')).filter((l) => l && !/^[-=_*~\s\u2500-\u257f\u2022\u00b7]+$/.test(l));
+  return lines.length > 0 && /^SAFE TO (?:ARCHIVE|EXIT)\b/.test(lines[lines.length - 1]);
+}
 
 /**
  * The rest of the finish chain, checked for substance (BRO-5359 /what-else): the same
@@ -265,19 +307,11 @@ export function evaluateChain(events, { lastMessage = '' } = {}) {
   }
 
   if (!bypass('NO-WRAP-UP')) {
-    let lastLand = -1;
+    const lands = landedPushIndices(events);
+    const lastLand = lands.length ? lands[lands.length - 1] : -1;
     let lastDone = -1;
-    const answers = new Map(events.filter((e) => e.kind === 'tool_result').map((e) => [e.tool_use_id, e]));
     events.forEach((e, i) => {
-      if (e.kind !== 'assistant_tool_use' || e.name !== 'Bash') return;
-      const c = String(e.input?.command || '');
-      const r = answers.get(e.id);
-      // Only a push that really ran counts as a landing: not a dry run, a delete, or one a hook blocked.
-      const push = LAND_PUSH_RE.exec(c);
-      // Judge the push segment only: `git push … land/x | tail -n 20` must not read as a dry run.
-      const segment = push ? c.slice(push.index).split(/[;&|\n]/)[0] : '';
-      if (push && r && !r.isError && !/--dry-run|\s-n\s|--delete\b|\s-d\s|\s:(?:refs\/heads\/)?land\//.test(segment)) lastLand = i;
-      if (LINEAR_DONE_RE.test(c)) lastDone = i;
+      if (e.kind === 'assistant_tool_use' && e.name === 'Bash' && LINEAR_DONE_RE.test(String(e.input?.command || ''))) lastDone = i;
     });
     if (lastLand >= 0 && lastDone >= 0 && lastDone < lastLand) problems.push('the Linear close-out was posted before the last landing; post it again now that the landing is verified');
   }
@@ -296,9 +330,8 @@ export function stopHookDecision({ lastMessage = '', events = null, env = proces
   if (env.CLAUDE_CODE_REMOTE !== 'true') return { decision: 'allow', reason: 'not a cloud session' };
   if (env.SHIP_CHECK_COVERAGE_DISABLE === '1') return { decision: 'allow', reason: 'SHIP_CHECK_COVERAGE_DISABLE=1' };
   const text = String(lastMessage || '').replace(/```[\s\S]*?```/g, '');
-  const lines = text.split('\n').map((l) => l.trim().replace(/^[*_>#\s•-]+/, '').replace(/[*_\s]+$/, '')).filter((l) => l && !/^[-=_*~\s\u2500-\u257f\u2022\u00b7]+$/.test(l));
   // BRO-6020: SAFE TO ARCHIVE is the current claim; legacy SAFE TO EXIT stays an alias.
-  if (!lines.length || !/^SAFE TO (?:ARCHIVE|EXIT)\b/.test(lines[lines.length - 1])) return { decision: 'allow', reason: 'not claiming SAFE TO ARCHIVE' };
+  if (!claimsSafeToArchive(lastMessage)) return { decision: 'allow', reason: 'not claiming SAFE TO ARCHIVE' };
   if (!events || events.length === 0) return { decision: 'allow', reason: 'no transcript (fails open)' };
   const cov = evaluateCoverage(events);
   // Only a session that did reviewed code work is held to the rest of the chain.

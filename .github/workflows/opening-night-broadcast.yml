@@ -1005,45 +1005,36 @@ jobs:
           DRIFT_OVERRIDDEN: ${{ steps.drift_gate.outputs.overridden }}
           ORPHAN_OVERRIDDEN: ${{ steps.orphan_gate.outputs.overridden }}
         run: |
+          # BRO-7297: the owner-facing text is built by scripts/lib/deadline-draft-alert.js
+          # (plain English, show titles, the review and critic, the Resend link). The old
+          # inline reader looked for checklist "checks"; the checklist writes "results",
+          # so the email never named a review. routeAlert stays inline here so
+          # scripts/audit-alert-reachability.js still sees this page.
           node -e "
             const fs = require('fs');
             const { routeAlert } = require('./scripts/lib/owner-alert-router');
+            const { buildDeadlineDraftAlert } = require('./scripts/lib/deadline-draft-alert');
             const split = v => (v || '').split(',').filter(Boolean);
-            const lines = [];
-            const ids = new Set();
-            for (const id of split(process.env.CHECKLIST_OVERRIDDEN)) {
-              ids.add(id);
-              let errs = [];
-              try {
-                const d = JSON.parse(fs.readFileSync('/tmp/checklist-' + id + '.json', 'utf8'));
-                for (const s of d.shows || []) for (const c of s.checks || []) {
-                  if (!c.ok && c.severity === 'error') errs.push(c.name + ': ' + String(c.message).slice(0, 300));
-                }
-              } catch (e) { errs.push('the QA checklist did not produce results (it crashed or timed out), so NONE of this show\'s reviews were checked'); }
-              lines.push(id + ' QA checklist errors:\n  - ' + (errs.length ? errs.join('\n  - ') : 'the checklist reported errors but none could be read back, so treat every review as unchecked'));
-            }
-            for (const id of split(process.env.DRIFT_OVERRIDDEN)) {
-              ids.add(id);
-              lines.push(id + ': review-count drift over 2 (a scored review may be missing from the email). See data/audit/review-count-drift-' + id + '.json');
-            }
-            for (const entry of split(process.env.ORPHAN_OVERRIDDEN)) {
-              const [id, action] = entry.split(':');
-              ids.add(id);
-              if (action === 'error' || !['in-flight', 'wait', 'dispatch', 'alert'].includes(action)) {
-                lines.push(id + ': the unscored-review check itself failed (' + (action || 'unknown') + '), so it is not known whether every review was scored. Check the score in the draft.');
-              } else {
-                lines.push(id + ': at least one review was still unscored (' + action + '), so the score in the draft may change once it is scored.');
-              }
-            }
-            const list = [...ids].sort().join(',');
+            const readJson = p => { try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch { return null; } };
+            const showsData = readJson('data/shows.json');
+            const showsById = Object.fromEntries(((showsData && showsData.shows) || []).map(s => [s.id, s]));
+            const alert = buildDeadlineDraftAlert({
+              checklistIds: split(process.env.CHECKLIST_OVERRIDDEN),
+              driftIds: split(process.env.DRIFT_OVERRIDDEN),
+              orphanEntries: split(process.env.ORPHAN_OVERRIDDEN),
+              showsById,
+              readChecklist: id => readJson('/tmp/checklist-' + id + '.json'),
+              sentTracker: readJson('data/opening-night-sent.json'),
+            });
             routeAlert({
-              conditionKey: 'broadcast:deadline-draft:' + list,
-              title: 'Opening-night draft created past deadline: check these before you press Send',
-              description: 'The draft deadline (10am ET the day after opening) passed, so the Resend draft was created even though QA checks flagged the items below. Nothing was sent to subscribers. Look over these reviews in the draft before sending.\n\n' + lines.join('\n\n'),
+              conditionKey: 'broadcast:deadline-draft:' + alert.ids.join(','),
+              title: alert.title,
+              description: alert.description,
+              url: alert.url,
+              subjectLabel: '',
               severity: 'warning',
               disposition: 'human',
               cooldownHours: 24,
-              fields: [{ name: 'Shows', value: list }],
             }).then(r => {
               // Page-worthy, so 'digest' means the allowlist lost this prefix: the
               // owner would only hear about it tomorrow morning, after the draft.

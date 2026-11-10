@@ -94,7 +94,7 @@ const {
 } = require('./lib/serp-session-cap');
 const { routeAlert } = require('./lib/owner-alert-router');
 const { maybeAlertSerpBurstTripwire } = require('./lib/serp-burst-tripwire');
-const { getFoundOutletIds, isInDiscoveryUnblockWindow } = require('./lib/found-outlet-ids');
+const { getFoundOutletIds, getFlaggedOnlyOutletIds, isInDiscoveryUnblockWindow } = require('./lib/found-outlet-ids');
 const { addClaimedOutletIds, buildStagedoorRow } = require('./lib/outlet-coverage-claim'); // BRO-6762: url-less stagedoor rows must not claim an outlet
 const { isPressWindowSerpSlot } = require('./lib/press-window-serp');
 const { DEFAULT_GIVEUP_THRESHOLD, isOutletGivenUp, updateOutletMisses, countableMissIds } = require('./lib/js-outlet-giveup');
@@ -1825,7 +1825,7 @@ async function pollShow(show) {
   let jsOutletMisses = { ...(backoff.jsOutletMisses || {}) };
   if (!SKIP_SITE_SEARCH) {
     const foundAfterParallel = getFoundOutletIds(SHOW_ID, { show, market });
-    addClaimedOutletIds(foundAfterParallel, [...aggResults, ...rssResults, ...ssrSiteSearchResults, ...omcResults, ...googleNewsResults]);
+    addClaimedOutletIds(foundAfterParallel, [...aggResults, ...rssResults, ...ssrSiteSearchResults, ...omcResults, ...googleNewsResults], getFlaggedOnlyOutletIds(SHOW_ID, { show, market }));
     // A find via ANY channel clears stale misses — otherwise an outlet found
     // here, later rejected as wrongProduction/not-a-review and reopened by
     // getFoundOutletIds, would inherit a give-up count from before it was ever
@@ -1996,7 +1996,7 @@ async function pollShow(show) {
   let serpResults = [];
   if ((!SKIP_SERP && shouldRunSerp()) || serpBurstActive) {
     const foundOutletIds = getFoundOutletIds(SHOW_ID, { show, market });
-    addClaimedOutletIds(foundOutletIds, [...aggResults, ...rssResults, ...siteSearchResults, ...omcResults, ...googleNewsResults]);
+    addClaimedOutletIds(foundOutletIds, [...aggResults, ...rssResults, ...siteSearchResults, ...omcResults, ...googleNewsResults], getFlaggedOnlyOutletIds(SHOW_ID, { show, market }));
     // Sort T1 before T2 so the 30-call SERP budget goes to highest-value outlets first
     let missingOutlets = getMissingT1T2Outlets(SHOW_ID, market, show)
       .filter(o => !foundOutletIds.has(o.id.toLowerCase()))
