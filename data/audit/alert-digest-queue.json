@@ -29,5 +29,75 @@
       }
     ],
     "queuedAt": "2026-11-10T09:43:51.886Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-t1-missing:dogstar-off-west-end-2026",
+    "title": "Auto-remediation gave up on dogstar-off-west-end-2026",
+    "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"dogstar-off-west-end-2026\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-10T09:58:32.920Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-t1-missing:here-there-are-blueberries-2026",
+    "title": "Auto-remediation gave up on here-there-are-blueberries-2026",
+    "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"here-there-are-blueberries-2026\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-10T09:58:33.132Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:the-kings-critique-off-broadway-2026",
+    "title": "Auto-remediation gave up on the-kings-critique-off-broadway-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"the-kings-critique-off-broadway-2026\",\"category\":\"off-broadway\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-10T09:58:33.147Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:hamlet-hail-to-the-thief-off-west-end-2026",
+    "title": "Auto-remediation gave up on hamlet-hail-to-the-thief-off-west-end-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"hamlet-hail-to-the-thief-off-west-end-2026\",\"category\":\"off-west-end\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-10T09:58:33.163Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:arrowhead-regional-2026",
+    "title": "Auto-remediation gave up on arrowhead-regional-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"arrowhead-regional-2026\",\"category\":\"regional\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-10T09:58:33.178Z"
   }
 ]
