@@ -73,10 +73,19 @@ test('"Tap to rate" matches the button labels: sentence case, white, centered, n
   assert.match(row[0], /mx-auto w-full max-w-\[\d+px\]/, 'stars are grouped in the middle, not spread edge to edge');
 });
 
-test('list button shows "Add to list" on phones in the two-column row, icon-only in the three-column row', () => {
-  assert.match(hero, /variant="hero" labelOnPhone=\{!showRateButton \|\| showMobileStars\}/);
-  assert.match(listBtn, /labelOnPhone \? 'sm:hidden' : 'hidden'}>Add to list</);
-  assert.match(listBtn, /labelOnPhone \? ' w-full px-2' : ' w-10'/);
+test('list button reads "Add to list" on phones and wraps instead of squeezing a third phone column', () => {
+  // Reviewer catch 2026-11-10: a rated, signed-in viewer has THREE buttons; at 14px "Log another viewing"
+  // overflows a 1/3 column on a 360-390px phone. Phones must never get an auto-width column.
+  const grid = hero.match(/<div className=\{`grid gap-2 \$\{showRateButton[\s\S]*?\}`\}>/);
+  assert.ok(grid, 'button grid not found');
+  const unprefixed = grid[0].match(/(?<![:\w-])grid-cols-\[[^\]]*\]/g) || [];
+  assert.deepEqual(unprefixed, [], 'phone grid must be plain grid-cols-1/2, no bracketed (auto) columns below sm');
+  assert.match(grid[0], /'grid-cols-2 sm:grid-cols-\[1fr_1fr_auto\]'/);
+  // "Log another viewing" is ~150px of text: it cannot share a phone row (158px column at 390). It spans the row.
+  assert.match(hero, /\$\{hasRating \? 'col-span-2 order-last sm:col-span-1 sm:order-none' : ''\}/, 'rated Rate button takes its own phone row');
+  assert.match(hero, /!isAuthenticated && showRateButton && hasRating \? 'col-span-2 sm:col-span-1'/, 'signed-out rated: Want to See spans too, no empty half');
+  assert.match(listBtn, /<span className="sm:hidden">Add to list<\/span>/);
+  assert.doesNotMatch(listBtn, /labelOnPhone|' w-10'/, 'no icon-only phone variant any more');
 });
 
 test('Get Tickets label is near-black on the gold (white on gold is 2.2-2.8:1, near-black 6.7+)', () => {
