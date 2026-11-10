@@ -293,14 +293,14 @@ jobs:
       # not fail the job.
       - name: Run the lane
         id: lane
-        timeout-minutes: 310  # BRO-7280: 280 -> 310 so the 300-min pre-embargo window (variable on) fits; the default window stays 270
+        timeout-minutes: 285  # BRO-7280: 280 -> 285 (the most the 355-min job cap and audit-push-retry-budgets allow) so the 275-min pre-embargo window fits; the default window stays 270
         env:
           # The lease is released by the "Release night lease" step after the push, not by the lane process (BRO-6618).
           OPENING_NIGHT_LANE_RELEASE_BY_WORKFLOW: '1'
           # The driver's window must end before the step cap, or every night is killed mid-run (BRO-4835 review).
           OPENING_NIGHT_LANE_WINDOW_MIN: '270'
           # BRO-7280: with the pre-embargo window on, the lane starts up to 60 min earlier and runs this long instead.
-          OPENING_NIGHT_LANE_WINDOW_PREEMBARGO_MIN: '300'
+          OPENING_NIGHT_LANE_WINDOW_PREEMBARGO_MIN: '275'
           LANE_PREEMBARGO_DIRECT_ONLY: ${{ needs.night-wait.outputs.preembargo }}
           # BRO-6649: each publish batch dispatches the deploy itself (deploy-port.js); gh needs a token for it.
           OPENING_NIGHT_LANE_DEPLOY_DISPATCH: '1'

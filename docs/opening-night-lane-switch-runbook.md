@@ -92,8 +92,8 @@ embargo minus 30 min. Unset = byte-identical to before. Turning it on is an owne
 owner's word on the card.
 
 - Start: `min(embargo - 30 min, max(19:30 local in the market tz, embargo - 90 min))`. For a 22:00 ET embargo that is
-  20:30 ET, so the window is about 60 min. The lane window grows to 300 min when on (270 off); the tail after the
-  embargo is about 30 min shorter. Job cap 355 min.
+  20:30 ET, so the window is about 60 min. The lane window is 275 min when on (270 off), so the lane ends about 55 min sooner after the
+  embargo (about E+185 min instead of E+240). The 355-min job cap and audit-push-retry-budgets allow no more.
 - The SERP "+3h" clock stays anchored at embargo minus 30 min, so an early start never moves SERP spend earlier.
 - Failures caused by the window are tagged `laneDeferred`: they do not count as retry attempts, Google News strikes or
   Talkin' Broadway blocks.
