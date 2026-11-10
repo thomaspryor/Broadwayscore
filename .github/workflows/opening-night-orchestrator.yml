@@ -786,7 +786,7 @@ jobs:
           # (scripts/lib/poller-dispatch-plan.js) dispatch_parallel keeps the guarded auto run (NOT waited on) and also
           # runs targeted polls for the hottest in-window shows (waited on). Those iterations are minutes, not hours, so
           # the loop runs to DEADLINE instead of an iteration count and SERP deferral counts wall-clock minutes.
-          # Kill switch: repo var POLLER_PER_SHOW_DISABLED=true. Never cancels a run.
+          # Kill switch: repo var POLLER_PER_SHOW_DISABLED=true. This code never calls gh run cancel (a same-group pending run can still be replaced by GitHub).
           BASE_MAX_ITERATIONS=$MAX_ITERATIONS
           LOOP_START=$(date +%s)
           PLAN_MODE=legacy
@@ -853,7 +853,7 @@ jobs:
             done
           }
           plan_dispatch
-          if [ "$PLAN_MODE" = "parallel" ] && [ -z "${{ inputs.max_iterations }}" ]; then
+          if { [ "$PLAN_MODE" = "parallel" ] || { [[ "$SHOWS" == *,* ]] && [ "${POLLER_PER_SHOW_DISABLED:-}" != "true" ]; }; } && [ -z "${{ inputs.max_iterations }}" ]; then
             MAX_ITERATIONS=48
             echo "parallel dispatch: loop runs to the wall-clock DEADLINE (max_iterations raised $BASE_MAX_ITERATIONS -> $MAX_ITERATIONS)"
           fi

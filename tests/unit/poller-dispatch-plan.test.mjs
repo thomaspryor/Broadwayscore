@@ -55,6 +55,8 @@ test('orchestrator wiring: kill switch, planner CLI, targeted dispatch, deadline
   assert.match(wf, /gh workflow run opening-night-poller\.yml -f show_id="\$id" \$POLLER_ARGS/);
   assert.match(wf, /if \[ "\$PLAN_MODE" = "parallel" \]; then\s+dispatch_parallel\s+else/);
   assert.match(wf, /MAX_ITERATIONS=48/); // parallel iterations are minutes: run to DEADLINE, not 10 iterations
+  // the clock kicks at embargo-2h, before the window opens: the cap must be raised up front for any multi-show run
+  assert.match(wf, /\[\[ "\$SHOWS" == \*,\* \]\] && \[ "\$\{POLLER_PER_SHOW_DISABLED:-\}" != "true" \]/);
   assert.match(wf, /ITERATION" -gt "\$BASE_MAX_ITERATIONS" \] && \[ "\$PLAN_MODE" != "parallel"/);
   assert.match(wf, /-lt 120 \] && SERP_DEFER_NOW=true/); // SERP deferral by wall clock in parallel mode
   assert.ok(!/gh run cancel/.test(wf.slice(wf.indexOf('dispatch_parallel() {'), wf.indexOf('plan_dispatch\n          if'))), 'never cancels a run');
