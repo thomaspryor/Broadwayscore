@@ -875,7 +875,8 @@ function checkpointReviewTexts(stats) {
   if (res.pushed) {
     markReviewTextsPushed(); // BRO-5308: final push-review-texts reports pushed=true
     // BRO-6886: score new press-night reviews now, not at job end.
-    startPressNightScoring(res.landed.map((p) => p.rel).filter((rel) => rel.endsWith('.json')));
+    const landedReviews = res.landed.map((p) => p.rel).filter((rel) => rel.endsWith('.json'));
+    startPressNightScoring(landedReviews);
     console.log(`  [Checkpoint] review-texts pushed (${res.landed.length} file(s))`);
   }
 }

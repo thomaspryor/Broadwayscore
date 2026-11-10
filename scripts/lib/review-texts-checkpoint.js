@@ -158,6 +158,9 @@ function runPush(repo, opts) {
     const out = execFileSync('bash', [opts.pushScript || PUSH_WITH_RETRY, String(opts.retries || 5)], {
       cwd: repo, env, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: opts.pushTimeoutMs || 12 * 60 * 1000, maxBuffer: 64 * 1024 * 1024,
     });
+    // BRO-5308: a CI job that pushed review-texts mid-run tells
+    // push-review-texts so the scoring/rebuild gate still fires (no-op off CI).
+    try { require('./review-texts-pushed-marker').markReviewTextsPushed(); } catch { /* fail-open */ }
     return { ok: true, output: out };
   } catch (e) {
     return { ok: false, status: e.status, output: `${e.stdout || ''}${e.stderr || ''}`.slice(-4000) };

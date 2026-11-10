@@ -419,7 +419,9 @@ test('structural: a workflow step that pushes review-texts itself enforces the l
       if (!/^\s*cd data\/review-texts\s*$/m.test(step) || !/push-with-retry\.sh/.test(step)) continue;
       direct.push(f);
       const enforceAt = step.indexOf('opening-night-lease.js" enforce');
-      assert.ok(enforceAt > 0 && enforceAt < step.lastIndexOf('git add'),
+      // BRO-7171: scoped staging via stage-review-texts.js counts as the git add.
+      const stageAt = Math.max(step.lastIndexOf('git add'), step.lastIndexOf('stage-review-texts.js'));
+      assert.ok(enforceAt > 0 && enforceAt < stageAt,
         `${f} (${step.split('\n')[0].trim()}): pushes review-texts without opening-night-lease.js enforce before git add (use push-review-texts, or enforce first)`);
     }
   }
