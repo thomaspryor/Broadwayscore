@@ -186,3 +186,24 @@ test('every registered outlet has a display name the lane accepts (no id-shaped 
   const bad = Object.keys(outlets).filter((id) => !isSentinelOutletId(id) && !outlets[id].displayNameReviewed && !card.outletDisplayName(id));
   assert.deepEqual(bad, []);
 });
+
+// BRO-7273: Here There Are Blueberries (2026-11-09). Cititour's page text opens "Cititour.com Review" with no byline, so
+// the lane held its row 3 passes for "no criticName" and the review went live ~6h after press night, via the regular pipeline.
+const CITITOUR_PAGE = 'NYC Events, Restaurants, Music, & Nightlife\n\nCititour.com Review\n In theater, as in life, timing is often everything. '
+  + 'Take the arrival of the Tectonic Project’s production of “Here There Are Blueberries,” now at Broadway’s Barrymore Theatre. '.repeat(3);
+
+test('a Cititour page with no printed byline resolves to the outlet\'s fallback critic, so the lane does not hold it', () => {
+  const row = { outletId: 'cititour', outlet: 'Cititour', criticName: null, fullText: CITITOUR_PAGE, publishDate: '2026-11-09' };
+  assert.equal(card.cardCriticName(row), 'Brian Scott Lipton');
+  const reg = require('../../data/outlet-registry.json');
+  assert.ok(reg.outlets.cititour.laneFallbackCritic, 'cititour must keep its laneFallbackCritic');
+});
+
+test('the fallback never applies to an outlet without one, or one that rotates writers', () => {
+  assert.equal(card.cardCriticName({ outletId: 'nysun', outlet: 'New York Sun', criticName: null, fullText: CITITOUR_PAGE }), null);
+  // Class guard: no outlet may carry both a lane fallback and multiAuthor (a rotating byline would be mislabelled).
+  const reg = require('../../data/outlet-registry.json');
+  for (const [id, o] of Object.entries(reg.outlets)) {
+    if (o.laneFallbackCritic) assert.notEqual(o.multiAuthor, true, `${id}: laneFallbackCritic on a multiAuthor outlet`);
+  }
+});
