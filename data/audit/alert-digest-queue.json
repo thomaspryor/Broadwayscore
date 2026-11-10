@@ -1334,45 +1334,60 @@
     "queuedAt": "2026-11-10T18:02:42.162Z"
   },
   {
-    "conditionKey": "test-yml:data-validation-red:audit-outlet-registry-gaps",
-    "title": "Data audit failing: Audit outlet-registry gaps",
-    "description": "The \"Audit outlet-registry gaps\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
+    "conditionKey": "pending-unrecoverable:harry-potter-and-the-cursed-child-one-part-west-end-2026",
+    "title": "1 review(s) for harry-potter-and-the-cursed-child-one-part-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--unknown.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/harry-potter-and-the-cursed-child-review-at-palace-theatre-london--new-cast-equals-the-original",
     "severity": "warning",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42874565535",
+    "url": null,
     "decision": false,
     "info": false,
     "decisionPrompt": null,
     "model": null,
     "tracked": null,
-    "fields": [
-      {
-        "name": "Job",
-        "value": "Data Validation"
-      },
-      {
-        "name": "Step",
-        "value": "Audit outlet-registry gaps"
-      },
-      {
-        "name": "Run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42874565535)"
-      }
-    ],
-    "queuedAt": "2026-11-10T18:32:49.287Z"
+    "fields": [],
+    "queuedAt": "2026-11-10T18:30:27.655Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 20 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +14 more). Checked 2026-11-10.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
+    "conditionKey": "pending-unrecoverable:iphigenie-en-tauride-english-national-opera-west-end-2026",
+    "title": "1 review(s) for iphigenie-en-tauride-english-national-opera-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--dd53c33.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/iphigenie-en-tauride-review-london-coliseum-english-national-opera",
+    "severity": "warning",
     "url": null,
     "decision": false,
-    "info": true,
+    "info": false,
     "decisionPrompt": null,
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-11-10T19:00:23.569Z"
+    "queuedAt": "2026-11-10T18:30:31.398Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:girls-off-west-end-2026",
+    "title": "1 review(s) for girls-off-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nbcny--48004f36.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/adam-driver-whether-he-will-reprise-role-girls-revival/6569210/",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-10T18:30:56.383Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:in-the-heights-off-broadway-2026",
+    "title": "1 review(s) for in-the-heights-off-broadway-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nycitycenter-org--7d6014eb.json (nycitycenter-org): fetch failed: All scraping methods failed https://www.nycitycenter.org/pdps/2026-2027/in-the-heights34/",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-10T18:32:39.050Z"
   },
   {
     "conditionKey": "land:land/job/linear-BRO-7307-mwb08ohn",
@@ -1530,5 +1545,59 @@
       }
     ],
     "queuedAt": "2026-11-10T19:30:53.384Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7312-expected-critics",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7312-expected-critics",
+    "description": "land.yml did not land land/bro-7312-expected-critics: the unit-tests-node gate went red at 95d2f9bdf1. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42886673497",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7312-expected-critics"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "95d2f9bdf17b37d25672dd4515462741b6b4879d"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42886673497"
+      }
+    ],
+    "queuedAt": "2026-11-10T19:40:23.764Z"
+  },
+  {
+    "conditionKey": "arm-yield:workflow:collect-we-ob-reviews",
+    "title": "Collect WE/OB Reviews has stopped updating (3 days)",
+    "description": "A scheduled job that keeps the site up to date has stopped succeeding. Nothing new since 2026-11-07, 3 days ago. It has never before gone quiet for more than 1 day(s), so this is not its normal rhythm. Nothing is fixing this automatically — it needs a look.\n\n(Detail: threshold 3d, from 25 productive day(s) / 25 item(s) between 2026-10-09 and 2026-11-07.)",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Last yield",
+        "value": "2026-11-07"
+      },
+      {
+        "name": "Silent for",
+        "value": "3 days (threshold 3)"
+      }
+    ],
+    "queuedAt": "2026-11-10T19:53:42.825Z"
   }
 ]

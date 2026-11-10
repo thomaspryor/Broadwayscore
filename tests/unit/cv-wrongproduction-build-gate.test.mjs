@@ -85,3 +85,48 @@ test("the gate's default mode is enforce (a silent flip to advisory would turn t
   const src = fs.readFileSync(new URL('../../scripts/rebuild-all-reviews.js', import.meta.url), 'utf8');
   assert.match(src, /process\.env\.CV_WP_BUILD_GATE \|\| 'enforce'/);
 });
+
+// BRO-7310: aliased/typo critic. Live row stores the display name ("Ben Brantley"); the url-less
+// review-texts file holds the raw byline ("Ben Brantly"). normalizeCriticName alone never joined them.
+test('BRO-7310: url-less file with an aliased critic byline is grandfathered against the live display name', () => {
+  const noUrl = { outletId: 'nytimes', criticName: 'Ben Brantly', contentVerification: released().contentVerification,
+    wrongProduction: false, wrongProductionAutoCleared: 'rebuild: dateless-revival hold released (was: x)' };
+  const live = buildGrandfatherSet([{ showId: show.id, url: 'https://live', outletId: 'nytimes', criticName: 'Ben Brantley' }]);
+  assert.equal(decide(noUrl, { grandfather: live }).hold, false);
+  const otherCritic = buildGrandfatherSet([{ showId: show.id, url: 'https://live', outletId: 'nytimes', criticName: 'Jesse Green' }]);
+  assert.equal(decide(noUrl, { grandfather: otherCritic }).hold, true);
+});
+
+// BRO-7310 class test: the rebuild's / scripts' wrongProductionAutoCleared stamps are STRINGS. Every writer in
+// the tree that assigns a non-boolean stamp must still be held by the gate, and the gate/check must only read
+// clear flags with `=== true`.
+test('BRO-7310: no writer\'s string stamp clears the CV gate; clear flags are read with === true', () => {
+  const root = new URL('../../', import.meta.url).pathname;
+  // Discover writers by scanning scripts/ (not a fixed list). A boolean-true writer is only allowed if it also
+  // stamps wrongProductionAutoClearedAt, which the gate treats as a script stamp, not a human clear.
+  const walk = (dir) => fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => e.isDirectory()
+    ? (e.name === 'node_modules' ? [] : walk(dir + e.name + '/')) : (/\.(js|mjs)$/.test(e.name) && !/\.test\./.test(e.name) ? [dir + e.name] : []));
+  let stamps = 0;
+  for (const f of walk(root + 'scripts/')) {
+    const src = fs.readFileSync(f, 'utf8');
+    const m = src.match(/\.wrongProductionAutoCleared\s*=\s*[^;]+;/g) || [];
+    for (const stmt of m) {
+      stamps++;
+      if (/=\s*true\s*;/.test(stmt)) {
+        assert.ok(/wrongProductionAutoClearedAt/.test(src), `${f}: writes boolean true without wrongProductionAutoClearedAt: ${stmt}`);
+      }
+    }
+  }
+  assert.ok(stamps >= 20, `found only ${stamps} writer statements`);
+  // script boolean stamp (with At) does not clear; a bare boolean (human) does
+  { const d = released(); d.wrongProductionAutoCleared = true; d.wrongProductionAutoClearedAt = '2026-11-01';
+    assert.equal(decide(d).hold, true, 'boolean script stamp with At must not clear'); }
+  for (const stamp of ['rebuild: x', 'shadow-gated-contradiction', 'unflag-fps: y', 'verify-productions: z', 'collect-review-texts: w', 1, {}, []]) {
+    const d = released(); d.wrongProductionAutoCleared = stamp;
+    assert.equal(decide(d).hold, true, `stamp ${JSON.stringify(stamp)} must not clear`);
+  }
+  for (const f of ['scripts/lib/cv-wrongproduction-build-gate.js', 'scripts/lib/opening-night-checks/cv-wrongproduction-unhandled.check.js']) {
+    const src = fs.readFileSync(root + f, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/[^\n]*/g, '');
+    assert.ok(!/!!\s*\w+\.wrongProductionAutoCleared\b|!\s*\w+\.wrongProductionAutoCleared\b/.test(src), `${f}: truthy read of wrongProductionAutoCleared`);
+  }
+});

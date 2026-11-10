@@ -33,10 +33,21 @@ const { handledReason, isCorroboratedTemporalOverride, CLEAR_FLAGS } =
  * ids and display-normalised critic names while the review-texts file holds the raw ones.
  */
 const ident = (x) => x;
+const { displayCriticName } = require('./critic-display-name');
+// BRO-7310: live rows carry the DISPLAY name (displayCriticName: typo/alias fixes, placeholder -> null) while the
+// review-texts file holds the raw byline, so an aliased critic never matched on normalizeCriticName alone and
+// url-less files missed grandfathering. Both sides go through the same display step; null/placeholder -> ''.
+function criticKey(norm, rawCritic, outlet) {
+  const n = (norm.critic || ident)(rawCritic);
+  if (!n) return '';
+  let d = null;
+  try { d = displayCriticName(String(n), outlet || null); } catch (_) { d = null; }
+  return (d == null ? '' : d).toString();
+}
 function shippedKeys(showId, row, norm = {}) {
   const url = (norm.url || ident)(row.url);
   const outlet = (norm.outlet || ident)(row.outletId || row.outlet) || '';
-  const critic = ((norm.critic || ident)(row.criticName) || '').toString();
+  const critic = criticKey(norm, row.criticName, outlet);
   if (url) return [`${showId}::url::${url}`];
   if (!outlet) return [];
   // A live row whose critic was dropped (placeholder/Unknown) is stored with a null critic: match it too.
@@ -51,7 +62,7 @@ function buildGrandfatherSet(reviews, norm = {}) {
     const url = (norm.url || ident)(r.url);
     if (url) set.add(`${r.showId}::url::${url}`);
     const outlet = (norm.outlet || ident)(r.outletId);
-    if (outlet) set.add(`${r.showId}::oc::${outlet}::${((norm.critic || ident)(r.criticName) || '').toString()}`);
+    if (outlet) set.add(`${r.showId}::oc::${outlet}::${criticKey(norm, r.criticName, outlet)}`);
   }
   return set;
 }
@@ -76,7 +87,10 @@ function decideCvWrongProductionHold(data, show, opts = {}) {
   const cv = data && data.contentVerification;
   if (!cv || cv.wrongProduction !== true) return none;
   if (!opts.grandfather) return none; // no previous reviews.json to grandfather against: stand down loudly in the caller
-  if (CLEAR_FLAGS.some((f) => data[f] === true)) return { hold: false, reason: 'clear-flag' };
+  // BRO-7310: review-normalization's URL-swap auto-clear stamps boolean `true` plus wrongProductionAutoClearedAt. That
+  // is a script, not a human/curator, and it ran before any later verifier pass, so it is not a clear here.
+  const scriptStamp = (f) => f === 'wrongProductionAutoCleared' && !!data.wrongProductionAutoClearedAt;
+  if (CLEAR_FLAGS.some((f) => data[f] === true && !scriptStamp(f))) return { hold: false, reason: 'clear-flag' };
   if (data.wrongProduction === false && data.wrongProductionManualClear === true) return { hold: false, reason: 'manual-clear' };
   const c = opts.carveouts || {};
   if (data.allowEarlyDate || data.allowCrossMarket || c.advisory || c.venueCarveout || c.ownCast || c.lane) {
@@ -90,4 +104,4 @@ function decideCvWrongProductionHold(data, show, opts = {}) {
     : { hold: true, reason: 'cv-wrongproduction-unhandled' };
 }
 
-module.exports = { decideCvWrongProductionHold, buildGrandfatherSet, isGrandfathered, shippedKeys };
+module.exports = { decideCvWrongProductionHold, buildGrandfatherSet, isGrandfathered, shippedKeys, criticKey };

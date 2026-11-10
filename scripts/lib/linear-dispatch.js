@@ -353,6 +353,8 @@ function buildLinearSeed({ identifier, title, description, url, model, project, 
     ``,
     `When you are done (or blocked), report the outcome by running: node scripts/linear-session.js report --issue=${identifier} --status=<done|in-review|paused|blocked> --summary="..." [--key-files="a,b"] [--verification="..."]. That posts the comment AND moves the issue's state in one step, in the one format the dispatcher can recognise later — reportedOutcomeGuard reads it to stop a second worker being dispatched onto work you already finished (BRO-2543), so a hand-rolled commentCreate is not equivalent. Do not leave it silently sitting in "In Progress" with no comment — that is how work goes untracked. If you cannot finish, report --status=blocked with what is blocking it; that deliberately leaves the state as-is rather than guessing at "In Review", and keeps the issue re-dispatchable.`,
     ``,
+    `Before any edit, claim the issue: node scripts/linear-session.js claim --issue=${identifier} (moves it to In Progress and records who holds it). A headless dispatch does not move the issue's state for you after the run (BRO-7116), so an unclaimed, unreported run leaves it where it was.`,
+    ``,
     `Start by confirming your understanding and a short plan, then proceed.`,
   ].filter((v) => v !== null).join('\n');
 }

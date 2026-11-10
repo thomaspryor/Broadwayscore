@@ -71,7 +71,7 @@ test('rolling alarms route through the owner router even without a run id; dry r
   assert.ok(alerts.every(a => isNeverQuietCondition(a.conditionKey)));
   assert.ok(alerts.every(a => a.disposition === 'digest' && a.cooldownHours === 20));
   await reportRollingCostAlerts(runs, { now, thresholdUsd: 10, dryRun: true, routeAlert: () => assert.fail('dry run routed') });
-  await reportRollingCostAlerts([run(), run()], { now, thresholdUsd: 10, routeAlert: () => assert.fail('healthy run routed') });
+  await reportRollingCostAlerts([run(), run()], { now, thresholdUsd: 10, routeAlert: () => assert.fail('healthy run routed'), resolveCondition: () => {} });
   let attempts = 0;
   await reportRollingCostAlerts(runs, { now, thresholdUsd: 10, routeAlert: async () => {
     attempts++;
@@ -81,6 +81,94 @@ test('rolling alarms route through the owner router even without a run id; dry r
   const independent = [];
   await reportRollingCostAlerts(runs, { now, thresholdUsd: null, routeAlert: async a => independent.push(a) });
   assert.equal(independent.length, 1, 'repeat detection must work even when the daily threshold is unavailable');
+});
+
+test('recovered daily spend resolves only its own condition, including exactly the alarm line', async () => {
+  for (const costUsd of [0, 5, 10]) {
+    const resolved = [];
+    await reportRollingCostAlerts([run({ costUsd })], {
+      now, thresholdUsd: 10,
+      routeAlert: () => assert.fail('healthy spend routed'),
+      resolveCondition: (key, options) => resolved.push({ key, ...options }),
+    });
+    assert.equal(resolved.length, 1);
+    assert.equal(resolved[0].key, 'llm-scoring:daily-cost-breach');
+    assert.match(resolved[0].reason, /Rolling 24h/);
+    assert.ok(resolved[0].reason.includes(`$${costUsd.toFixed(2)}`));
+  }
+});
+
+test('daily recovery never resolves from dry runs, overspend, or unavailable evidence', async () => {
+  const cases = [
+    { runs: [run()], dryRun: true },
+    { runs: [run({ costUsd: 10.01 })] },
+    ...[null, NaN, 0, -1].map(thresholdUsd => ({ runs: [run()], thresholdUsd })),
+    { runs: [] },
+    { runs: [run({ completedAt: '2026-09-29T10:00:00Z' })] },
+    { runs: [run({ completedAt: '2026-10-02T10:00:00Z' })] },
+    { runs: [run(), run({ completedAt: '2026-10-02T10:00:00Z' })] },
+    { runs: [run()], now: new Date(NaN) },
+    ...[null, {}, run({ completedAt: 'invalid' })].map(bad => ({ runs: [run(), bad] })),
+    ...[undefined, '5', NaN, Infinity, -1].map(costUsd => ({ runs: [run(), run({ costUsd })] })),
+  ];
+  for (const { runs, ...options } of cases) {
+    let resolutions = 0;
+    await reportRollingCostAlerts(runs, {
+      now, thresholdUsd: 10, ...options,
+      routeAlert: () => {}, resolveCondition: () => { resolutions++; },
+    });
+    assert.equal(resolutions, 0, JSON.stringify({ runs, ...options }));
+  }
+});
+
+test('daily recovery remains independent of repeat alerts and ignores expired legacy costs', async () => {
+  const alerts = [], resolved = [];
+  const runs = [run(), run(), run(), run({ completedAt: '2026-09-29T10:00:00Z', costUsd: undefined })];
+  await reportRollingCostAlerts(runs, {
+    now, thresholdUsd: 10, routeAlert: a => alerts.push(a.conditionKey),
+    resolveCondition: key => resolved.push(key),
+  });
+  assert.deepEqual(alerts, ['llm-scoring:cost-repeat-signature']);
+  assert.deepEqual(resolved, ['llm-scoring:daily-cost-breach']);
+});
+
+test('a daily resolution failure is non-fatal and does not suppress repeat alerts', async () => {
+  const alerts = [];
+  let attempts = 0;
+  const result = await reportRollingCostAlerts([run(), run(), run()], {
+    now, thresholdUsd: 10, routeAlert: a => alerts.push(a.conditionKey),
+    resolveCondition: async () => { attempts++; throw new Error('ledger unavailable'); },
+  });
+  assert.equal(attempts, 1);
+  assert.equal(result.daily.breached, false);
+  assert.deepEqual(alerts, ['llm-scoring:cost-repeat-signature']);
+});
+
+test('daily recovery persists through the real router without altering unrelated incidents', t => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'llm-recovery-'));
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  const ledgerPath = path.join(dir, 'ledger.json');
+  const key = 'llm-scoring:daily-cost-breach';
+  const incident = { status: 'open', lastSeen: now.toISOString(), linearIdentifier: 'BRO-6732' };
+  const ledger = { conditions: { [key]: incident, 'llm-scoring:cost-breach': incident } };
+  fs.writeFileSync(ledgerPath, JSON.stringify(ledger));
+  const result = spawnSync(process.execPath, ['-e', `
+    const { reportRollingCostAlerts } = require('./scripts/lib/llm-scoring-cost-recording');
+    reportRollingCostAlerts(JSON.parse(process.env.TEST_RUNS), {
+      now: new Date('2026-10-01T11:00:00Z'), thresholdUsd: 10,
+      routeAlert: () => { throw new Error('Healthy spend must not route'); },
+    }).catch(() => { process.exitCode = 1; });
+  `], {
+    cwd: path.resolve(import.meta.dirname, '../..'), encoding: 'utf8', timeout: 30000,
+    env: { ...process.env, ALERT_LEDGER_PATH: ledgerPath, TEST_RUNS: JSON.stringify([run()]) },
+  });
+  assert.equal(result.status, 0, result.stdout + result.stderr);
+  const saved = JSON.parse(fs.readFileSync(ledgerPath, 'utf8')).conditions;
+  assert.equal(saved[key].status, 'resolved');
+  assert.ok(Number.isFinite(Date.parse(saved[key].resolvedAt)));
+  assert.equal(saved[key].lastSeen, incident.lastSeen);
+  assert.equal(saved[key].linearIdentifier, 'BRO-6732');
+  assert.deepEqual(saved['llm-scoring:cost-breach'], incident);
 });
 
 test('daily spend CLI checks repeat signatures: three alert, two stay quiet, without billing requests', t => {
@@ -173,7 +261,7 @@ test('full scoring runs persist Claude cache usage in ensemble and single-model 
       if (id === 'fs' || id === 'node:fs') return isolatedFs;
       if (id === './scorer') return { ReviewScorer: StubScorer };
       if (id === './ensemble-scorer') return { EnsembleReviewScorer: StubScorer };
-      if (id.includes('owner-alert-router')) return { routeAlert: async () => {} };
+      if (id.includes('owner-alert-router')) return { routeAlert: async () => {}, resolveCondition: () => {} };
       if (id === 'child_process') return { ...load.call(this, id, parent, ...rest),
         execSync() { throw new Error('Git and shell execution forbidden in scoring test'); } };
       return load.call(this, id, parent, ...rest);

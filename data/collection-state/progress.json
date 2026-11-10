@@ -1,23 +1,66 @@
 {
   "processed": [
-    "kate-allie-and-the-86-mets-off-broadway-2026/front-row-center--tulis-mccall.json"
+    "kate-allie-and-the-86-mets-off-broadway-2026/front-row-center--tulis-mccall.json",
+    "cloud-9-west-end-2026/theatre-weekly--unknown.json",
+    "jest-to-impress-off-broadway-2026/donyc--unknown.json",
+    "here-there-are-blueberries-2026/cititour--brian-scott-lipton-2.json",
+    "dogstar-off-west-end-2026/theatreboard--unknown.json",
+    "here-there-are-blueberries-2026/lighting-and-sound-america--david-barbour.json",
+    "msblackforpresident-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
+    "nero-off-west-end-2026/musical-theatre-review--angela-thomas.json"
   ],
-  "failed": [],
+  "failed": [
+    "cloud-9-west-end-2026/times-uk--susannah-butter.json",
+    "jest-to-impress-off-broadway-2026/chelmsfordtheatre--genre.json",
+    "medea-off-broadway-2026/express-uk--neil-norman.json",
+    "the-visitors-off-broadway-2026/bobs-theater-blog--unknown.json",
+    "the-visitors-off-broadway-2026/boston-globe--unknown.json",
+    "msblackforpresident-off-broadway-2026/guardian--unknown.json",
+    "msblackforpresident-off-broadway-2026/talkinbroadway--unknown.json",
+    "wanted-2022/bobs-theater-blog--unknown.json"
+  ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "kate-allie-and-the-86-mets-off-broadway-2026/front-row-center--tulis-mccall.json"
+      "kate-allie-and-the-86-mets-off-broadway-2026/front-row-center--tulis-mccall.json",
+      "cloud-9-west-end-2026/theatre-weekly--unknown.json",
+      "jest-to-impress-off-broadway-2026/donyc--unknown.json",
+      "dogstar-off-west-end-2026/theatreboard--unknown.json",
+      "here-there-are-blueberries-2026/lighting-and-sound-america--david-barbour.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/new-york-new-york-2023/washpost--peter-marks.json",
+      "new-york-new-york-2023/washpost--peter-marks.json"
+    ],
     "directCookies": [],
-    "scrapingdog": [],
-    "scrapingbee": [],
+    "scrapingdog": [
+      "msblackforpresident-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
+      "nero-off-west-end-2026/musical-theatre-review--angela-thomas.json"
+    ],
+    "scrapingbee": [
+      "here-there-are-blueberries-2026/cititour--brian-scott-lipton-2.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "new-york-new-york-2023/village-voice--michael-musto.json",
+      "new-york-new-york-2023/dailybeast--tim-teeman.json"
+    ]
   },
   "startTime": "2026-11-10T18:35:10.555Z",
-  "lastProcessed": "kate-allie-and-the-86-mets-off-broadway-2026/front-row-center--tulis-mccall.json",
-  "log": []
+  "lastProcessed": "nero-off-west-end-2026/musical-theatre-review--angela-thomas.json",
+  "log": [
+    {
+      "t": "2026-11-10T19:47:41.089Z",
+      "event": "bb-session",
+      "session": "20dfce1a",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655599"
+    },
+    {
+      "t": "2026-11-10T19:47:41.945Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ]
 }
