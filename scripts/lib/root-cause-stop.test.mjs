@@ -6,7 +6,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { stopHookDecision, cardTitles, hasRootCauseAnswer, answerTexts, blockBudget, main } from './root-cause-stop.mjs';
+import { stopHookDecision, commitSubjects, isFixSubject, cardTitles, hasRootCauseAnswer, answerTexts, blockBudget, main } from './root-cause-stop.mjs';
 import { landedPushIndices } from './review-coverage.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -113,4 +113,62 @@ test('verify-edits.sh keeps the root-cause-stop call (a Mac-master sync must not
   const src = fs.readFileSync(path.join(ROOT, '.claude', 'hooks', 'verify-edits.sh'), 'utf8');
   assert.match(src, /root-cause-stop\.mjs" --stop-hook/);
   assert.match(src, /ROOT_CAUSE_STOP_DISABLE/);
+});
+
+// BRO-7301: a symptom-titled card (no FIX_RE word) with fix commits must still be checked.
+const SYMPTOM_CARD = [use('c9', 'Bash', { command: "node scripts/linear-brain.js create \"Opening grade: SERP census counts other cities' productions of classic titles\" --self" }), ok('c9')];
+const commit = (id, cmd) => [use(id, 'Bash', { command: cmd }), ok(id)];
+
+test('BRO-7301: symptom-titled card + landed fix(...) commit + bare SAFE TO ARCHIVE blocks; feat commit allows', () => {
+  const fixC = commit('g1', 'git commit -m "fix(opening-grade): scope SERP census to the show city"');
+  const featC = commit('g2', 'git commit -m "feat: add a tour map page"');
+  assert.equal(d([...SYMPTOM_CARD, ...fixC, ...LAND]), 'block');
+  assert.equal(stopHookDecision({ events: [...SYMPTOM_CARD, ...fixC, ...LAND], lastMessage: SAFE, env: CLOUD }).reason, 'fix commit: fix(opening-grade): scope SERP census to the show city');
+  assert.equal(d([...SYMPTOM_CARD, ...featC, ...LAND]), 'allow');
+  assert.equal(d([...SYMPTOM_CARD, ...LAND]), 'allow', 'no commits seen, symptom title alone stays quiet (old behavior)');
+  assert.equal(d([...SYMPTOM_CARD, ...fixC, ...LAND], 'CLASS-GUARD: scripts/lib/census.test.mjs\nSAFE TO ARCHIVE — x'), 'allow', 'a stated answer still passes');
+});
+
+test('BRO-7301: subject classification follows the conventional type, untyped goes to FIX_RE', () => {
+  assert.equal(isFixSubject('fix: wrong venue'), true);
+  assert.equal(isFixSubject('Fix(scope)!: wrong venue'), true);
+  assert.equal(isFixSubject('feat: add retry when push fails'), false, 'a fix word inside a feat subject');
+  assert.equal(isFixSubject('chore: fix typo'), false);
+  assert.equal(isFixSubject('data: Auto-fix 19 URL collisions'), false);
+  assert.equal(isFixSubject('Fix wrong venue on 6 shows'), true, 'untyped subject reads through FIX_RE');
+  assert.equal(isFixSubject('Add a tour map page'), false);
+  assert.equal(isFixSubject(''), false);
+});
+
+test('BRO-7301: commit parsing covers -am, --message=, heredoc, multi -m, MCP; scopes to landed, this repo, successful', () => {
+  const subj = (...evs) => commitSubjects([...evs.flat(), ...LAND]);
+  assert.deepEqual(subj(commit('a', 'git commit -am "fix: one"')), ['fix: one']);
+  assert.deepEqual(subj(commit('a', "git commit --message='fix: two'")), ['fix: two']);
+  assert.deepEqual(subj(commit('a', 'git commit -m "fix: first" -m "body second"')), ['fix: first']);
+  assert.deepEqual(subj(commit('a', 'git commit -m "fix: say \\"hi\\" ok"')), ['fix: say "hi" ok']);
+  assert.deepEqual(subj(commit('a', "git add -A && git commit -m \"$(cat <<'EOF'\nfix(x): heredoc subject\n\nbody\nEOF\n)\"")), ['fix(x): heredoc subject']);
+  assert.deepEqual(subj([use('m', 'mcp__github__push_files', { branch: 'land/z', message: 'fix: via mcp\n\nbody', files: [] }), ok('m')]), ['fix: via mcp']);
+  assert.deepEqual(subj(commit('a', 'cd ~/BroadwayScorecard-app && git commit -m "fix: ios"')), [], 'other repo');
+  assert.deepEqual(subj([use('a', 'Bash', { command: 'git commit -m "fix: refused"' }), ok('a', 'hook refused', true)]), [], 'failed commit');
+  assert.deepEqual(commitSubjects([...commit('a', 'git commit -m "fix: before"'), ...LAND, ...commit('b', 'git commit -m "fix: after landing"')]), ['fix: before'], 'a commit after the last landing never landed');
+  assert.deepEqual(commitSubjects(commit('a', 'git commit -m "fix: not pushed"')), [], 'nothing landed');
+});
+
+test('BRO-7301 review fixes: follow-up subjects, unknown prefixes, heredoc/echo mentions, chained -m', () => {
+  assert.equal(isFixSubject('Ship-check fixes: purge only on id rejection of the stored url'), false, 'review-round fixup in a feature session');
+  assert.equal(isFixSubject('Revert "fix: thing"'), false);
+  assert.equal(isFixSubject('Census: wrong city counted'), true, 'unknown Word: prefix is symptom wording, goes to FIX_RE');
+  assert.equal(isFixSubject('WIP: fixing broken test'), true);
+  assert.equal(isFixSubject('docs: wrong path in README'), false, 'known non-fix type wins');
+  const subj = (...evs) => commitSubjects([...evs.flat(), ...LAND]);
+  assert.deepEqual(subj(commit('a', "cat > notes.md <<'EOF'\nrun git commit -m \"fix: inside heredoc body\"\nEOF")), [], 'heredoc body that mentions a commit');
+  assert.deepEqual(subj(commit('a', "echo \"git commit -m 'fix: echoed'\"")), [], 'echoed text');
+  assert.deepEqual(subj(commit('a', 'git commit --amend --no-edit && git tag -a v1 -m "fix: tag message"')), [], 'a later command -m is not the commit message');
+  assert.deepEqual(subj(commit('a', 'git add -A && git commit -m "feat: a; b & c" && git push origin x')), ['feat: a; b & c'], 'quoted separators stay in the subject');
+  assert.deepEqual(subj(commit('a', 'git commit -m"fix: no space"')), ['fix: no space']);
+  assert.deepEqual(subj(commit('a', "linear-brain.js update BRO-1 --comment \"$(cat <<'EOF'\ngit commit -m 'fix: quoted in a comment'\nEOF\n)\"")), []);
+  const ship = commit('g3', 'git commit -m "Ship-check fixes: wrong sort order"');
+  assert.equal(d([...SYMPTOM_CARD, ...ship, ...LAND]), 'allow', 'a ship-check fixup commit does not turn a feature session into a fix session');
+  const untyped = commit('g4', 'git commit -m "Census counts the wrong city"');
+  assert.equal(d([...SYMPTOM_CARD, ...untyped, ...LAND]), 'block', 'untyped fix-reading subject through stopHookDecision');
 });

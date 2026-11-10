@@ -19,7 +19,8 @@
 // Scope: cloud only (CLAUDE_CODE_REMOTE=true), fails open on any error or missing transcript, kill
 // switch ROOT_CAUSE_STOP_DISABLE=1. Feature cards are skipped: when the session names its card
 // (linear-brain.js create "<title>" or the connector's save_issue title) and none is a fix card
-// (isFixCard), the check stays quiet. A session whose card title is unknown is checked.
+// (isFixCard) and none of the landed commit subjects reads as a fix (isFixSubject, BRO-7301), the
+// check stays quiet. A session whose card title is unknown is checked.
 // Block budget per transcript: 1 (a single reminder) until ROOT_CAUSE_CLOSE_BLOCKING_FROM, the same
 // rollout date as the card-close gate, then 2. Exit-0 output is invisible to the model, so the
 // advisory period is one nudge, never a silent log. Every decision to block is logged to
@@ -94,6 +95,86 @@ export function hasRootCauseAnswer(texts) {
   });
 }
 
+// BRO-7301: a real bug card often has a symptom title with no FIX_RE word, so a fix session looked
+// like a feature session. The landed commits' subjects are the second witness. FIX_RE itself is
+// shared with the Linear Done gate and stays unwidened; this check reads commit subjects instead.
+const CONVENTIONAL_RE = /^(\w+)(?:\([^)]*\))?!?:\s*\S/;
+// Only real conventional types decide on their own; any other `Word:` prefix ("Census: wrong city",
+// "WIP: fixing x") is symptom wording and goes through FIX_RE like an untyped subject.
+const FIX_TYPES = new Set(['fix', 'hotfix', 'bugfix']);
+const OTHER_TYPES = new Set(['feat', 'feature', 'chore', 'data', 'docs', 'doc', 'audit', 'health', 'refactor', 'test', 'tests', 'ci', 'style', 'perf', 'build', 'revert', 'deps', 'release']);
+// A review-round fixup ("Ship-check fixes: ...") and a revert are follow-ups on other work, not a bug fix.
+const FOLLOWUP_SUBJECT_RE = /^(?:ship-?check|post-?review|code-?review|review|second-opinion|revert)\b/i;
+// A real `git commit` sits at a command boundary; its arguments run to the next unquoted ; & | newline.
+const COMMIT_CMD_RE = /(?:^|[\n;&|(])[ \t]*git[ \t]+(?:-[Cc][ \t]+(?:"[^"]*"|'[^']*'|\S+)[ \t]+)?commit\b((?:"(?:[^"\\]|\\.)*"|'[^']*'|[^\n;&|"'])*)/g;
+const HEREDOC_RE = /<<-?[ \t]*['"]?(\w+)['"]?[ \t]*\n([\s\S]*?)\n[ \t]*\1\b/g;
+const MSG_ARG_RE = /(?:^|\s)(?:-[a-zA-Z]*m|--message)(?:=|[ \t]*)(?:"((?:[^"\\]|\\.)*)"|'([^']*)')/;
+const MCP_COMMIT_TOOL_RE = /__(?:push_files|create_or_update_file)$/;
+
+/**
+ * PURE. Does this commit subject read as a fix? A conventional type from the known list decides on
+ * its own (`fix` yes; feat/chore/data/docs/... no), because words like "fails" or "Auto-fix" in a
+ * feat or data subject must not count. Review-round fixups and reverts are never fixes. Everything
+ * else (untyped, or an unknown `Word:` prefix) goes to isFixCard (FIX_RE).
+ */
+export function isFixSubject(subject) {
+  const s = String(subject || '').trim();
+  if (!s || FOLLOWUP_SUBJECT_RE.test(s)) return false;
+  const m = CONVENTIONAL_RE.exec(s);
+  if (m) {
+    const type = m[1].toLowerCase();
+    if (FIX_TYPES.has(type)) return true;
+    if (OTHER_TYPES.has(type)) return false;
+  }
+  return isFixCard({ title: s });
+}
+
+function firstLine(text) {
+  return String(text || '').split('\n').map((l) => l.trim()).find(Boolean) || '';
+}
+
+/**
+ * PURE. The command with heredoc bodies removed, except a commit message's own `-m "$(cat <<EOF`
+ * heredoc, which is folded into a plain `-m "<subject>"`. Text that only mentions `git commit` in a
+ * heredoc body (notes, PR bodies, Linear comments) is thereby never read as a commit.
+ */
+function stripHeredocs(cmd) {
+  return cmd.replace(/-([a-zA-Z]*m|-message)([ \t]+|=)"\$\(cat[ \t]*(<<-?[ \t]*['"]?(\w+)['"]?[ \t]*\n([\s\S]*?)\n[ \t]*\4\b)[ \t\n]*\)"/g,
+    (_, f, sep, _h, _t, body) => `-${f}${sep}"${firstLine(body).replace(/["\\]/g, "'")}"`)
+    .replace(HEREDOC_RE, '<<HEREDOC');
+}
+
+/**
+ * PURE. Subjects of the commits this session made in this repo that reached a landing: successful
+ * `git commit -m ...` Bash calls (quoted, `-am`, `--message=`, or a heredoc) and the `message` of a
+ * successful MCP push_files / create_or_update_file, all at or before the last landing. A commit
+ * made after the final landing never reached main, and a command that targets the iOS repo is not
+ * this repo's work. Returns the subjects in order.
+ */
+export function commitSubjects(events) {
+  const landed = landedPushIndices(events);
+  if (!landed.length) return [];
+  const last = landed[landed.length - 1];
+  const failed = new Set();
+  for (const e of events) if (e.kind === 'tool_result' && e.isError) failed.add(e.tool_use_id);
+  const out = [];
+  events.forEach((e, i) => {
+    if (i > last || e.kind !== 'assistant_tool_use' || failed.has(e.id)) return;
+    if (e.name === 'Bash') {
+      const cmd = String(e.input?.command || '');
+      if (!/\bgit\b/.test(cmd) || /BroadwayScorecard-app/.test(cmd)) return;
+      for (const m of stripHeredocs(cmd).matchAll(COMMIT_CMD_RE)) {
+        const q = MSG_ARG_RE.exec(m[1]);
+        const subject = q ? firstLine((q[1] ?? q[2]).replace(/\\"/g, '"')) : '';
+        if (subject) out.push(subject);
+      }
+    } else if (MCP_COMMIT_TOOL_RE.test(e.name || '') && e.input?.message) {
+      out.push(firstLine(e.input.message));
+    }
+  });
+  return out.filter(Boolean);
+}
+
 export function blockBudget(now = new Date()) {
   return now.toISOString().slice(0, 10) >= ROOT_CAUSE_CLOSE_BLOCKING_FROM ? 2 : 1;
 }
@@ -117,9 +198,13 @@ export function stopHookDecision({ lastMessage = '', events = null, env = proces
   if (!events || events.length === 0) return { decision: 'allow', reason: 'no transcript (fails open)' };
   if (landedPushIndices(events).length === 0) return { decision: 'allow', reason: 'nothing landed' };
   const titles = cardTitles(events);
-  if (titles.length && !titles.some((t) => isFixCard({ title: t }))) return { decision: 'allow', reason: 'not a fix card' };
+  let fixCommit = null;
+  if (titles.length && !titles.some((t) => isFixCard({ title: t }))) {
+    fixCommit = commitSubjects(events).find(isFixSubject) || null;
+    if (!fixCommit) return { decision: 'allow', reason: 'not a fix card' };
+  }
   if (hasRootCauseAnswer(answerTexts(events, lastMessage))) return { decision: 'allow', reason: 'rule-21 answer stated' };
-  return { decision: 'block', reason: 'landed a fix with no rule-21 answer', message: MESSAGE };
+  return { decision: 'block', reason: fixCommit ? `fix commit: ${fixCommit}` : 'landed a fix with no rule-21 answer', message: MESSAGE };
 }
 
 function readStdin() {
@@ -160,7 +245,7 @@ export function main(argv, { env = process.env, now = new Date() } = {}) {
     n = parseInt(fs.readFileSync(counter, 'utf8'), 10) || 0;
   } catch { /* first block */ }
   const budget = blockBudget(now);
-  logHit({ session: input.session_id || null, blocked: n < budget, n, budget });
+  logHit({ session: input.session_id || null, blocked: n < budget, n, budget, reason: d.reason });
   if (n >= budget) return 0;
   try {
     fs.writeFileSync(counter, String(n + 1));
