@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7245-c",
   "planId": "7a20b925-35ce-47f3-816c-b573dfa6099f",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -82,5 +82,44 @@
         "description": "commercial.json: legally-blonde-2007.notes"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-10T00:01:43.177Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for legally-blonde-2007"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for legally-blonde-2007"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedDate updated for legally-blonde-2007"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: estimatedRecoupmentPct updated for legally-blonde-2007"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for legally-blonde-2007"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for legally-blonde-2007"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for legally-blonde-2007"
+    }
+  ],
+  "executedIn": "ci"
 }
