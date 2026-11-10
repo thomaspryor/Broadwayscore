@@ -1,4 +1,3 @@
-import { createRequire } from 'node:module';
 // Tests scripts/lib/linear-dispatch.js's pure decision logic (seed-prompt
 // construction, machine-bound routing, priority sort, GraphQL query/mutation
 // builders) and scripts/linear-next.js's own pure CLI helpers — no live
@@ -61,6 +60,7 @@ import {
   hasLiveLedgerEntry,
   dispatchCommentIsOurFinishedLaunch,
 } from '../../scripts/lib/linear-dispatch.js';
+import { createRequire } from 'node:module';
 import { parseArgs, ledgerTaskId, envMs, main, reportDispatchOnIssue } from '../../scripts/linear-next.js';
 
 // REPO root for the subprocess regression test below — spawned from a fixed
@@ -1217,7 +1217,9 @@ for (const [label, extraArgs, expectRefusal] of [
   const require = createRequire(import.meta.url);
   const ldx = require('../../scripts/lib/linear-dispatch.js');
   const at = (minsAgo) => new Date(Date.now() - minsAgo * 60e3).toISOString();
-  const note = (m) => ({ body: 'Headless worker ended without its own session report (stopped-short).\nJob: j' + m + '\n', createdAt: at(m) });
+  const her = require('../../scripts/lib/headless-end-report.js');
+  const note = (m) => ({ body: her.buildEndSummary({ ok: true, headlessOutcome: 'stopped-short', jobId: 'j' + m }), createdAt: at(m) });
+  const mc = (body, m) => ({ body, createdAt: at(m) });
   const disp = (m) => ({ body: 'Dispatched abc123 to headless at x (headless)', createdAt: at(m) });
   for (const [label, nodes, expected] of [
     ['3 notes with Dispatched receipts between', [note(1), disp(2), note(3), disp(4), note(5), disp(6)], 3],
@@ -1225,6 +1227,8 @@ for (const [label, extraArgs, expectRefusal] of [
     ['a person comment resets the count', [note(1), { body: 'try a narrower scope', createdAt: at(2) }, note(3), note(5)], 1],
     ['a worker report resets the count', [note(1), note(2), { body: '**Session report (blocked)**\nx', createdAt: at(3) }, note(4)], 2],
     ['no comments', [], 0],
+    ['other machine notes between runs do not reset', [note(1), mc('<!-- digest-dispatch-freshness:ab12 -->\nbrief', 2), note(3), mc('RECLAIMED-ABANDONED: x', 4), mc('Claimed by https://claude.ai/code/s', 5), note(6), mc('LAND-STRANDED: land/x', 7), mc('[auto-fix-attempted:fail] x', 8)], 3],
+    ['unsorted input, plain array, undated comment dropped', [note(6), { body: 'no date' }, note(1), note(3)], 3],
   ]) test(`strandedRepeatCount: ${label}`, () => {
     assert.equal(ldx.strandedRepeatCount({ comments: { nodes } }), expected);
   });
@@ -1232,6 +1236,12 @@ for (const [label, extraArgs, expectRefusal] of [
     const issue = { identifier: 'BRO-1', comments: { nodes: [note(1), note(2), note(3)] } };
     assert.match(ldx.strandedRepeatGuard(issue, {}), /3 headless runs in a row/);
     assert.equal(ldx.strandedRepeatGuard(issue, { force: true }), null);
+    assert.equal(ldx.strandedRepeatGuard(issue, { 'dry-run': true }), null);
+    assert.equal(ldx.strandedRepeatGuard(issue, { 'print-prompt': true }), null);
+    // Queues skip it too, so the watchdog and cloud picker never pick a card main() refuses.
+    const cwp = require('../../scripts/lib/cloud-worker-pick.js');
+    assert.equal(cwp.historySkipReason({ priority: 1 }, issue.comments.nodes, Date.now()), 'stranded-repeatedly');
+    assert.equal(cwp.historySkipReason({ priority: 1 }, [note(1), note(2)], Date.now()), null);
     assert.equal(ldx.strandedRepeatGuard({ identifier: 'BRO-1', comments: { nodes: [note(1), note(2)] } }, {}), null);
   });
   test('strandedRepeatGuard wiring: main() refuses before launching', () => {

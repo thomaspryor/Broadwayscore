@@ -890,17 +890,23 @@ function pausedHoldGuard(issue, opts, nowMs = Date.now()) {
 // worker or person wrote in between. Any other comment resets the count.
 const STRANDED_REPEAT_LIMIT = 3;
 const STRANDED_NOTE_RE = /^\s*Headless worker ended without its own session report/;
-const STRANDED_NEUTRAL_RE = /^\s*(?:Dispatched (?:[0-9a-f]+ )?to |Claimed by |STALL-NUDGE:|Auto-corrected |Auto-reset )/;
+// Machine notes that do not answer a stranded run: the picker's own list
+// (cloud-worker-pick.js isMachineComment) plus three this dispatch loop posts.
+const STRANDED_EXTRA_MACHINE_RE = /^\s*(?:<!-- digest-dispatch-freshness|LAND-STRANDED:|<!-- recheck-handoff -->)/i;
+function isStrandedNeutral(body) {
+  return require('./cloud-worker-pick.js').isMachineComment(body) || STRANDED_EXTRA_MACHINE_RE.test(String(body || ''));
+}
 
 function strandedRepeatCount(issue) {
   const c = issue && issue.comments;
-  const nodes = (Array.isArray(c) ? c : ((c && c.nodes) || [])).filter(Boolean)
-    .slice().sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
+  const nodes = (Array.isArray(c) ? c : ((c && c.nodes) || []))
+    .filter((n) => n && Number.isFinite(Date.parse(n.createdAt)))
+    .sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
   let n = 0;
   for (const node of nodes) {
     const body = String(node.body || '');
     if (STRANDED_NOTE_RE.test(body)) { n++; continue; }
-    if (STRANDED_NEUTRAL_RE.test(body)) continue;
+    if (isStrandedNeutral(body)) continue;
     break;
   }
   return n;
