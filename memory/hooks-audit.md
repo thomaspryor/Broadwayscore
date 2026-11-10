@@ -7,7 +7,7 @@ Rule used: a hook is kept only if it blocks an irreversible or costly action *be
 ## Inventory (where hooks live)
 
 - User level: `~/.claude/hooks/*.sh` (44 scripts; the counts in this bullet and in the User-level table are NOT verifiable from this repo, `~/.claude` is a separate private repo) wired in `~/.claude/settings.json` (41 registrations across PreToolUse, PostToolUse, SessionStart, Stop, ConfigChange, FileChanged, Notification, UserPromptSubmit). Library code in `~/.claude/hooks/lib/`, tests in `~/.claude/hooks/tests/`.
-- Project level: `.claude/hooks/*.sh` (21 scripts) wired in `.claude/settings.json`. Most are cloud-only copies that self-skip when the user-level master exists.
+- Project level: `.claude/hooks/*.sh` (19 scripts) wired in `.claude/settings.json`. Most are cloud-only copies that self-skip when the user-level master exists.
 - Git hooks: `scripts/hooks/{pre-commit,commit-msg,pre-push}` via `core.hooksPath=scripts/hooks`.
 - Codex: `.codex/hooks.json` points every event at `scripts/codex/hook-adapter.js`, which runs the Claude hooks above (see the Codex section).
 - Not hooks, so not in the tables: `.claude/hooks/lib/strip-git-commit-noise.js` (helper for block-resend-broadcasts.sh), `scripts/setup-git-hooks.sh` (installs the git hooks), `~/.claude/hooks/lib/` and `~/.claude/hooks/tests/`.
@@ -87,8 +87,6 @@ These run on cloud sessions, where `~/.claude/hooks/` does not exist. Copies tha
 | compact-state.sh | PreCompact + SessionStart(compact) | KEEP | Writes a checkpoint before compaction and prints it back after, so a long session keeps its state (spend review 2026-10-01). Fail-open, no master exists, logic is unit-tested in `scripts/lib/compact-state.js`. |
 | verify-edits.sh | Stop | KEEP | Cloud copy of the master Stop gate. |
 | session-start.sh | SessionStart | KEEP | Cloud copy of the master. |
-| notion-create-block.sh | (not wired) | DELETE | Notion retired. Replacement: none needed, `.claude/settings.json` does not register it; delete the file. |
-| whitespace-nowrap-lint.sh | PostToolUse Edit/Write | DELETE | Replaced by the same ESLint rule set plus the `/visual-qa` overflow probe, as in the user-level entry. |
 
 ## Git hooks (`scripts/hooks/`)
 
@@ -108,7 +106,7 @@ Codex sessions run the same guards through one adapter; there is no second copy 
 
 ## Still registered until their migration step
 
-A DELETE decision is taken, but the hook keeps running until its step in the migration order below. Today, in `.claude/settings.json`: whitespace-nowrap-lint.sh (step 1). `tests/unit/hooks-audit-coverage.test.mjs` fails if this line and the settings file disagree.
+A DELETE decision is taken, but the hook keeps running until its step in the migration order below. Today, in `.claude/settings.json`: none (the last two project scripts, notion-create-block.sh and whitespace-nowrap-lint.sh, were deleted in BRO-7315; the nowrap warning went to stderr on exit 0, which no session sees, so nothing was lost before the ESLint rule exists). `tests/unit/hooks-audit-coverage.test.mjs` fails if this line and the settings file disagree.
 
 ## Totals
 

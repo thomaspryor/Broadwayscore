@@ -22,6 +22,7 @@ const path = require('path');
 const { findExpectedCriticGaps, statusForCells } = require('./lib/expected-critics');
 const { STANDING_MARKETS } = require('./audit-standing-coverage');
 const { loadAcks, addAck, saveAcks } = require('./lib/t1-scoreboard');
+const recovery = require('./lib/expected-critics-recovery');
 
 const ROOT = path.join(__dirname, '..');
 const arg = (name) => {
@@ -57,7 +58,8 @@ function main() {
   const shows = readJson('data/shows.json').shows;
   const reviews = readJson('data/reviews.json').reviews;
   const outlets = readJson('data/outlet-registry.json').outlets;
-  const acks = loadAcks();
+  const state = recovery.loadRecoveryState();
+  const acks = recovery.mergedAcks(loadAcks(), state); // BRO-7312: auto-acks from the recovery count
 
   if (arg('cells')) {
     const rows = statusForCells({ keys: arg('cells').split(',').filter(Boolean), shows, reviews, outlets, acks, nowMs });
@@ -74,7 +76,9 @@ function main() {
   let cur = null;
   for (const r of open) {
     if (r.showId !== cur) { cur = r.showId; console.log(`\n${r.title} [${r.category}] opened ${r.openingDate} (${r.ageDays}d)`); }
-    console.log(`  ${r.status.padEnd(13)} ${r.outletId}${r.ackNote ? `  [${r.ackNote}]` : ''}`);
+    const rec = r.status === 'missing' ? recovery.ownerVisibility(r, state, nowMs) : null;
+    const recText = rec ? `  {recovery: ${rec.phase}/${rec.reason}${rec.visible ? ', owner-visible' : ''}}` : '';
+    console.log(`  ${r.status.padEnd(13)} ${r.outletId}${r.ackNote ? `  [${r.ackNote}]` : ''}${recText}`);
   }
 }
 

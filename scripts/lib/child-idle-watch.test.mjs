@@ -270,12 +270,15 @@ test('BRO-7109: no proposed watch outlives the 30-min default background limit',
     const s = { ccr: { id: 'session_x', status_bucket: `SESSION_STATUS_BUCKET_${bucket}`, updated_at: '2026-11-08T00:00:00Z' } };
     assert.ok(watch.decide({ session: s, now: Date.parse('2026-11-08T00:05:00Z'), idleMinutes: 110 }).rearmMinutes <= watch.SAFE_WATCH_MINUTES, bucket);
   }
-  // The CLOUD.md recipe the parent follows carries the long timeout.
+  // The recipe the parent follows carries the long timeout. BRO-7315 moved the worker-session steps
+  // out of CLOUD.md into a runbook read before create_session; CLOUD.md must still point at it.
   const cloud = fs.readFileSync(path.join(REPO, '.claude', 'CLOUD.md'), 'utf8');
-  const lines = cloud.split('\n');
+  assert.match(cloud, /Before calling `create_session`, read `docs\/cloud-worker-session-runbook\.md`/, 'CLOUD.md points at the worker-session runbook');
+  const runbook = fs.readFileSync(path.join(REPO, 'docs', 'cloud-worker-session-runbook.md'), 'utf8');
+  const lines = [...cloud.split('\n'), ...runbook.split('\n')];
   const step = lines.find((l) => l.includes('child-idle-watch.js watch --session'));
-  assert.match(step || '', /timeout:? 7200000/, 'CLOUD.md watch step must pass the Bash timeout');
-  // Cousins: every background-wait recipe in CLOUD.md carries the timeout too.
+  assert.match(step || '', /timeout:? 7200000/, 'the watch step must pass the Bash timeout');
+  // Cousins: every background-wait recipe in CLOUD.md and the runbook carries the timeout too.
   // Anchored on the recipe forms (code-quoted tool flag, imperative verbs), so
   // plain prose that says "in the background" doesn't trip it.
   const recipes = lines.filter((l) => /`run_in_background`|background-run `|in the background \(/.test(l));

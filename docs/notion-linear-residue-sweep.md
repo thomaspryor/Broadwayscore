@@ -141,7 +141,7 @@ BRO-4717, BRO-3488, BRO-4718 and BRO-5072 were already Done on main.
 | `enrich-card-acceptance.js`, `audit-card-verifiability.js` | Gated | Notion leg only under `--source notion`; the workflow passes `linear` |
 | `notion-brain.js` | Chokepoint | create exits 6 |
 | `lib/dispatch-guards.js`, `lib/dispatch-card-drift.js`, `claude-auth-preflight.js`, `rebuild-memory-index.js`, `local-triggers/weekly-retro.sh`, `.claude/hooks/session-start.sh`, `verify-edits.sh`, `docs/cloud-routines/weekly-retro.md`, `.claude/commands/*.md` | Text only | hint strings, or prose that forbids Notion |
-| `.claude/hooks/notion-create-block.sh` | Dead, kept on purpose | unregistered; `cloud-settings-guards.test.mjs` keeps the file for old snapshots |
+| `.claude/hooks/notion-create-block.sh` | Deleted (BRO-7315) | was unregistered; `cloud-settings-guards.test.mjs` now asserts it stays gone |
 | `cloud-memory/*notion*` | History | only `linear-board-workflow.md` is indexed, and it says Notion is retired |
 | `digest-audience.js` / `autonomous-email-render.js` "Stuck work" prefixes | Inert | match rows that no longer exist |
 

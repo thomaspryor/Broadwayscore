@@ -261,9 +261,8 @@ const EXEMPT_LEDGERS = [
 // one-off audit run by one session, so there is no concurrent writer.
 {
   const reason = '2026-11-10 (BRO-7256): the city-hub dual-model audit script is last-row-wins per key and rewrites its cache on re-run, so union could resurrect superseded rows; single manual writer.';
-  for (const city of ['washington-dc', 'los-angeles-ca']) {
-    for (const k of ['coverage', 'images', 'reviews', 'shows', 'tours']) EXEMPT_LEDGERS.push({ file: `data/audit/city-hub-dual/${city}/${k}.jsonl`, reason });
-  }
+  // Per-city files are exempted by directory prefix (EXEMPT_LEDGER_PREFIXES below), not a hardcoded
+  // city list: BRO-7323 went red when boston/chicago/san-diego audits landed with no entry.
   EXEMPT_LEDGERS.push({ file: 'data/audit/city-hub-dual/spend.jsonl', reason });
 }
 // BRO-5951 cross-model audit caches: single-writer one-off audit outputs. readRows()
@@ -277,11 +276,13 @@ const EXEMPT_LEDGERS = [
   }
   EXEMPT_LEDGERS.push({ file: 'data/audit/crossmodel/spend.jsonl', reason });
 }
+// Directory-prefix exemptions for audit outputs that gain a new subdirectory per run (BRO-7323).
+const EXEMPT_LEDGER_PREFIXES = ['data/audit/city-hub-dual/'];
 
 const EXEMPT_LEDGER_PATHS = new Set(EXEMPT_LEDGERS.map((e) => e.file));
 
 function isExemptLedgerPath(file) {
-  return EXEMPT_LEDGER_PATHS.has(file);
+  return EXEMPT_LEDGER_PATHS.has(file) || EXEMPT_LEDGER_PREFIXES.some((p) => file.startsWith(p));
 }
 
 /**
@@ -311,9 +312,17 @@ function findLedgersMissingUnionOrExemption(files, mergeAttrOf) {
  * @param {(file: string) => string|null|undefined} mergeAttrOf
  * @returns {{file: string}[]} EXEMPT_LEDGERS entries that are ALSO merge=union
  */
-function findExemptLedgersWronglyUnioned(mergeAttrOf) {
+function findExemptLedgersWronglyUnioned(mergeAttrOf, trackedFiles = []) {
   if (typeof mergeAttrOf !== 'function') throw new TypeError('mergeAttrOf must be a function');
-  return EXEMPT_LEDGERS.filter((e) => mergeAttrOf(e.file) === 'union').map((e) => ({ file: e.file }));
+  const files = new Set(EXEMPT_LEDGERS.map((e) => e.file));
+  // Prefix-exempt tracked files are checked too (BRO-7323 review): a per-file union rule must not override them.
+  for (const f of trackedFiles) if (isExemptLedgerPath(f)) files.add(f);
+  return [...files].filter((f) => mergeAttrOf(f) === 'union').map((file) => ({ file }));
+}
+
+/** Prefixes in EXEMPT_LEDGER_PREFIXES that match no tracked file (stale/renamed directory). */
+function findStaleExemptPrefixes(trackedFiles) {
+  return EXEMPT_LEDGER_PREFIXES.filter((p) => !trackedFiles.some((f) => f.startsWith(p)));
 }
 
 // merge=union *.jsonl outside data/audit/ whose readers were checked against
@@ -421,6 +430,8 @@ function findStaleVerifiedUnionPatterns(files) {
 module.exports = {
   perFileUnionDeclarations,
   EXEMPT_LEDGERS,
+  EXEMPT_LEDGER_PREFIXES,
+  findStaleExemptPrefixes,
   VERIFIED_UNION_LEDGERS,
   isVerifiedUnionPath,
   findUnverifiedUnionLedgers,

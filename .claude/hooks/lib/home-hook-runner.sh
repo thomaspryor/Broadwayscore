@@ -45,7 +45,7 @@ in_other_repo() {
   [ -n "$c" ] && [ "$c" != "$OURS" ]
 }
 
-REPO_SCOPED=" worktree-enforce.sh pre-push-visual-gate.sh pre-push-review-gate.sh pre-push-land-preflight.sh pre-merge-review-gate.sh check-skill-redaction.sh infra-plan-review-gate.sh infra-post-write-audit.sh whitespace-nowrap-lint.sh "
+REPO_SCOPED=" worktree-enforce.sh pre-push-visual-gate.sh pre-push-review-gate.sh pre-push-land-preflight.sh pre-merge-review-gate.sh check-skill-redaction.sh infra-plan-review-gate.sh infra-post-write-audit.sh "
 tool_event=""
 if [ "$event" = PreToolUse ] || [ "$event" = PostToolUse ]; then tool_event=1; fi
 

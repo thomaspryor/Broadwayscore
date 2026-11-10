@@ -178,8 +178,8 @@ fi
 # above only ever walked .claude/commands/*.md, never hooks/). Cloud sessions
 # (no ~/.claude) run ONLY the repo copy, so drift there is a silent capability
 # gap, not just a stale-skill nuisance.
-# Several repo hooks (session-start.sh, notion-create-block.sh,
-# whitespace-nowrap-lint.sh, pre-push-visual-gate.sh, verify-edits.sh — #430)
+# Several repo hooks (session-start.sh, pre-push-visual-gate.sh,
+# verify-edits.sh — #430)
 # intentionally carry a repo-only "# Self-skip ... fi" guard block at the top
 # (so local sessions, which load BOTH this global hook AND the repo's
 # settings.json-wired copy, don't double-fire) that must never exist in the
@@ -633,16 +633,15 @@ if [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ "${CLOUD_GLOBAL_RULES_DISABLED:-}
 fi
 
 cat << 'EOF'
-CRITICAL SESSION RULES (CLAUDE.md has full text — these 8 are the most-violated):
-1. LINEAR CARD FIRST, before any edit: `node scripts/linear-brain.js create "<title>" --self --notes "...## Acceptance criteria..."` (--self = you do this work now; --dispatch only for work a worker should take). Dispatched onto an existing issue → `node scripts/linear-session.js claim --issue=BRO-N` instead. Notion is retired: never notion-brain.js.
-2. VERIFY: run the command + show output before claiming done. `node --check` is syntax only, not a test.
-3. ASYNC = WAIT: deploys/CI started ≠ done. Verify it succeeded; fix if it failed.
-4. FIX, DON'T REPORT: discovered issues get fixed now, not listed for later.
-5. KEEP GOING: do natural follow-ups (rebuild, deploy, fix adjacent). Don't offer handoffs to "a new session".
-6. CONTEXT IS THE COST (spend review 2026-10-01): 84% of September's Claude spend was context written into the session and re-read on every step; answers were 10%. Keep tool output out of the main context: pipe long output to a file and print head/tail (never cat a whole data file or a full test log), send file sweeps and log reads to the repo-sweeper subagent (Sonnet, read-only) that returns paths and line numbers, and keep replies terse with no trailing recap. Verification evidence still required (rule 2); cut narration, keep proof.
-7. PRs: the owner NEVER reviews or merges them. Land it yourself: `git push origin HEAD:refs/heads/land/<name>`, follow the Land run, close the PR (CLOUD.md § Landing). "Waiting on review" is never a reason to leave a PR open.
-8. NO OFFERS: landing (`land/<name>`), building what was asked, fixing what you found, merging main into your branch and requesting the visual approval are pre-authorized by the owner, who is not technical. Never end on "say the word", "shall I", "want me to" or "check out the PR": do it, then report. Only a real owner call (money, irreversible, real-person email, taste) is asked, as a DECISION NEEDED block, and a design or visual choice is shown with screenshots (SendUserFile display render) or an Artifact, never described in text alone. The Stop hook blocks the offer endings (PASSIVEOFFER).
-Flow: implement → /did-it-work → /ship-check → /what-else → /wrap-up, each as a real skill call (an Agent "review" or doing wrap-up by hand does not count; the Stop hook blocks SAFE TO ARCHIVE until they ran). Don't stop between skills unless user said stop or you hit a real blocker.
+CRITICAL SESSION RULES (full text: CLAUDE.md, .claude/CLOUD.md):
+1. LINEAR CARD FIRST, before any edit: `node scripts/linear-brain.js create "<title>" --self --notes "...## Acceptance criteria..."`. Dispatched onto an existing issue: `node scripts/linear-session.js claim --issue=BRO-N`. Never notion-brain.js.
+2. VERIFY: run the command and show its output before claiming done. `node --check` is not a test.
+3. ASYNC = WAIT: started is not done. Verify it succeeded; fix it if it failed.
+4. FIX, DON'T REPORT, and KEEP GOING: no lists for later, no handoffs to "a new session".
+5. CONTEXT IS THE COST: pipe long output to a file and print head/tail, send sweeps and log reads to the repo-sweeper subagent, keep replies terse.
+6. LAND IT YOURSELF: `git push origin HEAD:refs/heads/land/<name>`, then follow the Land run. Never a PR: the owner never reviews or merges.
+7. NO OFFERS: never end on "shall I" or "want me to"; do it, then report. A real owner call (money, irreversible, real-person email, taste) is a DECISION NEEDED block; a design choice is shown (screenshots or an Artifact), never only described.
+Flow: implement → /did-it-work → /ship-check → /what-else → /wrap-up, each as a real skill call. Don't stop between skills unless the owner said stop or you hit a real blocker.
 EOF
 
 # ── Self-heal: data-repo pre-commit guards (conflict markers / invalid JSON) ──

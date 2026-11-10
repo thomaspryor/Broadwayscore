@@ -141,7 +141,7 @@ const STUB_ROOT = fs.mkdtempSync(path.join(os.tmpdir(), 'veg-stubroot-'));
 fs.mkdirSync(path.join(STUB_ROOT, 'scripts'));
 fs.writeFileSync(path.join(STUB_ROOT, 'scripts', 'linear-brain.js'), 'process.exit(Number(process.env.STUB_PROBE_EXIT || 0));\n');
 
-function runHook(transcriptPath, lastAssistantMessage, env = {}, stopHookActive = false) {
+function runHook(transcriptPath, lastAssistantMessage, env = {}, stopHookActive = false, { cwd, hook = REPO_HOOK } = {}) {
   const stdin = JSON.stringify({
     transcript_path: transcriptPath,
     session_id: `veg-test-${randomUUID()}`,
@@ -152,7 +152,8 @@ function runHook(transcriptPath, lastAssistantMessage, env = {}, stopHookActive 
   // (the one this PR changed), regardless of what's on the host machine.
   const fakeHomeDir = fs.mkdtempSync(path.join(os.tmpdir(), 'veg-fakehome-'));
   try {
-    const r = spawnSyncStdinFile('bash', [REPO_HOOK], {
+    const r = spawnSyncStdinFile('bash', [hook], {
+      ...(cwd ? { cwd } : {}),
       input: stdin,
       encoding: 'utf8',
       // BRO-5359: the review-coverage gate has its own tests (scripts/lib/review-coverage.test.mjs); these cases model
@@ -165,7 +166,7 @@ function runHook(transcriptPath, lastAssistantMessage, env = {}, stopHookActive 
     });
     return { status: r.status, stdout: r.stdout || '', stderr: r.stderr || '' };
   } finally {
-    fs.rmSync(fakeHomeDir, { recursive: true, force: true });
+    fs.rmSync(fakeHomeDir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 }
 
@@ -227,7 +228,7 @@ test('substantial work + SAFE TO ARCHIVE + no board close-out at all → BLOCKED
   const r = runHook(transcript, 'Pushed and verified live.\n\nSAFE TO ARCHIVE — fix confirmed live in production, nothing outstanding.');
   assertBlocked(r, 'claims SAFE TO ARCHIVE after real work but never closed out the Linear card');
   assert.match(r.stderr, /wrap-up/i, `expected a wrap-up reminder, got: ${r.stderr.slice(0, 300)}`);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('CRITICAL (owner-rejected v1 behavior): Skill(wrap-up) called but NO real board close-out → BLOCKED', skipNoRepoHook, () => {
@@ -239,7 +240,7 @@ test('CRITICAL (owner-rejected v1 behavior): Skill(wrap-up) called but NO real b
   const transcript = writeTranscript(dir, [GIT_PUSH, WRAP_UP]);
   const r = runHook(transcript, 'Pushed, then ran /wrap-up.\n\nSAFE TO ARCHIVE — pushed, wrap-up complete, nothing pending.');
   assertBlocked(r, 'invoking the wrap-up skill without a real board close-out must no longer satisfy the gate');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('Linear card touched but left "In Progress" (not Done/Backlog) → BLOCKED', skipNoRepoHook, () => {
@@ -247,7 +248,7 @@ test('Linear card touched but left "In Progress" (not Done/Backlog) → BLOCKED'
   const transcript = writeTranscript(dir, [GIT_PUSH, BOARD_UPDATE_IN_PROGRESS]);
   const r = runHook(transcript, 'Pushed and updated the card.\n\nSAFE TO ARCHIVE — pushed, card updated.');
   assertBlocked(r, 'a linear-brain.js update that never actually closes the card (still In Progress) must not satisfy the gate');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('EXPLOIT REGRESSION (2nd /second-opinion finding): quoted example "--state Done" inside --comment, real state still In Progress → BLOCKED', skipNoRepoHook, () => {
@@ -265,7 +266,7 @@ test('EXPLOIT REGRESSION (2nd /second-opinion finding): quoted example "--state 
   const transcript = writeTranscript(dir, [GIT_PUSH, exploitCmd]);
   const r = runHook(transcript, 'Pushed and updated the card with docs about the gate.\n\nSAFE TO ARCHIVE — pushed, card updated.');
   assertBlocked(r, 'quoted example text inside --comment must not satisfy the gate when the real --state is not a close-out');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('substantial work + real Linear close-out (Done) AFTER the work + SAFE TO ARCHIVE → ALLOWED', skipNoRepoHook, () => {
@@ -273,7 +274,7 @@ test('substantial work + real Linear close-out (Done) AFTER the work + SAFE TO A
   const transcript = writeTranscript(dir, [GIT_PUSH, BOARD_CLOSEOUT_DONE]);
   const r = runHook(transcript, 'Pushed, then closed out the Linear card.\n\nSAFE TO ARCHIVE — pushed, Linear card set to Done, nothing pending.');
   assertAllowed(r, 'a genuine Linear close-out after the work it is meant to cover must satisfy the gate');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('substantial work + real Linear close-out (linear-session report paused, space-separated flag form) + SAFE TO ARCHIVE → ALLOWED', skipNoRepoHook, () => {
@@ -281,7 +282,7 @@ test('substantial work + real Linear close-out (linear-session report paused, sp
   const transcript = writeTranscript(dir, [GIT_PUSH, BOARD_CLOSEOUT_PAUSED]);
   const r = runHook(transcript, 'Pushed, paused the card pending an owner decision.\n\nSAFE TO ARCHIVE — pushed, nothing hanging, card paused with context.');
   assertAllowed(r, 'Paused is a legitimate close-out status too, and the space-separated --status paused form must parse');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('real-world shape: heredoc-wrapped --comment with apostrophed prose around a real --state=Done → ALLOWED', skipNoRepoHook, () => {
@@ -302,7 +303,7 @@ test('real-world shape: heredoc-wrapped --comment with apostrophed prose around 
   const transcript = writeTranscript(dir, [GIT_PUSH, heredocCmd]);
   const r = runHook(transcript, 'Pushed and wrote up the full outcome.\n\nSAFE TO ARCHIVE — pushed, card closed out.');
   assertAllowed(r, 'a real heredoc-wrapped close-out call (this repo\'s actual convention) must parse and satisfy the gate');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 // ── composition-seam regression pins (two independent /ship-check reviewers,
@@ -322,7 +323,7 @@ test('composition seam: single-line --comment mentioning heredoc syntax as PROSE
   const transcript = writeTranscript(dir, [GIT_PUSH, mentionCmd]);
   const r = runHook(transcript, 'Pushed and documented it.\n\nSAFE TO ARCHIVE — pushed, card closed out.');
   assertAllowed(r, 'a short --comment that merely MENTIONS heredoc syntax as text, with no actual multi-line heredoc structure, must still parse to a real Done');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('composition seam: real heredoc body whose OWN prose mentions "<<TAG" on its own line + real Done → ALLOWED', skipNoRepoHook, () => {
@@ -344,7 +345,7 @@ test('composition seam: real heredoc body whose OWN prose mentions "<<TAG" on it
   const transcript = writeTranscript(dir, [GIT_PUSH, nestedCmd]);
   const r = runHook(transcript, 'Pushed and documented it.\n\nSAFE TO ARCHIVE — pushed, card closed out.');
   assertAllowed(r, 'a heredoc body that describes heredoc syntax on its own line must not confuse the stripper into corrupting the real --state flag');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('composition seam: unterminated/malformed heredoc → gate fails toward BLOCKED, hook does not crash', skipNoRepoHook, () => {
@@ -361,7 +362,7 @@ test('composition seam: unterminated/malformed heredoc → gate fails toward BLO
   const transcript = writeTranscript(dir, [GIT_PUSH, malformedCmd]);
   const r = runHook(transcript, 'Pushed.\n\nSAFE TO ARCHIVE — pushed.');
   assertBlocked(r, 'a malformed/unterminated heredoc must fail toward blocking, not crash the hook or silently pass');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('CRITICAL gaming case (found by /second-opinion review): close-out happened, then MORE work happened after it, then SAFE TO ARCHIVE → BLOCKED', skipNoRepoHook, () => {
@@ -372,7 +373,7 @@ test('CRITICAL gaming case (found by /second-opinion review): close-out happened
   const transcript = writeTranscript(dir, [GIT_PUSH, BOARD_CLOSEOUT_DONE, toolUse('Bash', { command: 'git push -u origin some-branch --force-with-lease' })]);
   const r = runHook(transcript, 'Pushed, closed out, then had to push a follow-up fix.\n\nSAFE TO ARCHIVE — follow-up pushed, nothing pending.');
   assertBlocked(r, 'a stale close-out that happened BEFORE the last substantial work must not satisfy the gate');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('BRO-4274: a notion-brain.js update --status Done alone is NOT a close-out (Notion retired) → BLOCKED', skipNoRepoHook, () => {
@@ -381,7 +382,7 @@ test('BRO-4274: a notion-brain.js update --status Done alone is NOT a close-out 
   const r = runHook(transcript, 'Pushed, closed the Notion card.\n\nSAFE TO ARCHIVE — pushed, card closed.');
   assertBlocked(r, 'a Notion update leaves the Linear card of record open, so it must not satisfy NOWRAPUP');
   assert.match(r.stderr, /linear-brain\.js update/, `expected the Linear close-out command in the block message, got: ${r.stderr.slice(0, 300)}`);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('BRO-4274: Notion update AND a Linear close-out after the work → ALLOWED', skipNoRepoHook, () => {
@@ -389,7 +390,7 @@ test('BRO-4274: Notion update AND a Linear close-out after the work → ALLOWED'
   const transcript = writeTranscript(dir, [GIT_PUSH, NOTION_CLOSEOUT_DONE, BOARD_CLOSEOUT_DONE]);
   const r = runHook(transcript, 'Pushed, closed out the card.\n\nSAFE TO ARCHIVE — pushed, card closed.');
   assertAllowed(r, 'a real Linear close-out satisfies the gate regardless of a stray Notion call');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('BRO-4274: NO-CARD session (no card by design) + SAFE TO ARCHIVE → not NOWRAPUP-blocked', skipNoRepoHook, () => {
@@ -397,7 +398,7 @@ test('BRO-4274: NO-CARD session (no card by design) + SAFE TO ARCHIVE → not NO
   const transcript = writeTranscript(dir, [GIT_PUSH], { card: false });
   const r = runHook(transcript, 'Pushed a one-line data fix.\n\nNO-CARD: owner-requested one-off data typo fix\n\nSAFE TO ARCHIVE — pushed.');
   assertAllowed(r, 'NOCARD accepted NO-CARD, so NOWRAPUP must not demand closing a card that does not exist');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('BRO-4274: session that FILED a card cannot use NO-CARD to skip closing it → BLOCKED (NOWRAPUP)', skipNoRepoHook, () => {
@@ -406,7 +407,7 @@ test('BRO-4274: session that FILED a card cannot use NO-CARD to skip closing it 
   const r = runHook(transcript, 'Pushed.\n\nNO-CARD: trying to skip the close-out step\n\nSAFE TO ARCHIVE — pushed.');
   assertBlocked(r, 'NO-CARD only excuses a session with no card; a filed card still has to be closed out');
   assert.match(r.stderr, /linear-brain\.js update/, `expected NOWRAPUP's close-out instruction, got: ${r.stderr.slice(0, 300)}`);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('wrap-up gate: KEEP OPEN + no close-out → ALLOWED (session has not claimed full completion)', skipNoRepoHook, () => {
@@ -414,7 +415,7 @@ test('wrap-up gate: KEEP OPEN + no close-out → ALLOWED (session has not claime
   const transcript = writeTranscript(dir, [GIT_PUSH]);
   const r = runHook(transcript, 'Pushed. Deploy still running.\n\nKEEP OPEN — deploy still running, will verify next check-in.');
   assertAllowed(r, 'KEEP OPEN does not claim completion, so a close-out is not required yet');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('CRITICAL false-positive guard: no substantial work at all → ALLOWED regardless of close-out', skipNoRepoHook, () => {
@@ -422,7 +423,7 @@ test('CRITICAL false-positive guard: no substantial work at all → ALLOWED rega
   const transcript = writeTranscript(dir, []);
   const r = runHook(transcript, 'Sure, happy to answer that question.');
   assertAllowed(r, 'a plain conversational reply must never require a board close-out');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('wrap-up gate bypass: NO-VERIFY: allows a missing close-out', skipNoRepoHook, () => {
@@ -430,7 +431,7 @@ test('wrap-up gate bypass: NO-VERIFY: allows a missing close-out', skipNoRepoHoo
   const transcript = writeTranscript(dir, [GIT_PUSH]);
   const r = runHook(transcript, 'Pushed a trivial fix. NO-VERIFY: docs-only, close-out ceremony not needed.\n\nSAFE TO ARCHIVE — pushed.');
   assertAllowed(r, 'NO-VERIFY bypass must still work for the wrap-up gate');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('wrap-up gate kill switch: WRAPUP_GATE_DISABLE=1 allows a missing close-out', skipNoRepoHook, () => {
@@ -438,7 +439,7 @@ test('wrap-up gate kill switch: WRAPUP_GATE_DISABLE=1 allows a missing close-out
   const transcript = writeTranscript(dir, [GIT_PUSH]);
   const r = runHook(transcript, 'Pushed.\n\nSAFE TO ARCHIVE — pushed.', { WRAPUP_GATE_DISABLE: '1' });
   assertAllowed(r, 'kill switch must fully disable the wrap-up gate');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('wrap-up gate: independent of SESSION_STATUS_GATE_DISABLE (no coupling — /second-opinion review finding)', skipNoRepoHook, () => {
@@ -449,7 +450,7 @@ test('wrap-up gate: independent of SESSION_STATUS_GATE_DISABLE (no coupling — 
   const r = runHook(transcript, 'Pushed.\n\nSAFE TO ARCHIVE — pushed, nothing pending.', { SESSION_STATUS_GATE_DISABLE: '1' });
   assertBlocked(r, 'disabling the status-line gate must not disable the independent wrap-up gate');
   assert.match(r.stderr, /wrap-up/i);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('regression: a fully clean session (edit + verify + push + Linear close-out + valid status, no PR) → ALLOWED end to end', skipNoRepoHook, () => {
@@ -465,7 +466,7 @@ test('regression: a fully clean session (edit + verify + push + Linear close-out
   ]);
   const r = runHook(transcript, 'Fixed, verified, pushed, closed out the card.\n\nSAFE TO ARCHIVE — verified with tsc, pushed, card set to Done.');
   assertAllowed(r, 'a fully clean, fully reported session must pass all gates including the redesigned wrap-up one');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 // ─────────────────────────── status-line gate ────────────────────────────
@@ -476,7 +477,7 @@ test('substantial work (code edit) + no closing status line → BLOCKED (NOSTATU
   const r = runHook(transcript, 'Fixed the rounding bug and verified with tsc.');
   assertBlocked(r, 'edit+verify but no status line');
   assert.match(r.stderr, /SAFE TO ARCHIVE/, `expected a SAFE TO ARCHIVE reminder, got: ${r.stderr.slice(0, 300)}`);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('substantial work (git push) + no closing status line → BLOCKED (NOSTATUSLINE)', skipNoRepoHook, () => {
@@ -484,7 +485,7 @@ test('substantial work (git push) + no closing status line → BLOCKED (NOSTATUS
   const transcript = writeTranscript(dir, [GIT_PUSH]);
   const r = runHook(transcript, 'Pushed the branch. Let me know if you want anything else!');
   assertBlocked(r, 'git push but no status line');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('substantial work (git push) + valid SAFE TO ARCHIVE line → ALLOWED', skipNoRepoHook, () => {
@@ -492,7 +493,7 @@ test('substantial work (git push) + valid SAFE TO ARCHIVE line → ALLOWED', ski
   const transcript = writeTranscript(dir, [GIT_PUSH, BOARD_CLOSEOUT_DONE]);
   const r = runHook(transcript, 'Pushed and verified CI green.\n\nSAFE TO ARCHIVE — branch pushed, CI green, nothing pending.');
   assertAllowed(r, 'valid SAFE TO ARCHIVE line');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('substantial work (git push) + valid KEEP OPEN line → ALLOWED', skipNoRepoHook, () => {
@@ -500,7 +501,7 @@ test('substantial work (git push) + valid KEEP OPEN line → ALLOWED', skipNoRep
   const transcript = writeTranscript(dir, [GIT_PUSH]);
   const r = runHook(transcript, 'Pushed. Deploy still running.\n\nKEEP OPEN — deploy still running, will verify next check-in.');
   assertAllowed(r, 'valid KEEP OPEN line');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('regression (ship-check adversarial review 2026-08-23): canonical wrap-up.md SESSION STATUS block, WITH its trailing divider rule after SAFE TO ARCHIVE, must pass', skipNoRepoHook, () => {
@@ -520,7 +521,7 @@ test('regression (ship-check adversarial review 2026-08-23): canonical wrap-up.m
   ].join('\n');
   const r = runHook(transcript, msg);
   assertAllowed(r, 'canonical wrap-up.md block with trailing divider must not be misread as missing a status line');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('regression: trailing divider after KEEP OPEN also passes', skipNoRepoHook, () => {
@@ -533,7 +534,7 @@ test('regression: trailing divider after KEEP OPEN also passes', skipNoRepoHook,
   ].join('\n');
   const r = runHook(transcript, msg);
   assertAllowed(r, 'canonical KEEP OPEN block with trailing divider must pass');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('status-line gate still blocks when the real last line is unrelated trailing prose (no divider)', skipNoRepoHook, () => {
@@ -546,7 +547,7 @@ test('status-line gate still blocks when the real last line is unrelated trailin
   ].join('\n');
   const r = runHook(transcript, msg);
   assertBlocked(r, 'a real trailing sentence after the status line is not a divider and must still block');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('regression (ship-check adversarial review 2026-08-23): empty final message + substantial work → BLOCKED, not silently skipped', skipNoRepoHook, () => {
@@ -558,7 +559,7 @@ test('regression (ship-check adversarial review 2026-08-23): empty final message
   // most likely to end without a wrap-up in practice).
   const r = runHook(transcript, '');
   assertBlocked(r, 'empty final message after substantial work must still require a status line');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('regression: "DECISION NEEDED" mentioned in prose (not the template header) does not falsely trip FALSESAFE', skipNoRepoHook, () => {
@@ -571,7 +572,7 @@ test('regression: "DECISION NEEDED" mentioned in prose (not the template header)
   ].join('\n');
   const r = runHook(transcript, msg);
   assertAllowed(r, 'a bare substring mention of the phrase (not the template header) must not trip FALSESAFE');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('regression: PR gate strips fenced quotes too — a quoted example blocker phrase does not satisfy the check', skipNoRepoHook, () => {
@@ -595,7 +596,7 @@ test('regression: PR gate strips fenced quotes too — a quoted example blocker 
   const r = runHook(transcript, msg);
   assertBlocked(r, 'a blocker phrase inside a fenced quote must not satisfy the PR follow-through gate');
   assert.match(r.stderr, /land it yourself/i, `expected the PR-follow-through gate's own message (not a different gate's), got: ${r.stderr.slice(0, 300)}`);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('CRITICAL false-positive guard: ordinary conversational turn, no tool calls at all → ALLOWED', skipNoRepoHook, () => {
@@ -603,7 +604,7 @@ test('CRITICAL false-positive guard: ordinary conversational turn, no tool calls
   const transcript = writeTranscript(dir, []); // no tool calls whatsoever
   const r = runHook(transcript, 'Sure, that repo has 2,800+ shows tracked.');
   assertAllowed(r, 'plain Q&A reply with zero tool calls must never require a status line');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('false-positive guard: mid-task exploratory turn (read-only tools, no edits) → ALLOWED', skipNoRepoHook, () => {
@@ -614,7 +615,7 @@ test('false-positive guard: mid-task exploratory turn (read-only tools, no edits
   ]);
   const r = runHook(transcript, "Found it — scoring.ts:42 is where the tier weight is applied. Want me to change it?");
   assertAllowed(r, 'a research-only turn ending in a question must not require SAFE TO ARCHIVE');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('DECISION NEEDED present but message falsely claims SAFE TO ARCHIVE → BLOCKED (FALSESAFE)', skipNoRepoHook, () => {
@@ -633,7 +634,7 @@ test('DECISION NEEDED present but message falsely claims SAFE TO ARCHIVE → BLO
   const r = runHook(transcript, msg);
   assertBlocked(r, 'DECISION NEEDED contradicts SAFE TO ARCHIVE claim');
   assert.match(r.stderr, /DECISION NEEDED/, `expected the contradiction message, got: ${r.stderr.slice(0, 300)}`);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('DECISION NEEDED present with correct ACTION NEEDED FROM YOU line → ALLOWED', skipNoRepoHook, () => {
@@ -649,7 +650,7 @@ test('DECISION NEEDED present with correct ACTION NEEDED FROM YOU line → ALLOW
   ].join('\n');
   const r = runHook(transcript, msg);
   assertAllowed(r, 'DECISION NEEDED correctly paired with ACTION NEEDED FROM YOU');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('status-line gate: fenced code block containing SAFE TO ARCHIVE text is stripped, real trailing line still required', skipNoRepoHook, () => {
@@ -664,7 +665,7 @@ test('status-line gate: fenced code block containing SAFE TO ARCHIVE text is str
   ].join('\n');
   const r = runHook(transcript, msg);
   assertBlocked(r, 'a SAFE TO ARCHIVE string inside a code fence must not satisfy the gate');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('status-line gate: real status line survives when an UNRELATED fenced block precedes it', skipNoRepoHook, () => {
@@ -680,7 +681,7 @@ test('status-line gate: real status line survives when an UNRELATED fenced block
   ].join('\n');
   const r = runHook(transcript, msg);
   assertAllowed(r, 'a real status line after an unrelated fence must pass');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('status-line gate bypass: NO-VERIFY: in message allows missing status line', skipNoRepoHook, () => {
@@ -688,7 +689,7 @@ test('status-line gate bypass: NO-VERIFY: in message allows missing status line'
   const transcript = writeTranscript(dir, [GIT_PUSH]);
   const r = runHook(transcript, 'Pushed a comment-only change. NO-VERIFY: docs-only, no closing status line needed.');
   assertAllowed(r, 'NO-VERIFY bypass must still work');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('status-line gate kill switch: SESSION_STATUS_GATE_DISABLE=1 allows missing status line', skipNoRepoHook, () => {
@@ -696,7 +697,7 @@ test('status-line gate kill switch: SESSION_STATUS_GATE_DISABLE=1 allows missing
   const transcript = writeTranscript(dir, [GIT_PUSH]);
   const r = runHook(transcript, 'Pushed.', { SESSION_STATUS_GATE_DISABLE: '1' });
   assertAllowed(r, 'kill switch must fully disable the gate');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 // ─────────────────────────── PR follow-through gate ───────────────────────
@@ -707,7 +708,7 @@ test('PR opened via MCP, never merged, no stated blocker → BLOCKED (PRUNMERGED
   const r = runHook(transcript, "Opened PR #42.\n\nSAFE TO ARCHIVE — PR open, nothing else pending.");
   assertBlocked(r, 'PR opened, never merged, no blocker stated');
   assert.match(r.stderr, /land it yourself/i, `expected the land-it-yourself reminder, got: ${r.stderr.slice(0, 300)}`);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('PR opened via MCP AND merged same session → ALLOWED', skipNoRepoHook, () => {
@@ -715,7 +716,7 @@ test('PR opened via MCP AND merged same session → ALLOWED', skipNoRepoHook, ()
   const transcript = writeTranscript(dir, [CREATE_PR, MERGE_PR, BOARD_CLOSEOUT_DONE]);
   const r = runHook(transcript, "Opened PR #42, CI passed, merged it.\n\nSAFE TO ARCHIVE — merged and live.");
   assertAllowed(r, 'PR opened and merged same session');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('PR opened, not merged, but a real blocker (CI red) is stated → ALLOWED', skipNoRepoHook, () => {
@@ -723,7 +724,7 @@ test('PR opened, not merged, but a real blocker (CI red) is stated → ALLOWED',
   const transcript = writeTranscript(dir, [CREATE_PR]);
   const r = runHook(transcript, "Opened PR #42 but CI is red on the typecheck job — investigating.\n\nKEEP OPEN — CI red on PR #42, fixing next.");
   assertAllowed(r, 'a genuinely stated CI-red blocker must pass');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('CRITICAL false-positive guard: no PR tool calls at all → ALLOWED regardless of message content', skipNoRepoHook, () => {
@@ -731,7 +732,7 @@ test('CRITICAL false-positive guard: no PR tool calls at all → ALLOWED regardl
   const transcript = writeTranscript(dir, [GIT_PUSH, BOARD_CLOSEOUT_DONE]);
   const r = runHook(transcript, "Pushed directly, no PR needed for this repo's workflow.\n\nSAFE TO ARCHIVE — pushed to branch, no PR opened this session.");
   assertAllowed(r, 'a session that never touched PR tools must never trip the PR gate');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('PR follow-through bypass: NO-VERIFY: allows an unmerged PR', skipNoRepoHook, () => {
@@ -739,7 +740,7 @@ test('PR follow-through bypass: NO-VERIFY: allows an unmerged PR', skipNoRepoHoo
   const transcript = writeTranscript(dir, [CREATE_PR]);
   const r = runHook(transcript, "Opened PR #42 for owner sign-off on the pricing change. NO-VERIFY: owner explicitly wants to review this one personally.");
   assertAllowed(r, 'NO-VERIFY bypass must still work for the PR gate');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('PR follow-through kill switch: PR_FOLLOWTHROUGH_GATE_DISABLE=1 allows an unmerged PR', skipNoRepoHook, () => {
@@ -751,7 +752,7 @@ test('PR follow-through kill switch: PR_FOLLOWTHROUGH_GATE_DISABLE=1 allows an u
   // with no status line at all would conflate the two gates' kill switches.
   const r = runHook(transcript, 'Opened PR #42.\n\nSAFE TO ARCHIVE — PR open, kill switch test.', { PR_FOLLOWTHROUGH_GATE_DISABLE: '1' });
   assertAllowed(r, 'kill switch must fully disable the PR gate');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 // ─────────── owner never merges: OWNERMERGE / land/** (2026-09-27) ────────────
@@ -767,7 +768,7 @@ test('OWNERMERGE: "waiting on your merge" blocks even with KEEP OPEN', skipNoRep
   const r = runHook(transcript, "PR #42 is green.\n\nKEEP OPEN — PR #42 green, waiting on your merge.");
   assertBlocked(r, 'asking the owner to merge must block');
   assert.match(r.stderr, /owner never merges/i, `got: ${r.stderr.slice(0, 300)}`);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('OWNERMERGE false-positive guard: describing or quoting the rule is not a merge ask', skipNoRepoHook, () => {
@@ -775,7 +776,7 @@ test('OWNERMERGE false-positive guard: describing or quoting the rule is not a m
   const transcript = writeTranscript(dir, [CREATE_PR, toolUse('Bash', { command: 'git push origin HEAD:refs/heads/land/x' }), toolUse('mcp__github__actions_get', { method: 'get_workflow_run' }), toolUse('Bash', { command: 'node scripts/linear-brain.js update BRO-1 --state Done' })]);
   const r = runHook(transcript, 'Landed. Sessions never ask the owner to merge, and the Stop hook now blocks "waiting on your merge" and `ready to merge`.\n\nSAFE TO ARCHIVE — landed and verified.');
   assertAllowed(r, 'a description or quotation of the rule must not trip OWNERMERGE');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('OWNERMERGE false-positive guard: a real owner decision ("waiting on your decision") is allowed', skipNoRepoHook, () => {
@@ -783,7 +784,7 @@ test('OWNERMERGE false-positive guard: a real owner decision ("waiting on your d
   const transcript = writeTranscript(dir, [CREATE_PR]);
   const r = runHook(transcript, "DECISION NEEDED: pricing tier for /biz.\n\nACTION NEEDED FROM YOU — waiting on your decision on pricing.");
   assertAllowed(r, 'owner decisions are not merge asks');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('OWNERMERGE false-positive guard: "merge conflict" is a stated blocker, not a merge ask', skipNoRepoHook, () => {
@@ -791,7 +792,7 @@ test('OWNERMERGE false-positive guard: "merge conflict" is a stated blocker, not
   const transcript = writeTranscript(dir, [CREATE_PR]);
   const r = runHook(transcript, "Resolving it now.\n\nKEEP OPEN — merge conflict on PR #42.");
   assertAllowed(r, 'merge conflict must stay a legitimate blocker');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 // BRO-5915: github-main-guard.sh now refuses PR creation, so a refused call
@@ -806,7 +807,7 @@ test('BRO-5915: a REFUSED create_pull_request is not an opened PR → ALLOWED', 
   assertAllowed(runHook(writeTranscript(dir, [REFUSED_CREATE_PR, GIT_PUSH, BOARD_CLOSEOUT_DONE]), msg), 'a hook-refused PR call opened nothing');
   // Control: the identical transcript with a successful create blocks.
   assertBlocked(runHook(writeTranscript(dir, [CREATE_PR, GIT_PUSH, BOARD_CLOSEOUT_DONE]), msg), 'control: a real open PR still blocks');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('BRO-5915: Bash `gh pr create` that printed a PR URL counts as an opened PR (PRUNMERGED)', skipNoRepoHook, () => {
@@ -814,7 +815,7 @@ test('BRO-5915: Bash `gh pr create` that printed a PR URL counts as an opened PR
   const r = runHook(writeTranscript(dir, [GH_PR_CREATE, BOARD_CLOSEOUT_DONE]), "Opened PR #42.\n\nSAFE TO ARCHIVE — PR open, nothing else pending.");
   assertBlocked(r, 'a Bash-opened PR left unmerged must block');
   assert.match(r.stderr, /land it yourself/i, `got: ${r.stderr.slice(0, 300)}`);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('BRO-5915: reading PRs (gh api GET …/pulls, …/pulls/N/comments) is not opening one → ALLOWED', skipNoRepoHook, () => {
@@ -830,7 +831,7 @@ test('BRO-5915: reading PRs (gh api GET …/pulls, …/pulls/N/comments) is not 
   // Control: a REST create counts.
   const create = toolUse('Bash', { command: 'gh api -X POST repos/thomaspryor/Broadwayscore/pulls -f head=x -f base=main' }, listing);
   assertBlocked(runHook(writeTranscript(dir, [create, GIT_PUSH, BOARD_CLOSEOUT_DONE]), "Opened a PR.\n\nSAFE TO ARCHIVE — PR open."), 'control: a REST create still counts');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 for (const ask of ['Please merge PR #42 when you get a chance.', "You'll need to merge both PRs.", 'You need to merge #42 and #43.', 'Merge #1170 first, then data#3.', 'All green. Merge the draft PRs when ready.']) {
@@ -839,7 +840,7 @@ for (const ask of ['Please merge PR #42 when you get a chance.', "You'll need to
     const r = runHook(writeTranscript(dir, [GH_PR_CREATE]), `${ask}\n\nKEEP OPEN — CI still running on PR #42.`);
     assertBlocked(r, 'an imperative merge ask must block');
     assert.match(r.stderr, /never merges/i, `OWNERMERGE must be the gate that fired, got: ${r.stderr.slice(0, 300)}`);
-    fs.rmSync(dir, { recursive: true, force: true });
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   });
 }
 
@@ -859,7 +860,7 @@ test('land/** push + checked Land run + Linear close-out → SAFE TO ARCHIVE all
   const transcript = writeTranscript(dir, [CREATE_PR, LAND_PUSH, LAND_RUN_CHECK, LINEAR_CLOSEOUT_DONE]);
   const r = runHook(transcript, "Landed via land.yml; main fast-forwarded.\n\nSAFE TO ARCHIVE — landed and verified.");
   assertAllowed(r, 'a landed branch satisfies the PR gate, and Linear close-out satisfies wrap-up');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('MCP create_branch land/** counts as landing follow-through', skipNoRepoHook, () => {
@@ -867,7 +868,7 @@ test('MCP create_branch land/** counts as landing follow-through', skipNoRepoHoo
   const transcript = writeTranscript(dir, [CREATE_PR, LAND_CREATE_BRANCH, LAND_RUN_CHECK, LINEAR_CLOSEOUT_DONE]);
   const r = runHook(transcript, "Landed.\n\nSAFE TO ARCHIVE — landed via MCP land branch.");
   assertAllowed(r, 'MCP land/** branch is the cloud fallback');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('LANDUNCHECKED: land/** push then SAFE TO ARCHIVE without checking the run → BLOCKED', skipNoRepoHook, () => {
@@ -876,7 +877,7 @@ test('LANDUNCHECKED: land/** push then SAFE TO ARCHIVE without checking the run 
   const r = runHook(transcript, "Pushed to land.\n\nSAFE TO ARCHIVE — pushed.");
   assertBlocked(r, 'push to land/** is not proof it landed');
   assert.match(r.stderr, /Land run/i, `got: ${r.stderr.slice(0, 300)}`);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 // BRO-7110: the documented land step is the waiter, so a waiter that FINISHED counts.
@@ -904,7 +905,7 @@ for (const [label, calls, allowed] of WFL_LANDUNCHECKED_CASES) {
     const r = runHook(transcript, 'Landed via land.yml.\n\nSAFE TO ARCHIVE — landed and verified.');
     if (allowed) assertAllowed(r, label);
     else { assertBlocked(r, label); assert.match(r.stderr, /wait-for-land\.js/, `got: ${r.stderr.slice(0, 300)}`); }
-    fs.rmSync(dir, { recursive: true, force: true });
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   });
 }
 
@@ -913,7 +914,7 @@ test('land/** match is anchored: a branch named foo-land/x is not a landing', sk
   const transcript = writeTranscript(dir, [CREATE_PR, toolUse('Bash', { command: 'git push origin HEAD:foo-land/x' }), BOARD_CLOSEOUT_DONE]);
   const r = runHook(transcript, "Pushed.\n\nSAFE TO ARCHIVE — pushed.");
   assertBlocked(r, 'foo-land/ is not land/**, PR still unlanded');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 // ─────────────────────────── regression: existing gates untouched ─────────
@@ -928,7 +929,7 @@ test('regression: existing UNVERIFIED gate still blocks an unrun code edit when 
   const r = runHook(transcript, 'SAFE TO ARCHIVE — done.'); // valid status line + Linear close-out done, so the NEW gates pass clean
   assertBlocked(r, 'an unverified code edit must still block on its own pre-existing gate');
   assert.match(r.stderr, /unverified edit/i, `expected the pre-existing UNVERIFIED message, got: ${r.stderr.slice(0, 300)}`);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('regression: a fully clean session, standalone check (edit + verify + push + wrap-up + valid status, no PR) → ALLOWED end to end', skipNoRepoHook, () => {
@@ -944,7 +945,7 @@ test('regression: a fully clean session, standalone check (edit + verify + push 
   ]);
   const r = runHook(transcript, 'Fixed, verified, pushed.\n\nSAFE TO ARCHIVE — verified with tsc, pushed to branch.');
   assertAllowed(r, 'a fully clean, fully reported session must pass all gates');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 // ─────────── review-parking + bare KEEP OPEN (2026-09-28) ────────────
@@ -957,7 +958,7 @@ function runOnPr(label, msg, env = {}) {
   const dir = makeTmpDir(label);
   const transcript = writeTranscript(dir, [CREATE_PR]);
   const r = runHook(transcript, msg, env);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   return r;
 }
 
@@ -1020,7 +1021,7 @@ function runCard(label, calls, msg, { env = {}, userText } = {}) {
   const dir = makeTmpDir(label);
   const transcript = writeTranscript(dir, calls, { card: false, ...(userText ? { userText } : {}) });
   const r = runHook(transcript, msg, env);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   return r;
 }
 const NOT_SAFE = 'Pushed.\n\nKEEP OPEN — deploy still running.';
@@ -1115,7 +1116,7 @@ test('NOWRAPUP: a linear-brain Done that the done-gate REFUSED is not a close-ou
   const r = runHook(transcript, 'Pushed and closed the card.\n\nSAFE TO ARCHIVE — done.');
   assertBlocked(r, 'the card is still open after a refused update');
   assert.match(r.stderr, /Linear card was never closed out/i, `got: ${r.stderr.slice(0, 300)}`);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('NOWRAPUP: a close-out the harness flagged is_error (denied or crashed) is not a close-out → BLOCKED', skipNoRepoHook, () => {
@@ -1128,7 +1129,7 @@ test('NOWRAPUP: a close-out the harness flagged is_error (denied or crashed) is 
     const transcript = writeTranscript(dir, [GIT_PUSH, errored]);
     const r = runHook(transcript, 'Pushed and closed the card.\n\nSAFE TO ARCHIVE — done.');
     assertBlocked(r, `an errored close-out left the card open: ${result.slice(0, 30)}`);
-    fs.rmSync(dir, { recursive: true, force: true });
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -1138,7 +1139,7 @@ test('NOWRAPUP: linear-session report --status=done (claimed issue) → ALLOWED'
   const transcript = writeTranscript(dir, [GIT_PUSH, report]);
   const r = runHook(transcript, 'Pushed and reported.\n\nSAFE TO ARCHIVE — reported done.');
   assertAllowed(r, 'report is the close-out verb for a claimed issue');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('NOWRAPUP: linear-session report whose done-gate refused → BLOCKED', skipNoRepoHook, () => {
@@ -1147,7 +1148,7 @@ test('NOWRAPUP: linear-session report whose done-gate refused → BLOCKED', skip
   const transcript = writeTranscript(dir, [GIT_PUSH, report]);
   const r = runHook(transcript, 'Pushed and reported.\n\nSAFE TO ARCHIVE — reported done.');
   assertBlocked(r, 'a refused report leaves the card open');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('NOWRAPUP fails open when Linear is unreachable', skipNoRepoHook, () => {
@@ -1155,7 +1156,7 @@ test('NOWRAPUP fails open when Linear is unreachable', skipNoRepoHook, () => {
   const transcript = writeTranscript(dir, [GIT_PUSH]);
   const r = runHook(transcript, 'Pushed.\n\nSAFE TO ARCHIVE — pushed.', { STUB_PROBE_EXIT: '4' });
   assertAllowed(r, 'a session cannot close out on a board it cannot reach');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 // ─────────── ship-check findings (2026-09-28): fall-through + phrasing ───────
@@ -1169,7 +1170,7 @@ test('P0 regression: NOCARD standing down (Linear unreachable) still runs the UN
   const r = runHook(transcript, 'Edited scoring.ts.\n\nKEEP OPEN — not verified yet.', { STUB_PROBE_EXIT: '4' });
   assertBlocked(r, 'a stood-down card gate must not wave through an unverified edit');
   assert.match(r.stderr, /unverified edit/i, `got: ${r.stderr.slice(0, 300)}`);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('P0 regression: NOWRAPUP standing down (Linear unreachable) still runs the UNVERIFIED gate → BLOCKED', skipNoRepoHook, () => {
@@ -1178,7 +1179,7 @@ test('P0 regression: NOWRAPUP standing down (Linear unreachable) still runs the 
   const r = runHook(transcript, 'Pushed.\n\nSAFE TO ARCHIVE — pushed.', { STUB_PROBE_EXIT: '4' });
   assertBlocked(r, 'a stood-down close-out gate must not wave through an unverified edit');
   assert.match(r.stderr, /unverified edit/i, `got: ${r.stderr.slice(0, 300)}`);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('P0 regression: escape hatch on, no card, PR parked → the PR gate still fires', skipNoRepoHook, () => {
@@ -1187,7 +1188,7 @@ test('P0 regression: escape hatch on, no card, PR parked → the PR gate still f
   const r = runHook(transcript, 'Opened PR #42.\n\nKEEP OPEN — PR open.', { BOARD_GATE_DISABLED: '1' });
   assertBlocked(r, 'the board escape hatch must not disable the PR gate');
   assert.match(r.stderr, /land it yourself/i, `got: ${r.stderr.slice(0, 300)}`);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('ordering: no card AND a parked PR → the PR gate fires first', skipNoRepoHook, () => {
@@ -1196,7 +1197,7 @@ test('ordering: no card AND a parked PR → the PR gate fires first', skipNoRepo
   const r = runHook(transcript, 'KEEP OPEN — PR #947 still open and unreviewed.');
   assertBlocked(r, 'parked PR without a card');
   assert.match(r.stderr, /never merges or reviews/i, `got: ${r.stderr.slice(0, 300)}`);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 for (const [label, msg] of [
@@ -1239,7 +1240,7 @@ for (const [label, msg] of [
     const transcript = writeTranscript(dir, [CREATE_PR, LAND_PUSH, LAND_RUN_CHECK, LINEAR_CLOSEOUT_DONE]);
     const r = runHook(transcript, msg);
     assertAllowed(r, 'describing that no review is needed must not trip OWNERMERGE');
-    fs.rmSync(dir, { recursive: true, force: true });
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   });
 }
 
@@ -1267,7 +1268,7 @@ test('NOWRAPUP: ECONNREFUSED in a retried-but-successful close-out is not a refu
   const transcript = writeTranscript(dir, [GIT_PUSH, closeout]);
   const r = runHook(transcript, 'Pushed and closed.\n\nSAFE TO ARCHIVE — card Done.');
   assertAllowed(r, 'REFUSED must be word-anchored');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 // Close-out by pausing: `--state Backlog` (or `--state Paused` once the team
@@ -1278,7 +1279,7 @@ test('NOWRAPUP: linear-brain --state Backlog is a close-out → ALLOWED', skipNo
   const transcript = writeTranscript(dir, [GIT_PUSH, closeout]);
   const r = runHook(transcript, 'Pushed and parked.\n\nSAFE TO ARCHIVE — card parked.');
   assertAllowed(r, 'Backlog is how Linear spells a pause');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('NOWRAPUP: linear-brain --state Paused (rejected by Linear) is not a close-out → BLOCKED', skipNoRepoHook, () => {
@@ -1288,7 +1289,7 @@ test('NOWRAPUP: linear-brain --state Paused (rejected by Linear) is not a close-
   const r = runHook(transcript, 'Pushed and paused.\n\nSAFE TO ARCHIVE — card paused.');
   assertBlocked(r, 'a rejected state change left the card open');
   assert.match(r.stderr, /status=paused/, `got: ${r.stderr.slice(0, 300)}`);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 // ─── In-flight-work gate (INFLIGHT, 2026-09-28) ─────────────────────────────
@@ -1338,21 +1339,21 @@ test('INFLIGHT: background Agent launched, no completion notice, SAFE TO ARCHIVE
   const r = runHook(transcript, SAFE_MSG);
   assertInflight(r, 'a live background agent dies with the session');
   assert.match(r.stderr, new RegExp(AGENT_ID), 'the block names the live agent id');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('INFLIGHT: same transcript with KEEP OPEN → ALLOWED (the honest line while work is in flight)', skipNoRepoHook, () => {
   const dir = makeTmpDir('inflight-agent-notsafe');
   const transcript = writeTranscript(dir, [AGENT_BG]);
   assertAllowed(runHook(transcript, NOT_SAFE_MSG), 'KEEP OPEN is what the gate asks for');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('INFLIGHT: agent completion arrives as a STRING-content <task-notification> → ALLOWED', skipNoRepoHook, () => {
   const dir = makeTmpDir('inflight-agent-done');
   const transcript = writeTranscript(dir, [AGENT_BG, AGENT_DONE, LINEAR_CLOSEOUT_DONE]);
   assertAllowed(runHook(transcript, SAFE_MSG), 'a completed agent is not in flight');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('INFLIGHT: completion delivered mid-turn as an `attachment` record (queued_command prompt), no user record → ALLOWED', skipNoRepoHook, () => {
@@ -1363,28 +1364,28 @@ test('INFLIGHT: completion delivered mid-turn as an `attachment` record (queued_
   assertAllowed(runHook(writeTranscript(dir, [AGENT_BG, handback, LINEAR_CLOSEOUT_DONE]), SAFE_MSG), 'mid-turn hand-back shape must count');
   const unrelated = attachmentNotice('<task-notification>\n<task-id>someone-else</task-id>\n<status>completed</status>\n</task-notification>');
   assertInflight(runHook(writeTranscript(dir, [AGENT_BG, unrelated, LINEAR_CLOSEOUT_DONE]), SAFE_MSG), 'a notice for a different id does not complete this agent');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('INFLIGHT: <status>failed</status> notice also completes the agent → ALLOWED', skipNoRepoHook, () => {
   const dir = makeTmpDir('inflight-agent-failed');
   const transcript = writeTranscript(dir, [AGENT_BG, AGENT_FAILED, LINEAR_CLOSEOUT_DONE]);
   assertAllowed(runHook(transcript, SAFE_MSG), 'a failed agent is finished, not live');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('INFLIGHT: <agent-message from=…> hand-back completes the agent → ALLOWED', skipNoRepoHook, () => {
   const dir = makeTmpDir('inflight-agent-handback');
   const transcript = writeTranscript(dir, [AGENT_BG, AGENT_HANDBACK, LINEAR_CLOSEOUT_DONE]);
   assertAllowed(runHook(transcript, SAFE_MSG), 'the hand-back is the completion');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('INFLIGHT: TaskStop on the agent completes it → ALLOWED', skipNoRepoHook, () => {
   const dir = makeTmpDir('inflight-agent-stop');
   const transcript = writeTranscript(dir, [AGENT_BG, AGENT_STOP, LINEAR_CLOSEOUT_DONE]);
   assertAllowed(runHook(transcript, SAFE_MSG), 'a stopped agent is not live');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('INFLIGHT: SendMessage to a finished agent resumes it — live again until its next completion → BLOCKED, then ALLOWED', skipNoRepoHook, () => {
@@ -1393,20 +1394,20 @@ test('INFLIGHT: SendMessage to a finished agent resumes it — live again until 
   assertInflight(runHook(blocked, SAFE_MSG), 'a resumed agent is in flight again');
   const allowed = writeTranscript(dir, [AGENT_BG, AGENT_DONE, AGENT_RESUME, AGENT_HANDBACK, LINEAR_CLOSEOUT_DONE]);
   assertAllowed(runHook(allowed, SAFE_MSG), 'its second hand-back completes it');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('INFLIGHT false-positive guard: a foreground Agent (report returned inline, no agentId) is never in flight', skipNoRepoHook, () => {
   const dir = makeTmpDir('inflight-agent-fg');
   const transcript = writeTranscript(dir, [AGENT_FG, LINEAR_CLOSEOUT_DONE]);
   assertAllowed(runHook(transcript, SAFE_MSG), 'foreground agents finish before the tool returns');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('INFLIGHT false-positive guard: a real foreground Agent result that also prints its agentId is finished', skipNoRepoHook, () => {
   const dir = makeTmpDir('inflight-agent-fg-real');
   assertAllowed(runHook(writeTranscript(dir, [AGENT_FG_REAL, LINEAR_CLOSEOUT_DONE]), SAFE_MSG), 'the report came back inline');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('INFLIGHT false-positive guard: a background Bash command is deliberately NOT tracked', skipNoRepoHook, () => {
@@ -1415,7 +1416,7 @@ test('INFLIGHT false-positive guard: a background Bash command is deliberately N
     'Command running in background with ID: b1e9y745t. Output is being written to: /tmp/x.output.');
   const transcript = writeTranscript(dir, [bg, LINEAR_CLOSEOUT_DONE]);
   assertAllowed(runHook(transcript, SAFE_MSG), 'two of four background commands in a real transcript finished with no notice');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('INFLIGHT: self-bound send_later still ahead of now, never deleted, SAFE TO ARCHIVE → BLOCKED', skipNoRepoHook, () => {
@@ -1424,42 +1425,42 @@ test('INFLIGHT: self-bound send_later still ahead of now, never deleted, SAFE TO
   const r = runHook(transcript, SAFE_MSG);
   assertInflight(r, 'a check-in scheduled into this session dies with it');
   assert.match(r.stderr, /trig_01FUTURE/, 'the block names the trigger id');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('INFLIGHT: send_later deleted via delete_trigger → ALLOWED', skipNoRepoHook, () => {
   const dir = makeTmpDir('inflight-sendlater-deleted');
   const transcript = writeTranscript(dir, [SEND_LATER_FUTURE, DELETE_FUTURE, LINEAR_CLOSEOUT_DONE]);
   assertAllowed(runHook(transcript, SAFE_MSG), 'a deleted trigger is not in flight');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('INFLIGHT: send_later whose fire_at is already past has fired → ALLOWED', skipNoRepoHook, () => {
   const dir = makeTmpDir('inflight-sendlater-fired');
   const transcript = writeTranscript(dir, [SEND_LATER_FIRED, LINEAR_CLOSEOUT_DONE]);
   assertAllowed(runHook(transcript, SAFE_MSG), 'the firing never echoes the id; time is the signal');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('INFLIGHT: update_trigger pushing a fired one-shot\'s run_once_at into the future re-arms it → BLOCKED', skipNoRepoHook, () => {
   const dir = makeTmpDir('inflight-sendlater-pushed');
   const transcript = writeTranscript(dir, [SEND_LATER_FIRED, ONESHOT_PUSHED, LINEAR_CLOSEOUT_DONE]);
   assertInflight(runHook(transcript, SAFE_MSG), 'the re-armed one-shot is live again');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('INFLIGHT: a failed send_later call (no trigger id in its result) schedules nothing → ALLOWED', skipNoRepoHook, () => {
   const dir = makeTmpDir('inflight-sendlater-failed');
   const transcript = writeTranscript(dir, [SEND_LATER_FAILED, LINEAR_CLOSEOUT_DONE]);
   assertAllowed(runHook(transcript, SAFE_MSG), 'nothing was scheduled');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('INFLIGHT: self-bound cron Routine (create_trigger result shape {"trigger":{"id"}}) never deleted → BLOCKED; disabled via update_trigger → ALLOWED', skipNoRepoHook, () => {
   const dir = makeTmpDir('inflight-cron');
   assertInflight(runHook(writeTranscript(dir, [CRON_SELF, LINEAR_CLOSEOUT_DONE]), SAFE_MSG), 'a recurring wake-up into this session is live until deleted');
   assertAllowed(runHook(writeTranscript(dir, [CRON_SELF, CRON_DISABLE, LINEAR_CLOSEOUT_DONE]), SAFE_MSG), 'enabled:false ends it');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('INFLIGHT false-positive guard: a Routine that fires into a fresh or other session is not this session\'s to keep alive', skipNoRepoHook, () => {
@@ -1468,7 +1469,7 @@ test('INFLIGHT false-positive guard: a Routine that fires into a fresh or other 
     '{"trigger":{"id":"trig_01SIBLING","run_once_at":"' + FAR + '"}}');
   const transcript = writeTranscript(dir, [CRON_OTHER_SESSION, other, LINEAR_CLOSEOUT_DONE]);
   assertAllowed(runHook(transcript, SAFE_MSG), 'create_new_session_on_fire / persistent_session_id Routines survive this session');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('INFLIGHT precedence: it blocks before the wrap-up gate, and KEEP OPEN with a live agent needs no close-out', skipNoRepoHook, () => {
@@ -1479,35 +1480,35 @@ test('INFLIGHT precedence: it blocks before the wrap-up gate, and KEEP OPEN with
   assertInflight(r, 'in-flight work is reported before the missing close-out');
   assert.doesNotMatch(r.stderr, /Linear card was never closed out/, 'one block per turn: INFLIGHT, not NOWRAPUP');
   assertAllowed(runHook(writeTranscript(dir, [GIT_PUSH, AGENT_BG]), NOT_SAFE_MSG), 'the honest line passes every gate');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('INFLIGHT: independent of SESSION_STATUS_GATE_DISABLE (own last-line parse, no shared locals)', skipNoRepoHook, () => {
   const dir = makeTmpDir('inflight-independent');
   const transcript = writeTranscript(dir, [AGENT_BG, LINEAR_CLOSEOUT_DONE]);
   assertInflight(runHook(transcript, SAFE_MSG, { SESSION_STATUS_GATE_DISABLE: '1' }), 'disabling the status-line gate must not disable this one');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('INFLIGHT bypass: NO-VERIFY: allows SAFE TO ARCHIVE with a live agent', skipNoRepoHook, () => {
   const dir = makeTmpDir('inflight-noverify');
   const transcript = writeTranscript(dir, [AGENT_BG, LINEAR_CLOSEOUT_DONE]);
   assertAllowed(runHook(transcript, 'NO-VERIFY: owner asked to end now, agent is throwaway.\n\nSAFE TO ARCHIVE — per owner.'), 'explicit bypass');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('INFLIGHT kill switch: INFLIGHT_GATE_DISABLE=1', skipNoRepoHook, () => {
   const dir = makeTmpDir('inflight-killswitch');
   const transcript = writeTranscript(dir, [AGENT_BG, LINEAR_CLOSEOUT_DONE]);
   assertAllowed(runHook(transcript, SAFE_MSG, { INFLIGHT_GATE_DISABLE: '1' }), 'kill switch');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('INFLIGHT false-positive guard: a fenced example containing "SAFE TO ARCHIVE" is not a claim; the real last line is NOT SAFE', skipNoRepoHook, () => {
   const dir = makeTmpDir('inflight-fenced');
   const transcript = writeTranscript(dir, [AGENT_BG]);
   assertAllowed(runHook(transcript, 'Example line:\n```\nSAFE TO ARCHIVE — example\n```\n\nKEEP OPEN — agent still running.'), 'fenced text is stripped');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('regression: existing user_text consumers unchanged — a STRING-content owner prompt does not become user_text (NO-VERIFY turn boundary untouched)', skipNoRepoHook, () => {
@@ -1517,7 +1518,7 @@ test('regression: existing user_text consumers unchanged — a STRING-content ow
   const dir = makeTmpDir('inflight-user-notice-isolated');
   const transcript = writeTranscript(dir, [GIT_PUSH, notice('owner typed something'), LINEAR_CLOSEOUT_DONE]);
   assertAllowed(runHook(transcript, SAFE_MSG), 'a plain string user record is inert for every other gate');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 // BRO-4238: github-main-guard.sh refuses Broadwayscore PR merges. A refused
@@ -1529,7 +1530,7 @@ test('PR gate: a merge attempt the hook BLOCKED does not count as merged → BLO
     'PreToolUse:mcp__github__merge_pull_request hook error: 🛑 BLOCKED: PRs in thomaspryor/Broadwayscore are never merged directly (BRO-4238)');
   const transcript = writeTranscript(dir, [CREATE_PR, blockedMerge, LINEAR_CLOSEOUT_DONE]);
   assertBlocked(runHook(transcript, 'Merged PR #1.\n\nSAFE TO ARCHIVE — merged.'), 'a blocked merge left the PR open');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('PR gate: a merge the API or the permission layer refused does not count as merged → BLOCKED', skipNoRepoHook, () => {
@@ -1544,7 +1545,7 @@ test('PR gate: a merge the API or the permission layer refused does not count as
     const failed = toolUse('mcp__github__merge_pull_request', { owner: 'someone', repo: 'other', pullNumber: 1 }, result);
     const transcript = writeTranscript(dir, [CREATE_PR, failed, LINEAR_CLOSEOUT_DONE]);
     assertBlocked(runHook(transcript, 'Merged PR #1.\n\nSAFE TO ARCHIVE — merged.'), `refused merge counted as merged: ${result.slice(0, 40)}`);
-    fs.rmSync(dir, { recursive: true, force: true });
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -1552,7 +1553,7 @@ test('PR gate: a merge that went through still counts (unchanged) → ALLOWED', 
   const dir = makeTmpDir('real-merge');
   const transcript = writeTranscript(dir, [CREATE_PR, MERGE_PR, LINEAR_CLOSEOUT_DONE]);
   assertAllowed(runHook(transcript, 'Merged PR #1.\n\nSAFE TO ARCHIVE — merged.'), 'a real merge closes the PR out');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 // ─────────── cloud finish-line chain (BRO-4238 phase 2, 2026-09-29) ─────────
@@ -1570,7 +1571,7 @@ const CLOSED = 'Landed and verified.\n\nSAFE TO ARCHIVE — landed, card updated
 function chain(name, calls, msg, env) {
   const dir = makeTmpDir(name);
   const r = runHook(writeTranscript(dir, calls), msg, env);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   return r;
 }
 
@@ -1673,7 +1674,7 @@ test('NO-VERIFY from an earlier turn does not waive a later unverified edit (own
   lines.splice(ownerIdx, 0, JSON.stringify({ type: 'assistant', message: { role: 'assistant', content: [earlier] } }));
   fs.writeFileSync(p, lines.join('\n') + '\n');
   const r = runHook(p, 'Fixed.\n\nSAFE TO ARCHIVE — done.');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   assertBlocked(r, 'a stale NO-VERIFY must not cover new work');
   assert.match(r.stderr, /unverified edit/i, `got: ${r.stderr.slice(0, 300)}`);
 });
@@ -1683,12 +1684,12 @@ test('NOCARD: edits that a hook blocked are not work (BRO-4238 smoke test false 
   const blocked = { ...toolUse('Edit', { file_path: '/home/user/Broadwayscore/scripts/lib/review-gate.mjs', old_string: 'a', new_string: 'b' },
     'PreToolUse:Edit hook error: 🛑 INFRA PLAN REVIEW GATE: shared-infrastructure edit needs a review first'), _isError: true };
   const r = runHook(writeTranscript(dir, [blocked], { card: false }), 'The edit was refused, nothing changed.\n\nSAFE TO ARCHIVE — nothing changed.');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   assertAllowed(r, 'a refused edit is not work');
   // The same edit going through still needs a card.
   const dir2 = makeTmpDir('nocard-real');
   const r2 = runHook(writeTranscript(dir2, [QUALIFYING_EDIT, toolUse('Bash', { command: 'npx tsc --noEmit src/lib/scoring.ts' })], { card: false }), 'Done.\n\nSAFE TO ARCHIVE — done.');
-  fs.rmSync(dir2, { recursive: true, force: true });
+  fs.rmSync(dir2, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   assertBlocked(r2, 'a real edit without a card');
 });
 
@@ -1698,7 +1699,7 @@ test('NOCARD: a push that ran but whose pipeline exited non-zero is still work',
   const dir = makeTmpDir('nocard-exitcode');
   const push = { ...toolUse('Bash', { command: 'git push -q origin HEAD:refs/heads/wip/x 2>&1 | grep -v "^remote:"' }, 'Exit code 1'), _isError: true };
   const r = runHook(writeTranscript(dir, [push], { card: false }), 'Pushed.\n\nSAFE TO ARCHIVE — pushed.');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   assertBlocked(r, 'a push that ran is work and still needs a card');
 });
 
@@ -1774,7 +1775,7 @@ test('loop guard: a different gate still blocks after an earlier block; the same
   // 3rd Stop: same gate again → let through (no infinite loop).
   assertAllowed(runHook(t, CLOSED, {}, true), 'same gate is not re-blocked in one chain');
   fs.rmSync(chainFileFor(t), { force: true });
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('loop guard: an already-fired gate falls through to the next gate instead of hiding it', skipNoRepoHook, () => {
@@ -1791,7 +1792,7 @@ test('loop guard: an already-fired gate falls through to the next gate instead o
     assert.match(second.stderr, /finish chain is incomplete/, `${name}: got ${second.stderr.slice(0, 300)}`);
     fs.rmSync(chainFileFor(t), { force: true });
   }
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('loop guard: blocks are capped per chain', skipNoRepoHook, () => {
@@ -1800,7 +1801,7 @@ test('loop guard: blocks are capped per chain', skipNoRepoHook, () => {
   fs.writeFileSync(chainFileFor(t), 'A\nB\nC\nD\n');
   assertAllowed(runHook(t, CLOSED, {}, true), 'cap reached');
   fs.rmSync(chainFileFor(t), { force: true });
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 // ship-check findings on the loop guard (2026-09-29).
@@ -1815,7 +1816,7 @@ test('loop guard: partial progress on the finish chain re-blocks until every ste
   assert.match(r2.stderr, /does not count\): \/what-else, then \/wrap-up/, `got: ${r2.stderr.slice(0, 300)}`);
   // Same missing set again: let through (no loop).
   assertAllowed(runHook(t, CLOSED, {}, true), 'same missing set is not re-blocked');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 // second-opinion finding: the ledger was joined/split on ',' and NOCHAIN keys
@@ -1829,7 +1830,7 @@ test('loop guard: running /what-else + /wrap-up but no review still re-blocks fo
   const r2 = runHook(t, CLOSED, {}, true);
   assertBlocked(r2, 'review still missing');
   assert.match(r2.stderr, /does not count\): \/ship-check/, `got: ${r2.stderr.slice(0, 300)}`);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('loop guard: a ledger from an earlier chain is cleared at the next chain\'s first Stop', skipNoRepoHook, () => {
@@ -1843,7 +1844,7 @@ test('loop guard: a ledger from an earlier chain is cleared at the next chain\'s
   assertBlocked(r, 'stale ledger must not skip the chain gate');
   assert.match(r.stderr, /finish chain is incomplete/, `got: ${r.stderr.slice(0, 300)}`);
   assert.doesNotMatch(r.stderr, /No such file/, 'no stray shell noise in the block message');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('loop guard: an unwritable ledger falls back to letting the Stop through (never loops)', skipNoRepoHook, () => {
@@ -1853,7 +1854,7 @@ test('loop guard: an unwritable ledger falls back to letting the Stop through (n
   fs.mkdirSync(chainFileFor(t));   // a directory: appends fail
   assertAllowed(runHook(t, CLOSED, {}, true), 'cannot record, so must not block again');
   fs.rmSync(chainFileFor(t), { force: true, recursive: true });
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 
@@ -1882,7 +1883,7 @@ test('OPENWORK: a started session that is still working does not block SAFE TO A
   for (const b of ['WORKING', 'BLOCKED', 'FAILED']) {
     assertAllowed(runHook(writeTranscript(dir, [CREATE_CHILD, GET_CHILD(b), LINEAR_CLOSEOUT_DONE]), SAFE_MSG), `${b}`);
   }
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('OPENWORK: handing work to the worker queue + SAFE TO ARCHIVE → BLOCKED; BACKLOG-OK passes; NOT SAFE passes', skipNoRepoHook, () => {
@@ -1899,7 +1900,7 @@ test('OPENWORK: handing work to the worker queue + SAFE TO ARCHIVE → BLOCKED; 
   }
   assertAllowed(runHook(t, 'Filed a low-priority card for the typo; the board worker can take it.\nBACKLOG-OK: cosmetic typo on an archive page, fine to wait weeks\n\nSAFE TO ARCHIVE'), 'BACKLOG-OK is the escape for work that can wait');
   assertAllowed(runHook(t, 'The automatic worker has the card.\n\nKEEP OPEN — the fix is not done yet.'), 'KEEP OPEN is honest');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('OPENWORK false-positive guards: ordinary closings, and phrases inside code', skipNoRepoHook, () => {
@@ -1916,7 +1917,7 @@ test('OPENWORK false-positive guards: ordinary closings, and phrases inside code
   ]) {
     assertAllowed(runHook(t, msg), msg.slice(0, 60));
   }
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('INFLIGHT matches the lowercase server spelling too (BRO-5040)', skipNoRepoHook, () => {
@@ -1925,7 +1926,7 @@ test('INFLIGHT matches the lowercase server spelling too (BRO-5040)', skipNoRepo
   assertInflight(runHook(writeTranscript(dir, [lower, LINEAR_CLOSEOUT_DONE]), SAFE_MSG), 'mcp__claude-code-remote__send_later is a live check-in');
   const del = toolUse('mcp__claude-code-remote__delete_trigger', { trigger_id: 'trig_01LOWER' }, '{"trigger":{"id":"trig_01LOWER"}}');
   assertAllowed(runHook(writeTranscript(dir, [lower, del, LINEAR_CLOSEOUT_DONE]), SAFE_MSG), 'and its delete ends it');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 // ─── BRO-5068: project commands that did not load ──────────────────────────
@@ -2030,7 +2031,7 @@ test('LOOSEENDS: real loose-end closings + SAFE TO ARCHIVE → BLOCKED', skipNoR
   ]) {
     assertLoose(runHook(t, `${body}\n\nNothing needed from you.\n\nSAFE TO ARCHIVE`, LE_ON), body);
   }
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('LOOSEENDS: the honest rewrites pass (NOT SAFE, BACKLOG-OK for deferrals) but BACKLOG-OK never excuses an offer', skipNoRepoHook, () => {
@@ -2039,7 +2040,7 @@ test('LOOSEENDS: the honest rewrites pass (NOT SAFE, BACKLOG-OK for deferrals) b
   assertAllowed(runHook(t, 'Want me to also clean up the old rows?\n\nKEEP OPEN — waiting on your answer.', LE_ON), 'NOT SAFE is not gated by LOOSEENDS');
   assertAllowed(runHook(t, 'Left three minor review notes for later on their own card.\nBACKLOG-OK: cosmetic wording, fine to wait\n\nSAFE TO ARCHIVE', LE_ON), 'carded deferral');
   assertLoose(runHook(t, 'Want me to also clean up the old rows?\nBACKLOG-OK: cosmetic\n\nSAFE TO ARCHIVE', LE_ON), 'an offer is never backlog');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('LOOSEENDS false-positive guards: ordinary finished closings', skipNoRepoHook, () => {
@@ -2059,7 +2060,7 @@ test('LOOSEENDS false-positive guards: ordinary finished closings', skipNoRepoHo
   }
   assertAllowed(runHook(t, 'Want me to do more?\n\nSAFE TO ARCHIVE', { ...LE_ON, LOOSEENDS_GATE_DISABLE: '1' }), 'kill switch');
   assertAllowed(runHook(t, 'Want me to do more?\nNO-VERIFY: owner asked for a menu of options\n\nSAFE TO ARCHIVE', LE_ON), 'bypass');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 // ─── Wake gate (WAKELESS, BRO-5881, 2026-10-22) ─────────────────────────────
@@ -2078,7 +2079,7 @@ const BG_DONE = notice('<task-notification>\n<task-id>b1e9y745t</task-id>\n<stat
 test('WAKELESS: incident replay — NOT SAFE, waiting, nothing armed → BLOCKED', skipNoRepoHook, () => {
   const dir = makeTmpDir('wake-stale');
   assertWakeless(runHook(writeTranscript(dir, [GIT_PUSH]), STALE, WK_ON), 'the 11-hour idle session');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('WAKELESS: each real wake passes — background Bash, Monitor, background Agent, started session, PR subscription, owner-asked send_later', skipNoRepoHook, () => {
@@ -2091,7 +2092,7 @@ test('WAKELESS: each real wake passes — background Bash, Monitor, background A
     ['child', [CREATE_CHILD, GET_CHILD('WORKING')]], ['pr', [sub]], ['send_later', [later]]]) {
     assertAllowed(runHook(writeTranscript(dir, [GIT_PUSH, ...calls]), STALE, WK_ON), label);
   }
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('WAKELESS: a wake that already finished is not a wake', skipNoRepoHook, () => {
@@ -2103,7 +2104,7 @@ test('WAKELESS: a wake that already finished is not a wake', skipNoRepoHook, () 
   // A stop-hook block between the wait and the closing does not hide the wait.
   const fb = { _notice: 'Stop hook feedback: something else first', _isMeta: true }; // real Stop feedback is isMeta
   assertAllowed(runHook(writeTranscript(dir, [GIT_PUSH, BG_WAIT, fb]), STALE, WK_ON), 'wait survives a re-fired Stop');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('WAKELESS: a real Monitor result is tracked by its task id (BRO-6717)', skipNoRepoHook, () => {
@@ -2116,7 +2117,7 @@ test('WAKELESS: a real Monitor result is tracked by its task id (BRO-6717)', ski
   assertAllowed(runHook(writeTranscript(dir, [GIT_PUSH, mon]), STALE, WK_ON), 'live monitor');
   assertAllowed(runHook(writeTranscript(dir, [GIT_PUSH, mon, ev]), STALE, WK_ON), 'an event is progress, the monitor is still live');
   assertWakeless(runHook(writeTranscript(dir, [GIT_PUSH, mon, ev, end]), STALE, WK_ON), 'a finished monitor is not a wake');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('WAKELESS: waiting on the owner needs no wake; bypass and kill switch', skipNoRepoHook, () => {
@@ -2128,7 +2129,7 @@ test('WAKELESS: waiting on the owner needs no wake; bypass and kill switch', ski
   assertAllowed(runHook(t, STALE, { WAKELESS_GATE_DISABLE: '1' }), 'kill switch');
   assertAllowed(runHook(t, STALE.replace('KEEP OPEN', 'NO-VERIFY: container restarting\n\nKEEP OPEN'), WK_ON), 'bypass');
   assert.doesNotMatch(runHook(t, 'Done and landed.\n\nSAFE TO ARCHIVE', WK_ON).stderr, /nothing will wake it/i, 'SAFE is not this gate');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 // ─── Child-wait gate (CHILDWAIT, BRO-6264) ───────────────────────────────────
@@ -2147,7 +2148,7 @@ test('CHILDWAIT: BRO-6154 replay — child fires a run after an old background w
   assertAllowed(runHook(writeTranscript(dir, [BG_WAIT, CW_DISPATCH]), CW_CLOSE, CW_ON), 'not a child (human session)');
   assertAllowed(runHook(writeTranscript(dir, [BG_WAIT, CW_DISPATCH], CW_CHILD), CW_CLOSE, { CHILDWAIT_GATE_DISABLE: '1' }), 'kill switch');
   assertAllowed(runHook(writeTranscript(dir, [BG_WAIT, CW_DISPATCH], CW_CHILD), 'NO-VERIFY: x\n\n' + CW_CLOSE, CW_ON), 'bypass');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('LOOSEENDS false-positive guards from the ship-check review: negations and descriptions', skipNoRepoHook, () => {
@@ -2162,7 +2163,7 @@ test('LOOSEENDS false-positive guards from the ship-check review: negations and 
   ]) {
     assertAllowed(runHook(t, `${body}\n\nSAFE TO ARCHIVE`, LE_ON), body);
   }
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('WAKELESS: a bold or bulleted DECISION NEEDED counts as waiting on the owner', skipNoRepoHook, () => {
@@ -2170,7 +2171,7 @@ test('WAKELESS: a bold or bulleted DECISION NEEDED counts as waiting on the owne
   const t = writeTranscript(dir, [GIT_PUSH]);
   assertAllowed(runHook(t, '**DECISION NEEDED:** keep or drop the page?\n\nACTION NEEDED FROM YOU — waiting on your decision.', WK_ON), 'bold');
   assertAllowed(runHook(t, '- DECISION NEEDED: keep or drop the page?\n\nACTION NEEDED FROM YOU — waiting on your decision.', WK_ON), 'bulleted');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('WAKELESS: a background wait from before the owner\'s latest message does not count', skipNoRepoHook, () => {
@@ -2178,7 +2179,7 @@ test('WAKELESS: a background wait from before the owner\'s latest message does n
   const owner = { _notice: 'is it done yet?', _extra: { origin: { kind: 'human' } } };
   assertWakeless(runHook(writeTranscript(dir, [GIT_PUSH, BG_WAIT, owner]), STALE, WK_ON), 'stale wait from an earlier turn');
   assertAllowed(runHook(writeTranscript(dir, [GIT_PUSH, owner, BG_WAIT]), STALE, WK_ON), 'wait started after it');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('INFLIGHT/LOOSEENDS: a TESTED status box after the closing line does not hide the line', skipNoRepoHook, () => {
@@ -2186,7 +2187,7 @@ test('INFLIGHT/LOOSEENDS: a TESTED status box after the closing line does not hi
   const agent = toolUse('Agent', { description: 'scan', prompt: 'x', run_in_background: true }, 'Async agent launched successfully.\nagentId: a1b2c3d4e5f6');
   const msg = 'All landed.\n\nSAFE TO ARCHIVE\n```\n━━━ TESTED ━━━\nProduction verified: yes\n━━━━━━\n```';
   assertBlocked(runHook(writeTranscript(dir, [agent, LINEAR_CLOSEOUT_DONE]), msg), 'the live agent still blocks SAFE');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 // ─── Clear-closing gate (CLEARCLOSE, BRO-5910, 2026-10-22) ──────────────────
@@ -2209,7 +2210,7 @@ test('CLEARCLOSE: real unclear endings → BLOCKED, naming what is missing', ski
   assertUnclear(runHook(t, 'Shipped.\n\nNothing is still running.\n\nNothing needed from you; closed BRO-5717 (commit e66ac2363).\n\nSAFE TO ARCHIVE', CC_ON), 'ids in the last lines', /BRO-5717/);
   assertUnclear(runHook(t, 'Shipped.\n\nNothing is still running.\n\nNothing needed from you.\n\nSAFE TO ARCHIVE — see `scripts/lib/x.js`', CC_ON), 'code on the status line');
   assertUnclear(runHook(t, 'Shipped.\n\nNothing is still running.\nNOTE: closed BRO-1 in e66ac23.\nNothing needed from you.\n\nSAFE TO ARCHIVE', CC_ON), 'a NOTE: line is prose, not a gate token', /BRO-1/);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('CLEARCLOSE: clear endings pass, including technical detail higher up and a NOT SAFE with its reason', skipNoRepoHook, () => {
@@ -2223,7 +2224,7 @@ test('CLEARCLOSE: clear endings pass, including technical detail higher up and a
   assertAllowed(runHook(t, 'The new score is 85/90.5 for critics, up from 1.5/2.0 stars.\n\nNothing is still running.\n\nNothing needed from you.\n\nSAFE TO ARCHIVE', CC_ON), 'score ratios are not paths');
   assertAllowed(runHook(t, 'Two ways to go.\n\nDECISION NEEDED: keep or drop the old page?\nWhy this is your call: taste.\nOption A — keep: familiar / clutter\nOption B — drop: cleaner / loses links\nMy recommendation: B because nobody visits it.\nDefault: I keep it.\n\nNothing is still running.\n\nYou need to: answer the decision above.\n\nACTION NEEDED FROM YOU — answer the decision above', CC_ON), 'DECISION NEEDED template');
   assertAllowed(runHook(t, 'Shipped.\n\nNothing is still running.\n\nNothing needed from you.\nNO-SHIP-CHECK: docs-only change, no code to review in BRO-1\n\nSAFE TO ARCHIVE', CC_ON), 'gate token lines are skipped');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('CLEARCLOSE: only after real work; bypass and kill switch', skipNoRepoHook, () => {
@@ -2233,7 +2234,7 @@ test('CLEARCLOSE: only after real work; bypass and kill switch', skipNoRepoHook,
   const t = writeTranscript(dir, [GIT_PUSH, LINEAR_CLOSEOUT_DONE]);
   assertAllowed(runHook(t, 'Shipped.\n\nSAFE TO ARCHIVE', { CLEARCLOSE_GATE_DISABLE: '1' }), 'kill switch');
   assertAllowed(runHook(t, 'Shipped.\nNO-VERIFY: owner asked for a one-line reply\n\nSAFE TO ARCHIVE', CC_ON), 'bypass');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 // ─── BRO-6020: three closing verdicts ───────────────────────────────────────
@@ -2262,7 +2263,7 @@ test('BRO-6020 LEGACYSTATUS: SAFE TO EXIT / NOT SAFE TO EXIT are asked about onc
   assertAllowed(runHook(t, 'Pushed, card closed.\n\n**SAFE TO ARCHIVE** — all done.'), 'bold new verdict');
   assertAllowed(runHook(t, 'Pushed.\nNO-VERIFY: replaying an old transcript\n\nSAFE TO EXIT — all done.'), 'bypass');
   fs.rmSync(chainFileFor(t), { force: true });
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('BRO-6020 aliases: after LEGACYSTATUS fired, a legacy SAFE TO EXIT is still held to the SAFE gates', skipNoRepoHook, () => {
@@ -2278,7 +2279,7 @@ test('BRO-6020 aliases: after LEGACYSTATUS fired, a legacy SAFE TO EXIT is still
   assertLegacy(runHook(t, stale, WK_ON), 'first Stop: legacy NOT SAFE');
   assertWakeless(runHook(t, stale, WK_ON, true), 'WAKELESS still fires on legacy NOT SAFE');
   fs.rmSync(chainFileFor(t), { force: true });
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('BRO-6020 VERDICTMISMATCH: the verdict must match who acts next', skipNoRepoHook, () => {
@@ -2294,7 +2295,7 @@ test('BRO-6020 VERDICTMISMATCH: the verdict must match who acts next', skipNoRep
   assertAllowed(runHook(t, 'You need to: nothing.\n\nKEEP OPEN — CI still running on the landing.'), '"nothing" + KEEP OPEN');
   assertAllowed(runHook(t, 'DECISION NEEDED: keep or drop the page?\n\nACTION NEEDED FROM YOU — answer the decision above.'), 'decision + ACTION NEEDED');
   fs.rmSync(chainFileFor(t), { force: true });
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('BRO-6020 LOOSEENDS: SAFE TO ARCHIVE while still waiting on another session or a run → BLOCKED; negated and past waits pass', skipNoRepoHook, () => {
@@ -2318,7 +2319,7 @@ test('BRO-6020 LOOSEENDS: SAFE TO ARCHIVE while still waiting on another session
   }
   assertAllowed(runHook(t, 'Still waiting for the land run.\n\nKEEP OPEN — waiting for the land run.', LE_ON), 'KEEP OPEN is not LOOSEENDS');
   fs.rmSync(chainFileFor(t), { force: true });
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('BRO-6020 CLEARCLOSE: KEEP OPEN and ACTION NEEDED need a reason; WAKELESS skips ACTION NEEDED', skipNoRepoHook, () => {
@@ -2333,7 +2334,7 @@ test('BRO-6020 CLEARCLOSE: KEEP OPEN and ACTION NEEDED need a reason; WAKELESS s
   assertAllowed(runHook(t, 'Tally emailed.\n\nNothing is still running.\n\nNothing needed from you.\n\nKEEP OPEN — the weekly spend watch fires into this session.', { ...CC_ON, ...WK_ON }), 'routine host');
   assertWakeless(runHook(t, 'Tally emailed.\n\nNothing is still running.\n\nNothing needed from you.\n\nKEEP OPEN — the weekly spend watch runs again Monday.', WK_ON), 'other wording still needs a wake');
   fs.rmSync(chainFileFor(t), { force: true });
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('BRO-6020 ship-check: a quoted (>) verdict is no verdict; quoted asks and "no action" are not owner asks; finished waits pass', skipNoRepoHook, () => {
@@ -2352,7 +2353,7 @@ test('BRO-6020 ship-check: a quoted (>) verdict is no verdict; quoted asks and "
     assertAllowed(runHook(t, `${body}\n\nSAFE TO ARCHIVE — done.`, LE_ON), body);
   }
   fs.rmSync(chainFileFor(t), { force: true });
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 // ─── Passive-offer gate (PASSIVEOFFER, BRO-6546, 2026-10-29) ────────────────
@@ -2390,7 +2391,7 @@ test('PASSIVEOFFER: offers to land/build/review block, with or without edits and
     assertPassive(runHook(noEdits, body, PO_ON), `no-edit turn: ${body.slice(0, 50)}`);
     assertPassive(runHook(closeout, body, PO_ON), `after work: ${body.slice(0, 50)}`);
   }
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('PASSIVEOFFER false-positive guards: a real DECISION NEEDED block, finished work, bypass', skipNoRepoHook, () => {
@@ -2416,5 +2417,199 @@ test('PASSIVEOFFER false-positive guards: a real DECISION NEEDED block, finished
   assertAllowed(runHook(noEdits, 'Landed and live on the site. The shows page now loads in half the time.', PO_ON), 'finished work');
   assertAllowed(runHook(noEdits, 'The gate matches `say the word` and `shall I build` in closings, and it reviewed the pull request diff itself.', PO_ON), 'quoted code and "reviewed" are not offers');
   assertAllowed(runHook(noEdits, 'Want me to land it now?\nNO-VERIFY: quoting the owner\'s own phrase for a test', PO_ON), 'NO-VERIFY bypass');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+});
+
+// ── BRO-7315: the engine must not fail silently, and every block must be countable ──
+// Every python exit in the hook is sys.exit(0) with the verdict printed, so a non-zero python status
+// means the engine crashed. Before BRO-7315 that left the verdict empty, matched no branch and exited
+// 0: every end-of-session check skipped without a word.
+function withBrokenPython(fn) {
+  const shim = fs.mkdtempSync(path.join(os.tmpdir(), 'veg-pyshim-'));
+  fs.writeFileSync(path.join(shim, 'python3'), '#!/bin/bash\necho "Traceback (most recent call last): boom" >&2\nexit 1\n', { mode: 0o755 });
+  try { return fn({ PATH: `${shim}:${process.env.PATH}` }); } finally { fs.rmSync(shim, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+}
+
+test('ENGINE_CRASH: a crashed check engine blocks once (it used to pass every check silently)', skipNoRepoHook, () => {
+  const dir = makeTmpDir('engine-crash');
+  const transcript = writeTranscript(dir, [QUALIFYING_EDIT]);
+  withBrokenPython((env) => {
+    const first = runHook(transcript, 'Fixed it.\n\nSAFE TO ARCHIVE — done', env);
+    assertBlocked(first, 'engine crash');
+    assert.match(first.stderr, /check engine crashed \(python exit 1/, `names the crash, got: ${first.stderr.slice(0, 300)}`);
+    assert.match(first.stderr, /\[VE:ENGINE_CRASH\]\s*$/, 'ends with the countable tag');
+    assertAllowed(runHook(transcript, 'Fixed it.\n\nSAFE TO ARCHIVE — done', env, true), 'the same chain is not blocked twice (a broken engine must not trap the session)');
+    assertAllowed(runHook(transcript, 'Fixed it.\n\nSAFE TO ARCHIVE — done', env), 'a later chain in the same session is not blocked again: once per session, so a repeating crash costs one turn, not one per prompt');
+  });
+  const dir2 = makeTmpDir('engine-crash-off');
+  const transcript2 = writeTranscript(dir2, [QUALIFYING_EDIT]);
+  withBrokenPython((env) => {
+    assertAllowed(runHook(transcript2, 'Fixed it.\n\nSAFE TO ARCHIVE — done', { ...env, ENGINE_CRASH_GATE_DISABLE: '1' }), 'kill switch');
+  });
+  fs.rmSync(dir2, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+});
+
+test('every block ends with one [VE:<code>] line and a pass prints none', skipNoRepoHook, () => {
+  const dir = makeTmpDir('ve-tag');
+  const transcript = writeTranscript(dir, [QUALIFYING_EDIT, toolUse('Bash', { command: 'npx tsc --noEmit src/lib/scoring.ts' })]);
+  const blocked = runHook(transcript, 'Fixed the rounding bug and verified with tsc.');
+  assertBlocked(blocked, 'no status line');
+  assert.match(blocked.stderr, /\[VE:NOSTATUSLINE\]\s*$/, `tag names the code that blocked, got tail: ${blocked.stderr.slice(-120)}`);
+  assert.equal((blocked.stderr.match(/\[VE:[A-Z_]+\]/g) || []).length, 1, 'exactly one tag per block');
+  const clean = runHook(writeTranscript(dir, []), 'Nothing changed.');
+  assertAllowed(clean, 'no work, no block');
+  assert.doesNotMatch(clean.stderr, /\[VE:/, 'a pass prints no tag');
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+});
+
+// ───────────── BRO-7315 proof tests: one blocking case + a passing twin per Stop code ─────────────
+// Each pair drives the REAL hook; the tag assertion is the machine-readable [VE:<CODE>] line.
+// Edit-session fixtures keep the status-line / board / chain gates out of the way so the code under test is the one that speaks.
+const QUIET = { SESSION_STATUS_GATE_DISABLE: '1', CLOUD_CHAIN_GATE_DISABLE: '1', BOARD_GATE_DISABLED: '1' };
+const tagRe = (code) => new RegExp(`\\[VE:${code}\\]\\s*$`);
+function proofPair(label, { block, pass }, code) {
+  const dir = makeTmpDir(`proof-${label}`);
+  try {
+    const b = block(dir);
+    assertBlocked(b, `${code} blocking case`);
+    assert.match(b.stderr, tagRe(code), `${code}: tag on the last stderr line, got tail: ${b.stderr.slice(-120)}`);
+    const t = pass(dir);
+    assertAllowed(t, `${code} passing twin`);
+    assert.doesNotMatch(t.stderr, new RegExp(`\\[VE:${code}\\]`), `${code} absent on the twin`);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+}
+
+test('BRO-7315 HUMAN_TIME_ESTIMATE: a human-pace estimate in the final message blocks; a minutes estimate passes', skipNoRepoHook, () => {
+  proofPair('human-time', {
+    block: (d) => runHook(writeTranscript(d, []), 'The migration will take about 3 days of careful work.'),
+    pass: (d) => runHook(writeTranscript(d, []), 'The migration takes about 4 minutes of wall-clock time.'),
+  }, 'HUMAN_TIME_ESTIMATE');
+});
+
+test('BRO-7315 UNSHIPCHECKED: a scripts/lib edit without a review blocks; with /ship-check it passes', skipNoRepoHook, () => {
+  const edit = toolUse('Edit', { file_path: '/work/repo/scripts/lib/proof-widget.js', old_string: 'a', new_string: 'b' });
+  const run = toolUse('Bash', { command: 'node scripts/lib/proof-widget.js' });
+  proofPair('unshipchecked', {
+    block: (d) => runHook(writeTranscript(d, [edit, run], { card: false }), 'Done.', QUIET),
+    pass: (d) => runHook(writeTranscript(d, [edit, run, SHIP_CHECK], { card: false }), 'Done.', QUIET),
+  }, 'UNSHIPCHECKED');
+});
+
+// The visual branch reads .claude/visual-qa/<branch>/verdict.json and `git branch` relative to the
+// hook's cwd, so these run in a throwaway git repo.
+function visualRepo(verdict) {
+  const repo = makeTmpDir('proof-visual-repo');
+  spawnSync('git', ['init', '-q', '-b', 'proof-branch'], { cwd: repo });
+  if (verdict !== undefined) {
+    const vd = path.join(repo, '.claude', 'visual-qa', 'proof-branch');
+    fs.mkdirSync(vd, { recursive: true });
+    fs.writeFileSync(path.join(vd, 'verdict.json'), JSON.stringify(verdict));
+  }
+  return repo;
+}
+const UI_EDIT = toolUse('Edit', { file_path: '/work/repo/src/components/ProofCard.tsx', old_string: '<div>', new_string: '<div className="p-4">' });
+function visualPair(label, code, { blockVerdict, passVerdict, userText, msg = 'Updated the card.' }) {
+  const repos = [];
+  const mk = (v) => { const r = visualRepo(v); repos.push(r); return r; };
+  try {
+    proofPair(label, {
+      block: (d) => runHook(writeTranscript(d, [UI_EDIT], { userText, card: false }), msg, QUIET, false, { cwd: mk(blockVerdict) }),
+      pass: (d) => runHook(writeTranscript(d, [UI_EDIT], { userText, card: false }), msg, QUIET, false, { cwd: mk(passVerdict) }),
+    }, code);
+  } finally {
+    for (const r of repos) fs.rmSync(r, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+}
+
+test('BRO-7315 UNVERIFIED_VISUAL: a UI edit with no verdict blocks; with a fresh v2 verdict it passes', skipNoRepoHook, () => {
+  visualPair('visual', 'UNVERIFIED_VISUAL', { blockVerdict: undefined, passVerdict: { schemaVersion: 2, verdicts: {} } });
+});
+
+test('BRO-7315 UNVERIFIED_VISUAL_SCHEMA: a stale v1 verdict blocks; v2 passes', skipNoRepoHook, () => {
+  visualPair('visual-schema', 'UNVERIFIED_VISUAL_SCHEMA', { blockVerdict: { schemaVersion: 1, verdicts: {} }, passVerdict: { schemaVersion: 2, verdicts: {} } });
+});
+
+test('BRO-7315 UNVERIFIED_VISUAL_REF: a pasted design reference with a verdict that never ran the LLM review blocks; one with verdicts passes', skipNoRepoHook, () => {
+  visualPair('visual-ref', 'UNVERIFIED_VISUAL_REF', {
+    userText: 'make it match this design [Image #1]',
+    blockVerdict: { schemaVersion: 2 },
+    passVerdict: { schemaVersion: 2, verdicts: {} },
+  });
+});
+
+test('BRO-7315 UNVERIFIED_VISUAL_CLAIM: claiming it renders correctly with no verdict blocks; with a verdict it passes', skipNoRepoHook, () => {
+  visualPair('visual-claim', 'UNVERIFIED_VISUAL_CLAIM', {
+    msg: 'The card renders correctly on mobile and desktop.',
+    blockVerdict: undefined,
+    passVerdict: { schemaVersion: 2, verdicts: {} },
+  });
+});
+
+test('BRO-7315 AUDIT_MATCHER_MISSING: a hook copy that cannot load the review-text write matcher blocks; with the matcher beside it, it passes', skipNoRepoHook, () => {
+  const dir = makeTmpDir('proof-audit-matcher');
+  const roots = [];
+  const copyRoot = (withMatcher) => {
+    const root = fs.mkdtempSync(path.join(dir, 'root-'));
+    roots.push(root);
+    for (const rel of ['.claude/hooks/verify-edits.sh', ...(withMatcher ? ['scripts/lib/verify_edits_writes.py'] : [])]) {
+      fs.mkdirSync(path.dirname(path.join(root, rel)), { recursive: true });
+      fs.copyFileSync(path.join(REPO_ROOT, rel), path.join(root, rel));
+    }
+    return root;
+  };
+  try {
+    const run = (withMatcher) => {
+      const root = copyRoot(withMatcher);
+      return runHook(writeTranscript(dir, []), 'Nothing changed.', {}, false, { cwd: root, hook: path.join(root, '.claude/hooks/verify-edits.sh') });
+    };
+    const b = run(false);
+    assertBlocked(b, 'AUDIT_MATCHER_MISSING blocking case');
+    assert.match(b.stderr, tagRe('AUDIT_MATCHER_MISSING'), `tail: ${b.stderr.slice(-120)}`);
+    const t = run(true);
+    assertAllowed(t, 'AUDIT_MATCHER_MISSING passing twin');
+    assert.doesNotMatch(t.stderr, /\[VE:AUDIT_MATCHER_MISSING\]/);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});
+
+// BRO-7315 cousin of ENGINE_CRASH: the three node checks at the top of the hook catch their own errors and pass by
+// design, but a death they cannot catch (a syntax error after a bad merge, a missing import) passed silently too.
+test('ENGINE_CRASH: a node pre-check that dies (not 0, not 2, not a timeout) blocks once; a healthy or timed-out one does not', skipNoRepoHook, () => {
+  const dir = makeTmpDir('proof-pre-crash');
+  const rootWith = (body) => {
+    const root = fs.mkdtempSync(path.join(dir, 'root-'));
+    for (const rel of ['.claude/hooks/verify-edits.sh', 'scripts/lib/verify_edits_writes.py']) {
+      fs.mkdirSync(path.dirname(path.join(root, rel)), { recursive: true });
+      fs.copyFileSync(path.join(REPO_ROOT, rel), path.join(root, rel));
+    }
+    fs.writeFileSync(path.join(root, 'scripts/lib/decision-restate.js'), body);
+    return root;
+  };
+  const run = (root, transcript, env = {}, active = false) =>
+    runHook(transcript, 'Nothing changed.', { CLAUDE_CODE_REMOTE: 'true', ...env }, active, { cwd: root, hook: path.join(root, '.claude/hooks/verify-edits.sh') });
+  try {
+    const dead = rootWith('this is not javascript (\n');
+    const t1 = writeTranscript(dir, []);
+    const first = run(dead, t1);
+    assertBlocked(first, 'a pre-check that cannot even parse');
+    assert.match(first.stderr, /check crashed before it could run \(decision-restate\.js exit 1,/, `names the script and status, got: ${first.stderr.slice(0, 300)}`);
+    assert.match(first.stderr, tagRe('ENGINE_CRASH'), `tail: ${first.stderr.slice(-120)}`);
+    assertAllowed(run(dead, t1), 'once per session');
+    const dir2 = makeTmpDir('proof-pre-crash-off');
+    assertAllowed(run(dead, writeTranscript(dir2, []), { ENGINE_CRASH_GATE_DISABLE: '1' }), 'kill switch');
+    fs.rmSync(dir2, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+    for (const [label, body] of [['healthy', 'process.exit(0);\n'], ['timed out', 'process.exit(124);\n']]) {
+      const d = makeTmpDir('proof-pre-ok');
+      const r = run(rootWith(body), writeTranscript(d, []));
+      assertAllowed(r, `${label} pre-check`);
+      assert.doesNotMatch(r.stderr, /\[VE:ENGINE_CRASH\]/);
+      fs.rmSync(d, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+    }
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
 });

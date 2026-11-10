@@ -132,3 +132,174 @@ test('the opening grade line names missing usual critics without changing the ve
   assert.equal(g.verdict, g0.verdict);
   assert.equal(g0.expectedMissing, null);
 });
+
+// ---------------------------------------------------------------------------
+// BRO-7312: recover missing cells automatically; tell the owner only about dead ends.
+const R = require('../../scripts/lib/expected-critics-recovery.js');
+const { getTargetOutlets, publishWindowVerdict } = require('../../scripts/collect-outlet-reviews.js');
+
+const DAY = 86400000;
+const OPEN = '2026-10-01';
+const OPENED = Date.parse(OPEN) + DAY; // end of opening day, as the gap finder reads it
+const at = (days) => OPENED + days * DAY;
+const gap = (showId, outletId, extra = {}) => ({ showId, outletId, outletName: outletId, title: showId, openingDate: OPEN, status: 'missing', ...extra });
+const attempt = (days, outcome, extra = {}) => ({ at: new Date(at(days)).toISOString(), outcome, ...extra });
+
+test('standing outlets sort ahead of the 60-outlet cap (theatermania was index 63 in tier+alpha order)', () => {
+  const reg = { outlets: {} };
+  for (let i = 0; i < 70; i++) reg.outlets[`a${String(i).padStart(2, '0')}`] = { domain: `a${i}.com`, tier: 1 };
+  reg.outlets.theatermania = { domain: 'theatermania.com', tier: 2, standingCoverage: true, standingMarkets: ['broadway', 'off-broadway'] };
+  const ids = getTargetOutlets('off-broadway', 1, 3, reg, 60).map((o) => o.id);
+  assert.equal(ids.length, 60);
+  assert.equal(ids[0], 'theatermania');
+  // --outlets narrows before the cap, so a targeted run always contains its outlet
+  assert.deepEqual(getTargetOutlets('off-broadway', 1, 3, reg, 60, new Set(['theatermania'])).map((o) => o.id), ['theatermania']);
+});
+
+test('a missing cell plans a collector run for exactly that show and outlet', () => {
+  const state = R.syncState(R.emptyState(), [gap('medea', 'theatermania'), gap('other', 'nypost', { status: 'live' })], at(3));
+  assert.deepEqual(Object.keys(state.cells), ['medea::theatermania']);
+  const plans = R.planRecovery(state, at(3));
+  assert.deepEqual(plans, [{ showId: 'medea', outletIds: ['theatermania'] }]);
+  const args = R.collectorArgs(plans[0], { resultJson: '/tmp/r.json' });
+  const val = (k) => args[args.indexOf(k) + 1];
+  assert.equal(val('--shows'), 'medea');
+  assert.equal(val('--outlets'), 'theatermania');
+  assert.equal(val('--max-searches'), '1');
+  assert.equal(val('--result-json'), '/tmp/r.json');
+  assert.ok(args.includes('--require-publish-window'));
+  assert.ok(!args.includes('--dry-run'));
+  // not due before day 3, and the cap holds
+  assert.deepEqual(R.planRecovery(state, at(2)), []);
+  assert.deepEqual(R.planRecovery(state, at(3), { maxSearches: 0 }), []);
+});
+
+test('three empty searches, the last 14+ days after opening, auto-ack the cell with the evidence', () => {
+  let state = R.syncState(R.emptyState(), [gap('medea', 'theatermania')], at(3));
+  const plan = { showId: 'medea', outletIds: ['theatermania'] };
+  const empty = [{ showId: 'medea', outletId: 'theatermania', outcome: 'no_evidence' }];
+  for (const d of [3, 7, 14]) {
+    assert.equal(R.cellPhase(state.cells['medea::theatermania'], at(d)).phase, 'recovering');
+    assert.equal(R.planRecovery(state, at(d)).length, 1, `due on day ${d}`);
+    state = R.applyResults(state, { plan, rows: empty, nowMs: at(d) });
+  }
+  const cell = state.cells['medea::theatermania'];
+  assert.equal(R.cellPhase(cell, at(14)).phase, 'acked');
+  assert.match(cell.autoAck.note, /3 targeted searches of theatermania for medea found no review/);
+  const acks = R.mergedAcks([{ key: 'x::y', ackedAt: 't', note: 'manual' }], state);
+  assert.equal(acks.length, 2);
+  assert.equal(acks[1].key, 'medea::theatermania');
+  // the gap finder then reads the cell as not-reviewed, and the state keeps it
+  const shows = [{ id: 'medea', title: 'Medea', category: 'off-broadway', openingDate: OPEN }];
+  const others = ['a', 'b', 'c', 'd', 'e', 'f'];
+  const reviews = others.map((o) => ({ showId: 'medea', outletId: o }));
+  const out = { theatermania: { displayName: 'TheaterMania', standingCoverage: true, standingMarkets: ['off-broadway'] }, ...Object.fromEntries(others.map((o) => [o, {}])) };
+  assert.equal(findExpectedCriticGaps({ shows, reviews, outlets: out, acks: [], nowMs: at(15) }).find((r) => r.outletId === 'theatermania').status, 'missing');
+  const rows = findExpectedCriticGaps({ shows, reviews, outlets: out, acks, nowMs: at(15) });
+  assert.equal(rows.find((r) => r.outletId === 'theatermania').status, 'not-reviewed');
+  assert.ok(R.syncState(state, rows, at(15)).cells['medea::theatermania'].autoAck);
+});
+
+test('three early empty searches (an old backlog cell) need one more after day 14 before acking', () => {
+  const cell = { showId: 's', outletId: 'o', openingDate: OPEN, attempts: [attempt(3, 'no_evidence'), attempt(4, 'no_evidence'), attempt(5, 'no_evidence')] };
+  const p = R.cellPhase(cell, at(6));
+  assert.equal(p.phase, 'recovering');
+  assert.equal(p.nextDueMs, at(14));
+});
+
+test('a failed search (SERP down, no result row) never counts toward an ack', () => {
+  let state = R.syncState(R.emptyState(), [gap('s', 'o')], at(3));
+  const plan = { showId: 's', outletIds: ['o'] };
+  for (const d of [3, 7, 14]) state = R.applyResults(state, { plan, rows: [], nowMs: at(d) });
+  const cell = state.cells['s::o'];
+  assert.deepEqual(cell.attempts.map((a) => a.outcome), ['non_evidence', 'non_evidence', 'non_evidence']);
+  assert.equal(R.cellPhase(cell, at(15)).phase, 'recovering');
+  // ...but a search that keeps breaking ends as a dead end the owner hears about
+  for (let d = 15; d < 20; d++) state = R.applyResults(state, { plan, rows: [], nowMs: at(d) });
+  assert.deepEqual(R.cellPhase(state.cells['s::o'], at(20)), { phase: 'dead-end', reason: 'search-keeps-failing', nextDueMs: null });
+});
+
+test('the owner sees no expected-critics line while searches remain; dead ends and a stalled recovery surface in plain English', () => {
+  const g = gap('medea', 'theatermania', { outletName: 'TheaterMania', title: 'Medea' });
+  const fresh = R.syncState(R.emptyState(), [g], at(3));
+  assert.equal(R.splitForOwner([g], fresh, at(3)).visible.length, 0);
+  const tried = { cells: { 'medea::theatermania': { ...fresh.cells['medea::theatermania'], attempts: [attempt(3, 'no_evidence'), attempt(7, 'no_evidence')] } } };
+  const s = R.splitForOwner([g], tried, at(8));
+  assert.equal(s.visible.length, 0);
+  assert.equal(s.recovering.length, 1);
+  // the grade line stays silent for a recovering cell (grade-openings passes only visible gaps)
+  assert.equal(expectedMissingForShow('medea', s.visible).length, 0);
+
+  // dead end: the only find was not a review
+  const dead = { cells: { 'medea::theatermania': { ...tried.cells['medea::theatermania'], attempts: [attempt(3, 'no_evidence'), attempt(7, 'rejected', { reason: 'non-review-url' }), attempt(14, 'no_evidence')] } } };
+  const v = R.splitForOwner([g], dead, at(15)).visible;
+  assert.equal(v.length, 1);
+  assert.equal(R.ownerLine(v[0]), 'TheaterMania on Medea: no review on the site, and the only match was a page that is not a review.');
+  assert.doesNotMatch(R.ownerLine(v[0]), /::|—|BRO-|\.js/);
+
+  // not searchable ends at once
+  const ns = { cells: { 'medea::theatermania': { ...fresh.cells['medea::theatermania'], attempts: [attempt(3, 'not_searchable', { reason: 'no-domain' })] } } };
+  assert.equal(R.splitForOwner([g], ns, at(3.5)).visible[0].recovery.reason, 'not-searchable');
+
+  // recovery never ran: quiet for 2 days after the cell became missing, then visible
+  assert.equal(R.splitForOwner([g], R.emptyState(), at(3)).visible.length, 0);
+  assert.equal(R.splitForOwner([g], R.emptyState(), at(6)).visible[0].recovery.reason, 'recovery-not-running');
+  // recovery stalled: a due search 2+ days overdue
+  assert.equal(R.splitForOwner([g], fresh, at(6)).visible[0].recovery.reason, 'recovery-overdue');
+  // ...counted from the day recovery first saw a backlog cell, not its weeks-old schedule date
+  const backlog = R.syncState(R.emptyState(), [g], at(30));
+  assert.equal(R.splitForOwner([g], backlog, at(31)).visible.length, 0);
+  assert.equal(R.splitForOwner([g], backlog, at(33)).visible[0].recovery.reason, 'recovery-overdue');
+});
+
+test('a written review waits for the rebuild, then counts as unusable if it never went live', () => {
+  const c = { showId: 's', outletId: 'o', openingDate: OPEN, attempts: [attempt(3, 'written', { url: 'https://x' })] };
+  assert.equal(R.cellPhase(c, at(4)).reason, 'waiting-for-rebuild');
+  const c3 = { ...c, attempts: [...c.attempts, attempt(7, 'written'), attempt(14, 'written')] };
+  assert.deepEqual(R.cellPhase(c3, at(18)), { phase: 'dead-end', reason: 'written-not-live', nextDueMs: null });
+});
+
+test('the collector refuses a page dated outside the production window (or undated, for West End)', () => {
+  const w = { dateMin: new Date('2026-10-01'), dateMax: new Date('2026-11-30') };
+  assert.equal(publishWindowVerdict('2026-10-02', w), null);
+  assert.equal(publishWindowVerdict('2019-05-01', w), 'outside-publish-window');
+  assert.equal(publishWindowVerdict(null, w), null);
+  assert.equal(publishWindowVerdict(null, { ...w, requireDate: true }), 'no-publish-date');
+  assert.equal(publishWindowVerdict('2019-05-01', null), null);
+});
+
+test('a junk match (news page, other site, older production) counts as an empty search; an undated or broken match is retried', () => {
+  const at0 = new Date(at(3)).toISOString();
+  assert.equal(R.attemptFromRow({ outcome: 'rejected', reason: 'non-review-url', url: 'u' }, at0).outcome, 'no_evidence');
+  assert.equal(R.attemptFromRow({ outcome: 'rejected', reason: 'outside-publish-window' }, at0).collectorOutcome, 'rejected');
+  assert.equal(R.attemptFromRow({ outcome: 'rejected', reason: 'no-publish-date' }, at0).outcome, 'non_evidence');
+  assert.equal(R.attemptFromRow({ outcome: 'rejected', reason: 'looks-not-review' }, at0).outcome, 'rejected');
+  assert.equal(R.attemptFromRow(null, at0).reason, 'no-result-row');
+
+  // Three junk matches on days 3, 7, 14 end auto-acked, never as an owner item.
+  let state = R.syncState(R.emptyState(), [gap('s', 'theatermania')], at(3));
+  for (const d of [3, 7, 14]) {
+    const plan = { showId: 's', outletIds: ['theatermania'] };
+    state = R.applyResults(state, { plan, rows: [{ showId: 's', outletId: 'theatermania', outcome: 'rejected', reason: 'non-review-url' }], nowMs: at(d) });
+  }
+  assert.equal(R.cellPhase(state.cells['s::theatermania'], at(15)).phase, 'acked');
+
+  // Undated matches never ack and never dead-end early.
+  let st2 = R.syncState(R.emptyState(), [gap('s', 'thestage')], at(3));
+  for (const d of [3, 7, 14]) {
+    st2 = R.applyResults(st2, { plan: { showId: 's', outletIds: ['thestage'] }, rows: [{ showId: 's', outletId: 'thestage', outcome: 'rejected', reason: 'no-publish-date' }], nowMs: at(d) });
+  }
+  assert.equal(R.cellPhase(st2.cells['s::thestage'], at(15)).phase, 'recovering');
+});
+
+test('a file already on disk waits for the rebuild instead of searching daily; a corrected opening date moves the schedule', () => {
+  const c = { showId: 's', outletId: 'o', openingDate: OPEN, attempts: [attempt(3, 'existing_file')] };
+  const p = R.cellPhase(c, at(4));
+  assert.equal(p.reason, 'waiting-for-rebuild');
+  assert.ok(p.nextDueMs >= at(6));
+
+  const s1 = R.syncState(R.emptyState(), [gap('s', 'o')], at(3));
+  const s2 = R.syncState(s1, [gap('s', 'o', { openingDate: '2026-10-05' })], at(4));
+  assert.equal(s2.cells['s::o'].openingDate, '2026-10-05');
+  assert.equal(s2.cells['s::o'].firstSeenMissingAt, s1.cells['s::o'].firstSeenMissingAt);
+});

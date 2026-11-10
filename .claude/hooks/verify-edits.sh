@@ -82,25 +82,30 @@ if [ "$stop_hook_active" = "true" ]; then
   # '|' separator: NOCHAIN keys contain commas (NOCHAIN:review,what-else).
   VE_SKIP_CODES=$(paste -sd'|' "$_ve_chain_file" 2>/dev/null)
 fi
+# BRO-7315: the three node checks below catch their own errors and pass (fail open, by design). A death
+# they cannot catch (syntax error, missing import, out of memory: any status but 0, 2 or a 124 timeout)
+# used to pass too. It is noted here and joins the once-per-session engine-crash block at the end.
+_ve_pre_crash=""
+_ve_pre_died() { case "$2" in 0|2|124) ;; *) _ve_pre_crash="${_ve_pre_crash}$1 exit $2, " ;; esac; }
 # BRO-5359: review-coverage gate (scripts/lib/review-coverage.mjs). Refuses SAFE TO EXIT after a hollow
-# /ship-check, a /did-it-work with no TESTED block, a hollow /what-else or an early Linear close-out. Lives HERE,
+# /ship-check, a /did-it-work that ran nothing, a /what-else with no board search or an early Linear close-out. Lives HERE,
 # not in a new hook, because this is the one Stop hook wired in every cloud container (a new hook only reaches
 # containers whose cached setup was built after it landed). Cloud only; fails open; blocks at most 3 times per
 # session (the lib keeps its own budget). Kill switch SHIP_CHECK_COVERAGE_DISABLE=1. Pinned by
 # scripts/lib/review-coverage.test.mjs so a Mac-master sync cannot silently drop it.
 if [ -z "${VE_ONLY_CODES:-}" ] && [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ "${SHIP_CHECK_COVERAGE_DISABLE:-0}" != "1" ] \
    && [ -f "$VE_REPO_ROOT/scripts/lib/review-coverage.mjs" ] && command -v node >/dev/null 2>&1; then
-  _rc_err=$(printf '%s' "$input" | node "$VE_REPO_ROOT/scripts/lib/review-coverage.mjs" --stop-hook 2>&1 >/dev/null)
-  if [ $? -eq 2 ]; then printf '%s\n' "$_rc_err" >&2; exit 2; fi
+  _rc_err=$(printf '%s' "$input" | node "$VE_REPO_ROOT/scripts/lib/review-coverage.mjs" --stop-hook 2>&1 >/dev/null); _ve_s=$?
+  if [ $_ve_s -eq 2 ]; then printf '%s\n[VE:RCOV]\n' "$_rc_err" >&2; exit 2; fi; _ve_pre_died review-coverage.mjs $_ve_s
 fi
 # BRO-6539: advisory check that a DECISION NEEDED is not already answered on its card (logic in decision-restate.js --stop-hook).
 if [ -z "${VE_ONLY_CODES:-}" ] && [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ -f "$VE_REPO_ROOT/scripts/lib/decision-restate.js" ] && command -v node >/dev/null 2>&1; then
-  _dr_err=$(printf '%s' "$input" | timeout 15 node "$VE_REPO_ROOT/scripts/lib/decision-restate.js" --stop-hook 2>&1 >/dev/null)
-  if [ $? -eq 2 ]; then printf '%s\n' "$_dr_err" >&2; exit 2; fi
+  _dr_err=$(printf '%s' "$input" | timeout 15 node "$VE_REPO_ROOT/scripts/lib/decision-restate.js" --stop-hook 2>&1 >/dev/null); _ve_s=$?
+  if [ $_ve_s -eq 2 ]; then printf '%s\n[VE:DRESTATE]\n' "$_dr_err" >&2; exit 2; fi; _ve_pre_died decision-restate.js $_ve_s
 fi
 # BRO-7294: rule 21 at SAFE TO ARCHIVE (root-cause-stop.mjs: cloud only, fails open, own block budget, kill ROOT_CAUSE_STOP_DISABLE=1).
 if [ -z "${VE_ONLY_CODES:-}" ] && [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ "${ROOT_CAUSE_STOP_DISABLE:-0}" != "1" ] && [ -f "$VE_REPO_ROOT/scripts/lib/root-cause-stop.mjs" ] && command -v node >/dev/null 2>&1; then
-  _rcs_err=$(printf '%s' "$input" | timeout 15 node "$VE_REPO_ROOT/scripts/lib/root-cause-stop.mjs" --stop-hook 2>&1 >/dev/null); if [ $? -eq 2 ]; then printf '%s\n' "$_rcs_err" >&2; exit 2; fi
+  _rcs_err=$(printf '%s' "$input" | timeout 15 node "$VE_REPO_ROOT/scripts/lib/root-cause-stop.mjs" --stop-hook 2>&1 >/dev/null); _ve_s=$?; if [ $_ve_s -eq 2 ]; then printf '%s\n[VE:ROOTCAUSE]\n' "$_rcs_err" >&2; exit 2; fi; _ve_pre_died root-cause-stop.mjs $_ve_s
 fi
 result=$(python3 - "$transcript" <<'PYEOF'
 import hashlib, json, sys, os, re, shlex
@@ -2088,27 +2093,9 @@ if any_ui_edit_in_session and VISUAL_QA_OK:
 # decisions based on these inflated estimates. Block when the last assistant
 # text contains human-pace estimate phrases — agent must re-quote in
 # Claude-pace minutes or bypass with NO-VERIFY: <reason this is external time>.
-HUMAN_TIME_ESTIMATE_RE = _ui_re.compile(
-    r'\b('
-    # Standalone human-pace expressions (almost always an estimate, not a literal duration)
-    r'half\s+a?\s*day|'
-    r'(?:a\s+)?couple\s+(?:of\s+)?(?:hours?|days?|weeks?)|'
-    r'(?:a\s+)?few\s+(?:hours?|days?|weeks?)|'
-    # Numeric in estimate context: "will take 3 hours", "takes 2 days", "about 4 hrs"
-    r'(?:will|would|should|gonna|going\s+to|takes?|estimate(?:d|s)?|need|require(?:s|d)?)\s+'
-    r'(?:about\s+|roughly\s+|~|approximately\s+)?'
-    r'\d{1,3}\s*(?:[-–]\s*\d{1,3}\s*)?'
-    r'(?:hours?|days?|weeks?|hrs?)|'
-    # "N hours of work", "N days of effort"
-    r'\d{1,3}\s*(?:hours?|days?|weeks?)\s+(?:of\s+)?(?:work|effort|engineering|coding|editing)'
-    r')\b',
-    _ui_re.IGNORECASE,
-)
 # NOTE: the human-time-estimate check itself was moved EARLIER in the script
 # (right after event parsing, before the no-edit early-exit) so it fires on
-# every Stop, not just when a code edit happened. The regex definition above
-# stays here for proximity to other detection regexes; the print/exit is at
-# the top with the early gates.
+# every Stop, not just when a code edit happened. Its regex lives there too.
 
 # Reference-attached: user pasted a design image. If any UI edit happened + the
 # session has a verdict but with verdicts:null (no LLM review), block with the
@@ -2300,7 +2287,6 @@ if is_shipcheck_edit and not shipcheck_verified:
     # Edits to scripts/lib/ or .github/workflows/ need an adversarial-reviewer pass.
     # Generic tsc/test green is NOT sufficient — see header note.
     _ve_final(f"UNSHIPCHECKED:{basename}")
-    sys.exit(0)
 
 # Visual-QA branch — triggered ONLY when this session is actually doing UI
 # work. reference_attached alone (a screenshot pasted for unrelated reasons)
@@ -2368,17 +2354,14 @@ if visual_branch_relevant:
     schema_gate_relevant = is_ui_edit or any_ui_edit_in_session or visual_claim_made
     if schema_gate_relevant and verdict_ok and verdict_schema != 2:
         _ve_final(f"UNVERIFIED_VISUAL_SCHEMA:{basename or 'ui-edit'}")
-        sys.exit(0)
     # REF gate fires only when reference attached AND a UI edit / claim
     # made it relevant — bare attachments (a screenshot of an unrelated error)
     # must not trip this. Already guarded by visual_branch_relevant on the
     # outer block, but make the inner condition explicit for clarity.
     if reference_attached and schema_gate_relevant and verdict_ok and not verdict_has_llm:
         _ve_final(f"UNVERIFIED_VISUAL_REF:{basename or 'ui-edit'}")
-        sys.exit(0)
     if visual_claim_made and not verdict_ok:
         _ve_final(f"UNVERIFIED_VISUAL_CLAIM:{basename or 'ui-edit'}")
-        sys.exit(0)
     if verdict_ok:
         # Record satisfied HEAD + latest UI-edit marker so delayed echoes
         # don't re-fire the gate, AND so a NEW uncommitted UI edit DOES
@@ -2403,7 +2386,15 @@ if generic_verified:
 _ve_final(f"UNVERIFIED:{basename}")
 PYEOF
 )
+_ve_py_rc=$?
+# BRO-7315: every python exit above is sys.exit(0), so a non-zero status means the engine itself
+# crashed (a traceback, or no python3). That used to leave $result empty, match no branch below and
+# fall through to `exit 0`: every end-of-session check skipped, silently. Now it blocks once per
+# chain (the loop guard below) and says so. The traceback is already on stderr.
+[ "$_ve_py_rc" -ne 0 ] && result="ENGINE_CRASH:$_ve_py_rc"
 # BRO-7194: stall-only mode (app-repo cloud sessions): any verdict outside the list passes.
+# Stall-only mode (BRO-7194, app and data repos) keeps its old behaviour on a crash: ENGINE_CRASH is
+# not in its list, so it passes. Deliberate: those containers are not guaranteed a working python3.
 if [ -n "${VE_ONLY_CODES:-}" ]; then
   case "|$VE_ONLY_CODES|" in *"|${result%%:*}|"*) ;; *) result=OK ;; esac
 fi
@@ -2423,6 +2414,9 @@ fi
 _ve_record_block() {
   [ "$1" = "2" ] || return 0
   printf '%s\n' "$_ve_code" >> "$_ve_chain_file" 2>/dev/null
+  # BRO-7315: one machine-readable line per block, so "did this gate ever fire?" is a count over
+  # transcripts and not a guess from message wording. The pre-gates above print RCOV/DRESTATE/ROOTCAUSE.
+  printf '[VE:%s]\n' "${_ve_code%%:*}" >&2
 }
 trap '_ve_record_block $?' EXIT
 
@@ -2430,6 +2424,19 @@ trap '_ve_record_block $?' EXIT
 # .claude/skills/visual-qa/skill.md and the gate comments; the assistant reading
 # this only needs the action, not the full incident history. Short messages =
 # less for the agent to echo back to the user.
+
+# Once per session, not per chain: a crash that repeats must not cost a turn after every prompt.
+_ve_crash_block() {
+  _ve_crash_once="${_ve_chain_file}.crash"
+  if [ "${ENGINE_CRASH_GATE_DISABLE:-0}" = "1" ] || [ -f "$_ve_crash_once" ]; then exit 0; fi
+  { : > "$_ve_crash_once"; } 2>/dev/null
+  _ve_code=ENGINE_CRASH
+  echo "🛑 BLOCKED: $1 If this session edited that file, fix the error and re-run its tests. If not, tell the owner in one plain line that the end-of-session checks are broken. Blocks once per session. Kill switch ENGINE_CRASH_GATE_DISABLE=1." >&2
+  exit 2
+}
+if [[ "$result" == ENGINE_CRASH:* ]]; then
+  _ve_crash_block "the Stop hook's check engine crashed (python exit ${result#ENGINE_CRASH:}; any traceback is printed above, 127 means python3 is not installed), so none of the end-of-session checks in .claude/hooks/verify-edits.sh ran."
+fi
 
 if [[ "$result" == HUMAN_TIME_ESTIMATE:* ]]; then
   phrase="${result#HUMAN_TIME_ESTIMATE:}"
@@ -2606,7 +2613,7 @@ if [[ "$result" == "CHILDJOBS" ]]; then
 fi
 
 if [[ "$result" == "CHILDWATCH" ]]; then
-  echo "🛑 BLOCKED: KEEP OPEN while a session you started is still live, but nothing will wake you if it goes idle without reporting back (BRO-6717: the BRO-6518 child sat idle 17h, then 19h; an idle child sends neither a report-back nor a failure event). Before ending the turn, start a Bash with run_in_background: true and timeout 7200000: node scripts/lib/child-idle-watch.js watch --session <child id> (one per child you wait on). When it wakes you, call get_session on the child, save the JSON and run node scripts/lib/child-idle-watch.js check --from-json <file> [--reported-at <time of its last report-back>]: rearm starts the watch again; nudge means send_message the child (poll in-turn, or hand its queue to a workflow, then report back); unblock means interrupt_session and send a workaround; restart means it failed; done means collect its report and archive_session it. If the child owns the work end to end and you do not need its result, end SAFE TO ARCHIVE instead (.claude/CLOUD.md 'Starting a worker session' step 6). Bypass: NO-VERIFY: <reason>. Kill switch CHILDWATCH_GATE_DISABLE=1." >&2
+  echo "🛑 BLOCKED: KEEP OPEN while a session you started is still live, but nothing will wake you if it goes idle without reporting back (BRO-6717: the BRO-6518 child sat idle 17h, then 19h; an idle child sends neither a report-back nor a failure event). Before ending the turn, start a Bash with run_in_background: true and timeout 7200000: node scripts/lib/child-idle-watch.js watch --session <child id> (one per child you wait on). When it wakes you, call get_session on the child, save the JSON and run node scripts/lib/child-idle-watch.js check --from-json <file> [--reported-at <time of its last report-back>]: rearm starts the watch again; nudge means send_message the child (poll in-turn, or hand its queue to a workflow, then report back); unblock means interrupt_session and send a workaround; restart means it failed; done means collect its report and archive_session it. If the child owns the work end to end and you do not need its result, end SAFE TO ARCHIVE instead (docs/cloud-worker-session-runbook.md step 6). Bypass: NO-VERIFY: <reason>. Kill switch CHILDWATCH_GATE_DISABLE=1." >&2
   exit 2
 fi
 
@@ -2615,4 +2622,6 @@ if [[ "$result" == "NOWRAPUP" ]]; then
   exit 2
 fi
 
+# Nothing else blocked, but a node check at the top died before it could judge this closing.
+[ -n "$_ve_pre_crash" ] && _ve_crash_block "an end-of-session check crashed before it could run (${_ve_pre_crash%, }, under scripts/lib), so it was skipped."
 exit 0

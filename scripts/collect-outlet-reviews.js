@@ -29,10 +29,16 @@
  *                                            skip-existing for outlets with healthy files.
  *   --max-shows N                            Limit to N shows (for testing)
  *   --max-searches N                         Limit total SERP searches (for cost control)
+ *   --result-json PATH                       Write one row per (show, outlet) cell looked at
+ *                                            (BRO-7312 expected-critics recovery reads it)
+ *   --require-publish-window                 Reject a find whose article date falls outside the
+ *                                            show's window (West End: a missing date rejects too)
  *   --max-outlets N                           Max outlets per show (default: 60, T1/T2 first)
  *   --outlets id1,id2,...                    Only search these specific outlet IDs
  *   --open-only                              Only search open/previews shows (for weekly cron)
  */
+
+require('./lib/cli-help').exitOnHelp(module);
 
 const fs = require('fs');
 const path = require('path');
@@ -44,6 +50,7 @@ const { domainMatchesExpected } = require('./lib/scraper');
 const { isLondonMarket, isBroadwayCategory } = require('./lib/venue-classification');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { prefetchDiscoveredArticle, applyPrefetch } = require('./lib/discovery-prefetch');
+const { standingOutletIds } = require('./lib/standing-outlets');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -93,6 +100,8 @@ function parseArgs() {
     maxOutlets: 60,       // Cap outlets per show (T1/T2 first, T3 fills remainder)
     openOnly: false,
     outlets: null,        // --outlets id1,id2,... — only search these specific outlets
+    resultJson: null,     // --result-json PATH — one row per searched (show, outlet) cell (BRO-7312)
+    requirePublishWindow: false, // --require-publish-window — reject finds dated outside the show's window (BRO-7312)
   };
 
   for (let i = 0; i < args.length; i++) {
@@ -110,6 +119,8 @@ function parseArgs() {
       case '--max-outlets': opts.maxOutlets = parseInt(args[++i]); break;
       case '--open-only': opts.openOnly = true; break;
       case '--outlets': opts.outlets = new Set(args[++i].split(',').map(s => s.trim().toLowerCase()).filter(Boolean)); break;
+      case '--result-json': opts.resultJson = args[++i]; break;
+      case '--require-publish-window': opts.requirePublishWindow = true; break;
     }
   }
 
@@ -134,11 +145,17 @@ function parseArgs() {
  *
  * Sorted by tier (T1 first), then alphabetically within tier.
  * Capped at maxOutlets.
+ *
+ * onlyIds (the --outlets filter) is applied BEFORE the cap (BRO-7312): applied
+ * after it, a named outlet sorted past position maxOutlets was silently dropped
+ * (theatermania sat at index 63 of 71 for Broadway, so `--outlets theatermania`
+ * searched nothing and the weekly cron never searched it either).
  */
-function getTargetOutlets(market, minTier, maxTier, registry, maxOutlets) {
+function getTargetOutlets(market, minTier, maxTier, registry, maxOutlets, onlyIds = null) {
   const outlets = [];
 
   for (const [id, info] of Object.entries(registry.outlets)) {
+    if (onlyIds && !onlyIds.has(id)) continue;
     // Must have a domain to be SERP-searchable
     if (!info.domain && !OUTLET_DOMAINS[id]) continue;
 
@@ -161,8 +178,12 @@ function getTargetOutlets(market, minTier, maxTier, registry, maxOutlets) {
     outlets.push({ id, tier });
   }
 
-  // Sort: T1 first, then T2, then T3; alphabetical within tier
-  outlets.sort((a, b) => a.tier - b.tier || a.id.localeCompare(b.id));
+  // Sort: the market's standing outlets (usual critics) first, then T1, T2,
+  // T3, alphabetical within tier. BRO-7312: a plain tier+alpha order put
+  // theatermania/theatrely/thewrap/theater-scene past the 60 cap, so the
+  // weekly sweep never searched the critics that review nearly every opening.
+  const standing = new Set(standingOutletIds(registry.outlets, market));
+  outlets.sort((a, b) => (standing.has(b.id) - standing.has(a.id)) || a.tier - b.tier || a.id.localeCompare(b.id));
 
   // Cap at maxOutlets
   const capped = maxOutlets ? outlets.slice(0, maxOutlets) : outlets;
@@ -175,7 +196,7 @@ function getTargetOutlets(market, minTier, maxTier, registry, maxOutlets) {
     if (minTier <= 1 && maxTier >= 1) fallback.push(...config.tier1.map(id => ({ id, tier: 1 })));
     if (minTier <= 2 && maxTier >= 2) fallback.push(...config.tier2.map(id => ({ id, tier: 2 })));
     if (minTier <= 3 && maxTier >= 3) fallback.push(...(config.tier3 || []).map(id => ({ id, tier: 3 })));
-    return fallback;
+    return onlyIds ? fallback.filter(o => onlyIds.has(o.id)) : fallback;
   }
 
   return capped;
@@ -299,17 +320,30 @@ async function writeReviewFile(showId, outletId, url, showTitle, outletName, opt
   // flagged copy must not be recreated, so also check the exact filename.
   const fileName = generateReviewFilename(outletId, 'unknown');
   const existing = findExistingReviewFile(showDir, outletId, 'unknown');
+  const skip = (reason) => { if (opts.onSkip) opts.onSkip(reason); return false; };
   if (existing || fs.existsSync(path.join(showDir, fileName))) {
     console.log(`    SKIP (file exists): ${existing ? existing.filename : fileName}`);
-    return false;
+    return skip('file-exists');
   }
 
   // BRO-3133: fetch the body now, as opening-night discovery does (BRO-4933).
   // A text-less stub waited for the next collect-review-texts pass with no
   // alert (Jane Eyre's London Theatre review sat empty on opening night).
   // Failure is non-fatal: the file is written as the old empty stub.
-  const prefetch = (opts.dryRun || opts.prefetch === false) ? null
+  // A publish-window check needs the date even on a dry run (read-only fetch).
+  const window = opts.publishWindow || null;
+  const prefetch = ((opts.dryRun && !window) || opts.prefetch === false) ? null
     : await (opts.prefetchFn || prefetchDiscoveredArticle)(url, { criticName: 'Unknown', outletId, showId });
+
+  // BRO-7312: targeted recovery searches revivals (ENO's Tosca) whose earlier
+  // productions share the title. West End searches carry no SERP date filter,
+  // so the article's own date decides. Missing date rejects only when the
+  // search itself was unfiltered (window.requireDate).
+  const verdict = publishWindowVerdict(prefetch && prefetch.publishDate, window);
+  if (verdict) {
+    console.log(`    SKIP (${verdict}${prefetch && prefetch.publishDate ? `: ${prefetch.publishDate}` : ''})`);
+    return skip(verdict);
+  }
 
   // Route through the shared save-time chokepoint (card 38b637c5) so every
   // guard applies (junk outlet, domain validation, cross-market reroute,
@@ -330,7 +364,7 @@ async function writeReviewFile(showId, outletId, url, showTitle, outletName, opt
 
   if (res.action !== 'new') {
     console.log(`    SKIP (${res.reason || res.action})`);
-    return false;
+    return skip(res.reason || res.action);
   }
 
   if (opts.dryRun) {
@@ -339,6 +373,18 @@ async function writeReviewFile(showId, outletId, url, showTitle, outletName, opt
     console.log(`    WROTE: ${path.basename(res.filepath || fileName)}`);
   }
   return true;
+}
+
+/**
+ * null when a candidate's publish date is acceptable, else a rejection reason.
+ * window: {dateMin: Date, dateMax: Date, requireDate: boolean} or null (no check).
+ */
+function publishWindowVerdict(publishDate, window) {
+  if (!window) return null;
+  const t = publishDate ? Date.parse(publishDate) : NaN;
+  if (!Number.isFinite(t)) return window.requireDate ? 'no-publish-date' : null;
+  if (t < window.dateMin.getTime() || t > window.dateMax.getTime()) return 'outside-publish-window';
+  return null;
 }
 
 async function sleep(ms) {
@@ -426,7 +472,7 @@ async function main() {
 
   // Show outlet counts for first show to give a sense of registry coverage
   const sampleMarket = targetShows.length > 0 ? (targetShows[0].category || opts.market || 'broadway') : (opts.market || 'broadway');
-  const sampleOutlets = getTargetOutlets(sampleMarket, opts.minTier, opts.maxTier, registry, opts.maxOutlets);
+  const sampleOutlets = getTargetOutlets(sampleMarket, opts.minTier, opts.maxTier, registry, opts.maxOutlets, opts.outlets);
   const tierCounts = {};
   sampleOutlets.forEach(o => { tierCounts[`T${o.tier}`] = (tierCounts[`T${o.tier}`] || 0) + 1; });
 
@@ -434,7 +480,7 @@ async function main() {
   console.log(`Mode: ${opts.showIds ? `specific shows (${opts.showIds.length})` : `market: ${opts.market}`}`);
   console.log(`Shows: ${targetShows.length}`);
   console.log(`Tiers: ${opts.minTier}-${opts.maxTier}`);
-  const filteredSample = opts.outlets ? sampleOutlets.filter(o => opts.outlets.has(o.id)) : sampleOutlets;
+  const filteredSample = sampleOutlets;
   console.log(`Outlets per show: ${filteredSample.length} (${Object.entries(tierCounts).map(([k, v]) => `${k}:${v}`).join(', ')})`);
   if (opts.outlets) console.log(`Outlet filter: ${[...opts.outlets].join(', ')}`);
   console.log(`Max outlets: ${opts.maxOutlets}`);
@@ -448,14 +494,28 @@ async function main() {
   let totalFound = 0;
   let totalWritten = 0;
   let totalSkipped = 0;
+  // BRO-7312 --result-json: one row per (show, outlet) cell this run looked at.
+  // Outcomes reuse gap-recovery-ledger's words: written | no_evidence (searched,
+  // nothing found) | rejected (found, refused; reason says why) | non_evidence
+  // (the search itself did not happen or broke) | existing_file | not_searchable.
+  const results = [];
+  const record = (showId, outletId, outcome, extra = {}) => {
+    if (opts.resultJson) results.push({ showId, outletId, outcome, ...extra, at: new Date().toISOString() });
+  };
 
   for (const [showIdx, show] of targetShows.entries()) {
     const restoreSpend = beginPressNightSpend(show);
     try {
       // Determine market for this show (auto-detect from category)
       const market = show.category || opts.market || 'broadway';
-      let targetOutlets = getTargetOutlets(market, opts.minTier, opts.maxTier, registry, opts.maxOutlets);
-      if (opts.outlets) targetOutlets = targetOutlets.filter(o => opts.outlets.has(o.id));
+      const targetOutlets = getTargetOutlets(market, opts.minTier, opts.maxTier, registry, opts.maxOutlets, opts.outlets);
+      // A requested outlet that cannot be searched for this market (no domain,
+      // outside the tier range, wrong region) gets a row, so the caller can
+      // tell "never searchable" from "the run died".
+      if (opts.outlets) {
+        const targeted = new Set(targetOutlets.map((o) => o.id));
+        for (const id of opts.outlets) if (!targeted.has(id)) record(show.id, id, 'not_searchable', { reason: registry.outlets[id] ? 'not-a-target-outlet' : 'unknown-outlet' });
+      }
 
       if (targetOutlets.length === 0) {
         console.log(`SKIP (no outlets for market ${market}): ${show.id}`);
@@ -468,12 +528,11 @@ async function main() {
 
       // Find which target outlets are missing
       const missing = targetOutlets.filter(o => {
-        if (existingOutlets.has(o.id)) return false;
         const info = registry.outlets[o.id];
-        if (info && info.aliases) {
-          return !info.aliases.some(a => existingOutlets.has(a.toLowerCase()));
-        }
-        return true;
+        const has = existingOutlets.has(o.id)
+          || !!(info && info.aliases && info.aliases.some(a => existingOutlets.has(a.toLowerCase())));
+        if (has && opts.outlets) record(show.id, o.id, 'existing_file');
+        return !has;
       });
 
       if (missing.length === 0) {
@@ -485,6 +544,11 @@ async function main() {
       // for UK content and cause false negatives. The site: + title query is precise enough.
       const isWEShow = isLondonMarket(show.category);
       const dateRange = isWEShow ? null : calculateDateWindow(show);
+      // Recovery mode: the article's own date must sit in the show's window.
+      const fullWindow = opts.requirePublishWindow ? calculateDateWindow(show) : null;
+      const writeOpts = fullWindow
+        ? { ...opts, publishWindow: { ...fullWindow, requireDate: isWEShow } }
+        : opts;
       if (dateRange) {
         const fmtDate = d => d.toISOString().split('T')[0];
         console.log(`\n${show.title} (${show.id}) — ${missing.length} missing outlets [${fmtDate(dateRange.dateMin)} to ${fmtDate(dateRange.dateMax)}]`);
@@ -518,6 +582,7 @@ async function main() {
 
         if (!domain) {
           console.log(`  [${outlet.id}] SKIP — no domain configured`);
+          record(show.id, outlet.id, 'not_searchable', { reason: 'no-domain' });
           totalSkipped++;
           continue;
         }
@@ -525,6 +590,7 @@ async function main() {
         // Skip uncollectable outlets — no online content to discover via SERP
         if (outletInfo && (outletInfo.accessModel === 'print-only' || outletInfo.accessModel === 'defunct')) {
           console.log(`  [${outlet.id}] SKIP — ${outletInfo.accessModel} outlet`);
+          record(show.id, outlet.id, 'not_searchable', { reason: outletInfo.accessModel });
           totalSkipped++;
           continue;
         }
@@ -559,6 +625,7 @@ async function main() {
               const foundHostname = new URL(foundUrl).hostname.replace(/^www\./, '');
               if (domain && !domainMatchesExpected(domain, foundHostname)) {
                 console.log(`    SKIP (wrong domain: expected ${domain}, got ${foundHostname})`);
+                record(show.id, outlet.id, 'rejected', { url: foundUrl, serpTitle, reason: 'wrong-domain' });
                 totalSkipped++;
                 await sleep(1500);
                 continue;
@@ -568,6 +635,7 @@ async function main() {
             // Review-relevance filter: block obvious non-review URLs
             if (!looksLikeReview(foundUrl, serpTitle)) {
               console.log(`    SKIP (non-review URL pattern)`);
+              record(show.id, outlet.id, 'rejected', { url: foundUrl, serpTitle, reason: 'non-review-url' });
               totalSkipped++;
             } else {
               totalFound++;
@@ -580,20 +648,28 @@ async function main() {
               const valid = skipValidation || await validateUrl(foundUrl);
               if (valid) {
                 if (skipValidation) console.log(`    SKIP validation (${accessModel} outlet)`);
-                const written = await writeReviewFile(show.id, outlet.id, foundUrl, show.title, outletName, opts);
+                let skipReason = null;
+                const written = await writeReviewFile(show.id, outlet.id, foundUrl, show.title, outletName,
+                  { ...writeOpts, onSkip: (r) => { skipReason = r; } });
                 if (written) totalWritten++;
+                record(show.id, outlet.id, written ? 'written' : 'rejected',
+                  { url: foundUrl, serpTitle, ...(written ? { dryRun: !!opts.dryRun } : { reason: skipReason || 'write-skipped' }) });
               } else {
                 console.log(`    INVALID (HTTP error): ${foundUrl}`);
+                record(show.id, outlet.id, 'rejected', { url: foundUrl, serpTitle, reason: 'http-error' });
               }
             }
           } else if (result === '__SERP_UNAVAILABLE__') {
             console.log(`    SERP UNAVAILABLE — stopping`);
+            record(show.id, outlet.id, 'non_evidence', { reason: 'serp-unavailable' });
             break;
           } else {
             console.log(`    Not found`);
+            record(show.id, outlet.id, 'no_evidence');
           }
         } catch (e) {
           console.log(`    ERROR: ${e.message}`);
+          record(show.id, outlet.id, 'non_evidence', { reason: `error: ${e.message}`.slice(0, 200) });
         }
 
         await sleep(1500);
@@ -633,10 +709,15 @@ async function main() {
   console.log(`Skipped (no domain / non-review): ${totalSkipped}`);
   console.log(`Open only: ${opts.openOnly}`);
   console.log(`Dry run: ${opts.dryRun}`);
+  if (opts.resultJson) {
+    fs.mkdirSync(path.dirname(path.resolve(opts.resultJson)), { recursive: true });
+    fs.writeFileSync(opts.resultJson, `${JSON.stringify({ results }, null, 2)}\n`);
+    console.log(`Result rows: ${results.length} -> ${opts.resultJson}`);
+  }
 }
 
 // Export the write path for tests (CLAUDE.md §15 — test the real function).
-module.exports = { main, writeReviewFile, looksLikeReview };
+module.exports = { main, writeReviewFile, looksLikeReview, getTargetOutlets, publishWindowVerdict };
 
 if (require.main === module) {
   main().catch(e => {

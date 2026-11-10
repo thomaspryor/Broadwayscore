@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-09T23:40:57.842Z",
+  "generatedAt": "2026-11-10T21:10:48.314Z",
   "counts": {
-    "router": 218,
+    "router": 220,
     "digest": 1,
     "direct": 0,
     "humanCallerIgnoresDigest": 0
@@ -44,14 +44,14 @@
     },
     {
       "file": ".github/workflows/opening-night-broadcast.yml",
-      "line": 1039,
+      "line": 1029,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
     },
     {
       "file": ".github/workflows/opening-night-broadcast.yml",
-      "line": 1290,
+      "line": 1281,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
@@ -93,14 +93,14 @@
     },
     {
       "file": ".github/workflows/test.yml",
-      "line": 4527,
+      "line": 4541,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
     },
     {
       "file": ".github/workflows/test.yml",
-      "line": 4536,
+      "line": 4550,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
@@ -849,31 +849,45 @@
     },
     {
       "file": "scripts/health-check.js",
-      "line": 2904,
+      "line": 2907,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
     },
     {
       "file": "scripts/health-check.js",
-      "line": 3066,
+      "line": 3069,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
     },
     {
       "file": "scripts/health-check.js",
-      "line": 5799,
+      "line": 5806,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "auto"
     },
     {
       "file": "scripts/health-check.js",
-      "line": 5833,
+      "line": 5840,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "auto"
+    },
+    {
+      "file": "scripts/health-check.js",
+      "line": 6300,
+      "kind": "routeAlert",
+      "classification": "router",
+      "disposition": "auto"
+    },
+    {
+      "file": "scripts/health-check.js",
+      "line": 6301,
+      "kind": "routeAlert",
+      "classification": "router",
+      "disposition": "human"
     },
     {
       "file": "scripts/ingest-dmarc-reports.js",
@@ -891,7 +905,7 @@
     },
     {
       "file": "scripts/lane-watchdog.js",
-      "line": 225,
+      "line": 226,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
@@ -989,14 +1003,14 @@
     },
     {
       "file": "scripts/lib/broadcast-gate-alert.js",
-      "line": 56,
+      "line": 69,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
     },
     {
       "file": "scripts/lib/broadcast-gate-alert.js",
-      "line": 76,
+      "line": 90,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
@@ -1059,7 +1073,7 @@
     },
     {
       "file": "scripts/lib/core-data-merge-registry.js",
-      "line": 2009,
+      "line": 2017,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
@@ -1143,21 +1157,21 @@
     },
     {
       "file": "scripts/lib/owner-alert-router.js",
-      "line": 670,
+      "line": 687,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "auto"
     },
     {
       "file": "scripts/lib/owner-alert-router.js",
-      "line": 705,
+      "line": 722,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
     },
     {
       "file": "scripts/lib/owner-alert-router.js",
-      "line": 1245,
+      "line": 1284,
       "kind": "sendAlert-direct",
       "classification": "digest",
       "severity": null
@@ -1290,7 +1304,7 @@
     },
     {
       "file": "scripts/press-night-watchdog.js",
-      "line": 114,
+      "line": 132,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
@@ -1332,7 +1346,7 @@
     },
     {
       "file": "scripts/renew-cookies.js",
-      "line": 112,
+      "line": 133,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"

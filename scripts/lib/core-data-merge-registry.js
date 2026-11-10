@@ -1657,6 +1657,14 @@ const CORE_DATA_MERGE_REGISTRY = [
     verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (audit-aggregator-gap.yml), group audit-aggregator-gap (cancel-in-progress: false).',
   },
   {
+    file: 'audit/expected-critics-recovery.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'expected-critics-recovery',
+    verifiedBy: '2026-11-10 (BRO-7312): 1 writer, the recover-expected-critics job in collect-outlet-reviews.yml (job-level concurrency group expected-critics-recovery, cancel-in-progress: false). Readers: health-check.js, grade-openings.js, audit-expected-critics.js.',
+  },
+  {
     file: 'audit/t1-coverage-ack.json',
     surface: 'public-repo',
     status: 'single-writer',

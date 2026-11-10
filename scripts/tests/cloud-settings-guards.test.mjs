@@ -1,7 +1,7 @@
 // BRO-4238: settings-file fixes approved by the owner (2026-09-28):
 //  - github-main-guard.sh: GitHub MCP writes/merges never change Broadwayscore main
 //  - block-resend-broadcasts.sh: CLAUDE.md §17 email guard now also fires in cloud
-//  - notion-create-block.sh: unregistered, but its script must stay (old snapshots call it)
+//  - notion-create-block.sh: unregistered, and since BRO-7315 deleted (six weeks on, no snapshot still calls it)
 // Drives the real hook scripts (CLAUDE.md §15).
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -101,12 +101,12 @@ test('resend guard: the repo copy finds its strip lib, so a commit message may m
 
 // ── settings.json wiring ───────────────────────────────────────────────────
 
-test('settings.json: new guards registered; notion-create-block unregistered but its script kept (never delete: old snapshots still call it)', () => {
+test('settings.json: new guards registered; notion-create-block unregistered and its script gone (BRO-7315)', () => {
   const s = fs.readFileSync(path.join(REPO_ROOT, '.claude', 'settings.json'), 'utf8');
   assert.match(s, /github-main-guard\.sh/);
   assert.match(s, /block-resend-broadcasts\.sh/);
   assert.doesNotMatch(s, /notion-create-block\.sh/);
-  assert.ok(fs.existsSync(path.join(HOOKS, 'notion-create-block.sh')));
+  assert.ok(!fs.existsSync(path.join(HOOKS, 'notion-create-block.sh')), 'retired with Notion; do not merge it back from ~/.claude/hooks');
   const d = JSON.parse(s);
   const mcpGroup = d.hooks.PreToolUse.find((g) => /mcp__github__/.test(g.matcher || ''));
   assert.ok(mcpGroup, 'MCP matcher group missing');
@@ -114,4 +114,93 @@ test('settings.json: new guards registered; notion-create-block unregistered but
     assert.ok(new RegExp(`^(?:${mcpGroup.matcher})$`).test(`mcp__github__${t}`), `matcher must cover ${t}`);
   }
   assert.ok(!new RegExp(`^(?:${mcpGroup.matcher})$`).test('mcp__github__create_branch'), 'land branches are created with create_branch; must not be gated');
+});
+
+// ── enterworktree-guard.sh (BRO-7315 proof tests) ──────────────────────────
+// Real hook + real scripts/check-worktree-collision.js against a throwaway git repo that holds a
+// real linked worktree. BROADWAYSCORE_REPO points the hook at that repo.
+import { spawnSync } from 'node:child_process';
+
+function git(cwd, ...args) {
+  const r = spawnSync('git', args, { cwd, encoding: 'utf8', env: { ...process.env, GIT_AUTHOR_NAME: 't', GIT_AUTHOR_EMAIL: 't@example.com', GIT_COMMITTER_NAME: 't', GIT_COMMITTER_EMAIL: 't@example.com' } });
+  assert.equal(r.status, 0, `git ${args.join(' ')}: ${r.stderr}`);
+  return r.stdout;
+}
+
+function worktreeRepo(label, { dirty }) {
+  const repo = fs.mkdtempSync(path.join(scratch, `ewg-${label}-`));
+  git(repo, 'init', '-q', '-b', 'main');
+  git(repo, 'commit', '-q', '--allow-empty', '-m', 'init');
+  // The hook runs $BROADWAYSCORE_REPO/scripts/check-worktree-collision.js, so the repo carries the real script + its libs.
+  for (const rel of ['scripts/check-worktree-collision.js', 'scripts/lib/duplicate-dispatch-guard.js', 'scripts/lib/cli-help.js', 'scripts/lib/worktree-lock-parse.js']) {
+    fs.mkdirSync(path.dirname(path.join(repo, rel)), { recursive: true });
+    fs.copyFileSync(path.join(REPO_ROOT, rel), path.join(repo, rel));
+  }
+  const wt = path.join(repo, '.claude', 'worktrees', 'proof-wt');
+  git(repo, 'worktree', 'add', '-q', '-b', 'proof-wt', wt);
+  if (dirty) fs.writeFileSync(path.join(wt, 'wip.txt'), 'another session is mid-edit\n');
+  return repo;
+}
+const enterWorktree = (name) => ({ tool_name: 'EnterWorktree', tool_input: { name } });
+
+test('enterworktree-guard: resuming a same-name worktree with uncommitted work is refused; the clean twin passes', () => {
+  const dirtyRepo = worktreeRepo('dirty', { dirty: true });
+  const refused = runHook('enterworktree-guard.sh', enterWorktree('proof-wt'), { env: { BROADWAYSCORE_REPO: dirtyRepo } });
+  assert.equal(refused.status, 2, refused.stderr);
+  assert.match(refused.stderr, /BLOCKED: EnterWorktree\("proof-wt"\)/);
+  assert.match(refused.stderr, /uncommitted changes/);
+  const cleanRepo = worktreeRepo('clean', { dirty: false });
+  const ok = runHook('enterworktree-guard.sh', enterWorktree('proof-wt'), { env: { BROADWAYSCORE_REPO: cleanRepo } });
+  assert.equal(ok.status, 0, ok.stderr);
+});
+
+test('enterworktree-guard: pass cases (no name, a fresh name, the kill switch) never block', () => {
+  const dirtyRepo = worktreeRepo('dirty2', { dirty: true });
+  const env = { BROADWAYSCORE_REPO: dirtyRepo };
+  assert.equal(runHook('enterworktree-guard.sh', { tool_name: 'EnterWorktree', tool_input: { path: '/x' } }, { env }).status, 0, 'path entry has no name to collide on');
+  assert.equal(runHook('enterworktree-guard.sh', enterWorktree('brand-new-name'), { env }).status, 0, 'a name with no existing worktree');
+  assert.equal(runHook('enterworktree-guard.sh', enterWorktree('proof-wt'), { env: { ...env, ENTERWORKTREE_GUARD_DISABLE: '1' } }).status, 0, 'kill switch');
+});
+
+// ── check-skill-redaction.sh (BRO-7315 proof tests) ────────────────────────
+// Real hook against a throwaway git repo. HOME is an empty dir: the hook self-skips when
+// $HOME/.claude/hooks/check-skill-redaction.sh exists. Fixture strings are made up.
+const REDACT_HOOK = path.join(HOOKS, 'check-skill-redaction.sh');
+function skillRepo(label, { skillText, denylist }) {
+  const repo = fs.mkdtempSync(path.join(scratch, `redact-${label}-`));
+  git(repo, 'init', '-q', '-b', 'main');
+  fs.mkdirSync(path.join(repo, '.claude', 'skills', 'x'), { recursive: true });
+  fs.writeFileSync(path.join(repo, '.claude', 'skills', 'x', 'SKILL.md'), skillText);
+  if (denylist !== undefined) fs.writeFileSync(path.join(repo, '.claude', 'skills', '.redaction-denylist.txt'), denylist);
+  git(repo, 'add', '.claude/skills/x/SKILL.md');   // tracked; the denylist stays untracked, as in the real repo
+  git(repo, 'commit', '-q', '-m', 'skill');
+  return repo;
+}
+function runRedaction(repo, command = 'git push origin HEAD') {
+  const home = fs.mkdtempSync(path.join(scratch, 'redact-home-'));
+  const r = spawnSyncStdinFile('bash', [REDACT_HOOK], {
+    input: JSON.stringify({ tool_name: 'Bash', tool_input: { command } }), encoding: 'utf8', cwd: repo, timeout: 30000,
+    env: { ...process.env, HOME: home, SKILL_REDACTION_DISABLE: '' },
+  });
+  return { status: r.status, stderr: r.stderr || '' };
+}
+const SECRET = 'zz-fake-cookie-value-48151623';
+
+test('check-skill-redaction: a denylisted string in a tracked skill blocks a git push', () => {
+  const r = runRedaction(skillRepo('hit', { skillText: `Use cookie ${SECRET} to log in\n`, denylist: `# made-up\n${SECRET}\n` }));
+  assert.equal(r.status, 2, r.stderr);
+  assert.match(r.stderr, /PUSH BLOCKED/);
+  assert.ok(r.stderr.includes('SKILL.md'), 'names the file');
+});
+
+test('check-skill-redaction: the same repo without the denylisted string passes; a non-push command passes', () => {
+  const clean = skillRepo('clean', { skillText: 'Mechanism only, no identifiers\n', denylist: `${SECRET}\n` });
+  assert.equal(runRedaction(clean).status, 0);
+  const dirty = skillRepo('nonpush', { skillText: `Use cookie ${SECRET}\n`, denylist: `${SECRET}\n` });
+  assert.equal(runRedaction(dirty, 'ls -la').status, 0, 'only push-ingress commands are checked');
+});
+
+test('check-skill-redaction: with NO denylist file the check is off (documents that it only guards machines that have the file)', () => {
+  const r = runRedaction(skillRepo('nolist', { skillText: `Use cookie ${SECRET}\n` }));
+  assert.equal(r.status, 0, r.stderr);
 });
