@@ -23,8 +23,8 @@ export default function NearBreakEvenList({ shows }: { shows: NearBreakEvenShow[
       <h3 className="text-lg font-semibold text-white mb-1">Close to break-even</h3>
       <p className="text-gray-400 text-sm mb-3">
         Running shows up to 10% above our estimated break-even, or up to 10% under it only because it&apos;s a slow time
-        of year. No closing estimate: they could tip either way. Shows marked New have fewer than four weeks of grosses,
-        mostly previews, so it&apos;s too early to judge.
+        of year. No closing estimate: they could tip either way. Shows marked New opened in the last two months and their
+        weeks so far are mostly previews, so it&apos;s too early to judge.
       </p>
       <div className="card rounded-xl divide-y divide-white/5">
         {shows.map((show) => (
@@ -47,7 +47,7 @@ export default function NearBreakEvenList({ shows }: { shows: NearBreakEvenShow[
                 {formatCurrency(show.avgWeeklyGross)} vs ~{formatCurrency(show.breakEven)}
               </span>
               <span className="text-score-tepid">
-                ~{(show.seasonCleared ? Math.floor : Math.round)(show.breakEvenRatio * 100)}% of break-even
+                ~{(show.seasonCleared || (show.isNew && show.breakEvenRatio < 1) ? Math.floor : Math.round)(show.breakEvenRatio * 100)}% of break-even
                 {show.seasonCleared ? ' (slow season)' : ''}
               </span>
               {!show.isNew && (

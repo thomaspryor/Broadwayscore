@@ -70,7 +70,7 @@ interface BizBuzzCardProps {
 
 /** BRO-7246: the show's Closing Watch or Close to break-even line, linking to the /biz list. */
 function ClosingOutlookNote({ outlook }: { outlook: ClosingOutlook }) {
-  const pct = (outlook.kind === 'near' && outlook.seasonCleared ? Math.floor : Math.round)(outlook.breakEvenRatio * 100);
+  const pct = (outlook.kind === 'near' && (outlook.seasonCleared || (outlook.isNew && outlook.breakEvenRatio < 1)) ? Math.floor : Math.round)(outlook.breakEvenRatio * 100);
   const median = outlook.kind === 'watch' ? formatMonthYear(outlook.likelyClosing?.median) : null;
   const early = outlook.kind === 'watch' ? formatMonthYear(outlook.likelyClosing?.early) : null;
   const late = outlook.kind === 'watch' ? formatMonthYear(outlook.likelyClosing?.late) : null;
@@ -87,7 +87,7 @@ function ClosingOutlookNote({ outlook }: { outlook: ClosingOutlook }) {
         {outlook.kind === 'watch'
           ? `No closing announced, but grosses are running at ~${pct}% of our estimated break-even. `
           : outlook.isNew
-            ? `New show, too early to judge. Its first weeks, mostly previews, are running at ~${pct}% of our estimated break-even.`
+            ? `New show, too early to judge. Its weeks so far, mostly previews, are running at ~${pct}% of our estimated break-even.`
             : `No closing announced. Grosses are running at ~${pct}% of our estimated break-even${outlook.seasonCleared ? ' in a slow time of year' : ''}, so it could tip either way.`}
         {outlook.kind === 'watch' &&
           (median
