@@ -8,8 +8,9 @@
  *     leaves it alone (isGroupSettled). Before this, the lane published the isolated scores and the cron moved them
  *     hours later (Blueberries 80.62 -> 79.97 after the owner posted it).
  * Nothing here reads env for paths, writes through anything but the injected `writeFile`, or prints; the callers own
- * that. Keep the llm-usage-install import first in the entry points, not here.
+ * that.
  */
+import '../lib/llm-usage-install.js'; // LLM spend meter: first import, so the lane (which loads this) meters its calls too (BRO-5043)
 import * as fs from 'fs';
 import * as path from 'path';
 import { GoogleGenerativeAI } from '@google/generative-ai';
