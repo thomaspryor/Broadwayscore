@@ -88,7 +88,7 @@ function plainFindings(result, { outletName = defaultOutletName } = {}) {
   if (r.name === 't1-outlets-scored') {
     return ["A review from a major outlet (such as The New York Times) is missing from the score."];
   }
-  return ['One of the automatic checks flagged a review but could not say which one in plain words. Ask Claude what it found before sending.'];
+  return ['One of the automatic checks flagged a review but did not say which one. Read through the reviews in the draft before sending.'];
 }
 
 function showTitle(id, showsById, fromChecklist) {
@@ -171,7 +171,7 @@ function buildDeadlineDraftAlert({ checklistIds = [], driftIds = [], orphanEntri
     `The opening-night email for ${titles.join(' and ')} is waiting in Resend as a draft. Nothing has gone to subscribers.`,
     `The automatic checks found ${count === 1 ? 'this' : 'these'}:`,
     sections.join('\n\n'),
-    "Don't send yet if any of these look wrong. Tell Claude which ones, and wait until Claude says the draft is fixed.",
+    "Sending is your call: the draft stays unsent until you press Send. If any of these look wrong, leave it unsent.",
     urls.length > 1 ? `Open the drafts:\n${urls.map((u) => `- ${u}`).join('\n')}`
       : urls[0] === RESEND_BROADCASTS_URL ? `Open your drafts in Resend (it is the newest one): ${urls[0]}`
         : `Open the draft: ${urls[0]}`,

@@ -37,7 +37,7 @@ function showTitles(breachedList, { readShows } = {}) {
 const GATES = {
   checklist: {
     title: 'Opening-night email draft on hold: a quality check flagged a review',
-    description: 'The opening-night email draft is on hold because the automatic quality check flagged at least one review (for example, a review of a different production). Ask Claude to look at it. If the draft has not been made by 10am ET the day after opening, it is made anyway then and you get an email listing which reviews to check before you press Send.',
+    description: 'The opening-night email draft is on hold because the automatic quality check flagged at least one review (for example, a review of a different production). Nothing is sent while it is on hold. If the draft has not been made by 10am ET the day after opening, it is made anyway then and you get an email listing which reviews to check before you press Send.',
   },
   drift: {
     title: 'Opening-night email draft on hold: some scored reviews are not on the site yet',

@@ -60,7 +60,7 @@ test('title comes from the checklist JSON when shows.json is not passed; stored 
   assert.match(a.title, /^Here There Are Blueberries and Other Show email draft/);
   assert.equal((a.description.match(/resend\.com\/broadcasts\/shared/g) || []).length, 1);
   // severity 'error' counts even if ok is true (matches the summary's error count)
-  assert.match(a.description, /could not say which one in plain words/);
+  assert.match(a.description, /did not say which one/);
   assert.doesNotMatch(a.description, /Something is off/);
 });
 
