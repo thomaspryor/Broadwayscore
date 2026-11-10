@@ -1370,9 +1370,13 @@ const OUTLET_BRANCH_HOSTS = [
 function hasOutletExtractor(urlOrHost) {
   const host = effectiveHost(urlOrHost);
   if (!host) return false;
-  if (OUTLET_BRANCH_HOSTS.some((d) => host.includes(d))) return true;
-  if (DEDICATED_EXTRACTOR_HOSTS.some((d) => host.includes(d))) return true;
-  return PATTERNS.some(([hostMatch]) => hostMatch && host.includes(hostMatch));
+  // Domain-boundary match: "snub.news" is not Nub News, "notvariety.com" is
+  // not Variety. A substring match sent unrelated sites to an outlet's
+  // extractor and dropped their generic body.
+  const owns = (d) => { const x = String(d || '').toLowerCase().replace(/^www\./, ''); return !!x && (host === x || host.endsWith(`.${x}`)); };
+  if (OUTLET_BRANCH_HOSTS.some(owns)) return true;
+  if (DEDICATED_EXTRACTOR_HOSTS.some(owns)) return true;
+  return PATTERNS.some(([hostMatch]) => typeof hostMatch === 'string' && owns(hostMatch));
 }
 
 /** Normalize a raw date string to YYYY-MM-DD (or null). */

@@ -62,9 +62,15 @@ test('L&SA: dedicated body beats a generic body that is past 500 chars but short
   assert.ok(text.length > generic.length);
 });
 
-test('dedicated host keeps a generic body when the dedicated one is shorter', () => {
-  const generic = 'x'.repeat(5000);
-  assert.equal(preferDedicatedText(generic, LSA_HTML, LSA_URL), generic);
+// BRO-7171 Stage 5: "the longer wins" let page chrome make the generic copy
+// win. The generic body now wins only when it holds real prose the outlet
+// extractor missed (gap-acceptance novelProseVerdict on the stored forms).
+test('dedicated host keeps a generic body only when it adds real prose', () => {
+  const junk = 'x'.repeat(5000);
+  assert.match(preferDedicatedText(junk, LSA_HTML, LSA_URL), /Paragraph 6\./, 'longer junk must not win');
+  const extra = [1, 2, 3, 4, 5, 6].map((i) => `Extra ${i}: the second act finally finds its footing when the defence calls a surprise witness and the room goes quiet for a long while.`).join('\n\n');
+  const richer = [1, 2, 3, 4, 5, 6].map((i) => `Paragraph ${i}. ${LSA_PARA.repeat(2).trim()}`).join('\n\n') + '\n\n' + extra;
+  assert.equal(preferDedicatedText(richer, LSA_HTML, LSA_URL), richer, 'generic with novel prose wins');
 });
 
 test('non-dedicated host never runs the dedicated extractor', () => {

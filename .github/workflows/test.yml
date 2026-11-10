@@ -5042,6 +5042,20 @@ jobs:
           node scripts/audit-direct-github-api.js
           node --test --test-timeout 120000 tests/unit/gh-api-wrapper.test.mjs
 
+      - name: Page furniture class guard (BRO-7171, advisory)
+        # Every outlet extractor, run on saved real pages
+        # (tests/fixtures/page-furniture/), must hand the save path a body with
+        # no share bars, related-story runs, newsletter/paywall/consent lines,
+        # booking or copyright lines. Advisory first (CLAUDE.md section 19);
+        # promote to blocking once it has run clean on main.
+        continue-on-error: true
+        run: |
+          set +e
+          node --test --test-timeout 120000 tests/unit/page-furniture-extractors.test.mjs 2>&1 | tee /tmp/page-furniture.log
+          rc=${PIPESTATUS[0]}
+          bash scripts/lib/summarize-failing-tests.sh "page furniture" /tmp/page-furniture.log "$rc" warning
+          exit "$rc"
+
       - name: Rendered copy voice guard (BRO-5812, advisory)
         # Owner voice rules for on-screen copy: no em dashes, no AI-flavored
         # phrases in JSX text or string literals under src/app and

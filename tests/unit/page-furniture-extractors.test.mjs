@@ -21,11 +21,11 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
-const { extractTextFromHtml } = require('../collect-review-texts.js');
-const { textAsStored } = require('./stored-text-form.js');
-const { detectPageFurniture } = require('./page-furniture.js');
+const { extractTextFromHtml } = require('../../scripts/collect-review-texts.js');
+const { textAsStored } = require('../../scripts/lib/stored-text-form.js');
+const { detectPageFurniture } = require('../../scripts/lib/page-furniture.js');
 
-const DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..', 'tests', 'fixtures', 'page-furniture');
+const DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'fixtures', 'page-furniture');
 const manifest = JSON.parse(fs.readFileSync(path.join(DIR, 'manifest.json'), 'utf8'));
 
 // Strings that reached stored bodies before BRO-7171 (scripts/audit-page-furniture.js).
@@ -65,6 +65,7 @@ test('the guard bites: with the kill switch on, furniture reaches the stored bod
   process.env.PAGE_FURNITURE_DISABLED = 'true';
   try {
     const dirty = manifest.filter((e) => detectPageFurniture(stored(e)).length > 0);
-    assert.ok(dirty.length >= 3, `only ${dirty.length} fixtures show furniture with the fix off`);
+    // Every fixture was picked because the pre-fix path leaked furniture.
+    assert.strictEqual(dirty.length, manifest.length, `only ${dirty.length}/${manifest.length} fixtures show furniture with the fix off`);
   } finally { delete process.env.PAGE_FURNITURE_DISABLED; }
 });
