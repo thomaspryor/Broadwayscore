@@ -353,6 +353,28 @@ jobs:
           fi
           exit 0
 
+      # BRO-7291 class 1: move city-hub closing dates forward when the listing page or the stored reviews announce
+      # a later run end (extensions). Advisory; kill switch: repo variable HUB_RUN_DATES_DISABLED=true.
+      - name: Update extended city-hub closing dates
+        if: always() && vars.HUB_RUN_DATES_DISABLED != 'true'
+        continue-on-error: true
+        timeout-minutes: 15
+        env:
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+        run: |
+          # lint-allow-swallow: advisory by design (BRO-7291). A crash or a failed validate restores shows.json and exits 0; the next run recomputes from the same evidence.
+          rm -rf /tmp/hub-run-pre; mkdir -p /tmp/hub-run-pre data/audit
+          cp data/shows.json /tmp/hub-run-pre/shows.json
+          timeout 600 node scripts/harvest-hub-run-dates.js --apply --listing || true
+          if node scripts/validate-data.js; then
+            bash scripts/lib/git-add-existing.sh data/audit/hub-run-dates.json
+          else
+            echo "::warning::validate-data failed after hub run-date update, rolling back"
+            cp /tmp/hub-run-pre/shows.json data/shows.json
+          fi
+          exit 0
+
       - name: Push core data (regional auto-promotion)
         id: push_core_regional
         if: always()

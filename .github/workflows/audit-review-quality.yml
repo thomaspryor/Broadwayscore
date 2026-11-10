@@ -17,6 +17,7 @@ on:
           - all
           - non-reviews
           - duplicates
+          - city-hubs
       skip_llm:
         description: 'Skip LLM classification (heuristics only)'
         required: false
@@ -202,3 +203,76 @@ jobs:
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "**Trigger:** Manual (audit=${{ inputs.audit }})" >> $GITHUB_STEP_SUMMARY
           fi
+
+  # BRO-7291 class 8: weekly dual-model audit of every launched city hub (stale closings, bylines, wrong
+  # production/venue/roundup, title typos, run dates, hand-entered rows, coverage gaps). New findings become a
+  # pending-fix plan (deterministic ones) and one Linear card per city per week. Advisory: never fails the run.
+  city-hub-audit:
+    name: City hub dual-model audit
+    if: github.event_name == 'schedule' || inputs.audit == 'all' || inputs.audit == 'city-hubs'
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    continue-on-error: true
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run city hub audit
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: |
+          ARGS="--max-usd=2"
+          if [ "${{ inputs.skip_llm }}" == "true" ]; then ARGS="$ARGS --no-llm"; fi
+          if [ "${{ inputs.dry_run }}" == "true" ]; then ARGS="$ARGS --dry-run"; fi
+          node scripts/city-hub-weekly-audit.js $ARGS
+
+      - name: Commit city hub audit results
+        if: always()
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1' # union-merges the LLM spend ledger on rebase (BRO-5043)
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/audit/gemini-usage-ledger.jsonl 2>/dev/null || true # LLM spend meter rows (BRO-5043)
+          git add data/audit/city-hub-dual 2>/dev/null || true
+          # pending-fixes is gitignored; this week's plans are force-added by name (as new-fix-plan.js does)
+          if ls data/pending-fixes/bro-7291-*-20*.json >/dev/null 2>&1; then git add -f data/pending-fixes/bro-7291-*-20*.json; fi
+          if git diff --staged --quiet; then
+            echo "No city hub audit changes"
+            exit 0
+          fi
+          git commit -m "audit: Weekly city hub dual-model audit (BRO-7291)
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'City Hub Dual-Model Audit Failed'
+          severity: 'warning'

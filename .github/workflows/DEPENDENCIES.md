@@ -383,7 +383,7 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 | `GUARDIAN_API_KEY` | 12 cross-repo writers (of 14 workflows using it) |
 | `HTML_HANDOFF_PRIVATE_KEY` | 1 cross-repo writers (of 2 workflows using it): `execute-approved-fix.yml` |
 | `LANE_RECORDING_KEY` | 1 cross-repo writers (of 2 workflows using it): `opening-night-lane-live.yml` |
-| `LINEAR_API_KEY` | 31 cross-repo writers (of 92 workflows using it) |
+| `LINEAR_API_KEY` | 32 cross-repo writers (of 93 workflows using it) |
 | `MEZZANINE_APP_ID` | 2 cross-repo writers (of 3 workflows using it): `fetch-all-image-formats.yml`, `update-mezzanine.yml` |
 | `MEZZANINE_SESSION_TOKEN` | 2 cross-repo writers (of 3 workflows using it): `fetch-all-image-formats.yml`, `update-mezzanine.yml` |
 | `NEW_YORKER_EMAIL` | 4 cross-repo writers (of 4 workflows using it) |
@@ -398,7 +398,7 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 | `NYT_COOKIES_META` | 1 cross-repo writers (of 1 workflows using it): `opening-night-express.yml` |
 | `NYT_EMAIL` | 8 cross-repo writers (of 9 workflows using it) |
 | `NYT_PASSWORD` | 1 cross-repo writers (of 1 workflows using it): `process-review-submission.yml` |
-| `OPENAI_API_KEY` | 34 cross-repo writers (of 56 workflows using it) |
+| `OPENAI_API_KEY` | 35 cross-repo writers (of 57 workflows using it) |
 | `OPENROUTER_API_KEY` | 12 cross-repo writers (of 16 workflows using it) |
 | `OWNER_EMAIL` | 70 cross-repo writers (of 157 workflows using it) |
 | `REDDIT_CLIENT_ID` | 3 cross-repo writers (of 4 workflows using it): `bulk-reddit-sentiment.yml`, `reddit-engagement-digest.yml`, `update-reddit-sentiment.yml` |
