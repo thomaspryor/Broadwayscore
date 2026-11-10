@@ -1578,6 +1578,20 @@
     "queuedAt": "2026-11-10T19:40:23.764Z"
   },
   {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 21 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +15 more). Checked 2026-11-10.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-10T20:04:15.829Z"
+  },
+  {
     "conditionKey": "arm-yield:workflow:collect-we-ob-reviews",
     "title": "Collect WE/OB Reviews has stopped updating (3 days)",
     "description": "A scheduled job that keeps the site up to date has stopped succeeding. Nothing new since 2026-11-07, 3 days ago. It has never before gone quiet for more than 1 day(s), so this is not its normal rhythm. Nothing is fixing this automatically — it needs a look.\n\n(Detail: threshold 3d, from 25 productive day(s) / 25 item(s) between 2026-10-09 and 2026-11-07.)",
