@@ -23,6 +23,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { createRequire } from 'node:module';
+import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { getCriticScore } from './lib/canonical-critic-scores.ts';
 
@@ -33,6 +34,7 @@ const { getScoreTierId } = require('./lib/score-tiers.js');
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const arg = (k, d) => { const a = process.argv.find((x) => x.startsWith(`--${k}=`)); return a ? a.split('=').slice(1).join('=') : d; };
 const MARKET = arg('market', 'broadway');
+if (!['broadway', 'off-broadway', 'west-end'].includes(MARKET)) { console.error(`unknown --market=${MARKET} (use broadway, off-broadway or west-end)`); process.exit(2); }
 const FLOOR = +arg('floor', 10);
 const SETTLE_DAYS = +arg('settle-days', 21); // a show must have opened this long before TODAY so its score has settled
 // Forecasts for shows that have not opened are NEVER written next to the backtest: this repo is public,
@@ -42,6 +44,15 @@ const WANT_FORECAST = !!FORECAST_OUT;
 const TODAY = arg('today', new Date().toISOString().slice(0, 10));
 const OUT = arg('out', path.join(ROOT, 'data/audit', MARKET === 'broadway' ? 'review-forecast-backtest.json' : `review-forecast-backtest-${MARKET}.json`));
 const MIN_PRIOR_SHOWS = 30; // a show is evaluated only once 30 earlier-season shows of its category exist
+
+// True if the path is inside this worktree OR the main checkout (git common dir parent), resolving symlinks.
+function insideAnyCheckout(p) {
+  const real = (x) => { let d = path.resolve(x); const tail = []; while (!fs.existsSync(d)) { tail.unshift(path.basename(d)); d = path.dirname(d); } return path.join(fs.realpathSync(d), ...tail); };
+  const roots = new Set([fs.realpathSync(ROOT)]);
+  try { const c = execFileSync('git', ['rev-parse', '--git-common-dir'], { cwd: ROOT, encoding: 'utf8' }).trim(); roots.add(fs.realpathSync(path.dirname(path.resolve(ROOT, c)))); } catch { /* no git: ROOT only */ }
+  const t = real(p);
+  return [...roots].some((r) => t === r || t.startsWith(r + path.sep));
+}
 const J = (f) => JSON.parse(fs.readFileSync(path.join(ROOT, f), 'utf8'));
 
 // ---- pre-declared publish bar (written before any result was seen) ----------------
@@ -238,6 +249,13 @@ const result = {
   generatedAt: new Date().toISOString(), card: 'BRO-7314', market: MARKET, floor: FLOOR, settleDays: SETTLE_DAYS, today: TODAY,
   target: 'getCriticScore(showId) from scripts/lib/canonical-critic-scores.ts (integer, as displayed)',
   preDeclaredBar: BAR,
+  caveats: [
+    'Population: targets need a settled review count at or above the floor, measured today. That is not knowable before opening, so results describe well-reviewed shows only.',
+    'Earlier shows enter the model with today\'s settled score and review count, dated by opening day. A show that opened a few days before the target may carry reviews published after the target opened. Thin on Broadway, larger on Off-Broadway and West End.',
+    'Creative team, venue and show-origins are current snapshots, not as-of-opening records.',
+    'Leave-one-season-out trains on later seasons and so is optimistic. Walk-forward and the fixed split are the forward-in-time numbers. Ablations use leave-one-season-out only.',
+    'Floors 5, 10 and 15 were all run. Every run misses the pre-declared bar, so this does not inflate the verdict.'
+  ],
   population: { scoredShowsAtFloor: targets.length, evaluated: rows.length, minEarlierSeasonShows: MIN_PRIOR_SHOWS,
     firstSeason: seasonsOf(rows)[0], lastSeason: seasonsOf(rows).slice(-1)[0], withEarlierProduction: rows.filter((r) => r.priorScore != null).length,
     withPreviewGrosses: rows.filter((r) => r.hasGross).length },
@@ -270,6 +288,7 @@ result.verdictFlags = {
 result.verdictFlags.meetsPublishBar = !!(result.verdictFlags.beatsBaselineByBar && result.verdictFlags.coverage80InBand);
 
 // ---- forecasts for shows that have not opened yet --------------------------------------
+if (WANT_FORECAST && !fullModel) { console.error('refusing: --forecast-out given but too few evaluated rows (<150) to fit a model for this market'); process.exit(4); }
 if (WANT_FORECAST && fullModel) {
   const nested = nestedResiduals(rows, RF.FEATURE_NAMES);
   const [q10, q90] = band(nested.model, 0.1, 0.9);
@@ -289,7 +308,7 @@ if (WANT_FORECAST && fullModel) {
 }
 
 if (result.upcoming) {
-  if (path.resolve(FORECAST_OUT).startsWith(ROOT + path.sep)) { console.error('refusing: --forecast-out must be outside the repo (public)'); process.exit(3); }
+  if (insideAnyCheckout(FORECAST_OUT)) { console.error('refusing: --forecast-out must be outside every checkout of this repo (public)'); process.exit(3); }
   fs.writeFileSync(FORECAST_OUT, JSON.stringify({ madeOn: TODAY, market: MARKET, status: 'UNPUBLISHED internal forecast', upcoming: result.upcoming }, null, 2));
   delete result.upcoming;
 }
