@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-10T15:31:49.295Z",
+  "timestamp": "2026-11-10T16:19:47.044Z",
   "stats": {
-    "totalReviews": 81177,
-    "alreadyFlagged": 22199,
+    "totalReviews": 81226,
+    "alreadyFlagged": 22202,
     "dateGuardCatches": 219,
     "directorMismatch": 3606,
     "tvFilmSignals": 2287,
-    "londonSignals": 3661,
-    "offBroadwaySignals": 753,
+    "londonSignals": 3662,
+    "offBroadwaySignals": 752,
     "yearMismatch": 364,
-    "noPublishDate": 8422
+    "noPublishDate": 8458
   },
   "findings": [
     {
@@ -104775,20 +104775,6 @@
       ]
     },
     {
-      "showId": "here-there-are-blueberries-2026",
-      "file": "cititour--brian-scott-lipton.json",
-      "score": 77,
-      "publishDate": "2026-11-09T00:00:00-05:00",
-      "url": "https://cititour.com/NYC_Broadway/Here-There-Are-Blueberries/1232",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
-        }
-      ]
-    },
-    {
       "showId": "here-there-are-blueberries-theatre-royal-stratford-east-off-west-end-2026",
       "file": "theatreandtonic--liam-arnold.json",
       "score": 65,
@@ -120598,6 +120584,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "representasian-an-evening-of-asian-talent-west-end-2026",
+      "file": "redbuslondinium--red-bus-londinium.json",
+      "publishDate": "2026-11-10",
+      "url": "https://redbuslondinium.uk/2026/11/10/review-representasian-an-evening-of-asian-talent-lyric-theatre-%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
