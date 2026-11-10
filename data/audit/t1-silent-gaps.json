@@ -1,8 +1,32 @@
 {
-  "generatedAt": "2026-11-10T17:39:23.017Z",
+  "generatedAt": "2026-11-10T18:58:49.817Z",
   "windowDays": 45,
   "showsScanned": 240,
   "gaps": [
+    {
+      "showId": "well-see-off-broadway-2026",
+      "title": "We'll See",
+      "openingDate": "2026-11-03",
+      "file": "talkinbroadway--unknown.json",
+      "outletId": "talkinbroadway",
+      "tier": 2,
+      "type": "empty-body",
+      "recoverable": true,
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655619",
+      "recovery": {
+        "attempted": true,
+        "ok": false,
+        "reason": "⚠️  Bright Data failed: Bright Data request timeout\n⚠️  Bright Data failed: Bright Data request timeout\n⚠️  Bright Data failed: Bright Data request timeout\n  forum thread fetch failed: All scraping methods failed"
+      },
+      "recoveryCount": 0,
+      "forumLinkRecoveryCount": 0,
+      "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=well-see-off-broadway-2026   # follows the thread's Link to the real review page",
+      "firstSeen": "2026-11-10T18:24:45.343Z",
+      "fileAgeHours": 0.5670633333333334,
+      "gapSeenAt": "2026-11-10T18:58:49.816Z",
+      "nonTerminalAgeHours": 0,
+      "needsManualRecovery": false
+    },
     {
       "showId": "iphigenie-en-tauride-english-national-opera-west-end-2026",
       "title": "Iphigenie en Tauride - English National Opera",
@@ -18,9 +42,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=iphigenie-en-tauride-english-national-opera-west-end-2026 --url=https://www.thetimes.com/culture/classical-opera/article/iphigenie-en-tauride-review-youve-never-seen-a-family-reunion-like-this-hmwx2kkh2 --outlet=sunday-times   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-08T22:39:44.349Z",
-      "fileAgeHours": 42.91414888888889,
+      "fileAgeHours": 44.31735027777778,
       "gapSeenAt": "2026-11-09T00:00:26.432Z",
-      "nonTerminalAgeHours": 41.649051388888886,
+      "nonTerminalAgeHours": 42.97316222222222,
       "needsManualRecovery": false
     },
     {
@@ -38,9 +62,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=msblackforpresident-off-broadway-2026 --url=https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play --outlet=guardian   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T07:02:09.044Z",
-      "fileAgeHours": 34.540664166666666,
+      "fileAgeHours": 35.943855,
       "gapSeenAt": "2026-11-10T05:35:04.300Z",
-      "nonTerminalAgeHours": 12.071865833333334,
+      "nonTerminalAgeHours": 13.395976666666666,
       "needsManualRecovery": false
     },
     {
@@ -53,18 +77,38 @@
       "type": "empty-body",
       "recoverable": true,
       "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655466",
+      "recovery": null,
+      "recoveryCount": 0,
+      "forumLinkRecoveryCount": 3,
+      "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=rope-off-broadway-2026   # follows the thread's Link to the real review page",
+      "firstSeen": "2026-11-10T13:48:14.823Z",
+      "fileAgeHours": 5.175748333333333,
+      "gapSeenAt": "2026-11-10T14:56:56.302Z",
+      "nonTerminalAgeHours": 4.031531666666667,
+      "needsManualRecovery": false
+    },
+    {
+      "showId": "the-whos-tommy-tour-2026",
+      "title": "The Who's Tommy",
+      "openingDate": "2026-10-06",
+      "file": "theatermania--unknown.json",
+      "outletId": "theatermania",
+      "tier": 2,
+      "type": "empty-body",
+      "recoverable": true,
+      "url": "https://www.theatermania.com/news/review-national-tour-of-the-whos-tommy-loses-its-pinball-magic-at-the-hollywood-pantages_1859212/",
       "recovery": {
         "attempted": true,
         "ok": false,
-        "reason": "⚠️  Bright Data failed: Bright Data request timeout\n⚠️  Bright Data failed: Bright Data request timeout\n⚠️  Bright Data failed: Bright Data request timeout\n  critic lookup failed (All scraping methods failed) — ingest will fall back to Unknown\n  ⊘ url kept: dropping fullText merged from refused https://talkinbroadway.com/page/ob/11_03_26b.html on /home/runner/work/Broadwayscore/Broadwayscore/data/"
+        "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
       },
       "recoveryCount": 0,
-      "forumLinkRecoveryCount": 2,
-      "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=rope-off-broadway-2026   # follows the thread's Link to the real review page",
-      "firstSeen": "2026-11-10T13:48:14.823Z",
-      "fileAgeHours": 3.852128611111111,
-      "gapSeenAt": "2026-11-10T14:56:56.302Z",
-      "nonTerminalAgeHours": 2.7074208333333334,
+      "forumLinkRecoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=the-whos-tommy-tour-2026 --url=https://www.theatermania.com/news/review-national-tour-of-the-whos-tommy-loses-its-pinball-magic-at-the-hollywood-pantages_1859212/ --outlet=theatermania   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-11-10T18:24:07.366Z",
+      "fileAgeHours": 0.5784063888888888,
+      "gapSeenAt": "2026-11-10T18:58:49.816Z",
+      "nonTerminalAgeHours": 0,
       "needsManualRecovery": false
     },
     {
@@ -82,9 +126,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=adirondack-chair-circle-regional-2026 --url=https://www.talkinbroadway.com/page/regional/chicago/ch944.html --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T21:14:38.698Z",
-      "fileAgeHours": 20.41230611111111,
+      "fileAgeHours": 21.73641888888889,
       "gapSeenAt": "2026-11-09T21:39:25.109Z",
-      "nonTerminalAgeHours": 19.99941888888889,
+      "nonTerminalAgeHours": 21.323529722222222,
       "needsManualRecovery": false
     },
     {
@@ -102,9 +146,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "# no URL on file — find the theatermania review for the-cottage-regional-2026 first, then: node scripts/ingest-review-from-url.js --show=the-cottage-regional-2026 --url=<URL> --outlet=theatermania",
       "firstSeen": "2026-11-10T00:26:39.999Z",
-      "fileAgeHours": 17.211946944444446,
+      "fileAgeHours": 18.53605888888889,
       "gapSeenAt": "2026-11-10T01:31:07.327Z",
-      "nonTerminalAgeHours": 16.137691666666665,
+      "nonTerminalAgeHours": 17.4618025,
       "needsManualRecovery": false
     }
   ],
