@@ -110,6 +110,9 @@ test('baseline uses earlier seasons only, never the target season', () => {
   const sameSeason = show({ id: 'sameSeason', openingDate: '2014-09-01', score: 5 });
   const f = RF.buildFeatures(target, { pool: [...pool, sameSeason], weeks: {}, origins: {} });
   assert.ok(!f.provenance.some((p) => p.ref === 'sameSeason' && p.kind === 'baseline'));
+  const clean = RF.buildFeatures(target, { pool, weeks: {}, origins: {} });
+  assert.equal(f.mu, clean.mu, 'a same-season show must not move the baseline mean');
+  assert.ok(clean.provenance.some((p) => p.kind === 'baseline'), 'baseline use is recorded in provenance');
 });
 
 test('prior run: latest earlier production of the same title; never itself or later runs', () => {
@@ -140,4 +143,11 @@ test('ridge recovers a known linear relationship and shrinks with lambda', () =>
   assert.ok(Math.abs(RF.predictRidge(m, { dir: 3 }) - 6) < 0.05);
   const shrunk = RF.fitRidge(rows, ['dir'], 1e6);
   assert.ok(Math.abs(RF.predictRidge(shrunk, { dir: 3 })) < 1);
+});
+
+test('prior run: a same-title show inside the lag window is not used', () => {
+  const inLag = show({ id: 'inLag', title: 'Target Play', openingDate: day(TARGET_DATE, -(RF.LAG_DAYS - 1)), score: 5 });
+  const f = RF.buildFeatures(target, { pool: [...world(), inLag], weeks: {}, origins: {} });
+  assert.equal(f.priorScore, null);
+  assert.ok(!f.provenance.some((p) => p.ref === 'inLag'));
 });

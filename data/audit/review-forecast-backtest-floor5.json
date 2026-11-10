@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-10T19:15:14.233Z",
+  "generatedAt": "2026-11-10T19:22:10.377Z",
   "card": "BRO-7314",
   "market": "broadway",
   "floor": 5,
@@ -12,6 +12,13 @@
     "coverageLow": 0.72,
     "coverageHigh": 0.88
   },
+  "caveats": [
+    "Population: targets need a settled review count at or above the floor, measured today. That is not knowable before opening, so results describe well-reviewed shows only.",
+    "Earlier shows enter the model with today's settled score and review count, dated by opening day. A show that opened a few days before the target may carry reviews published after the target opened. Thin on Broadway, larger on Off-Broadway and West End.",
+    "Creative team, venue and show-origins are current snapshots, not as-of-opening records.",
+    "Leave-one-season-out trains on later seasons and so is optimistic. Walk-forward and the fixed split are the forward-in-time numbers. Ablations use leave-one-season-out only.",
+    "Floors 5, 10 and 15 were all run. Every run misses the pre-declared bar, so this does not inflate the verdict."
+  ],
   "population": {
     "scoredShowsAtFloor": 616,
     "evaluated": 578,
