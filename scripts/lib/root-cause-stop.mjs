@@ -38,7 +38,7 @@ import { walkTranscript } from './transcript-scan.mjs';
 import { landedPushIndices, claimsSafeToArchive } from './review-coverage.mjs';
 
 const require = createRequire(import.meta.url);
-const { parseRootCauseBlock, isFixCard, ROOT_CAUSE_CLOSE_BLOCKING_FROM } = require('./root-cause-close.js');
+const { parseRootCauseBlock, isFixCard, ROOT_CAUSE_CLOSE_BLOCKING_FROM, COUSINS_TAIL_RE } = require('./root-cause-close.js');
 
 const MIN_REASON = 10;
 const NO_PREVENTION_RE = /^[ \t>*_-]*NO-PREVENTION(?:\*\*|__)?[ \t]*:(?:\*\*|__)?[ \t]*(\S.*)$/im;
@@ -88,31 +88,35 @@ export function answerTexts(events, lastMessage = '') {
 
 // BRO-7316: the same tail split parseRootCauseBlock applies to CLASS-GUARD/PREVENTION, applied to
 // NO-ROOT-CAUSE / NO-PREVENTION values so `NO-ROOT-CAUSE: typo ; cousins: grepped data/, none` counts.
-const COUSINS_TAIL_RE = /\s*(?:[,;\u2014\u2013]|\s-)\s*cousins\b[^:\n]{0,30}:\s*/i;
 const splitTail = (v) => { const [head, ...rest] = String(v || '').split(COUSINS_TAIL_RE); return { head: head.trim(), cousins: rest.join('; ').trim() }; };
+// An echoed template (`<path of the test...>`) or an explicit "not done" is not an answer.
+const PLACEHOLDER_RE = /<[^>\n]{3,}>|\b(?:not searched|todo|tbd)\b/i;
+const real = (v) => String(v || '').length >= MIN_REASON && !PLACEHOLDER_RE.test(v);
 
 /**
  * PURE (BRO-7316). What of the rule-21 answer is missing? [] when complete, else some of
  * 'CLASS-GUARD or NO-ROOT-CAUSE' and 'COUSINS'. The answer is the root-cause statement AND where else
- * the session looked for the same defect (COUSINS, 10+ chars, from its own line or a `; cousins:` tail).
+ * the session looked for the same defect (COUSINS, 10+ chars, own line or a `; cousins:` tail).
+ * Every line of every text is read on its own, so a short repeat in the chat never erases a full
+ * answer given in a Linear comment (parseRootCauseBlock alone is last-wins per field).
  */
 export function missingRootCauseParts(texts) {
-  const { fields, noRootCause } = parseRootCauseBlock(texts);
-  let cause = Boolean(fields['CLASS-GUARD'] && fields['CLASS-GUARD'].length >= MIN_REASON);
-  let cousins = fields.COUSINS || '';
-  const spot = (v) => {
-    const { head, cousins: c } = splitTail(v);
-    if (head.length >= MIN_REASON) cause = true;
-    if (c.length > cousins.length) cousins = c;
-  };
-  if (noRootCause) spot(noRootCause);
+  let cause = false;
+  let cousins = false;
+  const take = (v) => { const { head, cousins: c } = splitTail(v); if (real(head)) cause = true; if (real(c)) cousins = true; };
   for (const t of texts) {
-    const m = NO_PREVENTION_RE.exec(String(t || ''));
-    if (m) spot(m[1]);
+    for (const line of String(t || '').split('\n')) {
+      const { fields, noRootCause } = parseRootCauseBlock([line]);
+      if (fields['CLASS-GUARD'] && real(fields['CLASS-GUARD'])) cause = true;
+      if (real(fields.COUSINS)) cousins = true;
+      if (noRootCause) take(noRootCause);
+      const m = NO_PREVENTION_RE.exec(line);
+      if (m) take(m[1]);
+    }
   }
   const missing = [];
   if (!cause) missing.push('CLASS-GUARD or NO-ROOT-CAUSE');
-  if (cousins.length < MIN_REASON) missing.push('COUSINS');
+  if (!cousins) missing.push('COUSINS');
   return missing;
 }
 

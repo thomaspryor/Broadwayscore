@@ -371,6 +371,7 @@ module.exports = {
   FIX_RE,
   isFixCard,
   parseRootCauseBlock,
+  COUSINS_TAIL_RE,
   guardPaths,
   checkRootCauseClose,
   rootCauseCloseBlocking,

@@ -194,3 +194,13 @@ test('BRO-7316: CLASS-GUARD in a Linear comment and COUSINS in chat combine', ()
   assert.equal(d([...FIX_CARD, ...LAND, cmt, ok('l9')], 'COUSINS: grepped all shows for the same field, fixed 3\nSAFE TO ARCHIVE — x'), 'allow');
   assert.equal(d([...FIX_CARD, ...LAND, cmt, ok('l9')]), 'block');
 });
+
+test('BRO-7316 ship-check: every line counts, templates and "not searched" do not', () => {
+  const full = 'NO-ROOT-CAUSE: one-off typo in row ; cousins: grepped data/ and scripts/, none';
+  assert.deepEqual(missingRootCauseParts([full, 'NO-ROOT-CAUSE: one-off typo in row']), [], 'a short repeat does not erase the full answer');
+  assert.deepEqual(missingRootCauseParts(['COUSINS: grepped data/ and src/, fixed 2\nCLASS-GUARD: scripts/lib/a.test.mjs\nCOUSINS: none']), [], 'a later COUSINS: none keeps the earlier real one');
+  assert.deepEqual(missingRootCauseParts(['NO-PREVENTION: docs only change\nNO-PREVENTION: docs only ; cousins: grepped docs, none']), []);
+  assert.deepEqual(missingRootCauseParts(['CLASS-GUARD: <path of the test, check or guard>\nCOUSINS: <where you searched for the same defect>']), ['CLASS-GUARD or NO-ROOT-CAUSE', 'COUSINS'], 'echoed template');
+  assert.deepEqual(missingRootCauseParts(['CLASS-GUARD: scripts/lib/a.test.mjs\nCOUSINS: not searched yet, TODO']), ['COUSINS']);
+  assert.deepEqual(missingRootCauseParts(['**CLASS-GUARD:** scripts/lib/a.test.mjs\n- **Cousins:** grepped data/ and src/, none']), []);
+});
