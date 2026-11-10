@@ -1,0 +1,36 @@
+{
+  "issueNumber": "bro-7326d",
+  "planId": "cb471c6f-f58c-43db-bcd4-1d8441b803c2",
+  "status": "pending",
+  "createdAt": "2026-11-10T23:25:24.340Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7326: mark McHenry Vulture file as a non-review (Diablo Cody interview), parent request",
+    "steps": [
+      "jagged-little-pill-2019/vulture--jackson-mchenry.json: isNonReviewReason",
+      "jagged-little-pill-2019/vulture--jackson-mchenry.json: isNonReview"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "jagged-little-pill-2019/vulture--jackson-mchenry.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): attributed Diablo Cody interview, not a review of the production",
+        "description": "jagged-little-pill-2019/vulture--jackson-mchenry.json: isNonReviewReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jagged-little-pill-2019/vulture--jackson-mchenry.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "jagged-little-pill-2019/vulture--jackson-mchenry.json: isNonReview"
+      }
+    ]
+  }
+}
