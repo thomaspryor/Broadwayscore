@@ -94,6 +94,8 @@ const searchShows = visibleShows.map(show => {
   if (show.category && show.category !== 'broadway') {
     entry.category = show.category;
   }
+  // BRO-7313: HeaderSearch hides the market pill for operas (same rule as CategoryBadge).
+  if (show.type === 'opera') entry.type = 'opera';
 
   // Extract year from opening date or show ID for disambiguation
   if (show.openingDate) {
@@ -137,6 +139,7 @@ const archive = shows
   .map(show => {
     const entry = { id: show.id, title: show.title, slug: show.slug, status: show.status, archived: true };
     if (show.category && show.category !== 'broadway') entry.category = show.category;
+    if (show.type === 'opera') entry.type = 'opera';
     if (Array.isArray(show.akaTitles) && show.akaTitles.length) entry.akaTitles = show.akaTitles;
     const year = show.openingDate ? show.openingDate.slice(0, 4) : (show.id.match(/(\d{4})$/) || [])[1];
     if (year) entry.year = year;

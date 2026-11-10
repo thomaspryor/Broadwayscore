@@ -45,6 +45,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import ShowFollowBanner from '@/components/ShowFollowBanner';
 import ShowPageBelowFoldLoader from '@/components/show-page/ShowPageBelowFoldLoader';
 import { getVideoReviews } from '@/lib/data-video-reviews';
+import { showsMarketBadge } from '../../../../scripts/lib/market-badge';
 import { StatusBadge, ReviewsSyncingBadge, FormatPill, ProductionPill, CategoryBadge, ScoreBadge, getScoreTier, getScoreTextColorClass, ScoreBreakdownBar } from '@/components/show-cards';
 import { hasEnoughReviews, reviewsRemainingForScore, applyCoverageFloor } from '@/config/score-buckets';
 import { CURATED_HISTORICAL_SHOWS, TOP_CRITICS } from '@/config/scoring';
@@ -615,7 +616,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
               </div>
               {/* Compact pill labels under poster — mobile only */}
               <div className="flex sm:hidden flex-wrap justify-center gap-x-1.5 gap-y-0.5 text-[9px] font-semibold uppercase tracking-wide leading-none" data-testid="show-pills-poster">
-                {show.category && show.category !== 'broadway' && !isOpera && (
+                {show.category && showsMarketBadge(show.category, isOpera) && (
                   <span className={show.category === 'west-end' ? 'text-teal-400' : show.category === 'off-west-end' ? 'text-violet-400' : show.category === 'regional' ? 'text-emerald-400' : show.category === 'tour' ? 'text-sky-400' : 'text-indigo-400'}>{show.category === 'west-end' ? 'West End' : show.category === 'off-west-end' ? 'Off-West End' : show.category === 'regional' ? 'Regional' : show.category === 'tour' ? 'Tour' : 'Off-Bway'}</span>
                 )}
                 <span className={isOpera ? 'text-indigo-400' : showFormatTextClass(show.type)}>{isOpera ? 'Opera' : showFormatTitle(show.type)}</span>

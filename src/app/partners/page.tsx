@@ -24,6 +24,8 @@ export interface PartnerShowOption {
   slug: string;
   status: string;
   category?: string;
+  /** 'opera' for operas only, so the picker labels them Opera (BRO-7313). */
+  type?: string;
   score: number | null;
   reviewCount: number;
   hasEnoughReviews: boolean;
@@ -46,6 +48,7 @@ export default function PartnersPage() {
       slug: s.slug,
       status: s.status,
       category: s.category,
+      ...(s.type === 'opera' ? { type: 'opera' } : {}),
       score: s.criticScore?.score != null ? Math.round(s.criticScore.score) : null,
       reviewCount: s.criticScore?.reviewCount ?? 0,
       hasEnoughReviews: displaysCriticScore(s),
