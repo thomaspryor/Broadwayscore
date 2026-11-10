@@ -107,7 +107,7 @@ async function auditCity(city, maxUsd) {
   let cardFailed = false;
   summary.card = null;
   if (card) {
-    const r = await W.fileWithRetry(() => fileCard(card), { attempts: 2, baseMs: 30000 }) /* linear-brain retries 429s itself (5 x 60s) */;
+    const r = await W.fileWithRetry(() => fileCard(card), { attempts: 1 }) /* linear-brain retries 429s itself (5 x 60s); a 2nd attempt only risks a duplicate card and the 90-min job budget */;
     summary.card = r.card;
     if (r.error) { cardFailed = true; summary.cardError = r.error; console.log(`::warning::${city}: card not filed (${r.error.slice(0, 200)}); findings left unseen so next run retries`); }
   }
@@ -131,8 +131,9 @@ async function main() {
   }
   console.log(`[city-hub-weekly] ${out.map((s) => `${s.city}: ${s.error ? `ERROR ${s.error}` : `${s.newFindings} new`}`).join('; ')}`);
   if (process.env.GITHUB_STEP_SUMMARY) {
-    fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, `\n### City hub dual-model audit\n${out.map((s) => `- ${s.city}: ${s.error ? `error ${s.error}` : `${s.findings} findings, ${s.newFindings} new, class 5 ${s.provenance}${s.card ? `, card ${s.card}` : ''}`}`).join('\n')}\n`);
+    fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, `\n### City hub dual-model audit\n${out.map((s) => `- ${s.city}: ${s.error ? `error ${s.error}` : `${s.findings} findings, ${s.newFindings} new, class 5 ${s.provenance}${s.card ? `, card ${s.card}` : ''}${s.cardError ? `, CARD NOT FILED (${String(s.cardError).slice(0, 120)}), findings left unseen for next run` : ''}`}`).join('\n')}\n`);
   }
+  if (out.some((s) => s.cardError)) process.exitCode = 1; // surface unfiled cards (job is continue-on-error, so this only marks the step)
   // --open is the weekly card's VERIFY: it fails while any finding is unsettled (or a hub could not be audited)
   if (flag('open') && out.some((s) => s.error || s.newFindings > 0 || s.provenance > 0)) process.exit(1);
 }
