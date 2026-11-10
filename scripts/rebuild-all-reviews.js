@@ -6469,8 +6469,14 @@ for (const sid of postDedupTouchedShows) {
       // Matching lives in scripts/lib/manual-entry-merge.js. This merge runs after
       // every dedup pass, so a missed match appends a permanent phantom duplicate —
       // the helper matches punctuation-insensitively and falls back to the URL.
-      const { preserved, appended, matchedByUrl, refusedRoundup = [] } =
-        mergeManualEntries(allReviews, manualEntries, normalizeUrlForDedup);
+      // BRO-7291 class 5: rows without a recorded reason lose to a scored pipeline twin unless grandfathered.
+      let baseline = null;
+      try { baseline = new Set(JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/manual-entry-baseline.json'), 'utf8')).keys); } catch (_) { /* no baseline: legacy behaviour */ }
+      const { preserved, appended, matchedByUrl, refusedRoundup = [], unprovenanced = [] } =
+        mergeManualEntries(allReviews, manualEntries, normalizeUrlForDedup, { baseline });
+      for (const key of unprovenanced) {
+        console.warn(`⚠️  Manual entry without a recorded reason (not grandfathered): ${key}. Re-enter it with manual-review-direct.js --reason=...`);
+      }
       for (const key of refusedRoundup) {
         console.warn(`⚠️  Manual entry refused (roundup page credited to its host, no own review to attach to): ${key}`);
       }
