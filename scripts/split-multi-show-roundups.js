@@ -31,7 +31,7 @@
  * E2E sequence (manual until CI-wired):
  *   1. node scripts/split-multi-show-roundups.js --scan-all                    # dry-run audit
  *   2. node scripts/split-multi-show-roundups.js --scan-all --apply            # write child files
- *   3. cd data/review-texts && git add -A && git commit -m "split multi-show" && git push
+ *   3. bash scripts/sync-review-texts.sh "split multi-show roundups"
  *   4. gh workflow run llm-ensemble-score.yml                                  # score new children
  *   5. gh workflow run rebuild-fast.yml                                        # land in reviews.json
  *   6. gh workflow run "Deploy to Vercel"                                      # publish
@@ -188,7 +188,7 @@ function main() {
     console.log('\nDRY RUN — re-run with --apply to write changes.');
   } else if (stats.parentsRewritten || stats.childrenCreated) {
     console.log('\nReminder: data/review-texts is a separate private repo. Commit + push there:');
-    console.log('  cd data/review-texts && git add -A && git commit -m "split multi-show roundups" && git push');
+    console.log('  bash scripts/sync-review-texts.sh "split multi-show roundups"');
   }
 }
 

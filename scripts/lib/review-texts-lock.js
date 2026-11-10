@@ -65,6 +65,12 @@ function selfStartTime() {
   return _selfStart;
 }
 
+// Per-process holder token. `run` hands it to its child in TOKEN_ENV so the
+// child (a shell sync tool and the node helpers it calls) runs inside the
+// parent's hold instead of deadlocking on it (BRO-7171).
+const TOKEN_ENV = 'REVIEW_TEXTS_LOCK_TOKEN';
+const _token = require('crypto').randomBytes(12).toString('hex');
+
 /** Lock body: starts with the pid (file-lock.js readLockPid contract), then JSON. */
 function lockBody(label) {
   return `${process.pid} ${JSON.stringify({
@@ -72,8 +78,22 @@ function lockBody(label) {
     procStart: selfStartTime(),
     host: os.hostname(),
     label,
+    token: _token,
     acquiredAt: new Date().toISOString(),
   })}\n`;
+}
+
+/**
+ * True when this process was started under a live hold whose token it was
+ * handed (env TOKEN_ENV): an ancestor holds the lock for it.
+ */
+function inheritedHold() {
+  const want = process.env[TOKEN_ENV];
+  if (!want) return false;
+  let contents;
+  try { contents = fs.readFileSync(lockPath(), 'utf8'); } catch { return false; }
+  const meta = parseBody(contents);
+  return !!(meta && meta.token === want && holderAlive(contents));
 }
 
 function parseBody(contents) {
@@ -133,7 +153,7 @@ let _heldLabel = null;
  * @returns {T}
  */
 function withReviewTextsLock(label, fn, opts = {}) {
-  if (_depth > 0) {
+  if (_depth > 0 || inheritedHold()) {
     _depth++;
     try { return fn(); } finally { _depth--; }
   }
@@ -167,13 +187,30 @@ function readHolder() {
   return { ...meta, alive: holderAlive(contents) };
 }
 
+/**
+ * Run a command while holding the lock; the child inherits the hold
+ * (TOKEN_ENV), so its own lock calls are re-entrant. Returns the exit code.
+ * @param {string[]} argv  command + args
+ */
+function runLocked(argv, opts = {}) {
+  const { spawnSync } = require('child_process');
+  return withReviewTextsLock(`run:${path.basename(argv[0] || '')} ${(argv[1] && path.basename(argv[1])) || ''}`.trim(), () => {
+    const r = spawnSync(argv[0], argv.slice(1), { stdio: 'inherit', env: { ...process.env, [TOKEN_ENV]: _token } });
+    if (r.error) throw r.error;
+    return r.status == null ? 1 : r.status;
+  }, opts);
+}
+
 module.exports = {
   withReviewTextsLock,
+  runLocked,
+  inheritedHold,
   isHeldByMe,
   readHolder,
   holderAlive,
   lockPath,
   processStartTime,
+  TOKEN_ENV,
   DEFAULT_TIMEOUT_MS,
   _heldLabel: () => _heldLabel,
 };
@@ -183,8 +220,18 @@ if (require.main === module) {
   if (cmd === 'status') {
     const h = readHolder();
     console.log(h ? JSON.stringify(h, null, 2) : `free (${lockPath()})`);
+  } else if (cmd === 'held') {
+    // Exit 0 when an ancestor's `run` hold covers this process (shell re-exec guard).
+    process.exit(inheritedHold() ? 0 : 1);
+  } else if (cmd === 'run' && process.argv[3] === '--' && process.argv.length > 4) {
+    try {
+      process.exit(runLocked(process.argv.slice(4)));
+    } catch (e) {
+      console.error(`review-texts-lock run: ${e.message}`);
+      process.exit(e.code === 'ELOCKTIMEOUT' ? 75 : 1);
+    }
   } else {
-    console.error('Usage: node scripts/lib/review-texts-lock.js status');
+    console.error('Usage: node scripts/lib/review-texts-lock.js status | held | run -- <cmd> [args...]');
     process.exit(2);
   }
 }

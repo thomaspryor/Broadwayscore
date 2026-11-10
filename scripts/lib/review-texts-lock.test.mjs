@@ -128,3 +128,38 @@ test('a dead local pid stamped with a stale hostname (macOS renames on network c
   assert.equal(ran, true);
   assert.ok(Date.now() - t0 < 2000, 'not blocked for 2h by a hostname change');
 });
+
+// BRO-7171: shell sync tools re-exec under `run`; the child (and the node
+// helpers it calls) must see the parent's hold as theirs, or the first lock
+// call inside the child waits 30 min on its own parent.
+const CLI = path.join(path.dirname(new URL(import.meta.url).pathname), 'review-texts-lock.js');
+const cliEnv = () => { const e = { ...process.env, REVIEW_TEXTS_LOCK_PATH: lock.lockPath() }; delete e.REVIEW_TEXTS_LOCK_TOKEN; return e; };
+
+test('run: the child inherits the hold; exit code passes through; released after', () => {
+  const env = cliEnv();
+  const inner = `const L = require(${JSON.stringify(CLI)}); const t0 = Date.now();
+    L.withReviewTextsLock('nested', () => {}, { timeoutMs: 2000 });
+    console.log(JSON.stringify({ held: L.inheritedHold(), ms: Date.now() - t0 }));`;
+  const r = spawnSync(process.execPath, [CLI, 'run', '--', process.execPath, '-e', inner], { env, encoding: 'utf8' });
+  assert.equal(r.status, 0, r.stderr);
+  const out = JSON.parse(r.stdout.trim().split('\n').pop());
+  assert.equal(out.held, true);
+  assert.ok(out.ms < 1500, `nested lock call inside run waited ${out.ms}ms`);
+  assert.equal(spawnSync(process.execPath, [CLI, 'held'], { env }).status, 1, 'not held outside a run');
+  assert.equal(spawnSync(process.execPath, [CLI, 'run', '--', 'sh', '-c', 'exit 7'], { env }).status, 7);
+  assert.equal(fs.existsSync(lock.lockPath()), false, 'released after run');
+});
+
+test('run: another process (even with a forged token) waits for the hold', () => {
+  const env = cliEnv();
+  const holder = spawn(process.execPath, [CLI, 'run', '--', 'sleep', '3'], { env, stdio: 'ignore' });
+  children.push(holder);
+  const t0 = Date.now();
+  while (!fs.existsSync(lock.lockPath()) && Date.now() - t0 < 3000) spawnSync('sleep', ['0.1']);
+  const probe = `const L = require(${JSON.stringify(CLI)});
+    try { L.withReviewTextsLock('other', () => {}, { timeoutMs: 600 }); console.log('RAN'); } catch (e) { console.log(e.code); }`;
+  const r = spawnSync(process.execPath, ['-e', probe], { env: { ...env, REVIEW_TEXTS_LOCK_TOKEN: 'forged' }, encoding: 'utf8' });
+  assert.equal(r.stdout.trim(), 'ELOCKTIMEOUT');
+  assert.equal(spawnSync(process.execPath, [CLI, 'held'], { env: { ...env, REVIEW_TEXTS_LOCK_TOKEN: 'forged' } }).status, 1);
+  holder.kill();
+});
