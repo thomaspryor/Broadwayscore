@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 /**
+  * venue-write-guard-ok: reads venue from shows.json to compare against model extraction; writes nothing.
  * audit-city-hub-dual-model.js — pre-launch audit of one city hub by two independent model
  * families (Gemini + OpenAI), BRO-7256. Rerunnable for any hub in data/city-hubs.json.
  *
@@ -281,7 +282,7 @@ async function runTours(L, limit) {
 // ---------- pages (no LLM) ----------
 async function checkPages(L) {
   const out = { hub: { problems: [] }, app: { problems: [] } };
-  const res = await fetch(`https://broadwayscorecard.com/tours/${L.city}`, { headers: { 'user-agent': UA } });
+  const res = await fetch(`https://broadwayscorecard.com/tours/${L.city}`, { headers: { 'user-agent': UA }, signal: AbortSignal.timeout(30000) });
   out.hub.status = res.status;
   const live = A.parseLiveHub(await res.text());
   const exp = A.sectionHubShows(L.shows, L.city, L.hub.since, TODAY);
@@ -303,7 +304,7 @@ async function checkPages(L) {
     }
   }
   // app feed
-  const fr = await fetch('https://broadwayscorecard.com/data/mobile-shows.json', { headers: { 'user-agent': UA } });
+  const fr = await fetch('https://broadwayscorecard.com/data/mobile-shows.json', { headers: { 'user-agent': UA }, signal: AbortSignal.timeout(30000) });
   const feed = (await fr.json()).shows.filter((x) => x.cy === L.city);
   const feedIds = new Set(feed.map((x) => x.id));
   out.app = { feedStatus: fr.status, feedCount: feed.length, webCount: L.shows.length, problems: [] };
