@@ -98,6 +98,14 @@ if [ -z "${VE_ONLY_CODES:-}" ] && [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ -f
   _dr_err=$(printf '%s' "$input" | timeout 15 node "$VE_REPO_ROOT/scripts/lib/decision-restate.js" --stop-hook 2>&1 >/dev/null)
   if [ $? -eq 2 ]; then printf '%s\n' "$_dr_err" >&2; exit 2; fi
 fi
+# BRO-7294: rule 21 at the SAFE TO ARCHIVE claim. A session that landed a fix must state CLASS-GUARD: or NO-ROOT-CAUSE:
+# (chat or its Linear Outcome comment). Cloud only; fails open; its own per-session block budget (1, then 2 from the
+# card-close gate's arming date). Kill switch ROOT_CAUSE_STOP_DISABLE=1. Pinned by scripts/lib/root-cause-stop.test.mjs.
+if [ -z "${VE_ONLY_CODES:-}" ] && [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ "${ROOT_CAUSE_STOP_DISABLE:-0}" != "1" ] \
+   && [ -f "$VE_REPO_ROOT/scripts/lib/root-cause-stop.mjs" ] && command -v node >/dev/null 2>&1; then
+  _rcs_err=$(printf '%s' "$input" | timeout 15 node "$VE_REPO_ROOT/scripts/lib/root-cause-stop.mjs" --stop-hook 2>&1 >/dev/null)
+  if [ $? -eq 2 ]; then printf '%s\n' "$_rcs_err" >&2; exit 2; fi
+fi
 result=$(python3 - "$transcript" <<'PYEOF'
 import hashlib, json, sys, os, re, shlex
 
