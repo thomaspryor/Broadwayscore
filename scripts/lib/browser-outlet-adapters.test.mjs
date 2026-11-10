@@ -22,11 +22,11 @@ function fakePage({ status = 200, evalResult = { text: 'x'.repeat(2000), title: 
 }
 
 test('every recover-*-browser.js outlet has an adapter, keyed by its persistent profile name', () => {
-  assert.deepEqual(Object.keys(A.ADAPTERS).sort(), ['newyorker', 'nyt', 'thestage', 'thetimes', 'wapo', 'wsj']);
-  for (const id of ['thestage', 'nytimes', 'newyorker', 'washpost', 'wsj', 'times-uk', 'sunday-times']) {
+  assert.deepEqual(Object.keys(A.ADAPTERS).sort(), ['newyorker', 'nyt', 'telegraph', 'thestage', 'thetimes', 'wapo', 'wsj']);
+  for (const id of ['thestage', 'nytimes', 'newyorker', 'washpost', 'wsj', 'times-uk', 'sunday-times', 'telegraph', 'sunday-telegraph']) {
     assert.ok(A.adapterFor(id), `no adapter for ${id}`);
   }
-  assert.equal(A.adapterFor('telegraph'), null);
+  assert.equal(A.adapterFor('guardian'), null);
   for (const a of Object.values(A.ADAPTERS)) {
     assert.ok(a.testUrl && a.cookieDomain && a.minAuthChars > 0 && a.labels.fetchMethod);
   }
@@ -42,7 +42,12 @@ test('30% rule per adapter: a nightly:false adapter is planned only when the run
   assert.equal(A.adapterUsable('nytimes', { explicitOutlets: new Set(['nytimes']) }), true);
   assert.equal(A.adapterUsable('nytimes', { explicitOutlets: new Set(['thestage']) }), false);
   assert.equal(A.adapterUsable('thestage'), true, 'The Stage measured 18/20');
+  // Telegraph: unmeasured and the session ends with the month, so nightly off;
+  // a run that names --outlet=telegraph plans it (BRO-7171).
+  assert.equal(A.ADAPTERS.telegraph.nightly, false);
   assert.equal(A.adapterUsable('telegraph'), false);
+  assert.equal(A.adapterUsable('telegraph', { explicitOutlets: new Set(['telegraph']) }), true);
+  assert.equal(A.adapterUsable('guardian', { explicitOutlets: new Set(['guardian']) }), false);
 });
 
 test('the driver plans BROWSER_SESSION through adapterUsable, not bare adapterFor', async () => {
@@ -114,6 +119,62 @@ test('resolveBrowserMiss: lost session stops the run; wall and bot check are nev
   probed = false;
   assert.equal((await A.resolveBrowserMiss({ text: 'y'.repeat(4000) }, o(async () => { probed = true; return {}; }, 'show_not_mentioned'))).action, 'evidence');
   assert.equal(probed, false);
+});
+
+// BRO-7171: Telegraph fixtures (markup shapes from live pages, placeholder prose).
+const fs = require('fs');
+const path = require('path');
+const fx = (n) => fs.readFileSync(path.join(path.dirname(new URL(import.meta.url).pathname), '__fixtures__', 'telegraph', n), 'utf8');
+
+test('extractTelegraphBody joins every article-body-text block and drops furniture between and after', () => {
+  const t = A.extractTelegraphBody(fx('logged-in.html'));
+  for (let i = 1; i <= 5; i++) assert.match(t, new RegExp(`Fixture paragraph ${['one', 'two', 'three', 'four', 'five'][i - 1]}\\.`));
+  assert.match(t, /linked phrase/);
+  assert.match(t, /until Jun 20$/, 'ends at the listing line, before the Recommended teaser');
+  assert.doesNotMatch(t, /Fixture caption|Credit|Recommended|best plays and musicals|Join the conversation|Published/);
+  assert.doesNotMatch(t, /^Share$/m, 'page-furniture strips the share token');
+  assert.equal(t.split('\n\n').length, 6, 'paragraph breaks kept');
+  assert.equal(A.extractTelegraphBody('<html><body><p>no body</p></body></html>'), null);
+});
+
+test('Telegraph adapter: subscriber page -> text; walled page -> authWall; Akamai page -> bot check', async () => {
+  const ok = await A.ADAPTERS.telegraph.extract(fakePage({ html: fx('logged-in.html') }), 'https://www.telegraph.co.uk/theatre/what-to-see/x/');
+  assert.equal(ok.error, undefined);
+  assert.ok(ok.len > 1000 && ok.text.startsWith('Fixture paragraph one'));
+
+  const walled = await A.ADAPTERS.telegraph.extract(fakePage({ html: fx('walled.html') }), 'https://www.telegraph.co.uk/theatre/what-to-see/x/');
+  assert.equal(walled.authWall, true);
+  assert.equal(walled.text, undefined, 'the teaser is never handed on as a body');
+  // The blurred column is a wall even when the teaser runs long.
+  const longTeaser = fx('walled.html').replace('Fixture teaser.', 'Fixture teaser. ' + 'More teaser words here. '.repeat(80));
+  assert.equal((await A.ADAPTERS.telegraph.extract(fakePage({ html: longTeaser }), 'https://www.telegraph.co.uk/x/')).authWall, true);
+
+  const bot = await A.ADAPTERS.telegraph.extract(fakePage({ html: fx('bot-block.html') }), 'https://www.telegraph.co.uk/x/');
+  assert.match(bot.error, /Bot-check/);
+  assert.equal(bot.authWall, undefined);
+
+  // The lost-session policy: a walled row with a walled probe stops the run;
+  // a bot check is skipped. Neither is evidence about the review.
+  const probeWalled = async () => A.ADAPTERS.telegraph.extract(fakePage({ html: fx('walled.html') }), A.ADAPTERS.telegraph.testUrl);
+  assert.equal((await A.resolveBrowserMiss(walled, { probe: probeWalled, minAuthChars: A.ADAPTERS.telegraph.minAuthChars })).action, 'stop');
+  assert.equal((await A.resolveBrowserMiss(bot, { probe: probeWalled, minAuthChars: A.ADAPTERS.telegraph.minAuthChars })).action, 'skip');
+});
+
+test('renew-cookies: telegraph is manual-only and local-only, with a browser-only probe on the adapter testUrl', () => {
+  const { RENEW_OUTLETS } = require('./cookie-renew.js');
+  const { COOKIE_PROBES, classifyWalledProbe } = require('./cookie-probes.js');
+  const cfg = RENEW_OUTLETS.telegraph;
+  assert.equal(cfg.manualOnly, true);
+  assert.equal(cfg.localOnly, true);
+  assert.equal(cfg.selectors, undefined, 'no automatic credential flow');
+  assert.match(cfg.loginUrl, /^https:\/\/secure\.telegraph\.co\.uk\/customer\/secure\/login\//);
+  const p = COOKIE_PROBES.telegraph;
+  assert.equal(p.url, A.ADAPTERS.telegraph.testUrl);
+  assert.equal(p.browserOnly, true);
+  const cls = (html) => classifyWalledProbe({ withCookies: { html, body: p.extractBody(html) || '' }, minBody: p.minBody, wallMarker: p.wallMarker, gateMarker: p.gateMarker });
+  assert.equal(cls(fx('logged-in.html')), 'logged-in');
+  assert.equal(cls(fx('walled.html')), 'logged-out');
+  assert.equal(cls(fx('bot-block.html')), 'error', 'a bot page is never read as logged out');
 });
 
 test('a Stage wall page that still yields a short teaser is an access wall too', async () => {
