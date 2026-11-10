@@ -518,6 +518,21 @@
     "queuedAt": "2026-11-10T15:12:07.785Z"
   },
   {
+    "conditionKey": "live-data-test:tests/unit/critic-spelling-duplicates-live-data.test.mjs::reviews.json: no NEW critic page split by a byline spelling variant",
+    "title": "Live-data test failing: reviews.json: no NEW critic page split by a byline spelling variant (tests/unit/critic-spelling-duplicates-live-data.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"reviews.json: no NEW critic page split by a byline spelling variant\" in tests/unit/critic-spelling-duplicates-live-data.test.mjs is red against the live corpus.\n\nExpected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'review: The Recs NB - Nicola Berry (1) -> Nicola Berry (1) [extra words, both pages sizeable]'\n+ ]\n- []\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "tests/unit/critic-spelling-duplicates-live-data.test.mjs::reviews.json: no NEW critic page split by a byline spelling variant",
+    "fields": [],
+    "queuedAt": "2026-11-10T15:28:38.228Z"
+  },
+  {
     "conditionKey": "land:land/bro-7295-approval-scan",
     "title": "Landing blocked: unit-tests-node red on land/bro-7295-approval-scan",
     "description": "land.yml did not land land/bro-7295-approval-scan: the unit-tests-node gate went red at d1ece530d0. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42841756088",
