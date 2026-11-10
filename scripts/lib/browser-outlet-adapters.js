@@ -32,7 +32,7 @@ async function gotoOrNotFound(page, url, waitMs) {
  * Server-HTML extractor (article-extractor's outlet rules on the rendered page).
  * The Stage and The Times; the bodies are the ones the manual scripts used.
  */
-function htmlExtractor({ host, waitMs = 1500, label }) {
+function htmlExtractor({ host, waitMs = 1500, label, wallRe = null }) {
   return async function extract(page, url) {
     const { extractArticleText } = require('./article-extractor');
     const nf = await gotoOrNotFound(page, url, waitMs);
@@ -43,6 +43,10 @@ function htmlExtractor({ host, waitMs = 1500, label }) {
     }
     const text = extractArticleText(html, host);
     const title = await page.title();
+    // A sign-in / registration wall in place of the body says the session
+    // has no access to this page, never anything about the review (BRO-7171).
+    // Checked on short bodies too: a walled page can still yield a headline/teaser.
+    if ((!text || text.length < 500) && wallRe && wallRe.test(html)) return { error: 'access wall (sign-in/registration) in place of the body', authWall: true, title, html };
     if (!text) return { error: `No article body element found (${label} returned null — likely logged out)`, title, html };
     return { text, title, len: text.length, html };
   };
@@ -78,7 +82,38 @@ function domExtractor({ selectors, botRe, pickLongest = false, stripGaa = true, 
 }
 
 /** Read The Stage article from the live authenticated page. */
-const extractThestage = htmlExtractor({ host: 'thestage.co.uk', label: 'extractStageBody' });
+// THESTAGE_WALL_RE: the registration wall served when the session is not
+// entitled ("Sign in below or create a free account to read 5 free articles";
+// the live HTML puts a link between "account" and "to read", and the link
+// carries utm_source=Reggate, checked on a logged-out page 2026-11-10).
+const THESTAGE_WALL_RE = /create a free account(?:\s|<[^>]*>)*to read|utm_source=Reggate|THIS IS NOT A PAYWALL/i;
+const extractThestage = htmlExtractor({ host: 'thestage.co.uk', label: 'extractStageBody', wallRe: THESTAGE_WALL_RE });
+
+/**
+ * BRO-7171: what a recovery run may conclude from a page that gave no usable
+ * body. Only a 404/410, or an empty/short body while the session still passes
+ * its auth probe, is evidence about the review. A bot check is never evidence;
+ * an access wall or a failed re-probe means the session is gone, so the run
+ * stops instead of stamping files or counting "too short".
+ *
+ * @param {{error?:string, text?:string, notFound?:boolean, authWall?:boolean}} result  adapter.extract output
+ * @param {{probe: () => Promise<object>, minAuthChars: number, refusalCode?: string|null}} o
+ *   probe re-runs the adapter on its testUrl; refusalCode is the acceptance
+ *   gate's code when a body was extracted but refused
+ * @returns {Promise<{action:'evidence'|'skip'|'stop', reason:string}>}
+ */
+async function resolveBrowserMiss(result, { probe, minAuthChars, refusalCode = null }) {
+  const r = result || {};
+  if (r.notFound) return { action: 'evidence', reason: r.error || 'not_found' };
+  if (/robot|denied|too many|bot-check|challenge/i.test(String(r.error || ''))) return { action: 'skip', reason: 'bot_check' };
+  const textMiss = !!r.error || !r.text;
+  if (!textMiss && refusalCode !== 'too_short') return { action: 'evidence', reason: refusalCode || 'refused' };
+  const p = await Promise.resolve().then(probe).catch((e) => ({ error: e.message }));
+  const live = p && !p.error && p.text && (p.len || p.text.length) >= minAuthChars;
+  if (!live) return { action: 'stop', reason: `session_lost: ${(p && p.error) || `probe ${(p && p.len) || 0} chars`}` };
+  if (r.authWall) return { action: 'skip', reason: 'access_wall' };
+  return { action: 'evidence', reason: r.error || refusalCode || 'no_text' };
+}
 
 const ADAPTERS = Object.freeze({
   thestage: Object.freeze({
@@ -230,7 +265,7 @@ async function openSession(adapter) {
       await close();
       return { ok: false, outcome: 'auth_failed', reason: `auth_probe: ${probe.error || `${probe.len || 0} chars`}` };
     }
-    return { ok: true, session: { extract: (url) => adapter.extract(page, url), probe: () => adapter.extract(page, adapter.testUrl), close } };
+    return { ok: true, session: { extract: (url) => adapter.extract(page, url), probe: () => adapter.extract(page, adapter.testUrl), minAuthChars: adapter.minAuthChars, close } };
   } catch (e) {
     try { if (context) await context.close(); } catch { /* ignore */ }
     release();
@@ -238,4 +273,4 @@ async function openSession(adapter) {
   }
 }
 
-module.exports = { ADAPTERS, adapterFor, adapterUsable, openSession, extractThestage, gotoOrNotFound };
+module.exports = { ADAPTERS, adapterFor, adapterUsable, openSession, extractThestage, gotoOrNotFound, htmlExtractor, resolveBrowserMiss, THESTAGE_WALL_RE };

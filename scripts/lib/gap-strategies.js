@@ -127,6 +127,11 @@ async function archive(c, deps = defaultDeps()) {
  * (opened once per outlet per run, auth probe passed). A body that will not
  * extract re-runs the probe: a lost session is auth_failed, not evidence.
  */
+// Raw browser bodies under this length get a session re-probe before the
+// acceptance gate can call them "too short" (gap-acceptance MIN_TEXT_CHARS is
+// 300 after cleaning; the raw text is longer than the cleaned one).
+const BROWSER_SHORT_BODY_CHARS = 500;
+
 async function browserSession(c, session) {
   if (!session) return { ok: false, outcome: 'browser_unavailable', reason: 'no_session' };
   let r;
@@ -134,16 +139,28 @@ async function browserSession(c, session) {
     // A navigation timeout or a crashed page says nothing about the article.
     return { ok: false, outcome: 'non_evidence', reason: `navigation_error: ${String(e.message).split('\n')[0].slice(0, 80)}` };
   }
-  if (r && r.text) return { ok: true, rawText: r.text, url: c.url, html: r.html || '', via: 'browser' };
+  // A body shorter than the acceptance floor would be refused as "too short",
+  // which is evidence; a logged-out page reads the same way, so re-probe first.
+  const shortBody = r && r.text && r.text.length < BROWSER_SHORT_BODY_CHARS;
+  if (r && r.text && !shortBody) return { ok: true, rawText: r.text, url: c.url, html: r.html || '', via: 'browser' };
   // The outlet answered 404/410 to a logged-in session: evidence the stored url
   // is dead (Stage 4; it used to fall through to a probe and read as rejected).
   if (r && r.notFound) return { ok: false, outcome: 'no_evidence', reason: `url_not_found_${r.status || 404}` };
-  // A bot-check page is the outlet blocking us, not evidence about the review.
-  if (/robot|denied|too many|bot-check|challenge/i.test(String(r && r.error))) return { ok: false, outcome: 'non_evidence', reason: 'bot_check' };
+  // One policy with the recover-*-browser.js scripts (browser-outlet-adapters
+  // resolveBrowserMiss): a bot check, an access wall or a lost session is never
+  // evidence about the review.
   if (session.probe) {
-    const p = await session.probe().catch((e) => ({ error: e.message }));
-    if (!p || p.error || !p.text) return { ok: false, outcome: 'auth_failed', reason: `session_lost: ${(p && p.error) || 'probe empty'}` };
+    const { resolveBrowserMiss } = require('./browser-outlet-adapters');
+    const v = await resolveBrowserMiss(r, { probe: session.probe, minAuthChars: session.minAuthChars || 1, refusalCode: shortBody ? 'too_short' : null });
+    if (v.action === 'stop') return { ok: false, outcome: 'auth_failed', reason: v.reason };
+    if (v.action === 'skip') return { ok: false, outcome: 'non_evidence', reason: v.reason };
+  } else if (/robot|denied|too many|bot-check|challenge/i.test(String(r && r.error))) {
+    return { ok: false, outcome: 'non_evidence', reason: 'bot_check' };
+  } else if (r && r.authWall) {
+    return { ok: false, outcome: 'non_evidence', reason: 'access_wall' };
   }
+  // Session verified live: a short body goes to the acceptance gate as usual.
+  if (shortBody) return { ok: true, rawText: r.text, url: c.url, html: r.html || '', via: 'browser' };
   return { ok: false, outcome: 'rejected', reason: 'extractor_null' };
 }
 
