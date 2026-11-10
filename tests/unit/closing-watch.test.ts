@@ -7,6 +7,7 @@ import assert from 'node:assert/strict';
 import {
   isOnClosingWatch,
   isNearBreakEven,
+  splitStruggling,
   isBoxOfficeDriven,
   finalRunStart,
   seasonalIndexSeries,
@@ -208,4 +209,15 @@ test('close to break-even: just above, or under only after the season adjustment
   // Far under on raw grosses, lifted over 1 only by a deep January index: not "close".
   assert.equal(isNearBreakEven({ ...base, avgGross: 700_000, adjustedRatio: 1.02 }), false);
   assert.equal(isNearBreakEven({ ...base, avgGross: 842_000, adjustedRatio: 1.02 }), true); // 90%
+});
+
+test('struggling shows with an announced closing are "closing before recouping", not "at risk"', () => {
+  const shows = [
+    { slug: 'stranger-things', closingDate: '2027-01-03' },
+    { slug: 'no-closing', closingDate: null },
+    { slug: 'two-strangers', closingDate: '2026-11-29' },
+  ];
+  const { closing, atRisk } = splitStruggling(shows);
+  assert.deepEqual(closing.map((s) => s.slug), ['stranger-things', 'two-strangers']);
+  assert.deepEqual(atRisk.map((s) => s.slug), ['no-closing']);
 });
