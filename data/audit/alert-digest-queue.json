@@ -1632,20 +1632,6 @@
     "queuedAt": "2026-11-10T20:18:02.153Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 23 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +17 more). Checked 2026-11-10.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-10T20:37:38.513Z"
-  },
-  {
     "conditionKey": "land:land/bro-7319",
     "title": "Landing blocked: rebase red on land/bro-7319",
     "description": "land.yml did not land land/bro-7319: the rebase gate went red at a3661e163b. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-7319 @ a3661e163b (origin/land/bro-7319) → origin/main @ d7cc687f53 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ d7cc687f53: Rebasing (1/3) error: could not apply 9248063257a... BRO-7319: two-source rule for text-derived closing dates, hold-and-flag displaced hand rows, run-start opening guard in city-hub audit hint: Resolve all conflicts manually, mark them  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42890258338",
@@ -1737,5 +1723,19 @@
       }
     ],
     "queuedAt": "2026-11-10T20:49:59.136Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 22 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +16 more). Checked 2026-11-10.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-10T21:34:52.216Z"
   }
 ]
