@@ -1,20 +1,20 @@
 {
-  "runDate": "2026-11-10T17:16:03.266Z",
+  "runDate": "2026-11-10T17:40:57.190Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 60,
+    "maxReviews": 1000,
     "priority": "all",
-    "showFilter": "dogstar-off-west-end-2026",
-    "aggressive": true,
+    "showFilter": "frankie-and-johnny-in-the-clair-de-lune-2019",
+    "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 4,
-    "failed": 1,
+    "processed": 7,
+    "failed": 2,
     "skipped": 0,
-    "successRate": "80.0%"
+    "successRate": "77.8%"
   },
   "tierBreakdown": {
     "playwright": 4,
@@ -23,9 +23,9 @@
     "directCookies": 0,
     "scrapingdog": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 2
   },
   "statistics": {
     "tier1Attempts": 4,
@@ -34,30 +34,30 @@
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 1,
+    "tier1_9Attempts": 0,
     "tier1_9Success": 0,
-    "tier2Attempts": 1,
+    "tier2Attempts": 0,
     "tier2Success": 0,
     "tier3Attempts": 1,
-    "tier3Success": 0,
-    "tier3_6Attempts": 1,
+    "tier3Success": 1,
+    "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 2,
-    "tier4Success": 0,
-    "totalFailed": 1,
-    "scrapingBeePageCredits": 1,
+    "tier4Attempts": 4,
+    "tier4Success": 1,
+    "totalFailed": 2,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 4,
-    "failed": 1,
+    "processed": 7,
+    "failed": 2,
     "shows": [
-      "dogstar-off-west-end-2026"
+      "frankie-and-johnny-in-the-clair-de-lune-2019"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -66,45 +66,58 @@
     }
   },
   "processed": [
-    "dogstar-off-west-end-2026/artsdesk--unknown.json",
-    "dogstar-off-west-end-2026/londontheatre1--unknown.json",
-    "dogstar-off-west-end-2026/the-spy-in-the-stalls--unknown.json",
-    "dogstar-off-west-end-2026/theatreboard--unknown.json"
+    "frankie-and-johnny-in-the-clair-de-lune-2019/dailybeast--tim-teeman.json",
+    "frankie-and-johnny-in-the-clair-de-lune-2019/theatermania--zachary-stewart.json",
+    "frankie-and-johnny-in-the-clair-de-lune-2019/uinterview--erik-meers.json",
+    "frankie-and-johnny-in-the-clair-de-lune-2019/bobs-theater-blog--robert-sholiton.json",
+    "frankie-and-johnny-in-the-clair-de-lune-2019/nysr--steven-suskin.json",
+    "frankie-and-johnny-in-the-clair-de-lune-2019/thestage--naveen-kumar.json",
+    "frankie-and-johnny-in-the-clair-de-lune-2019/front-row-center--tulis-mccall.json"
   ],
   "failed": [
-    "dogstar-off-west-end-2026/plays-to-see--unknown.json"
+    "frankie-and-johnny-in-the-clair-de-lune-2019/theater-news-online--jeremy-gerard.json",
+    "frankie-and-johnny-in-the-clair-de-lune-2019/broadway-and-me--janice-c-simpson.json"
   ],
   "cumulativeResumedState": {
     "processed": [
-      "dogstar-off-west-end-2026/artsdesk--unknown.json",
-      "dogstar-off-west-end-2026/londontheatre1--unknown.json",
-      "dogstar-off-west-end-2026/the-spy-in-the-stalls--unknown.json",
-      "dogstar-off-west-end-2026/theatreboard--unknown.json"
+      "frankie-and-johnny-in-the-clair-de-lune-2019/dailybeast--tim-teeman.json",
+      "frankie-and-johnny-in-the-clair-de-lune-2019/theatermania--zachary-stewart.json",
+      "frankie-and-johnny-in-the-clair-de-lune-2019/uinterview--erik-meers.json",
+      "frankie-and-johnny-in-the-clair-de-lune-2019/bobs-theater-blog--robert-sholiton.json",
+      "frankie-and-johnny-in-the-clair-de-lune-2019/nysr--steven-suskin.json",
+      "frankie-and-johnny-in-the-clair-de-lune-2019/thestage--naveen-kumar.json",
+      "frankie-and-johnny-in-the-clair-de-lune-2019/front-row-center--tulis-mccall.json"
     ],
     "failed": [
-      "dogstar-off-west-end-2026/plays-to-see--unknown.json"
+      "frankie-and-johnny-in-the-clair-de-lune-2019/theater-news-online--jeremy-gerard.json",
+      "frankie-and-johnny-in-the-clair-de-lune-2019/broadway-and-me--janice-c-simpson.json"
     ]
   },
   "tierDetails": {
     "playwright": [
-      "dogstar-off-west-end-2026/artsdesk--unknown.json",
-      "dogstar-off-west-end-2026/londontheatre1--unknown.json",
-      "dogstar-off-west-end-2026/the-spy-in-the-stalls--unknown.json",
-      "dogstar-off-west-end-2026/theatreboard--unknown.json"
+      "frankie-and-johnny-in-the-clair-de-lune-2019/theatermania--zachary-stewart.json",
+      "frankie-and-johnny-in-the-clair-de-lune-2019/bobs-theater-blog--robert-sholiton.json",
+      "frankie-and-johnny-in-the-clair-de-lune-2019/nysr--steven-suskin.json",
+      "frankie-and-johnny-in-the-clair-de-lune-2019/front-row-center--tulis-mccall.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "frankie-and-johnny-in-the-clair-de-lune-2019/dailybeast--tim-teeman.json"
+    ],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "frankie-and-johnny-in-the-clair-de-lune-2019/uinterview--erik-meers.json",
+      "frankie-and-johnny-in-the-clair-de-lune-2019/thestage--naveen-kumar.json"
+    ]
   },
   "failuresByOutlet": {
-    "Plays To See": {
+    "Broadway & Me": {
       "count": 1,
-      "domain": "playstosee.com",
+      "domain": "broadwayandme.blogspot.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false

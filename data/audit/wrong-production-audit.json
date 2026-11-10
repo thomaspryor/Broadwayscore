@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-10T17:18:34.195Z",
+  "timestamp": "2026-11-10T17:34:34.566Z",
   "stats": {
-    "totalReviews": 81240,
-    "alreadyFlagged": 22204,
+    "totalReviews": 81256,
+    "alreadyFlagged": 22207,
     "dateGuardCatches": 219,
     "directorMismatch": 3606,
-    "tvFilmSignals": 2287,
-    "londonSignals": 3662,
+    "tvFilmSignals": 2286,
+    "londonSignals": 3663,
     "offBroadwaySignals": 752,
     "yearMismatch": 364,
-    "noPublishDate": 8467
+    "noPublishDate": 8476
   },
   "findings": [
     {
@@ -45879,20 +45879,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hbo max\""
-        }
-      ]
-    },
-    {
-      "showId": "new-york-new-york-2023",
-      "file": "village-voice--michael-musto.json",
-      "score": 76,
-      "publishDate": "2023-04-27",
-      "url": "https://www.villagevoice.com/review-new-york-new-york-makes-it-here/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -97329,6 +97315,19 @@
       ]
     },
     {
+      "showId": "dogstar-off-west-end-2026",
+      "file": "artsdesk--unknown.json",
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/dogstar-hampstead-theatre-review-enjoyably-ghostly-if-frustratingly-static",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
       "showId": "doktor-glas-west-end-2013",
       "file": "standard--unknown.json",
       "score": 78,
@@ -109109,7 +109108,7 @@
       "file": "sunday-times--kate-maltby.json",
       "score": 46,
       "publishDate": "2018-06-10",
-      "url": null,
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/killer-joe-review-theatre-orlando-bloom-dvfnfzztj",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

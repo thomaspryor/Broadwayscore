@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-10T16:11:53.462Z",
+  "generatedAt": "2026-11-10T17:39:50.316Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -89,6 +89,11 @@
       "openingDate": "2026-11-08"
     },
     {
+      "id": "kate-allie-and-the-86-mets-off-broadway-2026",
+      "title": "Kate, Allie and the '86 Mets",
+      "openingDate": "2026-11-09"
+    },
+    {
       "id": "king-lear-off-broadway-2026",
       "title": "King Lear",
       "openingDate": "2026-11-05"
@@ -108,16 +113,16 @@
   "feedsChecked": 84,
   "feedsFailed": [
     {
+      "outletId": "theater-scene",
+      "error": "Timeout fetching https://www.theaterscene.net/feed/"
+    },
+    {
       "outletId": "theater-life",
       "error": "Timeout fetching https://theaterlife.com/feed"
     },
     {
       "outletId": "front-row-center",
-      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
-    },
-    {
-      "outletId": "stageandcinema",
-      "error": "HTTP 503 for https://www.stageandcinema.com/feed/"
+      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
       "outletId": "cote-notices",
@@ -136,35 +141,31 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     },
     {
-      "outletId": "times-square-chronicles",
-      "error": "fetchPage returned an unexpected page for https://t2conline.com/wp-json/wp/v2/posts?categories=504,298,283&per_page=100&"
-    },
-    {
-      "outletId": "londontheatre1",
-      "error": "fetchPage returned an unexpected page for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&o"
+      "outletId": "stagebuddy",
+      "error": "Timeout fetching https://stagebuddy.com/feed"
     }
   ],
-  "itemsScanned": 777,
+  "itemsScanned": 835,
   "matchedGaps": 2,
   "possibleGaps": 2,
   "gaps": [
     {
-      "showId": "dogstar-off-west-end-2026",
-      "title": "Dogstar",
+      "showId": "222-a-ghost-story-off-broadway-2026",
+      "title": "2:22 - A Ghost Story",
       "level": "matched",
-      "outletId": "plays-to-see",
-      "url": "https://playstosee.com/reviews/uk-reviews/london/dogstar/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=dogstar",
-      "headline": "Dogstar",
-      "publishDate": "2026-11-10"
+      "outletId": "times-square-chronicles",
+      "url": "https://t2conline.com/222-a-ghost-story-the-loudest-thing-in-the-room-isnt-the-ghost/",
+      "headline": "2:22 – A Ghost Story: The Loudest Thing in the Room Isn’t the Ghost",
+      "publishDate": "2026-11-07"
     },
     {
-      "showId": "dogstar-off-west-end-2026",
-      "title": "Dogstar",
+      "showId": "the-verge-off-broadway-2026",
+      "title": "The Verge",
       "level": "matched",
-      "outletId": "the-spy-in-the-stalls",
-      "url": "https://thespyinthestalls.com/2026/11/dogstar/",
-      "headline": "DOGSTAR★★★Hampstead Theatre",
-      "publishDate": "2026-11-10"
+      "outletId": "stageandcinema",
+      "url": "https://stageandcinema.com/2026/11/09/the-verge-review-fiasco-theater-public/",
+      "headline": "Off-Broadway Review: THE VERGE (Fiasco Theater / The Public Theater)",
+      "publishDate": "2026-11-09"
     },
     {
       "showId": "king-lear-off-broadway-2026",

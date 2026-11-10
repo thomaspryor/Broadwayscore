@@ -219,6 +219,15 @@
  *   # hygiene-short-timeout-ok: <reason>  — (in the job) skip rule (r), short core-data job timeout (BRO-4266)
  *   # hygiene-unbounded-clone-ok: <reason> — (on the command line or the line above) skip rule (z) (BRO-5972)
  *
+ * (ae) EXPRESSION-SIZE (BRO-7306): a `run:` block that contains any `${{ }}` is
+ *      evaluated by GitHub as one expression, the whole script included, capped
+ *      at 21,000 characters. Past the cap the workflow file is invalid: no
+ *      schedule, dispatch or push run can start and nothing pages. BRO-7198
+ *      took opening-night-orchestrator.yml's Polling loop from 15,866 to 21,020
+ *      and the orchestrator could not run for a day. Fires at 19,000 bytes;
+ *      fix by moving every `${{ }}` into the step `env:`. Covers workflows and
+ *      composite actions. No exemption marker.
+ *
  * No external deps. Parsed with plain regex, consistent with
  * audit-workflow-concurrency.js and audit-cron-health-coverage.js.
  *
@@ -265,6 +274,8 @@ const {
   findUnpinnedActionUses,
   findEolNodeVersions,
   findStrictAdvisoryWithoutAlert,
+  findOversizedExpressionRunBlocks,
+  EXPRESSION_MAX_LENGTH,
 } = require('./lib/audit-workflow-hygiene-rules');
 const { scanWorkflow: scanPaidProviders } = require('./lib/paid-provider-push-scan');
 const { execFileSync } = require('child_process');
@@ -869,6 +880,7 @@ async function main() {
     quoteDouble: [],
     paidProviderOnPush: [],
     runIdKeyedCache: [],
+    oversizedExpression: [],
   };
 
   // ── Rule (m): run-id-keyed actions/cache, across workflows AND composite
@@ -886,6 +898,12 @@ async function main() {
     for (const { label, full } of targets) {
       const hits = findRunIdKeyedCaches(fs.readFileSync(full, 'utf8'));
       if (hits.length) violations.runIdKeyedCache.push({ file: label, hits });
+    }
+    // Rule (ae), BRO-7306: a run block holding ${{ }} near GitHub's expression
+    // size cap. No exemption marker: past the cap the file cannot run at all.
+    for (const { label, full } of targets) {
+      const hits = findOversizedExpressionRunBlocks(fs.readFileSync(full, 'utf8'));
+      if (hits.length) violations.oversizedExpression.push({ file: label, hits });
     }
     // Rule (e) for composite actions (BRO-4480: the dead exit-code capture
     // that hid an 8-minute install hang lived in actions/setup-playwright).
@@ -1310,7 +1328,8 @@ async function main() {
     // Caught by ship-check — the rule shipped unwired and passed its own tests,
     // because the tests called findRunIdKeyedCaches directly and never asserted
     // the CLI's exit code.
-    violations.runIdKeyedCache.length;
+    violations.runIdKeyedCache.length +
+    violations.oversizedExpression.length;
 
   // Advisory: printed before the total check so it shows on an otherwise clean run.
   if (violations.restFallback.length) {
@@ -1693,6 +1712,23 @@ async function main() {
     console.error('\nFix: key on content (hashFiles) or drop the cache if it does not pay for itself');
     console.error('— measure the restore+save step durations against a cold build before keeping it.');
     console.error('Exempt (legitimate): add  # hygiene-cache-runid-ok: <reason>  anywhere in the file.\n');
+  }
+
+  if (violations.oversizedExpression.length) {
+    console.error('── (ae) run: block with ${{ }} near the expression size cap ───');
+    console.error('GitHub evaluates a run block that contains any ${{ }} as ONE expression,');
+    console.error(`the whole script included, capped at ${EXPRESSION_MAX_LENGTH} characters. Past the cap the`);
+    console.error('workflow file is invalid: nothing can start it and nothing pages (BRO-7306:');
+    console.error('the opening-night orchestrator could not run for a day).\n');
+    for (const { file, hits } of violations.oversizedExpression) {
+      console.error(`  • ${file}`);
+      for (const h of hits) {
+        console.error(`      run block at line ${h.lineNum}: ${h.bytes} bytes as an expression, ${h.expressions} \${{ }} (first at line ${h.firstExpressionLine})`);
+      }
+    }
+    console.error('\nFix: move every ${{ }} out of the script into the step env: and read it as');
+    console.error('"$NAME". A block with no ${{ }} is a plain string and is not capped this way.');
+    console.error('There is no exemption marker for this rule.\n');
   }
 
   process.exit(1);
