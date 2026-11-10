@@ -4245,7 +4245,7 @@ function chooseOutletOrGeneric(dedicated, generic) {
   const base = String(generic || '');
   if (!dedicated) return { text: base, source: 'generic', novel: 0 };
   if (!base.trim()) return { text: dedicated, source: 'outlet', novel: 0 };
-  const { novelProseVerdict } = require('./lib/gap-acceptance');
+  const { novelProseVerdict } = require('./lib/novel-prose');
   // Judge both bodies as they will be stored. Raw, a cookie-consent dialog
   // (WhatsOnStage's IAB vendor list: 9,690 chars of long sentences) passed
   // as "novel prose" and the generic copy won; the save path strips that
@@ -4261,7 +4261,7 @@ function chooseOutletOrGeneric(dedicated, generic) {
   // triumph."). The 300-char bar above is for unrelated bodies; for a strict
   // superset losing prose is the worse failure (pre-BRO-7171 the longer text
   // always won), so a 3-word run is enough.
-  const { novelProseChars } = require('./lib/gap-acceptance');
+  const { novelProseChars } = require('./lib/novel-prose');
   const extra = novelProseChars(d, g, { minRunWords: 3 });
   if (extra > 0 && novelProseChars(g, d) === 0) return { text: base, source: 'generic', novel: extra };
   return { text: dedicated, source: 'outlet', novel: v.novel };
