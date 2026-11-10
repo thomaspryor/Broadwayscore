@@ -11,7 +11,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
-import { execFileSync, spawn } from 'node:child_process';
+import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -96,18 +96,16 @@ test('acquireLock is fail-closed while the holder is alive, reclaims a dead hold
   assert.equal(renew.acquireLock(lock), null, 'second acquire while we hold it');
   release();
 
-  // Lock left by a process that has exited.
-  // The freed PID can be reused by another process on a busy CI runner, so spawn until one is verifiably dead (BRO-7256 flake).
-  let deadPid = null;
-  for (let i = 0; i < 20 && deadPid === null; i++) {
-    const child = spawn(process.execPath, ['-e', '0']);
-    await new Promise((r) => child.on('exit', r));
-    let alive = true;
-    try { process.kill(child.pid, 0); } catch { alive = false; }
-    if (!alive) deadPid = child.pid;
-  }
-  assert.notEqual(deadPid, null, 'found a dead PID');
+  // Lock left by a process that has exited. Two races made this flaky (BRO-7256, BRO-7163 F10):
+  // a spawned child's freed PID can be reused on a busy runner, and with staleMs 0 a lock whose
+  // mtime is in the same millisecond as the check reads as age <= 0, so isStale() never asks
+  // whether the holder is alive. Use a PID above Linux's pid_max ceiling (2^22) and backdate the
+  // mtime by a second, still far under LOCK_STALE_MS, so this exercises the dead-holder path only.
+  const deadPid = 4194305;
+  assert.throws(() => process.kill(deadPid, 0), { code: 'ESRCH' }, 'PID above pid_max is never alive');
   fs.writeFileSync(lock, `${deadPid} 2026-09-27T00:00:00Z\n`);
+  const recent = new Date(Date.now() - 1000);
+  fs.utimesSync(lock, recent, recent);
   const again = renew.acquireLock(lock);
   assert.equal(typeof again, 'function', 'dead-PID lock is reclaimed');
   again();
