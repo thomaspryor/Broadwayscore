@@ -4234,6 +4234,8 @@ async function getWorkflowRunSummary() {
         runs.push(...response.workflow_runs);
         if (response.workflow_runs.length < 100) break;
         page++;
+        // Cap reached with more pages unread: coverage is incomplete (BRO-7307).
+        if (page > maxPages) partial = true;
       }
       return { runs, partial };
     });
@@ -6264,12 +6266,17 @@ function saveHistory(history) {
 // BRO-7307: an invalid workflow file fails instantly on every push and never
 // reaches notify-failure, so nothing else reports it. One row + one routed
 // alert per workflow; page-worthy workflows use the paging key.
+// Row names start with 'Workflow coverage' so digest-audience files them as
+// internal: the routed alert below is the one card, not a second START-NOW one.
 function invalidWorkflowFileResults(summary) {
   const files = (summary && summary.invalidWorkflowFiles) || [];
   if (!summary || summary.skipped) return [];
-  if (files.length === 0) return [{ name: 'Workflow files: invalid', status: 'pass', message: 'No workflow shows the invalid-file signature in the last 24h' }];
+  if (files.length === 0) {
+    if (summary.partial) return [{ name: 'Workflow coverage: invalid files', status: 'warn', message: 'Run list was truncated (300-run cap or a failed page), so an invalid workflow file could be missed' }];
+    return [{ name: 'Workflow coverage: invalid files', status: 'pass', message: 'No workflow shows the invalid-file signature in the last 24h' }];
+  }
   return files.map((f) => ({
-    name: `Workflow file invalid: ${f.file}`,
+    name: `Workflow coverage: invalid file ${f.file}`,
     status: 'error',
     message: `${f.file} cannot start: ${f.count} instant failed push run(s) since ${f.oldestAt} (newest ${f.newestAt}); no job ran so no failure alert fired. ${f.newestUrl}`,
     hint: 'Open the newest run: GitHub prints the parse error on the run page. Fix the file; scheduled and dispatched runs do not start until it is valid.',
@@ -6279,17 +6286,18 @@ function invalidWorkflowFileResults(summary) {
 async function alertInvalidWorkflowFiles(summary) {
   for (const f of (summary && summary.invalidWorkflowFiles) || []) {
     const page = isPageWorthyWorkflow(f.file);
+    const base = {
+      title: `Workflow file invalid: ${f.file}`,
+      description: `${f.file} is not a valid workflow, so GitHub records an instant failed run on every push to main (${f.count} since ${f.oldestAt}) and never runs its schedule. ${f.newestUrl}`,
+      hint: 'GitHub shows the parse error on the run page. Fix the file (BRO-7307).',
+      severity: 'error',
+      cardAction: 'Fix',
+      cooldownHours: 24,
+    };
     try {
-      await routeAlert({
-        conditionKey: `${page ? 'workflow-invalid-file:page:' : 'workflow-invalid-file:'}${f.file}`,
-        title: `Workflow file invalid: ${f.file}`,
-        description: `${f.file} is not a valid workflow, so GitHub records an instant failed run on every push (${f.count} since ${f.oldestAt}) and never runs its schedule. ${f.newestUrl}`,
-        hint: 'GitHub shows the parse error on the run page. Fix the file (BRO-7307).',
-        severity: 'error',
-        disposition: page ? 'human' : 'auto',
-        cardAction: 'Fix',
-        cooldownHours: 24,
-      });
+      // Always file the fix card; page-worthy workflows additionally page.
+      await routeAlert({ ...base, conditionKey: `workflow-invalid-file:${f.file}`, disposition: 'auto' });
+      if (page) await routeAlert({ ...base, conditionKey: `workflow-invalid-file:page:${f.file}`, disposition: 'human' });
     } catch (err) {
       console.error(`[Invalid workflow file] routeAlert failed for ${f.file}: ${err.message}`);
     }

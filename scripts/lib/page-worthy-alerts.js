@@ -366,7 +366,7 @@ const OWNER_ACTIONS = {
   // fix failed or never started.
   'opening-night-orchestrator.yml': 'Nothing is needed from you. The nightly opening-night review collection failed, so tonight\'s reviews may reach the site late.',
   // BRO-5477: sent only after the automatic fix card failed or never started.
-  'workflow-invalid-file:page:': 'Nothing is needed from you. A page-worthy workflow file is broken, so it cannot run; a fix is being filed.',
+  'workflow-invalid-file:page:': 'Nothing is needed from you. A page-worthy workflow file is invalid, so it cannot run until it is fixed. A fix card is open for a worker.',
   'auto-fix-first:escalation:': 'Nothing is needed from you. You asked to be told when the automatic fix for an opening-night failure does not work; what broke and what happens next are below.',
 };
 

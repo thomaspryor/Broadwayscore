@@ -35,13 +35,16 @@ function isInvalidWorkflowFileRun(run) {
  * file (a later normal run proves the file parses again). Non-signature runs
  * are matched by `path`, since their `name` is a display name.
  *
+ * @param {{branch?: string|null}} [opts] default 'main'; null = every branch
  * @returns {Array<{file, count, newestAt, oldestAt, newestUrl}>} newest first
  */
-function findInvalidWorkflowFiles(runs) {
+function findInvalidWorkflowFiles(runs, { branch = 'main' } = {}) {
   const bad = new Map();
   const lastGood = new Map();
   for (const run of Array.isArray(runs) ? runs : []) {
-    if (!run) continue;
+    // Only the default branch counts: a broken file on an unmerged branch must
+    // not page, and a good run on another branch must not hide a broken main.
+    if (!run || (branch && run.head_branch !== branch)) continue;
     if (isInvalidWorkflowFileRun(run)) {
       const file = run.name.split('/').pop();
       const t = ms(run.created_at);

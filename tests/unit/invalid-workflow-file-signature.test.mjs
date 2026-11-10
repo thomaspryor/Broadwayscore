@@ -7,11 +7,11 @@ const { isInvalidWorkflowFileRun, findInvalidWorkflowFiles } = require('../../sc
 const P = '.github/workflows/opening-night-orchestrator.yml';
 // Real BRO-7306 shape: runs 1800-1998, 2026-11-10.
 const invalid = (id, at = '2026-11-10T09:41:12Z') => ({
-  id, name: P, path: P, event: 'push', status: 'completed', conclusion: 'failure',
+  id, name: P, path: P, event: 'push', head_branch: 'main', status: 'completed', conclusion: 'failure',
   created_at: at, updated_at: at, html_url: `https://github.com/x/actions/runs/${id}`,
 });
 const normalFailed = {
-  id: 5, name: 'Opening Night Orchestrator', path: P, event: 'schedule', conclusion: 'failure',
+  id: 5, head_branch: 'main', name: 'Opening Night Orchestrator', path: P, event: 'schedule', conclusion: 'failure',
   created_at: '2026-11-10T08:00:00Z', updated_at: '2026-11-10T08:07:30Z',
 };
 const normalPush = {
@@ -60,4 +60,25 @@ test('health-check turns findings into one error row per workflow, pass row when
   assert.equal(rows[0].status, 'error');
   assert.equal(invalidWorkflowFileResults({ skipped: false, invalidWorkflowFiles: [] })[0].status, 'pass');
   assert.deepEqual(invalidWorkflowFileResults({ skipped: true }), []);
+});
+
+test('branch scoping: unmerged-branch breakage ignored; other-branch good run does not hide main', () => {
+  assert.deepEqual(findInvalidWorkflowFiles([{ ...invalid(1), head_branch: 'land/x' }]), []);
+  const otherGood = { ...normalFailed, head_branch: 'land/x', created_at: '2026-11-10T19:00:00Z', updated_at: '2026-11-10T19:05:00Z' };
+  assert.equal(findInvalidWorkflowFiles([invalid(1998, '2026-11-10T17:59:00Z'), otherGood]).length, 1);
+});
+test('a good run older than the newest invalid run stays flagged', () => {
+  assert.equal(findInvalidWorkflowFiles([invalid(1998, '2026-11-10T17:59:00Z'), normalFailed]).length, 1);
+});
+test('truncated run list: no-finding result is a warn, not a pass', () => {
+  const { invalidWorkflowFileResults } = require('../../scripts/health-check.js');
+  assert.equal(invalidWorkflowFileResults({ skipped: false, partial: true, invalidWorkflowFiles: [] })[0].status, 'warn');
+});
+test('rows are internal (no duplicate START-NOW card) and the key family auto-resolves', () => {
+  const { classifyHealthCheck } = require('../../scripts/lib/digest-audience.js');
+  const { invalidWorkflowFileResults } = require('../../scripts/health-check.js');
+  const row = invalidWorkflowFileResults({ skipped: false, invalidWorkflowFiles: findInvalidWorkflowFiles([invalid(1)]) })[0];
+  assert.equal(classifyHealthCheck({ name: row.name }), 'internal');
+  const src = require('node:fs').readFileSync(new URL('../../scripts/lib/owner-alert-router.js', import.meta.url), 'utf8');
+  assert.match(src, /family: \/\^workflow-invalid-file:\//);
 });
