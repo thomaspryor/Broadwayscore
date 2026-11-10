@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-10T12:05:27.436Z",
+  "generatedAt": "2026-11-10T13:27:11.048Z",
   "windowDays": 45,
   "showsScanned": 241,
   "gaps": [
@@ -18,9 +18,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=iphigenie-en-tauride-english-national-opera-west-end-2026 --url=https://www.thetimes.com/culture/classical-opera/article/iphigenie-en-tauride-review-youve-never-seen-a-family-reunion-like-this-hmwx2kkh2 --outlet=sunday-times   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-08T22:39:44.349Z",
-      "fileAgeHours": 37.42827861111111,
+      "fileAgeHours": 38.79040138888889,
       "gapSeenAt": "2026-11-09T00:00:26.432Z",
-      "nonTerminalAgeHours": 36.08361222222222,
+      "nonTerminalAgeHours": 37.445726666666665,
       "needsManualRecovery": false
     },
     {
@@ -38,9 +38,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=msblackforpresident-off-broadway-2026 --url=https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play --outlet=guardian   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T07:02:09.044Z",
-      "fileAgeHours": 29.054790277777776,
+      "fileAgeHours": 30.416911388888888,
       "gapSeenAt": "2026-11-10T05:35:04.300Z",
-      "nonTerminalAgeHours": 6.506426666666667,
+      "nonTerminalAgeHours": 7.868541111111111,
       "needsManualRecovery": false
     },
     {
@@ -58,9 +58,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=adirondack-chair-circle-regional-2026 --url=https://www.talkinbroadway.com/page/regional/chicago/ch944.html --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T21:14:38.698Z",
-      "fileAgeHours": 14.84686861111111,
+      "fileAgeHours": 16.208983055555557,
       "gapSeenAt": "2026-11-09T21:39:25.109Z",
-      "nonTerminalAgeHours": 14.433979722222222,
+      "nonTerminalAgeHours": 15.796094166666666,
       "needsManualRecovery": false
     },
     {
@@ -78,9 +78,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "# no URL on file — find the theatermania review for the-cottage-regional-2026 first, then: node scripts/ingest-review-from-url.js --show=the-cottage-regional-2026 --url=<URL> --outlet=theatermania",
       "firstSeen": "2026-11-10T00:26:39.999Z",
-      "fileAgeHours": 11.646508611111111,
+      "fileAgeHours": 13.008623333333333,
       "gapSeenAt": "2026-11-10T01:31:07.327Z",
-      "nonTerminalAgeHours": 10.5722525,
+      "nonTerminalAgeHours": 11.934366944444445,
       "needsManualRecovery": false
     }
   ],
