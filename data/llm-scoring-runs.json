@@ -309067,21 +309067,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-10T18:43:16.655Z",
-    "completedAt": "2026-11-10T18:43:34.691Z",
-    "totalReviews": 81593,
-    "processed": 3,
-    "skipped": 81576,
+    "startedAt": "2026-11-10T18:46:29.735Z",
+    "completedAt": "2026-11-10T18:46:51.594Z",
+    "totalReviews": 19,
+    "processed": 4,
+    "skipped": 15,
     "errors": 0,
     "tokensUsed": {
-      "input": 20304,
-      "output": 903,
-      "cacheRead": 7614,
-      "cacheWrite": 3807,
-      "total": 48517
+      "input": 26412,
+      "output": 1175,
+      "cacheRead": 15228,
+      "cacheWrite": 0,
+      "total": 63741
     },
-    "costUsd": 0.08749565,
-    "runId": "42876768953",
+    "costUsd": 0.0971502,
+    "runId": "42877566978",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -314720,20 +314720,30 @@
       {
         "showId": "as-you-like-it-regional-2021",
         "ourDistribution": {
-          "up": 24,
+          "up": 25,
           "flat": 2,
           "down": 0,
-          "total": 26
+          "total": 27
         },
         "hasDisagreement": false
       },
       {
         "showId": "as-you-like-it-regional-2025",
         "ourDistribution": {
-          "up": 24,
+          "up": 25,
           "flat": 2,
           "down": 0,
-          "total": 26
+          "total": 27
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "as-you-like-it-regional-2026",
+        "ourDistribution": {
+          "up": 25,
+          "flat": 2,
+          "down": 0,
+          "total": 27
         },
         "hasDisagreement": false
       },
@@ -360337,8 +360347,8 @@
     ]
   },
   {
-    "startedAt": "2026-11-10T18:49:18.364Z",
-    "completedAt": "2026-11-10T18:49:28.965Z",
+    "startedAt": "2026-11-10T18:51:48.462Z",
+    "completedAt": "2026-11-10T18:51:48.464Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -360351,7 +360361,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "42876768953",
+    "runId": "42877566978",
     "source": "comparative-rescore",
     "errorDetails": []
   }
