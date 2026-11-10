@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7252",
   "planId": "4cb30692-498c-46ed-8c17-96ac838f4bec",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-09T23:22:06.064Z",
   "submitter": {
     "name": null,
@@ -133,5 +133,51 @@
         "description": "shows.json: schmigadoon-2026.closingExtensions"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-10T03:54:07.298Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate already \"2027-07-04\", pins refreshed for operation-mincemeat-2025",
+      "noop": true
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingExtensionCount updated for operation-mincemeat-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingExtensions updated for operation-mincemeat-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate already \"2027-05-30\", pins refreshed for the-rocky-horror-show-2026",
+      "noop": true
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingExtensionCount updated for the-rocky-horror-show-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingExtensions updated for the-rocky-horror-show-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingExtensionCount updated for schmigadoon-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingExtensions updated for schmigadoon-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
