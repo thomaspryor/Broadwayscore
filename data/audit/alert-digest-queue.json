@@ -1321,6 +1321,21 @@
     "queuedAt": "2026-11-10T03:42:24.269Z"
   },
   {
+    "conditionKey": "live-data-test:scripts/audit-cross-outlet-attributions.test.mjs::no unreviewed cross-outlet attribution suspects remain",
+    "title": "Live-data test failing: no unreviewed cross-outlet attribution suspects remain (scripts/audit-cross-outlet-attributions.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"no unreviewed cross-outlet attribution suspects remain\" in scripts/audit-cross-outlet-attributions.test.mjs is red against the live corpus.\n\nunreviewed cross-outlet suspects remain (first 5): [\n{\n\"file\": \"wanted-2022/nytg--jonathan-mandell.json\",\n\"criticName\": \"Jonathan Mandell\",\n\"defaultCriticOf\": [\n\"nyt-theater\",\n\"faster-times\"\n],\n\"source\": \"bww-roundup\",\n\"url\": null\n}\n]\n\n1 !== 0\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "scripts/audit-cross-outlet-attributions.test.mjs::no unreviewed cross-outlet attribution suspects remain",
+    "fields": [],
+    "queuedAt": "2026-11-10T04:13:19.636Z"
+  },
+  {
     "conditionKey": "land:land/worktree-agent-ac55ac6c5eeaee060",
     "title": "Landing blocked: scripts-lib-tests red on land/worktree-agent-ac55ac6c5eeaee060",
     "description": "land.yml did not land land/worktree-agent-ac55ac6c5eeaee060: the scripts-lib-tests gate went red at b0ffe24460. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42750530370",
