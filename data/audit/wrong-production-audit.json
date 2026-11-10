@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-09T23:47:49.168Z",
+  "timestamp": "2026-11-10T00:09:56.692Z",
   "stats": {
-    "totalReviews": 80945,
-    "alreadyFlagged": 22135,
+    "totalReviews": 80978,
+    "alreadyFlagged": 22138,
     "dateGuardCatches": 219,
-    "directorMismatch": 3580,
+    "directorMismatch": 3582,
     "tvFilmSignals": 2303,
-    "londonSignals": 3653,
+    "londonSignals": 3655,
     "offBroadwaySignals": 752,
-    "yearMismatch": 370,
-    "noPublishDate": 8436
+    "yearMismatch": 372,
+    "noPublishDate": 8439
   },
   "findings": [
     {
@@ -46317,6 +46317,19 @@
     },
     {
       "showId": "north-by-northwest-old-regional-2026",
+      "file": "theatermania--jonas-schwartz.json",
+      "publishDate": "2026-07-15",
+      "url": "https://www.theatermania.com/news/review-north-by-northwest-an-all-over-the-map-hitchcock-adaptation_1845981/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"emma rice\" from north-by-northwest-regional-2026"
+        }
+      ]
+    },
+    {
+      "showId": "north-by-northwest-old-regional-2026",
       "file": "theatrereviewskurahashi--yuko-kurahashi.json",
       "score": 79,
       "publishDate": "2026-07-13",
@@ -51408,6 +51421,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"adam meggido\" from peter-pan-goes-wrong-2023"
+        }
+      ]
+    },
+    {
+      "showId": "peter-pan-goes-wrong-west-end-2015",
+      "file": "london-box-office--phil-willmott.json",
+      "score": 90,
+      "publishDate": "2015-12-11",
+      "url": "https://www.londonboxoffice.co.uk/news/post/peter-pan-wrong-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (4x) more than 2015 (1x). 2026 matches production: peter-pan-goes-wrong-regional-2026"
         }
       ]
     },
@@ -61821,6 +61853,19 @@
     },
     {
       "showId": "sunday-in-the-park-with-george-regional-2026",
+      "file": "oazis--unknown.json",
+      "publishDate": null,
+      "url": "https://oazis.app/evenements/sunday-in-the-park-with-george-chicago",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from sunday-in-the-park-with-george-1994"
+        }
+      ]
+    },
+    {
+      "showId": "sunday-in-the-park-with-george-regional-2026",
       "file": "picksinsix--sarah-fiorello.json",
       "score": 79,
       "publishDate": "2026-09-05",
@@ -66302,6 +66347,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "the-cottage-2023",
+      "file": "culturesauce--thom-geier.json",
+      "score": 40,
+      "publishDate": null,
+      "url": "https://culturesauce.com/cottage-broadway-review-eric-mccormack-laura-bell-bundy/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (2x) more than 2023 (1x). 2026 matches production: the-cottage-regional-2026"
         }
       ]
     },
@@ -118787,20 +118846,6 @@
       ]
     },
     {
-      "showId": "peter-pan-goes-wrong-west-end-2015",
-      "file": "london-box-office--phil-willmott.json",
-      "score": 90,
-      "publishDate": "2015-12-11",
-      "url": "https://www.londonboxoffice.co.uk/news/post/peter-pan-wrong-review",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
       "showId": "phaedra-west-end-2023",
       "file": "london-box-office--stuart-king.json",
       "score": 96,
@@ -132739,6 +132784,19 @@
       ]
     },
     {
+      "showId": "the-memory-of-water-octagon-regional-2026",
+      "file": "theatrereviewsnorth--robert-beale.json",
+      "publishDate": "2026-02-04",
+      "url": "https://www.theatrereviewsnorth.com/post/the-memory-of-water",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "the-merchant-of-venice-2010",
       "file": "the-komisar-scoop--lucy-komisar.json",
       "score": 82,
@@ -136096,6 +136154,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
+        }
+      ]
+    },
+    {
+      "showId": "the-trials-tron-regional-2026",
+      "file": "theatreandtonic--charlotte.json",
+      "publishDate": "2026-03-11",
+      "url": "https://theatreandtonic.co.uk/blog/the-trials-tron-theatre-glasgow-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
         }
       ]
     },
