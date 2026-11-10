@@ -401,6 +401,7 @@ function roundupNamesShow(roundupUrls, wholeTitleSlugs, openingDate) {
  * An identical blurb under two shows is a copy, not a section, and a URL listed
  * under this show alone has no sibling section, so neither vouches.
  */
+const SHOW_SCORE_DATE_WINDOW_DAYS = 120;
 const showScoreCache = new Map();
 function loadShowScoreDoc(file) {
   let mtime = 0;
@@ -426,13 +427,23 @@ function showScoreUrlKey(url) {
   // (viewpage.aspx?record=7314) identify the page.
   return urlKey(url).replace(/#.*$/, '').replace(/[?&]m=[01]$/, '').replace(/\/$/, '').toLowerCase();
 }
-function showScoreVouches(showId, url, file) {
+function showScoreVouches(showId, url, file, { openingDate, publishDate, hasSavedText } = {}) {
   if (!file) return false;
+  // Saved text was already judged by the text tests above; Show Score never
+  // overrides it (its classic error is show B's blurb under show A's URL).
+  if (hasSavedText) return false;
+  // Same production: a Show Score mislink to a revival years away vouches nothing.
+  if (openingDate && publishDate) {
+    const days = Math.abs(Date.parse(publishDate) - Date.parse(openingDate)) / 86400000;
+    if (!(days <= SHOW_SCORE_DATE_WINDOW_DAYS)) return false;
+  }
   const rows = loadShowScoreDoc(file).get(showScoreUrlKey(url));
   if (!rows) return false;
-  // A landing page (".../index.html", a bare root) is listed under unrelated
-  // shows; it is no post with sections, so it vouches for nothing.
-  if (/(^|\/)(index\.html?)?$/i.test(showScoreUrlKey(url).replace(/^[^/]*/, ''))) return false;
+  // Only an editorial post vouches: its last path segment is a hyphenated
+  // headline slug (3+ words). Landing pages, category and id-only pages are
+  // listed under unrelated shows and carry no per-show sections.
+  const lastSeg = showScoreUrlKey(url).replace(/\?.*$/, '').split('/').filter(Boolean).pop() || '';
+  if (lastSeg.replace(/\.(html?|php|aspx?)$/i, '').split('-').filter(Boolean).length < 3) return false;
   const mine = rows.find(r => r.showId === showId);
   if (!mine || !mine.excerpt) return false;
   const norm = (t) => t.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
@@ -620,7 +631,9 @@ function run(show, context) {
         || fullTextNamesVenueAndTitleWords(fullTexts, show, venueRe, mentionRe)
         || fullTextAboutThisShow(fullTexts, show, context.shows)
         || roundupNamesShow(sourceTextByUrl.roundupUrls.get(urlKey(review.url)), wholeTitleSlugs, show.openingDate)
-        || showScoreVouches(show.id, review.url, context.showScorePath)) { textConfirmed++; continue; }
+        || showScoreVouches(show.id, review.url, context.showScorePath, {
+          openingDate: show.openingDate, publishDate: review.publishDate, hasSavedText: !!(fullTexts && fullTexts.length),
+        })) { textConfirmed++; continue; }
     if ((!segs || segs.length === 0) && isIdOnlyCmsUrl(urlSlug)) {
       opaqueSkipped.push({ outletId: review.outletId, url: review.url });
       continue;

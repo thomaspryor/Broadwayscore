@@ -17,15 +17,15 @@ const check = require('../../scripts/lib/opening-night-checks/slug-mismatch.chec
 const MOTHER = { id: 'conversations-with-mother-off-broadway-2025', title: 'Conversations with Mother', slug: 'conversations-with-mother' };
 const URL = 'https://www.interestedbystander.com/2025/03/theater-reviews-ambitious-sumo.html';
 
-function run(showScoreShows, url = URL) {
+function run(showScoreShows, url = URL, extra = {}, show = MOTHER) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'slug-ss-'));
   try {
     const ssPath = path.join(root, 'show-score.json');
     fs.writeFileSync(ssPath, JSON.stringify({ shows: showScoreShows }));
-    return check.run(MOTHER, {
+    return check.run(show, {
       reviewTextsRoot: path.join(root, 'none'),
       showScorePath: ssPath,
-      reviewsDoc: { [MOTHER.id]: [{ outletId: 'the-interested-bystander', criticName: 'c', url }] },
+      reviewsDoc: { [MOTHER.id]: [{ outletId: 'the-interested-bystander', criticName: 'c', url, ...extra }] },
     });
   } finally { fs.rmSync(root, { recursive: true, force: true }); }
 }
@@ -61,6 +61,28 @@ describe('slug-mismatch: Show Score provenance', () => {
   it('never vouches for a landing page', () => {
     const u = 'https://www.talkinbroadway.com/page/world/index.html';
     const r = run({ [MOTHER.id]: row('a', u), 'other-show': row('b', u) }, u);
+    assert.strictEqual(r.ok, false);
+  });
+  it('flags a review published years from the show opening (other production)', () => {
+    const r = run({ [MOTHER.id]: row('a'), 'x': row('b') }, URL, { publishDate: '2019-01-01' }, { ...MOTHER, openingDate: '2025-02-23' });
+    assert.strictEqual(r.ok, false);
+    const ok = run({ [MOTHER.id]: row('a'), 'x': row('b') }, URL, { publishDate: '2025-03-09' }, { ...MOTHER, openingDate: '2025-02-23' });
+    assert.strictEqual(ok.ok, true);
+  });
+  it('never overrides saved review text that does not name the show', () => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'slug-ss-txt-'));
+    try {
+      fs.mkdirSync(path.join(root, MOTHER.id));
+      fs.writeFileSync(path.join(root, MOTHER.id, 'r.json'), JSON.stringify({ url: URL, fullText: 'About a sumo wrestling play only.' }));
+      const ssPath = path.join(root, 'ss.json');
+      fs.writeFileSync(ssPath, JSON.stringify({ shows: { [MOTHER.id]: row('a'), x: row('b') } }));
+      const r = check.run(MOTHER, { reviewTextsRoot: root, showScorePath: ssPath, reviewsDoc: { [MOTHER.id]: [{ outletId: 'o', criticName: 'c', url: URL }] } });
+      assert.strictEqual(r.ok, false);
+    } finally { fs.rmSync(root, { recursive: true, force: true }); }
+  });
+  it('flags a category page even when listed under two shows', () => {
+    const u = 'https://w.example/news/category/theater.html';
+    const r = run({ [MOTHER.id]: row('a', u), x: row('b', u) }, u);
     assert.strictEqual(r.ok, false);
   });
   it('flags when no Show Score file exists', () => {
