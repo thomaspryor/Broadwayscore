@@ -260,3 +260,27 @@ test('urlFind: a partial index error keeps the method open even when its found l
     assert.equal(r.methods.SLUG_GUESS, 'candidates_refused');
   } finally { Object.assign(UF, orig); fs.rmSync(tmp, { recursive: true, force: true }); }
 });
+
+// BRO-7171 item (c): a free-only URL_FIND slot never spends paid SERP or a
+// Bright Data fetch, and the skipped SERP stays open (skipped_paid is not done).
+test('urlFind freeOnly: no paid SERP, no Bright Data, SERP left open', async () => {
+  const fs = require('fs'); const os = require('os'); const path = require('path');
+  const UF = require('./gap-url-find.js');
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'urlfind-'));
+  fs.mkdirSync(path.join(tmp, 'julie-west-end-2018'));
+  const fp = path.join(tmp, 'julie-west-end-2018', 'telegraph--x.json');
+  fs.writeFileSync(fp, JSON.stringify({ showId: 'julie-west-end-2018', outletId: 'telegraph', criticName: 'X Y', url: null, fullText: 'short' }));
+  const root = path.join(path.dirname(new URL(import.meta.url).pathname), '..', '..');
+  const orig = { runMethod: UF.runMethod, fetchCandidateText: UF.fetchCandidateText };
+  const ran = [];
+  const allowBd = [];
+  UF.runMethod = async (m, ctx) => { ran.push(`${m}:${ctx.allowPaid}`); return { candidates: m === 'WAYBACK_CDX' ? [{ url: 'https://t.co.uk/w1' }] : [], tried: [], error: null, paid: m === 'SERP' }; };
+  UF.fetchCandidateText = async (url, o) => { allowBd.push(o.allowBd); return { ok: false, tried: ['free:no_evidence/url_dead_404', 'wayback:no_evidence/archive_empty'] }; };
+  try {
+    const r = await S.urlFind({ filePath: fp, showId: 'julie-west-end-2018' }, { dir: tmp, rootDir: root, methods: ['WAYBACK_CDX', 'SERP'], freeOnly: true }, { gate: async () => ({ ok: false, code: 'identity_unproven' }) });
+    assert.equal(r.methods.SERP, 'skipped_paid');
+    assert.ok(!ran.some((x) => x.startsWith('SERP')), JSON.stringify(ran));
+    assert.deepEqual(allowBd, [false]);
+    assert.ok(!UF.METHOD_DONE.has('skipped_paid'));
+  } finally { Object.assign(UF, orig); fs.rmSync(tmp, { recursive: true, force: true }); }
+});

@@ -255,6 +255,15 @@ async function main() {
   if (OPTS.dryRun) {
     SUMMARY.mode = 'dry_run';
     const summary = printPlan(cands);
+    {
+      const envN = (k, d) => { const n = parseInt(process.env[k] || String(d), 10); return Number.isFinite(n) && n >= 0 ? n : d; };
+      const plan = planUrlFind(cands, envN('GAP_URL_FIND_MAX_PER_RUN', 12), envN('GAP_URL_FIND_FREE_MAX_PER_RUN', 24));
+      const uf = plan.filter((c) => c.strategy === 'URL_FIND');
+      if (uf.length || plan.skippedUrlFind) {
+        console.log(`\nURL_FIND tonight: ${uf.filter((c) => !c.urlFindFreeOnly).length} full + ${uf.filter((c) => c.urlFindFreeOnly).length} free-only; ${plan.skippedUrlFind} wait`);
+        for (const c of uf.slice(0, 40)) console.log(`  ${c.urlFindFreeOnly ? 'free' : 'full'}  ${c.recency || '?'}  ${String(c.showDate || '').slice(0, 10)}  ${c.reviewKey}`);
+      }
+    }
     if (OPTS.jsonOut) {
       // A plan report from --json=, never a review file (read from argv
       // directly so review-write-safety's taint scan does not follow OPTS).
@@ -265,6 +274,15 @@ async function main() {
     return 0;
   }
   return runLive({ dir, cands, rows, ledgerPath, serpKeys, gui });
+}
+
+/** Tonight's URL_FIND slots over the planned candidates (gap-url-find.planUrlFindWork). */
+function planUrlFind(cands, paidSlots, freeSlots) {
+  const reg = readJson(path.join(ROOT, 'data', 'outlet-registry.json'));
+  const outlets = reg.outlets || reg;
+  return require('./lib/gap-url-find').planUrlFindWork(cands.filter((c) => c.strategy), {
+    paidSlots, freeSlots, tierOf: (id) => (outlets[id] && outlets[id].tier) || null,
+  });
 }
 
 async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
@@ -295,9 +313,17 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
   const pend = retryPendingPushes({ repoDir: dir, onLanded });
   if (pend.entries) console.log(`  [pending] ${pend.entries} earlier checkpoint(s): ${pend.landed.length} landed, ${pend.restored.length} restored, ${pend.notLanded.length} not landed`);
 
-  const todo = cands.filter((c) => c.strategy);
   let urlFindRuns = 0;
-  const URL_FIND_MAX_PER_RUN = (() => { const n = parseInt(process.env.GAP_URL_FIND_MAX_PER_RUN || '12', 10); return Number.isFinite(n) && n >= 0 ? n : 12; })();
+  const envInt = (k, d) => { const n = parseInt(process.env[k] || String(d), 10); return Number.isFinite(n) && n >= 0 ? n : d; };
+  // URL_FIND takes ~3-6 minutes a review, so it gets slices of the night
+  // (BRO-7171 item c): the top GAP_URL_FIND_MAX_PER_RUN by priority (recent
+  // show, then outlet tier, then newest) may use paid SERP / Bright Data
+  // within their own caps, keeping their interleaved places; the next
+  // GAP_URL_FIND_FREE_MAX_PER_RUN run the free methods only, after the rest.
+  const URL_FIND_MAX_PER_RUN = envInt('GAP_URL_FIND_MAX_PER_RUN', 12);
+  const URL_FIND_FREE_MAX_PER_RUN = envInt('GAP_URL_FIND_FREE_MAX_PER_RUN', 24);
+  const todo = planUrlFind(cands, URL_FIND_MAX_PER_RUN, URL_FIND_FREE_MAX_PER_RUN);
+  if (todo.skippedUrlFind) console.log(`  URL_FIND: ${URL_FIND_MAX_PER_RUN} full + ${URL_FIND_FREE_MAX_PER_RUN} free-only slots tonight; ${todo.skippedUrlFind} wait for a later night`);
   const work = OPTS.limit ? todo.slice(0, OPTS.limit) : todo;
   console.log(`\n${todo.length} candidates with a strategy; running ${work.length}. ${runCeiling != null ? `Run ceiling ${ceiling}` : `Daily ceiling ${ceiling} (accepted today so far: ${L.acceptedToday(rows)})`}.`);
 
@@ -343,11 +369,10 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
       if (L.killSwitchActive().active) { console.log('\nKill switch turned on mid-run; stopping.'); break; }
       // An accept must not wait uncommitted behind slow reviews that accept nothing (ship-check P1).
       if (tracker.size && Date.now() - lastFlushAt > 2 * 60 * 1000) flush(`checkpoint ${accepted}`);
-      // URL_FIND takes ~3-6 minutes a review (Wayback/Common Crawl indexes),
-      // so it gets a slice of the night, not all of it: the rest of the
-      // candidates (cheap re-fetches) still run. GAP_URL_FIND_MAX_PER_RUN.
-      if (c.strategy === 'URL_FIND' && urlFindRuns >= URL_FIND_MAX_PER_RUN) continue;
-      if (c.strategy === 'URL_FIND') urlFindRuns++;
+      // Full (paid-capable) URL_FIND slots are planned above; this backstop
+      // holds the cap for any URL_FIND the plan did not mark.
+      if (c.strategy === 'URL_FIND' && !c.urlFindFreeOnly && urlFindRuns >= URL_FIND_MAX_PER_RUN) continue;
+      if (c.strategy === 'URL_FIND' && !c.urlFindFreeOnly) urlFindRuns++;
       // Browser preferred but no GUI: record the non-evidence row, then use the next strategy.
       for (const k of c.skipped) {
         if (k.strategy === 'BROWSER_SESSION' && String(k.reason).startsWith('browser_unavailable')) {
@@ -401,7 +426,7 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
           .flatMap((r) => [...(r.outcome === 'rejected' && r.url ? [r.url] : []), ...((r.detail && r.detail.refusedCandidates) || [])]));
         // GAP_URL_FIND_METHODS narrows a bulk run to the methods with measured yield.
         const methods = process.env.GAP_URL_FIND_METHODS ? process.env.GAP_URL_FIND_METHODS.split(',').map((m) => m.trim()).filter(Boolean) : null;
-        got = await S.urlFind(c, { dir, rootDir: ROOT, serpKeys, refusedUrls, methods });
+        got = await S.urlFind(c, { dir, rootDir: ROOT, serpKeys, refusedUrls, methods, freeOnly: c.urlFindFreeOnly === true });
       }
       else got = { ok: false, outcome: 'non_evidence', reason: `strategy_unbuilt:${strategy}` };
 

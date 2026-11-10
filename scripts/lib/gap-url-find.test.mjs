@@ -141,3 +141,37 @@ test('probeLedgerRow: one non_evidence URL_FIND_PROBE row with per-method status
   const st = L.strategyState(L.indexRows([L.makeRow(row)]), row.reviewKey, 'URL_FIND');
   assert.equal(st.evidenceAttempts + st.nonEvidence, 0);
 });
+
+// BRO-7171 item (c): ~360 rows wait for URL_FIND at 12 a night, taken in the
+// global candidate order (recency, show date, cost) with no regard to outlet
+// tier. Now: recent shows first, then highest-tier outlet, then newest show;
+// the first N get every method (paid SERP / Bright Data stay inside their own
+// caps), the next M run the free methods only, after the rest of the night's work.
+test('planUrlFindWork: priority recent > tier > newest; paid slots keep their places, free-only slots go last', async () => {
+  const { createRequire } = await import('node:module');
+  const req = createRequire(import.meta.url);
+  const UFL = req('./gap-url-find.js');
+  assert.equal(typeof UFL.planUrlFindWork, 'function');
+  const tiers = { nytimes: 1, telegraph: 1, 'express-uk': 3, blog: 4 };
+  const tierOf = (id) => tiers[id] || 5;
+  const uf = (k, outletId, recency, showDate) => ({ reviewKey: k, outletId, recency, showDate, strategy: 'URL_FIND' });
+  const work = [
+    { reviewKey: 'r1', strategy: 'REFETCH_FREE' },
+    uf('blog-recent', 'blog', 'recent', '2026-01-01'),
+    { reviewKey: 'r2', strategy: 'ARCHIVE' },
+    uf('nyt-recent-old', 'nytimes', 'recent', '2025-01-01'),
+    uf('tel-historic', 'telegraph', 'historic', '2018-01-01'),
+    uf('express-historic', 'express-uk', 'historic', '2019-01-01'),
+    uf('nyt-recent-new', 'nytimes', 'recent', '2026-02-01'),
+    { reviewKey: 'r3', strategy: 'REFETCH_FREE' },
+    uf('blog-historic', 'blog', 'historic', '2020-01-01'),
+  ];
+  const out = UFL.planUrlFindWork(work, { paidSlots: 2, freeSlots: 2, tierOf });
+  assert.deepEqual(out.map((c) => c.reviewKey), ['r1', 'nyt-recent-new', 'r2', 'nyt-recent-old', 'r3', 'blog-recent', 'tel-historic']);
+  assert.deepEqual(out.filter((c) => c.strategy === 'URL_FIND').map((c) => c.urlFindFreeOnly === true), [false, false, true, true]);
+  assert.equal(out.skippedUrlFind, 2);
+  // input order of non-URL_FIND work is untouched and the input is not mutated
+  assert.equal(work[1].urlFindFreeOnly, undefined);
+  // zero free slots = the old behaviour (cap only)
+  assert.equal(UFL.planUrlFindWork(work, { paidSlots: 2, freeSlots: 0, tierOf }).filter((c) => c.strategy === 'URL_FIND').length, 2);
+});

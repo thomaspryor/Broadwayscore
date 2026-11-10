@@ -624,7 +624,48 @@ function probeLedgerRow(rec, { runId = null, ts = null } = {}) {
   };
 }
 
+/**
+ * URL_FIND order: recent shows first, then the highest-tier outlet (tier 1
+ * best; unknown last), then the newest show, then a stable key. Pure.
+ */
+function urlFindPriority(tierOf) {
+  const t = (c) => { const n = Number(tierOf(c.outletId)); return Number.isFinite(n) && n > 0 ? n : 9; };
+  const d = (c) => { const x = Date.parse(c.showDate || ''); return Number.isFinite(x) ? x : 0; };
+  return (a, b) => {
+    if ((a.recency === 'recent') !== (b.recency === 'recent')) return a.recency === 'recent' ? -1 : 1;
+    if (t(a) !== t(b)) return t(a) - t(b);
+    if (d(a) !== d(b)) return d(b) - d(a);
+    return String(a.reviewKey).localeCompare(String(b.reviewKey));
+  };
+}
+
+/**
+ * Which URL_FIND candidates run tonight, and how (BRO-7171 item c). The top
+ * `paidSlots` by urlFindPriority take the places URL_FIND already held in the
+ * run order (so they stay interleaved with the cheap re-fetches) and may use
+ * every method; paid SERP and Bright Data stay inside their own per-run caps.
+ * The next `freeSlots` run the free methods only (urlFindFreeOnly) and go to
+ * the END of the run, after everything else. The rest wait. Pure: returns a
+ * new array (with .skippedUrlFind), never mutates the input.
+ */
+function planUrlFindWork(work, { paidSlots, freeSlots = 0, tierOf }) {
+  const uf = work.filter((c) => c.strategy === 'URL_FIND').sort(urlFindPriority(tierOf));
+  const paid = uf.slice(0, Math.max(0, paidSlots));
+  const free = uf.slice(paid.length, paid.length + Math.max(0, freeSlots));
+  const out = [];
+  let k = 0;
+  for (const c of work) {
+    if (c.strategy !== 'URL_FIND') { out.push(c); continue; }
+    if (k < paid.length) out.push({ ...paid[k++], urlFindFreeOnly: false });
+  }
+  for (const c of free) out.push({ ...c, urlFindFreeOnly: true });
+  out.skippedUrlFind = uf.length - paid.length - free.length;
+  return out;
+}
+
 module.exports = {
+  urlFindPriority,
+  planUrlFindWork,
   probeLedgerRow,
   buildCorpusIndex, outletHosts, fetchCandidateText, fetchRefusedOnEvidence, methodNotApplicable, urlFindProgress, urlFindEligibility, METHOD_DONE, URL_FIND_POLICY, fetchIndexWithRetry,
   METHODS, SITEMAP_ADAPTERS, titleTokens, pathWords, slugTitleScore, dateWindow, learnOutletProfile, extractOutboundLinks,

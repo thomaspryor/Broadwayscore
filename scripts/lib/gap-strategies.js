@@ -270,7 +270,7 @@ function urlFindEnvironment({ dir, rootDir }) {
  * (gap-url-find.urlFindProgress, gap-terminal NOT_FINDABLE).
  * @returns candidate | refusal, plus `methods` {METHOD: status}
  */
-async function urlFind(c, { dir, rootDir, serpKeys = {}, refusedUrls = new Set(), methods: only = null } = {}, ufDeps = null) {
+async function urlFind(c, { dir, rootDir, serpKeys = {}, refusedUrls = new Set(), methods: only = null, freeOnly = false } = {}, ufDeps = null) {
   const fs = require('fs');
   const path = require('path');
   const UF = require('./gap-url-find');
@@ -285,7 +285,9 @@ async function urlFind(c, { dir, rootDir, serpKeys = {}, refusedUrls = new Set()
   const profile = UF.learnOutletProfile(ce.urls);
   const hosts = UF.outletHosts(review.outletId, profile, env.registry);
   if (!profile.hosts.length) profile.hosts = hosts.slice(0, 2);
-  const serpLeft = urlFindSerpUsed < urlFindSerpMax();
+  // freeOnly (a free-only URL_FIND slot, BRO-7171 item c): no paid SERP, no
+  // Bright Data fetch. SERP then reads 'skipped_paid', which never counts as done.
+  const serpLeft = !freeOnly && urlFindSerpUsed < urlFindSerpMax();
   const ctx = { review: { ...review, showId }, show, title, profile, hosts, archiveDir: env.archiveDir, templates: UF.learnSlugTemplates(ce.samples), titleDirs: UF.learnTitleStartDirs(ce.samples), serpKeys, allowPaid: serpLeft };
   const status = {};
   const tried = new Set([...refusedUrls].map((u) => u.replace(/\/$/, '')));
@@ -306,7 +308,7 @@ async function urlFind(c, { dir, rootDir, serpKeys = {}, refusedUrls = new Set()
     let st = fresh.length > URL_FIND_CANDIDATES_PER_METHOD ? 'more_candidates' : 'candidates_refused';
     for (const cand of fresh.slice(0, URL_FIND_CANDIDATES_PER_METHOD)) {
       tried.add(cand.url.replace(/\/$/, ''));
-      const got = await UF.fetchCandidateText(cand.url, { allowBd: urlFindBdLeft(), onPaid: () => { urlFindBdUsed++; } }, (ufDeps && ufDeps.fetchDeps) || null);
+      const got = await UF.fetchCandidateText(cand.url, { allowBd: !freeOnly && urlFindBdLeft(), onPaid: () => { urlFindBdUsed++; } }, (ufDeps && ufDeps.fetchDeps) || null);
       if (!got.ok) {
         // Refused only when every route answered with evidence (404, no
         // capture, extractor null); a timeout or budget cap leaves it open.
