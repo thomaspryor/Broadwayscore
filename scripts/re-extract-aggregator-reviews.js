@@ -235,6 +235,8 @@ function reExtractBWW() {
             outlet: outletName,
             criticName,
             url: null,
+            // BRO-7272: same provisional roundup date the gather-reviews Method 1 path now stamps.
+            ...roundupEntryDateFields(normalizePublishDate(json.datePublished) || null),
             bwwExcerpt: quote.substring(0, 300) + (quote.length > 300 ? '...' : ''),
             source: 'bww-roundup',
           });

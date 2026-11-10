@@ -33,6 +33,8 @@ const { createRunBudget } = require('./lib/run-budget');
 const ROOT = path.join(__dirname, '..');
 const SHOWS_PATH = path.join(ROOT, 'data', 'shows.json');
 const OUT_PATH = path.join(ROOT, 'data', 'tour-schedules.json');
+const OVERRIDES_PATH = path.join(ROOT, 'data', 'tour-stop-overrides.json');
+const { validateOverrides, applyStopOverrides, applyAllOverrides } = require('./lib/tour-stop-overrides');
 
 const iso = d => d.toISOString().slice(0, 10);
 // Tours To You answered 429 to 3 of 13 back-to-back requests (BRO-4601).
@@ -109,6 +111,15 @@ async function main() {
   // sweep and stop-review discovery date reviews against its stops, and half
   // the tours (every closed one) had none.
   let changed = 0;
+  // Manual date fixes (BRO-7271) are re-applied to every fetch so they survive.
+  const overrides = fs.existsSync(OVERRIDES_PATH) ? JSON.parse(fs.readFileSync(OVERRIDES_PATH, 'utf8')) : { overrides: [] };
+  const overrideErrs = validateOverrides(overrides);
+  if (overrideErrs.length) { console.error(`::error::tour-stop-overrides.json invalid: ${overrideErrs.join('; ')}`); process.exit(1); }
+  const warned = new Set();
+  const reportOverride = ({ override: o, status }) => {
+    const k = `${status}|${o.tourId}|${o.start}`;
+    if (status !== 'applied' && !warned.has(k)) { warned.add(k); console.log(`::warning::tour-stop override ${o.tourId} ${o.start} is ${status} (upstream differs from \`was\`); delete or update it in data/tour-stop-overrides.json`); }
+  };
   for (const id of pruneOrphanSchedules(out.tours, shows)) {
     console.log(`::warning::${id}: not in shows.json; saved schedule dropped`);
     changed++;
@@ -124,7 +135,8 @@ async function main() {
     if (budget.exceeded()) { console.log(`Time budget reached; ${targets.length - i} tour(s) keep their saved stops until tomorrow`); break; }
     if (i > 0) await sleep(PAUSE_MS);
     const { url, html } = await fetchSchedule(tour, null, { budget });
-    const stops = url ? tourStops(tour, html) : null;
+    const raw = url ? tourStops(tour, html) : null;
+    const stops = raw && applyStopOverrides(tour.id, raw, overrides.overrides, reportOverride);
     if (!stops) { failed++; console.log(`${tour.id}: no schedule (kept ${out.tours[tour.id] ? 'previous' : 'none'})`); continue; }
     // Another show's table on this page (BRO-4601: Come From Away's page showed
     // Operation Mincemeat's tour) must not become this tour's schedule.
@@ -150,6 +162,8 @@ async function main() {
     changed++;
     console.log(`${tour.id}: ${stops.length} stops, ${stops[0].city} ${stops[0].start} .. ${stops[stops.length - 1].city} ${stops[stops.length - 1].end}`);
   }
+  // Tours kept from a previous run (fetch failed / not reached) also get the fixes.
+  changed += applyAllOverrides(out.tours, overrides.overrides, reportOverride).length;
   if (changed) fs.writeFileSync(OUT_PATH, JSON.stringify(out, null, 2) + '\n');
   console.log(`${changed} changed, ${failed} failed of ${targets.length}`);
   if (targets.length && failed / targets.length > 0.5) {

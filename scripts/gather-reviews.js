@@ -2591,6 +2591,9 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
           // A foreign entry keeps its own url so it never takes a real
           // entry's slot in the shared anchor queue below.
           url: foreignTitle ? (posting.url || null) : null,
+          // BRO-7272: Method 1 entries used to carry no date at all (The Visitors / New York
+          // Theatre Guide shipped undated). Stamp the roundup's own JSON-LD date, provisional.
+          ...roundupEntryDateFields(normalizePublishDate(posting.datePublished || json.datePublished) || null),
           bwwExcerpt: quote.substring(0, 300) + (quote.length > 300 ? '...' : ''),
           bwwRoundupUrl: bwwUrl,
           source: 'bww-roundup',

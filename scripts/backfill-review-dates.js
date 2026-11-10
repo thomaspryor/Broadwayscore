@@ -37,7 +37,7 @@ const axios = require('axios');
 // Load .env if available (launchd/cron/worktree runs don't inherit a login shell)
 require('./lib/load-env').loadEnv();
 
-const { fetchPage } = require('./lib/scraper');
+const { fetchPage, verifyFetchedUrl } = require('./lib/scraper');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { runPublishDateBackfillTriage } = require('./lib/publish-date-backfill-triage');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -333,6 +333,24 @@ async function main() {
           }
         } catch (e) { /* try next */ }
       };
+      // BRO-7272: free plain HTTP (no paid or browser fallback). Most outlets are not
+      // paywalled; before this a --free-only sweep could only use cookies/archive.org
+      // and left e.g. New York Theatre Guide reviews undated.
+      const tryDirect = async () => {
+        try {
+          const result = await fetchPage(url, { timeout: 15000, directOnly: true });
+          const h = typeof result === 'string' ? result : (result?.html || result?.content || '');
+          // directOnly skips the scraper's own verification, so a dead URL that redirects to a section page
+          // or the homepage must be rejected here or it would be dated with that page's date.
+          const vr = h && h.length > 500 ? verifyFetchedUrl(h, url) : null;
+          if (vr && !vr.verified) console.log(`  [rejected:${vr.reason}] direct fetch`);
+          if (vr && vr.verified) {
+            html = h;
+            dateSource = 'html-direct';
+            console.log('  → Got HTML via direct fetch (free)');
+          }
+        } catch (e) { /* try next */ }
+      };
       const tryPaid = async () => {
         if (freeOnly) return;
         try {
@@ -346,7 +364,7 @@ async function main() {
           }
         } catch (e) { /* fall through */ }
       };
-      for (const step of recheckDates ? [tryCookies, tryPaid, tryArchive] : [tryCookies, tryArchive, tryPaid]) {
+      for (const step of recheckDates ? [tryCookies, tryDirect, tryPaid, tryArchive] : [tryCookies, tryDirect, tryArchive, tryPaid]) {
         if (html) break;
         await step();
       }

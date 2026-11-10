@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-10T05:14:31.894Z",
+  "generatedAt": "2026-11-10T09:35:55.936Z",
   "date": "2026-11-10",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 148415,
+  "entryCount": 159045,
   "shows": [
     {
       "showId": "tango-after-dark-off-west-end-2026",
@@ -456,13 +456,13 @@
     },
     {
       "showId": "iphigenie-en-tauride-english-national-opera-west-end-2026",
-      "reviewCount": 8,
+      "reviewCount": 9,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 603919,
-        "scored-to-rebuilt": 535460,
+        "scored-to-rebuilt": 453732,
         "rebuilt-to-deployed": 37327511
       },
       "reviews_over_15min": 0,
@@ -1957,21 +1957,6 @@
         "collected-to-scored": null,
         "scored-to-rebuilt": 1276400,
         "rebuilt-to-deployed": 27284447
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
-      "showId": "rorschach-regional-2026",
-      "reviewCount": 8,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 530113,
-        "rebuilt-to-deployed": 33753460
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -4138,21 +4123,6 @@
       "slowest_reviews": []
     },
     {
-      "showId": "wicked-2003",
-      "reviewCount": 25,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
-        "rebuilt-to-deployed": null
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
       "showId": "mamma-mia-west-end-2021",
       "reviewCount": 15,
       "median_e2e_ms": null,
@@ -4244,36 +4214,6 @@
     },
     {
       "showId": "one-day-the-musical-west-end-2026",
-      "reviewCount": 1,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
-        "rebuilt-to-deployed": null
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
-      "showId": "turn-turning-turnt-off-broadway-2026",
-      "reviewCount": 1,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
-        "rebuilt-to-deployed": null
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
-      "showId": "cirque-berserk-west-end-2026",
       "reviewCount": 1,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
@@ -4754,7 +4694,7 @@
     },
     {
       "showId": "macbeth-off-broadway-2026",
-      "reviewCount": 12,
+      "reviewCount": 11,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -5834,7 +5774,7 @@
     },
     {
       "showId": "to-kill-a-mockingbird-west-end-2026",
-      "reviewCount": 10,
+      "reviewCount": 11,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -6899,13 +6839,13 @@
     },
     {
       "showId": "here-there-are-blueberries-2026",
-      "reviewCount": 16,
+      "reviewCount": 19,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 78611,
-        "scored-to-rebuilt": 637876,
+        "collected-to-scored": 53703,
+        "scored-to-rebuilt": 522396,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -6989,12 +6929,12 @@
     },
     {
       "showId": "the-visitors-off-broadway-2026",
-      "reviewCount": 4,
+      "reviewCount": 6,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 423815,
+        "collected-to-scored": 593577,
         "scored-to-rebuilt": 586806,
         "rebuilt-to-deployed": null
       },
@@ -7289,13 +7229,28 @@
     },
     {
       "showId": "the-cherry-orchard-park-avenue-armory-off-broadway-2026",
-      "reviewCount": 1,
+      "reviewCount": 13,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "rorschach-regional-2026",
+      "reviewCount": 7,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 53291,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -7304,13 +7259,13 @@
     },
     {
       "showId": "the-feel-good-story-america-needs-right-now-regional-2026",
-      "reviewCount": 2,
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 2173058,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -7319,13 +7274,13 @@
     },
     {
       "showId": "texas-sodomy-regional-2026",
-      "reviewCount": 1,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 2165855,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -7334,13 +7289,13 @@
     },
     {
       "showId": "pericles-regional-2026",
-      "reviewCount": 1,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 2160485,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -7349,7 +7304,37 @@
     },
     {
       "showId": "how-high-the-moon-regional-2026",
-      "reviewCount": 1,
+      "reviewCount": 3,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 2154525,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "joseph-and-the-amazing-technicolor-dreamcoat-regional-2026",
+      "reviewCount": 3,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 2146325,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-bathroom-attendant-off-broadway-2026",
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -7363,8 +7348,23 @@
       "slowest_reviews": []
     },
     {
-      "showId": "joseph-and-the-amazing-technicolor-dreamcoat-regional-2026",
-      "reviewCount": 2,
+      "showId": "hungry-women-off-broadway-2026",
+      "reviewCount": 9,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "atonement-chichester-festival-regional-2026",
+      "reviewCount": 9,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {

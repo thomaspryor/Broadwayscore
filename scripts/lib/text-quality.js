@@ -256,6 +256,11 @@ function stripTrailingJunk(text) {
     /\n\s*Theater blogroll\n/i,
     // TheaterMania page footer (BRO-4804): the models read this unpunctuated last line as a cut-off.
     /\s*Add as a preferred source on Google/i,
+    // BRO-7272: page footers the ellipsis/last-character truncation signals mistook for a cut-off article.
+    // NY Post: "...essential to not repeating it. Read More Filed under <tags> 11/9/26 Read Next '<teaser>' ..."
+    /\s+Read More\s+Filed under\b/i,
+    /\s+Read Next\s+\S.{0,200}\.{3}\s*$/,
+    /(?:\s+Advertisement){2,}\s*$/,
   ];
 
   // Anchor patterns match the START of trailing junk sections (no greedy tails).
@@ -323,6 +328,26 @@ function stripTrailingJunk(text) {
     // Minimum-remaining guard: don't strip if too little text would remain.
     if (match.index < minRemaining) continue;
 
+    cleaned = cleaned.slice(0, match.index);
+  }
+
+  // Pass 3 (BRO-7272): share-widget and gift-article furniture. It also sits at the TOP of a page, so the back-half
+  // guard applies, and it runs AFTER pass 2: cutting it earlier shortened the text and let the older pass-2 anchors
+  // (colon headlines, "Recommended") fire on real prose that was no longer in the back 40%.
+  const footerFurniture = [
+    // WordPress sharing bar head. cleanText may already have removed the button names, leaving "Share this: (Opens in new window)".
+    /\s+Share this:\s/,
+    // BRO-7272: these also sit at the TOP of a page (under the subhead), so they need the back-half guard.
+    // WordPress sharing widget: "... Print (Opens in new window) Email ... Like Loading..."
+    /\s+(?:Share this:\s*)?(?:Click to [a-z ]{3,30}\s*)?(?:Print|Email|Facebook|X|Twitter|LinkedIn|Reddit|Tumblr|Pinterest|WhatsApp|Telegram|Pocket|Share)\s*\(Opens in new window\)/,
+    // NYT gift-article ribbon.
+    /\s*\+?(?:Give this|Share full) article\+?/,
+  ];
+  for (const pattern of footerFurniture) {
+    const match = cleaned.match(pattern);
+    if (!match) continue;
+    if (match.index < cleaned.length * 0.6) continue;
+    if (match.index < minRemaining) continue;
     cleaned = cleaned.slice(0, match.index);
   }
 
