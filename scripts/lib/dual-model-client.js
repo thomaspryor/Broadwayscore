@@ -1,4 +1,5 @@
 'use strict';
+require('./llm-usage-install'); // spend meter before any client is built
 /**
  * Thin Gemini + OpenAI clients for audit scripts (BRO-7256). Both return text; both count spend
  * in `spend` and refuse once `maxUsd` is reached. Keys come from GEMINI_API_KEY / OPENAI_API_KEY.
