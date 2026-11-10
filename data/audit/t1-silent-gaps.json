@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-10T03:17:35.984Z",
+  "generatedAt": "2026-11-10T04:24:06.002Z",
   "windowDays": 45,
-  "showsScanned": 240,
+  "showsScanned": 241,
   "gaps": [
     {
       "showId": "iphigenie-en-tauride-english-national-opera-west-end-2026",
@@ -18,9 +18,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=iphigenie-en-tauride-english-national-opera-west-end-2026 --url=https://www.thetimes.com/culture/classical-opera/article/iphigenie-en-tauride-review-youve-never-seen-a-family-reunion-like-this-hmwx2kkh2 --outlet=sunday-times   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-08T22:39:44.349Z",
-      "fileAgeHours": 28.629660833333332,
+      "fileAgeHours": 29.738273333333332,
       "gapSeenAt": "2026-11-09T00:00:26.432Z",
-      "nonTerminalAgeHours": 27.28598638888889,
+      "nonTerminalAgeHours": 28.394325,
       "needsManualRecovery": false
     },
     {
@@ -38,9 +38,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=adirondack-chair-circle-regional-2026 --url=https://www.talkinbroadway.com/page/regional/chicago/ch944.html --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T21:14:38.698Z",
-      "fileAgeHours": 6.049243888888889,
+      "fileAgeHours": 7.1575825,
       "gapSeenAt": "2026-11-09T21:39:25.109Z",
-      "nonTerminalAgeHours": 5.636353888888889,
+      "nonTerminalAgeHours": 6.7446925,
       "needsManualRecovery": false
     },
     {
@@ -58,9 +58,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "# no URL on file — find the theatermania review for the-cottage-regional-2026 first, then: node scripts/ingest-review-from-url.js --show=the-cottage-regional-2026 --url=<URL> --outlet=theatermania",
       "firstSeen": "2026-11-10T00:26:39.999Z",
-      "fileAgeHours": 2.848883888888889,
+      "fileAgeHours": 3.957222222222222,
       "gapSeenAt": "2026-11-10T01:31:07.327Z",
-      "nonTerminalAgeHours": 1.7746266666666666,
+      "nonTerminalAgeHours": 2.8829652777777777,
       "needsManualRecovery": false
     }
   ],
