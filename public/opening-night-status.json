@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-10T23:17:30.855Z",
+  "generatedAt": "2026-11-10T23:38:52.452Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -565,25 +565,25 @@
       "status": "open",
       "slug": "dogstar-off-west-end",
       "thumbnail": "/images/shows/dogstar-off-west-end-2026/thumbnail.webp",
-      "siteScore": 66.02,
-      "liveScore": 66,
-      "scoreDrift": -0.01999999999999602,
+      "siteScore": 62.39,
+      "liveScore": 62,
+      "scoreDrift": -0.39000000000000057,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 9,
-      "t1": 0,
-      "t2": 5,
+      "total": 11,
+      "t1": 1,
+      "t2": 6,
       "t3": 4,
       "positive": 6,
-      "mixed": 3,
-      "negative": 0,
+      "mixed": 4,
+      "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "T1:0/3"
+          "T1:1/3"
         ],
-        "highConfidence": 9,
+        "highConfidence": 11,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -596,10 +596,6 @@
         "detail": "Not yet broadcast-ready"
       },
       "missingT1": [
-        {
-          "name": "The Guardian",
-          "isDualMarket": true
-        },
         {
           "name": "Observer",
           "isDualMarket": true
@@ -676,10 +672,6 @@
         },
         {
           "name": "The Spectator (UK)",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Reviews Hub",
           "isDualMarket": false
         }
       ],
@@ -802,6 +794,18 @@
           "p": 6,
           "m": 3,
           "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-10T23:38:52.452Z",
+          "rc": 11,
+          "s": 62.39,
+          "t1": 1,
+          "t2": 6,
+          "t3": 4,
+          "p": 6,
+          "m": 4,
+          "n": 1,
           "bc": "waiting"
         }
       ]
@@ -1888,10 +1892,6 @@
         },
         {
           "name": "The Mail on Sunday",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Stage",
           "isDualMarket": true
         },
         {

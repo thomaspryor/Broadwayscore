@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-10T23:17:13.021Z",
+  "timestamp": "2026-11-10T23:38:35.344Z",
   "stats": {
-    "totalReviews": 81310,
-    "alreadyFlagged": 22220,
+    "totalReviews": 81318,
+    "alreadyFlagged": 22223,
     "dateGuardCatches": 218,
     "directorMismatch": 3606,
-    "tvFilmSignals": 2286,
+    "tvFilmSignals": 2287,
     "londonSignals": 3666,
     "offBroadwaySignals": 752,
-    "yearMismatch": 364,
-    "noPublishDate": 8460
+    "yearMismatch": 365,
+    "noPublishDate": 8458
   },
   "findings": [
     {
@@ -19179,6 +19179,20 @@
       "score": 58,
       "publishDate": "2026-08-04",
       "url": "https://www.whatsonstage.com/news/dog-man-the-musical-at-londons-southbank-centre-and-on-tour-review_1728502/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "dogstar-off-west-end-2026",
+      "file": "thereviewshub--richard-maguire.json",
+      "score": 62,
+      "publishDate": "2026-11-10",
+      "url": "https://www.thereviewshub.com/dogstar-hampstead-theatre-london/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -77992,6 +78006,19 @@
       "file": "cleveland-plain-dealer--joey-morona.json",
       "publishDate": "2026-09-29",
       "url": "https://www.cleveland.com/news/2026/09/where-else-revival-of-the-whos-rock-opera-tommy-to-launch-north-american-tour-in-cleveland.html",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2024 (2x) more than 2026 (1x). 2024 matches production: the-whos-tommy-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-whos-tommy-tour-2026",
+      "file": "theatermania--pete-hempstead.json",
+      "publishDate": "2026-11-10",
+      "url": "https://www.theatermania.com/news/review-national-tour-of-the-whos-tommy-loses-its-pinball-magic-at-the-hollywood-pantages_1859212/",
       "findings": [
         {
           "type": "YEAR_MISMATCH",
