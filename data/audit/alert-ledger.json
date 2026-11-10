@@ -41059,7 +41059,7 @@
       "resolvedAt": "2026-11-10T15:48:16.878Z"
     },
     "land:land/bro-7295-approval-scan": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/bro-7295-approval-scan",
       "firstSeen": "2026-11-10T15:18:33.745Z",
@@ -41069,7 +41069,8 @@
       "lastSurfacedAt": "2026-11-10T15:18:33.745Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-10T16:00:04.502Z"
     },
     "test-yml:data-validation-red:checkout-review-texts-private-repo": {
       "status": "resolved",
@@ -41330,12 +41331,32 @@
       "title": "Landing blocked: unit-tests-node red on land/bro-7291-sq",
       "firstSeen": "2026-11-10T15:47:19.918Z",
       "incidentOpenedAt": "2026-11-10T15:47:19.918Z",
-      "lastSeen": "2026-11-10T15:47:19.918Z",
+      "lastSeen": "2026-11-10T16:03:53.906Z",
       "lastNotifiedAt": "2026-11-10T15:47:19.918Z",
       "lastSurfacedAt": "2026-11-10T15:47:19.918Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
+    },
+    "test-yml:red:Data Safety Guards:a8821160": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: Data Safety Guards / Checkout review-texts (private repo)",
+      "firstSeen": "2026-11-10T16:01:58.301Z",
+      "incidentOpenedAt": "2026-11-10T16:01:58.301Z",
+      "lastSeen": "2026-11-10T16:01:58.301Z",
+      "lastNotifiedAt": "2026-11-10T16:01:58.301Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-7299",
+      "dispatch": {
+        "requestedAt": "2026-11-10T16:01:58.301Z",
+        "mode": "dispatch-at-filing",
+        "runId": "42848438036",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42848438036"
+      }
     },
     "land:land/inbox-digest-cost": {
       "status": "open",
@@ -41343,12 +41364,13 @@
       "title": "Landing blocked: rebase red on land/inbox-digest-cost",
       "firstSeen": "2026-11-10T15:56:37.031Z",
       "incidentOpenedAt": "2026-11-10T15:56:37.031Z",
-      "lastSeen": "2026-11-10T15:56:37.031Z",
+      "lastSeen": "2026-11-10T16:03:51.710Z",
       "lastNotifiedAt": "2026-11-10T15:56:37.031Z",
       "lastSurfacedAt": "2026-11-10T15:56:37.031Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     }
   }
 }

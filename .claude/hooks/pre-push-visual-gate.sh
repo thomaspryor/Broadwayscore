@@ -250,7 +250,7 @@ if [ "$LEDGER_OK" = "true" ]; then
   exit 0
 fi
 
-APPROVAL_RESULT=$(node "$SCAN" --query=approval-of "$VERDICT_HASH" --transcript="$transcript" 2>/dev/null)
+APPROVAL_RESULT=$(node "$SCAN" --query=approval-of "$VERDICT_HASH" --transcript="$transcript" --after-file="$VERDICT_PATH" 2>/dev/null)  # BRO-7295: yes must be newer than the verdict
 APPROVED=$(echo "$APPROVAL_RESULT" | jq -r '.approved // false' 2>/dev/null)
 
 if [ "$APPROVED" != "true" ]; then

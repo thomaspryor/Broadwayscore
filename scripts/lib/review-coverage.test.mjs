@@ -462,3 +462,21 @@ test('pendingGatedStats sizes a chained push like an unchained one: against the 
   assert.equal(run(ev(skill(), agent(), curl())).decision, 'allow');
   fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
+
+// BRO-7295: a compaction summary or re-injected skill text quotes <command-name>/ship-check</command-name>.
+// That is not a typed run, and must not reset the window the reviewers are counted in.
+test('findRuns ignores synthetic user_text that quotes a ship-check command wrapper', () => {
+  const sk = skill();
+  const a = agent();
+  const c = curl();
+  const events = [
+    sk, res(sk), a, res(a), c, res(c),
+    { kind: 'user_text', text: 'This session is being continued... <command-name>/ship-check</command-name>', synthetic: true },
+  ];
+  assert.equal(findRuns(events).length, 1);
+  assert.equal(evaluateCoverage(events).complete, true);
+  // The same text from the owner (not synthetic) is a typed run and does reset the window.
+  const typed = [...events.slice(0, -1), { kind: 'user_text', text: '<command-name>/ship-check</command-name>', synthetic: false }];
+  assert.equal(findRuns(typed).length, 2);
+  assert.equal(evaluateCoverage(typed).complete, false);
+});

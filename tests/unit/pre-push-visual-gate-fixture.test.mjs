@@ -135,10 +135,13 @@ const PUSH_CMD = `git push origin ${BRANCH}`;
 // gated push. userText is the LAST user text message the approval query reads.
 function writeTranscript(fx, userText, name = 'transcript.jsonl') {
   const p = join(fx.root, name);
+  // BRO-7295: the hook requires the owner's reply to be newer than the verdict
+  // file, so stamp it "now" (the fixture verdict was written just before).
+  const now = Date.now();
   const lines = [
-    { type: 'user', timestamp: '2026-10-13T00:00:00Z', message: { role: 'user', content: [{ type: 'text', text: userText }] } },
+    { type: 'user', timestamp: new Date(now).toISOString(), message: { role: 'user', content: [{ type: 'text', text: userText }] } },
     {
-      type: 'assistant', timestamp: '2026-10-13T00:00:01Z',
+      type: 'assistant', timestamp: new Date(now + 1000).toISOString(),
       message: {
         id: 'msg_fixture_01', role: 'assistant',
         content: [
