@@ -1,0 +1,27 @@
+{
+  "issueNumber": "bro-7326c",
+  "planId": "166e81ed-5d3e-4a4b-a574-deb16f8990de",
+  "status": "pending",
+  "createdAt": "2026-11-10T23:06:10.638Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7326: restore McHenry vulture file to its original interview url so two files do not share Shaw's review url",
+    "steps": [
+      "jagged-little-pill-2019/vulture--jackson-mchenry.json: url"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "jagged-little-pill-2019/vulture--jackson-mchenry.json",
+        "field": "url",
+        "oldValue": "https://www.vulture.com/2019/12/review-jagged-little-pill-is-missing-the-essence-of-alanis.html",
+        "newValue": "https://www.vulture.com/2019/11/diablo-cody-jagged-little-pill-musical.html",
+        "description": "jagged-little-pill-2019/vulture--jackson-mchenry.json: url"
+      }
+    ]
+  }
+}
