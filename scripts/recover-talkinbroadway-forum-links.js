@@ -29,10 +29,11 @@
 process.env.INGEST_CALLER = process.env.INGEST_CALLER || 'recover-talkinbroadway-forum-links';
 const fs = require('fs');
 const path = require('path');
-const { execFileSync, execSync } = require('child_process');
+const { execFileSync } = require('child_process');
 const { fetchPage } = require('./lib/scraper');
 const { isForumThreadUrl, extractReviewPageUrl, extractCriticName, isChatReplyThread } = require('./lib/talkinbroadway-forum-link');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { checkpointReviewTexts: checkpointRtWrites, retryPendingPushes } = require('./lib/review-texts-checkpoint'); // BRO-7171
 
 const USAGE = 'Usage: node scripts/recover-talkinbroadway-forum-links.js [--show=ID] [--dry-run] [--data-dir=PATH]';
 
@@ -83,26 +84,15 @@ async function fetchPageWithRetry(url, attempts = 3) {
 // script's restore-protected-fields step (this script never touches
 // protected fields on OTHER outlets' files, only the talkinbroadway husk it
 // just wrote).
-function checkpointReviewTexts(label) {
-  try {
-    execSync('git add -A', { cwd: reviewTextsDir, stdio: 'pipe' });
-    try {
-      execSync('git diff --staged --quiet', { cwd: reviewTextsDir, stdio: 'pipe' });
-      return; // nothing to commit
-    } catch { /* has staged changes */ }
-    execSync(`git commit -m "data: ${label} checkpoint"`, { cwd: reviewTextsDir, stdio: 'pipe' });
-    // push-with-retry.sh bounds the fetch for shallow checkouts and resolves
-    // review-texts conflicts; a bare `git pull --rebase` here pulled the whole
-    // repo history from the audit workflow's fetch-depth:1 checkout.
-    try {
-      execSync(`bash "${path.join(__dirname, 'lib', 'push-with-retry.sh')}" 3 main`, { cwd: reviewTextsDir, stdio: 'pipe' });
-      console.log('  [checkpoint] pushed review-texts');
-    } catch (e) {
-      console.warn(`  [checkpoint] WARNING: failed to push: ${String(e.message).slice(0, 200)}`);
-    }
-  } catch (e) {
-    console.warn(`  [checkpoint] error: ${e.message.slice(0, 200)}`);
-  }
+//
+// BRO-7171: commits ONLY the paths this candidate touched (husk + ingested
+// file), under the machine-wide lock, via review-texts-checkpoint.js. The old
+// whole-tree `git add -A` swept other writers' half-written files into this
+// commit, and a failed push was only a WARNING. A failed push now throws.
+function checkpointReviewTexts(label, paths) {
+  if (!fs.existsSync(path.join(reviewTextsDir, '.git'))) return; // --data-dir scratch copy
+  const res = checkpointRtWrites({ repoDir: reviewTextsDir, paths, message: `data: ${label} checkpoint` });
+  if (res.pushed) console.log('  [checkpoint] pushed review-texts');
 }
 
 function findCandidateFiles() {
@@ -143,6 +133,8 @@ async function resolveCriticName(reviewPageUrl) {
 }
 
 async function run() {
+  // BRO-7171: land an earlier run's unpushed checkpoint before new work.
+  if (!dryRun && fs.existsSync(path.join(reviewTextsDir, '.git'))) retryPendingPushes({ repoDir: reviewTextsDir });
   const candidates = findCandidateFiles();
   console.log(`Found ${candidates.length} candidate file(s) with a dead-end forum URL.`);
 
@@ -176,7 +168,7 @@ async function run() {
       } else {
         fs.unlinkSync(filePath);
         console.log(`  chat-reply thread (not a review): deleted stub ${path.join(showDir, file)}`);
-        checkpointReviewTexts(`recover-talkinbroadway-forum-links (${showId} chat-reply stub removed)`);
+        checkpointReviewTexts(`recover-talkinbroadway-forum-links (${showId} chat-reply stub removed)`, [filePath]);
       }
       skipped++;
       continue;
@@ -250,7 +242,7 @@ async function run() {
       }
     }
     succeeded++;
-    checkpointReviewTexts(`recover-talkinbroadway-forum-links (${showId})`);
+    checkpointReviewTexts(`recover-talkinbroadway-forum-links (${showId})`, [filePath, path.resolve(newFilePath)]);
   }
 
   console.log(`\nDone. ${succeeded} succeeded, ${failed} failed, ${skipped} skipped.`);

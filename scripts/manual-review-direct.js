@@ -252,12 +252,17 @@ if (!skipSourceFile) {
     else if (inlineText) sourceArgs.push(`--text="${inlineText}"`);
     if (publishDate) sourceArgs.push(`--publish-date=${publishDate}`);
 
-    execSync(`node scripts/ingest-manual-review.js ${sourceArgs.join(' ')}`, { stdio: 'inherit' });
+    const ingestOut = execSync(`node scripts/ingest-manual-review.js ${sourceArgs.join(' ')}`, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'inherit'] });
+    process.stdout.write(ingestOut);
     console.log('   ✅ Source file written');
 
-    // Push source file
+    // Push source file. BRO-7171: commit only the file the ingest wrote, under
+    // the machine-wide lock (review-texts-checkpoint.js), never a whole-tree add.
     try {
-      execSync('cd data/review-texts && git add -A && git commit -m "data: Source file for manual entry" && git push origin main 2>/dev/null', { stdio: 'pipe' });
+      const written = (ingestOut.match(/✅ (?:Created|Updated): (.+)/) || [])[1];
+      if (!written) throw new Error('ingest-manual-review.js did not report the file it wrote');
+      const { checkpointReviewTexts } = require('./lib/review-texts-checkpoint');
+      checkpointReviewTexts({ repoDir: path.join(__dirname, '..', 'data', 'review-texts'), paths: [path.resolve(written.trim())], message: 'data: Source file for manual entry' });
     } catch {
       // Push may fail due to concurrent CI — that's OK, the direct path already worked
       console.log('   ⚠️  Source file push failed (concurrent CI) — direct path already live');

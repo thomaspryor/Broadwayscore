@@ -50,6 +50,12 @@ if (!fs.existsSync(REVIEW_TEXTS_DIR)) {
   console.error(`Review texts directory not found: ${REVIEW_TEXTS_DIR}`);
   process.exit(1);
 }
+// BRO-7171: every file this run writes, so the commit carries only those
+// (review-texts-checkpoint.js), never another writer's half-written file.
+const RT_ROOT = path.dirname(REVIEW_TEXTS_DIR);
+const { checkpointReviewTexts, retryPendingPushes, createWriteTracker } = require('./lib/review-texts-checkpoint');
+const RUN_WRITES = createWriteTracker();
+if (!DRY_RUN) retryPendingPushes({ repoDir: RT_ROOT });
 
 // Parse corrections: "nypost:40,culturesauce:38" → [{outlet: "nypost", score: 40}, ...]
 // Also supports "nysr-roma-torre:60" → matches outlet "nysr" with critic containing "roma-torre"
@@ -112,6 +118,7 @@ for (const corr of corrections) {
 
   if (!DRY_RUN) {
     fs.writeFileSync(fp, JSON.stringify(data, null, 2));
+    RUN_WRITES.add(fp);
   }
   console.log(`  ✓ ${matchingFile}: humanReviewScore ${oldScore} → ${corr.score}`);
   modified++;
@@ -136,6 +143,7 @@ for (const cn of criticNames) {
 
   if (!DRY_RUN) {
     fs.writeFileSync(fp, JSON.stringify(data, null, 2));
+    RUN_WRITES.add(fp);
 
     // Rename file to match new critic name
     const newFilename = `${cn.outlet}--${cn.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.json`;
@@ -143,6 +151,7 @@ for (const cn of criticNames) {
       const newFp = path.join(REVIEW_TEXTS_DIR, newFilename);
       if (!fs.existsSync(newFp)) {
         fs.renameSync(fp, newFp);
+        RUN_WRITES.add(newFp);
         console.log(`  ✓ ${targetFile} → ${newFilename}: critic "${oldName}" → "${cn.name}"`);
       } else {
         console.log(`  ✓ ${targetFile}: critic "${oldName}" → "${cn.name}" (file not renamed — target exists)`);
@@ -166,34 +175,13 @@ if (refusedByStarBand > 0) {
 // Auto-commit, push, and trigger rebuild
 if (modified > 0 && !DRY_RUN) {
   const { execSync } = require('child_process');
-  const reviewTextsDir = REVIEW_TEXTS_DIR;
 
   try {
     console.log('\nCommitting and pushing...');
-    execSync('git add -A', { cwd: path.join(reviewTextsDir, '..'), stdio: 'pipe' });
-    execSync(`git commit -m "data: Batch corrections for ${SHOW_ID} (${modified} files)"`, { cwd: path.join(reviewTextsDir, '..'), stdio: 'pipe' });
-
-    // Push with retry (review-texts is a separate repo)
-    let pushed = false;
-    for (let attempt = 1; attempt <= 3; attempt++) {
-      try {
-        const rtRoot = path.join(reviewTextsDir, '..');
-        execSync('git pull --rebase origin main', { cwd: rtRoot, stdio: 'pipe' });
-        // Restore protected fields that remote may have overwritten in our files
-        // (humanReviewScore etc.). Covers bucket H. See scripts/lib/restore-protected-fields.js.
-        try {
-          execSync(`node ${path.join(__dirname, 'lib', 'restore-protected-fields.js')} ORIG_HEAD`, { cwd: rtRoot, stdio: 'pipe' });
-          execSync('git add -A && git diff --cached --quiet || git commit --amend --no-edit', { cwd: rtRoot, stdio: 'pipe', shell: '/bin/bash' });
-        } catch {}
-        execSync('git push origin main', { cwd: rtRoot, stdio: 'pipe' });
-        pushed = true;
-        console.log('  ✓ Pushed to review-texts repo');
-        break;
-      } catch (e) {
-        if (attempt < 3) console.log(`  Push attempt ${attempt} failed, retrying...`);
-      }
-    }
-    if (!pushed) console.error('  ✗ Failed to push after 3 attempts');
+    // BRO-7171: commit only this run's files; push-with-retry.sh (inside the
+    // checkpoint) restores protected fields on rebase. A failed push throws.
+    checkpointReviewTexts({ repoDir: RT_ROOT, paths: RUN_WRITES, message: `data: Batch corrections for ${SHOW_ID} (${modified} files)` });
+    console.log('  ✓ Pushed to review-texts repo');
 
     // Trigger rebuild
     try {
@@ -205,7 +193,7 @@ if (modified > 0 && !DRY_RUN) {
     }
   } catch (e) {
     console.error('  ✗ Git error:', e.message);
-    console.log('\n  Manual steps:');
-    console.log(`  cd ${path.join(reviewTextsDir, '..')} && git add -A && git commit -m "data: Batch corrections" && git push`);
+    console.log('  If the push failed, the commit is recorded as pending and a re-run of this script (or any checkpointing writer) pushes it first.');
+    process.exitCode = 1;
   }
 }

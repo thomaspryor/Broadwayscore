@@ -32,8 +32,8 @@
 
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
 const { decide } = require('./lib/orphan-pending-decision');
+const { checkpointReviewTexts, retryPendingPushes } = require('./lib/review-texts-checkpoint'); // BRO-7171
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -80,18 +80,16 @@ function loadMainReviewFiles(showId) {
 
 // Decision logic extracted to scripts/lib/orphan-pending-decision.js (testable).
 
-function perShowCommit(showId, deleted, promoted) {
+// BRO-7171: commit + push only the paths this show's cleanup touched, under
+// the machine-wide lock (review-texts-checkpoint.js). The old whole-tree
+// `git add -A` swept other writers' half-written files into the commit, and
+// the commit was never pushed. A failed push throws.
+function perShowCommit(showId, deleted, promoted, touched) {
   if (!CONFIG.execute) return;
   if (deleted.length === 0 && promoted.length === 0) return;
-  try {
-    const cwd = REVIEW_TEXTS_DIR;
-    execSync('git add -A', { cwd, stdio: 'pipe' });
-    const msg = `cleanup: ${showId} _pending orphans (${deleted.length} deleted${promoted.length ? `, ${promoted.length} promoted` : ''})`;
-    execSync(`git commit -m ${JSON.stringify(msg)}`, { cwd, stdio: 'pipe' });
-    console.log(`  ✓ committed ${showId}`);
-  } catch (e) {
-    console.error(`  ⚠ commit for ${showId} failed: ${e.message}`);
-  }
+  const msg = `cleanup: ${showId} _pending orphans (${deleted.length} deleted${promoted.length ? `, ${promoted.length} promoted` : ''})`;
+  checkpointReviewTexts({ repoDir: REVIEW_TEXTS_DIR, paths: touched, message: msg });
+  console.log(`  ✓ committed + pushed ${showId}`);
 }
 
 async function main() {
@@ -102,6 +100,7 @@ async function main() {
     console.log('No _pending directory; nothing to clean.');
     return;
   }
+  if (CONFIG.execute) retryPendingPushes({ repoDir: REVIEW_TEXTS_DIR }); // BRO-7171
   const showsIndex = loadShowsIndex();
   if (showsIndex.size === 0) {
     console.error('ERROR: could not load shows.json — refusing to run (would delete everything as synthetic).');
@@ -122,7 +121,7 @@ async function main() {
     if (pendingFiles.length === 0) continue;
 
     const mainFiles = loadMainReviewFiles(showId);
-    const showDeleted = [], showPromoted = [];
+    const showDeleted = [], showPromoted = [], touched = [];
 
     console.log(`\n${showId} (${pendingFiles.length} pending, ${mainFiles.length} main):`);
     for (const { file, path: fpath } of pendingFiles) {
@@ -136,7 +135,7 @@ async function main() {
         console.log(`  − ${file} → DELETE: ${decision.reason}`);
         totalDeleted++;
         showDeleted.push(file);
-        if (CONFIG.execute) fs.unlinkSync(fpath);
+        if (CONFIG.execute) { fs.unlinkSync(fpath); touched.push(fpath); }
       } else if (decision.action === 'promote') {
         console.log(`  ↑ ${file} → PROMOTE to ${decision.target.filename}: ${decision.reason}`);
         totalPromoted++;
@@ -144,6 +143,7 @@ async function main() {
         if (CONFIG.execute) {
           fs.writeFileSync(decision.target.path, fs.readFileSync(fpath));
           fs.unlinkSync(fpath);
+          touched.push(decision.target.path, fpath);
         }
       } else {
         if (CONFIG.verbose) console.log(`  = ${file} → keep: ${decision.reason}`);
@@ -156,7 +156,7 @@ async function main() {
       try { fs.rmdirSync(pendingShowDir); console.log(`  ✓ removed empty ${pendingShowDir}`); } catch {}
     }
 
-    perShowCommit(showId, showDeleted, showPromoted);
+    perShowCommit(showId, showDeleted, showPromoted, touched);
   }
 
   console.log(`\n=== SUMMARY ===`);

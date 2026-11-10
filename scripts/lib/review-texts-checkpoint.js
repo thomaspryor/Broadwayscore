@@ -161,7 +161,12 @@ function refreshOrigin(repo) {
 function confirmLanding(repo, paths) {
   const check = () => paths.map((p) => {
     const remote = showOrNull(repo, 'origin/main', p.rel);
-    return { ...p, landedBlob: blobOrNull(repo, 'origin/main', p.rel), landed: remote !== null && contentKey(remote) === p.fullTextHash };
+    // A run that deleted a file (committed content null) has landed when
+    // origin/main no longer has it either (BRO-7171 local writers delete files).
+    const landed = p.fullTextHash == null && p.committedKey == null
+      ? remote === null
+      : remote !== null && contentKey(remote) === p.fullTextHash;
+    return { ...p, landedBlob: blobOrNull(repo, 'origin/main', p.rel), landed };
   });
   let res = check();
   if (res.some((r) => !r.landed)) {

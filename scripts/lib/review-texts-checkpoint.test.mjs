@@ -221,6 +221,26 @@ test('a run that died between commit and pending entry: the next run still pushe
   assert.equal(JSON.parse(originHas(env, REL)).fullText, RECOVERED, 'orphan commit reached origin');
 });
 
+// BRO-7171: the local writers routed through the checkpoint also delete
+// (clean-orphan-pending, the talkinbroadway husk, batch-correct renames).
+// A deletion lands when origin/main no longer has the file; before the fix
+// it threw "did not land as written" after a successful push.
+test('a tracked deletion and a rename land: no throw, origin matches', () => {
+  const env = setup();
+  const other = path.join(env.local, 'show-2026', 'variety--b.json');
+  const renamed = path.join(env.local, 'show-2026', 'variety--jane-doe.json');
+  fs.unlinkSync(env.file);
+  fs.renameSync(other, renamed);
+  const landedPaths = [];
+  const res = checkpointReviewTexts({ repoDir: env.local, paths: [env.file, other, renamed], message: 'cleanup: test', onLanded: (l) => landedPaths.push(l.path), pendingPath: env.pendingPath, pushScript: env.pushScript });
+  assert.equal(res.pushed, true);
+  assert.equal(res.landed.length, 3);
+  assert.equal(originHas(env, REL), null, 'deleted on origin');
+  assert.equal(originHas(env, 'show-2026/variety--b.json'), null);
+  assert.equal(JSON.parse(originHas(env, 'show-2026/variety--jane-doe.json')).fullText, 'other stub');
+  assert.deepEqual(readPending(env.pendingPath), []);
+});
+
 test('nothing changed: no commit, no throw, landed confirmed by content', () => {
   const env = setup();
   const res = checkpointReviewTexts({ repoDir: env.local, paths: [env.file], message: 'feat: test', pendingPath: env.pendingPath, pushScript: env.pushScript });
