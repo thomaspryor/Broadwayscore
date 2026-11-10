@@ -365,6 +365,12 @@ function acceptRecoveredText(existing, candidate, ctx = {}) {
     if (late) return refuse('date_implausible', `date implausible: ${late} (likely another production)`);
     identity = proveIdentity(existing, text, newUrl, { ...ctx, pageByline: candidate.pageByline || null });
     if (!identity.proven) return refuse('identity_unproven', `identity unproven for new url: ${identity.missing.join('; ')}`, { identity });
+  } else if (existing.fabricatedEntry === true) {
+    // The stored url and critic of an invented row were an LLM's guess: a
+    // page at that url (a Wayback capture, a live page) proves nothing until
+    // the same identity rule as a new url passes; the accept clears the flag.
+    identity = proveIdentity(existing, text, newUrl, { ...ctx, pageByline: candidate.pageByline || null });
+    if (!identity.proven) return refuse('identity_unproven', `identity unproven at the invented stored url: ${identity.missing.join('; ')}`, { identity });
   }
 
   // 7. Tier: never invalid, never a downgrade.
@@ -528,6 +534,11 @@ function buildAcceptanceContext(filePath, existing, candidateUrl, opts = {}) {
     ctx.outletDomains = outletDomainsFor(outletId);
     const { findCrossShowOwners } = require('./url-ownership');
     ctx.crossShowOwners = findCrossShowOwners(candidateUrl, showId, opts.reviewTextsDir || path.dirname(showDir));
+  } else if (existing.fabricatedEntry === true && url) {
+    // An invented-url row needs identity proof even at its stored url
+    // (acceptRecoveredText step 6), so the proof inputs are needed here too.
+    ctx.outletDomains = outletDomainsFor(outletId);
+    ctx.crossShowOwners = require('./url-ownership').findCrossShowOwners(url, showId, opts.reviewTextsDir || path.dirname(showDir));
   }
   return ctx;
 }

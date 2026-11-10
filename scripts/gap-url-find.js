@@ -22,6 +22,8 @@ const path = require('path');
 const UF = require('./lib/gap-url-find');
 
 const argv = process.argv.slice(2);
+// --out=PATH: the yield report (JSON), never a review file.
+const REPORT_OUT = (process.argv.find((a) => a.startsWith('--out=')) || '').slice(6) || null;
 const arg = (n, d = null) => { const h = argv.find((a) => a.startsWith(`--${n}=`)); return h ? h.slice(n.length + 3) : d; };
 const flag = (n) => argv.includes(`--${n}`);
 
@@ -127,7 +129,7 @@ async function main() {
       console.log(`  ${m.padEnd(15)} found ${String(mr.found).padStart(3)}  verified ${mr.verified ? 'YES ' + mr.verified : 'no'}${mr.error ? `  err ${mr.error}` : ''}${mr.candidates.length && !mr.verified ? `  [${mr.candidates.map((x) => x.code).join(',')}]` : ''}`);
     }
     results.push(rec);
-    if (arg('out')) fs.writeFileSync(arg('out'), JSON.stringify(results, null, 1));
+    if (REPORT_OUT) fs.writeFileSync(REPORT_OUT, JSON.stringify(results, null, 1));
   }
   // Yield table.
   console.log('\nmethod           found  verified  yield');

@@ -109,9 +109,14 @@ test('no or tiny text is never usable', () => {
 // URL_DEAD forever (text-gap-classify reads httpStatus).
 test('httpStatusUpdate: a 200 for the url clears a stored 404/410; 404/410 set it; other codes say nothing', () => {
   const { httpStatusUpdate } = require('./rediscovery-candidate.js');
-  assert.deepEqual(httpStatusUpdate({ httpStatus: 404 }, 200), { clear: true });
-  assert.deepEqual(httpStatusUpdate({ httpStatus: 410 }, 200), { clear: true });
-  assert.equal(httpStatusUpdate({}, 200), null);
+  const PAGE = '<html><head><title>Review: 1776 - Variety</title></head><body><p>The revival of 1776 gets a makeover with a cast of women and nonbinary actors.</p></body></html>';
+  assert.deepEqual(httpStatusUpdate({ httpStatus: 404 }, 200, PAGE), { clear: true });
+  assert.deepEqual(httpStatusUpdate({ httpStatus: 410 }, 200, PAGE), { clear: true });
+  assert.equal(httpStatusUpdate({}, 200, PAGE), null);
+  // A 200 that is the site's not-found page is not "back" (soft 404), and no body proves nothing.
+  assert.equal(httpStatusUpdate({ httpStatus: 404 }, 200, '<html><head><title>Page Not Found | Variety</title></head><body>Oops</body></html>'), null);
+  assert.equal(httpStatusUpdate({ httpStatus: 404 }, 200, '<html><body>Page Not Found (404) | USA TODAY Home News Sports</body></html>'), null);
+  assert.equal(httpStatusUpdate({ httpStatus: 404 }, 200), null);
   assert.deepEqual(httpStatusUpdate({}, 404), { set: 404 });
   assert.equal(httpStatusUpdate({ httpStatus: 404 }, 404), null, 'no rewrite churn');
   assert.equal(httpStatusUpdate({ httpStatus: 404 }, 403), null, 'a block is not proof the page is back');
@@ -119,5 +124,5 @@ test('httpStatusUpdate: a 200 for the url clears a stored 404/410; 404/410 set i
   // the Phase 2 loop really uses it on both branches
   const fs = require('fs');
   const src = fs.readFileSync(new URL('../rediscover-review-urls.js', import.meta.url), 'utf8');
-  assert.match(src, /status === 200\) \{[\s\S]{0,300}httpStatusUpdate\(c\.data, status\)[\s\S]{0,320}delete c\.data\.httpStatus/);
+  assert.match(src, /status === 200\) \{[\s\S]{0,300}httpStatusUpdate\(c\.data, status, body\)[\s\S]{0,320}delete c\.data\.httpStatus/);
 });

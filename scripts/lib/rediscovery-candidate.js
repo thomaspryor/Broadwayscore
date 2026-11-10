@@ -122,15 +122,23 @@ function redirectRepairDecision(data, showTitle) {
  * httpStatus. A 404/410 records it; a 200 for the SAME url clears a stored
  * 404/410, or text-gap-classify keeps the review in URL_DEAD (and Phase 3
  * keeps ranking it for SERP) after the page came back (BRO-7171: the stamp
- * was write-only). Anything else (403, 503, timeout) says nothing. Pure.
+ * was write-only). Anything else (403, 503, timeout) says nothing. A 200
+ * whose body is the site's not-found page (soft 404) is not "back", so the
+ * clear needs the body. Pure.
  * @param {object} data  record on disk
  * @param {number} status  HTTP status of data.url
+ * @param {string|null} [html]  the 200 response body; without it nothing is cleared
  * @returns {{set: number}|{clear: true}|null}
  */
-function httpStatusUpdate(data, status) {
+function httpStatusUpdate(data, status, html = null) {
   const dead = (s) => s === 404 || s === 410;
   if (dead(status)) return data && data.httpStatus === status ? null : { set: status };
-  if (status === 200 && data && dead(data.httpStatus)) return { clear: true };
+  if (status === 200 && data && dead(data.httpStatus) && typeof html === 'string' && html.length > 0) {
+    const { isNotFoundHtml, isSoft404Body } = require('./soft-404-body');
+    const text = html.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/gi, ' ').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+    if (isNotFoundHtml(html) || isSoft404Body(text)) return null;
+    return { clear: true };
+  }
   return null;
 }
 

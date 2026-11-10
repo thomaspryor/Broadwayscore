@@ -512,7 +512,8 @@ async function runPhase2(candidates) {
       } else if (status === 200) {
         stats.phase2.urlsOk++;
         // The page is back: a stored 404/410 for this url is stale (BRO-7171).
-        if (httpStatusUpdate(c.data, status)) {
+        const body = (c.data.httpStatus === 404 || c.data.httpStatus === 410) ? await response.text().catch(() => '') : null;
+        if (httpStatusUpdate(c.data, status, body)) {
           stats.phase2.deadCleared = (stats.phase2.deadCleared || 0) + 1;
           if (CONFIG.dryRun) console.log(`  [200] ${c.reviewId}: stored httpStatus ${c.data.httpStatus} is stale, would clear`);
           else {

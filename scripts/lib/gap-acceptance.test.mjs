@@ -213,6 +213,13 @@ test('an invented-url row (fabricatedEntry) whose real review is accepted gets t
   assert.equal(onDisk.fabricatedEntry, false, 'merge-mode write must not copy the flag back');
   assert.equal(onDisk.fabricatedReason, null);
   assert.match(onDisk.fabricatedClearedReason, /joe-turner-review-real.*was: Legacy web-search row/);
+  // At the invented STORED url, a page proves nothing without the identity
+  // rule (review: a Wayback capture of the guessed url could be another critic).
+  const c3 = candidateFile({ fabricatedEntry: true, source: 'web-search' });
+  const r3 = gate.recoverReviewText({ filePath: c3.filePath, rawText: GOOD, labels: LABELS });
+  assert.equal(r3.ok, false);
+  assert.equal(r3.code, 'identity_unproven');
+  assert.equal(JSON.parse(fs.readFileSync(c3.filePath, 'utf8')).fabricatedEntry, true);
   // A refused text leaves the flag alone.
   const c2 = candidateFile({ fabricatedEntry: true, source: 'web-search' });
   assert.equal(gate.recoverReviewText({ filePath: c2.filePath, rawText: 'too short', labels: LABELS }).ok, false);

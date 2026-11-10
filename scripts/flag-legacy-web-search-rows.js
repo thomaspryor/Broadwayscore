@@ -82,7 +82,7 @@ async function main() {
       const ev = patch.fabricatedReason.replace(/^.*?\):\s*/, '').split(',')[0];
       stats.byEvidence[ev.replace(/\d{3}/, 'NNN')] = (stats.byEvidence[ev.replace(/\d{3}/, 'NNN')] || 0) + 1;
       stats.flag++;
-      plan.push({ key, filePath, url: d.url || null, gapClass: g.gapClass, patch, stampStatus: (probe === 404 || probe === 410) && d.httpStatus !== probe ? probe : null });
+      plan.push({ key, filePath, url: d.url || null, gapClass: g.gapClass, patch, ffReason, probe, stampStatus: (probe === 404 || probe === 410) && d.httpStatus !== probe ? probe : null });
     }
   }
 
@@ -98,8 +98,12 @@ async function main() {
   for (const p of plan) {
     withReviewTextsLock(`flag-legacy-web-search:${p.key}`, () => {
       const data = readReviewForUpdate(p.filePath);
-      if (data.fabricatedEntry === true || data.fabricatedEntry === false || (data.url || null) !== p.url) return; // changed since the scan
-      Object.assign(data, p.patch, { fabricatedFlaggedAt: new Date().toISOString() });
+      if ((data.url || null) !== p.url) return; // url moved since the scan
+      // Re-judge the fresh record: text fetched, a status cleared or a flag
+      // set while the probe ran (minutes) must not be overwritten.
+      const fresh = legacyWebSearchFlagPatch(data, { ffReason: p.ffReason, probeStatus: p.probe });
+      if (!fresh) return;
+      Object.assign(data, fresh, { fabricatedFlaggedAt: new Date().toISOString() });
       if (p.stampStatus) data.httpStatus = p.stampStatus;
       persistReviewSnapshot({ filePath: p.filePath, data, trailingNewline: true });
       tracker.add(path.resolve(p.filePath));
