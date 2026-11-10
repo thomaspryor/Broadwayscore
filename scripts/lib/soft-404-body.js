@@ -15,11 +15,26 @@
 const STRONG_SIGNATURES = [
   /\bdocument not found\b/i,
   /\bthe document you are looking for does not exist\b/i,
-  /\bthe page you (?:are|were) looking for (?:does not exist|could not be found|can(?:no|')t be found|is no longer available)\b/i,
+  /\bthe page you (?:are|were) looking for (?:does not exist|could not be found|(?:can(?:no|['’])t|couldn['’]t) be found|is no longer available)\b/i,
   // McClatchy (Tacoma News Tribune / AP syndication) template; shipped as
   // the-nance-2013 AP's pull quote via raw-fullText extraction (2026-10-19).
   /\bwe are unable to locate the page you requested\b/i,
+  // BRO-7171 corpus scan 2026-11-10: templates the rules above missed, each
+  // saved as a review's fullText and then judged as one (Gemini called the
+  // USA Today 404 page "news", so 13 real Gardner/Isherwood reviews were
+  // dropped as non-reviews instead of re-fetched).
+  /\bpage not found \(404\)/i, // USA Today ("Page Not Found (404) | USA TODAY")
+  /\bthe page you requested is not available\b/i, // Newsday
+  /\byou have found our ['‘’]?sorry['‘’]? page\b/i, // inews
+  /\bthe link you['’]re trying to access is either broken or no longer exists\b/i, // Columbus Dispatch (Gannett)
+  /\bwe couldn['’]t find the page you were looking for\b/i, // offoffonline
+  /\boops!? that page can['’]t be found\b/i, // WordPress default theme
+  /\bcurtain['’]s down on this page\b/i, // New York Theatre Guide
 ];
+// A body that OPENS with a not-found page title ("Page not found – New York
+// Daily News", "Page Not Found | The Victoria Advocate") is the template even
+// when its site nav pushes it past WEAK_MAX_LENGTH. A review never starts so.
+const NOT_FOUND_OPENING = /^(?:error\s*)?(?:404\s*)?page not found\s*(?:\(404\)\s*)?(?:[|–—:]|&#8211;|-\s)/i;
 // Weak: phrases a short real review can contain ("page not found" joke, a
 // show with 404 in its title). Count only alongside site-nav chrome.
 const WEAK_SIGNATURES = [
@@ -43,6 +58,7 @@ function isSoft404Body(text) {
   const body = text.trim();
   if (!body || body.length > SOFT_404_MAX_LENGTH) return false;
   if (STRONG_SIGNATURES.some((re) => re.test(body))) return true;
+  if (NOT_FOUND_OPENING.test(body)) return true;
   if (body.length > WEAK_MAX_LENGTH || !WEAK_SIGNATURES.some((re) => re.test(body))) return false;
   return NAV_CHROME.filter((re) => re.test(body)).length >= 2;
 }
