@@ -160,11 +160,14 @@ def _stall_advisory_post(kind, cards=None):
         if os.path.exists(mark):
             return
         open(mark, 'w').close()
-        root = os.environ.get('CLAUDE_PROJECT_DIR') or os.getcwd()
-        cmd = ['timeout', '10', 'node', os.path.join(root, 'scripts', 'lib', 'advisory-durability.js'), 'record',
-               '--kind=' + kind, '--session=' + sid]
+        root = os.environ.get('VE_REPO_ROOT') or os.environ.get('CLAUDE_PROJECT_DIR') or os.getcwd()
+        inner = ['timeout', '10', 'node', os.path.join(root, 'scripts', 'lib', 'advisory-durability.js'), 'record',
+                 '--kind=' + kind, '--session=' + sid]
         if cards:
-            cmd.append('--cards=' + ','.join(str(c) for c in cards))
+            inner.append('--cards=' + ','.join(str(c) for c in cards))
+        # On failure remove the once-per-session marker so the next hit retries (review finding).
+        cmd = ['sh', '-c', '"$@" || rm -f "$MARK"', 'sh'] + inner
+        os.environ['MARK'] = mark
         subprocess.Popen(cmd, cwd=root, stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, start_new_session=True)
     except Exception:
         pass
