@@ -25,9 +25,15 @@ function shouldTombstone(result) {
 // for backfill-cast.js; MAX_WRONG_PRODUCTION_PURGES caps one run so a guard regression cannot
 // delete the library.
 const MAX_WRONG_PRODUCTION_PURGES = 5;
-function shouldPurgeWrongProduction(result, show, hasCastFile, purgedSoFar = 0) {
+// Purges only on the production-id rejection (never the softer year check, which can be wrong
+// about a correct stored url) and only when the rejected url IS the one stored on the show or in
+// its cast file, so a search that stumbles on an old run cannot delete a correct cast.
+function shouldPurgeWrongProduction(result, show, hasCastFile, purgedSoFar = 0, castFileUrl = null) {
   if (!result || !result.productionMismatch || !show) return false;
+  if (result.rejectReason !== 'predates-show' && result.rejectReason !== 'no-production-id') return false;
   if (!show.ibdbUrl && !hasCastFile) return false;
+  const stored = [show.ibdbUrl, castFileUrl].filter(Boolean);
+  if (!result.rejectedUrl || !stored.includes(result.rejectedUrl)) return false;
   return purgedSoFar < MAX_WRONG_PRODUCTION_PURGES;
 }
 

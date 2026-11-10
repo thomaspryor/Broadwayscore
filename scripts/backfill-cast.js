@@ -30,6 +30,7 @@ const { shouldTombstone, shouldAbortMassWipe, shouldPurgeWrongProduction, expect
 const { isBroadwayCategory } = require('./lib/venue-classification');
 const { cleanup } = require('./lib/scraper');
 const showsWriteGuard = require('./lib/shows-write-guard');
+const { castDisjointFromBilling } = require('./lib/cast-billing-overlap');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -212,14 +213,15 @@ async function main() {
         // poisoned cast file and clear the stored url below, so the page stops showing that run's
         // cast. Without this the run only logged "will retry" and the bad data stayed forever.
         const badCastPath = path.join(CAST_DIR, `${show.id}.json`);
-        if (shouldPurgeWrongProduction(result, show, fs.existsSync(badCastPath), purgedWrongProduction.length)) {
-          let badUrl = show.ibdbUrl || null;
+        let badFile = null;
+        try { badFile = JSON.parse(fs.readFileSync(badCastPath, 'utf8')); } catch { /* missing or unreadable */ }
+        if (shardIdx === null && shouldPurgeWrongProduction(result, show, fs.existsSync(badCastPath), purgedWrongProduction.length, badFile && badFile.ibdbUrl)) {
+          const badUrl = result.rejectedUrl || show.ibdbUrl || null;
           const names = new Set();
-          try {
-            const bad = JSON.parse(fs.readFileSync(badCastPath, 'utf8'));
-            badUrl = badUrl || bad.ibdbUrl || null;
-            for (const m of [...(bad.openingNightCast || []), ...(bad.currentCast || [])]) if (m && m.name) names.add(m.name);
-          } catch { /* unreadable file: still remove it */ }
+          if (badFile) for (const m of [...(badFile.openingNightCast || []), ...(badFile.currentCast || [])]) if (m && m.name) names.add(m.name);
+          // File already gone (an earlier run deleted it, then the shows.json save failed): the
+          // stored cast is still that run's, provable by zero overlap with the Playbill billing.
+          if (names.size === 0 && castDisjointFromBilling(show)) for (const m of show.cast) if (m && m.name) names.add(m.name);
           if (fs.existsSync(badCastPath)) fs.unlinkSync(badCastPath);
           purgedWrongProduction.push({ id: show.id, ibdbUrl: badUrl, names });
           console.log(`  🧹 Wrong-production IBDB data removed for ${show.id} (${badUrl || 'no url'}); cast file deleted, stored ibdbUrl will be cleared`);

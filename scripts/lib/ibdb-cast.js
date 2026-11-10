@@ -404,7 +404,7 @@ async function lookupIBDBCast(title, options = {}) {
     const idReject = ibdbUrlRejectReason(options.openingYear ? Number(options.openingYear) : null, bestMatch.url);
     if (idReject) {
       console.log(`  ⚠️  IBDB url ${bestMatch.url} rejected (${idReject}) for a ${options.openingYear} show — wrong production, skipping`);
-      return { ...notFound, ibdbUrl: null, titleMismatch: true, productionMismatch: true };
+      return { ...notFound, ibdbUrl: null, titleMismatch: true, productionMismatch: true, rejectReason: idReject, rejectedUrl: bestMatch.url };
     }
 
     // Extract cast from the page

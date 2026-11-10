@@ -68,26 +68,37 @@ describe('cast file import refuses a same-title older production', () => {
 });
 
 describe('backfill-cast removes wrong-production data it already stores', () => {
-  const mismatch = { found: false, openingNightCast: [], productionMismatch: true, titleMismatch: true };
+  const idMismatch = { found: false, openingNightCast: [], productionMismatch: true, titleMismatch: true, rejectReason: 'predates-show', rejectedUrl: OLD_URL };
+  const yearMismatch = { found: false, openingNightCast: [], productionMismatch: true, titleMismatch: true };
 
-  it('purges when the show stores the rejected production (url or cast file)', () => {
-    assert.equal(shouldPurgeWrongProduction(mismatch, { ibdbUrl: OLD_URL }, false), true);
-    assert.equal(shouldPurgeWrongProduction(mismatch, { ibdbUrl: null }, true), true);
+  it('purges when the id-rejected url is the one the show stores (url or cast file)', () => {
+    assert.equal(shouldPurgeWrongProduction(idMismatch, { ibdbUrl: OLD_URL }, false), true);
+    assert.equal(shouldPurgeWrongProduction(idMismatch, { ibdbUrl: null }, true, 0, OLD_URL), true);
+    assert.equal(shouldPurgeWrongProduction({ ...idMismatch, rejectReason: 'no-production-id' }, { ibdbUrl: OLD_URL }, true), true);
+  });
+
+  it('never purges on the softer year check, which can be wrong about a correct stored url', () => {
+    assert.equal(shouldPurgeWrongProduction(yearMismatch, { ibdbUrl: NEW_URL }, true, 0, NEW_URL), false);
+  });
+
+  it('never purges when the rejected url is not the stored one (a search found an old run)', () => {
+    assert.equal(shouldPurgeWrongProduction(idMismatch, { ibdbUrl: NEW_URL }, true, 0, NEW_URL), false);
+    assert.equal(shouldPurgeWrongProduction(idMismatch, { ibdbUrl: null }, true, 0, null), false);
   });
 
   it('does nothing when nothing wrong is stored, or the result is not a production mismatch', () => {
-    assert.equal(shouldPurgeWrongProduction(mismatch, { ibdbUrl: null }, false), false);
+    assert.equal(shouldPurgeWrongProduction(idMismatch, { ibdbUrl: null }, false), false);
     assert.equal(shouldPurgeWrongProduction({ found: false, fetchFailed: true }, { ibdbUrl: OLD_URL }, true), false);
     assert.equal(shouldPurgeWrongProduction(null, { ibdbUrl: OLD_URL }, true), false);
   });
 
   it('stops purging past the per-run cap so a guard regression cannot empty the library', () => {
-    assert.equal(shouldPurgeWrongProduction(mismatch, { ibdbUrl: OLD_URL }, true, MAX_WRONG_PRODUCTION_PURGES - 1), true);
-    assert.equal(shouldPurgeWrongProduction(mismatch, { ibdbUrl: OLD_URL }, true, MAX_WRONG_PRODUCTION_PURGES), false);
+    assert.equal(shouldPurgeWrongProduction(idMismatch, { ibdbUrl: OLD_URL }, true, MAX_WRONG_PRODUCTION_PURGES - 1), true);
+    assert.equal(shouldPurgeWrongProduction(idMismatch, { ibdbUrl: OLD_URL }, true, MAX_WRONG_PRODUCTION_PURGES), false);
   });
 
   it('a mismatch is still never tombstoned', () => {
-    assert.equal(shouldTombstone(mismatch), false);
+    assert.equal(shouldTombstone(idMismatch), false);
   });
 });
 

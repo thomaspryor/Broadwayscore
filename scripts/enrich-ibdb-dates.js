@@ -251,7 +251,7 @@ async function main() {
     // this show's expected year, the whole match is the wrong production — skip it entirely
     // (dates AND ibdbUrl AND creativeTeam all belong to the other staging).
     if (ibdbWrongProduction(show, ibdb)) {
-      console.log(`  ⛔ ${show.title} (${show.id}): IBDB opening ${ibdb.openingDate} is implausible for this production (expected ~${expectedShowYear(show)}) — wrong-production match, skipping.`);
+      console.log(`  ⛔ ${show.title} (${show.id}): IBDB match (opening ${ibdb.openingDate || 'unknown'}, ${ibdb.ibdbUrl || 'no url'}) is another production than the one expected (expected ~${expectedShowYear(show)}) — wrong-production match, skipping.`);
       continue;
     }
 

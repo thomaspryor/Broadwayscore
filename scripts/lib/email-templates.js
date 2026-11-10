@@ -658,22 +658,6 @@ ${body.split('\n').map(line => line === '' ? '<br>' : `<p style="margin:0;">${li
 }
 
 /**
- * Build a fix-approval email — plain text style, personal, from Tom's system.
- * Includes Approve/Reject buttons as simple links.
- *
- * @param {object} opts
- * @param {string} opts.submitterName - Who reported the bug
- * @param {string} opts.showTitle - Show name if applicable
- * @param {string} opts.originalMessage - What the user wrote
- * @param {string} opts.planSummary - Plain-English summary of what Claude will do
- * @param {Array<string>} opts.planSteps - List of concrete steps
- * @param {string} opts.riskLevel - "Low" | "Medium" | "High"
- * @param {string} opts.approveUrl - HMAC-signed approval URL
- * @param {string} opts.rejectUrl - HMAC-signed rejection URL
- * @param {number} opts.issueNumber - GitHub issue number
- * @returns {{ subject: string, html: string }}
- */
-/**
  * Human-readable text for any show field value shown in a plan email. Without this, an array of
  * objects (cast, creativeTeam, ticketLinks) went through String() and printed "[object Object],
  * [object Object]" in the owner's Bug Fix Plan email (Wanted, #1186).
@@ -695,6 +679,22 @@ function formatFieldValue(value, { maxItems = 12 } = {}) {
   return String(value);
 }
 
+/**
+ * Build a fix-approval email — plain text style, personal, from Tom's system.
+ * Includes Approve/Reject buttons as simple links.
+ *
+ * @param {object} opts
+ * @param {string} opts.submitterName - Who reported the bug
+ * @param {string} opts.showTitle - Show name if applicable
+ * @param {string} opts.originalMessage - What the user wrote
+ * @param {string} opts.planSummary - Plain-English summary of what Claude will do
+ * @param {Array<string>} opts.planSteps - List of concrete steps
+ * @param {string} opts.riskLevel - "Low" | "Medium" | "High"
+ * @param {string} opts.approveUrl - HMAC-signed approval URL
+ * @param {string} opts.rejectUrl - HMAC-signed rejection URL
+ * @param {number} opts.issueNumber - GitHub issue number
+ * @returns {{ subject: string, html: string }}
+ */
 function buildFixApprovalEmail(opts) {
   const {
     submitterName, submitterEmail, showTitle, originalMessage,
