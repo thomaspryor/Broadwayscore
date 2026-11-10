@@ -1340,6 +1340,37 @@
     "queuedAt": "2026-11-10T17:56:10.485Z"
   },
   {
+    "conditionKey": "land:land/bro-7304",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7304",
+    "description": "land.yml did not land land/bro-7304: the unit-tests-node gate went red at 966be876c8. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42869964888",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7304"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "966be876c816cd2d4a1a6b2c40d0e97f675e2509"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42869964888"
+      }
+    ],
+    "queuedAt": "2026-11-10T18:03:51.221Z"
+  },
+  {
     "conditionKey": "land:land/bro-7078-fixups",
     "title": "Landing blocked: rebase red on land/bro-7078-fixups",
     "description": "land.yml did not land land/bro-7078-fixups: the rebase gate went red at 810c4c3a8a. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42391562391",
