@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-10T18:50:08.890Z",
+  "generatedAt": "2026-11-10T19:03:44.124Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -4218,45 +4218,6 @@
       "preflight": false
     },
     {
-      "id": "arrowhead-regional-2026",
-      "title": "Arrowhead",
-      "market": "broadway",
-      "category": "regional",
-      "type": "play",
-      "openingDate": "2026-11-12",
-      "status": "upcoming",
-      "slug": "arrowhead-regional-2026",
-      "thumbnail": "/images/shows/arrowhead-regional-2026/thumbnail.webp",
-      "daysUntil": 2,
-      "readinessChecks": {
-        "wrongProduction": {
-          "pass": true,
-          "detail": "No pre-existing score files"
-        },
-        "dtliSlug": {
-          "pass": false,
-          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
-        },
-        "bwwRoundup": {
-          "pass": null,
-          "detail": "Not yet archived — bww-rr-discover.js will auto-fetch within minutes of publication",
-          "warn": true
-        },
-        "talkingBroadway": {
-          "pass": null,
-          "detail": "Not yet archived — tb-direct-url.js will discover at poll time",
-          "warn": true
-        }
-      },
-      "readinessSummary": {
-        "failures": 2,
-        "warnings": 2,
-        "unknowns": 4,
-        "total": 7
-      },
-      "preflight": false
-    },
-    {
       "id": "dolly-partons-smoky-mountain-christmas-carol-tour-2026",
       "title": "Dolly Parton’s Smoky Mountain Christmas Carol",
       "market": "broadway",
@@ -4500,6 +4461,45 @@
       "status": "previews",
       "slug": "the-fantasticks",
       "thumbnail": "/images/shows/the-fantasticks-2026/thumbnail.jpg",
+      "daysUntil": 6,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        },
+        "dtliSlug": {
+          "pass": false,
+          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
+        },
+        "bwwRoundup": {
+          "pass": null,
+          "detail": "Not yet archived — bww-rr-discover.js will auto-fetch within minutes of publication",
+          "warn": true
+        },
+        "talkingBroadway": {
+          "pass": null,
+          "detail": "Not yet archived — tb-direct-url.js will discover at poll time",
+          "warn": true
+        }
+      },
+      "readinessSummary": {
+        "failures": 2,
+        "warnings": 2,
+        "unknowns": 4,
+        "total": 7
+      },
+      "preflight": false
+    },
+    {
+      "id": "ted-talks-and-talks-regional-2026",
+      "title": "Ted Talks and Talks",
+      "market": "broadway",
+      "category": "regional",
+      "type": "play",
+      "openingDate": "2026-11-16",
+      "status": "upcoming",
+      "slug": "ted-talks-and-talks-regional-2026",
+      "thumbnail": "/images/shows/ted-talks-and-talks-regional-2026/thumbnail.webp",
       "daysUntil": 6,
       "readinessChecks": {
         "wrongProduction": {
