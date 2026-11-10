@@ -788,9 +788,12 @@ function Inner({
         </div>
       )}
       {userFeaturesEnabled && (
+        // Phones never get an auto-width column: rows are two equal columns, and "Log another
+        // viewing" (too long for half a phone row at 14px) takes its own full-width row, so every
+        // label fits (reviewer caught the overflow, 2026-11-10).
         <div className={`grid gap-2 ${showRateButton
           ? (isAuthenticated
-              ? (showMobileStars ? 'grid-cols-2 sm:grid-cols-[1fr_1fr_auto]' : 'grid-cols-[1fr_1fr_auto]')
+              ? 'grid-cols-2 sm:grid-cols-[1fr_1fr_auto]'
               : (showMobileStars ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-2'))
           : (isAuthenticated ? 'grid-cols-2 sm:grid-cols-[1fr_auto]' : 'grid-cols-1')}`}>
           <button
@@ -800,7 +803,7 @@ function Inner({
               onWatchlist
                 ? 'bg-brand/10 border-brand text-brand'
                 : 'bg-white/10 border-white/15 text-white hover:bg-white/15 hover:border-white/25'
-            }`}
+            } ${!isAuthenticated && showRateButton && hasRating ? 'col-span-2 sm:col-span-1' : ''}`}
           >
             <svg className="w-4 h-4 shrink-0" fill={onWatchlist ? 'currentColor' : 'none'} viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
@@ -812,7 +815,7 @@ function Inner({
             type="button"
             ref={rateBtnRef}
             onClick={handleRateIt}
-            className={`${showMobileStars ? 'hidden sm:flex' : 'flex'} items-center justify-center gap-1.5 h-10 sm:h-12 px-2 rounded-lg border bg-white/10 border-white/15 text-white hover:bg-white/15 hover:border-white/25 transition-all whitespace-nowrap`}
+            className={`${showMobileStars ? 'hidden sm:flex' : 'flex'} ${hasRating ? 'col-span-2 order-last sm:col-span-1 sm:order-none' : ''} items-center justify-center gap-1.5 h-10 sm:h-12 px-2 rounded-lg border bg-white/10 border-white/15 text-white hover:bg-white/15 hover:border-white/25 transition-all whitespace-nowrap`}
           >
             <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
@@ -824,8 +827,8 @@ function Inner({
           )}
           {/* Custom lists, signed-in only: for signed-out visitors it was a third
               control that led straight to a sign-in wall (owner, 2026-10-06).
-              Icon-only below sm so the two primary buttons keep their width. */}
-          {isAuthenticated && <ShowPageAddToListButton showId={show.id} variant="hero" labelOnPhone={!showRateButton || showMobileStars} />}
+              Reads "Add to list" on phones, "List" from sm up. */}
+          {isAuthenticated && <ShowPageAddToListButton showId={show.id} variant="hero" />}
         </div>
       )}
 

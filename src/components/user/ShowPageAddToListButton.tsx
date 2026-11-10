@@ -9,19 +9,16 @@ import { featureFlags } from '@/config/feature-flags';
 
 interface ShowPageAddToListButtonProps {
   showId: string;
-  /** 'hero' matches the redesigned hero's h-10 action buttons (icon-only on mobile). */
+  /** 'hero' matches the redesigned hero's action buttons ("Add to list" on phones, "List" from sm). */
   variant?: 'default' | 'hero';
-  /** hero only: show the words "Add to list" below sm. Off keeps the narrow icon-only square
-   *  for the three-column phone row (Want to See / Log another viewing / list). */
-  labelOnPhone?: boolean;
 }
 
 const TRIGGER_CLASS: Record<NonNullable<ShowPageAddToListButtonProps['variant']>, string> = {
   default: 'inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border transition-all duration-200 bg-surface-overlay border-white/10 text-gray-300 hover:text-white hover:bg-white/10 cursor-pointer',
-  hero: 'flex items-center justify-center gap-1.5 h-10 sm:h-12 sm:w-auto sm:px-4 rounded-lg border transition-all bg-white/10 border-white/15 text-white hover:bg-white/15 hover:border-white/25 cursor-pointer whitespace-nowrap',
+  hero: 'flex items-center justify-center gap-1.5 h-10 w-full px-2 sm:h-12 sm:w-auto sm:px-4 rounded-lg border transition-all bg-white/10 border-white/15 text-white hover:bg-white/15 hover:border-white/25 cursor-pointer whitespace-nowrap',
 };
 
-export default function ShowPageAddToListButton({ showId, variant = 'default', labelOnPhone = false }: ShowPageAddToListButtonProps) {
+export default function ShowPageAddToListButton({ showId, variant = 'default' }: ShowPageAddToListButtonProps) {
   const { user, isAuthenticated, loading: authLoading, showSignIn } = useAuth();
   const { lists, getLists, addToList, removeFromList, createList } = useUserLists(user?.id || null);
   const { showToast } = useToastSafe();
@@ -141,7 +138,7 @@ export default function ShowPageAddToListButton({ showId, variant = 'default', l
       <button
         type="button"
         onClick={handleOpen}
-        className={`${TRIGGER_CLASS[variant]}${variant === 'hero' ? (labelOnPhone ? ' w-full px-2' : ' w-10') : ''}`}
+        className={TRIGGER_CLASS[variant]}
         aria-label="Add to list"
         aria-haspopup="true"
         aria-expanded={open}
@@ -151,7 +148,7 @@ export default function ShowPageAddToListButton({ showId, variant = 'default', l
         </svg>
         {variant === 'hero' ? (
           <span className="text-sm font-semibold">
-            <span className={labelOnPhone ? 'sm:hidden' : 'hidden'}>Add to list</span>
+            <span className="sm:hidden">Add to list</span>
             <span className="hidden sm:inline">List</span>
           </span>
         ) : (
