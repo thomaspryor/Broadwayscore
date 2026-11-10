@@ -8,6 +8,7 @@ const fs = require('fs');
 const path = require('path');
 const { applyRetire } = require('./lib/retire-stale-manual-rows');
 
+require('./lib/cli-help.js').exitOnHelp(module);
 const args = process.argv.slice(2);
 const targets = args.filter((a) => a.startsWith('--row=')).map((a) => {
   const parts = a.slice(6).split(':');
