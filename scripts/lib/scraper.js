@@ -1540,6 +1540,10 @@ const DIRECT_USER_AGENT = 'BroadwayScorecard/1.0';
 async function fetchPage(url, options = {}) {
   _lastUrlMismatchUrl = null; // BRO-6089: per-call state, never leaks from an earlier fetch
   url = require('./review-url-entity-decode').decodeUrlEntities(unwrapRedirectUrl(url)); // BRO-4403
+  // Direct-only reads share the provider chain's verification and explicit exemptions (BRO-7282).
+  const shouldVerify = options.skipVerify !== true && (() => {
+    try { return new URL(url).pathname.length > 1; } catch { return false; }
+  })();
   if (options.directOnly) {
     // Our own name, as tryDirect sends: with none (undici's "node") The Stage answers 200 with an empty page, which read
     // as "blocked" on all 193 lane reads of its reviews page in the 2026-11-04 replays (BRO-6872).
@@ -1547,7 +1551,9 @@ async function fetchPage(url, options = {}) {
     if (!response.ok) throw new Error(`Direct fetch failed: ${response.status}`);
     const content = await response.text();
     if (!content.trim() || _isChallengeOrGarbage(content)) throw new Error('Direct fetch returned empty or blocked content');
-    return { content, format: 'html', source: 'direct', finalUrl: response.url || url };
+    const checked = _checkAndReturn({ content, format: 'html', source: 'direct', finalUrl: response.url || url }, 'Direct');
+    if (!checked) throw new Error('Direct fetch returned wrong page');
+    return checked;
   }
   // EDGAR XML needs an identifying admin contact, and must retain its tags.
   // Keep SEC access behind the same fetchPage entry point as other sources.
@@ -1577,12 +1583,6 @@ async function fetchPage(url, options = {}) {
 
   console.log(`Fetching: ${url}`);
 
-  // Whether to verify the fetched URL matches what was requested.
-  // Skip for root-level URLs (homepage fetches are intentional).
-  const shouldVerify = options.skipVerify !== true && (() => {
-    try { return new URL(url).pathname.length > 1; } catch { return false; }
-  })();
-
   /**
    * Run verifyFetchedUrl and escalate if the result is a known-bad page.
    * Returns the result unchanged if verified (or if verification is skipped).
@@ -1605,7 +1605,7 @@ async function fetchPage(url, options = {}) {
         recordUrlMismatch(url, vr.actual, source, hostname);
       } catch { /* never crash the scrape */ }
     }
-    console.log(`  ⚠️  ${source} returned wrong page (${vr.reason}${vr.actual ? ': ' + vr.actual.slice(0, 80) : ''}) — trying next provider...`);
+    console.log(`  ⚠️  ${source} returned wrong page (${vr.reason}${vr.actual ? ': ' + vr.actual.slice(0, 80) : ''}); ${options.directOnly ? 'direct-only fetch refused' : 'trying next provider...'}`);
     return null;
   }
 

@@ -2,12 +2,22 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 
 const require = createRequire(import.meta.url);
 const pw = require('../../scripts/lib/opening-night-lane/preembargo-window.js');
 const driver = require('../../scripts/lib/opening-night-lane/driver.js');
 const af = require('../../scripts/lib/opening-night-lane/auto-fallback.js');
 const ls = require('../../scripts/lib/opening-night-lane/lane-switch.js');
+const discovery = require('../../scripts/lib/opening-night-lane/discovery.js');
+
+function tempDir(t, prefix) {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), prefix));
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  return dir;
+}
 
 const MIN = 60000;
 const EMBARGO = Date.parse('2026-11-12T03:00:00Z'); // Broadway 22:00 ET
@@ -75,7 +85,7 @@ test('wireLaneNight: every lane fetch inside the window is directOnly; from emba
   let seen = null; let clock = OPEN;
   const calls = [];
   const base = {
-    show: { id: 'x-2026', title: 'X', openingDate: '2026-11-11' }, night: '2026-11-11', ledgerDir: require('node:fs').mkdtempSync(require('node:path').join(require('node:os').tmpdir(), 'pe7-')),
+    show: { id: 'x-2026', title: 'X', openingDate: '2026-11-11' }, night: '2026-11-11', ledgerDir: tempDir(t, 'pe7-'),
     laneFetch: { fetchPage: async (u, o) => { calls.push({ at: clock, o: o || {} }); return { content: '<html></html>' }; }, close: async () => {} },
     scoreText: async () => ({ score: 50 }), now: () => clock, wait: async () => {}, reviewTextsDir: '/nonexistent', onDiskUrls: [], onDiskRows: [],
     showScoreGuards: {}, search: async () => { throw new Error('PAID SERP RAN'); }, decodeImpl: null, publishPorts: {},
@@ -119,11 +129,11 @@ test('wireLaneNight: preembargo absent or disabled changes nothing', async (t) =
   assert.ok(calls.every((o) => o.directOnly === undefined));
 });
 
-test('inline scoring: a failure caused by the window is not an attempt, so it never goes permanent', async () => {
+test('inline scoring: a failure caused by the window is not an attempt, so it never goes permanent', async (t) => {
   const inline = require('../../scripts/lib/opening-night-lane/inline-score.js');
   let clock = 0;
   const s = inline.createInlineScoring({
-    show: { id: 'x-2026', title: 'X' }, night: '2026-11-11', ledgerDir: require('node:fs').mkdtempSync(require('node:path').join(require('node:os').tmpdir(), 'pe-')), now: () => clock,
+    show: { id: 'x-2026', title: 'X' }, night: '2026-11-11', ledgerDir: tempDir(t, 'pe-'), now: () => clock,
     fetchPage: async () => { const e = new Error('403'); e.laneDeferred = true; throw e; },
     extractArticle: () => '', extractMeta: () => ({}), scoreText: async () => ({ score: 50 }), allShows: [],
   });
@@ -173,15 +183,126 @@ test('laneStartMs: an embargo before 19:30 local starts at the normal embargo - 
   assert.equal(pw.laneStartMs({ embargoMs: e0130, timeZone: 'America/New_York', enabled: true }), Date.parse('2026-11-11T00:30:00Z'));
 });
 
-test('guardPorts marks in-window pages laneDirectOnly; inline scoring defers a short one without an attempt', async () => {
+test('guardPorts marks in-window pages laneDirectOnly; inline scoring defers a short one without an attempt', async (t) => {
   const pw = require('../../scripts/lib/opening-night-lane/preembargo-window.js');
   const inline = require('../../scripts/lib/opening-night-lane/inline-score.js');
   const g = pw.guardPorts({ enabled: true, fetchPage: async () => ({ content: '<html></html>' }), search: async () => [], isActive: () => true });
   assert.equal((await g.fetchPage('https://a')).laneDirectOnly, true);
   let clock = 0;
-  const s = inline.createInlineScoring({ show: { id: 'x', title: 'X' }, night: '2026-11-11', ledgerDir: require('node:fs').mkdtempSync(require('node:path').join(require('node:os').tmpdir(), 'pe9-')), now: () => clock, fetchPage: g.fetchPage, extractArticle: () => 'short', extractMeta: () => ({}), scoreText: async () => ({ score: 50 }), allShows: [] });
+  const s = inline.createInlineScoring({ show: { id: 'x', title: 'X' }, night: '2026-11-11', ledgerDir: tempDir(t, 'pe9-'), now: () => clock, fetchPage: g.fetchPage, extractArticle: () => 'short', extractMeta: () => ({}), scoreText: async () => ({ score: 50 }), allShows: [] });
   for (let i = 0; i < 8; i++) {
     clock += 60000;
     await assert.rejects(s.fetchReview({ url: 'https://www.timeout.com/newyork/theater/x-review', key: 'k' }), (e) => e.name !== 'LanePermanentError' && /deferred/.test(e.message));
   }
+});
+
+// BRO-7282: exercise the production port wrapper, not a raw fetch that invents lane metadata.
+const SHOW = { id: 'other-desert-cities-2026', title: 'Other Desert Cities', openingDate: '2026-10-18' };
+const ARTICLE = 'https://www.talkinbroadway.com/page/world/OtherDesertCities26.html';
+const UNDATED = '<html><body>Other Desert Cities review</body></html>';
+const DATED = '<meta property="article:published_time" content="2026-10-18T23:00:00Z">' + UNDATED;
+
+function discoveryPass(fetchText, memo, candidate = {}) {
+  return discovery.runDiscoveryPass({
+    show: SHOW, night: SHOW.openingDate, timeZone: 'America/New_York', memo, fetchText,
+    adapters: [{ name: 'outlet-index', discover: async () => [{ url: ARTICLE, title: `${SHOW.title} review`, source: 'outlet-index', needsDate: true, ...candidate }] }],
+  });
+}
+
+test('date checks: undated direct-only pages remain pending without strikes and recover after the window', async () => {
+  let active = true;
+  let calls = 0;
+  const guarded = pw.guardPorts({ enabled: true, isActive: () => active, fetchPage: async () => { calls++; return { content: active ? UNDATED : DATED }; } });
+  const fetchText = discovery.fetchTextFrom(guarded.fetchPage);
+  const memo = { rejected: {} };
+  for (let i = 0; i < 5; i++) {
+    const result = await discoveryPass(fetchText, memo);
+    assert.deepEqual(result.admitted, []);
+    assert.deepEqual(result.deferredDateChecks, [discovery.canonicalUrl(ARTICLE)]);
+    assert.deepEqual(memo.rejected, {}, 'the window must not spend the three date-check attempts');
+  }
+  active = false;
+  const result = await discoveryPass(fetchText, memo);
+  assert.equal(calls, 6);
+  assert.equal(result.admitted.length, 1);
+  assert.equal(result.admitted[0][discovery.PREFETCHED_PAGE], DATED, 'scoring still receives HTML, not the page wrapper');
+});
+
+test('date checks: disabled or closed windows still stop undated pages after three strikes', async () => {
+  for (const [enabled, active] of [[false, true], [true, false]]) {
+    let calls = 0;
+    const guarded = pw.guardPorts({ enabled, isActive: () => active, fetchPage: async () => { calls++; return { content: UNDATED }; } });
+    const memo = { rejected: {} };
+    for (let i = 0; i < 5; i++) await discoveryPass(discovery.fetchTextFrom(guarded.fetchPage), memo);
+    assert.equal(calls, 3);
+    assert.equal(memo.rejected[discovery.canonicalUrl(ARTICLE)].dateFails, 3);
+  }
+});
+
+test('date checks: dated and fallback-dated direct-only pages retain their admission rules', async () => {
+  for (const [content, candidate, admitted] of [
+    [DATED, {}, true],
+    [UNDATED, { fallbackDate: '2026-10-18' }, true],
+    [DATED.replace('2026-10-18T23', '2025-10-18T23'), {}, false],
+  ]) {
+    const guarded = pw.guardPorts({ enabled: true, isActive: () => true, fetchPage: async () => ({ content }) });
+    const result = await discoveryPass(discovery.fetchTextFrom(guarded.fetchPage), { rejected: {} }, candidate);
+    assert.equal(result.admitted.length, Number(admitted));
+    if (admitted) assert.equal(result.admitted[0][discovery.PREFETCHED_PAGE], content === DATED ? DATED : undefined);
+  }
+});
+
+test('fetchTextFrom preserves the window marker only on requested page objects', async () => {
+  const fetchText = discovery.fetchTextFrom(pw.guardPorts({ enabled: true, isActive: () => true, fetchPage: async () => ({ content: UNDATED }) }).fetchPage);
+  assert.equal(await fetchText(ARTICLE), UNDATED, 'existing string consumers keep their contract');
+  assert.equal((await fetchText(ARTICLE, { withFinalUrl: true })).laneDirectOnly, true);
+});
+
+test('Google News: a direct-only wrapper without a publisher link is deferred, then resolves after the window', async () => {
+  let active = true;
+  let unwraps = 0;
+  const wrapper = 'https://news.google.com/rss/articles/CBMiOtherDesertCities';
+  const feed = `<rss><channel><item><title>${SHOW.title} review</title><link>${wrapper}</link><pubDate>Sun, 18 Oct 2026 23:00:00 GMT</pubDate><source url="https://www.talkinbroadway.com">Talkin Broadway</source></item></channel></rss>`;
+  const guarded = pw.guardPorts({ enabled: true, isActive: () => active, fetchPage: async (url) => {
+    if (url !== wrapper) return { content: feed };
+    unwraps++;
+    return { content: UNDATED, finalUrl: active ? wrapper : ARTICLE };
+  } });
+  const adapter = discovery.googleNewsAdapter({ siteQueryHosts: [], log: () => {} });
+  const run = () => adapter.discover({ show: SHOW, night: SHOW.openingDate, timeZone: 'America/New_York', fetchText: discovery.fetchTextFrom(guarded.fetchPage) });
+  for (let i = 0; i < 5; i++) assert.deepEqual(await run(), []);
+  assert.equal(unwraps, 5, 'the window must not exhaust the three wrapper attempts');
+  active = false;
+  assert.equal((await run())[0]?.url, ARTICLE);
+  assert.equal(unwraps, 6);
+});
+
+test('directOnly verifies canonical URLs without a paid fallback and respects skipVerify', async (t) => {
+  // Isolate the scraper audit from tracked data and other tests in this process.
+  const auditPath = path.join(tempDir(t, 'pe-mismatch-'), 'audit.json');
+  const oldAuditPath = process.env.SCRAPER_URL_MISMATCH_AUDIT_PATH;
+  process.env.SCRAPER_URL_MISMATCH_AUDIT_PATH = auditPath;
+  t.after(() => { if (oldAuditPath === undefined) delete process.env.SCRAPER_URL_MISMATCH_AUDIT_PATH; else process.env.SCRAPER_URL_MISMATCH_AUDIT_PATH = oldAuditPath; });
+  const scraperPath = require.resolve('../../scripts/lib/scraper.js');
+  const cached = require.cache[scraperPath];
+  delete require.cache[scraperPath];
+  t.after(() => { if (cached) require.cache[scraperPath] = cached; else delete require.cache[scraperPath]; });
+  const scraper = require(scraperPath);
+  let canonical = ARTICLE.replace('OtherDesertCities26', 'UnrelatedReview');
+  let calls = 0;
+  t.mock.method(globalThis, 'fetch', async () => {
+    calls++;
+    return { ok: true, url: ARTICLE, text: async () => `<link rel="canonical" href="${canonical}"><main>${'Theatre review. '.repeat(100)}</main>` };
+  });
+  const guarded = pw.guardPorts({ enabled: true, isActive: () => true, fetchPage: scraper.fetchPage });
+  await assert.rejects(guarded.fetchPage(ARTICLE), (error) => pw.isDeferred(error));
+  assert.equal(calls, 1, 'no paid or browser retry');
+  assert.equal(scraper.wasUrlMismatch(ARTICLE), true);
+  assert.equal(JSON.parse(fs.readFileSync(auditPath))[0].requestedUrl, ARTICLE);
+  assert.equal((await scraper.fetchPage(ARTICLE, { directOnly: true, skipVerify: true })).source, 'direct');
+  assert.equal(scraper.wasUrlMismatch(ARTICLE), false);
+  canonical = ARTICLE;
+  assert.equal((await scraper.fetchPage(ARTICLE, { directOnly: true })).source, 'direct');
+  assert.equal((await scraper.fetchPage('https://www.talkinbroadway.com/', { directOnly: true })).source, 'direct', 'homepage reads keep the existing verification exemption');
+  assert.equal(calls, 4);
 });

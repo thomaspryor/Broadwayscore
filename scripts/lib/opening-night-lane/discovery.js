@@ -960,6 +960,7 @@ function googleNewsAdapter({ maxUnwrap = 8, decodeImpl = null, maxDecode = 3 * m
             playwrightWaitForSelector: waitForPublisher(hostOf(it.sourceUrl)),
           });
           url = typeof page === 'string' ? publisherUrlFromWrapperPage(page, it.sourceUrl, null, { vettedOutlet: true }) : publisherUrlFromWrapperPage(page && page.content, it.sourceUrl, page && page.finalUrl, { vettedOutlet: true });
+          if (!url && page && page.laneDirectOnly) return; // BRO-7282: the browser tier was withheld; retry without a strike
         } catch (e) {
           // Cut off by the pass deadline (not started, or given less than its own cap, as withTimeout's message says):
           // that says nothing about the wrapper, so it is no strike (three strikes give the item up for the night).
@@ -1207,8 +1208,8 @@ function serpAllowed({ startedAt, now, missingOutlets = [], afterMs = SERP_AFTER
 
 /**
  * The lane's `fetchText` over the shared scraper's fetchPage, used by both the driver and the shadow so the two cannot
- * drift. It returns the page text; with `{ withFinalUrl: true }` it returns `{ content, finalUrl }` instead (finalUrl is
- * only set when a browser followed a redirect).
+ * drift. It returns the page text; with `{ withFinalUrl: true }` it returns `{ content, finalUrl }` instead, preserving
+ * laneDirectOnly so date checks and wrapper unwraps can defer incomplete direct responses without strikes.
  */
 function fetchTextFrom(fetchPage) {
   return async (url, opts = {}) => {
@@ -1225,7 +1226,7 @@ function fetchTextFrom(fetchPage) {
       throw e;
     }
     if (!r || !r.content) throw new Error(`fetchText: no content for ${url}`);
-    return withFinalUrl ? { content: r.content, finalUrl: r.finalUrl || null } : r.content;
+    return withFinalUrl ? { content: r.content, finalUrl: r.finalUrl || null, ...(r.laneDirectOnly ? { laneDirectOnly: true } : {}) } : r.content;
   };
 }
 
@@ -1463,7 +1464,7 @@ async function runDiscoveryPass({
           // answers after the pass deadline is read on the next pass instead of fetched (and paid for) all over again.
           const capMs = (adapterCaps.get(c.adapter) || fetchTimeoutMs);
           // The cap starts when the page is opened, not while the check waits for a slot.
-          const fetching = limitDateCheck(() => withTimeout(rawFetch, capMs, undefined, { unref: true })(c.fetchUrl || c.url, { recordAs: 'date-check' }), key);
+          const fetching = limitDateCheck(() => withTimeout(rawFetch, capMs, undefined, { unref: true })(c.fetchUrl || c.url, { recordAs: 'date-check', withFinalUrl: true }), key);
           // `outcome` is set the moment the check settles, so a pass reads a finished check even after its deadline fired.
           check = { outcome: null };
           check.done = fetching.then((html) => { check.outcome = { html }; return check.outcome; }, (error) => { check.outcome = { error }; return check.outcome; });
@@ -1486,9 +1487,11 @@ async function runDiscoveryPass({
           inFlight.delete(key);
           let publishDate;
           let pageDated = false;
+          const page = outcome.html;
+          const html = page && typeof page === 'object' ? page.content : page;
           try {
             if (outcome.error) throw outcome.error;
-            const pageDate = extractPublishDate(outcome.html);
+            const pageDate = extractPublishDate(html);
             pageDated = !!pageDate;
             publishDate = pageDate || c.fallbackDate || null;
           } catch (e) {
@@ -1510,6 +1513,7 @@ async function runDiscoveryPass({
             continue;
           }
           if (!publishDate) { // reported as before, but a strike that keeps the find pending: a challenge page has no date either
+            if (page && page.laneDirectOnly) { deferredDateChecks.push(c.url); continue; } // BRO-7282: retry with the full chain after the window
             rejected.push({ url: c.url, adapter: c.adapter, reason: 'no-publish-date' });
             dateFail(key);
             deferredDateChecks.push(c.url);
@@ -1517,7 +1521,7 @@ async function runDiscoveryPass({
           }
           // Only a page that dates itself is carried for scoring: one dated by the index's fallback day may be a challenge
           // or interstitial page (BRO-6872 review).
-          judge(c, key, publishDate, pageDated ? outcome.html : undefined);
+          judge(c, key, publishDate, pageDated ? html : undefined);
         }
       } finally { clearTimeout(timer); }
     }
