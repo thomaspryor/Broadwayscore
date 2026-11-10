@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7257-c",
   "planId": "f66d6f53-25cf-45e8-ba9e-cea1986dbf5d",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-10T05:30:44.752Z",
   "submitter": {
     "name": null,
@@ -21,5 +21,14 @@
         "args": "--row=paranormal-activity-boston-regional-2026:broadwayworld:R._Scott_Reedy:80 --row=wonder-regional-2026:metrmag:Kevin_T._Baldwin:74 --apply --expect=2"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-10T05:45:10.416Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran retire-stale-manual-rows.js successfully"
+    }
+  ],
+  "executedIn": "ci"
 }
