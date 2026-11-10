@@ -424,7 +424,12 @@ function skipReason(issue, nowMs, { tier = 'p0p1', codex = false } = {}) {
  * (BRO-5407). `nodes` are the card's comments. -> reason string or null
  */
 function historySkipReason(issue, nodes, nowMs, { cloudLane = false } = {}) {
-  return pausedHistorySkipReason(nodes || [], nowMs, { priority: issue && issue.priority, pausedBacklog: isPausedBacklog(issue), cloudLane });
+  const paused = pausedHistorySkipReason(nodes || [], nowMs, { priority: issue && issue.priority, pausedBacklog: isPausedBacklog(issue), cloudLane });
+  if (paused) return paused;
+  // BRO-7116: the same cap linear-next.js enforces at dispatch, so queues skip the card
+  // instead of picking it and being refused (ld.strandedRepeatGuard).
+  const ld = require('./linear-dispatch.js');
+  return ld.strandedRepeatCount({ comments: { nodes: nodes || [] } }) >= ld.STRANDED_REPEAT_LIMIT ? 'stranded-repeatedly' : null;
 }
 
 /**

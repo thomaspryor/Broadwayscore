@@ -878,6 +878,50 @@ function pausedHoldGuard(issue, opts, nowMs = Date.now()) {
     + 'Refusing to dispatch; read the latest session report first. Re-run with --force if this card really should run now.';
 }
 
+// -- strandedRepeatGuard (BRO-7116) ------------------------------------------
+//
+// A headless run that ends with no worker report gets a "Headless worker ended
+// without its own session report" note (headless-end-report.js) and its state
+// is left alone, so the card stays re-dispatchable. Since BRO-7116 the
+// dispatcher no longer moves a headless card to In Progress after the run, so
+// the 26h reclaim sweep (and its MAX_RECLAIMS park) no longer sits between two
+// such runs: a P0/P1 the watchdog keeps picking could be re-run every cycle.
+// Refuse once STRANDED_REPEAT_LIMIT of those notes stack up with nothing a
+// worker or person wrote in between. Any other comment resets the count.
+const STRANDED_REPEAT_LIMIT = 3;
+const STRANDED_NOTE_RE = /^\s*Headless worker ended without its own session report/;
+// Machine notes that do not answer a stranded run: the picker's own list
+// (cloud-worker-pick.js isMachineComment) plus three this dispatch loop posts.
+const STRANDED_EXTRA_MACHINE_RE = /^\s*(?:<!-- digest-dispatch-freshness|LAND-STRANDED:|<!-- recheck-handoff -->)/i;
+function isStrandedNeutral(body) {
+  return require('./cloud-worker-pick.js').isMachineComment(body) || STRANDED_EXTRA_MACHINE_RE.test(String(body || ''));
+}
+
+function strandedRepeatCount(issue) {
+  const c = issue && issue.comments;
+  const nodes = (Array.isArray(c) ? c : ((c && c.nodes) || []))
+    .filter((n) => n && Number.isFinite(Date.parse(n.createdAt)))
+    .sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
+  let n = 0;
+  for (const node of nodes) {
+    const body = String(node.body || '');
+    if (STRANDED_NOTE_RE.test(body)) { n++; continue; }
+    if (isStrandedNeutral(body)) continue;
+    break;
+  }
+  return n;
+}
+
+function strandedRepeatGuard(issue, opts) {
+  const o = opts || {};
+  if (o.force || o['dry-run'] || o['print-prompt']) return null;
+  const n = strandedRepeatCount(issue);
+  if (n < STRANDED_REPEAT_LIMIT) return null;
+  return `${(issue && issue.identifier) || '(unknown)'} has ${n} headless runs in a row that ended without a session report, `
+    + 'with no worker or person comment since. Refusing to dispatch it again; read the job logs on the card first. '
+    + 'Re-run with --force if it really should run now.';
+}
+
 // -- reportedOutcomeGuard (BRO-2543) ----------------------------------------
 //
 // The incident: BRO-2506's worker committed its fix to origin/main at
@@ -1250,6 +1294,9 @@ function staleDispatchCommentNote(comment, { nowMs = Date.now(), liveLedger = fa
 }
 
 module.exports = {
+  STRANDED_REPEAT_LIMIT,
+  strandedRepeatCount,
+  strandedRepeatGuard,
   STALE_DISPATCH_COMMENT_MS,
   staleDispatchCommentNote,
   MAC_ONLY_LABEL,

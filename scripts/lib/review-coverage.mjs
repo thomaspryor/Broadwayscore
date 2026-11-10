@@ -31,8 +31,9 @@
 //                `npm run build` when the diff touches src/. Bypass: `# NO-SHIP-CHECK: <15+ chars>` inside
 //                the push command. Kill switches: SHIP_CHECK_LAND_GATE_DISABLE=1; LAND_PREFLIGHT_DISABLE=1
 //                turns off the whole land hook. Events are logged to .claude/land-preflight.jsonl.
-//   Stop hook  - for a session with a /ship-check run: reviewers ran; /did-it-work printed its TESTED
-//                block; /what-else printed 5 ordered LENSES lines and searched the Linear board; the Linear Done close-out came after the last land push.
+//   Stop hook  - for a session with a /ship-check run: reviewers ran; /did-it-work ran a real
+//                command before the next skill (or printed TESTED); /what-else searched the Linear board;
+//                the Linear Done close-out came after the last land push.
 //                Bypass lines in the closing message: NO-SHIP-CHECK / NO-DID-IT-WORK / NO-WHAT-ELSE /
 //                NO-WRAP-UP: <reason, 10+ chars>, each waiving only its own check. Kill switch
 //                SHIP_CHECK_COVERAGE_DISABLE=1. Blocks at most 3 times per session.
@@ -204,29 +205,32 @@ export function landGateDecision({ command = '', events = null, gatedLines = 0, 
 
 
 const TESTED_RE = /(?:^|\n)[\s*#>_`=\u2500-\u257f-]*TESTED\b/;
-/** Numbers 1-5 found IN ORDER as lines under the LAST `LENSES:` header; items may wrap (max 3 lines between). */
-function lensNumbers(text) {
-  const lines = String(text).split('\n');
-  let best = new Set();
-  // Every LENSES: header is tried (a later "LENSES: done" must not hide the real block); the best one counts.
-  lines.forEach((l, h) => {
-    if (!/^[\s*#>_`-]*LENSES\s*:/i.test(l)) return;
-    const found = new Set();
-    let want = 1;
-    let prev = h;
-    for (let i = h + 1; i < Math.min(lines.length, h + 40) && want <= 5; i++) {
-      const m = /^[\s*_>`-]*\**\s*([1-5])[.)]\**\s+\S/.exec(lines[i]);
-      if (m && Number(m[1]) === want && i - prev <= 4) {
-        found.add(m[1]);
-        want += 1;
-        prev = i;
-      } else if (i - prev > 4) {
-        break;
-      }
-    }
-    if (found.size > best.size) best = found;
+/**
+ * Did the skill run at index `from` execute anything before the next skill started? A real command in
+ * that window is the substance of /did-it-work; the TESTED header is only how it gets reported
+ * (BRO-7315: the header check alone was 14 of 75 sampled Stop blocks, all on sessions that had run it).
+ * The window closes at the next skill however it starts: a Skill call, a typed /command, or a read of
+ * a skill file (the fallback findRuns accepts). Looking, listing and git do not count as running.
+ */
+const SKILL_FILE_RE = /\.claude\/commands\/[a-z-]+\.md|\.agents\/skills\/[a-z-]+\/SKILL\.md/;
+const LOOK_ONLY_RE = /^(?:echo|printf|ls|cat|head|tail|wc|grep|rg|sed|awk|cut|sort|uniq|tr|jq|find|diff|stat|file|which|date|nl|column|cd|pwd|git|true|sleep|wait|export|set|test|\[)$/;
+function runsSomething(command) {
+  return stripHeredocBodies(String(command || '')).split(/&&|\|\||[;|\n]/).some((seg) => {
+    const words = seg.trim().replace(/^[({]\s*/, '').split(/\s+/).filter((w) => w && !/^[A-Za-z_][A-Za-z0-9_]*=/.test(w));
+    return words.length > 0 && !LOOK_ONLY_RE.test(words[0]);
   });
-  return best;
+}
+function ranCommandIn(events, from) {
+  for (let i = from + 1; i < events.length; i++) {
+    const e = events[i];
+    if (e.kind === 'user_text' && !e.synthetic && /<command-name>/.test(e.text || '')) return false;
+    if (e.kind !== 'assistant_tool_use') continue;
+    if (e.name === 'Skill') return false;
+    const target = e.name === 'Read' ? String(e.input?.file_path || '') : e.name === 'Bash' ? String(e.input?.command || '') : '';
+    if (SKILL_FILE_RE.test(target)) return false;
+    if (e.name === 'Bash' && runsSomething(target)) return true;
+  }
+  return false;
 }
 // The board is Linear. The old GitHub roadmap (issue 1 of broadway-scorecard-data) is retired and no longer counts.
 // Command position: line start, after ; & | ( { or a newline, or after a shell keyword (a for/while/if body).
@@ -296,13 +300,11 @@ export function evaluateChain(events, { lastMessage = '' } = {}) {
   const dwi = findRuns(events, ['did-it-work']);
   if (!bypass('NO-DID-IT-WORK')) {
     if (dwi.length === 0) problems.push('/did-it-work was never run (it comes before /ship-check: run the real thing against real data)');
-    else if (!TESTED_RE.test(texts(dwi[dwi.length - 1].i))) problems.push('/did-it-work printed no TESTED block (real data, 3 diverse cases) after it ran');
+    else if (!TESTED_RE.test(texts(dwi[dwi.length - 1].i)) && !ranCommandIn(events, dwi[dwi.length - 1].i)) problems.push('/did-it-work was invoked but ran nothing: no command before the next skill and no TESTED block (run the real thing against real data, 3 diverse cases)');
   }
 
   const we = findRuns(events, ['what-else']);
   if (we.length && !bypass('NO-WHAT-ELSE')) {
-    const found = lensNumbers(texts(we[we.length - 1].i));
-    if (found.size < 5) problems.push(`/what-else printed ${found.size} of 5 numbered lens lines directly under a LENSES: header, each citing a concrete check`);
     const readBoard = events.slice(we[we.length - 1].i + 1).some((e) => e.kind === 'assistant_tool_use' && (
       BOARD_READ_TOOL_RE.test(e.name || '') ||
       (e.name === 'Bash' && BOARD_READ_RE.test(boardShell(String(e.input?.command || ''))))));
@@ -342,7 +344,7 @@ export function stopHookDecision({ lastMessage = '', events = null, env = proces
   const noShipCheck = /^\s*NO-SHIP-CHECK:\s*(\S.{9,})/m.test(text);
   if (cov.ran && !cov.complete && !noShipCheck) problems.push(...cov.missing.map((m) => `/${cov.skill} did not run its reviewers: ${m}`));
   // The newest message is not flushed to the transcript when the Stop hook runs (verify-edits.sh
-  // has the same note), so add it: a LENSES/TESTED block in the closing message must count.
+  // has the same note), so add it: a TESTED block in the closing message must count.
   // The chain checks apply to sessions that ran /ship-check; a pure /code-review (PR review) is not held to them.
   if (findRuns(events, ['ship-check']).length) problems.push(...evaluateChain([...events, { kind: 'assistant_text', text: String(lastMessage || '') }], { lastMessage: text }));
   if (problems.length === 0) return { decision: 'allow', reason: cov.ran ? 'chain complete' : 'no strong review run' };

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-10T19:01:40.662Z",
+  "generatedAt": "2026-11-10T20:26:01.857Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -113,20 +113,8 @@
   "feedsChecked": 84,
   "feedsFailed": [
     {
-      "outletId": "theater-scene",
-      "error": "HTTP 503 for https://www.theaterscene.net/feed/"
-    },
-    {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
-    },
-    {
-      "outletId": "british-theatre",
-      "error": "Timeout fetching https://www.britishtheatreguide.info/reviews/"
     },
     {
       "outletId": "cote-notices",
@@ -143,14 +131,10 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "londonpubtheatres",
-      "error": "Client network socket disconnected before secure TLS connection was established"
     }
   ],
-  "itemsScanned": 802,
-  "matchedGaps": 1,
+  "itemsScanned": 856,
+  "matchedGaps": 3,
   "possibleGaps": 2,
   "gaps": [
     {
@@ -161,6 +145,24 @@
       "url": "https://t2conline.com/222-a-ghost-story-the-loudest-thing-in-the-room-isnt-the-ghost/",
       "headline": "2:22 – A Ghost Story: The Loudest Thing in the Room Isn’t the Ghost",
       "publishDate": "2026-11-07"
+    },
+    {
+      "showId": "dogstar-off-west-end-2026",
+      "title": "Dogstar",
+      "level": "matched",
+      "outletId": "guardian",
+      "url": "https://www.theguardian.com/stage/2026/nov/10/dogstar-review-hampstead-theatre-london",
+      "headline": "There’s scurvy, mutiny and mystery in Dogstar – but like its icebound ship this drama goes nowhere",
+      "publishDate": "2026-11-10"
+    },
+    {
+      "showId": "dogstar-off-west-end-2026",
+      "title": "Dogstar",
+      "level": "matched",
+      "outletId": "thereviewshub",
+      "url": "https://www.thereviewshub.com/dogstar-hampstead-theatre-london/",
+      "headline": "Dogstar – Hampstead Theatre, London",
+      "publishDate": "2026-11-10"
     },
     {
       "showId": "king-lear-off-broadway-2026",

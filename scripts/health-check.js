@@ -57,6 +57,8 @@ const { SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION, isScrapingBeeExhaustionAcknowledged
 const { evaluateScrapingdogCredits } = require('./lib/scrapingdog-ack');
 const { cachedShell, cachedFetch, hasLowHeadroom } = require('./lib/gh-api-cache.js');
 const { fetchGitHubJSON } = require('./lib/gh-api-client.js');
+const { findInvalidWorkflowFiles } = require('./lib/invalid-workflow-file-signature.js');
+const { isPageWorthyWorkflow } = require('./lib/page-worthy-alerts.js');
 const { summarizeRepeatFailures, enrichRepeatFailureSteps, repeatFailureLabel, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS } = require('./lib/workflow-repeat-failures.js');
 const { assessAutofixEffectiveness, CHECK_NAME: AUTOFIX_EFFECTIVENESS_CHECK_NAME } = require('./lib/autofix-effectiveness');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -4232,6 +4234,8 @@ async function getWorkflowRunSummary() {
         runs.push(...response.workflow_runs);
         if (response.workflow_runs.length < 100) break;
         page++;
+        // Cap reached with more pages unread: coverage is incomplete (BRO-7307).
+        if (page > maxPages) partial = true;
       }
       return { runs, partial };
     });
@@ -4252,6 +4256,8 @@ async function getWorkflowRunSummary() {
         created: r.created_at,
       })),
       repeatFailures,
+      // BRO-7307: invalid workflow files, from the same already-fetched runs.
+      invalidWorkflowFiles: findInvalidWorkflowFiles(results),
       skipped: false,
       partial,
     };
@@ -6257,6 +6263,47 @@ function saveHistory(history) {
 
 // --- Main ---
 
+// BRO-7307: an invalid workflow file fails instantly on every push and never
+// reaches notify-failure, so nothing else reports it. One row + one routed
+// alert per workflow; page-worthy workflows use the paging key.
+// Row names start with 'Workflow coverage' so digest-audience files them as
+// internal: the routed alert below is the one card, not a second START-NOW one.
+function invalidWorkflowFileResults(summary) {
+  const files = (summary && summary.invalidWorkflowFiles) || [];
+  if (!summary || summary.skipped) return [];
+  if (files.length === 0) {
+    if (summary.partial) return [{ name: 'Workflow coverage: invalid files', status: 'warn', message: 'Run list was truncated (300-run cap or a failed page), so an invalid workflow file could be missed' }];
+    return [{ name: 'Workflow coverage: invalid files', status: 'pass', message: 'No workflow shows the invalid-file signature in the last 24h' }];
+  }
+  return files.map((f) => ({
+    name: `Workflow coverage: invalid file ${f.file}`,
+    status: 'error',
+    message: `${f.file} cannot start: ${f.count} instant failed push run(s) since ${f.oldestAt} (newest ${f.newestAt}); no job ran so no failure alert fired. ${f.newestUrl}`,
+    hint: 'Open the newest run: GitHub prints the parse error on the run page. Fix the file; scheduled and dispatched runs do not start until it is valid.',
+  }));
+}
+
+async function alertInvalidWorkflowFiles(summary) {
+  for (const f of (summary && summary.invalidWorkflowFiles) || []) {
+    const page = isPageWorthyWorkflow(f.file);
+    const base = {
+      title: `Workflow file invalid: ${f.file}`,
+      description: `${f.file} is not a valid workflow, so GitHub records an instant failed run on every push to main (${f.count} since ${f.oldestAt}) and never runs its schedule. ${f.newestUrl}`,
+      hint: 'GitHub shows the parse error on the run page. Fix the file (BRO-7307).',
+      severity: 'error',
+      cardAction: 'Fix',
+      cooldownHours: 24,
+    };
+    try {
+      // Always file the fix card; page-worthy workflows additionally page.
+      await routeAlert({ ...base, conditionKey: `workflow-invalid-file:${f.file}`, disposition: 'auto' });
+      if (page) await routeAlert({ ...base, conditionKey: `workflow-invalid-file:page:${f.file}`, disposition: 'human' });
+    } catch (err) {
+      console.error(`[Invalid workflow file] routeAlert failed for ${f.file}: ${err.message}`);
+    }
+  }
+}
+
 async function checkNeverRunWorkflowHealth() {
   try {
     const {
@@ -6415,6 +6462,8 @@ async function main() {
       console.log(`[Workflows] ${workflowSummary.succeeded} succeeded, ${workflowSummary.failed} failed (${workflowSummary.total} total in last 24h)`);
     }
     allResults.push(...repeatFailureResults(workflowSummary));
+    allResults.push(...invalidWorkflowFileResults(workflowSummary));
+    await alertInvalidWorkflowFiles(workflowSummary);
     // Feedback backlog, uncollected strands, card verifiability, coverage holes
     // and star-band drift are core checks now (BRO-5164): computeCoreHealthResults.
 
@@ -6587,4 +6636,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { checkBoardDispatchFreshness, checkSync, reviewTextsSkipReason, evaluateOutletFeedHealth, checkScheduledFailureStreak, checkNeverRunWorkflowHealth, checkAPICredits, corpusAuditResults, generateApproveUrl, checkAuditFreshness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, starBandDriftResults, earlyPublishDatesResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkCiMidSetupCancels, jobHeadroomRow, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixEffectiveness, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift, checkCommercialPendingQueue, checkExemptCronLiveness, checkUncollectedStrands, checkOutletHealth };
+module.exports = { invalidWorkflowFileResults, checkBoardDispatchFreshness, checkSync, reviewTextsSkipReason, evaluateOutletFeedHealth, checkScheduledFailureStreak, checkNeverRunWorkflowHealth, checkAPICredits, corpusAuditResults, generateApproveUrl, checkAuditFreshness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, starBandDriftResults, earlyPublishDatesResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkCiMidSetupCancels, jobHeadroomRow, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixEffectiveness, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift, checkCommercialPendingQueue, checkExemptCronLiveness, checkUncollectedStrands, checkOutletHealth };

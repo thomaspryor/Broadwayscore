@@ -810,6 +810,14 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     process.exit(1);
   }
 
+  // BRO-7116: headless runs no longer move the card after the run, so cap
+  // back-to-back runs that end with no report (see ld.strandedRepeatGuard).
+  const strandedRefusal = ld.strandedRepeatGuard(holdIssue, args);
+  if (strandedRefusal) {
+    console.error(`[linear-next] REFUSING to dispatch ${identifier}: ${strandedRefusal}`);
+    process.exit(1);
+  }
+
   // Started-state guard (BRO-2518): the third clause of the same documented
   // funnel line the two guards above close ("Backlog/Todo, not `·
   // Marketing`, not BSC Daily/CANARY") — refuses an issue already in a

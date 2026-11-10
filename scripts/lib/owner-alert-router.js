@@ -1437,6 +1437,7 @@ function resolveQuietConditions(conditionKeys, { quietHours = INCIDENT_GAP_RESET
 const ABSENCE_RESOLVE_RULES = [
   { family: /^scheduled-email-missing:/, quietHours: 48 },
   { family: /^(health-check:|cron-health(?:-failed)?:|alert-router:|feedback-(?:requests-live|outcomes):)/, quietHours: 96 },
+  { family: /^workflow-invalid-file:/, quietHours: 48 }, // BRO-7307: health-check refreshes lastSeen on every run while the file stays invalid
   { family: /^(opening-night-|on-monitor-|broadcast-gate:|broadcast:overdue:|land:|direct-push:)/, quietHours: 168 },
   { family: /^(gap:|backstop:|geo-bots:|tier-skip-drift$)/, quietHours: 336 },
   { family: /^(orphan-unscored-requeue:|review-gap:|roundup-gap:|we-aggregator-go-live:|ob-venue-go-live:|express-retry-still-thin:|slug-misroute:|outlet-ground-truth:)/, quietHours: 168 },

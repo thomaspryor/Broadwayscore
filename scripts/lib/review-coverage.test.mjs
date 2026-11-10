@@ -268,10 +268,35 @@ test('stop hook: bold SAFE TO EXIT is matched; the 10-char message bypass is doc
   assert.equal(stopHookDecision({ lastMessage: 'Done.\n\n**SAFE TO EXIT**', events: thin, env: CLOUD }).decision, 'block');
 });
 
-test('finish chain: did-it-work must have run and printed its TESTED block', () => {
+test('finish chain: did-it-work must have run and done something (a command, or its TESTED block)', () => {
   const noDwi = ev(skill(), agent(), curl());
   assert.match(evaluateChain(noDwi).join('|'), /did-it-work was never run/);
-  assert.match(evaluateChain([...ev(skill('did-it-work')), ...noDwi]).join('|'), /no TESTED block/);
+  // Hollow: invoked, then straight into the next skill. The ship-check's own curl must not count for it.
+  assert.match(evaluateChain([...ev(skill('did-it-work')), ...noDwi]).join('|'), /invoked but ran nothing/);
+  assert.match(evaluateChain([...ev(skill('did-it-work')), text('All good, it works.'), ...noDwi]).join('|'), /invoked but ran nothing/, 'prose alone is not a run');
+  // BRO-7315: a real command in the did-it-work window passes without the TESTED header (the header check was
+  // the second-largest Stop-block source and only ever fired on sessions that had run the skill).
+  const ran = tool('Bash', { command: 'node scripts/validate-data.js --show=hamilton-2015' });
+  assert.deepEqual(evaluateChain([...ev(skill('did-it-work'), ran), text('It works on three shows.'), ...noDwi]), []);
+  assert.match(evaluateChain([...ev(skill('did-it-work')), tool('Read', { file_path: 'x.js' }), ...noDwi]).join('|'), /invoked but ran nothing/, 'reading a file is not running it');
+  // Looking, listing and git are not running the thing (ship-check review P1).
+  for (const c of ['echo ok', 'git status && git diff --stat', 'ls -la scripts | head -3', 'cd scripts; cat x.js | grep -c foo', 'FOO=1 git log -1', 'sed -n 1,9p x.mjs | cut -c1-80; grep -rl x scripts | sort | uniq | head -3']) {
+    assert.match(evaluateChain([...ev(skill('did-it-work'), tool('Bash', { command: c })), ...noDwi]).join('|'), /invoked but ran nothing/, c);
+  }
+  for (const c of ['cd scripts && node query.js "SELECT 1"', 'FEATURES=x npm run build 2>&1 | tail -5', 'python3 - <<EOF\nprint(1)\nEOF', 'git status; npx playwright test']) {
+    assert.deepEqual(evaluateChain([...ev(skill('did-it-work'), tool('Bash', { command: c })), ...noDwi]), [], c);
+  }
+  // The window closes at the next skill however it starts: typed, or the read-the-skill-file fallback.
+  const typedNext = [...ev(skill('did-it-work')), { kind: 'user_text', text: '<command-name>/ship-check</command-name>' }, ...ev(ran, agent(), curl())];
+  assert.match(evaluateChain(typedNext).join('|'), /invoked but ran nothing/, 'a command after a typed /ship-check belongs to ship-check');
+  const failedShip = skill();
+  const fallbackNext = [...ev(skill('did-it-work')), failedShip, res(failedShip, 'Unknown skill: ship-check', true), ...ev(tool('Read', { file_path: '/repo/.claude/commands/ship-check.md' }), ran, agent(), curl())];
+  assert.match(evaluateChain(fallbackNext).join('|'), /invoked but ran nothing/, 'a command after the ship-check fallback read belongs to ship-check');
+  // did-it-work itself opened through the fallback: the cat of its own file is not the run's command.
+  const failedDwi = skill('did-it-work');
+  const catDwi = tool('Bash', { command: 'cat .claude/commands/did-it-work.md' });
+  assert.match(evaluateChain([failedDwi, res(failedDwi, 'Unknown skill: did-it-work', true), catDwi, res(catDwi), ...noDwi]).join('|'), /invoked but ran nothing/);
+  assert.deepEqual(evaluateChain([failedDwi, res(failedDwi, 'Unknown skill: did-it-work', true), catDwi, res(catDwi), ...ev(ran), ...noDwi]), []);
   assert.deepEqual(evaluateChain(fullChain()), []);
   assert.deepEqual(evaluateChain(noDwi, { lastMessage: 'NO-DID-IT-WORK: pure hook revert, nothing to run\n\nSAFE TO EXIT' }), []);
 });
@@ -280,8 +305,11 @@ test('finish chain: a hollow /what-else (one lens, no board search) is flagged',
   const base = fullChain();
   const hollow = [...base, ...ev(skill('what-else')), text('LENSES:\n1. Pattern: found cousins')];
   const p = evaluateChain(hollow).join('|');
-  assert.match(p, /1 of 5 numbered lens lines/);
   assert.match(p, /never searched the Linear board/);
+  // BRO-7315: the shape of the printed lens list is not policed any more (16 of 75 sampled Stop blocks,
+  // every one on a session that had run /what-else). The board search is the substance check that stays.
+  assert.doesNotMatch(p, /lens lines/);
+  assert.deepEqual(evaluateChain([...base, ...ev(skill('what-else')), roadmap(), res(roadmap()), text('Checked five angles, one card filed.')]), []);
   const good = [...base, ...ev(skill('what-else')), roadmap(), res(roadmap()), LENSES];
   const early = [...base, roadmap(), res(roadmap()), ...ev(skill('what-else')), LENSES];
   assert.match(evaluateChain(early).join('|'), /never searched the Linear board/, 'a search before /what-else started does not count');
@@ -303,7 +331,7 @@ test('finish chain: a Linear close-out posted before the last landing is flagged
   assert.deepEqual(evaluateChain([...base, done, res(done), land, res(land)], { lastMessage: 'NO-WRAP-UP: closed by hand after the landing\n\nSAFE TO EXIT' }), []);
 });
 
-test('stop hook: a LENSES/TESTED block that only exists in the closing message (not yet flushed) counts', () => {
+test('stop hook: a TESTED block that only exists in the closing message (not yet flushed) counts', () => {
   const base = [...ev(skill('did-it-work')), ...ev(skill(), agent(), curl()), ...ev(skill('what-else')), roadmap(), res(roadmap())];
   const closing = '\u2501\u2501\u2501 TESTED \u2501\u2501\u2501\n```\nLENSES:\n1. a: b\n2. a: b\n3. a: b\n4. a: b\n5. a: b\n```\n\nSAFE TO EXIT';
   assert.equal(stopHookDecision({ lastMessage: closing, events: base, env: CLOUD }).decision, 'allow');
@@ -326,14 +354,14 @@ test('general-purpose reviewer accepted when it has a real review prompt; a buil
   assert.equal(landGateDecision({ ...gate, touchesSrc: true }).decision, 'block');
 });
 
-test('review-ship-check ship-check findings: honest formats are not blocked', () => {
+test('review-ship-check ship-check findings: any lens list shape passes once the board was searched; TESTED header variants', () => {
   const base = fullChain();
   const withLenses = (t) => [...base, ...ev(skill('what-else')), roadmap(), res(roadmap()), text(t)];
   const five = ['1. a: b', '2. a: b', '3. a: b', '4. a: b', '5. a: b'];
   assert.deepEqual(evaluateChain(withLenses(`LENSES:\n${five.join('\n')}`)), []);
   assert.deepEqual(evaluateChain(withLenses(`**LENSES:**\n${five.map((l) => l.replace('. ', ') ')).join('\n')}`)), [], '1) numbering');
   assert.deepEqual(evaluateChain(withLenses(`I will print the LENSES: block now.\n\nLENSES:\n${five.map((l) => `**${l.slice(0, 2)}**${l.slice(2)}`).join('\n')}`)), [], 'earlier mention + bold numbers');
-  assert.match(evaluateChain(withLenses('LENSES:\n1. a: b\n\nOther notes:\n- one\n- two\n- three\n- four\n\nSummary:\n2. x\n3. y\n4. z\n5. w')).join('|'), /of 5 numbered lens lines/, 'numbered summary far below the block does not count');
+  assert.deepEqual(evaluateChain(withLenses('LENSES:\n1. a: b\n\nOther notes:\n- one\n- two\n- three\n- four\n\nSummary:\n2. x\n3. y\n4. z\n5. w')), [], 'the lens list format is not policed (BRO-7315)');
   assert.deepEqual(evaluateChain(withLenses('LENSES:\n1. a: b\n   wrapped line one\n   wrapped line two\n2. a: b\n3. a: b\n   wrapped\n4. a: b\n5. a: b')), [], 'wrapped items count');
   for (const g of ['\u2550\u2550\u2550 TESTED \u2550\u2550\u2550', '\u2500\u2500 TESTED', '**TESTED**', '## TESTED', 'TESTED:']) {
     assert.deepEqual(evaluateChain([...ev(skill('did-it-work')), text(g), ...ev(skill(), agent(), curl())]), [], g);
@@ -411,7 +439,7 @@ test('close-out ordering only counts landings that really ran, and only a real D
   assert.match(problem([...base, ...ev(doneRep), ...ev(mk(landCmd))]), /close-out was posted before/, '--status=done counts');
 });
 
-test('what-else: the best LENSES block wins over a later bare mention, and any Linear list_issues tool name reads the board', () => {
+test('what-else: any Linear list_issues tool name reads the board (lens list shape is not checked)', () => {
   const five = ['1. a: b', '2. a: b', '3. a: b', '4. a: b', '5. a: b'].join('\n');
   const rm = (name) => tool(name, { query: 'fantasy' });
   const run = (t, road) => evaluateChain([...fullChain(), ...ev(skill('what-else')), ...ev(road), text(t)]);

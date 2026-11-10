@@ -172,3 +172,27 @@ test('opening-date: page opening equal to previewsStartDate stops hiding once th
   const show = { openingDate: '2026-07-20', previewsStartDate: '2026-05-01' };
   assert.equal(D.openingIsRunStartArtifact(show, { opening: '2026-05-01', closing: '2026-09-01' }), false);
 });
+
+
+test('BRO-7319: a card create that throws is retried, never thrown, and leaves findings unseen', async () => {
+  const W = require('./city-hub-weekly.js');
+  let n = 0;
+  const ok = await W.fileWithRetry(() => { if (++n < 3) throw new Error('Linear HTTP 429'); return 'BRO-1'; }, { sleep: async () => {} });
+  assert.deepEqual(ok, { card: 'BRO-1', error: null });
+  const bad = await W.fileWithRetry(() => { throw new Error('Linear HTTP 429'); }, { attempts: 2, sleep: async () => {} });
+  assert.equal(bad.card, null);
+  assert.match(bad.error, /429/);
+  const findings = [{ key: 'a' }, { key: 'b' }, { key: 'c' }];
+  assert.deepEqual(W.seenKeys(findings, [{ key: 'b' }], true), ['a', 'c']);
+  assert.deepEqual(W.seenKeys(findings, [{ key: 'b' }], false), ['a', 'b', 'c']);
+});
+
+test('BRO-7319: a failed create for one hub does not stop the next hub', async () => {
+  const W = require('./city-hub-weekly.js');
+  const filed = [];
+  for (const city of ['san-diego-ca', 'boston-ma']) {
+    const r = await W.fileWithRetry(() => { if (city === 'san-diego-ca') throw new Error('Linear HTTP 429'); filed.push(city); return 'BRO-2'; }, { attempts: 2, sleep: async () => {} });
+    assert.equal(!!r.error, city === 'san-diego-ca');
+  }
+  assert.deepEqual(filed, ['boston-ma']);
+});

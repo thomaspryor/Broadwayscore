@@ -71,10 +71,10 @@ test('card: null when nothing is new; otherwise one card naming the plan and a V
 });
 
 // BRO-7319: a card that could not be filed must not mark its findings as seen
-test('keysToPersist: uncarded fresh findings stay unseen; carded ones are recorded', () => {
+test('seenKeys: uncarded fresh findings stay unseen; carded ones are recorded', () => {
   const findings = [{ key: 'a' }, { key: 'b' }, { key: 'c' }];
   const fresh = [{ key: 'b' }];
-  assert.deepEqual(W.keysToPersist(findings, fresh, true), ['a', 'b', 'c']);
-  assert.deepEqual(W.keysToPersist(findings, fresh, false), ['a', 'c']);
-  assert.deepEqual(W.newFindings(findings, W.keysToPersist(findings, fresh, false), {}).map((f) => f.key), ['b']);
+  assert.deepEqual(W.seenKeys(findings, fresh, false), ['a', 'b', 'c']);
+  assert.deepEqual(W.seenKeys(findings, fresh, true), ['a', 'c']);
+  assert.deepEqual(W.newFindings(findings, W.seenKeys(findings, fresh, true), {}).map((f) => f.key), ['b']);
 });

@@ -37,7 +37,7 @@ test('fix cards are told apart from new work by title', () => {
 test('the newest value of each field wins; NO-ROOT-CAUSE is a spot fix', () => {
   const p = rcc.parseRootCauseBlock(['ROOT-CAUSE: old reason here', 'ROOT-CAUSE: newer reason here']);
   assert.equal(p.fields['ROOT-CAUSE'], 'newer reason here');
-  const r = rcc.checkRootCauseClose({ title: 'Poller failed', texts: ['NO-ROOT-CAUSE: one-off upstream outage, nothing to guard', 'NO-EFFECT-CHECK: the outage ended upstream, nothing of ours to measure'] });
+  const r = rcc.checkRootCauseClose({ title: 'Poller failed', texts: ['NO-ROOT-CAUSE: one-off upstream outage, nothing to guard', 'COUSINS: grepped the other pollers, none', 'NO-EFFECT-CHECK: the outage ended upstream, nothing of ours to measure'] });
   assert.deepEqual([r.applies, r.ok, r.kind], [true, true, 'spot']);
   const short = rcc.checkRootCauseClose({ title: 'Poller failed', texts: ['NO-ROOT-CAUSE: n/a'] });
   assert.equal(short.ok, false);
@@ -343,8 +343,10 @@ test('EFFECT: required on fix closes, spot fixes included; a measurement names a
   assert.match(vague.notes.join(), /before and after \(numbers\)/);
   const optOut = rcc.checkRootCauseClose({ title: 'Fixture date bug', texts: [noEffect, 'NO-EFFECT-CHECK: the effect shows only at the next opening night'] });
   assert.equal(optOut.ok, true);
-  const spot = rcc.checkRootCauseClose({ title: 'Poller failed', texts: ['NO-ROOT-CAUSE: one-off upstream outage, nothing to guard'] });
+  const spot = rcc.checkRootCauseClose({ title: 'Poller failed', texts: ['NO-ROOT-CAUSE: one-off upstream outage, nothing to guard ; cousins: grepped the other pollers, none'] });
   assert.deepEqual([spot.ok, spot.kind, spot.missing], [false, 'spot', ['EFFECT']]);
+  const noCousins = rcc.checkRootCauseClose({ title: 'Poller failed', texts: ['NO-ROOT-CAUSE: one-off upstream outage, nothing to guard', 'NO-EFFECT-CHECK: the outage ended upstream, nothing to measure'] });
+  assert.deepEqual([noCousins.ok, noCousins.missing], [false, ['COUSINS']], 'BRO-7316: a spot fix needs COUSINS too');
   assert.equal(rcc.checkRootCauseClose({ title: 'Add a grosses page', texts: [] }).applies, false);
 });
 

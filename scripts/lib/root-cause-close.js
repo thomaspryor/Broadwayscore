@@ -148,10 +148,15 @@ function checkRootCauseClose({ title, texts, landedFiles = null } = {}) {
   const { fields, noRootCause } = parsed;
   const effect = checkEffect(parsed);
   if (noRootCause !== null && noRootCause.length >= MIN_FIELD_CHARS) {
-    // A spot fix still has to show it worked; kind stays 'spot' for the digest share.
-    return effect.ok
-      ? { applies: true, ok: true, kind: 'spot', missing: [], notes: [] }
-      : { applies: true, ok: false, kind: 'spot', missing: ['EFFECT'], notes: effect.notes };
+    // A spot fix still has to show it worked AND where else it looked (BRO-7316, same rule as the
+    // cloud Stop check); kind stays 'spot' for the digest share.
+    const tail = noRootCause.split(COUSINS_TAIL_RE).slice(1).join('; ').trim();
+    const spotMissing = [];
+    if (!((fields.COUSINS && fields.COUSINS.length >= MIN_FIELD_CHARS) || tail.length >= MIN_FIELD_CHARS)) spotMissing.push('COUSINS');
+    if (!effect.ok) spotMissing.push('EFFECT');
+    return spotMissing.length
+      ? { applies: true, ok: false, kind: 'spot', missing: spotMissing, notes: effect.notes }
+      : { applies: true, ok: true, kind: 'spot', missing: [], notes: [] };
   }
   const missing = FIELDS.filter((f) => !(fields[f] && fields[f].length >= MIN_FIELD_CHARS));
   const notes = [];
@@ -205,7 +210,7 @@ function rootCauseCloseMessage(identifier, result, blocking) {
     '    EFFECT: what you measured on real data after landing, before and after (a new check, gate or rule: its dry run over real past inputs and hit rate)',
     '    (or NO-EFFECT-CHECK: <reason>, BRO-7138)',
     '  (A `PREVENTION: <path> ; cousins: <...>` line counts as CLASS-GUARD + COUSINS.)',
-    '  Or for a spot fix: NO-ROOT-CAUSE: <reason>, plus EFFECT or NO-EFFECT-CHECK.',
+    '  Or for a spot fix: NO-ROOT-CAUSE: <reason>, plus COUSINS, plus EFFECT or NO-EFFECT-CHECK.',
     blocking
       ? `  Blocking since ${blockingFromFor(result)}. Rollback: ROOT_CAUSE_CLOSE_GATE=advisory.`
       : `  Advisory now; blocking from ${blockingFromFor(result)}.`,
@@ -371,6 +376,7 @@ module.exports = {
   FIX_RE,
   isFixCard,
   parseRootCauseBlock,
+  COUSINS_TAIL_RE,
   guardPaths,
   checkRootCauseClose,
   rootCauseCloseBlocking,

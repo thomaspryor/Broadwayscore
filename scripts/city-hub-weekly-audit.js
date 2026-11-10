@@ -69,21 +69,12 @@ function writePlan(city, week, actions) {
 }
 
 function fileCard(card) {
-  if (!process.env.LINEAR_API_KEY) { console.log('::warning::LINEAR_API_KEY not set: card not filed (findings are in weekly.json)'); return null; }
+  if (!process.env.LINEAR_API_KEY) { throw new Error('LINEAR_API_KEY not set: card not filed'); } // throws so the findings stay unseen and next run retries (BRO-7319)
   const brain = path.join(__dirname, 'linear-brain.js');
   const prefix = card.title.split(':')[0];
   const dedup = spawnSync('node', [brain, 'find', prefix], { encoding: 'utf8', timeout: 60_000, cwd: ROOT });
   if (dedup.status === 0 && dedup.stdout && dedup.stdout.trim() !== 'null') { console.log(`  card: "${prefix}" already open, not filed again`); return 'existing'; }
-  let c;
-  for (let attempt = 0; attempt < 4; attempt++) { // BRO-7319: Linear 429s the 4th+ create in a burst; back off and retry
-    if (attempt) { // a failed attempt may still have created the card: look again before retrying
-      const again = spawnSync('node', [brain, 'find', prefix], { encoding: 'utf8', timeout: 60_000, cwd: ROOT });
-      if (again.status === 0 && again.stdout && again.stdout.trim() !== 'null') return 'existing';
-    }
-    if (attempt) Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 15_000 * attempt);
-    c = spawnSync('node', [brain, 'create', card.title, '--priority', '2', '--notes', card.body, '--park', 'Weekly city-hub audit finding: a worker checks each source before any data edit'], { encoding: 'utf8', timeout: 60_000, cwd: ROOT });
-    if (c.status === 0 || !/429/.test(`${c.stderr || ''}${c.stdout || ''}`)) break;
-  }
+  const c = spawnSync('node', [brain, 'create', card.title, '--priority', '2', '--notes', card.body, '--dispatch'], { encoding: 'utf8', timeout: 400_000, cwd: ROOT });
   if (c.status !== 0) throw new Error(`linear-brain create failed (exit ${c.status}): ${(c.stderr || c.stdout || '').slice(0, 400)}`);
   const m = (c.stderr || '').match(/__BOARD_CARD_ID__=([A-Z]+-\d+)/);
   return m ? m[1] : 'filed';
@@ -117,15 +108,17 @@ async function auditCity(city, maxUsd) {
   const plan = writePlan(city, week, W.planActions(fresh));
   const card = W.cardFor(city, week, fresh, { planId: plan && (plan.planId ? `${plan.id} (issue_number=${plan.id} plan_id=${plan.planId})` : plan.id), provenance });
   summary.plan = plan;
-  let carded = true;
-  try { summary.card = card ? fileCard(card) : null; } catch (e) { // BRO-7319: keep going, keep the findings unseen so next week retries
-    carded = false; summary.card = null; summary.cardError = e.message;
-    console.log(`::warning::${city}: card not filed (${e.message.slice(0, 160)}); findings stay unseen for the next run`);
+  let cardFailed = false;
+  summary.card = null;
+  if (card) {
+    const r = await W.fileWithRetry(() => fileCard(card), { attempts: 1 }) /* linear-brain retries 429s itself (5 x 60s); a 2nd attempt only risks a duplicate card and the 90-min job budget */;
+    summary.card = r.card;
+    if (r.error) { cardFailed = true; summary.cardError = r.error; console.log(`::warning::${city}: card not filed (${r.error.slice(0, 200)}); findings left unseen so next run retries`); }
   }
   fs.mkdirSync(dir, { recursive: true });
   require('./lib/city-hub-dual-audit').writeAuditJson(path.join(dir, 'scorecard.json'), sc);
   await M.writeIngestPlan(L);
-  fs.writeFileSync(path.join(dir, 'weekly.json'), `${JSON.stringify({ ...summary, findingKeys: W.keysToPersist(findings, fresh, carded), fresh, provenanceRows: provenance.rows }, null, 1)}\n`);
+  fs.writeFileSync(path.join(dir, 'weekly.json'), `${JSON.stringify({ ...summary, findingKeys: W.seenKeys(findings, fresh, cardFailed), fresh, provenanceRows: provenance.rows }, null, 1)}\n`);
   return summary;
 }
 
@@ -137,12 +130,14 @@ async function main() {
   const maxUsd = Number(arg('max-usd', 2)) / Math.max(1, cities.length); // --max-usd is the whole-run cap
   const out = [];
   for (const c of cities) {
+    if (out.length && !DRY) await new Promise((r) => setTimeout(r, 5000)); // space Linear calls between hubs (429s, BRO-7319)
     try { out.push(await auditCity(c, maxUsd)); } catch (e) { console.log(`::warning::${c}: ${e.message}`); out.push({ city: c, error: e.message }); }
   }
   console.log(`[city-hub-weekly] ${out.map((s) => `${s.city}: ${s.error ? `ERROR ${s.error}` : `${s.newFindings} new`}`).join('; ')}`);
   if (process.env.GITHUB_STEP_SUMMARY) {
-    fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, `\n### City hub dual-model audit\n${out.map((s) => `- ${s.city}: ${s.error ? `error ${s.error}` : `${s.findings} findings, ${s.newFindings} new, class 5 ${s.provenance}${s.card ? `, card ${s.card}` : ''}`}`).join('\n')}\n`);
+    fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, `\n### City hub dual-model audit\n${out.map((s) => `- ${s.city}: ${s.error ? `error ${s.error}` : `${s.findings} findings, ${s.newFindings} new, class 5 ${s.provenance}${s.card ? `, card ${s.card}` : ''}${s.cardError ? `, CARD NOT FILED (${String(s.cardError).slice(0, 120)}), findings left unseen for next run` : ''}`}`).join('\n')}\n`);
   }
+  if (out.some((s) => s.cardError)) process.exitCode = 1; // surface unfiled cards (job is continue-on-error, so this only marks the step)
   // --open is the weekly card's VERIFY: it fails while any finding is unsettled (or a hub could not be audited)
   if (flag('open') && out.some((s) => s.error || s.newFindings > 0 || s.provenance > 0)) process.exit(1);
 }

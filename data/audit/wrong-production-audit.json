@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-10T19:17:39.191Z",
+  "timestamp": "2026-11-10T20:27:35.308Z",
   "stats": {
     "totalReviews": 81300,
-    "alreadyFlagged": 22219,
+    "alreadyFlagged": 22221,
     "dateGuardCatches": 219,
     "directorMismatch": 3606,
-    "tvFilmSignals": 2283,
+    "tvFilmSignals": 2286,
     "londonSignals": 3664,
     "offBroadwaySignals": 752,
     "yearMismatch": 364,
-    "noPublishDate": 8468
+    "noPublishDate": 8460
   },
   "findings": [
     {
@@ -22926,6 +22926,20 @@
     },
     {
       "showId": "fish-in-the-dark-2015",
+      "file": "forward--jesse-oxfeld.json",
+      "score": 44,
+      "publishDate": "2015-03-05T20:07:50-05:00",
+      "url": "https://forward.com/articles/216045/from-the-mind-of-larry-david-a-play-about-nothing",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 4\""
+        }
+      ]
+    },
+    {
+      "showId": "fish-in-the-dark-2015",
       "file": "northjerseycom--robert-feldberg.json",
       "score": 76,
       "publishDate": "2015-02-06",
@@ -22935,6 +22949,34 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "fish-in-the-dark-2015",
+      "file": "ny1--roma-torre.json",
+      "score": 76,
+      "publishDate": "2015-03-05",
+      "url": "http://www.ny1.com/nyc/all-boroughs/theater-reviews/2015/03/5/theater-review---fish-in-the-dark-.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "fish-in-the-dark-2015",
+      "file": "nydailynews--joe-dziemianowicz.json",
+      "score": 77,
+      "publishDate": "2015-03-05",
+      "url": "http://www.nydailynews.com/entertainment/theater-arts/fish-dark-review-larry-david-hooks-fun-comedy-article-1.2137659",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },

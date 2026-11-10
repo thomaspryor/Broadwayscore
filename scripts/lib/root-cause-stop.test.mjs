@@ -6,7 +6,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { stopHookDecision, commitSubjects, isFixSubject, cardTitles, hasRootCauseAnswer, answerTexts, blockBudget, main } from './root-cause-stop.mjs';
+import { stopHookDecision, missingRootCauseParts, blockMessage, commitSubjects, isFixSubject, cardTitles, hasRootCauseAnswer, answerTexts, blockBudget, main } from './root-cause-stop.mjs';
 import { landedPushIndices } from './review-coverage.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -26,22 +26,22 @@ test('blocks a landed fix that claims SAFE TO ARCHIVE with no rule-21 answer (th
 });
 
 test('passes with CLASS-GUARD, PREVENTION or NO-ROOT-CAUSE in chat', () => {
-  assert.equal(d([...FIX_CARD, ...LAND], 'Done.\nCLASS-GUARD: scripts/lib/venue-guard.test.mjs\n\nSAFE TO ARCHIVE — x'), 'allow');
+  assert.equal(d([...FIX_CARD, ...LAND], 'Done.\nCLASS-GUARD: scripts/lib/venue-guard.test.mjs\nCOUSINS: grepped data/ and scripts/, none\n\nSAFE TO ARCHIVE — x'), 'allow');
   assert.equal(d([...FIX_CARD, ...LAND, say('**PREVENTION:** scripts/lib/x.test.mjs ; cousins: grep of data/')]), 'allow');
-  assert.equal(d([...FIX_CARD, ...LAND], 'NO-ROOT-CAUSE: one-off typo in a hand-entered row\nSAFE TO ARCHIVE — x'), 'allow');
-  assert.equal(d([...FIX_CARD, ...LAND], 'NO-PREVENTION: docs-only change to CLOUD.md\nSAFE TO ARCHIVE — x'), 'allow');
+  assert.equal(d([...FIX_CARD, ...LAND], 'NO-ROOT-CAUSE: one-off typo in a hand-entered row ; cousins: grepped data/ and scripts/, none\nSAFE TO ARCHIVE — x'), 'allow');
+  assert.equal(d([...FIX_CARD, ...LAND], 'NO-PREVENTION: docs-only change to CLOUD.md ; cousins: grepped data/ and scripts/, none\nSAFE TO ARCHIVE — x'), 'allow');
 });
 
 test('passes when the answer is in the Linear Outcome comment, not the chat', () => {
-  const viaCli = use('l1', 'Bash', { command: "node scripts/linear-brain.js update BRO-1 --state Done --comment \"$(cat <<'EOF'\nOutcome.\nROOT-CAUSE: importer trusted URL slugs\nCLASS-GUARD: scripts/lib/import-guard.test.mjs\nEOF\n)\"" });
+  const viaCli = use('l1', 'Bash', { command: "node scripts/linear-brain.js update BRO-1 --state Done --comment \"$(cat <<'EOF'\nOutcome.\nROOT-CAUSE: importer trusted URL slugs\nCLASS-GUARD: scripts/lib/import-guard.test.mjs\nCOUSINS: grepped the other importers, none\nEOF\n)\"" });
   assert.equal(d([...FIX_CARD, ...LAND, viaCli, ok('l1')]), 'allow');
-  const inline = use('l4', 'Bash', { command: 'node scripts/linear-brain.js update BRO-1 --comment "CLASS-GUARD: scripts/lib/inline.test.mjs" --state Done' });
+  const inline = use('l4', 'Bash', { command: 'node scripts/linear-brain.js update BRO-1 --comment "CLASS-GUARD: scripts/lib/inline.test.mjs ; cousins: grepped data/, none" --state Done' });
   assert.equal(d([...FIX_CARD, ...LAND, inline, ok('l4')]), 'allow', 'an inline single-line --comment counts');
-  const report = use('l5', 'Bash', { command: "node scripts/linear-session.js report --status=done --summary='NO-ROOT-CAUSE: one manual row typo fixed'" });
+  const report = use('l5', 'Bash', { command: "node scripts/linear-session.js report --status=done --summary='NO-ROOT-CAUSE: one manual row typo fixed ; cousins: grepped data/ and scripts/, none'" });
   assert.equal(d([...FIX_CARD, ...LAND, report, ok('l5')]), 'allow');
-  const viaMcp = use('l2', 'mcp__Linear__save_comment', { issueId: 'BRO-1', body: 'Outcome\n- CLASS-GUARD: scripts/lib/a.test.mjs' });
+  const viaMcp = use('l2', 'mcp__Linear__save_comment', { issueId: 'BRO-1', body: 'Outcome\n- CLASS-GUARD: scripts/lib/a.test.mjs\n- COUSINS: grepped data/, none' });
   assert.equal(d([...FIX_CARD, ...LAND, viaMcp, ok('l2')]), 'allow');
-  const viaUuid = use('l3', 'mcp__0a1b2c3d-1111-2222-3333-444455556666__save_comment', { body: 'NO-ROOT-CAUSE: single bad row from a manual edit' });
+  const viaUuid = use('l3', 'mcp__0a1b2c3d-1111-2222-3333-444455556666__save_comment', { body: 'NO-ROOT-CAUSE: single bad row from a manual edit ; cousins: grepped data/ and scripts/, none' });
   assert.equal(d([...FIX_CARD, ...LAND, viaUuid, ok('l3')]), 'allow');
 });
 
@@ -86,7 +86,7 @@ test('only real landings count: refused, dry-run and delete pushes do not; MCP l
 test('helpers: titles from CLI and connector creates; answer texts include Linear writes', () => {
   assert.deepEqual(cardTitles([...FIX_CARD, use('s', 'mcp__Linear__save_issue', { title: 'Fix X', team: 'BRO' }), use('u', 'mcp__Linear__save_issue', { id: 'BRO-2', title: 'edit' })]), ['Fix wrong venue on 6 shows', 'Fix X']);
   assert.equal(answerTexts([use('b', 'Bash', { command: 'ls' })], 'm').length, 1);
-  assert.equal(hasRootCauseAnswer(['PREVENTION: scripts/lib/q.test.mjs']), true);
+  assert.equal(hasRootCauseAnswer(['PREVENTION: scripts/lib/q.test.mjs ; cousins: grepped data/, none']), true);
   assert.equal(blockBudget(new Date('2026-11-10T00:00:00Z')), 1);
   assert.equal(blockBudget(new Date('2026-12-22T00:00:00Z')), 2);
 });
@@ -123,10 +123,10 @@ test('BRO-7301: symptom-titled card + landed fix(...) commit + bare SAFE TO ARCH
   const fixC = commit('g1', 'git commit -m "fix(opening-grade): scope SERP census to the show city"');
   const featC = commit('g2', 'git commit -m "feat: add a tour map page"');
   assert.equal(d([...SYMPTOM_CARD, ...fixC, ...LAND]), 'block');
-  assert.equal(stopHookDecision({ events: [...SYMPTOM_CARD, ...fixC, ...LAND], lastMessage: SAFE, env: CLOUD }).reason, 'fix commit: fix(opening-grade): scope SERP census to the show city');
+  assert.equal(stopHookDecision({ events: [...SYMPTOM_CARD, ...fixC, ...LAND], lastMessage: SAFE, env: CLOUD }).reason, 'fix commit: fix(opening-grade): scope SERP census to the show city; missing: CLASS-GUARD or NO-ROOT-CAUSE + COUSINS');
   assert.equal(d([...SYMPTOM_CARD, ...featC, ...LAND]), 'allow');
   assert.equal(d([...SYMPTOM_CARD, ...LAND]), 'allow', 'no commits seen, symptom title alone stays quiet (old behavior)');
-  assert.equal(d([...SYMPTOM_CARD, ...fixC, ...LAND], 'CLASS-GUARD: scripts/lib/census.test.mjs\nSAFE TO ARCHIVE — x'), 'allow', 'a stated answer still passes');
+  assert.equal(d([...SYMPTOM_CARD, ...fixC, ...LAND], 'CLASS-GUARD: scripts/lib/census.test.mjs\nCOUSINS: grepped other shows, none\nSAFE TO ARCHIVE — x'), 'allow', 'a stated answer still passes');
 });
 
 test('BRO-7301: subject classification follows the conventional type, untyped goes to FIX_RE', () => {
@@ -171,4 +171,36 @@ test('BRO-7301 review fixes: follow-up subjects, unknown prefixes, heredoc/echo 
   assert.equal(d([...SYMPTOM_CARD, ...ship, ...LAND]), 'allow', 'a ship-check fixup commit does not turn a feature session into a fix session');
   const untyped = commit('g4', 'git commit -m "Census counts the wrong city"');
   assert.equal(d([...SYMPTOM_CARD, ...untyped, ...LAND]), 'block', 'untyped fix-reading subject through stopHookDecision');
+});
+
+test('BRO-7316: a root-cause statement alone is not enough, COUSINS is required too', () => {
+  const g = 'CLASS-GUARD: scripts/lib/venue-guard.test.mjs';
+  const r = (msg) => stopHookDecision({ events: [...FIX_CARD, ...LAND], lastMessage: `${msg}\nSAFE TO ARCHIVE — x`, env: CLOUD });
+  assert.equal(r(g).decision, 'block', 'CLASS-GUARD without COUSINS blocks');
+  assert.match(r(g).reason, /missing: COUSINS$/);
+  assert.equal(r(`${g}\nCOUSINS: grepped data/ and src/ for the same venue bug, fixed 2`).decision, 'allow');
+  assert.equal(r('NO-ROOT-CAUSE: one-off typo in a hand-entered row').decision, 'block', 'a spot fix needs COUSINS too');
+  assert.equal(r('NO-ROOT-CAUSE: one-off typo in a hand-entered row ; cousins: grepped shows.json, none').decision, 'allow');
+  assert.equal(r('NO-PREVENTION: docs-only change to CLOUD.md').decision, 'block');
+  assert.equal(r('PREVENTION: scripts/lib/x.test.mjs ; cousins: grepped data/, none').decision, 'allow', 'PREVENTION with a cousins tail');
+  assert.equal(r('COUSINS: grepped data/ and scripts/, none').decision, 'block', 'COUSINS without a root-cause line blocks');
+  assert.equal(r(`${g}\nCOUSINS: none`).decision, 'block', 'a bare "none" names no search');
+  assert.deepEqual(missingRootCauseParts([]), ['CLASS-GUARD or NO-ROOT-CAUSE', 'COUSINS']);
+  assert.match(blockMessage(['COUSINS']), /Missing: COUSINS\./);
+});
+
+test('BRO-7316: CLASS-GUARD in a Linear comment and COUSINS in chat combine', () => {
+  const cmt = use('l9', 'mcp__Linear__save_comment', { body: 'CLASS-GUARD: scripts/lib/a.test.mjs' });
+  assert.equal(d([...FIX_CARD, ...LAND, cmt, ok('l9')], 'COUSINS: grepped all shows for the same field, fixed 3\nSAFE TO ARCHIVE — x'), 'allow');
+  assert.equal(d([...FIX_CARD, ...LAND, cmt, ok('l9')]), 'block');
+});
+
+test('BRO-7316 ship-check: every line counts, templates and "not searched" do not', () => {
+  const full = 'NO-ROOT-CAUSE: one-off typo in row ; cousins: grepped data/ and scripts/, none';
+  assert.deepEqual(missingRootCauseParts([full, 'NO-ROOT-CAUSE: one-off typo in row']), [], 'a short repeat does not erase the full answer');
+  assert.deepEqual(missingRootCauseParts(['COUSINS: grepped data/ and src/, fixed 2\nCLASS-GUARD: scripts/lib/a.test.mjs\nCOUSINS: none']), [], 'a later COUSINS: none keeps the earlier real one');
+  assert.deepEqual(missingRootCauseParts(['NO-PREVENTION: docs only change\nNO-PREVENTION: docs only ; cousins: grepped docs, none']), []);
+  assert.deepEqual(missingRootCauseParts(['CLASS-GUARD: <path of the test, check or guard>\nCOUSINS: <where you searched for the same defect>']), ['CLASS-GUARD or NO-ROOT-CAUSE', 'COUSINS'], 'echoed template');
+  assert.deepEqual(missingRootCauseParts(['CLASS-GUARD: scripts/lib/a.test.mjs\nCOUSINS: not searched yet, TODO']), ['COUSINS']);
+  assert.deepEqual(missingRootCauseParts(['**CLASS-GUARD:** scripts/lib/a.test.mjs\n- **Cousins:** grepped data/ and src/, none']), []);
 });

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// BRO-7294: rule 21 at the moment a cloud session claims it is finished.
+// BRO-7294/BRO-7316: rule 21 at the moment a cloud session claims it is finished.
 //
 // A cloud session landed six one-record data patches, ended on SAFE TO ARCHIVE, and admitted they
 // were spot fixes only when the owner asked. The only rule-21 check (root-cause-close.js) runs when
@@ -8,6 +8,8 @@
 // or an MCP landing) on a FIX card, and now claims SAFE TO ARCHIVE, to state its rule-21 answer:
 //   CLASS-GUARD: <path> (or the older PREVENTION: <path> ; cousins: ...), or
 //   NO-ROOT-CAUSE: <why this was a spot fix>   (NO-PREVENTION: is accepted as an alias)
+// plus, since BRO-7316, COUSINS: <where else it searched for the same defect and what it fixed> (own line,
+// or a `; cousins:` tail on any of the above). A spot fix needs COUSINS too.
 // in its chat message OR in a Linear comment it posted this session (linear-brain.js update/comment
 // text, or the Linear connector's save_comment), so a session that closed its card properly passes
 // without putting jargon in the owner's chat.
@@ -36,7 +38,7 @@ import { walkTranscript } from './transcript-scan.mjs';
 import { landedPushIndices, claimsSafeToArchive } from './review-coverage.mjs';
 
 const require = createRequire(import.meta.url);
-const { parseRootCauseBlock, isFixCard, ROOT_CAUSE_CLOSE_BLOCKING_FROM } = require('./root-cause-close.js');
+const { parseRootCauseBlock, isFixCard, ROOT_CAUSE_CLOSE_BLOCKING_FROM, COUSINS_TAIL_RE } = require('./root-cause-close.js');
 
 const MIN_REASON = 10;
 const NO_PREVENTION_RE = /^[ \t>*_-]*NO-PREVENTION(?:\*\*|__)?[ \t]*:(?:\*\*|__)?[ \t]*(\S.*)$/im;
@@ -84,15 +86,43 @@ export function answerTexts(events, lastMessage = '') {
   return out;
 }
 
-/** PURE. Has the session stated its rule-21 answer? */
+// BRO-7316: the same tail split parseRootCauseBlock applies to CLASS-GUARD/PREVENTION, applied to
+// NO-ROOT-CAUSE / NO-PREVENTION values so `NO-ROOT-CAUSE: typo ; cousins: grepped data/, none` counts.
+const splitTail = (v) => { const [head, ...rest] = String(v || '').split(COUSINS_TAIL_RE); return { head: head.trim(), cousins: rest.join('; ').trim() }; };
+// An echoed template (`<path of the test...>`) or an explicit "not done" is not an answer.
+const PLACEHOLDER_RE = /<[^>\n]{3,}>|\b(?:not searched|todo|tbd)\b/i;
+const real = (v) => String(v || '').length >= MIN_REASON && !PLACEHOLDER_RE.test(v);
+
+/**
+ * PURE (BRO-7316). What of the rule-21 answer is missing? [] when complete, else some of
+ * 'CLASS-GUARD or NO-ROOT-CAUSE' and 'COUSINS'. The answer is the root-cause statement AND where else
+ * the session looked for the same defect (COUSINS, 10+ chars, own line or a `; cousins:` tail).
+ * Every line of every text is read on its own, so a short repeat in the chat never erases a full
+ * answer given in a Linear comment (parseRootCauseBlock alone is last-wins per field).
+ */
+export function missingRootCauseParts(texts) {
+  let cause = false;
+  let cousins = false;
+  const take = (v) => { const { head, cousins: c } = splitTail(v); if (real(head)) cause = true; if (real(c)) cousins = true; };
+  for (const t of texts) {
+    for (const line of String(t || '').split('\n')) {
+      const { fields, noRootCause } = parseRootCauseBlock([line]);
+      if (fields['CLASS-GUARD'] && real(fields['CLASS-GUARD'])) cause = true;
+      if (real(fields.COUSINS)) cousins = true;
+      if (noRootCause) take(noRootCause);
+      const m = NO_PREVENTION_RE.exec(line);
+      if (m) take(m[1]);
+    }
+  }
+  const missing = [];
+  if (!cause) missing.push('CLASS-GUARD or NO-ROOT-CAUSE');
+  if (!cousins) missing.push('COUSINS');
+  return missing;
+}
+
+/** PURE. Has the session stated its full rule-21 answer (root cause AND cousins)? */
 export function hasRootCauseAnswer(texts) {
-  const { fields, noRootCause } = parseRootCauseBlock(texts);
-  if (noRootCause && noRootCause.length >= MIN_REASON) return true;
-  if (fields['CLASS-GUARD'] && fields['CLASS-GUARD'].length >= MIN_REASON) return true;
-  return texts.some((t) => {
-    const m = NO_PREVENTION_RE.exec(String(t || ''));
-    return Boolean(m && m[1].trim().length >= MIN_REASON);
-  });
+  return missingRootCauseParts(texts).length === 0;
 }
 
 // BRO-7301: a real bug card often has a symptom title with no FIX_RE word, so a fix session looked
@@ -179,13 +209,16 @@ export function blockBudget(now = new Date()) {
   return now.toISOString().slice(0, 10) >= ROOT_CAUSE_CLOSE_BLOCKING_FROM ? 2 : 1;
 }
 
-const MESSAGE = [
-  'BLOCKED (BRO-7294, rule 21): this session landed a fix and claims SAFE TO ARCHIVE, but never said whether the fix closes the whole class of problem.',
-  'Add ONE of these, either as a line in the closing message or in the Linear Outcome comment for the card:',
-  '  CLASS-GUARD: <path of the test, check or guard that fails if this class of bug comes back>',
-  '  NO-ROOT-CAUSE: <why this was a spot fix, 10+ chars>',
-  'If what you landed were one-record patches (data edits that fix a row, not the cause), find the cause and fix it now. If you cannot, put the NO-ROOT-CAUSE line in the Linear Outcome comment AND tell the owner in plain words in the chat that these were spot fixes and what could cause the same problem again. Plain prose alone does not satisfy this check.',
-].join('\n');
+export function blockMessage(missing) {
+  return [
+    `BLOCKED (BRO-7294/BRO-7316, rule 21): this session landed a fix and claims SAFE TO ARCHIVE, but its rule-21 answer is incomplete. Missing: ${missing.join(' and ')}.`,
+    'Add ALL missing lines at once (one reminder per session), in the closing message or the Linear Outcome comment:',
+    '  CLASS-GUARD: <path of the test, check or guard that fails if this class of bug comes back>   (or NO-ROOT-CAUSE: <why this was a spot fix, 10+ chars>)',
+    '  COUSINS: <where you searched for the same defect (other shows, data/, code, similar scripts) and what you found or fixed>',
+    'Before writing COUSINS, do the search: grep site, data and code for the same defect, fix every instance you find, and fix the cause so it cannot recur. "none" is fine only with where you looked ("grepped data/ and scripts/, none"). A spot fix needs COUSINS too, for example: NO-ROOT-CAUSE: one-off typo in a row ; cousins: grepped shows.json for the same typo, none.',
+    'If what you landed were one-record patches, find the cause and fix it now. If you cannot, put NO-ROOT-CAUSE in the Linear Outcome comment AND tell the owner in plain words that these were spot fixes. Plain prose alone does not satisfy this check.',
+  ].join('\n');
+}
 
 /**
  * PURE Stop-hook decision.
@@ -203,8 +236,9 @@ export function stopHookDecision({ lastMessage = '', events = null, env = proces
     fixCommit = commitSubjects(events).find(isFixSubject) || null;
     if (!fixCommit) return { decision: 'allow', reason: 'not a fix card' };
   }
-  if (hasRootCauseAnswer(answerTexts(events, lastMessage))) return { decision: 'allow', reason: 'rule-21 answer stated' };
-  return { decision: 'block', reason: fixCommit ? `fix commit: ${fixCommit}` : 'landed a fix with no rule-21 answer', message: MESSAGE };
+  const missing = missingRootCauseParts(answerTexts(events, lastMessage));
+  if (!missing.length) return { decision: 'allow', reason: 'rule-21 answer stated' };
+  return { decision: 'block', reason: `${fixCommit ? `fix commit: ${fixCommit}` : 'landed a fix'}; missing: ${missing.join(' + ')}`, message: blockMessage(missing) };
 }
 
 function readStdin() {
