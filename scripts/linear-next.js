@@ -339,6 +339,18 @@ async function reportDispatchOnIssue(issue, ref, mode, correlationId, deps = {})
     const body = ld.buildDispatchComment({ ref, ts: new Date().toISOString(), mode, correlationId });
     await linearClient.createComment(issue.id, body);
   } catch (e) { console.error(`[linear-next] WARN could not post dispatch comment on ${issue.identifier}: ${e.message}`); }
+  // BRO-7116: a headless report runs AFTER the worker exited, so nothing is
+  // running to claim the card for. The worker claims its own card at start
+  // (linear-session.js claim) and closes it itself. Writing "In Progress"
+  // here clobbered a worker's own Paused close (Paused is a backlog-type
+  // state, so the type check below let it through): BRO-7116 went Paused ->
+  // In Progress 30s after its worker paused it, then the 26h reclaim sweep
+  // moved it to Todo and a second paid worker re-ran finished work. A
+  // stranded run is reported by postEndReportIfMissing, not by a state move.
+  if (mode === 'headless') {
+    console.log(`[linear-next] ${issue.identifier}: headless job finished — leaving its state to the worker`);
+    return;
+  }
   try {
     const team = await linearClient.getTeam();
     // Team BRO has TWO states of type 'started' (In Progress, In Review) —
@@ -360,17 +372,10 @@ async function reportDispatchOnIssue(issue, ref, mode, correlationId, deps = {})
     const started =
       lsr.pickStateByName(team.states, lsr.CLAIM_STATE_NAME) || lsr.pickStateByType(team.states, 'started');
     if (!started) { console.error(`[linear-next] WARN no 'started'-type workflow state on team ${linearClient.TEAM_KEY} — leaving ${issue.identifier}'s state unchanged`); return; }
-    // For 'headless' mode this runs AFTER the worker session has already
-    // finished (main() awaits runJob() to completion before calling this —
-    // see the caller) and may itself have moved the issue on completion
-    // (e.g. to "In Review" or "Done" per its own instructions, or a human
-    // could have touched it in the meantime). `issue` here is the object
-    // fetched at DISPATCH time, now stale, so blindly writing stateId would
-    // silently clobber whatever ran during that window. Re-fetch and only
-    // claim the state if it's still sitting where it was at dispatch
-    // (backlog/unstarted) — found live (BRO-287): this exact function would
-    // have overwritten the "In Review" state the BRO-287 session set on
-    // itself moments before exiting.
+    // cmux mode only (headless returned above). A human or the just-launched
+    // session may have moved the card since it was fetched at dispatch time,
+    // so re-fetch and only claim it if it still sits in backlog/unstarted
+    // (BRO-287: an earlier version overwrote an "In Review" a session had set).
     let currentType = issue.state && issue.state.type;
     try {
       const fresh = await linearClient.getIssue(issue.identifier);

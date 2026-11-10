@@ -2293,13 +2293,9 @@ test('reportDispatchOnIssue: no started-type state in the {nodes} shape leaves t
   assert.match(errors.join('\n'), /no 'started'-type workflow state/);
 });
 
-// Live BRO-287 finding: for 'headless' mode, this function runs AFTER
-// main() has awaited the worker session to full completion — by then the
-// session may have already moved the issue itself (e.g. to "In Review" per
-// its own completion instructions). Without a fresh re-check, this function
-// would blindly overwrite that with "In Progress" using the stale `issue`
-// object captured at dispatch time.
-test('reportDispatchOnIssue: does not clobber a state the session already moved to since dispatch', async () => {
+// BRO-287 / BRO-7116: in cmux mode the claim re-fetches the card and leaves a
+// state someone already moved alone.
+test('reportDispatchOnIssue: cmux does not clobber a state already moved since dispatch', async () => {
   const states = [
     { id: 'backlog-1', name: 'Backlog', type: 'backlog' },
     { id: 'progress-1', name: 'In Progress', type: 'started' },
@@ -2310,8 +2306,8 @@ test('reportDispatchOnIssue: does not clobber a state the session already moved 
   console.log = (msg) => logs.push(msg);
   try {
     await reportDispatchOnIssue(
-      { id: 'issue-1', identifier: 'BRO-1', state: { type: 'backlog' } }, 'job-1', 'headless', 'corr-1',
-      { linear: makeStubLinear(states, updateCalls, 'started') } // fresh getIssue() says it's now "started" (e.g. In Review)
+      { id: 'issue-1', identifier: 'BRO-1', state: { type: 'backlog' } }, 'ws-1', 'cmux', 'corr-1',
+      { linear: makeStubLinear(states, updateCalls, 'started') }
     );
   } finally {
     console.log = origLog;
@@ -2320,19 +2316,54 @@ test('reportDispatchOnIssue: does not clobber a state the session already moved 
   assert.match(logs.join('\n'), /already "started".*leaving its state alone/);
 });
 
-test('reportDispatchOnIssue: still claims the state when the fresh refetch confirms nothing else has moved it', async () => {
+test('reportDispatchOnIssue: cmux still claims when the refetch confirms nothing moved it', async () => {
   const states = [
     { id: 'backlog-1', name: 'Backlog', type: 'backlog' },
     { id: 'progress-1', name: 'In Progress', type: 'started' },
   ];
   const updateCalls = [];
   await reportDispatchOnIssue(
-    { id: 'issue-1', identifier: 'BRO-1', state: { type: 'backlog' } }, 'job-1', 'headless', 'corr-1',
-    { linear: makeStubLinear(states, updateCalls, 'unstarted') } // fresh getIssue() confirms still Todo
+    { id: 'issue-1', identifier: 'BRO-1', state: { type: 'backlog' } }, 'ws-1', 'cmux', 'corr-1',
+    { linear: makeStubLinear(states, updateCalls, 'unstarted') }
   );
   assert.equal(updateCalls.length, 1);
   assert.equal(updateCalls[0].patch.stateId, 'progress-1');
 });
+
+// BRO-7116: a headless report runs after the worker exited. The worker paused
+// its own card (Paused is a backlog-type state); the old post-run claim moved
+// it back to In Progress, the reclaim sweep then reset it to Todo, and a
+// second paid worker re-ran finished work. Headless must never write state.
+for (const [label, freshType, freshName] of [
+  ['the worker paused it (Paused, backlog-type)', 'backlog', 'Paused'],
+  ['the team-fallback pause left it in Backlog', 'backlog', 'Backlog'],
+  ['the worker never touched it (stranded run, still Todo)', 'unstarted', 'Todo'],
+]) {
+  test(`reportDispatchOnIssue: headless writes no state when ${label}`, async () => {
+    const states = [
+      { id: 'paused-1', name: 'Paused', type: 'backlog' },
+      { id: 'progress-1', name: 'In Progress', type: 'started' },
+    ];
+    const updateCalls = [];
+    const comments = [];
+    const stub = makeStubLinear(states, updateCalls, freshType);
+    stub.getIssue = async () => ({ state: { type: freshType, name: freshName } });
+    stub.createComment = async (id, body) => comments.push(body);
+    const origLog = console.log;
+    console.log = () => {};
+    try {
+      await reportDispatchOnIssue(
+        { id: 'issue-1', identifier: 'BRO-1', state: { type: 'unstarted', name: 'Todo' } }, 'job-1', 'headless', 'corr-1',
+        { linear: stub }
+      );
+    } finally {
+      console.log = origLog;
+    }
+    assert.equal(updateCalls.length, 0, 'headless post-run must not move the card');
+    assert.equal(comments.length, 1, 'the Dispatched breadcrumb is still posted');
+    assert.match(comments[0], /\(headless\)$/);
+  });
+}
 
 for (const [label, claims, expect, priority] of [
   ['three cloud Opus claims leave room', 3, 'opus', 2],
