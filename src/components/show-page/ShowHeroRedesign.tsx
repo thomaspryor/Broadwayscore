@@ -773,20 +773,26 @@ function Inner({
         <div
           // 'pending' keeps the row's height but hides and disables it, so there is no
           // flash or layout jump while we learn whether this viewer already rated.
-          className={`sm:hidden rounded-lg border border-white/10 bg-white/5 px-3 pt-2.5 pb-2 ${mobileStarState === 'pending' ? 'invisible' : ''}`}
+          className={`sm:hidden rounded-lg border border-white/10 bg-white/5 px-3 pt-2.5 pb-1.5 text-center ${mobileStarState === 'pending' ? 'invisible' : ''}`}
           inert={mobileStarState === 'pending'}
           aria-hidden={mobileStarState === 'pending' ? true : undefined}
         >
-          <p className="text-[11px] font-semibold uppercase tracking-widest text-fg-muted mb-1">Tap to rate</p>
-          <StarRating rating={null} onRatingChange={handlePosterStarsPick} size="lg" hideLabel fill arrowKeys={false} />
+          {/* Same label style as the buttons below (14px / semibold / white / sentence case,
+              centered). Owner decision 2026-11-10: it was 11px muted ALL CAPS, left aligned. */}
+          <p className="text-sm font-semibold text-white mb-1">Tap to rate</p>
+          {/* Stars grouped in the middle (owner pick "3b", 2026-11-10); each button is still a
+              full fifth of this narrower row, so the tap targets stay 44px+ wide. */}
+          <div className="mx-auto w-full max-w-[240px]">
+            <StarRating rating={null} onRatingChange={handlePosterStarsPick} size="lg" hideLabel fill arrowKeys={false} />
+          </div>
         </div>
       )}
       {userFeaturesEnabled && (
         <div className={`grid gap-2 ${showRateButton
           ? (isAuthenticated
-              ? (showMobileStars ? 'grid-cols-[1fr_auto] sm:grid-cols-[1fr_1fr_auto]' : 'grid-cols-[1fr_1fr_auto]')
+              ? (showMobileStars ? 'grid-cols-2 sm:grid-cols-[1fr_1fr_auto]' : 'grid-cols-[1fr_1fr_auto]')
               : (showMobileStars ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-2'))
-          : (isAuthenticated ? 'grid-cols-[1fr_auto]' : 'grid-cols-1')}`}>
+          : (isAuthenticated ? 'grid-cols-2 sm:grid-cols-[1fr_auto]' : 'grid-cols-1')}`}>
           <button
             type="button"
             onClick={handleWantToSee}
@@ -799,7 +805,7 @@ function Inner({
             <svg className="w-4 h-4 shrink-0" fill={onWatchlist ? 'currentColor' : 'none'} viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
             </svg>
-            <span className="text-xs sm:text-sm font-semibold">{getWatchlistCtaLabel({ onWatchlist, hasRating, isClosed })}</span>
+            <span className="text-sm font-semibold">{getWatchlistCtaLabel({ onWatchlist, hasRating, isClosed })}</span>
           </button>
           {showRateButton && (
           <button
@@ -811,7 +817,7 @@ function Inner({
             <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
             </svg>
-            <span className="text-xs sm:text-sm font-semibold">
+            <span className="text-sm font-semibold">
               {!hasRating ? 'Rate it' : 'Log another viewing'}
             </span>
           </button>
@@ -819,7 +825,7 @@ function Inner({
           {/* Custom lists, signed-in only: for signed-out visitors it was a third
               control that led straight to a sign-in wall (owner, 2026-10-06).
               Icon-only below sm so the two primary buttons keep their width. */}
-          {isAuthenticated && <ShowPageAddToListButton showId={show.id} variant="hero" />}
+          {isAuthenticated && <ShowPageAddToListButton showId={show.id} variant="hero" labelOnPhone={!showRateButton || showMobileStars} />}
         </div>
       )}
 
@@ -985,7 +991,7 @@ function Inner({
         officialUrl={show.officialUrl}
         pageType="show"
         splitVariant
-        primaryButtonClassName="w-full lg:flex-1 lg:min-w-[16rem] inline-flex items-center justify-center gap-1.5 h-10 sm:h-14 px-5 rounded-lg bg-gradient-brand text-white font-bold sm:font-extrabold text-sm sm:text-[17px] leading-none hover:shadow-glow-sm hover:scale-[1.01] active:scale-[0.99] transition-all whitespace-nowrap"
+        primaryButtonClassName="w-full lg:flex-1 lg:min-w-[16rem] inline-flex items-center justify-center gap-1.5 h-10 sm:h-14 px-5 rounded-lg bg-gradient-brand text-[#1a1208] font-bold sm:font-extrabold text-sm sm:text-[17px] leading-none hover:shadow-glow-sm hover:scale-[1.01] active:scale-[0.99] transition-all whitespace-nowrap"
         secondaryAfter={lotteryPill('hidden lg:inline-flex lg:h-14')}
       >
         {/* Keep the standalone lottery pill when no purchase link is available. */}

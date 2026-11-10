@@ -54,3 +54,33 @@ test('rate / want-to-see / list buttons share one 48px height from sm up', () =>
   assert.equal(sm12.length, 2, 'Want to See and Rate it');
   assert.match(listBtn, /hero: '[^']*\bsm:h-12\b/);
 });
+
+// Phone action card (owner decisions 2026-11-10: separate boxes, one label style, stars grouped "3b").
+test('every phone label uses ONE style: 14px semibold, no text-xs on the hero buttons', () => {
+  const cluster = hero.match(/data-testid="hero-action-cluster"[\s\S]*?Your plans/);
+  assert.ok(cluster, 'action cluster block not found');
+  assert.doesNotMatch(cluster[0], /text-xs sm:text-sm/, 'Want to See / Rate it must not shrink to 12px on phones');
+  assert.doesNotMatch(listBtn.match(/hero: '[^']*'/)[0], /text-xs/);
+  assert.match(listBtn, /<span className="text-sm font-semibold">/);
+});
+
+test('"Tap to rate" matches the button labels: sentence case, white, centered, not 11px muted caps', () => {
+  const row = hero.match(/\{userFeaturesEnabled && showMobileStars && \([\s\S]*?\n      \)\}/);
+  assert.ok(row, 'star row block not found');
+  assert.match(row[0], /<p className="text-sm font-semibold text-white[^"]*">Tap to rate<\/p>/);
+  assert.match(row[0], /text-center/);
+  assert.doesNotMatch(row[0], /uppercase|text-\[11px\]|text-fg-muted/);
+  assert.match(row[0], /mx-auto w-full max-w-\[\d+px\]/, 'stars are grouped in the middle, not spread edge to edge');
+});
+
+test('list button shows "Add to list" on phones in the two-column row, icon-only in the three-column row', () => {
+  assert.match(hero, /variant="hero" labelOnPhone=\{!showRateButton \|\| showMobileStars\}/);
+  assert.match(listBtn, /labelOnPhone \? 'sm:hidden' : 'hidden'}>Add to list</);
+  assert.match(listBtn, /labelOnPhone \? ' w-full px-2' : ' w-10'/);
+});
+
+test('Get Tickets label is near-black on the gold (white on gold is 2.2-2.8:1, near-black 6.7+)', () => {
+  const m = hero.match(/primaryButtonClassName="([^"]*)"/);
+  assert.match(m[1], /text-\[#1a1208\]/);
+  assert.doesNotMatch(m[1], /\btext-white\b/);
+});
