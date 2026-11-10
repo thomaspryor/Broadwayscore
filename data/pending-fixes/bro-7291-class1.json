@@ -1,0 +1,258 @@
+{
+  "issueNumber": "bro-7291-class1",
+  "planId": "ace4f43a-5087-4c70-b4e6-69fe703c279f",
+  "status": "pending",
+  "createdAt": "2026-11-10T15:08:24.484Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7291 class 1: 21 closing dates that two or more reviews (or an 'extended' notice) put later than ours, 20 Chicago + 1 Boston. Same decision as harvest-hub-run-dates.js, which only scans recent shows daily. (part 1 of 2)",
+    "steps": [
+      "shows.json: jersey-boys-regional-2024.closingDate (stale closing date: ours 2024-07-21 / review text \"through 2024-07-28\" (https://www.conversationswithedtracy.com/picksinsix/2024/3/31/picksinsix-review-jersey-boys-mercury-theater-chicago))",
+      "shows.json: jersey-boys-regional-2024.closingDateSource",
+      "shows.json: the-good-regional-2024.closingDate (stale closing date: ours 2024-04-20 / review text \"through 2024-04-21\" (https://aroundthetownchicago.com/theatre-reviews/the-good-reviewed-by-julia-w-rath/ ; https://www.chicagostageandscreen.com/post/magnus-speaks-her-and-maybe-our-mind ; https://www.",
+      "shows.json: the-good-regional-2024.closingDateSource",
+      "shows.json: deathtrap-regional-2024.closingDate (stale closing date: ours 2024-03-17 / review text \"through 2024-03-24\" (https://www.broadwayworld.com/chicago/article/Review-DEATHTRAP-at-BrightSide-Theatre-20240311 ; https://www.buzznews.net/theatre/theatre-reviews/item/5460-deathtrap-a-thriller-to-",
+      "shows.json: deathtrap-regional-2024.closingDateSource",
+      "shows.json: falsettos-regional-2024.closingDate (stale closing date: ours 2024-12-08 / review text \"through 2024-12-15\" (https://www.conversationswithedtracy.com/picksinsix/2024/11/18/picksinsix-review-falsettos-timeline-theatre-company-court-theatre))",
+      "shows.json: falsettos-regional-2024.closingDateSource",
+      "shows.json: 44-the-obama-musical-regional-2025.closingDate (stale closing date: ours 2025-09-20 / review text \"through 2025-09-21\" (https://www.allieandtheafterparty.com/reviews/44-the-musical ; https://aroundthetownchicago.com/theatre-reviews/44-the-musical/ ; https://www.broadwayworld.com/chicago/",
+      "shows.json: 44-the-obama-musical-regional-2025.closingDateSource",
+      "shows.json: endgame-regional-2025.closingDate (stale closing date: ours 2025-06-28 / review text \"through 2025-06-29\" (https://www.chicagostageandscreen.com/post/beautiful-beckett-at-facility ; https://www.chicagotribune.com/2025/05/27/review-in-endgame-at-facility-theatre-reality-and-dystopia-wash-",
+      "shows.json: endgame-regional-2025.closingDateSource",
+      "shows.json: ma-raineys-black-bottom-regional-2026.closingDate (stale closing date: ours 2026-04-26 / review text \"through 2026-05-03\" (https://thirdcoastreview.com/stages/2026/04/08/review-goodman-theatre-ma-raineys-black-bottom))",
+      "shows.json: ma-raineys-black-bottom-regional-2026.closingDateSource",
+      "shows.json: blackbird-regional-2025.closingDate (stale closing date: ours 2025-11-16 / review text \"through 2025-11-23\" (https://aroundthetownchicago.com/theatre-reviews/blackbird-reviewed-by-mark-reinecke/ ; https://www.chicagotribune.com/2025/11/04/review-blackbird-play-servi-factory/ ; https://ww",
+      "shows.json: blackbird-regional-2025.closingDateSource",
+      "shows.json: side-by-side-by-sondheim-regional-2025.closingDate (stale closing date: ours 2025-09-07 / review text \"through 2025-09-14\" (https://www.dailyherald.com/20250821/theater/the-star-of-the-show-is-stephen-sondheim-in-oil-lamps-side-by-side-by-sondheim-revival/ ; https://www.conversationswith",
+      "shows.json: side-by-side-by-sondheim-regional-2025.closingDateSource",
+      "shows.json: kubrickian-regional-2026.closingDate (stale closing date: ours 2026-03-15 / review text \"through 2026-03-28\" (https://www.chicagostageandscreen.com/post/the-surprising-intimacy-of-kubrickian-at-the-factory-theater))",
+      "shows.json: kubrickian-regional-2026.closingDateSource",
+      "shows.json: do-something-pretty-regional-2026.closingDate (stale closing date: ours 2026-06-06 / review text \"through 2026-06-07\" (https://www.allieandtheafterparty.com/reviews/rivendell-do-something-pretty ; https://aroundthetownchicago.com/theatre-reviews/do-something-pretty/ ; https://chicago.sun",
+      "shows.json: do-something-pretty-regional-2026.closingDateSource",
+      "shows.json: sons-of-hollywood-regional-2022.closingDate (stale closing date: ours 2022-04-16 / review text \"through 2022-04-17\" (http://www.aroundthetownchicago.com/theatre-reviews/sons-of-hollywood/ ; https://buzznews.net/theatre/theatre-reviews/item/4962-sons-of-hollywood-at-windy-city-playhouse-b",
+      "shows.json: sons-of-hollywood-regional-2022.closingDateSource"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jersey-boys-regional-2024",
+        "field": "closingDate",
+        "oldValue": "2024-07-21",
+        "newValue": "2024-07-28",
+        "description": "shows.json: jersey-boys-regional-2024.closingDate (stale closing date: ours 2024-07-21 / review text \"through 2024-07-28\" (https://www.conversationswithedtracy.com/picksinsix/2024/3/31/picksinsix-review-jersey-boys-mercury-theater-chicago))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jersey-boys-regional-2024",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through 2024-07-28\" (https://www.conversationswithedtracy.com/picksinsix/2024/3/31/picksinsix-review-jersey-boys-mercury-theater-chicago)",
+        "description": "shows.json: jersey-boys-regional-2024.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-good-regional-2024",
+        "field": "closingDate",
+        "oldValue": "2024-04-20",
+        "newValue": "2024-04-21",
+        "description": "shows.json: the-good-regional-2024.closingDate (stale closing date: ours 2024-04-20 / review text \"through 2024-04-21\" (https://aroundthetownchicago.com/theatre-reviews/the-good-reviewed-by-julia-w-rath/ ; https://www.chicagostageandscreen.com/post/magnus-speaks-her-and-maybe-our-mind ; https://www."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-good-regional-2024",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through 2024-04-21\" (https://aroundthetownchicago.com/theatre-reviews/the-good-reviewed-by-julia-w-rath/ ; https://www.chicagostageandscreen.com/post/magnus-speaks-her-and-maybe-our-mind ; https://www.newcitystage.com/2024/04/03/what-is-good-a-review-of-the-good-at-chicago-dramatists/)",
+        "description": "shows.json: the-good-regional-2024.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "deathtrap-regional-2024",
+        "field": "closingDate",
+        "oldValue": "2024-03-17",
+        "newValue": "2024-03-24",
+        "description": "shows.json: deathtrap-regional-2024.closingDate (stale closing date: ours 2024-03-17 / review text \"through 2024-03-24\" (https://www.broadwayworld.com/chicago/article/Review-DEATHTRAP-at-BrightSide-Theatre-20240311 ; https://www.buzznews.net/theatre/theatre-reviews/item/5460-deathtrap-a-thriller-to-"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "deathtrap-regional-2024",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through 2024-03-24\" (https://www.broadwayworld.com/chicago/article/Review-DEATHTRAP-at-BrightSide-Theatre-20240311 ; https://www.buzznews.net/theatre/theatre-reviews/item/5460-deathtrap-a-thriller-to-die-for.html)",
+        "description": "shows.json: deathtrap-regional-2024.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "falsettos-regional-2024",
+        "field": "closingDate",
+        "oldValue": "2024-12-08",
+        "newValue": "2024-12-15",
+        "description": "shows.json: falsettos-regional-2024.closingDate (stale closing date: ours 2024-12-08 / review text \"through 2024-12-15\" (https://www.conversationswithedtracy.com/picksinsix/2024/11/18/picksinsix-review-falsettos-timeline-theatre-company-court-theatre))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "falsettos-regional-2024",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through 2024-12-15\" (https://www.conversationswithedtracy.com/picksinsix/2024/11/18/picksinsix-review-falsettos-timeline-theatre-company-court-theatre)",
+        "description": "shows.json: falsettos-regional-2024.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "44-the-obama-musical-regional-2025",
+        "field": "closingDate",
+        "oldValue": "2025-09-20",
+        "newValue": "2025-09-21",
+        "description": "shows.json: 44-the-obama-musical-regional-2025.closingDate (stale closing date: ours 2025-09-20 / review text \"through 2025-09-21\" (https://www.allieandtheafterparty.com/reviews/44-the-musical ; https://aroundthetownchicago.com/theatre-reviews/44-the-musical/ ; https://www.broadwayworld.com/chicago/"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "44-the-obama-musical-regional-2025",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through 2025-09-21\" (https://www.allieandtheafterparty.com/reviews/44-the-musical ; https://aroundthetownchicago.com/theatre-reviews/44-the-musical/ ; https://www.broadwayworld.com/chicago/article/Review-44-THE-MUSICAL-at-The-Studebaker-Theater-20250907)",
+        "description": "shows.json: 44-the-obama-musical-regional-2025.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "endgame-regional-2025",
+        "field": "closingDate",
+        "oldValue": "2025-06-28",
+        "newValue": "2025-06-29",
+        "description": "shows.json: endgame-regional-2025.closingDate (stale closing date: ours 2025-06-28 / review text \"through 2025-06-29\" (https://www.chicagostageandscreen.com/post/beautiful-beckett-at-facility ; https://www.chicagotribune.com/2025/05/27/review-in-endgame-at-facility-theatre-reality-and-dystopia-wash-"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "endgame-regional-2025",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through 2025-06-29\" (https://www.chicagostageandscreen.com/post/beautiful-beckett-at-facility ; https://www.chicagotribune.com/2025/05/27/review-in-endgame-at-facility-theatre-reality-and-dystopia-wash-together/ ; https://www.newcitystage.com/2025/05/29/existence-is-pain-a-review-of-endgame-at-facility-theatre/)",
+        "description": "shows.json: endgame-regional-2025.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ma-raineys-black-bottom-regional-2026",
+        "field": "closingDate",
+        "oldValue": "2026-04-26",
+        "newValue": "2026-05-03",
+        "description": "shows.json: ma-raineys-black-bottom-regional-2026.closingDate (stale closing date: ours 2026-04-26 / review text \"through 2026-05-03\" (https://thirdcoastreview.com/stages/2026/04/08/review-goodman-theatre-ma-raineys-black-bottom))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ma-raineys-black-bottom-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through 2026-05-03\" (https://thirdcoastreview.com/stages/2026/04/08/review-goodman-theatre-ma-raineys-black-bottom)",
+        "description": "shows.json: ma-raineys-black-bottom-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "blackbird-regional-2025",
+        "field": "closingDate",
+        "oldValue": "2025-11-16",
+        "newValue": "2025-11-23",
+        "description": "shows.json: blackbird-regional-2025.closingDate (stale closing date: ours 2025-11-16 / review text \"through 2025-11-23\" (https://aroundthetownchicago.com/theatre-reviews/blackbird-reviewed-by-mark-reinecke/ ; https://www.chicagotribune.com/2025/11/04/review-blackbird-play-servi-factory/ ; https://ww"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "blackbird-regional-2025",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through 2025-11-23\" (https://aroundthetownchicago.com/theatre-reviews/blackbird-reviewed-by-mark-reinecke/ ; https://www.chicagotribune.com/2025/11/04/review-blackbird-play-servi-factory/ ; https://www.newcitystage.com/2025/10/31/new-theatre-projects-blackbird-is-a-harrowing-flight-into-darkness/)",
+        "description": "shows.json: blackbird-regional-2025.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "side-by-side-by-sondheim-regional-2025",
+        "field": "closingDate",
+        "oldValue": "2025-09-07",
+        "newValue": "2025-09-14",
+        "description": "shows.json: side-by-side-by-sondheim-regional-2025.closingDate (stale closing date: ours 2025-09-07 / review text \"through 2025-09-14\" (https://www.dailyherald.com/20250821/theater/the-star-of-the-show-is-stephen-sondheim-in-oil-lamps-side-by-side-by-sondheim-revival/ ; https://www.conversationswith"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "side-by-side-by-sondheim-regional-2025",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through 2025-09-14\" (https://www.dailyherald.com/20250821/theater/the-star-of-the-show-is-stephen-sondheim-in-oil-lamps-side-by-side-by-sondheim-revival/ ; https://www.conversationswithedtracy.com/picksinsix/2025/8/18/picksinsix-review-side-by-side-by-sondheim-oil-lamp-theater ; https://chicago.splashmags.com/2025/09/side-by-side-by-sondheim-enjoy-a-musical-celebration-of-the-master/)",
+        "description": "shows.json: side-by-side-by-sondheim-regional-2025.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "kubrickian-regional-2026",
+        "field": "closingDate",
+        "oldValue": "2026-03-15",
+        "newValue": "2026-03-28",
+        "description": "shows.json: kubrickian-regional-2026.closingDate (stale closing date: ours 2026-03-15 / review text \"through 2026-03-28\" (https://www.chicagostageandscreen.com/post/the-surprising-intimacy-of-kubrickian-at-the-factory-theater))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "kubrickian-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through 2026-03-28\" (https://www.chicagostageandscreen.com/post/the-surprising-intimacy-of-kubrickian-at-the-factory-theater)",
+        "description": "shows.json: kubrickian-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "do-something-pretty-regional-2026",
+        "field": "closingDate",
+        "oldValue": "2026-06-06",
+        "newValue": "2026-06-07",
+        "description": "shows.json: do-something-pretty-regional-2026.closingDate (stale closing date: ours 2026-06-06 / review text \"through 2026-06-07\" (https://www.allieandtheafterparty.com/reviews/rivendell-do-something-pretty ; https://aroundthetownchicago.com/theatre-reviews/do-something-pretty/ ; https://chicago.sun"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "do-something-pretty-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through 2026-06-07\" (https://www.allieandtheafterparty.com/reviews/rivendell-do-something-pretty ; https://aroundthetownchicago.com/theatre-reviews/do-something-pretty/ ; https://chicago.suntimes.com/theater/2026/05/15/review-do-something-pretty-rivendell-theatre-ensemble)",
+        "description": "shows.json: do-something-pretty-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sons-of-hollywood-regional-2022",
+        "field": "closingDate",
+        "oldValue": "2022-04-16",
+        "newValue": "2022-04-17",
+        "description": "shows.json: sons-of-hollywood-regional-2022.closingDate (stale closing date: ours 2022-04-16 / review text \"through 2022-04-17\" (http://www.aroundthetownchicago.com/theatre-reviews/sons-of-hollywood/ ; https://buzznews.net/theatre/theatre-reviews/item/4962-sons-of-hollywood-at-windy-city-playhouse-b"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sons-of-hollywood-regional-2022",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through 2022-04-17\" (http://www.aroundthetownchicago.com/theatre-reviews/sons-of-hollywood/ ; https://buzznews.net/theatre/theatre-reviews/item/4962-sons-of-hollywood-at-windy-city-playhouse-balances-tinsel-and-truth.html ; https://www.chicagoonstage.com/sons-of-hollywood/)",
+        "description": "shows.json: sons-of-hollywood-regional-2022.closingDateSource"
+      }
+    ]
+  }
+}

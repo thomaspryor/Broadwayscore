@@ -11,7 +11,8 @@
  * Usage:
  *   node scripts/manual-review-direct.js \
  *     --show=becky-shaw-2026 --outlet=guardian --critic="Adrian Horton" \
- *     --score=60 --stars="3/5" --url="https://..." --text-file=review.txt
+ *     --score=60 --stars="3/5" --url="https://..." --text-file=review.txt \
+ *     --reason="pipeline scored the roundup, critic's own page says 3/5"
  */
 
 const fs = require('fs');
@@ -35,13 +36,16 @@ const starsArg = getArg('stars');
 const inlineText = getArg('text');
 const textFile = getArg('text-file');
 const publishDate = getArg('publish-date');
+const reason = getArg('reason');
+const enteredBy = getArg('by') || process.env.MANUAL_ENTRY_BY || null;
 const dryRun = hasFlag('dry-run');
 const skipSourceFile = hasFlag('skip-source-file');
 
-if (!showId || !outletArg || !criticName) {
+if (!showId || !outletArg || !criticName || !reason || reason.trim().length < 8) {
   console.error('Usage: node scripts/manual-review-direct.js --show=ID --outlet=ID --critic=NAME [options]');
   console.error('');
-  console.error('Required: --show, --outlet, --critic');
+  console.error('Required: --show, --outlet, --critic, --reason="why the pipeline row is wrong (evidence url)"');
+  console.error('  (BRO-7291: a hand row without a reason no longer outranks the pipeline)');
   console.error('Optional: --score, --stars, --url, --text, --text-file, --publish-date');
   console.error('Flags:    --dry-run, --skip-source-file');
   process.exit(1);
@@ -183,6 +187,8 @@ const review = {
   publishDate: publishDate || new Date().toISOString().split('T')[0],
   manualEntry: true,
   manualEntryAt: new Date().toISOString(),
+  manualEntryReason: reason.trim(),
+  ...(enteredBy ? { manualEntryBy: enteredBy } : {}),
 };
 
 if (originalScore) {

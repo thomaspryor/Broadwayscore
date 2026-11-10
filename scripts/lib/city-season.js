@@ -100,6 +100,60 @@ function pendingShows(plans) {
   return out;
 }
 
+/**
+ * BRO-7291 (class 6, wrong dates from season pages): the run printed on a production's OWN page
+ * ("Extended! Oct 27 – Dec 13", "First Look (previews): Oct 27 - Nov 1 mat"). A season page or listing is a
+ * summary that an LLM reads; GRIM came out of one as Nov 27 while its own page said Oct 27. Returns
+ *   { first, end, opening, snippet }  first/last performance; opening = an "opening (night)|opens <date>" line, else
+ *   the day after the last preview (same day for a matinee), else the first performance. null when no run is printed.
+ * `year` is the season year (the row's start year); a range that wraps the new year moves its end to year + 1.
+ */
+const MON_RE = '(jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|june?|july?|aug(?:ust)?|sept?(?:ember)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)';
+const MON_N = { jan: 1, feb: 2, mar: 3, apr: 4, may: 5, jun: 6, jul: 7, aug: 8, sep: 9, oct: 10, nov: 11, dec: 12 };
+const DASH = '\\s*(?:-|–|—|to|through|thru)\\s*';
+const RANGE_RE = new RegExp(`\\b${MON_RE}\\.?\\s+(\\d{1,2})(?:st|nd|rd|th)?(?:,?\\s+(20\\d\\d))?${DASH}(?:${MON_RE}\\.?\\s+)?(\\d{1,2})(?!\\d)(?:st|nd|rd|th)?(?:,?\\s+(20\\d\\d))?`, 'gi');
+const PREVIEW_RE = new RegExp(`preview(?:s|ing)?\\b[^.:]{0,20}:?\\s*${MON_RE}\\.?\\s+\\d{1,2}${DASH}(?:${MON_RE}\\.?\\s+)?(\\d{1,2})(?!\\d)(?:,?\\s+20\\d\\d)?(\\s+mat(?:inee)?\\b)?`, 'i');
+const OPENS_RE = new RegExp(`\\b(?:opening(?:\\s+night)?|opens|official opening)\\s*:?\\s*(?:(?:sun|mon|tues?|wed(?:nes)?|thur?s?|fri|sat(?:ur)?)(?:day)?\\.?,?\\s+)?${MON_RE}\\.?\\s+(\\d{1,2})(?!\\d)`, 'i');
+const pad2 = (n) => String(n).padStart(2, '0');
+const monN = (m) => MON_N[String(m).toLowerCase().slice(0, 3)];
+const okDate = (y, m, d) => { const t = new Date(Date.UTC(y, m - 1, d)); return t.getUTCMonth() === m - 1 && t.getUTCDate() === d; };
+function runRangeFromShowPage(text, { year } = {}) {
+  const t = String(text || '').replace(/\s+/g, ' ');
+  RANGE_RE.lastIndex = 0;
+  let m;
+  while ((m = RANGE_RE.exec(t))) {
+    const m1 = monN(m[1]); const d1 = Number(m[2]);
+    const m2 = m[4] ? monN(m[4]) : m1; const d2 = Number(m[5]);
+    // "Jan 5 – Feb 9, 2027": the end's year names the start's too (one earlier when the run wraps the new year)
+    const y1 = Number(m[3] || (m[6] ? Number(m[6]) - (m2 < m1 ? 1 : 0) : year));
+    if (!y1 || !m1 || !m2 || !okDate(y1, m1, d1)) continue;
+    let y2 = Number(m[6] || y1);
+    if (!m[6] && (m2 < m1 || (m2 === m1 && d2 < d1))) y2 = y1 + 1;
+    if (!okDate(y2, m2, d2)) continue;
+    const first = `${y1}-${pad2(m1)}-${pad2(d1)}`;
+    const end = `${y2}-${pad2(m2)}-${pad2(d2)}`;
+    const days = (Date.parse(end) - Date.parse(first)) / 86400000;
+    if (days < 1 || days > MAX_RUN_DAYS) continue; // a single performance window or a season banner
+    let opening = first;
+    const pv = PREVIEW_RE.exec(t);
+    const op = OPENS_RE.exec(t);
+    const pick = (mon, day) => { const mm = monN(mon); const dd = Number(day); if (!mm) return null; for (const yy of [y1, y1 + 1]) { const iso = `${yy}-${pad2(mm)}-${pad2(dd)}`; if (okDate(yy, mm, dd) && iso >= first && iso <= end) return iso; } return null; };
+    // An explicit opening line wins; else the day after the last preview (the same day when previews end on a
+    // matinee: GRIM "previews Oct 27 - Nov 1 mat", regular performances from Nov 1 eve); else the first performance.
+    const opened = op && pick(op[1], op[2]);
+    const lastPreview = pv && pick(pv[2] || pv[1], pv[3]);
+    if (opened) opening = opened;
+    else if (lastPreview) opening = pv[4] ? lastPreview : addDays(lastPreview, 1);
+    return { first, end, opening, snippet: t.slice(Math.max(0, m.index - 30), m.index + m[0].length + 10).trim() };
+  }
+  return null;
+}
+
+/** Days between two ISO dates (absolute). */
+const gapDays = (a, b) => Math.abs(Date.parse(a) - Date.parse(b)) / 86400000;
+/** A listing and a season page that disagree on the run by more than this need the production's own page. */
+const DATE_CONFLICT_DAYS = 3;
+
 const keyOf = (r) => `${norm(r.title)}|${norm(r.theatre)}`;
 
 /** One row per production: theatre-page dates win over the listing; the listing's art is kept. */
@@ -111,9 +165,28 @@ function mergeSeason(lists) {
     if (!prev) { byKey.set(k, { ...row, sources: [row.source] }); continue; }
     const winner = row.source === 'theatre-season-page' && prev.source !== 'theatre-season-page' ? row : prev;
     const loser = winner === row ? prev : row;
-    byKey.set(k, { ...winner, image: winner.image || loser.image, bwwUrl: [winner, loser].map((x) => x.pageUrl).find((u) => /broadwayworld/.test(u || '')) || null, sources: [...new Set([...(prev.sources || [prev.source]), row.source])] });
+    // BRO-7291 class 6: two sources that disagree on the run are a question for the production's own page, not a coin toss.
+    const conflict = prev.dateConflict || gapDays(row.start, prev.start) > DATE_CONFLICT_DAYS || gapDays(row.end, prev.end) > DATE_CONFLICT_DAYS
+      ? { [row.source]: `${row.start}..${row.end}`, [prev.source]: `${prev.start}..${prev.end}`, ...(prev.dateConflict || {}) } : null;
+    byKey.set(k, { ...winner, image: winner.image || loser.image, bwwUrl: [winner, loser].map((x) => x.pageUrl).find((u) => /broadwayworld/.test(u || '')) || null, sources: [...new Set([...(prev.sources || [prev.source]), row.source])], ...(conflict ? { dateConflict: conflict } : {}) });
   }
   return [...byKey.values()].sort((a, b) => a.start.localeCompare(b.start) || a.title.localeCompare(b.title));
+}
+
+/**
+ * Settle a merged season row's dates against its production page (BRO-7291 class 6). `range` is
+ * runRangeFromShowPage's result for row.pageUrl (null when there is no production page or it printed no run).
+ * The page's run wins over the season page and the listing. Without it, a row whose sources disagree is held.
+ * @returns {{ row: object, held: string|null }}
+ */
+function settleRunDates(row, range, pageUrl) {
+  // A range that does not even overlap what the sources said is another production's (a sidebar, "also playing").
+  if (range && !(range.first <= row.end && range.end >= row.start)) range = null;
+  if (range) {
+    return { row: { ...row, start: range.opening, end: range.end, firstPerformance: range.first, source: 'theatre-show-page', dateNote: `production page "${range.snippet}" (${pageUrl})` }, held: null };
+  }
+  if (row.dateConflict) return { row, held: `sources disagree on the run (${Object.entries(row.dateConflict).map(([k, v]) => `${k} ${v}`).join(' vs ')}) and the production page printed none` };
+  return { row, held: null };
 }
 
 /** Existing hub show for a season row (same title; venue names the theatre when the title is not unique). */
@@ -146,8 +219,8 @@ function buildShow(row, { id, hubSlug, hub, city, today }) {
     status: row.start > today ? 'upcoming' : 'open',
     type: row.type === 'musical' || row.type === 'play' ? row.type : (/\b(musical|cabaret|cinderella)\b/i.test(row.title) ? 'musical' : 'play'),
     category: 'regional', market: 'regional',
-    openingDate: row.start, openingDateSource: row.source,
-    closingDate: row.end, closingDateSource: row.source,
+    openingDate: row.start, openingDateSource: row.dateNote || row.source,
+    closingDate: row.end, closingDateSource: row.dateNote || row.source,
     discoverySource: hub.discoverySource,
     localOnly: true, city: hubSlug,
     discoveredAt: today,
@@ -155,4 +228,4 @@ function buildShow(row, { id, hubSlug, hub, city, today }) {
   };
 }
 
-module.exports = { HORIZON_DAYS, NON_PRODUCTION_RE, resolveTheatre, usableWindow, fromBwwRows, fromPageRows, mergeSeason, findExisting, pendingShows, showId, buildShow, slugify };
+module.exports = { runRangeFromShowPage, settleRunDates, DATE_CONFLICT_DAYS, HORIZON_DAYS, NON_PRODUCTION_RE, resolveTheatre, usableWindow, fromBwwRows, fromPageRows, mergeSeason, findExisting, pendingShows, showId, buildShow, slugify };

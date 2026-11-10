@@ -218,22 +218,22 @@ function parseLiveHub(html) {
 const MONTHS = { jan: 1, feb: 2, mar: 3, apr: 4, may: 5, jun: 6, jul: 7, aug: 8, sep: 9, oct: 10, nov: 11, dec: 12 };
 /** Run-end dates a review's own text announces ("through November 21", "extended through Sept. 27"),
  *  as ISO dates in `year`. Only dates that follow a through/thru/closes/extended cue are returned. */
-function runEndsInText(text, year) {
-  const out = [];
-  const re = /\b(?:through|thru|closes|closing|extended(?:\s+through)?|runs\s+until|until)\s+(?:(?:sun|mon|tues?|wed(?:nes)?|thu(?:rs)?|fri|sat(?:ur)?)[a-z]*\.?,?\s+)?(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+(\d{1,2})(?:st|nd|rd|th)?\b(?:,?\s+(20\d\d))?/gi;
-  let m;
-  while ((m = re.exec(String(text || '')))) {
-    const y = m[3] ? Number(m[3]) : year;
-    out.push(`${y}-${String(MONTHS[m[1].toLowerCase()]).padStart(2, '0')}-${String(Number(m[2])).padStart(2, '0')}`);
-  }
-  return out;
+/**
+ * Latest announced run end more than `slackDays` after our closing date, or null. One parser for the audit and
+ * the writer: scripts/lib/run-end-from-text.js (BRO-7291; this used to be a second, looser regex).
+ * `opening` defaults to 80 days before `closing` so a later date up to 120 days out is still in the window.
+ */
+/** BRO-7291: per-show stale-closing finding, the writer's own rule (laterAnnouncedRunEnd over every text + the listing). */
+function showRunEndFinding(show, texts, listing) {
+  if (!show || !show.closingDate || !show.openingDate) return null;
+  return require('./run-end-from-text').laterAnnouncedRunEnd({ opening: show.openingDate, closing: show.closingDate }, { texts, listing });
 }
-/** Latest announced run end that is more than `slackDays` after our closing date (null when none). */
-function laterRunEnd(text, closing, slackDays = 3) {
+
+function laterRunEnd(text, closing, slackDays = 3, opening = null) {
   if (!closing) return null;
-  const year = Number(String(closing).slice(0, 4));
-  const later = runEndsInText(text, year).filter((d) => d > closing && dateDiffDays(closing, d) > slackDays && dateDiffDays(closing, d) <= 120);
-  return later.length ? later.sort().pop() : null;
+  const open = opening || new Date(Date.parse(`${closing}T00:00:00Z`) - 80 * 86400000).toISOString().slice(0, 10);
+  const r = require('./run-end-from-text').laterAnnouncedRunEnd({ opening: open, closing }, { texts: [{ text }] }, { slackDays, minSites: 1 });
+  return r ? r.date : null;
 }
 
 /** Audit report output (never a review-text file). */
@@ -249,7 +249,7 @@ const REVIEW_RECORD_FIELDS = ['criticName', 'publishDate', 'assignedScore', 'ori
 
 module.exports = { recordHash, SHOW_RECORD_FIELDS, REVIEW_RECORD_FIELDS,
   writeAuditJson,
-  runEndsInText, laterRunEnd,
+  laterRunEnd, showRunEndFinding,
   addDays, daysBetween, hubPhase, sectionHubShows, fold, parseJson, starsFromRating, bandForStars,
   starBandProblem, verdictProblem, quoteInText, bylineMatches, dateDiffDays, reviewFlags, showFlags,
   imageFlags, parseLiveHub, RECENT_DAYS, CLOSED_LIMIT,
