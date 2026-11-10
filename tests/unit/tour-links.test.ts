@@ -1,7 +1,7 @@
 // LIVE-DATA-LANE: reads data/site-image-versions.json (untracked core data); data/grosses.json (untracked core data); data/audience-buzz.json (untracked core data); +7 more. Runs in check-corpus-drift.yml, not test.yml's blocking batch (BRO-7101).
 /**
- * getToursOf (BRO-4211 Phase D): which Broadway pages get the "On tour" /
- * "National tour" line. A tour's tourOf names one Broadway run, but every
+ * getToursOf (BRO-4211 Phase D): which Broadway pages link to a tour (the
+ * blue "On tour" line itself was removed, BRO-7259). A tour's tourOf names one Broadway run, but every
  * Broadway production of that title should link to it: Beetlejuice's tour
  * points at beetlejuice-2019, while beetlejuice-2025 is the page people land on.
  *
