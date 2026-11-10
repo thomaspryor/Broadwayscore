@@ -488,6 +488,10 @@
     "audit-city-hub-dual-model.js": {
       "bucket": "b",
       "reason": "On-demand pre-launch audit of one city hub by GPT and Gemini (BRO-7256); run by hand per city, costs model spend so never scheduled."
+    },
+    "audit-roundup-excerpt-mismatch.js": {
+      "bucket": "b",
+      "reason": "BRO-7293 read-only cousin scan (roundup excerpt not in fullText on a flagged or auto-cleared file); needs the private review-texts corpus (cloud-run-script --review-texts); class guard is scripts/lib/roundup-merge-flagged-file.test.mjs"
     }
   }
 }
