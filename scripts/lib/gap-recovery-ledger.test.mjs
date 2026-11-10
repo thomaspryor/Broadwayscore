@@ -271,6 +271,22 @@ test('free refetch: only the collector cooldown blocks; abandoned / max retries 
   assert.equal(T.collectorRefetchGate({ shouldRetry: true, reason: 'not_gated' }).ok, true);
 });
 
+// BRO-7171 leftover: the driver checked the daily ceiling against a
+// start-of-run snapshot plus its own count, so a second run's accepts (same
+// ledger file) were invisible and two runs could each take the full ceiling.
+test('daily ceiling is read fresh from the shared ledger before each attempt', () => {
+  const f = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'gapceil-')), 'l.jsonl');
+  const snapshot = L.readRows(f); // run A starts: nothing accepted yet
+  // run B (another process) accepts 3 reviews into the same file
+  L.appendRows([1, 2, 3].map((n) => ({ reviewKey: `s/b${n}.json`, outcome: 'pending_push', runId: 'B' })), f);
+  assert.equal(L.ceilingReached({ rows: snapshot, ceiling: 3, acceptedThisRun: 0 }), false, 'the old snapshot check misses run B');
+  assert.equal(L.ceilingReachedNow({ file: f, ceiling: 3 }), true, 'fresh read sees run B');
+  assert.equal(L.ceilingReachedNow({ file: f, ceiling: 4 }), false);
+  // run mode is a per-run cap: other runs do not count
+  assert.equal(L.ceilingReachedNow({ file: f, ceiling: 3, runMode: true, acceptedThisRun: 2 }), false);
+  assert.equal(L.ceilingReachedNow({ file: f, ceiling: 3, runMode: true, acceptedThisRun: 3 }), true);
+});
+
 // BRO-7171 leftover: rows with the same ts had no order (Array.sort on ts only;
 // a union merge appends the other side's rows after ours, so file order is not
 // lifecycle order). A pending_push and its recovered row written in the same

@@ -242,6 +242,19 @@ function ceilingReached({ rows, nowMs = Date.now(), ceiling, acceptedThisRun = 0
   return acceptedToday(rows, nowMs) + acceptedThisRun >= ceiling;
 }
 
+/**
+ * Ceiling check for the NEXT attempt, read fresh from the shared ledger file
+ * (BRO-7171): a start-of-run snapshot plus this run's own count never saw
+ * another run's accepts, so two runs could each take the full daily ceiling.
+ * Daily mode counts every accept in the file today (this run's pending_push
+ * rows are already there); run mode (GAP_RECOVERY_RUN_CEILING) is a per-run
+ * cap and counts only this run.
+ */
+function ceilingReachedNow({ file = ledgerPathDefault(), ceiling, runMode = false, acceptedThisRun = 0, nowMs = Date.now() }) {
+  if (runMode) return acceptedThisRun >= ceiling;
+  return acceptedToday(readRows(file), nowMs) >= ceiling;
+}
+
 function killSwitchPath() {
   return path.join(require('os').homedir(), '.broadwayscore-state', 'gap-recovery-disabled');
 }
@@ -385,6 +398,7 @@ module.exports = {
   dailyCeiling,
   runCeiling,
   ceilingReached,
+  ceilingReachedNow,
   killSwitchPath,
   killSwitchActive,
   recoveredRowFromLanding,

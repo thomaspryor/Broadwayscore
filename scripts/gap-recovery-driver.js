@@ -269,7 +269,6 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
   // runs earlier in the same UTC day do not eat the night's budget.
   const runCeiling = L.runCeiling();
   const ceiling = runCeiling != null ? runCeiling : L.dailyCeiling();
-  const ceilingRows = runCeiling != null ? [] : rows;
   const tracker = createWriteTracker();
   const pendingInfo = new Map(); // reviewKey -> attempt info for the recovered row
   const earlierPending = L.pendingPushInfo(rows); // accepted by an earlier run, not yet landed
@@ -328,7 +327,7 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
     for (let i = 0; i < work.length; i++) {
       const c = work[i];
       if (Date.now() - start > OPTS.timeBudgetMs) { console.log('\nTime budget reached.'); break; }
-      if (L.ceilingReached({ rows: ceilingRows, ceiling, acceptedThisRun: accepted })) { console.log(`\n${runCeiling != null ? 'Run' : 'Daily'} ceiling ${ceiling} reached.`); SUMMARY.ceilingHit = true; break; }
+      if (L.ceilingReachedNow({ file: ledgerPath, ceiling, runMode: runCeiling != null, acceptedThisRun: accepted })) { console.log(`\n${runCeiling != null ? 'Run' : 'Daily'} ceiling ${ceiling} reached.`); SUMMARY.ceilingHit = true; break; }
       if (L.killSwitchActive().active) { console.log('\nKill switch turned on mid-run; stopping.'); break; }
       // Browser preferred but no GUI: record the non-evidence row, then use the next strategy.
       for (const k of c.skipped) {
