@@ -360472,21 +360472,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-10T20:01:52.692Z",
-    "completedAt": "2026-11-10T20:02:01.754Z",
-    "totalReviews": 50,
+    "startedAt": "2026-11-10T20:01:24.402Z",
+    "completedAt": "2026-11-10T20:01:36.571Z",
+    "totalReviews": 41,
     "processed": 2,
-    "skipped": 48,
+    "skipped": 39,
     "errors": 0,
     "tokensUsed": {
-      "input": 11226,
-      "output": 607,
+      "input": 13143,
+      "output": 601,
       "cacheRead": 7614,
       "cacheWrite": 0,
-      "total": 29039
+      "total": 31889
     },
-    "costUsd": 0.0429605,
-    "runId": "42889953198",
+    "costUsd": 0.048814899999999994,
+    "runId": "42889943977",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -387640,10 +387640,10 @@
       {
         "showId": "mother-play-2024",
         "ourDistribution": {
-          "up": 22,
+          "up": 24,
           "flat": 13,
           "down": 2,
-          "total": 37
+          "total": 39
         },
         "dtliDistribution": {
           "up": 7,
@@ -387658,7 +387658,7 @@
           "total": 13
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 35% (ours: 35%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 33% (ours: 33%, theirs: 0%)"
       },
       {
         "showId": "mother-russia-off-broadway-2026",
@@ -388674,10 +388674,10 @@
       {
         "showId": "new-york-new-york-2023",
         "ourDistribution": {
-          "up": 17,
+          "up": 15,
           "flat": 16,
           "down": 13,
-          "total": 46
+          "total": 44
         },
         "dtliDistribution": {
           "up": 1,
@@ -388692,7 +388692,7 @@
           "total": 15
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Flat thumbs differ by 35% (ours: 35%, theirs: 0%)"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 36% (ours: 36%, theirs: 0%)"
       },
       {
         "showId": "newsies-the-musical-2012",
@@ -411751,21 +411751,21 @@
     ]
   },
   {
-    "startedAt": "2026-11-10T20:06:59.512Z",
-    "completedAt": "2026-11-10T20:07:03.898Z",
-    "totalReviews": 2,
-    "processed": 2,
+    "startedAt": "2026-11-10T20:06:33.815Z",
+    "completedAt": "2026-11-10T20:06:33.867Z",
+    "totalReviews": 0,
+    "processed": 0,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 6157,
-      "output": 397,
+      "input": 0,
+      "output": 0,
       "cacheRead": 0,
       "cacheWrite": 0,
-      "total": 6554
+      "total": 0
     },
-    "costUsd": 0.0157849,
-    "runId": "42889953198",
+    "costUsd": 0,
+    "runId": "42889943977",
     "source": "comparative-rescore",
     "errorDetails": []
   }
