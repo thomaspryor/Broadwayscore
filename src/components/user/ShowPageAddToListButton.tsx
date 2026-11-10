@@ -15,7 +15,7 @@ interface ShowPageAddToListButtonProps {
 
 const TRIGGER_CLASS: Record<NonNullable<ShowPageAddToListButtonProps['variant']>, string> = {
   default: 'inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border transition-all duration-200 bg-surface-overlay border-white/10 text-gray-300 hover:text-white hover:bg-white/10 cursor-pointer',
-  hero: 'flex items-center justify-center gap-1.5 h-10 w-10 sm:w-auto sm:px-4 rounded-lg border transition-all bg-white/10 border-white/15 text-white hover:bg-white/15 hover:border-white/25 cursor-pointer whitespace-nowrap',
+  hero: 'flex items-center justify-center gap-1.5 h-10 w-10 sm:h-12 sm:w-auto sm:px-4 rounded-lg border transition-all bg-white/10 border-white/15 text-white hover:bg-white/15 hover:border-white/25 cursor-pointer whitespace-nowrap',
 };
 
 export default function ShowPageAddToListButton({ showId, variant = 'default' }: ShowPageAddToListButtonProps) {

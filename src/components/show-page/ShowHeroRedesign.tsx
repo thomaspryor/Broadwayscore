@@ -762,7 +762,7 @@ function Inner({
       {/* Action cluster — user buttons + tickets share ONE space-y-2 group so
           every gap in the button stack is identical (the old split put 16px
           above Get Tickets but 8px below it — owner report, 2026-07-17). */}
-      <div className="lg:space-y-2 max-lg:flex max-lg:flex-col max-lg:gap-2" data-testid="hero-action-cluster">
+      <div className="flex flex-col gap-2" data-testid="hero-action-cluster">
       {/* Action buttons row — same geometry as the ticket buttons below
           (h-10 / rounded-lg / horizontal icon+label); a taller rounder shape
           here read as mismatched (owner report, 2026-07-17). */}
@@ -790,7 +790,7 @@ function Inner({
           <button
             type="button"
             onClick={handleWantToSee}
-            className={`flex items-center justify-center gap-1.5 h-10 px-2 rounded-lg border transition-all whitespace-nowrap ${
+            className={`flex items-center justify-center gap-1.5 h-10 sm:h-12 px-2 rounded-lg border transition-all whitespace-nowrap ${
               onWatchlist
                 ? 'bg-brand/10 border-brand text-brand'
                 : 'bg-white/10 border-white/15 text-white hover:bg-white/15 hover:border-white/25'
@@ -806,7 +806,7 @@ function Inner({
             type="button"
             ref={rateBtnRef}
             onClick={handleRateIt}
-            className={`${showMobileStars ? 'hidden sm:flex' : 'flex'} items-center justify-center gap-1.5 h-10 px-2 rounded-lg border bg-white/10 border-white/15 text-white hover:bg-white/15 hover:border-white/25 transition-all whitespace-nowrap`}
+            className={`${showMobileStars ? 'hidden sm:flex' : 'flex'} items-center justify-center gap-1.5 h-10 sm:h-12 px-2 rounded-lg border bg-white/10 border-white/15 text-white hover:bg-white/15 hover:border-white/25 transition-all whitespace-nowrap`}
           >
             <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
@@ -966,10 +966,11 @@ function Inner({
           on mobile it pushed content too far down. Desktop keeps it next
           to the Get Tickets CTA where there's horizontal room. Full info
           for both viewports lives in the Discount Tickets card below. */}
-      {/* Below lg the ticket CTA leads the cluster, above the rate/list buttons
-          (owner decision 2026-11-09: tickets are the revenue button). At lg+ the
-          order and spacing are unchanged. */}
-      <div className="order-first max-lg:flex max-lg:flex-col max-lg:gap-2 lg:order-none lg:space-y-2" data-testid="hero-ticket-cta-slot">
+      {/* The ticket CTA leads the cluster at every width, above the rate/list
+          buttons (owner decisions 2026-11-09 and 2026-11-10: tickets are the
+          revenue button). From sm up it is a 56px bar; the Lottery pill sits
+          beside it at lg+. Guard: tests/unit/hero-tickets-first.test.mjs. */}
+      <div className="order-first flex flex-col gap-2 empty:hidden" data-testid="hero-ticket-cta-slot">
       <ShowPageTicketCTA
         showName={show.title}
         showId={show.id}
@@ -984,8 +985,8 @@ function Inner({
         officialUrl={show.officialUrl}
         pageType="show"
         splitVariant
-        primaryButtonClassName="w-full lg:w-auto lg:self-start inline-flex items-center justify-center gap-1.5 h-10 px-5 rounded-lg bg-gradient-brand text-white font-bold text-sm leading-none hover:shadow-glow-sm hover:scale-[1.01] active:scale-[0.99] transition-all whitespace-nowrap"
-        secondaryAfter={lotteryPill('hidden lg:inline-flex')}
+        primaryButtonClassName="w-full lg:flex-1 lg:min-w-[16rem] inline-flex items-center justify-center gap-1.5 h-10 sm:h-14 px-5 rounded-lg bg-gradient-brand text-white font-bold sm:font-extrabold text-sm sm:text-[17px] leading-none hover:shadow-glow-sm hover:scale-[1.01] active:scale-[0.99] transition-all whitespace-nowrap"
+        secondaryAfter={lotteryPill('hidden lg:inline-flex lg:h-14')}
       >
         {/* Keep the standalone lottery pill when no purchase link is available. */}
         {!isClosed && !(sortedTicketLinks.length > 0 || Boolean(show.officialUrl)) && lotteryPill('inline-flex self-start')}
