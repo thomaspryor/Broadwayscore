@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const A = require('../../scripts/city-hub-audit.js');
+const A = require('../../scripts/lib/city-hub-audit.js');
 
 test('starBand follows the CLAUDE.md score bands', () => {
   assert.deepEqual(A.starBand(2), [31, 50]);
