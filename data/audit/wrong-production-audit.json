@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-10T00:09:56.692Z",
+  "timestamp": "2026-11-10T00:24:16.335Z",
   "stats": {
-    "totalReviews": 80978,
-    "alreadyFlagged": 22138,
+    "totalReviews": 80996,
+    "alreadyFlagged": 22144,
     "dateGuardCatches": 219,
     "directorMismatch": 3582,
-    "tvFilmSignals": 2303,
+    "tvFilmSignals": 2304,
     "londonSignals": 3655,
     "offBroadwaySignals": 752,
     "yearMismatch": 372,
-    "noPublishDate": 8439
+    "noPublishDate": 8443
   },
   "findings": [
     {
@@ -234,6 +234,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"diane paulus\" from 1776-2022"
+        }
+      ]
+    },
+    {
+      "showId": "1972-regional-2026",
+      "file": "broadwayworld--r-scott-reedy.json",
+      "publishDate": "2026-11-05",
+      "url": "https://www.broadwayworld.com/boston/article/Review-American-Repertory-Theater-Rocks-Out-with-World-Premiere-of-1972-20261105",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hbo max\""
         }
       ]
     },
