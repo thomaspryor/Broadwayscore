@@ -96,3 +96,9 @@ test('classifyPost lives in reddit-post-filters (moved from the scraper)', () =>
   assert.equal(classifyPost({ title: 'Just saw Downstate, loved it' }, 'Downstate'), true);
   assert.equal(classifyPost({ title: 'Downstate movie trailer' }, 'Downstate'), false);
 });
+
+test('redditAggregate keeps posts that lack an id', () => {
+  const day = (iso) => Date.parse(`${iso}T12:00:00Z`) / 1000;
+  const r = P.redditAggregate([{ created_utc: day('2026-10-25'), num_comments: 1, score: 5 }, { created_utc: day('2026-10-26'), num_comments: 2, score: 7 }], { previewsStartDate: '2026-10-20', today: '2026-11-10' });
+  assert.equal(r.previews.postCount, 2);
+});

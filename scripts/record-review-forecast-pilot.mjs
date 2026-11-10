@@ -3,9 +3,9 @@
  * record-review-forecast-pilot.mjs (BRO-7329): the quiet review-forecast pilot.
  *
  * Each day: for every upcoming Broadway play/musical (in previews, or first preview within
- * 60 days) append ONE dated row to <dir>/ledger.jsonl with the forecast (scripts/lib/review-forecast.js),
+ * 60 days) append ONE dated row to <dir>/ledger/<YYYY-MM-DD>.jsonl with the forecast (scripts/lib/review-forecast.js),
  * the preview audience grades as they stand today, and a dated pre-opening Reddit aggregate.
- * Fourteen days after opening, append a grade row to <dir>/grades.jsonl (frozen forecast vs category
+ * Fourteen days after opening, write <dir>/grades/<showId>.json (frozen forecast vs category
  * mean vs preview audience grade, each against getCriticScore).
  *
  * PRIVATE ONLY. This repo is public and a committed forecast is a published claim, so --dir must be
@@ -34,6 +34,11 @@ const TODAY = arg('today', new Date().toISOString().slice(0, 10));
 const DIR = arg('dir', null);
 const ONLY = arg('shows', null) ? new Set(arg('shows').split(',')) : null;
 const DRY = flag('dry-run');
+// A backdated --today would pair an old date with today's audience grades and score pool (leakage). Dry runs only.
+if (TODAY < new Date().toISOString().slice(0, 10) && !DRY) {
+  console.error('refusing a --today earlier than the real UTC date unless --dry-run is set');
+  process.exit(5);
+}
 const FLOOR = 10;
 
 function insideAnyCheckout(p) {

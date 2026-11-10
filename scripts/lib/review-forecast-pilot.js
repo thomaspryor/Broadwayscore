@@ -96,8 +96,8 @@ function redditAggregate(posts, { previewsStartDate, today, leadupDays = REDDIT_
   const lead = bucket(); const prv = bucket();
   const seen = new Set();
   for (const p of posts) {
-    if (!p || !p.created_utc || seen.has(p.id)) continue;
-    seen.add(p.id);
+    if (!p || !p.created_utc) continue;
+    if (p.id != null) { if (seen.has(p.id)) continue; seen.add(p.id); }
     const d = p.created_utc / 86400;
     if (d < start || d >= end) continue;
     const b = d < prev ? lead : prv;
