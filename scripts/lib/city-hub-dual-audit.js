@@ -75,7 +75,8 @@ function starsFromRating(raw) {
     if (d === 10) return Math.round(n / 2 * 2) / 2;
     return null;
   }
-  m = /^(\d+(?:\.\d+)?)\s*stars?\b/i.exec(t);
+  m = /^(\d+(?:\.\d+)?)\s*stars?\b(?:\s*\(?\s*(?:of|out of)\s*(?:a possible\s*)?(\d+))?/i.exec(t);
+  if (m && m[2] && Number(m[2]) !== 5) return Number(m[2]) === 4 ? Math.round((Number(m[1]) / 4) * 5 * 2) / 2 : null;
   if (m && Number(m[1]) <= 5) return Number(m[1]);
   const full = (t.match(/★/g) || []).length; const half = /½/.test(t) ? 0.5 : 0;
   if (full) return full + half;
