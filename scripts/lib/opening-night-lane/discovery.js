@@ -1480,6 +1480,7 @@ async function runDiscoveryPass({
     if (checks.length) {
       let timer;
       const deadline = new Promise((resolve) => { timer = setTimeout(() => resolve(null), Math.max(0, deadlineMs - (Date.now() - startedMs))); });
+      const cancelDeadline = () => clearTimeout(timer);
       try {
         for (const { c, key, check } of checks) {
           const outcome = check.outcome || await Promise.race([check.done, deadline]) || check.outcome;
@@ -1523,7 +1524,7 @@ async function runDiscoveryPass({
           // or interstitial page (BRO-6872 review).
           judge(c, key, publishDate, pageDated ? html : undefined);
         }
-      } finally { clearTimeout(timer); }
+      } finally { cancelDeadline(); }
     }
   } finally {
     // Checks still waiting for a slot are dropped, however the pass ends, not left to start later: they are asked again
