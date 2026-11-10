@@ -21,6 +21,7 @@ const path = require('path');
 const crypto = require('crypto');
 const os = require('os');
 const { articleText, parseJson, sameCritic } = require('./audit-city-reviews');
+const { foldDiacritics } = require('./title-match');
 
 const ROOT = path.join(__dirname, '..', '..');
 const arg = (n, d) => { const h = process.argv.slice(2).find((a) => a.startsWith(`--${n}=`)); return h ? h.split('=').slice(1).join('=') : d; };
@@ -70,7 +71,7 @@ Article text (truncated):
 ${body.slice(0, 7000)}
 JSON keys: rightProduction (true/false/"unclear"), productionSeen (title and theatre the article is about), critic (byline author or null), publishDate (YYYY-MM-DD or null), outlet (publication), isReview (true/false), isRoundup (true if it is a multi-show roundup or listicle rather than a critique of this show), impliedScore (integer 0-100 for how positive the critic's verdict is, 0 awful, 50 mixed, 100 rave; null if no verdict), stars (the star rating printed in the article as a number out of 5, or null), quote (one verbatim sentence from the article that best captures the verdict, copied exactly), note (one short sentence).`;
 }
-const norm = (s) => String(s || '').toLowerCase().replace(/[‘’]/g, "'").replace(/[“”]/g, '"').replace(/\s+/g, ' ').replace(/[^a-z0-9' ]/g, '').trim();
+const norm = (s) => foldDiacritics(String(s || '')).toLowerCase().replace(/[‘’]/g, "'").replace(/[“”]/g, '"').replace(/\s+/g, ' ').replace(/[^a-z0-9' ]/g, '').trim();
 /** Stars to score band per CLAUDE.md. */
 function starBand(stars) { return { 1: [0, 30], 2: [31, 50], 3: [51, 70], 4: [71, 90], 5: [91, 100] }[Math.round(Number(stars))] || null; }
 
