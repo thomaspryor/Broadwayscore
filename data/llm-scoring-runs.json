@@ -1,97 +1,5 @@
 [
   {
-    "startedAt": "2026-11-09T12:13:03.360Z",
-    "completedAt": "2026-11-09T12:13:09.008Z",
-    "totalReviews": 44,
-    "processed": 1,
-    "skipped": 43,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 8594,
-      "output": 317,
-      "cacheRead": 0,
-      "cacheWrite": 3807,
-      "total": 18961
-    },
-    "costUsd": 0.04340115,
-    "runId": "42614204139",
-    "source": "index",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-11-09T12:18:06.137Z",
-    "completedAt": "2026-11-09T12:18:06.170Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "42614204139",
-    "source": "comparative-rescore",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-11-09T12:26:08.712Z",
-    "completedAt": "2026-11-09T12:26:08.745Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "42614207321",
-    "source": "comparative-rescore",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-11-09T13:17:59.639Z",
-    "completedAt": "2026-11-09T13:21:58.521Z",
-    "totalReviews": 81113,
-    "processed": 50,
-    "skipped": 81054,
-    "errors": 3,
-    "tokensUsed": {
-      "input": 328478,
-      "output": 16013,
-      "cacheRead": 197244,
-      "cacheWrite": 15093,
-      "total": 830326
-    },
-    "costUsd": 0.641595825,
-    "runId": "42623306684",
-    "source": "index",
-    "errorDetails": [
-      {
-        "showId": "an-enemy-of-the-people-west-end-2024",
-        "outletId": "times-uk",
-        "error": "Review text too short or missing"
-      },
-      {
-        "showId": "alterations-west-end-2025",
-        "outletId": "thestage",
-        "error": "Review text too short or missing"
-      },
-      {
-        "showId": "the-years-west-end-2025",
-        "outletId": "thestage",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-11-09T13:27:47.033Z",
     "completedAt": "2026-11-09T13:31:53.941Z",
     "totalReviews": 81113,
@@ -360527,6 +360435,44 @@
     },
     "costUsd": 0,
     "runId": "42915887264",
+    "source": "comparative-rescore",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-11-10T22:56:18.932Z",
+    "completedAt": "2026-11-10T22:56:23.316Z",
+    "totalReviews": 62,
+    "processed": 0,
+    "skipped": 61,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 6524,
+      "output": 150,
+      "cacheRead": 0,
+      "cacheWrite": 3807,
+      "total": 15643
+    },
+    "costUsd": 0.03514335,
+    "runId": "42918046043",
+    "source": "index",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-11-10T23:01:21.579Z",
+    "completedAt": "2026-11-10T23:01:21.605Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "42918046043",
     "source": "comparative-rescore",
     "errorDetails": []
   }
