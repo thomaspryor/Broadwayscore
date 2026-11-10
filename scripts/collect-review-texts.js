@@ -7521,13 +7521,17 @@ async function processReview(review) {
         // fabricatedEntry recovery, where the existing url is empty or broken
         // — the invariant doesn't apply (nothing to clear), but the discovered
         // url and the fabricated-flag clears must still persist.
+        // The invented-url flag (fabricatedEntry) is NOT cleared here: a search
+        // hit is not proof. It clears after the fetch, only on the
+        // gap-acceptance identity proof (fabricatedFlagClearDecision, BRO-7171).
+        // The record as it was before the flip keeps the proof inputs (old
+        // excerpts, print text) that the invariant is about to clear.
+        if (review.fabricatedEntry === true) {
+          try { review._preDiscoverySnapshot = readReviewForUpdate(review.filePath); } catch { /* proof then fails closed */ }
+        }
         updateFileUrlWithInvariant(review.filePath, discoveredUrl, {
           urlDiscoveredAt: new Date().toISOString(),
           urlDiscoveryMethod: 'google-serp-reason-recovery',
-          // Clear fabricated flags on successful URL discovery (undefined
-          // values are dropped by JSON serialization = deletion).
-          fabricatedEntry: undefined,
-          fabricatedReason: undefined,
         }, { stampOnNoop: true, oldUrlProvenWrong: true });
       } catch (e) {}
       review._urlCosmeticOnly = review._urlCosmeticOnly !== false && !isDifferentArticleRecovery(review.url, discoveredUrl);
@@ -7889,6 +7893,33 @@ async function processReview(review) {
         if (updated) console.log(`    → URL updated: ${review._previousUrl} → ${review.url}`);
       } catch (e) {
         console.log(`    ⚠ Could not persist URL discovery: ${e.message}`);
+      }
+    }
+
+    // An invented-url row found by search: the flag clears only when the
+    // stored page passes the gap-acceptance identity proof; otherwise it stays
+    // and the row goes on to URL_FIND (BRO-7171 item b).
+    if (review._urlDiscovered && review._preDiscoverySnapshot && review.filePath) {
+      try {
+        const { fabricatedFlagClearDecision } = require('./lib/gap-acceptance');
+        const d = fabricatedFlagClearDecision({
+          filePath: review.filePath, preDiscovery: review._preDiscoverySnapshot, fetchedText: result.text, url: review.url,
+          html: result.html || null, llmVerified: !!(contentVerification && discoveredPageVerdict(contentVerification).accept),
+        });
+        if (d.clear) {
+          const post = readReviewForUpdate(review.filePath);
+          if (post.fabricatedEntry === true) {
+            post.fabricatedEntry = false;
+            post.fabricatedClearedReason = `real review text accepted at ${review.url} (collector serp, ${d.via}, ${new Date().toISOString()}); was: ${post.fabricatedReason || 'flagged'}`;
+            post.fabricatedReason = null;
+            persistReviewSnapshot({ filePath: review.filePath, data: post, trailingNewline: true });
+          }
+          console.log(`    ✓ invented-url flag cleared: ${d.via}`);
+        } else {
+          console.log(`    ⚠ invented-url flag kept: ${d.reason}`);
+        }
+      } catch (e) {
+        console.log(`    ⚠ invented-url flag kept (proof failed: ${e.message})`);
       }
     }
 

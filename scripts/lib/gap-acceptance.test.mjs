@@ -508,3 +508,58 @@ test('a no-url print record gets its first proven url even when the page adds fe
   // and the first url still has to be proven (another site, same text)
   assert.equal(acceptRecoveredText(rec, { rawText: `${body} Through Sunday.`, url: 'https://copy.example.com/x', pageByline: 'Jesse Green' }, c).code, 'identity_unproven');
 });
+
+// BRO-7171 item (b): the collector's SERP discovery cleared fabricatedEntry the
+// moment a search result came back, before any fetch or identity proof. The
+// clear now goes through the same identity proof as acceptRecoveredText.
+test('fabricatedFlagClearDecision: an invented-url flag clears only on the gap-acceptance identity proof (BRO-7171)', () => {
+  assert.equal(typeof gate.fabricatedFlagClearDecision, 'function');
+  const realUrl = 'https://www.nytimes.com/2026/03/16/theater/joe-turner-review-real.html';
+  const named = `${GOOD} Review by Jesse Green.`;
+  // excerpt coverage proves it
+  const c1 = candidateFile({ fabricatedEntry: true, source: 'web-search', url: null, dtliExcerpt: GOOD.slice(0, 240) });
+  const pre1 = JSON.parse(fs.readFileSync(c1.filePath, 'utf8'));
+  const d1 = gate.fabricatedFlagClearDecision({ filePath: c1.filePath, preDiscovery: pre1, fetchedText: GOOD, url: realUrl, llmVerified: false });
+  assert.equal(d1.clear, true, JSON.stringify(d1));
+  assert.match(d1.via, /excerpt coverage/);
+  // outlet domain + critic named + LLM verdict proves it
+  const c2 = candidateFile({ fabricatedEntry: true, source: 'web-search', url: null });
+  const pre2 = JSON.parse(fs.readFileSync(c2.filePath, 'utf8'));
+  assert.equal(gate.fabricatedFlagClearDecision({ filePath: c2.filePath, preDiscovery: pre2, fetchedText: named, url: realUrl, llmVerified: true }).clear, true);
+  // ... but not without the LLM verdict, not off the outlet's domain, not unnamed
+  assert.equal(gate.fabricatedFlagClearDecision({ filePath: c2.filePath, preDiscovery: pre2, fetchedText: named, url: realUrl, llmVerified: false }).clear, false);
+  assert.equal(gate.fabricatedFlagClearDecision({ filePath: c2.filePath, preDiscovery: pre2, fetchedText: named, url: 'https://someblog.example/joe-turner', llmVerified: true }).clear, false);
+  assert.equal(gate.fabricatedFlagClearDecision({ filePath: c2.filePath, preDiscovery: pre2, fetchedText: GOOD, url: realUrl, llmVerified: true }).clear, false);
+  // not flagged: nothing to decide
+  assert.equal(gate.fabricatedFlagClearDecision({ filePath: c2.filePath, preDiscovery: { ...pre2, fabricatedEntry: false }, fetchedText: named, url: realUrl, llmVerified: true }).clear, false);
+});
+
+// Class guard (BRO-7171 item b): an invented-url flag clears ONLY behind the
+// gap-acceptance identity proof. Any new writer that sets it false/undefined/
+// null or deletes it fails here until it routes through fabricatedFlagClearDecision
+// or acceptRecoveredText.
+test('class guard: fabricatedEntry is cleared only behind the identity proof', () => {
+  const root = path.join(path.dirname(new URL(import.meta.url).pathname), '..');
+  const ALLOWED = new Map([
+    ['lib/gap-acceptance.js', ['data.fabricatedEntry = false;']],
+    ['collect-review-texts.js', ['review.fabricatedEntry = false; // prevent re-triggering SERP on retry', 'post.fabricatedEntry = false;']],
+  ]);
+  const CLEAR = /fabricatedEntry\s*:\s*(undefined|false|null)\b|\.fabricatedEntry\s*=\s*(undefined|false|null)\b|delete\s+[\w.[\]'"]+\.fabricatedEntry\b|\[['"]fabricatedEntry['"]\]\s*=\s*(undefined|false|null)\b/;
+  const bad = [];
+  const walk = (d) => {
+    for (const e of fs.readdirSync(d, { withFileTypes: true })) {
+      const p = path.join(d, e.name);
+      if (e.isDirectory()) { if (!['node_modules', 'fixtures', '__fixtures__'].includes(e.name)) walk(p); continue; }
+      if (!/\.(c?js|mjs|ts)$/.test(e.name) || /\.test\.|test-/.test(e.name)) continue;
+      const rel = path.relative(root, p);
+      const allow = ALLOWED.get(rel) || [];
+      fs.readFileSync(p, 'utf8').split('\n').forEach((line, i) => {
+        if (CLEAR.test(line) && !allow.includes(line.trim())) bad.push(`${rel}:${i + 1}: ${line.trim()}`);
+      });
+    }
+  };
+  walk(root);
+  assert.deepEqual(bad, []);
+  const collector = fs.readFileSync(path.join(root, 'collect-review-texts.js'), 'utf8');
+  assert.ok(collector.includes('fabricatedFlagClearDecision('), 'collector clear must go through fabricatedFlagClearDecision');
+});

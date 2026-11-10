@@ -544,6 +544,27 @@ function buildAcceptanceContext(filePath, existing, candidateUrl, opts = {}) {
 }
 
 /**
+ * May an invented-url flag (fabricatedEntry) clear after the collector stored
+ * text from a SERP-found url? (BRO-7171 item b: the collector cleared it when
+ * the search returned, before any fetch or proof.) Same identity proof as
+ * acceptRecoveredText step 6. `preDiscovery` is the record as it was BEFORE the
+ * url flip cleared its old excerpts/print text, since those are the proof inputs.
+ * @returns {{clear:boolean, via:string|null, reason:string}}
+ */
+function fabricatedFlagClearDecision({ filePath, preDiscovery, fetchedText, url, html = null, llmVerified = false, reviewTextsDir = null }) {
+  if (!preDiscovery || preDiscovery.fabricatedEntry !== true) return { clear: false, via: null, reason: 'not flagged' };
+  if (!url || !fetchedText) return { clear: false, via: null, reason: 'no url or text' };
+  const ctx = buildAcceptanceContext(filePath, preDiscovery, url, { llmIdentityVerified: llmVerified === true, reviewTextsDir: reviewTextsDir || undefined });
+  ctx.pageByline = pageByline(html, preDiscovery.outletId);
+  const showId = preDiscovery.showId || path.basename(path.dirname(filePath));
+  const cleaned = cleanCandidateText(fetchedText, { url, showId }).text || '';
+  const p = proveIdentity(preDiscovery, cleaned, url, ctx);
+  return p.proven
+    ? { clear: true, via: p.via, reason: 'identity proven' }
+    : { clear: false, via: null, reason: `identity unproven: ${(p.missing || []).join('; ')}` };
+}
+
+/**
  * Lock, fresh read, gate, ONE write. URL + text + provenance land in the same
  * safeWriteReview call; nothing is written unless the gate accepted.
  *
@@ -730,6 +751,7 @@ async function recoverReviewTextVerified({ filePath, rawText, url, headline = nu
 }
 
 module.exports = {
+  fabricatedFlagClearDecision,
   surnameOf,
   pagePublishDate,
   pageByline,
