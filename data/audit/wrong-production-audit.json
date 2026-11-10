@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-10T19:55:35.514Z",
+  "timestamp": "2026-11-10T20:11:19.160Z",
   "stats": {
     "totalReviews": 81301,
-    "alreadyFlagged": 22219,
+    "alreadyFlagged": 22221,
     "dateGuardCatches": 219,
     "directorMismatch": 3606,
-    "tvFilmSignals": 2287,
+    "tvFilmSignals": 2286,
     "londonSignals": 3664,
     "offBroadwaySignals": 752,
     "yearMismatch": 364,
-    "noPublishDate": 8463
+    "noPublishDate": 8461
   },
   "findings": [
     {
@@ -45880,20 +45880,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hbo max\""
-        }
-      ]
-    },
-    {
-      "showId": "new-york-new-york-2023",
-      "file": "village-voice--michael-musto.json",
-      "score": 74,
-      "publishDate": "2024-01-13T07:25:07-05:00",
-      "url": "https://www.villagevoice.com/2023/04/26/review-new-york-new-york-makes-it-here/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
