@@ -7,25 +7,25 @@
   "embargoSource": "market-default",
   "probe": {
     "startedAt": "2026-11-10T02:30:04.454Z",
-    "endedAt": null,
+    "endedAt": "2026-11-10T09:00:30.754Z",
     "intervalMin": 5,
-    "samples": 30,
+    "samples": 77,
     "failedSamples": 0,
-    "lastSampleAt": "2026-11-10T04:55:11.955Z",
-    "lastOkSampleAt": "2026-11-10T04:55:11.955Z"
+    "lastSampleAt": "2026-11-10T08:56:18.013Z",
+    "lastOkSampleAt": "2026-11-10T08:56:18.013Z"
   },
   "firstLiveAt": "2026-11-10T03:45:08.340Z",
   "firstLiveBaseline": false,
-  "lastLiveAt": "2026-11-10T04:45:11.488Z",
-  "liveCount": 4,
+  "lastLiveAt": "2026-11-10T08:21:16.567Z",
+  "liveCount": 6,
   "liveCountAt": {
     "1h": 2,
-    "2h": null,
+    "2h": 4,
     "6h": null
   },
   "liveCountSampleAt": {
     "1h": "2026-11-10T04:00:09.101Z",
-    "2h": null,
+    "2h": "2026-11-10T05:06:09.425Z",
     "6h": null
   },
   "firstOutletPublishAt": {
@@ -82,6 +82,30 @@
       "prevOkSampleAt": "2026-11-10T04:40:11.123Z",
       "baseline": false,
       "liveNow": true
+    },
+    {
+      "key": "theatermania|zachary stewart",
+      "outlet": "TheaterMania",
+      "critic": "Zachary Stewart",
+      "tier": 2,
+      "publishAt": "2026-11-09",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-10T06:16:11.983Z",
+      "prevOkSampleAt": "2026-11-10T06:11:11.813Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "the new york sun|elysa gardner",
+      "outlet": "The New York Sun",
+      "critic": "Elysa Gardner",
+      "tier": 2,
+      "publishAt": "2026-11-09",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-10T08:21:16.567Z",
+      "prevOkSampleAt": "2026-11-10T08:16:16.374Z",
+      "baseline": false,
+      "liveNow": true
     }
   ],
   "dropped": [],
@@ -99,6 +123,20 @@
       "liveCount": 4,
       "fetchedAt": "2026-11-10T05:00:26.929Z",
       "censusNote": "archive + live BWW roundup (4 rows): https://www.broadwayworld.com/article/Review-Roundup-What-Do-Critics-Think-of-THE-VISITORS-Off-Broadway-20261109"
+    },
+    "end": {
+      "status": "complete",
+      "source": [
+        "bww-roundup-live"
+      ],
+      "count": 4,
+      "covered": 4,
+      "coverage": 1,
+      "missing": [],
+      "suppressedMissing": [],
+      "liveCount": 6,
+      "fetchedAt": "2026-11-10T09:00:27.073Z",
+      "censusNote": "archive + live BWW roundup (4 rows): https://www.broadwayworld.com/article/Review-Roundup-What-Do-Critics-Think-of-THE-VISITORS-Off-Broadway-20261109"
     }
   },
   "manualActions": [],
@@ -111,11 +149,17 @@
         "label": "2h",
         "standDown": false,
         "reason": "no live lane lease"
+      },
+      {
+        "at": "2026-11-10T09:00:27.160Z",
+        "label": "end",
+        "standDown": false,
+        "reason": "no live lane lease"
       }
     ]
   },
   "fileState": {
-    "capturedAt": "2026-11-10T05:00:29.978Z",
+    "capturedAt": "2026-11-10T09:00:30.681Z",
     "files": [
       {
         "file": "bobs-theater-blog--unknown.json",
@@ -152,6 +196,19 @@
         "scoredAt": "2026-11-10T03:16:29.629Z",
         "publishDate": "2026-11-09",
         "url": "culturesauce.com/the-visitors-bryna-turner-off-broadway-review",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "new-york-sun--elysa-gardner.json",
+        "outletId": "new-york-sun",
+        "outlet": "The New York Sun",
+        "critic": "Elysa Gardner",
+        "firstSeenAt": "2026-11-10T07:22:38.516Z",
+        "scoredAt": "2026-11-10T07:50:45.139Z",
+        "publishDate": "2026-11-09",
+        "url": "nysun.com/article/modern-family-familiar-friction",
         "includable": true,
         "reason": null,
         "syndicatedUnder": null
@@ -227,11 +284,11 @@
         "outlet": "TheaterMania",
         "critic": "Zachary Stewart",
         "firstSeenAt": null,
-        "scoredAt": null,
-        "publishDate": "January 23rd, 2026",
-        "url": "theatermania.com/news/under-the-radar-review-the-visitors-a-cautionary-tale-for-nativists_1821410",
-        "includable": false,
-        "reason": "wrongProduction",
+        "scoredAt": "2026-11-10T05:48:29.192Z",
+        "publishDate": "2026-11-09",
+        "url": "theatermania.com/news/review-the-visitors-a-dark-comedy-about-siblings_1859149",
+        "includable": true,
+        "reason": null,
         "syndicatedUnder": null
       }
     ]
