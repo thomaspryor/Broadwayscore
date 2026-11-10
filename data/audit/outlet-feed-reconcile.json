@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-10T14:57:18.869Z",
+  "generatedAt": "2026-11-10T16:11:53.462Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -108,8 +108,16 @@
   "feedsChecked": 84,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
-      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
+      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
+    },
+    {
+      "outletId": "stageandcinema",
+      "error": "HTTP 503 for https://www.stageandcinema.com/feed/"
     },
     {
       "outletId": "cote-notices",
@@ -126,30 +134,20 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "times-square-chronicles",
+      "error": "fetchPage returned an unexpected page for https://t2conline.com/wp-json/wp/v2/posts?categories=504,298,283&per_page=100&"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "fetchPage returned an unexpected page for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&o"
     }
   ],
-  "itemsScanned": 856,
-  "matchedGaps": 7,
+  "itemsScanned": 777,
+  "matchedGaps": 2,
   "possibleGaps": 2,
   "gaps": [
-    {
-      "showId": "222-a-ghost-story-off-broadway-2026",
-      "title": "2:22 - A Ghost Story",
-      "level": "matched",
-      "outletId": "rhombus-rota",
-      "url": "https://rhombusrota.co.uk/2026/11/04/222-a-ghost-story-by-dads-theatre-company-at-upwell-village-hall-review/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=222-a-ghost-story-by-dads-theatre-company-at-upwell-village-hall-review",
-      "headline": "2:22 A Ghost Story by DADS Theatre Company at Upwell Village Hall Review",
-      "publishDate": "2026-11-04"
-    },
-    {
-      "showId": "222-a-ghost-story-off-broadway-2026",
-      "title": "2:22 - A Ghost Story",
-      "level": "matched",
-      "outletId": "times-square-chronicles",
-      "url": "https://t2conline.com/222-a-ghost-story-the-loudest-thing-in-the-room-isnt-the-ghost/",
-      "headline": "2:22 – A Ghost Story: The Loudest Thing in the Room Isn’t the Ghost",
-      "publishDate": "2026-11-07"
-    },
     {
       "showId": "dogstar-off-west-end-2026",
       "title": "Dogstar",
@@ -167,33 +165,6 @@
       "url": "https://thespyinthestalls.com/2026/11/dogstar/",
       "headline": "DOGSTAR★★★Hampstead Theatre",
       "publishDate": "2026-11-10"
-    },
-    {
-      "showId": "dogstar-off-west-end-2026",
-      "title": "Dogstar",
-      "level": "matched",
-      "outletId": "londontheatre1",
-      "url": "https://www.londontheatre1.com/reviews/dogstar-hampstead-theatre/",
-      "headline": "Dogstar | Hampstead Theatre",
-      "publishDate": "2026-11-10"
-    },
-    {
-      "showId": "dogstar-off-west-end-2026",
-      "title": "Dogstar",
-      "level": "matched",
-      "outletId": "west-end-best-friend",
-      "url": "https://www.westendbestfriend.co.uk/news/review-dogstar-hampstead-theatre",
-      "headline": "Review: DOGSTAR, Hampstead Theatre",
-      "publishDate": "2026-11-10"
-    },
-    {
-      "showId": "the-verge-off-broadway-2026",
-      "title": "The Verge",
-      "level": "matched",
-      "outletId": "stageandcinema",
-      "url": "https://stageandcinema.com/2026/11/09/the-verge-review-fiasco-theater-public/",
-      "headline": "Off-Broadway Review: THE VERGE (Fiasco Theater / The Public Theater)",
-      "publishDate": "2026-11-09"
     },
     {
       "showId": "king-lear-off-broadway-2026",
