@@ -85,7 +85,8 @@ function main() {
   }
   if (dryRun) { console.log('\n--dry-run: state not saved'); return; }
 
-  R.saveRecoveryState(state);
+  fs.mkdirSync(path.dirname(R.STATE_PATH), { recursive: true });
+  fs.writeFileSync(R.STATE_PATH, `${JSON.stringify(state, null, 2)}\n`); // single writer (BRO-7312)
   const phases = {};
   for (const cell of Object.values(state.cells)) {
     const p = R.cellPhase(cell, Date.now()).phase;

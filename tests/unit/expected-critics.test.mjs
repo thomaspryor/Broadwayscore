@@ -246,6 +246,10 @@ test('the owner sees no expected-critics line while searches remain; dead ends a
   assert.equal(R.splitForOwner([g], R.emptyState(), at(6)).visible[0].recovery.reason, 'recovery-not-running');
   // recovery stalled: a due search 2+ days overdue
   assert.equal(R.splitForOwner([g], fresh, at(6)).visible[0].recovery.reason, 'recovery-overdue');
+  // ...counted from the day recovery first saw a backlog cell, not its weeks-old schedule date
+  const backlog = R.syncState(R.emptyState(), [g], at(30));
+  assert.equal(R.splitForOwner([g], backlog, at(31)).visible.length, 0);
+  assert.equal(R.splitForOwner([g], backlog, at(33)).visible[0].recovery.reason, 'recovery-overdue');
 });
 
 test('a written review waits for the rebuild, then counts as unusable if it never went live', () => {

@@ -23,7 +23,7 @@
  *               failing. Only these reach the owner, in plain words.
  *
  * State: data/audit/expected-critics-recovery.json, single writer
- * (recover-expected-critics.js). Pure apart from loadRecoveryState/saveRecoveryState.
+ * (recover-expected-critics.js saves it). Pure apart from loadRecoveryState.
  */
 
 const fs = require('fs');
@@ -57,11 +57,6 @@ function loadRecoveryState(p = STATE_PATH) {
     if (s && typeof s === 'object' && s.cells && typeof s.cells === 'object') return s;
   } catch { /* missing or corrupt: start empty */ }
   return emptyState();
-}
-
-function saveRecoveryState(state, p = STATE_PATH) {
-  fs.mkdirSync(path.dirname(p), { recursive: true });
-  fs.writeFileSync(p, `${JSON.stringify(state, null, 2)}\n`);
 }
 
 /** End of opening day (UTC), as expected-critics.js reads it. */
@@ -241,7 +236,11 @@ function ownerVisibility(gap, state, nowMs) {
   const p = cellPhase(cell, nowMs);
   if (p.phase === 'dead-end') return { visible: true, ...p };
   if (p.phase === 'acked') return { visible: false, ...p };
-  if (p.nextDueMs != null && nowMs > p.nextDueMs + OVERDUE_GRACE_MS) return { visible: true, ...p, reason: 'recovery-overdue' };
+  // A backlog cell's schedule date can be weeks old the day recovery first
+  // sees it; the overdue clock starts no earlier than that day.
+  const seen = Date.parse(cell.firstSeenMissingAt);
+  const dueFrom = Math.max(p.nextDueMs == null ? -Infinity : p.nextDueMs, Number.isFinite(seen) ? seen : -Infinity);
+  if (p.nextDueMs != null && nowMs > dueFrom + OVERDUE_GRACE_MS) return { visible: true, ...p, reason: 'recovery-overdue' };
   return { visible: false, ...p };
 }
 
@@ -279,7 +278,7 @@ function ownerLine(g) {
 
 module.exports = {
   STATE_PATH, SCHEDULE_DAYS, ATTEMPTS_FOR_ACK, ACK_SOURCE,
-  emptyState, loadRecoveryState, saveRecoveryState,
+  emptyState, loadRecoveryState,
   cellPhase, syncState, planRecovery, collectorArgs, applyResults,
   mergedAcks, ownerVisibility, splitForOwner, ownerLine,
 };

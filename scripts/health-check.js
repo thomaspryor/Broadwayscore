@@ -354,7 +354,7 @@ const AUTO_FIX_PLAYBOOK = [
     workerInstruction: "Run node scripts/audit-standing-coverage.js --market=<market from the warning>; apply the change with an outlet-registry-flag plan that sets market to that market." },
   { match: /^Quality: expected critics missing$/, urgency: 'this-week',
     ownerText: "A critic that reviews nearly every opening has no review on the site for a show that opened recently, and the automatic searches could not find or rule it out. Nothing is needed from you.",
-    workerInstruction: "Run node scripts/audit-expected-critics.js and read data/audit/expected-critics-recovery.json for each listed cell's search attempts (BRO-7312); ingest the review, or ack it with evidence that the outlet did not review the show, or fix why the recovery could not settle it." },
+    workerInstruction: "Run node scripts/audit-expected-critics.js and read the recovery state file that scripts/recover-expected-critics.js writes for each listed cell's search attempts (BRO-7312); ingest the review, or ack it with evidence that the outlet did not review the show, or fix why the recovery could not settle it." },
   { match: /^Quality: outlet feed staleness$/, urgency: 'this-week',
     ownerText: "A critic outlet's news feed stopped updating while the outlet keeps publishing reviews, so new reviews from it may arrive late. Nothing is needed from you.",
     workerInstruction: "Open the outlet-listing poller feed-health snapshot (OUTLET_FEED_HEALTH_REL in scripts/lib/outlet-listing-helpers.js), take each outlet in stale[] or failing[], probe a replacement with `node scripts/probe-outlet-feeds.js --outlets <id>` and update its OUTLET_STRATEGY_CONFIG entry in scripts/outlet-listing-poller.js (BRO-6352; BRO-6340 fixed thewrap/observer this way)." },
@@ -2197,7 +2197,7 @@ function checkOutletHealth() {
         name,
         status: 'warn',
         message: `${visible.length} usual-critic review(s) the automatic search could not settle${searching}: ${visible.slice(0, 8).map(rec.ownerLine).join(' ')}${visible.length > 8 ? ' ...' : ''}`,
-        hint: 'Run `node scripts/audit-expected-critics.js`; ingest the review, or `--ack=show::outlet --note="<evidence>"` when the outlet did not review it. Recovery state: data/audit/expected-critics-recovery.json.',
+        hint: 'Run `node scripts/audit-expected-critics.js`; ingest the review, or `--ack=show::outlet --note="<evidence>"` when the outlet did not review it. Per-cell search attempts: node scripts/recover-expected-critics.js --plan-only and its state file (BRO-7312).',
       };
     }),
 
