@@ -1,0 +1,1496 @@
+{
+ "city": "boston-ma",
+ "today": "2026-11-10",
+ "models": {
+  "gemini": "gemini-2.5-flash",
+  "openai": "gpt-5-mini"
+ },
+ "itemsChecked": {
+  "shows": 6,
+  "images": 0,
+  "publishedReviews": 40,
+  "excludedFiles": 0,
+  "reviewsWithoutText": 6,
+  "tourStops": 0,
+  "coverageShows": 3,
+  "totalShows": 35,
+  "totalPublished": 157
+ },
+ "flaggedByGemini": 6,
+ "flaggedByOpenAI": 7,
+ "flaggedLocalChecks": 153,
+ "flaggedAny": 161,
+ "flaggedByBoth": 3,
+ "triagedItems": 0,
+ "confirmed": 0,
+ "falsePositives": 0,
+ "fixed": 0,
+ "remaining": [],
+ "untriaged": 161,
+ "flags": [
+  {
+   "kind": "show",
+   "id": "black-swan-regional-2026",
+   "label": "Black Swan",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-06-03 / page 2026-05-26"
+  },
+  {
+   "kind": "show",
+   "id": "black-swan-regional-2026",
+   "label": "Black Swan",
+   "model": "openai",
+   "code": "venue",
+   "detail": "ours \"American Repertory Theater, Cambridge, MA\" / page \"Loeb Drama Center\""
+  },
+  {
+   "kind": "show",
+   "id": "paranormal-activity-boston-regional-2026",
+   "label": "Paranormal Activity",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-07-15 / page 2026-07-11"
+  },
+  {
+   "kind": "show",
+   "id": "paranormal-activity-boston-regional-2026",
+   "label": "Paranormal Activity",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-07-11, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "paranormal-activity-boston-regional-2026",
+   "label": "Paranormal Activity",
+   "model": "gemini",
+   "code": "category",
+   "detail": "page says touring production"
+  },
+  {
+   "kind": "show",
+   "id": "paranormal-activity-boston-regional-2026",
+   "label": "Paranormal Activity",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-07-15 / page 2026-07-11"
+  },
+  {
+   "kind": "show",
+   "id": "paranormal-activity-boston-regional-2026",
+   "label": "Paranormal Activity",
+   "model": "openai",
+   "code": "category",
+   "detail": "page says touring production"
+  },
+  {
+   "kind": "show",
+   "id": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+   "label": "Rhinoceros",
+   "model": "gemini",
+   "code": "venue",
+   "detail": "ours \"American Repertory Theater, Cambridge, MA\" / page \"Loeb Drama Center\""
+  },
+  {
+   "kind": "show",
+   "id": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+   "label": "Rhinoceros",
+   "model": "openai",
+   "code": "venue",
+   "detail": "ours \"American Repertory Theater, Cambridge, MA\" / page \"Loeb Drama Center\""
+  },
+  {
+   "kind": "show",
+   "id": "purpose-regional-2026",
+   "label": "Purpose",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-09-16 / page 2026-09-10"
+  },
+  {
+   "kind": "show",
+   "id": "something-rotten-regional-2026",
+   "label": "Something Rotten!",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-05-01 / page 2026-06-07"
+  },
+  {
+   "kind": "review",
+   "id": "1972-regional-2026|https://themusicaltheatrereport.com/2026/11/08/1972-wanted-and-more|ben west",
+   "label": "1972 | Musical Theatre Report / Ben West",
+   "model": "gemini",
+   "code": "non-review:roundup",
+   "detail": "The article reviews '1972' and mentions 'Wanted' as part of the report, but only provides detailed notes for '1972', which it judges as a 'very poor piece of theatre'."
+  },
+  {
+   "kind": "review",
+   "id": "1972-regional-2026|https://themusicaltheatrereport.com/2026/11/08/1972-wanted-and-more|ben west",
+   "label": "1972 | Musical Theatre Report / Ben West",
+   "model": "openai",
+   "code": "non-review:roundup",
+   "detail": "The piece calls 1972 'a very poor piece of theatre' but suggests it could improve with rewriting and restaging."
+  },
+  {
+   "kind": "review",
+   "id": "all-my-sons-regional-2026|https://www.broadwayworld.com/boston/article/review-a-riveting-all-my-sons-at-lyric-stage-boston-20260928|r scott reedy",
+   "label": "All My Sons | BroadwayWorld / R. Scott Reedy",
+   "model": "openai",
+   "code": "score-vs-text",
+   "detail": "text reads rave, score 78"
+  },
+  {
+   "kind": "review",
+   "id": "1972-regional-2026|https://www.bostonglobe.com/2026/11/05/arts/1972-art-chadwick-stokes|",
+   "label": "1972-regional-2026 | Boston Globe",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.bostonglobe.com/2026/11/05/arts/1972-art-chadwick-stokes/"
+  },
+  {
+   "kind": "review",
+   "id": "1972-regional-2026|https://www.boston.com/culture/arts/2026/11/05/theater-review-rock-opera-1972-offers-a-different-kind-of-live-performance-and-a-needed-one|samantha genzer",
+   "label": "1972-regional-2026 | Boston.com",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.boston.com/culture/arts/2026/11/05/theater-review-rock-opera-1972-offers-a-different-kind-of-live-performance-and-a-needed-one/"
+  },
+  {
+   "kind": "review",
+   "id": "1972-regional-2026|https://www.broadwayworld.com/boston/article/review-american-repertory-theater-rocks-out-with-world-premiere-of-1972-20261105|r scott reedy",
+   "label": "1972-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/boston/article/Review-American-Repertory-Theater-Rocks-Out-with-World-Premiere-of-1972-20261105"
+  },
+  {
+   "kind": "review",
+   "id": "1972-regional-2026|https://themusicaltheatrereport.com/2026/11/08/1972-wanted-and-more|ben west",
+   "label": "1972-regional-2026 | Musical Theatre Report",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://themusicaltheatrereport.com/2026/11/08/1972-wanted-and-more/"
+  },
+  {
+   "kind": "review",
+   "id": "1972-regional-2026|https://artsfuse.org/337094/theater-review-chadwick-stokess-1972-finds-its-voice-in-a-powerful-cry-for-womens-empowerment|paul robicheau",
+   "label": "1972-regional-2026 | The Arts Fuse",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://artsfuse.org/337094/theater-review-chadwick-stokess-1972-finds-its-voice-in-a-powerful-cry-for-womens-empowerment/"
+  },
+  {
+   "kind": "review",
+   "id": "1972-regional-2026|https://www.netheatregeek.com/2026/11/05/rocking-out-on-the-precipice-of-hope-1972|maegan bergeron clearwood",
+   "label": "1972-regional-2026 | The New England Theatre Geek",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.netheatregeek.com/2026/11/05/rocking-out-on-the-precipice-of-hope-1972/"
+  },
+  {
+   "kind": "review",
+   "id": "1972-regional-2026|https://www.theatermirror.net/a-r-t-brings-rousing-world-premiere-to-cambridge-with-1972|",
+   "label": "1972-regional-2026 | The Theater Mirror",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.theatermirror.net/a-r-t-brings-rousing-world-premiere-to-cambridge-with-1972/"
+  },
+  {
+   "kind": "review",
+   "id": "a-midsummer-nights-dream-regional-2026|https://stageandcinema.com/2026/08/05/a-midsummer-nights-dream-review-commonwealth-shakespeare|lynne weiss",
+   "label": "a-midsummer-nights-dream-regional-2026 | Stage and Cinema",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://stageandcinema.com/2026/08/05/a-midsummer-nights-dream-review-commonwealth-shakespeare/"
+  },
+  {
+   "kind": "review",
+   "id": "a-midsummer-nights-dream-regional-2026|https://www.netheatregeek.com/2026/08/05/techno-escapism-in-a-midsummer-nights-dream|maegan bergeron clearwood",
+   "label": "a-midsummer-nights-dream-regional-2026 | The New England Theatre Geek",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.netheatregeek.com/2026/08/05/techno-escapism-in-a-midsummer-nights-dream/"
+  },
+  {
+   "kind": "review",
+   "id": "a-midsummer-nights-dream-regional-2026|https://sleeplesscritic.com/2026/08/05/review-commonwealth-shakespeare-company-vividly-envisions-a-spirited-a-midsummer-nights-dream-on-boston-common|",
+   "label": "a-midsummer-nights-dream-regional-2026 | The Sleepless Critic",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://sleeplesscritic.com/2026/08/05/review-commonwealth-shakespeare-company-vividly-envisions-a-spirited-a-midsummer-nights-dream-on-boston-common/"
+  },
+  {
+   "kind": "review",
+   "id": "a-midsummer-nights-dream-regional-2026|https://www.theatermirror.net|michele markarian",
+   "label": "a-midsummer-nights-dream-regional-2026 | The Theater Mirror",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.theatermirror.net/?p=11502"
+  },
+  {
+   "kind": "review",
+   "id": "a-midsummer-nights-dream-regional-2026|https://www.wbur.org/news/2026/08/04/commonwealth-shakespeare-company-a-midsummer-nights-dream-theater-review|jacquinn sinclair",
+   "label": "a-midsummer-nights-dream-regional-2026 | WBUR",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.wbur.org/news/2026/08/04/commonwealth-shakespeare-company-a-midsummer-nights-dream-theater-review"
+  },
+  {
+   "kind": "review",
+   "id": "a-new-era-regional-2026|https://www.bostonglobe.com/2026/07/20/arts/a-new-era-company-one-review|",
+   "label": "a-new-era-regional-2026 | Boston Globe",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.bostonglobe.com/2026/07/20/arts/a-new-era-company-one-review/"
+  },
+  {
+   "kind": "review",
+   "id": "a-new-era-regional-2026|https://www.broadwayworld.com/boston/article/review-company-one-theatres-a-new-era-is-fresh-look-at-boston-history-20260729|r scott reedy",
+   "label": "a-new-era-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/boston/article/Review-Company-One-Theatres-A-NEW-ERA-is-Fresh-Look-at-Boston-History-20260729"
+  },
+  {
+   "kind": "review",
+   "id": "a-new-era-regional-2026|https://www.netheatregeek.com/2026/07/25/activism-and-elitism-are-kissing-cousins-a-new-era|kitty drexel",
+   "label": "a-new-era-regional-2026 | The New England Theatre Geek",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.netheatregeek.com/2026/07/25/activism-and-elitism-are-kissing-cousins-a-new-era/"
+  },
+  {
+   "kind": "review",
+   "id": "all-my-sons-regional-2026|https://www.bostonglobe.com/2026/09/21/arts/lyric-all-my-sons|",
+   "label": "all-my-sons-regional-2026 | Boston Globe",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.bostonglobe.com/2026/09/21/arts/lyric-all-my-sons/"
+  },
+  {
+   "kind": "review",
+   "id": "all-my-sons-regional-2026|https://www.broadwayworld.com/boston/article/review-a-riveting-all-my-sons-at-lyric-stage-boston-20260928|r scott reedy",
+   "label": "all-my-sons-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/boston/article/Review-A-Riveting-ALL-MY-SONS-at-Lyric-Stage-Boston-20260928"
+  },
+  {
+   "kind": "review",
+   "id": "all-my-sons-regional-2026|https://www.metrmag.com/latest-reviews/all-my-sons-by-arthur-miller-lyric-stage-company-boston-ma-review|",
+   "label": "all-my-sons-regional-2026 | Metrmag",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.metrmag.com/latest-reviews/all-my-sons-by-arthur-miller-lyric-stage-company-boston-ma-review"
+  },
+  {
+   "kind": "review",
+   "id": "all-my-sons-regional-2026|https://stageandcinema.com/2026/10/05/all-my-sons-lyric-stage-boston|carmen barsomian dietrich",
+   "label": "all-my-sons-regional-2026 | Stage and Cinema",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://stageandcinema.com/2026/10/05/all-my-sons-lyric-stage-boston/"
+  },
+  {
+   "kind": "review",
+   "id": "all-my-sons-regional-2026|https://artsfuse.org/334666/theater-review-all-my-sons-unearthing-the-rot-beneath-the-american-dream|robert israel",
+   "label": "all-my-sons-regional-2026 | The Arts Fuse",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://artsfuse.org/334666/theater-review-all-my-sons-unearthing-the-rot-beneath-the-american-dream/"
+  },
+  {
+   "kind": "review",
+   "id": "all-my-sons-regional-2026|https://www.netheatregeek.com/2026/09/22/dear-dead-days-beyond-recall-all-my-sons|kitty drexel",
+   "label": "all-my-sons-regional-2026 | The New England Theatre Geek",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.netheatregeek.com/2026/09/22/dear-dead-days-beyond-recall-all-my-sons/"
+  },
+  {
+   "kind": "review",
+   "id": "all-my-sons-regional-2026|https://sleeplesscritic.com/2026/10/05/review-fueled-by-powerhouse-performances-lyric-stages-all-my-sons-a-riveting-and-indelible-tale|",
+   "label": "all-my-sons-regional-2026 | The Sleepless Critic",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://sleeplesscritic.com/2026/10/05/review-fueled-by-powerhouse-performances-lyric-stages-all-my-sons-a-riveting-and-indelible-tale/"
+  },
+  {
+   "kind": "review",
+   "id": "all-my-sons-regional-2026|https://www.theatermirror.net/in-lyric-stages-tragic-all-my-sons-millers-masterpiece-still-resonates|mike hoban",
+   "label": "all-my-sons-regional-2026 | The Theater Mirror",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.theatermirror.net/in-lyric-stages-tragic-all-my-sons-millers-masterpiece-still-resonates/"
+  },
+  {
+   "kind": "review",
+   "id": "annie-regional-2026|https://www.broadwayworld.com/boston/article/review-annie-at-greater-boston-stage-company-20260621|r scott reedy",
+   "label": "annie-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/boston/article/Review-ANNIE-at-Greater-Boston-Stage-Company-20260621"
+  },
+  {
+   "kind": "review",
+   "id": "annie-regional-2026|https://www.metrmag.com/latest-reviews/annie-the-musical-by-thomas-meehan-charles-strouse-and-martin-charnin-greater-boston-stage-company-stoneham-ma-review|",
+   "label": "annie-regional-2026 | Metrmag",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.metrmag.com/latest-reviews/annie-the-musical-by-thomas-meehan-charles-strouse-and-martin-charnin-greater-boston-stage-company-stoneham-ma-review"
+  },
+  {
+   "kind": "review",
+   "id": "annie-regional-2026|https://sleeplesscritic.com/2026/06/17/review-greater-boston-stage-company-adds-an-illustrated-personal-touch-to-uplifting-family-musical-classic-annie|",
+   "label": "annie-regional-2026 | The Sleepless Critic",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://sleeplesscritic.com/2026/06/17/review-greater-boston-stage-company-adds-an-illustrated-personal-touch-to-uplifting-family-musical-classic-annie/"
+  },
+  {
+   "kind": "review",
+   "id": "annie-regional-2026|https://www.theatermirror.net|julie anne whitney",
+   "label": "annie-regional-2026 | The Theater Mirror",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.theatermirror.net/?p=11258"
+  },
+  {
+   "kind": "review",
+   "id": "black-swan-regional-2026|https://www.bostonglobe.com/2026/06/11/arts/art-black-swan-melanie-moore|don aucoin",
+   "label": "black-swan-regional-2026 | Boston Globe",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.bostonglobe.com/2026/06/11/arts/art-black-swan-melanie-moore/"
+  },
+  {
+   "kind": "review",
+   "id": "black-swan-regional-2026|https://www.boston.com/community/entertainment/2026/06/14/theater-review-black-swan-dazzles-with-stunning-choreography-despite-a-forgettable-score|samantha genzer",
+   "label": "black-swan-regional-2026 | Boston.com",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.boston.com/community/entertainment/2026/06/14/theater-review-black-swan-dazzles-with-stunning-choreography-despite-a-forgettable-score/"
+  },
+  {
+   "kind": "review",
+   "id": "black-swan-regional-2026|https://www.broadwayworld.com/boston/article/review-a-thrilling-black-swan-at-american-repertory-theater-20260614|r scott reedy",
+   "label": "black-swan-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/boston/article/Review-A-Thrilling-BLACK-SWAN-at-American-Repertory-Theater-20260614"
+  },
+  {
+   "kind": "review",
+   "id": "black-swan-regional-2026|https://www.cambridgeday.com/2026/06/15/an-unmissable-dance-thriller-from-the-a-r-t|lynne weiss",
+   "label": "black-swan-regional-2026 | Cambridge Day",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.cambridgeday.com/2026/06/15/an-unmissable-dance-thriller-from-the-a-r-t/"
+  },
+  {
+   "kind": "review",
+   "id": "black-swan-regional-2026|https://www.metrmag.com/latest-reviews/black-swan-by-jen-silverman-and-dave-malloy-american-repertory-theater-cambridge-ma-review|kevin t baldwin",
+   "label": "black-swan-regional-2026 | Metrmag",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.metrmag.com/latest-reviews/black-swan-by-jen-silverman-and-dave-malloy-american-repertory-theater-cambridge-ma-review"
+  },
+  {
+   "kind": "review",
+   "id": "black-swan-regional-2026|https://themusicaltheatrereport.com/2026/06/14/black-swan-and-more|ben west",
+   "label": "black-swan-regional-2026 | Musical Theatre Report",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://themusicaltheatrereport.com/2026/06/14/black-swan-and-more/"
+  },
+  {
+   "kind": "review",
+   "id": "black-swan-regional-2026|https://nystagereview.com/2026/06/16/from-cambridge-ma-black-swan-tu-tu-thrilling|bob verini",
+   "label": "black-swan-regional-2026 | New York Stage Review",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://nystagereview.com/2026/06/16/from-cambridge-ma-black-swan-tu-tu-thrilling/"
+  },
+  {
+   "kind": "review",
+   "id": "black-swan-regional-2026|https://artsfuse.org/330444/theater-review-black-swan-beauty-madness-and-a-misguided-musical|martin copenhaver",
+   "label": "black-swan-regional-2026 | The Arts Fuse",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://artsfuse.org/330444/theater-review-black-swan-beauty-madness-and-a-misguided-musical/"
+  },
+  {
+   "kind": "review",
+   "id": "black-swan-regional-2026|https://www.netheatregeek.com/2026/06/12/a-swan-lake-superfan-peeled-like-a-grapefruit-stepp-out-of-her-skin-black-swan|kitty drexel",
+   "label": "black-swan-regional-2026 | The New England Theatre Geek",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.netheatregeek.com/2026/06/12/a-swan-lake-superfan-peeled-like-a-grapefruit-stepp-out-of-her-skin-black-swan/"
+  },
+  {
+   "kind": "review",
+   "id": "black-swan-regional-2026|https://sleeplesscritic.com/2026/06/27/review-a-ferocious-desire-in-american-repertory-theaters-black-swan|",
+   "label": "black-swan-regional-2026 | The Sleepless Critic",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://sleeplesscritic.com/2026/06/27/review-a-ferocious-desire-in-american-repertory-theaters-black-swan/"
+  },
+  {
+   "kind": "review",
+   "id": "black-swan-regional-2026|https://www.theatermirror.net/a-spectacular-scary-black-swan-soars-at-a-r-t|michele markarian",
+   "label": "black-swan-regional-2026 | The Theater Mirror",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.theatermirror.net/a-spectacular-scary-black-swan-soars-at-a-r-t/"
+  },
+  {
+   "kind": "review",
+   "id": "black-swan-regional-2026|https://www.wbur.org/news/2026/06/12/american-repertory-theater-black-swan-review|jacquinn sinclair",
+   "label": "black-swan-regional-2026 | WBUR",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.wbur.org/news/2026/06/12/american-repertory-theater-black-swan-review"
+  },
+  {
+   "kind": "review",
+   "id": "buyer-and-cellar-hub-regional-2026|https://stageandcinema.com/2026/07/27/buyer-and-cellar-hub-theatre-review|emily brenner",
+   "label": "buyer-and-cellar-hub-regional-2026 | Stage and Cinema",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://stageandcinema.com/2026/07/27/buyer-and-cellar-hub-theatre-review/"
+  },
+  {
+   "kind": "review",
+   "id": "buyer-and-cellar-hub-regional-2026|https://www.netheatregeek.com/2026/08/04/charisma-charm-and-grace-buyer-and-cellar|diana lu",
+   "label": "buyer-and-cellar-hub-regional-2026 | The New England Theatre Geek",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.netheatregeek.com/2026/08/04/charisma-charm-and-grace-buyer-and-cellar/"
+  },
+  {
+   "kind": "review",
+   "id": "buyer-and-cellar-hub-regional-2026|https://sleeplesscritic.com/2026/07/29/review-retail-therapy-takes-on-new-meaning-in-hub-theatre-company-of-bostons-lighthearted-comedy-buyer-and-cellar|",
+   "label": "buyer-and-cellar-hub-regional-2026 | The Sleepless Critic",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://sleeplesscritic.com/2026/07/29/review-retail-therapy-takes-on-new-meaning-in-hub-theatre-company-of-bostons-lighthearted-comedy-buyer-and-cellar/"
+  },
+  {
+   "kind": "review",
+   "id": "buyer-and-cellar-hub-regional-2026|https://www.theatermirror.net|mike hoban",
+   "label": "buyer-and-cellar-hub-regional-2026 | The Theater Mirror",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.theatermirror.net/?p=11439"
+  },
+  {
+   "kind": "review",
+   "id": "come-from-away-north-regional-2026|https://www.broadwayworld.com/boston/article/review-a-life-affirming-come-from-away-at-north-shore-music-theatre-20260923|r scott reedy",
+   "label": "come-from-away-north-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/boston/article/Review-A-Life-Affirming-COME-FROM-AWAY-at-North-Shore-Music-Theatre-20260923"
+  },
+  {
+   "kind": "review",
+   "id": "come-from-away-north-regional-2026|https://www.metrmag.com/latest-reviews/come-from-away-by-irene-sankoff-and-david-hein-north-shore-music-theatre-beverly-ma-review|",
+   "label": "come-from-away-north-regional-2026 | Metrmag",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.metrmag.com/latest-reviews/come-from-away-by-irene-sankoff-and-david-hein-north-shore-music-theatre-beverly-ma-review"
+  },
+  {
+   "kind": "review",
+   "id": "come-from-away-north-regional-2026|https://stageandcinema.com/2026/09/26/come-from-away-north-shore-music-theatre|carmen barsomian dietrich",
+   "label": "come-from-away-north-regional-2026 | Stage and Cinema",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://stageandcinema.com/2026/09/26/come-from-away-north-shore-music-theatre/"
+  },
+  {
+   "kind": "review",
+   "id": "come-from-away-north-regional-2026|https://sleeplesscritic.com/2026/09/25/review-kindness-stirs-in-north-shore-music-theatres-uplifting-come-from-away|",
+   "label": "come-from-away-north-regional-2026 | The Sleepless Critic",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://sleeplesscritic.com/2026/09/25/review-kindness-stirs-in-north-shore-music-theatres-uplifting-come-from-away/"
+  },
+  {
+   "kind": "review",
+   "id": "come-from-away-north-regional-2026|https://www.theatermirror.net/nsmts-come-from-away-is-a-reminder-that-inherent-kindness-does-still-exist|shelley a sackett",
+   "label": "come-from-away-north-regional-2026 | The Theater Mirror",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.theatermirror.net/nsmts-come-from-away-is-a-reminder-that-inherent-kindness-does-still-exist/"
+  },
+  {
+   "kind": "review",
+   "id": "covenant-speakeasy-regional-2026|https://www.bostonglobe.com/2026/09/28/arts/covenant-speakeasy-stage|",
+   "label": "covenant-speakeasy-regional-2026 | Boston Globe",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.bostonglobe.com/2026/09/28/arts/covenant-speakeasy-stage/"
+  },
+  {
+   "kind": "review",
+   "id": "covenant-speakeasy-regional-2026|https://www.broadwayworld.com/boston/article/review-speakeasy-stages-covenant-delivers-on-promise-20261008|r scott reedy",
+   "label": "covenant-speakeasy-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/boston/article/Review-SpeakEasy-Stages-COVENANT-Delivers-on-Promise-20261008"
+  },
+  {
+   "kind": "review",
+   "id": "covenant-speakeasy-regional-2026|https://www.metrmag.com/latest-reviews/covenant-by-york-walker-speakeasy-stage-company-boston-ma-review|",
+   "label": "covenant-speakeasy-regional-2026 | Metrmag",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.metrmag.com/latest-reviews/covenant-by-york-walker-speakeasy-stage-company-boston-ma-review"
+  },
+  {
+   "kind": "review",
+   "id": "covenant-speakeasy-regional-2026|https://stageandcinema.com/2026/10/04/covenant-speakeasy-stage|lynne weiss",
+   "label": "covenant-speakeasy-regional-2026 | Stage and Cinema",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://stageandcinema.com/2026/10/04/covenant-speakeasy-stage/"
+  },
+  {
+   "kind": "review",
+   "id": "covenant-speakeasy-regional-2026|https://artsfuse.org/335531/theater-review-in-speakeasys-covenant-the-devil-is-in-the-desires|susan saccoccia",
+   "label": "covenant-speakeasy-regional-2026 | The Arts Fuse",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://artsfuse.org/335531/theater-review-in-speakeasys-covenant-the-devil-is-in-the-desires/"
+  },
+  {
+   "kind": "review",
+   "id": "covenant-speakeasy-regional-2026|https://www.netheatregeek.com/2026/10/02/everything-and-everyone-has-a-price-covenant|kitty drexel",
+   "label": "covenant-speakeasy-regional-2026 | The New England Theatre Geek",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.netheatregeek.com/2026/10/02/everything-and-everyone-has-a-price-covenant/"
+  },
+  {
+   "kind": "review",
+   "id": "covenant-speakeasy-regional-2026|https://www.wbur.org/news/2026/09/29/covenant-speakeasy-theater-review|jacquinn sinclair",
+   "label": "covenant-speakeasy-regional-2026 | WBUR",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.wbur.org/news/2026/09/29/covenant-speakeasy-theater-review"
+  },
+  {
+   "kind": "review",
+   "id": "delirium-regional-2026|https://www.bostonglobe.com/2026/06/25/arts/arlekin-delirium|",
+   "label": "delirium-regional-2026 | Boston Globe",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.bostonglobe.com/2026/06/25/arts/arlekin-delirium/"
+  },
+  {
+   "kind": "review",
+   "id": "delirium-regional-2026|https://stageandcinema.com/2026/06/26/delirium-review-arlekin-players|lynne weiss",
+   "label": "delirium-regional-2026 | Stage and Cinema",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://stageandcinema.com/2026/06/26/delirium-review-arlekin-players/"
+  },
+  {
+   "kind": "review",
+   "id": "delirium-regional-2026|https://artsfuse.org/330885/theater-review-arlekins-delirium-reimagines-ionesco-with-visual-flair-and-urgency|bill marx",
+   "label": "delirium-regional-2026 | The Arts Fuse",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://artsfuse.org/330885/theater-review-arlekins-delirium-reimagines-ionesco-with-visual-flair-and-urgency/"
+  },
+  {
+   "kind": "review",
+   "id": "delirium-regional-2026|https://sleeplesscritic.com/2026/06/30/review-featuring-a-superb-comedic-pair-chaos-ensues-with-boundless-creativity-in-arlekins-exceptional-delirium|",
+   "label": "delirium-regional-2026 | The Sleepless Critic",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://sleeplesscritic.com/2026/06/30/review-featuring-a-superb-comedic-pair-chaos-ensues-with-boundless-creativity-in-arlekins-exceptional-delirium/"
+  },
+  {
+   "kind": "review",
+   "id": "delirium-regional-2026|https://www.theatermirror.net/arlekin-players-delirium-is-a-rampantly-imaginative-work-that-will-leave-you-speechless|julie anne whitney",
+   "label": "delirium-regional-2026 | The Theater Mirror",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.theatermirror.net/arlekin-players-delirium-is-a-rampantly-imaginative-work-that-will-leave-you-speechless/"
+  },
+  {
+   "kind": "review",
+   "id": "delirium-regional-2026|https://www.theatermirror.net/delirium-strikes-all-the-right-raw-notes|michele markarian",
+   "label": "delirium-regional-2026 | The Theater Mirror",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.theatermirror.net/delirium-strikes-all-the-right-raw-notes/"
+  },
+  {
+   "kind": "review",
+   "id": "eleanor-regional-2026|https://www.bostonglobe.com/2026/09/14/arts/eleanor-central-square-theater|",
+   "label": "eleanor-regional-2026 | Boston Globe",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.bostonglobe.com/2026/09/14/arts/eleanor-central-square-theater/"
+  },
+  {
+   "kind": "review",
+   "id": "eleanor-regional-2026|https://www.cambridgeday.com/2026/09/15/central-squares-eleanor-plum-production|lynne weiss",
+   "label": "eleanor-regional-2026 | Cambridge Day",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.cambridgeday.com/2026/09/15/central-squares-eleanor-plum-production/"
+  },
+  {
+   "kind": "review",
+   "id": "eleanor-regional-2026|https://sleeplesscritic.com/2026/09/24/review-path-of-a-trailblazing-woman-in-central-square-theaters-fascinating-eleanor|",
+   "label": "eleanor-regional-2026 | The Sleepless Critic",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://sleeplesscritic.com/2026/09/24/review-path-of-a-trailblazing-woman-in-central-square-theaters-fascinating-eleanor/"
+  },
+  {
+   "kind": "review",
+   "id": "eleanor-regional-2026|https://www.theatermirror.net/central-square-theater-raises-eleanor-roosevelt-from-the-dead-with-its-superb-production-of-eleanor|michele markarian",
+   "label": "eleanor-regional-2026 | The Theater Mirror",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.theatermirror.net/central-square-theater-raises-eleanor-roosevelt-from-the-dead-with-its-superb-production-of-eleanor/"
+  },
+  {
+   "kind": "review",
+   "id": "eleanor-regional-2026|https://www.wbur.org/news/2026/09/15/eleanor-central-square-theater-review|jacquinn sinclair",
+   "label": "eleanor-regional-2026 | WBUR",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.wbur.org/news/2026/09/15/eleanor-central-square-theater-review"
+  },
+  {
+   "kind": "review",
+   "id": "eureka-day-regional-2026|https://www.bostonglobe.com/2026/06/04/arts/eureka-day-huntington|",
+   "label": "eureka-day-regional-2026 | Boston Globe",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.bostonglobe.com/2026/06/04/arts/eureka-day-huntington/"
+  },
+  {
+   "kind": "review",
+   "id": "eureka-day-regional-2026|https://www.broadwayworld.com/boston/article/review-eureka-day-is-a-tempest-in-a-vaccination-teapot-20260609|r scott reedy",
+   "label": "eureka-day-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/boston/article/Review-EUREKA-DAY-is-a-Tempest-in-a-Vaccination-Teapot-20260609"
+  },
+  {
+   "kind": "review",
+   "id": "eureka-day-regional-2026|https://www.metrmag.com/latest-reviews/eureka-day-by-jonathan-spector-huntington-theatre-company-boston-ma-review|",
+   "label": "eureka-day-regional-2026 | Metrmag",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.metrmag.com/latest-reviews/eureka-day-by-jonathan-spector-huntington-theatre-company-boston-ma-review"
+  },
+  {
+   "kind": "review",
+   "id": "eureka-day-regional-2026|https://artsfuse.org/329962/theater-review-eureka-day-groupthink-gone-viral|martin copenhaver",
+   "label": "eureka-day-regional-2026 | The Arts Fuse",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://artsfuse.org/329962/theater-review-eureka-day-groupthink-gone-viral/"
+  },
+  {
+   "kind": "review",
+   "id": "eureka-day-regional-2026|https://www.netheatregeek.com/2026/06/06/we-welcome-your-unique-perspective-eureka-day|kitty drexel",
+   "label": "eureka-day-regional-2026 | The New England Theatre Geek",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.netheatregeek.com/2026/06/06/we-welcome-your-unique-perspective-eureka-day/"
+  },
+  {
+   "kind": "review",
+   "id": "eureka-day-regional-2026|https://sleeplesscritic.com/2026/06/22/review-chaos-and-good-intentions-in-the-huntingtons-hysterical-satirical-comedy-eureka-day|",
+   "label": "eureka-day-regional-2026 | The Sleepless Critic",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://sleeplesscritic.com/2026/06/22/review-chaos-and-good-intentions-in-the-huntingtons-hysterical-satirical-comedy-eureka-day/"
+  },
+  {
+   "kind": "review",
+   "id": "eureka-day-regional-2026|https://www.theatermirror.net/eureka-day-tackles-serious-topics-with-biting-insight-and-riotous-wit|shelley a sackett",
+   "label": "eureka-day-regional-2026 | The Theater Mirror",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.theatermirror.net/eureka-day-tackles-serious-topics-with-biting-insight-and-riotous-wit/"
+  },
+  {
+   "kind": "review",
+   "id": "in-old-age-regional-2026|https://www.bostonglobe.com/2026/06/22/arts/in-old-age-mfoniso-udofia|",
+   "label": "in-old-age-regional-2026 | Boston Globe",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.bostonglobe.com/2026/06/22/arts/in-old-age-mfoniso-udofia/"
+  },
+  {
+   "kind": "review",
+   "id": "in-old-age-regional-2026|https://www.broadwayworld.com/boston/article/review-an-emotionally-affecting-in-old-age-at-arts-emerson-20260624|r scott reedy",
+   "label": "in-old-age-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/boston/article/Review-An-Emotionally-Affecting-IN-OLD-AGE-at-Arts-Emerson-20260624"
+  },
+  {
+   "kind": "review",
+   "id": "in-old-age-regional-2026|https://stageandcinema.com/2026/06/19/in-old-age-review-emerson-front-porch|lynne weiss",
+   "label": "in-old-age-regional-2026 | Stage and Cinema",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://stageandcinema.com/2026/06/19/in-old-age-review-emerson-front-porch/"
+  },
+  {
+   "kind": "review",
+   "id": "in-old-age-regional-2026|https://www.netheatregeek.com/2026/06/19/sweet-sour-fruit-meets-a-charming-bulldozer-in-old-age|kitty drexel",
+   "label": "in-old-age-regional-2026 | The New England Theatre Geek",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.netheatregeek.com/2026/06/19/sweet-sour-fruit-meets-a-charming-bulldozer-in-old-age/"
+  },
+  {
+   "kind": "review",
+   "id": "in-old-age-regional-2026|https://sleeplesscritic.com/2026/06/27/review-a-profound-portrait-of-discovery-and-overcoming-in-arts-emerson-and-front-porch-arts-collectives-in-old-age|",
+   "label": "in-old-age-regional-2026 | The Sleepless Critic",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://sleeplesscritic.com/2026/06/27/review-a-profound-portrait-of-discovery-and-overcoming-in-arts-emerson-and-front-porch-arts-collectives-in-old-age/"
+  },
+  {
+   "kind": "review",
+   "id": "in-old-age-regional-2026|https://www.theatermirror.net/two-couples-each-on-the-verge-of-connection-take-different-paths-in-in-old-age-and-frankie-johnny-in-the-clair-de-lune|shelley a sackett",
+   "label": "in-old-age-regional-2026 | The Theater Mirror",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.theatermirror.net/two-couples-each-on-the-verge-of-connection-take-different-paths-in-in-old-age-and-frankie-johnny-in-the-clair-de-lune/"
+  },
+  {
+   "kind": "review",
+   "id": "in-old-age-regional-2026|https://www.wbur.org/news/2026/06/23/front-porch-arts-collective-ufot-cycle-in-old-age-review|jacquinn sinclair",
+   "label": "in-old-age-regional-2026 | WBUR",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.wbur.org/news/2026/06/23/front-porch-arts-collective-ufot-cycle-in-old-age-review"
+  },
+  {
+   "kind": "review",
+   "id": "joseph-and-the-amazing-technicolor-dreamcoat-north-regional-2026|https://sleeplesscritic.com/2026/07/17/review-not-only-the-coat-dazzles-in-north-shore-music-theatres-inspiring-joseph-and-the-amazing-technicolor-dreamcoat|",
+   "label": "joseph-and-the-amazing-technicolor-dreamcoat-north-regional-2026 | The Sleepless Critic",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://sleeplesscritic.com/2026/07/17/review-not-only-the-coat-dazzles-in-north-shore-music-theatres-inspiring-joseph-and-the-amazing-technicolor-dreamcoat/"
+  },
+  {
+   "kind": "review",
+   "id": "joseph-and-the-amazing-technicolor-dreamcoat-north-regional-2026|https://www.theatermirror.net|shelley a sackett",
+   "label": "joseph-and-the-amazing-technicolor-dreamcoat-north-regional-2026 | The Theater Mirror",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.theatermirror.net/?p=11420"
+  },
+  {
+   "kind": "review",
+   "id": "m-refractions-from-an-evil-act-regional-2026|https://www.broadwayworld.com/boston/article/review-murkiness-mars-exiled-theatres-m-refractions-from-an-evil-act-20260803|r scott reedy",
+   "label": "m-refractions-from-an-evil-act-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/boston/article/Review-Murkiness-Mars-Exiled-Theatres-M-REFRACTIONS-FROM-AN-EVIL-ACT-20260803"
+  },
+  {
+   "kind": "review",
+   "id": "m-refractions-from-an-evil-act-regional-2026|https://www.netheatregeek.com/2026/08/05/we-are-all-just-prisoners-here-of-our-own-device-m-refractions-from-an-evil-act|kitty drexel",
+   "label": "m-refractions-from-an-evil-act-regional-2026 | The New England Theatre Geek",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.netheatregeek.com/2026/08/05/we-are-all-just-prisoners-here-of-our-own-device-m-refractions-from-an-evil-act/"
+  },
+  {
+   "kind": "review",
+   "id": "m-refractions-from-an-evil-act-regional-2026|https://www.theatermirror.net|mike hoban",
+   "label": "m-refractions-from-an-evil-act-regional-2026 | The Theater Mirror",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.theatermirror.net/?p=11511"
+  },
+  {
+   "kind": "review",
+   "id": "merrily-we-roll-along-sullivan-regional-2026|https://www.broadwayworld.com/boston/article/review-sullivan-reps-merrily-we-roll-along-shows-sondheim-is-worth-a-second-look-20260621|r scott reedy",
+   "label": "merrily-we-roll-along-sullivan-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/boston/article/Review-Sullivan-Reps-MERRILY-WE-ROLL-ALONG-Shows-Sondheim-is-Worth-a-Second-Look-20260621"
+  },
+  {
+   "kind": "review",
+   "id": "merrily-we-roll-along-sullivan-regional-2026|https://sleeplesscritic.com/2026/06/25/review-risking-it-all-in-sullivan-reps-wry-and-reflective-merrily-we-roll-along|",
+   "label": "merrily-we-roll-along-sullivan-regional-2026 | The Sleepless Critic",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://sleeplesscritic.com/2026/06/25/review-risking-it-all-in-sullivan-reps-wry-and-reflective-merrily-we-roll-along/"
+  },
+  {
+   "kind": "review",
+   "id": "on-your-feet-regional-2026|https://www.bostonglobe.com/2026/06/08/arts/gloria-estefan-on-your-feet-north-shore-music-theater|",
+   "label": "on-your-feet-regional-2026 | Boston Globe",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.bostonglobe.com/2026/06/08/arts/gloria-estefan-on-your-feet-north-shore-music-theater/"
+  },
+  {
+   "kind": "review",
+   "id": "on-your-feet-regional-2026|https://www.broadwayworld.com/boston/article/review-emilio-and-gloria-estefan-musical-will-have-you-on-your-feet-in-beverly-20260610|r scott reedy",
+   "label": "on-your-feet-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/boston/article/Review-Emilio-and-Gloria-Estefan-Musical-Will-Have-You-ON-YOUR-FEET-in-Beverly-20260610"
+  },
+  {
+   "kind": "review",
+   "id": "on-your-feet-regional-2026|https://www.metrmag.com/latest-reviews/on-your-feet-by-alexander-dinelaris-gloria-estefan-and-emilio-estefan-north-shore-music-theatre-beverly-ma-review|",
+   "label": "on-your-feet-regional-2026 | Metrmag",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.metrmag.com/latest-reviews/on-your-feet-by-alexander-dinelaris-gloria-estefan-and-emilio-estefan-north-shore-music-theatre-beverly-ma-review"
+  },
+  {
+   "kind": "review",
+   "id": "on-your-feet-regional-2026|https://stageandcinema.com/2026/06/06/on-your-feet-review-north-shore-music-theatre|lynne weiss",
+   "label": "on-your-feet-regional-2026 | Stage and Cinema",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://stageandcinema.com/2026/06/06/on-your-feet-review-north-shore-music-theatre/"
+  },
+  {
+   "kind": "review",
+   "id": "on-your-feet-regional-2026|https://sleeplesscritic.com/2026/06/10/review-irresistible-rhythms-get-north-shore-music-theatres-on-your-feet|",
+   "label": "on-your-feet-regional-2026 | The Sleepless Critic",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://sleeplesscritic.com/2026/06/10/review-irresistible-rhythms-get-north-shore-music-theatres-on-your-feet/"
+  },
+  {
+   "kind": "review",
+   "id": "on-your-feet-regional-2026|https://www.theatermirror.net/nsmts-on-your-feet-is-a-nostalgic-if-cliched-look-back-at-gloria-and-emilio-estefans-remarkable-marriage-and-career|shelley a sackett",
+   "label": "on-your-feet-regional-2026 | The Theater Mirror",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.theatermirror.net/nsmts-on-your-feet-is-a-nostalgic-if-cliched-look-back-at-gloria-and-emilio-estefans-remarkable-marriage-and-career/"
+  },
+  {
+   "kind": "review",
+   "id": "paranormal-activity-boston-regional-2026|https://www.boston.com/culture/entertainment/2026/07/19/theater-review-paranormal-activity-proves-horror-can-work-beyond-the-screen|samantha genzer",
+   "label": "paranormal-activity-boston-regional-2026 | Boston.com",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.boston.com/culture/entertainment/2026/07/19/theater-review-paranormal-activity-proves-horror-can-work-beyond-the-screen/"
+  },
+  {
+   "kind": "review",
+   "id": "paranormal-activity-boston-regional-2026|https://www.broadwayworld.com/boston/article/review-a-thrilling-paranormal-activity-20260716|r scott reedy",
+   "label": "paranormal-activity-boston-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/boston/article/Review-A-Thrilling-PARANORMAL-ACTIVITY-20260716"
+  },
+  {
+   "kind": "review",
+   "id": "paranormal-activity-boston-regional-2026|https://www.metrmag.com/latest-reviews/paranormal-activity-by-levin-holloway-emerson-colonial-theatre-boston-ma-review|",
+   "label": "paranormal-activity-boston-regional-2026 | Metrmag",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.metrmag.com/latest-reviews/paranormal-activity-by-levin-holloway-emerson-colonial-theatre-boston-ma-review"
+  },
+  {
+   "kind": "review",
+   "id": "paranormal-activity-boston-regional-2026|https://nystagereview.com/2026/07/24/from-boston-paranormal-activity-stageworthy-and-scareworthy|bob verini",
+   "label": "paranormal-activity-boston-regional-2026 | New York Stage Review",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://nystagereview.com/2026/07/24/from-boston-paranormal-activity-stageworthy-and-scareworthy/"
+  },
+  {
+   "kind": "review",
+   "id": "paranormal-activity-boston-regional-2026|https://www.netheatregeek.com/2026/07/17/alarm-goes-on-alarm-goes-off-paranormal-activity-play|kitty drexel",
+   "label": "paranormal-activity-boston-regional-2026 | The New England Theatre Geek",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.netheatregeek.com/2026/07/17/alarm-goes-on-alarm-goes-off-paranormal-activity-play/"
+  },
+  {
+   "kind": "review",
+   "id": "paranormal-activity-boston-regional-2026|https://sleeplesscritic.com/2026/07/23/review-things-more-than-go-bump-in-the-night-in-gripping-paranormal-activity|",
+   "label": "paranormal-activity-boston-regional-2026 | The Sleepless Critic",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://sleeplesscritic.com/2026/07/23/review-things-more-than-go-bump-in-the-night-in-gripping-paranormal-activity/"
+  },
+  {
+   "kind": "review",
+   "id": "paranormal-activity-boston-regional-2026|https://www.theatermirror.net/paranormal-activity-a-thrilling-and-terrifying-ride|michele markarian",
+   "label": "paranormal-activity-boston-regional-2026 | The Theater Mirror",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.theatermirror.net/paranormal-activity-a-thrilling-and-terrifying-ride/"
+  },
+  {
+   "kind": "review",
+   "id": "purpose-regional-2026|https://baystatebanner.com/2026/10/01/purpose-presents-powerful-complicated-family-dynamics|susan saccoccia",
+   "label": "purpose-regional-2026 | Bay State Banner",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://baystatebanner.com/2026/10/01/purpose-presents-powerful-complicated-family-dynamics/"
+  },
+  {
+   "kind": "review",
+   "id": "purpose-regional-2026|https://www.bostonglobe.com/2026/09/17/arts/purpose-huntington|",
+   "label": "purpose-regional-2026 | Boston Globe",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.bostonglobe.com/2026/09/17/arts/purpose-huntington/"
+  },
+  {
+   "kind": "review",
+   "id": "purpose-regional-2026||",
+   "label": "purpose-regional-2026 | Broadway News",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": null
+  },
+  {
+   "kind": "review",
+   "id": "purpose-regional-2026||",
+   "label": "purpose-regional-2026 | Broadway News",
+   "model": "local",
+   "code": "no-url",
+   "detail": ""
+  },
+  {
+   "kind": "review",
+   "id": "purpose-regional-2026|https://www.broadwayworld.com/boston/article/review-a-play-with-purpose-20261004|r scott reedy",
+   "label": "purpose-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/boston/article/Review-A-Play-With-PURPOSE-20261004"
+  },
+  {
+   "kind": "review",
+   "id": "purpose-regional-2026|https://www.metrmag.com/latest-reviews/purpose-by-branden-jacobs-jenkins-huntington-theatre-company-boston-ma-review|kevin t baldwin",
+   "label": "purpose-regional-2026 | Metrmag",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.metrmag.com/latest-reviews/purpose-by-branden-jacobs-jenkins-huntington-theatre-company-boston-ma-review"
+  },
+  {
+   "kind": "review",
+   "id": "purpose-regional-2026||",
+   "label": "purpose-regional-2026 | New York Theatre Guide",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": null
+  },
+  {
+   "kind": "review",
+   "id": "purpose-regional-2026||",
+   "label": "purpose-regional-2026 | New York Theatre Guide",
+   "model": "local",
+   "code": "no-url",
+   "detail": ""
+  },
+  {
+   "kind": "review",
+   "id": "purpose-regional-2026|https://stageandcinema.com/2026/09/29/purpose-huntington-theatre|lynne weiss",
+   "label": "purpose-regional-2026 | Stage and Cinema",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://stageandcinema.com/2026/09/29/purpose-huntington-theatre/"
+  },
+  {
+   "kind": "review",
+   "id": "purpose-regional-2026|https://artsfuse.org/334471/theater-review-legacy-turns-toxic-in-branden-jacobs-jenkinss-purpose|bill marx",
+   "label": "purpose-regional-2026 | The Arts Fuse",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://artsfuse.org/334471/theater-review-legacy-turns-toxic-in-branden-jacobs-jenkinss-purpose/"
+  },
+  {
+   "kind": "review",
+   "id": "purpose-regional-2026|https://www.thecrimson.com/article/2026/10/13/purpose-theater-review-huntington-theatre|",
+   "label": "purpose-regional-2026 | The Harvard Crimson",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.thecrimson.com/article/2026/10/13/purpose-theater-review-huntington-theatre/"
+  },
+  {
+   "kind": "review",
+   "id": "purpose-regional-2026|https://thepoplarreview.substack.com/p/purpose-at-the-huntington-theatres|",
+   "label": "purpose-regional-2026 | The Poplar Review",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://thepoplarreview.substack.com/p/purpose-at-the-huntington-theatres"
+  },
+  {
+   "kind": "review",
+   "id": "purpose-regional-2026|https://sleeplesscritic.com/2026/10/09/review-secrets-and-transformation-in-the-huntingtons-funny-and-meditative-purpose|",
+   "label": "purpose-regional-2026 | The Sleepless Critic",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://sleeplesscritic.com/2026/10/09/review-secrets-and-transformation-in-the-huntingtons-funny-and-meditative-purpose/"
+  },
+  {
+   "kind": "review",
+   "id": "purpose-regional-2026|https://www.theatermirror.net/huntingtons-purpose-lacks-a-sense-of-purpose|mike hoban",
+   "label": "purpose-regional-2026 | The Theater Mirror",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.theatermirror.net/huntingtons-purpose-lacks-a-sense-of-purpose/"
+  },
+  {
+   "kind": "review",
+   "id": "purpose-regional-2026||",
+   "label": "purpose-regional-2026 | TheaterMania",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": null
+  },
+  {
+   "kind": "review",
+   "id": "purpose-regional-2026||",
+   "label": "purpose-regional-2026 | TheaterMania",
+   "model": "local",
+   "code": "no-url",
+   "detail": ""
+  },
+  {
+   "kind": "review",
+   "id": "purpose-regional-2026||",
+   "label": "purpose-regional-2026 | TheWrap",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": null
+  },
+  {
+   "kind": "review",
+   "id": "purpose-regional-2026||",
+   "label": "purpose-regional-2026 | TheWrap",
+   "model": "local",
+   "code": "no-url",
+   "detail": ""
+  },
+  {
+   "kind": "review",
+   "id": "purpose-regional-2026||",
+   "label": "purpose-regional-2026 | Time Out New York",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": null
+  },
+  {
+   "kind": "review",
+   "id": "purpose-regional-2026||",
+   "label": "purpose-regional-2026 | Time Out New York",
+   "model": "local",
+   "code": "no-url",
+   "detail": ""
+  },
+  {
+   "kind": "review",
+   "id": "purpose-regional-2026|https://www.wbur.org/news/2026/09/18/the-huntington-purpose-theater-review|jacquinn sinclair",
+   "label": "purpose-regional-2026 | WBUR",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.wbur.org/news/2026/09/18/the-huntington-purpose-theater-review"
+  },
+  {
+   "kind": "review",
+   "id": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026|https://1minutecritic.com/john-turturro-paul-giamatti-rhinoceros-review-art|jerry portwood",
+   "label": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026 | 1 Minute Critic",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://1minutecritic.com/john-turturro-paul-giamatti-rhinoceros-review-art/"
+  },
+  {
+   "kind": "review",
+   "id": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026|https://www.bostonglobe.com/2026/08/22/arts/turturro-giamatti-maslany-rhinoceros-review|ty burr",
+   "label": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026 | Boston Globe",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.bostonglobe.com/2026/08/22/arts/turturro-giamatti-maslany-rhinoceros-review/"
+  },
+  {
+   "kind": "review",
+   "id": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026|https://www.boston.com/community/entertainment/2026/08/22/theater-review-rhinoceros-explores-conformity-through-an-absurd-rhino-epidemic|samantha genzer",
+   "label": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026 | Boston.com",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.boston.com/community/entertainment/2026/08/22/theater-review-rhinoceros-explores-conformity-through-an-absurd-rhino-epidemic/"
+  },
+  {
+   "kind": "review",
+   "id": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026|https://www.broadwayworld.com/boston/article/review-a-breath-taking-rhinoceros-at-american-repertory-theater-20260824|r scott reedy",
+   "label": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/boston/article/Review-A-Breath-taking-RHINOCEROS-at-American-Repertory-Theater-20260824"
+  },
+  {
+   "kind": "review",
+   "id": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026|https://www.metrmag.com/latest-reviews/rhinoceros-by-eug%c3%a8ne-ionesco-american-repertory-theater-cambridge-ma-review|kevin t baldwin",
+   "label": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026 | Metrmag",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.metrmag.com/latest-reviews/rhinoceros-by-eug%C3%A8ne-ionesco-american-repertory-theater-cambridge-ma-review"
+  },
+  {
+   "kind": "review",
+   "id": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026|https://nystagereview.com/2026/08/23/from-cambridge-rhinoceros-or-welcome-to-zoodystopia|bob verini",
+   "label": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026 | New York Stage Review",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://nystagereview.com/2026/08/23/from-cambridge-rhinoceros-or-welcome-to-zoodystopia/"
+  },
+  {
+   "kind": "review",
+   "id": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026|https://stageandcinema.com/2026/08/22/rhinoceros-american-repertory-theater|emily brenner",
+   "label": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026 | Stage and Cinema",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://stageandcinema.com/2026/08/22/rhinoceros-american-repertory-theater/"
+  },
+  {
+   "kind": "review",
+   "id": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026|https://artsfuse.org/333276/theater-review-john-turturro-resists-the-herd-in-a-r-t-s-rhinoceros|bill marx",
+   "label": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026 | The Arts Fuse",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://artsfuse.org/333276/theater-review-john-turturro-resists-the-herd-in-a-r-t-s-rhinoceros/"
+  },
+  {
+   "kind": "review",
+   "id": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026|https://www.netheatregeek.com/2026/08/23/an-infallible-system-of-interpretation-rhinoceros|kitty drexel",
+   "label": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026 | The New England Theatre Geek",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.netheatregeek.com/2026/08/23/an-infallible-system-of-interpretation-rhinoceros/"
+  },
+  {
+   "kind": "review",
+   "id": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026|https://thepoplarreview.substack.com/p/an-absurd-harrowing-triumph-rhinoceros|",
+   "label": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026 | The Poplar Review",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://thepoplarreview.substack.com/p/an-absurd-harrowing-triumph-rhinoceros"
+  },
+  {
+   "kind": "review",
+   "id": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026|https://www.theatermirror.net/a-rousing-rhinoceros-opens-a-r-t-s-46th-season|julie anne whitney",
+   "label": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026 | The Theater Mirror",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.theatermirror.net/a-rousing-rhinoceros-opens-a-r-t-s-46th-season/"
+  },
+  {
+   "kind": "review",
+   "id": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026|https://www.theatermirror.net/a-r-t-s-rhinoceros-is-a-must-see-knockout|shelley a sackett",
+   "label": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026 | The Theater Mirror",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.theatermirror.net/a-r-t-s-rhinoceros-is-a-must-see-knockout/"
+  },
+  {
+   "kind": "review",
+   "id": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026|https://www.wsj.com/articles/rhinoceros-review-john-turturro-paul-giamatti-and-man-vs-beast-6d9f3114|charles isherwood",
+   "label": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026 | The Wall Street Journal",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.wsj.com/articles/rhinoceros-review-john-turturro-paul-giamatti-and-man-vs-beast-6d9f3114"
+  },
+  {
+   "kind": "review",
+   "id": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026|https://www.wbur.org/news/2026/08/25/american-repertory-theater-rhinoceros-review|jacquinn sinclair",
+   "label": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026 | WBUR",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.wbur.org/news/2026/08/25/american-repertory-theater-rhinoceros-review"
+  },
+  {
+   "kind": "review",
+   "id": "rock-of-ages-north-regional-2026|https://www.broadwayworld.com/boston/article/review-a-formulaic-rock-of-ages-at-bill-hanneys-north-shore-music-theatre-20260818|r scott reedy",
+   "label": "rock-of-ages-north-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/boston/article/Review-A-Formulaic-ROCK-OF-AGES-at-Bill-Hanneys-North-Shore-Music-Theatre-20260818"
+  },
+  {
+   "kind": "review",
+   "id": "rock-of-ages-north-regional-2026|https://www.metrmag.com/latest-reviews/rock-of-ages-by-chris-d-arienz-north-shore-music-theatre-beverly-ma-review|",
+   "label": "rock-of-ages-north-regional-2026 | Metrmag",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.metrmag.com/latest-reviews/rock-of-ages-by-chris-d-arienz-north-shore-music-theatre-beverly-ma-review"
+  },
+  {
+   "kind": "review",
+   "id": "rock-of-ages-north-regional-2026|https://www.netheatregeek.com/2026/08/19/an-ode-to-80s-youthful-excess-and-idiocy-rock-of-ages|",
+   "label": "rock-of-ages-north-regional-2026 | The New England Theatre Geek",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.netheatregeek.com/2026/08/19/an-ode-to-80s-youthful-excess-and-idiocy-rock-of-ages/"
+  },
+  {
+   "kind": "review",
+   "id": "rock-of-ages-north-regional-2026|https://sleeplesscritic.com/2026/08/21/review-north-shore-music-theatres-rock-of-ages-packs-big-dreams-and-spectacle-into-wry-rock-nostalgia|",
+   "label": "rock-of-ages-north-regional-2026 | The Sleepless Critic",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://sleeplesscritic.com/2026/08/21/review-north-shore-music-theatres-rock-of-ages-packs-big-dreams-and-spectacle-into-wry-rock-nostalgia/"
+  },
+  {
+   "kind": "review",
+   "id": "shear-madness-regional-2026|https://www.metrmag.com/latest-reviews/shear-madness-by-paul-p%c3%b6rtner-greater-boston-stage-company-stoneham-ma-review|",
+   "label": "shear-madness-regional-2026 | Metrmag",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.metrmag.com/latest-reviews/shear-madness-by-paul-p%C3%B6rtner-greater-boston-stage-company-stoneham-ma-review"
+  },
+  {
+   "kind": "review",
+   "id": "shear-madness-regional-2026|https://www.netheatregeek.com/2026/09/29/a-supercut-of-a-whodunnit-shear-madness|",
+   "label": "shear-madness-regional-2026 | The New England Theatre Geek",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.netheatregeek.com/2026/09/29/a-supercut-of-a-whodunnit-shear-madness/"
+  },
+  {
+   "kind": "review",
+   "id": "shear-madness-regional-2026|https://www.theatermirror.net/gbscs-shear-madness-is-sheer-fun|mike hoban",
+   "label": "shear-madness-regional-2026 | The Theater Mirror",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.theatermirror.net/gbscs-shear-madness-is-sheer-fun/"
+  },
+  {
+   "kind": "review",
+   "id": "something-rotten-regional-2026|https://www.bostonglobe.com/2026/05/04/arts/something-rotten-lyric-stage|",
+   "label": "something-rotten-regional-2026 | Boston Globe",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.bostonglobe.com/2026/05/04/arts/something-rotten-lyric-stage/"
+  },
+  {
+   "kind": "review",
+   "id": "something-rotten-regional-2026|https://www.broadwayworld.com/boston/article/review-something-rotten-is-anything-but-at-lyric-stage-boston-20260514|r scott reedy",
+   "label": "something-rotten-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/boston/article/Review-SOMETHING-ROTTEN-is-Anything-But-at-Lyric-Stage-Boston-20260514"
+  },
+  {
+   "kind": "review",
+   "id": "something-rotten-regional-2026|https://www.metrmag.com/latest-reviews/something-rotten-by-o-farrell-wayne-kirkpatrick-karey-kirkpatrick-lyric-stage-company-boston-ma-review|",
+   "label": "something-rotten-regional-2026 | Metrmag",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.metrmag.com/latest-reviews/something-rotten-by-o-farrell-wayne-kirkpatrick-karey-kirkpatrick-lyric-stage-company-boston-ma-review"
+  },
+  {
+   "kind": "review",
+   "id": "something-rotten-regional-2026|https://stageandcinema.com|emily brenner",
+   "label": "something-rotten-regional-2026 | Stage and Cinema",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://stageandcinema.com/?p=114946"
+  },
+  {
+   "kind": "review",
+   "id": "something-rotten-regional-2026|https://www.netheatregeek.com/2026/05/07/something-rotten-at-lyric-stage-passes-the-smell-test|helen ganley",
+   "label": "something-rotten-regional-2026 | The New England Theatre Geek",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.netheatregeek.com/2026/05/07/something-rotten-at-lyric-stage-passes-the-smell-test/"
+  },
+  {
+   "kind": "review",
+   "id": "something-rotten-regional-2026|https://www.theatermirror.net/lyrics-something-rotten-is-a-musical-comedy-triumph|mike hoban",
+   "label": "something-rotten-regional-2026 | The Theater Mirror",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.theatermirror.net/lyrics-something-rotten-is-a-musical-comedy-triumph/"
+  },
+  {
+   "kind": "review",
+   "id": "something-rotten-regional-2026|https://www.wbur.org/news/2026/05/05/lyric-stage-something-rotten-theater-review|jacquinn sinclair",
+   "label": "something-rotten-regional-2026 | WBUR",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.wbur.org/news/2026/05/05/lyric-stage-something-rotten-theater-review"
+  },
+  {
+   "kind": "review",
+   "id": "the-getaway-driver-central-regional-2026|https://www.bostonglobe.com/2026/11/03/arts/the-getaway-driver-central-square-theater|",
+   "label": "the-getaway-driver-central-regional-2026 | Boston Globe",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.bostonglobe.com/2026/11/03/arts/the-getaway-driver-central-square-theater/"
+  },
+  {
+   "kind": "review",
+   "id": "the-getaway-driver-central-regional-2026|https://www.metrmag.com/latest-reviews/the-getaway-driver-by-deborah-salem-smith-and-charlie-thurston-central-square-theater-cambridge-ma-review|kevin t baldwin",
+   "label": "the-getaway-driver-central-regional-2026 | Metrmag",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.metrmag.com/latest-reviews/the-getaway-driver-by-deborah-salem-smith-and-charlie-thurston-central-square-theater-cambridge-ma-review"
+  },
+  {
+   "kind": "review",
+   "id": "the-getaway-driver-central-regional-2026|https://artsfuse.org/337045/theater-review-the-getaway-driver-confronts-the-human-cost-of-political-violence|susan saccoccia",
+   "label": "the-getaway-driver-central-regional-2026 | The Arts Fuse",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://artsfuse.org/337045/theater-review-the-getaway-driver-confronts-the-human-cost-of-political-violence/"
+  },
+  {
+   "kind": "review",
+   "id": "the-mystery-of-irma-vep-regional-2026|https://www.bostonglobe.com/2026/06/01/arts/central-square-theater-mystery-of-irma-vep|",
+   "label": "the-mystery-of-irma-vep-regional-2026 | Boston Globe",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.bostonglobe.com/2026/06/01/arts/central-square-theater-mystery-of-irma-vep/"
+  },
+  {
+   "kind": "review",
+   "id": "the-mystery-of-irma-vep-regional-2026|https://www.broadwayworld.com/boston/article/review-laughs-abound-in-the-mystery-of-irma-vep-a-penny-dreadful-20260626|r scott reedy",
+   "label": "the-mystery-of-irma-vep-regional-2026 | BroadwayWorld",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.broadwayworld.com/boston/article/Review-Laughs-Abound-in-THE-MYSTERY-OF-IRMA-VEP-A-PENNY-DREADFUL-20260626"
+  },
+  {
+   "kind": "review",
+   "id": "the-mystery-of-irma-vep-regional-2026|https://www.cambridgeday.com/2026/06/04/undead-funny-irma-vep|lynne weiss",
+   "label": "the-mystery-of-irma-vep-regional-2026 | Cambridge Day",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.cambridgeday.com/2026/06/04/undead-funny-irma-vep/"
+  },
+  {
+   "kind": "review",
+   "id": "the-mystery-of-irma-vep-regional-2026|https://artsfuse.org/329668/theater-review-quick-changes-big-laughs-in-the-mystery-of-irma-vep|david greenham",
+   "label": "the-mystery-of-irma-vep-regional-2026 | The Arts Fuse",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://artsfuse.org/329668/theater-review-quick-changes-big-laughs-in-the-mystery-of-irma-vep/"
+  },
+  {
+   "kind": "review",
+   "id": "the-mystery-of-irma-vep-regional-2026|https://www.netheatregeek.com/2026/06/03/laughing-at-the-horror-of-it-all-the-mystery-of-irma-vep|",
+   "label": "the-mystery-of-irma-vep-regional-2026 | The New England Theatre Geek",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.netheatregeek.com/2026/06/03/laughing-at-the-horror-of-it-all-the-mystery-of-irma-vep/"
+  },
+  {
+   "kind": "review",
+   "id": "the-mystery-of-irma-vep-regional-2026|https://sleeplesscritic.com/2026/06/15/review-comedic-suspense-and-more-drives-central-square-theaters-the-mystery-of-irma-vep-a-penny-dreadful|",
+   "label": "the-mystery-of-irma-vep-regional-2026 | The Sleepless Critic",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://sleeplesscritic.com/2026/06/15/review-comedic-suspense-and-more-drives-central-square-theaters-the-mystery-of-irma-vep-a-penny-dreadful/"
+  },
+  {
+   "kind": "review",
+   "id": "the-mystery-of-irma-vep-regional-2026|https://www.theatermirror.net/central-square-theaters-the-mystery-of-irma-vep-is-a-fabulously-queer-gothic-romp|julie anne whitney",
+   "label": "the-mystery-of-irma-vep-regional-2026 | The Theater Mirror",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.theatermirror.net/central-square-theaters-the-mystery-of-irma-vep-is-a-fabulously-queer-gothic-romp/"
+  },
+  {
+   "kind": "review",
+   "id": "the-mystery-of-irma-vep-regional-2026|https://www.theatermirror.net|michele markarian",
+   "label": "the-mystery-of-irma-vep-regional-2026 | The Theater Mirror",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.theatermirror.net/?p=11277"
+  },
+  {
+   "kind": "review",
+   "id": "the-mystery-of-irma-vep-regional-2026|https://www.wbur.org/news/2026/06/02/central-square-theater-mystery-of-irma-vep-review|jacquinn sinclair",
+   "label": "the-mystery-of-irma-vep-regional-2026 | WBUR",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.wbur.org/news/2026/06/02/central-square-theater-mystery-of-irma-vep-review"
+  },
+  {
+   "kind": "review",
+   "id": "paranormal-activity-boston-regional-2026|https://www.bostonglobe.com/2026/07/16/arts/paranormal-activity-boston-review|don aucoin",
+   "label": "paranormal-activity-boston-regional-2026 | Boston Globe",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.bostonglobe.com/2026/07/16/arts/paranormal-activity-boston-review/"
+  },
+  {
+   "kind": "coverage",
+   "id": "paranormal-activity-boston-regional-2026",
+   "label": "Paranormal Activity",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "WBUR / Jacquinn Sinclair 2026-07-17 https://www.wbur.org/news/2026/07/17/levi-holloway-paranormal-activity-boston-play-broadway"
+  },
+  {
+   "kind": "coverage",
+   "id": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+   "label": "Rhinoceros",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "The Theater Mirror / Julie-Anne Whitney (Editor) 2026-08-22 https://www.thetheatermirror.com/2026/08/22/a-rousing-rhinoceros-opens-a-r-t-s-47th-season/"
+  },
+  {
+   "kind": "coverage",
+   "id": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+   "label": "Rhinoceros",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "The Theater Mirror / Shelley A. Sackett 2026-08-24 https://www.thetheatermirror.com/2026/08/24/a-r-t-s-rhinoceros-is-a-must-see-knockout/"
+  },
+  {
+   "kind": "coverage",
+   "id": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+   "label": "Rhinoceros",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "The New England Theatre Geek / Kitty Drexel 2026-08-23 https://www.newenglandtheatreek.com/2026/08/23/an-infallible-system-of-interpretation-rhinoceros/"
+  },
+  {
+   "kind": "coverage",
+   "id": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+   "label": "Rhinoceros",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "The Bay State Banner / Celina Colby 2026-08-13 https://www.baystatebanner.com/2026/08/13/rhinoceros-an-absurdist-commentary-on-fascism-barrels-onto-the-stage-at-a-r-t/"
+  },
+  {
+   "kind": "coverage",
+   "id": "purpose-regional-2026",
+   "label": "Purpose",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "METRMAG / Kevin T. Baldwin 2026-09-16 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGOYjJZiFgYKhdk34PoKvM5-9_OYHaNJCO5vv7rateT02MGHc7eOvvaRBx6cquKYFWW7XaLxIG_1QwG-wJ2D5X8qJFdwmseUMCval9Z8bIblYjKelXDf241NKbpWa2vgcV3_xCWAm08crLzyNzVr6oWhUcdFp3MgaZUzWYZq9FHCU5fcilmcdy_n1VAN3O9rmobD29fKobB7BybL_fRYiyBI7QBEWeN5tZ6Y3p7H_pX"
+  },
+  {
+   "kind": "coverage",
+   "id": "purpose-regional-2026",
+   "label": "Purpose",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Stage and Cinema / null 2026-09-29 https://broadwaystars.com/1524799"
+  }
+ ]
+}

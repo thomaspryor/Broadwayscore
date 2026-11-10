@@ -1,0 +1,104 @@
+{
+ "city": "san-diego-ca",
+ "week": "2026-W46",
+ "today": "2026-11-10",
+ "findings": 5,
+ "byClass": {
+  "1": 0,
+  "2": 0,
+  "3": 1,
+  "4": 0,
+  "6": 4
+ },
+ "newFindings": 5,
+ "newByClass": {
+  "1": 0,
+  "2": 0,
+  "3": 1,
+  "4": 0,
+  "6": 4
+ },
+ "provenance": 0,
+ "plan": null,
+ "card": "existing",
+ "findingKeys": [
+  "show:a-room-in-the-castle-regional-2026:opening-date",
+  "show:begin-again-regional-2026:opening-date",
+  "show:purpose-lajolla-regional-2026:opening-date",
+  "show:seussical-regional-2026:venue",
+  "show:the-family-album-regional-2026:opening-date"
+ ],
+ "fresh": [
+  {
+   "key": "show:the-family-album-regional-2026:opening-date",
+   "cls": 6,
+   "kind": "show",
+   "id": "the-family-album-regional-2026",
+   "label": "The Family Album",
+   "code": "opening-date",
+   "detail": "ours 2026-07-24 / page 2026-07-17",
+   "models": [
+    "gemini",
+    "openai"
+   ],
+   "fix": null
+  },
+  {
+   "key": "show:begin-again-regional-2026:opening-date",
+   "cls": 6,
+   "kind": "show",
+   "id": "begin-again-regional-2026",
+   "label": "Begin Again",
+   "code": "opening-date",
+   "detail": "ours 2026-09-17 / page 2026-09-06",
+   "models": [
+    "gemini",
+    "openai"
+   ],
+   "fix": null
+  },
+  {
+   "key": "show:a-room-in-the-castle-regional-2026:opening-date",
+   "cls": 6,
+   "kind": "show",
+   "id": "a-room-in-the-castle-regional-2026",
+   "label": "A Room in the Castle",
+   "code": "opening-date",
+   "detail": "ours 2026-05-16 / page 2026-05-10",
+   "models": [
+    "gemini",
+    "openai"
+   ],
+   "fix": null
+  },
+  {
+   "key": "show:purpose-lajolla-regional-2026:opening-date",
+   "cls": 6,
+   "kind": "show",
+   "id": "purpose-lajolla-regional-2026",
+   "label": "Purpose",
+   "code": "opening-date",
+   "detail": "ours 2026-05-18 / page 2026-05-12",
+   "models": [
+    "gemini",
+    "openai"
+   ],
+   "fix": null
+  },
+  {
+   "key": "show:seussical-regional-2026:venue",
+   "cls": 3,
+   "kind": "show",
+   "id": "seussical-regional-2026",
+   "label": "Seussical",
+   "code": "venue",
+   "detail": "ours \"San Diego Musical Theatre, San Diego, CA\" / page \"SDMT Stage\"",
+   "models": [
+    "gemini",
+    "openai"
+   ],
+   "fix": null
+  }
+ ],
+ "provenanceRows": []
+}
