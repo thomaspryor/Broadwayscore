@@ -1,27 +1,25 @@
 {
   "processed": [
-    "lobby-hero-2018/newsday--barbara-schuler.json",
-    "lobby-hero-2018/epoch-times--judd-hollander.json",
-    "lobby-hero-2018/timeout--adam-feldman.json",
-    "lobby-hero-2018/critics-at-large--steve-vineberg.json",
-    "lobby-hero-2018/thestage--mark-shenton.json"
+    "fish-in-the-dark-2015/nydailynews--joe-dziemianowicz.json",
+    "fish-in-the-dark-2015/ny1--roma-torre.json",
+    "fish-in-the-dark-2015/hollywood-reporter--david-rooney.json",
+    "fish-in-the-dark-2015/forward--jesse-oxfeld.json",
+    "fish-in-the-dark-2015/financialtimes--brendan-lemon.json"
   ],
   "failed": [
-    "lobby-hero-2018/theatermania--jesse-green.json",
-    "lobby-hero-2018/journal-inquirer--tim-leininger.json"
+    "fish-in-the-dark-2015/newsday--unknown.json",
+    "fish-in-the-dark-2015/wsj--terry-teachout.json",
+    "fish-in-the-dark-2015/epoch-times--diana-barth.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "lobby-hero-2018/timeout--adam-feldman.json",
-      "lobby-hero-2018/critics-at-large--steve-vineberg.json"
+      "fish-in-the-dark-2015/financialtimes--brendan-lemon.json"
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/mother-play-2024/wsj--charles-isherwood.json",
-      "mother-play-2024/wsj--charles-isherwood.json",
-      "data/review-texts/mother-play-2024/hollywood-reporter--unknown.json",
-      "mother-play-2024/hollywood-reporter--unknown.json"
+      "data/review-texts/fish-in-the-dark-2015/hollywood-reporter--david-rooney.json",
+      "fish-in-the-dark-2015/hollywood-reporter--david-rooney.json"
     ],
     "directCookies": [],
     "scrapingdog": [],
@@ -29,12 +27,41 @@
     "brightdata": [],
     "archiveToday": [],
     "archive": [
-      "lobby-hero-2018/newsday--barbara-schuler.json",
-      "lobby-hero-2018/epoch-times--judd-hollander.json",
-      "lobby-hero-2018/thestage--mark-shenton.json"
+      "fish-in-the-dark-2015/nydailynews--joe-dziemianowicz.json",
+      "fish-in-the-dark-2015/ny1--roma-torre.json",
+      "fish-in-the-dark-2015/forward--jesse-oxfeld.json"
     ]
   },
-  "startTime": "2026-11-10T19:39:51.299Z",
-  "lastProcessed": "lobby-hero-2018/thestage--mark-shenton.json",
-  "log": []
+  "startTime": "2026-11-10T19:39:24.622Z",
+  "lastProcessed": "fish-in-the-dark-2015/financialtimes--brendan-lemon.json",
+  "log": [
+    {
+      "t": "2026-11-10T19:39:43.401Z",
+      "event": "bb-session",
+      "session": "cbd44ce7",
+      "url": "http://www.hollywoodreporter.com/review/larry-davids-fish-dark-theater-779483"
+    },
+    {
+      "t": "2026-11-10T19:41:39.513Z",
+      "event": "bb-session",
+      "session": "aa6f7b94",
+      "url": "http://www.wsj.com/articles/fish-in-the-dark-review-enthusiasm-curbed-1425612431"
+    },
+    {
+      "t": "2026-11-10T19:41:40.300Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-10T19:41:57.404Z",
+      "event": "bb-session",
+      "session": "005b2d71",
+      "url": "http://www.wsj.com/articles/fish-in-the-dark-review-enthusiasm-curbed-1425612431"
+    },
+    {
+      "t": "2026-11-10T19:41:58.142Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
