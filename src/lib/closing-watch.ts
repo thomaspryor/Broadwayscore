@@ -391,6 +391,20 @@ export function isNearBreakEven(input: ClosingWatchInput): boolean {
   return input.avgGross <= input.breakEven * (1 + NEAR_BREAKEVEN_MARGIN);
 }
 
+/**
+ * A show too new for a season-adjusted figure (fewer than CLOSING_WATCH_MIN_WEEKS reported weeks
+ * in its current run) whose grosses so far are under or near break-even. Listed on "Close to
+ * break-even" as "New, too early to judge": no closing estimate from preview-heavy weeks.
+ */
+export function isNewNearOrBelowBreakEven(input: ClosingWatchInput): boolean {
+  if (input.status !== 'open' && input.status !== 'previews') return false;
+  if (!isBoxOfficeDriven(input.designation, input.limitedRun)) return false;
+  if (hasAnnouncedClosing(input)) return false;
+  if (input.adjustedRatio != null) return false;
+  if (input.avgGross == null || !(input.avgGross > 0) || input.breakEven == null || input.breakEven <= 0) return false;
+  return input.avgGross <= input.breakEven * (1 + NEAR_BREAKEVEN_MARGIN);
+}
+
 /** Break-even estimates are rough: the card says whether the show stays under if ours is this much too high. */
 export const CLOSING_WATCH_BREAKEVEN_MARGIN = 0.1;
 
