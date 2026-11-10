@@ -79,7 +79,7 @@ Object.assign(client, (${fakeClient.toString()})(events, ${JSON.stringify(fail)}
 function runHook(fx, { user = 'Please check the spacing', command = `git push origin ${fx.branch}`, fail = false } = {}) {
   const { events, env } = installClient(fx, fail);
   const transcript = join(fx.temp, 'transcript.jsonl');
-  writeFileSync(transcript, JSON.stringify({ type: 'user', message: { role: 'user', content: user } }) + '\n');
+  writeFileSync(transcript, JSON.stringify({ type: 'user', timestamp: new Date().toISOString(), message: { role: 'user', content: user } }) + '\n');
   const result = spawnSyncStdinFile('bash', [hook], {
     cwd: fx.repo, encoding: 'utf8', timeout: 60_000,
     env,

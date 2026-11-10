@@ -250,7 +250,11 @@ if [ "$LEDGER_OK" = "true" ]; then
   exit 0
 fi
 
-APPROVAL_RESULT=$(node "$SCAN" --query=approval-of "$VERDICT_HASH" --transcript="$transcript" 2>/dev/null)
+# BRO-7295: the owner's yes must be newer than the verdict it approves (an old
+# yes cannot approve a re-run verdict now that compaction/notification records
+# are skipped when finding the owner's last message).
+VERDICT_AFTER=$(node -e 'try{console.log(require("fs").statSync(process.argv[1]).mtime.toISOString())}catch{}' "$VERDICT_PATH" 2>/dev/null)
+APPROVAL_RESULT=$(node "$SCAN" --query=approval-of "$VERDICT_HASH" --transcript="$transcript" ${VERDICT_AFTER:+--after="$VERDICT_AFTER"} 2>/dev/null)
 APPROVED=$(echo "$APPROVAL_RESULT" | jq -r '.approved // false' 2>/dev/null)
 
 if [ "$APPROVED" != "true" ]; then

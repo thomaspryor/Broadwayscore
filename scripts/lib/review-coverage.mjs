@@ -98,6 +98,9 @@ export function findRuns(events, skills = STRONG_SKILLS) {
   const failed = new Set();
   events.forEach((e, i) => {
     if (e.kind === 'user_text') {
+      // Compaction summaries, re-injected skill text and harness wrappers quote <command-name>; only
+      // text the owner typed counts as a typed run (BRO-7295).
+      if (e.synthetic) return;
       const m = /<command-name>\/?([a-z-]+)<\/command-name>/.exec(e.text || '');
       if (m && skills.includes(m[1])) runs.push({ i, skill: m[1], id: `typed-${i}` });
     } else if (e.kind === 'assistant_tool_use' && e.name === 'Skill') {
