@@ -3,7 +3,7 @@
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
     "lastUpdated": "2026-11-08T22:20:13.459Z",
     "version": "2.1.0",
-    "lastChange": "BRO-7274: register 19 DC/LA regional outlets for BRO-7256 coverage-gap ingest"
+    "lastChange": "BRO-7274: register 17 DC/LA regional outlets (+domainAliases on thehollywoodtimes, hillrag) for BRO-7256 coverage-gap ingest"
   },
   "outlets": {
     "westendtheatre": {
@@ -14912,7 +14912,10 @@
       ],
       "domain": "hillrag.com",
       "region": "washington-dc",
-      "accessModel": "free"
+      "accessModel": "free",
+      "domainAliases": [
+        "capitalcommunitynews.com"
+      ]
     },
     "atheatregoersthoughts": {
       "displayName": "A Theatre-Goer's Thoughts",
@@ -15029,7 +15032,10 @@
       ],
       "domain": "hollywoodtimes.net",
       "region": "los-angeles",
-      "accessModel": "free"
+      "accessModel": "free",
+      "domainAliases": [
+        "thehollywoodtimes.today"
+      ]
     },
     "nighttintedglasses": {
       "displayName": "Night Tinted Glasses",
@@ -15304,8 +15310,7 @@
         "la-drama-critics-circle",
         "la drama critics circle",
         "los angeles drama critics circle",
-        "ladcc",
-        "ticketholdersla"
+        "ladcc"
       ],
       "domain": "ladramacriticscircle.com",
       "accessModel": "free",
@@ -15355,8 +15360,7 @@
         "peoples-world",
         "people's world",
         "peoples world",
-        "peoplesworld",
-        "hollywood progressive"
+        "peoplesworld"
       ],
       "domain": "peoplesworld.org",
       "accessModel": "free"
@@ -15370,18 +15374,6 @@
         "stagetakes"
       ],
       "domain": "stagetakes.com",
-      "accessModel": "free"
-    },
-    "capital-community-news": {
-      "displayName": "Capital Community News",
-      "tier": 3,
-      "aliases": [
-        "capital-community-news",
-        "capital community news",
-        "hill rag",
-        "hillrag"
-      ],
-      "domain": "capitalcommunitynews.com",
       "accessModel": "free"
     },
     "culver-city-news": {
@@ -15462,20 +15454,6 @@
       ],
       "domain": "thedowneypatriot.com",
       "accessModel": "free"
-    },
-    "hollywood-times": {
-      "displayName": "The Hollywood Times",
-      "tier": 4,
-      "aliases": [
-        "hollywood-times",
-        "the hollywood times",
-        "hollywood times"
-      ],
-      "domain": "thehollywoodtimes.today",
-      "accessModel": "free",
-      "domainAliases": [
-        "hollywoodtimes.net"
-      ]
     },
     "city-cast-dc": {
       "displayName": "City Cast DC",
@@ -16206,7 +16184,6 @@
     "la drama critics circle": "la-drama-critics-circle",
     "los angeles drama critics circle": "la-drama-critics-circle",
     "ladcc": "la-drama-critics-circle",
-    "ticketholdersla": "la-drama-critics-circle",
     "la-theatre-bites": "la-theatre-bites",
     "la theatre bites": "la-theatre-bites",
     "latheatrebites": "la-theatre-bites",
@@ -16220,14 +16197,9 @@
     "people's world": "peoples-world",
     "peoples world": "peoples-world",
     "peoplesworld": "peoples-world",
-    "hollywood progressive": "peoples-world",
     "stage-takes": "stage-takes",
     "stage takes": "stage-takes",
     "stagetakes": "stage-takes",
-    "capital-community-news": "capital-community-news",
-    "capital community news": "capital-community-news",
-    "hill rag": "capital-community-news",
-    "hillrag": "capital-community-news",
     "culver-city-news": "culver-city-news",
     "culver city news": "culver-city-news",
     "culvercitynews": "culver-city-news",
@@ -16251,9 +16223,6 @@
     "downey-patriot": "downey-patriot",
     "the downey patriot": "downey-patriot",
     "downey patriot": "downey-patriot",
-    "hollywood-times": "hollywood-times",
-    "the hollywood times": "hollywood-times",
-    "hollywood times": "hollywood-times",
     "city-cast-dc": "city-cast-dc",
     "city cast dc": "city-cast-dc",
     "citycast dc": "city-cast-dc",

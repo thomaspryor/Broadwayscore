@@ -124,7 +124,7 @@ test('BRO-7274: DC/LA hub review hosts from the coverage audit resolve to a regi
     'https://palipost.com/x', 'https://peoplesworld.org/article/x', 'https://www.ladancechronicle.com/x',
     'https://www.onthereels.com/p/x', 'https://stagetakes.com/x', 'https://dc.citycast.fm/theater-reviews/x',
     'https://www.capitalcommunitynews.com/content/x', 'https://ladramacriticscircle.com/x', 'https://www.ladcc.org/x',
-    'https://thehollywoodtimes.today/x', 'https://accessiblyliveoffline.wordpress.com/x', 'https://itsnotaboutme.tv/x',
+    'https://thehollywoodtimes.today/x', 'https://www.capitalcommunitynews.com/content/x', 'https://accessiblyliveoffline.wordpress.com/x', 'https://itsnotaboutme.tv/x',
     'https://latheatrebites.com/x', 'https://www.immersivescenelosangeles.com/post/x', 'https://www.halloweenscenelosangeles.com/post/x',
   ];
   for (const u of urls) {
