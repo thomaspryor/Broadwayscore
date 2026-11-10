@@ -2117,6 +2117,10 @@ on:
       # helpers are covered via tests/unit/collect-review-texts-rename-helper.test.mjs
       # under the tests/** trigger, but a solo edit to the file got ZERO CI).
       - 'scripts/collect-review-texts.js'
+      # BRO-7171: top-level scripts named by colocated class guards
+      # (browser-recovery-checkpoint.test.mjs, try-file-lock-race.test.mjs).
+      - 'scripts/migrate-add-core-data-push.js'
+      - 'scripts/dispatch-ingest-batch.js'
       # BRO-1431: colocated test (stale-flag neutralization on body
       # replacement — wrongProduction/contentVerification/contentTier).
       # Root-level scripts/*.test.mjs files are NOT globbed — registered in
