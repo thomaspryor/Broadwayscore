@@ -1,20 +1,20 @@
 {
-  "runDate": "2026-11-10T22:02:32.546Z",
+  "runDate": "2026-11-10T23:22:49.679Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 1000,
+    "maxReviews": 0,
     "priority": "all",
-    "showFilter": "frankie-and-johnny-in-the-clair-de-lune-2019",
+    "showFilter": "the-bridge-off-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 0,
+    "processed": 0,
+    "failed": 2,
     "skipped": 0,
-    "successRate": "100.0%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
     "playwright": 0,
@@ -25,27 +25,27 @@
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 2,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 0,
+    "tier1_9Attempts": 1,
     "tier1_9Success": 0,
-    "tier2Attempts": 0,
+    "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier3Attempts": 1,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
+    "tier3_6Attempts": 1,
     "tier3_6Success": 0,
     "tier4Attempts": 1,
-    "tier4Success": 1,
-    "totalFailed": 0,
-    "scrapingBeePageCredits": 0,
+    "tier4Success": 0,
+    "totalFailed": 2,
+    "scrapingBeePageCredits": 1,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -54,10 +54,10 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 1,
-    "failed": 0,
+    "processed": 0,
+    "failed": 2,
     "shows": [
-      "frankie-and-johnny-in-the-clair-de-lune-2019"
+      "the-bridge-off-west-end-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -65,15 +65,17 @@
       "failed": 0
     }
   },
-  "processed": [
-    "frankie-and-johnny-in-the-clair-de-lune-2019/dailybeast--tim-teeman.json"
+  "processed": [],
+  "failed": [
+    "the-bridge-off-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "the-bridge-off-west-end-2026/theatreandtonic--emmie-newitt.json"
   ],
-  "failed": [],
   "cumulativeResumedState": {
-    "processed": [
-      "frankie-and-johnny-in-the-clair-de-lune-2019/dailybeast--tim-teeman.json"
-    ],
-    "failed": []
+    "processed": [],
+    "failed": [
+      "the-bridge-off-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+      "the-bridge-off-west-end-2026/theatreandtonic--emmie-newitt.json"
+    ]
   },
   "tierDetails": {
     "playwright": [],
@@ -84,10 +86,16 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": [
-      "frankie-and-johnny-in-the-clair-de-lune-2019/dailybeast--tim-teeman.json"
-    ]
+    "archive": []
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "Cheryl Markosky": {
+      "count": 1,
+      "domain": "cherylmarkosky.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
