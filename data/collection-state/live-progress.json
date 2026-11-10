@@ -1,21 +1,76 @@
 {
-  "updatedAt": "2026-11-10T04:34:09.472Z",
-  "processed": 178,
-  "failed": 114,
-  "successRate": "61.0%",
+  "updatedAt": "2026-11-10T04:53:46.231Z",
+  "processed": 289,
+  "failed": 163,
+  "successRate": "63.9%",
   "tierBreakdown": {
-    "playwright": 141,
+    "playwright": 171,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 19,
-    "scrapingbee": 9,
+    "scrapingdog": 26,
+    "scrapingbee": 12,
     "brightdata": 5,
     "archiveToday": 0,
-    "archive": 57
+    "archive": 79
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 7,
   "recentActivity": [
+    {
+      "t": "2026-11-10T02:36:44.432Z",
+      "event": "bb-session",
+      "session": "c2a5e1e7",
+      "url": "https://www.talkinbroadway.com/regional/minn/minn1534.html"
+    },
+    {
+      "t": "2026-11-10T02:36:45.056Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-10T02:44:22.992Z",
+      "event": "bb-session",
+      "session": "968e0ba2",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-11-10T02:44:23.615Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-10T02:44:41.204Z",
+      "event": "bb-session",
+      "session": "86a656de",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-11-10T02:44:41.776Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-10T02:45:51.187Z",
+      "event": "bb-session",
+      "session": "e0b88c4f",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-11-10T02:45:51.745Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-10T02:46:08.561Z",
+      "event": "bb-session",
+      "session": "5f4c179c",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-11-10T02:46:09.153Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
     {
       "t": "2026-11-10T03:14:39.319Z",
       "event": "bb-session",
@@ -73,61 +128,6 @@
       "event": "bb-session",
       "session": "78cdbf40",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
-    },
-    {
-      "t": "2026-11-10T04:27:57.140Z",
-      "event": "bb-session",
-      "session": "268a1d58",
-      "url": "https://www.nytimes.com/2026/11/06/theater/the-unbelievers-222-a-ghost-story-rev"
-    },
-    {
-      "t": "2026-11-10T04:27:57.817Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-10T04:28:05.070Z",
-      "event": "bb-session",
-      "session": "cb4165ca",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655599"
-    },
-    {
-      "t": "2026-11-10T04:28:05.710Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-10T04:30:06.177Z",
-      "event": "bb-session",
-      "session": "8b445ab2",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655533"
-    },
-    {
-      "t": "2026-11-10T04:30:06.952Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-10T04:33:11.846Z",
-      "event": "bb-session",
-      "session": "81ec634c",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655534"
-    },
-    {
-      "t": "2026-11-10T04:33:12.531Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-10T04:34:01.953Z",
-      "event": "bb-session",
-      "session": "0d19fae0",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655510"
-    },
-    {
-      "t": "2026-11-10T04:34:02.574Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
     }
   ]
 }
