@@ -30,3 +30,21 @@ test('a genuinely cut-off body still reads truncated', () => {
   const cut = BODY.slice(0, BODY.length - 40) + ' and the evening ends on a qu...';
   assert.strictEqual(assessFullText(cut, true, { trustedComplete: true }), 'truncated');
 });
+
+// Ship-check finding: the same widgets also sit at the TOP of a page, under the subhead. They must never cut the body.
+const { stripTrailingJunk } = require('./text-quality.js');
+const HEADERS = {
+  nytimesRibbon: 'A revival of a lifesaving play.\n\nShare full article+',
+  shareBar: 'A revival of a lifesaving play. Share this: Share on X (Opens in new window) X Share on Facebook (Opens in new window) ',
+};
+for (const [name, header] of Object.entries(HEADERS)) {
+  test(`${name} at the top of the page keeps the whole review body`, () => {
+    const out = stripTrailingJunk(header + BODY);
+    assert.ok(out.includes('ends on a quiet, devastating note.'), 'body survived');
+  });
+}
+
+test('sharing bar whose button names were already removed still cuts as a footer', () => {
+  const out = stripTrailingJunk(BODY + ' Share this: (Opens in new window)');
+  assert.ok(out.endsWith('devastating note.'), out.slice(-60));
+});
