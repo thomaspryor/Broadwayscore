@@ -26,7 +26,8 @@ const KNOWN_SYNDICATION_PAIRS = {
   'mark kennedy': { primary: 'ap', secondary: ['abc-news', 'collider', 'washington-times', 'minneapolis-star-tribune',
     // BRO-6054: AP wire reprints filed under the subscriber's outlet id
     'washpost', 'sfgate', 'huffpost', 'seattle-post-intelligencer', 'news-tribune', 'npr', 'boston-com', 'abscbnnewscom'] },
-  'jennifer farrar': { primary: 'ap', secondary: ['abc-news', 'minneapolis-star-tribune'] },
+  // BRO-7272: Denver Post ran the AP wire review (same slug as the ABC News copy).
+  'jennifer farrar': { primary: 'ap', secondary: ['abc-news', 'minneapolis-star-tribune', 'denver-post'] },
   'jocelyn noveck': { primary: 'ap', secondary: ['seattle-post-intelligencer'] },
   // BRO-6054: critics who repost their own review at a second outlet.
   // Mandell's New York Theater blog runs first; DC Theatre Scene and The Faster Times reprint it.
