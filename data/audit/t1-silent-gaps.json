@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-10T16:11:33.045Z",
+  "generatedAt": "2026-11-10T17:39:23.017Z",
   "windowDays": 45,
-  "showsScanned": 241,
+  "showsScanned": 240,
   "gaps": [
     {
       "showId": "iphigenie-en-tauride-english-national-opera-west-end-2026",
@@ -18,9 +18,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=iphigenie-en-tauride-english-national-opera-west-end-2026 --url=https://www.thetimes.com/culture/classical-opera/article/iphigenie-en-tauride-review-youve-never-seen-a-family-reunion-like-this-hmwx2kkh2 --outlet=sunday-times   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-08T22:39:44.349Z",
-      "fileAgeHours": 41.4894275,
+      "fileAgeHours": 42.91414888888889,
       "gapSeenAt": "2026-11-09T00:00:26.432Z",
-      "nonTerminalAgeHours": 40.18517027777778,
+      "nonTerminalAgeHours": 41.649051388888886,
       "needsManualRecovery": false
     },
     {
@@ -38,9 +38,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=msblackforpresident-off-broadway-2026 --url=https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play --outlet=guardian   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T07:02:09.044Z",
-      "fileAgeHours": 33.11593055555556,
+      "fileAgeHours": 34.540664166666666,
       "gapSeenAt": "2026-11-10T05:35:04.300Z",
-      "nonTerminalAgeHours": 10.607984722222222,
+      "nonTerminalAgeHours": 12.071865833333334,
       "needsManualRecovery": false
     },
     {
@@ -56,15 +56,15 @@
       "recovery": {
         "attempted": true,
         "ok": false,
-        "reason": "⚠️  Bright Data failed: Bright Data request timeout\nFetch failed: fetch failed: All scraping methods failed; no archive.org capture\n  ingest failed: Ingesting single review: rope-off-broadway-2026 https://talkinbroadway.com/page/ob/11_03_26b.html\nFetching: https://talkinbroadway.com/page/ob/11_03_26b.html\n  → Trying Bright Data...\n[BD Call] {\"ts\":\"2026-11-10T16:11:03.539Z\",\"provider\":\"brightdata\","
+        "reason": "⚠️  Bright Data failed: Bright Data request timeout\n⚠️  Bright Data failed: Bright Data request timeout\n⚠️  Bright Data failed: Bright Data request timeout\n  critic lookup failed (All scraping methods failed) — ingest will fall back to Unknown\n  ⊘ url kept: dropping fullText merged from refused https://talkinbroadway.com/page/ob/11_03_26b.html on /home/runner/work/Broadwayscore/Broadwayscore/data/"
       },
       "recoveryCount": 0,
-      "forumLinkRecoveryCount": 1,
+      "forumLinkRecoveryCount": 2,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=rope-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-11-10T13:48:14.823Z",
-      "fileAgeHours": 2.3882955555555556,
+      "fileAgeHours": 3.852128611111111,
       "gapSeenAt": "2026-11-10T14:56:56.302Z",
-      "nonTerminalAgeHours": 1.2435397222222222,
+      "nonTerminalAgeHours": 2.7074208333333334,
       "needsManualRecovery": false
     },
     {
@@ -82,9 +82,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=adirondack-chair-circle-regional-2026 --url=https://www.talkinbroadway.com/page/regional/chicago/ch944.html --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T21:14:38.698Z",
-      "fileAgeHours": 18.94842722222222,
+      "fileAgeHours": 20.41230611111111,
       "gapSeenAt": "2026-11-09T21:39:25.109Z",
-      "nonTerminalAgeHours": 18.535537777777776,
+      "nonTerminalAgeHours": 19.99941888888889,
       "needsManualRecovery": false
     },
     {
@@ -102,9 +102,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "# no URL on file — find the theatermania review for the-cottage-regional-2026 first, then: node scripts/ingest-review-from-url.js --show=the-cottage-regional-2026 --url=<URL> --outlet=theatermania",
       "firstSeen": "2026-11-10T00:26:39.999Z",
-      "fileAgeHours": 15.748067222222222,
+      "fileAgeHours": 17.211946944444446,
       "gapSeenAt": "2026-11-10T01:31:07.327Z",
-      "nonTerminalAgeHours": 14.673810555555555,
+      "nonTerminalAgeHours": 16.137691666666665,
       "needsManualRecovery": false
     }
   ],
