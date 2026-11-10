@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-10T20:26:01.857Z",
+  "generatedAt": "2026-11-10T21:25:20.615Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -117,6 +117,10 @@
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
+      "outletId": "theater-pizzazz",
+      "error": "HTTP 503 for https://theaterpizzazz.com/feed/"
+    },
+    {
       "outletId": "cote-notices",
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
@@ -133,7 +137,7 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 856,
+  "itemsScanned": 833,
   "matchedGaps": 3,
   "possibleGaps": 2,
   "gaps": [

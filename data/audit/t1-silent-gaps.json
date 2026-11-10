@@ -1,8 +1,31 @@
 {
-  "generatedAt": "2026-11-10T20:25:40.199Z",
+  "generatedAt": "2026-11-10T21:24:55.692Z",
   "windowDays": 45,
   "showsScanned": 240,
   "gaps": [
+    {
+      "showId": "blood-of-my-blood-west-end-2026",
+      "title": "Blood of my Blood",
+      "openingDate": "2026-10-07",
+      "file": "whatsonstage--sarah-crompton.json",
+      "outletId": "whatsonstage",
+      "tier": 2,
+      "type": "unscored",
+      "dispatchable": true,
+      "skipReason": null,
+      "fetchAbandoned": false,
+      "recoverable": false,
+      "url": "https://www.whatsonstage.com/news/blood-of-my-blood-at-the-royal-court-review_1734857/",
+      "recovery": null,
+      "recoveryCount": 0,
+      "forumLinkRecoveryCount": 0,
+      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=blood-of-my-blood-west-end-2026",
+      "firstSeen": "2026-11-10T20:51:59.462Z",
+      "fileAgeHours": 0.5485238888888889,
+      "gapSeenAt": "2026-11-10T21:24:55.691Z",
+      "nonTerminalAgeHours": 0,
+      "needsManualRecovery": false
+    },
     {
       "showId": "iphigenie-en-tauride-english-national-opera-west-end-2026",
       "title": "Iphigenie en Tauride - English National Opera",
@@ -18,9 +41,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=iphigenie-en-tauride-english-national-opera-west-end-2026 --url=https://www.thetimes.com/culture/classical-opera/article/iphigenie-en-tauride-review-youve-never-seen-a-family-reunion-like-this-hmwx2kkh2 --outlet=sunday-times   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-08T22:39:44.349Z",
-      "fileAgeHours": 45.7644725,
+      "fileAgeHours": 46.752791944444446,
       "gapSeenAt": "2026-11-09T00:00:26.432Z",
-      "nonTerminalAgeHours": 44.42049083333333,
+      "nonTerminalAgeHours": 45.4081275,
       "needsManualRecovery": false
     },
     {
@@ -38,9 +61,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=msblackforpresident-off-broadway-2026 --url=https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play --outlet=guardian   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T07:02:09.044Z",
-      "fileAgeHours": 37.390985,
+      "fileAgeHours": 38.37930472222222,
       "gapSeenAt": "2026-11-10T05:35:04.300Z",
-      "nonTerminalAgeHours": 14.843305277777779,
+      "nonTerminalAgeHours": 15.830941944444444,
       "needsManualRecovery": false
     },
     {
@@ -58,9 +81,9 @@
       "forumLinkRecoveryCount": 3,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=rope-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-11-10T13:48:14.823Z",
-      "fileAgeHours": 6.6229144444444445,
+      "fileAgeHours": 7.611223888888889,
       "gapSeenAt": "2026-11-10T14:56:56.302Z",
-      "nonTerminalAgeHours": 5.478860277777778,
+      "nonTerminalAgeHours": 6.466496944444445,
       "needsManualRecovery": false
     },
     {
@@ -71,20 +94,16 @@
       "outletId": "theatermania",
       "tier": 2,
       "type": "empty-body",
-      "recoverable": true,
+      "recoverable": false,
       "url": "https://www.theatermania.com/news/review-national-tour-of-the-whos-tommy-loses-its-pinball-magic-at-the-hollywood-pantages_1859212/",
-      "recovery": {
-        "attempted": true,
-        "ok": false,
-        "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
-      },
-      "recoveryCount": 2,
+      "recovery": null,
+      "recoveryCount": 3,
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=the-whos-tommy-tour-2026 --url=https://www.theatermania.com/news/review-national-tour-of-the-whos-tommy-loses-its-pinball-magic-at-the-hollywood-pantages_1859212/ --outlet=theatermania   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-10T18:24:07.366Z",
-      "fileAgeHours": 2.025718888888889,
+      "fileAgeHours": 3.0133569444444444,
       "gapSeenAt": "2026-11-10T18:58:49.816Z",
-      "nonTerminalAgeHours": 1.4473286111111112,
+      "nonTerminalAgeHours": 2.4349652777777777,
       "needsManualRecovery": false
     },
     {
@@ -102,9 +121,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=adirondack-chair-circle-regional-2026 --url=https://www.talkinbroadway.com/page/regional/chicago/ch944.html --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T21:14:38.698Z",
-      "fileAgeHours": 23.183746666666668,
+      "fileAgeHours": 24.171383333333335,
       "gapSeenAt": "2026-11-09T21:39:25.109Z",
-      "nonTerminalAgeHours": 22.770858333333333,
+      "nonTerminalAgeHours": 23.758495,
       "needsManualRecovery": false
     },
     {
@@ -122,9 +141,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "# no URL on file — find the theatermania review for the-cottage-regional-2026 first, then: node scripts/ingest-review-from-url.js --show=the-cottage-regional-2026 --url=<URL> --outlet=theatermania",
       "firstSeen": "2026-11-10T00:26:39.999Z",
-      "fileAgeHours": 19.983387222222223,
+      "fileAgeHours": 20.97102388888889,
       "gapSeenAt": "2026-11-10T01:31:07.327Z",
-      "nonTerminalAgeHours": 18.909131111111112,
+      "nonTerminalAgeHours": 19.89676777777778,
       "needsManualRecovery": false
     }
   ],
