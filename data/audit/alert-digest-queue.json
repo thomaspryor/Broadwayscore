@@ -1338,5 +1338,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-10T17:56:10.485Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7078-fixups",
+    "title": "Landing blocked: rebase red on land/bro-7078-fixups",
+    "description": "land.yml did not land land/bro-7078-fixups: the rebase gate went red at 810c4c3a8a. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42391562391",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7078-fixups"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "810c4c3a8a342e67ed1629259f483c8e202cd6f6"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42391562391"
+      }
+    ],
+    "queuedAt": "2026-11-10T18:02:42.162Z"
   }
 ]
