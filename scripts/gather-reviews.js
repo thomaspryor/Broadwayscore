@@ -6089,7 +6089,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
       }
 
       if (!matched) {
-        const filename = generateReviewFilename(lboReview.outlet || lboReview.outletId, lboReview.criticName);
+        const filename = uniqueReviewFilename(showDir, generateReviewFilename(lboReview.outlet || lboReview.outletId, lboReview.criticName));
         const filePath = path.join(showDir, filename);
         const existingFile = findExistingReviewFile(showDir, lboReview.outlet || lboReview.outletId, lboReview.criticName);
         if (!existingFile && !fs.existsSync(filePath)) {

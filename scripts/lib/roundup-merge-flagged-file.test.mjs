@@ -68,3 +68,18 @@ test('dateless-revival hold is not released when the roundup excerpt is absent f
   const noExcerpt = { ...held, bwwExcerpt: undefined };
   assert.equal(shouldAutoClearDatelessRevival(noExcerpt, { hasUsableDate: true }), true);
 });
+
+test('outlet stays open after the roundup excerpt stub (-2) exists next to the flagged file', () => {
+  const base = makeDir();
+  fs.writeFileSync(path.join(base, SHOW, 'cititour--brian-scott-lipton-2.json'), JSON.stringify({
+    showId: SHOW, outletId: 'cititour', outlet: 'Cititour', criticName: 'Brian Scott Lipton',
+    url: null, contentTier: 'excerpt', bwwExcerpt: 'x',
+  }));
+  const flagged = getFlaggedOnlyOutletIds(SHOW, { reviewTextsDir: base });
+  assert.deepEqual([...flagged], ['cititour']);
+  // once a real, url-bearing review lands the outlet is genuinely found
+  fs.writeFileSync(path.join(base, SHOW, 'cititour--unknown.json'), JSON.stringify({
+    showId: SHOW, outletId: 'cititour', outlet: 'Cititour', url: 'https://cititour.com/new/1411', contentTier: 'complete',
+  }));
+  assert.deepEqual([...getFlaggedOnlyOutletIds(SHOW, { reviewTextsDir: base })], []);
+});
