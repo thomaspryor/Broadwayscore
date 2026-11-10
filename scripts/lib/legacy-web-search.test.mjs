@@ -43,6 +43,28 @@ test('no script under scripts/ writes source "web-search" (outside the cast back
   assert.deepEqual(offenders, []);
 });
 
+test('legacyWebSearchFlagPatch: flags only on dead/no url AND no fetched text (BRO-7171 sweep)', () => {
+  const { legacyWebSearchFlagPatch } = require('./legacy-web-search.js');
+  const ws = (x) => ({ source: 'web-search', url: 'https://www.washingtonpost.com/x_story.html', contentTier: 'excerpt', fullText: '', ...x });
+  assert.match(legacyWebSearchFlagPatch(ws({ httpStatus: 404 })).fabricatedReason, /url answered 404/);
+  assert.ok(legacyWebSearchFlagPatch(ws({ url: null })));
+  assert.ok(legacyWebSearchFlagPatch(ws({ incompleteReason: 'url_dead' })));
+  assert.ok(legacyWebSearchFlagPatch(ws({}), { ffReason: 'url_dead_404' }));
+  assert.ok(legacyWebSearchFlagPatch(ws({}), { probeStatus: 410 }));
+  // The stored "text" is the step's own excerpt, even if a fetch stamp exists.
+  const ex = 'A dazzling, heartfelt revival that earns every one of its standing ovations.';
+  assert.ok(legacyWebSearchFlagPatch(ws({ httpStatus: 404, contentTier: 'truncated', fullText: ex, dtliExcerpt: ex, textFetchedAt: '2026-01-01' })));
+  // Not flagged: live url, paywall/blocked (no dead evidence), complete text,
+  // real fetched text, another source vouching, an earlier deliberate clear.
+  assert.equal(legacyWebSearchFlagPatch(ws({}), { probeStatus: 200 }), null);
+  assert.equal(legacyWebSearchFlagPatch(ws({}), { probeStatus: 403 }), null);
+  assert.equal(legacyWebSearchFlagPatch(ws({ httpStatus: 404, contentTier: 'complete' })), null);
+  assert.equal(legacyWebSearchFlagPatch(ws({ httpStatus: 404, contentTier: 'truncated', fullText: 'Real body text fetched from the page. '.repeat(20), textFetchedAt: '2026-01-01' })), null);
+  assert.equal(legacyWebSearchFlagPatch(ws({ httpStatus: 404, sources: ['dtli'] })), null);
+  assert.equal(legacyWebSearchFlagPatch(ws({ httpStatus: 404, fabricatedEntry: false })), null);
+  assert.equal(legacyWebSearchFlagPatch(ws({ httpStatus: 404, fabricatedEntry: true })), null);
+});
+
 test('isLegacyWebSearchOnly: every source must be the legacy tag', () => {
   assert.equal(isLegacyWebSearchOnly({ source: 'web-search' }), true);
   assert.equal(isLegacyWebSearchOnly({ source: 'web-search', sources: ['dtli'] }), false);

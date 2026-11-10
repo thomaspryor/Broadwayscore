@@ -203,6 +203,22 @@ test('a url move stamps the caller urlDiscoveryMethod (and drops a stale one); t
   assert.equal(JSON.parse(fs.readFileSync(c2.filePath, 'utf8')).urlDiscoveryMethod, 'test-recovery', 'stale method replaced by the recovery method');
 });
 
+test('an invented-url row (fabricatedEntry) whose real review is accepted gets the flag cleared, or the rebuild keeps skipping it (BRO-7171)', () => {
+  const c = candidateFile({ fabricatedEntry: true, fabricatedReason: 'Legacy web-search row (BRO-7171): url answered 404', source: 'web-search', httpStatus: 404, dtliExcerpt: GOOD.slice(0, 240) });
+  const newUrl = 'https://www.nytimes.com/2026/03/17/theater/joe-turner-review-real.html';
+  const r = gate.recoverReviewText({ filePath: c.filePath, rawText: GOOD, url: newUrl, expectUrl: c.url, labels: LABELS });
+  assert.equal(r.ok, true, r.reason);
+  const onDisk = JSON.parse(fs.readFileSync(c.filePath, 'utf8'));
+  assert.equal(onDisk.url, newUrl);
+  assert.equal(onDisk.fabricatedEntry, false, 'merge-mode write must not copy the flag back');
+  assert.equal(onDisk.fabricatedReason, null);
+  assert.match(onDisk.fabricatedClearedReason, /joe-turner-review-real.*was: Legacy web-search row/);
+  // A refused text leaves the flag alone.
+  const c2 = candidateFile({ fabricatedEntry: true, source: 'web-search' });
+  assert.equal(gate.recoverReviewText({ filePath: c2.filePath, rawText: 'too short', labels: LABELS }).ok, false);
+  assert.equal(JSON.parse(fs.readFileSync(c2.filePath, 'utf8')).fabricatedEntry, true);
+});
+
 // ── recoverReviewTextVerified: the shared async wrapper (recover-serp-text + gap-recovery driver) ──
 
 test('verified wrapper: dry run at a new url with only the LLM proof missing asks for it, writes nothing', async () => {

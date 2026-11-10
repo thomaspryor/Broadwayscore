@@ -124,6 +124,8 @@ function groupTerminalCandidates(planRows, attemptsByKey, { deadHosts = new Map(
     // A garbage page: the terminal reason would mask scraper_garbage and let
     // the scorer read the garbage text (incomplete-reason.js priority order).
     if (row.gapClass === 'GARBAGE_PAGE') { bump('no_evidence_yet:GARBAGE_PAGE'); continue; }
+    // Same for a saved not-found page routed as URL_DEAD (text-gap-classify).
+    if (row.subclass === 'saved_error_page') { bump('no_evidence_yet:saved_error_page'); continue; }
     // A reopen (url corrected, text changed) resets the evidence (ledger liveRows).
     const tries = liveRows(attemptsByKey.get(row.reviewKey) || []);
     const archiveEmpty = tries.find((t) => t.strategy === 'ARCHIVE' && t.outcome === 'no_evidence' && /archive_empty/.test(t.reason || ''));
@@ -147,7 +149,8 @@ function groupTerminalCandidates(planRows, attemptsByKey, { deadHosts = new Map(
     if (row.gapClass === 'NO_URL') {
       const prog = require('./gap-url-find').urlFindProgress(tries);
       if (!prog.missing.length) {
-        owner.NOT_FINDABLE.push({ row, evidence: [`no url on file (${row.subclass || 'NO_URL'})`, ...prog.evidence] });
+        const urlNote = row.subclass === 'INVENTED_URL' ? 'url on file was invented by the deleted web-search step' : `no url on file (${row.subclass || 'NO_URL'})`;
+        owner.NOT_FINDABLE.push({ row, evidence: [urlNote, ...prog.evidence] });
         continue;
       }
     }

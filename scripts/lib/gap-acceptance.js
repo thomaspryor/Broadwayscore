@@ -601,6 +601,14 @@ function recoverReviewText({ filePath, rawText, url, headline = null, pageDate =
     data.contentTierReason = decision.newTierReason || labels.contentTierReasonFallback || null;
     delete data.incompleteReason;
     delete data.incompleteDetail;
+    // An invented-url row (fabricatedEntry) whose real review the gate just
+    // proved: the flag (clear-only, review-field-edit) goes false with its
+    // breadcrumb, or the rebuild keeps skipping the recovered review.
+    if (data.fabricatedEntry === true) {
+      data.fabricatedEntry = false;
+      data.fabricatedClearedReason = `real review text accepted at ${data.url} (${labels.sourceMethod}, ${at}); was: ${data.fabricatedReason || 'flagged'}`;
+      data.fabricatedReason = null;
+    }
     // Accepted on the page's own headline (body never prints the title): persist that
     // evidence so evaluateShowMentionGuard does not re-flag the body as wrong-show.
     if (decision.identityHeadline) data.showIdentityHeadline = decision.identityHeadline;
