@@ -7,34 +7,47 @@
   "embargoSource": "market-default",
   "probe": {
     "startedAt": "2026-11-09T20:30:04.578Z",
-    "endedAt": null,
+    "endedAt": "2026-11-10T03:00:31.883Z",
     "intervalMin": 5,
-    "samples": 30,
+    "samples": 78,
     "failedSamples": 0,
-    "lastSampleAt": "2026-11-09T22:55:12.408Z",
-    "lastOkSampleAt": "2026-11-09T22:55:12.408Z"
+    "lastSampleAt": "2026-11-10T02:59:13.392Z",
+    "lastOkSampleAt": "2026-11-10T02:59:13.392Z"
   },
-  "firstLiveAt": null,
+  "firstLiveAt": "2026-11-10T01:14:07.214Z",
   "firstLiveBaseline": false,
-  "lastLiveAt": null,
-  "liveCount": 0,
+  "lastLiveAt": "2026-11-10T01:14:07.214Z",
+  "liveCount": 1,
   "liveCountAt": {
     "1h": 0,
-    "2h": null,
+    "2h": 0,
     "6h": null
   },
   "liveCountSampleAt": {
     "1h": "2026-11-09T22:00:09.381Z",
-    "2h": null,
+    "2h": "2026-11-09T23:03:58.248Z",
     "6h": null
   },
   "firstOutletPublishAt": {
-    "at": null,
-    "precision": "unknown",
+    "at": "2026-11-10",
+    "precision": "approx",
     "source": "prod-rv-publishDate",
-    "tierScope": null
+    "tierScope": "T1-T2"
   },
-  "perReview": [],
+  "perReview": [
+    {
+      "key": "london box office|stuart king",
+      "outlet": "London Box Office",
+      "critic": "Stuart King",
+      "tier": 2,
+      "publishAt": "2026-11-10",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-10T01:14:07.214Z",
+      "prevOkSampleAt": "2026-11-10T01:09:06.771Z",
+      "baseline": false,
+      "liveNow": true
+    }
+  ],
   "dropped": [],
   "reference": {
     "2h": {
@@ -46,6 +59,17 @@
       "missing": [],
       "liveCount": 0,
       "fetchedAt": "2026-11-09T23:00:26.909Z",
+      "censusNote": "archive only"
+    },
+    "end": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 1,
+      "fetchedAt": "2026-11-10T03:00:31.205Z",
       "censusNote": "archive only"
     }
   },
@@ -59,11 +83,17 @@
         "label": "2h",
         "standDown": false,
         "reason": "market not lane-only"
+      },
+      {
+        "at": "2026-11-10T03:00:31.278Z",
+        "label": "end",
+        "standDown": false,
+        "reason": "market not lane-only"
       }
     ]
   },
   "fileState": {
-    "capturedAt": "2026-11-09T23:00:27.701Z",
+    "capturedAt": "2026-11-10T03:00:31.837Z",
     "files": [
       {
         "file": "bestoftheatre--alan-ingram.json",
@@ -76,6 +106,32 @@
         "url": "bestoftheatre.co.uk/blog/post/everything-you-need-to-know-dogstar",
         "includable": false,
         "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "broadwayworld--clementine-scott.json",
+        "outletId": "broadwayworld",
+        "outlet": "BroadwayWorld",
+        "critic": "Clementine Scott",
+        "firstSeenAt": "2026-11-10T02:06:49.423Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-10",
+        "url": "broadwayworld.com/westend/article/review-dogstar-hampstead-theatre-20261109",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "london-box-office--stuart-king.json",
+        "outletId": "london-box-office",
+        "outlet": "London Box Office",
+        "critic": "Stuart King",
+        "firstSeenAt": "2026-11-10T00:39:08.642Z",
+        "scoredAt": "2026-11-10T01:49:57.116Z",
+        "publishDate": "2026-11-10",
+        "url": "londonboxoffice.co.uk/news/post/dogstar-hampstead-theatre-review",
+        "includable": true,
+        "reason": null,
         "syndicatedUnder": null
       },
       {
