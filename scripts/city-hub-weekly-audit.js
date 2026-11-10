@@ -56,7 +56,7 @@ function writePlan(city, week, actions) {
   const r = spawnSync('node', [path.join(__dirname, 'new-fix-plan.js'), `--id=${id}`, '--force', `--summary=Weekly city-hub audit ${city} ${week}: deterministic findings (title typo, venue every outlet contradicts, later announced closing). Check each against its source before applying.`, `--actions=${tmp}`], { encoding: 'utf8', cwd: ROOT, timeout: 120_000 });
   const out = `${r.stdout || ''}${r.stderr || ''}`;
   if (r.status !== 0) { console.log(`::warning::${city}: new-fix-plan exited ${r.status}: ${out.slice(-400)}`); return null; }
-  const m = out.match(/planId[^0-9a-f]*([0-9a-f-]{36})/i);
+  const m = out.match(/plan_?id[^0-9a-f]*([0-9a-f]{8}-[0-9a-f-]{27})/i); // new-fix-plan prints "plan_id=<uuid>"
   return { id, planId: m ? m[1] : null };
 }
 
@@ -98,7 +98,7 @@ async function auditCity(city, maxUsd) {
   const summary = { city, week, today: TODAY, findings: findings.length, byClass, newFindings: fresh.length, newByClass: freshByClass, provenance: provenance.unprovenanced };
   if (DRY) return summary;
   const plan = writePlan(city, week, W.planActions(fresh));
-  const card = W.cardFor(city, week, fresh, { planId: plan && plan.id, provenance });
+  const card = W.cardFor(city, week, fresh, { planId: plan && (plan.planId ? `${plan.id} (issue_number=${plan.id} plan_id=${plan.planId})` : plan.id), provenance });
   summary.plan = plan;
   summary.card = card ? fileCard(card) : null;
   fs.mkdirSync(dir, { recursive: true });
