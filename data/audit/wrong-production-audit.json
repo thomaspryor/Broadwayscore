@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-10T07:18:39.007Z",
+  "timestamp": "2026-11-10T07:57:13.073Z",
   "stats": {
-    "totalReviews": 81102,
-    "alreadyFlagged": 22190,
+    "totalReviews": 81104,
+    "alreadyFlagged": 22191,
     "dateGuardCatches": 219,
-    "directorMismatch": 3599,
-    "tvFilmSignals": 2284,
+    "directorMismatch": 3600,
+    "tvFilmSignals": 2285,
     "londonSignals": 3658,
     "offBroadwaySignals": 750,
     "yearMismatch": 364,
-    "noPublishDate": 8421
+    "noPublishDate": 8420
   },
   "findings": [
     {
@@ -9866,6 +9866,20 @@
       "score": 77,
       "publishDate": "2026-10-21",
       "url": "https://www.leagueofcincytheatres.info/review-boop-has-something-for-everyoneand-then-some/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry mitchell\" from boop-2025"
+        }
+      ]
+    },
+    {
+      "showId": "boop-tour-2026",
+      "file": "leagueofcincytheatres--shelby-colman.json",
+      "score": 75,
+      "publishDate": null,
+      "url": "https://www.leagueofcincytheatres.info/review-boop-the-musical-bursts-into-color-on-aronoff-stage/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -31637,6 +31651,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"al pacino\" from hughie-1996"
+        }
+      ]
+    },
+    {
+      "showId": "human-things-off-broadway-2026",
+      "file": "deadline--glenn-garner.json",
+      "score": null,
+      "publishDate": "2026-10-02",
+      "url": "https://deadline.com/2026/10/ben-affleck-used-ai-lots-of-things-animals-1237145166/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -87198,20 +87226,6 @@
     },
     {
       "showId": "a-very-expensive-poison-west-end-2019",
-      "file": "daily-mail--patrick-marmion.json",
-      "score": 63,
-      "publishDate": "2019-09-06",
-      "url": "https://www.dailymail.co.uk/tvshowbiz/article-7433705/PATRICK-MARMION-reviews-Hansard-study-divided-political-couple.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"lyttelton\""
-        }
-      ]
-    },
-    {
-      "showId": "a-very-expensive-poison-west-end-2019",
       "file": "guardian--michael-billington.json",
       "score": 85,
       "publishDate": "September 6th, 2019",
@@ -97240,6 +97254,19 @@
       ]
     },
     {
+      "showId": "double-bill-tell-me-straight-and-aggy-off-west-end-2026",
+      "file": "iloveeventfest--unknown.json",
+      "publishDate": "2026-11-10",
+      "url": "https://www.iloveeventfest.com/arts/event/double-bill-tell-me-straight-aggy-london-2026-11-10",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
       "showId": "doubt-2024",
       "file": "ew--dalton-ross.json",
       "score": 86,
@@ -106086,7 +106113,7 @@
         {
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"almeida\""
+          "detail": "Mentions London venue: \"donmar warehouse\""
         }
       ]
     },
