@@ -400,6 +400,24 @@ function isPlaceholderBylineFor(rawCritic, outletIdOrName) {
 }
 const reviewsJsonPath = path.join(__dirname, '../data/reviews.json');
 
+// BRO-7296: build-time hold for verifier-flagged wrong-production reviews. Grandfather set = rows already
+// live in the previous reviews.json, read once before anything rewrites it. Missing/unreadable file => gate
+// off (fail open, loud). CV_WP_BUILD_GATE=off disables; =advisory logs would-be holds without excluding.
+const cvWpBuildGate = require('./lib/cv-wrongproduction-build-gate');
+// Same normalisers the row writer uses, so a live row and its review-texts file produce the same key.
+const cvWpNorm = () => ({ url: (u) => (u ? normalizeUrlForDedup(u) : ''), outlet: (o) => (o ? normalizeOutletCanonical(o) : ''), critic: (c) => (c ? normalizeCriticName(c) : '') });
+const CV_WP_BUILD_GATE_MODE = (process.env.CV_WP_BUILD_GATE || 'enforce').toLowerCase();
+let cvWpGrandfather = null;
+if (CV_WP_BUILD_GATE_MODE !== 'off') {
+  try {
+    cvWpGrandfather = cvWpBuildGate.buildGrandfatherSet(JSON.parse(fs.readFileSync(reviewsJsonPath, 'utf8')).reviews, cvWpNorm());
+    if (cvWpGrandfather.size === 0) cvWpGrandfather = null;
+    // Dry-run only (scripts/dryrun-cv-wp-build-gate.js): pretend nothing is live, to count the whole lifetime backlog.
+    if (cvWpGrandfather && process.env.CV_WP_BUILD_GATE_GRANDFATHER === 'off') cvWpGrandfather = new Set();
+  } catch (e) { cvWpGrandfather = null; }
+  if (!cvWpGrandfather) console.warn('⚠️  CV wrongProduction build gate (BRO-7296): no previous reviews.json rows to grandfather against, gate is OFF this run');
+}
+
 // --show=<id>: scope this run to one show and print its per-file exclusion
 // reasons, then exit before any AGGREGATE write (reviews.json, watermark,
 // registry, etc). This is the diagnostic command review-count-match.check.js
@@ -3784,6 +3802,32 @@ showDirs.forEach(showId => {
           logExclusion("skippedWrongProduction", showId, file, data);
           stats.skippedWrongProduction = (stats.skippedWrongProduction || 0) + 1;
           return;
+        }
+      }
+
+      // BRO-7296: the verifier says wrong production and nothing human cleared it (a rebuild auto-clear STRING
+      // never counts), so a row that would newly ship is held here, not at email time. Rows already live are
+      // grandfathered. Same per-file decision as opening-night cv-wrongproduction-unhandled.
+      if (cvWpGrandfather && data.contentVerification && data.contentVerification.wrongProduction === true) {
+        const cvWpBlk = cvWpBuildGate.decideCvWrongProductionHold(data, showById[showId], {
+          showId, filePath: path.join(showDir, file), grandfather: cvWpGrandfather, normalizers: cvWpNorm(),
+          carveouts: {
+            lane: laneOk('wrongProduction'),
+            advisory: hasHighConfidenceLlmScore(data) && data.contentVerification.confidence !== 'high'
+              && !hasStrongDifferentShowSignal(data.contentVerification.issues, data.contentVerification.reasoning),
+            venueCarveout: cvWrongProductionIsVenueCarveout(data.contentVerification, showById[showId], data.publishDate, false),
+            ownCast: ownShowTextEvidence(data.fullText, showById[showId]).strong,
+          },
+        });
+        if (cvWpBlk.hold) {
+          if (CV_WP_BUILD_GATE_MODE === 'advisory') {
+            stats.cvWrongProductionBuildGateWouldHold = (stats.cvWrongProductionBuildGateWouldHold || 0) + 1;
+            console.log(`  [CV-WP-BUILD-GATE advisory] ${showId}/${file}: would hold`);
+          } else {
+            logExclusion("skippedCvWrongProductionHeld", showId, file, data);
+            stats.skippedCvWrongProductionHeld = (stats.skippedCvWrongProductionHeld || 0) + 1;
+            return;
+          }
         }
       }
 
