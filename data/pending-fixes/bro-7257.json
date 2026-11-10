@@ -1,0 +1,102 @@
+{
+  "issueNumber": "bro-7257",
+  "planId": "2d65a182-bb7b-4b0a-9e66-6d69e0beb64a",
+  "status": "pending",
+  "createdAt": "2026-11-10T01:34:57.806Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7257 city hub audit fixes: Wonder Arts Fuse row, Black Swan Theater Mirror duplicate, Come From Away wrong production, Paranormal Boston.com score, GRIM dates",
+    "steps": [
+      "BRO-7257: Arts Fuse Wonder row shows Robert Israel, 2025-12-29, score 40. Byline in text is 'By Martin Copenhaver', mild positive on the show (praises Auggie, cast, design). Dual-model audit and the 3-model ensemble land 65-71. Human score drops the stale manual row (same url).",
+      "BRO-7257: Theater Mirror Black Swan is counted twice (pipeline row Michele Markarian ?p=11324 score 89 plus manual row 'Mike Hoban' slug url score 90), same article, byline 'by Michele Markarian', published 2026-06-13. Keep the slug-url file, score 89 as the pipeline had it, so the manual row is dropped.",
+      "BRO-7257: duplicate of theater-mirror--mike-hoban.json (same Theater Mirror article under the ?p=11324 url).",
+      "BRO-7257: stop the poller re-creating the ?p=11324 duplicate.",
+      "BRO-7257: review is of the Sharon Playhouse (CT) production ('Come From Away at the Sharon Playhouse', 2026-09-15); this show is North Shore Music Theatre, Beverly MA, 2026-09-16 to 09-27.",
+      "BRO-7257: manual row scored 68 from an excerpt (pull quote on the 'predictable' caveat). Full text read: praises set design, performances, effects, shared fear, one limited reservation. GPT-4.1 90, Gemini 85, ensemble 81. Human score 81 replaces the manual 68.",
+      "shows.json: grim-regional-2026.openingDate",
+      "shows.json: grim-regional-2026.openingDateSource",
+      "shows.json: grim-regional-2026.status"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "wonder-regional-2026/artsfuse--martin-copenhaver.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 71,
+        "description": "BRO-7257: Arts Fuse Wonder row shows Robert Israel, 2025-12-29, score 40. Byline in text is 'By Martin Copenhaver', mild positive on the show (praises Auggie, cast, design). Dual-model audit and the 3-model ensemble land 65-71. Human score drops the stale manual row (same url)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "black-swan-regional-2026/theater-mirror--mike-hoban.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 89,
+        "description": "BRO-7257: Theater Mirror Black Swan is counted twice (pipeline row Michele Markarian ?p=11324 score 89 plus manual row 'Mike Hoban' slug url score 90), same article, byline 'by Michele Markarian', published 2026-06-13. Keep the slug-url file, score 89 as the pipeline had it, so the manual row is dropped."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "black-swan-regional-2026/theater-mirror--michele-markarian.json",
+        "description": "BRO-7257: duplicate of theater-mirror--mike-hoban.json (same Theater Mirror article under the ?p=11324 url)."
+      },
+      {
+        "type": "run-script",
+        "description": "BRO-7257: stop the poller re-creating the ?p=11324 duplicate.",
+        "script": "block-review.js",
+        "args": [
+          "--show=black-swan-regional-2026",
+          "--url=https://www.theatermirror.net/?p=11324",
+          "--reason=BRO-7257-duplicate-of-slug-url-same-article"
+        ]
+      },
+      {
+        "type": "review-field-edit",
+        "file": "come-from-away-north-regional-2026/berkshire-on-stage--berkshire-on-stage.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7257: review is of the Sharon Playhouse (CT) production ('Come From Away at the Sharon Playhouse', 2026-09-15); this show is North Shore Music Theatre, Beverly MA, 2026-09-16 to 09-27."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "paranormal-activity-boston-regional-2026/boston-com--samantha-genzer.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 81,
+        "description": "BRO-7257: manual row scored 68 from an excerpt (pull quote on the 'predictable' caveat). Full text read: praises set design, performances, effects, shared fear, one limited reservation. GPT-4.1 90, Gemini 85, ensemble 81. Human score 81 replaces the manual 68."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "grim-regional-2026",
+        "field": "openingDate",
+        "oldValue": "2026-11-27",
+        "newValue": "2026-11-01",
+        "description": "shows.json: grim-regional-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "grim-regional-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "La Jolla Playhouse show page: First Look previews Oct 27 - Nov 1 mat, Weeks 2-7 from Nov 1 eve to Dec 13 (https://lajollaplayhouse.org/show/grim/)",
+        "description": "shows.json: grim-regional-2026.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "grim-regional-2026",
+        "field": "status",
+        "oldValue": "upcoming",
+        "newValue": "open",
+        "description": "shows.json: grim-regional-2026.status"
+      }
+    ]
+  }
+}
