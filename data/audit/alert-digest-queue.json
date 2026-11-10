@@ -1288,5 +1288,36 @@
       }
     ],
     "queuedAt": "2026-11-10T03:32:53.872Z"
+  },
+  {
+    "conditionKey": "land:land/near-breakeven",
+    "title": "Landing blocked: rebase red on land/near-breakeven",
+    "description": "land.yml did not land land/near-breakeven: the rebase gate went red at 23d746ab90. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/near-breakeven @ 23d746ab90 (origin/land/near-breakeven) → origin/main @ 5aea002ed1 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ bfb036e703: Rebasing (1/1) error: could not apply 23d746ab90b... feat(biz): Close to break-even list, and Closing Watch line on each show's Profitability Scorecard (BRO-7246) hint: Resolve all conflicts manually, mark them as resolved w Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42747126089",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/near-breakeven"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "23d746ab90b83a3821af78dff6661e295edaba70"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42747126089"
+      }
+    ],
+    "queuedAt": "2026-11-10T03:42:24.269Z"
   }
 ]
