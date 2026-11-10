@@ -461054,27 +461054,33 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-10T00:17:49.423Z",
-    "completedAt": "2026-11-10T00:18:14.781Z",
-    "totalReviews": 5,
-    "processed": 4,
+    "startedAt": "2026-11-10T00:18:00.134Z",
+    "completedAt": "2026-11-10T00:18:16.066Z",
+    "totalReviews": 4,
+    "processed": 3,
     "skipped": 0,
-    "errors": 0,
+    "errors": 1,
     "tokensUsed": {
-      "input": 36126,
-      "output": 1471,
-      "cacheRead": 19035,
+      "input": 20437,
+      "output": 895,
+      "cacheRead": 11421,
       "cacheWrite": 0,
-      "total": 84443
+      "total": 48902
     },
-    "costUsd": 0.1301344,
-    "runId": "42726373632",
+    "costUsd": 0.07492470000000001,
+    "runId": "42726382900",
     "source": "index",
-    "errorDetails": []
+    "errorDetails": [
+      {
+        "showId": "the-getaway-driver-central-regional-2026",
+        "outletId": "consequence",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
   },
   {
-    "startedAt": "2026-11-10T00:23:09.878Z",
-    "completedAt": "2026-11-10T00:23:09.880Z",
+    "startedAt": "2026-11-10T00:23:12.473Z",
+    "completedAt": "2026-11-10T00:23:12.474Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -461087,7 +461093,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "42726373632",
+    "runId": "42726382900",
     "source": "comparative-rescore",
     "errorDetails": []
   }
