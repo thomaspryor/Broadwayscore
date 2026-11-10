@@ -903,6 +903,20 @@
     "queuedAt": "2026-11-09T21:49:54.910Z"
   },
   {
+    "conditionKey": "opening-night-lane-summary:here-there-are-blueberries-2026:2026-11-09",
+    "title": "Opening-night lane for here-there-are-blueberries-2026: 0 unpublished, 18 failed, 130 errors",
+    "description": "passes 116, admitted 16\nfailed: https://nysun.com/article/apples-overlooked-macbook-pro-gets-an-upgrade (score failed for good after 1 attempt(s): scorer rejected the review: wrong_show)\nfailed: https://broadwayworld.com/article/Review-Roundup-HERE-THERE-ARE-BLUEBERRIES-Opens-on-Broadway-20261109 (score failed for good after 1 attempt(s): not a review: roundup page (BroadwayWorld Review-Roundup article (multi-outlet quote compilation)))\nfailed: https://playbill.com/article/reviews-what-did-critics-think-of-here-there-are-blueberries (score failed for good after 1 attempt(s): not a review: roundup page (Playbill Verdict roundup article (multi-outlet quote compilation)))\nfailed: https://nysun.com/article/mississippis-moment (incomplete card (no criticName), attempt 3/3; held from publish)\nfailed: https://newyorktheatreguide.com/reviews/here-there-are-blueberries-off-broadway-review (score failed for good after 1 attempt(s): scorer rejected the review: wrong_production)\nerror: talkin-broadway: every Talkin' Broadway index failed\nerror: dtli: fetch timed out after 45000ms: https://didtheylikeit.com/\nerror: playbill-verdict: playbill-verdict: roundup https://playbill.com/article/reviews-what-did-critics-think-of-here-there-are-blueberries parsed to 0 cited link(s), no review on a known outlet; page layout changed?\nerror: google-news: https://nysun.com/article/apples-overlooked-macbook-pro-gets-an-upgrade: score failed for good after 1 attempt(s): scorer rejected the review: wrong_show\nerror: playbill-verdict: playbill-verdict: roundup https://playbill.com/article/reviews-what-did-critics-think-of-here-there-are-blueberries parsed to 0 cited link(s), no review on a known outlet; page layout changed?",
+    "severity": "warn",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-10T07:04:50.425Z"
+  },
+  {
     "conditionKey": "llm-scoring:daily-cost-breach",
     "title": "LLM scoring daily spend over budget (still open — BRO-6732)",
     "description": "Still firing after 21 notifications since it was filed. Tracked at BRO-6732.\n\nRolling 24h LLM scoring cost $12.48 exceeds the $10.00 llmScoringDailyUsd alarm line, across all GitHub runs.",
@@ -1006,20 +1020,6 @@
     "queuedAt": "2026-11-09T23:58:01.057Z"
   },
   {
-    "conditionKey": "pending-unrecoverable:girls-off-west-end-2026",
-    "title": "1 review(s) for girls-off-west-end-2026 stuck in _pending with no text and no byline",
-    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nbcny--48004f36.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/adam-driver-whether-he-will-reprise-role-girls-revival/6569210/",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-10T01:30:07.345Z"
-  },
-  {
     "conditionKey": "land:land/bro-7257",
     "title": "Landing blocked: unit-tests-node red on land/bro-7257",
     "description": "land.yml did not land land/bro-7257: the unit-tests-node gate went red at 8e36de3b60. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42737379974",
@@ -1080,20 +1080,6 @@
       }
     ],
     "queuedAt": "2026-11-10T01:57:51.954Z"
-  },
-  {
-    "conditionKey": "pending-unrecoverable:in-the-heights-off-broadway-2026",
-    "title": "1 review(s) for in-the-heights-off-broadway-2026 stuck in _pending with no text and no byline",
-    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nycitycenter-org--7d6014eb.json (nycitycenter-org): fetch failed: All scraping methods failed https://www.nycitycenter.org/pdps/2026-2027/in-the-heights34/",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-10T02:09:19.797Z"
   },
   {
     "conditionKey": "pending-unrecoverable:well-see-off-broadway-2026",
@@ -1248,20 +1234,6 @@
     "queuedAt": "2026-11-10T03:32:53.872Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 21 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +15 more). Checked 2026-11-10.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-10T03:54:15.459Z"
-  },
-  {
     "conditionKey": "land:land/near-breakeven",
     "title": "Landing blocked: rebase red on land/near-breakeven",
     "description": "land.yml did not land land/near-breakeven: the rebase gate went red at 23d746ab90. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/near-breakeven @ 23d746ab90 (origin/land/near-breakeven) → origin/main @ 5aea002ed1 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ bfb036e703: Rebasing (1/1) error: could not apply 23d746ab90b... feat(biz): Close to break-even list, and Closing Watch line on each show's Profitability Scorecard (BRO-7246) hint: Resolve all conflicts manually, mark them as resolved w Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42747126089",
@@ -1365,34 +1337,6 @@
       }
     ],
     "queuedAt": "2026-11-10T04:42:23.742Z"
-  },
-  {
-    "conditionKey": "pending-unrecoverable:harry-potter-and-the-cursed-child-one-part-west-end-2026",
-    "title": "1 review(s) for harry-potter-and-the-cursed-child-one-part-west-end-2026 stuck in _pending with no text and no byline",
-    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--unknown.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/harry-potter-and-the-cursed-child-review-at-palace-theatre-london--new-cast-equals-the-original",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-10T05:18:55.097Z"
-  },
-  {
-    "conditionKey": "pending-unrecoverable:the-pianist-off-west-end-2026",
-    "title": "1 review(s) for the-pianist-off-west-end-2026 stuck in _pending with no text and no byline",
-    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--5e07c019.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/the-pianist-review-park-theatre-london",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-10T05:18:59.555Z"
   },
   {
     "conditionKey": "opening-night-publish-date-pre-opening:missing:the-visitors-off-broadway-2026",
