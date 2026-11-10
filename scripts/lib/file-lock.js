@@ -94,7 +94,7 @@ function isStale(lockPath, staleMs, abandonedMs, holderAlive = defaultHolderAliv
   if (ageMs <= staleMs) return false;
   let contents = '';
   try { contents = fs.readFileSync(lockPath, 'utf8'); } catch { /* unreadable: judged by the pid parse below */ }
-  return !holderAlive(contents);
+  return !holderAlive(contents, { mtimeMs: Date.now() - ageMs });
 }
 
 function defaultBody() {
@@ -228,4 +228,49 @@ function withFileLock(lockPath, fn, opts = {}) {
   }
 }
 
-module.exports = { withFileLock, pidAlive, readLockPid };
+/**
+ * Non-blocking, fail-CLOSED variant for "skip this run if busy" locks
+ * (cookie-renew, the gap-recovery run lock). One attempt: wx-create, else
+ * claim a stale lock IN PLACE under the steal gate (never unlink-then-wx: two
+ * waiters that both saw the dead holder would both win, BRO-7171).
+ *
+ * Stale = older than abandonedMs, or older than staleMs and
+ * !holderAlive(contents, {mtimeMs}). Defaults: staleMs 0 (a dead PID is stale
+ * at once), abandonedMs Infinity.
+ *
+ * @returns {Function|null} release (removes the lock only while it still holds
+ *   this call's body), or null when a live holder or a concurrent claim owns it.
+ */
+function tryAcquireFileLock(lockPath, opts = {}) {
+  const { staleMs = 0, abandonedMs = Infinity } = opts;
+  const holderAlive = opts.holderAlive || defaultHolderAlive;
+  const stamp = opts.body || defaultBody;
+  const body = stamp(); // fixed per call: release compares against it
+  const stealGatePath = `${lockPath}.steal-gate`;
+  fs.mkdirSync(path.dirname(lockPath), { recursive: true });
+  if (fs.existsSync(stealGatePath)) {
+    clearAbandonedGate(stealGatePath, staleMs, abandonedMs);
+    if (fs.existsSync(stealGatePath)) return null; // someone is claiming right now
+  }
+  let held = false;
+  try {
+    fs.writeFileSync(lockPath, body, { flag: 'wx' });
+    held = true;
+  } catch (e) {
+    if (e.code !== 'EEXIST') throw e;
+    try {
+      if (isStale(lockPath, staleMs, abandonedMs, holderAlive)) {
+        held = claimStaleLockInPlace(lockPath, stealGatePath, staleMs, abandonedMs, holderAlive, () => body);
+      }
+    } catch { held = false; } // vanished or lost the claim race
+  }
+  if (!held) return null;
+  let released = false;
+  return () => {
+    if (released) return;
+    released = true;
+    try { if (fs.readFileSync(lockPath, 'utf8') === body) fs.unlinkSync(lockPath); } catch { /* gone */ }
+  };
+}
+
+module.exports = { withFileLock, tryAcquireFileLock, pidAlive, readLockPid };

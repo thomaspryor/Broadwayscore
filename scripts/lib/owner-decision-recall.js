@@ -274,15 +274,13 @@ function startCacheWarmer({ cacheFile = CACHE_FILE, spawnFn = null, now = Date.n
   const lock = `${cacheFile}.warming`;
   try {
     fs.mkdirSync(path.dirname(cacheFile), { recursive: true });
-    try {
-      fs.writeFileSync(lock, String(now()), { flag: 'wx' });
-    } catch (err) {
-      if (err.code !== 'EEXIST' || now() - fs.statSync(lock).mtimeMs < WARM_LOCK_STALE_MS) return null;
-      // Stale: remove and race for it again with wx, so only one taker wins.
-      fs.unlinkSync(lock);
-      fs.writeFileSync(lock, String(now()), { flag: 'wx' });
-    }
-    const release = () => { try { fs.unlinkSync(lock); } catch { /* already gone */ } };
+    // Age-only staleness, claimed in place under file-lock's steal gate (the old
+    // unlink-then-wx let a second taker delete the first one's fresh lock, BRO-7171).
+    const release = require('./file-lock').tryAcquireFileLock(lock, {
+      // Judged on the injectable clock (staleMs -1: every existing lock goes to holderAlive).
+      body: () => String(now()), staleMs: -1, holderAlive: (_c, { mtimeMs }) => now() - mtimeMs < WARM_LOCK_STALE_MS,
+    });
+    if (!release) return null;
     const { spawn } = require('child_process');
     let child;
     try {

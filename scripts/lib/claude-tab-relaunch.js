@@ -183,20 +183,13 @@ const LOCK_STALE_MS = 5 * 60 * 1000;
 function acquireLock(ref) {
   // diacritic-guard-ok: sanitizing a cmux workspace ref into a filename
   const file = path.join(LOCK_DIR, `${String(ref).replace(/[^a-zA-Z0-9_-]/g, '_')}.lock`);
-  fs.mkdirSync(LOCK_DIR, { recursive: true });
-  for (let attempt = 0; attempt < 2; attempt++) {
-    try {
-      fs.writeFileSync(file, JSON.stringify({ pid: process.pid, ts: Date.now() }), { flag: 'wx' });
-      return () => { try { fs.unlinkSync(file); } catch { /* already gone */ } };
-    } catch (e) {
-      if (e.code !== 'EEXIST') throw e;
-      let age = 0;
-      try { age = Date.now() - fs.statSync(file).mtimeMs; } catch { continue; }
-      if (age < LOCK_STALE_MS) return null;
-      try { fs.unlinkSync(file); } catch { /* raced another cleaner */ }
-    }
-  }
-  return null;
+  // Age-only staleness, claimed in place under file-lock's steal gate: the old
+  // unlink-then-wx let two healers that both saw an old lock both win (BRO-7171).
+  return require('./file-lock').tryAcquireFileLock(file, {
+    body: () => JSON.stringify({ pid: process.pid, ts: Date.now() }),
+    abandonedMs: LOCK_STALE_MS,
+    holderAlive: () => true,
+  });
 }
 
 function sleepMs(ms) { Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms); }

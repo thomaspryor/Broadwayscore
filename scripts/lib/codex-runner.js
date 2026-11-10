@@ -1200,21 +1200,23 @@ function launchRunDir(runDir, slot = 0, { pollMs = 15_000 } = {}) {
  * minute old) frees it; onWait() runs between polls.
  */
 function withFileMutex(lockPath, fn, { onWait = () => {}, pollMs = 15_000 } = {}) {
-  const fs = require('fs');
-  const p = lockPath;
-  for (;;) {
-    try { fs.writeFileSync(p, String(process.pid), { flag: 'wx' }); break; } catch { /* held */ }
-    let pid = 0;
-    let ageMs = 0;
-    try { pid = Number(fs.readFileSync(p, 'utf8')); ageMs = Date.now() - fs.statSync(p).mtimeMs; } catch { continue; } // freed meanwhile
+  const { tryAcquireFileLock } = require('./file-lock');
+  // A dead holder's file is claimed in place under file-lock's steal gate; the
+  // old rmSync-then-wx let two waiters that both saw it dead both win (BRO-7171).
+  const holderAlive = (contents, { mtimeMs }) => {
+    const pid = Number(contents);
     // An empty file is a holder still writing its pid, unless it is a minute old (it died between the two).
-    let alive = pid > 0 || ageMs < 60_000;
-    if (pid > 0) { try { process.kill(pid, 0); } catch (e) { alive = !(e && e.code === 'ESRCH'); } }
-    if (!alive) { fs.rmSync(p, { force: true }); continue; }
+    if (!(pid > 0)) return Date.now() - mtimeMs < 60_000;
+    try { process.kill(pid, 0); return true; } catch (e) { return !(e && e.code === 'ESRCH'); }
+  };
+  let release;
+  for (;;) {
+    release = tryAcquireFileLock(lockPath, { body: () => String(process.pid), holderAlive });
+    if (release) break;
     onWait();
     Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, pollMs);
   }
-  try { return fn(); } finally { fs.rmSync(p, { force: true }); }
+  try { return fn(); } finally { release(); }
 }
 // One land-check run at a time per container, across Codex launches and land-local-check.js
 // (BRO-5730): two gauntlets at once on a 4-core container time tests out on both.

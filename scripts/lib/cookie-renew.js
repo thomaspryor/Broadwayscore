@@ -26,7 +26,7 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const { execFileSync } = require('child_process');
-const { pidAlive, readLockPid } = require('./file-lock');
+const { tryAcquireFileLock } = require('./file-lock');
 
 const LOGIN_COOLDOWN_MS = 20 * 60 * 60 * 1000;
 const LOGIN_WINDOW_MS = 7 * 24 * 60 * 60 * 1000;
@@ -134,23 +134,11 @@ const LOCK_STALE_MS = 2 * 60 * 60 * 1000;
  * @returns {Function|null} release function, or null if another run holds it
  */
 function acquireLock(lockPath) {
-  fs.mkdirSync(path.dirname(lockPath), { recursive: true });
-  for (let attempt = 0; attempt < 2; attempt++) {
-    try {
-      fs.writeFileSync(lockPath, `${process.pid} ${new Date().toISOString()}\n`, { flag: 'wx' });
-      return () => { try { fs.unlinkSync(lockPath); } catch { /* already gone */ } };
-    } catch (e) {
-      if (e.code !== 'EEXIST') throw e;
-      let ageMs = 0;
-      try { ageMs = Date.now() - fs.statSync(lockPath).mtimeMs; } catch { continue; }
-      if (pidAlive(readLockPid(lockPath)) && ageMs < LOCK_STALE_MS) return null;
-      // One launchd job on one machine is the only contender, so the
-      // unlink-then-wx window is not the multi-waiter race file-lock.js #1024
-      // guards against; wx still guarantees a single winner.
-      try { fs.unlinkSync(lockPath); } catch { /* raced; retry decides */ }
-    }
-  }
-  return null;
+  // In-place claim under file-lock's steal gate (BRO-7171): the old
+  // unlink-then-wx let two waiters that both saw a dead holder both win once
+  // browser recovery and login scripts started sharing this lock (race test:
+  // 5 of 10 racers inside at once). Release removes only this call's body.
+  return tryAcquireFileLock(lockPath, { staleMs: 0, abandonedMs: LOCK_STALE_MS });
 }
 
 // --- Keychain ----------------------------------------------------------------
