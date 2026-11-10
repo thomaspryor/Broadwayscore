@@ -164,3 +164,16 @@ test('review-texts: a hung sparse-checkout is bounded too', { skip: !hasTimeout 
     fs.rmSync(dir, { recursive: true, force: true, maxRetries: 3 });
   }
 });
+
+// BRO-7299: the 45s git stall window aborted the big review-texts clone while
+// GitHub built the pack (main red twice). Pin the widened, overridable window.
+test('BRO-7299: git_net honors GIT_NET_LOW_SPEED_TIME (default 45) and review-texts sets it wider', () => {
+  const run = (env) => spawnSync('bash', ['-c', `. "${ROOT}/scripts/lib/git-net-timeout.sh"; git_net 5 -c alias.x='!echo' config --get-all http.lowSpeedTime || true; git_net 5 --version >/dev/null; type git_net | grep -o 'lowSpeedTime=[^ ]*' | head -1`], { env: { ...process.env, ...env }, encoding: 'utf8' });
+  const src = fs.readFileSync(path.join(ROOT, 'scripts/lib/git-net-timeout.sh'), 'utf8');
+  assert.match(src, /GIT_NET_LOW_SPEED_TIME:-45/);
+  assert.match(src, /http\.lowSpeedTime="\$low"/);
+  assert.equal(run({}).status, 0);
+  const yml = fs.readFileSync(path.join(ACTIONS, 'checkout-review-texts', 'action.yml'), 'utf8');
+  const m = yml.match(/GIT_NET_LOW_SPEED_TIME="\$\{CHECKOUT_REVIEW_TEXTS_LOW_SPEED_SEC:-(\d+)\}"/);
+  assert.ok(m && Number(m[1]) > 45, 'review-texts clone must widen the stall window beyond 45s');
+});

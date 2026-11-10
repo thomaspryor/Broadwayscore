@@ -29,10 +29,13 @@
 git_net() {
   local secs="$1"; shift
   local bin
+  # BRO-7299: the 45s default aborts a clone while the server is still building
+  # the pack (no bytes sent yet). Callers with big repos set GIT_NET_LOW_SPEED_TIME.
+  local low="${GIT_NET_LOW_SPEED_TIME:-45}"
   bin="$(command -v timeout 2>/dev/null || command -v gtimeout 2>/dev/null || true)"
   if [ -n "$bin" ]; then
-    "$bin" -k 10 "$secs" git -c http.lowSpeedLimit=1000 -c http.lowSpeedTime=45 "$@"
+    "$bin" -k 10 "$secs" git -c http.lowSpeedLimit=1000 -c http.lowSpeedTime="$low" "$@"
   else
-    git -c http.lowSpeedLimit=1000 -c http.lowSpeedTime=45 "$@"
+    git -c http.lowSpeedLimit=1000 -c http.lowSpeedTime="$low" "$@"
   fi
 }

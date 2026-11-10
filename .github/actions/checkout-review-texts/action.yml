@@ -83,6 +83,11 @@ runs:
         # Full-history clones (fetch-depth 0, run-script.yml review_texts_depth)
         # were not in the timing sample: give them 4x.
         if [ "${FETCH_DEPTH}" = "0" ] && [ -z "${CHECKOUT_REVIEW_TEXTS_NET_TIMEOUT_SEC:-}" ]; then NET_SEC=900; fi
+        # BRO-7299: main went red on 2 pushes with "curl 28 Operation too slow ...
+        # 45 seconds" x3 attempts: the full clone sends no bytes while GitHub
+        # builds the pack for this big repo, and the 45s stall window (previously
+        # right at the p95 step time) aborted it. 180s stays far under NET_SEC.
+        export GIT_NET_LOW_SPEED_TIME="${CHECKOUT_REVIEW_TEXTS_LOW_SPEED_SEC:-180}"
         STDERR_FILE=$(mktemp)
         for ATTEMPT in $(seq 1 $MAX_RETRIES); do
           : > "$STDERR_FILE"
