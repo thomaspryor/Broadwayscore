@@ -5,7 +5,7 @@ run-name: 'Opening-night lane switch ${{ inputs.action }} ${{ inputs.variable }}
 # rollback. Cloud sessions get 403 on repo variables, so they dispatch this workflow (mcp__github__actions_run_trigger)
 # instead of asking the owner to click. workflow_dispatch only, never a cron.
 #
-#   action=set|clear  variable=LANE_ONLY_MARKETS|LANE_STANDDOWN|LANE_PREEMBARGO_DIRECT_ONLY  value=...  reason=...  mode=live|dry-run
+#   action=set|clear  variable=LANE_ONLY_MARKETS|LANE_STANDDOWN|LANE_PREEMBARGO_DIRECT_ONLY|LANE_COMPARATIVE_SETTLE_ENABLED  value=...  reason=...  mode=live|dry-run
 #       Any other variable name is refused. set refuses an empty value (use clear) and any market the lane does not know.
 #   action=rollback  [show=ID [night=YYYY-MM-DD]]  reason=...  mode=live|dry-run|drill  [hard=true]
 #       LANE_STANDDOWN=all, delete LANE_ONLY_MARKETS, wait up to 15 min for the lane to stand down by itself, cancel a
