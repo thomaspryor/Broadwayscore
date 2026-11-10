@@ -8,6 +8,7 @@
 // unit-tested with fixtures; this module only feeds them data.
 
 import type { RawShow } from './engine';
+import { isRepeatedlyExtended } from './closing-label';
 import type {
   ShowCommercial,
   SeasonStats,
@@ -758,6 +759,8 @@ export function getShowsAtRisk(): AtRiskShow[] {
       modelHoldLabel: getModelHoldLabel({ ...data, status: show.status }),
       trend: getRecoupmentTrend(slug),
       closingDate: isFutureDate(show.closingDate) ? show.closingDate ?? null : null,
+      closingExtensions: show.closingExtensions ?? null,
+      closingExtensionCount: show.closingExtensionCount ?? null,
     });
   }
 
@@ -852,6 +855,8 @@ export function getClosingWatch(): ClosingWatchShow[] {
       designation: data.designation,
       limitedRun: show.limitedRun,
       closingDate: show.closingDate,
+      closingExtensions: show.closingExtensions,
+      closingExtensionCount: show.closingExtensionCount,
       today,
       avgGross,
       breakEven,
@@ -986,6 +991,8 @@ export function getUpcomingClosings(): UpcomingClosing[] {
 
   for (const show of rawShows) {
     if (show.status !== 'open' || !show.closingDate) continue;
+    // BRO-7252: a run that keeps extending has no announced closing.
+    if (isRepeatedlyExtended(show)) continue;
 
     const closingDate = new Date(show.closingDate);
     if (isNaN(closingDate.getTime())) continue;
@@ -1041,9 +1048,13 @@ function toCommercialShowRow(slug: string, show: RawShow, data: ShowCommercial):
   const grossData = getShowGrosses(slug);
   const running = isRunningStatus(show.status);
   const weeks = recoupWeeks(slug, data, show);
+  const upcomingClose = running && isFutureDate(show.closingDate);
   return {
     slug,
     title: show.title,
+    closingDate: upcomingClose ? show.closingDate ?? null : null,
+    closingExtensions: upcomingClose ? show.closingExtensions ?? null : null,
+    closingExtensionCount: upcomingClose ? show.closingExtensionCount ?? null : null,
     status: show.status,
     designation: data.designation,
     capitalization: data.capitalization,

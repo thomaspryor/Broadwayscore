@@ -437,7 +437,7 @@ async function main() {
           showRecord.creativeTeam = ch.new;
         } else if (ch.field === 'closingDate') {
           // Route through guard so humanCorrectedClosingDate is honored.
-          if (!writeClosingDate(showRecord, ch.new, 'IBDB enrichment')) {
+          if (!writeClosingDate(showRecord, ch.new, 'IBDB enrichment', { recordExtension: false })) {
             console.log(`    🔒 ${showRecord.id}: closingDate skipped (humanCorrectedClosingDate=true)`);
           }
         } else {

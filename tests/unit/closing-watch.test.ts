@@ -176,3 +176,11 @@ test('break-even margin: a show far enough under stays under if our break-even i
   assert.equal(holdsAtLowerBreakEven(880, 935, 0.94), false);
   assert.equal(holdsAtLowerBreakEven(800, 935, 0.92), false); // raw under, season-adjusted not
 });
+
+test('watch: a repeatedly extended run (2+) has no announced closing even with a future closingDate (BRO-7252)', () => {
+  const future = { ...base, closingDate: '2027-07-04' };
+  assert.equal(isOnClosingWatch(future), false);
+  assert.equal(isOnClosingWatch({ ...future, closingExtensionCount: 1 }), false);
+  assert.equal(isOnClosingWatch({ ...future, closingExtensionCount: 12 }), true);
+  assert.equal(isOnClosingWatch({ ...future, closingExtensions: [{}, {}] }), true);
+});

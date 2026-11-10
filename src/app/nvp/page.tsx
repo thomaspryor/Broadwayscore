@@ -2,6 +2,7 @@ import { Suspense } from 'react';
 import { getBroadwayShows } from '@/lib/data-core';
 import { getAudienceBuzz, hasEnoughAudienceReviews } from '@/lib/data-audience';
 import NVPClient from './NVPClient';
+import { getClosingExtensionCount } from '@/lib/closing-label';
 import type { NVPShow } from './NVPClient';
 
 // NVP show IDs - shows invested in by Nothing Ventured Productions
@@ -46,6 +47,7 @@ export default function NVPPage() {
         isRevival: show.isRevival === true,
         openingDate: show.openingDate,
         closingDate: show.closingDate || undefined,
+        closingExtensionCount: getClosingExtensionCount(show) || undefined,
         images: show.images ? {
           thumbnail: show.images.thumbnail || undefined,
           poster: show.images.poster || undefined,

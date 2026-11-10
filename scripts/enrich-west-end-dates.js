@@ -902,7 +902,7 @@ async function main() {
           // Through the guard: planOltEnrichment already refuses
           // humanCorrectedClosingDate rows, and the guard refuses again at
           // write time (also stamps closingDateSource + closingDateUpdatedAt).
-          writeClosingDate(showRecord, ch.new, ch.source || 'olt');
+          writeClosingDate(showRecord, ch.new, ch.source || 'olt', { recordExtension: false });
         } else {
           showRecord[ch.field] = ch.new;
         }

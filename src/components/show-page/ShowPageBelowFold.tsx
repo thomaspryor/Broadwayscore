@@ -50,6 +50,7 @@ import type { ShowTonyInfo } from '@/lib/data-tony-noms';
 import type { TodayTixShowtimeData } from '@/lib/data-showtimes';
 import ScrollRow from '@/components/ScrollRow';
 import { getOperaHouseSuffix } from '@/lib/show-market';
+import { getClosingExtensionCount, ordinal } from '@/lib/closing-label';
 
 // BRO-5007: unreleased. A separate chunk, fetched only when the card renders,
 // so the held feature's code and copy stay out of every show page's bundle.
@@ -275,6 +276,8 @@ export default function ShowPageBelowFold({
             weeklyGross={grosses?.thisWeek?.gross}
             showStatus={show.status as 'open' | 'closed' | 'previews' | 'upcoming'}
             closingDate={show.closingDate}
+            closingExtensions={show.closingExtensions}
+            closingExtensionCount={show.closingExtensionCount}
             allTimeGross={grosses?.allTime?.gross}
             breakEvenCard={featureFlags.commercial && featureFlags.boxOfficeV2 ? breakEvenCard : null}
           />
@@ -431,8 +434,8 @@ export default function ShowPageBelowFold({
           )}
           {show.closingDate && (
             <div>
-              <dt className="text-fg-muted">{show.status === 'closed' ? 'Closed' : 'Closes'}</dt>
-              <dd className="text-white mt-0.5">{formatDate(show.closingDate)}</dd>
+              <dt className="text-fg-muted">{show.status === 'closed' ? 'Closed' : getClosingExtensionCount(show) >= 1 ? 'Extended through' : 'Closes'}</dt>
+              <dd className="text-white mt-0.5">{formatDate(show.closingDate)}{show.status !== 'closed' && getClosingExtensionCount(show) >= 1 ? ` (${ordinal(getClosingExtensionCount(show))} extension)` : ''}</dd>
             </div>
           )}
           {show.status === 'closed' && (() => {

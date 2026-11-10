@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { getTrendColor, getTrendIcon } from '@/config/commercial';
 import type { RecoupmentTrend } from '@/lib/data-types';
 import { formatCurrency, formatCapitalization, formatDataDate } from '@/lib/biz-format';
+import { getClosingLabel, ordinal } from '@/lib/closing-label';
 
 interface AtRiskCardProps {
   slug: string;
@@ -29,6 +30,9 @@ interface AtRiskCardProps {
   trend: RecoupmentTrend;
   /** Upcoming announced closing date (YYYY-MM-DD), null when none is ahead. */
   closingDate: string | null;
+  /** BRO-7252: press-recorded extensions, so an extended run reads "Extended through". */
+  closingExtensions?: Array<{ announcedAt: string | null; from: string | null; to: string; source?: string | null }> | null;
+  closingExtensionCount?: number | null;
 }
 
 const TREND_LABELS: Record<RecoupmentTrend, string> = {
@@ -51,10 +55,14 @@ export default function AtRiskCard({
   modelHoldLabel,
   trend,
   closingDate,
+  closingExtensions,
+  closingExtensionCount,
 }: AtRiskCardProps) {
   const trendLabel = TREND_LABELS[trend];
   const deficit = Math.max(0, breakEven - avgWeeklyGross);
   const closingText = formatDataDate(closingDate);
+  const closingLabel = getClosingLabel({ closingExtensions, closingExtensionCount }, closingText ?? '');
+  const extended = closingLabel.kind === 'extended';
   // To the nearest 5, as every recoupment figure is shown (owner 2026-10-22).
   const optimistic = Math.max(0, Math.round(modelRecoupmentPct[2] / 5) * 5);
 
@@ -72,8 +80,8 @@ export default function AtRiskCard({
       <div className="text-sm text-gray-400 mb-3">{season} Season</div>
       {closingText && (
         <div className="flex justify-between text-sm mb-1" data-testid="at-risk-closing">
-          <span className="text-fg-muted">Closing announced</span>
-          <span className="text-score-tepid">{closingText}</span>
+          <span className="text-fg-muted">{extended ? closingLabel.prefix : 'Closing announced'}</span>
+          <span className="text-score-tepid">{extended ? `${closingText} (${ordinal(closingLabel.extensionCount)} ext.)` : closingText}</span>
         </div>
       )}
       <div className="flex justify-between text-sm">
