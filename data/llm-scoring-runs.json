@@ -359242,48 +359242,27 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-10T04:24:28.129Z",
-    "completedAt": "2026-11-10T04:27:30.236Z",
-    "totalReviews": 81323,
-    "processed": 24,
-    "skipped": 81285,
-    "errors": 4,
+    "startedAt": "2026-11-10T04:30:46.951Z",
+    "completedAt": "2026-11-10T04:30:57.242Z",
+    "totalReviews": 4,
+    "processed": 0,
+    "skipped": 1,
+    "errors": 0,
     "tokensUsed": {
-      "input": 223040,
-      "output": 8720,
-      "cacheRead": 117972,
-      "cacheWrite": 11322,
-      "total": 538377
+      "input": 18773,
+      "output": 386,
+      "cacheRead": 11421,
+      "cacheWrite": 0,
+      "total": 45711
     },
-    "costUsd": 0.4584156,
-    "runId": "42754550545",
+    "costUsd": 0.0629289,
+    "runId": "42755599682",
     "source": "index",
-    "errorDetails": [
-      {
-        "showId": "an-enemy-of-the-people-west-end-2024",
-        "outletId": "times-uk",
-        "error": "Review text too short or missing"
-      },
-      {
-        "showId": "dear-evan-hansen-2016",
-        "outletId": "nyt-theater",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "alterations-west-end-2025",
-        "outletId": "thestage",
-        "error": "Review text too short or missing"
-      },
-      {
-        "showId": "the-years-west-end-2025",
-        "outletId": "thestage",
-        "error": "Review text too short or missing"
-      }
-    ]
+    "errorDetails": []
   },
   {
-    "startedAt": "2026-11-10T04:30:04.200Z",
-    "completedAt": "2026-11-10T04:30:10.756Z",
+    "startedAt": "2026-11-10T04:35:55.719Z",
+    "completedAt": "2026-11-10T04:35:55.720Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -359296,7 +359275,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "42754550545",
+    "runId": "42755599682",
     "source": "comparative-rescore",
     "errorDetails": []
   }
