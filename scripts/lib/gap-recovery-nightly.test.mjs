@@ -133,3 +133,10 @@ test('digest: an unanswered owner batch is named by count and file, never by ids
   assert.equal(none.ownerBatchPending, null);
   assert.match(N.renderDigestLine([none], NOW), /800 older ones have run out of automatic options/);
 });
+
+// The digest loads gap-recovery-nightly and must stay on node built-ins, so the
+// nightly keeps its own copy of the inert-strategy set: it must match the ledger's.
+test('nightly INERT_STRATEGIES matches the ledger set (copy kept off the digest import graph)', () => {
+  const L = require('./gap-recovery-ledger.js');
+  assert.deepEqual([...N.INERT_STRATEGIES].sort(), [...L.INERT_STRATEGIES].sort());
+});

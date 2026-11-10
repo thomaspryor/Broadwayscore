@@ -28,7 +28,10 @@ const path = require('path');
 const NIGHTLY_REL = path.join('data', 'audit', 'gap-recovery-nightly.jsonl');
 const DEFAULT_NIGHTLY_CEILING = 60;
 const PENDING_STUCK_HOURS = 24;
-const INERT = require('./gap-recovery-ledger').INERT_STRATEGIES;
+// Same set as gap-recovery-ledger INERT_STRATEGIES (parity-tested). Not
+// required from there: the morning digest loads this file and must stay on
+// node built-ins (the ledger pulls review-guards -> scraper -> playwright).
+const INERT = new Set(['URL_FIND_PROBE']);
 const AUTH_STREAK_ALERT = 2;
 const STALE_ROW_HOURS = 20; // run ~02:30 ET, digest ~08:00 ET: a missed night must not show yesterday as today
 
@@ -254,6 +257,7 @@ function renderDigestLine(rows, nowMs = Date.now()) {
 }
 
 module.exports = {
+  INERT_STRATEGIES: INERT,
   NIGHTLY_REL,
   DEFAULT_NIGHTLY_CEILING,
   PENDING_STUCK_HOURS,
