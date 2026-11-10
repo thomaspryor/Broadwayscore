@@ -4246,7 +4246,13 @@ function chooseOutletOrGeneric(dedicated, generic) {
   if (!dedicated) return { text: base, source: 'generic', novel: 0 };
   if (!base.trim()) return { text: dedicated, source: 'outlet', novel: 0 };
   const { novelProseVerdict } = require('./lib/gap-acceptance');
-  const v = novelProseVerdict(dedicated, base);
+  // Judge both bodies as they will be stored. Raw, a cookie-consent dialog
+  // (WhatsOnStage's IAB vendor list: 9,690 chars of long sentences) passed
+  // as "novel prose" and the generic copy won; the save path strips that
+  // dialog anyway, so it must not count.
+  const { textAsStored } = require('./lib/stored-text-form');
+  const asStored = (t) => { try { return textAsStored(t) || t; } catch { return t; } };
+  const v = novelProseVerdict(asStored(dedicated), asStored(base));
   return v.ok ? { text: base, source: 'generic', novel: v.novel } : { text: dedicated, source: 'outlet', novel: v.novel };
 }
 
@@ -8643,7 +8649,7 @@ function exitIfStuckAfterMain(graceMs = 20000) {
 }
 
 module.exports = {
-  reviewTimeoutMs, pushReviewTextsCheckpoint, commitChanges, extractTextFromHtml, preferDedicatedText, chooseOutletOrGeneric, extractArticleText, findReviewsToProcess, dropLeasedReviews, updateReviewJson, verifyFetchedContent };
+  reviewTimeoutMs, pushReviewTextsCheckpoint, commitChanges, extractTextFromHtml, extractTextFromHtmlGeneric, preferDedicatedText, chooseOutletOrGeneric, extractArticleText, findReviewsToProcess, dropLeasedReviews, updateReviewJson, verifyFetchedContent };
 
 // Run (guarded so scripts/collect-review-texts.test.mjs can require() this
 // file for pushReviewTextsCheckpoint() without kicking off a real collection

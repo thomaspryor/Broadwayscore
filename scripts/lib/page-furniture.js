@@ -94,6 +94,50 @@ const BOILERPLATE_RES = [
   /^(?:we use cookies|this (?:site|website) uses cookies)\b.{0,400}$/i,
   /^(?:accept|reject|manage) (?:all )?(?:cookies|preferences|consent)\.?$/i,
   /^manage preferences\.?$/i,
+  // site chrome left as the last line once the share/related furniture above
+  // it is cut (BRO-7171 dry run: these exposed endings read as cut-off bodies)
+  /^web production by tipit\b.{0,80}$/i, // ny1 footer
+  /^(?:\d{1,3}\.){3}\d{1,3}$/, // ny1 prints the client IP under the footer
+  /^unlimited digital access ?only .{0,60}$/i, // newsday
+  /^the newsday app makes it easier to access content without having to log in\.?$/i,
+  /^created with sketch\.?$/i, // variety svg title
+  /^access exclusive content$/i,
+  /^ad choices$/i,
+  /^already a member\? log in to hide these messages\.?$/i, // huffpost
+  /^this page has been blocked by an extension$/i,
+  /^[\w.-]+\.(?:com|net) is blocked$/i,
+  /^follow going out on facebook and on twitter @esgoingout\.?$/i, // standard
+  /^get the latest and greatest from the big smoke.{0,140}$/i, // timeout-london
+  /^all-access pass to top stories, events and offers around town\.?$/i, // village voice
+  // residual chrome found by re-running extraction over data/archives/reviews
+  /^number of vendors seeking consent(?: or relying on legitimate interest)?: \d+$/i, // IAB TCF dialog
+  /^get the best deals and latest updates on theat(?:re|er) and shows by signing up for .{1,40} newsletter today!?$/i,
+  /^the best of [\w ]{1,30} straight to your inbox$/i, // time out
+  /^déjà vu! we already have this email\. try another\?$/i,
+  /^thank you for signing up!?$/i,
+  /^(?:see all )?newsletters$/i, // ap
+  /^(?:skip )?advertisement$/i,
+  /^advertisement \| advertise on [\w ]{1,30}$/i, // newsday
+  /^remember me(?: on this computer)?$/i,
+  /^printed from: \S+$/i, // ft print view
+  /^print a single copy of this article for personal use\..{0,120}$/i,
+  /^get (?:local )?news (?:delivered )?(?:from .{1,60} )?(?:to|in) your inbox[.!]?$/i,
+  /^get weekly rundowns straight to your inbox$/i,
+  /^sign up to receive daily updates!?$/i,
+  /^subscribe for full access to the hollywood reporter$/i,
+  /^sign up for the critics$/i,
+  /^a weekly dispatch on the cultural discourse, for subscribers only\.?$/i,
+  /^(?:email me a log ?in link|admin login|need an account\? sign up|i agree to the subscription terms of use\.?)$/i,
+  /^view our media kit and learn all about how to advertise with us\..{0,20}$/i,
+  /^follow @ftlifearts on twitter to find out about our latest stories first\..{0,160}$/i,
+  // IAB TCF consent-dialog purpose texts (standard wording on every TCF site)
+  /^(?:we and our \d+ partners (?:use|store)|please note that your choices apply across|customi[sz]e your consent preferences|cookies, device or similar online identifiers|(?:advertising|content) presented to you on this service can be based on|information about your activity on this service|information regarding which (?:advertising|content) is presented|reports can be generated based on the combination|your data can be used to monitor for and prevent|certain information \(like an ip address|the choices you make regarding the purposes|in support of the purposes explained in this notice|your device might be distinguished from other devices|with your acceptance, your precise location|information about your activity on this service may be matched).{0,700}$/i,
+  /^(?:your preferences have been saved ?do not sell or share my personal data|if you switch this toggle to “no,” we will not sell or share).{0,700}$/i, // nypost
+  /^thank you for your patience while we verify access\..{0,300}$/i, // nyt bot wall
+  /^ad services privacy policy adchoices$/i,
+  // AP newsletter promos
+  /^(?:the latest ap-norc polls|our flagship newsletter breaks down the biggest headlines of the day\.|get the ap[’']s most compelling photographs sent directly to your inbox\.|get ap[’']s first personalized newsletter.{0,80})$/i,
+  /^listen to our free podcast (?:review of the show|going behind-the-scenes on the show):$/i, // whatsonstage
 ];
 
 // Copyright / publisher lines. Bounded length so a prose sentence that opens

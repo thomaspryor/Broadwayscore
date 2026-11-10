@@ -50,4 +50,21 @@ function cleanRecord(d, at) {
   return { record: out, removed };
 }
 
-module.exports = { cleanRecord, skipReason, TRIM_REASON };
+const TIER_RANK = { complete: 5, truncated: 4, excerpt: 3, stub: 2, invalid: 1 };
+
+/**
+ * Whether a clean may change the classifier's tier from `before` to `after`.
+ * Returns null when the write is fine, else the reason to leave the record.
+ * - tier-downgrade: cutting the furniture exposed chrome as the last line and
+ *   the body now reads as cut off.
+ * - invalid-upgrade: an `invalid` body is a wrong page (a section front, a
+ *   member wall); dropping one furniture line must not make it look valid.
+ */
+function tierChangeRefusal(before, after) {
+  if (before === after) return null;
+  if (before === 'invalid') return 'invalid-upgrade';
+  if ((TIER_RANK[after] || 0) < (TIER_RANK[before] || 0)) return 'tier-downgrade';
+  return null;
+}
+
+module.exports = { cleanRecord, skipReason, tierChangeRefusal, TRIM_REASON };

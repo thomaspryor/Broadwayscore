@@ -226,6 +226,15 @@ function checkCorruption(text) {
  */
 function stripTrailingJunk(text) {
   if (!text) return text;
+  // Page furniture (share bars, related-story runs, comment/ticket widgets,
+  // newsletter/paywall/donation lines, repeated paragraphs) comes from the ONE
+  // shared module the save path also uses (BRO-7171), so the detector, the
+  // stored-text cleaner and this scoring view cannot drift apart again. The
+  // anchor lists below stay separate on purpose: they are an assessment cut
+  // (verdict detection, scoring input), and swapping them for
+  // text-cleaning.js's storage cut changes the scoring text of 15,891 of
+  // 67,983 stored reviews (643 lose >10%), a rule-13 A/B, not a refactor.
+  text = require('./page-furniture').stripPageFurniture(text);
 
   // High-confidence anchors — definitively junk, NEVER legitimate review content.
   // Bypass the back-half guard (these patterns are specific enough to avoid false positives).

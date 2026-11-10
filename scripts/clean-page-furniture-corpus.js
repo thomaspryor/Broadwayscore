@@ -26,7 +26,7 @@
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
-const { cleanRecord, skipReason } = require('./lib/page-furniture-record');
+const { cleanRecord, skipReason, tierChangeRefusal } = require('./lib/page-furniture-record');
 
 function arg(name, def) {
   const hit = process.argv.slice(2).find((a) => a.startsWith(`--${name}=`));
@@ -55,13 +55,11 @@ const JSON_OUT = arg('json', null);
 
 function bump(m, k, n = 1) { m[k] = (m[k] || 0) + n; if (!m[k]) delete m[k]; }
 
-const TIER_RANK = { complete: 5, truncated: 4, excerpt: 3, stub: 2, invalid: 1 };
-function tierRank(t) { return TIER_RANK[t] || 0; }
 
 function main() {
   const { classifyContentTier } = require('./lib/content-quality');
   const at = new Date().toISOString();
-  const stats = { scanned: 0, changed: 0, written: 0, failed: 0, charsRemoved: 0, skipped: {}, byCategory: {}, byOutlet: {}, byWriter: {}, tierShift: {}, tierShiftRows: [], downgradeRows: [] };
+  const stats = { scanned: 0, changed: 0, written: 0, failed: 0, charsRemoved: 0, skipped: {}, byCategory: {}, byOutlet: {}, byWriter: {}, tierShift: {}, tierShiftRows: [], refusedRows: [] };
   const samples = [];
   const changedRows = [];
   for (const showId of fs.readdirSync(DIR).sort()) {
@@ -87,17 +85,16 @@ function main() {
       bump(stats.byWriter, d.fetchMethod || d.sourceMethod || 'unknown');
       let tb = null; let ta = null;
       try { tb = classifyContentTier(d).contentTier; ta = classifyContentTier(res.record).contentTier; } catch { /* tier unknown */ }
-      if (tierRank(ta) < tierRank(tb)) {
-        // Cutting the furniture left residual chrome as the last line (a
-        // Vulture "Show" + headline widget) and the classifier now reads the
-        // body as cut off. Leave the record as it is rather than downgrade it.
+      const refusal = tierChangeRefusal(tb, ta);
+      if (refusal) {
+        // Leave the record as it is (see tierChangeRefusal).
         stats.changed--;
         stats.charsRemoved -= d.fullText.length - res.record.fullText.length;
         for (const c of res.record.fullTextTrimmed.categories) bump(stats.byCategory, c, -1);
         bump(stats.byOutlet, d.outletId || '?', -1);
         bump(stats.byWriter, d.fetchMethod || d.sourceMethod || 'unknown', -1);
-        bump(stats.skipped, 'tier-downgrade');
-        stats.downgradeRows.push({ rel, from: tb, to: ta });
+        bump(stats.skipped, refusal);
+        stats.refusedRows.push({ rel, from: tb, to: ta, refusal });
         continue;
       }
       if (tb !== ta) {
@@ -148,7 +145,7 @@ function applyRows(rows, stats) {
       const res = cleanRecord(fresh, row.record.fullTextTrimmed.at);
       if (!res) return null;
       const { classifyContentTier } = require('./lib/content-quality');
-      if (tierRank(classifyContentTier(res.record).contentTier) < tierRank(classifyContentTier(fresh).contentTier)) return null;
+      if (tierChangeRefusal(classifyContentTier(fresh).contentTier, classifyContentTier(res.record).contentTier)) return null;
       const w = safeWriteReview(row.file, res.record, { force: true });
       const after = JSON.parse(fs.readFileSync(row.file, 'utf8'));
       if ((w && w.wrote === false) || after.fullText !== res.record.fullText) {
