@@ -516,5 +516,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-10T15:12:07.785Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7295-approval-scan",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7295-approval-scan",
+    "description": "land.yml did not land land/bro-7295-approval-scan: the unit-tests-node gate went red at d1ece530d0. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42841756088",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7295-approval-scan"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "d1ece530d01c360b6f5c96e8fbb812ffa1658178"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42841756088"
+      }
+    ],
+    "queuedAt": "2026-11-10T15:18:33.746Z"
   }
 ]
