@@ -27,7 +27,7 @@ test('other tours are untouched and re-applying is idempotent', () => {
 });
 
 test('overriding start still matches on the next fetch and after', () => {
-  const ov = [{ tourId: 't', start: '2026-01-01', set: { start: '2026-01-02' }, reason: 'x' }];
+  const ov = [{ tourId: 't', start: '2026-01-01', set: { start: '2026-01-02' }, was: { start: '2026-01-01' }, reason: 'x' }];
   const s = [{ city: 'A', venue: 'V', start: '2026-01-01', end: '2026-01-05' }];
   const once = applyStopOverrides('t', s, ov);
   assert.equal(once[0].start, '2026-01-02');
@@ -45,10 +45,22 @@ test('validation rejects bad entries', () => {
   assert.ok(validateOverrides({}).length);
 });
 
-test('every shipped override matches a stop in data/tour-schedules.json', () => {
-  const sched = JSON.parse(fs.readFileSync(new URL('../../data/tour-schedules.json', import.meta.url), 'utf8')).tours;
-  for (const o of doc.overrides) {
-    const stops = sched[o.tourId] && sched[o.tourId].stops;
-    assert.ok(stops && stops.some(s => s.start === o.start || s.start === (o.set && o.set.start)), `${o.tourId} ${o.start} has no matching stop`);
-  }
+test('upstream correcting the date itself is drift: override skipped and reported', () => {
+  const fixedUpstream = [{ ...fetched[0], end: '2026-12-13' }];
+  const seen = [];
+  const out = applyStopOverrides('hells-kitchen-tour-2025', fixedUpstream, doc.overrides, r => seen.push(r.status));
+  assert.equal(out[0].end, '2026-12-13');
+  assert.deepEqual(seen, ['drifted']);
+});
+
+test('an override whose stop vanished is reported unmatched', () => {
+  const seen = [];
+  applyStopOverrides('hells-kitchen-tour-2025', [fetched[1]], doc.overrides, r => seen.push(r.status));
+  assert.deepEqual(seen, ['unmatched']);
+});
+
+test('colliding or chained overrides are rejected', () => {
+  const a = { tourId: 't', start: '2026-01-01', set: { start: '2026-01-02' }, was: { start: '2026-01-01' }, reason: 'x' };
+  const b = { tourId: 't', start: '2026-01-02', set: { end: '2026-01-09' }, was: { end: '2026-01-05' }, reason: 'x' };
+  assert.ok(validateOverrides({ overrides: [a, b] }).some(e => /collides/.test(e)));
 });
