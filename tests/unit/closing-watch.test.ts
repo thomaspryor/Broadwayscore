@@ -234,4 +234,8 @@ test('new show too early to judge: fewer than 4 weeks, under or near break-even,
   assert.equal(isNewNearOrBelowBreakEven({ ...wanted, closingDate: '2027-01-03' }), false); // announced closing
   assert.equal(isNewNearOrBelowBreakEven({ ...wanted, limitedRun: true }), false);
   assert.equal(isNewNearOrBelowBreakEven({ ...wanted, status: 'closed' }), false);
+  // Opened Nov 8, 2026: New. A long-running show back from a break with few weeks: not New.
+  assert.equal(isNewNearOrBelowBreakEven({ ...wanted, openingDate: '2026-11-08', today: '2026-11-10' }), true);
+  assert.equal(isNewNearOrBelowBreakEven({ ...wanted, openingDate: '2019-03-01', today: '2026-11-10' }), false);
+  assert.equal(isNewNearOrBelowBreakEven({ ...wanted, openingDate: null }), true); // still in previews
 });
