@@ -1489,5 +1489,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-10T07:34:48.648Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-7270-mwabnkuj",
+    "title": "Landing blocked: rebase red on land/job/linear-BRO-7270-mwabnkuj",
+    "description": "land.yml did not land land/job/linear-BRO-7270-mwabnkuj: the rebase gate went red at 7c825295b9. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-7270-mwabnkuj @ 7c825295b9 (origin/land/job/linear-BRO-7270-mwabnkuj) → origin/main @ 11bd6b51e0 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 84ac1f4564: Rebasing (1/2) error: could not apply c16f8004ba0... BRO-7270: city-finder-stage normalizes shouted titles + guard test hint: Resolve all conflicts manually, mark them as resolved with hint: \"git  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42773303869",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-7270-mwabnkuj"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "7c825295b90d038eb30a9505873025b9086033e6"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42773303869"
+      }
+    ],
+    "queuedAt": "2026-11-10T07:41:08.947Z"
   }
 ]
