@@ -149,6 +149,13 @@ test('Telegraph adapter: subscriber page -> text; walled page -> authWall; Akama
   const longTeaser = fx('walled.html').replace('Fixture teaser.', 'Fixture teaser. ' + 'More teaser words here. '.repeat(80));
   assert.equal((await A.ADAPTERS.telegraph.extract(fakePage({ html: longTeaser }), 'https://www.telegraph.co.uk/x/')).authWall, true);
 
+  // A wall variant with no blur class and a long "…" preview is still a wall.
+  const noBlurLong = longTeaser.replace(/martech-paywall__blur(?:--short)?/g, '');
+  assert.equal((await A.ADAPTERS.telegraph.extract(fakePage({ html: noBlurLong }), 'https://www.telegraph.co.uk/x/')).authWall, true);
+  // The class name inside an inline script is not a wall on a subscriber page.
+  const scriptMention = fx('logged-in.html').replace('</head>', '<script>var c="martech-paywall__blur";</script></head>');
+  assert.equal((await A.ADAPTERS.telegraph.extract(fakePage({ html: scriptMention }), 'https://www.telegraph.co.uk/x/')).authWall, undefined);
+
   const bot = await A.ADAPTERS.telegraph.extract(fakePage({ html: fx('bot-block.html') }), 'https://www.telegraph.co.uk/x/');
   assert.match(bot.error, /Bot-check/);
   assert.equal(bot.authWall, undefined);

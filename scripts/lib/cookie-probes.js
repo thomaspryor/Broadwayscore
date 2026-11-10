@@ -32,14 +32,16 @@ const COOKIE_PROBES = {
   },
   // BRO-7171: browser-only. Akamai answers a plain fetch (and headless
   // Chrome) with its "Access Issue Help" block page (HTTP 402, TollBit), so
-  // renew-cookies.js probes this one inside the headed persistent profile
+  // renew-cookies.js probes this one inside the persistent profile (headless
+  // for --probe-only: Akamai serves the article to headless Chrome)
   // (browserOnly), with the gap adapter's body extractor (extractBody) and
   // the same walled url as the adapter's auth probe. Logged out: 168-char
   // teaser under martech-paywall__blur (2026-11-10).
   telegraph: {
     url: 'https://www.telegraph.co.uk/theatre/what-to-see/romeo-and-juliet-review-sadie-sink-noah-jupe/',
     minBody: 1500,
-    wallMarker: /martech-paywall__blur/i,
+    // In a class attribute only, never a script/CSS bundle mention.
+    wallMarker: /class="[^"]*martech-paywall__blur/i,
     gateMarker: /martech-paywall__blur|data-js="martech-paywall"|martech-regwall/i,
     browserOnly: true,
     extractBody: (html) => require('./browser-outlet-adapters').extractTelegraphBody(html),

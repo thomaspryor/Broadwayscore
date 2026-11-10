@@ -129,7 +129,13 @@ function extractTelegraph() {
     const text = extractTelegraphBody(html);
     // The blurred column is the logged-out page whatever the teaser length;
     // the paywall section with a short body is too. Neither is evidence.
-    const walled = /martech-paywall__blur/i.test(html) || (TELEGRAPH_WALL_RE.test(html) && (!text || text.length < TELEGRAPH_TEASER_MAX));
+    // Markup only: a class name inside an inline script/style bundle says
+    // nothing about this viewer. A teaser ending in "…" under the wall is the
+    // logged-out page whatever its length.
+    const markup = html.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/gi, '');
+    const wallShown = TELEGRAPH_WALL_RE.test(markup);
+    const walled = /martech-paywall__blur/i.test(markup)
+      || (wallShown && (!text || text.length < TELEGRAPH_TEASER_MAX || /[…]\s*$|\.\.\.\s*$/.test(text)));
     if (walled) return { error: 'access wall (paywall/registration) in place of the body', authWall: true, title, html };
     if (!text) return { error: 'No article body element found (extractTelegraphBody returned null)', title, html };
     return { text, title, len: text.length, html };
