@@ -54,6 +54,24 @@ const _fetchedMs = (d) => {
   return Number.isFinite(t) ? t : null;
 };
 
+const _sha = (t) => require('crypto').createHash('sha256').update(String(t == null ? '' : t)).digest('hex');
+
+// BRO-7171: a chrome-gain rollback (gap-rollback.js) restores the prior text
+// AND its older textFetchedAt, so recency alone would let the chrome text it
+// undoes win back. A side stamped rolledBack wins only against a side whose
+// fullText is exactly the chrome text named by its own provenance
+// (newFullTextHash); against any other text (a real refetch) recency decides.
+function rollbackWins(a, b) {
+  const rb = (x, y) => {
+    const p = x && x.textRecoveryProvenance;
+    return !!(p && p.rolledBack && p.newFullTextHash && typeof y.fullText === 'string'
+      && _sha(x.fullText) !== p.newFullTextHash && _sha(y.fullText) === p.newFullTextHash);
+  };
+  if (rb(a, b)) return 'a';
+  if (rb(b, a)) return 'b';
+  return null;
+}
+
 const TIER_RANK = { complete: 4, truncated: 3, excerpt: 2, stub: 1, invalid: 0 };
 
 // BRO-5656: a newer, shorter refetch is the corrected article; length alone
@@ -65,6 +83,8 @@ const TIER_RANK = { complete: 4, truncated: 3, excerpt: 2, stub: 1, invalid: 0 }
 // restore-protected-fields' stale-checkout guard so both steps agree.
 function fresherTextWins(a, b) {
   if (!_isObj(a) || !_isObj(b) || _textLen(a) === 0 || _textLen(b) === 0) return null;
+  const rolled = rollbackWins(a, b);
+  if (rolled) return rolled;
   const aAt = _fetchedMs(a);
   const bAt = _fetchedMs(b);
   if (aAt === null || bAt === null || aAt === bAt) return null;
@@ -162,4 +182,4 @@ if (require.main === module) {
   try { _cli(); } catch (e) { process.stderr.write(`review-json-three-way-merge: ${e.message}\n`); }
 }
 
-module.exports = { mergeReviewJson, TEXT_STATE_GROUP, fresherTextWins };
+module.exports = { mergeReviewJson, TEXT_STATE_GROUP, fresherTextWins, rollbackWins };
