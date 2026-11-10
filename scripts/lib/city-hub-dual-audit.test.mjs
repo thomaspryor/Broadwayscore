@@ -115,3 +115,20 @@ test('record hash changes when our record changes, so cached audits re-run (BRO-
   const src = fs.readFileSync(new URL('../audit-city-hub-dual-model.js', import.meta.url), 'utf8');
   assert.match(src, /recHash !== /);
 });
+
+test('BRO-7274: DC/LA hub review hosts from the coverage audit resolve to a registered outlet', () => {
+  const { resolveOutletFromUrl } = require('./review-normalization');
+  const urls = [
+    'https://lbpost.com/life/arts-culture/x', 'https://www.randomlengthsnews.com/archives/2026/09/09/x',
+    'https://www.culvercitynews.org/x', 'https://gardenavalleynews.org/x', 'https://www.thedowneypatriot.com/x',
+    'https://palipost.com/x', 'https://peoplesworld.org/article/x', 'https://www.ladancechronicle.com/x',
+    'https://www.onthereels.com/p/x', 'https://stagetakes.com/x', 'https://dc.citycast.fm/theater-reviews/x',
+    'https://www.capitalcommunitynews.com/content/x', 'https://ladramacriticscircle.com/x', 'https://www.ladcc.org/x',
+    'https://thehollywoodtimes.today/x', 'https://accessiblyliveoffline.wordpress.com/x', 'https://itsnotaboutme.tv/x',
+    'https://latheatrebites.com/x', 'https://www.immersivescenelosangeles.com/post/x', 'https://www.halloweenscenelosangeles.com/post/x',
+  ];
+  for (const u of urls) {
+    const r = resolveOutletFromUrl(u);
+    assert.ok(r && (r.outletId || r.id), `no registered outlet for ${u}`);
+  }
+});
