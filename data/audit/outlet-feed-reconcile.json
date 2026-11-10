@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-10T09:54:28.863Z",
+  "generatedAt": "2026-11-10T10:55:19.637Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -125,6 +125,10 @@
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
     {
+      "outletId": "north-west-end",
+      "error": "Timeout fetching https://northwestend.com/feed/"
+    },
+    {
       "outletId": "theartsdispatch",
       "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
     },
@@ -137,7 +141,7 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 849,
+  "itemsScanned": 838,
   "matchedGaps": 7,
   "possibleGaps": 2,
   "gaps": [
