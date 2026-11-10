@@ -108,7 +108,9 @@ describe('Redundancy guard ignores earlier runs near their loop deadline (BRO-60
     // Worst-case iteration: 2min poller lookup + wait-for-run cap + sleep + 3min gh overhead.
     const deadline = num(/DEADLINE=\$\(\( \$\(date \+%s\) \+ (\d+)\*60 \)\)/);
     const wait = num(/wait-for-run\.sh "\$RUN_ID" (\d+)/);
-    const interval = num(/POLL_INTERVAL=\$\{\{ inputs\.poll_interval_minutes \|\| (\d+) \}\}/);
+    // BRO-7306: the default now reaches the script through the step env (the run block holds no ${{ }}).
+    const interval = num(/POLL_INTERVAL_OR_DEFAULT: \$\{\{ inputs\.poll_interval_minutes \|\| (\d+) \}\}/);
+    assert.match(src, /POLL_INTERVAL=\$POLL_INTERVAL_OR_DEFAULT\b/);
     assert.ok(COVER + 2 + wait + interval + 3 <= deadline,
       `COVER_MAX_AGE_MIN=${COVER} + worst iteration ${2 + wait + interval + 3} > DEADLINE ${deadline}`);
   });
