@@ -234,7 +234,12 @@ function stripTrailingJunk(text) {
   // (verdict detection, scoring input), and swapping them for
   // text-cleaning.js's storage cut changes the scoring text of 15,891 of
   // 67,983 stored reviews (643 lose >10%), a rule-13 A/B, not a refactor.
-  text = require('./page-furniture').stripPageFurniture(text);
+  // The furniture pass runs AFTER the anchors (end of this function), never
+  // before: the anchors' back-half guard is a ratio of the text length, so
+  // removing furniture first moved a mid-review "Headline: Text" match past
+  // 60% and cut real prose (Vulture Parade 2023 lost 3,190 chars in the
+  // ship-check corpus replay). After, the scoring view can only lose
+  // furniture lines relative to the pre-BRO-7171 cut.
 
   // High-confidence anchors — definitively junk, NEVER legitimate review content.
   // Bypass the back-half guard (these patterns are specific enough to avoid false positives).
