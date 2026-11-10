@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7251-c",
   "planId": "4cb41d9a-6fcd-408a-903e-7f189d7d2ff7",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-11-09T23:52:27.339Z",
   "submitter": {
     "name": null,
@@ -34,5 +34,19 @@
         "description": "shows.json: schmigadoon-2026.closingDateSource"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-10T00:00:52.241Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "closingDate: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "closingDateSource: current value doesn't match expected (data changed since plan was created)"
+    }
+  ],
+  "executedIn": "ci"
 }
