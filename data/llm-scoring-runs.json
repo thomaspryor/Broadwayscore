@@ -1,43 +1,5 @@
 [
   {
-    "startedAt": "2026-11-09T02:03:33.878Z",
-    "completedAt": "2026-11-09T02:03:41.729Z",
-    "totalReviews": 13,
-    "processed": 74,
-    "skipped": 12,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 482935,
-      "output": 24883,
-      "cacheRead": 299628,
-      "cacheWrite": 30182,
-      "total": 1249598
-    },
-    "costUsd": 1.9375402,
-    "runId": "42548204037",
-    "source": "index",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-11-09T02:08:37.571Z",
-    "completedAt": "2026-11-09T02:08:37.572Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "42548204037",
-    "source": "comparative-rescore",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-11-09T02:04:16.333Z",
     "completedAt": "2026-11-09T02:04:21.792Z",
     "totalReviews": 10,
@@ -308931,6 +308893,90 @@
     },
     "costUsd": 0,
     "runId": "42815444458",
+    "source": "comparative-rescore",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-11-10T12:59:36.089Z",
+    "completedAt": "2026-11-10T13:03:10.288Z",
+    "totalReviews": 81440,
+    "processed": 83,
+    "skipped": 81325,
+    "errors": 4,
+    "tokensUsed": {
+      "input": 672767,
+      "output": 29463,
+      "cacheRead": 407304,
+      "cacheWrite": 15093,
+      "total": 1677599
+    },
+    "costUsd": 1.261198975,
+    "runId": "42819406302",
+    "source": "index",
+    "errorDetails": [
+      {
+        "showId": "an-enemy-of-the-people-west-end-2024",
+        "outletId": "times-uk",
+        "error": "Review text too short or missing"
+      },
+      {
+        "showId": "a-dolls-house-part-2-2017",
+        "outletId": "nyt-theater",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "alterations-west-end-2025",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      },
+      {
+        "showId": "the-years-west-end-2025",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-11-10T13:10:18.085Z",
+    "completedAt": "2026-11-10T13:14:21.403Z",
+    "totalReviews": 81440,
+    "processed": 46,
+    "skipped": 77289,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 251607,
+      "output": 14629,
+      "cacheRead": 151593,
+      "cacheWrite": 33897,
+      "total": 673722
+    },
+    "costUsd": 1.09896565,
+    "runId": "42819406302",
+    "source": "index",
+    "errorDetails": [
+      {
+        "showId": "ceilidh-the-musical-off-west-end-2026",
+        "outletId": "daily-echo",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-11-10T13:19:19.221Z",
+    "completedAt": "2026-11-10T13:22:33.588Z",
+    "totalReviews": 81,
+    "processed": 81,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 212573,
+      "output": 17809,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 230382
+    },
+    "costUsd": 0.5893720000000001,
+    "runId": "42819406302",
     "source": "comparative-rescore",
     "errorDetails": []
   }
