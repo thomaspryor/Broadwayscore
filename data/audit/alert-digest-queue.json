@@ -1725,20 +1725,6 @@
     "queuedAt": "2026-11-10T20:49:59.136Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 22 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +16 more). Checked 2026-11-10.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-10T21:34:52.216Z"
-  },
-  {
     "conditionKey": "land:land/job/linear-BRO-7327-mwb61lfb",
     "title": "Landing blocked: resolve red on land/job/linear-BRO-7327-mwb61lfb",
     "description": "land.yml did not land land/job/linear-BRO-7327-mwb61lfb: the resolve gate went red at 0d5ce0262e. The branch ref was left in place and nothing was pushed to main. First failure: REFUSED: resolve: land/job/linear-BRO-7327-mwb61lfb tip is cdcb5ae202 (origin/land/job/linear-BRO-7327-mwb61lfb), not the verified tip 0d5ce0262e — a newer push superseded this landing; nothing pushed (attempts 0, 39.3s) Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42902835443",
@@ -1782,5 +1768,19 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-10T22:13:30.900Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 21 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +15 more). Checked 2026-11-10.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-10T22:54:51.027Z"
   }
 ]
