@@ -141,7 +141,7 @@ const STUB_ROOT = fs.mkdtempSync(path.join(os.tmpdir(), 'veg-stubroot-'));
 fs.mkdirSync(path.join(STUB_ROOT, 'scripts'));
 fs.writeFileSync(path.join(STUB_ROOT, 'scripts', 'linear-brain.js'), 'process.exit(Number(process.env.STUB_PROBE_EXIT || 0));\n');
 
-function runHook(transcriptPath, lastAssistantMessage, env = {}, stopHookActive = false) {
+function runHook(transcriptPath, lastAssistantMessage, env = {}, stopHookActive = false, { cwd, hook = REPO_HOOK } = {}) {
   const stdin = JSON.stringify({
     transcript_path: transcriptPath,
     session_id: `veg-test-${randomUUID()}`,
@@ -152,7 +152,8 @@ function runHook(transcriptPath, lastAssistantMessage, env = {}, stopHookActive 
   // (the one this PR changed), regardless of what's on the host machine.
   const fakeHomeDir = fs.mkdtempSync(path.join(os.tmpdir(), 'veg-fakehome-'));
   try {
-    const r = spawnSyncStdinFile('bash', [REPO_HOOK], {
+    const r = spawnSyncStdinFile('bash', [hook], {
+      ...(cwd ? { cwd } : {}),
       input: stdin,
       encoding: 'utf8',
       // BRO-5359: the review-coverage gate has its own tests (scripts/lib/review-coverage.test.mjs); these cases model
@@ -2417,4 +2418,198 @@ test('PASSIVEOFFER false-positive guards: a real DECISION NEEDED block, finished
   assertAllowed(runHook(noEdits, 'The gate matches `say the word` and `shall I build` in closings, and it reviewed the pull request diff itself.', PO_ON), 'quoted code and "reviewed" are not offers');
   assertAllowed(runHook(noEdits, 'Want me to land it now?\nNO-VERIFY: quoting the owner\'s own phrase for a test', PO_ON), 'NO-VERIFY bypass');
   fs.rmSync(dir, { recursive: true, force: true });
+});
+
+// ── BRO-7315: the engine must not fail silently, and every block must be countable ──
+// Every python exit in the hook is sys.exit(0) with the verdict printed, so a non-zero python status
+// means the engine crashed. Before BRO-7315 that left the verdict empty, matched no branch and exited
+// 0: every end-of-session check skipped without a word.
+function withBrokenPython(fn) {
+  const shim = fs.mkdtempSync(path.join(os.tmpdir(), 'veg-pyshim-'));
+  fs.writeFileSync(path.join(shim, 'python3'), '#!/bin/bash\necho "Traceback (most recent call last): boom" >&2\nexit 1\n', { mode: 0o755 });
+  try { return fn({ PATH: `${shim}:${process.env.PATH}` }); } finally { fs.rmSync(shim, { recursive: true, force: true }); }
+}
+
+test('ENGINE_CRASH: a crashed check engine blocks once (it used to pass every check silently)', skipNoRepoHook, () => {
+  const dir = makeTmpDir('engine-crash');
+  const transcript = writeTranscript(dir, [QUALIFYING_EDIT]);
+  withBrokenPython((env) => {
+    const first = runHook(transcript, 'Fixed it.\n\nSAFE TO ARCHIVE — done', env);
+    assertBlocked(first, 'engine crash');
+    assert.match(first.stderr, /check engine crashed \(python exit 1/, `names the crash, got: ${first.stderr.slice(0, 300)}`);
+    assert.match(first.stderr, /\[VE:ENGINE_CRASH\]\s*$/, 'ends with the countable tag');
+    assertAllowed(runHook(transcript, 'Fixed it.\n\nSAFE TO ARCHIVE — done', env, true), 'the same chain is not blocked twice (a broken engine must not trap the session)');
+    assertAllowed(runHook(transcript, 'Fixed it.\n\nSAFE TO ARCHIVE — done', env), 'a later chain in the same session is not blocked again: once per session, so a repeating crash costs one turn, not one per prompt');
+  });
+  const dir2 = makeTmpDir('engine-crash-off');
+  const transcript2 = writeTranscript(dir2, [QUALIFYING_EDIT]);
+  withBrokenPython((env) => {
+    assertAllowed(runHook(transcript2, 'Fixed it.\n\nSAFE TO ARCHIVE — done', { ...env, ENGINE_CRASH_GATE_DISABLE: '1' }), 'kill switch');
+  });
+  fs.rmSync(dir2, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('every block ends with one [VE:<code>] line and a pass prints none', skipNoRepoHook, () => {
+  const dir = makeTmpDir('ve-tag');
+  const transcript = writeTranscript(dir, [QUALIFYING_EDIT, toolUse('Bash', { command: 'npx tsc --noEmit src/lib/scoring.ts' })]);
+  const blocked = runHook(transcript, 'Fixed the rounding bug and verified with tsc.');
+  assertBlocked(blocked, 'no status line');
+  assert.match(blocked.stderr, /\[VE:NOSTATUSLINE\]\s*$/, `tag names the code that blocked, got tail: ${blocked.stderr.slice(-120)}`);
+  assert.equal((blocked.stderr.match(/\[VE:[A-Z_]+\]/g) || []).length, 1, 'exactly one tag per block');
+  const clean = runHook(writeTranscript(dir, []), 'Nothing changed.');
+  assertAllowed(clean, 'no work, no block');
+  assert.doesNotMatch(clean.stderr, /\[VE:/, 'a pass prints no tag');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+// ───────────── BRO-7315 proof tests: one blocking case + a passing twin per Stop code ─────────────
+// Each pair drives the REAL hook; the tag assertion is the machine-readable [VE:<CODE>] line.
+// Edit-session fixtures keep the status-line / board / chain gates out of the way so the code under test is the one that speaks.
+const QUIET = { SESSION_STATUS_GATE_DISABLE: '1', CLOUD_CHAIN_GATE_DISABLE: '1', BOARD_GATE_DISABLED: '1' };
+const tagRe = (code) => new RegExp(`\\[VE:${code}\\]\\s*$`);
+function proofPair(label, { block, pass }, code) {
+  const dir = makeTmpDir(`proof-${label}`);
+  try {
+    const b = block(dir);
+    assertBlocked(b, `${code} blocking case`);
+    assert.match(b.stderr, tagRe(code), `${code}: tag on the last stderr line, got tail: ${b.stderr.slice(-120)}`);
+    const t = pass(dir);
+    assertAllowed(t, `${code} passing twin`);
+    assert.doesNotMatch(t.stderr, new RegExp(`\\[VE:${code}\\]`), `${code} absent on the twin`);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+}
+
+test('BRO-7315 HUMAN_TIME_ESTIMATE: a human-pace estimate in the final message blocks; a minutes estimate passes', skipNoRepoHook, () => {
+  proofPair('human-time', {
+    block: (d) => runHook(writeTranscript(d, []), 'The migration will take about 3 days of careful work.'),
+    pass: (d) => runHook(writeTranscript(d, []), 'The migration takes about 4 minutes of wall-clock time.'),
+  }, 'HUMAN_TIME_ESTIMATE');
+});
+
+test('BRO-7315 UNSHIPCHECKED: a scripts/lib edit without a review blocks; with /ship-check it passes', skipNoRepoHook, () => {
+  const edit = toolUse('Edit', { file_path: '/work/repo/scripts/lib/proof-widget.js', old_string: 'a', new_string: 'b' });
+  const run = toolUse('Bash', { command: 'node scripts/lib/proof-widget.js' });
+  proofPair('unshipchecked', {
+    block: (d) => runHook(writeTranscript(d, [edit, run], { card: false }), 'Done.', QUIET),
+    pass: (d) => runHook(writeTranscript(d, [edit, run, SHIP_CHECK], { card: false }), 'Done.', QUIET),
+  }, 'UNSHIPCHECKED');
+});
+
+// The visual branch reads .claude/visual-qa/<branch>/verdict.json and `git branch` relative to the
+// hook's cwd, so these run in a throwaway git repo.
+function visualRepo(verdict) {
+  const repo = makeTmpDir('proof-visual-repo');
+  spawnSync('git', ['init', '-q', '-b', 'proof-branch'], { cwd: repo });
+  if (verdict !== undefined) {
+    const vd = path.join(repo, '.claude', 'visual-qa', 'proof-branch');
+    fs.mkdirSync(vd, { recursive: true });
+    fs.writeFileSync(path.join(vd, 'verdict.json'), JSON.stringify(verdict));
+  }
+  return repo;
+}
+const UI_EDIT = toolUse('Edit', { file_path: '/work/repo/src/components/ProofCard.tsx', old_string: '<div>', new_string: '<div className="p-4">' });
+function visualPair(label, code, { blockVerdict, passVerdict, userText, msg = 'Updated the card.' }) {
+  const repos = [];
+  const mk = (v) => { const r = visualRepo(v); repos.push(r); return r; };
+  try {
+    proofPair(label, {
+      block: (d) => runHook(writeTranscript(d, [UI_EDIT], { userText, card: false }), msg, QUIET, false, { cwd: mk(blockVerdict) }),
+      pass: (d) => runHook(writeTranscript(d, [UI_EDIT], { userText, card: false }), msg, QUIET, false, { cwd: mk(passVerdict) }),
+    }, code);
+  } finally {
+    for (const r of repos) fs.rmSync(r, { recursive: true, force: true });
+  }
+}
+
+test('BRO-7315 UNVERIFIED_VISUAL: a UI edit with no verdict blocks; with a fresh v2 verdict it passes', skipNoRepoHook, () => {
+  visualPair('visual', 'UNVERIFIED_VISUAL', { blockVerdict: undefined, passVerdict: { schemaVersion: 2, verdicts: {} } });
+});
+
+test('BRO-7315 UNVERIFIED_VISUAL_SCHEMA: a stale v1 verdict blocks; v2 passes', skipNoRepoHook, () => {
+  visualPair('visual-schema', 'UNVERIFIED_VISUAL_SCHEMA', { blockVerdict: { schemaVersion: 1, verdicts: {} }, passVerdict: { schemaVersion: 2, verdicts: {} } });
+});
+
+test('BRO-7315 UNVERIFIED_VISUAL_REF: a pasted design reference with a verdict that never ran the LLM review blocks; one with verdicts passes', skipNoRepoHook, () => {
+  visualPair('visual-ref', 'UNVERIFIED_VISUAL_REF', {
+    userText: 'make it match this design [Image #1]',
+    blockVerdict: { schemaVersion: 2 },
+    passVerdict: { schemaVersion: 2, verdicts: {} },
+  });
+});
+
+test('BRO-7315 UNVERIFIED_VISUAL_CLAIM: claiming it renders correctly with no verdict blocks; with a verdict it passes', skipNoRepoHook, () => {
+  visualPair('visual-claim', 'UNVERIFIED_VISUAL_CLAIM', {
+    msg: 'The card renders correctly on mobile and desktop.',
+    blockVerdict: undefined,
+    passVerdict: { schemaVersion: 2, verdicts: {} },
+  });
+});
+
+test('BRO-7315 AUDIT_MATCHER_MISSING: a hook copy that cannot load the review-text write matcher blocks; with the matcher beside it, it passes', skipNoRepoHook, () => {
+  const dir = makeTmpDir('proof-audit-matcher');
+  const roots = [];
+  const copyRoot = (withMatcher) => {
+    const root = fs.mkdtempSync(path.join(dir, 'root-'));
+    roots.push(root);
+    for (const rel of ['.claude/hooks/verify-edits.sh', ...(withMatcher ? ['scripts/lib/verify_edits_writes.py'] : [])]) {
+      fs.mkdirSync(path.dirname(path.join(root, rel)), { recursive: true });
+      fs.copyFileSync(path.join(REPO_ROOT, rel), path.join(root, rel));
+    }
+    return root;
+  };
+  try {
+    const run = (withMatcher) => {
+      const root = copyRoot(withMatcher);
+      return runHook(writeTranscript(dir, []), 'Nothing changed.', {}, false, { cwd: root, hook: path.join(root, '.claude/hooks/verify-edits.sh') });
+    };
+    const b = run(false);
+    assertBlocked(b, 'AUDIT_MATCHER_MISSING blocking case');
+    assert.match(b.stderr, tagRe('AUDIT_MATCHER_MISSING'), `tail: ${b.stderr.slice(-120)}`);
+    const t = run(true);
+    assertAllowed(t, 'AUDIT_MATCHER_MISSING passing twin');
+    assert.doesNotMatch(t.stderr, /\[VE:AUDIT_MATCHER_MISSING\]/);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+// BRO-7315 cousin of ENGINE_CRASH: the three node checks at the top of the hook catch their own errors and pass by
+// design, but a death they cannot catch (a syntax error after a bad merge, a missing import) passed silently too.
+test('ENGINE_CRASH: a node pre-check that dies (not 0, not 2, not a timeout) blocks once; a healthy or timed-out one does not', skipNoRepoHook, () => {
+  const dir = makeTmpDir('proof-pre-crash');
+  const rootWith = (body) => {
+    const root = fs.mkdtempSync(path.join(dir, 'root-'));
+    for (const rel of ['.claude/hooks/verify-edits.sh', 'scripts/lib/verify_edits_writes.py']) {
+      fs.mkdirSync(path.dirname(path.join(root, rel)), { recursive: true });
+      fs.copyFileSync(path.join(REPO_ROOT, rel), path.join(root, rel));
+    }
+    fs.writeFileSync(path.join(root, 'scripts/lib/decision-restate.js'), body);
+    return root;
+  };
+  const run = (root, transcript, env = {}, active = false) =>
+    runHook(transcript, 'Nothing changed.', { CLAUDE_CODE_REMOTE: 'true', ...env }, active, { cwd: root, hook: path.join(root, '.claude/hooks/verify-edits.sh') });
+  try {
+    const dead = rootWith('this is not javascript (\n');
+    const t1 = writeTranscript(dir, []);
+    const first = run(dead, t1);
+    assertBlocked(first, 'a pre-check that cannot even parse');
+    assert.match(first.stderr, /check crashed before it could run \(decision-restate\.js exit 1,/, `names the script and status, got: ${first.stderr.slice(0, 300)}`);
+    assert.match(first.stderr, tagRe('ENGINE_CRASH'), `tail: ${first.stderr.slice(-120)}`);
+    assertAllowed(run(dead, t1), 'once per session');
+    const dir2 = makeTmpDir('proof-pre-crash-off');
+    assertAllowed(run(dead, writeTranscript(dir2, []), { ENGINE_CRASH_GATE_DISABLE: '1' }), 'kill switch');
+    fs.rmSync(dir2, { recursive: true, force: true });
+    for (const [label, body] of [['healthy', 'process.exit(0);\n'], ['timed out', 'process.exit(124);\n']]) {
+      const d = makeTmpDir('proof-pre-ok');
+      const r = run(rootWith(body), writeTranscript(d, []));
+      assertAllowed(r, `${label} pre-check`);
+      assert.doesNotMatch(r.stderr, /\[VE:ENGINE_CRASH\]/);
+      fs.rmSync(d, { recursive: true, force: true });
+    }
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
 });

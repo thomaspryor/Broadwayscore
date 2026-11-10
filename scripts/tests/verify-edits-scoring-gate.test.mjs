@@ -104,6 +104,8 @@ const blocked = (r, re, msg) => {
   assert.equal(r.status, 2, `${msg}: expected BLOCKED, got ${r.status}. stderr: ${r.stderr.slice(0, 400)}`);
   if (re) assert.match(r.stderr, re, msg);
 };
+// BRO-7315: the block's machine-readable tag (last stderr line), so the gate's code is pinned, not just its wording.
+const tagged = (r, code, msg) => assert.match(r.stderr, new RegExp(`\\[VE:${code}\\]\\s*$`), `${msg}: tail ${r.stderr.slice(-100)}`);
 const allowed = (r, msg) => assert.equal(r.status, 0, `${msg}: expected allowed, got ${r.status}. stderr: ${r.stderr.slice(0, 400)}`);
 
 const TQ = 'scripts/lib/text-quality.js';
@@ -113,7 +115,9 @@ const stamp = (s, exitCode, changed, extra = {}) => ({ ts: ago(s), exitCode, bas
 test('acceptance: text-quality.js edit + scoring-delta exit 2 is blocked with the §13 A/B instruction', () => {
   const f = fixture([{ ...edit(TQ), ts: ago(300) }, { ...bash('node scripts/scoring-delta.js | tail -3'), ts: ago(200) }, { ...SHIP_CHECK, ts: ago(100) }],
     [stamp(200, 2, [TQ])]);
-  blocked(runHook(f), /§13 A\/B/, 'piped exit-2 run');
+  const r = runHook(f);
+  blocked(r, /§13 A\/B/, 'piped exit-2 run');
+  tagged(r, 'SCORING_FAILED', 'exit-2 run');
 });
 
 test('acceptance: a later test-temporal-override-regression run does not wash out the exit 2', () => {
@@ -125,7 +129,9 @@ test('acceptance: a later test-temporal-override-regression run does not wash ou
 
 test('grep scoring-delta / no run at all is blocked', () => {
   const f = fixture([{ ...edit('scripts/lib/score-routing.js'), ts: ago(300) }, { ...bash('grep -n scoring-delta CLAUDE.md'), ts: ago(200) }, { ...SHIP_CHECK, ts: ago(100) }]);
-  blocked(runHook(f), /without a counterfactual/, 'grep only');
+  const r = runHook(f);
+  blocked(r, /without a counterfactual/, 'grep only');
+  tagged(r, 'UNVERIFIED_SCORING', 'no run');
 });
 
 test('a clean exit-0 run that measured the edited file passes', () => {
@@ -222,7 +228,9 @@ function regexFixture(regexStamps = [], corpus = true, calls = []) {
 const regexStamp = (extra = {}) => ({ started: ago(200), ts: ago(190), exitCode: 0, full: true, maxHits: 5, scanned: 100, ...extra });
 
 test('BRO-5307: content-quality edit without a regex audit stamp blocks when review texts exist', () => {
-  blocked(runHook(regexFixture()), /audit-regex-patterns\.js --full/, 'missing regex audit');
+  const r = runHook(regexFixture());
+  blocked(r, /audit-regex-patterns\.js --full/, 'missing regex audit');
+  tagged(r, 'UNVERIFIED_REGEX', 'missing regex audit');
 });
 
 test('BRO-5307: absent review texts only warn about the regex audit', () => {

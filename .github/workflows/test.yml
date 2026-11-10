@@ -2525,11 +2525,9 @@ on:
       # both outside that glob and need their own entries (same
       # "scripts/tests/ is not scripts/lib/" gap as hook-liveness below).
       - 'scripts/check-cmux-reachability.js'
-      - '.claude/hooks/notion-create-block.sh'
       - '.claude/hooks/worktree-enforce.sh'
       - '.claude/hooks/check-skill-redaction.sh'
       - '.claude/hooks/enterworktree-guard.sh'
-      - '.claude/hooks/whitespace-nowrap-lint.sh'
       - '.claude/hooks/session-start.sh'
       - '.claude/hooks/cloud-bootstrap.sh'
       # BRO-193 — hook-syntax-guard.sh's restore loop now walks a manifest of

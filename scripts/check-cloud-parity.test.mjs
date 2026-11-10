@@ -88,7 +88,7 @@ test('stripSelfSkip is anchored on the guard, not on the comment', () => {
   // BASH_SOURCE form, named by file.
   const named = 'if [ -f "$HOME/.claude/hooks/x.sh" ] && \\\n   [ "${BASH_SOURCE[0]}" != "$HOME/.claude/hooks/x.sh" ]; then\n  exit 0\nfi';
   assert.equal(stripSelfSkip(`# Self-skip preamble\n${named}\nb`), 'b');
-  // Code between the comment and the guard is kept (notion-create-block.sh).
+  // Code between the comment and the guard is kept.
   assert.equal(stripSelfSkip(`# Self-skip note\nhatch\n# end\n\n${GUARD}\n  exit 0\nfi\nb`), '# Self-skip note\nhatch\n# end\n\nb');
   // Unterminated guard and other hooks/ paths are not stripped.
   assert.equal(stripSelfSkip(`a\n${GUARD}\n  exit 0`), `a\n${GUARD}\n  exit 0`);
@@ -120,7 +120,7 @@ test('every shipped hook loses its guard and nothing but its guard', () => {
       assert.match(l, /^(\s*(#.*)?|if \[ -f "\$HOME.*|\s+\[ "\$\{BASH_SOURCE.*|\s*exit 0|fi\s*)$/, `${f}: dropped a real line: ${l}`);
     }
   }
-  assert.ok(guarded >= 14, `expected the guarded hooks, saw ${guarded}`);
+  assert.ok(guarded >= 12, `expected the guarded hooks, saw ${guarded}`); // 14 until BRO-7315 deleted two guarded hooks
 });
 
 test('buildAlert is accepted by the real router contract (required fields)', () => {

@@ -143,6 +143,11 @@ test('session-start.sh (real hook): the owner profile is no longer printed when 
   const { out } = runHook({ CLAUDE_CODE_REMOTE: 'true', CLAUDE_CODE_ENTRYPOINT: 'remote_mobile' });
   assert.doesNotMatch(out, /ABOUT THE OWNER|not installed/);
   assert.match(out, /CRITICAL SESSION RULES/);
+  // BRO-7315: the banner is re-read on every step of every session and printed again after each
+  // compaction. It restates rules whose full text is in CLAUDE.md, so it stays a short reminder.
+  const banner = /CRITICAL SESSION RULES[\s\S]*?\nFlow: [^\n]*/.exec(out);
+  assert.ok(banner, 'banner runs from its title to the Flow line');
+  assert.ok(banner[0].length <= 1400, `session-start banner is ${banner[0].length} chars (cap 1400): shorten a rule, do not add one`);
 });
 
 test('session-start.sh (real hook): a failed install is never silent — it prints the owner fallback and the reason', () => {
@@ -165,7 +170,7 @@ test('session-start.sh (real hook): a malformed mac-only marker is reported, and
 // BRO-5072: every cloud session reads .claude/CLOUD.md before any work. It
 // grew to 37KB of changelog narrative with no cap; trimmed to ~24KB. Keep
 // rules there, history in git and Linear.
-const CLOUD_MD_MAX_BYTES = 26 * 1024;
+const CLOUD_MD_MAX_BYTES = 23 * 1024; // BRO-7315: 26KB -> 23KB after three situational sections moved to docs/cloud-*-runbook.md
 test('.claude/CLOUD.md stays under its byte cap', () => {
   const bytes = fs.statSync(path.join(REPO_ROOT, '.claude', 'CLOUD.md')).size;
   assert.ok(bytes <= CLOUD_MD_MAX_BYTES, `.claude/CLOUD.md is ${bytes}B (cap ${CLOUD_MD_MAX_BYTES}B): trim narrative, keep rules`);
@@ -183,6 +188,26 @@ test('.claude/CLOUD.md keeps headroom under its byte cap', () => {
 // BRO-5072: AGENTS.md (Codex) points at CLAUDE.md instead of copying it; the
 // copies drifted. A cap stops them growing back.
 const AGENTS_MD_MAX_BYTES = 4 * 1024;
+// BRO-7315: CLOUD.md and CLAUDE.md load every session and point at docs/*.md
+// runbooks read on demand. /docs/* is gitignored with per-file negations, so a
+// runbook written without its negation exists on the author's disk and nowhere
+// else: every later session is sent to a file that is not in its clone.
+test('every docs/*.md a rule file points at is committed (not swallowed by the /docs/* ignore)', async () => {
+  const { execFileSync } = await import('node:child_process');
+  const cited = new Set();
+  for (const f of ['.claude/CLOUD.md', 'CLAUDE.md']) {
+    for (const m of fs.readFileSync(path.join(REPO_ROOT, f), 'utf8').matchAll(/docs\/[A-Za-z0-9_.\/-]+\.md/g)) cited.add(m[0]);
+  }
+  assert.ok(cited.size >= 3, `expected the rule files to cite runbooks, saw ${cited.size}`);
+  for (const rel of cited) {
+    assert.ok(fs.existsSync(path.join(REPO_ROOT, rel)), `${rel} is cited by a rule file but does not exist`);
+    // git check-ignore exits 0 = ignored, 1 = not ignored; anything else (128, git missing) is an error and must fail here.
+    let ignored = true;
+    try { execFileSync('git', ['check-ignore', '-q', '--no-index', rel], { cwd: REPO_ROOT, stdio: 'ignore' }); } catch (e) { assert.equal(e.status, 1, `git check-ignore failed for ${rel} (status ${e.status})`); ignored = false; }
+    assert.equal(ignored, false, `${rel} is cited by a rule file but .gitignore swallows it: add "!/${rel}" under /docs/*`);
+  }
+});
+
 test('AGENTS.md stays a short pointer to CLAUDE.md', () => {
   const text = fs.readFileSync(path.join(REPO_ROOT, 'AGENTS.md'), 'utf8');
   assert.ok(Buffer.byteLength(text) <= AGENTS_MD_MAX_BYTES, `AGENTS.md is ${Buffer.byteLength(text)}B (cap ${AGENTS_MD_MAX_BYTES}B): put rules in CLAUDE.md, not here`);

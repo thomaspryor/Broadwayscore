@@ -35,8 +35,8 @@ const ONE_LINE_GUARD_RE = /;\s*then\s+exit 0\s*;\s*fi\s*$/;
 // Covers the multi-line form, the one-line form (check-skill-redaction.sh)
 // and a guard with no "# Self-skip" comment (block-prompting-remote-tools.sh).
 // Its comment goes too, but only when it sits in the run of comment/blank
-// lines directly above the guard: notion-create-block.sh has real code
-// between its "# Self-skip" note and the guard, and that code is compared.
+// lines directly above the guard: real code between a "# Self-skip" note
+// and the guard is compared (the retired notion-create-block.sh had some).
 // A master without the guard comes back unchanged.
 function stripSelfSkip(text) {
   const lines = text.split('\n');

@@ -224,7 +224,9 @@ test('verify-edits.sh (the Stop hook wired in every cloud container) runs the ga
   const hook = path.join(ROOT, '.claude', 'hooks', 'verify-edits.sh');
   const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'rc-home-')); // defeats the Mac-master self-skip
   const run = (tr) => spawnSyncStdinFile('bash', [hook], { input: JSON.stringify({ transcript_path: tr, session_id: 'rc-test', last_assistant_message: 'Done.\n\nSAFE TO EXIT' }), encoding: 'utf8', env: { ...process.env, ...CLOUD, HOME: fakeHome, SHIP_CHECK_COVERAGE_DISABLE: '' } });
-  const codes = [run(thin), run(thin), run(thin), run(thin)].map((r) => r.status);
+  const runs = [run(thin), run(thin), run(thin), run(thin)];
+  const codes = runs.map((r) => r.status);
+  assert.match(runs[0].stderr, /\[VE:RCOV\]\s*$/, 'a block ends with its countable tag (BRO-7315)');
   assert.deepEqual(codes.slice(0, 3), [2, 2, 2], 'blocks three times');
   assert.match(run(thin).stderr, /^(?:(?!BLOCKED \(BRO-5359\)).)*$/s, 'after its budget the review-coverage gate stops blocking (other verify-edits gates may still speak)');
   assert.doesNotMatch(run(full).stderr, /BRO-5359/, 'a fully covered chain is not blocked by this gate');

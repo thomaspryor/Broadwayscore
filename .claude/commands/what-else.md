@@ -69,8 +69,8 @@ never to whether a lens is run.
 ### Phase 3: Filter and prioritize
 
 **Read the current board** to avoid duplicating existing items (mandatory;
-run the search; the LENSES block plus this read are the two things that make
-a /what-else pass real rather than performative). The board is Linear. The old
+run the search: this read is what the Stop hook checks to tell a real
+/what-else pass from a performative one; the LENSES block is for the reader). The board is Linear. The old
 GitHub roadmap issue (issue 1 of `broadway-scorecard-data`) and `memory/roadmap.md`
 are retired and stale: never use them.
 
