@@ -39594,7 +39594,7 @@
       "resolvedAt": "2026-11-09T02:23:27.087Z"
     },
     "test-yml:data-validation-red:run-data-validation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Data audit failing: Run data validation",
       "firstSeen": "2026-11-09T03:33:12.490Z",
@@ -39605,7 +39605,9 @@
       "lastSurfacedAt": "2026-11-10T15:36:09.399Z",
       "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-10T15:48:55.898Z",
+      "resolveReason": "step passed"
     },
     "gap:iphigenie-en-tauride-english-national-opera-west-end-2026/sunday-times--unknown.json": {
       "status": "open",
@@ -40135,7 +40137,7 @@
       "silentRefires": 4
     },
     "test-yml:data-validation-red:audit-critic-consensus-contamination": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Data audit failing: Audit critic-consensus contamination",
       "firstSeen": "2026-11-09T13:56:48.935Z",
@@ -40146,7 +40148,9 @@
       "lastSurfacedAt": "2026-11-10T15:36:09.476Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-10T15:48:55.915Z",
+      "resolveReason": "step passed"
     },
     "land:land/bro-6854-dups3": {
       "status": "resolved",
@@ -40276,7 +40280,7 @@
       "resolvedAt": "2026-11-09T18:54:18.217Z"
     },
     "test-yml:data-validation-red:audit-review-contamination": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Data audit failing: Audit review contamination",
       "firstSeen": "2026-11-09T20:22:26.713Z",
@@ -40287,7 +40291,9 @@
       "lastSurfacedAt": "2026-11-10T15:36:09.420Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-10T15:48:55.930Z",
+      "resolveReason": "step passed"
     },
     "land:land/bro-7239-hub-closing-guard": {
       "status": "resolved",
@@ -41066,7 +41072,7 @@
       "linearIdentifier": null
     },
     "test-yml:data-validation-red:checkout-review-texts-private-repo": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Data audit failing: Checkout review-texts (private repo)",
       "firstSeen": "2026-11-10T15:36:09.219Z",
@@ -41077,10 +41083,12 @@
       "lastSurfacedAt": "2026-11-10T15:36:09.219Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-10T15:48:55.944Z",
+      "resolveReason": "step passed"
     },
     "test-yml:data-validation-red:run-explainexclusion-corpus-parity-needs-review-texts": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Data audit failing: Run explainExclusion corpus parity (needs review-texts)",
       "firstSeen": "2026-11-10T15:36:09.244Z",
@@ -41091,10 +41099,12 @@
       "lastSurfacedAt": "2026-11-10T15:36:09.244Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-10T15:48:55.957Z",
+      "resolveReason": "step passed"
     },
     "test-yml:data-validation-red:run-autoclear-vs-ensemble-corpus-test-needs-review-texts": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Data audit failing: Run autoclear-vs-ensemble corpus test (needs review-texts)",
       "firstSeen": "2026-11-10T15:36:09.264Z",
@@ -41105,10 +41115,12 @@
       "lastSurfacedAt": "2026-11-10T15:36:09.264Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-10T15:48:55.970Z",
+      "resolveReason": "step passed"
     },
     "test-yml:data-validation-red:run-aggregator-domain-tld-parity-corpus-scan-needs-review-texts": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Data audit failing: Run aggregator-domain TLD parity corpus scan (needs review-texts)",
       "firstSeen": "2026-11-10T15:36:09.283Z",
@@ -41119,10 +41131,12 @@
       "lastSurfacedAt": "2026-11-10T15:36:09.283Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-10T15:48:55.984Z",
+      "resolveReason": "step passed"
     },
     "test-yml:data-validation-red:run-wrongshow-auto-clear-ensemble-corpus-scan-needs-review-texts": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Data audit failing: Run wrongShow auto-clear ensemble corpus scan (needs review-texts)",
       "firstSeen": "2026-11-10T15:36:09.301Z",
@@ -41133,10 +41147,12 @@
       "lastSurfacedAt": "2026-11-10T15:36:09.301Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-10T15:48:55.999Z",
+      "resolveReason": "step passed"
     },
     "test-yml:data-validation-red:run-frankie-2002-cleanup-regression-guard-needs-review-texts": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Data audit failing: Run frankie-2002 cleanup regression guard (needs review-texts)",
       "firstSeen": "2026-11-10T15:36:09.318Z",
@@ -41147,10 +41163,12 @@
       "lastSurfacedAt": "2026-11-10T15:36:09.318Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-10T15:48:56.016Z",
+      "resolveReason": "step passed"
     },
     "test-yml:data-validation-red:run-review-text-folder-orphan-guard-needs-review-texts": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Data audit failing: Run review-text folder orphan guard (needs review-texts)",
       "firstSeen": "2026-11-10T15:36:09.337Z",
@@ -41161,10 +41179,12 @@
       "lastSurfacedAt": "2026-11-10T15:36:09.337Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-10T15:48:56.027Z",
+      "resolveReason": "step passed"
     },
     "test-yml:data-validation-red:run-bro-1397-prior-run-former-cast-sweep-needs-review-texts": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Data audit failing: Run BRO-1397 prior-run former-cast sweep (needs review-texts)",
       "firstSeen": "2026-11-10T15:36:09.363Z",
@@ -41175,10 +41195,12 @@
       "lastSurfacedAt": "2026-11-10T15:36:09.363Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-10T15:48:56.040Z",
+      "resolveReason": "step passed"
     },
     "test-yml:data-validation-red:run-bro-3092-addams-wsj-dedup-acceptance-test-needs-review-texts": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Data audit failing: Run BRO-3092 addams WSJ dedup acceptance test (needs review-texts)",
       "firstSeen": "2026-11-10T15:36:09.381Z",
@@ -41189,10 +41211,12 @@
       "lastSurfacedAt": "2026-11-10T15:36:09.381Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-10T15:48:56.054Z",
+      "resolveReason": "step passed"
     },
     "test-yml:data-validation-red:run-self-contradictory-clear-drain-acceptance-test-needs-review-texts": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Data audit failing: Run self-contradictory-clear drain acceptance test (needs review-texts)",
       "firstSeen": "2026-11-10T15:36:09.437Z",
@@ -41203,10 +41227,12 @@
       "lastSurfacedAt": "2026-11-10T15:36:09.437Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-10T15:48:56.069Z",
+      "resolveReason": "step passed"
     },
     "test-yml:data-validation-red:audit-non-review-content-weather-sports-junk-pages": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Data audit failing: Audit non-review content (weather/sports/junk pages)",
       "firstSeen": "2026-11-10T15:36:09.456Z",
@@ -41217,10 +41243,12 @@
       "lastSurfacedAt": "2026-11-10T15:36:09.456Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-10T15:48:56.085Z",
+      "resolveReason": "step passed"
     },
     "test-yml:data-validation-red:audit-outlet-registry-gaps": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Data audit failing: Audit outlet-registry gaps",
       "firstSeen": "2026-11-10T15:36:09.494Z",
@@ -41231,10 +41259,12 @@
       "lastSurfacedAt": "2026-11-10T15:36:09.494Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-10T15:48:56.101Z",
+      "resolveReason": "step passed"
     },
     "test-yml:data-validation-red:audit-stale-duplicateof-flags": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Data audit failing: Audit stale duplicateOf flags",
       "firstSeen": "2026-11-10T15:36:09.511Z",
@@ -41245,10 +41275,12 @@
       "lastSurfacedAt": "2026-11-10T15:36:09.511Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-10T15:48:56.113Z",
+      "resolveReason": "step passed"
     },
     "test-yml:data-validation-red:audit-fully-unsuppressed-same-url-clusters": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Data audit failing: Audit fully-unsuppressed same-URL clusters",
       "firstSeen": "2026-11-10T15:36:09.529Z",
@@ -41259,10 +41291,12 @@
       "lastSurfacedAt": "2026-11-10T15:36:09.529Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-10T15:48:56.126Z",
+      "resolveReason": "step passed"
     },
     "test-yml:data-validation-red:validate-review-text-files": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Data audit failing: Validate review-text files",
       "firstSeen": "2026-11-10T15:36:09.546Z",
@@ -41273,7 +41307,9 @@
       "lastSurfacedAt": "2026-11-10T15:36:09.546Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-10T15:48:56.141Z",
+      "resolveReason": "step passed"
     },
     "land:land/bro-7291": {
       "status": "open",
