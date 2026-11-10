@@ -8,23 +8,23 @@
  "itemsChecked": {
   "shows": 62,
   "images": 58,
-  "publishedReviews": 193,
-  "excludedFiles": 14,
-  "reviewsWithoutText": 11,
+  "publishedReviews": 226,
+  "excludedFiles": 15,
+  "reviewsWithoutText": 13,
   "tourStops": 14,
   "coverageShows": 42,
   "totalShows": 62,
-  "totalPublished": 193
+  "totalPublished": 226
  },
- "flaggedByGemini": 115,
- "flaggedByOpenAI": 103,
- "flaggedLocalChecks": 14,
- "flaggedAny": 133,
- "flaggedByBoth": 92,
- "triagedItems": 101,
- "confirmed": 52,
- "falsePositives": 49,
- "fixed": 8,
+ "flaggedByGemini": 112,
+ "flaggedByOpenAI": 92,
+ "flaggedLocalChecks": 13,
+ "flaggedAny": 129,
+ "flaggedByBoth": 82,
+ "triagedItems": 134,
+ "confirmed": 54,
+ "falsePositives": 80,
+ "fixed": 10,
  "remaining": [
   {
    "item": "image:the-visit-regional-2026",
@@ -203,7 +203,7 @@
    "reason": "Review URL verified live and title-matched but absent from our corpus; ingest of registry-known outlets dispatched, others need outlet registry entries."
   }
  ],
- "untriaged": 32,
+ "untriaged": 6,
  "flags": [
   {
    "kind": "show",
@@ -395,15 +395,7 @@
    "label": "Frankenstein: Resurrection",
    "model": "gemini",
    "code": "opening-date",
-   "detail": "ours 2026-09-25 / page 2026-09-11"
-  },
-  {
-   "kind": "show",
-   "id": "frankenstein-resurrection-regional-2026",
-   "label": "Frankenstein: Resurrection",
-   "model": "gemini",
-   "code": "closing-date",
-   "detail": "ours 2026-09-30 / page 2026-11-01"
+   "detail": "ours 2026-09-20 / page 2026-09-11"
   },
   {
    "kind": "show",
@@ -411,15 +403,7 @@
    "label": "Frankenstein: Resurrection",
    "model": "openai",
    "code": "opening-date",
-   "detail": "ours 2026-09-25 / page 2026-09-11"
-  },
-  {
-   "kind": "show",
-   "id": "frankenstein-resurrection-regional-2026",
-   "label": "Frankenstein: Resurrection",
-   "model": "openai",
-   "code": "closing-date",
-   "detail": "ours 2026-09-30 / page 2026-11-01"
+   "detail": "ours 2026-09-20 / page 2026-09-11"
   },
   {
    "kind": "show",
@@ -923,7 +907,7 @@
    "label": "Clown Sh*t",
    "model": "gemini",
    "code": "closing-date",
-   "detail": "ours 2026-08-03 / page 2026-02-02"
+   "detail": "ours 2026-08-02 / page 2026-02-02"
   },
   {
    "kind": "show",
@@ -994,14 +978,6 @@
    "id": "the-arsonists-regional-2026",
    "label": "The Arsonists",
    "model": "gemini",
-   "code": "closing-date",
-   "detail": "ours 2026-09-20 / page 2026-09-27"
-  },
-  {
-   "kind": "show",
-   "id": "the-arsonists-regional-2026",
-   "label": "The Arsonists",
-   "model": "gemini",
    "code": "preview-date-missing",
    "detail": "page 2026-09-01, ours empty"
   },
@@ -1012,6 +988,14 @@
    "model": "gemini",
    "code": "category",
    "detail": "page says touring production"
+  },
+  {
+   "kind": "show",
+   "id": "the-arsonists-regional-2026",
+   "label": "The Arsonists",
+   "model": "openai",
+   "code": "closing-date",
+   "detail": "ours 2026-09-27 / page 2026-09-20"
   },
   {
    "kind": "show",
@@ -1091,15 +1075,7 @@
    "label": "A Case for the Existence of God",
    "model": "gemini",
    "code": "opening-date",
-   "detail": "ours 2026-09-10 / page 2026-08-30"
-  },
-  {
-   "kind": "show",
-   "id": "a-case-for-the-existence-of-god-regional-2026",
-   "label": "A Case for the Existence of God",
-   "model": "gemini",
-   "code": "closing-date",
-   "detail": "ours 2026-10-11 / page 2026-11-21"
+   "detail": "ours 2026-09-07 / page 2026-08-30"
   },
   {
    "kind": "show",
@@ -1115,15 +1091,7 @@
    "label": "A Case for the Existence of God",
    "model": "openai",
    "code": "opening-date",
-   "detail": "ours 2026-09-10 / page 2026-08-30"
-  },
-  {
-   "kind": "show",
-   "id": "a-case-for-the-existence-of-god-regional-2026",
-   "label": "A Case for the Existence of God",
-   "model": "openai",
-   "code": "closing-date",
-   "detail": "ours 2026-10-11 / page 2026-11-21"
+   "detail": "ours 2026-09-07 / page 2026-08-30"
   },
   {
    "kind": "show",
@@ -1132,6 +1100,14 @@
    "model": "openai",
    "code": "preview-date-missing",
    "detail": "page 2026-08-30, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "a-case-for-the-existence-of-god-regional-2026",
+   "label": "A Case for the Existence of God",
+   "model": "local",
+   "code": "closing-unsourced",
+   "detail": "closingDateSource missing"
   },
   {
    "kind": "show",
@@ -1504,7 +1480,7 @@
   {
    "kind": "show",
    "id": "hangman-regional-2026",
-   "label": "Hangman",
+   "label": "Hangmen",
    "model": "gemini",
    "code": "opening-date",
    "detail": "ours 2026-09-20 / page 2026-08-29"
@@ -1512,7 +1488,7 @@
   {
    "kind": "show",
    "id": "hangman-regional-2026",
-   "label": "Hangman",
+   "label": "Hangmen",
    "model": "gemini",
    "code": "preview-date-missing",
    "detail": "page 2026-08-28, ours empty"
@@ -1520,15 +1496,7 @@
   {
    "kind": "show",
    "id": "hangman-regional-2026",
-   "label": "Hangman",
-   "model": "gemini",
-   "code": "title",
-   "detail": "ours \"Hangman\" / page \"Hangmen\""
-  },
-  {
-   "kind": "show",
-   "id": "hangman-regional-2026",
-   "label": "Hangman",
+   "label": "Hangmen",
    "model": "openai",
    "code": "page-not-this-production",
    "detail": "Aug. 29 – Sept. 26, 2026"
@@ -1536,23 +1504,15 @@
   {
    "kind": "show",
    "id": "hangman-regional-2026",
-   "label": "Hangman",
+   "label": "Hangmen",
    "model": "openai",
    "code": "opening-date",
    "detail": "ours 2026-09-20 / page 2026-08-29"
   },
   {
-   "kind": "show",
-   "id": "hangman-regional-2026",
-   "label": "Hangman",
-   "model": "openai",
-   "code": "title",
-   "detail": "ours \"Hangman\" / page \"HANGMEN\""
-  },
-  {
    "kind": "image",
    "id": "hangman-regional-2026",
-   "label": "Hangman",
+   "label": "Hangmen",
    "model": "local",
    "code": "no-poster",
    "detail": "show has no images.poster"
@@ -1658,14 +1618,6 @@
    "id": "saint-megan-regional-2026",
    "label": "Saint Megan",
    "model": "gemini",
-   "code": "closing-date",
-   "detail": "ours 2026-11-15 / page 2026-11-22"
-  },
-  {
-   "kind": "show",
-   "id": "saint-megan-regional-2026",
-   "label": "Saint Megan",
-   "model": "gemini",
    "code": "preview-date-missing",
    "detail": "page 2026-10-04, ours empty"
   },
@@ -1676,6 +1628,14 @@
    "model": "openai",
    "code": "opening-date",
    "detail": "ours 2026-10-14 / page 2026-10-10"
+  },
+  {
+   "kind": "show",
+   "id": "saint-megan-regional-2026",
+   "label": "Saint Megan",
+   "model": "openai",
+   "code": "closing-date",
+   "detail": "ours 2026-11-22 / page 2026-11-15"
   },
   {
    "kind": "image",
@@ -1815,27 +1775,59 @@
   },
   {
    "kind": "review",
-   "id": "anastasia-regional-2026|https://www.ocregister.com/2026/06/09/review-anastasia-in-la-mirada-is-boisterous-fun-but-ultimately-underwhelms|christopher smith",
-   "label": "Anastasia | OC Register / Christopher Smith",
+   "id": "a-case-for-the-existence-of-god-regional-2026|https://www.artsbeatla.com/2026/09/a-case-for-the-existence-of-god|terry morgan",
+   "label": "A Case for the Existence of God | ArtsBeatLA / Terry Morgan",
    "model": "gemini",
-   "code": "star-band",
-   "detail": "article prints 3 stars (of a possible 4) should score 71-90, scored 63"
+   "code": "wrong-production",
+   "detail": "The current L.A. premiere by Rogue Machine Theatre of Samuel D. Hunter ’s A Case for the Existence of God"
   },
   {
    "kind": "review",
-   "id": "anastasia-regional-2026|https://www.theshowreport.org/post/review-anastasia-the-musical-la-mirada-theatre-mccoy-rigby-entertainment|theshowreport",
-   "label": "Anastasia | The Show Report / TheShowReport",
-   "model": "gemini",
-   "code": "byline",
-   "detail": "ours \"TheShowReport\" / article \"CHRIS DANIELS\""
-  },
-  {
-   "kind": "review",
-   "id": "anastasia-regional-2026|https://www.theshowreport.org/post/review-anastasia-the-musical-la-mirada-theatre-mccoy-rigby-entertainment|theshowreport",
-   "label": "Anastasia | The Show Report / TheShowReport",
+   "id": "a-case-for-the-existence-of-god-regional-2026|https://www.artsbeatla.com/2026/09/a-case-for-the-existence-of-god|terry morgan",
+   "label": "A Case for the Existence of God | ArtsBeatLA / Terry Morgan",
    "model": "openai",
-   "code": "byline",
-   "detail": "ours \"TheShowReport\" / article \"Chris Daniels\""
+   "code": "wrong-production",
+   "detail": "A Case for the Existence of God is presented by and at Rogue Machine Theatre through October 11, 2026."
+  },
+  {
+   "kind": "review",
+   "id": "a-number-regional-2026|https://accessiblyliveoffline.wordpress.com/2026/09/27/three-and-a-half-decades-after-the-fact|",
+   "label": "A Number | Accessibly Live Off-Line / null",
+   "model": "gemini",
+   "code": "wrong-production",
+   "detail": "SHELLS, a co-production of the Rogue Artists Ensemble and Greenway Arts Alliance, and performs at the Greenway Court Theatre, 544 North Fairfax Avenue, Los Angeles, until October 11th."
+  },
+  {
+   "kind": "review",
+   "id": "a-number-regional-2026|https://accessiblyliveoffline.wordpress.com/2026/09/27/three-and-a-half-decades-after-the-fact|",
+   "label": "A Number | Accessibly Live Off-Line / null",
+   "model": "gemini",
+   "code": "non-review:roundup",
+   "detail": "The article primarily discusses the author's personal history in Los Angeles before reviewing one play, 'SHELLS', and mentioning another, 'A Number', without reviewing it."
+  },
+  {
+   "kind": "review",
+   "id": "a-number-regional-2026|https://accessiblyliveoffline.wordpress.com/2026/09/27/three-and-a-half-decades-after-the-fact|",
+   "label": "A Number | Accessibly Live Off-Line / null",
+   "model": "openai",
+   "code": "wrong-production",
+   "detail": "SHELLS, a co-production of the Rogue Artists Ensemble and Greenway Arts Alliance, and performs at the Greenway Court Theatre, 544 North Fairfax Avenue, Los Angeles, until October 11th."
+  },
+  {
+   "kind": "review",
+   "id": "a-number-regional-2026|https://accessiblyliveoffline.wordpress.com/2026/09/27/three-and-a-half-decades-after-the-fact|",
+   "label": "A Number | Accessibly Live Off-Line / null",
+   "model": "openai",
+   "code": "non-review:roundup",
+   "detail": "The article is a multi-production roundup and mentions SHELLS at Greenway Court Theatre in Los Angeles; it does not reference A Number or Madnani Theater."
+  },
+  {
+   "kind": "review",
+   "id": "catch-me-if-you-can-regional-2026|https://www.culvercitynews.org/dazzling-and-energetic-catch-me-if-you-can-stage-musical-at-the-colony-theatre|shari barrett",
+   "label": "Catch Me If You Can | Culver City News / Shari Barrett",
+   "model": "openai",
+   "code": "non-review:interview",
+   "detail": "A largely favorable review with an embedded interview of lead Blake Jenner; includes production and ticketing details."
   },
   {
    "kind": "review",
@@ -1848,26 +1840,18 @@
   {
    "kind": "review",
    "id": "hangman-regional-2026|https://stageandcinema.com/2026/09/19/hangmen-long-beach-playhouse-review|michael m landman karny",
-   "label": "Hangman | Stage and Cinema / Michael M. Landman-Karny",
+   "label": "Hangmen | Stage and Cinema / Michael M. Landman-Karny",
    "model": "openai",
    "code": "wrong-production",
    "detail": "Hangmen Long Beach Playhouse Studio Theatre, Long Beach Playhouse, 5021 E. Anaheim St. in "
   },
   {
    "kind": "review",
-   "id": "heartbreak-house-regional-2026|https://stageraw.com/stage-raw-youth-journalism-review-heartbreak-house|steven morris",
-   "label": "Heartbreak House | Stage Raw / Steven Morris",
+   "id": "heartbreak-house-regional-2026|https://ladramacriticscircle.com/heartbreak-house-antaeus-theatre-company|",
+   "label": "Heartbreak House | Los Angeles Drama Critics Circle / null",
    "model": "gemini",
-   "code": "byline",
-   "detail": "ours \"Steven Morris\" / article \"Kayden J. Merritt\""
-  },
-  {
-   "kind": "review",
-   "id": "heartbreak-house-regional-2026|https://stageraw.com/stage-raw-youth-journalism-review-heartbreak-house|steven morris",
-   "label": "Heartbreak House | Stage Raw / Steven Morris",
-   "model": "openai",
-   "code": "byline",
-   "detail": "ours \"Steven Morris\" / article \"By Kayden J. Merritt\""
+   "code": "non-review:roundup",
+   "detail": "The article presents multiple short reviews/verdicts, primarily for 'Heartbreak House' but also listing other productions."
   },
   {
    "kind": "review",
@@ -1919,19 +1903,19 @@
   },
   {
    "kind": "review",
-   "id": "rorschach-regional-2026|https://www.theatreinla.com/rorschach/reviews/11446|",
-   "label": "Rorschach | Theatre in LA / null",
+   "id": "the-case-book-of-c-auguste-dupin-regional-2026|https://accessiblyliveoffline.wordpress.com/2026/09/27/three-and-a-half-decades-after-the-fact|",
+   "label": "The Case-Book of C. Auguste Dupin | Accessibly Live Off-Line / null",
    "model": "gemini",
-   "code": "non-review:roundup",
-   "detail": "This article is a roundup of review snippets for a single production, not a single review itself."
+   "code": "wrong-production",
+   "detail": "THE CASE-BOOK OF C. AUGUSTE DUPIN presented by Theatre 40 and performs at the Mary Levin Cutler Theatre, located on the campus of Beverly Hills High School"
   },
   {
    "kind": "review",
-   "id": "rorschach-regional-2026|https://www.theatreinla.com/rorschach/reviews/11446|",
-   "label": "Rorschach | Theatre in LA / null",
+   "id": "the-case-book-of-c-auguste-dupin-regional-2026|https://accessiblyliveoffline.wordpress.com/2026/09/27/three-and-a-half-decades-after-the-fact|",
+   "label": "The Case-Book of C. Auguste Dupin | Accessibly Live Off-Line / null",
    "model": "openai",
-   "code": "non-review:roundup",
-   "detail": "Aggregated page showing multiple reviews for the world premiere of Rorschach at Skylight Theatre in Los Angeles, with mostly favorable recommendations."
+   "code": "wrong-production",
+   "detail": "THE CASE-BOOK OF C. AUGUSTE DUPIN presented by Theatre 40 and performs at the Mary Levin Cutler Theatre, located on the campus of Beverly Hills High School, 241 South Moreno Drive (off Little Santa Monica Blvd.), Beverly Hills, until October 18th."
   },
   {
    "kind": "review",
@@ -1991,75 +1975,11 @@
   },
   {
    "kind": "excluded",
-   "id": "frankenstein-resurrection-regional-2026/broadwayworld--harker-jones.json",
-   "label": "Frankenstein: Resurrection | frankenstein-resurrection-regional-2026/broadwayworld--harker-jones.json",
-   "model": "gemini",
-   "code": "excluded-looks-valid",
-   "detail": "FRANKENSTEIN: RESURRECTION comes alive at the Nocturne Theatre, 324 N. Orange Street, in G | flags on file: "
-  },
-  {
-   "kind": "excluded",
-   "id": "frankenstein-resurrection-regional-2026/broadwayworld--harker-jones.json",
-   "label": "Frankenstein: Resurrection | frankenstein-resurrection-regional-2026/broadwayworld--harker-jones.json",
+   "id": "the-case-book-of-c-auguste-dupin-regional-2026/theatreinla--unknown.json",
+   "label": "The Case-Book of C. Auguste Dupin | the-case-book-of-c-auguste-dupin-regional-2026/theatreinla--unknown.json",
    "model": "openai",
    "code": "excluded-looks-valid",
-   "detail": "FRANKENSTEIN: RESURRECTION comes alive at the Nocturne Theatre, 324 N. Orange Street, in G | flags on file: "
-  },
-  {
-   "kind": "show",
-   "id": "a-case-for-the-existence-of-god-regional-2026",
-   "label": "A Case for the Existence of God",
-   "model": "local",
-   "code": "review-text-later-closing",
-   "detail": "ours 2026-10-11 / review text says through 2026-11-01 (broadwayworld 2026-09-18)"
-  },
-  {
-   "kind": "show",
-   "id": "a-case-for-the-existence-of-god-regional-2026",
-   "label": "A Case for the Existence of God",
-   "model": "local",
-   "code": "review-text-later-closing",
-   "detail": "ours 2026-10-11 / review text says through 2026-11-21 (stage-raw 2026-09-07)"
-  },
-  {
-   "kind": "show",
-   "id": "a-case-for-the-existence-of-god-regional-2026",
-   "label": "A Case for the Existence of God",
-   "model": "local",
-   "code": "review-text-later-closing",
-   "detail": "ours 2026-10-11 / review text says through 2026-11-21 (stagescenela 2026-09-22)"
-  },
-  {
-   "kind": "show",
-   "id": "painted-ponies-regional-2026",
-   "label": "Painted Ponies",
-   "model": "local",
-   "code": "review-text-later-closing",
-   "detail": "ours 2026-07-19 / review text says through 2026-08-09 (stage-raw 2026-06-29)"
-  },
-  {
-   "kind": "show",
-   "id": "saint-megan-regional-2026",
-   "label": "Saint Megan",
-   "model": "local",
-   "code": "review-text-later-closing",
-   "detail": "ours 2026-11-15 / review text says through 2026-11-22 (artsbeatla 2026-10-13)"
-  },
-  {
-   "kind": "show",
-   "id": "saint-megan-regional-2026",
-   "label": "Saint Megan",
-   "model": "local",
-   "code": "review-text-later-closing",
-   "detail": "ours 2026-11-15 / review text says through 2026-11-22 (discoverhollywood 2026-10-21)"
-  },
-  {
-   "kind": "show",
-   "id": "saint-megan-regional-2026",
-   "label": "Saint Megan",
-   "model": "local",
-   "code": "review-text-later-closing",
-   "detail": "ours 2026-11-15 / review text says through 2026-11-22 (splash-magazines 2026-10-30)"
+   "detail": "The Case-Book of C. Auguste Dupin at Theatre 40 at The Reuben Cordova Theatre 241 Moreno Drive Beverly Hills | flags on file: partial_text"
   },
   {
    "kind": "tour",
@@ -2068,14 +1988,6 @@
    "model": "openai",
    "code": "tour-dates",
    "detail": "ours 2027-04-20..2027-04-25 / source 2018-08-02..2018-08-26 AUGUST 2 - 26, 2018"
-  },
-  {
-   "kind": "coverage",
-   "id": "the-visit-regional-2026",
-   "label": "The Visit",
-   "model": "gemini",
-   "code": "missing-review-candidate",
-   "detail": "Broadway World (Los Angeles) / Harker Jones 2026-09-16 https://www.broadwayworld.com/los-angeles/article/Review-THE-VISIT-at-Pasadena-Playhouse-20260916"
   },
   {
    "kind": "coverage",
@@ -2092,14 +2004,6 @@
    "model": "gemini",
    "code": "missing-review-candidate",
    "detail": "itsnotaboutme.tv / Travis Michael Holder 2026-09-17 https://itsnotaboutme.tv/news/2026/09/17/theatre-the-visit/"
-  },
-  {
-   "kind": "coverage",
-   "id": "the-visit-regional-2026",
-   "label": "The Visit",
-   "model": "gemini",
-   "code": "missing-review-candidate",
-   "detail": "StageSceneLA / Steven Stanley 2026-09-13 https://stagescenela.com/2026/09/the-visit/"
   },
   {
    "kind": "coverage",
@@ -2143,27 +2047,11 @@
   },
   {
    "kind": "coverage",
-   "id": "the-visit-regional-2026",
-   "label": "The Visit",
-   "model": "openai",
-   "code": "missing-review-candidate",
-   "detail": "Broadway World (Los Angeles) / Harker Jones 2026-09-16 https://www.broadwayworld.com/los-angeles/article/review-the-visit-at-pasadena-playhouse-20260916"
-  },
-  {
-   "kind": "coverage",
    "id": "joseph-and-the-amazing-technicolor-dreamcoat-regional-2026",
    "label": "Joseph and the Amazing Technicolor Dreamcoat",
    "model": "gemini",
    "code": "missing-review-candidate",
    "detail": "Stage Raw / Joel Beers 2026-07-15 https://stageraw.com/2026/07/15/joseph-and-the-amazing-technicolor-dreamcoat/"
-  },
-  {
-   "kind": "coverage",
-   "id": "joseph-and-the-amazing-technicolor-dreamcoat-regional-2026",
-   "label": "Joseph and the Amazing Technicolor Dreamcoat",
-   "model": "gemini",
-   "code": "missing-review-candidate",
-   "detail": "The Show Report / Chris Daniels 2026-07-13 https://theshowreport.org/2026/07/13/review-joseph-and-the-amazing-technicolor-dreamcoat-musical-theatre-west-carpenter-performing-arts-center/"
   },
   {
    "kind": "coverage",
@@ -2201,14 +2089,6 @@
    "kind": "coverage",
    "id": "joseph-and-the-amazing-technicolor-dreamcoat-regional-2026",
    "label": "Joseph and the Amazing Technicolor Dreamcoat",
-   "model": "gemini",
-   "code": "missing-review-candidate",
-   "detail": "We Live Entertainment / Kevin Taft 2026-07-24 https://weliveentertainment.com/theater/theater-review-a-dazzling-cast-shines-through-a-frayed-joseph-and-the-amazing-technicolor-dreamcoat/"
-  },
-  {
-   "kind": "coverage",
-   "id": "joseph-and-the-amazing-technicolor-dreamcoat-regional-2026",
-   "label": "Joseph and the Amazing Technicolor Dreamcoat",
    "model": "openai",
    "code": "missing-review-candidate",
    "detail": "Stage Raw / Joel Beers 2026-07-15 https://stageraw.com/stage-raw-review-joseph-and-the-amazing-technicolor-dreamcoat/"
@@ -2228,22 +2108,6 @@
    "model": "openai",
    "code": "missing-review-candidate",
    "detail": "Long Beach Post (Eat. See. Do.) / Anita W. Harris 2026-07-17 https://lbpost.com/esd/eat-see-do-2/see/musical-theatre-wests-glitzy-joseph-and-the-amazing-technicolor-dreamcoat-has-younger-audiences-in-mind/"
-  },
-  {
-   "kind": "coverage",
-   "id": "joseph-and-the-amazing-technicolor-dreamcoat-regional-2026",
-   "label": "Joseph and the Amazing Technicolor Dreamcoat",
-   "model": "openai",
-   "code": "missing-review-candidate",
-   "detail": "TheShowReport / Chris Daniels 2026-07-13 https://www.theshowreport.org/post/review-joseph-and-the-amazing-technicolor-dreamcoat-musical-theatre-west-carpenter-performing-art"
-  },
-  {
-   "kind": "coverage",
-   "id": "joseph-and-the-amazing-technicolor-dreamcoat-regional-2026",
-   "label": "Joseph and the Amazing Technicolor Dreamcoat",
-   "model": "openai",
-   "code": "missing-review-candidate",
-   "detail": "We Live Entertainment / Kevin Taft 2026-07-24 https://weliveentertainment.com/we-live-entertainment/theater-review-dazzling-cast-shines-frayed-joseph-amazing-technicolor-dreamcoat/"
   },
   {
    "kind": "coverage",
@@ -2284,30 +2148,6 @@
    "model": "gemini",
    "code": "missing-review-candidate",
    "detail": "Gardena Valley News / Shari Barrett 2026-09-24 https://www.gardenavalleynews.com/dazzling-and-energetic-catch-me-if-you-can-stage-musical-at-the-colony-theatre/"
-  },
-  {
-   "kind": "coverage",
-   "id": "catch-me-if-you-can-regional-2026",
-   "label": "Catch Me If You Can",
-   "model": "gemini",
-   "code": "missing-review-candidate",
-   "detail": "Culver City News / Shari Barrett 2026-09-24 https://www.culvercitynews.org/dazzling-and-energetic-catch-me-if-you-can-stage-musical-at-the-colony-theatre/"
-  },
-  {
-   "kind": "coverage",
-   "id": "the-full-monty-regional-2026",
-   "label": "The Full Monty",
-   "model": "openai",
-   "code": "missing-review-candidate",
-   "detail": "Gardena Valley News / Shari Barrett 2026-08-06 https://gardenavalleynews.org/talented-cast-performs-the-full-monty-at-the-nocturne-theatre-in-glendale/"
-  },
-  {
-   "kind": "coverage",
-   "id": "the-full-monty-regional-2026",
-   "label": "The Full Monty",
-   "model": "openai",
-   "code": "missing-review-candidate",
-   "detail": "Culver City News / Shari Barrett 2026-08-06 https://www.culvercitynews.org/talented-cast-performs-the-full-monty-at-the-nocturne-theatre-in-glendale/"
   },
   {
    "kind": "coverage",
@@ -2355,39 +2195,7 @@
    "label": "Frankenstein: Resurrection",
    "model": "openai",
    "code": "missing-review-candidate",
-   "detail": "BroadwayWorld (Los Angeles) / Harker Jones 2026-09-23 https://www.broadwayworld.com/los-angeles/article/review-frankenstein-resurrection-at-nocturne-theatre-20260923"
-  },
-  {
-   "kind": "coverage",
-   "id": "frankenstein-resurrection-regional-2026",
-   "label": "Frankenstein: Resurrection",
-   "model": "openai",
-   "code": "missing-review-candidate",
-   "detail": "NoHo Arts District / Samantha Simmonds-Ronceros 2026-09-18 https://nohoartsdistrict.com/frankenstein-resurrection-nocturne-theatre-review/"
-  },
-  {
-   "kind": "coverage",
-   "id": "frankenstein-resurrection-regional-2026",
-   "label": "Frankenstein: Resurrection",
-   "model": "openai",
-   "code": "missing-review-candidate",
    "detail": "Los Angeles Drama Critics Circle (post linking TicketHoldersLA) / Travis Michael Holder (TicketHoldersLA) 2026-09-16 https://ladramacriticscircle.com/frankenstein-resurrection-the-nocturne-theatre/"
-  },
-  {
-   "kind": "coverage",
-   "id": "frankenstein-resurrection-regional-2026",
-   "label": "Frankenstein: Resurrection",
-   "model": "openai",
-   "code": "missing-review-candidate",
-   "detail": "Immersive Scene Los Angeles / ThomM 2026-11-07 https://www.immersivescenelosangeles.com/post/review-frankenstein-resurrection"
-  },
-  {
-   "kind": "coverage",
-   "id": "frankenstein-resurrection-regional-2026",
-   "label": "Frankenstein: Resurrection",
-   "model": "openai",
-   "code": "missing-review-candidate",
-   "detail": "Halloween Scene Los Angeles / thom8261 2026-11-06 https://www.halloweenscenelosangeles.com/post/review-frankenstein-resurrection"
   },
   {
    "kind": "coverage",
@@ -2511,22 +2319,6 @@
   },
   {
    "kind": "coverage",
-   "id": "applause-regional-2026",
-   "label": "Applause",
-   "model": "openai",
-   "code": "missing-review-candidate",
-   "detail": "BroadwayWorld (Los Angeles) / Andrew Child 2026-07-25 https://www.broadwayworld.com/los-angeles/article/Review-APPLAUSE-at-The-Group-Rep-20260725"
-  },
-  {
-   "kind": "coverage",
-   "id": "applause-regional-2026",
-   "label": "Applause",
-   "model": "openai",
-   "code": "missing-review-candidate",
-   "detail": "People's World / Ed Rampell 2026-07-29 https://peoplesworld.org/article/applause-musical-review-an-impressive-revival/"
-  },
-  {
-   "kind": "coverage",
    "id": "lakefront-regional-2026",
    "label": "Lakefront",
    "model": "gemini",
@@ -2587,14 +2379,6 @@
    "label": "How High the Moon",
    "model": "openai",
    "code": "missing-review-candidate",
-   "detail": "NoHo Arts District / Samantha Simmonds-Ronceros 2026-07-30 https://nohoartsdistrict.com/how-high-the-moon-review/"
-  },
-  {
-   "kind": "coverage",
-   "id": "how-high-the-moon-regional-2026",
-   "label": "How High the Moon",
-   "model": "openai",
-   "code": "missing-review-candidate",
    "detail": "Angeles Stage (Don Shirley) / Don Shirley 2026-08-04 https://angelestage.substack.com/p/local-local-local"
   },
   {
@@ -2620,14 +2404,6 @@
    "model": "gemini",
    "code": "missing-review-candidate",
    "detail": "Angeles Stage / Don Shirley 2026-07-08 https://www.ladramacritics.com/2026/07/08/painted-ponies-ruskin-group-theatre/"
-  },
-  {
-   "kind": "coverage",
-   "id": "painted-ponies-regional-2026",
-   "label": "Painted Ponies",
-   "model": "openai",
-   "code": "missing-review-candidate",
-   "detail": "The Downey Patriot / Alistair Hunter 2026-07-15 https://www.thedowneypatriot.com/articles/painted-ponies-delivers-a-powerful-portrait-of-grief-and-hope"
   },
   {
    "kind": "coverage",
@@ -2807,19 +2583,11 @@
   },
   {
    "kind": "coverage",
-   "id": "heroes-of-the-fourth-turning-regional-2026",
-   "label": "Heroes of the Fourth Turning",
-   "model": "openai",
+   "id": "a-case-for-the-existence-of-god-regional-2026",
+   "label": "A Case for the Existence of God",
+   "model": "gemini",
    "code": "missing-review-candidate",
-   "detail": "BroadwayWorld (Los Angeles) / Harker Jones 2026-08-18 https://www.broadwayworld.com/los-angeles/article/Review-HEROES-OF-THE-FOURTH-TURNING-at-Broadwater-Black-Box-20260818"
-  },
-  {
-   "kind": "coverage",
-   "id": "heroes-of-the-fourth-turning-regional-2026",
-   "label": "Heroes of the Fourth Turning",
-   "model": "openai",
-   "code": "missing-review-candidate",
-   "detail": "Stage Takes / Stage Takes 2026-08-22 https://stagetakes.com/2026/08/22/heroes-of-the-fourth-turning-by-catharsis-theater-collective/"
+   "detail": "Los Angeles Times / Charles McNulty 2026-09-09 https://www.latimes.com/entertainment/arts/la-et-cm-samuel-d-hunter-grangeville-a-case-for-the-existence-of-god-20260909-story.html"
   },
   {
    "kind": "coverage",
@@ -2827,7 +2595,7 @@
    "label": "A Case for the Existence of God",
    "model": "gemini",
    "code": "missing-review-candidate",
-   "detail": "Stage Raw / F. Kathleen Foley 2026-09-08 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFdrw_FjBK74LSvdI-KIBLJCsIvDruSPUpbhdEg58CB7CoVGPuTLxpOucx69HpXOOxoKqBEcXVGQY7c3DJQ1e0RXJdUNkbdog88usSyZuep1imms9G7uYBeA6MtN0eVnELg8P_x4Z31AV438X3ZKW5vZwvdHGGjgbzKNm7dhdnXVA=="
+   "detail": "The Hollywood Times / Sarah A. Spitz 2026-09-08 https://thehollywoodtimes.today/samuel-d-hunter-is-having-an-l-a-moment/"
   },
   {
    "kind": "coverage",
@@ -2835,7 +2603,7 @@
    "label": "A Case for the Existence of God",
    "model": "gemini",
    "code": "missing-review-candidate",
-   "detail": "Los Angeles Times / Charles McNulty 2026-09-09 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFnmqZh791j5yjDByW3q7Ao1-Nde1LKEZh6se07Pkb2ciDNcCmkzaj8Hmax0RvV3PBFALIhsNSg2zI_cWSJLM6SF4UT27oGySSpJiVeNdBODxXH14RjcS1k1ddS7TllpLjK-QID6zvXWT_k_tLBhsF2YkVVnk1EddFWzsQRUTc85Rv4DfkMvTXrtZGMGNl4c6PCFwVIe2xj69d6cN8BHGZK1n_BbxZPshhDgjBhgK9wHhrrWVs="
+   "detail": "NoHoArtsDistrict / Amalisha HuEck 2026-09-10 https://www.nohoartsdistrict.com/theatre-reviews/a-case-for-the-existence-of-god-rogue-machine-theatre/"
   },
   {
    "kind": "coverage",
@@ -2843,31 +2611,7 @@
    "label": "A Case for the Existence of God",
    "model": "gemini",
    "code": "missing-review-candidate",
-   "detail": "Broadway World (Los Angeles) / Evan Henerson 2026-09-18 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEYf2GuKOXrJrMa7ehQHjQvDsTaXBpsIgan1gsJomnMZJxppJ_0pxBmgQTepop1xMzgo0dOXkSVaXk_7eQrWXnE9qAJSAXjgNEXfy2i5yNVNq8uujgE5tRiSkNxcffOswEBVkqVPXy956aegvIKxssl3x0KZ6sSCH4-WR9lxnqVL7yqy46M34yk2rlPYF-dpeeMxo1t1cuCMzbjYpYiPA17MiOFl6krlPhQJ5Z5J1aENj_Q4Rub9kK_bPHwygeubfebepc="
-  },
-  {
-   "kind": "coverage",
-   "id": "a-case-for-the-existence-of-god-regional-2026",
-   "label": "A Case for the Existence of God",
-   "model": "gemini",
-   "code": "missing-review-candidate",
-   "detail": "Stage Scene LA / Steven Stanley 2026-09-21 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH7mzIgJ3Sie1SNzbEuGkFkvRYzX_zmbJDzVlebSDCQ-nteSR6k-rkHpAph0KHC_RpjF4qzI4w9C69YJfOYv7WG5rWJTYhUZcf4zz8lHfLVj-sYEMNPFSB4u9VBQcmXH8nUQ6GMShbFyxG3Y8d77RY1CHlKoewwZEUfRzw="
-  },
-  {
-   "kind": "coverage",
-   "id": "a-case-for-the-existence-of-god-regional-2026",
-   "label": "A Case for the Existence of God",
-   "model": "gemini",
-   "code": "missing-review-candidate",
-   "detail": "Stage Raw / Kayden J. Merritt 2026-10-13 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEDE3tHaq3D0R4Um2m39xKT7WVbclf6VWe01MTKUb5NVUdsghGPxOptY3trS-jYB052KVWGQxHl7v_KuTEm7akWpZ5fHRT7YVGQrM4vZsnLg_4YY6_DPilx0PWamZieiMX32k76VCjTKG1AR2p8NNX08Z2QO7mIjAiQ-N8D3uUtiebbaRDfk_ghDSI="
-  },
-  {
-   "kind": "coverage",
-   "id": "a-case-for-the-existence-of-god-regional-2026",
-   "label": "A Case for the Existence of God",
-   "model": "openai",
-   "code": "missing-review-candidate",
-   "detail": "ArtsBeatLA / Terry Morgan 2026-09-07 https://www.artsbeatla.com/2026/09/a-case-for-the-existence-of-god/"
+   "detail": "Hollywood Progressive / Ed Rampell 2026-09-11 https://www.hollywoodprogressive.com/the-heart-is-a-lonely-hunter/"
   },
   {
    "kind": "coverage",
@@ -2923,22 +2667,6 @@
    "label": "Conscience",
    "model": "gemini",
    "code": "missing-review-candidate",
-   "detail": "Hollywood Progressive / Ed Rampell 2026-08-31 https://www.peoplesworld.org/article/conscience-play-review-great-political-art-focusing-on-mccarthyism-of-past-and-present/"
-  },
-  {
-   "kind": "coverage",
-   "id": "conscience-regional-2026",
-   "label": "Conscience",
-   "model": "gemini",
-   "code": "missing-review-candidate",
-   "detail": "LAexcites.com / Imaan Jalali 2026-08-29 https://laexcites.com/2026/08/29/review-conscience-carries-the-weight-of-its-conviction-at-ict/"
-  },
-  {
-   "kind": "coverage",
-   "id": "conscience-regional-2026",
-   "label": "Conscience",
-   "model": "gemini",
-   "code": "missing-review-candidate",
    "detail": "Long Beach Post / Anita W. Harris 2026-09-03 https://lbpost.com/life/arts-culture/2026/09/03/a-play-about-standing-on-your-morals-during-mccarthys-red-scare-hits-home-today-in-international-city-theatres-conscience/"
   },
   {
@@ -2948,54 +2676,6 @@
    "model": "openai",
    "code": "missing-review-candidate",
    "detail": "Stage Raw / Joel Beers 2026-09-09 https://stageraw.com/stage-raw-review-conscience/"
-  },
-  {
-   "kind": "coverage",
-   "id": "conscience-regional-2026",
-   "label": "Conscience",
-   "model": "openai",
-   "code": "missing-review-candidate",
-   "detail": "LAexcites / Imaan Jalali 2026-08-29 https://laexcites.com/2026/08/29/review-conscience-international-city-theatre-long-beach/"
-  },
-  {
-   "kind": "coverage",
-   "id": "conscience-regional-2026",
-   "label": "Conscience",
-   "model": "openai",
-   "code": "missing-review-candidate",
-   "detail": "OnTheReels (Substack) / R.C. Samo 2026-09-12 https://www.onthereels.com/p/conscience-loses-its-historical-focus"
-  },
-  {
-   "kind": "coverage",
-   "id": "conscience-regional-2026",
-   "label": "Conscience",
-   "model": "openai",
-   "code": "missing-review-candidate",
-   "detail": "People's World / Ed Rampell 2026-08-31 https://www.peoplesworld.org/article/conscience-play-review-great-political-art-focusing-on-mccarthys-red-scare/"
-  },
-  {
-   "kind": "coverage",
-   "id": "the-swan-regional-2026",
-   "label": "The Swan",
-   "model": "openai",
-   "code": "missing-review-candidate",
-   "detail": "Random Lengths News / Greggory Moore 2026-09-09 https://www.randomlengthsnews.com/archives/2026/09/09/the-swan-hyping-the-transformative-possibilities-of-love/77389"
-  },
-  {
-   "kind": "coverage",
-   "id": "pericles-regional-2026",
-   "label": "Pericles",
-   "model": "gemini",
-   "code": "missing-review-candidate",
-   "detail": "Los Angeles Times / Charles McNulty 2026-09-05 https://www.latimes.com/arts/theater/story/2026-09-05/pericles-review-boston-court-pasadena-charles-mcnulty"
-  },
-  {
-   "kind": "coverage",
-   "id": "pericles-regional-2026",
-   "label": "Pericles",
-   "model": "openai",
-   "code": "missing-review-candidate",
-   "detail": "Los Angeles Times / Charles McNulty 2026-09-05 https://www.latimes.com/entertainment-arts/story/2026-09-05/pericles-theater-review-shakespeare-ellen-mclaughlin-boston-court"
   },
   {
    "kind": "coverage",
@@ -3083,7 +2763,7 @@
    "label": "The Best Medicine",
    "model": "gemini",
    "code": "missing-review-candidate",
-   "detail": "Stage Raw / Molly McLean 2026-10-14 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHxpyYi9Q3Ge-yHUhDXnP3sMD_BugAYVF0SbkAoMGJ2yVUsgUnK01l4YXGy__pEpsE5ROITcZ4oAUk6SkGZSGpJulTn71OW8ASbNI2yn8wxrprJY67O9DRwyGr9CmtC-qksjfbQvG4zVdhm40UhkkcUbrmA"
+   "detail": "Stage and Cinema / Ernest Kearney 2026-10-21 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGUryxqIANFlAOAbg09_u4Qo31HctHbGnPGGh-br9ztoekCWCLzBqaXc7yu_46Q2YEhAU9lYfFtU7ccAEkITm6n8278BPA51YTTFu7Iuq9YZL68VVC65jI_U8R3I3Q72sk0TigAKkP7J7QPPXmt4Cq5LPYFAraC"
   },
   {
    "kind": "coverage",
@@ -3091,15 +2771,7 @@
    "label": "The Best Medicine",
    "model": "gemini",
    "code": "missing-review-candidate",
-   "detail": "Discover Hollywood Magazine / Amalisha HuEck 2026-11-06 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEiPoPp187VIkMCfUJXRnYnMiTUxUCwqoV-CdNmNv6LCgKofNYDf3G5UXD8l9sue89EcusYQqRzGuO-bGM0XsljgBUwXPJ-1AXzr5nssARfXbwMTNdm2TZia0Gp6TqL2pOjSSuVsc6U_JKLoRoEHf-x2GGLWUG4-917ogtadXls"
-  },
-  {
-   "kind": "coverage",
-   "id": "the-best-medicine-regional-2026",
-   "label": "The Best Medicine",
-   "model": "gemini",
-   "code": "missing-review-candidate",
-   "detail": "Stage and Cinema / Ernest Kearney 2026-10-17 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFgxrv7KKB4pSt1TxYQ-ctudRogvn1-Yb95fALMZ-_ieckMFt0F1nhq-c0ODefD6Ac4gMERCucukQ2_oueHz6v203lBh3Nu0Th5qDroxmEY4i549X7W96ZzaiwUD6-A6lr0Z58AMX5RaywtIJeqc_U="
+   "detail": "Discover Hollywood Magazine / Amalisha HuEck 2026-11-06 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH3OvSlZG6_1lnwuBx1hHM7-uMYp4neoJc0CuHKnSvn0i3RwKO8qp-H864_eoxAhOJx2XmMTZzOO9ZmicMXldSHcBgmbZvO1sjoRn60Ncn9_15tibMXLB1u3XlgI04h409YPhe719CI3DwK4d-1U6s07thOMdL8lM1C6l3nS2c="
   },
   {
    "kind": "coverage",
@@ -3107,7 +2779,7 @@
    "label": "The Best Medicine",
    "model": "openai",
    "code": "missing-review-candidate",
-   "detail": "Palisadian-Post / Libby Motika 2026-10-20 https://palipost.com/the-best-medicine-explores-parkinsons-disease-in-solo-show/"
+   "detail": "Discover Hollywood / Amalisha HuEck 2026-11-06 https://www.discoverhollywood.com/the-best-medicine-odyssey-theatre/"
   },
   {
    "kind": "coverage",
@@ -3148,14 +2820,6 @@
    "model": "gemini",
    "code": "missing-review-candidate",
    "detail": "ColoradoBoulevard.net / Marilyn Fuss 2026-10-10 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQG7Be4fjRnKXgSp4REEfNw7ASW0SZnFT2y1S314TK8qeVA5LPMD-_TMZ1Arz4Q__tzBaNbrZ1bE7wYISI5LIlsZCAsvusN64RPno6lluVvvr4pEhH9mXpoKeQbazyXOg-AeI-B_IYG-TrbaW9WWsnOiGHsvNtje3Noi05MYVkJVL3CN-uhMYbKfqxo="
-  },
-  {
-   "kind": "coverage",
-   "id": "the-dance-and-the-railroad-regional-2026",
-   "label": "The Dance and the Railroad",
-   "model": "openai",
-   "code": "missing-review-candidate",
-   "detail": "L.A. Dance Chronicle / Tam Warner 2026-10-15 https://www.ladancechronicle.com/the-dance-and-the-railroad-at-the-los-angeles-theater-center/"
   },
   {
    "kind": "coverage",
@@ -3275,23 +2939,7 @@
    "label": "The Case-Book of C. Auguste Dupin",
    "model": "openai",
    "code": "missing-review-candidate",
-   "detail": "The Hollywood Times / Cameron Knight 2026-09-19 https://hollywoodtimes.net/michael-mullen-makes-poes-first-detective-impossible-to-ignore-in-theatre-40s-the-case-book-of-c-auguste-dupin/"
-  },
-  {
-   "kind": "coverage",
-   "id": "the-case-book-of-c-auguste-dupin-regional-2026",
-   "label": "The Case-Book of C. Auguste Dupin",
-   "model": "openai",
-   "code": "missing-review-candidate",
    "detail": "It's Not About Me / Karen Salkin 2026-09-25 https://itsnotaboutme.tv/news/theatre-the-case-book-of-c-auguste-dupin/"
-  },
-  {
-   "kind": "coverage",
-   "id": "the-case-book-of-c-auguste-dupin-regional-2026",
-   "label": "The Case-Book of C. Auguste Dupin",
-   "model": "openai",
-   "code": "missing-review-candidate",
-   "detail": "Accessibly Live (Off-Line) /  2026-09-27 https://accessiblyliveoffline.wordpress.com/2026/09/27/three-and-a-half-decades-after-the-fact/"
   },
   {
    "kind": "coverage",
@@ -3307,36 +2955,12 @@
    "label": "Wives",
    "model": "gemini",
    "code": "missing-review-candidate",
-   "detail": "Los Angeles Times / Charles McNulty 2026-10-13 https://www.latimes.com/entertainment/arts/story/2026-10-13/wives-review-east-west-players-david-henry-hwang-theater"
-  },
-  {
-   "kind": "coverage",
-   "id": "wives-regional-2026",
-   "label": "Wives",
-   "model": "gemini",
-   "code": "missing-review-candidate",
    "detail": "Splash Magazines / Elaine Mura 2026-10-19 https://www.ladcc.org/2026/10/19/wives-east-west-players/"
   },
   {
    "kind": "coverage",
-   "id": "wives-regional-2026",
-   "label": "Wives",
-   "model": "openai",
-   "code": "missing-review-candidate",
-   "detail": "Los Angeles Times / Charles McNulty 2026-10-13 https://www.latimes.com/entertainment-arts/story/2026-10-13/wives-theater-review-east-west-players"
-  },
-  {
-   "kind": "coverage",
-   "id": "texas-sodomy-regional-2026",
-   "label": "Texas Sodomy",
-   "model": "openai",
-   "code": "missing-review-candidate",
-   "detail": "NoHo Arts District / Samantha Simmonds-Ronceros 2026-09-17 https://nohoartsdistrict.com/texas-sodomy-theatre-review-whitefire-theatre/"
-  },
-  {
-   "kind": "coverage",
    "id": "hangman-regional-2026",
-   "label": "Hangman",
+   "label": "Hangmen",
    "model": "openai",
    "code": "missing-review-candidate",
    "detail": "Random Lengths News / Greggory Moore 2026-09-03 https://www.randomlengthsnews.com/archives/2026/09/03/hangmen-is-lesser-mcdonagh-imperfectly-staged-but-still-fun/77317/"
@@ -3391,19 +3015,11 @@
   },
   {
    "kind": "coverage",
-   "id": "the-feel-good-story-america-needs-right-now-regional-2026",
-   "label": "The Feel Good Story America Needs Right Now",
-   "model": "openai",
+   "id": "kaiju-regional-2026",
+   "label": "Kaiju",
+   "model": "gemini",
    "code": "missing-review-candidate",
-   "detail": "NoHo Arts District / Samantha Simmonds-Ronceros 2026-10-08 https://nohoartsdistrict.com/the-feel-good-story-america-needs-right-now-review/"
-  },
-  {
-   "kind": "coverage",
-   "id": "the-feel-good-story-america-needs-right-now-regional-2026",
-   "label": "The Feel Good Story America Needs Right Now",
-   "model": "openai",
-   "code": "missing-review-candidate",
-   "detail": "LAexcites / Imaan Jalali 2026-11-02 https://laexcites.com/2026/11/02/review-theatre-west-the-feel-good-story-america-needs-right-now/"
+   "detail": "NoHoArtsDistrict /  2026-10-02 https://nohoartsdistrict.com/2026/10/kaiju-theatre-review-at-the-road-theatre-company/"
   },
   {
    "kind": "coverage",
@@ -3411,7 +3027,7 @@
    "label": "Kaiju",
    "model": "gemini",
    "code": "missing-review-candidate",
-   "detail": "TicketHoldersLA / Travis Michael Holder 2026-10-26 https://www.ticketholdersla.com/current-reviews/"
+   "detail": "ArtsBeatLA / Terry Morgan 2026-09-28 https://artsbeatla.org/2026/09/the-road-theatre-presents-kaiju/"
   },
   {
    "kind": "coverage",
@@ -3419,7 +3035,7 @@
    "label": "Kaiju",
    "model": "gemini",
    "code": "missing-review-candidate",
-   "detail": "Splash Magazines / Elaine Mura 2026-10-26 https://www.splashmagazines.com/index.php/2026/10/26/kaiju-a-wildly-creative-and-audacious-production-at-the-road-theatre/"
+   "detail": "TicketHoldersLA / Travis Michael Holder 2026-10-07 https://www.ticketholdersla.com/2026/10/kaiju-the-road-theatre-company/"
   },
   {
    "kind": "coverage",
@@ -3427,7 +3043,7 @@
    "label": "Kaiju",
    "model": "openai",
    "code": "missing-review-candidate",
-   "detail": "Los Angeles Drama Critics Circle (review roundup page) / LADCC Critics 2026-10-07 https://ladramacriticscircle.com/kaiju-the-road-theatre-company/"
+   "detail": "NoHo Arts District / Samantha Simmonds-Ronceros 2026-10-02 https://nohoartsdistrict.com/kaiju-theatre-review-road-theatre-company/"
   },
   {
    "kind": "coverage",
@@ -3439,67 +3055,11 @@
   },
   {
    "kind": "coverage",
-   "id": "rorschach-regional-2026",
-   "label": "Rorschach",
-   "model": "gemini",
-   "code": "missing-review-candidate",
-   "detail": "The Nerds of Color / The Nerds of Color 2026-11-06 https://thenerdsofcolor.org/2026/11/06/a-los-angeles-theatre-review-rorschach/"
-  },
-  {
-   "kind": "coverage",
    "id": "heartbreak-house-regional-2026",
    "label": "Heartbreak House",
    "model": "gemini",
    "code": "missing-review-candidate",
    "detail": "LA Theatre Bites / Patrick Chavis 2026-10-20 https://latheatrebites.com/2026/10/20/heartbreak-house-antaeus-theatre-company-review/"
-  },
-  {
-   "kind": "coverage",
-   "id": "heartbreak-house-regional-2026",
-   "label": "Heartbreak House",
-   "model": "openai",
-   "code": "missing-review-candidate",
-   "detail": "LA Drama Critics Circle (aggregated reviews) / LADCC Critics 2026-10-26 https://ladramacriticscircle.com/heartbreak-house-antaeus-theatre-company/"
   }
- ],
- "pages": {
-  "hub": {
-   "problems": [
-    {
-     "code": "missing-from-section",
-     "section": "closed",
-     "title": "a case for the existence of god"
-    },
-    {
-     "code": "wrong-section",
-     "section": "now",
-     "title": "a case for the existence of god"
-    },
-    {
-     "code": "wrong-section",
-     "section": "closed",
-     "title": "frankenstein resurrection"
-    }
-   ],
-   "status": 200,
-   "counts": {
-    "now": 8,
-    "soon": 11,
-    "closed": 26
-   },
-   "expectedLocal": {
-    "now": 5,
-    "soon": 0,
-    "closedRecent": 12,
-    "archive": 45
-   }
-  },
-  "app": {
-   "feedStatus": 200,
-   "feedCount": 63,
-   "webCount": 62,
-   "problems": [],
-   "byDesignUnscoredClosed": []
-  }
- }
+ ]
 }

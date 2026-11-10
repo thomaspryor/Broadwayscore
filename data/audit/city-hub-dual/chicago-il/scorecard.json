@@ -1,0 +1,536 @@
+{
+ "city": "chicago-il",
+ "today": "2026-11-10",
+ "models": {
+  "gemini": "gemini-2.5-flash",
+  "openai": "gpt-5-mini"
+ },
+ "itemsChecked": {
+  "shows": 6,
+  "images": 0,
+  "publishedReviews": 41,
+  "excludedFiles": 0,
+  "reviewsWithoutText": 270,
+  "tourStops": 0,
+  "coverageShows": 3,
+  "totalShows": 766,
+  "totalPublished": 5476
+ },
+ "flaggedByGemini": 12,
+ "flaggedByOpenAI": 13,
+ "flaggedLocalChecks": 16,
+ "flaggedAny": 30,
+ "flaggedByBoth": 11,
+ "triagedItems": 1,
+ "confirmed": 0,
+ "falsePositives": 1,
+ "fixed": 0,
+ "remaining": [],
+ "untriaged": 30,
+ "flags": [
+  {
+   "kind": "show",
+   "id": "iceboy-regional-2026",
+   "label": "Iceboy!",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-06-29 / page 2026-06-20"
+  },
+  {
+   "kind": "show",
+   "id": "iceboy-regional-2026",
+   "label": "Iceboy!",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-06-29 / page 2026-06-20"
+  },
+  {
+   "kind": "show",
+   "id": "little-bear-ridge-road-regional-2024",
+   "label": "Little Bear Ridge Road",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2024-06-24 / page 2024-06-13"
+  },
+  {
+   "kind": "show",
+   "id": "little-bear-ridge-road-regional-2024",
+   "label": "Little Bear Ridge Road",
+   "model": "gemini",
+   "code": "closing-date-missing",
+   "detail": "page 2024-08-04, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "little-bear-ridge-road-regional-2024",
+   "label": "Little Bear Ridge Road",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2024-06-13, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "little-bear-ridge-road-regional-2024",
+   "label": "Little Bear Ridge Road",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2024-06-24 / page 2024-06-13"
+  },
+  {
+   "kind": "show",
+   "id": "little-bear-ridge-road-regional-2024",
+   "label": "Little Bear Ridge Road",
+   "model": "openai",
+   "code": "closing-date-missing",
+   "detail": "page 2024-08-04, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "42-balloons-regional-2025",
+   "label": "42 Balloons",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2025-06-10 / page 2025-05-24"
+  },
+  {
+   "kind": "show",
+   "id": "42-balloons-regional-2025",
+   "label": "42 Balloons",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2025-06-10 / page 2025-05-24"
+  },
+  {
+   "kind": "show",
+   "id": "paranormal-activity-chicago-regional-2025",
+   "label": "Paranormal Activity",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2025-10-16 / page 2025-10-08"
+  },
+  {
+   "kind": "show",
+   "id": "paranormal-activity-chicago-regional-2025",
+   "label": "Paranormal Activity",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2025-10-16 / page 2025-10-08"
+  },
+  {
+   "kind": "show",
+   "id": "hayward-regional-2026",
+   "label": "Hayward",
+   "model": "local",
+   "code": "closing-unsourced",
+   "detail": "closingDateSource missing"
+  },
+  {
+   "kind": "show",
+   "id": "million-dollar-quartet-regional-2024",
+   "label": "Million Dollar Quartet",
+   "model": "local",
+   "code": "closing-unsourced",
+   "detail": "closingDateSource missing"
+  },
+  {
+   "kind": "show",
+   "id": "a-strange-loop-regional-2026",
+   "label": "A Strange Loop",
+   "model": "local",
+   "code": "closing-unsourced",
+   "detail": "closingDateSource missing"
+  },
+  {
+   "kind": "show",
+   "id": "sunday-in-the-park-with-george-regional-2026",
+   "label": "Sunday in the Park with George",
+   "model": "local",
+   "code": "closing-unsourced",
+   "detail": "closingDateSource missing"
+  },
+  {
+   "kind": "show",
+   "id": "mud-row-regional-2026",
+   "label": "Mud Row",
+   "model": "local",
+   "code": "closing-unsourced",
+   "detail": "closingDateSource missing"
+  },
+  {
+   "kind": "show",
+   "id": "vape-the-grease-parody-regional-2026",
+   "label": "Vape! The Grease Parody",
+   "model": "local",
+   "code": "closing-unsourced",
+   "detail": "closingDateSource missing"
+  },
+  {
+   "kind": "show",
+   "id": "vladimir-regional-2026",
+   "label": "Vladimir",
+   "model": "local",
+   "code": "closing-unsourced",
+   "detail": "closingDateSource missing"
+  },
+  {
+   "kind": "show",
+   "id": "church-hurt-regional-2026",
+   "label": "Church Hurt",
+   "model": "local",
+   "code": "closing-unsourced",
+   "detail": "closingDateSource missing"
+  },
+  {
+   "kind": "show",
+   "id": "king-hedley-ii-regional-2026",
+   "label": "King Hedley II",
+   "model": "local",
+   "code": "closing-unsourced",
+   "detail": "closingDateSource missing"
+  },
+  {
+   "kind": "show",
+   "id": "the-royale-regional-2026",
+   "label": "The Royale",
+   "model": "local",
+   "code": "closing-unsourced",
+   "detail": "closingDateSource missing"
+  },
+  {
+   "kind": "show",
+   "id": "the-niceties-regional-2026",
+   "label": "The Niceties",
+   "model": "local",
+   "code": "closing-unsourced",
+   "detail": "closingDateSource missing"
+  },
+  {
+   "kind": "show",
+   "id": "the-snow-queen-regional-2026",
+   "label": "The Snow Queen",
+   "model": "local",
+   "code": "closing-unsourced",
+   "detail": "closingDateSource missing"
+  },
+  {
+   "kind": "review",
+   "id": "12-ophelias-regional-2026|https://chicagoreader.com/performing-arts/theater/theater-review/12-ophelias-strawdog-theatre|kerry reid",
+   "label": "12 Ophelias | Chicago Reader / Kerry Reid",
+   "model": "gemini",
+   "code": "publish-date",
+   "detail": "ours 2026-04-23 / article 2026-10-30"
+  },
+  {
+   "kind": "review",
+   "id": "12-ophelias-regional-2026|https://chicagoreader.com/performing-arts/theater/theater-review/12-ophelias-strawdog-theatre|kerry reid",
+   "label": "12 Ophelias | Chicago Reader / Kerry Reid",
+   "model": "openai",
+   "code": "publish-date",
+   "detail": "ours 2026-04-23 / article 2026-10-30"
+  },
+  {
+   "kind": "review",
+   "id": "1619-the-journey-of-a-people-regional-2024|https://buzznews.net/theatre/theatre-reviews/item/5571-review-1619-the-journey-of-a-people-by-ted-williams-iii-at-fleetwood-jourdain-theatre.html|sarz maxwell",
+   "label": "1619: The Journey of a People | Buzznews / Sarz Maxwell",
+   "model": "gemini",
+   "code": "wrong-production",
+   "detail": "1619: THE JOURNEY OF A PEOPLE plays at the Fleetwood-Jourdain Theatre on Saturday evenings and Sunday afternoons through June 30. ... True, this is Evanston..."
+  },
+  {
+   "kind": "review",
+   "id": "1619-the-journey-of-a-people-regional-2024|https://buzznews.net/theatre/theatre-reviews/item/5571-review-1619-the-journey-of-a-people-by-ted-williams-iii-at-fleetwood-jourdain-theatre.html|sarz maxwell",
+   "label": "1619: The Journey of a People | Buzznews / Sarz Maxwell",
+   "model": "openai",
+   "code": "wrong-production",
+   "detail": "1619: THE JOURNEY OF A PEOPLE plays at the Fleetwood-Jourdain Theatre on Saturday evenings and Sunday afternoons through June 30."
+  },
+  {
+   "kind": "review",
+   "id": "1776-regional-2024|https://www.chicagotribune.com/2024/08/29/review-1776-at-marriott-theatre-rediscovers-the-hope-in-the-birth-of-america|chris jones",
+   "label": "1776 | Chicago Tribune / Chris Jones",
+   "model": "gemini",
+   "code": "star-band",
+   "detail": "article prints 3 stars should score 51-70, scored 75"
+  },
+  {
+   "kind": "review",
+   "id": "1776-regional-2024|https://www.dailyherald.com/20240829/theater/time-is-right-for-1776-first-rate-cast-savvy-direction-elevates-marriott-revival|barbara vitello",
+   "label": "1776 | Daily Herald / Barbara Vitello",
+   "model": "gemini",
+   "code": "star-band",
+   "detail": "article prints 3 stars should score 51-70, scored 78"
+  },
+  {
+   "kind": "review",
+   "id": "1776-regional-2024|https://www.dailyherald.com/20240829/theater/time-is-right-for-1776-first-rate-cast-savvy-direction-elevates-marriott-revival|barbara vitello",
+   "label": "1776 | Daily Herald / Barbara Vitello",
+   "model": "openai",
+   "code": "star-band",
+   "detail": "article prints 3 stars should score 51-70, scored 78"
+  },
+  {
+   "kind": "review",
+   "id": "25th-annual-putnam-county-spelling-bee-regional-2024|https://aroundthetownchicago.com/theatre-reviews/the-25th-annual-putnam-county-spelling-bee-reviewed-by-julia-w-rath|julia w rath",
+   "label": "25th Annual Putnam County Spelling Bee | Around the Town Chicago / Julia W. Rath",
+   "model": "gemini",
+   "code": "byline",
+   "detail": "ours \"Julia W. Rath\" / article \"Alan Bresloff\""
+  },
+  {
+   "kind": "review",
+   "id": "25th-annual-putnam-county-spelling-bee-regional-2024|https://aroundthetownchicago.com/theatre-reviews/the-25th-annual-putnam-county-spelling-bee-reviewed-by-julia-w-rath|julia w rath",
+   "label": "25th Annual Putnam County Spelling Bee | Around the Town Chicago / Julia W. Rath",
+   "model": "openai",
+   "code": "byline",
+   "detail": "ours \"Julia W. Rath\" / article \"Alan Bresloff\""
+  },
+  {
+   "kind": "review",
+   "id": "25th-annual-putnam-county-spelling-bee-regional-2024|https://chicagocultureauthority.com/2024/03/17/music-theater-works-mounts-an-energetic-production-that-entertains-for-a-spell|frank sennett",
+   "label": "25th Annual Putnam County Spelling Bee | Chicago Culture Authority / Frank Sennett",
+   "model": "local",
+   "code": "pull-quote-not-in-text",
+   "detail": "Audience members are embarrassed. And there's plenty of time to go out for drinks after the show. The Music Theater Works production of The "
+  },
+  {
+   "kind": "review",
+   "id": "25th-annual-putnam-county-spelling-bee-regional-2024|https://thefourthwalsh.com/2024/03/review-the-25th-annual-putnam-county-spelling-bee-music-theater-works-f-u-n|katy walsh",
+   "label": "25th Annual Putnam County Spelling Bee | The Fourth Walsh / Katy Walsh",
+   "model": "openai",
+   "code": "byline",
+   "detail": "ours \"Katy Walsh\" / article \"Music Theater Works\""
+  },
+  {
+   "kind": "review",
+   "id": "4000-days-regional-2021|https://www.chicagotheatrereview.com/2021/10/memories-lost-and-found|colin douglas",
+   "label": "4000 Days | Chicago Theatre Review / Colin Douglas",
+   "model": "openai",
+   "code": "wrong-production",
+   "detail": "Presented October 7-31 by PrideArts, 4139 N Broadway, Chicago."
+  },
+  {
+   "kind": "review",
+   "id": "iceboy-regional-2026|https://thirdcoastreview.com/stages/2026/07/06/review-goodman-theatre-iceboy|karin mckie",
+   "label": "iceboy-regional-2026 | Third Coast Review",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://thirdcoastreview.com/stages/2026/07/06/review-goodman-theatre-iceboy"
+  },
+  {
+   "kind": "review",
+   "id": "paranormal-activity-chicago-regional-2025|https://stageandcinema.com/2025/10/18/paranormal-activity-chicago-shakespeare|emma s rund",
+   "label": "paranormal-activity-chicago-regional-2025 | Stage and Cinema",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://stageandcinema.com/2025/10/18/paranormal-activity-chicago-shakespeare/"
+  },
+  {
+   "kind": "review",
+   "id": "paranormal-activity-chicago-regional-2025|https://www.conversationswithedtracy.com/picksinsix/2025/10/19/picksinsix-review-paranormal-activity-chicago-shakespeare-theatre|sarah frances fiorello",
+   "label": "paranormal-activity-chicago-regional-2025 | PicksInSix",
+   "model": "local",
+   "code": "no-review-text-file",
+   "detail": "https://www.conversationswithedtracy.com/picksinsix/2025/10/19/picksinsix-review-paranormal-activity-chicago-shakespeare-theatre"
+  },
+  {
+   "kind": "coverage",
+   "id": "iceboy-regional-2026",
+   "label": "Iceboy!",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Allie And The After Party / Allie Bugajski 2026-06-30 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEE7Ys3d5cNopiTjEV2HSoKr-PrZXNUdFCSNphRObdCgPlNY88VbQc0gSoY5ZPdc6_bXhPJla6-8QqoBi7tQU7cjMoVXQu_vrVHaGyEAsNwJeLOfMUf3jGbXictV_K4OSlYyj_kiYiF4pTAy-shS73tBPUK3XB5lwdDSAstpKjY"
+  },
+  {
+   "kind": "coverage",
+   "id": "iceboy-regional-2026",
+   "label": "Iceboy!",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Rachel Weinberg Reviews / Rachel Weinberg 2026-06-30 https://rachelweinbergreviews.com/2026/06/30/review-iceboy-at-goodman-theatre/"
+  },
+  {
+   "kind": "coverage",
+   "id": "iceboy-regional-2026",
+   "label": "Iceboy!",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "In The Loop Magazine / null 2026-07-03 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGFc8bt_JKyLWmcHKfSRoG0TBTRtER6VT9MBHsFPL1TJJRNWrRtsHI5BnEyOof9ZtLSt3_eLz-f41vEA7NhRZhRdrFpSBabOMeFfROQw8NYALTr6enzs_ZJvT8K-rkU9OcfdA=="
+  },
+  {
+   "kind": "coverage",
+   "id": "iceboy-regional-2026",
+   "label": "Iceboy!",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "The Fourth Walsh / null 2026-06-30 https://thefourthwalsh.com/2026/06/review-iceboy-goodman-theatre-irresistible-confection-of-whimsy-and-snark-over-ice/"
+  },
+  {
+   "kind": "coverage",
+   "id": "iceboy-regional-2026",
+   "label": "Iceboy!",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Buzz Center Stage / Ken Payne 2026-06-30 http://www.buzznews.net/theatre/theatre-reviews/item/6511-goodman-s-iceboy-is-a-full-tilt-blast-of-comic-mayhem.html"
+  },
+  {
+   "kind": "coverage",
+   "id": "iceboy-regional-2026",
+   "label": "Iceboy!",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "louharry.com / Lou Harry 2026-07-04 https://louharry.com/2026/07/04/thoughts-on-iceboy-at-the-goodman-theatre/"
+  },
+  {
+   "kind": "coverage",
+   "id": "iceboy-regional-2026",
+   "label": "Iceboy!",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Theatre Criticism / Lou Harry 2026-07-05 https://www.theatrecriticism.com/iceboy-gets-a-lukewarm-reception-in-chicago/"
+  },
+  {
+   "kind": "coverage",
+   "id": "iceboy-regional-2026",
+   "label": "Iceboy!",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Chicago Theatre Review / null 2026-07-01 https://www.chicagotheatrereview.com/2026/07/total-insanity/"
+  },
+  {
+   "kind": "coverage",
+   "id": "iceboy-regional-2026",
+   "label": "Iceboy!",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "HollywoodChicago.com (via YouTube) / Patrick McDonald 2026-07-05 https://m.youtube.com/watch?v=j3WYQzUInc4"
+  },
+  {
+   "kind": "coverage",
+   "id": "iceboy-regional-2026",
+   "label": "Iceboy!",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Chicago Theatre Review / Colin Douglas 2026-07-01 https://www.chicagotheatrereview.com/2026/07/total-insanity/"
+  },
+  {
+   "kind": "coverage",
+   "id": "iceboy-regional-2026",
+   "label": "Iceboy!",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "New City Stage / Christine Trevino 2026-07-06 https://www.newcitystage.com/2026/07/06/iceboy-keeps-things-cool-at-the-goodman/"
+  },
+  {
+   "kind": "coverage",
+   "id": "iceboy-regional-2026",
+   "label": "Iceboy!",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Buzznews (Buzz Center Stage) / Ken Payne 2026-06-15 https://buzznews.net/theatre/now-playing/itemlist/user/65-kenpayne.html?start=0"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-front-page-regional-2026",
+   "label": "The Front Page",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Chicago Theatre Review / Colin Douglas 2026-09-20 https://www.chicagotheatrereview.com/2026/09/an-american-comic-classic/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-front-page-regional-2026",
+   "label": "The Front Page",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Buzznews / Angelo Campos 2026-09-20 https://www.buzzcenterstage.com/theatre-in-review/northlight-delivers-a-headline-making-hilarious-front-page"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-front-page-regional-2026",
+   "label": "The Front Page",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Splash Magazines / Jenny Lunz and Robert Lunz 2026-09-21 https://www.splashmags.com/index.php/2026/09/21/northlight-theaters-the-front-page-quite-the-news-debut/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-front-page-regional-2026",
+   "label": "The Front Page",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Chicago Theatre Review / Colin Douglas 2026-09-20 https://www.chicagotheatrereview.com/2026/09/an-american-comic-classic/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-front-page-regional-2026",
+   "label": "The Front Page",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Chicago On Stage / Karen Topham 2026-09-20 https://chicagoonstage.com/northlight-opens-its-new-home-with-a-classic-chicago-comedy/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-front-page-regional-2026",
+   "label": "The Front Page",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "PicksInSix (CONVERSATIONS with Ed Tracy) / Ed Tracy 2026-09-20 https://ed-tracy-m5sp.squarespace.com/picksinsix/2026/9/20/picksinsix-review-the-front-page"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-front-page-regional-2026",
+   "label": "The Front Page",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Theatre In Chicago (review roundup / links) / Theatre In Chicago (aggregator) 2026-09-20 https://www.theatreinchicago.com/the-front-page/reviews/13478/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-humanities-regional-2026",
+   "label": "The Humanities",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Conversations with Ed Tracy (PicksInSix) / Ronald Keaton 2026-09-15 https://www.conversationswithedtracy.com/picksinsix-review-the-humanities-victory-gardens-theater/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-humanities-regional-2026",
+   "label": "The Humanities",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Chicago Stage and Screen / Angela Allyn 2026-09-14 https://chicagostagescreen.com/uncomfortable-politics-at-victory-gardens/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-humanities-regional-2026",
+   "label": "The Humanities",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Around the Town Chicago / Alan Bresloff 2026-09-14 https://www.aroundthetownchicago.com/the-humanities-around-the-town-chicago/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-humanities-regional-2026",
+   "label": "The Humanities",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Around the Town Chicago / Alan Bresloff 2026-09-14 https://aroundthetownchicago.com/theatre-reviews/the-humanities/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-humanities-regional-2026",
+   "label": "The Humanities",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Stage and Cinema / C. J. Fernandes 2026-09-19 https://stageandcinema.com/2026/09/19/the-humanities-victory-gardens-review/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-humanities-regional-2026",
+   "label": "The Humanities",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Buzz Center Stage / BuzzNews / John Accrocco 2026-09-19 https://www.buzzcenterstage.buzznews.net/theatre/theatre-reviews/itemlist/user/6058-johnaccrocco.html"
+  }
+ ]
+}
