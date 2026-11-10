@@ -221,6 +221,8 @@ function urlCanonicallyChanged(existingUrl, newUrl) {
   // A garbage INCOMING url must never trigger a full state wipe — only a real,
   // fetchable replacement article counts as a URL change.
   if (newUrl.includes('undefined') || !/^https?:\/\//i.test(newUrl)) return false;
+  // BRO-7304: a URL with embedded whitespace is a scrape artifact, not an article move.
+  if (/\s/.test(newUrl.trim())) return false;
   // Lazy require — review-normalization lazy-requires this module back.
   const { normalizeUrl } = require('./review-normalization');
   if (isMalformedUrlRepair(existingUrl, newUrl, normalizeUrl)) return false;

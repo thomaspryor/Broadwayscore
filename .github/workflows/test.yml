@@ -5016,7 +5016,7 @@ jobs:
       - name: URL-wipe hold class guard (BRO-7304)
         # New gate lands advisory first (CLAUDE.md section 19); fixture-only, no core data.
         continue-on-error: true
-        run: node scripts/test-url-wipe-hold.js
+        run: node scripts/test-url-wipe-hold.js && node scripts/test-url-hygiene-bro7304.js
 
       - name: Run slow network-dependent unit tests
         # opening-night-checks-skeleton.test.mjs no longer touches the network
