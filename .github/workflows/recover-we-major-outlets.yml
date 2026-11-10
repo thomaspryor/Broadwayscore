@@ -171,7 +171,7 @@ jobs:
             node "$GITHUB_WORKSPACE/scripts/opening-night-lease.js" sync || true
             node "$GITHUB_WORKSPACE/scripts/opening-night-lease.js" enforce --dir="$GITHUB_WORKSPACE/data/review-texts" || \
               echo "::warning::opening-night lease enforce failed to run"
-            git add -A
+            node "$GITHUB_WORKSPACE/scripts/lib/stage-review-texts.js" # BRO-7171 scoped staging
             git diff --cached --quiet || git commit -m "data: BRO-6155 recover WE major-outlet reviews"
             bash ../../scripts/lib/push-with-retry.sh 5 main
           fi
