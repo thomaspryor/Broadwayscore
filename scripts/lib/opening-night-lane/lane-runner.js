@@ -62,7 +62,7 @@ function loadDone(ledgerDir, show, night, onDiskUrls = []) {
  *   latency {fetchMs, scoreMs}, passIntervalMs, maxPasses, windowMs (how long the lane runs), startedAt?, publishTimeoutMs, pollMs,
  *   shouldStop?() (stop discovering and scoring), abandonPending?() (LANE_STANDDOWN: publish nothing new, only let in-flight batches finish;
  *   queued rows are already in review-texts, so the regular pipeline publishes them)
- * @returns {Promise<{passes, admitted, published, errors, failed, skipped, unpublished, awaiting, stopped}>}
+ * @returns {Promise<{passes, admitted, published, errors, failed, skipped, removedCopies, unpublished, awaiting, stopped}>}
  */
 async function runLaneNight({
   show, night, openingDate, timeZone, adapters, fetchText, ledgerDir, fetchReview, scoreReview, publishPorts, makePublishPorts, dryRun = false,
@@ -84,6 +84,7 @@ async function runLaneNight({
   const quoteless = [];
   const incomplete = new Map(); // BRO-7196: review key -> passes it was held for a missing card field
   const awaiting = new Set(); // paywall teasers held for an aggregator excerpt or rating (keys), until they score
+  const removedCopies = []; // copies published in an earlier pass and taken down when their original scored
   const skipped = []; // deliberately not published (a syndicated copy whose primary is live), with the reason
   const pending = []; // rows scored but not yet published (or sent back by a failed batch)
   const inflight = new Set(); // real mode: batches publishing now
@@ -92,17 +93,36 @@ async function runLaneNight({
   // reviews.json: a primary the regular pipeline already published must still stop the lane publishing its copy.
   const taken = new Set(onDiskRows.filter((r) => r && r.criticName && r.outletId).map((r) => `${criticKey(r.criticName)}|${r.outletId}`));
 
+  // BRO-7238 part 1: copies the lane already put on the site whose original has scored since (a Yahoo reprint published
+  // in pass N, the TheWrap original in pass N+2). `livePublished` = what this lane published tonight, by critic|outlet;
+  // `stagedRemovals` = copies to take down with the batch that carries their original, kept until that publish succeeds.
+  const livePublished = new Map();
+  const stagedRemovals = [];
+
   const publishBatch = async (batch, clock) => {
+    // Only removals whose original rides in THIS batch: the copy never leaves the site before its original is in.
+    const batchKeys = new Set(batch.map((r) => r.key));
+    // merged or about to be: a copy in flight or re-queued as missing is still on the site when its original scores
+    for (const r of batch) livePublished.set(`${criticKey(r.row.criticName)}|${r.row.outletId}`, r);
+    const remove = stagedRemovals.filter((x) => batchKeys.has(x.primaryKey));
     try {
       const res = await publish.publishLaneReviews({
-        show: show.id, night, rows: batch, ledgerDir, ports: makePublishPorts ? makePublishPorts(clock) : publishPorts, now: clock.now, sleep: clock.wait,
+        show: show.id, night, rows: batch, ...(remove.length ? { remove: remove.map(({ criticName, outletId, primaryOutlet }) => ({ criticName, outletId, primaryOutletId: primaryOutlet })) } : {}), ledgerDir, ports: makePublishPorts ? makePublishPorts(clock) : publishPorts, now: clock.now, sleep: clock.wait,
         openingDate, dryRun, ...(pollMs ? { pollMs } : {}), ...(publishTimeoutMs ? { timeoutMs: publishTimeoutMs } : {}),
       });
       published.push(res);
+      const notLive = new Set([...(res.missing || [])]);
+      for (const x of remove) { // the merge landed: the copies are off the site (unless their original is still not live: retry with it)
+        if (notLive.has(x.primaryKey)) continue;
+        stagedRemovals.splice(stagedRemovals.indexOf(x), 1);
+        livePublished.delete(`${criticKey(x.criticName)}|${x.outletId}`);
+        removedCopies.push({ key: x.key, reason: `syndicated copy of the ${x.primaryOutlet} review by ${x.criticName}, taken down when the original was published` });
+      }
       for (const key of res.dropped || []) failed.push({ key, reason: 'landed in reviews.json but not in the regenerated show JSON' });
       const missing = new Set(res.missing);
       // never went live: try again with the next batch. A re-queued row restarts its mid-pass wait, or the 30 s timer
       // below would retry a failing publish every 30 s instead of about once a pass (BRO-7159 review).
+      for (const r of batch) if (!missing.has(r.key)) livePublished.set(`${criticKey(r.row.criticName)}|${r.row.outletId}`, r);
       pending.push(...batch.filter((r) => missing.has(r.key)).map((r) => ({ ...r, scoredAt: clock.now() })));
     } catch (e) {
       errors.push({ adapter: 'publish', error: String((e && e.message) || e).slice(0, 200) });
@@ -241,6 +261,11 @@ async function runLaneNight({
           skipped.push({ key: pending.at(i).key, reason: `syndicated copy of the ${row.outletId} review by ${row.criticName}` });
           pending.splice(i, 1);
         }
+        for (const [k, live] of livePublished) {
+          const q = live.row;
+          if (criticKey(q.criticName) !== criticKey(row.criticName) || !getSyndicationPrimaries(q.criticName, q.outletId).includes(row.outletId)) continue;
+          if (!stagedRemovals.some((x) => x.key === live.key)) stagedRemovals.push({ key: live.key, criticName: q.criticName, outletId: q.outletId, primaryKey: a.key, primaryOutlet: row.outletId });
+        }
         pending.push({ key: a.key, row, scoredAt: now() });
         taken.add(`${criticKey(row.criticName)}|${row.outletId}`);
         seen.add(a.key);
@@ -279,7 +304,7 @@ async function runLaneNight({
       else await Promise.race(inflight);
     }
   }
-  return { passes, admitted, published, errors, failed, skipped, quoteless, unpublished: pending.map((r) => r.key), awaiting: [...awaiting], stopped };
+  return { passes, admitted, published, errors, failed, skipped, removedCopies, quoteless, unpublished: pending.map((r) => r.key), awaiting: [...awaiting], stopped };
 }
 
 module.exports = { runLaneNight, loadDone };

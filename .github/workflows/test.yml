@@ -166,6 +166,8 @@ on:
       # tests/unit/tour-schedule-now-next.test.ts requires tourStops from
       # scripts/fetch-tour-schedules.js (BRO-4601).
       - 'scripts/fetch-tour-schedules.js'
+      # Manual tour-stop date fixes (BRO-7271); validated by tour-stop-overrides.test.mjs.
+      - 'data/tour-stop-overrides.json'
       # I/O wrapper for scripts/lib/tour-art.js (globbed above, BRO-4726): a
       # solo edit would otherwise trigger ZERO CI.
       - 'scripts/fetch-tour-images.js'

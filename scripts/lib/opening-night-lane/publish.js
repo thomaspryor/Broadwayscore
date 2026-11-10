@@ -23,6 +23,7 @@ const ledger = require('./ledger');
 const { canonicalUrl } = require('./discovery');
 const { keyOf, urlKeyOf, resolveConflict } = require('../merge-reviews-json');
 const { isLaneReview } = require('./trust-model');
+const { criticFileSlug } = require('../syndication-pairs');
 
 const DEFAULT_POLL_MS = 15 * 1000;
 // BRO-7232: the live site build takes 14-23 min on a normal night, so the "not live" page waits past it (30 min). The
@@ -37,12 +38,28 @@ const DEFAULT_TIMEOUT_MS = 30 * 60 * 1000;
  * URL that canonicalises: rows the generator would drop or verification could never see are refused up front.
  * @returns {{doc, added, replaced, kept, applied}} applied = the rows that actually landed (added or replaced)
  */
-function mergeShowRows(doc, showId, incoming, { openingDate } = {}) {
+function mergeShowRows(doc, showId, incoming, { openingDate, remove } = {}) {
   if (!showId) throw new Error('publish: showId is required');
   const base = doc && typeof doc === 'object' ? doc : {};
   const reviews = Array.isArray(base.reviews) ? base.reviews.slice() : [];
   let added = 0; let replaced = 0; let kept = 0;
   const applied = [];
+  // BRO-7238 part 1: a syndicated copy the lane published in an earlier pass whose original has now scored. Only the
+  // lane's own rows for this show are removed (a row the regular pipeline wrote is never touched), matched on the
+  // rebuild's critic key + outlet, and before the adds so the keys below are built from what remains.
+  const removed = [];
+  if (Array.isArray(remove) && remove.length) {
+    // An entry names its original (primaryOutletId): the copy only comes down when that original was applied in THIS
+    // merge, so a kept/rejected original never leaves the site with neither review.
+    const landed = new Set((incoming || []).map((r) => `${criticFileSlug(r.criticName)}|${r.outletId}`));
+    const gone = new Set(remove.filter((x) => !x.primaryOutletId || landed.has(`${criticFileSlug(x.criticName)}|${x.primaryOutletId}`))
+      .map((x) => `${criticFileSlug(x.criticName)}|${x.outletId}`));
+    for (let i = reviews.length - 1; i >= 0; i--) {
+      const r = reviews[i];
+      if (!r || r.showId !== showId || !r.criticName || !gone.has(`${criticFileSlug(r.criticName)}|${r.outletId}`) || !isLaneReview(r, { openingDate })) continue;
+      removed.push(r); reviews.splice(i, 1);
+    }
+  }
   const byPrimary = new Map();
   const byUrl = new Map();
   reviews.forEach((r, i) => {
@@ -65,7 +82,7 @@ function mergeShowRows(doc, showId, incoming, { openingDate } = {}) {
       reviews[at] = row; replaced++; applied.push(row);
     } else kept++;
   }
-  return { doc: { ...base, reviews }, added, replaced, kept, applied };
+  return { doc: { ...base, reviews }, added, replaced, kept, applied, removed };
 }
 
 const sha = (buf) => crypto.createHash('sha256').update(buf).digest('hex');
@@ -105,7 +122,7 @@ function createReviewsFilePort(file, { attempts = 5, beforeWrite = null, beforeR
  *   deploy(), fetchLiveShow(showId)}, now?(), sleep?(ms), pollMs, timeoutMs
  * @returns {{merge, verified, missing, dropped, timedOut, ms}}
  */
-async function publishLaneReviews({ show, night, rows, ledgerDir, ports, now = () => Date.now(), sleep = (ms) => new Promise((r) => setTimeout(r, ms)), pollMs = DEFAULT_POLL_MS, timeoutMs = DEFAULT_TIMEOUT_MS, openingDate, dryRun = false } = {}) {
+async function publishLaneReviews({ show, night, rows, ledgerDir, ports, now = () => Date.now(), sleep = (ms) => new Promise((r) => setTimeout(r, ms)), pollMs = DEFAULT_POLL_MS, timeoutMs = DEFAULT_TIMEOUT_MS, openingDate, dryRun = false, remove } = {}) {
   if (!show || !night || !ledgerDir || !ports) throw new Error('publish: show, night, ledgerDir and ports are required');
   if (!Array.isArray(rows) || !rows.length) return { merge: { added: 0, replaced: 0, kept: 0 }, verified: [], missing: [], dropped: [], timedOut: false, ms: 0 };
   for (const p of ['updateReviews', 'regenShow', 'deploy', 'fetchLiveShow']) if (typeof ports[p] !== 'function') throw new Error(`publish: port "${p}" is required`);
@@ -119,7 +136,7 @@ async function publishLaneReviews({ show, night, rows, ledgerDir, ports, now = (
   const t0 = now();
   const log = (key, stage, meta) => ledger.appendEvent(ledgerDir, { show, night, reviewKey: key, stage, at: now(), ...(meta ? { meta } : {}) });
 
-  const merge = await ports.updateReviews((doc) => mergeShowRows(doc, show, rows.map((r) => r.row), { openingDate }));
+  const merge = await ports.updateReviews((doc) => mergeShowRows(doc, show, rows.map((r) => r.row), { openingDate, remove }));
   const landed = new Set(merge.applied);
   if (ports.pushData) {
     const pushed = await ports.pushData();
@@ -160,7 +177,7 @@ async function publishLaneReviews({ show, night, rows, ledgerDir, ports, now = (
     }
     await sleep(pollMs);
   }
-  return { merge: { added: merge.added, replaced: merge.replaced, kept: merge.kept }, verified, missing: [...pending.values()], dropped, timedOut, ms: now() - t0 };
+  return { merge: { added: merge.added, replaced: merge.replaced, kept: merge.kept, removed: (merge.removed || []).length }, verified, missing: [...pending.values()], dropped, timedOut, ms: now() - t0 };
 }
 
 // ---- real-world ports (thin; CI wires the deploy) -----------------------------------------------------------------

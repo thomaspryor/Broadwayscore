@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-11-10T07:57:13.073Z",
+  "timestamp": "2026-11-10T09:06:43.512Z",
   "stats": {
-    "totalReviews": 81104,
-    "alreadyFlagged": 22191,
+    "totalReviews": 81107,
+    "alreadyFlagged": 22192,
     "dateGuardCatches": 219,
-    "directorMismatch": 3600,
-    "tvFilmSignals": 2285,
-    "londonSignals": 3658,
+    "directorMismatch": 3601,
+    "tvFilmSignals": 2286,
+    "londonSignals": 3662,
     "offBroadwaySignals": 750,
-    "yearMismatch": 364,
+    "yearMismatch": 365,
     "noPublishDate": 8420
   },
   "findings": [
@@ -46266,6 +46266,20 @@
       ]
     },
     {
+      "showId": "north-by-northwest-old-regional-2026",
+      "file": "timeout--adam-feldman.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.timeout.com/san-francisco/theater/north-by-northwest",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"emma rice\" from north-by-northwest-regional-2026"
+        }
+      ]
+    },
+    {
       "showId": "north-by-northwest-regional-2026",
       "file": "encoreplus--mick-lasalle.json",
       "publishDate": "2026-09-14",
@@ -69319,6 +69333,20 @@
     },
     {
       "showId": "the-guilty-off-west-end-2026",
+      "file": "deadline--zac-ntim.json",
+      "score": null,
+      "publishDate": "2026-07-10",
+      "url": "https://deadline.com/2026/07/micheal-ward-not-guilty-rape-sexual-assault-1236979158/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-guilty-off-west-end-2026",
       "file": "london-theatre--anya-ryan.json",
       "score": 89,
       "publishDate": "2026-07-01",
@@ -78780,6 +78808,24 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2018 (2x) more than 2026 (1x). 2018 matches production: to-kill-a-mockingbird-2018"
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-west-end-2026",
+      "file": "i-paper--sam-marlowe.json",
+      "publishDate": null,
+      "url": "https://inews.co.uk/culture/arts/to-kill-a-mockingbird-gielgud-theatre-review-rafe-spall-plays-the-hero-in-a-tremendous-reimagining-1550710?ico=most_popular&msclkid=a2c8ecb5b19611ec9593735c3a1a2e73",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2022 (2x) more than 2026 (0x). 2022 matches production: to-kill-a-mockingbird-west-end-2022"
         }
       ]
     },
@@ -97186,6 +97232,19 @@
       ]
     },
     {
+      "showId": "dog-man-the-musical-off-west-end-2026",
+      "file": "muddystilettos--unknown.json",
+      "publishDate": null,
+      "url": "https://london.muddystilettos.co.uk/things-to-do/arts-culture/dog-man-the-musical-2/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "dog-mom-off-west-end-2026",
       "file": "flicker-magazine--unknown.json",
       "publishDate": null,
@@ -98012,6 +98071,19 @@
       "score": 77,
       "publishDate": "2026-08-23",
       "url": "https://monstagigz.com/2026/08/23/theatre-review-electra-persona-starring-cate-blanchett-nina-hoss-at-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "electra-persona-west-end-2026",
+      "file": "muddystilettos--muddy-stilettos.json",
+      "publishDate": null,
+      "url": "https://london.muddystilettos.co.uk/things-to-do/arts-culture/electra-persona/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -130116,6 +130188,19 @@
       "score": 89,
       "publishDate": "2026-07-01",
       "url": "https://www.theguardian.com/stage/2026/jul/01/the-guilty-review-russell-tovey-donmar-warehouse-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "the-guilty-off-west-end-2026",
+      "file": "plays-international--jeremy-malies.json",
+      "publishDate": null,
+      "url": "https://playsinternational.org.uk/the-guilty-donmar-warehouse/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
