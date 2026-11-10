@@ -66,6 +66,50 @@ export function cardTitles(events) {
   return titles.filter(Boolean);
 }
 
+const COMMIT_MSG_RE = /(?:\s-[a-zA-Z]*m|\s--message=?)\s*(?:"((?:[^"\\]|\\.)*)"|'([^']*)')/;
+const HEREDOC_MSG_RE = /-m\s+"?\$\(cat\s*<<-?\s*['"]?(\w+)['"]?\s*\n([^\n]*)/;
+const CONVENTIONAL_RE = /^(feat|fix|chore|docs|refactor|test|tests|perf|style|build|ci|revert)(?:\([^)]*\))?!?:\s*/i;
+
+/**
+ * PURE. Subjects of the commits this session made: the first -m of each successful `git commit`
+ * (CLI or heredoc form), and the `message` of the connector's GitHub file-push tools (the cloud
+ * landing path has no git commit command). Piped commits can exit 0 on "nothing to commit".
+ */
+export function commitSubjects(events) {
+  const results = new Map(events.filter((e) => e.kind === 'tool_result').map((e) => [e.tool_use_id, e]));
+  const out = [];
+  for (const e of events) {
+    if (e.kind !== 'assistant_tool_use') continue;
+    const r = results.get(e.id);
+    if (!r || r.isError) continue;
+    if (e.name === 'Bash') {
+      if (/nothing (?:added )?to commit|no changes added/i.test(String(r.content || ''))) continue;
+      for (const seg of String(e.input?.command || '').split(/&&|;|\|\||(?<=EOF)\s*\n/)) {
+        if (!/\bgit\b[^\n]*\scommit\b/.test(seg)) continue;
+        const h = HEREDOC_MSG_RE.exec(seg);
+        const m = h ? null : COMMIT_MSG_RE.exec(seg);
+        const s = h ? h[2] : m && (m[1] ?? m[2]);
+        if (s && s.trim()) out.push(s.trim());
+      }
+    } else if (/^mcp__github__(?:push_files|create_or_update_file)$/.test(e.name || '') && e.input?.message) {
+      out.push(String(e.input.message).split('\n')[0].trim());
+    }
+  }
+  return out;
+}
+
+/**
+ * PURE. Does a commit subject read as a fix? A conventional type decides on its own (so
+ * "feat: add missing X" is a feature); otherwise the card-title test applies after dropping a
+ * leading "BRO-123:" tag. FIX_RE is shared with the Linear Done gate, so it is not widened here.
+ */
+export function subjectReadsAsFix(subject) {
+  let s = String(subject || '').trim().replace(/^(?:BRO-\d+\s*[:\-–]\s*)+/i, '');
+  const c = CONVENTIONAL_RE.exec(s);
+  if (c) return c[1].toLowerCase() === 'fix';
+  return isFixCard({ title: s });
+}
+
 /** PURE. Every text where a rule-21 answer may live: assistant chat, Linear comment writes, the closing message. */
 export function answerTexts(events, lastMessage = '') {
   const out = [];
@@ -117,7 +161,9 @@ export function stopHookDecision({ lastMessage = '', events = null, env = proces
   if (!events || events.length === 0) return { decision: 'allow', reason: 'no transcript (fails open)' };
   if (landedPushIndices(events).length === 0) return { decision: 'allow', reason: 'nothing landed' };
   const titles = cardTitles(events);
-  if (titles.length && !titles.some((t) => isFixCard({ title: t }))) return { decision: 'allow', reason: 'not a fix card' };
+  // BRO-7301: titles describe symptoms, so a bug card often has no fix word. A feature-looking
+  // title is only trusted when the commits it landed do not read as fixes either.
+  if (titles.length && !titles.some((t) => isFixCard({ title: t })) && !commitSubjects(events).some(subjectReadsAsFix)) return { decision: 'allow', reason: 'not a fix card' };
   if (hasRootCauseAnswer(answerTexts(events, lastMessage))) return { decision: 'allow', reason: 'rule-21 answer stated' };
   return { decision: 'block', reason: 'landed a fix with no rule-21 answer', message: MESSAGE };
 }

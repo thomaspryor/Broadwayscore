@@ -6,7 +6,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { stopHookDecision, cardTitles, hasRootCauseAnswer, answerTexts, blockBudget, main } from './root-cause-stop.mjs';
+import { stopHookDecision, cardTitles, commitSubjects, subjectReadsAsFix, hasRootCauseAnswer, answerTexts, blockBudget, main } from './root-cause-stop.mjs';
 import { landedPushIndices } from './review-coverage.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -113,4 +113,30 @@ test('verify-edits.sh keeps the root-cause-stop call (a Mac-master sync must not
   const src = fs.readFileSync(path.join(ROOT, '.claude', 'hooks', 'verify-edits.sh'), 'utf8');
   assert.match(src, /root-cause-stop\.mjs" --stop-hook/);
   assert.match(src, /ROOT_CAUSE_STOP_DISABLE/);
+});
+
+test('BRO-7301: a symptom-worded card title is still checked when the landed commit reads as a fix', () => {
+  const title = use('t1', 'Bash', { command: `node scripts/linear-brain.js create "Opening grade: SERP census counts other cities' productions of classic titles" --self` });
+  const commit = (msg) => [use('g1', 'Bash', { command: `git commit -m "${msg}"` }), ok('g1')];
+  const T = [title, ok('t1')];
+  assert.equal(d([...T, ...commit('fix(census): ignore other places'), ...LAND]), 'block');
+  assert.equal(d([...T, ...commit('BRO-7129: census-other-place ship-check fixes'), ...LAND]), 'block', 'BRO tag stripped, then fix word');
+  assert.equal(d([...T, ...commit('feat: add census panel'), ...LAND]), 'allow');
+  assert.equal(d([...T, ...commit('feat: add missing-reviews panel'), ...LAND]), 'allow', 'conventional type beats a fix word');
+  assert.equal(d([...T, ...LAND]), 'allow', 'no commit evidence keeps the title verdict');
+  assert.equal(d([...T, ...commit('fix(census): ignore other places'), ...LAND], 'CLASS-GUARD: scripts/lib/census.test.mjs\nSAFE TO ARCHIVE — x'), 'allow');
+  const failed = [use('g2', 'Bash', { command: 'git commit -m "fix: x y z"' }), ok('g2', 'error', true)];
+  assert.equal(d([...T, ...failed, ...LAND]), 'allow', 'a failed commit is not evidence');
+  const viaMcp = [use('m1', 'mcp__github__push_files', { branch: 'land/x', message: 'fix(census): other places\n\nbody', files: [] }), ok('m1')];
+  assert.equal(d([...T, ...viaMcp]), 'block', 'connector pushes carry the message');
+});
+
+test('BRO-7301 helpers: commitSubjects and subjectReadsAsFix', () => {
+  const run = (command, content = 'ok') => [use('h', 'Bash', { command }), ok('h', content)];
+  assert.deepEqual(commitSubjects(run("git commit -am 'fix: a b c'")), ['fix: a b c']);
+  assert.deepEqual(commitSubjects(run('git add -A && git commit -m "one thing" -m "second para"')), ['one thing']);
+  assert.deepEqual(commitSubjects(run("git commit -m \"$(cat <<'EOF'\nfix(x): heredoc subject\n\nbody\nEOF\n)\"")), ['fix(x): heredoc subject']);
+  assert.deepEqual(commitSubjects(run('git commit -m "x y"', 'nothing to commit, working tree clean')), []);
+  assert.equal(subjectReadsAsFix('chore: fix lint'), false);
+  assert.equal(subjectReadsAsFix('Fix wrong venue on 6 shows'), true);
 });
