@@ -24,6 +24,7 @@ const { articleText, parseJson, sameCritic } = require('./audit-city-reviews');
 const { foldDiacritics } = require('./title-match');
 
 const ROOT = path.join(__dirname, '..', '..');
+const saveJson = (dest, text) => fs.writeFileSync(dest, text);
 const arg = (n, d) => { const h = process.argv.slice(2).find((a) => a.startsWith(`--${n}=`)); return h ? h.split('=').slice(1).join('=') : d; };
 const has = (n) => process.argv.includes(`--${n}`);
 const TODAY = arg('today', new Date().toISOString().slice(0, 10));
@@ -155,7 +156,7 @@ async function getPage(url, cache) {
     const { fetchPage } = require('./scraper');
     const p = await fetchPage(url, { skipVerify: true });
     const page = p && p.content ? { content: p.content, finalUrl: p.finalUrl || p.url || null } : null;
-    if (page) fs.writeFileSync(cacheTarget, JSON.stringify(page));
+    if (page) saveJson(cacheTarget, JSON.stringify(page));
     return page;
   } catch { return null; }
 }
@@ -232,7 +233,7 @@ async function main() {
   };
   const reportTarget = arg('out', path.join(ROOT, 'data', 'audit', `city-hub-audit-${hub}.json`));
   fs.mkdirSync(path.dirname(reportTarget), { recursive: true });
-  fs.writeFileSync(reportTarget, JSON.stringify(out, null, 1));
+  saveJson(reportTarget, JSON.stringify(out, null, 1));
   try { require('./scraper').cleanup(); } catch { /* none */ }
   console.log(JSON.stringify(out.summary), '->', reportTarget);
 }
