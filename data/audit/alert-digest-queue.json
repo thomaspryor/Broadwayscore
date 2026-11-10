@@ -242,5 +242,36 @@
       }
     ],
     "queuedAt": "2026-11-10T10:37:04.867Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7272-footer-links",
+    "title": "Landing blocked: rebase red on land/bro-7272-footer-links",
+    "description": "land.yml did not land land/bro-7272-footer-links: the rebase gate went red at 0ce2363e16. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42801821803",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7272-footer-links"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "0ce2363e169eb854fb7627267ed7efbd687b2b72"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42801821803"
+      }
+    ],
+    "queuedAt": "2026-11-10T10:47:38.073Z"
   }
 ]
