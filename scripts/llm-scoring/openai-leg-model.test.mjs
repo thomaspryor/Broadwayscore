@@ -98,7 +98,7 @@ describe('class guard: no OpenAI scoring call builds its own body', () => {
   test('red-then-green: the scan does see the known production callers', () => {
     const callers = files.filter((f) => readFileSync(join(root, 'scripts/llm-scoring', f), 'utf8').includes('api.openai.com/v1/chat/completions'));
     assert.ok(callers.includes('openai-scorer.ts'));
-    assert.ok(callers.includes('comparative-rescore.ts'));
+    assert.ok(callers.includes('comparative-core.ts')); // the pass moved out of comparative-rescore.ts (BRO-7283)
   });
 });
 // Per-model pricing (gpt-4o vs gpt-5.4-mini) is covered in tests/unit/llm-cost-cache.test.ts.

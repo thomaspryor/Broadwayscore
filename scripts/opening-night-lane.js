@@ -39,6 +39,17 @@ async function main() {
     adaptersConfig: arg('adapters') ? JSON.parse(fs.readFileSync(arg('adapters'), 'utf8')) : {},
     routeAlert: require('./lib/owner-alert-router').routeAlert,
     ScorerClass: require('./llm-scoring/ensemble-scorer.ts').EnsembleReviewScorer,
+    // BRO-7283: the same within-band comparative pass the regular pipeline runs (comparative-core.ts), run at score time so the
+    // published score is the settled one. <2 models = nothing moves, the isolated scores publish as they always did.
+    settleFor: ({ show: s, reviewTextsDir }) => {
+      const core = require('./llm-scoring/comparative-core.ts');
+      return async ({ file }) => {
+        const models = core.availableModels();
+        if (models.length < 2) return { changed: [], unsettled: [{ reason: `only ${models.length} comparative model(s) available` }] };
+        const st = await core.settleShow(s.id, { reviewTextsDir, models, onlyFile: file, log: (l) => console.log(l) });
+        return { changed: st.changedFiles, unsettled: st.unsettled };
+      };
+    },
   });
   // BRO-6618: in the night workflow the lease outlives this process. The driver's `finally` calls deps.release, so swap in a
   // renewal (a fresh 30-minute TTL for the push) and let the workflow release it after push-review-texts succeeds.

@@ -694,9 +694,11 @@ jobs:
           # (e.g. the per-show auto-rescore from dispatch-rescore.js) fired a
           # comparative pass across EVERY West End show's anchored-v6 backlog,
           # rewriting unrelated shows' scores nobody aimed this run at.
-          # comparative-rescore.ts already supports --show=ID; a Broadway
-          # show_id just finds zero anchored-v6 groups and no-ops (that scope
-          # is WE/OWE-only by design — see the script's own header).
+          # comparative-rescore.ts already supports --show=ID, for any market:
+          # a Broadway show with 2+ anchored-v6 reviews in a star band IS
+          # rewritten (BRO-7283: this is what moved Blueberries 81 -> 80 after
+          # the opening-night lane had published the isolated scores). The
+          # lane now runs the same pass (comparative-core.ts) at score time.
           if [ -n "${INPUT_SHOW_ID}" ]; then
             # --show= takes one id; a comma list goes through --shows= (comparative-rescore.ts:387-388).
             SHOW_FLAG="--show"; case "${INPUT_SHOW_ID}" in *,*) SHOW_FLAG="--shows" ;; esac

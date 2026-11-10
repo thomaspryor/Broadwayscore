@@ -188,7 +188,7 @@ function recorderFromEnv(env) {
  */
 function buildRealLaneDeps({
   show, night, openingDate, timeZone, holder, repoDir, coreDir, ledgerDir, recordFile, maxAgeMs, adaptersConfig = {}, env = process.env,
-  routeAlert, ScorerClass,
+  routeAlert, ScorerClass, settleFor = null,
 }) {
   const missing = ['ANTHROPIC_API_KEY', 'OPENAI_API_KEY'].filter((k) => !env[k]);
   if (missing.length) throw new Error(`driver: missing scorer keys ${missing.join(', ')}`);
@@ -220,6 +220,8 @@ function buildRealLaneDeps({
         publishPorts: createRealPublishPorts({ show: show.id, repoDir, coreDir, holder }),
         now: Date.now, wait: (ms) => new Promise((r) => setTimeout(r, ms)),
         reviewTextsDir: path.join(repoDir, 'data', 'review-texts'),
+        // BRO-7283: the comparative within-band pass, run at score time (built by the CLI: it is TypeScript).
+        settleComparative: settleFor ? settleFor({ show, reviewTextsDir: path.join(repoDir, 'data', 'review-texts') }) : null,
         onDiskUrls: onDiskUrlsFor(reviewsFile, show.id), onDiskRows: onDiskRowsFor(reviewsFile, show.id),
         showScoreGuards: showScoreGuards(repoDir),
         // BRO-7280: opt-in pre-embargo direct-only window (off unless LANE_PREEMBARGO_DIRECT_ONLY is on).
@@ -250,7 +252,7 @@ const TUNING_KEYS = ['passIntervalMs', 'maxPasses', 'startedAt', 'latency', 'pol
  */
 function wireLaneNight({
   show, night, openingDate, timeZone, ledgerDir, adaptersConfig = {}, laneFetch, recorder = null, scoreText, fetchPorts, publishPorts, makePublishPorts, forkClock,
-  now, wait, reviewTextsDir, onDiskUrls, onDiskRows, showScoreGuards: guards, search: rawSearch, decodeImpl, windowMs, tuning = {}, preembargo = null,
+  now, wait, reviewTextsDir, onDiskUrls, onDiskRows, showScoreGuards: guards, search: rawSearch, decodeImpl, windowMs, tuning = {}, preembargo = null, settleComparative = null,
 } = {}) {
   const search = rawSearch;
   const required = { show, night, ledgerDir, laneFetch, scoreText, now, wait, reviewTextsDir, onDiskUrls, onDiskRows, showScoreGuards: guards, search };
@@ -282,6 +284,7 @@ function wireLaneNight({
       ...(pe ? { serpClockStartMs: pe.embargoMs - pw.LANE_LEAD_MIN * 60 * 1000 } : {}),
       ...tuning,
       reviewTextsDir,
+      ...(settleComparative ? { settleComparative } : {}),
       adapters: laneAdapters({ showScoreGuards: guards, adaptersConfig: guardedAdaptersConfig, search: adapterSearch, decodeImpl, now, ledgerDir }),
       // Outlets already captured (any seen URL resolving to them) drop out, so SERP stops searching for them.
       missingOutlets: ({ seen }) => discovery.laneMissingOutlets({ show, seen, adaptersConfig }),
