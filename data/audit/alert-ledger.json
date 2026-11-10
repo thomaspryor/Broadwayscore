@@ -1,22 +1,20 @@
 {
   "conditions": {
     "cron-health-failed:Collect WE/OB Reviews": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "Cron's latest run failed (not yet stale): Collect WE/OB Reviews",
       "firstSeen": "2026-10-12T20:42:23.472Z",
-      "incidentOpenedAt": "2026-10-12T20:42:23.472Z",
-      "lastSeen": "2026-10-15T16:06:04.598Z",
-      "lastNotifiedAt": "2026-10-15T16:06:04.598Z",
-      "lastSurfacedAt": "2026-10-15T16:06:04.598Z",
-      "notifyCount": 2,
+      "incidentOpenedAt": "2026-11-10T19:11:28.587Z",
+      "lastSeen": "2026-11-10T19:11:28.587Z",
+      "lastNotifiedAt": "2026-11-10T19:11:28.587Z",
+      "lastSurfacedAt": "2026-11-10T19:11:28.587Z",
+      "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null,
-      "resolvedAt": "2026-10-19T18:07:12.442Z",
-      "resolveReason": "latest run no longer failing"
+      "linearIdentifier": null
     },
     "cron-health-failed:Test Suite": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Cron's latest run failed (not yet stale): Test Suite",
       "firstSeen": "2026-10-12T20:42:23.460Z",
@@ -26,7 +24,9 @@
       "lastSurfacedAt": "2026-11-06T18:45:30.471Z",
       "notifyCount": 8,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-10T19:11:28.675Z",
+      "resolveReason": "latest run no longer failing"
     },
     "land:land/bro-5184-scroll-arrows": {
       "status": "resolved",
@@ -21922,10 +21922,10 @@
       "title": "Cron's latest run failed (not yet stale): Fetch All Image Formats",
       "firstSeen": "2026-10-19T18:07:12.430Z",
       "incidentOpenedAt": "2026-11-06T18:45:30.510Z",
-      "lastSeen": "2026-11-08T17:31:33.797Z",
-      "lastNotifiedAt": "2026-11-08T17:31:33.797Z",
-      "lastSurfacedAt": "2026-11-08T17:31:33.797Z",
-      "notifyCount": 7,
+      "lastSeen": "2026-11-10T19:11:28.633Z",
+      "lastNotifiedAt": "2026-11-10T19:11:28.633Z",
+      "lastSurfacedAt": "2026-11-10T19:11:28.633Z",
+      "notifyCount": 8,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -24629,10 +24629,10 @@
       "title": "Cron's latest run failed (not yet stale): Update Lottery/Rush",
       "firstSeen": "2026-10-22T16:27:21.287Z",
       "incidentOpenedAt": "2026-11-05T19:19:28.489Z",
-      "lastSeen": "2026-11-09T21:49:54.890Z",
-      "lastNotifiedAt": "2026-11-09T21:49:54.890Z",
-      "lastSurfacedAt": "2026-11-09T21:49:54.890Z",
-      "notifyCount": 5,
+      "lastSeen": "2026-11-10T19:11:28.654Z",
+      "lastNotifiedAt": "2026-11-10T19:11:28.654Z",
+      "lastSurfacedAt": "2026-11-10T19:11:28.654Z",
+      "notifyCount": 6,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -35384,7 +35384,7 @@
       "resolveReason": "job-green"
     },
     "cron-health-failed:Secret Scan (gitleaks)": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Cron's latest run failed (not yet stale): Secret Scan (gitleaks)",
       "firstSeen": "2026-11-01T17:29:47.370Z",
@@ -35394,7 +35394,9 @@
       "lastSurfacedAt": "2026-11-06T18:45:30.449Z",
       "notifyCount": 5,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-10T19:11:28.675Z",
+      "resolveReason": "latest run no longer failing"
     },
     "cron-health:Replay Push Rescue": {
       "status": "resolved",
@@ -37750,10 +37752,10 @@
       "title": "Cron's latest run failed (not yet stale): Enrich Off-Broadway Dates",
       "firstSeen": "2026-11-05T19:19:28.467Z",
       "incidentOpenedAt": "2026-11-05T19:19:28.467Z",
-      "lastSeen": "2026-11-09T21:49:54.869Z",
-      "lastNotifiedAt": "2026-11-09T21:49:54.869Z",
-      "lastSurfacedAt": "2026-11-09T21:49:54.869Z",
-      "notifyCount": 3,
+      "lastSeen": "2026-11-10T19:11:28.612Z",
+      "lastNotifiedAt": "2026-11-10T19:11:28.612Z",
+      "lastSurfacedAt": "2026-11-10T19:11:28.612Z",
+      "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -37867,13 +37869,13 @@
       "firstSeen": "2026-11-06T04:56:22.650Z",
       "incidentOpenedAt": "2026-11-10T15:28:38.227Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-10T18:40:51.132Z",
+      "lastSeen": "2026-11-10T19:16:29.252Z",
       "lastNotifiedAt": "2026-11-10T15:28:38.227Z",
       "lastSurfacedAt": "2026-11-10T15:28:38.227Z",
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "live-data-test:tests/unit/drain-unknown-outlets-live-data.test.mjs::tests/unit/drain-unknown-outlets-live-data.test.mjs": {
       "status": "resolved",
@@ -39595,12 +39597,13 @@
       "firstSeen": "2026-11-09T03:33:12.490Z",
       "incidentOpenedAt": "2026-11-10T19:00:41.460Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-10T19:00:41.460Z",
+      "lastSeen": "2026-11-10T19:13:51.737Z",
       "lastNotifiedAt": "2026-11-10T19:00:41.460Z",
       "lastSurfacedAt": "2026-11-10T19:00:41.460Z",
       "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "gap:iphigenie-en-tauride-english-national-opera-west-end-2026/sunday-times--unknown.json": {
       "status": "open",
@@ -40334,10 +40337,10 @@
       "title": "Cron's latest run failed (not yet stale): Opening Night Orchestrator",
       "firstSeen": "2026-11-09T21:49:54.806Z",
       "incidentOpenedAt": "2026-11-09T21:49:54.806Z",
-      "lastSeen": "2026-11-09T21:49:54.806Z",
-      "lastNotifiedAt": "2026-11-09T21:49:54.806Z",
-      "lastSurfacedAt": "2026-11-09T21:49:54.806Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-11-10T19:11:28.558Z",
+      "lastNotifiedAt": "2026-11-10T19:11:28.558Z",
+      "lastSurfacedAt": "2026-11-10T19:11:28.558Z",
+      "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -41248,13 +41251,13 @@
       "firstSeen": "2026-11-10T15:36:09.494Z",
       "incidentOpenedAt": "2026-11-10T18:32:49.285Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-10T19:00:41.494Z",
+      "lastSeen": "2026-11-10T19:13:51.761Z",
       "lastNotifiedAt": "2026-11-10T18:32:49.285Z",
       "lastSurfacedAt": "2026-11-10T18:32:49.285Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "test-yml:data-validation-red:audit-stale-duplicateof-flags": {
       "status": "resolved",
@@ -41481,7 +41484,7 @@
       "linearIdentifier": null
     },
     "land:land/bro-7304": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/bro-7304",
       "firstSeen": "2026-11-10T18:03:51.220Z",
@@ -41492,7 +41495,8 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-11-10T19:20:58.575Z"
     },
     "land:land/bro-7078-fixups": {
       "status": "open",
@@ -41513,12 +41517,13 @@
       "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-7307-mwb08ohn",
       "firstSeen": "2026-11-10T18:46:42.230Z",
       "incidentOpenedAt": "2026-11-10T18:46:42.230Z",
-      "lastSeen": "2026-11-10T18:46:42.230Z",
+      "lastSeen": "2026-11-10T19:22:49.132Z",
       "lastNotifiedAt": "2026-11-10T18:46:42.230Z",
       "lastSurfacedAt": "2026-11-10T18:46:42.230Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     }
   }
 }

@@ -2495,7 +2495,7 @@ function normalizeUrl(url) {
       const base = u.slice(0, qIdx);
       const kept = u.slice(qIdx + 1).split('&').filter((pair) => {
         if (!pair) return false; // drop empty segments from a stray &/&& in the source
-        return !/^(utm_\w+|ref|source|fbclid|gclid|partner|emc|_r|smid|campaign|algo|nc|srsltid|loginsuccessful|gaa_(?:at|n|ts|sig)|action|contentcollection|region|module|version|contentplacement|pgtype|searchresultposition)=|^amp=1$/.test(pair);
+        return !/^(utm_\w+|ref|source|fbclid|gclid|partner|emc|_r|smid|campaign|algo|nc|srsltid|loginsuccessful|gaa_(?:at|n|ts|sig)|action|contentcollection|region|module|version|contentplacement|pgtype|searchresultposition|smtyp|via|cmp|mod|ocid|mc_cid|mc_eid|igshid)=|^amp=1$/.test(pair);
       });
       u = kept.length ? `${base.replace(/\/+$/, "")}?${kept.join("&")}` : base;
     }
@@ -2521,6 +2521,9 @@ function normalizeUrl(url) {
     // serves the SAME article body as `/article`. Path-final only, so a real
     // slug that merely contains the words is untouched.
     u = u.replace(/\/comment-page-\d+$/, '');
+    // BRO-7304: FT serves the same article under /intl/ (www.ft.com/intl/content/<id>
+    // and www.ft.com/content/<id>); a swap between them is not a URL move.
+    u = u.replace(/^ft\.com\/intl\//, 'ft.com/');
     // Same-article host aliases (BRO-5674): an outlet that moved domains
     // keeps the path, and aggregators cite whichever host they saw. Without
     // this the url-change invariant reads a host swap as a different article

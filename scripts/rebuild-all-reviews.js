@@ -5969,6 +5969,53 @@ allReviews.sort((a, b) => {
   return (a.outlet || '').localeCompare(b.outlet || '');
 });
 
+// BRO-7304: URL-WIPE HOLD. A canonical URL move clears a file's text and score until it is
+// re-collected and re-scored; carry the previously-live row across that gap instead of
+// dropping it from the site. Logic + conditions: scripts/lib/url-wipe-hold.js.
+if (fs.existsSync(reviewsJsonPath) && process.env.URL_WIPE_HOLD_DISABLED !== 'true') {
+  try {
+    const { findUrlWipeHolds } = require('./lib/url-wipe-hold');
+    const prevRows = JSON.parse(fs.readFileSync(reviewsJsonPath, 'utf8')).reviews || [];
+    const { held, heldDetails, skipped } = findUrlWipeHolds({
+      previousRows: prevRows,
+      newRows: allReviews,
+      reviewTextsDir,
+      skipShowIds: leasedShowIds,
+      validShowIds,
+      // Hold only files whose sole build-time exclusion was skippedNoScore (the wipe).
+      onlyNoScoreExcluded: (sid, f) => {
+        const ex = (stats.byShow[sid] && stats.byShow[sid].exclusions || []).filter(e => path.basename(String(e.file)) === f);
+        return ex.length > 0 && ex.every(e => e.reason === 'skippedNoScore');
+      },
+    });
+    const soon = heldDetails.filter(d => d.expiringSoon);
+    if (soon.length) console.warn(`  ::warning::[URL-WIPE HOLD] ${soon.length} held review(s) expire within 24h and are still unscored; they will leave the site (${soon.slice(0, 5).map(d => d.showId + '/' + d.outletId).join(', ')})`);
+    if (held.length) {
+      for (const r of held) allReviews.push(r);
+      allReviews.sort((a, b) => (a.showId !== b.showId ? a.showId.localeCompare(b.showId) : (a.outlet || '').localeCompare(b.outlet || '')));
+      console.log(`  [URL-WIPE HOLD] ${held.length} live review(s) carried across a URL-move gap (awaiting re-collect/re-score)`);
+      for (const d of heldDetails.slice(0, 10)) console.log(`    ${d.showId} / ${d.outletId} (${d.criticName || '-'}) score ${d.assignedScore}`);
+    }
+    stats.urlWipeHeld = held.length;
+    // Write the audit only when something is held (or a prior file must be zeroed),
+    // so idle rebuilds do not produce a diff each run.
+    const auditFile = path.join(path.dirname(reviewsJsonPath), 'audit', 'rebuild-url-wipe-holds.json');
+    let priorHeld = 0;
+    try { priorHeld = JSON.parse(fs.readFileSync(auditFile, 'utf8')).heldCount || 0; } catch { /* none */ }
+    if (held.length || priorHeld) {
+      fs.mkdirSync(path.dirname(auditFile), { recursive: true });
+      fs.writeFileSync(auditFile, JSON.stringify({
+        generatedAt: new Date().toISOString(),
+        heldCount: held.length,
+        held: heldDetails,
+        notHeld: Object.fromEntries(skipped),
+      }, null, 2));
+    }
+  } catch (e) {
+    console.warn(`  [URL-WIPE HOLD] skipped: ${e.message}`);
+  }
+}
+
 // ========================================
 // 3B: SCORE-DRIFT GUARD
 // ========================================
