@@ -369,13 +369,13 @@
       "title": "T1 Coverage — new gaps past 24h",
       "firstSeen": "2026-07-28T19:25:18.269Z",
       "incidentOpenedAt": "2026-07-28T19:25:18.269Z",
-      "lastSeen": "2026-11-10T04:24:27.232Z",
+      "lastSeen": "2026-11-10T05:39:18.360Z",
       "lastNotifiedAt": "2026-11-09T20:23:30.357Z",
       "lastSurfacedAt": "2026-11-09T20:23:30.357Z",
       "notifyCount": 78,
       "cardId": null,
       "linearIdentifier": "BRO-5532",
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "t1-coverage:scoreboard": {
       "status": "resolved",
@@ -19491,7 +19491,7 @@
       "title": "Roundup gaps: 7 listed review(s) not captured across 4 show(s)",
       "firstSeen": "2026-10-16T17:15:04.341Z",
       "incidentOpenedAt": "2026-10-16T17:15:04.341Z",
-      "lastSeen": "2026-11-10T04:23:20.892Z",
+      "lastSeen": "2026-11-10T05:34:49.892Z",
       "lastNotifiedAt": "2026-11-09T19:32:26.167Z",
       "lastSurfacedAt": null,
       "notifyCount": 44,
@@ -19558,7 +19558,7 @@
         "wanted-2022",
         "the-visitors-off-broadway-2026"
       ],
-      "silentRefires": 8
+      "silentRefires": 9
     },
     "land:land/bro-5478-land-hold-doc": {
       "status": "resolved",
@@ -37116,13 +37116,13 @@
       "title": "Missing review from a tracked outlet: king-lear-off-broadway-2026 — theatermania",
       "firstSeen": "2026-11-04T06:41:38.163Z",
       "incidentOpenedAt": "2026-11-04T06:41:38.163Z",
-      "lastSeen": "2026-11-09T23:00:05.982Z",
+      "lastSeen": "2026-11-10T05:38:54.705Z",
       "lastNotifiedAt": "2026-11-04T06:41:38.163Z",
       "lastSurfacedAt": "2026-11-04T06:41:38.163Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 20
+      "silentRefires": 21
     },
     "land:land/bro-4315-image-gate-renames": {
       "status": "resolved",
@@ -38475,13 +38475,13 @@
       "title": "Review gap — \"Othello (Bedlam)\" missing 2 cited review(s)",
       "firstSeen": "2026-11-07T15:26:56.754Z",
       "incidentOpenedAt": "2026-11-07T15:26:56.754Z",
-      "lastSeen": "2026-11-10T04:23:20.822Z",
+      "lastSeen": "2026-11-10T05:34:49.790Z",
       "lastNotifiedAt": "2026-11-09T10:39:45.459Z",
       "lastSurfacedAt": "2026-11-09T10:39:45.459Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 14
+      "silentRefires": 15
     },
     "land:land/bro-7081-discovery": {
       "status": "resolved",
@@ -40497,12 +40497,13 @@
       "title": "Review gap — \"Here There Are Blueberries\" missing 11 cited review(s)",
       "firstSeen": "2026-11-10T04:23:20.803Z",
       "incidentOpenedAt": "2026-11-10T04:23:20.803Z",
-      "lastSeen": "2026-11-10T04:23:20.803Z",
+      "lastSeen": "2026-11-10T05:34:49.761Z",
       "lastNotifiedAt": "2026-11-10T04:23:20.803Z",
       "lastSurfacedAt": "2026-11-10T04:23:20.803Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "review-gap:opening-window:the-visitors-off-broadway-2026": {
       "status": "open",
@@ -40510,12 +40511,13 @@
       "title": "Review gap — \"The Visitors\" missing 1 cited review(s)",
       "firstSeen": "2026-11-10T04:23:20.845Z",
       "incidentOpenedAt": "2026-11-10T04:23:20.845Z",
-      "lastSeen": "2026-11-10T04:23:20.845Z",
+      "lastSeen": "2026-11-10T05:34:49.823Z",
       "lastNotifiedAt": "2026-11-10T04:23:20.845Z",
       "lastSurfacedAt": "2026-11-10T04:23:20.845Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "land:land/worktree-agent-ac55ac6c5eeaee060": {
       "status": "resolved",
@@ -40583,6 +40585,19 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "gap:msblackforpresident-off-broadway-2026/guardian--unknown.json": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "T1/T2 silent gap on near-opening show: Ms. Blakk for President — guardian",
+      "firstSeen": "2026-11-10T05:35:04.347Z",
+      "incidentOpenedAt": "2026-11-10T05:35:04.347Z",
+      "lastSeen": "2026-11-10T05:35:04.347Z",
+      "lastNotifiedAt": "2026-11-10T05:35:04.347Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-7266"
     }
   }
 }

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-10T04:24:06.002Z",
+  "generatedAt": "2026-11-10T05:35:04.300Z",
   "windowDays": 45,
   "showsScanned": 241,
   "gaps": [
@@ -18,9 +18,29 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=iphigenie-en-tauride-english-national-opera-west-end-2026 --url=https://www.thetimes.com/culture/classical-opera/article/iphigenie-en-tauride-review-youve-never-seen-a-family-reunion-like-this-hmwx2kkh2 --outlet=sunday-times   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-08T22:39:44.349Z",
-      "fileAgeHours": 29.738273333333332,
+      "fileAgeHours": 30.920678333333335,
       "gapSeenAt": "2026-11-09T00:00:26.432Z",
-      "nonTerminalAgeHours": 28.394325,
+      "nonTerminalAgeHours": 29.577185555555555,
+      "needsManualRecovery": false
+    },
+    {
+      "showId": "msblackforpresident-off-broadway-2026",
+      "title": "Ms. Blakk for President",
+      "openingDate": "2026-11-08",
+      "file": "guardian--unknown.json",
+      "outletId": "guardian",
+      "tier": 1,
+      "type": "empty-body",
+      "recoverable": false,
+      "url": "https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play",
+      "recovery": null,
+      "recoveryCount": 3,
+      "forumLinkRecoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=msblackforpresident-off-broadway-2026 --url=https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play --outlet=guardian   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-11-09T07:02:09.044Z",
+      "fileAgeHours": 22.547384166666667,
+      "gapSeenAt": "2026-11-10T05:35:04.300Z",
+      "nonTerminalAgeHours": 0,
       "needsManualRecovery": false
     },
     {
@@ -38,9 +58,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=adirondack-chair-circle-regional-2026 --url=https://www.talkinbroadway.com/page/regional/chicago/ch944.html --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T21:14:38.698Z",
-      "fileAgeHours": 7.1575825,
+      "fileAgeHours": 8.340441666666667,
       "gapSeenAt": "2026-11-09T21:39:25.109Z",
-      "nonTerminalAgeHours": 6.7446925,
+      "nonTerminalAgeHours": 7.927553055555555,
       "needsManualRecovery": false
     },
     {
@@ -58,9 +78,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "# no URL on file — find the theatermania review for the-cottage-regional-2026 first, then: node scripts/ingest-review-from-url.js --show=the-cottage-regional-2026 --url=<URL> --outlet=theatermania",
       "firstSeen": "2026-11-10T00:26:39.999Z",
-      "fileAgeHours": 3.957222222222222,
+      "fileAgeHours": 5.140082222222222,
       "gapSeenAt": "2026-11-10T01:31:07.327Z",
-      "nonTerminalAgeHours": 2.8829652777777777,
+      "nonTerminalAgeHours": 4.065825833333333,
       "needsManualRecovery": false
     }
   ],
