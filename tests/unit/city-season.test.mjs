@@ -103,3 +103,55 @@ test('pendingShows: only live plans lock their shows out', async () => {
   const got = S.pendingShows([mk('pending', 'a'), mk('applied', 'b'), mk('validation-failed', 'c'), mk('rejected', 'd'), mk('superseded', 'e'), null]);
   assert.deepEqual(got.map((x) => x.id), ['a', 'b']);
 });
+
+// BRO-7291 class 6: GRIM (La Jolla Playhouse) came out of the season page as 2026-11-27..12-13; its own page says
+// "Extended! Oct 27 – Dec 13" with First Look previews Oct 27 - Nov 1 mat. The BRO-7257 hand fix set opening 2026-11-01.
+// Fixture: the two header lines of https://lajollaplayhouse.org/show/grim/ (fetched 2026-11-10), nav link kept.
+const GRIM_PAGE = 'Season (https://lajollaplayhouse.org/events) Extended! Oct 27 – Dec 13 | Mandell Weiss Theatre Book by ... '
+  + 'ticket seller for this production. First Look (previews)*: Oct 27 - Nov 1 mat Weeks 2 – 7: Nov 1 eve - Dec 13';
+const GRIM_ROW = { title: 'GRIM', theatre: 'La Jolla Playhouse', city: 'La Jolla', start: '2026-11-27', end: '2026-12-13', source: 'theatre-season-page', pageUrl: 'https://lajollaplayhouse.org/show/grim/', image: null };
+
+test('class 6 replay: GRIM production page run beats the season page (opening = end of previews)', () => {
+  const r = S.runRangeFromShowPage(GRIM_PAGE, { year: 2026 });
+  assert.deepEqual([r.first, r.opening, r.end], ['2026-10-27', '2026-11-01', '2026-12-13']);
+  const { row, held } = S.settleRunDates(GRIM_ROW, r, GRIM_ROW.pageUrl);
+  assert.equal(held, null);
+  assert.deepEqual([row.start, row.end, row.source], ['2026-11-01', '2026-12-13', 'theatre-show-page']);
+  const show = S.buildShow(row, { id: 'grim-regional-2026', hubSlug: 'san-diego-ca', hub: { discoverySource: 'x' }, city: { defaultCity: 'La Jolla', state: 'CA' }, today: '2026-11-09' });
+  assert.equal(show.openingDate, '2026-11-01');
+  assert.match(show.openingDateSource, /production page "/);
+});
+
+test('class 6: listing and season page disagreeing >3 days with no run on the production page -> held', () => {
+  const bww = { ...GRIM_ROW, start: '2026-10-27', source: 'broadwayworld-regional-listing', pageUrl: 'https://www.broadwayworld.com/san-diego/regional/GRIM' };
+  const [m] = S.mergeSeason([[bww], [GRIM_ROW]]);
+  assert.ok(m.dateConflict, 'conflict recorded');
+  const { held } = S.settleRunDates(m, null, null);
+  assert.match(held, /disagree/);
+  // agreeing sources are not held
+  const [ok] = S.mergeSeason([[{ ...bww, start: '2026-11-26' }], [GRIM_ROW]]);
+  assert.equal(S.settleRunDates(ok, null, null).held, null);
+});
+
+test('class 6: run ranges across the new year, explicit years, opening-night lines; other productions ignored', () => {
+  assert.deepEqual(S.runRangeFromShowPage('Now playing Jan 5 – Feb 9, 2027', { year: 2026 }).first, '2027-01-05');
+  assert.equal(S.runRangeFromShowPage('Dec 1 - Jan 4', { year: 2026 }).end, '2027-01-04');
+  assert.equal(S.runRangeFromShowPage('Performances Sept. 12 through Oct. 19. Opening night: Sept. 20', { year: 2026 }).opening, '2026-09-20');
+  assert.equal(S.runRangeFromShowPage('Saturday Nov 8 7pm - 9pm', { year: 2026 }), null);
+  // a sidebar range that does not overlap the row is another show's: ignored
+  const other = S.runRangeFromShowPage('Also playing: Mar 3 - Apr 12', { year: 2027 });
+  assert.equal(S.settleRunDates(GRIM_ROW, other, 'u').row.start, '2026-11-27');
+});
+
+test('class 6: opening comes from the page\'s own opening line, else the day after the last preview (real pages 2026-11-10)', () => {
+  const cases = [
+    ['As You Like It | October 16-November 29 PREVIEWS October 16-23, 2026 OPENING October 24, 2026', '2026-10-16', '2026-10-24'], // newvillagearts.org
+    ['Nov 12 – Dec 6, 2026 Opening Night: November 21, 2026 Previews : Nov 12 – 20', '2026-11-12', '2026-11-21'], // diversionary.org
+    ['Mexodus Dec 4 - Jan 10, 2027 see showtimes Opening Night Thursday December 10 7:30PM', '2026-12-04', '2026-12-10'], // americanrepertorytheater.org
+    ['Nov 12 – Dec 6 Previews: Nov 12 – 20', '2026-11-12', '2026-11-21'],
+  ];
+  for (const [t, first, opening] of cases) {
+    const r = S.runRangeFromShowPage(t, { year: 2026 });
+    assert.deepEqual([r.first, r.opening], [first, opening], t);
+  }
+});

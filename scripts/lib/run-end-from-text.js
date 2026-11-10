@@ -10,7 +10,7 @@ const MONTHS = { jan: 1, feb: 2, mar: 3, apr: 4, may: 5, jun: 6, jul: 7, aug: 8,
 const MON = '(jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|june?|july?|aug(?:ust)?|sept?(?:ember)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)';
 // "through|thru|until|closes|closing|ends|final performance" ... Month d[, yyyy]
 const LEAD = '(extended\\s+(?:through|thru|until|to)|(?:running|runs|continues|playing|plays|performances?|on\\s+stage|continuing|open(?:s)?\\s+run)\\s+(?:through|thru|until)|through|thru|until|closes|closing(?:\\s+(?:on|night))?|ends|final\\s+performance(?:\\s+is)?(?:\\s+on)?|last\\s+performance(?:\\s+is)?(?:\\s+on)?)';
-const RE = new RegExp(`\\b${LEAD}[:,]?\\s+(?:(?:sun|mon|tues?|wed(?:nes)?|thurs?|fri|sat(?:ur)?)(?:day)?\\.?,?\\s+)?${MON}\\.?\\s+(\\d{1,2})(?:st|nd|rd|th)?(?:,?\\s+(20\\d\\d))?`, 'gi');
+const RE = new RegExp(`\\b${LEAD}[:,]?\\s+(?:(?:sun|mon|tues?|wed(?:nes)?|thurs?|fri|sat(?:ur)?)(?:day)?\\.?,?\\s+)?${MON}\\.?\\s+(\\d{1,2})(?!\\d)(?:st|nd|rd|th)?(?:,?\\s+(20\\d\\d))?`, 'gi');
 
 const pad = (n) => String(n).padStart(2, '0');
 const iso = (y, m, d) => `${y}-${pad(m)}-${pad(d)}`;
@@ -42,7 +42,9 @@ function runEndCandidates(text, ctx) {
     const lo = open;
     const hi = new Date(Date.parse(`${open}T00:00:00Z`) + 200 * 86400000).toISOString().slice(0, 10);
     if (date < lo || date > hi) continue;
-    out.push({ date, extended: /^extended/i.test(m[1]), snippet: text.slice(Math.max(0, m.index - 40), m.index + m[0].length + 20).replace(/\s+/g, ' ') });
+    // "it will get extended to Oct 31" / "could be extended" is a wish, not an announcement (real: misery-regional-2024)
+    const hypothetical = /\b(?:will|would|could|should|might|may|hope(?:fully)?|if|likely)\b[^.!?]{0,20}$/i.test(text.slice(Math.max(0, m.index - 40), m.index));
+    out.push({ date, extended: /^extended/i.test(m[1]) && !hypothetical, snippet: text.slice(Math.max(0, m.index - 40), m.index + m[0].length + 20).replace(/\s+/g, ' ') });
   }
   return out;
 }
@@ -80,4 +82,51 @@ function closingFields(end, source) {
 /** Assumed run length for a local production nobody published an end date for. src/lib/city-hub.ts mirrors this (tests/unit/hub-closing-dates.test.mjs keeps them equal). */
 const ESTIMATED_RUN_DAYS = 42;
 
-module.exports = { runEndCandidates, pickRunEnd, closingFields, ESTIMATED_RUN_DAYS };
+const daysBetween = (a, b) => Math.round((Date.parse(`${b}T00:00:00Z`) - Date.parse(`${a}T00:00:00Z`)) / 86400000);
+const hostOf = (u) => { try { return new URL(u).hostname.replace(/^www\./, ''); } catch { return null; } };
+
+/**
+ * BRO-7291 (class 1, stale closing dates after extensions): the production's announced run end when it is
+ * LATER than `closing`, from its own evidence, else null.
+ *   show      { opening, closing }  (closing may be empty: any sourced end is then returned)
+ *   evidence  { texts: [{ text, url, articleDate }], listing: { date, url } | null }
+ *             listing = the run end printed on the theatre's / listing site's own page for this production.
+ * The listing and the latest "extended through" sentence outrank plain review text (a review keeps quoting the
+ * original run after an extension); otherwise pickRunEnd decides. Only moves later, by more than `slackDays`
+ * and at most `maxDays`; plain review text needs `minSites` (2) distinct sites agreeing. An earlier date in a review is almost always the original run, never a shortening.
+ * @returns {{ date: string, source: string, kind: 'listing'|'extended'|'text' } | null}
+ */
+function laterAnnouncedRunEnd(show, evidence, opts = {}) {
+  const slack = opts.slackDays == null ? 0 : opts.slackDays;
+  const maxDays = opts.maxDays == null ? 120 : opts.maxDays;
+  const minSites = opts.minSites == null ? 2 : opts.minSites;
+  const opening = show.opening;
+  if (!opening) return null;
+  const cands = [];
+  for (const t of (evidence && evidence.texts) || []) {
+    for (const c of runEndCandidates(String(t.text || ''), { opening, articleDate: t.articleDate || null })) cands.push({ ...c, url: t.url || null });
+  }
+  const listing = evidence && evidence.listing && evidence.listing.date && evidence.listing.date >= opening ? evidence.listing : null;
+  const ext = cands.filter((c) => c.extended).sort((a, b) => a.date.localeCompare(b.date)).pop();
+  let best = null;
+  if (listing || ext) {
+    best = [listing && { date: listing.date, urls: [listing.url], kind: 'listing' }, ext && { date: ext.date, urls: [ext.url], kind: 'extended' }]
+      .filter(Boolean).sort((a, b) => a.date.localeCompare(b.date) || (a.kind === 'listing' ? 1 : -1)).pop();
+  } else {
+    const d = pickRunEnd(cands);
+    const urls = [...new Set(cands.filter((c) => c.date === d).map((c) => c.url))];
+    // a plain "through <date>" needs two independent sites: one blog's typo or stale sidebar is not an extension
+    if (d && new Set(urls.map((u, i) => hostOf(u) || `#${i}`)).size >= minSites) best = { date: d, urls, kind: 'text' };
+  }
+  if (!best) return null;
+  if (show.closing) {
+    const gap = daysBetween(show.closing, best.date);
+    if (!(best.date > show.closing) || gap <= slack || gap > maxDays) return null;
+  }
+  const urls = best.urls.filter(Boolean);
+  const where = urls.length ? ` (${urls.slice(0, 3).join(' ; ')})` : '';
+  const source = best.kind === 'listing' ? `theatre listing "through ${best.date}"${where}` : `review text "through ${best.date}"${where}`;
+  return { date: best.date, source, kind: best.kind, hosts: [...new Set(urls.map(hostOf).filter(Boolean))] };
+}
+
+module.exports = { runEndCandidates, pickRunEnd, closingFields, laterAnnouncedRunEnd, ESTIMATED_RUN_DAYS };

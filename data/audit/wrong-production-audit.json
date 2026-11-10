@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-10T17:34:34.566Z",
+  "timestamp": "2026-11-10T18:49:51.388Z",
   "stats": {
-    "totalReviews": 81256,
-    "alreadyFlagged": 22207,
+    "totalReviews": 81301,
+    "alreadyFlagged": 22220,
     "dateGuardCatches": 219,
     "directorMismatch": 3606,
-    "tvFilmSignals": 2286,
-    "londonSignals": 3663,
+    "tvFilmSignals": 2283,
+    "londonSignals": 3664,
     "offBroadwaySignals": 752,
     "yearMismatch": 364,
-    "noPublishDate": 8476
+    "noPublishDate": 8468
   },
   "findings": [
     {
@@ -1155,6 +1155,7 @@
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
       "file": "buffalorising--anthony-higgins.json",
+      "score": 74,
       "publishDate": "2025-04-10",
       "url": "https://www.buffalorising.com/2025/04/a-beautiful-noise-at-sheas-strikes-gold-with-longtime-fans-of-neil-diamonds-iconic-songbook/",
       "findings": [
@@ -1168,6 +1169,7 @@
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
       "file": "chicago-sun-times--catey-sullivan.json",
+      "score": 71,
       "publishDate": "2024-11-14",
       "url": "https://chicago.suntimes.com/theater/2024/11/14/a-beautiful-noise-neil-diamond-musical-review-chicago-theater-great-music-mundane-script",
       "findings": [
@@ -22924,20 +22926,6 @@
     },
     {
       "showId": "fish-in-the-dark-2015",
-      "file": "forward--jesse-oxfeld.json",
-      "score": 44,
-      "publishDate": "2015-03-06",
-      "url": "https://forward.com/culture/216045/from-the-mind-of-larry-david-a-play-about-nothing/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 4\""
-        }
-      ]
-    },
-    {
-      "showId": "fish-in-the-dark-2015",
       "file": "northjerseycom--robert-feldberg.json",
       "score": 76,
       "publishDate": "2015-02-06",
@@ -22947,34 +22935,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "fish-in-the-dark-2015",
-      "file": "ny1--roma-torre.json",
-      "score": 78,
-      "publishDate": "2015-03-05",
-      "url": "https://www.ny1.com/nyc/brooklyn/theater-reviews/2015/03/5/theater-review---fish-in-the-dark-.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "fish-in-the-dark-2015",
-      "file": "nydailynews--joe-dziemianowicz.json",
-      "score": 43,
-      "publishDate": "March 6, 2015",
-      "url": "https://www.nydailynews.com/2015/03/05/fish-in-the-dark-review-larry-david-hooks-a-funny-one-on-broadway/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -97066,6 +97026,19 @@
       ]
     },
     {
+      "showId": "desire-under-the-elms-off-west-end-2026",
+      "file": "west-end-wilma--westendwilma.json",
+      "publishDate": "2026-11-09",
+      "url": "https://westendwilma.com/shows-desire-under-the-elms-almeida-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
       "showId": "di-and-viv-and-rose-west-end-2015",
       "file": "financialtimes--ian-shuttleworth.json",
       "score": 81,
@@ -97317,6 +97290,7 @@
     {
       "showId": "dogstar-off-west-end-2026",
       "file": "artsdesk--unknown.json",
+      "score": 57,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/dogstar-hampstead-theatre-review-enjoyably-ghostly-if-frustratingly-static",
       "findings": [
@@ -120589,6 +120563,7 @@
     {
       "showId": "representasian-an-evening-of-asian-talent-west-end-2026",
       "file": "redbuslondinium--red-bus-londinium.json",
+      "score": 88,
       "publishDate": "2026-11-10",
       "url": "https://redbuslondinium.uk/2026/11/10/review-representasian-an-evening-of-asian-talent-lyric-theatre-%E2%98%85%E2%98%85%E2%98%85%E2%98%85/",
       "findings": [
@@ -135919,6 +135894,7 @@
     {
       "showId": "the-story-west-end-2026",
       "file": "muddystilettos--unknown.json",
+      "score": 75,
       "publishDate": null,
       "url": "https://london.muddystilettos.co.uk/things-to-do/arts-culture/the-story-review/",
       "findings": [

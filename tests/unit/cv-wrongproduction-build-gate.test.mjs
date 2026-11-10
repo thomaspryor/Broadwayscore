@@ -80,3 +80,8 @@ test('rebuild-all-reviews.js asks the gate and excludes (wiring guard: fails if 
   assert.match(src, /cvWpBuildGate\.decideCvWrongProductionHold\(/);
   assert.match(src, /logExclusion\("skippedCvWrongProductionHeld"/);
 });
+
+test("the gate's default mode is enforce (a silent flip to advisory would turn the hold off in production)", () => {
+  const src = fs.readFileSync(new URL('../../scripts/rebuild-all-reviews.js', import.meta.url), 'utf8');
+  assert.match(src, /process\.env\.CV_WP_BUILD_GATE \|\| 'enforce'/);
+});

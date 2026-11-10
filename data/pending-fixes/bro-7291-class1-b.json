@@ -1,0 +1,292 @@
+{
+  "issueNumber": "bro-7291-class1-b",
+  "planId": "12c23967-0822-45d6-bdeb-b326ae6dd32b",
+  "status": "applied",
+  "createdAt": "2026-11-10T15:08:24.484Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7291 class 1: 21 closing dates that two or more reviews (or an 'extended' notice) put later than ours, 20 Chicago + 1 Boston. Same decision as harvest-hub-run-dates.js, which only scans recent shows daily. (part 2 of 2)",
+    "steps": [
+      "shows.json: cullud-wattah-regional-2022.closingDate (stale closing date: ours 2022-07-07 / review text \"through 2022-07-17\" (http://www.aroundthetownchicago.com/theatre-reviews/cullud-wattuh-reviewed-by-julia-w-rath/ ; https://www.broadwayworld.com/chicago/article/Review-cullud-wattah-at-Victory-Gar",
+      "shows.json: cullud-wattah-regional-2022.closingDateSource",
+      "shows.json: school-of-rock-regional-2023.closingDate (stale closing date: ours 2023-05-28 / review text \"through 2023-06-04\" (https://chicagocultureauthority.com/2023/04/22/school-of-rock-melts-hearts-and-a-few-faces-at-the-paramount/ ; https://www.chicagotribune.com/entertainment/theater/reviews/ct",
+      "shows.json: school-of-rock-regional-2023.closingDateSource",
+      "shows.json: promises-promises-regional-2023.closingDate (stale closing date: ours 2023-12-30 / review text \"through 2023-12-31\" (https://www.chicagoonstage.com/promises-promises/ ; https://chicago.suntimes.com/2023/12/6/23989339/promises-promises-review-blank-theatre-greenhouse-chicago))",
+      "shows.json: promises-promises-regional-2023.closingDateSource",
+      "shows.json: fairview-regional-2023.closingDate (stale closing date: ours 2023-05-21 / review text \"through 2023-05-28\" (https://thirdcoastreview.com/2023/05/08/stages-review-definition-theatre-fairview/))",
+      "shows.json: fairview-regional-2023.closingDateSource",
+      "shows.json: in-the-back-on-the-floor-regional-2023.closingDate (stale closing date: ours 2023-05-26 / review text \"through 2023-05-28\" (https://buzznews.net/theatre/theatre-reviews/item/5167-in-the-back-on-the-floor-work-pain-and-corporate-slaying.html ; https://www.newcitystage.com/2023/05/05/workp",
+      "shows.json: in-the-back-on-the-floor-regional-2023.closingDateSource",
+      "shows.json: personality-the-lloyd-price-musical-regional-2023.closingDate (stale closing date: ours 2023-07-30 / review text \"through 2023-09-03\" (https://www.newcitystage.com/2023/06/20/cant-get-it-out-of-my-head-a-review-of-personality-the-lloyd-price-musical-at-the-studebaker-theater/ ; https://c",
+      "shows.json: personality-the-lloyd-price-musical-regional-2023.closingDateSource",
+      "shows.json: tango-regional-2023.closingDate (stale closing date: ours 2023-06-08 / review text \"through 2023-06-11\" (http://www.aroundthetownchicago.com/theatre-reviews/tango/ ; https://buzznews.net/theatre/theatre-reviews/item/5191-review-tango-at-pridearts-center.html ; https://www.newcitystage.co",
+      "shows.json: tango-regional-2023.closingDateSource",
+      "shows.json: adirondack-chair-circle-regional-2026.closingDate (stale closing date: ours 2026-12-06 / review text \"through 2026-12-13\" (https://splashmags.com/2026/11/adirondack-chair-circle-review-steppenwolf-theatre-companys-world-premiere/))",
+      "shows.json: adirondack-chair-circle-regional-2026.closingDateSource",
+      "shows.json: the-mystery-of-irma-vep-regional-2026.closingDate (stale closing date: ours 2026-06-21 / review text \"through 2026-06-28\" (https://sleeplesscritic.com/2026/06/15/review-comedic-suspense-and-more-drives-central-square-theaters-the-mystery-of-irma-vep-a-penny-dreadful/))",
+      "shows.json: the-mystery-of-irma-vep-regional-2026.closingDateSource"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cullud-wattah-regional-2022",
+        "field": "closingDate",
+        "oldValue": "2022-07-07",
+        "newValue": "2022-07-17",
+        "description": "shows.json: cullud-wattah-regional-2022.closingDate (stale closing date: ours 2022-07-07 / review text \"through 2022-07-17\" (http://www.aroundthetownchicago.com/theatre-reviews/cullud-wattuh-reviewed-by-julia-w-rath/ ; https://www.broadwayworld.com/chicago/article/Review-cullud-wattah-at-Victory-Gar"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cullud-wattah-regional-2022",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through 2022-07-17\" (http://www.aroundthetownchicago.com/theatre-reviews/cullud-wattuh-reviewed-by-julia-w-rath/ ; https://www.broadwayworld.com/chicago/article/Review-cullud-wattah-at-Victory-Gardens-Theater-20220619 ; https://www.chicagoonstage.com/cullud-wattuh/)",
+        "description": "shows.json: cullud-wattah-regional-2022.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "school-of-rock-regional-2023",
+        "field": "closingDate",
+        "oldValue": "2023-05-28",
+        "newValue": "2023-06-04",
+        "description": "shows.json: school-of-rock-regional-2023.closingDate (stale closing date: ours 2023-05-28 / review text \"through 2023-06-04\" (https://chicagocultureauthority.com/2023/04/22/school-of-rock-melts-hearts-and-a-few-faces-at-the-paramount/ ; https://www.chicagotribune.com/entertainment/theater/reviews/ct"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "school-of-rock-regional-2023",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through 2023-06-04\" (https://chicagocultureauthority.com/2023/04/22/school-of-rock-melts-hearts-and-a-few-faces-at-the-paramount/ ; https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-school-of-rock-paramount-theatre-review-20230427-fnvfycaw5vclbb6agy4rkar6li-story.html ; https://www.dailyherald.com/entlife/20230426/paramounts-terrific-school-of-rock-benefits-from-21-young-dynamos)",
+        "description": "shows.json: school-of-rock-regional-2023.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "promises-promises-regional-2023",
+        "field": "closingDate",
+        "oldValue": "2023-12-30",
+        "newValue": "2023-12-31",
+        "description": "shows.json: promises-promises-regional-2023.closingDate (stale closing date: ours 2023-12-30 / review text \"through 2023-12-31\" (https://www.chicagoonstage.com/promises-promises/ ; https://chicago.suntimes.com/2023/12/6/23989339/promises-promises-review-blank-theatre-greenhouse-chicago))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "promises-promises-regional-2023",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through 2023-12-31\" (https://www.chicagoonstage.com/promises-promises/ ; https://chicago.suntimes.com/2023/12/6/23989339/promises-promises-review-blank-theatre-greenhouse-chicago)",
+        "description": "shows.json: promises-promises-regional-2023.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "fairview-regional-2023",
+        "field": "closingDate",
+        "oldValue": "2023-05-21",
+        "newValue": "2023-05-28",
+        "description": "shows.json: fairview-regional-2023.closingDate (stale closing date: ours 2023-05-21 / review text \"through 2023-05-28\" (https://thirdcoastreview.com/2023/05/08/stages-review-definition-theatre-fairview/))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "fairview-regional-2023",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through 2023-05-28\" (https://thirdcoastreview.com/2023/05/08/stages-review-definition-theatre-fairview/)",
+        "description": "shows.json: fairview-regional-2023.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "in-the-back-on-the-floor-regional-2023",
+        "field": "closingDate",
+        "oldValue": "2023-05-26",
+        "newValue": "2023-05-28",
+        "description": "shows.json: in-the-back-on-the-floor-regional-2023.closingDate (stale closing date: ours 2023-05-26 / review text \"through 2023-05-28\" (https://buzznews.net/theatre/theatre-reviews/item/5167-in-the-back-on-the-floor-work-pain-and-corporate-slaying.html ; https://www.newcitystage.com/2023/05/05/workp"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "in-the-back-on-the-floor-regional-2023",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through 2023-05-28\" (https://buzznews.net/theatre/theatre-reviews/item/5167-in-the-back-on-the-floor-work-pain-and-corporate-slaying.html ; https://www.newcitystage.com/2023/05/05/workplace-war-zone-a-review-of-in-the-back-out-the-floor-at-stage-left/)",
+        "description": "shows.json: in-the-back-on-the-floor-regional-2023.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "personality-the-lloyd-price-musical-regional-2023",
+        "field": "closingDate",
+        "oldValue": "2023-07-30",
+        "newValue": "2023-09-03",
+        "description": "shows.json: personality-the-lloyd-price-musical-regional-2023.closingDate (stale closing date: ours 2023-07-30 / review text \"through 2023-09-03\" (https://www.newcitystage.com/2023/06/20/cant-get-it-out-of-my-head-a-review-of-personality-the-lloyd-price-musical-at-the-studebaker-theater/ ; https://c"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "personality-the-lloyd-price-musical-regional-2023",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through 2023-09-03\" (https://www.newcitystage.com/2023/06/20/cant-get-it-out-of-my-head-a-review-of-personality-the-lloyd-price-musical-at-the-studebaker-theater/ ; https://chicago.splashmags.com/index.php/2023/06/28/celebrate-the-unforgettable-songs-in-personality-the-lloyd-price-musical-at-the-studebaker-theatre/#gsc.tab=0)",
+        "description": "shows.json: personality-the-lloyd-price-musical-regional-2023.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "tango-regional-2023",
+        "field": "closingDate",
+        "oldValue": "2023-06-08",
+        "newValue": "2023-06-11",
+        "description": "shows.json: tango-regional-2023.closingDate (stale closing date: ours 2023-06-08 / review text \"through 2023-06-11\" (http://www.aroundthetownchicago.com/theatre-reviews/tango/ ; https://buzznews.net/theatre/theatre-reviews/item/5191-review-tango-at-pridearts-center.html ; https://www.newcitystage.co"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "tango-regional-2023",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through 2023-06-11\" (http://www.aroundthetownchicago.com/theatre-reviews/tango/ ; https://buzznews.net/theatre/theatre-reviews/item/5191-review-tango-at-pridearts-center.html ; https://www.newcitystage.com/2023/06/01/where-do-we-go-from-here-a-review-of-tango-at-pride-arts/)",
+        "description": "shows.json: tango-regional-2023.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "adirondack-chair-circle-regional-2026",
+        "field": "closingDate",
+        "oldValue": "2026-12-06",
+        "newValue": "2026-12-13",
+        "description": "shows.json: adirondack-chair-circle-regional-2026.closingDate (stale closing date: ours 2026-12-06 / review text \"through 2026-12-13\" (https://splashmags.com/2026/11/adirondack-chair-circle-review-steppenwolf-theatre-companys-world-premiere/))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "adirondack-chair-circle-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": null,
+        "newValue": "review text \"through 2026-12-13\" (https://splashmags.com/2026/11/adirondack-chair-circle-review-steppenwolf-theatre-companys-world-premiere/)",
+        "description": "shows.json: adirondack-chair-circle-regional-2026.closingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-mystery-of-irma-vep-regional-2026",
+        "field": "closingDate",
+        "oldValue": "2026-06-21",
+        "newValue": "2026-06-28",
+        "description": "shows.json: the-mystery-of-irma-vep-regional-2026.closingDate (stale closing date: ours 2026-06-21 / review text \"through 2026-06-28\" (https://sleeplesscritic.com/2026/06/15/review-comedic-suspense-and-more-drives-central-square-theaters-the-mystery-of-irma-vep-a-penny-dreadful/))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-mystery-of-irma-vep-regional-2026",
+        "field": "closingDateSource",
+        "oldValue": "review text \"Through June 21\" (https://www.bostonglobe.com/2026/06/01/arts/central-square-theater-mystery-of-irma-vep/ ; https://www.wbur.org/news/2026/06/02/central-square-theater-mystery-of-irma-vep-review)",
+        "newValue": "review text \"through 2026-06-28\" (https://sleeplesscritic.com/2026/06/15/review-comedic-suspense-and-more-drives-central-square-theaters-the-mystery-of-irma-vep-a-penny-dreadful/)",
+        "description": "shows.json: the-mystery-of-irma-vep-regional-2026.closingDateSource"
+      }
+    ]
+  },
+  "executedAt": "2026-11-10T18:49:03.158Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for cullud-wattah-regional-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for cullud-wattah-regional-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for school-of-rock-regional-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for school-of-rock-regional-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for promises-promises-regional-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for promises-promises-regional-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for fairview-regional-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for fairview-regional-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for in-the-back-on-the-floor-regional-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for in-the-back-on-the-floor-regional-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for personality-the-lloyd-price-musical-regional-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for personality-the-lloyd-price-musical-regional-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for tango-regional-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for tango-regional-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for adirondack-chair-circle-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for adirondack-chair-circle-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for the-mystery-of-irma-vep-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDateSource updated for the-mystery-of-irma-vep-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

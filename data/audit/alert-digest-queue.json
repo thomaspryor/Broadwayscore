@@ -928,33 +928,6 @@
     "queuedAt": "2026-11-10T15:36:09.477Z"
   },
   {
-    "conditionKey": "test-yml:data-validation-red:audit-outlet-registry-gaps",
-    "title": "Data audit failing: Audit outlet-registry gaps",
-    "description": "The \"Audit outlet-registry gaps\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
-    "severity": "warning",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42845160378",
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [
-      {
-        "name": "Job",
-        "value": "Data Validation"
-      },
-      {
-        "name": "Step",
-        "value": "Audit outlet-registry gaps"
-      },
-      {
-        "name": "Run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42845160378)"
-      }
-    ],
-    "queuedAt": "2026-11-10T15:36:09.494Z"
-  },
-  {
     "conditionKey": "test-yml:data-validation-red:audit-stale-duplicateof-flags",
     "title": "Data audit failing: Audit stale duplicateOf flags",
     "description": "The \"Audit stale duplicateOf flags\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
@@ -1174,20 +1147,6 @@
     "queuedAt": "2026-11-10T16:17:06.727Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 21 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +15 more). Checked 2026-11-10.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-10T17:03:05.401Z"
-  },
-  {
     "conditionKey": "land:land/bro-7291-sq2",
     "title": "Landing blocked: merged-tree-tests red on land/bro-7291-sq2",
     "description": "land.yml did not land land/bro-7291-sq2: the merged-tree-tests gate went red at 61aaf25e5e. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-7291-sq2 @ 61aaf25e5e (origin/land/bro-7291-sq2) → origin/main @ b6a8067d83 [land] .github/workflows/DEPENDENCIES.md was stale on the rebased tree: regenerated and folded into the last commit (BRO-7150) [land] attempt 1/3: rebased onto b6a8067d83, 42 file(s) changed — running checks [land] verified-base: main moved edab78b3a1 → b6a8067d83 across 209 file(s), substantive — re-checki Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42852618158",
@@ -1324,5 +1283,139 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-10T17:13:14.356Z"
+  },
+  {
+    "conditionKey": "opening-night-publish-date-pre-opening:missing:dogstar-off-west-end-2026",
+    "title": "Shipped review missing publishDate on Dogstar",
+    "description": "artsdesk/null SHIPPED with no publishDate — cannot confirm post-opening: https://theartsdesk.com/theatre/dogstar-hampstead-theatre-review-enjoyably-ghostly-if-frustratingly-static",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-10T17:56:10.485Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7304",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7304",
+    "description": "land.yml did not land land/bro-7304: the unit-tests-node gate went red at 966be876c8. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42869964888",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7304"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "966be876c816cd2d4a1a6b2c40d0e97f675e2509"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42869964888"
+      }
+    ],
+    "queuedAt": "2026-11-10T18:03:51.221Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7078-fixups",
+    "title": "Landing blocked: rebase red on land/bro-7078-fixups",
+    "description": "land.yml did not land land/bro-7078-fixups: the rebase gate went red at 810c4c3a8a. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42391562391",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7078-fixups"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "810c4c3a8a342e67ed1629259f483c8e202cd6f6"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42391562391"
+      }
+    ],
+    "queuedAt": "2026-11-10T18:02:42.162Z"
+  },
+  {
+    "conditionKey": "test-yml:data-validation-red:audit-outlet-registry-gaps",
+    "title": "Data audit failing: Audit outlet-registry gaps",
+    "description": "The \"Audit outlet-registry gaps\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42874565535",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Job",
+        "value": "Data Validation"
+      },
+      {
+        "name": "Step",
+        "value": "Audit outlet-registry gaps"
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42874565535)"
+      }
+    ],
+    "queuedAt": "2026-11-10T18:32:49.287Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-7307-mwb08ohn",
+    "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-7307-mwb08ohn",
+    "description": "land.yml did not land land/job/linear-BRO-7307-mwb08ohn: the unit-tests-node gate went red at 9727a21752. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42873877571",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-7307-mwb08ohn"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "9727a2175224a816304ea823ece9be03e40b9787"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42873877571"
+      }
+    ],
+    "queuedAt": "2026-11-10T18:46:42.231Z"
   }
 ]
