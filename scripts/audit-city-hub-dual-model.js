@@ -400,6 +400,14 @@ function computeFlags(L) {
     const d = V.showVenueDisagreement(s, textsBy.get(s.id) || [], cityVenues);
     if (d) add('show', s.id, s.title, 'local', [{ code: 'venue-contradicted', detail: `ours ${s.venue} / ${d.outlets.length} outlets name ${d.venue}: ${d.outlets.join(', ')}` }]);
   }
+  // BRO-7291 class 4: a title typo copied from a listing ("Hangman" staged, every review prints "Hangmen").
+  const T = require('./lib/title-spelling-check');
+  const knownTitles = readJson('data/shows.json').shows.map((x) => x.title);
+  for (const s of L.shows) {
+    const texts = (textsBy.get(s.id) || []).map((x) => x.fullText);
+    const t = T.titleSpellingFinding(s, texts, knownTitles.filter((x) => x !== s.title));
+    if (t) add('show', s.id, s.title, 'local', [{ code: 'title-spelling', detail: `ours "${s.title}" (${t.ours}x) / reviews print "${t.title}" ${t.theirs}x in ${t.texts} texts` }]);
+  }
   // duplicates by title
   const tcount = new Map(); for (const s of L.shows) { const k = `${fold(s.title)}|${fold(s.venue)}`; tcount.set(k, [...(tcount.get(k) || []), s.id]); }
   for (const [k, ids] of tcount) if (ids.length > 1) add('show', ids[0], k, 'local', [{ code: 'duplicate-show', detail: ids.join(', ') }]);
