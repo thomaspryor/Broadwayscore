@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7250-d261110",
   "planId": "44c62655-3865-4fe1-bf1d-9258ab55a3a6",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-10T18:46:32.181Z",
   "submitter": {
     "name": null,
@@ -224,5 +224,44 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-10T18:51:50.339Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added ted-talks-and-talks-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-christmas-carol-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added cygnets-a-magical-holiday-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added mother-play-regional-2027"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added frozen-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added alfred-hitchc-cks-north-by-northwest-regional-2027"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added meet-the-cartozians-regional-2027"
+    }
+  ],
+  "executedIn": "ci"
 }
