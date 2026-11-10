@@ -23,10 +23,15 @@ const NYT = 'https://www.nytimes.com/2026/09/28/theater/school-girls-or-the-afri
 const VARIETY = 'https://variety.com/2026/legit/reviews/school-girls-review-1236000000/';
 
 // Prose of roughly `n` chars in paragraphs, ending with a full sentence.
+// Each sentence is numbered: the assessment strips repeated paragraphs as page
+// furniture (BRO-7171), so identical paragraphs would not count toward length.
 function prose(n) {
-  const sentence = 'The ensemble in School Girls is sharp and funny, and the direction keeps the comedy moving with real bite. ';
   let out = '';
-  while (out.length < n) out += sentence + (out.length % 700 < sentence.length ? '\n\n' : '');
+  let k = 0;
+  while (out.length < n) {
+    k++;
+    out += `The ensemble in School Girls is sharp and funny in scene ${k}, and the direction keeps the comedy moving with real bite. ` + (out.length % 700 < 120 ? '\n\n' : '');
+  }
   return out.trim();
 }
 
@@ -212,4 +217,48 @@ test('applyPaywallTierOverride: soft-paywall label kept only while text is still
   assert.equal(applyPaywallTierOverride({ ...base, fullText: 'x'.repeat(3000) }, complete, now), complete);
   // unlabelled soft-paywall file: left alone (historical corpus untouched)
   assert.equal(applyPaywallTierOverride({ ...base, contentTierReason: 'ok' }, complete, now), complete);
+});
+
+// BRO-7171 hand check of the NYT / New Yorker rows labelled truncated.
+test('Off-Broadway NYT floor: a whole 4,000-char review passes, a Broadway one still needs 4,500', () => {
+  const body = prose(4000);
+  assert.equal(assessPaywallCompleteness(body, NYT, { category: 'off-broadway' }).complete, true);
+  const broadway = assessPaywallCompleteness(body, NYT, { category: 'broadway' });
+  assert.equal(broadway.complete, false);
+  assert.ok(broadway.reasons.some((r) => r.startsWith('below_floor')));
+  // no category: the old all-NYT floor (conservative)
+  assert.equal(assessPaywallCompleteness(body, NYT).complete, false);
+  // page one of an Off-Broadway review is still caught
+  assert.equal(assessPaywallCompleteness(prose(2400), NYT, { category: 'off-broadway' }).complete, false);
+});
+
+test('NYT recirculation module after the info box no longer hides the ending', () => {
+  const text = `${prose(3600)}\n\nMerry MeThrough Nov. 19 at New York Theater Workshop, Manhattan; nytw.org. Running time: 1 hour 30 minutes.\n\n`
+    + '14Share full article14More on N.Y.C. Theater, Music and Dance‘Oh, Mary!,’ a Visual Tour: Cole Escola stars as a deranged Mary Todd Lincoln in this Broadway comedy.\n\n'
+    + 'A Soprano With Dyslexia: Elza van den Heever no longer sees dyslexia as a hindrance, just a different way of learning.\n\n'
+    + 'How ‘Wicked’ Changed the Lives of Its Stars: Only the women who have played Elphaba and Glinda understand why the roles are so taxing.';
+  const a = assessPaywallCompleteness(text, NYT, { category: 'off-broadway' });
+  assert.equal(a.infoBoxEnding, true);
+  assert.equal(a.complete, true);
+});
+
+test('an NYT staff-bio last line marks the end of a whole article', () => {
+  const text = `${prose(2200)}\n\nMichael Paulson is the theater reporter for The Times.`;
+  const a = assessPaywallCompleteness(text, NYT);
+  assert.equal(a.infoBoxEnding, true);
+  assert.equal(a.complete, true);
+  // the bare page-one shape (prose + byline) is still partial
+  assert.equal(assessPaywallCompleteness(PAGE_ONE, NYT).complete, false);
+});
+
+test('a New Yorker listing capsule is judged against the capsule floor, not the magazine one', () => {
+  const NYER = 'https://www.newyorker.com/goings-on-about-town/theatre/grey-house-07-10-23';
+  const capsule = 'The Theatre Grey House By Dan Stahl June 30, 2023 A married couple, wandering through the woods after getting in a car accident, come across a cabin. '
+    + 'Nobody answers the door, so they let themselves in. Levi Holloway’s “Grey House” is as smart as it is scary, and Joe Mantello directs one hell of a show. '
+    + 'The cabin turns out to be inhabited by the foulmouthed Raleigh, plus four oddball girls and a silent boy who might be her children. '
+    + '(Lyceum; through Sept. 3.) Published in the print edition of the July 10 & 17, 2023 , issue.';
+  assert.equal(assessPaywallCompleteness(capsule, NYER).complete, true);
+  // A magazine review cut to the same length is still partial.
+  const magazine = 'Will the musical make fetch happen? ' + prose(700);
+  assert.equal(assessPaywallCompleteness(magazine, 'https://www.newyorker.com/magazine/2018/03/26/x').complete, false);
 });

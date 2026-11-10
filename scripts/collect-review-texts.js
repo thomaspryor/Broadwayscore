@@ -4046,6 +4046,7 @@ async function fetchReviewText(review) {
       candidate: { ...accepted, _onSuccess: tier.onSuccess ? () => tier.onSuccess(review, result) : null },
       url,
       criticName: review.criticName || review.critic, // queued reviews carry `critic`
+      category: review.category, // Off-Broadway NYT floor (BRO-7171)
     });
     if (paywallDecision.action === 'continue') {
       const a = paywallDecision.assessment;
@@ -5920,7 +5921,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       const isProxy = PROXY_METHODS.has(data.sourceMethod);
       let truncReason = null;
       if (isProxy && isHardPaywallUrl(data.url)) {
-        const pa = assessPaywallCompleteness(data.fullText, data.url, { criticName: data.criticName || review.criticName });
+        const pa = assessPaywallCompleteness(data.fullText, data.url, { criticName: data.criticName || review.criticName, category: data.category || review.category });
         if (!pa.complete) {
           truncReason = `Paywall truncation: ${pa.reasons.join(', ')} for ${urlHost} (source: ${data.sourceMethod})`;
         }
@@ -7643,7 +7644,7 @@ async function processReview(review) {
         // A COMPLETE re-fetch always wins over a stored partial; only a
         // partial one has to be strictly longer (ship-check P2, BRO-4334).
         const notLonger = result.partial && review._paywallRecheck && storedLen > 0 && (result.text || '').length <= storedLen;
-        if (notLonger || shouldKeepStoredText({ storedText: stored.fullText, newText: result.text, url: review.url, criticName: stored.criticName || review.criticName })) {
+        if (notLonger || shouldKeepStoredText({ storedText: stored.fullText, newText: result.text, url: review.url, criticName: stored.criticName || review.criticName, category: stored.category || review.category })) {
           console.log(`  ↺ Re-fetch (${result.text.length} chars via ${result.method}) is no better than the stored text (${storedLen} chars) — keeping stored text`);
           // A stored text still labelled 'complete' is re-labelled truncated so
           // reviews.json / the opening-window refetch see it as incomplete.
