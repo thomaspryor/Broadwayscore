@@ -198,6 +198,7 @@ async function main() {
 
   const flagged = [];
   const matches = [];
+  const suppressed = [];
   const errors = [];
   let audited = 0;
 
@@ -223,9 +224,9 @@ async function main() {
           continue;
         }
         // BRO-7275: next-day opening-night coverage is not a discrepancy.
-        const triage = triageOpeningFinding({ fieldType, stored, discoveredDate: discovered.date, today: TODAY });
+        const triage = triageOpeningFinding({ fieldType, stored, discoveredDate: discovered.date, today: TODAY, status: show.status });
         if (!triage.flag) {
-          matches.push({ id: show.id, fieldType, stored, discoveredDate: discovered.date, note: triage.reason });
+          suppressed.push({ id: show.id, fieldType, stored, discoveredDate: discovered.date, reason: triage.reason });
           continue;
         }
         // Date differs OR stored was null and we got a date.
@@ -251,10 +252,12 @@ async function main() {
       audited,
       flagged: flagged.length,
       matches: matches.length,
+      suppressed: suppressed.length,
       errors: errors.length,
     },
     flagged,
     matches,
+    suppressed,
     errors,
   };
 

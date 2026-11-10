@@ -10,8 +10,8 @@
  * Oct 19"), the press-cluster extractor reads that publication date as the
  * opening date, and every case turned out to be stored-date-correct.
  *
- * Rule: for an `opening` field whose stored date is already in the past
- * (the show has opened), a press date exactly 1 day later is an artifact.
+ * Rule: for an `opening` field of a status='open' show whose stored date is
+ * already in the past, a press date exactly 1 day later is an artifact.
  * Everything else (previews-start shifts, >1 day, not-yet-opened shows,
  * press date EARLIER than stored) still flags.
  */
@@ -22,9 +22,12 @@ function dayDiff(a, b) {
 }
 
 /** @returns {{flag: boolean, reason: string}} */
-function triageOpeningFinding({ fieldType, stored, discoveredDate, today }) {
+function triageOpeningFinding({ fieldType, stored, discoveredDate, today, status }) {
   if (!stored || !discoveredDate) return { flag: true, reason: 'no-stored-date-or-no-press-date' };
   if (fieldType !== 'opening') return { flag: true, reason: 'not-opening-field' };
+  // Only a show that has actually opened: a show still in previews with a past
+  // stored date is the likeliest real delay and must still flag.
+  if (status !== 'open') return { flag: true, reason: 'not-open-status' };
   if (Date.parse(stored) >= Date.parse(today)) return { flag: true, reason: 'not-yet-opened' };
   if (dayDiff(discoveredDate, stored) === 1) return { flag: false, reason: 'next-day-opening-night-coverage' };
   return { flag: true, reason: 'date-differs' };
