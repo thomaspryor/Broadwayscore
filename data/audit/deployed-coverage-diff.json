@@ -1,13 +1,48 @@
 {
-  "generatedAt": "2026-11-10T19:59:22.924Z",
+  "generatedAt": "2026-11-10T20:26:01.210Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 319,
-  "clean": 319,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 317,
+  "defective": 2,
+  "byType": {
+    "score-drift": 2
+  },
+  "shows": [
+    {
+      "showId": "here-there-are-blueberries-2026",
+      "title": "Here There Are Blueberries",
+      "openingDate": "2026-11-09",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 80.64 vs local 80.12 (Δ0.52)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 17,
+      "deployedCount": 18,
+      "firstDefectAt": "2026-11-10T20:25:56.980Z"
+    },
+    {
+      "showId": "rope-off-broadway-2026",
+      "title": "Rope",
+      "openingDate": "2026-11-03",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 60.81 vs local 61.8 (Δ0.99)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 13,
+      "deployedCount": 13,
+      "firstDefectAt": "2026-11-10T20:25:56.980Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
