@@ -49,7 +49,11 @@ function mergeShowRows(doc, showId, incoming, { openingDate, remove } = {}) {
   // rebuild's critic key + outlet, and before the adds so the keys below are built from what remains.
   const removed = [];
   if (Array.isArray(remove) && remove.length) {
-    const gone = new Set(remove.map((x) => `${criticFileSlug(x.criticName)}|${x.outletId}`));
+    // An entry names its original (primaryOutletId): the copy only comes down when that original was applied in THIS
+    // merge, so a kept/rejected original never leaves the site with neither review.
+    const landed = new Set((incoming || []).map((r) => `${criticFileSlug(r.criticName)}|${r.outletId}`));
+    const gone = new Set(remove.filter((x) => !x.primaryOutletId || landed.has(`${criticFileSlug(x.criticName)}|${x.primaryOutletId}`))
+      .map((x) => `${criticFileSlug(x.criticName)}|${x.outletId}`));
     for (let i = reviews.length - 1; i >= 0; i--) {
       const r = reviews[i];
       if (!r || r.showId !== showId || !r.criticName || !gone.has(`${criticFileSlug(r.criticName)}|${r.outletId}`) || !isLaneReview(r, { openingDate })) continue;

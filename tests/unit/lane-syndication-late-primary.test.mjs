@@ -69,3 +69,16 @@ test('mergeShowRows remove: only the lane\'s own matching row goes; the removal 
   assert.equal(mergeShowRows(doc, SHOW.id, [], { openingDate: NIGHT }).removed.length, 0);
   void laneRow;
 });
+
+test('a removal names its original: the copy only comes down in a merge that applies that original', async () => {
+  const { run, getDoc } = night({ urlsByPass: [[ORIG]] });
+  await run;
+  const orig = getDoc().reviews.find((r) => r.outletId === 'chicagotribune');
+  const copy = { ...orig, outletId: 'nydailynews', url: COPY };
+  const remove = [{ criticName: 'Chris Jones', outletId: 'nydailynews', primaryOutletId: 'chicagotribune' }];
+  const without = mergeShowRows({ reviews: [copy] }, SHOW.id, [], { openingDate: NIGHT, remove });
+  assert.equal(without.removed.length, 0, 'original not in this merge: the copy stays');
+  const withIt = mergeShowRows({ reviews: [copy] }, SHOW.id, [orig], { openingDate: NIGHT, remove });
+  assert.equal(withIt.removed.length, 1);
+  assert.deepEqual(withIt.doc.reviews.map((r) => r.outletId), ['chicagotribune']);
+});

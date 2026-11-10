@@ -244,3 +244,15 @@ test('BRO-7247: a drained budget throttles a changing URL, and the replay serves
   assert.match((await replay('https://hot/')).content, /v0/, 'the stale body, not an incomplete-recording error');
   assert.ok(raw > 0);
 });
+
+test('BRO-7247 review: a fetch that started EARLIER than the stored one is stored, never throttled onto a later body', async () => {
+  const dir = tmp();
+  let clock = 2000;
+  const r = rec.createFetchRecorder({ dir, key: KEY, now: () => clock, maxRunBytes: 700 });
+  let n = 0;
+  const f = r.wrapFetchText(async (u) => (u === 'https://hot/' ? page(u, n++) : page(u, 99)));
+  await f('https://filler/1'); await f('https://filler/2');
+  await f('https://hot/'); // stored at t=2000
+  clock = 1500; await f('https://hot/'); // started earlier (out-of-order completion)
+  assert.equal(r.stats().throttled, 0);
+});
