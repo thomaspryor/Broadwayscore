@@ -48,6 +48,7 @@ on:
 # complete, just serialized — cancelling would drop whichever run's alerts
 # were in flight.
 concurrency:
+  # shows-json-writer-exempt: review-forecast-pilot job writes only review-forecast-pilot/ files, never shows.json; the whole workflow is serialized by this group
   group: data-health-check
   cancel-in-progress: false
 
