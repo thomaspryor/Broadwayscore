@@ -1,63 +1,63 @@
 {
-  "runDate": "2026-11-10T18:08:06.377Z",
+  "runDate": "2026-11-10T18:36:33.501Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 1000,
+    "maxReviews": 100,
     "priority": "all",
-    "showFilter": "jagged-little-pill-2019",
+    "showFilter": "kate-allie-and-the-86-mets-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 18,
-    "failed": 2,
+    "processed": 1,
+    "failed": 0,
     "skipped": 0,
-    "successRate": "90.0%"
+    "successRate": "100.0%"
   },
   "tierBreakdown": {
-    "playwright": 9,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 1,
-    "scrapingbee": 1,
-    "brightdata": 3,
+    "scrapingdog": 0,
+    "scrapingbee": 0,
+    "brightdata": 0,
     "archiveToday": 0,
-    "archive": 4
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 11,
-    "tier1Success": 10,
+    "tier1Attempts": 1,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 1,
-    "tier1_9Success": 1,
-    "tier2Attempts": 3,
-    "tier2Success": 1,
-    "tier3Attempts": 4,
-    "tier3Success": 3,
+    "tier1_9Attempts": 0,
+    "tier1_9Success": 0,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 5,
-    "tier4Success": 2,
-    "totalFailed": 2,
-    "scrapingBeePageCredits": 2,
+    "tier4Attempts": 0,
+    "tier4Success": 0,
+    "totalFailed": 0,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 18,
-    "failed": 2,
+    "processed": 1,
+    "failed": 0,
     "shows": [
-      "jagged-little-pill-2019"
+      "kate-allie-and-the-86-mets-off-broadway-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -66,88 +66,27 @@
     }
   },
   "processed": [
-    "jagged-little-pill-2019/nydailynews--chris-jones.json",
-    "jagged-little-pill-2019/dailybeast--tim-teeman.json",
-    "jagged-little-pill-2019/guardian--alexis-soloski.json",
-    "jagged-little-pill-2019/nytimes--jesse-green.json",
-    "jagged-little-pill-2019/vulture--jackson-mchenry.json",
-    "jagged-little-pill-2019/nyt-theater--jonathan-mandell.json",
-    "jagged-little-pill-2019/broadwaynews--charles-isherwood.json",
-    "jagged-little-pill-2019/nypost--johnny-oleksinski.json",
-    "jagged-little-pill-2019/forward--unknown.json",
-    "jagged-little-pill-2019/theatrely--juan-a-ramirez.json",
-    "jagged-little-pill-2019/artsfuse--unknown.json",
-    "jagged-little-pill-2019/consequence--unknown.json",
-    "jagged-little-pill-2019/exeunt-magazine--unknown.json",
-    "jagged-little-pill-2019/forbes--hal-rubenstein.json",
-    "jagged-little-pill-2019/nbcny--unknown.json",
-    "jagged-little-pill-2019/talkinbroadway--unknown.json",
-    "jagged-little-pill-2019/usatoday--unknown.json",
-    "jagged-little-pill-2019/whatsonstage--unknown.json"
+    "kate-allie-and-the-86-mets-off-broadway-2026/front-row-center--tulis-mccall.json"
   ],
-  "failed": [
-    "jagged-little-pill-2019/theater-news-online--joe-dziemianowicz.json",
-    "jagged-little-pill-2019/frontmezzjunkies--unknown.json"
-  ],
+  "failed": [],
   "cumulativeResumedState": {
     "processed": [
-      "jagged-little-pill-2019/nydailynews--chris-jones.json",
-      "jagged-little-pill-2019/dailybeast--tim-teeman.json",
-      "jagged-little-pill-2019/guardian--alexis-soloski.json",
-      "jagged-little-pill-2019/nytimes--jesse-green.json",
-      "jagged-little-pill-2019/vulture--jackson-mchenry.json",
-      "jagged-little-pill-2019/nyt-theater--jonathan-mandell.json",
-      "jagged-little-pill-2019/broadwaynews--charles-isherwood.json",
-      "jagged-little-pill-2019/nypost--johnny-oleksinski.json",
-      "jagged-little-pill-2019/forward--unknown.json",
-      "jagged-little-pill-2019/theatrely--juan-a-ramirez.json",
-      "jagged-little-pill-2019/artsfuse--unknown.json",
-      "jagged-little-pill-2019/consequence--unknown.json",
-      "jagged-little-pill-2019/exeunt-magazine--unknown.json",
-      "jagged-little-pill-2019/forbes--hal-rubenstein.json",
-      "jagged-little-pill-2019/nbcny--unknown.json",
-      "jagged-little-pill-2019/talkinbroadway--unknown.json",
-      "jagged-little-pill-2019/usatoday--unknown.json",
-      "jagged-little-pill-2019/whatsonstage--unknown.json"
+      "kate-allie-and-the-86-mets-off-broadway-2026/front-row-center--tulis-mccall.json"
     ],
-    "failed": [
-      "jagged-little-pill-2019/theater-news-online--joe-dziemianowicz.json",
-      "jagged-little-pill-2019/frontmezzjunkies--unknown.json"
-    ]
+    "failed": []
   },
   "tierDetails": {
     "playwright": [
-      "jagged-little-pill-2019/guardian--alexis-soloski.json",
-      "jagged-little-pill-2019/nyt-theater--jonathan-mandell.json",
-      "jagged-little-pill-2019/broadwaynews--charles-isherwood.json",
-      "jagged-little-pill-2019/nypost--johnny-oleksinski.json",
-      "jagged-little-pill-2019/artsfuse--unknown.json",
-      "jagged-little-pill-2019/consequence--unknown.json",
-      "jagged-little-pill-2019/exeunt-magazine--unknown.json",
-      "jagged-little-pill-2019/nbcny--unknown.json",
-      "jagged-little-pill-2019/whatsonstage--unknown.json"
+      "kate-allie-and-the-86-mets-off-broadway-2026/front-row-center--tulis-mccall.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [
-      "jagged-little-pill-2019/forbes--hal-rubenstein.json"
-    ],
-    "scrapingbee": [
-      "jagged-little-pill-2019/theatrely--juan-a-ramirez.json"
-    ],
-    "brightdata": [
-      "jagged-little-pill-2019/dailybeast--tim-teeman.json",
-      "jagged-little-pill-2019/vulture--jackson-mchenry.json",
-      "jagged-little-pill-2019/usatoday--unknown.json"
-    ],
+    "scrapingdog": [],
+    "scrapingbee": [],
+    "brightdata": [],
     "archiveToday": [],
-    "archive": [
-      "jagged-little-pill-2019/nydailynews--chris-jones.json",
-      "jagged-little-pill-2019/nytimes--jesse-green.json",
-      "jagged-little-pill-2019/forward--unknown.json",
-      "jagged-little-pill-2019/talkinbroadway--unknown.json"
-    ]
+    "archive": []
   },
   "failuresByOutlet": {},
   "urlDiscoveries": []
