@@ -104,11 +104,17 @@ async function auditCity(city, maxUsd) {
   const plan = writePlan(city, week, W.planActions(fresh));
   const card = W.cardFor(city, week, fresh, { planId: plan && (plan.planId ? `${plan.id} (issue_number=${plan.id} plan_id=${plan.planId})` : plan.id), provenance });
   summary.plan = plan;
-  summary.card = card ? fileCard(card) : null;
+  let cardFailed = false;
+  summary.card = null;
+  if (card) {
+    const r = await W.fileWithRetry(() => fileCard(card));
+    summary.card = r.card;
+    if (r.error) { cardFailed = true; summary.cardError = r.error; console.log(`::warning::${city}: card not filed (${r.error.slice(0, 200)}); findings left unseen so next run retries`); }
+  }
   fs.mkdirSync(dir, { recursive: true });
   require('./lib/city-hub-dual-audit').writeAuditJson(path.join(dir, 'scorecard.json'), sc);
   await M.writeIngestPlan(L);
-  fs.writeFileSync(path.join(dir, 'weekly.json'), `${JSON.stringify({ ...summary, findingKeys: findings.map((f) => f.key).sort(), fresh, provenanceRows: provenance.rows }, null, 1)}\n`);
+  fs.writeFileSync(path.join(dir, 'weekly.json'), `${JSON.stringify({ ...summary, findingKeys: W.seenKeys(findings, fresh, cardFailed), fresh, provenanceRows: provenance.rows }, null, 1)}\n`);
   return summary;
 }
 
@@ -120,6 +126,7 @@ async function main() {
   const maxUsd = Number(arg('max-usd', 2)) / Math.max(1, cities.length); // --max-usd is the whole-run cap
   const out = [];
   for (const c of cities) {
+    if (out.length && !DRY) await new Promise((r) => setTimeout(r, 5000)); // space Linear calls between hubs (429s, BRO-7319)
     try { out.push(await auditCity(c, maxUsd)); } catch (e) { console.log(`::warning::${c}: ${e.message}`); out.push({ city: c, error: e.message }); }
   }
   console.log(`[city-hub-weekly] ${out.map((s) => `${s.city}: ${s.error ? `ERROR ${s.error}` : `${s.newFindings} new`}`).join('; ')}`);

@@ -133,3 +133,26 @@ test('BRO-7274: DC/LA hub review hosts from the coverage audit resolve to a regi
     if (u.includes('capitalcommunitynews')) assert.equal(r.outletId || r.id, 'hillrag');
   }
 });
+
+test('BRO-7319: a card create that throws is retried, never thrown, and leaves findings unseen', async () => {
+  const W = require('./city-hub-weekly.js');
+  let n = 0;
+  const ok = await W.fileWithRetry(() => { if (++n < 3) throw new Error('Linear HTTP 429'); return 'BRO-1'; }, { sleep: async () => {} });
+  assert.deepEqual(ok, { card: 'BRO-1', error: null });
+  const bad = await W.fileWithRetry(() => { throw new Error('Linear HTTP 429'); }, { attempts: 2, sleep: async () => {} });
+  assert.equal(bad.card, null);
+  assert.match(bad.error, /429/);
+  const findings = [{ key: 'a' }, { key: 'b' }, { key: 'c' }];
+  assert.deepEqual(W.seenKeys(findings, [{ key: 'b' }], true), ['a', 'c']);
+  assert.deepEqual(W.seenKeys(findings, [{ key: 'b' }], false), ['a', 'b', 'c']);
+});
+
+test('BRO-7319: a failed create for one hub does not stop the next hub', async () => {
+  const W = require('./city-hub-weekly.js');
+  const filed = [];
+  for (const city of ['san-diego-ca', 'boston-ma']) {
+    const r = await W.fileWithRetry(() => { if (city === 'san-diego-ca') throw new Error('Linear HTTP 429'); filed.push(city); return 'BRO-2'; }, { attempts: 2, sleep: async () => {} });
+    assert.equal(!!r.error, city === 'san-diego-ca');
+  }
+  assert.deepEqual(filed, ['boston-ma']);
+});

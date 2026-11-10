@@ -102,4 +102,24 @@ function cardFor(city, week, fresh, { planId = null, provenance = null } = {}) {
   return { title: `City hub audit ${city} ${week}: ${fresh.length + (prov ? 1 : 0)} new finding(s)`, body: lines.join('\n') };
 }
 
-module.exports = { CLASS_OF, CLASS_NAME, keyOf, findingsFromFlags, newFindings, planActions, isoWeek, cardFor };
+/**
+ * BRO-7319: file a card with retries (Linear 429s). Never throws: returns { card, error }.
+ * @param {() => string|null} fileFn  sync card filer (throws on failure)
+ * @param {{attempts?:number, baseMs?:number, sleep?:(ms:number)=>Promise<void>}} o
+ */
+async function fileWithRetry(fileFn, { attempts = 4, baseMs = 15000, sleep = (ms) => new Promise((r) => setTimeout(r, ms)) } = {}) {
+  let error = null;
+  for (let i = 0; i < attempts; i++) {
+    try { return { card: fileFn(), error: null }; } catch (e) { error = e.message || String(e); }
+    if (i < attempts - 1) await sleep(baseMs * 2 ** i);
+  }
+  return { card: null, error };
+}
+
+/** Keys persisted as "seen" in weekly.json. When the card was not filed, the fresh keys stay unseen so next week retries. */
+function seenKeys(findings, fresh, cardFailed) {
+  const skip = cardFailed ? new Set(fresh.map((f) => f.key)) : new Set();
+  return findings.map((f) => f.key).filter((k) => !skip.has(k)).sort();
+}
+
+module.exports = { fileWithRetry, seenKeys, CLASS_OF, CLASS_NAME, keyOf, findingsFromFlags, newFindings, planActions, isoWeek, cardFor };
