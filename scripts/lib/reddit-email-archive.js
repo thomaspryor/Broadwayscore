@@ -90,6 +90,10 @@ function classifyRecurring(m) {
   if (addr === SENDER) {
     // "<lead> · Nov 9" from the digest sender (buildSubject in send-opening-digest.js).
     if (name === 'Broadway Scorecard Digest' && /\s\u00b7\s[A-Z][a-z]{2} \d{1,2}$/.test(subject)) return 'opening-digest';
+    // The monthly Money Scorecard preview (scripts/money-monthly/send-preview.mjs) uses the same
+    // sender, display name and [DRAFT] prefix but is its own email the owner forwards to approve.
+    // A newer weekly newsletter draft must never push it out of the inbox.
+    if (/^\[DRAFT\]\s+Money Scorecard\b/.test(subject)) return null;
     if (/^\[DRAFT\]/.test(subject) && (name === 'Broadway Scorecard' || name === 'West End Scorecard')) return `newsletter-draft:${name}`;
   }
   return null;
@@ -244,7 +248,7 @@ async function sweep({ env = process.env, fetchImpl = fetch, dryRun = false, exp
   if (missing.length) log(`::warning::${missing.length} just-sent email(s) not in the inbox after ${Math.round(waitMs / 1000)}s; their predecessors are archived on the next sweep`);
 
   const plan = planArchive(messages, { nowMs: now() });
-  log(`${messages.length} recurring site email(s) in the inbox across ${plan.groups} group(s); ${plan.archive.length} to archive (superseded, or Reddit drafts over ${MAX_AGE_DAYS} days old)`);
+  log(`${messages.length} site email(s) in the inbox across ${plan.groups} group(s); ${plan.archive.length} to archive (superseded, or Reddit drafts over ${MAX_AGE_DAYS} days old)`);
   // The refresh response names the granted scopes. A key without gmail.modify cannot
   // write, so say so before trying instead of after a 403.
   if (plan.archive.length && !dryRun && scope && !scope.split(/\s+/).includes(MODIFY_SCOPE)) {

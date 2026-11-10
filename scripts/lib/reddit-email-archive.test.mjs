@@ -394,3 +394,10 @@ test('the Gmail search covers every recurring kind', () => {
     assert.ok(a.LIST_QUERY.includes(part), part);
   }
 });
+
+test('Money Scorecard [DRAFT] preview is never grouped with the weekly newsletter drafts', () => {
+  const money = msg('money', '[DRAFT] Money Scorecard, October: 2 recoupments and 1 closing', 1793900000000);
+  const r = a.planArchive([money, ...REAL_INBOX.filter((m) => m.id === 'nb7' || m.id === 'nb8')]);
+  assert.ok(!r.archive.includes('money'));
+  assert.deepEqual(r.archive.filter((id) => id === 'nb7'), ['nb7']);
+});
