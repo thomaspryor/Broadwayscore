@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7319",
   "planId": "9074f526-c9df-488d-97d3-a700292e35ff",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-10T19:45:12.483Z",
   "submitter": {
     "name": null,
@@ -23,5 +23,14 @@
         "description": "accessiblyliveoffline.wordpress.com 2026-09-27 is a 3,912-word multi-production column (SHELLS at Greenway Court Theatre and others); A Number is one of 6 passing mentions, not a review of it. Both audit models flagged it roundup."
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-10T21:25:19.174Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-number-regional-2026/accessibly-live-off-line--unknown.json wrongProduction: null -> true"
+    }
+  ],
+  "executedIn": "ci"
 }
