@@ -1,20 +1,20 @@
 {
-  "runDate": "2026-11-10T20:58:21.492Z",
+  "runDate": "2026-11-10T22:02:32.546Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 1000,
     "priority": "all",
-    "showFilter": "a-few-good-men-2026",
+    "showFilter": "frankie-and-johnny-in-the-clair-de-lune-2019",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 2,
+    "processed": 1,
+    "failed": 0,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "100.0%"
   },
   "tierBreakdown": {
     "playwright": 0,
@@ -25,11 +25,11 @@
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 1,
-    "tier1Success": 1,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
@@ -38,13 +38,13 @@
     "tier1_9Success": 0,
     "tier2Attempts": 0,
     "tier2Success": 0,
-    "tier3Attempts": 1,
-    "tier3Success": 1,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 0,
-    "tier4Success": 0,
-    "totalFailed": 2,
+    "tier4Attempts": 1,
+    "tier4Success": 1,
+    "totalFailed": 0,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
@@ -54,10 +54,10 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 0,
-    "failed": 2,
+    "processed": 1,
+    "failed": 0,
     "shows": [
-      "a-few-good-men-2026"
+      "frankie-and-johnny-in-the-clair-de-lune-2019"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -65,17 +65,15 @@
       "failed": 0
     }
   },
-  "processed": [],
-  "failed": [
-    "a-few-good-men-2026/variety--anna-tingley.json",
-    "a-few-good-men-2026/goldderby--ethan-alter.json"
+  "processed": [
+    "frankie-and-johnny-in-the-clair-de-lune-2019/dailybeast--tim-teeman.json"
   ],
+  "failed": [],
   "cumulativeResumedState": {
-    "processed": [],
-    "failed": [
-      "a-few-good-men-2026/variety--anna-tingley.json",
-      "a-few-good-men-2026/goldderby--ethan-alter.json"
-    ]
+    "processed": [
+      "frankie-and-johnny-in-the-clair-de-lune-2019/dailybeast--tim-teeman.json"
+    ],
+    "failed": []
   },
   "tierDetails": {
     "playwright": [],
@@ -86,7 +84,9 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "frankie-and-johnny-in-the-clair-de-lune-2019/dailybeast--tim-teeman.json"
+    ]
   },
   "failuresByOutlet": {},
   "urlDiscoveries": []
