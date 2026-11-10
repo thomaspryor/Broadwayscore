@@ -291,15 +291,12 @@ async function runStranded() {
   // ref, but an older attempt for the same card (the refused original of a
   // rebased retry) stays behind and must not read as lost work.
   const { landRefCardNumber } = require('./lib/cloud-worker-pick.js');
-  const cardLandedAt = new Map();
-  for (let p = 1; p <= 3; p += 1) {
-    const runs = gh([`repos/${repo}/actions/workflows/land.yml/runs?status=success&per_page=100&page=${p}`]).workflow_runs || [];
-    for (const r of runs) {
-      const n = landRefCardNumber(r.head_branch);
-      if (n != null && (!cardLandedAt.has(n) || r.updated_at > cardLandedAt.get(n))) cardLandedAt.set(n, r.updated_at);
-    }
-    if (runs.length < 100) break;
-  }
+  const { collectCardLandings, refLastMs } = require('./lib/land-stranded-refs.js');
+  const landingsPage = (p) => gh([`repos/${repo}/actions/workflows/land.yml/runs?status=success&per_page=100&page=${p}`]).workflow_runs || [];
+  // First read: the newest 3 pages. Older landings are read below only when an
+  // actionable ref's last run reaches back past them (BRO-7102).
+  let landed = collectCardLandings(landingsPage, landRefCardNumber, { maxPages: 3 });
+  const cardLandedAt = landed.landings;
   const decisions = [];
   for (const [branch, tip] of [...landRefs()].filter(([b]) => !only || b === only).slice(0, MAX_STRANDED_REFS)) {
     // One unreadable ref (a 502 on its run or jobs) skips that ref this pass, never the whole pass.
@@ -324,10 +321,33 @@ async function runStranded() {
       }
       if (isHandCancel(d.cancelledBy) && d.action !== 'escalate') handCancels.push({ branch, tip, latestRun, cancelledBy: d.cancelledBy, followUp: d.action });
       if (d.reason !== 'abandoned' && d.reason !== 'superseded') console.log(`${branch} @${tip.slice(0, 10)}: ${d.action} (${d.reason})${latestRun ? ` run ${latestRun.id} attempt ${latestRun.run_attempt}` : ''}`);
-      decisions.push({ branch, tip, latestRun, ...d });
+      decisions.push({ branch, tip, latestRun, ...d, inputs: { tip, latestRun, jobs, tipCommittedAt } });
     } catch (err) {
       console.log(`::warning::${branch}: skipped this pass (${String(err.message).split('\n')[0]})`);
     }
+  }
+  // BRO-7102: an escalate/rerun ref older than the landings read so far may be
+  // a leftover whose card landed from a retry ref days ago. Read further back
+  // (to the oldest such ref's last run, at most 14 days of landings) and
+  // re-decide those refs, so neither a false LAND-STRANDED card nor a re-run
+  // of stale code goes out.
+  const unsure = decisions.filter((d) => (d.action === 'escalate' || d.action === 'rerun')
+    && !cardLandedAt.has(landRefCardNumber(d.branch)) && Number.isFinite(refLastMs(d.inputs)) && refLastMs(d.inputs) < landed.oldestMs);
+  if (unsure.length && !landed.exhausted) {
+    const untilMs = Math.min(...unsure.map((d) => refLastMs(d.inputs)));
+    try {
+      landed = collectCardLandings(landingsPage, landRefCardNumber, { untilMs, maxPages: 30, into: cardLandedAt, startPage: landed.nextPage });
+    } catch (err) { console.log(`::warning::older landings unreadable (${String(err.message).split('\n')[0]}); holding ${unsure.length} old ref(s) this pass`); }
+    for (const d of unsure) {
+      const again = landed.oldestMs <= refLastMs(d.inputs) || landed.exhausted
+        ? decideStrandedRef({ ...d.inputs, cardLandedAt: cardLandedAt.get(landRefCardNumber(d.branch)), now })
+        : { action: 'wait', reason: 'landings-unread' };
+      if (again.action !== d.action) console.log(`${d.branch}: ${d.action} -> ${again.action} (${again.reason}) after reading older landings`);
+      Object.assign(d, again);
+    }
+    // A ref that turned out superseded is not owed a hand-cancel note either.
+    const gone = new Set(unsure.filter((d) => d.reason === 'superseded').map((d) => d.branch));
+    for (let i = handCancels.length - 1; i >= 0; i -= 1) if (gone.has(handCancels[i].branch)) handCancels.splice(i, 1);
   }
   const escalate = decisions.filter((d) => d.action === 'escalate');
   const reruns = decisions.filter((d) => d.action === 'rerun')

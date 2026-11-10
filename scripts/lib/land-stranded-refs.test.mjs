@@ -190,3 +190,53 @@ test('an escalation comment says who cancelled when it was a hand cancel only', 
   assert.doesNotMatch(buildEscalationComment({ ...base, cancelledBy: 'github-actions[bot]' }), /cancelled by @/);
   assert.doesNotMatch(buildEscalationComment(base), /cancelled by @/);
 });
+
+// ---- BRO-7102: the card-landed lookback must reach the ref's own last run ----
+{
+  const { collectCardLandings, refLastMs } = require('./land-stranded-refs.js');
+  const { landRefCardNumber } = require('./cloud-worker-pick.js');
+  // Real shape from 2026-11-10: land/bro-7102-job-headroom refused at
+  // 2026-11-08T06:37Z; the card landed from land/bro-7102-job-headroom-2 at
+  // 07:02Z, which sat on page 4 of the success listing (~150 landings a day).
+  const refused = { id: 42453448621, head_sha: TIP, status: 'completed', conclusion: 'failure', run_attempt: 1,
+    created_at: '2026-11-08T06:07:29Z', updated_at: '2026-11-08T06:37:53Z' };
+  const jobs = [checksOk, job('Land', 'failure')];
+  const now = Date.parse('2026-11-10T23:30:00Z');
+  const pageStart = Date.parse('2026-11-10T23:00:00Z');
+  const pages = Array.from({ length: 5 }, (_, p) => Array.from({ length: 100 }, (_, i) => {
+    const k = p * 100 + i;
+    const updated_at = new Date(pageStart - k * 10 * 60000).toISOString(); // one landing every 10 min
+    return { head_branch: k === 380 ? 'land/bro-7102-job-headroom-2' : `land/bro-${8000 + k}-x`, updated_at };
+  }));
+  pages[3][80].updated_at = '2026-11-08T07:02:47Z';
+  const fetchPage = (p) => pages[p - 1] || [];
+
+  test('BRO-7102 RED shape: a fixed 3-page lookback misses the retry landing -> false land-refused escalation', () => {
+    const { landings } = collectCardLandings(fetchPage, landRefCardNumber, { maxPages: 3 });
+    assert.equal(landings.has(7102), false);
+    const d = decideStrandedRef({ tip: TIP, latestRun: refused, jobs, cardLandedAt: landings.get(7102), now });
+    assert.equal(d.action, 'escalate');
+  });
+
+  test('BRO-7102: paging back to the ref\'s last run finds the retry landing -> superseded, no card', () => {
+    const first = collectCardLandings(fetchPage, landRefCardNumber, { maxPages: 3 });
+    const untilMs = refLastMs({ latestRun: refused });
+    assert.ok(untilMs < first.oldestMs, 'the ref predates the first read');
+    const more = collectCardLandings(fetchPage, landRefCardNumber, { untilMs, maxPages: 30, into: first.landings, startPage: first.nextPage });
+    assert.ok(more.oldestMs <= untilMs);
+    assert.equal(more.nextPage, 5, 'stops at the page that reaches the ref, not the whole history');
+    const d = decideStrandedRef({ tip: TIP, latestRun: refused, jobs, cardLandedAt: more.landings.get(7102), now });
+    assert.deepEqual(d, { action: 'none', reason: 'superseded' });
+  });
+
+  test('a short final page marks the listing exhausted', () => {
+    const r = collectCardLandings((p) => (p === 1 ? [{ head_branch: 'land/bro-1-a', updated_at: '2026-11-01T00:00:00Z' }] : []), landRefCardNumber, { maxPages: 5 });
+    assert.equal(r.exhausted, true);
+    assert.equal(r.landings.get(1), '2026-11-01T00:00:00Z');
+  });
+
+  test('a landing BEFORE the ref\'s last run still escalates (real lost work)', () => {
+    const d = decideStrandedRef({ tip: TIP, latestRun: refused, jobs, cardLandedAt: '2026-11-08T05:53:02Z', now });
+    assert.equal(d.action, 'escalate');
+  });
+}

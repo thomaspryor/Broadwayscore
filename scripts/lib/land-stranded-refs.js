@@ -73,7 +73,7 @@ function isAbandonedRun(run, now = Date.now()) {
 function decideStrandedRef({ tip, latestRun, jobs, tipCommittedAt, cardLandedAt, now = Date.now() } = {}) {
   const out = (action, reason) => ({ action, reason });
   const landedMs = Date.parse(cardLandedAt || '');
-  const lastMs = Date.parse((latestRun && (latestRun.updated_at || latestRun.created_at)) || tipCommittedAt || '');
+  const lastMs = refLastMs({ latestRun, tipCommittedAt });
   if (Number.isFinite(landedMs) && Number.isFinite(lastMs) && landedMs > lastMs
     && !(latestRun && latestRun.status !== 'completed')) return out('none', 'superseded');
   if (!latestRun || latestRun.head_sha !== tip) {
@@ -235,9 +235,50 @@ function newestPerCard(items, cardOf) {
   return [...best.values(), ...loose];
 }
 
+/**
+ * BRO-7102: a ref's own last-run time, the clock decideStrandedRef compares
+ * cardLandedAt against. NaN when unknown.
+ */
+function refLastMs({ latestRun, tipCommittedAt } = {}) {
+  return Date.parse((latestRun && (latestRun.updated_at || latestRun.created_at)) || tipCommittedAt || '');
+}
+
+/**
+ * Newest successful Land run per card, read newest-first page by page until a
+ * page reaches back past untilMs (or the listing runs out, or maxPages).
+ * BRO-7102: the pass used to read a fixed 3 pages (~2 days at 150 landings a
+ * day), so a refused leftover ref whose card landed from a retry ref more than
+ * ~2 days ago read as lost work: a false LAND-STRANDED card, and on the rerun
+ * path a full re-run of stale code. Callers page back to the oldest
+ * actionable ref's last run, which is exactly what "landed after this ref"
+ * needs.
+ * @param {(page:number)=>Array<{head_branch:string, updated_at:string}>} fetchPage
+ * @param {(branch:string)=>?number} cardOf
+ * @param {{untilMs?:number, maxPages?:number, into?:Map, startPage?:number}} [opts]
+ * @returns {{landings:Map<number,string>, nextPage:number, oldestMs:number, exhausted:boolean}}
+ */
+function collectCardLandings(fetchPage, cardOf, { untilMs = Infinity, maxPages = 3, into = new Map(), startPage = 1 } = {}) {
+  let page = startPage;
+  let oldestMs = Infinity;
+  let exhausted = false;
+  while (page < startPage + maxPages) {
+    const runs = fetchPage(page) || [];
+    page += 1;
+    for (const r of runs) {
+      const n = cardOf(r.head_branch);
+      if (n != null && (!into.has(n) || r.updated_at > into.get(n))) into.set(n, r.updated_at);
+      const ms = Date.parse(r.updated_at || '');
+      if (Number.isFinite(ms) && ms < oldestMs) oldestMs = ms;
+    }
+    if (runs.length < 100) { exhausted = true; break; }
+    if (oldestMs < untilMs) break;
+  }
+  return { landings: into, nextPage: page, oldestMs, exhausted };
+}
+
 module.exports = {
   STRANDED_RETRY_MINUTES, STRANDED_MAX_ATTEMPT, NO_RUN_GRACE_MINUTES, MARKER_PREFIX, ABANDONED_AFTER_DAYS,
   REFUSAL_GRACE_MINUTES, CARD_IDLE_HOURS, HELD_CARD_DAYS,
-  isAbandonedRun, decideStrandedRef, strandedMarker, buildEscalationComment, escalationAction, newestPerCard,
+  isAbandonedRun, decideStrandedRef, collectCardLandings, refLastMs, strandedMarker, buildEscalationComment, escalationAction, newestPerCard,
   cancelledByFromAnnotations, isHandCancel, cancelledJobs, buildHandCancelComment,
 };
