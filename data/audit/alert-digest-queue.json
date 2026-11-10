@@ -1706,5 +1706,36 @@
       }
     ],
     "queuedAt": "2026-11-10T20:40:02.223Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-7322-mwb42nh9",
+    "title": "Landing blocked: merged-tree-tests red on land/job/linear-BRO-7322-mwb42nh9",
+    "description": "land.yml did not land land/job/linear-BRO-7322-mwb42nh9: the merged-tree-tests gate went red at 73a8be8771. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-7322-mwb42nh9 @ 73a8be8771 (origin/land/job/linear-BRO-7322-mwb42nh9) → origin/main @ 29316de658 [land] attempt 1/3: rebased onto 6edb809373, 6 file(s) changed — running checks [land] verified-base: main moved e74a7a2ee5 → 6edb809373 across 112 file(s), substantive — re-checking on the merged tree (+4 test file(s) changed on main since the verified base); small re-check: Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42895045865",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-7322-mwb42nh9"
+      },
+      {
+        "name": "gate",
+        "value": "merged-tree-tests"
+      },
+      {
+        "name": "tip",
+        "value": "73a8be87718598269a92400b6d34eec424187b29"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42895045865"
+      }
+    ],
+    "queuedAt": "2026-11-10T20:49:59.136Z"
   }
 ]
