@@ -1,59 +1,5 @@
 [
   {
-    "startedAt": "2026-11-08T20:45:42.895Z",
-    "completedAt": "2026-11-08T20:49:11.069Z",
-    "totalReviews": 80872,
-    "processed": 26,
-    "skipped": 80825,
-    "errors": 3,
-    "tokensUsed": {
-      "input": 270216,
-      "output": 10770,
-      "cacheRead": 156087,
-      "cacheWrite": 11326,
-      "total": 669021
-    },
-    "costUsd": 0.5082264,
-    "runId": "42521230052",
-    "source": "index",
-    "errorDetails": [
-      {
-        "showId": "an-enemy-of-the-people-west-end-2024",
-        "outletId": "times-uk",
-        "error": "Review text too short or missing"
-      },
-      {
-        "showId": "alterations-west-end-2025",
-        "outletId": "thestage",
-        "error": "Review text too short or missing"
-      },
-      {
-        "showId": "the-years-west-end-2025",
-        "outletId": "thestage",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-11-08T20:49:25.583Z",
-    "completedAt": "2026-11-08T20:49:54.162Z",
-    "totalReviews": 10,
-    "processed": 10,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 22520,
-      "output": 2284,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 24804
-    },
-    "costUsd": 0.06629589999999999,
-    "runId": "42521230052",
-    "source": "comparative-rescore",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-11-08T21:31:26.426Z",
     "completedAt": "2026-11-08T21:31:31.247Z",
     "totalReviews": 80897,
@@ -359292,6 +359238,65 @@
     },
     "costUsd": 0,
     "runId": "42753297960",
+    "source": "comparative-rescore",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-11-10T04:24:28.129Z",
+    "completedAt": "2026-11-10T04:27:30.236Z",
+    "totalReviews": 81323,
+    "processed": 24,
+    "skipped": 81285,
+    "errors": 4,
+    "tokensUsed": {
+      "input": 223040,
+      "output": 8720,
+      "cacheRead": 117972,
+      "cacheWrite": 11322,
+      "total": 538377
+    },
+    "costUsd": 0.4584156,
+    "runId": "42754550545",
+    "source": "index",
+    "errorDetails": [
+      {
+        "showId": "an-enemy-of-the-people-west-end-2024",
+        "outletId": "times-uk",
+        "error": "Review text too short or missing"
+      },
+      {
+        "showId": "dear-evan-hansen-2016",
+        "outletId": "nyt-theater",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "alterations-west-end-2025",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      },
+      {
+        "showId": "the-years-west-end-2025",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-11-10T04:30:04.200Z",
+    "completedAt": "2026-11-10T04:30:10.756Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "42754550545",
     "source": "comparative-rescore",
     "errorDetails": []
   }
