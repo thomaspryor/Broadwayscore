@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7326",
   "planId": "fc389ff4-81e7-4f05-9a2a-ff7fbdeab559",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-10T20:58:09.265Z",
   "submitter": {
     "name": null,
@@ -50,5 +50,29 @@
         "description": "jagged-little-pill-2019/vulture--jackson-mchenry.json: url"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-10T21:45:23.767Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "frankie-and-johnny-in-the-clair-de-lune-2019/dailybeast--tim-teeman.json url: \"https://www.thedailybeast.com/frankie-and-johnny-in-the-clair-de-lune-audra-mcdonald-and-michael-shannons-chemistry-burns-up-broadway?via=twitter_page\" -> \"https://www.thedailybeast.com/frankie-and-johnny-in-the-clair-de-lune-audra-mcdonald-and-michael-shannons-chemistry-burns-up-broadway\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jagged-little-pill-2019/vulture--helen-shaw.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jagged-little-pill-2019/vulture--helen-shaw.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jagged-little-pill-2019/vulture--jackson-mchenry.json url: \"https://www.vulture.com/2019/11/diablo-cody-jagged-little-pill-musical.html\" -> \"https://www.vulture.com/2019/12/review-jagged-little-pill-is-missing-the-essence-of-alanis.html\""
+    }
+  ],
+  "executedIn": "ci"
 }
