@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 'use strict';
 
+require('./lib/cli-help').exitOnHelp(module);
+
 /**
  * recover-expected-critics.js (BRO-7312): search for every missing
  * expected-critic review before the owner ever hears about it.

@@ -38,6 +38,8 @@
  *   --open-only                              Only search open/previews shows (for weekly cron)
  */
 
+require('./lib/cli-help').exitOnHelp(module);
+
 const fs = require('fs');
 const path = require('path');
 const { beginPressNightSpend } = require('./lib/spend-purpose');
