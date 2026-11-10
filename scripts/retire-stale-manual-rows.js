@@ -10,8 +10,10 @@ const { applyRetire } = require('./lib/retire-stale-manual-rows');
 
 const args = process.argv.slice(2);
 const targets = args.filter((a) => a.startsWith('--row=')).map((a) => {
-  const [showId, outletId, critic, score] = a.slice(6).split(':');
-  return { showId, outletId, critic: String(critic || '').replace(/_/g, ' '), score: Number(score) };
+  const parts = a.slice(6).split(':');
+  const [showId, outletId, critic, score] = parts;
+  const ok = parts.length === 4 && /^\d+$/.test(score || '');
+  return { showId, outletId, critic: String(critic || '').replace(/_/g, ' '), score: ok ? Number(score) : NaN };
 });
 const apply = args.includes('--apply');
 const expect = (args.find((a) => a.startsWith('--expect=')) || '').slice(9);
