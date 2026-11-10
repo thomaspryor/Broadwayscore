@@ -630,7 +630,7 @@ function printHelp() {
 
 Queries:
   ui-edits-without-verdict          find most-recent UI-file Edit/Write
-  approval-of <hash> [--after=ISO]  check if the owner's last real msg approves (skips compaction/hook/notification records; --after = verdict time)
+  approval-of <hash> [--after=ISO|--after-file=PATH]  check if the owner's last real msg approves (skips compaction/hook/notification records; --after = verdict time)
   push-ingress --command=<cmd>      check if cmd is a push-ingress
   reference-attached                check if any user msg has an image attachment
   visual-claim-language             check if assistant msg makes visual-correctness claim
@@ -671,7 +671,10 @@ async function main() {
     case 'approval-of': {
       const hash = args.hash || args._[0];
       if (!hash) { console.error('ERROR: approval-of needs a hash (positional or --hash=)'); process.exit(1); }
-      result = queryApprovalOf(events, hash, { after: args.after || null });
+      // --after-file: the verdict file's mtime (BRO-7295). An unreadable file means no freshness bound.
+      let after = args.after || null;
+      if (!after && args['after-file']) { try { after = statSync(args['after-file']).mtime.toISOString(); } catch { /* no bound */ } }
+      result = queryApprovalOf(events, hash, { after });
       break;
     }
     case 'reference-attached':

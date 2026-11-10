@@ -1013,3 +1013,20 @@ test('approval-of: questions that mention yes/approved are not approval', () => 
   for (const q of ['did my yes get recorded?', 'is it approved?', 'was the yes recorded?']) assert.equal(approval([makeAssistantText('v'), makeUserText(q)]).approved, false, q);
   assert.equal(approval([makeAssistantText('v'), makeUserText('HOW MANY TIMES DO I HAVE TO SAY YES?!')]).approved, true);
 });
+
+test('CLI approval-of --after-file: a yes older than the verdict file is refused, a newer one approves', async () => {
+  const { spawnSync } = await import('node:child_process');
+  const { utimesSync } = await import('node:fs');
+  const lines = [makeAssistantText('verdict ready'), rec({ type: 'user', timestamp: '2026-11-10T14:00:00Z', message: { content: [{ type: 'text', text: 'yes' }] } })];
+  const { path, cleanup } = writeFixture(lines);
+  try {
+    const run = (mtime) => {
+      utimesSync(path + '.verdict', mtime, mtime);
+      const r = spawnSync('node', ['scripts/lib/transcript-scan.mjs', '--query=approval-of', H, `--transcript=${path}`, `--after-file=${path}.verdict`], { encoding: 'utf8' });
+      return JSON.parse(r.stdout).approved;
+    };
+    writeFileSync(path + '.verdict', '{}');
+    assert.equal(run(new Date('2026-11-10T15:00:00Z')), false); // verdict newer than the yes
+    assert.equal(run(new Date('2026-11-10T13:00:00Z')), true); // verdict older than the yes
+  } finally { cleanup(); }
+});
