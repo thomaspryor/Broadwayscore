@@ -173,4 +173,64 @@ function censusOtherPlaceSignal(url, serpTitle, show, outletArg) {
   return null;
 }
 
-module.exports = { censusOtherPlaceSignal, OTHER_HOUSES, CITIES, NY_MARKERS, NY_COVERAGE_MIN };
+/**
+ * BRO-6896: apply production evidence at the census writer, including stored
+ * publication dates. Opaque URLs (the WSJ's prior-season Boheme review) cannot
+ * supply a date themselves. Included reviews and the target show's held files
+ * can. Every dated witness must agree; missing or conflicting dates keep the
+ * candidate. A review already live on this show always stays admitted.
+ *
+ * Pure apart from the injected, lazily called file loader. Cache only metadata,
+ * once per show, rather than retaining private review text.
+ */
+function createCensusProductionGuard({ reviews, normalizeUrl, loadShowFiles = () => [] }) {
+  const { otherProductionSignal } = require('./other-production-signal');
+  const liveByShow = new Map();
+  const datesByUrl = new Map();
+  const heldByShow = new Map();
+  const urlsOf = r => [r.url, ...(Array.isArray(r.alternateUrls) ? r.alternateUrls : [])].filter(Boolean);
+  const addDate = (map, url, r) => {
+    const key = normalizeUrl(url);
+    if (!map.has(key)) map.set(key, []);
+    map.get(key).push({ url, publishDate: r.publishDate });
+  };
+  for (const r of reviews || []) {
+    if (!r || !r.showId) continue;
+    if (!liveByShow.has(r.showId)) liveByShow.set(r.showId, new Set());
+    for (const url of urlsOf(r)) {
+      liveByShow.get(r.showId).add(normalizeUrl(url));
+      addDate(datesByUrl, url, r);
+    }
+  }
+  return (url, serpTitle, show, outletArg) => {
+    if (!show) return null;
+    const key = normalizeUrl(url);
+    if (liveByShow.get(show.id)?.has(key)) return null;
+    const place = censusOtherPlaceSignal(url, serpTitle, show, outletArg);
+    if (place) return place;
+    // A declared inherited run may list opening night while its reviews date
+    // from previews. Match the place guard's conservative transfer exemption;
+    // only explicitly non-inherited prior runs can support a dated refusal.
+    if (Array.isArray(show.priorRuns) && show.priorRuns.some(r => r?.inheritReviews !== false)) return null;
+    if (!heldByShow.has(show.id)) {
+      const dates = new Map();
+      try {
+        for (const r of loadShowFiles(show.id) || []) {
+          if (!r) continue;
+          // A human's early-date allowance on this show is not overruled.
+          const witness = r.allowEarlyDate || r.humanReviewedEarlyPublish || r.allowCrossMarket
+            || r.wrongProductionManualClear || r.wrongProductionOverride
+            || r.humanReviewedWrongProduction === false ? { ...r, publishDate: null } : r;
+          for (const u of urlsOf(r)) addDate(dates, u, witness);
+        }
+      } catch { /* unreadable files provide no date evidence */ }
+      heldByShow.set(show.id, dates);
+    }
+    const witnesses = [...(datesByUrl.get(key) || []), ...(heldByShow.get(show.id).get(key) || [])];
+    if (!witnesses.length) return null;
+    const signals = witnesses.map(r => otherProductionSignal(r, show, { only: ['date-before-production'] }));
+    return signals.every(Boolean) ? signals[0] : null;
+  };
+}
+
+module.exports = { censusOtherPlaceSignal, createCensusProductionGuard, OTHER_HOUSES, CITIES, NY_MARKERS, NY_COVERAGE_MIN };

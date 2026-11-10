@@ -224,7 +224,7 @@ const { articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow, isUrlMonthB
 const { otherProductionSignal } = require('./lib/other-production-signal');
 const { priorRunUrlSignal, phillyFringeUrlSignal } = require('./lib/prior-run-url-signal');
 const { isLikelyTourReview } = require('./lib/review-guards');
-const { censusOtherPlaceSignal } = require('./lib/census-other-place');
+const { createCensusProductionGuard } = require('./lib/census-other-place');
 const { ingestRefusalReason } = require('./lib/non-review-url-patterns');
 const { classifyIngestSkip, describeSkip } = require('./lib/ingest-skip-classify');
 // WE reference schema version — bump to invalidate WE checkpoint entries (59 shows
@@ -443,20 +443,14 @@ function nyReviewCountByOutlet() {
 }
 // URLs already live as reviews of each show: the census never rejects its own live review
 // (BRO-7129 review: the NYT's Donmar Henry IV at St. Ann's names only the London house).
-let _liveUrlsByShow = null;
-function liveReviewUrl(showId, u) {
-  if (!_liveUrlsByShow) {
-    _liveUrlsByShow = new Map();
-    try {
-      for (const r of cachedReviews()) {
-        if (!r || !r.showId || !r.url) continue;
-        if (!_liveUrlsByShow.has(r.showId)) _liveUrlsByShow.set(r.showId, new Set());
-        _liveUrlsByShow.get(r.showId).add(gapUrlIdentity(r.url));
-      }
-    } catch { /* no reviews.json: nothing is live */ }
+let _censusProductionGuard = null;
+function censusProductionSignal(u, title, show) {
+  if (!_censusProductionGuard) {
+    let reviews = [];
+    try { reviews = cachedReviews(); } catch { /* no reviews.json: rely on held files */ }
+    _censusProductionGuard = createCensusProductionGuard({ reviews, normalizeUrl: gapUrlIdentity, loadShowFiles: loadDirFiles });
   }
-  const set = _liveUrlsByShow.get(showId);
-  return !!set && set.has(gapUrlIdentity(u));
+  return _censusProductionGuard(u, title, show, () => registryEntryForUrl(u));
 }
 
 // Curated show → Show Score page URL map (data/show-score-urls.json), loaded once.
@@ -1029,9 +1023,11 @@ function acceptSerpCensusResult(sr, { show, showInfo, priorVetted = false }) {
   if (otherProductionUrlSignal(u, show, sr.title, { census: true }) || edinburghFringeUrlSignal(u, show) || phillyFringeUrlSignal(u, show)) return null;
   // BRO-7129: same title staged in another city or house (King Lear OB counted
   // Manchester, London, Chicago and New Orleans stagings as "known" reviews).
-  if (show && !liveReviewUrl(show.id, u) && censusOtherPlaceSignal(u, sr.title, show, () => registryEntryForUrl(u))) {
+  const productionSignal = censusProductionSignal(u, sr.title, show);
+  if (productionSignal) {
     candidateRejections.count++;
-    candidateRejections.byReason['other-place'] = (candidateRejections.byReason['other-place'] || 0) + 1;
+    const reason = productionSignal.signal === 'date-before-production' ? 'stored-date-before-production' : 'other-place';
+    candidateRejections.byReason[reason] = (candidateRejections.byReason[reason] || 0) + 1;
     return null;
   }
   // Weak-specificity gate (ship-check 2026-07-24): isGenericShowTitle's raw
