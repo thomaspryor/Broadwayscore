@@ -76,6 +76,10 @@ function fileCard(card) {
   if (dedup.status === 0 && dedup.stdout && dedup.stdout.trim() !== 'null') { console.log(`  card: "${prefix}" already open, not filed again`); return 'existing'; }
   let c;
   for (let attempt = 0; attempt < 4; attempt++) { // BRO-7319: Linear 429s the 4th+ create in a burst; back off and retry
+    if (attempt) { // a failed attempt may still have created the card: look again before retrying
+      const again = spawnSync('node', [brain, 'find', prefix], { encoding: 'utf8', timeout: 60_000, cwd: ROOT });
+      if (again.status === 0 && again.stdout && again.stdout.trim() !== 'null') return 'existing';
+    }
     if (attempt) Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 15_000 * attempt);
     c = spawnSync('node', [brain, 'create', card.title, '--priority', '2', '--notes', card.body, '--park', 'Weekly city-hub audit finding: a worker checks each source before any data edit'], { encoding: 'utf8', timeout: 60_000, cwd: ROOT });
     if (c.status === 0 || !/429/.test(`${c.stderr || ''}${c.stdout || ''}`)) break;

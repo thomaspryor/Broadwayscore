@@ -103,18 +103,18 @@ function laterAnnouncedRunEnd(show, evidence, opts = {}) {
   const opening = show.opening;
   if (!opening) return null;
   const cands = [];
-  for (const t of (evidence && evidence.texts) || []) {
-    for (const c of runEndCandidates(String(t.text || ''), { opening, articleDate: t.articleDate || null })) cands.push({ ...c, url: t.url || null });
-  }
+  ((evidence && evidence.texts) || []).forEach((t, ti) => {
+    for (const c of runEndCandidates(String(t.text || ''), { opening, articleDate: t.articleDate || null })) cands.push({ ...c, url: t.url || null, ti });
+  });
   const listing = evidence && evidence.listing && evidence.listing.date && evidence.listing.date >= opening ? evidence.listing : null;
   // BRO-7319: one review's "extended through <date>" no longer moves a date. A text-derived date needs
   // `minSites` distinct hosts naming the SAME date (any mix of cues); only the theatre's own listing stands alone.
   // kind is 'extended' only when `minSites` hosts used the extended cue, so a plain mention never force-overwrites
   // a pinned humanCorrectedClosingDate in harvest-hub-run-dates.js. Several qualifying dates: the latest wins.
   const byDate = new Map();
-  cands.forEach((c, i) => {
+  cands.forEach((c) => {
     const e = byDate.get(c.date) || { all: new Set(), ext: new Set(), urls: [], n: 0 };
-    const h = hostOf(c.url) || `#${i}`;
+    const h = hostOf(c.url) || `text#${c.ti}`;
     e.all.add(h);
     e.n += 1;
     if (c.extended) e.ext.add(h);

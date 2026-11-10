@@ -165,12 +165,13 @@ const RUN_START_WINDOW_DAYS = 10;
  * the page has no separate previewStart, our opening is on/after the page date and inside the page's own run, and within
  * RUN_START_WINDOW_DAYS of it. A date earlier than the page's, or later than the window, still flags.
  */
+const PREVIEW_RUN_START_MAX_DAYS = 45; // a preview period longer than this is not a plausible preview-to-press gap
 function openingIsRunStartArtifact(show, ex) {
   const pageOpen = ex && ex.opening;
   if (!pageOpen || !show.openingDate) return false;
   const insideRun = show.openingDate >= pageOpen && !(ex.closing && show.openingDate > ex.closing);
   // the page's "opening" is exactly our recorded first preview: the same run-start fact, whatever the preview-to-press gap
-  if (insideRun && show.previewsStartDate && show.previewsStartDate === pageOpen) return true;
+  if (insideRun && show.previewsStartDate && show.previewsStartDate === pageOpen && show.openingDate <= addDays(pageOpen, PREVIEW_RUN_START_MAX_DAYS)) return true;
   if (ex.previewStart && ex.previewStart !== pageOpen) return false;
   if (show.openingDate < pageOpen || show.openingDate > addDays(pageOpen, RUN_START_WINDOW_DAYS)) return false;
   return !(ex.closing && show.openingDate > ex.closing);

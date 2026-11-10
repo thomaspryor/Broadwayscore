@@ -70,3 +70,10 @@ test('latest of several two-host dates wins', () => {
   const r = laterAnnouncedRunEnd(SHOW, { texts: [tx('through Nov 1', 'https://a.com/1'), tx('through Nov 1', 'https://b.com/2'), tx('through Nov 8', 'https://c.com/3'), tx('through Nov 8', 'https://d.com/4')] });
   assert.equal(r.date, '2026-11-08');
 });
+
+// BRO-7319 ship-check: two mentions inside ONE URL-less text are one source, not two
+test('two-source rule: a single URL-less text repeating the same extension does not pass', () => {
+  const t = 'The run has been extended through June 20, 2026. Tickets: extended through June 20, 2026.';
+  const r = laterAnnouncedRunEnd({ openingDate: '2026-05-01', closingDate: '2026-06-07' }, { texts: [{ text: t, url: null }] });
+  assert.equal(r, null);
+});

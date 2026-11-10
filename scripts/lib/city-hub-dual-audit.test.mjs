@@ -166,3 +166,9 @@ test('opening-date: page opening equal to our previewsStartDate is not flagged; 
   assert.equal(D.openingIsRunStartArtifact(show, { opening: '2026-08-20', closing: '2026-10-18' }), false);
   assert.equal(D.openingIsRunStartArtifact({ ...show, previewsStartDate: null }, { opening: '2026-09-06', closing: '2026-10-18' }), false);
 });
+
+test('opening-date: page opening equal to previewsStartDate stops hiding once the press opening is 45+ days later', () => {
+  const D = require('./city-hub-dual-audit.js');
+  const show = { openingDate: '2026-07-20', previewsStartDate: '2026-05-01' };
+  assert.equal(D.openingIsRunStartArtifact(show, { opening: '2026-05-01', closing: '2026-09-01' }), false);
+});
