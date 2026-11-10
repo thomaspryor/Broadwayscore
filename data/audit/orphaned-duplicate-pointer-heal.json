@@ -1,7 +1,7 @@
 {
-  "generated": "2026-11-10T22:23:54.192Z",
+  "generated": "2026-11-10T22:52:31.659Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 46,
+  "count": 48,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -54,9 +54,23 @@
     },
     {
       "showId": "beetlejuice-tour-2022",
+      "loserFile": "post-crescent--unknown.json",
+      "targetFile": "post-crescent--becky-jacobs.json",
+      "reason": "orphaned-duplicate-heal: post-crescent--becky-jacobs.json was flagged invalid after post-crescent--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "beetlejuice-tour-2022",
       "loserFile": "theatermania--unknown.json",
       "targetFile": "theatermania--david-gordon.json",
       "reason": "orphaned-duplicate-heal: theatermania--david-gordon.json was flagged invalid after theatermania--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "bob-fosses-dancin-2023",
+      "loserFile": "hollywood-reporter--unknown.json",
+      "targetFile": "hollywood-reporter--caitlin-huston.json",
+      "reason": "orphaned-duplicate-heal: hollywood-reporter--caitlin-huston.json was flagged invalid after hollywood-reporter--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
