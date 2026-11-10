@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-11-10T04:55:46.764Z",
+  "timestamp": "2026-11-10T05:17:56.607Z",
   "stats": {
-    "totalReviews": 81085,
-    "alreadyFlagged": 22184,
+    "totalReviews": 81087,
+    "alreadyFlagged": 22189,
     "dateGuardCatches": 219,
     "directorMismatch": 3596,
-    "tvFilmSignals": 2283,
+    "tvFilmSignals": 2282,
     "londonSignals": 3658,
     "offBroadwaySignals": 750,
     "yearMismatch": 364,
@@ -74438,20 +74438,6 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2025 (2x) more than 1986 (0x). 2025 matches production: the-phantom-of-the-opera-tour-2025"
-        }
-      ]
-    },
-    {
-      "showId": "the-piano-lesson-2022",
-      "file": "abc-news--unknown.json",
-      "score": null,
-      "publishDate": "2024-11-08",
-      "url": "https://abcnews.go.com/GMA/Culture/piano-lesson-review/story?id=115605368",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },

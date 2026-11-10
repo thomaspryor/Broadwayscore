@@ -1,7 +1,7 @@
 {
-  "generated": "2026-11-10T04:43:26.367Z",
+  "generated": "2026-11-10T05:06:17.006Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 48,
+  "count": 46,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -36,13 +36,6 @@
       "loserFile": "london-theatre--unknown.json",
       "targetFile": "london-theatre--holly-omahony.json",
       "reason": "orphaned-duplicate-heal: london-theatre--holly-omahony.json was flagged invalid after london-theatre--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "as-you-like-it-regional-2026",
-      "loserFile": "broadwayworld--richard-sasanow.json",
-      "targetFile": "broadwayworld--jared-fessler.json",
-      "reason": "orphaned-duplicate-heal: broadwayworld--jared-fessler.json was flagged invalid after broadwayworld--richard-sasanow.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -239,13 +232,6 @@
       "loserFile": "mail-on-sunday--bethan-edwards.json",
       "targetFile": "daily-mail--bethan-edwards.json",
       "reason": "orphaned-duplicate-heal: daily-mail--bethan-edwards.json was flagged invalid after mail-on-sunday--bethan-edwards.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "sweeney-todd-2023",
-      "loserFile": "theatrely--unknown.json",
-      "targetFile": "theatrely--jordanna-brody.json",
-      "reason": "orphaned-duplicate-heal: theatrely--jordanna-brody.json was flagged invalid after theatrely--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
