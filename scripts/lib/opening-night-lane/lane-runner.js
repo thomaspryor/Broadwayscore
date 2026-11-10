@@ -102,14 +102,18 @@ async function runLaneNight({
   const publishBatch = async (batch, clock) => {
     // Only removals whose original rides in THIS batch: the copy never leaves the site before its original is in.
     const batchKeys = new Set(batch.map((r) => r.key));
+    // merged or about to be: a copy in flight or re-queued as missing is still on the site when its original scores
+    for (const r of batch) livePublished.set(`${criticKey(r.row.criticName)}|${r.row.outletId}`, r);
     const remove = stagedRemovals.filter((x) => batchKeys.has(x.primaryKey));
     try {
       const res = await publish.publishLaneReviews({
-        show: show.id, night, rows: batch, ...(remove.length ? { remove: remove.map(({ criticName, outletId }) => ({ criticName, outletId })) } : {}), ledgerDir, ports: makePublishPorts ? makePublishPorts(clock) : publishPorts, now: clock.now, sleep: clock.wait,
+        show: show.id, night, rows: batch, ...(remove.length ? { remove: remove.map(({ criticName, outletId, primaryOutlet }) => ({ criticName, outletId, primaryOutletId: primaryOutlet })) } : {}), ledgerDir, ports: makePublishPorts ? makePublishPorts(clock) : publishPorts, now: clock.now, sleep: clock.wait,
         openingDate, dryRun, ...(pollMs ? { pollMs } : {}), ...(publishTimeoutMs ? { timeoutMs: publishTimeoutMs } : {}),
       });
       published.push(res);
-      for (const x of remove) { // the merge landed: the copies are off the site
+      const notLive = new Set([...(res.missing || [])]);
+      for (const x of remove) { // the merge landed: the copies are off the site (unless their original is still not live: retry with it)
+        if (notLive.has(x.primaryKey)) continue;
         stagedRemovals.splice(stagedRemovals.indexOf(x), 1);
         livePublished.delete(`${criticKey(x.criticName)}|${x.outletId}`);
         removedCopies.push({ key: x.key, reason: `syndicated copy of the ${x.primaryOutlet} review by ${x.criticName}, taken down when the original was published` });

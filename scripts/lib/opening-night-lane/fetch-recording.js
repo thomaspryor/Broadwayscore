@@ -99,10 +99,11 @@ function createFetchRecorder({ dir, key, now = Date.now, dateOf = () => null, ma
     if (written.has(sha)) { stats.deduped++; return { sha, bytes }; }
     if (bytes > maxPageBytes) { stats.oversize++; return { sha, bytes, note: 'oversize' }; }
     const last = lastStored.get(url);
-    if (last && Number.isFinite(at) && at - last.at < gapMsFor(stats.bytes / maxRunBytes)) {
+    if (last && Number.isFinite(at) && at >= last.at && at - last.at < gapMsFor(stats.bytes / maxRunBytes)) {
       stats.throttled++;
       return { sha: last.sha, bytes: last.bytes, note: 'throttled', actualSha: sha, actualBytes: bytes };
     }
+    if (stats.bytes >= maxRunBytes) { stats.capped = true; return { sha, bytes, note: 'capped' }; } // no compression CPU once full
     let blob;
     try { blob = encrypt(key, pack(content)); } catch { stats.errors++; return { sha, bytes, note: 'write-failed' }; }
     if (stats.bytes + blob.length > maxRunBytes) {
