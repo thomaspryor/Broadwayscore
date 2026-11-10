@@ -95,7 +95,7 @@ for (const dir of showDirs) {
 
     // Try to extract score using outlet-specific extractor
     const text = data.fullText || '';
-    const result = extractScore(html, text, outletId);
+    const result = extractScore(html, text, outletId, require('./lib/known-show-titles').showTitleForId(data.showId || path.basename(showDir)));
 
     if (!perOutlet[outletId]) perOutlet[outletId] = { checked: 0, found: 0, samples: [] };
     perOutlet[outletId].checked++;

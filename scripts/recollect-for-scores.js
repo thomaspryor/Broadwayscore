@@ -43,6 +43,7 @@ const path = require('path');
 require('./lib/load-env').loadEnv();
 
 const { extractScore, OUTLET_EXTRACTORS, EXTRACTOR_VERSION, OUTLET_VERIFIED_SOURCES } = require('./lib/score-extractors');
+const { showTitleForId } = require('./lib/known-show-titles');
 const { fetchPage: fetchPageScraper, cleanup: cleanupScraper } = require('./lib/scraper');
 const { setExtractedScore, isScoreClearSupersededBy } = require('./lib/score-routing');
 const { isTier15OverrideActive } = require('./lib/rebuild-helpers');
@@ -315,6 +316,10 @@ async function main() {
       console.log(`${progress} Fetching: ${t.dir}/${t.file}`);
       console.log(`  URL: ${t.url}`);
 
+      // BRO-5644: the show title lets bundled-column extractors (Daily Mail,
+      // Times, FT) read this show's section instead of guessing, as the
+      // collect path already does.
+      const showTitle = showTitleForId(t.data.showId || t.dir);
       // Check existing archives first (avoids paywall/JS-rendering issues)
       let html = '';
       let result = null;
@@ -325,7 +330,7 @@ async function main() {
         // Try most recent archive first
         const archiveFile = existingArchives.sort().pop();
         const archiveHtml = require('fs').readFileSync(archiveFile, 'utf8');
-        result = extractScore(archiveHtml, t.data.fullText || '', outlet);
+        result = extractScore(archiveHtml, t.data.fullText || '', outlet, showTitle);
         if (result && result.originalScore) {
           html = archiveHtml;
           console.log(`  ARCHIVE HIT: ${path.basename(archiveFile)} → ${result.originalScore} [${result.source}]`);
@@ -335,7 +340,7 @@ async function main() {
       if (!result) {
         html = await fetchItem(t.url);
         console.log(`  HTML: ${html.length} chars`);
-        result = extractScore(html, t.data.fullText || '', outlet);
+        result = extractScore(html, t.data.fullText || '', outlet, showTitle);
       }
 
       // JS-rendering retry: some outlets (Guardian, TimeOut) render star ratings
@@ -358,7 +363,7 @@ async function main() {
               }, RETRY_DEADLINE_MS, 'Playwright retry');
               html = rendered;
               console.log(`  Playwright HTML: ${html.length} chars`);
-              result = extractScore(html, t.data.fullText || '', outlet);
+              result = extractScore(html, t.data.fullText || '', outlet, showTitle);
             } finally {
               await withDeadline(() => page.close(), 5000, 'Page close').catch(() => {});
             }

@@ -76,7 +76,7 @@ async function main() {
         }
 
         // Extract star rating
-        const result = extractScore(html, data.fullText || '', data.outletId);
+        const result = extractScore(html, data.fullText || '', data.outletId, require('./lib/known-show-titles').showTitleForId(data.showId || path.basename(showDir)));
 
         if (result && result.originalScore) {
           console.log(`  ✓ ${label}: ${result.originalScore} [${result.source}]`);
