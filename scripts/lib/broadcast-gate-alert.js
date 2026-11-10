@@ -23,12 +23,12 @@ const fs = require('fs');
 
 const GATES = {
   checklist: {
-    title: 'Opening Night Broadcast Blocked — Checklist Errors',
-    description: 'Automated broadcast halted: opening night checklist found errors for pending shows.\nCheck /tmp/checklist-*.json or re-run with force_broadcast=true to override.',
+    title: 'Opening-night email draft on hold: a quality check flagged a review',
+    description: 'The opening-night email draft is on hold because the automatic quality check flagged at least one review (for example, a review of a different production). Claude can fix it. If nothing changes, the draft is made anyway at 10am ET the day after opening and you get an email listing exactly which reviews to check before you press Send.',
   },
   drift: {
-    title: 'Opening Night Broadcast Blocked — Review-Count Drift',
-    description: 'Automated broadcast halted: scored in-window reviews are missing from data/reviews.json for one or more pending shows (or reviews.json is stale).\nCheck data/audit/review-count-drift-{show}.json or re-run with force_broadcast=true to override.',
+    title: 'Opening-night email draft on hold: some scored reviews are not on the site yet',
+    description: 'The opening-night email draft is on hold because some scored reviews have not reached the site yet, so the score would be off. This usually clears on the next site update. If it does not, the draft is made anyway at 10am ET the day after opening and you get an email saying what to check before you press Send.',
   },
 };
 
