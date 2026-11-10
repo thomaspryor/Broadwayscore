@@ -5,7 +5,7 @@
  * families (Gemini + OpenAI), BRO-7256. Rerunnable for any hub in data/city-hubs.json.
  *
  *   node scripts/audit-city-hub-dual-model.js inventory --city=washington-dc
- *   node scripts/audit-city-hub-dual-model.js shows|images|reviews|coverage|tours --city=... [--limit=N] [--max-usd=4]
+ *   node scripts/audit-city-hub-dual-model.js shows|images|reviews|coverage|tours|ingest-plan --city=... [--limit=N] [--max-usd=4]
  *   node scripts/audit-city-hub-dual-model.js pages --city=...        (live hub + app feed vs shows.json, no LLM)
  *   node scripts/audit-city-hub-dual-model.js report --city=... [--write]  (scorecard; --write saves JSON + MD)
  *
@@ -251,10 +251,44 @@ async function runReviews(L, limit) {
 }
 
 // ---------- coverage (missing reviews) ----------
-const OUTLETS = {
-  'washington-dc': 'The Washington Post, DC Theater Arts, DCMetroTheaterArts, Broadway World (Washington DC), Washington City Paper, Maryland Theatre Guide, Washingtonian, WTOP, Theatre Washington',
-  'los-angeles-ca': 'Los Angeles Times, Variety, The Hollywood Reporter, Stage Raw, Broadway World (Los Angeles), Daily News, Deadline, LA Weekly, Los Angeles Magazine, Theatre Notes',
-};
+const C = require('./lib/city-hub-coverage');
+/**
+ * BRO-7291 class 7: the coverage gaps become an ingest plan (registry outlets) plus registry candidates (unknown
+ * hosts), in dispatch-ingest-batch.js's format, at data/audit/city-hub-dual/<city>/ingest-plan.json.
+ */
+/** HTTP status per URL (0 = no answer), for dropping invented links before they reach the ingest plan. */
+async function linkStatus(urls) {
+  const out = new Map();
+  for (const u of urls) {
+    try {
+      const r = await fetch(u, { redirect: 'follow', signal: AbortSignal.timeout(15000), headers: { 'user-agent': 'Mozilla/5.0' } });
+      out.set(u, r.status);
+    } catch { out.set(u, 0); }
+  }
+  return out;
+}
+async function writeIngestPlan(L, { checkLinks = true } = {}) {
+  const cov = loadCache(L.city, 'coverage');
+  const have = new Map();
+  for (const x of L.reviews) {
+    const h = have.get(x.row.showId) || { urls: new Set(), hosts: new Set() };
+    h.urls.add(C.normUrl(x.row.url)); h.hosts.add(C.host(x.row.url || ''));
+    have.set(x.row.showId, h);
+  }
+  const gaps = C.coverageGaps(L.shows, cov, have);
+  const { resolveOutletFromUrl } = require('./lib/review-normalization');
+  const status = checkLinks ? await linkStatus([...new Set(gaps.map((g) => g.url).filter((u) => !C.REDIRECT_HOSTS.test(C.host(u))))]) : null;
+  const out = { generatedAt: new Date().toISOString(), city: L.city, gaps: gaps.length, ...C.ingestPlan(gaps, resolveOutletFromUrl, { status }) };
+  const d = path.join(ROOT, 'data', 'audit', 'city-hub-dual', L.city); fs.mkdirSync(d, { recursive: true });
+  saveAuditJson(path.join(d, 'ingest-plan.json'), out);
+  const planned = Object.values(out.plan).reduce((n, v) => n + v.length, 0);
+  console.error(`ingest plan: ${planned} URLs for ${Object.keys(out.plan).length} shows; ${Object.keys(out.registryCandidates).length} hosts not in the outlet registry; ${out.redirects} redirect links skipped; ${out.dead} dead links (404/410) dropped`);
+  return out;
+}
+async function resolveRedirect(url) {
+  if (!url || !C.REDIRECT_HOSTS.test(C.host(url))) return url;
+  try { const r = await fetch(url, { redirect: 'manual' }); const loc = r.headers.get('location'); return loc && /^https?:/.test(loc) ? loc : url; } catch { return url; }
+}
 async function runCoverage(L, limit) {
   const cache = loadCache(L.city, 'coverage');
   const cutoff = A.addDays(TODAY, -120);
@@ -262,9 +296,11 @@ async function runCoverage(L, limit) {
   const todo = targets.filter((s) => !cache.has(s.id)).slice(0, limit);
   console.log(`coverage: ${todo.length} to check of ${targets.length} now-playing/recent-closed (${cache.size} cached)`);
   await pool(todo, 3, async (s) => {
-    const q = `List professional critic reviews (published reviews only, not previews, not ticket pages) of the stage production "${s.title}" at ${s.venue} (${L.hub.name}), run ${s.openingDate || ''} to ${s.closingDate || ''}. Look especially at: ${OUTLETS[L.city] || 'the main local newspapers and theatre sites'}. ${JSON_ONLY} Format: {"reviews":[{"outlet":"","critic":"","url":"","date":"YYYY-MM-DD"}]}. Only include reviews you found at a real URL.`;
+    const q = `List professional critic reviews (published reviews only, not previews, not ticket pages) of the stage production "${s.title}" at ${s.venue} (${L.hub.name}), run ${s.openingDate || ''} to ${s.closingDate || ''}. Look especially at: ${C.outletHint(L.reviews.map((x) => x.row)) || 'the main local newspapers and theatre sites'}. ${JSON_ONLY} Format: {"reviews":[{"outlet":"","critic":"","url":"","date":"YYYY-MM-DD"}]}. Only include reviews you found at a real URL.`;
     const [g, o] = await Promise.all([askGemini(q, { grounded: true }).catch((e) => `ERROR ${e.message}`), askOpenAI(q, { search: true }).catch((e) => `ERROR ${e.message}`)]);
     const row = { id: s.id, gemini: A.parseJson(g) || { _raw: String(g).slice(0, 200) }, openai: A.parseJson(o) || { _raw: String(o).slice(0, 200) } };
+    // Grounded search returns short-lived redirect links (they 404 within days): resolve them now so the gap is ingestable.
+    for (const m of ['gemini', 'openai']) for (const rv of ((row[m] || {}).reviews) || []) rv.url = await resolveRedirect(rv.url);
     appendCache(L.city, 'coverage', row); return row;
   });
 }
@@ -463,7 +499,8 @@ async function main() {
   } else if (mode === 'shows') await runShows(L, limit);
   else if (mode === 'images') await runImages(L, limit);
   else if (mode === 'reviews') await runReviews(L, limit);
-  else if (mode === 'coverage') await runCoverage(L, limit);
+  else if (mode === 'coverage') { await runCoverage(L, limit); await writeIngestPlan(L); }
+  else if (mode === 'ingest-plan') await writeIngestPlan(L);
   else if (mode === 'tours') await runTours(L, limit);
   else if (mode === 'pages') console.log(JSON.stringify(await checkPages(L), null, 1));
   else if (mode === 'report') {
@@ -473,6 +510,7 @@ async function main() {
     if (arg('write')) {
       const d = path.join(ROOT, 'data', 'audit', 'city-hub-dual', city); fs.mkdirSync(d, { recursive: true });
       saveAuditJson(path.join(d, 'scorecard.json'), sc);
+      await writeIngestPlan(L);
     }
     if (arg('flags')) saveAuditJson(arg('flags'), sc.flags);
   } else throw new Error(`unknown mode ${mode}`);
@@ -483,4 +521,4 @@ async function main() {
 }
 
 if (require.main === module) main().catch((e) => { console.error(e.message || e); process.exit(1); });
-module.exports = { loadCity, computeFlags, scorecard, checkPages };
+module.exports = { loadCity, computeFlags, scorecard, checkPages, writeIngestPlan };
