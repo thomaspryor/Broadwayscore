@@ -41,6 +41,7 @@ import type {
   ShowCommercial,
   RecoupmentTrend,
   AudienceBuzzData,
+  ClosingOutlook,
 } from '@/lib/data-types';
 import type { VideoReview } from '@/lib/data-video-reviews';
 import type { TicketLinkData } from '@/lib/ticket-utils';
@@ -50,6 +51,7 @@ import type { ShowTonyInfo } from '@/lib/data-tony-noms';
 import type { TodayTixShowtimeData } from '@/lib/data-showtimes';
 import ScrollRow from '@/components/ScrollRow';
 import { getOperaHouseSuffix } from '@/lib/show-market';
+import { getClosingExtensionCount, ordinal } from '@/lib/closing-label';
 
 // BRO-5007: unreleased. A separate chunk, fetched only when the card renders,
 // so the held feature's code and copy stay out of every show page's bundle.
@@ -82,6 +84,8 @@ export interface ShowPageBelowFoldProps {
   boxOfficeFacts: BoxOfficeFactsCard | null;
   /** The Profitability Scorecard's v3 break-even section (unreleased): null unless commercial && boxOfficeV2. */
   breakEvenCard: BoxOfficeV2Card | null;
+  /** BRO-7246: Closing Watch / Close to break-even line for the Profitability Scorecard. */
+  closingOutlook?: ClosingOutlook | null;
   recoupmentTrend: RecoupmentTrend;
   ranks: ShowRanks | null;
   ranksByFormat: ShowRanks | null;
@@ -154,6 +158,7 @@ export default function ShowPageBelowFold({
   commercial,
   boxOfficeFacts,
   breakEvenCard,
+  closingOutlook = null,
   recoupmentTrend,
   ranks,
   ranksByFormat,
@@ -275,8 +280,11 @@ export default function ShowPageBelowFold({
             weeklyGross={grosses?.thisWeek?.gross}
             showStatus={show.status as 'open' | 'closed' | 'previews' | 'upcoming'}
             closingDate={show.closingDate}
+            closingExtensions={show.closingExtensions}
+            closingExtensionCount={show.closingExtensionCount}
             allTimeGross={grosses?.allTime?.gross}
             breakEvenCard={featureFlags.commercial && featureFlags.boxOfficeV2 ? breakEvenCard : null}
+            closingOutlook={closingOutlook}
           />
         ) : show.status === 'previews' || show.status === 'upcoming' ? (
           <section className="card p-5 sm:p-6 mb-6">
@@ -431,8 +439,8 @@ export default function ShowPageBelowFold({
           )}
           {show.closingDate && (
             <div>
-              <dt className="text-fg-muted">{show.status === 'closed' ? 'Closed' : 'Closes'}</dt>
-              <dd className="text-white mt-0.5">{formatDate(show.closingDate)}</dd>
+              <dt className="text-fg-muted">{show.status === 'closed' ? 'Closed' : getClosingExtensionCount(show) >= 1 ? 'Extended through' : 'Closes'}</dt>
+              <dd className="text-white mt-0.5">{formatDate(show.closingDate)}{show.status !== 'closed' && getClosingExtensionCount(show) >= 1 ? ` (${ordinal(getClosingExtensionCount(show))} extension)` : ''}</dd>
             </div>
           )}
           {show.status === 'closed' && (() => {

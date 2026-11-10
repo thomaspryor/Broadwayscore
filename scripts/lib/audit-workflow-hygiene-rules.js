@@ -284,6 +284,7 @@ const GIT_ADD_SATISFYING_SCRIPTS = [
   'git-add-existing.sh',
   'safe-sync-review-texts.sh',
   'sync-audit-checkout.sh',
+  'stage-review-texts.js', // BRO-7171: scoped review-texts staging (add -u + new content files)
 ];
 const GIT_ADD_SATISFYING_SCRIPT_RE = new RegExp(
   `scripts/lib/(?:${GIT_ADD_SATISFYING_SCRIPTS.map((s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|')})\\b`,

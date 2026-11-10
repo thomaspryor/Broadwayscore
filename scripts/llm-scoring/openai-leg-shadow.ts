@@ -13,7 +13,9 @@
  *   npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/openai-leg-shadow.ts \
  *     --sample=1000 --seed=20261109 --shard=0 --shards=4 --concurrency=6 \
  *     --shadow-model=gpt-5.4-mini --out=data/audit/openai-leg-ab/shard-0.jsonl [--limit=20]
- *   ... openai-leg-shadow.ts --report data/audit/openai-leg-ab --write=data/audit/openai-leg-ab-report.json
+ *   ... --open-shows=25            every review of 25 open shows (per-show check)
+ *   ... --shadow-model=gpt-4o      gpt-4o vs itself: the run-to-run noise floor
+ *   ... openai-leg-shadow.ts --report data/audit/openai-leg-ab [--label=noise] --write=data/audit/openai-leg-ab-report.json
  */
 import '../lib/llm-usage-install.js'; // LLM spend meter: keep it the first import (BRO-5043)
 import * as fs from 'fs';
@@ -49,14 +51,39 @@ function rng(seed: number) {
 
 interface Candidate { id: string; filePath: string; showId: string; stratum: string }
 
+const OPEN_SHOWS = new Set<string>();
+
 function loadMarkets(): Map<string, string> {
   const m = new Map<string, string>();
   try {
     const raw = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
     const shows = Array.isArray(raw) ? raw : raw.shows || [];
-    for (const s of shows) m.set(s.id, String(s.market || s.category || 'unknown'));
+    // category separates Broadway / Off-Broadway / West End / Off-West End / regional;
+    // market is the coarser city and only a fallback.
+    for (const s of shows) {
+      m.set(s.id, String(s.category || s.market || 'unknown'));
+      if (s.status === 'open') OPEN_SHOWS.add(s.id);
+    }
   } catch { /* market 'unknown' */ }
   return m;
+}
+
+/**
+ * Per-show mode (--open-shows=N): EVERY scored/rejected review of N seeded-
+ * random currently-open shows with >= 8 such reviews, weight 1. Answers "does
+ * any show's headline critic score move?", which a corpus-wide sample cannot
+ * (the 1,154-review run had only 2 shows with >= 5 sampled reviews).
+ */
+function openShowsSample(pop: Candidate[], n: number, seed: number): Array<Candidate & { weight: number }> {
+  const rand = rng(seed);
+  const byShow = new Map<string, Candidate[]>();
+  for (const c of pop) if (OPEN_SHOWS.has(c.showId)) (byShow.get(c.showId) || byShow.set(c.showId, []).get(c.showId)!).push(c);
+  const eligible = [...byShow.entries()].filter(([, v]) => v.length >= 8).map(([k]) => k).sort();
+  const chosen = eligible.map((k) => ({ k, r: rand() })).sort((a, b) => a.r - b.r).slice(0, n).map((x) => x.k);
+  console.log(`open shows with >= 8 scored reviews: ${eligible.length}; chosen ${chosen.length}: ${chosen.join(', ')}`);
+  if (chosen.length === 0) throw new Error('--open-shows chose 0 shows (is data/shows.json present with status "open" shows?)');
+  if (chosen.length < n) console.log(`::warning::asked for ${n} open shows, only ${chosen.length} qualify`);
+  return chosen.flatMap((k) => byShow.get(k)!.map((c) => ({ ...c, weight: 1 }))).sort((a, b) => (a.id < b.id ? -1 : 1));
 }
 
 /** Past reviews the ensemble scored or rejected, keyed into market x outcome strata. */
@@ -64,6 +91,9 @@ function population(): Candidate[] {
   const markets = loadMarkets();
   const out: Candidate[] = [];
   for (const show of listShowDirs(REVIEW_TEXTS_DIR)) {
+    // '_'-prefixed folders (e.g. _superseded-misattributed) hold quarantined
+    // files, not live reviews: never part of the population (trial run 2026-11-10).
+    if (show.startsWith('_') || show.startsWith('.')) continue;
     const dir = path.join(REVIEW_TEXTS_DIR, show);
     for (const f of fs.readdirSync(dir).filter(isReviewTextFile).sort()) {
       let d: any;
@@ -134,7 +164,10 @@ async function runShard() {
   }
 
   const pop = population();
-  const sample = stratifiedSample(pop, sampleN, seed);
+  const openShowsRaw = flag('open-shows');
+  const openShows = openShowsRaw ? Number(openShowsRaw) : 0;
+  if (openShowsRaw && !(Number.isInteger(openShows) && openShows > 0)) throw new Error(`--open-shows must be a positive integer, got "${openShowsRaw}"`);
+  const sample = openShows > 0 ? openShowsSample(pop, openShows, seed) : stratifiedSample(pop, sampleN, seed);
   const mine = sample.filter((_, i) => i % shards === shard).filter((c) => !done.has(c.id)).slice(0, limit);
   console.log(`population ${pop.length}, sample ${sample.length}, shard ${shard}/${shards}: ${mine.length} to score (${done.size} already done), control ${SCORING_OPENAI} vs shadow ${shadowModel}`);
 
@@ -173,7 +206,10 @@ function runReport() {
   const dirArg = args[args.indexOf('--report') + 1];
   const dir = path.isAbsolute(dirArg) ? dirArg : path.join(ROOT, dirArg);
   const records: any[] = [];
-  for (const f of fs.readdirSync(dir).filter((x) => x.endsWith('.jsonl'))) {
+  // --label=X reads X-shard-*.jsonl only; no label reads the unlabelled shard-*.jsonl only, so runs never mix.
+  const label = flag('label');
+  const want = (x: string) => (label ? x.startsWith(`${label}-shard-`) : x.startsWith('shard-')) && x.endsWith('.jsonl');
+  for (const f of fs.readdirSync(dir).filter(want)) {
     for (const l of fs.readFileSync(path.join(dir, f), 'utf8').split('\n')) { try { if (l.trim()) records.push(JSON.parse(l)); } catch { /* skip */ } }
   }
   // A resumed shard never re-scores a done id, so a duplicate means two runs

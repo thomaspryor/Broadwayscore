@@ -65,7 +65,8 @@ async function main() {
   console.log(`Loaded ${cookies.length} WSJ cookies.`);
 
   const { chromium } = require('playwright');
-  const PROFILE_DIR = '/tmp/wsj-recovery-browser-profile';
+  // BRO-7171 plan item 8: the outlet's shared persistent profile (renew lock held).
+  const PROFILE_DIR = require('./lib/cookie-renew').claimOutletProfile('wsj', { legacy: ['/tmp/wsj-recovery-browser-profile', '/tmp/wsj-otp-browser-profile', '/tmp/wsj-browser-profile'] }).dir;
   const launchOpts = {
     headless: false,
     viewport: { width: 1280, height: 900 },

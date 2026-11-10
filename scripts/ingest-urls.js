@@ -231,7 +231,8 @@ async function main() {
           // A thin archive copy is refused, as in ingest-review-from-url (BRO-5874).
           const thinArchive = got.via === 'archive' && archiveCopyDisposition({ viaArchive: true, explicitSnapshot: false, stubOnFailure: false, textLength: extracted ? extracted.length : 0 }) !== 'ok';
           if (extracted && extracted.length >= 200 && !thinArchive) {
-            fullText = extracted;
+            // Share bars, related-story runs, widgets (BRO-7171 Stage 5).
+            fullText = require('./lib/page-furniture').stripPageFurniture(extracted);
             if (verbose) console.log(`    ✓ Extracted ${fullText.length} chars (article body) via ${fetchMethod}`);
           } else {
             // No extractor matched. Skip rather than store raw HTML chrome.
@@ -252,7 +253,7 @@ async function main() {
                 const dated = await fetchPage(ob.url);
                 const datedText = dated && dated.content ? extractArticleTextFromUrl(dated.content, ob.url) : null;
                 if (datedText && datedText.length >= 200) {
-                  fullText = datedText;
+                  fullText = require('./lib/page-furniture').stripPageFurniture(datedText);
                   fetchMethod = dated.source;
                   try { criticName = extractAuthorFromHtml(dated.content, datedText, { url: ob.url }) || null; } catch { criticName = null; }
                   try { publishDate = extractPublishDate(dated.content, ob.url) || null; } catch { publishDate = null; }

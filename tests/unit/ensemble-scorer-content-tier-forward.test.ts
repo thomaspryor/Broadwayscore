@@ -45,7 +45,23 @@ test('contentTier=complete with a Share/Leave-a-comment footer is scored as comp
   assert.equal(si.textQuality, 'complete', 'prepareScoringInput must forward contentTier (allowlist bug)');
 });
 
-test('without contentTier the same footer still reads as truncated (control)', () => {
+// BRO-7171: the scoring view now strips the Share/Leave-a-comment furniture
+// itself, so that footer alone no longer reads as truncated. The forwarding
+// check therefore uses an ending that is NOT furniture and still fails the
+// ending check: an unpunctuated fragment.
+const FRAGMENT = '\n\nThe production runs about two hours with one';
+
+test('without contentTier the Share/Leave-a-comment footer is stripped and reads as complete (BRO-7171)', () => {
   const si = prepare({}, '\n\nShare:\n\nLeave a comment');
+  assert.equal(si.textQuality, 'complete');
+});
+
+test('contentTier=complete with an unpunctuated tail is scored as complete', () => {
+  const si = prepare({ contentTier: 'complete' }, FRAGMENT);
+  assert.equal(si.textQuality, 'complete', 'prepareScoringInput must forward contentTier (allowlist bug)');
+});
+
+test('without contentTier the same unpunctuated tail still reads as truncated (control)', () => {
+  const si = prepare({}, FRAGMENT);
   assert.equal(si.textQuality, 'truncated');
 });

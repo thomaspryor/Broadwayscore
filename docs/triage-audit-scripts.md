@@ -95,6 +95,7 @@ review-texts finds hits, promote that script to (a).
 | Script | Why it stays manual |
 | --- | --- |
 | `audit-always-commit-after-validate.js` | advisory workflow linter (BRO-5293); exits 0 by design, rule 19 forbids arming it |
+| `audit-page-furniture.js` | BRO-7171 read-only furniture survey of the private review-texts corpus and local raw-page archives; the CI class guard is `tests/unit/page-furniture-extractors.test.mjs`, so this stays a manual diagnostic |
 | `audit-cast-matching.js` | one-shot re-evaluation of cast files against new IBDB matching rules |
 | `audit-critic-listing-parity.js` | one-shot parity check for decideCriticListingPromotion (task 995); sprint-scoped |
 | `audit-critic-name-apostrophe.js` | read-only sweep for BRO-5444 truncated critic names; promote to (a) if a run with review-texts finds hits |

@@ -766,7 +766,7 @@ jobs:
           node "$GITHUB_WORKSPACE/scripts/opening-night-lease.js" sync || true
           node "$GITHUB_WORKSPACE/scripts/opening-night-lease.js" enforce --dir="$GITHUB_WORKSPACE/data/review-texts" || \
             echo "::warning::opening-night lease enforce failed to run"
-          git add -A
+          node "$GITHUB_WORKSPACE/scripts/lib/stage-review-texts.js" # BRO-7171 scoped staging
           git diff --cached --quiet && exit 0
           git commit -m "data: Opening night poller — new reviews discovered [skip ci]"
           bash ../../scripts/lib/push-with-retry.sh 20 main
@@ -862,7 +862,7 @@ jobs:
           node "$GITHUB_WORKSPACE/scripts/opening-night-lease.js" sync || true
           node "$GITHUB_WORKSPACE/scripts/opening-night-lease.js" enforce --dir="$GITHUB_WORKSPACE/data/review-texts" || \
             echo "::warning::opening-night lease enforce failed to run"
-          git add -A
+          node "$GITHUB_WORKSPACE/scripts/lib/stage-review-texts.js" # BRO-7171 scoped staging
           git diff --cached --quiet && exit 0
           git commit -m "data: Opening night poller — collected review texts"
           bash ../../scripts/lib/push-with-retry.sh 5 main
@@ -899,7 +899,7 @@ jobs:
           node "$GITHUB_WORKSPACE/scripts/opening-night-lease.js" sync || true
           node "$GITHUB_WORKSPACE/scripts/opening-night-lease.js" enforce --dir="$GITHUB_WORKSPACE/data/review-texts" || \
             echo "::warning::opening-night lease enforce failed to run"
-          git add -A
+          node "$GITHUB_WORKSPACE/scripts/lib/stage-review-texts.js" # BRO-7171 scoped staging
           git diff --cached --quiet && exit 0
           git commit -m "data: Opening night poller — flagged combined reviews"
           bash ../../scripts/lib/push-with-retry.sh 5 main
@@ -1003,7 +1003,7 @@ jobs:
           node "$GITHUB_WORKSPACE/scripts/opening-night-lease.js" sync || true
           node "$GITHUB_WORKSPACE/scripts/opening-night-lease.js" enforce --dir="$GITHUB_WORKSPACE/data/review-texts" || \
             echo "::warning::opening-night lease enforce failed to run"
-          git add -A
+          node "$GITHUB_WORKSPACE/scripts/lib/stage-review-texts.js" # BRO-7171 scoped staging
           git diff --cached --quiet && exit 0
           git commit -m "data: Opening night poller — scored reviews"
           bash ../../scripts/lib/push-with-retry.sh 5 main

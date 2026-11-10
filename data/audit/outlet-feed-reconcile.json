@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-10T00:14:23.338Z",
+  "generatedAt": "2026-11-10T04:24:27.421Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -27,6 +27,11 @@
       "id": "iphigenie-en-tauride-english-national-opera-west-end-2026",
       "title": "Iphigenie en Tauride - English National Opera",
       "openingDate": "2026-11-06"
+    },
+    {
+      "id": "cloud-9-west-end-2026",
+      "title": "Cloud 9",
+      "openingDate": "2026-11-10"
     },
     {
       "id": "msblackforpresident-off-broadway-2026",
@@ -104,12 +109,7 @@
       "openingDate": "2026-11-07"
     }
   ],
-  "skipped": [
-    {
-      "showId": "cloud-9-west-end-2026",
-      "reason": "no data/review-texts directory for this show"
-    }
-  ],
+  "skipped": [],
   "feedsChecked": 84,
   "feedsFailed": [
     {
@@ -137,9 +137,9 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 840,
-  "matchedGaps": 3,
-  "possibleGaps": 3,
+  "itemsScanned": 852,
+  "matchedGaps": 4,
+  "possibleGaps": 2,
   "gaps": [
     {
       "showId": "222-a-ghost-story-off-broadway-2026",
@@ -169,6 +169,15 @@
       "publishDate": "2026-11-09"
     },
     {
+      "showId": "the-visitors-off-broadway-2026",
+      "title": "The Visitors",
+      "level": "matched",
+      "outletId": "theatermania",
+      "url": "https://www.theatermania.com/news/review-the-visitors-a-dark-comedy-about-siblings_1859149/",
+      "headline": "Review: The Visitors, a Dark Comedy About Siblings",
+      "publishDate": "2026-11-09"
+    },
+    {
       "showId": "king-lear-off-broadway-2026",
       "title": "King Lear",
       "level": "possible",
@@ -176,15 +185,6 @@
       "url": "https://www.theguardian.com/culture/2026/nov/04/every-family-has-silences-kathryn-hunter-on-despair-desire-dislodgeable-limbs-and-her-acting-genius",
       "headline": "‘Every family has silences’: Kathryn Hunter on despair, desire, dislodgeable limbs – and her acting genius",
       "publishDate": "2026-11-04"
-    },
-    {
-      "showId": "msblackforpresident-off-broadway-2026",
-      "title": "Ms. Blakk for President",
-      "level": "possible",
-      "outletId": "lighting-and-sound-america",
-      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=TO9BBB",
-      "headline": "Theatre&#32;in&#32;Review:&#32;Ms.&#32;Blakk&#32;for&#32;President&#32;(Vineyard&#32;Theatre)",
-      "publishDate": "2026-11-09"
     },
     {
       "showId": "wanted-2022",

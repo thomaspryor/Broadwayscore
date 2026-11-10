@@ -26,7 +26,7 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const { execFileSync } = require('child_process');
-const { pidAlive, readLockPid } = require('./file-lock');
+const { tryAcquireFileLock } = require('./file-lock');
 
 const LOGIN_COOLDOWN_MS = 20 * 60 * 60 * 1000;
 const LOGIN_WINDOW_MS = 7 * 24 * 60 * 60 * 1000;
@@ -58,6 +58,77 @@ const RENEW_OUTLETS = {
 
 function profileDir(outlet) {
   return path.join(os.homedir(), 'Library', 'Application Support', 'BroadwayScorecard', 'browser-profiles', outlet);
+}
+
+/**
+ * The one renew/profile lock: the main checkout's data/cookies/_renew.lock
+ * (worktrees have no cookie jar of their own). renew-cookies.js, the gap
+ * driver's browser sessions and every login/recover script hold it while
+ * Chrome has the outlet's profile open (Chrome refuses a profile directory
+ * another Chrome holds).
+ */
+function renewLockPath() {
+  if (process.env.COOKIE_RENEW_LOCK_PATH) return process.env.COOKIE_RENEW_LOCK_PATH; // tests
+  let root = null;
+  try { root = require('./review-texts-dir').mainWorktreeOf(path.join(__dirname, '..', '..')); } catch { /* fall back */ }
+  root = root || path.join(os.homedir(), 'Broadwayscore');
+  return path.join(root, 'data', 'cookies', '_renew.lock');
+}
+
+/**
+ * Plan item 8 (BRO-7171): one persistent Chrome profile per outlet outside
+ * /tmp, shared by renew-cookies.js, the gap driver and the standalone
+ * login/recover scripts, so a login made by one is the session the others
+ * use (and survives a reboot; macOS clears /tmp). Takes the renew lock for the
+ * rest of the process. The first claim copies the newest legacy /tmp profile
+ * in, so an existing login is not lost to the move.
+ * @param {string} outlet  profile name (browser-outlet-adapters / RENEW_OUTLETS key)
+ * @param {{legacy?: string[]}} [opts] old /tmp profile dirs (the newest by mtime is copied)
+ * @returns {{dir: string, release: Function}}  throws code EPROFILEBUSY when another run holds it
+ */
+const _claimed = new Map(); // outlet -> claim, so a second launch site in one run reuses it
+function claimOutletProfile(outlet, { legacy = [] } = {}) {
+  if (_claimed.has(outlet)) return _claimed.get(outlet);
+  const release = acquireLock(renewLockPath());
+  if (!release) {
+    const err = new Error(`another browser run holds the ${outlet} profile (lock ${renewLockPath()}); try again when it finishes`);
+    err.code = 'EPROFILEBUSY';
+    throw err;
+  }
+  // The lock is held for the whole run, and acquireLock treats a lock older
+  // than LOCK_STALE_MS (2h) as abandoned. A live long run (gap driver,
+  // recovery batch) keeps its mtime fresh so a second run cannot claim it and
+  // open Chrome on the same profile. Touches only while the body is still ours.
+  const lp = renewLockPath();
+  let ownBody = null;
+  try { ownBody = fs.readFileSync(lp, 'utf8'); } catch { /* touched below only if readable */ }
+  const beat = setInterval(() => {
+    try { if (ownBody !== null && fs.readFileSync(lp, 'utf8') === ownBody) { const t = new Date(); fs.utimesSync(lp, t, t); } } catch { /* lock gone */ }
+  }, Number(process.env.COOKIE_RENEW_HEARTBEAT_MS) || 10 * 60 * 1000);
+  beat.unref();
+  const stop = () => { clearInterval(beat); release(); };
+  process.once('exit', stop);
+  const dir = profileDir(outlet);
+  try {
+    const empty = !fs.existsSync(dir) || fs.readdirSync(dir).length === 0;
+    // The most recently used legacy profile (login and recover scripts each had their own).
+    const from = empty && legacy
+      .map((d) => { try { return fs.readdirSync(d).length > 0 ? { d, m: fs.statSync(d).mtimeMs } : null; } catch { return null; } })
+      .filter(Boolean).sort((a, b) => b.m - a.m).map((x) => x.d)[0];
+    if (from) {
+      fs.mkdirSync(path.dirname(dir), { recursive: true });
+      // Chrome's Singleton* files point at the old process; never copy them.
+      fs.cpSync(from, dir, { recursive: true, filter: (src) => !/[\\/]Singleton(Lock|Socket|Cookie)$/.test(src) });
+      console.log(`[profile] ${outlet}: migrated legacy profile ${from} -> ${dir}`);
+    }
+    fs.mkdirSync(dir, { recursive: true });
+  } catch (e) {
+    console.warn(`[profile] ${outlet}: legacy profile copy failed (${e.message}); starting a fresh profile`);
+    fs.mkdirSync(dir, { recursive: true });
+  }
+  const claim = { dir, release: () => { _claimed.delete(outlet); stop(); } };
+  _claimed.set(outlet, claim);
+  return claim;
 }
 
 // --- Login gate ------------------------------------------------------------
@@ -134,23 +205,11 @@ const LOCK_STALE_MS = 2 * 60 * 60 * 1000;
  * @returns {Function|null} release function, or null if another run holds it
  */
 function acquireLock(lockPath) {
-  fs.mkdirSync(path.dirname(lockPath), { recursive: true });
-  for (let attempt = 0; attempt < 2; attempt++) {
-    try {
-      fs.writeFileSync(lockPath, `${process.pid} ${new Date().toISOString()}\n`, { flag: 'wx' });
-      return () => { try { fs.unlinkSync(lockPath); } catch { /* already gone */ } };
-    } catch (e) {
-      if (e.code !== 'EEXIST') throw e;
-      let ageMs = 0;
-      try { ageMs = Date.now() - fs.statSync(lockPath).mtimeMs; } catch { continue; }
-      if (pidAlive(readLockPid(lockPath)) && ageMs < LOCK_STALE_MS) return null;
-      // One launchd job on one machine is the only contender, so the
-      // unlink-then-wx window is not the multi-waiter race file-lock.js #1024
-      // guards against; wx still guarantees a single winner.
-      try { fs.unlinkSync(lockPath); } catch { /* raced; retry decides */ }
-    }
-  }
-  return null;
+  // In-place claim under file-lock's steal gate (BRO-7171): the old
+  // unlink-then-wx let two waiters that both saw a dead holder both win once
+  // browser recovery and login scripts started sharing this lock (race test:
+  // 5 of 10 racers inside at once). Release removes only this call's body.
+  return tryAcquireFileLock(lockPath, { staleMs: 0, abandonedMs: LOCK_STALE_MS });
 }
 
 // --- Keychain ----------------------------------------------------------------
@@ -180,6 +239,8 @@ module.exports = {
   MAX_LOGINS_PER_WINDOW,
   LOCK_STALE_MS,
   profileDir,
+  renewLockPath,
+  claimOutletProfile,
   emptyOutletState,
   decideLogin,
   classifyLoginFailure,

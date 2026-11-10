@@ -485,7 +485,7 @@ function pushReviewTextsCheckpoint(message) {
     } catch {
       execSync(`git remote add origin "${remoteUrl}"`, { cwd: rtDir, stdio: 'pipe' });
     }
-    execSync('git add -A', { cwd: rtDir, stdio: 'pipe' });
+    require('./lib/stage-review-texts').stageReviewTexts(rtDir); // BRO-7171 scoped staging
     try {
       execSync('git diff --staged --quiet', { cwd: rtDir, stdio: 'pipe' });
       return; // No changes

@@ -175,4 +175,159 @@ async function urlRediscover(c, { scrapingBeeKey = '', brightDataKey = '' } = {}
   return { ...r, url: newUrl, serpRan: true };
 }
 
-module.exports = { FREE_TIERS, refetchFree, archive, browserSession, urlRediscover, outcomeForFetchError, fromHtml, defaultDeps };
+const DEAD_URL_REASONS = Object.freeze({
+  url_not_found_404: 404, url_not_found_410: 410, // logged-in subscriber browser (browserSession)
+  url_dead_404: 404, url_dead_410: 410, // free refetch (failed-fetch-policy classification)
+});
+
+/**
+ * Field patch that records a hard 404/410 on the review's CURRENT url, or null.
+ * `httpStatus` is the field rediscover-review-urls.js Phase 3 already ranks
+ * first for SERP url discovery, and text-gap-classify reads as URL_DEAD, so
+ * the next run plans ARCHIVE / rediscovery instead of re-fetching a dead url
+ * through the subscriber browser (BRO-7171: 31 WaPo, 16 WSJ, 12 New Yorker
+ * and 5 NYT urls answered 404 to a logged-in session; the evidence stayed in
+ * the engine ledger only). Url-bound: url-change-invariant clears it when the
+ * url moves, and a record whose url moved since the fetch is left alone.
+ * Pure.
+ * @param {object} review  fresh on-disk record
+ * @param {{url:string|null, outcome:string, reason:string}} result  strategy result for that url
+ * @returns {object|null}
+ */
+function deadUrlStampPatch(review, { url, outcome, reason }) {
+  if (!review || outcome !== 'no_evidence') return null;
+  const status = DEAD_URL_REASONS[reason];
+  if (!status || !url || review.url !== url) return null;
+  if (review.contentTier === 'complete') return null;
+  if (review.httpStatus === status) return null;
+  return { httpStatus: status };
+}
+
+/**
+ * Paid fetch of the stored url (Bright Data web unlocker, no login). The
+ * Telegraph returned full premium text this way in Nov 2026 with the
+ * subscription cancelled. Spend is capped by BD_REQ_BUDGET inside fetchPage;
+ * a capped request is non_evidence (failed-fetch-policy).
+ */
+async function paidFetch(c, deps = defaultDeps()) {
+  if (!c.url) return { ok: false, outcome: 'non_evidence', reason: 'no_url' };
+  let res;
+  try { res = await deps.fetchPage(c.url, { tiers: ['brightdata'] }); } catch (e) { return outcomeForFetchError(e.message); }
+  const r = fromHtml(res && res.content, c.url, 'paid:brightdata', deps);
+  return r.ok ? { ...r, url: c.url } : r;
+}
+
+// Paid SERP queries URL_FIND may spend per process (the rest of the night's
+// SERP_QUERY_BUDGET stays with the other strategies).
+let urlFindSerpUsed = 0;
+const urlFindSerpMax = () => { const n = parseInt(process.env.GAP_URL_FIND_SERP_MAX || '15', 10); return Number.isFinite(n) ? n : 15; };
+let urlFindEnv = null;
+// Bright Data fetches URL_FIND may spend per process, so it cannot eat the
+// night's BD_REQ_BUDGET before PAID_FETCH (the paywall route) runs.
+let urlFindBdUsed = 0;
+const urlFindBdLeft = () => { const n = parseInt(process.env.GAP_URL_FIND_BD_MAX || '8', 10); return urlFindBdUsed < (Number.isFinite(n) ? n : 8); };
+const URL_FIND_CANDIDATES_PER_METHOD = 3;
+// Gate refusals that say the page is NOT this review (vs. "is it, but unreadable").
+const URL_IDENTITY_REFUSALS = new Set(['identity_unproven', 'url_change_refused', 'show_not_mentioned', 'wrong_article', 'byline_conflict', 'date_implausible', 'multi_show_no_section', 'blocklisted']);
+
+/** Corpus index, shows and registry, built once per process. */
+function urlFindEnvironment({ dir, rootDir }) {
+  if (urlFindEnv) return urlFindEnv;
+  const fs = require('fs');
+  const path = require('path');
+  const UF = require('./gap-url-find');
+  const reg = JSON.parse(fs.readFileSync(path.join(rootDir, 'data', 'outlet-registry.json'), 'utf8'));
+  const showsRaw = JSON.parse(fs.readFileSync(path.join(rootDir, 'data', 'shows.json'), 'utf8'));
+  const titles = new Map((showsRaw.shows || showsRaw).map((s) => [s.id, s.title]));
+  urlFindEnv = { registry: reg.outlets || reg, corpus: UF.buildCorpusIndex(dir, (id) => titles.get(id)), archiveDir: path.join(rootDir, 'data', 'aggregator-archive') };
+  return urlFindEnv;
+}
+
+/**
+ * URL_FIND: find the original url of a review we hold no (or a dead) url for,
+ * free methods first, fetch each found url (free, Wayback, then Bright Data
+ * within budget), and return the first candidate the acceptance gate would
+ * take (decide-only; the driver then runs the real locked write, LLM check
+ * included). Every method's result goes in `methods` for the ledger: a review
+ * is only written off once each method has run to the end
+ * (gap-url-find.urlFindProgress, gap-terminal NOT_FINDABLE).
+ * @returns candidate | refusal, plus `methods` {METHOD: status}
+ */
+async function urlFind(c, { dir, rootDir, serpKeys = {}, refusedUrls = new Set(), methods: only = null } = {}, ufDeps = null) {
+  const fs = require('fs');
+  const path = require('path');
+  const UF = require('./gap-url-find');
+  const { recoverReviewTextVerified, pageHeadline, pagePublishDate, pageByline } = require('./gap-acceptance');
+  const env = urlFindEnvironment({ dir, rootDir });
+  let review;
+  try { review = JSON.parse(fs.readFileSync(c.filePath, 'utf8')); } catch (e) { return { ok: false, outcome: 'non_evidence', reason: `code_error: ${e.message}`, methods: {} }; }
+  const showId = c.showId || path.basename(path.dirname(c.filePath));
+  const show = c.show || null;
+  const title = (show && show.title) || review.showTitle || showId;
+  const ce = env.corpus.get(review.outletId) || { urls: [], samples: [] };
+  const profile = UF.learnOutletProfile(ce.urls);
+  const hosts = UF.outletHosts(review.outletId, profile, env.registry);
+  if (!profile.hosts.length) profile.hosts = hosts.slice(0, 2);
+  const serpLeft = urlFindSerpUsed < urlFindSerpMax();
+  const ctx = { review: { ...review, showId }, show, title, profile, hosts, archiveDir: env.archiveDir, templates: UF.learnSlugTemplates(ce.samples), titleDirs: UF.learnTitleStartDirs(ce.samples), serpKeys, allowPaid: serpLeft };
+  const status = {};
+  const tried = new Set([...refusedUrls].map((u) => u.replace(/\/$/, '')));
+  const refusedCandidates = [];
+  const foundUnreadable = [];
+  for (const m of only || UF.METHODS) {
+    if (m === 'SERP' && !serpLeft) { status[m] = 'skipped_paid'; continue; }
+    if (m === 'COMMON_CRAWL') { try { await ensureCcCollections(UF); } catch { status[m] = 'error'; continue; } }
+    const r = await UF.runMethod(m, ctx, ufDeps || undefined);
+    if (m === 'SERP' && r.paid) urlFindSerpUsed++;
+    if (r.error && !r.candidates.length) { status[m] = /no_serp_key/.test(r.error) ? 'skipped_paid' : 'error'; continue; }
+    if (!r.candidates.length) {
+      status[m] = UF.methodNotApplicable(m, r, ctx) ? 'not_applicable' : 'no_candidates';
+      continue;
+    }
+    // Links refused on earlier nights do not use up this night's slots.
+    const fresh = r.candidates.filter((x) => !tried.has(x.url.replace(/\/$/, '')));
+    let st = fresh.length > URL_FIND_CANDIDATES_PER_METHOD ? 'more_candidates' : 'candidates_refused';
+    for (const cand of fresh.slice(0, URL_FIND_CANDIDATES_PER_METHOD)) {
+      tried.add(cand.url.replace(/\/$/, ''));
+      const got = await UF.fetchCandidateText(cand.url, { allowBd: urlFindBdLeft(), onPaid: () => { urlFindBdUsed++; } }, (ufDeps && ufDeps.fetchDeps) || null);
+      if (!got.ok) {
+        // Refused only when every route answered with evidence (404, no
+        // capture, extractor null); a timeout or budget cap leaves it open.
+        if (UF.fetchRefusedOnEvidence(got.tried)) refusedCandidates.push(cand.url); else if (st !== 'found_unreadable') st = 'error';
+        continue;
+      }
+      const d = await ((ufDeps && ufDeps.gate) || recoverReviewTextVerified)({
+        filePath: c.filePath, rawText: got.rawText, url: cand.url, expectUrl: review.url || null, headline: pageHeadline(got.html), pageDate: pagePublishDate(got.html, cand.url), pageByline: pageByline(got.html, review.outletId),
+        labels: { fetchMethod: 'x', sourceMethod: 'x' }, dryRun: true, show, ctxOpts: { reviewTextsDir: dir },
+      });
+      if (d.ok || d.code === 'dry_run_needs_llm') {
+        status[m] = 'found';
+        return { ok: true, rawText: got.rawText, url: cand.url, html: got.html, via: `url-find:${m}:${got.via}`, methods: status, foundBy: m, refusedCandidates, foundUnreadable };
+      }
+      if (URL_IDENTITY_REFUSALS.has(d.code)) { refusedCandidates.push(cand.url); continue; }
+      // The page may well be this review but cannot be taken (paywall, too
+      // short, not longer, record locked): the link is found, never "not
+      // findable". Keep it for the ledger; the method stays open.
+      foundUnreadable.push({ url: cand.url, code: d.code });
+      st = 'found_unreadable';
+    }
+    // A query that errored left part of the index unsearched: refusing what
+    // the other queries found does not finish the method (ship-check P1).
+    if (r.error && st === 'candidates_refused') st = 'error';
+    status[m] = st;
+  }
+  const complete = UF.METHODS.every((m) => UF.METHOD_DONE.has(status[m]));
+  return { ok: false, outcome: Object.values(status).some((s) => UF.METHOD_DONE.has(s)) ? 'no_evidence' : 'non_evidence', reason: complete ? 'url_not_found_all_methods' : (foundUnreadable.length ? 'url_found_unreadable' : 'url_not_found'), methods: status, refusedCandidates, foundUnreadable };
+}
+
+async function ensureCcCollections(UF) {
+  if (ensureCcCollections.done) return;
+  // One try per process: an outage must not cost 60s on every review.
+  if (ensureCcCollections.failed) throw new Error('common crawl index list unavailable this run');
+  try {
+    UF.setCcCollections(JSON.parse(await UF.defaultDeps().fetchText('https://index.commoncrawl.org/collinfo.json', { timeoutMs: 60000 })));
+  } catch (e) { ensureCcCollections.failed = true; throw e; }
+  ensureCcCollections.done = true;
+}
+
+module.exports = { FREE_TIERS, refetchFree, archive, browserSession, urlRediscover, paidFetch, urlFind, outcomeForFetchError, fromHtml, defaultDeps, deadUrlStampPatch, DEAD_URL_REASONS };

@@ -63,7 +63,11 @@ const COOKIE_DIR = path.join(PROJECT_ROOT, 'data', 'cookies');
 const COOKIE_PATH = path.join(COOKIE_DIR, 'wsj.json');
 const META_PATH = path.join(COOKIE_DIR, '_extracted-at.json');
 
-const PROFILE_DIR = '/tmp/wsj-otp-browser-profile';
+// BRO-7171 plan item 8: the outlet's shared persistent profile (outside /tmp,
+// shared with renew-cookies.js and the recover scripts). claimProfile() takes
+// the renew lock and migrates the old /tmp profile once.
+const PROFILE_DIR = require('./lib/cookie-renew').profileDir('wsj');
+const claimProfile = () => require('./lib/cookie-renew').claimOutletProfile('wsj', { legacy: ['/tmp/wsj-otp-browser-profile', '/tmp/wsj-recovery-browser-profile', '/tmp/wsj-browser-profile'] }).dir;
 
 // Reuses the shared ~/.claude/bin/gmail helper (read-only IMAP wrapper around
 // the email worker's GMAIL_ADDRESS/GMAIL_APP_PASSWORD in
@@ -115,7 +119,7 @@ async function main() {
 
   let context;
   try {
-    context = await chromium.launchPersistentContext(PROFILE_DIR, { ...launchOpts, channel: 'chrome' });
+    context = await chromium.launchPersistentContext(claimProfile(), { ...launchOpts, channel: 'chrome' });
     console.log('  -> using installed Google Chrome (channel: chrome)');
   } catch (err) {
     console.log(`  -> real Chrome unavailable (${err.message.split('\n')[0]}); falling back to bundled chromium`);

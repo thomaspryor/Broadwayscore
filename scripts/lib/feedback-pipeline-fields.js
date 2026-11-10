@@ -27,6 +27,11 @@ const FEEDBACK_EDITABLE_FIELDS = {
     'openingDateSource',
     // BRO-7239: where a city-hub show's closingDate came from (free text naming the source, e.g. 'broadwayworld-regional-listing' or 'review text "through Oct. 18" (<url>)'; the literal 'estimated' marks a guess).
     'closingDateSource',
+    // BRO-7252: whole array, compare-and-set; [{announcedAt, from, to, source}] oldest first, one entry
+    // per time the run's closingDate moved later. closingExtensionsValueProblem checks the shape and chain.
+    'closingExtensions',
+    // BRO-7252: press-stated total extension count, a floor for runs whose early extensions have no recorded dates (non-negative integer).
+    'closingExtensionCount',
     // Whole images object, compare-and-set; human-approved plans only (BRO-4380:
     // clearing another show's art). execute-approved-fix refuses cross-show paths.
     'images',
@@ -193,10 +198,32 @@ function buildShowSnapshot(show) {
     if (value !== undefined) {
       snapshot[field] = value;
     } else {
-      snapshot[field] = (field === 'creativeTeam' || field === 'cast' || field === 'rejectedImageUrls' || field === 'priorRuns') ? [] : null;
+      snapshot[field] = (field === 'creativeTeam' || field === 'cast' || field === 'rejectedImageUrls' || field === 'priorRuns' || field === 'closingExtensions') ? [] : null;
     }
   }
   return snapshot;
+}
+
+// BRO-7252: closingExtensions value check. An array (oldest first) of
+// {announcedAt: YYYY-MM-DD|null, from: YYYY-MM-DD|null, to: YYYY-MM-DD, source: string|null};
+// each `to` is later than its `from` and than the previous entry's `to`.
+function closingExtensionsValueProblem(v) {
+  if (!Array.isArray(v)) return 'closingExtensions: newValue must be an array';
+  const iso = (x) => typeof x === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(x);
+  let prevTo = null;
+  for (const [i, e] of v.entries()) {
+    if (!e || typeof e !== 'object' || Array.isArray(e)) return `closingExtensions[${i}]: must be an object`;
+    const extra = Object.keys(e).filter(k => !['announcedAt', 'from', 'to', 'source'].includes(k));
+    if (extra.length) return `closingExtensions[${i}]: unexpected key "${extra[0]}"`;
+    if (e.announcedAt != null && !iso(e.announcedAt)) return `closingExtensions[${i}].announcedAt: must be YYYY-MM-DD or null`;
+    if (e.from != null && !iso(e.from)) return `closingExtensions[${i}].from: must be YYYY-MM-DD or null`;
+    if (!iso(e.to)) return `closingExtensions[${i}].to: must be YYYY-MM-DD`;
+    if (e.from != null && e.to <= e.from) return `closingExtensions[${i}]: to (${e.to}) must be later than from (${e.from})`;
+    if (prevTo && e.to <= prevTo) return `closingExtensions[${i}]: to (${e.to}) must be later than the previous entry's to (${prevTo})`;
+    if (e.source != null && typeof e.source !== 'string') return `closingExtensions[${i}].source: must be a string or null`;
+    prevTo = e.to;
+  }
+  return null;
 }
 
 // shows.json cast value check for the human-approved data-edit path
@@ -366,6 +393,7 @@ module.exports = {
   pickEditableFields,
   buildShowSnapshot,
   castValueProblem,
+  closingExtensionsValueProblem,
   rejectedUrlsValueProblem,
   priorRunsValueProblem,
   appendedPriorRunProblem,

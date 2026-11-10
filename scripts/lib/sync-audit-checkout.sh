@@ -162,7 +162,17 @@ run_checkout_sync_post() {
   perl -e 'alarm shift; exec @ARGV or die "exec: $!"' 180 node scripts/checkout-sync-post.js \
     || echo "[$TAG] checkout-sync-post.js failed or timed out (non-fatal)"
 }
-trap '_rc=$?; push_mutex_release; [ -n "${SYNC_FRESH_DIR:-}" ] && rm -rf "$SYNC_FRESH_DIR"; [ "$_rc" -eq 0 ] && run_checkout_sync_post; exit $_rc' EXIT
+# BRO-7171: publish the Mac's owner-digest spool (owner-alert-router queues
+# there off CI, because this script resets the tracked queue file) into
+# origin's queue. Every checkout-sync tick, refused or not: it never touches
+# the working tree (plumbing commit), so a stale or dirty checkout does not
+# stop alerts reaching the digest. Never changes the exit code.
+run_digest_spool_flush() {
+  [ "$TAG" = checkout-sync ] && [ -f scripts/lib/alert-digest-spool.js ] || return 0
+  perl -e 'alarm shift; exec @ARGV or die "exec: $!"' 300 node scripts/lib/alert-digest-spool.js flush \
+    || echo "[$TAG] alert-digest-spool flush failed or timed out (non-fatal; rows stay spooled)"
+}
+trap '_rc=$?; push_mutex_release; [ -n "${SYNC_FRESH_DIR:-}" ] && rm -rf "$SYNC_FRESH_DIR"; run_digest_spool_flush; [ "$_rc" -eq 0 ] && run_checkout_sync_post; exit $_rc' EXIT
 
 write_refused_snapshot() {
   local reason="$1" dirty="$2" blocking="${3:-}"

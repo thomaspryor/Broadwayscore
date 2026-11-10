@@ -1,5 +1,6 @@
 'use client';
 
+import { isRepeatedlyExtended } from '@/lib/closing-label';
 import { useMemo, useCallback, useState, useRef, useEffect, startTransition, Suspense } from 'react';
 import { audienceSortScore } from '@/lib/audience-grade-utils';
 import { replaceLocationSearch } from '@/lib/hooks/useLocationSearch';
@@ -342,7 +343,7 @@ function OffBroadwayPageInner({ shows, archiveHash, totalShows, totalReviews, ma
   const closingSoonShows = useMemo(() => {
     return shows
       .filter(show => {
-        if (show.status !== 'open' || !show.closingDate) return false;
+        if (show.status !== 'open' || !show.closingDate || isRepeatedlyExtended(show)) return false;
         const closing = new Date(show.closingDate);
         const diffDays = Math.ceil((closing.getTime() - nowMs) / (1000 * 60 * 60 * 24));
         return diffDays > 0 && diffDays <= 90 && obHasEnoughReviews(show);

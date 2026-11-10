@@ -95,7 +95,7 @@
  *     that inline `git commit`s on the root checkout and also pushes (bare
  *     `git push` or `push-with-retry.sh`), but has ZERO `git add` anywhere in
  *     the job — including via one of the shared helper scripts that perform
- *     the add internally (`stage-data-changes.sh`, `git-add-existing.sh`,
+ *     the add internally (`stage-data-changes.sh`, `git-add-existing.sh`, `stage-review-texts.js`,
  *     `safe-sync-review-texts.sh`, `sync-audit-checkout.sh`). Unlike rule
  *     (f)'s advisory posture, this one is unambiguous regardless of what the
  *     commit was meant to capture: a commit step with nothing ever staged is

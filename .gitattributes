@@ -523,3 +523,9 @@ data/audit/gap-recovery-attempts.jsonl merge=union
 # BRO-7171 Stage 3 nightly summary rows (scripts/lib/gap-recovery-nightly.js):
 # counts-only, one row per night, read by the morning digest; readers sort by ts.
 data/audit/gap-recovery-nightly.jsonl merge=union
+# BRO-7162 discovery slot-collision queue (scripts/discover-opening-night-reviews.js):
+# appendFileSync only, never pruned or rewritten, and no script or src reader (grep of
+# scripts/, src/, .github/ finds only the writer and the workflow's git add), so a union
+# can neither resurrect a pruned row nor disturb a reader. Landed without an attribute,
+# which failed audit-ledger-merge-attrs.test.mjs's repo-wide check (BRO-7263).
+data/audit/discovery-slot-collisions.jsonl merge=union

@@ -150,10 +150,14 @@ cleanup() {
 
         CHANGED=$(git status --porcelain | wc -l | tr -d ' ')
         if [ "$CHANGED" -gt 0 ]; then
-          git add -A
-          git commit -m "data: Post-simulation sync ($SHOW_ID)" 2>/dev/null || true
-          git push origin main 2>/dev/null || echo "  ⚠️  Could not push review-texts"
-          echo "  Synced $CHANGED review-text changes to private repo"
+          # BRO-7171: the shared sync tool stages scoped (no whole-tree add),
+          # runs under the review-texts lock and fails loudly on a push failure.
+          if bash ../../scripts/sync-review-texts.sh "data: Post-simulation sync ($SHOW_ID)"; then
+            echo "  Synced $CHANGED review-text changes to private repo"
+          else
+            echo "::error::review-texts sync failed after the simulation; local changes are still uncommitted"
+            exit 1
+          fi
         else
           echo "  No review-text changes after merging remote updates"
         fi

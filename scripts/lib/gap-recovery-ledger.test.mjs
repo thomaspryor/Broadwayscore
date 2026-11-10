@@ -160,19 +160,28 @@ test('strategy table: per-class order, skips with reasons, disabled flag removes
   // Stage 2 decision rule (pilot accepted 0/20 < 30%): both url-finding routes ship off.
   assert.equal(T.STRATEGY_FLAGS.URL_REDISCOVER.enabled, false);
   assert.equal(T.STRATEGY_FLAGS.AGG_LINK.enabled, false);
+  // Owner challenge 2026-11-09: NO_URL goes to URL_FIND (free methods first) before the SERP-only route.
   s = T.selectStrategy({ gapClass: 'NO_URL', hasUrl: false, hasAdapter: false });
+  assert.equal(s.strategy, 'URL_FIND');
+  assert.deepEqual(s.skipped, []);
+  const findOff = { ...T.STRATEGY_FLAGS, URL_FIND: { ...T.STRATEGY_FLAGS.URL_FIND, enabled: false } };
+  s = T.selectStrategy({ gapClass: 'NO_URL', hasUrl: false, hasAdapter: false, flags: findOff });
   assert.equal(s.strategy, null);
-  assert.deepEqual(s.skipped, [{ strategy: 'AGG_LINK', reason: 'disabled' }, { strategy: 'URL_REDISCOVER', reason: 'disabled' }]);
-  const on = { ...T.STRATEGY_FLAGS, URL_REDISCOVER: { ...T.STRATEGY_FLAGS.URL_REDISCOVER, enabled: true } };
+  assert.deepEqual(s.skipped, [{ strategy: 'URL_FIND', reason: 'disabled' }, { strategy: 'AGG_LINK', reason: 'disabled' }, { strategy: 'URL_REDISCOVER', reason: 'disabled' }]);
+  const on = { ...findOff, URL_REDISCOVER: { ...T.STRATEGY_FLAGS.URL_REDISCOVER, enabled: true } };
   s = T.selectStrategy({ gapClass: 'NO_URL', hasUrl: false, hasAdapter: false, flags: on });
   assert.equal(s.strategy, 'URL_REDISCOVER');
-  assert.deepEqual(s.skipped, [{ strategy: 'AGG_LINK', reason: 'disabled' }]);
+  assert.deepEqual(s.skipped, [{ strategy: 'URL_FIND', reason: 'disabled' }, { strategy: 'AGG_LINK', reason: 'disabled' }]);
+  // a dead (often invented) url: Wayback of it first, then URL_FIND looks for the real one
+  assert.equal(T.selectStrategy({ gapClass: 'URL_DEAD', hasUrl: true, hasAdapter: false, eligible: (st) => (st === 'ARCHIVE' ? { ok: false, reason: 'abandoned' } : { ok: true }) }).strategy, 'URL_FIND');
   s = T.selectStrategy({ gapClass: 'TRUNCATED_OTHER', hasUrl: true, hasAdapter: false, eligible: (st) => (st === 'REFETCH_FREE' ? { ok: false, reason: 'cooldown' } : { ok: true }) });
   assert.equal(s.strategy, 'ARCHIVE');
   // Stage 3 pilots: ARCHIVE 0/20 on recent shows, 9/20 on historic -> historic only.
+  // recent paywalled page: no Wayback, so the free refetch (saved cookies) and then the paid fetch
   s = T.selectStrategy({ gapClass: 'PAYWALL_PAGE', hasUrl: true, hasAdapter: false, recency: 'recent' });
-  assert.equal(s.strategy, null);
+  assert.equal(s.strategy, 'REFETCH_FREE');
   assert.deepEqual(s.skipped[1], { strategy: 'ARCHIVE', reason: 'disabled_recent' });
+  assert.equal(T.selectStrategy({ gapClass: 'PAYWALL_PAGE', hasUrl: true, hasAdapter: false, recency: 'recent', eligible: (st) => (st === 'REFETCH_FREE' ? { ok: false, reason: 'cooldown' } : { ok: true }) }).strategy, 'PAID_FETCH');
   assert.equal(T.selectStrategy({ gapClass: 'PAYWALL_PAGE', hasUrl: true, hasAdapter: false, recency: 'historic' }).strategy, 'ARCHIVE');
   assert.equal(T.selectStrategy({ gapClass: 'FALSE_TRUNCATION_SUSPECT', hasUrl: true, hasAdapter: true }).strategy, null);
   assert.equal(T.selectStrategy({ gapClass: 'GARBAGE_PAGE', hasUrl: true, hasAdapter: true, only: 'URL_REDISCOVER', flags: on }).strategy, 'URL_REDISCOVER');
@@ -207,7 +216,7 @@ test('pendingPushInfo: an earlier run\'s unlanded acceptance can still get its r
 });
 
 test('write-path refusals are non-evidence; gate verdicts are evidence; owned records are skipped', () => {
-  for (const code of ['url_moved_during_fetch', 'write_refused', 'write_rolled_back']) assert.equal(L.outcomeForGateRefusal(code), 'non_evidence');
+  for (const code of ['url_moved_during_fetch', 'write_refused', 'write_rolled_back', 'identity_check_unavailable']) assert.equal(L.outcomeForGateRefusal(code), 'non_evidence');
   for (const code of ['show_not_mentioned', 'not_longer', 'garbage', 'paywall']) assert.equal(L.outcomeForGateRefusal(code), 'rejected');
   assert.equal(L.ownedRecordReason({ manualContentTier: 'stub' }), 'manual_tier');
   assert.equal(L.ownedRecordReason({ _locked: true }), 'locked');
@@ -254,7 +263,8 @@ test('URL_WRONG_PAGE retries the stored url first when nothing contradicts it (S
   const news = T.storedUrlWorthRetry({ url: 'https://deadline.com/2026/05/ben-affleck-artificial-intelligence-startup-1236123456/', show, nowMs: now });
   assert.deepEqual(news, { ok: false, reason: 'url_names_other_show' });
   const none = T.selectStrategy({ gapClass: 'URL_WRONG_PAGE', hasUrl: true, hasAdapter: true, storedUrlOk: news });
-  assert.equal(none.strategy, null);
+  // ... and URL_FIND (free) looks for the right url
+  assert.equal(none.strategy, 'URL_FIND');
   assert.deepEqual(none.skipped.map((s) => s.reason), ['url_names_other_show', 'url_names_other_show', 'disabled']);
   // Globe Seagull row holds another production's url; the show has not started.
   const seagull = { title: 'The Seagull', previewsStartDate: '2027-01-15', venue: "Shakespeare's Globe", category: 'west-end' };
@@ -269,4 +279,43 @@ test('free refetch: only the collector cooldown blocks; abandoned / max retries 
   assert.equal(T.collectorRefetchGate({ shouldRetry: false, reason: 'abandoned' }).ok, true);
   assert.equal(T.collectorRefetchGate({ shouldRetry: false, reason: 'max_retries_reached' }).ok, true);
   assert.equal(T.collectorRefetchGate({ shouldRetry: true, reason: 'not_gated' }).ok, true);
+});
+
+// BRO-7171 leftover: the driver checked the daily ceiling against a
+// start-of-run snapshot plus its own count, so a second run's accepts (same
+// ledger file) were invisible and two runs could each take the full ceiling.
+test('daily ceiling is read fresh from the shared ledger before each attempt', () => {
+  const f = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'gapceil-')), 'l.jsonl');
+  const snapshot = L.readRows(f); // run A starts: nothing accepted yet
+  // run B (another process) accepts 3 reviews into the same file
+  L.appendRows([1, 2, 3].map((n) => ({ reviewKey: `s/b${n}.json`, outcome: 'pending_push', runId: 'B' })), f);
+  assert.equal(L.ceilingReached({ rows: snapshot, ceiling: 3, acceptedThisRun: 0 }), false, 'the old snapshot check misses run B');
+  assert.equal(L.ceilingReachedNow({ file: f, ceiling: 3 }), true, 'fresh read sees run B');
+  assert.equal(L.ceilingReachedNow({ file: f, ceiling: 4 }), false);
+  // run mode is a per-run cap: other runs do not count
+  assert.equal(L.ceilingReachedNow({ file: f, ceiling: 3, runMode: true, acceptedThisRun: 2 }), false);
+  assert.equal(L.ceilingReachedNow({ file: f, ceiling: 3, runMode: true, acceptedThisRun: 3 }), true);
+});
+
+// BRO-7171 leftover: rows with the same ts had no order (Array.sort on ts only;
+// a union merge appends the other side's rows after ours, so file order is not
+// lifecycle order). A pending_push and its recovered row written in the same
+// millisecond could index as [recovered, pending_push], leaving the review
+// "pending" forever (pendingPushInfo) and invisible to reconcile.
+test('indexRows: equal timestamps order by lifecycle, then per-process seq', () => {
+  const ts = iso(NOW);
+  const pending = row({ ts, outcome: 'pending_push', runId: 'r1' });
+  const recovered = row({ ts, outcome: 'recovered', runId: 'r1' });
+  const reopened = row({ ts, outcome: 'reopened' });
+  // File order as a union merge can leave it: later lifecycle first.
+  const list = L.indexRows([reopened, recovered, pending]).get(KEY);
+  assert.deepEqual(list.map((r) => r.outcome), ['pending_push', 'recovered', 'reopened']);
+  assert.equal(L.pendingPushInfo([recovered, pending]).size, 0, 'a landed review is not still pending');
+  // Two attempt rows of one run in the same ms keep their write order via seq.
+  const a = row({ ts, outcome: 'no_evidence', strategy: 'ARCHIVE', runId: 'r2' });
+  const b = row({ ts, outcome: 'rejected', strategy: 'ARCHIVE', runId: 'r2' });
+  assert.ok(b.seq > a.seq, 'makeRow stamps a monotonic seq');
+  assert.deepEqual(L.indexRows([b, a]).get(KEY).map((r) => r.outcome), ['no_evidence', 'rejected']);
+  // appendRows keeps a caller-supplied seq/ts (rows re-published verbatim).
+  assert.equal(L.makeRow({ ...a }).seq, a.seq);
 });

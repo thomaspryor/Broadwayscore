@@ -199,13 +199,8 @@ function adapterUsable(outletId, { explicitOutlets = null } = {}) {
   return !!explicitOutlets && [...explicitOutlets].includes(outletId);
 }
 
-function renewLockPath() {
-  // The main checkout's data/cookies (worktrees have no cookie jar of their own).
-  let root = null;
-  try { root = require('./review-texts-dir').mainWorktreeOf(path.join(__dirname, '..', '..')); } catch { /* fall back */ }
-  root = root || path.join(require('os').homedir(), 'Broadwayscore');
-  return path.join(root, 'data', 'cookies', '_renew.lock');
-}
+// One definition, shared with renew-cookies.js and the login/recover scripts.
+const { renewLockPath } = require('./cookie-renew');
 
 /**
  * Open the outlet's persistent profile with its cookies and run the auth probe.

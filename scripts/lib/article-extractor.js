@@ -53,6 +53,20 @@ function stripHtml(s) {
 }
 
 /**
+ * stripHtml per block-level paragraph, joined by blank lines (BRO-7171 Stage
+ * 5). stripHtml alone flattens a whole body to one line, which hides every
+ * paragraph boundary from the line-based furniture cleaner and the trailer
+ * checks. Paragraph breaks only; the text inside each block is stripHtml's.
+ */
+function stripHtmlKeepParagraphs(s) {
+  const marked = String(s || '')
+    .replace(/<script[\s\S]*?<\/script>/g, '')
+    .replace(/<style[\s\S]*?<\/style>/g, '')
+    .replace(/<\/(?:p|h[1-6]|li|blockquote|div)>|<br\s*\/?>\s*<br\s*\/?>/gi, '\u0000');
+  return marked.split('\u0000').map(stripHtml).filter(Boolean).join('\n\n');
+}
+
+/**
  * Remove balanced <div>…</div> blocks whose opening tag's class contains any of
  * the given needles. Regex can't match nested divs, so we walk the tag stream and
  * splice out each target block by depth-counting to its matching close.
@@ -277,7 +291,13 @@ function extractByParagraphDensity(html) {
 function extractStageBody(html) {
   const startM = html.match(/<div[^>]*class="[^"]*aos-Article-IntroText[^"]*"[^>]*>/);
   if (!startM) return null;
-  const region = html.slice(startM.index);
+  let region = html.slice(startM.index);
+  // BRO-7171 Stage 5: the author card (job title + biography) follows the
+  // review. Its bio "Sam Marlowe is reviews editor for The Stage..." has no
+  // article before "editor", so the bio shape below missed it; cut the region
+  // at the card itself.
+  const cardAt = region.search(/class="[^"]*aos-Contact(?:JobTitle|Biog)\b/);
+  if (cardAt > 0) region = region.slice(0, cardAt);
   const isTrailingNoise = (t) =>
     // Author bio: "Firstname [Lastname] is a (culture|theatre|freelance)? journalist/critic/..."
     // First-name-only bylines (e.g. "Holly is a culture journalist…") slipped the
@@ -1057,10 +1077,10 @@ function withStandfirst(html, text, hostname) {
   return `${found.text}\n\n${text}`;
 }
 
-function extractArticleText(html, hostname, criticHint) {
+function extractArticleText(html, hostname, criticHint, opts = {}) {
   // The dek joins first so the Radio Times promotion guard below judges the text callers actually get.
-  const text = withStandfirst(html, extractArticleTextUnchecked(html, hostname, criticHint), hostname);
-  const host = String(hostname || '').toLowerCase();
+  const text = withStandfirst(html, extractArticleTextUnchecked(html, hostname, criticHint, opts), hostname);
+  const host = effectiveHost(hostname);
   const isRadioTimes = host === 'radiotimes.com' || host.endsWith('.radiotimes.com');
   // Reject Radio Times promotions before any caller can save or score them.
   // Match boilerplate phrases, not standalone words that can occur in criticism.
@@ -1070,10 +1090,10 @@ function extractArticleText(html, hostname, criticHint) {
   return text;
 }
 
-function extractArticleTextUnchecked(html, hostname, criticHint) {
+function extractArticleTextUnchecked(html, hostname, criticHint, { outletOnly = false } = {}) {
   if (!html || typeof html !== 'string') return null;
   html = decodeBloxRot47(html); // BRO-4221: BLOX CMS ROT47-scrambled paragraphs
-  const host = String(hostname || '').replace(/^www\./, '').toLowerCase();
+  const host = effectiveHost(hostname);
   const isDedicatedHost = DEDICATED_EXTRACTOR_HOSTS.some((d) => host.includes(d));
 
   // Talkin' Broadway: the page's only <article> tag is newsletter-signup
@@ -1267,6 +1287,9 @@ function extractArticleTextUnchecked(html, hostname, criticHint) {
     // now returns null (ingest treats <200 as a hard failure anyway, so the
     // 100-199 slice of that range was already unusable downstream).
     if (hostMatch == null) {
+      // outletOnly: a caller with its own generic pass wants only what an
+      // outlet-specific extractor found (BRO-7171 Stage 5).
+      if (outletOnly) return null;
       const reGlobal = new RegExp(re.source, re.flags.includes('g') ? re.flags : re.flags + 'g');
       let bestText = null;
       for (const m of html.matchAll(reGlobal)) {
@@ -1279,7 +1302,7 @@ function extractArticleTextUnchecked(html, hostname, criticHint) {
     }
     const m = html.match(re);
     if (m && m[1] && m[1].length >= minLen) {
-      const text = stripHtml(m[1]);
+      const text = stripHtmlKeepParagraphs(m[1]);
       if (text.length >= 100) return text;
     }
   }
@@ -1293,7 +1316,7 @@ function extractArticleTextUnchecked(html, hostname, criticHint) {
   // "dead session mistaken for a successful recovery" risk the Stage/Times
   // unconditional-return fix above exists to prevent (ship-check task #919,
   // adversarial review 2026-08-14 caught this falling-through for WSJ).
-  if (isDedicatedHost || matchedDedicatedPattern) return null;
+  if (isDedicatedHost || matchedDedicatedPattern || outletOnly) return null;
   const commonClassText = extractByCommonClass(html);
   if (commonClassText) return commonClassText;
   return extractByParagraphDensity(html);
@@ -1303,9 +1326,57 @@ function extractArticleTextUnchecked(html, hostname, criticHint) {
  * Convenience: derive hostname from URL and call extractArticleText.
  */
 function extractArticleTextFromUrl(html, url, criticHint) {
-  let host = '';
-  try { host = new URL(url).hostname; } catch { /* fall through with empty host */ }
-  return extractArticleText(html, host, criticHint);
+  return extractArticleText(html, effectiveHost(url), criticHint);
+}
+
+/**
+ * The outlet host a hostname, full URL or Wayback URL points at, lowercased
+ * without "www." (BRO-7171 Stage 5). Callers pass any of the three: the
+ * collector passes the full URL, Wayback fetches arrive as
+ * web.archive.org/web/<ts>/<original>. A full URL used to defeat the
+ * host-anchored Deadline/THR test, and a Wayback URL hid every outlet
+ * extractor behind "web.archive.org".
+ */
+function effectiveHost(urlOrHost) {
+  let raw = String(urlOrHost || '').trim();
+  const wb = raw.match(/^(?:https?:\/\/)?web\.archive\.org\/web\/[^/]+\/(.+)$/i);
+  if (wb) raw = wb[1];
+  let host = raw;
+  if (/^[a-z]+:\/\//i.test(raw) || raw.includes('/')) {
+    try { host = new URL(/^[a-z]+:\/\//i.test(raw) ? raw : `https://${raw}`).hostname; } catch { /* keep raw */ }
+  }
+  return host.toLowerCase().replace(/^www\./, '');
+}
+
+// Hosts with an outlet-specific branch in extractArticleTextUnchecked (not a
+// PATTERNS row). Kept beside that function; the test checks each branch host
+// is listed here.
+const OUTLET_BRANCH_HOSTS = [
+  'talkinbroadway.com', 'wsj.com', 'variety.com', 'deadline.com', 'hollywoodreporter.com',
+  'lavocedinewyork.com', 'nysun.com', 'broadwayworld.com', 'thestage.co.uk', 'thetimes.co.uk',
+  'thetimes.com', 'newyorker.com', 'lightingandsoundamerica.com', 'curtainup.com',
+  'theatreweekly.com', 'theartsdesk.com', 'stagebuddy.com', 'dailymail.',
+];
+
+/**
+ * True when this file has an outlet-specific extractor for the host (a
+ * dedicated branch or a host-keyed PATTERNS row), so a caller's generic
+ * JSON-LD/paragraph pass should defer to it unless the generic pass holds
+ * real prose the outlet extractor missed (BRO-7171 Stage 5: the collector
+ * consulted these only for DEDICATED_EXTRACTOR_HOSTS, so Deadline, THR,
+ * WhatsOnStage, TheaterMania, Vulture and ~25 more outlets were saved by the
+ * generic pass with their share bars and related-story runs).
+ */
+function hasOutletExtractor(urlOrHost) {
+  const host = effectiveHost(urlOrHost);
+  if (!host) return false;
+  // Domain-boundary match: "snub.news" is not Nub News, "notvariety.com" is
+  // not Variety. A substring match sent unrelated sites to an outlet's
+  // extractor and dropped their generic body.
+  const owns = (d) => { const x = String(d || '').toLowerCase().replace(/^www\./, ''); return !!x && (host === x || host.endsWith(`.${x}`)); };
+  if (OUTLET_BRANCH_HOSTS.some(owns)) return true;
+  if (DEDICATED_EXTRACTOR_HOSTS.some(owns)) return true;
+  return PATTERNS.some(([hostMatch]) => typeof hostMatch === 'string' && owns(hostMatch));
 }
 
 /** Normalize a raw date string to YYYY-MM-DD (or null). */
@@ -1518,4 +1589,4 @@ function isExclusiveExtractorHost(urlOrHost) {
   return /(?:^|\.)theartsdesk\.com$/i.test(h);
 }
 
-module.exports = { isExclusiveExtractorHost, isDedicatedExtractorHost, extractArticleText, extractStandfirst, extractArticleTextFromUrl, extractPublishDate, stripHtml, extractLsaByline, extractZoxNewsBody, extractVarietyBody, extractNubNewsBody, extractLondonTheatreBody, extractArtsDeskBody, extractToledoBladeBody, extractCurtainUpBody, extractDailyMailBody, dailyMailVerdictValues };
+module.exports = { hasOutletExtractor, effectiveHost, OUTLET_BRANCH_HOSTS, isExclusiveExtractorHost, isDedicatedExtractorHost, extractArticleText, extractStandfirst, extractArticleTextFromUrl, extractPublishDate, stripHtml, extractLsaByline, extractZoxNewsBody, extractVarietyBody, extractNubNewsBody, extractLondonTheatreBody, extractArtsDeskBody, extractToledoBladeBody, extractCurtainUpBody, extractDailyMailBody, dailyMailVerdictValues };

@@ -2117,6 +2117,10 @@ on:
       # helpers are covered via tests/unit/collect-review-texts-rename-helper.test.mjs
       # under the tests/** trigger, but a solo edit to the file got ZERO CI).
       - 'scripts/collect-review-texts.js'
+      # BRO-7171: top-level scripts named by colocated class guards
+      # (browser-recovery-checkpoint.test.mjs, try-file-lock-race.test.mjs).
+      - 'scripts/migrate-add-core-data-push.js'
+      - 'scripts/dispatch-ingest-batch.js'
       # BRO-1431: colocated test (stale-flag neutralization on body
       # replacement — wrongProduction/contentVerification/contentTier).
       # Root-level scripts/*.test.mjs files are NOT globbed — registered in
@@ -5037,6 +5041,30 @@ jobs:
         run: |
           node scripts/audit-direct-github-api.js
           node --test --test-timeout 120000 tests/unit/gh-api-wrapper.test.mjs
+
+      - name: Page furniture class guard (BRO-7171, advisory)
+        # Every outlet extractor, run on saved real pages
+        # (tests/fixtures/page-furniture/), must hand the save path a body with
+        # no share bars, related-story runs, newsletter/paywall/consent lines,
+        # booking or copyright lines. Advisory first (CLAUDE.md section 19);
+        # promote to blocking once it has run clean on main.
+        continue-on-error: true
+        # Offline by design: the extractor runs on saved fixtures, so the
+        # fetch/LLM keys the collector can read are deliberately blank here.
+        env:
+          BRIGHTDATA_TOKEN: ''
+          BROWSERBASE_API_KEY: ''
+          BROWSERBASE_PROJECT_ID: ''
+          GUARDIAN_API_KEY: ''
+          REVIEW_TEXTS_TOKEN: ''
+          SCRAPINGBEE_API_KEY: ''
+          SCRAPINGDOG_API_KEY: ''
+        run: |
+          set +e
+          node --test --test-timeout 120000 tests/unit/page-furniture-extractors.test.mjs 2>&1 | tee /tmp/page-furniture.log
+          rc=${PIPESTATUS[0]}
+          bash scripts/lib/summarize-failing-tests.sh "page furniture" /tmp/page-furniture.log "$rc" warning
+          exit "$rc"
 
       - name: Rendered copy voice guard (BRO-5812, advisory)
         # Owner voice rules for on-screen copy: no em dashes, no AI-flavored

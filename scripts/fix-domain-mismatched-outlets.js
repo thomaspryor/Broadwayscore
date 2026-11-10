@@ -264,7 +264,7 @@ function main() {
   console.log('');
   console.log(`Summary: renamed=${results.renamed} would-rename=${results.wouldRename} marked-duplicate=${results.duped} would-duplicate=${results.wouldDupe} retagged-inplace=${results.retagged} would-retag-inplace=${results.wouldRetag} skip-not-found=${results.skipMissing} errors=${results.errs}`);
   if (!DRY_RUN && (results.renamed > 0 || results.duped > 0 || results.retagged > 0)) {
-    console.log('\nNext: cd data/review-texts && git add -A && git commit -m "..." && git push');
+    console.log('\nNext: bash scripts/sync-review-texts.sh "data: fix domain-mismatched outlets"');
   }
 }
 

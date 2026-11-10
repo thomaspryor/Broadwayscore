@@ -1,13 +1,15 @@
 import Link from 'next/link';
-import { getShowById, getTourStops, getToursOf } from '@/lib/data-core';
+import { getShowById, getTourStops } from '@/lib/data-core';
 import type { ComputedShow } from '@/lib/data-core';
 import { featureFlags } from '@/config/feature-flags';
 import { hasReachedStage, isLondonMarket, isUkRegionalShow } from '@/lib/market-utils';
-import { getTourParentLabel, describeTourScores } from '@/lib/tour-display';
-import { isTourScored } from '@/lib/tour-listing';
-import { hasEnoughReviews, applyCoverageFloor } from '@/config/score-buckets';
+import { getTourParentLabel } from '@/lib/tour-display';
 
 /**
+ * Owner decision 2026-11-10 (BRO-7259): a Broadway page's top card carries no
+ * "On tour" / "National tour" line. It was never approved on its own; the tour
+ * reaches Broadway readers through Other Productions and the tours browse page.
+ *
  * The lines under a show's header that say how it relates to other
  * productions: a national tour and its Broadway parent, a regional tryout and
  * its Broadway transfer, a multi-city tour and its stops. Server component.
@@ -42,49 +44,6 @@ export default function ShowTrustLines({ show }: { show: ComputedShow }) {
                   </Link>
                 </>
               )}
-            </span>
-          </p>
-        );
-      })()}
-
-      {/* Parent side (any market): its national tour(s). Empty while the tour flag is off. */}
-      {!isTour && (() => {
-        const tours = getToursOf(show);
-        if (tours.length === 0) return null;
-        return (
-          <p className="text-xs sm:text-sm mb-1 leading-relaxed text-sky-300/90" data-testid="on-tour-line">
-            {/* "On tour" only while one is running; a finished tour is "National tour". */}
-            <span className="font-semibold">{tours.some(t => t.status === 'open' || t.status === 'previews') ? 'On tour' : 'National tour'}</span>
-            <span className="text-gray-400">
-              {(() => {
-                // Same TBD gate as the tryout line: never show a score the tour's own page hides.
-                const t = tours.length === 1 ? tours[0] : null;
-                const tCount = t?.criticScore?.reviewCount || 0;
-                const tT12 = (t?.criticScore?.tier1Count || 0) + (t?.criticScore?.tier2Count || 0);
-                const tourHidden = !t || applyCoverageFloor(
-                  !hasEnoughReviews(tCount, t.category, tT12, false) || t.status === 'previews' || t.status === 'upcoming',
-                  { scorePublicSince: t.scorePublicSince, coverageState: t.cov?.state, coverageAcked: t.coverageAcked },
-                );
-                const tourScore = (!tourHidden && t?.criticScore?.score) ? Math.round(t.criticScore.score) : null;
-                if (tourScore) {
-                  return <>{': '}critics {t?.status === 'open' || t?.status === 'previews' ? 'score' : 'scored'} the tour <span className="text-sky-300 font-semibold">{tourScore}/100</span>.{' '}</>;
-                }
-                // No tour has a score yet: its page exists for the dates, so
-                // say reviews are on the way rather than promising a score.
-                if (!tours.some(isTourScored)) {
-                  return <>{': '}{tours.length > 1 ? 'the national tours are' : 'the national tour is'} {tours.every(x => x.status === 'upcoming') ? 'announced' : 'on the road'}, with critic reviews coming in.{' '}</>;
-                }
-                return <>{': '}{describeTourScores(tours.filter(isTourScored).length, tours.length)}.{' '}</>;
-              })()}
-              {tours.map((tour, i) => (
-                <span key={tour.id}>
-                  <Link href={`/show/${tour.slug}`} className="text-sky-300 underline decoration-sky-300/40 underline-offset-2 hover:text-sky-200" data-testid="on-tour-link">
-                    {/* Descriptive anchor text for the tour page (BRO-4601 SEO). */}
-                    {tours.length > 1 ? `${(tour.openingDate || tour.id.match(/(\d{4})$/)?.[1] || '').slice(0, 4)} national tour reviews →` : `${show.title} national tour reviews →`}
-                  </Link>
-                  {i < tours.length - 1 ? ' ' : ''}
-                </span>
-              ))}
             </span>
           </p>
         );

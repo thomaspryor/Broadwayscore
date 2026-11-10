@@ -73,7 +73,8 @@ async function main() {
   console.log(`Loaded ${cookies.length} New Yorker cookies.`);
 
   const { chromium } = require('playwright');
-  const PROFILE_DIR = '/tmp/newyorker-recovery-browser-profile';
+  // BRO-7171 plan item 8: the outlet's shared persistent profile (renew lock held).
+  const PROFILE_DIR = require('./lib/cookie-renew').claimOutletProfile('newyorker', { legacy: ['/tmp/newyorker-recovery-browser-profile', '/tmp/newyorker-otp-browser-profile', '/tmp/newyorker-browser-profile'] }).dir;
   const launchOpts = {
     headless: false,
     viewport: { width: 1280, height: 900 },

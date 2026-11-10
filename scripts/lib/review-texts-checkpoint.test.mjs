@@ -221,6 +221,53 @@ test('a run that died between commit and pending entry: the next run still pushe
   assert.equal(JSON.parse(originHas(env, REL)).fullText, RECOVERED, 'orphan commit reached origin');
 });
 
+// BRO-7171: the local writers routed through the checkpoint also delete
+// (clean-orphan-pending, the talkinbroadway husk, batch-correct renames).
+// A deletion lands when origin/main no longer has the file; before the fix
+// it threw "did not land as written" after a successful push.
+test('a tracked deletion and a rename land: no throw, origin matches', () => {
+  const env = setup();
+  const other = path.join(env.local, 'show-2026', 'variety--b.json');
+  const renamed = path.join(env.local, 'show-2026', 'variety--jane-doe.json');
+  fs.unlinkSync(env.file);
+  fs.renameSync(other, renamed);
+  const landedPaths = [];
+  const res = checkpointReviewTexts({ repoDir: env.local, paths: [env.file, other, renamed], message: 'cleanup: test', onLanded: (l) => landedPaths.push(l.path), pendingPath: env.pendingPath, pushScript: env.pushScript });
+  assert.equal(res.pushed, true);
+  assert.equal(res.landed.length, 3);
+  assert.equal(originHas(env, REL), null, 'deleted on origin');
+  assert.equal(originHas(env, 'show-2026/variety--b.json'), null);
+  assert.equal(JSON.parse(originHas(env, 'show-2026/variety--jane-doe.json')).fullText, 'other stub');
+  assert.deepEqual(readPending(env.pendingPath), []);
+});
+
+// clean-orphan-pending shape (ship-check): it deletes every file in a show
+// dir, then the dir itself. Before the fix relPath threw ENOENT on the gone
+// parent, and a deleted never-committed file threw "vanished" after the push.
+test('deleted on purpose: emptied-and-removed dir lands; an untracked deletion is a no-op', () => {
+  const env = setup();
+  const dirPath = path.join(env.local, 'show-2026');
+  const other = path.join(dirPath, 'variety--b.json');
+  const untracked = path.join(env.local, '_pending', 'show-2026', 'never-committed.json');
+  fs.mkdirSync(path.dirname(untracked), { recursive: true });
+  fs.writeFileSync(untracked, review('pending'));
+  fs.unlinkSync(env.file);
+  fs.unlinkSync(other);
+  fs.rmdirSync(dirPath);
+  fs.unlinkSync(untracked);
+  fs.rmdirSync(path.dirname(untracked));
+  const tracker = createWriteTracker();
+  for (const p of [env.file, other, untracked]) { tracker.add(p); tracker.deleted.add(p); }
+  const res = checkpointReviewTexts({ repoDir: env.local, paths: tracker, message: 'cleanup: test', pendingPath: env.pendingPath, pushScript: env.pushScript });
+  assert.equal(res.pushed, true);
+  assert.deepEqual(res.notLanded, []);
+  assert.equal(originHas(env, REL), null);
+  assert.equal(originHas(env, 'show-2026/variety--b.json'), null);
+  // Without `deleted`, a never-committed gone path is still a lost write (unchanged contract).
+  const lone = checkpointReviewTexts({ repoDir: env.local, paths: [path.join(env.local, 'x--gone.json')], message: 'feat: test', pendingPath: env.pendingPath, pushScript: env.pushScript });
+  assert.deepEqual(lone.notLanded.map((r) => r.why), ['file vanished before commit']);
+});
+
 test('nothing changed: no commit, no throw, landed confirmed by content', () => {
   const env = setup();
   const res = checkpointReviewTexts({ repoDir: env.local, paths: [env.file], message: 'feat: test', pendingPath: env.pendingPath, pushScript: env.pushScript });

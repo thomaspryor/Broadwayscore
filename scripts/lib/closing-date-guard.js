@@ -41,6 +41,7 @@ function canWriteClosingDate(show) {
  * @param {string|null} newDate - 'YYYY-MM-DD' or null to clear
  * @param {string} source - audit trail string (e.g. 'broadway.com schedule (audit 2026-05-24)')
  * @param {object} [opts]
+ * @param {boolean} [opts.recordExtension=true] - set false when the write is a correction, not an extension (BRO-7252)
  * @param {boolean} [opts.force=false] - bypass the human-correction guard. ONLY for explicitly-manual scripts.
  * @param {(msg: string) => void} [opts.log=console.log] - log function
  * @param {string} [opts.todayStr] - YYYY-MM-DD for closingDateUpdatedAt; defaults to today
@@ -53,13 +54,50 @@ function writeClosingDate(show, newDate, source, opts = {}) {
     log(`[closing-date-guard] skipping write to ${show.id || '(unknown)'}: humanCorrectedClosingDate=true (preserving ${show.closingDate})`);
     return false;
   }
+  if (!opts.force && opts.recordExtension !== false) {
+    recordClosingExtension(show, newDate, source, opts.todayStr);
+  }
   show.closingDate = newDate;
   if (source) show.closingDateSource = source;
   show.closingDateUpdatedAt = opts.todayStr || new Date().toISOString().slice(0, 10);
   return true;
 }
 
+const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
+const EXTENDABLE_STATUSES = new Set(['open', 'previews']);
+
+/**
+ * BRO-7252: a later closingDate on a running show is an EXTENSION, not an
+ * overwrite. Append { announcedAt, from, to, source } to show.closingExtensions
+ * so the site can say "Extended through <date> (Nth extension)" and Closing
+ * Watch can tell a repeatedly extended run from a real announced closing.
+ * Call BEFORE show.closingDate is overwritten (writeClosingDate does).
+ * No event for: first-time dates (from is empty), same or earlier dates,
+ * closed shows, malformed dates, or a repeat of the last recorded `to`.
+ *
+ * @returns {object|null} the appended event, or null
+ */
+function recordClosingExtension(show, newDate, source, todayStr) {
+  if (!show || !EXTENDABLE_STATUSES.has(show.status)) return null;
+  const from = show.closingDate;
+  if (typeof from !== 'string' || typeof newDate !== 'string') return null;
+  if (!ISO_DATE.test(from) || !ISO_DATE.test(newDate) || newDate <= from) return null;
+  const list = Array.isArray(show.closingExtensions) ? show.closingExtensions : [];
+  if (list.length && list[list.length - 1].to === newDate) return null;
+  const event = {
+    announcedAt: todayStr || new Date().toISOString().slice(0, 10),
+    from,
+    to: newDate,
+    source: source || null,
+  };
+  show.closingExtensions = [...list, event];
+  // The stored count is a press-stated floor for runs whose early extensions have no recorded dates; keep it ahead of the list.
+  if (Number.isInteger(show.closingExtensionCount) && show.closingExtensionCount > 0) show.closingExtensionCount += 1;
+  return event;
+}
+
 module.exports = {
   canWriteClosingDate,
   writeClosingDate,
+  recordClosingExtension,
 };

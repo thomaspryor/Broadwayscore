@@ -5,6 +5,7 @@ const path = require('path');
 const { titleToSlug, KNOWN_ALIASES } = require('../show-matching.js');
 const { foldDiacritics } = require('../title-match.js');
 const { slugify: urlSlugify } = require('../url-slug.js');
+const { toDateMs } = require('../date-utils.js');
 
 const name = 'slug-mismatch';
 const description = 'Review URL slug does not mention show slug or any known alias (cross-show contamination)';
@@ -390,6 +391,71 @@ function roundupNamesShow(roundupUrls, wholeTitleSlugs, openingDate) {
   });
 }
 
+
+/**
+ * Show Score provenance (BRO-7121). A capsule post that covers several shows
+ * ("theater-reviews-ambitious-sumo.html" also reviews Conversations with Mother)
+ * has one URL and a slug for one show. Show Score files it under each show it
+ * reviews, with a blurb per show. When THIS show's Show Score page lists the
+ * URL with an excerpt that no other show's page repeats for that URL, the
+ * aggregator vouches for the attribution (same idea as the BWW roundup rule).
+ * An identical blurb under two shows is a copy, not a section, and a URL listed
+ * under this show alone has no sibling section, so neither vouches.
+ */
+const SHOW_SCORE_DATE_WINDOW_DAYS = 120;
+const showScoreCache = new Map();
+function loadShowScoreDoc(file) {
+  let mtime = 0;
+  try { mtime = fs.statSync(file).mtimeMs; } catch { /* missing */ }
+  const cacheKey = `${file}@${mtime}`;
+  if (showScoreCache.has(cacheKey)) return showScoreCache.get(cacheKey);
+  let doc = null;
+  try { doc = JSON.parse(fs.readFileSync(file, 'utf8')); } catch { /* no file: nothing vouches */ }
+  const byUrl = new Map();   // normalized url -> [{ showId, excerpt }]
+  for (const [id, entry] of Object.entries((doc && doc.shows) || {})) {
+    for (const r of (entry && entry.criticReviews) || []) {
+      if (!r || !r.url) continue;
+      const k = showScoreUrlKey(r.url);
+      if (!byUrl.has(k)) byUrl.set(k, []);
+      byUrl.get(k).push({ showId: id, excerpt: String(r.excerpt || '').trim() });
+    }
+  }
+  showScoreCache.set(cacheKey, byUrl);
+  return byUrl;
+}
+function showScoreUrlKey(url) {
+  // Only Blogger's mobile flag and fragments are noise; other query strings
+  // (viewpage.aspx?record=7314) identify the page.
+  return urlKey(url).replace(/#.*$/, '').replace(/[?&]m=[01]$/, '').replace(/\/$/, '').toLowerCase();
+}
+function showScoreVouches(showId, url, file, { openingDate, publishDate, hasSavedText } = {}) {
+  if (!file) return false;
+  // Saved text was already judged by the text tests above; Show Score never
+  // overrides it (its classic error is show B's blurb under show A's URL).
+  if (hasSavedText) return false;
+  // Same production: a Show Score mislink to a revival years away vouches nothing.
+  if (openingDate && publishDate) {
+    const days = Math.abs(toDateMs(publishDate) - toDateMs(openingDate)) / 86400000;
+    // NaN (an unparseable date) fails the comparison and refuses to vouch.
+    if (!(days <= SHOW_SCORE_DATE_WINDOW_DAYS)) return false;
+  }
+  const rows = loadShowScoreDoc(file).get(showScoreUrlKey(url));
+  if (!rows) return false;
+  // Only an editorial post vouches: its last path segment is a hyphenated
+  // headline slug (3+ words). Landing pages, category and id-only pages are
+  // listed under unrelated shows and carry no per-show sections.
+  const lastSeg = showScoreUrlKey(url).replace(/\?.*$/, '').split('/').filter(Boolean).pop() || '';
+  if (lastSeg.replace(/\.(html?|php|aspx?)$/i, '').split('-').filter(Boolean).length < 3) return false;
+  const mine = rows.find(r => r.showId === showId);
+  if (!mine || !mine.excerpt) return false;
+  const norm = (t) => t.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  // Capsule signature: at least one OTHER show lists the same post with a
+  // different blurb. A URL listed under this show alone (a Musto column filed
+  // against a revival) is the contamination the check exists to catch.
+  const others = rows.filter(r => r.showId !== showId);
+  return others.length > 0 && !others.some(r => norm(r.excerpt) === norm(mine.excerpt));
+}
+
 /**
  * Regex for the show's venue name: the part before the first comma
  * ("Theater Wit, Chicago, IL" -> "Theater Wit"), a leading "The" optional and
@@ -566,7 +632,10 @@ function run(show, context) {
         || fullTextNamesShowRepeatedly(fullTexts, repeatRe)
         || fullTextNamesVenueAndTitleWords(fullTexts, show, venueRe, mentionRe)
         || fullTextAboutThisShow(fullTexts, show, context.shows)
-        || roundupNamesShow(sourceTextByUrl.roundupUrls.get(urlKey(review.url)), wholeTitleSlugs, show.openingDate)) { textConfirmed++; continue; }
+        || roundupNamesShow(sourceTextByUrl.roundupUrls.get(urlKey(review.url)), wholeTitleSlugs, show.openingDate)
+        || showScoreVouches(show.id, review.url, context.showScorePath, {
+          openingDate: show.openingDate, publishDate: review.publishDate, hasSavedText: !!(fullTexts && fullTexts.length),
+        })) { textConfirmed++; continue; }
     if ((!segs || segs.length === 0) && isIdOnlyCmsUrl(urlSlug)) {
       opaqueSkipped.push({ outletId: review.outletId, url: review.url });
       continue;

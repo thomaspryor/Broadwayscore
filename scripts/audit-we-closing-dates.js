@@ -289,7 +289,7 @@ async function main() {
         } else {
           extensions.push(result);
           if (!DRY_RUN) {
-            writeClosingDate(show, result.extracted, `${result.urlSource} (WE audit ${TODAY})`, { todayStr: TODAY });
+            writeClosingDate(show, result.extracted, `${result.urlSource} (WE audit ${TODAY})`, { todayStr: TODAY, recordExtension: false });
           }
         }
         break;

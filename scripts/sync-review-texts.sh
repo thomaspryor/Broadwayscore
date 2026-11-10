@@ -92,6 +92,14 @@ if [ "$CHECK_ONLY" = "1" ]; then
   exit 0
 fi
 
+# BRO-7171: pull/stage/commit/push under the machine-wide review-texts lock so
+# a local recovery run's checkpoint and this sync never rebase/commit the same
+# checkout at once. Re-exec under `review-texts-lock.js run`; the child sees
+# the inherited hold (`held` exits 0) and carries on.
+if ! node "$SCRIPT_DIR/lib/review-texts-lock.js" held; then
+  exec node "$SCRIPT_DIR/lib/review-texts-lock.js" run -- bash "$SCRIPT_DIR/$(basename "$0")" "$@"
+fi
+
 # SAFETY: Pull remote changes FIRST so we don't overwrite data (e.g., fullText)
 # that was fetched/committed by other processes while local changes were pending.
 # unbounded-fetch-ok: bound arrives via $(depth_args), see the depth_args()
@@ -116,8 +124,9 @@ if [ -f "$RPF" ] && git rev-parse ORIG_HEAD >/dev/null 2>&1; then
   node "$RPF" ORIG_HEAD >/dev/null 2>&1 || true
 fi
 
-# Check for changes
-git add -A
+# Check for changes. BRO-7171: scoped staging (tracked changes + new review
+# JSON); a stray screenshot or temp file in the checkout stays out.
+node "$SCRIPT_DIR/lib/stage-review-texts.js"
 # A clean index can still have outgoing commits, including a repaired rebase.
 if git diff --staged --quiet && [ "$(git rev-list --count origin/main..HEAD)" = 0 ]; then
   echo "No review-texts changes to sync."
@@ -157,7 +166,7 @@ node -e "
 " 2>/dev/null || true
 
 # Re-stage after protection pass
-git add -A
+node "$SCRIPT_DIR/lib/stage-review-texts.js"
 if git diff --staged --quiet && [ "$(git rev-list --count origin/main..HEAD)" = 0 ]; then
   echo "No review-texts changes to sync (all changes were stale)."
   exit 0
@@ -194,7 +203,7 @@ for i in 1 2 3 4 5; do
     if [ -f "$RPF" ] && git rev-parse ORIG_HEAD >/dev/null 2>&1; then
       node "$RPF" ORIG_HEAD >/dev/null 2>&1 || true
       # Re-stage anything restore-protected-fields rewrote
-      git add -A 2>/dev/null || true
+      node "$SCRIPT_DIR/lib/stage-review-texts.js" 2>/dev/null || true
     fi
     if ! git diff --staged --quiet; then
       bash "$SCRIPT_DIR/lib/commit-or-amend.sh" origin/main

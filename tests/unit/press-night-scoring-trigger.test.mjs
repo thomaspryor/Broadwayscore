@@ -68,6 +68,7 @@ test('every mid-run review-texts pusher also starts press-night scoring', () => 
   for (const f of callers) {
     const src = fs.readFileSync(path.join(scriptsDir, f), 'utf8');
     assert.match(src, /startPressNightScoring\(\w+\)/, `${f} pushes review-texts mid-run but never starts press-night scoring (BRO-6886)`);
-    assert.match(src, /listUnpushedReviewFiles\(/, `${f} must capture the files before its push`);
+    // BRO-7171: a pusher on review-texts-checkpoint.js gets the exact landed paths back instead.
+    assert.match(src, /listUnpushedReviewFiles\(|require\('\.\/lib\/review-texts-checkpoint'\)/, `${f} must capture the files before its push`);
   }
 });

@@ -120,7 +120,7 @@ const { applyMultiShowFanoutToFile } = require('./lib/multi-show-review-fanout')
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
 // BRO-912: shared byline-anchored extractor (article-extractor.js) — aliased
 // to avoid colliding with this file's own Playwright-DOM extractArticleText(page).
-const { extractArticleText: extractArticleTextFromHtml, extractZoxNewsBody, extractVarietyBody, isDedicatedExtractorHost, isExclusiveExtractorHost } = require('./lib/article-extractor');
+const { extractArticleText: extractArticleTextFromHtml, extractZoxNewsBody, extractVarietyBody, isDedicatedExtractorHost, isExclusiveExtractorHost, hasOutletExtractor } = require('./lib/article-extractor');
 
 // Text cleaning (entity decoding, junk stripping)
 const { cleanText, stripTrailingJunk, TRAILING_JUNK_PATTERNS, hasStrippableConsentLayer } = require('./lib/text-cleaning');
@@ -4191,7 +4191,7 @@ async function extractArticleText(page) {
   // BRO-6872: the browser path never consulted the tested per-host extractors,
   // so L&SA's A Few Good Men review was saved without its last paragraphs and
   // with the magazine's address footer (5375 chars vs the dedicated 5772).
-  if (!isDedicatedExtractorHost(currentUrl)) return domText;
+  if (!isDedicatedExtractorHost(currentUrl) && !(require('./lib/page-furniture').pageFurnitureEnabled() && hasOutletExtractor(currentUrl))) return domText;
   const html = await page.content().catch(() => '');
   return preferDedicatedText(domText, decodeBloxRot47(html), currentUrl);
 }
@@ -4207,15 +4207,64 @@ async function extractArticleText(page) {
 // paragraphs and kept the address footer, while the dedicated extractor got
 // the whole review. Both the HTML path and the browser path now run the
 // dedicated extractor on every dedicated host and keep it when it is longer.
+//
+// BRO-7171 Stage 5: "keep the longer" let the generic pass win whenever its
+// page chrome made it longer: The Stage's dedicated body drops the bio,
+// subscription pitch and copyright, so the generic copy that kept them was
+// longer and was saved. And only DEDICATED_EXTRACTOR_HOSTS consulted the
+// outlet extractors at all, so Deadline/THR (Related Stories runs),
+// WhatsOnStage/TheaterMania (Latest Reviews, tag lists), Vulture (comment and
+// shopping widgets) and every other outlet with a PATTERNS row were saved by
+// the generic pass. Now any host with an outlet extractor runs it, and the
+// generic text wins only when it holds material prose the outlet extractor
+// missed (the same novel-prose bar the gap-acceptance gate uses), not when it
+// is merely longer. Kill switch: PAGE_FURNITURE_DISABLED=true restores the
+// old rule.
 function preferDedicatedText(generic, html, url) {
   const base = String(generic || '');
-  if (!url || !html || !isDedicatedExtractorHost(url)) return base;
+  const legacy = !require('./lib/page-furniture').pageFurnitureEnabled();
+  const eligible = legacy ? isDedicatedExtractorHost(url) : (isDedicatedExtractorHost(url) || hasOutletExtractor(url));
+  if (!url || !html || !eligible) return base;
   let dedicated = null;
-  try { dedicated = extractArticleTextFromHtml(html, url); } catch { dedicated = null; }
+  // Non-dedicated hosts take only an outlet-specific extraction: the
+  // extractor's own generic fallbacks are no better than this file's.
+  const opts = isDedicatedExtractorHost(url) ? {} : { outletOnly: true };
+  try { dedicated = extractArticleTextFromHtml(html, url, undefined, opts); } catch { dedicated = null; }
   // Exclusive host: the generic pass is the bug (it keeps the support banner), so a dedicated miss is a failed
   // extraction, never a banner-prefixed save.
   if (isExclusiveExtractorHost(url)) return dedicated || '';
-  return dedicated && dedicated.length > base.length ? dedicated : base;
+  if (legacy) return dedicated && dedicated.length > base.length ? dedicated : base;
+  return chooseOutletOrGeneric(dedicated, base).text;
+}
+
+/**
+ * Outlet extractor vs generic pass (BRO-7171 Stage 5). Pure.
+ * @returns {{text: string, source: 'outlet'|'generic', novel: number}}
+ */
+function chooseOutletOrGeneric(dedicated, generic) {
+  const base = String(generic || '');
+  if (!dedicated) return { text: base, source: 'generic', novel: 0 };
+  if (!base.trim()) return { text: dedicated, source: 'outlet', novel: 0 };
+  const { novelProseVerdict } = require('./lib/novel-prose');
+  // Judge both bodies as they will be stored. Raw, a cookie-consent dialog
+  // (WhatsOnStage's IAB vendor list: 9,690 chars of long sentences) passed
+  // as "novel prose" and the generic copy won; the save path strips that
+  // dialog anyway, so it must not count.
+  const { textAsStored } = require('./lib/stored-text-form');
+  const asStored = (t) => { try { return textAsStored(t) || t; } catch { return t; } };
+  const d = asStored(dedicated);
+  const g = asStored(base);
+  const v = novelProseVerdict(d, g);
+  if (v.ok) return { text: base, source: 'generic', novel: v.novel };
+  // Superset: the generic body holds all of the outlet body plus extra
+  // non-chrome words (a dropped closing verdict, even "An unmissable
+  // triumph."). The 300-char bar above is for unrelated bodies; for a strict
+  // superset losing prose is the worse failure (pre-BRO-7171 the longer text
+  // always won), so a 3-word run is enough.
+  const { novelProseChars } = require('./lib/novel-prose');
+  const extra = novelProseChars(d, g, { minRunWords: 3 });
+  if (extra > 0 && novelProseChars(g, d) === 0) return { text: base, source: 'generic', novel: extra };
+  return { text: dedicated, source: 'outlet', novel: v.novel };
 }
 
 function extractTextFromHtml(html, url) {
@@ -6272,7 +6321,7 @@ function pushReviewTextsCheckpoint(processed) {
 
     // ROOT-CAUSE GUARD (2026-05-27, mirrors .github/actions/push-review-texts):
     // the review-texts data repo contains ONLY JSON review files — never
-    // symlinks. A stray symlink committed via `git add -A` from a local
+    // symlinks. A stray symlink committed via a whole-tree add from a local
     // session once dangled in CI and crashed the collection pipeline for
     // ~8h. This checkpoint previously never reached here in practice (the
     // REVIEW_TEXTS_TOKEN gate above silently no-op'd on every workflow this
@@ -6293,14 +6342,15 @@ function pushReviewTextsCheckpoint(processed) {
       console.log(`::warning::checkpoint: opening-night lease enforce failed to run (${e.message.split('\n')[0]})`);
     }
 
-    // Stage all changes
-    execSync('git add -A', { cwd: rtDir, stdio: 'pipe' });
+    // BRO-7171: scoped staging (tracked changes + new review JSON), never a
+    // whole-tree add that would sweep stray screenshots/temp files in.
+    require('./lib/stage-review-texts').stageReviewTexts(rtDir);
 
-    // BRO-2559: `git add -A` stages a deletion for ANY tracked file this
+    // BRO-2559: staging tracked changes (`add -u`) stages a deletion for ANY tracked file this
     // job's local working copy happens to be missing — regardless of why
     // (this checkpoint runs mid-collection on whatever subset of shows the
     // process touched; a file this job never fetched into its own working
-    // tree is indistinguishable to `git add -A` from one someone deleted on
+    // tree is indistinguishable to git from one someone deleted on
     // purpose). A hand-flagged wrongProduction/wrongShow verdict living only
     // in that file is silently discarded the moment this commits — safe
     // WriteReview never runs, so its disk-level protection never gets a
@@ -8610,7 +8660,7 @@ function exitIfStuckAfterMain(graceMs = 20000) {
 }
 
 module.exports = {
-  reviewTimeoutMs, pushReviewTextsCheckpoint, commitChanges, extractTextFromHtml, preferDedicatedText, extractArticleText, findReviewsToProcess, dropLeasedReviews, updateReviewJson, verifyFetchedContent };
+  reviewTimeoutMs, pushReviewTextsCheckpoint, commitChanges, extractTextFromHtml, extractTextFromHtmlGeneric, preferDedicatedText, chooseOutletOrGeneric, extractArticleText, findReviewsToProcess, dropLeasedReviews, updateReviewJson, verifyFetchedContent };
 
 // Run (guarded so scripts/collect-review-texts.test.mjs can require() this
 // file for pushReviewTextsCheckpoint() without kicking off a real collection

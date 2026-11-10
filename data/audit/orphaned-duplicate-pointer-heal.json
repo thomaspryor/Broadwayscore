@@ -1,7 +1,7 @@
 {
-  "generated": "2026-11-10T00:30:22.898Z",
+  "generated": "2026-11-10T04:43:26.367Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 46,
+  "count": 48,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -39,6 +39,13 @@
       "field": "duplicateOf"
     },
     {
+      "showId": "as-you-like-it-regional-2026",
+      "loserFile": "broadwayworld--richard-sasanow.json",
+      "targetFile": "broadwayworld--jared-fessler.json",
+      "reason": "orphaned-duplicate-heal: broadwayworld--jared-fessler.json was flagged invalid after broadwayworld--richard-sasanow.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
       "showId": "baby-off-west-end-2026",
       "loserFile": "daily-mail--tom-lawrence.json",
       "targetFile": "daily-mail--unknown.json",
@@ -71,13 +78,6 @@
       "loserFile": "north-west-end--unknown.json",
       "targetFile": "north-west-end--zain-russell.json",
       "reason": "orphaned-duplicate-heal: north-west-end--zain-russell.json was flagged invalid after north-west-end--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "dirty-great-love-story-west-end-2017",
-      "loserFile": "standard--naomi-ackerman.json",
-      "targetFile": "standard--unknown.json",
-      "reason": "orphaned-duplicate-heal: standard--unknown.json was flagged invalid after standard--naomi-ackerman.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -242,6 +242,13 @@
       "field": "duplicateOf"
     },
     {
+      "showId": "sweeney-todd-2023",
+      "loserFile": "theatrely--unknown.json",
+      "targetFile": "theatrely--jordanna-brody.json",
+      "reason": "orphaned-duplicate-heal: theatrely--jordanna-brody.json was flagged invalid after theatrely--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
       "showId": "that-is-not-who-i-am-west-end-2022",
       "loserFile": "theatre-bee-uk--theatre-bee-uk.json",
       "targetFile": "theatre-bee-uk--theatre-bee.json",
@@ -253,6 +260,13 @@
       "loserFile": "financialtimes--unknown.json",
       "targetFile": "financialtimes--louise-levene.json",
       "reason": "orphaned-duplicate-heal: financialtimes--louise-levene.json was flagged invalid after financialtimes--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "the-devil-wears-prada-west-end-2024",
+      "loserFile": "daily-mail--sonia-horon.json",
+      "targetFile": "mail-on-sunday--sonia-horon.json",
+      "reason": "orphaned-duplicate-heal: mail-on-sunday--sonia-horon.json was flagged invalid after daily-mail--sonia-horon.json was pointed at it",
       "field": "duplicateOf"
     },
     {

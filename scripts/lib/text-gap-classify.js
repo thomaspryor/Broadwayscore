@@ -106,6 +106,11 @@ function isFalseTruncationSuspect(review) {
   return (trailerRemoved || curlyEnd) && endsLikeASentence(stripped);
 }
 
+/** A stored HTTP status that says the url's article is gone. */
+function isDeadHttpStatus(status) {
+  return status === 404 || status === 410;
+}
+
 function noUrlSubclass(review, outletInfo) {
   if (outletInfo && outletInfo.accessModel === 'defunct') return 'PRINT_OR_DEFUNCT';
   return hasExcerpt(review) ? 'AGG_REF' : 'BARE';
@@ -145,9 +150,24 @@ function classifyTextGap(review, ffEntry = null, ctx = {}) {
   if (wrongProductionLive) return done('EXCLUDED', 'wrongProduction');
   if (review.isRoundupArticle) return done('EXCLUDED', 'roundup');
   if (review.isNonReview) return done('EXCLUDED', 'nonReview');
+  // A row the deleted LLM 'web-search' step invented (url 404, no text, its
+  // own excerpt). The rebuild, the collector and coverage-holes already skip
+  // it; counting it as an open gap sent 169 of them to subscriber browsers
+  // nightly (BRO-7171 weak-outlet audit 2026-11-09).
+  // A human found no such review exists, or the flagged row already holds
+  // full text (bulk-stamped WE rows, BRO-5858): nothing to find.
+  const fabricated = review.fabricatedEntry === true;
+  if (fabricated && (require('./legacy-web-search').isUserVerifiedFabrication(review) || review.contentTier === 'complete')) {
+    return done('EXCLUDED', 'fabricated');
+  }
   // Complete is closed, but a leftover failed-fetches row is surfaced (metric.completeWithFailedFetchRow).
   if (review.contentTier === 'complete') return done('COMPLETE', ffEntry ? 'with_failed_fetch_row' : null);
   if (hasTerminalRecord(review, dateKnown ? recency : null)) return done('TERMINAL', review.textUnrecoverable.reason);
+  // The other invented rows name a plausible review (critic + outlet) at a url
+  // that never served it: the real link is unknown, so they are NO_URL and go
+  // to URL_FIND only (no browser or archive fetch of the invented url). An
+  // accepted find clears the flag (gap-acceptance).
+  if (fabricated) return done('NO_URL', 'INVENTED_URL', 'fabricated');
 
   if (isFalseTruncationSuspect(review)) return done('FALSE_TRUNCATION_SUSPECT');
 
@@ -156,6 +176,17 @@ function classifyTextGap(review, ffEntry = null, ctx = {}) {
   const ffReason = ffEntry ? effectiveFailureReason(ffEntry) : '';
 
   if (reason === 'url_dead') return done('URL_DEAD', ffReason, reason);
+  // The outlet answered 404/410 for THIS url (rediscover-review-urls Phase 2
+  // HEAD check, or the gap engine's logged-in browser / free refetch). The
+  // field is url-bound: url-change-invariant clears it when the url moves.
+  // Without this the engine kept re-fetching dead urls through the
+  // subscriber browser (Stage 4: 31 WaPo, 16 WSJ, 12 New Yorker, 5 NYT) and
+  // never planned ARCHIVE / url rediscovery for them.
+  if (review.url && isDeadHttpStatus(review.httpStatus)) return done('URL_DEAD', `http_${review.httpStatus}`, reason);
+  // The stored "text" is the site's not-found page (USA Today "Page Not Found
+  // (404)", Newsday "The page you requested is not available"): the url is
+  // dead, so archive + url finding, not another fetch of the same page.
+  if (review.url && require('./soft-404-body').isSoft404Body(review.fullText)) return done('URL_DEAD', 'saved_error_page', reason);
   if (reason === 'url_content_mismatch') return done('URL_WRONG_PAGE', null, reason);
   if (ffReason === 'garbage_content') {
     return reason === 'paywall' ? done('PAYWALL_PAGE', null, reason) : done('GARBAGE_PAGE', 'garbage_content', reason);

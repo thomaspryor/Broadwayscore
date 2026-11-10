@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-10T00:13:53.482Z",
+  "generatedAt": "2026-11-10T04:24:06.002Z",
   "windowDays": 45,
-  "showsScanned": 240,
+  "showsScanned": 241,
   "gaps": [
     {
       "showId": "iphigenie-en-tauride-english-national-opera-west-end-2026",
@@ -18,33 +18,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=iphigenie-en-tauride-english-national-opera-west-end-2026 --url=https://www.thetimes.com/culture/classical-opera/article/iphigenie-en-tauride-review-youve-never-seen-a-family-reunion-like-this-hmwx2kkh2 --outlet=sunday-times   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-08T22:39:44.349Z",
-      "fileAgeHours": 25.5331075,
+      "fileAgeHours": 29.738273333333332,
       "gapSeenAt": "2026-11-09T00:00:26.432Z",
-      "nonTerminalAgeHours": 24.224180555555556,
-      "needsManualRecovery": false
-    },
-    {
-      "showId": "the-steel-man-off-broadway-2026",
-      "title": "The Steel Man",
-      "openingDate": "2026-11-08",
-      "file": "talkinbroadway--unknown.json",
-      "outletId": "talkinbroadway",
-      "tier": 2,
-      "type": "empty-body",
-      "recoverable": true,
-      "url": "https://www.talkinbroadway.com/page/ob/11_08_26.html",
-      "recovery": {
-        "attempted": true,
-        "ok": false,
-        "reason": "⚠️  Bright Data failed: Bright Data request timeout\nFetch failed: fetch failed: All scraping methods failed; no archive.org capture"
-      },
-      "recoveryCount": 2,
-      "forumLinkRecoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=the-steel-man-off-broadway-2026 --url=https://www.talkinbroadway.com/page/ob/11_08_26.html --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-11-09T21:14:38.643Z",
-      "fileAgeHours": 2.9705344444444446,
-      "gapSeenAt": "2026-11-10T00:13:53.482Z",
-      "nonTerminalAgeHours": 0,
+      "nonTerminalAgeHours": 28.394325,
       "needsManualRecovery": false
     },
     {
@@ -55,20 +31,36 @@
       "outletId": "talkinbroadway",
       "tier": 2,
       "type": "empty-body",
-      "recoverable": true,
+      "recoverable": false,
       "url": "https://www.talkinbroadway.com/page/regional/chicago/ch944.html",
-      "recovery": {
-        "attempted": true,
-        "ok": false,
-        "reason": "Fetch failed: fetch failed: All scraping methods failed; no archive.org capture"
-      },
-      "recoveryCount": 2,
+      "recovery": null,
+      "recoveryCount": 3,
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=adirondack-chair-circle-regional-2026 --url=https://www.talkinbroadway.com/page/regional/chicago/ch944.html --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T21:14:38.698Z",
-      "fileAgeHours": 2.9874372222222223,
+      "fileAgeHours": 7.1575825,
       "gapSeenAt": "2026-11-09T21:39:25.109Z",
-      "nonTerminalAgeHours": 2.5745480555555558,
+      "nonTerminalAgeHours": 6.7446925,
+      "needsManualRecovery": false
+    },
+    {
+      "showId": "the-cottage-regional-2026",
+      "title": "The Cottage",
+      "openingDate": "2026-10-28",
+      "file": "theatermania--unknown.json",
+      "outletId": "theatermania",
+      "tier": 2,
+      "type": "empty-body",
+      "recoverable": true,
+      "url": null,
+      "recovery": null,
+      "recoveryCount": 0,
+      "forumLinkRecoveryCount": 0,
+      "fix": "# no URL on file — find the theatermania review for the-cottage-regional-2026 first, then: node scripts/ingest-review-from-url.js --show=the-cottage-regional-2026 --url=<URL> --outlet=theatermania",
+      "firstSeen": "2026-11-10T00:26:39.999Z",
+      "fileAgeHours": 3.957222222222222,
+      "gapSeenAt": "2026-11-10T01:31:07.327Z",
+      "nonTerminalAgeHours": 2.8829652777777777,
       "needsManualRecovery": false
     }
   ],

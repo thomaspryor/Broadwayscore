@@ -28,6 +28,13 @@ if [ ! -d "$REVIEW_TEXTS_DIR/.git" ]; then
   exit 1
 fi
 
+# BRO-7171: pull/edit/commit/push under the machine-wide review-texts lock
+# (re-exec under `review-texts-lock.js run`; the child sees the inherited hold).
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+if ! node "$SCRIPT_DIR/lib/review-texts-lock.js" held; then
+  exec node "$SCRIPT_DIR/lib/review-texts-lock.js" run -- bash "$SCRIPT_DIR/$(basename "$0")" "$@"
+fi
+
 # Step 1: Pull latest from private repo
 echo "Pulling latest from private review-texts repo..."
 cd "$REVIEW_TEXTS_DIR"
@@ -67,7 +74,8 @@ if git diff --cached --quiet; then
 fi
 
 COMMIT_MSG="fix: Update $FILE_PATH ($(echo "$FIELDS" | node -e "const d=require('fs').readFileSync('/dev/stdin','utf8');const f=JSON.parse(d);console.log(Object.keys(f).join(', '))"))"
-git commit -m "$COMMIT_MSG"
+# --only: commit this file even if another writer left something staged.
+git commit -m "$COMMIT_MSG" --only -- "$FILE_PATH"
 git push origin main
 
 echo ""

@@ -85,6 +85,10 @@ const URL_DERIVED_FIELDS = Array.from(new Set([
   'textUnrecoverable',
   // rediscover-review-urls.js Phase 2 refusal of THIS url's redirect; moot once the url moves.
   'redirectRefused',
+  // The OLD url's 404/410 (rediscover-review-urls Phase 2, gap-recovery
+  // driver). text-gap-classify reads it as URL_DEAD, so a stale one would
+  // mark a corrected url dead (BRO-7171).
+  'httpStatus',
   // Salvaged from the old URL's walled page (walled-page-meta.js).
   'outletStandfirst', 'outletHeadline', 'walledPageMetaAt', 'walledPageMetaCheckedAt',
   // Headline + standfirst of the OLD page (page-meta-evidence.js, BRO-5794) and its recheck stamps.

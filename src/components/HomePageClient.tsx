@@ -1,5 +1,6 @@
 'use client';
 
+import { isRepeatedlyExtended } from '@/lib/closing-label';
 import { useMemo, useCallback, useState, useRef, useEffect, startTransition, Suspense, lazy } from 'react';
 import { audienceSortScore } from '@/lib/audience-grade-utils';
 import { replaceLocationSearch } from '@/lib/hooks/useLocationSearch';
@@ -568,7 +569,7 @@ function HomePageInner({ shows, archiveHash, upcomingShows, totalShows, totalRev
       const now = new Date(nowMs);
       const ninetyDaysFromNow = new Date(now.getTime() + 90 * 24 * 60 * 60 * 1000);
       result = result.filter(show => {
-        if (!isEffectivelyOpen(show) || !show.closingDate) return false;
+        if (!isEffectivelyOpen(show) || !show.closingDate || isRepeatedlyExtended(show)) return false;
         const closing = new Date(show.closingDate);
         return closing >= now && closing <= ninetyDaysFromNow;
       });

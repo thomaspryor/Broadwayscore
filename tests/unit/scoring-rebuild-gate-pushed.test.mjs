@@ -102,7 +102,9 @@ test('every mid-run review-texts pushWithRetry caller drops the marker on succes
   const scriptsDir = path.join(ROOT, 'scripts');
   const callers = fs.readdirSync(scriptsDir).filter(f => f.endsWith('.js'))
     .filter(f => /pushWithRetry\(\{ cwd: (rtDir|reviewTextsDir)\b/.test(fs.readFileSync(path.join(scriptsDir, f), 'utf8')));
-  assert.ok(callers.length >= 4, `found ${callers.join(', ')}`);
+  // BRO-7171: recover-wayback-reviews moved to review-texts-checkpoint.js, which marks every successful push itself.
+  assert.ok(callers.length >= 3, `found ${callers.join(', ')}`);
+  assert.match(fs.readFileSync(path.join(scriptsDir, 'lib', 'review-texts-checkpoint.js'), 'utf8'), /markReviewTextsPushed\(\); \} catch[^\n]*\n\s*return \{ ok: true/, 'review-texts-checkpoint marks a successful push');
   for (const f of callers) {
     const src = fs.readFileSync(path.join(scriptsDir, f), 'utf8');
     const re = /const rtPush = pushWithRetry\(\{ cwd: (?:rtDir|reviewTextsDir)[^\n]*\n\s*if \(rtPush\.ok\) \{\n\s*markReviewTextsPushed\(\);/g;

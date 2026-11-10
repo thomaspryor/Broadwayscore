@@ -1,0 +1,49 @@
+{
+  "issueNumber": "bro-7125-c",
+  "planId": "7d67d5a3-174f-464c-93a7-8b053c02a01d",
+  "status": "partial",
+  "createdAt": "2026-11-10T03:17:57.230036Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7125 part 3: the 1 Minute Critic Kramer/Fauci review (St. Ann's run) is a February Skirball review the outlet republished on 2026-10-06 for the St. Ann's return. The date backfill read a June Archive.org snapshot (2026-02-15) and tripped the cross-market gate, failing every daily run. Store the live page date so the recheck leaves it alone.",
+    "steps": [
+      "review-field-edit x2"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "kramerfauci-st-anns-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+        "field": "publishDate",
+        "oldValue": "2026-10-01",
+        "newValue": "2026-10-06",
+        "description": "live page datePublished is 2026-10-06 (republished for the St. Ann's return)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "kramerfauci-st-anns-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+        "field": "dateSource",
+        "oldValue": "llm-scoring",
+        "newValue": "html-page",
+        "description": "date read from the live page (curl of the review url, meta article:published_time)"
+      }
+    ]
+  },
+  "executedAt": "2026-11-10T03:51:07.302Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "publishDate: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "dateSource: current value doesn't match expected (data changed since plan was created)"
+    }
+  ],
+  "executedIn": "ci"
+}

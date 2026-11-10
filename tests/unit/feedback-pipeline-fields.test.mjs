@@ -36,8 +36,9 @@ describe('feedback-pipeline-fields', () => {
     // rejectedImageUrls is read by scripts/lib/image-source-match.js (BRO-4996);
     // noReliableArt by scripts/lib/no-reliable-art.js (BRO-5022);
     // firstRunStart by scripts/lib/video-production-context.js (BRO-4768);
-    // liveInHd by the data-edit plan for Met Live in HD dates (BRO-6769).
-    const writtenByPipeline = new Set(['rejectedImageUrls', 'noReliableArt', 'firstRunStart', 'liveInHd']);
+    // liveInHd by the data-edit plan for Met Live in HD dates (BRO-6769);
+    // closingExtensions / closingExtensionCount by the closing-date writers and the BRO-7252 backfill plan.
+    const writtenByPipeline = new Set(['rejectedImageUrls', 'noReliableArt', 'firstRunStart', 'liveInHd', 'closingExtensions', 'closingExtensionCount']);
     for (const field of FEEDBACK_EDITABLE_FIELDS['shows.json']) {
       if (writtenByPipeline.has(field)) continue;
       assert.ok(

@@ -146,3 +146,97 @@ test('URL_REDISCOVER: unavailable SERP is non-evidence and does not spend the fi
   assert.equal(hit.ok, true);
   assert.equal(hit.url, 'https://example.com/new-review');
 });
+
+// BRO-7171 weak-outlet audit: a hard 404/410 on the stored url lands on the
+// record (httpStatus) so the classifier routes it to URL_DEAD; before, the
+// evidence lived only in the engine ledger and the browser re-fetched it.
+test('deadUrlStampPatch: stamps a hard 404/410 on the current url only', async () => {
+  const rec = { url: c.url, contentTier: 'truncated', fullText: 'x'.repeat(182) };
+  const nf = await S.browserSession(c, { extract: async () => ({ error: 'HTTP 404 not found', notFound: true, status: 404 }) });
+  assert.deepEqual(S.deadUrlStampPatch(rec, { url: c.url, ...nf }), { httpStatus: 404 });
+  const gone = await S.refetchFree(c, deps({ fetchPage: async () => { throw new Error('HTTP 404 Not Found'); } }));
+  assert.equal(gone.outcome, 'no_evidence');
+  assert.deepEqual(S.deadUrlStampPatch(rec, { url: c.url, ...gone }), { httpStatus: 404 }, JSON.stringify(gone));
+  // not evidence / not a 404 / url moved since the fetch / complete text / already stamped
+  assert.equal(S.deadUrlStampPatch(rec, { url: c.url, outcome: 'non_evidence', reason: 'soft_404' }), null);
+  assert.equal(S.deadUrlStampPatch(rec, { url: c.url, outcome: 'no_evidence', reason: 'archive_empty' }), null);
+  assert.equal(S.deadUrlStampPatch({ ...rec, url: 'https://example.com/moved' }, { url: c.url, outcome: 'no_evidence', reason: 'url_not_found_404' }), null);
+  assert.equal(S.deadUrlStampPatch({ ...rec, contentTier: 'complete' }, { url: c.url, outcome: 'no_evidence', reason: 'url_not_found_404' }), null);
+  assert.equal(S.deadUrlStampPatch({ ...rec, httpStatus: 404 }, { url: c.url, outcome: 'no_evidence', reason: 'url_not_found_404' }), null);
+});
+
+test('a stamped 404 classifies URL_DEAD and a url change clears it (url-bound)', () => {
+  const { classifyTextGap } = require('./text-gap-classify.js');
+  const { URL_DERIVED_FIELDS } = require('./url-change-invariant.js');
+  const rec = { showId: 's-2025', outletId: 'washpost', url: c.url, contentTier: 'truncated', fullText: 'x'.repeat(182), source: 'web-search' };
+  const stamped = { ...rec, ...S.deadUrlStampPatch(rec, { url: c.url, outcome: 'no_evidence', reason: 'url_not_found_404' }) };
+  assert.equal(classifyTextGap(stamped, null, { nowMs: Date.parse('2026-11-09') }).gapClass, 'URL_DEAD');
+  assert.ok(URL_DERIVED_FIELDS.includes('httpStatus'), 'httpStatus must be cleared by a url change');
+});
+
+// URL_FIND candidate loop (review 2026-11-10): a method is only "done" when
+// its links were refused on evidence; unreadable links are kept, not written off.
+test('urlFind: timeouts stay open, unreadable links are kept, slots skip old refusals, Bright Data skipped on dead links', async () => {
+  const fs = require('fs'); const os = require('os'); const path = require('path');
+  const UF = require('./gap-url-find.js');
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'urlfind-'));
+  fs.mkdirSync(path.join(tmp, 'julie-west-end-2018'));
+  const fp = path.join(tmp, 'julie-west-end-2018', 'telegraph--x.json');
+  fs.writeFileSync(fp, JSON.stringify({ showId: 'julie-west-end-2018', outletId: 'telegraph', criticName: 'X Y', url: null, fullText: 'short' }));
+  const root = path.join(path.dirname(new URL(import.meta.url).pathname), '..', '..');
+  const orig = { runMethod: UF.runMethod, fetchCandidateText: UF.fetchCandidateText };
+  const cands = { AGG_LINK: ['https://t.co.uk/a1'], OUTLET_SITEMAP: ['https://t.co.uk/b1'], WAYBACK_CDX: ['https://t.co.uk/old', 'https://t.co.uk/c1', 'https://t.co.uk/c2', 'https://t.co.uk/c3', 'https://t.co.uk/c4'], SLUG_GUESS: ['https://t.co.uk/d1'] };
+  UF.runMethod = async (m) => ({ candidates: (cands[m] || []).map((url) => ({ url })), tried: [], error: null });
+  const fetched = [];
+  UF.fetchCandidateText = async (url) => {
+    fetched.push(url);
+    if (url.endsWith('a1')) return { ok: false, tried: ['free:no_evidence/all_tiers_timeout', 'wayback:no_evidence/archive_empty'] };
+    if (url.endsWith('d1')) return { ok: false, tried: ['free:no_evidence/url_dead_404', 'wayback:no_evidence/archive_empty'] };
+    return { ok: true, rawText: 'text', html: '<h1>x</h1>', tried: ['free:ok 4'], via: 'free' };
+  };
+  const gate = async ({ url }) => (url.endsWith('b1') ? { ok: false, code: 'paywall' } : { ok: false, code: 'identity_unproven' });
+  try {
+    const r = await S.urlFind({ filePath: fp, showId: 'julie-west-end-2018' }, { dir: tmp, rootDir: root, refusedUrls: new Set(['https://t.co.uk/old']), methods: ['AGG_LINK', 'OUTLET_SITEMAP', 'WAYBACK_CDX', 'SLUG_GUESS'] }, { gate });
+    assert.equal(r.methods.AGG_LINK, 'error'); // a timeout is not a refusal
+    assert.equal(r.methods.OUTLET_SITEMAP, 'found_unreadable'); // paywalled link is found, not "not findable"
+    assert.deepEqual(r.foundUnreadable, [{ url: 'https://t.co.uk/b1', code: 'paywall' }]);
+    assert.equal(r.methods.WAYBACK_CDX, 'more_candidates'); // 4 fresh links, 3 tried: not done
+    assert.ok(!fetched.includes('https://t.co.uk/old')); // an old refusal does not use a slot
+    assert.ok(fetched.includes('https://t.co.uk/c3') && !fetched.includes('https://t.co.uk/c4'));
+    assert.equal(r.methods.SLUG_GUESS, 'candidates_refused'); // a 404 + no capture is evidence
+    assert.ok(r.refusedCandidates.includes('https://t.co.uk/d1'));
+    assert.equal(r.reason, 'url_found_unreadable');
+  } finally { Object.assign(UF, orig); fs.rmSync(tmp, { recursive: true, force: true }); }
+  // Bright Data is not paid for a link the free fetch proved dead
+  let bd = 0;
+  const d = deps({ fetchPage: async (u, o) => { if (o && o.tiers && o.tiers[0] === 'brightdata') { bd++; return { content: ARTICLE }; } throw new Error('HTTP 404'); }, listCaptureTimestamps: async () => [] });
+  const got = await UF.fetchCandidateText('https://t.co.uk/dead', { allowBd: true }, d);
+  assert.equal(bd, 0, JSON.stringify(got.tried));
+  assert.equal(UF.fetchRefusedOnEvidence(got.tried), true);
+  assert.equal(UF.fetchRefusedOnEvidence(['free:no_evidence/all_tiers_timeout', 'wayback:no_evidence/archive_empty']), false);
+  // production classes a timeout and a 403 as no_evidence: neither is an answer about the page (ship-check P1)
+  assert.equal(UF.fetchRefusedOnEvidence(['free:no_evidence/fetch_error', 'wayback:no_evidence/archive_empty']), false);
+  assert.equal(UF.fetchRefusedOnEvidence(['free:no_evidence/url_dead_410', 'wayback:rejected/archive_thin_copy']), true);
+});
+
+// Ship-check P1: a query that errored left part of the index unsearched, so
+// refusing what the other queries found must not finish the method.
+test('urlFind: a partial index error keeps the method open even when its found links are refused', async () => {
+  const fs = require('fs'); const os = require('os'); const path = require('path');
+  const UF = require('./gap-url-find.js');
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'urlfind-'));
+  fs.mkdirSync(path.join(tmp, 'julie-west-end-2018'));
+  const fp = path.join(tmp, 'julie-west-end-2018', 'telegraph--x.json');
+  fs.writeFileSync(fp, JSON.stringify({ showId: 'julie-west-end-2018', outletId: 'telegraph', criticName: 'X Y', url: null, fullText: 'short' }));
+  const root = path.join(path.dirname(new URL(import.meta.url).pathname), '..', '..');
+  const orig = { runMethod: UF.runMethod, fetchCandidateText: UF.fetchCandidateText };
+  UF.runMethod = async (m) => (m === 'WAYBACK_CDX'
+    ? { candidates: [{ url: 'https://t.co.uk/w1' }], tried: [], error: 'WAYBACK_CDX partial: 1/2 queries failed' }
+    : { candidates: [{ url: 'https://t.co.uk/s1' }], tried: [], error: null });
+  UF.fetchCandidateText = async () => ({ ok: true, rawText: 'text', html: '<h1>x</h1>', tried: ['free:ok 4'], via: 'free' });
+  try {
+    const r = await S.urlFind({ filePath: fp, showId: 'julie-west-end-2018' }, { dir: tmp, rootDir: root, methods: ['WAYBACK_CDX', 'SLUG_GUESS'] }, { gate: async () => ({ ok: false, code: 'identity_unproven' }) });
+    assert.equal(r.methods.WAYBACK_CDX, 'error');
+    assert.equal(r.methods.SLUG_GUESS, 'candidates_refused');
+  } finally { Object.assign(UF, orig); fs.rmSync(tmp, { recursive: true, force: true }); }
+});

@@ -104,7 +104,8 @@ runs:
           node "$GITHUB_WORKSPACE/scripts/lib/resolve-modify-delete.js" \
             || echo "::warning::push-review-texts: modify/delete resolver crashed (falling back to whole-file)"
           git checkout --theirs -- . 2>/dev/null || true
-          git add -A
+          # BRO-7171: scoped staging (tracked changes + new review JSON), never a whole-tree add.
+          node "${GITHUB_WORKSPACE}/scripts/lib/stage-review-texts.js"
         fi
 
         # BRO-4786: opening-night lane lease. While the lane holds a show's night lease, no
@@ -120,7 +121,7 @@ runs:
         # ROOT-CAUSE GUARD (2026-05-27): the review-texts data repo contains
         # ONLY JSON review files — never symlinks. A stray symlink
         # (broadway-review-texts -> /Users/tompryor/broadway-review-texts,
-        # absolute local path) was committed via `git add -A` from a local
+        # absolute local path) was committed via a whole-tree add from a local
         # session, dangled in CI, and crashed the collection pipeline for
         # ~8h. Delete any symlinks in the tree before staging so one can
         # never be committed again. -print surfaces them in the log.
@@ -129,7 +130,7 @@ runs:
           echo "::warning::push-review-texts: removing stray symlink(s) before commit:"
           echo "$STRAY_LINKS"
           # -delete removes the symlink entry from the working tree. The
-          # `git add -A` below then stages that removal automatically —
+          # scoped staging below (its `add -u` half) stages that removal —
           # including for an already-tracked symlink — so no separate
           # `git rm --cached` is needed (and the unquoted-var form of it was
           # unsafe under whitespace in paths).
@@ -151,7 +152,9 @@ runs:
           return 1
         }
 
-        git add -A
+        # BRO-7171: scoped staging. Tracked changes (deletions included) plus new
+        # review JSON; a stray png/tmp file the job left in the tree stays out.
+        node "${GITHUB_WORKSPACE}/scripts/lib/stage-review-texts.js"
 
         # Check if there are changes to commit
         if git diff --staged --quiet && nothing_owed; then
@@ -342,7 +345,7 @@ runs:
         " || true
 
         # Re-stage after protection pass
-        git add -A
+        node "${GITHUB_WORKSPACE}/scripts/lib/stage-review-texts.js"
         if git diff --staged --quiet && nothing_owed; then
           echo "No review-texts changes to push (all changes were stale)"
           exit 0
@@ -496,11 +499,15 @@ runs:
                     THEIR_LEN=$(echo "$THEIR_CONTENT" | python3 -c "import sys,json;print(len(json.load(sys.stdin).get('fullText','') or ''))" 2>/dev/null || echo "0")
                   fi
 
-                  if [ "$OUR_LEN" -gt "$THEIR_LEN" ] 2>/dev/null; then
+                  # BRO-7171: same winner rule as the field merge (a chrome-gain
+                  # rollback beats the longer chrome text it undoes; a newer fetch
+                  # beats an older longer body). Length only if the helper fails.
+                  WIN=$(node ../../scripts/lib/review-json-three-way-merge.js --whole-file-winner "$f" 2>/dev/null) || WIN=""
+                  if [ "$WIN" = "workflow" ] || { [ -z "$WIN" ] && [ "$OUR_LEN" -gt "$THEIR_LEN" ] 2>/dev/null; }; then
                     git show REBASE_HEAD:"$f" > "$f" 2>/dev/null
                     git add "$f"
                     KEPT_OURS=$((KEPT_OURS + 1))
-                    echo "  $f: kept ours (${OUR_LEN} chars > ${THEIR_LEN} chars)"
+                    echo "  $f: kept ours (${WIN:-length}; ${OUR_LEN} vs ${THEIR_LEN} chars)"
                   else
                     # Use explicit `git show HEAD:` — NOT `git checkout --theirs`.
                     # During a REBASE git inverts ours/theirs: --theirs means the
@@ -519,7 +526,7 @@ runs:
                     fi
                     git add "$f"
                     KEPT_THEIRS=$((KEPT_THEIRS + 1))
-                    echo "  $f: kept remote (${THEIR_LEN} chars >= ${OUR_LEN} chars)"
+                    echo "  $f: kept remote (${WIN:-length}; ${THEIR_LEN} vs ${OUR_LEN} chars)"
                   fi
                 elif [[ "$f" == "failed-fetches.json" ]]; then
                   # Merge failed-fetches arrays: union by reviewId, keep newer (ours) entries
@@ -565,7 +572,7 @@ runs:
               CARRIED=$(node ../../scripts/lib/carry-newer-scoring.js --refs=HEAD,REBASE_HEAD $UNMERGED 2>&1 | tail -1) || CARRIED="0"
               if [ "$CARRIED" -gt 0 ] 2>/dev/null; then
                 echo "  Kept newer scoring in $CARRIED conflicted file(s)"
-                git add -A
+                node "${GITHUB_WORKSPACE}/scripts/lib/stage-review-texts.js"
               fi
 
               # If all conflicts were resolved by keeping theirs, our commit is empty — skip it
@@ -629,7 +636,7 @@ runs:
               RESTORED=$(node ../../scripts/lib/restore-protected-fields.js "origin/main" 2>&1 | tail -1) || RESTORED="0"
               if [ "$RESTORED" -gt 0 ] 2>/dev/null; then
                 echo "  Restored protected fields in $RESTORED file(s) after conflict resolution"
-                git add -A
+                node "${GITHUB_WORKSPACE}/scripts/lib/stage-review-texts.js"
                 bash "${GITHUB_WORKSPACE}/scripts/lib/commit-or-amend.sh" "origin/main" "${COMMIT_MSG:-data: reconcile after concurrent push}" >/dev/null 2>&1 || true
               fi
             fi

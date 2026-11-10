@@ -34,6 +34,7 @@ import TicketLink from '@/components/TicketLink';
 import { sortTicketLinks } from '@/lib/ticket-utils';
 import { stripInlineMarkdown } from '@/lib/formatting';
 import { formatShowDate } from '@/lib/date-utils';
+import { formatClosingLabel } from '@/lib/closing-label';
 import Breadcrumb from '@/components/Breadcrumb';
 import { displaysCriticScore } from '@/lib/critic-score-display';
 
@@ -378,7 +379,7 @@ export default async function GuidePage(props: { params: Promise<{ slug: string 
                       )}
                       {show.closingDate && show.status === 'open' && (
                         <p className="text-rose-400 text-xs mt-0.5">
-                          Closes {formatShowDate(show.closingDate)}
+                          {formatClosingLabel(show, formatShowDate(show.closingDate))}
                         </p>
                       )}
                     </div>

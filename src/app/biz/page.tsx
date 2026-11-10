@@ -11,6 +11,8 @@ import { featureFlags } from '@/config/feature-flags';
 import {
   getShowsApproachingRecoupment,
   getShowsAtRisk,
+  getClosingWatch,
+  getNearBreakEven,
   getRecentRecoupments,
   getRecentClosings,
   getUpcomingClosings,
@@ -43,6 +45,8 @@ import RecentDevelopmentsList from '@/components/biz/RecentDevelopmentsList';
 import { buildDevelopments } from '@/lib/biz-developments';
 import ApproachingRecoupmentCard from '@/components/biz/ApproachingRecoupmentCard';
 import AtRiskCard from '@/components/biz/AtRiskCard';
+import ClosingWatchCard from '@/components/biz/ClosingWatchCard';
+import NearBreakEvenList from '@/components/biz/NearBreakEvenList';
 import RecoupmentTable from '@/components/biz/RecoupmentTable';
 import AllShowsTable from '@/components/biz/AllShowsTable';
 import MoneyGate from '@/components/biz/MoneyGate';
@@ -113,7 +117,12 @@ export default function BizDashboard() {
   const costCoverage = featureFlags.commercial && featureFlags.boxOfficeV2 ? getBoxOfficeCostCoverage() : null;
 
   const approachingRecoupment = getShowsApproachingRecoupment();
-  const atRiskShows = getShowsAtRisk();
+  const closingWatch = getClosingWatch();
+  // Each show is listed once (BRO-7246): Closing Watch first, then At Risk (its card says more), then Close to break-even.
+  const watchSlugs = new Set(closingWatch.map((s) => s.slug));
+  const atRiskShows = getShowsAtRisk().filter((s) => !watchSlugs.has(s.slug));
+  const atRiskSlugs = new Set(atRiskShows.map((s) => s.slug));
+  const nearBreakEven = getNearBreakEven().filter((s) => !atRiskSlugs.has(s.slug));
   const recentRecoupments = getRecentRecoupments(24);
   const allOpenShows = getAllOpenShowsWithCommercial();
 
@@ -246,6 +255,30 @@ export default function BizDashboard() {
               </Link>
             </div>
             <RecentDevelopmentsList items={recentDevelopments} />
+          </section>
+        )}
+
+        {/* Closing Watch (BRO-7246): our estimate, before any announcement */}
+        {(closingWatch.length > 0 || nearBreakEven.length > 0) && (
+          <section className="mb-10" id="closing-watch">
+            <h2 className="text-xl font-bold text-white mb-4">
+              Closing Watch
+            </h2>
+            {closingWatch.length > 0 && (
+              <>
+                <p className="text-gray-400 text-sm mb-4">
+                  Running shows that haven&apos;t announced a closing but whose last 4 weeks of grosses are under
+                  estimated break-even. The closing date is our estimate, based on how long past Broadway shows
+                  kept running once their grosses fell this far.
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {closingWatch.map((show) => (
+                    <ClosingWatchCard key={show.slug} {...show} />
+                  ))}
+                </div>
+              </>
+            )}
+            <NearBreakEvenList shows={nearBreakEven} />
           </section>
         )}
 

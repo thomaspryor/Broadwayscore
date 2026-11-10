@@ -24,36 +24,43 @@
 
 const readline = require('readline');
 
+const { profileDir, claimOutletProfile } = require('./lib/cookie-renew');
+
 const SITES = {
   nyt: {
     name: 'New York Times',
     loginUrl: 'https://myaccount.nytimes.com/auth/login',
     testUrl: 'https://www.nytimes.com/',
-    profileDir: '/tmp/nyt-browser-profile',
+    profileDir: profileDir('nyt'), // BRO-7171 plan item 8: shared persistent profile, not /tmp
+    legacyProfile: '/tmp/nyt-browser-profile',
   },
   wsj: {
     name: 'Wall Street Journal',
     loginUrl: 'https://accounts.wsj.com/login',
     testUrl: 'https://www.wsj.com/',
-    profileDir: '/tmp/wsj-browser-profile',
+    profileDir: profileDir('wsj'), // BRO-7171 plan item 8: shared persistent profile, not /tmp
+    legacyProfile: '/tmp/wsj-browser-profile',
   },
   bloomberg: {
     name: 'Bloomberg',
     loginUrl: 'https://www.bloomberg.com/account/signin',
     testUrl: 'https://www.bloomberg.com/',
-    profileDir: '/tmp/bloomberg-browser-profile',
+    profileDir: profileDir('bloomberg'), // BRO-7171 plan item 8: shared persistent profile, not /tmp
+    legacyProfile: '/tmp/bloomberg-browser-profile',
   },
   newyorker: {
     name: 'New Yorker',
     loginUrl: 'https://www.newyorker.com/auth/initiate?redirectURL=https%3A%2F%2Fwww.newyorker.com%2F&source=HB',
     testUrl: 'https://www.newyorker.com/',
-    profileDir: '/tmp/newyorker-browser-profile',
+    profileDir: profileDir('newyorker'), // BRO-7171 plan item 8: shared persistent profile, not /tmp
+    legacyProfile: '/tmp/newyorker-browser-profile',
   },
   newspapers: {
     name: 'Newspapers.com',
     loginUrl: 'https://www.newspapers.com/signin/',
     testUrl: 'https://www.newspapers.com/',
-    profileDir: '/tmp/newspapers-browser-profile',
+    profileDir: profileDir('newspapers'), // BRO-7171 plan item 8: shared persistent profile, not /tmp
+    legacyProfile: '/tmp/newspapers-browser-profile',
   },
 };
 
@@ -82,6 +89,8 @@ async function main() {
   }
 
   const site = SITES[siteArg];
+  // Takes the renew lock (no second Chrome on the same profile) and migrates the old /tmp profile once.
+  claimOutletProfile(siteArg, { legacy: [site.legacyProfile] });
   console.log(`\n${'='.repeat(50)}`);
   console.log(`Paywall Browser Login: ${site.name}`);
   console.log(`${'='.repeat(50)}`);

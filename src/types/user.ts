@@ -58,6 +58,8 @@ export interface ShowLookup {
   previewDate: string | null;
   openingDate: string | null;
   closingDate: string | null;
+  /** BRO-7252: times the run was extended (compact feed field `ce`). */
+  closingExtensionCount?: number;
   compositeScore: number | null;
   posterUrl: string | null;
   diaryOnly?: boolean;

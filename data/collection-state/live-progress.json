@@ -1,19 +1,133 @@
 {
-  "updatedAt": "2026-11-10T00:36:03.516Z",
-  "processed": 1,
-  "failed": 1,
-  "successRate": "50.0%",
+  "updatedAt": "2026-11-10T04:53:46.231Z",
+  "processed": 289,
+  "failed": 163,
+  "successRate": "63.9%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 171,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
+    "scrapingdog": 26,
+    "scrapingbee": 12,
+    "brightdata": 5,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 79
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 7,
+  "recentActivity": [
+    {
+      "t": "2026-11-10T02:36:44.432Z",
+      "event": "bb-session",
+      "session": "c2a5e1e7",
+      "url": "https://www.talkinbroadway.com/regional/minn/minn1534.html"
+    },
+    {
+      "t": "2026-11-10T02:36:45.056Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-10T02:44:22.992Z",
+      "event": "bb-session",
+      "session": "968e0ba2",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-11-10T02:44:23.615Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-10T02:44:41.204Z",
+      "event": "bb-session",
+      "session": "86a656de",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-11-10T02:44:41.776Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-10T02:45:51.187Z",
+      "event": "bb-session",
+      "session": "e0b88c4f",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-11-10T02:45:51.745Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-10T02:46:08.561Z",
+      "event": "bb-session",
+      "session": "5f4c179c",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-11-10T02:46:09.153Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-10T03:14:39.319Z",
+      "event": "bb-session",
+      "session": "d279d443",
+      "url": "https://bachtrack.com/review-iphigenie-en-tauride-turner-bates-rice-imbrailo-eng"
+    },
+    {
+      "t": "2026-11-10T03:34:34.186Z",
+      "event": "bb-session",
+      "session": "f3142e6f",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-11-10T03:35:48.631Z",
+      "event": "bb-session",
+      "session": "9fb88114",
+      "url": "https://publictheater.org/productions/season/2627/the-curious-case-of-benjamin-b"
+    },
+    {
+      "t": "2026-11-10T03:36:08.494Z",
+      "event": "bb-session",
+      "session": "6c28343b",
+      "url": "https://publictheater.org/productions/season/2627/the-curious-case-of-benjamin-b"
+    },
+    {
+      "t": "2026-11-10T03:40:56.522Z",
+      "event": "bb-session",
+      "session": "6cd84257",
+      "url": "https://www.talkinbroadway.com/regional/minn/minn1534.html"
+    },
+    {
+      "t": "2026-11-10T03:40:56.774Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-10T03:52:19.082Z",
+      "event": "bb-session",
+      "session": "c1f75257",
+      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
+    },
+    {
+      "t": "2026-11-10T03:52:19.461Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-10T03:53:44.918Z",
+      "event": "bb-session",
+      "session": "8d28bbe8",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-11-10T03:53:51.948Z",
+      "event": "bb-session",
+      "session": "78cdbf40",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    }
+  ]
 }

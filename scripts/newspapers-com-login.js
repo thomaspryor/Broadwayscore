@@ -74,7 +74,11 @@ environment. Local/headed only — do not run in CI. See file header for full co
 
 const PROJECT_ROOT = path.join(__dirname, '..');
 const OUT_DIR = path.join(PROJECT_ROOT, 'data', 'newspapers-com-test');
-const PROFILE_DIR = '/tmp/newspapers-com-login-browser-profile';
+// BRO-7171 plan item 8: the outlet's shared persistent profile (outside /tmp,
+// shared with renew-cookies.js and the recover scripts). claimProfile() takes
+// the renew lock and migrates the old /tmp profile once.
+const PROFILE_DIR = require('./lib/cookie-renew').profileDir('newspapers');
+const claimProfile = () => require('./lib/cookie-renew').claimOutletProfile('newspapers', { legacy: ['/tmp/newspapers-com-login-browser-profile', '/tmp/newspapers-browser-profile'] }).dir;
 
 // Placeholder targets — replace with real /image/NNNNNNNN/ URLs found via a
 // logged-in search once credentials are available (logged-out search is
@@ -192,7 +196,7 @@ async function main() {
   }
 
   log(`Logging into newspapers.com as ${email}...`);
-  const context = await launchOtpBrowser(PROFILE_DIR);
+  const context = await launchOtpBrowser(claimProfile());
   const page = context.pages()[0] || (await context.newPage());
 
   const results = [];

@@ -72,7 +72,8 @@ async function main() {
   console.log(`Loaded ${cookies.length} WaPo cookies.`);
 
   const { chromium } = require('playwright');
-  const PROFILE_DIR = '/tmp/wapo-recovery-browser-profile';
+  // BRO-7171 plan item 8: the outlet's shared persistent profile (renew lock held).
+  const PROFILE_DIR = require('./lib/cookie-renew').claimOutletProfile('wapo', { legacy: ['/tmp/wapo-recovery-browser-profile', '/tmp/wapo-login-browser-profile'] }).dir;
   const launchOpts = {
     headless: false,
     viewport: { width: 1280, height: 900 },

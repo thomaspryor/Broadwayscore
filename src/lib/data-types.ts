@@ -583,6 +583,9 @@ export interface ApproachingRecoupmentShow {
 export interface AtRiskShow {
   slug: string;
   title: string;
+  /** BRO-7252: press-recorded extensions so the /biz card reads "Extended through". */
+  closingExtensions?: Array<{ announcedAt: string | null; from: string | null; to: string; source?: string | null }> | null;
+  closingExtensionCount?: number | null;
   season: string;
   capitalization: number | null;
   /** isEstimatedCapitalization(): true when the record flags its capitalization as an estimate or cites no publishable source (prints "~"). */
@@ -600,6 +603,49 @@ export interface AtRiskShow {
   trend: import('@/config/commercial').RecoupmentTrend;
   /** shows.json closingDate (YYYY-MM-DD) when it is still ahead, else null (a passed date on an open show is not an announcement). */
   closingDate: string | null;
+}
+
+/** BRO-7246: a show's line on its own Profitability Scorecard, from the /biz Closing Watch or Close to break-even lists. */
+export type ClosingOutlook =
+  | { kind: 'watch'; breakEvenRatio: number; likelyClosing: ClosingWatchShow['likelyClosing'] }
+  | { kind: 'near'; breakEvenRatio: number; seasonCleared: boolean };
+
+/** "Close to break-even" row on /biz (BRO-7246): no date estimate, it could tip either way. */
+export interface NearBreakEvenShow {
+  slug: string;
+  title: string;
+  avgWeeklyGross: number;
+  breakEven: number;
+  breakEvenRatio: number;
+  /** Under break-even on raw grosses, but cleared by the season adjustment. */
+  seasonCleared: boolean;
+  trend: ClosingWatchShow['trend'];
+}
+
+/** BRO-7246: a running show with no announced closing whose grosses trail break-even. */
+export interface ClosingWatchShow {
+  slug: string;
+  title: string;
+  season: string;
+  /** Trailing 4-week average gross. */
+  avgWeeklyGross: number;
+  /** getBreakEven(), as the At Risk list uses. */
+  breakEven: number;
+  /** avgWeeklyGross / breakEven, under 1. */
+  breakEvenRatio: number;
+  /** Consecutive latest weeks under break-even. */
+  weeksBelowBreakEven: number;
+  trend: import('@/config/commercial').RecoupmentTrend;
+  recouped: boolean;
+  /** Our estimated closing window (YYYY-MM-DD); early/late null when the history never got that far. Null without enough history. */
+  likelyClosing: { early: string | null; median: string; late: string | null } | null;
+  /** What the estimate rests on: past spells under the same threshold that lasted at least as long as this one. */
+  /** Still under break-even if our break-even estimate were 10% too high (holdsAtLowerBreakEven). */
+  holdsAtLowerBreakEven: boolean;
+  /** Won Best Musical/Play/Revival: past winners often outran the estimate (4 of 8 in the backtest ran 20+ weeks longer). */
+  topTonyWinner: boolean;
+  /** cushion: compared only with past runs that had banked at least ('banked') or less than ('thin') half their capitalization; null = all. */
+  basis: { sample: number; closings: number; weeksUnder: number; thresholdPct: number; medianWeeks: number; cushion: 'banked' | 'thin' | null; young: boolean | null } | null;
 }
 
 export interface RecentRecoupmentShow {
@@ -630,6 +676,11 @@ export interface RecentRecoupmentShow {
 export interface CommercialShowRow {
   slug: string;
   title: string;
+  /** Announced closing date of a running show (YYYY-MM-DD), null when none or already past (BRO-7252). */
+  closingDate?: string | null;
+  /** Press-recorded closing extensions, so /biz can say "Extended through" (BRO-7252). */
+  closingExtensions?: Array<{ announcedAt: string | null; from: string | null; to: string; source?: string | null }> | null;
+  closingExtensionCount?: number | null;
   /** shows.json status ('open' | 'previews' | 'closed' | ...). */
   status: string;
   designation: import('@/config/commercial').CommercialDesignation;

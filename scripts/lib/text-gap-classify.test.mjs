@@ -117,6 +117,42 @@ test('URL_DEAD: failed fetch says 404', () => {
   expectClass(classify(base({ fullText: '', contentTier: 'stub' }), ff('url_dead_404')), 'URL_DEAD', 'url_dead_404');
 });
 
+// BRO-7171 weak-outlet audit: a 404/410 the outlet gave for the stored url
+// (rediscover-review-urls Phase 2, or the engine's logged-in browser) routes
+// to URL_DEAD, whatever the text tier says; with no url it stays NO_URL.
+test('URL_DEAD: stored httpStatus 404/410 on the current url', () => {
+  // Real shapes: washpost web-search row (182 chars, GARBAGE_PAGE before) and
+  // a newyorker excerpt row (PAYWALL_TRUNCATED before).
+  expectClass(classify(base({ httpStatus: 404, fullText: 'x'.repeat(182) }), ff('garbage_content')), 'URL_DEAD', 'http_404');
+  expectClass(classify(base({ httpStatus: 410, fullText: '', contentTier: 'excerpt' })), 'URL_DEAD', 'http_410');
+  expectClass(classify(base({ httpStatus: 404 })), 'URL_DEAD', 'http_404');
+  assert.equal(classify(base({ httpStatus: 404, url: null, fullText: '', contentTier: 'stub' })).gapClass, 'NO_URL');
+  assert.equal(classify(base({ httpStatus: 200 })).gapClass, 'TRUNCATED_OTHER');
+  assert.equal(classify(base({ httpStatus: 404, contentTier: 'complete' })).gapClass, 'COMPLETE');
+});
+
+test('fabricatedEntry rows (invented url): NO_URL/INVENTED_URL routed to URL_FIND; verified or full-text ones EXCLUDED', () => {
+  // BRO-7171: the review (critic + outlet) is plausible, only the url was
+  // invented, so the real link is looked for, not the invented url fetched.
+  const r = classify(base({ fabricatedEntry: true, source: 'web-search', httpStatus: 404, fullText: '', contentTier: 'excerpt' }));
+  expectClass(r, 'NO_URL', 'INVENTED_URL');
+  assert.equal(r.open, true);
+  const { selectStrategy } = require('./gap-strategy-table');
+  assert.equal(selectStrategy({ gapClass: r.gapClass, hasUrl: true, hasAdapter: true }).strategy, 'URL_FIND');
+  const verified = classify(base({ fabricatedEntry: true, fabricatedReason: "User-verified: no New Yorker review of Hell's Kitchen exists.", fullText: '', contentTier: 'excerpt' }));
+  expectClass(verified, 'EXCLUDED', 'fabricated');
+  expectClass(classify(base({ fabricatedEntry: true, contentTier: 'complete' })), 'EXCLUDED', 'fabricated');
+  // A cleared flag (false) is an ordinary row.
+  assert.notEqual(classify(base({ fabricatedEntry: false, httpStatus: 404 })).subclass, 'INVENTED_URL');
+});
+
+test('URL_DEAD/saved_error_page: the stored text is the outlet not-found page (BRO-7171, USA Today / Newsday)', () => {
+  const usat = "Page Not Found (404) | USA TODAY America's birthday Discover PLAY U.S. Politics Sports Entertainment Life Money Travel Opinion Crossword";
+  expectClass(classify(base({ fullText: usat, contentTier: 'invalid' })), 'URL_DEAD', 'saved_error_page');
+  expectClass(classify(base({ fullText: 'The page you requested is not available. The page you are looking for might have been removed.', contentTier: 'truncated' })), 'URL_DEAD', 'saved_error_page');
+  assert.equal(classify(base({ fullText: usat, url: null, contentTier: 'invalid' })).gapClass, 'NO_URL');
+});
+
 test('URL_WRONG_PAGE: url_content_mismatch', () => {
   expectClass(classify(base({ fullText: '', contentTier: 'stub' }), ff('url_content_mismatch')), 'URL_WRONG_PAGE');
 });
