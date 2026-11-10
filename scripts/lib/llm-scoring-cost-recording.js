@@ -186,7 +186,7 @@ function checkDailyCostBreach(runs, { now = new Date(), thresholdUsd } = {}) {
 /** Shared by both scoring writers and the daily spend check. Injection keeps tests offline. */
 async function reportRollingCostAlerts(runs, {
   now = new Date(), thresholdUsd = loadCostThresholdUsd(undefined, 'llmScoringDailyUsd'),
-  dryRun = false, routeAlert,
+  dryRun = false, routeAlert, resolveCondition,
 } = {}) {
   const daily = checkDailyCostBreach(runs, { now, thresholdUsd });
   const repeats = checkRepeatSignature(runs, now);
@@ -203,6 +203,24 @@ async function reportRollingCostAlerts(runs, {
     title: 'LLM scoring repeated work detected',
     description: `Repeated scoring signatures in the last 24h (processed/input tokens): ${repeats.map(r => `${r.processed}/${r.input} seen ${r.count} times`).join('; ')}.`,
   });
+  // BRO-6732: a healthy check must clear the incident it raised. Missing or
+  // stale data is not recovery: the total above tolerates unknown costs for
+  // alerting, but those costs must never justify resolving an existing alert.
+  const end = new Date(now).getTime();
+  const recent = runsWithinDay(runs, now);
+  const recoveryEvidence = recent.length > 0 && runs.every(r => {
+    const completed = Date.parse(r?.completedAt);
+    return Number.isFinite(completed) && completed <= end;
+  }) && recent.every(r => Number.isFinite(r.costUsd) && r.costUsd >= 0);
+  if (!dryRun && daily && !daily.breached && recoveryEvidence) {
+    try {
+      await (resolveCondition || require('./owner-alert-router').resolveCondition)(daily.conditionKey, {
+        reason: `Rolling 24h LLM scoring cost $${daily.totalUsd.toFixed(2)} is at or below the $${daily.thresholdUsd.toFixed(2)} alarm line.`,
+      });
+    } catch (err) {
+      console.error(`[llm-scoring] ${daily.conditionKey} resolution failed (non-fatal): ${err.message}`);
+    }
+  }
   for (const alert of alerts) {
     console.warn(`[llm-scoring] ${alert.conditionKey}: ${alert.description}`);
     if (!dryRun) {
