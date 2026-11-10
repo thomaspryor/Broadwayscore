@@ -40,6 +40,7 @@ test('below the threshold is reported but not flagged (a toggled ledger file)', 
 test('an intentional git revert is exempt', () => {
   assert.equal(isIntentionalRevert('Revert "feat: x"'), true);
   assert.equal(isIntentionalRevert('fix: revert-safe parser'), false);
+  assert.equal(isIntentionalRevert('Reapply "feat: x"'), true);
   const files = ['a', 'b', 'c'].map((p) => f(p, `o${p}`, `c${p}`, [`o${p}`]));
   assert.equal(classifyCommit({ subject: 'Revert "BRO-9"', files }).flagged, false);
 });
@@ -51,19 +52,25 @@ test('scanRange flags a real stale-tree commit and passes a normal one (temp git
   const write = (o) => { for (const [k, v] of Object.entries(o)) fs.writeFileSync(path.join(dir, k), v); g('add', '-A'); };
   write({ 'a.js': 'a1', 'b.js': 'b1', 'c.js': 'c1' }); g('commit', '-qm', 'v1');
   write({ 'a.js': 'a2', 'b.js': 'b2', 'c.js': 'c2' }); g('commit', '-qm', 'others land v2');
+  write({ 'n1.js': 'n', 'n2.js': 'm' }); g('commit', '-qm', 'others add two files');
   const base = g('rev-parse', 'HEAD');
-  // normal edit on top of v2
-  write({ 'a.js': 'a3' }); g('commit', '-qm', 'normal edit');
-  // stale tree: rewrites every file back to v1 plus its own tiny change
-  write({ 'a.js': 'a1', 'b.js': 'b1', 'c.js': 'c1' }); g('commit', '-qm', 'BRO-1: fixups');
+  // normal edit on top of main
+  write({ 'a.js': 'a3', 'b.js': 'b3', 'c.js': 'c3' }); g('commit', '-qm', 'normal edit');
+  // the branch undoes its OWN edit to b and c, and changes a: not main's past, not flagged
+  write({ 'a.js': 'a4', 'b.js': 'b2', 'c.js': 'c2' }); g('commit', '-qm', 'drop debug edits');
+  // stale tree: a back to v1, and the two files main just added are deleted
+  fs.rmSync(path.join(dir, 'n1.js')); fs.rmSync(path.join(dir, 'n2.js'));
+  write({ 'a.js': 'a1' }); g('commit', '-qm', 'BRO-1: fixups');
   const prev = process.cwd();
   process.chdir(dir);
   try {
     const res = scanRange({ base });
-    assert.equal(res.length, 2);
+    assert.equal(res.length, 3);
     assert.equal(res[0].flagged, false, 'normal edit must pass');
-    assert.equal(res[1].flagged, true, 'stale-tree commit must be flagged');
-    assert.deepEqual(res[1].restored.sort(), ['a.js', 'b.js', 'c.js']);
+    assert.equal(res[1].flagged, false, 'undoing the branch own edit must pass');
+    assert.deepEqual(res[1].restored, [], 'going back to the merge-base version is not a restore');
+    assert.equal(res[2].flagged, true, 'stale-tree commit must be flagged');
+    assert.deepEqual(res[2].restored.sort(), ['a.js', 'n1.js', 'n2.js']);
   } finally {
     process.chdir(prev);
     fs.rmSync(dir, { recursive: true, force: true });
