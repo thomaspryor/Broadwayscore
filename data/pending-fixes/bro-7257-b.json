@@ -1,0 +1,25 @@
+{
+  "issueNumber": "bro-7257-b",
+  "planId": "80068c6d-32e3-46dc-9688-94bc7e5b1517",
+  "status": "pending",
+  "createdAt": "2026-11-10T04:24:14.346Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7257: retire two stale manual rows in reviews.json so the correct pipeline scores show on the Boston hub",
+    "steps": [
+      "BRO-7257: remove the two stale hand-entered rows that beat their correct pipeline twins (Arts Fuse Wonder: Robert Israel 40 should be Martin Copenhaver 71; Boston.com Paranormal: Genzer 68 should be 81). The next rebuild restores the twins."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "description": "BRO-7257: remove the two stale hand-entered rows that beat their correct pipeline twins (Arts Fuse Wonder: Robert Israel 40 should be Martin Copenhaver 71; Boston.com Paranormal: Genzer 68 should be 81). The next rebuild restores the twins.",
+        "script": "retire-stale-manual-rows.js",
+        "args": "--row=wonder-regional-2026:artsfuse:Robert_Israel:40 --row=paranormal-activity-boston-regional-2026:boston-com:Samantha_Genzer:68 --apply --expect=2"
+      }
+    ]
+  }
+}
