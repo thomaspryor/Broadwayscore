@@ -1,19 +1,37 @@
 {
-  "updatedAt": "2026-11-10T18:35:22.271Z",
-  "processed": 1,
-  "failed": 0,
-  "successRate": "100.0%",
+  "updatedAt": "2026-11-10T19:40:10.502Z",
+  "processed": 4,
+  "failed": 1,
+  "successRate": "80.0%",
   "tierBreakdown": {
     "playwright": 1,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 4,
     "directCookies": 0,
     "scrapingdog": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 1
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-11-10T19:39:20.045Z",
+      "event": "bb-session",
+      "session": "8a5c6564",
+      "url": "https://www.wsj.com/articles/mother-play-review-jessica-langes-tortured-vision-o"
+    },
+    {
+      "t": "2026-11-10T19:39:20.740Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-10T19:39:39.013Z",
+      "event": "bb-session",
+      "session": "b10f1dee",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/jessica-lange-broadway-mother-p"
+    }
+  ]
 }

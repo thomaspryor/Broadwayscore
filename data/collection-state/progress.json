@@ -1,23 +1,53 @@
 {
   "processed": [
-    "kate-allie-and-the-86-mets-off-broadway-2026/front-row-center--tulis-mccall.json"
+    "mother-play-2024/wsj--charles-isherwood.json",
+    "mother-play-2024/hollywood-reporter--unknown.json",
+    "mother-play-2024/broadwaynews--brittani-samuel.json",
+    "mother-play-2024/exeunt-magazine--unknown.json"
   ],
-  "failed": [],
+  "failed": [
+    "mother-play-2024/pages-on-stages--mason-pilevsky.json"
+  ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "kate-allie-and-the-86-mets-off-broadway-2026/front-row-center--tulis-mccall.json"
+      "mother-play-2024/exeunt-magazine--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/mother-play-2024/wsj--charles-isherwood.json",
+      "mother-play-2024/wsj--charles-isherwood.json",
+      "data/review-texts/mother-play-2024/hollywood-reporter--unknown.json",
+      "mother-play-2024/hollywood-reporter--unknown.json"
+    ],
     "directCookies": [],
     "scrapingdog": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "mother-play-2024/broadwaynews--brittani-samuel.json"
+    ]
   },
-  "startTime": "2026-11-10T18:35:10.555Z",
-  "lastProcessed": "kate-allie-and-the-86-mets-off-broadway-2026/front-row-center--tulis-mccall.json",
-  "log": []
+  "startTime": "2026-11-10T19:39:10.290Z",
+  "lastProcessed": "mother-play-2024/exeunt-magazine--unknown.json",
+  "log": [
+    {
+      "t": "2026-11-10T19:39:20.045Z",
+      "event": "bb-session",
+      "session": "8a5c6564",
+      "url": "https://www.wsj.com/articles/mother-play-review-jessica-langes-tortured-vision-o"
+    },
+    {
+      "t": "2026-11-10T19:39:20.740Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-10T19:39:39.013Z",
+      "event": "bb-session",
+      "session": "b10f1dee",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/jessica-lange-broadway-mother-p"
+    }
+  ]
 }
