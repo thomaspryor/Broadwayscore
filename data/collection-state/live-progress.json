@@ -1,44 +1,21 @@
 {
-  "updatedAt": "2026-11-10T23:35:16.512Z",
-  "processed": 0,
-  "failed": 3,
-  "successRate": "0%",
+  "updatedAt": "2026-11-10T23:52:34.690Z",
+  "processed": 194,
+  "failed": 107,
+  "successRate": "64.5%",
   "tierBreakdown": {
-    "playwright": 1,
-    "amp": 0,
-    "browserbase": 0,
+    "playwright": 118,
+    "amp": 1,
+    "browserbase": 6,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 1,
+    "scrapingdog": 17,
+    "scrapingbee": 7,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 46
   },
-  "browserbaseSessions": 8,
+  "browserbaseSessions": 16,
   "recentActivity": [
-    {
-      "t": "2026-11-10T22:32:28.772Z",
-      "event": "bb-session",
-      "session": "cc9f0044",
-      "url": "https://deadline.com/2026/11/broadway-box-office-tom-hiddleston-much-ado-about-n"
-    },
-    {
-      "t": "2026-11-10T22:42:42.077Z",
-      "event": "bb-session",
-      "session": "0691eb15",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655466"
-    },
-    {
-      "t": "2026-11-10T22:42:42.820Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-10T22:45:58.537Z",
-      "event": "bb-session",
-      "session": "5c431421",
-      "url": "https://www.talkinbroadway.com/page/regional/chicago/ch944.html"
-    },
     {
       "t": "2026-11-10T22:45:59.176Z",
       "event": "bb-cookie-inject",
@@ -88,6 +65,69 @@
       "t": "2026-11-10T23:18:58.663Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-10T23:38:03.933Z",
+      "event": "bb-session",
+      "session": "387d8186",
+      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
+    },
+    {
+      "t": "2026-11-10T23:38:04.598Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-10T23:38:33.923Z",
+      "event": "bb-session",
+      "session": "6364cae0",
+      "url": "https://deadline.com/2026/11/derek-klena-broadway-great-gatsby-savannah-bananas-"
+    },
+    {
+      "t": "2026-11-10T23:38:58.046Z",
+      "event": "bb-session",
+      "session": "f926679f",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-11-10T23:39:06.777Z",
+      "event": "bb-session",
+      "session": "54885d95",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-11-10T23:40:10.474Z",
+      "event": "bb-session",
+      "session": "d16461af",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    },
+    {
+      "t": "2026-11-10T23:40:19.247Z",
+      "event": "bb-session",
+      "session": "4d478e3b",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    },
+    {
+      "t": "2026-11-10T23:43:44.278Z",
+      "event": "bb-session",
+      "session": "a360a837",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
+    },
+    {
+      "t": "2026-11-10T23:43:44.898Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-11-10T23:43:54.360Z",
+      "event": "bb-session",
+      "session": "9b999f6c",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
+    },
+    {
+      "t": "2026-11-10T23:43:54.988Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
