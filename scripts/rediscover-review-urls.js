@@ -31,7 +31,7 @@ const { pushWithRetry } = require('./lib/push-with-retry.js');
 const { markReviewTextsPushed } = require('./lib/review-texts-pushed-marker.js'); // BRO-5308
 const { listUnpushedReviewFiles, startPressNightScoring } = require('./lib/press-night-scoring-trigger'); // BRO-6886
 const { listShowDirs } = require('./lib/list-show-dirs');
-const { hasUsableText, isPlausibleArticleRedirect, AGGREGATOR_FIELDS } = require('./lib/rediscovery-candidate');
+const { hasUsableText, isPlausibleArticleRedirect, AGGREGATOR_FIELDS, httpStatusUpdate } = require('./lib/rediscovery-candidate');
 
 // ---------------------------------------------------------------------------
 // CONFIG
@@ -511,10 +511,17 @@ async function runPhase2(candidates) {
         }
       } else if (status === 200) {
         stats.phase2.urlsOk++;
+        // The page is back: a stored 404/410 for this url is stale (BRO-7171).
+        if (!CONFIG.dryRun && httpStatusUpdate(c.data, status)) {
+          delete c.data.httpStatus;
+          persistReviewSnapshot({ filePath: c.filePath, data: c.data, trailingNewline: true });
+          stats.phase2.deadCleared = (stats.phase2.deadCleared || 0) + 1;
+        }
       } else if (status === 404 || status === 410) {
         // Mark for Phase 3
-        if (!CONFIG.dryRun) {
-          c.data.httpStatus = status;
+        const upd = httpStatusUpdate(c.data, status);
+        if (!CONFIG.dryRun && upd) {
+          c.data.httpStatus = upd.set;
           persistReviewSnapshot({ filePath: c.filePath, data: c.data });
         }
         stats.phase2.dead404++;

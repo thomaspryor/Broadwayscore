@@ -117,7 +117,25 @@ function redirectRepairDecision(data, showTitle) {
   return { repair: true, from, reason: verdict.reason };
 }
 
+/**
+ * What a Phase 2 status check should write to the record's url-bound
+ * httpStatus. A 404/410 records it; a 200 for the SAME url clears a stored
+ * 404/410, or text-gap-classify keeps the review in URL_DEAD (and Phase 3
+ * keeps ranking it for SERP) after the page came back (BRO-7171: the stamp
+ * was write-only). Anything else (403, 503, timeout) says nothing. Pure.
+ * @param {object} data  record on disk
+ * @param {number} status  HTTP status of data.url
+ * @returns {{set: number}|{clear: true}|null}
+ */
+function httpStatusUpdate(data, status) {
+  const dead = (s) => s === 404 || s === 410;
+  if (dead(status)) return data && data.httpStatus === status ? null : { set: status };
+  if (status === 200 && data && dead(data.httpStatus)) return { clear: true };
+  return null;
+}
+
 module.exports = {
+  httpStatusUpdate,
   hasUsableText, isPlausibleArticleRedirect, redirectRepairDecision, foldTitle,
   URL_FAILURE_REASONS, EXCERPT_MAX_CHARS, AGGREGATOR_FIELDS,
 };

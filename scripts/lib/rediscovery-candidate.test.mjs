@@ -104,3 +104,20 @@ test('no or tiny text is never usable', () => {
   assert.equal(hasUsableText({ fullText: 'short' }), false);
   assert.equal(hasUsableText(null), false);
 });
+
+// BRO-7171: the stored 404 was write-only, so a page that came back stayed
+// URL_DEAD forever (text-gap-classify reads httpStatus).
+test('httpStatusUpdate: a 200 for the url clears a stored 404/410; 404/410 set it; other codes say nothing', () => {
+  const { httpStatusUpdate } = require('./rediscovery-candidate.js');
+  assert.deepEqual(httpStatusUpdate({ httpStatus: 404 }, 200), { clear: true });
+  assert.deepEqual(httpStatusUpdate({ httpStatus: 410 }, 200), { clear: true });
+  assert.equal(httpStatusUpdate({}, 200), null);
+  assert.deepEqual(httpStatusUpdate({}, 404), { set: 404 });
+  assert.equal(httpStatusUpdate({ httpStatus: 404 }, 404), null, 'no rewrite churn');
+  assert.equal(httpStatusUpdate({ httpStatus: 404 }, 403), null, 'a block is not proof the page is back');
+  assert.equal(httpStatusUpdate({ httpStatus: 404 }, 503), null);
+  // the Phase 2 loop really uses it on both branches
+  const fs = require('fs');
+  const src = fs.readFileSync(new URL('../rediscover-review-urls.js', import.meta.url), 'utf8');
+  assert.match(src, /status === 200\) \{[\s\S]{0,300}httpStatusUpdate\(c\.data, status\)[\s\S]{0,120}delete c\.data\.httpStatus/);
+});
