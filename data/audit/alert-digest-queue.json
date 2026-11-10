@@ -1675,5 +1675,36 @@
       }
     ],
     "queuedAt": "2026-11-10T20:30:42.741Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7315-crash-block-and-rules",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7315-crash-block-and-rules",
+    "description": "land.yml did not land land/bro-7315-crash-block-and-rules: the unit-tests-node gate went red at 4da4eeb9b3. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42896440568",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7315-crash-block-and-rules"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "4da4eeb9b3153492bda151913138566a2c4e6472"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42896440568"
+      }
+    ],
+    "queuedAt": "2026-11-10T20:40:02.223Z"
   }
 ]
