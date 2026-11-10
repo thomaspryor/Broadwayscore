@@ -67,16 +67,35 @@ function buildTerminalRecord({ review, reason, evidence, decidedBy, approvedBy =
   return rec;
 }
 
-// Outlets whose paywall we cannot pass: the subscription was cancelled
-// (reference_paywall_subscriptions_status: Telegraph cancelled 2026-07-21).
-const NO_ACCESS_OUTLETS = new Set(['telegraph', 'sunday-telegraph']);
+// No outlet is written off by rule (owner challenge 2026-11-09: 14 Telegraph
+// reviews were sent as "subscription cancelled" with zero attempts logged, and
+// the cookie session and Bright Data both still returned the full text).
+// PAYWALL_NO_ACCESS needs a logged failure on EVERY route that can open a
+// paywalled page we hold a url for; BROWSER_SESSION only where the outlet has a
+// subscriber adapter. auth_failed is a failure here: the claim is "no access".
+const PAYWALL_ACCESS_ROUTES = Object.freeze(['REFETCH_FREE', 'PAID_FETCH', 'ARCHIVE']);
+const PAYWALL_CLASSES = new Set(['PAYWALL_PAGE', 'PAYWALL_TRUNCATED']);
+const ACCESS_FAILED = new Set(['rejected', 'no_evidence', 'auth_failed']);
 
 // Driver skip reasons that do not expire: a strategy turned off on measured
-// yield, no url / no adapter for it, or a stored url that names another show.
-// Anything else (cooldown, browser_unavailable, no_serp_key, ...) is waiting.
-const PERMANENT_SKIPS = /^(?:disabled|disabled_recent|no_url|no_adapter|url_names_other_(?:show|venue))$/;
+// yield, no url / no adapter for it, a stored url that names another show, or
+// every url-finding method already run. Anything else (cooldown,
+// browser_unavailable, no_serp_key, url_find_cooldown, ...) is waiting.
+const PERMANENT_SKIPS = /^(?:disabled|disabled_recent|no_url|no_adapter|url_names_other_(?:show|venue)|url_find_exhausted)$/;
 
 const { liveRows } = require('./gap-recovery-ledger');
+
+/** Evidence lines for the paywall routes, or the routes still untried. Pure. */
+function paywallRouteEvidence(tries, routes) {
+  const evidence = [];
+  const missing = [];
+  for (const route of routes) {
+    const hit = [...tries].reverse().find((t) => t.strategy === route && ACCESS_FAILED.has(t.outcome));
+    if (hit) evidence.push(`${route}: ${hit.outcome} (${hit.reason || '?'}) ${String(hit.ts || '').slice(0, 10)} run ${hit.runId || '?'}`);
+    else missing.push(route);
+  }
+  return { evidence, missing };
+}
 
 /**
  * Sort the driver's no-route rows into terminal candidates. Pure.
@@ -88,7 +107,7 @@ const { liveRows } = require('./gap-recovery-ledger');
  * @param {{deadHosts?: Map<string,string>, hostFor?: (row)=>string|null}} [io] DNS results gathered by the caller
  * @returns {{auto: Array<{row, reason, evidence}>, owner: Record<string, Array<{row, evidence}>>, open: Record<string, number>}}
  */
-function groupTerminalCandidates(planRows, attemptsByKey, { deadHosts = new Map(), hostFor = () => null } = {}) {
+function groupTerminalCandidates(planRows, attemptsByKey, { deadHosts = new Map(), hostFor = () => null, hasAdapter = () => false } = {}) {
   const auto = [];
   const owner = { PAYWALL_NO_ACCESS: [], URL_DEAD_NO_ARCHIVE: [], NOT_FINDABLE: [] };
   const open = {};
@@ -116,21 +135,25 @@ function groupTerminalCandidates(planRows, attemptsByKey, { deadHosts = new Map(
       ] });
       continue;
     }
-    if (NO_ACCESS_OUTLETS.has(row.outletId)) {
-      owner.PAYWALL_NO_ACCESS.push({ row, evidence: [`${row.outletId}: no subscription (cancelled 2026-07-21)`, ...(archiveEmpty ? ['wayback: no capture'] : [])] });
-      continue;
+    if (row.url && PAYWALL_CLASSES.has(row.gapClass)) {
+      const routes = hasAdapter(row) ? [...PAYWALL_ACCESS_ROUTES, 'BROWSER_SESSION'] : [...PAYWALL_ACCESS_ROUTES];
+      const p = paywallRouteEvidence(tries, routes);
+      if (!p.missing.length) { owner.PAYWALL_NO_ACCESS.push({ row, evidence: p.evidence }); continue; }
     }
     if (row.gapClass === 'URL_DEAD' && archiveEmpty) {
       owner.URL_DEAD_NO_ARCHIVE.push({ row, evidence: [`url dead (${row.subclass || 'url_dead'})`, `wayback: no capture (ledger ${archiveEmpty.runId || '?'})`] });
       continue;
     }
     if (row.gapClass === 'NO_URL') {
-      owner.NOT_FINDABLE.push({ row, evidence: [`no url on file or in aggregator sources (${row.subclass || 'NO_URL'})`, 'url search disabled: 0/20 accepted in the Stage 2 pilot'] });
-      continue;
+      const prog = require('./gap-url-find').urlFindProgress(tries);
+      if (!prog.missing.length) {
+        owner.NOT_FINDABLE.push({ row, evidence: [`no url on file (${row.subclass || 'NO_URL'})`, ...prog.evidence] });
+        continue;
+      }
     }
     bump(`no_evidence_yet:${row.gapClass}`);
   }
   return { auto, owner, open };
 }
 
-module.exports = { NO_ACCESS_OUTLETS, groupTerminalCandidates, TERMINAL_POLICY_VERSION, AUTO_REASONS, OWNER_REASONS, TERMINAL_REASONS, validateTerminal, buildTerminalRecord };
+module.exports = { PAYWALL_ACCESS_ROUTES, paywallRouteEvidence, groupTerminalCandidates, TERMINAL_POLICY_VERSION, AUTO_REASONS, OWNER_REASONS, TERMINAL_REASONS, validateTerminal, buildTerminalRecord };

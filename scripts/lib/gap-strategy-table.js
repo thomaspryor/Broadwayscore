@@ -30,7 +30,16 @@ const STRATEGY_FLAGS = Object.freeze({
   // under the 30% bar, so this stays off. The Mail pool is proven-zero for
   // another reason (serp-text-recovery-candidates.js: not indexed as reviews).
   URL_REDISCOVER: Object.freeze({ enabled: false, cost: 'S', note: 'discoverCorrectUrl + identity proof; search budget enforced in url-discovery' }),
-  AGG_LINK: Object.freeze({ enabled: false, cost: 'F', note: 'unbuilt: aggregator outbound links unverified (revised plan item 1)' }),
+  AGG_LINK: Object.freeze({ enabled: false, cost: 'F', note: 'superseded by URL_FIND (its AGG_LINK method)' }),
+  // BRO-7171 owner challenge 2026-11-09: free-first url finding for reviews we
+  // hold no (or an invented, dead) url for: aggregator links, outlet sitemap,
+  // Wayback CDX, Common Crawl, then a capped SERP and slug guess
+  // (scripts/lib/gap-url-find.js). Ramp on 30 diverse NO_URL files: see
+  // gap-url-find.js header for the per-method yield.
+  URL_FIND: Object.freeze({ enabled: true, cost: 'F', note: 'gap-url-find methods + acceptance gate; SERP capped by GAP_URL_FIND_SERP_MAX' }),
+  // Bright Data web unlocker on the stored url, last route for a paywalled
+  // page (BD_REQ_BUDGET caps spend). One of the routes PAYWALL_NO_ACCESS needs.
+  PAID_FETCH: Object.freeze({ enabled: true, cost: 'P', note: 'fetchPage brightdata tier only' }),
 });
 
 // Order per class. FALSE_TRUNCATION_SUSPECT is fixed by the classifier at the
@@ -38,13 +47,15 @@ const STRATEGY_FLAGS = Object.freeze({
 const CLASS_STRATEGIES = Object.freeze({
   SHORT_UNVERIFIED: ['REFETCH_FREE', 'BROWSER_SESSION', 'ARCHIVE'],
   TRUNCATED_OTHER: ['REFETCH_FREE', 'BROWSER_SESSION', 'ARCHIVE'],
-  PAYWALL_TRUNCATED: ['BROWSER_SESSION', 'ARCHIVE'],
-  PAYWALL_PAGE: ['BROWSER_SESSION', 'ARCHIVE'],
+  PAYWALL_TRUNCATED: ['BROWSER_SESSION', 'ARCHIVE', 'REFETCH_FREE', 'PAID_FETCH'],
+  PAYWALL_PAGE: ['BROWSER_SESSION', 'ARCHIVE', 'REFETCH_FREE', 'PAID_FETCH'],
   NEVER_FETCHED: ['REFETCH_FREE', 'BROWSER_SESSION', 'ARCHIVE'],
   BLOCKED: ['REFETCH_FREE', 'BROWSER_SESSION', 'ARCHIVE'],
   DEFERRED: ['REFETCH_FREE', 'BROWSER_SESSION', 'ARCHIVE'],
   GARBAGE_PAGE: ['REFETCH_FREE', 'BROWSER_SESSION', 'ARCHIVE', 'URL_REDISCOVER'],
-  URL_DEAD: ['ARCHIVE', 'URL_REDISCOVER'],
+  // A dead url is often one an old web-search recovery invented (Stage 4: 56
+  // of 64 dead links); URL_FIND looks for the real one.
+  URL_DEAD: ['ARCHIVE', 'URL_FIND', 'URL_REDISCOVER'],
   // Stage 4: most URL_WRONG_PAGE rows hold the RIGHT url and failed the
   // show-mention check on a bad earlier fetch (teaser, registration wall):
   // The Stage 60 recent rows extract fine in the subscriber browser;
@@ -52,13 +63,13 @@ const CLASS_STRATEGIES = Object.freeze({
   // a free refetch. So the stored url is re-tried first, but only when
   // storedUrlWorthRetry passes (selectStrategy's `storedUrlOk`); the
   // acceptance gate still decides identity from the text.
-  URL_WRONG_PAGE: ['REFETCH_FREE', 'BROWSER_SESSION', 'URL_REDISCOVER'],
-  NO_URL: ['AGG_LINK', 'URL_REDISCOVER'],
+  URL_WRONG_PAGE: ['REFETCH_FREE', 'BROWSER_SESSION', 'URL_REDISCOVER', 'URL_FIND'],
+  NO_URL: ['URL_FIND', 'AGG_LINK', 'URL_REDISCOVER'],
   FALSE_TRUNCATION_SUSPECT: [],
   UNCLASSIFIED: [],
 });
 
-const URL_STRATEGIES = new Set(['REFETCH_FREE', 'BROWSER_SESSION', 'ARCHIVE']);
+const URL_STRATEGIES = new Set(['REFETCH_FREE', 'BROWSER_SESSION', 'ARCHIVE', 'PAID_FETCH']);
 
 /**
  * Pick the first usable strategy for one candidate.
@@ -154,7 +165,7 @@ function compareCandidates(a, b) {
   if ((a.recency === 'recent') !== (b.recency === 'recent')) return a.recency === 'recent' ? -1 : 1;
   const da = ms(a.showDate); const db = ms(b.showDate);
   if (da !== db) return db - da;
-  const cost = { F: 0, B: 1, S: 2 };
+  const cost = { F: 0, B: 1, P: 2, S: 2 };
   const ca = a.strategy ? cost[STRATEGY_FLAGS[a.strategy].cost] : 9;
   const cb = b.strategy ? cost[STRATEGY_FLAGS[b.strategy].cost] : 9;
   if (ca !== cb) return ca - cb;

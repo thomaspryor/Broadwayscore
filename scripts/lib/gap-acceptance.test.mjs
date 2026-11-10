@@ -370,3 +370,118 @@ test('show-mention uses the shows.json title, not the slug (tour / punctuated ti
   // without the shows.json entry the slug fallback still applies
   assert.equal(acceptRecoveredText(rec, { rawText: body }, { showId: show.id }).code, 'show_not_mentioned');
 });
+
+// BRO-7171 owner challenge 2026-11-09: 463 no-url reviews hold Theatre Record
+// print text; Telegraph / Mail bodies never print the critic's name, so the
+// outlet-domain + critic + LLM proof could never pass. The stored print text
+// inside the found page proves it is the same article.
+test('identity: stored Theatre Record / no-url text inside the new page proves the review', () => {
+  const para = (n) => Array.from({ length: n }, (_, i) => `Sentence ${i} about Vanessa Kirby and the production of Julie at the Lyttelton, scene ${i * 7} turns sour.`).join(' ');
+  const prior = para(10); // ~900 chars of print text
+  const page = `${para(10)} ${Array.from({ length: 25 }, (_, i) => `Further paragraph ${i} on design, music and the ending that lands ${i} ways.`).join(' ')}`;
+  const tr = { showId: 'julie-west-end-2018', outletId: 'telegraph', criticName: 'Dominic Cavendish', url: null, source: 'theatre-record', fullText: prior };
+  const ok = gate.proveIdentity(tr, page, 'https://www.telegraph.co.uk/theatre/what-to-see/julie/', { outletDomains: ['telegraph.co.uk'], pageByline: 'Dominic Cavendish' });
+  assert.equal(ok.proven, true);
+  assert.match(ok.via, /stored theatre-record text/);
+  // a different article does not cover the stored text
+  const other = Array.from({ length: 40 }, (_, i) => `Unrelated line ${i} about a football match and weather ${i}.`).join(' ');
+  assert.equal(gate.proveIdentity(tr, other, 'https://www.telegraph.co.uk/sport/x/', { outletDomains: ['telegraph.co.uk'], pageByline: 'Dominic Cavendish' }).proven, false);
+  // text fetched from a web url (not print) is not trusted as a fingerprint
+  const web = { ...tr, url: 'https://www.telegraph.co.uk/old/', source: 'web-search' };
+  assert.equal(gate.proveIdentity(web, page, 'https://www.telegraph.co.uk/theatre/what-to-see/julie/', { outletDomains: ['telegraph.co.uk'], pageByline: 'Dominic Cavendish' }).proven, false);
+  // a pull quote is too short to be a fingerprint
+  assert.equal(gate.proveIdentity({ ...tr, fullText: prior.slice(0, 200) }, page, 'https://www.telegraph.co.uk/theatre/what-to-see/julie/', { outletDomains: ['telegraph.co.uk'], pageByline: 'Dominic Cavendish' }).proven, false);
+});
+
+test('identity: a Theatre Record scan polluted by a neighbouring column still proves the review (real Julie case, coverage 0.41)', () => {
+  const words = (seed, n) => Array.from({ length: n }, (_, i) => `${seed}${i % 97}x${Math.floor(i / 97)}`).join(' ');
+  const review = words('kirby', 120);
+  const neighbour = words('othercritic', 150); // another review merged in by the scan
+  const tr = { showId: 'julie-west-end-2018', outletId: 'telegraph', criticName: 'Dominic Cavendish', url: null, source: 'theatre-record', fullText: `${review} theatre record 01 30 june 2018 ${neighbour}` };
+  const page = `${review} ${words('rest', 900)}`;
+  const r = gate.proveIdentity(tr, page, 'https://www.telegraph.co.uk/theatre/what-to-see/julie/', { outletDomains: ['telegraph.co.uk'], pageByline: 'Dominic Cavendish' });
+  assert.equal(r.proven, true, JSON.stringify(r));
+  assert.match(r.via, /shared 5-word runs/);
+  // a page sharing a short pull quote only is not proof
+  const quote = `${words('kirby', 20)} ${words('rest', 900)}`;
+  assert.equal(gate.proveIdentity(tr, quote, 'https://www.telegraph.co.uk/theatre/what-to-see/julie/', { outletDomains: ['telegraph.co.uk'], pageByline: 'Dominic Cavendish' }).proven, false);
+  // the relaxed bar is for print scans only, not a no-url web text
+  assert.equal(gate.proveIdentity({ ...tr, source: 'manual' }, page, 'https://www.telegraph.co.uk/theatre/what-to-see/julie/', { outletDomains: ['telegraph.co.uk'], pageByline: 'Dominic Cavendish' }).proven, false);
+});
+
+test('identity: stored text never proves a page off the outlet site, owned by another show, or from a once-web no-url file (review 2026-11-10)', () => {
+  const words = (seed, n) => Array.from({ length: n }, (_, i) => `${seed}${i % 97}x${Math.floor(i / 97)}`).join(' ');
+  const review = words('kirby', 150);
+  const tr = { showId: 'julie-west-end-2018', outletId: 'telegraph', criticName: 'Dominic Cavendish', url: null, source: 'theatre-record', fullText: review };
+  const page = `${review} ${words('rest', 900)}`;
+  const tel = 'https://www.telegraph.co.uk/theatre/what-to-see/julie/';
+  assert.equal(gate.proveIdentity(tr, page, tel, { outletDomains: ['telegraph.co.uk'], pageByline: 'Dominic Cavendish' }).proven, true);
+  // a copy on another site (SERP is not host-limited)
+  assert.equal(gate.proveIdentity(tr, page, 'https://www.pressreader.com/uk/x/julie', { outletDomains: ['telegraph.co.uk'], pageByline: 'Dominic Cavendish' }).proven, false);
+  // another show's file already holds this url
+  assert.equal(gate.proveIdentity(tr, page, tel, { outletDomains: ['telegraph.co.uk'], pageByline: 'Dominic Cavendish', crossShowOwners: [{ showId: 'miss-julie-2003', file: 'telegraph--x.json' }] }).proven, false);
+  // a no-url file whose text came from a web page (url later dropped) is no fingerprint
+  for (const source of ['web-search', 'outlet-serp-discovery', 'ingest-urls']) {
+    assert.equal(gate.proveIdentity({ ...tr, source }, page, tel, { outletDomains: ['telegraph.co.uk'], pageByline: 'Dominic Cavendish' }).proven, false, source);
+  }
+});
+
+// Ship-check P0 (2026-11-10): a scan merges the neighbouring column, so a page
+// holding ONLY the neighbour's review (same domain: telegraph and
+// sunday-telegraph share telegraph.co.uk) covered 0.54 of the stored text and
+// was "proven". The page's own byline must name this critic.
+test('identity: the neighbouring critic\'s page is not proven by a merged scan; the page byline must name the critic', () => {
+  const words = (seed, n) => Array.from({ length: n }, (_, i) => `${seed}${i % 97}x${Math.floor(i / 97)}`).join(' ');
+  const mine = words('walker', 120);
+  const neighbour = words('cavendish', 150);
+  const tr = { showId: 'passion-play-west-end-2013', outletId: 'sunday-telegraph', criticName: 'Tim Walker', url: null, source: 'theatre-record', fullText: `${mine} theatre record ${neighbour}` };
+  const neighbourPage = `${neighbour} ${words('rest', 600)}`;
+  const tel = 'https://www.telegraph.co.uk/culture/theatre/x/';
+  const dom = { outletDomains: ['telegraph.co.uk'] };
+  assert.equal(gate.proveIdentity(tr, neighbourPage, tel, { ...dom, pageByline: 'Dominic Cavendish' }).proven, false, 'another critic\'s byline');
+  assert.equal(gate.proveIdentity(tr, neighbourPage, tel, dom).proven, false, 'no byline on the page');
+  const minePage = `${mine} ${words('rest', 600)}`;
+  assert.equal(gate.proveIdentity(tr, minePage, tel, { ...dom, pageByline: 'Tim Walker' }).proven, true);
+  // the byline is read from the page html (JSON-LD author)
+  assert.equal(gate.pageByline('<script type="application/ld+json">{"@type":"NewsArticle","author":{"@type":"Person","name":"Tim Walker"}}</script>', 'sunday-telegraph'), 'Tim Walker');
+});
+
+test('page date: a later revival\'s review is refused for a closed old production (macbeth-1982 <- 2022 page)', () => {
+  const macbeth = { id: 'macbeth-1982', title: 'Macbeth', openingDate: '1982-01-28', closingDate: '1982-02-14', status: 'closed' };
+  const rec = { showId: 'macbeth-1982', outletId: 'nypost', criticName: 'Johnny Oleksinski', url: null };
+  assert.match(gate.pageDateRefusal('2022-04-29', rec, macbeth), /after the show closed/);
+  assert.equal(gate.pageDateRefusal('1982-01-29', rec, macbeth), null);
+  assert.equal(gate.pageDateRefusal(null, rec, macbeth), null);
+  // a declared prior run / a still-running show is not refused
+  assert.equal(gate.pageDateRefusal('2022-04-29', rec, { ...macbeth, status: 'open' }), null);
+  // and the page date reaches the gate
+  const body = Array.from({ length: 30 }, (_, i) => `Macbeth scene ${i} at the Longacre turns ${i * 3} ways, Daniel Craig act ${i}.`).join(' ');
+  const d = acceptRecoveredText({ ...rec, fullText: 'short' }, { rawText: body, url: 'https://nypost.com/2022/04/29/macbeth-broadway-review/', pageDate: '2022-04-29' },
+    { showId: 'macbeth-1982', show: macbeth, outletDomains: ['nypost.com'] });
+  assert.equal(d.code, 'date_implausible');
+  // the page's own html date is read (JSON-LD), never the url
+  assert.equal(gate.pagePublishDate('<script type="application/ld+json">{"@type":"NewsArticle","datePublished":"2022-04-29T15:00:00Z"}</script>', 'https://x.com/a'), '2022-04-29');
+});
+
+test('surname: run-together scan names split (AndrzejLukowski -> Lukowski); real names untouched', () => {
+  assert.equal(gate.surnameOf('AndrzejLukowski'), 'Lukowski');
+  assert.equal(gate.surnameOf('MichaelArditti'), 'Arditti');
+  assert.equal(gate.surnameOf('Dominic Cavendish'), 'Cavendish');
+  assert.equal(gate.surnameOf('Ian McKellen'), 'McKellen');
+  assert.equal(gate.surnameOf('Charles McNulty (LA Times)'), 'McNulty');
+});
+
+test('a no-url print record gets its first proven url even when the page adds few characters (Nine Night +19, Strictly Ballroom +49)', () => {
+  const body = Array.from({ length: 30 }, (_, i) => `Joe Turner's Come and Gone scene ${i} finds August Wilson's boarders ${i * 3} ways to wait, and act ${i} lands.`).join(' ');
+  const rec = { showId: SHOW_ID, outletId: 'nytimes', criticName: 'Jesse Green', url: null, source: 'theatre-record', fullText: body, contentTier: 'complete' };
+  const url = 'https://www.nytimes.com/2026/03/16/theater/joe-turners-review.html';
+  const c = { ...ctx, outletDomains: ['nytimes.com'] };
+  const d = acceptRecoveredText(rec, { rawText: `${body} Through Sunday.`, url, pageByline: 'Jesse Green' }, c);
+  assert.equal(d.accept, true, d.reason);
+  assert.match(d.reason, /first url for a no-url record/);
+  // a record that already has a url still needs a material gain
+  const has = acceptRecoveredText({ ...rec, url }, { rawText: `${body} Through Sunday.`, url, pageByline: 'Jesse Green' }, c);
+  assert.equal(has.code, 'not_materially_longer');
+  // and the first url still has to be proven (another site, same text)
+  assert.equal(acceptRecoveredText(rec, { rawText: `${body} Through Sunday.`, url: 'https://copy.example.com/x', pageByline: 'Jesse Green' }, c).code, 'identity_unproven');
+});

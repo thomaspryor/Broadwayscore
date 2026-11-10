@@ -33,6 +33,26 @@ const MIN_TEXT_CHARS = 300;
 const MIN_MATERIAL_GAIN_CHARS = 100;
 const MIN_MATERIAL_GAIN_FRAC = 0.03;
 const EXCERPT_IDENTITY_MIN = 0.5;
+// Stored partial text long enough to be a fingerprint of the article (not a pull quote).
+const PRIOR_TEXT_IDENTITY_MIN_CHARS = 400;
+const PRINT_IDENTITY_MIN_COVERAGE = 0.25;
+const PRINT_IDENTITY_MIN_SHARED = 30;
+
+/**
+ * Distinct 5-word runs of `normPrior` found in `normPage`, and that as a
+ * fraction of the prior's runs. No length precondition: excerptCoverage
+ * returns 0 unless the page is 1.5x the excerpt, and a print text can be
+ * nearly the whole review (BRO-7171: Nine Night, 2,647 print chars vs a
+ * 2,665-char page). Pure.
+ */
+function sharedShingles(normPage, normPrior) {
+  const grams = (t) => { const w = t.split(' ').filter(Boolean); const s = new Set(); for (let i = 0; i + 5 <= w.length; i++) s.add(w.slice(i, i + 5).join(' ')); return s; };
+  const a = grams(normPage);
+  const b = grams(normPrior);
+  let n = 0;
+  for (const g of b) if (a.has(g)) n++;
+  return { shared: n, coverage: b.size ? n / b.size : 0 };
+}
 
 function sha256(text) {
   return crypto.createHash('sha256').update(String(text == null ? '' : text)).digest('hex');
@@ -75,7 +95,11 @@ function hostOf(url) {
 }
 
 function surnameOf(criticName) {
-  const s = String(criticName || '').split(/[,(]/)[0].trim().split(/\s+/).pop() || '';
+  // Theatre Record scans join names ("AndrzejLukowski", "MichaelArditti":
+  // ~228 files, 2026-11-10): split a run-together camel-case name first.
+  const raw = String(criticName || '').split(/[,(]/)[0].trim();
+  const name = /\s/.test(raw) ? raw : raw.replace(/([a-z]{2})([A-Z][a-z])/g, '$1 $2');
+  const s = name.split(/\s+/).pop() || '';
   return s.length >= 3 ? s : '';
 }
 
@@ -97,18 +121,45 @@ function proveIdentity(existing, cleaned, newUrl, ctx) {
     best = Math.max(best, excerptCoverage({ fullText: cleaned }, norm));
   }
   if (best >= EXCERPT_IDENTITY_MIN) return { proven: true, via: `excerpt coverage ${best.toFixed(2)}` };
-
   const host = hostOf(newUrl);
   const domains = (ctx.outletDomains || []).map((d) => String(d).replace(/^www\./, '').toLowerCase());
   const onOutletDomain = !!host && domains.some((d) => host === d || host.endsWith(`.${d}`));
-  const surname = surnameOf(existing.criticName);
-  const named = !!surname && stripMarks(cleaned).includes(stripMarks(surname));
   const owners = (ctx.crossShowOwners || []).filter((o) => o && o.blocking !== false);
+  // The print text we already hold (Theatre Record's archive: attribution
+  // comes from the print page, never from a web url that could be wrong) is a
+  // fingerprint of the article. Only on the outlet's own site with no other
+  // show owning the url, and only with dozens of shared 5-word runs, so a
+  // roundup quoting a line or a copy on another site cannot pass
+  // (BRO-7171: 463 of the 780 no-url reviews hold Theatre Record text, and
+  // Telegraph/Mail bodies never print the critic's name). Scans merge
+  // neighbouring columns into the stored text, so a true match can sit under
+  // half coverage (the real Telegraph "Julie" page: 0.41, 80 shared runs).
+  // Because of that merge, the text alone cannot tell this critic's column
+  // from the neighbouring critic's page (ship-check P0: a neighbour fixture
+  // passed at 0.54), and sibling outlets share a domain (telegraph and
+  // sunday-telegraph). So the page's OWN byline (JSON-LD/meta author) must
+  // name the critic too; no byline, or another name, is not proof.
+  const prior = String(existing.fullText || '');
+  const surname = surnameOf(existing.criticName);
+  const missing = [];
+  if (existing.source === 'theatre-record' && prior.length >= PRIOR_TEXT_IDENTITY_MIN_CHARS && onOutletDomain && owners.length === 0) {
+    const { normText } = require('./cloned-excerpt-guard');
+    const { shared, coverage: cov } = sharedShingles(normText(cleaned), normText(prior));
+    if (cov >= PRINT_IDENTITY_MIN_COVERAGE && shared >= PRINT_IDENTITY_MIN_SHARED) {
+      const byline = ctx.pageByline ? String(ctx.pageByline) : '';
+      if (surname && byline && stripMarks(byline).includes(stripMarks(surname))) {
+        return { proven: true, via: `stored theatre-record text: ${shared} shared 5-word runs, coverage ${cov.toFixed(2)}; page byline "${byline}"` };
+      }
+      missing.push(byline ? `page byline "${byline}" is not ${existing.criticName || 'the critic'}` : 'print text matches but the page has no byline to confirm the critic');
+    }
+    best = Math.max(best, cov);
+  }
+
+  const named = !!surname && stripMarks(cleaned).includes(stripMarks(surname));
   const llm = ctx.llmIdentityVerified === true;
   if (onOutletDomain && named && owners.length === 0 && llm) {
     return { proven: true, via: 'outlet domain + critic named + no cross-show owner + LLM verified' };
   }
-  const missing = [];
   if (!onOutletDomain) missing.push(`host ${host || '(none)'} not an outlet domain`);
   if (!named) missing.push(surname ? `critic "${surname}" not in text` : 'no critic surname');
   if (owners.length) missing.push(`url owned by ${owners.map((o) => `${o.showId}/${o.file}`).join(', ')}`);
@@ -124,6 +175,46 @@ function proveIdentity(existing, cleaned, newUrl, ctx) {
  * at the Menier Chocolate Factory, London".
  */
 const HEADLINE_IDENTITY_OUTLETS = new Set(['thestage']);
+
+/** The page's own author credit (reviewer line, JSON-LD, meta, byline markup), or null. */
+function pageByline(html, outletId) {
+  if (!html || typeof html !== 'string') return null;
+  try { return require('./byline-extraction').extractByline(html, { outletId }) || null; } catch { return null; }
+}
+
+/** The page's own publish date (JSON-LD, meta, dateline; never the url), or null. */
+function pagePublishDate(html, url) {
+  if (!html || typeof html !== 'string') return null;
+  try { return require('./html-publish-date').extractPublishDateFromHtml(html, url) || null; } catch { return null; }
+}
+
+// A page published this long after a closed show's last night reviews a later
+// production (BRO-7171 ramp: a 2022 Daniel Craig "Macbeth" review matched the
+// mis-filed macbeth-1982 record; a 2016 EW review matched robber-bridegroom-1976).
+const DAYS_IMPLAUSIBLE_AFTER_CLOSING = 365;
+
+/**
+ * Is the page's own date plausible for this production? Before: the shared
+ * 180-day rule (priorRuns/tour legs honoured). After: more than a year past a
+ * closed show's closing date. Pure.
+ * @returns {string|null} refusal reason, or null when plausible/unknown
+ */
+function pageDateRefusal(pageDate, existing, show) {
+  if (!pageDate || !show) return null;
+  const { evaluateDatePlausibility, parsePlausibilityDate } = require('./date-plausibility');
+  const before = evaluateDatePlausibility({ review: { ...existing, publishDate: pageDate, dateSource: 'html-page' }, show });
+  if (before.implausible) return `page dated ${pageDate}, ${before.daysBefore}d before the show's earliest date ${before.earliestDate}`;
+  const pub = parsePlausibilityDate(pageDate);
+  const closed = show.closingDate ? parsePlausibilityDate(show.closingDate) : null;
+  if (pub && closed && !(show.status && /^(open|previews)$/i.test(show.status))) {
+    const daysAfter = Math.round((pub.getTime() - closed.getTime()) / 86400000);
+    const { isWithinPriorRun, isWithinTourLeg } = require('./wrong-production-autoclear');
+    if (daysAfter > DAYS_IMPLAUSIBLE_AFTER_CLOSING && !isWithinPriorRun(pub, show.priorRuns) && !isWithinTourLeg(pub, show.tourLegs)) {
+      return `page dated ${pageDate}, ${daysAfter}d after the show closed ${show.closingDate}`;
+    }
+  }
+  return null;
+}
 
 /** The page's own headline: og:title, else the first <h1>. Never the url. */
 function pageHeadline(html) {
@@ -268,7 +359,11 @@ function acceptRecoveredText(existing, candidate, ctx = {}) {
   let identity;
   if (urlChanged) {
     if (ctx.urlChangeRefusal) return refuse('url_change_refused', `url change refused: ${ctx.urlChangeRefusal}`);
-    identity = proveIdentity(existing, text, newUrl, ctx);
+    // The new page's own date must fit this production (a mis-filed record
+    // must not pull in a later revival's review).
+    const late = pageDateRefusal(candidate.pageDate, existing, ctx.show);
+    if (late) return refuse('date_implausible', `date implausible: ${late} (likely another production)`);
+    identity = proveIdentity(existing, text, newUrl, { ...ctx, pageByline: candidate.pageByline || null });
     if (!identity.proven) return refuse('identity_unproven', `identity unproven for new url: ${identity.missing.join('; ')}`, { identity });
   }
 
@@ -285,6 +380,18 @@ function acceptRecoveredText(existing, candidate, ctx = {}) {
   //    re-fetch that adds a few characters recovers nothing: it would burn the
   //    nightly ceiling and be reported to the owner as a recovered review.
   const tierUp = !priorTier || TIER_RANK[priorTier] === undefined || TIER_RANK[newTier] > TIER_RANK[priorTier];
+  // A record with no url that gets its first, identity-proven url gains the
+  // url itself (the review's NO_URL gap closes, and clean web text replaces an
+  // OCR scan), so the text-gain bars do not apply. BRO-7171: Theatre Record
+  // often prints nearly the whole Telegraph review (Nine Night +19 chars,
+  // Strictly Ballroom +49), and those real links were being refused.
+  const firstUrl = !existing.url && !!candidate.url && !!identity && identity.proven === true;
+  if (firstUrl) {
+    return {
+      accept: true, code: 'accepted', reason: `accepted: first url for a no-url record (${identity.via})`, cleanedText: text,
+      newTier, newTierReason: tierResult.tierReason || tierResult.reason || null, priorTier, urlChanged, identity, identityHeadline,
+    };
+  }
   const minGain = Math.max(MIN_MATERIAL_GAIN_CHARS, Math.ceil(priorLen * MIN_MATERIAL_GAIN_FRAC));
   if (priorLen > 0 && !tierUp && text.length - priorLen < minGain) {
     return refuse('not_materially_longer', `not materially longer than existing (+${text.length - priorLen} chars, need ${minGain} or a better tier)`);
@@ -445,7 +552,7 @@ function buildAcceptanceContext(filePath, existing, candidateUrl, opts = {}) {
  * @param {(data: object, decision: object) => void} [args.beforeWrite] add score fields etc.
  * @returns {{ok: boolean, code: string, reason: string, newLen?: number, decision: object, write?: object}}
  */
-function recoverReviewText({ filePath, rawText, url, headline = null, expectUrl, labels, dryRun = false, tracker, ctxOpts = {}, beforeWrite }) {
+function recoverReviewText({ filePath, rawText, url, headline = null, pageDate = null, pageByline = null, expectUrl, labels, dryRun = false, tracker, ctxOpts = {}, beforeWrite }) {
   const { withReviewTextsLock } = require('./review-texts-lock');
   const run = () => {
     const { readReviewForUpdate, persistReviewViaSafeWrite } = require('./persist-review-snapshot');
@@ -459,7 +566,7 @@ function recoverReviewText({ filePath, rawText, url, headline = null, expectUrl,
       }
     }
     const ctx = buildAcceptanceContext(filePath, data, url, ctxOpts);
-    const decision = acceptRecoveredText(data, { rawText, url, headline }, ctx);
+    const decision = acceptRecoveredText(data, { rawText, url, headline, pageDate, pageByline }, ctx);
     if (!decision.accept || dryRun) {
       return { ok: decision.accept, code: decision.code, reason: decision.reason, newLen: decision.cleanedText && decision.cleanedText.length, decision, dryRun };
     }
@@ -555,8 +662,10 @@ async function verifyMovedReview({ filePath, show, showId, cleanedText, newUrl, 
     });
     return llmIdentityVerdict(v);
   } catch (e) {
+    // An outage is not a "no": the caller must not record the url as refused
+    // (ship-check P1: a missing key or API error blacklisted the right link).
     log(`    LLM identity check failed: ${String(e.message).slice(0, 120)}`);
-    return false;
+    return null;
   }
 }
 
@@ -572,8 +681,8 @@ async function verifyMovedReview({ filePath, show, showId, cleanedText, newUrl, 
  * @param {(decision:object) => Promise<((data:object)=>void)|null>} [a.prepareWrite]
  * @returns {Promise<{ok:boolean, code:string, reason:string, newLen?:number, decision?:object, llmAsked?:boolean}>}
  */
-async function recoverReviewTextVerified({ filePath, rawText, url, headline = null, expectUrl, labels, dryRun = false, tracker, ctxOpts = {}, show = null, prepareWrite, log = console.log }) {
-  const base = { filePath, rawText, url, headline, expectUrl, labels, ctxOpts };
+async function recoverReviewTextVerified({ filePath, rawText, url, headline = null, pageDate = null, pageByline = null, expectUrl, labels, dryRun = false, tracker, ctxOpts = {}, show = null, prepareWrite, log = console.log }) {
+  const base = { filePath, rawText, url, headline, pageDate, pageByline, expectUrl, labels, ctxOpts };
   let pre = recoverReviewText({ ...base, dryRun: true });
   let llmAsked = false;
   // identity_unproven is the one refusal an LLM verdict can overturn, and only
@@ -588,6 +697,9 @@ async function recoverReviewTextVerified({ filePath, rawText, url, headline = nu
     if (!cleaned.refused) {
       llmAsked = true;
       const verified = await verifyMovedReview({ filePath, show, showId, cleanedText: cleaned.text, newUrl: url, log });
+      if (verified === null) {
+        return { ok: false, code: 'identity_check_unavailable', reason: 'LLM identity check unavailable (error, not a verdict); try this link again later', decision: pre.decision, llmAsked: true };
+      }
       pre = recoverReviewText({ ...base, ctxOpts: { ...ctxOpts, llmIdentityVerified: verified }, dryRun: true });
       if (verified) ctxOpts = { ...ctxOpts, llmIdentityVerified: true };
     }
@@ -599,6 +711,10 @@ async function recoverReviewTextVerified({ filePath, rawText, url, headline = nu
 }
 
 module.exports = {
+  surnameOf,
+  pagePublishDate,
+  pageByline,
+  pageDateRefusal,
   acceptRecoveredText,
   headlineIdentity,
   pageHeadline,

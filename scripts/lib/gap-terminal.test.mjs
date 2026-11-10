@@ -83,9 +83,11 @@ test('grouping: recent and routable rows never terminal; auto only with DNS + ar
   assert.deepEqual(g.auto.map((a) => a.row.reviewKey), ['c/x.json', 'd/x.json']);
   assert.ok(g.auto.every((a) => a.reason === 'OUTLET_DEFUNCT' && a.evidence.length === 2));
   assert.deepEqual(g.owner.URL_DEAD_NO_ARCHIVE.map((a) => a.row.reviewKey), ['e/x.json']);
-  assert.deepEqual(g.owner.PAYWALL_NO_ACCESS.map((a) => a.row.reviewKey), ['f/x.json']);
-  assert.deepEqual(g.owner.NOT_FINDABLE.map((a) => a.row.reviewKey), ['g/x.json']);
-  assert.deepEqual(g.open, { recent_never_terminal: 1, route_left_to_try: 1, 'no_evidence_yet:GARBAGE_PAGE': 1 });
+  // No attempts logged: neither the Telegraph paywall row nor the no-url row
+  // is written off (it used to be, by outlet / class rule).
+  assert.deepEqual(g.owner.PAYWALL_NO_ACCESS, []);
+  assert.deepEqual(g.owner.NOT_FINDABLE, []);
+  assert.deepEqual(g.open, { recent_never_terminal: 1, route_left_to_try: 1, 'no_evidence_yet:GARBAGE_PAGE': 1, 'no_evidence_yet:PAYWALL_PAGE': 1, 'no_evidence_yet:NO_URL': 1 });
 });
 
 test('ship-check: waiting rows, owned rows, garbage and pre-reopen evidence never go terminal', () => {
@@ -107,6 +109,60 @@ test('ship-check: waiting rows, owned rows, garbage and pre-reopen evidence neve
   assert.equal(g.open['owned:manual_tier'], 1);
   assert.equal(g.open['no_evidence_yet:GARBAGE_PAGE'], 1);
   assert.equal(g.open['no_evidence_yet:URL_DEAD'], 1);
+});
+
+// Owner challenge 2026-11-09 (BRO-7171): 14 Telegraph reviews went to the
+// owner as PAYWALL_NO_ACCESS by an outlet rule with ZERO ledger attempts, and
+// 780 NO_URL reviews as NOT_FINDABLE after a SERP pilot on one outlet. A write-
+// off now needs a logged failure on every route, never an outlet or class rule.
+test('class guard: PAYWALL_NO_ACCESS only after a logged failure on every access route, never by outlet', () => {
+  const base = { recency: 'historic', strategy: null, skipped: [{ strategy: 'ARCHIVE', reason: 'disabled' }] };
+  const rows = [
+    // no url: no paywall was ever met, whatever the outlet
+    { ...base, reviewKey: 'tel-nourl/x.json', gapClass: 'NO_URL', subclass: 'AGG_REF', outletId: 'telegraph', url: null },
+    // paywalled page, no attempts logged
+    { ...base, reviewKey: 'tel-none/x.json', gapClass: 'PAYWALL_PAGE', outletId: 'telegraph', url: 'https://www.telegraph.co.uk/r/' },
+    // free + archive failed, paid fetch never tried
+    { ...base, reviewKey: 'tel-part/x.json', gapClass: 'PAYWALL_PAGE', outletId: 'telegraph', url: 'https://www.telegraph.co.uk/p/' },
+    // every route failed: owner group A, evidence names each route
+    { ...base, reviewKey: 'any-all/x.json', gapClass: 'PAYWALL_PAGE', outletId: 'some-paper', url: 'https://paper.example/a/' },
+  ];
+  const fail = (strategy, outcome = 'rejected', reason = 'paywall') => ({ strategy, outcome, reason, runId: 'r', ts: '2026-11-09T01:00:00Z' });
+  const att = new Map([
+    ['tel-part/x.json', [fail('REFETCH_FREE'), fail('ARCHIVE', 'no_evidence', 'archive_empty')]],
+    ['any-all/x.json', [fail('REFETCH_FREE'), fail('PAID_FETCH'), fail('ARCHIVE', 'no_evidence', 'archive_empty'), fail('BROWSER_SESSION', 'auth_failed', 'login')]],
+  ]);
+  const g = GT.groupTerminalCandidates(rows, att, { hostFor: () => 'alive.example', hasAdapter: (r) => r.outletId === 'some-paper' });
+  assert.equal(GT.NO_ACCESS_OUTLETS, undefined, 'no outlet-level write-off list');
+  assert.deepEqual(g.owner.PAYWALL_NO_ACCESS.map((a) => a.row.reviewKey), ['any-all/x.json']);
+  const ev = g.owner.PAYWALL_NO_ACCESS[0].evidence.join(' | ');
+  for (const r of ['REFETCH_FREE', 'PAID_FETCH', 'ARCHIVE', 'BROWSER_SESSION']) assert.match(ev, new RegExp(r));
+  assert.deepEqual(g.owner.NOT_FINDABLE, []);
+  assert.equal(g.open['no_evidence_yet:NO_URL'], 1);
+  assert.equal(g.open['no_evidence_yet:PAYWALL_PAGE'], 2);
+});
+
+test('class guard: NOT_FINDABLE only after every url-finding method completed without a usable link', () => {
+  const base = { recency: 'historic', strategy: null, gapClass: 'NO_URL', subclass: 'AGG_REF', outletId: 'alive', url: null, skipped: [] };
+  const rows = [
+    { ...base, reviewKey: 'none/x.json' },
+    { ...base, reviewKey: 'part/x.json' },
+    { ...base, reviewKey: 'err/x.json' },
+    { ...base, reviewKey: 'all/x.json' },
+  ];
+  const UF = require('./gap-url-find.js');
+  const allDone = Object.fromEntries(UF.METHODS.map((m) => [m, 'no_candidates']));
+  const row = (methods, ts = '2026-11-09T01:00:00Z') => ({ strategy: 'URL_FIND', outcome: 'no_evidence', reason: 'url_not_found', runId: 'r', ts, detail: { policy: 2, methods } });
+  const att = new Map([
+    ['part/x.json', [row({ AGG_LINK: 'no_candidates', WAYBACK_CDX: 'no_candidates' })]],
+    ['err/x.json', [row({ ...allDone, WAYBACK_CDX: 'error' })]],
+    // methods completed over two nights still count (union of live rows)
+    ['all/x.json', [row({ ...allDone, SERP: 'skipped_paid' }), row({ SERP: 'candidates_refused' }, '2026-11-10T01:00:00Z')]],
+  ]);
+  const g = GT.groupTerminalCandidates(rows, att, { hostFor: () => 'alive.example' });
+  assert.deepEqual(g.owner.NOT_FINDABLE.map((a) => a.row.reviewKey), ['all/x.json']);
+  assert.ok(g.owner.NOT_FINDABLE[0].evidence.some((e) => /SERP/.test(e)));
+  assert.equal(g.open['no_evidence_yet:NO_URL'], 3);
 });
 
 test('ship-check: a terminal record never masks a garbage fetch (scorer reads incompleteReason)', () => {

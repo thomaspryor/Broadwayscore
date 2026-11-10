@@ -83,6 +83,8 @@ const LABELS = {
   REFETCH_FREE: { fetchMethod: 'gap-recovery-refetch-free', sourceMethod: 'gap-recovery-refetch-free', contentTierReasonFallback: 'Recovered by the gap-recovery driver (free refetch)' },
   ARCHIVE: { fetchMethod: 'gap-recovery-wayback-earliest', sourceMethod: 'gap-recovery-archive', contentTierReasonFallback: 'Recovered by the gap-recovery driver (earliest Wayback capture)' },
   URL_REDISCOVER: { fetchMethod: 'gap-recovery-url-rediscover', sourceMethod: 'gap-recovery-url-rediscover', contentTierReasonFallback: 'Recovered by the gap-recovery driver (url rediscovery)', urlDiscoveryMethod: 'google-serp' },
+  URL_FIND: { fetchMethod: 'gap-recovery-url-find', sourceMethod: 'gap-recovery-url-find', contentTierReasonFallback: 'Recovered by the gap-recovery driver (original url found)', urlDiscoveryMethod: 'gap-url-find' },
+  PAID_FETCH: { fetchMethod: 'gap-recovery-paid-fetch', sourceMethod: 'gap-recovery-paid-fetch', contentTierReasonFallback: 'Recovered by the gap-recovery driver (paid fetch)' },
 };
 
 /** Build the candidate list with a strategy per review (no writes). */
@@ -106,6 +108,8 @@ function planCandidates({ dir, shows, outlets, ledgerIndex, runGates }) {
     const show = shows.get(row.showId) || null;
     const ffEntry = ff.get(reviewKey) || null;
     const eligible = (strategy) => {
+      // URL_FIND: per-method progress across nights (gap-url-find.urlFindEligibility).
+      if (strategy === 'URL_FIND') return require('./lib/gap-url-find').urlFindEligibility(L.liveRows(ledgerIndex.get(reviewKey) || []), { cooldownH: Number(process.env.GAP_URL_FIND_COOLDOWN_H || 20) });
       const e = L.strategyEligibility({ strategy, show, review, gapClass: row.gapClass, state: L.strategyState(ledgerIndex, reviewKey, strategy) });
       if (!e.ok) return e;
       if (strategy === 'REFETCH_FREE' && ffEntry) {
@@ -207,6 +211,8 @@ async function runReconcile({ dir, ledgerPath }) {
 }
 
 async function main() {
+  // Manual runs get the same keys the nightly sources from .env (fills only unset vars; no .env in CI).
+  require('./lib/load-env').loadEnv(ROOT);
   const ks = L.killSwitchActive();
   if (ks.active) { console.log(`gap-recovery: kill switch active (${ks.why}); nothing done.`); return 0; }
 
@@ -288,6 +294,8 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
   if (pend.entries) console.log(`  [pending] ${pend.entries} earlier checkpoint(s): ${pend.landed.length} landed, ${pend.restored.length} restored, ${pend.notLanded.length} not landed`);
 
   const todo = cands.filter((c) => c.strategy);
+  let urlFindRuns = 0;
+  const URL_FIND_MAX_PER_RUN = (() => { const n = parseInt(process.env.GAP_URL_FIND_MAX_PER_RUN || '12', 10); return Number.isFinite(n) && n >= 0 ? n : 12; })();
   const work = OPTS.limit ? todo.slice(0, OPTS.limit) : todo;
   console.log(`\n${todo.length} candidates with a strategy; running ${work.length}. ${runCeiling != null ? `Run ceiling ${ceiling}` : `Daily ceiling ${ceiling} (accepted today so far: ${L.acceptedToday(rows)})`}.`);
 
@@ -306,7 +314,9 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
     bump(b.outcomes, `${extra.outcome}:${String(extra.reason || '').split(':')[0]}`);
   };
 
+  let lastFlushAt = Date.now();
   const flush = (label) => {
+    lastFlushAt = Date.now();
     if (!tracker.size) return;
     const attempts = {};
     for (const p of tracker) { const k = L.reviewKeyOf(p); if (pendingInfo.has(k)) attempts[k] = pendingInfo.get(k); }
@@ -329,6 +339,13 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
       if (Date.now() - start > OPTS.timeBudgetMs) { console.log('\nTime budget reached.'); break; }
       if (L.ceilingReachedNow({ file: ledgerPath, ceiling, runMode: runCeiling != null, acceptedThisRun: accepted })) { console.log(`\n${runCeiling != null ? 'Run' : 'Daily'} ceiling ${ceiling} reached.`); SUMMARY.ceilingHit = true; break; }
       if (L.killSwitchActive().active) { console.log('\nKill switch turned on mid-run; stopping.'); break; }
+      // An accept must not wait uncommitted behind slow reviews that accept nothing (ship-check P1).
+      if (tracker.size && Date.now() - lastFlushAt > 2 * 60 * 1000) flush(`checkpoint ${accepted}`);
+      // URL_FIND takes ~3-6 minutes a review (Wayback/Common Crawl indexes),
+      // so it gets a slice of the night, not all of it: the rest of the
+      // candidates (cheap re-fetches) still run. GAP_URL_FIND_MAX_PER_RUN.
+      if (c.strategy === 'URL_FIND' && urlFindRuns >= URL_FIND_MAX_PER_RUN) continue;
+      if (c.strategy === 'URL_FIND') urlFindRuns++;
       // Browser preferred but no GUI: record the non-evidence row, then use the next strategy.
       for (const k of c.skipped) {
         if (k.strategy === 'BROWSER_SESSION' && String(k.reason).startsWith('browser_unavailable')) {
@@ -374,6 +391,16 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
       else if (strategy === 'REFETCH_FREE') got = await S.refetchFree(c);
       else if (strategy === 'ARCHIVE') got = await S.archive(c);
       else if (strategy === 'URL_REDISCOVER') got = await S.urlRediscover(c, serpKeys);
+      else if (strategy === 'PAID_FETCH') got = await S.paidFetch(c);
+      else if (strategy === 'URL_FIND') {
+        // Links a past URL_FIND run found and the live gate refused are not fetched again.
+        const refusedUrls = new Set(L.liveRows(L.indexRows(L.readRows(ledgerPath)).get(c.reviewKey) || [])
+          .filter((r) => r.strategy === 'URL_FIND')
+          .flatMap((r) => [...(r.outcome === 'rejected' && r.url ? [r.url] : []), ...((r.detail && r.detail.refusedCandidates) || [])]));
+        // GAP_URL_FIND_METHODS narrows a bulk run to the methods with measured yield.
+        const methods = process.env.GAP_URL_FIND_METHODS ? process.env.GAP_URL_FIND_METHODS.split(',').map((m) => m.trim()).filter(Boolean) : null;
+        got = await S.urlFind(c, { dir, rootDir: ROOT, serpKeys, refusedUrls, methods });
+      }
       else got = { ok: false, outcome: 'non_evidence', reason: `strategy_unbuilt:${strategy}` };
 
       // URL rediscovery spends the file's own SERP budget (shared serpRetryCount).
@@ -395,9 +422,11 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
         });
       }
 
+      const urlFindDetail = got.methods ? { policy: require('./lib/gap-url-find').URL_FIND_POLICY, methods: got.methods, foundBy: got.foundBy || null,
+        refusedCandidates: got.refusedCandidates || [], foundUnreadable: got.foundUnreadable || [] } : undefined;
       if (!got.ok) {
-        console.log(`  ✗ ${got.outcome} (${got.reason})`);
-        record(c, strategy, { outcome: got.outcome, reason: got.reason, url: got.url });
+        console.log(`  ✗ ${got.outcome} (${got.reason})${got.methods ? ` ${JSON.stringify(got.methods)}` : ''}`);
+        record(c, strategy, { outcome: got.outcome, reason: got.reason, url: got.url, ...(urlFindDetail ? { detail: urlFindDetail } : {}) });
         // A hard 404/410 on the stored url goes onto the record (httpStatus),
         // so the classifier routes it to URL_DEAD and url rediscovery ranks it.
         if (!got.url || got.url === c.url) {
@@ -419,13 +448,17 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
       };
       const r = await recoverReviewTextVerified({
         filePath: c.filePath, rawText: got.rawText, url: got.url, expectUrl: c.url || null,
-        headline: require('./lib/gap-acceptance').pageHeadline(got.html),
+        headline: require('./lib/gap-acceptance').pageHeadline(got.html), pageDate: require('./lib/gap-acceptance').pagePublishDate(got.html, got.url || c.url), pageByline: require('./lib/gap-acceptance').pageByline(got.html, c.outletId),
         labels, tracker, ctxOpts: { reviewTextsDir: dir }, show: c.show,
       });
       if (!r.ok) {
         const outcome = L.outcomeForGateRefusal(r.code);
         console.log(`  ✗ ${outcome} (${r.code}): ${String(r.reason).slice(0, 160)}`);
-        record(c, strategy, { outcome, reason: r.code, url: got.url, bytesAfter: r.newLen, detail: { via: got.via, llmAsked: !!r.llmAsked } });
+        // URL_FIND: the found link was refused by the live gate (LLM identity
+        // check included); its method stays un-done so the next night tries
+        // the other links (this url is skipped from now on).
+        const detail = { via: got.via, llmAsked: !!r.llmAsked, ...(urlFindDetail ? { ...urlFindDetail, methods: { ...urlFindDetail.methods, [got.foundBy]: 'found_refused_live' } } : {}) };
+        record(c, strategy, { outcome, reason: r.code, url: got.url, bytesAfter: r.newLen, detail });
         continue;
       }
       accepted++;
@@ -435,9 +468,13 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
       const info = { reviewKey: c.reviewKey, gapClass: c.gapClass, strategy, url: got.url, bytesBefore: c.bytesBefore, bytesAfter: r.newLen, priorFullTextHash, runId: RUN_ID };
       pendingInfo.set(c.reviewKey, info);
       console.log(`  ✓ accepted ${r.newLen} chars via ${got.via} (tier ${r.decision.priorTier} -> ${r.decision.newTier})`);
-      record(c, strategy, { outcome: 'pending_push', reason: 'accepted', url: got.url, bytesAfter: r.newLen, priorFullTextHash, detail: { via: got.via, newTier: r.decision.newTier } });
+      record(c, strategy, { outcome: 'pending_push', reason: 'accepted', url: got.url, bytesAfter: r.newLen, priorFullTextHash, detail: { via: got.via, newTier: r.decision.newTier, ...(urlFindDetail || {}) } });
       stats.byStrategy[strategy].accepted++;
-      if (accepted % 5 === 0) flush(`checkpoint ${accepted}`);
+      // Every 5 accepts, or once an accept has waited 2 minutes: an uncommitted
+      // write in the shared review-texts clone is lost to any other job's
+      // reset (BRO-7171 2026-11-10: a URL_FIND accept, ~6 min per review, was
+      // wiped by a concurrent cleanup job's `git reset` before checkpoint 5).
+      if (accepted % 5 === 0 || strategy === 'URL_FIND' || Date.now() - lastFlushAt > 2 * 60 * 1000) flush(`checkpoint ${accepted}`);
       await new Promise((res) => setTimeout(res, 1500));
     }
     flush('final');
