@@ -417,3 +417,15 @@ export function weeksBelowBreakEven(grossesNewestFirst: Array<number | null>, br
   }
   return n;
 }
+
+/**
+ * Owner 2026-11-10: a struggling show that has already announced its closing is
+ * no longer "at risk" (the outcome is known), so /biz lists it as "Closing
+ * Before Recouping" instead. Order within each group is kept.
+ */
+export function splitStruggling<T extends { closingDate: string | null }>(shows: T[]): { closing: T[]; atRisk: T[] } {
+  return {
+    closing: shows.filter((s) => !!s.closingDate),
+    atRisk: shows.filter((s) => !s.closingDate),
+  };
+}

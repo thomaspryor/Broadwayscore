@@ -7,6 +7,7 @@
  * trail the past events, so a November closing sat under May recoupments.
  */
 
+import { splitStruggling } from '@/lib/closing-watch';
 import type { DevelopmentItem } from '@/components/biz/RecentDevelopmentsList';
 import { getRecentRecoupments, getRecentClosings, getUpcomingClosings, getShowsAtRisk, getClosingWatch } from '@/lib/data-commercial';
 import { formatDevelopmentDate, formatMonthYear, sortNewestFirst } from '@/lib/biz-format';
@@ -53,7 +54,17 @@ export function buildDevelopments(scope: keyof typeof LIMITS = 'short'): Develop
 
   const watchShows = getClosingWatch();
   const watchSlugs = new Set(watchShows.map((s) => s.slug));
-  const atRisk: DevelopmentItem[] = getShowsAtRisk().filter((s) => !watchSlugs.has(s.slug)).slice(0, lim.atRisk).map((show) => ({
+  // A show that already announced its closing while below break-even is no
+  // longer "at risk": it is closing before recouping (owner 2026-11-10).
+  const atRiskAll = getShowsAtRisk().filter((s) => !watchSlugs.has(s.slug));
+  const closingUnrecoupedSlugs = new Set(splitStruggling(atRiskAll).closing.map((s) => s.slug));
+  const atRisk: DevelopmentItem[] = atRiskAll.slice(0, lim.atRisk).map((show) => (show.closingDate ? {
+    date: formatDevelopmentDate(show.closingDate),
+    type: 'closing-announced',
+    showTitle: show.title,
+    showSlug: show.slug,
+    description: 'closing before recouping, grosses below estimated break-even',
+  } : {
     date: 'Now',
     type: 'at-risk',
     showTitle: show.title,
@@ -74,7 +85,8 @@ export function buildDevelopments(scope: keyof typeof LIMITS = 'short'): Develop
     };
   });
 
-  const upcoming: DevelopmentItem[] = [...getUpcomingClosings()]
+  const upcoming: DevelopmentItem[] = getUpcomingClosings()
+    .filter((show) => !closingUnrecoupedSlugs.has(show.slug))
     .sort((a, b) => a.closingDate.localeCompare(b.closingDate))
     .slice(0, lim.upcoming)
     .map((show) => ({
