@@ -1,5 +1,6 @@
 'use strict';
 
+// venue-write-guard-ok: CLASS_OF maps audit codes (one is 'venue') to classes; no venue data is written
 /**
  * BRO-7291 class 8: the weekly dual-model city-hub audit's decisions. Pure; no I/O.
  * The driver is scripts/city-hub-weekly-audit.js (audit-review-quality.yml, Tuesdays).

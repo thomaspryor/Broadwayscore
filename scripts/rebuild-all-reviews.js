@@ -88,7 +88,7 @@ const { normalizeThumb, normalizePublishDate, fixMojibake, fixMissingPeriods, is
 const { normalizeCriticName } = require('./lib/byline-normalization');
 const { recoverDisplayBylinesForShow, resolveCriticName } = require('./lib/byline-recovery');
 const { displayCriticName, isPlaceholderCritic } = require('./lib/critic-display-name');
-const { mergeManualEntries } = require('./lib/manual-entry-merge');
+const { mergeManualEntries, loadManualEntryBaseline } = require('./lib/manual-entry-merge');
 const { isStaleScoreInput, markRescoreNeeded, queueRescoreForCvPartialWindow } = require('./lib/rescore-flagging');
 const { isLondonMarket, isUkOutletUrl, isBroadwayCategory } = require('./lib/venue-classification');
 const { isValidBroadwayCopy, shouldClearStaleObTransfer } = require('./lib/ob-transfer-guard');
@@ -6471,8 +6471,7 @@ for (const sid of postDedupTouchedShows) {
       // every dedup pass, so a missed match appends a permanent phantom duplicate —
       // the helper matches punctuation-insensitively and falls back to the URL.
       // BRO-7291 class 5: rows without a recorded reason lose to a scored pipeline twin unless grandfathered.
-      let baseline = null;
-      try { baseline = new Set(JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/manual-entry-baseline.json'), 'utf8')).keys); } catch (_) { /* no baseline: legacy behaviour */ }
+      const baseline = loadManualEntryBaseline(); // null when absent: legacy behaviour
       const { preserved, appended, matchedByUrl, refusedRoundup = [], unprovenanced = [] } =
         mergeManualEntries(allReviews, manualEntries, normalizeUrlForDedup, { baseline });
       for (const key of unprovenanced) {

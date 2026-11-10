@@ -233,4 +233,10 @@ function manualEntryKey(r) { return `${r.showId}|${r.outletId}|${criticKey(r.cri
 /** A hand row says who entered it and why (manual-review-direct.js --reason). */
 function hasManualProvenance(r) { return !!(r && typeof r.manualEntryReason === 'string' && r.manualEntryReason.trim().length >= 8); }
 
-module.exports = { manualEntryKey, hasManualProvenance, isRoundupManualEntry, manualUrlIsAggregatorOverOwn, criticKey, tierRank, isUnknownByline, isMergeFossilAnchor, findPipelineTwin, mergeManualEntries };
+/** BRO-7291 class 5: hand-maintained grandfather list (read-only here). Missing file -> null (legacy behaviour). */
+const MANUAL_ENTRY_BASELINE = 'data/audit/manual-entry-baseline.json';
+function loadManualEntryBaseline(root = require('path').join(__dirname, '..', '..')) {
+  try { return new Set(JSON.parse(require('fs').readFileSync(require('path').join(root, MANUAL_ENTRY_BASELINE), 'utf8')).keys); } catch (_) { return null; }
+}
+
+module.exports = { MANUAL_ENTRY_BASELINE, loadManualEntryBaseline, manualEntryKey, hasManualProvenance, isRoundupManualEntry, manualUrlIsAggregatorOverOwn, criticKey, tierRank, isUnknownByline, isMergeFossilAnchor, findPipelineTwin, mergeManualEntries };

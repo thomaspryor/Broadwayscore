@@ -36,6 +36,9 @@ on:
       - 'scripts/lib/**'
       # BRO-7103: scripts/lib/recurrence-classes.test.mjs and root-cause-close.test.mjs require it.
       - 'scripts/recurrence-detector.js'
+      # BRO-7291: scripts/lib/hub-run-dates.test.mjs and manual-entry-provenance.test.mjs require these.
+      - 'scripts/harvest-hub-run-dates.js'
+      - 'scripts/check-manual-entry-provenance.js'
       - 'scripts/route-dependabot-pr-cards.js'
       - 'scripts/read-theater-newsletters.js'
       # BRO-3497: scripts/re_extract_talkin_broadway_reviews.test.mjs covers this script.

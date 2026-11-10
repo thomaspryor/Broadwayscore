@@ -1,4 +1,5 @@
 'use strict';
+// venue-write-guard-ok: builds in-memory per-review verdict objects with a venue key; never writes shows.json
 /**
  * BRO-7291 class 3 (wrong production): a city-hub regional show's review that is about the same title at a
  * DIFFERENT theatre. Real case: come-from-away-north-regional-2026 (North Shore Music Theatre, Beverly MA)

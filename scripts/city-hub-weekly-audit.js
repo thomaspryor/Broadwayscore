@@ -46,8 +46,8 @@ function runAuditMode(city, mode, maxUsd, extra = []) {
 /** Class 5 rows for this hub's shows. */
 function provenanceFor(showIds) {
   const reviews = readJson('data/reviews.json', { reviews: [] });
-  const base = readJson('data/audit/manual-entry-baseline.json', { keys: [] });
-  const { unprovenancedRows } = require('./check-manual-entry-provenance');
+  const { unprovenancedRows, BASELINE } = require('./check-manual-entry-provenance');
+  const base = readJson(BASELINE, { keys: [] }); // read-only: the baseline is hand-maintained
   const rows = unprovenancedRows(reviews.reviews || reviews, base.keys).filter((k) => showIds.has(k.split('|')[0]));
   return { unprovenanced: rows.length, rows };
 }

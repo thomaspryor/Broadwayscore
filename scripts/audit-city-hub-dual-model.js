@@ -289,7 +289,7 @@ async function writeIngestPlan(L, { checkLinks = true } = {}) {
 }
 async function resolveRedirect(url) {
   if (!url || !C.REDIRECT_HOSTS.test(C.host(url))) return url;
-  try { const r = await fetch(url, { redirect: 'manual' }); const loc = r.headers.get('location'); return loc && /^https?:/.test(loc) ? loc : url; } catch { return url; }
+  try { const r = await fetch(url, { redirect: 'manual', signal: AbortSignal.timeout(15000) }); const loc = r.headers.get('location'); return loc && /^https?:/.test(loc) ? loc : url; } catch { return url; }
 }
 async function runCoverage(L, limit) {
   const cache = loadCache(L.city, 'coverage');

@@ -10,12 +10,13 @@
 require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
-const { manualEntryKey, hasManualProvenance } = require('./lib/manual-entry-merge');
+const { manualEntryKey, hasManualProvenance, MANUAL_ENTRY_BASELINE: BASELINE } = require('./lib/manual-entry-merge');
 
 const ROOT = path.join(__dirname, '..');
 const arg = (n, d) => { const h = process.argv.slice(2).find((a) => a.startsWith(`--${n}=`)); return h ? h.split('=').slice(1).join('=') : d; };
 
 /** Manual rows with no recorded reason that are not grandfathered. Pure. */
+
 function unprovenancedRows(reviews, baselineKeys) {
   const base = new Set(baselineKeys || []);
   return reviews.filter((r) => r && r.manualEntry === true && !hasManualProvenance(r) && !base.has(manualEntryKey(r))).map(manualEntryKey);
@@ -25,7 +26,7 @@ function main() {
   const reviewsPath = path.resolve(ROOT, arg('reviews', 'data/reviews.json'));
   if (!fs.existsSync(reviewsPath)) { console.log('[manual-entry-provenance] no reviews.json, skipped'); return; }
   const data = JSON.parse(fs.readFileSync(reviewsPath, 'utf8'));
-  const baseline = JSON.parse(fs.readFileSync(path.resolve(ROOT, arg('baseline', 'data/audit/manual-entry-baseline.json')), 'utf8'));
+  const baseline = JSON.parse(fs.readFileSync(path.resolve(ROOT, arg('baseline', BASELINE)), 'utf8'));
   const reviews = data.reviews || data;
   const bad = unprovenancedRows(reviews, baseline.keys);
   const manual = reviews.filter((r) => r && r.manualEntry === true).length;
@@ -34,5 +35,5 @@ function main() {
   if (bad.length) process.exit(1);
 }
 
-module.exports = { unprovenancedRows };
+module.exports = { unprovenancedRows, BASELINE };
 if (require.main === module) main();
