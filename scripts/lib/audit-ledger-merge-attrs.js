@@ -256,11 +256,11 @@ const EXEMPT_LEDGERS = [
   },
 ];
 
-// BRO-7256: city-hub dual-model audit caches. audit-city-hub-dual-model.js keeps the LAST row per key on read and
+// BRO-7256: city-hub dual-model audit caches. the city-hub dual-model audit script keeps the LAST row per key on read and
 // rewrites a cache file when a mode re-runs a cached row, so a union merge could resurrect superseded rows;
 // one-off audit run by one session, so there is no concurrent writer.
 {
-  const reason = '2026-11-10 (BRO-7256): audit-city-hub-dual-model.js is last-row-wins per key and rewrites its cache on re-run, so union could resurrect superseded rows; single manual writer.';
+  const reason = '2026-11-10 (BRO-7256): the city-hub dual-model audit script is last-row-wins per key and rewrites its cache on re-run, so union could resurrect superseded rows; single manual writer.';
   for (const city of ['washington-dc', 'los-angeles-ca']) {
     for (const k of ['coverage', 'images', 'reviews', 'shows', 'tours']) EXEMPT_LEDGERS.push({ file: `data/audit/city-hub-dual/${city}/${k}.jsonl`, reason });
   }

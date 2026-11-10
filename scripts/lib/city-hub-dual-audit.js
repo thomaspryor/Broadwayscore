@@ -1,6 +1,6 @@
 'use strict';
 /**
- * Pure helpers for scripts/audit-city-hub-dual-model.js (BRO-7256): the pre-launch
+ * Pure helpers for the city-hub dual-model audit CLI (BRO-7256): the pre-launch
  * dual-model (GPT + Gemini) audit of a city hub. No network, no file writes, so the
  * tests call the real functions.
  *
