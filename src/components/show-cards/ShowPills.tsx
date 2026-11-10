@@ -1,5 +1,6 @@
 import { resolveShowFormat } from '@/lib/show-format';
 import { shouldShowReviewsSyncing } from '../../../scripts/lib/show-page-provisional-state';
+import { showsMarketBadge } from '../../../scripts/lib/market-badge';
 
 // Status pill - subtle background with accent color
 export function StatusBadge({ status }: { status: string }) {
@@ -88,8 +89,7 @@ export function AudienceChip({ grade }: { grade: { grade: string; color: string;
 // Category badge - for Off-Broadway and West End shows.
 // Opera shows (Met Opera) suppress the badge since FormatPill already says "OPERA".
 export function CategoryBadge({ category, isOpera = false }: { category?: string; isOpera?: boolean }) {
-  if (isOpera) return null;
-  if (!category || category === 'broadway') return null;
+  if (!category || !showsMarketBadge(category, isOpera)) return null;
 
   const config: Record<string, { label: string; colorClass: string }> = {
     'off-broadway': {

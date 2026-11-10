@@ -15,6 +15,7 @@ import { formatClosingLabel } from '@/lib/closing-label';
 import { shortCity } from '@/lib/tour-schedule';
 import { getMarketLabel, isLondonMarket } from '@/lib/market-utils';
 import { isOperaShow, getOperaHouseSuffix, getOperaMarketLabel } from '@/lib/show-market';
+import { showsMarketBadge } from '../../../scripts/lib/market-badge';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
 import AfterHydration from '@/components/user/AfterHydration';
 import HoverRateStars from '@/components/user/HoverRateStars';
@@ -258,7 +259,7 @@ const ShowListCard = memo(function ShowListCard({
   ) : (
     // Default variant (Home, OB, WE): formatOpeningDate style
     <div className="flex-1 min-w-0">
-      {showCategoryBadge && category === 'off-broadway' && !isOpera && (
+      {showCategoryBadge && category === 'off-broadway' && showsMarketBadge(category, isOpera) && (
         <span className="inline-block mb-1 px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-wider text-purple-300 bg-purple-500/15 border border-purple-500/20 rounded whitespace-nowrap">Off-Broadway</span>
       )}
       <h3 className="font-bold text-white text-lg group-hover:text-brand transition-colors line-clamp-2">
@@ -272,7 +273,7 @@ const ShowListCard = memo(function ShowListCard({
           ? <GenrePill genre={show.genre} />
           : <FormatPill type={show.type} />}
         <ProductionPill isRevival={isRevival} />
-        {show.isOffWestEnd && <CategoryBadge category="off-west-end" />}
+        {show.isOffWestEnd && <CategoryBadge category="off-west-end" isOpera={isOpera} />}
         {!hideStatus && <StatusBadge status={show.status} />}
       </div>
       <p className="text-sm text-gray-400 mt-2.5 sm:truncate">
