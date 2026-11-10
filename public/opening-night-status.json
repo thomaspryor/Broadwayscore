@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-10T07:57:35.468Z",
+  "generatedAt": "2026-11-10T09:07:04.740Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -160,27 +160,27 @@
       "status": "open",
       "slug": "the-visitors-off-broadway",
       "thumbnail": "/images/shows/the-visitors-off-broadway-2026/thumbnail.webp",
-      "siteScore": 74.69,
+      "siteScore": 74.93,
       "liveScore": 75,
-      "scoreDrift": 0.3100000000000023,
+      "scoreDrift": 0.06999999999999318,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 5,
+      "total": 6,
       "t1": 0,
-      "t2": 4,
+      "t2": 5,
       "t3": 1,
-      "positive": 5,
+      "positive": 6,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "5/12 total",
+          "6/12 total",
           "T1:0/3",
-          "hi-conf:5/8"
+          "hi-conf:6/8"
         ],
-        "highConfidence": 5,
+        "highConfidence": 6,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -540,6 +540,18 @@
           "m": 0,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-11-10T09:07:04.740Z",
+          "rc": 6,
+          "s": 74.93,
+          "t1": 0,
+          "t2": 5,
+          "t3": 1,
+          "p": 6,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -746,9 +758,9 @@
       "status": "open",
       "slug": "here-there-are-blueberries",
       "thumbnail": "/images/shows/here-there-are-blueberries-2026/thumbnail.webp",
-      "siteScore": 80.55,
-      "liveScore": 81,
-      "scoreDrift": 0.45000000000000284,
+      "siteScore": 80.12,
+      "liveScore": 80,
+      "scoreDrift": -0.12000000000000455,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -847,10 +859,6 @@
         },
         {
           "name": "The Daily Beast",
-          "isDualMarket": false
-        },
-        {
-          "name": "Cititour",
           "isDualMarket": false
         },
         {
@@ -1099,6 +1107,18 @@
           "t": "2026-11-10T07:57:35.468Z",
           "rc": 18,
           "s": 80.55,
+          "t1": 4,
+          "t2": 12,
+          "t3": 2,
+          "p": 16,
+          "m": 2,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-10T09:07:04.740Z",
+          "rc": 18,
+          "s": 80.12,
           "t1": 4,
           "t2": 12,
           "t3": 2,
