@@ -36,7 +36,7 @@ function stubModels() {
   return [{ name: 'stub-a', call: answer([4, 0, 2]) }, { name: 'stub-b', call: answer([5, 1, 3]) }];
 }
 
-async function runNight({ settle }) {
+async function runNight({ settle, settleMaxRuns }) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7283-parity-'));
   const reviewTextsDir = path.join(dir, 'review-texts');
   let t = T0;
@@ -49,6 +49,7 @@ async function runNight({ settle }) {
     const run = await runLaneNight({
       show: SHOW, night: NIGHT, openingDate: NIGHT, ledgerDir: path.join(dir, 'ledger'), reviewTextsDir, dryRun: true, maxPasses: 1, passIntervalMs: 0, windowMs: 40 * 60 * 1000,
       adapters: [{ name: 'roundup', kind: 'aggregator', phase: 'main', discover: async () => REVIEWS.map((r) => ({ url: r.url, source: 'aggregator', aggregatorCited: true })) }],
+      ...(settleMaxRuns ? { settleMaxRuns } : {}),
       fetchText: async () => '',
       fetchReview: async (a) => { const r = byUrl.get(a.url); return { outletId: r.outletId, outlet: r.outletId, criticName: r.criticName, fullText: BODY, publishDate: NIGHT }; },
       scoreReview: async (row) => {
@@ -103,4 +104,12 @@ test('publish waits for a re-sent (rescored) row\'s NEW score to be live, not ju
   const src = fs.readFileSync(new URL('../../scripts/lib/opening-night-lane/publish.js', import.meta.url), 'utf8');
   assert.match(src, /rescored === true/);
   assert.match(src, /liveScore\.get\(url\) !== wantScore\.get\(url\)/);
+});
+
+test('the settle is capped per night: runs past the cap publish the isolated score and report why', async () => {
+  const res = await runNight({ settle: true, settleMaxRuns: 1 });
+  assert.equal(res.run.unpublished.length, 0);
+  assert.equal(res.settleCalls.length, 1, 'only one settle call was made');
+  assert.equal(res.run.settle.runs, 1);
+  assert.ok(res.run.settle.failed.some((f) => /runs already made/.test(f.reason)), 'the skipped runs are reported');
 });

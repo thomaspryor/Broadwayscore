@@ -67,7 +67,7 @@ function loadDone(ledgerDir, show, night, onDiskUrls = []) {
 async function runLaneNight({
   show, night, openingDate, timeZone, adapters, fetchText, ledgerDir, fetchReview, scoreReview, publishPorts, makePublishPorts, dryRun = false,
   onDiskUrls = [], onDiskRows = [], maxInflight = 2, midPassPublishAfterMs = 5 * 60 * 1000, midPassTickMs = Math.min(midPassPublishAfterMs, 30 * 1000), now, wait, forkClock, latency = {}, passIntervalMs = 2 * 60 * 1000, maxPasses = 1000, windowMs = 6 * 60 * 60 * 1000,
-  startedAt, serpClockStartMs, publishTimeoutMs, pollMs, reviewTextsDir, shouldStop = () => false, abandonPending = () => false, missingOutlets = [], settleComparative = null,
+  startedAt, serpClockStartMs, publishTimeoutMs, pollMs, reviewTextsDir, shouldStop = () => false, abandonPending = () => false, missingOutlets = [], settleComparative = null, settleMaxRuns = 25,
 } = {}) {
   for (const [k, v] of Object.entries({ show, night, adapters, fetchText, ledgerDir, fetchReview, scoreReview, now, wait })) {
     if (v === undefined || v === null) throw new Error(`lane-runner: ${k} is required`);
@@ -254,8 +254,10 @@ async function runLaneNight({
           // A failure publishes the isolated scores, exactly as before this existed.
           if (settleComparative) {
             try {
-              const res = await settleComparative({ file: base });
+              if (settled.runs >= settleMaxRuns) throw new Error(`settle skipped: ${settleMaxRuns} runs already made tonight`);
               settled.runs++;
+              // Each model call is bounded by its own 300s abort (comparative-core), so a hang ends in `unsettled`, not a late write.
+              const res = await settleComparative({ file: base });
               for (const c of (res && res.changed) || []) {
                 if (c.file === base) row = JSON.parse(require('fs').readFileSync(persisted.file, 'utf8'));
                 else if (fileToKey.has(c.file)) settled.rescored.push({ key: fileToKey.get(c.file), file: c.file });
