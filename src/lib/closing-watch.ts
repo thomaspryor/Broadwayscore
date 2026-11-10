@@ -391,23 +391,25 @@ export function isNearBreakEven(input: ClosingWatchInput): boolean {
   return input.avgGross <= input.breakEven * (1 + NEAR_BREAKEVEN_MARGIN);
 }
 
-/**
- * A show too new for a season-adjusted figure (fewer than CLOSING_WATCH_MIN_WEEKS reported weeks
- * in its current run) whose grosses so far are under or near break-even. Listed on "Close to
- * break-even" as "New, too early to judge": no closing estimate from preview-heavy weeks.
- */
-/** How long after opening a show still counts as New on Close to break-even. */
-export const NEW_SHOW_WEEKS = 26;
+/** A show counts as New for this many weeks after opening (and while still in previews). */
+export const NEW_SHOW_WEEKS = 8;
 
+/** Opened in the last NEW_SHOW_WEEKS, or has not opened yet. */
+export function isNewShow(openingDate: string | null | undefined, today: string): boolean {
+  const opening = (openingDate ?? '').slice(0, 10);
+  return !/^\d{4}-\d{2}-\d{2}$/.test(opening) || addWeeks(opening, NEW_SHOW_WEEKS) >= today;
+}
+
+/**
+ * A New show (isNewShow) whose grosses so far are under or near break-even. Listed on "Close to
+ * break-even" as "New, too early to judge", and kept off Closing Watch: its weeks so far are
+ * mostly previews, too early for a closing estimate.
+ */
 export function isNewNearOrBelowBreakEven(input: ClosingWatchInput & { openingDate?: string | null }): boolean {
   if (input.status !== 'open' && input.status !== 'previews') return false;
-  // Few weeks can also mean a long-running show back from a break; only a show that opened in the
-  // last NEW_SHOW_WEEKS (or has not opened yet) is "New".
-  const opening = (input.openingDate ?? '').slice(0, 10);
-  if (/^\d{4}-\d{2}-\d{2}$/.test(opening) && addWeeks(opening, NEW_SHOW_WEEKS) < input.today) return false;
+  if (!isNewShow(input.openingDate, input.today)) return false;
   if (!isBoxOfficeDriven(input.designation, input.limitedRun)) return false;
   if (hasAnnouncedClosing(input)) return false;
-  if (input.adjustedRatio != null) return false;
   if (input.avgGross == null || !(input.avgGross > 0) || input.breakEven == null || input.breakEven <= 0) return false;
   return input.avgGross <= input.breakEven * (1 + NEAR_BREAKEVEN_MARGIN);
 }

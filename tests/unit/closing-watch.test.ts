@@ -8,6 +8,7 @@ import {
   isOnClosingWatch,
   isNearBreakEven,
   isNewNearOrBelowBreakEven,
+  isNewShow,
   splitStruggling,
   isBoxOfficeDriven,
   finalRunStart,
@@ -230,7 +231,9 @@ test('new show too early to judge: fewer than 4 weeks, under or near break-even,
   assert.equal(isNewNearOrBelowBreakEven(wanted), true);
   assert.equal(isNearBreakEven(wanted), false); // the established rule still needs 4 weeks
   assert.equal(isNewNearOrBelowBreakEven({ ...wanted, avgGross: 700_000 * 1.2 }), false); // comfortably above
-  assert.equal(isNewNearOrBelowBreakEven({ ...wanted, adjustedRatio: 0.75 }), false); // 4+ weeks: the normal lists take over
+  // Still New with a 4th week: the tag lasts NEW_SHOW_WEEKS after opening, not until a 4th week posts.
+  assert.equal(isNewNearOrBelowBreakEven({ ...wanted, adjustedRatio: 0.75, openingDate: '2026-11-08', today: '2026-11-24' }), true);
+  assert.equal(isNewNearOrBelowBreakEven({ ...wanted, openingDate: '2026-11-08', today: '2027-01-10' }), false); // 9 weeks in
   assert.equal(isNewNearOrBelowBreakEven({ ...wanted, closingDate: '2027-01-03' }), false); // announced closing
   assert.equal(isNewNearOrBelowBreakEven({ ...wanted, limitedRun: true }), false);
   assert.equal(isNewNearOrBelowBreakEven({ ...wanted, status: 'closed' }), false);
@@ -238,4 +241,10 @@ test('new show too early to judge: fewer than 4 weeks, under or near break-even,
   assert.equal(isNewNearOrBelowBreakEven({ ...wanted, openingDate: '2026-11-08', today: '2026-11-10' }), true);
   assert.equal(isNewNearOrBelowBreakEven({ ...wanted, openingDate: '2019-03-01', today: '2026-11-10' }), false);
   assert.equal(isNewNearOrBelowBreakEven({ ...wanted, openingDate: null }), true); // still in previews
+});
+
+test('isNewShow: within 8 weeks of opening or not yet opened', () => {
+  assert.equal(isNewShow('2026-11-08', '2027-01-03'), true);
+  assert.equal(isNewShow('2026-11-08', '2027-01-04'), false);
+  assert.equal(isNewShow(null, '2026-11-10'), true);
 });
