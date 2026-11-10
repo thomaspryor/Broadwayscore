@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-10T00:24:30.379Z",
+  "generatedAt": "2026-11-10T00:44:54.043Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -3076,28 +3076,28 @@
       "status": "open",
       "slug": "the-snow-queen-regional-2026",
       "thumbnail": "/images/shows/the-snow-queen-regional-2026/thumbnail.jpg",
-      "siteScore": null,
-      "liveScore": 80,
-      "scoreDrift": null,
+      "siteScore": 81.83,
+      "liveScore": 82,
+      "scoreDrift": 0.1700000000000017,
       "belowThreshold": true,
-      "reviewsNeeded": 4,
+      "reviewsNeeded": 2,
       "siteFileExists": true,
-      "total": 3,
+      "total": 5,
       "t1": 0,
       "t2": 0,
-      "t3": 3,
-      "positive": 3,
+      "t3": 5,
+      "positive": 5,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "3/12 total",
+          "5/12 total",
           "T1:0/3",
           "T2:0/3",
-          "hi-conf:3/8"
+          "hi-conf:4/8"
         ],
-        "highConfidence": 3,
+        "highConfidence": 4,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -3450,6 +3450,18 @@
           "t2": 0,
           "t3": 3,
           "p": 3,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-10T00:44:54.043Z",
+          "rc": 5,
+          "s": 81.83,
+          "t1": 0,
+          "t2": 0,
+          "t3": 5,
+          "p": 5,
           "m": 0,
           "n": 0,
           "bc": "waiting"
