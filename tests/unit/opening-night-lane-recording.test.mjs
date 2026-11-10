@@ -174,3 +174,73 @@ test('manifest starts with a key-version header; the loader ignores it; HKDF key
   fs.writeFileSync(path.join(dir, 'fetches.jsonl'), JSON.stringify({ t: 0, url: 'https://a.example/p', status: 'ok', sha: 'x' }) + '\n');
   assert.throws(() => loadRecording(dir, { key: KEY }), /key version none/);
 });
+
+// BRO-7247: the 40 MiB RAW cap was spent at 02:49Z on Blueberries night (embargo 03:00Z); 3690 of 6065 fetches had no body.
+const page = (url, n) => `<html><body>${url} v${n} ${'<li class="review">some compressible listing markup</li>'.repeat(400)}</body></html>`;
+const readManifest = (dir) => fs.readFileSync(path.join(dir, 'fetches.jsonl'), 'utf8').trim().split('\n').map((l) => JSON.parse(l)).filter((e) => e.url);
+
+test('BRO-7247: the cap counts stored (gzipped) bytes, so a night the raw cap would drop is fully stored', async () => {
+  const dir = tmp();
+  let clock = 0;
+  const raw = page('https://a/x', 0).length;
+  // Old behaviour: a raw cap of 6 pages. New: the same number as a stored cap holds far more, since the pages gzip ~50x.
+  const r = rec.createFetchRecorder({ dir, key: KEY, now: () => clock, maxRunBytes: raw * 6 });
+  let n = 0;
+  const f = r.wrapFetchText(async (u) => page(u, n++));
+  for (let i = 0; i < 30; i++) await f(`https://a/${i}`);
+  const s = r.stats();
+  assert.equal(s.capped, false, 'a raw-sized cap is nowhere near full of gzipped pages');
+  assert.equal(readManifest(dir).filter((e) => e.note).length, 0);
+  assert.ok(s.bytes * 5 < s.rawBytes, `stored ${s.bytes} should be far below raw ${s.rawBytes}`);
+});
+
+test('BRO-7247: stats.bytes is the stored size on disk (each .enc minus its 28-byte header is the sum)', async () => {
+  const dir = tmp();
+  const r = rec.createFetchRecorder({ dir, key: KEY });
+  const f = r.wrapFetchText(async (u) => page(u, 1));
+  await f('https://a/1'); await f('https://a/2');
+  const sizes = allFiles(dir).filter((x) => x.endsWith('.enc')).map((x) => fs.statSync(x).size);
+  assert.equal(r.stats().bytes, sizes.reduce((t, b) => t + b, 0));
+});
+
+test('BRO-7247: decrypt reads both gzip pages and legacy raw pages', async () => {
+  const dir = tmp();
+  const r = rec.createFetchRecorder({ dir, key: KEY });
+  await r.wrapFetchText(async () => page('u', 2))('https://a/1');
+  const [file] = allFiles(dir).filter((x) => x.endsWith('.enc'));
+  assert.equal(rec.decrypt(KEY, fs.readFileSync(file)), page('u', 2));
+  const crypto = await import('node:crypto');
+  const iv = crypto.randomBytes(12); const c = crypto.createCipheriv('aes-256-gcm', KEY, iv);
+  const body = Buffer.concat([c.update('<html>legacy raw</html>', 'utf8'), c.final()]);
+  assert.equal(rec.decrypt(KEY, Buffer.concat([iv, c.getAuthTag(), body])), '<html>legacy raw</html>');
+});
+
+test('BRO-7247: gapMsFor widens as the budget drains', () => {
+  assert.equal(rec.gapMsFor(0), 0);
+  assert.equal(rec.gapMsFor(0.39), 0);
+  assert.equal(rec.gapMsFor(0.5), 5 * 60000);
+  assert.equal(rec.gapMsFor(0.7), 10 * 60000);
+  assert.equal(rec.gapMsFor(0.95), 20 * 60000);
+});
+
+test('BRO-7247: a drained budget throttles a changing URL, and the replay serves its last stored body instead of failing', async () => {
+  const dir = tmp();
+  let clock = 1000000;
+  const raw = page('https://hot/', 0).length;
+  const r = rec.createFetchRecorder({ dir, key: KEY, now: () => clock, maxRunBytes: 700 }); // ~2 gzipped pages fill half of it
+  let n = 0;
+  const f = r.wrapFetchText(async (u) => (u === 'https://hot/' ? page(u, n++) : page(u, 99)));
+  await f('https://filler/1'); await f('https://filler/2'); // spend past 40% of the cap
+  assert.ok(r.stats().bytes / 700 >= 0.4, 'precondition: past the free tier');
+  await f('https://hot/'); clock += 60000; await f('https://hot/'); // 1 min later, changed body
+  const lines = readManifest(dir).filter((e) => e.url === 'https://hot/');
+  assert.equal(lines.length, 2);
+  assert.equal(lines[1].note, 'throttled');
+  assert.equal(lines[1].sha, lines[0].sha, 'points at the URL last stored body');
+  assert.notEqual(lines[1].actualSha, lines[0].sha);
+  assert.equal(r.stats().throttled, 1);
+  const loaded = loadRecording(dir, { key: KEY });
+  const replay = replayFetchFrom(loaded, { now: () => clock - 1000000, startMs: 0 });
+  assert.match((await replay('https://hot/')).content, /v0/, 'the stale body, not an incomplete-recording error');
+  assert.ok(raw > 0);
+});

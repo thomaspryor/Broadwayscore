@@ -20,8 +20,8 @@ const { execFileSync } = require('child_process');
 const { decrypt, keyFromEnv, KEY_VERSION } = require('../opening-night-lane/fetch-recording');
 const { loadRecording, replayFetchFrom } = require('./recording-night');
 
-const MAX_NIGHT_BYTES = 10 * 1024 * 1024; // stored (gzipped) bytes per show/night/kind
-const MAX_TOTAL_BYTES = 100 * 1024 * 1024; // stored bytes under the whole root
+const MAX_NIGHT_BYTES = 24 * 1024 * 1024; // stored (gzipped) bytes per show/night/kind
+const MAX_TOTAL_BYTES = 150 * 1024 * 1024; // stored bytes under the whole root
 const KEEP_NIGHTS = 8; // newest nights kept per show
 const KINDS = ['recording', 'shadow'];
 
