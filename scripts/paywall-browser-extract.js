@@ -29,12 +29,15 @@
 const fs = require('fs');
 const path = require('path');
 
+const { profileDir, claimOutletProfile } = require('./lib/cookie-renew');
+
 const SITES = {
   nyt: {
     name: 'New York Times',
     outletId: 'nytimes',
     outlet: 'New York Times',
-    profileDir: '/tmp/nyt-browser-profile',
+    profileDir: profileDir('nyt'), // BRO-7171 plan item 8: shared persistent profile, not /tmp
+    legacyProfile: '/tmp/nyt-browser-profile',
     // Multiple selectors tried in order — first non-empty wins
     selectors: [
       'section[name="articleBody"]',
@@ -68,7 +71,8 @@ const SITES = {
     name: 'Wall Street Journal',
     outletId: 'wsj',
     outlet: 'Wall Street Journal',
-    profileDir: '/tmp/wsj-browser-profile',
+    profileDir: profileDir('wsj'), // BRO-7171 plan item 8: shared persistent profile, not /tmp
+    legacyProfile: '/tmp/wsj-browser-profile',
     selectors: [
       'div.article-content',
       'article section',
@@ -96,7 +100,8 @@ const SITES = {
     name: 'New Yorker',
     outletId: 'newyorker',
     outlet: 'New Yorker',
-    profileDir: '/tmp/newyorker-browser-profile',
+    profileDir: profileDir('newyorker'), // BRO-7171 plan item 8: shared persistent profile, not /tmp
+    legacyProfile: '/tmp/newyorker-browser-profile',
     selectors: [], // Uses customExtract instead
     removeSelectors: [],
     // New Yorker splits content across multiple article__body divs and marks
@@ -144,7 +149,8 @@ const SITES = {
     name: 'Bloomberg',
     outletId: 'bloomberg',
     outlet: 'Bloomberg',
-    profileDir: '/tmp/bloomberg-browser-profile',
+    profileDir: profileDir('bloomberg'), // BRO-7171 plan item 8: shared persistent profile, not /tmp
+    legacyProfile: '/tmp/bloomberg-browser-profile',
     selectors: [
       'div.body-content',
       'article .body-copy',
@@ -397,7 +403,9 @@ async function main() {
   const siteConfig = SITES[opts.site];
 
   // Check profile exists
-  if (!fs.existsSync(siteConfig.profileDir)) {
+  // Takes the renew lock (no second Chrome on the same profile) and migrates the old /tmp profile once.
+  claimOutletProfile(opts.site, { legacy: [siteConfig.legacyProfile] });
+  if (fs.readdirSync(siteConfig.profileDir).length === 0) {
     console.error(`Error: No browser profile found at ${siteConfig.profileDir}`);
     console.error(`Run first: node scripts/paywall-browser-login.js --site=${opts.site}`);
     process.exit(1);

@@ -45,7 +45,11 @@ Usage:
 `;
 // ─── Configuration ───────────────────────────────────────────────────────────
 
-const PROFILE_DIR = '/tmp/newspapers-browser-profile';
+// BRO-7171 plan item 8: the outlet's shared persistent profile (outside /tmp,
+// shared with renew-cookies.js and the recover scripts). claimProfile() takes
+// the renew lock and migrates the old /tmp profile once.
+const PROFILE_DIR = require('./lib/cookie-renew').profileDir('newspapers');
+const claimProfile = () => require('./lib/cookie-renew').claimOutletProfile('newspapers', { legacy: ['/tmp/newspapers-browser-profile', '/tmp/newspapers-com-login-browser-profile'] }).dir;
 
 const PAPERS = {
   dailynews: {
@@ -849,7 +853,7 @@ async function main() {
 
   // Check profile exists (only for the legacy local-profile mode; --local and
   // --browserbase carry their own auth).
-  if (!opts.local && !opts.browserbase && !fs.existsSync(PROFILE_DIR)) {
+  if (!opts.local && !opts.browserbase && fs.readdirSync(claimProfile()).length === 0) {
     console.error(`No browser profile at ${PROFILE_DIR}`);
     console.error('Run first: node scripts/paywall-browser-login.js --site=newspapers');
     process.exit(1);
@@ -945,7 +949,7 @@ async function main() {
       timezoneId: 'America/New_York',
     };
     try {
-      context = await chromium.launchPersistentContext(PROFILE_DIR, { ...npLaunchOpts, channel: 'chrome' });
+      context = await chromium.launchPersistentContext(claimProfile(), { ...npLaunchOpts, channel: 'chrome' });
     } catch (err) {
       console.log(`  → real Chrome unavailable (${err.message.split('\n')[0]}); using bundled chromium`);
       context = await chromium.launchPersistentContext(PROFILE_DIR, npLaunchOpts);

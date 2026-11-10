@@ -39,7 +39,11 @@ if (args.some(a => a === '--help' || a === '-h' || a.startsWith('--help='))) {
 
 const { launchOtpBrowser, writeOtpCookies } = require('./lib/otp-login-helpers');
 
-const PROFILE_DIR = '/tmp/wapo-login-browser-profile';
+// BRO-7171 plan item 8: the outlet's shared persistent profile (outside /tmp,
+// shared with renew-cookies.js and the recover scripts). claimProfile() takes
+// the renew lock and migrates the old /tmp profile once.
+const PROFILE_DIR = require('./lib/cookie-renew').profileDir('wapo');
+const claimProfile = () => require('./lib/cookie-renew').claimOutletProfile('wapo', { legacy: ['/tmp/wapo-login-browser-profile', '/tmp/wapo-recovery-browser-profile'] }).dir;
 
 async function main() {
   const email = process.env.WAPO_EMAIL;
@@ -51,7 +55,7 @@ async function main() {
 
   console.log(`Logging into WaPo as ${email} via email + password...`);
 
-  const context = await launchOtpBrowser(PROFILE_DIR);
+  const context = await launchOtpBrowser(claimProfile());
   const page = context.pages()[0] || (await context.newPage());
 
   try {

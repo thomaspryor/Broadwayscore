@@ -60,6 +60,65 @@ function profileDir(outlet) {
   return path.join(os.homedir(), 'Library', 'Application Support', 'BroadwayScorecard', 'browser-profiles', outlet);
 }
 
+/**
+ * The one renew/profile lock: the main checkout's data/cookies/_renew.lock
+ * (worktrees have no cookie jar of their own). renew-cookies.js, the gap
+ * driver's browser sessions and every login/recover script hold it while
+ * Chrome has the outlet's profile open (Chrome refuses a profile directory
+ * another Chrome holds).
+ */
+function renewLockPath() {
+  if (process.env.COOKIE_RENEW_LOCK_PATH) return process.env.COOKIE_RENEW_LOCK_PATH; // tests
+  let root = null;
+  try { root = require('./review-texts-dir').mainWorktreeOf(path.join(__dirname, '..', '..')); } catch { /* fall back */ }
+  root = root || path.join(os.homedir(), 'Broadwayscore');
+  return path.join(root, 'data', 'cookies', '_renew.lock');
+}
+
+/**
+ * Plan item 8 (BRO-7171): one persistent Chrome profile per outlet outside
+ * /tmp, shared by renew-cookies.js, the gap driver and the standalone
+ * login/recover scripts, so a login made by one is the session the others
+ * use (and survives a reboot; macOS clears /tmp). Takes the renew lock for the
+ * rest of the process. The first claim copies the newest legacy /tmp profile
+ * in, so an existing login is not lost to the move.
+ * @param {string} outlet  profile name (browser-outlet-adapters / RENEW_OUTLETS key)
+ * @param {{legacy?: string[]}} [opts] old /tmp profile dirs (the newest by mtime is copied)
+ * @returns {{dir: string, release: Function}}  throws code EPROFILEBUSY when another run holds it
+ */
+const _claimed = new Map(); // outlet -> claim, so a second launch site in one run reuses it
+function claimOutletProfile(outlet, { legacy = [] } = {}) {
+  if (_claimed.has(outlet)) return _claimed.get(outlet);
+  const release = acquireLock(renewLockPath());
+  if (!release) {
+    const err = new Error(`another browser run holds the ${outlet} profile (lock ${renewLockPath()}); try again when it finishes`);
+    err.code = 'EPROFILEBUSY';
+    throw err;
+  }
+  process.once('exit', release);
+  const dir = profileDir(outlet);
+  try {
+    const empty = !fs.existsSync(dir) || fs.readdirSync(dir).length === 0;
+    // The most recently used legacy profile (login and recover scripts each had their own).
+    const from = empty && legacy
+      .map((d) => { try { return fs.readdirSync(d).length > 0 ? { d, m: fs.statSync(d).mtimeMs } : null; } catch { return null; } })
+      .filter(Boolean).sort((a, b) => b.m - a.m).map((x) => x.d)[0];
+    if (from) {
+      fs.mkdirSync(path.dirname(dir), { recursive: true });
+      // Chrome's Singleton* files point at the old process; never copy them.
+      fs.cpSync(from, dir, { recursive: true, filter: (src) => !/[\\/]Singleton(Lock|Socket|Cookie)$/.test(src) });
+      console.log(`[profile] ${outlet}: migrated legacy profile ${from} -> ${dir}`);
+    }
+    fs.mkdirSync(dir, { recursive: true });
+  } catch (e) {
+    console.warn(`[profile] ${outlet}: legacy profile copy failed (${e.message}); starting a fresh profile`);
+    fs.mkdirSync(dir, { recursive: true });
+  }
+  const claim = { dir, release: () => { _claimed.delete(outlet); release(); } };
+  _claimed.set(outlet, claim);
+  return claim;
+}
+
 // --- Login gate ------------------------------------------------------------
 
 function emptyOutletState() {
@@ -168,6 +227,8 @@ module.exports = {
   MAX_LOGINS_PER_WINDOW,
   LOCK_STALE_MS,
   profileDir,
+  renewLockPath,
+  claimOutletProfile,
   emptyOutletState,
   decideLogin,
   classifyLoginFailure,

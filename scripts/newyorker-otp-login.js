@@ -37,7 +37,11 @@ if (args.some(a => a === '--help' || a === '-h' || a.startsWith('--help='))) {
 
 const { launchOtpBrowser, pollGmailForOtpCode, writeOtpCookies } = require('./lib/otp-login-helpers');
 
-const PROFILE_DIR = '/tmp/newyorker-otp-browser-profile';
+// BRO-7171 plan item 8: the outlet's shared persistent profile (outside /tmp,
+// shared with renew-cookies.js and the recover scripts). claimProfile() takes
+// the renew lock and migrates the old /tmp profile once.
+const PROFILE_DIR = require('./lib/cookie-renew').profileDir('newyorker');
+const claimProfile = () => require('./lib/cookie-renew').claimOutletProfile('newyorker', { legacy: ['/tmp/newyorker-otp-browser-profile', '/tmp/newyorker-recovery-browser-profile', '/tmp/newyorker-browser-profile'] }).dir;
 const LOGIN_URL = 'https://www.newyorker.com/auth/initiate?redirectURL=https%3A%2F%2Fwww.newyorker.com%2F&source=HB';
 
 async function main() {
@@ -49,7 +53,7 @@ async function main() {
 
   console.log(`Logging into The New Yorker as ${email} via one-time passcode...`);
 
-  const context = await launchOtpBrowser(PROFILE_DIR);
+  const context = await launchOtpBrowser(claimProfile());
   const page = context.pages()[0] || (await context.newPage());
 
   try {

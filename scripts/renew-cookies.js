@@ -56,13 +56,14 @@ const { extractArticleTextFromUrl } = require('./lib/article-extractor');
 const { COOKIE_PROBES, classifyWalledProbe } = require('./lib/cookie-probes');
 const {
   RENEW_OUTLETS, profileDir, emptyOutletState, decideLogin, classifyLoginFailure,
-  loadState, saveState, acquireLock, readKeychain,
+  loadState, saveState, acquireLock, readKeychain, renewLockPath,
 } = require('./lib/cookie-renew');
 const { launchOtpBrowser, writeOtpCookies, COOKIE_DIR } = require('./lib/otp-login-helpers');
 
 const REPO_ROOT = path.join(__dirname, '..');
 const STATE_PATH = path.join(COOKIE_DIR, '_renew-state.json');
-const LOCK_PATH = path.join(COOKIE_DIR, '_renew.lock');
+// Shared with the gap driver and the login/recover scripts (BRO-7171 plan item 8).
+const LOCK_PATH = renewLockPath();
 const REPO = 'thomaspryor/Broadwayscore';
 const HEALTH_WORKFLOW = 'check-cookie-health.yml';
 const UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36';
