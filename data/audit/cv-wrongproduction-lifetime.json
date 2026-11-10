@@ -1,23 +1,18 @@
 {
-  "updatedAt": "2026-11-09T10:43:55.586Z",
-  "scanned": 4794,
+  "updatedAt": "2026-11-10T10:22:40.603Z",
+  "scanned": 4801,
   "showsWithViolations": 167,
   "totalViolations": 223,
-  "newSinceLastRun": 4,
+  "newSinceLastRun": 0,
   "handled": {
-    "temporal-override-low-confidence": 966,
-    "not-shipped": 56,
-    "duplicate-not-shipped": 57,
+    "temporal-override-low-confidence": 967,
+    "not-shipped": 59,
+    "duplicate-not-shipped": 56,
     "rebuild-skip-audit": 32,
     "manual-clear-reason": 12,
     "prior-run-or-tour-leg": 43
   },
-  "newViolationKeys": [
-    "oliver-west-end-2024::financialtimes--financial-times.json",
-    "oliver-west-end-2024::financialtimes--sarah-hemming.json",
-    "a-small-and-quiet-light-off-west-end-2026::plays-international--maryam-philpott.json",
-    "ghosts-off-broadway-2025::times-uk--clive-davis.json"
-  ],
+  "newViolationKeys": [],
   "violationKeys": [
     "cats-the-jellicle-ball-2026::nytg--kyle-turner.json",
     "hells-kitchen-2024::chelsea-community-news--michael-musto.json",
@@ -2427,7 +2422,7 @@
       "showId": "operation-mincemeat-west-end-2024",
       "title": "Operation Mincemeat",
       "openingDate": "2023-05-09",
-      "message": "the-recs/Unknown (the-recs--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a genuine review with critical assessment (5-star rating), but the critic attended and is evaluating the Edinbur — https://therecs.co.uk/operation-mincemeat-touring/\nthereviewshub/The Reviews Hub - Scotland (thereviewshub--the-reviews-hub-scotland.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a well-written review of Operation Mincemeat, but it reviews the touring production of the show, not the West En — https://www.thereviewshub.com/operation-mincemeat-kings-theatre-edinburgh/",
+      "message": "the-recs/Unknown (the-recs--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a genuine review with critical assessment (5-star rating), but the critic attended and is evaluating the Edinbur — https://therecs.co.uk/operation-mincemeat-touring/\nthereviewshub/The Reviews Hub - Scotland (thereviewshub--the-reviews-hub-scotland.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a valid review (evaluates the performance, cast, staging with critical assessment), but it reviews a touring pro — https://www.thereviewshub.com/operation-mincemeat-kings-theatre-edinburgh/",
       "violations": [
         {
           "filename": "the-recs--unknown.json",
@@ -2449,10 +2444,10 @@
           "criticName": "The Reviews Hub - Scotland",
           "matchedBy": "url",
           "cvConfidence": "high",
-          "cvReasoning": "This is a well-written review of Operation Mincemeat, but it reviews the touring production of the show, not the West En",
+          "cvReasoning": "This is a valid review (evaluates the performance, cast, staging with critical assessment), but it reviews a touring pro",
           "cvIssues": [
-            "Review evaluates a TOURING production, not the West End run at Fortune Theatre",
-            "Critic explicitly states 'touring cast' and references 'when it tours back to Edinburgh next year'"
+            "Review evaluates a touring production, not the West End run at Fortune Theatre",
+            "Text explicitly states 'Runs until 7 November 2026 and on tour' and 'will definitely continue to charm audiences when it tours back to Edinburgh next year'"
           ]
         }
       ]
@@ -2834,13 +2829,13 @@
       "showId": "the-smile-of-her-off-west-end-2026",
       "title": "The Smile Of Her",
       "openingDate": "2026-07-16",
-      "message": "jonathan-baz/Florit ShoihetRuns (jonathan-baz--florit-shoihetruns.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 20d of opening, likely correct production] This is a legitimate theater review of 'The Smile Of — http://www.jonathanbaz.com/2026/07/the-smile-of-her-review.html",
+      "message": "jonathan-baz/Florit Shoihet (jonathan-baz--florit-shoihetruns.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 20d of opening, likely correct production] This is a legitimate theater review of 'The Smile Of — http://www.jonathanbaz.com/2026/07/the-smile-of-her-review.html",
       "violations": [
         {
           "filename": "jonathan-baz--florit-shoihetruns.json",
           "url": "http://www.jonathanbaz.com/2026/07/the-smile-of-her-review.html",
           "outletId": "jonathan-baz",
-          "criticName": "Florit ShoihetRuns",
+          "criticName": "Florit Shoihet",
           "matchedBy": "url",
           "cvConfidence": "low",
           "cvReasoning": "[OVERRIDE: review within 20d of opening, likely correct production] This is a legitimate theater review of 'The Smile Of",
