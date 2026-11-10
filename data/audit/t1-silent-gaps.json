@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-09T22:57:37.515Z",
+  "generatedAt": "2026-11-10T00:13:53.482Z",
   "windowDays": 45,
-  "showsScanned": 242,
+  "showsScanned": 240,
   "gaps": [
     {
       "showId": "iphigenie-en-tauride-english-national-opera-west-end-2026",
@@ -18,9 +18,33 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=iphigenie-en-tauride-english-national-opera-west-end-2026 --url=https://www.thetimes.com/culture/classical-opera/article/iphigenie-en-tauride-review-youve-never-seen-a-family-reunion-like-this-hmwx2kkh2 --outlet=sunday-times   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-08T22:39:44.349Z",
-      "fileAgeHours": 24.288060277777777,
+      "fileAgeHours": 25.5331075,
       "gapSeenAt": "2026-11-09T00:00:26.432Z",
-      "nonTerminalAgeHours": 22.953078333333334,
+      "nonTerminalAgeHours": 24.224180555555556,
+      "needsManualRecovery": false
+    },
+    {
+      "showId": "the-steel-man-off-broadway-2026",
+      "title": "The Steel Man",
+      "openingDate": "2026-11-08",
+      "file": "talkinbroadway--unknown.json",
+      "outletId": "talkinbroadway",
+      "tier": 2,
+      "type": "empty-body",
+      "recoverable": true,
+      "url": "https://www.talkinbroadway.com/page/ob/11_08_26.html",
+      "recovery": {
+        "attempted": true,
+        "ok": false,
+        "reason": "⚠️  Bright Data failed: Bright Data request timeout\nFetch failed: fetch failed: All scraping methods failed; no archive.org capture"
+      },
+      "recoveryCount": 2,
+      "forumLinkRecoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=the-steel-man-off-broadway-2026 --url=https://www.talkinbroadway.com/page/ob/11_08_26.html --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-11-09T21:14:38.643Z",
+      "fileAgeHours": 2.9705344444444446,
+      "gapSeenAt": "2026-11-10T00:13:53.482Z",
+      "nonTerminalAgeHours": 0,
       "needsManualRecovery": false
     },
     {
@@ -38,13 +62,13 @@
         "ok": false,
         "reason": "Fetch failed: fetch failed: All scraping methods failed; no archive.org capture"
       },
-      "recoveryCount": 1,
+      "recoveryCount": 2,
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=adirondack-chair-circle-regional-2026 --url=https://www.talkinbroadway.com/page/regional/chicago/ch944.html --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T21:14:38.698Z",
-      "fileAgeHours": 1.7163372222222222,
+      "fileAgeHours": 2.9874372222222223,
       "gapSeenAt": "2026-11-09T21:39:25.109Z",
-      "nonTerminalAgeHours": 1.3034458333333334,
+      "nonTerminalAgeHours": 2.5745480555555558,
       "needsManualRecovery": false
     }
   ],
