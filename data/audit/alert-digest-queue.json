@@ -333,5 +333,19 @@
       }
     ],
     "queuedAt": "2026-11-10T13:05:06.069Z"
+  },
+  {
+    "conditionKey": "watchdog-park:linear:BRO-7265",
+    "title": "Watchdog parked #linear:BRO-7265 — redispatch never produced a launch",
+    "description": "Watchdog: card \"DC + LA hubs: source real key art for ~47 regional shows with no poster or a venue photo/logo\" was claimed for redispatch at 2026-11-10T13:40:50.454Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id linear:BRO-7265), then re-arm with node scripts/linear-next.js --id BRO-7265 --force once fixed.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-10T13:56:59.353Z"
   }
 ]
