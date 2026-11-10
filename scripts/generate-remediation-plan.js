@@ -32,7 +32,7 @@ if (require('./lib/cli-help').hasHelpFlag(process.argv.slice(2))) {
   console.log('Usage: node scripts/generate-remediation-plan.js (driven by ISSUE_BODY, ISSUE_NUMBER, FIX_ACTION env vars; see the header comment)');
   process.exit(0);
 }
-const { buildFixApprovalEmail } = require('./lib/email-templates.js');
+const { buildFixApprovalEmail, formatFieldValue } = require('./lib/email-templates.js');
 const { GPT4O_MINI, CLAUDE_SONNET } = require('./lib/models');
 const { detectSystematicIssue } = require('./lib/systematic-fix-detection.js');
 const { buildEscalationCard } = require('./lib/plan-refusal-escalation.js');
@@ -643,16 +643,16 @@ ${diagnosis.originalMessage
     if (action.type === 'data-edit' && action.showId) {
       const targetShow = shows.find(s => s.id === action.showId);
       if (targetShow) {
-        const currentValue = action.field === 'creativeTeam'
-          ? (targetShow.creativeTeam || []).map(ct => `${ct.name} (${ct.role})`).join(', ') || 'empty'
-          : targetShow[action.field] != null ? String(targetShow[action.field]) : 'not set';
+        const currentValue = formatFieldValue(targetShow[action.field]);
         currentState.push({
           showTitle: targetShow.title,
           showId: targetShow.id,
           field: action.field,
           currentValue,
           proposedChange: action.description || JSON.stringify(action.newValue),
-          ibdbUrl: `https://www.ibdb.com/broadway-production/${targetShow.slug || targetShow.id}`,
+          // The show's stored IBDB url, or none. The old slug-built url was never a real IBDB
+          // address (IBDB urls end in a numeric production id), so "verify on IBDB" led nowhere.
+          ibdbUrl: targetShow.ibdbUrl || null,
         });
       }
     }

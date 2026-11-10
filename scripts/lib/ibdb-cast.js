@@ -32,7 +32,8 @@ const https = require('https');
 const { JSDOM } = require('jsdom');
 const { fetchPage } = require('./scraper');
 const { isBroadwayCategory } = require('./venue-classification');
-const { parseIbdbProductionYear, isProductionYearMismatch } = require('./cast-tombstone');
+const { parseIbdbProductionYear, parseIbdbOpeningYear, isProductionYearMismatch } = require('./cast-tombstone');
+const { ibdbUrlRejectReason } = require('./ibdb-year-guard');
 const { GEMINI_FLASH, GPT4O_MINI } = require('./models');
 
 const RATE_LIMIT_MS = 1500;
@@ -193,7 +194,10 @@ async function extractCastFromIBDBPage(url) {
   // Extract production title for validation
   const titleEl = doc.querySelector('h1.iblock');
   result.pageTitle = titleEl ? titleEl.textContent.trim() : null;
-  result.productionYear = parseIbdbProductionYear(doc.title);
+  // An original-run <title> has no "N Revival|Original" year, so fall back to the page's own
+  // "Opening Date" (same label ibdb-dates.js trusts). Without it a 1928 play of the same title
+  // recorded productionYear:null and the year guard waved it through (wanted-2022).
+  result.productionYear = parseIbdbProductionYear(doc.title) || parseIbdbOpeningYear(bodyText);
 
   const oncSection = doc.getElementById('OpeningNightCast');
 
@@ -393,6 +397,14 @@ async function lookupIBDBCast(title, options = {}) {
     if (!bestMatch) {
       console.log(`  ❌ No suitable IBDB production found for "${title}"`);
       return notFound;
+    }
+
+    // Production-id guard, before spending a page fetch: a url whose id predates the show's era
+    // (or has no id) is another production of the same title, never this one's cast.
+    const idReject = ibdbUrlRejectReason(options.openingYear ? Number(options.openingYear) : null, bestMatch.url);
+    if (idReject) {
+      console.log(`  ⚠️  IBDB url ${bestMatch.url} rejected (${idReject}) for a ${options.openingYear} show — wrong production, skipping`);
+      return { ...notFound, ibdbUrl: null, titleMismatch: true, productionMismatch: true };
     }
 
     // Extract cast from the page

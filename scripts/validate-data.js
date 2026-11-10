@@ -18,6 +18,8 @@
  */
 
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
+const { ibdbUrlRejectReason } = require('./lib/ibdb-year-guard');
+const { castDisjointFromBilling } = require('./lib/cast-billing-overlap');
 const fs = require('fs');
 const path = require('path');
 const { showsMissingOrigin, ORIGIN_GRACE_DAYS } = require('./lib/show-origins');
@@ -474,6 +476,17 @@ function validateNoDuplicates(shows) {
     if (castMismatch.length > 0) warn(`${castMismatch.length} cast file(s) carry a different ibdbUrl than shows.json (backfill-cast.js will revert shows.json): ${castMismatch.slice(0, 10).join(', ')}`);
     else ok('Cast-file ibdbUrls match shows.json');
   }
+
+  // Wrong-production IBDB links. A show opening 2006+ whose ibdbUrl id predates that era (or has no
+  // id) points at an older run of the same title; its cast, dates and creative team are that run's
+  // (wanted-2022 listed a 1928 play's cast, reader report #1186). Advisory first (CLAUDE.md §19);
+  // writer-side guards (ibdb-year-guard.js) are the prevention, this is the net for data already in.
+  const badIbdb = shows.map(s => ({ s, why: ibdbUrlRejectReason(s, s.ibdbUrl) })).filter(x => x.why);
+  if (badIbdb.length > 0) warn(`${badIbdb.length} show(s) carry an ibdbUrl for a different/older production: ${badIbdb.slice(0, 8).map(x => `${x.s.id} (${x.why})`).join(', ')}`);
+  else ok('No ibdbUrl points at an older production');
+  const disjointCast = shows.filter(s => castDisjointFromBilling(s));
+  if (disjointCast.length > 0) warn(`${disjointCast.length} show(s) have a cast array with zero overlap with their Playbill castBilling (wrong-production cast): ${disjointCast.slice(0, 8).map(s => s.id).join(', ')}`);
+  else ok('Every cast array overlaps its Playbill billing');
 
   // Market-specific slug validation
   const weShowsMissing = shows.filter(s => s.category === 'west-end' && !s.slug.includes('west-end'));

@@ -26,7 +26,7 @@ const path = require('path');
 require('./lib/load-env').loadEnv();
 
 const { lookupIBDBCast, RATE_LIMIT_MS } = require('./lib/ibdb-cast');
-const { shouldTombstone, shouldAbortMassWipe, expectedOpeningYear } = require('./lib/cast-tombstone');
+const { shouldTombstone, shouldAbortMassWipe, shouldPurgeWrongProduction, expectedOpeningYear } = require('./lib/cast-tombstone');
 const { isBroadwayCategory } = require('./lib/venue-classification');
 const { cleanup } = require('./lib/scraper');
 const showsWriteGuard = require('./lib/shows-write-guard');
@@ -177,6 +177,7 @@ async function main() {
     }
   }
   const wipedBackups = [];
+  const purgedWrongProduction = []; // { id, ibdbUrl } cast files removed because they belong to another production
 
   // Process shows
   let success = 0;
@@ -203,6 +204,25 @@ async function main() {
         // this is "not applicable," not an empty — never tombstone.
         if (result.skipped) {
           console.log(`  ⏭️  Not on IBDB (non-Broadway) — leaving existing cast file untouched`);
+          failed++;
+          continue;
+        }
+
+        // Wrong production (older run of the same title) that this show already stores: remove the
+        // poisoned cast file and clear the stored url below, so the page stops showing that run's
+        // cast. Without this the run only logged "will retry" and the bad data stayed forever.
+        const badCastPath = path.join(CAST_DIR, `${show.id}.json`);
+        if (shouldPurgeWrongProduction(result, show, fs.existsSync(badCastPath), purgedWrongProduction.length)) {
+          let badUrl = show.ibdbUrl || null;
+          const names = new Set();
+          try {
+            const bad = JSON.parse(fs.readFileSync(badCastPath, 'utf8'));
+            badUrl = badUrl || bad.ibdbUrl || null;
+            for (const m of [...(bad.openingNightCast || []), ...(bad.currentCast || [])]) if (m && m.name) names.add(m.name);
+          } catch { /* unreadable file: still remove it */ }
+          if (fs.existsSync(badCastPath)) fs.unlinkSync(badCastPath);
+          purgedWrongProduction.push({ id: show.id, ibdbUrl: badUrl, names });
+          console.log(`  🧹 Wrong-production IBDB data removed for ${show.id} (${badUrl || 'no url'}); cast file deleted, stored ibdbUrl will be cleared`);
           failed++;
           continue;
         }
@@ -307,6 +327,29 @@ async function main() {
   console.log(`  Empty:    ${empty}`);
   console.log(`  Failed:   ${failed}`);
   console.log(`  Total:    ${shows.length}`);
+
+  // Clear the stored ibdbUrl for shows whose wrong-production cast file was just removed (non-sharded
+  // runs only, like the sync below). Only clears when shows.json still holds the url that was rejected.
+  if (shardIdx === null && purgedWrongProduction.length > 0) {
+    try {
+      const showsData = showsWriteGuard.loadShows();
+      const touched = new Set();
+      for (const p of purgedWrongProduction) {
+        const show = showsData.shows.find(s => s.id === p.id);
+        if (show && show.ibdbUrl && (!p.ibdbUrl || show.ibdbUrl === p.ibdbUrl)) { show.ibdbUrl = null; touched.add(p.id); }
+        // show.cast was copied from that same file by enrich-cast-from-files.js. Clear it only when
+        // every name in it came from the purged file; a cast from another source (web backfill) stays.
+        if (show && Array.isArray(show.cast) && show.cast.length > 0 && p.names.size > 0
+            && show.cast.every(m => m && p.names.has(m.name))) { show.cast = []; touched.add(p.id); }
+      }
+      if (touched.size > 0) {
+        showsWriteGuard.saveShows(showsData);
+        console.log(`\n🧹 Cleared wrong-production ibdbUrl/cast on ${touched.size} show(s): ${[...touched].join(', ')}`);
+      }
+    } catch (e) {
+      console.log(`\n⚠️  wrong-production ibdbUrl clear failed (non-fatal): ${e.message}`);
+    }
+  }
 
   // Sync ibdbUrl from cast files back to shows.json (non-sharded runs only)
   if (shardIdx === null && success > 0) {

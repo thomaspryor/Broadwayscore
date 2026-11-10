@@ -1,3 +1,5 @@
+const { ibdbUrlRejectReason } = require('./ibdb-year-guard');
+
 // Pure decision for backfill-cast.js's empty-result branch.
 // Tested by tests/unit/cast-tombstone.test.mjs.
 //
@@ -15,6 +17,18 @@
 // every subsequent run until a forced re-scrape).
 function shouldTombstone(result) {
   return !(result && (result.fetchFailed || result.productionMismatch));
+}
+
+// A wrong-production result for a show that ALREADY stores that production (a cast file on disk
+// or show.ibdbUrl set) means bad data is in. Leaving it ("will retry next run") re-asserts it
+// forever: wanted-2022 kept a 1928 cast file and ibdbUrl through every weekly run. Pure decision
+// for backfill-cast.js; MAX_WRONG_PRODUCTION_PURGES caps one run so a guard regression cannot
+// delete the library.
+const MAX_WRONG_PRODUCTION_PURGES = 5;
+function shouldPurgeWrongProduction(result, show, hasCastFile, purgedSoFar = 0) {
+  if (!result || !result.productionMismatch || !show) return false;
+  if (!show.ibdbUrl && !hasCastFile) return false;
+  return purgedSoFar < MAX_WRONG_PRODUCTION_PURGES;
 }
 
 // Mass-wipe circuit breaker for --force backfill runs. A scraper regression
@@ -35,6 +49,13 @@ function shouldAbortMassWipe(populatedBefore, wipedCount, threshold = 0.3) {
 // Roundabout revival got the 1967 cast — Denholm Elliott et al.).
 function parseIbdbProductionYear(docTitle) {
   const m = /\b((?:18|19|20)\d{2})\s+(?:Revival|Original|Production)\b/i.exec(docTitle || '');
+  return m ? parseInt(m[1], 10) : null;
+}
+
+// The page body's own "Opening Date Nov 08, 1928" (same label ibdb-dates.js trusts). Original-run
+// <title>s carry no year, so this is the only year signal for a same-title original (wanted-2022).
+function parseIbdbOpeningYear(bodyText) {
+  const m = /Opening Date\s*[A-Z][a-z]{2,8}\s+\d{1,2},\s*((?:18|19|20)\d{2})/.exec(bodyText || '');
   return m ? parseInt(m[1], 10) : null;
 }
 
@@ -71,10 +92,13 @@ function castFileMismatchReason(castData, show) {
   if (isProductionYearMismatch(castData.productionYear, expected)) return 'year-mismatch';
   const unopened = !show.openingDate && (show.status === 'announced' || show.status === 'upcoming' || !show.status);
   if (unopened && castData.ibdbUrl && !castData.productionYear) return 'unverified-ibdb';
+  // An original-run IBDB <title> carries no year, so productionYear can be null and the year check
+  // above passes. The url's production id still proves an older run (wanted-2022 / 1928 play).
+  if (castData.ibdbUrl && ibdbUrlRejectReason(show, castData.ibdbUrl) === 'predates-show') return 'old-production-id';
   return null;
 }
 
 module.exports = {
-  shouldTombstone, shouldAbortMassWipe, parseIbdbProductionYear, isProductionYearMismatch,
+  shouldTombstone, shouldAbortMassWipe, shouldPurgeWrongProduction, MAX_WRONG_PRODUCTION_PURGES, parseIbdbProductionYear, parseIbdbOpeningYear, isProductionYearMismatch,
   expectedOpeningYear, castFileMismatchReason,
 };

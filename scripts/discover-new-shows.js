@@ -47,7 +47,7 @@ const { computeShowReconciliation, resolveReconciliationFields, appendReconcilia
 const { validateChangeStability } = require('./lib/change-stability-guard');
 const { classifyTodayTixStartDate, unconfirmedStartFlags, productionIdYear } = require('./lib/todaytix-dates');
 const { batchLookupIBDBDates, checkIBDBForPriorProductions } = require('./lib/ibdb-dates');
-const { ibdbYearMismatch, expectedShowYear } = require('./lib/ibdb-year-guard');
+const { ibdbYearMismatch, ibdbWrongProduction, expectedShowYear } = require('./lib/ibdb-year-guard');
 const { getTheaterAddress } = require('./lib/venue-addresses');
 const { withMarketSuffix } = require('./lib/market-slug');
 const { cleanSearchTitle } = require('./lib/title-normalization');
@@ -3031,8 +3031,9 @@ async function discoverShows() {
         // got 1989-11-15 + openingDateSource:ibdb this way, 2026-06-28). If the IBDB opening
         // year is implausible for this production, treat it as a no-IBDB match: keep the
         // Broadway.org "Begins:" as previewsStartDate and leave openingDate null.
-        if (ibdb.openingDate && ibdbYearMismatch(show, ibdb.openingDate)) {
-          console.log(`  ⛔ "${show.title}": IBDB opening ${ibdb.openingDate} implausible (expected ~${expectedShowYear(show)}) — wrong-production match, not applying IBDB dates`);
+        // ibdbWrongProduction also checks the url's production id, so a 1928 page whose date did not parse is still rejected.
+        if (ibdbWrongProduction(show, ibdb)) {
+          console.log(`  ⛔ "${show.title}": IBDB match ${ibdb.ibdbUrl || ''} opening ${ibdb.openingDate} implausible (expected ~${expectedShowYear(show)}) — wrong-production match, not applying IBDB dates`);
           if (show.openingDate) {
             show.previewsStartDate = show.openingDate;
             show.openingDate = null;

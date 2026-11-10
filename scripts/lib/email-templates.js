@@ -673,6 +673,28 @@ ${body.split('\n').map(line => line === '' ? '<br>' : `<p style="margin:0;">${li
  * @param {number} opts.issueNumber - GitHub issue number
  * @returns {{ subject: string, html: string }}
  */
+/**
+ * Human-readable text for any show field value shown in a plan email. Without this, an array of
+ * objects (cast, creativeTeam, ticketLinks) went through String() and printed "[object Object],
+ * [object Object]" in the owner's Bug Fix Plan email (Wanted, #1186).
+ * Objects render as "name (role)" / name / url / compact JSON; long lists are capped.
+ */
+function formatFieldValue(value, { maxItems = 12 } = {}) {
+  if (value == null || value === '') return 'not set';
+  if (Array.isArray(value)) {
+    if (value.length === 0) return 'empty';
+    const shown = value.slice(0, maxItems).map(v => formatFieldValue(v, { maxItems })).join(', ');
+    return value.length > maxItems ? `${shown}, and ${value.length - maxItems} more` : shown;
+  }
+  if (typeof value === 'object') {
+    const label = value.name || value.title || value.platform || value.url;
+    const detail = value.role || value.character || null;
+    if (label) return detail ? `${label} (${detail})` : String(label);
+    return JSON.stringify(value);
+  }
+  return String(value);
+}
+
 function buildFixApprovalEmail(opts) {
   const {
     submitterName, submitterEmail, showTitle, originalMessage,
@@ -701,7 +723,7 @@ function buildFixApprovalEmail(opts) {
       return `<tr>
         <td style="padding:8px 12px;border-bottom:1px solid #eee;">
           <strong>${escapeHtml(s.showTitle)}</strong>${verifyLink}<br>
-          <span style="color:#555;font-size:13px;">${escapeHtml(s.field)}: currently ${escapeHtml(s.currentValue)}</span><br>
+          <span style="color:#555;font-size:13px;">${escapeHtml(s.field)}: currently ${escapeHtml(formatFieldValue(s.currentValue))}</span><br>
           <span style="color:#0066cc;font-size:13px;">Change: ${escapeHtml(s.proposedChange)}</span>
         </td>
       </tr>`;
@@ -1026,6 +1048,7 @@ module.exports = {
   buildDraftPreviewRecipients,
   resolveNewsletterEdition,
   buildFooterHtml,
+  formatFieldValue,
   buildBroadcastFooterHtml,
   buildAccountCtaHtml,
   buildSocialRowHtml,

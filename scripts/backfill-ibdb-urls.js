@@ -21,6 +21,7 @@ const path = require('path');
 require('./lib/load-env').loadEnv();
 
 const { searchIBDB } = require('./lib/ibdb-dates');
+const { ibdbUrlRejectReason } = require('./lib/ibdb-year-guard');
 
 const AWARDS_FILE = path.join(__dirname, '..', 'data', 'awards.json');
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
@@ -98,7 +99,13 @@ async function main() {
 
       // Year validation: check if the found URL's year matches our show's opening year
       let yearValid = true;
-      if (openingYear && best.year) {
+      const idReject = ibdbUrlRejectReason(openingYear, best.url);
+      if (idReject) {
+        console.log(`  REJECTED: ${best.url} fails production-id check (${idReject}) for a ${openingYear} show\n`);
+        rejected++;
+        yearValid = false;
+      }
+      if (yearValid && openingYear && best.year) {
         const urlYear = parseInt(best.year);
         if (Math.abs(urlYear - openingYear) > 2) {
           console.log(`  REJECTED: URL year ${best.year} differs from show year ${openingYear} by >2 years`);

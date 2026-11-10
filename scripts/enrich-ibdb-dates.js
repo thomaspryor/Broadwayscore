@@ -26,7 +26,7 @@ const { cleanup } = require('./lib/scraper');
 const { splitCombinedCredits } = require('./lib/credit-splitting');
 const { verifyCreativeTeamViaSerp } = require('./lib/creative-team-verify');
 const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
-const { ibdbYearMismatch, expectedShowYear } = require('./lib/ibdb-year-guard');
+const { ibdbYearMismatch, ibdbWrongProduction, expectedShowYear } = require('./lib/ibdb-year-guard');
 const showsWriteGuard = require('./lib/shows-write-guard');
 const { parseErrorLines, evaluateCommitDecision, evaluatePerShowCommitDecision } = require('./lib/validation-setdiff');
 const { isBroadwayCategory } = require('./lib/venue-classification');
@@ -250,7 +250,7 @@ async function main() {
     // openingDateSource:ibdb, 2026-06-28). If the IBDB opening year is implausibly far from
     // this show's expected year, the whole match is the wrong production — skip it entirely
     // (dates AND ibdbUrl AND creativeTeam all belong to the other staging).
-    if (ibdbYearMismatch(show, ibdb.openingDate)) {
+    if (ibdbWrongProduction(show, ibdb)) {
       console.log(`  ⛔ ${show.title} (${show.id}): IBDB opening ${ibdb.openingDate} is implausible for this production (expected ~${expectedShowYear(show)}) — wrong-production match, skipping.`);
       continue;
     }
