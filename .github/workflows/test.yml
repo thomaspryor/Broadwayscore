@@ -5049,6 +5049,16 @@ jobs:
         # booking or copyright lines. Advisory first (CLAUDE.md section 19);
         # promote to blocking once it has run clean on main.
         continue-on-error: true
+        # Offline by design: the extractor runs on saved fixtures, so the
+        # fetch/LLM keys the collector can read are deliberately blank here.
+        env:
+          BRIGHTDATA_TOKEN: ''
+          BROWSERBASE_API_KEY: ''
+          BROWSERBASE_PROJECT_ID: ''
+          GUARDIAN_API_KEY: ''
+          REVIEW_TEXTS_TOKEN: ''
+          SCRAPINGBEE_API_KEY: ''
+          SCRAPINGDOG_API_KEY: ''
         run: |
           set +e
           node --test --test-timeout 120000 tests/unit/page-furniture-extractors.test.mjs 2>&1 | tee /tmp/page-furniture.log
