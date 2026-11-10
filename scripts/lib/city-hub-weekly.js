@@ -13,7 +13,7 @@
 
 /** code -> class (1 stale closing, 2 byline, 3 wrong production/venue/roundup, 4 title, 6 run dates). Class 5 is the provenance check. */
 const CLASS_OF = {
-  'review-text-later-closing': 1, 'closing-date': 1,
+  'review-text-later-closing': 1, 'review-text-later-closing-unconfirmed': 1, 'closing-date': 1,
   byline: 2,
   'wrong-production': 3, 'non-review:roundup': 3, 'page-not-this-production': 3, 'review-other-venue': 3, 'venue-contradicted': 3, venue: 3,
   'title-spelling': 4, title: 4,

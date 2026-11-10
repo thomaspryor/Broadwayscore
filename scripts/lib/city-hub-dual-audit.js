@@ -156,6 +156,27 @@ function reviewFlags(row, ex, { opening, closing } = {}) {
   return f;
 }
 
+/** BRO-7319: how far after the page's first performance our press-opening may sit before it stops being a preview-window artifact. */
+const RUN_START_WINDOW_DAYS = 10;
+
+/**
+ * Theatre pages with no preview/opening split print the first performance as "opening" (the extraction prompt tells the model
+ * to). Our openingDate is the press opening, a few days later. That is one fact seen two ways, not a wrong date: true only when
+ * the page has no separate previewStart, our opening is on/after the page date and inside the page's own run, and within
+ * RUN_START_WINDOW_DAYS of it. A date earlier than the page's, or later than the window, still flags.
+ */
+const PREVIEW_RUN_START_MAX_DAYS = 45; // a preview period longer than this is not a plausible preview-to-press gap
+function openingIsRunStartArtifact(show, ex) {
+  const pageOpen = ex && ex.opening;
+  if (!pageOpen || !show.openingDate) return false;
+  const insideRun = show.openingDate >= pageOpen && !(ex.closing && show.openingDate > ex.closing);
+  // the page's "opening" is exactly our recorded first preview: the same run-start fact, whatever the preview-to-press gap
+  if (insideRun && show.previewsStartDate && show.previewsStartDate === pageOpen && show.openingDate <= addDays(pageOpen, PREVIEW_RUN_START_MAX_DAYS)) return true;
+  if (ex.previewStart && ex.previewStart !== pageOpen) return false;
+  if (show.openingDate < pageOpen || show.openingDate > addDays(pageOpen, RUN_START_WINDOW_DAYS)) return false;
+  return !(ex.closing && show.openingDate > ex.closing);
+}
+
 /** Flags for one model's blind show extraction (theatre page) against our shows.json row. */
 function showFlags(show, ex) {
   const f = [];
@@ -166,7 +187,7 @@ function showFlags(show, ex) {
     if (theirs && !ours) f.push({ code: `${code}-missing`, detail: `page ${theirs}, ours empty` });
     else if (d != null && d > tol) f.push({ code, detail: `ours ${ours} / page ${theirs}` });
   };
-  cmp('opening-date', show.openingDate, ex.opening, 2);
+  if (!openingIsRunStartArtifact(show, ex)) cmp('opening-date', show.openingDate, ex.opening, 2);
   cmp('closing-date', show.closingDate, ex.closing, 2);
   cmp('preview-date', show.previewsStartDate || show.previewDate, ex.previewStart, 3);
   if (ex.venue && show.venue && fold(show.venue).split(' ').filter((w) => w.length > 3).every((w) => !fold(ex.venue).includes(w))) {
@@ -226,7 +247,14 @@ const MONTHS = { jan: 1, feb: 2, mar: 3, apr: 4, may: 5, jun: 6, jul: 7, aug: 8,
 /** BRO-7291: per-show stale-closing finding, the writer's own rule (laterAnnouncedRunEnd over every text + the listing). */
 function showRunEndFinding(show, texts, listing) {
   if (!show || !show.closingDate || !show.openingDate) return null;
-  return require('./run-end-from-text').laterAnnouncedRunEnd({ opening: show.openingDate, closing: show.closingDate }, { texts, listing });
+  const rule = require('./run-end-from-text').laterAnnouncedRunEnd;
+  const base = { opening: show.openingDate, closing: show.closingDate };
+  const r = rule(base, { texts, listing });
+  if (r) return r;
+  // BRO-7319: the writer needs two hosts (or the listing) before it moves a date. An explicit "extended through" from ONE
+  // host is still a lead: report it, flagged unconfirmed, so a real extension is never invisible (no auto-fix is planned from it).
+  const one = rule(base, { texts, listing }, { minSites: 1 });
+  return one && one.kind === 'extended' ? { ...one, unconfirmed: true } : null;
 }
 
 function laterRunEnd(text, closing, slackDays = 3, opening = null) {
@@ -248,7 +276,7 @@ const SHOW_RECORD_FIELDS = ['title', 'venue', 'openingDate', 'closingDate', 'pre
 const REVIEW_RECORD_FIELDS = ['criticName', 'publishDate', 'assignedScore', 'originalRating', 'outlet', 'isNonReview', 'wrongProduction', 'wrongShow'];
 
 module.exports = { recordHash, SHOW_RECORD_FIELDS, REVIEW_RECORD_FIELDS,
-  writeAuditJson,
+  writeAuditJson, openingIsRunStartArtifact,
   laterRunEnd, showRunEndFinding,
   addDays, daysBetween, hubPhase, sectionHubShows, fold, parseJson, starsFromRating, bandForStars,
   starBandProblem, verdictProblem, quoteInText, bylineMatches, dateDiffDays, reviewFlags, showFlags,

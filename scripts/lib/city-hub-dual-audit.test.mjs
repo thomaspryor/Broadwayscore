@@ -134,6 +134,46 @@ test('BRO-7274: DC/LA hub review hosts from the coverage audit resolve to a regi
   }
 });
 
+// BRO-7319 (c): a page that prints the first performance as "opening" is not a wrong press-opening date.
+test('opening-date: page run start a few days before our press opening is not flagged; real mismatches still are', () => {
+  const show = { title: 'Hundred Days', venue: 'Keegan Theatre', openingDate: '2026-10-14', closingDate: '2026-11-15' };
+  const base = { pageIsAboutProduction: 'yes', title: 'Hundred Days', venue: 'Keegan Theatre', closing: '2026-11-15' };
+  const codes = (ex) => A.showFlags(show, { ...base, ...ex }).map((f) => f.code).filter((c) => !c.startsWith('preview-date'));
+  assert.deepEqual(codes({ opening: '2026-10-08' }), []);                                   // run start 6 days earlier
+  assert.deepEqual(codes({ opening: '2026-10-08', previewStart: '2026-10-08' }), []);       // same date given as both
+  assert.ok(codes({ opening: '2026-09-20' }).includes('opening-date'));                    // 24 days earlier: too far
+  assert.ok(codes({ opening: '2026-10-08', previewStart: '2026-10-02' }).includes('opening-date')); // page has its own preview split
+  assert.ok(codes({ opening: '2026-10-20' }).includes('opening-date'));                    // our opening BEFORE the page's
+  assert.equal(A.openingIsRunStartArtifact({ openingDate: '2026-12-01' }, { opening: '2026-10-08', closing: '2026-11-15' }), false);
+});
+
+// BRO-7319 (a): a single-host "extended through" is held by the writer but never invisible to the audit.
+test('showRunEndFinding reports a one-host extension as unconfirmed, a two-host one as confirmed, a one-host plain date as nothing', () => {
+  const show = { openingDate: '2026-10-01', closingDate: '2026-10-25' };
+  const t = (text, host) => ({ text, url: `https://${host}/r`, articleDate: '2026-10-05' });
+  const one = A.showRunEndFinding(show, [t('extended through Nov 8', 'a.com')], null);
+  assert.equal(one.unconfirmed, true); assert.equal(one.date, '2026-11-08');
+  const two = A.showRunEndFinding(show, [t('extended through Nov 8', 'a.com'), t('extended through Nov 8', 'b.com')], null);
+  assert.equal(two.unconfirmed, undefined); assert.equal(two.date, '2026-11-08');
+  assert.equal(A.showRunEndFinding(show, [t('runs through Nov 8', 'a.com')], null), null);
+});
+
+// BRO-7319: page "opening" equal to our own first preview is the run start, even when the press opening is 11+ days later
+test('opening-date: page opening equal to our previewsStartDate is not flagged; an unrelated early date still is', () => {
+  const D = require('./city-hub-dual-audit.js');
+  const show = { title: 'Begin Again', venue: 'Cygnet Theatre', openingDate: '2026-09-17', previewsStartDate: '2026-09-06' };
+  assert.equal(D.openingIsRunStartArtifact(show, { opening: '2026-09-06', closing: '2026-10-18' }), true);
+  assert.equal(D.openingIsRunStartArtifact(show, { opening: '2026-08-20', closing: '2026-10-18' }), false);
+  assert.equal(D.openingIsRunStartArtifact({ ...show, previewsStartDate: null }, { opening: '2026-09-06', closing: '2026-10-18' }), false);
+});
+
+test('opening-date: page opening equal to previewsStartDate stops hiding once the press opening is 45+ days later', () => {
+  const D = require('./city-hub-dual-audit.js');
+  const show = { openingDate: '2026-07-20', previewsStartDate: '2026-05-01' };
+  assert.equal(D.openingIsRunStartArtifact(show, { opening: '2026-05-01', closing: '2026-09-01' }), false);
+});
+
+
 test('BRO-7319: a card create that throws is retried, never thrown, and leaves findings unseen', async () => {
   const W = require('./city-hub-weekly.js');
   let n = 0;

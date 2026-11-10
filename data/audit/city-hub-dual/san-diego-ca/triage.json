@@ -1,0 +1,16 @@
+{
+ "items": {
+  "show:begin-again-regional-2026:opening-date": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "show:begin-again-regional-2026:opening-date",
+   "reason": "The theatre page prints the run first performance (2026-09-06) as opening; our openingDate 2026-09-17 is the press opening (first reviews dated the same week) and previews start 2026-09-06. One fact seen two ways, not a wrong date. BRO-7319."
+  },
+  "show:seussical-regional-2026:venue": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "show:seussical-regional-2026:venue",
+   "reason": "SDMT Stage is the stage name inside San Diego Musical Theatre (our venue). Same building. BRO-7319."
+  }
+ }
+}

@@ -93,7 +93,7 @@ const hostOf = (u) => { try { return new URL(u).hostname.replace(/^www\./, ''); 
  *             listing = the run end printed on the theatre's / listing site's own page for this production.
  * The listing and the latest "extended through" sentence outrank plain review text (a review keeps quoting the
  * original run after an extension); otherwise pickRunEnd decides. Only moves later, by more than `slackDays`
- * and at most `maxDays`; plain review text needs `minSites` (2) distinct sites agreeing. An earlier date in a review is almost always the original run, never a shortening.
+ * and at most `maxDays`; any text-derived date (extended or plain) needs `minSites` (2) distinct hosts naming the same date; the audit passes 1 so single-host extensions stay visible. An earlier date in a review is almost always the original run, never a shortening.
  * @returns {{ date: string, source: string, kind: 'listing'|'extended'|'text' } | null}
  */
 function laterAnnouncedRunEnd(show, evidence, opts = {}) {
@@ -103,21 +103,34 @@ function laterAnnouncedRunEnd(show, evidence, opts = {}) {
   const opening = show.opening;
   if (!opening) return null;
   const cands = [];
-  for (const t of (evidence && evidence.texts) || []) {
-    for (const c of runEndCandidates(String(t.text || ''), { opening, articleDate: t.articleDate || null })) cands.push({ ...c, url: t.url || null });
-  }
+  ((evidence && evidence.texts) || []).forEach((t, ti) => {
+    for (const c of runEndCandidates(String(t.text || ''), { opening, articleDate: t.articleDate || null })) cands.push({ ...c, url: t.url || null, ti });
+  });
   const listing = evidence && evidence.listing && evidence.listing.date && evidence.listing.date >= opening ? evidence.listing : null;
-  const ext = cands.filter((c) => c.extended).sort((a, b) => a.date.localeCompare(b.date)).pop();
-  let best = null;
-  if (listing || ext) {
-    best = [listing && { date: listing.date, urls: [listing.url], kind: 'listing' }, ext && { date: ext.date, urls: [ext.url], kind: 'extended' }]
-      .filter(Boolean).sort((a, b) => a.date.localeCompare(b.date) || (a.kind === 'listing' ? 1 : -1)).pop();
-  } else {
-    const d = pickRunEnd(cands);
-    const urls = [...new Set(cands.filter((c) => c.date === d).map((c) => c.url))];
-    // a plain "through <date>" needs two independent sites: one blog's typo or stale sidebar is not an extension
-    if (d && new Set(urls.map((u, i) => hostOf(u) || `#${i}`)).size >= minSites) best = { date: d, urls, kind: 'text' };
-  }
+  // BRO-7319: one review's "extended through <date>" no longer moves a date. A text-derived date needs
+  // `minSites` distinct hosts naming the SAME date (any mix of cues); only the theatre's own listing stands alone.
+  // kind is 'extended' only when `minSites` hosts used the extended cue, so a plain mention never force-overwrites
+  // a pinned humanCorrectedClosingDate in harvest-hub-run-dates.js. Several qualifying dates: the latest wins.
+  const byDate = new Map();
+  cands.forEach((c) => {
+    const e = byDate.get(c.date) || { all: new Set(), ext: new Set(), urls: [], n: 0 };
+    const h = hostOf(c.url) || `text#${c.ti}`;
+    e.all.add(h);
+    e.n += 1;
+    if (c.extended) e.ext.add(h);
+    if (c.url && !e.urls.includes(c.url)) e.urls.push(c.url);
+    byDate.set(c.date, e);
+  });
+  // "extended" outranks plain text: the latest date that `minSites` hosts call an extension. Otherwise the plain date with the
+  // most distinct hosts (then most mentions, then the later one), as before BRO-7319, provided `minSites` hosts agree on it.
+  const extBest = [...byDate.entries()].filter(([, e]) => e.ext.size >= minSites).sort((x, y) => x[0].localeCompare(y[0])).pop();
+  const plainBest = [...byDate.entries()].filter(([, e]) => e.all.size >= minSites)
+    .sort((x, y) => y[1].all.size - x[1].all.size || y[1].n - x[1].n || y[0].localeCompare(x[0]))[0];
+  // plain text only decides when nothing stronger exists: the listing outranks it (a review keeps quoting the original run)
+  const pick = extBest ? { d: extBest, kind: 'extended' } : plainBest && !listing ? { d: plainBest, kind: 'text' } : null;
+  const text = pick && { date: pick.d[0], urls: pick.d[1].urls, kind: pick.kind };
+  const best = [listing && { date: listing.date, urls: [listing.url], kind: 'listing' }, text]
+    .filter(Boolean).sort((a, b) => a.date.localeCompare(b.date) || (a.kind === 'listing' ? 1 : -1)).pop() || null;
   if (!best) return null;
   if (show.closing) {
     const gap = daysBetween(show.closing, best.date);
