@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-10T11:04:13.058Z",
+  "timestamp": "2026-11-10T11:15:00.716Z",
   "stats": {
-    "totalReviews": 81144,
+    "totalReviews": 81145,
     "alreadyFlagged": 22190,
     "dateGuardCatches": 219,
     "directorMismatch": 3602,
-    "tvFilmSignals": 2287,
+    "tvFilmSignals": 2288,
     "londonSignals": 3661,
     "offBroadwaySignals": 753,
     "yearMismatch": 364,
-    "noPublishDate": 8424
+    "noPublishDate": 8422
   },
   "findings": [
     {
@@ -8240,6 +8240,19 @@
       "score": 91,
       "publishDate": null,
       "url": "https://www.beyondthecurtain.co.uk/2024/10/5-reasons-to-see-becoming-nancy.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "becoming-nancy-birmingham-rep-regional-2024",
+      "file": "guardian--arifa-akbar.json",
+      "publishDate": "2024-10-15",
+      "url": "https://www.theguardian.com/stage/2024/oct/15/becoming-nancy-review-coming-out-musical-birmingham-rep",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
