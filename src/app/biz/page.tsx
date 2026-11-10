@@ -293,8 +293,8 @@ export default function BizDashboard() {
             </h2>
             <p className="text-gray-400 text-sm mb-4">
               Shows that have announced a closing while their 4-week average gross is below estimated break-even
-              and our model has them under 30% recouped even in the best case. They will very likely close without
-              paying back their investors.
+              and our model has them under 30% recouped even in the best case. Unless business turns around sharply,
+              they are on track to close without paying back their investors.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {closingUnrecouped.slice(0, 6).map((show) => (
