@@ -65,7 +65,7 @@ function writePlan(city, week, actions) {
 }
 
 function fileCard(card) {
-  if (!process.env.LINEAR_API_KEY) { console.log('::warning::LINEAR_API_KEY not set: card not filed (findings are in weekly.json)'); return null; }
+  if (!process.env.LINEAR_API_KEY) { throw new Error('LINEAR_API_KEY not set: card not filed'); } // throws so the findings stay unseen and next run retries (BRO-7319)
   const brain = path.join(__dirname, 'linear-brain.js');
   const prefix = card.title.split(':')[0];
   const dedup = spawnSync('node', [brain, 'find', prefix], { encoding: 'utf8', timeout: 60_000, cwd: ROOT });
