@@ -6,7 +6,7 @@ import fs from 'node:fs';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { replayNight, runsAt, projectNight, chainShifts, pickRuns } = require('../../scripts/press-night-watchdog-replay.js');
+const { replayNight, runsAt, projectNight, chainShifts, pickRuns, liveLookup } = require('../../scripts/press-night-watchdog-replay.js');
 const { normalizeOutlet } = require('../../scripts/lib/review-normalization');
 const norm = (o) => (o ? normalizeOutlet(String(o)) || String(o).toLowerCase() : null);
 const load = (p) => JSON.parse(fs.readFileSync(new URL(`../../${p}`, import.meta.url), 'utf8'));
@@ -112,4 +112,20 @@ test('pickRuns: --runs wins, then the record\'s complete runs, then the fixture 
   assert.deepEqual(p.runs, ['f']);
   assert.match(p.warning, /incomplete \(rebuild-fast.yml\)/);
   assert.equal(pickRuns({ record: {}, runsArg: null, ...io, fixturePath: 'none.json' }).runs, null);
+});
+
+test('liveLookup: a critic named differently on the site matches by outlet only when the outlet has one file and one live review', () => {
+  const lives = [{ o: 'The New York Times', cn: 'A. Person', ms: 1 }, { o: 'NYSR', cn: 'X', ms: 2 }, { o: 'NYSR', cn: 'Y', ms: 3 }];
+  const files = [{ outletId: 'nytimes', critic: 'Alice Person' }, { outletId: 'nysr', critic: 'Z' }, { outletId: 'nysr', critic: 'X' }];
+  const live = liveLookup(lives, norm, files);
+  assert.equal(live(files[0]), 1);
+  assert.ok(Number.isNaN(live(files[1])));
+  assert.equal(live(files[2]), 2);
+});
+
+test('replay from a backfilled record (inCoreAtEnd unknown): a scored review whose site name differs still enters core and reads deploy', () => {
+  const rec = synthetic({ scoredAt: atm(5) });
+  rec.perReview[0].critic = 'A. B.'; // file says 'A'
+  const r = replayNight({ record: rec, runs: synRuns, normOutlet: norm });
+  assert.deepEqual(r.dispatches.map((d) => `${d.atMin}:${d.stage}`), ['20:deploy']);
 });

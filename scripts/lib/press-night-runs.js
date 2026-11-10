@@ -20,8 +20,11 @@ const MIN = 60000;
 const WATCHED_WORKFLOWS = ['opening-night-orchestrator.yml', 'opening-night-poller.yml', 'llm-ensemble-score.yml', 'rebuild-fast.yml', 'vercel-deploy.yml'];
 const WINDOW_BEFORE_MIN = 120;
 const WINDOW_AFTER_MIN = 180;
-// Runs are listed by creation time; a run created up to this long before the window can still be running in it.
-const LIST_LEAD_MIN = 60;
+// Runs are listed by creation time; a run created up to this long before the window can still be running in it:
+// the longest job timeout of the watched workflows (opening-night-orchestrator.yml, 360 min).
+const LIST_LEAD_MIN = 360;
+// GitHub returns at most 1000 runs for a filtered listing; a listing that reaches it may be cut short.
+const LIST_CAP = 1000;
 
 const foldKey = (s) => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z]/g, '');
 const toMs = (t) => (t == null || t === '' ? NaN : Date.parse(t));
@@ -70,6 +73,7 @@ function pipelineRunsFrom(listing, win, capturedAt) {
   for (const wf of WATCHED_WORKFLOWS) {
     const got = listing[wf];
     if (!got || got.error || !Array.isArray(got.runs)) { errors.push({ workflow: wf, error: String((got && got.error) || 'not listed').slice(0, 160) }); continue; }
+    if (got.runs.length >= LIST_CAP) { errors.push({ workflow: wf, error: `listing hit GitHub's ${LIST_CAP}-run cap: may be cut short` }); continue; }
     for (const r of got.runs) runs.push(slimRun(r, wf));
   }
   return { capturedAt, window: { from: win.from, to: win.to }, complete: errors.length === 0, ...(errors.length ? { errors } : {}), runs: selectWindowRuns(runs, win) };
@@ -109,28 +113,39 @@ function stampReviewTimes(rec, coreRows, normOutlet) {
     for (const f of files) {
       if (!f || !f.outletId) continue;
       // A critic name can differ between the file and reviews.json (initials, a co-byline): one file and one core row
-      // for the outlet are the same review.
+      // for the outlet are the same review. Any other name mismatch at an outlet with core rows is ambiguous: null
+      // (unknown), never false, which the replay would read as dropped.
       const oneToOne = filesPerOutlet.get(f.outletId) === 1 && coreByOutlet.get(f.outletId) === 1;
-      f.inCoreAtEnd = core.has(key(f.outletId, f.critic)) || ((!f.critic || oneToOne) && coreByOutlet.has(f.outletId));
+      if (core.has(key(f.outletId, f.critic)) || ((!f.critic || oneToOne) && coreByOutlet.has(f.outletId))) f.inCoreAtEnd = true;
+      else f.inCoreAtEnd = coreByOutlet.has(f.outletId) ? null : false;
       if (f.inCoreAtEnd) inCore++;
     }
   }
   const byKey = new Map();
   const byOutlet = new Map();
   for (const f of files) {
-    if (!f || !f.outletId || !f.scoredAt) continue;
+    if (!f || !f.outletId) continue;
     byKey.set(key(f.outletId, f.critic), f);
     if (!byOutlet.has(f.outletId)) byOutlet.set(f.outletId, []);
-    byOutlet.get(f.outletId).push(f);
+    byOutlet.get(f.outletId).push(f); // every file, scored or not: an outlet with two critics is never matched by outlet
   }
   let scored = 0;
   for (const p of rec.perReview || []) {
     const oid = normOutlet(p.outlet);
     const one = byOutlet.get(oid);
     const f = byKey.get(key(oid, p.critic)) || (one && one.length === 1 ? one[0] : null);
-    if (f) { p.scoredAt = f.scoredAt; scored++; } else delete p.scoredAt;
+    if (f && f.scoredAt) { p.scoredAt = f.scoredAt; scored++; } else delete p.scoredAt;
   }
   return { scored, reviews: (rec.perReview || []).length, inCore, files: files.length, coreKnown: !!coreRows };
+}
+
+/**
+ * Is a reviews.json written at `mtimeMs` the night's end state? Only when written after the replay window closed
+ * (embargo +3h); the probe's own checkout is cloned hours earlier and lacks every review of the night.
+ */
+function coreFreshForNight(mtimeMs, embargoAt) {
+  const e = toMs(embargoAt);
+  return Number.isFinite(mtimeMs) && Number.isFinite(e) && mtimeMs >= e + WINDOW_AFTER_MIN * MIN;
 }
 
 /**
@@ -167,6 +182,6 @@ function coreRowsAt(files, runs, nowMs, liveMsOf) {
 }
 
 module.exports = {
-  WATCHED_WORKFLOWS, runsWindow, slimRun, selectWindowRuns, pipelineRunsFrom, mergePipelineRuns, recordedRuns,
+  WATCHED_WORKFLOWS, LIST_LEAD_MIN, runsWindow, coreFreshForNight, slimRun, selectWindowRuns, pipelineRunsFrom, mergePipelineRuns, recordedRuns,
   stampReviewTimes, replayFiles, coreRowsAt,
 };

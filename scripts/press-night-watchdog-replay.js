@@ -57,21 +57,29 @@ function runsAt(runs, nowMs) {
   return out;
 }
 
-/** file -> when its review went live (by outlet id and folded critic; by outlet when the file has no critic), or NaN. */
-function liveLookup(lives, normOutlet) {
+/**
+ * file -> when its review went live, or NaN: by outlet id and folded critic; by outlet when the file has no critic, or
+ * when the outlet has one file and one live review (a critic named differently on the site: initials, a co-byline).
+ */
+function liveLookup(lives, normOutlet, files = []) {
   const fold = (c) => String(c || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z]/g, '');
   const byKey = new Map();
   const byOutlet = new Map();
+  const livesPerOutlet = new Map();
   for (const l of lives) {
     const oid = normOutlet(l.o);
     const k = `${oid}|${fold(l.cn)}`;
     if (!(byKey.get(k) <= l.ms)) byKey.set(k, l.ms);
     if (!(byOutlet.get(oid) <= l.ms)) byOutlet.set(oid, l.ms);
+    livesPerOutlet.set(oid, (livesPerOutlet.get(oid) || 0) + 1);
   }
+  const filesPerOutlet = new Map();
+  for (const f of files) if (f && f.outletId) filesPerOutlet.set(f.outletId, (filesPerOutlet.get(f.outletId) || 0) + 1);
   return (f) => {
     const ms = byKey.get(`${f.outletId}|${fold(f.critic)}`);
     if (ms != null) return ms;
-    return !f.critic && byOutlet.has(f.outletId) ? byOutlet.get(f.outletId) : NaN;
+    const oneToOne = filesPerOutlet.get(f.outletId) === 1 && livesPerOutlet.get(f.outletId) === 1;
+    return (!f.critic || oneToOne) && byOutlet.has(f.outletId) ? byOutlet.get(f.outletId) : NaN;
   };
 }
 
@@ -94,7 +102,7 @@ function replayNight({ record, runs, normOutlet, tickMin = TICK_MIN, untilMin = 
   const embargoMs = Date.parse(record.embargoAt);
   const files = pnr.replayFiles(record, normOutlet);
   const lives = (record.perReview || []).filter((p) => p.firstLiveAt).map((p) => ({ ms: Date.parse(p.firstLiveAt), o: p.outlet, cn: p.critic }));
-  const liveMsOf = liveLookup(lives, normOutlet);
+  const liveMsOf = liveLookup(lives, normOutlet, files);
   let state = {};
   const ticks = [];
   for (let m = 0; m <= untilMin; m += tickMin) {

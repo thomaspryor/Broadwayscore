@@ -211,13 +211,20 @@ async function buildCensus(rec, show) {
 
 function hasCoverage(ref) { return !!(ref && ref.coverage != null); }
 
-/** Core reviews.json rows of the show, or null when core data is not checked out (unknown, never "none in core"). */
-function readCoreRows(showId) {
+/**
+ * Core reviews.json rows of the show as {rows, why}. rows is null (unknown, never "none in core") when core data is
+ * not checked out, or when the file predates the end of the night (pnr.coreFreshForNight): the probe clones core data
+ * before the night, and a stale copy would read every new review as not in core, i.e. dropped.
+ */
+function readCoreRows(showId, embargoAt) {
+  const file = path.join(ROOT, 'data', 'reviews.json');
   try {
-    const raw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'reviews.json'), 'utf8'));
+    const mtimeMs = fs.statSync(file).mtimeMs;
+    if (!require('./lib/press-night-runs').coreFreshForNight(mtimeMs, embargoAt)) return { rows: null, why: `core reviews.json is from ${new Date(mtimeMs).toISOString()}, before the night's end: in-core not stamped` };
+    const raw = JSON.parse(fs.readFileSync(file, 'utf8'));
     const all = Array.isArray(raw) ? raw : raw.reviews;
-    return Array.isArray(all) ? all.filter((r) => r.showId === showId).map((r) => ({ outletId: r.outletId, outlet: r.outlet, criticName: r.criticName })) : null;
-  } catch (_) { return null; }
+    return Array.isArray(all) ? { rows: all.filter((r) => r.showId === showId).map((r) => ({ outletId: r.outletId, outlet: r.outlet, criticName: r.criticName })), why: null } : { rows: null, why: 'core reviews.json unreadable' };
+  } catch (_) { return { rows: null, why: 'core reviews.json not available' }; }
 }
 
 /** One watched workflow's runs created in [from, to] (REST, paginated). Throws on any gh failure. */
@@ -238,8 +245,12 @@ function stampPipeline(rec, { withCore = true } = {}) {
   const { normalizeOutlet } = require('./lib/review-normalization');
   const normOutlet = (o) => (o ? normalizeOutlet(String(o)) || String(o).toLowerCase() : null);
   try {
-    const n = pnr.stampReviewTimes(rec, withCore ? readCoreRows(rec.showId) : null, normOutlet);
-    console.log(`[press-night] scoredAt stamped on ${n.scored}/${n.reviews} live review(s); ${n.coreKnown ? `${n.inCore}/${n.files} file(s) in core reviews.json` : withCore ? 'core reviews.json not available' : 'in-core not stamped (backfill)'}`);
+    const core = withCore ? readCoreRows(rec.showId, rec.embargoAt) : { rows: null, why: 'in-core not stamped (backfill)' };
+    const n = pnr.stampReviewTimes(rec, core.rows, normOutlet);
+    console.log(`[press-night] scoredAt stamped on ${n.scored}/${n.reviews} live review(s); ${n.coreKnown ? `${n.inCore}/${n.files} file(s) in core reviews.json` : core.why}`);
+    // The file snapshot is refreshed only when review-texts were checked out; otherwise it is an earlier one (+2h).
+    const snapAt = rec.fileState && rec.fileState.capturedAt;
+    if (snapAt && !pnr.coreFreshForNight(Date.parse(snapAt), rec.embargoAt)) console.log(`::warning::press-night scoredAt read from the file snapshot of ${snapAt}, before the night's end: reviews scored later have none`);
   } catch (e) { console.log(`::warning::press-night scoredAt stamp failed: ${String(e.message || e).slice(0, 160)}`); }
   const win = pnr.runsWindow(rec.embargoAt);
   if (!win) return;
@@ -379,7 +390,9 @@ async function main() {
       ref = { status: 'error', error: String(e.message || e).slice(0, 200), source: null, count: 0, covered: null, coverage: null, missing: [], fetchedAt };
     }
     rec.reference[label] = ref;
-    if (label === 'end') stampPipeline(rec);
+    if (label === 'end') {
+      try { stampPipeline(rec); } catch (e) { console.log(`::warning::press-night pipeline stamp failed: ${String(e.message || e).slice(0, 160)}`); }
+    }
     // The +2h census was missing (roundup not out or not fetchable then), or thinner than this one: judge +2h
     // on the live timeline against this later, fuller census (a bigger denominator is the stricter answer).
     const ref2 = rec.reference['2h'];
@@ -399,7 +412,7 @@ async function main() {
   if (has('stamp-pipeline')) {
     // BRO-6863 backfill for a night recorded before --label=end kept the runs. Today's reviews.json is not the night's,
     // so in-core is not stamped; the replay then treats a scored review that went live as in core from its rebuild.
-    stampPipeline(rec, { withCore: false });
+    try { stampPipeline(rec, { withCore: false }); } catch (e) { console.error(`[press-night] pipeline stamp failed: ${e.message}`); return 1; }
     writeRecord(file, rec);
     return rec.pipelineRuns && rec.pipelineRuns.complete ? 0 : 1;
   }

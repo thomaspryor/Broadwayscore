@@ -12,8 +12,39 @@ const at = (m) => new Date(Date.parse(EMB) + m * 60000).toISOString();
 
 test('runsWindow: embargo -2h to +3h, listed from an hour earlier; null for a bad embargo', () => {
   const z = (m) => at(m).replace('.000Z', 'Z');
-  assert.deepEqual(pnr.runsWindow(EMB), { from: z(-120), to: z(180), listFrom: z(-180), listTo: z(180) });
+  assert.deepEqual(pnr.runsWindow(EMB), { from: z(-120), to: z(180), listFrom: z(-480), listTo: z(180) });
   assert.equal(pnr.runsWindow('nope'), null);
+});
+
+test('runsWindow lists back at least the longest watched job timeout (orchestrator 360 min), so a run created then and still active is kept', async () => {
+  const fs = await import('node:fs');
+  for (const wf of pnr.WATCHED_WORKFLOWS) {
+    const yml = fs.readFileSync(new URL(`../../.github/workflows/${wf}`, import.meta.url), 'utf8');
+    for (const m of yml.matchAll(/^\s{4}timeout-minutes:\s*(\d+)/gm)) assert.ok(Number(m[1]) <= pnr.LIST_LEAD_MIN, `${wf} job timeout ${m[1]} > LIST_LEAD_MIN`);
+  }
+  const win = pnr.runsWindow(EMB);
+  const orch = { status: 'completed', conclusion: 'success', display_title: 'o', run_started_at: at(-470), updated_at: at(-100) };
+  const listing = Object.fromEntries(pnr.WATCHED_WORKFLOWS.map((wf) => [wf, { runs: [] }]));
+  listing['opening-night-orchestrator.yml'] = { runs: [orch] };
+  assert.ok(Date.parse(win.listFrom) <= Date.parse(orch.run_started_at));
+  assert.equal(pnr.pipelineRunsFrom(listing, win, at(360)).runs.length, 1);
+});
+
+test('pipelineRunsFrom: a listing at GitHub\'s 1000-run cap is not complete', () => {
+  const win = pnr.runsWindow(EMB);
+  const listing = Object.fromEntries(pnr.WATCHED_WORKFLOWS.map((wf) => [wf, { runs: [] }]));
+  listing['vercel-deploy.yml'] = { runs: Array.from({ length: 1000 }, () => ({ status: 'completed', run_started_at: at(0), updated_at: at(1) })) };
+  const p = pnr.pipelineRunsFrom(listing, win, at(360));
+  assert.equal(p.complete, false);
+  assert.match(p.errors[0].error, /1000-run cap/);
+});
+
+test('coreFreshForNight: only a reviews.json written after embargo +3h is the night\'s end state', () => {
+  assert.equal(pnr.coreFreshForNight(Date.parse(at(-150)), EMB), false); // the probe's own clone, before the night
+  assert.equal(pnr.coreFreshForNight(Date.parse(at(179)), EMB), false);
+  assert.equal(pnr.coreFreshForNight(Date.parse(at(180)), EMB), true);
+  assert.equal(pnr.coreFreshForNight(NaN, EMB), false);
+  assert.equal(pnr.coreFreshForNight(Date.parse(at(400)), 'bad'), false);
 });
 
 test('slimRun: REST fields map to the replay row; nothing else is kept', () => {
@@ -67,10 +98,10 @@ test('stampReviewTimes: perReview scoredAt from the matching file, in-core flag 
   assert.deepEqual(rec.perReview.map((p) => p.scoredAt), [at(5), at(7), undefined, undefined]);
   assert.deepEqual(rec.fileState.files.map((f) => f.inCoreAtEnd), [true, true, false, true]);
   assert.deepEqual(n, { scored: 2, reviews: 4, inCore: 3, files: 4, coreKnown: true });
-  // Two critics at one outlet: a name mismatch is not assumed to be the same review.
+  // Two critics at one outlet: a name mismatch is ambiguous, so unknown (null), never false (which reads as dropped).
   const rec3 = { perReview: [], fileState: { files: [{ outletId: 'nysr', critic: 'A' }, { outletId: 'nysr', critic: 'B' }] } };
   pnr.stampReviewTimes(rec3, [{ outletId: 'nysr', criticName: 'A.' }, { outletId: 'nysr', criticName: 'Z' }], norm);
-  assert.deepEqual(rec3.fileState.files.map((f) => f.inCoreAtEnd), [true, false]);
+  assert.deepEqual(rec3.fileState.files.map((f) => f.inCoreAtEnd), [true, null]);
   // reviews.json unavailable: in-core stays unknown, never false.
   const rec2 = { perReview: [], fileState: { files: [{ outletId: 'nyt', critic: 'A' }] } };
   assert.equal(pnr.stampReviewTimes(rec2, null, norm).coreKnown, false);
@@ -99,4 +130,15 @@ test('coreRowsAt: a scored review enters core when the first rebuild started aft
   assert.deepEqual(rows(25), ['a']);
   assert.deepEqual(rows(40), ['a', 'd']);
   assert.deepEqual(pnr.coreRowsAt(files, null, Date.parse(at(60)), () => NaN).map((r) => r.outletId), []);
+});
+
+test('stampReviewTimes: an unscored critic at a two-critic outlet never takes the other critic\'s scoredAt', () => {
+  const rec = { perReview: [{ outlet: 'NYSR', critic: 'Unscored Person' }, { outlet: 'NYSR', critic: 'B' }],
+    fileState: { files: [{ outletId: 'nysr', critic: 'B', scoredAt: at(5) }, { outletId: 'nysr', critic: 'Unscored Person', scoredAt: null }] } };
+  pnr.stampReviewTimes(rec, null, norm);
+  assert.deepEqual(rec.perReview.map((p) => p.scoredAt), [undefined, at(5)]);
+  // Same with the unscored file named differently from the site (initials): still not matched by outlet.
+  const rec2 = { perReview: [{ outlet: 'NYSR', critic: 'U. P.' }], fileState: { files: rec.fileState.files } };
+  pnr.stampReviewTimes(rec2, null, norm);
+  assert.equal(rec2.perReview[0].scoredAt, undefined);
 });

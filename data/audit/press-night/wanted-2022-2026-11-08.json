@@ -788,13 +788,21 @@
     ]
   },
   "pipelineRuns": {
-    "capturedAt": "2026-11-10T09:04:33.740Z",
+    "capturedAt": "2026-11-10T10:15:35.661Z",
     "window": {
       "from": "2026-11-09T01:00:00Z",
       "to": "2026-11-09T06:00:00Z"
     },
     "complete": true,
     "runs": [
+      {
+        "workflow": "opening-night-orchestrator.yml",
+        "status": "completed",
+        "conclusion": "success",
+        "displayTitle": "Opening Night Orchestrator (west-end)",
+        "startedAt": "2026-11-08T23:15:04Z",
+        "updatedAt": "2026-11-09T04:23:17Z"
+      },
       {
         "workflow": "opening-night-poller.yml",
         "status": "completed",
