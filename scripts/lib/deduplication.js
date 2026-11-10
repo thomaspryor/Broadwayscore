@@ -790,9 +790,14 @@ function isMultiProduction(newShow, existing) {
   return false;
 }
 
-function colonSegmentKey(t) {
+function colonSegmentKeyUncached(t) {
   return foldDiacritics(String(t || '')).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
 }
+// BRO-7068: isColonSegmentVariant runs once per show PAIR in validate-data's O(n²)
+// duplicate scan and re-keyed both titles each time (~15s of a ~160s run, which put the
+// push-refusal sentinel test's two full runs past the live-data lane's 300s timeout).
+// Same per-string memo as normalizeTitle above (BRO-4204).
+const colonSegmentKey = memoizeByString(colonSegmentKeyUncached);
 
 /**
  * True when the shorter title equals exactly one side of the longer title's
@@ -809,17 +814,22 @@ const MUSICAL_SUFFIX_RE = /\s+(?:the\s+)?(?:new\s+)?musical$/i;
 function isColonSegmentVariant(titleA, titleB) {
   const [short, long] = String(titleA || '').length <= String(titleB || '').length
     ? [titleA, titleB] : [titleB, titleA];
-  const longStr = String(long || '');
-  const key = colonSegmentKey(short);
-  if (key.length < 4 || key === colonSegmentKey(longStr)) return false;
-  const m = longStr.match(SUBTITLE_SEPARATOR_RE);
-  if (m) {
-    const head = longStr.slice(0, m.index);
-    const tail = longStr.slice(m.index + m[0].length);
-    if (key === colonSegmentKey(head) || key === colonSegmentKey(tail)) return true;
-  }
-  return MUSICAL_SUFFIX_RE.test(longStr) && key === colonSegmentKey(longStr.replace(MUSICAL_SUFFIX_RE, ''));
+  const key = colonSegmentKey(String(short || ''));
+  const parts = colonSegmentParts(String(long || ''));
+  if (key.length < 4 || key === parts.whole) return false;
+  if (parts.head !== null && (key === parts.head || key === parts.tail)) return true;
+  return parts.unsuffixed !== null && key === parts.unsuffixed;
 }
+// The longer title's keys depend only on that title: computed once per title (BRO-7068).
+const colonSegmentParts = memoizeByString((longStr) => {
+  const m = longStr.match(SUBTITLE_SEPARATOR_RE);
+  return {
+    whole: colonSegmentKey(longStr),
+    head: m ? colonSegmentKey(longStr.slice(0, m.index)) : null,
+    tail: m ? colonSegmentKey(longStr.slice(m.index + m[0].length)) : null,
+    unsuffixed: MUSICAL_SUFFIX_RE.test(longStr) ? colonSegmentKey(longStr.replace(MUSICAL_SUFFIX_RE, '')) : null,
+  };
+});
 
 /**
  * Same subtitle, one credit list extending the other: "Anne Teresa De

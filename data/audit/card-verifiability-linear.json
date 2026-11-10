@@ -1,30 +1,70 @@
 {
-  "generatedAt": "2026-11-09T14:15:32.035Z",
-  "total": 361,
+  "generatedAt": "2026-11-10T13:44:43.601Z",
+  "total": 366,
   "armedCount": 348,
-  "refusedCount": 13,
+  "refusedCount": 18,
   "byKind": {
-    "no-command": 1,
     "no-section": 1,
-    "shape": 10,
+    "no-command": 3,
+    "shape": 13,
     "basename": 1
   },
   "refused": [
     {
-      "id": "BRO-7231",
-      "name": "Tonight: lane shadow runs hog runners on a live-lane Broadway night (skip redundant and overlapping shadows)",
+      "id": "BRO-7284",
+      "name": "Opening-night audit 2026-11-10",
       "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7231/tonight-lane-shadow-runs-hog-runners-on-a-live-lane-broadway-night",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7284/opening-night-audit-2026-11-10",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-7281",
+      "name": "Opening-night dispatch hardening: same-group run replacement, watchdog/sweep double-dispatch, sweep no-op rebuilds",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7281/opening-night-dispatch-hardening-same-group-run-replacement",
       "reason": "acceptance criteria names no runnable command (prose only)",
       "kind": "no-command"
     },
     {
-      "id": "BRO-7226",
-      "name": "Video Score card: title 'Video Score', drop tier label",
+      "id": "BRO-7255",
+      "name": "Opening-date audit: 1 show need review (2026-11-09)",
       "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7226/video-score-card-title-video-score-drop-tier-label",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7255/opening-date-audit-1-show-need-review-2026-11-09",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-7253",
+      "name": "Closing date audit: 3 shows need review (2026-11-09)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7253/closing-date-audit-3-shows-need-review-2026-11-09",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-7246",
+      "name": "Closing Watch: flag running Broadway shows likely to close before they announce",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7246/closing-watch-flag-running-broadway-shows-likely-to-close-before-they",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/test-closing-watch.js)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-7244",
+      "name": "Social captions: copy-editor rewrite tested with owner over multiple rounds, plus show tagging and fewer, bigger Instagram posts",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7244/social-captions-copy-editor-rewrite-tested-with-owner-over-multiple",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/social-autopost/run.js --help)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-7236",
+      "name": "Daily 404 watch from Vercel request logs (catch dead internal links before Search Console emails)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7236/daily-404-watch-from-vercel-request-logs-catch-dead-internal-links",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/check-404-watch.js --dry-run)",
+      "kind": "shape"
     },
     {
       "id": "BRO-7150",
@@ -116,28 +156,37 @@
     }
   ],
   "ownerJudgmentLimbo": {
-    "total": 263,
-    "checked": 263,
+    "total": 275,
+    "checked": 275,
     "complete": true,
     "cards": []
   },
   "missingCheckPaths": [
     {
-      "id": "BRO-7230",
-      "name": "Morning digest: Reddit refresh cap starves moved drafts; probe finalize stamps complete after a skipped probe",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7230/morning-digest-reddit-refresh-cap-starves-moved-drafts-probe-finalize",
-      "cmd": "node --test scripts/lib/reddit-selection.test.mjs",
+      "id": "BRO-7267",
+      "name": "Gold buttons sitewide: switch white labels to near-black (btn-primary, hero sign-in buttons, TicketButtonsAB default)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7267/gold-buttons-sitewide-switch-white-labels-to-near-black-btn-primary",
+      "cmd": "node --test tests/unit/gold-button-label-contrast.test.mjs",
       "missingPaths": [
-        "scripts/lib/reddit-selection.test.mjs"
+        "tests/unit/gold-button-label-contrast.test.mjs"
       ]
     },
     {
-      "id": "BRO-7229",
-      "name": "GSC 'Not found (404)' alert: regional show pages linked to nonexistent /theater/ venue pages",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7229/gsc-not-found-404-alert-regional-show-pages-linked-to-nonexistent",
-      "cmd": "node --test scripts/lib/venue-link-regional-guard.test.mjs",
+      "id": "BRO-7254",
+      "name": "Closing Watch: better break-even estimates for shows with no published running cost",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7254/closing-watch-better-break-even-estimates-for-shows-with-no-published",
+      "cmd": "node --test scripts/closing-watch-breakeven.test.mjs",
       "missingPaths": [
-        "scripts/lib/venue-link-regional-guard.test.mjs"
+        "scripts/closing-watch-breakeven.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-7240",
+      "name": "Rage clicks on homepage 'CRITICS ↓' scroll button",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7240/rage-clicks-on-homepage-critics-scroll-button",
+      "cmd": "node --test tests/unit/critics-button-scroll.test.mjs",
+      "missingPaths": [
+        "tests/unit/critics-button-scroll.test.mjs"
       ]
     },
     {
@@ -165,15 +214,6 @@
       "cmd": "node --test tests/unit/host-voucher-sibling-review.test.mjs",
       "missingPaths": [
         "tests/unit/host-voucher-sibling-review.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-7160",
-      "name": "Opening night: automatic post-lane review sweep, watchdog claim ordering, stub collection, stand-down outage hold (Wanted pre-flight findings)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7160/opening-night-automatic-post-lane-review-sweep-watchdog-claim-ordering",
-      "cmd": "node --test tests/unit/post-lane-sweep.test.mjs",
-      "missingPaths": [
-        "tests/unit/post-lane-sweep.test.mjs"
       ]
     },
     {

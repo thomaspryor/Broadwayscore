@@ -59,21 +59,25 @@ function loadDone(ledgerDir, show, night, onDiskUrls = []) {
  *   missingOutlets? (T1/T2 outlet ids still missing, or a function of {seen} returning them, so captured outlets stop being searched; gates the SERP phase),
  *   reviewTextsDir? (persist scored rows before marking done, also in a dry-run sandbox),
  *   dryRun?, onDiskUrls?, onDiskRows? ([{criticName, outletId}] of this show already in reviews.json), now() -> ms, wait(ms) -> Promise, forkClock?(startMs) -> {now, wait}, midPassTickMs? (real mode's mid-pass timer; default min(bar, 30 s)),
- *   latency {fetchMs, scoreMs}, passIntervalMs, maxPasses, windowMs (how long the lane runs), startedAt?, publishTimeoutMs, pollMs,
+ *   latency {fetchMs, scoreMs}, passIntervalMs, maxPasses, windowMs (how long the lane runs), startedAt?, serpClockStartMs? (BRO-7280: SERP's +3h clock starts here instead of at startedAt), publishTimeoutMs, pollMs,
  *   shouldStop?() (stop discovering and scoring), abandonPending?() (LANE_STANDDOWN: publish nothing new, only let in-flight batches finish;
  *   queued rows are already in review-texts, so the regular pipeline publishes them)
- * @returns {Promise<{passes, admitted, published, errors, failed, skipped, unpublished, awaiting, stopped}>}
+ * @returns {Promise<{passes, admitted, published, errors, failed, skipped, removedCopies, unpublished, awaiting, stopped}>}
  */
 async function runLaneNight({
   show, night, openingDate, timeZone, adapters, fetchText, ledgerDir, fetchReview, scoreReview, publishPorts, makePublishPorts, dryRun = false,
   onDiskUrls = [], onDiskRows = [], maxInflight = 2, midPassPublishAfterMs = 5 * 60 * 1000, midPassTickMs = Math.min(midPassPublishAfterMs, 30 * 1000), now, wait, forkClock, latency = {}, passIntervalMs = 2 * 60 * 1000, maxPasses = 1000, windowMs = 6 * 60 * 60 * 1000,
-  startedAt, publishTimeoutMs, pollMs, reviewTextsDir, shouldStop = () => false, abandonPending = () => false, missingOutlets = [],
+  startedAt, serpClockStartMs, publishTimeoutMs, pollMs, reviewTextsDir, shouldStop = () => false, abandonPending = () => false, missingOutlets = [], settleComparative = null, settleMaxRuns = 25,
 } = {}) {
   for (const [k, v] of Object.entries({ show, night, adapters, fetchText, ledgerDir, fetchReview, scoreReview, now, wait })) {
     if (v === undefined || v === null) throw new Error(`lane-runner: ${k} is required`);
   }
   if (!publishPorts && !makePublishPorts) throw new Error('lane-runner: publishPorts or makePublishPorts is required');
   const persistReview = reviewTextsDir ? createLaneReviewWriter({ reviewTextsDir, show, night }) : null;
+  // BRO-7283: file name <-> review key of every row this run persisted, so a settle that moves a sibling's score can
+  // find the queued or published row to send again. `settledNotes` is the report of what the settle did (summary page).
+  const fileToKey = new Map();
+  const settled = { runs: 0, rescored: [], failed: [], foreign: [] };
   const t0 = startedAt === undefined ? now() : startedAt;
   const seen = loadDone(ledgerDir, show.id, night, onDiskUrls);
   const memo = discovery.loadMemo(ledgerDir, show.id, night); // survives a restart: final rejections are not re-fetched
@@ -84,6 +88,7 @@ async function runLaneNight({
   const quoteless = [];
   const incomplete = new Map(); // BRO-7196: review key -> passes it was held for a missing card field
   const awaiting = new Set(); // paywall teasers held for an aggregator excerpt or rating (keys), until they score
+  const removedCopies = []; // copies published in an earlier pass and taken down when their original scored
   const skipped = []; // deliberately not published (a syndicated copy whose primary is live), with the reason
   const pending = []; // rows scored but not yet published (or sent back by a failed batch)
   const inflight = new Set(); // real mode: batches publishing now
@@ -92,18 +97,37 @@ async function runLaneNight({
   // reviews.json: a primary the regular pipeline already published must still stop the lane publishing its copy.
   const taken = new Set(onDiskRows.filter((r) => r && r.criticName && r.outletId).map((r) => `${criticKey(r.criticName)}|${r.outletId}`));
 
+  // BRO-7238 part 1: copies the lane already put on the site whose original has scored since (a Yahoo reprint published
+  // in pass N, the TheWrap original in pass N+2). `livePublished` = what this lane published tonight, by critic|outlet;
+  // `stagedRemovals` = copies to take down with the batch that carries their original, kept until that publish succeeds.
+  const livePublished = new Map();
+  const stagedRemovals = [];
+
   const publishBatch = async (batch, clock) => {
+    // Only removals whose original rides in THIS batch: the copy never leaves the site before its original is in.
+    const batchKeys = new Set(batch.map((r) => r.key));
+    // merged or about to be: a copy in flight or re-queued as missing is still on the site when its original scores
+    for (const r of batch) livePublished.set(`${criticKey(r.row.criticName)}|${r.row.outletId}`, r);
+    const remove = stagedRemovals.filter((x) => batchKeys.has(x.primaryKey));
     try {
       const res = await publish.publishLaneReviews({
-        show: show.id, night, rows: batch, ledgerDir, ports: makePublishPorts ? makePublishPorts(clock) : publishPorts, now: clock.now, sleep: clock.wait,
+        show: show.id, night, rows: batch, ...(remove.length ? { remove: remove.map(({ criticName, outletId, primaryOutlet }) => ({ criticName, outletId, primaryOutletId: primaryOutlet })) } : {}), ledgerDir, ports: makePublishPorts ? makePublishPorts(clock) : publishPorts, now: clock.now, sleep: clock.wait,
         openingDate, dryRun, ...(pollMs ? { pollMs } : {}), ...(publishTimeoutMs ? { timeoutMs: publishTimeoutMs } : {}),
       });
       published.push(res);
+      const notLive = new Set([...(res.missing || [])]);
+      for (const x of remove) { // the merge landed: the copies are off the site (unless their original is still not live: retry with it)
+        if (notLive.has(x.primaryKey)) continue;
+        stagedRemovals.splice(stagedRemovals.indexOf(x), 1);
+        livePublished.delete(`${criticKey(x.criticName)}|${x.outletId}`);
+        removedCopies.push({ key: x.key, reason: `syndicated copy of the ${x.primaryOutlet} review by ${x.criticName}, taken down when the original was published` });
+      }
       for (const key of res.dropped || []) failed.push({ key, reason: 'landed in reviews.json but not in the regenerated show JSON' });
       const missing = new Set(res.missing);
       // never went live: try again with the next batch. A re-queued row restarts its mid-pass wait, or the 30 s timer
       // below would retry a failing publish every 30 s instead of about once a pass (BRO-7159 review).
-      pending.push(...batch.filter((r) => missing.has(r.key)).map((r) => ({ ...r, scoredAt: clock.now() })));
+      for (const r of batch) if (!missing.has(r.key)) livePublished.set(`${criticKey(r.row.criticName)}|${r.row.outletId}`, r);
+      pending.push(...batch.filter((r) => missing.has(r.key) && !pending.some((q) => q.key === r.key)).map((r) => ({ ...r, scoredAt: clock.now() })));
     } catch (e) {
       errors.push({ adapter: 'publish', error: String((e && e.message) || e).slice(0, 200) });
       pending.unshift(...batch.map((r) => ({ ...r, scoredAt: clock.now() }))); // scored: losing them to a failed push would drop reviews silently
@@ -162,7 +186,7 @@ async function runLaneNight({
   try { // the finally clears the mid-pass timer even if a pass throws
   for (; passes < maxPasses && now() - t0 < windowMs; passes++) {
     if (shouldStop()) { stopped = true; break; }
-    const pass = await discovery.runDiscoveryPass({ show, night, now: now(), startedAt: t0, adapters, fetchText, seen, memo, timeZone,
+    const pass = await discovery.runDiscoveryPass({ show, night, now: now(), startedAt: serpClockStartMs === undefined ? t0 : serpClockStartMs, adapters, fetchText, seen, memo, timeZone,
       missingOutlets: typeof missingOutlets === 'function' ? missingOutlets({ seen }) : missingOutlets });
     errors.push(...pass.errors);
     const stamp = now();
@@ -221,7 +245,28 @@ async function runLaneNight({
         if (row.contentTier === 'truncated' && fetched.paywallTruncation) Object.assign(row, fetched.paywallTruncation);
         if (persistReview) {
           // The guarded writer can preserve a human correction. Publish precisely what survived on disk.
-          row = persistReview(row).row;
+          const persisted = persistReview(row);
+          row = persisted.row;
+          const base = require('path').basename(persisted.file);
+          fileToKey.set(base, a.key);
+          // BRO-7283: the same within-band comparative pass the regular pipeline runs hours later (and moves scores
+          // with). Run here, the published score is the settled one and that later pass finds the group settled.
+          // A failure publishes the isolated scores, exactly as before this existed.
+          if (settleComparative) {
+            try {
+              if (settled.runs >= settleMaxRuns) throw new Error(`settle skipped: ${settleMaxRuns} runs already made tonight`);
+              // Each model call is bounded by its own 300s abort (comparative-core), so a hang ends in `unsettled`, not a late write.
+              const res = await settleComparative({ file: base });
+              if (res && res.rescoresDone > 0) settled.runs++; // only runs that called a model count against the cap
+              for (const c of (res && res.changed) || []) {
+                if (c.file === base) row = JSON.parse(require('fs').readFileSync(persisted.file, 'utf8'));
+                else if (fileToKey.has(c.file)) settled.rescored.push({ key: fileToKey.get(c.file), file: c.file });
+                else settled.foreign.push(c.file); // not published by this run: the regular rebuild carries its new score
+                settled.moved = (settled.moved || 0) + 1;
+              }
+              for (const u of (res && res.unsettled) || []) settled.failed.push({ file: base, reason: String(u.reason).slice(0, 160) });
+            } catch (e) { settled.failed.push({ file: base, reason: String((e && e.message) || e).slice(0, 160) }); }
+          }
         }
         // BRO-7196: publish the card row (outlet display name, display byline, the rebuild's pull quote), not the bare
         // file row; the quote stays off the file, where pullQuote means a human editor's pick. A row the rebuild would
@@ -241,7 +286,23 @@ async function runLaneNight({
           skipped.push({ key: pending.at(i).key, reason: `syndicated copy of the ${row.outletId} review by ${row.criticName}` });
           pending.splice(i, 1);
         }
+        for (const [k, live] of livePublished) {
+          const q = live.row;
+          if (criticKey(q.criticName) !== criticKey(row.criticName) || !getSyndicationPrimaries(q.criticName, q.outletId).includes(row.outletId)) continue;
+          if (!stagedRemovals.some((x) => x.key === live.key)) stagedRemovals.push({ key: live.key, criticName: q.criticName, outletId: q.outletId, primaryKey: a.key, primaryOutlet: row.outletId });
+        }
         pending.push({ key: a.key, row, scoredAt: now() });
+        // BRO-7283: siblings whose score the settle just moved ride in this batch: swapped in place when still queued,
+        // queued again (marked `rescored`, so publish waits for the new score to be live) when already on the site.
+        for (const sib of settled.rescored.splice(0)) {
+          const file = [...fileToKey].find(([, k]) => k === sib.key)?.[0];
+          if (!file || sib.key === a.key) continue;
+          let sibRow;
+          try { sibRow = card.toCardRow(JSON.parse(require('fs').readFileSync(require('path').join(reviewTextsDir, show.id, file), 'utf8')), show); } catch { continue; }
+          const queued = pending.find((q) => q.key === sib.key);
+          if (queued) queued.row = sibRow;
+          else pending.push({ key: sib.key, row: sibRow, scoredAt: now(), rescored: true });
+        }
         taken.add(`${criticKey(row.criticName)}|${row.outletId}`);
         seen.add(a.key);
         awaiting.delete(a.key);
@@ -279,7 +340,7 @@ async function runLaneNight({
       else await Promise.race(inflight);
     }
   }
-  return { passes, admitted, published, errors, failed, skipped, quoteless, unpublished: pending.map((r) => r.key), awaiting: [...awaiting], stopped };
+  return { passes, admitted, published, errors, failed, skipped, removedCopies, quoteless, unpublished: pending.map((r) => r.key), awaiting: [...awaiting], stopped, settle: settleComparative ? { runs: settled.runs, moved: settled.moved || 0, failed: settled.failed, foreign: [...new Set(settled.foreign)] } : null };
 }
 
 module.exports = { runLaneNight, loadDone };

@@ -1635,7 +1635,22 @@ function freshnessShowDetail(items) {
   return rows.length ? ` Shows: ${rows.join('; ')}.` : '';
 }
 
-function localRollupIssues({ health, freshnessCount = 0, stuckCount = 0, freshnessItems = [] } = {}) {
+// BRO-7276: 5 of 6 "Stuck pipeline items" cards were filed with only a count
+// ("2 pipeline signal(s) ...") and no signal text, so the fix session had
+// nothing to act on and closed them; the signals are Mac-only (worktrees,
+// cmux, headless jobs) so it could not reproduce them either. Name them.
+function stuckSignalDetail(signals) {
+  // buildPlanRow cuts every message to 400 chars (~95 are the fixed prefix), so
+  // cap each signal to keep ALL of them visible, Mac-only ones (listed last) included.
+  const rows = (Array.isArray(signals) ? signals : [])
+    .map((s) => String(s).replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&').replace(/\s+/g, ' ').trim())
+    .filter(Boolean);
+  if (!rows.length) return '';
+  const per = Math.max(40, Math.floor(290 / rows.length) - 3);
+  return ` Signals: ${rows.map((r) => (r.length > per ? `${r.slice(0, per - 1)}…` : r)).join(' | ')}`;
+}
+
+function localRollupIssues({ health, freshnessCount = 0, stuckCount = 0, freshnessItems = [], stuckSignals = [] } = {}) {
   const present = new Set([...(health?.errors || []), ...(health?.warns || [])]
     .filter(Boolean).map((e) => (typeof e === 'string' ? e : e.name)));
   const out = [];
@@ -1645,13 +1660,13 @@ function localRollupIssues({ health, freshnessCount = 0, stuckCount = 0, freshne
   }
   if (stuckCount > 0 && !present.has(ROLLUP_ROW_NAMES.stuck)) {
     out.push({ name: ROLLUP_ROW_NAMES.stuck,
-      message: `${stuckCount} pipeline signal(s) flagged possibly-stuck by the overnight digest — investigate and unstick.` });
+      message: `${stuckCount} pipeline signal(s) flagged possibly-stuck by the overnight digest — investigate and unstick.${stuckSignalDetail(stuckSignals)}` });
   }
   return out;
 }
 
 module.exports = {
-  keepDecisionQueued, localRollupIssues, ROLLUP_ROW_NAMES,
+  keepDecisionQueued, localRollupIssues, stuckSignalDetail, ROLLUP_ROW_NAMES,
   planAutofix, runAutofix, matchOpenTask, buildCardNotes, isRowAcknowledged, DISPATCH_CAP,
   DIGEST_LEDGER_PATH, reconcileDigestOutcomes, reconcileAndAppendDigest, isDispatchResolved, findMyJob, readJsonlLedger, appendJsonlLedger,
   persistenceKey, computePersistenceGate, markTrackedReportOnly, coveredRowTitles, applyPersistenceGate, PERSIST_BEFORE_FILING_HOURS, GATE_SLACK_HOURS, DIGEST_SEEN_PATH,

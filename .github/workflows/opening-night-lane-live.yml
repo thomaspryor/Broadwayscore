@@ -155,6 +155,8 @@ jobs:
       actions: write  # gh workflow run (the next hop)
     outputs:
       go: ${{ steps.wait.outputs.go }}
+      # BRO-7280: read once here; the lane job uses this value, never the variable, so one night cannot split.
+      preembargo: ${{ steps.wait.outputs.preembargo }}
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
 
@@ -183,7 +185,10 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           # GITHUB_TOKEN cannot read repo variables (BRO-6639).
           VARS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          # BRO-7280: opt-in pre-embargo direct-only window (default off; opening-night-lane-switch.yml sets it).
+          LANE_PREEMBARGO_DIRECT_ONLY: ${{ vars.LANE_PREEMBARGO_DIRECT_ONLY }}
         run: |
+          if node -e "process.exit(require('./scripts/lib/opening-night-lane/preembargo-window').parseFlag(process.env.LANE_PREEMBARGO_DIRECT_ONLY)?0:1)"; then echo "preembargo=on" >> "$GITHUB_OUTPUT"; else echo "preembargo=off" >> "$GITHUB_OUTPUT"; fi
           read -r ACTION SLEEP_MIN <<< "$(node scripts/lane-auto-fallback.js night-wait "--show=${SHOW}" "--night=${NIGHT}")"
           echo "night-wait: ${ACTION} ${SLEEP_MIN} min"
           case "$ACTION" in
@@ -288,12 +293,17 @@ jobs:
       # not fail the job.
       - name: Run the lane
         id: lane
-        timeout-minutes: 280
+        timeout-minutes: 285  # BRO-7280: 280 -> 285 (the most the 355-min job cap and audit-push-retry-budgets allow) so the 275-min pre-embargo window fits; the default window stays 270
         env:
           # The lease is released by the "Release night lease" step after the push, not by the lane process (BRO-6618).
           OPENING_NIGHT_LANE_RELEASE_BY_WORKFLOW: '1'
           # The driver's window must end before the step cap, or every night is killed mid-run (BRO-4835 review).
           OPENING_NIGHT_LANE_WINDOW_MIN: '270'
+          # BRO-7280: with the pre-embargo window on, the lane starts up to 60 min earlier and runs this long instead.
+          OPENING_NIGHT_LANE_WINDOW_PREEMBARGO_MIN: '275'
+          LANE_PREEMBARGO_DIRECT_ONLY: ${{ needs.night-wait.outputs.preembargo }}
+          # BRO-7283: comparative settle kill switch (default off; opening-night-lane-switch.yml sets it to true).
+          LANE_COMPARATIVE_SETTLE_ENABLED: ${{ vars.LANE_COMPARATIVE_SETTLE_ENABLED }}
           # BRO-6649: each publish batch dispatches the deploy itself (deploy-port.js); gh needs a token for it.
           OPENING_NIGHT_LANE_DEPLOY_DISPATCH: '1'
           # Per-call and per-review LLM budgets, the poller's values (opening-night-poller.yml, BRO-6549). Without them

@@ -1,11 +1,11 @@
 name: Opening-night lane switch
 run-name: 'Opening-night lane switch ${{ inputs.action }} ${{ inputs.variable }} ${{ inputs.show }} ${{ inputs.mode }} ${{ inputs.request_id }}'
 
-# BRO-6622 (cutover card 8). The one way a session changes the opening-night lane's two repo variables, and the lane
+# BRO-6622 (cutover card 8). The one way a session changes the opening-night lane's repo variables, and the lane
 # rollback. Cloud sessions get 403 on repo variables, so they dispatch this workflow (mcp__github__actions_run_trigger)
 # instead of asking the owner to click. workflow_dispatch only, never a cron.
 #
-#   action=set|clear  variable=LANE_ONLY_MARKETS|LANE_STANDDOWN  value=...  reason=...  mode=live|dry-run
+#   action=set|clear  variable=LANE_ONLY_MARKETS|LANE_STANDDOWN|LANE_PREEMBARGO_DIRECT_ONLY|LANE_COMPARATIVE_SETTLE_ENABLED  value=...  reason=...  mode=live|dry-run
 #       Any other variable name is refused. set refuses an empty value (use clear) and any market the lane does not know.
 #   action=rollback  [show=ID [night=YYYY-MM-DD]]  reason=...  mode=live|dry-run|drill  [hard=true]
 #       LANE_STANDDOWN=all, delete LANE_ONLY_MARKETS, wait up to 15 min for the lane to stand down by itself, cancel a
@@ -31,7 +31,7 @@ on:
         description: 'set/clear only: which variable'
         required: false
         type: choice
-        options: [LANE_ONLY_MARKETS, LANE_STANDDOWN]
+        options: [LANE_ONLY_MARKETS, LANE_STANDDOWN, LANE_PREEMBARGO_DIRECT_ONLY, LANE_COMPARATIVE_SETTLE_ENABLED]
         default: LANE_STANDDOWN
       value:
         description: 'set only: e.g. broadway, or west-end, or all (LANE_STANDDOWN only)'

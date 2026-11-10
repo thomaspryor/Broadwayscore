@@ -37,8 +37,8 @@ on:
         default: false
 
 permissions:
-  contents: read
-  actions: write  # gh workflow run (orchestrator, probe, watchdog, preflight, the next hop of this chain)
+  contents: write  # BRO-7160: post-lane sweep claims on the opening-night-lane-fallbacks branch (no other push)
+  actions: write  # gh workflow run (orchestrator, probe, watchdog, preflight, poller sweep, the next hop of this chain)
 
 concurrency:
   # concurrency-queue-ok: a kick or re-seed dispatches a hop only when no hop is queued, pending or running (the orchestrator re-seed step and each hop's own chain step check first), and every hop recomputes its plan from state, so an evicted pending hop loses nothing the next one does not rebuild.
@@ -57,6 +57,8 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
       - uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'  # post-lane sweep claim commits on the fallback branch
 
       - name: Sleep to each kick, dispatch, chain
         id: clock
@@ -65,6 +67,7 @@ jobs:
           FIRED: ${{ inputs.fired }}
           CATEGORIES: ${{ inputs.categories }}
           DRY_RUN: ${{ inputs.dry_run }}
+          POST_LANE_SWEEP_DISABLED: ${{ vars.POST_LANE_SWEEP_DISABLED }}
         run: |
           retry() { local n; for n in 1 2 3; do "$@" && return 0; sleep 30; done; return 1; }
           [ -z "$FIRED" ] || printf '%s' "$FIRED" | grep -Eq '^[a-z0-9:,-]+$' || { echo "::error::fired must be show:night pairs"; exit 1; }
@@ -80,7 +83,8 @@ jobs:
             WAIT=$(( $(date -u -d "$KICK" +%s) - $(date +%s) ))
             echo "Next event: $KIND for $SHOW $NIGHT at $KICK (embargo $EMBARGO), in ${WAIT}s"
             # A Broadway event within 24h makes a failure of this run email the owner (BRO-6858); otherwise digest only.
-            if [ "$WAIT" -lt 86400 ] && node -e 'const a=require("./data/shows.json");const L=Array.isArray(a)?a:a.shows;const s=L.find(x=>(x.id||x.slug)===process.argv[1]);process.exit(s&&s.category==="broadway"?0:1)' "$SHOW"; then
+            # The advisory post-lane sweep slots (sw*, BRO-7160) never do: they run to about embargo +12h.
+            if [ "$WAIT" -lt 86400 ] && [ "${KIND#sw}" = "$KIND" ] && node -e 'const a=require("./data/shows.json");const L=Array.isArray(a)?a:a.shows;const s=L.find(x=>(x.id||x.slug)===process.argv[1]);process.exit(s&&s.category==="broadway"?0:1)' "$SHOW"; then
               echo "broadway_soon=true" >> "$GITHUB_OUTPUT"
             fi
             if [ "$DRY_RUN" = "true" ]; then exit 0; fi
@@ -130,6 +134,14 @@ jobs:
             KEY="$SHOW:$NIGHT"; [ "$KIND" = "kick" ] || KEY="$SHOW:$NIGHT:$KIND"
             CATEGORY=$(node -e 'const a=require("./data/shows.json");const L=Array.isArray(a)?a:a.shows;const s=L.find(x=>(x.id||x.slug)===process.argv[1]);process.stdout.write(s?s.category:"")' "$SHOW")
             SINCE=$(date -u -d "$KICK - 30 minutes" +%Y-%m-%dT%H:%M:%SZ)
+            case "$KIND" in sw*)
+              # BRO-7160 post-lane sweep (+4h15/+5h15/+6h15, verify +7h30): one targeted poller run (fast_path,
+              # force_serp) once the lane has released. Advisory: a failure warns and the next slot tries again.
+              node scripts/post-lane-sweep.js --show="$SHOW" --night="$NIGHT" --embargo-at="$EMBARGO" --slot="$KIND" \
+                || echo "::warning::post-lane sweep $KIND for $SHOW $NIGHT did not dispatch (the next slot retries)"
+              FIRED="${FIRED:+$FIRED,}$KEY"
+              continue ;;
+            esac
             if [ "$KIND" != "kick" ]; then
               # BRO-6858 preflight (-24h / -3h): credits, balances and secrets for the night. Dedupe on its run title.
               DONE=$(gh run list --workflow=press-night-preflight.yml --limit 50 --json displayTitle,createdAt \

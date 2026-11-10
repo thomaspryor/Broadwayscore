@@ -1,7 +1,7 @@
 {
   "system": "commercial",
   "status": "warn",
-  "lastChecked": "2026-11-09T09:53:09.449Z",
+  "lastChecked": "2026-11-10T09:52:18.564Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,12 +9,12 @@
     {
       "name": "Commercial: rows held for a person",
       "status": "warn",
-      "message": "2 row(s) in data/commercial-pending-review.json held for a person past 7 days: springsteen-on-broadway-2021 (8 days): backfill research row: needs a person to release it; appropriate (8 days): the record carries a human-reviewed designation: a person must decide."
+      "message": "2 row(s) in data/commercial-pending-review.json held for a person past 7 days: springsteen-on-broadway-2021 (9 days): backfill research row: needs a person to release it; appropriate (9 days): the record carries a human-reviewed designation: a person must decide."
     },
     {
       "name": "Commercial: season share cards",
-      "status": "pass",
-      "message": "All 26 commercial seasons have custom share cards"
+      "status": "warn",
+      "message": "Missing custom share cards for 1/27 commercial seasons: season-2006-2007.png"
     }
   ]
 }

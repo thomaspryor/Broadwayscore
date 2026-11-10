@@ -32,6 +32,7 @@ const { tokensMatchShow, standsDown } = require('./standdown');
 const MIN = 60 * 1000;
 const LEASE_TTL_MIN = 30;           // lease.js DEFAULT_TTL_MS
 const LANE_LEAD_MIN = 30;           // the lane starts this long before the embargo
+const LANE_WINDOW_PREEMBARGO_MIN = 275; // the same variable on: lane starts up to 60 min earlier, so the tail ends about 55 min sooner (the 355-min job cap leaves 5 min more window)
 const LANE_WINDOW_MIN = 270;        // OPENING_NIGHT_LANE_WINDOW_MIN in opening-night-lane-live.yml
 const START_BEFORE_MIN = 20 * 60;   // starter window opens 20h before the embargo (covers opening day's crons)
 const START_AFTER_MIN = 60;         // and closes 1h after it; later than that the old path keeps the night
@@ -47,11 +48,15 @@ const leaseKey = (show, night) => `${show}|${night}`;
 const toMs = (t) => (t === undefined ? Date.now() : new Date(t).getTime());
 
 /** Lane start and the watchdog's window for one show-night, or null when the embargo is unknown. Pure. */
-function nightTimes(show, night) {
+function nightTimes(show, night, { preembargo = false } = {}) {
   const embargoMs = Date.parse(embargoForNight(show, night) || '');
   if (!Number.isFinite(embargoMs)) return null;
-  const laneStartMs = embargoMs - LANE_LEAD_MIN * MIN;
-  return { embargoMs, laneStartMs, watchEndMs: laneStartMs + (LANE_WINDOW_MIN + LEASE_TTL_MIN) * MIN };
+  // BRO-7280: with the opt-in pre-embargo window the lane starts earlier (never before embargo - 90 min) and runs a
+  // longer window (LANE_WINDOW_PREEMBARGO_MIN, the live workflow's value when the variable is on). Off = unchanged.
+  const pw = require('./preembargo-window');
+  const laneStartMs = pw.laneStartMs({ embargoMs, timeZone: preembargo ? require('../local-date').tzForMarket(show.category || show.market) : null, enabled: !!preembargo });
+  const windowMin = preembargo ? LANE_WINDOW_PREEMBARGO_MIN : LANE_WINDOW_MIN;
+  return { embargoMs, laneStartMs, watchEndMs: laneStartMs + (windowMin + LEASE_TTL_MIN) * MIN };
 }
 
 /** Does a read LANE_ONLY_MARKETS ({ok, value}) cover the show? Unread, unset or a typo = no. Pure. */
@@ -96,9 +101,9 @@ function planNightStart({ show, now, onlyMarkets, standdown, armed, seenTitles }
  *   sleep-chain sleep sleepMin (the whole budget), then dispatch the next hop and end without starting
  *   late        more than an hour past the embargo: do not start (the watchdog falls back)
  */
-function planNightWait({ show, night, now }) {
+function planNightWait({ show, night, now, preembargo = false }) {
   const nowMs = toMs(now);
-  const t = show && nightTimes(show, night);
+  const t = show && nightTimes(show, night, { preembargo });
   if (!t) return { action: 'unknown', sleepMin: 0, reason: 'embargo unknown' };
   if (nowMs > t.embargoMs + START_AFTER_MIN * MIN) return { action: 'late', sleepMin: 0, reason: 'more than 1h past the embargo' };
   const waitMin = Math.ceil((t.laneStartMs - nowMs) / MIN);
@@ -123,13 +128,13 @@ function planNightWait({ show, night, now }) {
  *   fallback: release the dead lease when `release` (or `holder`'s live lease when `releaseStuck`), then dispatch the
  *   old path once; `digest` = page (digest row + red run).
  */
-function decideWatchdog({ show, night, now, leaseState, laneRun, sinceMs, fallbackDone, leaseSeen, onlyMarkets, standdown, progress }) {
+function decideWatchdog({ show, night, now, leaseState, laneRun, sinceMs, fallbackDone, leaseSeen, onlyMarkets, standdown, progress, preembargo = false }) {
   const nowMs = toMs(now);
   const wait = (reason) => ({ action: 'wait', reason });
   const stop = (reason) => ({ action: 'stop', reason });
   const fallback = (reason, { release = false, digest = true, ...extra } = {}) => ({ action: 'fallback', reason, release, digest, ...extra });
   if (fallbackDone) return stop('old path already dispatched for this night');
-  const t = show && show.id && nightTimes(show, night);
+  const t = show && show.id && nightTimes(show, night, { preembargo });
   if (!t) return fallback('embargo unknown', { digest: true });
   if (nowMs >= t.watchEndMs) return stop('past the lane window');
   // Nothing can be dead before the lane is due to start; the old path is the default until then anyway.
@@ -389,7 +394,7 @@ function runWatchdogTick(input, ports) {
 }
 
 module.exports = {
-  LEASE_TTL_MIN, LANE_LEAD_MIN, LANE_WINDOW_MIN, START_BEFORE_MIN, START_AFTER_MIN, WAIT_JOB_BUDGET_MIN, TICK_MIN,
+  LANE_WINDOW_PREEMBARGO_MIN, LEASE_TTL_MIN, LANE_LEAD_MIN, LANE_WINDOW_MIN, START_BEFORE_MIN, START_AFTER_MIN, WAIT_JOB_BUDGET_MIN, TICK_MIN,
   nightRunTitle, watchdogRunTitle, nightTimes, laneOnlyCovers, planNightStart, planNightWait, decideWatchdog,
   releaseDeadLease, runWatchdogTick, FALLBACK_BRANCH,
   STUCK_AFTER_RELEASE_MIN, STUCK_FLAT_MIN, OBSERVATION_FRESH_MIN, releaseStuckLease, updateProgress, stuckVerdict, CLAIM_TTL_MIN, CLAIM_STALE_MIN, CLAIM_FAILURES_BEFORE_DISPATCH,

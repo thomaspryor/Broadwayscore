@@ -183,7 +183,8 @@ async function watchdog() {
   let leaseSeen = flag('lease-seen');
   let claimFailures = 0;
   let progress = parseProgress(arg('progress'), `${show.id}|${night}`);
-  const times = af.nightTimes(show, night);
+  const preembargo = require('./lib/opening-night-lane/preembargo-window').parseFlag(process.env.LANE_PREEMBARGO_DIRECT_ONLY);
+  const times = af.nightTimes(show, night, { preembargo });
   const observe = times && createObserver(show, night, times);
   for (;;) {
     const nowMs = oneTickAt ? Date.parse(oneTickAt) : Date.now();
@@ -193,7 +194,7 @@ async function watchdog() {
       const c = progress.census;
       console.log(`observed: live ${progress.liveCount ?? '?'}${c ? `, census ${c.count}, missing ${c.missing.length}` : ', no census yet'}`);
     }
-    const r = af.runWatchdogTick({ show, night, now: oneTickAt || undefined, sinceMs, fallbackDone, leaseSeen, holder, claimFailures, progress }, ports);
+    const r = af.runWatchdogTick({ show, night, now: oneTickAt || undefined, sinceMs, fallbackDone, leaseSeen, holder, claimFailures, progress, preembargo }, ports);
     if (r.dispatched) fallbackDone = true;
     if (r.leaseLive) leaseSeen = true;
     if (typeof r.claimFailures === 'number') claimFailures = r.claimFailures;

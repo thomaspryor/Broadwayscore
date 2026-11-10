@@ -136,6 +136,7 @@ jobs:
         id: wd
         timeout-minutes: 270
         env:
+          LANE_PREEMBARGO_DIRECT_ONLY: ${{ vars.LANE_PREEMBARGO_DIRECT_ONLY }}
           SHOW: ${{ inputs.show }}
           NIGHT: ${{ inputs.night }}
           SINCE: ${{ inputs.since }}

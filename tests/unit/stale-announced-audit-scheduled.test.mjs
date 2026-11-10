@@ -78,8 +78,11 @@ test('workflow: this job\'s concurrency group matches what the registry entry cl
   assert.equal(group, entry?.concurrencyGroup, "the workflow's actual concurrency group must match what the registry entry claims — a drifted group here would silently invalidate the apiFallbackSafe registration");
 });
 
-test('consumer: scripts/health-check.js reads the snapshot and surfaces flaggedCount', () => {
+test('consumer: scripts/health-check.js reads the snapshot and surfaces its flags through staleAnnouncedFlagResult', () => {
   assert.match(healthCheckText, /stale-announced-shows\.json/, 'health-check.js must reference the snapshot file');
-  assert.match(healthCheckText, /snap\.flaggedCount/, 'health-check.js must surface flaggedCount from the snapshot, not just check it exists');
-  assert.match(healthCheckText, /silencedByContaminationCount/, "health-check.js must also surface silencedByContaminationCount — BRO-2611's contamination discount stays invisible otherwise");
+  // BRO-7277: the flag/grace logic moved into scripts/lib/stale-announced-audit.js
+  assert.match(healthCheckText, /staleAnnouncedFlagResult\(snap/, 'health-check.js must route the snapshot through staleAnnouncedFlagResult, not just check it exists');
+  const libText = fs.readFileSync(new URL('../../scripts/lib/stale-announced-audit.js', import.meta.url), 'utf8');
+  assert.match(libText, /snap\.flagged\b/, 'the result function must read the flagged rows');
+  assert.match(libText, /silencedByContaminationCount/, "must also surface silencedByContaminationCount — BRO-2611's contamination discount stays invisible otherwise");
 });

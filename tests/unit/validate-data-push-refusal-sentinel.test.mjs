@@ -22,7 +22,12 @@
  * FIXTURE_MODE to block shared audit-artifact writes; RUNNER_TEMP isolates the
  * sentinel too.
  *
- * The "clean shows.json → exit 0" subtest below runs validate-data.js
+ * BRO-7068: the success path ("clean shows.json → exit 0") lives in
+ * validate-data-push-refusal-sentinel-clean.test.mjs. Each full-corpus run takes
+ * ~150 s with review-texts present; two in one file passed the live-data lane's
+ * 300 s per-file timeout. Fixture helpers: tests/helpers/validate-data-sentinel.mjs.
+ *
+ * The "clean shows.json → exit 0" test runs validate-data.js
  * against an UNMODIFIED copy of the live corpus — they cannot use a hand-built
  * minimal fixture instead (rejected via /second-opinion, 2026-08-23):
  * validateMinimumCounts() compares against the real ~2920-show baseline (25%
@@ -33,92 +38,14 @@
  * corpus can, transiently, actually fail validate-data.js at the moment CI runs
  * (this repo lands ~150 commits/hour) — that's a real if short-lived DATA
  * problem, not a bug in the sentinel mechanism these tests exist to guard, so
- * that subtest skips (not fail) when the unmodified baseline itself doesn't
+ * that test (in the -clean file) skips (not fail) when the unmodified baseline itself doesn't
  * validate clean. See task #466-adjacent noise write-up, 2026-08-23.
  */
 
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
-import { execFileSync } from 'node:child_process';
-import { readFileSync, writeFileSync, existsSync, copyFileSync, mkdtempSync, rmSync } from 'node:fs';
-import { join } from 'node:path';
-import { tmpdir } from 'node:os';
-
-const ROOT = join(import.meta.dirname, '..', '..');
-const VALIDATE = join(ROOT, 'scripts/validate-data.js');
-const REAL_SHOWS_JSON = join(ROOT, 'data/shows.json');
-
-// Per-test throwaway copy of shows.json — never the real path. mkdtempSync gives
-// each test its own directory so parallel `node --test` runs can't collide.
-let fixtureDir;
-// The child resolves its sentinel under RUNNER_TEMP, which runValidate points at
-// fixtureDir. Using the shared /tmp (or CI's RUNNER_TEMP) instead let any other
-// validate-data.js run on the host (parallel session, CI step, sibling test)
-// plant/clear the sentinel between this test's run and its assert, and also made
-// the test write the real push-gating sentinel (BRO-2167 time-bomb audit flake).
-let SENTINEL;
-function freshFixtureCopy() {
-  fixtureDir = mkdtempSync(join(tmpdir(), 'validate-data-sentinel-'));
-  SENTINEL = join(fixtureDir, '.skip-push-core-data');
-  const fixturePath = join(fixtureDir, 'shows.json');
-  copyFileSync(REAL_SHOWS_JSON, fixturePath);
-  return fixturePath;
-}
-function cleanupFixture() {
-  if (fixtureDir) { try { rmSync(fixtureDir, { recursive: true, force: true }); } catch (_) { /* best-effort */ } }
-  fixtureDir = undefined;
-}
-process.on('exit', cleanupFixture);
-
-function plantSyntheticBadRow(fixturePath) {
-  const data = JSON.parse(readFileSync(fixturePath, 'utf8'));
-  data.shows.push({
-    id: 'synthetic-sentinel-test-row',
-    title: 'Sentinel Test',
-    slug: 'synthetic-sentinel-test-row',
-    venue: 'Test Venue',
-    openingDate: '2025-01-01',
-    closingDate: null,
-    status: 'open',
-    category: null,    // ← the gate that produces the error
-    market: null,
-    type: 'play',
-    isRevival: false,
-    tags: [],
-    cast: [],
-    creativeTeam: [],
-    images: {},
-    synopsis: '',
-    runtime: null,
-    intermissions: null,
-    ageRecommendation: null,
-    previewsStartDate: null,
-  });
-  writeFileSync(fixturePath, JSON.stringify(data, null, 2));
-}
-
-function runValidate(fixturePath, env = process.env) {
-  try {
-    execFileSync('node', [VALIDATE, '--write'], {
-      stdio: 'pipe',
-      env: { ...env, VALIDATE_DATA_SHOWS_JSON: fixturePath, RUNNER_TEMP: fixtureDir },
-      // Same ceiling, same reason, as validate-data-venue-complex-wiring.test.mjs:
-      // the 1 MiB default killed that sibling with ENOBUFS on main and turned
-      // Unit Tests red (run 33989118480). This fixture is a full-corpus copy so
-      // its output is smaller, but the corpus only grows.
-      maxBuffer: 64 * 1024 * 1024,
-    });
-    return 0;
-  } catch (e) {
-    // `e.status ?? 1` on its own turns EVERY spawn failure into "exited 1",
-    // including an ENOBUFS kill — and this suite's assertions read a non-zero
-    // code as "validate-data.js refused the push", so a buffer overflow would
-    // have been reported as the very contract being tested. A spawn that never
-    // produced an exit code carries no verdict; re-raise instead of inventing one.
-    if (typeof e.status !== 'number') throw e;
-    return e.status;
-  }
-}
+import { readFileSync, writeFileSync, existsSync } from 'node:fs';
+import { REAL_SHOWS_JSON, makeFixture, plantSyntheticBadRow, runValidate } from '../helpers/validate-data-sentinel.mjs';
 
 describe('validate-data.js — push-refusal sentinel contract (Notion 362637c5-416f-8174)', () => {
   // Skip the whole suite if data isn't symlinked (CI without core-data checkout).
@@ -128,14 +55,15 @@ describe('validate-data.js — push-refusal sentinel contract (Notion 362637c5-4
   }
 
   test('corrupt shows.json → exit 1, sentinel written with marker', async (t) => {
-    const fixturePath = freshFixtureCopy();
+    const fixture = makeFixture();
+    const SENTINEL = fixture.sentinel;
     try {
-      plantSyntheticBadRow(fixturePath);
+      plantSyntheticBadRow(fixture.fixturePath);
       // Reuse this full-corpus run for the cloud regression to stay within CI's timeout.
       await t.test('cloud session: sentinel written without GITHUB_ACTIONS', () => {
         const env = { ...process.env, CLAUDE_CODE_REMOTE: 'true' };
         delete env.GITHUB_ACTIONS;
-        const code = runValidate(fixturePath, env);
+        const code = runValidate(fixture, env);
         assert.strictEqual(code, 1, 'expected exit 1 when shows.json has a null-category open show');
         assert.strictEqual(existsSync(SENTINEL), true,
           'sentinel was NOT written: push-core-data would push the corrupt row to the private repo');
@@ -148,35 +76,7 @@ describe('validate-data.js — push-refusal sentinel contract (Notion 362637c5-4
         assert.match(content, /reason:/, 'sentinel missing the reason: prefix that operators key on');
       });
     } finally {
-      cleanupFixture();
-    }
-  });
-
-  // One full-corpus run covers both success-path contracts (BRO-7134: three ~80 s runs put this
-  // file at 236 s of its 300 s budget alone, and it timed out under the land batch's load):
-  // a success that WRITES a sentinel and a success that fails to CLEAR a stale one both leave
-  // the file present, so planting a stale sentinel first and asserting it is gone checks both.
-  test('clean shows.json → exit 0, stale sentinel from a prior failure cleared, none written', (t) => {
-    const fixturePath = freshFixtureCopy();
-    try {
-      writeFileSync(SENTINEL, 'stale sentinel from a prior run\n');
-      const code = runValidate(fixturePath);
-      if (code !== 0) {
-        // The live corpus itself currently fails validate-data.js: a real,
-        // transient data problem (see file header), not a sentinel regression.
-        // This test needs a genuine exit-0 run, so skip rather than false-fail.
-        const reason = existsSync(SENTINEL)
-          ? readFileSync(SENTINEL, 'utf8').split('\n')[0]
-          : `exit ${code}, no sentinel detail available`;
-        t.skip(`live data/shows.json is not currently clean (${reason}) — can't exercise the success-clears-stale-sentinel path, see file header`);
-        return;
-      }
-      assert.strictEqual(code, 0, 'expected exit 0 on clean shows.json');
-      assert.strictEqual(existsSync(SENTINEL), false,
-        'sentinel present after a successful validate: either success wrote one (push-core-data wrongly blocked) '
-        + 'or it did not clear the stale one (a single past failure would permanently block push)');
-    } finally {
-      cleanupFixture();
+      fixture.cleanup();
     }
   });
 
@@ -185,17 +85,18 @@ describe('validate-data.js — push-refusal sentinel contract (Notion 362637c5-4
   // lock the coverage: if a future edit splits a new exit path off without going
   // through exitWithError(), this test fails.
   test('unparseable shows.json → exit 1, sentinel written (early-exit path coverage)', () => {
-    const fixturePath = freshFixtureCopy();
+    const fixture = makeFixture();
+    const SENTINEL = fixture.sentinel;
     try {
-      writeFileSync(fixturePath, '{not json'); // truncated/invalid
-      const code = runValidate(fixturePath);
+      writeFileSync(fixture.fixturePath, '{not json'); // truncated/invalid
+      const code = runValidate(fixture);
       assert.strictEqual(code, 1, 'expected exit 1 on unparseable shows.json');
       assert.strictEqual(existsSync(SENTINEL), true,
         'sentinel NOT written on parse-error exit path — push-core-data would be unguarded');
       assert.match(readFileSync(SENTINEL, 'utf8'), /parse error/i,
         'sentinel reason should mention the parse error');
     } finally {
-      cleanupFixture();
+      fixture.cleanup();
     }
   });
 });

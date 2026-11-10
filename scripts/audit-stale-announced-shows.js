@@ -63,6 +63,7 @@ const {
   hasEvidenceOfOpening,
   describeOpeningEvidence,
   evidenceSinceFor,
+  carryFirstFlagged,
 } = require('./lib/stale-announced-audit');
 const { explainExclusion } = require('./lib/review-guards');
 const { createShowsWriteGuard } = require('./lib/shows-write-guard');
@@ -76,6 +77,7 @@ const REVIEWS_FILE = argValue('reviews-file') || path.join(DATA_DIR, 'reviews.js
 // BRO-4913: {"<showId>": "<official page text>"} — bypasses network fetch (tests/VERIFY)
 const PAGES_FIXTURE = argValue('pages-fixture');
 const NOW_OVERRIDE = argValue('now');
+const MIN_REVIEW_TEXT_DIRS = 50; // real checkout has hundreds of show dirs
 const DEMOTE = argvEarly.includes('--demote');
 // REVIEW_TEXTS_DIR env: a worktree has no review-texts checkout, so a local
 // run was blind to the review signal (BRO-7080). Same override as the
@@ -210,7 +212,11 @@ async function main() {
   const acks = loadAcks();
   const flagged = [];
 
-  const reviewTextsAvailable = fs.existsSync(REVIEW_TEXTS_DIR);
+  // BRO-7277: an existing-but-empty/partial checkout must count as unavailable,
+  // or every review-driven flag silently vanishes (and the health check's
+  // reviewTextsAvailable===false warning never fires).
+  let reviewTextsAvailable = false;
+  try { reviewTextsAvailable = fs.readdirSync(REVIEW_TEXTS_DIR).length >= MIN_REVIEW_TEXT_DIRS; } catch { /* missing */ }
   if (!reviewTextsAvailable) {
     console.log(`  ⚠️  ${REVIEW_TEXTS_DIR} not found — review-texts signal is disabled in this environment (private repo not checked out); only date-based signals will fire`);
   }
@@ -255,12 +261,19 @@ async function main() {
   const silencedByContamination = findSilencedByContamination(showsData.shows);
   const postponed = await findPostponed(showsData, now);
 
+  // BRO-7277: carry firstFlaggedAt from the prior snapshot so the digest can
+  // tell lag that clears on its own from a flag that needs a human.
+  let prevSnap = null;
+  try { prevSnap = JSON.parse(fs.readFileSync(AUDIT_FILE, 'utf8')); } catch { /* first run */ }
+  const { flagged: flaggedStamped, history: firstFlaggedHistory } = carryFirstFlagged(prevSnap, flagged, now.toISOString());
+
   const report = {
     generatedAt: now.toISOString(),
     staleDaysThreshold: STALE_DAYS,
     reviewTextsAvailable,
     flaggedCount: flagged.length,
-    flagged,
+    flagged: flaggedStamped,
+    firstFlaggedHistory,
     postponedCount: postponed.length,
     postponed,
     orphanAckCount: orphanAcks.length,

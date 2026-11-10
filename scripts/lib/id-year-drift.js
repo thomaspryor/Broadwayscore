@@ -171,6 +171,7 @@ const INGESTION_STAMP_ACCEPTED = {
   'bad-krey-l-off-broadway-2026': 'closed; id is a live URL, rename via rename-show-id.js (S8-T1)',
   'animal-wisdom-off-broadway-2022': 'closed; id is a live URL, rename via rename-show-id.js (S8-T1)',
   'wanted-2022': 'upcoming, opens 2026-11-08; rename via rename-show-id.js (S8-T1) once dates are confirmed',
+  'girls-chance-music-off-broadway-2024': 'closed; openingDate human-corrected to 2026-05-28 (Vineyard run) after the id was minted, id is a live URL with 10 reviews; rename via rename-show-id.js (S8-T1) (BRO-7068)',
 };
 
 /** Ingestion-stamp hits not yet in INGESTION_STAMP_ACCEPTED, in shows.json order. */

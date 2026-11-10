@@ -33,3 +33,25 @@ test('BRO-5724: "4.48 Psychosis" reviews with a 448-psychosis URL are not anothe
   const url = 'https://www.theguardian.com/stage/2025/jun/19/448-psychosis-review-royal-court-theatre-london-sarah-kane-play';
   assert.equal(urlNamesOtherShow(url, psy, [stub]), null);
 });
+
+// BRO-7068: the contamination audit passes every show as a candidate for each of ~60k
+// review files. Slugifying each candidate title per call made the audit 3+ minutes and
+// timed the live-data lane out; a candidate's title must be read once per list.
+test('BRO-7068: a candidate list is prepared once, not re-slugified on every call', () => {
+  let reads = 0;
+  const counted = (id, title) => ({ id, get title() { reads++; return title; } });
+  const candidates = [counted('care-west-end-2026', 'Care Review Young Vic'), counted('other-west-end-2026', 'Some Other Long Title')];
+  const url = 'https://www.thestage.co.uk/reviews/care-review-young-vic-london';
+  for (let i = 0; i < 50; i++) assert.equal(urlNamesOtherShow(url, own, candidates)?.showId, 'care-west-end-2026');
+  assert.ok(reads <= candidates.length * 2, `candidate titles read ${reads} times over 50 calls; expected them prepared once`);
+});
+
+test('BRO-7068: candidate order and the own-id / short-title skips are unchanged', () => {
+  const first = { id: 'first-west-end-2026', title: 'Care Review Young Vic' };
+  const second = { id: 'second-west-end-2026', title: 'Young Vic London Show' };
+  const url = 'https://x.com/reviews/care-review-young-vic-london-show';
+  assert.equal(urlNamesOtherShow(url, own, [first, second]).showId, 'first-west-end-2026');
+  assert.equal(urlNamesOtherShow(url, own, [second, first]).showId, 'second-west-end-2026');
+  assert.equal(urlNamesOtherShow(url, { ...own, id: first.id }, [null, first]), null);
+  assert.equal(urlNamesOtherShow(url, own, [{ id: 'short', title: 'Care Review' }]), null); // < 12 chars
+});

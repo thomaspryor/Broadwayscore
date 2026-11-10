@@ -239,7 +239,15 @@ function laterRunEnd(text, closing, slackDays = 3) {
 /** Audit report output (never a review-text file). */
 function writeAuditJson(dest, obj) { require('fs').writeFileSync(dest, JSON.stringify(obj, null, 1)); }
 
-module.exports = {
+/** Stable hash of the fields of OUR record that the audit compares against (BRO-7256: a changed record must be re-checked, not served from cache). */
+function recordHash(rec, fields) {
+  const o = {}; for (const f of fields) o[f] = rec && rec[f] !== undefined ? rec[f] : null;
+  return require('crypto').createHash('sha1').update(JSON.stringify(o)).digest('hex').slice(0, 10);
+}
+const SHOW_RECORD_FIELDS = ['title', 'venue', 'openingDate', 'closingDate', 'previewsStartDate', 'closingDateSource', 'category', 'status', 'image', 'officialUrl'];
+const REVIEW_RECORD_FIELDS = ['criticName', 'publishDate', 'assignedScore', 'originalRating', 'outlet', 'isNonReview', 'wrongProduction', 'wrongShow'];
+
+module.exports = { recordHash, SHOW_RECORD_FIELDS, REVIEW_RECORD_FIELDS,
   writeAuditJson,
   runEndsInText, laterRunEnd,
   addDays, daysBetween, hubPhase, sectionHubShows, fold, parseJson, starsFromRating, bandForStars,

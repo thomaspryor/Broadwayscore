@@ -10,8 +10,9 @@
  *
  * Each tick: REFRESH_CMD (the workflow's pull of core data + the show's review texts), the review files
  * (press-night-review-state), core data/reviews.json, the live https://broadwayscorecard.com/data/shows/<id>.json,
- * recent runs of the workflows that move a review (gh run list), the broadcast state, and LANE_ONLY_MARKETS /
- * LANE_STANDDOWN (read live). --dry-run decides and logs only: no dispatch, no claim, no alert (off-Broadway nights,
+ * recent runs of the workflows that move a review (gh run list), the broadcast state, and the full lease-aware lane
+ * decision (LANE_ONLY_MARKETS / LANE_STANDDOWN read live, the lane lease branch, stood-down markers on main; BRO-7160).
+ * --dry-run decides and logs only: no dispatch, no claim, no alert (off-Broadway nights,
  * which BRO-6687 owns, always run dry). Exit 0 unless the watchdog itself could not run.
  */
 require('./lib/cli-help').exitOnHelp(module);
@@ -38,7 +39,7 @@ function gh(args, timeout = 30000) {
 
 function recentRuns() {
   const out = [];
-  for (const workflow of ['opening-night-orchestrator.yml', 'opening-night-poller.yml', 'llm-ensemble-score.yml', 'rebuild-fast.yml', 'vercel-deploy.yml']) {
+  for (const workflow of require('./lib/press-night-runs').WATCHED_WORKFLOWS) { // the same five the record keeps (BRO-6863)
     try {
       const rows = JSON.parse(gh(['run', 'list', `--workflow=${workflow}`, '--limit', '20', '--json', 'status,conclusion,displayTitle,createdAt,updatedAt,databaseId']));
       for (const r of rows) out.push({ workflow, ...r });
@@ -66,36 +67,53 @@ function broadcastDone(showId) {
   } catch (_) { return false; } // unknown = not done: the orchestrator exits early on its own if it is
 }
 
-function laneOwnsNight(show) {
-  const read = (name) => {
-    try {
-      const v = execFileSync('bash', [path.join(ROOT, 'scripts/lib/read-actions-variable.sh'), name],
-        { encoding: 'utf8', timeout: 25000, env: { ...process.env, GH_TOKEN: process.env.VARS_TOKEN || process.env.GH_TOKEN }, stdio: ['ignore', 'pipe', 'pipe'] });
-      return { ok: true, value: v.trim() };
-    } catch (_) { return { ok: false }; }
-  };
-  const lom = require('./lib/opening-night-lane/lane-only-markets');
-  const { standsDown } = require('./lib/opening-night-lane/standdown');
-  const only = read('LANE_ONLY_MARKETS');
-  if (!lom.coversShow(only, show)) return false; // unread or not covering = the old path is on, so is this watchdog
-  const sd = read('LANE_STANDDOWN');
-  return !(sd.ok && standsDown(sd.value, show));
+function readVar(name) {
+  try {
+    const v = execFileSync('bash', [path.join(ROOT, 'scripts/lib/read-actions-variable.sh'), name],
+      { encoding: 'utf8', timeout: 25000, env: { ...process.env, GH_TOKEN: process.env.VARS_TOKEN || process.env.GH_TOKEN }, stdio: ['ignore', 'pipe', 'pipe'] });
+    return { ok: true, value: v.trim() };
+  } catch (_) { return { ok: false }; }
 }
 
-/** Once-per-night claim on the lane fallback branch. The orchestrator stage shares the lane watchdog's own key. */
-function claim(showId, night, stage, holder) {
+/** The lane's stood-down markers as committed on origin/main (the lane-live job pushes them mid-night). null = unreadable. */
+function readMainMarkers() {
+  const ref = 'refs/press-night-watchdog/main';
+  const git = (args) => execFileSync('git', args, { cwd: ROOT, encoding: 'utf8', timeout: 60000, stdio: ['ignore', 'pipe', 'pipe'] });
+  try {
+    git(['fetch', '--no-tags', '--quiet', 'origin', `+refs/heads/main:${ref}`]);
+    const out = {};
+    for (const p of git(['ls-tree', '--name-only', ref, 'data/opening-night/lane-stood-down/']).split('\n').filter((x) => x.endsWith('.json'))) {
+      try { out[path.basename(p, '.json')] = JSON.parse(git(['show', `${ref}:${p}`])); } catch (_) { out[path.basename(p, '.json')] = { unreadable: true }; }
+    }
+    return out;
+  } catch (_) { return null; }
+}
+
+/** BRO-7160: the full lease-aware lane decision (wd.laneOwnership), gathered live each tick. Any unread input = not owned. */
+function laneOwnsNight(show, nowMs) {
+  const store = require('./lib/opening-night-lane/lease-store');
+  let leaseState = null;
+  try { leaseState = store.readRemote({ repoDir: ROOT, remote: 'origin', branch: store.DEFAULT_BRANCH }).state; } catch (_) { leaseState = null; }
+  return wd.laneOwnership({ onlyMarkets: readVar('LANE_ONLY_MARKETS'), standdown: readVar('LANE_STANDDOWN'), show, leaseState,
+    markers: readMainMarkers(), now: nowMs });
+}
+
+/**
+ * Once-per-night claim on the lane fallback branch, in the order claim -> dispatch -> mark (BRO-7160). The orchestrator
+ * stage shares the lane watchdog's own key.
+ */
+function claimAndDispatch(showId, night, stage, holder) {
   const store = require('./lib/opening-night-lane/lease-store');
   const af = require('./lib/opening-night-lane/auto-fallback');
   const id = stage === 'orchestrator' ? showId : `${showId}~pnw-${stage}`;
-  const now = new Date().toISOString();
-  try {
-    const got = store.casTransition({ repoDir: ROOT, branch: af.FALLBACK_BRANCH, message: `press-night watchdog claim ${id}|${night} (BRO-6858)` },
-      (s) => af.claimFallback(s, { show: id, night, holder, now }));
-    if (!got.ok) return got;
-    store.casTransition({ repoDir: ROOT, branch: af.FALLBACK_BRANCH, message: `press-night watchdog dispatched ${id}|${night} (BRO-6858)` },
-      (s) => af.markFallbackDispatched(s, { show: id, night, holder, now }));
-    return { ok: true };
-  } catch (e) { return { ok: false, reason: `claim write failed: ${String(e.message).slice(0, 100)}` }; }
+  const cas = (what, fn) => store.casTransition({ repoDir: ROOT, branch: af.FALLBACK_BRANCH, message: `press-night watchdog ${what} ${id}|${night} (BRO-6858)` }, fn);
+  const now = () => new Date().toISOString();
+  return wd.claimThenDispatch({
+    claim: () => cas('claim', (s) => af.claimFallback(s, { show: id, night, holder, now: now() })),
+    dispatch: () => gh(dispatchArgs(stage, showId, night), 60000),
+    mark: () => cas('dispatched', (s) => af.markFallbackDispatched(s, { show: id, night, holder, now: now() })),
+    unclaim: () => cas('unclaim', (s) => wd.releaseClaim(s, { show: id, night, holder })),
+  });
 }
 
 function dispatchArgs(stage, showId, night) {
@@ -165,7 +183,8 @@ async function main() {
     const coreRows = (Array.isArray(reviews) ? reviews : reviews.reviews || []).filter((r) => r.showId === showId);
     const live = await liveRows(showId);
     const runs = recentRuns();
-    const lane = laneOwnsNight(show);
+    const laneD = laneOwnsNight(show, nowMs);
+    const lane = laneD.owns;
     const done = broadcastDone(showId);
     const r = wd.evaluateTick({ showId, embargoMs, nowMs, files: fileState.files, coreRows, liveRows: live.rows, runs,
       broadcastDone: done, laneOwnsNight: lane, state, normOutlet });
@@ -174,6 +193,7 @@ async function main() {
     const notes = [];
     if (!fileState.available) notes.push('review texts not checked out');
     if (!live.ok) notes.push(`live JSON unreadable (${live.why})`);
+    notes.push(`lane: ${laneD.reason}`);
     const acted = [];
     // A tick that cannot see the site or the files must not dispatch or page from a blind spot.
     const blind = !fileState.available || !live.ok;
@@ -183,10 +203,10 @@ async function main() {
       if (blind) { acted.push(`blind: would ${a.type}${a.stage ? ' ' + a.stage : ''}`); state = wd.undoUnsent(prevState, state, a); continue; }
       if (a.type === 'dispatch' || a.type === 'dispatch-orchestrator') {
         const stage = a.stage || 'orchestrator';
-        const c = claim(showId, night, stage, holder);
-        // Claimed by another tick or run = sent this night; a failed claim write is retried next tick.
-        if (!c.ok) { acted.push(`${stage}: not dispatched (${c.reason})`); if (/claim write failed/.test(c.reason || '')) state = wd.undoUnsent(prevState, state, a); continue; }
-        try { gh(dispatchArgs(stage, showId, night), 60000); acted.push(`${stage}: dispatched`); } catch (e) { acted.push(`${stage}: dispatch failed (${String(e.message).split('\n')[0].slice(0, 80)})`); }
+        const c = claimAndDispatch(showId, night, stage, holder);
+        acted.push(`${stage}: ${c.reason}`);
+        // Only a stage another writer already sent spends the slot; anything else not sent is retried next tick (BRO-7160).
+        if (!c.spent) state = wd.undoUnsent(prevState, state, a);
       } else if (a.type === 'page' || a.type === 'resolve') {
         try { acted.push(`${a.type}: ${await alert(a.type, showId, night, a.reason)}`); } catch (e) { acted.push(`${a.type} failed (${String(e.message).slice(0, 80)})`); state = wd.undoUnsent(prevState, state, a); }
       }

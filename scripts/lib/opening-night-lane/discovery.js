@@ -963,6 +963,7 @@ function googleNewsAdapter({ maxUnwrap = 8, decodeImpl = null, maxDecode = 3 * m
         } catch (e) {
           // Cut off by the pass deadline (not started, or given less than its own cap, as withTimeout's message says):
           // that says nothing about the wrapper, so it is no strike (three strikes give the item up for the night).
+          if (e && e.laneDeferred) return; // BRO-7280: the pre-embargo window withheld the browser tier; no strike
           const msg = String((e && e.message) || e);
           const granted = Number((msg.match(/^fetch timed out after (\d+)ms/) || [])[1]);
           if (/deadline reached/.test(msg) || (granted && granted < fetchTimeoutMs)) return;
@@ -1068,6 +1069,7 @@ function talkinBroadwayAdapter({
       return html;
     }, (err) => {
       carryNext.delete(url);
+      if (err && err.laneDeferred) { carryNext.add(url); return null; } // BRO-7280: pre-embargo window, not a block: no count
       if (tbFetchWasBlocked(err)) {
         const n = (blockedCount.get(url) || 0) + 1;
         blockedCount.set(url, n);
@@ -1503,6 +1505,7 @@ async function runDiscoveryPass({
               }
               continue;
             }
+            if (e && e.laneDeferred) continue; // BRO-7280: the pre-embargo window withheld the paid tiers: no strike, tried again next pass
             dateFail(key);
             continue;
           }

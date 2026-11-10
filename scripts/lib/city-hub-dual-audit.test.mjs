@@ -105,3 +105,32 @@ test('"3 stars (of a possible 4)" is read on the 4-star scale', () => {
   assert.equal(A.starsFromRating('3 stars (of a possible 4)'), 4);
   assert.equal(A.starBandProblem('3 stars (of a possible 4)', 80), null);
 });
+
+test('record hash changes when our record changes, so cached audits re-run (BRO-7256)', () => {
+  const a = { title: 'X', openingDate: '2026-06-01', closingDate: '2026-06-20' };
+  const h = A.recordHash(a, A.SHOW_RECORD_FIELDS);
+  assert.equal(A.recordHash({ ...a }, A.SHOW_RECORD_FIELDS), h);
+  assert.notEqual(A.recordHash({ ...a, closingDate: '2026-06-21' }, A.SHOW_RECORD_FIELDS), h);
+  assert.notEqual(A.recordHash({ ...a, title: 'Y' }, A.SHOW_RECORD_FIELDS), h);
+  const src = fs.readFileSync(new URL('../audit-city-hub-dual-model.js', import.meta.url), 'utf8');
+  assert.match(src, /recHash !== /);
+});
+
+test('BRO-7274: DC/LA hub review hosts from the coverage audit resolve to a registered outlet', () => {
+  const { resolveOutletFromUrl } = require('./review-normalization');
+  const urls = [
+    'https://lbpost.com/life/arts-culture/x', 'https://www.randomlengthsnews.com/archives/2026/09/09/x',
+    'https://www.culvercitynews.org/x', 'https://gardenavalleynews.org/x', 'https://www.thedowneypatriot.com/x',
+    'https://palipost.com/x', 'https://peoplesworld.org/article/x', 'https://www.ladancechronicle.com/x',
+    'https://www.onthereels.com/p/x', 'https://stagetakes.com/x', 'https://dc.citycast.fm/theater-reviews/x',
+    'https://www.capitalcommunitynews.com/content/x', 'https://ladramacriticscircle.com/x', 'https://www.ladcc.org/x',
+    'https://thehollywoodtimes.today/x', 'https://www.capitalcommunitynews.com/content/x', 'https://accessiblyliveoffline.wordpress.com/x', 'https://itsnotaboutme.tv/x',
+    'https://latheatrebites.com/x', 'https://www.immersivescenelosangeles.com/post/x', 'https://www.halloweenscenelosangeles.com/post/x',
+  ];
+  for (const u of urls) {
+    const r = resolveOutletFromUrl(u);
+    assert.ok(r && (r.outletId || r.id), `no registered outlet for ${u}`);
+    if (u.includes('thehollywoodtimes')) assert.equal(r.outletId || r.id, 'thehollywoodtimes');
+    if (u.includes('capitalcommunitynews')) assert.equal(r.outletId || r.id, 'hillrag');
+  }
+});

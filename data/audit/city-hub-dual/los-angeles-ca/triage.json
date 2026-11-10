@@ -605,6 +605,198 @@
    "status": "remaining",
    "item": "coverage:heartbreak-house-regional-2026",
    "reason": "Review URL verified live and title-matched but absent from our corpus; ingest of registry-known outlets dispatched, others need outlet registry entries."
+  },
+  "show:joseph-and-the-amazing-technicolor-dreamcoat-regional-2026": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "show:joseph-and-the-amazing-technicolor-dreamcoat-regional-2026",
+   "reason": "Regional openingDate is the first review date (openingDateSource first-review-date/tic-first-review); the page date is the first preview or first performance. Previews are not tracked for regional shows. Our opening sits within the review window. The checked page was not this production (season page or other run), so its dates do not apply."
+  },
+  "show:act-your-age-regional-2026": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "show:act-your-age-regional-2026",
+   "reason": "Regional openingDate is the first review date (openingDateSource first-review-date/tic-first-review); the page date is the first preview or first performance. Previews are not tracked for regional shows. Our opening sits within the review window. Closing differs from one page that gave a different run end; the review texts and venue listing agree with ours. The checked page was not this production (season page or other run), so its dates do not apply."
+  },
+  "show:the-physicists-regional-2026": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "show:the-physicists-regional-2026",
+   "reason": "Regional openingDate is the first review date (openingDateSource first-review-date/tic-first-review); the page date is the first preview or first performance. Previews are not tracked for regional shows. Our opening sits within the review window. The checked page was not this production (season page or other run), so its dates do not apply."
+  },
+  "show:applause-regional-2026": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "show:applause-regional-2026",
+   "reason": "Page checked is a later-year (2027) listing for another run; our dates match the 2026 review texts."
+  },
+  "show:how-high-the-moon-regional-2026": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "show:how-high-the-moon-regional-2026",
+   "reason": "Regional openingDate is the first review date (openingDateSource first-review-date/tic-first-review); the page date is the first preview or first performance. Previews are not tracked for regional shows. Our opening sits within the review window. The checked page was not this production (season page or other run), so its dates do not apply."
+  },
+  "show:clown-sh-t-regional-2026": {
+   "verdict": "confirmed",
+   "status": "",
+   "item": "show:clown-sh-t-regional-2026",
+   "reason": "Review text says the run ended 2026-08-02; our closingDate was 08-03. Fixed by plan bro-7256-f (executed 2026-11-10)."
+  },
+  "show:dracula-the-musical-regional-2026": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "show:dracula-the-musical-regional-2026",
+   "reason": "Regional openingDate is the first review date (openingDateSource first-review-date/tic-first-review); the page date is the first preview or first performance. Previews are not tracked for regional shows. Our opening sits within the review window. Closing differs from one page that gave a different run end; the review texts and venue listing agree with ours."
+  },
+  "show:heroes-of-the-fourth-turning-regional-2026": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "show:heroes-of-the-fourth-turning-regional-2026",
+   "reason": "Regional openingDate is the first review date (openingDateSource first-review-date/tic-first-review); the page date is the first preview or first performance. Previews are not tracked for regional shows. Our opening sits within the review window. The checked page was not this production (season page or other run), so its dates do not apply."
+  },
+  "show:a-number-regional-2026": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "show:a-number-regional-2026",
+   "reason": "Regional openingDate is the first review date (openingDateSource first-review-date/tic-first-review); the page date is the first preview or first performance. Previews are not tracked for regional shows. Our opening sits within the review window. The checked page was not this production (season page or other run), so its dates do not apply."
+  },
+  "show:the-best-medicine-regional-2026": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "show:the-best-medicine-regional-2026",
+   "reason": "closingDateSource is unset on every regional row by convention (closing comes from the venue run listing), so the check flags a convention gap, not a hub defect. Regional openingDate is the first review date (openingDateSource first-review-date/tic-first-review); the page date is the first preview or first performance. Previews are not tracked for regional shows. Our opening sits within the review window."
+  },
+  "show:christie-in-love-regional-2026": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "show:christie-in-love-regional-2026",
+   "reason": "Regional openingDate is the first review date (openingDateSource first-review-date/tic-first-review); the page date is the first preview or first performance. Previews are not tracked for regional shows. Our opening sits within the review window. The checked page was not this production (season page or other run), so its dates do not apply."
+  },
+  "show:aktion-t4-regional-2026": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "show:aktion-t4-regional-2026",
+   "reason": "Regional openingDate is the first review date (openingDateSource first-review-date/tic-first-review); the page date is the first preview or first performance. Previews are not tracked for regional shows. Our opening sits within the review window. The checked page was not this production (season page or other run), so its dates do not apply."
+  },
+  "show:the-trail-to-oregon-regional-2026": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "show:the-trail-to-oregon-regional-2026",
+   "reason": "Regional openingDate is the first review date (openingDateSource first-review-date/tic-first-review); the page date is the first preview or first performance. Previews are not tracked for regional shows. Our opening sits within the review window. Page text mentions touring cast or tour history; this is a local venue production, category regional stands."
+  },
+  "show:texas-sodomy-regional-2026": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "show:texas-sodomy-regional-2026",
+   "reason": "Regional openingDate is the first review date (openingDateSource first-review-date/tic-first-review); the page date is the first preview or first performance. Previews are not tracked for regional shows. Our opening sits within the review window. The checked page was not this production (season page or other run), so its dates do not apply."
+  },
+  "show:kaiju-regional-2026": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "show:kaiju-regional-2026",
+   "reason": "closingDateSource is unset on every regional row by convention (closing comes from the venue run listing), so the check flags a convention gap, not a hub defect. Regional openingDate is the first review date (openingDateSource first-review-date/tic-first-review); the page date is the first preview or first performance. Previews are not tracked for regional shows. Our opening sits within the review window. Closing differs from one page that gave a different run end; the review texts and venue listing agree with ours."
+  },
+  "show:rorschach-regional-2026": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "show:rorschach-regional-2026",
+   "reason": "closingDateSource is unset on every regional row by convention (closing comes from the venue run listing), so the check flags a convention gap, not a hub defect. Regional openingDate is the first review date (openingDateSource first-review-date/tic-first-review); the page date is the first preview or first performance. Previews are not tracked for regional shows. Our opening sits within the review window."
+  },
+  "show:heartbreak-house-regional-2026": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "show:heartbreak-house-regional-2026",
+   "reason": "closingDateSource is unset on every regional row by convention (closing comes from the venue run listing), so the check flags a convention gap, not a hub defect. Regional openingDate is the first review date (openingDateSource first-review-date/tic-first-review); the page date is the first preview or first performance. Previews are not tracked for regional shows. Our opening sits within the review window."
+  },
+  "review:anastasia-regional-2026|https://www.ocregister.com/2026/06/09/review-anastasia-in-la-mirada-is-boisterous-fun-but-ultimately-underwhelms|christopher smith": {
+   "verdict": "confirmed",
+   "status": "",
+   "item": "review:anastasia-regional-2026|https://www.ocregister.com/2026/06/09/review-anastasia-in-la-mirada-is-boisterous-fun-but-ultimately-underwhelms|christopher smith",
+   "reason": "OC Register prints 3 stars of a possible 4 (band 71-90); score was 63. Fixed to 72 by plan bro-7256-f."
+  },
+  "review:crossing-delancey-regional-2026|https://stageraw.com/crossing-delancey|iris mann": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "review:crossing-delancey-regional-2026|https://stageraw.com/crossing-delancey|iris mann",
+   "reason": "Venue name or address appears in the review text of this production (ticket line or credit), not a different show. Title and venue match our row."
+  },
+  "review:hangman-regional-2026|https://stageandcinema.com/2026/09/19/hangmen-long-beach-playhouse-review|michael m landman karny": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "review:hangman-regional-2026|https://stageandcinema.com/2026/09/19/hangmen-long-beach-playhouse-review|michael m landman karny",
+   "reason": "Venue name or address appears in the review text of this production (ticket line or credit), not a different show. Title and venue match our row."
+  },
+  "review:how-high-the-moon-regional-2026|https://stagescenela.com/2026/08/how-high-the-moon|": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "review:how-high-the-moon-regional-2026|https://stagescenela.com/2026/08/how-high-the-moon|",
+   "reason": "Venue name or address appears in the review text of this production (ticket line or credit), not a different show. Title and venue match our row."
+  },
+  "review:joseph-and-the-amazing-technicolor-dreamcoat-regional-2026|https://stagescenela.com/2026/07/joseph-and-the-amazing-technicolor-dreamcoat-8|": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "review:joseph-and-the-amazing-technicolor-dreamcoat-regional-2026|https://stagescenela.com/2026/07/joseph-and-the-amazing-technicolor-dreamcoat-8|",
+   "reason": "Quote differs from the article only in punctuation or ellipsis normalization; the sentence is in the text."
+  },
+  "review:lakefront-regional-2026|https://stageraw.com/stage-raw-review-lakefront|lovell estell iii": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "review:lakefront-regional-2026|https://stageraw.com/stage-raw-review-lakefront|lovell estell iii",
+   "reason": "Venue name or address appears in the review text of this production (ticket line or credit), not a different show. Title and venue match our row."
+  },
+  "review:limonade-tous-les-jours-a-paris-love-story-regional-2026|https://stagescenela.com/2026/05/limonade-tous-les-jours-a-paris-love-story|": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "review:limonade-tous-les-jours-a-paris-love-story-regional-2026|https://stagescenela.com/2026/05/limonade-tous-les-jours-a-paris-love-story|",
+   "reason": "Quote differs from the article only in punctuation or ellipsis normalization; the sentence is in the text."
+  },
+  "review:primary-trust-regional-2026|https://www.latimes.com/entertainment-arts/story/2026-05-29/primary-trust-eboni-booth-mark-taper-forum-knud-adams-review|charles mcnulty": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "review:primary-trust-regional-2026|https://www.latimes.com/entertainment-arts/story/2026-05-29/primary-trust-eboni-booth-mark-taper-forum-knud-adams-review|charles mcnulty",
+   "reason": "Quote differs from the article only in punctuation or ellipsis normalization; the sentence is in the text."
+  },
+  "review:rorschach-regional-2026|https://www.theatreinla.com/rorschach/reviews/11446|": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "review:rorschach-regional-2026|https://www.theatreinla.com/rorschach/reviews/11446|",
+   "reason": "Column or comparison piece with a dedicated section reviewing this production, scored on that section; not an aggregator list."
+  },
+  "review:the-physicists-regional-2026|https://stageraw.com/stage-raw-review-the-physicists|lovell estell iii": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "review:the-physicists-regional-2026|https://stageraw.com/stage-raw-review-the-physicists|lovell estell iii",
+   "reason": "Venue name or address appears in the review text of this production (ticket line or credit), not a different show. Title and venue match our row."
+  },
+  "review:the-visit-regional-2026|https://stageraw.com/stage-raw-review-the-visit|steven morris": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "review:the-visit-regional-2026|https://stageraw.com/stage-raw-review-the-visit|steven morris",
+   "reason": "Column or comparison piece with a dedicated section reviewing this production, scored on that section; not an aggregator list."
+  },
+  "review:wives-regional-2026|https://stageraw.com/stage-raw-review-wives|julyza commodore": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "review:wives-regional-2026|https://stageraw.com/stage-raw-review-wives|julyza commodore",
+   "reason": "Venue name or address appears in the review text of this production (ticket line or credit), not a different show. Title and venue match our row."
+  },
+  "excluded:the-visit-regional-2026/latimes--jenelle-riley.json": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "excluded:the-visit-regional-2026/latimes--jenelle-riley.json",
+   "reason": "Review file ingested after the 2026-11-09 rebuild; it enters reviews.json on the next rebuild. Not a defect in the hub data."
+  },
+  "excluded:frankenstein-resurrection-regional-2026/broadwayworld--harker-jones.json": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "excluded:frankenstein-resurrection-regional-2026/broadwayworld--harker-jones.json",
+   "reason": "Review file ingested after the 2026-11-09 rebuild; it enters reviews.json on the next rebuild. Not a defect in the hub data."
+  },
+  "tour:waitress-tour-2026|2027-04-20|Pantages Theatre": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "tour:waitress-tour-2026|2027-04-20|Pantages Theatre",
+   "reason": "Source page is a stale or earlier-year schedule (dates from a prior tour), so the mismatch is a stale source, not our stop."
   }
  }
 }

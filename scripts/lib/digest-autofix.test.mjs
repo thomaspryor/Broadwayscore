@@ -1643,6 +1643,36 @@ import { createRequire as _cr269 } from 'node:module';
   });
 }
 
+// BRO-7276: the stuck-pipeline rollup card must carry the signal text, not just a count.
+{
+  const { localRollupIssues: _lri2 } = _cr269(import.meta.url)('./digest-autofix.js');
+  const { readFileSync: _rf } = await import('node:fs');
+  const _t2 = (await import('node:test')).default;
+  const _a2 = (await import('node:assert/strict')).default;
+  _t2('BRO-7276 stuck rollup names the signals, not just a count', () => {
+    const out = _lri2({ health: {}, stuckCount: 2, stuckSignals: ['Same task dispatched more than once: X', 'Finished-but-unmerged work sitting in 1 worktree: y'] });
+    _a2.equal(out.length, 1);
+    _a2.match(out[0].message, /Signals: Same task dispatched more than once: X \| Finished-but-unmerged work/);
+  });
+  _t2('BRO-7276 every signal survives the 400-char plan-row cap, entities decoded', () => {
+    const sig = ['Same task dispatched more than once: ' + 'a'.repeat(300), 'Headless jobs needing a look: ' + 'b'.repeat(300), 'Finished-but-unmerged work sitting in 3 worktrees: R&amp;D &lt;x&gt;'];
+    const msg = _lri2({ health: {}, stuckCount: 3, stuckSignals: sig })[0].message.slice(0, 400);
+    _a2.match(msg, /Same task/); _a2.match(msg, /Headless jobs/); _a2.match(msg, /R&D <x>/);
+  });
+  _t2('BRO-7276 stuck rollup without signals keeps the count-only message', () => {
+    _a2.doesNotMatch(_lri2({ health: {}, stuckCount: 1 })[0].message, /Signals:/);
+  });
+  _t2('BRO-7276 every localRollupIssues call in send-morning-digest.js passes stuckSignals', () => {
+    const src = _rf(new URL('../send-morning-digest.js', import.meta.url), 'utf8');
+    const calls = src.match(/localRollupIssues\(\{[^}]*\}\)/g) || [];
+    const withStuck = calls.filter((c) => /stuckCount/.test(c));
+    _a2.ok(withStuck.length >= 2, 'expected the two plan call sites');
+    // pendingIssueCount only counts rows, so it is exempt; plan call sites feed the card text.
+    const planSites = withStuck.filter((c) => /freshnessItems/.test(c));
+    _a2.ok(planSites.length >= 2 && planSites.every((c) => /stuckSignals/.test(c)), 'plan call sites must pass stuckSignals');
+  });
+}
+
 test('planAutofix/runAutofix: info receipts get no card and no dispatch; decision wins over info (BRO-5481)', () => {
   const queued = [
     { title: 'User feedback: 2 handled', description: 'ok', conditionKey: 'feedback-outcomes:x', info: true },

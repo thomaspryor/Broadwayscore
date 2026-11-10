@@ -84,5 +84,25 @@ problem is fixed and the owner agrees, send each one as its own `set`/`clear` di
 branches, and checks a second pass starts nothing. It never touches the real lease branches, the two lane variables,
 any run, or the orchestrator.
 
+## Pre-embargo direct-only window (BRO-7280, default OFF)
+
+`LANE_PREEMBARGO_DIRECT_ONLY` (value `on`; `clear` = off) makes every lane fetch plain HTTP (`directOnly: true`, no
+Browserbase, no paid fallback) until embargo minus 30 min, and refuses paid SERP until then. Normal fetching resumes at
+embargo minus 30 min. Unset = byte-identical to before. Turning it on is an owner money call: never set it without the
+owner's word on the card.
+
+- Start: `min(embargo - 30 min, max(19:30 local in the market tz, embargo - 90 min))`. For a 22:00 ET embargo that is
+  20:30 ET, so the window is about 60 min. The lane window is 275 min when on (270 off), so the lane ends about 55 min sooner after the
+  embargo (about E+185 min instead of E+240). The 355-min job cap and audit-push-retry-budgets allow no more.
+- The SERP "+3h" clock stays anchored at embargo minus 30 min, so an early start never moves SERP spend earlier.
+- Failures caused by the window are tagged `laneDeferred`: they do not count as retry attempts, Google News strikes or
+  Talkin' Broadway blocks.
+- `night-wait` reads the variable once per night; the lane job reuses that value. The switch refuses to change it while
+  a night run is in flight.
+- Changing lane code changes `laneCodeHash`. Landing on main runs `lane-rehearsal-recorded.yml` (path filter), which
+  re-arms the lane under the new hash. Check with `node scripts/opening-night-lane-rehearse.js --arm-check`.
+- Proof after a night: `node scripts/lane-preembargo-spend-check.js --from=<window start> --to=<embargo - 30 min>
+  --show=<id>` must print `OK: zero paid lane calls`. Unit proof: `node --test tests/unit/lane-preembargo-window.test.mjs`.
+
 Code: `scripts/lane-switch.js`, `scripts/lib/opening-night-lane/lane-switch.js`. Tests:
 `node --test tests/unit/lane-rollback.test.mjs`.

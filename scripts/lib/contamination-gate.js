@@ -88,14 +88,17 @@ function isAlreadyExcludedFromScoring(data, show, filePath) {
  * @param {object} data parsed review-text file
  * @param {object} [show] shows.json entry
  * @param {string} [filePath] absolute path, as rebuild passes it (sibling reads)
+ * @param {() => boolean} [excluded] the caller's memoized
+ *   isAlreadyExcludedFromScoring(data, show, filePath), so a per-file scan asks the
+ *   rebuild predicate once (BRO-7068); defaults to calling it here
  * @returns {boolean}
  */
-function isClassGExempt(data, show, filePath) {
+function isClassGExempt(data, show, filePath, excluded) {
   if (!data) return true;
   return !!(data.isRoundupArticle || data.wrongAttribution
     || data.contentVerification?.wrongArticle || data.isNonReview || data.nonReviewFlag
     || data.nonReviewContent || data.duplicateOf || data.rejectionReason)
-    || isAlreadyExcludedFromScoring(data, show, filePath);
+    || (excluded ? excluded() : isAlreadyExcludedFromScoring(data, show, filePath));
 }
 
 module.exports = {

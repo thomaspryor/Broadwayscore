@@ -6,13 +6,16 @@
  * what it would have dispatched or paged, and when.
  *
  * Inputs, all recorded, nothing fetched:
- *   - data/audit/press-night/<show>-<night>.json: fileState.files (when each review file was first seen) and
- *     perReview[].firstLiveAt (when each review went live on the site).
- *   - --runs=FILE: the night's GitHub runs of the five watched workflows ({workflow,status,conclusion,displayTitle,
- *     startedAt,updatedAt}); a run counts as active between startedAt and updatedAt. Without it, the replay assumes
- *     no pipeline ran (the worst case). Fixtures: tests/fixtures/press-night-watchdog-replay/.
- *   - reviews.json at the time is not recorded, so a review is never in the "deploy" stage here, and scoring time is
- *     not recorded, so a pending review sits in the "score" stage.
+ *   - data/audit/press-night/<show>-<night>.json: fileState.files (when each review file was first seen, when it was
+ *     scored, and whether it was in core reviews.json at the end) and perReview[].firstLiveAt / scoredAt.
+ *   - the night's GitHub runs of the five watched workflows ({workflow,status,conclusion,displayTitle,startedAt,
+ *     updatedAt}); a run counts as active between startedAt and updatedAt. Read from the record's pipelineRuns
+ *     (BRO-6863, stamped by press-night-record.js --label=end) when complete; else from --runs=FILE or the fixture
+ *     tests/fixtures/press-night-watchdog-replay/runs-<show>-<night>.json; else the replay assumes no pipeline ran
+ *     (the worst case). --runs=FILE wins over the record.
+ *   - reviews.json at each tick is modelled (lib/press-night-runs.js coreRowsAt): a scored review that was in core at
+ *     the end enters core when the first successful rebuild-fast that started after its scoring finishes, so it can
+ *     sit in "deploy". A record without scoredAt (before BRO-6652) leaves every pending review in "score".
  *
  * --project: also project the night's first-live and coverage-2h under the 5-min first-2h sleep
  * (press-night-poll-plan.js, Broadway only). Conservative model, every assumption leans toward "no gain":
@@ -34,6 +37,7 @@
 const fs = require('fs');
 const path = require('path');
 const wd = require('./lib/press-night-watchdog');
+const pnr = require('./lib/press-night-runs');
 
 const ROOT = path.join(__dirname, '..');
 const MIN = 60000;
@@ -53,17 +57,59 @@ function runsAt(runs, nowMs) {
   return out;
 }
 
+/**
+ * file -> when its review went live, or NaN: by outlet id and folded critic; by outlet when the file has no critic, or
+ * when the outlet has one file and one live review (a critic named differently on the site: initials, a co-byline).
+ */
+function liveLookup(lives, normOutlet, files = []) {
+  const fold = (c) => String(c || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z]/g, '');
+  const byKey = new Map();
+  const byOutlet = new Map();
+  const livesPerOutlet = new Map();
+  for (const l of lives) {
+    const oid = normOutlet(l.o);
+    const k = `${oid}|${fold(l.cn)}`;
+    if (!(byKey.get(k) <= l.ms)) byKey.set(k, l.ms);
+    if (!(byOutlet.get(oid) <= l.ms)) byOutlet.set(oid, l.ms);
+    livesPerOutlet.set(oid, (livesPerOutlet.get(oid) || 0) + 1);
+  }
+  const filesPerOutlet = new Map();
+  for (const f of files) if (f && f.outletId) filesPerOutlet.set(f.outletId, (filesPerOutlet.get(f.outletId) || 0) + 1);
+  return (f) => {
+    const ms = byKey.get(`${f.outletId}|${fold(f.critic)}`);
+    if (ms != null) return ms;
+    const oneToOne = filesPerOutlet.get(f.outletId) === 1 && livesPerOutlet.get(f.outletId) === 1;
+    return (!f.critic || oneToOne) && byOutlet.has(f.outletId) ? byOutlet.get(f.outletId) : NaN;
+  };
+}
+
+/**
+ * Where the night's runs come from: --runs=FILE, else the record's complete pipelineRuns, else the fixture, else none.
+ * Returns {runs, source} or {error}; `warning` when the record holds an incomplete capture.
+ */
+function pickRuns({ record, runsArg, fixturePath, exists, read }) {
+  if (runsArg) return exists(runsArg) ? { runs: read(runsArg), source: runsArg } : { error: `no runs file at ${runsArg}` };
+  const fromRecord = pnr.recordedRuns(record);
+  if (fromRecord) return { runs: fromRecord, source: 'record' };
+  const warning = record && record.pipelineRuns && !record.pipelineRuns.complete
+    ? `record runs incomplete (${(record.pipelineRuns.errors || []).map((e) => e.workflow).join(', ') || 'unknown'}): not used` : undefined;
+  if (exists(fixturePath)) return { runs: read(fixturePath), source: fixturePath, warning };
+  return { runs: null, source: null, warning };
+}
+
 /** Replays one night; returns [{atMin, actions, summary}] for every tick with an action, plus totals. */
 function replayNight({ record, runs, normOutlet, tickMin = TICK_MIN, untilMin = UNTIL_MIN }) {
   const embargoMs = Date.parse(record.embargoAt);
-  const files = ((record.fileState && record.fileState.files) || []).map((f) => ({ ...f, scoredAt: null }));
+  const files = pnr.replayFiles(record, normOutlet);
   const lives = (record.perReview || []).filter((p) => p.firstLiveAt).map((p) => ({ ms: Date.parse(p.firstLiveAt), o: p.outlet, cn: p.critic }));
+  const liveMsOf = liveLookup(lives, normOutlet, files);
   let state = {};
   const ticks = [];
   for (let m = 0; m <= untilMin; m += tickMin) {
     const nowMs = embargoMs + m * MIN;
     const liveRows = lives.filter((l) => l.ms <= nowMs).map((l) => ({ o: l.o, cn: l.cn }));
-    const r = wd.evaluateTick({ showId: record.showId, embargoMs, nowMs, files, coreRows: [], liveRows,
+    const coreRows = pnr.coreRowsAt(files, runs, nowMs, liveMsOf);
+    const r = wd.evaluateTick({ showId: record.showId, embargoMs, nowMs, files, coreRows, liveRows,
       runs: runs ? runsAt(runs, nowMs) : [], normOutlet, state });
     state = r.state;
     ticks.push({ atMin: m, at: new Date(nowMs).toISOString(), actions: r.actions, summary: r.summary });
@@ -164,16 +210,20 @@ function main() {
   if (!fs.existsSync(recPath)) { console.error(`no record at ${path.relative(ROOT, recPath)}`); return 2; }
   const record = JSON.parse(fs.readFileSync(recPath, 'utf8'));
   let runs = null;
+  let runsFrom = 'none (worst case)';
   if (!args.includes('--no-runs')) {
-    const runsPath = arg('runs') || path.join(ROOT, 'tests', 'fixtures', 'press-night-watchdog-replay', `runs-${showId}-${night}.json`);
-    if (fs.existsSync(runsPath)) runs = JSON.parse(fs.readFileSync(runsPath, 'utf8'));
-    else if (arg('runs')) { console.error(`no runs file at ${runsPath}`); return 2; }
+    const fixture = path.join(ROOT, 'tests', 'fixtures', 'press-night-watchdog-replay', `runs-${showId}-${night}.json`);
+    const pick = pickRuns({ record, runsArg: arg('runs'), fixturePath: fixture, exists: fs.existsSync, read: (p) => JSON.parse(fs.readFileSync(p, 'utf8')) });
+    if (pick.error) { console.error(pick.error); return 2; }
+    if (pick.warning) console.error(pick.warning);
+    ({ runs } = pick);
+    if (runs) runsFrom = `recorded (${runs.length}) from ${pick.source === 'record' ? 'the record' : path.relative(ROOT, pick.source)}`;
   }
   const { normalizeOutlet } = require('./lib/review-normalization');
   const normOutlet = (o) => (o ? normalizeOutlet(String(o)) || String(o).toLowerCase() : null);
   const out = replayNight({ record, runs, normOutlet });
   if (args.includes('--json')) { console.log(JSON.stringify(out, null, 2)); return 0; }
-  console.log(`${showId} ${night}: embargo ${out.embargoAt}, first review live ${out.firstLiveAt || 'never'}, runs ${runs ? `recorded (${runs.length})` : 'none (worst case)'}`);
+  console.log(`${showId} ${night}: embargo ${out.embargoAt}, first review live ${out.firstLiveAt || 'never'}, runs ${runsFrom}`);
   if (!out.acted.length) console.log('  no action in any tick: every found review was live or moving');
   for (const t of out.acted) {
     for (const a of t.actions) {
@@ -194,5 +244,5 @@ function main() {
   return 0;
 }
 
-module.exports = { replayNight, runsAt, projectNight, chainShifts };
+module.exports = { replayNight, runsAt, projectNight, chainShifts, pickRuns, liveLookup };
 if (require.main === module) process.exitCode = main();

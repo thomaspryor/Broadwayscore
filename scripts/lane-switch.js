@@ -181,6 +181,12 @@ function cmdSwitch(action) {
   if (!who) return 2;
   const v = ls.validateSwitch({ action, variable: arg('variable'), value: arg('value') });
   if (!v.ok) { log(`::error::${v.reason}`); return 2; }
+  // BRO-7280: the night-wait job, the lane and the watchdog each read this variable once; a flip mid-night would split them.
+  if (mode === 'live' && v.variable === ls.PREEMBARGO_VARIABLE) {
+    const runs = listNightRuns();
+    const busy = runs === null || runs.some((r) => r.status !== 'completed' && ls.parseNightTitle(r.displayTitle));
+    if (busy) { log(`::error::refused: ${v.variable} cannot change while a lane night run is in flight (or the run list is unreadable). Change it between nights.`); return 2; }
+  }
   const before = readVar(v.variable);
   const from = before.ok ? before.value : 'unknown';
   let r = { ok: true };

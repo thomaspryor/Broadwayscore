@@ -1,7 +1,7 @@
 {
   "system": "main",
   "status": "warn",
-  "lastChecked": "2026-11-09T09:53:09.450Z",
+  "lastChecked": "2026-11-10T09:52:18.566Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -14,17 +14,17 @@
     {
       "name": "Main: green rate",
       "status": "warn",
-      "message": "rate 60.5% (green 283 / red 185, 470 runs, 2 cancelled, 73 hung (cancelled >= 10 min, counted red)), 7d trend from 44.7%, day 0 of 14 at ≥80% → FAIL"
+      "message": "rate 64.5% (green 300 / red 165, 467 runs, 2 cancelled, 73 hung (cancelled >= 10 min, counted red)), 7d trend from 41.8%, day 0 of 14 at ≥80% → FAIL"
     },
     {
       "name": "Main: mid-setup cancels",
       "status": "pass",
-      "message": "0% of the last 20 test.yml main runs cancelled mid-setup (threshold 30%)"
+      "message": "0% of the last 18 test.yml main runs cancelled mid-setup (threshold 30%)"
     },
     {
       "name": "Main: job time headroom",
       "status": "pass",
-      "message": "every test.yml job's p90 is under 80% of its time limit (tightest: Unit Tests p90 11 of 30 min (38%, n=20))"
+      "message": "every test.yml job's p90 is under 80% of its time limit (tightest: Unit Tests p90 11 of 30 min (37%, n=18))"
     }
   ]
 }

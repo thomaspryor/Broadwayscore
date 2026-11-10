@@ -188,7 +188,7 @@ function recorderFromEnv(env) {
  */
 function buildRealLaneDeps({
   show, night, openingDate, timeZone, holder, repoDir, coreDir, ledgerDir, recordFile, maxAgeMs, adaptersConfig = {}, env = process.env,
-  routeAlert, ScorerClass,
+  routeAlert, ScorerClass, settleFor = null,
 }) {
   const missing = ['ANTHROPIC_API_KEY', 'OPENAI_API_KEY'].filter((k) => !env[k]);
   if (missing.length) throw new Error(`driver: missing scorer keys ${missing.join(', ')}`);
@@ -211,6 +211,7 @@ function buildRealLaneDeps({
       const laneFetch = require('./browserbase-fetch').createLaneFetch({ env });
       const scorer = new ScorerClass(env.ANTHROPIC_API_KEY, env.OPENAI_API_KEY, env.GEMINI_API_KEY, env.OPENROUTER_API_KEY);
       const reviewsFile = path.join(repoDir, 'data', 'reviews.json');
+      const preembargo = (() => { const pw = require('./preembargo-window'); const on = pw.parseFlag(env[pw.VARIABLE]); const at = Date.parse(require('./lane-only-markets').embargoForNight(show, night) || ''); return on && Number.isFinite(at) ? { enabled: true, embargoMs: at } : null; })();
       return wireLaneNight({
         show, night, openingDate, timeZone, ledgerDir, adaptersConfig, laneFetch,
         recorder: recorderFromEnv(env),
@@ -219,11 +220,15 @@ function buildRealLaneDeps({
         publishPorts: createRealPublishPorts({ show: show.id, repoDir, coreDir, holder }),
         now: Date.now, wait: (ms) => new Promise((r) => setTimeout(r, ms)),
         reviewTextsDir: path.join(repoDir, 'data', 'review-texts'),
+        // BRO-7283: the comparative within-band pass, run at score time (built by the CLI: it is TypeScript).
+        settleComparative: settleFor ? settleFor({ show, reviewTextsDir: path.join(repoDir, 'data', 'review-texts') }) : null,
         onDiskUrls: onDiskUrlsFor(reviewsFile, show.id), onDiskRows: onDiskRowsFor(reviewsFile, show.id),
         showScoreGuards: showScoreGuards(repoDir),
+        // BRO-7280: opt-in pre-embargo direct-only window (off unless LANE_PREEMBARGO_DIRECT_ONLY is on).
+        preembargo,
         search: realSerpSearch(env), decodeImpl: require('../google-news-decode').decodeGoogleNewsLink,
         // A CI job caps the lane step below the 6 h default window; without this it is always killed mid-run (BRO-4835).
-        windowMs: Number(env.OPENING_NIGHT_LANE_WINDOW_MIN) > 0 ? Number(env.OPENING_NIGHT_LANE_WINDOW_MIN) * 60 * 1000 : undefined,
+        windowMs: (() => { const m = Number(preembargo && env.OPENING_NIGHT_LANE_WINDOW_PREEMBARGO_MIN) || Number(env.OPENING_NIGHT_LANE_WINDOW_MIN); return m > 0 ? m * 60 * 1000 : undefined; })(),
       })({ shouldStop, abandonPending });
     },
   };
@@ -247,8 +252,9 @@ const TUNING_KEYS = ['passIntervalMs', 'maxPasses', 'startedAt', 'latency', 'pol
  */
 function wireLaneNight({
   show, night, openingDate, timeZone, ledgerDir, adaptersConfig = {}, laneFetch, recorder = null, scoreText, fetchPorts, publishPorts, makePublishPorts, forkClock,
-  now, wait, reviewTextsDir, onDiskUrls, onDiskRows, showScoreGuards: guards, search, decodeImpl, windowMs, tuning = {},
+  now, wait, reviewTextsDir, onDiskUrls, onDiskRows, showScoreGuards: guards, search: rawSearch, decodeImpl, windowMs, tuning = {}, preembargo = null, settleComparative = null,
 } = {}) {
+  const search = rawSearch;
   const required = { show, night, ledgerDir, laneFetch, scoreText, now, wait, reviewTextsDir, onDiskUrls, onDiskRows, showScoreGuards: guards, search };
   for (const [k, v] of Object.entries(required)) if (v === undefined || v === null) throw new Error(`driver: wireLaneNight needs ${k}`);
   if (typeof laneFetch.fetchPage !== 'function' || typeof laneFetch.close !== 'function') throw new Error('driver: laneFetch needs fetchPage and close');
@@ -256,18 +262,30 @@ function wireLaneNight({
   if (!publishPorts && !makePublishPorts) throw new Error('driver: wireLaneNight needs publishPorts or makePublishPorts');
   const unknown = Object.keys(tuning).filter((k) => !TUNING_KEYS.includes(k));
   if (unknown.length) throw new Error(`driver: unknown tuning ${unknown.join(', ')}`);
+  // BRO-7280: opt-in pre-embargo window. Whole-object wrap so discovery, inline fetch/score and the SERP all see it.
+  const pw = require('./preembargo-window');
+  const pe = preembargo && preembargo.enabled && Number.isFinite(preembargo.embargoMs) ? preembargo : null;
+  const isActive = () => !!pe && pw.windowActive({ enabled: true, embargoMs: pe.embargoMs, nowMs: now() });
+  const guarded = pw.guardPorts({ enabled: !!pe, fetchPage: laneFetch.fetchPage, search: rawSearch, isActive });
+  const guardedFetch = pe ? { fetchPage: guarded.fetchPage, close: () => laneFetch.close() } : laneFetch;
+  const adapterSearch = guarded.search;
+  const guardedAdaptersConfig = pe && adaptersConfig && typeof adaptersConfig.search === 'function'
+    ? { ...adaptersConfig, search: pw.guardPorts({ enabled: true, fetchPage: laneFetch.fetchPage, search: adaptersConfig.search, isActive }).search }
+    : adaptersConfig;
   return ({ shouldStop, abandonPending } = {}) => {
     const { runLaneNight } = require('./lane-runner');
     const discovery = require('./discovery');
     const inline = require('./inline-score');
     const { laneAdapters } = require('./adapters');
-    const scoring = inline.createInlineScoring({ show, night, ledgerDir, now, fetchPage: laneFetch.fetchPage, ...(fetchPorts || inline.realFetchPorts({ fetchPage: laneFetch.fetchPage })), scoreText, allShows: guards.allShows });
+    const scoring = inline.createInlineScoring({ show, night, ledgerDir, now, fetchPage: guardedFetch.fetchPage, ...(fetchPorts || inline.realFetchPorts({ fetchPage: guardedFetch.fetchPage })), scoreText, allShows: guards.allShows });
     return Promise.resolve().then(() => runLaneNight({
-      show, night, openingDate, timeZone, ledgerDir, fetchText: recorder ? recorder.wrapFetchText(discovery.fetchTextFrom(laneFetch.fetchPage)) : discovery.fetchTextFrom(laneFetch.fetchPage), shouldStop, abandonPending,
+      show, night, openingDate, timeZone, ledgerDir, fetchText: recorder ? recorder.wrapFetchText(discovery.fetchTextFrom(guardedFetch.fetchPage)) : discovery.fetchTextFrom(guardedFetch.fetchPage), shouldStop, abandonPending,
       ...(windowMs > 0 ? { windowMs } : {}),
+      ...(pe ? { serpClockStartMs: pe.embargoMs - pw.LANE_LEAD_MIN * 60 * 1000 } : {}),
       ...tuning,
       reviewTextsDir,
-      adapters: laneAdapters({ showScoreGuards: guards, adaptersConfig, search, decodeImpl, now, ledgerDir }),
+      ...(settleComparative ? { settleComparative } : {}),
+      adapters: laneAdapters({ showScoreGuards: guards, adaptersConfig: guardedAdaptersConfig, search: adapterSearch, decodeImpl, now, ledgerDir }),
       // Outlets already captured (any seen URL resolving to them) drop out, so SERP stops searching for them.
       missingOutlets: ({ seen }) => discovery.laneMissingOutlets({ show, seen, adaptersConfig }),
       fetchReview: scoring.fetchReview, scoreReview: scoring.scoreReview,

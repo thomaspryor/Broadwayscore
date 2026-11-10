@@ -229,7 +229,81 @@ function describeOpeningEvidence(reviewTextsDir, showId, explainExclusion, show,
   return { hasEvidence, reviewFiles: files.length, excludedFiles: excluded };
 }
 
+// BRO-7277: the digest filed a new card (BRO-5448, 5522, 6815, 7216) the first
+// day ANY show was flagged, but most flags are lag that fixes itself: a
+// provisional venue-page show gets its reviews collected, then the next
+// update-show-status run flips it open/closed 1-4 days later (30-day snapshot
+// history: every flag but the ones that needed a data fix cleared in <= 4
+// daily snapshots). A warn per transient flag meant one card per lag window.
+// Only a flag that outlives the pipeline's own catch-up is worth a card.
+// 2 days, not longer: the owner-alert router already defers filing a card
+// until a warn has persisted 72h (deferFilingHours in health-check.js), and
+// the digest reads the previous day's snapshot, so the real delay is ~6 days.
+const GRACE_DAYS = 2;
+const HISTORY_DAYS = 7;
+
+/**
+ * Stamp each flagged row with `firstFlaggedAt`, carried over from the previous
+ * snapshot when the same show was flagged there (so the stamp survives daily
+ * re-runs and resets once a show drops out of the flagged set).
+ */
+function carryFirstFlagged(prevSnap, nowFlagged, nowIso) {
+  const prev = new Map(); // id -> { firstFlaggedAt, lastSeenAt }
+  const hist = (prevSnap && prevSnap.firstFlaggedHistory) || {};
+  for (const [id, v] of Object.entries(hist)) if (v && v.firstFlaggedAt) prev.set(id, v);
+  for (const f of Array.isArray(prevSnap && prevSnap.flagged) ? prevSnap.flagged : []) {
+    if (f && f.id && f.firstFlaggedAt) prev.set(f.id, { firstFlaggedAt: f.firstFlaggedAt, lastSeenAt: prevSnap.generatedAt || nowIso });
+  }
+  const flagged = (nowFlagged || []).map(f => ({ ...f, firstFlaggedAt: prev.get(f.id)?.firstFlaggedAt || nowIso }));
+  // A show can drop out of the flagged set without being fixed (a degraded or
+  // partial review-texts checkout, a wrong-production flag set then cleared,
+  // ack then unack). Keep its stamp for HISTORY_DAYS so the clock is not
+  // restarted by every blip.
+  const seenNow = new Set(flagged.map(f => f.id));
+  const history = {};
+  for (const [id, v] of prev) {
+    if (seenNow.has(id)) continue;
+    const last = Date.parse(v.lastSeenAt || nowIso);
+    if (Number.isFinite(last) && Date.parse(nowIso) - last <= HISTORY_DAYS * 86400000) history[id] = v;
+  }
+  return { flagged, history };
+}
+
+/** Split flagged rows into persistent (flagged >= graceDays) and settling. */
+function partitionByGrace(flagged, now, graceDays = GRACE_DAYS) {
+  const persistent = [];
+  const settling = [];
+  for (const f of flagged || []) {
+    // No stamp (snapshot from before BRO-7277) = age unknown: fail loud, not quiet.
+    const t = f && f.firstFlaggedAt ? Date.parse(f.firstFlaggedAt) : NaN;
+    const ageDays = Number.isFinite(t) ? (now.getTime() - t) / 86400000 : Infinity;
+    (ageDays >= graceDays ? persistent : settling).push(f);
+  }
+  return { persistent, settling };
+}
+
+const CHECK_NAME = 'Data quality: stale announced shows';
+
+/** Digest result for a fresh snapshot with flagged rows (age handling stays with the caller). */
+function staleAnnouncedFlagResult(snap, ageHours, now, graceDays = GRACE_DAYS) {
+  const name = CHECK_NAME;
+  const age = `${Math.round(ageHours)}h`; // short form; caller's formatAge is not importable here
+  const silencedNote = `${snap.silencedByContaminationCount ?? 0} silenced by contamination`;
+  const { persistent, settling } = partitionByGrace(snap.flagged || [], now, graceDays);
+  if (persistent.length > 0) {
+    return { name, status: 'warn', message: `${persistent.length} show(s) stuck announced/upcoming/previews ${graceDays}+ days after apparently opening: ${persistent.map(f => f.id).join(', ')} (${settling.length} newer still settling, ${silencedNote}, ${age} ago)`, hint: 'node scripts/audit-stale-announced-shows.js to see `flagged` and triage with --ack=<id> --ack-note="..."' };
+  }
+  if (settling.length > 0) {
+    return { name, status: 'pass', message: `${settling.length} show(s) flagged < ${graceDays}d, waiting on the status flip (${silencedNote}, ${age} ago)` };
+  }
+  return { name, status: 'pass', message: `No stale 'announced' shows (${silencedNote}, ${age} ago)` };
+}
+
 module.exports = {
+  staleAnnouncedFlagResult,
+  GRACE_DAYS,
+  carryFirstFlagged,
+  partitionByGrace,
   ACK_PATH,
   loadAcks,
   isAcked,

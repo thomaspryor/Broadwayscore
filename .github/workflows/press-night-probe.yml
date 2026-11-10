@@ -371,6 +371,18 @@ jobs:
           git_net 120 -C data/review-texts fetch --shallow-since="$SINCE" origin main
           node scripts/press-night-record.js --show="$SHOW_ID" --night="$NIGHT" --auto-log-manual --git-ref=FETCH_HEAD
 
+      # BRO-6863: the job's core data was cloned before the night; refresh it so --label=end stamps in-core
+      # (fileState.files[].inCoreAtEnd) from the night's end state. On failure the old copy stays and the script
+      # sees it is older than embargo +3h and leaves in-core unknown.
+      - name: Refresh core data (end-of-night reviews.json)
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 5
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          sparse: 'true'
+
       - name: Stamp census coverage at the end
         if: always()
         env:
@@ -380,6 +392,8 @@ jobs:
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          # BRO-6863: --label=end lists the night's runs of the five watched workflows into the record (actions: read).
+          GH_TOKEN: ${{ github.token }}
         run: node scripts/press-night-record.js --show="$SHOW_ID" --night="$NIGHT" --capture-reference --label=end
 
       - name: Finalize and print verdict

@@ -3,7 +3,7 @@
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
     "lastUpdated": "2026-11-08T22:20:13.459Z",
     "version": "2.1.0",
-    "lastChange": "BRO-6122: standingCoverage[off-broadway] promote theatermania (BRO-7166: measured 3-season coverage clears the promote bar)"
+    "lastChange": "BRO-7274: register 17 DC/LA regional outlets (+domainAliases on thehollywoodtimes, hillrag) for BRO-7256 coverage-gap ingest"
   },
   "outlets": {
     "westendtheatre": {
@@ -14912,7 +14912,10 @@
       ],
       "domain": "hillrag.com",
       "region": "washington-dc",
-      "accessModel": "free"
+      "accessModel": "free",
+      "domainAliases": [
+        "capitalcommunitynews.com"
+      ]
     },
     "atheatregoersthoughts": {
       "displayName": "A Theatre-Goer's Thoughts",
@@ -15029,7 +15032,10 @@
       ],
       "domain": "hollywoodtimes.net",
       "region": "los-angeles",
-      "accessModel": "free"
+      "accessModel": "free",
+      "domainAliases": [
+        "thehollywoodtimes.today"
+      ]
     },
     "nighttintedglasses": {
       "displayName": "Night Tinted Glasses",
@@ -15255,6 +15261,205 @@
         "mochamanstyle"
       ],
       "domain": "mochamanstyle.com"
+    },
+    "accessibly-live-off-line": {
+      "displayName": "Accessibly Live Off-Line",
+      "tier": 4,
+      "aliases": [
+        "accessibly-live-off-line",
+        "accessibly live off-line",
+        "accessiblyliveoffline"
+      ],
+      "domain": "accessiblyliveoffline.com",
+      "accessModel": "free",
+      "domainAliases": [
+        "accessiblyliveoffline.wordpress.com"
+      ]
+    },
+    "gardena-valley-news": {
+      "displayName": "Gardena Valley News",
+      "tier": 3,
+      "aliases": [
+        "gardena-valley-news",
+        "gardena valley news",
+        "gardenavalleynews"
+      ],
+      "domain": "gardenavalleynews.com",
+      "accessModel": "free",
+      "domainAliases": [
+        "gardenavalleynews.org"
+      ]
+    },
+    "its-not-about-me": {
+      "displayName": "It's Not About Me",
+      "tier": 4,
+      "aliases": [
+        "its-not-about-me",
+        "its not about me",
+        "it's not about me",
+        "itsnotaboutme"
+      ],
+      "domain": "itsnotaboutme.tv",
+      "accessModel": "free"
+    },
+    "la-drama-critics-circle": {
+      "displayName": "Los Angeles Drama Critics Circle",
+      "tier": 3,
+      "aliases": [
+        "la-drama-critics-circle",
+        "la drama critics circle",
+        "los angeles drama critics circle",
+        "ladcc"
+      ],
+      "domain": "ladramacriticscircle.com",
+      "accessModel": "free",
+      "domainAliases": [
+        "ladramacritics.com",
+        "ladcc.org"
+      ]
+    },
+    "la-theatre-bites": {
+      "displayName": "LA Theatre Bites",
+      "tier": 4,
+      "aliases": [
+        "la-theatre-bites",
+        "la theatre bites",
+        "latheatrebites"
+      ],
+      "domain": "latheatrebites.com",
+      "accessModel": "free"
+    },
+    "long-beach-post": {
+      "displayName": "Long Beach Post",
+      "tier": 3,
+      "aliases": [
+        "long-beach-post",
+        "long beach post",
+        "lbpost"
+      ],
+      "domain": "lbpost.com",
+      "accessModel": "free"
+    },
+    "palisadian-post": {
+      "displayName": "Palisadian-Post",
+      "tier": 3,
+      "aliases": [
+        "palisadian-post",
+        "palisadian-post",
+        "palisadian post",
+        "palipost"
+      ],
+      "domain": "palipost.com",
+      "accessModel": "free"
+    },
+    "peoples-world": {
+      "displayName": "People's World",
+      "tier": 3,
+      "aliases": [
+        "peoples-world",
+        "people's world",
+        "peoples world",
+        "peoplesworld"
+      ],
+      "domain": "peoplesworld.org",
+      "accessModel": "free"
+    },
+    "stage-takes": {
+      "displayName": "Stage Takes",
+      "tier": 4,
+      "aliases": [
+        "stage-takes",
+        "stagetakes"
+      ],
+      "domain": "stagetakes.com",
+      "accessModel": "free"
+    },
+    "culver-city-news": {
+      "displayName": "Culver City News",
+      "tier": 3,
+      "aliases": [
+        "culver-city-news",
+        "culver city news",
+        "culvercitynews"
+      ],
+      "domain": "culvercitynews.org",
+      "accessModel": "free"
+    },
+    "halloween-scene-los-angeles": {
+      "displayName": "Halloween Scene Los Angeles",
+      "tier": 4,
+      "aliases": [
+        "halloween-scene-los-angeles",
+        "halloween scene los angeles"
+      ],
+      "domain": "halloweenscenelosangeles.com",
+      "accessModel": "free"
+    },
+    "immersive-scene-los-angeles": {
+      "displayName": "Immersive Scene Los Angeles",
+      "tier": 4,
+      "aliases": [
+        "immersive-scene-los-angeles",
+        "immersive scene los angeles"
+      ],
+      "domain": "immersivescenelosangeles.com",
+      "accessModel": "free"
+    },
+    "la-dance-chronicle": {
+      "displayName": "L.A. Dance Chronicle",
+      "tier": 3,
+      "aliases": [
+        "la-dance-chronicle",
+        "la dance chronicle",
+        "l.a. dance chronicle",
+        "ladancechronicle"
+      ],
+      "domain": "ladancechronicle.com",
+      "accessModel": "free"
+    },
+    "on-the-reels": {
+      "displayName": "OnTheReels",
+      "tier": 4,
+      "aliases": [
+        "on-the-reels",
+        "onthereels"
+      ],
+      "domain": "onthereels.com",
+      "accessModel": "free"
+    },
+    "random-lengths-news": {
+      "displayName": "Random Lengths News",
+      "tier": 3,
+      "aliases": [
+        "random-lengths-news",
+        "random lengths news",
+        "randomlengthsnews"
+      ],
+      "domain": "randomlengthsnews.com",
+      "accessModel": "free"
+    },
+    "downey-patriot": {
+      "displayName": "The Downey Patriot",
+      "tier": 3,
+      "aliases": [
+        "downey-patriot",
+        "the downey patriot",
+        "downey patriot"
+      ],
+      "domain": "thedowneypatriot.com",
+      "accessModel": "free"
+    },
+    "city-cast-dc": {
+      "displayName": "City Cast DC",
+      "tier": 3,
+      "aliases": [
+        "city-cast-dc",
+        "city cast dc",
+        "citycast dc",
+        "citycastdc"
+      ],
+      "domain": "dc.citycast.fm",
+      "accessModel": "free"
     }
   },
   "_aliasIndex": {
@@ -15957,7 +16162,59 @@
     "paulseven": "theatre-reviews-paul-seven",
     "theatre.reviews with paul seven": "theatre-reviews-paul-seven",
     "theatrereviews-with-paul-seven": "theatre-reviews-paul-seven",
-    "paul seven lewis": "theatre-reviews-paul-seven"
+    "paul seven lewis": "theatre-reviews-paul-seven",
+    "accessibly-live-off-line": "accessibly-live-off-line",
+    "accessibly live off-line": "accessibly-live-off-line",
+    "accessiblyliveoffline": "accessibly-live-off-line",
+    "gardena-valley-news": "gardena-valley-news",
+    "gardena valley news": "gardena-valley-news",
+    "gardenavalleynews": "gardena-valley-news",
+    "its-not-about-me": "its-not-about-me",
+    "its not about me": "its-not-about-me",
+    "it's not about me": "its-not-about-me",
+    "itsnotaboutme": "its-not-about-me",
+    "la-drama-critics-circle": "la-drama-critics-circle",
+    "la drama critics circle": "la-drama-critics-circle",
+    "los angeles drama critics circle": "la-drama-critics-circle",
+    "ladcc": "la-drama-critics-circle",
+    "la-theatre-bites": "la-theatre-bites",
+    "la theatre bites": "la-theatre-bites",
+    "latheatrebites": "la-theatre-bites",
+    "long-beach-post": "long-beach-post",
+    "long beach post": "long-beach-post",
+    "lbpost": "long-beach-post",
+    "palisadian-post": "palisadian-post",
+    "palisadian post": "palisadian-post",
+    "palipost": "palisadian-post",
+    "peoples-world": "peoples-world",
+    "people's world": "peoples-world",
+    "peoples world": "peoples-world",
+    "peoplesworld": "peoples-world",
+    "stage-takes": "stage-takes",
+    "stagetakes": "stage-takes",
+    "culver-city-news": "culver-city-news",
+    "culver city news": "culver-city-news",
+    "culvercitynews": "culver-city-news",
+    "halloween-scene-los-angeles": "halloween-scene-los-angeles",
+    "halloween scene los angeles": "halloween-scene-los-angeles",
+    "immersive-scene-los-angeles": "immersive-scene-los-angeles",
+    "immersive scene los angeles": "immersive-scene-los-angeles",
+    "la-dance-chronicle": "la-dance-chronicle",
+    "la dance chronicle": "la-dance-chronicle",
+    "l.a. dance chronicle": "la-dance-chronicle",
+    "ladancechronicle": "la-dance-chronicle",
+    "on-the-reels": "on-the-reels",
+    "onthereels": "on-the-reels",
+    "random-lengths-news": "random-lengths-news",
+    "random lengths news": "random-lengths-news",
+    "randomlengthsnews": "random-lengths-news",
+    "downey-patriot": "downey-patriot",
+    "the downey patriot": "downey-patriot",
+    "downey patriot": "downey-patriot",
+    "city-cast-dc": "city-cast-dc",
+    "city cast dc": "city-cast-dc",
+    "citycast dc": "city-cast-dc",
+    "citycastdc": "city-cast-dc"
   },
   "lastUpdated": "2026-11-03T00:21:07.790Z",
   "lastChange": "BRO-6742: registered theatre-reviews-paul-seven (theatre.reviews' own /review/ pages by Paul Lewis; no domain, the host is an aggregator)"

@@ -54,6 +54,7 @@ on:
       - '.github/workflows/opening-night-express-retry-check.yml'
       # BRO-6669: tests/unit/lane-auto-fallback.test.mjs runs these (stuck-but-alive watchdog + shared census).
       - 'scripts/lane-watchdog.js'
+      - 'scripts/lane-preembargo-spend-check.js'
       - 'scripts/press-night-record.js'
       - 'scripts/press-night-watchdog-replay.js'
       - '.github/workflows/opening-night-lane-live.yml'
@@ -389,6 +390,8 @@ on:
       # zero CI is the worst version of this gap.
       - 'scripts/llm-scoring/input-builder.ts'
       - 'scripts/llm-scoring/is-scoreable.ts'
+      # BRO-7283: tests/unit/lane-comparative-parity.test.mjs imports comparative-core.ts.
+      - 'scripts/llm-scoring/comparative-core.ts'
       # --- BRO-3202: the 27 sources below were found by MEASURING the gap, not
       # by hand-listing it. Each is a top-level scripts/ file that a
       # manifest-registered test under tests/ require()s, but that had no

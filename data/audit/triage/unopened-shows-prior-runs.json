@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-11-09T10:44:29.115Z",
+  "generatedAt": "2026-11-10T10:23:19.458Z",
   "linearIssue": "BRO-80",
-  "scannedShows": 5948,
-  "flaggedShows": 50,
-  "flaggedFiles": 174,
+  "scannedShows": 5963,
+  "flaggedShows": 48,
+  "flaggedFiles": 169,
   "readmissionRiskFiles": 1,
   "readmissionRisks": [
     {
@@ -17,8 +17,8 @@
   "unevaluated": [],
   "unreadableFiles": 0,
   "byVerdict": {
-    "likely-contamination": 28,
-    "needs-human-review": 22
+    "likely-contamination": 27,
+    "needs-human-review": 21
   },
   "shows": [
     {
@@ -1858,81 +1858,6 @@
       ]
     },
     {
-      "showId": "here-there-are-blueberries-2026",
-      "title": "Here There Are Blueberries",
-      "market": "broadway",
-      "status": "previews",
-      "venue": "Ethel Barrymore Theatre",
-      "previewsStartDate": "2026-11-02",
-      "openingDate": "2026-11-09",
-      "verdict": "likely-contamination",
-      "reasoning": "4/4 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
-      "stats": {
-        "count": 4,
-        "distinctYears": [
-          2024
-        ],
-        "spanDays": 7,
-        "flaggedCount": 4,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "nysr--david-finkle.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "nysr",
-          "criticName": "David Finkle",
-          "publishDate": "2024-05-14",
-          "url": "https://nystagereview.com/2024/05/13/here-there-are-blueberries-a-new-invaluable-holocaust-stage-documentary/",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "nyt-theater--jonathan-mandell.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "nyt-theater",
-          "criticName": "Jonathan Mandell",
-          "publishDate": "2024-05-07",
-          "url": "https://newyorktheater.me/2024/05/07/here-there-are-blueberries-theater-review/",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "nytimes--jesse-green.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "nytimes",
-          "criticName": "Jesse Green",
-          "publishDate": "2024-05-14",
-          "url": "https://www.nytimes.com/2024/05/13/theater/here-there-are-blueberries-review.html",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "observer--david-cote.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "observer",
-          "criticName": "David Cote",
-          "publishDate": "2024-05-14",
-          "url": "https://observer.com/2024/05/review-here-there-are-blueberries-studies-holiday-photos-from-hell/",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
       "showId": "richard-ii-off-west-end-2026",
       "title": "Richard II",
       "market": "west-end",
@@ -2910,42 +2835,6 @@
           "criticName": "Stuart King",
           "publishDate": "2025-01-14",
           "url": "https://www.londonboxoffice.co.uk/news/post/firebird-kings-head-review",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
-      "showId": "the-visitors-off-broadway-2026",
-      "title": "The Visitors",
-      "market": "broadway",
-      "status": "previews",
-      "venue": "Second Stage Theater/Irene Diamond Stage at The Pershing Square Signature Center",
-      "previewsStartDate": "2026-10-21",
-      "openingDate": "2026-11-09",
-      "verdict": "needs-human-review",
-      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Second Stage Theater/Irene Diamond Stage at The Pershing Square Signature Center\") — too little evidence to call this a prior run on its own; read the review before deciding.",
-      "stats": {
-        "count": 1,
-        "distinctYears": [
-          2026
-        ],
-        "spanDays": 0,
-        "flaggedCount": 1,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "pages-on-stages--mason-pilevsky.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "pages-on-stages",
-          "criticName": "Mason Pilevsky",
-          "publishDate": "January 23rd, 2026",
-          "url": "https://pagesonstages.com/2026/01/23/the-visitors/",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null

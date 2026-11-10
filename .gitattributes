@@ -27,6 +27,8 @@ data/audit/stage-latency.jsonl merge=union
 # picking one, so a race between two callers loses zero rows at the git
 # level (each JSON line is independent; duplicates are harmless to read).
 data/audit/alert-router-attempts.jsonl merge=union
+# BRO-7160: append-only lane switch audit (scripts/lane-switch.js, opening-night-lane-switch.yml); added 2026-11-08 without an entry.
+data/audit/lane-switch.jsonl merge=union
 # Bot-only append log (BRO-3022), written by scripts/lib/breaker-transitions.js
 # from the three hourly spend-breaker checkers (check-sd-breaker.js,
 # check-bd-breaker.js, check-sb-breaker.js) — one row per trip/recovery TRANSITION, so Sprint 3 can
