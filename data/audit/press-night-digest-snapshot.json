@@ -1,24 +1,24 @@
 {
-  "generatedAt": "2026-11-09T23:52:36.849Z",
-  "night": "2026-11-08",
+  "generatedAt": "2026-11-10T05:14:47.860Z",
+  "night": "2026-11-09",
   "counts": {
     "total": 3,
-    "passed": 1,
-    "failed": 1,
-    "notGraded": 1
+    "passed": 0,
+    "failed": 0,
+    "notGraded": 3
   },
   "lines": [
     {
-      "verdict": "FAIL",
-      "line": "Ms. Blakk for President: reviews not graded, the overnight check stopped before it finished; Reddit draft emailed to you is out of date (score 71 from 10 reviews, the site shows score 70 from 12 reviews). Failed."
-    },
-    {
       "verdict": "UNKNOWN",
-      "line": "The Steel Man: not graded, the overnight check stopped before it finished."
+      "line": "Dogstar: not graded, could not check when the first review went live or the critics list at the 2-hour mark or which reviews came in that night."
     },
     {
-      "verdict": "PASS",
-      "line": "Wanted: published by the regular pipeline; theatrely fixed by hand at 11:18pm; 20 of 20 reviews live by 12:00am; emails ready, passed."
+      "verdict": "PENDING",
+      "line": "Here There Are Blueberries: not graded yet, still being checked; opening-night email draft not due until 9:00am."
+    },
+    {
+      "verdict": "PENDING",
+      "line": "The Visitors: not graded yet, still being checked."
     }
   ],
   "scoreboard": {
@@ -26,7 +26,5 @@
     "passed": 2,
     "passedOnOwn": 1
   },
-  "missFirstSeen": {
-    "msblackforpresident-off-broadway-2026|2026-11-08|email:reddit:stale": "2026-11-09T20:46:36.767Z"
-  }
+  "missFirstSeen": {}
 }

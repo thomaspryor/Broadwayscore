@@ -59,6 +59,9 @@ function stripHtml(s) {
  * checks. Paragraph breaks only; the text inside each block is stripHtml's.
  */
 function stripHtmlKeepParagraphs(s) {
+  // Kill switch (PAGE_FURNITURE_DISABLED / TRAILER_FIXES_DISABLED): the
+  // pre-Stage-5 single-line stripHtml.
+  if (!require('./page-furniture').pageFurnitureEnabled()) return stripHtml(s);
   const marked = String(s || '')
     .replace(/<script[\s\S]*?<\/script>/g, '')
     .replace(/<style[\s\S]*?<\/style>/g, '')
@@ -295,9 +298,9 @@ function extractStageBody(html) {
   // BRO-7171 Stage 5: the author card (job title + biography) follows the
   // review. Its bio "Sam Marlowe is reviews editor for The Stage..." has no
   // article before "editor", so the bio shape below missed it; cut the region
-  // at the card itself.
+  // at the card itself. Off under the page-furniture kill switch.
   const cardAt = region.search(/class="[^"]*aos-Contact(?:JobTitle|Biog)\b/);
-  if (cardAt > 0) region = region.slice(0, cardAt);
+  if (cardAt > 0 && require('./page-furniture').pageFurnitureEnabled()) region = region.slice(0, cardAt);
   const isTrailingNoise = (t) =>
     // Author bio: "Firstname [Lastname] is a (culture|theatre|freelance)? journalist/critic/..."
     // First-name-only bylines (e.g. "Holly is a culture journalist…") slipped the
@@ -1589,4 +1592,4 @@ function isExclusiveExtractorHost(urlOrHost) {
   return /(?:^|\.)theartsdesk\.com$/i.test(h);
 }
 
-module.exports = { hasOutletExtractor, effectiveHost, OUTLET_BRANCH_HOSTS, isExclusiveExtractorHost, isDedicatedExtractorHost, extractArticleText, extractStandfirst, extractArticleTextFromUrl, extractPublishDate, stripHtml, extractLsaByline, extractZoxNewsBody, extractVarietyBody, extractNubNewsBody, extractLondonTheatreBody, extractArtsDeskBody, extractToledoBladeBody, extractCurtainUpBody, extractDailyMailBody, dailyMailVerdictValues };
+module.exports = { hasOutletExtractor, effectiveHost, OUTLET_BRANCH_HOSTS, isExclusiveExtractorHost, isDedicatedExtractorHost, extractArticleText, extractStandfirst, extractArticleTextFromUrl, extractPublishDate, stripHtml, stripHtmlKeepParagraphs, extractLsaByline, extractZoxNewsBody, extractVarietyBody, extractNubNewsBody, extractLondonTheatreBody, extractArtsDeskBody, extractToledoBladeBody, extractCurtainUpBody, extractDailyMailBody, dailyMailVerdictValues };

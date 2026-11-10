@@ -63,6 +63,8 @@ const CONFIG = {
 };
 
 const TEST_URL = 'https://www.wsj.com/articles/smash-review-an-inside-broadway-musical-bdcafc62';
+const AUTH_MIN_CHARS = 1500;
+const { resolveBrowserMiss } = require('./lib/browser-outlet-adapters');
 
 function jitterDelay() {
   return CONFIG.delayMinMs + Math.random() * (CONFIG.delayMaxMs - CONFIG.delayMinMs);
@@ -175,7 +177,7 @@ async function main() {
 
   console.log('Testing authentication...');
   const testResult = await extractArticle(page, TEST_URL);
-  if (testResult.error || !testResult.text || testResult.len < 1500) {
+  if (testResult.error || !testResult.text || testResult.len < AUTH_MIN_CHARS) {
     console.error(`Auth test FAILED: ${testResult.error || `only ${testResult.len || 0} chars`}`);
     console.error('Cookies may be expired. Re-run: node scripts/wsj-otp-login.js');
     await context.close();
@@ -227,6 +229,11 @@ async function main() {
       }
 
       if (result.error || !result.text) {
+        // BRO-7171: a bot check, an access wall or a lost session is never
+        // evidence about the review: skip it, or stop the run, never stamp it.
+        const miss = await resolveBrowserMiss(result, { probe: () => extractArticle(page, TEST_URL), minAuthChars: AUTH_MIN_CHARS });
+        if (miss.action === 'stop') { console.log(`  ✗ ${result.error || 'no text extracted'}; ${miss.reason}: stopping the run`); stats.sessionLost = miss.reason; break; }
+        if (miss.action === 'skip') { console.log(`  ✗ ${result.error || 'no text extracted'} (${miss.reason}; not evidence, not stamped)`); stats.skipped = (stats.skipped || 0) + 1; continue; }
         const reason = result.error || 'no text extracted';
         console.log(`  ✗ ${reason}`);
         stats.dead++;
@@ -256,6 +263,10 @@ async function main() {
         console.log(`  ✓ RECOVERED (${outcome.newLen} chars)`);
         if (stats.recovered % CONFIG.checkpointInterval === 0) checkpoint(stats);
       } else {
+        if (outcome.code === 'too_short') {
+          const miss = await resolveBrowserMiss(result, { probe: () => extractArticle(page, TEST_URL), minAuthChars: AUTH_MIN_CHARS, refusalCode: 'too_short' });
+          if (miss.action === 'stop') { console.log(`  ✗ ${outcome.reason}; ${miss.reason}: stopping the run`); stats.sessionLost = miss.reason; break; }
+        }
         console.log(`  ✗ ${outcome.reason}`);
         if (outcome.reason.includes('too short')) stats.tooShort++;
         else if (outcome.reason.includes('garbage')) stats.garbage++;
@@ -279,6 +290,8 @@ async function main() {
   console.log(`  Candidates: ${stats.total}`);
   console.log(`  Recovered:  ${stats.recovered}`);
   console.log(`  Dead (stamped incompleteReason): ${stats.dead}`);
+  if (stats.sessionLost) console.log(`  Session lost mid-run (${stats.sessionLost}): stopped, nothing stamped after it`);
+  if (stats.skipped) console.log(`  Skipped (bot check / access wall, not evidence): ${stats.skipped}`);
   console.log(`  Too short: ${stats.tooShort}  Garbage: ${stats.garbage}  Not mentioned: ${stats.notMentioned}  Not longer: ${stats.notLonger}`);
 
   await context.close();

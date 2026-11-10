@@ -2371,6 +2371,23 @@ function countWords(text) {
 }
 
 /**
+ * New Yorker "Goings On About Town" capsule, recognised from its own text:
+ * a section label, the title, "By <critic>" and the date, within the first
+ * 400 characters (page chrome may be glued in front: "...MenuNow Playing").
+ * "Openings and Previews" blurbs are not reviews and are left out.
+ * BRO-7171: these whole ~150-250-word capsules were labelled truncated
+ * because their prose misses hasOpinionLanguage()'s vocabulary.
+ *
+ * @param {string} text
+ * @returns {boolean}
+ */
+const NEW_YORKER_CAPSULE_HEAD_RE = /(?:the theatre|now playing|opera|classical music|dance)\s*.{1,120}?\s*by\s*(?:the new yorker|[A-Z][\p{L}.'’-]+(?:\s+[A-Z][\p{L}.'’-]+){1,3})\s*(?:january|february|march|april|may|june|july|august|september|october|november|december)\s+\d{1,2},\s+(?:19|20)\d{2}/iu;
+function isNewYorkerCapsule(text) {
+  if (!text || typeof text !== 'string') return false;
+  return NEW_YORKER_CAPSULE_HEAD_RE.test(text.slice(0, 400).replace(/\s+/g, ' '));
+}
+
+/**
  * Detect opinion/evaluative language in text.
  * Unlike hasReviewContent() which checks topic keywords (Broadway, production),
  * this checks for critical assessment language that distinguishes a review from
@@ -2670,6 +2687,21 @@ function classifyContentTier(review) {
       wordCount,
       truncationSignals: [],
       tierReason: 'Short but structurally complete review'
+    };
+  }
+
+  // Path 3b (BRO-7171): a New Yorker listing capsule is whole at 100-250
+  // words. Its own head (section label, "By", date) is the evidence that the
+  // opinion-vocabulary proxy stands in for, the same reasoning as the
+  // trusted-capture relaxation above. Every other Path 3 check still applies.
+  if (review.outletId === 'newyorker' && wordCount >= 100 && hasProperEnding &&
+      truncation.severeCount === 0 && truncation.moderateCount === 0 &&
+      path3SignalsOk && looseExcerptCheck && isNewYorkerCapsule(fullText)) {
+    return {
+      contentTier: 'complete',
+      wordCount,
+      truncationSignals: [],
+      tierReason: 'New Yorker listing capsule'
     };
   }
 
@@ -4346,4 +4378,5 @@ module.exports = { isSiteWideAuthorSource, isSiteWideAuthorAccount,
   HORROR_FILM_PATTERNS,
   // Opinion language detection — used by content-verifier shouldDeferCvWrongShow
   hasOpinionLanguage,
+  isNewYorkerCapsule,
 };

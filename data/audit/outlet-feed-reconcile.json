@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-10T04:24:27.421Z",
+  "generatedAt": "2026-11-10T05:39:18.599Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -113,12 +113,8 @@
   "feedsChecked": 84,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
-      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
+      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
     },
     {
       "outletId": "cote-notices",
@@ -135,10 +131,22 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "the-knockturnal",
+      "error": "HTTP 403 for https://theknockturnal.com/feed/"
+    },
+    {
+      "outletId": "times-square-chronicles",
+      "error": "fetchPage returned an unexpected page for https://t2conline.com/wp-json/wp/v2/posts?categories=504,298,283&per_page=100&"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "fetchPage returned an unexpected page for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&o"
     }
   ],
-  "itemsScanned": 852,
-  "matchedGaps": 4,
+  "itemsScanned": 795,
+  "matchedGaps": 2,
   "possibleGaps": 2,
   "gaps": [
     {
@@ -151,30 +159,12 @@
       "publishDate": "2026-11-04"
     },
     {
-      "showId": "222-a-ghost-story-off-broadway-2026",
-      "title": "2:22 - A Ghost Story",
-      "level": "matched",
-      "outletId": "times-square-chronicles",
-      "url": "https://t2conline.com/222-a-ghost-story-the-loudest-thing-in-the-room-isnt-the-ghost/",
-      "headline": "2:22 – A Ghost Story: The Loudest Thing in the Room Isn’t the Ghost",
-      "publishDate": "2026-11-07"
-    },
-    {
       "showId": "nero-off-west-end-2026",
       "title": "Nero",
       "level": "matched",
       "outletId": "south-london",
       "url": "https://southlondon.co.uk/lifestyle/review-nero-southwark-playhouse/",
       "headline": "Review: Nero @ Southwark Playhouse",
-      "publishDate": "2026-11-09"
-    },
-    {
-      "showId": "the-visitors-off-broadway-2026",
-      "title": "The Visitors",
-      "level": "matched",
-      "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/review-the-visitors-a-dark-comedy-about-siblings_1859149/",
-      "headline": "Review: The Visitors, a Dark Comedy About Siblings",
       "publishDate": "2026-11-09"
     },
     {

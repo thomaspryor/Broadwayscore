@@ -452,6 +452,25 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
         labels, tracker, ctxOpts: { reviewTextsDir: dir }, show: c.show,
       });
       if (!r.ok) {
+        // A browser body the gate calls too short may be a logged-out page:
+        // re-probe the session before recording it as evidence (BRO-7171).
+        if (strategy === 'BROWSER_SESSION' && r.code === 'too_short') {
+          const ad = adapterFor(c.outletId);
+          const s = ad && sessions.get(ad.name);
+          if (s && !s.failed && s.probe) {
+            const { resolveBrowserMiss } = require('./lib/browser-outlet-adapters');
+            const v = await resolveBrowserMiss({ text: got.rawText }, { probe: s.probe, minAuthChars: s.minAuthChars || 1, refusalCode: 'too_short' });
+            if (v.action === 'stop') {
+              console.log(`  ✗ auth_failed (${v.reason}): too-short body from a lost session, not evidence`);
+              record(c, strategy, { outcome: 'auth_failed', reason: v.reason, url: got.url });
+              await s.close().catch(() => {});
+              sessions.set(ad.name, { failed: { outcome: 'auth_failed', reason: v.reason } });
+              SUMMARY.authOkOutlets = SUMMARY.authOkOutlets.filter((n) => n !== ad.name);
+              if (!SUMMARY.authFailedOutlets.includes(ad.name)) SUMMARY.authFailedOutlets.push(ad.name);
+              continue;
+            }
+          }
+        }
         const outcome = L.outcomeForGateRefusal(r.code);
         console.log(`  ✗ ${outcome} (${r.code}): ${String(r.reason).slice(0, 160)}`);
         // URL_FIND: the found link was refused by the live gate (LLM identity

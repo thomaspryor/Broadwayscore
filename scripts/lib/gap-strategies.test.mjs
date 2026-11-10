@@ -132,6 +132,26 @@ test('BROWSER_SESSION: a lost session is auth_failed (non-evidence), not a rejec
   assert.equal(probed, false);
 });
 
+test('BROWSER_SESSION: an access wall or a short body from a dead session is never too-short evidence (BRO-7171)', async () => {
+  const okProbe = async () => ({ text: 'x'.repeat(900) });
+  const deadProbe = async () => ({ error: 'access wall (sign-in/registration) in place of the body', authWall: true });
+  const wall = { error: 'access wall (sign-in/registration) in place of the body', authWall: true };
+  assert.equal((await S.browserSession(c, { extract: async () => wall, probe: deadProbe, minAuthChars: 500 })).outcome, 'auth_failed');
+  assert.deepEqual(await S.browserSession(c, { extract: async () => wall, probe: okProbe, minAuthChars: 500 }), { ok: false, outcome: 'non_evidence', reason: 'access_wall' });
+  // 74-char body (a wall or error template read as text): probe first.
+  const tiny = { text: 'Sign in to continue reading this article on our website today please.', len: 70 };
+  assert.equal((await S.browserSession(c, { extract: async () => tiny, probe: deadProbe, minAuthChars: 500 })).outcome, 'auth_failed');
+  const passed = await S.browserSession(c, { extract: async () => tiny, probe: okProbe, minAuthChars: 500 });
+  assert.equal(passed.ok, true, 'live session: the short body goes to the acceptance gate');
+  // A probe below the adapter floor is a lost session too.
+  assert.equal((await S.browserSession(c, { extract: async () => ({ error: 'No article body' }), probe: async () => ({ text: 'x'.repeat(100) }), minAuthChars: 500 })).outcome, 'auth_failed');
+  // A full body never probes.
+  let probed = false;
+  const full = await S.browserSession(c, { extract: async () => ({ text: 'y'.repeat(3000) }), probe: async () => { probed = true; return {}; }, minAuthChars: 500 });
+  assert.equal(full.ok, true);
+  assert.equal(probed, false);
+});
+
 test('URL_REDISCOVER: unavailable SERP is non-evidence and does not spend the file budget; a miss does', async () => {
   const keys = { brightDataKey: 'k' };
   assert.deepEqual(await S.urlRediscover(c, {}, deps()), { ok: false, outcome: 'non_evidence', reason: 'no_serp_key', serpRan: false });

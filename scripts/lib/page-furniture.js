@@ -153,6 +153,16 @@ const BOILERPLATE_RES = [
 const GIFT_DIALOG_HEAD_RE = /^as a subscriber you can share up to \d+ articles a month\b/i;
 const GIFT_DIALOG_FIELD_RE = /^(?:from|to|send gift|message(?: \(optional\))?|your name|recipient(?:'s)? email)$/i;
 
+// NYT recirculation module under a review: "Share full article" glued to a
+// module label and the first "Headline: dek" item, then one item per line to
+// the end ("Share full article58More on N.Y.C. Theater, Music and DanceOff
+// Broadway Shows in July: ..."). 62 stored NYT bodies end this way; it hid
+// the production info box from the paywall completeness check (BRO-7171).
+// "Share full article" alone also opens some captures, so only the two
+// module labels make it a block head.
+const NYT_RECIRC_HEAD_RE = /^\d*\s*share full article\s*\d*\s*(?:more on n\.y\.c\. theater, music and dance|performing arts across the globe)/i;
+const NYT_RECIRC_ITEM_RE = /^[^:\n]{2,100}: \S.{10,400}$/;
+
 // Copyright / publisher lines. Bounded length so a prose sentence that opens
 // with "Copyright" is never a match.
 // "(c)" counts only before a year or "copyright": a critic's enumerated
@@ -207,6 +217,20 @@ function analyse(text) {
     if (hits.has(i)) continue;
     const t = norm[i];
     if (!t) continue;
+    if (t.length <= 600 && NYT_RECIRC_HEAD_RE.test(t)) {
+      // Head + items, only when the items run to the end of the body.
+      const run = [i];
+      let j = i + 1;
+      for (; j < norm.length; j++) {
+        if (!norm[j]) continue;
+        if (!NYT_RECIRC_ITEM_RE.test(norm[j])) break;
+        run.push(j);
+      }
+      if (j >= norm.length) {
+        for (const k of run) hits.set(k, 'related');
+        continue;
+      }
+    }
     const cat = lineFurnitureCategory(t);
     if (!cat) continue;
     hits.set(i, cat);

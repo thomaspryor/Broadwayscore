@@ -1350,37 +1350,6 @@
     "queuedAt": "2026-11-10T04:13:19.636Z"
   },
   {
-    "conditionKey": "land:land/worktree-agent-ac55ac6c5eeaee060",
-    "title": "Landing blocked: scripts-lib-tests red on land/worktree-agent-ac55ac6c5eeaee060",
-    "description": "land.yml did not land land/worktree-agent-ac55ac6c5eeaee060: the scripts-lib-tests gate went red at b0ffe24460. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42750530370",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [
-      {
-        "name": "branch",
-        "value": "land/worktree-agent-ac55ac6c5eeaee060"
-      },
-      {
-        "name": "gate",
-        "value": "scripts-lib-tests"
-      },
-      {
-        "name": "tip",
-        "value": "b0ffe24460f103e48829a201403580c50532adc1"
-      },
-      {
-        "name": "run",
-        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42750530370"
-      }
-    ],
-    "queuedAt": "2026-11-10T04:12:35.199Z"
-  },
-  {
     "conditionKey": "land:land/bro-7257-b",
     "title": "Landing blocked: unit-tests-node red on land/bro-7257-b",
     "description": "land.yml did not land land/bro-7257-b: the unit-tests-node gate went red at ead7e9e4ae. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42756095956",
@@ -1410,5 +1379,154 @@
       }
     ],
     "queuedAt": "2026-11-10T04:42:23.742Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:harry-potter-and-the-cursed-child-one-part-west-end-2026",
+    "title": "1 review(s) for harry-potter-and-the-cursed-child-one-part-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--unknown.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/harry-potter-and-the-cursed-child-review-at-palace-theatre-london--new-cast-equals-the-original",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-10T05:18:55.097Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:the-pianist-off-west-end-2026",
+    "title": "1 review(s) for the-pianist-off-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--5e07c019.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/the-pianist-review-park-theatre-london",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-10T05:18:59.555Z"
+  },
+  {
+    "conditionKey": "opening-night-publish-date-pre-opening:missing:the-visitors-off-broadway-2026",
+    "title": "Shipped review missing publishDate on The Visitors",
+    "description": "nytg/Allison Considine SHIPPED with no publishDate — cannot confirm post-opening: https://www.newyorktheatreguide.com/reviews/the-visitors-off-broadway-review",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-10T05:14:28.095Z"
+  },
+  {
+    "conditionKey": "opening-night-cv-wrongproduction-unhandled-here-there-are-blueberries-2026",
+    "title": "Unhandled CV.wrongProduction on Here There Are Blueberries",
+    "description": "nyt-theater/Jonathan Mandell (nyt-theater--jonathan-mandell.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This article reviews the New York Theater Workshop production of 'Here There Are Blueberries' (Off-Broadway, running thr — https://newyorktheater.me/2024/05/07/here-there-are-blueberries-theater-review/\nthewrap/Robert Hofler (thewrap--robert-hofler.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a valid theater review with critical assessment, but it reviews the off-Broadway New York Theatre Workshop produ — https://www.thewrap.com/here-there-are-blueberries-off-broadway-review/",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-10T05:14:31.350Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7256-art",
+    "title": "Landing blocked: rebase red on land/bro-7256-art",
+    "description": "land.yml did not land land/bro-7256-art: the rebase gate went red at 627342eb47. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42761538989",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7256-art"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "627342eb47b169cc208c8cad98eeec302873f7c6"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42761538989"
+      }
+    ],
+    "queuedAt": "2026-11-10T05:26:57.748Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7256-c",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7256-c",
+    "description": "land.yml did not land land/bro-7256-c: the unit-tests-node gate went red at 0c850fbdc7. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42763843228",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7256-c"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "0c850fbdc7bf713229d902bdd0e5f244780bd8f0"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42763843228"
+      }
+    ],
+    "queuedAt": "2026-11-10T06:08:27.059Z"
+  },
+  {
+    "conditionKey": "land:land/worktree-agent-ac55ac6c5eeaee060",
+    "title": "Landing blocked: unit-tests-node red on land/worktree-agent-ac55ac6c5eeaee060",
+    "description": "land.yml did not land land/worktree-agent-ac55ac6c5eeaee060: the unit-tests-node gate went red at a370eafb9e. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42763549900",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/worktree-agent-ac55ac6c5eeaee060"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "a370eafb9e17962493a7a1e2372c48ba1e43734f"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42763549900"
+      }
+    ],
+    "queuedAt": "2026-11-10T06:11:00.055Z"
   }
 ]

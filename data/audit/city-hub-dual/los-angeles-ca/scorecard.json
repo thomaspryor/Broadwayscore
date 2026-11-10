@@ -24,15 +24,11 @@
  "triagedItems": 101,
  "confirmed": 52,
  "falsePositives": 49,
- "fixed": 0,
+ "fixed": 8,
  "remaining": [
   {
    "item": "image:the-visit-regional-2026",
    "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
-  },
-  {
-   "item": "show:frankenstein-resurrection-regional-2026",
-   "reason": "Source evidence (theatre page / article byline / review text through-date) contradicts our record; corrected via fix plan bro-7256."
   },
   {
    "item": "image:act-your-age-regional-2026",
@@ -67,10 +63,6 @@
    "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
   },
   {
-   "item": "show:painted-ponies-regional-2026",
-   "reason": "Source evidence (theatre page / article byline / review text through-date) contradicts our record; corrected via fix plan bro-7256."
-  },
-  {
    "item": "image:painted-ponies-regional-2026",
    "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
   },
@@ -79,16 +71,8 @@
    "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
   },
   {
-   "item": "show:the-arsonists-regional-2026",
-   "reason": "Source evidence (theatre page / article byline / review text through-date) contradicts our record; corrected via fix plan bro-7256."
-  },
-  {
    "item": "image:dracula-the-musical-regional-2026",
    "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
-  },
-  {
-   "item": "show:a-case-for-the-existence-of-god-regional-2026",
-   "reason": "Source evidence (theatre page / article byline / review text through-date) contradicts our record; corrected via fix plan bro-7256."
   },
   {
    "item": "image:melt-regional-2026",
@@ -103,10 +87,6 @@
    "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
   },
   {
-   "item": "show:hangman-regional-2026",
-   "reason": "Source evidence (theatre page / article byline / review text through-date) contradicts our record; corrected via fix plan bro-7256."
-  },
-  {
    "item": "image:hangman-regional-2026",
    "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
   },
@@ -119,10 +99,6 @@
    "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
   },
   {
-   "item": "show:saint-megan-regional-2026",
-   "reason": "Source evidence (theatre page / article byline / review text through-date) contradicts our record; corrected via fix plan bro-7256."
-  },
-  {
    "item": "image:saint-megan-regional-2026",
    "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
   },
@@ -133,14 +109,6 @@
   {
    "item": "image:heartbreak-house-regional-2026",
    "reason": "Show art missing or a venue photo/logo is used; no poster-sourcing script available in this session."
-  },
-  {
-   "item": "review:anastasia-regional-2026|https://www.theshowreport.org/post/review-anastasia-the-musical-la-mirada-theatre-mccoy-rigby-entertainment|theshowreport",
-   "reason": "Source evidence (theatre page / article byline / review text through-date) contradicts our record; corrected via fix plan bro-7256."
-  },
-  {
-   "item": "review:heartbreak-house-regional-2026|https://stageraw.com/stage-raw-youth-journalism-review-heartbreak-house|steven morris",
-   "reason": "Source evidence (theatre page / article byline / review text through-date) contradicts our record; corrected via fix plan bro-7256."
   },
   {
    "item": "coverage:the-visit-regional-2026",
@@ -3496,10 +3464,26 @@
  ],
  "pages": {
   "hub": {
-   "problems": [],
+   "problems": [
+    {
+     "code": "missing-from-section",
+     "section": "closed",
+     "title": "a case for the existence of god"
+    },
+    {
+     "code": "wrong-section",
+     "section": "now",
+     "title": "a case for the existence of god"
+    },
+    {
+     "code": "wrong-section",
+     "section": "closed",
+     "title": "frankenstein resurrection"
+    }
+   ],
    "status": 200,
    "counts": {
-    "now": 7,
+    "now": 8,
     "soon": 11,
     "closed": 26
    },

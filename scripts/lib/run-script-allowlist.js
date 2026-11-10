@@ -114,6 +114,9 @@ const ALLOWED_SCRIPTS = [
   // BRO-5507: apply hand-reviewed outlet display names to outlet-registry.json. Plans pass
   // --apply-proposals=data/audit/outlet-display-name-proposals.json --write; exits 1 on any refused row.
   'audit-registry-slug-displaynames.js',
+  // BRO-7257: remove named stale manualEntry rows from reviews.json (a manual row always beats its
+  // pipeline twin in the snapshot merge). Needs --row=show:outlet:critic_name:score, --apply --expect=N.
+  'retire-stale-manual-rows.js',
 ];
 
 /** Why the executor would refuse this run-script name, or null. */
