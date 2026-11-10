@@ -361,15 +361,26 @@ function computeFlags(L) {
   }
   // local review-level checks
   const seen = new Map();
+  const runEndTexts = new Map();
   for (const it of L.reviews) {
     const k = `${it.row.showId}|${fold(it.row.outletId)}|${fold(it.row.criticName)}`;
     if (seen.has(k)) add('review', it.id, `${it.row.showId} | ${it.row.outlet}`, 'local', [{ code: 'duplicate-outlet-critic', detail: `also ${seen.get(k)}` }]); else seen.set(k, it.row.url);
-    const later = it.file && A.laterRunEnd(it.file.fullText || it.file.text, (showBy.get(it.row.showId) || {}).closingDate);
-    if (later) add('show', it.row.showId, (showBy.get(it.row.showId) || {}).title, 'local', [{ code: 'review-text-later-closing', detail: `ours ${(showBy.get(it.row.showId) || {}).closingDate} / review text says through ${later} (${it.row.outletId} ${it.row.publishDate})` }]);
+    if (it.file && !it.file.wrongProduction && !it.file.wrongShow && !it.file.isRoundupArticle) {
+      if (!runEndTexts.has(it.row.showId)) runEndTexts.set(it.row.showId, []);
+      runEndTexts.get(it.row.showId).push({ text: it.file.fullText || it.file.text || '', url: it.row.url, articleDate: (it.row.publishDate || '').slice(0, 10) || null });
+    }
     if (!it.file) add('review', it.id, `${it.row.showId} | ${it.row.outlet}`, 'local', [{ code: 'no-review-text-file', detail: it.row.url }]);
     if (!/^https?:/.test(it.row.url || '')) add('review', it.id, `${it.row.showId} | ${it.row.outlet}`, 'local', [{ code: 'no-url', detail: '' }]);
     const sb = A.starBandProblem(it.row.originalRating, it.row.assignedScore);
     if (sb) add('review', it.id, `${it.row.showId} | ${it.row.outlet}`, 'local', [{ code: 'star-band-record', detail: sb }]);
+  }
+  // BRO-7291 class 1: the same decision the daily writer (scripts/harvest-hub-run-dates.js) makes, so a finding here
+  // means the writer would move the date too (or it is a pinned conflict). Listing dates come from its report.
+  let listings = {};
+  try { listings = readJson('data/audit/hub-run-dates.json').listings || {}; } catch { /* no report yet: texts only */ }
+  for (const s of L.shows) {
+    const r = A.showRunEndFinding(s, runEndTexts.get(s.id) || [], listings[s.id] || null);
+    if (r) add('show', s.id, s.title, 'local', [{ code: 'review-text-later-closing', detail: `ours ${s.closingDate} / ${r.source}` }]);
   }
   // duplicates by title
   const tcount = new Map(); for (const s of L.shows) { const k = `${fold(s.title)}|${fold(s.venue)}`; tcount.set(k, [...(tcount.get(k) || []), s.id]); }
