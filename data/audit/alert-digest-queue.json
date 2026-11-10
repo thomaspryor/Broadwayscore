@@ -1155,5 +1155,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-10T16:06:56.363Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7294-cost-row",
+    "title": "Landing blocked: rebase red on land/bro-7294-cost-row",
+    "description": "land.yml did not land land/bro-7294-cost-row: the rebase gate went red at fba3569101. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-7294-cost-row @ fba3569101 (origin/land/bro-7294-cost-row) → origin/main @ 480abe66ba REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 480abe66ba: Rebasing (1/1) error: could not apply fba3569101b... audit: session cost row (BRO-7294, BRO-7169, BRO-7163, BRO-7129) hint: Resolve all conflicts manually, mark them as resolved with hint: \"git add/rm <conflicted_files Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42851860977",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7294-cost-row"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "fba3569101b5cf81c2b1378427d3c05f313ebc1e"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42851860977"
+      }
+    ],
+    "queuedAt": "2026-11-10T16:17:06.727Z"
   }
 ]
