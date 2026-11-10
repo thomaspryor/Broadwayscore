@@ -5,6 +5,7 @@ const path = require('path');
 const { titleToSlug, KNOWN_ALIASES } = require('../show-matching.js');
 const { foldDiacritics } = require('../title-match.js');
 const { slugify: urlSlugify } = require('../url-slug.js');
+const { toDateMs } = require('../date-utils.js');
 
 const name = 'slug-mismatch';
 const description = 'Review URL slug does not mention show slug or any known alias (cross-show contamination)';
@@ -434,7 +435,8 @@ function showScoreVouches(showId, url, file, { openingDate, publishDate, hasSave
   if (hasSavedText) return false;
   // Same production: a Show Score mislink to a revival years away vouches nothing.
   if (openingDate && publishDate) {
-    const days = Math.abs(Date.parse(publishDate) - Date.parse(openingDate)) / 86400000;
+    const days = Math.abs(toDateMs(publishDate) - toDateMs(openingDate)) / 86400000;
+    // NaN (an unparseable date) fails the comparison and refuses to vouch.
     if (!(days <= SHOW_SCORE_DATE_WINDOW_DAYS)) return false;
   }
   const rows = loadShowScoreDoc(file).get(showScoreUrlKey(url));
