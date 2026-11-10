@@ -1,7 +1,7 @@
 {
-  "generated": "2026-11-10T01:40:28.194Z",
+  "generated": "2026-11-10T02:54:53.380Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 46,
+  "count": 47,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -71,13 +71,6 @@
       "loserFile": "north-west-end--unknown.json",
       "targetFile": "north-west-end--zain-russell.json",
       "reason": "orphaned-duplicate-heal: north-west-end--zain-russell.json was flagged invalid after north-west-end--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "dirty-great-love-story-west-end-2017",
-      "loserFile": "standard--naomi-ackerman.json",
-      "targetFile": "standard--unknown.json",
-      "reason": "orphaned-duplicate-heal: standard--unknown.json was flagged invalid after standard--naomi-ackerman.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -256,6 +249,13 @@
       "field": "duplicateOf"
     },
     {
+      "showId": "the-devil-wears-prada-west-end-2024",
+      "loserFile": "daily-mail--sonia-horon.json",
+      "targetFile": "mail-on-sunday--sonia-horon.json",
+      "reason": "orphaned-duplicate-heal: mail-on-sunday--sonia-horon.json was flagged invalid after daily-mail--sonia-horon.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
       "showId": "the-ferryman-west-end-2017",
       "loserFile": "standard--robert-dex.json",
       "targetFile": "standard--unknown.json",
@@ -324,6 +324,13 @@
       "targetFile": "providence-journal--katie-landeck.json",
       "reason": "orphaned-duplicate-heal: providence-journal--katie-landeck.json was flagged invalid after providence-journal--unknown.json was pointed at it",
       "field": "duplicateOf"
+    },
+    {
+      "showId": "the-devil-wears-prada-west-end-2024",
+      "loserFile": "daily-mail--sonia-horon.json",
+      "targetFile": "mail-on-sunday--sonia-horon.json",
+      "reason": "orphaned-duplicate-heal: mail-on-sunday--sonia-horon.json was flagged invalid after daily-mail--sonia-horon.json was pointed at it (duplicateTextOf)",
+      "field": "duplicateTextOf"
     }
   ]
 }
