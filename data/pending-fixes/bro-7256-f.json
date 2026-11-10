@@ -1,0 +1,62 @@
+{
+  "issueNumber": "bro-7256-f",
+  "planId": "fed4bfd2-d72b-4fc9-b269-bdd67eff7d0a",
+  "status": "pending",
+  "createdAt": "2026-11-10T07:07:24.402Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7256: Anastasia OC Register score matches its 3-of-4-star rating; Rorschach Theatre in LA roundup excluded; Clown Sh*t closing date matches the Stage Raw review",
+    "steps": [
+      "OC Register rated Anastasia 3 stars of a possible 4 (71-90 band); stored score 63 -> 72",
+      "Theatre in LA page for Rorschach is a multi-outlet reviews roundup (Stage and Cinema, Stage Scene LA and others), not a review: mark isNonReview",
+      "Clown Sh*t closingDate 2026-08-03 -> 2026-08-02 (Stage Raw: Through August 2)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "anastasia-regional-2026/oc-register--christopher-smith.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 72,
+        "description": "Review text: Rating: 3 stars (of a possible 4); 4-star scale puts 3 stars in the 71-90 band"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "anastasia-regional-2026/oc-register--christopher-smith.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-7256: critic rating 3 of 4 stars, band 71-90; LLM read 63 from tone",
+        "description": "Provenance note for the score override"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rorschach-regional-2026/theatreinla--unknown.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): theatreinla.com page aggregates ratings and excerpts from several outlets for Rorschach",
+        "description": "Breadcrumb required before isNonReview"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rorschach-regional-2026/theatreinla--unknown.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Roundup page of excerpts from Stage and Cinema, Stage Scene LA and others"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "clown-sh-t-regional-2026",
+        "field": "closingDate",
+        "oldValue": "2026-08-03",
+        "newValue": "2026-08-02",
+        "description": "Stage Raw review lists Easy Rhino Productions Through August 2"
+      }
+    ]
+  }
+}
