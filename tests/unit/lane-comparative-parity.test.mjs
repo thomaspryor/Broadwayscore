@@ -36,7 +36,7 @@ function stubModels() {
   return [{ name: 'stub-a', call: answer([4, 0, 2]) }, { name: 'stub-b', call: answer([5, 1, 3]) }];
 }
 
-async function runNight({ settle, settleMaxRuns }) {
+async function runNight({ settle, settleMaxRuns, twoPass }) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7283-parity-'));
   const reviewTextsDir = path.join(dir, 'review-texts');
   let t = T0;
@@ -44,11 +44,12 @@ async function runNight({ settle, settleMaxRuns }) {
   const live = () => ({ rv: doc.reviews.map((r) => ({ u: r.url, s: r.assignedScore })) });
   const byUrl = new Map(REVIEWS.map((r) => [r.url, r]));
   const settleCalls = [];
+  let passNo = 0;
   const models = stubModels();
   try {
     const run = await runLaneNight({
-      show: SHOW, night: NIGHT, openingDate: NIGHT, ledgerDir: path.join(dir, 'ledger'), reviewTextsDir, dryRun: true, maxPasses: 1, passIntervalMs: 0, windowMs: 40 * 60 * 1000,
-      adapters: [{ name: 'roundup', kind: 'aggregator', phase: 'main', discover: async () => REVIEWS.map((r) => ({ url: r.url, source: 'aggregator', aggregatorCited: true })) }],
+      show: SHOW, night: NIGHT, openingDate: NIGHT, ledgerDir: path.join(dir, 'ledger'), reviewTextsDir, dryRun: true, maxPasses: twoPass ? 2 : 1, passIntervalMs: 0, windowMs: 40 * 60 * 1000,
+      adapters: [{ name: 'roundup', kind: 'aggregator', phase: 'main', discover: async () => (twoPass && ++passNo === 1 ? REVIEWS.slice(0, 2) : REVIEWS).map((r) => ({ url: r.url, source: 'aggregator', aggregatorCited: true })) }],
       ...(settleMaxRuns ? { settleMaxRuns } : {}),
       fetchText: async () => '',
       fetchReview: async (a) => { const r = byUrl.get(a.url); return { outletId: r.outletId, outlet: r.outletId, criticName: r.criticName, fullText: BODY, publishDate: NIGHT }; },
@@ -56,7 +57,7 @@ async function runNight({ settle, settleMaxRuns }) {
         const r = byUrl.get(row.url);
         return { score: r.isolated, extra: { scoreSource: 'anchored-v6', llmScore: { score: r.isolated, band: { floor: 71, ceiling: 90 } } } };
       },
-      ...(settle ? { settleComparative: async ({ file }) => { settleCalls.push(file); const st = await core.settleShow(SHOW.id, { reviewTextsDir, models, onlyFile: file }); return { changed: st.changedFiles, unsettled: st.unsettled }; } } : {}),
+      ...(settle ? { settleComparative: async ({ file }) => { settleCalls.push(file); const st = await core.settleShow(SHOW.id, { reviewTextsDir, models, onlyFile: file }); return { changed: st.changedFiles, unsettled: st.unsettled, rescoresDone: st.rescoresDone }; } } : {}),
       publishPorts: {
         updateReviews: async (fn) => { const out = fn(doc); doc = out.doc; return out; },
         regenShow: async () => ({}), deploy: async () => {}, fetchLiveShow: async () => live(),
@@ -109,7 +110,15 @@ test('publish waits for a re-sent (rescored) row\'s NEW score to be live, not ju
 test('the settle is capped per night: runs past the cap publish the isolated score and report why', async () => {
   const res = await runNight({ settle: true, settleMaxRuns: 1 });
   assert.equal(res.run.unpublished.length, 0);
-  assert.equal(res.settleCalls.length, 1, 'only one settle call was made');
-  assert.equal(res.run.settle.runs, 1);
+  assert.ok(res.run.settle.runs <= 1, 'at most one model-calling settle run');
+  assert.ok(res.settleCalls.length >= 1);
   assert.ok(res.run.settle.failed.some((f) => /runs already made/.test(f.reason)), 'the skipped runs are reported');
+});
+
+test('re-publish path: a review landing in pass 2 moves a row already live from pass 1, and the site gets the new score', async () => {
+  const res = await runNight({ settle: true, twoPass: true });
+  assert.ok(res.run.settle.moved > 0, 'the settle moved scores across passes');
+  assert.equal(res.run.unpublished.length, 0);
+  assert.equal(res.cron.changed, 0, 'cron finds nothing left to move');
+  for (const r of REVIEWS) assert.equal(res.published[r.url], res.rebuild[r.url], `${r.outletId}: live score equals getBestScore(file)`);
 });

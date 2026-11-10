@@ -77,7 +77,7 @@ async function runLaneNight({
   // BRO-7283: file name <-> review key of every row this run persisted, so a settle that moves a sibling's score can
   // find the queued or published row to send again. `settledNotes` is the report of what the settle did (summary page).
   const fileToKey = new Map();
-  const settled = { runs: 0, rescored: [], failed: [] };
+  const settled = { runs: 0, rescored: [], failed: [], foreign: [] };
   const t0 = startedAt === undefined ? now() : startedAt;
   const seen = loadDone(ledgerDir, show.id, night, onDiskUrls);
   const memo = discovery.loadMemo(ledgerDir, show.id, night); // survives a restart: final rejections are not re-fetched
@@ -127,7 +127,7 @@ async function runLaneNight({
       // never went live: try again with the next batch. A re-queued row restarts its mid-pass wait, or the 30 s timer
       // below would retry a failing publish every 30 s instead of about once a pass (BRO-7159 review).
       for (const r of batch) if (!missing.has(r.key)) livePublished.set(`${criticKey(r.row.criticName)}|${r.row.outletId}`, r);
-      pending.push(...batch.filter((r) => missing.has(r.key)).map((r) => ({ ...r, scoredAt: clock.now() })));
+      pending.push(...batch.filter((r) => missing.has(r.key) && !pending.some((q) => q.key === r.key)).map((r) => ({ ...r, scoredAt: clock.now() })));
     } catch (e) {
       errors.push({ adapter: 'publish', error: String((e && e.message) || e).slice(0, 200) });
       pending.unshift(...batch.map((r) => ({ ...r, scoredAt: clock.now() }))); // scored: losing them to a failed push would drop reviews silently
@@ -255,12 +255,13 @@ async function runLaneNight({
           if (settleComparative) {
             try {
               if (settled.runs >= settleMaxRuns) throw new Error(`settle skipped: ${settleMaxRuns} runs already made tonight`);
-              settled.runs++;
               // Each model call is bounded by its own 300s abort (comparative-core), so a hang ends in `unsettled`, not a late write.
               const res = await settleComparative({ file: base });
+              if (res && res.rescoresDone > 0) settled.runs++; // only runs that called a model count against the cap
               for (const c of (res && res.changed) || []) {
                 if (c.file === base) row = JSON.parse(require('fs').readFileSync(persisted.file, 'utf8'));
                 else if (fileToKey.has(c.file)) settled.rescored.push({ key: fileToKey.get(c.file), file: c.file });
+                else settled.foreign.push(c.file); // not published by this run: the regular rebuild carries its new score
                 settled.moved = (settled.moved || 0) + 1;
               }
               for (const u of (res && res.unsettled) || []) settled.failed.push({ file: base, reason: String(u.reason).slice(0, 160) });
@@ -339,7 +340,7 @@ async function runLaneNight({
       else await Promise.race(inflight);
     }
   }
-  return { passes, admitted, published, errors, failed, skipped, removedCopies, quoteless, unpublished: pending.map((r) => r.key), awaiting: [...awaiting], stopped, settle: settleComparative ? { runs: settled.runs, moved: settled.moved || 0, failed: settled.failed } : null };
+  return { passes, admitted, published, errors, failed, skipped, removedCopies, quoteless, unpublished: pending.map((r) => r.key), awaiting: [...awaiting], stopped, settle: settleComparative ? { runs: settled.runs, moved: settled.moved || 0, failed: settled.failed, foreign: [...new Set(settled.foreign)] } : null };
 }
 
 module.exports = { runLaneNight, loadDone };

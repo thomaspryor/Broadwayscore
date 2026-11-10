@@ -47,7 +47,7 @@ async function main() {
         const models = core.availableModels();
         if (models.length < 2) return { changed: [], unsettled: [{ reason: `only ${models.length} comparative model(s) available` }] };
         const st = await core.settleShow(s.id, { reviewTextsDir, models, onlyFile: file, log: (l) => console.log(l) });
-        return { changed: st.changedFiles, unsettled: st.unsettled };
+        return { changed: st.changedFiles, unsettled: st.unsettled, rescoresDone: st.rescoresDone };
       };
     },
   });
