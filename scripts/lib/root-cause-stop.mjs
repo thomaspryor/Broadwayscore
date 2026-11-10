@@ -66,14 +66,41 @@ export function cardTitles(events) {
   return titles.filter(Boolean);
 }
 
-const COMMIT_MSG_RE = /(?:\s-[a-zA-Z]*m|\s--message=?)\s*(?:"((?:[^"\\]|\\.)*)"|'([^']*)')/;
-const HEREDOC_MSG_RE = /-m\s+"?\$\(cat\s*<<-?\s*['"]?(\w+)['"]?\s*\n([^\n]*)/;
+// First -m of a commit: a quoted subject, or the first line of a `"$(cat <<'EOF' ...)"` heredoc.
+// One alternation, so whichever -m comes first wins and a later heredoc body never overrides it.
+const COMMIT_MSG_RE = /(?:\s-[a-zA-Z]*m|\s--message=?)\s*(?:"\$\(cat\s*<<-?\s*['"]?(\w+)['"]?[ \t]*\n([^\n]*)|"((?:[^"\\]|\\.)*)"|'([^']*)')/;
+const FILE_HEREDOC_RE = /\s(?:-F\s*-|--file=?\s*-)\s*<<-?\s*['"]?(\w+)['"]?[ \t]*\n([^\n]*)/;
+const GIT_COMMIT_RE = /^\s*git(?:\s+-[Cc]\s+\S+)*\s+commit\b/;
+const COMMIT_OK_RE = /\[[^\]\n]+ [0-9a-f]{7,}\]/;
+const COMMIT_FAIL_RE = /nothing (?:added )?to commit|no changes added|^error:|^fatal:|hook failed|pre-commit.*(?:failed|error)/im;
 const CONVENTIONAL_RE = /^(feat|fix|chore|docs|refactor|test|tests|perf|style|build|ci|revert)(?:\([^)]*\))?!?:\s*/i;
 
+/** PURE. Split a shell command on unquoted && ; || | and newlines (quotes, and so heredoc-in-quotes, stay whole). */
+function splitShell(cmd) {
+  const segs = [];
+  let cur = '';
+  let q = null;
+  for (let i = 0; i < cmd.length; i++) {
+    const c = cmd[i];
+    if (q) {
+      cur += c;
+      if (c === '\\' && q === '"') cur += cmd[++i] ?? '';
+      else if (c === q) q = null;
+    } else if (c === '"' || c === "'") { q = c; cur += c; }
+    else if (c === '\\') cur += c + (cmd[++i] ?? '');
+    else if (c === ';' || c === '|' || c === '&' || c === '\n') {
+      if ((c === '|' || c === '&') && cmd[i + 1] === c) i++;
+      segs.push(cur); cur = '';
+    } else cur += c;
+  }
+  segs.push(cur);
+  return segs;
+}
+
 /**
- * PURE. Subjects of the commits this session made: the first -m of each successful `git commit`
- * (CLI or heredoc form), and the `message` of the connector's GitHub file-push tools (the cloud
- * landing path has no git commit command). Piped commits can exit 0 on "nothing to commit".
+ * PURE. Subjects of the commits this session made: the first -m (quoted or heredoc) or `-F - <<EOF`
+ * subject of each `git commit` that did not fail, and the `message` of the connector's GitHub
+ * file-push tools (the cloud landing path has no git commit command).
  */
 export function commitSubjects(events) {
   const results = new Map(events.filter((e) => e.kind === 'tool_result').map((e) => [e.tool_use_id, e]));
@@ -81,17 +108,22 @@ export function commitSubjects(events) {
   for (const e of events) {
     if (e.kind !== 'assistant_tool_use') continue;
     const r = results.get(e.id);
-    if (!r || r.isError) continue;
+    if (!r) continue;
     if (e.name === 'Bash') {
-      if (/nothing (?:added )?to commit|no changes added/i.test(String(r.content || ''))) continue;
-      for (const seg of String(e.input?.command || '').split(/&&|;|\|\||(?<=EOF)\s*\n/)) {
-        if (!/\bgit\b[^\n]*\scommit\b/.test(seg)) continue;
-        const h = HEREDOC_MSG_RE.exec(seg);
-        const m = h ? null : COMMIT_MSG_RE.exec(seg);
-        const s = h ? h[2] : m && (m[1] ?? m[2]);
+      const text = String(r.content || '');
+      // A piped commit exits 0 when git refused it, so judge the output: a failure marker with no
+      // `[branch sha]` success line means nothing was committed.
+      if ((r.isError || COMMIT_FAIL_RE.test(text)) && !COMMIT_OK_RE.test(text)) continue;
+      const cmd = String(e.input?.command || '');
+      const fileHd = FILE_HEREDOC_RE.exec(cmd);
+      for (const seg of splitShell(cmd)) {
+        if (!GIT_COMMIT_RE.test(seg)) continue;
+        const m = COMMIT_MSG_RE.exec(seg);
+        const s = m ? (m[2] ?? m[3] ?? m[4]) : fileHd && fileHd[2];
         if (s && s.trim()) out.push(s.trim());
       }
-    } else if (/^mcp__github__(?:push_files|create_or_update_file)$/.test(e.name || '') && e.input?.message) {
+      if (!out.length && fileHd && /\bgit\b[^\n]*\scommit\b/.test(cmd) && fileHd[2].trim()) out.push(fileHd[2].trim());
+    } else if (!r.isError && /^mcp__github__(?:push_files|create_or_update_file)$/.test(e.name || '') && e.input?.message) {
       out.push(String(e.input.message).split('\n')[0].trim());
     }
   }
@@ -102,9 +134,12 @@ export function commitSubjects(events) {
  * PURE. Does a commit subject read as a fix? A conventional type decides on its own (so
  * "feat: add missing X" is a feature); otherwise the card-title test applies after dropping a
  * leading "BRO-123:" tag. FIX_RE is shared with the Linear Done gate, so it is not widened here.
+ * Known trade-off: "ship-check fixes" reads as a fix, so a feature session that lands one gets a
+ * single reminder (block budget 1); that is the wording the real BRO-7129 incident used.
  */
 export function subjectReadsAsFix(subject) {
-  let s = String(subject || '').trim().replace(/^(?:BRO-\d+\s*[:\-–]\s*)+/i, '');
+  const s = String(subject || '').trim().replace(/^(?:BRO-\d+\s*[:\-–]?\s*)+/i, '');
+  if (/^revert\b/i.test(s)) return false;
   const c = CONVENTIONAL_RE.exec(s);
   if (c) return c[1].toLowerCase() === 'fix';
   return isFixCard({ title: s });
@@ -163,7 +198,7 @@ export function stopHookDecision({ lastMessage = '', events = null, env = proces
   const titles = cardTitles(events);
   // BRO-7301: titles describe symptoms, so a bug card often has no fix word. A feature-looking
   // title is only trusted when the commits it landed do not read as fixes either.
-  if (titles.length && !titles.some((t) => isFixCard({ title: t })) && !commitSubjects(events).some(subjectReadsAsFix)) return { decision: 'allow', reason: 'not a fix card' };
+  if (titles.length && !titles.some((t) => isFixCard({ title: t })) && !commitSubjects(events.slice(0, Math.max(...landedPushIndices(events)) + 1)).some(subjectReadsAsFix)) return { decision: 'allow', reason: 'not a fix card' };
   if (hasRootCauseAnswer(answerTexts(events, lastMessage))) return { decision: 'allow', reason: 'rule-21 answer stated' };
   return { decision: 'block', reason: 'landed a fix with no rule-21 answer', message: MESSAGE };
 }

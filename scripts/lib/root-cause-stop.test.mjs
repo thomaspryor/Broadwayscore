@@ -140,3 +140,19 @@ test('BRO-7301 helpers: commitSubjects and subjectReadsAsFix', () => {
   assert.equal(subjectReadsAsFix('chore: fix lint'), false);
   assert.equal(subjectReadsAsFix('Fix wrong venue on 6 shows'), true);
 });
+
+test('BRO-7301 parsing: quotes, heredocs, first -m, piped failures, only commits before the landing', () => {
+  const run = (command, content = 'ok') => [use('h', 'Bash', { command }), ok('h', content)];
+  assert.deepEqual(commitSubjects(run('git commit -m "fix: parser; keep names"')), ['fix: parser; keep names']);
+  assert.deepEqual(commitSubjects(run('git commit -m "feat: panel" -m "$(cat <<EOF\nfix: body\nEOF\n)"')), ['feat: panel']);
+  assert.deepEqual(commitSubjects(run('git commit -m "$(cat <<EOF\nfix(x): unquoted\n\nbody\nEOF\n)"')), ['fix(x): unquoted']);
+  assert.deepEqual(commitSubjects(run('git commit -F - <<EOF\nfix: from file\nEOF')), ['fix: from file']);
+  assert.deepEqual(commitSubjects(run('git status && git commit -m "fix: a b c"', '[b 1234567] fix: a b c')), ['fix: a b c']);
+  assert.deepEqual(commitSubjects(run('git commit -m "fix: a b c" | tail -3', 'error: gpg failed to sign')), [], 'piped, refused');
+  assert.deepEqual(commitSubjects(run('git log | grep commit -m "x"')), []);
+  assert.equal(subjectReadsAsFix('BRO-1 add never-seen badge'), false);
+  assert.equal(subjectReadsAsFix('Revert "fix: x"'), false);
+  const T = [use('t1', 'Bash', { command: 'node scripts/linear-brain.js create "Opening grade: SERP census counts other places" --self' }), ok('t1')];
+  const late = [...T, ...LAND, use('g', 'Bash', { command: 'git commit -m "fix: after landing"' }), ok('g')];
+  assert.equal(d(late), 'allow', 'a commit made after the last landing is not evidence about what landed');
+});
