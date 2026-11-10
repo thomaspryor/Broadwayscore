@@ -195,3 +195,12 @@ test('REGRESSION: every real tracked *.jsonl (repo-wide) is either merge=union o
   const staleExemptions = EXEMPT_LEDGERS.filter((e) => !trackedSet.has(e.file)).map((e) => e.file);
   assert.deepEqual(staleExemptions, [], `EXEMPT_LEDGERS names untracked/nonexistent path(s): ${JSON.stringify(staleExemptions)}`);
 });
+
+// BRO-7323 class guard: a new city-hub-dual city directory must not need a code edit.
+test('isExemptLedgerPath covers any city under data/audit/city-hub-dual/ (BRO-7323)', () => {
+  for (const city of ['boston-ma', 'some-future-city-xx']) {
+    for (const k of ['coverage', 'reviews', 'shows']) {
+      assert.equal(isExemptLedgerPath(`data/audit/city-hub-dual/${city}/${k}.jsonl`), true);
+    }
+  }
+});
