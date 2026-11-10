@@ -320,4 +320,11 @@ function scanJsonlValue(text) {
   return findings;
 }
 
-module.exports = { EMAIL_RE, maskEmail, redactEmails, formatPath, scanJsonValue, scanJsonlValue, isRedactedPlaceholder, firstRealEmail };
+function redactEmailsDeep(v) {
+  if (typeof v === 'string') return redactEmails(v);
+  if (Array.isArray(v)) return v.map(redactEmailsDeep);
+  if (v && typeof v === 'object') { const o = {}; for (const k of Object.keys(v)) o[k] = redactEmailsDeep(v[k]); return o; }
+  return v;
+}
+
+module.exports = { redactEmailsDeep, EMAIL_RE, maskEmail, redactEmails, formatPath, scanJsonValue, scanJsonlValue, isRedactedPlaceholder, firstRealEmail };
