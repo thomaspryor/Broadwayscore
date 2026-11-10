@@ -7,6 +7,7 @@ import assert from 'node:assert/strict';
 import {
   isOnClosingWatch,
   isNearBreakEven,
+  isNewNearOrBelowBreakEven,
   splitStruggling,
   isBoxOfficeDriven,
   finalRunStart,
@@ -221,4 +222,16 @@ test('struggling shows with an announced closing are "closing before recouping",
   const { closing, atRisk } = splitStruggling(shows);
   assert.deepEqual(closing.map((s) => s.slug), ['stranger-things', 'two-strangers']);
   assert.deepEqual(atRisk.map((s) => s.slug), ['no-closing', 'schmigadoon']);
+});
+
+test('new show too early to judge: fewer than 4 weeks, under or near break-even, listed as New (owner 2026-11-10)', () => {
+  // Wanted, Nov 2026: 3 preview weeks averaging ~$528K vs ~$700K, no season-adjusted figure yet.
+  const wanted = { ...base, avgGross: 528_000, breakEven: 700_000, adjustedRatio: null, weeksBelow: 3 };
+  assert.equal(isNewNearOrBelowBreakEven(wanted), true);
+  assert.equal(isNearBreakEven(wanted), false); // the established rule still needs 4 weeks
+  assert.equal(isNewNearOrBelowBreakEven({ ...wanted, avgGross: 700_000 * 1.2 }), false); // comfortably above
+  assert.equal(isNewNearOrBelowBreakEven({ ...wanted, adjustedRatio: 0.75 }), false); // 4+ weeks: the normal lists take over
+  assert.equal(isNewNearOrBelowBreakEven({ ...wanted, closingDate: '2027-01-03' }), false); // announced closing
+  assert.equal(isNewNearOrBelowBreakEven({ ...wanted, limitedRun: true }), false);
+  assert.equal(isNewNearOrBelowBreakEven({ ...wanted, status: 'closed' }), false);
 });

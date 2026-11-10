@@ -69,7 +69,7 @@ import fs from 'fs';
 import path from 'path';
 import { getMarketDate } from './date-utils';
 import { isTopTonyWinner } from './data-awards';
-import { bankedShareSeries, calibrateClosingWatch, seasonalIndexSeries, adjustedRatioSeries, estimateClosing, isBoxOfficeDriven, isOnClosingWatch, isNearBreakEven, holdsAtLowerBreakEven, addWeeks, weeksBelowBreakEven as countWeeksBelowBreakEven, type ClosingObservation } from './closing-watch';
+import { bankedShareSeries, calibrateClosingWatch, seasonalIndexSeries, adjustedRatioSeries, estimateClosing, isBoxOfficeDriven, isOnClosingWatch, isNearBreakEven, isNewNearOrBelowBreakEven, holdsAtLowerBreakEven, addWeeks, weeksBelowBreakEven as countWeeksBelowBreakEven, type ClosingObservation } from './closing-watch';
 import { isLossDesignation } from '../../scripts/lib/commercial-designations';
 import { conversionOf, isConvertedToCommercial, commercialRunWeeks, recoupClockStart } from '../../scripts/lib/commercial-conversion';
 import {
@@ -904,7 +904,7 @@ export function getClosingOutlook(slug: string): ClosingOutlook | null {
   if (!closingOutlooks) {
     const m = new Map<string, ClosingOutlook>();
     for (const s of getClosingWatch()) m.set(s.slug, { kind: 'watch', breakEvenRatio: s.breakEvenRatio, likelyClosing: s.likelyClosing });
-    for (const s of getNearBreakEven()) if (!m.has(s.slug)) m.set(s.slug, { kind: 'near', breakEvenRatio: s.breakEvenRatio, seasonCleared: s.seasonCleared });
+    for (const s of getNearBreakEven()) if (!m.has(s.slug)) m.set(s.slug, { kind: 'near', breakEvenRatio: s.breakEvenRatio, seasonCleared: s.seasonCleared, isNew: s.isNew });
     closingOutlooks = m;
   }
   return closingOutlooks.get(slug) ?? null;
@@ -925,18 +925,22 @@ export function getNearBreakEven(): NearBreakEvenShow[] {
     const ratios = adjustedRatioSeries(weekly, seasonal, breakEven);
     let adjustedRatio: number | null = null;
     for (let i = ratios.length - 1; i >= 0 && adjustedRatio == null; i--) adjustedRatio = ratios[i];
-    if (!isNearBreakEven({ status: show.status, designation: data.designation, limitedRun: show.limitedRun, closingDate: show.closingDate, closingExtensions: show.closingExtensions, closingExtensionCount: show.closingExtensionCount, today, avgGross, breakEven, adjustedRatio })) continue;
+    const input = { status: show.status, designation: data.designation, limitedRun: show.limitedRun, closingDate: show.closingDate, closingExtensions: show.closingExtensions, closingExtensionCount: show.closingExtensionCount, today, avgGross, breakEven, adjustedRatio };
+    const isNew = isNewNearOrBelowBreakEven(input);
+    if (!isNew && !isNearBreakEven(input)) continue;
     results.push({
       slug,
       title: show.title,
       avgWeeklyGross: avgGross as number,
       breakEven,
       breakEvenRatio: (avgGross as number) / breakEven,
-      seasonCleared: (avgGross as number) < breakEven,
+      seasonCleared: !isNew && (avgGross as number) < breakEven,
+      isNew,
       trend: getRecoupmentTrend(slug),
     });
   }
-  return results.sort((a, b) => a.breakEvenRatio - b.breakEvenRatio);
+  // Established shows first (lowest ratio first), then new shows, which have no settled figure yet.
+  return results.sort((a, b) => Number(a.isNew) - Number(b.isNew) || a.breakEvenRatio - b.breakEvenRatio);
 }
 
 /**
