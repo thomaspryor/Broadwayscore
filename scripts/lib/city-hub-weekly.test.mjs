@@ -69,3 +69,12 @@ test('card: null when nothing is new; otherwise one card naming the plan and a V
   assert.match(c.body, /bro-7291-chicago-il-2026-w46/);
   assert.match(c.body, /^VERIFY: node scripts\/city-hub-weekly-audit\.js --city=chicago-il --no-llm --dry-run --open$/m);
 });
+
+// BRO-7319: a card that could not be filed must not mark its findings as seen
+test('keysToPersist: uncarded fresh findings stay unseen; carded ones are recorded', () => {
+  const findings = [{ key: 'a' }, { key: 'b' }, { key: 'c' }];
+  const fresh = [{ key: 'b' }];
+  assert.deepEqual(W.keysToPersist(findings, fresh, true), ['a', 'b', 'c']);
+  assert.deepEqual(W.keysToPersist(findings, fresh, false), ['a', 'c']);
+  assert.deepEqual(W.newFindings(findings, W.keysToPersist(findings, fresh, false), {}).map((f) => f.key), ['b']);
+});

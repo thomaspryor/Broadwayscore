@@ -168,6 +168,9 @@ const RUN_START_WINDOW_DAYS = 10;
 function openingIsRunStartArtifact(show, ex) {
   const pageOpen = ex && ex.opening;
   if (!pageOpen || !show.openingDate) return false;
+  const insideRun = show.openingDate >= pageOpen && !(ex.closing && show.openingDate > ex.closing);
+  // the page's "opening" is exactly our recorded first preview: the same run-start fact, whatever the preview-to-press gap
+  if (insideRun && show.previewsStartDate && show.previewsStartDate === pageOpen) return true;
   if (ex.previewStart && ex.previewStart !== pageOpen) return false;
   if (show.openingDate < pageOpen || show.openingDate > addDays(pageOpen, RUN_START_WINDOW_DAYS)) return false;
   return !(ex.closing && show.openingDate > ex.closing);
@@ -243,7 +246,14 @@ const MONTHS = { jan: 1, feb: 2, mar: 3, apr: 4, may: 5, jun: 6, jul: 7, aug: 8,
 /** BRO-7291: per-show stale-closing finding, the writer's own rule (laterAnnouncedRunEnd over every text + the listing). */
 function showRunEndFinding(show, texts, listing) {
   if (!show || !show.closingDate || !show.openingDate) return null;
-  return require('./run-end-from-text').laterAnnouncedRunEnd({ opening: show.openingDate, closing: show.closingDate }, { texts, listing });
+  const rule = require('./run-end-from-text').laterAnnouncedRunEnd;
+  const base = { opening: show.openingDate, closing: show.closingDate };
+  const r = rule(base, { texts, listing });
+  if (r) return r;
+  // BRO-7319: the writer needs two hosts (or the listing) before it moves a date. An explicit "extended through" from ONE
+  // host is still a lead: report it, flagged unconfirmed, so a real extension is never invisible (no auto-fix is planned from it).
+  const one = rule(base, { texts, listing }, { minSites: 1 });
+  return one && one.kind === 'extended' ? { ...one, unconfirmed: true } : null;
 }
 
 function laterRunEnd(text, closing, slackDays = 3, opening = null) {

@@ -5,6 +5,42 @@
    "status": "",
    "item": "show:relentless-regional-2022:venue-contradicted",
    "reason": "Outlets name the producing company (TimeLine Theatre Company); the 2022 run played at Theater Wit, which pending-fix plan 19ed84b2 sets. Auto-planning venue = Timeline Theatre would be wrong. BRO-7291."
+  },
+  "show:iceboy-regional-2026:opening-date": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "show:iceboy-regional-2026:opening-date",
+   "reason": "The theatre page prints the run first performance (2026-06-20) as opening; our openingDate 2026-06-29 is the press opening (first reviews dated the same week) and previews start 2026-06-20. One fact seen two ways, not a wrong date. BRO-7319."
+  },
+  "show:little-bear-ridge-road-regional-2024:opening-date": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "show:little-bear-ridge-road-regional-2024:opening-date",
+   "reason": "Theatre page run \"Jun 13 – Aug 4, 2024\" starts at the first performance; our openingDate 2024-06-24 is the press opening (first reviews dated 2024-06-24). Both models read previewStart = opening = run start. BRO-7319."
+  },
+  "show:42-balloons-regional-2025:opening-date": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "show:42-balloons-regional-2025:opening-date",
+   "reason": "Theatre page run \"May 24–June 29, 2025\" starts at the first performance, equal to our previewsStartDate 2025-05-24; press opening 2025-06-10 (reviews 2025-06-07 to 2025-06-11). BRO-7319."
+  },
+  "show:paranormal-activity-chicago-regional-2025:opening-date": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "show:paranormal-activity-chicago-regional-2025:opening-date",
+   "reason": "The theatre page prints the run first performance (2025-10-08) as opening; our openingDate 2025-10-16 is the press opening (first reviews dated the same week) and previews start 2025-10-08. One fact seen two ways, not a wrong date. BRO-7319."
+  },
+  "review:1619-the-journey-of-a-people-regional-2024|https://buzznews.net/theatre/theatre-reviews/item/5571-review-1619-the-journey-of-a-people-by-ted-williams-iii-at-fleetwood-jourdain-theatre.html|sarz maxwell:wrong-production": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "review:1619-the-journey-of-a-people-regional-2024|https://buzznews.net/theatre/theatre-reviews/item/5571-review-1619-the-journey-of-a-people-by-ted-williams-iii-at-fleetwood-jourdain-theatre.html|sarz maxwell:wrong-production",
+   "reason": "The review is of this production. Fleetwood-Jourdain Theatre is the resident company at the Noyes Cultural Art Center, Evanston (the text credits Tim Rhoze, Fleetwood-Jourdain artistic director, as co-director), so naming the company is not naming another show. BRO-7319."
+  },
+  "review:25th-annual-putnam-county-spelling-bee-regional-2024|https://aroundthetownchicago.com/theatre-reviews/the-25th-annual-putnam-county-spelling-bee-reviewed-by-julia-w-rath|julia w rath:byline": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "review:25th-annual-putnam-county-spelling-bee-regional-2024|https://aroundthetownchicago.com/theatre-reviews/the-25th-annual-putnam-county-spelling-bee-reviewed-by-julia-w-rath|julia w rath:byline",
+   "reason": "Live page checked 2026-11-10: headline credits Julia W. Rath, the body opens with the site author box Alan Bresloff 3 years ago. The outlet prints both; the body is the outlet review of this production, so the score stands and our byline follows the headline credit. BRO-7319."
   }
  }
 }

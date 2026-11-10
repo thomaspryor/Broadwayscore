@@ -13,7 +13,7 @@
 
 /** code -> class (1 stale closing, 2 byline, 3 wrong production/venue/roundup, 4 title, 6 run dates). Class 5 is the provenance check. */
 const CLASS_OF = {
-  'review-text-later-closing': 1, 'closing-date': 1,
+  'review-text-later-closing': 1, 'review-text-later-closing-unconfirmed': 1, 'closing-date': 1,
   byline: 2,
   'wrong-production': 3, 'non-review:roundup': 3, 'page-not-this-production': 3, 'review-other-venue': 3, 'venue-contradicted': 3, venue: 3,
   'title-spelling': 4, title: 4,
@@ -102,4 +102,11 @@ function cardFor(city, week, fresh, { planId = null, provenance = null } = {}) {
   return { title: `City hub audit ${city} ${week}: ${fresh.length + (prov ? 1 : 0)} new finding(s)`, body: lines.join('\n') };
 }
 
-module.exports = { CLASS_OF, CLASS_NAME, keyOf, findingsFromFlags, newFindings, planActions, isoWeek, cardFor };
+// BRO-7319: finding keys to persist as "seen". When the card could not be filed (Linear 429), the
+// fresh findings stay unseen so the next weekly run raises them again instead of losing them.
+function keysToPersist(findings, fresh, carded) {
+  const hold = carded ? new Set() : new Set((fresh || []).map((f) => f.key));
+  return findings.map((f) => f.key).filter((k) => !hold.has(k)).sort();
+}
+
+module.exports = { keysToPersist, CLASS_OF, CLASS_NAME, keyOf, findingsFromFlags, newFindings, planActions, isoWeek, cardFor };

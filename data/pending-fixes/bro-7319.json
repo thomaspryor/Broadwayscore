@@ -1,0 +1,27 @@
+{
+  "issueNumber": "bro-7319",
+  "planId": "9074f526-c9df-488d-97d3-a700292e35ff",
+  "status": "pending",
+  "createdAt": "2026-11-10T19:45:12.483Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7319: exclude the accessiblyliveoffline multi-show column scored as an A Number review (LA audit finding)",
+    "steps": [
+      "accessiblyliveoffline.wordpress.com 2026-09-27 is a 3,912-word multi-production column (SHELLS at Greenway Court Theatre and others); A Number is one of 6 passing mentions, not a review of it. Both audit models flagged it roundup."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "a-number-regional-2026/accessibly-live-off-line--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "accessiblyliveoffline.wordpress.com 2026-09-27 is a 3,912-word multi-production column (SHELLS at Greenway Court Theatre and others); A Number is one of 6 passing mentions, not a review of it. Both audit models flagged it roundup."
+      }
+    ]
+  }
+}

@@ -421,7 +421,8 @@ function computeFlags(L) {
   try { listings = readJson('data/audit/hub-run-dates.json').listings || {}; } catch { /* no report yet: texts only */ }
   for (const s of L.shows) {
     const r = A.showRunEndFinding(s, runEndTexts.get(s.id) || [], listings[s.id] || null);
-    if (r) add('show', s.id, s.title, 'local', [{ code: 'review-text-later-closing', detail: `ours ${s.closingDate} / ${r.source}`, fix: { field: 'closingDate', value: r.date, sourceField: 'closingDateSource', source: r.source } }]);
+    if (r && r.unconfirmed) add('show', s.id, s.title, 'local', [{ code: 'review-text-later-closing-unconfirmed', detail: `ours ${s.closingDate} / one site says ${r.source} (the writer needs a second host or the theatre listing)` }]);
+    else if (r) add('show', s.id, s.title, 'local', [{ code: 'review-text-later-closing', detail: `ours ${s.closingDate} / ${r.source}`, fix: { field: 'closingDate', value: r.date, sourceField: 'closingDateSource', source: r.source } }]);
   }
   // BRO-7291 class 3: a published review about the same title at another theatre in another state, and a stored
   // venue every outlet contradicts (octet-regional-2026: stored Goodman, seven outlets review Raven Theatre's).

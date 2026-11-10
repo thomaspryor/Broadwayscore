@@ -113,15 +113,22 @@ function laterAnnouncedRunEnd(show, evidence, opts = {}) {
   // a pinned humanCorrectedClosingDate in harvest-hub-run-dates.js. Several qualifying dates: the latest wins.
   const byDate = new Map();
   cands.forEach((c, i) => {
-    const e = byDate.get(c.date) || { all: new Set(), ext: new Set(), urls: [] };
+    const e = byDate.get(c.date) || { all: new Set(), ext: new Set(), urls: [], n: 0 };
     const h = hostOf(c.url) || `#${i}`;
     e.all.add(h);
+    e.n += 1;
     if (c.extended) e.ext.add(h);
     if (c.url && !e.urls.includes(c.url)) e.urls.push(c.url);
     byDate.set(c.date, e);
   });
-  const textBest = [...byDate.entries()].filter(([, e]) => e.all.size >= minSites).sort((x, y) => x[0].localeCompare(y[0])).pop();
-  const text = textBest && { date: textBest[0], urls: textBest[1].urls, kind: textBest[1].ext.size >= minSites ? 'extended' : 'text' };
+  // "extended" outranks plain text: the latest date that `minSites` hosts call an extension. Otherwise the plain date with the
+  // most distinct hosts (then most mentions, then the later one), as before BRO-7319, provided `minSites` hosts agree on it.
+  const extBest = [...byDate.entries()].filter(([, e]) => e.ext.size >= minSites).sort((x, y) => x[0].localeCompare(y[0])).pop();
+  const plainBest = [...byDate.entries()].filter(([, e]) => e.all.size >= minSites)
+    .sort((x, y) => y[1].all.size - x[1].all.size || y[1].n - x[1].n || y[0].localeCompare(x[0]))[0];
+  // plain text only decides when nothing stronger exists: the listing outranks it (a review keeps quoting the original run)
+  const pick = extBest ? { d: extBest, kind: 'extended' } : plainBest && !listing ? { d: plainBest, kind: 'text' } : null;
+  const text = pick && { date: pick.d[0], urls: pick.d[1].urls, kind: pick.kind };
   const best = [listing && { date: listing.date, urls: [listing.url], kind: 'listing' }, text]
     .filter(Boolean).sort((a, b) => a.date.localeCompare(b.date) || (a.kind === 'listing' ? 1 : -1)).pop() || null;
   if (!best) return null;

@@ -74,7 +74,12 @@ function fileCard(card) {
   const prefix = card.title.split(':')[0];
   const dedup = spawnSync('node', [brain, 'find', prefix], { encoding: 'utf8', timeout: 60_000, cwd: ROOT });
   if (dedup.status === 0 && dedup.stdout && dedup.stdout.trim() !== 'null') { console.log(`  card: "${prefix}" already open, not filed again`); return 'existing'; }
-  const c = spawnSync('node', [brain, 'create', card.title, '--priority', '2', '--notes', card.body, '--park', 'Weekly city-hub audit finding: a worker checks each source before any data edit'], { encoding: 'utf8', timeout: 60_000, cwd: ROOT });
+  let c;
+  for (let attempt = 0; attempt < 4; attempt++) { // BRO-7319: Linear 429s the 4th+ create in a burst; back off and retry
+    if (attempt) Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 15_000 * attempt);
+    c = spawnSync('node', [brain, 'create', card.title, '--priority', '2', '--notes', card.body, '--park', 'Weekly city-hub audit finding: a worker checks each source before any data edit'], { encoding: 'utf8', timeout: 60_000, cwd: ROOT });
+    if (c.status === 0 || !/429/.test(`${c.stderr || ''}${c.stdout || ''}`)) break;
+  }
   if (c.status !== 0) throw new Error(`linear-brain create failed (exit ${c.status}): ${(c.stderr || c.stdout || '').slice(0, 400)}`);
   const m = (c.stderr || '').match(/__BOARD_CARD_ID__=([A-Z]+-\d+)/);
   return m ? m[1] : 'filed';
@@ -108,11 +113,15 @@ async function auditCity(city, maxUsd) {
   const plan = writePlan(city, week, W.planActions(fresh));
   const card = W.cardFor(city, week, fresh, { planId: plan && (plan.planId ? `${plan.id} (issue_number=${plan.id} plan_id=${plan.planId})` : plan.id), provenance });
   summary.plan = plan;
-  summary.card = card ? fileCard(card) : null;
+  let carded = true;
+  try { summary.card = card ? fileCard(card) : null; } catch (e) { // BRO-7319: keep going, keep the findings unseen so next week retries
+    carded = false; summary.card = null; summary.cardError = e.message;
+    console.log(`::warning::${city}: card not filed (${e.message.slice(0, 160)}); findings stay unseen for the next run`);
+  }
   fs.mkdirSync(dir, { recursive: true });
   require('./lib/city-hub-dual-audit').writeAuditJson(path.join(dir, 'scorecard.json'), sc);
   await M.writeIngestPlan(L);
-  fs.writeFileSync(path.join(dir, 'weekly.json'), `${JSON.stringify({ ...summary, findingKeys: findings.map((f) => f.key).sort(), fresh, provenanceRows: provenance.rows }, null, 1)}\n`);
+  fs.writeFileSync(path.join(dir, 'weekly.json'), `${JSON.stringify({ ...summary, findingKeys: W.keysToPersist(findings, fresh, carded), fresh, provenanceRows: provenance.rows }, null, 1)}\n`);
   return summary;
 }
 
