@@ -61,6 +61,12 @@ function runCollector(plan, { dryRun }) {
   }
 }
 
+/** Single writer (BRO-7312). Called after every show so a crash mid-run never re-buys searches already made. */
+function saveState(state) {
+  fs.mkdirSync(path.dirname(R.STATE_PATH), { recursive: true });
+  fs.writeFileSync(R.STATE_PATH, `${JSON.stringify(state, null, 2)}\n`);
+}
+
 function main() {
   const nowMs = Date.now();
   const dryRun = flag('dry-run');
@@ -82,11 +88,11 @@ function main() {
     const rows = runCollector(plan, { dryRun });
     for (const r of rows) console.log(`  result ${r.showId}::${r.outletId} ${r.outcome}${r.reason ? ` (${r.reason})` : ''}${r.url ? ` ${r.url}` : ''}`);
     state = R.applyResults(state, { plan, rows, nowMs: Date.now(), dryRun });
+    if (!dryRun) saveState(state);
   }
   if (dryRun) { console.log('\n--dry-run: state not saved'); return; }
 
-  fs.mkdirSync(path.dirname(R.STATE_PATH), { recursive: true });
-  fs.writeFileSync(R.STATE_PATH, `${JSON.stringify(state, null, 2)}\n`); // single writer (BRO-7312)
+  saveState(state); // also records the sync when nothing was due
   const phases = {};
   for (const cell of Object.values(state.cells)) {
     const p = R.cellPhase(cell, Date.now()).phase;
