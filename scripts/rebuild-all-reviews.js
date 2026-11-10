@@ -5996,15 +5996,21 @@ if (fs.existsSync(reviewsJsonPath) && process.env.URL_WIPE_HOLD_DISABLED !== 'tr
       console.log(`  [URL-WIPE HOLD] ${held.length} live review(s) carried across a URL-move gap (awaiting re-collect/re-score)`);
       for (const d of heldDetails.slice(0, 10)) console.log(`    ${d.showId} / ${d.outletId} (${d.criticName || '-'}) score ${d.assignedScore}`);
     }
-    const auditDir = path.join(path.dirname(reviewsJsonPath), 'audit');
-    fs.mkdirSync(auditDir, { recursive: true });
-    fs.writeFileSync(path.join(auditDir, 'rebuild-url-wipe-holds.json'), JSON.stringify({
-      generatedAt: new Date().toISOString(),
-      heldCount: held.length,
-      held: heldDetails,
-      notHeld: Object.fromEntries(skipped),
-    }, null, 2));
     stats.urlWipeHeld = held.length;
+    // Write the audit only when something is held (or a prior file must be zeroed),
+    // so idle rebuilds do not produce a diff each run.
+    const auditFile = path.join(path.dirname(reviewsJsonPath), 'audit', 'rebuild-url-wipe-holds.json');
+    let priorHeld = 0;
+    try { priorHeld = JSON.parse(fs.readFileSync(auditFile, 'utf8')).heldCount || 0; } catch { /* none */ }
+    if (held.length || priorHeld) {
+      fs.mkdirSync(path.dirname(auditFile), { recursive: true });
+      fs.writeFileSync(auditFile, JSON.stringify({
+        generatedAt: new Date().toISOString(),
+        heldCount: held.length,
+        held: heldDetails,
+        notHeld: Object.fromEntries(skipped),
+      }, null, 2));
+    }
   } catch (e) {
     console.warn(`  [URL-WIPE HOLD] skipped: ${e.message}`);
   }

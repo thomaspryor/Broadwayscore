@@ -62,6 +62,10 @@ function holdRefusal(d, nowMs, windowMs) {
   if (nowMs - at > windowMs) return 'stamp-expired';
   if (hasScoreSignal(d)) return 'has-score-signal';
   if (hasExclusionFlag(d)) return 'exclusion-flag';
+  // The move itself erases wrong/roundup/duplicate flags; the stamp's cleared list is the
+  // only trace. If the old URL was flagged wrong, its score is not worth holding.
+  const cleared = Array.isArray(c.cleared) ? c.cleared.map(String) : [];
+  if (cleared.some((f) => /^(wrongShow|wrongProduction|wrongArticle|isRoundupArticle|isNonReview|duplicateOf)$/.test(f)) || d.urlCorrectedFrom) return 'old-url-was-flagged';
   return null;
 }
 

@@ -46,4 +46,9 @@ put('s3', 'late', { outletId: 'y', criticName: 'G', _urlChangedClear: stamp('202
 const late = findUrlWipeHolds({ previousRows: [row('s3', 'y', 'G')], newRows: [], reviewTextsDir: dir, nowMs: now });
 assert.strictEqual(late.heldDetails[0].expiringSoon, true);
 fs.rmSync(dir, { recursive: true, force: true });
+// The move erased a wrongProduction flag: the stamp's cleared list is the only trace; refuse.
+put('s2', 'wasflagged', { outletId: 'obs2', criticName: 'F', _urlChangedClear: { ...stamp('2026-11-10T15:39:00Z'), cleared: ['wrongProduction', 'llmScore'] } });
+const r2 = findUrlWipeHolds({ previousRows: [row('s2', 'obs2', 'F')], newRows: [], reviewTextsDir: dir, nowMs: now });
+assert.strictEqual(r2.held.length, 0);
+assert.strictEqual(r2.skipped.get('old-url-was-flagged'), 1);
 console.log('url-wipe-hold: all assertions passed');
