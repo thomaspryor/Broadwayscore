@@ -51,7 +51,7 @@ function isInDiscoveryUnblockWindow(show, nowMs = Date.now()) {
  */
 function getFoundOutletIds(showId, ctx) {
   const outletIds = new Set();
-  const showDir = path.join(REVIEW_TEXTS_DIR, showId);
+  const showDir = path.join((ctx && ctx.reviewTextsDir) || REVIEW_TEXTS_DIR, showId);
   if (!fs.existsSync(showDir)) return outletIds;
 
   const scoped = !!(ctx && ctx.show && isInDiscoveryUnblockWindow(ctx.show));
@@ -91,4 +91,36 @@ function getFoundOutletIds(showId, ctx) {
   return outletIds;
 }
 
-module.exports = { getFoundOutletIds, isInDiscoveryUnblockWindow, DISCOVERY_UNBLOCK_WINDOW_DAYS, REVIEW_TEXTS_DIR };
+/**
+ * BRO-7293: outlets that have review files on disk but every one is flagged
+ * wrongProduction/wrongShow (an earlier production's review). getFoundOutletIds
+ * correctly leaves these outlets open for discovery; this is the same fact as a set,
+ * so a url-less roundup row cannot close them again (claimsOutletCoverage).
+ */
+function getFlaggedOnlyOutletIds(showId, ctx) {
+  const flagged = new Set();
+  const showDir = path.join((ctx && ctx.reviewTextsDir) || REVIEW_TEXTS_DIR, showId);
+  if (!fs.existsSync(showDir)) return flagged;
+  const found = getFoundOutletIds(showId, ctx);
+  const hasFlagged = new Set();
+  const hasRealUnflagged = new Set();
+  for (const file of fs.readdirSync(showDir)) {
+    if (!isReviewTextFile(file)) continue;
+    try {
+      const data = JSON.parse(fs.readFileSync(path.join(showDir, file), 'utf8'));
+      if (!data.outletId) continue;
+      const id = data.outletId.toLowerCase();
+      if (data.wrongProduction || data.wrongShow) { hasFlagged.add(id); continue; }
+      // A url-less excerpt stub (what a roundup row leaves behind next to a flagged
+      // sibling) is not a collected review, so it must not close the outlet either.
+      const urlLessStub = !data.url && (data.contentTier === 'excerpt' || data.contentTier === 'stub');
+      if (!urlLessStub) hasRealUnflagged.add(id);
+    } catch {}
+  }
+  for (const id of hasFlagged) {
+    if (!found.has(id) || !hasRealUnflagged.has(id)) flagged.add(id);
+  }
+  return flagged;
+}
+
+module.exports = { getFoundOutletIds, getFlaggedOnlyOutletIds, isInDiscoveryUnblockWindow, DISCOVERY_UNBLOCK_WINDOW_DAYS, REVIEW_TEXTS_DIR };

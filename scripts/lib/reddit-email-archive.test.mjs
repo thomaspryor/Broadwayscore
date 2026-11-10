@@ -401,3 +401,11 @@ test('Money Scorecard [DRAFT] preview is never grouped with the weekly newslette
   assert.ok(!r.archive.includes('money'));
   assert.deepEqual(r.archive.filter((id) => id === 'nb7'), ['nb7']);
 });
+
+test('sweep logs each archived message id and subject so a wrong archive can be traced and undone', async () => {
+  const { fetchImpl } = fakeGmail({ messages: INBOX });
+  const lines = [];
+  await a.sweep({ now: () => 10000, env: ENV, fetchImpl, log: (l) => lines.push(l) });
+  assert.ok(lines.some((l) => l === 'archive n41: Updated Reddit post: Nero (41/100) for r/TheWestEnd'), lines.join('\n'));
+  assert.ok(!lines.some((l) => l.includes('archive n40')));
+});

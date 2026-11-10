@@ -484,6 +484,10 @@
       "bucket": "b",
       "rank": 99,
       "reason": "Zero-gap plan 1C read-only dry run: which truncated review-text files the trailer fix would re-tier to complete on the next rebuild, per outlet with sample endings; needs the private corpus and never writes review data. Logic is covered by scripts/lib/trailer-signatures.test.mjs, which CI runs."
+    },
+    "audit-roundup-excerpt-mismatch.js": {
+      "bucket": "b",
+      "reason": "BRO-7293 read-only cousin scan (roundup excerpt not in fullText on a flagged or auto-cleared file); needs the private review-texts corpus (cloud-run-script --review-texts); class guard is scripts/lib/roundup-merge-flagged-file.test.mjs"
     }
   }
 }

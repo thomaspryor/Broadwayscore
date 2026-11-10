@@ -173,7 +173,8 @@ const { cleanSearchTitle } = require('./lib/title-normalization');
 const { extractReviewsFromLBO } = require('./scrape-london-box-office-roundups');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { parseDate, parseHistoricalDate, maxPlausibleYear } = require('./lib/date-utils');
-const { getFoundOutletIds } = require('./lib/found-outlet-ids');
+const { isFlaggedForRoundupMerge, uniqueReviewFilename } = require('./lib/review-file-match');
+const { getFoundOutletIds, getFlaggedOnlyOutletIds } = require('./lib/found-outlet-ids');
 const { claimsOutletCoverage, buildStagedoorRow } = require('./lib/outlet-coverage-claim'); // BRO-6762
 const { logExclusion } = require('./lib/exclusion-logger');
 const { shouldLogRejection, shouldStampPreviewPlaceholder } = require('./lib/gather-review-stats');
@@ -5401,6 +5402,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
   // with existing reviews doesn't re-query site-search/SERP for outlets it already
   // has real files for (#785). Shared between STEP 1c and STEP 2 below.
   const diskFoundOutletIds = getFoundOutletIds(showId, { show, market: isWestEnd ? 'west-end' : 'broadway' });
+  const flaggedOnlyOutletIds = getFlaggedOnlyOutletIds(showId, { show, market: isWestEnd ? 'west-end' : 'broadway' }); // BRO-7293
 
   // STEP 1c: Direct Site Search (Telegraph, Variety, The Stage, Independent, Parterre, etc.)
   // Outlet-native search answers instantly (no Google indexing lag) and costs nothing for
@@ -5413,7 +5415,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
     const market = isWestEnd ? 'west-end' : 'broadway';
     const alreadyFoundIds = new Set([
       ...diskFoundOutletIds,
-      ...foundReviews.filter(claimsOutletCoverage).map(r => (r.outletId || '').toLowerCase()),
+      ...foundReviews.filter(r => claimsOutletCoverage(r, flaggedOnlyOutletIds)).map(r => (r.outletId || '').toLowerCase()),
     ]);
     const knownUrlsSoFar = new Set(foundReviews.map(r => r.url).filter(Boolean));
     const scrapingBeeKey = process.env.SCRAPINGBEE_API_KEY || '';
@@ -5567,7 +5569,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
         // vetted (wrongProduction/wrongShow/not_a_review excluded) by getFoundOutletIds.
         ...diskFoundOutletIds,
         ...foundReviews
-          .filter(claimsOutletCoverage)
+          .filter(r => claimsOutletCoverage(r, flaggedOnlyOutletIds))
           .filter(r => {
             const oid = (r.outletId || '').toLowerCase();
             const expectedDomain = outletDomainMap.get(oid);
@@ -5639,7 +5641,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
           // Aggregators may have already found 1 critic; compute which critics are
           // still uncovered and only query those (blanket-skip on foundOutletIds
           // would defeat the purpose of per-critic routing).
-          const foundForOutlet = foundReviews.filter(claimsOutletCoverage).filter(r => (r.outletId || '').toLowerCase() === outletIdLower);
+          const foundForOutlet = foundReviews.filter(r => claimsOutletCoverage(r, flaggedOnlyOutletIds)).filter(r => (r.outletId || '').toLowerCase() === outletIdLower);
           const criticsToQuery = _remainingCritics(criticList, foundForOutlet);
           const aggregatorCovered = foundForOutlet.length > 0;
 
@@ -5966,7 +5968,9 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
       const outletNorm = normalizeOutlet(bwwReview.outlet || bwwReview.outletId);
 
       let matched = false;
-      const matchFile = findMatchingReviewFile(existingFiles, outletNorm, criticNorm, normalizeOutlet);
+      // BRO-7293: never attach the excerpt to a flagged file (an earlier production's
+      // review by the same critic); it gets its own stub under a free filename instead.
+      const matchFile = findMatchingReviewFile(existingFiles.filter((f) => !isFlaggedForRoundupMerge(path.join(showDir, f))), outletNorm, criticNorm, normalizeOutlet);
       for (const file of existingFiles) {
         if (file === matchFile) {
           const filePath = path.join(showDir, file);
@@ -6000,7 +6004,8 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
           continue;
         }
 
-        const filename = generateReviewFilename(bwwReview.outlet || bwwReview.outletId, bwwReview.criticName);
+        // BRO-7293: a flagged file already owns the canonical name; use a free sibling name.
+        const filename = uniqueReviewFilename(showDir, generateReviewFilename(bwwReview.outlet || bwwReview.outletId, bwwReview.criticName));
         const filePath = path.join(showDir, filename);
 
         // Don't overwrite existing files (could exist from a different source or variant outlet ID)
@@ -6054,7 +6059,9 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
       const criticNorm = normalizeCritic(lboReview.criticName);
 
       let matched = false;
-      const matchFile = findMatchingReviewFile(existingFiles, outletNorm, criticNorm, normalizeOutlet);
+      // BRO-7293: never attach the excerpt to a flagged file (an earlier production's
+      // review by the same critic); it gets its own stub under a free filename instead.
+      const matchFile = findMatchingReviewFile(existingFiles.filter((f) => !isFlaggedForRoundupMerge(path.join(showDir, f))), outletNorm, criticNorm, normalizeOutlet);
       for (const file of existingFiles) {
         if (file === matchFile) {
           const filePath = path.join(showDir, file);
@@ -6082,7 +6089,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
       }
 
       if (!matched) {
-        const filename = generateReviewFilename(lboReview.outlet || lboReview.outletId, lboReview.criticName);
+        const filename = uniqueReviewFilename(showDir, generateReviewFilename(lboReview.outlet || lboReview.outletId, lboReview.criticName));
         const filePath = path.join(showDir, filename);
         const existingFile = findExistingReviewFile(showDir, lboReview.outlet || lboReview.outletId, lboReview.criticName);
         if (!existingFile && !fs.existsSync(filePath)) {

@@ -161,7 +161,28 @@ function isPlainApproval(text) {
   // approval of verdict A can't green-light verdict B.
   if (/APPROVED:\s*[A-Za-z0-9]{6,}/.test(text)) return false;
   if (APPROVAL_NEGATION_RE.test(text)) return false; // "don't ship", "not yet", etc.
-  return PLAIN_APPROVAL_RE.test(text);
+  if (!PLAIN_APPROVAL_RE.test(text)) return false;
+  // BRO-7295: a question ("did you push it?", "should we deploy?") is not a
+  // yes. Only a literal yes/approved inside it counts, which keeps the
+  // frustrated "HOW MANY TIMES DO I HAVE TO SAY YES?!" working.
+  // A question about approval is not approval: "did my yes get recorded?", "is it approved?".
+  if (/^\s*(?:did|is|was|does|do|has|have|can|will|should|are|what|why|when|where|which)\b[^]*\?\s*$/i.test(text)) return false;
+  if (/\?\s*$/.test(text.trim()) && !/\b(?:yes|yep|yup|yeah|approved?)\b/i.test(text)) return false;
+  return true;
+}
+
+// BRO-7295: who wrote this record? Only the owner's own typed text may approve.
+// Compaction summaries, hook feedback, task notifications, peer/subagent
+// messages and wake events are written by the harness or other agents and must
+// never be read as the owner's reply (nor be skipped over as a "last message").
+// Fails toward synthetic: an unknown origin kind is NOT the owner.
+const HUMAN_ORIGIN_KINDS = new Set(['user', 'human']);
+const SYNTHETIC_TEXT_RE = /^\s*(?:This session is being continued from a previous conversation|<system-reminder>|<command-name>|<local-command-|<task-notification>|<wake\b|<agent-message\b|<cross-session-message\b|\[SYSTEM NOTIFICATION|Stop hook feedback:|<user-prompt-submit-hook>|Caveat: The messages below|\[Request interrupted)/i;
+export function isSyntheticRecord(r, text) {
+  if (r && (r.isCompactSummary || r.isMeta || r.isSynthetic || r.isSidechain || r.isVisibleInTranscriptOnly || r.turnCompanion)) return true;
+  const origin = r && (r.origin || r.attachment?.origin);
+  if (origin && !HUMAN_ORIGIN_KINDS.has(origin.kind)) return true;
+  return SYNTHETIC_TEXT_RE.test(text || '');
 }
 
 // Reference-attached detection — Claude Code surfaces user-attached images as:
@@ -203,6 +224,21 @@ export function walkTranscript(transcriptPath) {
     // in-flight NO-VERIFY fix — see queryVisualClaimLanguage.
     const messageId = msg.id || r.uuid || null;
     const content = Array.isArray(msg.content) ? msg.content : (msg.content != null ? [msg.content] : []);
+    // BRO-7295: an owner message sent while a turn is running is stored by the
+    // harness as a top-level `attachment` record (type queued_command), not as
+    // a user record. Read it only from that harness-written record, never from
+    // tool_result text (tool output is agent-controlled and could forge it).
+    if (mtype === 'attachment' && r.attachment?.type === 'queued_command' && typeof r.attachment.prompt === 'string') {
+      const t = r.attachment.prompt;
+      // Only the owner's own mid-turn message becomes an event. Peer,
+      // notification and other harness-queued prompts emit nothing, exactly as
+      // before BRO-7295, so they cannot forge a typed /ship-check in
+      // review-coverage or move the in-flight turn boundary.
+      if (r.attachment.commandMode === 'prompt' && !isSyntheticRecord(r, t) && !isSyntheticRecord(r.attachment, t)) {
+        events.push({ kind: 'user_text', text: t, ts, messageId: r.uuid || null, midTurn: true, synthetic: false });
+      }
+      continue;
+    }
     if (mtype === 'assistant') {
       for (const c of content) {
         if (!c || typeof c !== 'object') continue;
@@ -216,7 +252,7 @@ export function walkTranscript(transcriptPath) {
       for (const c of content) {
         if (!c || typeof c !== 'object') {
           // raw string content — treat as user text
-          if (typeof c === 'string') events.push({ kind: 'user_text', text: c, ts, messageId });
+          if (typeof c === 'string') events.push({ kind: 'user_text', text: c, ts, messageId, synthetic: isSyntheticRecord(r, c) });
           continue;
         }
         if (c.type === 'tool_result') {
@@ -227,7 +263,7 @@ export function walkTranscript(transcriptPath) {
             events.push({ kind: 'attachment', detail: 'tool_result_image', ts, messageId });
           }
         } else if (c.type === 'text') {
-          events.push({ kind: 'user_text', text: c.text || '', ts, messageId });
+          events.push({ kind: 'user_text', text: c.text || '', ts, messageId, synthetic: isSyntheticRecord(r, c.text || '') });
           if (containsImageAttachment(c.text || '')) {
             events.push({ kind: 'attachment', detail: 'user_text_image_marker', ts, messageId });
           }
@@ -270,20 +306,33 @@ export function queryUiEditsWithoutVerdict(events) {
   return { hasUiEdit: false };
 }
 
-export function queryApprovalOf(events, hash) {
+export function queryApprovalOf(events, hash, { after = null } = {}) {
   const re = approvalRe(hash);
   if (!re) return { approved: false, reason: 'invalid hash' };
-  // Find LAST user_text (not tool_result, not attachment).
+  // Find the LAST user_text the owner actually wrote: skip synthetic records
+  // (compaction summaries, hook feedback, notifications, peer messages).
+  // BRO-7295: after compaction the last user_text was the auto summary, so the
+  // owner's real "yes" was never read.
   for (let i = events.length - 1; i >= 0; i--) {
     const e = events[i];
-    if (e.kind === 'user_text') {
+    if (e.kind === 'user_text' && !e.synthetic) {
       const exact = re.test(e.text);
       const plain = isPlainApproval(e.text);
+      let approved = exact || plain;
+      let reason;
+      // Freshness: a plain yes must come after the verdict it approves was
+      // written, so an old yes cannot green-light a newer verdict now that
+      // synthetic records no longer act as a barrier.
+      if (approved && after != null) {
+        const a = Date.parse(after), t = Date.parse(e.ts || '');
+        if (!(t >= a)) { approved = false; reason = 'owner reply is older than the verdict'; }
+      }
       return {
-        approved: exact || plain,
-        via: exact ? 'hash' : (plain ? 'plain-affirmative' : null),
+        approved,
+        via: approved ? (exact ? 'hash' : 'plain-affirmative') : null,
         lastUserText: e.text.slice(0, 200),
         matchedHash: hash,
+        ...(reason ? { reason } : {}),
       };
     }
   }
@@ -507,7 +556,7 @@ export function queryOverrideActiveForPush(events, { sessionId, consume = false,
   let matchIndex = -1;
   for (let i = events.length - 1; i >= 0; i--) {
     const e = events[i];
-    if (e.kind === 'user_text') {
+    if (e.kind === 'user_text' && !e.synthetic) {
       text = e.text || '';
       const m = OVERRIDE_RE.exec(text);
       if (m) {
@@ -581,7 +630,7 @@ function printHelp() {
 
 Queries:
   ui-edits-without-verdict          find most-recent UI-file Edit/Write
-  approval-of <hash>                check if last user msg contains APPROVED: <hash>
+  approval-of <hash> [--after=ISO|--after-file=PATH]  check if the owner's last real msg approves (skips compaction/hook/notification records; --after = verdict time)
   push-ingress --command=<cmd>      check if cmd is a push-ingress
   reference-attached                check if any user msg has an image attachment
   visual-claim-language             check if assistant msg makes visual-correctness claim
@@ -622,7 +671,10 @@ async function main() {
     case 'approval-of': {
       const hash = args.hash || args._[0];
       if (!hash) { console.error('ERROR: approval-of needs a hash (positional or --hash=)'); process.exit(1); }
-      result = queryApprovalOf(events, hash);
+      // --after-file: the verdict file's mtime (BRO-7295). An unreadable file means no freshness bound.
+      let after = args.after || null;
+      if (!after && args['after-file']) { try { after = statSync(args['after-file']).mtime.toISOString(); } catch { /* no bound */ } }
+      result = queryApprovalOf(events, hash, { after });
       break;
     }
     case 'reference-attached':
