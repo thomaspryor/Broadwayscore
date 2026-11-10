@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7257",
   "planId": "2d65a182-bb7b-4b0a-9e66-6d69e0beb64a",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-10T01:34:57.806Z",
   "submitter": {
     "name": null,
@@ -98,5 +98,54 @@
         "description": "shows.json: grim-regional-2026.status"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-10T03:36:59.118Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "wonder-regional-2026/artsfuse--martin-copenhaver.json humanReviewScore: null -> 71"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "black-swan-regional-2026/theater-mirror--mike-hoban.json humanReviewScore: null -> 89"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted black-swan-regional-2026/theater-mirror--michele-markarian.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran block-review.js successfully"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "come-from-away-north-regional-2026/berkshire-on-stage--berkshire-on-stage.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "paranormal-activity-boston-regional-2026/boston-com--samantha-genzer.json humanReviewScore: null -> 81"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for grim-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for grim-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for grim-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
