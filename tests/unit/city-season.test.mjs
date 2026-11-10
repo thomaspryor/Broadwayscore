@@ -96,3 +96,10 @@ test('pageToText keeps each link next to its label', () => {
   assert.equal(o.text, 'Arrowhead (https://a.org/x) Nov 12');
   assert.deepEqual(o.links, ['https://a.org/x']);
 });
+
+test('pendingShows: only live plans lock their shows out', async () => {
+  const S = require('../../scripts/lib/city-season');
+  const mk = (status, id) => ({ status, plan: { actions: [{ type: 'add-show', show: { id } }] } });
+  const got = S.pendingShows([mk('pending', 'a'), mk('applied', 'b'), mk('validation-failed', 'c'), mk('rejected', 'd'), mk('superseded', 'e'), null]);
+  assert.deepEqual(got.map((x) => x.id), ['a', 'b']);
+});

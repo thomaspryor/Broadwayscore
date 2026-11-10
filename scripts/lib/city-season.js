@@ -85,6 +85,21 @@ function fromPageRows(rows, { theatre, pageText, pageLinks = [], pageUrl, today,
   return out;
 }
 
+/**
+ * Shows queued in pending-fix plans, so the daily job does not propose them twice. A plan that failed
+ * validation, was rejected or was superseded must NOT count: its shows never reached shows.json and would
+ * otherwise be locked out forever (BRO-7250 review). `skipFile(name)` drops the caller's own plan files.
+ */
+const LIVE_PLAN_STATUS = new Set(['pending', 'applied', 'partial']);
+function pendingShows(plans) {
+  const out = [];
+  for (const pj of plans || []) {
+    if (!pj || !LIVE_PLAN_STATUS.has(pj.status)) continue;
+    for (const a of (pj.plan && pj.plan.actions) || []) if (a && a.show) out.push(a.show);
+  }
+  return out;
+}
+
 const keyOf = (r) => `${norm(r.title)}|${norm(r.theatre)}`;
 
 /** One row per production: theatre-page dates win over the listing; the listing's art is kept. */
@@ -140,4 +155,4 @@ function buildShow(row, { id, hubSlug, hub, city, today }) {
   };
 }
 
-module.exports = { HORIZON_DAYS, NON_PRODUCTION_RE, resolveTheatre, usableWindow, fromBwwRows, fromPageRows, mergeSeason, findExisting, showId, buildShow, slugify };
+module.exports = { HORIZON_DAYS, NON_PRODUCTION_RE, resolveTheatre, usableWindow, fromBwwRows, fromPageRows, mergeSeason, findExisting, pendingShows, showId, buildShow, slugify };

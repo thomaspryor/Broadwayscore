@@ -123,7 +123,11 @@ async function main() {
   let retired = () => false;
   try { retired = require('./lib/retired-show-ids').isRetiredId; } catch { /* registry missing */ }
   const pf = path.join(ROOT, 'data', 'pending-fixes');
-  if (fs.existsSync(pf)) for (const f of fs.readdirSync(pf)) { if (f.startsWith(planId)) continue; try { const pj = JSON.parse(fs.readFileSync(path.join(pf, f), 'utf8')); if (!['pending', 'applied', 'partial'].includes(pj.status)) continue; /* a failed or rejected plan must not lock its shows out */ for (const a of pj.plan.actions || []) if (a.show) { taken.add(a.show.id); pending.push(a.show); } } catch { /* skip */ } }
+  if (fs.existsSync(pf)) {
+    const plans = [];
+    for (const f of fs.readdirSync(pf)) { if (f.startsWith(planId)) continue; try { plans.push(JSON.parse(fs.readFileSync(path.join(pf, f), 'utf8'))); } catch { /* skip */ } }
+    for (const sh of S.pendingShows(plans)) { taken.add(sh.id); pending.push(sh); }
+  }
 
   const bwwAll = await bwwRows(city, getPage);
   if (!bwwAll.length) log.push('WARN: BroadwayWorld listing returned no rows');
