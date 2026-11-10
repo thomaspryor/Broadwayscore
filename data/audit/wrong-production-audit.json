@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-10T00:44:32.661Z",
+  "timestamp": "2026-11-10T01:54:17.391Z",
   "stats": {
-    "totalReviews": 81004,
-    "alreadyFlagged": 22147,
+    "totalReviews": 81021,
+    "alreadyFlagged": 22151,
     "dateGuardCatches": 219,
     "directorMismatch": 3582,
-    "tvFilmSignals": 2304,
-    "londonSignals": 3655,
+    "tvFilmSignals": 2305,
+    "londonSignals": 3657,
     "offBroadwaySignals": 752,
-    "yearMismatch": 372,
-    "noPublishDate": 8448
+    "yearMismatch": 373,
+    "noPublishDate": 8445
   },
   "findings": [
     {
@@ -19005,6 +19005,20 @@
       ]
     },
     {
+      "showId": "disaster-2016",
+      "file": "northjerseycom--virginia-rohan.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.northjersey.com/story/entertainment/tv/2016/02/20/growing-trend-of-live-tv-brings-possibilities-of-greatness-and-disaster/94507614/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "disgraced-2014",
       "file": "newsday--linda-winer.json",
       "score": 74,
@@ -32623,6 +32637,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "in-the-heights-off-broadway-2026",
+      "file": "one-minute-critic--matthew-wexler.json",
+      "publishDate": "2026-11-08",
+      "url": "https://1minutecritic.com/in-the-heights-city-center-review/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2008 (2x) more than 2026 (1x). 2008 matches production: in-the-heights-2008"
         }
       ]
     },
@@ -46332,6 +46359,7 @@
     {
       "showId": "north-by-northwest-old-regional-2026",
       "file": "theatermania--jonas-schwartz.json",
+      "score": 61,
       "publishDate": "2026-07-15",
       "url": "https://www.theatermania.com/news/review-north-by-northwest-an-all-over-the-map-hitchcock-adaptation_1845981/",
       "findings": [
@@ -94922,6 +94950,32 @@
       ]
     },
     {
+      "showId": "cloud-9-west-end-2026",
+      "file": "theatre-weekly--unknown.json",
+      "publishDate": "2026-11-09",
+      "url": "https://theatreweekly.com/first-look-images-released-for-caryl-churchills-cloud-9-at-the-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "cloud-9-west-end-2026",
+      "file": "whatsonstage--alex-wood.json",
+      "publishDate": "2026-11-09",
+      "url": "https://www.whatsonstage.com/news/cloud-9-at-the-national-theatre-first-look-photos_1736973/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "clueless-west-end-2025",
       "file": "london-box-office--emmie-newitt.json",
       "score": null,
@@ -104825,6 +104879,7 @@
     {
       "showId": "here-there-are-blueberries-theatre-royal-stratford-east-off-west-end-2026",
       "file": "theatreandtonic--liam-arnold.json",
+      "score": 65,
       "publishDate": "2026-02-12",
       "url": "https://theatreandtonic.co.uk/blog/here-there-are-blueberries-at-stratford-east-review",
       "findings": [
@@ -132800,6 +132855,7 @@
     {
       "showId": "the-memory-of-water-octagon-regional-2026",
       "file": "theatrereviewsnorth--robert-beale.json",
+      "score": 87,
       "publishDate": "2026-02-04",
       "url": "https://www.theatrereviewsnorth.com/post/the-memory-of-water",
       "findings": [
@@ -136174,6 +136230,7 @@
     {
       "showId": "the-trials-tron-regional-2026",
       "file": "theatreandtonic--charlotte.json",
+      "score": 63,
       "publishDate": "2026-03-11",
       "url": "https://theatreandtonic.co.uk/blog/the-trials-tron-theatre-glasgow-review",
       "findings": [
