@@ -87,7 +87,10 @@ function decideCvWrongProductionHold(data, show, opts = {}) {
   const cv = data && data.contentVerification;
   if (!cv || cv.wrongProduction !== true) return none;
   if (!opts.grandfather) return none; // no previous reviews.json to grandfather against: stand down loudly in the caller
-  if (CLEAR_FLAGS.some((f) => data[f] === true)) return { hold: false, reason: 'clear-flag' };
+  // BRO-7310: review-normalization's URL-swap auto-clear stamps boolean `true` plus wrongProductionAutoClearedAt. That
+  // is a script, not a human/curator, and it ran before any later verifier pass, so it is not a clear here.
+  const scriptStamp = (f) => f === 'wrongProductionAutoCleared' && !!data.wrongProductionAutoClearedAt;
+  if (CLEAR_FLAGS.some((f) => data[f] === true && !scriptStamp(f))) return { hold: false, reason: 'clear-flag' };
   if (data.wrongProduction === false && data.wrongProductionManualClear === true) return { hold: false, reason: 'manual-clear' };
   const c = opts.carveouts || {};
   if (data.allowEarlyDate || data.allowCrossMarket || c.advisory || c.venueCarveout || c.ownCast || c.lane) {

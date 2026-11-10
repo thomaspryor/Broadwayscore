@@ -102,26 +102,31 @@ test('BRO-7310: url-less file with an aliased critic byline is grandfathered aga
 // clear flags with `=== true`.
 test('BRO-7310: no writer\'s string stamp clears the CV gate; clear flags are read with === true', () => {
   const root = new URL('../../', import.meta.url).pathname;
-  const files = ['scripts/rebuild-all-reviews.js', 'scripts/unflag-wrong-production-fps.js', 'scripts/autoclear-stale-flags.js',
-    'scripts/video-reviews/verify-productions.js', 'scripts/lib/consent-refetch.js', 'scripts/lib/stale-flag-neutralization.js',
-    'scripts/lib/review-file-move.js', 'scripts/lib/multi-show-isolation-plan.js', 'scripts/lib/automated-clear-not-manual.js'];
+  // Discover writers by scanning scripts/ (not a fixed list). A boolean-true writer is only allowed if it also
+  // stamps wrongProductionAutoClearedAt, which the gate treats as a script stamp, not a human clear.
+  const walk = (dir) => fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => e.isDirectory()
+    ? (e.name === 'node_modules' ? [] : walk(dir + e.name + '/')) : (/\.(js|mjs)$/.test(e.name) && !/\.test\./.test(e.name) ? [dir + e.name] : []));
   let stamps = 0;
-  for (const f of files) {
-    const src = fs.readFileSync(root + f, 'utf8');
+  for (const f of walk(root + 'scripts/')) {
+    const src = fs.readFileSync(f, 'utf8');
     const m = src.match(/\.wrongProductionAutoCleared\s*=\s*[^;]+;/g) || [];
-    assert.ok(m.length > 0, `${f}: expected at least one wrongProductionAutoCleared writer`);
     for (const stmt of m) {
-      assert.ok(!/=\s*true\s*;/.test(stmt), `${f}: writes boolean true: ${stmt}`);
       stamps++;
+      if (/=\s*true\s*;/.test(stmt)) {
+        assert.ok(/wrongProductionAutoClearedAt/.test(src), `${f}: writes boolean true without wrongProductionAutoClearedAt: ${stmt}`);
+      }
     }
   }
   assert.ok(stamps >= 20, `found only ${stamps} writer statements`);
+  // script boolean stamp (with At) does not clear; a bare boolean (human) does
+  { const d = released(); d.wrongProductionAutoCleared = true; d.wrongProductionAutoClearedAt = '2026-11-01';
+    assert.equal(decide(d).hold, true, 'boolean script stamp with At must not clear'); }
   for (const stamp of ['rebuild: x', 'shadow-gated-contradiction', 'unflag-fps: y', 'verify-productions: z', 'collect-review-texts: w', 1, {}, []]) {
     const d = released(); d.wrongProductionAutoCleared = stamp;
     assert.equal(decide(d).hold, true, `stamp ${JSON.stringify(stamp)} must not clear`);
   }
   for (const f of ['scripts/lib/cv-wrongproduction-build-gate.js', 'scripts/lib/opening-night-checks/cv-wrongproduction-unhandled.check.js']) {
     const src = fs.readFileSync(root + f, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/[^\n]*/g, '');
-    assert.ok(!/!!\s*\w+\.wrongProductionAutoCleared|!\s*\w+\.wrongProductionAutoCleared\b/.test(src), `${f}: truthy read of wrongProductionAutoCleared`);
+    assert.ok(!/!!\s*\w+\.wrongProductionAutoCleared\b|!\s*\w+\.wrongProductionAutoCleared\b/.test(src), `${f}: truthy read of wrongProductionAutoCleared`);
   }
 });
