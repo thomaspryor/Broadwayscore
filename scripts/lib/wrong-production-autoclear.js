@@ -794,6 +794,21 @@ function shouldAutoClearWrongShowUkUrl(data, { isLondonMarketShow, isUkOutletUrl
  *   (parsed publishDate or YYYYMMDD URL date)
  * @returns {boolean}
  */
+/**
+ * BRO-7293: the BWW roundup excerpt quotes the review this file is supposed to hold. When
+ * the stored text has none of it, the file holds a different article (an earlier
+ * production's review the excerpt was attached to by outlet + critic). A date the
+ * roundup brought along says nothing about that text, so it must not release the hold.
+ */
+function bwwExcerptContradictsText(data) {
+  const norm = (t) => String(t || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  const text = norm(data && data.fullText);
+  if (text.length < 200 || !data.bwwExcerpt) return false;
+  const frags = String(data.bwwExcerpt).split(/\.\.\.|\u2026/).map(norm).filter((f) => f.length >= 25);
+  if (!frags.length) return false;
+  return !frags.some((f) => text.includes(f.slice(0, 60)));
+}
+
 function shouldAutoClearDatelessRevival(data, { hasUsableDate } = {}) {
   if (!data || data.wrongProduction !== true) return false;
   const note = data.wrongProductionNote || '';
@@ -817,6 +832,7 @@ function shouldAutoClearDatelessRevival(data, { hasUsableDate } = {}) {
     || data.humanReviewedWrongProduction === false;
   if (humanOverride) return true;
   if (hasEnsembleConsensus(data, 'wrong_production')) return false;
+  if (bwwExcerptContradictsText(data)) return false; // BRO-7293
   return !!hasUsableDate;
 }
 
@@ -1310,6 +1326,7 @@ function shouldAutoClearStaleLondonOutletCrossMarket(data, ctx = {}) {
 }
 
 module.exports = {
+  bwwExcerptContradictsText,
   DATE_GUARD_PREFIXES,
   locationFlagsStaleAfterMove,
   showIdDirMismatchNote,
