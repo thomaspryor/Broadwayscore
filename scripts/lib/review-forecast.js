@@ -178,6 +178,7 @@ function buildFeatures(target, ctx, opts = {}) {
   // Preview grosses: weeks ending strictly before opening night.
   x.grossCap = 0; x.grossAtp = 0;
   let hasGross = false;
+  // Intentionally NOT isBroadwayCategory: the backtest keys everything on the explicit category string; grosses exist for Broadway proper only, and a null category must not borrow them.
   if (ctx.weeks && target.category === 'broadway') {
     const wk = Object.keys(ctx.weeks).filter((w) => toDay(w) < D && ctx.weeks[w][target.id]).sort().slice(-PREVIEW_WEEKS_USED);
     const caps = []; const atps = [];
