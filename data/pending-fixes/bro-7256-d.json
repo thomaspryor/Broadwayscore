@@ -1,0 +1,45 @@
+{
+  "issueNumber": "bro-7256-d",
+  "planId": "ca074d76-6c4a-4ffb-8878-2d1482f09d37",
+  "status": "pending",
+  "createdAt": "2026-11-10T05:54:04.940Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7256: Sally & Tom opening date moved to the first review date; WaPo review no longer flagged as pre-opening",
+    "steps": [
+      "openingDate 2026-06-13 -> 2026-06-08 (BroadwayWorld, DC Theater Arts and WaPo reviews are dated 06-08 to 06-10)",
+      "Clear the anticipatory wrongProduction flag on the WaPo review (a review of this production, dated inside the corrected run)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sally-and-tom-regional-2026",
+        "field": "openingDate",
+        "oldValue": "2026-06-13",
+        "newValue": "2026-06-08",
+        "description": "Regional convention: openingDate is the first review date; reviews exist from 2026-06-08"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sally-and-tom-regional-2026/washpost--thomas-floyd.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Review is of Sally & Tom at Round House; the flag came from the wrong openingDate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sally-and-tom-regional-2026/washpost--thomas-floyd.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Lock the clear"
+      }
+    ]
+  }
+}
