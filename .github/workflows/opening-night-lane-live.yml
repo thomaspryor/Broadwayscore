@@ -302,6 +302,8 @@ jobs:
           # BRO-7280: with the pre-embargo window on, the lane starts up to 60 min earlier and runs this long instead.
           OPENING_NIGHT_LANE_WINDOW_PREEMBARGO_MIN: '275'
           LANE_PREEMBARGO_DIRECT_ONLY: ${{ needs.night-wait.outputs.preembargo }}
+          # BRO-7283: comparative settle kill switch (default off; opening-night-lane-switch.yml sets it to true).
+          LANE_COMPARATIVE_SETTLE_ENABLED: ${{ vars.LANE_COMPARATIVE_SETTLE_ENABLED }}
           # BRO-6649: each publish batch dispatches the deploy itself (deploy-port.js); gh needs a token for it.
           OPENING_NIGHT_LANE_DEPLOY_DISPATCH: '1'
           # Per-call and per-review LLM budgets, the poller's values (opening-night-poller.yml, BRO-6549). Without them

@@ -41,7 +41,7 @@ async function main() {
     ScorerClass: require('./llm-scoring/ensemble-scorer.ts').EnsembleReviewScorer,
     // BRO-7283: the same within-band comparative pass the regular pipeline runs (comparative-core.ts), run at score time so the
     // published score is the settled one. <2 models = nothing moves, the isolated scores publish as they always did.
-    settleFor: ({ show: s, reviewTextsDir }) => {
+    settleFor: !require('./lib/opening-night-lane/settle-flag').parseSettleFlag(process.env.LANE_COMPARATIVE_SETTLE_ENABLED) ? null : ({ show: s, reviewTextsDir }) => {
       const core = require('./llm-scoring/comparative-core.ts');
       return async ({ file }) => {
         const models = core.availableModels();

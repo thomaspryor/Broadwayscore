@@ -122,3 +122,24 @@ test('re-publish path: a review landing in pass 2 moves a row already live from 
   assert.equal(res.cron.changed, 0, 'cron finds nothing left to move');
   for (const r of REVIEWS) assert.equal(res.published[r.url], res.rebuild[r.url], `${r.outletId}: live score equals getBestScore(file)`);
 });
+
+// Kill switch: the settle ships OFF (unset variable) so landing it changes nothing until opening-night-lane-switch.yml turns it on.
+test('kill switch: only the exact value true turns the settle on', () => {
+  const { parseSettleFlag } = require('../../scripts/lib/opening-night-lane/settle-flag.js');
+  for (const off of [undefined, null, '', ' ', 'false', 'on', '1', 'yes', 'truee', 'off']) assert.equal(parseSettleFlag(off), false, `${JSON.stringify(off)} is off`);
+  for (const on of ['true', 'TRUE', ' true ']) assert.equal(parseSettleFlag(on), true);
+});
+
+test('kill switch: OFF runs no settle and makes no model call; the variable is switchable only through the switch workflow', async () => {
+  const res = await runNight({ settle: false });
+  assert.equal(res.settleCalls.length, 0, 'no settle port, no settle call');
+  assert.ok(!res.run.settle, 'no settle summary when the port is absent');
+  const { validateSwitch } = require('../../scripts/lib/opening-night-lane/lane-switch.js');
+  assert.equal(validateSwitch({ action: 'set', variable: 'LANE_COMPARATIVE_SETTLE_ENABLED', value: 'true' }).ok, true);
+  assert.equal(validateSwitch({ action: 'set', variable: 'LANE_COMPARATIVE_SETTLE_ENABLED', value: 'on' }).ok, false);
+  assert.equal(validateSwitch({ action: 'clear', variable: 'LANE_COMPARATIVE_SETTLE_ENABLED', value: '' }).op, 'delete');
+  const read = (p) => fs.readFileSync(new URL(`../../${p}`, import.meta.url), 'utf8');
+  assert.match(read('scripts/opening-night-lane.js'), /parseSettleFlag\(process\.env\.LANE_COMPARATIVE_SETTLE_ENABLED\) \? null/, 'the CLI builds the settle port only when the flag is on');
+  assert.match(read('.github/workflows/opening-night-lane-live.yml'), /LANE_COMPARATIVE_SETTLE_ENABLED: \$\{\{ vars\.LANE_COMPARATIVE_SETTLE_ENABLED \}\}/);
+  assert.match(read('.github/workflows/opening-night-lane-switch.yml'), /LANE_COMPARATIVE_SETTLE_ENABLED\]/);
+});
