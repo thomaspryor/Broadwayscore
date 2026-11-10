@@ -148,14 +148,14 @@ function loadData(hub, extraPlan) {
   return { shows: [...shows, ...season], season, reviews: R.filter((r) => ids.has(r.showId)) };
 }
 async function getPage(url, cache) {
-  const f = path.join(cache, crypto.createHash('sha1').update(url).digest('hex') + '.json');
-  try { return JSON.parse(fs.readFileSync(f, 'utf8')); } catch { /* fetch */ }
+  const cacheTarget = path.join(cache, crypto.createHash('sha1').update(url).digest('hex') + '.json');
+  try { return JSON.parse(fs.readFileSync(cacheTarget, 'utf8')); } catch { /* fetch */ }
   if (has('no-fetch')) return null;
   try {
     const { fetchPage } = require('./scraper');
     const p = await fetchPage(url, { skipVerify: true });
     const page = p && p.content ? { content: p.content, finalUrl: p.finalUrl || p.url || null } : null;
-    if (page) fs.writeFileSync(f, JSON.stringify(page));
+    if (page) fs.writeFileSync(cacheTarget, JSON.stringify(page));
     return page;
   } catch { return null; }
 }
@@ -230,11 +230,11 @@ async function main() {
     reviewsFlaggedGpt: out.perReview.filter((r) => r.problems && r.problems.gpt.length).length,
     reviewsFlaggedDeterministic: out.perReview.filter((r) => r.det.length).length,
   };
-  const file = arg('out', path.join(ROOT, 'data', 'audit', `city-hub-audit-${hub}.json`));
-  fs.mkdirSync(path.dirname(file), { recursive: true });
-  fs.writeFileSync(file, JSON.stringify(out, null, 1));
+  const reportTarget = arg('out', path.join(ROOT, 'data', 'audit', `city-hub-audit-${hub}.json`));
+  fs.mkdirSync(path.dirname(reportTarget), { recursive: true });
+  fs.writeFileSync(reportTarget, JSON.stringify(out, null, 1));
   try { require('./scraper').cleanup(); } catch { /* none */ }
-  console.log(JSON.stringify(out.summary), '->', file);
+  console.log(JSON.stringify(out.summary), '->', reportTarget);
 }
 if (require.main === module) main().catch((e) => { console.error(e); process.exit(1); });
 module.exports = { judgeReview, quoteProblem, showChecks, starBand, keyTitle, reviewPrompt, showPrompt };
