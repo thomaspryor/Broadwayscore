@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-11-10T19:42:58.503Z",
-  "processed": 5,
+  "updatedAt": "2026-11-10T19:43:46.072Z",
+  "processed": 7,
   "failed": 3,
-  "successRate": "62.5%",
+  "successRate": "70.0%",
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 4,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 0,
@@ -12,37 +12,20 @@
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 3
+    "archive": 2
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-11-10T19:39:43.401Z",
+      "t": "2026-11-10T19:43:22.088Z",
       "event": "bb-session",
-      "session": "cbd44ce7",
-      "url": "http://www.hollywoodreporter.com/review/larry-davids-fish-dark-theater-779483"
+      "session": "d4e6bf44",
+      "url": "https://www.washingtonpost.com/theater-dance/2023/04/26/new-york-musical-kander-"
     },
     {
-      "t": "2026-11-10T19:41:39.513Z",
-      "event": "bb-session",
-      "session": "aa6f7b94",
-      "url": "http://www.wsj.com/articles/fish-in-the-dark-review-enthusiasm-curbed-1425612431"
-    },
-    {
-      "t": "2026-11-10T19:41:40.300Z",
+      "t": "2026-11-10T19:43:22.946Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-11-10T19:41:57.404Z",
-      "event": "bb-session",
-      "session": "005b2d71",
-      "url": "http://www.wsj.com/articles/fish-in-the-dark-review-enthusiasm-curbed-1425612431"
-    },
-    {
-      "t": "2026-11-10T19:41:58.142Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "washingtonpost.com"
     }
   ]
 }

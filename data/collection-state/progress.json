@@ -1,25 +1,30 @@
 {
   "processed": [
-    "fish-in-the-dark-2015/nydailynews--joe-dziemianowicz.json",
-    "fish-in-the-dark-2015/ny1--roma-torre.json",
-    "fish-in-the-dark-2015/hollywood-reporter--david-rooney.json",
-    "fish-in-the-dark-2015/forward--jesse-oxfeld.json",
-    "fish-in-the-dark-2015/financialtimes--brendan-lemon.json"
+    "new-york-new-york-2023/village-voice--michael-musto.json",
+    "new-york-new-york-2023/dailybeast--tim-teeman.json",
+    "new-york-new-york-2023/pages-on-stages--mason-pilevsky.json",
+    "new-york-new-york-2023/culturesauce--thom-geier.json",
+    "new-york-new-york-2023/stageandcinema--unknown.json",
+    "new-york-new-york-2023/theater-life--paulanne-simmons.json",
+    "new-york-new-york-2023/washpost--peter-marks.json"
   ],
   "failed": [
-    "fish-in-the-dark-2015/newsday--unknown.json",
-    "fish-in-the-dark-2015/wsj--terry-teachout.json",
-    "fish-in-the-dark-2015/epoch-times--diana-barth.json"
+    "new-york-new-york-2023/vulture--justin-davidson.json",
+    "new-york-new-york-2023/ny1--unknown.json",
+    "new-york-new-york-2023/whatsonstage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "fish-in-the-dark-2015/financialtimes--brendan-lemon.json"
+      "new-york-new-york-2023/pages-on-stages--mason-pilevsky.json",
+      "new-york-new-york-2023/culturesauce--thom-geier.json",
+      "new-york-new-york-2023/stageandcinema--unknown.json",
+      "new-york-new-york-2023/theater-life--paulanne-simmons.json"
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/fish-in-the-dark-2015/hollywood-reporter--david-rooney.json",
-      "fish-in-the-dark-2015/hollywood-reporter--david-rooney.json"
+      "data/review-texts/new-york-new-york-2023/washpost--peter-marks.json",
+      "new-york-new-york-2023/washpost--peter-marks.json"
     ],
     "directCookies": [],
     "scrapingdog": [],
@@ -27,41 +32,23 @@
     "brightdata": [],
     "archiveToday": [],
     "archive": [
-      "fish-in-the-dark-2015/nydailynews--joe-dziemianowicz.json",
-      "fish-in-the-dark-2015/ny1--roma-torre.json",
-      "fish-in-the-dark-2015/forward--jesse-oxfeld.json"
+      "new-york-new-york-2023/village-voice--michael-musto.json",
+      "new-york-new-york-2023/dailybeast--tim-teeman.json"
     ]
   },
-  "startTime": "2026-11-10T19:39:24.622Z",
-  "lastProcessed": "fish-in-the-dark-2015/financialtimes--brendan-lemon.json",
+  "startTime": "2026-11-10T19:40:19.583Z",
+  "lastProcessed": "new-york-new-york-2023/whatsonstage--unknown.json",
   "log": [
     {
-      "t": "2026-11-10T19:39:43.401Z",
+      "t": "2026-11-10T19:43:22.088Z",
       "event": "bb-session",
-      "session": "cbd44ce7",
-      "url": "http://www.hollywoodreporter.com/review/larry-davids-fish-dark-theater-779483"
+      "session": "d4e6bf44",
+      "url": "https://www.washingtonpost.com/theater-dance/2023/04/26/new-york-musical-kander-"
     },
     {
-      "t": "2026-11-10T19:41:39.513Z",
-      "event": "bb-session",
-      "session": "aa6f7b94",
-      "url": "http://www.wsj.com/articles/fish-in-the-dark-review-enthusiasm-curbed-1425612431"
-    },
-    {
-      "t": "2026-11-10T19:41:40.300Z",
+      "t": "2026-11-10T19:43:22.946Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-11-10T19:41:57.404Z",
-      "event": "bb-session",
-      "session": "005b2d71",
-      "url": "http://www.wsj.com/articles/fish-in-the-dark-review-enthusiasm-curbed-1425612431"
-    },
-    {
-      "t": "2026-11-10T19:41:58.142Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "washingtonpost.com"
     }
   ]
 }
