@@ -42,29 +42,53 @@ function criticPhrase(name) {
   return n && !/^unknown$/i.test(n) ? ` by ${n}` : '';
 }
 
-/** Plain-English lines for one failed checklist result. */
-function plainFindings(result, { outletName = defaultOutletName } = {}) {
-  const d = (result && result.details) || {};
-  if (result.name === 'cv-wrongproduction-unhandled' && Array.isArray(d.violations) && d.violations.length) {
-    const lines = d.violations.slice(0, MAX_LINES_PER_CHECK).map((v) =>
-      `The ${outletName(v.outletId)} review${criticPhrase(v.criticName)} looks like it is about a different production of this show (for example an earlier run), but it is counted in the score.`);
-    if (d.violations.length > MAX_LINES_PER_CHECK) lines.push(`${d.violations.length - MAX_LINES_PER_CHECK} more reviews have the same problem.`);
-    return lines;
-  }
-  if (result.name === 'review-cards-complete') {
-    return ['At least one review in the draft is missing its outlet name or its quote.'];
-  }
-  if (result.name === 't1-outlets-scored') {
-    return [`A major outlet's review is missing from the score. ${firstSentence(result.message)}`.trim()];
-  }
-  const what = result.description || result.name;
-  return [`${what}. ${firstSentence(result.message)}`.replace(/\.\s*\.$/, '.').trim()];
+// One plain sentence per flagged review, for every error-severity check in
+// scripts/lib/opening-night-checks/. `who` is "The <Outlet> review[ by <critic>]".
+// Never echo a check's own description or message: those are written for
+// engineers (slugs, file names, task numbers). BRO-7297.
+const CHECK_LINES = {
+  'cv-wrongproduction-unhandled': { list: 'violations', line: (who) => `${who} looks like it is about a different production of this show (for example an earlier run), but it is counted in the score.` },
+  'slug-mismatch': { list: 'mismatches', line: (who) => `${who} has a web link that does not mention this show, so it may belong to a different show.` },
+  'fulltext-mentions-show': { list: 'violations', line: (who) => `${who} never mentions the show by name, so it may be about a different show.` },
+  'assigned-score-schema': { list: 'violations', line: (who) => `${who} has a score that is not a number, so it may be counted wrong.` },
+  'publish-date-pre-opening': { list: 'violations', line: (who, v) => `${who} is dated ${friendlyDate(v.publishDate)}, before this show opened, so it may be about an earlier production.` },
+  'wrong-production-bww': { list: 'problems', line: (who) => `${who} is dated well before this show opened, so it may be about an earlier production.` },
+};
+
+function friendlyDate(iso) {
+  const m = String(iso || '').match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (!m) return 'earlier';
+  const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  return `${months[Number(m[2]) - 1]} ${Number(m[3])}, ${m[1]}`;
 }
 
-function firstSentence(text) {
-  const t = String(text || '').split('\n')[0].trim();
-  const m = t.match(/^(.{1,200}?[.!?])(\s|$)/);
-  return (m ? m[1] : t.slice(0, 200)).trim();
+function reviewPhrase(v, outletName) {
+  const outlet = v && v.outletId ? outletName(v.outletId) : '';
+  if (!outlet) return 'One review';
+  return `${/^the\s/i.test(outlet) ? outlet : `The ${outlet}`} review${criticPhrase(v.criticName)}`;
+}
+
+/** Plain-English lines for one failed checklist result. */
+function plainFindings(result, { outletName = defaultOutletName } = {}) {
+  const r = result || {};
+  const d = r.details || {};
+  if (/^check threw:/.test(String(r.message || ''))) {
+    return ['One of the automatic checks broke while it ran, so part of the review list was not checked. Read through the reviews in the draft before sending.'];
+  }
+  const spec = CHECK_LINES[r.name];
+  const items = spec && Array.isArray(d[spec.list]) ? d[spec.list] : [];
+  if (items.length) {
+    const lines = items.slice(0, MAX_LINES_PER_CHECK).map((v) => spec.line(reviewPhrase(v, outletName), v));
+    if (items.length > MAX_LINES_PER_CHECK) lines.push(`${items.length - MAX_LINES_PER_CHECK} more reviews have the same problem.`);
+    return lines;
+  }
+  if (r.name === 'review-cards-complete') {
+    return ['At least one review in the draft is missing its outlet name or its quote.'];
+  }
+  if (r.name === 't1-outlets-scored') {
+    return ["A review from a major outlet (such as The New York Times) is missing from the score."];
+  }
+  return ['One of the automatic checks flagged a review but could not say which one in plain words. Ask Claude what it found before sending.'];
 }
 
 function showTitle(id, showsById, fromChecklist) {
@@ -127,6 +151,8 @@ function buildDeadlineDraftAlert({ checklistIds = [], driftIds = [], orphanEntri
     const [id, action] = String(entry).split(':');
     if (action === 'error' || !['in-flight', 'wait', 'dispatch', 'alert'].includes(action)) {
       add(id, 'The check that every review has a score did not finish, so the score in the draft may not include every review.');
+    } else if (action === 'alert') {
+      add(id, 'At least one review never got its score after several tries, so the score in the draft leaves it out.');
     } else {
       add(id, 'At least one review was still waiting for its score, so the score in the draft may change slightly.');
     }
@@ -145,11 +171,13 @@ function buildDeadlineDraftAlert({ checklistIds = [], driftIds = [], orphanEntri
     `The opening-night email for ${titles.join(' and ')} is waiting in Resend as a draft. Nothing has gone to subscribers.`,
     `The automatic checks found ${count === 1 ? 'this' : 'these'}:`,
     sections.join('\n\n'),
-    "Don't send yet if any of these look wrong. Tell Claude which ones; once they are fixed the draft updates on its own.",
-    urls.length === 1 ? `Open the draft: ${urls[0]}` : `Open the drafts:\n${urls.map((u) => `- ${u}`).join('\n')}`,
+    "Don't send yet if any of these look wrong. Tell Claude which ones, and wait until Claude says the draft is fixed.",
+    urls.length > 1 ? `Open the drafts:\n${urls.map((u) => `- ${u}`).join('\n')}`
+      : urls[0] === RESEND_BROADCASTS_URL ? `Open your drafts in Resend (it is the newest one): ${urls[0]}`
+        : `Open the draft: ${urls[0]}`,
   ].join('\n\n');
 
   return { ids, title, description, url: urls[0] };
 }
 
-module.exports = { readChecklistErrors, plainFindings, buildDeadlineDraftAlert, RESEND_BROADCASTS_URL };
+module.exports = { readChecklistErrors, plainFindings, buildDeadlineDraftAlert, RESEND_BROADCASTS_URL, CHECK_LINES };

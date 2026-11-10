@@ -20,15 +20,28 @@
  */
 
 const fs = require('fs');
+const path = require('path');
+
+/** Show titles for a comma list of show ids; the owner never sees slugs (BRO-7297). */
+function showTitles(breachedList, { readShows } = {}) {
+  const ids = String(breachedList || '').split(',').filter(Boolean);
+  if (!ids.length) return 'unknown';
+  let byId = {};
+  try {
+    const data = readShows ? readShows() : JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'data', 'shows.json'), 'utf8'));
+    byId = Object.fromEntries(((data && data.shows) || []).map((x) => [x.id, x.title]));
+  } catch { /* fall back to ids */ }
+  return ids.map((id) => byId[id] || id).join(', ');
+}
 
 const GATES = {
   checklist: {
     title: 'Opening-night email draft on hold: a quality check flagged a review',
-    description: 'The opening-night email draft is on hold because the automatic quality check flagged at least one review (for example, a review of a different production). Claude can fix it. If nothing changes, the draft is made anyway at 10am ET the day after opening and you get an email listing exactly which reviews to check before you press Send.',
+    description: 'The opening-night email draft is on hold because the automatic quality check flagged at least one review (for example, a review of a different production). Ask Claude to look at it. If the draft has not been made by 10am ET the day after opening, it is made anyway then and you get an email listing which reviews to check before you press Send.',
   },
   drift: {
     title: 'Opening-night email draft on hold: some scored reviews are not on the site yet',
-    description: 'The opening-night email draft is on hold because some scored reviews have not reached the site yet, so the score would be off. This usually clears on the next site update. If it does not, the draft is made anyway at 10am ET the day after opening and you get an email saying what to check before you press Send.',
+    description: 'The opening-night email draft is on hold because some scored reviews have not reached the site yet, so the score would be off. This usually clears on the next site update. If the draft has not been made by 10am ET the day after opening, it is made anyway then and you get an email saying what to check before you press Send.',
   },
 };
 
@@ -48,7 +61,7 @@ function isOwnerInformed(result) {
  * The conditionKey uses the caller's breached list as given; the workflow
  * sorts it so the same set always collapses to one key.
  */
-async function alertGateBlocked(gate, breachedList, { routeAlertFn } = {}) {
+async function alertGateBlocked(gate, breachedList, { routeAlertFn, readShows } = {}) {
   const cfg = GATES[gate];
   if (!cfg) throw new Error(`unknown broadcast gate "${gate}" (expected ${Object.keys(GATES).join('|')})`);
   const routeAlert = routeAlertFn || require('./owner-alert-router').routeAlert;
@@ -60,7 +73,8 @@ async function alertGateBlocked(gate, breachedList, { routeAlertFn } = {}) {
     severity: 'error',
     disposition: 'human',
     cooldownHours: 24,
-    fields: [{ name: 'Shows', value: breachedList || '(unknown)' }],
+    subjectLabel: '',
+    fields: [{ name: 'Show', value: showTitles(breachedList, { readShows }) }],
   });
   // A page-worthy downgrade to 'digest' counts as informed (see isOwnerInformed).
   return { informed: isOwnerInformed(result), action: result && result.action };
@@ -86,7 +100,7 @@ async function runGateAlert(gate, breachedList, { routeAlertFn, outputFile, log 
   return 1;
 }
 
-module.exports = { GATES, isOwnerInformed, alertGateBlocked, runGateAlert };
+module.exports = { GATES, isOwnerInformed, alertGateBlocked, runGateAlert, showTitles };
 
 if (require.main === module) {
   runGateAlert(process.argv[2], process.env.BREACHED_LIST, { outputFile: process.env.GITHUB_OUTPUT })

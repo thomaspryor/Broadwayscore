@@ -2,7 +2,10 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { readChecklistErrors, buildDeadlineDraftAlert } = require('../../scripts/lib/deadline-draft-alert.js');
+const { readChecklistErrors, buildDeadlineDraftAlert, plainFindings } = require('../../scripts/lib/deadline-draft-alert.js');
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 const { buildAlertEmail } = require('../../scripts/lib/discord-notify.js');
 
 // Shape written by scripts/opening-night-checklist.js --json (shows[].results).
@@ -57,7 +60,8 @@ test('title comes from the checklist JSON when shows.json is not passed; stored 
   assert.match(a.title, /^Here There Are Blueberries and Other Show email draft/);
   assert.equal((a.description.match(/resend\.com\/broadcasts\/shared/g) || []).length, 1);
   // severity 'error' counts even if ok is true (matches the summary's error count)
-  assert.match(a.description, /Something is off\. detail\./);
+  assert.match(a.description, /could not say which one in plain words/);
+  assert.doesNotMatch(a.description, /Something is off/);
 });
 
 test('long violation lists are capped', () => {
@@ -70,6 +74,7 @@ test('missing checklist output says the reviews were not checked; unknown critic
   const a = buildDeadlineDraftAlert({ checklistIds: ['x'], readChecklist: () => null });
   assert.match(a.description, /could not run, so none of the reviews were checked/);
   assert.equal(a.url, 'https://resend.com/broadcasts');
+  assert.match(a.description, /Open your drafts in Resend \(it is the newest one\)/);
   const b = buildDeadlineDraftAlert({
     checklistIds: ['x'], outletName,
     readChecklist: () => ({ shows: [{ results: [{ name: 'cv-wrongproduction-unhandled', ok: false, severity: 'error', details: { violations: [{ outletId: 'cititour', criticName: 'unknown' }] } }] }] }),
@@ -82,4 +87,43 @@ test('drift and orphan overrides read as plain sentences and count toward the ti
   assert.match(a.title, /check 2 things/);
   assert.match(a.description, /may be missing from the draft/);
   assert.match(a.description, /still waiting for its score/);
+});
+
+// Class guard: every checklist check that can raise an error (and so hold or
+// annotate the owner's draft) must have plain owner wording in CHECK_LINES.
+// A new error check without it would leak engineer text into the email.
+test('every error-severity opening-night check has plain owner wording', () => {
+  const dir = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..', 'scripts', 'lib', 'opening-night-checks');
+  const { CHECK_LINES: lines } = require('../../scripts/lib/deadline-draft-alert.js');
+  const missing = [];
+  for (const f of fs.readdirSync(dir).filter((x) => x.endsWith('.check.js'))) {
+    const src = fs.readFileSync(path.join(dir, f), 'utf8');
+    if (!/severity:\s*'error'/.test(src)) continue;
+    const name = require(path.join(dir, f)).name;
+    if (!lines[name]) missing.push(name);
+  }
+  assert.deepEqual(missing, []);
+});
+
+test('no finding line echoes engineer text (slug, file name, check threw)', () => {
+  const engineer = /\.json|check threw|--|https?:|[a-z]+-[a-z]+-\d{4}/;
+  const cases = [
+    { name: 'slug-mismatch', ok: false, severity: 'error', message: 'Review URL for nyt/Jesse Green does not mention show slug (checked: foo-2026): https://x', details: { mismatches: [{ outletId: 'nyt', criticName: 'Jesse Green', url: 'https://x/foo' }] } },
+    { name: 'fulltext-mentions-show', ok: false, severity: 'error', message: 'nyt/Jesse (nyt--jesse.json) SHIPPED', details: { violations: [{ filename: 'nyt--jesse.json', outletId: 'nyt', criticName: 'Jesse' }] } },
+    { name: 'publish-date-pre-opening', ok: false, severity: 'error', message: 'x', details: { violations: [{ outletId: 'nyt', criticName: 'J', publishDate: '2025-01-02' }] } },
+    { name: 'assigned-score-schema', ok: false, severity: 'error', message: 'x', details: { violations: [{ outletId: 'nyt', criticName: 'J' }] } },
+    { name: 'wrong-production-bww', ok: false, severity: 'error', message: 'x', details: { problems: [{ url: 'https://bww/x' }] } },
+    { name: 'cv-wrongproduction-unhandled', ok: false, severity: 'error', message: "check threw: ENOENT '/home/runner/data/x.json'", details: {} },
+    { name: 'some-future-check', ok: false, severity: 'error', message: 'foo-bar-2026 (x.json)', description: 'Catches EBT class (task #1)' },
+  ];
+  for (const r of cases) {
+    for (const line of plainFindings(r, { outletName: (id) => (id === 'nyt' ? 'New York Times' : id) })) {
+      assert.doesNotMatch(line, engineer, `${r.name}: ${line}`);
+    }
+  }
+});
+
+test('outlet names that start with "The" are not doubled; dates read like dates', () => {
+  const [line] = plainFindings({ name: 'publish-date-pre-opening', severity: 'error', ok: false, details: { violations: [{ outletId: 'nyt', criticName: 'J', publishDate: '2024-05-14' }] } }, { outletName: () => 'The New York Times' });
+  assert.match(line, /^The New York Times review by J is dated May 14, 2024,/);
 });
