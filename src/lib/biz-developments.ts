@@ -56,9 +56,10 @@ export function buildDevelopments(scope: keyof typeof LIMITS = 'short'): Develop
   const watchSlugs = new Set(watchShows.map((s) => s.slug));
   // A show that already announced its closing while below break-even is no
   // longer "at risk": it is closing before recouping (owner 2026-11-10).
-  const atRiskAll = getShowsAtRisk().filter((s) => !watchSlugs.has(s.slug));
-  const closingUnrecoupedSlugs = new Set(splitStruggling(atRiskAll).closing.map((s) => s.slug));
-  const atRisk: DevelopmentItem[] = atRiskAll.slice(0, lim.atRisk).map((show) => (show.closingDate ? {
+  const atRiskShown = getShowsAtRisk().filter((s) => !watchSlugs.has(s.slug)).slice(0, lim.atRisk);
+  // Only the ones listed here leave the upcoming-closings list, so none vanishes from the feed.
+  const closingUnrecoupedSlugs = new Set(splitStruggling(atRiskShown).closing.map((s) => s.slug));
+  const atRisk: DevelopmentItem[] = atRiskShown.map((show) => (show.closingDate ? {
     date: formatDevelopmentDate(show.closingDate),
     type: 'closing-announced',
     showTitle: show.title,
