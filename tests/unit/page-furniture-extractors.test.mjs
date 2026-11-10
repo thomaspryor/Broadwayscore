@@ -55,6 +55,12 @@ for (const entry of manifest) {
     const text = stored(entry);
     assert.ok(text.length >= 300, `extractor lost the body (${text.length} chars)`);
     assert.match(text, /Fixture paragraph \d+/, 'article prose missing');
+    // Every article paragraph (manifest snapshot, checked against the
+    // kill-switch output when taken) survives, in order: losing prose fails.
+    const got = [...text.matchAll(/Fixture paragraph (\d+)/g)].map((m) => Number(m[1]));
+    let k = 0;
+    for (const id of got) if (k < entry.paragraphs.length && id === entry.paragraphs[k]) k++;
+    assert.strictEqual(k, entry.paragraphs.length, `prose lost or reordered: expected ${JSON.stringify(entry.paragraphs)}, got ${JSON.stringify(got)}`);
     const hits = detectPageFurniture(text);
     assert.deepStrictEqual(hits, [], `furniture survived: ${hits.slice(0, 5).map((h) => `${h.category}: ${h.line}`).join(' | ')}`);
     for (const re of KNOWN) assert.doesNotMatch(text, re);

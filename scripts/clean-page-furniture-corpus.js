@@ -127,13 +127,13 @@ function main() {
 function applyRows(rows, stats) {
   const { safeWriteReview } = require('./lib/review-write-guard');
   const { withReviewTextsLock } = require('./lib/review-texts-lock');
-  const { checkpointReviewTexts, retryPendingPushes, createWriteTracker } = require('./lib/review-texts-checkpoint');
+  const { checkpointReviewTexts, retryPendingPushes, createWriteTracker, landingKey } = require("./lib/review-texts-checkpoint");
   const pre = retryPendingPushes({ repoDir: DIR });
   if (pre.notLanded && pre.notLanded.length) throw new Error(`earlier checkpoint(s) not landed: ${pre.notLanded.map((n) => n.rel).join(', ')}`);
   let tracker = createWriteTracker();
   const flush = () => {
     if (!tracker.size) return;
-    const res = checkpointReviewTexts({ repoDir: DIR, paths: [...tracker], message: `chore: remove page furniture from stored review texts (BRO-7171 Stage 5) - ${stats.written} so far` });
+    const res = checkpointReviewTexts({ repoDir: DIR, paths: [...tracker], expected: tracker.expected, message: `chore: remove page furniture from stored review texts (BRO-7171 Stage 5) - ${stats.written} so far` });
     console.log(`  [Checkpoint] ${res.pushed ? 'pushed' : 'nothing new to push'}; ${res.landed.length} landed, ${res.notLanded.length} not landed`);
     if (res.notLanded.length) throw new Error(`checkpoint did not land: ${res.notLanded.slice(0, 5).map((n) => n.rel).join(', ')}`);
     tracker = createWriteTracker();
@@ -153,7 +153,7 @@ function applyRows(rows, stats) {
           if (tierChangeRefusal(classifyContentTier(fresh).contentTier, classifyContentTier(res.record).contentTier)) return null;
           const w = safeWriteReview(row.file, res.record, { force: true });
           const after = JSON.parse(fs.readFileSync(row.file, 'utf8'));
-          if (after.fullText === res.record.fullText) tracker.add(path.resolve(row.file));
+          if (after.fullText === res.record.fullText) { tracker.add(path.resolve(row.file)); tracker.expected.set(path.resolve(row.file), landingKey(after)); }
           if ((w && w.wrote === false) || after.fullText !== res.record.fullText) {
             console.log(`  ✗ ${row.rel}: write did not stick (${(w && (w.skipped || w.reason)) || 'text differs after write'})`);
             return false;

@@ -321,7 +321,9 @@ function stripTrailingJunk(text) {
     cleaned = cleaned.slice(0, match.index);
   }
 
-  return cleaned.trim();
+  // Furniture the anchors above did not cut (BRO-7171 ship-check): the first
+  // pass kept tail anchors so these cuts could fire; nothing anchors now.
+  return require('./page-furniture').stripPageFurniture(cleaned.trim(), { anchors: false });
 }
 
 /**

@@ -250,11 +250,48 @@ function detectPageFurniture(text) {
   return [...hits.entries()].sort((a, b) => a[0] - b[0]).map(([i, category]) => ({ category, line: normLine(lines[i]) }));
 }
 
+// Tail anchors (ship-check, BRO-7171). The cut-to-end rules in
+// text-cleaning.js / text-quality.js start at end-of-article lines ("Share
+// this", "12 Comments", "Read more", "Advertisement") and take the junk
+// below them (bios, newsletter blocks, headline lists). Removing such a line
+// in the tail region leaves that junk with nothing to cut from it. So a
+// furniture line is removed only when real review prose still follows it
+// (it sits mid-article) or when nothing but furniture/blank lines follows
+// (it closes the body). Otherwise it stays as the anchor.
+// A one-line author bio is not "prose follows": two sentence lines, or one long one.
+const TAIL_PROSE_MIN_LINES = 2;
+const TAIL_PROSE_MIN_CHARS = 200;
+const TAIL_PROSE_ONE_LINE = 400;
+function keepTailAnchors(lines, hits, midBlock) {
+  if (!hits.size) return;
+  const norm = lines.map(normLine);
+  let proseLines = 0;
+  let proseChars = 0;
+  let otherAfter = false; // non-furniture, non-blank content below
+  for (let i = norm.length - 1; i >= 0; i--) {
+    const t = norm[i];
+    if (hits.has(i)) {
+      const cat = hits.get(i);
+      // A repeated paragraph or a mid-article related block is never an anchor.
+      if (cat === 'repeat' || (midBlock && midBlock.has(i))) continue;
+      const midArticle = (proseLines >= TAIL_PROSE_MIN_LINES && proseChars >= TAIL_PROSE_MIN_CHARS)
+        || proseChars >= TAIL_PROSE_ONE_LINE;
+      if (!midArticle && otherAfter) hits.delete(i);
+      continue;
+    }
+    if (!t) continue;
+    otherAfter = true;
+    if (t.length >= 60 && SENTENCE_END_RE.test(t)) { proseLines++; proseChars += t.length; }
+  }
+}
+
 /**
  * Remove furniture lines (and whitespace-only lines left around them).
  * Returns the input unchanged (same string) when nothing is furniture.
  */
-function stripPageFurniture(text, { tailGuard = false } = {}) {
+// anchors:false is for a pass that runs AFTER the cut-to-end rules (nothing
+// left to anchor); every other pass keeps tail anchors (keepTailAnchors).
+function stripPageFurniture(text, { tailGuard = false, anchors = true } = {}) {
   if (!text || typeof text !== 'string' || !pageFurnitureEnabled()) return text;
   const { lines, hits, midBlock } = analyse(text);
   if (tailGuard) {
@@ -270,6 +307,7 @@ function stripPageFurniture(text, { tailGuard = false } = {}) {
       if (!keep) hits.delete(i);
     }
   }
+  if (anchors) keepTailAnchors(lines, hits, midBlock);
   if (!hits.size) return text;
   const kept = lines.filter((_, i) => !hits.has(i));
   const out = kept.join('\n')

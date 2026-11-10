@@ -1282,9 +1282,16 @@ function _deliberateTextTrim(field, localData, committedData) {
   // A breadcrumb that names the text it produced (BRO-5198 toLength) only
   // covers that text: a later fetch replacing it is not a deliberate trim.
   if (typeof t.toLength === 'number' && localData.fullText.length !== t.toLength) return false;
-  return !!committedData && typeof committedData.fullText === 'string'
+  const lengthMatch = !!committedData && typeof committedData.fullText === 'string'
     && committedData.fullText.length === t.fromLength
     && committedData.fullText.length > localData.fullText.length;
+  if (!lengthMatch) return false;
+  // BRO-7171: a breadcrumb that names the exact prior text by hash covers only
+  // that text; a different body of the same length is a real re-collection.
+  if (typeof t.priorFullTextHash === 'string') {
+    return require('crypto').createHash('sha256').update(committedData.fullText).digest('hex') === t.priorFullTextHash;
+  }
+  return true;
 }
 
 // The breadcrumb half alone. safeWriteReview's own merge uses this: there the

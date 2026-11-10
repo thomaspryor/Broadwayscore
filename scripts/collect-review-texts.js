@@ -4256,11 +4256,14 @@ function chooseOutletOrGeneric(dedicated, generic) {
   const g = asStored(base);
   const v = novelProseVerdict(d, g);
   if (v.ok) return { text: base, source: 'generic', novel: v.novel };
-  // Superset: the generic body holds all of the outlet body plus at least
-  // one real prose run (a dropped closing/verdict paragraph). The 300-char
-  // bar above is for unrelated bodies; a strict superset only needs a run.
+  // Superset: the generic body holds all of the outlet body plus extra
+  // non-chrome words (a dropped closing verdict, even "An unmissable
+  // triumph."). The 300-char bar above is for unrelated bodies; for a strict
+  // superset losing prose is the worse failure (pre-BRO-7171 the longer text
+  // always won), so a 3-word run is enough.
   const { novelProseChars } = require('./lib/gap-acceptance');
-  if (v.novel > 0 && novelProseChars(g, d) === 0) return { text: base, source: 'generic', novel: v.novel };
+  const extra = novelProseChars(d, g, { minRunWords: 3 });
+  if (extra > 0 && novelProseChars(g, d) === 0) return { text: base, source: 'generic', novel: extra };
   return { text: dedicated, source: 'outlet', novel: v.novel };
 }
 

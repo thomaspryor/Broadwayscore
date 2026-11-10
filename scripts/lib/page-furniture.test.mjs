@@ -149,6 +149,8 @@ test('chooseOutletOrGeneric: generic superset with a dropped short verdict parag
   assert.ok(verdict.length < 300);
   const r = chooseOutletOrGeneric(BODY, `${BODY}\n\n${verdict}`);
   assert.strictEqual(r.source, 'generic');
+  assert.strictEqual(chooseOutletOrGeneric(BODY, `${BODY}\n\nAn unmissable triumph.`).source, 'generic');
+  assert.strictEqual(chooseOutletOrGeneric(BODY, `${BODY}\n\nShare on Facebook`).source, 'outlet');
   // Not a superset (outlet has prose the generic lacks): outlet keeps it.
   const other = 'An entirely different opening paragraph about the set design and the orchestra, which the generic pass never saw at all.';
   assert.strictEqual(chooseOutletOrGeneric(`${other}\n\n${BODY}`, `${BODY}\n\n${verdict}`).source, 'outlet');
@@ -157,6 +159,42 @@ test('chooseOutletOrGeneric: generic superset with a dropped short verdict parag
 test('copyright rule leaves an enumerated "(c)" point alone', () => {
   assert.strictEqual(PF.lineFurnitureCategory('(c) the second act sags badly'), null);
   assert.strictEqual(PF.lineFurnitureCategory('(c) 2024 Guardian News & Media Limited'), 'copyright');
+});
+
+// Ship-check (BRO-7171): a furniture line in the tail region is the anchor the
+// cut-to-end rules start from; removing it left footers on every save.
+test('tail anchors survive so the cut-to-end rules still fire', () => {
+  const { cleanText } = require('./text-cleaning.js');
+  const cases = [
+    ['washingtonpost', `${BODY}\n\n12 Comments\n\nNEWSLETTER\n\nWEEKDAYS\n\nThe 7: Today's most important news, every weekday morning.`, /NEWSLETTER|The 7/],
+    ['stageandcinema', `${BODY}\n\nShare on Facebook\n\nShare on X\n\nLeave a Reply\n\nYour email address will not be published.\n\nSUPPORT STAGE & CINEMA\n\nDONATE`, /DONATE|Leave a Reply/],
+    ['scoring view', `${BODY}\n\nShare this\n\nJane Critic writes about theatre.\n\nTop Ten Shows of the Season`, /Top Ten Shows|Jane Critic/],
+  ];
+  for (const [name, text, leak] of cases) {
+    const out = name === 'scoring view' ? TQ.stripTrailingJunk(text) : cleanText(text);
+    assert.ok(!leak.test(out), `${name}: footer kept: ${JSON.stringify(out.slice(-160))}`);
+    assert.ok(out.includes(P3), `${name}: prose lost`);
+  }
+});
+
+test('mid-article share bar is still removed', () => {
+  const t = `${P1}\n\nShare on Facebook\n\n${P2}\n\n${P3}`;
+  assert.ok(!/Share on Facebook/.test(PF.stripPageFurniture(t)));
+});
+
+test('push restore honours the trim only for the exact prior text (priorFullTextHash)', () => {
+  const { isIntentionalClear } = require('./review-write-guard.js');
+  const res = cleanRecord({ fullText: `${P1}\n\nShare on Facebook\n\n${P2}\n\n${P3}` }, '2026-11-09T00:00:00Z');
+  assert.ok(res, 'furniture found');
+  const prior = `${P1}\n\nShare on Facebook\n\n${P2}\n\n${P3}`;
+  assert.strictEqual(isIntentionalClear('fullText', res.record, { fullText: prior }), true);
+  const sameLengthOther = prior.replace('handsome', 'HANDSOME');
+  assert.strictEqual(sameLengthOther.length, prior.length);
+  assert.strictEqual(isIntentionalClear('fullText', res.record, { fullText: sameLengthOther }), false);
+});
+
+test('skipReason: manual tier and manual verification are left alone', () => {
+  assert.strictEqual(skipReason({ fullText: BODY, manualContentTier: 'complete' }), 'manual-tier');
 });
 
 test('cleanRecord chains an earlier trim breadcrumb under previous', () => {

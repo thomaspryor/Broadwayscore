@@ -17,6 +17,10 @@ function skipReason(d) {
   if (d._locked === true) return 'locked';
   // Text a person pasted or approved stays as they left it.
   if (d.fetchMethod === 'manual-entry' || d.sourceMethod === 'manual-entry') return 'manual-entry';
+  // A manual tier pins the tier check's result, so it can't vouch for the cut;
+  // same rule as the recovery gate (gap-acceptance.js).
+  if (d.manualContentTier) return 'manual-tier';
+  try { if (require('./incomplete-reason').isManuallyVerifiedAfterFetch(d)) return 'manually-verified'; } catch { /* helper missing: no extra skip */ }
   // A Theatre Record lift breadcrumb (BRO-6154) is read off fullTextTrimmed;
   // overwriting it would drop the lift's wrongProduction clear.
   if (d.fullTextTrimmed && /BRO-6154/.test(String(d.fullTextTrimmed.reason || ''))) return 'tr-lift-breadcrumb';

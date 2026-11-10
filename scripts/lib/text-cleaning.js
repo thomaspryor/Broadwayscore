@@ -396,7 +396,7 @@ function stripTrailingJunk(text, outletId) {
   const cleaned = stripTrailingJunkCore(stripPageFurniture(text, { tailGuard: true }));
   // Unlike tiering, this result is SAVED to review files, so the kill switch must cover it.
   if (!trailerFixesEnabled()) return cleaned;
-  return stripOutletTrailer(stripFourthWalshInfoBlock(stripPageFurniture(cleaned)), outletId);
+  return stripOutletTrailer(stripFourthWalshInfoBlock(stripPageFurniture(cleaned, { anchors: false })), outletId);
 }
 
 function stripTrailingJunkCore(text) {

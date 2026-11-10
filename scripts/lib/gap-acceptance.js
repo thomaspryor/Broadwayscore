@@ -94,7 +94,7 @@ const RELATED_MARKER_RE = /\b(?:related (?:articles|posts|stories|content|readin
  * Characters of genuinely new prose the candidate adds over the prior text.
  * Pure. @returns {number}
  */
-function novelProseChars(priorText, candidateText) {
+function novelProseChars(priorText, candidateText, { minRunWords = NOVEL_MIN_RUN_WORDS } = {}) {
   const { identityTokens } = require('./review-text-identity');
   const words = (t) => identityTokens(String(t || '')).map((x) => x.w);
   const pw = words(priorText);
@@ -118,7 +118,7 @@ function novelProseChars(priorText, candidateText) {
     const joined = r.join(' ');
     const m = RELATED_MARKER_RE.exec(joined);
     if (m) r = joined.slice(0, m.index).trim().split(' ').filter(Boolean);
-    if (r.length < NOVEL_MIN_RUN_WORDS) continue;
+    if (r.length < minRunWords) continue;
     const chrome = r.filter((w) => CHROME_WORDS.has(w) || /^\d+$/.test(w)).length;
     if (chrome / r.length > NOVEL_MAX_CHROME_FRAC) continue;
     chars += r.join(' ').length;
