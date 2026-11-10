@@ -563,3 +563,23 @@ test('class guard: fabricatedEntry is cleared only behind the identity proof', (
   const collector = fs.readFileSync(path.join(root, 'collect-review-texts.js'), 'utf8');
   assert.ok(collector.includes('fabricatedFlagClearDecision('), 'collector clear must go through fabricatedFlagClearDecision');
 });
+
+// BRO-7171 item (a): a review excluded on a saved error page is recovered, and
+// the write voids the verdicts with the errorPageVerdictVoid breadcrumb.
+test('recoverReviewText: real text replacing a saved error page voids the verdicts judged on it (BRO-7171)', async () => {
+  const USAT_404 = 'Page Not Found (404) | USA TODAY Skip to main content Home U.S. Sports Entertainment Life Money Tech Travel Opinion '
+    + 'Sorry, we can\'t find the page you are looking for. '.repeat(3);
+  const c = candidateFile({ fullText: USAT_404, contentTier: 'invalid', isNonReview: true, nonReviewType: 'news', nonReviewClassifiedBy: 'gemini', wrongShow: true, wrongShowReason: '404 page - not a review' });
+  const pre = JSON.parse(fs.readFileSync(c.filePath, 'utf8'));
+  assert.equal(acceptRecoveredText(pre, { rawText: GOOD }, ctx).accept, true);
+  const r = await gate.recoverReviewTextVerified({ filePath: c.filePath, rawText: GOOD, url: c.url, expectUrl: c.url, labels: LABELS, show: null, ctxOpts: {} });
+  assert.equal(r.ok, true, `${r.code} ${r.reason}`);
+  const onDisk = JSON.parse(fs.readFileSync(c.filePath, 'utf8'));
+  assert.equal(onDisk.isNonReview, null);
+  assert.equal(onDisk.wrongShow, null);
+  assert.equal(onDisk.errorPageVerdictVoid.prior.isNonReview, true);
+  assert.equal(onDisk.errorPageVerdictVoid.prior.wrongShowReason, '404 page - not a review');
+  // a non-body verdict still refuses
+  const keep = candidateFile({ fullText: USAT_404, contentTier: 'invalid', wrongProduction: true, wrongProductionNote: 'Cross-market: US outlet reviewing London show' });
+  assert.equal(acceptRecoveredText(JSON.parse(fs.readFileSync(keep.filePath, 'utf8')), { rawText: GOOD }, ctx).code, 'excluded_record');
+});

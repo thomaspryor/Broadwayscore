@@ -281,6 +281,14 @@ function headlineIdentity({ outletId, headline, show, showTitle }) {
  *   newTier?: string, priorTier?: string|null, urlChanged: boolean, identity?: object}}
  */
 function acceptRecoveredText(existing, candidate, ctx = {}) {
+  // Verdicts judged on the saved error page this text would replace say
+  // nothing about the candidate: judge it as the record will be once the write
+  // voids them (BRO-7171 item a). The caller's object is never mutated.
+  const EPV = require('./error-page-verdict');
+  if (EPV.isErrorPageVerdictOnly(existing)) {
+    existing = JSON.parse(JSON.stringify(existing));
+    EPV.voidErrorPageVerdicts(existing);
+  }
   const showId = ctx.showId || existing.showId;
   const newUrl = candidate.url || existing.url || '';
   const urlChanged = !!candidate.url && !!existing.url
@@ -622,6 +630,10 @@ function recoverReviewText({ filePath, rawText, url, headline = null, pageDate =
       // the move (and a delete would be copied back by merge-mode safeWriteReview).
       data.urlDiscoveryMethod = labels.urlDiscoveryMethod || labels.sourceMethod;
     }
+    // Verdicts judged on the saved error page being replaced go aside with a
+    // breadcrumb (judged on the OLD body, so before it is overwritten); the new
+    // text is judged fresh (BRO-4383 write guard, rescore).
+    require('./error-page-verdict').voidErrorPageVerdicts(data, { at, why: `real text accepted via ${labels.sourceMethod}` });
     const { countWords } = require('./content-quality');
     data.fullText = text;
     data.isFullReview = text.length > 1500;

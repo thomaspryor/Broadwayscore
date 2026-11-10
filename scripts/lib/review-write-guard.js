@@ -237,6 +237,10 @@ const PROTECTED_FIELDS = [
   // _previousWrongFlags — isIntentionalClear() keys on it, so losing it on a
   // rebase would let the restore resurrect old-URL-derived flags/scores.
   '_urlChangedClear',
+  // error-page-verdict.js breadcrumb (BRO-7171): verdicts judged on a saved
+  // error page, voided when real text was accepted. isIntentionalClear() keys
+  // on it; lost on a rebase, the restore would resurrect the voided verdicts.
+  'errorPageVerdictVoid',
   'wrongAttribution',
   'wrongAttributionReason',
   'manualContentTier',
@@ -1301,6 +1305,10 @@ function _isBreadcrumbClear(field, localData, committedData) {
   if (!localData) return false;
   const pred = CLEAR_BREADCRUMBS[field];
   if (typeof pred === 'function' && pred(localData, committedData)) return true;
+  // BRO-7171: a verdict judged on a saved error page, voided when real text was
+  // accepted (errorPageVerdictVoid). Restore-scope only, and only while the
+  // committed copy holds exactly the voided value; not a human clear.
+  if (require('./error-page-verdict').isErrorPageVoidedField(field, localData, committedData)) return true;
   return _urlChangeCleared(field, localData, committedData);
 }
 

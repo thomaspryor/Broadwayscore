@@ -140,6 +140,13 @@ function classifyTextGap(review, ffEntry = null, ctx = {}) {
     tier: review.contentTier || null,
   });
 
+  // A file whose only exclusions were judged on the saved error page it holds
+  // (Gemini "news", LLM "page not found", the BRO-4383 guard reading a 404
+  // page) is a dead url: archive + url finding, verdicts voided on accept.
+  if (require('./error-page-verdict').isErrorPageVerdictOnly(review) && review.url) {
+    if (hasTerminalRecord(review, dateKnown ? recency : null)) return done('TERMINAL', review.textUnrecoverable.reason);
+    return done('URL_DEAD', 'saved_error_page', classifyIncompleteReason(review, ffEntry)?.incompleteReason || null);
+  }
   // Not a gap: other flows own these files.
   const wrongShowLive = review.wrongShow && !require('./review-guards').wrongShowExplicitlyCleared(review);
   if (review.duplicateOf) return done('EXCLUDED', 'duplicate');

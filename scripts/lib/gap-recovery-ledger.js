@@ -390,7 +390,9 @@ function ownedRecordReason(review) {
   if (!review) return null;
   if (review._locked === true) return 'locked';
   if (review.manualContentTier) return 'manual_tier';
-  if (review.wrongShow || review.wrongProduction) return 'excluded_record';
+  // Verdicts judged on a saved error page do not own the record: the real
+  // review is looked for and they are voided on accept (BRO-7171 item a).
+  if ((review.wrongShow || review.wrongProduction) && !require('./error-page-verdict').isErrorPageVerdictOnly(review)) return 'excluded_record';
   return null;
 }
 
