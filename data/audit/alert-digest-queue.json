@@ -411,6 +411,37 @@
     "queuedAt": "2026-11-10T14:20:54.833Z"
   },
   {
+    "conditionKey": "land:land/bro-7163-f10",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7163-f10",
+    "description": "land.yml did not land land/bro-7163-f10: the unit-tests-node gate went red at 12ee4ebdf2. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42829559585",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7163-f10"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "12ee4ebdf247106fcf7821e43c93597852028f69"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42829559585"
+      }
+    ],
+    "queuedAt": "2026-11-10T14:28:02.713Z"
+  },
+  {
     "conditionKey": "land:land/inbox-digest-archive",
     "title": "Landing blocked: unit-tests-node red on land/inbox-digest-archive",
     "description": "land.yml did not land land/inbox-digest-archive: the unit-tests-node gate went red at 2fb03548bd. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42830262223",
