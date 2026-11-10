@@ -127,3 +127,15 @@ test('BRO-6268: a bare genre disambiguator may be dropped, even onto a shared ti
   assert.equal(r.ok, true, r.reason);
   assert.equal(shows[0].title, 'Lend Me a Tenor');
 });
+
+test('BRO-7256: a one-letter misspelling of a long word is a cosmetic repair, a different word is not', () => {
+  assert.equal(retitleProblem('Hangman', 'Hangmen', []), null);
+  assert.match(retitleProblem('Hangman', 'Hangmen', ['Hangmen']), /not a cosmetic repair/);
+  assert.match(retitleProblem('Rent', 'Rant', []), /not a cosmetic repair/);       // short words never
+  assert.match(retitleProblem('Hamlet', 'Hamlet Two', []), /not a cosmetic repair/);
+  assert.match(retitleProblem('Company', 'Compass', []), /not a cosmetic repair/); // two letters differ
+  const shows = [{ id: 'hangman-regional-2026', title: 'Hangman' }];
+  const r = applyRetitleShow(shows, { id: 'hangman-regional-2026', expectTitle: 'Hangman', newTitle: 'Hangmen', reason: 'review text headline spells it HANGMEN' });
+  assert.equal(r.ok, true, r.reason);
+  assert.equal(shows[0].title, 'Hangmen');
+});
