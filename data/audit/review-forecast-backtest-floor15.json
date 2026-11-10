@@ -1,0 +1,3239 @@
+{
+  "generatedAt": "2026-11-10T19:15:17.821Z",
+  "card": "BRO-7314",
+  "market": "broadway",
+  "floor": 15,
+  "settleDays": 21,
+  "today": "2026-11-10",
+  "target": "getCriticScore(showId) from scripts/lib/canonical-critic-scores.ts (integer, as displayed)",
+  "preDeclaredBar": {
+    "text": "Publish-worthy only if, walk-forward, (1) model MAE is at least 15% lower than the category-mean baseline with a season-clustered 95% bootstrap interval that excludes zero, and (2) the stated 80% range holds between 72% and 88% of outcomes.",
+    "minRelativeMaeGain": 0.15,
+    "coverageLow": 0.72,
+    "coverageHigh": 0.88
+  },
+  "population": {
+    "scoredShowsAtFloor": 494,
+    "evaluated": 452,
+    "minEarlierSeasonShows": 30,
+    "firstSeason": 2011,
+    "lastSeason": 2026,
+    "withEarlierProduction": 101,
+    "withPreviewGrosses": 362
+  },
+  "leakage": {
+    "rowsChecked": 494,
+    "lagDays": 3,
+    "perturbation": {
+      "checked": 40,
+      "moved": 0
+    }
+  },
+  "notUsed": [
+    "audience grades (no dated history; data/audience-snapshots begins 2026-04 and live scores postdate openings)",
+    "cast (shows.json cast is a later snapshot incl. replacements)",
+    "producers (not in the data)"
+  ],
+  "loso": {
+    "n": 452,
+    "seasons": 15,
+    "maeModel": 8,
+    "maeCategoryMean": 8.9,
+    "maeGainPct": 10.2,
+    "maeDiffCI95": [
+      -1.2,
+      -0.6
+    ],
+    "maeDiffVsPriorElseMeanCI95": [
+      -1,
+      -0.1
+    ],
+    "rmseModel": 10,
+    "rmseCategoryMean": 10.8,
+    "scoreSd": 11,
+    "maePriorElseMean": 8.5,
+    "bandHitModel": 0.352,
+    "bandHitCategoryMean": 0.299,
+    "bandHitPriorElseMean": 0.321,
+    "coverage80": 0.794,
+    "coverage50": 0.496,
+    "avgWidth80": 26.5,
+    "baselineIntervalCoverage80": 0.799,
+    "baselineIntervalWidth80": 27.6,
+    "priorRunSubset": {
+      "n": 101,
+      "maePriorRunAlone": 7.1,
+      "maeModel": 5.7,
+      "maeCategoryMean": 8.9
+    }
+  },
+  "walkForward": {
+    "n": 301,
+    "seasons": 10,
+    "maeModel": 7.6,
+    "maeCategoryMean": 8.4,
+    "maeGainPct": 9.9,
+    "maeDiffCI95": [
+      -1.3,
+      -0.3
+    ],
+    "maeDiffVsPriorElseMeanCI95": [
+      -1.1,
+      0.2
+    ],
+    "rmseModel": 9.6,
+    "rmseCategoryMean": 10.2,
+    "scoreSd": 10.4,
+    "maePriorElseMean": 8,
+    "bandHitModel": 0.372,
+    "bandHitCategoryMean": 0.319,
+    "bandHitPriorElseMean": 0.346,
+    "coverage80": 0.821,
+    "coverage50": 0.561,
+    "avgWidth80": 27.1,
+    "baselineIntervalCoverage80": 0.844,
+    "baselineIntervalWidth80": 28.6,
+    "priorRunSubset": {
+      "n": 91,
+      "maePriorRunAlone": 7.4,
+      "maeModel": 5.8,
+      "maeCategoryMean": 8.7
+    }
+  },
+  "fixedSplit": {
+    "n": 183,
+    "seasons": 6,
+    "maeModel": 7.8,
+    "maeCategoryMean": 9.1,
+    "maeGainPct": 13.8,
+    "maeDiffCI95": [
+      -1.6,
+      -0.8
+    ],
+    "maeDiffVsPriorElseMeanCI95": [
+      -1.8,
+      0
+    ],
+    "rmseModel": 9.8,
+    "rmseCategoryMean": 10.7,
+    "scoreSd": 10.9,
+    "maePriorElseMean": 8.6,
+    "bandHitModel": 0.366,
+    "bandHitCategoryMean": 0.251,
+    "bandHitPriorElseMean": 0.295,
+    "coverage80": 0.82,
+    "coverage50": 0.525,
+    "avgWidth80": 26.3,
+    "baselineIntervalCoverage80": 0.847,
+    "baselineIntervalWidth80": 28.2,
+    "priorRunSubset": {
+      "n": 67,
+      "maePriorRunAlone": 7.7,
+      "maeModel": 6,
+      "maeCategoryMean": 8.9
+    },
+    "window": "train through 2019-20, test 2021-22 onward"
+  },
+  "ablationsLoso": {
+    "all": {
+      "n": 452,
+      "maeModel": 8,
+      "maeCategoryMean": 8.9,
+      "bandHitModel": 0.352
+    },
+    "people only": {
+      "n": 452,
+      "maeModel": 8.6,
+      "maeCategoryMean": 8.9,
+      "bandHitModel": 0.31
+    },
+    "prior run only": {
+      "n": 452,
+      "maeModel": 8.3,
+      "maeCategoryMean": 8.9,
+      "bandHitModel": 0.327
+    },
+    "preview grosses only": {
+      "n": 452,
+      "maeModel": 8.8,
+      "maeCategoryMean": 8.9,
+      "bandHitModel": 0.303
+    },
+    "route and source only": {
+      "n": 452,
+      "maeModel": 8.3,
+      "maeCategoryMean": 8.9,
+      "bandHitModel": 0.338
+    },
+    "everything but grosses": {
+      "n": 452,
+      "maeModel": 8,
+      "maeCategoryMean": 8.9,
+      "bandHitModel": 0.336
+    }
+  },
+  "failuresWalkForward": {
+    "play new": {
+      "n": 115,
+      "mae": 7.3,
+      "maeCategoryMean": 7.9,
+      "meanSigned": 0.1
+    },
+    "actual tier: must-see": {
+      "n": 48,
+      "mae": 8.6,
+      "maeCategoryMean": 14,
+      "meanSigned": -8.4
+    },
+    "no earlier production": {
+      "n": 210,
+      "mae": 8.4,
+      "maeCategoryMean": 8.3,
+      "meanSigned": 0.2
+    },
+    "has preview grosses": {
+      "n": 213,
+      "mae": 7.7,
+      "maeCategoryMean": 8.2,
+      "meanSigned": 0.8
+    },
+    "25+ reviews": {
+      "n": 271,
+      "mae": 7.5,
+      "maeCategoryMean": 8.4,
+      "meanSigned": 0.6
+    },
+    "musical new": {
+      "n": 85,
+      "mae": 8.5,
+      "maeCategoryMean": 10,
+      "meanSigned": 1.5
+    },
+    "actual tier: worth-seeing": {
+      "n": 96,
+      "mae": 4.7,
+      "maeCategoryMean": 2.7,
+      "meanSigned": 2
+    },
+    "play revival": {
+      "n": 61,
+      "mae": 7.9,
+      "maeCategoryMean": 8.3,
+      "meanSigned": -1.4
+    },
+    "actual tier: recommended": {
+      "n": 92,
+      "mae": 6.1,
+      "maeCategoryMean": 8,
+      "meanSigned": -5.2
+    },
+    "actual tier: stay-away": {
+      "n": 21,
+      "mae": 18.5,
+      "maeCategoryMean": 19.9,
+      "meanSigned": 18.5
+    },
+    "musical revival": {
+      "n": 40,
+      "mae": 6.2,
+      "maeCategoryMean": 6.8,
+      "meanSigned": 2.7
+    },
+    "has earlier production": {
+      "n": 91,
+      "mae": 5.8,
+      "maeCategoryMean": 8.7,
+      "meanSigned": 1.4
+    },
+    "actual tier: skippable": {
+      "n": 44,
+      "mae": 10.6,
+      "maeCategoryMean": 10.4,
+      "meanSigned": 10.6
+    },
+    "10-24 reviews": {
+      "n": 30,
+      "mae": 8.6,
+      "maeCategoryMean": 9.1,
+      "meanSigned": 0.4
+    },
+    "no preview grosses": {
+      "n": 88,
+      "mae": 7.3,
+      "maeCategoryMean": 9.1,
+      "meanSigned": -0.2
+    }
+  },
+  "failuresLoso": {
+    "play new": {
+      "n": 168,
+      "mae": 7.4,
+      "maeCategoryMean": 8.6,
+      "meanSigned": 0.8
+    },
+    "actual tier: must-see": {
+      "n": 72,
+      "mae": 10,
+      "maeCategoryMean": 14.6,
+      "meanSigned": -9.9
+    },
+    "no earlier production": {
+      "n": 351,
+      "mae": 8.6,
+      "maeCategoryMean": 8.9,
+      "meanSigned": -0.1
+    },
+    "has preview grosses": {
+      "n": 362,
+      "mae": 8.1,
+      "maeCategoryMean": 8.8,
+      "meanSigned": 0.2
+    },
+    "10-24 reviews": {
+      "n": 126,
+      "mae": 9.3,
+      "maeCategoryMean": 10,
+      "meanSigned": 1
+    },
+    "musical revival": {
+      "n": 60,
+      "mae": 7.5,
+      "maeCategoryMean": 8.7,
+      "meanSigned": -0.4
+    },
+    "actual tier: skippable": {
+      "n": 75,
+      "mae": 9.7,
+      "maeCategoryMean": 9.7,
+      "meanSigned": 9.7
+    },
+    "musical new": {
+      "n": 128,
+      "mae": 8.8,
+      "maeCategoryMean": 9.8,
+      "meanSigned": 0.2
+    },
+    "actual tier: recommended": {
+      "n": 131,
+      "mae": 6.6,
+      "maeCategoryMean": 8.2,
+      "meanSigned": -6.1
+    },
+    "play revival": {
+      "n": 96,
+      "mae": 8.1,
+      "maeCategoryMean": 8.4,
+      "meanSigned": -1.4
+    },
+    "actual tier: stay-away": {
+      "n": 39,
+      "mae": 18.7,
+      "maeCategoryMean": 19.9,
+      "meanSigned": 18.7
+    },
+    "actual tier: worth-seeing": {
+      "n": 135,
+      "mae": 4.1,
+      "maeCategoryMean": 2.8,
+      "meanSigned": 0.6
+    },
+    "has earlier production": {
+      "n": 101,
+      "mae": 5.7,
+      "maeCategoryMean": 8.9,
+      "meanSigned": 0.4
+    },
+    "25+ reviews": {
+      "n": 326,
+      "mae": 7.5,
+      "maeCategoryMean": 8.5,
+      "meanSigned": -0.3
+    },
+    "no preview grosses": {
+      "n": 90,
+      "mae": 7.5,
+      "maeCategoryMean": 9.2,
+      "meanSigned": -0.8
+    }
+  },
+  "fullModelWeights": {
+    "dir": 0.028,
+    "chor": 0.297,
+    "writer": 0.571,
+    "priorRun": 0.406,
+    "venue": 0.203,
+    "grossCap": 0.13,
+    "grossAtp": -1.884,
+    "srcFilm": 0.314,
+    "srcTv": 1.433,
+    "srcBook": -1.902,
+    "srcMusic": 1.871,
+    "srcPlay": 0.833,
+    "pathLondon": 0.447,
+    "pathOffB": 6.271,
+    "pathRegional": -1.114
+  },
+  "examples": {
+    "rule": "5 most recent evaluated openings (walk-forward forecasts) plus the 4 largest misses overall; no other selection",
+    "recent": [
+      {
+        "id": "other-desert-cities-2026",
+        "title": "Other Desert Cities",
+        "opened": "2026-10-18",
+        "type": "play revival",
+        "forecast": 75,
+        "range80": [
+          60,
+          87
+        ],
+        "categoryMean": 72,
+        "earlierProduction": 74,
+        "actual": 67,
+        "error": 8
+      },
+      {
+        "id": "school-girls-or-the-african-mean-girls-play-2026",
+        "title": "School Girls; Or, The African Mean Girls Play",
+        "opened": "2026-09-28",
+        "type": "play revival",
+        "forecast": 79,
+        "range80": [
+          64,
+          91
+        ],
+        "categoryMean": 72,
+        "earlierProduction": 85,
+        "actual": 84,
+        "error": -5
+      },
+      {
+        "id": "paranormal-activity-2026",
+        "title": "Paranormal Activity",
+        "opened": "2026-08-25",
+        "type": "play",
+        "forecast": 74,
+        "range80": [
+          59,
+          86
+        ],
+        "categoryMean": 72,
+        "earlierProduction": 81,
+        "actual": 78,
+        "error": -4
+      },
+      {
+        "id": "the-lost-boys-2026",
+        "title": "The Lost Boys",
+        "opened": "2026-04-26",
+        "type": "musical",
+        "forecast": 67,
+        "range80": [
+          52,
+          79
+        ],
+        "categoryMean": 67,
+        "earlierProduction": null,
+        "actual": 72,
+        "error": -5
+      },
+      {
+        "id": "joe-turners-come-and-gone-2026",
+        "title": "Joe Turner's Come and Gone",
+        "opened": "2026-04-25",
+        "type": "play revival",
+        "forecast": 78,
+        "range80": [
+          64,
+          90
+        ],
+        "categoryMean": 72,
+        "earlierProduction": 82,
+        "actual": 80,
+        "error": -2
+      }
+    ],
+    "largestMisses": [
+      {
+        "id": "the-cherry-orchard-2016",
+        "title": "The Cherry Orchard",
+        "opened": "2016-10-16",
+        "type": "play revival",
+        "forecast": 74,
+        "range80": [
+          58,
+          86
+        ],
+        "categoryMean": 71,
+        "earlierProduction": null,
+        "actual": 43,
+        "error": 31
+      },
+      {
+        "id": "the-parisian-woman-2017",
+        "title": "The Parisian Woman",
+        "opened": "2017-11-30",
+        "type": "play",
+        "forecast": 74,
+        "range80": [
+          59,
+          87
+        ],
+        "categoryMean": 71,
+        "earlierProduction": null,
+        "actual": 48,
+        "error": 26
+      },
+      {
+        "id": "cabaret-2024",
+        "title": "Cabaret at the Kit Kat Club",
+        "opened": "2024-04-21",
+        "type": "musical revival",
+        "forecast": 86,
+        "range80": [
+          72,
+          99
+        ],
+        "categoryMean": 74,
+        "earlierProduction": 88,
+        "actual": 62,
+        "error": 24
+      },
+      {
+        "id": "dana-h-2021",
+        "title": "Dana H.",
+        "opened": "2021-10-17",
+        "type": "play",
+        "forecast": 66,
+        "range80": [
+          52,
+          78
+        ],
+        "categoryMean": 72,
+        "earlierProduction": null,
+        "actual": 89,
+        "error": -23
+      }
+    ]
+  },
+  "predictionsWalkForward": [
+    {
+      "id": "a-dolls-house-part-2-2017",
+      "opened": "2017-04-27",
+      "forecast": 66.9,
+      "lo80": 51.1,
+      "hi80": 78.9,
+      "categoryMean": 69.8,
+      "actual": 83
+    },
+    {
+      "id": "bandstand-2017",
+      "opened": "2017-04-26",
+      "forecast": 65.3,
+      "lo80": 49.5,
+      "hi80": 77.4,
+      "categoryMean": 66.7,
+      "actual": 74
+    },
+    {
+      "id": "six-degrees-of-separation-2017",
+      "opened": "2017-04-25",
+      "forecast": 64.1,
+      "lo80": 48.3,
+      "hi80": 76.1,
+      "categoryMean": 71.3,
+      "actual": 78
+    },
+    {
+      "id": "anastasia-2017",
+      "opened": "2017-04-24",
+      "forecast": 70.9,
+      "lo80": 55,
+      "hi80": 82.9,
+      "categoryMean": 66.7,
+      "actual": 68
+    },
+    {
+      "id": "charlie-and-the-chocolate-factory-2017",
+      "opened": "2017-04-23",
+      "forecast": 67.5,
+      "lo80": 51.7,
+      "hi80": 79.5,
+      "categoryMean": 66.7,
+      "actual": 50
+    },
+    {
+      "id": "hello-dolly-2017",
+      "opened": "2017-04-20",
+      "forecast": 79.7,
+      "lo80": 63.9,
+      "hi80": 91.7,
+      "categoryMean": 72.6,
+      "actual": 85
+    },
+    {
+      "id": "the-little-foxes-2017",
+      "opened": "2017-04-19",
+      "forecast": 71.6,
+      "lo80": 55.8,
+      "hi80": 83.6,
+      "categoryMean": 71.3,
+      "actual": 85
+    },
+    {
+      "id": "indecent-2017",
+      "opened": "2017-04-18",
+      "forecast": 69,
+      "lo80": 53.2,
+      "hi80": 81,
+      "categoryMean": 69.8,
+      "actual": 82
+    },
+    {
+      "id": "groundhog-day-2017",
+      "opened": "2017-04-17",
+      "forecast": 85.2,
+      "lo80": 69.4,
+      "hi80": 97.2,
+      "categoryMean": 66.7,
+      "actual": 72
+    },
+    {
+      "id": "oslo-2017",
+      "opened": "2017-04-13",
+      "forecast": 79.2,
+      "lo80": 63.4,
+      "hi80": 91.2,
+      "categoryMean": 69.8,
+      "actual": 82
+    },
+    {
+      "id": "war-paint-2017",
+      "opened": "2017-04-06",
+      "forecast": 62.4,
+      "lo80": 46.6,
+      "hi80": 74.4,
+      "categoryMean": 66.7,
+      "actual": 72
+    },
+    {
+      "id": "present-laughter-2017",
+      "opened": "2017-04-05",
+      "forecast": 65.4,
+      "lo80": 49.6,
+      "hi80": 77.4,
+      "categoryMean": 71.3,
+      "actual": 80
+    },
+    {
+      "id": "the-play-that-goes-wrong-2017",
+      "opened": "2017-04-02",
+      "forecast": 70.2,
+      "lo80": 54.4,
+      "hi80": 82.2,
+      "categoryMean": 69.8,
+      "actual": 73
+    },
+    {
+      "id": "sweat-2017",
+      "opened": "2017-03-26",
+      "forecast": 78.7,
+      "lo80": 62.9,
+      "hi80": 90.7,
+      "categoryMean": 69.8,
+      "actual": 80
+    },
+    {
+      "id": "miss-saigon-2017",
+      "opened": "2017-03-23",
+      "forecast": 66.4,
+      "lo80": 50.6,
+      "hi80": 78.4,
+      "categoryMean": 72.6,
+      "actual": 64
+    },
+    {
+      "id": "the-price-2017",
+      "opened": "2017-03-16",
+      "forecast": 75.6,
+      "lo80": 59.8,
+      "hi80": 87.6,
+      "categoryMean": 71.3,
+      "actual": 73
+    },
+    {
+      "id": "come-from-away-2017",
+      "opened": "2017-03-12",
+      "forecast": 66,
+      "lo80": 50.2,
+      "hi80": 78,
+      "categoryMean": 66.7,
+      "actual": 78
+    },
+    {
+      "id": "the-glass-menagerie-2017",
+      "opened": "2017-03-09",
+      "forecast": 72.9,
+      "lo80": 57.1,
+      "hi80": 84.9,
+      "categoryMean": 71.3,
+      "actual": 65
+    },
+    {
+      "id": "significant-other-2017",
+      "opened": "2017-03-02",
+      "forecast": 77.8,
+      "lo80": 62,
+      "hi80": 89.8,
+      "categoryMean": 69.8,
+      "actual": 74
+    },
+    {
+      "id": "sunday-in-the-park-with-george-2017",
+      "opened": "2017-02-23",
+      "forecast": 77.1,
+      "lo80": 61.2,
+      "hi80": 89.1,
+      "categoryMean": 72.6,
+      "actual": 83
+    },
+    {
+      "id": "sunset-boulevard-2017",
+      "opened": "2017-02-09",
+      "forecast": 71.4,
+      "lo80": 55.6,
+      "hi80": 83.4,
+      "categoryMean": 72.6,
+      "actual": 71
+    },
+    {
+      "id": "jitney-2017",
+      "opened": "2017-01-19",
+      "forecast": 72.3,
+      "lo80": 56.5,
+      "hi80": 84.3,
+      "categoryMean": 69.8,
+      "actual": 87
+    },
+    {
+      "id": "the-present-2017",
+      "opened": "2017-01-08",
+      "forecast": 74.3,
+      "lo80": 58.4,
+      "hi80": 86.3,
+      "categoryMean": 69.8,
+      "actual": 69
+    },
+    {
+      "id": "in-transit-2016",
+      "opened": "2016-12-11",
+      "forecast": 67,
+      "lo80": 51.2,
+      "hi80": 79,
+      "categoryMean": 66.7,
+      "actual": 58
+    },
+    {
+      "id": "dear-evan-hansen-2016",
+      "opened": "2016-12-04",
+      "forecast": 89.9,
+      "lo80": 74.1,
+      "hi80": 100,
+      "categoryMean": 66.7,
+      "actual": 86
+    },
+    {
+      "id": "a-bronx-tale-the-musical-2016",
+      "opened": "2016-12-01",
+      "forecast": 63.6,
+      "lo80": 47.7,
+      "hi80": 75.6,
+      "categoryMean": 66.7,
+      "actual": 55
+    },
+    {
+      "id": "natasha-pierre-and-the-great-comet-of-1812-2016",
+      "opened": "2016-11-14",
+      "forecast": 76.5,
+      "lo80": 60.7,
+      "hi80": 88.5,
+      "categoryMean": 66.7,
+      "actual": 83
+    },
+    {
+      "id": "les-liaisons-dangereuses-2016",
+      "opened": "2016-10-30",
+      "forecast": 68.3,
+      "lo80": 52.5,
+      "hi80": 80.3,
+      "categoryMean": 71.3,
+      "actual": 59
+    },
+    {
+      "id": "falsettos-2016",
+      "opened": "2016-10-27",
+      "forecast": 74.8,
+      "lo80": 59,
+      "hi80": 86.8,
+      "categoryMean": 72.6,
+      "actual": 81
+    },
+    {
+      "id": "the-front-page-2016",
+      "opened": "2016-10-20",
+      "forecast": 73.6,
+      "lo80": 57.8,
+      "hi80": 85.6,
+      "categoryMean": 71.3,
+      "actual": 72
+    },
+    {
+      "id": "the-cherry-orchard-2016",
+      "opened": "2016-10-16",
+      "forecast": 73.5,
+      "lo80": 57.7,
+      "hi80": 85.5,
+      "categoryMean": 71.3,
+      "actual": 43
+    },
+    {
+      "id": "heisenberg-2016",
+      "opened": "2016-10-13",
+      "forecast": 82.5,
+      "lo80": 66.7,
+      "hi80": 94.5,
+      "categoryMean": 69.8,
+      "actual": 71
+    },
+    {
+      "id": "oh-hello-on-broadway-2016",
+      "opened": "2016-10-10",
+      "forecast": 76,
+      "lo80": 60.2,
+      "hi80": 88.1,
+      "categoryMean": 69.8,
+      "actual": 75
+    },
+    {
+      "id": "holiday-inn-the-new-irving-berlin-musical-2016",
+      "opened": "2016-10-06",
+      "forecast": 68.3,
+      "lo80": 52.5,
+      "hi80": 80.4,
+      "categoryMean": 66.7,
+      "actual": 67
+    },
+    {
+      "id": "the-encounter-2016",
+      "opened": "2016-09-29",
+      "forecast": 72.6,
+      "lo80": 56.8,
+      "hi80": 84.7,
+      "categoryMean": 69.8,
+      "actual": 69
+    },
+    {
+      "id": "cats-2016",
+      "opened": "2016-07-31",
+      "forecast": 76.6,
+      "lo80": 60.7,
+      "hi80": 88.6,
+      "categoryMean": 72.6,
+      "actual": 65
+    },
+    {
+      "id": "the-boys-in-the-band-2018",
+      "opened": "2018-05-31",
+      "forecast": 72.7,
+      "lo80": 57.5,
+      "hi80": 85.7,
+      "categoryMean": 71,
+      "actual": 78
+    },
+    {
+      "id": "the-iceman-cometh-2018",
+      "opened": "2018-04-26",
+      "forecast": 71.8,
+      "lo80": 56.6,
+      "hi80": 84.8,
+      "categoryMean": 71,
+      "actual": 73
+    },
+    {
+      "id": "saint-joan-2018",
+      "opened": "2018-04-25",
+      "forecast": 70.5,
+      "lo80": 55.2,
+      "hi80": 83.4,
+      "categoryMean": 71,
+      "actual": 65
+    },
+    {
+      "id": "travesties-2018",
+      "opened": "2018-04-24",
+      "forecast": 74.6,
+      "lo80": 59.3,
+      "hi80": 87.5,
+      "categoryMean": 71,
+      "actual": 85
+    },
+    {
+      "id": "summer-2018",
+      "opened": "2018-04-23",
+      "forecast": 60.3,
+      "lo80": 45.1,
+      "hi80": 73.2,
+      "categoryMean": 67.1,
+      "actual": 50
+    },
+    {
+      "id": "harry-potter-2021",
+      "opened": "2018-04-22",
+      "forecast": 72.4,
+      "lo80": 57.2,
+      "hi80": 85.3,
+      "categoryMean": 70.8,
+      "actual": 85
+    },
+    {
+      "id": "my-fair-lady-2018",
+      "opened": "2018-04-19",
+      "forecast": 72.2,
+      "lo80": 57,
+      "hi80": 85.1,
+      "categoryMean": 73.1,
+      "actual": 83
+    },
+    {
+      "id": "carousel-2018",
+      "opened": "2018-04-12",
+      "forecast": 75.6,
+      "lo80": 60.3,
+      "hi80": 88.5,
+      "categoryMean": 73.1,
+      "actual": 74
+    },
+    {
+      "id": "children-of-a-lesser-god-2018",
+      "opened": "2018-04-11",
+      "forecast": 68.1,
+      "lo80": 52.9,
+      "hi80": 81.1,
+      "categoryMean": 71,
+      "actual": 62
+    },
+    {
+      "id": "mean-girls-2018",
+      "opened": "2018-04-08",
+      "forecast": 71.3,
+      "lo80": 56,
+      "hi80": 84.2,
+      "categoryMean": 67.1,
+      "actual": 75
+    },
+    {
+      "id": "three-tall-women-2018",
+      "opened": "2018-03-29",
+      "forecast": 74.1,
+      "lo80": 58.9,
+      "hi80": 87.1,
+      "categoryMean": 70.8,
+      "actual": 87
+    },
+    {
+      "id": "lobby-hero-2018",
+      "opened": "2018-03-26",
+      "forecast": 71.7,
+      "lo80": 56.5,
+      "hi80": 84.7,
+      "categoryMean": 70.8,
+      "actual": 79
+    },
+    {
+      "id": "angels-in-america-2018",
+      "opened": "2018-03-25",
+      "forecast": 77.6,
+      "lo80": 62.4,
+      "hi80": 90.5,
+      "categoryMean": 71,
+      "actual": 88
+    },
+    {
+      "id": "frozen-2018",
+      "opened": "2018-03-22",
+      "forecast": 67.9,
+      "lo80": 52.7,
+      "hi80": 80.9,
+      "categoryMean": 67.1,
+      "actual": 63
+    },
+    {
+      "id": "escape-to-margaritaville-2018",
+      "opened": "2018-03-15",
+      "forecast": 61.6,
+      "lo80": 46.4,
+      "hi80": 74.6,
+      "categoryMean": 67.1,
+      "actual": 56
+    },
+    {
+      "id": "john-lithgow-stories-by-heart-2018",
+      "opened": "2018-01-11",
+      "forecast": 75.3,
+      "lo80": 60.1,
+      "hi80": 88.3,
+      "categoryMean": 70.8,
+      "actual": 72
+    },
+    {
+      "id": "farinelli-and-the-king-2017",
+      "opened": "2017-12-17",
+      "forecast": 71,
+      "lo80": 55.8,
+      "hi80": 84,
+      "categoryMean": 70.8,
+      "actual": 77
+    },
+    {
+      "id": "the-children-2017",
+      "opened": "2017-12-12",
+      "forecast": 73.8,
+      "lo80": 58.5,
+      "hi80": 86.7,
+      "categoryMean": 70.8,
+      "actual": 76
+    },
+    {
+      "id": "spongebob-squarepants-2017",
+      "opened": "2017-12-04",
+      "forecast": 62.3,
+      "lo80": 47,
+      "hi80": 75.2,
+      "categoryMean": 67.1,
+      "actual": 76
+    },
+    {
+      "id": "once-on-this-island-2017",
+      "opened": "2017-12-03",
+      "forecast": 69.9,
+      "lo80": 54.7,
+      "hi80": 82.8,
+      "categoryMean": 73.1,
+      "actual": 83
+    },
+    {
+      "id": "the-parisian-woman-2017",
+      "opened": "2017-11-30",
+      "forecast": 73.9,
+      "lo80": 58.7,
+      "hi80": 86.9,
+      "categoryMean": 70.8,
+      "actual": 48
+    },
+    {
+      "id": "meteor-shower-2017",
+      "opened": "2017-11-29",
+      "forecast": 72.1,
+      "lo80": 56.9,
+      "hi80": 85.1,
+      "categoryMean": 70.8,
+      "actual": 61
+    },
+    {
+      "id": "latin-history-for-morons-2017",
+      "opened": "2017-11-15",
+      "forecast": 75.3,
+      "lo80": 60.1,
+      "hi80": 88.3,
+      "categoryMean": 70.8,
+      "actual": 78
+    },
+    {
+      "id": "the-bands-visit-2017",
+      "opened": "2017-11-09",
+      "forecast": 83.2,
+      "lo80": 68,
+      "hi80": 96.1,
+      "categoryMean": 67.1,
+      "actual": 88
+    },
+    {
+      "id": "junk-2017",
+      "opened": "2017-11-02",
+      "forecast": 70.5,
+      "lo80": 55.3,
+      "hi80": 83.5,
+      "categoryMean": 70.8,
+      "actual": 70
+    },
+    {
+      "id": "m-butterfly-2017",
+      "opened": "2017-10-26",
+      "forecast": 70.5,
+      "lo80": 55.2,
+      "hi80": 83.4,
+      "categoryMean": 71,
+      "actual": 63
+    },
+    {
+      "id": "time-and-the-conways-2017",
+      "opened": "2017-10-10",
+      "forecast": 70.2,
+      "lo80": 55,
+      "hi80": 83.1,
+      "categoryMean": 71,
+      "actual": 61
+    },
+    {
+      "id": "prince-of-broadway-2017",
+      "opened": "2017-08-24",
+      "forecast": 73.3,
+      "lo80": 58,
+      "hi80": 86.2,
+      "categoryMean": 67.1,
+      "actual": 67
+    },
+    {
+      "id": "the-terms-of-my-surrender-2017",
+      "opened": "2017-08-10",
+      "forecast": 71.6,
+      "lo80": 56.4,
+      "hi80": 84.6,
+      "categoryMean": 70.8,
+      "actual": 66
+    },
+    {
+      "id": "marvins-room-2017",
+      "opened": "2017-06-29",
+      "forecast": 67.5,
+      "lo80": 52.3,
+      "hi80": 80.5,
+      "categoryMean": 70.8,
+      "actual": 71
+    },
+    {
+      "id": "1984-2017",
+      "opened": "2017-06-22",
+      "forecast": 73.4,
+      "lo80": 58.1,
+      "hi80": 86.3,
+      "categoryMean": 70.8,
+      "actual": 69
+    },
+    {
+      "id": "frankie-and-johnny-in-the-clair-de-lune-2019",
+      "opened": "2019-05-30",
+      "forecast": 64.4,
+      "lo80": 49.7,
+      "hi80": 77.4,
+      "categoryMean": 71.1,
+      "actual": 76
+    },
+    {
+      "id": "beetlejuice-2019",
+      "opened": "2019-04-25",
+      "forecast": 69,
+      "lo80": 54.2,
+      "hi80": 82,
+      "categoryMean": 67.1,
+      "actual": 58
+    },
+    {
+      "id": "ink-2019",
+      "opened": "2019-04-24",
+      "forecast": 70.3,
+      "lo80": 55.5,
+      "hi80": 83.3,
+      "categoryMean": 71,
+      "actual": 77
+    },
+    {
+      "id": "tootsie-2019",
+      "opened": "2019-04-23",
+      "forecast": 66,
+      "lo80": 51.2,
+      "hi80": 79,
+      "categoryMean": 67.1,
+      "actual": 76
+    },
+    {
+      "id": "all-my-sons-2019",
+      "opened": "2019-04-22",
+      "forecast": 69,
+      "lo80": 54.2,
+      "hi80": 81.9,
+      "categoryMean": 71.1,
+      "actual": 78
+    },
+    {
+      "id": "gary-a-sequel-to-titus-andronicus-2019",
+      "opened": "2019-04-21",
+      "forecast": 74.4,
+      "lo80": 59.6,
+      "hi80": 87.3,
+      "categoryMean": 71,
+      "actual": 69
+    },
+    {
+      "id": "hillary-and-clinton-2019",
+      "opened": "2019-04-18",
+      "forecast": 72.3,
+      "lo80": 57.6,
+      "hi80": 85.3,
+      "categoryMean": 71,
+      "actual": 68
+    },
+    {
+      "id": "hadestown-2019",
+      "opened": "2019-04-17",
+      "forecast": 79,
+      "lo80": 64.2,
+      "hi80": 92,
+      "categoryMean": 67.1,
+      "actual": 83
+    },
+    {
+      "id": "burn-this-2019",
+      "opened": "2019-04-16",
+      "forecast": 71.3,
+      "lo80": 56.5,
+      "hi80": 84.3,
+      "categoryMean": 71.1,
+      "actual": 66
+    },
+    {
+      "id": "oklahoma-2019",
+      "opened": "2019-04-07",
+      "forecast": 84.4,
+      "lo80": 69.6,
+      "hi80": 97.3,
+      "categoryMean": 73.7,
+      "actual": 73
+    },
+    {
+      "id": "king-lear-2019",
+      "opened": "2019-04-04",
+      "forecast": 74.9,
+      "lo80": 60.1,
+      "hi80": 87.9,
+      "categoryMean": 71.1,
+      "actual": 66
+    },
+    {
+      "id": "what-the-constitution-means-to-me-2019",
+      "opened": "2019-03-31",
+      "forecast": 76.3,
+      "lo80": 61.6,
+      "hi80": 89.3,
+      "categoryMean": 71,
+      "actual": 86
+    },
+    {
+      "id": "aint-too-proud-2019",
+      "opened": "2019-03-21",
+      "forecast": 61.9,
+      "lo80": 47.1,
+      "hi80": 74.8,
+      "categoryMean": 67.1,
+      "actual": 69
+    },
+    {
+      "id": "kiss-me-kate-2019",
+      "opened": "2019-03-14",
+      "forecast": 82,
+      "lo80": 67.3,
+      "hi80": 95,
+      "categoryMean": 73.7,
+      "actual": 76
+    },
+    {
+      "id": "be-more-chill-2019",
+      "opened": "2019-03-10",
+      "forecast": 70.8,
+      "lo80": 56,
+      "hi80": 83.7,
+      "categoryMean": 67.1,
+      "actual": 66
+    },
+    {
+      "id": "true-west-2019",
+      "opened": "2019-01-24",
+      "forecast": 65.2,
+      "lo80": 50.4,
+      "hi80": 78.1,
+      "categoryMean": 71.1,
+      "actual": 66
+    },
+    {
+      "id": "choir-boy-2019",
+      "opened": "2019-01-08",
+      "forecast": 77.4,
+      "lo80": 62.6,
+      "hi80": 90.3,
+      "categoryMean": 71,
+      "actual": 80
+    },
+    {
+      "id": "to-kill-a-mockingbird-2018",
+      "opened": "2018-12-13",
+      "forecast": 73.7,
+      "lo80": 58.9,
+      "hi80": 86.7,
+      "categoryMean": 71,
+      "actual": 78
+    },
+    {
+      "id": "network-2018",
+      "opened": "2018-12-06",
+      "forecast": 83.3,
+      "lo80": 68.6,
+      "hi80": 96.3,
+      "categoryMean": 71,
+      "actual": 72
+    },
+    {
+      "id": "the-cher-show-2018",
+      "opened": "2018-12-03",
+      "forecast": 66,
+      "lo80": 51.2,
+      "hi80": 78.9,
+      "categoryMean": 67.1,
+      "actual": 66
+    },
+    {
+      "id": "the-prom-2018",
+      "opened": "2018-11-15",
+      "forecast": 63.8,
+      "lo80": 49,
+      "hi80": 76.8,
+      "categoryMean": 67.1,
+      "actual": 77
+    },
+    {
+      "id": "the-new-one-2018",
+      "opened": "2018-11-11",
+      "forecast": 76.2,
+      "lo80": 61.4,
+      "hi80": 89.1,
+      "categoryMean": 71,
+      "actual": 80
+    },
+    {
+      "id": "king-kong-2018",
+      "opened": "2018-11-08",
+      "forecast": 74.3,
+      "lo80": 59.5,
+      "hi80": 87.3,
+      "categoryMean": 67.1,
+      "actual": 52
+    },
+    {
+      "id": "american-son-2018",
+      "opened": "2018-11-04",
+      "forecast": 66.7,
+      "lo80": 52,
+      "hi80": 79.7,
+      "categoryMean": 71,
+      "actual": 68
+    },
+    {
+      "id": "torch-song-2018",
+      "opened": "2018-11-01",
+      "forecast": 76.7,
+      "lo80": 61.9,
+      "hi80": 89.6,
+      "categoryMean": 71.1,
+      "actual": 77
+    },
+    {
+      "id": "the-waverly-gallery-2018",
+      "opened": "2018-10-25",
+      "forecast": 72.7,
+      "lo80": 57.9,
+      "hi80": 85.6,
+      "categoryMean": 71,
+      "actual": 78
+    },
+    {
+      "id": "the-ferryman-2018",
+      "opened": "2018-10-21",
+      "forecast": 83.3,
+      "lo80": 68.5,
+      "hi80": 96.2,
+      "categoryMean": 71,
+      "actual": 87
+    },
+    {
+      "id": "the-lifespan-of-a-fact-2018",
+      "opened": "2018-10-18",
+      "forecast": 69,
+      "lo80": 54.2,
+      "hi80": 81.9,
+      "categoryMean": 71,
+      "actual": 74
+    },
+    {
+      "id": "the-nap-2018",
+      "opened": "2018-09-27",
+      "forecast": 70.9,
+      "lo80": 56.1,
+      "hi80": 83.9,
+      "categoryMean": 71,
+      "actual": 67
+    },
+    {
+      "id": "bernhardthamlet-2018",
+      "opened": "2018-09-25",
+      "forecast": 67.8,
+      "lo80": 53.1,
+      "hi80": 80.8,
+      "categoryMean": 71,
+      "actual": 72
+    },
+    {
+      "id": "pretty-woman-the-musical-2018",
+      "opened": "2018-08-16",
+      "forecast": 69,
+      "lo80": 54.2,
+      "hi80": 81.9,
+      "categoryMean": 67.1,
+      "actual": 49
+    },
+    {
+      "id": "gettin-the-band-back-together-2018",
+      "opened": "2018-08-13",
+      "forecast": 64.6,
+      "lo80": 49.8,
+      "hi80": 77.5,
+      "categoryMean": 67.1,
+      "actual": 49
+    },
+    {
+      "id": "head-over-heels-2018",
+      "opened": "2018-07-26",
+      "forecast": 66.9,
+      "lo80": 52.1,
+      "hi80": 79.8,
+      "categoryMean": 67.1,
+      "actual": 67
+    },
+    {
+      "id": "straight-white-men-2018",
+      "opened": "2018-07-23",
+      "forecast": 76.4,
+      "lo80": 61.6,
+      "hi80": 89.4,
+      "categoryMean": 71,
+      "actual": 70
+    },
+    {
+      "id": "west-side-story-2020",
+      "opened": "2020-02-20",
+      "forecast": 81.3,
+      "lo80": 66.6,
+      "hi80": 93.8,
+      "categoryMean": 73.7,
+      "actual": 73
+    },
+    {
+      "id": "grand-horizons-2020",
+      "opened": "2020-01-23",
+      "forecast": 67.1,
+      "lo80": 52.3,
+      "hi80": 79.5,
+      "categoryMean": 71.5,
+      "actual": 70
+    },
+    {
+      "id": "a-soldiers-play-2020",
+      "opened": "2020-01-21",
+      "forecast": 70.1,
+      "lo80": 55.3,
+      "hi80": 82.5,
+      "categoryMean": 71.5,
+      "actual": 81
+    },
+    {
+      "id": "my-name-is-lucy-barton-2020",
+      "opened": "2020-01-15",
+      "forecast": 72,
+      "lo80": 57.2,
+      "hi80": 84.4,
+      "categoryMean": 71.5,
+      "actual": 70
+    },
+    {
+      "id": "jagged-little-pill-2019",
+      "opened": "2019-12-05",
+      "forecast": 64.1,
+      "lo80": 49.3,
+      "hi80": 76.6,
+      "categoryMean": 66.8,
+      "actual": 67
+    },
+    {
+      "id": "a-christmas-carol-2019",
+      "opened": "2019-11-20",
+      "forecast": 70.7,
+      "lo80": 55.9,
+      "hi80": 83.1,
+      "categoryMean": 71.5,
+      "actual": 72
+    },
+    {
+      "id": "the-inheritance-2019",
+      "opened": "2019-11-17",
+      "forecast": 77.8,
+      "lo80": 63,
+      "hi80": 90.2,
+      "categoryMean": 71.5,
+      "actual": 78
+    },
+    {
+      "id": "tina-2019",
+      "opened": "2019-11-07",
+      "forecast": 70.1,
+      "lo80": 55.4,
+      "hi80": 82.6,
+      "categoryMean": 66.8,
+      "actual": 71
+    },
+    {
+      "id": "the-sound-inside-2019",
+      "opened": "2019-10-17",
+      "forecast": 66.7,
+      "lo80": 51.9,
+      "hi80": 79.1,
+      "categoryMean": 71.5,
+      "actual": 82
+    },
+    {
+      "id": "the-lightning-thief-2019",
+      "opened": "2019-10-16",
+      "forecast": 65.9,
+      "lo80": 51.1,
+      "hi80": 78.4,
+      "categoryMean": 66.8,
+      "actual": 49
+    },
+    {
+      "id": "the-rose-tattoo-2019",
+      "opened": "2019-10-15",
+      "forecast": 70.8,
+      "lo80": 56,
+      "hi80": 83.2,
+      "categoryMean": 71.1,
+      "actual": 60
+    },
+    {
+      "id": "linda-vista-2019",
+      "opened": "2019-10-10",
+      "forecast": 69.5,
+      "lo80": 54.7,
+      "hi80": 81.9,
+      "categoryMean": 71.5,
+      "actual": 72
+    },
+    {
+      "id": "the-great-society-2019",
+      "opened": "2019-10-01",
+      "forecast": 68.2,
+      "lo80": 53.4,
+      "hi80": 80.6,
+      "categoryMean": 71.5,
+      "actual": 63
+    },
+    {
+      "id": "the-height-of-the-storm-2019",
+      "opened": "2019-09-24",
+      "forecast": 73.2,
+      "lo80": 58.5,
+      "hi80": 85.7,
+      "categoryMean": 71.5,
+      "actual": 72
+    },
+    {
+      "id": "betrayal-2019",
+      "opened": "2019-09-05",
+      "forecast": 78.1,
+      "lo80": 63.3,
+      "hi80": 90.5,
+      "categoryMean": 71.1,
+      "actual": 78
+    },
+    {
+      "id": "sea-wall-a-life-2019",
+      "opened": "2019-08-08",
+      "forecast": 80.3,
+      "lo80": 65.5,
+      "hi80": 92.7,
+      "categoryMean": 71.5,
+      "actual": 71
+    },
+    {
+      "id": "moulin-rouge-2019",
+      "opened": "2019-07-25",
+      "forecast": 67.3,
+      "lo80": 52.6,
+      "hi80": 79.8,
+      "categoryMean": 66.8,
+      "actual": 71
+    },
+    {
+      "id": "take-me-out-2022",
+      "opened": "2022-04-04",
+      "forecast": 67.3,
+      "lo80": 53.5,
+      "hi80": 79.8,
+      "categoryMean": 71.1,
+      "actual": 81
+    },
+    {
+      "id": "macbeth-2022",
+      "opened": "2022-04-28",
+      "forecast": 62.2,
+      "lo80": 48.4,
+      "hi80": 74.7,
+      "categoryMean": 71.1,
+      "actual": 48
+    },
+    {
+      "id": "mr-saturday-night-2022",
+      "opened": "2022-04-27",
+      "forecast": 63.6,
+      "lo80": 49.8,
+      "hi80": 76.1,
+      "categoryMean": 66.7,
+      "actual": 69
+    },
+    {
+      "id": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022",
+      "opened": "2022-04-27",
+      "forecast": 68.5,
+      "lo80": 54.7,
+      "hi80": 81,
+      "categoryMean": 71.7,
+      "actual": 74
+    },
+    {
+      "id": "a-strange-loop-2022",
+      "opened": "2022-04-26",
+      "forecast": 69,
+      "lo80": 55.1,
+      "hi80": 81.5,
+      "categoryMean": 66.7,
+      "actual": 87
+    },
+    {
+      "id": "the-skin-of-our-teeth-2022",
+      "opened": "2022-04-25",
+      "forecast": 64.2,
+      "lo80": 50.3,
+      "hi80": 76.7,
+      "categoryMean": 71.1,
+      "actual": 69
+    },
+    {
+      "id": "funny-girl-2022",
+      "opened": "2022-04-24",
+      "forecast": 80.5,
+      "lo80": 66.7,
+      "hi80": 93,
+      "categoryMean": 73.7,
+      "actual": 63
+    },
+    {
+      "id": "hangmen-2022",
+      "opened": "2022-04-21",
+      "forecast": 82.1,
+      "lo80": 68.3,
+      "hi80": 94.6,
+      "categoryMean": 71.7,
+      "actual": 77
+    },
+    {
+      "id": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022",
+      "opened": "2022-04-20",
+      "forecast": 74.1,
+      "lo80": 60.3,
+      "hi80": 86.6,
+      "categoryMean": 71.1,
+      "actual": 82
+    },
+    {
+      "id": "how-i-learned-to-drive-2022",
+      "opened": "2022-04-19",
+      "forecast": 71.5,
+      "lo80": 57.7,
+      "hi80": 84,
+      "categoryMean": 71.1,
+      "actual": 83
+    },
+    {
+      "id": "the-minutes-2022",
+      "opened": "2022-04-17",
+      "forecast": 70.6,
+      "lo80": 56.7,
+      "hi80": 83.1,
+      "categoryMean": 71.7,
+      "actual": 78
+    },
+    {
+      "id": "american-buffalo-2022",
+      "opened": "2022-04-14",
+      "forecast": 66.9,
+      "lo80": 53.1,
+      "hi80": 79.4,
+      "categoryMean": 71.1,
+      "actual": 67
+    },
+    {
+      "id": "the-little-prince-2022",
+      "opened": "2022-04-11",
+      "forecast": 65.6,
+      "lo80": 51.8,
+      "hi80": 78.1,
+      "categoryMean": 71.7,
+      "actual": 47
+    },
+    {
+      "id": "birthday-candles-2022",
+      "opened": "2022-04-10",
+      "forecast": 70.6,
+      "lo80": 56.8,
+      "hi80": 83.1,
+      "categoryMean": 71.7,
+      "actual": 58
+    },
+    {
+      "id": "paradise-square-2022",
+      "opened": "2022-04-03",
+      "forecast": 73.5,
+      "lo80": 59.7,
+      "hi80": 86,
+      "categoryMean": 66.7,
+      "actual": 61
+    },
+    {
+      "id": "plaza-suite-2022",
+      "opened": "2022-03-28",
+      "forecast": 69,
+      "lo80": 55.1,
+      "hi80": 81.5,
+      "categoryMean": 71.1,
+      "actual": 64
+    },
+    {
+      "id": "the-music-man-2022",
+      "opened": "2022-02-10",
+      "forecast": 75.5,
+      "lo80": 61.7,
+      "hi80": 88,
+      "categoryMean": 73.7,
+      "actual": 64
+    },
+    {
+      "id": "mj-2022",
+      "opened": "2022-02-01",
+      "forecast": 71.6,
+      "lo80": 57.8,
+      "hi80": 84.1,
+      "categoryMean": 66.7,
+      "actual": 67
+    },
+    {
+      "id": "skeleton-crew-2022",
+      "opened": "2022-01-26",
+      "forecast": 76.8,
+      "lo80": 63,
+      "hi80": 89.3,
+      "categoryMean": 71.7,
+      "actual": 81
+    },
+    {
+      "id": "flying-over-sunset-2021",
+      "opened": "2021-12-13",
+      "forecast": 62.6,
+      "lo80": 48.8,
+      "hi80": 75.1,
+      "categoryMean": 66.7,
+      "actual": 54
+    },
+    {
+      "id": "company-2021",
+      "opened": "2021-12-09",
+      "forecast": 79.7,
+      "lo80": 65.9,
+      "hi80": 92.2,
+      "categoryMean": 73.7,
+      "actual": 80
+    },
+    {
+      "id": "mrs-doubtfire-2021",
+      "opened": "2021-12-05",
+      "forecast": 68,
+      "lo80": 54.2,
+      "hi80": 80.5,
+      "categoryMean": 66.7,
+      "actual": 55
+    },
+    {
+      "id": "clydes-2021",
+      "opened": "2021-11-23",
+      "forecast": 70,
+      "lo80": 56.1,
+      "hi80": 82.5,
+      "categoryMean": 71.7,
+      "actual": 82
+    },
+    {
+      "id": "trouble-in-mind-2021",
+      "opened": "2021-11-18",
+      "forecast": 69.7,
+      "lo80": 55.9,
+      "hi80": 82.2,
+      "categoryMean": 71.7,
+      "actual": 81
+    },
+    {
+      "id": "diana-the-musical-2021",
+      "opened": "2021-11-17",
+      "forecast": 59.4,
+      "lo80": 45.6,
+      "hi80": 71.9,
+      "categoryMean": 66.7,
+      "actual": 37
+    },
+    {
+      "id": "caroline-or-change-2021",
+      "opened": "2021-10-27",
+      "forecast": 81.3,
+      "lo80": 67.5,
+      "hi80": 93.8,
+      "categoryMean": 73.7,
+      "actual": 79
+    },
+    {
+      "id": "dana-h-2021",
+      "opened": "2021-10-17",
+      "forecast": 65.9,
+      "lo80": 52.1,
+      "hi80": 78.4,
+      "categoryMean": 71.7,
+      "actual": 89
+    },
+    {
+      "id": "the-lehman-trilogy-2021",
+      "opened": "2021-10-14",
+      "forecast": 82,
+      "lo80": 68.2,
+      "hi80": 94.5,
+      "categoryMean": 71.7,
+      "actual": 83
+    },
+    {
+      "id": "thoughts-of-a-colored-man-2021",
+      "opened": "2021-10-13",
+      "forecast": 67.5,
+      "lo80": 53.6,
+      "hi80": 80,
+      "categoryMean": 71.7,
+      "actual": 72
+    },
+    {
+      "id": "is-this-a-room-2021",
+      "opened": "2021-10-11",
+      "forecast": 68.1,
+      "lo80": 54.2,
+      "hi80": 80.6,
+      "categoryMean": 71.7,
+      "actual": 83
+    },
+    {
+      "id": "chicken-and-biscuits-2021",
+      "opened": "2021-10-10",
+      "forecast": 75.9,
+      "lo80": 62.1,
+      "hi80": 88.4,
+      "categoryMean": 71.7,
+      "actual": 65
+    },
+    {
+      "id": "lackawanna-blues-2021",
+      "opened": "2021-10-07",
+      "forecast": 69.2,
+      "lo80": 55.4,
+      "hi80": 81.7,
+      "categoryMean": 71.1,
+      "actual": 85
+    },
+    {
+      "id": "six-2021",
+      "opened": "2021-10-03",
+      "forecast": 66.1,
+      "lo80": 52.3,
+      "hi80": 78.6,
+      "categoryMean": 66.7,
+      "actual": 82
+    },
+    {
+      "id": "pass-over-2021",
+      "opened": "2021-08-22",
+      "forecast": 76.6,
+      "lo80": 62.8,
+      "hi80": 89.1,
+      "categoryMean": 71.7,
+      "actual": 80
+    },
+    {
+      "id": "grey-house-2023",
+      "opened": "2023-05-30",
+      "forecast": 72.3,
+      "lo80": 58.2,
+      "hi80": 85,
+      "categoryMean": 72,
+      "actual": 64
+    },
+    {
+      "id": "new-york-new-york-2023",
+      "opened": "2023-04-26",
+      "forecast": 70.1,
+      "lo80": 56.1,
+      "hi80": 82.8,
+      "categoryMean": 66.5,
+      "actual": 60
+    },
+    {
+      "id": "summer-1976-2023",
+      "opened": "2023-04-25",
+      "forecast": 74.2,
+      "lo80": 60.2,
+      "hi80": 86.9,
+      "categoryMean": 72,
+      "actual": 75
+    },
+    {
+      "id": "good-night-oscar-2023",
+      "opened": "2023-04-24",
+      "forecast": 68.5,
+      "lo80": 54.4,
+      "hi80": 81.2,
+      "categoryMean": 72,
+      "actual": 72
+    },
+    {
+      "id": "prima-facie-2023",
+      "opened": "2023-04-23",
+      "forecast": 79.3,
+      "lo80": 65.3,
+      "hi80": 92,
+      "categoryMean": 72,
+      "actual": 84
+    },
+    {
+      "id": "the-thanksgiving-play-2023",
+      "opened": "2023-04-20",
+      "forecast": 76.5,
+      "lo80": 62.4,
+      "hi80": 89.2,
+      "categoryMean": 72,
+      "actual": 66
+    },
+    {
+      "id": "peter-pan-goes-wrong-2023",
+      "opened": "2023-04-19",
+      "forecast": 80.2,
+      "lo80": 66.1,
+      "hi80": 92.9,
+      "categoryMean": 72,
+      "actual": 79
+    },
+    {
+      "id": "camelot-2023",
+      "opened": "2023-04-13",
+      "forecast": 69.9,
+      "lo80": 55.9,
+      "hi80": 82.6,
+      "categoryMean": 73.5,
+      "actual": 58
+    },
+    {
+      "id": "fat-ham-2023",
+      "opened": "2023-04-12",
+      "forecast": 77,
+      "lo80": 63,
+      "hi80": 89.7,
+      "categoryMean": 72,
+      "actual": 81
+    },
+    {
+      "id": "shucked-2023",
+      "opened": "2023-04-04",
+      "forecast": 61.3,
+      "lo80": 47.2,
+      "hi80": 74,
+      "categoryMean": 66.5,
+      "actual": 76
+    },
+    {
+      "id": "life-of-pi-2023",
+      "opened": "2023-03-30",
+      "forecast": 72.5,
+      "lo80": 58.5,
+      "hi80": 85.2,
+      "categoryMean": 72,
+      "actual": 79
+    },
+    {
+      "id": "sweeney-todd-2023",
+      "opened": "2023-03-26",
+      "forecast": 77.8,
+      "lo80": 63.8,
+      "hi80": 90.5,
+      "categoryMean": 73.5,
+      "actual": 80
+    },
+    {
+      "id": "bad-cinderella-2023",
+      "opened": "2023-03-23",
+      "forecast": 65.5,
+      "lo80": 51.5,
+      "hi80": 78.2,
+      "categoryMean": 66.5,
+      "actual": 43
+    },
+    {
+      "id": "bob-fosses-dancin-2023",
+      "opened": "2023-03-19",
+      "forecast": 74,
+      "lo80": 60,
+      "hi80": 86.7,
+      "categoryMean": 73.5,
+      "actual": 73
+    },
+    {
+      "id": "parade-2023",
+      "opened": "2023-03-16",
+      "forecast": 80.9,
+      "lo80": 66.8,
+      "hi80": 93.5,
+      "categoryMean": 73.5,
+      "actual": 81
+    },
+    {
+      "id": "a-dolls-house-2023",
+      "opened": "2023-03-09",
+      "forecast": 69.3,
+      "lo80": 55.3,
+      "hi80": 82,
+      "categoryMean": 71.2,
+      "actual": 71
+    },
+    {
+      "id": "pictures-from-home-2023",
+      "opened": "2023-02-09",
+      "forecast": 71.8,
+      "lo80": 57.8,
+      "hi80": 84.5,
+      "categoryMean": 72,
+      "actual": 62
+    },
+    {
+      "id": "between-riverside-and-crazy-2022",
+      "opened": "2022-12-19",
+      "forecast": 77.6,
+      "lo80": 63.6,
+      "hi80": 90.3,
+      "categoryMean": 72,
+      "actual": 83
+    },
+    {
+      "id": "the-collaboration-2022",
+      "opened": "2022-12-18",
+      "forecast": 72.7,
+      "lo80": 58.7,
+      "hi80": 85.4,
+      "categoryMean": 72,
+      "actual": 54
+    },
+    {
+      "id": "some-like-it-hot-2022",
+      "opened": "2022-12-11",
+      "forecast": 68.4,
+      "lo80": 54.4,
+      "hi80": 81.1,
+      "categoryMean": 66.5,
+      "actual": 79
+    },
+    {
+      "id": "ohio-state-murders-2022",
+      "opened": "2022-12-08",
+      "forecast": 68.5,
+      "lo80": 54.5,
+      "hi80": 81.2,
+      "categoryMean": 71.2,
+      "actual": 80
+    },
+    {
+      "id": "a-beautiful-noise-the-neil-diamond-musical-2022",
+      "opened": "2022-12-04",
+      "forecast": 65.9,
+      "lo80": 51.9,
+      "hi80": 78.6,
+      "categoryMean": 66.5,
+      "actual": 59
+    },
+    {
+      "id": "aint-no-mo-2022",
+      "opened": "2022-12-01",
+      "forecast": 73.4,
+      "lo80": 59.4,
+      "hi80": 86.1,
+      "categoryMean": 72,
+      "actual": 84
+    },
+    {
+      "id": "kpop-2022",
+      "opened": "2022-11-27",
+      "forecast": 71.2,
+      "lo80": 57.1,
+      "hi80": 83.9,
+      "categoryMean": 66.5,
+      "actual": 67
+    },
+    {
+      "id": "a-christmas-carol-2022",
+      "opened": "2022-11-21",
+      "forecast": 71,
+      "lo80": 56.9,
+      "hi80": 83.7,
+      "categoryMean": 72,
+      "actual": 74
+    },
+    {
+      "id": "and-juliet-2022",
+      "opened": "2022-11-17",
+      "forecast": 73.2,
+      "lo80": 59.2,
+      "hi80": 85.9,
+      "categoryMean": 66.5,
+      "actual": 72
+    },
+    {
+      "id": "mike-birbiglia-the-old-man-and-the-pool-2022",
+      "opened": "2022-11-13",
+      "forecast": 71,
+      "lo80": 57,
+      "hi80": 83.7,
+      "categoryMean": 72,
+      "actual": 84
+    },
+    {
+      "id": "kimberly-akimbo-2022",
+      "opened": "2022-11-10",
+      "forecast": 86.6,
+      "lo80": 72.6,
+      "hi80": 99.3,
+      "categoryMean": 66.5,
+      "actual": 88
+    },
+    {
+      "id": "almost-famous-2022",
+      "opened": "2022-11-03",
+      "forecast": 66.6,
+      "lo80": 52.6,
+      "hi80": 79.3,
+      "categoryMean": 66.5,
+      "actual": 50
+    },
+    {
+      "id": "walking-with-ghosts-2022",
+      "opened": "2022-10-27",
+      "forecast": 71.8,
+      "lo80": 57.8,
+      "hi80": 84.5,
+      "categoryMean": 72,
+      "actual": 68
+    },
+    {
+      "id": "topdog-underdog-2022",
+      "opened": "2022-10-20",
+      "forecast": 70.4,
+      "lo80": 56.4,
+      "hi80": 83.1,
+      "categoryMean": 71.2,
+      "actual": 82
+    },
+    {
+      "id": "the-piano-lesson-2022",
+      "opened": "2022-10-13",
+      "forecast": 73.5,
+      "lo80": 59.4,
+      "hi80": 86.1,
+      "categoryMean": 71.2,
+      "actual": 75
+    },
+    {
+      "id": "death-of-a-salesman-2022",
+      "opened": "2022-10-09",
+      "forecast": 81.2,
+      "lo80": 67.2,
+      "hi80": 93.9,
+      "categoryMean": 71.2,
+      "actual": 78
+    },
+    {
+      "id": "1776-2022",
+      "opened": "2022-10-06",
+      "forecast": 71,
+      "lo80": 57,
+      "hi80": 83.7,
+      "categoryMean": 73.5,
+      "actual": 66
+    },
+    {
+      "id": "cost-of-living-2022",
+      "opened": "2022-10-03",
+      "forecast": 76.4,
+      "lo80": 62.4,
+      "hi80": 89.1,
+      "categoryMean": 72,
+      "actual": 83
+    },
+    {
+      "id": "leopoldstadt-2022",
+      "opened": "2022-10-02",
+      "forecast": 74.8,
+      "lo80": 60.8,
+      "hi80": 87.5,
+      "categoryMean": 72,
+      "actual": 81
+    },
+    {
+      "id": "into-the-woods-2022",
+      "opened": "2022-07-10",
+      "forecast": 78.6,
+      "lo80": 64.6,
+      "hi80": 91.3,
+      "categoryMean": 73.5,
+      "actual": 88
+    },
+    {
+      "id": "the-kite-runner-2022",
+      "opened": "2022-07-21",
+      "forecast": 69.8,
+      "lo80": 55.8,
+      "hi80": 82.5,
+      "categoryMean": 72,
+      "actual": 57
+    },
+    {
+      "id": "the-great-gatsby-2024",
+      "opened": "2024-04-25",
+      "forecast": 60.4,
+      "lo80": 46.7,
+      "hi80": 73,
+      "categoryMean": 66.5,
+      "actual": 56
+    },
+    {
+      "id": "mother-play-2024",
+      "opened": "2024-04-25",
+      "forecast": 75.5,
+      "lo80": 61.8,
+      "hi80": 88.1,
+      "categoryMean": 72.2,
+      "actual": 72
+    },
+    {
+      "id": "illinoise-2024",
+      "opened": "2024-04-24",
+      "forecast": 80.8,
+      "lo80": 67,
+      "hi80": 93.4,
+      "categoryMean": 66.5,
+      "actual": 80
+    },
+    {
+      "id": "uncle-vanya-2024",
+      "opened": "2024-04-24",
+      "forecast": 77.7,
+      "lo80": 64,
+      "hi80": 90.3,
+      "categoryMean": 71.6,
+      "actual": 59
+    },
+    {
+      "id": "mary-jane-2024",
+      "opened": "2024-04-23",
+      "forecast": 78.1,
+      "lo80": 64.3,
+      "hi80": 90.6,
+      "categoryMean": 72.2,
+      "actual": 82
+    },
+    {
+      "id": "heart-of-rock-and-roll-2024",
+      "opened": "2024-04-22",
+      "forecast": 66.5,
+      "lo80": 52.7,
+      "hi80": 79.1,
+      "categoryMean": 66.5,
+      "actual": 70
+    },
+    {
+      "id": "patriots-2024",
+      "opened": "2024-04-22",
+      "forecast": 77.7,
+      "lo80": 63.9,
+      "hi80": 90.3,
+      "categoryMean": 72.2,
+      "actual": 67
+    },
+    {
+      "id": "cabaret-2024",
+      "opened": "2024-04-21",
+      "forecast": 86.2,
+      "lo80": 72.5,
+      "hi80": 98.8,
+      "categoryMean": 73.6,
+      "actual": 62
+    },
+    {
+      "id": "hells-kitchen-2024",
+      "opened": "2024-04-20",
+      "forecast": 78.3,
+      "lo80": 64.5,
+      "hi80": 90.9,
+      "categoryMean": 66.5,
+      "actual": 78
+    },
+    {
+      "id": "stereophonic-2024",
+      "opened": "2024-04-19",
+      "forecast": 84.2,
+      "lo80": 70.4,
+      "hi80": 96.8,
+      "categoryMean": 72.2,
+      "actual": 88
+    },
+    {
+      "id": "suffs-2024",
+      "opened": "2024-04-18",
+      "forecast": 77.9,
+      "lo80": 64.1,
+      "hi80": 90.5,
+      "categoryMean": 66.5,
+      "actual": 80
+    },
+    {
+      "id": "the-wiz-2024",
+      "opened": "2024-04-17",
+      "forecast": 68.2,
+      "lo80": 54.5,
+      "hi80": 80.8,
+      "categoryMean": 73.6,
+      "actual": 66
+    },
+    {
+      "id": "lempicka-2024",
+      "opened": "2024-04-14",
+      "forecast": 65.4,
+      "lo80": 51.6,
+      "hi80": 77.9,
+      "categoryMean": 66.5,
+      "actual": 54
+    },
+    {
+      "id": "the-outsiders-2024",
+      "opened": "2024-04-11",
+      "forecast": 70.6,
+      "lo80": 56.8,
+      "hi80": 83.1,
+      "categoryMean": 66.5,
+      "actual": 70
+    },
+    {
+      "id": "the-whos-tommy-2024",
+      "opened": "2024-03-28",
+      "forecast": 76.5,
+      "lo80": 62.7,
+      "hi80": 89,
+      "categoryMean": 73.6,
+      "actual": 76
+    },
+    {
+      "id": "water-for-elephants-2024",
+      "opened": "2024-03-21",
+      "forecast": 62.8,
+      "lo80": 49,
+      "hi80": 75.3,
+      "categoryMean": 66.5,
+      "actual": 73
+    },
+    {
+      "id": "an-enemy-of-the-people-2024",
+      "opened": "2024-03-18",
+      "forecast": 63,
+      "lo80": 49.2,
+      "hi80": 75.6,
+      "categoryMean": 71.6,
+      "actual": 78
+    },
+    {
+      "id": "the-notebook-2024",
+      "opened": "2024-03-14",
+      "forecast": 63.1,
+      "lo80": 49.3,
+      "hi80": 75.6,
+      "categoryMean": 66.5,
+      "actual": 62
+    },
+    {
+      "id": "doubt-2024",
+      "opened": "2024-03-07",
+      "forecast": 72.6,
+      "lo80": 58.9,
+      "hi80": 85.2,
+      "categoryMean": 71.6,
+      "actual": 77
+    },
+    {
+      "id": "days-of-wine-and-roses-2024",
+      "opened": "2024-01-28",
+      "forecast": 74.4,
+      "lo80": 60.6,
+      "hi80": 87,
+      "categoryMean": 66.5,
+      "actual": 75
+    },
+    {
+      "id": "prayer-for-the-french-republic-2024",
+      "opened": "2024-01-09",
+      "forecast": 80.2,
+      "lo80": 66.4,
+      "hi80": 92.7,
+      "categoryMean": 72.2,
+      "actual": 77
+    },
+    {
+      "id": "appropriate-2023",
+      "opened": "2023-12-18",
+      "forecast": 73,
+      "lo80": 59.3,
+      "hi80": 85.6,
+      "categoryMean": 72.2,
+      "actual": 86
+    },
+    {
+      "id": "how-to-dance-in-ohio-2023",
+      "opened": "2023-12-10",
+      "forecast": 65.8,
+      "lo80": 52.1,
+      "hi80": 78.4,
+      "categoryMean": 66.5,
+      "actual": 68
+    },
+    {
+      "id": "spamalot-2023",
+      "opened": "2023-11-16",
+      "forecast": 76.9,
+      "lo80": 63.1,
+      "hi80": 89.5,
+      "categoryMean": 73.6,
+      "actual": 75
+    },
+    {
+      "id": "harmony-2023",
+      "opened": "2023-11-13",
+      "forecast": 79,
+      "lo80": 65.2,
+      "hi80": 91.6,
+      "categoryMean": 66.5,
+      "actual": 65
+    },
+    {
+      "id": "i-need-that-2023",
+      "opened": "2023-11-02",
+      "forecast": 70.8,
+      "lo80": 57,
+      "hi80": 83.4,
+      "categoryMean": 72.2,
+      "actual": 55
+    },
+    {
+      "id": "gutenberg-2023",
+      "opened": "2023-10-12",
+      "forecast": 79,
+      "lo80": 65.3,
+      "hi80": 91.6,
+      "categoryMean": 73.6,
+      "actual": 70
+    },
+    {
+      "id": "merrily-we-roll-along-2023",
+      "opened": "2023-10-10",
+      "forecast": 87.4,
+      "lo80": 73.6,
+      "hi80": 100,
+      "categoryMean": 73.6,
+      "actual": 86
+    },
+    {
+      "id": "jajas-african-hair-braiding-2023",
+      "opened": "2023-10-03",
+      "forecast": 73.1,
+      "lo80": 59.3,
+      "hi80": 85.7,
+      "categoryMean": 72.2,
+      "actual": 79
+    },
+    {
+      "id": "purlie-victorious-2023",
+      "opened": "2023-09-27",
+      "forecast": 73.3,
+      "lo80": 59.5,
+      "hi80": 85.9,
+      "categoryMean": 71.6,
+      "actual": 85
+    },
+    {
+      "id": "the-shark-is-broken-2023",
+      "opened": "2023-08-10",
+      "forecast": 76,
+      "lo80": 62.2,
+      "hi80": 88.6,
+      "categoryMean": 72.2,
+      "actual": 63
+    },
+    {
+      "id": "back-to-the-future-2023",
+      "opened": "2023-08-03",
+      "forecast": 63.8,
+      "lo80": 50.1,
+      "hi80": 76.4,
+      "categoryMean": 66.5,
+      "actual": 59
+    },
+    {
+      "id": "the-cottage-2023",
+      "opened": "2023-07-24",
+      "forecast": 77.9,
+      "lo80": 64.2,
+      "hi80": 90.5,
+      "categoryMean": 72.2,
+      "actual": 58
+    },
+    {
+      "id": "here-lies-love-2023",
+      "opened": "2023-07-20",
+      "forecast": 70.2,
+      "lo80": 56.5,
+      "hi80": 82.8,
+      "categoryMean": 66.5,
+      "actual": 77
+    },
+    {
+      "id": "just-for-us-2023",
+      "opened": "2023-06-26",
+      "forecast": 77.4,
+      "lo80": 63.7,
+      "hi80": 90,
+      "categoryMean": 72.2,
+      "actual": 85
+    },
+    {
+      "id": "once-upon-a-one-more-time-2023",
+      "opened": "2023-06-22",
+      "forecast": 65.1,
+      "lo80": 51.4,
+      "hi80": 77.7,
+      "categoryMean": 66.5,
+      "actual": 59
+    },
+    {
+      "id": "real-women-have-curves-2025",
+      "opened": "2025-04-27",
+      "forecast": 62.9,
+      "lo80": 48.3,
+      "hi80": 75.4,
+      "categoryMean": 66.7,
+      "actual": 77
+    },
+    {
+      "id": "dead-outlaw-2025",
+      "opened": "2025-04-27",
+      "forecast": 78.6,
+      "lo80": 64,
+      "hi80": 91.1,
+      "categoryMean": 66.7,
+      "actual": 84
+    },
+    {
+      "id": "just-in-time-2025",
+      "opened": "2025-04-26",
+      "forecast": 69.4,
+      "lo80": 54.8,
+      "hi80": 81.9,
+      "categoryMean": 66.7,
+      "actual": 79
+    },
+    {
+      "id": "pirates-the-penzance-musical-2025",
+      "opened": "2025-04-24",
+      "forecast": 75.3,
+      "lo80": 60.8,
+      "hi80": 87.9,
+      "categoryMean": 73.5,
+      "actual": 77
+    },
+    {
+      "id": "stranger-things-2024",
+      "opened": "2025-04-22",
+      "forecast": 81.7,
+      "lo80": 67.2,
+      "hi80": 94.3,
+      "categoryMean": 72.3,
+      "actual": 63
+    },
+    {
+      "id": "floyd-collins-2025",
+      "opened": "2025-04-21",
+      "forecast": 71.7,
+      "lo80": 57.1,
+      "hi80": 84.2,
+      "categoryMean": 73.5,
+      "actual": 71
+    },
+    {
+      "id": "john-proctor-is-the-villain-2025",
+      "opened": "2025-04-14",
+      "forecast": 72.7,
+      "lo80": 58.1,
+      "hi80": 85.3,
+      "categoryMean": 72.3,
+      "actual": 83
+    },
+    {
+      "id": "smash-2025",
+      "opened": "2025-04-10",
+      "forecast": 69,
+      "lo80": 54.5,
+      "hi80": 81.6,
+      "categoryMean": 66.7,
+      "actual": 59
+    },
+    {
+      "id": "stephen-sondheims-old-friends-2025",
+      "opened": "2025-04-08",
+      "forecast": 69.9,
+      "lo80": 55.3,
+      "hi80": 82.5,
+      "categoryMean": 66.7,
+      "actual": 74
+    },
+    {
+      "id": "the-last-five-years-2025",
+      "opened": "2025-04-06",
+      "forecast": 75.6,
+      "lo80": 61,
+      "hi80": 88.1,
+      "categoryMean": 73.5,
+      "actual": 56
+    },
+    {
+      "id": "boop-2025",
+      "opened": "2025-04-05",
+      "forecast": 62.3,
+      "lo80": 47.7,
+      "hi80": 74.8,
+      "categoryMean": 66.7,
+      "actual": 72
+    },
+    {
+      "id": "good-night-and-good-luck-2025",
+      "opened": "2025-04-03",
+      "forecast": 72.5,
+      "lo80": 57.9,
+      "hi80": 85.1,
+      "categoryMean": 72.3,
+      "actual": 69
+    },
+    {
+      "id": "glengarry-glen-ross-2025",
+      "opened": "2025-03-31",
+      "forecast": 64.4,
+      "lo80": 49.9,
+      "hi80": 77,
+      "categoryMean": 71.8,
+      "actual": 66
+    },
+    {
+      "id": "the-picture-of-dorian-gray-2025",
+      "opened": "2025-03-27",
+      "forecast": 75.6,
+      "lo80": 61,
+      "hi80": 88.1,
+      "categoryMean": 72.3,
+      "actual": 78
+    },
+    {
+      "id": "othello-2025",
+      "opened": "2025-03-23",
+      "forecast": 70.3,
+      "lo80": 55.7,
+      "hi80": 82.8,
+      "categoryMean": 71.8,
+      "actual": 52
+    },
+    {
+      "id": "operation-mincemeat-2025",
+      "opened": "2025-03-20",
+      "forecast": 77.7,
+      "lo80": 63.1,
+      "hi80": 90.3,
+      "categoryMean": 66.7,
+      "actual": 78
+    },
+    {
+      "id": "buena-vista-social-club-2025",
+      "opened": "2025-03-19",
+      "forecast": 83,
+      "lo80": 68.4,
+      "hi80": 95.6,
+      "categoryMean": 66.7,
+      "actual": 82
+    },
+    {
+      "id": "purpose-2025",
+      "opened": "2025-03-17",
+      "forecast": 73.2,
+      "lo80": 58.6,
+      "hi80": 85.7,
+      "categoryMean": 72.3,
+      "actual": 82
+    },
+    {
+      "id": "redwood-2025",
+      "opened": "2025-02-13",
+      "forecast": 65.6,
+      "lo80": 51,
+      "hi80": 78.1,
+      "categoryMean": 66.7,
+      "actual": 56
+    },
+    {
+      "id": "english-2025",
+      "opened": "2025-01-23",
+      "forecast": 83.2,
+      "lo80": 68.6,
+      "hi80": 95.7,
+      "categoryMean": 72.3,
+      "actual": 84
+    },
+    {
+      "id": "all-in-comedy-about-love-2024",
+      "opened": "2024-12-22",
+      "forecast": 72.9,
+      "lo80": 58.3,
+      "hi80": 85.4,
+      "categoryMean": 72.3,
+      "actual": 67
+    },
+    {
+      "id": "gypsy-2024",
+      "opened": "2024-12-19",
+      "forecast": 79.5,
+      "lo80": 64.9,
+      "hi80": 92.1,
+      "categoryMean": 73.5,
+      "actual": 85
+    },
+    {
+      "id": "eureka-day-2024",
+      "opened": "2024-12-16",
+      "forecast": 71.8,
+      "lo80": 57.2,
+      "hi80": 84.4,
+      "categoryMean": 71.8,
+      "actual": 78
+    },
+    {
+      "id": "cult-of-love-2024",
+      "opened": "2024-12-12",
+      "forecast": 71.1,
+      "lo80": 56.5,
+      "hi80": 83.6,
+      "categoryMean": 72.3,
+      "actual": 72
+    },
+    {
+      "id": "death-becomes-her-2024",
+      "opened": "2024-11-21",
+      "forecast": 63.8,
+      "lo80": 49.2,
+      "hi80": 76.3,
+      "categoryMean": 66.7,
+      "actual": 81
+    },
+    {
+      "id": "swept-away-2024",
+      "opened": "2024-11-19",
+      "forecast": 63.9,
+      "lo80": 49.3,
+      "hi80": 76.5,
+      "categoryMean": 66.7,
+      "actual": 66
+    },
+    {
+      "id": "elf-2024",
+      "opened": "2024-11-17",
+      "forecast": 68.2,
+      "lo80": 53.6,
+      "hi80": 80.8,
+      "categoryMean": 73.5,
+      "actual": 74
+    },
+    {
+      "id": "tammy-faye-2024",
+      "opened": "2024-11-14",
+      "forecast": 65.2,
+      "lo80": 50.6,
+      "hi80": 77.7,
+      "categoryMean": 66.7,
+      "actual": 47
+    },
+    {
+      "id": "maybe-happy-ending-2024",
+      "opened": "2024-11-12",
+      "forecast": 65.3,
+      "lo80": 50.8,
+      "hi80": 77.9,
+      "categoryMean": 66.7,
+      "actual": 85
+    },
+    {
+      "id": "a-wonderful-world-the-louis-armstrong-musical-2024",
+      "opened": "2024-11-11",
+      "forecast": 67,
+      "lo80": 52.4,
+      "hi80": 79.6,
+      "categoryMean": 66.7,
+      "actual": 60
+    },
+    {
+      "id": "romeo-juliet-2024",
+      "opened": "2024-10-24",
+      "forecast": 71.3,
+      "lo80": 56.7,
+      "hi80": 83.9,
+      "categoryMean": 71.8,
+      "actual": 67
+    },
+    {
+      "id": "left-on-tenth-2024",
+      "opened": "2024-10-23",
+      "forecast": 68.8,
+      "lo80": 54.2,
+      "hi80": 81.3,
+      "categoryMean": 72.3,
+      "actual": 55
+    },
+    {
+      "id": "sunset-boulevard-2024",
+      "opened": "2024-10-20",
+      "forecast": 77,
+      "lo80": 62.4,
+      "hi80": 89.6,
+      "categoryMean": 73.5,
+      "actual": 76
+    },
+    {
+      "id": "our-town-2024",
+      "opened": "2024-10-10",
+      "forecast": 72.4,
+      "lo80": 57.8,
+      "hi80": 85,
+      "categoryMean": 71.8,
+      "actual": 70
+    },
+    {
+      "id": "yellow-face-2024",
+      "opened": "2024-10-01",
+      "forecast": 76.1,
+      "lo80": 61.5,
+      "hi80": 88.7,
+      "categoryMean": 71.8,
+      "actual": 77
+    },
+    {
+      "id": "mcneal-2024",
+      "opened": "2024-09-30",
+      "forecast": 73.3,
+      "lo80": 58.8,
+      "hi80": 85.9,
+      "categoryMean": 72.3,
+      "actual": 51
+    },
+    {
+      "id": "the-hills-of-california-2024",
+      "opened": "2024-09-29",
+      "forecast": 75.4,
+      "lo80": 60.9,
+      "hi80": 88,
+      "categoryMean": 72.3,
+      "actual": 78
+    },
+    {
+      "id": "the-roommate-2024",
+      "opened": "2024-09-12",
+      "forecast": 71.5,
+      "lo80": 57,
+      "hi80": 84.1,
+      "categoryMean": 72.3,
+      "actual": 69
+    },
+    {
+      "id": "once-upon-a-mattress-2024",
+      "opened": "2024-08-12",
+      "forecast": 85.5,
+      "lo80": 70.9,
+      "hi80": 98,
+      "categoryMean": 73.5,
+      "actual": 77
+    },
+    {
+      "id": "job-2024",
+      "opened": "2024-07-30",
+      "forecast": 79.7,
+      "lo80": 65.1,
+      "hi80": 92.2,
+      "categoryMean": 72.3,
+      "actual": 71
+    },
+    {
+      "id": "oh-mary-2024",
+      "opened": "2024-07-11",
+      "forecast": 87.4,
+      "lo80": 72.9,
+      "hi80": 100,
+      "categoryMean": 72.3,
+      "actual": 87
+    },
+    {
+      "id": "home-2024",
+      "opened": "2024-06-05",
+      "forecast": 70.7,
+      "lo80": 56.1,
+      "hi80": 83.2,
+      "categoryMean": 71.8,
+      "actual": 78
+    },
+    {
+      "id": "the-lost-boys-2026",
+      "opened": "2026-04-26",
+      "forecast": 66.7,
+      "lo80": 52.3,
+      "hi80": 78.7,
+      "categoryMean": 67.2,
+      "actual": 72
+    },
+    {
+      "id": "joe-turners-come-and-gone-2026",
+      "opened": "2026-04-25",
+      "forecast": 78.5,
+      "lo80": 64,
+      "hi80": 90.5,
+      "categoryMean": 71.6,
+      "actual": 80
+    },
+    {
+      "id": "the-rocky-horror-show-2026",
+      "opened": "2026-04-23",
+      "forecast": 79.3,
+      "lo80": 64.9,
+      "hi80": 91.3,
+      "categoryMean": 73.5,
+      "actual": 72
+    },
+    {
+      "id": "beaches-2026",
+      "opened": "2026-04-22",
+      "forecast": 62.8,
+      "lo80": 48.4,
+      "hi80": 74.8,
+      "categoryMean": 67.2,
+      "actual": 43
+    },
+    {
+      "id": "the-balusters-2026",
+      "opened": "2026-04-21",
+      "forecast": 74.2,
+      "lo80": 59.8,
+      "hi80": 86.2,
+      "categoryMean": 72.3,
+      "actual": 80
+    },
+    {
+      "id": "schmigadoon-2026",
+      "opened": "2026-04-20",
+      "forecast": 63.5,
+      "lo80": 49.1,
+      "hi80": 75.5,
+      "categoryMean": 67.2,
+      "actual": 79
+    },
+    {
+      "id": "fallen-angels-2026",
+      "opened": "2026-04-19",
+      "forecast": 72,
+      "lo80": 57.5,
+      "hi80": 84,
+      "categoryMean": 71.6,
+      "actual": 78
+    },
+    {
+      "id": "proof-2026",
+      "opened": "2026-04-16",
+      "forecast": 80.6,
+      "lo80": 66.2,
+      "hi80": 92.6,
+      "categoryMean": 71.6,
+      "actual": 72
+    },
+    {
+      "id": "the-fear-of-13-2026",
+      "opened": "2026-04-15",
+      "forecast": 71.2,
+      "lo80": 56.8,
+      "hi80": 83.2,
+      "categoryMean": 72.3,
+      "actual": 61
+    },
+    {
+      "id": "titanique-2026",
+      "opened": "2026-04-12",
+      "forecast": 78.7,
+      "lo80": 64.2,
+      "hi80": 90.7,
+      "categoryMean": 67.2,
+      "actual": 76
+    },
+    {
+      "id": "death-of-a-salesman-2026",
+      "opened": "2026-04-09",
+      "forecast": 76,
+      "lo80": 61.6,
+      "hi80": 88,
+      "categoryMean": 71.6,
+      "actual": 86
+    },
+    {
+      "id": "cats-the-jellicle-ball-2026",
+      "opened": "2026-04-07",
+      "forecast": 82,
+      "lo80": 67.6,
+      "hi80": 94,
+      "categoryMean": 73.5,
+      "actual": 86
+    },
+    {
+      "id": "becky-shaw-2026",
+      "opened": "2026-04-06",
+      "forecast": 71.8,
+      "lo80": 57.4,
+      "hi80": 83.8,
+      "categoryMean": 71.6,
+      "actual": 84
+    },
+    {
+      "id": "dog-day-afternoon-2026",
+      "opened": "2026-03-30",
+      "forecast": 74.9,
+      "lo80": 60.5,
+      "hi80": 86.9,
+      "categoryMean": 72.3,
+      "actual": 55
+    },
+    {
+      "id": "giant-2026",
+      "opened": "2026-03-23",
+      "forecast": 82.8,
+      "lo80": 68.4,
+      "hi80": 94.8,
+      "categoryMean": 72.3,
+      "actual": 79
+    },
+    {
+      "id": "every-brilliant-thing-2026",
+      "opened": "2026-03-12",
+      "forecast": 74.5,
+      "lo80": 60,
+      "hi80": 86.5,
+      "categoryMean": 71.6,
+      "actual": 79
+    },
+    {
+      "id": "bug-2026",
+      "opened": "2026-01-08",
+      "forecast": 71.9,
+      "lo80": 57.5,
+      "hi80": 83.9,
+      "categoryMean": 71.6,
+      "actual": 75
+    },
+    {
+      "id": "marjorie-prime-2025",
+      "opened": "2025-12-08",
+      "forecast": 71.8,
+      "lo80": 57.4,
+      "hi80": 83.8,
+      "categoryMean": 71.6,
+      "actual": 81
+    },
+    {
+      "id": "two-strangers-bway-2025",
+      "opened": "2025-11-20",
+      "forecast": 73.3,
+      "lo80": 58.9,
+      "hi80": 85.3,
+      "categoryMean": 67.2,
+      "actual": 77
+    },
+    {
+      "id": "chess-2025",
+      "opened": "2025-11-16",
+      "forecast": 71.9,
+      "lo80": 57.5,
+      "hi80": 83.9,
+      "categoryMean": 73.5,
+      "actual": 63
+    },
+    {
+      "id": "oedipus-2025",
+      "opened": "2025-11-13",
+      "forecast": 68.5,
+      "lo80": 54.1,
+      "hi80": 80.5,
+      "categoryMean": 71.6,
+      "actual": 82
+    },
+    {
+      "id": "queen-versailles-2025",
+      "opened": "2025-11-09",
+      "forecast": 67.4,
+      "lo80": 53,
+      "hi80": 79.4,
+      "categoryMean": 67.2,
+      "actual": 50
+    },
+    {
+      "id": "little-bear-ridge-road-2025",
+      "opened": "2025-10-30",
+      "forecast": 78.2,
+      "lo80": 63.8,
+      "hi80": 90.2,
+      "categoryMean": 72.3,
+      "actual": 84
+    },
+    {
+      "id": "liberation-2025",
+      "opened": "2025-10-28",
+      "forecast": 82.4,
+      "lo80": 67.9,
+      "hi80": 94.4,
+      "categoryMean": 72.3,
+      "actual": 86
+    },
+    {
+      "id": "ragtime-2025",
+      "opened": "2025-10-16",
+      "forecast": 83.5,
+      "lo80": 69.1,
+      "hi80": 95.5,
+      "categoryMean": 73.5,
+      "actual": 83
+    },
+    {
+      "id": "punch-2025",
+      "opened": "2025-09-29",
+      "forecast": 75.7,
+      "lo80": 61.3,
+      "hi80": 87.7,
+      "categoryMean": 72.3,
+      "actual": 73
+    },
+    {
+      "id": "waiting-for-godot-2025",
+      "opened": "2025-09-28",
+      "forecast": 75,
+      "lo80": 60.6,
+      "hi80": 87,
+      "categoryMean": 71.6,
+      "actual": 66
+    },
+    {
+      "id": "art-2025",
+      "opened": "2025-09-16",
+      "forecast": 64.7,
+      "lo80": 50.3,
+      "hi80": 76.7,
+      "categoryMean": 71.6,
+      "actual": 66
+    },
+    {
+      "id": "mamma-mia-2025",
+      "opened": "2025-08-14",
+      "forecast": 74.5,
+      "lo80": 60.1,
+      "hi80": 86.5,
+      "categoryMean": 73.5,
+      "actual": 73
+    },
+    {
+      "id": "call-me-izzy-2025",
+      "opened": "2025-06-12",
+      "forecast": 72.5,
+      "lo80": 58.1,
+      "hi80": 84.5,
+      "categoryMean": 72.3,
+      "actual": 63
+    },
+    {
+      "id": "school-girls-or-the-african-mean-girls-play-2026",
+      "opened": "2026-09-28",
+      "forecast": 78.7,
+      "lo80": 64.2,
+      "hi80": 90.8,
+      "categoryMean": 72.2,
+      "actual": 84
+    },
+    {
+      "id": "paranormal-activity-2026",
+      "opened": "2026-08-25",
+      "forecast": 73.6,
+      "lo80": 59,
+      "hi80": 85.6,
+      "categoryMean": 72.3,
+      "actual": 78
+    },
+    {
+      "id": "other-desert-cities-2026",
+      "opened": "2026-10-18",
+      "forecast": 74.5,
+      "lo80": 59.9,
+      "hi80": 86.6,
+      "categoryMean": 72.2,
+      "actual": 67
+    }
+  ],
+  "verdictFlags": {
+    "walkForwardMaeGainPct": 9.9,
+    "maeDiffCI95": [
+      -1.3,
+      -0.3
+    ],
+    "beatsBaselineByBar": false,
+    "coverage80InBand": true,
+    "meetsPublishBar": false
+  }
+}

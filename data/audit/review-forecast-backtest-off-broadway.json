@@ -1,0 +1,1766 @@
+{
+  "generatedAt": "2026-11-10T19:15:09.341Z",
+  "card": "BRO-7314",
+  "market": "off-broadway",
+  "floor": 10,
+  "settleDays": 21,
+  "today": "2026-11-10",
+  "target": "getCriticScore(showId) from scripts/lib/canonical-critic-scores.ts (integer, as displayed)",
+  "preDeclaredBar": {
+    "text": "Publish-worthy only if, walk-forward, (1) model MAE is at least 15% lower than the category-mean baseline with a season-clustered 95% bootstrap interval that excludes zero, and (2) the stated 80% range holds between 72% and 88% of outcomes.",
+    "minRelativeMaeGain": 0.15,
+    "coverageLow": 0.72,
+    "coverageHigh": 0.88
+  },
+  "population": {
+    "scoredShowsAtFloor": 390,
+    "evaluated": 324,
+    "minEarlierSeasonShows": 30,
+    "firstSeason": 2017,
+    "lastSeason": 2026,
+    "withEarlierProduction": 34,
+    "withPreviewGrosses": 0
+  },
+  "leakage": {
+    "rowsChecked": 390,
+    "lagDays": 3,
+    "perturbation": {
+      "checked": 40,
+      "moved": 0
+    }
+  },
+  "notUsed": [
+    "audience grades (no dated history; data/audience-snapshots begins 2026-04 and live scores postdate openings)",
+    "cast (shows.json cast is a later snapshot incl. replacements)",
+    "producers (not in the data)"
+  ],
+  "loso": {
+    "n": 324,
+    "seasons": 9,
+    "maeModel": 7.2,
+    "maeCategoryMean": 7.4,
+    "maeGainPct": 1.9,
+    "maeDiffCI95": [
+      -0.2,
+      0
+    ],
+    "maeDiffVsPriorElseMeanCI95": [
+      -0.5,
+      0.1
+    ],
+    "rmseModel": 9,
+    "rmseCategoryMean": 9.1,
+    "scoreSd": 8.9,
+    "maePriorElseMean": 7.5,
+    "bandHitModel": 0.41,
+    "bandHitCategoryMean": 0.404,
+    "bandHitPriorElseMean": 0.389,
+    "coverage80": 0.802,
+    "coverage50": 0.5,
+    "avgWidth80": 22.7,
+    "baselineIntervalCoverage80": 0.802,
+    "baselineIntervalWidth80": 22.4,
+    "priorRunSubset": {
+      "n": 34,
+      "maePriorRunAlone": 7.9,
+      "maeModel": 5.9,
+      "maeCategoryMean": 6.9
+    }
+  },
+  "walkForward": {
+    "n": 142,
+    "seasons": 2,
+    "maeModel": 7.2,
+    "maeCategoryMean": 7.3,
+    "maeGainPct": 1.5,
+    "maeDiffCI95": [
+      -0.1,
+      0
+    ],
+    "maeDiffVsPriorElseMeanCI95": [
+      -0.6,
+      -0.1
+    ],
+    "rmseModel": 8.8,
+    "rmseCategoryMean": 8.8,
+    "scoreSd": 8.6,
+    "maePriorElseMean": 7.5,
+    "bandHitModel": 0.401,
+    "bandHitCategoryMean": 0.373,
+    "bandHitPriorElseMean": 0.366,
+    "coverage80": 0.789,
+    "coverage50": 0.5,
+    "avgWidth80": 22.5,
+    "baselineIntervalCoverage80": 0.824,
+    "baselineIntervalWidth80": 22.7,
+    "priorRunSubset": {
+      "n": 20,
+      "maePriorRunAlone": 9,
+      "maeModel": 7.4,
+      "maeCategoryMean": 7.7
+    }
+  },
+  "fixedSplit": {
+    "n": 0,
+    "window": "train through 2019-20, test 2021-22 onward"
+  },
+  "ablationsLoso": {
+    "all": {
+      "n": 324,
+      "maeModel": 7.2,
+      "maeCategoryMean": 7.4,
+      "bandHitModel": 0.41
+    },
+    "people only": {
+      "n": 324,
+      "maeModel": 7.3,
+      "maeCategoryMean": 7.4,
+      "bandHitModel": 0.404
+    },
+    "prior run only": {
+      "n": 324,
+      "maeModel": 7.2,
+      "maeCategoryMean": 7.4,
+      "bandHitModel": 0.404
+    },
+    "preview grosses only": {
+      "n": 324,
+      "maeModel": 7.2,
+      "maeCategoryMean": 7.4,
+      "bandHitModel": 0.404
+    },
+    "route and source only": {
+      "n": 324,
+      "maeModel": 7.2,
+      "maeCategoryMean": 7.4,
+      "bandHitModel": 0.404
+    },
+    "everything but grosses": {
+      "n": 324,
+      "maeModel": 7.2,
+      "maeCategoryMean": 7.4,
+      "bandHitModel": 0.41
+    }
+  },
+  "failuresWalkForward": {
+    "play revival": {
+      "n": 26,
+      "mae": 8.6,
+      "maeCategoryMean": 8,
+      "meanSigned": 0.5
+    },
+    "actual tier: worth-seeing": {
+      "n": 54,
+      "mae": 3.4,
+      "maeCategoryMean": 2.7,
+      "meanSigned": 1.7
+    },
+    "no earlier production": {
+      "n": 122,
+      "mae": 7.2,
+      "maeCategoryMean": 7.3,
+      "meanSigned": -0.3
+    },
+    "no preview grosses": {
+      "n": 142,
+      "mae": 7.2,
+      "maeCategoryMean": 7.3,
+      "meanSigned": -0.6
+    },
+    "10-24 reviews": {
+      "n": 132,
+      "mae": 7.2,
+      "maeCategoryMean": 7.4,
+      "meanSigned": -0.8
+    },
+    "actual tier: recommended": {
+      "n": 52,
+      "mae": 7.3,
+      "maeCategoryMean": 8.7,
+      "meanSigned": -7.2
+    },
+    "has earlier production": {
+      "n": 20,
+      "mae": 7.4,
+      "maeCategoryMean": 7.7,
+      "meanSigned": -2.3
+    },
+    "actual tier: skippable": {
+      "n": 20,
+      "mae": 9.9,
+      "maeCategoryMean": 9.3,
+      "meanSigned": 9.9
+    },
+    "play new": {
+      "n": 89,
+      "mae": 7,
+      "maeCategoryMean": 7.5,
+      "meanSigned": -0.9
+    },
+    "actual tier: stay-away": {
+      "n": 7,
+      "mae": 19.1,
+      "maeCategoryMean": 17.8,
+      "meanSigned": 19.1
+    },
+    "musical new": {
+      "n": 20,
+      "mae": 6.3,
+      "maeCategoryMean": 5.8,
+      "meanSigned": 1.1
+    },
+    "musical revival": {
+      "n": 7,
+      "mae": 7.6,
+      "maeCategoryMean": 7.9,
+      "meanSigned": -5.6
+    },
+    "25+ reviews": {
+      "n": 10,
+      "mae": 7.6,
+      "maeCategoryMean": 6.9,
+      "meanSigned": 2.5
+    },
+    "actual tier: must-see": {
+      "n": 9,
+      "mae": 14.9,
+      "maeCategoryMean": 15.4,
+      "meanSigned": -14.9
+    }
+  },
+  "failuresLoso": {
+    "musical new": {
+      "n": 55,
+      "mae": 7.3,
+      "maeCategoryMean": 7.4,
+      "meanSigned": 1
+    },
+    "actual tier: worth-seeing": {
+      "n": 132,
+      "mae": 3,
+      "maeCategoryMean": 2.7,
+      "meanSigned": 1
+    },
+    "no earlier production": {
+      "n": 290,
+      "mae": 7.4,
+      "maeCategoryMean": 7.4,
+      "meanSigned": 0.2
+    },
+    "no preview grosses": {
+      "n": 324,
+      "mae": 7.2,
+      "maeCategoryMean": 7.4,
+      "meanSigned": 0
+    },
+    "10-24 reviews": {
+      "n": 295,
+      "mae": 7.1,
+      "maeCategoryMean": 7.2,
+      "meanSigned": -0.2
+    },
+    "play new": {
+      "n": 228,
+      "mae": 6.9,
+      "maeCategoryMean": 7.2,
+      "meanSigned": 0
+    },
+    "actual tier: skippable": {
+      "n": 53,
+      "mae": 10.2,
+      "maeCategoryMean": 9,
+      "meanSigned": 10.2
+    },
+    "25+ reviews": {
+      "n": 29,
+      "mae": 8.6,
+      "maeCategoryMean": 8.8,
+      "meanSigned": 1.2
+    },
+    "actual tier: must-see": {
+      "n": 19,
+      "mae": 14,
+      "maeCategoryMean": 15.2,
+      "meanSigned": -14
+    },
+    "actual tier: recommended": {
+      "n": 103,
+      "mae": 7.6,
+      "maeCategoryMean": 9,
+      "meanSigned": -7.6
+    },
+    "has earlier production": {
+      "n": 34,
+      "mae": 5.9,
+      "maeCategoryMean": 6.9,
+      "meanSigned": -1.8
+    },
+    "actual tier: stay-away": {
+      "n": 17,
+      "mae": 21.3,
+      "maeCategoryMean": 20.2,
+      "meanSigned": 21.3
+    },
+    "musical revival": {
+      "n": 11,
+      "mae": 7.7,
+      "maeCategoryMean": 9,
+      "meanSigned": -6.4
+    },
+    "play revival": {
+      "n": 30,
+      "mae": 9.1,
+      "maeCategoryMean": 8,
+      "meanSigned": 0
+    }
+  },
+  "fullModelWeights": {
+    "dir": 0.131,
+    "chor": -0.843,
+    "writer": 0.152,
+    "priorRun": 0.31,
+    "venue": 0.698,
+    "grossCap": 0,
+    "grossAtp": 0,
+    "srcFilm": 0,
+    "srcTv": 0,
+    "srcBook": 0,
+    "srcMusic": 0,
+    "srcPlay": 0,
+    "pathLondon": 0,
+    "pathOffB": 0,
+    "pathRegional": 0
+  },
+  "examples": {
+    "rule": "5 most recent evaluated openings (walk-forward forecasts) plus the 4 largest misses overall; no other selection",
+    "recent": [
+      {
+        "id": "copperfield-the-new-musical-off-broadway-2026",
+        "title": "Copperfield! The New Musical",
+        "opened": "2026-10-19",
+        "type": "musical",
+        "forecast": 67,
+        "range80": [
+          55,
+          77
+        ],
+        "categoryMean": 69,
+        "earlierProduction": null,
+        "actual": 73,
+        "error": -6
+      },
+      {
+        "id": "king-of-the-yees-off-broadway-2026",
+        "title": "King of the Yees",
+        "opened": "2026-10-19",
+        "type": "play",
+        "forecast": 70,
+        "range80": [
+          58,
+          81
+        ],
+        "categoryMean": 70,
+        "earlierProduction": null,
+        "actual": 78,
+        "error": -8
+      },
+      {
+        "id": "memoirs-of-amorous-gentlemen-off-broadway-2026",
+        "title": "Memoirs of Amorous Gentlemen",
+        "opened": "2026-10-15",
+        "type": "musical",
+        "forecast": 70,
+        "range80": [
+          58,
+          81
+        ],
+        "categoryMean": 69,
+        "earlierProduction": null,
+        "actual": 59,
+        "error": 11
+      },
+      {
+        "id": "midnight-off-broadway-2026",
+        "title": "Midnight",
+        "opened": "2026-10-15",
+        "type": "musical",
+        "forecast": 71,
+        "range80": [
+          59,
+          81
+        ],
+        "categoryMean": 69,
+        "earlierProduction": null,
+        "actual": 67,
+        "error": 4
+      },
+      {
+        "id": "a-ghost-in-your-ear-off-broadway-2026",
+        "title": "A Ghost In Your Ear",
+        "opened": "2026-10-14",
+        "type": "play",
+        "forecast": 76,
+        "range80": [
+          64,
+          87
+        ],
+        "categoryMean": 70,
+        "earlierProduction": 81,
+        "actual": 71,
+        "error": 5
+      }
+    ],
+    "largestMisses": [
+      {
+        "id": "an-american-daughter-off-broadway-2026",
+        "title": "An American Daughter",
+        "opened": "2026-08-11",
+        "type": "play revival",
+        "forecast": 73,
+        "range80": [
+          61,
+          84
+        ],
+        "categoryMean": 69,
+        "earlierProduction": null,
+        "actual": 46,
+        "error": 27
+      },
+      {
+        "id": "this-world-of-tomorrow-off-broadway-2025",
+        "title": "This World of Tomorrow",
+        "opened": "2025-11-18",
+        "type": "play",
+        "forecast": 71,
+        "range80": [
+          59,
+          82
+        ],
+        "categoryMean": 70,
+        "earlierProduction": null,
+        "actual": 52,
+        "error": 19
+      },
+      {
+        "id": "the-invention-of-love-off-broadway-2026",
+        "title": "The Invention of Love",
+        "opened": "2026-09-20",
+        "type": "play revival",
+        "forecast": 64,
+        "range80": [
+          52,
+          75
+        ],
+        "categoryMean": 69,
+        "earlierProduction": null,
+        "actual": 83,
+        "error": -19
+      },
+      {
+        "id": "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025",
+        "title": "The 25th Annual Putnam County Spelling Bee",
+        "opened": "2025-11-17",
+        "type": "musical revival",
+        "forecast": 72,
+        "range80": [
+          60,
+          82
+        ],
+        "categoryMean": 70,
+        "earlierProduction": 89,
+        "actual": 90,
+        "error": -18
+      }
+    ]
+  },
+  "predictionsWalkForward": [
+    {
+      "id": "the-receptionist-off-broadway-2026",
+      "opened": "2026-05-07",
+      "forecast": 70.4,
+      "lo80": 58.4,
+      "hi80": 81,
+      "categoryMean": 69.7,
+      "actual": 65
+    },
+    {
+      "id": "titus-andronicus-off-broadway-2026",
+      "opened": "2026-03-29",
+      "forecast": 79.5,
+      "lo80": 67.5,
+      "hi80": 90.1,
+      "categoryMean": 69.7,
+      "actual": 77
+    },
+    {
+      "id": "the-other-place-off-broadway-2026",
+      "opened": "2026-01-30",
+      "forecast": 70.3,
+      "lo80": 58.3,
+      "hi80": 80.9,
+      "categoryMean": 69.7,
+      "actual": 63
+    },
+    {
+      "id": "the-unknown-off-broadway-2026",
+      "opened": "2026-02-12",
+      "forecast": 74.8,
+      "lo80": 62.9,
+      "hi80": 85.5,
+      "categoryMean": 69.6,
+      "actual": 75
+    },
+    {
+      "id": "the-disappear-off-broadway-2026",
+      "opened": "2026-01-15",
+      "forecast": 69.8,
+      "lo80": 57.9,
+      "hi80": 80.4,
+      "categoryMean": 69.6,
+      "actual": 52
+    },
+    {
+      "id": "kenrex-off-broadway-2026",
+      "opened": "2026-04-26",
+      "forecast": 74.4,
+      "lo80": 62.5,
+      "hi80": 85.1,
+      "categoryMean": 69.6,
+      "actual": 80
+    },
+    {
+      "id": "the-reservoir-off-broadway-2026",
+      "opened": "2026-02-24",
+      "forecast": 70.3,
+      "lo80": 58.3,
+      "hi80": 80.9,
+      "categoryMean": 69.6,
+      "actual": 72
+    },
+    {
+      "id": "night-side-songs-off-broadway-2026",
+      "opened": "2026-03-02",
+      "forecast": 67.2,
+      "lo80": 55.2,
+      "hi80": 77.8,
+      "categoryMean": 69.6,
+      "actual": 71
+    },
+    {
+      "id": "heathers-the-musical-off-broadway-2025",
+      "opened": "2025-06-30",
+      "forecast": 66.7,
+      "lo80": 54.8,
+      "hi80": 77.4,
+      "categoryMean": 70.2,
+      "actual": 73
+    },
+    {
+      "id": "mother-russia-off-broadway-2026",
+      "opened": "2026-02-23",
+      "forecast": 69.7,
+      "lo80": 57.8,
+      "hi80": 80.3,
+      "categoryMean": 69.6,
+      "actual": 78
+    },
+    {
+      "id": "ulysses-off-broadway-2026",
+      "opened": "2026-01-25",
+      "forecast": 70.1,
+      "lo80": 58.2,
+      "hi80": 80.7,
+      "categoryMean": 69.6,
+      "actual": 70
+    },
+    {
+      "id": "public-charge-off-broadway-2026",
+      "opened": "2026-03-25",
+      "forecast": 69.8,
+      "lo80": 57.9,
+      "hi80": 80.4,
+      "categoryMean": 69.6,
+      "actual": 67
+    },
+    {
+      "id": "encores-the-wild-party-off-broadway-2026",
+      "opened": "2026-03-18",
+      "forecast": 69.2,
+      "lo80": 57.3,
+      "hi80": 79.8,
+      "categoryMean": 70.2,
+      "actual": 79
+    },
+    {
+      "id": "the-adding-machine-off-broadway-2026",
+      "opened": "2026-04-14",
+      "forecast": 71.2,
+      "lo80": 59.2,
+      "hi80": 81.8,
+      "categoryMean": 69.7,
+      "actual": 66
+    },
+    {
+      "id": "antigone-this-play-i-read-in-high-school-off-broadway-2026",
+      "opened": "2026-03-11",
+      "forecast": 70.1,
+      "lo80": 58.2,
+      "hi80": 80.7,
+      "categoryMean": 69.6,
+      "actual": 68
+    },
+    {
+      "id": "chinese-republicans-off-broadway-2026",
+      "opened": "2026-02-26",
+      "forecast": 71.7,
+      "lo80": 59.8,
+      "hi80": 82.4,
+      "categoryMean": 69.6,
+      "actual": 69
+    },
+    {
+      "id": "blackout-songs-off-broadway-2026",
+      "opened": "2026-01-15",
+      "forecast": 70.3,
+      "lo80": 58.3,
+      "hi80": 80.9,
+      "categoryMean": 69.6,
+      "actual": 67
+    },
+    {
+      "id": "marcel-on-the-train-off-broadway-2026",
+      "opened": "2026-02-22",
+      "forecast": 69.7,
+      "lo80": 57.8,
+      "hi80": 80.3,
+      "categoryMean": 69.6,
+      "actual": 71
+    },
+    {
+      "id": "no-singing-in-the-navy-off-broadway-2026",
+      "opened": "2026-03-29",
+      "forecast": 70.1,
+      "lo80": 58.2,
+      "hi80": 80.8,
+      "categoryMean": 69.6,
+      "actual": 52
+    },
+    {
+      "id": "jesa-off-broadway-2026",
+      "opened": "2026-03-20",
+      "forecast": 70,
+      "lo80": 58.1,
+      "hi80": 80.6,
+      "categoryMean": 69.6,
+      "actual": 66
+    },
+    {
+      "id": "the-25th-annual-putnam-county-spelling-bee-off-broadway-2025",
+      "opened": "2025-11-17",
+      "forecast": 71.7,
+      "lo80": 59.8,
+      "hi80": 82.3,
+      "categoryMean": 70.2,
+      "actual": 90
+    },
+    {
+      "id": "masquerade-off-broadway-2025",
+      "opened": "2025-09-29",
+      "forecast": 70,
+      "lo80": 58.1,
+      "hi80": 80.7,
+      "categoryMean": 70.2,
+      "actual": 74
+    },
+    {
+      "id": "cold-war-choir-practice-off-broadway-2026",
+      "opened": "2026-03-10",
+      "forecast": 71.4,
+      "lo80": 59.5,
+      "hi80": 82.1,
+      "categoryMean": 69.6,
+      "actual": 77
+    },
+    {
+      "id": "what-we-did-before-our-moth-days-off-broadway-2026",
+      "opened": "2026-03-05",
+      "forecast": 66.2,
+      "lo80": 54.3,
+      "hi80": 76.8,
+      "categoryMean": 69.6,
+      "actual": 70
+    },
+    {
+      "id": "hamlet-off-broadway-2026",
+      "opened": "2026-05-04",
+      "forecast": 67.8,
+      "lo80": 55.8,
+      "hi80": 78.4,
+      "categoryMean": 69.7,
+      "actual": 67
+    },
+    {
+      "id": "seagull-true-story-off-broadway-2026",
+      "opened": "2026-03-30",
+      "forecast": 70.3,
+      "lo80": 58.3,
+      "hi80": 80.9,
+      "categoryMean": 69.6,
+      "actual": 68
+    },
+    {
+      "id": "zack-off-broadway-2026",
+      "opened": "2026-03-08",
+      "forecast": 70.4,
+      "lo80": 58.4,
+      "hi80": 81,
+      "categoryMean": 69.7,
+      "actual": 61
+    },
+    {
+      "id": "the-monsters-off-broadway-2026",
+      "opened": "2026-02-11",
+      "forecast": 70.4,
+      "lo80": 58.4,
+      "hi80": 81,
+      "categoryMean": 69.6,
+      "actual": 81
+    },
+    {
+      "id": "the-dinosaurs-off-broadway-2026",
+      "opened": "2026-02-16",
+      "forecast": 70.5,
+      "lo80": 58.5,
+      "hi80": 81.1,
+      "categoryMean": 69.6,
+      "actual": 64
+    },
+    {
+      "id": "bigfoot-off-broadway-2026",
+      "opened": "2026-03-01",
+      "forecast": 76.5,
+      "lo80": 64.6,
+      "hi80": 87.1,
+      "categoryMean": 69.6,
+      "actual": 69
+    },
+    {
+      "id": "an-ark-off-broadway-2026",
+      "opened": "2026-01-21",
+      "forecast": 70.3,
+      "lo80": 58.3,
+      "hi80": 80.9,
+      "categoryMean": 69.6,
+      "actual": 59
+    },
+    {
+      "id": "data-off-broadway-2026",
+      "opened": "2026-01-25",
+      "forecast": 72.2,
+      "lo80": 60.2,
+      "hi80": 82.8,
+      "categoryMean": 69.6,
+      "actual": 79
+    },
+    {
+      "id": "the-tragedy-of-coriolanus-off-broadway-2026",
+      "opened": "2026-02-14",
+      "forecast": 70.4,
+      "lo80": 58.4,
+      "hi80": 81,
+      "categoryMean": 69.7,
+      "actual": 55
+    },
+    {
+      "id": "rheology-off-broadway-2026",
+      "opened": "2026-04-22",
+      "forecast": 69.7,
+      "lo80": 57.7,
+      "hi80": 80.3,
+      "categoryMean": 69.6,
+      "actual": 82
+    },
+    {
+      "id": "indian-princesses-off-broadway-2025",
+      "opened": "2026-05-19",
+      "forecast": 70.4,
+      "lo80": 58.5,
+      "hi80": 81.1,
+      "categoryMean": 69.6,
+      "actual": 75
+    },
+    {
+      "id": "you-got-older-off-broadway-2026",
+      "opened": "2026-02-23",
+      "forecast": 69,
+      "lo80": 57.1,
+      "hi80": 79.7,
+      "categoryMean": 69.7,
+      "actual": 76
+    },
+    {
+      "id": "animal-wisdom-off-broadway-2022",
+      "opened": "2026-05-19",
+      "forecast": 70.7,
+      "lo80": 58.8,
+      "hi80": 81.3,
+      "categoryMean": 70.2,
+      "actual": 71
+    },
+    {
+      "id": "burnout-paradise-off-broadway-2026",
+      "opened": "2026-03-05",
+      "forecast": 76,
+      "lo80": 64.1,
+      "hi80": 86.6,
+      "categoryMean": 69.6,
+      "actual": 79
+    },
+    {
+      "id": "my-joy-is-heavy-off-broadway-2025",
+      "opened": "2026-03-17",
+      "forecast": 70.7,
+      "lo80": 58.8,
+      "hi80": 81.4,
+      "categoryMean": 69.6,
+      "actual": 73
+    },
+    {
+      "id": "girls-chance-music-off-broadway-2024",
+      "opened": "2026-05-28",
+      "forecast": 68.3,
+      "lo80": 56.4,
+      "hi80": 78.9,
+      "categoryMean": 69.6,
+      "actual": 66
+    },
+    {
+      "id": "the-emporium-off-broadway-2025",
+      "opened": "2026-05-18",
+      "forecast": 71.2,
+      "lo80": 59.2,
+      "hi80": 81.8,
+      "categoryMean": 69.6,
+      "actual": 64
+    },
+    {
+      "id": "bughouse-off-broadway-2026",
+      "opened": "2026-03-11",
+      "forecast": 68.8,
+      "lo80": 56.9,
+      "hi80": 79.5,
+      "categoryMean": 69.6,
+      "actual": 55
+    },
+    {
+      "id": "tru-off-broadway-2026",
+      "opened": "2026-03-19",
+      "forecast": 62.9,
+      "lo80": 51,
+      "hi80": 73.5,
+      "categoryMean": 69.7,
+      "actual": 61
+    },
+    {
+      "id": "going-bacharach-the-songs-of-an-icon-off-broadway-2026",
+      "opened": "2026-01-12",
+      "forecast": 70.2,
+      "lo80": 58.2,
+      "hi80": 80.8,
+      "categoryMean": 69.6,
+      "actual": 80
+    },
+    {
+      "id": "amaze-magic-off-broadway-2025",
+      "opened": "2025-08-13",
+      "forecast": 70,
+      "lo80": 58,
+      "hi80": 80.6,
+      "categoryMean": 69.6,
+      "actual": 80
+    },
+    {
+      "id": "monte-cristo-the-york-theatre-company-off-broadway-2026",
+      "opened": "2026-03-19",
+      "forecast": 70.2,
+      "lo80": 58.2,
+      "hi80": 80.8,
+      "categoryMean": 69.6,
+      "actual": 66
+    },
+    {
+      "id": "ulster-american-irish-repertory-theatre-off-broadway-2026",
+      "opened": "2026-03-15",
+      "forecast": 72.6,
+      "lo80": 60.7,
+      "hi80": 83.2,
+      "categoryMean": 69.6,
+      "actual": 70
+    },
+    {
+      "id": "sexual-misconduct-of-the-middle-classes-off-broadway-2026",
+      "opened": "2026-03-17",
+      "forecast": 70.3,
+      "lo80": 58.3,
+      "hi80": 80.9,
+      "categoryMean": 69.6,
+      "actual": 78
+    },
+    {
+      "id": "the-maids-off-broadway-2026",
+      "opened": "2026-05-26",
+      "forecast": 70.5,
+      "lo80": 58.5,
+      "hi80": 81.1,
+      "categoryMean": 69.7,
+      "actual": 65
+    },
+    {
+      "id": "well-ill-let-you-go-off-broadway-2026",
+      "opened": "2026-04-30",
+      "forecast": 71.5,
+      "lo80": 59.6,
+      "hi80": 82.2,
+      "categoryMean": 69.6,
+      "actual": 87
+    },
+    {
+      "id": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
+      "opened": "2026-05-12",
+      "forecast": 70.2,
+      "lo80": 58.2,
+      "hi80": 80.8,
+      "categoryMean": 69.6,
+      "actual": 75
+    },
+    {
+      "id": "and-then-the-rodeo-burned-down-off-broadway-2026",
+      "opened": "2026-05-31",
+      "forecast": 70.3,
+      "lo80": 58.3,
+      "hi80": 80.9,
+      "categoryMean": 69.6,
+      "actual": 78
+    },
+    {
+      "id": "morgan-bassichis-can-i-be-frank-off-broadway-2026",
+      "opened": "2025-08-04",
+      "forecast": 70.3,
+      "lo80": 58.3,
+      "hi80": 80.9,
+      "categoryMean": 69.6,
+      "actual": 74
+    },
+    {
+      "id": "small-off-broadway-2026",
+      "opened": "2026-05-28",
+      "forecast": 70.1,
+      "lo80": 58.2,
+      "hi80": 80.8,
+      "categoryMean": 69.6,
+      "actual": 81
+    },
+    {
+      "id": "lets-love-off-broadway-2026",
+      "opened": "2025-10-08",
+      "forecast": 70.3,
+      "lo80": 58.3,
+      "hi80": 80.9,
+      "categoryMean": 69.6,
+      "actual": 58
+    },
+    {
+      "id": "eurydice-off-broadway-2026",
+      "opened": "2025-06-02",
+      "forecast": 77.1,
+      "lo80": 65.2,
+      "hi80": 87.8,
+      "categoryMean": 69.7,
+      "actual": 71
+    },
+    {
+      "id": "caroline-off-broadway-2026",
+      "opened": "2025-09-30",
+      "forecast": 69.8,
+      "lo80": 57.9,
+      "hi80": 80.4,
+      "categoryMean": 69.6,
+      "actual": 81
+    },
+    {
+      "id": "trophy-boys-off-broadway-2025",
+      "opened": "2025-06-24",
+      "forecast": 69.8,
+      "lo80": 57.9,
+      "hi80": 80.4,
+      "categoryMean": 69.6,
+      "actual": 69
+    },
+    {
+      "id": "broken-snow-off-broadway-2026",
+      "opened": "2026-04-30",
+      "forecast": 70.3,
+      "lo80": 58.3,
+      "hi80": 80.9,
+      "categoryMean": 69.6,
+      "actual": 57
+    },
+    {
+      "id": "kyoto-off-broadway-2025",
+      "opened": "2025-11-03",
+      "forecast": 73.5,
+      "lo80": 61.6,
+      "hi80": 84.2,
+      "categoryMean": 69.6,
+      "actual": 68
+    },
+    {
+      "id": "archduke-off-broadway-2025",
+      "opened": "2025-11-12",
+      "forecast": 70.6,
+      "lo80": 58.7,
+      "hi80": 81.3,
+      "categoryMean": 69.6,
+      "actual": 71
+    },
+    {
+      "id": "not-ready-for-prime-time-off-broadway-2025",
+      "opened": "2025-10-20",
+      "forecast": 70.3,
+      "lo80": 58.3,
+      "hi80": 80.9,
+      "categoryMean": 69.6,
+      "actual": 54
+    },
+    {
+      "id": "lowcountry-off-broadway-2025",
+      "opened": "2025-06-10",
+      "forecast": 71.1,
+      "lo80": 59.2,
+      "hi80": 81.7,
+      "categoryMean": 69.6,
+      "actual": 63
+    },
+    {
+      "id": "picnic-at-hanging-rock-off-broadway-2025",
+      "opened": "2025-12-18",
+      "forecast": 71.1,
+      "lo80": 59.2,
+      "hi80": 81.7,
+      "categoryMean": 69.6,
+      "actual": 62
+    },
+    {
+      "id": "the-burning-cauldron-of-fiery-fire-off-broadway-2025",
+      "opened": "2025-11-09",
+      "forecast": 69.2,
+      "lo80": 57.3,
+      "hi80": 79.9,
+      "categoryMean": 69.6,
+      "actual": 60
+    },
+    {
+      "id": "playing-shylock-off-broadway-2025",
+      "opened": "2025-10-25",
+      "forecast": 72.4,
+      "lo80": 60.4,
+      "hi80": 83,
+      "categoryMean": 69.6,
+      "actual": 75
+    },
+    {
+      "id": "richard-ii-off-broadway-2025",
+      "opened": "2025-11-10",
+      "forecast": 70.3,
+      "lo80": 58.3,
+      "hi80": 80.9,
+      "categoryMean": 69.6,
+      "actual": 76
+    },
+    {
+      "id": "nothing-can-take-you-from-the-hand-of-god-off-broadway-2025",
+      "opened": "2025-10-13",
+      "forecast": 70.9,
+      "lo80": 58.9,
+      "hi80": 81.5,
+      "categoryMean": 69.6,
+      "actual": 79
+    },
+    {
+      "id": "messy-white-gays-off-broadway-2025",
+      "opened": "2025-11-02",
+      "forecast": 70.4,
+      "lo80": 58.4,
+      "hi80": 81,
+      "categoryMean": 69.6,
+      "actual": 66
+    },
+    {
+      "id": "the-honey-trap-off-broadway-2025",
+      "opened": "2025-09-28",
+      "forecast": 72.4,
+      "lo80": 60.5,
+      "hi80": 83.1,
+      "categoryMean": 69.6,
+      "actual": 79
+    },
+    {
+      "id": "the-bakers-wife-off-broadway-2025",
+      "opened": "2025-11-11",
+      "forecast": 70.5,
+      "lo80": 58.5,
+      "hi80": 81.1,
+      "categoryMean": 70.2,
+      "actual": 78
+    },
+    {
+      "id": "queens-off-broadway-2025",
+      "opened": "2025-11-05",
+      "forecast": 68,
+      "lo80": 56,
+      "hi80": 78.6,
+      "categoryMean": 69.6,
+      "actual": 76
+    },
+    {
+      "id": "meet-the-cartozians-off-broadway-2025",
+      "opened": "2025-11-17",
+      "forecast": 70.5,
+      "lo80": 58.6,
+      "hi80": 81.2,
+      "categoryMean": 69.6,
+      "actual": 84
+    },
+    {
+      "id": "oh-happy-day-off-broadway-2025",
+      "opened": "2025-10-15",
+      "forecast": 70,
+      "lo80": 58.1,
+      "hi80": 80.6,
+      "categoryMean": 69.6,
+      "actual": 67
+    },
+    {
+      "id": "the-other-americans-off-broadway-2025",
+      "opened": "2025-09-25",
+      "forecast": 69.9,
+      "lo80": 58,
+      "hi80": 80.6,
+      "categoryMean": 69.6,
+      "actual": 62
+    },
+    {
+      "id": "the-least-problematic-woman-in-the-world-off-broadway-2025",
+      "opened": "2025-10-07",
+      "forecast": 72.2,
+      "lo80": 60.2,
+      "hi80": 82.8,
+      "categoryMean": 69.6,
+      "actual": 77
+    },
+    {
+      "id": "the-seat-of-our-pants-off-broadway-2025",
+      "opened": "2025-11-13",
+      "forecast": 70.7,
+      "lo80": 58.7,
+      "hi80": 81.3,
+      "categoryMean": 69.6,
+      "actual": 72
+    },
+    {
+      "id": "house-of-mcqueen-off-broadway-2025",
+      "opened": "2025-09-09",
+      "forecast": 70.3,
+      "lo80": 58.3,
+      "hi80": 80.9,
+      "categoryMean": 69.6,
+      "actual": 53
+    },
+    {
+      "id": "this-world-of-tomorrow-off-broadway-2025",
+      "opened": "2025-11-18",
+      "forecast": 71.4,
+      "lo80": 59.5,
+      "hi80": 82,
+      "categoryMean": 69.6,
+      "actual": 52
+    },
+    {
+      "id": "ginger-twinsies-off-broadway-2025",
+      "opened": "2025-07-24",
+      "forecast": 71.1,
+      "lo80": 59.2,
+      "hi80": 81.7,
+      "categoryMean": 69.6,
+      "actual": 72
+    },
+    {
+      "id": "ta-da-off-broadway-2025",
+      "opened": "2025-07-21",
+      "forecast": 70.7,
+      "lo80": 58.7,
+      "hi80": 81.3,
+      "categoryMean": 69.6,
+      "actual": 79
+    },
+    {
+      "id": "rolling-thunder-off-broadway-2025",
+      "opened": "2025-07-24",
+      "forecast": 70.9,
+      "lo80": 59,
+      "hi80": 81.6,
+      "categoryMean": 69.6,
+      "actual": 57
+    },
+    {
+      "id": "ava-the-secret-conversations-off-broadway-2025",
+      "opened": "2025-08-07",
+      "forecast": 68,
+      "lo80": 56.1,
+      "hi80": 78.7,
+      "categoryMean": 69.6,
+      "actual": 65
+    },
+    {
+      "id": "angry-alan-off-broadway-2025",
+      "opened": "2025-06-11",
+      "forecast": 70.3,
+      "lo80": 58.3,
+      "hi80": 80.9,
+      "categoryMean": 69.6,
+      "actual": 77
+    },
+    {
+      "id": "saturday-church-off-broadway-2025",
+      "opened": "2025-09-15",
+      "forecast": 69.7,
+      "lo80": 57.8,
+      "hi80": 80.3,
+      "categoryMean": 69.6,
+      "actual": 71
+    },
+    {
+      "id": "tartuffe-off-broadway-2025",
+      "opened": "2025-12-16",
+      "forecast": 70,
+      "lo80": 58.1,
+      "hi80": 80.6,
+      "categoryMean": 69.7,
+      "actual": 63
+    },
+    {
+      "id": "gruesome-playground-injuries-off-broadway-2025",
+      "opened": "2025-11-23",
+      "forecast": 72.4,
+      "lo80": 60.5,
+      "hi80": 83.1,
+      "categoryMean": 69.7,
+      "actual": 69
+    },
+    {
+      "id": "prince-faggot-off-broadway-2025",
+      "opened": "2025-09-11",
+      "forecast": 74.2,
+      "lo80": 62.2,
+      "hi80": 84.8,
+      "categoryMean": 69.6,
+      "actual": 77
+    },
+    {
+      "id": "anna-christie-off-broadway-2025",
+      "opened": "2025-12-11",
+      "forecast": 70.7,
+      "lo80": 58.7,
+      "hi80": 81.3,
+      "categoryMean": 69.7,
+      "actual": 66
+    },
+    {
+      "id": "the-weir-off-broadway-2025",
+      "opened": "2025-07-17",
+      "forecast": 72,
+      "lo80": 60.1,
+      "hi80": 82.6,
+      "categoryMean": 69.6,
+      "actual": 84
+    },
+    {
+      "id": "the-brothers-size-off-broadway-2025",
+      "opened": "2025-09-10",
+      "forecast": 70.5,
+      "lo80": 58.5,
+      "hi80": 81.1,
+      "categoryMean": 69.7,
+      "actual": 84
+    },
+    {
+      "id": "duke-and-roya-off-broadway-2025",
+      "opened": "2025-06-24",
+      "forecast": 72.6,
+      "lo80": 60.7,
+      "hi80": 83.2,
+      "categoryMean": 69.6,
+      "actual": 67
+    },
+    {
+      "id": "prince-faggot-playwrights-horizons-off-broadway-2025",
+      "opened": "2025-06-16",
+      "forecast": 70.4,
+      "lo80": 58.4,
+      "hi80": 81,
+      "categoryMean": 69.6,
+      "actual": 78
+    },
+    {
+      "id": "encores-la-cage-aux-folles-off-broadway-2026",
+      "opened": "2026-06-17",
+      "forecast": 73.1,
+      "lo80": 61.1,
+      "hi80": 83.6,
+      "categoryMean": 77.5,
+      "actual": 66
+    },
+    {
+      "id": "music-city-off-broadway-2026",
+      "opened": "2026-06-24",
+      "forecast": 72,
+      "lo80": 59.9,
+      "hi80": 82.5,
+      "categoryMean": 69.5,
+      "actual": 79
+    },
+    {
+      "id": "girl-interrupted-off-broadway-2026",
+      "opened": "2026-06-04",
+      "forecast": 66.1,
+      "lo80": 54,
+      "hi80": 76.6,
+      "categoryMean": 69.9,
+      "actual": 68
+    },
+    {
+      "id": "kramerfauci-st-anns-off-broadway-2026",
+      "opened": "2026-10-04",
+      "forecast": 71.5,
+      "lo80": 59.5,
+      "hi80": 82,
+      "categoryMean": 69.9,
+      "actual": 81
+    },
+    {
+      "id": "jerome-off-broadway-2025",
+      "opened": "2026-06-02",
+      "forecast": 70.2,
+      "lo80": 58.1,
+      "hi80": 80.7,
+      "categoryMean": 69.9,
+      "actual": 68
+    },
+    {
+      "id": "the-saviors-off-broadway-2026",
+      "opened": "2026-07-27",
+      "forecast": 70,
+      "lo80": 58,
+      "hi80": 80.5,
+      "categoryMean": 69.9,
+      "actual": 80
+    },
+    {
+      "id": "birthright-off-broadway-2026",
+      "opened": "2026-06-29",
+      "forecast": 70.4,
+      "lo80": 58.4,
+      "hi80": 80.9,
+      "categoryMean": 69.9,
+      "actual": 85
+    },
+    {
+      "id": "the-whoopi-monologues-off-broadway-2026",
+      "opened": "2026-07-14",
+      "forecast": 70.1,
+      "lo80": 58.1,
+      "hi80": 80.6,
+      "categoryMean": 68.9,
+      "actual": 78
+    },
+    {
+      "id": "giulia-the-poison-queen-of-palermo-off-broadway-2026",
+      "opened": "2026-07-10",
+      "forecast": 70,
+      "lo80": 58,
+      "hi80": 80.5,
+      "categoryMean": 69.5,
+      "actual": 66
+    },
+    {
+      "id": "a-woman-among-women-off-broadway-2026",
+      "opened": "2026-06-04",
+      "forecast": 70.4,
+      "lo80": 58.4,
+      "hi80": 80.9,
+      "categoryMean": 69.9,
+      "actual": 61
+    },
+    {
+      "id": "the-cherry-orchard-park-avenue-armory-off-broadway-2026",
+      "opened": "2026-09-17",
+      "forecast": 62.4,
+      "lo80": 50.4,
+      "hi80": 72.9,
+      "categoryMean": 68.9,
+      "actual": 75
+    },
+    {
+      "id": "henry-vi-a-trilogy-in-two-parts-off-broadway-2026",
+      "opened": "2026-06-21",
+      "forecast": 69.9,
+      "lo80": 57.9,
+      "hi80": 80.4,
+      "categoryMean": 68.9,
+      "actual": 77
+    },
+    {
+      "id": "a-walk-on-the-moon-off-broadway-2026",
+      "opened": "2026-06-29",
+      "forecast": 69.6,
+      "lo80": 57.6,
+      "hi80": 80.1,
+      "categoryMean": 69.5,
+      "actual": 62
+    },
+    {
+      "id": "cat-cohen-broad-strokes-off-broadway-2026",
+      "opened": "2026-07-27",
+      "forecast": 72.5,
+      "lo80": 60.5,
+      "hi80": 83,
+      "categoryMean": 69.5,
+      "actual": 78
+    },
+    {
+      "id": "good-time-charlie-off-broadway-2026",
+      "opened": "2026-10-09",
+      "forecast": 70.4,
+      "lo80": 58.4,
+      "hi80": 80.9,
+      "categoryMean": 69.9,
+      "actual": 77
+    },
+    {
+      "id": "how-shakespeare-saved-my-life-off-broadway-2026",
+      "opened": "2026-09-27",
+      "forecast": 70.4,
+      "lo80": 58.4,
+      "hi80": 80.9,
+      "categoryMean": 69.9,
+      "actual": 69
+    },
+    {
+      "id": "camping-off-broadway-2026",
+      "opened": "2026-06-19",
+      "forecast": 70.4,
+      "lo80": 58.4,
+      "hi80": 80.9,
+      "categoryMean": 69.9,
+      "actual": 85
+    },
+    {
+      "id": "shifters-off-broadway-2026",
+      "opened": "2026-07-15",
+      "forecast": 76.7,
+      "lo80": 64.7,
+      "hi80": 87.2,
+      "categoryMean": 69.9,
+      "actual": 77
+    },
+    {
+      "id": "are-you-now-or-have-you-ever-been-off-broadway-2026",
+      "opened": "2026-06-10",
+      "forecast": 68.3,
+      "lo80": 56.3,
+      "hi80": 78.8,
+      "categoryMean": 68.9,
+      "actual": 77
+    },
+    {
+      "id": "the-loved-ones-off-broadway-2026",
+      "opened": "2026-06-23",
+      "forecast": 72.8,
+      "lo80": 60.8,
+      "hi80": 83.3,
+      "categoryMean": 69.9,
+      "actual": 79
+    },
+    {
+      "id": "the-potluck-off-broadway-2026",
+      "opened": "2026-06-30",
+      "forecast": 70,
+      "lo80": 58,
+      "hi80": 80.5,
+      "categoryMean": 69.5,
+      "actual": 68
+    },
+    {
+      "id": "king-of-the-yees-off-broadway-2026",
+      "opened": "2026-10-19",
+      "forecast": 70.4,
+      "lo80": 58.4,
+      "hi80": 80.9,
+      "categoryMean": 69.9,
+      "actual": 78
+    },
+    {
+      "id": "dad-dont-read-this-off-broadway-2026",
+      "opened": "2026-06-23",
+      "forecast": 70.8,
+      "lo80": 58.8,
+      "hi80": 81.3,
+      "categoryMean": 69.9,
+      "actual": 81
+    },
+    {
+      "id": "disruption-off-broadway-2026",
+      "opened": "2026-08-02",
+      "forecast": 70.4,
+      "lo80": 58.4,
+      "hi80": 80.9,
+      "categoryMean": 69.9,
+      "actual": 65
+    },
+    {
+      "id": "romeo-and-juliet-off-broadway-2026",
+      "opened": "2026-06-11",
+      "forecast": 76.8,
+      "lo80": 64.8,
+      "hi80": 87.3,
+      "categoryMean": 68.9,
+      "actual": 60
+    },
+    {
+      "id": "slam-frank-off-broadway-2026",
+      "opened": "2026-10-04",
+      "forecast": 70.9,
+      "lo80": 58.9,
+      "hi80": 81.4,
+      "categoryMean": 69.5,
+      "actual": 65
+    },
+    {
+      "id": "midnight-off-broadway-2026",
+      "opened": "2026-10-15",
+      "forecast": 70.7,
+      "lo80": 58.7,
+      "hi80": 81.2,
+      "categoryMean": 69.5,
+      "actual": 67
+    },
+    {
+      "id": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026",
+      "opened": "2026-10-14",
+      "forecast": 71.9,
+      "lo80": 59.8,
+      "hi80": 82.4,
+      "categoryMean": 69.9,
+      "actual": 67
+    },
+    {
+      "id": "the-winters-tale-off-broadway-2026",
+      "opened": "2026-08-12",
+      "forecast": 69,
+      "lo80": 57,
+      "hi80": 79.5,
+      "categoryMean": 68.9,
+      "actual": 80
+    },
+    {
+      "id": "creation-stories-and-all-the-important-importants-off-broadway-2026",
+      "opened": "2026-10-01",
+      "forecast": 69.5,
+      "lo80": 57.5,
+      "hi80": 80,
+      "categoryMean": 69.9,
+      "actual": 72
+    },
+    {
+      "id": "garry-starr-classic-penguins-off-broadway-2026",
+      "opened": "2026-09-08",
+      "forecast": 72.7,
+      "lo80": 60.7,
+      "hi80": 83.2,
+      "categoryMean": 69.9,
+      "actual": 73
+    },
+    {
+      "id": "pre-existing-condition-off-broadway-2026",
+      "opened": "2026-09-14",
+      "forecast": 70.2,
+      "lo80": 58.2,
+      "hi80": 80.7,
+      "categoryMean": 68.9,
+      "actual": 73
+    },
+    {
+      "id": "the-real-ivanov-off-broadway-2026",
+      "opened": "2026-08-25",
+      "forecast": 70.4,
+      "lo80": 58.4,
+      "hi80": 80.9,
+      "categoryMean": 69.9,
+      "actual": 53
+    },
+    {
+      "id": "the-pass-off-broadway-2026",
+      "opened": "2026-08-04",
+      "forecast": 70.4,
+      "lo80": 58.4,
+      "hi80": 80.9,
+      "categoryMean": 69.9,
+      "actual": 65
+    },
+    {
+      "id": "the-hairy-ape-irish-repertory-theatre-off-broadway-2026",
+      "opened": "2026-10-04",
+      "forecast": 71.2,
+      "lo80": 59.2,
+      "hi80": 81.7,
+      "categoryMean": 68.9,
+      "actual": 77
+    },
+    {
+      "id": "an-american-daughter-off-broadway-2026",
+      "opened": "2026-08-11",
+      "forecast": 73,
+      "lo80": 61,
+      "hi80": 83.5,
+      "categoryMean": 68.9,
+      "actual": 46
+    },
+    {
+      "id": "delirium-off-broadway-2026",
+      "opened": "2026-09-24",
+      "forecast": 77.5,
+      "lo80": 65.5,
+      "hi80": 88,
+      "categoryMean": 69.9,
+      "actual": 82
+    },
+    {
+      "id": "america-who-hurt-you-off-broadway-2026",
+      "opened": "2026-09-17",
+      "forecast": 70.4,
+      "lo80": 58.4,
+      "hi80": 80.9,
+      "categoryMean": 69.9,
+      "actual": 76
+    },
+    {
+      "id": "in-honor-of-jean-michel-basquiat-off-broadway-2026",
+      "opened": "2026-09-15",
+      "forecast": 69.8,
+      "lo80": 57.8,
+      "hi80": 80.3,
+      "categoryMean": 69.9,
+      "actual": 76
+    },
+    {
+      "id": "copperfield-the-new-musical-off-broadway-2026",
+      "opened": "2026-10-19",
+      "forecast": 66.8,
+      "lo80": 54.8,
+      "hi80": 77.3,
+      "categoryMean": 69.5,
+      "actual": 73
+    },
+    {
+      "id": "a-ghost-in-your-ear-off-broadway-2026",
+      "opened": "2026-10-14",
+      "forecast": 76.1,
+      "lo80": 64.1,
+      "hi80": 86.6,
+      "categoryMean": 69.9,
+      "actual": 71
+    },
+    {
+      "id": "degenerates-off-broadway-2026",
+      "opened": "2026-09-29",
+      "forecast": 71.5,
+      "lo80": 59.5,
+      "hi80": 82,
+      "categoryMean": 69.9,
+      "actual": 78
+    },
+    {
+      "id": "memoirs-of-amorous-gentlemen-off-broadway-2026",
+      "opened": "2026-10-15",
+      "forecast": 70,
+      "lo80": 58,
+      "hi80": 80.5,
+      "categoryMean": 69.5,
+      "actual": 59
+    },
+    {
+      "id": "benevolent-off-broadway-2026",
+      "opened": "2026-08-14",
+      "forecast": 70.4,
+      "lo80": 58.4,
+      "hi80": 80.9,
+      "categoryMean": 69.9,
+      "actual": 84
+    },
+    {
+      "id": "human-things-off-broadway-2026",
+      "opened": "2026-09-25",
+      "forecast": 70.4,
+      "lo80": 58.4,
+      "hi80": 80.9,
+      "categoryMean": 69.9,
+      "actual": 68
+    },
+    {
+      "id": "the-invention-of-love-off-broadway-2026",
+      "opened": "2026-09-20",
+      "forecast": 64.1,
+      "lo80": 52.1,
+      "hi80": 74.6,
+      "categoryMean": 68.9,
+      "actual": 83
+    },
+    {
+      "id": "safe-house-off-broadway-2026",
+      "opened": "2026-09-11",
+      "forecast": 66.6,
+      "lo80": 54.6,
+      "hi80": 77.1,
+      "categoryMean": 69.9,
+      "actual": 80
+    },
+    {
+      "id": "arias-with-a-twist-off-broadway-2026",
+      "opened": "2026-09-23",
+      "forecast": 70.8,
+      "lo80": 58.8,
+      "hi80": 81.3,
+      "categoryMean": 68.9,
+      "actual": 82
+    },
+    {
+      "id": "going-bacharach-the-songs-of-an-icon-return-off-broadway-2026",
+      "opened": "2026-09-16",
+      "forecast": 70.2,
+      "lo80": 58.2,
+      "hi80": 80.7,
+      "categoryMean": 69.5,
+      "actual": 80
+    }
+  ],
+  "verdictFlags": {
+    "walkForwardMaeGainPct": 1.5,
+    "maeDiffCI95": [
+      -0.1,
+      0
+    ],
+    "beatsBaselineByBar": false,
+    "coverage80InBand": true,
+    "meetsPublishBar": false
+  }
+}
