@@ -1,30 +1,32 @@
 {
-  "generatedAt": "2026-11-10T05:14:47.860Z",
+  "generatedAt": "2026-11-10T09:36:10.577Z",
   "night": "2026-11-09",
   "counts": {
     "total": 3,
     "passed": 0,
-    "failed": 0,
-    "notGraded": 3
+    "failed": 1,
+    "notGraded": 2
   },
   "lines": [
+    {
+      "verdict": "FAIL",
+      "line": "Here There Are Blueberries: published by the new lane; 16 of 17 reviews live by 12:00am; Cititour not live by 3:57am; opening-night email draft not due until 9:00am. Failed."
+    },
     {
       "verdict": "UNKNOWN",
       "line": "Dogstar: not graded, could not check when the first review went live or the critics list at the 2-hour mark or which reviews came in that night."
     },
     {
-      "verdict": "PENDING",
-      "line": "Here There Are Blueberries: not graded yet, still being checked; opening-night email draft not due until 9:00am."
-    },
-    {
-      "verdict": "PENDING",
-      "line": "The Visitors: not graded yet, still being checked."
+      "verdict": "UNKNOWN",
+      "line": "The Visitors: published by the regular pipeline; 4 of 4 reviews live by 12:00am; emails ready. Not graded: could not check when the first review went live."
     }
   ],
   "scoreboard": {
-    "graded": 17,
+    "graded": 18,
     "passed": 2,
     "passedOnOwn": 1
   },
-  "missFirstSeen": {}
+  "missFirstSeen": {
+    "here-there-are-blueberries-2026|2026-11-09|review:cititour:": "2026-11-10T09:36:10.577Z"
+  }
 }
