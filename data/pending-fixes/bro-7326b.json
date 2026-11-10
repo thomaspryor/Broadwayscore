@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7326b",
   "planId": "82100e08-6890-46ef-80b9-d6aed0b82c1f",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-10T22:22:49.256Z",
   "submitter": {
     "name": null,
@@ -32,5 +32,19 @@
         "description": "frankie-and-johnny-in-the-clair-de-lune-2019/dailybeast--tim-teeman.json: isNonReview"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-10T22:33:32.363Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "frankie-and-johnny-in-the-clair-de-lune-2019/dailybeast--tim-teeman.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "frankie-and-johnny-in-the-clair-de-lune-2019/dailybeast--tim-teeman.json isNonReview: true -> false"
+    }
+  ],
+  "executedIn": "ci"
 }
