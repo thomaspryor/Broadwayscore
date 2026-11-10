@@ -97,6 +97,44 @@ function parseAnthropicBatchResult(entry) {
 // OPENAI (Batch API)
 // ========================================
 
+// Per-model request quirks for the OpenAI models the scoring pipeline may use.
+// ONE place for them (owner asked 2026-11-09 to move the ensemble's OpenAI leg
+// off gpt-4o, which OpenAI retires 2027-01-14): the sync scorer
+// (openai-scorer.ts), the Batch API lines below and comparative-rescore.ts all
+// build their body through openaiChatBody(), so a model swap cannot leave one
+// path sending a field the new model rejects.
+//   reasoning_effort: gpt-5.x models are reasoning models. Sent explicitly as
+//   'none' so a change of OpenAI's default can never add billed reasoning
+//   tokens, or eat the completion cap and return empty content. gpt-4o bodies
+//   carry no such field.
+const OPENAI_REQUEST_PROFILES = Object.freeze({
+  'gpt-4o': Object.freeze({}),
+  'gpt-4o-mini': Object.freeze({}),
+  'gpt-5.4-mini': Object.freeze({ reasoning_effort: 'none' }),
+});
+
+/** The OpenAI model ids the scoring pipeline knows how to call. */
+function openaiScoringModels() {
+  return Object.keys(OPENAI_REQUEST_PROFILES);
+}
+
+/**
+ * Chat Completions request body for a scoring call. Always
+ * max_completion_tokens: gpt-5.x rejects max_tokens (HTTP 400), and gpt-4o
+ * accepts either. Throws on a model with no profile, so a typo'd or new model
+ * fails at the first request instead of scoring with untested parameters.
+ */
+function openaiChatBody({ model, messages, maxTokens = 500, temperature = 0.3 }) {
+  const profile = OPENAI_REQUEST_PROFILES[model];
+  if (!profile) {
+    throw new Error(`openaiChatBody: no request profile for OpenAI model "${model}" (known: ${openaiScoringModels().join(', ')}). Add it to OPENAI_REQUEST_PROFILES in scripts/lib/llm-batch.js after an A/B (CLAUDE.md rule 13).`);
+  }
+  if (!Array.isArray(messages) || messages.length === 0) throw new Error('openaiChatBody: messages are required');
+  const body = { model, messages, max_completion_tokens: maxTokens, temperature };
+  if (profile.reasoning_effort) body.reasoning_effort = profile.reasoning_effort;
+  return body;
+}
+
 /** One line of the JSONL file uploaded to POST /v1/files (purpose=batch). */
 function buildOpenAIBatchLine({ customId, model, systemPrompt, userPrompt, maxTokens = 500, temperature = 0.3 }) {
   if (!customId || !model || !systemPrompt || !userPrompt) {
@@ -106,15 +144,15 @@ function buildOpenAIBatchLine({ customId, model, systemPrompt, userPrompt, maxTo
     custom_id: customId,
     method: 'POST',
     url: '/v1/chat/completions',
-    body: {
+    body: openaiChatBody({
       model,
       messages: [
         { role: 'system', content: systemPrompt },
         { role: 'user', content: userPrompt },
       ],
-      max_tokens: maxTokens,
+      maxTokens,
       temperature,
-    },
+    }),
   };
 }
 
@@ -284,6 +322,9 @@ function decideNextAction({ batchState, vendorStatuses, now }) {
 }
 
 module.exports = {
+  OPENAI_REQUEST_PROFILES,
+  openaiScoringModels,
+  openaiChatBody,
   buildCustomId,
   parseCustomIdIndex,
   buildAnthropicBatchRequest,

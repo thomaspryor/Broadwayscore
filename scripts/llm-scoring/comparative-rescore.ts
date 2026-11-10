@@ -54,6 +54,8 @@ const { detectBandFromReviewFile } = require('../lib/star-reliability');
 const { getBestTextForScoring } = require('../lib/text-quality');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { listShowDirs } = require('../lib/list-show-dirs');
+const { openaiChatBody } = require('../lib/llm-batch.js');
+const { COMPARATIVE_OPENAI } = require('../lib/models');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const {
   isGroupSettled,
@@ -168,16 +170,15 @@ async function callOpenAI(prompt: string): Promise<string | null> {
       signal: AbortSignal.timeout(300000),
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${key}` },
-      body: JSON.stringify({
-        model: 'gpt-4o',
+      // COMPARATIVE_OPENAI, not SCORING_OPENAI: this job rewrites already-
+      // published scores, so it moves to a new model only after its own check
+      // (owner plan 2026-11-09). Body via the shared builder (llm-batch.js).
+      body: JSON.stringify(openaiChatBody({
+        model: COMPARATIVE_OPENAI,
         messages: [{ role: 'user', content: prompt }],
-        // max_completion_tokens (not max_tokens) — gpt-5.4-mini rejects
-        // max_tokens with HTTP 400; this form works for gpt-4o too, so if
-        // this call site is ever pointed at gpt-5.4-mini it won't 400
-        // (task #504, 2026-07-26).
-        max_completion_tokens: 2000,
+        maxTokens: 2000,
         temperature: 0.3,
-      }),
+      })),
     });
     if (!res.ok) return null;
     const j: any = await res.json();
@@ -479,7 +480,7 @@ async function main() {
     claude: usageTotals.claude,
     openai: usageTotals.openai,
     gemini: usageTotals.gemini,
-  }, { claudeModelName: 'claude-sonnet-4-6', openaiModelName: 'gpt-4o' });
+  }, { claudeModelName: 'claude-sonnet-4-6', openaiModelName: COMPARATIVE_OPENAI });
   const costUsd = breakdown.total;
   console.log(
     `Estimated cost: $${costUsd.toFixed(4)} (Claude: $${breakdown.claude.toFixed(4)}, OpenAI: $${breakdown.openai.toFixed(4)}, Gemini: $${breakdown.gemini.toFixed(4)})`

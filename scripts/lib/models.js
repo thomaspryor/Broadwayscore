@@ -43,6 +43,14 @@ module.exports = {
   SCORING_SONNET: 'claude-sonnet-4-6',
   SCORING_OPUS: 'claude-opus-4-7', // video-reviews/score-video-reviews.js
   GPT4O: 'gpt-4o',
+  // Review-SCORING OpenAI pins (same rule as SCORING_SONNET above): the
+  // ensemble's OpenAI leg (ensemble-scorer.ts, index.ts) and the comparative
+  // within-band rescore. Each moves only after its own A/B (CLAUDE.md §13);
+  // the leg is the ONLY thing that changes, so flip and rollback are one line.
+  // OpenAI retires gpt-4o on 2027-01-14 (owner email 2026-10-14). The request
+  // shape per model lives in scripts/lib/llm-batch.js OPENAI_REQUEST_PROFILES.
+  SCORING_OPENAI: 'gpt-4o',
+  COMPARATIVE_OPENAI: 'gpt-4o',
   GPT4O_MINI: 'gpt-4o-mini',
   // Cheaper gpt-4o candidate evaluated in task #504 (2026-07-26) — API id
   // confirmed live via GET /v1/models. NOT the ensemble default: its A/B

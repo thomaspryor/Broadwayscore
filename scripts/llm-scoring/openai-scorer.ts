@@ -9,6 +9,8 @@ import '../lib/llm-usage-install.js'; // LLM spend meter: keep it the first impo
 import { LLMScoringResult, ReviewTextFile, ScoredReviewFile, SimplifiedLLMResult, Bucket } from './types';
 import { SYSTEM_PROMPT, SYSTEM_PROMPT_V5, buildPrompt, buildPromptV5, scoreToBucket, scoreToThumb, PROMPT_VERSION, BUCKET_RANGES } from './config';
 const { createReviewBudget } = require('../lib/llm-call-budget.js');
+// One builder for every OpenAI scoring request (sync, batch, comparative).
+const { openaiChatBody } = require('../lib/llm-batch.js');
 
 // ========================================
 // TYPES
@@ -168,17 +170,15 @@ export class OpenAIReviewScorer {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${this.apiKey}`
           },
-          body: JSON.stringify({
+          body: JSON.stringify(openaiChatBody({
             model: this.options.model,
             messages: [
               { role: 'system', content: SYSTEM_PROMPT },
               { role: 'user', content: prompt }
             ],
-            // gpt-5.4-mini rejects max_tokens (400: unsupported_parameter) —
-            // max_completion_tokens is accepted by both it and gpt-4o/-mini.
-            max_completion_tokens: 1000,
+            maxTokens: 1000,
             temperature: 0.3
-          })
+          }))
         });
 
         if (!response.ok) {
@@ -329,17 +329,15 @@ export class OpenAIReviewScorer {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${this.apiKey}`
           },
-          body: JSON.stringify({
+          body: JSON.stringify(openaiChatBody({
             model: this.options.model,
             messages: [
               { role: 'system', content: systemPrompt },
               { role: 'user', content: prompt }
             ],
-            // gpt-5.4-mini rejects max_tokens (400: unsupported_parameter) —
-            // max_completion_tokens is accepted by both it and gpt-4o/-mini.
-            max_completion_tokens: 500,
+            maxTokens: 500,
             temperature: 0.3
-          })
+          }))
         });
 
         if (!response.ok) {
