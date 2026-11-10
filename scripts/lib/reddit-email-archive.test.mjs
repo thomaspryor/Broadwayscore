@@ -314,3 +314,83 @@ test('sweep archives an expired email and only removes the INBOX label', async (
   assert.equal(r.archived, 1);
   assert.deepEqual(JSON.parse(calls.find((c) => c.path.endsWith('/batchModify')).body), { ids: ['old'], removeLabelIds: ['INBOX'] });
 });
+
+// ---- Other recurring site emails (owner 2026-11-10 chose to extend the sweep). ----
+// Subjects, senders and times below are the real ones from the owner's inbox on 2026-11-10.
+const ALERTS = 'Broadway Scorecard <alerts@broadwayscorecard.com>';
+const DIGEST = 'Broadway Scorecard Digest <updates@broadwayscorecard.com>';
+const WEST_END = 'West End Scorecard <updates@broadwayscorecard.com>';
+const MD = (d) => `Morning digest — ${d} · site mostly OK · 1 minor visitor issue · 3 decisions for you`;
+const REAL_INBOX = [
+  msg('md8', MD('Sun, Nov 8'), 1794142657000, ALERTS),
+  msg('md7', MD('Sat, Nov 7'), 1794056385000, ALERTS),
+  msg('md7t', `TEST: ${MD('Sat, Nov 7')}`, 1794065316000, ALERTS),
+  msg('md6', MD('Fri, Nov 6'), 1793969477000, ALERTS),
+  msg('md5', MD('Thu, Nov 5'), 1793888784000, ALERTS),
+  msg('md4', MD('Wed, Nov 4'), 1793796864000, ALERTS),
+  msg('od8', '1 opening today · Nov 8', 1794156663000, DIGEST),
+  msg('od5', '2 broadcast-ready · 1 tomorrow · Nov 5', 1793902989000, DIGEST),
+  msg('od4', '2 broadcast-ready · Nov 4', 1793816414000, DIGEST),
+  msg('nb8', "[DRAFT] (Sunday refresh) 7 off-Broadway shows get reviews, We'll See scores highest with critics", 1794146670000),
+  msg('nb7', '[DRAFT] 8 off-Broadway shows get reviews, The Morbs scores highest with critics', 1794069939000),
+  msg('nw8', '[DRAFT] (Sunday refresh) Iphigenie en Tauride - English National Opera opens to decent reviews.', 1794146654000, WEST_END),
+  msg('nw7', '[DRAFT] Speculations opens to rough reviews, The Bridge opens to strong reviews.', 1794070784000, WEST_END),
+];
+// Emails from the same senders that must never be touched.
+const UNRELATED = [
+  msg('x1', 'Decision needed: Should I hand you the critic outreach note to send from your own address to the 50 critic…', 1794164536000, ALERTS),
+  msg('x2', 'New Profitability Scorecard sign-up #51', 1794190123000, ALERTS),
+  msg('x3', 'Broadway opening-night draft ready in Resend: Wanted', 1794224377000),
+  msg('x4', 'Welcome to Broadway Scorecard', 1793785578000),
+  msg('x5', 'Fixed: reader report (reported by A reader)', 1793992181000, 'Tom at Broadway Scorecard <updates@broadwayscorecard.com>'),
+  msg('x6', '3 decisions are still waiting on you', 1794079738000, ALERTS),
+  msg('x7', 'Sunday newsletter review — 2026-11-02', 1794148806000, ALERTS),
+  msg('x8', '[CRITICAL] Opening Night Poller Failed', 1793942317000, ALERTS),
+];
+
+test('planArchive keeps the newest Morning digest, Opening Digest and newsletter draft per edition', () => {
+  const r = a.planArchive(REAL_INBOX);
+  assert.deepEqual([...r.keep].sort(), ['md7t', 'md8', 'nb8', 'nw8', 'od8']);
+  assert.deepEqual([...r.archive].sort(), ['md4', 'md5', 'md6', 'md7', 'nb7', 'nw7', 'od4', 'od5']);
+});
+
+test('recurring emails have no age rule: an old newest digest stays', () => {
+  const r = a.planArchive(REAL_INBOX, { nowMs: 1794156663000 + 60 * 86400000 });
+  assert.deepEqual([...r.keep].sort(), ['md7t', 'md8', 'nb8', 'nw8', 'od8']);
+});
+
+test('planArchive never touches other mail from the same senders', () => {
+  const r = a.planArchive([...REAL_INBOX, ...UNRELATED]);
+  const touched = new Set([...r.archive, ...r.keep]);
+  for (const m of UNRELATED) assert.ok(!touched.has(m.id), m.id);
+});
+
+test('a lookalike subject from another sender or display name is ignored', () => {
+  const fake = [
+    msg('f1', MD('Mon, Nov 9'), 1794300000000, 'Someone <evil@example.com>'),
+    msg('f2', '1 opening today · Nov 9', 1794300000000, 'Broadway Scorecard <updates@broadwayscorecard.com>'),
+    msg('f3', '[DRAFT] hello', 1794300000000, 'Tom at Broadway Scorecard <updates@broadwayscorecard.com>'),
+    msg('f4', MD('Mon, Nov 9'), 1794300000000, 'Broadway Scorecard <updates@broadwayscorecard.com>'),
+  ];
+  const r = a.planArchive([...REAL_INBOX, ...fake]);
+  for (const id of ['f1', 'f2', 'f3', 'f4']) assert.ok(![...r.archive, ...r.keep].includes(id), id);
+  assert.deepEqual([...r.keep].sort(), ['md7t', 'md8', 'nb8', 'nw8', 'od8']);
+});
+
+test('Reddit drafts and recurring emails are planned together without mixing groups', () => {
+  const reddit = [msg('r1', 'Updated Reddit post: Nero (41/100) for r/TheWestEnd', 1794259000000), msg('r2', 'Updated Reddit post: Nero (40/100) for r/TheWestEnd', 1794259721000)];
+  const r = a.planArchive([...reddit, ...REAL_INBOX], { nowMs: 1794300000000 });
+  assert.ok(r.archive.includes('r1') && r.keep.includes('r2'));
+  assert.equal(r.groups, 6);
+});
+
+test('parseFrom reads names and bare addresses', () => {
+  assert.deepEqual(a.parseFrom('"West End Scorecard" <Updates@BroadwayScorecard.com>'), { name: 'West End Scorecard', addr: 'updates@broadwayscorecard.com' });
+  assert.deepEqual(a.parseFrom('updates@broadwayscorecard.com'), { name: '', addr: 'updates@broadwayscorecard.com' });
+});
+
+test('the Gmail search covers every recurring kind', () => {
+  for (const part of ['from:updates@broadwayscorecard.com', 'from:alerts@broadwayscorecard.com', 'subject:"Morning digest"', 'subject:"[DRAFT]"', 'from:"Broadway Scorecard Digest"', 'subject:"Reddit post"']) {
+    assert.ok(a.LIST_QUERY.includes(part), part);
+  }
+});
