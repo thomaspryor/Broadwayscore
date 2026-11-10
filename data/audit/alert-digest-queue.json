@@ -1365,7 +1365,7 @@
     "title": "Data audit failing: Audit outlet-registry gaps",
     "description": "The \"Audit outlet-registry gaps\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
     "severity": "warning",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42873999496",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42874565535",
     "decision": false,
     "info": false,
     "decisionPrompt": null,
@@ -1382,9 +1382,9 @@
       },
       {
         "name": "Run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42873999496)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42874565535)"
       }
     ],
-    "queuedAt": "2026-11-10T18:28:35.955Z"
+    "queuedAt": "2026-11-10T18:32:49.287Z"
   }
 ]
