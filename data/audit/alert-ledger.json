@@ -4360,7 +4360,7 @@
       "resolveReason": "absent"
     },
     "test-yml:red:Lint Workflows:1ff49e04": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Lint Workflows / Audit — no submitter PII in committed data/audit files",
       "firstSeen": "2026-09-20T19:22:49.867Z",
@@ -4377,7 +4377,9 @@
         "runId": "40458183423",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40458183423"
       },
-      "silentRefires": 4
+      "silentRefires": 4,
+      "resolvedAt": "2026-11-10T21:48:49.036Z",
+      "resolveReason": "job-green"
     },
     "test-yml:red:Data Validation:9e7c89b2": {
       "status": "resolved",
