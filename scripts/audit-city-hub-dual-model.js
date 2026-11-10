@@ -214,13 +214,16 @@ async function runShows(L, limit) {
   });
 }
 
+function posterPathFor(s) { return s.images && typeof s.images === 'object' ? s.images.poster || null : null; }
+
 async function runImages(L, limit) {
-  const cache = loadCache(L.city, 'images'); const todo = L.shows.filter((s) => !cache.has(s.id)).slice(0, limit);
+  const cache = loadCache(L.city, 'images'); const todo = L.shows.filter((s) => !cache.has(s.id) || (cache.get(s.id) || {}).missing).slice(0, limit);
   console.log(`images: ${todo.length} to check`);
   await pool(todo, 4, async (s) => {
-    const p = path.join(ROOT, 'public', 'images', 'shows', s.id, 'poster.webp');
-    if (!fs.existsSync(p)) { const row = { id: s.id, missing: true }; appendCache(L.city, 'images', row); return row; }
-    const image = { mime: 'image/webp', b64: fs.readFileSync(p).toString('base64') };
+    const posterPath = posterPathFor(s); // the show's own images.poster (webp or jpg), never an assumed filename
+    const p = posterPath && path.join(ROOT, 'public', posterPath.replace(/^\//, ''));
+    if (!p || !fs.existsSync(p)) { const row = { id: s.id, missing: true, poster: posterPath || null }; appendCache(L.city, 'images', row); return row; }
+    const image = { mime: /\.jpe?g$/i.test(p) ? 'image/jpeg' : 'image/webp', b64: fs.readFileSync(p).toString('base64') };
     const ex = await both(imagePrompt(s), { image });
     const row = { id: s.id, ...ex }; appendCache(L.city, 'images', row); return row;
   });
@@ -329,7 +332,7 @@ function computeFlags(L) {
   for (const s of L.shows) {
     const r = sc.get(s.id); if (r) { checked.shows++; ['gemini', 'openai'].forEach((m) => add('show', s.id, s.title, m, A.showFlags(s, r[m]))); }
     const i = ic.get(s.id); if (i && !i.missing) { checked.images++; ['gemini', 'openai'].forEach((m) => add('image', s.id, s.title, m, A.imageFlags(s, i[m]))); }
-    else if (i && i.missing) flags.push({ kind: 'image', id: s.id, label: s.title, model: 'local', code: 'no-poster', detail: 'poster.webp missing' });
+    else if (i && i.missing) flags.push({ kind: 'image', id: s.id, label: s.title, model: 'local', code: 'no-poster', detail: i.poster ? `file missing: ${i.poster}` : 'show has no images.poster' });
     const fl = [];
     if (!s.closingDate && A.hubPhase(s, TODAY) !== 'closed') fl.push({ code: 'no-closing-date', detail: 'open show without closingDate' });
     if (s.closingDate && !s.closingDateSource && s.status !== 'closed' && A.hubPhase(s, TODAY) !== 'closed') fl.push({ code: 'closing-unsourced', detail: 'closingDateSource missing' });
@@ -357,6 +360,8 @@ function computeFlags(L) {
   for (const it of L.reviews) {
     const k = `${it.row.showId}|${fold(it.row.outletId)}|${fold(it.row.criticName)}`;
     if (seen.has(k)) add('review', it.id, `${it.row.showId} | ${it.row.outlet}`, 'local', [{ code: 'duplicate-outlet-critic', detail: `also ${seen.get(k)}` }]); else seen.set(k, it.row.url);
+    const later = it.file && A.laterRunEnd(it.file.fullText || it.file.text, (showBy.get(it.row.showId) || {}).closingDate);
+    if (later) add('show', it.row.showId, (showBy.get(it.row.showId) || {}).title, 'local', [{ code: 'review-text-later-closing', detail: `ours ${(showBy.get(it.row.showId) || {}).closingDate} / review text says through ${later} (${it.row.outletId} ${it.row.publishDate})` }]);
     if (!it.file) add('review', it.id, `${it.row.showId} | ${it.row.outlet}`, 'local', [{ code: 'no-review-text-file', detail: it.row.url }]);
     if (!/^https?:/.test(it.row.url || '')) add('review', it.id, `${it.row.showId} | ${it.row.outlet}`, 'local', [{ code: 'no-url', detail: '' }]);
     const sb = A.starBandProblem(it.row.originalRating, it.row.assignedScore);

@@ -91,3 +91,12 @@ test('image flags: other title or placeholder flags, matching title does not', (
   assert.equal(A.imageFlags(show, { visibleTitle: 'Hamilton', isPlaceholderOrBanner: false })[0].code, 'image-other-title');
   assert.equal(A.imageFlags(show, { visibleTitle: null, isPlaceholderOrBanner: true })[0].code, 'image-not-key-art');
 });
+
+test('review text that announces a later run end is found (stale theatre-page closing dates)', () => {
+  const t = 'A Case for the Existence of God. Through November 21 at the Matrix Theatre.';
+  assert.deepEqual(A.runEndsInText(t, 2026), ['2026-11-21']);
+  assert.equal(A.laterRunEnd(t, '2026-10-11'), '2026-11-21');
+  assert.equal(A.laterRunEnd(t, '2026-11-21'), null);
+  assert.equal(A.laterRunEnd('Extended through Sept. 27, 2026.', '2026-09-20'), '2026-09-27');
+  assert.equal(A.laterRunEnd('No dates here', '2026-09-20'), null);
+});
