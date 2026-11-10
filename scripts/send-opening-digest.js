@@ -172,6 +172,7 @@ function marketLabel(market) {
 // Row label for the compact rows. Regional/tour rows name the kind of
 // production and the venue, since "Regional" alone says nothing.
 function rowMarketLabel(show, market) {
+  if (show && show.type === 'opera') return marketLabel('opera');
   if (market === 'tour') return show.venue ? `National tour · ${show.venue}` : 'National tour';
   if (market !== 'regional') return marketLabel(market);
   let kind = 'Regional';
@@ -578,7 +579,9 @@ function metadataPills(row) {
   const pills = [];
   pills.push(formatPill(row.type || 'play'));
   pills.push(productionPill(row.isRevival));
-  const cat = categoryBadge(row.market);
+  // Site parity (ShowPills.CategoryBadge): an opera's OPERA pill already says
+  // what it is, so the market pill (WEST END / OFF-WE) is suppressed.
+  const cat = row.type === 'opera' ? '' : categoryBadge(row.market);
   if (cat) pills.push(cat);
   if (row.important && row.market !== 'broadway' && row.market !== 'west-end') {
     pills.push(sitePill('★ Important', { color: TOKENS.brand, bg: TOKENS.brandMuted }));
@@ -1010,6 +1013,7 @@ module.exports = {
   buildHtml,
   regionOf,
   rowMarketLabel,
+  metadataPills,
   REGION_ORDER,
   computeCriticScore,
   setOutletRegistryForTest: (r) => { outletRegistry = r; },
