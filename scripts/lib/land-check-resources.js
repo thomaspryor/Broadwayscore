@@ -21,9 +21,14 @@ function freeBytesOf(dir, statfs = require('fs').statfsSync) {
   try { const s = statfs(dir); return Number(s.bavail) * Number(s.bsize); } catch { return NaN; }
 }
 
+// BRO-7315: a TAP title line ("# Subtest: …", "ok 12 - …", "not ok 12 - …") names a test, and four tests
+// ABOUT disk handling say ENOSPC in their names. Counting those made every land-local-check run end
+// "not a valid verdict" (exit 3) since BRO-7186. Only output outside a title line counts.
+const TAP_TITLE_RE = /^\s*(?:# Subtest:|(?:not )?ok \d+ - ).*$/gm;
+
 /** True when the text shows the environment (disk) failed, not the code. */
 function looksLikeEnvFailure(text) {
-  return ENV_FAILURE_RE.test(String(text || ''));
+  return ENV_FAILURE_RE.test(String(text || '').replace(TAP_TITLE_RE, ''));
 }
 
 const RECENT_MS = 6 * 3600_000;

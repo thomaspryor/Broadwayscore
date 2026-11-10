@@ -449,6 +449,23 @@ test('BRO-7186: ENOSPC output is an environment failure', () => {
   assert.ok(!looksLikeEnvFailure('AssertionError: expected 1'));
 });
 
+test('BRO-7315: a test NAMED after ENOSPC is not a disk failure; the same error in a test body still is', () => {
+  // The four real title pairs that made every run "not a valid verdict" (unit-tests-node.log, scripts-lib-tests.log).
+  const titles = [
+    '# Subtest: isDiskFailure: the system message counts on its own, a bare ENOSPC only while the disk is low',
+    'ok 7238 - isDiskFailure: the system message counts on its own, a bare ENOSPC only while the disk is low',
+    '    # Subtest: BRO-7186: ENOSPC output is an environment failure',
+    '    not ok 7403 - BRO-7186: ENOSPC output is an environment failure',
+  ].join('\n');
+  assert.ok(!looksLikeEnvFailure(titles));
+  assert.ok(looksLikeEnvFailure(`${titles}\n  ---\n  error: "ENOSPC: no space left on device, write"\n  ...`));
+  assert.ok(looksLikeEnvFailure('not ok 3 - writes the ledger\n  stack: |-\n    Error: ENOSPC\n'));
+  const d = mkdtempSync(join(tmpdir(), 'enospc-title-'));
+  writeFileSync(join(d, 'unit-tests-node.log'), `${titles}\n`);
+  assert.deepEqual(envFailureLogs([d]), []);
+  rmSync(d, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+});
+
 test('BRO-7186: a gone ref counts as landed only via an exact-branch recent ledger row and no red run', () => {
   const now = Date.parse('2026-11-08T12:00:00Z');
   const ago = (h) => new Date(now - h * 3600_000).toISOString();
