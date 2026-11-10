@@ -44,6 +44,10 @@ test('rows already live in the previous reviews.json are grandfathered (no live 
   assert.equal(decide(noUrl(), { grandfather: liveByOc }).hold, false);
   const liveNullCritic = buildGrandfatherSet([{ showId: show.id, outletId: 'cititour', criticName: null }]);
   assert.equal(decide(noUrl(), { grandfather: liveNullCritic }).hold, false);
+  // A url-bearing, different-url file is NEW even when a url-less live row has the same outlet+critic
+  // (the later dedup would let the newer wrong-production row replace the live one).
+  const liveNoUrl = buildGrandfatherSet([{ showId: show.id, url: '', outletId: 'cititour', criticName: 'Brian Scott Lipton' }]);
+  assert.equal(decide(d, { grandfather: liveNoUrl }).hold, true);
   // Normalisers are applied on both sides (live rows hold canonical ids, files hold raw ones).
   const norm = { outlet: (o) => String(o).toLowerCase().replace(/[^a-z]/g, ''), critic: (c) => String(c).toLowerCase().trim() };
   const gfN = buildGrandfatherSet([{ showId: show.id, outletId: 'Citi-Tour', criticName: ' BRIAN SCOTT LIPTON ' }], norm);

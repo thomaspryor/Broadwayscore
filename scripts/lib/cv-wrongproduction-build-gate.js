@@ -35,7 +35,7 @@ const { handledReason, isCorroboratedTemporalOverride, CLEAR_FLAGS } =
 const ident = (x) => x;
 function shippedKeys(showId, row, norm = {}) {
   const url = (norm.url || ident)(row.url);
-  const outlet = (norm.outlet || ident)(row.outletId) || '';
+  const outlet = (norm.outlet || ident)(row.outletId || row.outlet) || '';
   const critic = ((norm.critic || ident)(row.criticName) || '').toString();
   if (url) return [`${showId}::url::${url}`];
   if (!outlet) return [];

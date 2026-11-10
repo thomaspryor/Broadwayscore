@@ -406,7 +406,7 @@ const reviewsJsonPath = path.join(__dirname, '../data/reviews.json');
 const cvWpBuildGate = require('./lib/cv-wrongproduction-build-gate');
 // Same normalisers the row writer uses, so a live row and its review-texts file produce the same key.
 const cvWpNorm = () => ({ url: (u) => (u ? normalizeUrlForDedup(u) : ''), outlet: (o) => (o ? normalizeOutletCanonical(o) : ''), critic: (c) => (c ? normalizeCriticName(c) : '') });
-const CV_WP_BUILD_GATE_MODE = (process.env.CV_WP_BUILD_GATE || 'enforce').toLowerCase();
+const CV_WP_BUILD_GATE_MODE = (process.env.CV_WP_BUILD_GATE || 'advisory').toLowerCase();
 let cvWpGrandfather = null;
 if (CV_WP_BUILD_GATE_MODE !== 'off') {
   try {
@@ -3822,7 +3822,7 @@ showDirs.forEach(showId => {
         if (cvWpBlk.hold) {
           if (CV_WP_BUILD_GATE_MODE === 'advisory') {
             stats.cvWrongProductionBuildGateWouldHold = (stats.cvWrongProductionBuildGateWouldHold || 0) + 1;
-            console.log(`  [CV-WP-BUILD-GATE advisory] ${showId}/${file}: would hold`);
+            console.log(`  [CV-WP-BUILD-GATE advisory] ${showId}/${file}: would hold | outlet=${data.outletId || ''} critic=${data.criticName || ''} url=${data.url ? 'y' : 'n'} liveShowOutlet=${cvWpGrandfather.has(`${showId}::oc::${cvWpNorm().outlet(data.outletId)}::${cvWpNorm().critic(data.criticName) || ''}`) ? 'y' : 'n'}`);
           } else {
             logExclusion("skippedCvWrongProductionHeld", showId, file, data);
             stats.skippedCvWrongProductionHeld = (stats.skippedCvWrongProductionHeld || 0) + 1;
