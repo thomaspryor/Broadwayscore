@@ -1,19 +1,93 @@
 {
-  "updatedAt": "2026-11-10T23:22:06.269Z",
-  "processed": 0,
-  "failed": 2,
-  "successRate": "0%",
+  "updatedAt": "2026-11-10T23:31:49.124Z",
+  "processed": 146,
+  "failed": 65,
+  "successRate": "69.2%",
   "tierBreakdown": {
-    "playwright": 0,
-    "amp": 0,
-    "browserbase": 0,
+    "playwright": 98,
+    "amp": 1,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 0,
+    "scrapingdog": 14,
+    "scrapingbee": 5,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 26
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 8,
+  "recentActivity": [
+    {
+      "t": "2026-11-10T22:32:28.772Z",
+      "event": "bb-session",
+      "session": "cc9f0044",
+      "url": "https://deadline.com/2026/11/broadway-box-office-tom-hiddleston-much-ado-about-n"
+    },
+    {
+      "t": "2026-11-10T22:42:42.077Z",
+      "event": "bb-session",
+      "session": "0691eb15",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655466"
+    },
+    {
+      "t": "2026-11-10T22:42:42.820Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-10T22:45:58.537Z",
+      "event": "bb-session",
+      "session": "5c431421",
+      "url": "https://www.talkinbroadway.com/page/regional/chicago/ch944.html"
+    },
+    {
+      "t": "2026-11-10T22:45:59.176Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-10T22:47:29.314Z",
+      "event": "bb-session",
+      "session": "3ecea1d2",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655418"
+    },
+    {
+      "t": "2026-11-10T22:47:29.945Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-10T22:52:44.597Z",
+      "event": "bb-session",
+      "session": "88369ee5",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-11-10T22:54:11.763Z",
+      "event": "bb-session",
+      "session": "7104b94e",
+      "url": "https://ground.news/article/memoriam-review-by-thespyinthestalls-at-southwark-pl"
+    },
+    {
+      "t": "2026-11-10T23:18:03.675Z",
+      "event": "bb-session",
+      "session": "0736e89f",
+      "url": "https://www.talkinbroadway.com/regional/minn/minn1534.html"
+    },
+    {
+      "t": "2026-11-10T23:18:04.417Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-10T23:18:58.023Z",
+      "event": "bb-session",
+      "session": "1322b7b9",
+      "url": "https://www.nytimes.com/2026/10/12/theater/joey-arias-basil-twist-arias-with-a-t"
+    },
+    {
+      "t": "2026-11-10T23:18:58.663Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
