@@ -117,6 +117,26 @@ test('URL_DEAD: failed fetch says 404', () => {
   expectClass(classify(base({ fullText: '', contentTier: 'stub' }), ff('url_dead_404')), 'URL_DEAD', 'url_dead_404');
 });
 
+// BRO-7171 weak-outlet audit: a 404/410 the outlet gave for the stored url
+// (rediscover-review-urls Phase 2, or the engine's logged-in browser) routes
+// to URL_DEAD, whatever the text tier says; with no url it stays NO_URL.
+test('URL_DEAD: stored httpStatus 404/410 on the current url', () => {
+  // Real shapes: washpost web-search row (182 chars, GARBAGE_PAGE before) and
+  // a newyorker excerpt row (PAYWALL_TRUNCATED before).
+  expectClass(classify(base({ httpStatus: 404, fullText: 'x'.repeat(182) }), ff('garbage_content')), 'URL_DEAD', 'http_404');
+  expectClass(classify(base({ httpStatus: 410, fullText: '', contentTier: 'excerpt' })), 'URL_DEAD', 'http_410');
+  expectClass(classify(base({ httpStatus: 404 })), 'URL_DEAD', 'http_404');
+  assert.equal(classify(base({ httpStatus: 404, url: null, fullText: '', contentTier: 'stub' })).gapClass, 'NO_URL');
+  assert.equal(classify(base({ httpStatus: 200 })).gapClass, 'TRUNCATED_OTHER');
+  assert.equal(classify(base({ httpStatus: 404, contentTier: 'complete' })).gapClass, 'COMPLETE');
+});
+
+test('EXCLUDED: fabricatedEntry rows (invented by the deleted LLM web-search step)', () => {
+  const r = classify(base({ fabricatedEntry: true, source: 'web-search', httpStatus: 404, fullText: '', contentTier: 'excerpt' }));
+  expectClass(r, 'EXCLUDED', 'fabricated');
+  assert.equal(r.open, false);
+});
+
 test('URL_WRONG_PAGE: url_content_mismatch', () => {
   expectClass(classify(base({ fullText: '', contentTier: 'stub' }), ff('url_content_mismatch')), 'URL_WRONG_PAGE');
 });

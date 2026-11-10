@@ -399,6 +399,20 @@ async function runLive({ dir, cands, rows, ledgerPath, serpKeys, gui }) {
       if (!got.ok) {
         console.log(`  ✗ ${got.outcome} (${got.reason})`);
         record(c, strategy, { outcome: got.outcome, reason: got.reason, url: got.url });
+        // A hard 404/410 on the stored url goes onto the record (httpStatus),
+        // so the classifier routes it to URL_DEAD and url rediscovery ranks it.
+        if (!got.url || got.url === c.url) {
+          const { readReviewForUpdate, persistReviewSnapshot } = require('./lib/persist-review-snapshot');
+          withReviewTextsLock(`gap-dead-url:${c.reviewKey}`, () => {
+            const data = readReviewForUpdate(c.filePath);
+            const patch = S.deadUrlStampPatch(data, { url: c.url, outcome: got.outcome, reason: got.reason });
+            if (!patch) return;
+            Object.assign(data, patch);
+            persistReviewSnapshot({ filePath: c.filePath, data, trailingNewline: true });
+            tracker.add(path.resolve(c.filePath));
+            console.log(`    stamped httpStatus ${patch.httpStatus} (url dead -> URL_DEAD next run)`);
+          });
+        }
         continue;
       }
       const labels = LABELS[strategy] || {

@@ -146,3 +146,30 @@ test('URL_REDISCOVER: unavailable SERP is non-evidence and does not spend the fi
   assert.equal(hit.ok, true);
   assert.equal(hit.url, 'https://example.com/new-review');
 });
+
+// BRO-7171 weak-outlet audit: a hard 404/410 on the stored url lands on the
+// record (httpStatus) so the classifier routes it to URL_DEAD; before, the
+// evidence lived only in the engine ledger and the browser re-fetched it.
+test('deadUrlStampPatch: stamps a hard 404/410 on the current url only', async () => {
+  const rec = { url: c.url, contentTier: 'truncated', fullText: 'x'.repeat(182) };
+  const nf = await S.browserSession(c, { extract: async () => ({ error: 'HTTP 404 not found', notFound: true, status: 404 }) });
+  assert.deepEqual(S.deadUrlStampPatch(rec, { url: c.url, ...nf }), { httpStatus: 404 });
+  const gone = await S.refetchFree(c, deps({ fetchPage: async () => { throw new Error('HTTP 404 Not Found'); } }));
+  assert.equal(gone.outcome, 'no_evidence');
+  assert.deepEqual(S.deadUrlStampPatch(rec, { url: c.url, ...gone }), { httpStatus: 404 }, JSON.stringify(gone));
+  // not evidence / not a 404 / url moved since the fetch / complete text / already stamped
+  assert.equal(S.deadUrlStampPatch(rec, { url: c.url, outcome: 'non_evidence', reason: 'soft_404' }), null);
+  assert.equal(S.deadUrlStampPatch(rec, { url: c.url, outcome: 'no_evidence', reason: 'archive_empty' }), null);
+  assert.equal(S.deadUrlStampPatch({ ...rec, url: 'https://example.com/moved' }, { url: c.url, outcome: 'no_evidence', reason: 'url_not_found_404' }), null);
+  assert.equal(S.deadUrlStampPatch({ ...rec, contentTier: 'complete' }, { url: c.url, outcome: 'no_evidence', reason: 'url_not_found_404' }), null);
+  assert.equal(S.deadUrlStampPatch({ ...rec, httpStatus: 404 }, { url: c.url, outcome: 'no_evidence', reason: 'url_not_found_404' }), null);
+});
+
+test('a stamped 404 classifies URL_DEAD and a url change clears it (url-bound)', () => {
+  const { classifyTextGap } = require('./text-gap-classify.js');
+  const { URL_DERIVED_FIELDS } = require('./url-change-invariant.js');
+  const rec = { showId: 's-2025', outletId: 'washpost', url: c.url, contentTier: 'truncated', fullText: 'x'.repeat(182), source: 'web-search' };
+  const stamped = { ...rec, ...S.deadUrlStampPatch(rec, { url: c.url, outcome: 'no_evidence', reason: 'url_not_found_404' }) };
+  assert.equal(classifyTextGap(stamped, null, { nowMs: Date.parse('2026-11-09') }).gapClass, 'URL_DEAD');
+  assert.ok(URL_DERIVED_FIELDS.includes('httpStatus'), 'httpStatus must be cleared by a url change');
+});

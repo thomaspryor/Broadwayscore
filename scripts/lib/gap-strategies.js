@@ -175,4 +175,32 @@ async function urlRediscover(c, { scrapingBeeKey = '', brightDataKey = '' } = {}
   return { ...r, url: newUrl, serpRan: true };
 }
 
-module.exports = { FREE_TIERS, refetchFree, archive, browserSession, urlRediscover, outcomeForFetchError, fromHtml, defaultDeps };
+const DEAD_URL_REASONS = Object.freeze({
+  url_not_found_404: 404, url_not_found_410: 410, // logged-in subscriber browser (browserSession)
+  url_dead_404: 404, url_dead_410: 410, // free refetch (failed-fetch-policy classification)
+});
+
+/**
+ * Field patch that records a hard 404/410 on the review's CURRENT url, or null.
+ * `httpStatus` is the field rediscover-review-urls.js Phase 3 already ranks
+ * first for SERP url discovery, and text-gap-classify reads as URL_DEAD, so
+ * the next run plans ARCHIVE / rediscovery instead of re-fetching a dead url
+ * through the subscriber browser (BRO-7171: 31 WaPo, 16 WSJ, 12 New Yorker
+ * and 5 NYT urls answered 404 to a logged-in session; the evidence stayed in
+ * the engine ledger only). Url-bound: url-change-invariant clears it when the
+ * url moves, and a record whose url moved since the fetch is left alone.
+ * Pure.
+ * @param {object} review  fresh on-disk record
+ * @param {{url:string|null, outcome:string, reason:string}} result  strategy result for that url
+ * @returns {object|null}
+ */
+function deadUrlStampPatch(review, { url, outcome, reason }) {
+  if (!review || outcome !== 'no_evidence') return null;
+  const status = DEAD_URL_REASONS[reason];
+  if (!status || !url || review.url !== url) return null;
+  if (review.contentTier === 'complete') return null;
+  if (review.httpStatus === status) return null;
+  return { httpStatus: status };
+}
+
+module.exports = { FREE_TIERS, refetchFree, archive, browserSession, urlRediscover, outcomeForFetchError, fromHtml, defaultDeps, deadUrlStampPatch, DEAD_URL_REASONS };
