@@ -20,6 +20,7 @@
  * Usage:
  *   node scripts/backtest-review-forecast.mjs [--market=broadway|off-broadway|west-end] [--floor=10] [--out=path] [--forecast-out=/path/outside/repo.json]
  */
+// venue-write-guard-ok: read-only backtest, copies venue into in-memory feature rows and the audit JSON; never writes shows.json
 import fs from 'node:fs';
 import path from 'node:path';
 import { createRequire } from 'node:module';
