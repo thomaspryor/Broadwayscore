@@ -59,7 +59,7 @@ function loadDone(ledgerDir, show, night, onDiskUrls = []) {
  *   missingOutlets? (T1/T2 outlet ids still missing, or a function of {seen} returning them, so captured outlets stop being searched; gates the SERP phase),
  *   reviewTextsDir? (persist scored rows before marking done, also in a dry-run sandbox),
  *   dryRun?, onDiskUrls?, onDiskRows? ([{criticName, outletId}] of this show already in reviews.json), now() -> ms, wait(ms) -> Promise, forkClock?(startMs) -> {now, wait}, midPassTickMs? (real mode's mid-pass timer; default min(bar, 30 s)),
- *   latency {fetchMs, scoreMs}, passIntervalMs, maxPasses, windowMs (how long the lane runs), startedAt?, publishTimeoutMs, pollMs,
+ *   latency {fetchMs, scoreMs}, passIntervalMs, maxPasses, windowMs (how long the lane runs), startedAt?, serpClockStartMs? (BRO-7280: SERP's +3h clock starts here instead of at startedAt), publishTimeoutMs, pollMs,
  *   shouldStop?() (stop discovering and scoring), abandonPending?() (LANE_STANDDOWN: publish nothing new, only let in-flight batches finish;
  *   queued rows are already in review-texts, so the regular pipeline publishes them)
  * @returns {Promise<{passes, admitted, published, errors, failed, skipped, removedCopies, unpublished, awaiting, stopped}>}
@@ -67,7 +67,7 @@ function loadDone(ledgerDir, show, night, onDiskUrls = []) {
 async function runLaneNight({
   show, night, openingDate, timeZone, adapters, fetchText, ledgerDir, fetchReview, scoreReview, publishPorts, makePublishPorts, dryRun = false,
   onDiskUrls = [], onDiskRows = [], maxInflight = 2, midPassPublishAfterMs = 5 * 60 * 1000, midPassTickMs = Math.min(midPassPublishAfterMs, 30 * 1000), now, wait, forkClock, latency = {}, passIntervalMs = 2 * 60 * 1000, maxPasses = 1000, windowMs = 6 * 60 * 60 * 1000,
-  startedAt, publishTimeoutMs, pollMs, reviewTextsDir, shouldStop = () => false, abandonPending = () => false, missingOutlets = [],
+  startedAt, serpClockStartMs, publishTimeoutMs, pollMs, reviewTextsDir, shouldStop = () => false, abandonPending = () => false, missingOutlets = [],
 } = {}) {
   for (const [k, v] of Object.entries({ show, night, adapters, fetchText, ledgerDir, fetchReview, scoreReview, now, wait })) {
     if (v === undefined || v === null) throw new Error(`lane-runner: ${k} is required`);
@@ -182,7 +182,7 @@ async function runLaneNight({
   try { // the finally clears the mid-pass timer even if a pass throws
   for (; passes < maxPasses && now() - t0 < windowMs; passes++) {
     if (shouldStop()) { stopped = true; break; }
-    const pass = await discovery.runDiscoveryPass({ show, night, now: now(), startedAt: t0, adapters, fetchText, seen, memo, timeZone,
+    const pass = await discovery.runDiscoveryPass({ show, night, now: now(), startedAt: serpClockStartMs === undefined ? t0 : serpClockStartMs, adapters, fetchText, seen, memo, timeZone,
       missingOutlets: typeof missingOutlets === 'function' ? missingOutlets({ seen }) : missingOutlets });
     errors.push(...pass.errors);
     const stamp = now();

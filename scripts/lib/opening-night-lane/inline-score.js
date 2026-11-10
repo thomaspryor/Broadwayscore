@@ -166,6 +166,13 @@ function createInlineScoring({
   /** Record a failed attempt; throws a retry error, or a permanent one when attempts are exhausted or `permanent`. */
   const fail = (stage, key, e, permanent = false) => {
     const id = `${stage}:${key}`;
+    // BRO-7280: a fetch that failed because the pre-embargo window withheld the paid tiers is no attempt: try again soon.
+    if (e && e.laneDeferred && !permanent) {
+      const prior = state.get(id) || { attempts: 0, nextAt: 0, terminal: false };
+      prior.nextAt = now() + 30 * 1000;
+      state.set(id, prior);
+      throw new LaneRetryError(`${stage} deferred (pre-embargo direct-only window), retry at ${new Date(prior.nextAt).toISOString()}: ${String((e && e.message) || e)}`);
+    }
     const st = state.get(id) || { attempts: 0, nextAt: 0, terminal: false };
     st.attempts += 1;
     const reason = String((e && e.message) || e);

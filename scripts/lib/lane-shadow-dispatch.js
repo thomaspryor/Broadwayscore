@@ -69,7 +69,7 @@ function planShadowDispatch({ show, night, market, embargoAt, nowMs = Date.now()
     if (!s || s.id === rec.id || !/^\d{4}-\d{2}-\d{2}$/.test(String(s.openingDate || ''))) continue;
     if (Math.abs(Date.parse(`${s.openingDate}T00:00:00Z`) - nightMs) > DAY_MS) continue;
     if (!coversShow(onlyMarkets, s)) continue;
-    const t = nightTimes(s, s.openingDate);
+    const t = nightTimes(s, s.openingDate, { preembargo: require('./opening-night-lane/preembargo-window').parseFlag(process.env.LANE_PREEMBARGO_DIRECT_ONLY) });
     if (!t) continue;
     if (nowMs < t.watchEndMs && shadowEndMs > t.laneStartMs) {
       return { dispatch: false, reason: `live-lane night: runners reserved for ${s.id} (lane ${new Date(t.laneStartMs).toISOString()} to ${new Date(t.watchEndMs).toISOString()})`, windowMin: 0 };

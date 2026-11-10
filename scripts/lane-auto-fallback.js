@@ -79,7 +79,7 @@ function startPlan() {
 
 function nightWait() {
   const show = findShow(loadShows(), arg('show'));
-  const d = af.planNightWait({ show, night: arg('night'), now: arg('now') || undefined });
+  const d = af.planNightWait({ show, night: arg('night'), now: arg('now') || undefined, preembargo: require('./lib/opening-night-lane/preembargo-window').parseFlag(process.env.LANE_PREEMBARGO_DIRECT_ONLY) });
   console.error(`night-wait ${arg('show')} ${arg('night')}: ${d.action} (${d.reason})`);
   console.log(`${d.action} ${d.sleepMin}`);
   return 0;
