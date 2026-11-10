@@ -1,43 +1,5 @@
 [
   {
-    "startedAt": "2026-11-09T02:04:16.333Z",
-    "completedAt": "2026-11-09T02:04:21.792Z",
-    "totalReviews": 10,
-    "processed": 73,
-    "skipped": 9,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 480732,
-      "output": 24747,
-      "cacheRead": 303435,
-      "cacheWrite": 26375,
-      "total": 1246077
-    },
-    "costUsd": 1.91578815,
-    "runId": "42548202434",
-    "source": "index",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-11-09T02:09:21.284Z",
-    "completedAt": "2026-11-09T02:09:21.286Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "42548202434",
-    "source": "comparative-rescore",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-11-09T02:24:16.028Z",
     "completedAt": "2026-11-09T02:24:21.569Z",
     "totalReviews": 12,
@@ -308977,6 +308939,44 @@
     },
     "costUsd": 0.5893720000000001,
     "runId": "42819406302",
+    "source": "comparative-rescore",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-11-10T13:34:16.803Z",
+    "completedAt": "2026-11-10T13:34:23.183Z",
+    "totalReviews": 4,
+    "processed": 0,
+    "skipped": 2,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 9538,
+      "output": 242,
+      "cacheRead": 7614,
+      "cacheWrite": 0,
+      "total": 26040
+    },
+    "costUsd": 0.0328638,
+    "runId": "42824615389",
+    "source": "index",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-11-10T13:39:22.058Z",
+    "completedAt": "2026-11-10T13:39:22.059Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "42824615389",
     "source": "comparative-rescore",
     "errorDetails": []
   }
