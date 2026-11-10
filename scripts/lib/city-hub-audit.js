@@ -22,6 +22,7 @@ const crypto = require('crypto');
 const os = require('os');
 const { articleText, parseJson, sameCritic } = require('./audit-city-reviews');
 const { foldDiacritics } = require('./title-match');
+const { toDateMs } = require('./date-utils');
 
 const ROOT = path.join(__dirname, '..', '..');
 const saveJson = (dest, text) => fs.writeFileSync(dest, text);
@@ -85,7 +86,7 @@ function judgeReview(rev, v) {
   if (v.isRoundup === true) p.push('roundup');
   if (v.critic && rev.criticName && !/^unknown$/i.test(rev.criticName) && !sameCritic(v.critic, rev.criticName)) p.push(`critic ${rev.criticName} vs byline ${v.critic}`);
   if (v.publishDate && ISO.test(String(v.publishDate)) && rev.publishDate && String(v.publishDate).slice(0, 10) !== String(rev.publishDate).slice(0, 10)) {
-    const d = Math.abs((Date.parse(v.publishDate) - Date.parse(rev.publishDate)) / 864e5);
+    const d = Math.abs((toDateMs(v.publishDate) - toDateMs(rev.publishDate)) / 864e5);
     if (d > 3) p.push(`date ${rev.publishDate} vs page ${v.publishDate}`);
   }
   if (typeof v.impliedScore === 'number' && typeof rev.assignedScore === 'number' && Math.abs(v.impliedScore - rev.assignedScore) > 20) p.push(`score ${rev.assignedScore} vs text-implied ${v.impliedScore}`);
