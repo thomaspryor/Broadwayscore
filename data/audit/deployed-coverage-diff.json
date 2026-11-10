@@ -1,13 +1,32 @@
 {
-  "generatedAt": "2026-11-10T21:25:20.178Z",
+  "generatedAt": "2026-11-10T22:49:57.535Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 319,
-  "clean": 319,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 318,
+  "defective": 1,
+  "byType": {
+    "score-drift": 1
+  },
+  "shows": [
+    {
+      "showId": "hamilton-2015",
+      "title": "Hamilton",
+      "openingDate": "2015-08-06",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 91.64 vs local 91.22 (Δ0.42)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 43,
+      "deployedCount": 43,
+      "firstDefectAt": "2026-11-10T22:49:48.082Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

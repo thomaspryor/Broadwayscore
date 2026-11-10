@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-10T21:25:20.615Z",
+  "generatedAt": "2026-11-10T22:49:57.967Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -113,12 +113,12 @@
   "feedsChecked": 84,
   "feedsFailed": [
     {
-      "outletId": "front-row-center",
-      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
     },
     {
-      "outletId": "theater-pizzazz",
-      "error": "HTTP 503 for https://theaterpizzazz.com/feed/"
+      "outletId": "front-row-center",
+      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
       "outletId": "cote-notices",
@@ -135,10 +135,14 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "fringereview",
+      "error": "HTTP 500 for https://fringereview.co.uk/feed/"
     }
   ],
-  "itemsScanned": 833,
-  "matchedGaps": 3,
+  "itemsScanned": 848,
+  "matchedGaps": 4,
   "possibleGaps": 2,
   "gaps": [
     {
@@ -167,6 +171,15 @@
       "url": "https://www.thereviewshub.com/dogstar-hampstead-theatre-london/",
       "headline": "Dogstar – Hampstead Theatre, London",
       "publishDate": "2026-11-10"
+    },
+    {
+      "showId": "the-steel-man-off-broadway-2026",
+      "title": "The Steel Man",
+      "level": "matched",
+      "outletId": "stageandcinema",
+      "url": "https://stageandcinema.com/2026/11/09/the-steel-man-review-penguin-rep-59e59-theaters/",
+      "headline": "Off-Broadway Review: THE STEEL MAN (Penguin Rep Theatre / 59E59 Theatres)",
+      "publishDate": "2026-11-09"
     },
     {
       "showId": "king-lear-off-broadway-2026",
