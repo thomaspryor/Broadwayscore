@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-10T14:50:29.427Z",
+  "timestamp": "2026-11-10T15:31:49.295Z",
   "stats": {
-    "totalReviews": 81169,
-    "alreadyFlagged": 22196,
+    "totalReviews": 81177,
+    "alreadyFlagged": 22199,
     "dateGuardCatches": 219,
     "directorMismatch": 3606,
     "tvFilmSignals": 2287,
-    "londonSignals": 3660,
+    "londonSignals": 3661,
     "offBroadwaySignals": 753,
     "yearMismatch": 364,
-    "noPublishDate": 8423
+    "noPublishDate": 8422
   },
   "findings": [
     {
@@ -94830,6 +94830,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "cloud-9-west-end-2026",
+      "file": "theatre-weekly--unknown.json",
+      "publishDate": "2026-11-09",
+      "url": "https://theatreweekly.com/first-look-images-released-for-caryl-churchills-cloud-9-at-the-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
