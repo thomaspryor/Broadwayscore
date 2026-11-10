@@ -78,16 +78,20 @@ runs:
         # attempts are ~13 min worst case. Jobs with timeout-minutes 10 still end
         # at the job timeout on a triple hang (no worse than before); the cap
         # exists so one hung attempt is retried instead. A stall is
-        # caught far sooner by git_net's http.lowSpeed flags (45s under 1000 B/s).
-        NET_SEC="${CHECKOUT_REVIEW_TEXTS_NET_TIMEOUT_SEC:-240}"
+        # caught sooner by git_net's http.lowSpeed flags (GIT_NET_LOW_SPEED_TIME, below).
+        NET_SEC="${CHECKOUT_REVIEW_TEXTS_NET_TIMEOUT_SEC:-360}"
         # Full-history clones (fetch-depth 0, run-script.yml review_texts_depth)
         # were not in the timing sample: give them 4x.
         if [ "${FETCH_DEPTH}" = "0" ] && [ -z "${CHECKOUT_REVIEW_TEXTS_NET_TIMEOUT_SEC:-}" ]; then NET_SEC=900; fi
         # BRO-7299: main went red on 2 pushes with "curl 28 Operation too slow ...
         # 45 seconds" x3 attempts: the full clone sends no bytes while GitHub
         # builds the pack for this big repo, and the 45s stall window (previously
-        # right at the p95 step time) aborted it. 180s stays far under NET_SEC.
-        export GIT_NET_LOW_SPEED_TIME="${CHECKOUT_REVIEW_TEXTS_LOW_SPEED_SEC:-180}"
+        # right at the p95 step time) aborted it. 180s fits inside NET_SEC (raised 240 to 360 so a stall plus the transfer still fits).
+        GIT_NET_LOW_SPEED_TIME="${CHECKOUT_REVIEW_TEXTS_LOW_SPEED_SEC:-180}"
+        if ! printf '%s' "${GIT_NET_LOW_SPEED_TIME}" | grep -Eq '^[0-9]{1,5}$'; then
+          echo "::error::CHECKOUT_REVIEW_TEXTS_LOW_SPEED_SEC must be digits only"; exit 1
+        fi
+        export GIT_NET_LOW_SPEED_TIME
         STDERR_FILE=$(mktemp)
         for ATTEMPT in $(seq 1 $MAX_RETRIES); do
           : > "$STDERR_FILE"
