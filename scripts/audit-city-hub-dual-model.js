@@ -381,7 +381,7 @@ function computeFlags(L) {
   const cov = loadCache(L.city, 'coverage'); const host = (u) => { try { return new URL(u).hostname.replace(/^www\./, ''); } catch (_) { return ''; } };
   for (const s of L.shows) {
     const r = cov.get(s.id); if (!r) continue; checked.coverage++;
-    const ours = L.reviews.filter((x) => x.row.showId === s.id); const oursHosts = new Set(ours.map((x) => host(x.row.url))); const oursUrls = new Set(ours.map((x) => x.row.url.replace(/\/+$/, '')));
+    const ours = L.reviews.filter((x) => x.row.showId === s.id); const oursHosts = new Set(ours.map((x) => host(x.row.url || ''))); const oursUrls = new Set(ours.map((x) => (x.row.url || '').replace(/\/+$/, '')));
     ['gemini', 'openai'].forEach((m) => (((r[m] || {}).reviews) || []).forEach((rv) => {
       if (!rv.url || oursUrls.has(rv.url.replace(/\/+$/, '')) || oursHosts.has(host(rv.url))) return;
       add('coverage', s.id, s.title, m, [{ code: 'missing-review-candidate', detail: `${rv.outlet} / ${rv.critic} ${rv.date} ${rv.url}` }]);

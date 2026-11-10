@@ -100,3 +100,8 @@ test('review text that announces a later run end is found (stale theatre-page cl
   assert.equal(A.laterRunEnd('Extended through Sept. 27, 2026.', '2026-09-20'), '2026-09-27');
   assert.equal(A.laterRunEnd('No dates here', '2026-09-20'), null);
 });
+
+test('"3 stars (of a possible 4)" is read on the 4-star scale', () => {
+  assert.equal(A.starsFromRating('3 stars (of a possible 4)'), 4);
+  assert.equal(A.starBandProblem('3 stars (of a possible 4)', 80), null);
+});
