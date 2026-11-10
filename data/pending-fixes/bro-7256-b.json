@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7256-b",
   "planId": "0c2c051d-7015-4bd4-9472-7abdc4585c41",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-10T05:20:00.139Z",
   "submitter": {
     "name": null,
@@ -32,5 +32,14 @@
         "description": "the-legend-of-sleepy-hollow-regional-2026: add poster and hero, thumbnail moves from the old jpg to the new webp (art from the TodayTix listing)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-10T06:50:36.380Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-legend-of-sleepy-hollow-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
