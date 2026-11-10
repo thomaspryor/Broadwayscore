@@ -17,6 +17,7 @@ const crypto = require('crypto');
 const { fetchPage, cleanup } = require('./lib/scraper');
 const { closingFields, ESTIMATED_RUN_DAYS } = require('./lib/run-end-from-text');
 const F = require('./lib/city-review-finder');
+const { stagedTitle } = require('./lib/staged-title');
 const { getFinder } = require('./lib/city-finder-config');
 const { sanitizeVenueForWrite } = require('./lib/venue-classification');
 
@@ -27,6 +28,12 @@ const normUrl = (u) => String(u).toLowerCase().replace(/^https?:\/\/(www\.)?/, '
 const SLUG_YEAR = (d) => String(d).slice(0, 4);
 
 const slugify = (t) => String(t).toLowerCase().replace(/&/g, ' and ').replace(/['’]/g, '').normalize('NFKD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+
+function stagedTitleLogged(id, title) {
+  const r = stagedTitle(id, title);
+  if (r.manualReview) console.error(`WARN shouted title needs manual review: ${title} (${id})`);
+  return r.title;
+}
 
 function theatreOf(city, name) {
   const n = F.norm(name);
@@ -136,7 +143,7 @@ function emit() {
     taken.add(id);
     const closed = p.end ? p.end < today : (Date.parse(today) - Date.parse(opening)) / 86400000 > ESTIMATED_RUN_DAYS;
     const show = {
-      id, title: p.title, slug: id,
+      id, title: stagedTitleLogged(id, p.title), slug: id,
       venue: sanitizeVenueForWrite(`${p.theatre}, ${p.city || city.defaultCity || 'San Diego'}, ${city.state}`),
       status: closed ? 'closed' : 'open',
       type: /\b(musical|rent|hairspray|mean girls|cher show|rock of ages|guys and dolls|come from away|evan hansen|seussical|spongebob|most happy fella|american rhythm|we will rock you|carrie|charlie and the chocolate factory)\b/i.test(p.title) ? 'musical' : 'play',

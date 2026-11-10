@@ -1251,20 +1251,6 @@
     "queuedAt": "2026-11-10T03:42:24.269Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:here-there-are-blueberries-2026",
-    "title": "Review gap — \"Here There Are Blueberries\" missing 11 cited review(s)",
-    "description": "Here There Are Blueberries (here-there-are-blueberries-2026): 11 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=here-there-are-blueberries-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-10T04:23:20.804Z"
-  },
-  {
     "conditionKey": "pending-unrecoverable:parcel-from-america-off-broadway-2026",
     "title": "1 review(s) for parcel-from-america-off-broadway-2026 stuck in _pending with no text and no byline",
     "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- irish-central--2f81a7ad.json (irish-central): fetch failed: All scraping methods failed https://www.irishcentral.com/opinion/others/parcel-from-america-theater-row.amp",
@@ -1547,5 +1533,67 @@
       }
     ],
     "queuedAt": "2026-11-10T07:59:38.294Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7256-g",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7256-g",
+    "description": "land.yml did not land land/bro-7256-g: the unit-tests-node gate went red at 2164e2dd2a. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42779715560",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7256-g"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "2164e2dd2abb99077fe9e2adc1d6456dfd090bd9"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42779715560"
+      }
+    ],
+    "queuedAt": "2026-11-10T08:34:43.011Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-7271-mwaea0ht",
+    "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-7271-mwaea0ht",
+    "description": "land.yml did not land land/job/linear-BRO-7271-mwaea0ht: the unit-tests-node gate went red at f3603d309a. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42779980237",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-7271-mwaea0ht"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "f3603d309a39433da0e442a87d49b3e7e9c210e4"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42779980237"
+      }
+    ],
+    "queuedAt": "2026-11-10T08:37:19.754Z"
   }
 ]
