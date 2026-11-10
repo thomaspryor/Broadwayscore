@@ -1110,5 +1110,36 @@
       }
     ],
     "queuedAt": "2026-11-10T15:47:19.919Z"
+  },
+  {
+    "conditionKey": "land:land/inbox-digest-cost",
+    "title": "Landing blocked: rebase red on land/inbox-digest-cost",
+    "description": "land.yml did not land land/inbox-digest-cost: the rebase gate went red at c41bb0f088. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42848918209",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/inbox-digest-cost"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "c41bb0f0884572c7d187a87501e4f9aee63a2434"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42848918209"
+      }
+    ],
+    "queuedAt": "2026-11-10T15:56:37.031Z"
   }
 ]
