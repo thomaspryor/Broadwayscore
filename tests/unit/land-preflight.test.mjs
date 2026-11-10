@@ -535,6 +535,30 @@ test('stale-tree check passes a correct squash, a branch merely behind main, and
   assert.equal(v.decision, 'allow', v.message);
 });
 
+// BRO-7078: the same checks run server-side in land.yml (advisory), because a
+// session without the pre-push hook pushed a 112-file stale tree to land/**.
+test('ci-stale mode: flags a stale-tree squash, passes an honest branch, never blocks (BRO-7078)', async () => {
+  const { ciStaleTreeVerdict } = await import('../../scripts/lib/land-preflight.mjs');
+  const d = staleSquashRepo();
+  sh(d, 'git checkout -q feat && echo fix >> g.txt && git commit -qam fix');
+  const honest = ciStaleTreeVerdict({ base: 'main', tip: 'HEAD', cwd: d });
+  assert.equal(honest.status, 'pass', JSON.stringify(honest));
+  sh(d, 'git reset -q --soft main && git commit -qm squash');
+  // main moves on after the push: the branch is still judged as pushed (merge-base..tip)
+  sh(d, 'git checkout -q main && echo later >> f.txt && git commit -qam later && git checkout -q feat');
+  const stale = ciStaleTreeVerdict({ base: 'main', tip: 'feat', cwd: d });
+  assert.equal(stale.status, 'fail', JSON.stringify(stale));
+  assert.match(stale.lines[0], /stale-tree revert: 5 of the 6 files/);
+  assert.match(stale.lines[0], /more files/);
+  const cli = spawnSync(process.execPath, [path.join(ROOT, 'scripts/lib/land-preflight.mjs'), '--ci-stale', '--base', 'main', '--tip', 'feat', '--cwd', d], { env: ENV, encoding: 'utf8' });
+  assert.equal(cli.status, 0, cli.stderr);
+  assert.match(cli.stdout, /^::warning::stale-tree revert/m);
+  assert.match(cli.stdout, /^stale_tree=fail$/m);
+  // an unrelated tip is a skip, not a crash
+  const none = ciStaleTreeVerdict({ base: 'main', tip: 'no-such-ref', cwd: d });
+  assert.equal(none.status, 'skip');
+});
+
 test('manifest left unsorted on the rebased tree blocks; a sorted one passes (BRO-5086)', async () => {
   const { judgeLand } = await import('../../scripts/lib/land-preflight.mjs');
   const d = baseRepo();

@@ -224,31 +224,33 @@ jobs:
           echo "rebased: $(git rev-list --count "$BASE"..HEAD) commit(s), $(git diff --name-only "$BASE"...HEAD | wc -l | tr -d ' ') file(s) changed"
           git diff --name-only "$BASE"...HEAD | sed 's/^/  /'
 
-      # BRO-7078: a commit built from a stale checkout puts back OLDER versions
-      # of files and undoes work already on main (land/bro-7078-fixups: 112
-      # files, stopped only by an unrelated rebase conflict). ADVISORY (rule 19):
-      # warns, never fails the job. always(): checks the branch's own commits
-      # (merge-base..TIP) even when the rebase conflicted. Runs main's copy of
-      # the detector: a stale tree may have deleted the branch's copy.
+      # BRO-7078: server-side copy of the pre-push stale-tree checks (BRO-5086,
+      # land-preflight.mjs checkStaleRevert + checkBotOwnedRewrite). A session
+      # without the hook pushed land/bro-7078-fixups: 112 files put back to an
+      # older main state, stopped only by an unrelated rebase conflict.
+      # ADVISORY (rule 19): warns, never fails the job. Runs even when the
+      # rebase conflicted (judges merge-base..TIP, the branch as pushed). Uses
+      # main's copy: a stale tree may carry an old or missing one.
+      # Rollback: repo variable LAND_STALE_TREE_CHECK_DISABLED=true.
       - name: Stale-tree revert check (advisory)
         id: staletree
-        if: always() && steps.rebase.outputs.tip != ''
+        if: ${{ !cancelled() && steps.rebase.outputs.tip != '' && vars.LAND_STALE_TREE_CHECK_DISABLED != 'true' }}
         continue-on-error: true
         env:
           TIP: ${{ steps.rebase.outputs.tip }}
         run: |
-          D="$RUNNER_TEMP/stale-tree"; mkdir -p "$D"
-          git show "origin/main:scripts/lib/stale-tree-revert.js" > "$D/stale-tree-revert.js" 2>/dev/null \
-            || git show "$TIP:scripts/lib/stale-tree-revert.js" > "$D/stale-tree-revert.js" 2>/dev/null \
-            || { echo "no stale-tree detector on main or the branch yet"; exit 0; }
-          OUT=$(timeout 180 node "$D/stale-tree-revert.js" --base origin/main --tip "$TIP") \
-            || { echo "::warning::stale-tree check could not run (exit $?)"; exit 0; }
+          P=scripts/lib/.land-preflight-main.mjs
+          trap 'rm -f "$P"' EXIT
+          git show origin/main:scripts/lib/land-preflight.mjs > "$P" 2>/dev/null || true
+          grep -q -- '--ci-stale' "$P" 2>/dev/null || cp scripts/lib/land-preflight.mjs "$P" 2>/dev/null || true
+          grep -q -- '--ci-stale' "$P" 2>/dev/null || { echo "no ci-stale mode on main or the branch yet"; exit 0; }
+          OUT=$(timeout 180 node "$P" --ci-stale --base origin/main --tip "$TIP" 2>&1) \
+            || { RC=$?; echo "$OUT"; echo "::warning::stale-tree check could not run (exit $RC)"; exit 0; }
           echo "$OUT"
-          if echo "$OUT" | grep -q '^::warning::stale-tree revert'; then
-            echo "flagged=true" >> "$GITHUB_OUTPUT"
-            { echo "### Stale-tree revert (advisory)"; echo "$OUT" | grep '^::warning::' | sed 's/^::warning:://'; } >> "$GITHUB_STEP_SUMMARY"
-          else
-            echo "flagged=false" >> "$GITHUB_OUTPUT"
+          V=$(echo "$OUT" | sed -n 's/^stale_tree=//p' | tail -1)
+          echo "verdict=${V:-unknown}" >> "$GITHUB_OUTPUT"
+          if [ "$V" = "fail" ]; then
+            { echo "### Stale-tree revert (advisory)"; echo "$OUT" | sed -n 's/^::warning:://p'; } >> "$GITHUB_STEP_SUMMARY"
           fi
 
       # BRO-5411: server-side backstop for the in-session review gate (BRO-5359).

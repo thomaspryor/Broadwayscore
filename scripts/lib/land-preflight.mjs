@@ -448,6 +448,33 @@ export function checkStaleRevert({ base, tip, cwd, window = STALE_WINDOW, minFil
 }
 
 /**
+ * BRO-7078: the server-side copy of the two stale-tree checks above, for
+ * land.yml. The pre-push hook runs them only where hooks are installed; a
+ * cloud session without them pushed land/bro-7078-fixups (810c4c3a8, 112 files
+ * put back to a 2026-11-07 main state) and only an unrelated rebase conflict
+ * stopped it. Judges the branch as pushed (merge-base..tip), so it also runs
+ * when the land rebase conflicts. Advisory: never throws, never blocks.
+ * -> { status: 'pass' | 'fail' | 'skip', lines: string[] }
+ */
+export function ciStaleTreeVerdict({ base = 'origin/main', tip = 'HEAD', cwd }) {
+  const mb = git(cwd, ['merge-base', base, tip]);
+  if (!ok(mb)) return { status: 'skip', lines: [`merge-base of ${base} and ${tip} failed`] };
+  const from = out(mb);
+  const stale = checkStaleRevert({ base: from, tip, cwd });
+  const bot = checkBotOwnedRewrite({ base: from, tip, cwd });
+  const lines = [];
+  if (stale.status === 'fail') {
+    lines.push(`stale-tree revert: ${stale.count} of the ${stale.of} files this branch changes are put back to how they were at an older main commit (${stale.matches}), e.g. ${stale.sample.join(', ')}. It was likely built from a stale checkout and would undo work already on main. Rebuild it on a fresh origin/main.`);
+  }
+  if (bot.status === 'fail') {
+    lines.push(`bot-owned rewrite: the branch rewrites ${bot.count} pipeline-owned files (e.g. ${bot.sample.join(', ')}); a deliberate change touches at most ${BOT_OWNED_MAX}. Usually a squash over a stale or failed merge.`);
+  }
+  const status = lines.length ? 'fail' : (stale.status === 'skip' && bot.status === 'skip' ? 'skip' : 'pass');
+  if (status === 'skip') lines.push(`could not judge: ${stale.reason || bot.reason || 'unknown'}`);
+  return { status, lines };
+}
+
+/**
  * BRO-5086 (comment): a manifest the branch edited can come out of the land
  * rebase unsorted, when git's 3-way merge puts the branch's new line after a
  * neighbour main just added (run 38177137379). Judge the rebased tree's copy.
@@ -1064,6 +1091,14 @@ export function runHook({ command, cwd, env = process.env, seams = {}, transcrip
 }
 
 function main(argv) {
+  if (argv.includes('--ci-stale')) {
+    // land.yml advisory step (BRO-7078): warnings only, always exit 0.
+    const at = (name, dflt) => { const i = argv.indexOf(name); return i >= 0 ? argv[i + 1] : dflt; };
+    const v = ciStaleTreeVerdict({ base: at('--base', 'origin/main'), tip: at('--tip', 'HEAD'), cwd: path.resolve(at('--cwd', process.cwd())) });
+    for (const l of v.lines) process.stdout.write(`${v.status === 'fail' ? '::warning::' : ''}${l}\n`);
+    process.stdout.write(`stale_tree=${v.status}\n`);
+    return 0;
+  }
   if (argv.includes('--hook')) {
     let input = {};
     try {
