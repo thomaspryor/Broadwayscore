@@ -63,6 +63,7 @@ const {
   hasEvidenceOfOpening,
   describeOpeningEvidence,
   evidenceSinceFor,
+  carryFirstFlagged,
 } = require('./lib/stale-announced-audit');
 const { explainExclusion } = require('./lib/review-guards');
 const { createShowsWriteGuard } = require('./lib/shows-write-guard');
@@ -255,12 +256,18 @@ async function main() {
   const silencedByContamination = findSilencedByContamination(showsData.shows);
   const postponed = await findPostponed(showsData, now);
 
+  // BRO-7277: carry firstFlaggedAt from the prior snapshot so the digest can
+  // tell lag that clears on its own from a flag that needs a human.
+  let prevFlagged = [];
+  try { prevFlagged = JSON.parse(fs.readFileSync(AUDIT_FILE, 'utf8')).flagged || []; } catch { /* first run */ }
+  const flaggedStamped = carryFirstFlagged(prevFlagged, flagged, now.toISOString());
+
   const report = {
     generatedAt: now.toISOString(),
     staleDaysThreshold: STALE_DAYS,
     reviewTextsAvailable,
     flaggedCount: flagged.length,
-    flagged,
+    flagged: flaggedStamped,
     postponedCount: postponed.length,
     postponed,
     orphanAckCount: orphanAcks.length,

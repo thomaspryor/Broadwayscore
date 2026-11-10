@@ -29,6 +29,7 @@
  */
 
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
+const { staleAnnouncedFlagResult } = require('./lib/stale-announced-audit');
 const fs = require('fs');
 const { readWorkflowFilesOrFailClosed } = require('./lib/workflow-glob-guard.js');
 const path = require('path');
@@ -1920,11 +1921,7 @@ function checkQuality() {
       if (snap.reviewTextsAvailable === false) {
         return { name, status: 'warn', message: `data/review-texts was not checked out in that run (${formatAge(age)} ago) — only date-based signals fired, review-driven stale flags may be missed`, hint: 'Check the "Checkout review-texts (private repo)" step in data-health-check.yml' };
       }
-      const silencedNote = `${snap.silencedByContaminationCount ?? 0} silenced by contamination`;
-      if (snap.flaggedCount > 0) {
-        return { name, status: 'warn', message: `${snap.flaggedCount} show(s) stuck announced/upcoming/previews after apparently opening (${silencedNote}, ${formatAge(age)} ago)`, hint: 'node scripts/audit-stale-announced-shows.js to see `flagged` and triage with --ack=<id> --ack-note="..."' };
-      }
-      return { name, status: 'pass', message: `No stale 'announced' shows (${silencedNote}, ${formatAge(age)} ago)` };
+      return staleAnnouncedFlagResult(snap, age, new Date());
     }),
 
     // Coverage Verdict S1 (tasks #872 + #898). #872 measured SERP-census recall
