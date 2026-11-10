@@ -167,6 +167,43 @@ function extractArtsdeskByline(text) {
   return name ? { name, known: true } : null;
 }
 
+// Stage Raw (stageraw.com, BRO-7291 class 2) prints the reviewer under the headline: "Reviewed by Joel Beers
+// Ricardo Montalbán Theatre Through August 9 RECOMMENDED" or, for the youth-journalism program, "By Kayden
+// J. Merritt RECOMMENDED". The listing sites and the WordPress author name the editor ("Steven Morris"), so 5
+// of 29 stored "Steven Morris" files were someone else's review (heartbreak-house: Kayden J. Merritt). The
+// venue runs straight on after the name, so a name is only trusted when it is a known Stage Raw critic or
+// is followed directly by RECOMMENDED (the youth-program format has no venue).
+const SR_KNOWN_CRITICS = [
+  "F. Kathleen Foley", "Steven Leigh Morris", "Madison Mellon", "Lovell Estell III", "Joel Beers", "Asa Fris",
+  "Molly McLean", "Keelyn McDermott", "Socks Whitmore", "Julia Stier", "Martín Hernández", "Iris Mann",
+  "Deborah Klugman", "G. Bruce Smith", "Dana Martin", "Julyza Commodore", "Kayden J. Merritt",
+];
+const srFold = (s) => String(s).normalize("NFD").replace(/[̀-ͯ́]/g, "").replace(/ι/g, "i").toLowerCase();
+const SR_BY_RE = /\b(?:Reviewed by|By)\s+(\p{Lu}[^\n]{0,80})/u;
+function extractStageRawByline(text) {
+  if (!text) return null;
+  const m = SR_BY_RE.exec(String(text).slice(0, 900).replace(/\s+/g, " "));
+  if (!m) return null;
+  const tail = srFold(m[1]);
+  const known = SR_KNOWN_CRITICS.filter((n) => tail === srFold(n) || tail.startsWith(srFold(n) + " ")).sort((a, b) => b.length - a.length)[0];
+  if (known) return { name: known, known: true };
+  const clean = new RegExp(String.raw`^(${PRINTED_NAME})\s+RECOMMENDED\b`, "u").exec(m[1]);
+  const name = clean && printedPerson(clean[1]);
+  return name ? { name, known: true } : null;
+}
+
+// The Show Report (theshowreport.org, BRO-7291 class 2) posts every review under the Wix account
+// "TheShowReport" and prints the real credit as the closing line: "CHRIS DANIELS ARTS & ENTERTAINMENT
+// REVIEWER THE SHOW REPORT" (anastasia-regional-2026, shucked-tour-2024, joseph... 2026).
+const TSR_CREDIT_RE = /(?![AP]\.?M\b)(\p{Lu}[\p{Lu}'’-]+\.?(?:\s+\p{Lu}[\p{Lu}'’-]*\.?){1,3})\s+(?:ARTS\s*&\s*ENTERTAINMENT\s+)?(?:REVIEWER|CRITIC|CONTRIBUTOR)\s+(?:FOR\s+)?THE\s+SHOW\s+REPORT\b/u;
+const titleCase = (s) => s.toLowerCase().replace(/(^|[\s'’-])(\p{L})/gu, (_, a, b) => a + b.toUpperCase());
+function extractShowReportByline(text) {
+  if (!text) return null;
+  const m = TSR_CREDIT_RE.exec(String(text).slice(-600).replace(/\s+/g, " "));
+  const name = m && printedPerson(titleCase(m[1]));
+  return name ? { name, known: true } : null;
+}
+
 const BYLINE_EXTRACTORS = {
   "plays-international": extractPlaysInternationalByline,
   "theater-scene": extractTheaterSceneByline,
@@ -178,6 +215,8 @@ const BYLINE_EXTRACTORS = {
   "timeout": extractTimeOutByline,
   "timeout-london": extractTimeOutByline,
   "artsdesk": extractArtsdeskByline,
+  "stage-raw": extractStageRawByline,
+  "the-show-report": extractShowReportByline,
 };
 
 /**
@@ -192,6 +231,8 @@ const PRINTED_BYLINE_OVERRIDES = new Map([
   ["theatreandtonic", { requireUrlSlug: false }],
   ["all-that-dazzles-uk", { requireUrlSlug: false }],
   ["artsdesk", { requireUrlSlug: false }],
+  ["stage-raw", { requireUrlSlug: false }],
+  ["the-show-report", { requireUrlSlug: false }],
 ]);
 
 const foldName = (n) => String(n || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z ]/g, " ").replace(/\s+/g, " ").trim();
