@@ -4,6 +4,7 @@
  */
 
 import Link from 'next/link';
+import { splitStruggling } from '@/lib/closing-watch';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
@@ -120,8 +121,10 @@ export default function BizDashboard() {
   const closingWatch = getClosingWatch();
   // Each show is listed once (BRO-7246): Closing Watch first, then At Risk (its card says more), then Close to break-even.
   const watchSlugs = new Set(closingWatch.map((s) => s.slug));
-  const atRiskShows = getShowsAtRisk().filter((s) => !watchSlugs.has(s.slug));
-  const atRiskSlugs = new Set(atRiskShows.map((s) => s.slug));
+  const struggling = getShowsAtRisk().filter((s) => !watchSlugs.has(s.slug));
+  // Already announced a closing while below break-even: the outcome is known, so not "at risk" (owner 2026-11-10).
+  const { closing: closingUnrecouped, atRisk: atRiskShows } = splitStruggling(struggling);
+  const atRiskSlugs = new Set(struggling.map((s) => s.slug));
   const nearBreakEven = getNearBreakEven().filter((s) => !atRiskSlugs.has(s.slug));
   const recentRecoupments = getRecentRecoupments(24);
   const allOpenShows = getAllOpenShowsWithCommercial();
@@ -279,6 +282,25 @@ export default function BizDashboard() {
               </>
             )}
             <NearBreakEvenList shows={nearBreakEven} />
+          </section>
+        )}
+
+        {/* Closing before recouping: announced closings on shows still below break-even */}
+        {closingUnrecouped.length > 0 && (
+          <section className="mb-10" data-testid="closing-unrecouped">
+            <h2 className="text-xl font-bold text-white mb-4">
+              Closing Before Recouping
+            </h2>
+            <p className="text-gray-400 text-sm mb-4">
+              Shows that have announced a closing while their 4-week average gross is below estimated break-even
+              and our model has them under 30% recouped even in the best case. Unless business turns around sharply,
+              they are on track to close without paying back their investors.
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {closingUnrecouped.slice(0, 6).map((show) => (
+                <AtRiskCard key={show.slug} {...show} />
+              ))}
+            </div>
           </section>
         )}
 

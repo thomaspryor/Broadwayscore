@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-11-10T15:10:00.000Z",
+    "lastUpdated": "2026-11-10T15:29:58.514Z",
     "version": "2.1.0",
     "lastChange": "BRO-7291: register angeles-stage, laist, baltimore-banner (coverage-gap hosts whose links resolved; the other 14 model-named hosts had only dead or unverifiable links)"
   },
@@ -731,6 +731,7 @@
         "citiour"
       ],
       "domain": "cititour.com",
+      "laneFallbackCritic": "Brian Scott Lipton",
       "accessModel": "free",
       "region": "nyc",
       "standingCoverage": true,
@@ -15461,6 +15462,14 @@
       "domain": "dc.citycast.fm",
       "accessModel": "free"
     },
+    "theatrestorm": {
+      "displayName": "TheatreStorm",
+      "tier": 3,
+      "aliases": [
+        "theatrestorm"
+      ],
+      "domain": "theatrestorm.com"
+    },
     "angeles-stage": {
       "displayName": "Angeles Stage",
       "tier": 3,
@@ -16254,6 +16263,6 @@
     "citycast dc": "city-cast-dc",
     "citycastdc": "city-cast-dc"
   },
-  "lastUpdated": "2026-11-10T15:10:00.000Z",
-  "lastChange": "BRO-7291: register angeles-stage, laist, baltimore-banner (coverage-gap hosts whose links resolved; the other 14 model-named hosts had only dead or unverifiable links)"
+  "lastUpdated": "2026-11-03T00:21:07.790Z",
+  "lastChange": "BRO-6742: registered theatre-reviews-paul-seven (theatre.reviews' own /review/ pages by Paul Lewis; no domain, the host is an aggregator)"
 }

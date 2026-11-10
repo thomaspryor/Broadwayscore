@@ -608,7 +608,7 @@ export interface AtRiskShow {
 /** BRO-7246: a show's line on its own Profitability Scorecard, from the /biz Closing Watch or Close to break-even lists. */
 export type ClosingOutlook =
   | { kind: 'watch'; breakEvenRatio: number; likelyClosing: ClosingWatchShow['likelyClosing'] }
-  | { kind: 'near'; breakEvenRatio: number; seasonCleared: boolean };
+  | { kind: 'near'; breakEvenRatio: number; seasonCleared: boolean; isNew?: boolean };
 
 /** "Close to break-even" row on /biz (BRO-7246): no date estimate, it could tip either way. */
 export interface NearBreakEvenShow {
@@ -619,6 +619,8 @@ export interface NearBreakEvenShow {
   breakEvenRatio: number;
   /** Under break-even on raw grosses, but cleared by the season adjustment. */
   seasonCleared: boolean;
+  /** Too few weeks for a season-adjusted figure: shown as "New, too early to judge". */
+  isNew: boolean;
   trend: ClosingWatchShow['trend'];
 }
 

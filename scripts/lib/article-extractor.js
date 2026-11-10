@@ -1592,4 +1592,4 @@ function isExclusiveExtractorHost(urlOrHost) {
   return /(?:^|\.)theartsdesk\.com$/i.test(h);
 }
 
-module.exports = { hasOutletExtractor, effectiveHost, OUTLET_BRANCH_HOSTS, isExclusiveExtractorHost, isDedicatedExtractorHost, extractArticleText, extractStandfirst, extractArticleTextFromUrl, extractPublishDate, stripHtml, stripHtmlKeepParagraphs, extractLsaByline, extractZoxNewsBody, extractVarietyBody, extractNubNewsBody, extractLondonTheatreBody, extractArtsDeskBody, extractToledoBladeBody, extractCurtainUpBody, extractDailyMailBody, dailyMailVerdictValues };
+module.exports = { extractAllBalancedDivsByClass, hasOutletExtractor, effectiveHost, OUTLET_BRANCH_HOSTS, isExclusiveExtractorHost, isDedicatedExtractorHost, extractArticleText, extractStandfirst, extractArticleTextFromUrl, extractPublishDate, stripHtml, stripHtmlKeepParagraphs, extractLsaByline, extractZoxNewsBody, extractVarietyBody, extractNubNewsBody, extractLondonTheatreBody, extractArtsDeskBody, extractToledoBladeBody, extractCurtainUpBody, extractDailyMailBody, dailyMailVerdictValues };

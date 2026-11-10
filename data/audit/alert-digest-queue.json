@@ -275,20 +275,6 @@
     "queuedAt": "2026-11-10T10:47:38.073Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 20 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +14 more). Checked 2026-11-10.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-10T12:30:55.812Z"
-  },
-  {
     "conditionKey": "live-data-test:scripts/audit-cross-outlet-attributions.test.mjs::no unreviewed cross-outlet attribution suspects remain",
     "title": "Live-data test failing: no unreviewed cross-outlet attribution suspects remain (scripts/audit-cross-outlet-attributions.test.mjs)",
     "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"no unreviewed cross-outlet attribution suspects remain\" in scripts/audit-cross-outlet-attributions.test.mjs is red against the live corpus.\n\nunreviewed cross-outlet suspects remain (first 5): [\n{\n\"file\": \"the-lion-king-1997/jasonraize--frank-scheck.json\",\n\"criticName\": \"Frank Scheck\",\n\"defaultCriticOf\": [\n\"scheckontheater\",\n\"reuters\"\n],\n\"source\": \"show-score\",\n\"url\": \"http://www.jasonraize.net/pr_tlk_spt112197.html\"\n},\n{\n\"file\": \"the-lion-king-1997/jasonraize--michael-sommers.json\",\n\"criticName\": \"Michael Sommers\",\n\"defaultCriticOf\": [\n\"the-kalamazoo-gazette\",\n\"journaltimes\"\n],\n\"source\": \"show-score\",\n\"url\": \"http://www.jasonraize.net/pr_tlk_njsl111497.html\"\n}\n]\n\n2 !== 0\n",
@@ -333,5 +319,248 @@
       }
     ],
     "queuedAt": "2026-11-10T13:05:06.069Z"
+  },
+  {
+    "conditionKey": "watchdog-park:linear:BRO-7265",
+    "title": "Watchdog parked #linear:BRO-7265 — redispatch never produced a launch",
+    "description": "Watchdog: card \"DC + LA hubs: source real key art for ~47 regional shows with no poster or a venue photo/logo\" was claimed for redispatch at 2026-11-10T13:40:50.454Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id linear:BRO-7265), then re-arm with node scripts/linear-next.js --id BRO-7265 --force once fixed.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-10T13:56:59.353Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7293",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7293",
+    "description": "land.yml did not land land/bro-7293: the unit-tests-node gate went red at b6acc11d18. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42831491016",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7293"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "b6acc11d18c1adbd9e91ae276a3b94d10f2e8686"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42831491016"
+      }
+    ],
+    "queuedAt": "2026-11-10T14:18:00.768Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7294-root-cause-stop",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7294-root-cause-stop",
+    "description": "land.yml did not land land/bro-7294-root-cause-stop: the unit-tests-node gate went red at ba3105fad5. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42832095902",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7294-root-cause-stop"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "ba3105fad59e068951c9858b80ef157a5fe75ceb"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42832095902"
+      }
+    ],
+    "queuedAt": "2026-11-10T14:20:54.833Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7163-f10",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7163-f10",
+    "description": "land.yml did not land land/bro-7163-f10: the unit-tests-node gate went red at 12ee4ebdf2. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42829559585",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7163-f10"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "12ee4ebdf247106fcf7821e43c93597852028f69"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42829559585"
+      }
+    ],
+    "queuedAt": "2026-11-10T14:28:02.713Z"
+  },
+  {
+    "conditionKey": "land:land/inbox-digest-archive",
+    "title": "Landing blocked: unit-tests-node red on land/inbox-digest-archive",
+    "description": "land.yml did not land land/inbox-digest-archive: the unit-tests-node gate went red at 2fb03548bd. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42830262223",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/inbox-digest-archive"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "2fb03548bde8b5dcfe2e3bd049f17c691a4e5c70"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42830262223"
+      }
+    ],
+    "queuedAt": "2026-11-10T14:27:42.424Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7297-deadline-alert",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-7297-deadline-alert",
+    "description": "land.yml did not land land/bro-7297-deadline-alert: the scripts-lib-tests gate went red at 87c6832d7b. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42834739508",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7297-deadline-alert"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "87c6832d7b73da0d80e3388828b76371426f3a73"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42834739508"
+      }
+    ],
+    "queuedAt": "2026-11-10T14:35:39.402Z"
+  },
+  {
+    "conditionKey": "watchdog-park:linear:BRO-7296",
+    "title": "Watchdog parked #linear:BRO-7296 — redispatch never produced a launch",
+    "description": "Watchdog: card \"Hold verifier-flagged wrong-production reviews off the site at build time, not at email time\" was claimed for redispatch at 2026-11-10T14:15:20.135Z but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id linear:BRO-7296), then re-arm with node scripts/linear-next.js --id BRO-7296 --force once fixed.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-10T14:30:34.455Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 19 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +13 more). Checked 2026-11-10.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-10T15:12:07.785Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/critic-spelling-duplicates-live-data.test.mjs::reviews.json: no NEW critic page split by a byline spelling variant",
+    "title": "Live-data test failing: reviews.json: no NEW critic page split by a byline spelling variant (tests/unit/critic-spelling-duplicates-live-data.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"reviews.json: no NEW critic page split by a byline spelling variant\" in tests/unit/critic-spelling-duplicates-live-data.test.mjs is red against the live corpus.\n\nExpected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   'review: The Recs NB - Nicola Berry (1) -> Nicola Berry (1) [extra words, both pages sizeable]'\n+ ]\n- []\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "tests/unit/critic-spelling-duplicates-live-data.test.mjs::reviews.json: no NEW critic page split by a byline spelling variant",
+    "fields": [],
+    "queuedAt": "2026-11-10T15:28:38.228Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7295-approval-scan",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7295-approval-scan",
+    "description": "land.yml did not land land/bro-7295-approval-scan: the unit-tests-node gate went red at d1ece530d0. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42841756088",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7295-approval-scan"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "d1ece530d01c360b6f5c96e8fbb812ffa1658178"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42841756088"
+      }
+    ],
+    "queuedAt": "2026-11-10T15:18:33.746Z"
   }
 ]

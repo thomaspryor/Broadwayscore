@@ -34,6 +34,8 @@
  *   node scripts/renew-cookies.js --outlet=thestage --probe-only
  *   node scripts/renew-cookies.js --outlet=thestage --manual     # headed profile, YOU log in, then push
  *   node scripts/renew-cookies.js --outlet=thestage --reset      # clear a needs-human stop (keeps login history)
+ *   node scripts/renew-cookies.js --outlet=telegraph --manual    # manual-only, local-only (BRO-7171); --probe-only
+ *                                                                # checks the session inside the profile
  *
  * Exit: 0 ok/nothing to do, 1 error, 2 probe vacuous, 3 needs human,
  *       4 push/confirm failed.
@@ -46,7 +48,7 @@ const { hasHelpFlag } = require('./lib/cli-help');
 
 // Before any other require or side effect (task #498).
 if (hasHelpFlag(process.argv.slice(2))) {
-  console.log(fs.readFileSync(__filename, 'utf8').split('\n').slice(3, 43).join('\n'));
+  console.log(fs.readFileSync(__filename, 'utf8').split('\n').slice(3, 41).join('\n'));
   process.exit(0);
 }
 
@@ -82,13 +84,31 @@ function cookieHeader(cookies, host) {
     .join('; ');
 }
 
-async function fetchProbe(url, cookies) {
+// A probe may carry its own body extractor (telegraph: the gap adapter's,
+// BRO-7171); otherwise the shared article extractor.
+function probeBody(probe, html) {
+  return (probe.extractBody ? probe.extractBody(html) : extractArticleTextFromUrl(html, probe.url)) || '';
+}
+
+async function fetchProbe(probe, cookies) {
+  const url = probe.url;
   const headers = { 'User-Agent': UA, Accept: 'text/html' };
   if (cookies) headers.Cookie = cookieHeader(cookies, new URL(url).hostname);
   const res = await fetch(url, { headers, redirect: 'follow', signal: AbortSignal.timeout(30000) });
   if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
   const html = await res.text();
-  return { html, body: extractArticleTextFromUrl(html, url) || '' };
+  return { html, body: probeBody(probe, html) };
+}
+
+// browserOnly probes (telegraph, BRO-7171): the outlet blocks plain fetch, so
+// the probe runs inside the persistent profile instead of over HTTP.
+async function browserProbe(outlet, cfg, probe) {
+  const context = await launchOtpBrowser(profileDir(outlet), { headless: true, userAgent: UA });
+  try {
+    return await profileSession(context, cfg, probe);
+  } finally {
+    await context.close().catch(() => {});
+  }
 }
 
 function readLocalCookies(fileKey) {
@@ -136,12 +156,14 @@ async function profileSession(context, outletCfg, probe) {
   await page.goto(probe.url, { waitUntil: 'domcontentloaded', timeout: 45000 });
   await page.waitForTimeout(2000);
   const html = await page.content();
+  const body = probeBody(probe, html);
   const status = classifyWalledProbe({
-    withCookies: { html, body: extractArticleTextFromUrl(html, probe.url) || '' },
+    withCookies: { html, body },
     minBody: probe.minBody, wallMarker: probe.wallMarker, gateMarker: probe.gateMarker,
   });
-  if (status !== 'logged-in') return { status, cookies: null };
-  return { status, cookies: (await context.cookies()).filter((c) => c.domain.includes(outletCfg.cookieDomain)) };
+  const detail = `body ${body.length} chars, floor ${probe.minBody}, wall marker ${probe.wallMarker && probe.wallMarker.test(html) ? 'present' : 'absent'}`;
+  if (status !== 'logged-in') return { status, cookies: null, detail };
+  return { status, detail, cookies: (await context.cookies()).filter((c) => c.domain.includes(outletCfg.cookieDomain)) };
 }
 
 // --manual: the owner logs in by hand inside the SAME persistent profile
@@ -253,10 +275,31 @@ async function main() {
       return 0;
     }
 
+    const manual = flag('manual');
+    // Manual-only outlets (telegraph): no credential flow exists, so an
+    // unattended run never tries to log in (BRO-7171).
+    if (cfg.manualOnly && !manual && !probeOnly) {
+      console.error(`${outlet} is manual-only. Probe: node scripts/renew-cookies.js --outlet=${outlet} --probe-only ; log in: node scripts/renew-cookies.js --outlet=${outlet} --manual`);
+      return 3;
+    }
+
     // 1. Probe the cookies CI is using (local file == last pushed bundle entry).
     let status;
-    try {
-      const [withCookies, withoutCookies] = [await fetchProbe(probe.url, readLocalCookies(cfg.fileKey)), await fetchProbe(probe.url, null)];
+    if (probe.browserOnly) {
+      // No HTTP probe: the outlet's bot wall answers every plain fetch.
+      if (probeOnly) {
+        let r;
+        try { r = await browserProbe(outlet, cfg, probe); } catch (e) {
+          console.error(`${outlet} in-profile probe failed: ${e.message.split('\n')[0]}`);
+          return 1;
+        }
+        console.log(`${outlet} probe (persistent profile ${profileDir(outlet)}): ${r.status} (${r.detail})`);
+        if (r.status !== 'logged-in') console.log(`${outlet}: not logged in. Log in once with: node scripts/renew-cookies.js --outlet=${outlet} --manual`);
+        return r.status === 'logged-in' ? 0 : r.status === 'error' ? 1 : 3;
+      }
+      status = 'unknown';
+    } else try {
+      const [withCookies, withoutCookies] = [await fetchProbe(probe, readLocalCookies(cfg.fileKey)), await fetchProbe(probe, null)];
       status = classifyWalledProbe({ withCookies, withoutCookies, minBody: probe.minBody, wallMarker: probe.wallMarker, gateMarker: probe.gateMarker });
       console.log(`${outlet} probe: ${status} (with cookies ${withCookies.body.length} chars, without ${withoutCookies.body.length}, floor ${probe.minBody})`);
     } catch (e) {
@@ -272,7 +315,6 @@ async function main() {
       console.error(`${outlet}: probe page is not the recognised registration gate (challenge/maintenance/redesign?). Not logging in on an uncertain probe.`);
       return 1;
     }
-    const manual = flag('manual');
     if (status === 'logged-in' && !state.pendingPush && !manual) {
       state.lastSuccessAt = new Date().toISOString();
       persist();
@@ -367,6 +409,13 @@ async function main() {
     }
 
     // 4. Push.
+    if (cfg.localOnly) {
+      state.pendingPush = false;
+      state.lastSuccessAt = new Date().toISOString();
+      persist();
+      console.log(`${outlet}: local-only outlet, cookies saved for the local gap-recovery driver; CI bundles not updated.`);
+      return 0;
+    }
     if (flag('no-push')) { console.log('--no-push: bundles not updated.'); return 0; }
     try {
       pushBundles();

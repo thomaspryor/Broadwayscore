@@ -14,6 +14,12 @@
  * of its draft. The drafts stop being emailed after a few days, so the last one
  * would otherwise sit in the inbox forever.
  *
+ * Owner 2026-11-10 (chose option A): the same "keep the newest, archive the rest"
+ * rule also covers three other recurring site emails, each replaced by the next one:
+ * the Morning digest, the Opening Digest and the [DRAFT] newsletter copies (one
+ * group per edition). These have no age limit, only "newest wins". classifyRecurring()
+ * is the single place that says which emails those are.
+ *
  * Design: a SWEEP, not a per-send hook. It lists the inbox, groups the emails
  * by (show, subreddit), keeps the newest of each group and archives the rest.
  * Re-running changes nothing, a missed run is caught by the next one, and no
@@ -31,6 +37,7 @@
 const { SUBJECT_LEADS, SHOW_HEADER } = require('./reddit-post-email');
 
 const SENDER = 'updates@broadwayscorecard.com';
+const ALERTS_SENDER = 'alerts@broadwayscorecard.com';
 const LEADS = Object.values(SUBJECT_LEADS);
 const MODIFY_SCOPE = 'https://www.googleapis.com/auth/gmail.modify';
 // Mirrors buildSubject(): `${lead}: ${showTitle} (${score}/100) for r/${subreddit}`.
@@ -39,7 +46,7 @@ const SUBJECT_RE = new RegExp(`^(${LEADS.join('|')}): (.+) \\((\\d{1,3})/100\\) 
 const TOKEN_URL = 'https://oauth2.googleapis.com/token';
 const GMAIL = 'https://gmail.googleapis.com/gmail/v1/users/me';
 // Gmail search for the candidates. The exact filtering happens in code below.
-const LIST_QUERY = `in:inbox from:${SENDER} (subject:"Reddit post" OR subject:"Still ready to post")`;
+const LIST_QUERY = `in:inbox (from:${SENDER} OR from:${ALERTS_SENDER}) (subject:"Reddit post" OR subject:"Still ready to post" OR subject:"Morning digest" OR subject:"[DRAFT]" OR from:"Broadway Scorecard Digest")`;
 const MAX_MESSAGES = 500;
 // Owner 2026-11-09: these emails should leave the inbox after 7 days, even the newest of a draft.
 const MAX_AGE_DAYS = 7;
@@ -61,6 +68,37 @@ function isOurSender(from) {
   return new RegExp(`(^|[<\\s])${SENDER.replace(/\./g, '\\.')}>?\\s*$`, 'i').test(String(from || '').trim());
 }
 
+/** { name, addr } from a From header such as `Broadway Scorecard <updates@broadwayscorecard.com>`. */
+function parseFrom(from) {
+  const s = String(from || '').trim();
+  const m = /^"?([^"<]*?)"?\s*<([^>]+)>$/.exec(s);
+  return m ? { name: m[1].trim(), addr: m[2].trim().toLowerCase() } : { name: '', addr: s.toLowerCase() };
+}
+
+/**
+ * The group a recurring site email belongs to, or null when it is not one of them.
+ * Sender address AND display name AND subject shape must all match, so a reader reply
+ * or a similar-looking email from anyone else is never touched. The em dash is written
+ * as an escape because the real Morning digest subject contains one.
+ */
+function classifyRecurring(m) {
+  const { name, addr } = parseFrom(m.from);
+  const subject = String(m.subject || '').trim();
+  if (addr === ALERTS_SENDER && /^(TEST: )?Morning digest \u2014 /.test(subject)) {
+    return subject.startsWith('TEST: ') ? 'morning-digest-test' : 'morning-digest';
+  }
+  if (addr === SENDER) {
+    // "<lead> · Nov 9" from the digest sender (buildSubject in send-opening-digest.js).
+    if (name === 'Broadway Scorecard Digest' && /\s\u00b7\s[A-Z][a-z]{2} \d{1,2}$/.test(subject)) return 'opening-digest';
+    // The monthly Money Scorecard preview (scripts/money-monthly/send-preview.mjs) uses the same
+    // sender, display name and [DRAFT] prefix but is its own email the owner forwards to approve.
+    // A newer weekly newsletter draft must never push it out of the inbox.
+    if (/^\[DRAFT\]\s+Money Scorecard\b/.test(subject)) return null;
+    if (/^\[DRAFT\]/.test(subject) && (name === 'Broadway Scorecard' || name === 'West End Scorecard')) return `newsletter-draft:${name}`;
+  }
+  return null;
+}
+
 /**
  * Which message ids to archive.
  * @param {Array<{id:string, subject:string, from:string, internalDate:number|string}>} messages inbox messages
@@ -69,9 +107,17 @@ function isOurSender(from) {
  */
 function planArchive(messages, { nowMs = null, maxAgeDays = MAX_AGE_DAYS } = {}) {
   const groups = new Map();
+  const recurring = new Map();
   const expired = [];
   for (const m of messages || []) {
-    if (!m || !isOurSender(m.from)) continue;
+    if (!m) continue;
+    const kind = classifyRecurring(m);
+    if (kind) {
+      if (!recurring.has(kind)) recurring.set(kind, []);
+      recurring.get(kind).push({ id: m.id, at: Number(m.internalDate) || 0, showId: '' });
+      continue;
+    }
+    if (!isOurSender(m.from)) continue;
     const p = parseDraftSubject(m.subject);
     if (!p) continue;
     const at = Number(m.internalDate) || 0;
@@ -89,6 +135,8 @@ function planArchive(messages, { nowMs = null, maxAgeDays = MAX_AGE_DAYS } = {})
     if (ids.size <= 1) { sets.push(list); continue; }
     for (const id of ids) sets.push(list.filter((x) => x.showId === id));
   }
+  // Recurring site emails: newest per group, no age rule.
+  for (const list of recurring.values()) sets.push(list);
   const archive = [...expired];
   const keep = [];
   for (const list of sets) {
@@ -200,7 +248,7 @@ async function sweep({ env = process.env, fetchImpl = fetch, dryRun = false, exp
   if (missing.length) log(`::warning::${missing.length} just-sent email(s) not in the inbox after ${Math.round(waitMs / 1000)}s; their predecessors are archived on the next sweep`);
 
   const plan = planArchive(messages, { nowMs: now() });
-  log(`${messages.length} Reddit draft email(s) in the inbox across ${plan.groups} draft(s); ${plan.archive.length} to archive (superseded or over ${MAX_AGE_DAYS} days old)`);
+  log(`${messages.length} site email(s) in the inbox across ${plan.groups} group(s); ${plan.archive.length} to archive (superseded, or Reddit drafts over ${MAX_AGE_DAYS} days old)`);
   // The refresh response names the granted scopes. A key without gmail.modify cannot
   // write, so say so before trying instead of after a 403.
   if (plan.archive.length && !dryRun && scope && !scope.split(/\s+/).includes(MODIFY_SCOPE)) {
@@ -218,4 +266,4 @@ async function sweep({ env = process.env, fetchImpl = fetch, dryRun = false, exp
   return { candidates: messages.length, groups: plan.groups, archived: dryRun ? 0 : plan.archive.length, wouldArchive: plan.archive.length, dryRun, missing };
 }
 
-module.exports = { SENDER, LEADS, MODIFY_SCOPE, SHOW_HEADER, MAX_MESSAGES, MAX_AGE_DAYS, LIST_QUERY, parseDraftSubject, isOurSender, planArchive, sweep, listCandidates, GmailScopeError };
+module.exports = { SENDER, LEADS, MODIFY_SCOPE, SHOW_HEADER, MAX_MESSAGES, MAX_AGE_DAYS, LIST_QUERY, parseDraftSubject, isOurSender, parseFrom, classifyRecurring, planArchive, sweep, listCandidates, GmailScopeError };

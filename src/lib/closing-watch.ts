@@ -391,6 +391,29 @@ export function isNearBreakEven(input: ClosingWatchInput): boolean {
   return input.avgGross <= input.breakEven * (1 + NEAR_BREAKEVEN_MARGIN);
 }
 
+/** A show counts as New for this many weeks after opening (and while still in previews). */
+export const NEW_SHOW_WEEKS = 8;
+
+/** Opened in the last NEW_SHOW_WEEKS, or has not opened yet. */
+export function isNewShow(openingDate: string | null | undefined, today: string): boolean {
+  const opening = (openingDate ?? '').slice(0, 10);
+  return !/^\d{4}-\d{2}-\d{2}$/.test(opening) || addWeeks(opening, NEW_SHOW_WEEKS) >= today;
+}
+
+/**
+ * A New show (isNewShow) whose grosses so far are under or near break-even. Listed on "Close to
+ * break-even" as "New, too early to judge", and kept off Closing Watch: its weeks so far are
+ * mostly previews, too early for a closing estimate.
+ */
+export function isNewNearOrBelowBreakEven(input: ClosingWatchInput & { openingDate?: string | null }): boolean {
+  if (input.status !== 'open' && input.status !== 'previews') return false;
+  if (!isNewShow(input.openingDate, input.today)) return false;
+  if (!isBoxOfficeDriven(input.designation, input.limitedRun)) return false;
+  if (hasAnnouncedClosing(input)) return false;
+  if (input.avgGross == null || !(input.avgGross > 0) || input.breakEven == null || input.breakEven <= 0) return false;
+  return input.avgGross <= input.breakEven * (1 + NEAR_BREAKEVEN_MARGIN);
+}
+
 /** Break-even estimates are rough: the card says whether the show stays under if ours is this much too high. */
 export const CLOSING_WATCH_BREAKEVEN_MARGIN = 0.1;
 
@@ -416,4 +439,23 @@ export function weeksBelowBreakEven(grossesNewestFirst: Array<number | null>, br
     n++;
   }
   return n;
+}
+
+/**
+ * Owner 2026-11-10: a struggling show that has already announced its closing is
+ * no longer "at risk" (the outcome is known), so /biz lists it as "Closing
+ * Before Recouping" instead. Order within each group is kept. A run extended
+ * twice or more stays "at risk": its date is the latest extension.
+ */
+export function splitStruggling<T extends {
+  closingDate: string | null;
+  closingExtensions?: ReadonlyArray<unknown> | null;
+  closingExtensionCount?: number | null;
+}>(shows: T[]): { closing: T[]; atRisk: T[] } {
+  // closingDate here is already a future date; a run extended twice or more has no real closing (BRO-7252).
+  const announced = (s: T) => !!s.closingDate && Math.max(s.closingExtensions?.length ?? 0, s.closingExtensionCount ?? 0) < 2;
+  return {
+    closing: shows.filter(announced),
+    atRisk: shows.filter((s) => !announced(s)),
+  };
 }

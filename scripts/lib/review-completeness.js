@@ -117,7 +117,8 @@ const OPENING_CHARS = 120;
 /**
  * The critic the row's own evidence names: its byline, else a critic the outlet registry lists for the outlet printed
  * at the head of the text (printed-byline-conflict.js, the regular collector's fill rule), else a byline the text opens
- * with ("Review by <Name>"). null when nothing names one; the caller holds the review rather than guess.
+ * with ("Review by <Name>"), else the outlet's registry laneFallbackCritic (outletFallbackCritic). null when nothing
+ * names one; the caller holds the review rather than guess.
  */
 function cardCriticName(row) {
   const r = row || {};
@@ -132,7 +133,21 @@ function cardCriticName(row) {
     const found = (hit && hit.printedName) || (OPENING_BYLINE.test(text.slice(0, OPENING_CHARS)) && pb.extractHeaderByline(text.slice(0, OPENING_CHARS)));
     if (found) return displayCritic({ ...r, criticName: found });
   } catch { /* no byline is a hold, never a crash */ }
-  return null;
+  return outletFallbackCritic(r);
+}
+
+/**
+ * The critic a single-columnist outlet's page never prints (BRO-7273: Cititour's page opens "Cititour.com Review" with no
+ * byline, so the lane held the Blueberries review 3 passes and the regular pipeline ingested it ~6h after press night).
+ * Opt-in per outlet through the registry's `laneFallbackCritic`; an outlet that rotates writers (`multiAuthor`) never gets
+ * one. Lane-only on purpose: the rebuild's defaultCritic fill (critic-fill-rules.js) would rewrite every older Unknown row.
+ */
+function outletFallbackCritic(row) {
+  try {
+    const entry = row && row.outletId && (outletRegistry().outlets || {})[row.outletId];
+    if (!entry || entry.multiAuthor === true || !str(entry.laneFallbackCritic)) return null;
+    return displayCritic({ ...row, criticName: entry.laneFallbackCritic });
+  } catch { return null; }
 }
 
 /**

@@ -90,6 +90,59 @@ const THESTAGE_WALL_RE = /create a free account(?:\s|<[^>]*>)*to read|utm_source
 const extractThestage = htmlExtractor({ host: 'thestage.co.uk', label: 'extractStageBody', wallRe: THESTAGE_WALL_RE });
 
 /**
+ * The Telegraph (BRO-7171). The review body is split into several
+ * `<div class="component article-body-text">` blocks with images, ad slots
+ * and captions between them, and the "Recommended" teaser and comments after
+ * the last one; only the article-body-text blocks are the review. Pure
+ * function of the rendered HTML so it is tested on a saved fixture.
+ * @param {string} html
+ * @returns {string|null}
+ */
+function extractTelegraphBody(html) {
+  const { extractAllBalancedDivsByClass, stripHtmlKeepParagraphs } = require('./article-extractor');
+  const { stripPageFurniture } = require('./page-furniture');
+  const parts = extractAllBalancedDivsByClass(String(html || ''), 'article-body-text').map(stripHtmlKeepParagraphs).filter(Boolean);
+  if (!parts.length) return null;
+  const text = stripPageFurniture(parts.join('\n\n'));
+  return text && text.trim() ? text.trim() : null;
+}
+
+// TELEGRAPH_WALL_RE: the page a browser without an entitled session gets
+// (rendered DOM, no cookies, 2026-11-10): the content column carries
+// martech-paywall__blur and a <section data-js="martech-paywall"> (paywall or
+// "regwall-express" register prompt) follows <main>. The teaser left in the
+// body is one paragraph (168-230 chars on two reviews) ending in "…".
+const TELEGRAPH_WALL_RE = /martech-paywall__blur|data-js="martech-paywall"|martech-regwall/i;
+// Akamai's block page ("Access Issue Help ... unusual activity on this
+// connection", TollBit token notice): plain fetch and headless Chrome get it.
+const TELEGRAPH_BOT_RE = /Access Issue Help|unusual activity on this connection|valid TollBit Token|<title>\s*Access (?:Denied|Restricted)\s*<\/title>/i;
+// Bodies under this many chars on a page that shows the wall are the teaser.
+const TELEGRAPH_TEASER_MAX = 1200;
+
+function extractTelegraph() {
+  return async function extract(page, url) {
+    const nf = await gotoOrNotFound(page, url, 3000); // the paywall/entitlement script runs after DOMContentLoaded
+    if (nf) return nf;
+    const html = await page.content();
+    if (TELEGRAPH_BOT_RE.test(html)) return { error: 'Bot-check challenge detected (Akamai)', html };
+    const title = await page.title();
+    const text = extractTelegraphBody(html);
+    // The blurred column is the logged-out page whatever the teaser length;
+    // the paywall section with a short body is too. Neither is evidence.
+    // Markup only: a class name inside an inline script/style bundle says
+    // nothing about this viewer. A teaser ending in "…" under the wall is the
+    // logged-out page whatever its length.
+    const markup = html.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/gi, '');
+    const wallShown = TELEGRAPH_WALL_RE.test(markup);
+    const walled = /martech-paywall__blur/i.test(markup)
+      || (wallShown && (!text || text.length < TELEGRAPH_TEASER_MAX || /[…]\s*$|\.\.\.\s*$/.test(text)));
+    if (walled) return { error: 'access wall (paywall/registration) in place of the body', authWall: true, title, html };
+    if (!text) return { error: 'No article body element found (extractTelegraphBody returned null)', title, html };
+    return { text, title, len: text.length, html };
+  };
+}
+
+/**
  * BRO-7171: what a recovery run may conclude from a page that gave no usable
  * body. Only a 404/410, or an empty/short body while the session still passes
  * its auth probe, is evidence about the review. A bot check is never evidence;
@@ -213,6 +266,26 @@ const ADAPTERS = Object.freeze({
       contentTierReasonFallback: 'Recovered via authenticated Times UK browser session (gap-recovery driver)',
     },
   }),
+  telegraph: Object.freeze({
+    // BRO-7171: 96 open PAYWALL_TRUNCATED rows. The subscription was
+    // cancelled but stays active to the end of the billing month; the owner
+    // logs in by hand once (renew-cookies.js --outlet=telegraph --manual).
+    // No live yield measured yet and the session ends with the month, so the
+    // unattended nightly does not plan it; --outlet=telegraph runs do.
+    nightly: false,
+    outletIds: ['telegraph', 'sunday-telegraph'],
+    cookieDomain: 'telegraph.co.uk',
+    // Walled for a browser with no session (168-char teaser + paywall,
+    // 2026-11-10); the full review is ~2,600 chars (earliest Wayback copy).
+    testUrl: 'https://www.telegraph.co.uk/theatre/what-to-see/romeo-and-juliet-review-sadie-sink-noah-jupe/',
+    minAuthChars: 1500,
+    extract: extractTelegraph(),
+    labels: {
+      fetchMethod: 'telegraph-subscriber-browser-session',
+      sourceMethod: 'telegraph-subscriber-recovery-login',
+      contentTierReasonFallback: 'Recovered via authenticated Telegraph browser session (gap-recovery driver)',
+    },
+  }),
 });
 
 function adapterFor(outletId) {
@@ -273,4 +346,4 @@ async function openSession(adapter) {
   }
 }
 
-module.exports = { ADAPTERS, adapterFor, adapterUsable, openSession, extractThestage, gotoOrNotFound, htmlExtractor, resolveBrowserMiss, THESTAGE_WALL_RE };
+module.exports = { ADAPTERS, adapterFor, adapterUsable, openSession, extractThestage, extractTelegraphBody, gotoOrNotFound, htmlExtractor, resolveBrowserMiss, THESTAGE_WALL_RE, TELEGRAPH_WALL_RE };

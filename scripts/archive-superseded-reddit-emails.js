@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 /**
- * archive-superseded-reddit-emails.js: archive the older Reddit draft emails
- * in the owner's Gmail inbox, keeping the newest per show and subreddit, and
- * every such email once it is more than 7 days old.
+ * archive-superseded-reddit-emails.js: archive superseded site emails in the owner's
+ * Gmail inbox. Reddit drafts keep the newest per show and subreddit and expire after
+ * 7 days; the Morning digest, Opening Digest and [DRAFT] newsletter copies keep the
+ * newest per group (per edition for newsletters).
  * Logic and rationale: scripts/lib/reddit-email-archive.js.
  *
  *   node scripts/archive-superseded-reddit-emails.js            # archive them
@@ -33,7 +34,7 @@ async function main() {
     try { expectSubjects = fs.readFileSync(expectArg.slice('--expect-file='.length), 'utf8').split('\n').map((x) => x.trim()).filter(Boolean); } catch { /* nothing was sent this run */ }
   }
   const r = await sweep({ dryRun, expectSubjects });
-  console.log(dryRun ? `Dry run: would archive ${r.wouldArchive}, archived 0.` : `Archived ${r.archived} superseded Reddit draft email(s).`);
+  console.log(dryRun ? `Dry run: would archive ${r.wouldArchive}, archived 0.` : `Archived ${r.archived} superseded site email(s).`);
 }
 
 main().catch((e) => {

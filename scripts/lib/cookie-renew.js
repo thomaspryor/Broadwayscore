@@ -54,6 +54,19 @@ const RENEW_OUTLETS = {
       submit: /^login$/i,
     },
   },
+  // BRO-7171: the cancelled subscription stays active to the end of the
+  // billing month. Manual only (no Keychain credentials, no selectors, never
+  // an automatic login): the owner logs in by hand once with --manual in the
+  // persistent profile. localOnly: the cookies serve the local gap-recovery
+  // driver only, so they are saved to data/cookies/telegraph.json but not
+  // pushed to the CI bundles (CI can't get past Akamai anyway).
+  telegraph: {
+    fileKey: 'telegraph',
+    cookieDomain: 'telegraph.co.uk',
+    loginUrl: 'https://secure.telegraph.co.uk/customer/secure/login/?redirectTo=https%3A%2F%2Fwww.telegraph.co.uk%2Ftheatre%2Fwhat-to-see%2Fromeo-and-juliet-review-sadie-sink-noah-jupe%2F',
+    manualOnly: true,
+    localOnly: true,
+  },
 };
 
 function profileDir(outlet) {
