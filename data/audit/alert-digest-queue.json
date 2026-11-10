@@ -1640,5 +1640,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-10T09:35:52.476Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7247-spend",
+    "title": "Landing blocked: rebase red on land/bro-7247-spend",
+    "description": "land.yml did not land land/bro-7247-spend: the rebase gate went red at 62034cd4b7. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42792845188",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7247-spend"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "62034cd4b7dcc50cdae46de7fe759b94d8e9fd54"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42792845188"
+      }
+    ],
+    "queuedAt": "2026-11-10T09:43:51.886Z"
   }
 ]
