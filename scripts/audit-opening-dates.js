@@ -40,6 +40,7 @@ const fs = require('fs');
 const path = require('path');
 const { discoverAnnouncedDate } = require('./lib/closing-date-discovery');
 const { cleanup } = require('./lib/scraper');
+const { triageOpeningFinding } = require('./lib/opening-date-triage');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
@@ -219,6 +220,12 @@ async function main() {
         }
         if (stored && discovered.date === stored) {
           matches.push({ id: show.id, fieldType, stored, discoveredDate: discovered.date });
+          continue;
+        }
+        // BRO-7275: next-day opening-night coverage is not a discrepancy.
+        const triage = triageOpeningFinding({ fieldType, stored, discoveredDate: discovered.date, today: TODAY });
+        if (!triage.flag) {
+          matches.push({ id: show.id, fieldType, stored, discoveredDate: discovered.date, note: triage.reason });
           continue;
         }
         // Date differs OR stored was null and we got a date.
