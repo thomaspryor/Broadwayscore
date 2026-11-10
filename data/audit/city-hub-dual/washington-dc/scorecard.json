@@ -1,0 +1,2794 @@
+{
+ "city": "washington-dc",
+ "today": "2026-11-10",
+ "models": {
+  "gemini": "gemini-2.5-flash",
+  "openai": "gpt-5-mini"
+ },
+ "itemsChecked": {
+  "shows": 47,
+  "images": 20,
+  "publishedReviews": 161,
+  "excludedFiles": 19,
+  "reviewsWithoutText": 14,
+  "tourStops": 12,
+  "coverageShows": 32,
+  "totalShows": 47,
+  "totalPublished": 161
+ },
+ "flaggedByGemini": 88,
+ "flaggedByOpenAI": 82,
+ "flaggedLocalChecks": 33,
+ "flaggedAny": 124,
+ "flaggedByBoth": 75,
+ "triagedItems": 0,
+ "confirmed": 0,
+ "falsePositives": 0,
+ "fixed": 0,
+ "remaining": [],
+ "untriaged": 124,
+ "flags": [
+  {
+   "kind": "show",
+   "id": "crazysexycool-regional-2026",
+   "label": "CrazySexyCool: The TLC Musical",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-06-26 / page 2026-06-12"
+  },
+  {
+   "kind": "show",
+   "id": "crazysexycool-regional-2026",
+   "label": "CrazySexyCool: The TLC Musical",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-06-26 / page 2026-06-12"
+  },
+  {
+   "kind": "show",
+   "id": "the-score-regional-2026",
+   "label": "The Score",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-09-16 / page 2026-09-11"
+  },
+  {
+   "kind": "show",
+   "id": "the-score-regional-2026",
+   "label": "The Score",
+   "model": "gemini",
+   "code": "category",
+   "detail": "page says touring production"
+  },
+  {
+   "kind": "show",
+   "id": "the-score-regional-2026",
+   "label": "The Score",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-09-16 / page 2026-09-11"
+  },
+  {
+   "kind": "show",
+   "id": "a-fine-madness-regional-2026",
+   "label": "A Fine Madness",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-06-03 / page 2026-05-30"
+  },
+  {
+   "kind": "show",
+   "id": "a-fine-madness-regional-2026",
+   "label": "A Fine Madness",
+   "model": "openai",
+   "code": "closing-date",
+   "detail": "ours 2026-06-28 / page 2026-06-21"
+  },
+  {
+   "kind": "image",
+   "id": "a-fine-madness-regional-2026",
+   "label": "A Fine Madness",
+   "model": "local",
+   "code": "no-poster",
+   "detail": "show has no images.poster"
+  },
+  {
+   "kind": "show",
+   "id": "get-down-tonight-classic-funk-regional-2026",
+   "label": "Get Down Tonight: Classic Funk",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-05-09 / page 2026-05-05"
+  },
+  {
+   "kind": "show",
+   "id": "get-down-tonight-classic-funk-regional-2026",
+   "label": "Get Down Tonight: Classic Funk",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-05-09 / page 2026-05-05"
+  },
+  {
+   "kind": "image",
+   "id": "get-down-tonight-classic-funk-regional-2026",
+   "label": "Get Down Tonight: Classic Funk",
+   "model": "local",
+   "code": "no-poster",
+   "detail": "show has no images.poster"
+  },
+  {
+   "kind": "show",
+   "id": "pippin-regional-2026",
+   "label": "Pippin",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-05-23 / page 2026-05-12"
+  },
+  {
+   "kind": "show",
+   "id": "pippin-regional-2026",
+   "label": "Pippin",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-05-23 / page 2026-05-12"
+  },
+  {
+   "kind": "show",
+   "id": "pippin-regional-2026",
+   "label": "Pippin",
+   "model": "openai",
+   "code": "preview-date-missing",
+   "detail": "page 2026-05-12, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "what-became-of-us-regional-2026",
+   "label": "What Became of Us",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-06-29 / page 2026-06-16"
+  },
+  {
+   "kind": "show",
+   "id": "what-became-of-us-regional-2026",
+   "label": "What Became of Us",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-06-29 / page 2026-06-16"
+  },
+  {
+   "kind": "show",
+   "id": "the-motion-regional-2026",
+   "label": "The Motion",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-05-18 / page 2026-05-06"
+  },
+  {
+   "kind": "show",
+   "id": "the-motion-regional-2026",
+   "label": "The Motion",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-05-18 / page 2026-05-06"
+  },
+  {
+   "kind": "show",
+   "id": "the-motion-regional-2026",
+   "label": "The Motion",
+   "model": "openai",
+   "code": "preview-date-missing",
+   "detail": "page 2026-05-06, ours empty"
+  },
+  {
+   "kind": "image",
+   "id": "the-motion-regional-2026",
+   "label": "The Motion",
+   "model": "local",
+   "code": "no-poster",
+   "detail": "show has no images.poster"
+  },
+  {
+   "kind": "show",
+   "id": "the-play-that-goes-wrong-regional-2026",
+   "label": "The Play That Goes Wrong",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-06-17 / page 2026-06-06"
+  },
+  {
+   "kind": "show",
+   "id": "the-play-that-goes-wrong-regional-2026",
+   "label": "The Play That Goes Wrong",
+   "model": "gemini",
+   "code": "closing-date",
+   "detail": "ours 2026-07-19 / page 2026-07-12"
+  },
+  {
+   "kind": "show",
+   "id": "the-play-that-goes-wrong-regional-2026",
+   "label": "The Play That Goes Wrong",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-06-06, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "the-play-that-goes-wrong-regional-2026",
+   "label": "The Play That Goes Wrong",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-06-17 / page 2025-07-07"
+  },
+  {
+   "kind": "show",
+   "id": "the-play-that-goes-wrong-regional-2026",
+   "label": "The Play That Goes Wrong",
+   "model": "openai",
+   "code": "closing-date",
+   "detail": "ours 2026-07-19 / page 2026-09-08"
+  },
+  {
+   "kind": "image",
+   "id": "the-play-that-goes-wrong-regional-2026",
+   "label": "The Play That Goes Wrong",
+   "model": "local",
+   "code": "no-poster",
+   "detail": "show has no images.poster"
+  },
+  {
+   "kind": "show",
+   "id": "carla-hall-please-underestimate-me-regional-2026",
+   "label": "Carla Hall - Please Underestimate Me",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-06-14 / page 2026-06-03"
+  },
+  {
+   "kind": "show",
+   "id": "carla-hall-please-underestimate-me-regional-2026",
+   "label": "Carla Hall - Please Underestimate Me",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-06-03, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "carla-hall-please-underestimate-me-regional-2026",
+   "label": "Carla Hall - Please Underestimate Me",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-06-14 / page 2026-05-27"
+  },
+  {
+   "kind": "show",
+   "id": "carla-hall-please-underestimate-me-regional-2026",
+   "label": "Carla Hall - Please Underestimate Me",
+   "model": "openai",
+   "code": "closing-date",
+   "detail": "ours 2026-07-12 / page 2026-06-28"
+  },
+  {
+   "kind": "show",
+   "id": "a-gentlemans-guide-to-love-and-murder-regional-2026",
+   "label": "A Gentleman's Guide to Love and Murder",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-07-09 / page 2026-07-05"
+  },
+  {
+   "kind": "show",
+   "id": "a-gentlemans-guide-to-love-and-murder-regional-2026",
+   "label": "A Gentleman's Guide to Love and Murder",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-07-02, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "a-gentlemans-guide-to-love-and-murder-regional-2026",
+   "label": "A Gentleman's Guide to Love and Murder",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-07-09 / page 2026-07-05"
+  },
+  {
+   "kind": "show",
+   "id": "a-gentlemans-guide-to-love-and-murder-regional-2026",
+   "label": "A Gentleman's Guide to Love and Murder",
+   "model": "openai",
+   "code": "preview-date-missing",
+   "detail": "page 2026-07-02, ours empty"
+  },
+  {
+   "kind": "image",
+   "id": "a-gentlemans-guide-to-love-and-murder-regional-2026",
+   "label": "A Gentleman's Guide to Love and Murder",
+   "model": "local",
+   "code": "no-poster",
+   "detail": "show has no images.poster"
+  },
+  {
+   "kind": "show",
+   "id": "ghost-limb-regional-2026",
+   "label": "Ghost Limb",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-05-15 / page 2026-05-03"
+  },
+  {
+   "kind": "show",
+   "id": "ghost-limb-regional-2026",
+   "label": "Ghost Limb",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-04-30, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "ghost-limb-regional-2026",
+   "label": "Ghost Limb",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-05-15 / page 2026-05-03"
+  },
+  {
+   "kind": "show",
+   "id": "ghost-limb-regional-2026",
+   "label": "Ghost Limb",
+   "model": "openai",
+   "code": "preview-date-missing",
+   "detail": "page 2026-04-30, ours empty"
+  },
+  {
+   "kind": "image",
+   "id": "ghost-limb-regional-2026",
+   "label": "Ghost Limb",
+   "model": "local",
+   "code": "no-poster",
+   "detail": "show has no images.poster"
+  },
+  {
+   "kind": "show",
+   "id": "or-regional-2026",
+   "label": "Or,",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-05-21 / page 2026-05-15"
+  },
+  {
+   "kind": "show",
+   "id": "or-regional-2026",
+   "label": "Or,",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-05-21 / page 2026-05-15"
+  },
+  {
+   "kind": "image",
+   "id": "or-regional-2026",
+   "label": "Or,",
+   "model": "local",
+   "code": "no-poster",
+   "detail": "show has no images.poster"
+  },
+  {
+   "kind": "show",
+   "id": "precarious-regional-2026",
+   "label": "Precarious",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-06-12 / page 2026-06-04"
+  },
+  {
+   "kind": "show",
+   "id": "precarious-regional-2026",
+   "label": "Precarious",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-06-12 / page 2026-06-04"
+  },
+  {
+   "kind": "image",
+   "id": "precarious-regional-2026",
+   "label": "Precarious",
+   "model": "local",
+   "code": "no-poster",
+   "detail": "show has no images.poster"
+  },
+  {
+   "kind": "show",
+   "id": "sally-and-tom-regional-2026",
+   "label": "Sally & Tom",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-06-13 / page 2026-06-01"
+  },
+  {
+   "kind": "show",
+   "id": "sally-and-tom-regional-2026",
+   "label": "Sally & Tom",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-05-27, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "sally-and-tom-regional-2026",
+   "label": "Sally & Tom",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-06-13 / page 2026-05-27"
+  },
+  {
+   "kind": "image",
+   "id": "sally-and-tom-regional-2026",
+   "label": "Sally & Tom",
+   "model": "local",
+   "code": "no-poster",
+   "detail": "show has no images.poster"
+  },
+  {
+   "kind": "show",
+   "id": "purlie-victorious-regional-2026",
+   "label": "Purlie Victorious",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-05-11 / page 2026-05-06"
+  },
+  {
+   "kind": "show",
+   "id": "purlie-victorious-regional-2026",
+   "label": "Purlie Victorious",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-05-11 / page 2026-05-06"
+  },
+  {
+   "kind": "show",
+   "id": "feeling-afraid-as-if-something-terrible-is-going-to-happen-regional-2026",
+   "label": "Feeling Afraid As If Something Terrible Is Going to Happen",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-06-12 / page 2026-06-07"
+  },
+  {
+   "kind": "show",
+   "id": "feeling-afraid-as-if-something-terrible-is-going-to-happen-regional-2026",
+   "label": "Feeling Afraid As If Something Terrible Is Going to Happen",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-06-04, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "feeling-afraid-as-if-something-terrible-is-going-to-happen-regional-2026",
+   "label": "Feeling Afraid As If Something Terrible Is Going to Happen",
+   "model": "gemini",
+   "code": "category",
+   "detail": "page says touring production"
+  },
+  {
+   "kind": "show",
+   "id": "feeling-afraid-as-if-something-terrible-is-going-to-happen-regional-2026",
+   "label": "Feeling Afraid As If Something Terrible Is Going to Happen",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-06-12 / page 2026-06-04"
+  },
+  {
+   "kind": "show",
+   "id": "feeling-afraid-as-if-something-terrible-is-going-to-happen-regional-2026",
+   "label": "Feeling Afraid As If Something Terrible Is Going to Happen",
+   "model": "openai",
+   "code": "category",
+   "detail": "page says touring production"
+  },
+  {
+   "kind": "show",
+   "id": "aguardiente-where-magic-transcends-borders-regional-2026",
+   "label": "Aguardiente: Where Magic Transcends Borders",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-05-06 / page 2026-04-30"
+  },
+  {
+   "kind": "show",
+   "id": "aguardiente-where-magic-transcends-borders-regional-2026",
+   "label": "Aguardiente: Where Magic Transcends Borders",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-05-06 / page 2026-04-30"
+  },
+  {
+   "kind": "image",
+   "id": "aguardiente-where-magic-transcends-borders-regional-2026",
+   "label": "Aguardiente: Where Magic Transcends Borders",
+   "model": "local",
+   "code": "no-poster",
+   "detail": "show has no images.poster"
+  },
+  {
+   "kind": "show",
+   "id": "somewhere-over-the-border-regional-2026",
+   "label": "Somewhere Over the Border",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-09-15 / page 2026-09-10"
+  },
+  {
+   "kind": "show",
+   "id": "somewhere-over-the-border-regional-2026",
+   "label": "Somewhere Over the Border",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-09-15 / page 2026-09-10"
+  },
+  {
+   "kind": "image",
+   "id": "somewhere-over-the-border-regional-2026",
+   "label": "Somewhere Over the Border",
+   "model": "local",
+   "code": "no-poster",
+   "detail": "show has no images.poster"
+  },
+  {
+   "kind": "show",
+   "id": "ma-raineys-black-bottom-regional-2026-round-house-theatre",
+   "label": "Ma Rainey's Black Bottom",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-09-21 / page 2026-09-09"
+  },
+  {
+   "kind": "show",
+   "id": "ma-raineys-black-bottom-regional-2026-round-house-theatre",
+   "label": "Ma Rainey's Black Bottom",
+   "model": "gemini",
+   "code": "closing-date",
+   "detail": "ours 2026-10-18 / page 2026-10-11"
+  },
+  {
+   "kind": "show",
+   "id": "ma-raineys-black-bottom-regional-2026-round-house-theatre",
+   "label": "Ma Rainey's Black Bottom",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-09-21 / page 2026-09-09"
+  },
+  {
+   "kind": "image",
+   "id": "ma-raineys-black-bottom-regional-2026-round-house-theatre",
+   "label": "Ma Rainey's Black Bottom",
+   "model": "local",
+   "code": "no-poster",
+   "detail": "show has no images.poster"
+  },
+  {
+   "kind": "show",
+   "id": "adrift-a-medieval-wayward-folly-regional-2026",
+   "label": "Adrift: A Medieval Wayward Folly",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-07-24 / page 2026-07-16"
+  },
+  {
+   "kind": "show",
+   "id": "adrift-a-medieval-wayward-folly-regional-2026",
+   "label": "Adrift: A Medieval Wayward Folly",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-07-24 / page 2026-07-16"
+  },
+  {
+   "kind": "show",
+   "id": "adrift-a-medieval-wayward-folly-regional-2026",
+   "label": "Adrift: A Medieval Wayward Folly",
+   "model": "openai",
+   "code": "category",
+   "detail": "page says touring production"
+  },
+  {
+   "kind": "image",
+   "id": "adrift-a-medieval-wayward-folly-regional-2026",
+   "label": "Adrift: A Medieval Wayward Folly",
+   "model": "local",
+   "code": "no-poster",
+   "detail": "show has no images.poster"
+  },
+  {
+   "kind": "show",
+   "id": "the-flying-lovers-of-vitebsk-regional-2026",
+   "label": "The Flying Lovers of Vitebsk",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-10-17 / page 2026-10-07"
+  },
+  {
+   "kind": "show",
+   "id": "the-flying-lovers-of-vitebsk-regional-2026",
+   "label": "The Flying Lovers of Vitebsk",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-10-17 / page 2026-10-13"
+  },
+  {
+   "kind": "show",
+   "id": "the-flying-lovers-of-vitebsk-regional-2026",
+   "label": "The Flying Lovers of Vitebsk",
+   "model": "openai",
+   "code": "preview-date-missing",
+   "detail": "page 2026-10-07, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "loot-regional-2026",
+   "label": "Loot",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-06-11 / page 2026-06-05"
+  },
+  {
+   "kind": "show",
+   "id": "loot-regional-2026",
+   "label": "Loot",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-06-11 / page 2026-06-05"
+  },
+  {
+   "kind": "show",
+   "id": "loot-regional-2026",
+   "label": "Loot",
+   "model": "openai",
+   "code": "preview-date-missing",
+   "detail": "page 2026-06-05, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "frida-a-self-portrait-regional-2026",
+   "label": "Frida...A Self Portrait",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-10-14 / page 2026-10-20"
+  },
+  {
+   "kind": "show",
+   "id": "frida-a-self-portrait-regional-2026",
+   "label": "Frida...A Self Portrait",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-10-20, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "frida-a-self-portrait-regional-2026",
+   "label": "Frida...A Self Portrait",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-10-14 / page 2026-10-08"
+  },
+  {
+   "kind": "show",
+   "id": "the-effect-of-gamma-rays-on-man-in-the-moon-marigolds-regional-2026",
+   "label": "The Effect of Gamma Rays on Man-in-the-Moon Marigolds",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-05-17 / page 2026-05-08"
+  },
+  {
+   "kind": "image",
+   "id": "the-effect-of-gamma-rays-on-man-in-the-moon-marigolds-regional-2026",
+   "label": "The Effect of Gamma Rays on Man-in-the-Moon Marigolds",
+   "model": "local",
+   "code": "no-poster",
+   "detail": "show has no images.poster"
+  },
+  {
+   "kind": "show",
+   "id": "the-roaring-girl-regional-2026",
+   "label": "The Roaring Girl",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-06-08 / page 2026-06-05"
+  },
+  {
+   "kind": "show",
+   "id": "the-roaring-girl-regional-2026",
+   "label": "The Roaring Girl",
+   "model": "openai",
+   "code": "page-not-this-production",
+   "detail": ""
+  },
+  {
+   "kind": "image",
+   "id": "the-roaring-girl-regional-2026",
+   "label": "The Roaring Girl",
+   "model": "local",
+   "code": "no-poster",
+   "detail": "show has no images.poster"
+  },
+  {
+   "kind": "image",
+   "id": "the-mannequin-regional-2026",
+   "label": "The Mannequin",
+   "model": "local",
+   "code": "no-poster",
+   "detail": "show has no images.poster"
+  },
+  {
+   "kind": "show",
+   "id": "stonewalls-bust-regional-2026",
+   "label": "Stonewall's Bust",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-10-15 / page 2026-10-09"
+  },
+  {
+   "kind": "show",
+   "id": "stonewalls-bust-regional-2026",
+   "label": "Stonewall's Bust",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-10-15 / page 2026-10-09"
+  },
+  {
+   "kind": "image",
+   "id": "stonewalls-bust-regional-2026",
+   "label": "Stonewall's Bust",
+   "model": "local",
+   "code": "no-poster",
+   "detail": "show has no images.poster"
+  },
+  {
+   "kind": "show",
+   "id": "venus-regional-2026",
+   "label": "Venus",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-09-18 / page 2026-09-10"
+  },
+  {
+   "kind": "show",
+   "id": "venus-regional-2026",
+   "label": "Venus",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-09-09, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "venus-regional-2026",
+   "label": "Venus",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-09-18 / page 2026-09-09"
+  },
+  {
+   "kind": "image",
+   "id": "venus-regional-2026",
+   "label": "Venus",
+   "model": "local",
+   "code": "no-poster",
+   "detail": "show has no images.poster"
+  },
+  {
+   "kind": "show",
+   "id": "richard-obriens-the-rocky-horror-show-regional-2026",
+   "label": "Richard O'Brien's The Rocky Horror Show",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-08-25 / page 2026-08-22"
+  },
+  {
+   "kind": "show",
+   "id": "richard-obriens-the-rocky-horror-show-regional-2026",
+   "label": "Richard O'Brien's The Rocky Horror Show",
+   "model": "openai",
+   "code": "preview-date-missing",
+   "detail": "page 2026-08-22, ours empty"
+  },
+  {
+   "kind": "image",
+   "id": "richard-obriens-the-rocky-horror-show-regional-2026",
+   "label": "Richard O'Brien's The Rocky Horror Show",
+   "model": "local",
+   "code": "no-poster",
+   "detail": "show has no images.poster"
+  },
+  {
+   "kind": "show",
+   "id": "no-exit-regional-2026",
+   "label": "No Exit",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-07-02 / page 2026-06-25"
+  },
+  {
+   "kind": "show",
+   "id": "no-exit-regional-2026",
+   "label": "No Exit",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-07-02 / page 2026-06-25"
+  },
+  {
+   "kind": "image",
+   "id": "no-exit-regional-2026",
+   "label": "No Exit",
+   "model": "local",
+   "code": "no-poster",
+   "detail": "show has no images.poster"
+  },
+  {
+   "kind": "show",
+   "id": "gruesome-playground-injuries-regional-2026",
+   "label": "Gruesome Playground Injuries",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-08-22 / page 2026-08-15"
+  },
+  {
+   "kind": "show",
+   "id": "gruesome-playground-injuries-regional-2026",
+   "label": "Gruesome Playground Injuries",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-08-22 / page 2026-08-15"
+  },
+  {
+   "kind": "show",
+   "id": "hundred-days-regional-2026",
+   "label": "Hundred Days",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-10-13 / page 2026-10-10"
+  },
+  {
+   "kind": "show",
+   "id": "hundred-days-regional-2026",
+   "label": "Hundred Days",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-10-09, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "hundred-days-regional-2026",
+   "label": "Hundred Days",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-10-13 / page 2026-10-10"
+  },
+  {
+   "kind": "show",
+   "id": "hundred-days-regional-2026",
+   "label": "Hundred Days",
+   "model": "openai",
+   "code": "closing-date",
+   "detail": "ours 2026-11-15 / page 2026-11-08"
+  },
+  {
+   "kind": "show",
+   "id": "hundred-days-regional-2026",
+   "label": "Hundred Days",
+   "model": "local",
+   "code": "closing-unsourced",
+   "detail": "closingDateSource missing"
+  },
+  {
+   "kind": "show",
+   "id": "the-colored-museum-regional-2026",
+   "label": "The Colored Museum",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-07-17 / page 2026-06-26"
+  },
+  {
+   "kind": "image",
+   "id": "the-colored-museum-regional-2026",
+   "label": "The Colored Museum",
+   "model": "local",
+   "code": "no-poster",
+   "detail": "show has no images.poster"
+  },
+  {
+   "kind": "show",
+   "id": "monsters-of-the-villa-diodati-regional-2026",
+   "label": "Monsters of the Villa Diodati",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-10-14 / page 2026-10-08"
+  },
+  {
+   "kind": "show",
+   "id": "monsters-of-the-villa-diodati-regional-2026",
+   "label": "Monsters of the Villa Diodati",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-10-14 / page 2026-10-08"
+  },
+  {
+   "kind": "show",
+   "id": "garbo-the-actor-who-saved-the-world-regional-2026",
+   "label": "Garbo: The Actor Who Saved the World",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-09-09 / page 2026-09-03"
+  },
+  {
+   "kind": "show",
+   "id": "garbo-the-actor-who-saved-the-world-regional-2026",
+   "label": "Garbo: The Actor Who Saved the World",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-09-09 / page 2026-09-03"
+  },
+  {
+   "kind": "image",
+   "id": "garbo-the-actor-who-saved-the-world-regional-2026",
+   "label": "Garbo: The Actor Who Saved the World",
+   "model": "local",
+   "code": "no-poster",
+   "detail": "show has no images.poster"
+  },
+  {
+   "kind": "show",
+   "id": "merrily-we-roll-along-regional-2026",
+   "label": "Merrily We Roll Along",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-09-04 / page 2026-08-25"
+  },
+  {
+   "kind": "show",
+   "id": "merrily-we-roll-along-regional-2026",
+   "label": "Merrily We Roll Along",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-08-25, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "merrily-we-roll-along-regional-2026",
+   "label": "Merrily We Roll Along",
+   "model": "openai",
+   "code": "page-not-this-production",
+   "detail": ""
+  },
+  {
+   "kind": "show",
+   "id": "freddie-a-girl-regional-2026",
+   "label": "Freddie: A Girl",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-09-01 / page 2026-08-27"
+  },
+  {
+   "kind": "show",
+   "id": "freddie-a-girl-regional-2026",
+   "label": "Freddie: A Girl",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-09-01 / page 2026-08-27"
+  },
+  {
+   "kind": "show",
+   "id": "woody-guthries-american-song-regional-2026",
+   "label": "Woody Guthrie's American Song",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-08-15 / page 2026-08-07"
+  },
+  {
+   "kind": "show",
+   "id": "woody-guthries-american-song-regional-2026",
+   "label": "Woody Guthrie's American Song",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-08-06, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "woody-guthries-american-song-regional-2026",
+   "label": "Woody Guthrie's American Song",
+   "model": "gemini",
+   "code": "venue",
+   "detail": "ours \"Theater Alliance, Washington, DC\" / page \"The Wharf Waterfront Park\""
+  },
+  {
+   "kind": "show",
+   "id": "woody-guthries-american-song-regional-2026",
+   "label": "Woody Guthrie's American Song",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-08-15 / page 2026-08-06"
+  },
+  {
+   "kind": "show",
+   "id": "woody-guthries-american-song-regional-2026",
+   "label": "Woody Guthrie's American Song",
+   "model": "openai",
+   "code": "venue",
+   "detail": "ours \"Theater Alliance, Washington, DC\" / page \"Waterfront Park at The Wharf\""
+  },
+  {
+   "kind": "show",
+   "id": "wish-you-were-here-regional-2026",
+   "label": "Wish You Were Here",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-09-29 / page 2026-09-23"
+  },
+  {
+   "kind": "show",
+   "id": "wish-you-were-here-regional-2026",
+   "label": "Wish You Were Here",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-09-29 / page 2026-09-23"
+  },
+  {
+   "kind": "show",
+   "id": "bronte-sister-house-party-regional-2026",
+   "label": "Bronte Sister House Party",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-08-18 / page 2026-08-14"
+  },
+  {
+   "kind": "show",
+   "id": "bronte-sister-house-party-regional-2026",
+   "label": "Bronte Sister House Party",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-08-18 / page 2026-08-14"
+  },
+  {
+   "kind": "image",
+   "id": "bronte-sister-house-party-regional-2026",
+   "label": "Bronte Sister House Party",
+   "model": "local",
+   "code": "no-poster",
+   "detail": "show has no images.poster"
+  },
+  {
+   "kind": "show",
+   "id": "all-the-worlds-a-stage-regional-2026",
+   "label": "All The World's A Stage",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-10-20, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "all-the-worlds-a-stage-regional-2026",
+   "label": "All The World's A Stage",
+   "model": "openai",
+   "code": "page-not-this-production",
+   "detail": "All the World’s a Stage runs October 20 – December 20, 2026, in the ARK Theatre at Signature Theatre"
+  },
+  {
+   "kind": "show",
+   "id": "all-the-worlds-a-stage-regional-2026",
+   "label": "All The World's A Stage",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-10-28 / page 2026-10-20"
+  },
+  {
+   "kind": "image",
+   "id": "all-the-worlds-a-stage-regional-2026",
+   "label": "All The World's A Stage",
+   "model": "local",
+   "code": "no-poster",
+   "detail": "show has no images.poster"
+  },
+  {
+   "kind": "show",
+   "id": "all-the-worlds-a-stage-regional-2026",
+   "label": "All The World's A Stage",
+   "model": "local",
+   "code": "closing-unsourced",
+   "detail": "closingDateSource missing"
+  },
+  {
+   "kind": "show",
+   "id": "some-like-it-hot-regional-2026",
+   "label": "Some Like It Hot",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-09-18, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "some-like-it-hot-regional-2026",
+   "label": "Some Like It Hot",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-09-26 / page 2026-09-18"
+  },
+  {
+   "kind": "image",
+   "id": "some-like-it-hot-regional-2026",
+   "label": "Some Like It Hot",
+   "model": "local",
+   "code": "no-poster",
+   "detail": "show has no images.poster"
+  },
+  {
+   "kind": "show",
+   "id": "where-dead-women-go-to-dance-regional-2026",
+   "label": "Where Dead Women Go to Dance",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-09-29 / page 2026-09-25"
+  },
+  {
+   "kind": "show",
+   "id": "where-dead-women-go-to-dance-regional-2026",
+   "label": "Where Dead Women Go to Dance",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-09-29 / page 2026-09-25"
+  },
+  {
+   "kind": "image",
+   "id": "where-dead-women-go-to-dance-regional-2026",
+   "label": "Where Dead Women Go to Dance",
+   "model": "local",
+   "code": "no-poster",
+   "detail": "show has no images.poster"
+  },
+  {
+   "kind": "show",
+   "id": "the-fruits-of-our-labor-regional-2026",
+   "label": "The Fruits of Our Labor",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-09-13 / page 2026-09-10"
+  },
+  {
+   "kind": "show",
+   "id": "the-fruits-of-our-labor-regional-2026",
+   "label": "The Fruits of Our Labor",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-09-13 / page 2026-09-10"
+  },
+  {
+   "kind": "show",
+   "id": "are-you-now-or-have-you-ever-been-regional-2026",
+   "label": "Are You Now or Have You Ever Been?",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-10-24 / page 2026-10-17"
+  },
+  {
+   "kind": "show",
+   "id": "are-you-now-or-have-you-ever-been-regional-2026",
+   "label": "Are You Now or Have You Ever Been?",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-10-17, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "are-you-now-or-have-you-ever-been-regional-2026",
+   "label": "Are You Now or Have You Ever Been?",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-10-24 / page 2026-10-17"
+  },
+  {
+   "kind": "show",
+   "id": "are-you-now-or-have-you-ever-been-regional-2026",
+   "label": "Are You Now or Have You Ever Been?",
+   "model": "local",
+   "code": "closing-unsourced",
+   "detail": "closingDateSource missing"
+  },
+  {
+   "kind": "show",
+   "id": "the-legend-of-sleepy-hollow-regional-2026",
+   "label": "The Legend of Sleepy Hollow",
+   "model": "gemini",
+   "code": "opening-date",
+   "detail": "ours 2026-10-13 / page 2026-10-07"
+  },
+  {
+   "kind": "show",
+   "id": "the-legend-of-sleepy-hollow-regional-2026",
+   "label": "The Legend of Sleepy Hollow",
+   "model": "gemini",
+   "code": "preview-date-missing",
+   "detail": "page 2026-10-07, ours empty"
+  },
+  {
+   "kind": "show",
+   "id": "the-legend-of-sleepy-hollow-regional-2026",
+   "label": "The Legend of Sleepy Hollow",
+   "model": "openai",
+   "code": "opening-date",
+   "detail": "ours 2026-10-13 / page 2026-10-07"
+  },
+  {
+   "kind": "show",
+   "id": "the-legend-of-sleepy-hollow-regional-2026",
+   "label": "The Legend of Sleepy Hollow",
+   "model": "openai",
+   "code": "category",
+   "detail": "page says touring production"
+  },
+  {
+   "kind": "image",
+   "id": "the-legend-of-sleepy-hollow-regional-2026",
+   "label": "The Legend of Sleepy Hollow",
+   "model": "local",
+   "code": "no-poster",
+   "detail": "show has no images.poster"
+  },
+  {
+   "kind": "review",
+   "id": "bronte-sister-house-party-regional-2026|https://dctheaterarts.org/2026/08/16/sibling-revelry-comes-to-afterlife-in-bronte-sister-house-party-by-nu-sass|john stoltenberg",
+   "label": "Bronte Sister House Party | DC Theater Arts / John Stoltenberg",
+   "model": "gemini",
+   "code": "wrong-production",
+   "detail": "DC Reviews Sibling revelry comes to afterlife in ‘Brontë Sister House Party’ by Nu Sass"
+  },
+  {
+   "kind": "review",
+   "id": "bronte-sister-house-party-regional-2026|https://dctheaterarts.org/2026/08/16/sibling-revelry-comes-to-afterlife-in-bronte-sister-house-party-by-nu-sass|john stoltenberg",
+   "label": "Bronte Sister House Party | DC Theater Arts / John Stoltenberg",
+   "model": "openai",
+   "code": "wrong-production",
+   "detail": "Presented by Nu Sass Productions, which leans into the surreal and eccentric"
+  },
+  {
+   "kind": "review",
+   "id": "crazysexycool-regional-2026|https://www.broadwayworld.com/washington-dc/article/review-crazysexycool-the-tlc-musical-at-kreeger-theater-20260627|mary lincer",
+   "label": "CrazySexyCool: The TLC Musical | BroadwayWorld / Mary Lincer",
+   "model": "local",
+   "code": "pull-quote-not-in-text",
+   "detail": "A joyous telling of the arc of this sisterhood of talented performers — though the sound design drowns out about 50% of the lyrics."
+  },
+  {
+   "kind": "review",
+   "id": "crazysexycool-regional-2026|https://featurepresentationvideo.substack.com/p/review-crazysexycool-the-tlc-musical|patrick j regal",
+   "label": "CrazySexyCool: The TLC Musical | Feature Presentation / Patrick J. Regal",
+   "model": "local",
+   "code": "pull-quote-not-in-text",
+   "detail": "It is very good, and symbolically one hell of a way to go out — already stronger than most of its jukebox contemporaries."
+  },
+  {
+   "kind": "review",
+   "id": "freddie-a-girl-regional-2026|https://dctheaterarts.org/2026/08/30/girl-power-goes-anti-fascist-in-taffety-punks-first-rate-freddie-a-girl|john stoltenberg",
+   "label": "Freddie: A Girl | DC Theater Arts / John Stoltenberg",
+   "model": "openai",
+   "code": "wrong-production",
+   "detail": "a first-rate Taffety Punk production of her second play, Freddie: A Girl"
+  },
+  {
+   "kind": "review",
+   "id": "frida-a-self-portrait-regional-2026|https://www.hillrag.com/2026/10/20/the-shakespeare-theatres-frida-delights|gregory ford",
+   "label": "Frida...A Self Portrait | Hill Rag / Gregory Ford",
+   "model": "gemini",
+   "code": "wrong-production",
+   "detail": "The Shakespeare Theatre’s “Frida..A Self Portrait” is a delight."
+  },
+  {
+   "kind": "review",
+   "id": "frida-a-self-portrait-regional-2026|https://www.hillrag.com/2026/10/20/the-shakespeare-theatres-frida-delights|gregory ford",
+   "label": "Frida...A Self Portrait | Hill Rag / Gregory Ford",
+   "model": "openai",
+   "code": "wrong-production",
+   "detail": "The Shakespeare Theatre’s “Frida..A Self Portrait” is a delight."
+  },
+  {
+   "kind": "review",
+   "id": "frida-a-self-portrait-regional-2026|https://www.thegeorgetowndish.com/articles/fridaa-self-portrait|peter rosenstein",
+   "label": "Frida...A Self Portrait | The Georgetown Dish / Peter Rosenstein",
+   "model": "gemini",
+   "code": "score-vs-text",
+   "detail": "text reads negative, score 59"
+  },
+  {
+   "kind": "review",
+   "id": "ghost-limb-regional-2026|https://www.broadwayworld.com/washington-dc/article/review-ghost-limb-at-avant-bard-theatre-20260515|jackson malmgren",
+   "label": "Ghost Limb | BroadwayWorld / Jackson Malmgren",
+   "model": "gemini",
+   "code": "wrong-production",
+   "detail": "GHOST LIMB at Avant Bard Theatre"
+  },
+  {
+   "kind": "review",
+   "id": "ghost-limb-regional-2026|https://www.broadwayworld.com/washington-dc/article/review-ghost-limb-at-avant-bard-theatre-20260515|jackson malmgren",
+   "label": "Ghost Limb | BroadwayWorld / Jackson Malmgren",
+   "model": "openai",
+   "code": "wrong-production",
+   "detail": "GHOST LIMB, written by Marisela Treviño Orta and directed by Elena Velasco at Avant Bard Theatre,"
+  },
+  {
+   "kind": "review",
+   "id": "or-regional-2026|https://www.broadwayworld.com/washington-dc/article/review-or-at-constellation-theatre-company-20260521|laurie sara oliver",
+   "label": "Or, | BroadwayWorld / Laurie Sara Oliver",
+   "model": "gemini",
+   "code": "wrong-production",
+   "detail": "In Constellation Theater’s production"
+  },
+  {
+   "kind": "review",
+   "id": "or-regional-2026|https://www.broadwayworld.com/washington-dc/article/review-or-at-constellation-theatre-company-20260521|laurie sara oliver",
+   "label": "Or, | BroadwayWorld / Laurie Sara Oliver",
+   "model": "openai",
+   "code": "wrong-production",
+   "detail": "In Constellation Theater’s production, the actors, too, nail this same balancing act."
+  },
+  {
+   "kind": "review",
+   "id": "purlie-victorious-regional-2026|https://www.broadwayworld.com/washington-dc/article/review-purlie-victorious-at-studio-theatre-20260511|jake bridges",
+   "label": "Purlie Victorious | BroadwayWorld / Jake Bridges",
+   "model": "gemini",
+   "code": "score-vs-text",
+   "detail": "text reads rave, score 77"
+  },
+  {
+   "kind": "review",
+   "id": "purlie-victorious-regional-2026|https://www.metroweekly.com/2026/05/studio-theatre-purlie-victorious-review|andre hereford",
+   "label": "Purlie Victorious | Metro Weekly / André Hereford",
+   "model": "gemini",
+   "code": "non-review:roundup",
+   "detail": "The article contains two distinct reviews, one for 'Purlie Victorious' and another for 'The Rocky Horror Show'."
+  },
+  {
+   "kind": "review",
+   "id": "sally-and-tom-regional-2026|https://www.metroweekly.com/2026/06/sally-tom-review-round-house-theatre|andre hereford",
+   "label": "Sally & Tom | Metro Weekly / André Hereford",
+   "model": "gemini",
+   "code": "non-review:roundup",
+   "detail": "The article is a roundup of three reviews, with the first section reviewing the target production, Sally & Tom."
+  },
+  {
+   "kind": "review",
+   "id": "somewhere-over-the-border-regional-2026|https://www.hillrag.com/2026/09/29/mosaics-somewhere-over-the-border-is-joyful|gregory ford",
+   "label": "Somewhere Over the Border | Hill Rag / Gregory Ford",
+   "model": "openai",
+   "code": "wrong-production",
+   "detail": "Visit Mosaic Theatre for tickets."
+  },
+  {
+   "kind": "review",
+   "id": "somewhere-over-the-border-regional-2026|https://mdtheatreguide.com/2026/09/theatre-review-somewhere-over-the-border-at-mosaic-theater-company|aidan o connor",
+   "label": "Somewhere Over the Border | Maryland Theatre Guide / Aidan O'Connor",
+   "model": "gemini",
+   "code": "publish-date",
+   "detail": "ours 2026-09-15 / article 2026-10-18"
+  },
+  {
+   "kind": "review",
+   "id": "somewhere-over-the-border-regional-2026|https://www.metroweekly.com/2026/09/somewhere-over-the-border-review|andre hereford",
+   "label": "Somewhere Over the Border | Metro Weekly / André Hereford",
+   "model": "gemini",
+   "code": "wrong-production",
+   "detail": "Mosaic's show is undeniably entertaining"
+  },
+  {
+   "kind": "review",
+   "id": "somewhere-over-the-border-regional-2026|https://www.metroweekly.com/2026/09/somewhere-over-the-border-review|andre hereford",
+   "label": "Somewhere Over the Border | Metro Weekly / André Hereford",
+   "model": "openai",
+   "code": "wrong-production",
+   "detail": "Mosaic's show is undeniably entertaining and wonderfully executed in many aspects."
+  },
+  {
+   "kind": "review",
+   "id": "somewhere-over-the-border-regional-2026|https://morristheatredc.com/reviews/somewhere-over-the-border-mosaic|drew morris",
+   "label": "Somewhere Over the Border | Morris Theatre DC / Drew Morris",
+   "model": "gemini",
+   "code": "wrong-production",
+   "detail": "Mosaic Theater Company D20 D2X CaBi ♿ 1333 H St NE, Washington, DC 20002"
+  },
+  {
+   "kind": "review",
+   "id": "somewhere-over-the-border-regional-2026|https://morristheatredc.com/reviews/somewhere-over-the-border-mosaic|drew morris",
+   "label": "Somewhere Over the Border | Morris Theatre DC / Drew Morris",
+   "model": "openai",
+   "code": "wrong-production",
+   "detail": "Mosaic Theater Company\n1333 H St NE, Washington, DC 20002"
+  },
+  {
+   "kind": "review",
+   "id": "stonewalls-bust-regional-2026|https://www.broadwayworld.com/washington-dc/article/review-stonewalls-bust-at-best-medicine-rep-20261020|david friscic",
+   "label": "Stonewall's Bust | BroadwayWorld / David Friscic",
+   "model": "gemini",
+   "code": "publish-date",
+   "detail": "ours 2026-10-20 / article 2026-10-25"
+  },
+  {
+   "kind": "review",
+   "id": "the-roaring-girl-regional-2026|https://www.broadwayworld.com/washington-dc/article/review-the-roaring-girl-at-theatre-prometheus-20260608|roger catlin",
+   "label": "The Roaring Girl | BroadwayWorld / Roger Catlin",
+   "model": "openai",
+   "code": "wrong-production",
+   "detail": "“The Roaring Girl” runs through June 27 at the Universalist National Memorial Church, 1810 16th St NW, the usual home of Spooky Action Theater."
+  },
+  {
+   "kind": "review",
+   "id": "where-dead-women-go-to-dance-regional-2026|https://www.broadwayworld.com/article/review-where-dead-women-go-to-dance-at-theatre-prometheus-20261010|jackson malmgren",
+   "label": "Where Dead Women Go to Dance | BroadwayWorld / Jackson Malmgren",
+   "model": "gemini",
+   "code": "wrong-production",
+   "detail": "produced by Theatre Prometheus"
+  },
+  {
+   "kind": "review",
+   "id": "where-dead-women-go-to-dance-regional-2026|https://www.broadwayworld.com/article/review-where-dead-women-go-to-dance-at-theatre-prometheus-20261010|jackson malmgren",
+   "label": "Where Dead Women Go to Dance | BroadwayWorld / Jackson Malmgren",
+   "model": "openai",
+   "code": "wrong-production",
+   "detail": "produced by Theatre Prometheus."
+  },
+  {
+   "kind": "excluded",
+   "id": "crazysexycool-regional-2026/zebra--jordan-wright.json",
+   "label": "CrazySexyCool: The TLC Musical | crazysexycool-regional-2026/zebra--jordan-wright.json",
+   "model": "gemini",
+   "code": "excluded-looks-valid",
+   "detail": "Through August 9 th at Arena Stage, 1101 Sixth Street, NW, Washington DC 20024. | flags on file: "
+  },
+  {
+   "kind": "excluded",
+   "id": "crazysexycool-regional-2026/zebra--jordan-wright.json",
+   "label": "CrazySexyCool: The TLC Musical | crazysexycool-regional-2026/zebra--jordan-wright.json",
+   "model": "openai",
+   "code": "excluded-looks-valid",
+   "detail": "Through August 9 th at Arena Stage, 1101 Sixth Street, NW, Washington DC 20024. | flags on file: "
+  },
+  {
+   "kind": "excluded",
+   "id": "sally-and-tom-regional-2026/dc-theater-arts--chris-klimek.json",
+   "label": "Sally & Tom | sally-and-tom-regional-2026/dc-theater-arts--chris-klimek.json",
+   "model": "gemini",
+   "code": "excluded-looks-valid",
+   "detail": "Round House Theatre’s new production of Suzan-Lori Parks ’ Sally & Tom | flags on file: "
+  },
+  {
+   "kind": "excluded",
+   "id": "sally-and-tom-regional-2026/dc-theater-arts--chris-klimek.json",
+   "label": "Sally & Tom | sally-and-tom-regional-2026/dc-theater-arts--chris-klimek.json",
+   "model": "openai",
+   "code": "excluded-looks-valid",
+   "detail": "Sally & Tom plays through June 28, 2026, at Round House Theatre, 4545 East-West Highway, Bethesda, MD. | flags on file: "
+  },
+  {
+   "kind": "excluded",
+   "id": "sally-and-tom-regional-2026/the-georgetowner--peggy-sands.json",
+   "label": "Sally & Tom | sally-and-tom-regional-2026/the-georgetowner--peggy-sands.json",
+   "model": "gemini",
+   "code": "excluded-looks-valid",
+   "detail": "June, therefore, is an ideal time to see “Sally & Tom” at Bethesda’s Round House Theatre. | flags on file: "
+  },
+  {
+   "kind": "excluded",
+   "id": "sally-and-tom-regional-2026/the-georgetowner--peggy-sands.json",
+   "label": "Sally & Tom | sally-and-tom-regional-2026/the-georgetowner--peggy-sands.json",
+   "model": "openai",
+   "code": "excluded-looks-valid",
+   "detail": "see “Sally & Tom” at Bethesda’s Round House Theatre. | flags on file: "
+  },
+  {
+   "kind": "excluded",
+   "id": "sally-and-tom-regional-2026/washpost--thomas-floyd.json",
+   "label": "Sally & Tom | sally-and-tom-regional-2026/washpost--thomas-floyd.json",
+   "model": "gemini",
+   "code": "excluded-looks-valid",
+   "detail": "regional premiere at Round House Theatre | flags on file: true"
+  },
+  {
+   "kind": "show",
+   "id": "carla-hall-please-underestimate-me-regional-2026",
+   "label": "Carla Hall - Please Underestimate Me",
+   "model": "local",
+   "code": "review-text-later-closing",
+   "detail": "ours 2026-07-12 / review text says through 2026-07-26 (maryland-theatre-guide 2026-06-14)"
+  },
+  {
+   "kind": "tour",
+   "id": "hells-kitchen-tour-2025|2026-11-24|National Theatre",
+   "label": "Hell's Kitchen @ National Theatre",
+   "model": "gemini",
+   "code": "tour-dates",
+   "detail": "ours 2026-11-24..2026-11-29 / source 2026-11-24..2026-12-06 November 24 - December 6, 2026"
+  },
+  {
+   "kind": "tour",
+   "id": "hells-kitchen-tour-2025|2026-11-24|National Theatre",
+   "label": "Hell's Kitchen @ National Theatre",
+   "model": "openai",
+   "code": "tour-dates",
+   "detail": "ours 2026-11-24..2026-11-29 / source 2026-11-24..2026-12-06 November 24 - December 6, 2026"
+  },
+  {
+   "kind": "tour",
+   "id": "a-beautiful-noise-the-neil-diamond-musical-tour-2026|2027-03-02|National Theatre",
+   "label": "A Beautiful Noise, The Neil Diamond Musical @ National Theatre",
+   "model": "gemini",
+   "code": "tour-dates",
+   "detail": "ours 2027-03-02..2027-03-07 / source 2024-12-03..2024-12-08 Witness the story at The National Theatre in Washington, D.C. from December 3 – 8, 2024."
+  },
+  {
+   "kind": "coverage",
+   "id": "crazysexycool-regional-2026",
+   "label": "CrazySexyCool: The TLC Musical",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Maryland Theatre Guide / Aidan O'Connor 2026-06-29 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEGEY8r56I2TIgXKJkEEBRihOBZWndw75mXxNDOpGHDk7o5akef3LTVZGDXukkJ1V84csOvz-l1Ea5nGAtcpHAtiYmP9m2cW1okW-t2rMzdnwhiVElTwEM6S3zupcnQlE8o2D7ZJIuGkNlN13vgFg2EuS_zp3w1yZicdteeHANnY8yfQs7bfXyfxxK7KrjOhh28vKtjFWHmNkNR"
+  },
+  {
+   "kind": "coverage",
+   "id": "crazysexycool-regional-2026",
+   "label": "CrazySexyCool: The TLC Musical",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "DC Theater Arts / Sherrita Wilkins 2026-06-28 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGgcxrYzsbimzGlUIRNzxRRNpgkxGWkUnXYqEGjYKUwETev8xZUYo8WgvYfACDMLlJXFK0Y6VYS1GLVhKVYnjej9DLLDbZJishSCu0NaNjAXfqKjjZVKCA1_XdpZ0Ls9KTanlO66Km4PDvS97YMScPLu23mCXWVQWAarX5rPvK3PXGRZHKJOfqqZbFbKodP7jaa9kmDfOXewdVFETKCUg=="
+  },
+  {
+   "kind": "coverage",
+   "id": "crazysexycool-regional-2026",
+   "label": "CrazySexyCool: The TLC Musical",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "BroadwayWorld / Mary Lincer 2026-06-27 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGjdO1Yfi3XczS4FRwSCsVHazx1n1BnD7Z_3N2h7F1xmbPDou0ONZhnSgKpCtCP7pqPPPLAEmKc-2TX9i1JpWjDhp4Lu1XA3-ZN9StX8S4UuEb0u-ihOo4QDbdO1DA8u3kHAP98P9INsU9rqetq5v3UiRF5tnY7lO8bN_xqyX3M-Vjlzrz4Yj5mNinyXekcBwsdjaZywJ3oP8s2pdFgLma05VriziZE1ISq_sDVKi1d"
+  },
+  {
+   "kind": "coverage",
+   "id": "crazysexycool-regional-2026",
+   "label": "CrazySexyCool: The TLC Musical",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "The Washington Post / Thomas Floyd 2026-07-15 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQF99ySG87G_CQGTQzjgFYyHdq7havzPb7i5EWWUPvatilDsdxlxG9d0bG7uApRS8GKxI4ggz6Pb6zVxz0MCQdHc5GCYP-EflVsp2LNnXOoHMqkEjP9xbPigteFfKEAhDGkIP6eBr8-L1Kqo81VtqJwiGdWhE9SU2orPUE783_humVetWG-g_2pWvMM5NhaM_gC1lBw_7KbzotAW9QnGeNYcBjL5Sb92YUZowlPi0eJythv_Sh5ZD6Db6ytm6zJLHA=="
+  },
+  {
+   "kind": "coverage",
+   "id": "crazysexycool-regional-2026",
+   "label": "CrazySexyCool: The TLC Musical",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "DC Metro Theater Arts / Paul Webb 2026-06-29 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHkqq7IpytFagdlBk82lvemC8iXv8HntfVeUqdJndXDallTgYb0GngIrhaGYIhs6KLygjuItAup_YxgD0wwwfMXJC_XZU-LU5jRUZfaBS_3LY_WPovvqDNGjUd5SOomAh3NqVwfJ0a9nFh2VehfssZzGtvLWJCYRacY7PX4HX3_p77bV_pwhGb_EJtttkSMOfQ6Ig=="
+  },
+  {
+   "kind": "coverage",
+   "id": "crazysexycool-regional-2026",
+   "label": "CrazySexyCool: The TLC Musical",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Morris Theatre DC / Morris 2026-06-29 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGItKdPGQZLaxyrgbtA4JG5MqZNsJhpdfilXSylMwjB7B-TZV-aoFL7KLFrHX1x3qF56Sg88XRXexpmrxdoealzGbeM1yjbvLucJa-SGTTRnptMBngcVv4lYtWkipeCaawrpRLnqnY5Oblfwmy3fogQku7jXG1iQyw6UxXgrNcb"
+  },
+  {
+   "kind": "coverage",
+   "id": "crazysexycool-regional-2026",
+   "label": "CrazySexyCool: The TLC Musical",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "HillRag / Gregory Ford 2026-07-09 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGJgrpJ22ipFqdEZWV9HFpFBE9eDYdELa1uxKf3I_y3hcDXddPhw_GTjIt9HH2IX0oQChqdrHPz-UnBv7BDlKV2thYyTPkTCPcIE-7oqmtBl6ypPmKkskge7a4tfiWGk3fo6VMfVlR5D1MNlIEreuZLXVIgjYXaOn2hmoZ51jHvz_sG0kbLk_kSdnweUNbVNF8="
+  },
+  {
+   "kind": "coverage",
+   "id": "crazysexycool-regional-2026",
+   "label": "CrazySexyCool: The TLC Musical",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Whisk + Quill / Jordan Wright 2026-06-29 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGoMWjCsikDCqLJI7PDJOThSiBT-k09UtMINx2dsNdPFwDYnduYQgiSQz_e4ygwiQAxHOSw1KOqMOpIUh-iiN-YUFYHYkFVE9jqILtwT4o3NztPZwBIugKTyyw05CamUR5P5nlNObvEYWJprnUiJwfW0AJom4xrof6f"
+  },
+  {
+   "kind": "coverage",
+   "id": "crazysexycool-regional-2026",
+   "label": "CrazySexyCool: The TLC Musical",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Talkin' Broadway (Regional) / Susan Berlin 2026-07-03 https://adserver.talkinbroadway.com/page/regional/dc/dc1395.html"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-score-regional-2026",
+   "label": "The Score",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "The Washington Post / Thomas Floyd 2026-09-24 https://www.washingtonpost.com/arts-entertainment/2026/09/24/brian-cox-the-score-shakespeare-theatre-company/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-score-regional-2026",
+   "label": "The Score",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "DC Theater Arts / D.R. Lewis 2026-09-18 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGl9KQuUX-3P4k3LGseGjJnFrLWJO88Wv-tu8LdH5OT9eGKXJBa7lbf8sPqcWOD_x4cYwFtdyar0pd98HPyxP6O_q5aYaRG1Fm_zOeTUg676alAytFg3cJwvm4cwcc6t1T9dXh8OEIjKiwjoERpMFvt7o7_wKk3vCuH4-XInN5iCznUfEKO96tR2k5dLhdWCKWyvrqHRKBLDpPglsgFFqdVz-OdV7Y="
+  },
+  {
+   "kind": "coverage",
+   "id": "the-score-regional-2026",
+   "label": "The Score",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Maryland Theatre Guide / Peter Orvetti 2026-09-22 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHx7knFjAaq1Ljd5z6LCl6YCEiFPXKGtYii7LjHZSYVnpvzTi3JJNVeK_h8SPR22NUJjsvqASXSENQnnWWU3TuI_vW48bpeCNYs7Q-D2hwSPlLnCztGobJP_Ux0oEfWqzXv3fIeQw="
+  },
+  {
+   "kind": "coverage",
+   "id": "the-score-regional-2026",
+   "label": "The Score",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "The Washington Post / Thomas Floyd 2026-09-24 https://www.washingtonpost.com/entertainment/theater/2026/09/24/successions-brian-cox-indignation-isnt-an-act/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-score-regional-2026",
+   "label": "The Score",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Washington Unbound /  2026-09-? (2026-09) https://www.washington-unbound.com/bookreviews/the-score"
+  },
+  {
+   "kind": "coverage",
+   "id": "pippin-regional-2026",
+   "label": "Pippin",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "DC Theater Arts / Lisa Traiger 2026-05-23 https://dctheaterarts.org/2026/05/23/theres-magic-at-play-in-signature-theatres-dazzling-pippin/"
+  },
+  {
+   "kind": "coverage",
+   "id": "pippin-regional-2026",
+   "label": "Pippin",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "TheaterMania / Keith Loria 2026-06-03 https://www.theatermania.com/news/review-signature-theatres-dazzling-pippin-finds-meaning-beneath-the-spectacle_1840549/"
+  },
+  {
+   "kind": "coverage",
+   "id": "pippin-regional-2026",
+   "label": "Pippin",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Talkin' Broadway (Regional) / Susan Berlin 2026-05-28 https://www.talkinbroadway.com/page/regional/dc/dc1391.html"
+  },
+  {
+   "kind": "coverage",
+   "id": "pippin-regional-2026",
+   "label": "Pippin",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Morris Theatre DC /  2026-05-22 https://morristheatredc.com/reviews/review-pippin-signature-theatre"
+  },
+  {
+   "kind": "coverage",
+   "id": "what-became-of-us-regional-2026",
+   "label": "What Became of Us",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "BroadwayWorld / Elliot Lanes 2026-06-25 https://www.broadwayworld.com/washington-dc/article/Review-WHAT-BECAME-OF-US-at-Signature-Theatre-20260625"
+  },
+  {
+   "kind": "coverage",
+   "id": "what-became-of-us-regional-2026",
+   "label": "What Became of Us",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "DC Theater Arts / Celia Wren 2026-06-26 https://dctheaterarts.org/2026/06/26/what-became-of-us-at-signature-theatre-explores-enduring-love-between-siblings/"
+  },
+  {
+   "kind": "coverage",
+   "id": "what-became-of-us-regional-2026",
+   "label": "What Became of Us",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Washington City Paper / Stephanie Rudig 2026-07-13 https://www.washingtoncitypaper.com/arts/theater/article/21400000/what-became-of-us-at-signature-theatre-reviewed"
+  },
+  {
+   "kind": "coverage",
+   "id": "what-became-of-us-regional-2026",
+   "label": "What Became of Us",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Metro Weekly / André Hereford 2026-06-28 https://www.metroweekly.com/2026/06/what-became-of-us-review-a-poignant-tale-of-two-siblings/"
+  },
+  {
+   "kind": "coverage",
+   "id": "what-became-of-us-regional-2026",
+   "label": "What Became of Us",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Morris Theatre DC / Drew Morris 2026-07-03 https://morristheatredc.com/2026/07/03/review-what-became-of-us-signature-theatre/"
+  },
+  {
+   "kind": "coverage",
+   "id": "what-became-of-us-regional-2026",
+   "label": "What Became of Us",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "DC Digest / Kathleen Sheehan 2026-06-27 https://dcdigest.com/what-became-of-us-signature-theatre-review/"
+  },
+  {
+   "kind": "coverage",
+   "id": "what-became-of-us-regional-2026",
+   "label": "What Became of Us",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "The Washington Post / Thomas Floyd 2026-07-15 https://www.washingtonpost.com/entertainment/theater/2026/07/15/dc-area-theater-reviews-what-became-of-us-gentlemans-guide/"
+  },
+  {
+   "kind": "coverage",
+   "id": "what-became-of-us-regional-2026",
+   "label": "What Became of Us",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "The Washington Post / Thomas Floyd 2026-07-15 https://www.washingtonpost.com/entertainment/theater/2026/07/15/crazysexycool-brings-bangers-tlc-deserves-bolder-musical-treatment/"
+  },
+  {
+   "kind": "coverage",
+   "id": "what-became-of-us-regional-2026",
+   "label": "What Became of Us",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "DC Theater Arts / Celia Wren 2026-06-26 https://dctheaterarts.org/2026/06/26/what-became-of-us-at-signature-theatre-explores-enduring-love-between-siblings/"
+  },
+  {
+   "kind": "coverage",
+   "id": "what-became-of-us-regional-2026",
+   "label": "What Became of Us",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "BroadwayWorld (Washington DC) / Aidan O'Connor 2026-06-25 https://www.broadwayworld.com/washington-dc/article/Review-WHAT-BECAME-OF-US-at-Signature-Theatre-20260625"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-play-that-goes-wrong-regional-2026",
+   "label": "The Play That Goes Wrong",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "DC Theater Arts / Amy Kotkin 2026-06-17 https://dctheaterarts.org/2026/06/17/the-play-that-goes-wrong-goes-delightfully-wrong-at-the-keegan-theatre/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-play-that-goes-wrong-regional-2026",
+   "label": "The Play That Goes Wrong",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Hill Rag / Matthew McClure 2026-06-17 https://www.capitalcommunitynews.com/content/play-goes-wrong-keegan"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-play-that-goes-wrong-regional-2026",
+   "label": "The Play That Goes Wrong",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Metro Weekly / Chris Klimek 2026-06-27 https://www.metroweekly.com/2026/06/the-play-that-goes-wrong-review-embracing-the-mayhem/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-play-that-goes-wrong-regional-2026",
+   "label": "The Play That Goes Wrong",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "DC Theater Arts / Amy Kotkin 2026-06-17 https://dctheaterarts.org/2026/06/17/the-play-that-goes-wrong-goes-delightfully-wrong-at-the-keegan-theatre/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-play-that-goes-wrong-regional-2026",
+   "label": "The Play That Goes Wrong",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Metro Weekly / André Hereford 2026-06-27 https://www.metroweekly.com/2026/06/the-play-that-goes-wrong-review-keegan-theatre/"
+  },
+  {
+   "kind": "coverage",
+   "id": "a-gentlemans-guide-to-love-and-murder-regional-2026",
+   "label": "A Gentleman's Guide to Love and Murder",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "DC Theater Arts /  2026-07-07 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHBCepfPIqd-ERx2C3D_6trS__tsKsLYrfC3z3y72L0-sJAAbtKNCUpmVA2eQThQ5Km02wqmAmB0HmmjJfdeG-pK8erT6pPvF6cbiTpgTzDru0-y5Z4QJ_2EqySkvlPVccYxBeSbxeJZcjaNCX5D-RViiXiaAbS-ojywSl-64-wyJYvAKctzGZGDa68jHZc0aJr5uqjPnmpavH5E3EffR66IE7D4g=="
+  },
+  {
+   "kind": "coverage",
+   "id": "a-gentlemans-guide-to-love-and-murder-regional-2026",
+   "label": "A Gentleman's Guide to Love and Murder",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Broadway World (Washington DC) /  2026-07-07 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQE84cNLfHSlS-3Ndy2Cjt2Pzw2110qQSpbEZbfbEfoU3cZjLKrW0U6dacS9s5tzv4HfeXurQd3o8xebu2NyKsBVe4A0Fd_1BqumOlk4yPAnDwsilbA0ELsYMHBl2veeclRyAGr5xT9pyrR_wRTejqQBzsVrYiJ4ceh8TzhgtXrBaJDmm9Wi8if8WVKU9cyDdp3KC0hc489F2a-bfGzGJSZBEfiWXbgUVCc=="
+  },
+  {
+   "kind": "coverage",
+   "id": "a-gentlemans-guide-to-love-and-murder-regional-2026",
+   "label": "A Gentleman's Guide to Love and Murder",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Maryland Theatre Guide / Kate Mankowski 2026-07-09 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFasfy28gMNJw9rRdHDH6qj2_JTGZivhXd7mT5VU-95AcQRLGbvmL0EPKDnEYAOGssQYWXKZ_mJ0_l2cJpwn-GTlR_uA-3VSRbafbyC1LPCg8fQPSfiOyj4JoZb"
+  },
+  {
+   "kind": "coverage",
+   "id": "a-gentlemans-guide-to-love-and-murder-regional-2026",
+   "label": "A Gentleman's Guide to Love and Murder",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Morris Theatre DC / Morris Theatre DC 2026-07-09 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFcgk7GS2B1Y-fFNATG_0Lhkbdc1Ti9i8hdac34K0m7W7zjMtrvWhZTk8L7jfL-S7w_egUYxaymT7KQa9dZHcnXPdCh-nnsp7TrxP_TKflUyPDfqvpRiHn2a0cptLFu5jiBH6Qb3tweAJU1SEGRGG4mUYB-hFuaKRLCukrQ99q8UzZSDF7D3OKyryNiU_8WLSe9F1sWFCK99c-hle6GkY8=="
+  },
+  {
+   "kind": "coverage",
+   "id": "a-gentlemans-guide-to-love-and-murder-regional-2026",
+   "label": "A Gentleman's Guide to Love and Murder",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Steve Charing OUTspoken / Steve Charing 2026-07-08 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEO587QO4PxaqQOFccxoTxb9jiFDJNOgcYQsEFmeZI9nt349lEx5iGSzYcpIReb1bSBR7WCcjusPA57mOtIiVZXoXxk5fOv-h_ArZHR0yhrvvoRv2wK6m5-Blf6kGXa4Xc73gI1AfMctOyuDBbI8tB2w78CtheSboXvBK33r5v5j4mfcdm6uYhqa7KChp8=="
+  },
+  {
+   "kind": "coverage",
+   "id": "a-gentlemans-guide-to-love-and-murder-regional-2026",
+   "label": "A Gentleman's Guide to Love and Murder",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "The Washington Post / Thomas Floyd 2026-07-15 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQE-3dpXyPD0p3WQoiiej67cptPk1ExBxbl8n3nZXq6Igc_J6BvnlCnf8-fkYM5pFVXtIrA0Zci_QtJdcme_2hdUdtS0IyW1DbeXyYNZpC9r3HJ6t7GSQuYFZgSOyCP_Ov9PEmsq-dx2Qb4naYPH221eAJKXSjG0liPLBie21Qzzk9Lz8x6dj8ydflPMV3NdVi08YDqj1fn06GzOx8zmI8IJiM6xNc4tkRoElpvbXu5o592QtvCHQU3QG1kwr"
+  },
+  {
+   "kind": "coverage",
+   "id": "a-gentlemans-guide-to-love-and-murder-regional-2026",
+   "label": "A Gentleman's Guide to Love and Murder",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Broadway World (Washington DC) / Itai Yasur 2026-07-07 https://www.broadwayworld.com/washington-dc/article/review-a-gentlemans-guide-at-olney-theatre-center-20260707"
+  },
+  {
+   "kind": "coverage",
+   "id": "a-gentlemans-guide-to-love-and-murder-regional-2026",
+   "label": "A Gentleman's Guide to Love and Murder",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "The Washington Post / Thomas Floyd 2026-07-15 https://www.washingtonpost.com/entertainment/theater/2026/07/15/crazysexycool-brings-bangers-tlc-deserves-bolder-musical-treatment/"
+  },
+  {
+   "kind": "coverage",
+   "id": "somewhere-over-the-border-regional-2026",
+   "label": "Somewhere Over the Border",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "DC Theater Arts / Melissa Sturges 2026-09-17 https://dctheaterarts.org/2026/09/17/in-somewhere-over-the-border-the-yellow-brick-road-leads-to-america/"
+  },
+  {
+   "kind": "coverage",
+   "id": "somewhere-over-the-border-regional-2026",
+   "label": "Somewhere Over the Border",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "The Washington Post / Thomas Floyd 2026-09-16 https://www.washingtonpost.com/entertainment/theater/2026/09/16/signature-merrily-we-roll-along-peaks-sondheimian-perfection/"
+  },
+  {
+   "kind": "coverage",
+   "id": "somewhere-over-the-border-regional-2026",
+   "label": "Somewhere Over the Border",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "DC Theater Arts / Melissa Sturges 2026-09-17 https://dctheaterarts.org/2026/09/17/in-somewhere-over-the-border-the-yellow-brick-road-leads-to-america/"
+  },
+  {
+   "kind": "coverage",
+   "id": "somewhere-over-the-border-regional-2026",
+   "label": "Somewhere Over the Border",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Broadway World (Washington DC) / Itai Yasur 2026-09-16 https://www.broadwayworld.com/washington-dc/article/BWW-Reviews-SOMEWHERE-OVER-THE-BORDER-at-Mosaic-Theater-Company-20260916"
+  },
+  {
+   "kind": "coverage",
+   "id": "ma-raineys-black-bottom-regional-2026-round-house-theatre",
+   "label": "Ma Rainey's Black Bottom",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Maryland Theatre Guide / Anne Valentino 2026-09-27 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQECqiY3_18VL_ON2mZjIb2wU9Gnz1YlbV1wbyssIkPMXPaiwVGAb_YkqnHrWjbabC-UJ4CqZ-YeZkQR6o6qd6nRNTQJiL7fo7qEqhyoqUp-NlsaeYmy1x2W5B_2ZW9Q_7ErAR2Zjr9e8PA5I22FjM6vnNk5TvdRnt7y71UP4kwFVzBCqXb02tH6Xp00WQNxCscTLf0y0gV62k_A6g=="
+  },
+  {
+   "kind": "coverage",
+   "id": "ma-raineys-black-bottom-regional-2026-round-house-theatre",
+   "label": "Ma Rainey's Black Bottom",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "DC Theater Arts / Amy Kotkin 2026-09-16 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQED_-e7We0ZFpfVwzFx7QkhwULRwKHgghLhNxfDFBu6wXhWNvcd6_RM07Frk7U2JkkbahSISyHXHgkh26hk01W2h2smL5DObIMdXSdZWIfKyc1jv_nGitjW31IgXuXu1QCMyHbdVXbA-holyR00AJH45ltc6Rf01sijV6pN1z2ktBdScAl9fmzaLsp5fY5C7KQ8XPyhXT4="
+  },
+  {
+   "kind": "coverage",
+   "id": "ma-raineys-black-bottom-regional-2026-round-house-theatre",
+   "label": "Ma Rainey's Black Bottom",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Broadway World (Washington DC) / Roger Catlin 2026-09-17 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQG26XLNQDacp5wuhMcQmTr4srWfbDwTo5ZjncRjtEWsTQWqIZLcDboCQgfho32NOAlufEq_2kZ3zXFp2kijDOQMBTSWLGawTQXse1xrCj-XaUp_Py8Fa0OdMKf6Shcj2P-W5nriU_0vuzS8kw=="
+  },
+  {
+   "kind": "coverage",
+   "id": "ma-raineys-black-bottom-regional-2026-round-house-theatre",
+   "label": "Ma Rainey's Black Bottom",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "The Washington Post / null 2026-09-23 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGRwElmWWRkZUirWi6AKiV3ACF9-C2mp-pf_MBBgx9Ed3MlMz1XFaYvVIRNxfIYzVsrBwAHOpEXzWiv-JSlg8RQM6VoFjKRVVSVUJWDR_0SqO4elg1Ybo-FUNZSbQfCuvkvfdT7dLiz3ts-OwBuv1RYmlM8PfLfMgLX1JdX41CFb1VinqnH6kwUmGc8cAN4wcij32CJh39khMjIgqLEUsM0PiPGLY1CrQGjyw=="
+  },
+  {
+   "kind": "coverage",
+   "id": "ma-raineys-black-bottom-regional-2026-round-house-theatre",
+   "label": "Ma Rainey's Black Bottom",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Washington City Paper / Stephanie Rudig 2026-09-21 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGu41CMH_noiFowdmSHnufW306r_SswLEJ0URVcof9lVyVRJJYgRXkLY_qoVtR07zrx0fkbxMkiv1aZRpn8WSvq5VUyPSgb4nSOwnMKArKqkny2QiggjdRXNVtBXj8A2DlxBZk2ZL2LSPI42yEv4YHHPTKe"
+  },
+  {
+   "kind": "coverage",
+   "id": "ma-raineys-black-bottom-regional-2026-round-house-theatre",
+   "label": "Ma Rainey's Black Bottom",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Whisk + Quill / Jordan Wright 2026-09-21 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQG71bclTsJI8fCRQ_VeObhhDwrZCoOqcyhnDxbGGVWBSIplFgBrZsVCgCNy701mDk3oyxl2pW1rNwvgRzL0HZdyTY_XFnvJyYHzXN5SARu9n7H3axobMs4418BDt3hKHj9awsL9BLqM5JUXHF42vxACSYONqD1gf6uhoxcmIZYb"
+  },
+  {
+   "kind": "coverage",
+   "id": "ma-raineys-black-bottom-regional-2026-round-house-theatre",
+   "label": "Ma Rainey's Black Bottom",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "BroadwayWorld (Washington, DC) / Roger Catlin 2026-09-17 https://www.broadwayworld.com/washington-dc/article/Review-MA-RAINEYS-BLACK-BOTTOM-at-Round-House-Theatre-20260917"
+  },
+  {
+   "kind": "coverage",
+   "id": "ma-raineys-black-bottom-regional-2026-round-house-theatre",
+   "label": "Ma Rainey's Black Bottom",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Metro Weekly / André Hereford 2026-09-21 https://www.metroweekly.com/2026/09/ma-raineys-black-bottom-round-house-review/"
+  },
+  {
+   "kind": "coverage",
+   "id": "adrift-a-medieval-wayward-folly-regional-2026",
+   "label": "Adrift: A Medieval Wayward Folly",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "DC Theater Arts / Deryl Davis 2026-07-19 https://dctheaterarts.org/2026/07/19/in-adrift-by-happenstance-theater-we-laugh-at-our-demons/"
+  },
+  {
+   "kind": "coverage",
+   "id": "adrift-a-medieval-wayward-folly-regional-2026",
+   "label": "Adrift: A Medieval Wayward Folly",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Broadway World (Washington DC) / Itai Yasur 2026-07-20 https://www.broadwayworld.com/washington-dc/article/Review-ADRIFT-A-MEDIEVAL-WAYWARD-FOLLY-by-Happenstance-Theatre-20260720"
+  },
+  {
+   "kind": "coverage",
+   "id": "adrift-a-medieval-wayward-folly-regional-2026",
+   "label": "Adrift: A Medieval Wayward Folly",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Maryland Theatre Guide / Justin Rustle 2026-07-28 https://mdtheatreguide.com/2026/07/theater-review-adrift-a-medieval-wayward-folly-presented-by-happenstance-theater-at-round-house-theatre/"
+  },
+  {
+   "kind": "coverage",
+   "id": "adrift-a-medieval-wayward-folly-regional-2026",
+   "label": "Adrift: A Medieval Wayward Folly",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "The Baltimore Banner / Hannah Yasharoff 2026-07-26 https://www.baltimorebanner.com/culture/arts/adrift-medieval-wayward-folly-round-house-theatre-review-2026-07-26-Q2R3X4Y5Z6A7B8C9D0E1F2G3H4I5J6K7L8M9N0O1P2R3S4T5U6V7W8X9Y0Z1/"
+  },
+  {
+   "kind": "coverage",
+   "id": "adrift-a-medieval-wayward-folly-regional-2026",
+   "label": "Adrift: A Medieval Wayward Folly",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Washington Blade / Patrick Folliard 2026-07-26 https://www.washingtonblade.com/2026/07/26/d-c-summer-theater-offers-something-for-every-taste/"
+  },
+  {
+   "kind": "coverage",
+   "id": "adrift-a-medieval-wayward-folly-regional-2026",
+   "label": "Adrift: A Medieval Wayward Folly",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "DC Theater Arts / Deryl Davis 2026-07-19 https://dctheaterarts.org/2026/07/19/in-adrift-by-happenstance-theater-we-laugh-at-our-demons/"
+  },
+  {
+   "kind": "coverage",
+   "id": "adrift-a-medieval-wayward-folly-regional-2026",
+   "label": "Adrift: A Medieval Wayward Folly",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "BroadwayWorld (Washington DC) / Itai Yasur 2026-07-20 https://www.broadwayworld.com/washington-dc/article/Review-ADRIFT-A-MEDIEVAL-WAYWARD-FOLLY-by-Happenstance-Theatre-20260720"
+  },
+  {
+   "kind": "coverage",
+   "id": "adrift-a-medieval-wayward-folly-regional-2026",
+   "label": "Adrift: A Medieval Wayward Folly",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Maryland Theatre Guide / Justin Rustle 2026-07-28 https://mdtheatreguide.com/2026/07/theater-review-adrift-a-medieval-wayward-folly-presented-by-happenstance-theater-at-round-house-theatre/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-flying-lovers-of-vitebsk-regional-2026",
+   "label": "The Flying Lovers of Vitebsk",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Broadway World (Washington DC) / Pamela Roberts 2026-10-17 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEw0eXwEpwWEt3ZrR7xzjnaB2mu51bIfLGQeEKCDktJqW8lRjrtXJdtYMZ76e0R0quwSHXhkKrpcmx_JKO40ESQ4Emvf5YK29FRVmpDAtg8jfqWwN0nVfF8XhH4gdN7Z24pHzcxGYkTD3jtQ6sTQ0PQjcStjn1Rc062FXih1Rk3q9ftoG0wy6iAlYun7fcqvwDCww_e7ncwEuf2JLtuxWgkw_H-t8OrN3I="
+  },
+  {
+   "kind": "coverage",
+   "id": "the-flying-lovers-of-vitebsk-regional-2026",
+   "label": "The Flying Lovers of Vitebsk",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Maryland Theatre Guide / Jarod Glou 2026-11-03 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGe5sYIXHX8YfTQLj8am3yaDAh_eB8Z_Mf9YZsWKqaFWGMsO-PaArrHmb0HqWxG_WN1cT0SX3dvtdxvETSMks9WbYO6zSnvmBiFI4QjGV_Dws9LbM9jXrHK6smuQylzMDoNe7_5L9GSt2Zo58jzbFi0THxp_wvFMRtdYJmOIgrnLjscyTsxOC4_nsOL31ND9fbSNLYJqfvHfK4mcgmTmguQK4cSR24zFRRL9Bwvl5zg5Zt5nBc="
+  },
+  {
+   "kind": "coverage",
+   "id": "the-flying-lovers-of-vitebsk-regional-2026",
+   "label": "The Flying Lovers of Vitebsk",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "The Washington Post / Trey Graham 2026-10-20 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFcW-LYNvtXTWkVP--mh1_WdwPDuCMCWvChGusYMdIiCmsxV2qLiEabd0rg3CzfJftnS6e4eflLxe7PYDvoPZkcodvD-66CckV3XxB7DL8OfFPwxx7kONmQR5L3n-Oz-GgyDpa3t1E1nvZOXB_KcMm9QjwThdTWzHM6pzHb0rJf4UEyWJrlDYqbKZpAfreK2L5E-DbXEImy5gBCSQ="
+  },
+  {
+   "kind": "coverage",
+   "id": "the-flying-lovers-of-vitebsk-regional-2026",
+   "label": "The Flying Lovers of Vitebsk",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "DC Theater Arts / Hannah Estifanos 2026-10-20 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHvePCoPdz-UyLIE4IYnjM88MFMce0Yr9qK__RC87fqzEjmvZl6hypPXgR9GhVS6Z--SClzdQS3e3jb9Q1If4IT3_d2XZnHLqZ0vSuw48G7O3C3Ncp59autH0cPRg_CSOB20n2FBg0="
+  },
+  {
+   "kind": "coverage",
+   "id": "the-flying-lovers-of-vitebsk-regional-2026",
+   "label": "The Flying Lovers of Vitebsk",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Metro Weekly / André Hereford 2026-10-24 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHGzklIeTQShktAjFH_VS36VVPShgMCQd9xNsTI1ls9HIvjDE3AWSrO86slY1hlXSVTRUS41lv7R7NxXMt-7t0MyhKbcPaYDpFQUW0TIQ2kFowWkzJSMj6AvFfU63GmeMY3HfwC0Kt2mRnOto88CNNsjXxCBxs_U-FVpip0zCEYhVNMJSSNyQ=="
+  },
+  {
+   "kind": "coverage",
+   "id": "the-flying-lovers-of-vitebsk-regional-2026",
+   "label": "The Flying Lovers of Vitebsk",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "The Georgetown Dish / Peter Rosenstein 2026-10-18 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEMqmFL2wJlb-OTMBTg7s6iyhQ3Bk3tRS-vsVb5uR1rbEirZJKk03PrMvwpjSR8QW5yTVWxvTboVOwHEs30ROkqVro4SwRBrasPAdMkxt1Jz2EZR0gOdAubpGWheIley41CIAXwaaHfu9XdvlfWmpOafarnko_U87HeWFk="
+  },
+  {
+   "kind": "coverage",
+   "id": "the-flying-lovers-of-vitebsk-regional-2026",
+   "label": "The Flying Lovers of Vitebsk",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "The Washington Post / Trey Graham 2026-10-22 https://www.washingtonpost.com/entertainment/theater/2026/10/22/frida-kahlo-woody-guthrie-dc-stages-explore-inner-lives-artists/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-flying-lovers-of-vitebsk-regional-2026",
+   "label": "The Flying Lovers of Vitebsk",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "DC Theater Arts / Hannah Estifanos 2026-10-20 https://dctheaterarts.org/2026/10/20/the-flying-lovers-of-vitebsk-at-theater-j-is-a-work-of-art/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-flying-lovers-of-vitebsk-regional-2026",
+   "label": "The Flying Lovers of Vitebsk",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Maryland Theatre Guide / Jarod Glou 2026-11-03 https://mdtheatreguide.com/2026/11/theatre-review-the-flying-lovers-of-vitebsk-presented-by-theater-j-at-edlavitch-dcjcc/"
+  },
+  {
+   "kind": "coverage",
+   "id": "frida-a-self-portrait-regional-2026",
+   "label": "Frida...A Self Portrait",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "MD Theatre Guide / Jeannette Mulherin 2026-10-17 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFbOiuQ6igLF6NmlSuTSLuYx4i2lcy_SEXpJpQvCzHjkqpJxuV_40O02MssHeanidwP7QNAdYmiT5NH3xvHwNmCMJF21WTBRkFEDHWZlyYXsWBPdcxWXsCn0TK46f4U7un7ZzF8t1l2yv1duV1dq3-FOTa9XP_IcPDx8EZc5OYL9dbcWi_S9VX65NSBvgahqrwC7lLmyBXnfl3p037joqFdDwo="
+  },
+  {
+   "kind": "coverage",
+   "id": "frida-a-self-portrait-regional-2026",
+   "label": "Frida...A Self Portrait",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "The Georgetown Dish / Peter Rosenstein 2026-10-14 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGXFj1t16-YNYLZptrnA3sDSUDkDezI4_mvCl3JDQh5TtQlqoRzoscni1pKwt4dYwE9l6lzsQmW6kc0EM8FRWSJN4HlmlIeTLi4iCtZNBWj1IQ5q4bqPEUQ9sy_86Jzuta9UI8mNA_yktsQKx7cQZdMnrQSAteSunKzAw=="
+  },
+  {
+   "kind": "coverage",
+   "id": "frida-a-self-portrait-regional-2026",
+   "label": "Frida...A Self Portrait",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "DC Theater Arts / Susan Galbraith 2026-10-15 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFAo5JRJqWM61VczBD3ARm2sbKEkbO1birwo6Y9z6s1EK0WwZVDviRHVsTXOxCDoI3ZOAH9e_cIhKerZ2o2OyfiYFiLaoMLiSgJSM2yqingAGAguRLeTu9mWRDJvqy5paBbFyOypp9s0Ow64AKxp4_1rwFvugV_TL6rG3EEzKvjxhvYsoNPbaoZEugFDRPCHH12aLP0VZKOUBBv81jdORORHgjNgNOR2Vz23jc="
+  },
+  {
+   "kind": "coverage",
+   "id": "frida-a-self-portrait-regional-2026",
+   "label": "Frida...A Self Portrait",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Washington Blade / Patrick Folliard 2026-11-01 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQH6Zl-WsOwSFCWiMYxQxrxSRdFUisXE7nym2TMzXM6e9bctO2kHwDg7Mt9l6qqVJshvWEQXPYMiIprZkZXr2xfilGVpWa0cfUTlMjKkP5GFayY7HkNVfNkGAoTgCGdvRoIwTFYyqCQlcuvyf9D9-YuFsKE5RptAvSjxl2R8OWvuBRr1apTnUdNLYal0Q3Y="
+  },
+  {
+   "kind": "coverage",
+   "id": "frida-a-self-portrait-regional-2026",
+   "label": "Frida...A Self Portrait",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "BroadwayWorld / BWW Reviewer 2026-10-16 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGxW0u554jELMlQToPxE5pXslhE4g36A-shkKuBidELnZBp4bz0kc35YgiGa9K6HE88SxA_U4DW3h6Bq5yuS93PQwXVKc_4ULQZ1k3W6aPe0kzk6WhbBxf1HkWh7lQoBvAUNdncVAlhnjfWeyH8Ljla-bMtv0RFu8Fo0VAFtSohdky47DWmhUvfUX8ODaaRymNQIa2oGJfRgaqSNxx-JKy5u6psiQe2-A5mrL-w340ITD6S7w=="
+  },
+  {
+   "kind": "coverage",
+   "id": "frida-a-self-portrait-regional-2026",
+   "label": "Frida...A Self Portrait",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "The Washington Post / Trey Graham 2026-10-22 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQF--_0sKNqMRl4gS4X-cpAKsz-xsPPdXYIV79ukBwtnE6nkofyptnPZ4gKW7jhlwowVaYAuVAf-yTnoTPnKJBM8XCh8dZxLCtnrUVI6F9Et8x_rmHg_lPcgVQCXdwkNVSWNh0mgMR2lSg1KjLrzE0WGtZoFIhQO_ackFrwDvH8PwutPPoVi5D66oCCPUh1Wg9jSpUJmn_2ePBb-4LcuaYa8jp5hf4nqC99lxnXJHOe0UWDOmO9V5CSYgOOIIA=="
+  },
+  {
+   "kind": "coverage",
+   "id": "frida-a-self-portrait-regional-2026",
+   "label": "Frida...A Self Portrait",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "The Washington Post / Trey Graham 2026-10-22 https://www.washingtonpost.com/entertainment/theater/2026/10/22/frida-kahlo-woody-guthrie-dc-stages-explore-inner-lives-artists/"
+  },
+  {
+   "kind": "coverage",
+   "id": "frida-a-self-portrait-regional-2026",
+   "label": "Frida...A Self Portrait",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "DC Theater Arts / Susan Galbraith 2026-10-15 https://dctheaterarts.org/2026/10/15/in-fridaa-self-portrait-at-stc-up-close-with-the-woman-who-painted-selfies/"
+  },
+  {
+   "kind": "coverage",
+   "id": "venus-regional-2026",
+   "label": "Venus",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "DC Theater Arts / John Stoltenberg 2026-09-16 https://dctheaterarts.org/2026/09/16/a-seriously-funny-bad-romance-in-venus-at-woolly-mammoth-theatre-company/"
+  },
+  {
+   "kind": "coverage",
+   "id": "venus-regional-2026",
+   "label": "Venus",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Broadway World (Washington DC) / A.A. Cristi 2026-09-16 https://www.broadwayworld.com/washington-dc/article/Review-VENUS-at-Woolly-Mammoth-20260916"
+  },
+  {
+   "kind": "coverage",
+   "id": "venus-regional-2026",
+   "label": "Venus",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "The Washington Post / Celia Wren 2026-09-23 https://www.washingtonpost.com/entertainment/theater_dance/2026/09/23/come-from-away-fords-theatre-celebrates-best-of-humanity/"
+  },
+  {
+   "kind": "coverage",
+   "id": "venus-regional-2026",
+   "label": "Venus",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "BroadwayWorld (Washington DC) / Morgan Musselman 2026-09-16 https://www.broadwayworld.com/washington-dc/article/Review-VENUS-at-Woolly-Mammoth-20260916"
+  },
+  {
+   "kind": "coverage",
+   "id": "venus-regional-2026",
+   "label": "Venus",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "DC Theater Arts / John Stoltenberg 2026-09-16 https://dctheaterarts.org/2026/09/16/a-seriously-funny-bad-romance-in-venus-at-woolly-mammoth-theatre/"
+  },
+  {
+   "kind": "coverage",
+   "id": "venus-regional-2026",
+   "label": "Venus",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "City Cast DC / Chris Klimek 2026-09-28 https://dc.citycast.fm/theater-reviews/woolly-mammoth-venus"
+  },
+  {
+   "kind": "coverage",
+   "id": "richard-obriens-the-rocky-horror-show-regional-2026",
+   "label": "Richard O'Brien's The Rocky Horror Show",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Maryland Theatre Guide / Alyssa Mutterperl 2026-08-31 https://mdtheatreguide.com/2026/08/theatre-review-the-rocky-horror-show-at-monumental-theatre-company/"
+  },
+  {
+   "kind": "coverage",
+   "id": "no-exit-regional-2026",
+   "label": "No Exit",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "BroadwayWorld (Washington DC) / Andrew White 2026-06-29 https://www.broadwayworld.com/washington-dc/article/Review-Scena-Theatres-NO-EXIT-at-Atlas-Performing-Arts-Center-20260629"
+  },
+  {
+   "kind": "coverage",
+   "id": "no-exit-regional-2026",
+   "label": "No Exit",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "DC Theatre Arts / John Stoltenberg 2026-06-29 https://dctheaterarts.org/2026/06/29/scena-theatres-droll-fresh-take-on-sartres-famously-dour-no-exit/"
+  },
+  {
+   "kind": "coverage",
+   "id": "no-exit-regional-2026",
+   "label": "No Exit",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Maryland Theatre Guide / Anne Valentino 2026-07-15 https://mdtheatreguide.com/2026/07/theatre-review-no-exit-presented-by-scena-theatre-at-atlas-performing-arts-center/"
+  },
+  {
+   "kind": "coverage",
+   "id": "gruesome-playground-injuries-regional-2026",
+   "label": "Gruesome Playground Injuries",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "The Washington Post / Thomas Floyd 2026-08-25 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFczcRoO1oq1LjJd1sm-EYmw1_oaGJ_s1LKtB8kGb6R7XhQeY0oGd8WKBvcNlOm28WtD7_D3cYOjsKAproqxYJ4WW1r5_LeveXUIqDVw9C5nWOEo_8-Tan8WRb_W8BeWuAq9p6X5wZfTyGMcWzScvvK72KPOF1BJ2Pu5DKloLKlAKmBrpZXvLEuxFDZw8RVmZ8484c"
+  },
+  {
+   "kind": "coverage",
+   "id": "gruesome-playground-injuries-regional-2026",
+   "label": "Gruesome Playground Injuries",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "DC Theater Arts / Nicole Hertvik 2026-08-18 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGajET9JvHKrlciTGLi5o24pjUGtJ1Vs_QrXgTgHVf0Gv1pAn1ks5GnOjrn5iqFFaxTqxD41aux0U0VZAivPs0HmDap5nTVDIk4xdHnjmr6-LeU0p6q3jTOHh8btzg2orrM04HaUrvlz_E7JYJIfJW5npDGUR5-IMYfKKfBJQBczi9cgGPs607Bb14Q_aSY98I2K-q-sUKiLYVLLT_OZvlrfZJsmGxICrYDbTw="
+  },
+  {
+   "kind": "coverage",
+   "id": "gruesome-playground-injuries-regional-2026",
+   "label": "Gruesome Playground Injuries",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Broadway World (Washington DC) / Jake Bridges 2026-08-17 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQF08PdhmDEU3lvy9Co9YKW6bJeE90JHojXO6rgmcpC82_J3a9paRkj29I0WU_fcFoI6Yfb9qKFTbogkQa_lqV4Uaj4jJGLyPecVounCdAKBs-rWgcDw7C5fCpZ_Z_bh2fJtQjvoozFUxqLkHt96X5Ph7x9X0yraYayl5Bwh6H2Aje3ohAdOsBQ6XM0fcCeM1rJsQjxnKRAkmx3DSq32PK0x8DJEY09vSg04MHXk="
+  },
+  {
+   "kind": "coverage",
+   "id": "gruesome-playground-injuries-regional-2026",
+   "label": "Gruesome Playground Injuries",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Maryland Theatre Guide / Anne Valentino 2026-08-25 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHMo68KM0FJO2F0pRee1ZiYSTUs3-b_8O_d-wunIeagwZCFqVVoCXVBBMN90XOfu8hfUpcvDMoUodJkCFpaZLMhjMg2FP54_5qmw5jVn9aUHYWGlNml5GBJHfkkVcrBOa_jN6HqkB35HxAz3oBwteZFyvK65em7DIjKJbkkr5TTveBz2goxrIOi9oYpItWa7NPhGlr8YosHmLUPBA="
+  },
+  {
+   "kind": "coverage",
+   "id": "gruesome-playground-injuries-regional-2026",
+   "label": "Gruesome Playground Injuries",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Metro Weekly / null 2026-08-22 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQE0GWnd-Pq5PM9-RWouiGhyyrQ9Z44i9PmjXpnl_ycQMr3uRNClfW2ZCKczUScWKoqtMEwZ3cqDM3nzvRWKWs6Q9-XR-Jo_0cCvhQYz_4i9Ai4oT70h3aqONkocCi8WKAqDgxpe0_W6j7tEii2uXQsGx5LmOUP43c4OXiUm2k7P-kUF11JAnQRcOLZCmH__p5E="
+  },
+  {
+   "kind": "coverage",
+   "id": "gruesome-playground-injuries-regional-2026",
+   "label": "Gruesome Playground Injuries",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "The Washington Post / Thomas Floyd 2026-08-25 https://www.washingtonpost.com/entertainment/theater/2026/08/25/notebook-underappreciated-broadway-brings-waterworks-dc/"
+  },
+  {
+   "kind": "coverage",
+   "id": "gruesome-playground-injuries-regional-2026",
+   "label": "Gruesome Playground Injuries",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "BroadwayWorld (Washington, DC) / Jake Bridges 2026-08-17 https://www.broadwayworld.com/washington-dc/article/Review-GRUESOME-PLAYGROUND-INJURIES-at-Keegan-Theatre-20260817"
+  },
+  {
+   "kind": "coverage",
+   "id": "hundred-days-regional-2026",
+   "label": "Hundred Days",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Broadway World / Doug Poms 2026-10-12 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQG5x8_M9lYwCU0rWzDVj31c1rQiN1AV2jwT6szXsZ8vTPFtHIvFsp0W3n2h8Awt0cmIaqzmvij9Cp2sYq0tLGTV7fbOPzwMhF8QZDn3tlAkKCCOLiEaxUU-LIju6_7Z91p78wgRwJGl0DmQZw21LbUWfrmfls6mO_-U44DEgMjx9vk1iwFFFKGrW6ioJOCRnTRou0AyeeF1aOQGePjBHPav"
+  },
+  {
+   "kind": "coverage",
+   "id": "hundred-days-regional-2026",
+   "label": "Hundred Days",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "MD Theatre Guide / Aidan O'Connor 2026-10-13 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFk65ZmurAdlu40P3SlZhkIs0tDQGVPACGeqkt52TEZwOpL4rUzZeXDnjwH1sBR8rKPHxthpu4BJJYGDOM3kNcGSLrowoTMeLVxPVtqqJKDkykB_WmSm3HDoVYeV83HlYBNsFSOva7cL8gOg8QT5FH6JxnRLAwNKfNz5keaC919vNPUlR3-81CHsaRK7i2qCg=="
+  },
+  {
+   "kind": "coverage",
+   "id": "hundred-days-regional-2026",
+   "label": "Hundred Days",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "DC Theater Arts / Eric Colchamiro 2026-10-14 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGM2TXIqmSCYuQNpbYzXhlwRm46AEEan49nGDz-JMoFCWjNLfxUqtMCHHbEMjPTFva7LgNSQeVlDTkGmnGfJu3VxuC3UERJMSeVGLVcItG7dqXEgrUcZrOFSFac4_Rk33hc_RRu9bzvBmRBgctrOETtrlhRZRlJHsRdzxHCtB3kiP196cYAQXgpWec_JmykJxs"
+  },
+  {
+   "kind": "coverage",
+   "id": "hundred-days-regional-2026",
+   "label": "Hundred Days",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Metro Weekly / André Hereford 2026-10-20 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFsEiikMcyXSspTzEybx1qJwWaQrGaj1dMta2nNiK7Ah7q6QrN-t2zB1RJ0t2sxGrYPy1JKevKbwX6d-GDViieRf5MHhBDxEc7ujkSOKffFj7VBvwUJdmj3CsL74TQCrvmbw7yqNBSIJiYVVPWLD5ufWUDjJP1isglIEshpM3vq7Ro="
+  },
+  {
+   "kind": "coverage",
+   "id": "hundred-days-regional-2026",
+   "label": "Hundred Days",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "The Washington Post / null 2026-10-22 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQE-RvuUF4lEyy9YgjaPLIybZu15uDpw068gQSncC6nqQVetuypt8QiTjsW23FEnMn3oB3ve8eW28W0-cevRF0oosOEfqLxsP4CW_DsnGYFXxd2GoJaKPxEEBhqAuCGYdrN02P2xjvfURtkTqSKL6pnSos9Ds1OdTKONfjI0ymW2duYtBg=="
+  },
+  {
+   "kind": "coverage",
+   "id": "hundred-days-regional-2026",
+   "label": "Hundred Days",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "The Washington Post / Trey Graham 2026-10-22 https://www.washingtonpost.com/entertainment/theater/2026/10/22/frida-kahlo-woody-guthrie-dc-stages-explore-inner-lives-artists/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-colored-museum-regional-2026",
+   "label": "The Colored Museum",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Maryland Theatre Guide / Susan Brall 2026-07-21 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHlOyml8STlepyO5TWac1uqPkp1UwG76aRyWP3sYh1S7jZNVTwhz_hNXrTB28ZOlS75yV7HZm3cpF-T6bftE-nJXcv5TqUpIRiP82Biu02hCVUME07nazg5_sOTmdLI61fcu2La-7brCnmpbi4GDy2ZF7KuYzpCr-D3ZvnXsIHIIUSwG4k0F3dCA9Qpf2qFa88Wc9pww_E"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-colored-museum-regional-2026",
+   "label": "The Colored Museum",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "DC Theater Arts / Mary V. Holiman 2026-07-03 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQG5347FKMO4gxsevYa3rEU_4MxArTV18Xzae96PBVtrE3eX7FkGAHRH3e98da-5e11xVpmD0XzBycs_rPesqVRAW3g8uUpBxE9w2c4gcWPkIR1ris6aDes5GEg9glajsw5Al2qWNx_QlsKWLpOiT_Er3AONBUHSmDD8UqOktiG5X9yDafJwxwhCklm9Jkh3hS7bbRUgrvo4JS7tDW8waeBypGP2G9Rl"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-colored-museum-regional-2026",
+   "label": "The Colored Museum",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "TheatreBloom / Wes Dennis 2026-07-17 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHKEsUkW1XscNgtD1YUH2HDhkick0OYp1OuYc68PVR5MiA5rqXq2IUfbs2gv-Qn-KUL4qERi7SlGuaj5wo4Q90b_gEQDDe-tW3-Jf-2oxc8b7E6NsLCSBYDQz-l0DDw512wUsxnG66JGT4a4ocE0o4K2CJcspouvoCiNjoSlTmRJKLRZ3f9kRbcVw=="
+  },
+  {
+   "kind": "coverage",
+   "id": "the-colored-museum-regional-2026",
+   "label": "The Colored Museum",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Maryland Theatre Guide / Susan Brallon 2026-07-21 https://mdtheatreguide.com/2026/07/theatre-review-the-colored-museum-at-silver-spring-stage/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-colored-museum-regional-2026",
+   "label": "The Colored Museum",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "DC Theater Arts / Mary V. Holiman 2026-07-03 https://dctheaterarts.org/2026/07/03/black-diaspora-as-dramedy-in-the-colored-museum-at-silver-spring-stage/"
+  },
+  {
+   "kind": "coverage",
+   "id": "monsters-of-the-villa-diodati-regional-2026",
+   "label": "Monsters of the Villa Diodati",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "DC Theater Arts / D.R. Lewis 2026-10-14 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQE6s01_uSBDq8KadB1aXN3B_HA7BzeQREQamIU41udcPbwcJiUkxcdX_oZLDBzj9cScp9_fhBSAYr3E6353AoikHygC0mEezCDiYzTu0IvmufuI3YpocDAyWDFN2rvH9xKkmfKhIP72pDGd1MBQORYcIZyd8zrgResuKH46a5bkWJ7RnY1dQOt4ZUq12K2-4dotIBlivLjgP0ZsDhRySHTvN4RfMw=="
+  },
+  {
+   "kind": "coverage",
+   "id": "monsters-of-the-villa-diodati-regional-2026",
+   "label": "Monsters of the Villa Diodati",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Broadway World (Washington DC) / Itai Yasur 2026-10-15 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEAywLZx8M6Y3yfw_fL-KHxJZLoY_CoJd9wSlCUnLj00zx0cR6YSkwYaGfP0CvDXfw4QoxdQmzx8UJx_T0TUZ4QAoPjF3_zo5RfLVVomMDpItaxSYioa-LQ18PJoz4LmK0D-rRyMpNXDJHWgRV2iNh-SExi8jM4HDnOL63FmY-orOZAQwxxRGMAVbhHcGNWrJJw20aRv7VKZI7A7tPkmZXrtTcOoKgiVDqgsodFVYwc-f-mNzbmOWlKyBPazWQ=="
+  },
+  {
+   "kind": "coverage",
+   "id": "monsters-of-the-villa-diodati-regional-2026",
+   "label": "Monsters of the Villa Diodati",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Maryland Theatre Guide / Jennifer Georgia 2026-10-14 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEEnASzJB8PZ907wzq_uF5x7d5V9X2L2O84cLc1U2QEAtepGoXzTGsgJHw49NJnalP9li3VBBYYbsGjkDIkeEbmUiMFxtoHnnSjhwCp9mNlM1ndy6QtZn8yY_k02FX_UR-F8avf05AAmWdzOihu6zYUXVxLBH8H3ADfCslUsUYqaXTn7ou7_H8uxulYYqtTA02q4ZFZuDT_41JKKDaqq-nq"
+  },
+  {
+   "kind": "coverage",
+   "id": "garbo-the-actor-who-saved-the-world-regional-2026",
+   "label": "Garbo: The Actor Who Saved the World",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Broadway World (Washington DC) / Roger Catlin 2026-09-08 https://www.broadwayworld.com/washington-dc/article/Review-GARBO-THE-ACTOR-WHO-SAVED-THE-WORLD-at-GALA-Hispanic-Theatre-20260908"
+  },
+  {
+   "kind": "coverage",
+   "id": "garbo-the-actor-who-saved-the-world-regional-2026",
+   "label": "Garbo: The Actor Who Saved the World",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "The Washington Post / Thomas Floyd 2026-09-16 https://www.washingtonpost.com/theater_review/2026/09/16/signature-merrily-we-roll-along-sondheim-perfection/"
+  },
+  {
+   "kind": "coverage",
+   "id": "garbo-the-actor-who-saved-the-world-regional-2026",
+   "label": "Garbo: The Actor Who Saved the World",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "The Washington Post / Thomas Floyd 2026-09-16 https://www.washingtonpost.com/entertainment/theater/2026/09/16/signature-merrily-we-roll-along-peaks-sondheimian-perfection/"
+  },
+  {
+   "kind": "coverage",
+   "id": "garbo-the-actor-who-saved-the-world-regional-2026",
+   "label": "Garbo: The Actor Who Saved the World",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Broadway World (Washington DC) / Roger Catlin 2026-09-08 https://www.broadwayworld.com/washington-dc/article/Review-GARBO-THE-ACTOR-WHO-SAVED-THE-WORLD-at-GALA-Hispanic-Theatre-20260908"
+  },
+  {
+   "kind": "coverage",
+   "id": "merrily-we-roll-along-regional-2026",
+   "label": "Merrily We Roll Along",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "The Washington Post / Thomas Floyd 2026-09-16 https://www.washingtonpost.com/theater-dance/2026/09/16/merrily-we-roll-along-signature-theatre-review/"
+  },
+  {
+   "kind": "coverage",
+   "id": "merrily-we-roll-along-regional-2026",
+   "label": "Merrily We Roll Along",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "DC Theater Arts / Bob Ashby 2026-09-05 https://dctheaterarts.org/2026/09/05/merrily-we-roll-along-asks-what-if-you-got-everything-you-ever-wanted/"
+  },
+  {
+   "kind": "coverage",
+   "id": "merrily-we-roll-along-regional-2026",
+   "label": "Merrily We Roll Along",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Washingtonian / Jordan Wright 2026-09-06 https://www.washingtonian.com/2026/09/06/stephen-sondheims-musical-merrily-we-roll-along-is-a-hit-at-signature-theatre/"
+  },
+  {
+   "kind": "coverage",
+   "id": "merrily-we-roll-along-regional-2026",
+   "label": "Merrily We Roll Along",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Washington City Paper / Chris Klimek 2026-09-09 https://www.chrisklimek.com/latest-work/2026/9/9/signatures-merrily-we-roll-along-is-a-delight-from-end-to-beginning"
+  },
+  {
+   "kind": "coverage",
+   "id": "merrily-we-roll-along-regional-2026",
+   "label": "Merrily We Roll Along",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "The Washington Post / Thomas Floyd 2026-09-16 https://www.washingtonpost.com/entertainment/theater/2026/09/16/signature-merrily-we-roll-along-peaks-sondheimian-perfection/"
+  },
+  {
+   "kind": "coverage",
+   "id": "merrily-we-roll-along-regional-2026",
+   "label": "Merrily We Roll Along",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "DC Theater Arts / Bob Ashby 2026-09-05 https://dctheaterarts.org/2026/09/05/merrily-we-roll-along-asks-what-if-you-ever-wanted/"
+  },
+  {
+   "kind": "coverage",
+   "id": "freddie-a-girl-regional-2026",
+   "label": "Freddie: A Girl",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "DC Theater Arts / John Stoltenberg 2026-08-30 https://dctheaterarts.com/2026/08/30/girl-power-goes-anti-fascist-in-taffety-punks-first-rate-freddie-a-girl/"
+  },
+  {
+   "kind": "coverage",
+   "id": "woody-guthries-american-song-regional-2026",
+   "label": "Woody Guthrie's American Song",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "BroadwayWorld (Washington DC) / Roger Catlin 2026-08-11 https://www.broadwayworld.com/washington-dc/article/Review-WOODY-GUTHRIES-AMERICAN-SONG-at-Theater-Alliance-20260811"
+  },
+  {
+   "kind": "coverage",
+   "id": "woody-guthries-american-song-regional-2026",
+   "label": "Woody Guthrie's American Song",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "DC Theater Arts / Susan Galbraith 2026-08-09 https://dctheaterarts.org/2026/08/09/theater-alliance-pays-powerful-musical-tribute-to-woody-guthries-legacy/"
+  },
+  {
+   "kind": "coverage",
+   "id": "woody-guthries-american-song-regional-2026",
+   "label": "Woody Guthrie's American Song",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "1 Minute Critic / Matthew Wexler 2026-08-10 https://1minutecritic.com/2026/08/10/5-regional-theater-productions-worth-the-trip-this-august/"
+  },
+  {
+   "kind": "coverage",
+   "id": "woody-guthries-american-song-regional-2026",
+   "label": "Woody Guthrie's American Song",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "DC Theater Arts / Susan Galbraith 2026-08-09 https://dctheaterarts.org/2026/08/09/theater-alliance-pays-powerful-musical-tribute-to-woody-guthries-legacy/"
+  },
+  {
+   "kind": "coverage",
+   "id": "woody-guthries-american-song-regional-2026",
+   "label": "Woody Guthrie's American Song",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Broadway World (Washington DC) / Roger Catlin 2026-08-11 https://www.broadwayworld.com/washington-dc/article/Review-WOODY-GUTHRIES-AMERICAN-SONG-at-Theater-Alliance-20260811"
+  },
+  {
+   "kind": "coverage",
+   "id": "wish-you-were-here-regional-2026",
+   "label": "Wish You Were Here",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Broadway World (Washington DC) /  2026-09-29 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFZCeYhWLUWeiqT97yrScN2MclcHnSzE4MVH11QRz1Dqe0nCV4pmMIZhBThheeZsNCMq1ams6aAhnzI9xKzNZG9TOZdWl1DWJNIMHgC42rlBFWwJzVASUW4Qlzvqb7o-AHYBPVKXX8tM0BMTd-n5L-6m3EsleChXA_o-wmzGWzo-YKlLCiwuVhb998-8oSYJoJpFx5xj_ne61NzhnZE3sfEv5A="
+  },
+  {
+   "kind": "coverage",
+   "id": "wish-you-were-here-regional-2026",
+   "label": "Wish You Were Here",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Maryland Theatre Guide / Aidan O'Connor 2026-09-29 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQF6IaSq2_N5OqoRaQpqLCrwO_JjuzhOC6wwDpkObSnXaxodXg118Pd960fTdgM1m5VqyTQzwiFe4yQplnjLQxB0Q1QREW6tdKc-n1VFVyV3dd764XDYVqChKvD7otQiuaU35gTz5ejcUaczBpxT6YOZ9CrvwF11YBa-g7Fw0GB5Xf9wPFFa44chD3cHG2DfZKDx"
+  },
+  {
+   "kind": "coverage",
+   "id": "wish-you-were-here-regional-2026",
+   "label": "Wish You Were Here",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "DC Theater Arts / Celia Wren 2026-09-29 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFlK0RLlOqgpYTFF1YZM6JjChe0u3Wy8opOHGp9sI-R2u9xPk9quYVqKL2bYrNOp13IvaQsH5V64VmAwiOhCj1STVQDbW5xcjIchRGNm0e0uFJl7uaSygbqfj3sfuVmggoD8-3tJHvh8mpRGs7N2otFl__kfEeJFEuWLwHyJF0QZ0uHak0Rhvw2myfrctxdnR3sOpO8Drejck1CHcNZ_8TjbTI-DyiWJGgu9zg="
+  },
+  {
+   "kind": "coverage",
+   "id": "wish-you-were-here-regional-2026",
+   "label": "Wish You Were Here",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Washington City Paper / Daniella Ignacio 2026-10-15 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHRWgQa-kdbeF85fyQTd50rwEOCdU8oza-YL_QTjpLKdoxv5cyzPL6ZKYsDOOTXN6XXm-0pPB5dx4p4AFGNWFCvqpcoY-rBsPTRrE6HER42sMI1kqXfbP7fZBj15fHmFrdVRn3Y-xXMlPUvf23q0lq-JVkQnXqFHKOTy4IhaNR6w9NX2sjm3On2szXZ69q_-JIHds-vuV0y"
+  },
+  {
+   "kind": "coverage",
+   "id": "wish-you-were-here-regional-2026",
+   "label": "Wish You Were Here",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "The Washington Post / Trey Graham 2026-10-01 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHlFtglDavh0BAOAfdAupxmmANxdVgKf6cVTxXf-vSuzfphFx6q-OtiXmlCmMyb56k8syY_DB5Fq1MOoCGvfcn2gKXwqG4i7a4hTJXk7321mlM-o0W0v9Lh5LhXSBB470ocBoF4saL_XR0un7c="
+  },
+  {
+   "kind": "coverage",
+   "id": "wish-you-were-here-regional-2026",
+   "label": "Wish You Were Here",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Talkin Broadway / Susan Berlin 2026-09-29 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGdBdFN0vMMRUd2j_OfFpFAVgodtaPk0_i6U-5AkX7ytLFi5pRvs2UBEj-5vwS012QqxHXVOr09ZyGoN-GuVeOiLW4h1r-l9yli49UzT0Xn5ih_Emws3L6sl_jhJ8TlmslDXfQp0YJoAyUOGoAb5Ae1vgZZghD0"
+  },
+  {
+   "kind": "coverage",
+   "id": "wish-you-were-here-regional-2026",
+   "label": "Wish You Were Here",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "City Cast DC / Chris Klimek 2026-10-20 https://dc.citycast.fm/theater-reviews/wish-you-were-here-sanaz-toossi"
+  },
+  {
+   "kind": "coverage",
+   "id": "wish-you-were-here-regional-2026",
+   "label": "Wish You Were Here",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "The Washington Post / Trey Graham 2026-10-01 https://www.washingtonpost.com/entertainment/theater/2026/10/01/measure-measure-set-american-south-illuminates-shakespeare-anew/"
+  },
+  {
+   "kind": "coverage",
+   "id": "bronte-sister-house-party-regional-2026",
+   "label": "Bronte Sister House Party",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "BroadwayWorld (Washington DC) / Abby Korb 2026-08-26 https://www.broadwayworld.com/washington-dc/article/Review-BRONT-SISTER-HOUSE-PARTY-at-Nu-Sass-Productions-20260826"
+  },
+  {
+   "kind": "coverage",
+   "id": "some-like-it-hot-regional-2026",
+   "label": "Some Like It Hot",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Maryland Theatre Guide / Susan Brall 2026-09-27 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFSsiZ7KAS76I-RIlEnWafh16s-CAjTPm5_L-xjBbzB2-enUazregNs8keVBtyzTh1wMwrWNNJjTBDCw5uf-32-Dfa2EbgHwIIc0G7ybaNhuWCv0Yqv817eFVBfnmUZsvaW6y5ohfqT7TnqpO9xVSoow5BjgTp9jsVzgH8T5XYsQCZM2Re2JPCo9Ob0JcQD4YJQkjPNAczCEUE5Ghl1dyew24djUfWXIjjhvxNxdl4CmVBZWnf3dOh8"
+  },
+  {
+   "kind": "coverage",
+   "id": "some-like-it-hot-regional-2026",
+   "label": "Some Like It Hot",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "BroadwayWorld (Washington, DC) / Jake Bridges 2026-09-25 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQG_oQipAUSZCADaGZ0PL-VW54G4CpxadFGh93z6hjkST2C4ZraiDwJo5PQHnZ_PJo7SYHRlq0ZGlvtbt_-m4bFmqkDlHWsaxk301pSQpulSF-dMzdK8vWPuQHX29WvHBVVH2F0G1urooKfTJKVMNEDwKn63R2v1PnA-KbYKXRqXf4MzH1kUzYTR4_2xtIyddqsRrzpmTvQ-Gn8Nq3IRn8qNhu0PilfXYA=="
+  },
+  {
+   "kind": "coverage",
+   "id": "some-like-it-hot-regional-2026",
+   "label": "Some Like It Hot",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "DC Theater Arts / Bob Ashby 2026-09-26 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGzwiSebIFEe7cqiztkdQhdCMnw6H_cgAA4sF_VQ6T2H5lovXbEl1v4V6VGSxGKX1pC2NJ-0T0V0Y2j1qO8Y83kU4ecewpCeXJWIZDk8NGE7bvt5Vn30S6jFOM50ze2nnGsltW7uFJixT_gMTpk4WzcH-em1RWGbbRvX234A3sGmqFMnmziROgo9KmUfb6kpD52uCI91yrroUmFdN-oTvVMylg=="
+  },
+  {
+   "kind": "coverage",
+   "id": "some-like-it-hot-regional-2026",
+   "label": "Some Like It Hot",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Washington Blade / null 2026-10-07 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFiDpDqUoGeQEQ2kP9J84HPu0UcgYmJZrDhkMRZWb5XWkOayOi50xyNnEJGLxOPFeqwUMUbcKwOra_uKBkyNVE7pDkUQRGOYTrFAxJG7y5YgKDAeWq32OaUF8H7eMPJBr1J7eMPJBr1J78hsgJZNMYfxY4pYNc-I5JTXgnmHjF1c7EXLymU="
+  },
+  {
+   "kind": "coverage",
+   "id": "some-like-it-hot-regional-2026",
+   "label": "Some Like It Hot",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "The Washington Post / Trey Graham 2026-10-01 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGvE6UaRDMXHJAaH9jExKG9owwbDBbzokEiKjWfkm6G7jNws3X7Bc4MVwNKzWgP5RFADs4HKzU4pbRjkq7EkoSkyD7ew_r3mqt2RmajLTxPKKDXDpuqIwjGfA2cJtRTnXAPoabTHvhinDieH4sXHitS5GQ34J_2Qr9FIAr5GuBr753R6lB2Kl_bJ6sjgMm8SBiLsdoOQq8E51hNr5xLM5dJx9qgl_sVOTKcvn1WVjmEwO-YQP5vW2mQ2VZxvg=="
+  },
+  {
+   "kind": "coverage",
+   "id": "some-like-it-hot-regional-2026",
+   "label": "Some Like It Hot",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "The Washington Post / Thomas Floyd 2026-10-02 https://www.washingtonpost.com/entertainment/theater/2026/10/02/some-like-it-hot-plays-historic-stage-after-olney-theatre-renovation/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-fruits-of-our-labor-regional-2026",
+   "label": "The Fruits of Our Labor",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "MD Theatre Guide / Anne Valentino 2026-09-13 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQE75OdkOu5I7zHzpMoIRPE8QM9pkUS-Gm-YvoA4z89USOtqNaxoV3smKXQHQya5ydtaswv21LeY2mNs2e6z6SGVqwj3PYR0LATOxocvVvXcKIp6FSb5IPcU06chceIrlovcbnhpg4B8F0jImtuN5H0KpqdAxpjRPPXGJlmQO2EkVmPPyIvfWLRe_Tl7406sZhpYvl2luDjBMYx_0dxwYAnJLKBn_CaHeMOYjKYoFI11esY71w=="
+  },
+  {
+   "kind": "coverage",
+   "id": "the-fruits-of-our-labor-regional-2026",
+   "label": "The Fruits of Our Labor",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "DC Theater Arts / John Stoltenberg 2026-09-11 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQF_jN_RZ2Vt4i9PLpwtOEVpzb3YlVXYD8b_hiiogyNatdclI_5Pmrpxtu4ulpk0DDSv3zpPq1TTfhXhr2IwZsmtyyPj5hGITGOnnPUSZUIZ1Gt5nXP1l1r_PhulinYjZkF4tg4Z"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-fruits-of-our-labor-regional-2026",
+   "label": "The Fruits of Our Labor",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Broadway World (Washington DC) / Audrey Cahak 2026-09-14 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHnd6i-YVUBBOZus0ROQoRj9iVNRY9oVutEkS5laHmwptoQTdnbyw2wqIleMfTBnjLdRJwyciP-bT5Z6dh61zwoxzA19N4mPlkaNCY83iEDi3Y4sjwlajnSlBwaQ5B05YR1-8Aq6NFpcvKc83O9r8rrp-ljmBXWe-jAc_JTmVCwOVQNp-8kaHYZAQx5auTdC6tqbeYv4GVHStJPi1844NAFVI6OW4hFZB2UOX0C79OR8tyK"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-fruits-of-our-labor-regional-2026",
+   "label": "The Fruits of Our Labor",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "DC Theatre News /  2026-10-09 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEXjf1duO2Hsk89oOprCXYWNi-VC61skqkUcLAkebIqkuECvBHj-TabbeIKDR455IGxwydtt_yfVj75N4o0bXc4dq5NXc9sFbasZs-7A7aWoFOjHvQyeQNKrCU5aC8p8uGFjp9zNEcXNmmSa38gqBjR_AGV0p9_fi2VDG2tW4RxUuyYprilUonqtJ53GFs6B24="
+  },
+  {
+   "kind": "coverage",
+   "id": "the-fruits-of-our-labor-regional-2026",
+   "label": "The Fruits of Our Labor",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "DCdigest / Kathleen Sheehan 2026-11-02 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFWkGgHaK6bWYD0U10DxJ699CodrQuPDvuSZfTRUJEV4Fau5PRjXRbdKnAKfgDz9jcB2ge82LvcZ2r7lGz4PtfqH5y36hiB4PmSo-9D89HaIgr_wZtKnVlAqmiO"
+  },
+  {
+   "kind": "coverage",
+   "id": "are-you-now-or-have-you-ever-been-regional-2026",
+   "label": "Are You Now or Have You Ever Been?",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "The Washington Post / Thomas Floyd 2026-11-05 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQEHCHuU_YtXJ9ZRf6ImQYBbgGGEhcWy2UpMJ3tUWzxs4p4TJ9vhnbNk1qXc63u4OET2eKsLBc3Im4MoHqnh5LXCktpHxHX1wtWRxtVe7_tEISlQ__Op13VffA-ADM8njNB3yASm0tKaDmxYYwwmXIKGLmbgEw1qyzOhPMIYZTbFYfafR7-TMXvnX5CP3VILnSYyoy6gqGW5GcgOGNr7Lo1z7P_RxIcNCjwOB2Vn6VSp7Q=="
+  },
+  {
+   "kind": "coverage",
+   "id": "are-you-now-or-have-you-ever-been-regional-2026",
+   "label": "Are You Now or Have You Ever Been?",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "DC Theater Arts / Celia Wren 2026-10-25 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQFgsYvgbrgVh8dvzimpb0P9tuL7MN5upWrc9uLwLU7xcEoCZBSRU6AVEQNixGVjwXeui-MUOtJYGlXdV6wOgSsks9ugijbTbvGHkYlzdEcMAhV4tgeb8yOoxyq8LidmqtjTJt0yH_jatTjuMtsiUY3FxlrgSwqEiZuL3-1vq0cT9kNu4_6rbPmZ3w9uTXtkXnuq6VFmtJImdqNvBgIJTdehjXyCaO7yE=="
+  },
+  {
+   "kind": "coverage",
+   "id": "are-you-now-or-have-you-ever-been-regional-2026",
+   "label": "Are You Now or Have You Ever Been?",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Broadway World (Washington DC) / Peter Rouleau 2026-10-23 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHSZO6HDqO8Wrv6Qst9cx2R5hjxs7Cpe2AzsphG8jOCB32ZHyJAMbE95zsRV4m5UkoXOAj9MrmuokJ4rCcVQVolS3EaYGa4ud0ndbYWJdPSfNNaqEZzaTTgYmGE-xcpiysSiFmR6lfthCywA3f4TAcU1f1RBhv8PGeKKzUL4ljPr6NGtm_4R_Gq1qBmADwXv2EBnQX9gUbWz188phMexnMdyWS8szpfIS_AH9grkXUT"
+  },
+  {
+   "kind": "coverage",
+   "id": "are-you-now-or-have-you-ever-been-regional-2026",
+   "label": "Are You Now or Have You Ever Been?",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Washington City Paper / Allison R. Shely 2026-11-03 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQHyP7_t26FohUHAdXzO0VR64HVIarjnyewM1hklTFphmQSRG7uq1giOKrIy8JroFjAIWibxWjuHvadRHL9lf1BfVXRHVIwF_aEM3zpDFep5A_lpuyNWISryZPTiMsRs6P7z_04="
+  },
+  {
+   "kind": "coverage",
+   "id": "are-you-now-or-have-you-ever-been-regional-2026",
+   "label": "Are You Now or Have You Ever Been?",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Metro Weekly / André Hereford 2026-11-07 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQGUYaOPFZO8t1PfHqhBsLRv97WILZaDnguqRNrYJbzLWN7N7zLXvaRFeV6Eu1SDG7_01bLz8spPUxD2nvm7jDpoiDsvquBdMo9yjrx3eb8pJRVPTDxdiH9KDQoD7oSafcu0PV1tM0WWSFQ-1RWQrxHe-dVMXdFsykP9A-OKJ4I="
+  },
+  {
+   "kind": "coverage",
+   "id": "are-you-now-or-have-you-ever-been-regional-2026",
+   "label": "Are You Now or Have You Ever Been?",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Washington Jewish Week / Lisa Traiger 2026-11-03 https://vertexaisearch.cloud.google.com/grounding-api-redirect/AUZIYQE28Ev3zeonZRSQZ-EfU-3QxV3CfyPopx0ldoudPlluRe6I9V52-z0kR04nCWAzQPUyxgbdb-HtQwVXbKdC5tiJw7EwLCwT5JPfh3sX4QLJmvLPQsi7FIpEuUciva-OO6aENAgW4w=="
+  },
+  {
+   "kind": "coverage",
+   "id": "are-you-now-or-have-you-ever-been-regional-2026",
+   "label": "Are You Now or Have You Ever Been?",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "The Washington Post / Thomas Floyd 2026-11-05 https://www.washingtonpost.com/entertainment/theater/2026/11/05/play-about-mccarthyism-anchors-dc-area-theater-slate/"
+  },
+  {
+   "kind": "coverage",
+   "id": "are-you-now-or-have-you-ever-been-regional-2026",
+   "label": "Are You Now or Have You Ever Been?",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "Metro Weekly / Chris Hu 2026-11-03 https://www.metroweekly.com/2026/11/are-you-now-review-arena-stage/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-legend-of-sleepy-hollow-regional-2026",
+   "label": "The Legend of Sleepy Hollow",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "The Washington Post / Peter Marks 2026-11-05 https://www.washingtonpost.com/entertainment/theater_dance/2026/11/05/are-you-now-or-have-you-ever-been-review/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-legend-of-sleepy-hollow-regional-2026",
+   "label": "The Legend of Sleepy Hollow",
+   "model": "gemini",
+   "code": "missing-review-candidate",
+   "detail": "Moderately MOCO / Rachel Migone 2026-10-09 https://moderatelymoco.com/2026/10/10/just-in-time-for-halloween-a-ghoulish-but-tender-tale-of-the-legend-of-sleepy-hollow-by-synetic-theater-at-olney-theatre-center/"
+  },
+  {
+   "kind": "coverage",
+   "id": "the-legend-of-sleepy-hollow-regional-2026",
+   "label": "The Legend of Sleepy Hollow",
+   "model": "openai",
+   "code": "missing-review-candidate",
+   "detail": "The Washington Post / Thomas Floyd 2026-11-05 https://www.washingtonpost.com/entertainment/theater/2026/11/05/play-about-mccarthyism-anchors-dc-area-theater-slate//"
+  }
+ ],
+ "pages": {
+  "hub": {
+   "problems": [],
+   "status": 200,
+   "counts": {
+    "now": 4,
+    "soon": 11,
+    "closed": 23
+   },
+   "expectedLocal": {
+    "now": 3,
+    "soon": 0,
+    "closedRecent": 12,
+    "archive": 32
+   }
+  },
+  "app": {
+   "feedStatus": 200,
+   "feedCount": 48,
+   "webCount": 47,
+   "problems": [],
+   "byDesignUnscoredClosed": [
+    "the-effect-of-gamma-rays-on-man-in-the-moon-marigolds-regional-2026"
+   ]
+  }
+ }
+}

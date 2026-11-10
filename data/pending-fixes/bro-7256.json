@@ -1,0 +1,126 @@
+{
+  "issueNumber": "bro-7256",
+  "planId": "cc98eca7-dd6c-470d-8c25-d92719eb6dde",
+  "status": "pending",
+  "createdAt": "2026-11-10T01:47:56.728Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7256 DC/LA hub audit: stale closing dates (theatre page extended or review text says later), two bylines, two opening dates",
+    "steps": [
+      "shows.json: a-case-for-the-existence-of-god-regional-2026.closingDate",
+      "shows.json: a-case-for-the-existence-of-god-regional-2026.status",
+      "shows.json: saint-megan-regional-2026.closingDate",
+      "shows.json: painted-ponies-regional-2026.closingDate",
+      "shows.json: carla-hall-please-underestimate-me-regional-2026.closingDate",
+      "shows.json: the-arsonists-regional-2026.closingDate",
+      "shows.json: frankenstein-resurrection-regional-2026.closingDate",
+      "shows.json: hangman-regional-2026.openingDate",
+      "shows.json: the-colored-museum-regional-2026.openingDate",
+      "anastasia-regional-2026/the-show-report--theshowreport.json: criticName",
+      "heartbreak-house-regional-2026/stage-raw--steven-morris.json: criticName"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-case-for-the-existence-of-god-regional-2026",
+        "field": "closingDate",
+        "oldValue": "2026-10-11",
+        "newValue": "2026-11-21",
+        "description": "shows.json: a-case-for-the-existence-of-god-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-case-for-the-existence-of-god-regional-2026",
+        "field": "status",
+        "oldValue": "closed",
+        "newValue": "open",
+        "description": "shows.json: a-case-for-the-existence-of-god-regional-2026.status"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "saint-megan-regional-2026",
+        "field": "closingDate",
+        "oldValue": "2026-11-15",
+        "newValue": "2026-11-22",
+        "description": "shows.json: saint-megan-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "painted-ponies-regional-2026",
+        "field": "closingDate",
+        "oldValue": "2026-07-19",
+        "newValue": "2026-08-09",
+        "description": "shows.json: painted-ponies-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "carla-hall-please-underestimate-me-regional-2026",
+        "field": "closingDate",
+        "oldValue": "2026-07-12",
+        "newValue": "2026-07-26",
+        "description": "shows.json: carla-hall-please-underestimate-me-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-arsonists-regional-2026",
+        "field": "closingDate",
+        "oldValue": "2026-09-20",
+        "newValue": "2026-09-27",
+        "description": "shows.json: the-arsonists-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "frankenstein-resurrection-regional-2026",
+        "field": "closingDate",
+        "oldValue": "2026-09-30",
+        "newValue": "2026-11-01",
+        "description": "shows.json: frankenstein-resurrection-regional-2026.closingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hangman-regional-2026",
+        "field": "openingDate",
+        "oldValue": "2026-09-20",
+        "newValue": "2026-08-29",
+        "description": "shows.json: hangman-regional-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-colored-museum-regional-2026",
+        "field": "openingDate",
+        "oldValue": "2026-07-17",
+        "newValue": "2026-06-26",
+        "description": "shows.json: the-colored-museum-regional-2026.openingDate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "anastasia-regional-2026/the-show-report--theshowreport.json",
+        "field": "criticName",
+        "oldValue": "TheShowReport",
+        "newValue": "Chris Daniels",
+        "description": "anastasia-regional-2026/the-show-report--theshowreport.json: criticName"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "heartbreak-house-regional-2026/stage-raw--steven-morris.json",
+        "field": "criticName",
+        "oldValue": "Steven Morris",
+        "newValue": "Kayden J. Merritt",
+        "description": "heartbreak-house-regional-2026/stage-raw--steven-morris.json: criticName"
+      }
+    ]
+  }
+}
