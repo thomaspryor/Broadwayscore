@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-10T21:04:19.124Z",
+  "generatedAt": "2026-11-10T23:29:11.813Z",
   "date": "2026-11-10",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 189369,
+  "entryCount": 197691,
   "shows": [
     {
       "showId": "tango-after-dark-off-west-end-2026",
@@ -155,21 +155,6 @@
       "slowest_reviews": []
     },
     {
-      "showId": "bernhardthamlet-2018",
-      "reviewCount": 45,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": 11017115,
-        "scored-to-rebuilt": 369672,
-        "rebuilt-to-deployed": 102440551
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
       "showId": "john-lithgow-stories-by-heart-2018",
       "reviewCount": 51,
       "median_e2e_ms": null,
@@ -193,21 +178,6 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 12317530,
         "scored-to-rebuilt": 634814,
-        "rebuilt-to-deployed": 149839744
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
-      "showId": "tuck-everlasting-2016",
-      "reviewCount": 40,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": 12308736,
-        "scored-to-rebuilt": 634810,
         "rebuilt-to-deployed": 149839744
       },
       "reviews_over_15min": 0,
@@ -558,7 +528,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 411324,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -1317,13 +1287,13 @@
     },
     {
       "showId": "a-few-good-men-2026",
-      "reviewCount": 31,
+      "reviewCount": 32,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 111096,
+        "scored-to-rebuilt": 583821,
         "rebuilt-to-deployed": 150704713
       },
       "reviews_over_15min": 0,
@@ -1439,13 +1409,13 @@
     },
     {
       "showId": "the-imaginary-invalid-2026",
-      "reviewCount": 31,
+      "reviewCount": 32,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 280115,
+        "scored-to-rebuilt": 202178,
         "rebuilt-to-deployed": 100877848
       },
       "reviews_over_15min": 0,
@@ -1499,13 +1469,13 @@
     },
     {
       "showId": "the-verge-off-broadway-2026",
-      "reviewCount": 12,
+      "reviewCount": 13,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 137547,
+        "scored-to-rebuilt": 264570,
         "rebuilt-to-deployed": 144739366
       },
       "reviews_over_15min": 0,
@@ -1589,13 +1559,13 @@
     },
     {
       "showId": "the-royale-regional-2026",
-      "reviewCount": 13,
+      "reviewCount": 15,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 415491,
+        "scored-to-rebuilt": 303806,
         "rebuilt-to-deployed": 141167562
       },
       "reviews_over_15min": 0,
@@ -1604,7 +1574,7 @@
     },
     {
       "showId": "well-see-off-broadway-2026",
-      "reviewCount": 13,
+      "reviewCount": 14,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -6447,7 +6417,7 @@
     },
     {
       "showId": "girls-chance-music-off-broadway-2024",
-      "reviewCount": 10,
+      "reviewCount": 11,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -6888,7 +6858,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 60583,
-        "scored-to-rebuilt": 492740,
+        "scored-to-rebuilt": 223782,
         "rebuilt-to-deployed": 38911015
       },
       "reviews_over_15min": 2,
@@ -6905,6 +6875,21 @@
           "stuck_at_stage": "rebuilt"
         }
       ]
+    },
+    {
+      "showId": "bernhardthamlet-2018",
+      "reviewCount": 45,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 9624049,
+        "scored-to-rebuilt": 104539,
+        "rebuilt-to-deployed": 55041347
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
     },
     {
       "showId": "cabaret-2014",
@@ -8204,13 +8189,13 @@
     },
     {
       "showId": "frankie-and-johnny-in-the-clair-de-lune-2019",
-      "reviewCount": 42,
+      "reviewCount": 43,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 4295215,
-        "scored-to-rebuilt": 517104,
+        "collected-to-scored": 2419051,
+        "scored-to-rebuilt": 517103,
         "rebuilt-to-deployed": 5218248
       },
       "reviews_over_15min": 0,
@@ -8774,13 +8759,13 @@
     },
     {
       "showId": "grand-horizons-2020",
-      "reviewCount": 22,
+      "reviewCount": 25,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 563930,
-        "scored-to-rebuilt": 517075,
+        "collected-to-scored": 585346,
+        "scored-to-rebuilt": 517073,
         "rebuilt-to-deployed": 5218248
       },
       "reviews_over_15min": 0,
@@ -8789,13 +8774,13 @@
     },
     {
       "showId": "jagged-little-pill-2019",
-      "reviewCount": 34,
+      "reviewCount": 35,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 576917,
-        "scored-to-rebuilt": 1287556,
+        "scored-to-rebuilt": 1287555,
         "rebuilt-to-deployed": 4447761
       },
       "reviews_over_15min": 0,
@@ -8894,7 +8879,7 @@
     },
     {
       "showId": "how-i-learned-to-drive-2022",
-      "reviewCount": 33,
+      "reviewCount": 32,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -9036,6 +9021,51 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1321121,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-ripple-the-wave-that-carried-me-home-off-broadway-2026",
+      "reviewCount": 3,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 868067,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-flying-lovers-of-vitebsk-regional-2024",
+      "reviewCount": 10,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 868065,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "hamlet-hail-to-the-thief-off-west-end-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1698880,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
