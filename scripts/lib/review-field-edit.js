@@ -198,7 +198,13 @@ function trackingStripRepair(current, v) {
   if (typeof current !== 'string' || typeof v !== 'string' || !current || !v || current === v) return false;
   if (!/^https?:\/\//i.test(current) || !/^https?:\/\//i.test(v)) return false;
   const { normalizeUrl } = require('./review-normalization');
-  return normalizeUrl(current) === normalizeUrl(v) && v.length < current.length;
+  if (normalizeUrl(current) !== normalizeUrl(v) || v.length >= current.length) return false;
+  // Exact strip only: same scheme, host, path and fragment; v keeps a subset of current's query.
+  try {
+    const a = new URL(current), b = new URL(v);
+    if (a.protocol !== b.protocol || a.host !== b.host || a.pathname !== b.pathname || a.hash !== b.hash) return false;
+    return [...b.searchParams].every(([k, val]) => a.searchParams.get(k) === val);
+  } catch { return false; }
 }
 
 /**
@@ -211,6 +217,7 @@ function verifiedNonReviewSameHost(record, v) {
   const cv = record && record.contentVerification;
   if (!cv || cv.isValid !== false || cv.wrongArticle !== true || cv.confidence !== 'high') return false;
   if (!cv.articleType || cv.articleType === 'review') return false;
+  if (record.urlVerified === true || record.urlManualOverride) return false; // human-pinned url
   try {
     const host = (u) => new URL(u).hostname.replace(/^www\./, '').toLowerCase();
     return host(record.url) === host(v);

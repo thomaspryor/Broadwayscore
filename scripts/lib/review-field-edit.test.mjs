@@ -1060,3 +1060,16 @@ test('url edit: a high-confidence verified non-review article url may be swapped
   const refused = applyReviewFieldEdit(real, { field: 'url', oldValue: real.url, newValue: 'https://www.vulture.com/2019/12/review-jagged-little-pill.html' }, stamp);
   assert.equal(refused.ok, false);
 });
+
+test('url edit (BRO-7326 review): scheme/case/path changes are not tracking strips, pinned or low-confidence urls are not swapped', () => {
+  const base = 'https://www.thedailybeast.com/Frankie-Review';
+  const rec = { outletId: 'dailybeast', url: `${base}?via=twitter_page` };
+  assert.equal(applyReviewFieldEdit(rec, { field: 'url', oldValue: rec.url, newValue: base.toLowerCase() }, stamp).ok, false);
+  assert.equal(applyReviewFieldEdit(rec, { field: 'url', oldValue: rec.url, newValue: base.replace('https', 'http') }, stamp).ok, false);
+  const cv = { isValid: false, wrongArticle: true, confidence: 'high', articleType: 'interview' };
+  const mk = (extra) => ({ outletId: 'vulture', url: 'https://www.vulture.com/2019/11/x.html', contentVerification: cv, ...extra });
+  const to = 'https://www.vulture.com/2019/12/review-y.html';
+  for (const r of [mk({ urlVerified: true }), mk({ urlManualOverride: true }), mk({ contentVerification: { ...cv, confidence: 'medium' } }), mk({ contentVerification: { ...cv, isValid: true } })]) {
+    assert.equal(applyReviewFieldEdit(r, { field: 'url', oldValue: r.url, newValue: to }, stamp).ok, false);
+  }
+});
