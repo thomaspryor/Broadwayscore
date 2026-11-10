@@ -3,8 +3,14 @@ name: Collect Outlet Reviews (SERP)
 on:
   schedule:
     - cron: '0 14 * * 1'  # Weekly Monday 2 PM UTC (9 AM EST)
+    - cron: '30 9 * * *'  # BRO-7312: daily expected-critics recovery (recover-expected-critics job only)
   workflow_dispatch:
     inputs:
+      expected_critics:
+        description: 'Run only the expected-critics recovery (targeted search per missing usual critic, BRO-7312)'
+        required: false
+        default: false
+        type: boolean
       market:
         description: 'Market to collect for (ignored if shows is set)'
         required: false
@@ -61,7 +67,7 @@ permissions:
 jobs:
   # Cron: run each market in parallel so no market starves the others
   collect-market:
-    if: github.event_name == 'schedule'
+    if: github.event_name == 'schedule' && github.event.schedule == '0 14 * * 1'
     runs-on: ubuntu-latest
     timeout-minutes: 45
     strategy:
@@ -134,7 +140,7 @@ jobs:
   # After all markets finish, trigger a single rebuild
   rebuild:
     needs: collect-market
-    if: github.event_name == 'schedule' && !cancelled()
+    if: github.event_name == 'schedule' && github.event.schedule == '0 14 * * 1' && !cancelled()
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
@@ -146,7 +152,7 @@ jobs:
 
   # Manual dispatch: single job for targeted runs
   collect-manual:
-    if: github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.expected_critics != 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
@@ -233,4 +239,84 @@ jobs:
         uses: ./.github/actions/notify-failure
         with:
           title: 'Collect Outlet Reviews Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+
+  # BRO-7312: every missing usual critic (scripts/lib/expected-critics.js) gets a
+  # targeted search for exactly that show and outlet on a schedule after
+  # opening (days 3, 7, 14). Three empty searches auto-ack the cell with the
+  # evidence; only dead ends reach the owner (health check + opening grade).
+  # State: data/audit/expected-critics-recovery.json (single writer: this job).
+  recover-expected-critics:
+    if: (github.event_name == 'schedule' && github.event.schedule == '30 9 * * *') || (github.event_name == 'workflow_dispatch' && github.event.inputs.expected_critics == 'true')
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    concurrency:
+      group: expected-critics-recovery
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
+      - uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Search for each missing usual critic
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          INPUT_DRY_RUN: ${{ github.event.inputs.dry_run }}
+        run: |
+          DRY=""
+          if [ "${INPUT_DRY_RUN}" = "true" ]; then DRY="--dry-run"; fi
+          node scripts/recover-expected-critics.js --max-searches=12 $DRY
+
+      - name: Push review texts
+        id: push-review-texts
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "feat: Recover expected-critic reviews via targeted SERP (BRO-7312)"
+
+      - name: Trigger rebuild
+        if: success() && github.event.inputs.dry_run != 'true' && steps.push-review-texts.outputs.pushed == 'true'
+        run: |
+          gh workflow run rebuild-reviews.yml -f reason="Post expected-critics recovery"
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      - name: Commit recovery state and scraper-spend ledger
+        if: always()
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/audit/expected-critics-recovery.json data/audit/scraper-spend-ledger.jsonl 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No recovery state changes to commit"
+          else
+            git commit -m "chore: Expected-critics recovery state (BRO-7312)"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Expected-critics recovery failed'
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

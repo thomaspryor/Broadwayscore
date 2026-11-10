@@ -507,6 +507,13 @@ async function main() {
       // Determine market for this show (auto-detect from category)
       const market = show.category || opts.market || 'broadway';
       const targetOutlets = getTargetOutlets(market, opts.minTier, opts.maxTier, registry, opts.maxOutlets, opts.outlets);
+      // A requested outlet that cannot be searched for this market (no domain,
+      // outside the tier range, wrong region) gets a row, so the caller can
+      // tell "never searchable" from "the run died".
+      if (opts.outlets) {
+        const targeted = new Set(targetOutlets.map((o) => o.id));
+        for (const id of opts.outlets) if (!targeted.has(id)) record(show.id, id, 'not_searchable', { reason: registry.outlets[id] ? 'not-a-target-outlet' : 'unknown-outlet' });
+      }
 
       if (targetOutlets.length === 0) {
         console.log(`SKIP (no outlets for market ${market}): ${show.id}`);

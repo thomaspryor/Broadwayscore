@@ -29,6 +29,7 @@ const { citedUncollectedNow } = require('./lib/audit-show-review-gap');
 const { loadBlocklist } = require('./lib/poller-blocklist');
 const { findExpectedCriticGaps, expectedMissingForShow } = require('./lib/expected-critics');
 const { loadAcks } = require('./lib/t1-scoreboard');
+const recovery = require('./lib/expected-critics-recovery');
 
 const ROOT = path.join(__dirname, '..');
 const arg = (k) => { const a = process.argv.find((x) => x.startsWith(`--${k}=`)); return a ? a.slice(k.length + 3) : null; };
@@ -40,12 +41,19 @@ function readJson(p, fallback) {
   try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch { return fallback; }
 }
 
-/** Missing usual-critic cells for these openings (BRO-7166). Never throws: a grade without it is still a grade. */
+/**
+ * Missing usual-critic cells for these openings (BRO-7166), minus the ones the
+ * automatic recovery is still searching for (BRO-7312): the grade names a
+ * missing critic only once the automation has given up on it.
+ * Never throws: a grade without it is still a grade.
+ */
 function expectedCriticGaps(openings, nowMs) {
   try {
     const reviews = readJson(path.join(ROOT, 'data/reviews.json'), { reviews: [] }).reviews || [];
     const outlets = readJson(path.join(ROOT, 'data/outlet-registry.json'), { outlets: {} }).outlets || {};
-    return findExpectedCriticGaps({ shows: openings, reviews, outlets, acks: loadAcks(), nowMs, since: '0000-01-01' });
+    const state = recovery.loadRecoveryState();
+    const gaps = findExpectedCriticGaps({ shows: openings, reviews, outlets, acks: recovery.mergedAcks(loadAcks(), state), nowMs, since: '0000-01-01' });
+    return recovery.splitForOwner(gaps, state, nowMs).visible;
   } catch (e) {
     console.error(`grade-openings: expected-critics skipped (${e.message})`);
     return [];
