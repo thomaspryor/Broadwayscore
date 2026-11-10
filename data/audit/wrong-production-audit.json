@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-10T10:14:38.937Z",
+  "timestamp": "2026-11-10T10:43:53.210Z",
   "stats": {
-    "totalReviews": 81107,
-    "alreadyFlagged": 22192,
+    "totalReviews": 81150,
+    "alreadyFlagged": 22191,
     "dateGuardCatches": 219,
-    "directorMismatch": 3601,
-    "tvFilmSignals": 2286,
-    "londonSignals": 3662,
-    "offBroadwaySignals": 750,
-    "yearMismatch": 365,
-    "noPublishDate": 8419
+    "directorMismatch": 3602,
+    "tvFilmSignals": 2287,
+    "londonSignals": 3661,
+    "offBroadwaySignals": 753,
+    "yearMismatch": 364,
+    "noPublishDate": 8429
   },
   "findings": [
     {
@@ -51993,6 +51993,19 @@
     },
     {
       "showId": "pippin-regional-2026",
+      "file": "dc-theater-arts--lisa-traiger.json",
+      "publishDate": "2026-05-23",
+      "url": "https://dctheaterarts.org/2026/05/23/theres-magic-at-play-in-signature-theatres-dazzling-pippin",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from pippin-1972"
+        }
+      ]
+    },
+    {
+      "showId": "pippin-regional-2026",
       "file": "hillrag--matthew-mcclure.json",
       "score": 91,
       "publishDate": null,
@@ -78812,24 +78825,6 @@
       ]
     },
     {
-      "showId": "to-kill-a-mockingbird-west-end-2026",
-      "file": "i-paper--sam-marlowe.json",
-      "publishDate": null,
-      "url": "https://inews.co.uk/culture/arts/to-kill-a-mockingbird-gielgud-theatre-review-rafe-spall-plays-the-hero-in-a-tremendous-reimagining-1550710?ico=most_popular&msclkid=a2c8ecb5b19611ec9593735c3a1a2e73",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"gielgud\""
-        },
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2022 (2x) more than 2026 (0x). 2022 matches production: to-kill-a-mockingbird-west-end-2022"
-        }
-      ]
-    },
-    {
       "showId": "toni-stone-regional-2023",
       "file": "splash-magazines--jessie-bond.json",
       "score": 89,
@@ -81263,6 +81258,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "venus-regional-2026",
+      "file": "broadwayworld--morgan-musselman.json",
+      "publishDate": "2026-09-16",
+      "url": "https://www.broadwayworld.com/washington-dc/article/Review-VENUS-at-Woolly-Mammoth-20260916",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -104699,6 +104707,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "here-there-are-blueberries-2026",
+      "file": "cititour--brian-scott-lipton.json",
+      "score": 77,
+      "publishDate": "2026-11-09T00:00:00-05:00",
+      "url": "https://cititour.com/NYC_Broadway/Here-There-Are-Blueberries/1232",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
         }
       ]
     },
@@ -139624,6 +139646,19 @@
       ]
     },
     {
+      "showId": "venus-regional-2026",
+      "file": "city-cast-dc--chris-klimek.json",
+      "publishDate": "2026-09-28",
+      "url": "https://dc.citycast.fm/theater-reviews/woolly-mammoth-venus",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"signature theatre\""
+        }
+      ]
+    },
+    {
       "showId": "vincent-in-brixton-2003",
       "file": "nytimes--ben-brantley.json",
       "score": 79,
@@ -141036,6 +141071,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
+        }
+      ]
+    },
+    {
+      "showId": "wish-you-were-here-regional-2026",
+      "file": "city-cast-dc--chris-klimek.json",
+      "publishDate": "2026-10-20",
+      "url": "https://dc.citycast.fm/theater-reviews/wish-you-were-here-sanaz-toossi",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"signature theatre\""
         }
       ]
     },
