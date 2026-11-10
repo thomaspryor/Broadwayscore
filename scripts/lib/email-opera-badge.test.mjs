@@ -24,3 +24,8 @@ test('compact-row label says Opera for opera shows, market for the rest', () => 
   assert.equal(rowMarketLabel({ type: 'opera' }, 'west-end'), 'Opera');
   assert.equal(rowMarketLabel({ type: 'musical' }, 'west-end'), 'West End');
 });
+
+test('regional and tour operas keep their venue-bearing label', () => {
+  assert.match(rowMarketLabel({ type: 'opera', venue: 'Santa Fe Opera' }, 'regional'), /Santa Fe Opera/);
+  assert.match(rowMarketLabel({ type: 'opera', venue: 'Kennedy Center' }, 'tour'), /Kennedy Center/);
+});

@@ -172,7 +172,8 @@ function marketLabel(market) {
 // Row label for the compact rows. Regional/tour rows name the kind of
 // production and the venue, since "Regional" alone says nothing.
 function rowMarketLabel(show, market) {
-  if (show && show.type === 'opera') return marketLabel('opera');
+  // Regional/tour rows keep their venue-bearing label below; only the market-name rows collapse to Opera.
+  if (show && show.type === 'opera' && market !== 'regional' && market !== 'tour') return marketLabel('opera');
   if (market === 'tour') return show.venue ? `National tour · ${show.venue}` : 'National tour';
   if (market !== 'regional') return marketLabel(market);
   let kind = 'Regional';
