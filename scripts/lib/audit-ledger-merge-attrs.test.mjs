@@ -9,6 +9,8 @@ import {
   isExemptLedgerPath,
   findLedgersMissingUnionOrExemption,
   findExemptLedgersWronglyUnioned,
+  findStaleExemptPrefixes,
+  EXEMPT_LEDGER_PREFIXES,
   VERIFIED_UNION_LEDGERS,
   isVerifiedUnionPath,
   findUnverifiedUnionLedgers,
@@ -170,7 +172,8 @@ test('REGRESSION: every real tracked *.jsonl (repo-wide) is either merge=union o
   // A file listed in EXEMPT_LEDGERS for a checked, reasoned disqualifier must
   // never ALSO be declared merge=union — that silently overrides the
   // exemption and reintroduces the exact corruption its reason documents.
-  const contradictions = findExemptLedgersWronglyUnioned(attrOf);
+  const contradictions = findExemptLedgersWronglyUnioned(attrOf, tracked);
+  assert.deepEqual(findStaleExemptPrefixes(tracked), [], 'EXEMPT_LEDGER_PREFIXES entry matches no tracked file');
   assert.deepEqual(
     contradictions,
     [],
@@ -203,4 +206,11 @@ test('isExemptLedgerPath covers any city under data/audit/city-hub-dual/ (BRO-73
       assert.equal(isExemptLedgerPath(`data/audit/city-hub-dual/${city}/${k}.jsonl`), true);
     }
   }
+});
+
+test('prefix-exempt files declared merge=union are flagged; stale prefix detected (BRO-7323 review)', () => {
+  const f = 'data/audit/city-hub-dual/boston-ma/shows.jsonl';
+  assert.deepEqual(findExemptLedgersWronglyUnioned((x) => (x === f ? 'union' : 'unspecified'), [f]), [{ file: f }]);
+  assert.deepEqual(findStaleExemptPrefixes([]), EXEMPT_LEDGER_PREFIXES);
+  assert.deepEqual(findStaleExemptPrefixes([f]), []);
 });

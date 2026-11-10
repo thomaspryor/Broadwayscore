@@ -312,9 +312,17 @@ function findLedgersMissingUnionOrExemption(files, mergeAttrOf) {
  * @param {(file: string) => string|null|undefined} mergeAttrOf
  * @returns {{file: string}[]} EXEMPT_LEDGERS entries that are ALSO merge=union
  */
-function findExemptLedgersWronglyUnioned(mergeAttrOf) {
+function findExemptLedgersWronglyUnioned(mergeAttrOf, trackedFiles = []) {
   if (typeof mergeAttrOf !== 'function') throw new TypeError('mergeAttrOf must be a function');
-  return EXEMPT_LEDGERS.filter((e) => mergeAttrOf(e.file) === 'union').map((e) => ({ file: e.file }));
+  const files = new Set(EXEMPT_LEDGERS.map((e) => e.file));
+  // Prefix-exempt tracked files are checked too (BRO-7323 review): a per-file union rule must not override them.
+  for (const f of trackedFiles) if (isExemptLedgerPath(f)) files.add(f);
+  return [...files].filter((f) => mergeAttrOf(f) === 'union').map((file) => ({ file }));
+}
+
+/** Prefixes in EXEMPT_LEDGER_PREFIXES that match no tracked file (stale/renamed directory). */
+function findStaleExemptPrefixes(trackedFiles) {
+  return EXEMPT_LEDGER_PREFIXES.filter((p) => !trackedFiles.some((f) => f.startsWith(p)));
 }
 
 // merge=union *.jsonl outside data/audit/ whose readers were checked against
@@ -423,6 +431,7 @@ module.exports = {
   perFileUnionDeclarations,
   EXEMPT_LEDGERS,
   EXEMPT_LEDGER_PREFIXES,
+  findStaleExemptPrefixes,
   VERIFIED_UNION_LEDGERS,
   isVerifiedUnionPath,
   findUnverifiedUnionLedgers,
