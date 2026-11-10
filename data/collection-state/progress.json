@@ -127,7 +127,12 @@
     "white-rabbit-red-rabbit-west-end-2026/whatsonstage--alex-wood.json",
     "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/off-off-online--edward-karam.json",
     "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
-    "schmigadoon-2026/npr--terry-gross.json"
+    "schmigadoon-2026/npr--terry-gross.json",
+    "the-visitors-off-broadway-2026/culturesauce--thom-geier.json",
+    "the-visitors-off-broadway-2026/nysr--michael-sommers.json",
+    "tosca-off-broadway-2026/operawire--unknown.json",
+    "wanted-2022/vulture--sara-holdren.json",
+    "kate-allie-and-the-86-mets-off-broadway-2026/front-row-center--tulis-mccall.json"
   ],
   "failed": [
     "the-getaway-driver-central-regional-2026/consequence--unknown.json",
@@ -194,7 +199,13 @@
     "white-rabbit-red-rabbit-west-end-2026/thestage--dave-fargnoli.json",
     "white-rabbit-red-rabbit-west-end-2026/times-uk--anya-ryan.json",
     "beetlejuice-west-end-2026/amny--matt-windman.json",
-    "the-rocky-horror-show-2026/north-west-end--peter-kinnock.json"
+    "the-rocky-horror-show-2026/north-west-end--peter-kinnock.json",
+    "the-visitors-off-broadway-2026/bobs-theater-blog--unknown.json",
+    "the-visitors-off-broadway-2026/boston-globe--unknown.json",
+    "msblackforpresident-off-broadway-2026/guardian--unknown.json",
+    "222-a-ghost-story-off-broadway-2026/talkinbroadway--unknown.json",
+    "the-unbelievers-off-broadway-2026/bobs-theater-blog--unknown.json",
+    "the-verge-off-broadway-2026/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -286,7 +297,11 @@
       "white-rabbit-red-rabbit-west-end-2026/londontheatredirect--matthew-keeley.json",
       "white-rabbit-red-rabbit-west-end-2026/whatsonstage--alex-wood.json",
       "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/off-off-online--edward-karam.json",
-      "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json"
+      "the-rocky-horror-show-2026/one-minute-critic--matthew-wexler.json",
+      "the-visitors-off-broadway-2026/culturesauce--thom-geier.json",
+      "the-visitors-off-broadway-2026/nysr--michael-sommers.json",
+      "tosca-off-broadway-2026/operawire--unknown.json",
+      "kate-allie-and-the-86-mets-off-broadway-2026/front-row-center--tulis-mccall.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -314,7 +329,8 @@
       "here-there-are-blueberries-2026/talkinbroadway--unknown.json",
       "cabaret-2014/variety--marilyn-stasio.json",
       "the-steel-man-off-broadway-2026/talkinbroadway--unknown.json",
-      "mexodus-tour-2026/chicagotribune--unknown.json"
+      "mexodus-tour-2026/chicagotribune--unknown.json",
+      "wanted-2022/vulture--sara-holdren.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -341,7 +357,7 @@
     ]
   },
   "startTime": "2026-11-10T00:35:43.955Z",
-  "lastProcessed": "schmigadoon-2026/npr--terry-gross.json",
+  "lastProcessed": "the-verge-off-broadway-2026/talkinbroadway--unknown.json",
   "log": [
     {
       "t": "2026-11-10T01:50:52.713Z",
@@ -475,6 +491,50 @@
       "t": "2026-11-10T02:46:09.153Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-10T03:08:19.395Z",
+      "event": "bb-session",
+      "session": "90c0f458",
+      "url": "https://www.nytimes.com/2026/11/06/theater/the-unbelievers-222-a-ghost-story-rev"
+    },
+    {
+      "t": "2026-11-10T03:08:20.020Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-10T03:08:20.225Z",
+      "event": "bb-session",
+      "session": "828d8602",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655599"
+    },
+    {
+      "t": "2026-11-10T03:08:20.820Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-10T03:08:36.763Z",
+      "event": "bb-session",
+      "session": "54d5b886",
+      "url": "https://www.nytimes.com/2026/11/06/theater/the-unbelievers-222-a-ghost-story-rev"
+    },
+    {
+      "t": "2026-11-10T03:08:37.337Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-10T03:10:53.181Z",
+      "event": "bb-session",
+      "session": "08bc305e",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655533"
+    },
+    {
+      "t": "2026-11-10T03:10:54.225Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
