@@ -1624,13 +1624,15 @@ async function main() {
   // never block the digest itself.
   let changesHtml = null;
   let stuckCount = 0;
+  let stuckSignalTexts = [];
   let stuckKnown = false; // false when the overnight collector failed: Board numbers shows n/a, not 0
   try {
-    const { gatherDigest, renderDigestBlock, countStuckSignals } = require('./lib/overnight-digest.js');
+    const { gatherDigest, renderDigestBlock, countStuckSignals, stuckSignals } = require('./lib/overnight-digest.js');
     const digest = gatherDigest({ repo: REPO });
     if (digest) {
       changesHtml = renderDigestBlock(digest);
       stuckCount = countStuckSignals(digest);
+      stuckSignalTexts = stuckSignals(digest);
       stuckKnown = true;
     }
   } catch (err) {
@@ -1658,7 +1660,7 @@ async function main() {
     const openTitles = Array.isArray(openIssues) ? new Set(openIssues.map((i) => i && i.title).filter(Boolean)) : null;
     const queued = Array.isArray(sections.health?.queued) ? sections.health.queued : [];
     const coveredTitles = await readCoveredRowTitles();
-    autofixRows = markTrackedReportOnly(planAutofix({ health: sections.health, extraIssues: localRollupIssues({ health: sections.health, freshnessCount: sections.freshness?.count || 0, freshnessItems: sections.freshness?.items, stuckCount }), tasks: [], queued }), openTitles, coveredTitles);
+    autofixRows = markTrackedReportOnly(planAutofix({ health: sections.health, extraIssues: localRollupIssues({ health: sections.health, freshnessCount: sections.freshness?.count || 0, freshnessItems: sections.freshness?.items, stuckCount, stuckSignals: stuckSignalTexts }), tasks: [], queued }), openTitles, coveredTitles);
     if (sections.health && Array.isArray(sections.health.queued)) sections.health.queued = keepDecisionQueued(sections.health.queued, autofixRows);
     const tracked = autofixRows.filter((r) => r.state === 'tracked').length;
     console.log(`[digest] --no-autofix: report only, nothing filed or dispatched; ${tracked} of ${autofixRows.length} row(s) already have an open card${openTitles ? '' : ' (Linear unreadable)'}`);
@@ -1703,7 +1705,7 @@ async function main() {
     const openLinearTitles = Array.isArray(openIssues)
       ? new Set(openIssues.map((i) => i && i.title).filter(Boolean))
       : null;
-    autofixRows = runAutofix({ plan: planAutofix({ health: sections.health, extraIssues: localRollupIssues({ health: sections.health, freshnessCount: sections.freshness?.count || 0, freshnessItems: sections.freshness?.items, stuckCount }), tasks, queued: queuedForAutofix }), dryRun: autofixDryRun, log: (m) => console.log(m), concurrencyCap: DIGEST_CONCURRENCY_CAP, openLinearTitles, coveredLinearTitles: await readCoveredRowTitles() });
+    autofixRows = runAutofix({ plan: planAutofix({ health: sections.health, extraIssues: localRollupIssues({ health: sections.health, freshnessCount: sections.freshness?.count || 0, freshnessItems: sections.freshness?.items, stuckCount, stuckSignals: stuckSignalTexts }), tasks, queued: queuedForAutofix }), dryRun: autofixDryRun, log: (m) => console.log(m), concurrencyCap: DIGEST_CONCURRENCY_CAP, openLinearTitles, coveredLinearTitles: await readCoveredRowTitles() });
     // Liveness gate (task #940, owner screenshots 2026-08-03): the digest
     // once claimed "a fix session is working on it now" for 4 issues whose
     // sessions had died hours earlier — 'in-progress' state comes purely
