@@ -77,6 +77,10 @@ const BOILERPLATE_RES = [
   /^already (?:a subscriber|have an account|registered)\?.{0,160}$/i,
   // registration / paywall prompts
   /^invest in the stage today with a subscription starting at just [£$€]\d+(?:\.\d+)?\.?$/i,
+  // The Stage registration wall (2026 pages serve these instead of the body)
+  /^(?:🔓 ?)?sign in below or create a free account to read \d+ free articles\.?$/iu,
+  /^join over [\d,]+ theatremakers who rely on the stage for trusted news, reviews,? and insight\.?$/i,
+  /^coming up next: .{1,80} subscribe now to read in print, or online\.?$/i,
   /^(?:create a free account|register for free|sign in|log in) to (?:continue reading|keep reading|read (?:the full|this) (?:article|story|review)).{0,120}$/i,
   /^registration is a free and easy way to support our journalism\.?.{0,200}$/i,
   /^(?:subscribe|sign up) (?:now |today )?to (?:continue|keep) reading.{0,120}$/i,
