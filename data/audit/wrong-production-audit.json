@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-10T04:34:28.367Z",
+  "timestamp": "2026-11-10T04:55:46.764Z",
   "stats": {
-    "totalReviews": 81086,
-    "alreadyFlagged": 22180,
+    "totalReviews": 81085,
+    "alreadyFlagged": 22184,
     "dateGuardCatches": 219,
-    "directorMismatch": 3595,
-    "tvFilmSignals": 2280,
+    "directorMismatch": 3596,
+    "tvFilmSignals": 2283,
     "londonSignals": 3658,
     "offBroadwaySignals": 750,
     "yearMismatch": 364,
-    "noPublishDate": 8442
+    "noPublishDate": 8423
   },
   "findings": [
     {
@@ -11805,6 +11805,20 @@
       ]
     },
     {
+      "showId": "cat-on-a-hot-tin-roof-2013",
+      "file": "hollywood-reporter--unknown.json",
+      "score": null,
+      "publishDate": "2013-01-17",
+      "url": "https://www.hollywoodreporter.com/news/general-news/scarlett-johansson-cat-on-a-hot-tin-roof-413384/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"debbie allen\" from cat-on-a-hot-tin-roof-2008"
+        }
+      ]
+    },
+    {
       "showId": "cat-on-a-hot-tin-roof-west-end-2017",
       "file": "nytimes--ben-brantley.json",
       "score": 89,
@@ -18864,20 +18878,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"series finale\""
-        }
-      ]
-    },
-    {
-      "showId": "disaster-2016",
-      "file": "northjerseycom--virginia-rohan.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.northjersey.com/story/entertainment/tv/2016/02/20/growing-trend-of-live-tv-brings-possibilities-of-greatness-and-disaster/94507614/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -51925,6 +51925,7 @@
     {
       "showId": "pippin-regional-2026",
       "file": "morris-theatre-dc--unknown.json",
+      "score": 97,
       "publishDate": "2026-05-22",
       "url": "https://morristheatredc.com/reviews/review-pippin-signature-theatre",
       "findings": [
@@ -51957,6 +51958,7 @@
     {
       "showId": "pippin-regional-2026",
       "file": "theatermania--keith-loria.json",
+      "score": 89,
       "publishDate": "2026-06-03",
       "url": "https://www.theatermania.com/news/review-signature-theatres-dazzling-pippin-finds-meaning-beneath-the-spectacle_1840549/",
       "findings": [
@@ -57256,6 +57258,20 @@
     },
     {
       "showId": "smash-2025",
+      "file": "chicagotribune--unknown.json",
+      "score": null,
+      "publishDate": "2025-04-10",
+      "url": "https://www.chicagotribune.com/2025/04/10/review-in-its-remake-of-the-tv-series-smash-on-broadway-is-anything-but/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "smash-2025",
       "file": "cititour--brian-scott-lipton.json",
       "score": 26,
       "publishDate": null,
@@ -57312,6 +57328,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "smash-2025",
+      "file": "exeunt-magazine--unknown.json",
+      "score": null,
+      "publishDate": "2025-04-17",
+      "url": "https://exeuntnyc.com/reviews/review-smash-at-the-imperial-theatre/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"pilot episode\""
         }
       ]
     },
@@ -57377,6 +57407,20 @@
       "score": 57,
       "publishDate": "April 10, 2025",
       "url": "https://www.newyorktheatreguide.com/reviews/smash-broadway-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "smash-2025",
+      "file": "people--dave-quinn.json",
+      "score": null,
+      "publishDate": "2025-06-10",
+      "url": "https://people.com/smash-sets-broadway-closing-date-after-tony-nominated-run-11752193",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -74394,6 +74438,20 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2025 (2x) more than 1986 (0x). 2025 matches production: the-phantom-of-the-opera-tour-2025"
+        }
+      ]
+    },
+    {
+      "showId": "the-piano-lesson-2022",
+      "file": "abc-news--unknown.json",
+      "score": null,
+      "publishDate": "2024-11-08",
+      "url": "https://abcnews.go.com/GMA/Culture/piano-lesson-review/story?id=115605368",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -110880,6 +110938,7 @@
     {
       "showId": "ma-raineys-black-bottom-regional-2026-round-house-theatre",
       "file": "metro-weekly--andre-hereford.json",
+      "score": 91,
       "publishDate": "2026-09-21",
       "url": "https://www.metroweekly.com/2026/09/ma-raineys-black-bottom-round-house-review/",
       "findings": [
@@ -133948,6 +134007,7 @@
     {
       "showId": "the-play-that-goes-wrong-regional-2026",
       "file": "metro-weekly--andre-hereford.json",
+      "score": 74,
       "publishDate": "2026-06-27",
       "url": "https://www.metroweekly.com/2026/06/the-play-that-goes-wrong-review-keegan-theatre/",
       "findings": [
