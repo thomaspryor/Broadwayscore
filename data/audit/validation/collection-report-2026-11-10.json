@@ -1,50 +1,50 @@
 {
-  "runDate": "2026-11-10T17:15:26.999Z",
+  "runDate": "2026-11-10T17:16:03.266Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 60,
     "priority": "all",
-    "showFilter": "here-there-are-blueberries-2026",
+    "showFilter": "dogstar-off-west-end-2026",
     "aggressive": true,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 0,
+    "processed": 4,
+    "failed": 1,
     "skipped": 0,
-    "successRate": "100.0%"
+    "successRate": "80.0%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 4,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingdog": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 1,
-    "tier1Success": 1,
+    "tier1Attempts": 4,
+    "tier1Success": 4,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 0,
+    "tier1_9Attempts": 1,
     "tier1_9Success": 0,
     "tier2Attempts": 1,
-    "tier2Success": 1,
-    "tier3Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 1,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
+    "tier3_6Attempts": 1,
     "tier3_6Success": 0,
-    "tier4Attempts": 0,
+    "tier4Attempts": 2,
     "tier4Success": 0,
-    "totalFailed": 0,
+    "totalFailed": 1,
     "scrapingBeePageCredits": 1,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
@@ -54,10 +54,10 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 2,
-    "failed": 0,
+    "processed": 4,
+    "failed": 1,
     "shows": [
-      "here-there-are-blueberries-2026"
+      "dogstar-off-west-end-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -66,32 +66,49 @@
     }
   },
   "processed": [
-    "here-there-are-blueberries-2026/cititour--brian-scott-lipton-2.json",
-    "here-there-are-blueberries-2026/yahoo--unknown.json"
+    "dogstar-off-west-end-2026/artsdesk--unknown.json",
+    "dogstar-off-west-end-2026/londontheatre1--unknown.json",
+    "dogstar-off-west-end-2026/the-spy-in-the-stalls--unknown.json",
+    "dogstar-off-west-end-2026/theatreboard--unknown.json"
   ],
-  "failed": [],
+  "failed": [
+    "dogstar-off-west-end-2026/plays-to-see--unknown.json"
+  ],
   "cumulativeResumedState": {
     "processed": [
-      "here-there-are-blueberries-2026/cititour--brian-scott-lipton-2.json",
-      "here-there-are-blueberries-2026/yahoo--unknown.json"
+      "dogstar-off-west-end-2026/artsdesk--unknown.json",
+      "dogstar-off-west-end-2026/londontheatre1--unknown.json",
+      "dogstar-off-west-end-2026/the-spy-in-the-stalls--unknown.json",
+      "dogstar-off-west-end-2026/theatreboard--unknown.json"
     ],
-    "failed": []
+    "failed": [
+      "dogstar-off-west-end-2026/plays-to-see--unknown.json"
+    ]
   },
   "tierDetails": {
     "playwright": [
-      "here-there-are-blueberries-2026/yahoo--unknown.json"
+      "dogstar-off-west-end-2026/artsdesk--unknown.json",
+      "dogstar-off-west-end-2026/londontheatre1--unknown.json",
+      "dogstar-off-west-end-2026/the-spy-in-the-stalls--unknown.json",
+      "dogstar-off-west-end-2026/theatreboard--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
-    "scrapingbee": [
-      "here-there-are-blueberries-2026/cititour--brian-scott-lipton-2.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "Plays To See": {
+      "count": 1,
+      "domain": "playstosee.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
