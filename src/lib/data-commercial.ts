@@ -926,7 +926,7 @@ export function getNearBreakEven(): NearBreakEvenShow[] {
     let adjustedRatio: number | null = null;
     for (let i = ratios.length - 1; i >= 0 && adjustedRatio == null; i--) adjustedRatio = ratios[i];
     const input = { status: show.status, designation: data.designation, limitedRun: show.limitedRun, closingDate: show.closingDate, closingExtensions: show.closingExtensions, closingExtensionCount: show.closingExtensionCount, today, avgGross, breakEven, adjustedRatio };
-    const isNew = isNewNearOrBelowBreakEven(input);
+    const isNew = isNewNearOrBelowBreakEven({ ...input, openingDate: show.openingDate });
     if (!isNew && !isNearBreakEven(input)) continue;
     results.push({
       slug,

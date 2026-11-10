@@ -396,8 +396,15 @@ export function isNearBreakEven(input: ClosingWatchInput): boolean {
  * in its current run) whose grosses so far are under or near break-even. Listed on "Close to
  * break-even" as "New, too early to judge": no closing estimate from preview-heavy weeks.
  */
-export function isNewNearOrBelowBreakEven(input: ClosingWatchInput): boolean {
+/** How long after opening a show still counts as New on Close to break-even. */
+export const NEW_SHOW_WEEKS = 26;
+
+export function isNewNearOrBelowBreakEven(input: ClosingWatchInput & { openingDate?: string | null }): boolean {
   if (input.status !== 'open' && input.status !== 'previews') return false;
+  // Few weeks can also mean a long-running show back from a break; only a show that opened in the
+  // last NEW_SHOW_WEEKS (or has not opened yet) is "New".
+  const opening = (input.openingDate ?? '').slice(0, 10);
+  if (/^\d{4}-\d{2}-\d{2}$/.test(opening) && addWeeks(opening, NEW_SHOW_WEEKS) < input.today) return false;
   if (!isBoxOfficeDriven(input.designation, input.limitedRun)) return false;
   if (hasAnnouncedClosing(input)) return false;
   if (input.adjustedRatio != null) return false;
