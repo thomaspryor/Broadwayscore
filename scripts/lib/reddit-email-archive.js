@@ -249,6 +249,10 @@ async function sweep({ env = process.env, fetchImpl = fetch, dryRun = false, exp
 
   const plan = planArchive(messages, { nowMs: now() });
   log(`${messages.length} site email(s) in the inbox across ${plan.groups} group(s); ${plan.archive.length} to archive (superseded, or Reddit drafts over ${MAX_AGE_DAYS} days old)`);
+  // Audit trail: archiving only removes the INBOX label, so a wrong archive is undone by re-adding it,
+  // but only if the run log says which messages were touched.
+  const bySubject = new Map(messages.map((m) => [m.id, String(m.subject || '').slice(0, 120)]));
+  for (const id of plan.archive) log(`${dryRun ? 'would archive' : 'archive'} ${id}: ${bySubject.get(id)}`);
   // The refresh response names the granted scopes. A key without gmail.modify cannot
   // write, so say so before trying instead of after a 403.
   if (plan.archive.length && !dryRun && scope && !scope.split(/\s+/).includes(MODIFY_SCOPE)) {
