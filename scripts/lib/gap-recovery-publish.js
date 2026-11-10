@@ -64,6 +64,37 @@ const sleep = (ms) => Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 
  * @returns {{pushed:boolean, commit?:string, added:Record<string,number>, attempts:number, upToDate?:boolean}}
  */
 function publishLedgers({ repoDir, files, message, remote = 'origin', branch = 'main', attempts = 5, log = () => {} }) {
+  let added = {};
+  const r = publishComputed({
+    repoDir, message, remote, branch, attempts, log, label: 'gap-recovery ledgers',
+    compute: (originText) => {
+      const changes = [];
+      added = {};
+      for (const f of files) {
+        let localText = '';
+        try { localText = fs.readFileSync(f.localPath, 'utf8'); } catch { /* none yet */ }
+        const u = unionLines(originText(f.rel), localText);
+        added[f.rel] = u.added;
+        if (u.added) changes.push({ rel: f.rel, text: u.text });
+      }
+      return changes;
+    },
+  });
+  if (r.pushed) log(`published ${Object.entries(added).filter(([, n]) => n).map(([rel, n]) => `${rel} +${n}`).join(', ')} as ${r.commit.slice(0, 10)}`);
+  return { ...r, added };
+}
+
+/**
+ * The plumbing loop shared by every "publish a data file to origin/main
+ * without a working tree" caller: fetch to a private ref, compute the new file
+ * texts from origin's, commit in a throwaway index, push; a rejected push
+ * recomputes on the new tip. compute must be idempotent.
+ * @param {object} a
+ * @param {(originText:(rel:string)=>string) => Array<{rel:string,text:string}>} a.compute
+ * @param {(commit:string) => void} [a.beforePush] journal hook: runs after the commit exists, before the push
+ * @returns {{pushed:boolean, commit?:string, attempts:number, upToDate?:boolean}}
+ */
+function publishComputed({ repoDir, message, compute, beforePush, remote = 'origin', branch = 'main', attempts = 5, log = () => {}, label = 'data files' }) {
   // A bot push (direct-push-guard.sh allow:push-with-retry-bot); a pre-push
   // refusal still fails the push and is retried, never counted as published.
   const git = gitRunner(repoDir, { PUSH_WITH_RETRY_CALLER: 'bot' });
@@ -75,18 +106,9 @@ function publishLedgers({ repoDir, files, message, remote = 'origin', branch = '
       const privRef = `refs/gap-publish/${branch}`;
       git(['fetch', '--quiet', remote, `+refs/heads/${branch}:${privRef}`], { timeout: 180000 });
       const base = git(['rev-parse', privRef]).trim();
-      const changes = [];
-      const added = {};
-      for (const f of files) {
-        let originText = '';
-        try { originText = git(['show', `${base}:${f.rel}`]); } catch { /* not on origin yet */ }
-        let localText = '';
-        try { localText = fs.readFileSync(f.localPath, 'utf8'); } catch { /* none yet */ }
-        const u = unionLines(originText, localText);
-        added[f.rel] = u.added;
-        if (u.added) changes.push({ rel: f.rel, text: u.text });
-      }
-      if (!changes.length) return { pushed: false, upToDate: true, added, attempts: i };
+      const originText = (rel) => { try { return git(['show', `${base}:${rel}`]); } catch { return ''; } };
+      const changes = compute(originText).filter((c) => c.text !== originText(c.rel));
+      if (!changes.length) return { pushed: false, upToDate: true, attempts: i };
       const idx = path.join(os.tmpdir(), `gap-publish-index-${process.pid}-${Date.now()}`);
       const env = { GIT_INDEX_FILE: idx };
       try {
@@ -97,9 +119,9 @@ function publishLedgers({ repoDir, files, message, remote = 'origin', branch = '
         }
         const tree = git(['write-tree'], { env }).trim();
         const commit = git(['commit-tree', tree, '-p', base, '-m', message]).trim();
+        if (beforePush) beforePush(commit);
         git(['push', '--quiet', remote, `${commit}:refs/heads/${branch}`], { timeout: 180000 });
-        log(`published ${changes.map((c) => `${c.rel} +${added[c.rel]}`).join(', ')} as ${commit.slice(0, 10)}`);
-        return { pushed: true, commit, added, attempts: i };
+        return { pushed: true, commit, attempts: i };
       } finally {
         try { fs.unlinkSync(idx); } catch { /* none */ }
       }
@@ -109,9 +131,17 @@ function publishLedgers({ repoDir, files, message, remote = 'origin', branch = '
       if (i < attempts) sleep(Math.min(30000, 2000 * 2 ** (i - 1)) + Math.floor(Math.random() * 1000));
     }
   }
-  const err = new Error(`gap-recovery ledgers not published after ${attempts} attempts: ${lastErr && lastErr.message}`);
+  const err = new Error(`${label} not published after ${attempts} attempts: ${lastErr && lastErr.message}`);
   err.cause = lastErr;
   throw err;
+}
+
+/** Is `commit` on origin's branch (fetched into the private ref)? */
+function landedOnOrigin({ repoDir, commit, remote = 'origin', branch = 'main' }) {
+  const git = gitRunner(repoDir);
+  const privRef = `refs/gap-publish/${branch}`;
+  git(['fetch', '--quiet', remote, `+refs/heads/${branch}:${privRef}`], { timeout: 180000 });
+  try { git(['merge-base', '--is-ancestor', commit, privRef]); return true; } catch { return false; }
 }
 
 /**
@@ -138,4 +168,4 @@ function seedStateFile({ repoDir, rel, localPath, remote = 'origin', branch = 'm
   return merged.text ? merged.text.split('\n').filter(Boolean).length : 0;
 }
 
-module.exports = { unionLines, publishLedgers, seedStateFile };
+module.exports = { unionLines, publishLedgers, publishComputed, landedOnOrigin, seedStateFile };

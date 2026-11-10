@@ -130,8 +130,20 @@ const LEDGER_PATH = process.env.ALERT_LEDGER_PATH
 // because, unlike the ledger, this path had no override and no write-time
 // guard. Same incident CLASS as the 2026-08-02 ledger one (saveLedger()'s
 // NODE_TEST_CONTEXT guard below), just not yet caught for this file.
+// BRO-7171: off CI the tracked file is the wrong place. sync-audit-checkout.sh
+// resets dirty non-jsonl data/audit files on the Mac and only CI's
+// health-check drains the queue, so a Mac job's digest row was lost (and the
+// local ledger's cooldown kept it from ever being re-queued). Off CI the queue
+// is a machine-local spool (same bare-array format) that
+// scripts/lib/alert-digest-spool.js publishes into origin's tracked queue
+// every checkout-sync tick.
+const DIGEST_SPOOL_MODE = !process.env.ALERT_DIGEST_QUEUE_PATH && !isCIExecution();
+// Under node:test the real queue/spool may not be written without an override.
+const DIGEST_QUEUE_OVERRIDE_ENV = DIGEST_SPOOL_MODE ? 'ALERT_DIGEST_SPOOL_PATH' : 'ALERT_DIGEST_QUEUE_PATH';
 const DIGEST_QUEUE_PATH = process.env.ALERT_DIGEST_QUEUE_PATH
-  || path.join(REPO_ROOT, 'data', 'audit', 'alert-digest-queue.json');
+  || (isCIExecution()
+    ? path.join(REPO_ROOT, 'data', 'audit', 'alert-digest-queue.json')
+    : require('./alert-digest-spool').spoolPath());
 // Append-only attempt log for disposition='auto' dispatches — logs EVERY
 // attempt (success or failure), unlike the ledger above which only ever
 // records successes (a failed dispatch is deliberately not written there, so
@@ -778,6 +790,8 @@ function queueDigestLine({ title, description, severity, conditionKey, url, deci
   if (!promptCheck.ok) {
     console.warn(`[alert-router] digest row "${conditionKey}" decisionPrompt may clip badly: ${promptCheck.reason}`);
   }
+  assertRealFileWriteIsSafeUnderTest('alert digest queue', DIGEST_QUEUE_OVERRIDE_ENV);
+  withDigestQueueLock(() => {
   let queue = [];
   try {
     const parsed = JSON.parse(fs.readFileSync(DIGEST_QUEUE_PATH, 'utf8'));
@@ -797,9 +811,23 @@ function queueDigestLine({ title, description, severity, conditionKey, url, deci
     fields: Array.isArray(fields) ? fields : [],
     queuedAt: new Date().toISOString(),
   });
-  assertRealFileWriteIsSafeUnderTest('alert digest queue', 'ALERT_DIGEST_QUEUE_PATH');
+  writeDigestQueueFile(queue);
+  });
+}
+
+// Spool mode (off CI): the flush (alert-digest-spool.js) trims published rows
+// out of the spool, so every read-modify-write of it is serialized with that.
+function withDigestQueueLock(fn) {
+  if (!DIGEST_SPOOL_MODE) return fn();
   fs.mkdirSync(path.dirname(DIGEST_QUEUE_PATH), { recursive: true });
-  fs.writeFileSync(DIGEST_QUEUE_PATH, JSON.stringify(queue, null, 2) + '\n');
+  return require('./file-lock').withFileLock(`${DIGEST_QUEUE_PATH}.lock`, fn, { timeoutMs: 15000, sleepWait: true });
+}
+
+function writeDigestQueueFile(queue) {
+  fs.mkdirSync(path.dirname(DIGEST_QUEUE_PATH), { recursive: true });
+  const tmp = `${DIGEST_QUEUE_PATH}.tmp.${process.pid}`;
+  fs.writeFileSync(tmp, JSON.stringify(queue, null, 2) + '\n');
+  fs.renameSync(tmp, DIGEST_QUEUE_PATH);
 }
 
 // Every field of a queued digest row that its consumers read
@@ -840,9 +868,8 @@ function peekDigestQueue() {
 
 // Clears the queue. Call only AFTER the peeked lines are durably persisted.
 function clearDigestQueue() {
-  assertRealFileWriteIsSafeUnderTest('alert digest queue', 'ALERT_DIGEST_QUEUE_PATH');
-  fs.mkdirSync(path.dirname(DIGEST_QUEUE_PATH), { recursive: true });
-  fs.writeFileSync(DIGEST_QUEUE_PATH, JSON.stringify([], null, 2) + '\n');
+  assertRealFileWriteIsSafeUnderTest('alert digest queue', DIGEST_QUEUE_OVERRIDE_ENV);
+  withDigestQueueLock(() => writeDigestQueueFile([]));
 }
 
 // Removes specific queued lines without touching the rest of the queue.
@@ -853,14 +880,21 @@ function clearDigestQueue() {
 // the NEXT (real) occurrence. Returns the number of lines removed.
 function removeDigestLines(conditionKeys) {
   const keys = new Set(Array.isArray(conditionKeys) ? conditionKeys : [conditionKeys]);
-  const queue = peekDigestQueue();
-  const kept = queue.filter(q => !q || !keys.has(q.conditionKey));
-  if (kept.length !== queue.length) {
-    assertRealFileWriteIsSafeUnderTest('alert digest queue', 'ALERT_DIGEST_QUEUE_PATH');
-    fs.mkdirSync(path.dirname(DIGEST_QUEUE_PATH), { recursive: true });
-    fs.writeFileSync(DIGEST_QUEUE_PATH, JSON.stringify(kept, null, 2) + '\n');
+  // Spool mode: the row may already be on origin's queue; the next flush
+  // removes it there too (tombstone), not just from the local spool.
+  if (DIGEST_SPOOL_MODE) {
+    assertRealFileWriteIsSafeUnderTest('alert digest spool removals', DIGEST_QUEUE_OVERRIDE_ENV);
+    require('./alert-digest-spool').recordRemovals([...keys]);
   }
-  return queue.length - kept.length;
+  return withDigestQueueLock(() => {
+    const queue = peekDigestQueue();
+    const kept = queue.filter(q => !q || !keys.has(q.conditionKey));
+    if (kept.length !== queue.length) {
+      assertRealFileWriteIsSafeUnderTest('alert digest queue', DIGEST_QUEUE_OVERRIDE_ENV);
+      writeDigestQueueFile(kept);
+    }
+    return queue.length - kept.length;
+  });
 }
 
 // Reads and clears in one step — retained for callers whose read and use are
