@@ -1174,20 +1174,6 @@
     "queuedAt": "2026-11-10T16:17:06.727Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 21 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +15 more). Checked 2026-11-10.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-10T17:03:05.401Z"
-  },
-  {
     "conditionKey": "land:land/bro-7291-sq2",
     "title": "Landing blocked: merged-tree-tests red on land/bro-7291-sq2",
     "description": "land.yml did not land land/bro-7291-sq2: the merged-tree-tests gate went red at 61aaf25e5e. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-7291-sq2 @ 61aaf25e5e (origin/land/bro-7291-sq2) → origin/main @ b6a8067d83 [land] .github/workflows/DEPENDENCIES.md was stale on the rebased tree: regenerated and folded into the last commit (BRO-7150) [land] attempt 1/3: rebased onto b6a8067d83, 42 file(s) changed — running checks [land] verified-base: main moved edab78b3a1 → b6a8067d83 across 209 file(s), substantive — re-checki Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42852618158",
@@ -1400,5 +1386,19 @@
       }
     ],
     "queuedAt": "2026-11-10T18:02:42.162Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 19 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +13 more). Checked 2026-11-10.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-10T18:23:55.780Z"
   }
 ]
