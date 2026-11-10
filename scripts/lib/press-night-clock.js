@@ -28,6 +28,13 @@ const KINDS = {
   kick: { leadMin: KICK_LEAD_MIN, lateMin: KICK_LEAD_MIN + KICK_LATE_MIN, categories: null },
   pf24: { leadMin: 24 * 60, lateMin: 20 * 60, categories: ['broadway'] }, // until embargo -4h
   pf3: { leadMin: 180, lateMin: 120, categories: ['broadway'] }, // until embargo -1h
+  // BRO-7160 post-lane review sweep (scripts/lib/post-lane-sweep.js SWEEP_SLOTS/VERIFY_SLOT): after the lane releases
+  // at about +4h, one targeted poller run at +4h15, +5h15 and +6h15, then a verify at +7h30. Negative lead = after
+  // embargo. Each slot stays fireable until the next one is due; the last sweep and the verify until about +12h.
+  sw1: { leadMin: -255, lateMin: 60, categories: ['broadway'] },
+  sw2: { leadMin: -315, lateMin: 60, categories: ['broadway'] },
+  sw3: { leadMin: -375, lateMin: 345, categories: ['broadway'] },
+  swv: { leadMin: -450, lateMin: 270, categories: ['broadway'] },
 };
 
 function kickKey(showId, night, kind = 'kick') {

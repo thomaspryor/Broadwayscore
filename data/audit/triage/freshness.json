@@ -1,7 +1,7 @@
 {
   "system": "freshness",
   "status": "pass",
-  "lastChecked": "2026-11-09T09:53:09.446Z",
+  "lastChecked": "2026-11-10T09:52:18.561Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,17 +9,17 @@
     {
       "name": "Freshness: reviews.json",
       "status": "pass",
-      "message": "0h old"
+      "message": "1h old"
     },
     {
       "name": "Freshness: shows.json",
       "status": "pass",
-      "message": "1h old"
+      "message": "2h old"
     },
     {
       "name": "Freshness: grosses.json",
       "status": "pass",
-      "message": "6d old"
+      "message": "7d old"
     },
     {
       "name": "Freshness: audience-buzz.json",
@@ -29,7 +29,7 @@
     {
       "name": "Freshness: commercial.json",
       "status": "pass",
-      "message": "19h old"
+      "message": "10h old"
     },
     {
       "name": "Freshness: critic-consensus.json",
@@ -39,22 +39,22 @@
     {
       "name": "Freshness: lottery-rush.json",
       "status": "pass",
-      "message": "2d old"
+      "message": "3d old"
     },
     {
       "name": "Freshness: cast-changes.json",
       "status": "pass",
-      "message": "10h old"
+      "message": "0h old"
     },
     {
       "name": "Freshness: nyt-critics-picks.json",
       "status": "pass",
-      "message": "1h old"
+      "message": "0h old"
     },
     {
       "name": "Freshness: video-reviews.json",
       "status": "pass",
-      "message": "7d old"
+      "message": "21h old"
     },
     {
       "name": "Freshness: tony-win-probabilities.json",
@@ -74,62 +74,62 @@
     {
       "name": "Freshness: audit/t1-silent-gaps.json",
       "status": "pass",
-      "message": "0h old"
+      "message": "1h old"
     },
     {
       "name": "Freshness: audit/uncollected-live-reviews.json",
       "status": "pass",
-      "message": "0h old"
+      "message": "1h old"
     },
     {
       "name": "Freshness: audit/imageless-scored-shows.json",
       "status": "pass",
-      "message": "6h old"
+      "message": "5h old"
     },
     {
       "name": "Freshness: audit/venue-date-mismatches.json",
       "status": "pass",
-      "message": "10h old"
+      "message": "7h old"
     },
     {
       "name": "Freshness: audit/alert-sender-inventory.json",
       "status": "pass",
-      "message": "15h old"
+      "message": "10h old"
     },
     {
       "name": "Freshness: audit/ob-closing-candidates.json",
       "status": "pass",
-      "message": "7d old"
+      "message": "12h old"
     },
     {
       "name": "Freshness: audit/same-title-confusion.json",
       "status": "pass",
-      "message": "15h old"
+      "message": "2d old"
     },
     {
       "name": "Freshness: audit/slug-misroute-audit.json",
       "status": "pass",
-      "message": "15h old"
+      "message": "2d old"
     },
     {
       "name": "Freshness: audit/open-backlog-acceptance-sweep.json",
       "status": "pass",
-      "message": "1d old"
+      "message": "23h old"
     },
     {
       "name": "Freshness: audit/progress-watch-state.json",
       "status": "pass",
-      "message": "21h old"
+      "message": "20h old"
     },
     {
       "name": "Freshness: audit/stuck-card-closer.json",
       "status": "pass",
-      "message": "1d old"
+      "message": "23h old"
     },
     {
       "name": "Freshness: board-dispatch ledger",
       "status": "pass",
-      "message": "No board-dispatch ledger yet (the nightly job has not written one); first nightly row due by 2026-11-12T18:00:00Z"
+      "message": "last scheduled row 23h old"
     }
   ]
 }

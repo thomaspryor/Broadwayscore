@@ -42,7 +42,8 @@ test('orchestrator loop script is valid bash', () => {
 test('orchestrator re-waits on a still-active previous poller run instead of dispatching', () => {
   const s = orchestratorLoopScript();
   const guard = s.indexOf('PREV_STILL_ACTIVE=false');
-  const dispatch = s.indexOf('gh workflow run opening-night-poller.yml');
+  // BRO-7198: dispatch_parallel (defined above the loop) has its own per-show guard; this pins the legacy loop path.
+  const dispatch = s.indexOf('gh workflow run opening-night-poller.yml', guard);
   assert.ok(guard > -1 && guard < dispatch, 'active-run guard must precede the first dispatch');
   for (const st of ['queued', 'in_progress', 'waiting', 'pending', 'requested']) {
     assert.ok(s.includes(st), `guard must treat ${st} as active`);

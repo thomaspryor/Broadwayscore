@@ -105,3 +105,13 @@ test('"3 stars (of a possible 4)" is read on the 4-star scale', () => {
   assert.equal(A.starsFromRating('3 stars (of a possible 4)'), 4);
   assert.equal(A.starBandProblem('3 stars (of a possible 4)', 80), null);
 });
+
+test('record hash changes when our record changes, so cached audits re-run (BRO-7256)', () => {
+  const a = { title: 'X', openingDate: '2026-06-01', closingDate: '2026-06-20' };
+  const h = A.recordHash(a, A.SHOW_RECORD_FIELDS);
+  assert.equal(A.recordHash({ ...a }, A.SHOW_RECORD_FIELDS), h);
+  assert.notEqual(A.recordHash({ ...a, closingDate: '2026-06-21' }, A.SHOW_RECORD_FIELDS), h);
+  assert.notEqual(A.recordHash({ ...a, title: 'Y' }, A.SHOW_RECORD_FIELDS), h);
+  const src = fs.readFileSync(new URL('../audit-city-hub-dual-model.js', import.meta.url), 'utf8');
+  assert.match(src, /recHash !== /);
+});

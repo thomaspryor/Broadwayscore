@@ -1,7 +1,7 @@
 {
   "system": "quality",
   "status": "warn",
-  "lastChecked": "2026-11-09T09:53:09.447Z",
+  "lastChecked": "2026-11-10T09:52:18.563Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -13,23 +13,23 @@
     },
     {
       "name": "Quality: star-vs-score mismatch",
-      "status": "warn",
-      "message": "1 NEW review(s) whose explicit rating contradicts the score (worst: beaches-2026 The Times (UK) 5/5 stars→100 vs LLM 45, gap 55)"
+      "status": "pass",
+      "message": "No new star/score contradictions (30 known/baselined)"
     },
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.2% scored (49955/50860)"
+      "message": "98.2% scored (50117/51044)"
     },
     {
       "name": "Quality: corpus drift",
       "status": "pass",
-      "message": "26 audit(s) drifting, each reported on its own card or the digest FYI line (10h ago)"
+      "message": "27 audit(s) drifting, each reported on its own card or the digest FYI line (6h ago)"
     },
     {
       "name": "Quality: DMARC deliverability",
       "status": "pass",
-      "message": "18020 messages, 0 auth failures (p=reject)"
+      "message": "18677 messages, 0 auth failures (p=reject)"
     },
     {
       "name": "Quality: missing contentTier",
@@ -39,7 +39,7 @@
     {
       "name": "Quality: outlet domain moves",
       "status": "warn",
-      "message": "1 unregistered host(s) name-match a registered outlet (e.g. westendextra.co.uk → west-end-extra) — probable domain move dropping reviews via domain-mismatch"
+      "message": "2 unregistered host(s) name-match a registered outlet (e.g. westendextra.co.uk → west-end-extra) — probable domain move dropping reviews via domain-mismatch"
     },
     {
       "name": "Quality: Show Score gap",
@@ -49,12 +49,12 @@
     {
       "name": "Quality: outlet stub rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1847 outlet(s), 80784 review(s)"
+      "message": "No broken-extractor signature in 1851 outlet(s), 81065 review(s)"
     },
     {
       "name": "Quality: outlet invalid-content rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1847 outlet(s), 80784 review(s)"
+      "message": "No broken-extractor signature in 1851 outlet(s), 81065 review(s)"
     },
     {
       "name": "Quality: standingCoverage drift",
@@ -64,7 +64,7 @@
     {
       "name": "Quality: expected critics missing",
       "status": "warn",
-      "message": "14 usual-critic review(s) missing across 9 opening(s): blood-of-my-blood-west-end-2026 (broadwayworld, whatsonstage); from-the-heart-west-end-2026 (broadwayworld, london-theatre, timeout-london); angels-bone-west-end-2026 (timeout-london, whatsonstage); the-dog-show-come-sit-stay-off-broadway-2026 (theatermania); billy-crystal-860-2026 (theatrely); the-kick-inside-off-broadway-2026 (theatermania); medea-off-broadway-2026 (theatermania); tosca-english-national-opera-west-end-2026 (timeout-london, whatsonstage); ..."
+      "message": "18 usual-critic review(s) missing across 10 opening(s): blood-of-my-blood-west-end-2026 (broadwayworld, whatsonstage); from-the-heart-west-end-2026 (broadwayworld, london-theatre, timeout-london); angels-bone-west-end-2026 (timeout-london, whatsonstage); the-dog-show-come-sit-stay-off-broadway-2026 (theatermania); billy-crystal-860-2026 (theatrely); the-kick-inside-off-broadway-2026 (theatermania); medea-off-broadway-2026 (theatermania); tosca-english-national-opera-west-end-2026 (timeout-london, whatsonstage); ..."
     },
     {
       "name": "Quality: coverageExpectation drift",
@@ -73,13 +73,13 @@
     },
     {
       "name": "Quality: outlet-heartbeat red flags",
-      "status": "pass",
-      "message": "148 outlet×market rows checked, none NEW silent 2+ consecutive weeks (31 known/baselined, 7d ago)"
+      "status": "warn",
+      "message": "13 NEW T1/T2 outlet×market row(s) silent 2+ consecutive weekly checks (worst: telegraph/off-broadway, 3671d silent vs 482d threshold; 30 known/baselined)"
     },
     {
       "name": "Quality: outlet feed staleness",
-      "status": "warn",
-      "message": "Of 80 feed(s), outlet still publishing but feed 1 stale: exeunt-magazine (feed newest none, review 2026-11-07)"
+      "status": "pass",
+      "message": "84 feed(s) checked, none stale or failing"
     }
   ]
 }

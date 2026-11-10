@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-11-10T08:52:23.474Z",
+  "generatedAt": "2026-11-10T10:00:15.455Z",
   "threshold": 50,
   "summary": {
-    "totalSyndicatedPairs": 1,
-    "newlyFlagged": 1,
+    "totalSyndicatedPairs": 0,
+    "newlyFlagged": 0,
     "alreadyFlagged": 0,
-    "criticsAffected": 1,
-    "showsAffected": 1,
-    "avgSimilarity": 73,
-    "avgScoreDiff": 2
+    "criticsAffected": 0,
+    "showsAffected": 0,
+    "avgSimilarity": 0,
+    "avgScoreDiff": 0
   },
   "syndicationPairs": [
     {
@@ -17,7 +17,7 @@
       "secondaryOutlets": [
         "nydailynews"
       ],
-      "count": 1
+      "count": 0
     },
     {
       "critic": "kathleen campion",
@@ -99,7 +99,8 @@
       "primaryOutlet": "ap",
       "secondaryOutlets": [
         "abc-news",
-        "minneapolis-star-tribune"
+        "minneapolis-star-tribune",
+        "denver-post"
       ],
       "count": 0
     },
@@ -161,20 +162,7 @@
       "count": 0
     }
   ],
-  "flagged": [
-    {
-      "critic": "Chris Jones",
-      "showId": "here-there-are-blueberries-2026",
-      "primaryOutlet": "chicagotribune",
-      "secondaryOutlet": "nydailynews",
-      "primaryFile": "chicagotribune--chris-jones--on-2026-11-09.json",
-      "secondaryFile": "nydailynews--chris-jones.json",
-      "similarity": 73,
-      "primaryScore": 88,
-      "secondaryScore": 86,
-      "scoreDiff": 2
-    }
-  ],
+  "flagged": [],
   "authorMismatches": [
     {
       "showId": "birthday-candles-2022",

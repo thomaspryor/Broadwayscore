@@ -97,9 +97,17 @@ test('acquireLock is fail-closed while the holder is alive, reclaims a dead hold
   release();
 
   // Lock left by a process that has exited.
-  const child = spawn(process.execPath, ['-e', '0']);
-  await new Promise((r) => child.on('exit', r));
-  fs.writeFileSync(lock, `${child.pid} 2026-09-27T00:00:00Z\n`);
+  // The freed PID can be reused by another process on a busy CI runner, so spawn until one is verifiably dead (BRO-7256 flake).
+  let deadPid = null;
+  for (let i = 0; i < 20 && deadPid === null; i++) {
+    const child = spawn(process.execPath, ['-e', '0']);
+    await new Promise((r) => child.on('exit', r));
+    let alive = true;
+    try { process.kill(child.pid, 0); } catch { alive = false; }
+    if (!alive) deadPid = child.pid;
+  }
+  assert.notEqual(deadPid, null, 'found a dead PID');
+  fs.writeFileSync(lock, `${deadPid} 2026-09-27T00:00:00Z\n`);
   const again = renew.acquireLock(lock);
   assert.equal(typeof again, 'function', 'dead-PID lock is reclaimed');
   again();

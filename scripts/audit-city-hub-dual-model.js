@@ -195,7 +195,8 @@ async function both(promptFn, opts = {}) {
 }
 
 async function runShows(L, limit) {
-  const cache = loadCache(L.city, 'shows'); const todo = L.shows.filter((s) => !cache.has(s.id)).slice(0, limit);
+  const cache = loadCache(L.city, 'shows'); const stale = (c, h) => !c || (c.recHash !== undefined && c.recHash !== h); // rows cached before BRO-7256 carry no hash and stay valid
+  const todo = L.shows.filter((s) => stale(cache.get(s.id), A.recordHash(s, A.SHOW_RECORD_FIELDS))).slice(0, limit);
   console.log(`shows: ${todo.length} to check (${cache.size} cached)`);
   await pool(todo, 4, async (s) => {
     const url = showPageUrl(s);
@@ -210,7 +211,7 @@ async function runShows(L, limit) {
       const [g, o] = await Promise.all([askGemini(q, { grounded: true }).catch((e) => `ERROR ${e.message}`), askOpenAI(q, { search: true }).catch((e) => `ERROR ${e.message}`)]);
       ex = { gemini: A.parseJson(g) || { _raw: String(g).slice(0, 200) }, openai: A.parseJson(o) || { _raw: String(o).slice(0, 200) } };
     }
-    const row = { id: s.id, url: url || null, src, pageHash: page.text ? sha(page.text) : null, ...ex };
+    const row = { id: s.id, recHash: A.recordHash(s, A.SHOW_RECORD_FIELDS), url: url || null, src, pageHash: page.text ? sha(page.text) : null, ...ex };
     appendCache(L.city, 'shows', row); return row;
   });
 }
@@ -234,17 +235,18 @@ async function runReviews(L, limit) {
   const cache = loadCache(L.city, 'reviews');
   const showBy = new Map(L.shows.map((s) => [s.id, s]));
   const all = [...L.reviews, ...L.excluded.map((e) => ({ ...e, row: null }))];
-  const todo = all.filter((it) => !cache.has(it.id)).slice(0, limit);
+  const recOf = (it) => A.recordHash({ ...(it.row || {}), textHash: sha((it.file && (it.file.fullText || it.file.text)) || '') }, [...A.REVIEW_RECORD_FIELDS, 'textHash']);
+  const todo = all.filter((it) => { const c = cache.get(it.id); return !c || (c.recHash !== undefined && c.recHash !== recOf(it)); }).slice(0, limit);
   console.log(`reviews: ${todo.length} to check (${cache.size} cached; ${L.reviews.length} published + ${L.excluded.length} excluded files)`);
   await pool(todo, 6, async (it) => {
     const showId = it.row ? it.row.showId : it.showId; const show = showBy.get(showId);
     const text = it.file && (it.file.fullText || it.file.text);
     if (!text || String(text).length < 200) {
-      const row = { id: it.id, kind: it.kind, noText: true, textLen: text ? String(text).length : 0 }; appendCache(L.city, 'reviews', row); return row;
+      const row = { id: it.id, recHash: recOf(it), kind: it.kind, noText: true, textLen: text ? String(text).length : 0 }; appendCache(L.city, 'reviews', row); return row;
     }
     const meta = `url: ${it.file.url || ''}\nfetched: ${it.file.textFetchedAt || ''}`;
     const ex = await both(reviewPrompt({ ...show, city: L.hub.name }, text, meta));
-    const row = { id: it.id, kind: it.kind, textHash: sha(text), ...ex }; appendCache(L.city, 'reviews', row); return row;
+    const row = { id: it.id, recHash: recOf(it), kind: it.kind, textHash: sha(text), ...ex }; appendCache(L.city, 'reviews', row); return row;
   });
 }
 

@@ -1,39 +1,154 @@
 {
-  "generatedAt": "2026-11-09T10:47:44.161Z",
-  "scope": "2 opening window(s): the-visitors-off-broadway-2026 (2026-11-09), dogstar-off-west-end-2026 (2026-11-09)",
+  "generatedAt": "2026-11-10T10:26:12.124Z",
+  "scope": "2 opening window(s): cloud-9-west-end-2026 (2026-11-10), the-visitors-off-broadway-2026 (2026-11-09)",
   "degraded": null,
   "windows": [
     {
-      "showId": "the-visitors-off-broadway-2026",
-      "openingDate": "2026-11-09",
-      "from": "2026-11-08T00:00:00.000Z",
-      "to": "2026-11-13T23:59:59.999Z"
+      "showId": "cloud-9-west-end-2026",
+      "openingDate": "2026-11-10",
+      "from": "2026-11-09T00:00:00.000Z",
+      "to": "2026-11-14T23:59:59.999Z"
     },
     {
-      "showId": "dogstar-off-west-end-2026",
+      "showId": "the-visitors-off-broadway-2026",
       "openingDate": "2026-11-09",
       "from": "2026-11-08T00:00:00.000Z",
       "to": "2026-11-13T23:59:59.999Z"
     }
   ],
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "logEntryCount": 232966,
-  "logOldestEntryAt": "2026-11-07T01:51:51.728Z",
+  "logEntryCount": 160041,
+  "logOldestEntryAt": "2026-11-08T21:18:11.911Z",
   "publishTimesLoaded": 0,
   "verdict": {
     "verdict": "insufficient-data",
     "pass": false,
-    "evaluated": 0,
+    "evaluated": 4,
     "inFlight": 0,
     "compliant": 0,
-    "compliancePct": null,
-    "p50Ms": null,
-    "p90Ms": null,
+    "compliancePct": 0,
+    "p50Ms": 20334921,
+    "p90Ms": 27207021,
     "targetMinutes": 15,
     "targetPct": 90,
     "minSample": 5,
-    "breaches": [],
-    "byBasis": {}
+    "breaches": [
+      {
+        "showId": "the-visitors-off-broadway-2026",
+        "reviewKey": "nysr:michael-sommers:https://nystagereview.com/2026/11/09/the-visitors-playing-the-organ/",
+        "outletId": "nysr",
+        "publishedAt": null,
+        "publishedAtAssumedZone": false,
+        "firstSeenAt": "2026-11-10T02:15:03.979Z",
+        "collectedAt": null,
+        "scoredAt": null,
+        "rebuiltAt": "2026-11-10T03:28:51.580Z",
+        "liveAt": "2026-11-10T09:38:31.000Z",
+        "pipelineMs": 26607021,
+        "publishedToLiveMs": 27207021,
+        "basis": "poller-bounded",
+        "stuckAtStage": null
+      },
+      {
+        "showId": "the-visitors-off-broadway-2026",
+        "reviewKey": "culturesauce:thom-geier:https://culturesauce.com/the-visitors-bryna-turner-off-broadway-review/",
+        "outletId": "culturesauce",
+        "publishedAt": null,
+        "publishedAtAssumedZone": false,
+        "firstSeenAt": "2026-11-10T02:15:04.381Z",
+        "collectedAt": null,
+        "scoredAt": null,
+        "rebuiltAt": "2026-11-10T03:28:51.580Z",
+        "liveAt": "2026-11-10T09:38:31.000Z",
+        "pipelineMs": 26606619,
+        "publishedToLiveMs": 27206619,
+        "basis": "poller-bounded",
+        "stuckAtStage": null
+      },
+      {
+        "showId": "the-visitors-off-broadway-2026",
+        "reviewKey": "nytg:allison-considine:https://www.newyorktheatreguide.com/reviews/the-visitors-off-broadway-review",
+        "outletId": "nytg",
+        "publishedAt": null,
+        "publishedAtAssumedZone": false,
+        "firstSeenAt": "2026-11-10T04:09:36.079Z",
+        "collectedAt": null,
+        "scoredAt": null,
+        "rebuiltAt": "2026-11-10T04:12:35.867Z",
+        "liveAt": "2026-11-10T09:38:31.000Z",
+        "pipelineMs": 19734921,
+        "publishedToLiveMs": 20334921,
+        "basis": "poller-bounded",
+        "stuckAtStage": null
+      },
+      {
+        "showId": "the-visitors-off-broadway-2026",
+        "reviewKey": "talkinbroadway:james-wilson:https://www.talkinbroadway.com/page/ob/11_09_26.html",
+        "outletId": "talkinbroadway",
+        "publishedAt": null,
+        "publishedAtAssumedZone": false,
+        "firstSeenAt": "2026-11-10T04:09:36.558Z",
+        "collectedAt": null,
+        "scoredAt": null,
+        "rebuiltAt": "2026-11-10T04:12:35.867Z",
+        "liveAt": "2026-11-10T09:38:31.000Z",
+        "pipelineMs": 19734442,
+        "publishedToLiveMs": 20334442,
+        "basis": "poller-bounded",
+        "stuckAtStage": null
+      }
+    ],
+    "byBasis": {
+      "poller-bounded": {
+        "evaluated": 4,
+        "compliant": 0
+      }
+    }
   },
-  "records": []
+  "records": [
+    {
+      "showId": "the-visitors-off-broadway-2026",
+      "outletId": "nysr",
+      "reviewKey": "nysr:michael-sommers:https://nystagereview.com/2026/11/09/the-visitors-playing-the-organ/",
+      "basis": "poller-bounded",
+      "firstSeenAt": "2026-11-10T02:15:03.979Z",
+      "liveAt": "2026-11-10T09:38:31.000Z",
+      "pipelineMinutes": 443.5,
+      "publishedToLiveMinutes": 453.5,
+      "stuckAtStage": null
+    },
+    {
+      "showId": "the-visitors-off-broadway-2026",
+      "outletId": "culturesauce",
+      "reviewKey": "culturesauce:thom-geier:https://culturesauce.com/the-visitors-bryna-turner-off-broadway-review/",
+      "basis": "poller-bounded",
+      "firstSeenAt": "2026-11-10T02:15:04.381Z",
+      "liveAt": "2026-11-10T09:38:31.000Z",
+      "pipelineMinutes": 443.4,
+      "publishedToLiveMinutes": 453.4,
+      "stuckAtStage": null
+    },
+    {
+      "showId": "the-visitors-off-broadway-2026",
+      "outletId": "nytg",
+      "reviewKey": "nytg:allison-considine:https://www.newyorktheatreguide.com/reviews/the-visitors-off-broadway-review",
+      "basis": "poller-bounded",
+      "firstSeenAt": "2026-11-10T04:09:36.079Z",
+      "liveAt": "2026-11-10T09:38:31.000Z",
+      "pipelineMinutes": 328.9,
+      "publishedToLiveMinutes": 338.9,
+      "stuckAtStage": null
+    },
+    {
+      "showId": "the-visitors-off-broadway-2026",
+      "outletId": "talkinbroadway",
+      "reviewKey": "talkinbroadway:james-wilson:https://www.talkinbroadway.com/page/ob/11_09_26.html",
+      "basis": "poller-bounded",
+      "firstSeenAt": "2026-11-10T04:09:36.558Z",
+      "liveAt": "2026-11-10T09:38:31.000Z",
+      "pipelineMinutes": 328.9,
+      "publishedToLiveMinutes": 338.9,
+      "stuckAtStage": null
+    }
+  ]
 }

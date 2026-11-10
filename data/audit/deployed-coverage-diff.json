@@ -1,32 +1,13 @@
 {
-  "generatedAt": "2026-11-10T08:46:31.575Z",
+  "generatedAt": "2026-11-10T09:54:28.547Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 317,
-  "clean": 316,
-  "defective": 1,
-  "byType": {
-    "score-drift": 1
-  },
-  "shows": [
-    {
-      "showId": "here-there-are-blueberries-2026",
-      "title": "Here There Are Blueberries",
-      "openingDate": "2026-11-09",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 80.55 vs local 81.01 (Δ0.46)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 17,
-      "deployedCount": 17,
-      "firstDefectAt": "2026-11-10T08:46:26.855Z"
-    }
-  ],
+  "clean": 317,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
