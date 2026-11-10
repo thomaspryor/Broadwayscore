@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-10T07:35:38.472Z",
+  "generatedAt": "2026-11-10T08:46:32.022Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -125,10 +125,6 @@
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
     {
-      "outletId": "city-am",
-      "error": "HTTP 403 for https://www.cityam.com/category/theatre/feed/"
-    },
-    {
       "outletId": "theartsdispatch",
       "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
     },
@@ -139,10 +135,14 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "londonpubtheatres",
+      "error": "Timeout fetching https://www.londonpubtheatres.com/feed/rss2"
     }
   ],
-  "itemsScanned": 851,
-  "matchedGaps": 3,
+  "itemsScanned": 838,
+  "matchedGaps": 6,
   "possibleGaps": 2,
   "gaps": [
     {
@@ -164,12 +164,39 @@
       "publishDate": "2026-11-07"
     },
     {
+      "showId": "dogstar-off-west-end-2026",
+      "title": "Dogstar",
+      "level": "matched",
+      "outletId": "the-recs",
+      "url": "https://therecs.co.uk/dogstar-hampstead-theatre/",
+      "headline": "Dogstar &#8211; Hampstead Theatre ★★★★",
+      "publishDate": "2026-11-10"
+    },
+    {
+      "showId": "nero-off-west-end-2026",
+      "title": "Nero",
+      "level": "matched",
+      "outletId": "readaboutstuff",
+      "url": "https://readaboutstuff.com/2026/11/10/review-nero-southwark-playhouse-elephant-london/",
+      "headline": "Review: Nero &#8211; Southwark Playhouse Elephant, London",
+      "publishDate": "2026-11-10"
+    },
+    {
       "showId": "nero-off-west-end-2026",
       "title": "Nero",
       "level": "matched",
       "outletId": "south-london",
       "url": "https://southlondon.co.uk/lifestyle/review-nero-southwark-playhouse/",
       "headline": "Review: Nero @ Southwark Playhouse",
+      "publishDate": "2026-11-09"
+    },
+    {
+      "showId": "the-verge-off-broadway-2026",
+      "title": "The Verge",
+      "level": "matched",
+      "outletId": "stageandcinema",
+      "url": "https://stageandcinema.com/2026/11/09/the-verge-review-fiasco-theater-public/",
+      "headline": "Off-Broadway Review: THE VERGE (Fiasco Theater / The Public Theater)",
       "publishDate": "2026-11-09"
     },
     {
