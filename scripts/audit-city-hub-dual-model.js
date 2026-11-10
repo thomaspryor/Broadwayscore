@@ -5,7 +5,7 @@
  * families (Gemini + OpenAI), BRO-7256. Rerunnable for any hub in data/city-hubs.json.
  *
  *   node scripts/audit-city-hub-dual-model.js inventory --city=washington-dc
- *   node scripts/audit-city-hub-dual-model.js shows|images|reviews|coverage|tours|ingest-plan --city=... [--limit=N] [--max-usd=4]
+ *   node scripts/audit-city-hub-dual-model.js shows|images|reviews|coverage|tours|ingest-plan --city=... [--limit=N] [--max-usd=4] [--refresh-days=N]
  *   node scripts/audit-city-hub-dual-model.js pages --city=...        (live hub + app feed vs shows.json, no LLM)
  *   node scripts/audit-city-hub-dual-model.js report --city=... [--write]  (scorecard; --write saves JSON + MD)
  *
@@ -96,7 +96,9 @@ function loadCache(city, kind) {
   for (const l of fs.readFileSync(f, 'utf8').split('\n')) { if (!l.trim()) continue; try { const j = JSON.parse(l); m.set(j.id, j); } catch (_) { /* skip */ } }
   return m;
 }
-function appendCache(city, kind, row) { fs.appendFileSync(cacheFile(city, kind), `${JSON.stringify(row)}\n`); }
+/** A row where a model call failed (API error, or the --max-usd cap) is not cached, so the next run asks again. */
+const failedCall = (row) => ['gemini', 'openai'].some((m) => row[m] && typeof row[m]._raw === 'string' && row[m]._raw.startsWith('ERROR '));
+function appendCache(city, kind, row) { if (failedCall(row)) return; fs.appendFileSync(cacheFile(city, kind), `${JSON.stringify(row)}\n`); }
 
 // ---------- source text ----------
 const UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126 Safari/537.36';
@@ -293,12 +295,15 @@ async function runCoverage(L, limit) {
   const cache = loadCache(L.city, 'coverage');
   const cutoff = A.addDays(TODAY, -120);
   const targets = L.shows.filter((s) => { const p = A.hubPhase(s, TODAY); return p === 'now' || (p === 'closed' && (s.closingDate || s.openingDate || '') >= cutoff); });
-  const todo = targets.filter((s) => !cache.has(s.id)).slice(0, limit);
+  // --refresh-days=N re-asks for still-running shows whose answer is older than N days (late reviews); rows without `at` predate this
+  const refresh = Number(arg('refresh-days', 0));
+  const old = (c) => refresh > 0 && A.hubPhase(c.show, TODAY) === 'now' && (!c.row.at || c.row.at < A.addDays(TODAY, -refresh));
+  const todo = targets.filter((s) => !cache.has(s.id) || old({ show: s, row: cache.get(s.id) })).slice(0, limit);
   console.log(`coverage: ${todo.length} to check of ${targets.length} now-playing/recent-closed (${cache.size} cached)`);
   await pool(todo, 3, async (s) => {
     const q = `List professional critic reviews (published reviews only, not previews, not ticket pages) of the stage production "${s.title}" at ${s.venue} (${L.hub.name}), run ${s.openingDate || ''} to ${s.closingDate || ''}. Look especially at: ${C.outletHint(L.reviews.map((x) => x.row)) || 'the main local newspapers and theatre sites'}. ${JSON_ONLY} Format: {"reviews":[{"outlet":"","critic":"","url":"","date":"YYYY-MM-DD"}]}. Only include reviews you found at a real URL.`;
     const [g, o] = await Promise.all([askGemini(q, { grounded: true }).catch((e) => `ERROR ${e.message}`), askOpenAI(q, { search: true }).catch((e) => `ERROR ${e.message}`)]);
-    const row = { id: s.id, gemini: A.parseJson(g) || { _raw: String(g).slice(0, 200) }, openai: A.parseJson(o) || { _raw: String(o).slice(0, 200) } };
+    const row = { id: s.id, at: TODAY, gemini: A.parseJson(g) || { _raw: String(g).slice(0, 200) }, openai: A.parseJson(o) || { _raw: String(o).slice(0, 200) } };
     // Grounded search returns short-lived redirect links (they 404 within days): resolve them now so the gap is ingestable.
     for (const m of ['gemini', 'openai']) for (const rv of ((row[m] || {}).reviews) || []) rv.url = await resolveRedirect(rv.url);
     appendCache(L.city, 'coverage', row); return row;
@@ -416,7 +421,7 @@ function computeFlags(L) {
   try { listings = readJson('data/audit/hub-run-dates.json').listings || {}; } catch { /* no report yet: texts only */ }
   for (const s of L.shows) {
     const r = A.showRunEndFinding(s, runEndTexts.get(s.id) || [], listings[s.id] || null);
-    if (r) add('show', s.id, s.title, 'local', [{ code: 'review-text-later-closing', detail: `ours ${s.closingDate} / ${r.source}` }]);
+    if (r) add('show', s.id, s.title, 'local', [{ code: 'review-text-later-closing', detail: `ours ${s.closingDate} / ${r.source}`, fix: { field: 'closingDate', value: r.date, sourceField: 'closingDateSource', source: r.source } }]);
   }
   // BRO-7291 class 3: a published review about the same title at another theatre in another state, and a stored
   // venue every outlet contradicts (octet-regional-2026: stored Goodman, seven outlets review Raven Theatre's).
@@ -434,7 +439,7 @@ function computeFlags(L) {
   }
   for (const s of L.shows) {
     const d = V.showVenueDisagreement(s, textsBy.get(s.id) || [], cityVenues);
-    if (d) add('show', s.id, s.title, 'local', [{ code: 'venue-contradicted', detail: `ours ${s.venue} / ${d.outlets.length} outlets name ${d.venue}: ${d.outlets.join(', ')}` }]);
+    if (d) add('show', s.id, s.title, 'local', [{ code: 'venue-contradicted', detail: `ours ${s.venue} / ${d.outlets.length} outlets name ${d.venue}: ${d.outlets.join(', ')}`, fix: { field: 'venue', value: d.venue } }]);
   }
   // BRO-7291 class 4: a title typo copied from a listing ("Hangman" staged, every review prints "Hangmen").
   const T = require('./lib/title-spelling-check');
@@ -442,7 +447,7 @@ function computeFlags(L) {
   for (const s of L.shows) {
     const texts = (textsBy.get(s.id) || []).map((x) => x.fullText);
     const t = T.titleSpellingFinding(s, texts, knownTitles.filter((x) => x !== s.title));
-    if (t) add('show', s.id, s.title, 'local', [{ code: 'title-spelling', detail: `ours "${s.title}" (${t.ours}x) / reviews print "${t.title}" ${t.theirs}x in ${t.texts} texts` }]);
+    if (t) add('show', s.id, s.title, 'local', [{ code: 'title-spelling', detail: `ours "${s.title}" (${t.ours}x) / reviews print "${t.title}" ${t.theirs}x in ${t.texts} texts`, fix: { field: 'title', value: t.title } }]);
   }
   // duplicates by title
   const tcount = new Map(); for (const s of L.shows) { const k = `${fold(s.title)}|${fold(s.venue)}`; tcount.set(k, [...(tcount.get(k) || []), s.id]); }
@@ -521,4 +526,4 @@ async function main() {
 }
 
 if (require.main === module) main().catch((e) => { console.error(e.message || e); process.exit(1); });
-module.exports = { loadCity, computeFlags, scorecard, checkPages, writeIngestPlan };
+module.exports = { loadCity, computeFlags, scorecard, checkPages, writeIngestPlan, failedCall };
