@@ -928,33 +928,6 @@
     "queuedAt": "2026-11-10T15:36:09.477Z"
   },
   {
-    "conditionKey": "test-yml:data-validation-red:audit-outlet-registry-gaps",
-    "title": "Data audit failing: Audit outlet-registry gaps",
-    "description": "The \"Audit outlet-registry gaps\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
-    "severity": "warning",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42845160378",
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [
-      {
-        "name": "Job",
-        "value": "Data Validation"
-      },
-      {
-        "name": "Step",
-        "value": "Audit outlet-registry gaps"
-      },
-      {
-        "name": "Run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42845160378)"
-      }
-    ],
-    "queuedAt": "2026-11-10T15:36:09.494Z"
-  },
-  {
     "conditionKey": "test-yml:data-validation-red:audit-stale-duplicateof-flags",
     "title": "Data audit failing: Audit stale duplicateOf flags",
     "description": "The \"Audit stale duplicateOf flags\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
@@ -1388,17 +1361,30 @@
     "queuedAt": "2026-11-10T18:02:42.162Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 19 (backfill-everybodys-talking-about-jamie-show-exists, pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, +13 more). Checked 2026-11-10.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
+    "conditionKey": "test-yml:data-validation-red:audit-outlet-registry-gaps",
+    "title": "Data audit failing: Audit outlet-registry gaps",
+    "description": "The \"Audit outlet-registry gaps\" step of test.yml's Data Validation job is failing on main. The job is non-blocking (BRO-3425), so main stays green, but the audit is reporting a real data or code problem. This card is scoped to this one step; another failing step gets its own card.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42873999496",
     "decision": false,
-    "info": true,
+    "info": false,
     "decisionPrompt": null,
     "model": null,
     "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-10T18:23:55.780Z"
+    "fields": [
+      {
+        "name": "Job",
+        "value": "Data Validation"
+      },
+      {
+        "name": "Step",
+        "value": "Audit outlet-registry gaps"
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/42873999496)"
+      }
+    ],
+    "queuedAt": "2026-11-10T18:28:35.955Z"
   }
 ]
