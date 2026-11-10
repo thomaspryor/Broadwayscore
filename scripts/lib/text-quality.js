@@ -256,6 +256,15 @@ function stripTrailingJunk(text) {
     /\n\s*Theater blogroll\n/i,
     // TheaterMania page footer (BRO-4804): the models read this unpunctuated last line as a cut-off.
     /\s*Add as a preferred source on Google/i,
+    // BRO-7272: page footers the ellipsis/last-character truncation signals mistook for a cut-off article.
+    // NY Post: "...essential to not repeating it. Read More Filed under <tags> 11/9/26 Read Next '<teaser>' ..."
+    /\s+Read More\s+Filed under\b/i,
+    /\s+Read Next\s+\S.{0,200}\.{3}\s*$/,
+    // WordPress sharing widget: "... Print (Opens in new window) Email ... Like Loading..."
+    /\s+(?:Share this:\s*)?(?:Click to [a-z ]{3,30}\s*)?(?:Print|Email|Facebook|X|Twitter|LinkedIn|Reddit|Tumblr|Pinterest|WhatsApp|Telegram|Pocket|Share)\s*\(Opens in new window\)/,
+    // NYT gift-article ribbon and stacked ad slots.
+    /\s*\+?(?:Give this|Share full) article\+?/,
+    /(?:\s+Advertisement){2,}\s*$/,
   ];
 
   // Anchor patterns match the START of trailing junk sections (no greedy tails).
