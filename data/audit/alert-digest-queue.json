@@ -1844,5 +1844,36 @@
       }
     ],
     "queuedAt": "2026-11-10T23:33:32.021Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7083-census-write",
+    "title": "Landing blocked: rebase red on land/bro-7083-census-write",
+    "description": "land.yml did not land land/bro-7083-census-write: the rebase gate went red at 6d2795f6a2. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42391435632",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7083-census-write"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "6d2795f6a2704a195f683cbe5fa76ec423601b10"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42391435632"
+      }
+    ],
+    "queuedAt": "2026-11-10T23:35:06.420Z"
   }
 ]
