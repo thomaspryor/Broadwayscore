@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import type { ShowCommercial, RecoupmentTrend } from '@/lib/data-types';
+import type { ShowCommercial, RecoupmentTrend, ClosingOutlook } from '@/lib/data-types';
+import { formatMonthYear } from '@/lib/biz-format';
 import { getTrendColor, getTrendIcon } from '@/config/commercial';
 import {
   getRecoupmentDisplayMode,
@@ -58,6 +59,36 @@ interface BizBuzzCardProps {
   allTimeGross?: number | null;
   /** BRO-5007 v3 break-even section (unreleased): null unless commercial && boxOfficeV2 and it has something to show. */
   breakEvenCard?: BoxOfficeV2Card | null;
+  /** BRO-7246: this show's Closing Watch / Close to break-even line, as on /biz. */
+  closingOutlook?: ClosingOutlook | null;
+}
+
+/** BRO-7246: the show's Closing Watch or Close to break-even line, linking to the /biz list. */
+function ClosingOutlookNote({ outlook }: { outlook: ClosingOutlook }) {
+  const pct = (outlook.kind === 'near' && outlook.seasonCleared ? Math.floor : Math.round)(outlook.breakEvenRatio * 100);
+  const median = outlook.kind === 'watch' ? formatMonthYear(outlook.likelyClosing?.median) : null;
+  const early = outlook.kind === 'watch' ? formatMonthYear(outlook.likelyClosing?.early) : null;
+  const late = outlook.kind === 'watch' ? formatMonthYear(outlook.likelyClosing?.late) : null;
+  return (
+    <Link
+      href="/biz#closing-watch"
+      className="block rounded-lg bg-surface-overlay px-3 py-2 mb-3 text-sm focus-ring"
+      data-testid="closing-outlook"
+    >
+      <span className="text-xs font-semibold uppercase tracking-[0.06em] text-score-tepid">
+        {outlook.kind === 'watch' ? 'Closing Watch' : 'Close to break-even'}
+      </span>
+      <span className="block text-gray-300 mt-0.5">
+        {outlook.kind === 'watch'
+          ? `No closing announced, but grosses are running at ~${pct}% of our estimated break-even. `
+          : `No closing announced. Grosses are running at ~${pct}% of our estimated break-even${outlook.seasonCleared ? ' in a slow time of year' : ''}, so it could tip either way.`}
+        {outlook.kind === 'watch' &&
+          (median
+            ? `Our estimate: likely closes around ${median}${early || late ? ` (likely ${early ?? 'soon'} to ${late ?? 'later'})` : ''}.`
+            : 'Too few past shows ran this far under break-even for us to estimate a date.')}
+      </span>
+    </Link>
+  );
 }
 
 function formatCurrency(value: number | null | undefined): string {
@@ -165,7 +196,7 @@ function TrendIndicator({ trend }: { trend: RecoupmentTrend }) {
   );
 }
 
-export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross, showStatus, allTimeGross, breakEvenCard = null, closingDate }: BizBuzzCardProps) {
+export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross, showStatus, allTimeGross, breakEvenCard = null, closingDate, closingOutlook = null }: BizBuzzCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   void showTitle;
 
@@ -258,6 +289,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
           how we measure
         </Link>
       </p>
+      {closingOutlook && <ClosingOutlookNote outlook={closingOutlook} />}
 
       {/* Everything below the heading is free with an email (BRO-6210). */}
       {/* No paywall JSON-LD here: it would mark the whole show page not free

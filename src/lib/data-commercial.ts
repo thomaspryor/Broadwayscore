@@ -14,6 +14,8 @@ import type {
   ApproachingRecoupmentShow,
   AtRiskShow,
   ClosingWatchShow,
+  NearBreakEvenShow,
+  ClosingOutlook,
   RecentRecoupmentShow,
   RecentClosing,
   UpcomingClosing,
@@ -66,7 +68,7 @@ import fs from 'fs';
 import path from 'path';
 import { getMarketDate } from './date-utils';
 import { isTopTonyWinner } from './data-awards';
-import { bankedShareSeries, calibrateClosingWatch, seasonalIndexSeries, adjustedRatioSeries, estimateClosing, isBoxOfficeDriven, isOnClosingWatch, holdsAtLowerBreakEven, addWeeks, weeksBelowBreakEven as countWeeksBelowBreakEven, type ClosingObservation } from './closing-watch';
+import { bankedShareSeries, calibrateClosingWatch, seasonalIndexSeries, adjustedRatioSeries, estimateClosing, isBoxOfficeDriven, isOnClosingWatch, isNearBreakEven, holdsAtLowerBreakEven, addWeeks, weeksBelowBreakEven as countWeeksBelowBreakEven, type ClosingObservation } from './closing-watch';
 import { isLossDesignation } from '../../scripts/lib/commercial-designations';
 import { conversionOf, isConvertedToCommercial, commercialRunWeeks, recoupClockStart } from '../../scripts/lib/commercial-conversion';
 import {
@@ -888,6 +890,47 @@ export function getClosingWatch(): ClosingWatchShow[] {
     });
   }
 
+  return results.sort((a, b) => a.breakEvenRatio - b.breakEvenRatio);
+}
+
+let closingOutlooks: Map<string, ClosingOutlook> | null = null;
+/** One show's Closing Watch / Close to break-even line for its show page (BRO-7246). Built once per process. */
+export function getClosingOutlook(slug: string): ClosingOutlook | null {
+  if (!closingOutlooks) {
+    const m = new Map<string, ClosingOutlook>();
+    for (const s of getClosingWatch()) m.set(s.slug, { kind: 'watch', breakEvenRatio: s.breakEvenRatio, likelyClosing: s.likelyClosing });
+    for (const s of getNearBreakEven()) if (!m.has(s.slug)) m.set(s.slug, { kind: 'near', breakEvenRatio: s.breakEvenRatio, seasonCleared: s.seasonCleared });
+    closingOutlooks = m;
+  }
+  return closingOutlooks.get(slug) ?? null;
+}
+
+/** "Close to break-even" (BRO-7246): running shows just above break-even, or under it only in a slow season. */
+export function getNearBreakEven(): NearBreakEvenShow[] {
+  const seasonal = getSeasonalIndex();
+  const today = getMarketDate();
+  const results: NearBreakEvenShow[] = [];
+  for (const [slug, data] of Object.entries(commercial.shows)) {
+    const show = rawShows.find((s) => s.slug === slug);
+    if (!show || !isRunningStatus(show.status)) continue;
+    const breakEven = getBreakEven(data);
+    if (!breakEven) continue;
+    const weekly = weeklyGrossesOldestFirst(slug);
+    const avgGross = trailingAverageGross(getRecentGrosses(slug, 4));
+    const ratios = adjustedRatioSeries(weekly, seasonal, breakEven);
+    let adjustedRatio: number | null = null;
+    for (let i = ratios.length - 1; i >= 0 && adjustedRatio == null; i--) adjustedRatio = ratios[i];
+    if (!isNearBreakEven({ status: show.status, designation: data.designation, limitedRun: show.limitedRun, closingDate: show.closingDate, today, avgGross, breakEven, adjustedRatio })) continue;
+    results.push({
+      slug,
+      title: show.title,
+      avgWeeklyGross: avgGross as number,
+      breakEven,
+      breakEvenRatio: (avgGross as number) / breakEven,
+      seasonCleared: (avgGross as number) < breakEven,
+      trend: getRecoupmentTrend(slug),
+    });
+  }
   return results.sort((a, b) => a.breakEvenRatio - b.breakEvenRatio);
 }
 

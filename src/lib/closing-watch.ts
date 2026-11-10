@@ -355,6 +355,31 @@ export function isOnClosingWatch(input: ClosingWatchInput): boolean {
   return input.avgGross < input.breakEven;
 }
 
+/** "Close to break-even" (BRO-7246 lighter tier): up to this share above estimated break-even... */
+export const NEAR_BREAKEVEN_MARGIN = 0.1;
+/** ...or under it by no more than this, when the season adjustment clears it. */
+export const NEAR_BREAKEVEN_FLOOR = 0.9;
+
+/**
+ * The lighter tier under Closing Watch: same shows that could be on the watch (running, box-office
+ * driven, no announced closing) but not on it, whose 4-week average is within NEAR_BREAKEVEN_MARGIN
+ * above break-even, or down to NEAR_BREAKEVEN_FLOOR under it only because the season adjustment cleared it (Two Strangers,
+ * Oct 2026: 95% raw, 105% adjusted, closed 7 weeks later).
+ */
+export function isNearBreakEven(input: ClosingWatchInput): boolean {
+  if (input.status !== 'open' && input.status !== 'previews') return false;
+  if (!isBoxOfficeDriven(input.designation, input.limitedRun)) return false;
+  const close = (input.closingDate ?? '').slice(0, 10);
+  if (/^\d{4}-\d{2}-\d{2}$/.test(close) && close >= input.today) return false;
+  if (input.avgGross == null || input.breakEven == null || input.breakEven <= 0) return false;
+  // Too few weeks for a season-adjusted figure (a show still in its first weeks): not listed yet.
+  if (input.adjustedRatio == null) return false;
+  if (isOnClosingWatch(input)) return false;
+  // Not on the watch and under break-even means the season adjustment cleared it; only slightly under counts.
+  if (input.avgGross < input.breakEven * NEAR_BREAKEVEN_FLOOR) return false;
+  return input.avgGross <= input.breakEven * (1 + NEAR_BREAKEVEN_MARGIN);
+}
+
 /** Break-even estimates are rough: the card says whether the show stays under if ours is this much too high. */
 export const CLOSING_WATCH_BREAKEVEN_MARGIN = 0.1;
 

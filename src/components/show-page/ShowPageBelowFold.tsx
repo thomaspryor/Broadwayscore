@@ -41,6 +41,7 @@ import type {
   ShowCommercial,
   RecoupmentTrend,
   AudienceBuzzData,
+  ClosingOutlook,
 } from '@/lib/data-types';
 import type { VideoReview } from '@/lib/data-video-reviews';
 import type { TicketLinkData } from '@/lib/ticket-utils';
@@ -82,6 +83,8 @@ export interface ShowPageBelowFoldProps {
   boxOfficeFacts: BoxOfficeFactsCard | null;
   /** The Profitability Scorecard's v3 break-even section (unreleased): null unless commercial && boxOfficeV2. */
   breakEvenCard: BoxOfficeV2Card | null;
+  /** BRO-7246: Closing Watch / Close to break-even line for the Profitability Scorecard. */
+  closingOutlook?: ClosingOutlook | null;
   recoupmentTrend: RecoupmentTrend;
   ranks: ShowRanks | null;
   ranksByFormat: ShowRanks | null;
@@ -154,6 +157,7 @@ export default function ShowPageBelowFold({
   commercial,
   boxOfficeFacts,
   breakEvenCard,
+  closingOutlook = null,
   recoupmentTrend,
   ranks,
   ranksByFormat,
@@ -277,6 +281,7 @@ export default function ShowPageBelowFold({
             closingDate={show.closingDate}
             allTimeGross={grosses?.allTime?.gross}
             breakEvenCard={featureFlags.commercial && featureFlags.boxOfficeV2 ? breakEvenCard : null}
+            closingOutlook={closingOutlook}
           />
         ) : show.status === 'previews' || show.status === 'upcoming' ? (
           <section className="card p-5 sm:p-6 mb-6">

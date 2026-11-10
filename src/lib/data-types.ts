@@ -602,6 +602,23 @@ export interface AtRiskShow {
   closingDate: string | null;
 }
 
+/** BRO-7246: a show's line on its own Profitability Scorecard, from the /biz Closing Watch or Close to break-even lists. */
+export type ClosingOutlook =
+  | { kind: 'watch'; breakEvenRatio: number; likelyClosing: ClosingWatchShow['likelyClosing'] }
+  | { kind: 'near'; breakEvenRatio: number; seasonCleared: boolean };
+
+/** "Close to break-even" row on /biz (BRO-7246): no date estimate, it could tip either way. */
+export interface NearBreakEvenShow {
+  slug: string;
+  title: string;
+  avgWeeklyGross: number;
+  breakEven: number;
+  breakEvenRatio: number;
+  /** Under break-even on raw grosses, but cleared by the season adjustment. */
+  seasonCleared: boolean;
+  trend: ClosingWatchShow['trend'];
+}
+
 /** BRO-7246: a running show with no announced closing whose grosses trail break-even. */
 export interface ClosingWatchShow {
   slug: string;

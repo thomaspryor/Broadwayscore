@@ -6,6 +6,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   isOnClosingWatch,
+  isNearBreakEven,
   isBoxOfficeDriven,
   finalRunStart,
   seasonalIndexSeries,
@@ -175,4 +176,26 @@ test('break-even margin: a show far enough under stays under if our break-even i
   assert.equal(holdsAtLowerBreakEven(747, 935, 0.82), true); // 841 at 10% lower: still under
   assert.equal(holdsAtLowerBreakEven(880, 935, 0.94), false);
   assert.equal(holdsAtLowerBreakEven(800, 935, 0.92), false); // raw under, season-adjusted not
+});
+
+test('close to break-even: just above, or under only after the season adjustment; never also on the watch', () => {
+  const near = { ...base, avgGross: 1_000_000, adjustedRatio: 1.07 }; // 107% of 935K
+  assert.equal(isNearBreakEven(near), true);
+  assert.equal(isNearBreakEven({ ...near, avgGross: 935_000 * 1.1 }), true);
+  assert.equal(isNearBreakEven({ ...near, avgGross: 935_000 * 1.11 }), false); // comfortably above
+  // Two Strangers, Oct 2026: 95% raw, 105% season-adjusted. Off the watch, on this list.
+  const twoStrangers = { ...base, avgGross: 888_000, adjustedRatio: 1.05 };
+  assert.equal(isOnClosingWatch(twoStrangers), false);
+  assert.equal(isNearBreakEven(twoStrangers), true);
+  // On the watch: not listed twice.
+  assert.equal(isNearBreakEven(base), false);
+  assert.equal(isNearBreakEven({ ...near, closingDate: '2027-04-04' }), false);
+  assert.equal(isNearBreakEven({ ...near, designation: 'Nonprofit' }), false);
+  assert.equal(isNearBreakEven({ ...near, status: 'closed' }), false);
+  assert.equal(isNearBreakEven({ ...near, breakEven: null }), false);
+  // A show in its first weeks (no adjusted figure yet) at 75% is neither listed nor near (Wanted, Nov 2026).
+  assert.equal(isNearBreakEven({ ...base, avgGross: 700_000, adjustedRatio: null }), false);
+  // Far under on raw grosses, lifted over 1 only by a deep January index: not "close".
+  assert.equal(isNearBreakEven({ ...base, avgGross: 700_000, adjustedRatio: 1.02 }), false);
+  assert.equal(isNearBreakEven({ ...base, avgGross: 842_000, adjustedRatio: 1.02 }), true); // 90%
 });
