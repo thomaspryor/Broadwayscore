@@ -1,0 +1,48 @@
+{
+  "issueNumber": "bro-7291",
+  "planId": "1aef670f-1888-45d5-b129-c15b71418491",
+  "status": "pending",
+  "createdAt": "2026-11-10T14:33:47.176Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7291 class 3: three Chicago hub shows stored the wrong theatre (octet opened at Raven before its Goodman transfer; Relentless 2022 ran at Theater Wit; Twihard 2024 premiered at Otherworld). Every dated review names the corrected venue.",
+    "steps": [
+      "shows.json: octet-regional-2026.venue",
+      "shows.json: relentless-regional-2022.venue",
+      "shows.json: twihard-a-twilight-musical-parody-regional-2024.venue"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "octet-regional-2026",
+        "field": "venue",
+        "oldValue": "Goodman Theatre, Chicago, IL",
+        "newValue": "Raven Theatre, Chicago, IL",
+        "description": "shows.json: octet-regional-2026.venue"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "relentless-regional-2022",
+        "field": "venue",
+        "oldValue": "Goodman Theatre, Chicago, IL",
+        "newValue": "Theater Wit, Chicago, IL",
+        "description": "shows.json: relentless-regional-2022.venue"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "twihard-a-twilight-musical-parody-regional-2024",
+        "field": "venue",
+        "oldValue": "Apollo Theater, Chicago, IL",
+        "newValue": "Otherworld Theatre, Chicago, IL",
+        "description": "shows.json: twihard-a-twilight-musical-parody-regional-2024.venue"
+      }
+    ]
+  }
+}

@@ -382,6 +382,24 @@ function computeFlags(L) {
     const r = A.showRunEndFinding(s, runEndTexts.get(s.id) || [], listings[s.id] || null);
     if (r) add('show', s.id, s.title, 'local', [{ code: 'review-text-later-closing', detail: `ours ${s.closingDate} / ${r.source}` }]);
   }
+  // BRO-7291 class 3: a published review about the same title at another theatre in another state, and a stored
+  // venue every outlet contradicts (octet-regional-2026: stored Goodman, seven outlets review Raven Theatre's).
+  const V = require('./lib/regional-venue-mismatch');
+  const cityVenues = L.shows.map((s) => s.venue).filter(Boolean);
+  const textsBy = new Map();
+  for (const it of L.reviews) {
+    if (!it.file || it.file.wrongProduction || it.file.wrongShow || it.file.isRoundupArticle) continue;
+    const show = showBy.get(it.row.showId); if (!show) continue;
+    const rv = { fullText: it.file.fullText || it.file.text || '', url: it.row.url, outletId: it.row.outletId };
+    const hit = V.regionalVenueMismatch(rv, show);
+    if (hit) add('review', it.id, `${it.row.showId} | ${it.row.outlet}`, 'local', [{ code: 'review-other-venue', detail: `names ${hit.venue} (${hit.state}) ${hit.mentions}x, never ${show.venue}` }]);
+    if (!textsBy.has(show.id)) textsBy.set(show.id, []);
+    textsBy.get(show.id).push(rv);
+  }
+  for (const s of L.shows) {
+    const d = V.showVenueDisagreement(s, textsBy.get(s.id) || [], cityVenues);
+    if (d) add('show', s.id, s.title, 'local', [{ code: 'venue-contradicted', detail: `ours ${s.venue} / ${d.outlets.length} outlets name ${d.venue}: ${d.outlets.join(', ')}` }]);
+  }
   // duplicates by title
   const tcount = new Map(); for (const s of L.shows) { const k = `${fold(s.title)}|${fold(s.venue)}`; tcount.set(k, [...(tcount.get(k) || []), s.id]); }
   for (const [k, ids] of tcount) if (ids.length > 1) add('show', ids[0], k, 'local', [{ code: 'duplicate-show', detail: ids.join(', ') }]);

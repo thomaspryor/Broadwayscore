@@ -75,6 +75,7 @@ const { inheritUrlFromDuplicateLosers } = require('./lib/duplicate-fold-url');
 const { siblingRatingForClamp } = require('./lib/sibling-rating-inherit');
 const { detectBandFromReviewFile } = require('./lib/star-reliability');
 const { displayedOriginalRating } = require('./lib/displayed-original-rating');
+const { regionalVenueMismatch } = require('./lib/regional-venue-mismatch');
 const { decideEarlyFileExclusion, isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, multiShowSplitGroup, isMultiShowSplitSibling, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasIncludableSyndicationPrimary, isRejectedByReasonExclusion, isFullTextWrongAuthorActive, isRejectedAtExclusion, isRegistrationWallStubExclusion, duplicateOfInheritedFlag, duplicateOfRefIsCopy, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, isMisFamilyCvPromotedWrongShow, isStaleGenericHomepageWrongShow, isStaleBulkTitleWrongShow, computeCvIsStale, applyVenueClassificationCarveout, cvWrongProductionIsVenueCarveout, isVenueCarveoutPersistedWrongProduction, isOwnCastEvidencePersistedWrongProduction, isEnsembleCategoryQuibbleRejection, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, soloVerdictHeld, isNamedNonReviewUrlRecord, isRefusedSubmissionUrlRecord, isCancelledBeforeOpeningShow, isUnverifiableWebSearchRow, isPreviewFirstLookPiece, isCombinedReviewOfOtherMemberOnly, isBodylessAggregatorScoreUncorroborated, cvNonReviewHumanCleared, cvWrongArticleFamily, cvArticleTypeNonReview, cvArticleTypeVerdictIsPartialWindow, cvWrongArticlePromotion, wrongShowCleared, wrongShowExplicitlyCleared, evaluateLateDateGuard, evaluateUrlYearGuard, evaluateDirectorGuard } = require('./lib/review-guards');
 const { ownShowTextEvidence } = require('./lib/own-show-text-evidence');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
@@ -4196,6 +4197,23 @@ showDirs.forEach(showId => {
         stats.skippedCrossMarket = (stats.skippedCrossMarket || 0) + 1;
         if (!stats.crossMarketDetails) stats.crossMarketDetails = [];
         stats.crossMarketDetails.push({ showId, outlet: rawOutlet, file, direction: 'london→broadway', urlFallback: reverseCrossMarket.urlIsUK });
+        return;
+      }
+
+      // BRO-7291 class 3: a city-hub regional show's review that is about the same title at another theatre
+      // in another state (come-from-away-north: a Sharon Playhouse, CT review filed under North Shore, MA).
+      // 0 false positives across 6,662 hub reviews (both hits were the real cases).
+      const regionalVenue = regionalVenueMismatch(data, showById[showId]);
+      if (regionalVenue) {
+        if (!data.wrongProduction && !shouldSkipWrongProductionAudit(data) && !skipStaleFlagWrite(data)) {
+          // [GUARD:REGIONAL-VENUE-MISMATCH]
+          data.wrongProduction = true;
+          invalidateWrongProductionAutoClear(data);
+          data.wrongProductionNote = `Regional venue mismatch: text names ${regionalVenue.venue} (${regionalVenue.state}) ${regionalVenue.mentions}x, never ${showById[showId].venue}`;
+          try { safeWriteReview(path.join(showDir, file), data); } catch (e) {}
+        }
+        logExclusion("skippedRegionalVenue", showId, file, data);
+        stats.skippedRegionalVenue = (stats.skippedRegionalVenue || 0) + 1;
         return;
       }
 
