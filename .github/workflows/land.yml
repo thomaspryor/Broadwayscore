@@ -224,6 +224,33 @@ jobs:
           echo "rebased: $(git rev-list --count "$BASE"..HEAD) commit(s), $(git diff --name-only "$BASE"...HEAD | wc -l | tr -d ' ') file(s) changed"
           git diff --name-only "$BASE"...HEAD | sed 's/^/  /'
 
+      # BRO-7078: a commit built from a stale checkout puts back OLDER versions
+      # of files and undoes work already on main (land/bro-7078-fixups: 112
+      # files, stopped only by an unrelated rebase conflict). ADVISORY (rule 19):
+      # warns, never fails the job. always(): checks the branch's own commits
+      # (merge-base..TIP) even when the rebase conflicted. Runs main's copy of
+      # the detector: a stale tree may have deleted the branch's copy.
+      - name: Stale-tree revert check (advisory)
+        id: staletree
+        if: always() && steps.rebase.outputs.tip != ''
+        continue-on-error: true
+        env:
+          TIP: ${{ steps.rebase.outputs.tip }}
+        run: |
+          D="$RUNNER_TEMP/stale-tree"; mkdir -p "$D"
+          git show "origin/main:scripts/lib/stale-tree-revert.js" > "$D/stale-tree-revert.js" 2>/dev/null \
+            || git show "$TIP:scripts/lib/stale-tree-revert.js" > "$D/stale-tree-revert.js" 2>/dev/null \
+            || { echo "no stale-tree detector on main or the branch yet"; exit 0; }
+          OUT=$(timeout 180 node "$D/stale-tree-revert.js" --base origin/main --tip "$TIP") \
+            || { echo "::warning::stale-tree check could not run (exit $?)"; exit 0; }
+          echo "$OUT"
+          if echo "$OUT" | grep -q '^::warning::stale-tree revert'; then
+            echo "flagged=true" >> "$GITHUB_OUTPUT"
+            { echo "### Stale-tree revert (advisory)"; echo "$OUT" | grep '^::warning::' | sed 's/^::warning:://'; } >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "flagged=false" >> "$GITHUB_OUTPUT"
+          fi
+
       # BRO-5411: server-side backstop for the in-session review gate (BRO-5359).
       # A stale cached container has no hooks, so check the Review-Receipt
       # trailer here. ADVISORY (CLAUDE.md rule 19): continue-on-error, always
