@@ -1226,5 +1226,36 @@
       }
     ],
     "queuedAt": "2026-11-10T02:57:37.855Z"
+  },
+  {
+    "conditionKey": "land:land/worktree-agent-a034341a2b2130352",
+    "title": "Landing blocked: unit-tests-tsx red on land/worktree-agent-a034341a2b2130352",
+    "description": "land.yml did not land land/worktree-agent-a034341a2b2130352: the unit-tests-tsx gate went red at cf8a9e2982. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42744148961",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/worktree-agent-a034341a2b2130352"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-tsx"
+      },
+      {
+        "name": "tip",
+        "value": "cf8a9e2982f6e5787935fc176bf83dbfd5a201df"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42744148961"
+      }
+    ],
+    "queuedAt": "2026-11-10T03:13:08.893Z"
   }
 ]
