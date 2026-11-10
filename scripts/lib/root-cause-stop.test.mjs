@@ -78,7 +78,7 @@ test('only real landings count: refused, dry-run and delete pushes do not; MCP l
   assert.deepEqual(landedPushIndices([use('x', 'Bash', { command: 'git push origin HEAD:refs/heads/land/x 2>&1 | tail -5' }), ok('x', ' ! [rejected]        HEAD -> land/x (fetch first)\nerror: failed to push some refs')]), [], 'a piped push git refused');
   assert.deepEqual(landedPushIndices([use('m', 'mcp__github__actions_run_trigger', { workflow_id: 'land-ref-prune.yml' }), ok('m')]), [], 'land-* helper workflows are not landings');
   assert.deepEqual(landedPushIndices([use('m', 'mcp__github__actions_run_trigger', { workflow_id: 'visual-approval-land.yml' }), ok('m')]), []);
-  assert.deepEqual(landedPushIndices(ev('gh workflow run land.yml -f ref=land/x')), [0]);
+  assert.deepEqual(landedPushIndices(ev('gh workflow run land.yml -f branch=land/x')), [0]);
   assert.deepEqual(landedPushIndices(ev('node scripts/cloud-dispatch.js land.yml --ref main')), [0]);
   assert.deepEqual(landedPushIndices([use('m', 'mcp__github__push_files', { branch: 'land/z', files: [] }), ok('m')]), [0]);
 });
