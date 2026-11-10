@@ -1,26 +1,98 @@
 {
-  "updatedAt": "2026-11-10T01:48:34.721Z",
-  "processed": 12,
-  "failed": 8,
-  "successRate": "60.0%",
+  "updatedAt": "2026-11-10T02:16:31.551Z",
+  "processed": 42,
+  "failed": 41,
+  "successRate": "50.6%",
   "tierBreakdown": {
-    "playwright": 9,
+    "playwright": 30,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 1,
-    "scrapingbee": 0,
-    "brightdata": 1,
+    "scrapingdog": 4,
+    "scrapingbee": 1,
+    "brightdata": 3,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 3
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 8,
   "recentActivity": [
     {
-      "t": "2026-11-10T01:41:05.626Z",
+      "t": "2026-11-10T01:50:52.713Z",
       "event": "bb-session",
-      "session": "a209ebd8",
-      "url": "https://bachtrack.com/review-iphigenie-en-tauride-turner-bates-rice-imbrailo-eng"
+      "session": "bcd47443",
+      "url": "http://www.talkinbroadway.com/page/ob/1_28_16.html"
+    },
+    {
+      "t": "2026-11-10T01:50:53.333Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-10T01:55:52.403Z",
+      "event": "bb-session",
+      "session": "e517c0bf",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655599"
+    },
+    {
+      "t": "2026-11-10T01:55:53.054Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-10T01:58:14.051Z",
+      "event": "bb-session",
+      "session": "c6129aec",
+      "url": "https://www.nytimes.com/2026/11/06/theater/the-unbelievers-222-a-ghost-story-rev"
+    },
+    {
+      "t": "2026-11-10T01:58:14.612Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-10T01:58:31.498Z",
+      "event": "bb-session",
+      "session": "2609426f",
+      "url": "https://www.nytimes.com/2026/11/06/theater/the-unbelievers-222-a-ghost-story-rev"
+    },
+    {
+      "t": "2026-11-10T01:58:32.083Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-10T02:05:36.288Z",
+      "event": "bb-session",
+      "session": "c0f00557",
+      "url": "https://www.talkinbroadway.com/page/regional/chicago/ch944.html"
+    },
+    {
+      "t": "2026-11-10T02:05:36.912Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-10T02:07:06.662Z",
+      "event": "bb-session",
+      "session": "53206c7b",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655418"
+    },
+    {
+      "t": "2026-11-10T02:07:07.320Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-10T02:12:15.667Z",
+      "event": "bb-session",
+      "session": "a158ec4c",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-11-10T02:13:40.877Z",
+      "event": "bb-session",
+      "session": "721dde90",
+      "url": "https://ground.news/article/memoriam-review-by-thespyinthestalls-at-southwark-pl"
     }
   ]
 }
