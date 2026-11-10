@@ -1528,5 +1528,36 @@
       }
     ],
     "queuedAt": "2026-11-10T06:11:00.055Z"
+  },
+  {
+    "conditionKey": "land:land/hero-tickets-cost",
+    "title": "Landing blocked: rebase red on land/hero-tickets-cost",
+    "description": "land.yml did not land land/hero-tickets-cost: the rebase gate went red at 55741467d4. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42767392618",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/hero-tickets-cost"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "55741467d4cc25af00577f26c890c65a89aa4276"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42767392618"
+      }
+    ],
+    "queuedAt": "2026-11-10T06:18:34.216Z"
   }
 ]
