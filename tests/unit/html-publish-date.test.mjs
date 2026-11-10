@@ -316,6 +316,6 @@ describe('wiring (ship-check)', () => {
   test('backfill --recheck-dates guards divergence and tries the live page before archive.org', () => {
     const s = src('scripts/backfill-review-dates.js');
     assert.match(s, /allowDivergent: recheckDates && needsOpeningWindowDateRecheck\(current, showById\.get\(show\)\)/);
-    assert.match(s, /recheckDates \? \[tryCookies, tryPaid, tryArchive\] : \[tryCookies, tryArchive, tryPaid\]/);
+    assert.match(s, /recheckDates \? \[tryCookies, tryDirect, tryPaid, tryArchive\] : \[tryCookies, tryDirect, tryArchive, tryPaid\]/);
   });
 });
