@@ -1520,5 +1520,32 @@
       }
     ],
     "queuedAt": "2026-11-10T07:41:08.947Z"
+  },
+  {
+    "conditionKey": "feedback-outcomes:2026-11-10T05:19:27.169182+00:00",
+    "title": "Feedback: 1 submission(s), all handled automatically",
+    "description": "1 message from users came in. All of them are being handled automatically. Nothing needs you.\n\nWanted — Running the auto-fix-feedback-bug.yml workflow. You will get another email when it is live on the site.\n  They wrote: \"Hi! Was on the Wanted page and noticed that the section with info about the cast seems to be listing info about a different show. Different character and actor names that don’t match the show, I’m guessing it’s just pulling from another page or something. This is super cool though, glad someone is building this!\"\n  Full details and who sent it: https://github.com/thomaspryor/Broadwayscore/issues/1186",
+    "severity": "info",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42778914550",
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Submissions",
+        "value": "1"
+      },
+      {
+        "name": "Need you",
+        "value": "0"
+      },
+      {
+        "name": "Pipeline status",
+        "value": "success"
+      }
+    ],
+    "queuedAt": "2026-11-10T07:59:38.294Z"
   }
 ]
