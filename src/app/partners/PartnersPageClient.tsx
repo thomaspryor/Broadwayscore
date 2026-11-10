@@ -4,6 +4,7 @@ import MailtoLink from '@/components/MailtoLink';
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import type { PartnerShowOption } from './page';
+import { searchPillMarket } from '../../../scripts/lib/market-badge';
 
 interface Props {
   shows: PartnerShowOption[];
@@ -148,7 +149,7 @@ export default function PartnersPageClient({ shows, baseUrl }: Props) {
                     <div className="flex-1 min-w-0">
                       <div className="font-semibold text-sm truncate">{show.title}</div>
                       <div className="text-[10px] text-fg-muted uppercase tracking-wide">
-                        {show.category === 'west-end' ? 'West End' : show.category === 'off-west-end' ? 'Off-West End' : show.category === 'off-broadway' ? 'Off-Broadway' : 'Broadway'} · {show.status}
+                        {({ opera: 'Opera', 'west-end': 'West End', 'off-west-end': 'Off-West End', 'off-broadway': 'Off-Broadway' } as Record<string, string>)[searchPillMarket(show.category, show.type === 'opera')] ?? 'Broadway'} · {show.status}
                       </div>
                     </div>
                     {show.hasEnoughReviews && show.score != null && (

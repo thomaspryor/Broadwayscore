@@ -20,4 +20,20 @@ function showsMarketBadge(category, isOpera) {
   return true;
 }
 
-module.exports = { showsMarketBadge };
+/**
+ * Which pill a search dropdown shows for a result (HeaderSearch,
+ * ShowSearchDropdown, CompareShowPicker). Those always show one pill, so an
+ * opera gets 'opera' (labelled "Opera") instead of its market (BRO-7313:
+ * Met Opera results read "Off-Bway"). search-shows.json sets type only for
+ * operas.
+ *
+ * @param {string|null|undefined} category
+ * @param {boolean} isOpera
+ * @returns {string} 'opera' or the category, defaulting to 'broadway'
+ */
+function searchPillMarket(category, isOpera) {
+  if (isOpera) return 'opera';
+  return category || 'broadway';
+}
+
+module.exports = { showsMarketBadge, searchPillMarket };

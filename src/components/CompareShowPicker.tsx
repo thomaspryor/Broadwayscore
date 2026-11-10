@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useShowSearch } from '@/hooks/useShowSearch';
+import { searchPillMarket } from '../../scripts/lib/market-badge';
 import ShowImage from '@/components/ShowImage';
 
 interface SearchShow {
@@ -14,6 +15,8 @@ interface SearchShow {
   od?: string;
   images?: { thumbnail?: string };
   category?: string;
+  /** 'opera' for operas only (search-shows.json, BRO-7313). */
+  type?: string;
   year?: string;
 }
 
@@ -58,6 +61,7 @@ function ShowInput({
         <div className="absolute z-[80] top-full mt-1 w-full sm:w-80 bg-surface-raised border border-white/10 rounded-lg shadow-xl max-h-72 overflow-y-auto">
           {results.map(show => {
             const year = show.year || show.od?.slice(0, 4);
+            const market = searchPillMarket(show.category, show.type === 'opera');
             return (
               <button
                 key={show.id}
@@ -82,14 +86,16 @@ function ShowInput({
                       {show.status === 'open' ? 'Now Playing' : show.status === 'previews' ? 'Previews' : 'Closed'}
                     </span>
                     <span className={`px-1 py-0.5 rounded font-medium ${
-                      show.category === 'west-end' ? 'bg-purple-500/20 text-purple-400' :
-                      show.category === 'off-west-end' ? 'bg-purple-500/20 text-purple-400' :
-                      show.category === 'off-broadway' ? 'bg-indigo-500/20 text-indigo-400' :
+                      market === 'opera' ? 'bg-indigo-500/20 text-indigo-400' :
+                      market === 'west-end' ? 'bg-purple-500/20 text-purple-400' :
+                      market === 'off-west-end' ? 'bg-purple-500/20 text-purple-400' :
+                      market === 'off-broadway' ? 'bg-indigo-500/20 text-indigo-400' :
                       'bg-blue-500/20 text-blue-400'
                     }`}>
-                      {show.category === 'west-end' ? 'West End' :
-                       show.category === 'off-west-end' ? 'Off-West End' :
-                       show.category === 'off-broadway' ? 'Off-Bway' : 'Broadway'}
+                      {market === 'opera' ? 'Opera' :
+                       market === 'west-end' ? 'West End' :
+                       market === 'off-west-end' ? 'Off-West End' :
+                       market === 'off-broadway' ? 'Off-Bway' : 'Broadway'}
                     </span>
                     {year && <span className="text-fg-muted">{year}</span>}
                   </div>

@@ -9,6 +9,7 @@ import { useCurrentMarket } from '@/hooks/useCurrentMarket';
 import { captureEvent } from '@/lib/posthog-events';
 import { gaEvent } from '@/lib/analytics/ga-event';
 import { getRegionalLabel } from '@/lib/market-utils';
+import { showsMarketBadge, searchPillMarket } from '../../scripts/lib/market-badge';
 import {
   mergeSearchResults, suggestCloseMatches, createSuggestionIndex, withHeaderSearchExtra, HEADER_FUSE_OPTIONS,
 } from '../../scripts/lib/show-search-match';
@@ -26,6 +27,8 @@ interface Show {
   };
   hasScore?: boolean;
   category?: string;
+  /** Only set for operas ('opera'); drives the market-pill rule (BRO-7313). */
+  type?: string;
   castNames?: string;
   archived?: boolean;
   year?: string;
@@ -259,7 +262,9 @@ export default function HeaderSearch() {
             role="listbox"
             className="absolute top-full right-0 mt-2 w-80 bg-surface-raised border border-white/10 rounded-lg shadow-xl overflow-hidden z-[80]"
           >
-            {filteredShows.map((show, index) => (
+            {filteredShows.map((show, index) => {
+              const market = searchPillMarket(show.category, show.type === 'opera');
+              return (
               <button
                 key={show.id}
                 role="option"
@@ -291,24 +296,27 @@ export default function HeaderSearch() {
                        show.status === 'announced' ? 'Announced' : 'Closed'}
                     </span>
                     <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium ${
-                      show.category === 'west-end' ? 'bg-teal-500/20 text-teal-400' :
-                      show.category === 'off-west-end' ? 'bg-violet-500/20 text-violet-400' :
-                      show.category === 'off-broadway' ? 'bg-indigo-500/20 text-indigo-400' :
-                      show.category === 'regional' ? 'bg-emerald-500/20 text-emerald-400' :
-                      show.category === 'tour' ? 'bg-sky-500/20 text-sky-400' :
+                      market === 'opera' ? 'bg-indigo-500/20 text-indigo-400' :
+                      market === 'west-end' ? 'bg-teal-500/20 text-teal-400' :
+                      market === 'off-west-end' ? 'bg-violet-500/20 text-violet-400' :
+                      market === 'off-broadway' ? 'bg-indigo-500/20 text-indigo-400' :
+                      market === 'regional' ? 'bg-emerald-500/20 text-emerald-400' :
+                      market === 'tour' ? 'bg-sky-500/20 text-sky-400' :
                       'bg-blue-500/20 text-blue-400'
                     }`}>
-                      {show.category === 'west-end' ? 'West End' :
-                       show.category === 'off-west-end' ? 'Off-West End' :
-                       show.category === 'off-broadway' ? 'Off-Bway' :
-                       show.category === 'regional' ? getRegionalLabel(show) :
-                       show.category === 'tour' ? 'Tour' : 'Broadway'}
+                      {market === 'opera' ? 'Opera' :
+                       market === 'west-end' ? 'West End' :
+                       market === 'off-west-end' ? 'Off-West End' :
+                       market === 'off-broadway' ? 'Off-Bway' :
+                       market === 'regional' ? getRegionalLabel(show) :
+                       market === 'tour' ? 'Tour' : 'Broadway'}
                     </span>
                     {show.venue ? <span className="truncate">{show.venue}</span> : show.year ? <span>{show.year}</span> : null}
                   </div>
                 </div>
               </button>
-            ))}
+            );
+            })}
           </div>
         )}
 
@@ -407,13 +415,13 @@ export default function HeaderSearch() {
                              show.status === 'upcoming' ? 'Upcoming' :
                              show.status === 'announced' ? 'Announced' : 'Closed'}
                           </span>
-                          {show.category === 'west-end' && (
+                          {show.category === 'west-end' && showsMarketBadge(show.category, show.type === 'opera') && (
                             <span className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-teal-500/20 text-teal-400">West End</span>
                           )}
-                          {show.category === 'off-west-end' && (
+                          {show.category === 'off-west-end' && showsMarketBadge(show.category, show.type === 'opera') && (
                             <span className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-violet-500/20 text-violet-400">Off-West End</span>
                           )}
-                          {show.category === 'off-broadway' && (
+                          {show.category === 'off-broadway' && showsMarketBadge(show.category, show.type === 'opera') && (
                             <span className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-indigo-500/20 text-indigo-400">Off-Bway</span>
                           )}
                           {show.venue ? <span className="truncate">{show.venue}</span> : show.year ? <span>{show.year}</span> : null}
