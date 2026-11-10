@@ -26,6 +26,7 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const { detectPageFurniture, stripPageFurniture } = require('./lib/page-furniture');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 function argVal(name, def) {
   const i = process.argv.indexOf(name);
@@ -44,8 +45,7 @@ function top(map, n = 12) { return Object.entries(map).sort((a, b) => b[1] - a[1
 function surveyCorpus(dir) {
   const byCat = {}; const byCatOutlet = {}; const byCatWriter = {}; const examples = {};
   let files = 0; let withFurniture = 0; let charsRemoved = 0; const byOutlet = {}; const byWriter = {};
-  for (const show of fs.readdirSync(dir)) {
-    if (show.startsWith('_') || show.startsWith('.')) continue;
+  for (const show of listShowDirs(dir, { silent: true, skipHolding: true })) {
     const sd = path.join(dir, show);
     let names;
     try { names = fs.readdirSync(sd); } catch { continue; }
@@ -85,7 +85,7 @@ function surveyArchives(archiveDir) {
   const { textAsStored } = require('./lib/stored-text-form');
   const byOutlet = {}; const pages = {}; const examples = [];
   let n = 0; let withFurniture = 0;
-  for (const show of fs.readdirSync(archiveDir)) {
+  for (const show of listShowDirs(archiveDir, { silent: true })) {
     const sd = path.join(archiveDir, show);
     let names;
     try { names = fs.readdirSync(sd); } catch { continue; }

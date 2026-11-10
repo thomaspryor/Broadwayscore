@@ -219,3 +219,12 @@ test('cleanRecord chains an earlier trim breadcrumb under previous', () => {
   assert.deepStrictEqual(res.record.fullTextTrimmed.previous, prior);
   assert.strictEqual(res.record.fullTextTrimmed.reason, TRIM_REASON);
 });
+
+test('gift-article dialog and donation footer go; bare From/To elsewhere stay', () => {
+  const prose = 'The production is a joy from start to finish, and the cast sells every number with real conviction and warmth.\n\nMonica writes about the local arts scene for the paper and has covered touring productions for many years now.';
+  const tail = '\n\nAs a subscriber you can share up to 5 articles a month with friends and family. Your recipient will receive a personalized email with the article directly from you, giving them access to read.\n\n From\n\n To\n\n Send Gift\n\nSupport journalism that covers the topics that matter most to you. Donate today to preserve the quality and integrity of local journalism.';
+  assert.strictEqual(PF.stripPageFurniture(prose + tail, { anchors: false }), prose);
+  // "From" / "To" are form fields only under the dialog line.
+  const plain = prose + '\n\nFrom\n\nTo';
+  assert.strictEqual(PF.stripPageFurniture(plain, { anchors: false }), plain);
+});

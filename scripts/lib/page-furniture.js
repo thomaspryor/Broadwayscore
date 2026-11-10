@@ -142,7 +142,16 @@ const BOILERPLATE_RES = [
   // AP newsletter promos
   /^(?:the latest ap-norc polls|our flagship newsletter breaks down the biggest headlines of the day\.|get the ap[’']s most compelling photographs sent directly to your inbox\.|get ap[’']s first personalized newsletter.{0,80})$/i,
   /^listen to our free podcast (?:review of the show|going behind-the-scenes on the show):$/i, // whatsonstage
+  // Arkansas Democrat-Gazette gift-article dialog + donation footer
+  // (scrapingdog fetch, 2026-11-10; 3 stored bodies)
+  /^as a subscriber you can share up to \d+ articles a month with friends and family\..{0,200}$/i,
+  /^support journalism that covers the topics that matter most to you\. donate today.{0,120}$/i,
 ];
+
+// Form fields printed under a gift-article dialog line ("From", "To", "Send
+// Gift"). Bare words, so they count only directly below that dialog line.
+const GIFT_DIALOG_HEAD_RE = /^as a subscriber you can share up to \d+ articles a month\b/i;
+const GIFT_DIALOG_FIELD_RE = /^(?:from|to|send gift|message(?: \(optional\))?|your name|recipient(?:'s)? email)$/i;
 
 // Copyright / publisher lines. Bounded length so a prose sentence that opens
 // with "Copyright" is never a match.
@@ -201,6 +210,13 @@ function analyse(text) {
     const cat = lineFurnitureCategory(t);
     if (!cat) continue;
     hits.set(i, cat);
+    if (cat === 'boilerplate' && GIFT_DIALOG_HEAD_RE.test(t)) {
+      for (let j = i + 1; j < norm.length; j++) {
+        if (!norm[j]) continue;
+        if (!GIFT_DIALOG_FIELD_RE.test(norm[j])) break;
+        hits.set(j, 'boilerplate');
+      }
+    }
     if (cat === 'related' && RELATED_BLOCK_RE.test(t)) {
       // Take the headline run below the label when real prose (a line ending
       // a sentence) follows it, i.e. the module sits mid-article, or when the

@@ -26,6 +26,7 @@
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 const { cleanRecord, skipReason, tierChangeRefusal } = require('./lib/page-furniture-record');
 
 function arg(name, def) {
@@ -62,11 +63,10 @@ function main() {
   const stats = { scanned: 0, changed: 0, written: 0, failed: 0, charsRemoved: 0, skipped: {}, byCategory: {}, byOutlet: {}, byWriter: {}, tierShift: {}, tierShiftRows: [], refusedRows: [] };
   const samples = [];
   const changedRows = [];
-  for (const showId of fs.readdirSync(DIR).sort()) {
-    if (showId.startsWith('_') || showId.startsWith('.')) continue;
+  for (const showId of listShowDirs(DIR, { silent: true, skipHolding: true }).sort()) {
     const showDir = path.join(DIR, showId);
     let names;
-    try { if (!fs.statSync(showDir).isDirectory()) continue; names = fs.readdirSync(showDir); } catch { continue; }
+    try { names = fs.readdirSync(showDir); } catch { continue; }
     for (const f of names.sort()) {
       if (!f.endsWith('.json') || f.startsWith('_') || f.startsWith('.')) continue;
       const rel = `${showId}/${f}`;
