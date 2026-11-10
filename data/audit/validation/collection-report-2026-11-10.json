@@ -1,41 +1,41 @@
 {
-  "runDate": "2026-11-10T19:41:25.312Z",
+  "runDate": "2026-11-10T19:43:00.599Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 1000,
     "priority": "all",
-    "showFilter": "mother-play-2024",
+    "showFilter": "lobby-hero-2018",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 4,
-    "failed": 1,
+    "processed": 5,
+    "failed": 2,
     "skipped": 0,
-    "successRate": "80.0%"
+    "successRate": "71.4%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 2,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 0,
     "directCookies": 0,
     "scrapingdog": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 1,
-    "tier1Success": 1,
+    "tier1Attempts": 4,
+    "tier1Success": 3,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 2,
-    "tier1_5Success": 2,
-    "tier1_9Attempts": 0,
-    "tier1_9Success": 0,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier1_9Attempts": 1,
+    "tier1_9Success": 1,
     "tier2Attempts": 0,
     "tier2Success": 0,
     "tier3Attempts": 0,
@@ -43,21 +43,21 @@
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
     "tier4Attempts": 2,
-    "tier4Success": 2,
-    "totalFailed": 1,
+    "tier4Success": 1,
+    "totalFailed": 2,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 0.4,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 4,
-    "failed": 1,
+    "processed": 5,
+    "failed": 2,
     "shows": [
-      "mother-play-2024"
+      "lobby-hero-2018"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -66,43 +66,45 @@
     }
   },
   "processed": [
-    "mother-play-2024/wsj--charles-isherwood.json",
-    "mother-play-2024/hollywood-reporter--unknown.json",
-    "mother-play-2024/broadwaynews--brittani-samuel.json",
-    "mother-play-2024/exeunt-magazine--unknown.json"
+    "lobby-hero-2018/newsday--barbara-schuler.json",
+    "lobby-hero-2018/epoch-times--judd-hollander.json",
+    "lobby-hero-2018/timeout--adam-feldman.json",
+    "lobby-hero-2018/critics-at-large--steve-vineberg.json",
+    "lobby-hero-2018/thestage--mark-shenton.json"
   ],
   "failed": [
-    "mother-play-2024/pages-on-stages--mason-pilevsky.json"
+    "lobby-hero-2018/theatermania--jesse-green.json",
+    "lobby-hero-2018/journal-inquirer--tim-leininger.json"
   ],
   "cumulativeResumedState": {
     "processed": [
-      "mother-play-2024/wsj--charles-isherwood.json",
-      "mother-play-2024/hollywood-reporter--unknown.json",
-      "mother-play-2024/broadwaynews--brittani-samuel.json",
-      "mother-play-2024/exeunt-magazine--unknown.json"
+      "lobby-hero-2018/newsday--barbara-schuler.json",
+      "lobby-hero-2018/epoch-times--judd-hollander.json",
+      "lobby-hero-2018/timeout--adam-feldman.json",
+      "lobby-hero-2018/critics-at-large--steve-vineberg.json",
+      "lobby-hero-2018/thestage--mark-shenton.json"
     ],
     "failed": [
-      "mother-play-2024/pages-on-stages--mason-pilevsky.json"
+      "lobby-hero-2018/theatermania--jesse-green.json",
+      "lobby-hero-2018/journal-inquirer--tim-leininger.json"
     ]
   },
   "tierDetails": {
     "playwright": [
-      "mother-play-2024/exeunt-magazine--unknown.json"
+      "lobby-hero-2018/timeout--adam-feldman.json",
+      "lobby-hero-2018/critics-at-large--steve-vineberg.json"
     ],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/mother-play-2024/wsj--charles-isherwood.json",
-      "mother-play-2024/wsj--charles-isherwood.json",
-      "data/review-texts/mother-play-2024/hollywood-reporter--unknown.json",
-      "mother-play-2024/hollywood-reporter--unknown.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
     "archive": [
-      "mother-play-2024/broadwaynews--brittani-samuel.json"
+      "lobby-hero-2018/newsday--barbara-schuler.json",
+      "lobby-hero-2018/epoch-times--judd-hollander.json",
+      "lobby-hero-2018/thestage--mark-shenton.json"
     ]
   },
   "failuresByOutlet": {},
