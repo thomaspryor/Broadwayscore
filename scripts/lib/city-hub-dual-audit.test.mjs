@@ -130,5 +130,7 @@ test('BRO-7274: DC/LA hub review hosts from the coverage audit resolve to a regi
   for (const u of urls) {
     const r = resolveOutletFromUrl(u);
     assert.ok(r && (r.outletId || r.id), `no registered outlet for ${u}`);
+    if (u.includes('thehollywoodtimes')) assert.equal(r.outletId || r.id, 'thehollywoodtimes');
+    if (u.includes('capitalcommunitynews')) assert.equal(r.outletId || r.id, 'hillrag');
   }
 });
