@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { readChecklistErrors, buildDeadlineDraftAlert } = require('../../scripts/lib/deadline-draft-alert.js');
+const { buildAlertEmail } = require('../../scripts/lib/discord-notify.js');
 
 // Shape written by scripts/opening-night-checklist.js --json (shows[].results).
 const checklist = {
@@ -41,6 +42,28 @@ test('owner email names the show title, outlet and critic in plain words', () =>
   assert.doesNotMatch(a.description, /none could be read back|CV\.|wrongProduction|here-there-are-blueberries-2026|\.json/);
   assert.equal(a.url, 'https://resend.com/broadcasts/abc-123');
   assert.match(a.description, /Open the draft: https:\/\/resend\.com\/broadcasts\/abc-123/);
+  // The whole rendered email, not just the description: no slug, no [CRITICAL] tag.
+  const email = buildAlertEmail({ title: a.title, description: a.description, severity: 'error', url: a.url, subjectLabel: '' });
+  const rendered = JSON.stringify(email);
+  assert.doesNotMatch(rendered, /here-there-are-blueberries-2026|CRITICAL/);
+});
+
+test('title comes from the checklist JSON when shows.json is not passed; stored draftUrl wins; links de-duplicated', () => {
+  const a = buildDeadlineDraftAlert({
+    checklistIds: ['here-there-are-blueberries-2026', 'other'], outletName,
+    readChecklist: (id) => (id === 'other' ? { shows: [{ show: { id: 'other', title: 'Other Show' }, results: [{ name: 'x', severity: 'error', ok: true, description: 'Something is off', message: 'detail.' }] }] } : checklist),
+    sentTracker: { shows: { 'here-there-are-blueberries-2026': { draftUrl: 'https://resend.com/broadcasts/shared' }, other: { draftUrl: 'https://resend.com/broadcasts/shared' } } },
+  });
+  assert.match(a.title, /^Here There Are Blueberries and Other Show email draft/);
+  assert.equal((a.description.match(/resend\.com\/broadcasts\/shared/g) || []).length, 1);
+  // severity 'error' counts even if ok is true (matches the summary's error count)
+  assert.match(a.description, /Something is off\. detail\./);
+});
+
+test('long violation lists are capped', () => {
+  const violations = Array.from({ length: 8 }, (_, i) => ({ outletId: 'o' + i, criticName: 'C' + i }));
+  const a = buildDeadlineDraftAlert({ checklistIds: ['s'], readChecklist: () => ({ shows: [{ results: [{ name: 'cv-wrongproduction-unhandled', severity: 'error', ok: false, details: { violations } }] }] }) });
+  assert.match(a.description, /3 more reviews have the same problem/);
 });
 
 test('missing checklist output says the reviews were not checked; unknown critic is omitted', () => {

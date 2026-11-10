@@ -14,6 +14,7 @@
  */
 
 const RESEND_BROADCASTS_URL = 'https://resend.com/broadcasts';
+const MAX_LINES_PER_CHECK = 5;
 
 /** Failed error-severity results from a checklist JSON (shows[].results). */
 function readChecklistErrors(json) {
@@ -21,7 +22,8 @@ function readChecklistErrors(json) {
   for (const s of (json && json.shows) || []) {
     // `checks` is tolerated so an older writer cannot silently empty the list again.
     for (const r of s.results || s.checks || []) {
-      if (r && !r.ok && r.severity === 'error') out.push(r);
+      // Severity alone, matching the summary's error count (opening-night-checks/index.js).
+      if (r && r.severity === 'error') out.push(r);
     }
   }
   return out;
@@ -44,8 +46,10 @@ function criticPhrase(name) {
 function plainFindings(result, { outletName = defaultOutletName } = {}) {
   const d = (result && result.details) || {};
   if (result.name === 'cv-wrongproduction-unhandled' && Array.isArray(d.violations) && d.violations.length) {
-    return d.violations.map((v) =>
+    const lines = d.violations.slice(0, MAX_LINES_PER_CHECK).map((v) =>
       `The ${outletName(v.outletId)} review${criticPhrase(v.criticName)} looks like it is about a different production of this show (for example an earlier run), but it is counted in the score.`);
+    if (d.violations.length > MAX_LINES_PER_CHECK) lines.push(`${d.violations.length - MAX_LINES_PER_CHECK} more reviews have the same problem.`);
+    return lines;
   }
   if (result.name === 'review-cards-complete') {
     return ['At least one review in the draft is missing its outlet name or its quote.'];
@@ -63,18 +67,22 @@ function firstSentence(text) {
   return (m ? m[1] : t.slice(0, 200)).trim();
 }
 
-function showTitle(id, showsById) {
+function showTitle(id, showsById, fromChecklist) {
   const s = showsById && showsById[id];
-  return (s && s.title) || id;
+  return (s && s.title) || (fromChecklist && fromChecklist[id]) || id;
 }
 
-function draftUrlFor(ids, sentTracker) {
+// send-opening-night-broadcast.js stores draftUrl (and draftId) per show; several
+// shows can share one draft, so the links are de-duplicated.
+function draftUrlsFor(ids, sentTracker) {
   const shows = (sentTracker && (sentTracker.shows || sentTracker)) || {};
+  const urls = new Set();
   for (const id of ids) {
     const rec = shows[id];
-    if (rec && rec.draftId) return `${RESEND_BROADCASTS_URL}/${rec.draftId}`;
+    if (rec && rec.draftUrl) urls.add(rec.draftUrl);
+    else if (rec && rec.draftId) urls.add(`${RESEND_BROADCASTS_URL}/${rec.draftId}`);
   }
-  return RESEND_BROADCASTS_URL;
+  return urls.size ? [...urls] : [RESEND_BROADCASTS_URL];
 }
 
 /**
@@ -89,6 +97,7 @@ function draftUrlFor(ids, sentTracker) {
  */
 function buildDeadlineDraftAlert({ checklistIds = [], driftIds = [], orphanEntries = [], showsById = {}, readChecklist, sentTracker, outletName } = {}) {
   const byShow = new Map();
+  const titleFromChecklist = {};
   const add = (id, line) => {
     if (!byShow.has(id)) byShow.set(id, []);
     byShow.get(id).push(line);
@@ -100,6 +109,9 @@ function buildDeadlineDraftAlert({ checklistIds = [], driftIds = [], orphanEntri
     if (!json) {
       add(id, 'The quality check could not run, so none of the reviews were checked. Read through the reviews in the draft before sending.');
       continue;
+    }
+    for (const s of json.shows || []) {
+      if (s && s.show && s.show.id && s.show.title) titleFromChecklist[s.show.id] = s.show.title;
     }
     const errs = readChecklistErrors(json);
     if (!errs.length) {
@@ -121,23 +133,23 @@ function buildDeadlineDraftAlert({ checklistIds = [], driftIds = [], orphanEntri
   }
 
   const ids = [...byShow.keys()].sort();
-  const titles = ids.map((id) => showTitle(id, showsById));
-  const url = draftUrlFor(ids, sentTracker);
+  const titles = ids.map((id) => showTitle(id, showsById, titleFromChecklist));
+  const urls = draftUrlsFor(ids, sentTracker);
   const count = [...byShow.values()].reduce((n, l) => n + l.length, 0);
   const title = `${titles.join(' and ')} email draft is ready in Resend: check ${count === 1 ? 'one thing' : `${count} things`} before you send`;
   const sections = ids.map((id) => {
     const lines = byShow.get(id).map((l) => `- ${l}`).join('\n');
-    return ids.length > 1 ? `${showTitle(id, showsById)}:\n${lines}` : lines;
+    return ids.length > 1 ? `${showTitle(id, showsById, titleFromChecklist)}:\n${lines}` : lines;
   });
   const description = [
     `The opening-night email for ${titles.join(' and ')} is waiting in Resend as a draft. Nothing has gone to subscribers.`,
     `The automatic checks found ${count === 1 ? 'this' : 'these'}:`,
     sections.join('\n\n'),
-    'If a review does not belong, ask Claude to take it off the site; the draft updates on its own. Then press Send.',
-    `Open the draft: ${url}`,
+    "Don't send yet if any of these look wrong. Tell Claude which ones; once they are fixed the draft updates on its own.",
+    urls.length === 1 ? `Open the draft: ${urls[0]}` : `Open the drafts:\n${urls.map((u) => `- ${u}`).join('\n')}`,
   ].join('\n\n');
 
-  return { ids, title, description, url };
+  return { ids, title, description, url: urls[0] };
 }
 
 module.exports = { readChecklistErrors, plainFindings, buildDeadlineDraftAlert, RESEND_BROADCASTS_URL };
