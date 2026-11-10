@@ -309174,56 +309174,40 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-10T21:58:54.653Z",
-    "completedAt": "2026-11-10T22:01:52.153Z",
-    "totalReviews": 81595,
-    "processed": 10,
-    "skipped": 81582,
-    "errors": 3,
+    "startedAt": "2026-11-10T22:03:08.511Z",
+    "completedAt": "2026-11-10T22:03:28.700Z",
+    "totalReviews": 35,
+    "processed": 5,
+    "skipped": 30,
+    "errors": 0,
     "tokensUsed": {
-      "input": 61837,
-      "output": 3252,
-      "cacheRead": 26604,
-      "cacheWrite": 11331,
-      "total": 153327
+      "input": 20643,
+      "output": 1453,
+      "cacheRead": 15228,
+      "cacheWrite": 3807,
+      "total": 61542
     },
-    "costUsd": 0.13673172499999997,
-    "runId": "42909090110",
+    "costUsd": 0.09804295,
+    "runId": "42910048830",
     "source": "index",
-    "errorDetails": [
-      {
-        "showId": "an-enemy-of-the-people-west-end-2024",
-        "outletId": "times-uk",
-        "error": "Review text too short or missing"
-      },
-      {
-        "showId": "alterations-west-end-2025",
-        "outletId": "thestage",
-        "error": "Review text too short or missing"
-      },
-      {
-        "showId": "the-years-west-end-2025",
-        "outletId": "thestage",
-        "error": "Review text too short or missing"
-      }
-    ]
+    "errorDetails": []
   },
   {
-    "startedAt": "2026-11-10T22:02:10.277Z",
-    "completedAt": "2026-11-10T22:02:38.485Z",
-    "totalReviews": 8,
-    "processed": 8,
+    "startedAt": "2026-11-10T22:08:25.841Z",
+    "completedAt": "2026-11-10T22:08:25.857Z",
+    "totalReviews": 0,
+    "processed": 0,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 22325,
-      "output": 1886,
+      "input": 0,
+      "output": 0,
       "cacheRead": 0,
       "cacheWrite": 0,
-      "total": 24211
+      "total": 0
     },
-    "costUsd": 0.0623776,
-    "runId": "42909090110",
+    "costUsd": 0,
+    "runId": "42910048830",
     "source": "comparative-rescore",
     "errorDetails": []
   }
