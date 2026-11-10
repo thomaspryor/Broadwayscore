@@ -447,16 +447,15 @@ function normalizeOutlet(outletName) {
   // trusted to mean "outlet + critic name" — exclude them (card #116).
   const ambiguousPrefixSlugs = buildAmbiguousPrefixSlugs();
   const ambiguousSmashedPrefixSlugs = buildAmbiguousSmashedPrefixSlugs();
-  for (const [canonical, aliases] of Object.entries(outletAliases)) {
+  for (const [canonical, canonicalSlug, aliasSlugs] of outletAliasSlugs(outletAliases)) {
     // Skip short canonical IDs to prevent false prefix matches (e.g., "new", "ap", "ew", "gq")
     if (canonical.length < 4) continue;
     // Check if the slug starts with the canonical outlet ID followed by a critic name
-    if (!ambiguousPrefixSlugs.has(slugify(canonical)) && slug.startsWith(canonical + '-') && slug.length > canonical.length + 3) {
+    if (!ambiguousPrefixSlugs.has(canonicalSlug) && slug.startsWith(canonical + '-') && slug.length > canonical.length + 3) {
       return canonical;
     }
     // Check if the slug starts with any alias (slugified) followed by a critic name
-    for (const alias of aliases) {
-      const aliasSlug = slugify(alias);
+    for (const aliasSlug of aliasSlugs) {
       if (!aliasSlug || ambiguousPrefixSlugs.has(aliasSlug)) continue;
       if (aliasSlug.length >= 4 && slug.startsWith(aliasSlug + '-') && slug.length > aliasSlug.length + 3) {
         return canonical;
@@ -572,6 +571,20 @@ function isSuspiciousOutletId(outletId) {
  */
 function generateReviewKey(outlet, critic) {
   return `${normalizeOutlet(outlet)}|${normalizeCritic(critic)}`;
+}
+
+// BRO-7068: normalizeOutlet's prefix fallback slugified every registry alias on every
+// call that missed the exact-match maps (~18s of a 90s contamination-audit run). The
+// slugs depend only on the alias table, which getOutletAliases() caches as one object,
+// so they are computed once per table. Entries: [canonical, slugify(canonical), slugify(alias)[]].
+const _outletAliasSlugsCache = new WeakMap();
+function outletAliasSlugs(outletAliases) {
+  let entries = _outletAliasSlugsCache.get(outletAliases);
+  if (!entries) {
+    entries = Object.entries(outletAliases).map(([canonical, aliases]) => [canonical, slugify(canonical), aliases.map(alias => slugify(alias))]);
+    _outletAliasSlugsCache.set(outletAliases, entries);
+  }
+  return entries;
 }
 
 /**

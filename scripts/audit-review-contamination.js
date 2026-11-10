@@ -421,6 +421,12 @@ for (const showId of showDirs) {
     try { d = JSON.parse(fs.readFileSync(path.join(sDir, f), 'utf8')); }
     catch { continue; }
     filesScanned++;
+    // BRO-7068: the canonical rebuild predicate is the audit's most expensive call
+    // (~75s of a 3+ min run) and A/E/G each asked it about the same file. Ask once.
+    const filePath = path.join(sDir, f);
+    let excludedMemo;
+    const excludedFromScoring = () => (excludedMemo === undefined
+      ? (excludedMemo = isAlreadyExcludedFromScoring(d, show, filePath)) : excludedMemo);
 
     const alreadyFlagged = d.wrongProduction || d.wrongShow || d.isRoundupArticle
       || d.wrongAttribution || d.contentVerification?.wrongArticle
@@ -438,7 +444,7 @@ for (const showId of showDirs) {
       // Anything the canonical rebuild predicate already excludes (ensemble
       // rejection, "Wrong show" tier, no-text stub) can't reach a score or a
       // page either — BRO-973. A/A2/C/D read this; E and G apply it directly; B/F have own gates.
-      || isAlreadyExcludedFromScoring(d, show, path.join(sDir, f));
+      || excludedFromScoring();
 
     // ─── A: Cross-market / cross-production contamination ────
     // `_auditAllowCrossMarket` is a manual allowlist for cases the detector can't
@@ -527,7 +533,7 @@ for (const showId of showDirs) {
 
     // ─── E: Unflagged roundup pages ────
     // Must match the same pattern as Guard E in review-file-writer.js
-    if (shouldRunClass('E') && !d.isRoundupArticle && d.url && !isAlreadyExcludedFromScoring(d, show, path.join(sDir, f))) {
+    if (shouldRunClass('E') && !d.isRoundupArticle && d.url && !excludedFromScoring()) {
       if (/\/article\/Review-Roundup-/i.test(d.url)) {
         hits.E_unflagged_roundup.push({ showId, file: f, url: d.url });
       }
@@ -647,7 +653,7 @@ for (const showId of showDirs) {
     // wrongProduction/wrongShow are left to the helper, which reads them as
     // EFFECTIVE flags (an auto-cleared flag is how the Oliver! file leaked).
     // "Live" = includable by the canonical rebuild predicate (BRO-6842).
-    if (shouldRunClass('G') && !isClassGExempt(d, show, path.join(sDir, f))) {
+    if (shouldRunClass('G') && !isClassGExempt(d, show, filePath, excludedFromScoring)) {
       const g = olderProductionLiveReason(d, show);
       if (g) hits.G_older_production_live.push({ showId, file: f, kind: g.kind, reason: g.reason, url: d.url || null });
     }

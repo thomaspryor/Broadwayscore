@@ -297,9 +297,34 @@ test('BRO-973: isAlreadyExcludedFromScoring skips ensemble-rejected, no-text stu
     // A showId-relative path resolves against cwd, so the cross-outlet-cycle
     // sibling read fails and the predicate reports a live file as excluded.
     const src = fs.readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), 'audit-review-contamination.js'), 'utf8');
+    // BRO-7068: the per-file call sites share one filePath (and one memoized predicate call).
+    assert.match(src, /const filePath = path\.join\(sDir, f\);/, 'filePath must be the absolute path.join(sDir, f)');
     const calls = src.match(/(?:isAlreadyExcludedFromScoring|isClassGExempt)\(d, show, [^)]*\)/g) || [];
-    assert.ok(calls.length >= 3, `expected the A/C/D, E and G call sites, found ${calls.length}`);
-    for (const c of calls) assert.match(c, /path\.join\(sDir, f\)/, c);
+    assert.ok(calls.length >= 2, `expected the memoized predicate and G call sites, found ${calls.length}`);
+    for (const c of calls) assert.match(c, /\(d, show, (?:filePath|path\.join\(sDir, f\))[,)]/, c);
+  });
+
+  // BRO-7068: the rebuild predicate was ~75s of a 3+ min audit run because A/C/D, E and
+  // G each asked it about the same file; two full runs per test then blew the live-data
+  // lane's 300s per-test timeout. One ask per file: one direct call, behind a memo that
+  // E and G reuse.
+  test('BRO-7068: the audit asks the rebuild predicate once per file (memoized for A/C/D, E and G)', () => {
+    const src = fs.readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), 'audit-review-contamination.js'), 'utf8');
+    const direct = src.match(/isAlreadyExcludedFromScoring\(d, show, /g) || [];
+    assert.equal(direct.length, 1, `expected exactly one direct isAlreadyExcludedFromScoring(d, show, ...) call (the memo), found ${direct.length}`);
+    assert.match(src, /isClassGExempt\(d, show, filePath, excludedFromScoring\)/, 'G must reuse the per-file memo');
+    assert.ok((src.match(/excludedFromScoring\(\)/g) || []).length >= 2, 'A/C/D and E must read the memo');
+  });
+
+  test('BRO-7068: isClassGExempt uses the caller\'s memoized predicate instead of re-running it', () => {
+    let asked = 0;
+    const memo = () => { asked++; return true; };
+    // `live` is includable, so only the injected memo can make it exempt.
+    assert.equal(isClassGExempt(live, show, 'x/y.json', memo), true);
+    assert.equal(asked, 1);
+    // Explicit skips short-circuit before the memo is consulted.
+    assert.equal(isClassGExempt({ ...live, isRoundupArticle: true }, show, 'x/y.json', memo), true);
+    assert.equal(asked, 1);
   });
 
   test('BRO-6842: G keeps its existing explicit skips', () => {
