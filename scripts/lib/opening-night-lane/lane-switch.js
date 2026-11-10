@@ -28,9 +28,11 @@
 const af = require('./auto-fallback');
 const { parseStanddown } = require('./standdown');
 
-const ALLOWED_VARIABLES = Object.freeze(['LANE_ONLY_MARKETS', 'LANE_STANDDOWN', 'LANE_PREEMBARGO_DIRECT_ONLY']);
+const ALLOWED_VARIABLES = Object.freeze(['LANE_ONLY_MARKETS', 'LANE_STANDDOWN', 'LANE_PREEMBARGO_DIRECT_ONLY', 'LANE_COMPARATIVE_SETTLE_ENABLED']);
 // BRO-7280: the opt-in pre-embargo direct-only window. Its only value is 'on'; clear (unset) is off.
 const PREEMBARGO_VARIABLE = 'LANE_PREEMBARGO_DIRECT_ONLY';
+// BRO-7283: the comparative settle kill switch. Its only value is 'true'; clear (unset) is off.
+const SETTLE_VARIABLE = 'LANE_COMPARATIVE_SETTLE_ENABLED';
 const PROBE_VARIABLE = 'LANE_SWITCH_PROBE'; // drill only: proves VARS_TOKEN can write variables
 const KNOWN = 'broadway, west-end, off-broadway, off-west-end, regional, tour';
 const OFF_VALUES = new Set(['', 'false', '0', 'off', 'no', 'none']);
@@ -56,6 +58,11 @@ function validateSwitch({ action, variable, value }) {
   const name = String(variable == null ? '' : variable).trim();
   if (!ALLOWED_VARIABLES.includes(name)) return { ok: false, reason: `refused: ${name || '(empty)'} is not one of ${ALLOWED_VARIABLES.join(', ')}` };
   const raw = String(value == null ? '' : value).trim().toLowerCase();
+  if (name === SETTLE_VARIABLE) {
+    if (action === 'clear') return raw ? { ok: false, reason: 'refused: clear takes no value' } : { ok: true, variable: name, op: 'delete', value: '' };
+    if (action !== 'set') return { ok: false, reason: `refused: unknown action ${action}` };
+    return raw === 'true' ? { ok: true, variable: name, op: 'set', value: 'true' } : { ok: false, reason: `refused: ${name} takes only the value true (use action clear to turn it off)` };
+  }
   if (name === PREEMBARGO_VARIABLE) {
     if (action === 'clear') return raw ? { ok: false, reason: 'refused: clear takes no value' } : { ok: true, variable: name, op: 'delete', value: '' };
     if (action !== 'set') return { ok: false, reason: `refused: unknown action ${action}` };
@@ -308,7 +315,7 @@ function drillLeaseState({ night, now }) {
 }
 
 module.exports = {
-  ALLOWED_VARIABLES, PREEMBARGO_VARIABLE, PROBE_VARIABLE, ROLLBACK_STANDDOWN, MODES, STANDDOWN_WAIT_MIN, RUN_WAIT_MIN, POLL_SEC,
+  ALLOWED_VARIABLES, PREEMBARGO_VARIABLE, SETTLE_VARIABLE, PROBE_VARIABLE, ROLLBACK_STANDDOWN, MODES, STANDDOWN_WAIT_MIN, RUN_WAIT_MIN, POLL_SEC,
   DRILL_LEASE_BRANCH, DRILL_FALLBACK_BRANCH, DRILL_SHOW, DRILL_HOLDER,
   validateSwitch, parseNightTitle, planRollback, executeRollback, describeStep, restoreCalls, auditRow, drillLeaseState,
 };

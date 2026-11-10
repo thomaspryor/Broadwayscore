@@ -31,7 +31,7 @@ on:
         description: 'set/clear only: which variable'
         required: false
         type: choice
-        options: [LANE_ONLY_MARKETS, LANE_STANDDOWN, LANE_PREEMBARGO_DIRECT_ONLY]
+        options: [LANE_ONLY_MARKETS, LANE_STANDDOWN, LANE_PREEMBARGO_DIRECT_ONLY, LANE_COMPARATIVE_SETTLE_ENABLED]
         default: LANE_STANDDOWN
       value:
         description: 'set only: e.g. broadway, or west-end, or all (LANE_STANDDOWN only)'
