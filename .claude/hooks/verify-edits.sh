@@ -147,22 +147,25 @@ def _stall_gate_blocks(envvar):
     import time
     return (os.environ.get('STALL_GATE_NOW') or time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())) >= _STALL_ARM_AFTER
 
-def _stall_advisory_post(kind, detail):
-    # Cloud: ~/.claude/state dies with the container (BRO-7190), so the hit also goes to a
-    # card comment, once per session and kind, detached and bounded. Failure is silent.
+def _stall_advisory_post(kind, cards=None):
+    # Cloud: ~/.claude/state dies with the container (BRO-7190), so the hit also goes to the
+    # collector card via scripts/lib/advisory-durability.js: ids only, never message text,
+    # once per session and kind, detached and bounded. Failure is silent.
     if os.environ.get('CLAUDE_CODE_REMOTE') != 'true' or not os.environ.get('LINEAR_API_KEY'):
         return
     try:
         import subprocess, tempfile
-        sid = os.environ.get('CLAUDE_CODE_SESSION_ID', '') or 'nosession'
+        sid = re.sub(r'[^0-9A-Za-z_-]', '', os.environ.get('CLAUDE_CODE_SESSION_ID', '')) or 'nosession'
         mark = os.path.join(tempfile.gettempdir(), 'stall-advisory-%s-%s' % (kind, sid))
         if os.path.exists(mark):
             return
         open(mark, 'w').close()
         root = os.environ.get('CLAUDE_PROJECT_DIR') or os.getcwd()
-        subprocess.Popen(['timeout', '10', 'node', os.path.join(root, 'scripts', 'linear-brain.js'), 'update', 'BRO-7190', '--comment',
-                          '%s-ADVISORY: session %s %s' % (kind, sid, str(detail)[:300])],
-                         cwd=root, stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, start_new_session=True)
+        cmd = ['timeout', '10', 'node', os.path.join(root, 'scripts', 'lib', 'advisory-durability.js'), 'record',
+               '--kind=' + kind, '--session=' + sid]
+        if cards:
+            cmd.append('--cards=' + ','.join(str(c) for c in cards))
+        subprocess.Popen(cmd, cwd=root, stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, start_new_session=True)
     except Exception:
         pass
 
@@ -1491,14 +1494,14 @@ if os.environ.get('WAKELESS_GATE_DISABLE', '0') != '1' and not _cs_on:
                 if _stall_gate_blocks('PROMISE_GATE_MODE'):
                     _ve_block("WAKEPROMISE")
                 elif os.environ.get('PROMISE_GATE_MODE') != 'off':
-                    _stall_advisory_post('WAKEPROMISE', _PROMISE_RE.search(_wk_text).group(0))
+                    _stall_advisory_post('WAKEPROMISE')
                     try:
                         import time
                         _pd = os.path.join(os.path.expanduser('~'), '.claude', 'state')
                         os.makedirs(_pd, exist_ok=True)
                         with open(os.path.join(_pd, 'wake-promise-advisory.jsonl'), 'a') as _pf:
                             _pf.write(json.dumps({'at': time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()), 'session': os.environ.get('CLAUDE_CODE_SESSION_ID', ''),
-                                                  'phrase': _PROMISE_RE.search(_wk_text).group(0)}) + '\n')
+                                                  'pattern': 'promise'}) + '\n')  # no message text (BRO-7190)
                     except Exception:
                         pass
     except Exception:
@@ -1574,7 +1577,7 @@ if _CW_CODES:
                 _ve_block('OPENCLAIM')
             elif _cw_res.get('code') == 'OPENCLAIM':
               if os.environ.get('OPENCLAIM_GATE_MODE') != 'off':
-                _stall_advisory_post('OPENCLAIM', _cw_res.get('cards'))
+                _stall_advisory_post('OPENCLAIM', _cw_res.get('cards') or [])
                 _pd = os.path.join(os.path.expanduser('~'), '.claude', 'state')
                 os.makedirs(_pd, exist_ok=True)
                 with open(os.path.join(_pd, 'open-claim-advisory.jsonl'), 'a') as _pf:
