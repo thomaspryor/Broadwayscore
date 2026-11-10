@@ -183,5 +183,33 @@
     "tracked": "BRO-5596",
     "fields": [],
     "queuedAt": "2026-11-10T09:44:28.826Z"
+  },
+  {
+    "conditionKey": "aggregator-health:theatre-reviews:coverage-drop",
+    "title": "theatre.reviews: archive coverage 33% in 2026Q2+2026Q3 vs 73% baseline (2025Q2+2025Q3+2025Q4+2026Q1)",
+    "description": "theatre.reviews: archive coverage 33% in 2026Q2+2026Q3 vs 73% baseline (2025Q2+2025Q3+2025Q4+2026Q1)\n\nMonitor: node scripts/audit-aggregator-health.js (BRO-6098). Coverage compares the last 2 full quarters with the 4 before; workflow checks use the last 30 scheduled runs.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-10T10:23:17.748Z"
+  },
+  {
+    "conditionKey": "time-to-publish-sla:unmeasurable",
+    "title": "Time-to-publish SLA cannot be measured — only 4 review(s) in scope (need 5)",
+    "description": "Scope: 2 opening window(s): cloud-9-west-end-2026 (2026-11-10), the-visitors-off-broadway-2026 (2026-11-09)\n0 review(s) still in flight.\nStage log currently starts at 2026-11-08T21:18:11.911Z.\nThis is NOT a pass — the SLA had too little to judge.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-10T10:26:12.666Z"
   }
 ]
