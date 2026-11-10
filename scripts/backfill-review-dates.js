@@ -333,6 +333,20 @@ async function main() {
           }
         } catch (e) { /* try next */ }
       };
+      // BRO-7272: free plain HTTP (no paid or browser fallback). Most outlets are not
+      // paywalled; before this a --free-only sweep could only use cookies/archive.org
+      // and left e.g. New York Theatre Guide reviews undated.
+      const tryDirect = async () => {
+        try {
+          const result = await fetchPage(url, { timeout: 15000, directOnly: true });
+          const h = typeof result === 'string' ? result : (result?.html || result?.content || '');
+          if (h && h.length > 500) {
+            html = h;
+            dateSource = 'html-direct';
+            console.log('  → Got HTML via direct fetch (free)');
+          }
+        } catch (e) { /* try next */ }
+      };
       const tryPaid = async () => {
         if (freeOnly) return;
         try {
@@ -346,7 +360,7 @@ async function main() {
           }
         } catch (e) { /* fall through */ }
       };
-      for (const step of recheckDates ? [tryCookies, tryPaid, tryArchive] : [tryCookies, tryArchive, tryPaid]) {
+      for (const step of recheckDates ? [tryCookies, tryDirect, tryPaid, tryArchive] : [tryCookies, tryDirect, tryArchive, tryPaid]) {
         if (html) break;
         await step();
       }
