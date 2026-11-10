@@ -77,4 +77,29 @@ function tierChangeRefusal(before, after) {
   return null;
 }
 
-module.exports = { cleanRecord, skipReason, tierChangeRefusal, TRIM_REASON };
+/**
+ * Guarded redo of an earlier furniture clean (ship-check, BRO-7171): rebuild
+ * the record from the exact text the clean replaced, under the current rules.
+ * `current` must still be exactly what the clean wrote (its breadcrumb's
+ * toLength) and `prior` must hash to its priorFullTextHash, so any later
+ * writer's edit is left alone. Every non-text field keeps its current value.
+ * @returns {{record: object|null, reason: string}}
+ */
+function rebuildFromPrior(current, prior, at) {
+  const t = current && current.fullTextTrimmed;
+  if (!t || t.reason !== TRIM_REASON) return { record: null, reason: 'not-a-furniture-clean' };
+  if (typeof current.fullText !== 'string' || current.fullText.length !== t.toLength) return { record: null, reason: 'changed-since' };
+  if (!prior || typeof prior.fullText !== 'string') return { record: null, reason: 'no-prior' };
+  if (crypto.createHash('sha256').update(prior.fullText).digest('hex') !== t.priorFullTextHash) return { record: null, reason: 'prior-mismatch' };
+  const base = { ...current, fullText: prior.fullText };
+  if (prior.fullTextTrimmed) base.fullTextTrimmed = prior.fullTextTrimmed;
+  else delete base.fullTextTrimmed;
+  for (const f of ['textWordCount', 'wordCount']) if (typeof prior[f] === 'number') base[f] = prior[f];
+  if (current.llmPullQuote == null && prior.llmPullQuote) base.llmPullQuote = prior.llmPullQuote;
+  const res = cleanRecord(base, at);
+  const record = res ? res.record : base;
+  if (record.fullText === current.fullText) return { record: null, reason: 'unchanged' };
+  return { record, reason: res ? 'recleaned' : 'restored' };
+}
+
+module.exports = { cleanRecord, skipReason, tierChangeRefusal, rebuildFromPrior, TRIM_REASON };

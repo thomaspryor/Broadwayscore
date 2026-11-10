@@ -197,6 +197,20 @@ test('skipReason: manual tier and manual verification are left alone', () => {
   assert.strictEqual(skipReason({ fullText: BODY, manualContentTier: 'complete' }), 'manual-tier');
 });
 
+test('rebuildFromPrior: redo only an untouched clean, from the hash-verified prior', () => {
+  const { rebuildFromPrior } = require('./page-furniture-record.js');
+  const prior = { fullText: `${BODY}\n\nShare this\n\nJane Critic writes about theatre.`, assignedScore: 70 };
+  // A clean under the old rule removed the tail anchor.
+  const oldClean = { ...prior, assignedScore: 72, fullText: `${BODY}\n\nJane Critic writes about theatre.` };
+  oldClean.fullTextTrimmed = { reason: TRIM_REASON, fromLength: prior.fullText.length, toLength: oldClean.fullText.length, at: 'x', priorFullTextHash: require('crypto').createHash('sha256').update(prior.fullText).digest('hex') };
+  const r = rebuildFromPrior(oldClean, prior, 'y');
+  assert.strictEqual(r.record.fullText, prior.fullText, 'tail anchor restored');
+  assert.strictEqual(r.record.assignedScore, 72, 'later field edits kept');
+  assert.strictEqual(r.record.fullTextTrimmed, undefined);
+  assert.strictEqual(rebuildFromPrior({ ...oldClean, fullText: `${oldClean.fullText} edited` }, prior, 'y').reason, 'changed-since');
+  assert.strictEqual(rebuildFromPrior(oldClean, { fullText: 'other' }, 'y').reason, 'prior-mismatch');
+});
+
 test('cleanRecord chains an earlier trim breadcrumb under previous', () => {
   const text = 'A real review paragraph about the production that runs long enough to count as prose for the stripper, with a verdict.\n\nShare on Facebook';
   const prior = { reason: 'BRO-5141 earlier trim', fromLength: 9999, toLength: text.length, at: '2026-01-01T00:00:00Z' };

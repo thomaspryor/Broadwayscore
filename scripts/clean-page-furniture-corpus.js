@@ -124,7 +124,16 @@ function main() {
   return stats.failed ? 1 : 0;
 }
 
-function applyRows(rows, stats) {
+// Default build: clean what is on disk now. Returns the record to write, or null.
+function cleanFresh(fresh, row) {
+  const res = cleanRecord(fresh, row.record.fullTextTrimmed.at);
+  if (!res) return null;
+  const { classifyContentTier } = require('./lib/content-quality');
+  if (tierChangeRefusal(classifyContentTier(fresh).contentTier, classifyContentTier(res.record).contentTier)) return null;
+  return res.record;
+}
+
+function applyRows(rows, stats, build = cleanFresh, label = 'remove page furniture from stored review texts') {
   const { safeWriteReview } = require('./lib/review-write-guard');
   const { withReviewTextsLock } = require('./lib/review-texts-lock');
   const { checkpointReviewTexts, retryPendingPushes, createWriteTracker, landingKey } = require("./lib/review-texts-checkpoint");
@@ -133,7 +142,7 @@ function applyRows(rows, stats) {
   let tracker = createWriteTracker();
   const flush = () => {
     if (!tracker.size) return;
-    const res = checkpointReviewTexts({ repoDir: DIR, paths: [...tracker], expected: tracker.expected, message: `chore: remove page furniture from stored review texts (BRO-7171 Stage 5) - ${stats.written} so far` });
+    const res = checkpointReviewTexts({ repoDir: DIR, paths: [...tracker], expected: tracker.expected, message: `chore: ${label} (BRO-7171 Stage 5) - ${stats.written} so far` });
     console.log(`  [Checkpoint] ${res.pushed ? 'pushed' : 'nothing new to push'}; ${res.landed.length} landed, ${res.notLanded.length} not landed`);
     if (res.notLanded.length) throw new Error(`checkpoint did not land: ${res.notLanded.slice(0, 5).map((n) => n.rel).join(', ')}`);
     tracker = createWriteTracker();
@@ -147,14 +156,12 @@ function applyRows(rows, stats) {
         // since the scan. Clean what is on disk now, not the scanned copy.
         try {
           const fresh = JSON.parse(fs.readFileSync(row.file, 'utf8'));
-          const res = cleanRecord(fresh, row.record.fullTextTrimmed.at);
-          if (!res) return null;
-          const { classifyContentTier } = require('./lib/content-quality');
-          if (tierChangeRefusal(classifyContentTier(fresh).contentTier, classifyContentTier(res.record).contentTier)) return null;
-          const w = safeWriteReview(row.file, res.record, { force: true });
+          const record = build(fresh, row);
+          if (!record) return null;
+          const w = safeWriteReview(row.file, record, { force: true });
           const after = JSON.parse(fs.readFileSync(row.file, 'utf8'));
-          if (after.fullText === res.record.fullText) { tracker.add(path.resolve(row.file)); tracker.expected.set(path.resolve(row.file), landingKey(after)); }
-          if ((w && w.wrote === false) || after.fullText !== res.record.fullText) {
+          if (after.fullText === record.fullText) { tracker.add(path.resolve(row.file)); tracker.expected.set(path.resolve(row.file), landingKey(after)); }
+          if ((w && w.wrote === false) || after.fullText !== record.fullText) {
             console.log(`  ✗ ${row.rel}: write did not stick (${(w && (w.skipped || w.reason)) || 'text differs after write'})`);
             return false;
           }
@@ -174,4 +181,50 @@ function applyRows(rows, stats) {
   console.log(`applied: ${stats.written} written, ${stats.failed} failed`);
 }
 
-if (require.main === module) process.exit(main());
+// --redo-commits=<sha,...>: rebuild every record those cleaner commits touched
+// from the exact prior blob (<sha>^:<path>) under the current rules. The
+// guarded restore path for a rule change after a clean (rebuildFromPrior).
+function redoMain(commits) {
+  const { execFileSync } = require('child_process');
+  const { rebuildFromPrior } = require('./lib/page-furniture-record');
+  const { classifyContentTier } = require('./lib/content-quality');
+  const git = (...a) => execFileSync('git', ['-C', DIR, ...a], { encoding: 'utf8', maxBuffer: 256 * 1024 * 1024 });
+  const at = new Date().toISOString();
+  const stats = { scanned: 0, written: 0, failed: 0, reasons: {} };
+  const rows = [];
+  const seen = new Set();
+  for (const c of commits) {
+    for (const rel of git('diff-tree', '--no-commit-id', '--name-only', '-r', c).split('\n').filter((l) => l.endsWith('.json'))) {
+      if (seen.has(rel)) continue;
+      seen.add(rel);
+      stats.scanned++;
+      let prior;
+      try { prior = JSON.parse(git('show', `${c}^:${rel}`)); } catch { bump(stats.reasons, 'no-prior'); continue; }
+      const file = path.join(DIR, rel);
+      let current;
+      try { current = JSON.parse(fs.readFileSync(file, 'utf8')); } catch { bump(stats.reasons, 'gone'); continue; }
+      const r = rebuildFromPrior(current, prior, at);
+      if (r.record) {
+        let ta = null; let tp = null;
+        try { tp = classifyContentTier(prior).contentTier; ta = classifyContentTier(r.record).contentTier; } catch { /* below */ }
+        const refusal = tp && ta ? tierChangeRefusal(tp, ta) : 'tier-unknown';
+        if (refusal) { bump(stats.reasons, `refused-${refusal}`); continue; }
+        rows.push({ rel, file, prior });
+      }
+      bump(stats.reasons, r.reason);
+    }
+  }
+  console.log(`REDO ${APPLY ? 'APPLY' : 'DRY RUN'}: ${stats.scanned} records in ${commits.length} commits; ${JSON.stringify(stats.reasons)}`);
+  if (APPLY) {
+    applyRows(rows, stats, (fresh, row) => {
+      const r = rebuildFromPrior(fresh, row.prior, at);
+      return r.record;
+    }, 'redo page furniture clean under fixed tail-anchor rules');
+  }
+  return stats.failed ? 1 : 0;
+}
+
+if (require.main === module) {
+  const redo = arg('redo-commits', '');
+  process.exit(redo ? redoMain(redo.split(',').filter(Boolean)) : main());
+}
