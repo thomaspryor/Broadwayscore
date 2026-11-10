@@ -319,3 +319,29 @@ test('indexRows: equal timestamps order by lifecycle, then per-process seq', () 
   // appendRows keeps a caller-supplied seq/ts (rows re-published verbatim).
   assert.equal(L.makeRow({ ...a }).seq, a.seq);
 });
+
+// BRO-7171 coordinator 2026-11-10: manual driver runs appended 368 rows to the
+// machine state ledger that never reached the published data/audit mirror
+// (only the nightly published). A live manual run against the state ledger
+// must publish its own rows; the nightly's child run and dry runs must not.
+test('manualRunShouldPublish: live manual run on the state ledger publishes; nightly child, dry run, repo ledger do not', () => {
+  const state = L.stateLedgerPath();
+  assert.equal(typeof L.manualRunShouldPublish, 'function');
+  assert.equal(L.manualRunShouldPublish({ dryRun: false, ledgerPath: state, env: {} }), true);
+  assert.equal(L.manualRunShouldPublish({ dryRun: true, ledgerPath: state, env: {} }), false);
+  assert.equal(L.manualRunShouldPublish({ dryRun: false, ledgerPath: state, env: { GAP_RECOVERY_RUN_LOCK_PARENT: '123' } }), false);
+  assert.equal(L.manualRunShouldPublish({ dryRun: false, ledgerPath: '/tmp/x.jsonl', env: {} }), false);
+  assert.equal(L.manualRunShouldPublish({ dryRun: false, ledgerPath: state, env: { CI: 'true' } }), false);
+  assert.equal(L.manualRunShouldPublish({ dryRun: false, ledgerPath: state, env: { GAP_RECOVERY_NO_PUBLISH: '1' } }), false);
+});
+
+test('URL_FIND_PROBE rows are logged but inert: no shadowing of pending_push/recovered, no strategy state (BRO-7171)', () => {
+  const k = 'show-2018/telegraph--x.json';
+  const t = (h) => new Date(NOW - h * 3600e3).toISOString();
+  const probe = { reviewKey: k, strategy: 'URL_FIND_PROBE', outcome: 'non_evidence', reason: 'probe:none', ts: t(1) };
+  const pend = [{ reviewKey: k, strategy: 'URL_FIND', outcome: 'pending_push', reason: 'accepted', url: 'https://x/r', ts: t(2) }, probe];
+  assert.equal(L.pendingPushInfo(pend).has(k), true);
+  const rec = [{ reviewKey: k, strategy: 'URL_FIND', outcome: 'recovered', reason: 'landed_on_origin_main', bytesAfter: 5000, ts: t(2) }, probe];
+  assert.equal(L.reconcileRecovered(rec, () => ({ fullText: '' , contentTier: 'excerpt' })).length, 1);
+  assert.equal(L.indexRows([probe]).size, 0);
+});

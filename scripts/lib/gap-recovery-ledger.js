@@ -56,6 +56,21 @@ function ledgerPathDefault() {
   return path.join(__dirname, '..', '..', 'data', 'audit', 'gap-recovery-attempts.jsonl');
 }
 
+/**
+ * A live manual driver run that appended to the machine state ledger publishes
+ * its own rows to the data/audit mirror at exit (BRO-7171 2026-11-10: 368
+ * manual-run rows sat only in the state file, invisible to CI readers of the
+ * mirror, until the next nightly). The nightly's child run (it sets
+ * GAP_RECOVERY_RUN_LOCK_PARENT) publishes from the parent; dry runs, CI and a
+ * scratch ledger never publish. GAP_RECOVERY_NO_PUBLISH=1 opts out.
+ */
+function manualRunShouldPublish({ dryRun, ledgerPath, env = process.env }) {
+  if (dryRun) return false;
+  if (env.GAP_RECOVERY_RUN_LOCK_PARENT || env.GAP_RECOVERY_NO_PUBLISH === '1') return false;
+  if (env.GITHUB_ACTIONS || env.CI) return false;
+  return !!ledgerPath && path.resolve(ledgerPath) === path.resolve(stateLedgerPath());
+}
+
 function reviewKeyOf(p) {
   const parts = String(p).split(/[\\/]/).filter(Boolean);
   return parts.slice(-2).join('/');
@@ -124,10 +139,16 @@ function compareRows(a, b) {
   return (tsMs(a) - tsMs(b)) || (lifeRank(a) - lifeRank(b)) || (seqOf(a) - seqOf(b));
 }
 
-/** Rows grouped by reviewKey, each list in compareRows order (never file order). */
+// Logged-only strategies: a read-only probe row (gap-url-find.js) is kept in
+// the ledger as a record but never read as an attempt, so it cannot shadow a
+// pending_push or recovered row, cool a strategy down, or count as evidence.
+const INERT_STRATEGIES = new Set(['URL_FIND_PROBE']);
+
+/** Rows grouped by reviewKey, each list in compareRows order (never file order; logged-only rows left out). */
 function indexRows(rows) {
   const m = new Map();
   for (const r of rows) {
+    if (INERT_STRATEGIES.has(r.strategy)) continue;
     if (!m.has(r.reviewKey)) m.set(r.reviewKey, []);
     m.get(r.reviewKey).push(r);
   }
@@ -384,6 +405,8 @@ module.exports = {
   DEFAULT_DAILY_CEILING,
   ledgerPathDefault,
   stateLedgerPath,
+  manualRunShouldPublish,
+  INERT_STRATEGIES,
   reviewKeyOf,
   makeRow,
   appendRows,

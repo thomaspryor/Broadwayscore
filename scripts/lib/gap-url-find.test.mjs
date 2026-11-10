@@ -109,3 +109,35 @@ test('url-find progress: union of live rows, errors and paid skips do not count;
   assert.equal(UF.urlFindEligibility([unread], { nowMs: now, cooldownH: 0 }).ok, true);
   assert.equal(UF.urlFindEligibility([unread], { nowMs: now + 7 * 86400000 }).ok, true);
 });
+
+// BRO-7171 coordinator 2026-11-10: the read-only method probe (gap-url-find.js)
+// wrote its per-method results only to an --out file, so a 30-file probe left
+// no trace in the attempts ledger. Each probed review now gets one
+// URL_FIND_PROBE row: non_evidence (never a cooldown, never terminal evidence)
+// carrying the per-method status.
+test('probeLedgerRow: one non_evidence URL_FIND_PROBE row with per-method status', async () => {
+  const { createRequire } = await import('node:module');
+  const req = createRequire(import.meta.url);
+  const UFL = req('./gap-url-find.js');
+  const L = req('./gap-recovery-ledger.js');
+  assert.equal(typeof UFL.probeLedgerRow, 'function');
+  const rec = { reviewKey: 's-2014/express-uk--x.json', outletId: 'express-uk', methods: {
+    AGG_LINK: { found: 0, tried: ['4 archived aggregator page(s)'], error: null, verified: null, candidates: [] },
+    WAYBACK_CDX: { found: 0, tried: ['q'], error: 'CDX HTTP 503', verified: null, candidates: [] },
+    SERP: { found: 2, tried: ['discoverCorrectUrl'], error: null, verified: 'https://e.co/r', candidates: [{ url: 'https://e.co/r', ok: true, code: 'accepted' }] },
+    SLUG_GUESS: { found: 3, tried: ['t'], error: null, verified: null, candidates: [{ url: 'https://e.co/a', ok: false, code: 'identity' }] },
+    OUTLET_SITEMAP: { found: 0, tried: ['no sitemap adapter for outlet'], error: null, verified: null, candidates: [] },
+  } };
+  const row = UFL.probeLedgerRow(rec, { runId: 'probe-1' });
+  assert.equal(row.strategy, 'URL_FIND_PROBE');
+  assert.equal(row.outcome, 'non_evidence');
+  assert.equal(row.reason, 'probe:verified');
+  assert.equal(row.url, 'https://e.co/r');
+  assert.deepEqual(row.detail.methods, { AGG_LINK: 'no_candidates', WAYBACK_CDX: 'error', SERP: 'verified', SLUG_GUESS: 'candidates_refused', OUTLET_SITEMAP: 'not_applicable' });
+  assert.ok(L.makeRow(row));
+  const none = UFL.probeLedgerRow({ reviewKey: 'k/a.json', methods: { AGG_LINK: rec.methods.AGG_LINK } }, {});
+  assert.equal(none.reason, 'probe:none');
+  // A probe row never changes URL_FIND eligibility.
+  const st = L.strategyState(L.indexRows([L.makeRow(row)]), row.reviewKey, 'URL_FIND');
+  assert.equal(st.evidenceAttempts + st.nonEvidence, 0);
+});

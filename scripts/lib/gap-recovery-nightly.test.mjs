@@ -35,6 +35,14 @@ test('pendingStuckCount: only a LATEST pending_push row older than 24h counts', 
   assert.equal(N.pendingStuckCount(rows, NOW), 1);
 });
 
+test('pendingStuckCount: a later read-only URL_FIND_PROBE row does not hide a stuck pending_push (BRO-7171)', () => {
+  const rows = [
+    { reviewKey: 'a/x.json', outcome: 'pending_push', strategy: 'URL_FIND', ts: new Date(NOW - 30 * H).toISOString() },
+    { reviewKey: 'a/x.json', outcome: 'non_evidence', strategy: 'URL_FIND_PROBE', ts: new Date(NOW - 1 * H).toISOString() },
+  ];
+  assert.equal(N.pendingStuckCount(rows, NOW), 1);
+});
+
 test('auth streak: a night with no browser attempt carries the streak; success resets it', () => {
   assert.equal(N.nextAuthStreak({ authFailedStreak: 1 }, { authFailed: true, authOk: false }), 2);
   assert.equal(N.nextAuthStreak({ authFailedStreak: 1 }, { authFailed: false, authOk: false }), 1);

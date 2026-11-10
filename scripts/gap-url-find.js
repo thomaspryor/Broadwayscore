@@ -20,6 +20,9 @@ const fs = require('fs');
 const os = require('os');
 const path = require('path');
 const UF = require('./lib/gap-url-find');
+const L = require('./lib/gap-recovery-ledger');
+const LEDGER = L.ledgerPathDefault();
+const RUN_ID = `probe-${new Date().toISOString().replace(/[:.]/g, '').slice(0, 15)}-${process.pid}`;
 
 const argv = process.argv.slice(2);
 // --out=PATH: the yield report (JSON), never a review file.
@@ -130,6 +133,19 @@ async function main() {
     }
     results.push(rec);
     if (REPORT_OUT) fs.writeFileSync(REPORT_OUT, JSON.stringify(results, null, 1));
+    // Every probe reaches the attempts ledger (non_evidence: never a cooldown).
+    if (!flag('no-ledger')) L.appendRows([UF.probeLedgerRow(rec, { runId: RUN_ID })], LEDGER);
+  }
+  if (!flag('no-ledger') && L.manualRunShouldPublish({ dryRun: false, ledgerPath: LEDGER })) {
+    try {
+      require('./lib/gap-recovery-publish').publishLedgers({
+        repoDir: ROOT,
+        files: [{ rel: path.join('data', 'audit', 'gap-recovery-attempts.jsonl'), localPath: LEDGER }],
+        message: `data: gap-recovery url-find probe ledger (${RUN_ID}) [skip ci]\n\nBRO-7171: read-only probe rows, published by plumbing.`,
+        attempts: 3,
+        log: (m) => console.log(`[ledger publish] ${m}`),
+      });
+    } catch (e) { console.error(`[ledger publish] FAILED: ${e.message} (rows stay in ${LEDGER}; the nightly publishes them)`); }
   }
   // Yield table.
   console.log('\nmethod           found  verified  yield');

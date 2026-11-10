@@ -177,6 +177,7 @@ function printPlan(cands) {
 }
 
 /** Stats for --summary (nightly reads it; never a review file). */
+let RUN_LEDGER = null; // set in main(); a live manual run publishes it at exit
 const SUMMARY = { mode: null, attempted: 0, accepted: 0, landed: 0, byStrategy: {}, ceilingHit: false, pushFailed: false, authFailedOutlets: [], authOkOutlets: [], reopened: 0, error: null };
 function writeSummary() {
   const p = arg('summary');
@@ -219,6 +220,7 @@ async function main() {
   const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
   const dir = process.env.REVIEW_TEXTS_DIR || resolveReviewTextsDir();
   const ledgerPath = L.ledgerPathDefault();
+  RUN_LEDGER = ledgerPath;
   if (!OPTS.dryRun && !takeRunLock(OPTS.reconcile ? 'gap-recovery-driver --reconcile' : 'gap-recovery-driver')) return 3;
   if (OPTS.reconcile) { await runReconcile({ dir, ledgerPath }); return 0; }
 
@@ -529,6 +531,21 @@ main()
   .catch((e) => { console.error('FATAL:', e.stack || e.message); if (!SUMMARY.error) SUMMARY.error = String(e.message).slice(0, 300); process.exitCode = 1; })
   .finally(() => {
     writeSummary();
+    // Every attempt reaches the published data/audit mirror, not only nightly
+    // ones (BRO-7171 2026-11-10). Plumbing push of the ledger file only; a
+    // failure leaves the rows in the state file for the next nightly.
+    if (RUN_LEDGER && L.manualRunShouldPublish({ dryRun: OPTS.dryRun, ledgerPath: RUN_LEDGER })) {
+      try {
+        const p = require('./lib/gap-recovery-publish').publishLedgers({
+          repoDir: ROOT,
+          files: [{ rel: path.join('data', 'audit', 'gap-recovery-attempts.jsonl'), localPath: RUN_LEDGER }],
+          message: `data: gap-recovery manual run ledger (${RUN_ID}) [skip ci]\n\nBRO-7171: manual driver run rows, published by plumbing.`,
+          attempts: 3,
+          log: (m) => console.log(`  [ledger publish] ${m}`),
+        });
+        if (!p.pushed) console.log('  [ledger publish] attempts ledger already on origin/main');
+      } catch (e) { console.error(`  [ledger publish] FAILED: ${e.message} (rows stay in ${RUN_LEDGER}; the nightly publishes them)`); }
+    }
     // fetchPage's Playwright tiers keep a browser alive for reuse.
     let cleanup = null;
     try { if (require.cache[require.resolve('./lib/scraper')]) cleanup = require('./lib/scraper').cleanup; } catch { /* not loaded */ }

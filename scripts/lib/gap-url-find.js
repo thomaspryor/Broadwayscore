@@ -587,7 +587,45 @@ async function fetchCandidateText(url, { allowBd = false, minChars = 1500, onPai
   return best ? { ...best, url, tried, paid } : { ok: false, url, tried, paid };
 }
 
+/**
+ * One attempts-ledger row for a read-only probe of one review (BRO-7171
+ * 2026-11-10: a 30-file probe left no ledger trace). Strategy URL_FIND_PROBE
+ * and outcome non_evidence, so it never cools down URL_FIND or counts as
+ * write-off evidence; detail.methods carries each method's status. Pure.
+ */
+function probeMethodStatus(mr) {
+  if (!mr) return 'not_run';
+  if (mr.verified) return 'verified';
+  if (mr.error) return 'error';
+  if (mr.found > 0) return 'candidates_refused';
+  if ((mr.tried || []).some((t) => /^no (sitemap|fill-in)|not applicable/i.test(String(t)))) return 'not_applicable';
+  return 'no_candidates';
+}
+
+function probeLedgerRow(rec, { runId = null, ts = null } = {}) {
+  const methods = {};
+  let verifiedUrl = null;
+  let foundAny = false;
+  for (const [m, mr] of Object.entries(rec.methods || {})) {
+    methods[m] = probeMethodStatus(mr);
+    if (mr && mr.verified && !verifiedUrl) verifiedUrl = mr.verified;
+    if (mr && mr.found > 0) foundAny = true;
+  }
+  return {
+    ...(ts ? { ts } : {}),
+    reviewKey: rec.reviewKey,
+    gapClass: 'NO_URL',
+    strategy: 'URL_FIND_PROBE',
+    outcome: 'non_evidence',
+    reason: verifiedUrl ? 'probe:verified' : foundAny ? 'probe:candidates_refused' : 'probe:none',
+    url: verifiedUrl,
+    runId,
+    detail: { methods, foundBy: verifiedUrl ? Object.keys(methods).find((m) => methods[m] === 'verified') : null, readOnly: true },
+  };
+}
+
 module.exports = {
+  probeLedgerRow,
   buildCorpusIndex, outletHosts, fetchCandidateText, fetchRefusedOnEvidence, methodNotApplicable, urlFindProgress, urlFindEligibility, METHOD_DONE, URL_FIND_POLICY, fetchIndexWithRetry,
   METHODS, SITEMAP_ADAPTERS, titleTokens, pathWords, slugTitleScore, dateWindow, learnOutletProfile, extractOutboundLinks,
   rankCandidates, cdxFilterToken, waybackQueries, learnTitleStartDirs, titleStartQueries, yearWindow, parseCdxCandidates, learnSlugTemplates, slugify, sitemapDays,

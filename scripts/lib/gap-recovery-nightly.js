@@ -28,6 +28,7 @@ const path = require('path');
 const NIGHTLY_REL = path.join('data', 'audit', 'gap-recovery-nightly.jsonl');
 const DEFAULT_NIGHTLY_CEILING = 60;
 const PENDING_STUCK_HOURS = 24;
+const INERT = require('./gap-recovery-ledger').INERT_STRATEGIES;
 const AUTH_STREAK_ALERT = 2;
 const STALE_ROW_HOURS = 20; // run ~02:30 ET, digest ~08:00 ET: a missed night must not show yesterday as today
 
@@ -84,6 +85,7 @@ function planCounts(candidates) {
 function pendingStuckCount(ledgerRows, nowMs = Date.now()) {
   const latest = new Map();
   for (const r of ledgerRows || []) {
+    if (INERT.has(r.strategy)) continue; // read-only probe, never resolves a push
     const t = Date.parse(r.ts || '');
     const prev = latest.get(r.reviewKey);
     if (!prev || t >= prev.t) latest.set(r.reviewKey, { t, outcome: r.outcome });
