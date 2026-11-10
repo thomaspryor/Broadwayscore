@@ -6647,6 +6647,16 @@ jobs:
         # prevention is review-write-guard's URL-collision detector, daily heal is
         # dedupe-same-url-bylines.yml. Run --fix locally to repair.
 
+      - name: Manual review rows record why (BRO-7291, advisory)
+        if: always()
+        continue-on-error: true
+        run: node scripts/check-manual-entry-provenance.js
+        # Every hand-entered reviews.json row (manualEntry) needs manualEntryReason
+        # (manual-review-direct.js --reason) unless grandfathered in
+        # data/audit/manual-entry-baseline.json. Write-time: rebuild-all-reviews
+        # lets an unexplained, non-grandfathered row lose to its scored pipeline
+        # twin (scripts/lib/manual-entry-merge.js). Advisory first (CLAUDE.md §19).
+
       - name: Audit same-text different-critic copies (BRO-5321, advisory)
         if: always()
         continue-on-error: true

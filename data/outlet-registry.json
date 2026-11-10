@@ -1,9 +1,9 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-11-10T15:17:21.217Z",
+    "lastUpdated": "2026-11-10T15:29:58.514Z",
     "version": "2.1.0",
-    "lastChange": "BRO-7274: register 17 DC/LA regional outlets (+domainAliases on thehollywoodtimes, hillrag) for BRO-7256 coverage-gap ingest"
+    "lastChange": "BRO-7291: register angeles-stage, laist, baltimore-banner (coverage-gap hosts whose links resolved; the other 14 model-named hosts had only dead or unverifiable links)"
   },
   "outlets": {
     "westendtheatre": {
@@ -15469,6 +15469,44 @@
         "theatrestorm"
       ],
       "domain": "theatrestorm.com"
+    },
+    "angeles-stage": {
+      "displayName": "Angeles Stage",
+      "tier": 3,
+      "aliases": [
+        "angeles stage",
+        "angelesstage",
+        "don shirley angeles stage"
+      ],
+      "domain": "angelesstage.com",
+      "domainAliases": [
+        "angelestage.substack.com",
+        "angelesstage.substack.com"
+      ],
+      "region": "los-angeles",
+      "accessModel": "free"
+    },
+    "laist": {
+      "displayName": "LAist",
+      "tier": 3,
+      "aliases": [
+        "laist"
+      ],
+      "domain": "laist.com",
+      "region": "los-angeles",
+      "accessModel": "free"
+    },
+    "baltimore-banner": {
+      "displayName": "The Baltimore Banner",
+      "tier": 3,
+      "aliases": [
+        "baltimore banner",
+        "the baltimore banner",
+        "baltimorebanner"
+      ],
+      "domain": "baltimorebanner.com",
+      "region": "baltimore",
+      "accessModel": "metered"
     }
   },
   "_aliasIndex": {

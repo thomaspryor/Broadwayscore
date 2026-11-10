@@ -156,17 +156,27 @@ function manualUrlIsAggregatorOverOwn(manual, twin) {
  * @param {(url: string) => string|null} normalizeUrl
  * @returns {{preserved: number, appended: number, matchedByUrl: number, matchedCrossOutlet: number, refusedRoundup: string[]}}
  */
-function mergeManualEntries(reviews, manualEntries, normalizeUrl) {
+function mergeManualEntries(reviews, manualEntries, normalizeUrl, opts = {}) {
   let preserved = 0;
   let appended = 0;
   let matchedByUrl = 0;
   let matchedCrossOutlet = 0;
   const refusedRoundup = [];
+  const unprovenanced = [];
+  const baseline = opts.baseline || null;
 
   for (const manual of manualEntries) {
     const twin = findPipelineTwin(manual, reviews, normalizeUrl);
 
     if (twin && twin.review.scoreSource === 'human-review') continue;
+
+    // BRO-7291 class 5: a hand row with no recorded reason (manualEntryReason) that is not in the grandfathered
+    // baseline no longer outranks a scored pipeline twin forever (Arts Fuse: a stale hand row kept the wrong
+    // critic and score through every rebuild). It is reported; the pipeline row stands.
+    if (baseline && !hasManualProvenance(manual) && !baseline.has(manualEntryKey(manual))) {
+      unprovenanced.push(manualEntryKey(manual));
+      if (twin && Number.isFinite(twin.review.assignedScore)) continue;
+    }
 
     if (twin && isUnknownByline(manual.criticName)
       && isMergeFossilAnchor(twin.review) && Number.isFinite(twin.review.assignedScore)
@@ -215,7 +225,12 @@ function mergeManualEntries(reviews, manualEntries, normalizeUrl) {
     // nothing scoreable — appending here would duplicate, so do nothing.
   }
 
-  return { preserved, appended, matchedByUrl, matchedCrossOutlet, refusedRoundup };
+  return { preserved, appended, matchedByUrl, matchedCrossOutlet, refusedRoundup, unprovenanced };
 }
 
-module.exports = { isRoundupManualEntry, manualUrlIsAggregatorOverOwn, criticKey, tierRank, isUnknownByline, isMergeFossilAnchor, findPipelineTwin, mergeManualEntries };
+/** Grandfather / report key of a manual row. */
+function manualEntryKey(r) { return `${r.showId}|${r.outletId}|${criticKey(r.criticName)}`; }
+/** A hand row says who entered it and why (manual-review-direct.js --reason). */
+function hasManualProvenance(r) { return !!(r && typeof r.manualEntryReason === 'string' && r.manualEntryReason.trim().length >= 8); }
+
+module.exports = { manualEntryKey, hasManualProvenance, isRoundupManualEntry, manualUrlIsAggregatorOverOwn, criticKey, tierRank, isUnknownByline, isMergeFossilAnchor, findPipelineTwin, mergeManualEntries };

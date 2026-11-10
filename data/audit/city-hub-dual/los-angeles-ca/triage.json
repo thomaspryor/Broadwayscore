@@ -638,7 +638,7 @@
   },
   "show:clown-sh-t-regional-2026": {
    "verdict": "confirmed",
-   "status": "",
+   "status": "fixed",
    "item": "show:clown-sh-t-regional-2026",
    "reason": "Review text says the run ended 2026-08-02; our closingDate was 08-03. Fixed by plan bro-7256-f (executed 2026-11-10)."
   },
@@ -710,7 +710,7 @@
   },
   "review:anastasia-regional-2026|https://www.ocregister.com/2026/06/09/review-anastasia-in-la-mirada-is-boisterous-fun-but-ultimately-underwhelms|christopher smith": {
    "verdict": "confirmed",
-   "status": "",
+   "status": "fixed",
    "item": "review:anastasia-regional-2026|https://www.ocregister.com/2026/06/09/review-anastasia-in-la-mirada-is-boisterous-fun-but-ultimately-underwhelms|christopher smith",
    "reason": "OC Register prints 3 stars of a possible 4 (band 71-90); score was 63. Fixed to 72 by plan bro-7256-f."
   },
@@ -797,6 +797,12 @@
    "status": "",
    "item": "tour:waitress-tour-2026|2027-04-20|Pantages Theatre",
    "reason": "Source page is a stale or earlier-year schedule (dates from a prior tour), so the mismatch is a stale source, not our stop."
+  },
+  "show:clown-sh-t-regional-2026:opening-date": {
+   "verdict": "false-positive",
+   "status": "",
+   "item": "show:clown-sh-t-regional-2026:opening-date",
+   "reason": "The page the models found is the January 2026 run at the Eastwood (Jan 23 to Feb 2). Our record is the summer remount (stageraw review: through August 2), so both opening dates are right for their own run. BRO-7291."
   }
  }
 }

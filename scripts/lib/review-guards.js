@@ -1847,6 +1847,13 @@ function isLikelyTourReview(url, showId) {
 function isRoundupUrl(url) {
   if (!url) return { isRoundup: false };
 
+  // TheatreInChicago / TheatreInDC / TheatreInLA (BRO-7291 class 3): /<slug>/reviews/<id>/ lists excerpts
+  // from OTHER outlets, /<slug>/<id>/ is the production listing. Neither is a review; 11 were ingested as
+  // "theatrein*--unknown" reviews, several filed under a different show of the same title.
+  if (/theatrein(?:chicago|dc|la)\.com\/[^/?#]+\/(?:reviews\/)?\d+\/?(?:[?#]|$)/i.test(url)) {
+    return { isRoundup: true, reason: 'TheatreIn<City> listing/aggregator page' };
+  }
+
   // The Stage review-round-ups section
   if (/thestage\.co\.uk\/review-round-ups\//i.test(url)) {
     return { isRoundup: true, reason: 'The Stage review-round-ups page' };

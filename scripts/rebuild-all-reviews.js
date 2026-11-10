@@ -75,6 +75,7 @@ const { inheritUrlFromDuplicateLosers } = require('./lib/duplicate-fold-url');
 const { siblingRatingForClamp } = require('./lib/sibling-rating-inherit');
 const { detectBandFromReviewFile } = require('./lib/star-reliability');
 const { displayedOriginalRating } = require('./lib/displayed-original-rating');
+const { regionalVenueMismatch } = require('./lib/regional-venue-mismatch');
 const { decideEarlyFileExclusion, isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, multiShowSplitGroup, isMultiShowSplitSibling, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasIncludableSyndicationPrimary, isRejectedByReasonExclusion, isFullTextWrongAuthorActive, isRejectedAtExclusion, isRegistrationWallStubExclusion, duplicateOfInheritedFlag, duplicateOfRefIsCopy, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, isMisFamilyCvPromotedWrongShow, isStaleGenericHomepageWrongShow, isStaleBulkTitleWrongShow, computeCvIsStale, applyVenueClassificationCarveout, cvWrongProductionIsVenueCarveout, isVenueCarveoutPersistedWrongProduction, isOwnCastEvidencePersistedWrongProduction, isEnsembleCategoryQuibbleRejection, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, soloVerdictHeld, isNamedNonReviewUrlRecord, isRefusedSubmissionUrlRecord, isCancelledBeforeOpeningShow, isUnverifiableWebSearchRow, isPreviewFirstLookPiece, isCombinedReviewOfOtherMemberOnly, isBodylessAggregatorScoreUncorroborated, cvNonReviewHumanCleared, cvWrongArticleFamily, cvArticleTypeNonReview, cvArticleTypeVerdictIsPartialWindow, cvWrongArticlePromotion, wrongShowCleared, wrongShowExplicitlyCleared, evaluateLateDateGuard, evaluateUrlYearGuard, evaluateDirectorGuard } = require('./lib/review-guards');
 const { ownShowTextEvidence } = require('./lib/own-show-text-evidence');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
@@ -4199,6 +4200,24 @@ showDirs.forEach(showId => {
         return;
       }
 
+      // BRO-7291 class 3: a city-hub regional show's review that is about the same title at another theatre
+      // in another state (come-from-away-north: a Sharon Playhouse, CT review filed under North Shore, MA).
+      // 0 false positives across 6,662 hub reviews (both hits were the real cases).
+      // A human clear (wrongProductionManualClear / Override / allowCrossMarket) keeps the review, as at every sibling guard.
+      const regionalVenue = shouldSkipWrongProductionAudit(data) ? null : regionalVenueMismatch(data, showById[showId]);
+      if (regionalVenue) {
+        if (!data.wrongProduction && !skipStaleFlagWrite(data)) {
+          // [GUARD:REGIONAL-VENUE-MISMATCH]
+          data.wrongProduction = true;
+          invalidateWrongProductionAutoClear(data);
+          data.wrongProductionNote = `Regional venue mismatch: text names ${regionalVenue.venue} (${regionalVenue.state}) ${regionalVenue.mentions}x, never ${showById[showId].venue}`;
+          try { safeWriteReview(path.join(showDir, file), data); } catch (e) {}
+        }
+        logExclusion("skippedRegionalVenue", showId, file, data);
+        stats.skippedRegionalVenue = (stats.skippedRegionalVenue || 0) + 1;
+        return;
+      }
+
       // [GUARD:CROSS-MARKET-LATE-DUAL-UK] BRO-5429: the reverse guard above exempts
       // dual-market outlets outright, so a UK national's review of a LONDON
       // production filed under a Broadway id stayed live (chicago-1996: Daily
@@ -6451,8 +6470,14 @@ for (const sid of postDedupTouchedShows) {
       // Matching lives in scripts/lib/manual-entry-merge.js. This merge runs after
       // every dedup pass, so a missed match appends a permanent phantom duplicate —
       // the helper matches punctuation-insensitively and falls back to the URL.
-      const { preserved, appended, matchedByUrl, refusedRoundup = [] } =
-        mergeManualEntries(allReviews, manualEntries, normalizeUrlForDedup);
+      // BRO-7291 class 5: rows without a recorded reason lose to a scored pipeline twin unless grandfathered.
+      let baseline = null;
+      try { baseline = new Set(JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/manual-entry-baseline.json'), 'utf8')).keys); } catch (_) { /* no baseline: legacy behaviour */ }
+      const { preserved, appended, matchedByUrl, refusedRoundup = [], unprovenanced = [] } =
+        mergeManualEntries(allReviews, manualEntries, normalizeUrlForDedup, { baseline });
+      for (const key of unprovenanced) {
+        console.warn(`⚠️  Manual entry without a recorded reason (not grandfathered): ${key}. Re-enter it with manual-review-direct.js --reason=...`);
+      }
       for (const key of refusedRoundup) {
         console.warn(`⚠️  Manual entry refused (roundup page credited to its host, no own review to attach to): ${key}`);
       }

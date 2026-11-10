@@ -29,14 +29,16 @@ const today = arg('today', new Date().toISOString().slice(0, 10));
 
 function makeFetch(cacheDir) {
   if (cacheDir) fs.mkdirSync(cacheDir, { recursive: true });
-  return async (url) => {
+  const mem = new Map(); // one fetch per URL per run: the date check and the art lookup read the same production page
+  return (url) => { if (!mem.has(url)) mem.set(url, fetchOnce(url)); return mem.get(url); };
+  async function fetchOnce(url) {
     const f = cacheDir && path.join(cacheDir, crypto.createHash('sha1').update(url).digest('hex') + '.json');
     if (f && fs.existsSync(f)) return JSON.parse(fs.readFileSync(f, 'utf8'));
     let r = null;
     try { const p = await fetchPage(url, { skipVerify: true }); r = p && p.content ? { content: p.content, finalUrl: p.finalUrl || p.url || url } : null; } catch { r = null; }
     if (f && r) fs.writeFileSync(f, JSON.stringify(r));
     return r;
-  };
+  }
 }
 
 async function bwwRows(city, getPage) {
@@ -76,8 +78,22 @@ async function download(url) {
   return Buffer.from(await res.arrayBuffer());
 }
 
-/** First usable art for a row: the listing image, else the production page's og:image. Returns a Buffer or null. */
 const seasonPages = new Set(Object.values(SEASON_SOURCES).flatMap((x) => x.pages || []));
+/** The row's production-specific page (never a site root, a season page or the BroadwayWorld listing), or null. */
+const productionPage = (row) => [row.pageUrl].find((x) => x && !/^https?:\/\/[^/]+\/?$/.test(x) && !seasonPages.has(x) && !/broadwayworld\.com/i.test(x)) || null;
+
+/**
+ * BRO-7291 class 6: the run the production's own page prints wins over the season page / listing; a row whose
+ * sources disagree and whose page prints no run is held (reported, not added).
+ */
+async function settleDates(row, getPage) {
+  const u = productionPage(row);
+  const r = u ? await getPage(u) : null;
+  const range = r ? S.runRangeFromShowPage(pageToText(r.content, r.finalUrl).text, { year: Number(row.start.slice(0, 4)) }) : null;
+  return S.settleRunDates(row, range, u);
+}
+
+/** First usable art for a row: the listing image, else the production page's og:image. Returns a Buffer or null. */
 async function findArt(row, getPage) {
   const cands = [row.image];
   // A season page's og:image is the theatre's site-wide banner; only a production-specific page can supply art.
@@ -138,7 +154,11 @@ async function main() {
   const actions = [];
   const report = { city: city.key, today, read: { bww: bww.length, pages: pages.length }, added: [], existing: [], skipped: [] };
   const cands = [];
-  for (const row of rows) {
+  for (const merged of rows) {
+    const { row, held } = await settleDates(merged, getPage);
+    if (held) { report.skipped.push(`${row.title}: held, ${held}`); continue; }
+    if (row !== merged && (row.start !== merged.start || row.end !== merged.end)) log.push(`${row.title}: production page run ${row.start}..${row.end} replaces ${merged.start}..${merged.end}`);
+    if (!S.usableWindow({ ...row, start: row.firstPerformance || row.start }, today)) { report.skipped.push(`${row.title}: production page run ${row.start}..${row.end} is outside the window`); continue; }
     const have = S.findExisting(row, [...hubShows, ...pending]);
     if (have) { report.existing.push(`${row.title} (${have.id})`); continue; }
     const id = S.showId(row, taken);
