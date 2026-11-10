@@ -286,6 +286,52 @@
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-11-10T11:22:28.347Z"
+    "queuedAt": "2026-11-10T12:30:55.812Z"
+  },
+  {
+    "conditionKey": "live-data-test:scripts/audit-cross-outlet-attributions.test.mjs::no unreviewed cross-outlet attribution suspects remain",
+    "title": "Live-data test failing: no unreviewed cross-outlet attribution suspects remain (scripts/audit-cross-outlet-attributions.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"no unreviewed cross-outlet attribution suspects remain\" in scripts/audit-cross-outlet-attributions.test.mjs is red against the live corpus.\n\nunreviewed cross-outlet suspects remain (first 5): [\n{\n\"file\": \"the-lion-king-1997/jasonraize--frank-scheck.json\",\n\"criticName\": \"Frank Scheck\",\n\"defaultCriticOf\": [\n\"scheckontheater\",\n\"reuters\"\n],\n\"source\": \"show-score\",\n\"url\": \"http://www.jasonraize.net/pr_tlk_spt112197.html\"\n},\n{\n\"file\": \"the-lion-king-1997/jasonraize--michael-sommers.json\",\n\"criticName\": \"Michael Sommers\",\n\"defaultCriticOf\": [\n\"the-kalamazoo-gazette\",\n\"journaltimes\"\n],\n\"source\": \"show-score\",\n\"url\": \"http://www.jasonraize.net/pr_tlk_njsl111497.html\"\n}\n]\n\n2 !== 0\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "scripts/audit-cross-outlet-attributions.test.mjs::no unreviewed cross-outlet attribution suspects remain",
+    "fields": [],
+    "queuedAt": "2026-11-10T12:47:01.864Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7283",
+    "title": "Landing blocked: rebase red on land/bro-7283",
+    "description": "land.yml did not land land/bro-7283: the rebase gate went red at cbad0eb78f. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42820885764",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7283"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "cbad0eb78ffefec991955348fb514b3ebf310b64"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42820885764"
+      }
+    ],
+    "queuedAt": "2026-11-10T13:05:06.069Z"
   }
 ]
