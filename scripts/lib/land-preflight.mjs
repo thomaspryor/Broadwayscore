@@ -719,6 +719,9 @@ export function blockMessage({ target, rebase, tests, base, botOwned, staleRever
       '     git fetch origin main && git merge origin/main      # resolve anything, commit',
       '     git diff origin/main --stat                         # must list ONLY your branch\'s files',
       '     git reset --soft origin/main && git commit -m "<one message for the whole change>"',
+      `   If ${target} already exists on origin (an earlier push got through), push the squash to a NEW ref such as ${target}-2:`,
+      '   the old ref holds the pre-squash tip, so a plain push is non-fast-forward, and never force-push it. This differs from',
+      '   wait-for-land\'s "push the same ref" because the merge commit itself conflicts in land.yml\'s plain rebase.',
     );
   }
   if (tests?.status === 'fail') {

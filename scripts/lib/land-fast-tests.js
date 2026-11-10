@@ -69,6 +69,7 @@ const INVARIANT_TESTS = [
   'tests/unit/sibling-matchers-diacritics.test.mjs',
   'tests/unit/timeout-audit.test.mjs',
   'tests/unit/tmp-git-repo-teardown-retries.test.mjs',
+  'tests/unit/workflow-run-hint-inputs.test.mjs', // scans all of scripts/, 0.4s; refused BRO-7294 25 min in (land run 42833962510)
   'tests/unit/workflow-secret-gaps-budget.test.mjs',
 ];
 

@@ -125,6 +125,8 @@ test('preview: a conflict resolved inside a merge of main comes back (the BRO-45
   assert.match(p.commit, /feat-edit/);
   assert.deepEqual(p.files, ['f.txt']);
   assert.match(blockMessage({ target: 'land/feat', rebase: p, base: 'origin/main' }), /conflicts at commit ".*feat-edit" in f\.txt[\s\S]*reset --soft origin\/main[\s\S]*not a land refusal/);
+  // The squash rewrites history: when the old ref already exists, the message must route it to a NEW ref (force-push is refused).
+  assert.match(blockMessage({ target: 'land/feat', rebase: p, base: 'origin/main' }), /already exists on origin[\s\S]*NEW ref such as land\/feat-2[\s\S]*never force-push/);
 });
 
 test('preview: a clean merge of main (no false positive)', () => {
