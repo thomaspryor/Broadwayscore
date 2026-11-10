@@ -41,7 +41,7 @@ describe('mobile web star row on the show page', () => {
   });
 
   test('button grid keeps its columns in step with the hidden Rate it button', () => {
-    assert.match(hero, /showMobileStars \? 'grid-cols-\[1fr_auto\] sm:grid-cols-\[1fr_1fr_auto\]'/);
+    assert.match(hero, /showMobileStars \? 'grid-cols-2 sm:grid-cols-\[1fr_1fr_auto\]'/);
     assert.match(hero, /showMobileStars \? 'grid-cols-1 sm:grid-cols-2'/);
   });
 

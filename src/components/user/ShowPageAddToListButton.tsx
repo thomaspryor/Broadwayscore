@@ -11,14 +11,17 @@ interface ShowPageAddToListButtonProps {
   showId: string;
   /** 'hero' matches the redesigned hero's h-10 action buttons (icon-only on mobile). */
   variant?: 'default' | 'hero';
+  /** hero only: show the words "Add to list" below sm. Off keeps the narrow icon-only square
+   *  for the three-column phone row (Want to See / Log another viewing / list). */
+  labelOnPhone?: boolean;
 }
 
 const TRIGGER_CLASS: Record<NonNullable<ShowPageAddToListButtonProps['variant']>, string> = {
   default: 'inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border transition-all duration-200 bg-surface-overlay border-white/10 text-gray-300 hover:text-white hover:bg-white/10 cursor-pointer',
-  hero: 'flex items-center justify-center gap-1.5 h-10 w-10 sm:h-12 sm:w-auto sm:px-4 rounded-lg border transition-all bg-white/10 border-white/15 text-white hover:bg-white/15 hover:border-white/25 cursor-pointer whitespace-nowrap',
+  hero: 'flex items-center justify-center gap-1.5 h-10 sm:h-12 sm:w-auto sm:px-4 rounded-lg border transition-all bg-white/10 border-white/15 text-white hover:bg-white/15 hover:border-white/25 cursor-pointer whitespace-nowrap',
 };
 
-export default function ShowPageAddToListButton({ showId, variant = 'default' }: ShowPageAddToListButtonProps) {
+export default function ShowPageAddToListButton({ showId, variant = 'default', labelOnPhone = false }: ShowPageAddToListButtonProps) {
   const { user, isAuthenticated, loading: authLoading, showSignIn } = useAuth();
   const { lists, getLists, addToList, removeFromList, createList } = useUserLists(user?.id || null);
   const { showToast } = useToastSafe();
@@ -138,7 +141,7 @@ export default function ShowPageAddToListButton({ showId, variant = 'default' }:
       <button
         type="button"
         onClick={handleOpen}
-        className={TRIGGER_CLASS[variant]}
+        className={`${TRIGGER_CLASS[variant]}${variant === 'hero' ? (labelOnPhone ? ' w-full px-2' : ' w-10') : ''}`}
         aria-label="Add to list"
         aria-haspopup="true"
         aria-expanded={open}
@@ -146,7 +149,14 @@ export default function ShowPageAddToListButton({ showId, variant = 'default' }:
         <svg className={variant === 'hero' ? 'w-4 h-4 shrink-0' : 'w-3.5 h-3.5'} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 10h16M4 14h10m-4 4h4m2-2v4m0 0h-4m4 0h4" />
         </svg>
-        <span className={variant === 'hero' ? 'hidden sm:inline text-xs sm:text-sm font-semibold' : 'hidden sm:inline'}>List</span>
+        {variant === 'hero' ? (
+          <span className="text-sm font-semibold">
+            <span className={labelOnPhone ? 'sm:hidden' : 'hidden'}>Add to list</span>
+            <span className="hidden sm:inline">List</span>
+          </span>
+        ) : (
+          <span className="hidden sm:inline">List</span>
+        )}
       </button>
 
       {open && (
