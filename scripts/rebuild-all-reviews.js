@@ -5969,6 +5969,39 @@ allReviews.sort((a, b) => {
   return (a.outlet || '').localeCompare(b.outlet || '');
 });
 
+// BRO-7304: URL-WIPE HOLD. A canonical URL move clears a file's text and score until it is
+// re-collected and re-scored; carry the previously-live row across that gap instead of
+// dropping it from the site. Logic + conditions: scripts/lib/url-wipe-hold.js.
+if (fs.existsSync(reviewsJsonPath) && process.env.URL_WIPE_HOLD_DISABLED !== 'true') {
+  try {
+    const { findUrlWipeHolds } = require('./lib/url-wipe-hold');
+    const prevRows = JSON.parse(fs.readFileSync(reviewsJsonPath, 'utf8')).reviews || [];
+    const { held, heldDetails, skipped } = findUrlWipeHolds({
+      previousRows: prevRows,
+      newRows: allReviews,
+      reviewTextsDir,
+      skipShowIds: leasedShowIds,
+    });
+    if (held.length) {
+      for (const r of held) allReviews.push(r);
+      allReviews.sort((a, b) => (a.showId !== b.showId ? a.showId.localeCompare(b.showId) : (a.outlet || '').localeCompare(b.outlet || '')));
+      console.log(`  [URL-WIPE HOLD] ${held.length} live review(s) carried across a URL-move gap (awaiting re-collect/re-score)`);
+      for (const d of heldDetails.slice(0, 10)) console.log(`    ${d.showId} / ${d.outletId} (${d.criticName || '-'}) score ${d.assignedScore}`);
+    }
+    const auditDir = path.join(path.dirname(reviewsJsonPath), 'audit');
+    fs.mkdirSync(auditDir, { recursive: true });
+    fs.writeFileSync(path.join(auditDir, 'rebuild-url-wipe-holds.json'), JSON.stringify({
+      generatedAt: new Date().toISOString(),
+      heldCount: held.length,
+      held: heldDetails,
+      notHeld: Object.fromEntries(skipped),
+    }, null, 2));
+    stats.urlWipeHeld = held.length;
+  } catch (e) {
+    console.warn(`  [URL-WIPE HOLD] skipped: ${e.message}`);
+  }
+}
+
 // ========================================
 // 3B: SCORE-DRIFT GUARD
 // ========================================
