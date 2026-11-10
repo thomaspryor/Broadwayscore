@@ -267,3 +267,39 @@ test('the collector refuses a page dated outside the production window (or undat
   assert.equal(publishWindowVerdict(null, { ...w, requireDate: true }), 'no-publish-date');
   assert.equal(publishWindowVerdict('2019-05-01', null), null);
 });
+
+test('a junk match (news page, other site, older production) counts as an empty search; an undated or broken match is retried', () => {
+  const at0 = new Date(at(3)).toISOString();
+  assert.equal(R.attemptFromRow({ outcome: 'rejected', reason: 'non-review-url', url: 'u' }, at0).outcome, 'no_evidence');
+  assert.equal(R.attemptFromRow({ outcome: 'rejected', reason: 'outside-publish-window' }, at0).collectorOutcome, 'rejected');
+  assert.equal(R.attemptFromRow({ outcome: 'rejected', reason: 'no-publish-date' }, at0).outcome, 'non_evidence');
+  assert.equal(R.attemptFromRow({ outcome: 'rejected', reason: 'looks-not-review' }, at0).outcome, 'rejected');
+  assert.equal(R.attemptFromRow(null, at0).reason, 'no-result-row');
+
+  // Three junk matches on days 3, 7, 14 end auto-acked, never as an owner item.
+  let state = R.syncState(R.emptyState(), [gap('s', 'theatermania')], at(3));
+  for (const d of [3, 7, 14]) {
+    const plan = { showId: 's', outletIds: ['theatermania'] };
+    state = R.applyResults(state, { plan, rows: [{ showId: 's', outletId: 'theatermania', outcome: 'rejected', reason: 'non-review-url' }], nowMs: at(d) });
+  }
+  assert.equal(R.cellPhase(state.cells['s::theatermania'], at(15)).phase, 'acked');
+
+  // Undated matches never ack and never dead-end early.
+  let st2 = R.syncState(R.emptyState(), [gap('s', 'thestage')], at(3));
+  for (const d of [3, 7, 14]) {
+    st2 = R.applyResults(st2, { plan: { showId: 's', outletIds: ['thestage'] }, rows: [{ showId: 's', outletId: 'thestage', outcome: 'rejected', reason: 'no-publish-date' }], nowMs: at(d) });
+  }
+  assert.equal(R.cellPhase(st2.cells['s::thestage'], at(15)).phase, 'recovering');
+});
+
+test('a file already on disk waits for the rebuild instead of searching daily; a corrected opening date moves the schedule', () => {
+  const c = { showId: 's', outletId: 'o', openingDate: OPEN, attempts: [attempt(3, 'existing_file')] };
+  const p = R.cellPhase(c, at(4));
+  assert.equal(p.reason, 'waiting-for-rebuild');
+  assert.ok(p.nextDueMs >= at(6));
+
+  const s1 = R.syncState(R.emptyState(), [gap('s', 'o')], at(3));
+  const s2 = R.syncState(s1, [gap('s', 'o', { openingDate: '2026-10-05' })], at(4));
+  assert.equal(s2.cells['s::o'].openingDate, '2026-10-05');
+  assert.equal(s2.cells['s::o'].firstSeenMissingAt, s1.cells['s::o'].firstSeenMissingAt);
+});

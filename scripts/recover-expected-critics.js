@@ -72,6 +72,9 @@ function main() {
   const dryRun = flag('dry-run');
   const planOnly = flag('plan-only');
   const maxSearches = Number(arg('max-searches') || 12);
+  // Stop starting new shows before the workflow's 30-minute timeout can kill
+  // the job mid-run (state is also saved after every show).
+  const budgetMs = Number(arg('budget-minutes') || 22) * 60 * 1000;
   const only = arg('cells') ? new Set(arg('cells').split(',').filter(Boolean)) : null;
 
   let state = R.syncState(R.loadRecoveryState(), currentGaps(R.loadRecoveryState(), nowMs), nowMs);
@@ -85,6 +88,7 @@ function main() {
   if (planOnly) return;
 
   for (const plan of plans) {
+    if (Date.now() - nowMs > budgetMs) { console.log(`Time budget reached; ${plan.showId} waits for the next run`); break; }
     const rows = runCollector(plan, { dryRun });
     for (const r of rows) console.log(`  result ${r.showId}::${r.outletId} ${r.outcome}${r.reason ? ` (${r.reason})` : ''}${r.url ? ` ${r.url}` : ''}`);
     state = R.applyResults(state, { plan, rows, nowMs: Date.now(), dryRun });

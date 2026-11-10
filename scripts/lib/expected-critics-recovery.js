@@ -46,6 +46,26 @@ const FRESH_GRACE_MS = 2 * DAY_MS; // a cell nobody has tried yet stays quiet th
 const ACK_SOURCE = 'expected-critics-recovery';
 
 const EVIDENCE = new Set(['no_evidence', 'rejected']);
+// A refused match that still says "no review of this production here": counts
+// as an empty search, so these cells can auto-ack (review finding, BRO-7312).
+const EMPTY_FIND_REASONS = new Set(['non-review-url', 'wrong-domain', 'outside-publish-window']);
+// A refused match we could not judge (page would not load or had no date):
+// retried like any other failed search, never counted toward ack or dead end.
+const RETRY_FIND_REASONS = new Set(['no-publish-date', 'http-error']);
+
+/** The attempt record for one collector row (rejected rows normalised as above). */
+function attemptFromRow(row, at) {
+  if (!row) return { at, outcome: 'non_evidence', reason: 'no-result-row' };
+  let outcome = row.outcome;
+  if (outcome === 'rejected' && EMPTY_FIND_REASONS.has(row.reason)) outcome = 'no_evidence';
+  else if (outcome === 'rejected' && RETRY_FIND_REASONS.has(row.reason)) outcome = 'non_evidence';
+  return {
+    at, outcome,
+    ...(outcome !== row.outcome ? { collectorOutcome: row.outcome } : {}),
+    ...(row.reason ? { reason: row.reason } : {}),
+    ...(row.url ? { url: row.url } : {}),
+  };
+}
 
 function emptyState() {
   return { schemaVersion: 1, cells: {} };
@@ -85,7 +105,8 @@ function cellPhase(cell, nowMs) {
   if (firstExisting && nowMs - atMs(firstExisting) >= EXISTING_FILE_DEAD_MS) {
     return { phase: 'dead-end', reason: 'file-not-live', nextDueMs: null };
   }
-  if (last && last.outcome === 'written' && nowMs - atMs(last) < WRITTEN_SETTLE_MS) {
+  if (last && (last.outcome === 'written' || last.outcome === 'existing_file') && nowMs - atMs(last) < WRITTEN_SETTLE_MS) {
+    // A file on disk needs a rebuild, not another search tomorrow.
     return { phase: 'recovering', reason: 'waiting-for-rebuild', nextDueMs: atMs(last) + WRITTEN_SETTLE_MS };
   }
 
@@ -129,7 +150,10 @@ function syncState(state, gaps, nowMs) {
   const missing = new Map();
   for (const g of gaps || []) if (g.status === 'missing') missing.set(cellKey(g.showId, g.outletId), g);
   for (const [key, cell] of Object.entries(state.cells || {})) {
-    if (cell.autoAck || missing.has(key)) next.cells[key] = cell;
+    if (!(cell.autoAck || missing.has(key))) continue;
+    const g = missing.get(key);
+    // A corrected opening date moves the schedule with it.
+    next.cells[key] = g && g.openingDate && g.openingDate !== cell.openingDate ? { ...cell, openingDate: g.openingDate } : cell;
   }
   for (const [key, g] of missing) {
     if (!next.cells[key]) {
@@ -194,9 +218,7 @@ function applyResults(state, { plan, rows, nowMs, dryRun = false }) {
     const cell = next.cells[key];
     if (!cell) continue;
     const row = (rows || []).find((r) => r && r.showId === plan.showId && r.outletId === outletId);
-    const attempt = row
-      ? { at, outcome: row.outcome, ...(row.reason ? { reason: row.reason } : {}), ...(row.url ? { url: row.url } : {}) }
-      : { at, outcome: 'non_evidence', reason: 'no-result-row' };
+    const attempt = attemptFromRow(row, at);
     const updated = { ...cell, attempts: [...(cell.attempts || []), attempt] };
     if (cellPhase(updated, nowMs).phase === 'acked') updated.autoAck = { ackedAt: at, note: ackNote(updated) };
     next.cells[key] = updated;
@@ -266,6 +288,8 @@ const REASON_TEXT = {
   'outside-publish-window': 'the only match was from a different production',
   'no-publish-date': 'the only match had no date, so we could not tell which production it covers',
   'search-keeps-failing': 'the search itself kept failing',
+  'file-exists': 'we have a copy on file, but it never made it onto the site',
+  'write-skipped': 'we found it but could not save it',
   'recovery-overdue': 'the automatic search has stopped running',
   'recovery-not-running': 'the automatic search has not looked for it yet',
 };
@@ -277,6 +301,7 @@ function ownerLine(g) {
 }
 
 module.exports = {
+  attemptFromRow,
   STATE_PATH, SCHEDULE_DAYS, ATTEMPTS_FOR_ACK, ACK_SOURCE,
   emptyState, loadRecoveryState,
   cellPhase, syncState, planRecovery, collectorArgs, applyResults,

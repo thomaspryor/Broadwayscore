@@ -57,7 +57,7 @@ on:
         type: boolean
 
 concurrency:
-  group: collect-outlet-reviews-${{ github.event.inputs.market || 'manual' }}
+  group: collect-outlet-reviews-${{ github.event.inputs.expected_critics == 'true' && 'expected-critics' || github.event.schedule == '30 9 * * *' && 'expected-critics' || github.event.inputs.market || 'manual' }}
   cancel-in-progress: false
 
 permissions:
