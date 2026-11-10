@@ -138,4 +138,9 @@ test('BRO-7256: a one-letter misspelling of a long word is a cosmetic repair, a 
   const r = applyRetitleShow(shows, { id: 'hangman-regional-2026', expectTitle: 'Hangman', newTitle: 'Hangmen', reason: 'review text headline spells it HANGMEN' });
   assert.equal(r.ok, true, r.reason);
   assert.equal(shows[0].title, 'Hangmen');
+  // Real data (plan bro-7256-c refused): other-market productions of Hangmen exist; only the same city counts as a duplicate.
+  const real = [{ id: 'hangman-regional-2026', title: 'Hangman', city: 'washington-dc' }, { id: 'hangmen-2022', title: 'Hangmen', city: 'new-york' }];
+  assert.equal(applyRetitleShow(real, { id: 'hangman-regional-2026', expectTitle: 'Hangman', newTitle: 'Hangmen', reason: 'x spells it Hangmen' }).ok, true);
+  const dup = [{ id: 'a', title: 'Hangman', city: 'washington-dc' }, { id: 'b', title: 'Hangmen', city: 'washington-dc' }];
+  assert.equal(applyRetitleShow(dup, { id: 'a', expectTitle: 'Hangman', newTitle: 'Hangmen', reason: 'x spells it Hangmen' }).ok, false);
 });
