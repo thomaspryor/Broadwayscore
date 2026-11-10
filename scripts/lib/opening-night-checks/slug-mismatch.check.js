@@ -6,6 +6,7 @@ const { titleToSlug, KNOWN_ALIASES } = require('../show-matching.js');
 const { foldDiacritics } = require('../title-match.js');
 const { slugify: urlSlugify } = require('../url-slug.js');
 const { toDateMs } = require('../date-utils.js');
+const { urlNamesOtherShow: canonicalUrlNamesOtherShow } = require('../url-names-other-show.js');
 
 const name = 'slug-mismatch';
 const description = 'Review URL slug does not mention show slug or any known alias (cross-show contamination)';
@@ -597,41 +598,16 @@ function fullTextAboutThisShow(fullTexts, show, shows) {
  * on a correctly filed review. Cross-show contamination in this pipeline means
  * a review of ANOTHER show in shows.json got attached here, and its URL then
  * usually names that show ("/dolly-parton-on-broadway-9-to-5" filed under
- * Waiting for Godot, BRO-7121). Returns the other show's normalized title, or
- * null. Multi-word titles only (two or more non-article words): one-word
- * titles ("Chicago", "Company", "Other") are ordinary words in a path. A title
- * contained in this show's own title, or containing it, is the same family
- * ("Dog Man" vs "Dog Man: The Musical") and never counts.
+ * Waiting for Godot, BRO-7121). Uses the contamination audit's own matcher
+ * (scripts/lib/url-names-other-show.js: other title of 2+ words and 12+
+ * chars as a whole run in the path, same-family titles skipped) so the two
+ * detectors agree on what "names another show" means. Returns the other
+ * show's title, or null.
  */
-const TITLE_ARTICLES = new Set(['the', 'a', 'an']);
-const urlTitleIndexCache = new WeakMap();
-function buildUrlTitleIndex(shows) {
-  if (urlTitleIndexCache.has(shows)) return urlTitleIndexCache.get(shows);
-  const titles = new Set();
-  for (const s of shows) {
-    const w = normWords(s && s.title);
-    if (w.filter(x => !TITLE_ARTICLES.has(x)).length >= 2) titles.add(w.join(' '));
-  }
-  const idx = { titles, lengths: [...new Set([...titles].map(t => t.split(' ').length))] };
-  urlTitleIndexCache.set(shows, idx);
-  return idx;
-}
-
 function urlNamesOtherShow(url, show, shows) {
-  if (!url || !Array.isArray(shows) || shows.length === 0) return null;
-  const { titles, lengths } = buildUrlTitleIndex(shows);
-  const own = normWords(show && show.title).join(' ');
-  const pad = (s) => ` ${s} `;
-  const words = normWords(urlSearchSlug(url));
-  for (const n of lengths) {
-    for (let i = 0; i + n <= words.length; i++) {
-      const key = words.slice(i, i + n).join(' ');
-      if (!titles.has(key) || !own) continue;
-      if (pad(own).includes(pad(key)) || pad(key).includes(pad(own))) continue;
-      return key;
-    }
-  }
-  return null;
+  if (!url || !show || !Array.isArray(shows) || shows.length === 0) return null;
+  const hit = canonicalUrlNamesOtherShow(url, show, shows);
+  return hit ? hit.title : null;
 }
 
 // The lifetime sweep's isActionable rule (audit-slug-mismatch-lifetime.js).
