@@ -335,7 +335,9 @@ const VERIFIED_UNION_LEDGERS = [
       'only scripts/llm-scoring/openai-leg-shadow.ts reads the shards (the --report path ' +
       'and the resume skip-set at the --out file). Criterion (a)/(b): both key rows by ' +
       'record id (resume builds a Set of ids; the report folds into a Map keyed by id ' +
-      'before computeReport), so union reordering or a duplicated row cannot change the result.',
+      'before computeReport), so a duplicated row is detected, warned about and collapsed by id ' +
+      '(only two runs writing different results for one id could make order matter; resume ' +
+      'skips done ids, and this is a shadow A/B).',
   },
   {
     pattern: 'data/audit/fact-check/*.jsonl',
