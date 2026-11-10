@@ -39351,7 +39351,7 @@
       "resolveReason": "live-data test green"
     },
     "test-yml:red:Unit Test Shard:0e0a79a5": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Test Shard (3) / Run scripts/lib tests shard — \"REGRESSION: every real tracked *.jsonl (repo-wide) is either merge=union or a documented exemption\"",
       "firstSeen": "2026-11-08T22:03:17.171Z",
@@ -39368,7 +39368,9 @@
         "runId": "42736454915",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42736454915"
       },
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-11-10T02:47:07.315Z",
+      "resolveReason": "job-green"
     },
     "land:land/bro-7150-fast-land": {
       "status": "resolved",
