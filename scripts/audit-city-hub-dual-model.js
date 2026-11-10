@@ -195,7 +195,8 @@ async function both(promptFn, opts = {}) {
 }
 
 async function runShows(L, limit) {
-  const cache = loadCache(L.city, 'shows'); const stale = (c, h) => !c || (c.recHash !== undefined && c.recHash !== h); // rows cached before BRO-7256 carry no hash and stay valid const todo = L.shows.filter((s) => stale(cache.get(s.id), A.recordHash(s, A.SHOW_RECORD_FIELDS))).slice(0, limit);
+  const cache = loadCache(L.city, 'shows'); const stale = (c, h) => !c || (c.recHash !== undefined && c.recHash !== h); // rows cached before BRO-7256 carry no hash and stay valid
+  const todo = L.shows.filter((s) => stale(cache.get(s.id), A.recordHash(s, A.SHOW_RECORD_FIELDS))).slice(0, limit);
   console.log(`shows: ${todo.length} to check (${cache.size} cached)`);
   await pool(todo, 4, async (s) => {
     const url = showPageUrl(s);
