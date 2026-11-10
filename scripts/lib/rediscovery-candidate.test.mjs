@@ -119,5 +119,5 @@ test('httpStatusUpdate: a 200 for the url clears a stored 404/410; 404/410 set i
   // the Phase 2 loop really uses it on both branches
   const fs = require('fs');
   const src = fs.readFileSync(new URL('../rediscover-review-urls.js', import.meta.url), 'utf8');
-  assert.match(src, /status === 200\) \{[\s\S]{0,300}httpStatusUpdate\(c\.data, status\)[\s\S]{0,120}delete c\.data\.httpStatus/);
+  assert.match(src, /status === 200\) \{[\s\S]{0,300}httpStatusUpdate\(c\.data, status\)[\s\S]{0,320}delete c\.data\.httpStatus/);
 });

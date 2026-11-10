@@ -512,10 +512,13 @@ async function runPhase2(candidates) {
       } else if (status === 200) {
         stats.phase2.urlsOk++;
         // The page is back: a stored 404/410 for this url is stale (BRO-7171).
-        if (!CONFIG.dryRun && httpStatusUpdate(c.data, status)) {
-          delete c.data.httpStatus;
-          persistReviewSnapshot({ filePath: c.filePath, data: c.data, trailingNewline: true });
+        if (httpStatusUpdate(c.data, status)) {
           stats.phase2.deadCleared = (stats.phase2.deadCleared || 0) + 1;
+          if (CONFIG.dryRun) console.log(`  [200] ${c.reviewId}: stored httpStatus ${c.data.httpStatus} is stale, would clear`);
+          else {
+            delete c.data.httpStatus;
+            persistReviewSnapshot({ filePath: c.filePath, data: c.data, trailingNewline: true });
+          }
         }
       } else if (status === 404 || status === 410) {
         // Mark for Phase 3
@@ -552,7 +555,7 @@ async function runPhase2(candidates) {
   console.log(`\nPhase 2 complete:`);
   console.log(`  Scanned: ${stats.phase2.scanned}`);
   console.log(`  Redirects found: ${stats.phase2.redirectsFound}`);
-  console.log(`  URLs OK (200): ${stats.phase2.urlsOk}`);
+  console.log(`  URLs OK (200): ${stats.phase2.urlsOk} (stale stored 404/410 cleared: ${stats.phase2.deadCleared || 0})`);
   console.log(`  Dead (404/410): ${stats.phase2.dead404}`);
   console.log(`  Paywall (403/503): ${stats.phase2.paywall}`);
   console.log(`  Errors: ${stats.phase2.errors}`);
