@@ -170,7 +170,7 @@ jobs:
           OUT_FILE: ${{ steps.dir.outputs.file }}
         run: |
           EXTRA=""
-          if [ -n "$INPUT_LIMIT" ]; then EXTRA="$EXTRA --limit=$INPUT_LIMIT"; fi
+          if [ -n "$INPUT_LIMIT" ]; then EXTRA="$EXTRA --limit=$INPUT_LIMIT --shuffle"; fi
           if [ -n "$INPUT_OPEN_SHOWS" ]; then EXTRA="$EXTRA --open-shows=$INPUT_OPEN_SHOWS"; fi
           npx ts-node --project scripts/tsconfig.json scripts/llm-scoring/openai-leg-shadow.ts \
             --sample="${INPUT_SAMPLE:-1000}" --seed=20261109 --shard=${{ matrix.shard }} --shards=4 \
