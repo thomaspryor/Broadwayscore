@@ -47,6 +47,7 @@ const rc = await Promise.all([import('./transcript-scan.mjs'), import('./review-
 const require = createRequire(import.meta.url);
 const { isPromisorFetchFailure } = require('./promisor-fetch-failure.js');
 const { manifestOrderProblem } = require('./test-manifest.js');
+const { hasSkipCiMarker } = require('./landing-ci-coverage.js');
 const {
   NODE_MANIFEST_REL: NODE_MANIFEST,
   TSX_MANIFEST_REL: TSX_MANIFEST,
@@ -55,6 +56,41 @@ const {
 } = require('./unit-test-collection.js');
 
 export const MAX_COMMITS = 200;
+
+/**
+ * BRO-7353: GitHub starts no push-triggered workflow for a pushed tip whose
+ * message carries a CI-skip marker, so land.yml never runs for that land/**
+ * push and the commit silently never lands (2026-11-11: a cost-row land ref
+ * sat 2h with zero runs). The Mac landing script handles this itself by
+ * pushing an empty trigger commit (land-skip-ci-marker.js, BRO-4643) AFTER it
+ * runs judgeLand through the CLI, so this check lives in runHook only and must
+ * never move into judgeLand. Predicate: landing-ci-coverage.js hasSkipCiMarker.
+ * -> { status: 'pass' | 'fail' | 'skip', reason? }
+ */
+export function checkSkipCiTip({ tip, cwd, getMessage = null }) {
+  let msg;
+  if (getMessage) msg = getMessage(tip);
+  else {
+    const r = git(cwd, ['log', '-1', '--format=%B', `${tip}^{commit}`, '--']);
+    if (!ok(r)) return { status: 'skip', reason: `could not read ${tip}` };
+    msg = r.stdout;
+  }
+  return hasSkipCiMarker(msg) ? { status: 'fail' } : { status: 'pass' };
+}
+
+export function skipCiMessage({ target, sameCommand = false }) {
+  const what = sameCommand ? 'the commit this command makes before the push' : 'the pushed tip commit';
+  return [
+    `LAND PREFLIGHT: ${what} carries a CI-skip marker in its message, so GitHub would start no land.yml run for ${target} and the commit would never land.`,
+    '',
+    'Fix (keeps the same ref, fast-forwards):',
+    '  git commit --allow-empty -m "chore(land): trigger land.yml"',
+    '  then run the same push again.',
+    'Or reword the commit (git commit --amend -m "<message without the marker>") before the first push.',
+    'If the ref already exists on origin with the marked tip, the empty commit is the fix; dispatching land.yml by hand also works (.claude/CLOUD.md Landing).',
+    'If you are certain it is wrong, add `# NO-LAND-PREFLIGHT: <reason, 15+ chars>` to the push command (logged).',
+  ].join('\n');
+}
 const BYPASS_RE = /#\s*NO-LAND-PREFLIGHT:\s*(\S.{14,})/;
 // A fixed identity so the simulated commits never depend on (or fail for lack
 // of) the session's git config. They are unreferenced objects, gc'd normally.
@@ -948,6 +984,14 @@ export function runHook({ command, cwd, env = process.env, seams = {}, transcrip
       continue;
     }
     const root = out(top);
+    const bypass = String(command).match(BYPASS_RE);
+    // BRO-7353: `git commit -m "... <marker>" && git push origin HEAD:land/x` is
+    // the common cloud shape and is otherwise skipped below (HEAD moves first).
+    if (p.headMovedBefore && !bypass && hasSkipCiMarker(String(command).split(/\bgit\s+push\b/)[0])) {
+      logEvent(root, { event: 'block', target: t.dst, skipCi: 'fail-same-command' });
+      results.push({ decision: 'block', message: skipCiMessage({ target: t.dst, sameCommand: true }), warnings: [] });
+      continue;
+    }
     if (p.headMovedBefore) {
       // BRO-7349: 8 of 13 land pushes in one container skipped every check this way, and one went
       // to land.yml with a test this preflight would have caught. Say so (advisory, never blocks).
@@ -956,7 +1000,6 @@ export function runHook({ command, cwd, env = process.env, seams = {}, transcrip
       results.push(r);
       continue;
     }
-    const bypass = String(command).match(BYPASS_RE);
     if (bypass) {
       logEvent(root, { event: 'bypass', target: t.dst, reason: bypass[1].trim() });
       results.push({ decision: 'allow', reason: 'bypass' });
@@ -971,6 +1014,10 @@ export function runHook({ command, cwd, env = process.env, seams = {}, transcrip
     const base = seams.base || 'origin/main';
     const v = judgeLand({ cwd: root, src: t.src || 'HEAD', target: t.dst, base, checkTests, seams });
     if (!checkTests) v.detail.tests = { status: 'skip', reason: srcIsHead ? `uncommitted test files: ${dirty.slice(0, 3).join(', ')}` : 'pushed ref is not HEAD' };
+    // BRO-7353: runHook only, never judgeLand (see checkSkipCiTip).
+    const skipCi = v.decision === 'block' ? { status: 'skip', reason: 'already refused' } : (seams.checkSkipCiTip || checkSkipCiTip)({ tip: t.src || 'HEAD', cwd: root });
+    v.detail.skipCi = skipCi;
+    if (skipCi.status === 'fail') { v.decision = 'block'; v.message = skipCiMessage({ target: t.dst }); }
     const lc = localCheckWarning({ root, src: t.src || 'HEAD', seams: seams.localCheck || {} });
     // BRO-7150: only when nothing above refused (a refusal is the faster answer) and the land would apply cleanly.
     const ft = v.decision === 'block' ? { status: 'skip', reason: 'already refused' }
@@ -979,7 +1026,7 @@ export function runHook({ command, cwd, env = process.env, seams = {}, transcrip
     v.detail.fastTests = ft;
     if (ft.status === 'fail') { v.decision = 'block'; v.message = ft.message; }
     if (ft.warning) v.warnings = [...(v.warnings || []), ft.warning];
-    logEvent(root, { event: v.decision, fastTests: ft.status, fastTestsSecs: ft.secs ?? null, target: t.dst, rebase: v.detail.rebase?.status, tests: v.detail.tests?.status, botOwned: v.detail.botOwned?.status, staleRevert: v.detail.staleRevert?.status, pendingPlans: v.detail.pendingPlans?.status, fetch: v.detail.fetch || null, skipReason: v.detail.rebase?.reason || null, localCheck: lc.status });
+    logEvent(root, { event: v.decision, fastTests: ft.status, fastTestsSecs: ft.secs ?? null, target: t.dst, rebase: v.detail.rebase?.status, tests: v.detail.tests?.status, botOwned: v.detail.botOwned?.status, staleRevert: v.detail.staleRevert?.status, pendingPlans: v.detail.pendingPlans?.status, fetch: v.detail.fetch || null, skipReason: v.detail.rebase?.reason || null, localCheck: lc.status, skipCi: skipCi.status });
     if (v.decision !== 'block') {
       const cw = coordinatorWarnings({ root, src: t.src || 'HEAD', target: t.dst, seams });
       if (cw.length) v.warnings = [...(v.warnings || []), ...cw];

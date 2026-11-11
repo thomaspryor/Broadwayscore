@@ -400,6 +400,28 @@ test('hook: a squashed branch passes; a non-repo cwd and garbage input fail open
   assert.equal(runHook({ command: 'git status', cwd: wt }).decision, 'skip');
 });
 
+test('hook: a CI-skip-marked tip blocks (land.yml would never start); the CLI the Mac lander uses does not (BRO-7353)', () => {
+  const { wt } = landFixture();
+  sh(wt, 'git reset -q --soft origin/main && git commit -qm "data: cost row [skip ci]"');
+  const marked = runHook({ command: 'git push origin HEAD:refs/heads/land/feat', cwd: wt });
+  assert.equal(marked.decision, 'block', JSON.stringify(marked));
+  assert.match(marked.message, /CI-skip marker/);
+  assert.match(marked.message, /--allow-empty/);
+  // The Mac lander runs the CLI on the raw tip and adds its own trigger commit afterwards: must not exit 3.
+  const cli = spawnSync('node', [path.join(ROOT, 'scripts/lib/land-preflight.mjs'), '--cwd', wt, '--tip', 'HEAD', '--base', 'origin/main', '--target', 'land/feat', '--no-fetch', '--no-tests'], { encoding: 'utf8' });
+  assert.equal(cli.status, 0, cli.stderr);
+  // The documented fix clears it.
+  sh(wt, 'git commit -q --allow-empty -m "chore(land): trigger land.yml"');
+  const fixed = runHook({ command: 'git push origin HEAD:refs/heads/land/feat', cwd: wt });
+  assert.equal(fixed.results[0].detail.skipCi.status, 'pass');
+  // Same-command commit with a marker, which the HEAD-moves skip would otherwise wave through.
+  const same = runHook({ command: 'git commit -qm "audit: refresh [ci skip]" && git push origin HEAD:land/feat', cwd: wt });
+  assert.equal(same.decision, 'block');
+  assert.match(same.message, /the commit this command makes/);
+  assert.equal(runHook({ command: 'git commit -qm "plain" && git push origin HEAD:land/feat', cwd: wt }).decision, 'skip');
+  assert.notEqual(runHook({ command: 'git commit -qm "x [skip ci]" && git push origin HEAD:land/feat  # NO-LAND-PREFLIGHT: verified marker is intended here', cwd: wt }).decision, 'block');
+});
+
 test('tests: an audit that crashes (exit 1, no JSON) skips instead of blocking with garbage', () => {
   const d = auditRepo();
   write(d, 'scripts/audit-orphan-tests.js', "throw new Error('boom');\n");
