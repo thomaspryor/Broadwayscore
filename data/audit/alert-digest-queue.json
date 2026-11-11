@@ -506,5 +506,38 @@
     "testId": "tests/unit/critic-spelling-duplicates-live-data.test.mjs::reviews.json: no NEW critic page split by a byline spelling variant",
     "fields": [],
     "queuedAt": "2026-11-11T16:55:47.876Z"
+  },
+  {
+    "conditionKey": "opening-night-fulltext-mentions-show:cloud-9-west-end-2026",
+    "title": "Content mismatch on Cloud 9",
+    "description": "thestage/Sam Marlowe (thestage--sam-marlowe.json) SHIPPED but fullText never mentions 'Cloud 9' (3969 chars): https://www.thestage.co.uk/reviews/cloud-9-review-lyttelton-national-theatre-london",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-11T17:40:18.494Z"
+  },
+  {
+    "conditionKey": "broadcast-gate:checklist:cloud-9-west-end-2026",
+    "title": "Opening-night email draft on hold: a quality check flagged a review",
+    "description": "The opening-night email draft is on hold because the automatic quality check flagged at least one review (for example, a review of a different production). Nothing is sent while it is on hold. If the draft has not been made by 10am ET the day after opening, it is made anyway then and you get an email listing which reviews to check before you press Send.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Show",
+        "value": "Cloud 9"
+      }
+    ],
+    "queuedAt": "2026-11-11T17:40:20.347Z"
   }
 ]
