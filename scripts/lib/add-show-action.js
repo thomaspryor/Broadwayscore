@@ -14,6 +14,7 @@
 const { sanitizeVenueForWrite, isBroadwayCategory } = require('./venue-classification');
 const { MARKET_BEFORE_TOUR_RE } = require('./tour-family');
 const { marketSuffixMismatch } = require('./show-id-market-suffix');
+const { setSynopsis } = require('./synopsis-source');
 
 const REQUIRED = ['id', 'title', 'slug', 'venue', 'status', 'type', 'category', 'market'];
 const ALLOWED = new Set([
@@ -167,6 +168,8 @@ function applyAddShow(shows, action, { isRetired, root } = {}) {
   }
 
   const added = { ...show, venue: venueTbd ? null : sanitizeVenueForWrite(show.venue), discoverySource: show.discoverySource || 'manual-user-request' };
+  // Approved additions carry manual provenance, just like approved synopsis edits.
+  if (added.synopsis) setSynopsis(added, added.synopsis, 'manual');
   // Persist the declared distinction on the row: the prebuild gate (and the
   // shows.json write guard) read show.distinctFrom, not the action (BRO-6578).
   if (Array.isArray(action.distinctFrom) && action.distinctFrom.length) {
