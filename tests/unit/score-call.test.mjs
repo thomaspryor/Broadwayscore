@@ -41,9 +41,15 @@ test('buildSyncRows uses the last ledger row before opening, skips rows without 
   assert.equal(rows.length, 1);
   assert.deepEqual(rows[0], { p_show_id: 'a', p_opening: '2026-12-01', p_forecast: 74, p_lo: 62, p_hi: 85, p_reviews_live: true, p_enabled: true });
 });
+// BRO-7348 owner-only board: allowed to read the ledger only while it stays admin-gated and per-request.
+const OWNER_ONLY = new Set(['src/app/admin/forecasts/page.tsx', 'src/lib/admin-review-forecasts.ts']);
+test('owner-only forecast board stays admin-gated and dynamic', () => {
+  const page = fs.readFileSync(path.join(ROOT, 'src/app/admin/forecasts/page.tsx'), 'utf8');
+  assert.ok(/isAdmin/.test(page) && /notFound\(/.test(page) && /dynamic\s*=\s*'force-dynamic'/.test(page) && !/generateStaticParams/.test(page));
+});
 test('LEAK GUARD: nothing under src/ or public/ reads the ledger or the sync loader', () => {
   const bad = [];
-  const walk = (d) => { for (const f of fs.readdirSync(d, { withFileTypes: true })) { const p = path.join(d, f.name); if (f.isDirectory()) { if (f.name !== 'node_modules') walk(p); } else if (/\.(tsx?|jsx?|mjs|json)$/.test(f.name) && /score-call-forecasts|review-forecast-pilot|lo80|hi80/.test(fs.readFileSync(p, 'utf8')) && !/CallTheScore|useScoreCall|score-call\.js/.test(f.name)) bad.push(p); } };
+  const walk = (d) => { for (const f of fs.readdirSync(d, { withFileTypes: true })) { const p = path.join(d, f.name); if (f.isDirectory()) { if (f.name !== 'node_modules') walk(p); } else if (/\.(tsx?|jsx?|mjs|json)$/.test(f.name) && /score-call-forecasts|review-forecast-pilot|lo80|hi80/.test(fs.readFileSync(p, 'utf8')) && !/CallTheScore|useScoreCall|score-call\.js/.test(f.name) && !OWNER_ONLY.has(path.relative(ROOT, p))) bad.push(p); } };
   walk(path.join(ROOT, 'src')); walk(path.join(ROOT, 'public'));
   assert.deepEqual(bad, []);
 });
@@ -68,3 +74,40 @@ import { createRequire as _cr } from 'node:module';
   assertM.equal(sc.getPendingCall('a', mem(), 1), null);
   console.log('pending-store tests ok');
 }
+
+function memStore(init = {}) { const m = { ...init }; return { getItem: (k) => (k in m ? m[k] : null), setItem: (k, v) => { m[k] = String(v); }, removeItem: (k) => { delete m[k]; }, _m: m }; }
+
+test('pending pick: one per show, replaces, expires after 7 days, integers only, clears', () => {
+  const s = memStore(); const t0 = 1_700_000_000_000;
+  assert.equal(SC.setPendingCall('a', 83, s, t0), 83);
+  assert.equal(SC.setPendingCall('a', 40, s, t0 + 1), 40);
+  assert.equal(SC.getPendingCall('a', s, t0 + 2), 40);
+  assert.equal(SC.setPendingCall('a', 83.5, s, t0), null);
+  assert.equal(SC.setPendingCall('a', 101, s, t0), null);
+  assert.equal(SC.setPendingCall('a', -1, s, t0), null);
+  assert.equal(SC.getPendingCall('a', s, t0 + 7 * 86400000), 40);
+  assert.equal(SC.getPendingCall('a', s, t0 + 7 * 86400000 + 5), null, 'expired');
+  SC.clearPendingCall('a', s, t0 + 2);
+  assert.equal(SC.getPendingCall('a', s, t0 + 2), null);
+  assert.equal(Object.keys(s._m).length, 0, 'empty store removes the key');
+});
+
+test('pending pick ignores tampered storage (non-integer, strings, bad JSON)', () => {
+  const now = 1_700_000_000_000;
+  const bad = memStore({ bsc_pending_score_calls: JSON.stringify({ a: { score: 12.5, ts: now }, b: { score: 'x', ts: now }, c: { score: 50 }, d: 7 }) });
+  for (const id of ['a', 'b', 'c', 'd']) assert.equal(SC.getPendingCall(id, bad, now), null);
+  assert.equal(SC.getPendingCall('a', memStore({ bsc_pending_score_calls: '{not json' }), now), null);
+  assert.equal(SC.getPendingCall('a', null, now), null);
+});
+
+test('isCallableShow hides already-open, no-date, closed, cancelled and non-broadway shows', () => {
+  const base = { category: 'broadway', type: 'musical', status: 'previews', openingDate: '2026-12-01' };
+  assert.equal(SC.isCallableShow(base, '2026-11-11'), true);
+  assert.equal(SC.isCallableShow({ ...base, openingDate: '2026-11-11' }, '2026-11-11'), false, 'opens today: closed');
+  assert.equal(SC.isCallableShow({ ...base, status: 'open', openingDate: '2026-01-01' }, '2026-11-11'), false);
+  assert.equal(SC.isCallableShow({ ...base, openingDate: undefined }, '2026-11-11'), false);
+  assert.equal(SC.isCallableShow({ ...base, openingDate: 'TBD' }, '2026-11-11'), false);
+  assert.equal(SC.isCallableShow({ ...base, status: 'closed' }, '2026-11-11'), false);
+  assert.equal(SC.isCallableShow({ ...base, cancelledBeforeOpening: true }, '2026-11-11'), false);
+  assert.equal(SC.isCallableShow({ ...base, category: 'west-end' }, '2026-11-11'), false);
+});
