@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-11T00:22:06.423Z",
+  "timestamp": "2026-11-11T01:38:09.119Z",
   "stats": {
-    "totalReviews": 81320,
-    "alreadyFlagged": 22224,
+    "totalReviews": 81325,
+    "alreadyFlagged": 22227,
     "dateGuardCatches": 218,
     "directorMismatch": 3607,
-    "tvFilmSignals": 2287,
-    "londonSignals": 3668,
+    "tvFilmSignals": 2288,
+    "londonSignals": 3669,
     "offBroadwaySignals": 752,
     "yearMismatch": 365,
     "noPublishDate": 8455
@@ -3284,6 +3284,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "adirondack-chair-circle-regional-2026",
+      "file": "spotlightonlake--unknown.json",
+      "publishDate": null,
+      "url": "https://www.spotlightonlake.com/posts/steppenwolf-theatre-presents-world-premiere-adirondack-chair-circle-1",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"apple tv\""
         }
       ]
     },
@@ -48067,7 +48080,7 @@
     {
       "showId": "operation-mincemeat-2025",
       "file": "ew--shania-russell.json",
-      "score": null,
+      "score": 92,
       "publishDate": "2025-03-20",
       "url": "https://ew.com/operation-mincemeat-review-british-hit-delivers-broadway-11697974",
       "findings": [
@@ -97384,6 +97397,20 @@
       ]
     },
     {
+      "showId": "dogstar-off-west-end-2026",
+      "file": "theatreandtonic--eleanor-bywater.json",
+      "score": 85,
+      "publishDate": "2026-11-10",
+      "url": "https://theatreandtonic.co.uk/blog/dogstar-at-hampstead-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
+        }
+      ]
+    },
+    {
       "showId": "doktor-glas-west-end-2013",
       "file": "standard--unknown.json",
       "score": 78,
@@ -123539,6 +123566,7 @@
     {
       "showId": "speculations-off-west-end-2026",
       "file": "uktheatrenetwork--clare-brotherwood.json",
+      "score": 81,
       "publishDate": "2026-11-05",
       "url": "https://uktheatrenetwork.com/2026/11/05/speculations-at-the-marylebone-theatre-london/",
       "findings": [
