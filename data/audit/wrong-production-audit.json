@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-11T05:38:03.567Z",
+  "timestamp": "2026-11-11T06:35:30.984Z",
   "stats": {
-    "totalReviews": 81377,
-    "alreadyFlagged": 22237,
+    "totalReviews": 81382,
+    "alreadyFlagged": 22239,
     "dateGuardCatches": 218,
-    "directorMismatch": 3624,
-    "tvFilmSignals": 2294,
-    "londonSignals": 3680,
+    "directorMismatch": 3625,
+    "tvFilmSignals": 2295,
+    "londonSignals": 3681,
     "offBroadwaySignals": 752,
     "yearMismatch": 369,
-    "noPublishDate": 8442
+    "noPublishDate": 8440
   },
   "findings": [
     {
@@ -2328,7 +2328,7 @@
     {
       "showId": "a-flea-in-her-ear-west-end-2010",
       "file": "telegraph--charles-spencer.json",
-      "score": null,
+      "score": 25,
       "publishDate": null,
       "url": "https://www.telegraph.co.uk/culture/theatre/theatre-reviews/8203314/A-Flea-in-her-Ear-Old-Vic-review.html",
       "findings": [
@@ -42142,6 +42142,24 @@
     },
     {
       "showId": "medea-off-broadway-2022",
+      "file": "seattle-times--unknown.json",
+      "publishDate": "2022-09-21",
+      "url": "https://www.seattletimes.com/entertainment/met-opera-to-open-season-with-dark-murderous-medea/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david mcvicar\" from medea-off-broadway-2026"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 3\""
+        }
+      ]
+    },
+    {
+      "showId": "medea-off-broadway-2022",
       "file": "wsj--heidi-waleson.json",
       "score": 56,
       "publishDate": "2022-09-28",
@@ -79754,7 +79772,7 @@
     {
       "showId": "travesties-west-end-2017",
       "file": "telegraph--claire-allfree.json",
-      "score": null,
+      "score": 85,
       "publishDate": null,
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/travesties-apollo-theatre-review-champagne-revival-stoppards/",
       "findings": [
@@ -90038,6 +90056,7 @@
     {
       "showId": "anna-west-end-2019",
       "file": "telegraph--dominic-cavendish.json",
+      "score": 39,
       "publishDate": null,
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/anna-review-national-theatre-ersatz-cold-war-thriller/",
       "findings": [
@@ -101779,6 +101798,7 @@
     {
       "showId": "glass-kill-bluebeard-and-imp-west-end-2019",
       "file": "telegraph--dominic-cavendish.json",
+      "score": 57,
       "publishDate": null,
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/glass-kill-bluebeard-imp-royal-court-review-not-quite-play-need/",
       "findings": [
@@ -120926,6 +120946,7 @@
     {
       "showId": "red-velvet-west-end-2016",
       "file": "telegraph--dominic-cavendish.json",
+      "score": 78,
       "publishDate": "2016-02-01",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/red-velvet-garrick-theatre-review-highly-recommended/",
       "findings": [
@@ -123370,6 +123391,19 @@
       "score": 35,
       "publishDate": "2024-07-10",
       "url": "https://www.broadwayworld.com/westend/article/Review-SLAVE-PLAY-Nol-Coward-Theatre-20240710",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "slave-play-west-end-2024",
+      "file": "jewishnews--debbie-collins.json",
+      "publishDate": "2024-07-11",
+      "url": "https://www.jewishnews.co.uk/review-slave-play-noel-coward-theatre/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -129675,7 +129709,7 @@
     {
       "showId": "the-end-of-history-west-end-2019",
       "file": "guardian--michael-billington.json",
-      "score": 56,
+      "score": 55,
       "publishDate": "2019-07-04",
       "url": "https://www.theguardian.com/stage/2019/jul/04/the-end-of-history-review-jack-thorne-john-tiffany-royal-court",
       "findings": [
@@ -129689,6 +129723,7 @@
     {
       "showId": "the-end-of-history-west-end-2019",
       "file": "telegraph--dominic-cavendish.json",
+      "score": 64,
       "publishDate": null,
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/end-history-royal-court-review-lesley-sharp-brilliant-political/",
       "findings": [
@@ -131033,7 +131068,7 @@
     {
       "showId": "the-heretic-west-end-2011",
       "file": "telegraph--charles-spencer.json",
-      "score": null,
+      "score": 90,
       "publishDate": null,
       "url": "https://www.telegraph.co.uk/culture/theatre/theatre-reviews/8318442/The-Heretic-Royal-Court-review.html",
       "findings": [
@@ -141211,7 +141246,7 @@
     {
       "showId": "when-we-are-married-west-end-2010",
       "file": "independent--paul-taylor.json",
-      "score": 83,
+      "score": 84,
       "publishDate": "2010-11-01",
       "url": "http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/when-we-are-married-garrick-theatre-london-2121720.html",
       "findings": [
