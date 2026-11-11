@@ -13,7 +13,7 @@ const fmtDate = (iso?: string | null) => (iso ? new Date(iso.slice(0, 10) + 'T12
 
 function Tile({ label, score, category, muted }: { label: string; score: number | null; category?: string; muted?: boolean }) {
   return (
-    <div className="flex flex-col items-center gap-1.5 flex-1">
+    <div className="flex flex-col items-center gap-1.5 min-w-[5.5rem]">
       {score == null ? <div className="score-badge w-16 h-16 sm:w-20 sm:h-20 text-3xl rounded-xl score-none font-bold text-gray-400 flex items-center justify-center">?</div> : <ScoreBadge score={score} size="lg" category={category} />}
       <span className={`text-[11px] font-semibold uppercase tracking-[0.08em] ${muted ? 'text-fg-muted' : 'text-gray-300'}`}>{label}</span>
     </div>
@@ -51,7 +51,7 @@ export default function CallTheScore({ show }: { show: ShowLike }) {
     return (
       <Wrap>
         <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-brand m-0 mb-3">Your call is in</p>
-        <div className="flex items-start justify-center gap-6 mb-3">
+        <div className="flex items-start justify-center gap-4 mb-3">
           <Tile label="Your call" score={call.called_score} category={show.category} />
           {call.forecast != null && <Tile label="Our forecast" score={call.forecast} category={show.category} muted />}
         </div>
@@ -101,7 +101,7 @@ export function CallResultStrip({ show, critic }: { show: ShowLike; critic: numb
     <div className="mb-4 rounded-lg bg-surface-overlay p-4" data-testid="call-result-strip">
       <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-brand m-0 mb-1">Your call</p>
       <p className="text-base font-semibold text-white m-0 mb-3">Off by {r.off}.{r.beatForecast ? ' You beat our forecast.' : ''}</p>
-      <div className="flex items-start justify-center gap-6 mb-2">
+      <div className="flex items-start justify-center gap-4 mb-2">
         <Tile label="You" score={call.called_score} category={show.category} />
         {call.forecast != null && <Tile label="Our forecast" score={call.forecast} category={show.category} muted />}
         <Tile label="Critics" score={r.critic} category={show.category} />
