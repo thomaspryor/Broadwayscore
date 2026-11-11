@@ -81,12 +81,11 @@ function stalledSessionAction({ entry, session, error, notFound, nowMs }) {
     return (notFound === true || NOT_FOUND_RE.test(msg)) ? { action: 'requeue', reason: `session not found (${msg.slice(0, 80)})` }
       : { action: 'skip', reason: `get_session failed, retry next firing (${msg.slice(0, 80)})` };
   }
-  const v = decide({ session, now: nowMs, idleMinutes: 60 });
+  // BRO-7377: an entry exists only because this session claimed the card, so it started; a last_init_error on it is stale.
+  const v = decide({ session, now: nowMs, idleMinutes: 60, checkInit: false });
   const archived = /archived/i.test(String(v.reason)) || session.archived === true;
   if (archived) return { action: 'requeue', reason: 'session archived with the card still In Progress' };
   if (v.action === 'rearm') return { action: 'skip', reason: `session working (${v.reason})` };
-  // BRO-7377: a session whose container never started cannot read a nudge; requeue now, not after two ignored ones 48h on.
-  if (v.action === 'restart' && v.neverStarted === true) return { action: 'requeue', reason: v.reason.slice(0, 120) };
   if (v.action === 'unblock') return { action: 'skip', reason: `session waiting on a prompt (${v.reason}); a message cannot answer it` };
   const lastNudgeMs = Date.parse(entry.lastNudgeAt);
   if (Number.isFinite(lastNudgeMs) && nowMs - lastNudgeMs < NUDGE_GAP_MS) return { action: 'skip', reason: 'nudged under 24h ago' };
