@@ -285,3 +285,48 @@ test('BRO-7109: no proposed watch outlives the 30-min default background limit',
   assert.ok(recipes.length >= 3, `found ${recipes.length} background recipes`);
   for (const l of recipes) assert.match(l, /timeout:? 7200000/, `background recipe without the 2h timeout: ${l.slice(0, 120)}`);
 });
+
+// ─── BRO-7377: a child whose container never came up ────────────────────────
+// Real get_session of the BRO-7370 trial child whose setup script exited 128.
+// The API still said status_bucket=WORKING, so decide() answered "rearm" at 8
+// min and again at 26 min. Only external_metadata.last_init_error shows it.
+const INIT_FAILED = JSON.parse(fs.readFileSync(path.join(HERE, 'fixtures', 'bro-7377-init-failed', 'get-session.json'), 'utf8'));
+const withInit = (patch) => JSON.parse(JSON.stringify({ ...INIT_FAILED, ccr: { ...INIT_FAILED.ccr, ...patch } }));
+
+test('BRO-7377: a child whose setup script failed is restart, not "WORKING", at the first look and every later one', () => {
+  assert.match(INIT_FAILED.ccr.status_bucket, /WORKING/, 'the fixture must keep the lie that made this bug');
+  for (const now of ['2026-11-11T13:52:38Z', '2026-11-11T14:10:00Z', '2026-11-11T20:00:00Z']) {
+    const r = decide({ session: INIT_FAILED, now });
+    assert.equal(r.action, 'restart', `${now}: ${r.reason}`);
+    assert.match(r.reason, /never started/);
+    assert.match(r.reason, /Setup script failed/);
+    assert.match(r.reason, /init_script/);
+  }
+});
+
+test('BRO-7377: the CLI check prints restart for the real failed-init JSON', () => {
+  const r = spawnSync('node', [path.join(HERE, 'child-idle-watch.js'), 'check', '--from-json',
+    path.join(HERE, 'fixtures', 'bro-7377-init-failed', 'get-session.json'), '--now', '2026-11-11T14:10:00Z'], { encoding: 'utf8' });
+  assert.equal(r.status, 0, r.stderr);
+  assert.equal(JSON.parse(r.stdout).action, 'restart');
+});
+
+test('BRO-7377: an init error does not hide a finished child, a report-back, or a recoverable error', () => {
+  assert.equal(decide({ session: withInit({ status_bucket: 'SESSION_STATUS_BUCKET_COMPLETED' }), now: '2026-11-11T14:10:00Z' }).action, 'done');
+  assert.equal(decide({ session: INIT_FAILED, now: '2026-11-11T14:10:00Z', reportedAt: '2026-11-11T13:50:00Z' }).action, 'done');
+  const recoverable = JSON.parse(JSON.stringify(INIT_FAILED));
+  recoverable.ccr.external_metadata.last_init_error.recoverable = 'true';
+  assert.equal(decide({ session: recoverable, now: '2026-11-11T13:52:38Z' }).action, 'rearm');
+});
+
+test('BRO-7377: a healthy working child with no init error still rearms', () => {
+  const ok = JSON.parse(JSON.stringify(INIT_FAILED));
+  delete ok.ccr.external_metadata.last_init_error;
+  assert.equal(decide({ session: ok, now: '2026-11-11T13:52:38Z' }).action, 'rearm');
+});
+
+test('BRO-7377: the runbook tells a parent to look 3 minutes after create_session, not only at 25', () => {
+  const rb = fs.readFileSync(path.join(REPO, 'docs', 'cloud-worker-session-runbook.md'), 'utf8');
+  assert.match(rb, /--minutes 3\b/);
+  assert.match(rb, /last_init_error|never started/);
+});
