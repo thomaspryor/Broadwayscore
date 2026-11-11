@@ -26,7 +26,7 @@ function Wrap({ children }: { children: React.ReactNode }) {
   return <div className="mt-4 pt-4 border-t border-white/10" data-testid="call-the-score">{children}</div>;
 }
 
-const lockMsg = (reason: string) => (reason === 'calls_closed' ? 'Predictions closed on opening night.' : reason === 'not_open' ? 'Predictions open soon for this show.' : reason === 'already_called' ? null : 'Could not save your prediction. Try again.');
+const lockMsg = (reason: string) => (reason === 'calls_closed' ? 'Predictions closed when opening day began.' : reason === 'not_open' ? 'Predictions open soon for this show.' : reason === 'already_called' ? null : 'Could not save your prediction. Try again.');
 
 /** Pending-state card: pick 0-100 (signed out is fine), save it with an account, then see the forecast. Renders nothing for shows a reader cannot predict. */
 export default function CallTheScore({ show }: { show: ShowLike }) {
