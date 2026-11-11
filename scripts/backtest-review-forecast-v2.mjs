@@ -450,7 +450,7 @@ const out = {
       byMarket: Object.fromEntries([...EC.EARLIER_CATEGORIES].map((c) => [c, rows.filter((r) => r.has.earlierCritics && (EC.findEarlier(r.t, ctx, EA.earlierCutoff(r.t)) || {}).category === c).length])),
       note: 'v1 already carries the latest earlier production score as priorRun; these tests measure what that does not use (count shrinkage, before-first-preview filter, tier weighting, T1-only, audience-minus-critics gap)' };
     cov.transferModel = transferModel;
-    cov.decision.candidates = results.filter((r) => r.inCorrectionFamily && /INCREMENT over (landed )?v2: all shows|INCREMENT over landed v2 \(v1.*all shows|confirmed pages only/.test(r.input)).map((r) => ({ input: r.input, diff: r.diff, diffCI95Bonferroni: r.diffCI95Bonferroni, addToPilot: !!(r.diffCI95Bonferroni && r.diffCI95Bonferroni[1] < 0) }));
+    cov.decision.candidates = results.filter((r) => r.inCorrectionFamily && (r.kind === 'primary' || r.kind === 'primary-subset') && /INCREMENT over (landed )?v2: all shows|INCREMENT over landed v2 \(v1.*all shows|confirmed pages only/.test(r.input)).map((r) => ({ input: r.input, diff: r.diff, diffCI95Bonferroni: r.diffCI95Bonferroni, addToPilot: !!(r.diffCI95Bonferroni && r.diffCI95Bonferroni[1] < 0) }));
     cov.decision.addToPilotAny = cov.decision.candidates.some((c) => c.addToPilot);
     return cov;
   })() } : {}),
