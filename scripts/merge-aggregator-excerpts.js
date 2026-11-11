@@ -16,6 +16,7 @@ const { loadShows } = require('./lib/show-matching');
 const { normalizeOutlet, normalizeCritic, areCriticsSimilar } = require('./lib/review-normalization');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { parseArticleBodyReviews } = require('./lib/bww-roundup-parser');
+const { isFlaggedForRoundupMerge } = require('./lib/review-file-match');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 // Archive files are named by show id, but the page inside can be another
@@ -172,6 +173,8 @@ function findMatchingReviewFile(showDir, extractedReview) {
   for (const file of files) {
     try {
       const filePath = path.join(showDir, file);
+      // BRO-7303: skip flagged (wrongProduction/wrongShow/duplicateOf) files
+      if (isFlaggedForRoundupMerge(filePath)) continue;
       const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
       // Match by outlet ID
