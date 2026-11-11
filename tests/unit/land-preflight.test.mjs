@@ -550,7 +550,7 @@ test('ci-stale mode: flags a stale-tree squash, passes an honest branch, never b
   assert.equal(stale.status, 'fail', JSON.stringify(stale));
   assert.match(stale.lines[0], /stale-tree revert: 5 of the 6 files/);
   assert.match(stale.lines[0], /more files/);
-  const cli = spawnSync(process.execPath, [path.join(ROOT, 'scripts/lib/land-preflight.mjs'), '--ci-stale', '--base', 'main', '--tip', 'feat', '--cwd', d], { env: ENV, encoding: 'utf8' });
+  const cli = spawnSync(process.execPath, [path.join(ROOT, 'scripts/lib/stale-tree-check.mjs'), '--ci-stale', '--base', 'main', '--tip', 'feat', '--cwd', d], { env: ENV, encoding: 'utf8' });
   assert.equal(cli.status, 0, cli.stderr);
   assert.match(cli.stdout, /^::warning::stale-tree revert/m);
   assert.match(cli.stdout, /^stale_tree=fail$/m);
