@@ -51,6 +51,8 @@ function insideAnyCheckout(p) {
 }
 if (!DIR) { console.error('--dir=<private ledger directory> is required'); process.exit(2); }
 if (insideAnyCheckout(DIR)) { console.error('refusing: --dir must be outside every checkout of this public repo'); process.exit(3); }
+// BRO-7357: nightly tripwire. The public checkout must hold no forecast rows (v1 or v2); this runs in CI every night.
+{ const leaks = require('./lib/forecast-privacy-guard.js').scanTracked(ROOT); if (leaks.length) { console.error('refusing: forecast rows found in tracked public files: ' + leaks.map((l) => l.file).join(', ')); process.exit(4); } }
 fs.mkdirSync(DIR, { recursive: true });
 // One file per write (ledger/YYYY-MM-DD.jsonl, grades/<showId>.json): every write is a new path, so
 // concurrent pushes to the private repo cannot conflict. Lines are parsed strictly, a bad line aborts.
