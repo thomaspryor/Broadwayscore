@@ -1,21 +1,43 @@
 {
-  "updatedAt": "2026-11-11T15:51:28.829Z",
-  "processed": 300,
-  "failed": 171,
-  "successRate": "63.7%",
+  "updatedAt": "2026-11-11T16:03:48.523Z",
+  "processed": 323,
+  "failed": 178,
+  "successRate": "64.5%",
   "tierBreakdown": {
-    "playwright": 170,
+    "playwright": 182,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 3,
     "directCookies": 0,
     "scrapingdog": 37,
-    "scrapingbee": 25,
+    "scrapingbee": 26,
     "brightdata": 1,
     "archiveToday": 0,
-    "archive": 73
+    "archive": 83
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 0,
   "recentActivity": [
+    {
+      "t": "2026-11-11T11:23:30.403Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-11T11:26:08.721Z",
+      "event": "bb-session",
+      "session": "104d8322",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655641"
+    },
+    {
+      "t": "2026-11-11T11:26:09.346Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-11T11:29:10.327Z",
+      "event": "bb-session",
+      "session": "e60b795f",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655599"
+    },
     {
       "t": "2026-11-11T11:29:11.035Z",
       "event": "bb-cookie-inject",
@@ -101,28 +123,6 @@
     },
     {
       "t": "2026-11-11T13:43:31.093Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-11T15:45:28.303Z",
-      "event": "bb-session",
-      "session": "d8a56c9b",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
-    },
-    {
-      "t": "2026-11-11T15:45:28.659Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-11-11T15:47:27.347Z",
-      "event": "bb-session",
-      "session": "057a45da",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
-    },
-    {
-      "t": "2026-11-11T15:47:27.738Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     }
