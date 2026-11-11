@@ -443,5 +443,36 @@
       }
     ],
     "queuedAt": "2026-11-11T15:05:09.355Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7372-page-confirm-venue-forms",
+    "title": "Landing blocked: toplevel-regression red on land/bro-7372-page-confirm-venue-forms",
+    "description": "land.yml did not land land/bro-7372-page-confirm-venue-forms: the toplevel-regression gate went red at c1da6843eb. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/43041642720",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7372-page-confirm-venue-forms"
+      },
+      {
+        "name": "gate",
+        "value": "toplevel-regression"
+      },
+      {
+        "name": "tip",
+        "value": "c1da6843eb58112ff73483613cf12b1c8701d02c"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/43041642720"
+      }
+    ],
+    "queuedAt": "2026-11-11T15:15:08.519Z"
   }
 ]
