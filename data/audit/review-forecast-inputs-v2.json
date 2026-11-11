@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-11T08:10:17.192Z",
+  "generatedAt": "2026-11-11T08:15:07.918Z",
   "card": "BRO-7347",
   "market": "broadway",
   "floor": {
@@ -31,7 +31,7 @@
   },
   "showScoreMembers": {
     "showsTried": 341,
-    "withFiveOrMorePreOpening": 237,
+    "withAtLeastOnePreOpeningMemberReview": 237,
     "paidFetches": 0,
     "directRequests": 4225
   },
@@ -134,6 +134,7 @@
       ],
       "bonferroniTests": 26,
       "survivesCorrection": false,
+      "inCorrectionFamily": true,
       "verdict": "hurts"
     },
     {
@@ -196,6 +197,7 @@
       ],
       "bonferroniTests": 26,
       "survivesCorrection": false,
+      "inCorrectionFamily": true,
       "verdict": "no effect"
     },
     {
@@ -258,6 +260,7 @@
       ],
       "bonferroniTests": 26,
       "survivesCorrection": false,
+      "inCorrectionFamily": true,
       "verdict": "hurts"
     },
     {
@@ -276,7 +279,7 @@
           -0.23,
           1.64
         ],
-        "survivesCorrection": false
+        "survivesCorrection": null
       },
       "missMiddle55to82": {
         "n": 261,
@@ -290,7 +293,7 @@
           -0.01,
           0.38
         ],
-        "survivesCorrection": false
+        "survivesCorrection": null
       },
       "miss83Plus": {
         "n": 55,
@@ -304,7 +307,7 @@
           -0.5,
           0.37
         ],
-        "survivesCorrection": false
+        "survivesCorrection": null
       },
       "maeWithout": 7.73,
       "maeWith": 7.93,
@@ -319,7 +322,8 @@
         0.34
       ],
       "bonferroniTests": 26,
-      "survivesCorrection": false,
+      "survivesCorrection": null,
+      "inCorrectionFamily": false,
       "verdict": "hurts"
     },
     {
@@ -338,7 +342,7 @@
           -1.68,
           1.59
         ],
-        "survivesCorrection": false
+        "survivesCorrection": null
       },
       "missMiddle55to82": {
         "n": 259,
@@ -352,7 +356,7 @@
           -0.08,
           0.99
         ],
-        "survivesCorrection": false
+        "survivesCorrection": null
       },
       "miss83Plus": {
         "n": 55,
@@ -366,7 +370,7 @@
           -1.67,
           0
         ],
-        "survivesCorrection": false
+        "survivesCorrection": null
       },
       "maeWithout": 7.74,
       "maeWith": 7.79,
@@ -381,7 +385,8 @@
         0.66
       ],
       "bonferroniTests": 26,
-      "survivesCorrection": false,
+      "survivesCorrection": null,
+      "inCorrectionFamily": false,
       "verdict": "no effect"
     },
     {
@@ -444,6 +449,7 @@
       ],
       "bonferroniTests": 26,
       "survivesCorrection": true,
+      "inCorrectionFamily": true,
       "verdict": "helps"
     },
     {
@@ -506,6 +512,7 @@
       ],
       "bonferroniTests": 26,
       "survivesCorrection": false,
+      "inCorrectionFamily": true,
       "verdict": "helps"
     },
     {
@@ -524,7 +531,7 @@
           -7.61,
           -0.99
         ],
-        "survivesCorrection": true
+        "survivesCorrection": null
       },
       "missMiddle55to82": {
         "n": 183,
@@ -538,7 +545,7 @@
           -0.54,
           0.16
         ],
-        "survivesCorrection": false
+        "survivesCorrection": null
       },
       "miss83Plus": {
         "n": 40,
@@ -552,7 +559,7 @@
           -1.72,
           -0.11
         ],
-        "survivesCorrection": true
+        "survivesCorrection": null
       },
       "maeWithout": 7.74,
       "maeWith": 7.11,
@@ -567,7 +574,8 @@
         -0.24
       ],
       "bonferroniTests": 26,
-      "survivesCorrection": true,
+      "survivesCorrection": null,
+      "inCorrectionFamily": false,
       "verdict": "helps"
     },
     {
@@ -630,6 +638,7 @@
       ],
       "bonferroniTests": 26,
       "survivesCorrection": false,
+      "inCorrectionFamily": true,
       "verdict": "helps"
     },
     {
@@ -692,6 +701,7 @@
       ],
       "bonferroniTests": 26,
       "survivesCorrection": true,
+      "inCorrectionFamily": true,
       "verdict": "helps"
     },
     {
@@ -754,6 +764,7 @@
       ],
       "bonferroniTests": 26,
       "survivesCorrection": true,
+      "inCorrectionFamily": true,
       "verdict": "helps"
     },
     {
@@ -816,6 +827,7 @@
       ],
       "bonferroniTests": 26,
       "survivesCorrection": false,
+      "inCorrectionFamily": true,
       "verdict": "no effect"
     },
     {
@@ -878,6 +890,7 @@
       ],
       "bonferroniTests": 26,
       "survivesCorrection": false,
+      "inCorrectionFamily": true,
       "verdict": "no effect"
     },
     {
@@ -940,6 +953,7 @@
       ],
       "bonferroniTests": 26,
       "survivesCorrection": false,
+      "inCorrectionFamily": true,
       "verdict": "helps"
     },
     {
@@ -1002,6 +1016,7 @@
       ],
       "bonferroniTests": 26,
       "survivesCorrection": false,
+      "inCorrectionFamily": true,
       "verdict": "helps"
     },
     {
@@ -1020,7 +1035,7 @@
           -2.33,
           0.76
         ],
-        "survivesCorrection": false
+        "survivesCorrection": null
       },
       "missMiddle55to82": {
         "n": 128,
@@ -1034,7 +1049,7 @@
           -0.83,
           1.14
         ],
-        "survivesCorrection": false
+        "survivesCorrection": null
       },
       "miss83Plus": {
         "n": 35,
@@ -1048,7 +1063,7 @@
           -1.94,
           0.04
         ],
-        "survivesCorrection": false
+        "survivesCorrection": null
       },
       "maeWithout": 7.4,
       "maeWith": 7.19,
@@ -1063,7 +1078,8 @@
         0.69
       ],
       "bonferroniTests": 26,
-      "survivesCorrection": false,
+      "survivesCorrection": null,
+      "inCorrectionFamily": false,
       "verdict": "no effect"
     },
     {
@@ -1082,7 +1098,7 @@
           -2.33,
           0.76
         ],
-        "survivesCorrection": false
+        "survivesCorrection": null
       },
       "missMiddle55to82": {
         "n": 90,
@@ -1096,7 +1112,7 @@
           -1.2,
           0.78
         ],
-        "survivesCorrection": false
+        "survivesCorrection": null
       },
       "miss83Plus": {
         "n": 17,
@@ -1110,7 +1126,7 @@
           -4.49,
           0.75
         ],
-        "survivesCorrection": false
+        "survivesCorrection": null
       },
       "maeWithout": 8.62,
       "maeWith": 8.16,
@@ -1125,7 +1141,8 @@
         0.42
       ],
       "bonferroniTests": 26,
-      "survivesCorrection": false,
+      "survivesCorrection": null,
+      "inCorrectionFamily": false,
       "verdict": "no effect"
     },
     {
@@ -1145,7 +1162,7 @@
           -0.35,
           2.55
         ],
-        "survivesCorrection": false
+        "survivesCorrection": null
       },
       "miss83Plus": {
         "n": 18,
@@ -1159,7 +1176,7 @@
           -1.85,
           0.82
         ],
-        "survivesCorrection": false
+        "survivesCorrection": null
       },
       "maeWithout": 4.72,
       "maeWith": 5.07,
@@ -1174,7 +1191,8 @@
         1.25
       ],
       "bonferroniTests": 26,
-      "survivesCorrection": false,
+      "survivesCorrection": null,
+      "inCorrectionFamily": false,
       "verdict": "no effect"
     },
     {
@@ -1237,6 +1255,7 @@
       ],
       "bonferroniTests": 26,
       "survivesCorrection": false,
+      "inCorrectionFamily": true,
       "verdict": "no effect"
     },
     {
@@ -1299,6 +1318,7 @@
       ],
       "bonferroniTests": 26,
       "survivesCorrection": false,
+      "inCorrectionFamily": true,
       "verdict": "helps"
     },
     {
@@ -1317,7 +1337,7 @@
           0.84,
           2.2
         ],
-        "survivesCorrection": false
+        "survivesCorrection": null
       },
       "missMiddle55to82": {
         "n": 261,
@@ -1331,7 +1351,7 @@
           -0.44,
           -0.04
         ],
-        "survivesCorrection": true
+        "survivesCorrection": null
       },
       "miss83Plus": {
         "n": 55,
@@ -1345,7 +1365,7 @@
           -0.63,
           -0.13
         ],
-        "survivesCorrection": true
+        "survivesCorrection": null
       },
       "maeWithout": 7.73,
       "maeWith": 7.62,
@@ -1360,7 +1380,8 @@
         0
       ],
       "bonferroniTests": 26,
-      "survivesCorrection": false,
+      "survivesCorrection": null,
+      "inCorrectionFamily": false,
       "verdict": "helps"
     },
     {
@@ -1423,6 +1444,7 @@
       ],
       "bonferroniTests": 26,
       "survivesCorrection": false,
+      "inCorrectionFamily": true,
       "verdict": "no effect"
     },
     {
@@ -1442,7 +1464,7 @@
           -0.26,
           2.28
         ],
-        "survivesCorrection": false
+        "survivesCorrection": null
       },
       "miss83Plus": null,
       "maeWithout": 7.7,
@@ -1458,7 +1480,8 @@
         2.32
       ],
       "bonferroniTests": 26,
-      "survivesCorrection": false,
+      "survivesCorrection": null,
+      "inCorrectionFamily": false,
       "verdict": "hurts"
     },
     {
@@ -1521,6 +1544,7 @@
       ],
       "bonferroniTests": 26,
       "survivesCorrection": false,
+      "inCorrectionFamily": true,
       "verdict": "no effect"
     },
     {
@@ -1583,6 +1607,7 @@
       ],
       "bonferroniTests": 26,
       "survivesCorrection": false,
+      "inCorrectionFamily": true,
       "verdict": "no effect"
     },
     {
@@ -1645,6 +1670,7 @@
       ],
       "bonferroniTests": 26,
       "survivesCorrection": false,
+      "inCorrectionFamily": true,
       "verdict": "no effect"
     },
     {
@@ -1707,6 +1733,7 @@
       ],
       "bonferroniTests": 26,
       "survivesCorrection": false,
+      "inCorrectionFamily": true,
       "verdict": "helps"
     },
     {
@@ -1769,6 +1796,7 @@
       ],
       "bonferroniTests": 26,
       "survivesCorrection": false,
+      "inCorrectionFamily": true,
       "verdict": "no effect"
     },
     {
@@ -1831,6 +1859,7 @@
       ],
       "bonferroniTests": 26,
       "survivesCorrection": true,
+      "inCorrectionFamily": true,
       "verdict": "helps"
     },
     {
@@ -1849,7 +1878,7 @@
           -7.2,
           -0.66
         ],
-        "survivesCorrection": true
+        "survivesCorrection": null
       },
       "missMiddle55to82": {
         "n": 183,
@@ -1863,7 +1892,7 @@
           -1.14,
           -0.04
         ],
-        "survivesCorrection": true
+        "survivesCorrection": null
       },
       "miss83Plus": {
         "n": 40,
@@ -1877,7 +1906,7 @@
           -2.56,
           0.26
         ],
-        "survivesCorrection": false
+        "survivesCorrection": null
       },
       "maeWithout": 7.74,
       "maeWith": 6.8,
@@ -1892,7 +1921,8 @@
         -0.59
       ],
       "bonferroniTests": 26,
-      "survivesCorrection": true,
+      "survivesCorrection": null,
+      "inCorrectionFamily": false,
       "verdict": "helps"
     },
     {
@@ -1911,7 +1941,7 @@
           -1.05,
           1.68
         ],
-        "survivesCorrection": false
+        "survivesCorrection": null
       },
       "missMiddle55to82": {
         "n": 183,
@@ -1925,7 +1955,7 @@
           -0.68,
           0.01
         ],
-        "survivesCorrection": false
+        "survivesCorrection": null
       },
       "miss83Plus": {
         "n": 40,
@@ -1939,7 +1969,7 @@
           -1.5,
           -0.05
         ],
-        "survivesCorrection": true
+        "survivesCorrection": null
       },
       "maeWithout": 7.74,
       "maeWith": 7.33,
@@ -1954,7 +1984,8 @@
         -0.18
       ],
       "bonferroniTests": 26,
-      "survivesCorrection": true,
+      "survivesCorrection": null,
+      "inCorrectionFamily": false,
       "verdict": "helps"
     },
     {
@@ -2017,6 +2048,7 @@
       ],
       "bonferroniTests": 26,
       "survivesCorrection": false,
+      "inCorrectionFamily": true,
       "verdict": "no effect"
     },
     {
@@ -2079,6 +2111,7 @@
       ],
       "bonferroniTests": 26,
       "survivesCorrection": false,
+      "inCorrectionFamily": true,
       "verdict": "no effect"
     },
     {
@@ -2141,6 +2174,7 @@
       ],
       "bonferroniTests": 26,
       "survivesCorrection": false,
+      "inCorrectionFamily": true,
       "verdict": "no effect"
     },
     {
@@ -2203,6 +2237,7 @@
       ],
       "bonferroniTests": 26,
       "survivesCorrection": false,
+      "inCorrectionFamily": true,
       "verdict": "no effect"
     },
     {
@@ -2265,6 +2300,7 @@
       ],
       "bonferroniTests": 26,
       "survivesCorrection": false,
+      "inCorrectionFamily": true,
       "verdict": "hurts"
     },
     {
@@ -2327,6 +2363,7 @@
       ],
       "bonferroniTests": 26,
       "survivesCorrection": false,
+      "inCorrectionFamily": true,
       "verdict": "no effect"
     },
     {
@@ -2389,6 +2426,7 @@
       ],
       "bonferroniTests": 26,
       "survivesCorrection": false,
+      "inCorrectionFamily": true,
       "verdict": "no effect"
     },
     {
@@ -2451,6 +2489,7 @@
       ],
       "bonferroniTests": 26,
       "survivesCorrection": false,
+      "inCorrectionFamily": true,
       "verdict": "no effect"
     },
     {
@@ -2513,6 +2552,7 @@
       ],
       "bonferroniTests": 26,
       "survivesCorrection": false,
+      "inCorrectionFamily": true,
       "verdict": "no effect"
     },
     {
@@ -2575,6 +2615,7 @@
       ],
       "bonferroniTests": 26,
       "survivesCorrection": false,
+      "inCorrectionFamily": true,
       "verdict": "no effect"
     },
     {
@@ -2637,6 +2678,7 @@
       ],
       "bonferroniTests": 26,
       "survivesCorrection": false,
+      "inCorrectionFamily": true,
       "verdict": "no effect"
     },
     {
@@ -2699,6 +2741,7 @@
       ],
       "bonferroniTests": 26,
       "survivesCorrection": false,
+      "inCorrectionFamily": true,
       "verdict": "no effect"
     },
     {
@@ -2761,6 +2804,7 @@
       ],
       "bonferroniTests": 26,
       "survivesCorrection": false,
+      "inCorrectionFamily": true,
       "verdict": "no effect"
     },
     {
@@ -2823,6 +2867,7 @@
       ],
       "bonferroniTests": 26,
       "survivesCorrection": false,
+      "inCorrectionFamily": true,
       "verdict": "no effect"
     },
     {
@@ -2885,6 +2930,7 @@
       ],
       "bonferroniTests": 26,
       "survivesCorrection": false,
+      "inCorrectionFamily": true,
       "verdict": "no effect"
     },
     {
@@ -2947,6 +2993,7 @@
       ],
       "bonferroniTests": 26,
       "survivesCorrection": false,
+      "inCorrectionFamily": true,
       "verdict": "no effect"
     },
     {
@@ -3009,6 +3056,7 @@
       ],
       "bonferroniTests": 26,
       "survivesCorrection": false,
+      "inCorrectionFamily": true,
       "verdict": "no effect"
     },
     {
@@ -3071,6 +3119,7 @@
       ],
       "bonferroniTests": 26,
       "survivesCorrection": false,
+      "inCorrectionFamily": true,
       "verdict": "no effect"
     },
     {
@@ -3133,6 +3182,7 @@
       ],
       "bonferroniTests": 26,
       "survivesCorrection": false,
+      "inCorrectionFamily": true,
       "verdict": "helps"
     },
     {
@@ -3195,6 +3245,7 @@
       ],
       "bonferroniTests": 26,
       "survivesCorrection": true,
+      "inCorrectionFamily": true,
       "verdict": "helps"
     }
   ],
@@ -3202,7 +3253,7 @@
     {
       "input": "Show Score audience score (Wayback capture before opening)",
       "verdict": "cannot be dated at usable coverage",
-      "why": "archive.org availability lookups found no pre-opening capture for 30 shows (one season). Unproven coverage, not proof of absence. Replaced by the dated member-review route, which is tested above on a 54-show pilot."
+      "why": "archive.org availability lookups found no pre-opening capture for 30 shows (one season). Unproven coverage, not proof of absence. Replaced by the dated member-review route, which is tested above on the full 341-show pull (coverage: none of the 2025 and 2026 shows has dated member reviews)."
     },
     {
       "input": "Mezzanine (separate audience components)",
@@ -3300,6 +3351,7 @@
     ],
     "bonferroniTests": 26,
     "survivesCorrection": true,
+    "inCorrectionFamily": true,
     "verdict": "helps"
   }
 }
