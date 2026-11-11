@@ -1840,14 +1840,17 @@ function checkQuality() {
         scriptName: 'audit-revival-unverified-lifetime.js',
         stepName: 'revival-unverified lifetime sweep',
         unit: 'unverified revival flag(s)',
+        // BRO-7354: same-title earlier production, not contamination.
+        evidenceLabel: 'a same-title earlier production',
+        openRemedy: 'set isRevival: true if it is a revival, or revivalVerifiedNot: true if it is the original',
       },
-    ].map(({ name, snapFile, scriptName, stepName, unit }) => runCheck(name, () => {
+    ].map(({ name, snapFile, scriptName, stepName, unit, evidenceLabel, openRemedy }) => runCheck(name, () => {
       const snapPath = path.join(AUDIT_DIR, snapFile);
       const snap = fs.existsSync(snapPath) ? readJSON(snapPath) : null;
       const ageHours = snap?.updatedAt ? hoursAgo(snap.updatedAt) : Infinity;
       // BRO-7204: an evidence-aware snapshot warns only on new hits with
       // contamination evidence (scripts/lib/lifetime-sweep-row.js).
-      return lifetimeSweepRowResult({ name, snap, ageHours, scriptName, stepName, unit, formatAge });
+      return lifetimeSweepRowResult({ name, snap, ageHours, scriptName, stepName, unit, formatAge, evidenceLabel, openRemedy });
     })),
 
     // Missed opening-night broadcast sweep (BRO-2934). The dead-man half of
