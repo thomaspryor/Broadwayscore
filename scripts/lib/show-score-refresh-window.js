@@ -6,7 +6,8 @@
 // began. So a show opening within the next earlyAheadDays whose reviews on file include one dated
 // since its previews began (the wave has started) is refreshed too.
 const DAY_MS = 86400000;
-const DATE_RE = /^\d{4}-\d{2}-\d{2}/; // month-only or null publishDates prove nothing
+const { toDateMs } = require('./date-utils'); // handles ordinal dates like ISO (BRO-2836)
+const MONTH_ONLY_RE = /^\d{4}-\d{2}$/; // a month-only publishDate proves nothing
 
 function selectRefreshShows(shows, reviews, { nowMs = Date.now(), lookbackDays = 2, lookAheadDays = 2, earlyAheadDays = 14 } = {}) {
   const cutoff = nowMs - lookbackDays * DAY_MS;
@@ -14,8 +15,8 @@ function selectRefreshShows(shows, reviews, { nowMs = Date.now(), lookbackDays =
   const earlyLimit = nowMs + earlyAheadDays * DAY_MS;
   const latestReview = new Map();
   for (const r of reviews || []) {
-    if (!r || !r.showId || !DATE_RE.test(String(r.publishDate || ''))) continue;
-    const t = Date.parse(r.publishDate);
+    if (!r || !r.showId || MONTH_ONLY_RE.test(String(r.publishDate || ''))) continue;
+    const t = toDateMs(r.publishDate);
     if (Number.isFinite(t) && t > (latestReview.get(r.showId) ?? -Infinity)) latestReview.set(r.showId, t);
   }
   return (shows || []).filter((s) => {

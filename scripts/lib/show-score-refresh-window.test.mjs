@@ -27,6 +27,9 @@ test('rule (b) needs a review: a future show with none, or only an older product
 test('rule (b) is bounded: a show opening beyond 14 days is not picked', () => {
   assert.deepEqual(pick([show('far', { openingDate: '2026-12-01' })], [rv('far', '2026-11-10')]), []);
 });
+test('an ordinal publishDate counts like ISO (BRO-2836)', () => {
+  assert.deepEqual(pick([show('o', { openingDate: '2026-11-18' })], [rv('o', 'November 10th, 2026')]), ['o']);
+});
 test('boundaries: now+2d is rule (a), now+2d+1ms is not, and nothing is counted twice', () => {
   const edge = new Date(NOW + 2 * 86400000).toISOString();
   const over = new Date(NOW + 2 * 86400000 + 1).toISOString();
