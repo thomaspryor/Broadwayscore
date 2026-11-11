@@ -287,8 +287,8 @@ export async function replayOne({ tree, hook = HOOK, lines, stops, label, binDir
       results.push(d);
     }
   } finally {
-    fs.rmSync(home, { recursive: true, force: true });
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(home, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     // The hook keeps two state files at fixed /tmp paths keyed by the transcript path.
     fs.rmSync(`/tmp/verify-edits-chain-${cksum(cut)}`, { force: true });
     fs.rmSync(`/tmp/verify-edits-satisfied-${createHash('md5').update(cut).digest('hex').slice(0, 16)}.json`, { force: true });
@@ -439,7 +439,7 @@ async function main(argv) {
       report.transcripts.push({ name: inp.name, stops: stops.length, total, ...compare(stops, b, h) });
     }
   } finally {
-    fs.rmSync(binDir, { recursive: true, force: true });
+    fs.rmSync(binDir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     for (const t of trees) git(root, ['worktree', 'remove', '--force', t]);
   }
   report.secs = Math.round((Date.now() - started) / 1000);
