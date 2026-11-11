@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-11T04:59:56.148Z",
+  "timestamp": "2026-11-11T05:38:03.567Z",
   "stats": {
-    "totalReviews": 81373,
-    "alreadyFlagged": 22236,
+    "totalReviews": 81377,
+    "alreadyFlagged": 22237,
     "dateGuardCatches": 218,
-    "directorMismatch": 3619,
+    "directorMismatch": 3624,
     "tvFilmSignals": 2294,
-    "londonSignals": 3678,
+    "londonSignals": 3680,
     "offBroadwaySignals": 752,
-    "yearMismatch": 368,
-    "noPublishDate": 8443
+    "yearMismatch": 369,
+    "noPublishDate": 8442
   },
   "findings": [
     {
@@ -2322,6 +2322,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "a-flea-in-her-ear-west-end-2010",
+      "file": "telegraph--charles-spencer.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.telegraph.co.uk/culture/theatre/theatre-reviews/8203314/A-Flea-in-her-Ear-Old-Vic-review.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -5242,6 +5256,20 @@
       "score": 89,
       "publishDate": "2017-03-26",
       "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"christopher wheeldon\" from an-american-in-paris-2015"
+        }
+      ]
+    },
+    {
+      "showId": "an-american-in-paris-west-end-2017",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 81,
+      "publishDate": "2017-03-22",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/whisks-oh-la-la-land-american-paris-dominion-theatre-review/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -10210,20 +10238,6 @@
     },
     {
       "showId": "boys-from-the-blackstuff-west-end-2024",
-      "file": "telegraph--mark-brown.json",
-      "score": 83,
-      "publishDate": null,
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/boys-from-the-black-stuff-royal-court-liverpool-review/?n=@",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "boys-from-the-blackstuff-west-end-2024",
       "file": "thestage--sam-marlowe.json",
       "score": 60,
       "publishDate": "2024-05-30",
@@ -13966,7 +13980,7 @@
     {
       "showId": "cock-west-end-2022",
       "file": "broadwayworld--marianka-swain.json",
-      "score": 60,
+      "score": 59,
       "publishDate": "2022-03-16",
       "url": "https://www.broadwayworld.com/westend/article/BWW-Review-COCK-Ambassadors-Theatre-20220316",
       "findings": [
@@ -43714,6 +43728,20 @@
     },
     {
       "showId": "motown-the-musical-west-end-2016",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 82,
+      "publishDate": null,
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/motown-the-musical-review-a-lavish-slick-song-crammed-show/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"charles randolph-wright\" from motown-the-musical-2016"
+        }
+      ]
+    },
+    {
+      "showId": "motown-the-musical-west-end-2016",
       "file": "whatsonstage--michael-coveney.json",
       "score": 38,
       "publishDate": "2016-03-08",
@@ -48196,7 +48224,7 @@
     {
       "showId": "only-fools-and-horses-west-end-2019",
       "file": "guardian--mark-lawson.json",
-      "score": 62,
+      "score": 59,
       "publishDate": "February 20th, 2019",
       "url": "https://www.theguardian.com/stage/2019/feb/20/only-fools-and-horses-the-musical-review-vintage-gags-need-better-tunes",
       "findings": [
@@ -48279,7 +48307,7 @@
     {
       "showId": "only-fools-and-horses-west-end-2019",
       "file": "whatsonstage--alun-hood.json",
-      "score": 67,
+      "score": 68,
       "publishDate": "February 20th, 2019",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/only-fools-and-horses-musical-haymarket_48539.html",
       "findings": [
@@ -49470,7 +49498,7 @@
     {
       "showId": "p-rn-play-west-end-2025",
       "file": "broadwayworld--franco-milazzo.json",
-      "score": 56,
+      "score": 55,
       "publishDate": "2025-11-14",
       "url": "https://www.broadwayworld.com/westend/article/Review-PORN-PLAY-Royal-Court-20251114",
       "findings": [
@@ -49591,7 +49619,7 @@
     {
       "showId": "p-rn-play-west-end-2025",
       "file": "telegraph--fiona-mountford.json",
-      "score": 53,
+      "score": 58,
       "publishDate": "November 14th, 2025",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/porn-play-royal-court-review/",
       "findings": [
@@ -56554,7 +56582,7 @@
     {
       "showId": "shifters-west-end-2024",
       "file": "i-paper--fiona-mountford.json",
-      "score": 84,
+      "score": 83,
       "publishDate": "2024-08-22",
       "url": "https://inews.co.uk/culture/arts/shifters-review-glorious-tender-profound-3239467",
       "findings": [
@@ -56582,7 +56610,7 @@
     {
       "showId": "shifters-west-end-2024",
       "file": "telegraph--dzifa-benson.json",
-      "score": 83,
+      "score": 79,
       "publishDate": "2024-08-22",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/shifters-duke-of-yorks-theatre-review/",
       "findings": [
@@ -57546,7 +57574,7 @@
     {
       "showId": "skylight-west-end-2014",
       "file": "telegraph--charles-spencer.json",
-      "score": 87,
+      "score": 91,
       "publishDate": null,
       "url": "https://www.telegraph.co.uk/culture/theatre/theatre-reviews/10909907/Skylight-Wyndhams-review-a-knockout.html",
       "findings": [
@@ -59230,6 +59258,24 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"mike nichols\" from spamalot-2005"
+        }
+      ]
+    },
+    {
+      "showId": "spamalot-tour-2025",
+      "file": "asheville-stages--bruce-steele.json",
+      "publishDate": "2026-07-29",
+      "url": "https://ashevillestages.com/theater/spamalot-at-the-peace-center",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"mike nichols\" from spamalot-2005"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2023 (2x) more than 2025 (0x). 2023 matches production: spamalot-2023"
         }
       ]
     },
@@ -67504,6 +67550,20 @@
       "score": 76,
       "publishDate": "2015-06-05",
       "url": "https://www.standard.co.uk/culture/theatre/the-elephant-man-theatre-royal-haymarket-review-bradley-cooper-ditches-the-cad-in-focused-performance-10288354.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"scott ellis\" from the-elephant-man-2014"
+        }
+      ]
+    },
+    {
+      "showId": "the-elephant-man-west-end-2015",
+      "file": "telegraph--ben-lawrence.json",
+      "score": 74,
+      "publishDate": "2015-06-01T12:14:40+00:00",
+      "url": "https://www.telegraph.co.uk/culture/theatre/theatre-reviews/11639001/The-Elephant-Man-West-End-review.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -79693,6 +79753,20 @@
     },
     {
       "showId": "travesties-west-end-2017",
+      "file": "telegraph--claire-allfree.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/travesties-apollo-theatre-review-champagne-revival-stoppards/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"patrick marber\" from travesties-2018"
+        }
+      ]
+    },
+    {
+      "showId": "travesties-west-end-2017",
       "file": "timeout-london--dave-calhoun.json",
       "score": 89,
       "publishDate": "2017-02-16",
@@ -86153,7 +86227,7 @@
     {
       "showId": "9-to-5-the-musical-west-end-2019",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 66,
+      "score": 65,
       "publishDate": "May 24th, 2019",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/review-9-to-5-savoy-theatre_48522.html",
       "findings": [
@@ -88072,7 +88146,7 @@
     {
       "showId": "after-life-west-end-2021",
       "file": "guardian--kate-wyver.json",
-      "score": 60,
+      "score": 58,
       "publishDate": "2021-06-11",
       "url": "https://www.theguardian.com/stage/2021/jun/11/after-life-review-jack-thorne-dorfman-national-theatre",
       "findings": [
@@ -97629,7 +97703,7 @@
     {
       "showId": "doctor-faustus-west-end-2016",
       "file": "artsdesk--marianka-swain.json",
-      "score": 36,
+      "score": 40,
       "publishDate": null,
       "url": "http://www.theartsdesk.com/theatre/doctor-faustus-duke-yorks-theatre",
       "findings": [
@@ -97698,7 +97772,7 @@
     {
       "showId": "dogstar-off-west-end-2026",
       "file": "theatreandtonic--eleanor-bywater.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "2026-11-10",
       "url": "https://theatreandtonic.co.uk/blog/dogstar-at-hampstead-theatre-review",
       "findings": [
@@ -97794,7 +97868,7 @@
     {
       "showId": "downstate-west-end-2019",
       "file": "guardian--michael-billington.json",
-      "score": 80,
+      "score": 75,
       "publishDate": "March 21st, 2019",
       "url": "https://www.theguardian.com/stage/2019/mar/21/downstate-review-steppenwolf-national-theatre-child-abusers-punishment",
       "findings": [
@@ -117258,7 +117332,7 @@
     {
       "showId": "oklahoma-west-end-2023",
       "file": "musical-theatre-review--scott-matthewman.json",
-      "score": 95,
+      "score": 93,
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/oklahoma-wyndhams-theatre/",
       "findings": [
@@ -120841,6 +120915,19 @@
       "score": 18,
       "publishDate": "2017-10-30",
       "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-OHRA0U",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "red-velvet-west-end-2016",
+      "file": "telegraph--dominic-cavendish.json",
+      "publishDate": "2016-02-01",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/red-velvet-garrick-theatre-review-highly-recommended/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -130944,6 +131031,20 @@
       ]
     },
     {
+      "showId": "the-heretic-west-end-2011",
+      "file": "telegraph--charles-spencer.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.telegraph.co.uk/culture/theatre/theatre-reviews/8318442/The-Heretic-Royal-Court-review.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "the-hills-of-california-2024",
       "file": "culturesauce--thom-geier.json",
       "score": 78,
@@ -133189,7 +133290,7 @@
     {
       "showId": "the-man-in-the-white-suit-west-end-2019",
       "file": "guardian--michael-billington.json",
-      "score": 64,
+      "score": 62,
       "publishDate": "October 9th, 2019",
       "url": "https://www.theguardian.com/stage/2019/oct/09/the-man-in-the-white-suit-review-stephen-mangan-ealing-comedy",
       "findings": [
