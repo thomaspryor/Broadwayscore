@@ -127,7 +127,7 @@ const sessionJson = (id, revision, bucket = 'SESSION_STATUS_BUCKET_COMPLETED', c
 
 test('trialSession: needs a session id and a Broadwayscore revision', () => {
   assert.deepEqual(trialSession(sessionJson('session_abc', 'refs/heads/trial-x', undefined, '2026-11-11T13:00:00Z')),
-    { id: 'session_abc', revision: 'refs/heads/trial-x', bucket: 'SESSION_STATUS_BUCKET_COMPLETED', createdAt: '2026-11-11T13:00:00Z' });
+    { id: 'session_abc', revision: 'refs/heads/trial-x', bucket: 'SESSION_STATUS_BUCKET_COMPLETED', createdAt: '2026-11-11T13:00:00Z', initError: null });
   assert.throws(() => trialSession({ ccr: { id: 'x' } }), /no session id/);
   assert.throws(() => trialSession({ ccr: { id: 'session_a', session_context: { sources: [] } } }), /no Broadwayscore source revision/);
 });
@@ -157,6 +157,9 @@ test('buildRecord: a trial counts only on the guidance text it ran on, after it 
     assert.match(buildRecord({ cwd: dir, base: 'main', sessions: [trialSession(sessionJson('session_t2', 'refs/heads/work', 'SESSION_STATUS_BUCKET_WORKING'))], verdict: 'pass', note }).error, /still working/);
     assert.match(buildRecord({ cwd: dir, base: 'main', sessions: [trialSession(sessionJson('session_t3', 'refs/heads/work', ''))], verdict: 'pass', note }).error, /status is unknown/);
     assert.match(rec('refs/heads/no-such-branch', at(2.5)).error, /cannot resolve/);
+    const dead = sessionJson('session_t4', 'refs/heads/work', 'SESSION_STATUS_BUCKET_COMPLETED', at(2.5));
+    dead.ccr.external_metadata = { last_init_error: { message: 'Setup script failed' } };
+    assert.match(buildRecord({ cwd: dir, base: 'main', sessions: [trialSession(dead)], verdict: 'pass', note }).error, /never started/, 'an archived session that died in setup is not a trial');
     assert.match(rec('refs/heads/work', at(2.5), { verdict: 'maybe' }).error, /pass or fail/);
     assert.match(rec('refs/heads/work', at(2.5), { note: 'ok' }).error, /20\+ characters/);
     assert.match(buildRecord({ cwd: dir, base: 'main', sessions: [], verdict: 'pass', note }).error, /--from-json/);
