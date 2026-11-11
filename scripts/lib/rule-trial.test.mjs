@@ -6,7 +6,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import {
-  isGuidance, countWords, guidanceDiff, ruleTrialWarning, trialSession, buildRecord, main, LEDGER, MIN_WORDS,
+  isGuidance, countWords, wordChanges, guidanceDiff, ruleTrialWarning, trialSession, buildRecord, main, LEDGER, MIN_WORDS,
 } from './rule-trial.mjs';
 
 function git(cwd, ...args) {
@@ -33,6 +33,13 @@ function repo() {
 }
 const rm = (d) => fs.rmSync(d, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 const commit = (dir, msg) => { git(dir, 'add', '-A'); git(dir, 'commit', '-qm', msg); };
+const HOUR = 3600 * 1000;
+const at = (h) => new Date(Date.now() + h * HOUR).toISOString();
+function commitAt(dir, msg, h) {
+  git(dir, 'add', '-A');
+  const r = spawnSync('git', ['commit', '-qm', msg], { cwd: dir, encoding: 'utf8', env: { ...process.env, GIT_COMMITTER_DATE: at(h), GIT_AUTHOR_DATE: at(h) } });
+  if (r.status !== 0) throw new Error(r.stderr);
+}
 
 test('isGuidance: rule files, skills (both copies), agents; not memory topics or code', () => {
   for (const f of ['CLAUDE.md', 'scripts/CLAUDE.md', 'AGENTS.md', '.claude/CLOUD.md', '.claude/commands/ship-check.md',
@@ -45,6 +52,30 @@ test('isGuidance: rule files, skills (both copies), agents; not memory topics or
 test('countWords: added and removed runs count, file headers do not', () => {
   const p = ['diff --git a/CLAUDE.md b/CLAUDE.md', '--- a/CLAUDE.md', '+++ b/CLAUDE.md', '@@ -1 +1 @@', ' kept words', '-old two', '+new three words', '~'].join('\n');
   assert.equal(countWords(p), 5);
+});
+
+test('wordChanges: header lines are parsed only in the header, paths come from +++', () => {
+  // A removed line whose text starts "-- a/" is a change, not a file header.
+  const p = ['diff --git a/x b/y/CLAUDE.md b/x b/y/CLAUDE.md', '--- a/x b/y/CLAUDE.md', '+++ b/x b/y/CLAUDE.md', '@@ -1 +1 @@', ' keep', '--- a/b rule', '+new', '~',
+    'diff --git "a/q\\"x.md" "b/q\\"x.md"', '--- "a/q\\"x.md"', '+++ "b/q\\"x.md"', '@@ -1 +1 @@', '+word'].join('\n');
+  const { words, changes } = wordChanges(p);
+  assert.equal(words, 5);
+  assert.deepEqual([...changes.keys()], ['x b/y/CLAUDE.md', 'q"x.md']);
+  assert.deepEqual(changes.get('x b/y/CLAUDE.md'), ['keep|--- a/b rule', 'keep|+new']);
+});
+
+test('guidanceDiff: the same words added in a different place are a different text', () => {
+  const dir = repo();
+  try {
+    fs.writeFileSync(path.join(dir, 'CLAUDE.md'), '# Rules\nAlways land changes\nNever email owners\n');
+    commit(dir, 'base2');
+    git(dir, 'branch', '-f', 'main');
+    const add = (txt) => { git(dir, 'checkout', '-q', '-B', 'x', 'main'); fs.writeFileSync(path.join(dir, 'CLAUDE.md'), txt); commit(dir, 'edit'); return guidanceDiff(dir, 'main', 'HEAD').hash; };
+    const a = add('# Rules\nAlways land changes without asking\nNever email owners\n');
+    const b = add('# Rules\nAlways land changes\nNever email owners without asking\n');
+    assert.ok(a && b);
+    assert.notEqual(a, b);
+  } finally { rm(dir); }
 });
 
 test('guidanceDiff + ruleTrialWarning: a one-line CLAUDE.md rule is big, a reflow and memory topics are not', () => {
@@ -91,39 +122,45 @@ test('ruleTrialWarning never throws (a broken repo is silent)', () => {
   assert.equal(ruleTrialWarning({ root: '/nonexistent-dir', base: 'main' }), null);
 });
 
-const sessionJson = (id, revision, bucket = 'SESSION_STATUS_BUCKET_COMPLETED') => ({ ccr: { id, status_bucket: bucket,
+const sessionJson = (id, revision, bucket = 'SESSION_STATUS_BUCKET_COMPLETED', created = at(100)) => ({ ccr: { id, status_bucket: bucket, created_at: created,
   session_context: { sources: [{ git_repository: { url: 'https://github.com/thomaspryor/Broadwayscore', revision } }] } } });
 
 test('trialSession: needs a session id and a Broadwayscore revision', () => {
-  assert.deepEqual(trialSession(sessionJson('session_abc', 'refs/heads/trial-x')), { id: 'session_abc', revision: 'refs/heads/trial-x', bucket: 'SESSION_STATUS_BUCKET_COMPLETED' });
+  assert.deepEqual(trialSession(sessionJson('session_abc', 'refs/heads/trial-x', undefined, '2026-11-11T13:00:00Z')),
+    { id: 'session_abc', revision: 'refs/heads/trial-x', bucket: 'SESSION_STATUS_BUCKET_COMPLETED', createdAt: '2026-11-11T13:00:00Z' });
   assert.throws(() => trialSession({ ccr: { id: 'x' } }), /no session id/);
   assert.throws(() => trialSession({ ccr: { id: 'session_a', session_context: { sources: [] } } }), /no Broadwayscore source revision/);
 });
 
-test('buildRecord: a trial counts only on this exact guidance text, after it finished', () => {
+test('buildRecord: a trial counts only on the guidance text it ran on, after it finished', () => {
   const dir = repo();
   try {
     fs.appendFileSync(path.join(dir, 'CLAUDE.md'), `### 2. ${words(MIN_WORDS)}\n`);
-    commit(dir, 'draft one');
-    git(dir, 'branch', 'draft-one');
+    commitAt(dir, 'draft one', 1);
+    const draftOne = git(dir, 'rev-parse', 'HEAD').trim();
     fs.appendFileSync(path.join(dir, 'CLAUDE.md'), '### 3. another sentence added after the trial\n');
-    commit(dir, 'draft two');
+    commitAt(dir, 'draft two', 2);
     fs.writeFileSync(path.join(dir, 'scripts', 'x.js'), '2;\n');
-    commit(dir, 'code only, guidance unchanged');
-    git(dir, 'branch', 'tip-before-code', 'HEAD~1');
+    commitAt(dir, 'code only, guidance unchanged', 3);
     const note = 'trial followed the new rule and nothing else regressed';
-    const ok = (rev, extra = {}) => buildRecord({ cwd: dir, base: 'main', sessions: [trialSession(sessionJson('session_t1', rev))], verdict: 'pass', note, ...extra });
+    const rec = (rev, created, extra = {}) => buildRecord({ cwd: dir, base: 'main', sessions: [trialSession(sessionJson('session_t1', rev, undefined, created))], verdict: 'pass', note, ...extra });
 
-    assert.match(ok('refs/heads/draft-one').error, /guidance text differs/, 'a trial of an older draft is refused');
-    const r = ok('refs/heads/tip-before-code');
+    // The branch moved on after the trial started: the trial ran draft one, not today's tip.
+    assert.match(rec('refs/heads/work', at(1.5)).error, /guidance text differs/, 'a trial of an older draft on the same branch is refused');
+    assert.match(rec(draftOne, at(1.5)).error, /guidance text differs/, 'a sha of an older draft is refused');
+    const r = rec('refs/heads/work', at(2.5));
     assert.ok(r.row, JSON.stringify(r));
     assert.deepEqual(r.row.sessions, ['session_t1']);
     assert.equal(r.row.hash, guidanceDiff(dir, 'main', 'HEAD').hash, 'a later code-only commit keeps the same guidance text');
-    assert.match(buildRecord({ cwd: dir, base: 'main', sessions: [trialSession(sessionJson('session_t2', 'refs/heads/tip-before-code', 'SESSION_STATUS_BUCKET_WORKING'))], verdict: 'pass', note }).error, /still working/);
-    assert.match(ok('refs/heads/no-such-branch').error, /cannot resolve/);
-    assert.match(ok('refs/heads/tip-before-code', { verdict: 'maybe' }).error, /pass or fail/);
-    assert.match(ok('refs/heads/tip-before-code', { note: 'ok' }).error, /20\+ characters/);
+    assert.match(rec('refs/heads/work', at(-5)).error, /cannot resolve/, 'a session older than every commit has nothing to resolve');
+    assert.match(rec('refs/heads/work', null).error, /cannot resolve/, 'a branch name needs the start time');
+    assert.match(buildRecord({ cwd: dir, base: 'main', sessions: [trialSession(sessionJson('session_t2', 'refs/heads/work', 'SESSION_STATUS_BUCKET_WORKING'))], verdict: 'pass', note }).error, /still working/);
+    assert.match(buildRecord({ cwd: dir, base: 'main', sessions: [trialSession(sessionJson('session_t3', 'refs/heads/work', ''))], verdict: 'pass', note }).error, /status is unknown/);
+    assert.match(rec('refs/heads/no-such-branch', at(2.5)).error, /cannot resolve/);
+    assert.match(rec('refs/heads/work', at(2.5), { verdict: 'maybe' }).error, /pass or fail/);
+    assert.match(rec('refs/heads/work', at(2.5), { note: 'ok' }).error, /20\+ characters/);
     assert.match(buildRecord({ cwd: dir, base: 'main', sessions: [], verdict: 'pass', note }).error, /--from-json/);
+    assert.match(buildRecord({ cwd: dir, base: 'no-such-base', sessions: [trialSession(sessionJson('session_t1', 'refs/heads/work'))], verdict: 'pass', note }).error, /failed/);
   } finally { rm(dir); }
 });
 
