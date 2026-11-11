@@ -575,12 +575,13 @@
       "title": "Review-gap audit refused to write — 25.0% of shows changed coverage state",
       "firstSeen": "2026-08-03T23:19:26.609Z",
       "incidentOpenedAt": "2026-11-07T16:40:54.348Z",
-      "lastSeen": "2026-11-11T01:41:07.299Z",
+      "lastSeen": "2026-11-11T02:57:44.096Z",
       "lastNotifiedAt": "2026-11-11T01:41:07.299Z",
       "lastSurfacedAt": "2026-11-09T07:55:47.811Z",
       "notifyCount": 89,
       "cardId": null,
-      "linearIdentifier": "BRO-5516"
+      "linearIdentifier": "BRO-5516",
+      "silentRefires": 1
     },
     "health-check:Cron failed: Weekly Video Reviews": {
       "status": "resolved",
@@ -19485,7 +19486,7 @@
       "title": "Roundup gaps: 14 listed review(s) not captured across 3 show(s)",
       "firstSeen": "2026-10-16T17:15:04.341Z",
       "incidentOpenedAt": "2026-10-16T17:15:04.341Z",
-      "lastSeen": "2026-11-11T01:41:08.071Z",
+      "lastSeen": "2026-11-11T02:57:44.240Z",
       "lastNotifiedAt": "2026-11-10T20:25:27.119Z",
       "lastSurfacedAt": null,
       "notifyCount": 46,
@@ -19552,7 +19553,7 @@
         "wanted-2022",
         "the-visitors-off-broadway-2026"
       ],
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "land:land/bro-5478-land-hold-doc": {
       "status": "resolved",
@@ -38530,13 +38531,13 @@
       "title": "Review gap — \"Othello (Bedlam)\" missing 2 cited review(s)",
       "firstSeen": "2026-11-07T15:26:56.754Z",
       "incidentOpenedAt": "2026-11-07T15:26:56.754Z",
-      "lastSeen": "2026-11-11T01:41:08.011Z",
+      "lastSeen": "2026-11-11T02:57:44.198Z",
       "lastNotifiedAt": "2026-11-10T07:34:48.647Z",
       "lastSurfacedAt": "2026-11-10T07:34:48.647Z",
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 14
+      "silentRefires": 15
     },
     "land:land/bro-7081-discovery": {
       "status": "resolved",
@@ -41699,6 +41700,19 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-7340"
+    },
+    "review-gap:opening-window:as-you-like-it-regional-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Review gap — \"As You Like It\" missing 6 cited review(s)",
+      "firstSeen": "2026-11-11T02:57:44.180Z",
+      "incidentOpenedAt": "2026-11-11T02:57:44.180Z",
+      "lastSeen": "2026-11-11T02:57:44.180Z",
+      "lastNotifiedAt": "2026-11-11T02:57:44.180Z",
+      "lastSurfacedAt": "2026-11-11T02:57:44.180Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
     },
     "land:land/bro-7331-round3": {
       "status": "open",
