@@ -6065,7 +6065,7 @@ function loadState() {
         if (!state.tierBreakdown) {
           state.tierBreakdown = { playwright: [], amp: [], browserbase: [], directCookies: [], scrapingdog: [], scrapingbee: [], brightdata: [], archiveToday: [], archive: [] };
         } else {
-          for (const key of ['playwright', 'amp', 'browserbase', 'scrapingdog', 'scrapingbee', 'brightdata', 'archiveToday', 'archive']) {
+          for (const key of ['playwright', 'amp', 'browserbase', 'directCookies', 'scrapingdog', 'scrapingbee', 'brightdata', 'archiveToday', 'archive']) {
             if (!state.tierBreakdown[key]) state.tierBreakdown[key] = [];
           }
         }
