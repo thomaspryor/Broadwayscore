@@ -26,7 +26,7 @@ function isBotAuthor(name, email) {
     || /^(action|noreply)@github\.com$|\[bot\]@users\.noreply\.github\.com$/i.test(String(email || '').trim());
 }
 
-/** Parse `git log --format=LOG_FORMAT --name-only` output into [{ sha, at, author, subject, files }]. */
+/** Parse `git log --format=LOG_FORMAT --name-only` (or `--name-status`) output into [{ sha, at, author, subject, files, added? }]. */
 function parseGitLog(raw) {
   const out = [];
   for (const chunk of String(raw || '').split(SEP)) {
@@ -34,7 +34,23 @@ function parseGitLog(raw) {
     const lines = chunk.split('\n');
     const m = /^([0-9a-f]{7,40})\|([^|]+)\|([^|]*)\|([^|]*)\|(.*)$/.exec(lines[0]);
     if (!m) continue;
-    out.push({ sha: m[1], at: m[2], author: m[3], email: m[4], subject: m[5].trim(), files: lines.slice(1).map((l) => l.trim()).filter(Boolean) });
+    // `--name-status` lines ("A\tpath", "M\tpath") also parse: files keeps the
+    // bare paths, and `added` lists the ones the commit created (BRO-7375: a
+    // commit that only MODIFIED an outlet's file recovered text, it did not
+    // find a review the first pass missed). name-only output leaves `added` unset.
+    const files = [];
+    let added = null;
+    for (const raw of lines.slice(1)) {
+      const l = raw.trim();
+      if (!l) continue;
+      const st = /^([ACDMRTU])[0-9]*\t(?:[^\t]+\t)?(.+)$/.exec(raw);
+      if (st) {
+        files.push(st[2].trim());
+        added = added || [];
+        if (st[1] === 'A' || st[1] === 'C') added.push(st[2].trim());
+      } else files.push(l);
+    }
+    out.push({ sha: m[1], at: m[2], author: m[3], email: m[4], subject: m[5].trim(), files, ...(added ? { added } : {}) });
   }
   return out;
 }
@@ -65,8 +81,15 @@ function manualActionsFromCommits(commits, { showId, embargoAt, nightStartH = 4,
     const source = `${String(c.sha).slice(0, 8)} ${c.subject}`;
     const ids = [...new Set(touched.map((f) => outletIdFromFile(f, showId)).filter(Boolean))];
     const base = { at: new Date(at).toISOString(), kind: 'hand-fix', source };
+    // fileChange (BRO-7375), only when the log carried file status: 'added'
+    // when the commit created one of the outlet's files, else 'modified'.
+    const change = (id) => {
+      if (!Array.isArray(c.added)) return {};
+      const mine = touched.filter((f) => outletIdFromFile(f, showId) === id);
+      return { fileChange: mine.some((f) => c.added.includes(f)) ? 'added' : 'modified' };
+    };
     if (!ids.length) out.push({ ...base, outletId: null, outlet: null });
-    else for (const id of ids) out.push({ ...base, outletId: id, outlet: id });
+    else for (const id of ids) out.push({ ...base, outletId: id, outlet: id, ...change(id) });
   }
   return out;
 }

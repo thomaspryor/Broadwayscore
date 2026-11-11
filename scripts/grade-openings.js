@@ -79,7 +79,7 @@ function historyFrom(rtDir) {
 
 /** Commits that can be hand evidence: non-bot authors, plus every `ingest-urls:` commit. */
 function loadCommits(rtDir, sinceIso, untilIso) {
-  const base = ['log', 'HEAD', `--since=${sinceIso}`, `--until=${untilIso}`, `--format=${pm.LOG_FORMAT}`, '--name-only', '--no-renames'];
+  const base = ['log', 'HEAD', `--since=${sinceIso}`, `--until=${untilIso}`, `--format=${pm.LOG_FORMAT}`, '--name-status', '--no-renames']; // name-status: added vs modified per file (BRO-7375)
   const human = pm.parseGitLog(git(rtDir, [...base, '--perl-regexp', '--author=^(?!GitHub Action|github-actions)']));
   const ingest = pm.parseGitLog(git(rtDir, [...base, '--grep=^ingest-urls:']));
   // ingest-urls.yml's own fallback commit when the script did not commit
@@ -163,6 +163,14 @@ function main() {
     commitsScanned: commits.length,
     summary: og.summarize(grades),
     grades,
+    // BRO-7375: reviews the first pass did not get, kept MISS_HISTORY_DAYS
+    // (longer than the grade window) for the recurrence detector's 30-day rule.
+    // Only shows graded in this run are replaced, so a --show run keeps the rest.
+    firstPassMisses: og.mergeMissHistory(
+      (readJson(auditOutPath, null) || {}).firstPassMisses || [],
+      og.firstPassMisses(grades),
+      { nowMs, gradedShows: grades.map((g) => g.showId) },
+    ),
   };
   for (const g of grades) console.log(`${g.verdict.padEnd(13)} ${g.showId}  ${og.gradeLine(g)}`);
   console.log(JSON.stringify(doc.summary));
