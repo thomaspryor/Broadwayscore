@@ -494,3 +494,11 @@ test('commentBodiesOldestFirst sorts Linear page order and the detector uses it'
 test('preventionLines reads CLASS-GUARD lines too, the format the close check asks for (BRO-7132)', () => {
   assert.deepEqual(rc.preventionLines('CLASS-GUARD: scripts/a.test.mjs\n**PREVENTION**: b\nNO-PREVENTION: docs only'), ['scripts/a.test.mjs', 'b']);
 });
+
+test('BRO-7334: an expected-repeat class answers --check-class as quiet, not as a case coming back', () => {
+  const cards = [28, 21, 14, 7].map((d) => done('Tech Scorecard weekly port 2026-10-' + String(30 - d).padStart(2, '0'), d, d - 1));
+  const snap = det.buildSnapshot({ cards, ledger: null, now: NOW, complete: true });
+  const key = snap.expected.find((e) => /weekly port/.test(e.key)).key;
+  assert.ok(!(key in snap.lastSeenByKey), 'expected class has no last-seen date');
+  assert.ok(snap.knownKeys.includes(key), 'but the slug stays known, so a typo is still refused');
+});
