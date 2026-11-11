@@ -21,6 +21,7 @@ import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
 const lib = require('./lib/reddit-opening-post.js');
+const { dueEmails } = require('./lib/reddit-post-email.js');
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const DRAFTS = path.join(HERE, '..', 'data', 'audit', 'reddit-post-drafts.json');
@@ -40,15 +41,11 @@ test('the daily draft job has run the BRO-5879 code (posted-detection recorded, 
   assert.ok(stamped.length > 0, 'no draft carries emailedScore/emailedReviewCount yet: the new sender has not emailed anything');
 });
 
-test('no live emailed draft is sitting on moved numbers with no update sent', () => {
+test('no live emailed draft is due an uncapped update with no update sent', () => {
   const file = load();
-  const pending = Object.values(file.drafts || {}).filter(d =>
-    d.status === 'ready' && d.emailedAt
-    && (Date.now() - Date.parse(d.createdAt)) / 86400000 <= lib.DRAFT_TTL_DAYS
-    && (d.updateCount || 0) < lib.MAX_UPDATE_EMAILS
-    && lib.numbersMoved(d));
-  // After a completed run the sender has emailed every moved draft, unless
-  // posted-detection was skipped that run (updates are held back then).
-  if (file._meta && file._meta.postedDetection === 'skipped') return;
-  assert.deepEqual(pending.map(d => d.showId), [], 'emailed drafts whose numbers moved but got no Updated email');
+  // Use the sender's actual decision: moved numbers can be intentionally held
+  // by posted detection, review gaps, or same-day subject deduplication.
+  const pending = dueEmails(file, Date.now()).filter(e =>
+    e.kind === 'update' && (e.draft.updateCount || 0) < lib.MAX_UPDATE_EMAILS);
+  assert.deepEqual(pending.map(e => e.draft.showId), [], 'emailed drafts due an update but got no Updated email');
 });

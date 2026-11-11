@@ -373,7 +373,7 @@ function emailedNumbers(d) {
  */
 function carryOverState(prev, entry, nowIso) {
   if (!prev) return entry;
-  for (const k of ['createdAt', 'emailedAt', 'reminderAt', 'emailedScore', 'emailedReviewCount', 'updateCount', 'verification', 'status', 'postedAt', 'postedUrl', 'postedSubreddit', 'postedScore']) {
+  for (const k of ['createdAt', 'emailedAt', 'reminderAt', 'emailedScore', 'emailedReviewCount', 'updateCount', 'updateEmailHistory', 'verification', 'status', 'postedAt', 'postedUrl', 'postedSubreddit', 'postedScore']) {
     if (prev[k] !== undefined) entry[k] = prev[k];
   }
   if (prev.emailedAt) {

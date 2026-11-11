@@ -8,11 +8,19 @@
 
 const { TOKENS, esc } = require('./email-components');
 const { activeDrafts, numbersMoved, updateAllowed } = require('./reddit-opening-post');
+const { dayKeyET } = require('./scheduled-email-count-rules');
 
 const REMIND_AFTER_HOURS = 20;
 
 function isComplete(d) {
   return !!(d && d.title && d.body && d.subreddit && d.submitUrl && d.showTitle && typeof d.score === 'number');
+}
+
+// Match the monitor's ET calendar day. Remember every update subject that day:
+// comparing only the last send misses score cycles such as 65 -> 63 -> 65.
+function updatesSentOn(draft, stamp) {
+  const day = dayKeyET(stamp);
+  return (draft.updateEmailHistory || []).filter(sent => dayKeyET(sent.sentAt) === day);
 }
 
 /**
@@ -30,7 +38,8 @@ function dueEmails(drafts, nowMs) {
     if (!isComplete(d)) continue;
     if (d.heldGap) continue; // BRO-6676: aggregator gap hold
     if (!d.emailedAt) out.push({ draft: d, kind: 'new' });
-    else if (canUpdate && numbersMoved(d) && updateAllowed(d, nowMs)) out.push({ draft: d, kind: 'update' });
+    else if (canUpdate && numbersMoved(d) && updateAllowed(d, nowMs)
+      && !updatesSentOn(d, new Date(nowMs).toISOString()).some(sent => sent.subject === buildSubject(d, 'update'))) out.push({ draft: d, kind: 'update' });
     else if (!d.reminderAt && (nowMs - Date.parse(d.emailedAt)) / 3600000 >= REMIND_AFTER_HOURS) out.push({ draft: d, kind: 'reminder' });
   }
   return out;
@@ -66,7 +75,12 @@ function resendEmails(drafts, ids) {
 function stampsFor(kind, draft, stamp, { resend = false } = {}) {
   const sent = { emailedScore: draft.score, emailedReviewCount: draft.reviewCount };
   if (resend) return { emailedAt: stamp, reminderAt: stamp, ...sent };
-  if (kind === 'update') return { emailedAt: stamp, reminderAt: stamp, updateCount: (draft.updateCount || 0) + 1, ...sent };
+  if (kind === 'update') return {
+    emailedAt: stamp, reminderAt: stamp, updateCount: (draft.updateCount || 0) + 1, ...sent,
+    updateEmailHistory: [...updatesSentOn(draft, stamp), {
+      subject: buildSubject(draft, kind), score: draft.score, reviewCount: draft.reviewCount, sentAt: stamp,
+    }],
+  };
   return { [kind === 'new' ? 'emailedAt' : 'reminderAt']: stamp, ...sent };
 }
 

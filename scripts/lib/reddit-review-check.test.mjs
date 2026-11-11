@@ -299,10 +299,10 @@ test('an update email ends the pending-scoring watch; a first email does not', (
   const d = baseDraft({ verification: { status: 'fixed', pendingScoring: true, added: [{ outlet: 'Guardian' }] } });
   const afterNew = mail.afterSend(d, mail.stampsFor('new', d, 'T'));
   assert.equal(afterNew.verification.pendingScoring, true, 'the first email still has numbers that will move');
-  const afterUpdate = mail.afterSend(d, mail.stampsFor('update', d, 'T'));
+  const afterUpdate = mail.afterSend(d, mail.stampsFor('update', d, new Date(NOW).toISOString()));
   assert.equal(afterUpdate.verification.pendingScoring, false);
   assert.deepEqual(afterUpdate.verification.added, [{ outlet: 'Guardian' }], 'the rest of the record is kept');
-  assert.equal(mail.afterSend(baseDraft(), mail.stampsFor('update', baseDraft(), 'T')).verification, undefined);
+  assert.equal(mail.afterSend(baseDraft(), mail.stampsFor('update', baseDraft(), new Date(NOW).toISOString())).verification, undefined);
 });
 
 test('the email shows what the check did, and a banner when it failed', () => {
@@ -470,12 +470,12 @@ test('a second check before the update keeps the watch: pendingScoring survives 
   const failed = chk.buildVerification({ draft: landed, nowIso: 'T3', mode: 'apply', snapshotBefore: same, snapshotAfter: same, census: null, error: 'boom', previous: first });
   assert.equal(failed.pendingScoring, true);
   // and once the update is sent with nothing new added, the watch ends
-  assert.equal(mail.afterSend(rechecked, mail.stampsFor('update', rechecked, 'T')).verification.pendingScoring, false);
+  assert.equal(mail.afterSend(rechecked, mail.stampsFor('update', rechecked, new Date(NOW).toISOString())).verification.pendingScoring, false);
 });
 
 test('an update email keeps the watch when the check just before it added reviews that are not live yet', () => {
   const d = baseDraft({ verification: { status: 'fixed', pendingScoring: true, addedThisCheck: true, added: [{ outlet: 'Time Out' }] } });
-  const after = mail.afterSend(d, mail.stampsFor('update', d, 'T'));
+  const after = mail.afterSend(d, mail.stampsFor('update', d, new Date(NOW).toISOString()));
   assert.equal(after.verification.pendingScoring, true);
   assert.equal(mail.afterSend(d, mail.stampsFor('reminder', d, 'T')).verification.pendingScoring, true, 'a reminder never ends it');
 });

@@ -585,9 +585,60 @@ test('updates are held back when posted detection was skipped that run (BRO-5879
   assert.deepEqual(mail.dueEmails({ _meta: { postedDetection: 'skipped' }, drafts: { x: d } }, now).map(e => e.kind), ['reminder'], 'no update, the plain reminder still goes');
 });
 
+test('update subjects send once per ET day across redrafts and score cycles (BRO-7026)', () => {
+  const draft = (score, reviewCount) => ({ showId: 'tosca', showTitle: 'Tosca - English National Opera', status: 'ready', title: 't', body: 'b', subreddit: 'TheWestEnd', submitUrl: 'https://a', score, reviewCount, createdAt: '2026-11-04T06:00:00Z' });
+  let d = mail.afterSend(draft(61, 10), mail.stampsFor('new', draft(61, 10), '2026-11-04T06:00:00Z'));
+  for (const [score, count, stamp, expected] of [
+    [65, 12, '2026-11-04T07:00:00Z', ['update']],
+    [63, 14, '2026-11-04T08:00:00Z', ['update']],
+    [65, 16, '2026-11-04T09:00:00Z', []],
+    [64, 17, '2026-11-04T10:00:00Z', ['update']],
+    [65, 18, '2026-11-05T04:59:59Z', []], // UTC tomorrow, still November 4 ET
+    [65, 18, '2026-11-05T05:00:00Z', ['update']],
+  ]) {
+    d = lib.carryOverState(d, draft(score, count), stamp);
+    const due = mail.dueEmails({ drafts: { tosca: d } }, Date.parse(stamp));
+    assert.deepEqual(due.map(e => e.kind), expected, `${score}/${count} at ${stamp}`);
+    if (due.length) d = mail.afterSend(d, mail.stampsFor(due[0].kind, d, stamp));
+  }
+  assert.equal(d.updateCount, 4, 'suppressed sends do not advance the counter');
+  assert.deepEqual(d.updateEmailHistory, [{
+    subject: mail.buildSubject(d, 'update'), score: 65, reviewCount: 18, sentAt: '2026-11-05T05:00:00Z',
+  }], 'the next ET day prunes earlier history');
+});
+
+test('same-score review additions cannot repeat an update subject, but new subjects still send', () => {
+  const stamp = '2026-11-04T12:00:00Z';
+  const draft = { showId: 'x', showTitle: 'Ceilidh The Musical', status: 'ready', title: 't', body: 'b', subreddit: 'TheWestEnd', submitUrl: 'https://a', score: 82, reviewCount: 20, createdAt: stamp };
+  const sent = mail.afterSend(draft, mail.stampsFor('update', draft, stamp));
+  const changed = lib.carryOverState(sent, { ...draft, reviewCount: 21 }, stamp);
+  const due = d => mail.dueEmails({ drafts: { x: d } }, Date.parse('2026-11-04T13:00:00Z')).map(e => e.kind);
+  assert.deepEqual(due(changed), []);
+  assert.deepEqual(due({ ...changed, score: 83 }), ['update']);
+  assert.deepEqual(due({ ...changed, subreddit: 'Broadway' }), ['update']);
+  assert.deepEqual(sent.updateEmailHistory, [{ subject: mail.buildSubject(draft, 'update'), score: 82, reviewCount: 20, sentAt: stamp }]);
+  assert.equal(sent.emailedReviewCount, 20, 'suppression does not pretend to send the new count');
+});
+
+test('update history survives reminders and explicit resends without blocking them', () => {
+  const stamp = '2026-11-04T12:00:00Z';
+  const draft = { showId: 'x', showTitle: 'Rope', status: 'ready', title: 't', body: 'b', subreddit: 'offbroadwayNYC', submitUrl: 'https://a', score: 58, reviewCount: 12, createdAt: stamp };
+  const sent = mail.afterSend(draft, mail.stampsFor('update', draft, stamp));
+  for (const [kind, options] of [['reminder', {}], ['new', { resend: true }]]) {
+    const resent = mail.afterSend(sent, mail.stampsFor(kind, sent, '2026-11-04T13:00:00Z', options));
+    assert.deepEqual(resent.updateEmailHistory, sent.updateEmailHistory);
+    assert.deepEqual(mail.dueEmails({ drafts: { x: { ...resent, reviewCount: 13 } } }, Date.parse('2026-11-04T14:00:00Z')), []);
+    assert.equal(mail.resendEmails({ drafts: { x: resent } }, ['x']).due.length, 1);
+  }
+});
+
 test('stampsFor: update counts as the nudge, resend stamps both, reminder keeps emailedAt', () => {
   const d = { score: 80, reviewCount: 20, updateCount: 1 };
-  assert.deepEqual(mail.stampsFor('update', d, 'T'), { emailedAt: 'T', reminderAt: 'T', updateCount: 2, emailedScore: 80, emailedReviewCount: 20 });
+  const stamp = '2026-11-04T12:00:00Z';
+  assert.deepEqual(mail.stampsFor('update', d, stamp), {
+    emailedAt: stamp, reminderAt: stamp, updateCount: 2, emailedScore: 80, emailedReviewCount: 20,
+    updateEmailHistory: [{ subject: mail.buildSubject(d, 'update'), score: 80, reviewCount: 20, sentAt: stamp }],
+  });
   assert.deepEqual(mail.stampsFor('reminder', d, 'T'), { reminderAt: 'T', emailedScore: 80, emailedReviewCount: 20 });
   assert.deepEqual(mail.stampsFor('new', d, 'T', { resend: true }), { emailedAt: 'T', reminderAt: 'T', emailedScore: 80, emailedReviewCount: 20 });
 });
