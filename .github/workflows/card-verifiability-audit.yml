@@ -122,13 +122,23 @@ jobs:
           node scripts/enrich-card-acceptance.js --source linear --limit 25
           # BRO-2170: a narrowed stamping rule must not strand an already-stamped cohort.
           node scripts/enrich-card-acceptance.js --source linear --recheck-markers --limit 10
-          # BRO-7333: the armed-but-vacuous bucket ("Data: armed-but-vacuous backlog cards") is
-          # invisible to the unarmed pass above (enrichOneCard skips armed cards), so its ONLY
-          # remedy, --rearm, was hand-run per card: BRO-5456, BRO-7007, BRO-7219 each fixed one
-          # case and the next day's audit refiled it. Comment-only correction (never a
-          # description rewrite, BRO-2796); --allow-human-written because most vacuous cards
-          # are human-filed and would otherwise stay flagged forever.
-          node scripts/enrich-card-acceptance.js --source linear --rearm --allow-human-written --limit 10
+
+      # BRO-7333: the armed-but-vacuous bucket ("Data: armed-but-vacuous backlog cards") is
+      # invisible to the unarmed pass above (enrichOneCard skips armed cards), so its ONLY
+      # remedy, --rearm, was hand-run per card: BRO-5456, BRO-7007, BRO-7219 each fixed one
+      # case and the next day's audit refiled it. Comment-only correction (never a
+      # description rewrite, BRO-2796); --allow-human-written because most vacuous cards
+      # are human-filed and would otherwise stay flagged forever.
+      - name: Rearm vacuous Linear cards
+        timeout-minutes: 15
+        # lint-allow-swallow: a failed rearm draft (exitCode 1 when every attempted card fails) must not skip the "Audit Linear cards" step below; the row stays flagged and the next daily run retries
+        continue-on-error: true
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: node scripts/enrich-card-acceptance.js --source linear --rearm --allow-human-written --limit 10
 
       # BRO-3619: the Linear report (health-check's vacuous/refused/stale rows read it) was never refreshed on a
       # schedule. Its own step: the audit re-fetches every flagged issue (~475 round trips), so it gets its own
