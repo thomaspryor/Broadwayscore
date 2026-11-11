@@ -741,3 +741,34 @@ test('BRO-7331: a not_a_review stamped before the correction no longer excludes 
   assert.equal(isUrlCorrectedReverifiedReview(bro7331Fixture({ contentVerification: { ...cv, articleType: 'news' } })), false);
   assert.equal(isUrlCorrectedReverifiedReview(bro7331Fixture({ contentVerification: { ...cv, articleTypeConfidence: 'low', confidence: 'low' } })), false);
 });
+
+test('BRO-7331 round 2: a stale low-confidence score older than the corrected-url CV is re-queued once, never after a fresh score', () => {
+  const { isUrlCorrectedAwaitingFreshScore } = require('./review-guards.js');
+  const { unscoredSkipReason, UNSCORED_SKIP } = require('./scoring-queue-counts.js');
+  const stale = { llmScore: { score: 89, confidence: 'low' }, assignedScore: 89, llmMetadata: { scoredAt: '2026-10-25T10:00:00.000Z' } };
+  const d = bro7331Fixture(stale);
+  assert.equal(isUrlCorrectedAwaitingFreshScore(d), true);
+  assert.notEqual(unscoredSkipReason(d, {}), UNSCORED_SKIP.ALREADY_SCORED);
+  // After the rescore (any confidence) scoredAt >= verifiedAt: no re-queue loop.
+  const rescored = bro7331Fixture({ llmScore: { score: 70, confidence: 'low' }, llmMetadata: { scoredAt: '2026-11-11T10:00:00.000Z' } });
+  assert.equal(isUrlCorrectedAwaitingFreshScore(rescored), false);
+  assert.equal(unscoredSkipReason(rescored, {}), UNSCORED_SKIP.ALREADY_SCORED);
+  // High-confidence ensemble score since the CV: done.
+  assert.equal(isUrlCorrectedAwaitingFreshScore(bro7331Fixture({ llmScore: { score: 80, confidence: 'high' }, llmMetadata: { scoredAt: '2026-11-11T10:00:00.000Z' } })), false);
+  // No url correction, no llmScore, or CV unsafe: ordinary already-scored behaviour.
+  assert.equal(isUrlCorrectedAwaitingFreshScore(bro7331Fixture({ ...stale, urlCorrectedFrom: undefined })), false);
+  assert.equal(isUrlCorrectedAwaitingFreshScore(bro7331Fixture()), false);
+  const cv = bro7331Fixture().contentVerification;
+  assert.equal(isUrlCorrectedAwaitingFreshScore(bro7331Fixture({ ...stale, contentVerification: { ...cv, articleType: 'news' } })), false);
+  assert.equal(unscoredSkipReason(bro7331Fixture({ ...stale, urlCorrectedFrom: undefined }), {}), UNSCORED_SKIP.ALREADY_SCORED);
+});
+
+test('BRO-7331 round 2: the re-queue is limited to CV-promoted isNonReview files (no mass rescore of ordinary reviews)', () => {
+  const { isUrlCorrectedAwaitingFreshScore } = require('./review-guards.js');
+  const stale = { llmScore: { score: 89, confidence: 'low' }, llmMetadata: { scoredAt: '2026-10-25T10:00:00.000Z' } };
+  assert.equal(isUrlCorrectedAwaitingFreshScore(bro7331Fixture(stale)), true);
+  assert.equal(isUrlCorrectedAwaitingFreshScore(bro7331Fixture({ ...stale, isNonReview: false })), false);
+  assert.equal(isUrlCorrectedAwaitingFreshScore(bro7331Fixture({ ...stale, isNonReview: undefined, contentVerificationPromoted: undefined })), false);
+  assert.equal(isUrlCorrectedAwaitingFreshScore(bro7331Fixture({ ...stale, _locked: true })), false);
+  assert.equal(isUrlCorrectedAwaitingFreshScore(bro7331Fixture({ ...stale, humanReviewScore: 80 })), false);
+});

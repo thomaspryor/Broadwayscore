@@ -1204,7 +1204,7 @@ async function main(): Promise<void> {
     let unscoredBlockedSkipped = 0;
     let stickyRejectionSkipped = 0;
     filesToProcess = allFiles.filter(f => {
-      if ((f.data as any).llmScore) return false;
+      if ((f.data as any).llmScore && !require('../lib/review-guards').isUrlCorrectedAwaitingFreshScore(f.data)) return false; // BRO-7331
       if (isBlockedFromRescore(f.data as any)) {
         unscoredBlockedSkipped++;
         return false;
