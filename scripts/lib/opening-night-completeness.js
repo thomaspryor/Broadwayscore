@@ -136,7 +136,11 @@ function hasSameMarketTitleMatch(show, shows) {
     // Regional productions are staged by independent companies in different
     // cities: the same title elsewhere is a different production, not a
     // revival of this one (BRO-7336). Only the same venue counts.
-    if (targetMarket === 'regional' && normVenue(s.venue) !== normVenue(show.venue)) return false;
+    if (targetMarket === 'regional') {
+      const v = normVenue(show.venue);
+      // No venue: nothing ties this show to an earlier run (two stubs must not match).
+      if (!v || normVenue(s.venue) !== v) return false;
+    }
     // Only an EARLIER production makes `show` a revival. A later sibling
     // (e.g. sacrilegious-2027 flagged isRevival, BRO-5439) is the revival;
     // this show is the original.
