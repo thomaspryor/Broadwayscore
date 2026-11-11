@@ -1,10 +1,10 @@
 {
   "_meta": {
-    "generatedAt": "2026-11-11T02:26:35.694Z",
+    "generatedAt": "2026-11-11T02:44:10.665Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 156,
+    "totalFlagged": 157,
     "highConfidence": 9,
-    "mediumConfidence": 147,
+    "mediumConfidence": 148,
     "lowConfidence": 0,
     "reassignable": 52
   },
@@ -1415,6 +1415,23 @@
         "year 1979 in text matches revival the-elephant-man-1979"
       ],
       "textSnippet": "The directors Michael DeFilippis, Dmitry Krymov and Aleksandr Molochnikov all infuse their current productions with a burning, modern rage.\n\nIn “Burnout Paradise,” four performers try ambitious tasks "
+    },
+    {
+      "showId": "the-elephant-man-2002",
+      "showTitle": "The Elephant Man",
+      "showYear": 2002,
+      "file": "talkinbroadway--unknown.json",
+      "outlet": "Talkin' Broadway",
+      "criticName": "Unknown",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "revival text signals: revival, this production",
+        "modern references: masks",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "Theatre Review by Matthew Murray - April 14, 2002\n\nThe Elephant Man by Bernard Pomerance. Directed by Sean Mathias. Scenic and costume design by Santo Loquasto. Lighting design by James F. Ingalls. So"
     },
     {
       "showId": "thoroughly-modern-millie-2002",

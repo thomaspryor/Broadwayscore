@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-11T02:35:26.299Z",
+  "timestamp": "2026-11-11T02:53:07.045Z",
   "stats": {
-    "totalReviews": 81369,
-    "alreadyFlagged": 22231,
+    "totalReviews": 81370,
+    "alreadyFlagged": 22234,
     "dateGuardCatches": 218,
     "directorMismatch": 3619,
-    "tvFilmSignals": 2291,
-    "londonSignals": 3670,
+    "tvFilmSignals": 2292,
+    "londonSignals": 3672,
     "offBroadwaySignals": 752,
     "yearMismatch": 368,
-    "noPublishDate": 8454
+    "noPublishDate": 8443
   },
   "findings": [
     {
@@ -9208,6 +9208,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "bob-fosses-dancin-2023",
+      "file": "exeunt-magazine--loren-noveck.json",
+      "score": 86,
+      "publishDate": "2023-04-03",
+      "url": "http://exeuntnyc.com/reviews/review-bob-fosses-dancin-at-the-music-box-theatre/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"streaming show\""
         }
       ]
     },
@@ -100183,6 +100197,34 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "finding-neverland-2015",
+      "file": "amny--matt-windman.json",
+      "score": null,
+      "publishDate": "2015-11-19",
+      "url": "https://www.amny.com/entertainment/behind-the-curtain-kelsey-grammer-hooks-back-up-with-finding-neverland-1-11143717/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "finding-neverland-2015",
+      "file": "huffpost--david-finkle.json",
+      "score": 59,
+      "publishDate": "2015-04-15T19:42:49-04:00",
+      "url": "http://www.huffingtonpost.com/david-finkle/first-nighter-flying-off_b_7075296.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
