@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-11T17:40:54.705Z",
+  "timestamp": "2026-11-11T18:06:33.044Z",
   "stats": {
-    "totalReviews": 81529,
-    "alreadyFlagged": 22256,
+    "totalReviews": 81530,
+    "alreadyFlagged": 22257,
     "dateGuardCatches": 218,
     "directorMismatch": 3629,
     "tvFilmSignals": 2297,
-    "londonSignals": 3694,
+    "londonSignals": 3695,
     "offBroadwaySignals": 751,
     "yearMismatch": 369,
-    "noPublishDate": 8482
+    "noPublishDate": 8481
   },
   "findings": [
     {
@@ -95371,6 +95371,20 @@
       "score": 79,
       "publishDate": "2026-11-11",
       "url": "https://www.broadwayworld.com/westend/article/Review-CLOUD-9-National-Theatre-20261111",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "cloud-9-west-end-2026",
+      "file": "financialtimes--sarah-hemming.json",
+      "score": null,
+      "publishDate": "2026-11-11",
+      "url": "https://www.ft.com/content/ef9eec04-6960-4997-a0ca-f974b7eddc9e?syn-25a6b1a6=1",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

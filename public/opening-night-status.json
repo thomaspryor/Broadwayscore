@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-11T17:41:11.581Z",
+  "generatedAt": "2026-11-11T18:06:47.542Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -558,17 +558,17 @@
       "status": "open",
       "slug": "cloud-9-west-end",
       "thumbnail": "/images/shows/cloud-9-west-end-2026/thumbnail.webp",
-      "siteScore": 76.73,
+      "siteScore": 76.99,
       "liveScore": 77,
-      "scoreDrift": 0.269999999999996,
+      "scoreDrift": 0.010000000000005116,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 16,
-      "t1": 7,
+      "total": 17,
+      "t1": 8,
       "t2": 5,
       "t3": 4,
-      "positive": 13,
+      "positive": 14,
       "mixed": 2,
       "negative": 1,
       "readiness": {
@@ -589,10 +589,6 @@
       "missingT1": [
         {
           "name": "Observer",
-          "isDualMarket": true
-        },
-        {
-          "name": "Financial Times",
           "isDualMarket": true
         },
         {
@@ -799,6 +795,18 @@
           "t2": 5,
           "t3": 4,
           "p": 13,
+          "m": 2,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-11T18:06:47.542Z",
+          "rc": 17,
+          "s": 76.99,
+          "t1": 8,
+          "t2": 5,
+          "t3": 4,
+          "p": 14,
           "m": 2,
           "n": 1,
           "bc": "waiting"
