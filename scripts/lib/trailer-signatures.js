@@ -242,7 +242,13 @@ const TELEGRAPH_PROMO_RE = /\s*(?:Telegraph Box ?office Popular Shows»|Twitter 
 const TELEGRAPH_FOOTER_MAX = 260;
 // whole month words only: a bare "Mar"/"May" prefix matched "remark", "mayhem"
 const TELEGRAPH_MONTH = '\\b(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|June?|July?|Aug(?:ust)?|Sept?(?:ember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\\b\\.?';
-const TELEGRAPH_OPENER_RE = new RegExp(`^(?:Until\\b|Booking\\b|Book\\b|Tickets?\\b|At\\s+[\\p{Lu}\\d]|[\\p{Lu}\\d][\\w'’&.-]*(?:\\s+[\\w'’&.()-]+){0,6},\\s+(?:London\\b|(?:to|until)\\s+(?:\\d|${TELEGRAPH_MONTH})))`, 'u');
+// Each opener names what follows it, so a prose fragment that merely starts
+// with "Until"/"Tickets"/"Book" ("Until the final scene, the") is not a listing
+// (second review, 406b6a883f6).
+const TELEGRAPH_DATE = `(?:${TELEGRAPH_MONTH}\\s+\\d{1,2}|\\d{1,2}\\s+${TELEGRAPH_MONTH})`;
+const TELEGRAPH_OPENER_RE = new RegExp(`^(?:Until\\s+${TELEGRAPH_DATE}|Booking\\s+(?:to|until)\\s+${TELEGRAPH_DATE}|Book(?:ing)?\\s+tickets\\b|Tickets?(?::|\\s+\\d)|At\\s+[\\p{Lu}\\d]|(?!(?:Then|But|And|So|Yet|It|He|She|They|We|I|There|Here|Still|Even|Now)\\b)[\\p{Lu}\\d][\\w'’&.-]*(?:\\s+[\\w'’&.()-]+){0,6},\\s+(?:London\\s+(?:[A-Z]{1,2}\\d{1,2}[A-Z]?\\b|\\()|(?:to|until)\\s+${TELEGRAPH_DATE}))`, 'u');
+// later sentences of a listing ("... Tickets: 020 ...", "Purchase X tickets or call 0844 ...")
+const TELEGRAPH_HARD_EVIDENCE_RE = /\b[a-z0-9-]+\.(?:co\.uk|org\.uk|com|org|net|london|uk)\b|\b0\d{3,4}\s?\d{3}\s?\d{3,4}\b|^Then touring\b/;
 const TELEGRAPH_EVIDENCE_RE = new RegExp(`\\b(?:[Uu]ntil|to)\\s+(?:${TELEGRAPH_MONTH}\\s+\\d{1,2}|\\d{1,2}\\s+${TELEGRAPH_MONTH})|\\b[a-z0-9-]+\\.(?:co\\.uk|org\\.uk|com|org|net|london|uk)\\b|\\b0\\d{3,4}\\s?\\d{3}\\s?\\d{3,4}\\b|\\bTickets?:`);
 // the listing ends on a date, a domain, a number or "book tickets", never on a dangling word
 const TELEGRAPH_END_RE = new RegExp(`(?:\\d|${TELEGRAPH_MONTH}|\\.(?:co\\.uk|org\\.uk|com|org|net|london|uk)|\\bbook tickets|\\))\\.?\\s*$`);
@@ -282,7 +288,10 @@ function isTelegraphListing(seg) {
   if (!seg || seg.length < 6 || seg.length > TELEGRAPH_FOOTER_MAX) return false;
   // a listing, not prose: no full sentence inside it
   if (/[a-z]{2,}[.!?]["'”’]?\s+[A-Z][a-z]+ [a-z]+ [a-z]+/.test(seg)) return false;
-  return TELEGRAPH_OPENER_RE.test(seg) && TELEGRAPH_EVIDENCE_RE.test(seg) && TELEGRAPH_END_RE.test(seg);
+  if (!(TELEGRAPH_OPENER_RE.test(seg) && TELEGRAPH_EVIDENCE_RE.test(seg) && TELEGRAPH_END_RE.test(seg))) return false;
+  // every later sentence must be listing too: an opener or a phone / domain
+  const parts = seg.split(/(?<=[a-z0-9)])[.]\s+(?=[A-Z])/).slice(1);
+  return parts.every((p) => TELEGRAPH_OPENER_RE.test(p) || TELEGRAPH_HARD_EVIDENCE_RE.test(p));
 }
 
 // Outlet-scoped strippers (outletId is the registry id on the review file).

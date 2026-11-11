@@ -146,7 +146,19 @@ test('The Telegraph: listing line + box-office promo are a trailer; a cut-off re
     ' Then, to be fair, the revival until Oct 3 drew a summary',
     ' At Chichester, to May 9 the cast play to mayhem',
   ]) assert.equal(T.stripTelegraphFooter(BODY + tail), BODY + tail, tail);
-  const cutVenue = `${BODY.slice(0, -1)} and the lead brings a snarl\n\nNational Theatre, London SE1. Until Jun 6; nationaltheatre.org.uk`;
+  // second review: a cut-off fragment that starts with an opener word is not a listing
+  const L = '\n\nUntil Jun 6. Tickets: 020 3989 5455';
+  for (const frag of [
+    ' It works. Tickets were hard to get and the',
+    ' It works. Until the final scene, the',
+    ' It works.\n\nBook-ending the evening, the director',
+    ' It works. Sondheim, London and the',
+    ' It was a slow start. Then, to Oct 18',
+  ]) {
+    const cut = BODY + frag + L;
+    assert.notEqual(tier(cut, 'telegraph').contentTier, 'complete', frag);
+  }
+  const cutVenue =`${BODY.slice(0, -1)} and the lead brings a snarl\n\nNational Theatre, London SE1. Until Jun 6; nationaltheatre.org.uk`;
   assert.equal(T.stripTelegraphFooter(cutVenue), cutVenue);
   // classify-only: the saved text keeps the listing
   assert.match(stripTrailingJunk(BODY + endings[2], 'telegraph'), /Tickets: 020 3989 5455/);
