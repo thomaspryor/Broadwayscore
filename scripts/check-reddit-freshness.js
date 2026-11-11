@@ -13,6 +13,7 @@
 'use strict';
 
 const fs = require('fs');
+const { NEVER_ASK_REDDIT_APP } = require('./lib/reddit-owner-guard');
 const path = require('path');
 const { redditStaleVerdict, redditOutageVerdict, readRedditLedgerRows, REDDIT_STALE_HOURS } = require('./lib/reddit-dispatch-cooldown');
 
@@ -57,8 +58,8 @@ async function main() {
       conditionKey: CONDITION_KEY,
       title: `Reddit fetching is failing: ${o.attempts} Reddit calls and no successful write since ${last}`,
       description:
-        'Every fetch tier may be blocked (Reddit serves bot walls to proxies; direct returns 403). Check the scrape step log and ' +
-        'the REDDIT_CLIENT_ID / REDDIT_CLIENT_SECRET secrets (official OAuth route in scripts/lib/reddit-api.js). BRO-7337.',
+        'Every fetch tier may be blocked (Reddit serves bot walls to proxies; direct returns 403). Check the scrape step log. ' +
+        `${NEVER_ASK_REDDIT_APP} BRO-7337.`,
       severity: 'warning',
       disposition: 'auto',
       category: 'reddit-sentiment',
@@ -78,7 +79,7 @@ async function main() {
     description:
       `No show's sources.reddit was written since ${last}, while the scraper kept trying (${attemptsInWindow} Reddit calls in ${REDDIT_STALE_HOURS}h). ` +
       'Find a working route (Reddit direct 403, ScrapingBee timeouts, Scrapingdog breaker) and backfill shows opened since the last good write. ' +
-      'The ScrapingBee leg now cools down across runs (scripts/lib/reddit-dispatch-cooldown.js).',
+      'The ScrapingBee leg now cools down across runs (scripts/lib/reddit-dispatch-cooldown.js). ' + NEVER_ASK_REDDIT_APP,
     severity: 'warning',
     disposition: 'auto',
     category: 'reddit-sentiment',
