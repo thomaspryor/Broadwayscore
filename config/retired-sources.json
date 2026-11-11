@@ -8,8 +8,7 @@
     "watchers": [
       { "file": "scripts/check-reddit-freshness.js", "note": "returns early and resolves condition reddit-sentiment:stale while retired" },
       { "file": "scripts/lib/digest-snapshots.js", "note": "redditDigest snapshot entry removed so the morning digest shows no stale banner" },
-      { "file": ".github/workflows/check-cron-health.yml", "note": "reddit-engagement-digest.yml row removed" },
-      { "file": "scripts/lib/scheduled-email-count-rules.js", "note": "reddit-engagement-digest is no longer an expected daily email" },
+      { "file": ".github/workflows/check-cron-health.yml", "note": "reddit-engagement-digest.yml row kept, resized to 13h for the hourly drafter only" },
       { "file": "scripts/fetch-social-pulse.js", "note": "Guard 6b degraded mode is expected while retired, not a warning" }
     ]
   }

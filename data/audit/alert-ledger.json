@@ -23969,7 +23969,7 @@
       "silentRefires": 23
     },
     "reddit-sentiment:stale": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Reddit fetching is failing: 35 Reddit calls and no successful write since 2026-11-10T16:42:14.658Z",
       "firstSeen": "2026-10-22T07:06:39.460Z",
@@ -23980,7 +23980,9 @@
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-7343",
-      "silentRefires": 5
+      "silentRefires": 5,
+      "resolvedAt": "2026-11-11T14:12:27.138Z",
+      "resolveReason": "reddit retired (BRO-7337, owner decision 2026-11-11)"
     },
     "coverage-holes:lincoln-in-the-bardo-off-broadway-2026": {
       "status": "resolved",

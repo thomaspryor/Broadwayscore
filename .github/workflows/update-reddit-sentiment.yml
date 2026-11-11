@@ -55,10 +55,15 @@ jobs:
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
-          sparse-checkout: config
+          sparse-checkout: |
+            config
+            scripts/lib/reddit-status.js
       - id: sw
+        env:
+          REDDIT_FORCE_ENABLED: ${{ vars.REDDIT_FORCE_ENABLED }}
         run: |
-          if [ "${REDDIT_FORCE_ENABLED:-}" != "1" ] && grep -q '"reddit"' config/retired-sources.json; then
+          # Same function the scripts use, so the gate and the library cannot disagree.
+          if [ "$(node scripts/lib/reddit-status.js)" = "true" ]; then
             echo "retired=true" >> "$GITHUB_OUTPUT"; echo "Reddit is retired; skipping."
           else
             echo "retired=false" >> "$GITHUB_OUTPUT"
@@ -68,6 +73,8 @@ jobs:
     needs: gate
     if: ${{ needs.gate.outputs.retired != 'true' }}
     runs-on: ubuntu-latest
+    env:
+      REDDIT_FORCE_ENABLED: ${{ vars.REDDIT_FORCE_ENABLED }}  # set the repo variable to 1 for a one-off run
     timeout-minutes: 240  # 4 hour timeout - 29 shows × ~8 min each
     steps:
       - name: Checkout repository
