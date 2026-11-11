@@ -219,7 +219,7 @@ describe('review findings (BRO-6921 second opinion)', () => {
     const fs = require('fs'); const os = require('os'); const path = require('path');
     const f = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'uc-')), 'c.json');
     const now = Date.parse('2026-10-20T00:00:00Z');
-    fs.writeFileSync(f, JSON.stringify({ entries: { 'a|x': '2026-10-19T00:00:00Z', 'b|x': '2026-10-10T00:00:00Z' } }));
+    fs.writeFileSync(f, JSON.stringify({ logic: require('../../scripts/lib/outlet-listing-helpers.js').confirmLogicFingerprint(), entries: { 'a|x': '2026-10-19T00:00:00Z', 'b|x': '2026-10-10T00:00:00Z' } }));
     assert.deepEqual(Object.keys(poller.loadUnconfirmedCache(f, now)), ['a|x']);
     assert.deepEqual(poller.loadUnconfirmedCache(path.join(path.dirname(f), 'missing.json'), now), {});
   });
@@ -271,7 +271,7 @@ describe('ship-check P1 fixes (BRO-6921)', () => {
   test('unreadable marks expire after a day, unconfirmed after a week', () => {
     const fs = require('fs'); const os = require('os'); const path = require('path');
     const f = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'uc-')), 'c.json');
-    fs.writeFileSync(f, JSON.stringify({ entries: { 'u|*unreadable*': '2026-10-18T00:00:00Z', 'u|show': '2026-10-18T00:00:00Z' } }));
+    fs.writeFileSync(f, JSON.stringify({ logic: require('../../scripts/lib/outlet-listing-helpers.js').confirmLogicFingerprint(), entries: { 'u|*unreadable*': '2026-10-18T00:00:00Z', 'u|show': '2026-10-18T00:00:00Z' } }));
     assert.deepEqual(Object.keys(poller.loadUnconfirmedCache(f, Date.parse('2026-10-20T00:00:00Z'))), ['u|show']);
   });
   test('the fetcher gets a check that the page names a candidate title', async () => {
