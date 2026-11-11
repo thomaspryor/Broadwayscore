@@ -19,12 +19,26 @@ import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import { getCriticScore } from './lib/canonical-critic-scores.ts';
 
+if (process.argv.includes('--help') || process.argv.includes('-h')) {
+  console.log(`Usage: node scripts/backtest-review-forecast-v2.mjs [--out=path] [--audience=path] [--members=path] [--today=YYYY-MM-DD] [--freeze=path] [--nightly-combined] [--sweep2]
+
+Walk-forward backtest of pre-opening inputs for the review-score forecast (BRO-7347). Reads data/ only; writes --out (default data/audit/review-forecast-inputs-v2.json).
+  --nightly-combined  adds the Show Score + panel test and the panel increment block (BRO-7357)
+  --sweep2            BRO-7373: adds the second input sweep (team record, rating shape, source, schedule, position, box office vs theater norm,
+                      Show Score x type interactions), each graded against v1 and against the landed v2 (Show Score mean + count), with the
+                      correction family enlarged by every new test
+  --freeze=path       write the frozen nightly v2 model
+  --help              this text (no data is read and nothing is written)`);
+  process.exit(0);
+}
 const require = createRequire(import.meta.url);
 const RF = require('./lib/review-forecast.js');
 const V2 = require('./lib/review-forecast-v2-inputs.js');
 const EX = require('./lib/review-forecast-v2-extra.js');
 const ER = require('./lib/review-forecast-v2-earlier-run.js');
 const OT = require('./lib/outlet-tiers.js');
+const HANDCHECK = new Set(((process.argv.find((a) => a.startsWith('--handcheck=')) || '').slice(12) || '').split(',').filter(Boolean)); // print sweep2 features for these show ids (BRO-7373 hand-check)
+const S2 = require('./lib/review-forecast-v2-sweep2.js');
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const arg = (k, d) => { const a = process.argv.find((x) => x.startsWith(`--${k}=`)); return a ? a.split('=').slice(1).join('=') : d; };
@@ -89,7 +103,12 @@ if (fs.existsSync(MEM_FILE)) {
 }
 // earlier-run review scores gathered from the web (scores + dates only), dated before first preview
 const erRaw = J('data/audit/review-forecast-v2-earlier-run-compact.json');
-const ctx = { pool, weeks, origins, poolById, castIndex, audience, awards, panel: { byCritic }, earlierRun: erRaw.reviews, troubleSet: new Set(erRaw.trouble || []) };
+const SWEEP2 = process.argv.includes('--sweep2');
+const teamsIdx = S2.buildTeamIndex(shows);
+const openingsIdx = S2.buildOpeningsIndex(shows);
+const theaterSeats = Object.fromEntries(Object.entries(J('data/theater-metadata.json')).filter(([k, v]) => k !== '_meta' && v && v.capacity > 0).map(([k, v]) => [k, v.capacity]));
+const showMeta = Object.fromEntries(shows.map((s) => [s.id, { limitedRun: !!s.limitedRun }]));
+const ctx = { pool, weeks, origins, poolById, castIndex, audience, awards, teams: teamsIdx, openings: openingsIdx, theaterSeats, showMeta, memberShape: memRaw ? memRaw.shows : {}, panel: { byCritic }, earlierRun: erRaw.reviews, troubleSet: new Set(erRaw.trouble || []) };
 
 const targets = shows.filter((s) => poolById[s.id] && s.category === MARKET && poolById[s.id].rc >= FLOOR && (s.type === 'play' || s.type === 'musical')
   && !s.noReviewsExpected && !s.cancelledBeforeOpening && RF.toDay(s.openingDate) <= RF.toDay(TODAY) - SETTLE_DAYS).map((s) => poolById[s.id]);
@@ -106,7 +125,11 @@ for (const t of targets) {
   const er = ER.buildEarlierRunFeatures(t, ctx, f.mu);
   ER.assertNoLeakageEarlierRun(t, er.provenance);
   const er72 = ER.buildEarlierRunFeatures(t, ctx, f.mu, { cut: 72 }); const er78 = ER.buildEarlierRunFeatures(t, ctx, f.mu, { cut: 78 });
-  rows.push({ t, season: RF.seasonStartYear(t.openingDate), x: { ...f.x, ...v.x, ...e.x, ...er.x }, x72: er72.x, x78: er78.x, has: { ...v.has, ...e.has, ...er.has, ownPrior: f.priorScore != null }, mu: f.mu, y: t.score });
+  const s2 = S2.buildSweep2Features(t, ctx, { floor: FLOOR });
+  S2.assertNoLeakageSweep2(t, s2.provenance);
+  const aud = v.x.audScore; const typeMusical = t.type === 'musical' ? 1 : 0; const rev = t.isRevival ? 1 : 0;
+  if (HANDCHECK.has(t.id)) console.log('HANDCHECK', t.id, t.openingDate, 'y', t.score, JSON.stringify({ x: s2.x, has: s2.has, prov: s2.provenance.map((q) => `${q.kind}:${q.ref}:${q.date ?? ''}`).slice(0, 12) }));
+  rows.push({ t, season: RF.seasonStartYear(t.openingDate), x: { ...f.x, ...v.x, ...e.x, ...er.x, ...s2.x, audMusical: aud * typeMusical, audRevival: aud * rev, audPlay: aud * (1 - typeMusical) }, x72: er72.x, x78: er78.x, has: { ...v.has, ...e.has, ...er.has, ...Object.fromEntries(Object.entries(s2.has).map(([k, q]) => [`s2${k}`, q])), ownPrior: f.priorScore != null }, mu: f.mu, y: t.score });
 }
 console.error(`evaluated rows ${rows.length}; v2 leakage-checked ${prov.checked}; awards ${rows.filter((r) => r.has.awards).length}, panel ${rows.filter((r) => r.has.panel).length}, cast ${rows.filter((r) => r.has.cast).length}, preview ${rows.filter((r) => r.has.preview).length}, audience ${rows.filter((r) => r.has.audience).length}`);
 
@@ -186,14 +209,18 @@ function diffCI(a, b, B = 2000, alpha = 0.05) { // a, b: aligned prediction arra
 // + earlier-run linear and step (2) + forked step cuts 72 and 78 (2) + flop and rave tails for earlier-run linear and step (4)
 // + combined panel+earlier-run step and linear (2) + Show Score: full-pull primary, restricted variant, three secondary specs, primary flop and hit tails (7) + combined with Show Score (1) = 26.
 const NIGHTLY_COMBINED = process.argv.includes('--nightly-combined'); // BRO-7357: adds one test (Show Score + panel, no web-collected earlier-run), so the family is 27
-const N_PRIMARY_TESTS = NIGHTLY_COMBINED ? 27 : 26;
+const S2_TESTS = 39; // BRO-7373: six groups x (vs v1: all, flop tail, hit tail; vs v2: all, flop tail, hit tail) + the Show Score x type interaction vs v2 (all, flop tail, hit tail)
+const N_PRIMARY_TESTS = (NIGHTLY_COMBINED ? 27 : 26) + (SWEEP2 ? S2_TESTS : 0);
 const r2 = (x) => (x == null ? null : Math.round(x * 100) / 100);
 const maeOf = (p) => RF.mean(p.map((q) => Math.abs(q.y - q.pred)));
 
 const V1 = RF.FEATURE_NAMES;
 const G = V2.V2_GROUPS;
-const base = walk(V1);
-function compare(label, names, subsetFn, kind, variant) {
+const baseV1 = walk(V1);
+const base = baseV1;
+const baseV2 = walk([...V1, ...G.audience]); // the landed v2 shadow model: v1 features + Show Score mean + review count
+function compare(label, names, subsetFn, kind, variant, against) {
+  const base = against || baseV1; // paired baseline: v1 by default, the landed v2 for BRO-7373 increments
   const w = walk(names, variant);
   if (w.length !== base.length || w.some((q, i) => q.id !== base[i].id)) throw new Error('walk-forward rows misaligned between models');
   const idx = base.map((_, i) => i).filter((i) => !subsetFn || subsetFn(base[i]));
@@ -286,6 +313,49 @@ if (FREEZE) {
   fs.writeFileSync(FREEZE, JSON.stringify(frozen, null, 1) + '\n');
   console.error(`froze v2 model on ${fit.length} rows -> ${FREEZE}`);
 }
+// ---- BRO-7373: second input sweep. Specs fixed before any test row was graded (scripts/lib/review-forecast-v2-sweep2.js header + the card).
+// Each group is graded twice on the same walk-forward rows: v1 features + group against v1, and v2 (v1 + Show Score mean + count) + group against v2.
+// "Holds" = the increment over v2 has a Bonferroni-corrected interval entirely below zero AND the group also beats v1 on the corrected interval.
+let sweep2 = null;
+if (SWEEP2) {
+  const SG = S2.SWEEP2_GROUPS; const v2n = [...V1, ...G.audience];
+  const GROUP_LABEL = { team: 'Creative-team record from our Critic Scores (director, book writer, composer/lyricist: experience, last 3, best member, debut share)',
+    shape: 'Show Score rating shape (median, share 90+, share 60 or below, trend over the pre-opening weeks)',
+    source: 'Source material and revival dormancy (years since last Broadway production, true story, limited run)',
+    schedule: 'Preview schedule played (preview performances, cancelled-performance shortfall)',
+    position: 'Theater size and season position (seats, same-week openings, openings in prior 28 days)',
+    box: 'Preview box office against the theater\'s own norm and first-week level' };
+  const HAS = { team: 's2team', shape: 's2shape', source: 's2source', schedule: 's2schedule', position: 's2position', box: 's2box' };
+  const covered = (g) => baseV2.filter((p) => p.has[HAS[g]]).length;
+  const rowsOut = [];
+  for (const g of Object.keys(SG)) {
+    const vsV1 = compare(`S2 ${g} vs v1`, [...V1, ...SG[g]], null, 'sweep2-v1');
+    const vsV2 = compare(`S2 ${g} vs v2`, [...v2n, ...SG[g]], null, 'sweep2-v2', undefined, baseV2);
+    const sub = covered(g) >= 20 && covered(g) < baseV2.length ? compare(`S2 ${g} vs v2, covered shows only`, [...v2n, ...SG[g]], (p) => p.has[HAS[g]], 'sweep2-subset', undefined, baseV2) : null;
+    rowsOut.push({ group: g, label: GROUP_LABEL[g], features: SG[g], covered: covered(g), evaluated: baseV2.length, vsV1, vsV2, vsV2CoveredOnly: sub,
+      holds: !!(vsV2.survivesCorrection && vsV1.survivesCorrection) });
+  }
+  const inter = compare('S2 Show Score score x type (musical) and x revival, vs v2', [...v2n, 'audMusical', 'audRevival'], null, 'sweep2-v2', undefined, baseV2);
+  const exploratory = [];
+  for (const g of Object.keys(SG)) for (const f of SG[g]) {
+    const r = compare(`S2 feature ${f} vs v2`, [...v2n, f], null, 'exploratory', undefined, baseV2);
+    exploratory.push({ group: g, feature: f, shows: r.shows, maeV2: r.maeWithout, maeV2Plus: r.maeWith, diffCI95: r.diffCI95 });
+  }
+  sweep2 = { card: 'BRO-7373', evaluated: baseV2.length, maeV1: r2(maeOf(baseV1)), maeV2: r2(maeOf(baseV2)), bonferroniTests: N_PRIMARY_TESTS,
+    protocol: 'diff = MAE with minus MAE without, paired on the same shows, same walk-forward, season-clustered bootstrap seed 7314 B=2000; negative is better. Correction family = the 26 BRO-7347 tests + 39 new (six groups x six cells + the interaction, tails counted).',
+    groups: rowsOut, interaction: inter, exploratoryVsV2: exploratory,
+    notTestable: [
+      { input: 'Lead producer track record', why: 'No producer field in shows.json or any collected source; nothing to read before opening.' },
+      { input: 'Opening date moved (announced vs actual)', why: 'Needs the announced date over time; the checkout is shallow so git history cannot supply it, and no dated announcement log exists.' },
+      { input: 'Preview count (announced)', why: 'Not stored; the grosses performances played in the first four weeks stands in for it (schedule group).' },
+      { input: 'Show Score rating spread (standard deviation)', why: 'Only n, mean, median, shares and first/rest means are stored per show; a spread needs a re-pull of about 2,000 review pages, not justified because the stored shape measures add nothing beyond v2.' },
+      { input: 'Star-vehicle limited run', why: 'No dated star-above-title field (the parent found it null); the limited-run flag is tested inside the source group.' },
+      { input: 'Google Trends in the preview window', why: 'One robots.txt probe through fetchPage (trends.google.com) returned a provider refusal for Google properties, not the file; stopped at the first block. Bypass is ruled out by the card.' },
+      { input: 'Earlier-production scores for transfers', why: 'BRO-7369 owns it; same-title credits are excluded from the team record here to avoid double counting.' }
+    ] };
+  for (const r of rowsOut) console.log(`SWEEP2 ${r.group.padEnd(9)} cov ${String(r.covered).padStart(3)}/${r.evaluated} v1 ${r.vsV1.maeWithout}->${r.vsV1.maeWith} CI ${JSON.stringify(r.vsV1.diffCI95)} adj ${JSON.stringify(r.vsV1.diffCI95Bonferroni)} | v2 ${r.vsV2.maeWithout}->${r.vsV2.maeWith} CI ${JSON.stringify(r.vsV2.diffCI95)} adj ${JSON.stringify(r.vsV2.diffCI95Bonferroni)} holds=${r.holds}`);
+  console.log(`SWEEP2 interaction v2 ${inter.maeWithout}->${inter.maeWith} CI ${JSON.stringify(inter.diffCI95)} adj ${JSON.stringify(inter.diffCI95Bonferroni)}`);
+}
 // Best model = v1 unless a primary full-population candidate has a Bonferroni-corrected interval entirely below zero.
 const winners = results.filter((r) => r.kind === 'primary' && r.survivesCorrection && r.shows === base.length).sort((a, b) => a.maeWith - b.maeWith);
 const bestCombined = winners[0] || { input: 'None: v1 (today\'s formula) stays best', shows: base.length, maeWith: r2(maeOf(base)), verdict: 'no input helps' };
@@ -313,12 +383,13 @@ const out = {
   leakage: { rowsChecked: prov.checked, perturbation: { checked: sampled, moved }, lagDays: RF.LAG_DAYS },
   showScoreMembers: memRaw ? { showsTried: Object.keys(memRaw.shows).length, withAtLeastOnePreOpeningMemberReview: Object.keys(audience).filter((k) => memRaw.shows[k]).length, paidFetches: 0, directRequests: memRaw.directRequestsTotal || null } : null,
   wayback: audRaw ? { showsTried: Object.keys(audRaw.shows).length, withCaptureBeforeOpening: Object.values(audRaw.shows).filter((v) => (v.captureTimestampsBeforeOpening || []).length).length, parsed: Object.keys(audRaw.shows).filter((k) => (audRaw.shows[k].captures || []).some((c) => c.score != null)).length, paidFetches: audRaw.paidFetches || 0 } : null,
-  multipleComparisons: `Bonferroni over ${N_PRIMARY_TESTS} tests (6 single-group primary tests, cast+preview, all inputs together, earlier-run linear and step, two forked cuts, flop and rave tails, three combined models, seven Show Score tests). Per-feature rows are exploratory and uncorrected, so a lone exploratory "helps" would not count.`,
+  multipleComparisons: `Bonferroni over ${N_PRIMARY_TESTS} tests (6 single-group primary tests, cast+preview, all inputs together, earlier-run linear and step, two forked cuts, flop and rave tails, three combined models, seven Show Score tests${SWEEP2 ? `, plus ${S2_TESTS} BRO-7373 sweep-2 tests (six groups x vs v1 and vs v2 on all, flop and hit cells, minus the shared counts, plus the interaction)` : ""}). Per-feature rows are exploratory and uncorrected, so a lone exploratory "helps" would not count.`,
   floor: { shows: floors.length, bootstrapMissCriticSampling: r2(floorBoot), ifFullPanelIsItselfADraw: r2(floorBoot * Math.SQRT2), method: 'resample each show\'s critics (one vote per outlet+critic, real tier weights), mean |resample - full|; the second number scales by sqrt(2) because the observed panel is itself one draw. Neither is a hard limit; it estimates the part of the miss that comes from which critics happened to review.' },
   reliability,
   earlierRunOverlap: overlap,
   earlierRun: { source: 'research agents scored web reviews of the earlier run (regional, Off-Broadway, West End) found dated before first preview; the model uses only those dated on or before opening minus 3 days (the lag every input uses). Scores are agent-assigned after the Broadway verdict was known: noisy, hindsight risk the date filter cannot remove', showsInFile: Object.keys(erRaw.reviews).length, reviewsInFile: Object.values(erRaw.reviews).reduce((s, l) => s + l.length, 0), partialDatesReadAsLastDayOfPeriod: true, cutDeclared: ER.ER_CUT, forkedCuts: [72, 78], troubleListUndated: true },
   panelIncrement,
+  sweep2,
   inputs: results,
   notTestable: [
     { input: 'Show Score audience score (Wayback capture before opening)', verdict: 'cannot be dated at usable coverage', why: 'archive.org availability lookups found no pre-opening capture for 30 shows (one season). Unproven coverage, not proof of absence. Replaced by the dated member-review route, which is tested above on the full 341-show pull (coverage: none of the 2025 and 2026 shows has dated member reviews).' },
