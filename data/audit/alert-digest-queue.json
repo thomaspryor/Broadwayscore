@@ -293,5 +293,36 @@
       }
     ],
     "queuedAt": "2026-11-11T06:33:24.886Z"
+  },
+  {
+    "conditionKey": "land:land/wrapup-cost-7331b",
+    "title": "Landing blocked: rebase red on land/wrapup-cost-7331b",
+    "description": "land.yml did not land land/wrapup-cost-7331b: the rebase gate went red at a727359c81. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42984148465",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/wrapup-cost-7331b"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "a727359c81b817f665248e88389a73106ce383c0"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42984148465"
+      }
+    ],
+    "queuedAt": "2026-11-11T08:07:45.268Z"
   }
 ]
