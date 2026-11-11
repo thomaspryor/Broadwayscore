@@ -357,6 +357,20 @@
     "queuedAt": "2026-11-11T08:18:37.828Z"
   },
   {
+    "conditionKey": "outlet-ground-truth:king-lear-off-broadway-2026:https://www.theatermania.com/news/review-anon-the-one-about-the-maga-neighbor-and-the-ugly-flag_1857163/",
+    "title": "Missing review from a tracked outlet: king-lear-off-broadway-2026 — theatermania",
+    "description": "theatermania lists a review we don't hold (https://www.theatermania.com/news/review-anon-the-one-about-the-maga-neighbor-and-the-ugly-flag_1857163/), and automatic ingest did not recover it.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-11T08:43:42.674Z"
+  },
+  {
     "conditionKey": "land:land/bro-7347-forecast-v2",
     "title": "Landing blocked: unit-tests-node red on land/bro-7347-forecast-v2",
     "description": "land.yml did not land land/bro-7347-forecast-v2: the unit-tests-node gate went red at e70a293479. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42985616344",
