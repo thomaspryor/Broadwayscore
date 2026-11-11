@@ -336,7 +336,7 @@ test('BRO-7377: an init error from long before the last activity is stale, not a
   later.ccr.updated_at = '2026-11-11T15:30:00Z';
   assert.equal(decide({ session: later, now: '2026-11-11T15:31:00Z' }).action, 'rearm');
   const atEdge = JSON.parse(JSON.stringify(INIT_FAILED));
-  atEdge.ccr.updated_at = '2026-11-11T13:50:00Z'; // 5 min after the error: still the dead child
+  atEdge.ccr.updated_at = '2026-11-11T13:46:00Z'; // under 3 min after the error: still the dead child
   assert.equal(decide({ session: atEdge, now: '2026-11-11T13:52:00Z' }).action, 'restart');
 });
 
@@ -346,12 +346,21 @@ test('BRO-7377: the restart reason says to archive the dead session and to read 
   assert.match(r, /env_manager_log/);
 });
 
-test('BRO-7377: the stalled-session sweep requeues a never-started session at once instead of nudging it', () => {
+test('BRO-7377: the sweep ignores a stale init error: its entry names a session that claimed the card, so it started', () => {
   const { stalledSessionAction } = require('./stalled-session-sweep.js');
   const entry = { action: 'check', card: 'BRO-1', sessionId: INIT_FAILED.ccr.id, nudges: 0, lastNudgeAt: null };
-  const r = stalledSessionAction({ entry, session: INIT_FAILED, nowMs: Date.parse('2026-11-11T20:00:00Z') });
-  assert.equal(r.action, 'requeue', r.reason);
-  assert.match(r.reason, /never started/);
+  const r = stalledSessionAction({ entry, session: INIT_FAILED, nowMs: Date.parse('2026-11-11T13:52:38Z') });
+  assert.equal(r.action, 'skip', r.reason); // working, as before this change
+  assert.equal(decide({ session: INIT_FAILED, now: '2026-11-11T13:52:38Z', checkInit: false }).action, 'rearm');
+});
+
+test('BRO-7377: an unparseable updated_at never restarts; "True " counts as recoverable; a brief run then idle is not restart 20h on', () => {
+  const bad = JSON.parse(JSON.stringify(INIT_FAILED)); bad.ccr.updated_at = 'garbage';
+  assert.notEqual(decide({ session: bad, now: '2026-11-11T13:52:38Z' }).action, 'restart');
+  const sp = JSON.parse(JSON.stringify(INIT_FAILED)); sp.ccr.external_metadata.last_init_error.recoverable = 'True ';
+  assert.equal(decide({ session: sp, now: '2026-11-11T13:52:38Z' }).action, 'rearm');
+  const ran = JSON.parse(JSON.stringify(INIT_FAILED)); ran.ccr.updated_at = '2026-11-11T13:50:00Z'; ran.ccr.status_bucket = 'SESSION_STATUS_BUCKET_IDLE';
+  assert.notEqual(decide({ session: ran, now: '2026-11-12T10:00:00Z' }).action, 'restart');
 });
 
 test('BRO-7377: recoverable as a boolean true is recoverable; a missing `at` falls back to created_at', () => {

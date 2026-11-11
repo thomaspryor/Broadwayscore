@@ -40,8 +40,9 @@ const FAILED = new Set(['FAILED', 'ERROR', 'ERRORED', 'CRASHED']);
 const BLOCKED = new Set(['BLOCKED', 'NEEDS_INPUT', 'AWAITING_INPUT', 'REQUIRES_ACTION']);
 // A report-back moves the child's updated_at a little (its turn ends after it).
 const REPORT_SLACK_MS = 10 * 60000;
-// A child that moved this long after its init error did start (BRO-7377).
-const INIT_ERROR_SLACK_MS = 10 * 60000;
+// A child that moved more than this after its init error did start (BRO-7377). A dead child's
+// updated_at sits within seconds of the error (fixture: 0.8 s).
+const INIT_ERROR_SLACK_MS = 3 * 60000;
 
 /**
  * Shallowest value of `key` in a parsed get_session payload (it nests under
@@ -78,9 +79,10 @@ function toMs(v) {
  * @param {number|string} p.now
  * @param {number} [p.idleMinutes=30]
  * @param {string} [p.reportedAt]  when the child last reported back (send_message to @parent), if seen
+ * @param {boolean} [p.checkInit=true]  false when the caller knows the session started (it claimed a card): a last_init_error on it is stale
  * @returns {{action: 'rearm'|'nudge'|'unblock'|'restart'|'done', reason: string, idleMinutes: number|null, rearmMinutes: number, neverStarted?: true}}
  */
-function decide({ session, now = Date.now(), idleMinutes = DEFAULT_IDLE_MINUTES, reportedAt } = {}) {
+function decide({ session, now = Date.now(), idleMinutes = DEFAULT_IDLE_MINUTES, reportedAt, checkInit = true } = {}) {
   const nowMs = toMs(now) ?? Date.now();
   const bucket = normBucket(findField(session, 'status_bucket'));
   const status = normBucket(findField(session, 'session_status'));
@@ -101,12 +103,13 @@ function decide({ session, now = Date.now(), idleMinutes = DEFAULT_IDLE_MINUTES,
   // updated_at equals the error's `at`; a working one moves on).
   const meta = (session && (session.ccr || session).external_metadata) || {};
   const initErr = meta.last_init_error || findField(session, 'last_init_error');
-  if (reported == null && initErr && typeof initErr === 'object' && String(initErr.recoverable).toLowerCase() !== 'true'
+  if (checkInit && reported == null && initErr && typeof initErr === 'object' && !/^\s*true\s*$/i.test(String(initErr.recoverable))
       && (initErr.message || initErr.error_kind || initErr.error_type)) {
     // No usable `at`: measure from the session's creation, a dead child's updated_at sits minutes after it.
     const errAt = toMs(initErr.at) ?? toMs(findField(session, 'created_at'));
+    // An unparseable updated_at proves nothing either way: leave it to the ordinary checks, never restart on it.
     const progressed = errAt != null && updated != null && updated - errAt > INIT_ERROR_SLACK_MS;
-    if (!progressed) {
+    if (updated != null && !progressed) {
       const kind = initErr.error_kind || initErr.error_type || 'init';
       return { ...out('restart', `child never started (${kind}: ${initErr.message || 'no message'}${initErr.at ? ` at ${initErr.at}` : ''}): `
         + 'list_events it with kinds ["env_manager_log"] for the output, fix the cause (get_environment, then update_environment), '
