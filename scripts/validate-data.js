@@ -194,6 +194,8 @@ Options:
               "DRY RUN: N shows.json writes suppressed" (0 when none).
   --write     In a cloud session (CLAUDE_CODE_REMOTE=true, outside CI) the
               default is --dry-run; --write turns writes back on.
+  --critic-log-slugs=PATH  Check an additional JSON array of retired critic route
+              slugs seen in logs; unregistered live outlet twins fail validation.
   --strict    Label the run STRICT in the header. Accepted for CI/workflow
               compatibility; no check currently changes severity under it.
 
@@ -5586,6 +5588,28 @@ function validateShowOrigins(shows) {
   if (!missing.length) ok('Every opened Broadway show has a show-origins record');
 }
 
+// BRO-7234: validate the same aliases prebuild emits. A saved log-slug array
+// can extend the check without generating speculative aliases for every critic.
+function validateCriticOutletRedirects(shows) {
+  const { buildLiveCriticAliases, findMissingCriticOutletAliases, retiredSlugs } = require('./lib/critic-outlet-redirects');
+  const { loadCriticSlugAliases, criticSlugsFromReviews } = require('./lib/critic-slug-aliases');
+  try {
+    const reviews = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'reviews.json'), 'utf8')).reviews;
+    const outlets = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'outlet-registry.json'), 'utf8'));
+    const { aliases } = buildLiveCriticAliases({ aliases: loadCriticSlugAliases(), reviews, shows, outlets });
+    const logArg = process.argv.find(arg => arg.startsWith('--critic-log-slugs='));
+    const observed = logArg ? JSON.parse(fs.readFileSync(logArg.slice('--critic-log-slugs='.length), 'utf8')) : [];
+    if (!Array.isArray(observed)) throw new Error('--critic-log-slugs must contain a JSON array of route slugs');
+    const missing = findMissingCriticOutletAliases([...retiredSlugs, ...observed], criticSlugsFromReviews(reviews, shows), outlets, aliases);
+    for (const { slug, canonical } of missing) {
+      error(`Missing retired critic outlet redirect: ${slug} -> ${canonical}; register the observed slug in scripts/lib/retired-critic-outlet-slugs.json`);
+    }
+    if (!missing.length) ok('Every observed retired critic outlet twin resolves to its live canonical page');
+  } catch (e) {
+    error(`Critic outlet redirect validation failed: ${e.message}`);
+  }
+}
+
 function runValidation() {
   console.log('='.repeat(60));
   console.log('BROADWAY SCORECARD DATA VALIDATION');
@@ -5612,6 +5636,7 @@ function runValidation() {
   console.log('');
 
   // Run all validations
+  validateCriticOutletRedirects(shows);
   validateNoDuplicates(shows);
   validateRetiredIds(shows);
   console.log('');
