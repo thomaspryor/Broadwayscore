@@ -78,7 +78,7 @@ function toMs(v) {
  * @param {number|string} p.now
  * @param {number} [p.idleMinutes=30]
  * @param {string} [p.reportedAt]  when the child last reported back (send_message to @parent), if seen
- * @returns {{action: 'rearm'|'nudge'|'unblock'|'restart'|'done', reason: string, idleMinutes: number|null, rearmMinutes: number}}
+ * @returns {{action: 'rearm'|'nudge'|'unblock'|'restart'|'done', reason: string, idleMinutes: number|null, rearmMinutes: number, neverStarted?: true}}
  */
 function decide({ session, now = Date.now(), idleMinutes = DEFAULT_IDLE_MINUTES, reportedAt } = {}) {
   const nowMs = toMs(now) ?? Date.now();
@@ -103,13 +103,14 @@ function decide({ session, now = Date.now(), idleMinutes = DEFAULT_IDLE_MINUTES,
   const initErr = meta.last_init_error || findField(session, 'last_init_error');
   if (reported == null && initErr && typeof initErr === 'object' && String(initErr.recoverable).toLowerCase() !== 'true'
       && (initErr.message || initErr.error_kind || initErr.error_type)) {
-    const errAt = toMs(initErr.at);
+    // No usable `at`: measure from the session's creation, a dead child's updated_at sits minutes after it.
+    const errAt = toMs(initErr.at) ?? toMs(findField(session, 'created_at'));
     const progressed = errAt != null && updated != null && updated - errAt > INIT_ERROR_SLACK_MS;
     if (!progressed) {
       const kind = initErr.error_kind || initErr.error_type || 'init';
-      return out('restart', `child never started (${kind}: ${initErr.message || 'no message'}${initErr.at ? ` at ${initErr.at}` : ''}): `
+      return { ...out('restart', `child never started (${kind}: ${initErr.message || 'no message'}${initErr.at ? ` at ${initErr.at}` : ''}): `
         + 'list_events it with kinds ["env_manager_log"] for the output, fix the cause (get_environment, then update_environment), '
-        + 'archive_session the dead one, then create_session again');
+        + 'archive_session the dead one, then create_session again'), neverStarted: true };
     }
   }
   if (FAILED.has(bucket) || FAILED.has(status)) return out('restart', `child ${bucket || status}: fix or restart it`);

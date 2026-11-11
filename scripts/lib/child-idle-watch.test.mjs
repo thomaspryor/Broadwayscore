@@ -353,3 +353,19 @@ test('BRO-7377: the stalled-session sweep requeues a never-started session at on
   assert.equal(r.action, 'requeue', r.reason);
   assert.match(r.reason, /never started/);
 });
+
+test('BRO-7377: recoverable as a boolean true is recoverable; a missing `at` falls back to created_at', () => {
+  const rec = JSON.parse(JSON.stringify(INIT_FAILED));
+  rec.ccr.external_metadata.last_init_error.recoverable = true;
+  assert.equal(decide({ session: rec, now: '2026-11-11T13:52:38Z' }).action, 'rearm');
+  const noAt = JSON.parse(JSON.stringify(INIT_FAILED));
+  delete noAt.ccr.external_metadata.last_init_error.at;
+  assert.equal(decide({ session: noAt, now: '2026-11-11T13:52:38Z' }).action, 'restart');
+  noAt.ccr.updated_at = '2026-11-11T15:30:00Z'; // an hour+ after created_at: it ran
+  assert.equal(decide({ session: noAt, now: '2026-11-11T15:31:00Z' }).action, 'rearm');
+});
+
+test('BRO-7377: the verdict carries neverStarted so the sweep does not parse the reason text', () => {
+  assert.equal(decide({ session: INIT_FAILED, now: '2026-11-11T13:52:38Z' }).neverStarted, true);
+  assert.equal(decide({ session: JSON.parse(JSON.stringify({ ccr: { ...INIT_FAILED.ccr, external_metadata: {} } })), now: '2026-11-11T13:52:38Z' }).neverStarted, undefined);
+});
