@@ -144,11 +144,24 @@ function isGradeDue(openingDate, today) {
  * One grade row, or null when not gradable yet (not due, no critic score, no frozen row).
  * `frozen` = frozenForecastRow(...). Errors are absolute misses against criticScore.
  */
-function buildGradeRow({ showId, openingDate, today, frozen, criticScore }) {
+function buildGradeRow({ showId, openingDate, today, frozen, criticScore, frozenV2 = null }) {
   if (!isGradeDue(openingDate, today) || criticScore == null || !frozen) return null;
   const miss = (v) => (typeof v === 'number' ? r1(Math.abs(criticScore - v)) : null);
   const audience = frozen.audience ? frozen.audience.combined : null;
+  // BRO-7357: v2 shadow, graded beside v1. v2 comes from the frozen v2 row (Show Score used, recorded at or before
+  // opening minus 3 days); with none, v2 equals v1 (fallback). v1 is ALSO graded from that same row so the
+  // comparison uses one information date and one model fit (v1 refits nightly, v2 is frozen).
+  const usedShowScore = !!(frozenV2 && frozenV2.v2);
+  const v2row = usedShowScore ? frozenV2.v2 : null;
+  const v2Forecast = usedShowScore ? v2row.forecast : frozen.forecast;
+  const v1Same = usedShowScore ? frozenV2.forecast : frozen.forecast;
+  const v2 = {
+    v2ModelVersion: usedShowScore ? v2row.modelVersion : null, v2RecordedAt: usedShowScore ? frozenV2.recordedAt : frozen.recordedAt, v2UsedShowScore: usedShowScore,
+    forecastV2: v2Forecast, missForecastV2: miss(v2Forecast), forecastV1SameRow: v1Same, missForecastV1SameRow: miss(v1Same),
+    inRange80V2: usedShowScore ? criticScore >= v2row.lo80 && criticScore <= v2row.hi80 : (typeof frozen.lo80 === 'number' ? criticScore >= frozen.lo80 && criticScore <= frozen.hi80 : null),
+  };
   return {
+    ...v2,
     showId, gradedAt: today, openingDate, criticScore, frozenRecordedAt: frozen.recordedAt,
     forecast: frozen.forecast, categoryMean: frozen.categoryMean, previewAudience: audience,
     missForecast: miss(frozen.forecast), missCategoryMean: miss(frozen.categoryMean), missPreviewAudience: miss(audience),
@@ -160,7 +173,11 @@ function buildGradeRow({ showId, openingDate, today, frozen, criticScore }) {
 function scoreboard(grades) {
   const avg = (k) => { const v = grades.map((g) => g[k]).filter((x) => typeof x === 'number'); return v.length ? { n: v.length, mae: r1(RF.mean(v)) } : { n: 0, mae: null }; };
   const hits = grades.map((g) => g.inRange80).filter((x) => typeof x === 'boolean');
+  // BRO-7357: v1 vs v2 on the same shows; the Show Score-only subset compares v1 and v2 from the same ledger row.
+  const ss = grades.filter((g) => g.v2UsedShowScore);
+  const avgOf = (rows, k) => { const v = rows.map((g) => g[k]).filter((x) => typeof x === 'number'); return v.length ? { n: v.length, mae: r1(RF.mean(v)) } : { n: 0, mae: null }; };
   return {
+    v2Shadow: { all: { v1: avg('missForecast'), v2: avg('missForecastV2') }, showScoreUsed: { v1SameRow: avgOf(ss, 'missForecastV1SameRow'), v2: avgOf(ss, 'missForecastV2') } },
     shows: grades.length,
     forecast: avg('missForecast'), categoryMean: avg('missCategoryMean'), previewAudience: avg('missPreviewAudience'),
     range80HitRate: hits.length ? Math.round((hits.filter(Boolean).length / hits.length) * 100) / 100 : null,

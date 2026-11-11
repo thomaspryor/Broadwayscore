@@ -31,6 +31,7 @@ const arg = (k, d) => { const a = process.argv.find((x) => x.startsWith(`--${k}=
 const FLOOR = 10; const SETTLE_DAYS = 21; const MIN_PRIOR_SHOWS = 30; const MARKET = 'broadway';
 const TODAY = arg('today', new Date().toISOString().slice(0, 10));
 const OUT = arg('out', path.join(ROOT, 'data/audit/review-forecast-inputs-v2.json'));
+const FREEZE = arg('freeze', null); // BRO-7357: write the frozen Show Score mean-plus-n model the nightly pilot uses
 const AUD_FILE = arg('audience', path.join(ROOT, 'data/audit/review-forecast-v2-wayback-audience.json'));
 const J = (f) => JSON.parse(fs.readFileSync(path.join(ROOT, f), 'utf8'));
 
@@ -184,7 +185,8 @@ function diffCI(a, b, B = 2000, alpha = 0.05) { // a, b: aligned prediction arra
 // 6 single-group primary tests (cast, preview, panel, awards, calendar, house) + cast+preview + all-inputs-together (2)
 // + earlier-run linear and step (2) + forked step cuts 72 and 78 (2) + flop and rave tails for earlier-run linear and step (4)
 // + combined panel+earlier-run step and linear (2) + Show Score: full-pull primary, restricted variant, three secondary specs, primary flop and hit tails (7) + combined with Show Score (1) = 26.
-const N_PRIMARY_TESTS = 26;
+const NIGHTLY_COMBINED = process.argv.includes('--nightly-combined'); // BRO-7357: adds one test (Show Score + panel, no web-collected earlier-run), so the family is 27
+const N_PRIMARY_TESTS = NIGHTLY_COMBINED ? 27 : 26;
 const r2 = (x) => (x == null ? null : Math.round(x * 100) / 100);
 const maeOf = (p) => RF.mean(p.map((q) => Math.abs(q.y - q.pred)));
 
@@ -220,6 +222,7 @@ results.push(compare('Show Score secondary (a): share of ratings at or below 60'
 results.push(compare('Show Score secondary (b): floor rule, only moves down when below the earlier shows median', [...V1, 'audBelow'], null, 'secondary', 'S'));
 results.push(compare('Show Score secondary (c): mean plus review count', [...V1, ...G.audience], null, 'secondary'));
 const X = EX.EXTRA_GROUPS;
+if (NIGHTLY_COMBINED) results.push(compare('Nightly-safe combined: panel + Show Score mean plus n (no earlier-run)', [...V1, ...X.panel, ...G.audience], null, 'combined'));
 const EG = ER.ER_GROUPS; const hasEr = (p) => p.has.earlierRun;
 results.push(compare('Earlier-run web reviews, linear (shrunk mean gap, has flag)', [...V1, ...EG.linear], null, 'primary'));
 results.push(compare('Earlier-run web reviews, step at 75 (below / at or above)', [...V1, ...EG.step], null, 'primary'));
@@ -253,6 +256,25 @@ results.push(compare('Combined: panel + earlier-run + Show Score audience, shows
 results.push(compare('Combined: panel + earlier-run (step), shows with member reviews only (same shows, no audience)', [...V1, ...X.panel, ...EG.step], hasAud, 'combined-subset'));
 for (const f of [...G.cast, ...G.preview, ...EX.EXTRA_FEATURE_NAMES]) results.push(compare(`feature: ${f}`, [...V1, f], null, 'exploratory'));
 
+// ---- BRO-7357: freeze the nightly v2 shadow model (v1 features + audScore + audCount, fit on the full evaluated set) ----
+if (FREEZE) {
+  const names = [...V1, ...G.audience];
+  const fit = rows.filter((r) => r.mu != null);
+  const toTrain = (rs) => rs.map((r) => ({ x: r.x, y: r.y - r.mu }));
+  const clamp = (v) => Math.max(0, Math.min(100, v));
+  const model = RF.fitRidge(toTrain(fit), names);
+  const resid = [];
+  for (const s of seasonsOf(fit)) {
+    const tr = fit.filter((r) => r.season !== s); const te = fit.filter((r) => r.season === s);
+    if (tr.length < 60) continue;
+    const m = RF.fitRidge(toTrain(tr), names);
+    for (const r of te) resid.push(r.y - clamp(r.mu + RF.predictRidge(m, r.x)));
+  }
+  resid.sort((a, b) => a - b);
+  const frozen = { modelVersion: 'rf-v2-showscore-meann-2026-11-11', spec: 'v1 features + audScore (shrunk Show Score mean, k=10 toward 85, minus 85) + audCount (log(n+1) - log 60); ridge lambda ' + RF.RIDGE_LAMBDA, fitRows: fit.length, residualQ10: RF.quantile(resid, 0.1), residualQ90: RF.quantile(resid, 0.9), shrinkK: 10, shrinkCenter: 85, model };
+  fs.writeFileSync(FREEZE, JSON.stringify(frozen, null, 1) + '\n');
+  console.error(`froze v2 model on ${fit.length} rows -> ${FREEZE}`);
+}
 // Best model = v1 unless a primary full-population candidate has a Bonferroni-corrected interval entirely below zero.
 const winners = results.filter((r) => r.kind === 'primary' && r.survivesCorrection && r.shows === base.length).sort((a, b) => a.maeWith - b.maeWith);
 const bestCombined = winners[0] || { input: 'None: v1 (today\'s formula) stays best', shows: base.length, maeWith: r2(maeOf(base)), verdict: 'no input helps' };
