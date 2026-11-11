@@ -16,6 +16,7 @@ const fs = require('fs');
 const path = require('path');
 const { redditStaleVerdict, redditOutageVerdict, readRedditLedgerRows, REDDIT_STALE_HOURS } = require('./lib/reddit-dispatch-cooldown');
 
+const { isRedditRetired } = require('./lib/reddit-status');
 const CONDITION_KEY = 'reddit-sentiment:stale';
 
 function newestRedditWriteMs(buzz) {
@@ -35,6 +36,14 @@ function countRedditAttempts(rows, nowMs) {
 async function main() {
   const dryRun = process.argv.includes('--dry-run');
   const nowMs = Date.now();
+  // BRO-7337: Reddit is retired on purpose (config/retired-sources.json). Stored data is frozen and
+  // no scraper runs, so there is nothing to be stale. Close any open incident and stop; this must
+  // come before the idle check, which would otherwise leave an open alert open forever.
+  if (isRedditRetired()) {
+    console.log('[reddit-freshness] Reddit is retired; nothing to check');
+    if (!dryRun) require('./lib/owner-alert-router').resolveCondition(CONDITION_KEY, { reason: 'reddit retired (config/retired-sources.json)' });
+    return;
+  }
   const buzz = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'audience-buzz.json'), 'utf8'));
   const lastWriteMs = newestRedditWriteMs(buzz);
   const ledgerRows = readRedditLedgerRows();

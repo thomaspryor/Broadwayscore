@@ -190,7 +190,6 @@ jobs:
             # rewrites the snapshot (idempotent); drafts are stamped emailedAt
             # before commit, so it can repeat a draft email only when the
             # previous run's commit failed after the send.
-            "reddit-engagement-digest.yml|36|Reddit Engagement Digest"
             "weekly-video-reviews.yml|192|Weekly Video Reviews"
             "weekly-nyt-critics-picks.yml|72|NYT Critics Picks"
             "weekly-show-origins.yml|192|Weekly Show Origins"

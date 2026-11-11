@@ -403,6 +403,8 @@ async function main() {
     const redditNull = ok.filter((r) => r.counters.reddit === null).length;
     const redditZero = ok.filter((r) => r.counters.reddit === 0).length;
     if (redditNull / ok.length > 0.9) {
+      // BRO-7337: while Reddit is retired (config/retired-sources.json) this is the expected,
+      // permanent state, not a provider outage.
       // Every provider is down and the fetcher SAID so (null = signal
       // absent). This is the designed degraded mode: the scorer drops the
       // Reddit signal and renormalizes with the coverage floor. Publish,

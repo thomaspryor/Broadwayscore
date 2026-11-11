@@ -2,20 +2,8 @@ name: Reddit Engagement Digest
 
 on:
   schedule:
-    # Daily (01:45 UTC since BRO-4800). Card #511 (owner merge decision — exactly one scheduled
-    # email/day, not three): this no longer emails on its own. It writes
-    # data/audit/reddit-digest-snapshot.json instead; autonomous-email.js
-    # folds it into the loop's single scheduled morning email. Went from
-    # twice-daily (01:00/13:00 UTC) to once-daily — a second same-day run
-    # would just overwrite this one's snapshot before the morning email ever
-    # read it, silently dropping its threads. Runs BEFORE daily-digest.yml
-    # (02:00 UTC) / the loop start (07:30 UTC) so the snapshot is same-day
-    # fresh. The draft-opening-posts job (BRO-4333/4360) drafts Reddit posts
-    # and emails each new one on its own (~8am Berlin).
-    # BRO-4800: moved 06:00 -> 01:45 UTC (still ahead of daily-digest.yml,
-    # now 02:00). GitHub's schedule lag here is 5-8h, so 06:00 landed after
-    # the 11:30 UTC morning digest (2026-10-06: snapshot written 12:25 UTC).
-    - cron: '45 1 * * *'
+    # BRO-7337: the daily '45 1 * * *' digest cron was removed (Reddit retired, config/retired-sources.json).
+    # Restore it from git history to turn the digest back on.
     # BRO-6634: opening-night cadence for the Reddit draft. Hourly, the cheap
     # `due` job asks the draft script's own rule whether any show needs a draft
     # or redraft (a displayed-score or review-count move counts, 59->60
@@ -63,7 +51,7 @@ jobs:
   digest:
     # A resend dispatch is about a few named drafts only; running the digest
     # too would write a snapshot the 06:00 run overwrites unread (see above).
-    if: ${{ github.event.schedule == '45 1 * * *' || (github.event_name == 'workflow_dispatch' && inputs.resend_shows == '' && inputs.due_check != true) }}
+    if: ${{ (github.event_name == 'workflow_dispatch' && inputs.resend_shows == '' && inputs.due_check != true) }}
     runs-on: ubuntu-latest
     concurrency:
       group: reddit-engagement-digest

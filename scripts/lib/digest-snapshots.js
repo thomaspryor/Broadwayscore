@@ -51,7 +51,8 @@ const DEFAULT_DATA_DIR = path.join(REPO, 'data');
 const SNAPSHOTS = [
   { key: 'health', label: 'site health', file: 'health-digest-snapshot.json', maxAgeH: 36 },
   { key: 'dailyDigest', label: 'score-drift digest', file: 'daily-digest-snapshot.json', maxAgeH: 36, bannerOnly: true },
-  { key: 'redditDigest', label: 'Reddit engagement', file: 'reddit-digest-snapshot.json', maxAgeH: 36, bannerOnly: true },
+  // BRO-7337: redditDigest REMOVED when Reddit was retired (config/retired-sources.json); the daily
+  // producer cron is gone, so keeping it would raise a permanent stale banner. Rollback restores it.
   // scripts/produce-new-show-types-snapshot.js (BRO-6542) — new tour,
   // pre-Broadway and UK regional shows, plus a suggested r/Broadway post for
   // each new pre-Broadway one (owner ask 2026-10-29: "so I don't miss them").

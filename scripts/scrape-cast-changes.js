@@ -205,6 +205,8 @@ async function fetchRedditJson(url, maxRetries = 2) {
       return await fetchRedditWithFallback(url, 0, { allowRss: true });
     } catch (e) {
       lastError = e;
+      // BRO-7337: a retired source is not a transient failure, so no retry and no sleep.
+      if (e && e.code === 'REDDIT_RETIRED') throw e;
       if (attempt < maxRetries) {
         const delay = 5000 * (attempt + 1);
         if (verbose) console.log(`    Reddit retry ${attempt + 1}/${maxRetries}: ${e.message}`);
@@ -1070,7 +1072,11 @@ async function scrapeReddit(targetShows) {
   const allPosts = [];
   const seenPostIds = new Set();
 
-  for (const query of generalQueries) {
+  // BRO-7337: Reddit is retired (config/retired-sources.json): skip the whole Reddit leg quietly,
+  // not as 25 recorded errors.
+  const redditRetired = require('./lib/reddit-status').isRedditRetired();
+  if (redditRetired) console.log('[Reddit] retired; skipping the Reddit leg');
+  for (const query of redditRetired ? [] : generalQueries) {
     // Graceful fallback: if Reddit is blocking, stop trying
     if (consecutiveEmpty >= 3) {
       console.log('[Reddit] 3+ consecutive empty results — likely being blocked. Skipping remaining queries.');

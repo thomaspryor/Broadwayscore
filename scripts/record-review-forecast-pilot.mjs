@@ -124,6 +124,9 @@ async function loadReddit() {
   return redditDeps;
 }
 async function redditFor(show) {
+  // BRO-7337: Reddit is retired (config/retired-sources.json). No queries, no spend.
+  const { createRequire } = await import('node:module');
+  if (createRequire(import.meta.url)('./lib/reddit-status.js').isRedditRetired()) return { available: false, reason: 'reddit retired' };
   const d = await loadReddit();
   const win = d.computeProductionWindow(show, shows);
   // The scraper floors at first preview; the pilot wants the lead-up too. Only safe without an earlier sibling production.

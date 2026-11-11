@@ -59,7 +59,6 @@ test('readAllSnapshots: fresh sections render, everything else lands in problems
   const { sections, problems } = readAllSnapshots({ auditDir: dir, now: NOW });
   assert.ok(sections.health);
   assert.equal(sections.dailyDigest, null);
-  assert.equal(sections.redditDigest, null);
   assert.equal(sections.providerSpend, null);
   // providerSpend is optionalIfMissing (no file until the first daily run
   // lands it) — its absence must NOT land in problems, only reddit's genuine
@@ -67,8 +66,8 @@ test('readAllSnapshots: fresh sections render, everything else lands in problems
   // registry entry was removed in BRO-3390 when its producer was retired;
   // the INVARIANT it guards is about optionalIfMissing, not about that one
   // snapshot, so it is re-pointed rather than deleted.)
-  assert.equal(problems.length, 2);
-  assert.deepEqual(problems.map((p) => p.status).sort(), ['missing', 'stale']);
+  assert.equal(problems.length, 1);
+  assert.deepEqual(problems.map((p) => p.status).sort(), ['stale']);
   assert.ok(!problems.some((p) => p.key === 'providerSpend'));
 });
 
@@ -94,7 +93,8 @@ test('describeProblems names every non-fresh source; null when all fresh', () =>
 });
 
 test('registry covers exactly the folded digests (opening digest is standalone again since 2026-07-30; coverageVerdict added #905; trunk added #1003; p1RelevanceAudit added #1719; predispatchQueue added #1801; dispatchGuardQueue added #1802; doneEvidence added BRO-3426; guardAudit added BRO-3011; backlogDrain REMOVED BRO-3390 when its producer was retired; newShowTypes added BRO-6542; pressNight added BRO-6645; openingGrades added BRO-7082)', () => {
-  assert.deepEqual(SNAPSHOTS.map((s) => s.key).sort(), ['coverageVerdict', 'dailyDigest', 'dispatchGuardQueue', 'doneEvidence', 'guardAudit', 'health', 'newShowTypes', 'openingGrades', 'p1RelevanceAudit', 'predispatchQueue', 'pressNight', 'providerSpend', 'redditDigest', 'trunk']);
+  assert.deepEqual(SNAPSHOTS.map((s) => s.key).sort(), ['coverageVerdict', 'dailyDigest', 'dispatchGuardQueue', 'doneEvidence', 'guardAudit', 'health', 'newShowTypes', 'openingGrades', 'p1RelevanceAudit', 'predispatchQueue', 'pressNight', 'providerSpend', 'trunk']);
+  assert.ok(!SNAPSHOTS.some((s) => s.key === 'redditDigest'), 'BRO-7337: Reddit retired; a registered redditDigest snapshot would show a permanent stale banner');
   assert.ok(!SNAPSHOTS.some((s) => s.key === 'backlogDrain'),
     'backlog-drain-metric.json froze on 2026-08-31 when scripts/backlog-drain.js was decommissioned; re-registering it would resume a permanent daily "stale" warning in the owner digest');
 });

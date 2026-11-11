@@ -186,6 +186,11 @@ async function fetchAllPosts() {
   } catch (e) {
     console.warn(`  Archive unavailable (${e.message}); trying Reddit`);
   }
+  // BRO-7337: Reddit is retired. The archive is the only source now; empty is a clean result.
+  if (require('./lib/reddit-status').isRedditRetired()) {
+    console.warn('  Reddit is retired; no live fallback. Returning no posts.');
+    return [];
+  }
   return fetchFromReddit();
 }
 

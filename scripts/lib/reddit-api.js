@@ -22,6 +22,7 @@ const { recordSbCall, recordSdCall, recordBdCall, sbBilledCredits, sdBilledCredi
 const { creditsFor } = require('./provider-credits');
 const { consultScrapingdog } = require('./scrapingdog-caps');
 const { consultBrightData } = require('./brightdata-caps');
+const { isRedditRetired, RedditRetiredError } = require('./reddit-status');
 const { sbRedditVerdict, sbRunBreakerOpen, readLedgerTail } = require('./reddit-dispatch-cooldown');
 
 const USER_AGENT = 'web:broadwayscorecard:v1.0 (by /u/bwayscorecard)';
@@ -832,6 +833,9 @@ async function fetchViaOauth(url, isRetry = false) {
 }
 
 async function fetchWithFallback(url, retryCount = 0, opts = {}) {
+  // BRO-7337: Reddit is retired. Refuse before the circuit breaker and any network call, so a
+  // refusal neither spends proxy credits nor counts as a provider failure.
+  if (isRedditRetired()) throw new RedditRetiredError();
   // Circuit breaker: if too many consecutive failures, stop wasting time
   if (circuitBroken) {
     throw new Error('Circuit breaker open: all Reddit sources failing consistently. Aborting to save time.');
@@ -1167,6 +1171,8 @@ function resetFallbackState() {
 
 module.exports = {
   fetchViaOauth,
+  isRedditRetired,
+  RedditRetiredError,
   _oauthState: () => ({ oauthDown, hasCreds: hasOauthCreds() }),
   searchSubreddit,
   getPostComments,
