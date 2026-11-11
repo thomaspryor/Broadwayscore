@@ -231,5 +231,36 @@
       }
     ],
     "queuedAt": "2026-11-11T05:05:26.950Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7349-rc-scope",
+    "title": "Landing blocked: unit-tests-node red on land/bro-7349-rc-scope",
+    "description": "land.yml did not land land/bro-7349-rc-scope: the unit-tests-node gate went red at 8d9248c73a. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42963832970",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7349-rc-scope"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "8d9248c73afa54c3a4f0c5775ec1c8a995cddadf"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42963832970"
+      }
+    ],
+    "queuedAt": "2026-11-11T05:14:22.982Z"
   }
 ]
