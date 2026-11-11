@@ -1515,7 +1515,30 @@
    "pagesRead": 12,
    "capped": true,
    "reachedCutoff": false
+  },
+  "cats-2016": {
+   "opening": "2016-07-31",
+   "cutoff": "2016-07-28",
+   "previewsStart": "2016-07-14",
+   "gapNewestToCutoffDays": 0,
+   "earlierRunN": 2,
+   "earlierRunMean": 84.5,
+   "earlierRunNewest": "2016-03-11",
+   "lastPage": 430,
+   "n": 32,
+   "newest": "2016-07-28",
+   "oldest": "2016-07-14",
+   "mean": 89.5,
+   "median": 92.5,
+   "shareGe90": 0.7,
+   "shareLe60": 0,
+   "meanFirst20": 89,
+   "meanRest": 90.3,
+   "daysCovered": 14,
+   "pagesRead": 5,
+   "capped": false,
+   "reachedCutoff": true
   }
  },
- "directRequestsTotal": 1105
+ "directRequestsTotal": 1118
 }
