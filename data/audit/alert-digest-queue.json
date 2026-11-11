@@ -684,5 +684,62 @@
       }
     ],
     "queuedAt": "2026-11-11T18:56:26.849Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:Enrich Off-Broadway Dates",
+    "title": "Cron's latest run failed (not yet stale): Enrich Off-Broadway Dates",
+    "description": "Enrich Off-Broadway Dates: Latest run failed (last success 97h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/43083884950",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/43083884950)"
+      }
+    ],
+    "queuedAt": "2026-11-11T19:07:08.600Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:Update Lottery/Rush",
+    "title": "Cron's latest run failed (not yet stale): Update Lottery/Rush",
+    "description": "Update Lottery/Rush: Latest run failed (last success 106h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/43083884950",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/43083884950)"
+      }
+    ],
+    "queuedAt": "2026-11-11T19:07:08.629Z"
+  },
+  {
+    "conditionKey": "cron-health:Commercial Pending Review",
+    "title": "🚨 Critical cron stale, self-heal failed: Commercial Pending Review",
+    "description": "Self-heal redispatch did not bring this cron back to healthy. See the run log for the mapped workflow file and last-success timestamp.",
+    "severity": "critical",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/43083884950",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/43083884950)"
+      }
+    ],
+    "queuedAt": "2026-11-11T19:07:08.773Z"
   }
 ]
