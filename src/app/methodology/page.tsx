@@ -114,7 +114,7 @@ const faqSchema = {
       name: 'What is AudienceGrade?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'AudienceGrade is a letter grade, A+ to F, built from what theatergoers say on Show Score, Mezzanine, Theatr, Broadway.com and r/Broadway (plus SeatPlan, London Box Office and London Theatre Direct for London shows). Sites with more ratings count for more, and no single site can make up more than 80% of the grade. From Reddit we only count people who saw the show.',
+        text: 'AudienceGrade is a letter grade, A+ to F, built from what theatergoers say on Show Score, Mezzanine, Theatr and Broadway.com, plus SeatPlan, London Box Office and London Theatre Direct for London shows. Shows that already had r/Broadway data also keep it, but we stopped collecting new Reddit comments in November 2026. Sites with more ratings count for more, and no single site can make up more than 80% of the grade. From Reddit we only count people who saw the show.',
       },
     },
     {
@@ -413,7 +413,7 @@ export default function MethodologyPage() {
                 <span className="text-white font-medium">Reddit (r/Broadway)</span>
               </div>
               <p className="text-gray-300 text-sm">
-                What people on r/Broadway say after seeing a show. We only count people who actually went, so boycotts, opinions about the source material, and secondhand takes are left out. We wait until there are at least 50 comments from the last three years.
+                What people on r/Broadway say after seeing a show. We only count people who actually went, so boycotts, opinions about the source material, and secondhand takes are left out. We wait until there are at least 50 comments from the last three years. We stopped collecting new Reddit comments in November 2026, so this only applies to shows that already had Reddit data. Their Reddit numbers stay as they were.
               </p>
             </div>
           </div>
