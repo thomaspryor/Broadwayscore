@@ -1,6 +1,7 @@
 'use client';
 
 import { memo } from 'react';
+import type { ReactNode } from 'react';
 import type { MouseEvent, KeyboardEvent } from 'react';
 import Link from 'next/link';
 import { getOptimizedImageUrl } from '@/lib/images';
@@ -51,6 +52,10 @@ export interface ShowListCardProps {
   overrideHref?: string;
   /** Show the venue under the title. Lists set it only for rows that share a title with another row (BRO-4309). */
   showVenue?: boolean;
+  /** Replaces the right-hand score box (default variant). Pages whose number is not a Critic Score (admin forecasts) pass their own labelled box. */
+  scoreSlot?: ReactNode;
+  /** Replaces the date line under the title (default variant). */
+  metaSlot?: ReactNode;
 }
 
 function RankBadge({ rank }: { rank: number }) {
@@ -82,6 +87,8 @@ const ShowListCard = memo(function ShowListCard({
   showTicketLink = false,
   overrideHref,
   showVenue = false,
+  scoreSlot,
+  metaSlot,
 }: ShowListCardProps) {
   const isRevival = show.isRevival === true;
   const category = show.category ?? 'broadway';
@@ -276,7 +283,7 @@ const ShowListCard = memo(function ShowListCard({
         {show.isOffWestEnd && <CategoryBadge category="off-west-end" isOpera={isOpera} />}
         {!hideStatus && <StatusBadge status={show.status} />}
       </div>
-      <p className="text-sm text-gray-400 mt-2.5 sm:truncate">
+      {metaSlot ?? <p className="text-sm text-gray-400 mt-2.5 sm:truncate">
         {show.status === 'previews' || show.status === 'upcoming' ? (
           // Show BOTH dates when we have both — a previews start is real,
           // useful information, not a lesser substitute for opening night.
@@ -317,12 +324,12 @@ const ShowListCard = memo(function ShowListCard({
             )}
           </>
         )}
-      </p>
+      </p>}
     </div>
   );
 
   // --- Score section ---
-  const scoreSection = (
+  const scoreSection = scoreSlot ?? (
     <div className={`flex-shrink-0 flex flex-col items-center ${isCompact ? 'gap-1.5' : 'justify-center gap-1.5'} w-20 sm:w-24 ${isCompact ? '' : 'overflow-visible'}`}>
       {scoreMode === 'audience' ? (
         audienceGrade ? (

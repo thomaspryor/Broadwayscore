@@ -2,67 +2,76 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { isAdmin } from '@/lib/admin-auth';
+import { getShowById } from '@/lib/data';
 import { getReviewForecastBoard, type BoardEntry } from '@/lib/admin-review-forecasts';
-import { StatGrid, StatusBadge, ScoreBadge } from '@/components/show-cards';
+import { StatGrid, ScoreBadge, ShowListCard } from '@/components/show-cards';
+import type { ShowCardShow } from '@/components/show-cards';
 
 // Owner-only. Forecasts are private: this is a server-rendered page behind the admin cookie, with no
 // API route, no static params and nothing under public/. Signed-out visitors get a plain 404.
+// Layout matches the home page list: one ShowListCard per show, number on the right (here a labelled forecast).
 export const dynamic = 'force-dynamic';
 export const metadata: Metadata = { robots: { index: false, follow: false } };
 
 const fmtDate = (iso: string) =>
   new Date(`${iso}T12:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
-const pts = (n: number | null) => (n == null ? '–' : `${n} pts`);
 
-function Fact({ label, value }: { label: string; value: string }) {
+function cardShow(e: BoardEntry): ShowCardShow {
+  const s = getShowById(e.showId);
+  return {
+    id: e.showId,
+    slug: s?.slug ?? e.showId,
+    title: e.title,
+    venue: s?.venue ?? '',
+    openingDate: e.openingDate,
+    previewsStartDate: s?.previewsStartDate,
+    status: e.state === 'upcoming' ? (s?.status === 'previews' ? 'previews' : 'upcoming') : (s?.status ?? 'open'),
+    type: s?.type ?? 'musical',
+    isRevival: s?.isRevival,
+    category: s?.category,
+    images: s?.images,
+    audienceCombinedScore: null,
+    audienceGrade: null,
+  };
+}
+
+/** Right-hand box: same footprint as the home page score box, labelled so it is never read as a Critic Score. */
+function ForecastBox({ e }: { e: BoardEntry }) {
+  const graded = e.state === 'graded';
   return (
-    <div>
-      <dt className="text-fg-muted text-xs">{label}</dt>
-      <dd className="font-semibold tabular-nums">{value}</dd>
+    <div className="flex-shrink-0 flex flex-col items-center justify-center gap-1.5 w-20 sm:w-24">
+      <span className="text-[9px] font-semibold uppercase tracking-wide whitespace-nowrap text-fg-muted">
+        {graded ? 'Forecast was' : 'Forecast'}
+      </span>
+      <ScoreBadge score={e.forecast} size="lg" />
+      {e.forecastV2 != null ? (
+        <span className="text-[10px] text-gray-400 whitespace-nowrap" title="Newer model, tracked quietly beside the main forecast">
+          v2 {e.forecastV2}
+          {e.v2UsedShowScore ? '' : ' (same inputs)'}
+        </span>
+      ) : null}
     </div>
   );
 }
 
-function ShowRow({ e }: { e: BoardEntry }) {
-  const status = e.state === 'upcoming' ? 'upcoming' : 'open';
-  const range = e.lo80 != null && e.hi80 != null ? `${e.lo80} to ${e.hi80}` : '–';
+function MetaLine({ e }: { e: BoardEntry }) {
+  const range = e.lo80 != null && e.hi80 != null ? `Likely ${e.lo80} to ${e.hi80}` : null;
+  const aud = e.previewAudience != null ? `Audience ${Math.round(e.previewAudience)}${e.audienceCount ? ` (${e.audienceCount} votes)` : ''}` : 'No audience grade yet';
+  const when = `${e.state === 'upcoming' ? 'Opens' : 'Opened'} ${fmtDate(e.openingDate)}`;
   return (
-    <li className="card p-4">
-      <div className="flex items-start gap-3">
-        <ScoreBadge score={e.forecast} size="xs" />
-        <div className="min-w-0 flex-1">
-          <h3 className="font-bold break-words [overflow-wrap:anywhere]">{e.title}</h3>
-          <p className="text-sm text-fg-muted mt-0.5">
-            {e.state === 'upcoming' ? 'Opens' : 'Opened'} <time dateTime={e.openingDate}>{fmtDate(e.openingDate)}</time>
-          </p>
-        </div>
-        {e.state === 'upcoming' ? <StatusBadge status={status} /> : null}
-      </div>
-      <dl className="grid grid-cols-2 gap-x-4 gap-y-2 mt-3 text-sm">
-        <Fact label="Our forecast" value={e.forecast == null ? '–' : String(e.forecast)} />
-        <Fact label="Likely range" value={range} />
-        <Fact label="Category average" value={e.categoryMean == null ? '–' : String(Math.round(e.categoryMean))} />
-        <Fact
-          label="Preview audience grade"
-          value={e.previewAudience == null ? 'none yet' : `${Math.round(e.previewAudience)} (${e.audienceCount} votes)`}
-        />
-        {e.state === 'graded' ? (
-          <>
-            <Fact label="Actual Critic Score" value={String(e.criticScore)} />
-            <Fact label="In likely range" value={e.inRange80 == null ? '–' : e.inRange80 ? 'Yes' : 'No'} />
-            <Fact label="Our miss" value={pts(e.missForecast)} />
-            <Fact label="Category average miss" value={pts(e.missCategoryMean)} />
-          </>
-        ) : null}
-      </dl>
-      <p className="text-xs text-fg-muted mt-3">
-        {e.state === 'graded'
-          ? `Forecast frozen ${e.forecastRecordedAt ? fmtDate(e.forecastRecordedAt) : 'before opening'}.`
-          : e.state === 'awaiting-grade'
-            ? `Frozen before opening. Graded on ${fmtDate(e.gradeDueOn)}, once reviews settle.`
-            : `Latest forecast${e.forecastRecordedAt ? `, recorded ${fmtDate(e.forecastRecordedAt)}` : ''}. Freezes at opening night.`}
-      </p>
-    </li>
+    <div className="text-sm text-gray-400 mt-2.5">
+      <p>{range ? `${when} · ${range}` : when}</p>
+      <p>{aud}</p>
+      {e.state === 'graded' ? (
+        <p className="text-fg mt-0.5">
+          Critic Score {e.criticScore}
+          {e.missForecast != null ? ` · missed by ${e.missForecast} pts` : ''}
+          {e.inRange80 != null ? (e.inRange80 ? ' · inside range' : ' · outside range') : ''}
+        </p>
+      ) : e.state === 'awaiting-grade' ? (
+        <p className="mt-0.5">Graded {fmtDate(e.gradeDueOn)}, once reviews settle</p>
+      ) : null}
+    </div>
   );
 }
 
@@ -70,21 +79,20 @@ export default async function AdminForecastsPage() {
   if (!(await isAdmin())) notFound(); // plain 404, same as the other admin pages
 
   const board = await getReviewForecastBoard();
-  const sections: Array<[string, BoardEntry['state']]> = [
-    ['Upcoming', 'upcoming'],
-    ['Opened, waiting for the grade', 'awaiting-grade'],
+  const sections: Array<[string, BoardEntry['group']]> = [
+    ['Opening soon', 'soon'],
+    ['Later', 'later'],
     ['Graded', 'graded'],
   ];
 
   return (
     <div className="min-h-screen bg-surface text-white">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
-        <header className="mb-6">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-5 sm:py-12">
+        <header className="mb-5">
           <Link href="/admin" className="text-sm text-brand hover:underline">Admin</Link>
           <h1 className="text-2xl sm:text-3xl font-extrabold mt-3">Review forecasts</h1>
           <p className="text-sm text-fg-muted mt-1">
-            Our quiet forecast of each Broadway opening&apos;s Critic Score, recorded daily and frozen at opening night.
-            Private. Refreshes itself every few minutes.
+            Our quiet forecast of each opening&apos;s Critic Score, recorded daily and frozen at opening night. Private.
           </p>
         </header>
 
@@ -100,7 +108,6 @@ export default async function AdminForecastsPage() {
                 { label: 'Shows graded', value: board.summary.gradedShows },
                 { label: 'Our typical miss', value: board.summary.ourMiss == null ? '–' : `${board.summary.ourMiss} pts`, dimmed: board.summary.ourMiss == null },
                 { label: 'Category average miss', value: board.summary.categoryMiss == null ? '–' : `${board.summary.categoryMiss} pts`, dimmed: board.summary.categoryMiss == null },
-                { label: 'Upcoming', value: board.summary.upcomingShows, subtitle: `${board.summary.awaitingGrade} awaiting grade` },
               ]}
             />
             <p className="text-sm text-fg-muted mb-6">
@@ -110,17 +117,24 @@ export default async function AdminForecastsPage() {
                   ? `Only ${board.summary.gradedShows} graded so far, too early to call a winner. Smaller miss is better.`
                   : 'Smaller miss is better. Each miss is the average gap to the actual Critic Score.'}
             </p>
-            {sections.map(([heading, state]) => {
-              const rows = board.entries.filter((e) => e.state === state);
+            {sections.map(([heading, group]) => {
+              const rows = board.entries.filter((e) => e.group === group);
               if (rows.length === 0) return null;
               return (
-                <section key={state} aria-label={heading} className="mb-8">
-                  <h2 className="text-lg font-bold mb-3">
-                    {heading} <span className="text-sm text-fg-muted font-normal">({rows.length})</span>
-                  </h2>
-                  <ul className="grid gap-3 md:grid-cols-2">
-                    {rows.map((e) => <ShowRow key={e.showId} e={e} />)}
-                  </ul>
+                <section key={group} aria-label={heading} className="mb-6">
+                  <h2 className="text-base font-bold text-white mb-3">{heading}</h2>
+                  <div className="space-y-3" role="list" aria-label={heading}>
+                    {rows.map((e, i) => (
+                      <ShowListCard
+                        key={e.showId}
+                        show={cardShow(e)}
+                        index={i}
+                        scoreMode="critics"
+                        scoreSlot={<ForecastBox e={e} />}
+                        metaSlot={<MetaLine e={e} />}
+                      />
+                    ))}
+                  </div>
                 </section>
               );
             })}

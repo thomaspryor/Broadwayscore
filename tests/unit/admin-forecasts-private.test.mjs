@@ -51,3 +51,11 @@ test('no forecast data under public/ or data/, and no script writes pilot rows t
   const recorder = read('scripts/record-review-forecast-pilot.mjs');
   assert.match(recorder, /outside every checkout|isInsideCheckout|must be outside/i, 'recorder refuses a --dir inside the repo');
 });
+
+test('forecast page reuses the shared home-page card and labels its number as a forecast (owner 2026-11-11)', () => {
+  const src = fs.readFileSync(new URL('../../src/app/admin/forecasts/page.tsx', import.meta.url), 'utf8');
+  assert.match(src, /ShowListCard/, 'page must render the shared ShowListCard');
+  assert.match(src, />\s*\{graded \? 'Forecast was' : 'Forecast'\}/, 'score box must be labelled Forecast');
+  assert.doesNotMatch(src, /md:grid-cols/, 'single column, no desktop grid');
+  assert.doesNotMatch(src, /className="card p-4"/, 'no bespoke card');
+});

@@ -41,3 +41,15 @@ test('empty input gives an empty board, not a crash', () => {
   assert.equal(b.entries.length, 0);
   assert.equal(b.summary.ourMiss, null);
 });
+
+test('v2 shadow fields and the soon/later/graded groups (BRO-7357), tolerant of rows without v2', () => {
+  const ledgerRows = [
+    { showId: 'a', recordedAt: '2026-11-10', openingDate: '2026-11-20', forecast: 70, lo80: 56, hi80: 82, categoryMean: 67, audience: { combined: null, totalCount: 0 }, v2: { forecast: 74, lo80: 60, hi80: 86, inputsPresent: ['v1', 'showScore'], modelVersion: 'v2', showScoreMixedProductions: false } },
+    { showId: 'b', recordedAt: '2026-11-10', openingDate: '2027-02-01', forecast: 66, lo80: 50, hi80: 80, categoryMean: 65, audience: { combined: null, totalCount: 0 } },
+  ];
+  const b = buildBoard({ ledgerRows, grades: [], today: '2026-11-11' });
+  const a = b.entries.find((e) => e.showId === 'a');
+  const later = b.entries.find((e) => e.showId === 'b');
+  assert.equal(a.group, 'soon'); assert.equal(a.forecastV2, 74); assert.equal(a.v2UsedShowScore, true);
+  assert.equal(later.group, 'later'); assert.equal(later.forecastV2, null); assert.equal(later.v2UsedShowScore, false);
+});

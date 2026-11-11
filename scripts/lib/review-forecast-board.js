@@ -8,6 +8,7 @@
 
 const P = require('./review-forecast-pilot');
 
+const SOON_DAYS = 45; // opening within this many days (or already open, waiting on its grade) reads as "Opening soon"
 const MIN_N_FOR_RESULT = 5; // below this many graded shows the UI labels averages as early
 
 /**
@@ -28,6 +29,10 @@ function buildBoard({ ledgerRows, grades, titleOf = () => null, today }) {
     const row = opened ? (P.frozenForecastRow(rows, showId, openingDate) || newest) : newest;
     const state = grade ? 'graded' : opened ? 'awaiting-grade' : 'upcoming';
     const src = grade && !rows.length ? null : row;
+    // BRO-7357 v2 shadow forecast, read tolerantly: older rows and grades carry none of it.
+    const v2 = src && src.v2 && typeof src.v2.forecast === 'number' ? src.v2 : null;
+    const v2Forecast = grade && typeof grade.forecastV2 === 'number' ? grade.forecastV2 : v2 ? v2.forecast : null;
+    const group = state === 'graded' ? 'graded' : P.addDays(today, SOON_DAYS) >= openingDate ? 'soon' : 'later';
     entries.push({
       showId,
       title: titleOf(showId) || showId,
@@ -45,6 +50,12 @@ function buildBoard({ ledgerRows, grades, titleOf = () => null, today }) {
       missForecast: grade ? grade.missForecast : null,
       missCategoryMean: grade ? grade.missCategoryMean : null,
       inRange80: grade ? grade.inRange80 : null,
+      group,
+      forecastV2: v2Forecast,
+      lo80V2: v2 && typeof v2.lo80 === 'number' ? v2.lo80 : null,
+      hi80V2: v2 && typeof v2.hi80 === 'number' ? v2.hi80 : null,
+      v2UsedShowScore: grade ? !!grade.v2UsedShowScore : v2 ? Array.isArray(v2.inputsPresent) && v2.inputsPresent.includes('showScore') : false,
+      missForecastV2: grade && typeof grade.missForecastV2 === 'number' ? grade.missForecastV2 : null,
     });
   }
   const rank = { upcoming: 0, 'awaiting-grade': 1, graded: 2 };
@@ -65,4 +76,4 @@ function buildBoard({ ledgerRows, grades, titleOf = () => null, today }) {
   };
 }
 
-module.exports = { buildBoard, MIN_N_FOR_RESULT };
+module.exports = { buildBoard, MIN_N_FOR_RESULT, SOON_DAYS };
