@@ -15,6 +15,7 @@ const { execSync } = require('child_process');
 
 const { normalizeOutlet, normalizeCritic } = require('./lib/review-normalization');
 
+const { isFlaggedForRoundupMerge } = require('./lib/review-file-match');
 const REVIEW_TEXTS_DIR = path.join(__dirname, '../data/review-texts');
 
 // Get all review files for a show
@@ -24,6 +25,8 @@ function getReviewFiles(showId) {
 
   return fs.readdirSync(showDir)
     .filter(f => f.endsWith('.json'))
+    // BRO-7303: never merge excerpts into a flagged (wrongProduction/wrongShow/duplicateOf) file
+    .filter(f => !isFlaggedForRoundupMerge(path.join(showDir, f)))
     .map(f => ({
       filename: f,
       filepath: path.join(showDir, f),

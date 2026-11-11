@@ -19,7 +19,7 @@ const fs = require('fs');
 const path = require('path');
 const { normalizeOutlet, normalizeCritic } = require('./lib/review-normalization');
 const { parseBwwPostingAuthor } = require('./lib/bww-jsonld-author');
-const { findMatchingReviewFile } = require('./lib/review-file-match');
+const { findMatchingReviewFile, isFlaggedForRoundupMerge } = require('./lib/review-file-match');
 const { extractBwwThumbIcons, pairBwwThumbsByCritic } = require('./lib/bww-thumb-pairing');
 
 const ARCHIVE_DIR = path.join(__dirname, '..', 'data', 'aggregator-archive', 'bww-roundups');
@@ -95,7 +95,8 @@ function findMatchingFile(showId, outletId, criticNorm) {
   const showDir = path.join(REVIEW_TEXTS_DIR, showId);
   if (!fs.existsSync(showDir)) return null;
 
-  const files = fs.readdirSync(showDir).filter(f => isReviewTextFile(f));
+  // BRO-7303: skip flagged (wrongProduction/wrongShow/duplicateOf) files
+  const files = fs.readdirSync(showDir).filter(f => isReviewTextFile(f) && !isFlaggedForRoundupMerge(path.join(showDir, f)));
 
   // Exact match: outlet--critic
   if (criticNorm && criticNorm !== 'unknown') {

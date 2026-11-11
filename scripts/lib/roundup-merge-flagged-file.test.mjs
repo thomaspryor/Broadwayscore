@@ -89,3 +89,34 @@ test('excerpt match survives diacritics and HTML entities on either side', () =>
   const data = { fullText: body, bwwExcerpt: 'Cafe Muller opens with a quiet duet and the staging is tender... a rousing finale & a standing ovation follow' };
   assert.equal(bwwExcerptContradictsText(data), false);
 });
+
+// BRO-7303: sibling merge scripts must also skip flagged files; wrongShow counts as flagged.
+test('isFlaggedForRoundupMerge flags wrongProduction, wrongShow, duplicateOf; not clean or unreadable', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7303-'));
+  const w = (n, o) => { const p = path.join(dir, n); fs.writeFileSync(p, JSON.stringify(o)); return p; };
+  assert.equal(isFlaggedForRoundupMerge(w('a.json', { wrongProduction: true })), true);
+  assert.equal(isFlaggedForRoundupMerge(w('b.json', { wrongShow: true })), true);
+  assert.equal(isFlaggedForRoundupMerge(w('c.json', { duplicateOf: 'x.json' })), true);
+  assert.equal(isFlaggedForRoundupMerge(w('d.json', { outletId: 'nytimes' })), false);
+  assert.equal(isFlaggedForRoundupMerge(path.join(dir, 'missing.json')), false);
+});
+
+test('merge-aggregator-excerpts findMatchingReviewFile skips wrongProduction/wrongShow files', () => {
+  const { findMatchingReviewFile: agg } = require('../merge-aggregator-excerpts.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7303b-'));
+  const rev = { outletId: 'cititour', criticName: 'Brian Scott Lipton' };
+  for (const flag of ['wrongProduction', 'wrongShow']) {
+    fs.rmSync(dir, { recursive: true }); fs.mkdirSync(dir);
+    fs.writeFileSync(path.join(dir, 'cititour--brian-scott-lipton.json'), JSON.stringify({ outletId: 'cititour', criticName: 'Brian Scott Lipton', [flag]: true }));
+    assert.equal(agg(dir, rev), null, `${flag} file must not match`);
+    fs.writeFileSync(path.join(dir, 'cititour--brian-scott-lipton-2.json'), JSON.stringify({ outletId: 'cititour', criticName: 'Brian Scott Lipton' }));
+    assert.ok(agg(dir, rev) && agg(dir, rev).filePath.endsWith('-2.json'), 'clean sibling still matches');
+  }
+});
+
+test('every excerpt/thumb merge script guards with isFlaggedForRoundupMerge', () => {
+  for (const f of ['merge-bww-excerpts.js', 'merge-aggregator-excerpts.js', 'backfill-bww-thumbs.js', 'gather-reviews.js']) {
+    const src = fs.readFileSync(path.join(path.dirname(new URL(import.meta.url).pathname), '..', f), 'utf8');
+    assert.match(src, /isFlaggedForRoundupMerge\(/, `${f} must filter flagged files`);
+  }
+});
