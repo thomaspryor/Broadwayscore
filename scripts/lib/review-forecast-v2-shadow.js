@@ -39,7 +39,7 @@ const V2_KEYS = ['forecast', 'forecastRaw', 'lo80', 'hi80', 'inputsPresent', 'mo
  * nothing at record time proves a mixture, and v2 falls back to v1 for anything that is not false.
  */
 function showScoreMixedProductions(pageUrl) {
-  return typeof pageUrl === 'string' && /\/[^/?#]+-broadway\/?$/.test(pageUrl) ? false : 'unknown';
+  return typeof pageUrl === 'string' && /\/broadway-shows\/[^/?#]+-broadway\/?$/.test(pageUrl) ? false : 'unknown';
 }
 
 /**
@@ -88,6 +88,8 @@ function frozenV2Row(rows, showId, openingDate) {
   let best = null;
   for (const r of rows) {
     if (r.showId !== showId || !r.v2 || !r.v2.inputsPresent || !r.v2.inputsPresent.includes('showScore')) continue;
+    // Rows written before the flag existed (undefined) are not trusted as clean: only an explicit false counts.
+    if (r.v2.showScoreMixedProductions !== false) continue;
     if (RF.toDay(r.recordedAt) > cutoff) continue;
     if (!best || r.recordedAt > best.recordedAt) best = r;
   }
