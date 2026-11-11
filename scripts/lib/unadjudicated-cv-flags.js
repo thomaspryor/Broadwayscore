@@ -34,4 +34,35 @@ function findUnadjudicatedCounted(files, counted) {
   return files.filter((f) => isUnadjudicatedCvFlag(f.record) && live.has(`${f.showId}|${f.record.url}`));
 }
 
-module.exports = { CV_NOT_A_REVIEW_RE, isUnadjudicatedCvFlag, findUnadjudicatedCounted };
+/**
+ * BRO-7344: the stuck CV-promoted exclusion. rebuild-all-reviews.js promotes a
+ * contentVerification "not a review" verdict to isNonReview=true; a later or
+ * differently-read CV may say articleType=review (high) with no other exclusion,
+ * yet nothing releases it: the scorer skips flagged files, and the read-time
+ * release (isNonReviewDemotedByFreshCV) wants an ensemble score that can never
+ * come. 19 such files sat unread until a scan found them. This names the class so
+ * an audit can list it for a human read. A file is NOT stuck when it carries any
+ * adjudication: a human clear/override, an ensemble rejection, a duplicate pointer,
+ * a manual reason, or an existing score (the rescore path owns it).
+ */
+function isStuckCvPromotedNonReview(record) {
+  if (!record || record.isNonReview !== true || !record.contentVerificationPromoted) return false;
+  const cv = record.contentVerification;
+  if (!cv || cv.articleType !== 'review' || (cv.articleTypeConfidence || cv.confidence) !== 'high') return false;
+  if (cv.wrongProduction === true || cv.isFilmTv === true || cv.wrongArticle === true) return false;
+  if (record.llmScore || record.humanReviewScore != null) return false;
+  if (record.wrongProduction === true || record.wrongShow === true || record.isRoundupArticle === true) return false;
+  if (record.duplicateOf || record.rejectedAt || record._locked === true) return false;
+  if (record.manualReviewedBy || record.manualNonReviewSet === true || record.manualNonReviewBy
+    || record.nonReviewOverride || record.wrongShowOverride === true || cvNonReviewHumanCleared(record)) return false;
+  if (typeof record.isNonReviewReason === 'string' && /^manual \(not a review\)/i.test(record.isNonReviewReason)) return false;
+  const body = typeof record.fullText === 'string' ? record.fullText : '';
+  return body.length >= 300;
+}
+
+/** @returns the files whose record is a stuck CV-promoted isNonReview (see above). */
+function findStuckCvPromotedNonReview(files) {
+  return files.filter((f) => isStuckCvPromotedNonReview(f.record));
+}
+
+module.exports = { CV_NOT_A_REVIEW_RE, isUnadjudicatedCvFlag, findUnadjudicatedCounted, isStuckCvPromotedNonReview, findStuckCvPromotedNonReview };

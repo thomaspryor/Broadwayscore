@@ -1,0 +1,108 @@
+{
+  "issueNumber": "bro-7344-b",
+  "planId": "d4bdd013-de07-4d0d-b145-d0444fc26f20",
+  "status": "pending",
+  "createdAt": "2026-11-11T04:29:34.635Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7344: clear 11 stale CV-promoted isNonReview flags on genuine reviews (read full text) and record Man to Man bestoftheatre as a roundup (part 2 of 2)",
+    "steps": [
+      "BRO-7344: read the full stored text. New York Stage Review review of The Brothers Size at The Shed (url nystagereview.com/2025/09/10), evaluative; the CV byline/outlet complaint is the page not repeating them in the body. Clears the stale CV-promoted non-review flag so the unscored pass can score it.",
+      "Release the false CV-promoted non-review flag (BRO-7344)",
+      "Clear the rejectionReason the CV promotion stamped (BRO-7344)",
+      "BRO-7344: read the full stored text. This Week in New York review of Three Houses at the Signature (2024-05-21, matches the show dates), describes and evaluates staging and score, closes on \"dazzling works\". Clears the stale CV-promoted non-review flag so the unscored pass can score it.",
+      "Release the false CV-promoted non-review flag (BRO-7344)",
+      "Clear the rejectionReason the CV promotion stamped (BRO-7344)",
+      "BRO-7344: read the full stored text. The Stage review of Wallace at Oran Mor by Fergus Morgan, evaluative (\"impressively polished\"), published after opening. Clears the stale CV-promoted non-review flag so the unscored pass can score it.",
+      "Release the false CV-promoted non-review flag (BRO-7344)",
+      "Clear the rejectionReason the CV promotion stamped (BRO-7344)",
+      "BRO-7344: read the full text: a roundup of other critics, not a critic review. Record the human reason so the CV-promoted label is adjudicated."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-brothers-size-off-broadway-2025/nysr--melissa-rose-bernardo.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7344: read the full stored text. New York Stage Review review of The Brothers Size at The Shed (url nystagereview.com/2025/09/10), evaluative; the CV byline/outlet complaint is the page not repeating them in the body. Clears the stale CV-promoted non-review flag so the unscored pass can score it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-brothers-size-off-broadway-2025/nysr--melissa-rose-bernardo.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Release the false CV-promoted non-review flag (BRO-7344)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-brothers-size-off-broadway-2025/nysr--melissa-rose-bernardo.json",
+        "field": "rejectionReason",
+        "oldValue": "not_a_review",
+        "newValue": null,
+        "description": "Clear the rejectionReason the CV promotion stamped (BRO-7344)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "three-houses-off-broadway-2026/this-week-in-new-york--mark-rifkin.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7344: read the full stored text. This Week in New York review of Three Houses at the Signature (2024-05-21, matches the show dates), describes and evaluates staging and score, closes on \"dazzling works\". Clears the stale CV-promoted non-review flag so the unscored pass can score it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "three-houses-off-broadway-2026/this-week-in-new-york--mark-rifkin.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Release the false CV-promoted non-review flag (BRO-7344)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "three-houses-off-broadway-2026/this-week-in-new-york--mark-rifkin.json",
+        "field": "rejectionReason",
+        "oldValue": "not_a_review",
+        "newValue": null,
+        "description": "Clear the rejectionReason the CV promotion stamped (BRO-7344)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "wallace-oran-mor-regional-2025/thestage--fergus-morgan.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-7344: read the full stored text. The Stage review of Wallace at Oran Mor by Fergus Morgan, evaluative (\"impressively polished\"), published after opening. Clears the stale CV-promoted non-review flag so the unscored pass can score it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "wallace-oran-mor-regional-2025/thestage--fergus-morgan.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Release the false CV-promoted non-review flag (BRO-7344)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "wallace-oran-mor-regional-2025/thestage--fergus-morgan.json",
+        "field": "rejectionReason",
+        "oldValue": "not_a_review",
+        "newValue": null,
+        "description": "Clear the rejectionReason the CV promotion stamped (BRO-7344)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "man-to-man-west-end-2026/bestoftheatre--arthur-fisher.json",
+        "field": "isNonReviewReason",
+        "oldValue": "CV-promoted (not a review): The scraped content provides information about the production and its history but lacks a critical assessment or opinion from a reviewer, indicating it is a preview rather than a review.",
+        "newValue": "manual (not a review): Best of Theatre review roundup (\"eight reviews in so far\", average 3.7 of 5) quoting other critics; no single critic verdict (BRO-7344)",
+        "description": "BRO-7344: read the full text: a roundup of other critics, not a critic review. Record the human reason so the CV-promoted label is adjudicated."
+      }
+    ]
+  }
+}
