@@ -565966,21 +565966,40 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-11T17:00:38.559Z",
-    "completedAt": "2026-11-11T17:00:38.569Z",
-    "totalReviews": 0,
-    "processed": 0,
+    "startedAt": "2026-11-11T16:53:16.407Z",
+    "completedAt": "2026-11-11T16:53:23.609Z",
+    "totalReviews": 20,
+    "processed": 1,
+    "skipped": 19,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 7113,
+      "output": 316,
+      "cacheRead": 3807,
+      "cacheWrite": 0,
+      "total": 16757
+    },
+    "costUsd": 0.026097,
+    "runId": "43061445966",
+    "source": "index",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-11-11T16:58:19.065Z",
+    "completedAt": "2026-11-11T16:58:23.772Z",
+    "totalReviews": 2,
+    "processed": 2,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 0,
-      "output": 0,
+      "input": 6200,
+      "output": 409,
       "cacheRead": 0,
       "cacheWrite": 0,
-      "total": 0
+      "total": 6609
     },
-    "costUsd": 0,
-    "runId": "43061423744",
+    "costUsd": 0.0161138,
+    "runId": "43061445966",
     "source": "comparative-rescore",
     "errorDetails": []
   }
