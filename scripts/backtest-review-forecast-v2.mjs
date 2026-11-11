@@ -81,6 +81,8 @@ let memRaw = null; const MEM_MIN = 1; // shrinkage (k=10 toward 85) handles smal
 if (fs.existsSync(MEM_FILE)) {
   memRaw = JSON.parse(fs.readFileSync(MEM_FILE, 'utf8'));
   for (const [id, m] of Object.entries(memRaw.shows || {})) {
+    // leakage guard on the member data itself: nothing newer than opening minus the lag may be kept
+    if (m.newest && m.cutoff && m.newest > m.cutoff) throw new Error(`LEAKAGE: ${id} member review ${m.newest} is after cutoff ${m.cutoff}`);
     if (m.n >= MEM_MIN && m.newest) audience[id] = { date: m.newest, score: (m.n * m.mean + 10 * 85) / (m.n + 10), reviewCount: m.n };
   }
 }
@@ -170,6 +172,7 @@ function walk(names, variant) {
 }
 function rng(seed) { let a = seed; return () => { a |= 0; a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
 function diffCI(a, b, B = 2000, alpha = 0.05) { // a, b: aligned prediction arrays; CI of MAE(a) - MAE(b), seasons resampled
+  if (a.length !== b.length || a.some((p, i) => p.y !== b[i].y || p.season !== b[i].season)) throw new Error('diffCI: prediction arrays are not aligned');
   const by = {};
   a.forEach((p, i) => { (by[p.season] = by[p.season] || []).push(Math.abs(p.y - p.pred) - Math.abs(b[i].y - b[i].pred)); });
   const ks = Object.keys(by); const R = rng(7314); const ds = [];
