@@ -76,6 +76,35 @@ const CODEX_POS_RE = cmdPos('codex\\s+exec');
 // ("what's", in a heredoc prompt or a double-quoted string) pair with a later quote and erase a
 // real `$(curl`; heredoc text is data, so a curl line inside one is not a call.
 const shellCode = (cmd) => stripHeredocBodies(cmd).replace(/'[^']*'|"[^"]*"/g, '""');
+
+/**
+ * BRO-7349: the shell text a Bash call actually RUNS, for "did it land / did it write to Linear".
+ * Heredoc bodies and quoted text with spaces are data (a `cat <<EOF` fixture, a `node -e '...'` test,
+ * a sed expression); a space-free quote such as "HEAD:refs/heads/land/x" is kept. The script handed
+ * to a shell (`bash -c "..."`, `bash <<'EOF' ... EOF`) is code, so it is unwrapped and judged the same way.
+ */
+const SHELL_C_BEFORE_RE = /(?:^|[\s;&|(])(?:ba|z)?sh\s+-c\s+$/;
+const SHELL_HEREDOC_OPEN_RE = /(?:^|[\s;&|(])(?:ba|z)?sh\b[^\n<]*<<-?\s*(['"]?)(\w+)\1[^\n]*$/;
+export function runShellCode(command, depth = 0) {
+  const raw = String(command || '');
+  const inner = [];
+  // Quotes are read left to right, so a `bash -c '...'` sitting inside a larger quoted string (a
+  // `node -e "..."` fixture) is never seen as its own quote; heredoc bodies are already gone.
+  const outer = stripHeredocBodies(raw).replace(/'[^']*'|"[^"]*"/g, (q, at, str) => {
+    if (SHELL_C_BEFORE_RE.test(str.slice(0, at))) { inner.push(q.slice(1, -1)); return '""'; }
+    return /\s/.test(q) ? '""' : q;
+  });
+  // A heredoc fed to a shell: its opener survived stripping (so it is not itself inside data); take its body from raw.
+  const rawLines = raw.split('\n');
+  for (const line of outer.split('\n')) {
+    const m = SHELL_HEREDOC_OPEN_RE.exec(line);
+    const at = m ? rawLines.indexOf(rawLines.find((l) => l.startsWith(line.slice(0, m.index + 1)) && SHELL_HEREDOC_OPEN_RE.test(l))) : -1;
+    if (at < 0) continue;
+    const endAt = rawLines.findIndex((l, j) => j > at && l.replace(/^\t+/, '') === m[2]);
+    inner.push(rawLines.slice(at + 1, endAt < 0 ? undefined : endAt).join('\n'));
+  }
+  return [outer, ...(depth > 2 ? [] : inner.map((t) => runShellCode(t, depth + 1)))].join('\n');
+}
 const BUILD_RE = /(?:^|[;&|(\n]|\$\()\s*(?:\w+=\S*\s+|time\s+|timeout\s+\S+\s+)*(?:npm\s+run\s+build|npx\s+next\s+build|next\s+build)\b/;
 const SHELL_C_BUILD_RE = /^\s*(?:ba)?sh\s+-l?c\s[\s\S]*\b(?:npm\s+run\s+build|next\s+build)\b/;
 const MIN_PANELIST_PROMPT = 200; // chars: "say ok" is not a review
@@ -261,11 +290,9 @@ export function landedPushIndices(events) {
     const r = answers.get(e.id);
     if (!r || r.isError) return;
     if (e.name === 'Bash') {
-      // BRO-7349: heredoc bodies are data. A test fixture or note written by `cat <<EOF` that
-      // mentions `git push … land/x` is not a landing (a real transcript counted 7 such as landings).
-      // Quoted text with spaces is data too (a `node -e '...'` test, a sed expression); a quoted
-      // refspec ("HEAD:refs/heads/land/x") has none and is kept. One pass, as shellCode (BRO-5430).
-      const c = stripHeredocBodies(String(e.input?.command || '')).replace(/'[^']*'|"[^"]*"/g, (q) => (/\s/.test(q) ? '""' : q));
+      // BRO-7349: only what the shell runs counts; a fixture mentioning `git push … land/x` inside a
+      // heredoc or a `node -e` test is not a landing (one real transcript counted 7 such).
+      const c = runShellCode(e.input?.command);
       const push = LAND_PUSH_RE.exec(c);
       // Judge the push segment only: `git push … land/x | tail -n 20` must not read as a dry run.
       const segment = push ? c.slice(push.index).split(/[;&|\n]/)[0] : '';
