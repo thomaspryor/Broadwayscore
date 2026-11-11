@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-11T15:40:52.654Z",
+  "timestamp": "2026-11-11T16:09:05.556Z",
   "stats": {
-    "totalReviews": 81416,
-    "alreadyFlagged": 22245,
+    "totalReviews": 81476,
+    "alreadyFlagged": 22250,
     "dateGuardCatches": 218,
-    "directorMismatch": 3630,
+    "directorMismatch": 3629,
     "tvFilmSignals": 2295,
-    "londonSignals": 3686,
-    "offBroadwaySignals": 752,
+    "londonSignals": 3688,
+    "offBroadwaySignals": 751,
     "yearMismatch": 369,
-    "noPublishDate": 8441
+    "noPublishDate": 8476
   },
   "findings": [
     {
@@ -6825,19 +6825,6 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2022 (3x) more than 2025 (2x). 2022 matches production: as-you-like-it-west-end-2022"
-        }
-      ]
-    },
-    {
-      "showId": "as-you-like-it-regional-2026",
-      "file": "broadway-baby--unknown.json",
-      "publishDate": null,
-      "url": "https://broadwaybaby.com/shows/as-you-like-it/839334",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"daniel evans\" from all-male-as-you-like-it-regional-2026"
         }
       ]
     },
@@ -42394,7 +42381,7 @@
     {
       "showId": "memoriam-off-west-end-2026",
       "file": "broadwayworld--clementine-scott.json",
-      "score": 57,
+      "score": 58,
       "publishDate": "2026-10-26",
       "url": "https://www.broadwayworld.com/westend/article/Review-MEMORIAM-Southwark-Playhouse-20261026",
       "findings": [
@@ -62471,7 +62458,7 @@
       "showId": "sunset-boulevard-2024",
       "file": "cititour--brian-scott-lipton.json",
       "score": 78,
-      "publishDate": null,
+      "publishDate": "2024-10-21T09:48:01-05:00",
       "url": "https://cititour.com/NYC_Broadway/Sunset-Boulevard/1258",
       "findings": [
         {
@@ -71255,7 +71242,7 @@
       "showId": "the-kite-runner-2022",
       "file": "observer--david-cote.json",
       "score": 38,
-      "publishDate": null,
+      "publishDate": "2022-07-21T21:08:13-04:00",
       "url": "https://observer.com/2022/07/review-a-weak-adaptation-of-a-rapidly-aging-the-kite-runner-at-hayes-theater/",
       "findings": [
         {
@@ -95338,6 +95325,20 @@
     },
     {
       "showId": "cloud-9-west-end-2026",
+      "file": "guardian--arifa-akbar.json",
+      "score": 81,
+      "publishDate": "2026-11-11",
+      "url": "https://www.theguardian.com/stage/2026/nov/11/cloud-9-review-national-theatre-london-caryl-churchill",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "cloud-9-west-end-2026",
       "file": "london-box-office--stuart-king.json",
       "score": 98,
       "publishDate": "2026-11-11",
@@ -95380,6 +95381,20 @@
     },
     {
       "showId": "cloud-9-west-end-2026",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 81,
+      "publishDate": "2026-11-11",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/cloud-9-revival-review-modern-classic/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "cloud-9-west-end-2026",
       "file": "theatre-weekly--unknown.json",
       "publishDate": "2026-11-09",
       "url": "https://theatreweekly.com/first-look-images-released-for-caryl-churchills-cloud-9-at-the-national-theatre/",
@@ -95397,6 +95412,20 @@
       "score": 80,
       "publishDate": "2026-11-11",
       "url": "https://www.thereviewshub.com/cloud-9-national-theatre-london/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "cloud-9-west-end-2026",
+      "file": "theupcoming--dionysia-afolabi.json",
+      "score": 74,
+      "publishDate": "2026-11-11",
+      "url": "https://www.theupcoming.co.uk/2026/11/11/cloud-9-at-the-national-theatre-theatre-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -114299,7 +114328,7 @@
     {
       "showId": "memoriam-off-west-end-2026",
       "file": "theatreandtonic--eleanor-bywater.json",
-      "score": 63,
+      "score": 61,
       "publishDate": "2026-10-27",
       "url": "https://theatreandtonic.co.uk/blog/memoriam-at-southwark-playhouse-borough-review",
       "findings": [
@@ -125821,20 +125850,6 @@
     },
     {
       "showId": "sunset-boulevard-2024",
-      "file": "thewrap--robert-hofler.json",
-      "score": 35,
-      "publishDate": "October 20, 2024",
-      "url": "https://www.thewrap.com/sunset-boulevard-broadway-review-glenn-close-leads-awkward-comeback/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "sunset-boulevard-2024",
       "file": "vulture--sara-holdren.json",
       "score": 77,
       "publishDate": "October 20, 2024",
@@ -130056,20 +130071,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"csc\""
-        }
-      ]
-    },
-    {
-      "showId": "the-father-2016",
-      "file": "frontmezzjunkies--steven-ross.json",
-      "score": 92,
-      "publishDate": "2016-04-14",
-      "url": "https://frontmezzjunkies.com/2016/04/14/the-father-a-vague-but-stellar-review/90-4/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
         }
       ]
     },
@@ -139995,7 +139996,7 @@
       "showId": "true-west-2019",
       "file": "amny--matt-windman.json",
       "score": 25,
-      "publishDate": null,
+      "publishDate": "2019-01-24T20:50:30-05:00",
       "url": "https://www.amny.com/entertainment/true-west-review-1.26398259",
       "findings": [
         {
@@ -140009,7 +140010,7 @@
       "showId": "true-west-2019",
       "file": "hollywood-reporter--frank-scheck.json",
       "score": 67,
-      "publishDate": null,
+      "publishDate": "January 24, 2019",
       "url": "https://www.hollywoodreporter.com/review/true-west-review-1177735",
       "findings": [
         {
