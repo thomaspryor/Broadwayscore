@@ -7,6 +7,7 @@ import { ToastProvider } from '@/components/ui/Toast';
 import WelcomeGate from '@/components/onboarding/WelcomeGate';
 import LocalRatingsMigrator from '@/components/user/LocalRatingsMigrator';
 import LocalSavesConfirmation from '@/components/user/LocalSavesConfirmation';
+import GoogleOneTap from '@/components/auth/GoogleOneTap';
 
 /**
  * Client component wrapper for user account providers.
@@ -29,6 +30,8 @@ export default function UserProviders({ children }: { children: ReactNode }) {
         <WelcomeGate />
         <LocalRatingsMigrator />
         <LocalSavesConfirmation />
+        {/* Dormant unless NEXT_PUBLIC_GOOGLE_CLIENT_ID is set (BRO-6917 Part 5). */}
+        <GoogleOneTap />
       </ToastProvider>
     </AuthProvider>
   );

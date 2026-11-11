@@ -45,9 +45,9 @@ test('welcomeSeenKey is per account', () => {
   assert.notEqual(welcomeSeenKey('a'), welcomeSeenKey('b'));
 });
 
-test('steps run shows -> import -> done and stop at done', () => {
-  assert.equal(nextWelcomeStep('shows'), 'import');
-  assert.equal(nextWelcomeStep('import'), 'done');
+test('steps run shows -> want -> done and stop at done', () => {
+  assert.equal(nextWelcomeStep('shows'), 'want');
+  assert.equal(nextWelcomeStep('want'), 'done');
   assert.equal(nextWelcomeStep('done'), 'done');
 });
 

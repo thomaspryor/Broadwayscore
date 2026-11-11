@@ -17,7 +17,8 @@ export const WELCOME_ACCOUNT_MAX_AGE_MS = 24 * 60 * 60 * 1000;
 /** A device clock a little behind the server still counts a just-made account as new. */
 export const WELCOME_CLOCK_SKEW_MS = 2 * 60 * 1000;
 
-export const WELCOME_STEPS = ['shows', 'import', 'done'] as const;
+/** Seen, then Want to See (BRO-6917 Part 4 replaced the import step), then done. */
+export const WELCOME_STEPS = ['shows', 'want', 'done'] as const;
 export type WelcomeStep = typeof WELCOME_STEPS[number];
 
 export function welcomeSeenKey(userId: string): string {

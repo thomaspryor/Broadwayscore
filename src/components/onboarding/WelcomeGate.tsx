@@ -14,6 +14,11 @@
  * other page it waits until they move on from the page they landed on, so it
  * never covers the review they came to read (welcomeCanOpenOn).
  *
+ * Who (BRO-6917 Part 4): only a sign-up started from a Sign in button
+ * (header, menu, My Shows) is offered the sheet. Any other sign-up (a rating,
+ * a bookmark, a nudge, One Tap) spends the welcome quietly and stays where it
+ * was. The decision is signupOnboardingFor() in src/lib/web-signup-onboarding.ts.
+ *
  * Dev preview: ?welcome=preview on localhost opens it without an account
  * (nothing is written or tracked), for visual QA.
  */
@@ -25,7 +30,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { getPendingAction } from '@/lib/deferred-auth';
 import { supabaseRestRpc } from '@/lib/supabase-rest';
 import { shouldOfferWelcome, welcomeCanOpenOn, welcomeSeenKey } from '@/lib/welcome-onboarding';
-import { clearMidFlowSignIn, hasMidFlowSignIn } from '@/lib/signin-intent';
+import { clearMidFlowSignIn } from '@/lib/signin-intent';
+import { clearSignUpSource, signUpSourceFor, signupOnboardingFor, type SignupOnboarding } from '@/lib/web-signup-onboarding';
 
 const WelcomeSheet = dynamic(() => import('./WelcomeSheet'), { ssr: false });
 /** Same chunk as above; fetched before the claim so a failed download costs nothing. */
@@ -94,35 +100,44 @@ export default function WelcomeGate() {
     }
   }, []);
 
-  // A sign-up that began mid-task (rating or bookmark, BRO-6917 Part 3): the
-  // person is partway through something on a show page, so they get no welcome
-  // setup. Spend it quietly instead, so it does not turn up on the next page.
-  // Declared before the effect below: it marks the account seen on this device
-  // first, so that effect (which may fire at once on a hub page) skips it.
-  useEffect(() => {
-    if (!userId || !profileLoaded || onAuthPage || !hasMidFlowSignIn()) return;
-    clearMidFlowSignIn();
-    const key = welcomeSeenKey(userId);
+  // What this account gets (BRO-6917 Part 4): the setup only after a Sign in
+  // button sign-up; any other new account (mid-task rating or bookmark, a
+  // nudge, One Tap) spends its welcome quietly and stays on its page.
+  const decide = (uid: string): SignupOnboarding => {
     let locallySeen = false;
-    try { locallySeen = localStorage.getItem(key) === '1'; } catch { /* private mode */ }
-    if (!shouldOfferWelcome({ profile: { onboarding_seen_at: seenAt, created_at: createdAt }, now: Date.now(), locallySeen })) return;
+    try { locallySeen = localStorage.getItem(welcomeSeenKey(uid)) === '1'; } catch { /* private mode */ }
+    const owedWelcome = shouldOfferWelcome({ profile: { onboarding_seen_at: seenAt, created_at: createdAt }, now: Date.now(), locallySeen });
+    return signupOnboardingFor({ owedWelcome, source: signUpSourceFor(uid) });
+  };
+
+  // The quiet path. Declared before the effect below: it marks the account
+  // seen on this device first, so that effect (which may fire at once on a hub
+  // page) skips it.
+  useEffect(() => {
+    if (!userId || !profileLoaded || onAuthPage) return;
+    const decision = decide(userId);
+    if (decision === 'quiz') return;
+    clearMidFlowSignIn();
+    clearSignUpSource();
+    if (decision === 'none') return;
+    const key = welcomeSeenKey(userId);
     // Marked synchronously so the main effect below skips this account while
     // the claim is in flight (it would otherwise win the claim and open the
-    // sheet). A failed claim (e.g. offline) undoes the mark, so the welcome is
-    // simply offered on a later page instead of being lost.
+    // sheet). A failed claim (e.g. offline) undoes the mark; the source marker
+    // is already gone, so a later page spends it quietly too.
     try { localStorage.setItem(key, '1'); } catch { /* private mode */ }
     void supabaseRestRpc<boolean>('claim_onboarding').then(({ error }) => {
       if (!error) return;
       try { localStorage.removeItem(key); } catch { /* private mode */ }
     });
+    // decide() reads only the values listed here.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId, profileLoaded, seenAt, createdAt, onAuthPage]);
 
   useEffect(() => {
     if (!userId || !profileLoaded || onAuthPage || !canOpenHere || open) return;
+    if (decide(userId) !== 'quiz') return;
     const key = welcomeSeenKey(userId);
-    let locallySeen = false;
-    try { locallySeen = localStorage.getItem(key) === '1'; } catch { /* private mode */ }
-    if (!shouldOfferWelcome({ profile: { onboarding_seen_at: seenAt, created_at: createdAt }, now: Date.now(), locallySeen })) return;
 
     let cancelled = false;
     let timer: ReturnType<typeof setTimeout>;
@@ -141,6 +156,7 @@ export default function WelcomeGate() {
       const { data, error } = await supabaseRestRpc<boolean>('claim_onboarding');
       if (error) return; // e.g. the migration is not applied yet: show nothing
       try { localStorage.setItem(key, '1'); } catch { /* private mode */ }
+      clearSignUpSource();
       if (data !== true) return;
       // Once claimed it is spent, so open even if this effect re-ran meanwhile,
       // but never on top of a modal that opened while the claim was in flight.
@@ -156,6 +172,8 @@ export default function WelcomeGate() {
       cancelled = true;
       clearTimeout(timer);
     };
+    // decide() reads only the values listed here.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId, profileLoaded, seenAt, createdAt, onAuthPage, canOpenHere, open, pathname]);
 
   if (!open) return null;

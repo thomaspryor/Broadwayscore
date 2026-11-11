@@ -6,6 +6,7 @@ import { getSupabaseClient, hasStoredSupabaseSession, isSupabaseConfigured, onSu
 import { isAuthCallbackPath } from '@/lib/analytics/redact-url';
 import { saveReturnUrl, clearReturnUrl, clearPendingAction, safeReturnPath, takeSignInParam } from '@/lib/deferred-auth';
 import { recordSignInIntent, clearMidFlowSignIn } from '@/lib/signin-intent';
+import { recordSignUpSource } from '@/lib/web-signup-onboarding';
 import { oauthRedirectUrl } from '@/lib/auth-redirect';
 import { autoSubscribeOnSignIn } from '@/lib/auto-subscribe';
 import type { UserProfile } from '@/types/user';
@@ -254,6 +255,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // with no await before it (Safari blocks it otherwise, see apple-auth.ts).
     const clientReady = getSupabaseClient();
     markSignInStarted(provider, source);
+    // Which button started it decides the post-sign-up setup (BRO-6917 Part 4).
+    recordSignUpSource(source);
 
     if (provider === 'apple') {
       // Apple: use JS SDK + signInWithIdToken (bypasses GoTrue code exchange)
@@ -348,6 +351,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const client = await getSupabaseClient();
     if (!client) return { error: 'Sign-in is unavailable right now. Please try again.' };
     markSignInStarted('email', source);
+    recordSignUpSource(source);
     const { error } = await client.auth.signInWithOtp({ email, options: { shouldCreateUser: true } });
     if (error) {
       // A too-soon resend (429) is not a failed sign-in: keep the pending

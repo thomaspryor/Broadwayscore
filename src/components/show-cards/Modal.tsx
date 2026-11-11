@@ -19,6 +19,12 @@ interface ModalProps {
   bottomSheet?: boolean;
   /** ARIA label for the dialog */
   ariaLabel?: string;
+  /**
+   * 'side-panel': full-height panel on the right edge (desktop).
+   * 'full-screen': covers the whole viewport (phones).
+   * Omitted: the usual centered dialog (or bottom sheet).
+   */
+  layout?: 'side-panel' | 'full-screen';
 }
 
 const MAX_WIDTH_CLASS = {
@@ -46,6 +52,7 @@ export default function Modal({
   closeOnEscape = true,
   bottomSheet = false,
   ariaLabel,
+  layout,
 }: ModalProps) {
   const scrollYRef = useRef(0);
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -169,15 +176,28 @@ export default function Modal({
 
   if (!isOpen) return null;
 
-  const alignClass = bottomSheet
-    ? 'flex items-end sm:items-center justify-center'
-    : 'flex items-center justify-center p-4';
+  const alignClass = layout === 'side-panel'
+    ? 'flex items-stretch justify-end'
+    : layout === 'full-screen'
+      ? 'flex'
+      : bottomSheet
+        ? 'flex items-end sm:items-center justify-center'
+        : 'flex items-center justify-center p-4';
 
   // Bottom sheets sit flush against the screen edge — pad for the iOS home
   // indicator so the last action row isn't visually cut off (owner, 2026-07-19).
-  const panelRounding = bottomSheet
-    ? 'rounded-t-2xl sm:rounded-2xl pb-[env(safe-area-inset-bottom)] sm:pb-0'
-    : 'rounded-2xl';
+  const panelRounding = layout === 'side-panel'
+    ? 'rounded-none border-y-0 border-r-0'
+    : layout === 'full-screen'
+      ? 'rounded-none border-0 pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]'
+      : bottomSheet
+        ? 'rounded-t-2xl sm:rounded-2xl pb-[env(safe-area-inset-bottom)] sm:pb-0'
+        : 'rounded-2xl';
+  const panelSize = layout === 'side-panel'
+    ? 'max-w-[480px] h-full max-h-none overflow-hidden flex flex-col'
+    : layout === 'full-screen'
+      ? 'h-[100dvh] max-h-none overflow-hidden flex flex-col'
+      : `${MAX_WIDTH_CLASS[maxWidth]} max-h-[85vh] overflow-y-auto`;
 
   // Portal to <body>: position:fixed resolves against the nearest containing
   // block, and any ancestor with a transform, filter, or CSS containment
@@ -200,7 +220,7 @@ export default function Modal({
       {/* Backdrop */}
       <div
         data-testid="modal-backdrop"
-        className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+        className={`absolute inset-0 ${layout === 'side-panel' ? 'bg-black/40' : 'bg-black/70 backdrop-blur-sm'}`}
         onClick={closeOnBackdrop ? onClose : undefined}
         aria-hidden="true"
       />
@@ -209,7 +229,7 @@ export default function Modal({
       <div
         ref={panelRef}
         tabIndex={-1}
-        className={`relative w-full ${MAX_WIDTH_CLASS[maxWidth]} bg-surface-raised border border-white/10 ${panelRounding} shadow-2xl max-h-[85vh] overflow-y-auto focus:outline-none`}
+        className={`relative w-full ${panelSize} bg-surface-raised border border-white/10 ${panelRounding} shadow-2xl focus:outline-none`}
       >
         {children}
       </div>

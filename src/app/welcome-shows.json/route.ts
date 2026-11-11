@@ -2,12 +2,14 @@ import { getAllShows } from '@/lib/data-core';
 import { isLocalOnlyShow } from '@/lib/local-market';
 import { getMarketDate } from '@/lib/date-utils';
 import { pickWelcomeShows, WELCOME_MARKETS, type WelcomeMarket, type WelcomeShow } from '@/lib/welcome-onboarding';
+import { pickWantShows } from '@/lib/web-signup-onboarding';
 
 // Built once per deploy: the poster grids in the welcome sheet (BRO-4619),
 // one per market. A route rather than a public/data file so it needs no
 // generator step and is always computed from the same data as the rest of
 // the build. `shows` (Broadway) stays for pages loaded before the per-market
-// lists existed.
+// lists existed. `want` (BRO-6917 Part 4) is the Want to See grid: shows
+// still running or in previews, per market.
 export const dynamic = 'force-static';
 
 export async function GET() {
@@ -26,5 +28,9 @@ export async function GET() {
     m,
     pickWelcomeShows(sources, getMarketDate(m), { category: m }),
   ])) as Record<WelcomeMarket, WelcomeShow[]>;
-  return Response.json({ shows: markets.broadway, markets });
+  const want = Object.fromEntries(WELCOME_MARKETS.map(m => [
+    m,
+    pickWantShows(sources, getMarketDate(m), { category: m }),
+  ])) as Record<WelcomeMarket, WelcomeShow[]>;
+  return Response.json({ shows: markets.broadway, markets, want });
 }
