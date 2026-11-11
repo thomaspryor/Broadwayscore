@@ -261,7 +261,11 @@ export function landedPushIndices(events) {
     const r = answers.get(e.id);
     if (!r || r.isError) return;
     if (e.name === 'Bash') {
-      const c = String(e.input?.command || '');
+      // BRO-7349: heredoc bodies are data. A test fixture or note written by `cat <<EOF` that
+      // mentions `git push … land/x` is not a landing (a real transcript counted 7 such as landings).
+      // Quoted text with spaces is data too (a `node -e '...'` test, a sed expression); a quoted
+      // refspec ("HEAD:refs/heads/land/x") has none and is kept. One pass, as shellCode (BRO-5430).
+      const c = stripHeredocBodies(String(e.input?.command || '')).replace(/'[^']*'|"[^"]*"/g, (q) => (/\s/.test(q) ? '""' : q));
       const push = LAND_PUSH_RE.exec(c);
       // Judge the push segment only: `git push … land/x | tail -n 20` must not read as a dry run.
       const segment = push ? c.slice(push.index).split(/[;&|\n]/)[0] : '';

@@ -23,6 +23,9 @@
 // (linear-brain.js create "<title>" or the connector's save_issue title) and none is a fix card
 // (isFixCard) and none of the landed commit subjects reads as a fix (isFixSubject, BRO-7301), the
 // check stays quiet. A session whose card title is unknown is checked.
+// Scope (BRO-7349): each chunk of work between accepted SAFE TO ARCHIVE claims answers for itself.
+// After a claim, a new landing is checked only when its commits read as a fix (or a new fix card
+// was created), and only answers written after that claim count. See chunkStart.
 // Block budget per transcript: 1 (a single reminder) until ROOT_CAUSE_CLOSE_BLOCKING_FROM, the same
 // rollout date as the card-close gate, then 2. Exit-0 output is invisible to the model, so the
 // advisory period is one nudge, never a silent log. Every decision to block is logged to
@@ -39,6 +42,7 @@ import { landedPushIndices, claimsSafeToArchive } from './review-coverage.mjs';
 
 const require = createRequire(import.meta.url);
 const { parseRootCauseBlock, isFixCard, ROOT_CAUSE_CLOSE_BLOCKING_FROM, COUSINS_TAIL_RE } = require('./root-cause-close.js');
+const { stripHeredocBodies } = require('./infra-review-scope.js');
 
 const MIN_REASON = 10;
 const NO_PREVENTION_RE = /^[ \t>*_-]*NO-PREVENTION(?:\*\*|__)?[ \t]*:(?:\*\*|__)?[ \t]*(\S.*)$/im;
@@ -75,7 +79,9 @@ export function answerTexts(events, lastMessage = '') {
   for (const e of events) {
     if (e.kind === 'assistant_text') out.push(e.text || '');
     else if (e.kind === 'assistant_tool_use') {
-      if (e.name === 'Bash' && LINEAR_WRITE_CMD_RE.test(String(e.input?.command || ''))) {
+      // BRO-7349: the Linear write must be a command this Bash runs, not text inside a heredoc or a
+      // quoted script (a test fixture written with `cat <<EOF` was read as the session's answer).
+      if (e.name === 'Bash' && LINEAR_WRITE_CMD_RE.test(stripHeredocBodies(String(e.input?.command || '')).replace(/'[^']*'|"[^"]*"/g, (q) => (/\s/.test(q) ? '""' : q)))) {
         // Start each flag value on its own line, so an inline `--comment "CLASS-GUARD: x"` reads as a field line.
         out.push(String(e.input.command).replace(/\\n/g, '\n').replace(/--(?:comment|body|notes|summary)[=\s]+(?:\$\(cat\s*<<-?\s*)?["']?/g, '\n'));
       }
@@ -181,15 +187,15 @@ function stripHeredocs(cmd) {
  * made after the final landing never reached main, and a command that targets the iOS repo is not
  * this repo's work. Returns the subjects in order.
  */
-export function commitSubjects(events) {
+export function commitSubjects(events, { from = -1, to = null } = {}) {
   const landed = landedPushIndices(events);
   if (!landed.length) return [];
-  const last = landed[landed.length - 1];
+  const last = to ?? landed[landed.length - 1];
   const failed = new Set();
   for (const e of events) if (e.kind === 'tool_result' && e.isError) failed.add(e.tool_use_id);
   const out = [];
   events.forEach((e, i) => {
-    if (i > last || e.kind !== 'assistant_tool_use' || failed.has(e.id)) return;
+    if (i <= from || i > last || e.kind !== 'assistant_tool_use' || failed.has(e.id)) return;
     if (e.name === 'Bash') {
       const cmd = String(e.input?.command || '');
       if (!/\bgit\b/.test(cmd) || /BroadwayScorecard-app/.test(cmd)) return;
@@ -221,6 +227,31 @@ export function blockMessage(missing) {
 }
 
 /**
+ * PURE (BRO-7349). Where the work under judgement starts. The rule-21 answer used to be read
+ * session-wide, so one early answer covered every later fix (a real session: one answer on
+ * 2026-11-08 passed six more landed fixes through 2026-11-10). The boundary is the last SAFE TO
+ * ARCHIVE claim before the latest landing that THIS check passed (re-judged on the transcript up to
+ * that claim). A claim it would have blocked leaves its fix unanswered, so it is no boundary; a claim
+ * some other Stop hook refused still is (counting any refused claim out collapsed the boundary to
+ * the session start in real transcripts, where most claims draw some hook's feedback). The current
+ * closing message comes after the latest landing, flushed to the transcript or not, so it is never
+ * picked. -> { claimIdx, landedFrom, lastLanding } (claimIdx -1 = judge the whole session as before;
+ * landedFrom = last landing at or before the claim, the lower bound for this chunk's commits)
+ */
+export function chunkStart(events, env = { CLAUDE_CODE_REMOTE: 'true' }) {
+  const landed = landedPushIndices(events);
+  const lastLanding = landed.length ? landed[landed.length - 1] : -1;
+  let claimIdx = -1;
+  for (let i = lastLanding - 1; i >= 0; i--) {
+    const e = events[i];
+    if (e.kind !== 'assistant_text' || !claimsSafeToArchive(e.text)) continue;
+    if (stopHookDecision({ lastMessage: e.text, events: events.slice(0, i), env: { ...env, CLAUDE_CODE_REMOTE: 'true', ROOT_CAUSE_STOP_DISABLE: '' } }).decision === 'allow') { claimIdx = i; break; }
+  }
+  const landedFrom = claimIdx < 0 ? -1 : landed.filter((x) => x <= claimIdx).pop() ?? -1;
+  return { claimIdx, landedFrom, lastLanding };
+}
+
+/**
  * PURE Stop-hook decision.
  * -> { decision: 'allow'|'block', reason, message? }
  */
@@ -229,16 +260,29 @@ export function stopHookDecision({ lastMessage = '', events = null, env = proces
   if (env.ROOT_CAUSE_STOP_DISABLE === '1') return { decision: 'allow', reason: 'ROOT_CAUSE_STOP_DISABLE=1' };
   if (!claimsSafeToArchive(lastMessage)) return { decision: 'allow', reason: 'not claiming SAFE TO ARCHIVE' };
   if (!events || events.length === 0) return { decision: 'allow', reason: 'no transcript (fails open)' };
-  if (landedPushIndices(events).length === 0) return { decision: 'allow', reason: 'nothing landed' };
-  const titles = cardTitles(events);
+  const { claimIdx, landedFrom, lastLanding } = chunkStart(events, env);
+  if (lastLanding < 0) return { decision: 'allow', reason: 'nothing landed' };
   let fixCommit = null;
-  if (titles.length && !titles.some((t) => isFixCard({ title: t }))) {
-    fixCommit = commitSubjects(events).find(isFixSubject) || null;
-    if (!fixCommit) return { decision: 'allow', reason: 'not a fix card' };
+  if (claimIdx < 0) {
+    const titles = cardTitles(events);
+    if (titles.length && !titles.some((t) => isFixCard({ title: t }))) {
+      fixCommit = commitSubjects(events).find(isFixSubject) || null;
+      if (!fixCommit) return { decision: 'allow', reason: 'not a fix card' };
+    }
+  } else {
+    // BRO-7349: a later chunk is judged on its own work. Its witnesses are the commits made since
+    // the landing before the last accepted claim, or a fix card created after that claim. A chunk
+    // with neither (a data: cost row, a ship-check follow-up, or commits this parser cannot read,
+    // such as `git commit -F`) is allowed; the reason is logged so the miss rate stays visible.
+    const after = events.slice(claimIdx + 1);
+    const newFixCard = cardTitles(after).find((t) => isFixCard({ title: t }));
+    fixCommit = commitSubjects(events, { from: landedFrom, to: lastLanding }).find(isFixSubject) || null;
+    if (!fixCommit && !newFixCard) return { decision: 'allow', reason: 'no new fix since the last SAFE TO ARCHIVE' };
+    if (!fixCommit) fixCommit = `card: ${newFixCard}`;
   }
-  const missing = missingRootCauseParts(answerTexts(events, lastMessage));
-  if (!missing.length) return { decision: 'allow', reason: 'rule-21 answer stated' };
-  return { decision: 'block', reason: `${fixCommit ? `fix commit: ${fixCommit}` : 'landed a fix'}; missing: ${missing.join(' + ')}`, message: blockMessage(missing) };
+  const missing = missingRootCauseParts(answerTexts(events.slice(claimIdx + 1), lastMessage));
+  if (!missing.length) return { decision: 'allow', reason: claimIdx < 0 ? 'rule-21 answer stated' : 'rule-21 answer stated for this chunk' };
+  return { decision: 'block', chunkKey: claimIdx < 0 ? '' : String(events[claimIdx].messageId || events[claimIdx].ts || claimIdx), reason: `${claimIdx < 0 ? '' : 'since last SAFE TO ARCHIVE; '}${fixCommit ? `fix commit: ${fixCommit}` : 'landed a fix'}; missing: ${missing.join(' + ')}`, message: blockMessage(missing) };
 }
 
 function readStdin() {
@@ -273,13 +317,14 @@ export function main(argv, { env = process.env, now = new Date() } = {}) {
   const d = stopHookDecision({ lastMessage: input.last_assistant_message || '', events: walkTranscript(tp), env });
   if (d.decision !== 'block') return 0;
   // Cap blocks per transcript so the check can never loop a session.
-  const counter = path.join(os.tmpdir(), `root-cause-stop-${createHash('sha1').update(tp).digest('hex').slice(0, 12)}`);
+  // BRO-7349: one budget per chunk (keyed by the boundary claim's message id), so a later fix gets its own reminder.
+  const counter = path.join(os.tmpdir(), `root-cause-stop-${createHash('sha1').update(tp + '\u0000' + (d.chunkKey || '')).digest('hex').slice(0, 12)}`);
   let n = 0;
   try {
     n = parseInt(fs.readFileSync(counter, 'utf8'), 10) || 0;
   } catch { /* first block */ }
   const budget = blockBudget(now);
-  logHit({ session: input.session_id || null, blocked: n < budget, n, budget, reason: d.reason });
+  logHit({ session: input.session_id || null, chunk: d.chunkKey || null, blocked: n < budget, n, budget, reason: d.reason });
   if (n >= budget) return 0;
   try {
     fs.writeFileSync(counter, String(n + 1));
