@@ -1,95 +1,128 @@
 {
-  "updatedAt": "2026-11-11T17:10:39.497Z",
-  "processed": 75,
-  "failed": 79,
-  "successRate": "48.7%",
+  "updatedAt": "2026-11-11T17:24:37.819Z",
+  "processed": 385,
+  "failed": 225,
+  "successRate": "63.1%",
   "tierBreakdown": {
-    "playwright": 51,
+    "playwright": 212,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 12,
-    "scrapingbee": 9,
-    "brightdata": 0,
+    "scrapingdog": 38,
+    "scrapingbee": 29,
+    "brightdata": 2,
     "archiveToday": 0,
-    "archive": 17
+    "archive": 110
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 0,
   "recentActivity": [
     {
-      "t": "2026-11-11T16:17:16.155Z",
-      "event": "bb-session",
-      "session": "f3686a31",
-      "url": "https://www.nytimes.com/2019/03/21/theater/matt-walker-play-that-goes-wrong.html"
-    },
-    {
-      "t": "2026-11-11T16:17:16.682Z",
+      "t": "2026-11-11T11:23:30.403Z",
       "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "domain": "talkinbroadway.com"
     },
     {
-      "t": "2026-11-11T16:43:25.093Z",
+      "t": "2026-11-11T11:26:08.721Z",
       "event": "bb-session",
-      "session": "5f95e08b",
-      "url": "https://www.nytimes.com/2026/11/11/theater/cloud-nine-national-theatre-london-re"
+      "session": "104d8322",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655641"
     },
     {
-      "t": "2026-11-11T16:43:25.474Z",
+      "t": "2026-11-11T11:26:09.346Z",
       "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "domain": "talkinbroadway.com"
     },
     {
-      "t": "2026-11-11T16:45:38.805Z",
+      "t": "2026-11-11T11:29:10.327Z",
       "event": "bb-session",
-      "session": "42a438d1",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
+      "session": "e60b795f",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655599"
     },
     {
-      "t": "2026-11-11T16:45:39.083Z",
+      "t": "2026-11-11T11:29:11.035Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-11T13:11:48.152Z",
+      "event": "bb-session",
+      "session": "e76362f9",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-11-11T13:11:48.477Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
     },
     {
-      "t": "2026-11-11T17:02:56.592Z",
+      "t": "2026-11-11T13:33:07.470Z",
       "event": "bb-session",
-      "session": "ea41c04c",
+      "session": "74cfaf07",
+      "url": "https://deadline.com/2026/10/you-can-see-everything-clayface-box-office-12371686"
+    },
+    {
+      "t": "2026-11-11T13:35:11.569Z",
+      "event": "bb-session",
+      "session": "34a61575",
       "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
     },
     {
-      "t": "2026-11-11T17:02:57.460Z",
+      "t": "2026-11-11T13:35:12.488Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     },
     {
-      "t": "2026-11-11T17:06:07.865Z",
+      "t": "2026-11-11T13:36:30.416Z",
       "event": "bb-session",
-      "session": "ea741282",
+      "session": "22ef9567",
       "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655641"
     },
     {
-      "t": "2026-11-11T17:06:08.653Z",
+      "t": "2026-11-11T13:36:31.232Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     },
     {
-      "t": "2026-11-11T17:08:30.296Z",
+      "t": "2026-11-11T13:38:54.560Z",
       "event": "bb-session",
-      "session": "28b4a23c",
+      "session": "4f0b43dd",
       "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655599"
     },
     {
-      "t": "2026-11-11T17:08:31.160Z",
+      "t": "2026-11-11T13:38:55.370Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     },
     {
-      "t": "2026-11-11T17:09:50.653Z",
+      "t": "2026-11-11T13:40:23.462Z",
       "event": "bb-session",
-      "session": "f673f54d",
+      "session": "4f079a9f",
       "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655533"
     },
     {
-      "t": "2026-11-11T17:09:51.543Z",
+      "t": "2026-11-11T13:40:24.382Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-11T13:41:46.263Z",
+      "event": "bb-session",
+      "session": "ccfa2070",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655534"
+    },
+    {
+      "t": "2026-11-11T13:41:47.095Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-11T13:43:30.265Z",
+      "event": "bb-session",
+      "session": "6d0dfce3",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655510"
+    },
+    {
+      "t": "2026-11-11T13:43:31.093Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     }
