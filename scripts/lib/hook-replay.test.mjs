@@ -155,7 +155,7 @@ test('replayOne + compare: a hook that changed its decision is reported, in a sa
     assert.equal(c.fidelity, null);
   } finally {
     for (const [k, v] of Object.entries(saved)) { if (v === undefined) delete process.env[k]; else process.env[k] = v; }
-    for (const d of [base, head, bin]) fs.rmSync(d, { recursive: true, force: true });
+    for (const d of [base, head, bin]) fs.rmSync(d, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -168,8 +168,8 @@ test('replayOne: the hook sees the transcript growing stop by stop, without the 
     // Stop 2's cut includes stop 1's text (already written), so only stop 1 is clean.
     assert.deepEqual(res.map((d) => d.decision), ['allow', 'crash']);
   } finally {
-    fs.rmSync(tree, { recursive: true, force: true });
-    fs.rmSync(bin, { recursive: true, force: true });
+    fs.rmSync(tree, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+    fs.rmSync(bin, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -214,7 +214,7 @@ test('hookScopeDiff + hookReplayWarning: warn on a hook-lib change with no repla
     assert.notEqual(hookScopeDiff(dir, 'main', 'HEAD').hash, d.hash, 'a further hook edit needs a new replay');
     assert.match(hookReplayWarning({ root: dir, src: 'HEAD', base: 'main' }), /verify-edits\.sh/);
   } finally {
-    fs.rmSync(dir, { recursive: true, force: true });
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -237,7 +237,7 @@ test('dirtyFiles: the first porcelain line keeps its whole path (an unstaged hoo
     fs.writeFileSync(path.join(dir, 'scripts', 'lib', 'new.js'), '1;\n');
     assert.deepEqual(dirtyFiles(dir).sort(), ['.claude/hooks/verify-edits.sh', 'scripts/lib/new.js']);
   } finally {
-    fs.rmSync(dir, { recursive: true, force: true });
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -264,6 +264,6 @@ test('prepareTree: refuses a leftover directory that is not its own worktree; th
     assert.equal(prepareTree(dir, 'head', 'HEAD'), t, 'an existing worktree is reused');
     assert.equal(fs.readFileSync(path.join(t, 'a.txt'), 'utf8'), 'committed\n');
   } finally {
-    fs.rmSync(dir, { recursive: true, force: true });
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
