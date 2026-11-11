@@ -74,7 +74,7 @@ async function getHtml(u) {
     throw e;
   }
 }
-const pageName = (h) => { const m = /<title>\s*Show Score \| (.*?)\s*NYC Reviews/i.exec(h); return m ? m[1].replace(/\s*\([^)]*\)\s*$/, '') : null; };
+const pageName = EA.pageName;
 
 async function sweepSource(s, c, cutoff) {
   const h1 = await getHtml(c.url);

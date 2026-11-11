@@ -32,6 +32,12 @@ function parseMembers(html) {
   return out;
 }
 
+/** Show name from a Show Score page <title> (NYC and London pages), parenthetical venue tag stripped; null when it does not parse. */
+function pageName(html) {
+  const m = /<title>\s*Show Score \| (.*?)\s*(?:NYC|London) Reviews/i.exec(html || '');
+  return m ? m[1].replace(/\s*\([^)]*\)\s*$/, '') : null;
+}
+
 const addDays = (iso, d) => { const t = new Date(`${iso}T00:00:00Z`); t.setUTCDate(t.getUTCDate() + d); return t.toISOString().slice(0, 10); };
 
 /**
@@ -90,4 +96,4 @@ function assertNoLeakageEarlierAudience(target, provenance) {
   return true;
 }
 
-module.exports = { EA_CENTER, EA_K, EA_GROUPS, EA_FEATURE_NAMES, parseMembers, earlierCutoff, summarize, pool, buildEarlierAudienceFeatures, assertNoLeakageEarlierAudience };
+module.exports = { EA_CENTER, EA_K, EA_GROUPS, EA_FEATURE_NAMES, parseMembers, pageName, earlierCutoff, summarize, pool, buildEarlierAudienceFeatures, assertNoLeakageEarlierAudience };

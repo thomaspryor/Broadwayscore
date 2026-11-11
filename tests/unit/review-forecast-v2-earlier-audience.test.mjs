@@ -26,6 +26,12 @@ test('parseMembers reads dated ratings from JSON-LD and ignores the rest', () =>
   assert.deepEqual(EA.parseMembers(''), []);
 });
 
+test('pageName reads NYC and London Show Score titles (London pages were once rejected as a title mismatch)', () => {
+  assert.equal(EA.pageName('<title>Show Score | Operation Mincemeat (West End) London Reviews and Tickets</title>'), 'Operation Mincemeat');
+  assert.equal(EA.pageName('<title>Show Score | Hadestown NYC Reviews and Tickets</title>'), 'Hadestown');
+  assert.equal(EA.pageName('<title>Something else</title>'), null);
+});
+
 test('summarize keeps only ratings on or before the cutoff; pool is n-weighted', () => {
   const s = EA.summarize([{ date: '2015-01-01', rating: 80 }, { date: '2015-02-19', rating: 60 }, { date: '2015-02-20', rating: 10 }], '2015-02-19');
   assert.equal(s.n, 2); assert.equal(s.mean, 70); assert.equal(s.newest, '2015-02-19'); assert.equal(s.shareLe60, 0.5);
