@@ -123,6 +123,7 @@ const G = V2.V2_GROUPS;
 const base = walk(V1);
 function compare(label, names, subsetFn, kind) {
   const w = walk(names);
+  if (w.length !== base.length || w.some((q, i) => q.id !== base[i].id)) throw new Error('walk-forward rows misaligned between models');
   const idx = base.map((_, i) => i).filter((i) => !subsetFn || subsetFn(base[i]));
   const A = idx.map((i) => w[i]); const B = idx.map((i) => base[i]);
   if (A.length < 20) return { input: label, kind, shows: A.length, verdict: 'cannot be established (fewer than 20 evaluated shows carry this input)' };
@@ -143,7 +144,9 @@ results.push(compare('Preview signals, shows with preview data only', [...V1, ..
 results.push(compare('Show Score audience score before opening (Wayback capture)', [...V1, ...G.audience], hasAud, 'primary-subset'));
 for (const f of [...G.cast, ...G.preview]) results.push(compare(`feature: ${f}`, [...V1, f], null, 'exploratory'));
 
-const bestCombined = results.filter((r) => r.kind === 'primary' && r.maeWith != null).sort((a, b) => a.maeWith - b.maeWith)[0];
+// Best model = v1 unless a primary full-population candidate has a 95% interval entirely below zero.
+const winners = results.filter((r) => r.kind === 'primary' && r.verdict === 'helps' && r.shows === base.length).sort((a, b) => a.maeWith - b.maeWith);
+const bestCombined = winners[0] || { input: 'None: v1 (today\'s formula) stays best', shows: base.length, maeWith: r2(maeOf(base)), verdict: 'no input helps' };
 const out = {
   generatedAt: new Date().toISOString(), card: 'BRO-7347', market: MARKET, floor: FLOOR, today: TODAY,
   protocol: 'Walk-forward by season, ridge lambda 20, getCriticScore target, season-clustered bootstrap seed 7314 B=2000. diff = MAE with minus MAE without; negative is better. Verdict helps only if the 95% interval is entirely below zero.',
@@ -151,6 +154,7 @@ const out = {
   coverage: { evaluated: rows.length, withOpeningCast: rows.filter((r) => r.has.cast).length, withPreviewData: rows.filter((r) => r.has.preview).length, withAudienceCapture: rows.filter((r) => r.has.audience).length },
   leakage: { rowsChecked: prov.checked, perturbation: { checked: sampled, moved }, lagDays: RF.LAG_DAYS },
   wayback: audRaw ? { showsTried: Object.keys(audRaw.shows).length, withCaptureBeforeOpening: Object.values(audRaw.shows).filter((v) => (v.captureTimestampsBeforeOpening || []).length).length, parsed: Object.keys(audience).length, paidFetches: audRaw.paidFetches || 0 } : null,
+  multipleComparisons: 'Three primary groups were declared in advance; per-feature rows are exploratory and uncorrected, so a lone exploratory "helps" would not count.',
   inputs: results,
   notTestable: [
     { input: 'Show Score audience score and review count (Wayback capture before opening)', verdict: 'cannot be dated at usable coverage', why: 'archive.org availability found no capture dated before opening for any of the first 30 shows swept (2 of 24 in the earlier pilot). Fewer than 20 shows can carry it, so no with/without comparison is possible.' },
