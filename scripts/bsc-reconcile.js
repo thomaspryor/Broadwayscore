@@ -1147,8 +1147,8 @@ async function sweepOrphanedLinearInFlight({ dryRun = false, deps = {} } = {}) {
   const issues = [];
   for (const c of candidates) {
     try { const iss = await getIssueFn(c.identifier); if (iss) issues.push(iss); } catch (e) {
-      if (isIssueMissingOnRead(e)) { // BRO-7276: never re-fetch a deleted issue every tick
-        handled.add(orphaned.handledKey(c.taskId, c.dead.ts));
+      if (isIssueMissingOnRead(e)) { // BRO-7276: a deleted issue is not stuck. Not persisted to
+        // `handled`: a key that loses access would read "not found" too, and must not be silenced forever.
         reportFn({ kind: 'linear-orphaned-issue-missing', identifier: c.identifier, detail: `${c.identifier}: ${e.message}` });
         continue;
       }

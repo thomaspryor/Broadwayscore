@@ -322,6 +322,11 @@ test('gatherDigest keeps a regression when reviews.json is missing or older than
     assert.equal(countUnlanded({ branch: 'feature-x', branchSubjects: ['wip: unrelated'], evidence }), 1);
   });
 
+  test('BRO-7276 a landed part 1 does not hide a stranded part 2 on the same card', () => {
+    const evidence = landedEvidence(['fix(BRO-9): part 1']);
+    assert.equal(countUnlanded({ branch: 'bro-9-followup', branchSubjects: ['fix(BRO-9): part 1', 'fix(BRO-9): part 2'], evidence }), 1);
+  });
+
   test('BRO-7276 only idle 1..14 days surfaces: in-flight and long-abandoned do not hold the row', () => {
     const e = (d) => ({ name: 'feature-x', ahead: 3, unlanded: 3, lastCommitDays: d });
     assert.equal(isStrandedWorktree(e(0)), false);

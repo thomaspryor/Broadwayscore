@@ -687,7 +687,7 @@ test('BRO-2989: sweepOrphanedLinearInFlight moves dead cards, never live ones, p
 // BRO-7276: a deleted / never-existing issue (a leaked test fixture id,
 // BRO-25690) re-raised a fetch error every tick for 7 weeks and kept the
 // digest's "Stuck pipeline items" row permanently warn.
-test('BRO-7276: orphaned sweep marks a missing issue handled and never re-fetches it', async () => {
+test('BRO-7276: orphaned sweep reports a missing issue as issue-missing (not actionable), never fetch-error', async () => {
   const fs2 = await import('node:fs');
   const os2 = await import('node:os');
   const { sweepOrphanedLinearInFlight } = require('../bsc-reconcile.js');
@@ -701,7 +701,6 @@ test('BRO-7276: orphaned sweep marks a missing issue handled and never re-fetche
   };
   await sweepOrphanedLinearInFlight({ deps });
   assert.deepEqual(reports.map((r) => r.kind), ['linear-orphaned-issue-missing']);
-  await sweepOrphanedLinearInFlight({ deps: { ...deps, nowFn: () => NOW + 2 * H } });
   assert.equal(fetches, 1);
 });
 

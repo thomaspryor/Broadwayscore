@@ -210,10 +210,14 @@ function landedEvidence(mainSubjects) {
 }
 
 // Commits on a branch that have no landed counterpart on main.
+// The card-id shortcut only applies when NO subject matched (a squash landed
+// under a new subject): if some commits landed verbatim, the rest are judged
+// by subject, so a stranded part 2 is not hidden by its landed part 1.
 function countUnlanded({ branch, branchSubjects, evidence }) {
+  const unlanded = branchSubjects.filter((s) => s && !evidence.subjects.has(s)).length;
   const id = String(branch || '').match(/\bBRO-(\d+)\b/i);
-  if (id && evidence.ids.has(`BRO-${id[1]}`)) return 0;
-  return branchSubjects.filter((s) => s && !evidence.subjects.has(s)).length;
+  if (id && unlanded === branchSubjects.length && evidence.ids.has(`BRO-${id[1]}`)) return 0;
+  return unlanded;
 }
 
 // ── Impure gatherer — every source fails soft ───────────────────────────────
