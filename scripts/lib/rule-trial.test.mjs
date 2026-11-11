@@ -62,6 +62,8 @@ test('wordChanges: header lines are parsed only in the header, paths come from +
   assert.equal(words, 5);
   assert.deepEqual([...changes.keys()], ['x b/y/CLAUDE.md', 'q"x.md']);
   assert.deepEqual(changes.get('x b/y/CLAUDE.md'), ['keep|--- a/b rule', 'keep|+new']);
+  const tab = ['diff --git a/a b/a b/a b/a', '--- a/a b/a\t', '+++ b/a b/a\t', '@@ -1 +1 @@', '+w'].join('\n');
+  assert.deepEqual([...wordChanges(tab).changes.keys()], ['a b/a'], "git's trailing tab after a path with a space is dropped");
 });
 
 test('guidanceDiff: the same words added in a different place are a different text', () => {
@@ -148,6 +150,7 @@ test('buildRecord: a trial counts only on the guidance text it ran on, after it 
     // The branch moved on after the trial started: the trial ran draft one, not today's tip.
     assert.match(rec('refs/heads/work', at(1.5)).error, /guidance text differs/, 'a trial of an older draft on the same branch is refused');
     assert.match(rec(draftOne, at(1.5)).error, /guidance text differs/, 'a sha of an older draft is refused');
+    assert.ok(rec(git(dir, 'rev-parse', 'HEAD~1').trim(), at(-100)).row, 'a sha of the current text is accepted whatever the start time');
     const r = rec('refs/heads/work', at(2.5));
     assert.ok(r.row, JSON.stringify(r));
     assert.deepEqual(r.row.sessions, ['session_t1']);
@@ -177,6 +180,7 @@ test('main record + status: writes the ledger row that clears the warning', () =
     assert.equal(main(['status', '--base', 'main'], io), 0);
     assert.match(outs.join('\n'), /Trial needed[\s\S]*create_session[\s\S]*TRIAL SESSION/);
     assert.match(outs.join('\n'), /yourself a TRIAL SESSION, stop here/);
+    assert.ok(outs.join('\n').includes(`source_revision ${git(dir, 'rev-parse', 'HEAD').trim()}`), 'the recipe names the exact commit');
     fs.appendFileSync(path.join(dir, 'CLAUDE.md'), 'an uncommitted line\n');
     outs.length = 0;
     assert.equal(main(['status', '--base', 'main'], io), 0);

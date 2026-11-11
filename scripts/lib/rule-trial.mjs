@@ -67,7 +67,7 @@ export function wordChanges(porcelain) {
       // File name from the +++ line (--- for a deleted file): a "diff --git" line cannot be split safely when a path contains " b/".
       const m = /^(\+\+\+|---) (.+)$/.exec(line);
       if (m && m[2] !== '/dev/null') {
-        const p = unquote(m[2]).replace(/^[ab]\//, '');
+        const p = unquote(m[2].replace(/\t$/, '')).replace(/^[ab]\//, '');
         if (m[1] === '+++' || !file) file = p;
       }
       if (line.startsWith('@@')) { inHeader = false; ctx = []; }
@@ -187,11 +187,11 @@ export function buildRecord({ cwd, base, src = 'HEAD', sessions, verdict, note, 
   return { row: { ts: now.toISOString(), hash: d.hash, files: d.files, words: d.words, sessions: sessions.map((s) => s.id), revisions, verdict, note: note.trim() } };
 }
 
-export function recipe(d, branch) {
+export function recipe(d, branch, sha) {
   return [
     'If you are yourself a TRIAL SESSION, stop here: report that a trial is needed and do not start one.',
     `1. Push this branch (your session branch, not land/*) so a new session can check it out: ${branch || '<branch>'}.`,
-    '2. Start one or two trial sessions with create_session: source_url https://github.com/thomaspryor/Broadwayscore, source_revision <that branch>, model sonnet.',
+    `2. Start one or two trial sessions with create_session: source_url https://github.com/thomaspryor/Broadwayscore, source_revision ${sha || '<the pushed commit sha>'} (the sha, not the branch name: a branch name is matched by commit time, which can credit a later draft), model sonnet.`,
     '   Prompt: a realistic task the new guidance should change (the kind of request that made you write it), then:',
     '   "TRIAL SESSION: do not push, land, edit Linear, create cards or sessions, email, post or spend. Work in a scratch worktree.',
     '    When done, report what you did and which written guidance (file and rule) you followed or found unclear."',
@@ -237,7 +237,8 @@ export function main(argv, { cwd = process.cwd(), out = console.log, err = conso
     if (passed) { out('A passing trial is recorded for this exact text.'); return 0; }
     if (!needed) { out('Below the size that needs a trial.'); return 0; }
     const branch = (git(cwd, ['branch', '--show-current']) || '').trim();
-    out(`Trial needed.\n${recipe(d, branch)}`);
+    const sha = (git(cwd, ['rev-parse', a.src]) || '').trim();
+    out(`Trial needed.\n${recipe(d, branch, sha)}`);
     return 0;
   }
   if (a.cmd === 'record') {

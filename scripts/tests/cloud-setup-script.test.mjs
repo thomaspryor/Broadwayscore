@@ -41,7 +41,7 @@ function fixture(kind) {
   fs.writeFileSync(path.join(seed, 'a'), '2\n'); git(seed, 'commit', '-qam', 'main moves'); git(seed, 'push', '-q', 'origin', 'main');
   if (kind === 'diverged') { fs.writeFileSync(path.join(repo, 'b'), 'x\n'); git(repo, 'add', '-A'); git(repo, 'commit', '-qm', 'trial branch work'); }
   fs.mkdirSync(path.join(home, 'app', 'scripts'), { recursive: true });
-  fs.writeFileSync(path.join(home, 'app', 'scripts', 'install-home-claude-config.js'), 'process.exit(1);\n');
+  fs.writeFileSync(path.join(home, 'app', 'scripts', 'install-home-claude-config.js'), `require('fs').writeFileSync(${JSON.stringify(path.join(tmp, 'installer-ran'))}, '1'); process.exit(1);\n`);
   return { tmp, home, repo };
 }
 
@@ -58,6 +58,7 @@ test('documented setup script survives a branch that diverged from main and a fa
       const before = git(f.repo, 'rev-parse', 'HEAD');
       const r = run(script, f.home);
       assert.equal(r.status, 0, `${kind}: setup exited ${r.status}\n${r.stderr}`);
+      assert.ok(fs.existsSync(path.join(f.tmp, 'installer-ran')), 'the installer loop still runs');
       const after = git(f.repo, 'rev-parse', 'HEAD');
       if (kind === 'behind') assert.equal(after, git(f.repo, 'rev-parse', 'origin/main'), 'a branch that is only behind still fast-forwards');
       else assert.equal(after, before, 'a diverged branch is left as it is');
