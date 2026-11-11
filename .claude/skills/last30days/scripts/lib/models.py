@@ -20,7 +20,7 @@ from . import cache, http, env
 OPENAI_MODELS_URL = "https://api.openai.com/v1/models"
 # Ordered by cost-efficiency for web_search + JSON extraction tasks.
 # Mini models first: same structured extraction quality at ~3x lower cost.
-OPENAI_FALLBACK_MODELS = ["gpt-5-mini", "gpt-4.1-mini", "gpt-4.1", "gpt-4o"]
+OPENAI_FALLBACK_MODELS = ["gpt-5.4-mini", "gpt-5.5"]  # gpt-5-mini retires 2026-12-11, gpt-4.1/4o 2027-01-14 (BRO-7339)
 CODEX_FALLBACK_MODELS = ["gpt-5.1-codex-mini", "gpt-5.2"]
 
 # xAI API - Agent Tools API requires grok-4 family

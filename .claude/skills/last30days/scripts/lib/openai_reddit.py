@@ -10,7 +10,7 @@ from . import http, env
 # Fallback models when the selected model isn't accessible (e.g., org not verified).
 # Ordered by cost-efficiency: mini models handle structured extraction equally well.
 # Note: gpt-4o-mini does NOT support web_search with filters — excluded.
-MODEL_FALLBACK_ORDER = ["gpt-5-mini", "gpt-4.1-mini", "gpt-4.1", "gpt-4o"]
+MODEL_FALLBACK_ORDER = ["gpt-5.4-mini", "gpt-5.5"]  # gpt-5-mini retires 2026-12-11, gpt-4.1/4o 2027-01-14 (BRO-7339)
 
 
 def _log_error(msg: str):
