@@ -129,7 +129,73 @@ function findInFlightCoverage(runs, showId, opts = {}) {
   return findInFlightPollerForShow(runs, showId);
 }
 
+/**
+ * BRO-7117: the show id a poller run is targeting, read from its run-name
+ * (`Opening Night Poller — <show_id>`). Auto runs (`— auto`) and titles
+ * without the separator return null.
+ *
+ * @param {string} title
+ * @returns {string|null}
+ */
+function targetedShowIdFromTitle(title) {
+  if (typeof title !== 'string') return null;
+  const at = title.lastIndexOf(RUN_NAME_SEPARATOR);
+  if (at < 0) return null;
+  const id = title.slice(at + RUN_NAME_SEPARATOR.length).trim();
+  if (!id || id === 'auto') return null;
+  return id;
+}
+
+/**
+ * BRO-7117: show ids that an ACTIVE targeted poller run owns right now,
+ * mapped to that run's id (databaseId) for logging.
+ *
+ * Why: an auto/market poller and a targeted per-show poller sit in different
+ * concurrency groups, so on a press night (orchestrator BRO-7198 parallel
+ * dispatch, update-show-status, the watcher, post-lane sweeps) both used to
+ * gather, collect and score the SAME show at the same time. Half the
+ * "Opening Night Poller Failed" cards in Oct-Nov 2026 were that overlap
+ * (BRO-5716, BRO-6594 _pending rename races; BRO-7338 both runs crashed in
+ * collect). The auto run now leaves those shows to the targeted run.
+ *
+ * @param {Array} runs  gh run list --json databaseId,status,displayTitle output.
+ * @returns {Map<string, (number|string|null)>}
+ */
+function activeTargetedPollerShows(runs) {
+  const owned = new Map();
+  if (!Array.isArray(runs)) return owned;
+  for (const r of runs) {
+    if (!isActiveRun(r)) continue;
+    const id = targetedShowIdFromTitle(r.displayTitle);
+    if (id && !owned.has(id)) owned.set(id, r.databaseId ?? null);
+  }
+  return owned;
+}
+
+/**
+ * BRO-7117: split an auto run's show list into the shows it should still
+ * work on and the shows an active targeted run already owns.
+ *
+ * @param {Array} runs
+ * @param {string[]} showIds
+ * @returns {{keep: string[], owned: Array<{showId: string, runId: (number|string|null)}>}}
+ */
+function partitionByActiveTargetedPoller(runs, showIds) {
+  const active = activeTargetedPollerShows(runs);
+  const keep = [];
+  const owned = [];
+  for (const id of showIds || []) {
+    if (!id) continue;
+    if (active.has(id)) owned.push({ showId: id, runId: active.get(id) });
+    else keep.push(id);
+  }
+  return { keep, owned };
+}
+
 module.exports = {
+  targetedShowIdFromTitle,
+  activeTargetedPollerShows,
+  partitionByActiveTargetedPoller,
   findInFlightCoverage,
   buildTitleSuffix,
   isActiveStatus,
