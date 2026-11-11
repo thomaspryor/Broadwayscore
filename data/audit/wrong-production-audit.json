@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-11T01:54:48.514Z",
+  "timestamp": "2026-11-11T02:11:23.759Z",
   "stats": {
     "totalReviews": 81327,
     "alreadyFlagged": 22230,
     "dateGuardCatches": 218,
     "directorMismatch": 3607,
     "tvFilmSignals": 2288,
-    "londonSignals": 3668,
+    "londonSignals": 3669,
     "offBroadwaySignals": 752,
     "yearMismatch": 365,
-    "noPublishDate": 8455
+    "noPublishDate": 8454
   },
   "findings": [
     {
@@ -94871,6 +94871,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "cloud-9-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "score": 97,
+      "publishDate": "2026-11-11",
+      "url": "https://www.londonboxoffice.co.uk/news/post/cloud-9-national-theatre-lyttelton-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
         }
       ]
     },
