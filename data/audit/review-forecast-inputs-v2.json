@@ -1,0 +1,335 @@
+{
+  "generatedAt": "2026-11-11T05:07:02.310Z",
+  "card": "BRO-7347",
+  "market": "broadway",
+  "floor": 10,
+  "today": "2026-11-11",
+  "protocol": "Walk-forward by season, ridge lambda 20, getCriticScore target, season-clustered bootstrap seed 7314 B=2000. diff = MAE with minus MAE without; negative is better. Verdict helps only if the 95% interval is entirely below zero.",
+  "baselineV1": {
+    "n": 341,
+    "maeV1": 7.73,
+    "maeCategoryMean": 8.55
+  },
+  "coverage": {
+    "evaluated": 519,
+    "withOpeningCast": 519,
+    "withPreviewData": 517,
+    "withAudienceCapture": 0
+  },
+  "leakage": {
+    "rowsChecked": 550,
+    "perturbation": {
+      "checked": 65,
+      "moved": 0
+    },
+    "lagDays": 3
+  },
+  "wayback": {
+    "showsTried": 30,
+    "withCaptureBeforeOpening": 0,
+    "parsed": 0,
+    "paidFetches": 0
+  },
+  "inputs": [
+    {
+      "input": "Opening-night cast (all six cast features)",
+      "kind": "primary",
+      "shows": 341,
+      "maeWithout": 7.73,
+      "maeWith": 7.93,
+      "maeCategoryMean": 8.55,
+      "diff": 0.2,
+      "diffCI95": [
+        0.09,
+        0.29
+      ],
+      "verdict": "hurts"
+    },
+    {
+      "input": "Preview signals (length, capacity/price/gross trend, gross level)",
+      "kind": "primary",
+      "shows": 341,
+      "maeWithout": 7.73,
+      "maeWith": 7.77,
+      "maeCategoryMean": 8.55,
+      "diff": 0.04,
+      "diffCI95": [
+        -0.2,
+        0.4
+      ],
+      "verdict": "no effect"
+    },
+    {
+      "input": "Cast + preview signals together",
+      "kind": "primary",
+      "shows": 341,
+      "maeWithout": 7.73,
+      "maeWith": 7.96,
+      "maeCategoryMean": 8.55,
+      "diff": 0.24,
+      "diffCI95": [
+        0.01,
+        0.56
+      ],
+      "verdict": "hurts"
+    },
+    {
+      "input": "Cast, shows with an opening cast on file only",
+      "kind": "primary-subset",
+      "shows": 341,
+      "maeWithout": 7.73,
+      "maeWith": 7.93,
+      "maeCategoryMean": 8.55,
+      "diff": 0.2,
+      "diffCI95": [
+        0.09,
+        0.29
+      ],
+      "verdict": "hurts"
+    },
+    {
+      "input": "Preview signals, shows with preview data only",
+      "kind": "primary-subset",
+      "shows": 339,
+      "maeWithout": 7.74,
+      "maeWith": 7.79,
+      "maeCategoryMean": 8.56,
+      "diff": 0.05,
+      "diffCI95": [
+        -0.17,
+        0.39
+      ],
+      "verdict": "no effect"
+    },
+    {
+      "input": "Show Score audience score before opening (Wayback capture)",
+      "kind": "primary-subset",
+      "shows": 0,
+      "verdict": "cannot be established (fewer than 20 evaluated shows carry this input)"
+    },
+    {
+      "input": "feature: castDevLead",
+      "kind": "exploratory",
+      "shows": 341,
+      "maeWithout": 7.73,
+      "maeWith": 7.77,
+      "maeCategoryMean": 8.55,
+      "diff": 0.04,
+      "diffCI95": [
+        -0.02,
+        0.12
+      ],
+      "verdict": "no effect"
+    },
+    {
+      "input": "feature: castDevAll",
+      "kind": "exploratory",
+      "shows": 341,
+      "maeWithout": 7.73,
+      "maeWith": 7.79,
+      "maeCategoryMean": 8.55,
+      "diff": 0.06,
+      "diffCI95": [
+        -0.01,
+        0.15
+      ],
+      "verdict": "no effect"
+    },
+    {
+      "input": "feature: castExpLead",
+      "kind": "exploratory",
+      "shows": 341,
+      "maeWithout": 7.73,
+      "maeWith": 7.73,
+      "maeCategoryMean": 8.55,
+      "diff": 0,
+      "diffCI95": [
+        -0.02,
+        0.03
+      ],
+      "verdict": "no effect"
+    },
+    {
+      "input": "feature: castExpAll",
+      "kind": "exploratory",
+      "shows": 341,
+      "maeWithout": 7.73,
+      "maeWith": 7.75,
+      "maeCategoryMean": 8.55,
+      "diff": 0.02,
+      "diffCI95": [
+        0,
+        0.04
+      ],
+      "verdict": "hurts"
+    },
+    {
+      "input": "feature: castDebutFrac",
+      "kind": "exploratory",
+      "shows": 341,
+      "maeWithout": 7.73,
+      "maeWith": 7.77,
+      "maeCategoryMean": 8.55,
+      "diff": 0.04,
+      "diffCI95": [
+        0.01,
+        0.08
+      ],
+      "verdict": "hurts"
+    },
+    {
+      "input": "feature: castSize",
+      "kind": "exploratory",
+      "shows": 341,
+      "maeWithout": 7.73,
+      "maeWith": 7.73,
+      "maeCategoryMean": 8.55,
+      "diff": 0,
+      "diffCI95": [
+        -0.03,
+        0.04
+      ],
+      "verdict": "no effect"
+    },
+    {
+      "input": "feature: prevLen",
+      "kind": "exploratory",
+      "shows": 341,
+      "maeWithout": 7.73,
+      "maeWith": 7.74,
+      "maeCategoryMean": 8.55,
+      "diff": 0.02,
+      "diffCI95": [
+        -0.03,
+        0.06
+      ],
+      "verdict": "no effect"
+    },
+    {
+      "input": "feature: prevWeeks",
+      "kind": "exploratory",
+      "shows": 341,
+      "maeWithout": 7.73,
+      "maeWith": 7.8,
+      "maeCategoryMean": 8.55,
+      "diff": 0.07,
+      "diffCI95": [
+        -0.12,
+        0.34
+      ],
+      "verdict": "no effect"
+    },
+    {
+      "input": "feature: capSlope",
+      "kind": "exploratory",
+      "shows": 341,
+      "maeWithout": 7.73,
+      "maeWith": 7.73,
+      "maeCategoryMean": 8.55,
+      "diff": 0,
+      "diffCI95": [
+        -0.03,
+        0.04
+      ],
+      "verdict": "no effect"
+    },
+    {
+      "input": "feature: atpSlope",
+      "kind": "exploratory",
+      "shows": 341,
+      "maeWithout": 7.73,
+      "maeWith": 7.66,
+      "maeCategoryMean": 8.55,
+      "diff": -0.07,
+      "diffCI95": [
+        -0.21,
+        0.06
+      ],
+      "verdict": "no effect"
+    },
+    {
+      "input": "feature: grossRel",
+      "kind": "exploratory",
+      "shows": 341,
+      "maeWithout": 7.73,
+      "maeWith": 7.73,
+      "maeCategoryMean": 8.55,
+      "diff": 0,
+      "diffCI95": [
+        -0.05,
+        0.05
+      ],
+      "verdict": "no effect"
+    },
+    {
+      "input": "feature: grossSlope",
+      "kind": "exploratory",
+      "shows": 341,
+      "maeWithout": 7.73,
+      "maeWith": 7.74,
+      "maeCategoryMean": 8.55,
+      "diff": 0.01,
+      "diffCI95": [
+        -0.06,
+        0.12
+      ],
+      "verdict": "no effect"
+    }
+  ],
+  "notTestable": [
+    {
+      "input": "Show Score audience score and review count (Wayback capture before opening)",
+      "verdict": "cannot be dated at usable coverage",
+      "why": "archive.org availability found no capture dated before opening for any of the first 30 shows swept (2 of 24 in the earlier pilot). Fewer than 20 shows can carry it, so no with/without comparison is possible."
+    },
+    {
+      "input": "Mezzanine, Theatr (separate audience components)",
+      "verdict": "cannot be dated",
+      "why": "Mezzanine stored data is production aggregates with no review dates. Theatr: 0 of 20 sampled show pages have a Wayback capture before opening."
+    },
+    {
+      "input": "Broadway.com audience score",
+      "verdict": "cannot be dated",
+      "why": "6 of 20 sampled show pages have an earlier capture, but the one capture read (1 paid fetch) carries no audience rating field."
+    },
+    {
+      "input": "BroadwayWorld board chatter before opening",
+      "verdict": "cannot be dated",
+      "why": "Wayback holds only board front pages and indexes. Thread URLs carry no show name, so per-show pre-opening thread counts cannot be rebuilt for a backtest."
+    },
+    {
+      "input": "Producer track record",
+      "verdict": "cannot be dated",
+      "why": "No producers field in data/commercial.json or any stored file; an IBDB scrape is a new paid source (owner call)."
+    },
+    {
+      "input": "Opening date pushed, discount and lottery presence",
+      "verdict": "cannot be dated",
+      "why": "No stored original opening date (2 openingDateNote entries only) and no dated discount or lottery history."
+    },
+    {
+      "input": "Google Trends in the preview window",
+      "verdict": "not attempted",
+      "why": "Trends serves a bot wall to fetchPage; bypass is ruled out by the card."
+    },
+    {
+      "input": "Out-of-town critic scores",
+      "verdict": "already used",
+      "why": "priorRun takes the latest earlier production of the same title in any category (pool is all categories), including regional and West End runs."
+    }
+  ],
+  "bestCombinedPrimary": {
+    "input": "Preview signals (length, capacity/price/gross trend, gross level)",
+    "kind": "primary",
+    "shows": 341,
+    "maeWithout": 7.73,
+    "maeWith": 7.77,
+    "maeCategoryMean": 8.55,
+    "diff": 0.04,
+    "diffCI95": [
+      -0.2,
+      0.4
+    ],
+    "verdict": "no effect"
+  }
+}
