@@ -91,6 +91,17 @@ function decide({ session, now = Date.now(), idleMinutes = DEFAULT_IDLE_MINUTES,
   if (DONE.has(bucket) || DONE.has(status) || findField(session, 'archived') === true) {
     return out('done', `child is ${bucket || status || 'archived'}: collect its report`);
   }
+  // BRO-7377: a child whose container never came up (setup script exit 128 on
+  // 2026-11-11) still reads status_bucket=WORKING, so every check said rearm.
+  // external_metadata.last_init_error is the only signal. A child that has
+  // reported back has plainly started, so a stale error never beats a report.
+  const initErr = findField(session, 'last_init_error');
+  if (reported == null && initErr && typeof initErr === 'object' && String(initErr.recoverable).toLowerCase() !== 'true'
+      && (initErr.message || initErr.error_kind || initErr.error_type)) {
+    const kind = initErr.error_kind || initErr.error_type || 'init';
+    return out('restart', `child never started (${kind}: ${initErr.message || 'no message'}${initErr.at ? ` at ${initErr.at}` : ''}): `
+      + 'list_events it with kinds ["env_manager_log"] for the output, fix the cause (get_environment, then update_environment), then create_session again');
+  }
   if (FAILED.has(bucket) || FAILED.has(status)) return out('restart', `child ${bucket || status}: fix or restart it`);
   if (BLOCKED.has(bucket) || BLOCKED.has(status)) return out('unblock', `child ${bucket || status}: interrupt_session and send a workaround`);
   // A report-back at (or just before) the child's last activity means it has
