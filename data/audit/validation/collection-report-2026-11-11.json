@@ -1,68 +1,63 @@
 {
-  "runDate": "2026-11-11T10:18:59.401Z",
+  "runDate": "2026-11-11T11:03:11.987Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "wanted-2022,cloud-9-west-end-2026,msblackforpresident-off-broadway-2026,the-visitors-off-broadway-2026,dogstar-off-west-end-2026,here-there-are-blueberries-2026,the-steel-man-off-broadway-2026,the-charioteer-off-broadway-2026,kate-allie-and-the-86-mets-off-broadway-2026",
+    "showFilter": "cloud-9-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 6,
-    "failed": 7,
+    "processed": 2,
+    "failed": 1,
     "skipped": 0,
-    "successRate": "46.2%"
+    "successRate": "66.7%"
   },
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 2,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 1,
-    "scrapingbee": 1,
+    "scrapingdog": 0,
+    "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 11,
-    "tier1Success": 4,
+    "tier1Attempts": 3,
+    "tier1Success": 2,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 3,
-    "tier1_5Success": 1,
-    "tier1_9Attempts": 2,
-    "tier1_9Success": 1,
-    "tier2Attempts": 4,
-    "tier2Success": 1,
-    "tier3Attempts": 5,
-    "tier3Success": 0,
-    "tier3_6Attempts": 3,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier1_9Attempts": 1,
+    "tier1_9Success": 0,
+    "tier2Attempts": 1,
+    "tier2Success": 0,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
+    "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 10,
-    "tier4Success": 1,
-    "totalFailed": 6,
-    "scrapingBeePageCredits": 12,
+    "tier4Attempts": 2,
+    "tier4Success": 0,
+    "totalFailed": 1,
+    "scrapingBeePageCredits": 10,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 3,
-    "browserbaseMinutesUsed": 1.3,
-    "urlDiscoveryAttempts": 1,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 6,
-    "failed": 7,
+    "processed": 2,
+    "failed": 1,
     "shows": [
-      "cloud-9-west-end-2026",
-      "dogstar-off-west-end-2026",
-      "here-there-are-blueberries-2026",
-      "kate-allie-and-the-86-mets-off-broadway-2026",
-      "msblackforpresident-off-broadway-2026",
-      "the-visitors-off-broadway-2026"
+      "cloud-9-west-end-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -71,86 +66,35 @@
     }
   },
   "processed": [
-    "cloud-9-west-end-2026/theatre-weekly--unknown.json",
-    "here-there-are-blueberries-2026/new-york-city-theatre--unknown.json",
-    "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json",
-    "dogstar-off-west-end-2026/theatreboard--unknown.json",
-    "kate-allie-and-the-86-mets-off-broadway-2026/front-row-center--tulis-mccall.json",
-    "msblackforpresident-off-broadway-2026/new-york-notebook--sandy-macdonald.json"
+    "cloud-9-west-end-2026/timeout-london--unknown.json",
+    "cloud-9-west-end-2026/theatre-weekly--unknown.json"
   ],
   "failed": [
-    "cloud-9-west-end-2026/times-uk--susannah-butter.json",
-    "here-there-are-blueberries-2026/talkinbroadway--unknown.json",
-    "the-visitors-off-broadway-2026/bobs-theater-blog--unknown.json",
-    "the-visitors-off-broadway-2026/boston-globe--unknown.json",
-    "the-visitors-off-broadway-2026/talkinbroadway--unknown.json",
-    "msblackforpresident-off-broadway-2026/guardian--unknown.json",
-    "msblackforpresident-off-broadway-2026/talkinbroadway--unknown.json"
+    "cloud-9-west-end-2026/times-uk--susannah-butter.json"
   ],
   "cumulativeResumedState": {
     "processed": [
-      "cloud-9-west-end-2026/theatre-weekly--unknown.json",
-      "here-there-are-blueberries-2026/new-york-city-theatre--unknown.json",
-      "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json",
-      "dogstar-off-west-end-2026/theatreboard--unknown.json",
-      "kate-allie-and-the-86-mets-off-broadway-2026/front-row-center--tulis-mccall.json",
-      "msblackforpresident-off-broadway-2026/new-york-notebook--sandy-macdonald.json"
+      "cloud-9-west-end-2026/timeout-london--unknown.json",
+      "cloud-9-west-end-2026/theatre-weekly--unknown.json"
     ],
     "failed": [
-      "cloud-9-west-end-2026/times-uk--susannah-butter.json",
-      "here-there-are-blueberries-2026/talkinbroadway--unknown.json",
-      "the-visitors-off-broadway-2026/bobs-theater-blog--unknown.json",
-      "the-visitors-off-broadway-2026/boston-globe--unknown.json",
-      "the-visitors-off-broadway-2026/talkinbroadway--unknown.json",
-      "msblackforpresident-off-broadway-2026/guardian--unknown.json",
-      "msblackforpresident-off-broadway-2026/talkinbroadway--unknown.json"
+      "cloud-9-west-end-2026/times-uk--susannah-butter.json"
     ]
   },
   "tierDetails": {
     "playwright": [
-      "cloud-9-west-end-2026/theatre-weekly--unknown.json",
-      "dogstar-off-west-end-2026/theatreboard--unknown.json",
-      "kate-allie-and-the-86-mets-off-broadway-2026/front-row-center--tulis-mccall.json"
+      "cloud-9-west-end-2026/timeout-london--unknown.json",
+      "cloud-9-west-end-2026/theatre-weekly--unknown.json"
     ],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/cloud-9-west-end-2026/times-uk--susannah-butter.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [
-      "msblackforpresident-off-broadway-2026/new-york-notebook--sandy-macdonald.json"
-    ],
-    "scrapingbee": [
-      "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json"
-    ],
+    "scrapingdog": [],
+    "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": [
-      "here-there-are-blueberries-2026/new-york-city-theatre--unknown.json"
-    ]
+    "archive": []
   },
-  "failuresByOutlet": {
-    "Talkin' Broadway": {
-      "count": 2,
-      "domain": "talkinbroadway.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "Bob's Theater Blog": {
-      "count": 1,
-      "domain": "gotham-playgoer.blogspot.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Guardian": {
-      "count": 1,
-      "domain": "theguardian.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
