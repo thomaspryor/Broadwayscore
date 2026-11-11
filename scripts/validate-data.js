@@ -5591,11 +5591,18 @@ function validateShowOrigins(shows) {
 // BRO-7234: validate the same aliases prebuild emits. A saved log-slug array
 // can extend the check without generating speculative aliases for every critic.
 function validateCriticOutletRedirects(shows) {
+  const registryFile = path.join(DATA_DIR, 'outlet-registry.json');
+  // Partial checkouts omit the registry, just as the redirect builder permits.
+  // Existing but invalid registries must still fail validation below.
+  if (!fs.existsSync(registryFile)) {
+    info('outlet-registry.json does not exist, skipping critic outlet redirect validation');
+    return;
+  }
   const { buildLiveCriticAliases, findMissingCriticOutletAliases, retiredSlugs } = require('./lib/critic-outlet-redirects');
   const { loadCriticSlugAliases, criticSlugsFromReviews } = require('./lib/critic-slug-aliases');
   try {
     const reviews = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'reviews.json'), 'utf8')).reviews;
-    const outlets = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'outlet-registry.json'), 'utf8'));
+    const outlets = JSON.parse(fs.readFileSync(registryFile, 'utf8'));
     const { aliases } = buildLiveCriticAliases({ aliases: loadCriticSlugAliases(), reviews, shows, outlets });
     const logArg = process.argv.find(arg => arg.startsWith('--critic-log-slugs='));
     const observed = logArg ? JSON.parse(fs.readFileSync(logArg.slice('--critic-log-slugs='.length), 'utf8')) : [];
