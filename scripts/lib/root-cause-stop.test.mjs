@@ -281,3 +281,11 @@ test('BRO-7349: a Linear close-out mentioned inside a heredoc or a quoted script
   const nodeE = toolUse('w2', 'Bash', { command: `node -e 'run("node scripts/linear-brain.js update BRO-1 --comment CLASS-GUARD: scripts/lib/x.test.mjs ; cousins: grepped data/, none")'` });
   assert.equal(d([...FIX_CARD, ...LAND, nodeE, ok('w2')]), 'block');
 });
+
+test('BRO-7349: many blocked claims in a row stay fast (memoised boundary search)', () => {
+  const ev = [...FIX_CARD];
+  for (let n = 0; n < 40; n++) ev.push(...commitLand(n, `fix: thing ${n}`), { ...say(SAFE), messageId: `m${n}` });
+  const t = Date.now();
+  assert.equal(d(ev), 'block');
+  assert.ok(Date.now() - t < 1000, `took ${Date.now() - t}ms; the boundary search must not re-judge earlier claims`);
+});

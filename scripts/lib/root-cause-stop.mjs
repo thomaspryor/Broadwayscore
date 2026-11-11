@@ -238,14 +238,18 @@ export function blockMessage(missing) {
  * picked. -> { claimIdx, landedFrom, lastLanding } (claimIdx -1 = judge the whole session as before;
  * landedFrom = last landing at or before the claim, the lower bound for this chunk's commits)
  */
-export function chunkStart(events, env = { CLAUDE_CODE_REMOTE: 'true' }) {
+// memo: claim index -> verdict on events[0..i). Prefixes keep absolute indices, so one memo serves every
+// level; without it each blocked claim re-judges all earlier ones and the cost doubles per claim
+// (20 blocked claims took 5.8s against verify-edits.sh's 15s timeout, which fails open).
+export function chunkStart(events, env = { CLAUDE_CODE_REMOTE: 'true' }, memo = new Map()) {
   const landed = landedPushIndices(events);
   const lastLanding = landed.length ? landed[landed.length - 1] : -1;
   let claimIdx = -1;
   for (let i = lastLanding - 1; i >= 0; i--) {
     const e = events[i];
     if (e.kind !== 'assistant_text' || !claimsSafeToArchive(e.text)) continue;
-    if (stopHookDecision({ lastMessage: e.text, events: events.slice(0, i), env: { ...env, CLAUDE_CODE_REMOTE: 'true', ROOT_CAUSE_STOP_DISABLE: '' } }).decision === 'allow') { claimIdx = i; break; }
+    if (!memo.has(i)) memo.set(i, stopHookDecision({ lastMessage: e.text, events: events.slice(0, i), env: { ...env, CLAUDE_CODE_REMOTE: 'true', ROOT_CAUSE_STOP_DISABLE: '' }, memo }).decision);
+    if (memo.get(i) === 'allow') { claimIdx = i; break; }
   }
   const landedFrom = claimIdx < 0 ? -1 : landed.filter((x) => x <= claimIdx).pop() ?? -1;
   return { claimIdx, landedFrom, lastLanding };
@@ -255,12 +259,12 @@ export function chunkStart(events, env = { CLAUDE_CODE_REMOTE: 'true' }) {
  * PURE Stop-hook decision.
  * -> { decision: 'allow'|'block', reason, message? }
  */
-export function stopHookDecision({ lastMessage = '', events = null, env = process.env }) {
+export function stopHookDecision({ lastMessage = '', events = null, env = process.env, memo = new Map() }) {
   if (env.CLAUDE_CODE_REMOTE !== 'true') return { decision: 'allow', reason: 'not a cloud session' };
   if (env.ROOT_CAUSE_STOP_DISABLE === '1') return { decision: 'allow', reason: 'ROOT_CAUSE_STOP_DISABLE=1' };
   if (!claimsSafeToArchive(lastMessage)) return { decision: 'allow', reason: 'not claiming SAFE TO ARCHIVE' };
   if (!events || events.length === 0) return { decision: 'allow', reason: 'no transcript (fails open)' };
-  const { claimIdx, landedFrom, lastLanding } = chunkStart(events, env);
+  const { claimIdx, landedFrom, lastLanding } = chunkStart(events, env, memo);
   if (lastLanding < 0) return { decision: 'allow', reason: 'nothing landed' };
   let fixCommit = null;
   if (claimIdx < 0) {
