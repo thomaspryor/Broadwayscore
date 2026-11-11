@@ -467,7 +467,11 @@ test('prepareTree isolated: a remote-tracking sha in a shallow source repo still
     spawnSync('git', ['clone', '-q', '--depth=1', `file://${up}`, sh], { encoding: 'utf8' });
     const sha = git(sh, 'rev-parse', 'origin/main');
     assert.equal(git(sh, 'rev-parse', '--is-shallow-repository'), 'true');
-    git(sh, 'checkout', '-q', '-b', 'work');
+    git(sh, 'config', 'user.email', 't@t');
+    git(sh, 'config', 'user.name', 't');
+    git(sh, 'checkout', '-q', '--orphan', 'work');
+    git(sh, 'commit', '-qm', 'unrelated');
+    git(sh, 'branch', '-q', '-D', 'main'); // only the remote-tracking ref holds the sha, as in the cloud checkout
     const t = prepareTree(sh, 'iso', sha, { isolated: true });
     assert.equal(fs.readFileSync(path.join(t, 'a.txt'), 'utf8'), 'two\n');
   } finally {
