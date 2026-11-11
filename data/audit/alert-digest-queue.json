@@ -755,5 +755,28 @@
       }
     ],
     "queuedAt": "2026-11-11T19:07:08.773Z"
+  },
+  {
+    "conditionKey": "arm-yield:workflow:sweep-we-aggregators",
+    "title": "Sweep WE Aggregators has stopped updating (8 days)",
+    "description": "A scheduled job that keeps the site up to date has stopped succeeding. Nothing new since 2026-11-03, 8 days ago. It has never before gone quiet for more than 6 day(s), so this is not its normal rhythm. Nothing is fixing this automatically — it needs a look.\n\n(Detail: threshold 8d, from 5 productive day(s) / 5 item(s) between 2026-10-05 and 2026-11-03.)",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Last yield",
+        "value": "2026-11-03"
+      },
+      {
+        "name": "Silent for",
+        "value": "8 days (threshold 8)"
+      }
+    ],
+    "queuedAt": "2026-11-11T19:45:45.595Z"
   }
 ]

@@ -530,16 +530,17 @@
       "resolvedAt": "2026-08-26T18:50:48.174Z"
     },
     "arm-yield:workflow:sweep-we-aggregators": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
-      "title": "Sweep WE Aggregators has stopped updating (20 days)",
+      "title": "Sweep WE Aggregators has stopped updating (8 days)",
       "firstSeen": "2026-08-03T13:05:40.013Z",
-      "lastSeen": "2026-08-03T13:25:13.090Z",
-      "lastNotifiedAt": "2026-08-03T13:05:40.013Z",
-      "notifyCount": 1,
+      "incidentOpenedAt": "2026-11-11T19:45:45.594Z",
+      "lastSeen": "2026-11-11T19:45:45.594Z",
+      "lastNotifiedAt": "2026-11-11T19:45:45.594Z",
+      "lastSurfacedAt": "2026-11-11T19:45:45.594Z",
+      "notifyCount": 2,
       "cardId": null,
-      "silentRefires": 1,
-      "resolvedAt": "2026-08-04T13:07:42.297Z"
+      "linearIdentifier": null
     },
     "arm-yield:workflow:scoring-audit": {
       "status": "resolved",
@@ -1931,13 +1932,13 @@
       "title": "Scrape WestEndTheatre has stopped updating (97 days)",
       "firstSeen": "2026-08-24T13:26:25.716Z",
       "incidentOpenedAt": "2026-08-24T13:26:25.716Z",
-      "lastSeen": "2026-11-10T19:53:42.848Z",
+      "lastSeen": "2026-11-11T19:45:45.621Z",
       "lastNotifiedAt": "2026-11-07T17:52:29.571Z",
       "lastSurfacedAt": "2026-11-07T17:52:29.571Z",
       "notifyCount": 8,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "arm-yield:outlet:nysr": {
       "status": "resolved",
@@ -14645,7 +14646,7 @@
       "resolvedAt": "2026-10-10T18:20:59.411Z"
     },
     "arm-yield:workflow:collect-we-ob-reviews": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Collect WE/OB Reviews has stopped updating (3 days)",
       "firstSeen": "2026-10-10T17:24:32.977Z",
@@ -14655,7 +14656,8 @@
       "lastSurfacedAt": "2026-11-10T19:53:42.824Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-11T19:45:45.724Z"
     },
     "land:land/bro-4985-box-office-data": {
       "status": "resolved",
