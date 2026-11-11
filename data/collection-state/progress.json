@@ -4,7 +4,17 @@
     "here-there-are-blueberries-2026/new-york-city-theatre--unknown.json",
     "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json",
     "dogstar-off-west-end-2026/theatreboard--unknown.json",
-    "msblackforpresident-off-broadway-2026/new-york-notebook--sandy-macdonald.json"
+    "msblackforpresident-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
+    "julius-caesar-globe-off-west-end-2026/whatsonstage--tanyel-gumushan.json",
+    "nero-off-west-end-2026/musical-theatre-review--angela-thomas.json",
+    "speculations-off-west-end-2026/adventuresintheatreland--julie-fisher-sheher.json",
+    "speculations-off-west-end-2026/jonathan-baz--unknown.json",
+    "speculations-off-west-end-2026/londonlivinglarge--london-living-large.json",
+    "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
+    "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json",
+    "ceilidh-the-musical-off-west-end-2026/guardian--emma-john.json",
+    "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json",
+    "ceilidh-the-musical-off-west-end-2026/musical-theatre-review--angela-thomas.json"
   ],
   "failed": [
     "cloud-9-west-end-2026/city-am--olivia-jordan.json",
@@ -16,13 +26,26 @@
     "msblackforpresident-off-broadway-2026/guardian--unknown.json",
     "msblackforpresident-off-broadway-2026/talkinbroadway--unknown.json",
     "act-of-god-off-west-end-2026/london-box-office--stuart-king.json",
-    "act-of-god-off-west-end-2026/thestage--holly-omahony.json"
+    "act-of-god-off-west-end-2026/thestage--holly-omahony.json",
+    "iphigenie-en-tauride-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "the-bridge-off-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "the-bridge-off-west-end-2026/theatreandtonic--emmie-newitt.json",
+    "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "cloud-9-west-end-2026/theatre-weekly--unknown.json",
-      "dogstar-off-west-end-2026/theatreboard--unknown.json"
+      "dogstar-off-west-end-2026/theatreboard--unknown.json",
+      "julius-caesar-globe-off-west-end-2026/whatsonstage--tanyel-gumushan.json",
+      "speculations-off-west-end-2026/adventuresintheatreland--julie-fisher-sheher.json",
+      "speculations-off-west-end-2026/jonathan-baz--unknown.json",
+      "speculations-off-west-end-2026/londonlivinglarge--london-living-large.json",
+      "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
+      "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json",
+      "ceilidh-the-musical-off-west-end-2026/guardian--emma-john.json",
+      "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -30,7 +53,9 @@
     ],
     "directCookies": [],
     "scrapingdog": [
-      "msblackforpresident-off-broadway-2026/new-york-notebook--sandy-macdonald.json"
+      "msblackforpresident-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
+      "nero-off-west-end-2026/musical-theatre-review--angela-thomas.json",
+      "ceilidh-the-musical-off-west-end-2026/musical-theatre-review--angela-thomas.json"
     ],
     "scrapingbee": [
       "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json"
@@ -42,7 +67,7 @@
     ]
   },
   "startTime": "2026-11-11T19:44:43.602Z",
-  "lastProcessed": "act-of-god-off-west-end-2026/thestage--holly-omahony.json",
+  "lastProcessed": "ceilidh-the-musical-off-west-end-2026/musical-theatre-review--angela-thomas.json",
   "log": [
     {
       "t": "2026-11-11T19:46:26.880Z",
@@ -76,6 +101,17 @@
       "t": "2026-11-11T19:51:37.896Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-11T20:16:34.473Z",
+      "event": "bb-session",
+      "session": "0ea2065c",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
+    },
+    {
+      "t": "2026-11-11T20:16:35.256Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
