@@ -76,6 +76,7 @@ const shows = J('data/shows.json').shows;
 const weeks = J('data/grosses-history.json').weeks;
 const origins = J('data/show-origins.json').shows;
 const buzz = J('data/audience-buzz.json');
+const ssUrls = J('data/show-score-urls.json').shows;
 const buzzOf = (id) => (buzz.shows || buzz)[id];
 const slimRc = (id) => { try { return JSON.parse(fs.readFileSync(path.join(ROOT, 'public/data/shows', `${id}.json`), 'utf8')).rc ?? 0; } catch { return 0; } };
 
@@ -164,7 +165,7 @@ for (const s of shows) {
   }
   const v1Part = { forecast: Math.round(p.forecast), forecastRaw: Math.round(p.forecast * 10) / 10, lo80: Math.round(p.lo80), hi80: Math.round(p.hi80) };
   // BRO-7357: v2 shadow beside v1, new field only. Uses the Show Score score+count already in audience-buzz; never fetched here.
-  const v2 = V2S.buildV2Shadow({ features: f, v1: v1Part, showScore: V2S.showScoreInput(buzzOf(s.id)), openingDate: s.openingDate, recordedAt: TODAY });
+  const v2 = V2S.buildV2Shadow({ features: f, v1: v1Part, showScore: V2S.showScoreInput(buzzOf(s.id)), openingDate: s.openingDate, recordedAt: TODAY, pageUrl: ssUrls[s.id] || null });
   candidates.push({
     showId: s.id, recordedAt: TODAY, openingDate: s.openingDate, previewsStartDate: s.previewsStartDate || null, status: s.status,
     ...v1Part, categoryMean: Math.round(f.mu * 10) / 10,

@@ -9,7 +9,9 @@ const MODEL = require('../../scripts/lib/review-forecast-v2-model.json');
 
 const features = { mu: 74, x: Object.fromEntries(MODEL.model.names.map((n) => [n, 0])) };
 const v1 = { forecast: 77, forecastRaw: 77.2, lo80: 63, hi80: 89 };
-const base = { features, v1, openingDate: '2026-11-19', recordedAt: '2026-11-10' };
+const BWAY = 'https://www.show-score.com/broadway-shows/downstate-broadway';
+const SHARED = 'https://www.show-score.com/broadway-shows/mix-and-master';
+const base = { features, v1, openingDate: '2026-11-19', recordedAt: '2026-11-10', pageUrl: BWAY };
 const ss = { score: 90, count: 120, capturedAt: '2026-11-08' };
 
 test('model is frozen and versioned', () => {
@@ -83,4 +85,40 @@ test('grade row grades v2 beside v1 from the same ledger row', () => {
   const fb = P.buildGradeRow({ showId: 'x', openingDate: '2026-11-19', today: '2026-12-25', frozen: { ...frozen, v2: undefined }, criticScore: 80 });
   assert.equal(fb.v2UsedShowScore, false);
   assert.equal(fb.forecastV2, 70);
+});
+
+test('showScoreMixedProductions: -broadway page is false, shared or unmapped page is unknown, never true', () => {
+  assert.equal(S.showScoreMixedProductions(BWAY), false);
+  assert.equal(S.showScoreMixedProductions(BWAY + '/'), false);
+  assert.equal(S.showScoreMixedProductions(SHARED), 'unknown');
+  assert.equal(S.showScoreMixedProductions('https://www.show-score.com/broadway-shows/hangmen'), 'unknown');
+  assert.equal(S.showScoreMixedProductions(null), 'unknown');
+  assert.equal(S.showScoreMixedProductions(undefined), 'unknown');
+});
+
+test('v2 stores the flag; a shared or unmapped page falls back to v1 with a stated reason', () => {
+  const clean = S.buildV2Shadow({ ...base, showScore: ss });
+  assert.equal(clean.showScoreMixedProductions, false);
+  assert.deepEqual(clean.inputsPresent, ['v1', 'showScore']);
+  for (const pageUrl of [SHARED, null]) {
+    const v = S.buildV2Shadow({ ...base, showScore: ss, pageUrl });
+    assert.equal(v.showScoreMixedProductions, 'unknown');
+    assert.deepEqual(v.inputsPresent, ['v1']);
+    assert.equal(v.forecast, v1.forecast);
+    assert.match(v.fallbackReason, /not Broadway-specific/);
+    assert.equal(v.showScore, null);
+  }
+  // a fallback for another reason still carries the flag
+  assert.equal(S.buildV2Shadow({ ...base, showScore: null }).showScoreMixedProductions, false);
+});
+
+test('grade row carries the flag, and the scoreboard shows the clean page subset apart from the rest', () => {
+  const mk = (id, flag, used, miss1, miss2) => ({ showId: id, v2UsedShowScore: used, v2ShowScoreMixed: flag, missForecast: miss1, missForecastV2: miss2, missForecastV1SameRow: miss1 });
+  const sb = P.scoreboard([mk('a', false, true, 10, 4), mk('b', false, true, 6, 2), mk('c', 'unknown', false, 8, 8)]);
+  assert.deepEqual(sb.v2Shadow.cleanPage, { v1SameRow: { n: 2, mae: 8 }, v2: { n: 2, mae: 3 } });
+  assert.equal(sb.v2Shadow.mixedOrUnknownPage.shows, 1);
+  assert.equal(sb.v2Shadow.mixedOrUnknownPage.v1.mae, 8);
+  const frozen = { showId: 'x', recordedAt: '2026-11-09', openingDate: '2026-11-19', forecast: 70, lo80: 56, hi80: 82, v2: { inputsPresent: ['v1'], showScoreMixedProductions: 'unknown' } };
+  const g = P.buildGradeRow({ showId: 'x', openingDate: '2026-11-19', today: '2026-12-25', frozen, criticScore: 80 });
+  assert.equal(g.v2ShowScoreMixed, 'unknown');
 });

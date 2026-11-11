@@ -157,6 +157,7 @@ function buildGradeRow({ showId, openingDate, today, frozen, criticScore, frozen
   const v1Same = usedShowScore ? frozenV2.forecast : frozen.forecast;
   const v2 = {
     v2ModelVersion: usedShowScore ? v2row.modelVersion : null, v2RecordedAt: usedShowScore ? frozenV2.recordedAt : frozen.recordedAt, v2UsedShowScore: usedShowScore,
+    v2ShowScoreMixed: ((usedShowScore ? v2row : frozen.v2) || {}).showScoreMixedProductions ?? null,
     forecastV2: v2Forecast, missForecastV2: miss(v2Forecast), forecastV1SameRow: v1Same, missForecastV1SameRow: miss(v1Same),
     inRange80V2: usedShowScore ? criticScore >= v2row.lo80 && criticScore <= v2row.hi80 : (typeof frozen.lo80 === 'number' ? criticScore >= frozen.lo80 && criticScore <= frozen.hi80 : null),
   };
@@ -175,9 +176,12 @@ function scoreboard(grades) {
   const hits = grades.map((g) => g.inRange80).filter((x) => typeof x === 'boolean');
   // BRO-7357: v1 vs v2 on the same shows; the Show Score-only subset compares v1 and v2 from the same ledger row.
   const ss = grades.filter((g) => g.v2UsedShowScore);
+  // Clean = Broadway-specific Show Score page (flag false). Anything else fell back to v1, so it is counted, not compared.
+  const clean = ss.filter((g) => g.v2ShowScoreMixed === false);
+  const notClean = grades.filter((g) => g.v2ShowScoreMixed !== false);
   const avgOf = (rows, k) => { const v = rows.map((g) => g[k]).filter((x) => typeof x === 'number'); return v.length ? { n: v.length, mae: r1(RF.mean(v)) } : { n: 0, mae: null }; };
   return {
-    v2Shadow: { note: 'all = mixed information dates (v1 frozen the day before opening, v2 at opening minus 3); showScoreUsed compares both from the same row', all: { v1: avg('missForecast'), v2: avg('missForecastV2') }, showScoreUsed: { v1SameRow: avgOf(ss, 'missForecastV1SameRow'), v2: avgOf(ss, 'missForecastV2') } },
+    v2Shadow: { note: 'all = mixed information dates (v1 frozen the day before opening, v2 at opening minus 3); showScoreUsed compares both from the same row', all: { v1: avg('missForecast'), v2: avg('missForecastV2') }, showScoreUsed: { v1SameRow: avgOf(ss, 'missForecastV1SameRow'), v2: avgOf(ss, 'missForecastV2') }, cleanPage: { v1SameRow: avgOf(clean, 'missForecastV1SameRow'), v2: avgOf(clean, 'missForecastV2') }, mixedOrUnknownPage: { shows: notClean.length, v1: avgOf(notClean, 'missForecast') } },
     shows: grades.length,
     forecast: avg('missForecast'), categoryMean: avg('missCategoryMean'), previewAudience: avg('missPreviewAudience'),
     range80HitRate: hits.length ? Math.round((hits.filter(Boolean).length / hits.length) * 100) / 100 : null,

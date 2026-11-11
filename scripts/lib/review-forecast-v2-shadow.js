@@ -27,13 +27,27 @@ const clamp = (v) => Math.max(0, Math.min(100, v));
 const r1 = (x) => Math.round(x * 10) / 10;
 
 /** Keys of the v2 object (the privacy guard derives its field list from this). */
-const V2_KEYS = ['forecast', 'forecastRaw', 'lo80', 'hi80', 'inputsPresent', 'modelVersion', 'showScore', 'fallbackReason'];
+const V2_KEYS = ['forecast', 'forecastRaw', 'lo80', 'hi80', 'inputsPresent', 'modelVersion', 'showScore', 'fallbackReason', 'showScoreMixedProductions'];
+
+/**
+ * showScoreMixedProductions: can the live Show Score page aggregate include an EARLIER production's reviews?
+ * The v2 model was fit on member reviews dated from 14 days before first preview (earlier-run reviews excluded),
+ * so a shared page is a train/live mismatch. Evidence (BRO-7347 sweep, 249 shows): pages whose slug ends
+ * "-broadway" are Broadway-specific (3 of 114 had any earlier-run review, 1 material); other pages
+ * (shared with an Off-Broadway or West End run) had 44 of 135, 22 with earlier reviews >= 20% of the total.
+ * Returns false (Broadway-specific page) or 'unknown' (shared page possible, or no page mapped). Never true:
+ * nothing at record time proves a mixture, and v2 falls back to v1 for anything that is not false.
+ */
+function showScoreMixedProductions(pageUrl) {
+  return typeof pageUrl === 'string' && /\/[^/?#]+-broadway\/?$/.test(pageUrl) ? false : 'unknown';
+}
 
 /**
  * showScore = { score, count, capturedAt:'YYYY-MM-DD' } or null. v1 = { forecast, forecastRaw, lo80, hi80 }.
  * recordedAt = the ledger day. Returns the v2 object stored on the row.
  */
-function buildV2Shadow({ features, v1, showScore, openingDate, recordedAt }) {
+function buildV2Shadow({ features, v1, showScore, openingDate, recordedAt, pageUrl = null }) {
+  const mixed = showScoreMixedProductions(pageUrl);
   const cutoff = RF.toDay(openingDate) - RF.LAG_DAYS;
   const rec = RF.toDay(recordedAt);
   const cap = showScore && showScore.capturedAt ? RF.toDay(showScore.capturedAt) : null;
@@ -42,8 +56,9 @@ function buildV2Shadow({ features, v1, showScore, openingDate, recordedAt }) {
   else if (cap == null) reason = 'Show Score capture date missing';
   else if (rec == null || rec > cutoff) reason = 'recorded after opening minus 3 days';
   else if (cap > cutoff) reason = 'Show Score capture after opening minus 3 days';
+  else if (mixed !== false) reason = 'Show Score page is not Broadway-specific, earlier productions may be mixed in (model trained without them)';
   if (reason) {
-    return { forecast: v1.forecast, forecastRaw: v1.forecastRaw, lo80: v1.lo80, hi80: v1.hi80, inputsPresent: ['v1'], modelVersion: MODEL_VERSION, showScore: null, fallbackReason: reason };
+    return { forecast: v1.forecast, forecastRaw: v1.forecastRaw, lo80: v1.lo80, hi80: v1.hi80, inputsPresent: ['v1'], modelVersion: MODEL_VERSION, showScore: null, fallbackReason: reason, showScoreMixedProductions: mixed };
   }
   const n = Math.min(showScore.count, TRAIN_COUNT_MAX);
   const shrunk = (n * showScore.score + SHRINK_K * SHRINK_CENTER) / (n + SHRINK_K);
@@ -51,7 +66,7 @@ function buildV2Shadow({ features, v1, showScore, openingDate, recordedAt }) {
   const p = clamp(features.mu + RF.predictRidge(MODEL.model, x));
   return {
     forecast: Math.round(p), forecastRaw: r1(p), lo80: Math.round(clamp(p + MODEL.residualQ10)), hi80: Math.round(clamp(p + MODEL.residualQ90)),
-    inputsPresent: ['v1', 'showScore'], modelVersion: MODEL_VERSION, fallbackReason: null,
+    inputsPresent: ['v1', 'showScore'], modelVersion: MODEL_VERSION, fallbackReason: null, showScoreMixedProductions: mixed,
     showScore: { score: showScore.score, count: showScore.count, capturedAt: showScore.capturedAt, countClamped: showScore.count > TRAIN_COUNT_MAX },
   };
 }
@@ -79,4 +94,4 @@ function frozenV2Row(rows, showId, openingDate) {
   return best;
 }
 
-module.exports = { MODEL_VERSION, TRAIN_COUNT_MAX, V2_KEYS, buildV2Shadow, showScoreInput, frozenV2Row };
+module.exports = { MODEL_VERSION, TRAIN_COUNT_MAX, V2_KEYS, showScoreMixedProductions, buildV2Shadow, showScoreInput, frozenV2Row };
