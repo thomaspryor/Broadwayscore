@@ -114,6 +114,10 @@ function isTourShow(show) {
   return !!show && (!!show.tourOf || show.category === 'tour' || show.market === 'tour');
 }
 
+function normVenue(v) {
+  return String(v || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+}
+
 function hasSameMarketTitleMatch(show, shows) {
   if (!show || !Array.isArray(shows)) return false;
   const targetTitle = (show.canonicalTitle || show.title || '').toLowerCase().trim();
@@ -128,6 +132,10 @@ function hasSameMarketTitleMatch(show, shows) {
     const t = (s.canonicalTitle || s.title || '').toLowerCase().trim();
     if (t !== targetTitle) return false;
     if ((s.category || s.market || null) !== targetMarket) return false;
+    // Regional productions are staged by independent companies in different
+    // cities: the same title elsewhere is a different production, not a
+    // revival of this one (BRO-7336). Only the same venue counts.
+    if (targetMarket === 'regional' && normVenue(s.venue) !== normVenue(show.venue)) return false;
     // Only an EARLIER production makes `show` a revival. A later sibling
     // (e.g. sacrilegious-2027 flagged isRevival, BRO-5439) is the revival;
     // this show is the original.
