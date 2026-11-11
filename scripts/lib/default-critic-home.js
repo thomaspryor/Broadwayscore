@@ -16,17 +16,18 @@
  */
 'use strict';
 
+const { makeOutletCanonicalizer } = require('./cross-outlet-triage');
+
 /**
  * @param {{outlets: Object<string,{defaultCritic?:string}>, _aliasIndex?: Object<string,string>}} registryDoc
  * @param {Array<{outletId:string, criticName:string}>} reviews
  * @returns {Array<{outletId:string, critic:string, elsewhere:Array<{outletId:string,n:number}>}>}
  */
 function findHomelessDefaultCritics(registryDoc, reviews) {
-  const idx = (registryDoc && registryDoc._aliasIndex) || {};
-  const canon = (id) => {
-    const hit = idx[String(id || '').toLowerCase()];
-    return typeof hit === 'string' && hit ? hit : id;
-  };
+  if (!registryDoc || typeof registryDoc.outlets !== 'object' || !Array.isArray(reviews) || !reviews.length) {
+    throw new Error('findHomelessDefaultCritics: registry.outlets and a non-empty reviews array are required (an empty corpus would pass silently)');
+  }
+  const canon = makeOutletCanonicalizer(registryDoc);
   const counts = new Map(); // critic -> Map(outlet -> n)
   for (const r of reviews || []) {
     if (!r || !r.criticName) continue;

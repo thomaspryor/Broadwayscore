@@ -2,8 +2,9 @@
 // BRO-7391 CLASS-GUARD for "cross-outlet attribution drift" (cards BRO-6860, BRO-6976, BRO-7038).
 // A registry defaultCritic the outlet has never published under is what makes
 // audit-cross-outlet-attributions.js mint false suspects (BRO-7038: Mark Kennedy at
-// news-tribune). Adding a NEW one must fail here, at registry-edit time, not as a
-// daily digest warning weeks later. The 6 below pre-date the guard (checked
+// news-tribune). Adding a NEW one fails this test in check-corpus-drift.yml (daily
+// + after every rebuild; non-blocking live-data lane, the corpus is not in test.yml),
+// instead of surfacing as a digest warning on individual rows weeks later. The 6 below pre-date the guard (checked
 // 2026-11-11, each already carries a multiAuthorNote or sole-source rationale);
 // shrink this list, never grow it. To add one deliberately, prove the critic
 // writes for that outlet and put the evidence in the registry row's note.
@@ -33,4 +34,9 @@ test('no new registry defaultCritic that the outlet has never published under', 
     .filter((h) => !KNOWN_HOMELESS.has(`${h.outletId}|${h.critic}`))
     .map((h) => `${h.outletId}|${h.critic} (publishes at ${h.elsewhere.slice(0, 3).map((e) => `${e.outletId}:${e.n}`).join(', ')})`);
   assert.deepStrictEqual(fresh, []);
+});
+
+test('allowlist has no stale entries (a fixed default must be removed from KNOWN_HOMELESS)', () => {
+  const live = new Set(findHomelessDefaultCritics(registry, reviews).map((h) => `${h.outletId}|${h.critic}`));
+  assert.deepStrictEqual([...KNOWN_HOMELESS].filter((k) => !live.has(k)), []);
 });

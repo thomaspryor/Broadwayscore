@@ -32,3 +32,8 @@ test('fixed registry (default removed) is clean', () => {
   const fixed = { outlets: { b: {} } };
   assert.deepStrictEqual(findHomelessDefaultCritics(fixed, [{ outletId: 'x', criticName: 'Bob' }]), []);
 });
+
+test('refuses an empty corpus or malformed registry instead of passing silently', () => {
+  assert.throws(() => findHomelessDefaultCritics(reg, []));
+  assert.throws(() => findHomelessDefaultCritics({}, [{ outletId: 'x', criticName: 'Bob' }]));
+});
