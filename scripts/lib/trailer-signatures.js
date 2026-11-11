@@ -289,6 +289,10 @@ function isTelegraphListing(seg) {
   // a listing, not prose: no full sentence inside it
   if (/[a-z]{2,}[.!?]["'”’]?\s+[A-Z][a-z]+ [a-z]+ [a-z]+/.test(seg)) return false;
   if (!(TELEGRAPH_OPENER_RE.test(seg) && TELEGRAPH_EVIDENCE_RE.test(seg) && TELEGRAPH_END_RE.test(seg))) return false;
+  // A run date alone is not enough ("In 1987, to Oct 18" is prose): a real
+  // listing also carries a box-office domain, a phone number, a London
+  // postcode or the closing "book tickets" link (third review, 2026-11-11).
+  if (!(TELEGRAPH_HARD_EVIDENCE_RE.test(seg) || /\bLondon\s+[A-Z]{1,2}\d{1,2}[A-Z]?\b|\bbook tickets$/.test(seg))) return false;
   // every later sentence must be listing too: an opener or a phone / domain
   const parts = seg.split(/(?<=[a-z0-9)])[.]\s+(?=[A-Z])/).slice(1);
   return parts.every((p) => TELEGRAPH_OPENER_RE.test(p) || TELEGRAPH_HARD_EVIDENCE_RE.test(p));

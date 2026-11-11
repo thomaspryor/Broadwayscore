@@ -158,6 +158,14 @@ test('The Telegraph: listing line + box-office promo are a trailer; a cut-off re
     const cut = BODY + frag + L;
     assert.notEqual(tier(cut, 'telegraph').contentTier, 'complete', frag);
   }
+  // third review: prose that ends on a date, with no domain/phone/postcode, is not a listing
+  for (const frag of [
+    ' In 1987, to Oct 18', ' When it played Stratford, until May 3', ' If the first half, to May 4',
+    ' At Christmas the run was extended until Jan 5', ' Until Oct 18, when the cast leaves in 2027',
+    ' Tickets: the show was sold out by 2019',
+  ]) {
+    assert.equal(T.stripTelegraphFooter(BODY + frag), BODY + frag, frag);
+  }
   const cutVenue =`${BODY.slice(0, -1)} and the lead brings a snarl\n\nNational Theatre, London SE1. Until Jun 6; nationaltheatre.org.uk`;
   assert.equal(T.stripTelegraphFooter(cutVenue), cutVenue);
   // classify-only: the saved text keeps the listing
