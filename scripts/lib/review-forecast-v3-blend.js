@@ -96,11 +96,11 @@ function assertNoLeakageV3(target, earlier) {
 
 /**
  * Walk-forward weight. rows = [{season, y, baseV1, baseV2, ec}] (carrying rows only). baseKind 'v1' | 'v2'.
- * Uses only rows of seasons before `season`; 0 when fewer than MIN_WEIGHT_ROWS. Ties go to the smaller weight.
+ * v2 base fits only rows where the audience input changed the base (baseV1 !== baseV2), matching live use. Uses only rows of seasons before `season`; 0 when fewer than MIN_WEIGHT_ROWS. Ties go to the smaller weight.
  */
 function chooseWeight(rows, season, baseKind) {
   const key = baseKind === 'v2' ? 'baseV2' : 'baseV1';
-  const use = rows.filter((r) => r.season < season && typeof r[key] === 'number' && typeof r.ec === 'number' && typeof r.y === 'number');
+  const use = rows.filter((r) => r.season < season && (baseKind !== 'v2' || r.baseV1 !== r.baseV2) && typeof r[key] === 'number' && typeof r.ec === 'number' && typeof r.y === 'number');
   if (use.length < MIN_WEIGHT_ROWS) return { weight: 0, n: use.length };
   let best = null;
   for (const w of GRID) {
@@ -125,6 +125,7 @@ function buildV3Shadow({ v2, earlier, weightRows, openingDate, recordedAt }) {
   });
   if (!earlier) return passthrough('no earlier-run score dated by the cutoff');
   if (rec == null || rec > cutoff) return passthrough('recorded after opening minus 3 days');
+  if (!weightRows || !weightRows.length) return passthrough('no weight rows available'); // weight 0 from missing data would dilute the graded set
   const { weight } = chooseWeight(weightRows || [], RF.seasonStartYear(openingDate), baseKind);
   const p = clamp((1 - weight) * v2.forecastRaw + weight * earlier.score);
   const delta = p - v2.forecastRaw;

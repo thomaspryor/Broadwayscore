@@ -40,7 +40,7 @@ test('origin labels', () => {
 });
 
 test('weight: 0 under 10 rows or when only later seasons exist; uses only earlier seasons; picks the best grid weight', () => {
-  const mk = (n, season) => Array.from({ length: n }, (_, i) => ({ season, y: 80, baseV1: 60, baseV2: 60, ec: 80, id: `r${season}-${i}` }));
+  const mk = (n, season) => Array.from({ length: n }, (_, i) => ({ season, y: 80, baseV1: 60, baseV2: 61, ec: 80, id: `r${season}-${i}` }));
   assert.equal(V3.chooseWeight(mk(9, 2020), 2021, 'v2').weight, 0);
   assert.equal(V3.chooseWeight(mk(20, 2022), 2021, 'v2').weight, 0); // later season is never used
   assert.equal(V3.chooseWeight(mk(20, 2020), 2021, 'v2').weight, 1); // ec is exact
@@ -48,8 +48,14 @@ test('weight: 0 under 10 rows or when only later seasons exist; uses only earlie
   const w = V3.chooseWeight(noisy, 2021, 'v1').weight; assert.ok(w >= 0 && w <= 1);
 });
 
+test('weight (v2 base) ignores rows where the audience input did not change the base', () => {
+  const same = Array.from({ length: 20 }, (_, i) => ({ season: 2020, y: 80, baseV1: 60, baseV2: 60, ec: 80, id: `s${i}` }));
+  assert.equal(V3.chooseWeight(same, 2021, 'v2').weight, 0);
+  assert.equal(V3.chooseWeight(same, 2021, 'v1').weight, 1);
+});
+
 test('buildV3Shadow: blends only with an earlier score and a record dated by opening minus 3 days; otherwise v3 = base', () => {
-  const rows = Array.from({ length: 20 }, (_, i) => ({ season: 2020, y: 80, baseV1: 60, baseV2: 60, ec: 80, id: `r${i}` }));
+  const rows = Array.from({ length: 20 }, (_, i) => ({ season: 2020, y: 80, baseV1: 60, baseV2: 61, ec: 80, id: `r${i}` }));
   const earlier = { n: 6, raw: 80, score: 80, source: 'web-compact', origin: 'out-of-town', ref: null, newest: '2025-01-01' };
   const a = V3.buildV3Shadow({ v2: v2ss, earlier, weightRows: rows, openingDate: '2026-11-19', recordedAt: '2026-11-10' });
   assert.equal(a.v3Applied, true); assert.equal(a.v3Weight, 1); assert.equal(a.v3Forecast, 80); assert.equal(a.v3Base, 'v2'); assert.equal(a.v3Origin, 'out-of-town');
@@ -61,7 +67,7 @@ test('buildV3Shadow: blends only with an earlier score and a record dated by ope
   const late = V3.buildV3Shadow({ v2: v2ss, earlier, weightRows: rows, openingDate: '2026-11-19', recordedAt: '2026-11-17' });
   assert.equal(late.v3Applied, false); assert.equal(late.v3Forecast, v2ss.forecast);
   const noRows = V3.buildV3Shadow({ v2: v2ss, earlier, weightRows: [], openingDate: '2026-11-19', recordedAt: '2026-11-10' });
-  assert.equal(noRows.v3Applied, true); assert.equal(noRows.v3Weight, 0); assert.equal(noRows.v3Forecast, v2ss.forecast);
+  assert.equal(noRows.v3Applied, false); assert.match(noRows.v3FallbackReason, /no weight rows/); assert.equal(noRows.v3Forecast, v2ss.forecast);
 });
 
 test('frozen v3 row: latest applied row at or before opening minus 3 days', () => {

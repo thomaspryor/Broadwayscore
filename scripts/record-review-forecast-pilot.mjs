@@ -96,12 +96,13 @@ for (const s of shows) {
 }
 const ctx = { pool, weeks, origins };
 // BRO-7382: v3 inputs. Own-record earlier-run reviews (same builder as the backtest) and the web-collected compact file; weight rows are historical walk-forward predictions.
-const jsonOr = (f, d) => { try { return J(f); } catch { return d; } };
+const jsonOr = (f, d) => { try { return J(f); } catch (e) { console.error(`WARN: ${f} unreadable (${e.message}), v3 runs without it tonight`); return d; } };
 const allReviews = jsonOr('data/reviews.json', { reviews: [] }).reviews;
 const reviewsByShow = V3.buildReviewsByShow(allReviews, byId);
 if (!reviewsByShow.size) console.error('WARN: data/reviews.json missing or empty, v3 has no own-record earlier-run scores tonight');
 const ctx3 = { pool, reviewsByShow, earlierRun: jsonOr('data/audit/review-forecast-v2-earlier-run-compact.json', { reviews: {} }).reviews, origins };
 const v3WeightRows = jsonOr('data/audit/review-forecast-v3-weight-rows.json', { rows: [] }).rows;
+if (!v3WeightRows.length) console.error('WARN: v3 weight rows empty, v3 is passthrough tonight');
 const targetOf = (s) => ({ id: s.id, title: s.title, openingDate: s.openingDate, category: s.category, type: s.type, isRevival: !!s.isRevival, venue: s.venue || null, people: RF.peopleOf(s.creativeTeam) });
 
 // Training rows: opened Broadway shows with a settled score, same rules as the backtest.
@@ -180,8 +181,9 @@ for (const s of shows) {
   // BRO-7382: v3 shadow, new field only. Earlier-run score dated by min(day before first preview, opening minus 3 days); no score means v3 = v2.
   const t3 = { id: s.id, title: s.title, openingDate: s.openingDate, previewsStartDate: s.previewsStartDate || null };
   const earlier = V3.earlierRunScore(t3, ctx3, f.mu);
-  if (earlier) V3.assertNoLeakageV3(t3, earlier);
-  const v3 = V3.buildV3Shadow({ v2, earlier, weightRows: v3WeightRows, openingDate: s.openingDate, recordedAt: TODAY });
+  let leak = null;
+  if (earlier) { try { V3.assertNoLeakageV3(t3, earlier); } catch (e) { leak = e.message; console.error('WARN: ' + leak); } } // a v3 problem must never drop the v1/v2 rows
+  const v3 = V3.buildV3Shadow({ v2, earlier: leak ? null : earlier, weightRows: v3WeightRows, openingDate: s.openingDate, recordedAt: TODAY });
   candidates.push({
     showId: s.id, recordedAt: TODAY, openingDate: s.openingDate, previewsStartDate: s.previewsStartDate || null, status: s.status,
     ...v1Part, categoryMean: Math.round(f.mu * 10) / 10,
