@@ -1,51 +1,23 @@
 {
-  "updatedAt": "2026-11-11T10:20:06.456Z",
-  "processed": 426,
-  "failed": 221,
+  "updatedAt": "2026-11-11T10:21:52.275Z",
+  "processed": 428,
+  "failed": 222,
   "successRate": "65.8%",
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 222,
     "amp": 0,
     "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 1,
-    "scrapingbee": 1,
-    "brightdata": 0,
+    "scrapingdog": 39,
+    "scrapingbee": 25,
+    "brightdata": 1,
     "archiveToday": 0,
     "archive": 1
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-11-11T06:30:41.546Z",
-      "event": "bb-session",
-      "session": "40c5cf14",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655533"
-    },
-    {
-      "t": "2026-11-11T06:30:41.864Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-11T07:33:55.166Z",
-      "event": "bb-session",
-      "session": "46912b5f",
-      "url": "https://deadline.com/2026/10/you-can-see-everything-clayface-box-office-12371686"
-    },
-    {
-      "t": "2026-11-11T07:35:15.491Z",
-      "event": "bb-session",
-      "session": "4d79670a",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
-    },
-    {
-      "t": "2026-11-11T07:35:15.828Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-11T07:38:57.269Z",
+      "t": "2026-11-11T06:27:31.459Z",
       "event": "bb-session",
       "session": "cd9d1255",
       "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655641"
@@ -124,6 +96,34 @@
     },
     {
       "t": "2026-11-11T10:19:05.211Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-11T10:15:26.470Z",
+      "event": "bb-session",
+      "session": "cf0bb7d9",
+      "url": "https://deadline.com/2026/10/you-can-see-everything-clayface-box-office-12371686"
+    },
+    {
+      "t": "2026-11-11T10:17:17.421Z",
+      "event": "bb-session",
+      "session": "cf7b17e8",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
+    },
+    {
+      "t": "2026-11-11T10:17:18.124Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-11-11T10:19:43.592Z",
+      "event": "bb-session",
+      "session": "c0bb989b",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
+    },
+    {
+      "t": "2026-11-11T10:19:44.234Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     }
