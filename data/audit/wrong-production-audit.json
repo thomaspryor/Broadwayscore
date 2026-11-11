@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-11T16:09:05.556Z",
+  "timestamp": "2026-11-11T16:33:10.590Z",
   "stats": {
-    "totalReviews": 81476,
-    "alreadyFlagged": 22250,
+    "totalReviews": 81520,
+    "alreadyFlagged": 22254,
     "dateGuardCatches": 218,
     "directorMismatch": 3629,
-    "tvFilmSignals": 2295,
+    "tvFilmSignals": 2296,
     "londonSignals": 3688,
     "offBroadwaySignals": 751,
     "yearMismatch": 369,
-    "noPublishDate": 8476
+    "noPublishDate": 8494
   },
   "findings": [
     {
@@ -10817,6 +10817,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "building-the-wall-off-broadway-2017",
+      "file": "amny--matt-windman.json",
+      "score": 80,
+      "publishDate": "2017-05-24",
+      "url": "http://www.amny.com/news/building-the-wall-review-immigrant-interrogation-drama-focuses-on-individuals-1.13661323",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hulu\""
         }
       ]
     },
