@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-11T04:15:13.506Z",
+  "timestamp": "2026-11-11T04:59:56.148Z",
   "stats": {
-    "totalReviews": 81372,
+    "totalReviews": 81373,
     "alreadyFlagged": 22236,
     "dateGuardCatches": 218,
-    "directorMismatch": 3618,
-    "tvFilmSignals": 2292,
-    "londonSignals": 3672,
+    "directorMismatch": 3619,
+    "tvFilmSignals": 2294,
+    "londonSignals": 3678,
     "offBroadwaySignals": 752,
     "yearMismatch": 368,
     "noPublishDate": 8443
@@ -10200,6 +10200,20 @@
       "score": 78,
       "publishDate": "2024-05-30",
       "url": "https://www.standard.co.uk/culture/theatre/boys-from-the-blackstuff-national-theatre-review-b1160984.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "boys-from-the-blackstuff-west-end-2024",
+      "file": "telegraph--mark-brown.json",
+      "score": 83,
+      "publishDate": null,
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/boys-from-the-black-stuff-royal-court-liverpool-review/?n=@",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -49576,6 +49590,25 @@
     },
     {
       "showId": "p-rn-play-west-end-2025",
+      "file": "telegraph--fiona-mountford.json",
+      "score": 53,
+      "publishDate": "November 14th, 2025",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/porn-play-royal-court-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "p-rn-play-west-end-2025",
       "file": "telegraph--unknown.json",
       "publishDate": "November 14th, 2025",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/porn-play-royal-court-review/",
@@ -56553,6 +56586,11 @@
       "publishDate": "2024-08-22",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/shifters-duke-of-yorks-theatre-review/",
       "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lynette linton\" from shifters-off-broadway-2026"
+        },
         {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
@@ -89924,6 +89962,19 @@
       ]
     },
     {
+      "showId": "anna-west-end-2019",
+      "file": "telegraph--dominic-cavendish.json",
+      "publishDate": null,
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/anna-review-national-theatre-ersatz-cold-war-thriller/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
       "showId": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026",
       "file": "lighting-and-sound-america--david-barbour.json",
       "score": 49,
@@ -101652,6 +101703,19 @@
       ]
     },
     {
+      "showId": "glass-kill-bluebeard-and-imp-west-end-2019",
+      "file": "telegraph--dominic-cavendish.json",
+      "publishDate": null,
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/glass-kill-bluebeard-imp-royal-court-review-not-quite-play-need/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "glorious-hope-mill-regional-2025",
       "file": "theatreandtonic--thomas.json",
       "score": 86,
@@ -107756,6 +107820,20 @@
       "score": 96,
       "publishDate": "2026-04-07",
       "url": "https://www.elementaltheatre.com/post/inter-alia-wyndham-s-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "lbc--johnny-jenkins.json",
+      "score": 91,
+      "publishDate": "2026-04-08",
+      "url": "https://www.lbc.co.uk/article/inter-alia-review-best-plays-ever-seen-5HjdXRZ_2/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -117351,6 +117429,20 @@
       "score": 82,
       "publishDate": "October 4th, 2023",
       "url": "https://www.standard.co.uk/culture/theatre/old-friends-gielgud-theatre-review-bernadette-peters-lea-salonga-into-the-woods-b1111218.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "old-friends-west-end-2023",
+      "file": "telegraph--helen-brown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/julia-mckenzie-miss-marple-stephen-sondheim-old-friends/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -129499,6 +129591,19 @@
       "score": 56,
       "publishDate": "2019-07-04",
       "url": "https://www.theguardian.com/stage/2019/jul/04/the-end-of-history-review-jack-thorne-john-tiffany-royal-court",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "the-end-of-history-west-end-2019",
+      "file": "telegraph--dominic-cavendish.json",
+      "publishDate": null,
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/end-history-royal-court-review-lesley-sharp-brilliant-political/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
