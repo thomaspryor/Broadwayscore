@@ -6441,6 +6441,18 @@ async function main() {
 
   const allResults = await computeCoreHealthResults(isCI);
 
+  // BRO-7308: daily production HTML versus the reference shipped by its build.
+  // The probe owns one deduplicated alert condition; do not re-route its findings
+  // through the generic digest as a second card. Local health checks stay offline.
+  if (isCI) {
+    try {
+      const parity = await require('./lib/prod-data-parity').runProbe({ alert: true });
+      if (parity.exitCode === 2) allResults.push({ name: 'Production page parity', status: 'warn', message: parity.error || `${parity.unavailable} pages unavailable` });
+    } catch (err) {
+      allResults.push({ name: 'Production page parity', status: 'warn', message: `Probe or alert routing failed: ${err.message}` });
+    }
+  }
+
   // Workflow run summary (last 24h) \u2014 fetched here, before the alerting block,
   // so repeat failures can be promoted into allResults and escalate like any
   // other check (subject line, consecutive-error days, auto-triage). CI-only:

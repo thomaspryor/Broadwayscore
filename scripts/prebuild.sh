@@ -71,6 +71,8 @@ node scripts/generate-blog-reviews-for-scoring.js
 # used by show pages in THIS build. Skipping this causes 0.1-0.9 pt drift
 # when rebuild workflows commit stale public JSONs between deploys. (~30s)
 node scripts/generate-mobile-show-details.js
+# Pin the page-parity reference to this build's canonical scores and review data.
+node scripts/lib/prod-data-parity.js --snapshot
 
 # Web Stats catalog (gitignored): a slim projection of mobile-shows.json, so it
 # runs on BOTH paths — here from the committed mobile-shows.json, and at the end
