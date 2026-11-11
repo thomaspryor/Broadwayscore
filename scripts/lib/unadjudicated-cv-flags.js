@@ -49,7 +49,8 @@ function isStuckCvPromotedNonReview(record) {
   if (!record || record.isNonReview !== true || !record.contentVerificationPromoted) return false;
   const cv = record.contentVerification;
   if (!cv || cv.articleType !== 'review' || (cv.articleTypeConfidence || cv.confidence) !== 'high') return false;
-  if (cv.wrongProduction === true || cv.isFilmTv === true || cv.wrongArticle === true) return false;
+  if (cv.wrongProduction === true || cv.isFilmTv === true || cv.wrongArticle === true || cv.clearRefusal) return false;
+  if (require('./approved-fix-flag').hasApprovedFlag(record, 'isNonReview')) return false;
   if (record.llmScore || record.humanReviewScore != null) return false;
   if (record.wrongProduction === true || record.wrongShow === true || record.isRoundupArticle === true) return false;
   if (record.duplicateOf || record.rejectedAt || record._locked === true) return false;

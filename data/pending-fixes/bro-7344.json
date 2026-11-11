@@ -10,7 +10,7 @@
   "plan": {
     "summary": "BRO-7344: clear 11 stale CV-promoted isNonReview flags on genuine reviews (read full text) and record Man to Man bestoftheatre as a roundup (part 1 of 2)",
     "steps": [
-      "BRO-7344: read the full stored text. The Stage review of A Small and Quiet Light at Chichester by Dave Fargnoli: evaluative throughout (\"Sombre, meandering, but nevertheless quietly inspiring\"), signed, full body. The CV \"wrongProduction\" note is a bare string with no boolean, and the url/venue/date match the show. Clears the stale CV-promoted non-review flag so the unscored pass can score it.",
+      "BRO-7344: read the full stored text. The Stage review of A Small and Quiet Light at Chichester by Dave Fargnoli: evaluative throughout (reads as an evaluative verdict), signed, full body. The CV \"wrongProduction\" note is a bare string with no boolean, and the url/venue/date match the show. Clears the stale CV-promoted non-review flag so the unscored pass can score it.",
       "Release the false CV-promoted non-review flag (BRO-7344)",
       "Clear the rejectionReason the CV promotion stamped (BRO-7344)",
       "BRO-7344: read the full stored text. The Stage review (url slug antigone-exits-review-chichester-festival-theatre-nina-segal) of the Chichester Antigone Exits production, evaluative (stilted staging, uneven cast, striking images). The CV flag came from the review body calling the play Antigone, not from a different production. Clears the stale CV-promoted non-review flag so the unscored pass can score it.",
@@ -25,7 +25,7 @@
       "BRO-7344: read the full stored text. London Box Office review (4/5, \"Review: EVERY BRILLIANT THING at @Sohoplace\") with critic assessment; CV called it a preview with no issues listed. Clears the stale CV-promoted non-review flag so the unscored pass can score it.",
       "Release the false CV-promoted non-review flag (BRO-7344)",
       "Clear the rejectionReason the CV promotion stamped (BRO-7344)",
-      "BRO-7344: read the full stored text. Cititour review of Kowalski after opening night (\"superbly flamboyant\", \"satisfying combination of drama and melodrama\"), evaluates cast, direction and design. Clears the stale CV-promoted non-review flag so the unscored pass can score it.",
+      "BRO-7344: read the full stored text. Cititour review of Kowalski after opening night (praises the performance and the drama in evaluative terms), evaluates cast, direction and design. Clears the stale CV-promoted non-review flag so the unscored pass can score it.",
       "Release the false CV-promoted non-review flag (BRO-7344)",
       "Clear the rejectionReason the CV promotion stamped (BRO-7344)",
       "BRO-7344: read the full stored text. TheaterMania review of Six Characters at the Claire Tow, evaluative; CV only noted a spliced film blurb at the end. Clears the stale CV-promoted non-review flag so the unscored pass can score it.",
@@ -43,7 +43,7 @@
         "field": "nonReviewManualClear",
         "oldValue": null,
         "newValue": true,
-        "description": "BRO-7344: read the full stored text. The Stage review of A Small and Quiet Light at Chichester by Dave Fargnoli: evaluative throughout (\"Sombre, meandering, but nevertheless quietly inspiring\"), signed, full body. The CV \"wrongProduction\" note is a bare string with no boolean, and the url/venue/date match the show. Clears the stale CV-promoted non-review flag so the unscored pass can score it."
+        "description": "BRO-7344: read the full stored text. The Stage review of A Small and Quiet Light at Chichester by Dave Fargnoli: evaluative throughout (reads as an evaluative verdict), signed, full body. The CV \"wrongProduction\" note is a bare string with no boolean, and the url/venue/date match the show. Clears the stale CV-promoted non-review flag so the unscored pass can score it."
       },
       {
         "type": "review-field-edit",
@@ -163,7 +163,7 @@
         "field": "nonReviewManualClear",
         "oldValue": null,
         "newValue": true,
-        "description": "BRO-7344: read the full stored text. Cititour review of Kowalski after opening night (\"superbly flamboyant\", \"satisfying combination of drama and melodrama\"), evaluates cast, direction and design. Clears the stale CV-promoted non-review flag so the unscored pass can score it."
+        "description": "BRO-7344: read the full stored text. Cititour review of Kowalski after opening night (praises the performance and the drama in evaluative terms), evaluates cast, direction and design. Clears the stale CV-promoted non-review flag so the unscored pass can score it."
       },
       {
         "type": "review-field-edit",
