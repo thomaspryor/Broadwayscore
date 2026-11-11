@@ -35,7 +35,7 @@ test('a lone copy in an empty dir runs and flags a stale-tree squash, exit 0', (
     assert.match(r.stdout, /^::warning::stale-tree revert: 4 of the 5 files/m);
     assert.match(r.stdout, /^stale_tree=fail$/m);
   } finally {
-    fs.rmSync(lone, { recursive: true, force: true });
-    fs.rmSync(repo, { recursive: true, force: true });
+    fs.rmSync(lone, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+    fs.rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
