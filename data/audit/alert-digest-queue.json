@@ -794,6 +794,20 @@
     "queuedAt": "2026-11-11T21:24:27.088Z"
   },
   {
+    "conditionKey": "review-gap:opening-window:cloud-9-national-west-end-2026",
+    "title": "Review gap — \"Cloud 9 National\" missing 5 cited review(s)",
+    "description": "Cloud 9 National (cloud-9-national-west-end-2026): 5 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=cloud-9-national-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-11T22:02:12.294Z"
+  },
+  {
     "conditionKey": "opening-night-placeholder-synopsis-cloud-9-national-west-end-2026",
     "title": "Placeholder synopsis on Cloud 9 National",
     "description": "synopsis for cloud-9-national-west-end-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
