@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-11T07:47:22.644Z",
+  "timestamp": "2026-11-11T08:55:25.805Z",
   "stats": {
-    "totalReviews": 81382,
+    "totalReviews": 81387,
     "alreadyFlagged": 22239,
     "dateGuardCatches": 218,
-    "directorMismatch": 3625,
+    "directorMismatch": 3628,
     "tvFilmSignals": 2295,
     "londonSignals": 3681,
     "offBroadwaySignals": 752,
     "yearMismatch": 369,
-    "noPublishDate": 8439
+    "noPublishDate": 8438
   },
   "findings": [
     {
@@ -7301,6 +7301,32 @@
     },
     {
       "showId": "back-to-the-future-tour-2024",
+      "file": "cleveland-plain-dealer--joey-morona.json",
+      "publishDate": "2024-06-17",
+      "url": "https://www.cleveland.com/entertainment/2024/06/back-to-the-future-the-musical-dazzles-in-north-american-tour-premiere-at-playhouse-square.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john rando\" from back-to-the-future-2023"
+        }
+      ]
+    },
+    {
+      "showId": "back-to-the-future-tour-2024",
+      "file": "clevescene--christine-howey.json",
+      "publishDate": "2024-06-20",
+      "url": "https://www.clevescene.com/arts/back-to-the-future-the-musical-will-mainly-make-you-want-to-watch-the-movie-instead-44564774",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john rando\" from back-to-the-future-2023"
+        }
+      ]
+    },
+    {
+      "showId": "back-to-the-future-tour-2024",
       "file": "fwtx--john-henry.json",
       "publishDate": "2026-03-23",
       "url": "https://fwtx.com/culture/back-to-the-future-musical-lands-at-bass-hall/",
@@ -7499,6 +7525,19 @@
       "score": 86,
       "publishDate": "2024-12-27",
       "url": "https://www.theshowreport.org/post/review-back-to-the-future-the-musical-segerstrom-center-for-the-arts",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john rando\" from back-to-the-future-2023"
+        }
+      ]
+    },
+    {
+      "showId": "back-to-the-future-tour-2024",
+      "file": "washingtoncitypaper--jared-strange.json",
+      "publishDate": "2024-07-30",
+      "url": "https://washingtoncitypaper.com/article/745072/back-to-the-future-the-musical-is-cinema-onstage-for-good-and-not-so-good/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
