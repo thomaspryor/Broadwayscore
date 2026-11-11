@@ -48,12 +48,14 @@ if (require.main === module && (!process.argv[2] || hasHelpFlag(process.argv.sli
 const ROOT = path.join(__dirname, '..');
 const OUT_DIR = path.join(ROOT, 'data', 'audit', 'fact-check');
 const GEMINI_MODEL = 'gemini-2.5-flash';
-const OPENAI_MODEL = 'gpt-5-mini';
+const { AUDIT_OPENAI: OPENAI_MODEL } = require('./lib/models');
+const { perTokenUsd } = require('./lib/research-cost');
 // USD. Gemini 2.5 Flash: $0.30/M in, $2.50/M out (thinking billed as output),
-// grounded prompt $0.035. gpt-5-mini: $0.25/M in, $2/M out, web search call $0.01.
+// grounded prompt $0.035. OpenAI rates + the $0.01 search-call fee come from
+// research-cost.js RATES for the model pinned in models.js (BRO-7339).
 const PRICE = {
   gemini: { in: 0.30e-6, out: 2.5e-6, grounded: 0.035 },
-  openai: { in: 0.25e-6, out: 2e-6, search: 0.01 },
+  openai: perTokenUsd(OPENAI_MODEL),
 };
 
 function arg(name, dflt) {

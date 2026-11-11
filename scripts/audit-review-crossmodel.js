@@ -35,10 +35,11 @@ const { isBroadwayCategory } = require('./lib/venue-classification');
 const ROOT = path.join(__dirname, '..');
 const OUT = path.join(ROOT, 'data', 'audit', 'crossmodel');
 const GEMINI_MODEL = 'gemini-2.5-flash';
-const OPENAI_MODEL = 'gpt-5-mini';
+const { AUDIT_OPENAI: OPENAI_MODEL } = require('./lib/models');
+const { perTokenUsd } = require('./lib/research-cost');
 const PRICE = {
   gemini: { in: 0.30e-6, out: 2.5e-6, grounded: 0.035 },
-  openai: { in: 0.25e-6, out: 2e-6 },
+  openai: perTokenUsd(OPENAI_MODEL),
 };
 const spend = { usd: 0, gemini: 0, openai: 0 };
 

@@ -299,7 +299,8 @@ jobs:
     # BRO-5769: 345->350 for the 1-min early-publish-date audit step (job-timeout-margin gate).
     # BRO-7131: 350->355 for the 5-min abandoned-review rescue step (job-timeout-margin gate).
     # BRO-7181: 355->365 for three --alert audit steps raised 1->3 min each (Linear calls; job-timeout-margin gate).
-    timeout-minutes: 365
+    # BRO-7339: 365->368 for the 3-min OpenAI shutdown audit step (job-timeout-margin gate).
+    timeout-minutes: 368
     permissions:
       contents: write
       issues: write
@@ -624,6 +625,21 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
         run: node scripts/audit-syndicated-critic-pairs.js --strict --alert
+
+      # BRO-7339: OpenAI posted a Dec 11, 2026 shutdown of gpt-5-mini and o3 (notice 2026-06-11) and nothing here knew.
+      # Diffs OpenAI's deprecations page against research-cost.js MODEL_SHUTDOWNS for model ids the repo uses.
+      # Advisory first (CLAUDE.md rule 19). --alert files one worker card per condition (scripts/lib/audit-alert.js,
+      # warning, 20h cooldown), clears it when clean; an unreadable page files input-missing and never clears the
+      # findings card. Hygiene rule (ad) keeps it so.
+      - name: OpenAI model shutdown audit
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 3
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/audit-openai-retirements.js --strict --alert
 
       # BRO-5510: dropped-by-wrong-twin reviews and stale-slot squatters on 2026+ shows (empty outlet slots only).
       # Advisory (CLAUDE.md rule 19): the script exits 0 unless --strict; continue-on-error keeps the job green.

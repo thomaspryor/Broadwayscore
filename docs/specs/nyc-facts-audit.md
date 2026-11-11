@@ -13,7 +13,7 @@ Cohort `nyc-facts` in the sourced fact-check harness (`scripts/fact-check-histor
 | ob-recent | 316 | other closed OB rows |
 | bway-recent | 169 | closed Broadway rows |
 
-Two checkers answer from the web without seeing the stored values: Gemini 2.5 Flash with Google grounding, and gpt-5-mini with OpenAI web search. Fields: theatre (house and stage), tier (Broadway / Off-Broadway / Off-Off), first preview, opening night, closing (including extensions), type, revival vs new, other NYC runs (transfers, moves, earlier runs). Every field where a checker disagreed with the store, or agreed only without a source, was adjudicated by hand from a fetched page. The adjudications are in `data/audit/fact-check/nyc-facts-adjudications.json` (33 entries, each with the URL used). Model confidence counted for nothing.
+Two checkers answer from the web without seeing the stored values: Gemini 2.5 Flash with Google grounding, and gpt-5.6-terra (models.js AUDIT_OPENAI; was gpt-5-mini, shut down 2026-12-11) with OpenAI web search. Fields: theatre (house and stage), tier (Broadway / Off-Broadway / Off-Off), first preview, opening night, closing (including extensions), type, revival vs new, other NYC runs (transfers, moves, earlier runs). Every field where a checker disagreed with the store, or agreed only without a source, was adjudicated by hand from a fetched page. The adjudications are in `data/audit/fact-check/nyc-facts-adjudications.json` (33 entries, each with the URL used). Model confidence counted for nothing.
 
 ## Pilot error rates (40 shows)
 

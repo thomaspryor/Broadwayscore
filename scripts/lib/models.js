@@ -61,5 +61,21 @@ module.exports = {
   // Social score posts (BRO-6959): Claude writes from the fact pool, GPT-5.5 fact-checks it.
   SOCIAL_WRITER: 'claude-opus-5-5',
   GPT55: 'gpt-5.5',
+  // Web-grounded OpenAI checker in the Gemini+OpenAI audit scripts
+  // (dual-model-client, audit-review-crossmodel, fact-check-historical-sample).
+  // BRO-7339: gpt-5-mini shuts down 2026-12-11; OpenAI names gpt-5.6-terra as the
+  // replacement. 10-show web-lookup bake-off (2026-11-11): terra matched
+  // gpt-5-mini's accuracy and answered "unknown" where gpt-5.6-luna made up a
+  // date and director, which is the failure an audit checker must not have.
+  // Rates for every id here live in research-cost.js RATES (one table).
+  AUDIT_OPENAI: 'gpt-5.6-terra',
+  // AEO visibility tracker (history.jsonl trend series). Its own pin, so a model
+  // change there is a deliberate trend break and never rides along with the audits.
+  // luna, not terra: it only counts mentions and tool-returned citations (no
+  // fabrication risk to a fact), and terra would take the weekly run from ~$2.5
+  // to ~$4.1, close to the $4.50 guard that skips the history write when hit.
+  AEO_OPENAI: 'gpt-5.6-luna',
+  // Deep-research dispatch choice replacing o3 (shuts down 2026-12-11).
+  DEEP_RESEARCH_OPENAI_PRO: 'gpt-5.6-sol',
   KIMI: 'moonshotai/kimi-k2.5',
 };

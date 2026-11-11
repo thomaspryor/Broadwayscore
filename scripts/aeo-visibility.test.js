@@ -29,7 +29,12 @@ a = lib.analyzeAnswer('Hamilton rocks.', [{ url: 'https://broadwayscorecard.com/
 assert.strictEqual(a.mentioned, true); assert.strictEqual(a.mentionedInText, false);
 
 // cost
-assert.ok(Math.abs(lib.costOf('openai', { input: 10000, output: 1000, searches: 3 }) - (0.0025 + 0.002 + 0.03)) < 1e-9);
+// BRO-7339: rates come from research-cost.js RATES for the AEO_OPENAI pin; derive, never hand-copy.
+const { AEO_OPENAI } = require('./lib/models');
+const { ratesFor, WEB_SEARCH_CALL_USD } = require('./lib/research-cost');
+const oa = ratesFor(AEO_OPENAI);
+assert.ok(oa.input < 10 && oa.output < 40, `${AEO_OPENAI} is unpriced (fallback rates)`);
+assert.ok(Math.abs(lib.costOf('openai', { input: 10000, output: 1000, searches: 3 }) - ((10000 * oa.input + 1000 * oa.output) / 1e6 + 3 * WEB_SEARCH_CALL_USD)) < 1e-9);
 assert.ok(Math.abs(lib.costOf('gemini', { input: 1000, output: 1000, searches: 1 }) - (0.0003 + 0.0025 + 0.035)) < 1e-9);
 
 (async () => {

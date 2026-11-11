@@ -85,9 +85,52 @@ describe('modelShutdownStatus', () => {
     };
     walk(scriptsDir);
     const names = Object.keys(MODEL_SHUTDOWNS).map(m => m.replace(/[.]/g, '\\.'));
-    const re = new RegExp(`\\bmodel\\s*[:=]\\s*['"\`](?:${names.join('|')})(?:-\\d{4}-\\d{2}-\\d{2})?['"\`]`);
+    const lit = `['"\`](?:${names.join('|')})(?:-\\d{4}-\\d{2}-\\d{2})?['"\`]`;
+    // BRO-7339: the first version matched only a lowercase `\bmodel` key, so
+    // `const OPENAI_MODEL = 'gpt-5-mini'` and `process.env.X || 'gpt-5-mini'`
+    // sailed past it for months. Case-insensitive, any `*model` name, plus `|| 'id'` fallbacks.
+    const re = new RegExp(`(?:\\b\\w*model\\s*[:=]\\s*|\\|\\|\\s*)${lit}`, 'i');
     const hits = files.filter(f => re.test(fs.readFileSync(f, 'utf8'))).map(f => path.relative(scriptsDir, f));
     assert.deepEqual(hits, [], `hardcoded retiring model in: ${hits.join(', ')}`);
     assert.ok(files.length > 100, 'scan found too few scripts');
+    // Workflows pass models too (dropdown options, --model=, shadow_model defaults).
+    const wfDir = fileURLToPath(new URL('../../.github/workflows/', import.meta.url));
+    const wfRe = new RegExp(`model.*${lit}|${lit}.*model`, 'i');
+    const wfHits = fs.readdirSync(wfDir).filter(n => /\.ya?ml$/.test(n))
+      .filter(n => fs.readFileSync(path.join(wfDir, n), 'utf8').split('\n').some(l => !/^\s*#/.test(l) && wfRe.test(l)));
+    assert.deepEqual(wfHits, [], `retiring model in workflow: ${wfHits.join(', ')}`);
+  });
+
+  // BRO-7339: gpt-5-mini and o3 shut down 2026-12-11 and were not in the table, so
+  // no guard could fire. Pin the 2026-06-11 notice, and the pins that replaced them.
+  it('registry holds the 2026-12-11 shutdowns; the replacement pins are live and priced', () => {
+    const { MODEL_SHUTDOWNS, RATES, ratesFor, perTokenUsd } = require('../../scripts/lib/research-cost');
+    const models = require('../../scripts/lib/models');
+    for (const m of ['gpt-5', 'gpt-5-mini', 'gpt-5-nano', 'gpt-5-pro', 'o3', 'o3-pro']) {
+      assert.equal(MODEL_SHUTDOWNS[m], '2026-12-11', `${m} missing from MODEL_SHUTDOWNS`);
+    }
+    for (const key of ['AUDIT_OPENAI', 'AEO_OPENAI', 'DEEP_RESEARCH_OPENAI_PRO']) {
+      const id = models[key];
+      assert.ok(id, `${key} missing from models.js`);
+      assert.equal(modelShutdownStatus(id, '1970-01-01').shutdown, null, `${key}=${id} has a shutdown date`);
+      assert.ok(RATES[id], `${key}=${id} has no RATES entry (would price at the fallback)`);
+    }
+    const t = perTokenUsd(models.AUDIT_OPENAI);
+    assert.equal(t.in, ratesFor(models.AUDIT_OPENAI).input / 1e6);
+    assert.equal(t.out, ratesFor(models.AUDIT_OPENAI).output / 1e6);
+    assert.equal(t.search, 0.01);
+  });
+
+  it('the audit client and the deep-research dropdown follow the models.js pins', async () => {
+    const fs = await import('node:fs');
+    const models = require('../../scripts/lib/models');
+    const { perTokenUsd } = require('../../scripts/lib/research-cost');
+    delete process.env.AUDIT_OPENAI_MODEL;
+    const client = require('../../scripts/lib/dual-model-client');
+    assert.equal(client.OPENAI_MODEL, models.AUDIT_OPENAI);
+    assert.deepEqual(perTokenUsd(client.OPENAI_MODEL), perTokenUsd(models.AUDIT_OPENAI));
+    const wf = fs.readFileSync(new URL('../../.github/workflows/deep-research-commercial.yml', import.meta.url), 'utf8');
+    const options = [...wf.matchAll(/^\s+- '([^']+)'$/gm)].map(m => m[1]);
+    assert.ok(options.includes(models.DEEP_RESEARCH_OPENAI_PRO), 'workflow must offer the models.js pro pin');
   });
 });

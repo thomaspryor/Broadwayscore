@@ -14,7 +14,7 @@ on:
         type: choice
         options:
           - 'gpt-5.4-mini'
-          - 'o3'
+          - 'gpt-5.6-sol'
         default: 'gpt-5.4-mini'
       budget:
         description: 'Max spend in dollars'

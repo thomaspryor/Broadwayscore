@@ -7,10 +7,13 @@ require('./llm-usage-install'); // spend meter before any client is built
  */
 
 const GEMINI_MODEL = process.env.AUDIT_GEMINI_MODEL || 'gemini-2.5-flash';
-const OPENAI_MODEL = process.env.AUDIT_OPENAI_MODEL || 'gpt-5-mini';
+const { AUDIT_OPENAI } = require('./models');
+const { perTokenUsd } = require('./research-cost');
+const OPENAI_MODEL = process.env.AUDIT_OPENAI_MODEL || AUDIT_OPENAI;
+// OpenAI rates come from research-cost.js RATES (one table, BRO-7339).
 const PRICE = {
   gemini: { in: 0.30e-6, out: 2.5e-6, grounded: 0.035 },
-  openai: { in: 0.25e-6, out: 2e-6, search: 0.01 },
+  openai: perTokenUsd(OPENAI_MODEL),
 };
 const spend = { usd: 0, gemini: 0, openai: 0, calls: 0, maxUsd: Infinity };
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));

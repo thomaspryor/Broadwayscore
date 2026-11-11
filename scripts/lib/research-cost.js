@@ -20,6 +20,11 @@ const RATES = {
   'gpt-5-mini': { input: 0.25, cached: 0.025, output: 2.00 },
   'gpt-5.4-mini': { input: 0.75, cached: 0.075, output: 4.50 },
   'gpt-5.4': { input: 2.50, cached: 0.25, output: 15.00 },
+  // GPT-5.6 family, checked 2026-11-11 (BRO-7339). Replacements OpenAI names for
+  // the 2026-12-11 shutdowns: gpt-5-mini->terra, o3/gpt-5/gpt-5-pro->sol, gpt-5-nano->luna.
+  'gpt-5.6-luna': { input: 0.20, cached: 0.02, output: 1.20 },
+  'gpt-5.6-terra': { input: 2.00, cached: 0.20, output: 12.00 },
+  'gpt-5.6-sol': { input: 4.00, cached: 0.40, output: 20.00 },
   // Shut down by OpenAI 2026-07-23; kept so old cost-log rows still price.
   'o4-mini-deep-research': { input: 2.00, cached: 0.50, output: 8.00 },
   'o3-deep-research': { input: 10.00, cached: 2.50, output: 40.00 },
@@ -37,6 +42,19 @@ function ratesFor(model) {
   // Dated snapshots (gpt-5.4-mini-2026-03-17) price like their alias.
   const alias = String(model || '').replace(/-\d{4}-\d{2}-\d{2}$/, '');
   return RATES[alias] || FALLBACK_RATES;
+}
+
+/**
+ * Per-token USD plus the per-search fee, from the one RATES table, for scripts
+ * that meter their own spend (dual-model-client, audit-review-crossmodel,
+ * fact-check-historical-sample, aeo-visibility). A model swap is then one line
+ * in models.js; unknown ids price at FALLBACK_RATES (never under-count).
+ * @param {string} model
+ * @returns {{in:number, out:number, search:number}}
+ */
+function perTokenUsd(model) {
+  const r = ratesFor(model);
+  return { in: r.input / 1e6, out: r.output / 1e6, search: WEB_SEARCH_CALL_USD };
 }
 
 /**
@@ -76,6 +94,35 @@ const MODEL_SHUTDOWNS = {
   'o3-mini': '2026-10-23',
   'o4-mini-deep-research': '2026-07-23',
   'o3-deep-research': '2026-07-23',
+  // 2026-06-11 notice (checked 2026-11-11, BRO-7339). The owner email of 2026-11
+  // read "5.5 / 5.4 mini / 5.4 nano / 5.5 pro", but the docs table lists these ids.
+  'gpt-5': '2026-12-11',
+  'gpt-5-mini': '2026-12-11',
+  'gpt-5-nano': '2026-12-11',
+  'gpt-5-pro': '2026-12-11',
+  'o3': '2026-12-11',
+  'o3-pro': '2026-12-11',
+  // 2026-10-01 notice.
+  'gpt-5.4-nano': '2027-04-01',
+  'gpt-5.1': '2027-04-01',
+  'gpt-5.3-codex': '2027-04-01',
+  // gpt-4o family (2027-01-14) is deliberately NOT listed yet: the scoring
+  // ensemble still runs on it (CLAUDE.md rule 13 A/B first), and listing it
+  // would fail the any-announced-shutdown guard in research-cost.test.mjs.
+};
+
+// Models the repo knowingly still uses past an announced shutdown, each waiting on a
+// migration that needs its own A/B (CLAUDE.md rule 13). Kept apart from MODEL_SHUTDOWNS
+// because that table feeds the any-announced-shutdown guard in research-cost.test.mjs;
+// scripts/audit-openai-retirements.js reads both, so the countdown is still tracked.
+const ACCEPTED_SHUTDOWNS = {
+  // BRO-7341: the review-scoring ensemble's OpenAI leg (models.js SCORING_OPENAI,
+  // COMPARATIVE_OPENAI, GPT4O, GPT4O_MINI). Moving it shifts scores corpus-wide, so it
+  // needs its own A/B (rule 13) and is not part of the BRO-7339 call-site sweep.
+  'gpt-4o': '2027-01-14',
+  'gpt-4o-mini': '2027-01-14',
+  'gpt-4.1': '2027-01-14',
+  'gpt-4.1-mini': '2027-01-14',
 };
 
 /**
@@ -92,4 +139,4 @@ function modelShutdownStatus(model, todayStr, warnDays = 30) {
   return { status: daysLeft <= 0 ? 'dead' : daysLeft <= warnDays ? 'warn' : 'ok', shutdown, daysLeft };
 }
 
-module.exports = { RATES, WEB_SEARCH_CALL_USD, MODEL_SHUTDOWNS, ratesFor, countSearchCalls, researchCallCost, modelShutdownStatus };
+module.exports = { RATES, WEB_SEARCH_CALL_USD, MODEL_SHUTDOWNS, ACCEPTED_SHUTDOWNS, ratesFor, perTokenUsd, countSearchCalls, researchCallCost, modelShutdownStatus };

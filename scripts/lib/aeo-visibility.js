@@ -119,8 +119,11 @@ function analyzeAnswer(rawText, citations) {
 }
 
 // ---- Cost (USD). Rates as of 2026-11; update here if pricing moves. ----
+// OpenAI rates come from research-cost.js RATES for the AEO_OPENAI pin in models.js (BRO-7339).
+const { AEO_OPENAI } = require('./models');
+const { ratesFor, WEB_SEARCH_CALL_USD } = require('./research-cost');
 const RATES = {
-  openai: { inPerM: 0.25, outPerM: 2.0, perSearch: 0.01 },   // gpt-5-mini + web_search tool ($10/1k calls)
+  openai: { inPerM: ratesFor(AEO_OPENAI).input, outPerM: ratesFor(AEO_OPENAI).output, perSearch: WEB_SEARCH_CALL_USD },
   gemini: { inPerM: 0.30, outPerM: 2.5, perPrompt: 0.035 },  // gemini-2.5-flash + grounding ($35/1k grounded prompts)
 };
 
@@ -132,7 +135,7 @@ function costOf(engine, usage) {
 }
 
 // ---- Engines: each returns { text, citations:[{url,title,domain}], usage:{input,output,searches} } ----
-async function runOpenAI(prompt, { fetchImpl = fetch, apiKey = process.env.OPENAI_API_KEY, model = 'gpt-5-mini' } = {}) {
+async function runOpenAI(prompt, { fetchImpl = fetch, apiKey = process.env.OPENAI_API_KEY, model = AEO_OPENAI } = {}) {
   const res = await fetchImpl('https://api.openai.com/v1/responses', {
     method: 'POST',
     signal: AbortSignal.timeout(120000),
@@ -212,7 +215,7 @@ async function runGemini(prompt, { fetchImpl = fetch, apiKey = process.env.GEMIN
 }
 
 const ENGINES = {
-  openai: { label: 'ChatGPT (gpt-5-mini + web_search)', key: 'OPENAI_API_KEY', run: runOpenAI },
+  openai: { label: `ChatGPT (${AEO_OPENAI} + web_search)`, key: 'OPENAI_API_KEY', run: runOpenAI },
   gemini: { label: 'Gemini (2.5-flash + Google Search)', key: 'GEMINI_API_KEY', run: runGemini },
 };
 

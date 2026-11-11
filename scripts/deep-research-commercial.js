@@ -17,7 +17,7 @@
  *   --all-tbd            Research all TBD + uncovered open Broadway shows
  *   --max-shows=N        Max shows per run (default 10)
  *   --budget=N           Max spend in dollars (default 15)
- *   --model=MODEL        gpt-5.4-mini (default), o4-mini (shut down 2026-10-23), o3
+ *   --model=MODEL        gpt-5.4-mini (default), or 'pro' for gpt-5.6-sol (replaces o3, shut down 2026-12-11)
  *   --dry-run            Preview without writing files
  *   --queue              Also consume data/commercial-research-queue.json
  *   --force              Reset attempt counter and re-research
@@ -101,11 +101,11 @@ const timeBudget = createRunBudget(TIME_BUDGET_MIN);
 const MIN_REMAINING_MS_TO_START = 10 * 60_000;
 
 // Model mapping: CLI shorthand -> actual API model name
+// BRO-7339: the o3 / o4-mini / *-deep-research aliases are gone (all shut down or
+// shutting down 2026-12-11); any other --model value passes through unchanged.
+const { DEEP_RESEARCH_OPENAI_PRO } = require('./lib/models');
 const MODEL_MAP = {
-  'o4-mini-deep': 'o4-mini-deep-research',
-  'o3-deep': 'o3-deep-research',
-  'o4-mini': 'o4-mini',
-  'o3': 'o3',
+  'pro': DEEP_RESEARCH_OPENAI_PRO,
 };
 // The ONE default model: workflows omit --model so a model retirement is a
 // one-line change here (BRO-4990). o4-mini-deep and o3-deep were shut down
