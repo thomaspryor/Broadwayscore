@@ -223,7 +223,7 @@ results.push(compare('Show Score secondary (b): floor rule, only moves down when
 results.push(compare('Show Score secondary (c): mean plus review count', [...V1, ...G.audience], null, 'secondary'));
 const X = EX.EXTRA_GROUPS;
 if (NIGHTLY_COMBINED) results.push(compare('Nightly-safe combined: panel + Show Score mean plus n (no earlier-run)', [...V1, ...X.panel, ...G.audience], null, 'combined'));
-// BRO-7357 (2): panel increment over Show Score ALONE, paired on the same rows and the same walk-forward. Report-only, not a test in the family above.
+// BRO-7357 (2): panel increment over Show Score ALONE, paired on the same rows and the same walk-forward. Report-only. The Bonferroni interval is shown for reference against the same N_PRIMARY_TESTS family the other combined forms use; the decision rule is the plain 95% CI.
 let panelIncrement = null;
 if (NIGHTLY_COMBINED) {
   const wSS = walk([...V1, ...G.audience]); const wCB = walk([...V1, ...X.panel, ...G.audience]);

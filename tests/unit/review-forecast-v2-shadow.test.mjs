@@ -65,11 +65,15 @@ test('showScoreInput reads audience-buzz and takes the capture date from lastUpd
 });
 
 test('frozenV2Row: latest showScore-using row at or before cutoff; fallback rows ignored', () => {
-  const mk = (d, used) => ({ showId: 'x', recordedAt: d, forecast: 70, v2: { inputsPresent: used ? ['v1', 'showScore'] : ['v1'], forecast: 72 } });
+  const mk = (d, used) => ({ showId: 'x', recordedAt: d, forecast: 70, v2: { inputsPresent: used ? ['v1', 'showScore'] : ['v1'], forecast: 72, showScoreMixedProductions: false } });
   const rows = [mk('2026-11-05', true), mk('2026-11-09', true), mk('2026-11-10', false), mk('2026-11-17', true)];
   assert.equal(S.frozenV2Row(rows, 'x', '2026-11-19').recordedAt, '2026-11-09');
   assert.equal(S.frozenV2Row(rows, 'y', '2026-11-19'), null);
   assert.equal(S.frozenV2Row([mk('2026-11-10', false)], 'x', '2026-11-19'), null);
+  // legacy row (no flag) or a non-clean flag is never frozen as a clean v2 forecast
+  const legacy = { ...mk('2026-11-09', true) }; delete legacy.v2.showScoreMixedProductions;
+  assert.equal(S.frozenV2Row([legacy], 'x', '2026-11-19'), null);
+  assert.equal(S.frozenV2Row([{ ...mk('2026-11-09', true), v2: { ...mk('2026-11-09', true).v2, showScoreMixedProductions: 'unknown' } }], 'x', '2026-11-19'), null);
 });
 
 test('grade row grades v2 beside v1 from the same ledger row', () => {
@@ -92,6 +96,7 @@ test('showScoreMixedProductions: -broadway page is false, shared or unmapped pag
   assert.equal(S.showScoreMixedProductions(BWAY + '/'), false);
   assert.equal(S.showScoreMixedProductions(SHARED), 'unknown');
   assert.equal(S.showScoreMixedProductions('https://www.show-score.com/broadway-shows/hangmen'), 'unknown');
+  assert.equal(S.showScoreMixedProductions('https://www.show-score.com/off-broadway-shows/some-kilted-king-of-broadway'), 'unknown');
   assert.equal(S.showScoreMixedProductions(null), 'unknown');
   assert.equal(S.showScoreMixedProductions(undefined), 'unknown');
 });
@@ -117,6 +122,8 @@ test('grade row carries the flag, and the scoreboard shows the clean page subset
   const sb = P.scoreboard([mk('a', false, true, 10, 4), mk('b', false, true, 6, 2), mk('c', 'unknown', false, 8, 8)]);
   assert.deepEqual(sb.v2Shadow.cleanPage, { v1SameRow: { n: 2, mae: 8 }, v2: { n: 2, mae: 3 } });
   assert.equal(sb.v2Shadow.mixedOrUnknownPage.shows, 1);
+  const sb2 = P.scoreboard([mk('a', false, true, 10, 4), mk('d', false, false, 5, 5)]);
+  assert.equal(sb2.v2Shadow.mixedOrUnknownPage.shows, 1, 'clean-page show whose v2 fell back is not in clean, so it is in the rest');
   assert.equal(sb.v2Shadow.mixedOrUnknownPage.v1.mae, 8);
   const frozen = { showId: 'x', recordedAt: '2026-11-09', openingDate: '2026-11-19', forecast: 70, lo80: 56, hi80: 82, v2: { inputsPresent: ['v1'], showScoreMixedProductions: 'unknown' } };
   const g = P.buildGradeRow({ showId: 'x', openingDate: '2026-11-19', today: '2026-12-25', frozen, criticScore: 80 });
