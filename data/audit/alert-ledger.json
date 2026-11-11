@@ -572,16 +572,15 @@
       "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
-      "title": "Review-gap audit refused to write — 25.9% of shows changed coverage state",
+      "title": "Review-gap audit refused to write — 25.0% of shows changed coverage state",
       "firstSeen": "2026-08-03T23:19:26.609Z",
       "incidentOpenedAt": "2026-11-07T16:40:54.348Z",
-      "lastSeen": "2026-11-09T21:35:25.354Z",
-      "lastNotifiedAt": "2026-11-09T19:32:25.628Z",
+      "lastSeen": "2026-11-11T01:41:07.299Z",
+      "lastNotifiedAt": "2026-11-11T01:41:07.299Z",
       "lastSurfacedAt": "2026-11-09T07:55:47.811Z",
-      "notifyCount": 88,
+      "notifyCount": 89,
       "cardId": null,
-      "linearIdentifier": "BRO-5516",
-      "silentRefires": 2
+      "linearIdentifier": "BRO-5516"
     },
     "health-check:Cron failed: Weekly Video Reviews": {
       "status": "resolved",
@@ -19486,7 +19485,7 @@
       "title": "Roundup gaps: 14 listed review(s) not captured across 3 show(s)",
       "firstSeen": "2026-10-16T17:15:04.341Z",
       "incidentOpenedAt": "2026-10-16T17:15:04.341Z",
-      "lastSeen": "2026-11-11T01:13:30.906Z",
+      "lastSeen": "2026-11-11T01:41:08.071Z",
       "lastNotifiedAt": "2026-11-10T20:25:27.119Z",
       "lastSurfacedAt": null,
       "notifyCount": 46,
@@ -37173,7 +37172,7 @@
       "title": "Missing review from a tracked outlet: king-lear-off-broadway-2026 — theatermania",
       "firstSeen": "2026-11-04T06:41:38.163Z",
       "incidentOpenedAt": "2026-11-04T06:41:38.163Z",
-      "lastSeen": "2026-11-11T01:16:35.487Z",
+      "lastSeen": "2026-11-11T01:44:52.108Z",
       "lastNotifiedAt": "2026-11-04T06:41:38.163Z",
       "lastSurfacedAt": "2026-11-04T06:41:38.163Z",
       "notifyCount": 1,
@@ -38539,7 +38538,7 @@
       "title": "Review gap — \"Othello (Bedlam)\" missing 2 cited review(s)",
       "firstSeen": "2026-11-07T15:26:56.754Z",
       "incidentOpenedAt": "2026-11-07T15:26:56.754Z",
-      "lastSeen": "2026-11-11T01:13:30.838Z",
+      "lastSeen": "2026-11-11T01:41:08.011Z",
       "lastNotifiedAt": "2026-11-10T07:34:48.647Z",
       "lastSurfacedAt": "2026-11-10T07:34:48.647Z",
       "notifyCount": 4,
@@ -41696,8 +41695,20 @@
       "lastSurfacedAt": "2026-11-11T00:39:19.356Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null,
-      "resolvedAt": "2026-11-11T01:27:30.875Z"
+      "linearIdentifier": null
+    },
+    "backstop:the-cottage-regional-2026/theatermania--unknown.json": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "T1/T2 review stuck >24h: The Cottage — theatermania",
+      "firstSeen": "2026-11-11T01:41:27.445Z",
+      "incidentOpenedAt": "2026-11-11T01:41:27.445Z",
+      "lastSeen": "2026-11-11T01:41:27.445Z",
+      "lastNotifiedAt": "2026-11-11T01:41:27.445Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-7340"
     }
   }
 }
