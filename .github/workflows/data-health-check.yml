@@ -2122,6 +2122,20 @@ jobs:
           REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
           REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
         run: node scripts/record-review-forecast-pilot.mjs --dir=/tmp/core-data-checkout/review-forecast-pilot --quiet
+      # BRO-7350: copy each upcoming show's frozen forecast into Supabase score_call_shows so "Predict the
+      # Score" can reveal it to a reader only after they save a prediction (the forecast is never in a public
+      # file). A step here, not its own job: it reads tonight's local ledger rows and the core data already
+      # checked out. Idempotent upserts. Counts only in the log (public): never print a row.
+      # Calls close at the opening-night time server-side, so a reviews_live flip is only an early close.
+      - name: Sync forecasts to Predict the Score (advisory)
+        if: vars.SCORE_CALL_SYNC_DISABLED != 'true'
+        # lint-allow-swallow: advisory (CLAUDE.md §19); a failed night leaves yesterday's forecast rows in place.
+        continue-on-error: true
+        timeout-minutes: 5
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: node scripts/sync-score-call-forecasts.mjs --dir=/tmp/core-data-checkout/review-forecast-pilot
       - name: Push pilot rows to the private core-data repo
         if: steps.record.outcome == 'success'
         # lint-allow-swallow: advisory pilot (CLAUDE.md §19).
