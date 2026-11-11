@@ -37,8 +37,8 @@ async function main() {
   const nowMs = Date.now();
   const buzz = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'audience-buzz.json'), 'utf8'));
   const lastWriteMs = newestRedditWriteMs(buzz);
-  const attemptsInWindow = countRedditAttempts(readRedditLedgerRows(), nowMs);
   const ledgerRows = readRedditLedgerRows();
+  const attemptsInWindow = countRedditAttempts(ledgerRows, nowMs);
   const v = redditStaleVerdict({ lastWriteMs, attemptsInWindow, nowMs });
   // BRO-7337: an outage must not wait 48h to be visible. Alerts when the scraper kept
   // calling Reddit since the last write and nothing was written.
