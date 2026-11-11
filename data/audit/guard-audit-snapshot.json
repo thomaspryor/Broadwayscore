@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-11T00:23:59.618Z",
+  "generatedAt": "2026-11-11T09:59:21.948Z",
   "window": {
     "since": "2026-11-05",
     "until": "2026-11-11"
@@ -12,7 +12,7 @@
     },
     {
       "title": "bd-circuit-breaker-web_unlocker2",
-      "detail": "OK: 2 trip day(s); rerouted spend on trip days $0.03 (207 rows) — 'bd-budget' also marks per-run budget skips · CAP DRIFT: ceiling 1750 (opening-window-reserve) < 1.5x 14-day median 2316"
+      "detail": "OK: 2 trip day(s); rerouted spend on trip days $0.03 (207 rows) — 'bd-budget' also marks per-run budget skips · CAP DRIFT: ceiling 1750 (opening-window-reserve) < 1.5x 14-day median 2262"
     },
     {
       "title": "sb-circuit-breaker",
@@ -56,7 +56,7 @@
         "source": "opening-window-reserve",
         "from": "trip-row",
         "currentZero": false,
-        "median14d": 634,
+        "median14d": 624,
         "drift": false,
         "note": null
       }
@@ -86,7 +86,7 @@
         "source": "opening-window-reserve",
         "from": "trip-row",
         "currentZero": false,
-        "median14d": 2316,
+        "median14d": 2262,
         "drift": true,
         "note": null
       }
@@ -109,11 +109,11 @@
         "caveat": null
       },
       "drift": {
-        "ceiling": 32507,
+        "ceiling": 30582,
         "source": "plan+opening-window-reserve+median-floor",
         "from": "state",
         "currentZero": false,
-        "median14d": 20942,
+        "median14d": 20388,
         "drift": false,
         "note": "not enforcing (shadow)"
       }
@@ -142,7 +142,7 @@
         "source": "plan+opening-window-reserve+median-floor",
         "from": "trip-row",
         "currentZero": false,
-        "median14d": 20942,
+        "median14d": 20388,
         "drift": false,
         "note": null
       }
@@ -165,11 +165,11 @@
         "caveat": null
       },
       "drift": {
-        "ceiling": 212862,
+        "ceiling": 221432,
         "source": "plan",
         "from": "state",
         "currentZero": false,
-        "median14d": 79849,
+        "median14d": 81991,
         "drift": false,
         "note": null
       }
