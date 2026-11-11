@@ -130,3 +130,16 @@ test('CLI fails open when gh errors: keeps every show, owns nothing', () => {
   assert.equal(runCli(['--active'], 'exit 1'), '');
   assert.equal(runCli(['a-2026'], 'echo not-json'), 'a-2026');
 });
+
+// BRO-7360: no dispatcher may start a market-less poller run (concurrency group
+// 'auto-discovery'), which overlaps the orchestrator's market-scoped runs on the
+// same shows. Every dispatch of opening-night-poller.yml passes show_id or market.
+test('update-show-status dispatches the poller per market, never market-less', () => {
+  const uss = fs.readFileSync(path.join(ROOT, '.github/workflows/update-show-status.yml'), 'utf8');
+  const at = uss.indexOf("workflow_id: 'opening-night-poller.yml'");
+  assert.ok(at > 0, 'fallback dispatch not found');
+  const block = uss.slice(uss.lastIndexOf('script: |', at), uss.indexOf('- name:', at));
+  assert.doesNotMatch(block, /inputs:\s*\{\s*\}/, 'market-less poller dispatch');
+  assert.match(block, /for \(const market of \['broadway', 'west-end'\]\)/);
+  assert.match(block, /inputs: \{ market \}/);
+});
