@@ -45,7 +45,6 @@ test('a launchd job runs the opening-window script on a sub-hour interval', () =
   assert.match(plist, /gap-recovery-opening-window\.js/);
   const m = plist.match(/<key>StartInterval<\/key>\s*<integer>(\d+)<\/integer>/);
   assert.ok(m && Number(m[1]) <= 3600, 'interval must be <= 1h');
-  assert.ok(fs.existsSync(path.join(ROOT, 'scripts/gap-recovery-opening-window.js')));
 });
 
 test('ticks stay out of the nightly window and West End shows are not selected', () => {

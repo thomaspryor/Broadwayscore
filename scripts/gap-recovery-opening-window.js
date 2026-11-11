@@ -44,4 +44,4 @@ function main() {
   return worst;
 }
 
-process.exit(main());
+require('./lib/exit-flushed').exitFlushed(main());
