@@ -74,6 +74,15 @@ for (const r of J('data/reviews.json').reviews) {
   if (!byCritic.has(key)) byCritic.set(key, []);
   byCritic.get(key).push({ day, score: r.assignedScore, type: s.type, weight: OT.getEffectiveWeight(r.outletId, { showCategory: s.category }), showId: r.showId });
 }
+// Show Score member reviews dated before opening (live paginated pages): shrunk mean toward 85 (k=10), review count
+const MEM_FILE = arg('members', path.join(ROOT, 'data/audit/review-forecast-v2-showscore-members.json'));
+let memRaw = null; const MEM_MIN = 5;
+if (fs.existsSync(MEM_FILE)) {
+  memRaw = JSON.parse(fs.readFileSync(MEM_FILE, 'utf8'));
+  for (const [id, m] of Object.entries(memRaw.shows || {})) {
+    if (m.preOpeningCount >= MEM_MIN && m.newestPreOpeningReview) audience[id] = { date: m.newestPreOpeningReview, score: (m.preOpeningCount * m.preOpeningMean + 10 * 85) / (m.preOpeningCount + 10), reviewCount: m.preOpeningCount };
+  }
+}
 const ctx = { pool, weeks, origins, poolById, castIndex, audience, awards, panel: { byCritic } };
 
 const targets = shows.filter((s) => poolById[s.id] && s.category === MARKET && poolById[s.id].rc >= FLOOR && (s.type === 'play' || s.type === 'musical')
@@ -163,7 +172,7 @@ results.push(compare('Preview signals (length, capacity/price/gross trend, gross
 results.push(compare('Cast + preview signals together', [...V1, ...G.cast, ...G.preview], null, 'primary'));
 results.push(compare('Cast, shows with an opening cast on file only', [...V1, ...G.cast], hasCast, 'primary-subset'));
 results.push(compare('Preview signals, shows with preview data only', [...V1, ...G.preview], hasPrev, 'primary-subset'));
-results.push(compare('Show Score audience score before opening (Wayback capture)', [...V1, ...G.audience], hasAud, 'primary-subset'));
+results.push(compare('Show Score audience score from member reviews dated before opening', [...V1, ...G.audience], hasAud, 'primary-subset'));
 const X = EX.EXTRA_GROUPS;
 const hasAw = (p) => p.has.awards; const hasPanel = (p) => p.has.panel;
 results.push(compare('Panel: per-critic forecasts with tier weights (all critics, then same type)', [...V1, ...X.panel], null, 'primary'));
@@ -200,6 +209,7 @@ const out = {
   baselineV1: { n: base.length, maeV1: r2(maeOf(base)), maeCategoryMean: r2(RF.mean(base.map((q) => Math.abs(q.y - q.base)))) },
   coverage: { evaluated: rows.length, withOpeningCast: rows.filter((r) => r.has.cast).length, withPreviewData: rows.filter((r) => r.has.preview).length, withAudienceCapture: rows.filter((r) => r.has.audience).length },
   leakage: { rowsChecked: prov.checked, perturbation: { checked: sampled, moved }, lagDays: RF.LAG_DAYS },
+  showScoreMembers: memRaw ? { showsTried: Object.keys(memRaw.shows).length, withFiveOrMorePreOpening: Object.keys(audience).filter((k) => memRaw.shows[k]).length, paidFetches: 0, directRequests: memRaw.directRequestsTotal || null } : null,
   wayback: audRaw ? { showsTried: Object.keys(audRaw.shows).length, withCaptureBeforeOpening: Object.values(audRaw.shows).filter((v) => (v.captureTimestampsBeforeOpening || []).length).length, parsed: Object.keys(audience).length, paidFetches: audRaw.paidFetches || 0 } : null,
   multipleComparisons: 'Three primary groups were declared in advance; per-feature rows are exploratory and uncorrected, so a lone exploratory "helps" would not count.',
   floor: { shows: floors.length, bootstrapMissCriticSampling: r2(floorBoot), ifFullPanelIsItselfADraw: r2(floorBoot * Math.SQRT2), method: 'resample each show\'s critics (one vote per outlet+critic, real tier weights), mean |resample - full|; the second number scales by sqrt(2) because the observed panel is itself one draw. Neither is a hard limit: it is the part of the miss no pre-opening input can remove.' },
