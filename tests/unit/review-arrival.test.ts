@@ -2,8 +2,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  windowCount, expectedFromCounts, expectedForShow, reviewArrivalPhase, splitRegularOutlets, buildReviewArrival,
-  arrivalWindowEndMs, pressNightEmbargoMs, arrivalText, ARRIVAL_WINDOW_HOURS, type ExpectedCount, type HistoryShow,
+  morningCount, expectedFromCounts, expectedForShow, reviewArrivalPhase, splitRegularOutlets, buildReviewArrival,
+  arrivalWindowEndMs, pressNightEmbargoMs, arrivalText, MORNING_SHARE, type ExpectedCount, type HistoryShow,
 } from '../../src/lib/review-arrival';
 
 const OPEN = '2026-11-15';
@@ -11,21 +11,26 @@ const exp = (expected: number): ExpectedCount => ({ expected, median: expected, 
 const at = (iso: string) => new Date(iso);
 const base = { openingDate: OPEN, category: 'broadway', expected: exp(30) };
 
-test('window is 72h after the press-night embargo', () => {
-  assert.equal(arrivalWindowEndMs(OPEN)! - pressNightEmbargoMs(OPEN)!, ARRIVAL_WINDOW_HOURS * 3600000);
+test('status ends at 9am ET the morning after opening, EST and EDT', () => {
+  assert.equal(new Date(arrivalWindowEndMs('2026-11-10')!).toISOString(), '2026-11-11T14:00:00.000Z'); // EST
+  assert.equal(new Date(arrivalWindowEndMs('2026-10-29')!).toISOString(), '2026-10-30T13:00:00.000Z'); // EDT
+  assert.equal(arrivalWindowEndMs(null), null);
 });
 
-test('windowCount keeps reviews up to 3 days after opening, drops later ones, keeps undated', () => {
-  assert.equal(windowCount(['2026-11-15', '2026-11-16', '2026-11-18', '2026-11-19', '2026-12-30', null], OPEN), 4);
+test('morningCount: share of reviews dated opening day or next day, ignores later and undated', () => {
+  const d = ['2026-11-15', '2026-11-15', '2026-11-16', '2026-11-16', '2026-11-18', '2026-12-30', null];
+  assert.equal(morningCount(d, OPEN), Math.round(4 * MORNING_SHARE));
+  assert.equal(morningCount(d, null), 0);
 });
 
-test('expectedFromCounts: median rounded to 5, ignores zeros, null with no history', () => {
+test('expectedFromCounts: conservative, 25th percentile rounded DOWN to 5, min 5, null with no history', () => {
   assert.equal(expectedFromCounts([]), null);
   assert.equal(expectedFromCounts([0, 0]), null);
-  const e = expectedFromCounts([19, 23, 27, 32, 33])!;
-  assert.equal(e.median, 27);
-  assert.equal(e.expected, 25);
-  assert.equal(e.n, 5);
+  const e = expectedFromCounts([18, 19, 22, 22, 24, 24, 26, 17, 5, 18])!;
+  assert.equal(e.low, 18);
+  assert.equal(e.expected, 15);
+  assert.equal(expectedFromCounts([3, 4, 6])!.expected, 5);
+  assert.ok(expectedFromCounts([30, 31, 32, 33])!.expected <= 30);
 });
 
 function h(id: string, openingDate: string, n: number, category = 'broadway'): HistoryShow {
@@ -40,7 +45,7 @@ test('expectedForShow uses only earlier Broadway openings, latest 10, never itse
   ];
   const e = expectedForShow({ id: 'self', category: 'broadway', openingDate: OPEN }, history)!;
   assert.equal(e.n, 10);
-  assert.ok(e.median >= 10 && e.median <= 40);
+  assert.ok(e.median >= 8 && e.median <= 35);
   assert.equal(expectedForShow({ id: 'x', category: 'off-broadway', openingDate: OPEN }, history), null);
 });
 
@@ -52,13 +57,15 @@ test('phase: hidden before opening-day noon, after the window, off-Broadway, wit
   assert.equal(reviewArrivalPhase({ ...i, now: at('2026-11-15T20:00:00Z'), expected: null }), null);
 });
 
-test('phase: waiting, below-minimum, early, nearly-complete, then settled (hidden)', () => {
+test('phase: waiting, below-minimum, early; hidden once the count reaches the estimate or 9am ET passes', () => {
   const now = at('2026-11-16T06:00:00Z');
   assert.equal(reviewArrivalPhase({ ...base, now, reviewCount: 0, scoreShowing: false }), 'waiting');
   assert.equal(reviewArrivalPhase({ ...base, now, reviewCount: 3, scoreShowing: false }), 'below-minimum');
   assert.equal(reviewArrivalPhase({ ...base, now, reviewCount: 8, scoreShowing: true }), 'early');
-  assert.equal(reviewArrivalPhase({ ...base, now, reviewCount: 24, scoreShowing: true }), 'nearly-complete');
-  assert.equal(reviewArrivalPhase({ ...base, now: at('2026-11-20T00:00:00Z'), reviewCount: 30, scoreShowing: true }), null);
+  assert.equal(reviewArrivalPhase({ ...base, now, reviewCount: 29, scoreShowing: true }), 'early');
+  assert.equal(reviewArrivalPhase({ ...base, now, reviewCount: 30, scoreShowing: true }), null);
+  assert.equal(reviewArrivalPhase({ ...base, now: at('2026-11-16T14:01:00Z'), reviewCount: 8, scoreShowing: true }), null);
+  assert.equal(reviewArrivalPhase({ ...base, now: at('2026-11-16T13:59:00Z'), reviewCount: 8, scoreShowing: true }), 'early');
 });
 
 test('splitRegularOutlets is case-insensitive and keeps order', () => {
@@ -69,7 +76,7 @@ test('splitRegularOutlets is case-insensitive and keeps order', () => {
 });
 
 test('buildReviewArrival returns null when hidden and a full payload when shown', () => {
-  assert.equal(buildReviewArrival({ ...base, now: at('2026-11-25T00:00:00Z'), reviewCount: 30, scoreShowing: true }), null);
+  assert.equal(buildReviewArrival({ ...base, now: at('2026-11-25T00:00:00Z'), reviewCount: 8, scoreShowing: true }), null);
   const a = buildReviewArrival({
     ...base, now: at('2026-11-16T06:00:00Z'), reviewCount: 8, scoreShowing: true,
     regular: [{ id: 'nytimes', name: 'NYT' }, { id: 'vulture', name: 'Vulture' }], haveOutletIds: ['nytimes'],
@@ -78,13 +85,12 @@ test('buildReviewArrival returns null when hidden and a full payload when shown'
   assert.equal(a.expected, 30);
   assert.equal(a.regularIn.length, 1);
   assert.equal(a.regularToCome[0].name, 'Vulture');
-  assert.ok(a.hoursLeft > 0 && a.hoursLeft < ARRIVAL_WINDOW_HOURS);
+  assert.ok(a.hoursLeft > 0 && a.hoursLeft < 12);
 });
 
-test('arrivalText: one short line in the owner wording, no em dash', () => {
-  assert.equal(arrivalText({ phase: 'waiting', reviewCount: 0, expected: 25 }), 'No reviews yet, expect ~25 total');
-  assert.equal(arrivalText({ phase: 'early', reviewCount: 8, expected: 25 }), '8 reviews so far, more coming in, expect ~25 total');
-  assert.equal(arrivalText({ phase: 'below-minimum', reviewCount: 1, expected: 25 }), '1 review so far, more coming in, expect ~25 total');
-  assert.equal(arrivalText({ phase: 'nearly-complete', reviewCount: 26, expected: 25 }), '26 reviews so far, a few more may land');
-  for (const t of [arrivalText({ phase: 'early', reviewCount: 8, expected: 25 })]) assert.ok(!t.includes('\u2014'));
+test('arrivalText: owner wording, no bar, no em dash', () => {
+  assert.equal(arrivalText({ phase: 'waiting', reviewCount: 0, expected: 20 }), 'Reviews tonight, expect about 20');
+  assert.equal(arrivalText({ phase: 'early', reviewCount: 8, expected: 20 }), '8 reviews so far, expect about 20');
+  assert.equal(arrivalText({ phase: 'below-minimum', reviewCount: 1, expected: 20 }), '1 review so far, expect about 20');
+  for (const t of [arrivalText({ phase: 'early', reviewCount: 8, expected: 20 })]) assert.ok(!t.includes('\u2014'));
 });

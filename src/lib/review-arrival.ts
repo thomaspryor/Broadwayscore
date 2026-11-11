@@ -10,10 +10,12 @@
  * clock could disagree with the server HTML).
  *
  * Where the numbers come from (never invented):
- *  - "about N expected": the median count of reviews that were live within
- *    ARRIVAL_WINDOW_HOURS of press night for the previous HISTORY_SIZE Broadway
- *    openings (reviews.json publish dates). scripts/review-arrival-accuracy.ts
- *    reports how far off that was on the last 10 openings.
+ *  - "expect about N": a CONSERVATIVE morning-after count. For each of the
+ *    previous HISTORY_SIZE Broadway openings, how many reviews were in by 9am ET
+ *    the morning after (see morningCount); N is the 25th percentile of those,
+ *    rounded down to 5. Low on purpose: the status must never promise more
+ *    than shows up (owner, BRO-7376 round 3). scripts/review-arrival-accuracy.ts
+ *    reports how often the real count fell short.
  *  - "regular outlets in / still to come": data/outlet-registry.json
  *    standingCoverage, the set of outlets that review nearly every Broadway
  *    opening (scripts/lib/standing-outlets.js). Hit rate is measured there.
@@ -23,22 +25,27 @@
  * Broadway only for now: the history that backs the count exists for Broadway.
  */
 
-export const ARRIVAL_WINDOW_HOURS = 72;
 export const HISTORY_SIZE = 10;
-/** nearly-complete once this share of the expected count is in */
-export const NEARLY_COMPLETE_RATIO = 0.8;
+/** The status ends at this Eastern hour the morning after opening, if the count has not reached the estimate first. */
+export const ARRIVAL_END_ET_HOUR = 9;
+/**
+ * reviews.json publish dates are date-only, so "in by 9am ET the morning after"
+ * is estimated as this share of the reviews dated opening day or the next day.
+ * Measured on the 4 Broadway openings that have real go-live timestamps
+ * (data/audit/press-night): 0.85, 0.95, 0.79, 0.87, mean 0.865.
+ */
+export const MORNING_SHARE = 0.865;
 
 const HOUR_MS = 3600000;
 const DAY_MS = 86400000;
 // Press-night reviews drop about 10pm Eastern on the opening date, which is
-// 02:00Z (EDT) or 03:00Z (EST) the next UTC day. Use the later one so the
-// window never closes early.
+// 02:00Z (EDT) or 03:00Z (EST) the next UTC day. Use the later one.
 const EMBARGO_OFFSET_MS = DAY_MS + 3 * HOUR_MS;
 // The status appears on the afternoon of opening day, before the embargo, so
 // "opening night, reviews expected tonight" can show.
 const START_OFFSET_MS = 12 * HOUR_MS;
 
-export type ArrivalPhase = 'waiting' | 'below-minimum' | 'early' | 'nearly-complete';
+export type ArrivalPhase = 'waiting' | 'below-minimum' | 'early';
 
 export interface HistoryShow {
   id: string;
@@ -49,7 +56,7 @@ export interface HistoryShow {
 }
 
 export interface ExpectedCount {
-  /** median, rounded to the nearest 5 for display ("about 30") */
+  /** conservative: 25th percentile of the morning-after counts, rounded DOWN to 5 ("expect about 15") */
   expected: number;
   /** unrounded median */
   median: number;
@@ -71,26 +78,27 @@ export function pressNightEmbargoMs(openingDate: string | null | undefined): num
   return ms == null ? null : ms + EMBARGO_OFFSET_MS;
 }
 
-/** When the status stops showing, epoch ms. */
+/** 9am Eastern the morning after opening (DST-aware), epoch ms. The status ends here at the latest. */
 export function arrivalWindowEndMs(openingDate: string | null | undefined): number | null {
-  const e = pressNightEmbargoMs(openingDate);
-  return e == null ? null : e + ARRIVAL_WINDOW_HOURS * HOUR_MS;
+  const ms = dateMs(openingDate);
+  if (ms == null) return null;
+  const guess = ms + DAY_MS + 13 * HOUR_MS; // 9am EDT
+  const etHour = Number(new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', hour: 'numeric', hourCycle: 'h23' }).format(new Date(guess)));
+  return etHour === ARRIVAL_END_ET_HOUR ? guess : guess + HOUR_MS; // 9am EST is 14:00Z
 }
 
 /**
- * Reviews counted as "part of the opening wave": published no later than the
- * end of the arrival window (publish dates are date-only, so the cutoff is the
- * date 3 days after press night). A review with no date counts, since nothing
- * says it came later.
+ * Reviews in by 9am ET the morning after opening, estimated from date-only
+ * publish dates: MORNING_SHARE of those dated opening day or the next day.
  */
-export function windowCount(reviewDates: Array<string | null | undefined>, openingDate: string | null | undefined): number {
+export function morningCount(reviewDates: Array<string | null | undefined>, openingDate: string | null | undefined): number {
   const open = dateMs(openingDate);
-  if (open == null) return reviewDates.length;
-  const cutoff = open + (ARRIVAL_WINDOW_HOURS / 24) * DAY_MS;
-  return reviewDates.filter((d) => {
+  if (open == null) return 0;
+  const n = reviewDates.filter((d) => {
     const ms = dateMs(d);
-    return ms == null || ms <= cutoff;
+    return ms != null && ms >= open && ms <= open + DAY_MS;
   }).length;
+  return Math.round(n * MORNING_SHARE);
 }
 
 function quantile(sorted: number[], q: number): number {
@@ -99,13 +107,13 @@ function quantile(sorted: number[], q: number): number {
   return sorted[idx];
 }
 
-/** Median (and quartiles) of the opening-wave counts of past openings. null with no history. */
+/** Conservative estimate (25th percentile, rounded down to 5) from past morning-after counts. null with no history. */
 export function expectedFromCounts(counts: number[]): ExpectedCount | null {
   const c = counts.filter((n) => Number.isFinite(n) && n > 0).sort((a, b) => a - b);
   if (c.length === 0) return null;
   const mid = c.length % 2 ? c[(c.length - 1) / 2] : (c[c.length / 2 - 1] + c[c.length / 2]) / 2;
   return {
-    expected: Math.max(5, Math.round(mid / 5) * 5),
+    expected: Math.max(5, Math.floor(quantile(c, 0.25) / 5) * 5),
     median: mid,
     low: quantile(c, 0.25),
     high: quantile(c, 0.75),
@@ -129,7 +137,7 @@ export function expectedForShow(
     .filter((x): x is { h: HistoryShow; ms: number } => x.ms != null && x.ms < open)
     .sort((a, b) => b.ms - a.ms)
     .slice(0, HISTORY_SIZE);
-  return expectedFromCounts(prior.map(({ h }) => windowCount(h.reviewDates, h.openingDate)));
+  return expectedFromCounts(prior.map(({ h }) => morningCount(h.reviewDates, h.openingDate)));
 }
 
 export interface ArrivalInput {
@@ -153,9 +161,11 @@ export function reviewArrivalPhase(i: ArrivalInput): ArrivalPhase | null {
   if (open == null || end == null || !i.expected) return null;
   const t = i.now.getTime();
   if (t < open + START_OFFSET_MS || t > end) return null;
+  // Done: the count reached the estimate, so nothing implies more are owed.
+  if (i.reviewCount >= i.expected.expected) return null;
   if (i.reviewCount <= 0) return 'waiting';
   if (!i.scoreShowing) return 'below-minimum';
-  return i.reviewCount / i.expected.expected >= NEARLY_COMPLETE_RATIO ? 'nearly-complete' : 'early';
+  return 'early';
 }
 
 export interface OutletRef {
@@ -220,11 +230,9 @@ export function buildReviewArrival(
   };
 }
 
-/** The one status line shown with the Critic Score (owner wording, BRO-7376). */
+/** The one status line shown with the Critic Score (owner wording, BRO-7376 round 3). */
 export function arrivalText(a: Pick<ReviewArrival, 'phase' | 'reviewCount' | 'expected'>): string {
   const n = a.reviewCount;
-  if (a.phase === 'waiting') return `No reviews yet, expect ~${a.expected} total`;
-  const noun = n === 1 ? 'review' : 'reviews';
-  if (n >= a.expected) return `${n} ${noun} so far, a few more may land`;
-  return `${n} ${noun} so far, more coming in, expect ~${a.expected} total`;
+  if (a.phase === 'waiting') return `Reviews tonight, expect about ${a.expected}`;
+  return `${n} ${n === 1 ? 'review' : 'reviews'} so far, expect about ${a.expected}`;
 }

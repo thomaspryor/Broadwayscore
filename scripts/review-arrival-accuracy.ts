@@ -1,87 +1,79 @@
 /**
- * How good is the "about N reviews expected" number? (BRO-7376)
+ * How good is the "expect about N" number? (BRO-7376, round 3)
  *
- * For each of the last 10 Broadway openings, rebuild what the status would have
- * said with only the openings BEFORE it as history (src/lib/review-arrival.ts),
- * and compare with the reviews actually on file within the arrival window.
- * Also prints the regular-outlet hit rate and how much of the opening wave had
- * landed by each day after press night (reviews.json publish dates).
+ * For each of the last 40 Broadway openings, rebuild what the status would have
+ * said using only the 10 openings BEFORE it (src/lib/review-arrival.ts), and
+ * compare with the morning-after count (reviews in by 9am ET). Publish dates in
+ * reviews.json are date-only, so that count is a calibrated proxy (MORNING_SHARE).
+ * Also scores the old rule (median of the last 10 openings' 3-day totals) so the
+ * two can be compared.
  *
  *   npx tsx scripts/review-arrival-accuracy.ts [--json] [--asof=YYYY-MM-DD]
  */
 import fs from 'node:fs';
 import path from 'node:path';
-import { expectedForShow, windowCount, arrivalWindowEndMs, type HistoryShow } from '../src/lib/review-arrival';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { standingOutletIds } = require('./lib/standing-outlets');
+import { expectedForShow, morningCount, type HistoryShow } from '../src/lib/review-arrival';
 
 const root = path.join(__dirname, '..');
 const read = (p: string) => JSON.parse(fs.readFileSync(path.join(root, p), 'utf8'));
 const asofArg = process.argv.find((a) => a.startsWith('--asof='));
 const ASOF = asofArg ? Date.parse(asofArg.split('=')[1]) : Date.now();
 const json = process.argv.includes('--json');
+const N = 40;
 
 const showsRaw = read('data/shows.json');
 const shows: any[] = showsRaw.shows || showsRaw;
 const revRaw = read('data/reviews.json');
 const reviews: any[] = revRaw.reviews || revRaw;
-const registry = read('data/outlet-registry.json').outlets;
-const regular = new Set<string>(standingOutletIds(registry, 'broadway'));
-
 const byShow = new Map<string, any[]>();
-for (const r of reviews) (byShow.get(r.showId) || byShow.set(r.showId, []).get(r.showId)!).push(r);
+for (const r of reviews) {
+  if (r.wrongProduction || r.wrongShow || r.isRoundupArticle) continue;
+  (byShow.get(r.showId) || byShow.set(r.showId, []).get(r.showId)!).push(r);
+}
+const dates = (id: string) => (byShow.get(id) || []).map((r) => r.publishDate);
+const DAY = 86400000;
+const within3d = (id: string, open: string) => dates(id).filter((d) => d && Date.parse(String(d).slice(0, 10)) - Date.parse(open) <= 3 * DAY && Date.parse(String(d).slice(0, 10)) >= Date.parse(open)).length;
 
 const history: HistoryShow[] = shows
   .filter((s) => s.category === 'broadway' && s.openingDate)
-  .map((s) => ({ id: s.id, category: s.category, openingDate: s.openingDate, reviewDates: (byShow.get(s.id) || []).map((r) => r.publishDate) }));
+  .map((s) => ({ id: s.id, category: s.category, openingDate: s.openingDate, reviewDates: dates(s.id) }));
 
 const opened = shows
-  .filter((s) => s.category === 'broadway' && s.openingDate && Date.parse(s.openingDate) < ASOF && (byShow.get(s.id) || []).length > 0)
+  .filter((s) => s.category === 'broadway' && s.openingDate && Date.parse(s.openingDate) < ASOF - 5 * DAY && within3d(s.id, s.openingDate) >= 5)
   .sort((a, b) => (a.openingDate < b.openingDate ? 1 : -1))
-  .slice(0, 10);
+  .slice(0, N);
 
-const DAY = 86400000;
+const median = (v: number[]) => { const s = [...v].sort((a, b) => a - b); const m = s.length >> 1; return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2; };
+const r5 = (x: number) => Math.round(x / 5) * 5;
 const rows = opened.map((s) => {
-  const rs = byShow.get(s.id) || [];
-  const dates = rs.map((r) => r.publishDate);
-  const actual = windowCount(dates, s.openingDate);
-  const exp = expectedForShow(s, history);
-  const outs = new Set(rs.map((r) => String(r.outletId)));
-  const regIn = [...regular].filter((id) => outs.has(id)).length;
-  const end = arrivalWindowEndMs(s.openingDate)!;
-  return {
-    id: s.id, opened: s.openingDate, type: s.type, onFile: rs.length, actual,
-    expected: exp?.expected ?? null, range: exp ? [exp.low, exp.high] : null,
-    error: exp ? exp.expected - actual : null,
-    inRange: exp ? actual >= exp.low && actual <= exp.high : null,
-    regularIn: regIn, regularTotal: regular.size,
-    windowStillOpen: ASOF < end,
-  };
+  const actual = morningCount(dates(s.id), s.openingDate);
+  const total72 = within3d(s.id, s.openingDate);
+  const prior = history.filter((h) => h.id !== s.id && Date.parse(h.openingDate!) < Date.parse(s.openingDate) && h.reviewDates.length > 0)
+    .sort((a, b) => (a.openingDate! < b.openingDate! ? 1 : -1)).slice(0, 10);
+  const conservative = expectedForShow(s, history)?.expected ?? null;
+  const oldRule = prior.length ? Math.max(5, r5(median(prior.map((h) => within3d(h.id, h.openingDate!))))) : null;
+  return { id: s.id, opened: s.openingDate, morning: actual, total72, conservative, oldRule };
 });
-const scored = rows.filter((r) => r.error != null);
-const abs = scored.map((r) => Math.abs(r.error as number));
+const score = (key: 'conservative' | 'oldRule') => {
+  const r = rows.filter((x) => x[key] != null);
+  const miss = r.map((x) => Math.abs((x[key] as number) - x.morning));
+  return {
+    n: r.length,
+    meanMiss: +(miss.reduce((a, b) => a + b, 0) / Math.max(1, r.length)).toFixed(1),
+    fellShort: r.filter((x) => x.morning < (x[key] as number)).length,
+    shortBy3Plus: r.filter((x) => x.morning < (x[key] as number) - 2).length,
+    typicalEstimate: median(r.map((x) => x[key] as number)),
+  };
+};
 const summary = {
   openings: rows.length,
-  meanAbsError: +(abs.reduce((a, b) => a + b, 0) / Math.max(1, abs.length)).toFixed(1),
-  within5: scored.filter((r) => Math.abs(r.error as number) <= 5).length,
-  within20pct: scored.filter((r) => Math.abs(r.error as number) <= 0.2 * r.actual).length,
-  inQuartileRange: scored.filter((r) => r.inRange).length,
-  overCount: scored.filter((r) => (r.error as number) > 5).length,
-  underCount: scored.filter((r) => (r.error as number) < -5).length,
-  regularHits: rows.map((r) => r.regularIn),
+  medianMorningCount: median(rows.map((r) => r.morning)),
+  median72hTotal: median(rows.map((r) => r.total72)),
+  medianMorningShareOf72h: +median(rows.map((r) => r.morning / r.total72)).toFixed(2),
+  conservative: score('conservative'),
+  oldMedianRule: score('oldRule'),
 };
-// Share of each opening's on-file reviews by publish day after press night.
-const dayShare: Record<string, number> = {};
-let total = 0;
-for (const s of opened) for (const r of byShow.get(s.id) || []) {
-  if (!r.publishDate) continue;
-  const off = Math.round((Date.parse(String(r.publishDate).slice(0, 10)) - Date.parse(s.openingDate)) / DAY);
-  const k = off <= 0 ? 'day0' : off <= 1 ? 'day1' : off <= 3 ? 'day2-3' : 'later';
-  dayShare[k] = (dayShare[k] || 0) + 1; total++;
-}
-const shares = Object.fromEntries(Object.entries(dayShare).map(([k, v]) => [k, +(v / total * 100).toFixed(0)]));
-if (json) { console.log(JSON.stringify({ rows, summary, shares }, null, 1)); process.exit(0); }
-console.log('opened      show                                              onFile window expected(range)  err  regular/14  open?');
-for (const r of rows) console.log(`${r.opened}  ${r.id.padEnd(48)} ${String(r.onFile).padStart(5)} ${String(r.actual).padStart(6)} ${String(r.expected).padStart(8)} (${r.range?.join('-')})`.padEnd(100) + ` ${String(r.error).padStart(4)}  ${r.regularIn}/${r.regularTotal}  ${r.windowStillOpen ? 'window still open' : ''}`);
-console.log(JSON.stringify(summary));
-console.log('share of dated reviews by publish day after press night (%):', JSON.stringify(shares));
+if (json) { console.log(JSON.stringify({ rows, summary }, null, 1)); process.exit(0); }
+console.log('opened      show                                              morning  72h  conservative  oldRule');
+for (const r of rows) console.log(`${r.opened}  ${r.id.padEnd(48)} ${String(r.morning).padStart(6)} ${String(r.total72).padStart(4)} ${String(r.conservative).padStart(8)} ${String(r.oldRule).padStart(9)}`);
+console.log(JSON.stringify(summary, null, 1));

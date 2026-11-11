@@ -506,7 +506,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
   const reviewsSyncing = shouldShowReviewsSyncing(show);
   // Opening-night status, decided once on the server so ISR HTML and the clock agree (BRO-7376).
   const reviewArrival = getReviewArrival(show, reviewCount, !showTBD);
-  const reviewArrivalVariant = (['bar', 'ring', 'text'] as const).find((v) => v === process.env.REVIEW_ARRIVAL_VARIANT) ?? 'bar';
+  const reviewArrivalVariant = (['text', 'bar'] as const).find((v) => v === process.env.REVIEW_ARRIVAL_VARIANT) ?? 'text';
   const reviewsRemaining = showTBD && show.status !== 'previews' && show.status !== 'upcoming'
     ? reviewsRemainingForScore(reviewCount, show.category, tier1Count + tier2Count, isCuratedHistoricalShow)
     : 0;
