@@ -246,7 +246,7 @@ const TELEGRAPH_MONTH = '\\b(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|
 // with "Until"/"Tickets"/"Book" ("Until the final scene, the") is not a listing
 // (second review, 406b6a883f6).
 const TELEGRAPH_DATE = `(?:${TELEGRAPH_MONTH}\\s+\\d{1,2}|\\d{1,2}\\s+${TELEGRAPH_MONTH})`;
-const TELEGRAPH_OPENER_RE = new RegExp(`^(?:Until\\s+${TELEGRAPH_DATE}|Booking\\s+(?:to|until)\\s+${TELEGRAPH_DATE}|Book(?:ing)?\\s+tickets\\b|Tickets?(?::|\\s+\\d)|At\\s+[\\p{Lu}\\d]|(?!(?:Then|But|And|So|Yet|It|He|She|They|We|I|There|Here|Still|Even|Now)\\b)[\\p{Lu}\\d][\\w'’&.-]*(?:\\s+[\\w'’&.()-]+){0,6},\\s+(?:London\\s+(?:[A-Z]{1,2}\\d{1,2}[A-Z]?\\b|\\()|(?:to|until)\\s+${TELEGRAPH_DATE}))`, 'u');
+const TELEGRAPH_OPENER_RE = new RegExp(`^(?:Until\\s+${TELEGRAPH_DATE}|Booking\\s+(?:to|until)\\s+${TELEGRAPH_DATE}|Book(?:ing)?\\s+tickets\\b|Tickets?(?::|\\s+\\d)|At\\s+(?:the\\s+)?\\p{Lu}|(?!(?:Then|But|And|So|Yet|It|He|She|They|We|I|There|Here|Still|Even|Now)\\b)[\\p{Lu}\\d][\\w'’&.-]*(?:\\s+[\\w'’&.()-]+){0,6},\\s+(?:London\\s+(?:[A-Z]{1,2}\\d{1,2}[A-Z]?\\b|\\()|(?:to|until)\\s+${TELEGRAPH_DATE}))`, 'u');
 // later sentences of a listing ("... Tickets: 020 ...", "Purchase X tickets or call 0844 ...")
 const TELEGRAPH_HARD_EVIDENCE_RE = /\b[a-z0-9-]+\.(?:co\.uk|org\.uk|com|org|net|london|uk)\b|\b0\d{3,4}\s?\d{3}\s?\d{3,4}\b|^Then touring\b/;
 const TELEGRAPH_EVIDENCE_RE = new RegExp(`\\b(?:[Uu]ntil|to)\\s+(?:${TELEGRAPH_MONTH}\\s+\\d{1,2}|\\d{1,2}\\s+${TELEGRAPH_MONTH})|\\b[a-z0-9-]+\\.(?:co\\.uk|org\\.uk|com|org|net|london|uk)\\b|\\b0\\d{3,4}\\s?\\d{3}\\s?\\d{3,4}\\b|\\bTickets?:`);
@@ -290,9 +290,11 @@ function isTelegraphListing(seg) {
   if (/[a-z]{2,}[.!?]["'”’]?\s+[A-Z][a-z]+ [a-z]+ [a-z]+/.test(seg)) return false;
   if (!(TELEGRAPH_OPENER_RE.test(seg) && TELEGRAPH_EVIDENCE_RE.test(seg) && TELEGRAPH_END_RE.test(seg))) return false;
   // A run date alone is not enough ("In 1987, to Oct 18" is prose): a real
-  // listing also carries a box-office domain, a phone number, a London
-  // postcode or the closing "book tickets" link (third review, 2026-11-11).
-  if (!(TELEGRAPH_HARD_EVIDENCE_RE.test(seg) || /\bLondon\s+[A-Z]{1,2}\d{1,2}[A-Z]?\b|\bbook tickets$/.test(seg))) return false;
+  // listing also carries a box-office domain, a phone number or the closing
+  // "; book tickets" link (third review, 2026-11-11).
+  // "; book tickets" is the link text after a listing; bare "book tickets" and a
+  // postcode also occur in prose (fourth review), so neither counts alone.
+  if (!(TELEGRAPH_HARD_EVIDENCE_RE.test(seg) || /;\s*book tickets$/.test(seg))) return false;
   // every later sentence must be listing too: an opener or a phone / domain
   const parts = seg.split(/(?<=[a-z0-9)])[.]\s+(?=[A-Z])/).slice(1);
   return parts.every((p) => TELEGRAPH_OPENER_RE.test(p) || TELEGRAPH_HARD_EVIDENCE_RE.test(p));

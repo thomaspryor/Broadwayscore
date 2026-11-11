@@ -163,6 +163,10 @@ test('The Telegraph: listing line + box-office promo are a trailer; a cut-off re
     ' In 1987, to Oct 18', ' When it played Stratford, until May 3', ' If the first half, to May 4',
     ' At Christmas the run was extended until Jan 5', ' Until Oct 18, when the cast leaves in 2027',
     ' Tickets: the show was sold out by 2019',
+    // fourth review
+    ' At 86, McKellen is still playing eight shows a week until Oct 18, and those who cannot book tickets',
+    " At Wyndham's, where it runs until Oct 18, there is still just about time to book tickets",
+    ' At the Old Vic, until 18 October, the queue at the box office in London SE1',
   ]) {
     assert.equal(T.stripTelegraphFooter(BODY + frag), BODY + frag, frag);
   }
