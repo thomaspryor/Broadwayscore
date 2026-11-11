@@ -18,6 +18,7 @@
 const fs = require('fs');
 const path = require('path');
 const { fetchPage } = require('./lib/scraper');
+const { foldDiacritics } = require('./lib/title-match');
 const { archiveSnapshotFetchUrl } = require('./lib/archive-snapshot-url');
 
 const ROOT = path.resolve(__dirname, '..');
@@ -68,7 +69,7 @@ paid = state.paidFetches || 0;
     state.shows[id] = rec;
     if (!s) { rec.reason = 'unknown show'; save(); continue; }
     // stored url first; otherwise the two slugs Show Score uses (plain title, title + "-broadway"). Free lookups only.
-    const tslug = String(s.title || '').toLowerCase().replace(/&/g, 'and').replace(/['\u2019]/g, '-').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+    const tslug = foldDiacritics(String(s.title || '').toLowerCase()).replace(/&/g, 'and').replace(/['\u2019]/g, '-').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
     const cands = urls[id] ? [urls[id]] : [`https://www.show-score.com/broadway-shows/${tslug}`, `https://www.show-score.com/broadway-shows/${tslug}-broadway`];
     const open = s.openingDate.replace(/-/g, '');
     const seen = new Map(); // timestamp -> page url

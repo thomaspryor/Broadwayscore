@@ -133,6 +133,7 @@ function buildV2Features(target, ctx, opts = {}) {
     note('previews-start', target.id, target.previewsStartDate);
     has.preview = true;
   }
+  // Intentionally NOT isBroadwayCategory: Broadway proper only, as in v1 (grosses exist for no other lane)
   if (ctx.weeks && target.category === 'broadway') {
     const wk = Object.keys(ctx.weeks).filter((w) => toDay(w) < D && ctx.weeks[w][target.id]).sort().slice(-PREVIEW_WEEKS_TREND);
     const caps = []; const atps = []; const gross = [];
