@@ -173,7 +173,11 @@
     "wicked-2003/theatrely--kobi-kassal.json",
     "mamma-mia-west-end-2021/standard--jessie-thompson.json",
     "the-lion-king-1997/timeout--adam-feldman.json",
-    "chicago-1996/theater-pizzazz--sandi-durell.json"
+    "chicago-1996/theater-pizzazz--sandi-durell.json",
+    "julius-caesar-globe-off-west-end-2026/whatsonstage--tanyel-gumushan.json",
+    "cranford-off-west-end-2026/british-theatre--unknown.json",
+    "cloud-9-west-end-2026/london-box-office--stuart-king.json",
+    "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json"
   ],
   "failed": [
     "_superseded-misattributed/coal-country-off-broadway-2022--theatermania--hayley-levitt--1793619920718.json",
@@ -203,7 +207,6 @@
     "cloud-9-west-end-2026/times-uk--susannah-butter.json",
     "here-there-are-blueberries-2026/talkinbroadway--unknown.json",
     "the-visitors-off-broadway-2026/talkinbroadway--unknown.json",
-    "julius-caesar-globe-off-west-end-2026/whatsonstage--tanyel-gumushan.json",
     "222-a-ghost-story-off-broadway-2026/theatrely--kobi-kassal.json",
     "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json",
     "medea-off-broadway-2026/express-uk--neil-norman.json",
@@ -302,7 +305,14 @@
     "the-lion-king-1997/familyvacationcritic--unknown.json",
     "the-lion-king-1997/maryland-theatre-guide--susan-brall.json",
     "chicago-1996/nydailynews--howard-kissel.json",
-    "chicago-1996/newsday--linda-winer.json"
+    "chicago-1996/newsday--linda-winer.json",
+    "iphigenie-en-tauride-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "iphigenie-en-tauride-english-national-opera-west-end-2026/sunday-times--unknown.json",
+    "the-bridge-off-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "the-bridge-off-west-end-2026/theatreandtonic--emmie-newitt.json",
+    "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json",
+    "ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -408,7 +418,11 @@
       "wicked-west-end-2021/firstnightmagazine--unknown.json",
       "wicked-west-end-2021/stagedtheatre--karen-jemison.json",
       "wicked-west-end-2021/west-end-wilma--unknown.json",
-      "the-lion-king-1997/timeout--adam-feldman.json"
+      "the-lion-king-1997/timeout--adam-feldman.json",
+      "julius-caesar-globe-off-west-end-2026/whatsonstage--tanyel-gumushan.json",
+      "cranford-off-west-end-2026/british-theatre--unknown.json",
+      "cloud-9-west-end-2026/london-box-office--stuart-king.json",
+      "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -511,7 +525,7 @@
     ]
   },
   "startTime": "2026-11-10T23:31:59.134Z",
-  "lastProcessed": "chicago-1996/newsday--linda-winer.json",
+  "lastProcessed": "ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
   "log": [
     {
       "t": "2026-11-11T00:03:40.476Z",
@@ -659,6 +673,20 @@
       "t": "2026-11-11T01:30:32.679Z",
       "event": "bb-cookie-inject",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-11-11T01:44:38.435Z",
+      "event": "bb-session",
+      "session": "41d75362",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
+    },
+    {
+      "t": "2026-11-11T01:44:38.769Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
+  ],
+  "recoveredAfterFailure": [
+    "julius-caesar-globe-off-west-end-2026/whatsonstage--tanyel-gumushan.json"
   ]
 }
