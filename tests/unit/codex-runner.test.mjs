@@ -1878,15 +1878,26 @@ test('runnerHealth: runner errors on runs that stopped for disk are the lane ala
   // crashes outnumbered by the day's landings are noise (real 2026-11-11: 3 crashed beside 7 landed)
   const noisy = [run('2026-11-11T04:00:00Z', { done: 'BRO-1, BRO-2, BRO-3, BRO-4' }), run('2026-11-11T05:00:00Z', { done: 'BRO-5, BRO-6, BRO-7', crash: 'BRO-8, BRO-9, BRO-10' })];
   assert.equal(r.runnerHealth(noisy, now).status, 'pass');
-  // a disk stop does not hide a lock stop or a day that landed nothing
-  assert.equal(r.runnerHealth([run('2026-11-11T07:00:00Z', { crash: 'BRO-2', stop: 'only 0.0 GB of disk left (needs 3 GB to start a card)' })], now).status, 'error');
+  // exclusion scope = the lane alarm's: gha disk stops and crash-streak lines quoting a crash still count
+  const DISK = 'only 0.0 GB of disk left (needs 3 GB to start a card)';
+  const gha = (at, o) => ({ ...run(at, o), body: run(at, o).body.replace('(lane cloud)', '(slot 3) (lane gha)') });
+  assert.equal(r.runnerHealth([land, gha('2026-11-11T06:00:00Z', { crash: 'BRO-2', stop: DISK }), gha('2026-11-11T07:00:00Z', { crash: 'BRO-3', stop: DISK })], now).status, 'warn', 'gha disk stops are not the cloud alarm\'s');
+  assert.equal(r.runnerHealth([land, run('2026-11-11T06:00:00Z', { crash: 'BRO-2', stop: DISK })], now).status, 'pass', 'cloud disk stops in the window are the alarm\'s');
+  const quoted = '2 runner errors in a row (the last: error: failed to write object)';
+  assert.equal(r.runnerHealth([land, run('2026-11-11T06:00:00Z', { crash: 'BRO-2', stop: quoted }), run('2026-11-11T07:00:00Z', { crash: 'BRO-3', stop: quoted })], now).status, 'warn', 'a crash-streak line is not a disk stop');
+  // boundaries of crashed*2 >= landed
+  const mix = (l, c) => [run('2026-11-11T04:00:00Z', { done: Array.from({ length: l }, (_, i) => `BRO-${i + 1}`).join(', ') }), run('2026-11-11T05:00:00Z', { crash: Array.from({ length: c }, (_, i) => `BRO-${100 + i}`).join(', ') })];
+  assert.equal(r.runnerHealth(mix(4, 2), now).status, 'warn');
+  assert.equal(r.runnerHealth(mix(5, 2), now).status, 'pass');
+  assert.equal(r.runnerHealth(mix(10, 5), now).status, 'warn');
 });
 
 test('class guard (BRO-7356): the daily row and the lane alarm share one disk-stop regex', () => {
   const rootSrc = fs.readFileSync(new URL('../../scripts/lib/codex-runner.js', import.meta.url), 'utf8');
   const laneSrc = fs.readFileSync(new URL('../../scripts/lib/codex-lane-health.js', import.meta.url), 'utf8');
-  assert.ok(/DISK_STOP_RE\.test\(f\.stop/.test(rootSrc), 'runnerHealth classifies a disk stop with DISK_STOP_RE');
+  assert.ok(/runStoppedForDisk\(f\.stop\)/.test(rootSrc) && /function runStoppedForDisk[^}]*DISK_STOP_RE\.test/.test(rootSrc), 'runnerHealth classifies a disk stop through DISK_STOP_RE');
   assert.ok(/const DISK_STOP = DISK_STOP_RE;/.test(laneSrc), 'lane alarm uses the same regex, not its own copy');
+  assert.strictEqual(require('../../scripts/lib/codex-lane-health.js').DISK_STOP, r.DISK_STOP_RE);
   for (const s of ['only 0.0 GB of disk left (needs 3 GB to start a card)', 'out of disk: ENOSPC', 'No space left on device']) assert.ok(r.DISK_STOP_RE.test(s), s);
   assert.ok(!r.DISK_STOP_RE.test('3 Claude REJECTs in a row'));
 });
