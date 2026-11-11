@@ -1879,6 +1879,7 @@ function main() {
         // BRO-7331: the corrected-url refetch release the CV-promoted branch delegates to.
         && (baseline.isUrlCorrectedReverifiedReview?.toString() || '') === (working.isUrlCorrectedReverifiedReview?.toString() || '')
         && (baseline.isUrlCorrectedAwaitingFreshScore?.toString() || '') === (working.isUrlCorrectedAwaitingFreshScore?.toString() || '')
+        && (baseline.freshEnsembleScoreSinceCv?.toString() || '') === (working.freshEnsembleScoreSinceCv?.toString() || '')
         // BRO-6233: the CV wrongArticle routing decideInclusion replays, its
         // helpers, the mirror's high-confidence rule and the deferral.
         && (baseline.cvWrongArticlePromotion?.toString() || '') === (working.cvWrongArticlePromotion?.toString() || '')

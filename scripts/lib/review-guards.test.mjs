@@ -772,3 +772,13 @@ test('BRO-7331 round 2: the re-queue is limited to CV-promoted isNonReview files
   assert.equal(isUrlCorrectedAwaitingFreshScore(bro7331Fixture({ ...stale, _locked: true })), false);
   assert.equal(isUrlCorrectedAwaitingFreshScore(bro7331Fixture({ ...stale, humanReviewScore: 80 })), false);
 });
+
+test('BRO-7331 round 3: a fresh low-confidence ensemble score on the corrected page releases the CV-promoted exclusion for rebuild', () => {
+  const fresh = { llmScore: { score: 89, confidence: 'low' }, ensembleData: { claudeScore: 91, modelAgreement: 'All 3 models agree: Rave' }, llmMetadata: { scoredAt: '2026-11-11T02:28:02.120Z' } };
+  assert.equal(isNonReviewDemotedByFreshCV(bro7331Fixture(fresh)), true);
+  // Older than the CV, or no ensemble data: still held back from rebuild.
+  assert.equal(isNonReviewDemotedByFreshCV(bro7331Fixture({ ...fresh, llmMetadata: { scoredAt: '2026-10-25T10:00:00.000Z' } })), false);
+  assert.equal(isNonReviewDemotedByFreshCV(bro7331Fixture({ ...fresh, ensembleData: undefined })), false);
+  // Safeguards still win: no url correction keeps it excluded.
+  assert.equal(isNonReviewDemotedByFreshCV(bro7331Fixture({ ...fresh, urlCorrectedFrom: undefined })), false);
+});
