@@ -40,6 +40,7 @@ const { getMarketSearchKeyword } = require('./lib/market-label');
 const { todaytixMarket, todaytixSearchUrl, extractTodaytixShowLink, todaytixSerpQuery, todaytixShowUrl } = require('./lib/todaytix-market');
 const { unconfirmedArtReason } = require('./lib/unconfirmed-art-policy');
 const { normalizeMezzTitle, buildMezzIndex, pickMezzanineCandidate, theatrEligible, isRejectedImage, thumbnailFallbackAction, ibdbEligible, venuesMatch, buildVenueCityIndex, keepExistingImage, fileSourceUrls, recordFileSources, recordedSourceFor, imagePathOwner } = require('./lib/image-source-match');
+const { findContentOwner } = require('./lib/duplicate-images');
 const { isStrictGoogleShow, noArtOutcome, buildNoReliableArtMarker } = require('./lib/no-reliable-art');
 const { selectShowsToFetch, todaytixApiArtEligible } = require('./lib/image-fetch-selection');
 const { loadImageSources, saveImageSources } = require('./lib/image-sources-store');
@@ -2739,6 +2740,26 @@ function applyImages(show, images) {
     if (d.path && !wasStaged) {
       try { fs.unlinkSync(path.join(__dirname, '..', 'public', d.path)); } catch {}
     }
+  }
+  // BRO-7390 byte-level backstop: a fresh candidate whose bytes an unrelated
+  // show already serves (same stock/venue photo fetched under another URL) is
+  // refused here, not logged after the fact. The prior file stays when intact.
+  for (const format of ['hero', 'poster', 'thumbnail']) {
+    const p = safe[format];
+    if (typeof p !== 'string' || !p.startsWith('/images/')) continue;
+    const st = staged && staged[format] && staged[format].local === p ? staged[format] : null;
+    if (!st && p === before[format]) continue; // not touched by this fetch
+    let bytes = st ? st.bytes : null;
+    if (!bytes) { try { bytes = fs.readFileSync(path.join(__dirname, '..', 'public', p)); } catch { continue; } }
+    const owner = findContentOwner(show.id, bytes, allShowsForImageGuard, path.join(__dirname, '..', 'public'));
+    if (!owner) continue;
+    console.log(`   ✗ Refusing ${format} for ${show.id}: byte-identical to ${owner}'s art (${p})`);
+    const prior = before[format];
+    const wasStaged = discardStaged(staged, format);
+    if (wasStaged && fileSources) delete fileSources[format];
+    const priorIntact = typeof prior === 'string' && prior.startsWith('/images/') && (prior !== p || wasStaged);
+    safe[format] = priorIntact && keepExistingImage(show, format, sources) ? prior : null;
+    if (!wasStaged) { try { fs.unlinkSync(path.join(__dirname, '..', 'public', p)); } catch {} }
   }
   // Write surviving verified candidates, release the rest (BRO-179).
   if (staged) {

@@ -146,3 +146,27 @@ test('signatureShowImageFiles signatures real files once, skips non-/images/ pat
     fs.rmSync(dir, { recursive: true, force: true });
   }
 });
+
+// BRO-7390: write-time guard. The live-data test kept going red because the fetcher only audited after the write.
+test('findContentOwner refuses bytes an unrelated show already serves, allows related/same-title/different bytes', () => {
+  const { findContentOwner } = require('./duplicate-images.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7390-'));
+  const put = (id, bytes) => {
+    fs.mkdirSync(path.join(dir, 'images', 'shows', id), { recursive: true });
+    fs.writeFileSync(path.join(dir, 'images', 'shows', id, 'poster.webp'), bytes);
+    return `/images/shows/${id}/poster.webp`;
+  };
+  const venuePhoto = Buffer.from('venue-building-photo-bytes');
+  const shows = [
+    { id: 'hangman-regional-2026', title: 'Hangman', images: { poster: put('hangman-regional-2026', venuePhoto) } },
+    { id: 'other-show-2026', title: 'Other Show', images: { poster: put('other-show-2026', Buffer.from('different-art')) } },
+    { id: 'hangman-2019', title: 'Hangman (2019)', images: {} },
+    { id: 'dolls-house-2026', title: "A Doll's House", images: {} },
+  ];
+  const opts = { allowlist: [], sharedAllowlist: {} };
+  assert.equal(findContentOwner('dolls-house-2026', venuePhoto, shows, dir, opts), 'hangman-regional-2026');
+  assert.equal(findContentOwner('hangman-2019', venuePhoto, shows, dir, opts), null, 'same title is one show');
+  assert.equal(findContentOwner('dolls-house-2026', Buffer.from('fresh-art'), shows, dir, opts), null);
+  assert.equal(findContentOwner('hangman-regional-2026', venuePhoto, shows, dir, opts), null, 'own file is not a conflict');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
