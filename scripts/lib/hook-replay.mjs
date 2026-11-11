@@ -352,9 +352,13 @@ async function main(argv) {
   fs.writeFileSync(path.join(binDir, 'gh'), '#!/bin/sh\necho "gh disabled in hook replay" >&2\nexit 1\n', { mode: 0o755 });
   const started = Date.now();
   const report = { base: baseSha, head: headSha, dirty: dirtyInScope, scope: scopeDiff, transcripts: [] };
+  // Per-process worktree names: two replays at once must not check out over each other's trees.
+  const trees = [];
   try {
-    const baseTree = prepareTree(root, 'hook-replay-base', baseSha);
-    const headTree = prepareTree(root, 'hook-replay-head', headSha, { withDirtyFrom: cwd });
+    const baseTree = prepareTree(root, `hook-replay-base-${process.pid}`, baseSha);
+    trees.push(baseTree);
+    const headTree = prepareTree(root, `hook-replay-head-${process.pid}`, headSha, { withDirtyFrom: cwd });
+    trees.push(headTree);
     for (const [n, inp] of inputs.entries()) {
       const rows = inp.lines.map((l) => { try { return JSON.parse(l); } catch { return {}; } });
       let stops = stopPoints(rows);
@@ -369,6 +373,7 @@ async function main(argv) {
     }
   } finally {
     fs.rmSync(binDir, { recursive: true, force: true });
+    for (const t of trees) git(root, ['worktree', 'remove', '--force', t]);
   }
   report.secs = Math.round((Date.now() - started) / 1000);
   const stopsN = report.transcripts.reduce((s, t) => s + t.stops, 0);
