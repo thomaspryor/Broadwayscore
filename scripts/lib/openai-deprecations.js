@@ -84,11 +84,13 @@ function referencedModelIds(source) {
  * @param {Iterable<string>} p.referenced - base ids the repo uses
  * @param {string} p.today - YYYY-MM-DD
  * @param {number} [p.warnDays=60]
+ * @param {(id:string)=>string} [p.baseIdFn] - alias folding for another provider's snapshot style (BRO-7342)
  * @returns {{missing:object[], dateDrift:object[], soon:object[]}}
  *   missing: the repo uses it, the page schedules its shutdown, the registry is silent.
  *   dateDrift: registry date differs from the page. soon: shutdown still ahead and within warnDays.
  */
-function driftReport({ page, registry, referenced, today, warnDays = 60 }) {
+function driftReport({ page, registry, referenced, today, warnDays = 60, baseIdFn = baseId }) {
+  const baseId = baseIdFn;
   const refs = new Set([...referenced].map(baseId));
   // An alias row (gpt-4o) is exact. A dated snapshot row (gpt-4o-2024-05-13) says
   // nothing about the alias until every snapshot is gone, so snapshot dates fold into
