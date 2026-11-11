@@ -21,6 +21,7 @@ const path = require('path');
 const crypto = require('crypto');
 const os = require('os');
 const { articleText, parseJson, sameCritic } = require('./audit-city-reviews');
+const { AUDIT_OPENAI } = require('./models');
 const { foldDiacritics } = require('./title-match');
 const { toDateMs } = require('./date-utils');
 
@@ -45,14 +46,17 @@ async function gemini(prompt) {
 }
 async function gpt(prompt) {
   const key = process.env.OPENAI_API_KEY; if (!key) throw new Error('OPENAI_API_KEY is not set');
-  const res = await fetch('https://api.openai.com/v1/chat/completions', {
+  // BRO-7339: gpt-4.1 shuts down 2027-01-14. The gpt-5.6 pins take the Responses API only and reject
+  // temperature, so reasoning effort is the dial and JSON mode moves to text.format.
+  const res = await fetch('https://api.openai.com/v1/responses', {
     method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${key}` },
-    body: JSON.stringify({ model: 'gpt-4.1', temperature: 0, response_format: { type: 'json_object' }, messages: [{ role: 'user', content: prompt }] }),
-    signal: AbortSignal.timeout(90000),
+    body: JSON.stringify({ model: AUDIT_OPENAI, reasoning: { effort: 'low' }, text: { format: { type: 'json_object' } }, input: [{ role: 'user', content: prompt }] }),
+    signal: AbortSignal.timeout(180000),
   });
   const j = await res.json();
-  if (!res.ok) throw new Error(`OpenAI HTTP ${res.status}: ${JSON.stringify(j).slice(0, 160)}`);
-  return parseJson(j.choices?.[0]?.message?.content);
+  if (!res.ok || j.error) throw new Error(`OpenAI HTTP ${res.status}: ${JSON.stringify(j).slice(0, 160)}`);
+  const text = (j.output || []).filter((o) => o.type === 'message').flatMap((o) => o.content || []).map((c) => c.text || '').join('');
+  return parseJson(text);
 }
 const MODELS = { gemini, gpt };
 async function both(prompt) {
@@ -239,4 +243,4 @@ async function main() {
   console.log(JSON.stringify(out.summary), '->', reportTarget);
 }
 if (require.main === module) main().catch((e) => { console.error(e); process.exit(1); });
-module.exports = { judgeReview, quoteProblem, showChecks, starBand, keyTitle, reviewPrompt, showPrompt };
+module.exports = { judgeReview, quoteProblem, showChecks, starBand, keyTitle, reviewPrompt, showPrompt, gpt };

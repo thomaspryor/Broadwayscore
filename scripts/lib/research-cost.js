@@ -106,6 +106,10 @@ const MODEL_SHUTDOWNS = {
   'gpt-5.4-nano': '2027-04-01',
   'gpt-5.1': '2027-04-01',
   'gpt-5.3-codex': '2027-04-01',
+  // No scoring use (city-hub-audit.js moved to AUDIT_OPENAI), so the any-announced-shutdown guard
+  // fails any script that still names them.
+  'gpt-4.1': '2027-01-14',
+  'gpt-4.1-mini': '2027-01-14',
   // gpt-4o family (2027-01-14) is deliberately NOT listed yet: the scoring
   // ensemble still runs on it (CLAUDE.md rule 13 A/B first), and listing it
   // would fail the any-announced-shutdown guard in research-cost.test.mjs.
@@ -121,8 +125,6 @@ const ACCEPTED_SHUTDOWNS = {
   // needs its own A/B (rule 13) and is not part of the BRO-7339 call-site sweep.
   'gpt-4o': '2027-01-14',
   'gpt-4o-mini': '2027-01-14',
-  'gpt-4.1': '2027-01-14',
-  'gpt-4.1-mini': '2027-01-14',
 };
 
 /**

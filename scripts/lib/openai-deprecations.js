@@ -14,9 +14,13 @@
 
 const MONTHS = { jan: 1, feb: 2, mar: 3, apr: 4, may: 5, jun: 6, jul: 7, aug: 8, sep: 9, oct: 10, nov: 11, dec: 12 };
 
-/** "Dec 11, 2026" / "February 10, 2027" -> "2026-12-11"; null if it is not a date. */
+/** "Dec 11, 2026" / "February 10, 2027" / "2026-09-24" -> ISO; null if it is not a date. */
 function parseShutdownDate(text) {
-  const m = String(text || '').replace(/\s+/g, ' ').trim().match(/^([A-Za-z]{3,9})\.? (\d{1,2}),? (\d{4})$/);
+  const t = String(text || '').replace(/\s+/g, ' ').trim();
+  // The live page mixes "Dec 11, 2026" and "2026-09-24" (88 of its dated rows are ISO).
+  const iso = t.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (iso) return +iso[2] >= 1 && +iso[2] <= 12 && +iso[3] >= 1 && +iso[3] <= 31 ? t : null;
+  const m = t.match(/^([A-Za-z]{3,9})\.? (\d{1,2}),? (\d{4})$/);
   if (!m) return null;
   const mon = MONTHS[m[1].slice(0, 3).toLowerCase()];
   if (!mon) return null;
@@ -49,6 +53,16 @@ function parseDeprecations(html) {
     rows.push({ shutdown, ids, replacement: rep ? rep[1].trim() : null });
   }
   return rows;
+}
+
+/** Table rows that list a model id in <code> (dated or not): the parser's denominator. */
+function countModelRows(html) {
+  let n = 0;
+  for (const tr of String(html).match(/<tr[\s\S]*?<\/tr>/g) || []) {
+    const cells = [...tr.matchAll(/<td[^>]*>([\s\S]*?)<\/td>/g)].map((m) => m[1]);
+    if (cells.length >= 2 && /<code[^>]*>/.test(cells[1])) n++;
+  }
+  return n;
 }
 
 /**
@@ -105,4 +119,4 @@ function driftReport({ page, registry, referenced, today, warnDays = 60 }) {
   return { missing, dateDrift, soon };
 }
 
-module.exports = { parseShutdownDate, baseId, parseDeprecations, referencedModelIds, driftReport };
+module.exports = { parseShutdownDate, baseId, parseDeprecations, countModelRows, referencedModelIds, driftReport };

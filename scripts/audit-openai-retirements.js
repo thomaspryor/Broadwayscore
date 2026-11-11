@@ -21,11 +21,12 @@ const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help');
-const { parseDeprecations, referencedModelIds, driftReport } = require('./lib/openai-deprecations');
+const { parseDeprecations, countModelRows, referencedModelIds, driftReport } = require('./lib/openai-deprecations');
 const { MODEL_SHUTDOWNS, ACCEPTED_SHUTDOWNS } = require('./lib/research-cost');
 
 const URL_PAGE = 'https://developers.openai.com/api/docs/deprecations';
 const ROOT = path.join(__dirname, '..');
+const REGISTRY_FILE = path.join(__dirname, 'lib', 'research-cost.js'); // its own tables would make every listed id look "used"
 const argv = process.argv.slice(2);
 const flagVal = (n) => { const a = argv.find((x) => x.startsWith(`--${n}=`)); return a ? a.slice(n.length + 3) : null; };
 
@@ -44,7 +45,7 @@ function repoReferencedIds() {
       if (skip.has(e.name) || e.name.startsWith('.worktrees')) continue;
       const p = path.join(dir, e.name);
       if (e.isDirectory()) walk(p);
-      else if (/\.(c?js|mjs|ts|tsx|ya?ml)$/.test(e.name) && !/\.(test|spec)\./.test(e.name)) {
+      else if (/\.(c?js|mjs|ts|tsx|ya?ml)$/.test(e.name) && !/\.(test|spec)\./.test(e.name) && p !== REGISTRY_FILE) {
         for (const id of referencedModelIds(fs.readFileSync(p, 'utf8'))) ids.add(id);
       }
     }
@@ -65,14 +66,18 @@ async function fetchPage() {
 
 (async () => {
   const today = new Date().toISOString().slice(0, 10);
-  const page = parseDeprecations(await fetchPage());
-  const inputMissing = page.length < 5; // the live page has 200+ dated rows; a handful means a shell or a block page
+  const html = await fetchPage();
+  const page = parseDeprecations(html);
+  const modelRows = countModelRows(html);
+  // The live page has ~150 dated model rows. A shell or block page parses ~0; a layout or date-style
+  // change parses part of it, so also compare against the rows that name a model at all.
+  const inputMissing = page.length < 20 || page.length < 0.8 * modelRows;
   const referenced = repoReferencedIds();
   const registry = { ...ACCEPTED_SHUTDOWNS, ...MODEL_SHUTDOWNS };
   const report = inputMissing ? { missing: [], dateDrift: [], soon: [] } : driftReport({ page, registry, referenced, today });
   const out = { generatedAt: new Date().toISOString(), pageRows: page.length, referenced: referenced.size, inputMissing, ...report };
 
-  if (inputMissing) console.log(`audit-openai-retirements: INPUT MISSING (parsed ${page.length} rows from ${URL_PAGE}); nothing checked`);
+  if (inputMissing) console.log(`audit-openai-retirements: INPUT MISSING (parsed ${page.length} of ${modelRows} model rows from ${URL_PAGE}); nothing checked`);
   for (const m of report.missing) console.log(`UNREGISTERED  ${m.id} shuts down ${m.shutdown} (${m.daysLeft}d), replacement ${m.replacement || 'none named'}; add it to MODEL_SHUTDOWNS or ACCEPTED_SHUTDOWNS`);
   for (const d of report.dateDrift) console.log(`DATE MOVED    ${d.id}: registry ${d.registry}, OpenAI now ${d.page}`);
   for (const s of report.soon) console.log(`SOON          ${s.id} ${s.shutdown} (${s.daysLeft}d) -> ${s.replacement || 'none named'}`);

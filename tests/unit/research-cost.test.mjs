@@ -95,7 +95,7 @@ describe('modelShutdownStatus', () => {
     assert.ok(files.length > 100, 'scan found too few scripts');
     // Workflows pass models too (dropdown options, --model=, shadow_model defaults).
     const wfDir = fileURLToPath(new URL('../../.github/workflows/', import.meta.url));
-    const wfRe = new RegExp(`model.*${lit}|${lit}.*model`, 'i');
+    const wfRe = new RegExp(`model.*${lit}|${lit}.*model|^\\s*-\\s*${lit}\\s*$`, 'i'); // last form: a dropdown option line
     const wfHits = fs.readdirSync(wfDir).filter(n => /\.ya?ml$/.test(n))
       .filter(n => fs.readFileSync(path.join(wfDir, n), 'utf8').split('\n').some(l => !/^\s*#/.test(l) && wfRe.test(l)));
     assert.deepEqual(wfHits, [], `retiring model in workflow: ${wfHits.join(', ')}`);

@@ -109,7 +109,7 @@ const MODEL_MAP = {
 };
 // The ONE default model: workflows omit --model so a model retirement is a
 // one-line change here (BRO-4990). o4-mini-deep and o3-deep were shut down
-// 2026-07-23 and o4-mini goes 2026-10-23 (see MODEL_SHUTDOWNS).
+// 2026-07-23, o4-mini 2026-10-23, o3 goes 2026-12-11 (see MODEL_SHUTDOWNS).
 const DEFAULT_MODEL = 'gpt-5.4-mini';
 const MODEL_INPUT = flags['model'] || DEFAULT_MODEL;
 const MODEL = MODEL_MAP[MODEL_INPUT] || MODEL_INPUT;

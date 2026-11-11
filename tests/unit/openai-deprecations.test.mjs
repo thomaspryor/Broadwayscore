@@ -5,7 +5,7 @@ import assert from 'node:assert';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 
-const { parseShutdownDate, baseId, parseDeprecations, referencedModelIds, driftReport } = require('../../scripts/lib/openai-deprecations');
+const { parseShutdownDate, baseId, parseDeprecations, countModelRows, referencedModelIds, driftReport } = require('../../scripts/lib/openai-deprecations');
 const { decideOpenAiRetirementAlerts, INPUT_MISSING_KEY, UNREGISTERED_KEY } = require('../../scripts/lib/openai-retirement-alert');
 const { MODEL_SHUTDOWNS, ACCEPTED_SHUTDOWNS } = require('../../scripts/lib/research-cost');
 
@@ -22,7 +22,8 @@ describe('parseShutdownDate', () => {
   it('reads the page date styles', () => {
     assert.equal(parseShutdownDate('Dec 11, 2026'), '2026-12-11');
     assert.equal(parseShutdownDate('February 10, 2027'), '2027-02-10');
-    assert.equal(parseShutdownDate('2026-02-17'), null, 'ISO dates are not a table style here');
+    assert.equal(parseShutdownDate('2026-02-17'), '2026-02-17', 'the live page writes 88 of its dates in ISO form');
+    assert.equal(parseShutdownDate('2026-13-40'), null);
     assert.equal(parseShutdownDate('Shutdown date'), null);
   });
 });
@@ -30,8 +31,13 @@ describe('parseShutdownDate', () => {
 describe('parseDeprecations', () => {
   const rows = parseDeprecations(FIXTURE);
   it('skips the header row and keeps every dated model row', () => {
-    assert.equal(rows.length, 4); // ISO-dated legacy row is not parseable and is skipped
+    assert.equal(rows.length, 5); // includes the ISO-dated row
     assert.deepEqual(rows[0], { shutdown: '2026-12-11', ids: ['gpt-5-mini', 'gpt-5-mini-2025-08-07'], replacement: 'gpt-5.6-terra' });
+  });
+  it('counts every model row, so a partial parse is visible', () => {
+    assert.equal(countModelRows(FIXTURE), 5);
+    assert.equal(countModelRows(FIXTURE.replace('2026-02-17', 'soon')), 5);
+    assert.equal(parseDeprecations(FIXTURE.replace('2026-02-17', 'soon')).length, 4);
   });
   it('returns nothing for a shell page, which the CLI reports as input-missing', () => {
     assert.equal(parseDeprecations('<html><body>Just a moment...</body></html>').length, 0);
