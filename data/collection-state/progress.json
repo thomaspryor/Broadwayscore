@@ -229,7 +229,9 @@
     "parsifal-off-west-end-2026/broadwayworld--alexander-cohen.json",
     "degenerates-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
     "degenerates-off-broadway-2026/playbill--unknown.json",
-    "how-shakespeare-saved-my-life-off-broadway-2026/timeout--raven-snook.json"
+    "how-shakespeare-saved-my-life-off-broadway-2026/timeout--raven-snook.json",
+    "cloud-9-west-end-2026/theupcoming--dionysia-afolabi.json",
+    "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json"
   ],
   "failed": [
     "cloud-9-west-end-2026/times-uk--susannah-butter.json",
@@ -533,13 +535,16 @@
       "the-hungry-ghost-off-west-end-2026/adventuresintheatreland--julie-fisher-sheher.json",
       "the-hungry-ghost-off-west-end-2026/revstanstheatreblog--unknown.json",
       "degenerates-off-broadway-2026/playbill--unknown.json",
-      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--raven-snook.json"
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--raven-snook.json",
+      "cloud-9-west-end-2026/theupcoming--dionysia-afolabi.json",
+      "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/now-you-see-me-live-2026/deadline--anthony-dalessandro.json",
       "data/review-texts/paranormal-activity-2026/nytimes--helen-shaw.json",
-      "paranormal-activity-2026/nytimes--helen-shaw.json"
+      "paranormal-activity-2026/nytimes--helen-shaw.json",
+      "data/review-texts/cloud-9-west-end-2026/times-uk--susannah-butter.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -650,7 +655,7 @@
     ]
   },
   "startTime": "2026-11-11T10:59:59.833Z",
-  "lastProcessed": "how-shakespeare-saved-my-life-off-broadway-2026/timeout--raven-snook.json",
+  "lastProcessed": "the-lives-of-others-west-end-2026/independent--lizzie-edmonds.json",
   "log": [
     {
       "t": "2026-11-11T11:21:35.313Z",
@@ -773,6 +778,17 @@
       "t": "2026-11-11T13:43:31.093Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-11T15:36:15.069Z",
+      "event": "bb-session",
+      "session": "b352a9fa",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
+    },
+    {
+      "t": "2026-11-11T15:36:15.787Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ],
   "recoveredAfterFailure": [
