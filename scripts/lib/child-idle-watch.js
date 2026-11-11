@@ -40,6 +40,8 @@ const FAILED = new Set(['FAILED', 'ERROR', 'ERRORED', 'CRASHED']);
 const BLOCKED = new Set(['BLOCKED', 'NEEDS_INPUT', 'AWAITING_INPUT', 'REQUIRES_ACTION']);
 // A report-back moves the child's updated_at a little (its turn ends after it).
 const REPORT_SLACK_MS = 10 * 60000;
+// A child that moved this long after its init error did start (BRO-7377).
+const INIT_ERROR_SLACK_MS = 10 * 60000;
 
 /**
  * Shallowest value of `key` in a parsed get_session payload (it nests under
@@ -93,14 +95,22 @@ function decide({ session, now = Date.now(), idleMinutes = DEFAULT_IDLE_MINUTES,
   }
   // BRO-7377: a child whose container never came up (setup script exit 128 on
   // 2026-11-11) still reads status_bucket=WORKING, so every check said rearm.
-  // external_metadata.last_init_error is the only signal. A child that has
-  // reported back has plainly started, so a stale error never beats a report.
-  const initErr = findField(session, 'last_init_error');
+  // external_metadata.last_init_error is the only signal. Two guards against a
+  // stale error on a session that later started fine: a report-back (it has
+  // plainly started) and activity well after the error (the failed child's
+  // updated_at equals the error's `at`; a working one moves on).
+  const meta = (session && (session.ccr || session).external_metadata) || {};
+  const initErr = meta.last_init_error || findField(session, 'last_init_error');
   if (reported == null && initErr && typeof initErr === 'object' && String(initErr.recoverable).toLowerCase() !== 'true'
       && (initErr.message || initErr.error_kind || initErr.error_type)) {
-    const kind = initErr.error_kind || initErr.error_type || 'init';
-    return out('restart', `child never started (${kind}: ${initErr.message || 'no message'}${initErr.at ? ` at ${initErr.at}` : ''}): `
-      + 'list_events it with kinds ["env_manager_log"] for the output, fix the cause (get_environment, then update_environment), then create_session again');
+    const errAt = toMs(initErr.at);
+    const progressed = errAt != null && updated != null && updated - errAt > INIT_ERROR_SLACK_MS;
+    if (!progressed) {
+      const kind = initErr.error_kind || initErr.error_type || 'init';
+      return out('restart', `child never started (${kind}: ${initErr.message || 'no message'}${initErr.at ? ` at ${initErr.at}` : ''}): `
+        + 'list_events it with kinds ["env_manager_log"] for the output, fix the cause (get_environment, then update_environment), '
+        + 'archive_session the dead one, then create_session again');
+    }
   }
   if (FAILED.has(bucket) || FAILED.has(status)) return out('restart', `child ${bucket || status}: fix or restart it`);
   if (BLOCKED.has(bucket) || BLOCKED.has(status)) return out('unblock', `child ${bucket || status}: interrupt_session and send a workaround`);

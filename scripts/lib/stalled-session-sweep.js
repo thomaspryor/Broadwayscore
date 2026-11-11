@@ -85,6 +85,8 @@ function stalledSessionAction({ entry, session, error, notFound, nowMs }) {
   const archived = /archived/i.test(String(v.reason)) || session.archived === true;
   if (archived) return { action: 'requeue', reason: 'session archived with the card still In Progress' };
   if (v.action === 'rearm') return { action: 'skip', reason: `session working (${v.reason})` };
+  // BRO-7377: a session whose container never started cannot read a nudge; requeue now, not after two ignored ones 48h on.
+  if (v.action === 'restart' && /never started/.test(String(v.reason))) return { action: 'requeue', reason: v.reason.slice(0, 120) };
   if (v.action === 'unblock') return { action: 'skip', reason: `session waiting on a prompt (${v.reason}); a message cannot answer it` };
   const lastNudgeMs = Date.parse(entry.lastNudgeAt);
   if (Number.isFinite(lastNudgeMs) && nowMs - lastNudgeMs < NUDGE_GAP_MS) return { action: 'skip', reason: 'nudged under 24h ago' };
