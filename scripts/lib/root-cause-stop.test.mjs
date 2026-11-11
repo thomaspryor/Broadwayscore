@@ -270,7 +270,7 @@ test('BRO-7349: a land push mentioned in a heredoc, a node -e test or a sed expr
   const ev = (cmd) => [toolUse('x', 'Bash', { command: cmd }), ok('x')];
   assert.deepEqual(landedPushIndices(ev("cat >> t.test.mjs <<'EOF'\nconst LAND = 'git push origin HEAD:refs/heads/land/x';\nEOF")), []);
   assert.deepEqual(landedPushIndices(ev(`node -e 'run("git push origin HEAD:refs/heads/land/x")'`)), []);
-  assert.deepEqual(landedPushIndices(ev(`sed -i "s/gh workflow run land.yml -f ref=x/gh workflow run land.yml -f branch=x/" t.mjs`)), []);
+  assert.deepEqual(landedPushIndices(ev(`sed -i "s/gh workflow run land.yml -f branch=a/gh workflow run land.yml -f branch=b/" t.mjs`)), []);
   assert.deepEqual(landedPushIndices(ev('git push origin "HEAD:refs/heads/land/x" 2>&1 | tail -2')), [0], 'a quoted refspec still lands');
   assert.deepEqual(landedPushIndices(ev("git commit -qm 'fix: a thing' && git push origin HEAD:refs/heads/land/x")), [0], 'a quoted commit message before a real push');
 });
