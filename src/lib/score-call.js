@@ -80,14 +80,17 @@ function setPendingCall(showId, score, store, now = Date.now()) {
   return n;
 }
 /** The remembered pick for a show, or null. */
-function getPendingCall(showId, store, now = Date.now()) {
+function getPendingCall(showId, store, now = Date.now(), maxAgeMs = PENDING_TTL_MS) {
   const v = readPending(store, now)[showId];
-  return v ? v.score : null;
+  return v && now - v.ts <= maxAgeMs ? v.score : null;
 }
+// A number is saved on its own only right after sign-in. An older one (shared device, abandoned
+// sign-in) is shown on the slider and the reader taps Lock, so nobody inherits a stranger's final pick.
+const AUTOSAVE_WINDOW_MS = 30 * 60 * 1000;
 function clearPendingCall(showId, store, now = Date.now()) {
   const o = readPending(store, now);
   delete o[showId];
   writePending(store, o);
 }
 
-module.exports = { isCallableShow, parseCall, resultStrip, gapSentence, toDay, setPendingCall, getPendingCall, clearPendingCall };
+module.exports = { isCallableShow, parseCall, resultStrip, gapSentence, toDay, setPendingCall, getPendingCall, clearPendingCall, AUTOSAVE_WINDOW_MS };

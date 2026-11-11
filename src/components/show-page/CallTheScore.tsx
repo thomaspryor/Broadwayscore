@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { ScoreBadge, getScoreTier } from '@/components/show-cards';
 import { useAuth } from '@/contexts/AuthContext';
 import { useScoreCall } from '@/hooks/useScoreCall';
-import { isCallableShow, gapSentence, resultStrip, setPendingCall, getPendingCall, clearPendingCall } from '@/lib/score-call';
+import { isCallableShow, gapSentence, resultStrip, setPendingCall, getPendingCall, clearPendingCall, AUTOSAVE_WINDOW_MS } from '@/lib/score-call';
 
 interface ShowLike { id: string; category?: string; type?: string; status?: string; openingDate?: string | null; previewsStartDate?: string | null; previewDate?: string | null; cancelledBeforeOpening?: boolean }
 
@@ -23,7 +23,7 @@ function Tile({ label, score, category, muted }: { label: string; score: number 
 
 // Module-level so React keeps the subtree (and the slider's drag) across renders.
 function Wrap({ children }: { children: React.ReactNode }) {
-  return <div className="mt-4 pt-4 border-t border-white/10" data-testid="call-the-score">{children}</div>;
+  return <div className="mt-4 pt-4 border-t border-white/10" data-testid="call-the-score" aria-live="polite">{children}</div>;
 }
 
 const lockMsg = (reason: string) => (reason === 'calls_closed' ? 'Predictions closed when opening day began.' : reason === 'not_open' ? 'Predictions open soon for this show.' : reason === 'already_called' ? null : 'Could not save your prediction. Try again.');
@@ -38,6 +38,7 @@ export default function CallTheScore({ show }: { show: ShowLike }) {
   const [saveAsk, setSaveAsk] = useState(false);
   const [callable, setCallable] = useState(false);
   const autoRef = useRef(false);
+  const tapRef = useRef(false);
   useEffect(() => { setCallable(isCallableShow(show as never, localToday())); }, [show]);
   // Back from sign-up (or a fresh visit): restore the number they picked.
   useEffect(() => {
@@ -47,7 +48,7 @@ export default function CallTheScore({ show }: { show: ShowLike }) {
   // Once signed in and nothing is saved yet, save the waiting number automatically.
   useEffect(() => {
     if (!callable || !signedIn || !loaded || call || autoRef.current) return;
-    const p = getPendingCall(show.id, ls());
+    const p = getPendingCall(show.id, ls(), Date.now(), AUTOSAVE_WINDOW_MS);
     if (p == null) return;
     autoRef.current = true;
     setBusy(true); setValue(p);
@@ -71,9 +72,10 @@ export default function CallTheScore({ show }: { show: ShowLike }) {
       showSignIn('prediction', 'predict_the_score');
       return;
     }
-    setBusy(true);
+    if (tapRef.current) return;
+    tapRef.current = true; setBusy(true);
     const r = await lock(value);
-    setBusy(false);
+    tapRef.current = false; setBusy(false);
     if (!r.ok) setMsg(lockMsg(r.reason));
   };
 
@@ -102,7 +104,7 @@ export default function CallTheScore({ show }: { show: ShowLike }) {
         <ScoreBadge score={value} size="lg" category={show.category} />
         <span className="text-sm font-semibold text-gray-200" aria-live="polite">{tier?.label}</span>
       </div>
-      <input type="range" min={0} max={100} step={1} value={value} onChange={(e) => setValue(Number(e.target.value))} aria-label="Your score prediction, 0 to 100" className="w-full accent-brand" />
+      <input type="range" min={0} max={100} step={1} value={value} onChange={(e) => setValue(Number(e.target.value))} aria-label="Your score prediction, 0 to 100" aria-valuetext={`${value}, ${tier?.label ?? ''}`} className="w-full accent-brand" />
       <button type="button" className="btn-primary w-full mt-4" disabled={busy} onClick={onLock}>{busy ? 'Saving your prediction…' : 'Lock in my prediction'}</button>
       {!signedIn && saveAsk && <p className="text-sm text-gray-200 text-center mt-2 mb-0" data-testid="save-prompt">Save your prediction: create a free account or sign in.</p>}
       {msg && <p className="text-xs text-score-skip text-center mt-2 mb-0" role="alert">{msg}</p>}
