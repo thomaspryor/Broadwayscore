@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-11T10:46:16.205Z",
+  "generatedAt": "2026-11-11T12:39:02.282Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -140,11 +140,19 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "londonpubtheatres",
+      "error": "Client network socket disconnected before secure TLS connection was established"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "fetchPage returned an unexpected page for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&o"
     }
   ],
-  "itemsScanned": 847,
+  "itemsScanned": 811,
   "matchedGaps": 3,
-  "possibleGaps": 2,
+  "possibleGaps": 1,
   "gaps": [
     {
       "showId": "222-a-ghost-story-off-broadway-2026",
@@ -181,15 +189,6 @@
       "url": "https://www.theguardian.com/culture/2026/nov/04/every-family-has-silences-kathryn-hunter-on-despair-desire-dislodgeable-limbs-and-her-acting-genius",
       "headline": "‘Every family has silences’: Kathryn Hunter on despair, desire, dislodgeable limbs – and her acting genius",
       "publishDate": "2026-11-04"
-    },
-    {
-      "showId": "wanted-2022",
-      "title": "Wanted",
-      "level": "possible",
-      "outletId": "west-end-best-friend",
-      "url": "https://www.westendbestfriend.co.uk/news/review-jim-carusos-cast-party-with-billy-stritch-at-the-piano-crazy-coqs",
-      "headline": "Review: JIM CARUSO'S CAST PARTY WITH BILLY STRITCH AT THE PIANO, Crazy Coqs",
-      "publishDate": "2026-11-05"
     }
   ]
 }
