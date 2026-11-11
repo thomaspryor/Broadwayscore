@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-10T23:38:35.344Z",
+  "timestamp": "2026-11-11T00:06:48.570Z",
   "stats": {
     "totalReviews": 81318,
-    "alreadyFlagged": 22223,
+    "alreadyFlagged": 22225,
     "dateGuardCatches": 218,
-    "directorMismatch": 3606,
+    "directorMismatch": 3607,
     "tvFilmSignals": 2287,
-    "londonSignals": 3666,
+    "londonSignals": 3667,
     "offBroadwaySignals": 752,
     "yearMismatch": 365,
-    "noPublishDate": 8458
+    "noPublishDate": 8455
   },
   "findings": [
     {
@@ -73634,6 +73634,19 @@
     },
     {
       "showId": "the-outsiders-tour-2025",
+      "file": "san-diego-union-tribune--michael-james-rocha.json",
+      "publishDate": "2026-11-05",
+      "url": "https://www.sandiegouniontribune.com/2026/11/05/review-a-gritty-stunning-homecoming-for-the-outsiders/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from the-outsiders-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-outsiders-tour-2025",
       "file": "sesayarts--arpita-ghosal.json",
       "score": 79,
       "publishDate": "2026-06-24",
@@ -103891,6 +103904,20 @@
       "score": 97,
       "publishDate": "2022-01-25",
       "url": "https://www.newyorktheatreguide.com/reviews/review-of-harry-potter-and-the-cursed-child-on-broadway",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "harry-potter-2021",
+      "file": "sfgate--lily-janiak.json",
+      "score": null,
+      "publishDate": "2018-06-28",
+      "url": "https://www.sfgate.com/performance/article/Harry-Potter-play-coming-to-San-Francisco-s-13035122.php",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
