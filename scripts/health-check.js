@@ -6447,6 +6447,7 @@ async function main() {
   if (isCI) {
     try {
       const parity = await require('./lib/prod-data-parity').runProbe({ alert: true });
+      if (parity.exitCode === 0) allResults.push({ name: 'Production page parity', status: 'pass', message: `${parity.matched} sampled pages match their deployed critic data` });
       if (parity.exitCode === 2) allResults.push({ name: 'Production page parity', status: 'warn', message: parity.error || `${parity.unavailable} pages unavailable` });
     } catch (err) {
       allResults.push({ name: 'Production page parity', status: 'warn', message: `Probe or alert routing failed: ${err.message}` });
