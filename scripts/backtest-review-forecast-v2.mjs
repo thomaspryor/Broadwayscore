@@ -23,6 +23,7 @@ const require = createRequire(import.meta.url);
 const RF = require('./lib/review-forecast.js');
 const V2 = require('./lib/review-forecast-v2-inputs.js');
 const EX = require('./lib/review-forecast-v2-extra.js');
+const ER = require('./lib/review-forecast-v2-earlier-run.js');
 const OT = require('./lib/outlet-tiers.js');
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -75,15 +76,17 @@ for (const r of J('data/reviews.json').reviews) {
   byCritic.get(key).push({ day, score: r.assignedScore, type: s.type, weight: OT.getEffectiveWeight(r.outletId, { showCategory: s.category }), showId: r.showId });
 }
 // Show Score member reviews dated before opening (live paginated pages): shrunk mean toward 85 (k=10), review count
-const MEM_FILE = arg('members', path.join(ROOT, 'data/audit/review-forecast-v2-showscore-members.json'));
+const MEM_FILE = arg('members', fs.existsSync(path.join(ROOT, 'data/audit/review-forecast-v2-showscore-members.json')) ? path.join(ROOT, 'data/audit/review-forecast-v2-showscore-members.json') : path.join(ROOT, 'data/audit/review-forecast-v2-showscore-members-pilot.json'));
 let memRaw = null; const MEM_MIN = 5;
 if (fs.existsSync(MEM_FILE)) {
   memRaw = JSON.parse(fs.readFileSync(MEM_FILE, 'utf8'));
   for (const [id, m] of Object.entries(memRaw.shows || {})) {
-    if (m.preOpeningCount >= MEM_MIN && m.newestPreOpeningReview) audience[id] = { date: m.newestPreOpeningReview, score: (m.preOpeningCount * m.preOpeningMean + 10 * 85) / (m.preOpeningCount + 10), reviewCount: m.preOpeningCount };
+    if (m.n >= MEM_MIN && m.newest) audience[id] = { date: m.newest, score: (m.n * m.mean + 10 * 85) / (m.n + 10), reviewCount: m.n };
   }
 }
-const ctx = { pool, weeks, origins, poolById, castIndex, audience, awards, panel: { byCritic } };
+// earlier-run review scores gathered from the web (scores + dates only), dated before first preview
+const erRaw = J('data/audit/review-forecast-v2-earlier-run-compact.json');
+const ctx = { pool, weeks, origins, poolById, castIndex, audience, awards, panel: { byCritic }, earlierRun: erRaw.reviews, troubleSet: new Set(erRaw.trouble || []) };
 
 const targets = shows.filter((s) => poolById[s.id] && s.category === MARKET && poolById[s.id].rc >= FLOOR && (s.type === 'play' || s.type === 'musical')
   && !s.noReviewsExpected && !s.cancelledBeforeOpening && RF.toDay(s.openingDate) <= RF.toDay(TODAY) - SETTLE_DAYS).map((s) => poolById[s.id]);
@@ -97,7 +100,10 @@ for (const t of targets) {
   if (f.mu == null || f.baselineN < MIN_PRIOR_SHOWS) continue;
   const e = EX.buildExtraFeatures(t, ctx, f.mu);
   EX.assertNoLeakageExtra(t, e.provenance);
-  rows.push({ t, season: RF.seasonStartYear(t.openingDate), x: { ...f.x, ...v.x, ...e.x }, has: { ...v.has, ...e.has }, mu: f.mu, y: t.score });
+  const er = ER.buildEarlierRunFeatures(t, ctx, f.mu);
+  ER.assertNoLeakageEarlierRun(t, er.provenance);
+  const er72 = ER.buildEarlierRunFeatures(t, ctx, f.mu, { cut: 72 }); const er78 = ER.buildEarlierRunFeatures(t, ctx, f.mu, { cut: 78 });
+  rows.push({ t, season: RF.seasonStartYear(t.openingDate), x: { ...f.x, ...v.x, ...e.x, ...er.x }, x72: er72.x, x78: er78.x, has: { ...v.has, ...e.has, ...er.has, ownPrior: f.priorScore != null }, mu: f.mu, y: t.score });
 }
 console.error(`evaluated rows ${rows.length}; v2 leakage-checked ${prov.checked}; awards ${rows.filter((r) => r.has.awards).length}, panel ${rows.filter((r) => r.has.panel).length}, cast ${rows.filter((r) => r.has.cast).length}, preview ${rows.filter((r) => r.has.preview).length}, audience ${rows.filter((r) => r.has.audience).length}`);
 
@@ -117,21 +123,28 @@ for (const r of rows.filter((_, i) => i % 8 === 0)) {
   const cpAw = Object.fromEntries(Object.entries(awards).map(([id, rec]) => [id, Object.fromEntries(Object.entries(rec).map(([k, a]) => [k, a && EX.awardDate(k, a) && RF.toDay(EX.awardDate(k, a)) > D - RF.LAG_DAYS ? { ...a, wins: ['x'], nominations: 9, nominatedFor: ['x'] } : a]))]));
   const ex2 = EX.buildExtraFeatures(r.t, { ...ctx, pool: cp, awards: cpAw, panel: { byCritic: cpPanel } }, r.mu);
   if (EX.EXTRA_FEATURE_NAMES.some((k) => ex2.x[k] !== r.x[k])) moved++;
+  // earlier-run: add a post-cutoff review (and a year-only date in the opening year) with an extreme score, rebuild
+  const dayStr = (d) => new Date(d * 86400000).toISOString().slice(0, 10);
+  const cpEr = { ...ctx.earlierRun, [r.t.id]: [...(ctx.earlierRun[r.t.id] || []), [1, dayStr(D - RF.LAG_DAYS + 1), 0], [99, dayStr(D + 40), 0], [1, r.t.openingDate.slice(0, 4), 0]] };
+  const er2 = ER.buildEarlierRunFeatures(r.t, { ...ctx, earlierRun: cpEr }, r.mu);
+  const yearOnlyLate = RF.toDay(`${r.t.openingDate.slice(0, 4)}-12-31`) <= D - RF.LAG_DAYS; // a year-only date is allowed only when its LAST day is before the cutoff
+  if (!yearOnlyLate && ER.ER_FEATURE_NAMES.some((k) => er2.x[k] !== r.x[k])) moved++;
 }
 console.error(`perturbation self-check: ${sampled} shows, ${moved} v2 features moved`);
 if (moved) { console.error('FAIL: v2 features depend on post-opening data'); process.exit(2); }
 
 // ---- model plumbing (identical to v1) ----
 const seasonsOf = (rs) => [...new Set(rs.map((r) => r.season))].sort((a, b) => a - b);
-const fitOn = (rs, names) => RF.fitRidge(rs.map((r) => ({ x: r.x, y: r.y - r.mu })), names);
-const predictRow = (m, r) => Math.max(0, Math.min(100, r.mu + RF.predictRidge(m, r.x)));
-function walk(names) {
+const xOf = (r, variant) => (variant ? { ...r.x, ...r[`x${variant}`] } : r.x);
+const fitOn = (rs, names, variant) => RF.fitRidge(rs.map((r) => ({ x: xOf(r, variant), y: r.y - r.mu })), names);
+const predictRow = (m, r, variant) => Math.max(0, Math.min(100, r.mu + RF.predictRidge(m, xOf(r, variant))));
+function walk(names, variant) {
   const out = [];
   for (const s of seasonsOf(rows)) {
     const train = rows.filter((r) => r.season < s); const test = rows.filter((r) => r.season === s);
     if (train.length < 150 || !test.length) continue;
-    const m = fitOn(train, names);
-    for (const r of test) out.push({ id: r.t.id, season: s, y: r.y, pred: predictRow(m, r), base: r.mu, has: r.has });
+    const m = fitOn(train, names, variant);
+    for (const r of test) out.push({ id: r.t.id, season: s, y: r.y, pred: predictRow(m, r, variant), base: r.mu, has: r.has, prior: r.has.ownPrior, v1prior: r.x.priorRun });
   }
   return out;
 }
@@ -144,15 +157,17 @@ function diffCI(a, b, B = 2000, alpha = 0.05) { // a, b: aligned prediction arra
   ds.sort((x, y) => x - y);
   return [RF.quantile(ds, alpha / 2), RF.quantile(ds, 1 - alpha / 2)];
 }
-const N_PRIMARY_TESTS = 7; // single-group primary tests (cast, preview, panel, awards, calendar, house, audience); combos excluded
+// Test family for the correction: 7 single-group primary tests (cast, preview, panel, awards, calendar, house, audience)
+// + earlier-run linear and step (2) + the two forked step cuts 72 and 78 (2) + overall/flop/rave tails for linear and step (4) = 15.
+const N_PRIMARY_TESTS = 15;
 const r2 = (x) => (x == null ? null : Math.round(x * 100) / 100);
 const maeOf = (p) => RF.mean(p.map((q) => Math.abs(q.y - q.pred)));
 
 const V1 = RF.FEATURE_NAMES;
 const G = V2.V2_GROUPS;
 const base = walk(V1);
-function compare(label, names, subsetFn, kind) {
-  const w = walk(names);
+function compare(label, names, subsetFn, kind, variant) {
+  const w = walk(names, variant);
   if (w.length !== base.length || w.some((q, i) => q.id !== base[i].id)) throw new Error('walk-forward rows misaligned between models');
   const idx = base.map((_, i) => i).filter((i) => !subsetFn || subsetFn(base[i]));
   const A = idx.map((i) => w[i]); const B = idx.map((i) => base[i]);
@@ -160,9 +175,10 @@ function compare(label, names, subsetFn, kind) {
   const ci = diffCI(A, B); const ciAdj = diffCI(A, B, 2000, 0.05 / N_PRIMARY_TESTS);
   const d = maeOf(A) - maeOf(B);
   const verdict = ci[1] < 0 ? 'helps' : ci[0] > 0 ? 'hurts' : 'no effect';
-  const tail = (pred) => { const a = A.filter((q) => pred(q.y)); const b = B.filter((q) => pred(q.y)); return a.length >= 10 ? { n: a.length, maeWithout: r2(maeOf(b)), maeWith: r2(maeOf(a)) } : null; };
+  const tail = (pred) => { const ix = A.map((_, i) => i).filter((i) => pred(A[i].y)); const a = ix.map((i) => A[i]); const b = ix.map((i) => B[i]); if (a.length < 10) return null;
+    const c1 = diffCI(a, b); const c2 = diffCI(a, b, 2000, 0.05 / N_PRIMARY_TESTS); return { n: a.length, maeWithout: r2(maeOf(b)), maeWith: r2(maeOf(a)), diffCI95: c1.map(r2), diffCI95Bonferroni: c2.map(r2), survivesCorrection: c2[1] < 0 }; };
   return { input: label, kind, shows: A.length, missUnder55: tail((y) => y < 55), miss83Plus: tail((y) => y >= 83), maeWithout: r2(maeOf(B)), maeWith: r2(maeOf(A)), maeCategoryMean: r2(RF.mean(A.map((q) => Math.abs(q.y - q.base)))),
-    diff: r2(d), diffCI95: ci.map(r2), diffCI95Bonferroni7: ciAdj.map(r2), survivesCorrection: ciAdj[1] < 0, verdict };
+    diff: r2(d), diffCI95: ci.map(r2), diffCI95Bonferroni: ciAdj.map(r2), bonferroniTests: N_PRIMARY_TESTS, survivesCorrection: ciAdj[1] < 0, verdict };
 }
 const rowsOf = {}; // walk-forward index helpers use base ids
 const hasAud = (p) => p.has.audience; const hasCast = (p) => p.has.cast; const hasPrev = (p) => p.has.preview;
@@ -174,6 +190,24 @@ results.push(compare('Cast, shows with an opening cast on file only', [...V1, ..
 results.push(compare('Preview signals, shows with preview data only', [...V1, ...G.preview], hasPrev, 'primary-subset'));
 results.push(compare('Show Score audience score from member reviews dated before opening', [...V1, ...G.audience], hasAud, 'primary-subset'));
 const X = EX.EXTRA_GROUPS;
+const EG = ER.ER_GROUPS; const hasEr = (p) => p.has.earlierRun;
+results.push(compare('Earlier-run web reviews, linear (shrunk mean gap, has flag)', [...V1, ...EG.linear], null, 'primary'));
+results.push(compare('Earlier-run web reviews, step at 75 (below / at or above)', [...V1, ...EG.step], null, 'primary'));
+results.push(compare('Earlier-run, step at 72 (forked cut)', [...V1, ...EG.step], null, 'primary', '72'));
+results.push(compare('Earlier-run, step at 78 (forked cut)', [...V1, ...EG.step], null, 'primary', '78'));
+results.push(compare('Earlier-run linear, shows with earlier-run reviews only', [...V1, ...EG.linear], hasEr, 'primary-subset'));
+results.push(compare('Earlier-run linear, shows WITHOUT an own earlier production in our data', [...V1, ...EG.linear], (p) => p.has.earlierRun && !p.prior, 'primary-subset'));
+results.push(compare('Earlier-run linear, shows WITH an own earlier production in our data', [...V1, ...EG.linear], (p) => p.has.earlierRun && p.prior, 'primary-subset'));
+results.push(compare('Trouble list (undated, exploratory only, not usable for forecasting)', [...V1, ...EG.trouble], null, 'exploratory'));
+// overlap with the existing earlier-production input (priorRun from our own data)
+const wb = walk(V1);
+const erRows = wb.filter((p) => p.has.earlierRun);
+const bothOwnAndEr = erRows.filter((p) => p.prior).length;
+const tryoutOnly = erRows.filter((p) => !p.prior).length;
+const erMeanOf = (id) => { const r = rows.find((q) => q.t.id === id); return r ? r.x.erDev + r.mu : null; };
+const overlap = { evaluatedShows: wb.length, withEarlierRunWebReviews: erRows.length, withOwnEarlierProduction: wb.filter((p) => p.prior).length, bothEarlierRunAndOwnProduction: bothOwnAndEr, earlierRunOnly: tryoutOnly,
+  correlationShrunkWebMeanVsOwnPriorGap: (() => { const a = rows.filter((r) => r.has.earlierRun && r.has.ownPrior); if (a.length < 5) return null; const mx = RF.mean(a.map((r) => r.x.erDev)); const my = RF.mean(a.map((r) => r.x.priorRun)); let sxy = 0; let sxx = 0; let syy = 0; for (const r of a) { sxy += (r.x.erDev - mx) * (r.x.priorRun - my); sxx += (r.x.erDev - mx) ** 2; syy += (r.x.priorRun - my) ** 2; } return { n: a.length, r: r2(sxy / Math.sqrt(sxx * syy)) }; })() };
+console.error('earlier-run overlap', JSON.stringify(overlap));
 const hasAw = (p) => p.has.awards; const hasPanel = (p) => p.has.panel;
 results.push(compare('Panel: per-critic forecasts with tier weights (all critics, then same type)', [...V1, ...X.panel], null, 'primary'));
 results.push(compare('Panel, shows with an active panel only', [...V1, ...X.panel], hasPanel, 'primary-subset'));
@@ -182,10 +216,15 @@ results.push(compare('Awards, shows with an earlier production that has honours'
 results.push(compare('Calendar: spring crush and month of year', [...V1, ...X.calendar], null, 'primary'));
 results.push(compare('Nonprofit-run house flag', [...V1, ...X.venueType], null, 'primary'));
 results.push(compare('Every input together (cast, preview, panel, awards, calendar, house)', [...V1, ...G.cast, ...G.preview, ...X.panel, ...X.awards, ...X.calendar, ...X.venueType], null, 'primary'));
+// combined model (parent request): per-critic panel + earlier-run + Show Score audience, one before/after number. Combined rows are not in the correction family (they combine already-counted inputs).
+results.push(compare('Combined: panel + earlier-run (step at 75)', [...V1, ...X.panel, ...EG.step], null, 'combined'));
+results.push(compare('Combined: panel + earlier-run (linear)', [...V1, ...X.panel, ...EG.linear], null, 'combined'));
+results.push(compare('Combined: panel + earlier-run + Show Score audience, shows with member reviews only', [...V1, ...X.panel, ...EG.step, ...G.audience], hasAud, 'combined-subset'));
+results.push(compare('Combined: panel + earlier-run (step), shows with member reviews only (same shows, no audience)', [...V1, ...X.panel, ...EG.step], hasAud, 'combined-subset'));
 for (const f of [...G.cast, ...G.preview, ...EX.EXTRA_FEATURE_NAMES]) results.push(compare(`feature: ${f}`, [...V1, f], null, 'exploratory'));
 
-// Best model = v1 unless a primary full-population candidate has a 95% interval entirely below zero.
-const winners = results.filter((r) => r.kind === 'primary' && r.verdict === 'helps' && r.shows === base.length).sort((a, b) => a.maeWith - b.maeWith);
+// Best model = v1 unless a primary full-population candidate has a Bonferroni-corrected interval entirely below zero.
+const winners = results.filter((r) => r.kind === 'primary' && r.survivesCorrection && r.shows === base.length).sort((a, b) => a.maeWith - b.maeWith);
 const bestCombined = winners[0] || { input: 'None: v1 (today\'s formula) stays best', shows: base.length, maeWith: r2(maeOf(base)), verdict: 'no input helps' };
 // ---- floor: how low the miss could go if the panel's own sampling noise were the only error ----
 // For each evaluated show, resample its critics (one vote per outlet+critic, tier weights) with replacement
@@ -211,13 +250,15 @@ const out = {
   leakage: { rowsChecked: prov.checked, perturbation: { checked: sampled, moved }, lagDays: RF.LAG_DAYS },
   showScoreMembers: memRaw ? { showsTried: Object.keys(memRaw.shows).length, withFiveOrMorePreOpening: Object.keys(audience).filter((k) => memRaw.shows[k]).length, paidFetches: 0, directRequests: memRaw.directRequestsTotal || null } : null,
   wayback: audRaw ? { showsTried: Object.keys(audRaw.shows).length, withCaptureBeforeOpening: Object.values(audRaw.shows).filter((v) => (v.captureTimestampsBeforeOpening || []).length).length, parsed: Object.keys(audience).length, paidFetches: audRaw.paidFetches || 0 } : null,
-  multipleComparisons: 'Three primary groups were declared in advance; per-feature rows are exploratory and uncorrected, so a lone exploratory "helps" would not count.',
+  multipleComparisons: `Bonferroni over ${N_PRIMARY_TESTS} tests (7 single-group primary tests, earlier-run linear and step, two forked step cuts, and flop and rave tails for linear and step). Per-feature rows are exploratory and uncorrected, so a lone exploratory "helps" would not count.`,
   floor: { shows: floors.length, bootstrapMissCriticSampling: r2(floorBoot), ifFullPanelIsItselfADraw: r2(floorBoot * Math.SQRT2), method: 'resample each show\'s critics (one vote per outlet+critic, real tier weights), mean |resample - full|; the second number scales by sqrt(2) because the observed panel is itself one draw. Neither is a hard limit: it is the part of the miss no pre-opening input can remove.' },
   reliability,
+  earlierRunOverlap: overlap,
+  earlierRun: { source: 'research agents scored web reviews of the earlier run (regional, Off-Broadway, West End), dated before first preview; scores noisy, hindsight risk', showsInFile: Object.keys(erRaw.reviews).length, reviewsInFile: Object.values(erRaw.reviews).reduce((s, l) => s + l.length, 0), partialDatesReadAsLastDayOfPeriod: true, cutDeclared: ER.ER_CUT, forkedCuts: [72, 78], troubleListUndated: true },
   inputs: results,
   notTestable: [
-    { input: 'Show Score audience score and review count (Wayback capture before opening)', verdict: 'cannot be dated at usable coverage', why: 'archive.org availability (closest-capture lookups at four offsets before opening) found no pre-opening capture for the 30 shows swept, all opened 2015-10 to 2016-05 (one season). The lookup returns one closest capture per query, so an older pre-opening capture could be missed; a full capture listing (CDX) is blocked from this environment. Treated as unproven coverage, not proof of absence: with 0 captures no with/without comparison is possible.' },
-    { input: 'Mezzanine, Theatr (separate audience components)', verdict: 'untested (no dated source found)', why: 'Mezzanine stored data is production aggregates with no review dates. Theatr and Broadway.com were not swept: no committed sampling backs a capture-rate claim, so these are untested, not disproven.' },
+    { input: 'Show Score audience score (Wayback capture before opening)', verdict: 'cannot be dated at usable coverage', why: 'archive.org availability lookups found no pre-opening capture for 30 shows (one season). Unproven coverage, not proof of absence. Replaced by the dated member-review route, which is tested above on a 54-show pilot.' },
+    { input: 'Mezzanine (separate audience components)', verdict: 'forward-only', why: 'Stored Mezzanine data is production aggregates with no per-rating dates, so no pre-opening value can be rebuilt for past shows. It can only be recorded going forward. Theatr was not swept (no committed sampling): untested, not disproven.' },
     { input: 'Broadway.com audience score', verdict: 'untested (no dated source found)', why: 'Not swept (no committed sampling); the one paid fetch of the pilot found no audience rating field on the page read. Untested, not disproven.' },
     { input: 'BroadwayWorld board chatter before opening', verdict: 'cannot be dated', why: 'Wayback holds only board front pages and indexes. Thread URLs carry no show name, so per-show pre-opening thread counts cannot be rebuilt for a backtest.' },
     { input: 'Producer track record', verdict: 'cannot be dated', why: 'No producers field in data/commercial.json or any stored file; an IBDB scrape is a new paid source (owner call).' },
