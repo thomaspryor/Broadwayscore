@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-11T14:46:15.119Z",
+  "timestamp": "2026-11-11T15:40:52.654Z",
   "stats": {
-    "totalReviews": 81408,
+    "totalReviews": 81416,
     "alreadyFlagged": 22245,
     "dateGuardCatches": 218,
-    "directorMismatch": 3629,
-    "tvFilmSignals": 2296,
+    "directorMismatch": 3630,
+    "tvFilmSignals": 2295,
     "londonSignals": 3686,
     "offBroadwaySignals": 752,
     "yearMismatch": 369,
-    "noPublishDate": 8438
+    "noPublishDate": 8441
   },
   "findings": [
     {
@@ -6825,6 +6825,19 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2022 (3x) more than 2025 (2x). 2022 matches production: as-you-like-it-west-end-2022"
+        }
+      ]
+    },
+    {
+      "showId": "as-you-like-it-regional-2026",
+      "file": "broadway-baby--unknown.json",
+      "publishDate": null,
+      "url": "https://broadwaybaby.com/shows/as-you-like-it/839334",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"daniel evans\" from all-male-as-you-like-it-regional-2026"
         }
       ]
     },
@@ -56302,25 +56315,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "sea-wall-a-life-2019",
-      "file": "nytimes--ben-brantley.json",
-      "score": 77,
-      "publishDate": "August 8, 2019",
-      "url": "https://www.nytimes.com/2019/08/08/theater/sea-wall-a-life-review-broadway-gyllenhaal.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
@@ -118046,6 +118040,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"signature theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "on-the-town-1998",
+      "file": "variety--charles-isherwood.json",
+      "publishDate": "1998-11-23",
+      "url": "https://variety.com/1998/legit/reviews/on-the-town-3-1200455847/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
