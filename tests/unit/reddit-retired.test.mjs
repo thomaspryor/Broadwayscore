@@ -19,7 +19,7 @@ function tmpCfg(obj) {
 test('isRedditRetired reads the single switch file', () => {
   assert.equal(isRedditRetired({ file: tmpCfg({ reddit: { retiredAt: '2026-11-11' } }), env: {} }), true);
   assert.equal(isRedditRetired({ file: tmpCfg({}), env: {} }), false);
-  assert.equal(isRedditRetired({ file: '/nonexistent/x.json', env: {} }), false);
+  assert.equal(isRedditRetired({ file: '/nonexistent/x.json', env: {} }), true);
 });
 
 test('REDDIT_FORCE_ENABLED=1 overrides the switch', () => {

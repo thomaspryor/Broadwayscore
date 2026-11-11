@@ -2,8 +2,8 @@
 /**
  * reddit-status.js — the single off-switch for Reddit (BRO-7337, owner decision 2026-11-11).
  *
- * Reddit is retired while config/retired-sources.json has a `reddit` entry. Delete the entry to
- * turn it back on. REDDIT_FORCE_ENABLED=1 overrides for tests and one-off manual runs.
+ * Reddit is retired while config/retired-sources.json has a `reddit` entry. Delete the entry (keep the file, `{}`) to
+ * turn it back on; a missing or malformed file counts as retired. REDDIT_FORCE_ENABLED=1 overrides for tests and one-off manual runs.
  * Enforced inside scripts/lib/reddit-api.js (before any network call), so no caller can spend.
  */
 const fs = require('fs');
@@ -26,7 +26,7 @@ function isRedditRetired({ file = DEFAULT_FILE, env = process.env } = {}) {
     const cfg = JSON.parse(fs.readFileSync(file, 'utf8'));
     return Boolean(cfg && cfg.reddit);
   } catch {
-    return false; // missing or unreadable file: not retired (fail open to the old behaviour)
+    return true; // missing or unreadable file: stay retired (fail closed, so a bad deploy cannot restart spend)
   }
 }
 
