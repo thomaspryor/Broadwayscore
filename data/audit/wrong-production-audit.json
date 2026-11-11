@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-11T08:55:25.805Z",
+  "timestamp": "2026-11-11T10:33:21.728Z",
   "stats": {
-    "totalReviews": 81387,
+    "totalReviews": 81390,
     "alreadyFlagged": 22239,
     "dateGuardCatches": 218,
     "directorMismatch": 3628,
     "tvFilmSignals": 2295,
-    "londonSignals": 3681,
+    "londonSignals": 3684,
     "offBroadwaySignals": 752,
     "yearMismatch": 369,
     "noPublishDate": 8438
@@ -95293,6 +95293,20 @@
     },
     {
       "showId": "cloud-9-west-end-2026",
+      "file": "broadwayworld--josh-maughan.json",
+      "score": null,
+      "publishDate": "2026-11-11",
+      "url": "https://www.broadwayworld.com/westend/article/Review-CLOUD-9-National-Theatre-20261111",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "cloud-9-west-end-2026",
       "file": "london-box-office--stuart-king.json",
       "score": 97,
       "publishDate": "2026-11-11",
@@ -95307,9 +95321,37 @@
     },
     {
       "showId": "cloud-9-west-end-2026",
+      "file": "london-theatre--anya-ryan.json",
+      "score": null,
+      "publishDate": "2026-11-11",
+      "url": "https://www.londontheatre.co.uk/reviews/cloud-9-review-national-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "cloud-9-west-end-2026",
       "file": "theatre-weekly--unknown.json",
       "publishDate": "2026-11-09",
       "url": "https://theatreweekly.com/first-look-images-released-for-caryl-churchills-cloud-9-at-the-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "cloud-9-west-end-2026",
+      "file": "thereviewshub--maryam-philpott.json",
+      "score": 80,
+      "publishDate": "2026-11-11",
+      "url": "https://www.thereviewshub.com/cloud-9-national-theatre-london/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
