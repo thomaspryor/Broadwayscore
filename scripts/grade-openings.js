@@ -79,14 +79,17 @@ function historyFrom(rtDir) {
 
 /** Commits that can be hand evidence: non-bot authors, plus every `ingest-urls:` commit. */
 function loadCommits(rtDir, sinceIso, untilIso) {
-  const base = ['log', 'HEAD', `--since=${sinceIso}`, `--until=${untilIso}`, `--format=${pm.LOG_FORMAT}`, '--name-only', '--no-renames'];
+  const base = ['log', 'HEAD', `--since=${sinceIso}`, `--until=${untilIso}`, `--format=${pm.LOG_FORMAT}`, '--name-status', '--no-renames']; // name-status: added vs modified per file (BRO-7375)
   const human = pm.parseGitLog(git(rtDir, [...base, '--perl-regexp', '--author=^(?!GitHub Action|github-actions)']));
   const ingest = pm.parseGitLog(git(rtDir, [...base, '--grep=^ingest-urls:']));
   // ingest-urls.yml's own fallback commit when the script did not commit
   // itself: bot-authored, but still a hand dispatch (never caller-tagged).
   const fallback = pm.parseGitLog(git(rtDir, [...base, '--grep=^data: Ingest URLs for ']));
+  // BRO-7375: the aggregator-gap audit's automated ingests ("ingest: ...")
+  // feed sweepFinds (reviews a later pass created), never the hand signals.
+  const sweep = pm.parseGitLog(git(rtDir, [...base, '--grep=^ingest: ']));
   const bySha = new Map();
-  for (const c of [...human, ...ingest, ...fallback]) bySha.set(c.sha, c);
+  for (const c of [...human, ...ingest, ...fallback, ...sweep]) bySha.set(c.sha, c);
   return [...bySha.values()];
 }
 
@@ -163,6 +166,16 @@ function main() {
     commitsScanned: commits.length,
     summary: og.summarize(grades),
     grades,
+    // BRO-7375: reviews the first pass did not get, kept MISS_HISTORY_DAYS
+    // (longer than the grade window) for the recurrence detector's 30-day rule.
+    // Only shows graded in this run are replaced, so a --show run keeps the rest.
+    firstPassMisses: og.mergeMissHistory(
+      (readJson(auditOutPath, null) || {}).firstPassMisses || [],
+      og.firstPassMisses(grades),
+      // A grade whose git history does not reach its window cannot vouch that
+      // a show had no misses: its earlier rows stay (ship-check).
+      { nowMs, gradedShows: grades.filter((g) => g.historyCovers !== false).map((g) => g.showId) },
+    ),
   };
   for (const g of grades) console.log(`${g.verdict.padEnd(13)} ${g.showId}  ${og.gradeLine(g)}`);
   console.log(JSON.stringify(doc.summary));

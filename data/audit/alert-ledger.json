@@ -37905,13 +37905,13 @@
       "firstSeen": "2026-11-06T04:56:22.650Z",
       "incidentOpenedAt": "2026-11-10T15:28:38.227Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-11T12:25:00.401Z",
+      "lastSeen": "2026-11-11T15:05:43.988Z",
       "lastNotifiedAt": "2026-11-10T15:28:38.227Z",
       "lastSurfacedAt": "2026-11-10T15:28:38.227Z",
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 13
+      "silentRefires": 14
     },
     "live-data-test:tests/unit/drain-unknown-outlets-live-data.test.mjs::tests/unit/drain-unknown-outlets-live-data.test.mjs": {
       "status": "resolved",
@@ -39088,7 +39088,7 @@
       "resolvedAt": "2026-11-08T10:15:43.140Z"
     },
     "live-data-test:scripts/audit-cross-outlet-attributions.test.mjs::no unreviewed cross-outlet attribution suspects remain": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Live-data test failing: no unreviewed cross-outlet attribution suspects remain (scripts/audit-cross-outlet-attributions.test.mjs)",
       "firstSeen": "2026-11-08T11:49:18.462Z",
@@ -39099,7 +39099,9 @@
       "lastSurfacedAt": "2026-11-11T12:25:00.376Z",
       "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-11T15:05:44.045Z",
+      "resolveReason": "live-data test green"
     },
     "live-data-test:tests/unit/morning-digest-quiet.test.mjs::plain wording: no visitor-facing health check shows its raw name (BRO-7047)": {
       "status": "open",
@@ -39108,12 +39110,13 @@
       "firstSeen": "2026-11-08T11:49:18.563Z",
       "incidentOpenedAt": "2026-11-11T12:25:00.426Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-11T12:25:00.426Z",
+      "lastSeen": "2026-11-11T15:05:44.007Z",
       "lastNotifiedAt": "2026-11-11T12:25:00.426Z",
       "lastSurfacedAt": "2026-11-11T12:25:00.426Z",
       "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "land:land/job/linear-BRO-7126-mw7xdyzq": {
       "status": "resolved",
@@ -41291,13 +41294,13 @@
       "firstSeen": "2026-11-10T15:36:09.494Z",
       "incidentOpenedAt": "2026-11-10T18:32:49.285Z",
       "deferredAuto": true,
-      "lastSeen": "2026-11-11T14:55:00.961Z",
+      "lastSeen": "2026-11-11T15:05:12.554Z",
       "lastNotifiedAt": "2026-11-10T18:32:49.285Z",
       "lastSurfacedAt": "2026-11-10T18:32:49.285Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 44
+      "silentRefires": 45
     },
     "test-yml:data-validation-red:audit-stale-duplicateof-flags": {
       "status": "resolved",
@@ -41981,7 +41984,7 @@
       "linearIdentifier": null
     },
     "land:land/job/linear-BRO-7375-mwc69c0l": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-7375-mwc69c0l",
       "firstSeen": "2026-11-11T14:31:20.567Z",
@@ -41989,6 +41992,33 @@
       "lastSeen": "2026-11-11T14:31:20.567Z",
       "lastNotifiedAt": "2026-11-11T14:31:20.567Z",
       "lastSurfacedAt": "2026-11-11T14:31:20.567Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "live-data-test:tests/unit/opening-night-lane-sources.test.mjs::last 10 Broadway openings (when data/reviews.json is present): every on-time outlet in each final set has a source or a gap (BRO-7199)": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Live-data test failing: last 10 Broadway openings (when data/reviews.json is present): every on-time outlet in each final set has a source or a gap (BRO-7199) (tests/unit/opening-night-lane-sources.test.mjs)",
+      "firstSeen": "2026-11-11T15:05:44.026Z",
+      "incidentOpenedAt": "2026-11-11T15:05:44.026Z",
+      "deferredAuto": true,
+      "lastSeen": "2026-11-11T15:05:44.026Z",
+      "lastNotifiedAt": "2026-11-11T15:05:44.026Z",
+      "lastSurfacedAt": "2026-11-11T15:05:44.026Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/bro-7373-cost": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: rebase red on land/bro-7373-cost",
+      "firstSeen": "2026-11-11T15:05:09.354Z",
+      "incidentOpenedAt": "2026-11-11T15:05:09.354Z",
+      "lastSeen": "2026-11-11T15:05:09.354Z",
+      "lastNotifiedAt": "2026-11-11T15:05:09.354Z",
+      "lastSurfacedAt": "2026-11-11T15:05:09.354Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null

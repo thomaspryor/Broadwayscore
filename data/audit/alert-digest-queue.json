@@ -397,5 +397,51 @@
       }
     ],
     "queuedAt": "2026-11-11T14:31:20.568Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/opening-night-lane-sources.test.mjs::last 10 Broadway openings (when data/reviews.json is present): every on-time outlet in each final set has a source or a gap (BRO-7199)",
+    "title": "Live-data test failing: last 10 Broadway openings (when data/reviews.json is present): every on-time outlet in each final set has a source or a gap (BRO-7199) (tests/unit/opening-night-lane-sources.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"last 10 Broadway openings (when data/reviews.json is present): every on-time outlet in each final set has a source or a gap (BRO-7199)\" in tests/unit/opening-night-lane-sources.test.mjs is red against the live corpus.\n\non-time outlets with no lane source:\n2026-11-08  wanted-2022                                       22 outlets   16 polled   5 gaps   1 missing: headtopics (ON TIME)\n\n1 !== 0\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "testId": "tests/unit/opening-night-lane-sources.test.mjs::last 10 Broadway openings (when data/reviews.json is present): every on-time outlet in each final set has a source or a gap (BRO-7199)",
+    "fields": [],
+    "queuedAt": "2026-11-11T15:05:44.026Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7373-cost",
+    "title": "Landing blocked: rebase red on land/bro-7373-cost",
+    "description": "land.yml did not land land/bro-7373-cost: the rebase gate went red at 3c6b31be17. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-7373-cost @ 3c6b31be17 (origin/land/bro-7373-cost) → origin/main @ 7a22630ef9 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 7a22630ef9: Rebasing (1/1) error: could not apply 3c6b31be170... BRO-7373: record session cost hint: Resolve all conflicts manually, mark them as resolved with hint: \"git add/rm <conflicted_files>\", then run \"git rebase --continue\". hint: Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/43043270580",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7373-cost"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "3c6b31be17051b80c7892586c5d62ebcf2cfecae"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/43043270580"
+      }
+    ],
+    "queuedAt": "2026-11-11T15:05:09.355Z"
   }
 ]
