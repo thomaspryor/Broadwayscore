@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-11T14:29:51.880Z",
+  "generatedAt": "2026-11-11T14:46:32.361Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -9,7 +9,7 @@
       "category": "broadway",
       "type": "special",
       "openingDate": "2026-11-11",
-      "status": "upcoming",
+      "status": "open",
       "slug": "now-you-see-me-live",
       "thumbnail": "/images/shows/now-you-see-me-live-2026/thumbnail.webp",
       "siteScore": null,
@@ -76,6 +76,10 @@
         },
         {
           "name": "Associated Press",
+          "isDualMarket": false
+        },
+        {
+          "name": "Deadline",
           "isDualMarket": false
         },
         {
@@ -3510,6 +3514,45 @@
         "warnings": 0,
         "unknowns": 2,
         "total": 4
+      },
+      "preflight": false
+    },
+    {
+      "id": "first-and-last-off-broadway-2026",
+      "title": "First and Last",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "play",
+      "openingDate": "2026-11-12",
+      "status": "previews",
+      "slug": "first-and-last-off-broadway",
+      "thumbnail": "/images/shows/first-and-last-off-broadway-2026/thumbnail.webp",
+      "daysUntil": 1,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        },
+        "dtliSlug": {
+          "pass": false,
+          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
+        },
+        "bwwRoundup": {
+          "pass": null,
+          "detail": "Not yet archived — bww-rr-discover.js will auto-fetch within minutes of publication",
+          "warn": true
+        },
+        "talkingBroadway": {
+          "pass": null,
+          "detail": "Not yet archived — tb-direct-url.js will discover at poll time",
+          "warn": true
+        }
+      },
+      "readinessSummary": {
+        "failures": 2,
+        "warnings": 2,
+        "unknowns": 4,
+        "total": 7
       },
       "preflight": false
     },

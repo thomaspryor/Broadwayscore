@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-11T14:29:34.274Z",
+  "timestamp": "2026-11-11T14:46:15.119Z",
   "stats": {
     "totalReviews": 81408,
-    "alreadyFlagged": 22242,
+    "alreadyFlagged": 22245,
     "dateGuardCatches": 218,
     "directorMismatch": 3629,
     "tvFilmSignals": 2296,
-    "londonSignals": 3687,
+    "londonSignals": 3686,
     "offBroadwaySignals": 752,
     "yearMismatch": 369,
     "noPublishDate": 8438
@@ -97655,19 +97655,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
-        }
-      ]
-    },
-    {
-      "showId": "desire-under-the-elms-off-west-end-2026",
-      "file": "timeout-london--unknown.json",
-      "publishDate": "2026-10-11",
-      "url": "https://www.timeout.com/london/theatre/desire-under-the-elms-2",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
