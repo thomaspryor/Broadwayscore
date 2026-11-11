@@ -24,8 +24,12 @@ const snapshot = () => store;
 
 async function load(userId: string) {
   if (store.userId === userId && (store.loaded || store.inflight)) return store.inflight ?? undefined;
-  const p = (async () => {
+  // A response only lands if it is still the current request: a sign-out or a different user signing
+  // in meanwhile replaces store.inflight, so a late answer for the old user is dropped.
+  let p: Promise<void>;
+  p = (async () => {
     const { data } = await supabaseRestRpc<ScoreCall[]>('get_my_score_calls');
+    if (store.inflight !== p) return;
     const calls: Record<string, ScoreCall> = {};
     for (const c of data || []) calls[c.show_id] = c;
     store = { userId, calls, loaded: true, inflight: null };

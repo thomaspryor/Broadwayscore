@@ -53,7 +53,7 @@ export default function CallTheScore({ show }: { show: ShowLike }) {
     setBusy(true); setValue(p);
     lock(p).then((r) => {
       setBusy(false);
-      if (r.ok || r.reason !== 'error') clearPendingCall(show.id, ls());
+      if (r.ok || r.reason === 'already_called' || r.reason === 'calls_closed') clearPendingCall(show.id, ls());
       else autoRef.current = false;
       if (!r.ok) setMsg(lockMsg(r.reason));
     });
