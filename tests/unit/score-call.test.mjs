@@ -120,3 +120,13 @@ test('a not_open answer keeps the waiting number (only ok, already_called, calls
   const src = fs.readFileSync(path.join(ROOT, 'src/components/show-page/CallTheScore.tsx'), 'utf8');
   assert.match(src, /r\.ok \|\| r\.reason === 'already_called' \|\| r\.reason === 'calls_closed'\) clearPendingCall/);
 });
+
+test('auto-save only takes a number picked within 30 minutes; older ones wait for a tap', () => {
+  const s = memStore(); const t0 = 1_700_000_000_000;
+  SC.setPendingCall('a', 77, s, t0);
+  assert.equal(SC.getPendingCall('a', s, t0 + 29 * 60000, SC.AUTOSAVE_WINDOW_MS), 77);
+  assert.equal(SC.getPendingCall('a', s, t0 + 31 * 60000, SC.AUTOSAVE_WINDOW_MS), null);
+  assert.equal(SC.getPendingCall('a', s, t0 + 31 * 60000), 77, 'still pre-fills the slider');
+  const src = fs.readFileSync(path.join(ROOT, 'src/components/show-page/CallTheScore.tsx'), 'utf8');
+  assert.match(src, /getPendingCall\(show\.id, ls\(\), Date\.now\(\), AUTOSAVE_WINDOW_MS\)/);
+});
