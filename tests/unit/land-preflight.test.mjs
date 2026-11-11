@@ -436,6 +436,16 @@ test('hook: an unknown push dir or a non-origin remote is a skip, never judged a
   assert.equal(runHook({ command: 'git push origin HEAD:land/feat', cwd: wt }).decision, 'block', 'control');
 });
 
+test('hook: a commit and a land push in one command is a skip that says the push went unchecked (BRO-7349)', async () => {
+  const { HEAD_MOVED_WARNING } = await import('../../scripts/lib/land-preflight.mjs');
+  const { wt } = landFixture(); // wt conflicts with main, so judging it would block
+  const v = runHook({ command: 'git commit -qm x && git push origin HEAD:land/feat', cwd: wt });
+  assert.equal(v.decision, 'skip');
+  assert.deepEqual(v.warnings, [HEAD_MOVED_WARNING]);
+  assert.match(HEAD_MOVED_WARNING, /NOT checked/);
+  assert.deepEqual(runHook({ command: 'git status && git push origin HEAD:land/feat', cwd: wt }).warnings.filter((w) => w === HEAD_MOVED_WARNING), [], 'control: no HEAD move, no such warning');
+});
+
 test('tests: manifest problems the audit reports (unsorted manifest) block too', () => {
   const d = auditRepo();
   write(d, 'tests/unit/new.test.mjs', '');

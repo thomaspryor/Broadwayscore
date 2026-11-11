@@ -754,6 +754,8 @@ export function judgeLand({ cwd, src, target, base = 'origin/main', fetch = true
   return { decision: rebase.status === 'skip' && tests.status === 'skip' ? 'skip' : 'allow', warnings, detail };
 }
 
+export const HEAD_MOVED_WARNING = 'this land push was NOT checked before it ran: a commit (or another HEAD move) runs earlier in the same command, so the preflight cannot see the commit being pushed, and the fast tests and rebase preview were skipped. land.yml still judges it, minutes later. Commit in one command and push land/<name> in the next, so the preflight checks it first.';
+
 /** Directory a land push runs in, from its `cd` / `git -C` prefixes. */
 function pushDir(cwd, p) {
   let dir = cwd;
@@ -947,7 +949,9 @@ export function runHook({ command, cwd, env = process.env, seams = {}, transcrip
     }
     const root = out(top);
     if (p.headMovedBefore) {
-      const r = { decision: 'skip', reason: 'HEAD moves earlier in the same command; cannot judge the pushed commit' };
+      // BRO-7349: 8 of 13 land pushes in one container skipped every check this way, and one went
+      // to land.yml with a test this preflight would have caught. Say so (advisory, never blocks).
+      const r = { decision: 'skip', reason: 'HEAD moves earlier in the same command; cannot judge the pushed commit', warnings: [HEAD_MOVED_WARNING] };
       logEvent(root, { event: 'skip', target: t.dst, reason: r.reason });
       results.push(r);
       continue;
