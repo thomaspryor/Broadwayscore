@@ -50,4 +50,44 @@ function gapSentence({ called, forecast, lo80, hi80 }) {
   return `We forecast ${forecast}${range}. ${tail}`;
 }
 
-module.exports = { isCallableShow, parseCall, resultStrip, gapSentence, toDay };
+// Guess first, sign up second (owner 2026-11-11). The number a signed-out reader picks waits in
+// localStorage until they sign in; only the number is kept here, never the forecast.
+const PENDING_KEY = 'bsc_pending_score_calls';
+const PENDING_TTL_MS = 7 * 24 * 60 * 60 * 1000;
+
+function readPending(store, now) {
+  try {
+    const raw = store && store.getItem(PENDING_KEY);
+    const o = raw ? JSON.parse(raw) : {};
+    const out = {};
+    for (const [id, v] of Object.entries(o || {})) {
+      const score = parseCall(v && v.score);
+      if (score != null && v && Number.isFinite(v.ts) && now - v.ts <= PENDING_TTL_MS) out[id] = { score, ts: v.ts };
+    }
+    return out;
+  } catch { return {}; }
+}
+function writePending(store, o) {
+  try { if (store) { if (Object.keys(o).length) store.setItem(PENDING_KEY, JSON.stringify(o)); else store.removeItem(PENDING_KEY); } } catch { /* private mode: reader just picks again */ }
+}
+/** Remember the pick for one show (one per show; a new pick replaces the old). Returns the stored integer or null. */
+function setPendingCall(showId, score, store, now = Date.now()) {
+  const n = parseCall(score);
+  if (!showId || n == null) return null;
+  const o = readPending(store, now);
+  o[showId] = { score: n, ts: now };
+  writePending(store, o);
+  return n;
+}
+/** The remembered pick for a show, or null. */
+function getPendingCall(showId, store, now = Date.now()) {
+  const v = readPending(store, now)[showId];
+  return v ? v.score : null;
+}
+function clearPendingCall(showId, store, now = Date.now()) {
+  const o = readPending(store, now);
+  delete o[showId];
+  writePending(store, o);
+}
+
+module.exports = { isCallableShow, parseCall, resultStrip, gapSentence, toDay, setPendingCall, getPendingCall, clearPendingCall };

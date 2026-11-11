@@ -1,13 +1,14 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ScoreBadge, getScoreTier } from '@/components/show-cards';
 import { useAuth } from '@/contexts/AuthContext';
 import { useScoreCall } from '@/hooks/useScoreCall';
-import { isCallableShow, gapSentence, resultStrip } from '@/lib/score-call';
+import { isCallableShow, gapSentence, resultStrip, setPendingCall, getPendingCall, clearPendingCall } from '@/lib/score-call';
 
 interface ShowLike { id: string; category?: string; type?: string; status?: string; openingDate?: string | null; previewsStartDate?: string | null; previewDate?: string | null; cancelledBeforeOpening?: boolean }
 
+const ls = (): Storage | null => { try { return window.localStorage; } catch { return null; } };
 const localToday = () => new Date().toISOString().slice(0, 10);
 const fmtDate = (iso?: string | null) => (iso ? new Date(iso.slice(0, 10) + 'T12:00:00Z').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' }) : '');
 
@@ -25,23 +26,55 @@ function Wrap({ children }: { children: React.ReactNode }) {
   return <div className="mt-4 pt-4 border-t border-white/10" data-testid="call-the-score">{children}</div>;
 }
 
-/** Pending-state card: sign in, pick 0-100, lock, reveal. Renders nothing for shows a reader cannot call. */
+const lockMsg = (reason: string) => (reason === 'calls_closed' ? 'Predictions closed on opening night.' : reason === 'not_open' ? 'Predictions open soon for this show.' : reason === 'already_called' ? null : 'Could not save your prediction. Try again.');
+
+/** Pending-state card: pick 0-100 (signed out is fine), save it with an account, then see the forecast. Renders nothing for shows a reader cannot predict. */
 export default function CallTheScore({ show }: { show: ShowLike }) {
   const { showSignIn } = useAuth();
   const { signedIn, loaded, call, lock } = useScoreCall(show.id);
   const [value, setValue] = useState(70);
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
+  const [saveAsk, setSaveAsk] = useState(false);
   const [callable, setCallable] = useState(false);
+  const autoRef = useRef(false);
   useEffect(() => { setCallable(isCallableShow(show as never, localToday())); }, [show]);
+  // Back from sign-up (or a fresh visit): restore the number they picked.
+  useEffect(() => {
+    const p = getPendingCall(show.id, ls());
+    if (p != null) { setValue(p); setSaveAsk(true); }
+  }, [show.id]);
+  // Once signed in and nothing is saved yet, save the waiting number automatically.
+  useEffect(() => {
+    if (!callable || !signedIn || !loaded || call || autoRef.current) return;
+    const p = getPendingCall(show.id, ls());
+    if (p == null) return;
+    autoRef.current = true;
+    setBusy(true); setValue(p);
+    lock(p).then((r) => {
+      setBusy(false);
+      if (r.ok || r.reason !== 'error') clearPendingCall(show.id, ls());
+      else autoRef.current = false;
+      if (!r.ok) setMsg(lockMsg(r.reason));
+    });
+  }, [callable, signedIn, loaded, call, show.id, lock]);
+  useEffect(() => { if (call) clearPendingCall(show.id, ls()); }, [call, show.id]);
   if (!callable) return null;
   const tier = getScoreTier(value, show.category);
 
   const onLock = async () => {
-    setBusy(true); setMsg(null);
+    setMsg(null);
+    if (!signedIn) {
+      // Only the number is stored. The forecast never reaches a signed-out browser.
+      setPendingCall(show.id, value, ls());
+      setSaveAsk(true);
+      showSignIn('prediction', 'predict_the_score');
+      return;
+    }
+    setBusy(true);
     const r = await lock(value);
     setBusy(false);
-    if (!r.ok) setMsg(r.reason === 'calls_closed' ? 'Predictions closed on opening night.' : r.reason === 'not_open' ? 'Predictions open soon for this show.' : r.reason === 'already_called' ? null : 'Could not lock your prediction. Try again.');
+    if (!r.ok) setMsg(lockMsg(r.reason));
   };
 
   if (signedIn && !loaded) return <Wrap><div className="h-24" aria-hidden /></Wrap>;
@@ -61,20 +94,6 @@ export default function CallTheScore({ show }: { show: ShowLike }) {
     );
   }
 
-  if (!signedIn) {
-    return (
-      <Wrap>
-        <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-brand m-0 mb-3">Predict the score</p>
-        <div className="flex items-center gap-4">
-          <div className="score-badge w-16 h-16 sm:w-20 sm:h-20 text-3xl rounded-xl score-none font-bold text-gray-400 flex items-center justify-center border border-dashed border-white/20" aria-hidden>?</div>
-          <p className="text-sm text-gray-300 m-0">Guess what the critics will give it, then see what we are predicting.</p>
-        </div>
-        <button type="button" className="btn-primary w-full mt-4" onClick={() => showSignIn('generic', 'call_the_score')}>Sign in to predict the score</button>
-        <p className="text-xs text-fg-muted text-center mt-2 mb-0">Free. Signed-in readers only, one prediction per show.</p>
-      </Wrap>
-    );
-  }
-
   return (
     <Wrap>
       <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-brand m-0 mb-1">Predict the score</p>
@@ -84,9 +103,10 @@ export default function CallTheScore({ show }: { show: ShowLike }) {
         <span className="text-sm font-semibold text-gray-200" aria-live="polite">{tier?.label}</span>
       </div>
       <input type="range" min={0} max={100} step={1} value={value} onChange={(e) => setValue(Number(e.target.value))} aria-label="Your score prediction, 0 to 100" className="w-full accent-brand" />
-      <button type="button" className="btn-primary w-full mt-4" disabled={busy} onClick={onLock}>{busy ? 'Locking in…' : 'Lock in my prediction'}</button>
+      <button type="button" className="btn-primary w-full mt-4" disabled={busy} onClick={onLock}>{busy ? 'Saving your prediction…' : 'Lock in my prediction'}</button>
+      {!signedIn && saveAsk && <p className="text-sm text-gray-200 text-center mt-2 mb-0" data-testid="save-prompt">Save your prediction: create a free account or sign in.</p>}
       {msg && <p className="text-xs text-score-skip text-center mt-2 mb-0" role="alert">{msg}</p>}
-      <p className="text-xs text-fg-muted text-center mt-2 mb-0">Want to see what we&apos;re predicting? Make your prediction to reveal it. One prediction per show, final once you lock it in.</p>
+      <p className="text-xs text-fg-muted text-center mt-2 mb-0">Want to see what we&apos;re predicting? Make your prediction to reveal it. Free account, one prediction per show, final once you lock it in.</p>
     </Wrap>
   );
 }
