@@ -103,6 +103,6 @@ const save = () => fs.writeFileSync(OUT, JSON.stringify({ ...state, directReques
   }
   save();
   const v = Object.entries(state.shows);
-  console.log(JSON.stringify({ shows: v.length, withPreOpening5plus: v.filter(([, x]) => x.preOpeningCount >= 5).length, directRequests: state.directRequestsTotal, paidFetches: 0 }));
+  console.log(JSON.stringify({ shows: v.length, withPreOpening5plus: v.filter(([, x]) => x.n >= 5).length, directRequests: state.directRequestsTotal, paidFetches: 0 }));
   for (const [id, x] of v.slice(-12)) console.log(id, JSON.stringify(x));
 })().catch((e) => { console.error(e); save(); process.exit(1); });
