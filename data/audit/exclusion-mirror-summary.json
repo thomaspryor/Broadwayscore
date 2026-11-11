@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-11-11T17:24:26.880Z",
-  "totalScanned": 81781,
-  "totalExcluded": 30877,
+  "generatedAt": "2026-11-11T17:40:31.122Z",
+  "totalScanned": 81787,
+  "totalExcluded": 30876,
   "ruleCounts": {
-    "wrongProduction": 20054,
-    "duplicateOf": 2271,
+    "wrongProduction": 20055,
+    "duplicateOf": 2274,
     "rejectionReason": 1441,
     "wrongShow": 1329,
-    "noTextOrScoreSignal": 1081,
+    "noTextOrScoreSignal": 1076,
     "unverifiableWebSearchRow": 896,
     "nonReview": 855,
     "cvWrongArticleHighConfidence": 409,
@@ -45,27 +45,23 @@
   },
   "ruleDeltas": {
     "wrongProduction": 1,
-    "duplicateOf": 1,
-    "rejectionReason": 1,
-    "noTextOrScoreSignal": -1,
-    "nonReview": 1,
-    "tourContaminationInText": -2,
-    "fullTextWrongAuthorNoExcerpt": 1
+    "duplicateOf": 3,
+    "noTextOrScoreSignal": -5
   },
-  "previousGeneratedAt": "2026-11-11T16:59:11.872Z",
+  "previousGeneratedAt": "2026-11-11T17:24:26.880Z",
   "mirror": {
     "comparedShows": 4738,
-    "comparedFiles": 81121,
-    "agreeExcluded": 30665,
-    "agreeIncluded": 49807,
-    "mirrorOnly": 339,
-    "rebuildOnly": 310,
+    "comparedFiles": 81125,
+    "agreeExcluded": 30666,
+    "agreeIncluded": 49810,
+    "mirrorOnly": 338,
+    "rebuildOnly": 311,
     "disagreements": 649,
     "disagreementRate": 0.008,
     "mirrorOnlyByRule": {
       "cvWrongArticleHighConfidence": 296,
       "contentTierInvalid": 26,
-      "noTextOrScoreSignal": 13,
+      "noTextOrScoreSignal": 12,
       "knownSyndicationSecondary": 2,
       "previewPlaceholder": 1,
       "rejectionReason": 1
@@ -85,12 +81,13 @@
       "skippedExcerptFingerprintDedup": 1,
       "skippedFingerprintDedup": 1,
       "skippedGarbage": 1,
+      "skippedOutletAsCriticDedup": 1,
       "skippedUrlPathCrossMarket": 1,
       "skippedWrongShow": 1
     },
     "rebuildEntriesUnscanned": 0,
     "notComparedShows": 66,
-    "notComparedFiles": 660
+    "notComparedFiles": 662
   },
   "previousDisagreementRate": 0.008
 }

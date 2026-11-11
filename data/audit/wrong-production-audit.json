@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-11T17:24:49.063Z",
+  "timestamp": "2026-11-11T17:40:54.705Z",
   "stats": {
-    "totalReviews": 81525,
-    "alreadyFlagged": 22257,
+    "totalReviews": 81529,
+    "alreadyFlagged": 22256,
     "dateGuardCatches": 218,
     "directorMismatch": 3629,
     "tvFilmSignals": 2297,
-    "londonSignals": 3693,
+    "londonSignals": 3694,
     "offBroadwaySignals": 751,
     "yearMismatch": 369,
-    "noPublishDate": 8496
+    "noPublishDate": 8482
   },
   "findings": [
     {
@@ -95515,6 +95515,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "cloud-9-west-end-2026",
+      "file": "times-uk--clive-davis.json",
+      "score": 42,
+      "publishDate": "2026-11-11",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/cloud-9-review-org*sms-and-orgies-in-the-foliage-fchw23k6r",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
         }
       ]
     },
