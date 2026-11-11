@@ -41,7 +41,7 @@ export default function CallTheScore({ show }: { show: ShowLike }) {
     setBusy(true); setMsg(null);
     const r = await lock(value);
     setBusy(false);
-    if (!r.ok) setMsg(r.reason === 'calls_closed' ? 'Calls closed when the show opened.' : r.reason === 'not_open' ? 'Calls open soon for this show.' : r.reason === 'already_called' ? null : 'Could not lock your call. Try again.');
+    if (!r.ok) setMsg(r.reason === 'calls_closed' ? 'Predictions closed on opening night.' : r.reason === 'not_open' ? 'Predictions open soon for this show.' : r.reason === 'already_called' ? null : 'Could not lock your prediction. Try again.');
   };
 
   if (signedIn && !loaded) return <Wrap><div className="h-24" aria-hidden /></Wrap>;
@@ -50,9 +50,9 @@ export default function CallTheScore({ show }: { show: ShowLike }) {
     const sentence = gapSentence({ called: call.called_score, forecast: call.forecast as number, lo80: call.lo80 as number, hi80: call.hi80 as number });
     return (
       <Wrap>
-        <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-brand m-0 mb-3">Your call is in</p>
+        <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-brand m-0 mb-3">Your prediction is in</p>
         <div className="flex items-start justify-center gap-4 mb-3">
-          <Tile label="Your call" score={call.called_score} category={show.category} />
+          <Tile label="Your prediction" score={call.called_score} category={show.category} />
           {call.forecast != null && <Tile label="Our forecast" score={call.forecast} category={show.category} muted />}
         </div>
         {sentence && <p className="text-sm text-gray-300 text-center m-0 mb-1">{sentence}</p>}
@@ -64,29 +64,29 @@ export default function CallTheScore({ show }: { show: ShowLike }) {
   if (!signedIn) {
     return (
       <Wrap>
-        <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-brand m-0 mb-3">Call the score</p>
+        <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-brand m-0 mb-3">Predict the score</p>
         <div className="flex items-center gap-4">
           <div className="score-badge w-16 h-16 sm:w-20 sm:h-20 text-3xl rounded-xl score-none font-bold text-gray-400 flex items-center justify-center border border-dashed border-white/20" aria-hidden>?</div>
           <p className="text-sm text-gray-300 m-0">Guess what the critics will give it, then see what we are predicting.</p>
         </div>
-        <button type="button" className="btn-primary w-full mt-4" onClick={() => showSignIn('generic', 'call_the_score')}>Sign in to call the score</button>
-        <p className="text-xs text-fg-muted text-center mt-2 mb-0">Free. Signed-in readers only, one call per show.</p>
+        <button type="button" className="btn-primary w-full mt-4" onClick={() => showSignIn('generic', 'call_the_score')}>Sign in to predict the score</button>
+        <p className="text-xs text-fg-muted text-center mt-2 mb-0">Free. Signed-in readers only, one prediction per show.</p>
       </Wrap>
     );
   }
 
   return (
     <Wrap>
-      <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-brand m-0 mb-1">Call the score</p>
+      <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-brand m-0 mb-1">Predict the score</p>
       <h3 className="text-base font-semibold text-white m-0 mb-3">What will the critics give it?</h3>
       <div className="flex items-center gap-4 mb-3">
         <ScoreBadge score={value} size="lg" category={show.category} />
         <span className="text-sm font-semibold text-gray-200" aria-live="polite">{tier?.label}</span>
       </div>
-      <input type="range" min={0} max={100} step={1} value={value} onChange={(e) => setValue(Number(e.target.value))} aria-label="Your score call, 0 to 100" className="w-full accent-brand" />
-      <button type="button" className="btn-primary w-full mt-4" disabled={busy} onClick={onLock}>{busy ? 'Locking in…' : 'Lock in and see our forecast'}</button>
+      <input type="range" min={0} max={100} step={1} value={value} onChange={(e) => setValue(Number(e.target.value))} aria-label="Your score prediction, 0 to 100" className="w-full accent-brand" />
+      <button type="button" className="btn-primary w-full mt-4" disabled={busy} onClick={onLock}>{busy ? 'Locking in…' : 'Lock in my prediction'}</button>
       {msg && <p className="text-xs text-score-skip text-center mt-2 mb-0" role="alert">{msg}</p>}
-      <p className="text-xs text-fg-muted text-center mt-2 mb-0">Want to see what we&apos;re predicting? Make your guess to reveal it. One call per show, final once you lock it in.</p>
+      <p className="text-xs text-fg-muted text-center mt-2 mb-0">Want to see what we&apos;re predicting? Make your prediction to reveal it. One prediction per show, final once you lock it in.</p>
     </Wrap>
   );
 }
@@ -99,23 +99,23 @@ export function CallResultStrip({ show, critic }: { show: ShowLike; critic: numb
   if (!r) return null;
   return (
     <div className="mb-4 rounded-lg bg-surface-overlay p-4" data-testid="call-result-strip">
-      <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-brand m-0 mb-1">Your call</p>
-      <p className="text-base font-semibold text-white m-0 mb-3">Off by {r.off}.{r.beatForecast ? ' You beat our forecast.' : ''}</p>
+      <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-brand m-0 mb-1">Your prediction</p>
+      <p className="text-base font-semibold text-white m-0 mb-3">You predicted {call.called_score}. Critics gave it {r.critic}. Off by {r.off}.{r.beatForecast ? ' You beat our forecast.' : ''}</p>
       <div className="flex items-start justify-center gap-4 mb-2">
         <Tile label="You" score={call.called_score} category={show.category} />
         {call.forecast != null && <Tile label="Our forecast" score={call.forecast} category={show.category} muted />}
         <Tile label="Critics" score={r.critic} category={show.category} />
       </div>
-      {r.forecastMiss != null && <p className="text-xs text-fg-muted text-center m-0">Our forecast (when you called) was off by {r.forecastMiss}.</p>}
+      {r.forecastMiss != null && <p className="text-xs text-fg-muted text-center m-0">Our forecast (when you predicted) was off by {r.forecastMiss}.</p>}
     </div>
   );
 }
 
-/** Hero "Awaiting reviews" link: anchor to the card, or "You called N". */
+/** Hero "Awaiting reviews" link: anchor to the card, or "You predicted N". */
 export function CallTheScoreHeroLink({ show }: { show: ShowLike }) {
   const { call } = useScoreCall(show.id);
   const [callable, setCallable] = useState(false);
   useEffect(() => { setCallable(isCallableShow(show as never, localToday())); }, [show]);
   if (!callable) return null;
-  return <a href="#critic-reviews" className="inline-block mt-1.5 text-xs font-semibold text-brand hover:text-brand-hover transition-colors" data-testid="call-the-score-link">{call ? `You called ${call.called_score}` : 'Call the score'}</a>;
+  return <a href="#critic-reviews" className="inline-block mt-1.5 text-xs font-semibold text-brand hover:text-brand-hover transition-colors" data-testid="call-the-score-link">{call ? `You predicted ${call.called_score}` : 'Predict the score'}</a>;
 }
