@@ -324,6 +324,7 @@ for (const f of [...G.cast, ...G.preview, ...EX.EXTRA_FEATURE_NAMES]) results.pu
 // "Transfers" = an earlier non-Broadway production of the same title in shows.json or earlier-run reviews on file, picked without looking at the new input.
 // Decision rule: the input is added to the nightly pilot only if the increment over v2 (all shows) has a Bonferroni-corrected interval entirely below zero.
 let transferModel = null; const V2SPEC = [...V1, ...G.audience]; const hasEA = (p) => p.has.earlierAudience; const isTr = (p) => p.has.transfer;
+const EA_ROWS_FROM = results.length;
 if (EA_ON) {
   results.push(compare('Earlier-production audience vs v1: shrunk member mean, all shows', [...V1, 'eaScore'], null, 'primary'));
   results.push(compare('Earlier-production audience vs v1: transfers only', [...V1, 'eaScore'], isTr, 'primary-subset', undefined, { family: true }));
@@ -361,6 +362,10 @@ if (EA_ON) {
   results.push(compare(`D: TRANSFER MODEL vs v1: all shows`, D, null, 'exploratory'));
   results.push(compare(`D: TRANSFER MODEL INCREMENT over v2, seasons after the selection set (clean test): all shows`, D, (p) => p.season > SEL, 'exploratory-subset', undefined, { baseNames: V2SPEC }));
   results.push(compare(`D: TRANSFER MODEL INCREMENT over v2, seasons after the selection set: transfers only`, D, (p) => p.season > SEL && isTr(p), 'exploratory-subset', undefined, { baseNames: V2SPEC }));
+}
+if (EA_ON) { // the Bonferroni family must equal the rows declared in it: fail loudly if a test is added or dropped without updating EA_NEW_TESTS
+  const declared = results.slice(EA_ROWS_FROM).filter((r) => r.kind === 'primary' || r.kind === 'primary-subset').length;
+  if (declared !== EA_NEW_TESTS) throw new Error(`correction family mismatch: ${declared} new in-family rows, EA_NEW_TESTS=${EA_NEW_TESTS}`);
 }
 
 // ---- BRO-7357: freeze the nightly v2 shadow model (v1 features + audScore + audCount, fit on the full evaluated set) ----
