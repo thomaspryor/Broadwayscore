@@ -6,8 +6,8 @@ import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { stopHookDecision, missingRootCauseParts, blockMessage, commitSubjects, isFixSubject, cardTitles, hasRootCauseAnswer, answerTexts, blockBudget, main } from './root-cause-stop.mjs';
-import { landedPushIndices } from './review-coverage.mjs';
+import { stopHookDecision, missingRootCauseParts, blockMessage, commitSubjects, isFixSubject, cardTitles, hasRootCauseAnswer, answerTexts, blockBudget, main, chunkStart } from './root-cause-stop.mjs';
+import { landedPushIndices, runShellCode } from './review-coverage.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const CLOUD = { CLAUDE_CODE_REMOTE: 'true' };
@@ -288,4 +288,28 @@ test('BRO-7349: many blocked claims in a row stay fast (memoised boundary search
   const t = Date.now();
   assert.equal(d(ev), 'block');
   assert.ok(Date.now() - t < 1000, `took ${Date.now() - t}ms; the boundary search must not re-judge earlier claims`);
+});
+
+test('BRO-7349: a claim made before anything landed does not discard an earlier answer', () => {
+  const ev = [...FIX_CARD, toolUse('k1', 'Bash', { command: 'git commit -qm "fix: venue"' }), ok('k1'), ANSWER, say(SAFE), feedback('Stop hook feedback:\n[command hook 1]: BLOCKED: unpushed commits'), ...commitLand(2, 'fix: venue follow-up').slice(2)];
+  assert.equal(d(ev), 'allow');
+  assert.equal(chunkStart(ev).claimIdx, -1);
+});
+
+test('BRO-7349: a land push handed to a shell is still a landing; one written into a fixture is not', () => {
+  const lp = (command) => landedPushIndices([toolUse('p', 'Bash', { command }), ok('p')]).length;
+  assert.equal(lp('bash -c "git push origin HEAD:refs/heads/land/x"'), 1);
+  assert.equal(lp("sh -c 'cd /tmp/w && git push origin HEAD:refs/heads/land/x'"), 1);
+  assert.equal(lp("bash <<'EOF'\ncd /tmp/w\ngit push origin HEAD:refs/heads/land/x\nEOF"), 1);
+  assert.equal(lp('git push origin "HEAD:refs/heads/land/x"'), 1);
+  assert.equal(lp("cat > t.mjs <<'EOF'\nconst c = 'git push origin HEAD:refs/heads/land/x';\nEOF"), 0);
+  assert.equal(lp("node -e \"run('git push origin HEAD:refs/heads/land/x')\""), 0);
+  assert.equal(runShellCode('bash -c "node scripts/linear-brain.js update BRO-1 --comment x"').includes('linear-brain.js update'), true);
+});
+
+test('BRO-7349: a shell-wrapped land push written into a fixture is not a landing', () => {
+  const lp = (command) => landedPushIndices([toolUse('p', 'Bash', { command }), ok('p')]).length;
+  assert.equal(lp("cat >> t.test.mjs <<'EOF'\nassert.equal(lp('bash -c \"git push origin HEAD:refs/heads/land/x\"'), 1);\nEOF"), 0);
+  assert.equal(lp("node -e \"x('bash -c git push origin HEAD:refs/heads/land/x')\""), 0);
+  assert.equal(lp("cat > a.sh <<'EOF'\nbash <<'X'\ngit push origin HEAD:refs/heads/land/x\nX\nEOF"), 0);
 });

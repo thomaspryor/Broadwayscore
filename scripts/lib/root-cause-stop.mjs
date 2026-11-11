@@ -38,11 +38,10 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 import { walkTranscript } from './transcript-scan.mjs';
-import { landedPushIndices, claimsSafeToArchive } from './review-coverage.mjs';
+import { landedPushIndices, claimsSafeToArchive, runShellCode } from './review-coverage.mjs';
 
 const require = createRequire(import.meta.url);
 const { parseRootCauseBlock, isFixCard, ROOT_CAUSE_CLOSE_BLOCKING_FROM, COUSINS_TAIL_RE } = require('./root-cause-close.js');
-const { stripHeredocBodies } = require('./infra-review-scope.js');
 
 const MIN_REASON = 10;
 const NO_PREVENTION_RE = /^[ \t>*_-]*NO-PREVENTION(?:\*\*|__)?[ \t]*:(?:\*\*|__)?[ \t]*(\S.*)$/im;
@@ -81,7 +80,7 @@ export function answerTexts(events, lastMessage = '') {
     else if (e.kind === 'assistant_tool_use') {
       // BRO-7349: the Linear write must be a command this Bash runs, not text inside a heredoc or a
       // quoted script (a test fixture written with `cat <<EOF` was read as the session's answer).
-      if (e.name === 'Bash' && LINEAR_WRITE_CMD_RE.test(stripHeredocBodies(String(e.input?.command || '')).replace(/'[^']*'|"[^"]*"/g, (q) => (/\s/.test(q) ? '""' : q)))) {
+      if (e.name === 'Bash' && LINEAR_WRITE_CMD_RE.test(runShellCode(e.input?.command))) {
         // Start each flag value on its own line, so an inline `--comment "CLASS-GUARD: x"` reads as a field line.
         out.push(String(e.input.command).replace(/\\n/g, '\n').replace(/--(?:comment|body|notes|summary)[=\s]+(?:\$\(cat\s*<<-?\s*)?["']?/g, '\n'));
       }
@@ -245,7 +244,9 @@ export function chunkStart(events, env = { CLAUDE_CODE_REMOTE: 'true' }, memo = 
   const landed = landedPushIndices(events);
   const lastLanding = landed.length ? landed[landed.length - 1] : -1;
   let claimIdx = -1;
-  for (let i = lastLanding - 1; i >= 0; i--) {
+  // A claim before the first landing had nothing to answer for (it was allowed as "nothing landed"),
+  // so it cannot close a chunk and discard an answer stated before it.
+  for (let i = lastLanding - 1; i > (landed[0] ?? Infinity); i--) {
     const e = events[i];
     if (e.kind !== 'assistant_text' || !claimsSafeToArchive(e.text)) continue;
     if (!memo.has(i)) memo.set(i, stopHookDecision({ lastMessage: e.text, events: events.slice(0, i), env: { ...env, CLAUDE_CODE_REMOTE: 'true', ROOT_CAUSE_STOP_DISABLE: '' }, memo }).decision);
