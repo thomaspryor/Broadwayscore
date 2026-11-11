@@ -44,14 +44,14 @@ const { assessFullText, getBestTextForScoring } = require('./text-quality');
  * what the selector picks: each file is then re-flagged once, and the loop guard
  * holds again after a rescore that ran on the new selector.
  */
-const TEXT_SELECTOR_CHANGED_AT = '2026-11-11T06:00:00Z';
+const TEXT_SELECTOR_CHANGED_AT = '2026-11-10T12:00:00Z';
 
 /**
  * Scored from an excerpt by an OLD selector, and the CURRENT selector now picks
  * the full text. Pure function of file state + the constant above.
  */
 function isExcerptScoreFromOldSelector(data) {
-  if (!data || typeof data !== 'object' || !data.fullText) return false;
+  if (!data || typeof data !== 'object' || !data.fullText || data.contentTier !== 'complete') return false;
   const src = data.llmMetadata && data.llmMetadata.textSource;
   if (!src || src.type !== 'excerpt') return false;
   const scoredAt = Date.parse((data.llmMetadata && data.llmMetadata.scoredAt) || '');

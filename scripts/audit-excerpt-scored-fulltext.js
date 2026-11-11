@@ -42,19 +42,22 @@ function loadShows() {
 function scan(dir, showsById) {
   const counts = {};
   const actionable = [];
+  let scanned = 0;
+  let malformed = 0;
   for (const showDir of listShowDirs(dir)) {
     const showPath = path.join(dir, showDir);
     for (const file of fs.readdirSync(showPath).filter((f) => isReviewTextFile(f))) {
       const fp = path.join(showPath, file);
       let data;
-      try { data = JSON.parse(fs.readFileSync(fp, 'utf8')); } catch { continue; }
+      try { data = JSON.parse(fs.readFileSync(fp, 'utf8')); } catch { malformed++; continue; }
+      scanned++;
       const cls = classifyExcerptScoredFullText(data, showsById.get(showDir), fp);
       if (!cls) continue;
       counts[cls] = (counts[cls] || 0) + 1;
       if (cls === 'actionable') actionable.push({ path: fp, rel: `${showDir}/${file}` });
     }
   }
-  return { counts, actionable };
+  return { counts, actionable, scanned, malformed };
 }
 
 function main() {
@@ -66,7 +69,9 @@ function main() {
   let showsById;
   try { showsById = loadShows(); } catch (e) { console.error(`[excerpt-scored-fulltext] cannot load shows.json: ${e.message}`); process.exit(2); }
 
-  const { counts, actionable } = scan(dir, showsById);
+  const { counts, actionable, scanned, malformed } = scan(dir, showsById);
+  // An empty or unreadable corpus would otherwise report 0 actionable and pass.
+  if (scanned === 0 || malformed > scanned * 0.05) { console.error(`[excerpt-scored-fulltext] corpus unusable: scanned=${scanned} malformed=${malformed} in ${dir}`); process.exit(2); }
   let fixed = 0;
   if (argv.includes('--fix') && actionable.length) {
     const { safeWriteReview } = require('./lib/review-write-guard');
