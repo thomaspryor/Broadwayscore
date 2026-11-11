@@ -1,19 +1,71 @@
 {
-  "updatedAt": "2026-11-11T00:13:39.437Z",
-  "processed": 2,
-  "failed": 0,
-  "successRate": "100.0%",
+  "updatedAt": "2026-11-11T00:33:50.520Z",
+  "processed": 44,
+  "failed": 47,
+  "successRate": "48.4%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 32,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 3,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 0,
+    "scrapingdog": 17,
+    "scrapingbee": 5,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 28
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 6,
+  "recentActivity": [
+    {
+      "t": "2026-11-11T00:03:40.476Z",
+      "event": "bb-session",
+      "session": "a47a0557",
+      "url": "https://deadline.com/2026/11/broadway-box-office-tom-hiddleston-much-ado-about-n"
+    },
+    {
+      "t": "2026-11-11T00:05:29.597Z",
+      "event": "bb-session",
+      "session": "322038a2",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
+    },
+    {
+      "t": "2026-11-11T00:05:30.042Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-11-11T00:08:03.424Z",
+      "event": "bb-session",
+      "session": "25b06628",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
+    },
+    {
+      "t": "2026-11-11T00:08:03.851Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-11T00:10:15.830Z",
+      "event": "bb-session",
+      "session": "3d990574",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655641"
+    },
+    {
+      "t": "2026-11-11T00:10:16.342Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-11T00:19:40.194Z",
+      "event": "bb-session",
+      "session": "05aa59ad",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-11-11T00:31:36.231Z",
+      "event": "bb-session",
+      "session": "ebb9d4a3",
+      "url": "https://publictheater.org/productions/season/2627/the-curious-case-of-benjamin-b"
+    }
+  ]
 }
