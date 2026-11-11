@@ -136,6 +136,39 @@ function venuePhrase(show) {
   return norm;
 }
 
+// BRO-7372: shows.json writes a house with its stage as "Playwrights Horizons/Judith O. Rubin
+// Theater" or "The Public Theater/Newman Theater", and some carry a space suffix ("The Other
+// Palace - Main Theatre"). A page or headline names the house ("at Playwrights Horizons"),
+// almost never the whole string, so matching on the full string alone made every credit-less
+// show with such a venue unconfirmable: Exeunt's review of the ripple, the wave that carried
+// me home was dropped as "does not confirm the show" (and cached as such for a week).
+// The forms a page may use for one venue, full string first. Each extra form must be two or
+// more words (a bare "Public" or "Main" proves nothing) and not a generic venue word.
+const GENERIC_VENUE_WORDS = new Set(['theatre', 'theater', 'stage', 'hall', 'house', 'main', 'studio', 'room', 'space', 'auditorium', 'playhouse']);
+function venueForms(show) {
+  const full = venuePhrase(show);
+  if (!full) return [];
+  const out = [full];
+  const raw = String((show && show.venue) || '');
+  const [houseRaw, ...stages] = raw.split('/');
+  // The house: the text before the stage separator, cut at a " - Main Theatre" suffix, a bracket or a comma.
+  const house = hyphenSpaced(houseRaw.split(/\s[-–—]\s|[(,]/)[0]);
+  const candidates = [house, ...stages.map((st) => hyphenSpaced(st.split(/\s[-–—]\s|[(,]/)[0]))];
+  for (const form of candidates) {
+    if (!form || out.includes(form) || GENERIC_VENUES.has(form)) continue;
+    const words = form.split(/\s+/);
+    if (words.length < 2 || words.every((w) => GENERIC_VENUE_WORDS.has(w))) continue;
+    out.push(form);
+  }
+  return out;
+}
+
+// Another running show at the same house: a form both carry cannot tell the two apart.
+function sharesVenueForm(a, b) {
+  const theirs = new Set(venueForms(b));
+  return venueForms(a).some((f) => theirs.has(f));
+}
+
 // Real feeds title an off-Broadway review with the bare show name: Off Off Online's
 // "Soon" and Theater Scene's "Soon" (BRO-5358) name no venue, cast or writer. For a
 // credit-less short-title show, an item whose WHOLE headline is the title ("Soon",
@@ -164,9 +197,11 @@ const REVIEW_WORD_RE = /\b(review|reviews|reviewed)\b/i;
 function namesShowVenue(combined, rawText, show, nowMs = Date.now()) {
   if (creditNames(show, nowMs).length > 0) return false;
   if (!REVIEW_WORD_RE.test(`${rawText || ''} ${combined}`)) return false;
-  const norm = venuePhrase(show);
+  const forms = venueForms(show);
+  if (!forms.length) return false;
+  const norm = forms.find((f) => ` ${combined} `.includes(` ${f} `));
   if (!norm) return false;
-  if (!` ${combined} `.includes(` ${norm} `)) return false;
+  if (norm !== forms[0]) return true; // a house or stage form: always two or more words, see venueForms
   const tokens = norm.split(/\s+/);
   if (tokens.length === 1 && norm.length < 6) {
     const stored = String(show.venue).trim();
@@ -324,7 +359,7 @@ function findMatchingShows(headline, urlSlug, activeShows, creditText = '', { no
   // A venue credit is void when another show at the same venue matched on its
   // own title: "Hamlet at St. Luke's Theatre ... soon" belongs to Hamlet.
   const kept = matches.filter((show) => !venueOnly.has(show)
-    || !matches.some((o) => o !== show && !venueOnly.has(o) && venuePhrase(o) === venuePhrase(show)));
+    || !matches.some((o) => o !== show && !venueOnly.has(o) && sharesVenueForm(o, show)));
   return dropTitlesInsideLongerMatch(kept, headline ? hyphenSpaced(String(headline).replace(/[_/]+/g, ' ')) : combined);
 }
 
@@ -549,10 +584,25 @@ function pageConfirmsShow(text, show, { nowMs = Date.now(), otherShows = [] } = 
   if (!titleForms(show).some((f) => formInHay(f, hay))) return false;
   const credits = creditNames(show, nowMs);
   if (credits.length) return credits.some((n) => hay.includes(` ${n} `) || hay.includes(` ${n}s `));
-  const venue = venuePhrase(show);
-  // A one-word venue ("JACK", "Signature") is too common a word to prove anything from a page.
-  if (!venue || venue.split(/\s+/).length < 2 || !hay.includes(` ${venue} `)) return false;
-  return !otherShows.some((o) => o.id !== show.id && venuePhrase(o) === venue);
+  // A one-word venue ("JACK", "Signature") is too common a word to prove anything from a page:
+  // venueForms keeps only forms of two or more words. A form another running show carries too
+  // (the same house) cannot tell the two apart, so it is dropped; the show's own stage can stay.
+  const rivals = otherShows.filter((o) => o.id !== show.id);
+  return venueForms(show)
+    .filter((f) => f.split(/\s+/).length >= 2 && !rivals.some((o) => venueForms(o).includes(f)))
+    .some((f) => hay.includes(` ${f} `));
+}
+
+/**
+ * BRO-7372: a fingerprint of the code that decides "this page confirms this show". The poller
+ * stamps its "did not confirm" cache with it and drops the whole cache when it changes, so a
+ * fix to the confirmation rules takes effect on the next run instead of after the 7-day TTL.
+ * Derived from the functions' own source, so nobody has to remember to bump a version.
+ */
+function confirmLogicFingerprint() {
+  const src = [pageConfirmsShow, pageNamesTitle, pageHay, titleForms, creditNames, venueForms, venuePhrase, formInHay]
+    .map((f) => String(f)).join('\n');
+  return require('crypto').createHash('sha1').update(src).digest('hex').slice(0, 12);
 }
 
 /**
@@ -927,6 +977,7 @@ module.exports = {
   latestReviewDateByOutlet,
   isFeedStale,
   namesShowVenue,
+  venueForms,
   looksLikeBookReview,
   findMatchingShows,
   findPageConfirmCandidates,
@@ -934,6 +985,7 @@ module.exports = {
   itemReadsAsReview,
   headlineLooksLikeNews,
   pageConfirmsShow,
+  confirmLogicFingerprint,
   pageNamesTitle,
   pageText,
   titleForms,
