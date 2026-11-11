@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-11T14:16:28.894Z",
+  "generatedAt": "2026-11-11T15:19:36.481Z",
   "date": "2026-11-11",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 247615,
+  "entryCount": 253874,
   "shows": [
     {
       "showId": "tango-after-dark-off-west-end-2026",
@@ -2104,21 +2104,6 @@
       "slowest_reviews": []
     },
     {
-      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
-      "reviewCount": 4,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 688507,
-        "rebuilt-to-deployed": 138790742
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
       "showId": "king-of-the-yees-off-broadway-2026",
       "reviewCount": 21,
       "median_e2e_ms": null,
@@ -2231,7 +2216,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 777291,
+        "scored-to-rebuilt": 779547,
         "rebuilt-to-deployed": 168905673
       },
       "reviews_over_15min": 0,
@@ -3319,21 +3304,6 @@
       "slowest_reviews": []
     },
     {
-      "showId": "the-wiz-tour-2026",
-      "reviewCount": 2,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
-        "rebuilt-to-deployed": null
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
       "showId": "la-boheme-off-broadway-2026",
       "reviewCount": 5,
       "median_e2e_ms": null,
@@ -3432,21 +3402,6 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 166727413,
         "scored-to-rebuilt": 1299108,
-        "rebuilt-to-deployed": null
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
-      "showId": "fences-leeds-regional-2026",
-      "reviewCount": 6,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -3950,7 +3905,7 @@
     },
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "reviewCount": 33,
+      "reviewCount": 34,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -4138,21 +4093,6 @@
         "collected-to-scored": null,
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
-      "showId": "wicked-2003",
-      "reviewCount": 25,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": 1381928,
-        "rebuilt-to-deployed": 82952724
       },
       "reviews_over_15min": 0,
       "reviews_over_60min": 0,
@@ -6641,6 +6581,21 @@
       "slowest_reviews": []
     },
     {
+      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+      "reviewCount": 4,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 688507,
+        "rebuilt-to-deployed": 138790742
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
       "showId": "i-became-we-off-broadway-2026",
       "reviewCount": 11,
       "median_e2e_ms": null,
@@ -8158,6 +8113,21 @@
       "slowest_reviews": []
     },
     {
+      "showId": "wicked-2003",
+      "reviewCount": 25,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1381928,
+        "rebuilt-to-deployed": 82952724
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
       "showId": "triumph-off-west-end-2026",
       "reviewCount": 20,
       "median_e2e_ms": null,
@@ -9118,21 +9088,6 @@
       "slowest_reviews": []
     },
     {
-      "showId": "double-bill-tell-me-straight-and-aggy-off-west-end-2026",
-      "reviewCount": 1,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
-        "rebuilt-to-deployed": null
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
       "showId": "the-whos-tommy-tour-2026",
       "reviewCount": 5,
       "median_e2e_ms": null,
@@ -9239,13 +9194,13 @@
     },
     {
       "showId": "cloud-9-west-end-2026",
-      "reviewCount": 7,
+      "reviewCount": 9,
       "median_e2e_ms": 10593777,
       "p90_e2e_ms": 43731626,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 512326,
-        "scored-to-rebuilt": 457089,
+        "collected-to-scored": 480716,
+        "scored-to-rebuilt": 451975,
         "rebuilt-to-deployed": 8941203
       },
       "reviews_over_15min": 5,
@@ -10719,6 +10674,21 @@
       "slowest_reviews": []
     },
     {
+      "showId": "double-bill-tell-me-straight-and-aggy-off-west-end-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
       "showId": "all-the-worlds-a-stage-regional-2026",
       "reviewCount": 6,
       "median_e2e_ms": null,
@@ -10727,6 +10697,21 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1018504,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "act-of-god-off-west-end-2026",
+      "reviewCount": 3,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1761088,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
