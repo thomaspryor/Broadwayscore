@@ -111,3 +111,12 @@ test('isCallableShow hides already-open, no-date, closed, cancelled and non-broa
   assert.equal(SC.isCallableShow({ ...base, cancelledBeforeOpening: true }, '2026-11-11'), false);
   assert.equal(SC.isCallableShow({ ...base, category: 'west-end' }, '2026-11-11'), false);
 });
+
+test('useScoreCall drops a late get_my_score_calls answer for a previous user (store.inflight guard)', () => {
+  const src = fs.readFileSync(path.join(ROOT, 'src/hooks/useScoreCall.ts'), 'utf8');
+  assert.match(src, /if \(store\.inflight !== p\) return;/);
+});
+test('a not_open answer keeps the waiting number (only ok, already_called, calls_closed clear it)', () => {
+  const src = fs.readFileSync(path.join(ROOT, 'src/components/show-page/CallTheScore.tsx'), 'utf8');
+  assert.match(src, /r\.ok \|\| r\.reason === 'already_called' \|\| r\.reason === 'calls_closed'\) clearPendingCall/);
+});
