@@ -198,6 +198,8 @@ jobs:
         env:
           INPUT_MARKET: ${{ inputs.market }}
           INPUT_SHOW_ID: ${{ inputs.show_id }}
+          # BRO-7117: lists active targeted poller runs (needs only actions: read).
+          GH_TOKEN: ${{ github.token }}
         run: |
           # WE reviews publish 12-48h after press night; use longer window
           DEFAULT_LOOKBACK=2
@@ -214,6 +216,15 @@ jobs:
             echo "shows=$INPUT_SHOW" >> $GITHUB_OUTPUT
             echo "has_shows=true" >> $GITHUB_OUTPUT
           else
+            # BRO-7117: an auto/market run and a targeted run sit in different
+            # concurrency groups, so both used to work the SAME show at once and
+            # one failed (BRO-5716, BRO-6594, BRO-7338). Leave a show an active
+            # targeted run owns to that run; it does the full pipeline for it
+            # (gather, pre-loop _pending drain, collect, score, readiness). The
+            # loop and the collect/score scope below re-check, for targeted runs
+            # that start later. Fails open: an unreadable run list owns nothing.
+            export POLLER_OWNED_SHOWS=$(node scripts/filter-active-targeted-poller-shows.js --active)
+            [ -n "$POLLER_OWNED_SHOWS" ] && echo "Shows owned by an active targeted poller run (left to it): $POLLER_OWNED_SHOWS"
             SHOWS=$(node -e "
               const shows = require('./data/shows.json').shows;
               const { isStuckPreviewsPollCandidate } = require('./scripts/lib/opening-signal');
@@ -222,7 +233,7 @@ jobs:
               cutoff.setDate(cutoff.getDate() - $LOOKBACK);
               cutoff.setHours(0,0,0,0);
               const market = '$MARKET';
-              const opened = shows.filter(s => {
+              const candidates = shows.filter(s => {
                 const cat = s.category || 'broadway';
                 if (cat !== 'broadway' && cat !== 'west-end' && cat !== 'off-west-end' && cat !== 'off-broadway') return false;
                 if (market === 'broadway' && cat !== 'broadway' && cat !== 'off-broadway') return false;
@@ -250,6 +261,9 @@ jobs:
                 d.setHours(0,0,0,0);
                 return d >= cutoff && d <= now;
               });
+              const ownedElsewhere = new Set((process.env.POLLER_OWNED_SHOWS || '').split(',').filter(Boolean));
+              const opened = candidates.filter(s => !ownedElsewhere.has(s.id));
+              if (candidates.length > 0 && opened.length === 0) console.error('All recently opened shows are owned by active targeted poller runs (BRO-7117).');
               // Order (poller-loop-budget.js orderPollShows): shows in their press-night
               // window first (main stage before Off), local-date future openers last.
               // The poll loop is time-budgeted and keeps the first POLL_PRIORITY_SHOWS in
@@ -260,7 +274,7 @@ jobs:
             ")
 
             if [ -z "$SHOWS" ]; then
-              echo "No recently opened shows"
+              echo "No recently opened shows left for this run"
               echo "has_shows=false" >> $GITHUB_OUTPUT
             else
               IFS='|' read -r ORDERED HOT FRONT MAIN_FRONT_END WINDOW <<< "$SHOWS"
@@ -361,6 +375,8 @@ jobs:
           # text for reviews already on disk. Never on the orchestrator's press-night loop, which omits the input.
           INPUT_SHOW_ID: ${{ inputs.show_id }}
           INPUT_COLLECT_EXISTING: ${{ inputs.collect_existing }}
+          # BRO-7117: owned_elsewhere() lists active targeted poller runs.
+          GH_TOKEN: ${{ github.token }}
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -463,6 +479,23 @@ jobs:
           IFS=',' read -ra HOT_ARRAY <<< "$HOT_SHOWS"
           declare -A LAST_POLL=()
           declare -A REPOLLS=()
+          # BRO-7117: an auto/market run skips a show once a targeted run for it
+          # is active (a targeted run started after Find). The list is re-read at
+          # most every 2 min; fails open (no list = nothing owned).
+          OWNED_AT=-9999
+          OWNED_LIST=""
+          OWNED_SKIPPED=""
+          owned_elsewhere() {
+            [ -z "$INPUT_SHOW_ID" ] || return 1
+            if [ $((SECONDS - OWNED_AT)) -ge 120 ]; then
+              OWNED_LIST=",$(node scripts/filter-active-targeted-poller-shows.js --active || true),"
+              OWNED_AT=$SECONDS
+            fi
+            [[ "$OWNED_LIST" == *",$1,"* ]] || return 1
+            echo "↪ $1: an active targeted poller run owns it now; leaving it to that run (BRO-7117)"
+            [[ " $OWNED_SKIPPED " == *" $1 "* ]] || OWNED_SKIPPED="$OWNED_SKIPPED $1"
+            return 0
+          }
           HOT_NEW=false
           HOT_NEW_COUNT=0
           # BRO-6033: hot shows whose press-night wave no earlier run has committed
@@ -619,6 +652,10 @@ jobs:
               SKIPPED_SHOWS="$SKIPPED_SHOWS $SHOW_ID"
               continue
             fi
+            if owned_elsewhere "$SHOW_ID"; then
+              POLLED=$((POLLED + 1))
+              continue
+            fi
             poll_one "$SHOW_ID" "$SHOW_TIMEOUT"
             POLLED=$((POLLED + 1))
             for HOT_ID in "${HOT_ARRAY[@]}"; do
@@ -629,6 +666,7 @@ jobs:
               HOT_TIMEOUT=$(node scripts/lib/poller-loop-budget.js timeout $((POLL_LOOP_BUDGET_SEC - (SECONDS - LOOP_START))) 600 || echo 0)
               case "$HOT_TIMEOUT" in ''|*[!0-9]*) HOT_TIMEOUT=0 ;; esac
               [ "$HOT_TIMEOUT" -gt 0 ] || continue
+              owned_elsewhere "$HOT_ID" && continue
               echo "↻ Press-night re-poll of $HOT_ID ($(( (SECONDS - ${LAST_POLL[$HOT_ID]}) / 60 )) min since last poll)"
               REPOLLS[$HOT_ID]=$(( ${REPOLLS[$HOT_ID]:-0} + 1 ))
               poll_one "$HOT_ID" "$HOT_TIMEOUT"
@@ -647,6 +685,9 @@ jobs:
             fi
           done
 
+          if [ -n "$OWNED_SKIPPED" ]; then
+            echo "Left to active targeted poller runs (BRO-7117):$OWNED_SKIPPED" >> "$GITHUB_STEP_SUMMARY"
+          fi
           if [ -n "$SKIPPED_SHOWS" ]; then
             echo "::warning::Poll loop budget (${POLL_LOOP_BUDGET_SEC}s) spent; not polled this run (rotation reaches them next run):$SKIPPED_SHOWS"
             echo "Poll loop budget spent; not polled:$SKIPPED_SHOWS" >> "$GITHUB_STEP_SUMMARY"
@@ -798,12 +839,37 @@ jobs:
           git commit -m "data: Opening night poller — new reviews discovered [skip ci]"
           bash ../../scripts/lib/push-with-retry.sh 20 main
 
+      # BRO-7117: collect and score run 10-60 min after Find. A targeted run that
+      # started since then owns its show; an auto/market run leaves it alone here
+      # too (BRO-7338: both runs collected cloud-9 and both crashed). Targeted runs
+      # pass their list through unchanged. Fails open: on any error the full list
+      # is kept (all_owned stays empty, the steps below fall back to Find's list).
+      - name: Scope collect and score to shows this run still owns
+        id: scope
+        if: steps.find.outputs.has_shows == 'true'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          INPUT_SHOW_ID: ${{ inputs.show_id }}
+          FIND_SHOWS: ${{ steps.find.outputs.shows }}
+        run: |
+          KEEP="$FIND_SHOWS"
+          if [ -z "$INPUT_SHOW_ID" ]; then
+            KEEP=$(node scripts/filter-active-targeted-poller-shows.js "$FIND_SHOWS")
+          fi
+          echo "shows=$KEEP" >> "$GITHUB_OUTPUT"
+          if [ -z "$KEEP" ]; then
+            echo "all_owned=true" >> "$GITHUB_OUTPUT"
+            echo "Every show is owned by an active targeted poller run; skipping collect and score here."
+          fi
+
       - name: Collect full text inline
         id: collect
-        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_collect == 'true'
+        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_collect == 'true' && steps.scope.outputs.all_owned != 'true'
         env:
           # BRO-7160: a collect_existing sweep is a targeted run, so this list is already that one show.
-          SHOW_FILTER: ${{ steps.find.outputs.shows }}
+          # BRO-7117: never empty here (all_owned gates the step), so collect never runs unfiltered.
+          SHOW_FILTER: ${{ steps.scope.outputs.shows || steps.find.outputs.shows }}
           MAX_REVIEWS: '100'
           BATCH_SIZE: '10'
           # BRO-6972: a show with no scored review yet is collected first (collection-priority.js).
@@ -935,7 +1001,7 @@ jobs:
 
       - name: Score reviews inline
         id: score
-        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_action == 'true'
+        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_action == 'true' && steps.scope.outputs.all_owned != 'true'
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -956,7 +1022,7 @@ jobs:
           # "disabled" to --time-budget-min, so never pass it one.
           score_has_time() { awk -v d="$SCORE_DEADLINE" -v n="$(date +%s)" 'BEGIN{exit !((d-n)/60 >= 5.0)}'; }
           SCORE_DEFERRED=0
-          SHOWS="${{ steps.find.outputs.shows }}"
+          SHOWS="${{ steps.scope.outputs.shows || steps.find.outputs.shows }}"
           IFS=',' read -ra SHOW_ARRAY <<< "$SHOWS"
           # BRO-735: same per-show crash counting as the gather stage above —
           # `|| true` keeps the loop resilient across shows, but a genuine
