@@ -88,8 +88,9 @@ concurrency:
   # queues, and GitHub superseding an older pending dispatch is harmless
   # (cancelled runs never alert and don't count toward failure streaks).
   # Market-scoped when the dispatcher passes market (orchestrator always does),
-  # so BW and WE orchestrators keep their pollers parallel to each other and
-  # update-show-status's market-less opener dispatch doesn't compete with them.
+  # so BW and WE orchestrators keep their pollers parallel to each other.
+  # update-show-status's opener fallback dispatches per market too (BRO-7360),
+  # so it queues behind them instead of overlapping them.
   # Deliberately NOT one shared group for every review-texts writer (BRO-4273):
   # that would queue the targeted per-show poller behind a 60-min auto run on
   # opening night. Concurrent pushes are push-with-retry.sh's job; run
