@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7371-a",
   "planId": "e8090654-6fb4-40b4-a67b-99976defd45b",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-11T13:37:15.874Z",
   "submitter": {
     "name": null,
@@ -24,5 +24,15 @@
         "reason": "audit-standing-coverage --market=broadway lists chicagotribune under promote (unflagged, 85% overall, every trailing season >= 79%)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-11T14:22:17.630Z",
+  "results": [
+    {
+      "action": "outlet-registry-flag",
+      "ok": true,
+      "changed": true,
+      "msg": "chicagotribune: standingCoverage[broadway] false -> true"
+    }
+  ],
+  "executedIn": "ci"
 }
