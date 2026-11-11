@@ -9,6 +9,13 @@
  * `root-cause-class: v1:KEY` line); later runs comment the new instances
  * on it instead of filing again. Grouping logic: scripts/lib/recurrence-classes.js.
  *
+ * First-pass misses (BRO-7375): reviews the first pass did not get (found
+ * later by a person, ingest-urls or the aggregator-gap sweep, or found
+ * without full text), from opening-grades.json firstPassMisses. The same
+ * market+outlet on 3+ shows opened in 30 days is a class
+ * (missed-at-first-pass:<market>:<outlet>, or text-missed-at-first-pass:...)
+ * with its own root card; at most 2 of the 3 new cards per run.
+ *
  * Modes:
  *   (default)                dry run: print what --apply would do (writes nothing)
  *   --apply                  file/comment root-cause cards (cap 3 new per run), write the snapshot.

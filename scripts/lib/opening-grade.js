@@ -164,6 +164,10 @@ function causeOfFields(fields) {
 const FIRST_PASS_CAUSES = new Set(['discovery-gap', 'text-gap']);
 // Automated second-pass ingests (bot-authored, never hand work).
 const SWEEP_FIND_SUBJECT = /^ingest: /i;
+// A sweep find before the embargo, or in the first hours while the
+// opening-night poller is still running, raced the first pass rather than
+// caught its miss (2026-11-11 data: 68 of 194 finds were pre-embargo).
+const SWEEP_GRACE_H = 6;
 
 /**
  * Cause of one commit signal (BRO-7375). The file status beats the subject:
@@ -317,7 +321,7 @@ function gradeOpening({ show, files = [], commits = [], historyFromMs = null, pr
   const sweepFinds = [];
   for (const c of commits || []) {
     const at = toMs(c.at);
-    if (!inWin(at) || !SWEEP_FIND_SUBJECT.test(c.subject || '') || !Array.isArray(c.added)) continue;
+    if (!inWin(at) || at < embargoMs + SWEEP_GRACE_H * HOUR || !SWEEP_FIND_SUBJECT.test(c.subject || '') || !Array.isArray(c.added)) continue;
     const mine = (c.files || []).filter((f) => f.startsWith(`${show.id}/`));
     const outlets = [...new Set(mine.map((f) => outletIdFromFile(f, show.id)).filter(Boolean))];
     for (const o of outlets) {

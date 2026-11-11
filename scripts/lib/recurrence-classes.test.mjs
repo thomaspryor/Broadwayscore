@@ -618,7 +618,7 @@ test('BRO-7375 ship-check: a review found late and then given its text by hand i
 
 test('BRO-7375: reviews the aggregator-gap sweep CREATED in opening week are first-pass misses but not hand signals', () => {
   const show = { id: 'show-y', title: 'Y', category: 'off-broadway', openingDate: '2026-11-07' };
-  const commits = pm.parseGitLog('\x1ebbbbbbbb22|2026-11-08T09:00:00Z|GitHub Action|action@github.com|ingest: audit-aggregator-gap auto-ingested review-texts\nA\tshow-y/nytimes--a.json\nM\tshow-y/wsj--b.json\nA\tother/vulture--c.json\n')
+  const commits = pm.parseGitLog('\x1ebbbbbbbb22|2026-11-08T15:00:00Z|GitHub Action|action@github.com|ingest: audit-aggregator-gap auto-ingested review-texts\nA\tshow-y/nytimes--a.json\nM\tshow-y/wsj--b.json\nA\tother/vulture--c.json\n')
     .map((c) => ({ ...c, sha: 'bbbbbbbb22' }));
   const g = og.gradeOpening({ show, commits, nowMs: Date.parse('2026-11-09T00:00:00Z') });
   assert.equal(g.signals.length, 0);
@@ -644,4 +644,14 @@ test('BRO-7375 ship-check: a miss class never reads quiet when the grades were m
   assert.equal(det.checkClass('missed-at-first-pass-off-broadway-wsj', true, snap), 3);
   const fresh = { ...snap, missesFresh: true };
   assert.equal(det.checkClass('missed-at-first-pass-off-broadway-wsj', true, fresh), 0);
+});
+
+test('BRO-7375: a sweep find before the embargo or in its first hours raced the poller and is not a miss', () => {
+  const show = { id: 'show-z', title: 'Z', category: 'off-broadway', openingDate: '2026-11-07' };
+  const emb = og.estimateEmbargoMs(show.openingDate, show.category);
+  const at = (h) => new Date(emb + h * 3600e3).toISOString();
+  const log = [-5, 2, 8].map((h, i) => `\x1ecccccc${i}0|${at(h)}|GitHub Action|action@github.com|ingest: audit-aggregator-gap auto-ingested review-texts\nA\tshow-z/o${i}--a.json\n`).join('');
+  const commits = pm.parseGitLog(log).map((c) => ({ ...c }));
+  const g = og.gradeOpening({ show, commits, nowMs: emb + 48 * 3600e3 });
+  assert.deepEqual(g.sweepFinds.map((s) => s.outletId), ['o2']);
 });
