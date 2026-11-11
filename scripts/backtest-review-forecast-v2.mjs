@@ -77,7 +77,7 @@ for (const r of J('data/reviews.json').reviews) {
 }
 // Show Score member reviews dated before opening (live paginated pages): shrunk mean toward 85 (k=10), review count
 const MEM_FILE = arg('members', fs.existsSync(path.join(ROOT, 'data/audit/review-forecast-v2-showscore-members.json')) ? path.join(ROOT, 'data/audit/review-forecast-v2-showscore-members.json') : path.join(ROOT, 'data/audit/review-forecast-v2-showscore-members-pilot.json'));
-let memRaw = null; const MEM_MIN = 5;
+let memRaw = null; const MEM_MIN = 1; // shrinkage (k=10 toward 85) handles small n; the full-pull spec grades every show with at least one dated member review
 if (fs.existsSync(MEM_FILE)) {
   memRaw = JSON.parse(fs.readFileSync(MEM_FILE, 'utf8'));
   for (const [id, m] of Object.entries(memRaw.shows || {})) {
@@ -132,9 +132,30 @@ for (const r of rows.filter((_, i) => i % 8 === 0)) {
 console.error(`perturbation self-check: ${sampled} shows, ${moved} v2 features moved`);
 if (moved) { console.error('FAIL: v2 features depend on post-opening data'); process.exit(2); }
 
+// ---- Show Score full-pull specs (declared before the full pull was graded) ----
+// PRIMARY: one feature, audScore = shrunk pre-opening member mean minus 85, in the v1 ridge/residual frame, full population (0 when no dated member review).
+// SECONDARY (a) audLow: shrunk share of member ratings <= 60 (k=10 toward 0.10, declared); (b) audBelow: floor rule, only ever negative, the shrunk mean minus
+// the median shrunk mean of shows that opened at least 21 days earlier (needs 10 of them), zero otherwise; (c) mean plus n (the two audience features of the group).
+// RESTRICTED variant R: shows whose kept reviews stop more than 7 days before the cutoff (the 12-page cap) count as having no audience data.
+const SHARE_K = 10; const SHARE_P0 = 0.10; const MEM_GAP_MAX = 7;
+const memOf = (id) => (memRaw && memRaw.shows ? memRaw.shows[id] : null);
+const byOpen = [...rows].sort((a, b) => (a.t.openingDate < b.t.openingDate ? -1 : 1));
+for (const r of rows) {
+  const m = memOf(r.t.id); const has = !!(r.has.audience && m && m.n >= MEM_MIN);
+  r.xS = { audLow: 0, audBelow: 0 }; r.xR = { audScore: r.x.audScore, audCount: r.x.audCount };
+  if (!has) continue;
+  if (m.shareLe60 != null) r.xS.audLow = (m.n * m.shareLe60 + SHARE_K * SHARE_P0) / (m.n + SHARE_K) - SHARE_P0;
+  const D = RF.toDay(r.t.openingDate);
+  const prior = byOpen.filter((q) => q.has.audience && RF.toDay(q.t.openingDate) <= D - 21).map((q) => q.x.audScore).sort((a, b) => a - b);
+  if (prior.length >= 10) r.xS.audBelow = Math.min(0, r.x.audScore - prior[Math.floor(prior.length / 2)]);
+  if (m.gapNewestToCutoffDays != null && m.gapNewestToCutoffDays > MEM_GAP_MAX) { r.xR = { audScore: 0, audCount: 0 }; r.hasR = false; } else r.hasR = true;
+}
+for (const r of rows) if (r.hasR === undefined) r.hasR = r.has.audience;
+const XVAR = { S: (r) => r.xS, R: (r) => r.xR };
+
 // ---- model plumbing (identical to v1) ----
 const seasonsOf = (rs) => [...new Set(rs.map((r) => r.season))].sort((a, b) => a - b);
-const xOf = (r, variant) => (variant ? { ...r.x, ...r[`x${variant}`] } : r.x);
+const xOf = (r, variant) => (variant ? { ...r.x, ...(XVAR[variant] ? XVAR[variant](r) : r[`x${variant}`]) } : r.x);
 const fitOn = (rs, names, variant) => RF.fitRidge(rs.map((r) => ({ x: xOf(r, variant), y: r.y - r.mu })), names);
 const predictRow = (m, r, variant) => Math.max(0, Math.min(100, r.mu + RF.predictRidge(m, xOf(r, variant))));
 function walk(names, variant) {
@@ -157,10 +178,10 @@ function diffCI(a, b, B = 2000, alpha = 0.05) { // a, b: aligned prediction arra
   return [RF.quantile(ds, alpha / 2), RF.quantile(ds, 1 - alpha / 2)];
 }
 // Test family for the correction (every row that can be called a winner or a verdict counts, combinations included):
-// 7 single-group primary tests (cast, preview, panel, awards, calendar, house, audience) + cast+preview + all-inputs-together (2)
+// 6 single-group primary tests (cast, preview, panel, awards, calendar, house) + cast+preview + all-inputs-together (2)
 // + earlier-run linear and step (2) + forked step cuts 72 and 78 (2) + flop and rave tails for earlier-run linear and step (4)
-// + combined panel+earlier-run step and linear (2) + Show Score: full-pull primary, three secondary specs and flop/hit tails (6) = 25.
-const N_PRIMARY_TESTS = 25;
+// + combined panel+earlier-run step and linear (2) + Show Score: full-pull primary, restricted variant, three secondary specs, primary flop and hit tails (7) + combined with Show Score (1) = 26.
+const N_PRIMARY_TESTS = 26;
 const r2 = (x) => (x == null ? null : Math.round(x * 100) / 100);
 const maeOf = (p) => RF.mean(p.map((q) => Math.abs(q.y - q.pred)));
 
@@ -175,11 +196,11 @@ function compare(label, names, subsetFn, kind, variant) {
   if (A.length < 20) return { input: label, kind, shows: A.length, verdict: 'cannot be established (fewer than 20 evaluated shows carry this input)' };
   const ci = diffCI(A, B); const ciAdj = diffCI(A, B, 2000, 0.05 / N_PRIMARY_TESTS);
   const d = maeOf(A) - maeOf(B);
-  const verdict = ci[1] < 0 ? 'helps' : ci[0] > 0 ? 'hurts' : 'no effect';
+  const verdict = r2(ci[1]) < 0 ? 'helps' : r2(ci[0]) > 0 ? 'hurts' : 'no effect'; // judged on the rounded interval: a hundredth of a point is not an effect
   const tail = (pred) => { const ix = A.map((_, i) => i).filter((i) => pred(A[i].y)); const a = ix.map((i) => A[i]); const b = ix.map((i) => B[i]); if (a.length < 10) return null;
-    const c1 = diffCI(a, b); const c2 = diffCI(a, b, 2000, 0.05 / N_PRIMARY_TESTS); return { n: a.length, maeWithout: r2(maeOf(b)), maeWith: r2(maeOf(a)), diffCI95: c1.map(r2), diffCI95Bonferroni: c2.map(r2), survivesCorrection: c2[1] < 0 }; };
-  return { input: label, kind, shows: A.length, missUnder55: tail((y) => y < 55), miss83Plus: tail((y) => y >= 83), maeWithout: r2(maeOf(B)), maeWith: r2(maeOf(A)), maeCategoryMean: r2(RF.mean(A.map((q) => Math.abs(q.y - q.base)))),
-    diff: r2(d), diffCI95: ci.map(r2), diffCI95Bonferroni: ciAdj.map(r2), bonferroniTests: N_PRIMARY_TESTS, survivesCorrection: ciAdj[1] < 0, verdict };
+    const c1 = diffCI(a, b); const c2 = diffCI(a, b, 2000, 0.05 / N_PRIMARY_TESTS); return { n: a.length, maeWithout: r2(maeOf(b)), maeWith: r2(maeOf(a)), diffCI95: c1.map(r2), diffCI95Bonferroni: c2.map(r2), survivesCorrection: r2(c2[1]) < 0 }; };
+  return { input: label, kind, shows: A.length, missUnder55: tail((y) => y < 55), missMiddle55to82: tail((y) => y >= 55 && y < 83), miss83Plus: tail((y) => y >= 83), maeWithout: r2(maeOf(B)), maeWith: r2(maeOf(A)), maeCategoryMean: r2(RF.mean(A.map((q) => Math.abs(q.y - q.base)))),
+    diff: r2(d), diffCI95: ci.map(r2), diffCI95Bonferroni: ciAdj.map(r2), bonferroniTests: N_PRIMARY_TESTS, survivesCorrection: r2(ciAdj[1]) < 0, verdict };
 }
 const hasAud = (p) => p.has.audience; const hasCast = (p) => p.has.cast; const hasPrev = (p) => p.has.preview;
 const results = [];
@@ -188,7 +209,13 @@ results.push(compare('Preview signals (length, capacity/price/gross trend, gross
 results.push(compare('Cast + preview signals together', [...V1, ...G.cast, ...G.preview], null, 'primary'));
 results.push(compare('Cast, shows with an opening cast on file only', [...V1, ...G.cast], hasCast, 'primary-subset'));
 results.push(compare('Preview signals, shows with preview data only', [...V1, ...G.preview], hasPrev, 'primary-subset'));
-results.push(compare('Show Score audience score from member reviews dated before opening', [...V1, ...G.audience], hasAud, 'primary-subset'));
+// Show Score, full pull. Primary spec stated above before grading; secondary specs counted in the correction family.
+results.push(compare('Show Score PRIMARY: shrunk pre-opening member mean, full population', [...V1, 'audScore'], null, 'primary'));
+results.push(compare('Show Score primary, restricted to shows whose kept reviews reach within 7 days of the cutoff (others count as no data)', [...V1, 'audScore'], null, 'primary', 'R'));
+results.push(compare('Show Score primary, only shows with dated member reviews', [...V1, 'audScore'], hasAud, 'primary-subset'));
+results.push(compare('Show Score secondary (a): share of ratings at or below 60', [...V1, 'audLow'], null, 'secondary', 'S'));
+results.push(compare('Show Score secondary (b): floor rule, only moves down when below the earlier shows median', [...V1, 'audBelow'], null, 'secondary', 'S'));
+results.push(compare('Show Score secondary (c): mean plus review count', [...V1, ...G.audience], null, 'secondary'));
 const X = EX.EXTRA_GROUPS;
 const EG = ER.ER_GROUPS; const hasEr = (p) => p.has.earlierRun;
 results.push(compare('Earlier-run web reviews, linear (shrunk mean gap, has flag)', [...V1, ...EG.linear], null, 'primary'));
@@ -218,6 +245,7 @@ results.push(compare('Every input together (cast, preview, panel, awards, calend
 // combined model (parent request): per-critic panel + earlier-run + Show Score audience, one before/after number. Combined rows are tests in their own right and count in the correction family.
 results.push(compare('Combined: panel + earlier-run (step at 75)', [...V1, ...X.panel, ...EG.step], null, 'combined'));
 results.push(compare('Combined: panel + earlier-run (linear)', [...V1, ...X.panel, ...EG.linear], null, 'combined'));
+results.push(compare('Combined: panel + earlier-run (step) + Show Score primary, full population', [...V1, ...X.panel, ...EG.step, 'audScore'], null, 'combined'));
 results.push(compare('Combined: panel + earlier-run + Show Score audience, shows with member reviews only', [...V1, ...X.panel, ...EG.step, ...G.audience], hasAud, 'combined-subset'));
 results.push(compare('Combined: panel + earlier-run (step), shows with member reviews only (same shows, no audience)', [...V1, ...X.panel, ...EG.step], hasAud, 'combined-subset'));
 for (const f of [...G.cast, ...G.preview, ...EX.EXTRA_FEATURE_NAMES]) results.push(compare(`feature: ${f}`, [...V1, f], null, 'exploratory'));
@@ -249,7 +277,7 @@ const out = {
   leakage: { rowsChecked: prov.checked, perturbation: { checked: sampled, moved }, lagDays: RF.LAG_DAYS },
   showScoreMembers: memRaw ? { showsTried: Object.keys(memRaw.shows).length, withFiveOrMorePreOpening: Object.keys(audience).filter((k) => memRaw.shows[k]).length, paidFetches: 0, directRequests: memRaw.directRequestsTotal || null } : null,
   wayback: audRaw ? { showsTried: Object.keys(audRaw.shows).length, withCaptureBeforeOpening: Object.values(audRaw.shows).filter((v) => (v.captureTimestampsBeforeOpening || []).length).length, parsed: Object.keys(audRaw.shows).filter((k) => (audRaw.shows[k].captures || []).some((c) => c.score != null)).length, paidFetches: audRaw.paidFetches || 0 } : null,
-  multipleComparisons: `Bonferroni over ${N_PRIMARY_TESTS} tests (7 single-group primary tests, cast+preview, all inputs together, earlier-run linear and step, two forked cuts, flop and rave tails, two combined models, six Show Score tests). Per-feature rows are exploratory and uncorrected, so a lone exploratory "helps" would not count.`,
+  multipleComparisons: `Bonferroni over ${N_PRIMARY_TESTS} tests (6 single-group primary tests, cast+preview, all inputs together, earlier-run linear and step, two forked cuts, flop and rave tails, three combined models, seven Show Score tests). Per-feature rows are exploratory and uncorrected, so a lone exploratory "helps" would not count.`,
   floor: { shows: floors.length, bootstrapMissCriticSampling: r2(floorBoot), ifFullPanelIsItselfADraw: r2(floorBoot * Math.SQRT2), method: 'resample each show\'s critics (one vote per outlet+critic, real tier weights), mean |resample - full|; the second number scales by sqrt(2) because the observed panel is itself one draw. Neither is a hard limit; it estimates the part of the miss that comes from which critics happened to review.' },
   reliability,
   earlierRunOverlap: overlap,
