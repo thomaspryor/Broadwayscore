@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-11T21:44:22.811Z",
+  "generatedAt": "2026-11-11T22:05:59.288Z",
   "date": "2026-11-11",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 278503,
+  "entryCount": 280253,
   "shows": [
     {
       "showId": "tango-after-dark-off-west-end-2026",
@@ -6645,7 +6645,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 1329214,
+        "scored-to-rebuilt": 934066,
         "rebuilt-to-deployed": 162598002
       },
       "reviews_over_15min": 0,
@@ -7136,7 +7136,7 @@
     },
     {
       "showId": "are-you-now-or-have-you-ever-been-regional-2026",
-      "reviewCount": 6,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -10717,13 +10717,13 @@
     },
     {
       "showId": "act-of-god-off-west-end-2026",
-      "reviewCount": 5,
+      "reviewCount": 6,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 1410625,
-        "scored-to-rebuilt": 1022529,
+        "collected-to-scored": 776710,
+        "scored-to-rebuilt": 286804,
         "rebuilt-to-deployed": 19429158
       },
       "reviews_over_15min": 0,
