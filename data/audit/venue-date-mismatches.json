@@ -1,33 +1,59 @@
 {
-  "generatedAt": "2026-11-10T03:15:16.911Z",
+  "generatedAt": "2026-11-11T01:10:18.919Z",
   "filter": {
     "allProvisional": true,
     "limit": null
   },
   "timeBudgetMin": 25,
   "counts": {
-    "total": 128,
-    "match": 35,
-    "venueUnverified": 10,
-    "mismatch": 7,
-    "unresolved": 76,
+    "total": 123,
+    "match": 38,
+    "venueUnverified": 8,
+    "mismatch": 9,
+    "unresolved": 68,
     "infraUnavailable": 0,
-    "deferred": 404,
-    "carriedForward": 404
+    "deferred": 409,
+    "carriedForward": 409
   },
   "results": [
     {
-      "id": "the-caretaker-chichester-festival-regional-2024",
-      "title": "The Caretaker",
-      "venue": "Chichester Festival Theatre, Chichester",
+      "id": "cranford-off-west-end-2026",
+      "title": "Cranford",
+      "venue": "Orange Tree Theatre",
+      "validationSource": "london",
+      "playbillUrl": null,
+      "mismatches": [],
+      "parsed": null,
+      "result": "no-london-url",
+      "fingerprint": "Orange Tree Theatre|2026-11-03|2027-01-16|false|Cranford||off-west-end|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-london-url"
+    },
+    {
+      "id": "becoming-nancy-birmingham-rep-regional-2024",
+      "title": "Becoming Nancy",
+      "venue": "Birmingham Rep, Birmingham",
       "result": "no-playbill-url",
       "urlSource": "none",
       "mismatches": [],
       "playbillUrl": null,
       "parsed": null,
-      "fingerprint": "Chichester Festival Theatre, Chichester|2024-06-13||false|The Caretaker||regional|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
+      "fingerprint": "Birmingham Rep, Birmingham|2024-10-15||false|Becoming Nancy||regional|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
       "lastDefinitiveResult": "no-playbill-url"
+    },
+    {
+      "id": "into-the-woods-noel-coward-west-end-2026",
+      "title": "Into the Woods",
+      "venue": "Noël Coward Theatre",
+      "validationSource": "london",
+      "playbillUrl": null,
+      "mismatches": [],
+      "parsed": null,
+      "result": "no-london-url",
+      "fingerprint": "Noël Coward Theatre|2026-10-07|2027-01-09|true|Into the Woods|Bridge Theatre~2025-12-11~2026-05-30|west-end|musical",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "mismatch"
     },
     {
       "id": "jane-eyre-rose-kingston-off-west-end-2026",
@@ -39,7 +65,7 @@
       "parsed": null,
       "result": "no-london-url",
       "fingerprint": "Rose Theatre Kingston|2026-10-15|2026-10-24|true|Jane Eyre||off-west-end|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
       "lastDefinitiveResult": "mismatch"
     },
     {
@@ -52,7 +78,7 @@
       "parsed": null,
       "result": "no-london-url",
       "fingerprint": "Riverside Studios|2026-09-08|2026-09-12|true|The Cherry Orchard||off-west-end|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
       "lastDefinitiveResult": "mismatch"
     },
     {
@@ -65,7 +91,7 @@
       "parsed": null,
       "result": "no-london-url",
       "fingerprint": "Orange Tree Theatre||2027-04-10|false|King Lear||off-west-end|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
       "lastDefinitiveResult": "mismatch"
     },
     {
@@ -78,7 +104,20 @@
       "parsed": null,
       "result": "no-london-url",
       "fingerprint": "Orange Tree Theatre||2027-04-10|false|Richard II||off-west-end|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "mismatch"
+    },
+    {
+      "id": "christmas-carol-goes-wrong-apollo-west-end-2025",
+      "title": "Christmas Carol Goes Wrong",
+      "venue": "Apollo Theatre",
+      "validationSource": "london",
+      "playbillUrl": null,
+      "mismatches": [],
+      "parsed": null,
+      "result": "no-london-url",
+      "fingerprint": "Apollo Theatre|2025-12-14|2026-01-26|false|Christmas Carol Goes Wrong||west-end|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
       "lastDefinitiveResult": "mismatch"
     },
     {
@@ -91,7 +130,7 @@
       "parsed": null,
       "result": "no-london-url",
       "fingerprint": "Hampstead Theatre|2025-12-15|2026-02-07|false|Indian Ink||off-west-end|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
       "lastDefinitiveResult": "mismatch"
     },
     {
@@ -120,7 +159,7 @@
       "urlSource": "london",
       "result": "venue-unverified",
       "fingerprint": "Almeida Theatre|2026-01-30|2026-03-14|false|American Psycho||off-west-end|musical",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
       "lastDefinitiveResult": "mismatch"
     },
     {
@@ -130,10 +169,26 @@
       "validationSource": "london",
       "playbillUrl": null,
       "mismatches": [],
-      "parsed": null,
-      "result": "no-london-url",
+      "parsed": {
+        "titleParse": {
+          "rawTitle": "Safe Haven",
+          "market": "London",
+          "venue": null,
+          "year": null
+        },
+        "dates": {
+          "openingDate": "2026-01-14",
+          "closingDate": "2026-02-07"
+        },
+        "tagLine": null
+      },
+      "explainedByPriorRun": [],
+      "venueCheck": "unverified",
+      "sourceUrl": "https://www.arcolatheatre.com/event/safe-haven/",
+      "urlSource": "london",
+      "result": "venue-unverified",
       "fingerprint": "Arcola Theatre|2026-01-19|2026-02-07|false|Safe Haven||off-west-end|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
       "lastDefinitiveResult": "mismatch"
     },
     {
@@ -162,7 +217,7 @@
       "urlSource": "london",
       "result": "venue-unverified",
       "fingerprint": "Bloomsbury Theatre||2027-01-03|false|Stick Man||off-west-end|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
       "lastDefinitiveResult": "mismatch"
     },
     {
@@ -210,7 +265,7 @@
       ],
       "explainedByPriorRun": [],
       "fingerprint": "The Night Egg at the Culture Club|2026-10-26|2026-11-23|false|Hospital Hour||off-broadway|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
       "lastDefinitiveResult": "mismatch"
     },
     {
@@ -256,7 +311,7 @@
       ],
       "explainedByPriorRun": [],
       "fingerprint": "59E59 Theaters|2026-11-08|2026-12-13|false|The Steel Man||off-broadway|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
       "lastDefinitiveResult": "mismatch"
     },
     {
@@ -269,7 +324,7 @@
       "parsed": null,
       "result": "no-london-url",
       "fingerprint": "Riverside Studios|2026-10-02|2026-10-03|false|Measure for Measure||off-west-end|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
       "lastDefinitiveResult": "mismatch"
     },
     {
@@ -314,7 +369,7 @@
       ],
       "explainedByPriorRun": [],
       "fingerprint": "Foxwoods Theatre|2011-06-14|2014-01-04|false|Spider-Man: Turn Off the Dark||broadway|musical",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
       "lastDefinitiveResult": "mismatch"
     },
     {
@@ -323,25 +378,135 @@
       "venue": "Theatre Royal Bath, Bath",
       "result": "mismatch",
       "venueCheck": "different",
-      "playbillUrl": "https://playbill.com/production/emma-regional-denver-center-theatre-company-wolf-theatre-2024",
+      "playbillUrl": "https://playbill.com/production/emma-regional-playmakers-repertory-company-2022",
       "urlSource": "serp",
       "parsed": {
         "titleParse": {
           "rawTitle": "Emma",
           "market": "Regional",
-          "venue": "Denver Center Theatre Company - Wolf Theatre",
-          "year": 2024
+          "venue": "PlayMakers Repertory Company",
+          "year": 2022
         },
         "dates": {
-          "firstPreview": "2024-04-05",
-          "openingDate": "2024-04-12",
-          "closingDate": "2024-05-05"
+          "firstPreview": null,
+          "openingDate": "2022-11-16",
+          "closingDate": "2022-12-04"
         },
         "tagLine": {
           "tags": [
             "Regional",
-            "Play",
             "Comedy"
+          ],
+          "market": "Regional",
+          "showType": null,
+          "revivalStatus": "unknown"
+        }
+      },
+      "mismatches": [
+        {
+          "field": "venue",
+          "shows": "Theatre Royal Bath, Bath",
+          "showsCanonical": "theatre",
+          "playbill": "PlayMakers Repertory Company",
+          "playbillCanonical": "playmakers"
+        },
+        {
+          "field": "opening-year",
+          "shows": 2025,
+          "playbill": 2022
+        },
+        {
+          "field": "openingDate",
+          "shows": "2025-09-18",
+          "playbill": "2022-11-16",
+          "deltaDays": 1037
+        }
+      ],
+      "explainedByPriorRun": [],
+      "fingerprint": "Theatre Royal Bath, Bath|2025-09-18||false|Emma||regional|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "mismatch"
+    },
+    {
+      "id": "grease-pitlochry-festival-regional-2025",
+      "title": "Grease",
+      "venue": "Pitlochry Festival Theatre, Pitlochry",
+      "result": "mismatch",
+      "venueCheck": "different",
+      "playbillUrl": "https://playbill.com/production/grease-regional-la-mirada-theatre-for-the-performing-arts-2023",
+      "urlSource": "serp",
+      "parsed": {
+        "titleParse": {
+          "rawTitle": "Grease",
+          "market": "Regional",
+          "venue": "La Mirada Theatre for the Performing Arts",
+          "year": 2023
+        },
+        "dates": {
+          "firstPreview": null,
+          "openingDate": "2023-01-20",
+          "closingDate": "2023-02-12"
+        },
+        "tagLine": {
+          "tags": [
+            "Regional",
+            "Musical",
+            "Comedy"
+          ],
+          "market": "Regional",
+          "showType": "musical",
+          "revivalStatus": "unknown"
+        }
+      },
+      "mismatches": [
+        {
+          "field": "venue",
+          "shows": "Pitlochry Festival Theatre, Pitlochry",
+          "showsCanonical": "pitlochry",
+          "playbill": "La Mirada Theatre for the Performing Arts",
+          "playbillCanonical": "la"
+        },
+        {
+          "field": "opening-year",
+          "shows": 2025,
+          "playbill": 2023
+        },
+        {
+          "field": "openingDate",
+          "shows": "2025-06-23",
+          "playbill": "2023-01-20",
+          "deltaDays": 885
+        }
+      ],
+      "explainedByPriorRun": [],
+      "fingerprint": "Pitlochry Festival Theatre, Pitlochry|2025-06-23||false|Grease||regional|musical",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "mismatch"
+    },
+    {
+      "id": "the-39-steps-hull-truck-regional-2026",
+      "title": "The 39 Steps",
+      "venue": "Hull Truck Theatre, Hull",
+      "result": "mismatch",
+      "venueCheck": "different",
+      "playbillUrl": "https://playbill.com/production/the-39-steps-regional-denver-center-for-performing-arts-2023",
+      "urlSource": "serp",
+      "parsed": {
+        "titleParse": {
+          "rawTitle": "The 39 Steps",
+          "market": "Regional",
+          "venue": "Denver Center for Performing Arts",
+          "year": 2023
+        },
+        "dates": {
+          "firstPreview": "2023-04-14",
+          "openingDate": "2023-04-21",
+          "closingDate": "2023-06-18"
+        },
+        "tagLine": {
+          "tags": [
+            "Regional",
+            "Play"
           ],
           "market": "Regional",
           "showType": "play",
@@ -351,52 +516,26 @@
       "mismatches": [
         {
           "field": "venue",
-          "shows": "Theatre Royal Bath, Bath",
-          "showsCanonical": "theatre",
-          "playbill": "Denver Center Theatre Company - Wolf Theatre",
+          "shows": "Hull Truck Theatre, Hull",
+          "showsCanonical": "hull",
+          "playbill": "Denver Center for Performing Arts",
           "playbillCanonical": "denver"
         },
         {
           "field": "opening-year",
-          "shows": 2025,
-          "playbill": 2024
+          "shows": 2026,
+          "playbill": 2023
         },
         {
           "field": "openingDate",
-          "shows": "2025-09-18",
-          "playbill": "2024-04-12",
-          "deltaDays": 524
+          "shows": "2026-10-01",
+          "playbill": "2023-04-21",
+          "deltaDays": 1259
         }
       ],
       "explainedByPriorRun": [],
-      "fingerprint": "Theatre Royal Bath, Bath|2025-09-18||false|Emma||regional|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
-      "lastDefinitiveResult": "mismatch"
-    },
-    {
-      "id": "grease-pitlochry-festival-regional-2025",
-      "title": "Grease",
-      "venue": "Pitlochry Festival Theatre, Pitlochry",
-      "result": "no-playbill-url",
-      "urlSource": "none",
-      "mismatches": [],
-      "playbillUrl": null,
-      "parsed": null,
-      "fingerprint": "Pitlochry Festival Theatre, Pitlochry|2025-06-23||false|Grease||regional|musical",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
-      "lastDefinitiveResult": "mismatch"
-    },
-    {
-      "id": "the-39-steps-hull-truck-regional-2026",
-      "title": "The 39 Steps",
-      "venue": "Hull Truck Theatre, Hull",
-      "result": "no-playbill-url",
-      "urlSource": "none",
-      "mismatches": [],
-      "playbillUrl": null,
-      "parsed": null,
       "fingerprint": "Hull Truck Theatre, Hull|2026-10-01||true|The 39 Steps||regional|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
       "lastDefinitiveResult": "mismatch"
     },
     {
@@ -453,20 +592,46 @@
       ],
       "explainedByPriorRun": [],
       "fingerprint": "Stephen Joseph Theatre, Scarborough|2025-08-14||false|Noises Off||regional|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
       "lastDefinitiveResult": "mismatch"
     },
     {
-      "id": "an-iliad-off-west-end-2027",
-      "title": "An Iliad",
-      "venue": "Rose Theatre Kingston",
+      "id": "guess-how-much-i-love-you-west-end-2026",
+      "title": "Guess How Much I Love You?",
+      "venue": "Royal Court",
       "validationSource": "london",
       "playbillUrl": null,
       "mismatches": [],
       "parsed": null,
       "result": "no-london-url",
-      "fingerprint": "Rose Theatre Kingston||2027-03-27|false|An Iliad||off-west-end|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
+      "fingerprint": "Royal Court|2026-01-22|2026-02-21|false|Guess How Much I Love You?||west-end|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-london-url"
+    },
+    {
+      "id": "cable-street-off-west-end-2026",
+      "title": "Cable Street",
+      "venue": "Marylebone Theatre",
+      "validationSource": "london",
+      "playbillUrl": null,
+      "mismatches": [],
+      "parsed": null,
+      "result": "no-london-url",
+      "fingerprint": "Marylebone Theatre|2026-01-26|2026-02-28|false|Cable Street||off-west-end|musical",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-london-url"
+    },
+    {
+      "id": "lost-atoms-off-west-end-2026",
+      "title": "Lost Atoms",
+      "venue": "Lyric Hammersmith",
+      "validationSource": "london",
+      "playbillUrl": null,
+      "mismatches": [],
+      "parsed": null,
+      "result": "fetch-error",
+      "fingerprint": "Lyric Hammersmith|2026-02-03|2026-02-28|false|Lost Atoms||off-west-end|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
       "lastDefinitiveResult": "no-london-url"
     },
     {
@@ -504,7 +669,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "St. Ann's Warehouse|2026-10-04|2026-10-24|false|Kramer/Fauci|NYU Skirball Center for the Performing Arts~2026-02-11~2026-02-21|off-broadway|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -541,7 +706,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "American Irish Historical Society|2026-11-24|2027-01-03|true|The Dead, 1904|American Irish Historical Society~2024-11-26~2025-01-05|off-broadway|special",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -590,7 +755,7 @@
         }
       ],
       "fingerprint": "West End Theatre||2026-11-29|true|Othello (Bedlam)|West End Theatre~2026-05-10~2026-05-31|off-broadway|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -628,7 +793,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "Atlantic Theater|2025-10-08|2025-11-22|false|Let's Love||off-broadway|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -665,7 +830,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "Vineyard Theatre|2026-11-08|2026-12-13|false|Ms. Blakk for President||off-broadway|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -702,7 +867,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "Signature Theatre Company/Alice Griffin Jewel Box Theater|2026-10-19|2026-11-15|false|King of the Yees||off-broadway|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -738,7 +903,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "Signature Theatre|2024-02-20|2024-03-10|false|Sunset Baby||off-broadway|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -773,7 +938,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "Signature Theatre|2024-10-28|2024-12-01|false|Bad Kreyòl||off-broadway|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -811,7 +976,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "Signature Theatre|2025-02-24|2025-03-23|false|Grangeville||off-broadway|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -847,7 +1012,44 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "Signature Theatre|2025-06-02|2025-06-29|true|Eurydice||off-broadway|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "match"
+    },
+    {
+      "id": "oratorio-for-living-things-off-broadway-2026",
+      "title": "Oratorio for Living Things",
+      "venue": "Signature Theatre",
+      "result": "match",
+      "venueCheck": "match",
+      "playbillUrl": "https://playbill.com/production/oratorio-for-living-things-off-broadway-the-pershing-square-signature-center-romulus-linney-courtyard-theatre-2025",
+      "urlSource": "cache",
+      "parsed": {
+        "titleParse": {
+          "rawTitle": "Oratorio for Living Things",
+          "market": "Off-Broadway",
+          "venue": "The Pershing Square Signature Center/Romulus Linney Courtyard Theatre",
+          "year": 2025
+        },
+        "dates": {
+          "firstPreview": "2025-09-30",
+          "openingDate": "2025-10-16",
+          "closingDate": "2025-11-23"
+        },
+        "tagLine": {
+          "tags": [
+            "Off-Broadway",
+            "Musical",
+            "One Act"
+          ],
+          "market": "Off-Broadway",
+          "showType": "musical",
+          "revivalStatus": "unknown"
+        }
+      },
+      "mismatches": [],
+      "explainedByPriorRun": [],
+      "fingerprint": "Signature Theatre|2025-10-16|2025-11-23|false|Oratorio for Living Things||off-broadway|musical",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -884,7 +1086,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "MCC Theater|2025-09-30|2025-11-16|false|Caroline||off-broadway|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -920,7 +1122,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "MCC Theater|2025-03-10|2025-05-18|false|All Nighter||off-broadway|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -956,7 +1158,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "MCC Theater|2025-06-24|2025-08-03|false|Trophy Boys||off-broadway|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -992,7 +1194,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "MCC Theater|2024-05-20|2024-06-09|false|The Lonely Few||off-broadway|musical",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -1027,7 +1229,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "MCC Theater|2024-11-18|2024-12-15|false|Shit. Meet. Fan.||off-broadway|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -1065,7 +1267,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "Theatre 71|2026-04-30|2026-05-31|false|Broken Snow||off-broadway|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -1102,7 +1304,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "Public Theater/Delacorte Theater|2026-06-11|2026-06-28|true|Romeo and Juliet||off-broadway|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -1137,7 +1339,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "Lucille Lortel Theatre|2025-03-18|2025-05-11|false|Vanya||off-broadway|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -1172,7 +1374,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "The Laura Pels Theatre at the Harold and Miriam Steinberg Center for Theatre|2023-05-25|2023-07-02|false|Primary Trust||off-broadway|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -1209,7 +1411,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "Lincoln Center Theater - Mitzi E. Newhouse Theater|2025-11-03|2025-11-30|false|Kyoto||off-broadway|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -1246,7 +1448,42 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "BAM Fisher (Fishman Space)|2026-09-08|2026-09-20|false|The Ford/Hill Project||off-broadway|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "match"
+    },
+    {
+      "id": "danny-and-the-deep-blue-sea-off-broadway-2023",
+      "title": "Danny and the Deep Blue Sea",
+      "venue": "Lucille Lortel Theatre",
+      "result": "match",
+      "venueCheck": "match",
+      "playbillUrl": "https://playbill.com/production/danny-and-the-deep-blue-sea-off-broadway-lucille-lortel-theatre-2023",
+      "urlSource": "serp",
+      "parsed": {
+        "titleParse": {
+          "rawTitle": "Danny And The Deep Blue Sea",
+          "market": "Off-Broadway",
+          "venue": "Lucille Lortel Theatre",
+          "year": 2023
+        },
+        "dates": {
+          "firstPreview": "2023-10-30",
+          "openingDate": "2023-11-13",
+          "closingDate": "2024-01-13"
+        },
+        "tagLine": {
+          "tags": [
+            "Off-Broadway"
+          ],
+          "market": "Off-Broadway",
+          "showType": null,
+          "revivalStatus": "unknown"
+        }
+      },
+      "mismatches": [],
+      "explainedByPriorRun": [],
+      "fingerprint": "Lucille Lortel Theatre|2023-11-13|2024-01-13|true|Danny and the Deep Blue Sea||off-broadway|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -1286,21 +1523,37 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "SoHo Playhouse|2026-09-23|2026-10-16|false|Lost in Del Valle|SoHo Playhouse~2026-04-09~2026-05-03|off-broadway|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
       "lastDefinitiveResult": "match"
     },
     {
-      "id": "monstering-the-rocketman-off-west-end-2026",
-      "title": "Monstering the Rocketman",
+      "id": "bitch-boxer-off-west-end-2026",
+      "title": "Bitch Boxer",
       "venue": "Arcola Theatre",
       "validationSource": "london",
       "playbillUrl": null,
       "mismatches": [],
-      "parsed": null,
-      "result": "no-london-url",
-      "fingerprint": "Arcola Theatre|2026-02-05|2026-02-21|false|Monstering the Rocketman||off-west-end|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
-      "lastDefinitiveResult": "no-london-url"
+      "parsed": {
+        "titleParse": {
+          "rawTitle": "Bitch Boxer",
+          "market": "London",
+          "venue": null,
+          "year": null
+        },
+        "dates": {
+          "openingDate": "2026-02-18",
+          "closingDate": "2026-03-14"
+        },
+        "tagLine": null
+      },
+      "explainedByPriorRun": [],
+      "venueCheck": "unverified",
+      "sourceUrl": "https://www.arcolatheatre.com/event/bitch-boxer/",
+      "urlSource": "london",
+      "result": "venue-unverified",
+      "fingerprint": "Arcola Theatre|2026-02-25|2026-03-14|false|Bitch Boxer||off-west-end|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "venue-unverified"
     },
     {
       "id": "ukraine-unbroken-off-west-end-2026",
@@ -1328,7 +1581,7 @@
       "urlSource": "london",
       "result": "venue-unverified",
       "fingerprint": "Arcola Theatre|2026-03-02|2026-03-28|false|Ukraine Unbroken||off-west-end|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
       "lastDefinitiveResult": "venue-unverified"
     },
     {
@@ -1338,27 +1591,11 @@
       "validationSource": "london",
       "playbillUrl": null,
       "mismatches": [],
-      "parsed": {
-        "titleParse": {
-          "rawTitle": "Iphigenia",
-          "market": "London",
-          "venue": null,
-          "year": null
-        },
-        "dates": {
-          "openingDate": "2026-04-10",
-          "closingDate": "2026-05-02"
-        },
-        "tagLine": null
-      },
-      "explainedByPriorRun": [],
-      "venueCheck": "unverified",
-      "sourceUrl": "https://www.arcolatheatre.com/event/iphigenia/",
-      "urlSource": "london",
-      "result": "venue-unverified",
+      "parsed": null,
+      "result": "no-london-url",
       "fingerprint": "Arcola Theatre|2026-04-13|2026-05-02|false|Iphigenia||off-west-end|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
-      "lastDefinitiveResult": "venue-unverified"
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-london-url"
     },
     {
       "id": "a-fine-idea-off-west-end-2026",
@@ -1386,8 +1623,46 @@
       "urlSource": "london",
       "result": "venue-unverified",
       "fingerprint": "Arcola Theatre|2026-06-15|2026-07-04|false|A Fine Idea||off-west-end|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
       "lastDefinitiveResult": "venue-unverified"
+    },
+    {
+      "id": "arias-with-a-twist-off-broadway-2026",
+      "title": "Arias with a Twist",
+      "venue": "HERE Arts Center",
+      "result": "match",
+      "venueCheck": "match",
+      "playbillUrl": "https://playbill.com/production/arias-with-a-twist-off-broadway-here-arts-center-2026",
+      "urlSource": "cache",
+      "parsed": {
+        "titleParse": {
+          "rawTitle": "Arias with a Twist",
+          "market": "Off-Broadway",
+          "venue": "HERE Arts Center",
+          "year": 2026
+        },
+        "dates": {
+          "firstPreview": "2026-09-17",
+          "openingDate": "2026-09-23",
+          "closingDate": "2026-12-20"
+        },
+        "tagLine": {
+          "tags": [
+            "Off-Broadway",
+            "Puppetry",
+            "Special",
+            "Revival"
+          ],
+          "market": "Off-Broadway",
+          "showType": null,
+          "revivalStatus": "unknown"
+        }
+      },
+      "mismatches": [],
+      "explainedByPriorRun": [],
+      "fingerprint": "HERE Arts Center|2026-09-23|2026-12-20|true|Arias with a Twist||off-broadway|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "match"
     },
     {
       "id": "going-bacharach-the-songs-of-an-icon-return-off-broadway-2026",
@@ -1423,7 +1698,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "The Marjorie S. Deane Little Theater|2026-09-16|2026-11-29|false|Going Bacharach: The Songs of an Icon|The Marjorie S. Deane Little Theater~2026-01-12~2026-02-22|off-broadway|musical",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -1460,7 +1735,7 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "Theatre Row|2026-11-01|2026-12-05|false|The Blue Violinist Over West End Avenue||off-broadway|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -1498,7 +1773,49 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "The Flea Theater|2026-09-18|2026-10-28|false|Beyond the Stardust||off-broadway|musical",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "match"
+    },
+    {
+      "id": "fire-fire-off-west-end-2026",
+      "title": "Fire Fire",
+      "venue": "Arcola Theatre",
+      "validationSource": "london",
+      "playbillUrl": null,
+      "mismatches": [],
+      "parsed": null,
+      "result": "no-london-url",
+      "fingerprint": "Arcola Theatre|2026-09-11|2026-10-03|false|Fire Fire||off-west-end|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-london-url"
+    },
+    {
+      "id": "the-master-builder-off-west-end-2026",
+      "title": "The Master Builder",
+      "venue": "Arcola Theatre",
+      "validationSource": "london",
+      "playbillUrl": null,
+      "mismatches": [],
+      "parsed": {
+        "titleParse": {
+          "rawTitle": "The Master Builder",
+          "market": "London",
+          "venue": "Arcola Theatre",
+          "year": null
+        },
+        "dates": {
+          "openingDate": "2026-11-11",
+          "closingDate": "2026-11-21"
+        },
+        "tagLine": null
+      },
+      "explainedByPriorRun": [],
+      "venueCheck": "match",
+      "sourceUrl": "https://www.arcolatheatre.com/event/the-master-builder/",
+      "urlSource": "london",
+      "result": "match",
+      "fingerprint": "Arcola Theatre|2026-10-22|2026-11-21|false|The Master Builder||off-west-end|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
       "lastDefinitiveResult": "match"
     },
     {
@@ -1508,27 +1825,40 @@
       "validationSource": "london",
       "playbillUrl": null,
       "mismatches": [],
+      "parsed": null,
+      "result": "no-london-url",
+      "fingerprint": "Arcola Theatre||2026-12-19|false|The Ugly One||off-west-end|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-london-url"
+    },
+    {
+      "id": "are-you-even-indian-off-west-end-2026",
+      "title": "Are You Even Indian?",
+      "venue": "Riverside Studios",
+      "validationSource": "london",
+      "playbillUrl": null,
+      "mismatches": [],
       "parsed": {
         "titleParse": {
-          "rawTitle": "The Ugly One",
+          "rawTitle": "Are You Even Indian?",
           "market": "London",
-          "venue": "Arcola Theatre",
+          "venue": null,
           "year": null
         },
         "dates": {
           "openingDate": "2026-11-17",
-          "closingDate": "2026-12-19"
+          "closingDate": "2026-11-29"
         },
         "tagLine": null
       },
       "explainedByPriorRun": [],
-      "venueCheck": "match",
-      "sourceUrl": "https://www.arcolatheatre.com/event/the-ugly-one/",
+      "venueCheck": "unverified",
+      "sourceUrl": "https://riversidestudios.co.uk/whats-on/SR-are-you-even-indian/",
       "urlSource": "london",
-      "result": "match",
-      "fingerprint": "Arcola Theatre||2026-12-19|false|The Ugly One||off-west-end|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
-      "lastDefinitiveResult": "match"
+      "result": "venue-unverified",
+      "fingerprint": "Riverside Studios||2026-11-29|false|Are You Even Indian?||off-west-end|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "venue-unverified"
     },
     {
       "id": "the-dog-show-come-sit-stay-off-broadway-2026",
@@ -1565,8 +1895,1129 @@
       "mismatches": [],
       "explainedByPriorRun": [],
       "fingerprint": "The Triad Theatre|2026-10-18|2026-11-29|false|The Dog Show: Come. Sit. Stay.||off-broadway|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
       "lastDefinitiveResult": "match"
+    },
+    {
+      "id": "a-kidman-carol-off-broadway-2026",
+      "title": "A Kidman Carol",
+      "venue": "New World Stages",
+      "result": "match",
+      "venueCheck": "match",
+      "playbillUrl": "https://playbill.com/production/a-kidman-carol-off-broadway-new-world-stages-stage-3-2026",
+      "urlSource": "serp",
+      "parsed": {
+        "titleParse": {
+          "rawTitle": "A Kidman Carol",
+          "market": "Off-Broadway",
+          "venue": "New World Stages Stage 3",
+          "year": 2026
+        },
+        "dates": {
+          "firstPreview": "2026-11-16",
+          "openingDate": "2026-11-30",
+          "closingDate": null
+        },
+        "tagLine": {
+          "tags": [
+            "Off-Broadway",
+            "Play",
+            "Comedy",
+            "Original"
+          ],
+          "market": "Off-Broadway",
+          "showType": "play",
+          "revivalStatus": "original"
+        }
+      },
+      "mismatches": [],
+      "explainedByPriorRun": [],
+      "fingerprint": "New World Stages|2026-11-30|2026-12-30|false|A Kidman Carol||off-broadway|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "match"
+    },
+    {
+      "id": "you-will-get-sick-off-broadway-2022",
+      "title": "You Will Get Sick",
+      "venue": "Laura Pels Theatre",
+      "result": "match",
+      "venueCheck": "match",
+      "playbillUrl": "https://playbill.com/production/you-will-get-sick-off-broadway-roundabout-theatre-company-laura-pels-theatre-2022",
+      "urlSource": "serp",
+      "parsed": {
+        "titleParse": {
+          "rawTitle": "You Will Get Sick",
+          "market": "Off-Broadway",
+          "venue": "Roundabout Theatre Company - Laura Pels Theatre",
+          "year": 2022
+        },
+        "dates": {
+          "firstPreview": "2022-10-14",
+          "openingDate": "2022-11-06",
+          "closingDate": "2022-12-11"
+        },
+        "tagLine": {
+          "tags": [
+            "Off-Broadway"
+          ],
+          "market": "Off-Broadway",
+          "showType": null,
+          "revivalStatus": "unknown"
+        }
+      },
+      "mismatches": [],
+      "explainedByPriorRun": [],
+      "fingerprint": "Laura Pels Theatre|2022-11-06|2022-12-11|false|You Will Get Sick||off-broadway|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "match"
+    },
+    {
+      "id": "the-amish-project-2027",
+      "title": "The Amish Project",
+      "venue": "Broadhurst Theatre",
+      "result": "match",
+      "venueCheck": "match",
+      "playbillUrl": "https://playbill.com/production/the-amish-project-broadway-broadhurst-theatre-2027",
+      "urlSource": "serp",
+      "parsed": {
+        "titleParse": {
+          "rawTitle": "The Amish Project",
+          "market": "Broadway",
+          "venue": "Broadhurst Theatre",
+          "year": 2027
+        },
+        "dates": {
+          "firstPreview": "2027-02-10",
+          "openingDate": "2027-03-10",
+          "closingDate": null
+        },
+        "tagLine": {
+          "tags": [
+            "Broadway",
+            "Solo",
+            "Play",
+            "One Act",
+            "Revival"
+          ],
+          "market": "Broadway",
+          "showType": "play",
+          "revivalStatus": "revival"
+        }
+      },
+      "mismatches": [],
+      "explainedByPriorRun": [],
+      "fingerprint": "Broadhurst Theatre|||true|The Amish Project||broadway|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "match"
+    },
+    {
+      "id": "springsteen-on-broadway-2021",
+      "title": "Springsteen on Broadway",
+      "venue": "St. James Theatre",
+      "result": "match",
+      "venueCheck": "match",
+      "playbillUrl": "https://playbill.com/production/springsteen-on-broadwayst-james-theatre-2021-2022",
+      "urlSource": "serp",
+      "parsed": {
+        "titleParse": {
+          "rawTitle": "Springsteen On Broadway",
+          "market": "Broadway",
+          "venue": "St. James Theatre",
+          "year": 2021
+        },
+        "dates": {
+          "firstPreview": "2021-06-26",
+          "openingDate": "2021-06-26",
+          "closingDate": "2021-09-04"
+        },
+        "tagLine": {
+          "tags": [
+            "Broadway",
+            "Concert",
+            "Revival"
+          ],
+          "market": "Broadway",
+          "showType": null,
+          "revivalStatus": "unknown"
+        }
+      },
+      "mismatches": [],
+      "explainedByPriorRun": [],
+      "fingerprint": "St. James Theatre|2021-06-26|2021-09-04|true|Springsteen on Broadway|Walter Kerr Theatre~2017-10-12~2018-12-15|broadway|special",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "match"
+    },
+    {
+      "id": "noises-off-off-west-end-2027",
+      "title": "Noises Off",
+      "venue": "Theatre Royal Stratford East",
+      "validationSource": "london",
+      "playbillUrl": null,
+      "mismatches": [],
+      "parsed": null,
+      "result": "no-london-url",
+      "fingerprint": "Theatre Royal Stratford East||2027-03-13|false|Noises Off||off-west-end|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-london-url"
+    },
+    {
+      "id": "talking-in-tongues-off-west-end-2027",
+      "title": "Talking In Tongues",
+      "venue": "Theatre Royal Stratford East",
+      "validationSource": "london",
+      "playbillUrl": null,
+      "mismatches": [],
+      "parsed": null,
+      "result": "no-london-url",
+      "fingerprint": "Theatre Royal Stratford East||2027-05-01|false|Talking In Tongues||off-west-end|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-london-url"
+    },
+    {
+      "id": "two-halves-of-guinness-off-west-end-2026",
+      "title": "Two Halves of Guinness",
+      "venue": "Park Theatre",
+      "validationSource": "london",
+      "playbillUrl": null,
+      "mismatches": [],
+      "parsed": null,
+      "result": "no-london-url",
+      "fingerprint": "Park Theatre|2026-04-22|2026-05-02|false|Two Halves of Guinness||off-west-end|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-london-url"
+    },
+    {
+      "id": "age-is-a-feeling-off-west-end-2026",
+      "title": "Age Is a Feeling",
+      "venue": "Soho Theatre Walthamstow",
+      "validationSource": "london",
+      "playbillUrl": null,
+      "mismatches": [],
+      "parsed": null,
+      "result": "no-london-url",
+      "fingerprint": "Soho Theatre Walthamstow|2026-03-05|2026-03-07|false|Age Is a Feeling||off-west-end|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-london-url"
+    },
+    {
+      "id": "hole-off-west-end-2026",
+      "title": "Hole!",
+      "venue": "Soho Theatre",
+      "validationSource": "london",
+      "playbillUrl": null,
+      "mismatches": [],
+      "parsed": null,
+      "result": "no-london-url",
+      "fingerprint": "Soho Theatre|2026-07-17|2026-08-01|false|Hole!||off-west-end|musical",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-london-url"
+    },
+    {
+      "id": "already-perfect-off-west-end-2026",
+      "title": "Already Perfect",
+      "venue": "King's Head Theatre",
+      "validationSource": "london",
+      "playbillUrl": null,
+      "mismatches": [],
+      "parsed": null,
+      "result": "no-london-url",
+      "fingerprint": "King's Head Theatre|2026-01-15|2026-02-15|false|Already Perfect||off-west-end|musical",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-london-url"
+    },
+    {
+      "id": "here-comes-j-edgar-off-west-end-2026",
+      "title": "Here Comes J. Edgar!",
+      "venue": "King's Head Theatre",
+      "validationSource": "london",
+      "playbillUrl": null,
+      "mismatches": [],
+      "parsed": null,
+      "result": "no-london-url",
+      "fingerprint": "King's Head Theatre|2026-07-16|2026-08-16|false|Here Comes J. Edgar!||off-west-end|musical",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-london-url"
+    },
+    {
+      "id": "dear-jack-dear-louise-off-west-end-2026",
+      "title": "Dear Jack, Dear Louise",
+      "venue": "Arcola Theatre",
+      "validationSource": "london",
+      "playbillUrl": null,
+      "mismatches": [],
+      "parsed": null,
+      "result": "no-london-url",
+      "fingerprint": "Arcola Theatre|2026-04-09|2026-05-02|false|Dear Jack, Dear Louise||off-west-end|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-london-url"
+    },
+    {
+      "id": "orphans-off-west-end-2026",
+      "title": "Orphans",
+      "venue": "Jermyn Street Theatre",
+      "validationSource": "london",
+      "playbillUrl": null,
+      "mismatches": [],
+      "parsed": null,
+      "result": "no-london-url",
+      "fingerprint": "Jermyn Street Theatre|2026-01-07|2026-01-24|false|Orphans||off-west-end|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-london-url"
+    },
+    {
+      "id": "dear-liar-off-west-end-2026",
+      "title": "Dear Liar",
+      "venue": "Jermyn Street Theatre",
+      "validationSource": "london",
+      "playbillUrl": null,
+      "mismatches": [],
+      "parsed": null,
+      "result": "fetch-error",
+      "fingerprint": "Jermyn Street Theatre|2026-02-10|2026-03-07|false|Dear Liar||off-west-end|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-london-url"
+    },
+    {
+      "id": "a-slow-fire-off-west-end-2026",
+      "title": "A Slow Fire",
+      "venue": "Jermyn Street Theatre",
+      "validationSource": "london",
+      "playbillUrl": null,
+      "mismatches": [],
+      "parsed": null,
+      "result": "no-london-url",
+      "fingerprint": "Jermyn Street Theatre|2026-08-25|2026-09-26|false|A Slow Fire||off-west-end|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-london-url"
+    },
+    {
+      "id": "eggs-arent-that-easy-to-make-off-west-end-2026",
+      "title": "Eggs Aren't That Easy to Make",
+      "venue": "Riverside Studios",
+      "validationSource": "london",
+      "playbillUrl": null,
+      "mismatches": [],
+      "parsed": null,
+      "result": "no-london-url",
+      "fingerprint": "Riverside Studios|2026-04-02|2026-04-12|false|Eggs Aren't That Easy to Make||off-west-end|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-london-url"
+    },
+    {
+      "id": "who-killed-marilyn-off-west-end-2026",
+      "title": "Who Killed Marilyn?",
+      "venue": "Emerald Theatre",
+      "validationSource": "london",
+      "playbillUrl": null,
+      "mismatches": [],
+      "parsed": null,
+      "result": "no-london-url",
+      "fingerprint": "Emerald Theatre|2026-08-21|2026-10-29|false|Who Killed Marilyn?||off-west-end|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-london-url"
+    },
+    {
+      "id": "grindr-mom-off-west-end-2026",
+      "title": "Grindr Mom",
+      "venue": "Waterloo East Theatre",
+      "validationSource": "london",
+      "playbillUrl": null,
+      "mismatches": [],
+      "parsed": null,
+      "result": "no-london-url",
+      "fingerprint": "Waterloo East Theatre|2026-02-20|2026-03-01|false|Grindr Mom||off-west-end|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-london-url"
+    },
+    {
+      "id": "the-sound-of-absence-off-west-end-2026",
+      "title": "The Sound of Absence",
+      "venue": "Omnibus Theatre",
+      "validationSource": "london",
+      "playbillUrl": null,
+      "mismatches": [],
+      "parsed": null,
+      "result": "no-london-url",
+      "fingerprint": "Omnibus Theatre|2026-02-24|2026-02-28|false|The Sound of Absence||off-west-end|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-london-url"
+    },
+    {
+      "id": "hold-the-line-off-west-end-2026",
+      "title": "Hold the Line",
+      "venue": "Hope Theatre",
+      "validationSource": "london",
+      "playbillUrl": null,
+      "mismatches": [],
+      "parsed": null,
+      "result": "no-london-url",
+      "fingerprint": "Hope Theatre|2026-04-22|2026-04-25|false|Hold the Line||off-west-end|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-london-url"
+    },
+    {
+      "id": "i-made-you-a-mixtape-off-west-end-2026",
+      "title": "I Made You a Mixtape",
+      "venue": "The Cockpit",
+      "validationSource": "london",
+      "playbillUrl": null,
+      "mismatches": [],
+      "parsed": null,
+      "result": "no-london-url",
+      "fingerprint": "The Cockpit|2026-06-12|2026-06-14|false|I Made You a Mixtape||off-west-end|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-london-url"
+    },
+    {
+      "id": "the-pass-off-west-end-2026",
+      "title": "The Pass",
+      "venue": "Pearly Queen Theatre",
+      "validationSource": "london",
+      "playbillUrl": null,
+      "mismatches": [],
+      "parsed": null,
+      "result": "no-london-url",
+      "fingerprint": "Pearly Queen Theatre|2026-09-17|2026-10-03|false|The Pass||off-west-end|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-london-url"
+    },
+    {
+      "id": "ancient-grease-off-west-end-2026",
+      "title": "Ancient Grease",
+      "venue": "The Vaults Theatre",
+      "validationSource": "london",
+      "playbillUrl": null,
+      "mismatches": [],
+      "parsed": null,
+      "result": "no-london-url",
+      "fingerprint": "The Vaults Theatre||2026-05-30|false|Ancient Grease||off-west-end|musical",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-london-url"
+    },
+    {
+      "id": "three-men-in-a-boat-off-west-end-2026",
+      "title": "Three Men in a Boat",
+      "venue": "Rose Theatre Kingston",
+      "validationSource": "london",
+      "playbillUrl": null,
+      "mismatches": [],
+      "parsed": null,
+      "result": "no-london-url",
+      "fingerprint": "Rose Theatre Kingston|2026-09-23|2026-10-10|false|Three Men in a Boat||off-west-end|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-london-url"
+    },
+    {
+      "id": "top-gunchained-off-west-end-2026",
+      "title": "Top Gunchained",
+      "venue": "Wilton's Music Hall",
+      "validationSource": "london",
+      "playbillUrl": null,
+      "mismatches": [],
+      "parsed": {
+        "titleParse": {
+          "rawTitle": "Top Gunchained",
+          "market": "London",
+          "venue": null,
+          "year": null
+        },
+        "dates": {
+          "openingDate": "2026-11-16",
+          "closingDate": null
+        },
+        "tagLine": null
+      },
+      "explainedByPriorRun": [],
+      "venueCheck": "unverified",
+      "sourceUrl": "https://officiallondontheatre.com/show/top-gunchained-111476290/",
+      "urlSource": "london",
+      "result": "venue-unverified",
+      "fingerprint": "Wilton's Music Hall||2026-11-21|false|Top Gunchained||off-west-end|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "venue-unverified"
+    },
+    {
+      "id": "dick-whittington-adults-only-off-west-end-2026",
+      "title": "Dick Whittington: Adults Only",
+      "venue": "King's Head Theatre",
+      "validationSource": "london",
+      "playbillUrl": null,
+      "mismatches": [],
+      "parsed": null,
+      "result": "no-london-url",
+      "fingerprint": "King's Head Theatre|2026-11-27|2027-01-02|false|Dick Whittington: Adults Only||off-west-end|musical",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-london-url"
+    },
+    {
+      "id": "michael-r-jackson-wake-up-call-off-broadway-2026",
+      "title": "Michael R. Jackson: Wake Up Call",
+      "venue": "Joe's Pub",
+      "result": "no-playbill-url",
+      "urlSource": "none",
+      "mismatches": [],
+      "playbillUrl": null,
+      "parsed": null,
+      "fingerprint": "Joe's Pub|2026-08-16|2026-08-16|false|Michael R. Jackson: Wake Up Call||off-broadway|special",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-playbill-url"
+    },
+    {
+      "id": "the-radium-girls-off-west-end-2026",
+      "title": "The Radium Girls",
+      "venue": "Southwark Playhouse",
+      "validationSource": "london",
+      "playbillUrl": null,
+      "mismatches": [],
+      "parsed": null,
+      "result": "no-london-url",
+      "fingerprint": "Southwark Playhouse||2027-05-08|false|The Radium Girls||off-west-end|musical",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-london-url"
+    },
+    {
+      "id": "machine-learning-off-broadway-2026",
+      "title": "Machine Learning",
+      "venue": "Manhattan Neighborhood Network",
+      "result": "no-playbill-url",
+      "urlSource": "none",
+      "mismatches": [],
+      "playbillUrl": null,
+      "parsed": null,
+      "fingerprint": "Manhattan Neighborhood Network|2026-10-20|2026-10-30|false|Machine Learning||off-broadway|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-playbill-url"
+    },
+    {
+      "id": "diana-the-untold-and-untrue-story-off-broadway-2026",
+      "title": "Diana: The Untold and Untrue Story",
+      "venue": "SoHo Playhouse",
+      "result": "no-playbill-url",
+      "urlSource": "none",
+      "mismatches": [],
+      "playbillUrl": null,
+      "parsed": null,
+      "fingerprint": "SoHo Playhouse|2026-12-02|2026-12-13|false|Diana: The Untold and Untrue Story||off-broadway|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-playbill-url"
+    },
+    {
+      "id": "the-very-gay-christmas-prince-off-broadway-2026",
+      "title": "The (Very Gay) Christmas Prince",
+      "venue": "SoHo Playhouse",
+      "result": "no-playbill-url",
+      "urlSource": "none",
+      "mismatches": [],
+      "playbillUrl": null,
+      "parsed": null,
+      "fingerprint": "SoHo Playhouse|2026-12-16|2027-01-03|false|The (Very Gay) Christmas Prince||off-broadway|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-playbill-url"
+    },
+    {
+      "id": "the-second-best-school-shooting-off-broadway-2026",
+      "title": "The Second Best School Shooting",
+      "venue": "SoHo Playhouse",
+      "result": "no-playbill-url",
+      "urlSource": "none",
+      "mismatches": [],
+      "playbillUrl": null,
+      "parsed": null,
+      "fingerprint": "SoHo Playhouse|2026-10-17|2026-10-20|false|The Second Best School Shooting||off-broadway|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-playbill-url"
+    },
+    {
+      "id": "big-feelings-off-broadway-2026",
+      "title": "Big Feelings",
+      "venue": "The Cell Theatre",
+      "result": "no-playbill-url",
+      "urlSource": "none",
+      "mismatches": [],
+      "playbillUrl": null,
+      "parsed": null,
+      "fingerprint": "The Cell Theatre|2026-09-13|2026-10-09|false|Big Feelings||off-broadway|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-playbill-url"
+    },
+    {
+      "id": "fantasma-off-broadway-2026",
+      "title": "Fantasma",
+      "venue": "59E59 Theaters",
+      "result": "mismatch",
+      "venueCheck": "different",
+      "playbillUrl": "https://playbill.com/production/fantasma-off-broadway-59e59-theater-a-2026",
+      "urlSource": "serp",
+      "parsed": {
+        "titleParse": {
+          "rawTitle": "Fantasma",
+          "market": "Off-Broadway",
+          "venue": "59E59 Theater A",
+          "year": 2026
+        },
+        "dates": {
+          "firstPreview": "2026-11-07",
+          "openingDate": "2026-11-15",
+          "closingDate": "2026-12-20"
+        },
+        "tagLine": {
+          "tags": [
+            "Off-Broadway",
+            "Play",
+            "One Act",
+            "Original"
+          ],
+          "market": "Off-Broadway",
+          "showType": "play",
+          "revivalStatus": "original"
+        }
+      },
+      "mismatches": [
+        {
+          "field": "venue",
+          "shows": "59E59 Theaters",
+          "showsCanonical": "59e59",
+          "playbill": "59E59 Theater A",
+          "playbillCanonical": "59e59"
+        }
+      ],
+      "explainedByPriorRun": [],
+      "fingerprint": "59E59 Theaters|2026-11-22|2026-12-20|false|Fantasma||off-broadway|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "mismatch"
+    },
+    {
+      "id": "les-enfants-terribles-off-broadway-2026",
+      "title": "Les Enfants Terribles",
+      "venue": "East Village Basement",
+      "result": "no-playbill-url",
+      "urlSource": "none",
+      "mismatches": [],
+      "playbillUrl": null,
+      "parsed": null,
+      "fingerprint": "East Village Basement|2026-09-12|2026-10-04|false|Les Enfants Terribles||off-broadway|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-playbill-url"
+    },
+    {
+      "id": "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026",
+      "title": "Queeney Todd: The Demon Bottom of Fleet Street",
+      "venue": "Judson Memorial Church",
+      "result": "no-playbill-url",
+      "urlSource": "none",
+      "mismatches": [],
+      "playbillUrl": null,
+      "parsed": null,
+      "fingerprint": "Judson Memorial Church|2026-10-22|2026-10-31|false|Queeney Todd: The Demon Bottom of Fleet Street||off-broadway|musical",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-playbill-url"
+    },
+    {
+      "id": "the-morbs-off-broadway-2026",
+      "title": "The Morbs",
+      "venue": "Jeffrey and Paula Gural Theatre at A.R.T./New York Theatres",
+      "result": "no-playbill-url",
+      "urlSource": "none",
+      "mismatches": [],
+      "playbillUrl": null,
+      "parsed": null,
+      "fingerprint": "Jeffrey and Paula Gural Theatre at A.R.T./New York Theatres|2026-11-02|2026-11-21|false|The Morbs||off-broadway|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-playbill-url"
+    },
+    {
+      "id": "alice-in-wonderland-off-broadway-2026",
+      "title": "Alice in Wonderland",
+      "venue": "The Players Theatre",
+      "result": "no-playbill-url",
+      "urlSource": "none",
+      "mismatches": [],
+      "playbillUrl": null,
+      "parsed": null,
+      "fingerprint": "The Players Theatre|2026-09-26||false|Alice in Wonderland||off-broadway|musical",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-playbill-url"
+    },
+    {
+      "id": "an-outrageous-outcome-off-broadway-2027",
+      "title": "An Outrageous Outcome",
+      "venue": "The Players Theatre",
+      "result": "no-playbill-url",
+      "urlSource": "none",
+      "mismatches": [],
+      "playbillUrl": null,
+      "parsed": null,
+      "fingerprint": "The Players Theatre||2027-07-25|false|An Outrageous Outcome||off-broadway|musical",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-playbill-url"
+    },
+    {
+      "id": "not-nineveh-off-broadway-2027",
+      "title": "Not Nineveh",
+      "venue": "The Players Theatre",
+      "result": "no-playbill-url",
+      "urlSource": "none",
+      "mismatches": [],
+      "playbillUrl": null,
+      "parsed": null,
+      "fingerprint": "The Players Theatre||2027-04-18|false|Not Nineveh||off-broadway|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-playbill-url"
+    },
+    {
+      "id": "space-quest-off-broadway-2027",
+      "title": "Space Quest",
+      "venue": "The Players Theatre",
+      "result": "no-playbill-url",
+      "urlSource": "none",
+      "mismatches": [],
+      "playbillUrl": null,
+      "parsed": null,
+      "fingerprint": "The Players Theatre||2027-02-07|false|Space Quest||off-broadway|musical",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-playbill-url"
+    },
+    {
+      "id": "the-little-lasses-of-appleton-wisconsin-off-broadway-2027",
+      "title": "The Little Lasses of Appleton, Wisconsin",
+      "venue": "The Players Theatre",
+      "result": "no-playbill-url",
+      "urlSource": "none",
+      "mismatches": [],
+      "playbillUrl": null,
+      "parsed": null,
+      "fingerprint": "The Players Theatre||2027-01-24|false|The Little Lasses of Appleton, Wisconsin||off-broadway|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-playbill-url"
+    },
+    {
+      "id": "we-are-happy-to-serve-you-off-broadway-2026",
+      "title": "We Are Happy to Serve You",
+      "venue": "The Players Theatre",
+      "result": "no-playbill-url",
+      "urlSource": "none",
+      "mismatches": [],
+      "playbillUrl": null,
+      "parsed": null,
+      "fingerprint": "The Players Theatre||2026-12-20|false|We Are Happy to Serve You||off-broadway|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-playbill-url"
+    },
+    {
+      "id": "you-go-on-off-broadway-2027",
+      "title": "You Go On",
+      "venue": "The Players Theatre",
+      "result": "no-playbill-url",
+      "urlSource": "none",
+      "mismatches": [],
+      "playbillUrl": null,
+      "parsed": null,
+      "fingerprint": "The Players Theatre||2027-06-06|false|You Go On||off-broadway|musical",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-playbill-url"
+    },
+    {
+      "id": "the-masters-tools-off-broadway-2027",
+      "title": "The Master's Tools",
+      "venue": "The Flea Theater",
+      "result": "no-playbill-url",
+      "urlSource": "none",
+      "mismatches": [],
+      "playbillUrl": null,
+      "parsed": null,
+      "fingerprint": "The Flea Theater||2027-01-24|false|The Master's Tools||off-broadway|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-playbill-url"
+    },
+    {
+      "id": "miss-julie-off-broadway-2026",
+      "title": "Miss Julie",
+      "venue": "The Space at Irondale",
+      "result": "no-playbill-url",
+      "urlSource": "none",
+      "mismatches": [],
+      "playbillUrl": null,
+      "parsed": null,
+      "fingerprint": "The Space at Irondale||2026-12-19|true|Miss Julie||off-broadway|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-playbill-url"
+    },
+    {
+      "id": "all-the-way-home-off-broadway-2027",
+      "title": "All The Way Home",
+      "venue": "Theater at St. Jean's",
+      "result": "no-playbill-url",
+      "urlSource": "none",
+      "mismatches": [],
+      "playbillUrl": null,
+      "parsed": null,
+      "fingerprint": "Theater at St. Jean's||2027-04-11|false|All The Way Home||off-broadway|musical",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-playbill-url"
+    },
+    {
+      "id": "nikola-tesla-the-forgotten-genius-off-broadway-2027",
+      "title": "Nikola Tesla: The Forgotten Genius",
+      "venue": "Theater at St. Jean's",
+      "result": "no-playbill-url",
+      "urlSource": "none",
+      "mismatches": [],
+      "playbillUrl": null,
+      "parsed": null,
+      "fingerprint": "Theater at St. Jean's||2027-03-28|false|Nikola Tesla: The Forgotten Genius||off-broadway|musical",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-playbill-url"
+    },
+    {
+      "id": "elektra-off-broadway-2026",
+      "title": "Elektra",
+      "venue": "Polonsky Shakespeare Center",
+      "result": "match",
+      "venueCheck": "match",
+      "playbillUrl": "https://playbill.com/production/elektra-off-broadway-theatre-for-a-new-audience-polonsky-shakespeare-center-2026",
+      "urlSource": "serp",
+      "parsed": {
+        "titleParse": {
+          "rawTitle": "Elektra",
+          "market": "Off-Broadway",
+          "venue": "Theatre for a New Audience @ Polonsky Shakespeare Center",
+          "year": 2026
+        },
+        "dates": {
+          "firstPreview": "2026-11-10",
+          "openingDate": "2026-11-20",
+          "closingDate": "2026-12-06"
+        },
+        "tagLine": {
+          "tags": [
+            "Off-Broadway",
+            "Play",
+            "Revival"
+          ],
+          "market": "Off-Broadway",
+          "showType": "play",
+          "revivalStatus": "revival"
+        }
+      },
+      "mismatches": [],
+      "explainedByPriorRun": [],
+      "fingerprint": "Polonsky Shakespeare Center|2026-11-20|2026-12-06|true|Elektra||off-broadway|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "match"
+    },
+    {
+      "id": "the-curious-incident-of-the-dog-in-the-night-time-off-broadway-2026",
+      "title": "The Curious Incident of the Dog in the Night-Time",
+      "venue": "A.R.T./New York Theatres",
+      "result": "no-playbill-url",
+      "urlSource": "none",
+      "mismatches": [],
+      "playbillUrl": null,
+      "parsed": null,
+      "fingerprint": "A.R.T./New York Theatres||2026-12-06|true|The Curious Incident of the Dog in the Night-Time||off-broadway|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-playbill-url"
+    },
+    {
+      "id": "double-bill-tell-me-straight-and-aggy-off-west-end-2026",
+      "title": "Double Bill: Tell Me Straight & Aggy",
+      "venue": "King's Head Theatre",
+      "validationSource": "london",
+      "playbillUrl": null,
+      "mismatches": [],
+      "parsed": null,
+      "result": "no-london-url",
+      "fingerprint": "King's Head Theatre|2026-10-15|2026-11-14|false|Double Bill: Tell Me Straight & Aggy||off-west-end|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-london-url"
+    },
+    {
+      "id": "petite-rouge-off-broadway-2026",
+      "title": "Petite Rouge",
+      "venue": "Theatre XIV",
+      "result": "no-playbill-url",
+      "urlSource": "none",
+      "mismatches": [],
+      "playbillUrl": null,
+      "parsed": null,
+      "fingerprint": "Theatre XIV|2026-03-01|2026-10-31|false|Petite Rouge||off-broadway|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-playbill-url"
+    },
+    {
+      "id": "beyond-caring-off-west-end-2027",
+      "title": "Beyond Caring",
+      "venue": "Almeida Theatre",
+      "validationSource": "london",
+      "playbillUrl": null,
+      "mismatches": [],
+      "parsed": null,
+      "result": "no-london-url",
+      "fingerprint": "Almeida Theatre||2027-05-22|false|Beyond Caring||off-west-end|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-london-url"
+    },
+    {
+      "id": "faith-hope-and-charity-off-west-end-2027",
+      "title": "Faith, Hope and Charity",
+      "venue": "Almeida Theatre",
+      "validationSource": "london",
+      "playbillUrl": null,
+      "mismatches": [],
+      "parsed": null,
+      "result": "no-london-url",
+      "fingerprint": "Almeida Theatre||2027-05-22|false|Faith, Hope and Charity||off-west-end|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-london-url"
+    },
+    {
+      "id": "love-off-west-end-2027",
+      "title": "LOVE",
+      "venue": "Almeida Theatre",
+      "validationSource": "london",
+      "playbillUrl": null,
+      "mismatches": [],
+      "parsed": null,
+      "result": "no-london-url",
+      "fingerprint": "Almeida Theatre||2027-05-22|false|LOVE||off-west-end|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-london-url"
+    },
+    {
+      "id": "springsteen-on-broadway-2017",
+      "title": "Springsteen on Broadway",
+      "venue": "Walter Kerr Theatre",
+      "result": "match",
+      "venueCheck": "match",
+      "playbillUrl": "https://playbill.com/production/springsteen-on-broadwaywalter-kerr-theatre-2017-2018",
+      "urlSource": "serp",
+      "parsed": {
+        "titleParse": {
+          "rawTitle": "Springsteen On Broadway",
+          "market": "Broadway",
+          "venue": "Walter Kerr Theatre",
+          "year": 2017
+        },
+        "dates": {
+          "firstPreview": "2017-10-03",
+          "openingDate": "2017-10-12",
+          "closingDate": "2018-12-15"
+        },
+        "tagLine": {
+          "tags": [
+            "Broadway",
+            "Concert",
+            "Original"
+          ],
+          "market": "Broadway",
+          "showType": null,
+          "revivalStatus": "original"
+        }
+      },
+      "mismatches": [],
+      "explainedByPriorRun": [],
+      "fingerprint": "Walter Kerr Theatre|2017-10-12|2018-12-15|false|Springsteen on Broadway||broadway|special",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "match"
+    },
+    {
+      "id": "august-osage-county-national-theatre-west-end-2008",
+      "title": "August: Osage County",
+      "venue": "Lyttelton Theatre",
+      "validationSource": "london",
+      "playbillUrl": null,
+      "mismatches": [],
+      "parsed": null,
+      "result": "no-london-url",
+      "fingerprint": "Lyttelton Theatre|2008-11-26|2009-01-21|false|August: Osage County||west-end|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-london-url"
+    },
+    {
+      "id": "a-masked-ball-off-west-end-2026",
+      "title": "A Masked Ball",
+      "venue": "Royal Opera House",
+      "validationSource": "london",
+      "playbillUrl": null,
+      "mismatches": [],
+      "parsed": null,
+      "result": "no-london-url",
+      "fingerprint": "Royal Opera House|2026-11-30|2026-12-18|false|A Masked Ball||off-west-end|opera",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-london-url"
+    },
+    {
+      "id": "cinderella-the-musical-off-broadway-2027",
+      "title": "Cinderella the Musical",
+      "venue": "The Players Theatre",
+      "result": "mismatch",
+      "venueCheck": "different",
+      "playbillUrl": "https://playbill.com/production/cinderella-broadway-theatre-vault-0000013978",
+      "urlSource": "serp",
+      "parsed": {
+        "titleParse": {
+          "rawTitle": "Cinderella",
+          "market": "Broadway",
+          "venue": "Broadway Theatre",
+          "year": 2013
+        },
+        "dates": {
+          "firstPreview": "2013-01-25",
+          "openingDate": "2013-03-03",
+          "closingDate": "2015-01-03"
+        },
+        "tagLine": {
+          "tags": [
+            "Broadway",
+            "Musical",
+            "Original"
+          ],
+          "market": "Broadway",
+          "showType": "musical",
+          "revivalStatus": "original"
+        }
+      },
+      "mismatches": [
+        {
+          "field": "venue",
+          "shows": "The Players Theatre",
+          "showsCanonical": "the",
+          "playbill": "Broadway Theatre",
+          "playbillCanonical": "broadway"
+        },
+        {
+          "field": "market",
+          "shows": "off-broadway",
+          "playbill": "Broadway"
+        }
+      ],
+      "explainedByPriorRun": [],
+      "fingerprint": "The Players Theatre||2027-04-04|false|Cinderella the Musical||off-broadway|musical",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "mismatch"
+    },
+    {
+      "id": "uncle-vanya-off-west-end-2027",
+      "title": "Uncle Vanya",
+      "venue": "Theatre Royal Stratford East",
+      "validationSource": "london",
+      "playbillUrl": null,
+      "mismatches": [],
+      "parsed": null,
+      "result": "no-london-url",
+      "fingerprint": "Theatre Royal Stratford East||2027-06-19|false|Uncle Vanya||off-west-end|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-london-url"
+    },
+    {
+      "id": "noel-cowards-sirocco-off-west-end-2026",
+      "title": "Noël Coward's Sirocco",
+      "venue": "Finborough Theatre",
+      "validationSource": "london",
+      "playbillUrl": null,
+      "mismatches": [],
+      "parsed": {
+        "titleParse": {
+          "rawTitle": "Noël Coward’s Sirocco",
+          "market": "London",
+          "venue": "Finborough Theatre",
+          "year": null
+        },
+        "dates": {
+          "openingDate": "2026-11-24",
+          "closingDate": "2026-12-22"
+        },
+        "tagLine": null
+      },
+      "explainedByPriorRun": [],
+      "venueCheck": "match",
+      "sourceUrl": "https://www.finboroughtheatre.co.uk/productions/sirocco",
+      "urlSource": "london",
+      "result": "match",
+      "fingerprint": "Finborough Theatre||2026-12-22|false|Noël Coward's Sirocco||off-west-end|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "match"
+    },
+    {
+      "id": "the-woolgatherer-off-west-end-2027",
+      "title": "The Woolgatherer",
+      "venue": "Finborough Theatre",
+      "validationSource": "london",
+      "playbillUrl": null,
+      "mismatches": [],
+      "parsed": null,
+      "result": "no-london-url",
+      "fingerprint": "Finborough Theatre||2027-01-30|false|The Woolgatherer||off-west-end|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "no-london-url"
+    },
+    {
+      "id": "all-our-lives-off-west-end-2027",
+      "title": "All Our Lives",
+      "venue": "Finborough Theatre",
+      "validationSource": "london",
+      "playbillUrl": null,
+      "mismatches": [],
+      "parsed": {
+        "titleParse": {
+          "rawTitle": "All Our Lives",
+          "market": "London",
+          "venue": "Finborough Theatre",
+          "year": null
+        },
+        "dates": {
+          "openingDate": "2027-02-02",
+          "closingDate": "2027-02-27"
+        },
+        "tagLine": null
+      },
+      "explainedByPriorRun": [],
+      "venueCheck": "match",
+      "sourceUrl": "https://www.finboroughtheatre.co.uk/productions/all-our-lives",
+      "urlSource": "london",
+      "result": "match",
+      "fingerprint": "Finborough Theatre||2027-02-27|false|All Our Lives||off-west-end|play",
+      "checkedAt": "2026-11-11T01:10:18.915Z",
+      "lastDefinitiveResult": "match"
+    },
+    {
+      "id": "the-caretaker-chichester-festival-regional-2024",
+      "title": "The Caretaker",
+      "venue": "Chichester Festival Theatre, Chichester",
+      "result": "no-playbill-url",
+      "urlSource": "none",
+      "mismatches": [],
+      "playbillUrl": null,
+      "parsed": null,
+      "fingerprint": "Chichester Festival Theatre, Chichester|2024-06-13||false|The Caretaker||regional|play",
+      "checkedAt": "2026-11-10T03:15:16.909Z",
+      "lastDefinitiveResult": "no-playbill-url"
+    },
+    {
+      "id": "an-iliad-off-west-end-2027",
+      "title": "An Iliad",
+      "venue": "Rose Theatre Kingston",
+      "validationSource": "london",
+      "playbillUrl": null,
+      "mismatches": [],
+      "parsed": null,
+      "result": "no-london-url",
+      "fingerprint": "Rose Theatre Kingston||2027-03-27|false|An Iliad||off-west-end|play",
+      "checkedAt": "2026-11-10T03:15:16.909Z",
+      "lastDefinitiveResult": "no-london-url"
+    },
+    {
+      "id": "monstering-the-rocketman-off-west-end-2026",
+      "title": "Monstering the Rocketman",
+      "venue": "Arcola Theatre",
+      "validationSource": "london",
+      "playbillUrl": null,
+      "mismatches": [],
+      "parsed": null,
+      "result": "no-london-url",
+      "fingerprint": "Arcola Theatre|2026-02-05|2026-02-21|false|Monstering the Rocketman||off-west-end|play",
+      "checkedAt": "2026-11-10T03:15:16.909Z",
+      "lastDefinitiveResult": "no-london-url"
     },
     {
       "id": "de-profundis-off-west-end-2026",
@@ -1803,41 +3254,6 @@
       "lastDefinitiveResult": "no-london-url"
     },
     {
-      "id": "danny-and-the-deep-blue-sea-off-broadway-2023",
-      "title": "Danny and the Deep Blue Sea",
-      "venue": "Lucille Lortel Theatre",
-      "result": "match",
-      "venueCheck": "match",
-      "playbillUrl": "https://playbill.com/production/danny-and-the-deep-blue-sea-off-broadway-lucille-lortel-theatre-2023",
-      "urlSource": "serp",
-      "parsed": {
-        "titleParse": {
-          "rawTitle": "Danny And The Deep Blue Sea",
-          "market": "Off-Broadway",
-          "venue": "Lucille Lortel Theatre",
-          "year": 2023
-        },
-        "dates": {
-          "firstPreview": "2023-10-30",
-          "openingDate": "2023-11-13",
-          "closingDate": "2024-01-13"
-        },
-        "tagLine": {
-          "tags": [
-            "Off-Broadway"
-          ],
-          "market": "Off-Broadway",
-          "showType": null,
-          "revivalStatus": "unknown"
-        }
-      },
-      "mismatches": [],
-      "explainedByPriorRun": [],
-      "fingerprint": "Lucille Lortel Theatre|2023-11-13|2024-01-13|true|Danny and the Deep Blue Sea||off-broadway|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
-      "lastDefinitiveResult": "match"
-    },
-    {
       "id": "standing-at-the-skys-edge-west-end-2024",
       "title": "Standing at the Sky's Edge",
       "venue": "Gillian Lynne Theatre",
@@ -1849,42 +3265,6 @@
       "fingerprint": "Gillian Lynne Theatre|2024-02-29|2024-08-03|false|Standing at the Sky's Edge||west-end|musical",
       "checkedAt": "2026-11-10T03:15:16.909Z",
       "lastDefinitiveResult": "no-london-url"
-    },
-    {
-      "id": "into-the-woods-noel-coward-west-end-2026",
-      "title": "Into the Woods",
-      "venue": "Noël Coward Theatre",
-      "validationSource": "london",
-      "playbillUrl": null,
-      "mismatches": [
-        {
-          "field": "openingDate",
-          "shows": "2026-10-07",
-          "playbill": "2026-11-10",
-          "deltaDays": 34
-        }
-      ],
-      "parsed": {
-        "titleParse": {
-          "rawTitle": "Into The Woods",
-          "market": "London",
-          "venue": null,
-          "year": null
-        },
-        "dates": {
-          "openingDate": "2026-11-10",
-          "closingDate": null
-        },
-        "tagLine": null
-      },
-      "explainedByPriorRun": [],
-      "venueCheck": "unverified",
-      "sourceUrl": "https://officiallondontheatre.com/show/into-the-woods-111473840/",
-      "urlSource": "london",
-      "result": "mismatch",
-      "fingerprint": "Noël Coward Theatre|2026-10-07|2027-01-09|true|Into the Woods|Bridge Theatre~2025-12-11~2026-05-30|west-end|musical",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
-      "lastDefinitiveResult": "mismatch"
     },
     {
       "id": "arcadia-duke-of-yorks-west-end-2026",
@@ -1939,19 +3319,6 @@
       "lastDefinitiveResult": "no-london-url"
     },
     {
-      "id": "lost-atoms-off-west-end-2026",
-      "title": "Lost Atoms",
-      "venue": "Lyric Hammersmith",
-      "validationSource": "london",
-      "playbillUrl": null,
-      "mismatches": [],
-      "parsed": null,
-      "result": "fetch-error",
-      "fingerprint": "Lyric Hammersmith|2026-02-03|2026-02-28|false|Lost Atoms||off-west-end|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
-      "lastDefinitiveResult": "no-london-url"
-    },
-    {
       "id": "the-last-days-of-liz-truss-off-west-end-2026",
       "title": "The Last Days of Liz Truss?",
       "venue": "The Other Palace - Studio",
@@ -1976,35 +3343,6 @@
       "fingerprint": "Soho Theatre|2026-09-03|2026-09-23|false|Crybabies: The Scaring||off-west-end|play",
       "checkedAt": "2026-11-10T03:15:16.909Z",
       "lastDefinitiveResult": "no-london-url"
-    },
-    {
-      "id": "bitch-boxer-off-west-end-2026",
-      "title": "Bitch Boxer",
-      "venue": "Arcola Theatre",
-      "validationSource": "london",
-      "playbillUrl": null,
-      "mismatches": [],
-      "parsed": {
-        "titleParse": {
-          "rawTitle": "Bitch Boxer",
-          "market": "London",
-          "venue": null,
-          "year": null
-        },
-        "dates": {
-          "openingDate": "2026-02-18",
-          "closingDate": "2026-03-14"
-        },
-        "tagLine": null
-      },
-      "explainedByPriorRun": [],
-      "venueCheck": "unverified",
-      "sourceUrl": "https://www.arcolatheatre.com/event/bitch-boxer/",
-      "urlSource": "london",
-      "result": "venue-unverified",
-      "fingerprint": "Arcola Theatre|2026-02-25|2026-03-14|false|Bitch Boxer||off-west-end|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
-      "lastDefinitiveResult": "venue-unverified"
     },
     {
       "id": "player-off-west-end-2026",
@@ -2046,102 +3384,6 @@
       "lastDefinitiveResult": "no-london-url"
     },
     {
-      "id": "arias-with-a-twist-off-broadway-2026",
-      "title": "Arias with a Twist",
-      "venue": "HERE Arts Center",
-      "result": "match",
-      "venueCheck": "match",
-      "playbillUrl": "https://playbill.com/production/arias-with-a-twist-off-broadway-here-arts-center-2026",
-      "urlSource": "cache",
-      "parsed": {
-        "titleParse": {
-          "rawTitle": "Arias with a Twist",
-          "market": "Off-Broadway",
-          "venue": "HERE Arts Center",
-          "year": 2026
-        },
-        "dates": {
-          "firstPreview": "2026-09-17",
-          "openingDate": "2026-09-23",
-          "closingDate": "2026-12-20"
-        },
-        "tagLine": {
-          "tags": [
-            "Off-Broadway",
-            "Puppetry",
-            "Special",
-            "Revival"
-          ],
-          "market": "Off-Broadway",
-          "showType": null,
-          "revivalStatus": "unknown"
-        }
-      },
-      "mismatches": [],
-      "explainedByPriorRun": [],
-      "fingerprint": "HERE Arts Center|2026-09-23|2026-12-20|true|Arias with a Twist||off-broadway|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
-      "lastDefinitiveResult": "match"
-    },
-    {
-      "id": "fire-fire-off-west-end-2026",
-      "title": "Fire Fire",
-      "venue": "Arcola Theatre",
-      "validationSource": "london",
-      "playbillUrl": null,
-      "mismatches": [],
-      "parsed": {
-        "titleParse": {
-          "rawTitle": "Fire Fire",
-          "market": "London",
-          "venue": null,
-          "year": null
-        },
-        "dates": {
-          "openingDate": "2026-09-09",
-          "closingDate": "2026-10-03"
-        },
-        "tagLine": null
-      },
-      "explainedByPriorRun": [],
-      "venueCheck": "unverified",
-      "sourceUrl": "https://www.arcolatheatre.com/event/fire-fire/",
-      "urlSource": "london",
-      "result": "venue-unverified",
-      "fingerprint": "Arcola Theatre|2026-09-11|2026-10-03|false|Fire Fire||off-west-end|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
-      "lastDefinitiveResult": "venue-unverified"
-    },
-    {
-      "id": "the-master-builder-off-west-end-2026",
-      "title": "The Master Builder",
-      "venue": "Arcola Theatre",
-      "validationSource": "london",
-      "playbillUrl": null,
-      "mismatches": [],
-      "parsed": {
-        "titleParse": {
-          "rawTitle": "The Master Builder",
-          "market": "London",
-          "venue": "Arcola Theatre",
-          "year": null
-        },
-        "dates": {
-          "openingDate": "2026-11-10",
-          "closingDate": "2026-11-21"
-        },
-        "tagLine": null
-      },
-      "explainedByPriorRun": [],
-      "venueCheck": "match",
-      "sourceUrl": "https://www.arcolatheatre.com/event/the-master-builder/",
-      "urlSource": "london",
-      "result": "match",
-      "fingerprint": "Arcola Theatre|2026-10-22|2026-11-21|false|The Master Builder||off-west-end|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
-      "lastDefinitiveResult": "match"
-    },
-    {
       "id": "tinderella-off-west-end-2026",
       "title": "Tinderella",
       "venue": "Riverside Studios",
@@ -2155,118 +3397,6 @@
       "lastDefinitiveResult": "no-london-url"
     },
     {
-      "id": "a-kidman-carol-off-broadway-2026",
-      "title": "A Kidman Carol",
-      "venue": "New World Stages",
-      "result": "match",
-      "venueCheck": "match",
-      "playbillUrl": "https://playbill.com/production/a-kidman-carol-off-broadway-new-world-stages-stage-3-2026",
-      "urlSource": "serp",
-      "parsed": {
-        "titleParse": {
-          "rawTitle": "A Kidman Carol",
-          "market": "Off-Broadway",
-          "venue": "New World Stages Stage 3",
-          "year": 2026
-        },
-        "dates": {
-          "firstPreview": "2026-11-16",
-          "openingDate": "2026-11-30",
-          "closingDate": null
-        },
-        "tagLine": {
-          "tags": [
-            "Off-Broadway",
-            "Play",
-            "Comedy",
-            "Original"
-          ],
-          "market": "Off-Broadway",
-          "showType": "play",
-          "revivalStatus": "original"
-        }
-      },
-      "mismatches": [],
-      "explainedByPriorRun": [],
-      "fingerprint": "New World Stages|2026-11-30|2026-12-30|false|A Kidman Carol||off-broadway|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
-      "lastDefinitiveResult": "match"
-    },
-    {
-      "id": "you-will-get-sick-off-broadway-2022",
-      "title": "You Will Get Sick",
-      "venue": "Laura Pels Theatre",
-      "result": "match",
-      "venueCheck": "match",
-      "playbillUrl": "https://playbill.com/production/you-will-get-sick-off-broadway-roundabout-theatre-company-laura-pels-theatre-2022",
-      "urlSource": "serp",
-      "parsed": {
-        "titleParse": {
-          "rawTitle": "You Will Get Sick",
-          "market": "Off-Broadway",
-          "venue": "Roundabout Theatre Company - Laura Pels Theatre",
-          "year": 2022
-        },
-        "dates": {
-          "firstPreview": "2022-10-14",
-          "openingDate": "2022-11-06",
-          "closingDate": "2022-12-11"
-        },
-        "tagLine": {
-          "tags": [
-            "Off-Broadway"
-          ],
-          "market": "Off-Broadway",
-          "showType": null,
-          "revivalStatus": "unknown"
-        }
-      },
-      "mismatches": [],
-      "explainedByPriorRun": [],
-      "fingerprint": "Laura Pels Theatre|2022-11-06|2022-12-11|false|You Will Get Sick||off-broadway|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
-      "lastDefinitiveResult": "match"
-    },
-    {
-      "id": "the-amish-project-2027",
-      "title": "The Amish Project",
-      "venue": "Broadhurst Theatre",
-      "result": "match",
-      "venueCheck": "match",
-      "playbillUrl": "https://playbill.com/production/the-amish-project-broadway-broadhurst-theatre-2027",
-      "urlSource": "serp",
-      "parsed": {
-        "titleParse": {
-          "rawTitle": "The Amish Project",
-          "market": "Broadway",
-          "venue": "Broadhurst Theatre",
-          "year": 2027
-        },
-        "dates": {
-          "firstPreview": "2027-02-10",
-          "openingDate": null,
-          "closingDate": null
-        },
-        "tagLine": {
-          "tags": [
-            "Broadway",
-            "Solo",
-            "Play",
-            "One Act",
-            "Revival"
-          ],
-          "market": "Broadway",
-          "showType": "play",
-          "revivalStatus": "revival"
-        }
-      },
-      "mismatches": [],
-      "explainedByPriorRun": [],
-      "fingerprint": "Broadhurst Theatre|||true|The Amish Project||broadway|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
-      "lastDefinitiveResult": "match"
-    },
-    {
       "id": "bedlam-off-west-end-2027",
       "title": "Bedlam",
       "venue": "Arcola Theatre",
@@ -2278,43 +3408,6 @@
       "fingerprint": "Arcola Theatre||2027-05-15|false|Bedlam||off-west-end|play",
       "checkedAt": "2026-11-10T03:15:16.909Z",
       "lastDefinitiveResult": "no-london-url"
-    },
-    {
-      "id": "oratorio-for-living-things-off-broadway-2026",
-      "title": "Oratorio for Living Things",
-      "venue": "Signature Theatre",
-      "result": "match",
-      "venueCheck": "match",
-      "playbillUrl": "https://playbill.com/production/oratorio-for-living-things-off-broadway-the-pershing-square-signature-center-romulus-linney-courtyard-theatre-2025",
-      "urlSource": "cache",
-      "parsed": {
-        "titleParse": {
-          "rawTitle": "Oratorio for Living Things",
-          "market": "Off-Broadway",
-          "venue": "The Pershing Square Signature Center/Romulus Linney Courtyard Theatre",
-          "year": 2025
-        },
-        "dates": {
-          "firstPreview": "2025-09-30",
-          "openingDate": "2025-10-16",
-          "closingDate": "2025-11-23"
-        },
-        "tagLine": {
-          "tags": [
-            "Off-Broadway",
-            "Musical",
-            "One Act"
-          ],
-          "market": "Off-Broadway",
-          "showType": "musical",
-          "revivalStatus": "unknown"
-        }
-      },
-      "mismatches": [],
-      "explainedByPriorRun": [],
-      "fingerprint": "Signature Theatre|2025-10-16|2025-11-23|false|Oratorio for Living Things||off-broadway|musical",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
-      "lastDefinitiveResult": "match"
     },
     {
       "id": "the-choir-of-man-marble-arch-off-west-end-2026",
@@ -2352,19 +3445,6 @@
       "parsed": null,
       "result": "no-london-url",
       "fingerprint": "The Old Vic|2023-02-15|2023-04-08|false|Sylvia||west-end|musical",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
-      "lastDefinitiveResult": "no-london-url"
-    },
-    {
-      "id": "cranford-off-west-end-2026",
-      "title": "Cranford",
-      "venue": "Orange Tree Theatre",
-      "validationSource": "london",
-      "playbillUrl": null,
-      "mismatches": [],
-      "parsed": null,
-      "result": "no-london-url",
-      "fingerprint": "Orange Tree Theatre||2027-01-16|false|Cranford||off-west-end|play",
       "checkedAt": "2026-11-10T03:15:16.909Z",
       "lastDefinitiveResult": "no-london-url"
     },
@@ -2408,19 +3488,6 @@
       "lastDefinitiveResult": "no-london-url"
     },
     {
-      "id": "guess-how-much-i-love-you-west-end-2026",
-      "title": "Guess How Much I Love You?",
-      "venue": "Royal Court",
-      "validationSource": "london",
-      "playbillUrl": null,
-      "mismatches": [],
-      "parsed": null,
-      "result": "fetch-error",
-      "fingerprint": "Royal Court|2026-01-22|2026-02-21|false|Guess How Much I Love You?||west-end|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
-      "lastDefinitiveResult": "no-london-url"
-    },
-    {
       "id": "america-the-beautiful-chapter-1-off-west-end-2026",
       "title": "America the Beautiful: Chapter 1",
       "venue": "King's Head Theatre",
@@ -2432,42 +3499,6 @@
       "fingerprint": "King's Head Theatre|2026-03-09|2026-03-14|false|America the Beautiful: Chapter 1||off-west-end|play",
       "checkedAt": "2026-11-10T03:15:16.909Z",
       "lastDefinitiveResult": "no-london-url"
-    },
-    {
-      "id": "christmas-carol-goes-wrong-apollo-west-end-2025",
-      "title": "Christmas Carol Goes Wrong",
-      "venue": "Apollo Theatre",
-      "validationSource": "london",
-      "playbillUrl": null,
-      "mismatches": [
-        {
-          "field": "openingDate",
-          "shows": "2025-12-14",
-          "playbill": "2026-12-20",
-          "deltaDays": 371
-        }
-      ],
-      "parsed": {
-        "titleParse": {
-          "rawTitle": "Christmas Carol Goes Wrong",
-          "market": "London",
-          "venue": null,
-          "year": null
-        },
-        "dates": {
-          "openingDate": "2026-12-20",
-          "closingDate": null
-        },
-        "tagLine": null
-      },
-      "explainedByPriorRun": [],
-      "venueCheck": "unverified",
-      "sourceUrl": "https://officiallondontheatre.com/show/christmas-carol-goes-wrong-111474261/",
-      "urlSource": "london",
-      "result": "mismatch",
-      "fingerprint": "Apollo Theatre|2025-12-14|2026-01-26|false|Christmas Carol Goes Wrong||west-end|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
-      "lastDefinitiveResult": "mismatch"
     },
     {
       "id": "a-ghost-in-your-ear-off-west-end-2026",
@@ -2522,35 +3553,6 @@
       "lastDefinitiveResult": "no-london-url"
     },
     {
-      "id": "are-you-even-indian-off-west-end-2026",
-      "title": "Are You Even Indian?",
-      "venue": "Riverside Studios",
-      "validationSource": "london",
-      "playbillUrl": null,
-      "mismatches": [],
-      "parsed": {
-        "titleParse": {
-          "rawTitle": "Are You Even Indian?",
-          "market": "London",
-          "venue": null,
-          "year": null
-        },
-        "dates": {
-          "openingDate": "2026-11-17",
-          "closingDate": "2026-11-29"
-        },
-        "tagLine": null
-      },
-      "explainedByPriorRun": [],
-      "venueCheck": "unverified",
-      "sourceUrl": "https://riversidestudios.co.uk/whats-on/SR-are-you-even-indian/",
-      "urlSource": "london",
-      "result": "venue-unverified",
-      "fingerprint": "Riverside Studios||2026-11-29|false|Are You Even Indian?||off-west-end|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
-      "lastDefinitiveResult": "venue-unverified"
-    },
-    {
       "id": "neil-simons-rumors-off-broadway-2027",
       "title": "Neil Simon's Rumors",
       "venue": "Robert W. Wilson MCC Theater Space",
@@ -2590,43 +3592,6 @@
       "lastDefinitiveResult": "no-playbill-url"
     },
     {
-      "id": "springsteen-on-broadway-2021",
-      "title": "Springsteen on Broadway",
-      "venue": "St. James Theatre",
-      "result": "match",
-      "venueCheck": "match",
-      "playbillUrl": "https://playbill.com/production/springsteen-on-broadwayst-james-theatre-2021-2022",
-      "urlSource": "serp",
-      "parsed": {
-        "titleParse": {
-          "rawTitle": "Springsteen On Broadway",
-          "market": "Broadway",
-          "venue": "St. James Theatre",
-          "year": 2021
-        },
-        "dates": {
-          "firstPreview": "2021-06-26",
-          "openingDate": "2021-06-26",
-          "closingDate": "2021-09-04"
-        },
-        "tagLine": {
-          "tags": [
-            "Broadway",
-            "Concert",
-            "Revival"
-          ],
-          "market": "Broadway",
-          "showType": null,
-          "revivalStatus": "unknown"
-        }
-      },
-      "mismatches": [],
-      "explainedByPriorRun": [],
-      "fingerprint": "St. James Theatre|2021-06-26|2021-09-04|true|Springsteen on Broadway|Walter Kerr Theatre~2017-10-12~2018-12-15|broadway|special",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
-      "lastDefinitiveResult": "match"
-    },
-    {
       "id": "akhnaten-off-broadway-2019",
       "title": "Akhnaten",
       "venue": "Metropolitan Opera House",
@@ -2664,35 +3629,6 @@
       "fingerprint": "Park Theatre||2027-11-27|false|Chamber||off-west-end|play",
       "checkedAt": "2026-11-10T03:15:16.909Z",
       "lastDefinitiveResult": "no-london-url"
-    },
-    {
-      "id": "noises-off-off-west-end-2027",
-      "title": "Noises Off",
-      "venue": "Theatre Royal Stratford East",
-      "validationSource": "london",
-      "playbillUrl": null,
-      "mismatches": [],
-      "parsed": {
-        "titleParse": {
-          "rawTitle": "Noises Off",
-          "market": "London",
-          "venue": null,
-          "year": null
-        },
-        "dates": {
-          "openingDate": "2027-02-05",
-          "closingDate": "2027-03-13"
-        },
-        "tagLine": null
-      },
-      "explainedByPriorRun": [],
-      "venueCheck": "unverified",
-      "sourceUrl": "https://www.stratfordeast.com/whats-on/noises-off/",
-      "urlSource": "london",
-      "result": "venue-unverified",
-      "fingerprint": "Theatre Royal Stratford East||2027-03-13|false|Noises Off||off-west-end|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
-      "lastDefinitiveResult": "venue-unverified"
     },
     {
       "id": "diana-the-untold-and-untrue-story-off-west-end-2027",
@@ -2812,35 +3748,6 @@
       "lastDefinitiveResult": "no-london-url"
     },
     {
-      "id": "talking-in-tongues-off-west-end-2027",
-      "title": "Talking In Tongues",
-      "venue": "Theatre Royal Stratford East",
-      "validationSource": "london",
-      "playbillUrl": null,
-      "mismatches": [],
-      "parsed": {
-        "titleParse": {
-          "rawTitle": "Talking In Tongues",
-          "market": "London",
-          "venue": null,
-          "year": null
-        },
-        "dates": {
-          "openingDate": "2027-04-01",
-          "closingDate": "2027-05-01"
-        },
-        "tagLine": null
-      },
-      "explainedByPriorRun": [],
-      "venueCheck": "unverified",
-      "sourceUrl": "https://www.stratfordeast.com/whats-on/talking-in-tongues/",
-      "urlSource": "london",
-      "result": "venue-unverified",
-      "fingerprint": "Theatre Royal Stratford East||2027-05-01|false|Talking In Tongues||off-west-end|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
-      "lastDefinitiveResult": "venue-unverified"
-    },
-    {
       "id": "invisible-me-off-west-end-2026",
       "title": "Invisible Me",
       "venue": "Southwark Playhouse Borough",
@@ -2863,19 +3770,6 @@
       "parsed": null,
       "result": "no-london-url",
       "fingerprint": "Southwark Playhouse Borough|2026-06-05|2026-07-04|false|Slaughterhouse-Five||off-west-end|play",
-      "checkedAt": "2026-11-10T03:15:16.909Z",
-      "lastDefinitiveResult": "no-london-url"
-    },
-    {
-      "id": "cable-street-off-west-end-2026",
-      "title": "Cable Street",
-      "venue": "Marylebone Theatre",
-      "validationSource": "london",
-      "playbillUrl": null,
-      "mismatches": [],
-      "parsed": null,
-      "result": "fetch-error",
-      "fingerprint": "Marylebone Theatre|2026-01-26|2026-02-28|false|Cable Street||off-west-end|musical",
       "checkedAt": "2026-11-10T03:15:16.909Z",
       "lastDefinitiveResult": "no-london-url"
     },
@@ -6357,19 +7251,6 @@
       "lastDefinitiveResult": "no-playbill-url"
     },
     {
-      "id": "becoming-nancy-birmingham-rep-regional-2024",
-      "title": "Becoming Nancy",
-      "venue": "Birmingham Rep, Birmingham",
-      "result": "no-playbill-url",
-      "urlSource": "none",
-      "mismatches": [],
-      "playbillUrl": null,
-      "parsed": null,
-      "fingerprint": "Birmingham Rep, Birmingham|2024-10-16||false|Becoming Nancy||regional|play",
-      "checkedAt": "2026-10-31T23:56:28.893Z",
-      "lastDefinitiveResult": "no-playbill-url"
-    },
-    {
       "id": "spitfire-girls-birmingham-rep-regional-2025",
       "title": "Spitfire Girls",
       "venue": "Birmingham Rep, Birmingham",
@@ -7397,123 +8278,6 @@
       "lastDefinitiveResult": "no-playbill-url"
     },
     {
-      "id": "the-morbs-off-broadway-2026",
-      "title": "The Morbs",
-      "venue": "Jeffrey and Paula Gural Theatre at A.R.T./New York Theatres",
-      "result": "no-playbill-url",
-      "urlSource": "none",
-      "mismatches": [],
-      "playbillUrl": null,
-      "parsed": null,
-      "fingerprint": "Jeffrey and Paula Gural Theatre at A.R.T./New York Theatres|2026-11-02|2026-11-21|false|The Morbs||off-broadway|play",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-playbill-url"
-    },
-    {
-      "id": "elektra-off-broadway-2026",
-      "title": "Elektra",
-      "venue": "Polonsky Shakespeare Center",
-      "result": "no-playbill-url",
-      "urlSource": "none",
-      "mismatches": [],
-      "playbillUrl": null,
-      "parsed": null,
-      "fingerprint": "Polonsky Shakespeare Center|2026-11-20|2026-12-06|true|Elektra||off-broadway|play",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-playbill-url"
-    },
-    {
-      "id": "august-osage-county-national-theatre-west-end-2008",
-      "title": "August: Osage County",
-      "venue": "Lyttelton Theatre",
-      "validationSource": "london",
-      "playbillUrl": null,
-      "mismatches": [],
-      "parsed": null,
-      "result": "no-london-url",
-      "fingerprint": "Lyttelton Theatre|2008-11-26|2009-01-21|false|August: Osage County||west-end|play",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-london-url"
-    },
-    {
-      "id": "a-masked-ball-off-west-end-2026",
-      "title": "A Masked Ball",
-      "venue": "Royal Opera House",
-      "validationSource": "london",
-      "playbillUrl": null,
-      "mismatches": [],
-      "parsed": null,
-      "result": "no-london-url",
-      "fingerprint": "Royal Opera House|2026-11-30|2026-12-18|false|A Masked Ball||off-west-end|opera",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-london-url"
-    },
-    {
-      "id": "cinderella-the-musical-off-broadway-2027",
-      "title": "Cinderella the Musical",
-      "venue": "The Players Theatre",
-      "result": "no-playbill-url",
-      "urlSource": "none",
-      "mismatches": [],
-      "playbillUrl": null,
-      "parsed": null,
-      "fingerprint": "The Players Theatre||2027-04-04|false|Cinderella the Musical||off-broadway|musical",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-playbill-url"
-    },
-    {
-      "id": "uncle-vanya-off-west-end-2027",
-      "title": "Uncle Vanya",
-      "venue": "Theatre Royal Stratford East",
-      "validationSource": "london",
-      "playbillUrl": null,
-      "mismatches": [],
-      "parsed": null,
-      "result": "no-london-url",
-      "fingerprint": "Theatre Royal Stratford East||2027-06-19|false|Uncle Vanya||off-west-end|play",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-london-url"
-    },
-    {
-      "id": "noel-cowards-sirocco-off-west-end-2026",
-      "title": "Noël Coward's Sirocco",
-      "venue": "Finborough Theatre",
-      "validationSource": "london",
-      "playbillUrl": null,
-      "mismatches": [],
-      "parsed": null,
-      "result": "no-london-url",
-      "fingerprint": "Finborough Theatre||2026-12-22|false|Noël Coward's Sirocco||off-west-end|play",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-london-url"
-    },
-    {
-      "id": "the-woolgatherer-off-west-end-2027",
-      "title": "The Woolgatherer",
-      "venue": "Finborough Theatre",
-      "validationSource": "london",
-      "playbillUrl": null,
-      "mismatches": [],
-      "parsed": null,
-      "result": "no-london-url",
-      "fingerprint": "Finborough Theatre||2027-01-30|false|The Woolgatherer||off-west-end|play",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-london-url"
-    },
-    {
-      "id": "all-our-lives-off-west-end-2027",
-      "title": "All Our Lives",
-      "venue": "Finborough Theatre",
-      "validationSource": "london",
-      "playbillUrl": null,
-      "mismatches": [],
-      "parsed": null,
-      "result": "no-london-url",
-      "fingerprint": "Finborough Theatre||2027-02-27|false|All Our Lives||off-west-end|play",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-london-url"
-    },
-    {
       "id": "parasocial-activity-off-west-end-2027",
       "title": "Parasocial Activity",
       "venue": "Southwark Playhouse",
@@ -7536,630 +8300,6 @@
       "parsed": null,
       "result": "no-london-url",
       "fingerprint": "King's Head Theatre||2027-04-17|false|For Dolores||off-west-end|play",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-london-url"
-    },
-    {
-      "id": "springsteen-on-broadway-2017",
-      "title": "Springsteen on Broadway",
-      "venue": "Walter Kerr Theatre",
-      "result": "no-playbill-url",
-      "urlSource": "none",
-      "mismatches": [],
-      "playbillUrl": null,
-      "parsed": null,
-      "fingerprint": "Walter Kerr Theatre|2017-10-12|2018-12-15|false|Springsteen on Broadway||broadway|special",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-playbill-url"
-    },
-    {
-      "id": "miss-julie-off-broadway-2026",
-      "title": "Miss Julie",
-      "venue": "The Space at Irondale",
-      "result": "no-playbill-url",
-      "urlSource": "none",
-      "mismatches": [],
-      "playbillUrl": null,
-      "parsed": null,
-      "fingerprint": "The Space at Irondale||2026-12-19|true|Miss Julie||off-broadway|play",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-playbill-url"
-    },
-    {
-      "id": "double-bill-tell-me-straight-and-aggy-off-west-end-2026",
-      "title": "Double Bill: Tell Me Straight & Aggy",
-      "venue": "King's Head Theatre",
-      "validationSource": "london",
-      "playbillUrl": null,
-      "mismatches": [],
-      "parsed": null,
-      "result": "no-london-url",
-      "fingerprint": "King's Head Theatre|2026-10-15|2026-11-14|false|Double Bill: Tell Me Straight & Aggy||off-west-end|play",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-london-url"
-    },
-    {
-      "id": "petite-rouge-off-broadway-2026",
-      "title": "Petite Rouge",
-      "venue": "Theatre XIV",
-      "result": "no-playbill-url",
-      "urlSource": "none",
-      "mismatches": [],
-      "playbillUrl": null,
-      "parsed": null,
-      "fingerprint": "Theatre XIV|2026-03-01|2026-10-31|false|Petite Rouge||off-broadway|play",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-playbill-url"
-    },
-    {
-      "id": "two-halves-of-guinness-off-west-end-2026",
-      "title": "Two Halves of Guinness",
-      "venue": "Park Theatre",
-      "validationSource": "london",
-      "playbillUrl": null,
-      "mismatches": [],
-      "parsed": null,
-      "result": "no-london-url",
-      "fingerprint": "Park Theatre|2026-04-22|2026-05-02|false|Two Halves of Guinness||off-west-end|play",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-london-url"
-    },
-    {
-      "id": "age-is-a-feeling-off-west-end-2026",
-      "title": "Age Is a Feeling",
-      "venue": "Soho Theatre Walthamstow",
-      "validationSource": "london",
-      "playbillUrl": null,
-      "mismatches": [],
-      "parsed": null,
-      "result": "no-london-url",
-      "fingerprint": "Soho Theatre Walthamstow|2026-03-05|2026-03-07|false|Age Is a Feeling||off-west-end|play",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-london-url"
-    },
-    {
-      "id": "hole-off-west-end-2026",
-      "title": "Hole!",
-      "venue": "Soho Theatre",
-      "validationSource": "london",
-      "playbillUrl": null,
-      "mismatches": [],
-      "parsed": null,
-      "result": "no-london-url",
-      "fingerprint": "Soho Theatre|2026-07-17|2026-08-01|false|Hole!||off-west-end|musical",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-london-url"
-    },
-    {
-      "id": "already-perfect-off-west-end-2026",
-      "title": "Already Perfect",
-      "venue": "King's Head Theatre",
-      "validationSource": "london",
-      "playbillUrl": null,
-      "mismatches": [],
-      "parsed": null,
-      "result": "no-london-url",
-      "fingerprint": "King's Head Theatre|2026-01-15|2026-02-15|false|Already Perfect||off-west-end|musical",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-london-url"
-    },
-    {
-      "id": "here-comes-j-edgar-off-west-end-2026",
-      "title": "Here Comes J. Edgar!",
-      "venue": "King's Head Theatre",
-      "validationSource": "london",
-      "playbillUrl": null,
-      "mismatches": [],
-      "parsed": null,
-      "result": "no-london-url",
-      "fingerprint": "King's Head Theatre|2026-07-16|2026-08-16|false|Here Comes J. Edgar!||off-west-end|musical",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-london-url"
-    },
-    {
-      "id": "dear-jack-dear-louise-off-west-end-2026",
-      "title": "Dear Jack, Dear Louise",
-      "venue": "Arcola Theatre",
-      "validationSource": "london",
-      "playbillUrl": null,
-      "mismatches": [],
-      "parsed": null,
-      "result": "no-london-url",
-      "fingerprint": "Arcola Theatre|2026-04-09|2026-05-02|false|Dear Jack, Dear Louise||off-west-end|play",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-london-url"
-    },
-    {
-      "id": "orphans-off-west-end-2026",
-      "title": "Orphans",
-      "venue": "Jermyn Street Theatre",
-      "validationSource": "london",
-      "playbillUrl": null,
-      "mismatches": [],
-      "parsed": null,
-      "result": "no-london-url",
-      "fingerprint": "Jermyn Street Theatre|2026-01-07|2026-01-24|false|Orphans||off-west-end|play",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-london-url"
-    },
-    {
-      "id": "dear-liar-off-west-end-2026",
-      "title": "Dear Liar",
-      "venue": "Jermyn Street Theatre",
-      "validationSource": "london",
-      "playbillUrl": null,
-      "mismatches": [],
-      "parsed": null,
-      "result": "no-london-url",
-      "fingerprint": "Jermyn Street Theatre|2026-02-10|2026-03-07|false|Dear Liar||off-west-end|play",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-london-url"
-    },
-    {
-      "id": "a-slow-fire-off-west-end-2026",
-      "title": "A Slow Fire",
-      "venue": "Jermyn Street Theatre",
-      "validationSource": "london",
-      "playbillUrl": null,
-      "mismatches": [],
-      "parsed": null,
-      "result": "no-london-url",
-      "fingerprint": "Jermyn Street Theatre|2026-08-25|2026-09-26|false|A Slow Fire||off-west-end|play",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-london-url"
-    },
-    {
-      "id": "eggs-arent-that-easy-to-make-off-west-end-2026",
-      "title": "Eggs Aren't That Easy to Make",
-      "venue": "Riverside Studios",
-      "validationSource": "london",
-      "playbillUrl": null,
-      "mismatches": [],
-      "parsed": null,
-      "result": "no-london-url",
-      "fingerprint": "Riverside Studios|2026-04-02|2026-04-12|false|Eggs Aren't That Easy to Make||off-west-end|play",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-london-url"
-    },
-    {
-      "id": "who-killed-marilyn-off-west-end-2026",
-      "title": "Who Killed Marilyn?",
-      "venue": "Emerald Theatre",
-      "validationSource": "london",
-      "playbillUrl": null,
-      "mismatches": [],
-      "parsed": null,
-      "result": "no-london-url",
-      "fingerprint": "Emerald Theatre|2026-08-21|2026-10-29|false|Who Killed Marilyn?||off-west-end|play",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-london-url"
-    },
-    {
-      "id": "grindr-mom-off-west-end-2026",
-      "title": "Grindr Mom",
-      "venue": "Waterloo East Theatre",
-      "validationSource": "london",
-      "playbillUrl": null,
-      "mismatches": [],
-      "parsed": null,
-      "result": "no-london-url",
-      "fingerprint": "Waterloo East Theatre|2026-02-20|2026-03-01|false|Grindr Mom||off-west-end|play",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-london-url"
-    },
-    {
-      "id": "the-sound-of-absence-off-west-end-2026",
-      "title": "The Sound of Absence",
-      "venue": "Omnibus Theatre",
-      "validationSource": "london",
-      "playbillUrl": null,
-      "mismatches": [],
-      "parsed": null,
-      "result": "no-london-url",
-      "fingerprint": "Omnibus Theatre|2026-02-24|2026-02-28|false|The Sound of Absence||off-west-end|play",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-london-url"
-    },
-    {
-      "id": "hold-the-line-off-west-end-2026",
-      "title": "Hold the Line",
-      "venue": "Hope Theatre",
-      "validationSource": "london",
-      "playbillUrl": null,
-      "mismatches": [],
-      "parsed": null,
-      "result": "no-london-url",
-      "fingerprint": "Hope Theatre|2026-04-22|2026-04-25|false|Hold the Line||off-west-end|play",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-london-url"
-    },
-    {
-      "id": "i-made-you-a-mixtape-off-west-end-2026",
-      "title": "I Made You a Mixtape",
-      "venue": "The Cockpit",
-      "validationSource": "london",
-      "playbillUrl": null,
-      "mismatches": [],
-      "parsed": null,
-      "result": "no-london-url",
-      "fingerprint": "The Cockpit|2026-06-12|2026-06-14|false|I Made You a Mixtape||off-west-end|play",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-london-url"
-    },
-    {
-      "id": "the-pass-off-west-end-2026",
-      "title": "The Pass",
-      "venue": "Pearly Queen Theatre",
-      "validationSource": "london",
-      "playbillUrl": null,
-      "mismatches": [],
-      "parsed": null,
-      "result": "no-london-url",
-      "fingerprint": "Pearly Queen Theatre|2026-09-17|2026-10-03|false|The Pass||off-west-end|play",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-london-url"
-    },
-    {
-      "id": "ancient-grease-off-west-end-2026",
-      "title": "Ancient Grease",
-      "venue": "The Vaults Theatre",
-      "validationSource": "london",
-      "playbillUrl": null,
-      "mismatches": [],
-      "parsed": null,
-      "result": "no-london-url",
-      "fingerprint": "The Vaults Theatre||2026-05-30|false|Ancient Grease||off-west-end|musical",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-london-url"
-    },
-    {
-      "id": "three-men-in-a-boat-off-west-end-2026",
-      "title": "Three Men in a Boat",
-      "venue": "Rose Theatre Kingston",
-      "validationSource": "london",
-      "playbillUrl": null,
-      "mismatches": [],
-      "parsed": null,
-      "result": "no-london-url",
-      "fingerprint": "Rose Theatre Kingston|2026-09-23|2026-10-10|false|Three Men in a Boat||off-west-end|play",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-london-url"
-    },
-    {
-      "id": "top-gunchained-off-west-end-2026",
-      "title": "Top Gunchained",
-      "venue": "Wilton's Music Hall",
-      "validationSource": "london",
-      "playbillUrl": null,
-      "mismatches": [],
-      "parsed": null,
-      "result": "no-london-url",
-      "fingerprint": "Wilton's Music Hall||2026-11-21|false|Top Gunchained||off-west-end|play",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-london-url"
-    },
-    {
-      "id": "dick-whittington-adults-only-off-west-end-2026",
-      "title": "Dick Whittington: Adults Only",
-      "venue": "King's Head Theatre",
-      "validationSource": "london",
-      "playbillUrl": null,
-      "mismatches": [],
-      "parsed": null,
-      "result": "no-london-url",
-      "fingerprint": "King's Head Theatre|2026-11-27|2027-01-02|false|Dick Whittington: Adults Only||off-west-end|musical",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-london-url"
-    },
-    {
-      "id": "michael-r-jackson-wake-up-call-off-broadway-2026",
-      "title": "Michael R. Jackson: Wake Up Call",
-      "venue": "Joe's Pub",
-      "result": "no-playbill-url",
-      "urlSource": "none",
-      "mismatches": [],
-      "playbillUrl": null,
-      "parsed": null,
-      "fingerprint": "Joe's Pub|2026-08-16|2026-08-16|false|Michael R. Jackson: Wake Up Call||off-broadway|special",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-playbill-url"
-    },
-    {
-      "id": "the-radium-girls-off-west-end-2026",
-      "title": "The Radium Girls",
-      "venue": "Southwark Playhouse",
-      "validationSource": "london",
-      "playbillUrl": null,
-      "mismatches": [],
-      "parsed": null,
-      "result": "no-london-url",
-      "fingerprint": "Southwark Playhouse||2027-05-08|false|The Radium Girls||off-west-end|musical",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-london-url"
-    },
-    {
-      "id": "machine-learning-off-broadway-2026",
-      "title": "Machine Learning",
-      "venue": "Manhattan Neighborhood Network",
-      "result": "no-playbill-url",
-      "urlSource": "none",
-      "mismatches": [],
-      "playbillUrl": null,
-      "parsed": null,
-      "fingerprint": "Manhattan Neighborhood Network|2026-10-20|2026-10-30|false|Machine Learning||off-broadway|play",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-playbill-url"
-    },
-    {
-      "id": "diana-the-untold-and-untrue-story-off-broadway-2026",
-      "title": "Diana: The Untold and Untrue Story",
-      "venue": "SoHo Playhouse",
-      "result": "no-playbill-url",
-      "urlSource": "none",
-      "mismatches": [],
-      "playbillUrl": null,
-      "parsed": null,
-      "fingerprint": "SoHo Playhouse|2026-12-02|2026-12-13|false|Diana: The Untold and Untrue Story||off-broadway|play",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-playbill-url"
-    },
-    {
-      "id": "the-very-gay-christmas-prince-off-broadway-2026",
-      "title": "The (Very Gay) Christmas Prince",
-      "venue": "SoHo Playhouse",
-      "result": "no-playbill-url",
-      "urlSource": "none",
-      "mismatches": [],
-      "playbillUrl": null,
-      "parsed": null,
-      "fingerprint": "SoHo Playhouse|2026-12-16|2027-01-03|false|The (Very Gay) Christmas Prince||off-broadway|play",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-playbill-url"
-    },
-    {
-      "id": "the-second-best-school-shooting-off-broadway-2026",
-      "title": "The Second Best School Shooting",
-      "venue": "SoHo Playhouse",
-      "result": "no-playbill-url",
-      "urlSource": "none",
-      "mismatches": [],
-      "playbillUrl": null,
-      "parsed": null,
-      "fingerprint": "SoHo Playhouse|2026-10-17|2026-10-20|false|The Second Best School Shooting||off-broadway|play",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-playbill-url"
-    },
-    {
-      "id": "big-feelings-off-broadway-2026",
-      "title": "Big Feelings",
-      "venue": "The Cell Theatre",
-      "result": "no-playbill-url",
-      "urlSource": "none",
-      "mismatches": [],
-      "playbillUrl": null,
-      "parsed": null,
-      "fingerprint": "The Cell Theatre|2026-09-13|2026-10-09|false|Big Feelings||off-broadway|play",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-playbill-url"
-    },
-    {
-      "id": "fantasma-off-broadway-2026",
-      "title": "Fantasma",
-      "venue": "59E59 Theaters",
-      "result": "no-playbill-url",
-      "urlSource": "none",
-      "mismatches": [],
-      "playbillUrl": null,
-      "parsed": null,
-      "fingerprint": "59E59 Theaters|2026-11-22|2026-12-20|false|Fantasma||off-broadway|play",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-playbill-url"
-    },
-    {
-      "id": "les-enfants-terribles-off-broadway-2026",
-      "title": "Les Enfants Terribles",
-      "venue": "East Village Basement",
-      "result": "no-playbill-url",
-      "urlSource": "none",
-      "mismatches": [],
-      "playbillUrl": null,
-      "parsed": null,
-      "fingerprint": "East Village Basement|2026-09-12|2026-10-04|false|Les Enfants Terribles||off-broadway|play",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-playbill-url"
-    },
-    {
-      "id": "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026",
-      "title": "Queeney Todd: The Demon Bottom of Fleet Street",
-      "venue": "Judson Memorial Church",
-      "result": "no-playbill-url",
-      "urlSource": "none",
-      "mismatches": [],
-      "playbillUrl": null,
-      "parsed": null,
-      "fingerprint": "Judson Memorial Church|2026-10-22|2026-10-31|false|Queeney Todd: The Demon Bottom of Fleet Street||off-broadway|musical",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-playbill-url"
-    },
-    {
-      "id": "alice-in-wonderland-off-broadway-2026",
-      "title": "Alice in Wonderland",
-      "venue": "The Players Theatre",
-      "result": "no-playbill-url",
-      "urlSource": "none",
-      "mismatches": [],
-      "playbillUrl": null,
-      "parsed": null,
-      "fingerprint": "The Players Theatre|2026-09-26||false|Alice in Wonderland||off-broadway|musical",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-playbill-url"
-    },
-    {
-      "id": "an-outrageous-outcome-off-broadway-2027",
-      "title": "An Outrageous Outcome",
-      "venue": "The Players Theatre",
-      "result": "no-playbill-url",
-      "urlSource": "none",
-      "mismatches": [],
-      "playbillUrl": null,
-      "parsed": null,
-      "fingerprint": "The Players Theatre||2027-07-25|false|An Outrageous Outcome||off-broadway|musical",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-playbill-url"
-    },
-    {
-      "id": "not-nineveh-off-broadway-2027",
-      "title": "Not Nineveh",
-      "venue": "The Players Theatre",
-      "result": "no-playbill-url",
-      "urlSource": "none",
-      "mismatches": [],
-      "playbillUrl": null,
-      "parsed": null,
-      "fingerprint": "The Players Theatre||2027-04-18|false|Not Nineveh||off-broadway|play",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-playbill-url"
-    },
-    {
-      "id": "space-quest-off-broadway-2027",
-      "title": "Space Quest",
-      "venue": "The Players Theatre",
-      "result": "no-playbill-url",
-      "urlSource": "none",
-      "mismatches": [],
-      "playbillUrl": null,
-      "parsed": null,
-      "fingerprint": "The Players Theatre||2027-02-07|false|Space Quest||off-broadway|musical",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-playbill-url"
-    },
-    {
-      "id": "the-little-lasses-of-appleton-wisconsin-off-broadway-2027",
-      "title": "The Little Lasses of Appleton, Wisconsin",
-      "venue": "The Players Theatre",
-      "result": "no-playbill-url",
-      "urlSource": "none",
-      "mismatches": [],
-      "playbillUrl": null,
-      "parsed": null,
-      "fingerprint": "The Players Theatre||2027-01-24|false|The Little Lasses of Appleton, Wisconsin||off-broadway|play",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-playbill-url"
-    },
-    {
-      "id": "we-are-happy-to-serve-you-off-broadway-2026",
-      "title": "We Are Happy to Serve You",
-      "venue": "The Players Theatre",
-      "result": "no-playbill-url",
-      "urlSource": "none",
-      "mismatches": [],
-      "playbillUrl": null,
-      "parsed": null,
-      "fingerprint": "The Players Theatre||2026-12-20|false|We Are Happy to Serve You||off-broadway|play",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-playbill-url"
-    },
-    {
-      "id": "you-go-on-off-broadway-2027",
-      "title": "You Go On",
-      "venue": "The Players Theatre",
-      "result": "no-playbill-url",
-      "urlSource": "none",
-      "mismatches": [],
-      "playbillUrl": null,
-      "parsed": null,
-      "fingerprint": "The Players Theatre||2027-06-06|false|You Go On||off-broadway|musical",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-playbill-url"
-    },
-    {
-      "id": "the-masters-tools-off-broadway-2027",
-      "title": "The Master's Tools",
-      "venue": "The Flea Theater",
-      "result": "no-playbill-url",
-      "urlSource": "none",
-      "mismatches": [],
-      "playbillUrl": null,
-      "parsed": null,
-      "fingerprint": "The Flea Theater||2027-01-24|false|The Master's Tools||off-broadway|play",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-playbill-url"
-    },
-    {
-      "id": "all-the-way-home-off-broadway-2027",
-      "title": "All The Way Home",
-      "venue": "Theater at St. Jean's",
-      "result": "no-playbill-url",
-      "urlSource": "none",
-      "mismatches": [],
-      "playbillUrl": null,
-      "parsed": null,
-      "fingerprint": "Theater at St. Jean's||2027-04-11|false|All The Way Home||off-broadway|musical",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-playbill-url"
-    },
-    {
-      "id": "nikola-tesla-the-forgotten-genius-off-broadway-2027",
-      "title": "Nikola Tesla: The Forgotten Genius",
-      "venue": "Theater at St. Jean's",
-      "result": "no-playbill-url",
-      "urlSource": "none",
-      "mismatches": [],
-      "playbillUrl": null,
-      "parsed": null,
-      "fingerprint": "Theater at St. Jean's||2027-03-28|false|Nikola Tesla: The Forgotten Genius||off-broadway|musical",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-playbill-url"
-    },
-    {
-      "id": "the-curious-incident-of-the-dog-in-the-night-time-off-broadway-2026",
-      "title": "The Curious Incident of the Dog in the Night-Time",
-      "venue": "A.R.T./New York Theatres",
-      "result": "no-playbill-url",
-      "urlSource": "none",
-      "mismatches": [],
-      "playbillUrl": null,
-      "parsed": null,
-      "fingerprint": "A.R.T./New York Theatres||2026-12-06|true|The Curious Incident of the Dog in the Night-Time||off-broadway|play",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-playbill-url"
-    },
-    {
-      "id": "beyond-caring-off-west-end-2027",
-      "title": "Beyond Caring",
-      "venue": "Almeida Theatre",
-      "validationSource": "london",
-      "playbillUrl": null,
-      "mismatches": [],
-      "parsed": null,
-      "result": "no-london-url",
-      "fingerprint": "Almeida Theatre||2027-05-22|false|Beyond Caring||off-west-end|play",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-london-url"
-    },
-    {
-      "id": "faith-hope-and-charity-off-west-end-2027",
-      "title": "Faith, Hope and Charity",
-      "venue": "Almeida Theatre",
-      "validationSource": "london",
-      "playbillUrl": null,
-      "mismatches": [],
-      "parsed": null,
-      "result": "no-london-url",
-      "fingerprint": "Almeida Theatre||2027-05-22|false|Faith, Hope and Charity||off-west-end|play",
-      "checkedAt": "2026-10-30T00:27:40.871Z",
-      "lastDefinitiveResult": "no-london-url"
-    },
-    {
-      "id": "love-off-west-end-2027",
-      "title": "LOVE",
-      "venue": "Almeida Theatre",
-      "validationSource": "london",
-      "playbillUrl": null,
-      "mismatches": [],
-      "parsed": null,
-      "result": "no-london-url",
-      "fingerprint": "Almeida Theatre||2027-05-22|false|LOVE||off-west-end|play",
       "checkedAt": "2026-10-30T00:27:40.871Z",
       "lastDefinitiveResult": "no-london-url"
     }
