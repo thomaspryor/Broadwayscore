@@ -1691,6 +1691,7 @@ on:
       - 'scripts/lib/rescore-flagging.js'
       - 'tests/unit/rescore-flagging.test.mjs'
       - 'scripts/audit-stale-score-input.js'
+      - 'scripts/audit-excerpt-scored-fulltext.js'
       # Canonical cascade-gate queue counts (task #652). llm-ensemble-score.yml
       # gates phases 2-4 on UNSCORED == 0; its old inline counter drifted looser
       # than the scorer's own selection filter and starved the cascade for
@@ -6152,6 +6153,15 @@ jobs:
       # pattern on the contamination/text-quality/provisional-venue steps.
       # Setup steps (checkout, npm ci, freshness canary) and the auto-close
       # MUTATION stay fail-fast above — downstream is meaningless if they break.
+      - name: Audit — complete fullText scored from an excerpt and not queued (BRO-7345, advisory)
+        if: always()
+        # Class guard: a complete >=1500-char fullText file whose llmMetadata.textSource is an
+        # excerpt with needsRescore false means the full text never reached the scorer.
+        # Advisory (CLAUDE.md §19): no --max, so it reports and exits 0; exit 2 (corpus or
+        # shows.json missing) DOES fail, so it can never pass silently without data.
+        # Classifier + tests: scripts/lib/rescore-flagging.js, tests/unit/rescore-flagging.test.mjs.
+        run: node scripts/audit-excerpt-scored-fulltext.js
+
       - name: Run explainExclusion corpus parity (needs review-texts)
         # Coverage Verdict S0 (task #902) shipped review-guards.explain.test.mjs
         # with a three-layer design whose top layer sweeps the whole review-texts
