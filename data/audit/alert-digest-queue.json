@@ -262,5 +262,36 @@
       }
     ],
     "queuedAt": "2026-11-11T05:14:22.982Z"
+  },
+  {
+    "conditionKey": "land:land/bro-7351-replay",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-7351-replay",
+    "description": "land.yml did not land land/bro-7351-replay: the scripts-lib-tests gate went red at b77899c1c2. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/42969447339",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-7351-replay"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "b77899c1c2f2e7fbdda31de9ddb8866b50f351a3"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/42969447339"
+      }
+    ],
+    "queuedAt": "2026-11-11T06:33:24.886Z"
   }
 ]
