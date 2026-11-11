@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7371-c",
   "planId": "19563b4d-a73d-4b35-98f9-0ece0c5acdb6",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-11T13:34:20.813Z",
   "submitter": {
     "name": null,
@@ -21,5 +21,14 @@
         "description": "Fabricated byline: the page at this url is bylined Laura Collins-Hughes (BRO-5090 part 3, approved 2026-10-12 as duplicateOf nytimes--laura-collins-hughes.json). That duplicateOf was later erased by heal-orphaned-duplicate-pointers while the target was briefly invalid, and the target now carries a duplicateTextOf back-pointer, so restoring duplicateOf is a cycle the write guard refuses. The legacy web-search row holds nothing the real record lacks (same article, 6311 vs 6557 chars), so remove it."
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-11T14:34:45.309Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted sea-wall-a-life-2019/nytimes--ben-brantley.json"
+    }
+  ],
+  "executedIn": "ci"
 }
