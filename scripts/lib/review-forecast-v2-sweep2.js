@@ -83,6 +83,7 @@ function buildTeamIndex(shows) {
  * Pool index of Broadway openings for crowding, dormancy: [{id, title, openingDate, category, type}] from ALL shows.
  */
 function buildOpeningsIndex(shows) {
+  // Intentionally NOT isBroadwayCategory: the forecast pool is the strict 'broadway' category, as in review-forecast.js.
   return shows.filter((s) => s.category === 'broadway' && toDay(s.openingDate) != null && (s.type === 'play' || s.type === 'musical')
     && !s.noReviewsExpected && !s.cancelledBeforeOpening)
     .map((s) => ({ id: s.id, key: titleKey(s.title), day: toDay(s.openingDate), openingDate: s.openingDate }));
@@ -181,6 +182,7 @@ function buildSweep2Features(target, ctx, opts = {}) {
   has.source = !!target.isRevival ? x.revKnown === 1 : true;
 
   // ---- schedule, position, box office: Broadway proper only (grosses and the opening calendar) ----
+  // Intentionally NOT isBroadwayCategory: strict category, same as the v1/v2 evaluation rows.
   if (target.category === 'broadway') {
     const wkAll = ctx.weeks ? Object.keys(ctx.weeks).filter((w) => toDay(w) < D && ctx.weeks[w][target.id]).sort() : [];
     const wk4 = wkAll.slice(-SCHEDULE_WEEKS);
