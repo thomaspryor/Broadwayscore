@@ -328,7 +328,8 @@
     "paranormal-activity-2026/nytimes--helen-shaw.json",
     "beetlejuice-tour-2026/arkansas-democrat-gazette--eric-e-harrison.json",
     "wicked-tour-2021/theatermania--tricia-baron.json",
-    "rosie-odonnell-common-knowledge-off-broadway-2026/broadwayworld--nicole-rosky.json"
+    "rosie-odonnell-common-knowledge-off-broadway-2026/broadwayworld--nicole-rosky.json",
+    "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json"
   ],
   "failed": [
     "_superseded-misattributed/coal-country-off-broadway-2022--theatermania--hayley-levitt--1793619920718.json",
@@ -489,7 +490,15 @@
     "the-car-man-off-west-end-2026/thestage--dave-fargnoli.json",
     "_superseded-misattributed/ruthless-the-musical-off-broadway-2015--stagezine--scott-harrah--1792678950714.json",
     "_superseded-misattributed/ruthless-the-musical-off-broadway-2015--stagezine--scott-harrah--1793093070659.json",
-    "mercury-off-broadway-2026/thestage--paul-vale.json"
+    "mercury-off-broadway-2026/thestage--paul-vale.json",
+    "iphigenie-en-tauride-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "iphigenie-en-tauride-english-national-opera-west-end-2026/sunday-times--unknown.json",
+    "the-bridge-off-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "the-bridge-off-west-end-2026/theatreandtonic--emmie-newitt.json",
+    "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json",
+    "ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+    "ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -676,7 +685,8 @@
       "the-saviors-off-broadway-2026/playbill--unknown.json",
       "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json",
       "ghost-notes-off-broadway-2026/oazis--unknown.json",
-      "wicked-tour-2021/theatermania--tricia-baron.json"
+      "wicked-tour-2021/theatermania--tricia-baron.json",
+      "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -853,7 +863,7 @@
     ]
   },
   "startTime": "2026-11-10T23:31:59.134Z",
-  "lastProcessed": "rosie-odonnell-common-knowledge-off-broadway-2026/broadwayworld--nicole-rosky.json",
+  "lastProcessed": "ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
   "log": [
     {
       "t": "2026-11-11T00:03:40.476Z",
@@ -1139,6 +1149,17 @@
     },
     {
       "t": "2026-11-11T03:15:43.342Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-11-11T04:08:49.924Z",
+      "event": "bb-session",
+      "session": "9cf0a100",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
+    },
+    {
+      "t": "2026-11-11T04:08:50.282Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
     }
