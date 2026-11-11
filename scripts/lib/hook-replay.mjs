@@ -4,7 +4,7 @@
  * hook twice, once from main (the base) and once from this branch (the head),
  * and report every stop where the decision changed.
  *
- * Why: a rule, hook or guidance change is judged by unit tests written by the
+ * Why: a hook change is judged by unit tests written by the
  * same session that wrote it. BRO-7349 passed its tests and still counted
  * quoted text as landings and scoped answers session-wide; only a replay of
  * real sessions showed it. This makes that replay one command.
@@ -171,9 +171,10 @@ export function canonicalRoot(cwd) {
   return common ? path.dirname(common) : cwd;
 }
 
-export function readLedger(root) {
+/** Rows of a jsonl ledger under root (default this replay ledger; rule-trial.mjs reads its own). */
+export function readLedger(root, file = LEDGER) {
   try {
-    return fs.readFileSync(path.join(root, LEDGER), 'utf8').split('\n').filter(Boolean).map((l) => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
+    return fs.readFileSync(path.join(root, file), 'utf8').split('\n').filter(Boolean).map((l) => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean);
   } catch { return []; }
 }
 
@@ -189,7 +190,7 @@ export function hookReplayWarning({ root, src = 'HEAD', base = 'origin/main', le
     const rows = readLedger(ledgerRoot || canonicalRoot(root));
     if (rows.some((r) => r.hash === d.hash)) return null;
     const shown = d.files.slice(0, 4).join(', ') + (d.files.length > 4 ? `, +${d.files.length - 4} more` : '');
-    return `this land changes hook code (Stop or PreToolUse) (${shown}) and no replay of real sessions was recorded for it (BRO-7351). Before landing a hook or rule change, run: node scripts/lib/hook-replay.mjs --record (replays recent real sessions through main's hook and this branch's, and lists every stop whose decision changed). Advisory only.`;
+    return `this land changes hook code (Stop or PreToolUse) (${shown}) and no replay of real sessions was recorded for it (BRO-7351). Before landing a hook change, run: node scripts/lib/hook-replay.mjs --record (replays recent real sessions through main's hook and this branch's, and lists every stop whose decision changed). Written guidance cannot be replayed: rule-trial.mjs covers it. Advisory only.`;
   } catch {
     return null;
   }

@@ -855,6 +855,16 @@ test('coordinatorWarnings: seam result is used, a crashing check is silent', asy
   assert.ok(v.warnings.includes('COORDINATOR CHECK: BRO-5955'), JSON.stringify(v.warnings));
 });
 
+// BRO-7370: a big written-guidance change with no recorded trial session is surfaced as an advisory warning.
+test('runHook surfaces the rule-trial warning (advisory, never a block)', async () => {
+  const { runHook } = await import('../../scripts/lib/land-preflight.mjs');
+  const { wt } = landFixture();
+  sh(wt, 'git reset -q --hard origin/main && echo z >> g.txt && git commit -qam ok');
+  const v = runHook({ command: 'git push origin HEAD:refs/heads/land/feat', cwd: wt, env: ENV, seams: { ruleTrialWarning: () => 'RULE TRIAL: none recorded' } });
+  assert.notEqual(v.decision, 'block');
+  assert.ok(v.warnings.includes('RULE TRIAL: none recorded'), JSON.stringify(v.warnings));
+});
+
 // BRO-5730: land-local-check records its verdict per tip; the land push hook warns (never blocks)
 // when a code-changing tip has no clean verdict, and logs the status beside the push verdict.
 test('land-local-check-log: records per HEAD in the shared checkout log, newest wins, tree match, exit 2 not recorded', async () => {
