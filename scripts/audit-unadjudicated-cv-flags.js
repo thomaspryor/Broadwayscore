@@ -18,7 +18,7 @@ const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { pickReviewTextsTree } = require('./lib/preflight-review-fix-plan');
-const { findUnadjudicatedCounted } = require('./lib/unadjudicated-cv-flags');
+const { findUnadjudicatedCounted, findStuckCvPromotedNonReview } = require('./lib/unadjudicated-cv-flags');
 
 function argValue(name) {
   const hit = process.argv.find((a) => a.startsWith(`--${name}=`));
@@ -27,7 +27,7 @@ function argValue(name) {
 
 function main() {
   if (hasHelpFlag(process.argv)) {
-    console.log('Usage: node scripts/audit-unadjudicated-cv-flags.js [--max=N] [--json=out.json]  (read-only)');
+    console.log('Usage: node scripts/audit-unadjudicated-cv-flags.js [--max=N] [--max-stuck=N] [--json=out.json]  (read-only)');
     return 0;
   }
   const max = Number(argValue('max') || 0);
@@ -48,10 +48,17 @@ function main() {
     }
   }
   const hits = findUnadjudicatedCounted(files, counted);
+  // BRO-7344: advisory list of CV-promoted isNonReview files whose CV says review and nothing can release them.
+  // Printed BEFORE the summary line (the workflow reads the last line); gates only with --max-stuck=N.
+  const stuck = findStuckCvPromotedNonReview(files);
+  for (const h of stuck) console.log(`stuck CV-promoted isNonReview\t${h.showId}/${h.file}`);
+  console.log(`stuck CV-promoted isNonReview files (CV says review, no score, no other flag): ${stuck.length}`);
+  const maxStuck = argValue('max-stuck');
   for (const h of hits) console.log(`${h.showId}/${h.file}\t${h.record.url}`);
   console.log(`unadjudicated CV not-a-review flags on counted reviews: ${hits.length} (max ${max})`);
   const out = argValue('json');
   if (out) fs.writeFileSync(out, JSON.stringify(hits.map((h) => ({ showId: h.showId, file: h.file, url: h.record.url })), null, 2));
+  if (maxStuck !== null && stuck.length > Number(maxStuck)) return 1;
   return hits.length > max ? 1 : 0;
 }
 

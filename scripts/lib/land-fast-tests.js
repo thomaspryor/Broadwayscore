@@ -52,6 +52,8 @@ const INVARIANT_TESTS = [
   'scripts/lib/api-fallback-writer-drift.test.mjs',
   'scripts/lib/core-data-merge-registry.test.mjs',
   'scripts/lib/core-data-registry-coverage.test.mjs',
+  'scripts/lib/exit-flushed.test.mjs', // scans all of scripts/, 0.3s; refused BRO-7351 31 min in (land run 42969447339)
+  'scripts/lib/is-main-module.test.mjs', // scans all of scripts/; refused BRO-7351's second land (run 42974325499)
   'scripts/lib/review-text-sidecars.test.mjs',
   'scripts/lib/run-push-audits.test.mjs',
   'scripts/lib/test-yml-manifest-paths.test.mjs',

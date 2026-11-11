@@ -94,6 +94,8 @@ data/pending-fixes/*
 !data/pending-fixes/bro-7094.json
 !data/pending-fixes/bro-7174.json
 !data/pending-fixes/bro-6599.json
+!data/pending-fixes/bro-7344.json
+!data/pending-fixes/bro-7344-b.json
 !data/pending-fixes/bro-7034.json
 !data/pending-fixes/bro-6848.json
 !data/pending-fixes/bro-6848-b.json
@@ -610,6 +612,7 @@ tmp/
 .cache/
 .claude/visual-qa/
 .claude/review-verdicts.jsonl
+.claude/hook-replays.jsonl
 # BRO-4593: land-preflight hook verdict log (blocks, bypasses, skips)
 .claude/land-preflight.jsonl
 .claude/hook-liveness.jsonl
@@ -771,3 +774,7 @@ data/audit/outlet-census/.cache/
 data/lane-recordings/
 data/money-monthly/drafts/
 data/money-monthly/snapshot.json
+
+# BRO-7308: generated with each deployment, never a reference from an older build.
+/public/data/prod-data-parity.json
+!/docs/prod-data-parity.md

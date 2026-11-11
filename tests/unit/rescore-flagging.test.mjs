@@ -350,3 +350,43 @@ test('BRO-2610: never re-picked once re-scored for this reason, and the usual gu
   assert.equal(isBotStubContaminatedScore(stubScored({ llmMetadata: {} })), false);
   assert.equal(isBotStubContaminatedScore(stubScored({ fullText: BODY_4804 + COMMENT_FORM_2610, llmMetadata: { scoredAt: 'not-a-date' } })), false);
 });
+
+// BRO-7345: a rescore that ran on an OLD text selector recorded textSource 'excerpt' with complete
+// fullText on disk; the rescoreCompletedAt loop guard used to refuse to re-flag it forever.
+const { TEXT_SELECTOR_CHANGED_AT, isExcerptScoreFromOldSelector, classifyExcerptScoredFullText } = require(path.join(REPO, 'scripts/lib/rescore-flagging.js'));
+const PARA = 'The production opens with a stark, beautifully lit set and the cast commits fully to every scene. The second act drags a little, but the leads are superb and the staging is inventive. Overall this is a thoroughly rewarding evening that earns its recommendation. ';
+function oldSelectorExcerptScore(over = {}) {
+  return {
+    assignedScore: 74, scoreSource: 'llm-v6', contentTier: 'complete',
+    fullText: PARA.repeat(8),
+    bwwExcerpt: 'A rewarding evening with superb leads.',
+    textFetchedAt: '2026-02-16T11:50:53.096Z',
+    rescoreCompletedAt: '2026-07-22T12:39:20.687Z',
+    llmMetadata: { scoredAt: '2026-07-22T12:39:20.687Z', textSource: { type: 'excerpt', status: 'excerpt-only' } },
+    ...over,
+  };
+}
+
+test('BRO-7345: rescore completed before the selector fix + selector now picks fullText → stale despite loop guard', () => {
+  const d = oldSelectorExcerptScore();
+  assert.equal(isExcerptScoreFromOldSelector(d), true);
+  assert.equal(isStaleScoreInput(d), true);
+  assert.equal(classifyExcerptScoredFullText(d), 'actionable');
+});
+
+test('BRO-7345: rescore on the current selector that still chose the excerpt → settled (loop guard holds)', () => {
+  const after = new Date(Date.parse(TEXT_SELECTOR_CHANGED_AT) + 3600e3).toISOString();
+  const d = oldSelectorExcerptScore({ rescoreCompletedAt: after, llmMetadata: { scoredAt: after, textSource: { type: 'excerpt' } } });
+  assert.equal(isExcerptScoreFromOldSelector(d), false);
+  assert.equal(isStaleScoreInput(d), false);
+  assert.equal(classifyExcerptScoredFullText(d), 'settled');
+});
+
+test('BRO-7345: classifier exempts non-LLM scores, unscored, and already-queued files', () => {
+  assert.equal(classifyExcerptScoredFullText(oldSelectorExcerptScore({ scoreSource: 'guardian-star-svg' })), 'non-llm-score');
+  assert.equal(classifyExcerptScoredFullText(oldSelectorExcerptScore({ humanReviewScore: 80 })), 'non-llm-score');
+  assert.equal(classifyExcerptScoredFullText(oldSelectorExcerptScore({ assignedScore: undefined })), 'unscored');
+  assert.equal(classifyExcerptScoredFullText(oldSelectorExcerptScore({ needsRescore: true })), null);
+  assert.equal(classifyExcerptScoredFullText(oldSelectorExcerptScore({ contentTier: 'truncated' })), null);
+  assert.equal(classifyExcerptScoredFullText(oldSelectorExcerptScore({ wrongShow: true })), 'excluded');
+});

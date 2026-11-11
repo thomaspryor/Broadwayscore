@@ -41,11 +41,9 @@ const fs = require('fs');
 const path = require('path');
 const {
   loadCriticSlugAliases,
-  flattenCriticSlugAliases,
-  criticSlugsFromReviews,
-  dropAliasesWithoutLiveCanonical,
   buildCriticRedirectEntries,
 } = require('./lib/critic-slug-aliases');
+const { buildLiveCriticAliases } = require('./lib/critic-outlet-redirects');
 const { NAME_REDIRECT_PREFIXES, buildNameSlugRedirects } = require('./lib/name-slug-redirects');
 
 const dataDir = path.join(__dirname, '..', 'data');
@@ -151,14 +149,17 @@ for (const show of shows) {
 // flattened here so the middleware never has to follow one; self-maps and
 // cycles are dropped with a warning rather than emitted as a redirect loop.
 // Aliases to a critic no review carries any more are dropped too (BRO-5434);
-// with no reviews.json in this checkout, none are.
-const { aliases: flatCriticRedirects, dropped: droppedCycles } = flattenCriticSlugAliases(loadCriticSlugAliases());
+// with no reviews.json in this checkout, none are. Recorded outlet-suffixed
+// twins are derived from live critic pages and registered outlet names
+// (BRO-7234), without expanding every possible critic/outlet combination.
 const reviewRows = fs.existsSync(reviewsPath) ? JSON.parse(fs.readFileSync(reviewsPath, 'utf8')).reviews : null;
-const liveCriticSlugs = reviewRows ? criticSlugsFromReviews(reviewRows, shows) : null;
-const bylineCriticSlugs = reviewRows ? criticSlugsFromReviews(reviewRows) : undefined;
-const { aliases: criticRedirects, dropped: droppedDead } = dropAliasesWithoutLiveCanonical(flatCriticRedirects, liveCriticSlugs, bylineCriticSlugs);
-for (const d of [...droppedCycles, ...droppedDead]) {
-  console.warn(`critic-slug alias skipped: "${d.slug}" — ${d.reason}`);
+const outletsPath = path.join(path.dirname(showsPath), 'outlet-registry.json');
+const outlets = fs.existsSync(outletsPath) ? JSON.parse(fs.readFileSync(outletsPath, 'utf8')) : {};
+const { aliases: criticRedirects, dropped } = buildLiveCriticAliases({
+  aliases: loadCriticSlugAliases(), reviews: reviewRows, shows, outlets,
+});
+for (const d of dropped) {
+  console.warn(`critic-slug alias skipped: "${d.slug}": ${d.reason}`);
 }
 
 // Name-derived pages: retired (pre-fold) slug → live slug, per route family,
