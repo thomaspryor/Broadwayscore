@@ -127,8 +127,7 @@ for (const r of rows.filter((_, i) => i % 8 === 0)) {
   const dayStr = (d) => new Date(d * 86400000).toISOString().slice(0, 10);
   const cpEr = { ...ctx.earlierRun, [r.t.id]: [...(ctx.earlierRun[r.t.id] || []), [1, dayStr(D - RF.LAG_DAYS + 1), 0], [99, dayStr(D + 40), 0], [1, r.t.openingDate.slice(0, 4), 0]] };
   const er2 = ER.buildEarlierRunFeatures(r.t, { ...ctx, earlierRun: cpEr }, r.mu);
-  const yearOnlyLate = RF.toDay(`${r.t.openingDate.slice(0, 4)}-12-31`) <= D - RF.LAG_DAYS; // a year-only date is allowed only when its LAST day is before the cutoff
-  if (!yearOnlyLate && ER.ER_FEATURE_NAMES.some((k) => er2.x[k] !== r.x[k])) moved++;
+  if (ER.ER_FEATURE_NAMES.some((k) => er2.x[k] !== r.x[k])) moved++;
 }
 console.error(`perturbation self-check: ${sampled} shows, ${moved} v2 features moved`);
 if (moved) { console.error('FAIL: v2 features depend on post-opening data'); process.exit(2); }
@@ -157,9 +156,11 @@ function diffCI(a, b, B = 2000, alpha = 0.05) { // a, b: aligned prediction arra
   ds.sort((x, y) => x - y);
   return [RF.quantile(ds, alpha / 2), RF.quantile(ds, 1 - alpha / 2)];
 }
-// Test family for the correction: 7 single-group primary tests (cast, preview, panel, awards, calendar, house, audience)
-// + earlier-run linear and step (2) + the two forked step cuts 72 and 78 (2) + overall/flop/rave tails for linear and step (4) = 15.
-const N_PRIMARY_TESTS = 15;
+// Test family for the correction (every row that can be called a winner or a verdict counts, combinations included):
+// 7 single-group primary tests (cast, preview, panel, awards, calendar, house, audience) + cast+preview + all-inputs-together (2)
+// + earlier-run linear and step (2) + forked step cuts 72 and 78 (2) + flop and rave tails for earlier-run linear and step (4)
+// + combined panel+earlier-run step and linear (2) + Show Score: full-pull primary, three secondary specs and flop/hit tails (6) = 25.
+const N_PRIMARY_TESTS = 25;
 const r2 = (x) => (x == null ? null : Math.round(x * 100) / 100);
 const maeOf = (p) => RF.mean(p.map((q) => Math.abs(q.y - q.pred)));
 
@@ -180,7 +181,6 @@ function compare(label, names, subsetFn, kind, variant) {
   return { input: label, kind, shows: A.length, missUnder55: tail((y) => y < 55), miss83Plus: tail((y) => y >= 83), maeWithout: r2(maeOf(B)), maeWith: r2(maeOf(A)), maeCategoryMean: r2(RF.mean(A.map((q) => Math.abs(q.y - q.base)))),
     diff: r2(d), diffCI95: ci.map(r2), diffCI95Bonferroni: ciAdj.map(r2), bonferroniTests: N_PRIMARY_TESTS, survivesCorrection: ciAdj[1] < 0, verdict };
 }
-const rowsOf = {}; // walk-forward index helpers use base ids
 const hasAud = (p) => p.has.audience; const hasCast = (p) => p.has.cast; const hasPrev = (p) => p.has.preview;
 const results = [];
 results.push(compare('Opening-night cast (all six cast features)', [...V1, ...G.cast], null, 'primary'));
@@ -204,9 +204,8 @@ const wb = walk(V1);
 const erRows = wb.filter((p) => p.has.earlierRun);
 const bothOwnAndEr = erRows.filter((p) => p.prior).length;
 const tryoutOnly = erRows.filter((p) => !p.prior).length;
-const erMeanOf = (id) => { const r = rows.find((q) => q.t.id === id); return r ? r.x.erDev + r.mu : null; };
 const overlap = { evaluatedShows: wb.length, withEarlierRunWebReviews: erRows.length, withOwnEarlierProduction: wb.filter((p) => p.prior).length, bothEarlierRunAndOwnProduction: bothOwnAndEr, earlierRunOnly: tryoutOnly,
-  correlationShrunkWebMeanVsOwnPriorGap: (() => { const a = rows.filter((r) => r.has.earlierRun && r.has.ownPrior); if (a.length < 5) return null; const mx = RF.mean(a.map((r) => r.x.erDev)); const my = RF.mean(a.map((r) => r.x.priorRun)); let sxy = 0; let sxx = 0; let syy = 0; for (const r of a) { sxy += (r.x.erDev - mx) * (r.x.priorRun - my); sxx += (r.x.erDev - mx) ** 2; syy += (r.x.priorRun - my) ** 2; } return { n: a.length, r: r2(sxy / Math.sqrt(sxx * syy)) }; })() };
+  correlationShrunkWebMeanVsOwnPriorGap: (() => { const evalIds = new Set(wb.map((p) => p.id)); const a = rows.filter((r) => evalIds.has(r.t.id) && r.has.earlierRun && r.has.ownPrior); if (a.length < 5) return null; const mx = RF.mean(a.map((r) => r.x.erDev)); const my = RF.mean(a.map((r) => r.x.priorRun)); let sxy = 0; let sxx = 0; let syy = 0; for (const r of a) { sxy += (r.x.erDev - mx) * (r.x.priorRun - my); sxx += (r.x.erDev - mx) ** 2; syy += (r.x.priorRun - my) ** 2; } return { n: a.length, r: r2(sxy / Math.sqrt(sxx * syy)) }; })() };
 console.error('earlier-run overlap', JSON.stringify(overlap));
 const hasAw = (p) => p.has.awards; const hasPanel = (p) => p.has.panel;
 results.push(compare('Panel: per-critic forecasts with tier weights (all critics, then same type)', [...V1, ...X.panel], null, 'primary'));
@@ -216,7 +215,7 @@ results.push(compare('Awards, shows with an earlier production that has honours'
 results.push(compare('Calendar: spring crush and month of year', [...V1, ...X.calendar], null, 'primary'));
 results.push(compare('Nonprofit-run house flag', [...V1, ...X.venueType], null, 'primary'));
 results.push(compare('Every input together (cast, preview, panel, awards, calendar, house)', [...V1, ...G.cast, ...G.preview, ...X.panel, ...X.awards, ...X.calendar, ...X.venueType], null, 'primary'));
-// combined model (parent request): per-critic panel + earlier-run + Show Score audience, one before/after number. Combined rows are not in the correction family (they combine already-counted inputs).
+// combined model (parent request): per-critic panel + earlier-run + Show Score audience, one before/after number. Combined rows are tests in their own right and count in the correction family.
 results.push(compare('Combined: panel + earlier-run (step at 75)', [...V1, ...X.panel, ...EG.step], null, 'combined'));
 results.push(compare('Combined: panel + earlier-run (linear)', [...V1, ...X.panel, ...EG.linear], null, 'combined'));
 results.push(compare('Combined: panel + earlier-run + Show Score audience, shows with member reviews only', [...V1, ...X.panel, ...EG.step, ...G.audience], hasAud, 'combined-subset'));
@@ -249,12 +248,12 @@ const out = {
   coverage: { evaluated: rows.length, withOpeningCast: rows.filter((r) => r.has.cast).length, withPreviewData: rows.filter((r) => r.has.preview).length, withAudienceCapture: rows.filter((r) => r.has.audience).length },
   leakage: { rowsChecked: prov.checked, perturbation: { checked: sampled, moved }, lagDays: RF.LAG_DAYS },
   showScoreMembers: memRaw ? { showsTried: Object.keys(memRaw.shows).length, withFiveOrMorePreOpening: Object.keys(audience).filter((k) => memRaw.shows[k]).length, paidFetches: 0, directRequests: memRaw.directRequestsTotal || null } : null,
-  wayback: audRaw ? { showsTried: Object.keys(audRaw.shows).length, withCaptureBeforeOpening: Object.values(audRaw.shows).filter((v) => (v.captureTimestampsBeforeOpening || []).length).length, parsed: Object.keys(audience).length, paidFetches: audRaw.paidFetches || 0 } : null,
-  multipleComparisons: `Bonferroni over ${N_PRIMARY_TESTS} tests (7 single-group primary tests, earlier-run linear and step, two forked step cuts, and flop and rave tails for linear and step). Per-feature rows are exploratory and uncorrected, so a lone exploratory "helps" would not count.`,
-  floor: { shows: floors.length, bootstrapMissCriticSampling: r2(floorBoot), ifFullPanelIsItselfADraw: r2(floorBoot * Math.SQRT2), method: 'resample each show\'s critics (one vote per outlet+critic, real tier weights), mean |resample - full|; the second number scales by sqrt(2) because the observed panel is itself one draw. Neither is a hard limit: it is the part of the miss no pre-opening input can remove.' },
+  wayback: audRaw ? { showsTried: Object.keys(audRaw.shows).length, withCaptureBeforeOpening: Object.values(audRaw.shows).filter((v) => (v.captureTimestampsBeforeOpening || []).length).length, parsed: Object.keys(audRaw.shows).filter((k) => (audRaw.shows[k].captures || []).some((c) => c.score != null)).length, paidFetches: audRaw.paidFetches || 0 } : null,
+  multipleComparisons: `Bonferroni over ${N_PRIMARY_TESTS} tests (7 single-group primary tests, cast+preview, all inputs together, earlier-run linear and step, two forked cuts, flop and rave tails, two combined models, six Show Score tests). Per-feature rows are exploratory and uncorrected, so a lone exploratory "helps" would not count.`,
+  floor: { shows: floors.length, bootstrapMissCriticSampling: r2(floorBoot), ifFullPanelIsItselfADraw: r2(floorBoot * Math.SQRT2), method: 'resample each show\'s critics (one vote per outlet+critic, real tier weights), mean |resample - full|; the second number scales by sqrt(2) because the observed panel is itself one draw. Neither is a hard limit; it estimates the part of the miss that comes from which critics happened to review.' },
   reliability,
   earlierRunOverlap: overlap,
-  earlierRun: { source: 'research agents scored web reviews of the earlier run (regional, Off-Broadway, West End), dated before first preview; scores noisy, hindsight risk', showsInFile: Object.keys(erRaw.reviews).length, reviewsInFile: Object.values(erRaw.reviews).reduce((s, l) => s + l.length, 0), partialDatesReadAsLastDayOfPeriod: true, cutDeclared: ER.ER_CUT, forkedCuts: [72, 78], troubleListUndated: true },
+  earlierRun: { source: 'research agents scored web reviews of the earlier run (regional, Off-Broadway, West End) found dated before first preview; the model uses only those dated on or before opening minus 3 days (the lag every input uses). Scores are agent-assigned after the Broadway verdict was known: noisy, hindsight risk the date filter cannot remove', showsInFile: Object.keys(erRaw.reviews).length, reviewsInFile: Object.values(erRaw.reviews).reduce((s, l) => s + l.length, 0), partialDatesReadAsLastDayOfPeriod: true, cutDeclared: ER.ER_CUT, forkedCuts: [72, 78], troubleListUndated: true },
   inputs: results,
   notTestable: [
     { input: 'Show Score audience score (Wayback capture before opening)', verdict: 'cannot be dated at usable coverage', why: 'archive.org availability lookups found no pre-opening capture for 30 shows (one season). Unproven coverage, not proof of absence. Replaced by the dated member-review route, which is tested above on a 54-show pilot.' },
@@ -264,7 +263,7 @@ const out = {
     { input: 'Producer track record', verdict: 'cannot be dated', why: 'No producers field in data/commercial.json or any stored file; an IBDB scrape is a new paid source (owner call).' },
     { input: 'Opening date pushed, discount and lottery presence', verdict: 'cannot be dated', why: 'No stored original opening date (5 openingDateNote entries in shows.json) and no dated discount or lottery history.' },
     { input: 'Google Trends in the preview window', verdict: 'not attempted', why: 'Trends serves a bot wall to fetchPage; bypass is ruled out by the card.' },
-    { input: 'Out-of-town critic scores', verdict: 'already used', why: 'priorRun takes the latest earlier production of the same title in any category (pool is all categories), including regional and West End runs.' },
+    { input: 'Out-of-town critic scores', verdict: 'partly used, extension tested above', why: 'priorRun uses an earlier production of the same title only when we hold its Critic Score (97 of 341 evaluated shows). The web earlier-run input extends coverage to 179 shows (123 with nothing of our own); see the earlier-run rows.' },
   ],
   bestCombinedPrimary: bestCombined || null,
 };
