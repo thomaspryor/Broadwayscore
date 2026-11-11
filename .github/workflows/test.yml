@@ -142,6 +142,8 @@ on:
       # BRO-3579: multi-run workflow-status wrapper + its manifest-registered test.
       - 'scripts/check-workflow-run-status.js'
       - 'scripts/check-remote-branch-absent.js'
+      - 'scripts/check-reddit-freshness.js'
+      - 'scripts/record-review-forecast-pilot.mjs'
       - 'scripts/audit-london-census-coverage.js'
       - 'scripts/audit-approved-fix-drift.js'
       - 'scripts/audit-aggregator-health.js' # BRO-6098: audit-aggregator-health.test.mjs

@@ -17,6 +17,7 @@
  */
 
 const https = require('https');
+const { NEVER_ASK_REDDIT_APP } = require('./reddit-owner-guard');
 require('./cloud-proxy'); // BRO-6258: ScrapingBee needs the sandbox proxy in cloud
 const { recordSbCall, recordSdCall, recordBdCall, sbBilledCredits, sdBilledCredits } = require('./provider-telemetry');
 const { creditsFor } = require('./provider-credits');
@@ -750,8 +751,15 @@ async function fetchRedditDirect(url) {
 /**
  * Fetch URL with direct Reddit access, fallback to ScrapingBee
  */
+let missingCredsNoted = false;
+/** The credentials-missing message (BRO-7337): says plainly not to ask the owner for an app. */
+function missingOauthCredsMessage() {
+  return `Reddit OAuth credentials are not set; using the proxy chain. ${NEVER_ASK_REDDIT_APP}`;
+}
 function hasOauthCreds() {
-  return Boolean(process.env.REDDIT_CLIENT_ID && process.env.REDDIT_CLIENT_SECRET) && !oauthDown;
+  const has = Boolean(process.env.REDDIT_CLIENT_ID && process.env.REDDIT_CLIENT_SECRET);
+  if (!has && !missingCredsNoted) { missingCredsNoted = true; console.log(`  ${missingOauthCredsMessage()}`); }
+  return has && !oauthDown;
 }
 
 /** Fetch (and cache) an app-only OAuth token via client_credentials. */
@@ -778,7 +786,7 @@ function getOauthToken() {
       res.on('end', () => {
         if (res.statusCode !== 200) {
           if (res.statusCode === 401 || res.statusCode === 403) oauthDown = true;
-          reject(new Error(`Reddit OAuth token ${res.statusCode}: ${data.slice(0, 120)} — check REDDIT_CLIENT_ID/REDDIT_CLIENT_SECRET`));
+          reject(new Error(`Reddit OAuth token ${res.statusCode}: ${data.slice(0, 120)} — ${NEVER_ASK_REDDIT_APP}`));
           return;
         }
         try {
@@ -1171,6 +1179,7 @@ function resetFallbackState() {
 
 module.exports = {
   fetchViaOauth,
+  missingOauthCredsMessage,
   isRedditRetired,
   RedditRetiredError,
   _oauthState: () => ({ oauthDown, hasCreds: hasOauthCreds() }),

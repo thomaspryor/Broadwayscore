@@ -318,6 +318,8 @@ async function captureScreenshots({ url, paths, branch, outDir, elements }) {
         // Never load or count a real ad (BRO-5893): the bwsc_noads cookie
         // opts AdSlot out, and Google's ad hosts are aborted outright.
         await context.addCookies([{ name: 'bwsc_noads', value: '1', url }]);
+        // Owner-only pages (/admin/*): sign in with a LOCAL dev token (BRO-7348). Never a production token.
+        if (process.env.VISUAL_QA_ADMIN_TOKEN) await context.addCookies([{ name: 'admin_token', value: process.env.VISUAL_QA_ADMIN_TOKEN, url }]);
         await context.route(AD_NETWORK_URL_RE, (route) => route.abort('blockedbyclient'));
         const page = await context.newPage();
         try {
