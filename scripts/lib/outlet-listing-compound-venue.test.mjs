@@ -98,6 +98,44 @@ test('a rival whose house name contains ours as whole words voids the shorter fo
   assert.deepEqual(find('Review: Zebra Garden, Soon at Signature Theatre', 'review-zebra-garden-soon', [soonArl, other]).map((x) => x.id), [other.id]);
 });
 
+// Ship-check blockers (BRO-7372): a comma venue never gets house forms, even with a bracket or
+// dash before the comma, and a slash inside a name must not yield a place-only form.
+test('comma venues with a bracket or dash keep the city: no extra forms, no Manhattan false positive', () => {
+  const arl = { id: 'arl-2026', title: 'Million Dollar Quartet', venue: 'Signature Theatre (The MAX), Arlington, VA', status: 'open', cast: [], creativeTeam: [] };
+  assert.equal(helpers.venueForms(arl).length, 1);
+  assert.equal(helpers.pageConfirmsShow('Million Dollar Quartet at Signature Theatre in Manhattan', arl, { nowMs: NOW, otherShows: [arl] }), false);
+  for (const venue of ['Victory Gardens Theater - Biograph, Chicago, IL', 'The Old Globe (Donald and Darlene Shiley Stage), San Diego, CA']) {
+    assert.equal(helpers.venueForms({ venue }).length, 1, venue);
+  }
+});
+
+test('a slash inside a house name does not make a place-only form ("new york theatres")', () => {
+  const morbs = { id: 'the-morbs-2026', title: 'The Morbs', venue: 'Jeffrey and Paula Gural Theatre at A.R.T./New York Theatres', status: 'open', cast: [], creativeTeam: [] };
+  assert.ok(!helpers.venueForms(morbs).includes('new york theatres'));
+  assert.ok(!helpers.venueForms(morbs).includes('a r t'));
+  assert.equal(helpers.pageConfirmsShow('Review: The Morbs heads to New York theatres after its London run.', morbs, { nowMs: NOW, otherShows: [morbs] }), false);
+  assert.ok(helpers.venueForms({ venue: 'Jeffrey and Paula Gural Theatre (A.R.T./New York Theatres)' }).every((f) => !f.includes(')')));
+});
+
+// Class guard: no venue in shows.json yields an extra form that is only generic or place words, and a
+// comma venue yields none. Fails if the filters in venueForms regress.
+test('class: no show venue in shows.json yields a generic or city-less extra form', (t) => {
+  const file = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..', 'data', 'shows.json');
+  if (!fs.existsSync(file)) return t.skip('data/shows.json not present (private data)');
+  const j = JSON.parse(fs.readFileSync(file, 'utf8'));
+  const shows = Array.isArray(j) ? j : j.shows;
+  const bad = [];
+  for (const v of new Set(shows.map((x) => String(x.venue || '')).filter(Boolean))) {
+    const forms = helpers.venueForms({ venue: v });
+    if (v.includes(',') && forms.length > 1) bad.push(`comma venue with extra forms: ${v}`);
+    for (const f of forms.slice(1)) {
+      const words = f.split(/\s+/);
+      if (words.length < 2 || /[()]/.test(f) || words.every((w) => w.length < 2 || ['new', 'york', 'london', 'theatres', 'theaters', 'theatre', 'theater', 'stage', 'main'].includes(w))) bad.push(`${v} -> ${f}`);
+    }
+  }
+  assert.deepEqual(bad, []);
+});
+
 // Class guard: every show the poller must be able to confirm from a page with no credits on
 // file has a venue form a page can carry. Fails if venueForms regresses to the whole string.
 test('class: every credit-less show with a House/Stage venue in shows.json yields a house form', (t) => {
