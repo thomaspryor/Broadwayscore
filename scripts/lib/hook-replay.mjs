@@ -33,8 +33,8 @@ import os from 'node:os';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { spawn, spawnSync } from 'node:child_process';
-import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
+import { isMainModule } from './is-main-module.mjs';
 
 export const HOOK = '.claude/hooks/verify-edits.sh';
 export const LEDGER = '.claude/hook-replays.jsonl';
@@ -474,7 +474,7 @@ async function main(argv) {
   return 0;
 }
 
-if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+if (isMainModule(import.meta.url)) {
   const { exitFlushed } = createRequire(import.meta.url)('./exit-flushed.js');
   main(process.argv.slice(2)).then(
     (c) => exitFlushed(c),
