@@ -1,13 +1,55 @@
 {
-  "generatedAt": "2026-11-11T12:39:01.910Z",
+  "generatedAt": "2026-11-11T14:19:12.790Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 318,
-  "clean": 318,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 316,
+  "defective": 2,
+  "byType": {
+    "missing-from-prod": 1,
+    "score-drift": 2
+  },
+  "shows": [
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "title": "Stranger Things: The First Shadow",
+      "openingDate": "2023-12-14",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: times-uk"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 84.99 vs local 83.31 (Δ1.68)"
+        }
+      ],
+      "missingFromProd": [
+        "times-uk"
+      ],
+      "localCount": 34,
+      "deployedCount": 33,
+      "firstDefectAt": "2026-11-11T14:19:06.283Z"
+    },
+    {
+      "showId": "all-the-worlds-a-stage-regional-2026",
+      "title": "All The World's A Stage",
+      "openingDate": "2026-10-28",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 83.27 vs local 84.44 (Δ1.17)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 6,
+      "deployedCount": 6,
+      "firstDefectAt": "2026-11-11T14:19:06.283Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

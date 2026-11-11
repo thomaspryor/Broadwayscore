@@ -1,28 +1,8 @@
 {
-  "generatedAt": "2026-11-11T12:38:40.139Z",
+  "generatedAt": "2026-11-11T14:18:53.367Z",
   "windowDays": 45,
   "showsScanned": 239,
   "gaps": [
-    {
-      "showId": "iphigenie-en-tauride-english-national-opera-west-end-2026",
-      "title": "Iphigenie en Tauride - English National Opera",
-      "openingDate": "2026-11-06",
-      "file": "sunday-times--unknown.json",
-      "outletId": "sunday-times",
-      "tier": 1,
-      "type": "empty-body",
-      "recoverable": false,
-      "url": "https://www.thetimes.com/culture/classical-opera/article/iphigenie-en-tauride-review-youve-never-seen-a-family-reunion-like-this-hmwx2kkh2",
-      "recovery": null,
-      "recoveryCount": 3,
-      "forumLinkRecoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=iphigenie-en-tauride-english-national-opera-west-end-2026 --url=https://www.thetimes.com/culture/classical-opera/article/iphigenie-en-tauride-review-youve-never-seen-a-family-reunion-like-this-hmwx2kkh2 --outlet=sunday-times   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-11-08T22:39:44.349Z",
-      "fileAgeHours": 61.98190388888889,
-      "gapSeenAt": "2026-11-09T00:00:26.432Z",
-      "nonTerminalAgeHours": 60.637140555555554,
-      "needsManualRecovery": false
-    },
     {
       "showId": "msblackforpresident-off-broadway-2026",
       "title": "Ms. Blakk for President",
@@ -38,9 +18,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=msblackforpresident-off-broadway-2026 --url=https://www.theguardian.com/stage/2026/nov/ms-blakk-for-president-play --outlet=guardian   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T07:02:09.044Z",
-      "fileAgeHours": 53.6084075,
+      "fileAgeHours": 55.278756944444446,
       "gapSeenAt": "2026-11-10T05:35:04.300Z",
-      "nonTerminalAgeHours": 31.059955,
+      "nonTerminalAgeHours": 32.73029638888889,
       "needsManualRecovery": false
     },
     {
@@ -58,9 +38,9 @@
       "forumLinkRecoveryCount": 3,
       "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=rope-off-broadway-2026   # follows the thread's Link to the real review page",
       "firstSeen": "2026-11-10T13:48:14.823Z",
-      "fileAgeHours": 22.840260277777777,
+      "fileAgeHours": 24.510609722222224,
       "gapSeenAt": "2026-11-10T14:56:56.302Z",
-      "nonTerminalAgeHours": 21.69551,
+      "nonTerminalAgeHours": 23.36585138888889,
       "needsManualRecovery": false
     },
     {
@@ -78,9 +58,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=adirondack-chair-circle-regional-2026 --url=https://www.talkinbroadway.com/page/regional/chicago/ch944.html --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-09T21:14:38.698Z",
-      "fileAgeHours": 39.400397222222225,
+      "fileAgeHours": 41.07073861111111,
       "gapSeenAt": "2026-11-09T21:39:25.109Z",
-      "nonTerminalAgeHours": 38.98750805555556,
+      "nonTerminalAgeHours": 40.657849444444444,
       "needsManualRecovery": false
     },
     {
@@ -98,9 +78,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "# no URL on file — find the theatermania review for the-cottage-regional-2026 first, then: node scripts/ingest-review-from-url.js --show=the-cottage-regional-2026 --url=<URL> --outlet=theatermania",
       "firstSeen": "2026-11-10T00:26:39.999Z",
-      "fileAgeHours": 36.20003722222222,
+      "fileAgeHours": 37.870378611111114,
       "gapSeenAt": "2026-11-10T01:31:07.327Z",
-      "nonTerminalAgeHours": 35.12578083333333,
+      "nonTerminalAgeHours": 36.79612222222222,
       "needsManualRecovery": false
     }
   ],

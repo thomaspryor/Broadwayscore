@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-11T12:39:02.282Z",
+  "generatedAt": "2026-11-11T14:19:13.164Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -94,11 +94,6 @@
       "openingDate": "2026-11-12"
     },
     {
-      "id": "kate-allie-and-the-86-mets-off-broadway-2026",
-      "title": "Kate, Allie and the '86 Mets",
-      "openingDate": "2026-11-09"
-    },
-    {
       "id": "king-lear-off-broadway-2026",
       "title": "King Lear",
       "openingDate": "2026-11-05"
@@ -140,18 +135,10 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "londonpubtheatres",
-      "error": "Client network socket disconnected before secure TLS connection was established"
-    },
-    {
-      "outletId": "londontheatre1",
-      "error": "fetchPage returned an unexpected page for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&o"
     }
   ],
-  "itemsScanned": 811,
-  "matchedGaps": 3,
+  "itemsScanned": 848,
+  "matchedGaps": 4,
   "possibleGaps": 1,
   "gaps": [
     {
@@ -162,6 +149,15 @@
       "url": "https://t2conline.com/222-a-ghost-story-the-loudest-thing-in-the-room-isnt-the-ghost/",
       "headline": "2:22 – A Ghost Story: The Loudest Thing in the Room Isn’t the Ghost",
       "publishDate": "2026-11-07"
+    },
+    {
+      "showId": "cloud-9-west-end-2026",
+      "title": "Cloud 9",
+      "level": "matched",
+      "outletId": "all-that-dazzles-uk",
+      "url": "https://www.allthatdazzles.co.uk/post/review-cloud-9-lyttelton-theatre",
+      "headline": "Review: Cloud 9 (Lyttelton Theatre)",
+      "publishDate": "2026-11-11"
     },
     {
       "showId": "dogstar-off-west-end-2026",
