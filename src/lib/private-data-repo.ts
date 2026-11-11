@@ -27,3 +27,32 @@ export async function fetchPrivateJson<T>(path: string, token: string, fallback:
   if (!res.ok) throw new Error(`GitHub ${res.status} reading ${path}`);
   return (await res.json()) as T;
 }
+
+/** Read a text file (e.g. JSONL) from the private repo. Missing file returns `fallback`. */
+export async function fetchPrivateText(path: string, token: string, fallback: string): Promise<string> {
+  const res = await fetch(
+    `${GH_API_BASE}/repos/${PRIVATE_DATA_REPO}/contents/${path}?ref=main`,
+    {
+      headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github.raw+json' },
+      cache: 'no-store',
+    },
+  );
+  if (res.status === 404) return fallback;
+  if (!res.ok) throw new Error(`GitHub ${res.status} reading ${path}`);
+  return res.text();
+}
+
+/** List file names in a private-repo directory. A missing directory returns []. */
+export async function listPrivateDir(path: string, token: string): Promise<string[]> {
+  const res = await fetch(
+    `${GH_API_BASE}/repos/${PRIVATE_DATA_REPO}/contents/${path}?ref=main`,
+    {
+      headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' },
+      cache: 'no-store',
+    },
+  );
+  if (res.status === 404) return [];
+  if (!res.ok) throw new Error(`GitHub ${res.status} listing ${path}`);
+  const items = (await res.json()) as Array<{ name: string; type: string }>;
+  return items.filter((i) => i.type === 'file').map((i) => i.name);
+}

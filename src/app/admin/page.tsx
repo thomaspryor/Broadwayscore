@@ -18,6 +18,7 @@ export default async function AdminPage() {
           <div className="flex flex-wrap gap-x-4 gap-y-1">
             <Link href="/admin/accounts" className="text-sm text-brand hover:underline">Accounts dashboard</Link>
             <Link href="/admin/critic-invites" className="text-sm text-brand hover:underline">Invite a critic</Link>
+            <Link href="/admin/forecasts" className="text-sm text-brand hover:underline">Review forecasts</Link>
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold mt-3">Money Scorecard sign-ups</h1>
           <p className="text-sm text-gray-400 mt-1">
