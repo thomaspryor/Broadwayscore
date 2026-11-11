@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-11T00:06:48.570Z",
+  "timestamp": "2026-11-11T00:22:06.423Z",
   "stats": {
-    "totalReviews": 81318,
-    "alreadyFlagged": 22225,
+    "totalReviews": 81320,
+    "alreadyFlagged": 22224,
     "dateGuardCatches": 218,
     "directorMismatch": 3607,
     "tvFilmSignals": 2287,
-    "londonSignals": 3667,
+    "londonSignals": 3668,
     "offBroadwaySignals": 752,
     "yearMismatch": 365,
     "noPublishDate": 8455
@@ -123533,6 +123533,19 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 161d before show (May 20th, 2026 vs 2026-10-28)"
+        }
+      ]
+    },
+    {
+      "showId": "speculations-off-west-end-2026",
+      "file": "uktheatrenetwork--clare-brotherwood.json",
+      "publishDate": "2026-11-05",
+      "url": "https://uktheatrenetwork.com/2026/11/05/speculations-at-the-marylebone-theatre-london/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
