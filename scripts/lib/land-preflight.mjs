@@ -47,7 +47,7 @@ const rc = await Promise.all([import('./transcript-scan.mjs'), import('./review-
 const require = createRequire(import.meta.url);
 const { isPromisorFetchFailure } = require('./promisor-fetch-failure.js');
 const { manifestOrderProblem } = require('./test-manifest.js');
-const { hasSkipCiMarker } = require('./landing-ci-coverage.js');
+const { hasSkipCiMarker } = require('./skip-ci-marker.js');
 const {
   NODE_MANIFEST_REL: NODE_MANIFEST,
   TSX_MANIFEST_REL: TSX_MANIFEST,
@@ -64,7 +64,7 @@ export const MAX_COMMITS = 200;
  * sat 2h with zero runs). The Mac landing script handles this itself by
  * pushing an empty trigger commit (land-skip-ci-marker.js, BRO-4643) AFTER it
  * runs judgeLand through the CLI, so this check lives in runHook only and must
- * never move into judgeLand. Predicate: landing-ci-coverage.js hasSkipCiMarker.
+ * never move into judgeLand. Predicate: skip-ci-marker.js (shared with landing-ci-coverage.js).
  * -> { status: 'pass' | 'fail' | 'skip', reason? }
  */
 // `git push`, `git -C dir push`, `git --no-pager push`: where the pushing git call starts.
