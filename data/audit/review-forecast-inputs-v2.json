@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-11T05:07:02.310Z",
+  "generatedAt": "2026-11-11T05:08:00.475Z",
   "card": "BRO-7347",
   "market": "broadway",
   "floor": 10,
@@ -30,6 +30,7 @@
     "parsed": 0,
     "paidFetches": 0
   },
+  "multipleComparisons": "Three primary groups were declared in advance; per-feature rows are exploratory and uncorrected, so a lone exploratory \"helps\" would not count.",
   "inputs": [
     {
       "input": "Opening-night cast (all six cast features)",
@@ -319,17 +320,9 @@
     }
   ],
   "bestCombinedPrimary": {
-    "input": "Preview signals (length, capacity/price/gross trend, gross level)",
-    "kind": "primary",
+    "input": "None: v1 (today's formula) stays best",
     "shows": 341,
-    "maeWithout": 7.73,
-    "maeWith": 7.77,
-    "maeCategoryMean": 8.55,
-    "diff": 0.04,
-    "diffCI95": [
-      -0.2,
-      0.4
-    ],
-    "verdict": "no effect"
+    "maeWith": 7.73,
+    "verdict": "no input helps"
   }
 }
