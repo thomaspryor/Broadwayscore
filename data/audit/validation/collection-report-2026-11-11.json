@@ -1,0 +1,105 @@
+{
+  "runDate": "2026-11-11T00:15:03.796Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 20,
+    "priority": "all",
+    "showFilter": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 1,
+    "failed": 1,
+    "skipped": 0,
+    "successRate": "50.0%"
+  },
+  "tierBreakdown": {
+    "playwright": 1,
+    "amp": 0,
+    "browserbase": 0,
+    "directCookies": 0,
+    "scrapingdog": 0,
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archiveToday": 0,
+    "archive": 0
+  },
+  "statistics": {
+    "tier1Attempts": 2,
+    "tier1Success": 1,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier1_9Attempts": 1,
+    "tier1_9Success": 0,
+    "tier2Attempts": 1,
+    "tier2Success": 0,
+    "tier3Attempts": 1,
+    "tier3Success": 0,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 0,
+    "tier4Attempts": 2,
+    "tier4Success": 0,
+    "totalFailed": 1,
+    "scrapingBeePageCredits": 1,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 0,
+    "urlDiscoverySuccess": 0,
+    "urlDiscoveryCapped": 0
+  },
+  "thisRun": {
+    "processed": 1,
+    "failed": 1,
+    "shows": [
+      "catarina-and-the-beauty-of-killing-fascists-west-end-2026"
+    ],
+    "outOfScopeShows": [],
+    "inheritedFromResume": {
+      "processed": 0,
+      "failed": 0
+    }
+  },
+  "processed": [
+    "catarina-and-the-beauty-of-killing-fascists-west-end-2026/londonlivinglarge--london-living-large.json"
+  ],
+  "failed": [
+    "catarina-and-the-beauty-of-killing-fascists-west-end-2026/london-unattached--unknown.json"
+  ],
+  "cumulativeResumedState": {
+    "processed": [
+      "catarina-and-the-beauty-of-killing-fascists-west-end-2026/londonlivinglarge--london-living-large.json"
+    ],
+    "failed": [
+      "catarina-and-the-beauty-of-killing-fascists-west-end-2026/london-unattached--unknown.json"
+    ]
+  },
+  "tierDetails": {
+    "playwright": [
+      "catarina-and-the-beauty-of-killing-fascists-west-end-2026/londonlivinglarge--london-living-large.json"
+    ],
+    "amp": [],
+    "browserbase": [],
+    "directCookies": [],
+    "scrapingdog": [],
+    "scrapingbee": [],
+    "brightdata": [],
+    "archiveToday": [],
+    "archive": []
+  },
+  "failuresByOutlet": {
+    "London Unattached": {
+      "count": 1,
+      "domain": "london-unattached.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
+  "urlDiscoveries": []
+}
