@@ -82,7 +82,9 @@
     "the-disappear-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "picnic-at-hanging-rock-off-broadway-2025/new-york-notebook--sandy-macdonald.json",
     "picnic-at-hanging-rock-off-broadway-2025/the-recs--erin-muldoon.json",
-    "archduke-off-broadway-2025/one-minute-critic--matthew-wexler.json"
+    "archduke-off-broadway-2025/one-minute-critic--matthew-wexler.json",
+    "here-there-are-blueberries-2026/new-york-city-theatre--unknown.json",
+    "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json"
   ],
   "failed": [
     "hold-on-to-me-darling-off-broadway-2016/talkinbroadway--matthew-murray.json",
@@ -151,7 +153,15 @@
     "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
     "you-got-older-off-broadway-2026/new-york-city-theatre--unknown.json",
     "andrea-chenier-off-broadway-2025/nytimes--corinna-da-fonseca-wollheim.json",
-    "pygmalion-off-broadway-2025/theater-life--ellis-nassour.json"
+    "pygmalion-off-broadway-2025/theater-life--ellis-nassour.json",
+    "here-there-are-blueberries-2026/talkinbroadway--unknown.json",
+    "the-visitors-off-broadway-2026/bobs-theater-blog--unknown.json",
+    "the-visitors-off-broadway-2026/boston-globe--unknown.json",
+    "the-visitors-off-broadway-2026/talkinbroadway--unknown.json",
+    "msblackforpresident-off-broadway-2026/guardian--unknown.json",
+    "msblackforpresident-off-broadway-2026/talkinbroadway--unknown.json",
+    "222-a-ghost-story-off-broadway-2026/talkinbroadway--unknown.json",
+    "the-unbelievers-off-broadway-2026/bobs-theater-blog--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -237,7 +247,8 @@
       "marlise-off-broadway-2026/broadwayworld--unknown.json",
       "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json",
       "rosie-odonnell-common-knowledge-off-broadway-2026/broadwayworld--nicole-rosky.json",
-      "birthright-off-broadway-2026/broadwayworld--kyle-turner.json"
+      "birthright-off-broadway-2026/broadwayworld--kyle-turner.json",
+      "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json"
     ],
     "brightdata": [],
     "archiveToday": [],
@@ -260,10 +271,56 @@
       "public-charge-off-broadway-2026/theater-life--david-sheward.json",
       "what-we-did-before-our-moth-days-off-broadway-2026/playbill--unknown.json",
       "an-ark-off-broadway-2026/playbill--unknown.json",
-      "picnic-at-hanging-rock-off-broadway-2025/new-york-notebook--sandy-macdonald.json"
+      "picnic-at-hanging-rock-off-broadway-2025/new-york-notebook--sandy-macdonald.json",
+      "here-there-are-blueberries-2026/new-york-city-theatre--unknown.json"
     ]
   },
   "startTime": "2026-11-11T17:59:59.489Z",
-  "lastProcessed": "pygmalion-off-broadway-2025/theater-life--ellis-nassour.json",
-  "log": []
+  "lastProcessed": "the-unbelievers-off-broadway-2026/bobs-theater-blog--unknown.json",
+  "log": [
+    {
+      "t": "2026-11-11T19:12:28.188Z",
+      "event": "bb-session",
+      "session": "4cc3fd69",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
+    },
+    {
+      "t": "2026-11-11T19:12:28.856Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-11T19:15:39.139Z",
+      "event": "bb-session",
+      "session": "8eba3f1b",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655641"
+    },
+    {
+      "t": "2026-11-11T19:15:39.808Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-11T19:18:12.726Z",
+      "event": "bb-session",
+      "session": "d680d80f",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655599"
+    },
+    {
+      "t": "2026-11-11T19:18:13.370Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-11T19:18:57.408Z",
+      "event": "bb-session",
+      "session": "d5c12c5b",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655533"
+    },
+    {
+      "t": "2026-11-11T19:18:58.041Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ]
 }
