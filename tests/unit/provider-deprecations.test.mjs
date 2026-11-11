@@ -70,7 +70,7 @@ describe('Anthropic parser', () => {
     assert.equal(rows[1].replacement, 'claude-sonnet-5-5');
   });
   it('counts the same rows as the denominator, and a shell page parses nothing', () => {
-    assert.equal(D.countAnthropicModelRows(ANTHROPIC), 4, "the TBA row counts: it names a model but has no date");
+    assert.equal(D.countAnthropicModelRows(ANTHROPIC), 3, "an undated TBA row must not lower the parse ratio");
     assert.equal(D.readProviderPage('anthropic', '<html>Just a moment...</html>').inputMissing, true);
   });
   it('folds dated snapshots to the alias and finds quoted ids', () => {
@@ -106,6 +106,7 @@ describe('drift through the shared driftReport', () => {
     const r = D.driftReport({ page, registry: {}, referenced, today, baseIdFn: D.anthropicBaseId });
     assert.equal(r.missing[0].id, 'claude-sonnet-4-5');
     assert.equal(r.missing[0].shutdown, '2026-11-30');
+    assert.equal(r.missing[0].replacement, null);
     const quiet = D.driftReport({ page, registry: { 'claude-sonnet-4-5': '2026-11-30' }, referenced, today, baseIdFn: D.anthropicBaseId });
     assert.deepEqual([quiet.missing, quiet.dateDrift], [[], []]);
   });
@@ -147,5 +148,19 @@ describe('CLI and workflow wiring (fails if either provider step is dropped)', (
       const none = spawnSync('node', ['scripts/audit-provider-retirements.js', '--provider=gemini', `--html=${f}`], { cwd: root, encoding: 'utf8' });
       assert.equal(none.status, 0, 'advisory without --strict');
     } finally { fs.rmSync(tmp, { recursive: true, force: true }); }
+  });
+});
+
+describe('review fixes', () => {
+  it('a registry entry for the alias covers the pinned snapshot, and the guard folds -YYYYMMDD', () => {
+    const { modelShutdownStatus } = require('../../scripts/lib/research-cost');
+    const page = D.parseAnthropicDeprecations(ANTHROPIC);
+    const q = D.driftReport({ page, registry: { 'claude-sonnet-4-5': '2026-11-30' }, referenced: ['claude-sonnet-4-5-20250929'], today: '2026-11-11', baseIdFn: D.anthropicBaseId });
+    assert.deepEqual(q.missing, []);
+  });
+  it('an equal-dated tie keeps the row that names a replacement', () => {
+    const html = ANTHROPIC.replace('</tbody></table>\n<table><thead><tr><th>Retirement', `<tr><td>November 30, 2026</td><td>${btn('claude-sonnet-4-5-20250929')}</td><td>${btn('claude-sonnet-5-5')}</td></tr></tbody></table>\n<table><thead><tr><th>Retirement`);
+    const r = D.driftReport({ page: D.parseAnthropicDeprecations(html), registry: {}, referenced: ['claude-sonnet-4-5-20250929'], today: '2026-11-11', baseIdFn: D.anthropicBaseId });
+    assert.equal(r.missing[0].replacement, 'claude-sonnet-5-5');
   });
 });

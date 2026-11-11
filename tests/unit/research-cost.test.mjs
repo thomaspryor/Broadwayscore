@@ -85,7 +85,7 @@ describe('modelShutdownStatus', () => {
     };
     walk(scriptsDir);
     const names = Object.keys(MODEL_SHUTDOWNS).map(m => m.replace(/[.]/g, '\\.'));
-    const lit = `['"\`](?:${names.join('|')})(?:-\\d{4}-\\d{2}-\\d{2})?['"\`]`;
+    const lit = `['"\`](?:${names.join('|')})(?:-\\d{4}-\\d{2}-\\d{2}|-\\d{8})?['"\`]`;
     // BRO-7339: the first version matched only a lowercase `\bmodel` key, so
     // `const OPENAI_MODEL = 'gpt-5-mini'` and `process.env.X || 'gpt-5-mini'`
     // sailed past it for months. Case-insensitive, any `*model` name, plus `|| 'id'` fallbacks.

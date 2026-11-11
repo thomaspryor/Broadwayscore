@@ -40,7 +40,7 @@ const FALLBACK_RATES = { input: 10.00, cached: 2.50, output: 40.00 };
 function ratesFor(model) {
   if (RATES[model]) return RATES[model];
   // Dated snapshots (gpt-5.4-mini-2026-03-17) price like their alias.
-  const alias = String(model || '').replace(/-\d{4}-\d{2}-\d{2}$/, '');
+  const alias = String(model || '').replace(/-\d{4}-\d{2}-\d{2}$|-\d{8}$/, '');
   return RATES[alias] || FALLBACK_RATES;
 }
 
@@ -134,7 +134,7 @@ const ACCEPTED_SHUTDOWNS = {
  * @returns {{status:'ok'|'warn'|'dead', shutdown:string|null, daysLeft:number|null}}
  */
 function modelShutdownStatus(model, todayStr, warnDays = 30) {
-  const alias = String(model || '').replace(/-\d{4}-\d{2}-\d{2}$/, '');
+  const alias = String(model || '').replace(/-\d{4}-\d{2}-\d{2}$|-\d{8}$/, '');
   const shutdown = MODEL_SHUTDOWNS[model] || MODEL_SHUTDOWNS[alias] || null;
   if (!shutdown) return { status: 'ok', shutdown: null, daysLeft: null };
   const daysLeft = Math.round((Date.parse(shutdown) - Date.parse(todayStr)) / 86400000);

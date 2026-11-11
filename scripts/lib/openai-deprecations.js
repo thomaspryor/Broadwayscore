@@ -103,8 +103,12 @@ function driftReport({ page, registry, referenced, today, warnDays = 60, baseIdF
     const alias = baseId(id);
     if (alias === id) {
       if (!exact.has(id) || row.shutdown < exact.get(id).shutdown) exact.set(id, row);
-    } else if (!viaSnapshot.has(alias) || row.shutdown > viaSnapshot.get(alias).shutdown) viaSnapshot.set(alias, row);
+    } else if (!viaSnapshot.has(alias) || row.shutdown > viaSnapshot.get(alias).shutdown
+      || (row.shutdown === viaSnapshot.get(alias).shutdown && !viaSnapshot.get(alias).replacement && row.replacement)) viaSnapshot.set(alias, row);
   }
+  // Registry keys fold the same way, so 'claude-sonnet-4-5' covers the pinned snapshot (BRO-7342).
+  const reg = { ...registry };
+  for (const k of Object.keys(registry)) if (!(baseId(k) in reg)) reg[baseId(k)] = registry[k];
   const pageDate = { get: (id) => exact.get(id) || viaSnapshot.get(id) };
   const days = (iso) => Math.round((Date.parse(iso) - Date.parse(today)) / 86400000);
   const missing = [];
@@ -113,7 +117,7 @@ function driftReport({ page, registry, referenced, today, warnDays = 60, baseIdF
   for (const id of [...refs].sort()) {
     const row = pageDate.get(id);
     if (!row) continue;
-    const known = registry[id];
+    const known = reg[id];
     if (!known) missing.push({ id, shutdown: row.shutdown, replacement: row.replacement, daysLeft: days(row.shutdown) });
     else if (known !== row.shutdown) dateDrift.push({ id, registry: known, page: row.shutdown });
     if (days(row.shutdown) >= 0 && days(row.shutdown) <= warnDays) soon.push({ id, shutdown: row.shutdown, replacement: row.replacement, daysLeft: days(row.shutdown) });
