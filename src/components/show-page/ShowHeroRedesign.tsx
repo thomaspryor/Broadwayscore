@@ -28,6 +28,7 @@
  * resumed when the user lands back on this page authenticated.
  */
 
+import { CallTheScoreHeroLink } from './CallTheScore';
 import { foldVenueName } from '@/lib/venue-fold';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
@@ -1069,6 +1070,7 @@ function AwaitingCard({ show, reviewCount, reviewsRemaining, noReviewsExpected =
       ) : (
         <p className="text-xs text-fg-muted">{progress}</p>
       )}
+      {!noReviewsExpected && <CallTheScoreHeroLink show={{ id: show.id, category: show.category, type: show.type, status: show.status, openingDate: show.openingDate, previewsStartDate: show.previewsStartDate }} />}
     </div>
   );
 }
