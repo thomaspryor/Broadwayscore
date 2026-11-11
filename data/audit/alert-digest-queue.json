@@ -200,5 +200,33 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-11T03:22:53.207Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:garry-starr-classic-penguins-off-west-end-2026",
+    "title": "Review gap — \"Garry Starr Classic Penguins\" missing 1 cited review(s) (still open — BRO-6950)",
+    "description": "Still firing after 20 notifications since it was filed. Tracked at BRO-6950.\n\nGarry Starr Classic Penguins (garry-starr-classic-penguins-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=garry-starr-classic-penguins-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-6950",
+    "fields": [],
+    "queuedAt": "2026-11-11T04:03:41.233Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:othello-bedlam-off-broadway-2026",
+    "title": "Review gap — \"Othello (Bedlam)\" missing 2 cited review(s)",
+    "description": "Othello (Bedlam) (othello-bedlam-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=othello-bedlam-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-11T04:03:41.257Z"
   }
 ]
