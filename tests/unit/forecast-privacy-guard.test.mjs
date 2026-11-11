@@ -26,7 +26,7 @@ test('RED: a planted v2 value in a public data file is flagged, for each v2 key'
 
 test('RED: removing v2 field coverage from the guard lets a planted v2 row through (the guard test catches it)', () => {
   const weakened = G.FORECAST_VALUE_KEYS.filter((k) => !G.V2_VALUE_KEYS.includes(k));
-  assert.equal(G.scanContent(row({ forecastV2: 80, inRange80V2: true }), weakened), null); // would leak
+  assert.equal(G.scanContent(row({ forecastV2: 80, inRange80V2: true }), weakened, []), null); // would leak
   assert.ok(G.scanContent(row({ forecastV2: 80, inRange80V2: true })), 'full guard must flag it');
 });
 
@@ -38,4 +38,8 @@ test('GREEN: ordinary public data rows are not flagged', () => {
 test('GREEN: no git-tracked public data file carries a forecast row signature', () => {
   const leaks = G.scanTracked(process.cwd());
   assert.deepEqual(leaks, []);
+});
+
+test('RED: v2-only keys are flagged even without a row-shape key (id-keyed map, nested object)', () => {
+  assert.ok(G.scanContent('{"downstate-2026":{"v2":{"forecast":80,"inputsPresent":["v1","showScore"]}}}'));
 });

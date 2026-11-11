@@ -15,16 +15,20 @@ const { V2_KEYS } = require('./review-forecast-v2-shadow.js');
 const V1_VALUE_KEYS = ['forecastRaw', 'categoryMean', 'missForecast', 'frozenRecordedAt'];
 const V2_VALUE_KEYS = ['forecastV2', 'missForecastV2', 'forecastV1SameRow', 'inRange80V2', 'v2ModelVersion', ...V2_KEYS.filter((k) => k !== 'forecast' && k !== 'showScore')];
 const FORECAST_VALUE_KEYS = [...new Set([...V1_VALUE_KEYS, ...V2_VALUE_KEYS])];
+// Keys that only exist on v2 rows: flagged on their own, no row-shape key needed (catches id-keyed maps, nested objects).
+const DISTINCT_KEYS = ['forecastV2', 'missForecastV2', 'forecastV1SameRow', 'inRange80V2', 'v2ModelVersion', 'inputsPresent'];
 const ROW_SHAPE_KEYS = ['showId', 'recordedAt', 'openingDate'];
 const MODEL_VERSION_PREFIX = /rf-v2-[a-z0-9-]+/;
 // Code, tests, docs, the frozen model JSON and agent memory may name these fields; data files may not.
-const ALLOWED = [/^scripts\//, /^tests\//, /^docs\//, /^\.claude\//, /^\.github\//, /^memory\//, /^cloud-memory\//, /^src\//];
+const ALLOWED = [/^scripts\//, /^tests\//, /^docs\//, /^\.claude\//, /^\.github\//, /^memory\//, /^cloud-memory\//, ];
 
 function hasKey(text, key) { return new RegExp('"' + key + '"\\s*:').test(text); }
 
 /** Which signature (or null) a file's text carries. `valueKeys` is injectable so tests can prove coverage. */
-function scanContent(text, valueKeys = FORECAST_VALUE_KEYS) {
+function scanContent(text, valueKeys = FORECAST_VALUE_KEYS, distinctKeys = DISTINCT_KEYS) {
   if (MODEL_VERSION_PREFIX.test(text) && /"modelVersion"|"v2ModelVersion"/.test(text)) return 'v2-model-version';
+  const d = distinctKeys.find((k) => hasKey(text, k));
+  if (d) return 'v2-key:' + d;
   if (!ROW_SHAPE_KEYS.some((k) => hasKey(text, k))) return null;
   const hit = valueKeys.find((k) => hasKey(text, k));
   return hit ? 'forecast-key:' + hit : null;
@@ -47,4 +51,4 @@ function scanTracked(root, valueKeys = FORECAST_VALUE_KEYS) {
   return leaks;
 }
 
-module.exports = { FORECAST_VALUE_KEYS, V2_VALUE_KEYS, ROW_SHAPE_KEYS, scanContent, scanTracked, trackedPublicFiles };
+module.exports = { DISTINCT_KEYS, FORECAST_VALUE_KEYS, V2_VALUE_KEYS, ROW_SHAPE_KEYS, scanContent, scanTracked, trackedPublicFiles };

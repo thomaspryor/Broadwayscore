@@ -177,7 +177,7 @@ function scoreboard(grades) {
   const ss = grades.filter((g) => g.v2UsedShowScore);
   const avgOf = (rows, k) => { const v = rows.map((g) => g[k]).filter((x) => typeof x === 'number'); return v.length ? { n: v.length, mae: r1(RF.mean(v)) } : { n: 0, mae: null }; };
   return {
-    v2Shadow: { all: { v1: avg('missForecast'), v2: avg('missForecastV2') }, showScoreUsed: { v1SameRow: avgOf(ss, 'missForecastV1SameRow'), v2: avgOf(ss, 'missForecastV2') } },
+    v2Shadow: { note: 'all = mixed information dates (v1 frozen the day before opening, v2 at opening minus 3); showScoreUsed compares both from the same row', all: { v1: avg('missForecast'), v2: avg('missForecastV2') }, showScoreUsed: { v1SameRow: avgOf(ss, 'missForecastV1SameRow'), v2: avgOf(ss, 'missForecastV2') } },
     shows: grades.length,
     forecast: avg('missForecast'), categoryMean: avg('missCategoryMean'), previewAudience: avg('missPreviewAudience'),
     range80HitRate: hits.length ? Math.round((hits.filter(Boolean).length / hits.length) * 100) / 100 : null,
