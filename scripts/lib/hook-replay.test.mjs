@@ -8,7 +8,7 @@ import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import {
   libsNamedIn, hookScope, hookScopeDiff, hookReplayWarning, stopPoints, eventsToRows,
-  replayOne, compare, sameDecision, decisionOf, LEDGER,
+  replayOne, compare, sameDecision, decisionOf, LEDGER, relativeImports, dirtyFiles, prepareTree,
 } from './hook-replay.mjs';
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -23,23 +23,51 @@ const git = (cwd, ...args) => {
   return r.stdout.trim();
 };
 
-test('libsNamedIn: a lib the hook runs counts; comment and echo mentions do not', () => {
+test('libsNamedIn: a lib the hook runs counts, as a path or as path segments; comments, echo text and watched-path lists do not', () => {
+  const libs = ['root-cause-stop.mjs', 'stall-stop-gate.js', 'wait-for-land.js', 'only-in-comment.js', 'infra-review-scope.js',
+    'writes.py', 'patterns.json', 'content-quality.js', 'review-guards.js', 'trailing.js'].map((f) => `scripts/lib/${f}`);
   const sh = [
     '# scripts/lib/only-in-comment.js is documented here',
     '_x=$(node "$VE_REPO_ROOT/scripts/lib/root-cause-stop.mjs" --stop-hook)',
     '  echo "run node scripts/lib/wait-for-land.js to check"',
     "python3 - <<'EOF'",
-    "load('scripts/lib/stall-stop-gate.js')  # shared patterns",
+    "load('scripts/lib/stall-stop-gate.js')",
+    "scope = os.path.join(root, 'scripts', 'lib', 'infra-review-scope.js')",
+    "exec(open(os.path.join(lib, 'writes.py')).read()); pats = json.load(open(lib + '/patterns.json'))",
+    "edited = p.endswith('/scripts/lib/content-quality.js')",
+    "SCORING_LOGIC_FALLBACK = ('scripts/lib/review-guards.js', 'src/lib/scoring.ts')",
+    "try:  # one source shared with scripts/lib/trailing.js",
+    "x = run('not-a-lib.js')",
     'EOF',
   ].join('\n');
-  assert.deepEqual(libsNamedIn(sh), ['scripts/lib/root-cause-stop.mjs', 'scripts/lib/stall-stop-gate.js']);
+  assert.deepEqual(libsNamedIn(sh, libs), ['infra-review-scope.js', 'patterns.json', 'root-cause-stop.mjs', 'stall-stop-gate.js', 'writes.py'].map((f) => `scripts/lib/${f}`));
+});
+
+test('relativeImports: top-level imports and requires count, a lazy require inside a function does not', () => {
+  const have = new Set(['scripts/lib/a.mjs', 'scripts/lib/b.js', 'scripts/lib/c.js', 'scripts/lib/lazy.js', 'src/lib/d.js']);
+  const text = [
+    "import { x } from './a.mjs';",
+    "const b = require('./b');",
+    "const { y } = require('./c.js'); const n = require('./missing.js');",
+    "const d = require('../../src/lib/d.js');",
+    'function f() {',
+    "  return require('./lazy.js').go();",
+    '}',
+  ].join('\n');
+  assert.deepEqual(relativeImports('scripts/lib/gate.js', text, have), ['scripts/lib/a.mjs', 'scripts/lib/b.js', 'scripts/lib/c.js', 'src/lib/d.js']);
 });
 
 test('hookScope of this repo includes the Stop-check libs verify-edits.sh runs', () => {
   const s = hookScope(REPO, 'HEAD');
-  for (const f of ['scripts/lib/root-cause-stop.mjs', 'scripts/lib/review-coverage.mjs', 'scripts/lib/decision-restate.js']) assert.ok(s.libs.includes(f), `${f} missing from ${s.libs.join(', ')}`);
+  const want = ['root-cause-stop.mjs', 'review-coverage.mjs', 'decision-restate.js', // named as paths
+    'infra-review-scope.js', 'verify_edits_writes.py', 'wake-promise-patterns.json', // named as path segments
+    'transcript-scan.mjs', 'root-cause-close.js', 'visual-approval.js']; // imported by those
+  for (const f of want) assert.ok(s.libs.includes(`scripts/lib/${f}`), `${f} missing from ${s.libs.join(', ')}`);
   assert.equal(s.hook, '.claude/hooks/verify-edits.sh');
-  assert.ok(!s.libs.includes('scripts/lib/land-preflight.mjs'), 'a PreToolUse-only lib is not replayable, so not in scope');
+  for (const f of ['land-preflight.mjs', 'content-quality.js', 'review-guards.js', 'wait-for-land.js', 'linear-client.js']) {
+    assert.ok(!s.libs.includes(`scripts/lib/${f}`), `${f} is not code the Stop hook runs at load (PreToolUse-only, a watched path, message text or a lazy Linear call)`);
+  }
+  assert.ok(s.libs.length < 30, `scope grew to ${s.libs.length} files; a lazy or Linear-side import is probably being followed`);
 });
 
 test('stopPoints, recorded Stops: cut before the turn text, hook 1 errors are blocks, hook 2 errors are not', () => {
@@ -96,6 +124,7 @@ test('replayOne + compare: a hook that changed its decision is reported, in a sa
     '[ -n "${LINEAR_API_KEY:-}${OPENAI_API_KEY:-}${GH_TOKEN:-}" ] && { echo "secret leaked" >&2; exit 7; }',
     'gh api user >/dev/null 2>&1 && { echo "gh works" >&2; exit 7; }',
     '[ "$HOOK_REPLAY" = 1 ] || exit 7',
+    '[ -z "${CLAUDE_PROJECT_DIR:-}" ] && [ "$BOARD_GATE_DISABLED" = 1 ] || { echo "live checkout or board reachable" >&2; exit 7; }',
     'n=$(wc -l < "$(printf %s "$in" | node -e \'process.stdout.write(JSON.parse(require("fs").readFileSync(0,"utf8")).transcript_path)\')")',
     'echo "$n" >> "$TMPDIR/seen"',
   ].join('\n');
@@ -103,7 +132,8 @@ test('replayOne + compare: a hook that changed its decision is reported, in a sa
   const head = fakeTree(`${guard}\ncase "$in" in *BLOCKME*) echo "🛑 BLOCKED: blocked it" >&2; echo "[VE:FAKE]" >&2; exit 2;; esac\nexit 0`);
   const bin = fs.mkdtempSync(path.join(os.tmpdir(), 'hook-replay-bin-'));
   fs.writeFileSync(path.join(bin, 'gh'), '#!/bin/sh\nexit 1\n', { mode: 0o755 });
-  const saved = { LINEAR_API_KEY: process.env.LINEAR_API_KEY, GH_TOKEN: process.env.GH_TOKEN };
+  const saved = { LINEAR_API_KEY: process.env.LINEAR_API_KEY, GH_TOKEN: process.env.GH_TOKEN, CLAUDE_PROJECT_DIR: process.env.CLAUDE_PROJECT_DIR };
+  process.env.CLAUDE_PROJECT_DIR = REPO;
   process.env.LINEAR_API_KEY = 'lin_dummy';
   process.env.GH_TOKEN = 'dummy';
   try {
@@ -190,4 +220,50 @@ test('hookScopeDiff + hookReplayWarning: warn on a hook-lib change with no repla
 
 test('hookReplayWarning never throws (a broken repo is silent)', () => {
   assert.equal(hookReplayWarning({ root: '/nonexistent-dir', src: 'HEAD', base: 'main' }), null);
+});
+
+test('dirtyFiles: the first porcelain line keeps its whole path (an unstaged hook edit is caught by --record)', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'hook-replay-dirty-'));
+  try {
+    git(dir, 'init', '-q', '-b', 'main');
+    git(dir, 'config', 'user.email', 't@t');
+    git(dir, 'config', 'user.name', 't');
+    fs.mkdirSync(path.join(dir, '.claude', 'hooks'), { recursive: true });
+    fs.writeFileSync(path.join(dir, '.claude', 'hooks', 'verify-edits.sh'), 'a\n');
+    git(dir, 'add', '-A');
+    git(dir, 'commit', '-qm', 'base');
+    fs.writeFileSync(path.join(dir, '.claude', 'hooks', 'verify-edits.sh'), 'b\n');
+    fs.mkdirSync(path.join(dir, 'scripts', 'lib'), { recursive: true });
+    fs.writeFileSync(path.join(dir, 'scripts', 'lib', 'new.js'), '1;\n');
+    assert.deepEqual(dirtyFiles(dir).sort(), ['.claude/hooks/verify-edits.sh', 'scripts/lib/new.js']);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('prepareTree: refuses a leftover directory that is not its own worktree; the head tree gets uncommitted and new files', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'hook-replay-tree-'));
+  try {
+    git(dir, 'init', '-q', '-b', 'main');
+    git(dir, 'config', 'user.email', 't@t');
+    git(dir, 'config', 'user.name', 't');
+    fs.writeFileSync(path.join(dir, 'a.txt'), 'committed\n');
+    git(dir, 'add', '-A');
+    git(dir, 'commit', '-qm', 'base');
+    fs.writeFileSync(path.join(dir, 'a.txt'), 'edited\n');
+    fs.mkdirSync(path.join(dir, 'lib'));
+    fs.writeFileSync(path.join(dir, 'lib', 'new.js'), 'new\n');
+
+    fs.mkdirSync(path.join(dir, '.claude', 'worktrees', 'leftover'), { recursive: true });
+    assert.throws(() => prepareTree(dir, 'leftover', 'HEAD'), /not a worktree of its own/);
+    assert.equal(fs.readFileSync(path.join(dir, 'a.txt'), 'utf8'), 'edited\n', 'the main checkout was not touched');
+
+    const t = prepareTree(dir, 'head', 'HEAD', { withDirtyFrom: dir });
+    assert.equal(fs.readFileSync(path.join(t, 'a.txt'), 'utf8'), 'edited\n');
+    assert.equal(fs.readFileSync(path.join(t, 'lib', 'new.js'), 'utf8'), 'new\n');
+    assert.equal(prepareTree(dir, 'head', 'HEAD'), t, 'an existing worktree is reused');
+    assert.equal(fs.readFileSync(path.join(t, 'a.txt'), 'utf8'), 'committed\n');
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
 });

@@ -49,27 +49,67 @@ const gitOut = (cwd, args) => {
 
 // ---------------------------------------------------------------- hook scope
 
-const LIB_RE = /scripts\/lib\/[\w.-]+\.(?:mjs|cjs|js)\b/g;
+const TOKEN_RE = /[\w.-]+\.(?:mjs|cjs|js|py|json)\b/g;
+// A file path the hook only compares against (an edited-file watchlist), not code it runs.
+const DATA_ONLY_RE = /\.endswith\(|_FALLBACK\s*=/;
 
-/** scripts/lib files a hook script loads, from its text. Pure comment lines and echo text do not count. */
-export function libsNamedIn(scriptText) {
+/**
+ * scripts/lib files a hook script loads, from its text. The hook names them as whole paths
+ * (scripts/lib/x.mjs) or as path segments (os.path.join(root, 'scripts', 'lib', 'x.js')), so any
+ * file name that exists in scripts/lib counts. Comment lines and text, echo text and watched-path
+ * lists do not. `libFiles` = the scripts/lib paths that exist.
+ */
+export function libsNamedIn(scriptText, libFiles) {
+  const have = new Set(libFiles);
   const found = new Set();
   for (const line of String(scriptText).split('\n')) {
-    const t = line.trim();
-    if (!t || t.startsWith('#') || /^(?:echo|printf)\b/.test(t)) continue;
-    for (const m of t.match(LIB_RE) || []) found.add(m);
+    let t = line.trim();
+    if (!t || t.startsWith('#') || /^(?:echo|printf)\b/.test(t) || DATA_ONLY_RE.test(t)) continue;
+    t = t.replace(/\s#\s.*$/, '');
+    for (const m of t.match(TOKEN_RE) || []) {
+      const f = `scripts/lib/${path.basename(m)}`;
+      if (have.has(f)) found.add(f);
+    }
   }
   return [...found].sort();
 }
 
+const IMPORT_RE = /(?:\bfrom\s*|\bimport\s*\(\s*|\brequire\s*\(\s*)['"](\.{1,2}\/[^'"]+)['"]/g;
+
+/** Top-level relative imports of a JS file that resolve to existing files (tries .js/.mjs/.cjs/index.js). */
+export function relativeImports(file, text, have) {
+  const out = [];
+  // Top-level imports only: an indented require() is a lazy load inside one function (often the
+  // Linear client), which the replay cannot observe and which would pull in most of scripts/lib.
+  const top = String(text).split('\n').filter((l) => /^\S/.test(l)).join('\n');
+  for (const m of top.matchAll(IMPORT_RE)) {
+    const p = path.posix.normalize(path.posix.join(path.posix.dirname(file), m[1]));
+    const hit = [p, `${p}.js`, `${p}.mjs`, `${p}.cjs`, `${p}/index.js`].find((c) => have.has(c));
+    if (hit) out.push(hit);
+  }
+  return out;
+}
+
 /**
  * Hook scope at `rev`: what this replay can test, i.e. the Stop hook (verify-edits.sh, the only
- * Stop hook in .claude/settings.json) and the scripts/lib files it runs. PreToolUse hooks are
- * not replayed, so a change to them is out of scope.
+ * Stop hook in .claude/settings.json), the scripts/lib files it names, and everything those
+ * import in turn. PreToolUse hooks are not replayed, so a change to them is out of scope.
  */
 export function hookScope(cwd, rev) {
   const text = gitOut(cwd, ['show', `${rev}:${HOOK}`]);
-  return { hook: HOOK, libs: text ? libsNamedIn(text) : [] };
+  if (!text) return { hook: HOOK, libs: [] };
+  const tracked = (gitOut(cwd, ['ls-tree', '-r', '--name-only', rev, '--', 'scripts']) || '').split('\n').filter(Boolean);
+  const have = new Set(tracked);
+  const libs = new Set(libsNamedIn(text, tracked.filter((f) => f.startsWith('scripts/lib/'))));
+  const queue = [...libs];
+  while (queue.length) {
+    const f = queue.shift();
+    if (!/\.(?:mjs|cjs|js)$/.test(f)) continue;
+    for (const dep of relativeImports(f, gitOut(cwd, ['show', `${rev}:${f}`]) || '', have)) {
+      if (!libs.has(dep)) { libs.add(dep); queue.push(dep); }
+    }
+  }
+  return { hook: HOOK, libs: [...libs].sort() };
 }
 
 export const inHookScope = (file, scope) => file === scope.hook || scope.libs.includes(file);
@@ -126,9 +166,9 @@ export function textOf(row) {
 const isMain = (r) => r && !r.isSidechain;
 const isAssistantText = (r) => isMain(r) && r.type === 'assistant' && textOf(r).trim() !== '';
 function isRealUser(r) {
-  if (!isMain(r) || r.type !== 'user' || r.isMeta) return false;
+  if (!isMain(r) || r.type !== 'user' || r.isMeta || r.isCompactSummary) return false;
   const c = r.message?.content;
-  if (typeof c === 'string') return c.trim() !== '';
+  if (typeof c === 'string') return c.trim() !== '' && !/^<local-command-(?:stdout|stderr|caveat)>/.test(c.trim());
   return Array.isArray(c) && c.some((b) => b && b.type === 'text' && String(b.text || '').trim() !== '');
 }
 const hook1Errors = (r) => (r.hookErrors || []).filter((x) => /^\[command hook 1\]/.test(String(x)));
@@ -230,6 +270,11 @@ export async function replayOne({ tree, hook = HOOK, lines, stops, label, binDir
   const cut = path.join(tmp, `transcript-${label}.jsonl`);
   const env = { ...process.env, HOME: home, TMPDIR: tmp, CLAUDE_CODE_REMOTE: 'true', HOOK_REPLAY: '1', PATH: `${binDir}:${process.env.PATH}`, ...extraEnv };
   for (const k of SECRET_ENV) delete env[k];
+  // CLAUDE_PROJECT_DIR would point the hook's helpers at the live checkout (and its .env keys)
+  // instead of the tree under test; the board gates read live Linear state, so they stay off.
+  delete env.CLAUDE_PROJECT_DIR;
+  env.BOARD_GATE_DISABLED = '1';
+  env.CLAUDE_CODE_SESSION_ID = `replay-${label}`;
   const results = [];
   let prevBlocked = false;
   try {
@@ -244,7 +289,9 @@ export async function replayOne({ tree, hook = HOOK, lines, stops, label, binDir
   } finally {
     fs.rmSync(home, { recursive: true, force: true });
     fs.rmSync(tmp, { recursive: true, force: true });
+    // The hook keeps two state files at fixed /tmp paths keyed by the transcript path.
     fs.rmSync(`/tmp/verify-edits-chain-${cksum(cut)}`, { force: true });
+    fs.rmSync(`/tmp/verify-edits-satisfied-${createHash('md5').update(cut).digest('hex').slice(0, 16)}.json`, { force: true });
   }
   return results;
 }
@@ -253,6 +300,10 @@ export async function replayOne({ tree, hook = HOOK, lines, stops, label, binDir
 export function prepareTree(root, name, rev, { withDirtyFrom = null } = {}) {
   const dir = path.join(root, '.claude', 'worktrees', name);
   if (fs.existsSync(dir)) {
+    // A leftover directory that is not its own worktree would resolve to the enclosing checkout,
+    // and checkout -f there would throw away someone's work.
+    const top = gitOut(dir, ['rev-parse', '--show-toplevel']);
+    if (!top || fs.realpathSync(top) !== fs.realpathSync(dir)) throw new Error(`${dir} exists and is not a worktree of its own; remove it and re-run`);
     const r = git(dir, ['checkout', '-q', '--detach', '-f', rev]);
     if (r.status !== 0) throw new Error(`could not check out ${rev} in ${dir}: ${r.stderr.trim()}`);
     git(dir, ['clean', '-fdq']);
@@ -266,8 +317,24 @@ export function prepareTree(root, name, rev, { withDirtyFrom = null } = {}) {
       const a = spawnSync('git', ['apply', '--whitespace=nowarn'], { cwd: dir, input: patch, encoding: 'utf8' });
       if (a.status !== 0) throw new Error(`could not apply uncommitted changes to ${dir}: ${a.stderr.trim()}`);
     }
+    // New files not yet added to git are not in that diff.
+    for (const f of (git(withDirtyFrom, ['ls-files', '--others', '--exclude-standard']).stdout || '').split('\n').filter(Boolean)) {
+      // Nested repos and worktrees list as "dir/"; only plain files are copied.
+      if (f.endsWith('/') || f.startsWith('.claude/worktrees/')) continue;
+      let st;
+      try { st = fs.lstatSync(path.join(withDirtyFrom, f)); } catch { continue; }
+      if (!st.isFile()) continue;
+      fs.mkdirSync(path.dirname(path.join(dir, f)), { recursive: true });
+      fs.copyFileSync(path.join(withDirtyFrom, f), path.join(dir, f));
+    }
   }
   return dir;
+}
+
+/** Uncommitted paths (modified, staged, untracked). */
+export function dirtyFiles(cwd) {
+  // Not gitOut: its trim() would eat the first line's leading status space and cut the path.
+  return (git(cwd, ['status', '--porcelain', '--untracked-files=all']).stdout || '').split('\n').filter(Boolean).map((l) => l.slice(3).replace(/^.* -> /, ''));
 }
 
 export function defaultTranscripts(home = os.homedir(), n = 3) {
@@ -334,7 +401,7 @@ async function main(argv) {
   const baseSha = gitOut(cwd, ['rev-parse', a.base]);
   if (!baseSha) { console.error(`unknown base ${a.base}`); return 2; }
   const scopeDiff = hookScopeDiff(cwd, a.base, 'HEAD');
-  const dirty = (gitOut(cwd, ['status', '--porcelain']) || '').split('\n').filter(Boolean).map((l) => l.slice(3));
+  const dirty = dirtyFiles(cwd);
   const scope = hookScope(cwd, 'HEAD');
   const dirtyInScope = dirty.filter((f) => inHookScope(f, scope));
   if (a.record && dirtyInScope.length) { console.error(`--record needs committed hook code; uncommitted: ${dirtyInScope.join(', ')}`); return 2; }
@@ -382,7 +449,7 @@ async function main(argv) {
 
   if (a.json) console.log(JSON.stringify(report, null, 2));
   else {
-    console.log(`hook replay: main ${baseSha.slice(0, 9)} vs this branch ${headSha.slice(0, 9)}${dirtyInScope.length ? ' + uncommitted' : ''}, ${stopsN} stops in ${report.transcripts.length} transcript(s), ${report.secs}s`);
+    console.log(`hook replay: ${a.base} ${baseSha.slice(0, 9)} vs this branch ${headSha.slice(0, 9)}${dirtyInScope.length ? ' + uncommitted' : ''}, ${stopsN} stops in ${report.transcripts.length} transcript(s), ${report.secs}s`);
     console.log(`hook-scope files changed: ${scopeDiff.files.length ? scopeDiff.files.join(', ') : 'none'}`);
     for (const t of report.transcripts) {
       const fid = t.fidelity ? `; main's hook matches the recorded outcome at ${t.fidelity.agree}/${t.fidelity.compared} stops` : '';
