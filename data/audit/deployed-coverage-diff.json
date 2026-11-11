@@ -1,30 +1,37 @@
 {
-  "generatedAt": "2026-11-10T22:49:57.535Z",
+  "generatedAt": "2026-11-11T00:04:22.371Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 319,
-  "clean": 318,
+  "checked": 317,
+  "clean": 316,
   "defective": 1,
   "byType": {
+    "missing-from-prod": 1,
     "score-drift": 1
   },
   "shows": [
     {
-      "showId": "hamilton-2015",
-      "title": "Hamilton",
-      "openingDate": "2015-08-06",
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "title": "Stranger Things: The First Shadow",
+      "openingDate": "2023-12-14",
       "ok": false,
       "defects": [
         {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: times-uk"
+        },
+        {
           "type": "score-drift",
-          "detail": "deployed cs 91.64 vs local 91.22 (Δ0.42)"
+          "detail": "deployed cs 84.99 vs local 83.31 (Δ1.68)"
         }
       ],
-      "missingFromProd": [],
-      "localCount": 43,
-      "deployedCount": 43,
-      "firstDefectAt": "2026-11-10T22:49:48.082Z"
+      "missingFromProd": [
+        "times-uk"
+      ],
+      "localCount": 34,
+      "deployedCount": 33,
+      "firstDefectAt": "2026-11-11T00:04:16.235Z"
     }
   ],
   "persistentDefective": 0,

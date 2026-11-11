@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-10T22:49:57.967Z",
+  "generatedAt": "2026-11-11T00:04:22.756Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -59,9 +59,9 @@
       "openingDate": "2026-11-09"
     },
     {
-      "id": "parcel-from-america-off-broadway-2026",
-      "title": "Parcel from America",
-      "openingDate": "2026-11-04"
+      "id": "the-kings-critique-off-broadway-2026",
+      "title": "The King's Critique",
+      "openingDate": "2026-11-12"
     },
     {
       "id": "speculations-off-west-end-2026",
@@ -89,6 +89,11 @@
       "openingDate": "2026-11-08"
     },
     {
+      "id": "hamlet-hail-to-the-thief-off-west-end-2026",
+      "title": "Hamlet Hail to the Thief",
+      "openingDate": "2026-11-12"
+    },
+    {
       "id": "kate-allie-and-the-86-mets-off-broadway-2026",
       "title": "Kate, Allie and the '86 Mets",
       "openingDate": "2026-11-09"
@@ -99,17 +104,17 @@
       "openingDate": "2026-11-05"
     },
     {
-      "id": "the-niceties-regional-2026",
-      "title": "The Niceties",
-      "openingDate": "2026-11-04"
-    },
-    {
       "id": "the-snow-queen-regional-2026",
       "title": "The Snow Queen",
       "openingDate": "2026-11-07"
     }
   ],
-  "skipped": [],
+  "skipped": [
+    {
+      "showId": "the-good-thief-off-broadway-2026",
+      "reason": "no data/review-texts directory for this show"
+    }
+  ],
   "feedsChecked": 84,
   "feedsFailed": [
     {
@@ -137,12 +142,12 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     },
     {
-      "outletId": "fringereview",
-      "error": "HTTP 500 for https://fringereview.co.uk/feed/"
+      "outletId": "chicagotribune",
+      "error": "All scraping methods failed"
     }
   ],
-  "itemsScanned": 848,
-  "matchedGaps": 4,
+  "itemsScanned": 832,
+  "matchedGaps": 1,
   "possibleGaps": 2,
   "gaps": [
     {
@@ -153,33 +158,6 @@
       "url": "https://t2conline.com/222-a-ghost-story-the-loudest-thing-in-the-room-isnt-the-ghost/",
       "headline": "2:22 – A Ghost Story: The Loudest Thing in the Room Isn’t the Ghost",
       "publishDate": "2026-11-07"
-    },
-    {
-      "showId": "dogstar-off-west-end-2026",
-      "title": "Dogstar",
-      "level": "matched",
-      "outletId": "guardian",
-      "url": "https://www.theguardian.com/stage/2026/nov/10/dogstar-review-hampstead-theatre-london",
-      "headline": "There’s scurvy, mutiny and mystery in Dogstar – but like its icebound ship this drama goes nowhere",
-      "publishDate": "2026-11-10"
-    },
-    {
-      "showId": "dogstar-off-west-end-2026",
-      "title": "Dogstar",
-      "level": "matched",
-      "outletId": "thereviewshub",
-      "url": "https://www.thereviewshub.com/dogstar-hampstead-theatre-london/",
-      "headline": "Dogstar – Hampstead Theatre, London",
-      "publishDate": "2026-11-10"
-    },
-    {
-      "showId": "the-steel-man-off-broadway-2026",
-      "title": "The Steel Man",
-      "level": "matched",
-      "outletId": "stageandcinema",
-      "url": "https://stageandcinema.com/2026/11/09/the-steel-man-review-penguin-rep-59e59-theaters/",
-      "headline": "Off-Broadway Review: THE STEEL MAN (Penguin Rep Theatre / 59E59 Theatres)",
-      "publishDate": "2026-11-09"
     },
     {
       "showId": "king-lear-off-broadway-2026",
