@@ -66,7 +66,7 @@ function countAnthropicModelRows(html) {
     const cells = [...tr.matchAll(/<td[^>]*>([\s\S]*?)<\/td>/g)].map((m) => m[1]);
     if (cells.length < 3) continue;
     if (parseShutdownDate(stripTags(cells[0])) && anthropicRowIds(cells[1]).length) n++;
-    else if (cells.length >= 4 && /^deprecated$/i.test(stripTags(cells[1])) && anthropicRowIds(cells[0]).length) n++;
+    else if (cells.length >= 4 && /^deprecated$/i.test(stripTags(cells[1])) && anthropicRowIds(cells[0]).length && /\d{4}/.test(stripTags(cells[3]))) n++;
   }
   return n;
 }
