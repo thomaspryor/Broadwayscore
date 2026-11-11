@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-11T15:24:16.479Z",
+  "generatedAt": "2026-11-11T16:43:17.999Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -84,6 +84,11 @@
       "openingDate": "2026-11-08"
     },
     {
+      "id": "act-of-god-off-west-end-2026",
+      "title": "Act of God",
+      "openingDate": "2026-11-11"
+    },
+    {
       "id": "dr-seuss-how-the-grinch-stole-christmas-tour-2026",
       "title": "Dr. Seuss' How the Grinch Stole Christmas!",
       "openingDate": "2026-11-06"
@@ -122,6 +127,10 @@
   "feedsChecked": 84,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -142,8 +151,8 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 854,
-  "matchedGaps": 8,
+  "itemsScanned": 849,
+  "matchedGaps": 3,
   "possibleGaps": 1,
   "gaps": [
     {
@@ -156,66 +165,21 @@
       "publishDate": "2026-11-07"
     },
     {
-      "showId": "cloud-9-west-end-2026",
-      "title": "Cloud 9",
+      "showId": "222-a-ghost-story-off-broadway-2026",
+      "title": "2:22 - A Ghost Story",
       "level": "matched",
-      "outletId": "all-that-dazzles-uk",
-      "url": "https://www.allthatdazzles.co.uk/post/review-cloud-9-lyttelton-theatre",
-      "headline": "Review: Cloud 9 (Lyttelton Theatre)",
-      "publishDate": "2026-11-11"
-    },
-    {
-      "showId": "cloud-9-west-end-2026",
-      "title": "Cloud 9",
-      "level": "matched",
-      "outletId": "london-unattached",
-      "url": "https://www.london-unattached.com/cloud-9-national-theatre/",
-      "headline": "Cloud 9 &#8211; Lyttelton National Theatre",
-      "publishDate": "2026-11-11"
-    },
-    {
-      "showId": "cloud-9-west-end-2026",
-      "title": "Cloud 9",
-      "level": "matched",
-      "outletId": "guardian",
-      "url": "https://www.theguardian.com/stage/2026/nov/11/cloud-9-review-national-theatre-london-caryl-churchill",
-      "headline": "Caryl Churchill’s magnificent Cloud 9 reaches for the skies – the National Theatre has done it proud",
-      "publishDate": "2026-11-11"
-    },
-    {
-      "showId": "cloud-9-west-end-2026",
-      "title": "Cloud 9",
-      "level": "matched",
-      "outletId": "theupcoming",
-      "url": "https://www.theupcoming.co.uk/2026/11/11/cloud-9-at-the-national-theatre-theatre-review/",
-      "headline": "Cloud 9 at the National Theatre &#124; Theatre review",
-      "publishDate": "2026-11-11"
-    },
-    {
-      "showId": "dogstar-off-west-end-2026",
-      "title": "Dogstar",
-      "level": "matched",
-      "outletId": "readaboutstuff",
-      "url": "https://readaboutstuff.com/2026/11/11/review-dogstar-hampstead-theatre-london/",
-      "headline": "Review: Dogstar &#8211; Hampstead Theatre, London",
-      "publishDate": "2026-11-11"
-    },
-    {
-      "showId": "dogstar-off-west-end-2026",
-      "title": "Dogstar",
-      "level": "matched",
-      "outletId": "rhombus-rota",
-      "url": "https://rhombusrota.co.uk/2026/11/11/dogstar-at-the-hampstead-theatre-review/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=dogstar-at-the-hampstead-theatre-review",
-      "headline": "Dogstar at the Hampstead Theatre Review",
+      "outletId": "the-interested-bystander",
+      "url": "https://www.interestedbystander.com/2026/11/theater-reviews-ms-blakk-for-president.html",
+      "headline": "Theater Reviews: “Ms. Blakk For President?” Sure, and Texas Will Turn Blue; Lauren Ambrose Is Excellent as a Mother of a Missing Son in “The Unbelievers”; Subtext Becomes Text in a Suspenseful “Rope”; More (BOO!) British Paranormal Activities in “2:22 – A Ghost Story”",
       "publishDate": "2026-11-11"
     },
     {
       "showId": "msblackforpresident-off-broadway-2026",
       "title": "Ms. Blakk for President",
       "level": "matched",
-      "outletId": "theater-life",
-      "url": "https://theaterlife.com/well-see-ms-blakk-for-president/",
-      "headline": "We’ll See ****, Ms. Blakk for President ****",
+      "outletId": "the-interested-bystander",
+      "url": "https://www.interestedbystander.com/2026/11/theater-reviews-ms-blakk-for-president.html",
+      "headline": "Theater Reviews: “Ms. Blakk For President?” Sure, and Texas Will Turn Blue; Lauren Ambrose Is Excellent as a Mother of a Missing Son in “The Unbelievers”; Subtext Becomes Text in a Suspenseful “Rope”; More (BOO!) British Paranormal Activities in “2:22 – A Ghost Story”",
       "publishDate": "2026-11-11"
     },
     {
