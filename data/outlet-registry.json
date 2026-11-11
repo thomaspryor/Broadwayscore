@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-11-11T14:22:17.600Z",
+    "lastUpdated": "2026-11-11T16:47:17.793Z",
     "version": "2.1.0",
     "lastChange": "BRO-6122: standingCoverage[broadway] promote chicagotribune (audit-standing-coverage --market=broadway lists chicagotribune under promote (unflagged, 85% overall, every trailing sea)"
   },
@@ -15535,6 +15535,22 @@
       ],
       "domain": "metro.us",
       "accessModel": "free"
+    },
+    "aislinmagazine": {
+      "displayName": "Aislin Magazine",
+      "tier": 3,
+      "aliases": [
+        "aislinmagazine"
+      ],
+      "domain": "aislinmagazine.com"
+    },
+    "samicone": {
+      "displayName": "Sami Cone",
+      "tier": 3,
+      "aliases": [
+        "samicone"
+      ],
+      "domain": "samicone.com"
     }
   },
   "_aliasIndex": {
