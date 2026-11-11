@@ -1,4 +1,6 @@
 // BRO-7380 guard: the London/out-of-town audience results stay aggregate-only and the summary reproduces.
+const { hasHelpFlag } = require('./lib/cli-help');
+if (hasHelpFlag(process.argv)) { console.log('Usage: node scripts/test-review-forecast-london-audience.js  (checks BRO-7380 results stay aggregate-only; no network, no writes)'); process.exit(0); }
 const fs = require('fs'); const { execFileSync } = require('child_process'); const assert = require('assert');
 const d = JSON.parse(fs.readFileSync(require('path').join(__dirname, '..', 'data/audit/review-forecast-london-audience.json'), 'utf8'));
 assert.strictEqual(d.paidFetches, 0, 'sweep must stay on free direct fetches');
