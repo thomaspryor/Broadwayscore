@@ -320,7 +320,7 @@ results.push(compare('Combined: panel + earlier-run (step), shows with member re
 for (const f of [...G.cast, ...G.preview, ...EX.EXTRA_FEATURE_NAMES]) results.push(compare(`feature: ${f}`, [...V1, f], null, 'exploratory'));
 
 // ---- BRO-7369: earlier-production Show Score audience. Specs declared before any result was seen: ONE feature, eaScore (shrunk member mean, k=10 toward 85, minus 85, 0 when none),
-// full population, in the v1 ridge/residual frame; the increment is measured against the LANDED v2 spec (v1 + audScore + audCount). Five tests join the correction family.
+// full population, in the v1 ridge/residual frame; the increment is measured against the LANDED v2 spec (v1 + audScore + audCount). The new tests join the correction family (EA_NEW_TESTS, checked at runtime).
 // "Transfers" = an earlier non-Broadway production of the same title in shows.json or earlier-run reviews on file, picked without looking at the new input.
 // Decision rule: the input is added to the nightly pilot only if the increment over v2 (all shows) has a Bonferroni-corrected interval entirely below zero.
 let transferModel = null; const V2SPEC = [...V1, ...G.audience]; const hasEA = (p) => p.has.earlierAudience; const isTr = (p) => p.has.transfer;

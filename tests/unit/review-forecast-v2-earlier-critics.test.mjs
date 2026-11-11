@@ -27,7 +27,7 @@ test('earlier production: only off-Broadway / West End markets, opened by the cu
 test('features: count-shrunk gap, tier-weighted and T1-only gaps, audience-minus-critics gap', () => {
   const f = EC.buildEarlierCriticsFeatures(target, ctx({ earlierAudience: { T: { n: 90, mean: 91.5, newest: '2019-01-01' } } }), 70);
   assert.equal(f.x.ecHas, 1);
-  assert.ok(Math.abs(f.x.ecGap - (15 / 20) * 10) < 1e-9);
+  assert.ok(Math.abs(f.x.ecGap - (2 / 7) * (80 - 70)) < 1e-9, 'A is the shrunk plain mean of the dated reviews');
   const wMean = (0.8 * 90 + 0.48 * 70) / 1.28;
   assert.ok(Math.abs(f.x.ecWGap - (2 / 7) * (wMean - 70)) < 1e-9);
   assert.equal(f.x.ecT1Has, 1); assert.ok(Math.abs(f.x.ecT1Gap - (1 / 6) * 20) < 1e-9);
@@ -40,6 +40,14 @@ test('reviews dated after the cutoff never feed the target (perturbation)', () =
   const base = EC.buildEarlierCriticsFeatures(target, ctx(), 70);
   const noisy = ctx(); noisy.reviewsByShow.get('P').push(rv('2019-03-22', 1, 9, true), rv('2019-04-30', 1, 9, true));
   assert.deepEqual(EC.buildEarlierCriticsFeatures(target, noisy, 70).x, base.x);
+});
+
+test('the earlier production\'s stored score and review count (all-time, may include post-cutoff reviews) are never read', () => {
+  const a = EC.buildEarlierCriticsFeatures(target, ctx({ earlierAudience: { T: { n: 90, mean: 91.5, newest: '2019-01-01' } } }), 70);
+  const b = EC.buildEarlierCriticsFeatures(target, ctx({ pool: [{ ...prior, score: 5, rc: 400 }], earlierAudience: { T: { n: 90, mean: 91.5, newest: '2019-01-01' } } }), 70);
+  assert.deepEqual(b.x, a.x);
+  const noReviews = EC.buildEarlierCriticsFeatures(target, ctx({ reviewsByShow: new Map([['P', [rv('2019-04-30', 99, 9, true)]]]) }), 70);
+  assert.equal(noReviews.has.earlierCritics, false, 'only post-cutoff reviews on file means no feature');
 });
 
 test('leakage guard: red on a late or undated source, green on a valid one', () => {

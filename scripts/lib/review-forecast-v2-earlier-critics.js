@@ -10,10 +10,10 @@
  *
  *   ctx.reviewsByShow = Map showId -> [{ day (number), score, w (effective tier weight), t1 (bool) }]
  *   features (K = EC_K shrinks the gap toward 0 when few reviews):
- *     ecHas, ecGap      A: canonical score of the earlier production minus mu, shrunk by its review count
+ *     ecHas, ecGap      A: plain mean of its reviews dated by the cutoff, minus mu, shrunk by their count
  *     ecWGap            B: tier-weighted mean of its reviews dated by the cutoff, minus mu, shrunk by their count
  *     ecT1Has, ecT1Gap  B: same with Tier-1 outlets only
- *     eaGapHas, eaCritGap  C: shrunk earlier-audience mean minus the earlier production's canonical score
+ *     eaGapHas, eaCritGap  C: shrunk earlier-audience mean minus the earlier production's dated-review mean
  */
 'use strict';
 
@@ -47,26 +47,26 @@ function buildEarlierCriticsFeatures(target, ctx, mu) {
   const cutoffIso = EA.earlierCutoff(target); const cut = toDay(cutoffIso);
   const p = mu == null ? null : findEarlier(target, ctx, cutoffIso);
   if (!p) return { x, provenance: prov, has };
-  const n = p.rc || 0;
-  x.ecHas = 1; has.earlierCritics = true;
-  x.ecGap = (n / (n + EC_K)) * (p.score - mu);
-  prov.push({ kind: 'earlier-critics', ref: p.id, date: p.openingDate });
+  // every score below is rebuilt from reviews dated on or before the cutoff: an earlier production's stored score and
+  // review count cover ALL its reviews (some dated after the cutoff), so they are never read here
   const rv = ((ctx.reviewsByShow && ctx.reviewsByShow.get(p.id)) || []).filter((r) => r.day <= cut);
-  if (rv.length) {
-    const sw = rv.reduce((a, r) => a + r.w, 0);
-    const wMean = rv.reduce((a, r) => a + r.w * r.score, 0) / sw;
-    x.ecWGap = (rv.length / (rv.length + EC_K)) * (wMean - mu);
-    prov.push({ kind: 'earlier-critics-reviews', ref: p.id, date: dayStr(Math.max(...rv.map((r) => r.day))) });
-    const t1 = rv.filter((r) => r.t1);
-    if (t1.length) {
-      x.ecT1Has = 1; has.earlierT1 = true;
-      x.ecT1Gap = (t1.length / (t1.length + EC_K)) * (RF.mean(t1.map((r) => r.score)) - mu);
-    }
+  if (!rv.length) return { x, provenance: prov, has };
+  const plain = RF.mean(rv.map((r) => r.score)); // A: plain mean of the dated reviews (the site score without tier weights)
+  x.ecHas = 1; has.earlierCritics = true;
+  x.ecGap = (rv.length / (rv.length + EC_K)) * (plain - mu);
+  prov.push({ kind: 'earlier-critics', ref: p.id, date: dayStr(Math.max(...rv.map((r) => r.day))) });
+  const sw = rv.reduce((a, r) => a + r.w, 0);
+  const wMean = rv.reduce((a, r) => a + r.w * r.score, 0) / sw;
+  x.ecWGap = (rv.length / (rv.length + EC_K)) * (wMean - mu);
+  const t1 = rv.filter((r) => r.t1);
+  if (t1.length) {
+    x.ecT1Has = 1; has.earlierT1 = true;
+    x.ecT1Gap = (t1.length / (t1.length + EC_K)) * (RF.mean(t1.map((r) => r.score)) - mu);
   }
   const a = ctx.earlierAudience && ctx.earlierAudience[target.id];
   if (a && a.n > 0) {
     x.eaGapHas = 1;
-    x.eaCritGap = (a.n * a.mean + EA.EA_K * EA.EA_CENTER) / (a.n + EA.EA_K) - p.score;
+    x.eaCritGap = (a.n * a.mean + EA.EA_K * EA.EA_CENTER) / (a.n + EA.EA_K) - plain;
   }
   return { x, provenance: prov, has };
 }

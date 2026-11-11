@@ -11,7 +11,7 @@
  * { directOnly: true } (free tier, 0 paid fetches), stop at the first 403, 429 or captcha, no bypass.
  *
  * Usage: node scripts/review-forecast-v2-earlier-audience-sweep.js --ids=a,b,c | --ids-from=<backtest.json>
- *          [--limit=N] [--max-pages-per-source=12] [--no-guess] [--plan]
+ *          [--limit=N] [--max-pages-per-source=20] [--no-guess] [--plan]
  *   --plan   print each show's candidate pages and make no request
  * Output (checkpointed per show, resumable): data/audit/review-forecast-v2-earlier-audience.json
  */
@@ -70,7 +70,7 @@ async function getHtml(u) {
     return c;
   } catch (e) {
     if (/404|not found/i.test(e.message)) return null;
-    if (/40[13]|429|captcha|challenge|bot wall/i.test(e.message)) e.stop = true;
+    if (/40[13]|429|captcha|challenge|bot wall|blocked/i.test(e.message)) e.stop = true;
     throw e;
   }
 }
