@@ -287,12 +287,20 @@ export function defaultTranscripts(home = os.homedir(), n = 3) {
   return files.filter((f) => fs.readFileSync(f, 'utf8').includes('"stop_hook_summary"')).slice(0, n);
 }
 
+/** Same block? By [VE:TAG] when both have one; an older hook without tags is matched on its message. */
+export function sameDecision(b, h) {
+  if (b.decision !== h.decision) return false;
+  if (b.decision !== 'block') return true;
+  if (b.tag !== '?' && h.tag !== '?') return b.tag === h.tag;
+  return b.detail.slice(0, 80) === h.detail.slice(0, 80);
+}
+
 export function compare(stops, base, head) {
   const changed = [];
   stops.forEach((s, i) => {
     const b = base[i];
     const h = head[i];
-    if (b.decision !== h.decision || (b.decision === 'block' && b.tag !== h.tag)) changed.push({ i, ts: s.ts, base: b, head: h, message: s.text.replace(/\s+/g, ' ').slice(0, 120) });
+    if (!sameDecision(b, h)) changed.push({ i, ts: s.ts, base: b, head: h, message: s.text.replace(/\s+/g, ' ').slice(0, 120) });
   });
   const fidelity = stops.filter((s) => s.recorded).length
     ? { compared: stops.filter((s) => s.recorded).length, agree: stops.filter((s, i) => s.recorded && s.recorded === base[i].decision).length }
