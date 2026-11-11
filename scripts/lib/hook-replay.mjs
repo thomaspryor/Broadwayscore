@@ -11,7 +11,7 @@
  *
  * Usage:
  *   node scripts/lib/hook-replay.mjs [transcript.jsonl ...] [--from-events f.json ...]
- *        [--base origin/main] [--max-stops 20] [--record] [--json]
+ *        [--base origin/main] [--max-stops 20] [--max-tools 150] [--no-pre|--only-pre] [--record] [--json]
  *   No transcripts: the 3 newest top-level ~/.claude/projects/<proj>/<id>.jsonl with recorded Stops.
  *   --from-events: files saved from the list_events tool (cloud sessions), converted first.
  *   --record: append a row to <repo>/.claude/hook-replays.jsonl keyed by the hook-scope
@@ -25,6 +25,15 @@
  * Known blind spot: gates that need Linear (close-out checks) are skipped in replay.
  * Only the FIRST changed stop per transcript is fully reliable: later ones can be
  * knock-on effects of block budgets that already diverged.
+ *
+ * PreToolUse (BRO-7352): every assistant tool_use row of the transcript is turned into the stdin
+ * Claude Code gives a PreToolUse hook, and every hook registered for it in each tree's own
+ * .claude/settings.json whose matcher fits the tool is run in base and head, in a sandbox like
+ * the Stop one but in an isolated clone (so a hook writing under the repo's data/ or .claude/
+ * cannot touch the live checkout). A decision is a deny (exit 2, or exit 0 with
+ * permissionDecision "deny" on stdout) or an allow. Skipped on purpose: pre-push-land-preflight
+ * (LAND_PREFLIGHT_DISABLE=1: it fetches, rebases and runs minutes of tests against live git
+ * state). Flags: --no-pre (Stop only), --only-pre, --max-tools N (default 150, evenly sampled).
  *
  * Exit: 0 report printed (changes are not an error) | 1 internal error | 2 usage.
  */
@@ -91,17 +100,48 @@ export function relativeImports(file, text, have) {
   return out;
 }
 
+export const SETTINGS = '.claude/settings.json';
+const HOOK_PATH_RE = /\.claude\/hooks\/[\w.-]+\.(?:sh|mjs|js|py)\b/;
+
+/** PreToolUse entries of a settings.json text -> [{ matcher, command, script }] (script = the .claude/hooks/ file the command runs). */
+export function preToolUseHooks(settingsText) {
+  let cfg;
+  try { cfg = JSON.parse(settingsText); } catch { return []; }
+  const out = [];
+  for (const g of cfg?.hooks?.PreToolUse || []) {
+    for (const h of g.hooks || []) {
+      if (h.type && h.type !== 'command') continue;
+      const m = String(h.command || '').match(HOOK_PATH_RE);
+      if (m) out.push({ matcher: g.matcher || '*', command: h.command, script: m[0] });
+    }
+  }
+  return out;
+}
+
+/** Claude Code matchers are regexes over the tool name; '' and '*' match everything. */
+export function matcherMatches(matcher, toolName) {
+  if (!matcher || matcher === '*') return true;
+  try { return new RegExp(`^(?:${matcher})$`).test(toolName); } catch { return false; }
+}
+
 /**
- * Hook scope at `rev`: what this replay can test, i.e. the Stop hook (verify-edits.sh, the only
- * Stop hook in .claude/settings.json), the scripts/lib files it names, and everything those
- * import in turn. PreToolUse hooks are not replayed, so a change to them is out of scope.
+ * Hook scope at `rev`: what this replay can test. The Stop hook (verify-edits.sh), every
+ * PreToolUse hook script registered in .claude/settings.json (BRO-7352) and settings.json itself
+ * (a matcher change moves which hooks run), plus the scripts/lib files those name, and
+ * everything those import in turn.
  */
 export function hookScope(cwd, rev) {
-  const text = gitOut(cwd, ['show', `${rev}:${HOOK}`]);
-  if (!text) return { hook: HOOK, libs: [] };
+  const settings = gitOut(cwd, ['show', `${rev}:${SETTINGS}`]);
+  const pre = settings ? [...new Set(preToolUseHooks(settings).map((h) => h.script))].sort() : [];
+  const hooks = [HOOK, ...pre.filter((f) => f !== HOOK), ...(settings ? [SETTINGS] : [])];
   const tracked = (gitOut(cwd, ['ls-tree', '-r', '--name-only', rev, '--', 'scripts']) || '').split('\n').filter(Boolean);
   const have = new Set(tracked);
-  const libs = new Set(libsNamedIn(text, tracked.filter((f) => f.startsWith('scripts/lib/'))));
+  const libFiles = tracked.filter((f) => f.startsWith('scripts/lib/'));
+  const libs = new Set();
+  for (const h of hooks.filter((f) => f !== SETTINGS)) {
+    const text = gitOut(cwd, ['show', `${rev}:${h}`]);
+    if (text) for (const l of libsNamedIn(text, libFiles)) libs.add(l);
+  }
   const queue = [...libs];
   while (queue.length) {
     const f = queue.shift();
@@ -110,10 +150,10 @@ export function hookScope(cwd, rev) {
       if (!libs.has(dep)) { libs.add(dep); queue.push(dep); }
     }
   }
-  return { hook: HOOK, libs: [...libs].sort() };
+  return { hook: HOOK, hooks, libs: [...libs].sort() };
 }
 
-export const inHookScope = (file, scope) => file === scope.hook || scope.libs.includes(file);
+export const inHookScope = (file, scope) => file === scope.hook || (scope.hooks || []).includes(file) || scope.libs.includes(file);
 
 /** -> { files, hash } for the hook-scope part of base...src; hash null when nothing in scope changed. */
 export function hookScopeDiff(cwd, base, src = 'HEAD') {
@@ -139,7 +179,7 @@ export function readLedger(root) {
 
 /**
  * Land preflight advice (advisory, never blocks; rule 19): the pushed commit changes
- * Stop-hook code and no replay of real sessions was recorded for that exact change.
+ * hook code (Stop or PreToolUse) and no replay of real sessions was recorded for that exact change.
  * -> string | null
  */
 export function hookReplayWarning({ root, src = 'HEAD', base = 'origin/main', ledgerRoot = null }) {
@@ -149,7 +189,7 @@ export function hookReplayWarning({ root, src = 'HEAD', base = 'origin/main', le
     const rows = readLedger(ledgerRoot || canonicalRoot(root));
     if (rows.some((r) => r.hash === d.hash)) return null;
     const shown = d.files.slice(0, 4).join(', ') + (d.files.length > 4 ? `, +${d.files.length - 4} more` : '');
-    return `this land changes Stop-hook code (${shown}) and no replay of real sessions was recorded for it (BRO-7351). Before landing a hook or rule change, run: node scripts/lib/hook-replay.mjs --record (replays recent real sessions through main's hook and this branch's, and lists every stop whose decision changed). Advisory only.`;
+    return `this land changes hook code (Stop or PreToolUse) (${shown}) and no replay of real sessions was recorded for it (BRO-7351). Before landing a hook or rule change, run: node scripts/lib/hook-replay.mjs --record (replays recent real sessions through main's hook and this branch's, and lists every stop whose decision changed). Advisory only.`;
   } catch {
     return null;
   }
@@ -297,10 +337,138 @@ export async function replayOne({ tree, hook = HOOK, lines, stops, label, binDir
   return results;
 }
 
+// ------------------------------------------------------- PreToolUse replay (BRO-7352)
+
+/**
+ * Tool calls of a transcript: every tool_use block of a main-chain assistant row.
+ * -> [{ cut, name, input, id, ts }]; cut = rows written when the hook runs (the call's own row is in).
+ */
+export function toolUsePoints(rows) {
+  const out = [];
+  rows.forEach((r, i) => {
+    if (!isMain(r) || r.type !== 'assistant' || !Array.isArray(r.message?.content)) return;
+    for (const b of r.message.content) {
+      if (b && b.type === 'tool_use' && b.name) out.push({ cut: i + 1, name: String(b.name), input: b.input || {}, id: b.id || `call-${i}`, ts: r.timestamp || '' });
+    }
+  });
+  return out;
+}
+
+/** Evenly spaced sample of at most `n` calls, order kept (a transcript's tail alone would be all Bash). */
+export function sampleCalls(calls, n) {
+  if (calls.length <= n) return calls;
+  const out = [];
+  for (let k = 0; k < n; k++) out.push(calls[Math.floor((k * calls.length) / n)]);
+  return out;
+}
+
+function runShell({ tree, command, stdin, env, timeoutMs }) {
+  return new Promise((resolve) => {
+    const child = spawn('bash', ['-c', command], { cwd: tree, env, stdio: ['pipe', 'pipe', 'pipe'] });
+    let out = '';
+    let err = '';
+    let timedOut = false;
+    const timer = setTimeout(() => { timedOut = true; child.kill('SIGKILL'); }, timeoutMs);
+    child.stdout.on('data', (d) => { if (out.length < 200000) out += d; });
+    child.stderr.on('data', (d) => { if (err.length < 200000) err += d; });
+    child.on('error', () => {});
+    child.on('close', (code) => {
+      clearTimeout(timer);
+      resolve({ code: timedOut ? null : code, stdout: out, stderr: err, timedOut });
+    });
+    child.stdin.on('error', () => {});
+    child.stdin.end(stdin);
+  });
+}
+
+/**
+ * PreToolUse decision of one hook run: exit 2 = deny, exit 0 with a deny in the stdout JSON
+ * (hookSpecificOutput.permissionDecision, or the older decision:"block") = deny, else allow.
+ * Same shape as decisionOf, with decision 'block' meaning deny so sameDecision applies.
+ */
+export function decisionOfPre({ code, stdout = '', stderr = '', timedOut }) {
+  if (timedOut || (code !== 0 && code !== 2)) return { decision: 'crash', tag: timedOut ? 'TIMEOUT' : `EXIT_${code}`, detail: String(stderr).trim().split('\n').slice(-1)[0]?.slice(0, 160) || '' };
+  const firstLine = (t) => String(t).split('\n').find((l) => /BLOCKED|🛑/.test(l)) || String(t).trim().split('\n')[0] || '';
+  if (code === 2) return { decision: 'block', tag: (String(stderr).match(/\[([A-Z][A-Z0-9_]*:[A-Z0-9_]+)\]/) || [])[1] || '?', detail: firstLine(stderr).slice(0, 160) };
+  const text = String(stdout).trim();
+  if (text.startsWith('{')) {
+    try {
+      const o = JSON.parse(text);
+      const pd = o.hookSpecificOutput?.permissionDecision;
+      if (pd === 'deny' || o.decision === 'block') return { decision: 'block', tag: '?', detail: String(o.hookSpecificOutput?.permissionDecisionReason || o.reason || '').slice(0, 160) };
+    } catch { /* not JSON: an allow with a message */ }
+  }
+  return { decision: 'allow', tag: '', detail: '' };
+}
+
+/**
+ * Replay `calls` through every PreToolUse hook of one tree whose matcher fits, in order, sharing
+ * one HOME and TMPDIR (hook counters carry over as in a session). `hooks` = preToolUseHooks of
+ * THIS tree's settings.json. -> one { [script]: decision } map per call; a hook that does not
+ * apply to a call (no match, or not registered in this tree) is simply absent from the map.
+ */
+export async function replayTools({ tree, hooks, lines, calls, label, binDir, timeoutMs = 30000, extraEnv = {} }) {
+  const home = fs.mkdtempSync(path.join(os.tmpdir(), `hook-replay-home-${label}-`));
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), `hook-replay-tmp-${label}-`));
+  const cutFile = path.join(tmp, `transcript-${label}.jsonl`);
+  const env = { ...process.env, HOME: home, TMPDIR: tmp, CLAUDE_CODE_REMOTE: 'true', HOOK_REPLAY: '1', PATH: `${binDir}:${process.env.PATH}`, ...extraEnv };
+  for (const k of SECRET_ENV) delete env[k];
+  delete env.CLAUDE_PROJECT_DIR;
+  env.BOARD_GATE_DISABLED = '1';
+  env.LAND_PREFLIGHT_DISABLE = '1';
+  env.CLAUDE_CODE_SESSION_ID = `replay-${label}`;
+  const results = [];
+  let written = 0;
+  fs.writeFileSync(cutFile, '');
+  try {
+    for (const c of calls) {
+      // Calls arrive in transcript order, so the cut file only ever grows.
+      if (c.cut > written) { fs.appendFileSync(cutFile, lines.slice(written, c.cut).join('\n') + '\n'); written = c.cut; }
+      const stdin = JSON.stringify({ session_id: `replay-${label}`, transcript_path: cutFile, cwd: tree, permission_mode: 'default', hook_event_name: 'PreToolUse', tool_name: c.name, tool_input: c.input, tool_use_id: c.id });
+      const per = {};
+      for (const h of hooks) {
+        if (!matcherMatches(h.matcher, c.name) || h.script in per) continue;
+        per[h.script] = decisionOfPre(await runShell({ tree, command: h.command, stdin, env, timeoutMs }));
+      }
+      results.push(per);
+    }
+  } finally {
+    fs.rmSync(home, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+  return results;
+}
+
+/** Calls whose per-hook decision differs between base and head (a hook absent on one side allows). */
+export function comparePre(calls, base, head) {
+  const allow = { decision: 'allow', tag: '', detail: '' };
+  const changed = [];
+  let hookRuns = 0;
+  calls.forEach((c, i) => {
+    for (const script of new Set([...Object.keys(base[i] || {}), ...Object.keys(head[i] || {})])) {
+      const b = base[i]?.[script] || allow;
+      const h = head[i]?.[script] || allow;
+      hookRuns++;
+      if (!sameDecision(b, h)) changed.push({ i, ts: c.ts, tool: c.name, script, base: b, head: h, input: JSON.stringify(c.input).slice(0, 140) });
+    }
+  });
+  const crashes = (side) => side.reduce((n, per) => n + Object.values(per || {}).filter((d) => d.decision === 'crash').length, 0);
+  const denied = (side) => side.reduce((n, per) => n + Object.values(per || {}).filter((d) => d.decision === 'block').length, 0);
+  return { changed, hookRuns, denied: { base: denied(base), head: denied(head) }, crashes: { base: crashes(base), head: crashes(head) } };
+}
+
 /** Detached worktree of `rev` under <root>/.claude/worktrees/ (node_modules resolves from the repo root). */
-export function prepareTree(root, name, rev, { withDirtyFrom = null } = {}) {
+export function prepareTree(root, name, rev, { withDirtyFrom = null, isolated = false } = {}) {
   const dir = path.join(root, '.claude', 'worktrees', name);
-  if (fs.existsSync(dir)) {
+  if (isolated) {
+    // A shared clone has its own git dir, so a hook that writes next to "the main checkout's
+    // .git" (ledgers under data/ or .claude/) writes inside this throwaway clone, not the live repo.
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+    const c = git(root, ['clone', '-q', '--shared', '--no-checkout', root, dir]);
+    if (c.status !== 0) throw new Error(`git clone ${dir} failed: ${c.stderr.trim()}`);
+    const r = git(dir, ['checkout', '-q', '--detach', rev]);
+    if (r.status !== 0) throw new Error(`could not check out ${rev} in ${dir}: ${r.stderr.trim()}`);
+  } else if (fs.existsSync(dir)) {
     // A leftover directory that is not its own worktree would resolve to the enclosing checkout,
     // and checkout -f there would throw away someone's work.
     const top = gitOut(dir, ['rev-parse', '--show-toplevel']);
@@ -375,11 +543,14 @@ export function compare(stops, base, head) {
 }
 
 function parseArgs(argv) {
-  const a = { transcripts: [], events: [], base: 'origin/main', maxStops: 20, record: false, json: false };
+  const a = { transcripts: [], events: [], base: 'origin/main', maxStops: 20, maxTools: 150, stop: true, pre: true, record: false, json: false };
   for (let i = 0; i < argv.length; i++) {
     const x = argv[i];
     if (x === '--base') a.base = argv[++i];
     else if (x === '--max-stops') a.maxStops = Number(argv[++i]);
+    else if (x === '--max-tools') a.maxTools = Number(argv[++i]);
+    else if (x === '--no-pre') a.pre = false;
+    else if (x === '--only-pre') a.stop = false;
     else if (x === '--from-events') a.events.push(argv[++i]);
     else if (x === '--record') a.record = true;
     else if (x === '--json') a.json = true;
@@ -388,13 +559,27 @@ function parseArgs(argv) {
     else a.transcripts.push(x);
   }
   if (!(a.maxStops > 0)) throw new Error('--max-stops must be a positive number');
+  if (!(a.maxTools > 0)) throw new Error('--max-tools must be a positive number');
+  if (!a.stop && !a.pre) throw new Error('--no-pre and --only-pre together replay nothing');
   return a;
+}
+
+function printPre(t) {
+  if (!t.pre) return;
+  const p = t.pre;
+  console.log(`${t.name} PreToolUse: ${p.calls} of ${p.total} matching tool calls, ${p.hookRuns} hook decisions, denies base ${p.denied.base} / head ${p.denied.head}, ${p.changed.length} changed${p.crashes.head ? `; ${p.crashes.head} HEAD crash(es)` : ''}`);
+  p.changed.forEach((c) => {
+    const fmt = (d) => (d.decision === 'allow' ? 'allow' : `${d.decision} ${d.tag}`);
+    console.log(`  call ${c.i} ${c.tool} ${path.basename(c.script)}: ${fmt(c.base)} -> ${fmt(c.head)}`);
+    console.log(`      input: ${c.input}`);
+    if (c.head.detail) console.log(`      head: ${c.head.detail}`);
+  });
 }
 
 async function main(argv) {
   let a;
   try { a = parseArgs(argv); } catch (e) { console.error(e.message); return 2; }
-  if (a.help) { console.log('usage: node scripts/lib/hook-replay.mjs [transcript.jsonl ...] [--from-events f.json ...] [--base origin/main] [--max-stops 20] [--record] [--json]'); return 0; }
+  if (a.help) { console.log('usage: node scripts/lib/hook-replay.mjs [transcript.jsonl ...] [--from-events f.json ...] [--base origin/main] [--max-stops 20] [--max-tools 150] [--no-pre|--only-pre] [--record] [--json]'); return 0; }
   const cwd = gitOut(process.cwd(), ['rev-parse', '--show-toplevel']);
   if (!cwd) { console.error('run inside the Broadwayscore repo'); return 2; }
   const root = canonicalRoot(cwd);
@@ -423,21 +608,39 @@ async function main(argv) {
   // Per-process worktree names: two replays at once must not check out over each other's trees.
   const trees = [];
   try {
-    const baseTree = prepareTree(root, `hook-replay-base-${process.pid}`, baseSha);
+    // Isolated clones: PreToolUse hooks append ledgers under the repo's data/ and .claude/.
+    const baseTree = prepareTree(root, `hook-replay-base-${process.pid}`, baseSha, { isolated: true });
     trees.push(baseTree);
-    const headTree = prepareTree(root, `hook-replay-head-${process.pid}`, headSha, { withDirtyFrom: cwd });
+    const headTree = prepareTree(root, `hook-replay-head-${process.pid}`, headSha, { withDirtyFrom: cwd, isolated: true });
     trees.push(headTree);
+    const readSettings = (tree) => { try { return fs.readFileSync(path.join(tree, SETTINGS), 'utf8'); } catch { return ''; } };
+    const baseHooks = preToolUseHooks(readSettings(baseTree));
+    const headHooks = preToolUseHooks(readSettings(headTree));
+    const anyHook = (name) => [...baseHooks, ...headHooks].some((h) => matcherMatches(h.matcher, name));
     for (const [n, inp] of inputs.entries()) {
       const rows = inp.lines.map((l) => { try { return JSON.parse(l); } catch { return {}; } });
-      let stops = stopPoints(rows);
-      stops.forEach((s, i) => { s.prevRecordedBlock = i > 0 && stops[i - 1].recorded === 'block'; });
-      const total = stops.length;
-      stops = stops.slice(-a.maxStops);
-      const [b, h] = await Promise.all([
-        replayOne({ tree: baseTree, lines: inp.lines, stops, label: `base${n}`, binDir }),
-        replayOne({ tree: headTree, lines: inp.lines, stops, label: `head${n}`, binDir }),
-      ]);
-      report.transcripts.push({ name: inp.name, stops: stops.length, total, ...compare(stops, b, h) });
+      const entry = { name: inp.name, stops: 0, total: 0, changed: [], fidelity: null, crashes: { base: 0, head: 0 } };
+      if (a.stop) {
+        let stops = stopPoints(rows);
+        stops.forEach((s, i) => { s.prevRecordedBlock = i > 0 && stops[i - 1].recorded === 'block'; });
+        const total = stops.length;
+        stops = stops.slice(-a.maxStops);
+        const [b, h] = await Promise.all([
+          replayOne({ tree: baseTree, lines: inp.lines, stops, label: `base${n}`, binDir }),
+          replayOne({ tree: headTree, lines: inp.lines, stops, label: `head${n}`, binDir }),
+        ]);
+        Object.assign(entry, { stops: stops.length, total, ...compare(stops, b, h) });
+      }
+      if (a.pre) {
+        const all = toolUsePoints(rows).filter((c) => anyHook(c.name));
+        const calls = sampleCalls(all, a.maxTools);
+        const [b, h] = await Promise.all([
+          replayTools({ tree: baseTree, hooks: baseHooks, lines: inp.lines, calls, label: `pbase${n}`, binDir }),
+          replayTools({ tree: headTree, hooks: headHooks, lines: inp.lines, calls, label: `phead${n}`, binDir }),
+        ]);
+        entry.pre = { calls: calls.length, total: all.length, ...comparePre(calls, b, h) };
+      }
+      report.transcripts.push(entry);
     }
   } finally {
     fs.rmSync(binDir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
@@ -447,12 +650,17 @@ async function main(argv) {
   const stopsN = report.transcripts.reduce((s, t) => s + t.stops, 0);
   const changedN = report.transcripts.reduce((s, t) => s + t.changed.length, 0);
   const crashN = report.transcripts.reduce((s, t) => s + t.crashes.head, 0);
+  const preCalls = report.transcripts.reduce((s, t) => s + (t.pre?.calls || 0), 0);
+  const preRuns = report.transcripts.reduce((s, t) => s + (t.pre?.hookRuns || 0), 0);
+  const preChanged = report.transcripts.reduce((s, t) => s + (t.pre?.changed.length || 0), 0);
+  const preCrash = report.transcripts.reduce((s, t) => s + (t.pre?.crashes.head || 0), 0);
 
   if (a.json) console.log(JSON.stringify(report, null, 2));
   else {
-    console.log(`hook replay: ${a.base} ${baseSha.slice(0, 9)} vs this branch ${headSha.slice(0, 9)}${dirtyInScope.length ? ' + uncommitted' : ''}, ${stopsN} stops in ${report.transcripts.length} transcript(s), ${report.secs}s`);
+    console.log(`hook replay: ${a.base} ${baseSha.slice(0, 9)} vs this branch ${headSha.slice(0, 9)}${dirtyInScope.length ? ' + uncommitted' : ''}, ${stopsN} stops${a.pre ? `, ${preCalls} tool calls (${preRuns} PreToolUse hook runs)` : ''} in ${report.transcripts.length} transcript(s), ${report.secs}s`);
     console.log(`hook-scope files changed: ${scopeDiff.files.length ? scopeDiff.files.join(', ') : 'none'}`);
     for (const t of report.transcripts) {
+      if (!a.stop) { printPre(t); continue; }
       const fid = t.fidelity ? `; main's hook matches the recorded outcome at ${t.fidelity.agree}/${t.fidelity.compared} stops` : '';
       console.log(`\n${t.name}: last ${t.stops} of ${t.total} stops, ${t.changed.length} changed${fid}${t.crashes.head ? `; ${t.crashes.head} HEAD crash(es)` : ''}`);
       t.changed.forEach((c, k) => {
@@ -462,11 +670,12 @@ async function main(argv) {
         if (c.head.detail) console.log(`      head: ${c.head.detail}`);
         if (c.base.detail && c.base.decision !== 'allow') console.log(`      main: ${c.base.detail}`);
       });
+      printPre(t);
     }
     console.log(`\n* = first change in that transcript (reliable). Later changes may follow from it. Linear-backed gates do not run in replay.`);
   }
   if (a.record) {
-    const row = { ts: new Date().toISOString(), head: headSha, base: baseSha, hash: scopeDiff.hash, files: scopeDiff.files, transcripts: report.transcripts.map((t) => t.name), stops: stopsN, changed: changedN, headCrashes: crashN };
+    const row = { ts: new Date().toISOString(), head: headSha, base: baseSha, hash: scopeDiff.hash, files: scopeDiff.files, transcripts: report.transcripts.map((t) => t.name), stops: stopsN, changed: changedN, headCrashes: crashN, preCalls, preHookRuns: preRuns, preChanged, preHeadCrashes: preCrash };
     fs.mkdirSync(path.join(root, '.claude'), { recursive: true });
     fs.appendFileSync(path.join(root, LEDGER), JSON.stringify(row) + '\n');
     if (!a.json) console.log(`recorded in ${LEDGER}${scopeDiff.hash ? '' : ' (no hook-scope change on this branch)'}`);

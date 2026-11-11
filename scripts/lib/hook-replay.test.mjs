@@ -9,6 +9,7 @@ import { fileURLToPath } from 'node:url';
 import {
   libsNamedIn, hookScope, hookScopeDiff, hookReplayWarning, stopPoints, eventsToRows,
   replayOne, compare, sameDecision, decisionOf, LEDGER, relativeImports, dirtyFiles, prepareTree,
+  preToolUseHooks, matcherMatches, toolUsePoints, sampleCalls, decisionOfPre, replayTools, comparePre, inHookScope,
 } from './hook-replay.mjs';
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -64,10 +65,15 @@ test('hookScope of this repo includes the Stop-check libs verify-edits.sh runs',
     'transcript-scan.mjs', 'root-cause-close.js', 'visual-approval.js']; // imported by those
   for (const f of want) assert.ok(s.libs.includes(`scripts/lib/${f}`), `${f} missing from ${s.libs.join(', ')}`);
   assert.equal(s.hook, '.claude/hooks/verify-edits.sh');
-  for (const f of ['land-preflight.mjs', 'content-quality.js', 'review-guards.js', 'wait-for-land.js', 'linear-client.js']) {
-    assert.ok(!s.libs.includes(`scripts/lib/${f}`), `${f} is not code the Stop hook runs at load (PreToolUse-only, a watched path, message text or a lazy Linear call)`);
+  for (const f of ['content-quality.js', 'review-guards.js']) {
+    assert.ok(!s.libs.includes(`scripts/lib/${f}`), `${f} is not code a replayed hook runs at load (a watched path, message text or a lazy Linear call)`);
   }
-  assert.ok(s.libs.length < 30, `scope grew to ${s.libs.length} files; a lazy or Linear-side import is probably being followed`);
+  // BRO-7352: the PreToolUse hooks registered in settings.json are in scope, with the libs they run.
+  for (const f of ['.claude/hooks/pre-push-review-gate.sh', '.claude/hooks/worktree-enforce.sh', '.claude/hooks/infra-plan-review-gate.sh', '.claude/settings.json']) {
+    assert.ok(s.hooks.includes(f), `${f} missing from ${s.hooks.join(', ')}`);
+  }
+  assert.ok(s.libs.includes('scripts/lib/land-preflight.mjs'), 'land-preflight.mjs is run by pre-push-land-preflight.sh');
+  assert.ok(s.libs.length < 90, `scope grew to ${s.libs.length} files; a lazy or Linear-side import is probably being followed`);
 });
 
 test('stopPoints, recorded Stops: cut before the turn text, hook 1 errors are blocks, hook 2 errors are not', () => {
@@ -262,6 +268,185 @@ test('prepareTree: refuses a leftover directory that is not its own worktree; th
     assert.equal(fs.readFileSync(path.join(t, 'a.txt'), 'utf8'), 'edited\n');
     assert.equal(fs.readFileSync(path.join(t, 'lib', 'new.js'), 'utf8'), 'new\n');
     assert.equal(prepareTree(dir, 'head', 'HEAD'), t, 'an existing worktree is reused');
+    assert.equal(fs.readFileSync(path.join(t, 'a.txt'), 'utf8'), 'committed\n');
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});
+
+// ------------------------------------------------------------------ BRO-7352: PreToolUse
+
+const settingsFor = (scripts) => JSON.stringify({
+  hooks: {
+    PreToolUse: scripts.map(([matcher, script]) => ({ matcher, hooks: [{ type: 'command', command: `bash "$CLAUDE_PROJECT_DIR/.claude/hooks/${script}" || bash ".claude/hooks/${script}"` }] })),
+    Stop: [{ matcher: '*', hooks: [{ type: 'command', command: 'bash .claude/hooks/verify-edits.sh' }] }],
+  },
+});
+
+test('preToolUseHooks + matcherMatches: PreToolUse commands only, matcher is an anchored regex, * and empty match all', () => {
+  const hooks = preToolUseHooks(settingsFor([['Bash|Edit', 'a.sh'], ['mcp__github__(push_files|create_pull_request)', 'b.sh'], ['*', 'c.sh']]));
+  assert.deepEqual(hooks.map((h) => [h.matcher, h.script]), [['Bash|Edit', '.claude/hooks/a.sh'], ['mcp__github__(push_files|create_pull_request)', '.claude/hooks/b.sh'], ['*', '.claude/hooks/c.sh']]);
+  assert.equal(matcherMatches('Bash|Edit', 'Bash'), true);
+  assert.equal(matcherMatches('Bash|Edit', 'BashOutput'), false, 'anchored: a prefix is not a match');
+  assert.equal(matcherMatches('mcp__github__(push_files|create_pull_request)', 'mcp__github__push_files'), true);
+  assert.equal(matcherMatches('', 'Anything'), true);
+  assert.equal(matcherMatches('*', 'Anything'), true);
+  assert.deepEqual(preToolUseHooks('not json'), []);
+});
+
+test('toolUsePoints: one point per tool_use block of a main-chain assistant row, cut includes the row; sampleCalls keeps order and spread', () => {
+  const rows = [user('go'), { type: 'assistant', message: { content: [{ type: 'text', text: 'x' }, { type: 'tool_use', id: 't1', name: 'Bash', input: { command: 'ls' } }, { type: 'tool_use', id: 't2', name: 'Edit', input: { file_path: 'a' } }] }, timestamp: 'T1' },
+    toolResult(), { ...toolUse(), isSidechain: true }, { type: 'assistant', message: { content: [{ type: 'tool_use', id: 't3', name: 'Write', input: {} }] } }];
+  const pts = toolUsePoints(rows);
+  assert.deepEqual(pts.map((p) => [p.id, p.name, p.cut]), [['t1', 'Bash', 2], ['t2', 'Edit', 2], ['t3', 'Write', 5]]);
+  assert.equal(pts[0].ts, 'T1');
+  const many = Array.from({ length: 100 }, (_, i) => ({ id: i }));
+  const s = sampleCalls(many, 10);
+  assert.equal(s.length, 10);
+  assert.deepEqual(s.map((x) => x.id), [0, 10, 20, 30, 40, 50, 60, 70, 80, 90]);
+  assert.equal(sampleCalls(many, 500), many);
+});
+
+test('decisionOfPre: exit 2 and a stdout permissionDecision deny both deny; other exits crash; plain stdout allows', () => {
+  assert.deepEqual(decisionOfPre({ code: 2, stderr: '🛑 BLOCKED: no push\n' }), { decision: 'block', tag: '?', detail: '🛑 BLOCKED: no push' });
+  assert.equal(decisionOfPre({ code: 2, stderr: 'BLOCKED [PG:MAIN]' }).tag, 'PG:MAIN');
+  const j = decisionOfPre({ code: 0, stdout: JSON.stringify({ hookSpecificOutput: { permissionDecision: 'deny', permissionDecisionReason: 'because' } }) });
+  assert.deepEqual([j.decision, j.detail], ['block', 'because']);
+  assert.equal(decisionOfPre({ code: 0, stdout: JSON.stringify({ hookSpecificOutput: { permissionDecision: 'allow' } }) }).decision, 'allow');
+  assert.equal(decisionOfPre({ code: 0, stdout: '{"systemMessage":"note"}' }).decision, 'allow');
+  assert.equal(decisionOfPre({ code: 0, stdout: 'plain text' }).decision, 'allow');
+  assert.equal(decisionOfPre({ code: 1, stderr: 'boom' }).decision, 'crash');
+  assert.equal(decisionOfPre({ code: null, timedOut: true }).tag, 'TIMEOUT');
+});
+
+function fakePreTree(settings, hooks) {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'hook-replay-pre-'));
+  fs.mkdirSync(path.join(dir, '.claude', 'hooks'), { recursive: true });
+  fs.writeFileSync(path.join(dir, '.claude', 'settings.json'), settings);
+  for (const [name, body] of Object.entries(hooks)) fs.writeFileSync(path.join(dir, '.claude', 'hooks', name), `#!/bin/bash\n${body}\n`, { mode: 0o755 });
+  return dir;
+}
+
+test('replayTools + comparePre: a fake PreToolUse hook that starts denying is reported as a changed decision, in the sandbox', async () => {
+  const guard = [
+    'in=$(cat)',
+    `[ "$HOME" = "${os.homedir()}" ] && { echo "real HOME" >&2; exit 7; }`,
+    '[ -n "${LINEAR_API_KEY:-}${GH_TOKEN:-}" ] && { echo "secret leaked" >&2; exit 7; }',
+    '[ "$HOOK_REPLAY" = 1 ] && [ "$BOARD_GATE_DISABLED" = 1 ] && [ -z "${CLAUDE_PROJECT_DIR:-}" ] || { echo "not sandboxed" >&2; exit 7; }',
+    'case "$in" in *PreToolUse*) ;; *) echo "wrong event" >&2; exit 7;; esac',
+  ].join('\n');
+  const settings = settingsFor([['Bash', 'fake-guard.sh'], ['Edit|Write', 'edit-guard.sh']]);
+  const base = fakePreTree(settings, { 'fake-guard.sh': `${guard}\nexit 0`, 'edit-guard.sh': `${guard}\nexit 0` });
+  const head = fakePreTree(settings, {
+    'fake-guard.sh': `${guard}\ncase "$in" in *git\\ push*) echo "🛑 BLOCKED: no push" >&2; exit 2;; esac\nexit 0`,
+    'edit-guard.sh': `${guard}\ncase "$in" in *secrets.env*) printf '{"hookSpecificOutput":{"permissionDecision":"deny","permissionDecisionReason":"no secrets"}}'; exit 0;; esac\nexit 0`,
+  });
+  const bin = fs.mkdtempSync(path.join(os.tmpdir(), 'hook-replay-bin-'));
+  const saved = { LINEAR_API_KEY: process.env.LINEAR_API_KEY, CLAUDE_PROJECT_DIR: process.env.CLAUDE_PROJECT_DIR };
+  process.env.LINEAR_API_KEY = 'lin_dummy';
+  process.env.CLAUDE_PROJECT_DIR = REPO;
+  try {
+    const mk = (id, name, input) => ({ type: 'assistant', message: { content: [{ type: 'tool_use', id, name, input }] } });
+    const rows = [user('go'), mk('a', 'Bash', { command: 'ls' }), mk('b', 'Bash', { command: 'git push origin main' }), mk('c', 'Edit', { file_path: 'x/secrets.env' }),
+      mk('d', 'Edit', { file_path: 'x/ok.txt' }), mk('e', 'Read', { file_path: 'x' })];
+    const lines = rows.map((r) => JSON.stringify(r));
+    const calls = toolUsePoints(rows);
+    assert.equal(calls.length, 5);
+    const run = (tree, label) => replayTools({ tree, hooks: preToolUseHooks(fs.readFileSync(path.join(tree, '.claude', 'settings.json'), 'utf8')), lines, calls, label, binDir: bin, timeoutMs: 20000 });
+    const [b, h] = await Promise.all([run(base, 'pt-base'), run(head, 'pt-head')]);
+    assert.deepEqual(b.map((per) => Object.keys(per).length), [1, 1, 1, 1, 0], 'Read matches no hook');
+    assert.ok(Object.values(b).every((per) => Object.values(per).every((d) => d.decision === 'allow')), JSON.stringify(b));
+    const c = comparePre(calls, b, h);
+    assert.deepEqual(c.changed.map((x) => [x.i, x.tool, path.basename(x.script), x.base.decision, x.head.decision]), [[1, 'Bash', 'fake-guard.sh', 'allow', 'block'], [2, 'Edit', 'edit-guard.sh', 'allow', 'block']]);
+    assert.match(c.changed[0].input, /git push origin main/);
+    assert.equal(c.changed[1].head.detail, 'no secrets');
+    assert.deepEqual(c.denied, { base: 0, head: 2 });
+    assert.deepEqual(c.crashes, { base: 0, head: 0 });
+    assert.equal(c.hookRuns, 4);
+    // Identical trees: nothing changed.
+    const same = comparePre(calls, b, await run(base, 'pt-same'));
+    assert.equal(same.changed.length, 0);
+    // A hook dropped from head's settings.json that used to deny flips deny -> allow.
+    const dropped = comparePre(calls, h, b);
+    assert.deepEqual(dropped.changed.map((x) => [x.base.decision, x.head.decision]), [['block', 'allow'], ['block', 'allow']]);
+    const gone = comparePre(calls, h, h.map(() => ({})));
+    assert.equal(gone.changed.length, 2, 'a hook missing on one side counts as allow');
+  } finally {
+    for (const [k, v] of Object.entries(saved)) { if (v === undefined) delete process.env[k]; else process.env[k] = v; }
+    for (const d of [base, head, bin]) fs.rmSync(d, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});
+
+test('replayTools: the hook sees the transcript up to and including the call, never later rows', async () => {
+  const tree = fakePreTree(settingsFor([['Bash', 'peek.sh']]), { 'peek.sh': 'in=$(cat)\np=$(printf %s "$in" | node -e \'process.stdout.write(JSON.parse(require("fs").readFileSync(0,"utf8")).transcript_path)\')\ngrep -q "LATER" "$p" && exit 9\ngrep -q "THIS_CALL" "$p" || exit 8\nexit 0' });
+  const bin = fs.mkdtempSync(path.join(os.tmpdir(), 'hook-replay-bin-'));
+  try {
+    const mk = (id, cmd) => ({ type: 'assistant', message: { content: [{ type: 'tool_use', id, name: 'Bash', input: { command: cmd } }] } });
+    const rows = [user('go'), mk('a', 'echo THIS_CALL'), toolResult(), asst('LATER words'), mk('b', 'echo THIS_CALL again')];
+    const calls = toolUsePoints(rows);
+    const res = await replayTools({ tree, hooks: preToolUseHooks(fs.readFileSync(path.join(tree, '.claude', 'settings.json'), 'utf8')), lines: rows.map((r) => JSON.stringify(r)), calls, label: 'pt-cut', binDir: bin, timeoutMs: 20000 });
+    const d = res.map((per) => per['.claude/hooks/peek.sh'].decision);
+    assert.deepEqual(d, ['allow', 'crash'], 'call 1 sees no LATER row; call 2 legitimately sees it');
+  } finally {
+    fs.rmSync(tree, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+    fs.rmSync(bin, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});
+
+test('hookScope + hookReplayWarning: a registered PreToolUse hook, its lib and settings.json are in scope; an unregistered hook is not', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'hook-replay-prescope-'));
+  try {
+    git(dir, 'init', '-q', '-b', 'main');
+    git(dir, 'config', 'user.email', 't@t');
+    git(dir, 'config', 'user.name', 't');
+    fs.mkdirSync(path.join(dir, '.claude', 'hooks'), { recursive: true });
+    fs.mkdirSync(path.join(dir, 'scripts', 'lib'), { recursive: true });
+    fs.writeFileSync(path.join(dir, '.claude', 'settings.json'), settingsFor([['Bash', 'guard.sh']]));
+    fs.writeFileSync(path.join(dir, '.claude', 'hooks', 'verify-edits.sh'), 'exit 0\n');
+    fs.writeFileSync(path.join(dir, '.claude', 'hooks', 'guard.sh'), 'node "$R/scripts/lib/guard-lib.mjs"\n');
+    fs.writeFileSync(path.join(dir, '.claude', 'hooks', 'unregistered.sh'), 'echo x\n');
+    fs.writeFileSync(path.join(dir, 'scripts', 'lib', 'guard-lib.mjs'), 'export default 1;\n');
+    git(dir, 'add', '-A');
+    git(dir, 'commit', '-qm', 'base');
+    git(dir, 'checkout', '-qb', 'work');
+    const s = hookScope(dir, 'HEAD');
+    assert.deepEqual(s.hooks, ['.claude/hooks/verify-edits.sh', '.claude/hooks/guard.sh', '.claude/settings.json']);
+    assert.deepEqual(s.libs, ['scripts/lib/guard-lib.mjs']);
+    assert.equal(inHookScope('.claude/hooks/unregistered.sh', s), false);
+
+    fs.writeFileSync(path.join(dir, '.claude', 'hooks', 'unregistered.sh'), 'echo y\n');
+    git(dir, 'commit', '-qam', 'unregistered hook');
+    assert.equal(hookReplayWarning({ root: dir, src: 'HEAD', base: 'main' }), null);
+
+    fs.writeFileSync(path.join(dir, 'scripts', 'lib', 'guard-lib.mjs'), 'export default 2;\n');
+    git(dir, 'commit', '-qam', 'lib a PreToolUse hook runs');
+    assert.match(hookReplayWarning({ root: dir, src: 'HEAD', base: 'main' }), /scripts\/lib\/guard-lib\.mjs/);
+
+    fs.writeFileSync(path.join(dir, LEDGER), JSON.stringify({ hash: hookScopeDiff(dir, 'main', 'HEAD').hash }) + '\n');
+    assert.equal(hookReplayWarning({ root: dir, src: 'HEAD', base: 'main' }), null);
+    fs.writeFileSync(path.join(dir, '.claude', 'hooks', 'guard.sh'), 'exit 2\n');
+    git(dir, 'commit', '-qam', 'the hook itself');
+    assert.match(hookReplayWarning({ root: dir, src: 'HEAD', base: 'main' }), /guard\.sh/);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});
+
+test('prepareTree isolated: a separate git dir, so a hook writing next to the common dir cannot reach the source repo', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'hook-replay-iso-'));
+  try {
+    git(dir, 'init', '-q', '-b', 'main');
+    git(dir, 'config', 'user.email', 't@t');
+    git(dir, 'config', 'user.name', 't');
+    fs.writeFileSync(path.join(dir, 'a.txt'), 'committed\n');
+    git(dir, 'add', '-A');
+    git(dir, 'commit', '-qm', 'base');
+    fs.writeFileSync(path.join(dir, 'a.txt'), 'edited\n');
+    const t = prepareTree(dir, 'iso', 'HEAD', { withDirtyFrom: dir, isolated: true });
+    assert.equal(fs.readFileSync(path.join(t, 'a.txt'), 'utf8'), 'edited\n');
+    const common = git(t, 'rev-parse', '--path-format=absolute', '--git-common-dir');
+    assert.equal(fs.realpathSync(path.dirname(common)), fs.realpathSync(t), 'the clone is its own repo root');
+    assert.equal(prepareTree(dir, 'iso', 'HEAD', { isolated: true }), t, 're-preparing replaces it cleanly');
     assert.equal(fs.readFileSync(path.join(t, 'a.txt'), 'utf8'), 'committed\n');
   } finally {
     fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
