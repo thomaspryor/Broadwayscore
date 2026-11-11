@@ -157,6 +157,10 @@ describe('review fixes', () => {
     const page = D.parseAnthropicDeprecations(ANTHROPIC);
     const q = D.driftReport({ page, registry: { 'claude-sonnet-4-5': '2026-11-30' }, referenced: ['claude-sonnet-4-5-20250929'], today: '2026-11-11', baseIdFn: D.anthropicBaseId });
     assert.deepEqual(q.missing, []);
+    const { MODEL_SHUTDOWNS } = require('../../scripts/lib/research-cost');
+    MODEL_SHUTDOWNS['claude-zz-test'] = '2026-11-30';
+    try { assert.equal(modelShutdownStatus('claude-zz-test-20250929', '2026-11-11').shutdown, '2026-11-30'); }
+    finally { delete MODEL_SHUTDOWNS['claude-zz-test']; }
   });
   it('an equal-dated tie keeps the row that names a replacement', () => {
     const html = ANTHROPIC.replace('</tbody></table>\n<table><thead><tr><th>Retirement', `<tr><td>November 30, 2026</td><td>${btn('claude-sonnet-4-5-20250929')}</td><td>${btn('claude-sonnet-5-5')}</td></tr></tbody></table>\n<table><thead><tr><th>Retirement`);
