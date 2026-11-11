@@ -463,7 +463,7 @@ test('prepareTree isolated: a remote-tracking sha in a shallow source repo still
     git(up, 'config', 'user.email', 't@t');
     git(up, 'config', 'user.name', 't');
     for (const n of ['one', 'two']) { fs.writeFileSync(path.join(up, 'a.txt'), `${n}\n`); git(up, 'add', '-A'); git(up, 'commit', '-qm', n); }
-    fs.rmSync(sh, { recursive: true, force: true });
+    fs.rmSync(sh, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     spawnSync('git', ['clone', '-q', '--depth=1', `file://${up}`, sh], { encoding: 'utf8' });
     const sha = git(sh, 'rev-parse', 'origin/main');
     assert.equal(git(sh, 'rev-parse', '--is-shallow-repository'), 'true');
@@ -475,7 +475,7 @@ test('prepareTree isolated: a remote-tracking sha in a shallow source repo still
     const t = prepareTree(sh, 'iso', sha, { isolated: true });
     assert.equal(fs.readFileSync(path.join(t, 'a.txt'), 'utf8'), 'two\n');
   } finally {
-    fs.rmSync(up, { recursive: true, force: true });
-    fs.rmSync(sh, { recursive: true, force: true });
+    fs.rmSync(up, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+    fs.rmSync(sh, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
