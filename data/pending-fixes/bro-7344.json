@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-7344",
   "planId": "2ca19b0d-8c9f-4c94-a2e4-bae4af38c407",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-11T04:29:34.635Z",
   "submitter": {
     "name": null,
@@ -230,5 +230,129 @@
         "description": "Clear the rejectionReason the CV promotion stamped (BRO-7344)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-11T06:11:38.064Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-small-and-quiet-light-chichester-festival-regional-2026/thestage--dave-fargnoli.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-small-and-quiet-light-chichester-festival-regional-2026/thestage--dave-fargnoli.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-small-and-quiet-light-chichester-festival-regional-2026/thestage--dave-fargnoli.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "antigone-exits-chichester-regional-2026/thestage--dave-fargnoli.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "antigone-exits-chichester-regional-2026/thestage--dave-fargnoli.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "antigone-exits-chichester-regional-2026/thestage--dave-fargnoli.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "billy-crystal-860-2026/nydailynews--chris-jones.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "billy-crystal-860-2026/nydailynews--chris-jones.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "billy-crystal-860-2026/nydailynews--chris-jones.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "deep-history-off-broadway-2024/theatermania--kenji-fujishima.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "deep-history-off-broadway-2024/theatermania--kenji-fujishima.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "deep-history-off-broadway-2024/theatermania--kenji-fujishima.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "every-brilliant-thing-west-end-2025/london-box-office--stuart-king.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "every-brilliant-thing-west-end-2025/london-box-office--stuart-king.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "every-brilliant-thing-west-end-2025/london-box-office--stuart-king.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kowalski-off-broadway-2025/cititour--brian-scott-lipton.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kowalski-off-broadway-2025/cititour--brian-scott-lipton.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kowalski-off-broadway-2025/cititour--brian-scott-lipton.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "six-characters-off-broadway-2024/theatermania--pete-hempstead.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "six-characters-off-broadway-2024/theatermania--pete-hempstead.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "six-characters-off-broadway-2024/theatermania--pete-hempstead.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ta-da-off-broadway-2025/theatermania--pete-hempstead.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ta-da-off-broadway-2025/theatermania--pete-hempstead.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ta-da-off-broadway-2025/theatermania--pete-hempstead.json rejectionReason: \"not_a_review\" -> null"
+    }
+  ],
+  "executedIn": "ci"
 }
