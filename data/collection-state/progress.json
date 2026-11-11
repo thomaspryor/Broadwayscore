@@ -83,8 +83,17 @@
     "picnic-at-hanging-rock-off-broadway-2025/new-york-notebook--sandy-macdonald.json",
     "picnic-at-hanging-rock-off-broadway-2025/the-recs--erin-muldoon.json",
     "archduke-off-broadway-2025/one-minute-critic--matthew-wexler.json",
-    "here-there-are-blueberries-2026/new-york-city-theatre--unknown.json",
-    "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json"
+    "julius-caesar-globe-off-west-end-2026/whatsonstage--tanyel-gumushan.json",
+    "cloud-9-west-end-2026/theatre-weekly--unknown.json",
+    "dogstar-off-west-end-2026/fairypoweredproductions--unknown.json",
+    "dogstar-off-west-end-2026/theatreboard--unknown.json",
+    "dogstar-off-west-end-2026/thestage--unknown.json",
+    "nero-off-west-end-2026/musical-theatre-review--angela-thomas.json",
+    "speculations-off-west-end-2026/adventuresintheatreland--julie-fisher-sheher.json",
+    "speculations-off-west-end-2026/jonathan-baz--unknown.json",
+    "speculations-off-west-end-2026/londonlivinglarge--london-living-large.json",
+    "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
+    "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json"
   ],
   "failed": [
     "hold-on-to-me-darling-off-broadway-2016/talkinbroadway--matthew-murray.json",
@@ -154,14 +163,14 @@
     "you-got-older-off-broadway-2026/new-york-city-theatre--unknown.json",
     "andrea-chenier-off-broadway-2025/nytimes--corinna-da-fonseca-wollheim.json",
     "pygmalion-off-broadway-2025/theater-life--ellis-nassour.json",
-    "here-there-are-blueberries-2026/talkinbroadway--unknown.json",
-    "the-visitors-off-broadway-2026/bobs-theater-blog--unknown.json",
-    "the-visitors-off-broadway-2026/boston-globe--unknown.json",
-    "the-visitors-off-broadway-2026/talkinbroadway--unknown.json",
-    "msblackforpresident-off-broadway-2026/guardian--unknown.json",
-    "msblackforpresident-off-broadway-2026/talkinbroadway--unknown.json",
-    "222-a-ghost-story-off-broadway-2026/talkinbroadway--unknown.json",
-    "the-unbelievers-off-broadway-2026/bobs-theater-blog--unknown.json"
+    "act-of-god-off-west-end-2026/london-box-office--stuart-king.json",
+    "act-of-god-off-west-end-2026/thestage--holly-omahony.json",
+    "cloud-9-west-end-2026/city-am--olivia-jordan.json",
+    "cloud-9-west-end-2026/times-uk--susannah-butter.json",
+    "iphigenie-en-tauride-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "the-bridge-off-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "the-bridge-off-west-end-2026/theatreandtonic--emmie-newitt.json",
+    "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -218,10 +227,22 @@
       "blackout-songs-off-broadway-2026/one-minute-critic--emily-chackerian.json",
       "the-disappear-off-broadway-2026/one-minute-critic--matthew-wexler.json",
       "picnic-at-hanging-rock-off-broadway-2025/the-recs--erin-muldoon.json",
-      "archduke-off-broadway-2025/one-minute-critic--matthew-wexler.json"
+      "archduke-off-broadway-2025/one-minute-critic--matthew-wexler.json",
+      "julius-caesar-globe-off-west-end-2026/whatsonstage--tanyel-gumushan.json",
+      "cloud-9-west-end-2026/theatre-weekly--unknown.json",
+      "dogstar-off-west-end-2026/fairypoweredproductions--unknown.json",
+      "dogstar-off-west-end-2026/theatreboard--unknown.json",
+      "dogstar-off-west-end-2026/thestage--unknown.json",
+      "speculations-off-west-end-2026/adventuresintheatreland--julie-fisher-sheher.json",
+      "speculations-off-west-end-2026/jonathan-baz--unknown.json",
+      "speculations-off-west-end-2026/londonlivinglarge--london-living-large.json",
+      "speculations-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
+      "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/cloud-9-west-end-2026/times-uk--susannah-butter.json"
+    ],
     "directCookies": [],
     "scrapingdog": [
       "msblackforpresident-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
@@ -238,7 +259,8 @@
       "well-ill-let-you-go-off-broadway-2026/theater-life--paulanne-simmons.json",
       "my-joy-is-heavy-off-broadway-2025/playbill--extends-off-broadway.json",
       "bigfoot-off-broadway-2026/theater-life--paulanne-simmons.json",
-      "you-got-older-off-broadway-2026/new-york-city-theatre--unknown.json"
+      "you-got-older-off-broadway-2026/new-york-city-theatre--unknown.json",
+      "nero-off-west-end-2026/musical-theatre-review--angela-thomas.json"
     ],
     "scrapingbee": [
       "the-curious-case-of-benjamin-button-off-broadway-2026/theatrely--emily-wyrwa.json",
@@ -276,51 +298,18 @@
     ]
   },
   "startTime": "2026-11-11T17:59:59.489Z",
-  "lastProcessed": "the-unbelievers-off-broadway-2026/bobs-theater-blog--unknown.json",
+  "lastProcessed": "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
   "log": [
     {
-      "t": "2026-11-11T19:12:28.188Z",
+      "t": "2026-11-11T19:14:05.120Z",
       "event": "bb-session",
-      "session": "4cc3fd69",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
+      "session": "c659c5be",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
     },
     {
-      "t": "2026-11-11T19:12:28.856Z",
+      "t": "2026-11-11T19:14:05.530Z",
       "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-11T19:15:39.139Z",
-      "event": "bb-session",
-      "session": "8eba3f1b",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655641"
-    },
-    {
-      "t": "2026-11-11T19:15:39.808Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-11T19:18:12.726Z",
-      "event": "bb-session",
-      "session": "d680d80f",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655599"
-    },
-    {
-      "t": "2026-11-11T19:18:13.370Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-11T19:18:57.408Z",
-      "event": "bb-session",
-      "session": "d5c12c5b",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655533"
-    },
-    {
-      "t": "2026-11-11T19:18:58.041Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
+      "domain": "thetimes.com"
     }
   ]
 }
