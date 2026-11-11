@@ -1,0 +1,49 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
+const SC = require('../../src/lib/score-call.js');
+const P = require('../../scripts/lib/review-forecast-pilot.js');
+const { buildSyncRows } = require('../../scripts/lib/score-call-forecasts.js');
+const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
+
+test('parseCall accepts only integers 0-100', () => {
+  assert.equal(SC.parseCall(0), 0); assert.equal(SC.parseCall('73'), 73); assert.equal(SC.parseCall(100), 100);
+  for (const bad of [-1, 101, 5.5, NaN, '', 'abc', null, undefined]) assert.equal(SC.parseCall(bad), null);
+});
+test('resultStrip: off by N, beat forecast, null forecast', () => {
+  assert.deepEqual(SC.resultStrip({ called: 80, forecast: 70, critic: 78.4 }), { off: 2, forecastMiss: 8, beatForecast: true, critic: 78 });
+  assert.equal(SC.resultStrip({ called: 60, forecast: 70, critic: 78 }).beatForecast, false);
+  assert.equal(SC.resultStrip({ called: 60, forecast: null, critic: 78 }).forecastMiss, null);
+  assert.equal(SC.resultStrip({ called: null, forecast: 1, critic: 5 }), null);
+});
+test('gapSentence', () => {
+  assert.equal(SC.gapSentence({ called: 80, forecast: 74, lo80: 62, hi80: 85 }), 'We forecast 74 (likely 62 to 85). You are 6 above.');
+  assert.equal(SC.gapSentence({ called: 74, forecast: 74 }), 'We forecast 74. You matched it.');
+  assert.equal(SC.gapSentence({ called: 70, forecast: null }), null);
+});
+test('isCallableShow agrees with the pilot predicate on every real show and several dates', () => {
+  const shows = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/shows.json'), 'utf8')).shows;
+  let disagree = 0;
+  for (const today of ['2025-01-15', '2025-10-01', '2026-03-01', '2026-11-11']) for (const s of shows) if (SC.isCallableShow(s, today) !== P.isPilotTarget(s, today)) disagree++;
+  assert.equal(disagree, 0);
+});
+test('buildSyncRows uses the last ledger row before opening, skips rows without forecast, flags live reviews', () => {
+  const shows = [{ id: 'a', category: 'broadway', type: 'musical', status: 'previews', openingDate: '2026-12-01' }, { id: 'b', category: 'broadway', type: 'play', status: 'previews', openingDate: '2026-12-01' }];
+  const ledger = [
+    { showId: 'a', recordedAt: '2026-11-01', forecast: 70, lo80: 60, hi80: 80 },
+    { showId: 'a', recordedAt: '2026-11-10', forecast: 74.4, lo80: 62, hi80: 85 },
+    { showId: 'a', recordedAt: '2026-12-01', forecast: 99, lo80: 90, hi80: 100 }, // not strictly before opening
+  ];
+  const rows = buildSyncRows({ shows, ledgerRows: ledger, today: '2026-11-11', reviewCounts: { a: 2 } });
+  assert.equal(rows.length, 1);
+  assert.deepEqual(rows[0], { p_show_id: 'a', p_opening: '2026-12-01', p_forecast: 74, p_lo: 62, p_hi: 85, p_reviews_live: true, p_enabled: true });
+});
+test('LEAK GUARD: nothing under src/ or public/ reads the ledger or the sync loader', () => {
+  const bad = [];
+  const walk = (d) => { for (const f of fs.readdirSync(d, { withFileTypes: true })) { const p = path.join(d, f.name); if (f.isDirectory()) { if (f.name !== 'node_modules') walk(p); } else if (/\.(tsx?|jsx?|mjs|json)$/.test(f.name) && /score-call-forecasts|review-forecast-pilot|lo80|hi80/.test(fs.readFileSync(p, 'utf8')) && !/CallTheScore|useScoreCall|score-call\.js/.test(f.name)) bad.push(p); } };
+  walk(path.join(ROOT, 'src')); walk(path.join(ROOT, 'public'));
+  assert.deepEqual(bad, []);
+});
