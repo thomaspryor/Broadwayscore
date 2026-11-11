@@ -80,7 +80,7 @@ export default function TicketButtonsAB({
   ticketLinks, officialUrl, pageType,
   buttonClassName = "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs leading-none font-medium transition-colors border border-white/10 whitespace-nowrap flex-shrink-0",
   splitVariant = false,
-  primaryButtonClassName = "w-full inline-flex items-center justify-center gap-1.5 py-2.5 px-4 rounded-lg bg-gradient-brand text-white font-bold text-sm hover:shadow-glow-sm hover:scale-[1.01] active:scale-[0.99] transition-all whitespace-nowrap",
+  primaryButtonClassName = "w-full inline-flex items-center justify-center gap-1.5 py-2.5 px-4 rounded-lg bg-gradient-brand text-[#1a1208] font-bold text-sm hover:shadow-glow-sm hover:scale-[1.01] active:scale-[0.99] transition-all whitespace-nowrap",
   secondaryAfter,
 }: TicketButtonsABProps) {
   // undefined until the PostHog flag resolves to a string value. Rendering never
