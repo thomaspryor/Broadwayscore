@@ -140,7 +140,8 @@ export function trialSession(json) {
   const srcs = (s.session_context && s.session_context.sources) || [];
   const repo = srcs.map((x) => x.git_repository).find((g) => g && /broadwayscore(\.git)?$/i.test(g.url || ''));
   if (!repo || !repo.revision) throw new Error(`${s.id}: no Broadwayscore source revision; start the trial with create_session source_revision=<your pushed branch>`);
-  return { id: s.id, revision: repo.revision, bucket: s.status_bucket || '', createdAt: s.created_at || null };
+  const initError = s.external_metadata?.last_init_error?.message || null;
+  return { id: s.id, revision: repo.revision, bucket: s.status_bucket || '', createdAt: s.created_at || null, initError };
 }
 
 /**
@@ -174,6 +175,8 @@ export function buildRecord({ cwd, base, src = 'HEAD', sessions, verdict, note, 
   if (!d.hash) return { error: `no guidance text changed in ${base}...${src}; nothing to record` };
   const revisions = [];
   for (const s of sessions) {
+    // An archived session that died in setup reads COMPLETED but never ran a turn.
+    if (s.initError) return { error: `${s.id} never started (${s.initError}); start a new trial` };
     if (!s.bucket || /WORKING/.test(s.bucket)) return { error: `${s.id} is still working (or its status is unknown); record after it finishes so its behaviour can be judged` };
     const sha = resolveRevision(cwd, s.revision, s.createdAt);
     if (!sha) return { error: `${s.id}: cannot resolve the commit it ran on (${s.revision}, started ${s.createdAt || 'unknown'})` };
