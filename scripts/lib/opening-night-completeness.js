@@ -1,6 +1,7 @@
 'use strict';
 
 const { isRecentlyLive } = require('./show-liveness');
+const { foldDiacritics } = require('./title-match');
 
 /**
  * Pure predicates for the opening-night metadata completeness gate (card #189).
@@ -115,7 +116,7 @@ function isTourShow(show) {
 }
 
 function normVenue(v) {
-  return String(v || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+  return foldDiacritics(String(v || '')).toLowerCase().replace(/[^a-z0-9]/g, '');
 }
 
 function hasSameMarketTitleMatch(show, shows) {
