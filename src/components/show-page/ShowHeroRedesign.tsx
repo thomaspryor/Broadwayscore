@@ -28,6 +28,8 @@
  * resumed when the user lands back on this page authenticated.
  */
 
+import ReviewArrivalStatus, { type ReviewArrivalVariant } from './ReviewArrivalStatus';
+import type { ReviewArrival } from '@/lib/review-arrival';
 import { foldVenueName } from '@/lib/venue-fold';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
@@ -135,6 +137,9 @@ interface ShowHeroRedesignProps {
    *  doesn't apply. Computed server-side for the same reason as tourReviewYears,
    *  and shared with the legacy hero so both show it for the same shows. */
   reviewAgeNote?: string | null;
+  /** Opening-night "reviews still arriving" status (BRO-7376), computed server-side; null/absent = hidden */
+  reviewArrival?: ReviewArrival | null;
+  reviewArrivalVariant?: ReviewArrivalVariant;
   /** Wording computed with metadata on the server, preserved for cached pages. */
   liveInHdText?: string | null;
   /** Server-rendered ShowTrustLines (tour parent, tryout transfer, tour stops),
@@ -183,6 +188,8 @@ function Inner({
   ranks,
   tourReviewYears,
   reviewAgeNote,
+  reviewArrival,
+  reviewArrivalVariant,
   liveInHdText,
   trustLines,
 }: ShowHeroRedesignProps) {
@@ -732,6 +739,9 @@ function Inner({
         </p>
       )}
 
+
+      {/* Opening-night status: some reviews in, more expected (BRO-7376). One block for every width and phase. */}
+      {reviewArrival && <ReviewArrivalStatus arrival={reviewArrival} variant={reviewArrivalVariant} />}
 
       {/* Distribution bar — both modes; spans full width under the header. */}
       {hasEnoughCriticReviews && criticReviewsForBar.length > 0 && (
