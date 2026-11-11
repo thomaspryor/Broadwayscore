@@ -151,9 +151,11 @@ function venueForms(show) {
   const out = [full];
   const raw = String((show && show.venue) || '');
   const [houseRaw, ...stages] = raw.split('/');
-  // The house: the text before the stage separator, cut at a " - Main Theatre" suffix, a bracket or a comma.
-  const house = hyphenSpaced(houseRaw.split(/\s[-–—]\s|[(,]/)[0]);
-  const candidates = [house, ...stages.map((st) => hyphenSpaced(st.split(/\s[-–—]\s|[(,]/)[0]))];
+  // The house: the text before the stage separator, cut at a " - Main Theatre" suffix or a bracket.
+  // NOT cut at a comma: "Paramount Theatre, Aurora, IL" keeps its city, since a page about
+  // another city's Paramount must not confirm it (reviewer, BRO-7372).
+  const cut = (x) => hyphenSpaced(x.split(/\s[-–—]\s|\(/)[0]);
+  const candidates = [cut(houseRaw), ...stages.map(cut)];
   for (const form of candidates) {
     if (!form || out.includes(form) || GENERIC_VENUES.has(form)) continue;
     const words = form.split(/\s+/);
@@ -163,10 +165,12 @@ function venueForms(show) {
   return out;
 }
 
-// Another running show at the same house: a form both carry cannot tell the two apart.
+// Another running show at the same house: a form both carry cannot tell the two apart. Compared
+// as whole words, not exact strings: "signature theatre" is inside "signature theatre company".
+const formWithin = (f, g) => ` ${g} `.includes(` ${f} `);
 function sharesVenueForm(a, b) {
-  const theirs = new Set(venueForms(b));
-  return venueForms(a).some((f) => theirs.has(f));
+  const theirs = venueForms(b);
+  return venueForms(a).some((f) => theirs.some((g) => formWithin(f, g) || formWithin(g, f)));
 }
 
 // Real feeds title an off-Broadway review with the bare show name: Off Off Online's
@@ -589,7 +593,7 @@ function pageConfirmsShow(text, show, { nowMs = Date.now(), otherShows = [] } = 
   // (the same house) cannot tell the two apart, so it is dropped; the show's own stage can stay.
   const rivals = otherShows.filter((o) => o.id !== show.id);
   return venueForms(show)
-    .filter((f) => f.split(/\s+/).length >= 2 && !rivals.some((o) => venueForms(o).includes(f)))
+    .filter((f) => f.split(/\s+/).length >= 2 && !rivals.some((o) => venueForms(o).some((g) => formWithin(f, g))))
     .some((f) => hay.includes(` ${f} `));
 }
 
@@ -600,8 +604,10 @@ function pageConfirmsShow(text, show, { nowMs = Date.now(), otherShows = [] } = 
  * Derived from the functions' own source, so nobody has to remember to bump a version.
  */
 function confirmLogicFingerprint() {
-  const src = [pageConfirmsShow, pageNamesTitle, pageHay, titleForms, creditNames, venueForms, venuePhrase, formInHay]
-    .map((f) => String(f)).join('\n');
+  // The whole module's source: the decision leans on helpers and constants (computeTitleForms,
+  // GENERIC_VENUES, credit regexes...) a per-function list would miss. A harmless edit to this
+  // file drops the cache once; a missed rule change would keep stale verdicts for 7 days.
+  const src = require('fs').readFileSync(__filename, 'utf8');
   return require('crypto').createHash('sha1').update(src).digest('hex').slice(0, 12);
 }
 

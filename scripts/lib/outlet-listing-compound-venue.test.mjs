@@ -75,6 +75,29 @@ test('feed-item path: a short-title show at a House/Stage venue matches on the h
   assert.deepEqual(find('Review: Hamlet at Foo Playhouse, soon', 'review-hamlet-foo-playhouse-soon', [soon, rival]).map((s) => s.id), [rival.id]);
 });
 
+// Reviewer blockers (BRO-7372): a comma venue keeps its city, and the rival check is by whole words.
+test('a comma venue keeps its city: another city\'s house of the same name does not confirm', () => {
+  const mdq = { id: 'mdq-regional-2026', title: 'Million Dollar Quartet', venue: 'Paramount Theatre, Aurora, IL', status: 'open', cast: [], creativeTeam: [] };
+  assert.deepEqual(helpers.venueForms(mdq), ['paramount theatre aurora il']);
+  const seattle = 'Million Dollar Quartet review: the musical rocks the Paramount Theatre in Seattle.';
+  assert.equal(helpers.pageConfirmsShow(seattle, mdq, { nowMs: NOW, otherShows: [mdq] }), false);
+  const aurora = 'Million Dollar Quartet review: the musical rocks the Paramount Theatre, Aurora, IL.';
+  assert.equal(helpers.pageConfirmsShow(aurora, mdq, { nowMs: NOW, otherShows: [mdq] }), true);
+});
+
+test('a rival whose house name contains ours as whole words voids the shorter form', () => {
+  const sigArl = { id: 'sig-arlington-2026', title: 'All the world\'s a stage', venue: 'Signature Theatre/Max Theatre', status: 'open', cast: [], creativeTeam: [] };
+  const sigNyc = { id: 'sig-nyc-2026', title: 'Other Play', venue: 'Signature Theatre Company/Pershing Square', status: 'open', cast: [], creativeTeam: [] };
+  const page2 = 'All the world\'s a stage, a note on Signature Theatre Company this season.';
+  assert.equal(helpers.pageConfirmsShow(page2, sigArl, { nowMs: NOW, otherShows: [sigArl, sigNyc] }), false);
+  // The feed path's sibling check agrees: Other Play matched by its title voids the house credit on the other show.
+  const find = (h, u, shows) => helpers.findMatchingShows(h, u, shows, '', { nowMs: NOW });
+  const soonArl = { ...sigArl, id: 'soon-arl-2026', title: 'Soon' };
+  const other = { ...sigNyc, title: 'Zebra Garden' };
+  assert.deepEqual(find('Review: Soon at Signature Theatre', 'review-soon-signature-theatre', [soonArl]).map((x) => x.id), [soonArl.id]);
+  assert.deepEqual(find('Review: Zebra Garden, Soon at Signature Theatre', 'review-zebra-garden-soon', [soonArl, other]).map((x) => x.id), [other.id]);
+});
+
 // Class guard: every show the poller must be able to confirm from a page with no credits on
 // file has a venue form a page can carry. Fails if venueForms regresses to the whole string.
 test('class: every credit-less show with a House/Stage venue in shows.json yields a house form', (t) => {
