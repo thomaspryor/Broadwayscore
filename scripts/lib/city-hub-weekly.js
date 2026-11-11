@@ -93,7 +93,11 @@ function cardFor(city, week, fresh, { planId = null, provenance = null } = {}) {
     if (rows.length > 25) lines.push(`- ...and ${rows.length - 25} more in data/audit/city-hub-dual/${city}/weekly.json`);
     lines.push('');
   }
-  if (prov) lines.push(`### Class 5: ${CLASS_NAME[5]} (${prov})`, '`node scripts/check-manual-entry-provenance.js` lists them: add a `--reason` or remove the row.', '');
+  if (prov) {
+    lines.push(`### Class 5: ${CLASS_NAME[5]} (${prov})`);
+    for (const k of (provenance.rows || []).slice(0, 25)) lines.push(`- \`${k}\``);
+    lines.push('Add a `--reason` to each row or remove it (`node scripts/check-manual-entry-provenance.js` lists every standing row).', '');
+  }
   lines.push('## Resolution steps');
   if (planId) lines.push(`1. The deterministic rows are in pending-fix plan \`${planId}\`: check each against its source, then apply it with execute-approved-fix.yml.`);
   lines.push(`${planId ? 2 : 1}. For the other rows, open the source; a confirmed problem is fixed through a pending-fix plan, a false lead is recorded in data/audit/city-hub-dual/${city}/triage.json (verdict false-positive) so it never comes back.`, '');
@@ -122,4 +126,22 @@ function seenKeys(findings, fresh, cardFailed) {
   return findings.map((f) => f.key).filter((k) => !skip.has(k)).sort();
 }
 
-module.exports = { fileWithRetry, seenKeys, CLASS_OF, CLASS_NAME, keyOf, findingsFromFlags, newFindings, planActions, isoWeek, cardFor };
+/**
+ * Class 5 rows to put on this week's card: only rows last week's run did not already report, so a standing
+ * unprovenanced row is carded once, not every Tuesday. --open (a card's VERIFY) passes `open` and gets every row.
+ * @param {string[]} rows      this week's unprovenanced row keys
+ * @param {string[]} prevRows  last week's weekly.json provenanceRows
+ */
+function freshProvenanceRows(rows, prevRows, open = false) {
+  if (open) return [...(rows || [])];
+  const prior = new Set(prevRows || []);
+  return (rows || []).filter((k) => !prior.has(k));
+}
+
+/** provenanceRows persisted in weekly.json; when the card was not filed, this week's fresh rows stay unseen so next week retries. */
+function seenProvenanceRows(rows, fresh, cardFailed) {
+  const skip = cardFailed ? new Set(fresh) : new Set();
+  return (rows || []).filter((k) => !skip.has(k)).sort();
+}
+
+module.exports = { freshProvenanceRows, seenProvenanceRows, fileWithRetry, seenKeys, CLASS_OF, CLASS_NAME, keyOf, findingsFromFlags, newFindings, planActions, isoWeek, cardFor };
