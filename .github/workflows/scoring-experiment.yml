@@ -28,6 +28,8 @@ on:
         type: choice
         options:
           - gpt-5.4-mini
+          - gpt-5.6-luna
+          - gpt-5.6-sol
           - gpt-4o
       open_shows:
         description: 'openai-leg-shadow: score EVERY review of N open shows instead of a corpus sample (blank = sample)'

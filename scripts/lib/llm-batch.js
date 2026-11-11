@@ -111,6 +111,10 @@ const OPENAI_REQUEST_PROFILES = Object.freeze({
   'gpt-4o': Object.freeze({}),
   'gpt-4o-mini': Object.freeze({}),
   'gpt-5.4-mini': Object.freeze({ reasoning_effort: 'none' }),
+  // BRO-7341 candidates (ids confirmed live via GET /v1/models 2026-11-10; the
+  // issue's "gpt-6-luna" does not exist). Both accept reasoning_effort none.
+  'gpt-5.6-luna': Object.freeze({ reasoning_effort: 'none' }),
+  'gpt-5.6-sol': Object.freeze({ reasoning_effort: 'none' }),
 });
 
 /** The OpenAI model ids the scoring pipeline knows how to call. */
