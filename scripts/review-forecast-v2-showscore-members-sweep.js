@@ -18,9 +18,9 @@ const { fetchPage } = require('./lib/scraper');
 const ROOT = path.resolve(__dirname, '..');
 const arg = (k, d) => { const a = process.argv.find((x) => x.startsWith(`--${k}=`)); return a ? a.split('=').slice(1).join('=') : d; };
 const OUT = arg('out', path.join(ROOT, 'data/audit/review-forecast-v2-showscore-members.json'));
-const MAX_PAGES = +arg('max-pages-per-show', 80);
+const MAX_PAGES = +arg('max-pages-per-show', 12);
 const LIMIT = +arg('limit', 100000);
-const GAP_MS = +arg('gap-ms', 1000);
+const GAP_MS = +arg('gap-ms', 1100);
 const shows = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/shows.json'), 'utf8')).shows;
 const urls = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/show-score-urls.json'), 'utf8')).shows;
 const byId = Object.fromEntries(shows.map((s) => [s.id, s]));
@@ -30,6 +30,7 @@ const SHARD = (arg('shard', '0/1')).split('/').map(Number);
 ids = ids.filter((_, i) => i % SHARD[1] === SHARD[0]).slice(0, LIMIT);
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 let requests = 0;
+const hints = {}; // page-1 listed review count per show url, used only to guess the last page
 
 /** member reviews on one page: [{date:'YYYY-MM-DD', rating}] (empty when the page is past the end). */
 function parseMembers(html) {
@@ -41,32 +42,46 @@ function parseMembers(html) {
 }
 async function page(base, p) {
   await sleep(GAP_MS); requests += 1;
-  try { const r = await fetchPage(p === 1 ? base : `${base}?page=${p}`, { directOnly: true, skipVerify: true }); return parseMembers(r.content || ''); } catch (e) { if (/404/.test(e.message)) return []; if (/40[13]|429|captcha|challenge/i.test(e.message)) { e.stop = true; } throw e; }
+  try { const r = await fetchPage(p === 1 ? base : `${base}?page=${p}`, { directOnly: true, skipVerify: true }); if (p === 1) { const m = /"aggregateRating":\{[^}]*?"reviewCount":(\d+)/.exec(r.content || ''); if (m) hints[base] = +m[1]; } return parseMembers(r.content || ''); } catch (e) { if (/404/.test(e.message)) return []; if (/40[13]|429|captcha|challenge/i.test(e.message)) { e.stop = true; } throw e; }
 }
 
+const LAG = 3; // days, same lag the model uses: only reviews dated on or before opening minus LAG count
+const PER_PAGE_GUESS = 8;
+const median = (v) => { const s = [...v].sort((x, y) => x - y); const m = s.length >> 1; return s.length ? (s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2) : null; };
+const avg = (v) => (v.length ? v.reduce((x, y) => x + y, 0) / v.length : null);
+const r1 = (x) => (x == null ? null : Math.round(x * 10) / 10);
+const addDays = (iso, d) => { const t = new Date(`${iso}T00:00:00Z`); t.setUTCDate(t.getUTCDate() + d); return t.toISOString().slice(0, 10); };
+
+/** Walk from the END of the list (oldest reviews first), stepping back toward newer pages until dates pass the cutoff. */
 async function sweepShow(id) {
   const s = byId[id]; const base = urls[id];
   if (!s || !base) return { reason: 'no show or no Show Score url' };
-  const open = s.openingDate;
+  const cutoff = addDays(s.openingDate, -LAG);
   const cache = new Map(); const get = async (p) => { if (!cache.has(p)) cache.set(p, await page(base, p)); return cache.get(p); };
-  // last non-empty page (exponential, then bisect)
-  let hi = 1; while ((await get(hi)).length && hi < 4096) hi *= 2;
-  let lo = hi / 2; if (hi === 1) return { reason: 'no member reviews listed' };
-  while (hi - lo > 1) { const mid = Math.floor((lo + hi) / 2); if ((await get(mid)).length) lo = mid; else hi = mid; }
-  const last = lo;
-  // first page whose NEWEST review is before opening
-  let a = 1; let b = last + 1;
-  while (a < b) { const mid = Math.floor((a + b) / 2); const d = await get(mid); if (d.length && d[0].date < open) b = mid; else a = mid + 1; }
-  const first = Math.max(1, a - 1); // the straddling page
-  const pre = []; let newest = null; let pages = 0; let capped = false;
-  for (let p = first; p <= last; p++) {
+  const p1 = await get(1);
+  if (!p1.length) return { reason: 'no member reviews listed' };
+  // last page: estimate from the listed review count, then confirm with at most a few probes
+  let last = Math.max(1, Math.ceil((hints[base] || 0) / PER_PAGE_GUESS));
+  if (!(await get(last)).length) { while (last > 1 && !(await get(last)).length) last = Math.max(1, last - 2); }
+  while ((await get(last + 1)).length) last += 1;
+  const kept = []; let pages = 0; let capped = false; let reachedCutoff = false;
+  for (let pg = last; pg >= 1; pg--) {
     if (pages >= MAX_PAGES) { capped = true; break; }
     pages += 1;
-    for (const r of await get(p)) if (r.date < open) { pre.push(r.rating); if (!newest || r.date > newest) newest = r.date; }
+    const rows = await get(pg);
+    const older = rows.filter((r) => r.date <= cutoff);
+    for (const r of older) kept.push(r);
+    if (older.length < rows.length) { reachedCutoff = true; break; } // page holds reviews past the cutoff: nothing newer is needed
   }
-  const mean = pre.length ? pre.reduce((x, y) => x + y, 0) / pre.length : null;
-  const sd = pre.length > 1 ? Math.sqrt(pre.reduce((x, y) => x + (y - mean) ** 2, 0) / (pre.length - 1)) : null;
-  return { opening: open, lastPage: last, preOpeningCount: pre.length, newestPreOpeningReview: newest, preOpeningMean: mean == null ? null : Math.round(mean * 10) / 10, preOpeningSd: sd == null ? null : Math.round(sd * 10) / 10, pagesRead: pages, capped };
+  kept.sort((x, y) => (x.date < y.date ? -1 : 1));
+  const rt = kept.map((r) => r.rating);
+  const first20 = rt.slice(0, 20); const rest = rt.slice(20);
+  const days = kept.length ? Math.round((new Date(kept[kept.length - 1].date) - new Date(kept[0].date)) / 864e5) : null;
+  return {
+    opening: s.openingDate, cutoff, lastPage: last, n: rt.length, newest: kept.length ? kept[kept.length - 1].date : null, oldest: kept.length ? kept[0].date : null,
+    mean: r1(avg(rt)), median: r1(median(rt)), shareGe90: rt.length ? r1(rt.filter((x) => x >= 90).length / rt.length) : null, shareLe60: rt.length ? r1(rt.filter((x) => x <= 60).length / rt.length) : null,
+    meanFirst20: r1(avg(first20)), meanRest: rest.length ? r1(avg(rest)) : null, daysCovered: days, pagesRead: pages, capped, reachedCutoff,
+  };
 }
 
 const state = fs.existsSync(OUT) ? JSON.parse(fs.readFileSync(OUT, 'utf8')) : { card: 'BRO-7347', note: 'Pre-opening Show Score member reviews (dates and ratings only) rebuilt from live paginated pages. Free direct fetches. No names or text stored.', paidFetches: 0, shows: {} };
