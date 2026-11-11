@@ -3456,9 +3456,31 @@ function checkDigestInvariantFail(isCI) {
 // tracked-file signals (review-count drop, rebuild-regression.json); the
 // worktree/cmux/headless-job signals are only visible when this runs
 // locally, same as the digest itself.
+// BRO-7276: the worktree/cmux/reconcile sources live in the MAIN checkout on
+// the Mac. Reading them from this file's own checkout made a verify run in a
+// worktree, a cloud container or CI blind to them, so every Mac-only card
+// "passed" its acceptance check (7 recurrences in 37 days). Read the main
+// checkout, and when its Mac-only sources are absent say "Skipped" (the
+// health-row-probe 'unknown' form, exit 3 under --live) instead of a pass.
+function stuckPipelineRow({ signals = [], errors = [], macSourcesPresent = true } = {}) {
+  const name = 'Stuck pipeline items';
+  if (signals.length) {
+    return { name, status: 'warn', message: `${signals.length} pipeline signal(s) flagged possibly-stuck by the overnight digest — investigate and unstick. ${signals.join(' | ')}`.slice(0, 500) };
+  }
+  if (errors.length) {
+    // "No signals found" and "collection itself partially failed" are NOT
+    // the same claim (adversarial ship-check finding, card #794).
+    return { name, status: 'warn', message: `Overnight digest gathered partially (${errors.length} source(s) failed) — cannot confirm clean: ${errors.join('; ')}`.slice(0, 500) };
+  }
+  if (!macSourcesPresent) {
+    return { name, status: 'pass', message: 'Skipped: the Mac-only stuck sources (worktrees, reconcile report) are not on this machine; only the git-history and rebuild-regression signals were checked, and they are clean.' };
+  }
+  return { name, status: 'pass', message: 'No pipeline signals flagged possibly-stuck by the overnight digest.' };
+}
+
 function checkStuckPipelineItems() {
   const { gatherDigest, stuckSignals } = require('./lib/overnight-digest.js');
-  const repo = path.join(__dirname, '..');
+  const { MAIN_REPO_ROOT: repo } = require('./lib/repo-root.js');
   let digest;
   try {
     // skipFetch: this runs inside health-row-probe.js's supposed-to-be
@@ -3472,26 +3494,9 @@ function checkStuckPipelineItems() {
   } catch (err) {
     return [{ name: 'Stuck pipeline items', status: 'warn', message: `Could not gather the overnight digest to check for stuck signals (${String(err.message).slice(0, 120)})` }];
   }
-  const signals = stuckSignals(digest);
-  if (signals.length) {
-    return [{
-      name: 'Stuck pipeline items',
-      status: 'warn',
-      message: `${signals.length} pipeline signal(s) flagged possibly-stuck by the overnight digest — investigate and unstick. ${signals.join(' | ')}`.slice(0, 500),
-    }];
-  }
-  if (digest.errors.length) {
-    // "No signals found" and "collection itself partially failed" are NOT
-    // the same claim — collapsing them the way this row never existing at
-    // all collapsed every state to "fixed" is the exact false-pass class
-    // this row exists to end (adversarial ship-check finding).
-    return [{
-      name: 'Stuck pipeline items',
-      status: 'warn',
-      message: `Overnight digest gathered partially (${digest.errors.length} source(s) failed) — cannot confirm clean: ${digest.errors.join('; ')}`.slice(0, 500),
-    }];
-  }
-  return [{ name: 'Stuck pipeline items', status: 'pass', message: 'No pipeline signals flagged possibly-stuck by the overnight digest.' }];
+  const macSourcesPresent = fs.existsSync(path.join(repo, '.claude', 'worktrees'))
+    || fs.existsSync(path.join(repo, 'data', 'audit', 'reconcile-report.jsonl'));
+  return [stuckPipelineRow({ signals: stuckSignals(digest), errors: digest.errors, macSourcesPresent })];
 }
 
 // --- Data freshness gaps (BRO-3697) ---
@@ -6655,4 +6660,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { invalidWorkflowFileResults, checkBoardDispatchFreshness, checkSync, reviewTextsSkipReason, evaluateOutletFeedHealth, checkScheduledFailureStreak, checkNeverRunWorkflowHealth, checkAPICredits, corpusAuditResults, generateApproveUrl, checkAuditFreshness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, starBandDriftResults, earlyPublishDatesResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkCiMidSetupCancels, jobHeadroomRow, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixEffectiveness, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift, checkCommercialPendingQueue, checkExemptCronLiveness, checkUncollectedStrands, checkOutletHealth };
+module.exports = { invalidWorkflowFileResults, checkBoardDispatchFreshness, checkSync, reviewTextsSkipReason, evaluateOutletFeedHealth, checkScheduledFailureStreak, checkNeverRunWorkflowHealth, checkAPICredits, corpusAuditResults, generateApproveUrl, checkAuditFreshness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, starBandDriftResults, earlyPublishDatesResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkCiMidSetupCancels, jobHeadroomRow, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, stuckPipelineRow, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixEffectiveness, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift, checkCommercialPendingQueue, checkExemptCronLiveness, checkUncollectedStrands, checkOutletHealth };

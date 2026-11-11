@@ -1982,3 +1982,36 @@ test('covers-digest-row matches a real planAutofix row (prefixed title) by plain
   assert.ok(plan.every((r) => r.state === 'tracked' || r.state !== 'needs-card'));
   assert.ok(plan.some((r) => r.state === 'tracked'));
 });
+
+// BRO-7276 (2nd half): a stuck card filed from Mac-only signals must verify
+// LIVE. Its old snapshot-mode check read CI's snapshot, which can never see
+// worktrees/reconcile events, so every such card "cleared itself".
+test('BRO-7276 Mac-only stuck rollup card verifies with --live, and the command passes the safe-form gate', () => {
+  const { localRollupIssues } = require('./digest-autofix.js');
+  const extra = localRollupIssues({ health: {}, stuckCount: 1, stuckSignals: ['Finished-but-unmerged work sitting in 1 worktree: y'] });
+  assert.equal(extra[0].liveVerify, true);
+  const plan = planAutofix({ health: {}, extraIssues: extra, tasks: [] });
+  const notes = buildCardNotes(plan[0]);
+  const m = notes.match(/`(node scripts\/check-health-row-absent\.js [^`]+)`/);
+  assert.ok(m, notes);
+  assert.match(m[1], / --live$/);
+  const { SAFE_CHECK_FORMS } = require('./check-paths.js');
+  assert.ok((SAFE_CHECK_FORMS || []).some((f) => (f.re || f).test(m[1])), `not safe-form: ${m[1]}`);
+});
+
+test('BRO-7276 a snapshot-visible health row keeps the snapshot check (no --live)', () => {
+  const plan = planAutofix({ health: { warns: [{ name: 'Some row', message: 'x' }] }, tasks: [] });
+  const notes = buildCardNotes(plan[0]);
+  assert.doesNotMatch(notes, /--live/);
+});
+
+test('BRO-7276 stuck row says Skipped (probe: cannot verify) when the Mac-only sources are absent', () => {
+  const { stuckPipelineRow } = require('../health-check.js');
+  const { isSkipPlaceholder } = require('./health-row-probe.js');
+  const off = stuckPipelineRow({ signals: [], errors: [], macSourcesPresent: false });
+  assert.equal(isSkipPlaceholder(off), true);
+  const on = stuckPipelineRow({ signals: [], errors: [], macSourcesPresent: true });
+  assert.equal(on.status, 'pass'); assert.equal(isSkipPlaceholder(on), false);
+  // A CI-visible signal still warns off the Mac.
+  assert.equal(stuckPipelineRow({ signals: ['Shows losing scored reviews: x'], macSourcesPresent: false }).status, 'warn');
+});

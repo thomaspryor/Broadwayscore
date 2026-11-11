@@ -488,6 +488,8 @@ function buildPlanRow(r, { tasks, today, titleOverride = null } = {}) {
     taskId: existing ? existing.id : null,
     conditionKey,
     ...(r.testId ? { testId: r.testId } : {}),
+    // BRO-7276: a row only this Mac can see verifies with the LIVE probe, never the CI snapshot.
+    ...(r.liveVerify ? { liveVerify: true } : {}),
     model: r.model || null,
     // Plan-time guess (BRO-232 S4 digest-subject split, send-morning-
     // digest.js's buildSubject): true only when NOTHING already tracked
@@ -724,7 +726,9 @@ function buildCardNotes(row) {
       // BRO-5486: a one-show fold of a queued row still verifies by conditionKey.
       row.affected && row.affected[0] && row.affected[0].conditionKey
         ? `\`${alertAbsentCheckCmd(row.affected[0].conditionKey)}\` passes — i.e. the alert condition for "${name}" is no longer open.`
-        : `\`${rowAbsentCheckCmd(row.name)}\` passes — i.e. the daily health check no longer lists "${name}" among errors or warnings.`,
+        : row.liveVerify
+          ? `\`${rowAbsentCheckCmd(row.name)} --live\` passes — i.e. a live health check on the Mac no longer lists "${name}" (its signals are Mac-only, so the CI snapshot cannot prove it; off the Mac this exits 3, cannot verify).`
+          : `\`${rowAbsentCheckCmd(row.name)}\` passes — i.e. the daily health check no longer lists "${name}" among errors or warnings.`,
       // BRO-7102 item 4: lets the alert router's test filers find this card.
       // Never on a fold (affected[], even a one-item fold): a fold card can grow to
       // many tests, and runAutofix never searches the marker for one.
@@ -1659,7 +1663,10 @@ function localRollupIssues({ health, freshnessCount = 0, stuckCount = 0, freshne
       message: `${freshnessCount} open show(s) missing critical data — auto-fill from the standard image/synopsis/ticket pipelines.${freshnessShowDetail(freshnessItems)}` });
   }
   if (stuckCount > 0 && !present.has(ROLLUP_ROW_NAMES.stuck)) {
-    out.push({ name: ROLLUP_ROW_NAMES.stuck,
+    // BRO-7276: folded in only because the CI snapshot lacks the row, i.e. the
+    // signal is Mac-only. A snapshot-mode acceptance check could never see it
+    // and "passed" every card (7 recurrences), so this card verifies live.
+    out.push({ name: ROLLUP_ROW_NAMES.stuck, liveVerify: true,
       message: `${stuckCount} pipeline signal(s) flagged possibly-stuck by the overnight digest — investigate and unstick.${stuckSignalDetail(stuckSignals)}` });
   }
   return out;
