@@ -110,6 +110,48 @@ test('The Times: listing footer + promo line are a trailer; a cut-off review is 
   }
 });
 
+test('The Telegraph: listing line + box-office promo are a trailer; a cut-off review is not (BRO-7171 Telegraph run)', () => {
+  // real endings (telegraph / sunday-telegraph files, 2026-11-11)
+  const endings = [
+    '\n\nLyric Hammersmith, London W6 ( lyric.co.uk ) until October 3',
+    '\n\nHarold Pinter Theatre, London SW1 (haroldpintertheatre.co.uk) until Jun 20',
+    '\n\nUntil Jun 6. Tickets: 020 3989 5455; nationaltheatre.org.uk',
+    '\n\nAt Royal Lyceum until Oct 18, then touring until Nov 7; book tickets',
+    '\n\nWyndham’s, to Apr 13; www.quartermainesterms.com\n\nTelegraph Boxoffice Popular Shows»',
+    ' Until Nov 7. Tickets: rsc.org.uk Book tickets via Tickets | Telegraph Media Group provided by London Theatre Direct',
+    '\n\nBooking to Feb 12; www.matildathemusical.com\n\nThis review also appears in Seven magazine, free with The Sunday Telegraph',
+    ' Until Oct 20. Purchase Strictly Ballroom tickets or call 0844 871 2118',
+  ];
+  for (const e of endings) {
+    assert.equal(T.stripTelegraphFooter(BODY + e), BODY, JSON.stringify(e));
+    assert.equal(tier(BODY + e, 'telegraph').contentTier, 'complete', JSON.stringify(e));
+    assert.equal(tier(BODY + e, 'sunday-telegraph').contentTier, 'complete');
+  }
+  // only for the Telegraph outlets
+  assert.notEqual(tier(BODY + endings[2], 'guardian').contentTier, 'complete');
+  // a review cut off mid-sentence keeps its footer and stays truncated
+  const cut = `${BODY.slice(0, -1)} and the lead brings a snarl${endings[2]}`;
+  assert.equal(T.stripTelegraphFooter(cut), cut);
+  assert.equal(tier(cut, 'telegraph').contentTier, 'truncated');
+  // a cut-off review with only a promo line: still not complete
+  const cutPromo = `${BODY.slice(0, -1)} who brings\n\nTelegraph Boxoffice Popular Shows»`;
+  assert.notEqual(tier(cutPromo, 'telegraph').contentTier, 'complete');
+  // review prose that opens "At ..." and names a month is not a listing
+  const prose = `${BODY} At the end the cast, who are booked until June, take a bow and`;
+  assert.equal(T.stripTelegraphFooter(prose), prose);
+  // reviewer findings: a month prefix inside a word is not a listing end, "Then, to"
+  // is not a listing opener, and a dateless venue line is not the last sentence
+  for (const tail of [
+    ' At Hampstead until Oct 3, it is a production of remark',
+    ' Then, to be fair, the revival until Oct 3 drew a summary',
+    ' At Chichester, to May 9 the cast play to mayhem',
+  ]) assert.equal(T.stripTelegraphFooter(BODY + tail), BODY + tail, tail);
+  const cutVenue = `${BODY.slice(0, -1)} and the lead brings a snarl\n\nNational Theatre, London SE1. Until Jun 6; nationaltheatre.org.uk`;
+  assert.equal(T.stripTelegraphFooter(cutVenue), cutVenue);
+  // classify-only: the saved text keeps the listing
+  assert.match(stripTrailingJunk(BODY + endings[2], 'telegraph'), /Tickets: 020 3989 5455/);
+});
+
 test('one-minute-critic: a cut-off final paragraph is not a headline (codex finding)', () => {
   const cut = BODY + '\n\nThe final act\n\nThe lead actor finally begins to';
   assert.equal(T.stripRelatedPostHeadlines(cut), cut);

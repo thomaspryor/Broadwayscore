@@ -226,10 +226,71 @@ function stripTimesFooter(text) {
   return t === text.replace(/\s+$/, '') ? text : (SENTENCE_END_RE.test(t) && t.length >= RELATED_MIN_REMAINING ? t : text);
 }
 
+// ---------------------------------------------------------------------------
+// The Telegraph / Sunday Telegraph: the review ends with a listing line, often
+// followed by a box-office promo. Real endings (BRO-7171 Telegraph trial run
+// 2026-11-11: 5 of 10 "truncated" files already held the whole review):
+//   "... far greater.\n\nLyric Hammersmith, London W6 ( lyric.co.uk ) until October 3"
+//   "... I can’t say I enjoyed it.\n\nUntil Jun 6. Tickets: 020 3989 5455; nationaltheatre.org.uk"
+//   "... narrative theatre at its very best.\n\nAt Royal Lyceum until Oct 18, then touring until Nov 7; book tickets"
+//   "... the silence seems to scream.\n\nWyndham’s, to Apr 13; www.quartermainesterms.com\n\nTelegraph Boxoffice Popular Shows»"
+// Promo lines go first; then the last fragment after a sentence end, when it
+// opens like a listing, carries a run date / phone / domain / "Tickets", has
+// no prose sentence in it, and what precedes it ends a sentence at review length.
+// ---------------------------------------------------------------------------
+const TELEGRAPH_PROMO_RE = /\s*(?:Telegraph Box ?office Popular Shows»|Twitter Icon Facebook Icon WhatsApp Icon Email Icon Comment speech bubble|Buy [^\n]{0,80}?tickets[^\n]{0,80}?Telegraph Box Office\.?|Book tickets via Tickets \| Telegraph Media Group provided by London Theatre Direct(?:\s+Recommended[^\n]{0,200}?Read more)?|This review also appears in Seven magazine[^\n]{0,80})\s*$/i;
+const TELEGRAPH_FOOTER_MAX = 260;
+// whole month words only: a bare "Mar"/"May" prefix matched "remark", "mayhem"
+const TELEGRAPH_MONTH = '\\b(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|June?|July?|Aug(?:ust)?|Sept?(?:ember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\\b\\.?';
+const TELEGRAPH_OPENER_RE = new RegExp(`^(?:Until\\b|Booking\\b|Book\\b|Tickets?\\b|At\\s+[\\p{Lu}\\d]|[\\p{Lu}\\d][\\w'’&.-]*(?:\\s+[\\w'’&.()-]+){0,6},\\s+(?:London\\b|(?:to|until)\\s+(?:\\d|${TELEGRAPH_MONTH})))`, 'u');
+const TELEGRAPH_EVIDENCE_RE = new RegExp(`\\b(?:[Uu]ntil|to)\\s+(?:${TELEGRAPH_MONTH}\\s+\\d{1,2}|\\d{1,2}\\s+${TELEGRAPH_MONTH})|\\b[a-z0-9-]+\\.(?:co\\.uk|org\\.uk|com|org|net|london|uk)\\b|\\b0\\d{3,4}\\s?\\d{3}\\s?\\d{3,4}\\b|\\bTickets?:`);
+// the listing ends on a date, a domain, a number or "book tickets", never on a dangling word
+const TELEGRAPH_END_RE = new RegExp(`(?:\\d|${TELEGRAPH_MONTH}|\\.(?:co\\.uk|org\\.uk|com|org|net|london|uk)|\\bbook tickets|\\))\\.?\\s*$`);
+
+function stripTelegraphFooter(text) {
+  if (!text || typeof text !== 'string') return text;
+  let t = text.replace(/\s+$/, '');
+  for (let i = 0; i < 3; i++) {
+    const p = t.replace(TELEGRAPH_PROMO_RE, '');
+    if (p === t) break;
+    t = p;
+  }
+  const base = Math.max(0, t.length - TELEGRAPH_FOOTER_MAX - 5);
+  const tail = t.slice(base);
+  // a footer starts after a sentence end or a paragraph break
+  const boundary = /[.!?]["'”’)]?\s+|\n\s*\n/g;
+  let m;
+  while ((m = boundary.exec(tail)) !== null) {
+    const footer = tail.slice(m.index + m[0].length).trim();
+    if (!isTelegraphListing(footer)) continue;
+    const body = t.slice(0, base + m.index + m[0].length).replace(/\s+$/, '');
+    // the body must end a sentence, and that sentence must not itself be a
+    // listing: "... a snarl\n\nUntil Jun 6. Tickets: ..." is a cut-off review
+    // whose "Until Jun 6." would otherwise pass for its last sentence.
+    if (!SENTENCE_END_RE.test(body) || body.length < RELATED_MIN_REMAINING) continue;
+    const lastSeg = body.split(/[.!?]["'”’)]?\s+|\n\s*\n/).pop().trim();
+    const lastBare = lastSeg.replace(/[.!?]["'”’)]?$/, '');
+    // a short venue line with no date ("National Theatre, London SE1.") opens
+    // like a listing too: it is not the review's last sentence either
+    if (isTelegraphListing(lastBare) || (lastBare.length <= 120 && TELEGRAPH_OPENER_RE.test(lastBare))) continue;
+    return body;
+  }
+  return t === text.replace(/\s+$/, '') ? text : (SENTENCE_END_RE.test(t) && t.length >= RELATED_MIN_REMAINING ? t : text);
+}
+
+function isTelegraphListing(seg) {
+  if (!seg || seg.length < 6 || seg.length > TELEGRAPH_FOOTER_MAX) return false;
+  // a listing, not prose: no full sentence inside it
+  if (/[a-z]{2,}[.!?]["'”’]?\s+[A-Z][a-z]+ [a-z]+ [a-z]+/.test(seg)) return false;
+  return TELEGRAPH_OPENER_RE.test(seg) && TELEGRAPH_EVIDENCE_RE.test(seg) && TELEGRAPH_END_RE.test(seg);
+}
+
 // Outlet-scoped strippers (outletId is the registry id on the review file).
 const OUTLET_TRAILER_STRIPPERS = Object.freeze({
   'times-uk': stripTimesFooter,
   'sunday-times': stripTimesFooter,
+  telegraph: stripTelegraphFooter,
+  'sunday-telegraph': stripTelegraphFooter,
   thestage: stripStageCriticBio,
   'one-minute-critic': stripRelatedPostHeadlines,
   thefourthwalsh: stripFourthWalshInfoBlock,
@@ -237,7 +298,8 @@ const OUTLET_TRAILER_STRIPPERS = Object.freeze({
 
 // Strippers that only feed the tier classifier and never edit saved text: the
 // Times footer carries the star rating (★★★★☆), the scorer's band anchor.
-const CLASSIFY_ONLY_OUTLETS = Object.freeze(new Set(['times-uk', 'sunday-times']));
+// The Telegraph footer is classify-only too: the saved text stays as fetched.
+const CLASSIFY_ONLY_OUTLETS = Object.freeze(new Set(['times-uk', 'sunday-times', 'telegraph', 'sunday-telegraph']));
 
 /**
  * Strip the trailer known for this outlet; unknown outlet returns text unchanged.
@@ -273,6 +335,7 @@ module.exports = {
   stripRelatedPostHeadlines,
   stripStageCriticBio,
   stripTimesFooter,
+  stripTelegraphFooter,
   stripGuardianTopicsFooter,
   stripOutletTrailer,
   stripKnownTrailers,
