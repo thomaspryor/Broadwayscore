@@ -1,0 +1,28 @@
+{
+  "issueNumber": "bro-7371-a",
+  "planId": "e8090654-6fb4-40b4-a67b-99976defd45b",
+  "status": "pending",
+  "createdAt": "2026-11-11T13:37:15.874Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7371: promote chicagotribune to standingCoverage for broadway. The audit lists it as unflagged and clearing the promote bar; the action re-checks that at execute time.",
+    "steps": [
+      "Promote chicagotribune to standingCoverage (broadway)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "outlet-registry-flag",
+        "description": "Promote chicagotribune to standingCoverage (broadway)",
+        "outletId": "chicagotribune",
+        "flag": "standingCoverage",
+        "value": true,
+        "market": "broadway",
+        "reason": "audit-standing-coverage --market=broadway lists chicagotribune under promote (unflagged, 85% overall, every trailing season >= 79%)"
+      }
+    ]
+  }
+}

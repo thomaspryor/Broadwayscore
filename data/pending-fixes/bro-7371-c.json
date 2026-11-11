@@ -1,0 +1,25 @@
+{
+  "issueNumber": "bro-7371-c",
+  "planId": "19563b4d-a73d-4b35-98f9-0ece0c5acdb6",
+  "status": "pending",
+  "createdAt": "2026-11-11T13:34:20.813Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-7209: remove the fabricated-byline Ben Brantley duplicate of the Laura Collins-Hughes NYT review (sea-wall-a-life-2019)",
+    "steps": [
+      "Fabricated byline: the page at this url is bylined Laura Collins-Hughes (BRO-5090 part 3, approved 2026-10-12 as duplicateOf nytimes--laura-collins-hughes.json). That duplicateOf was later erased by heal-orphaned-duplicate-pointers while the target was briefly invalid, and the target now carries a duplicateTextOf back-pointer, so restoring duplicateOf is a cycle the write guard refuses. The legacy web-search row holds nothing the real record lacks (same article, 6311 vs 6557 chars), so remove it."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "sea-wall-a-life-2019/nytimes--ben-brantley.json",
+        "description": "Fabricated byline: the page at this url is bylined Laura Collins-Hughes (BRO-5090 part 3, approved 2026-10-12 as duplicateOf nytimes--laura-collins-hughes.json). That duplicateOf was later erased by heal-orphaned-duplicate-pointers while the target was briefly invalid, and the target now carries a duplicateTextOf back-pointer, so restoring duplicateOf is a cycle the write guard refuses. The legacy web-search row holds nothing the real record lacks (same article, 6311 vs 6557 chars), so remove it."
+      }
+    ]
+  }
+}
