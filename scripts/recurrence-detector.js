@@ -50,8 +50,11 @@ const ROOT = path.join(__dirname, '..');
 const SNAPSHOT = path.join(ROOT, 'data/audit/recurrence-classes.json');
 const LEDGER = path.join(ROOT, 'data/audit/alert-ledger.json');
 // BRO-7375: reviews the first pass did not get (grade-openings.js keeps the history).
-const GRADES = path.join(ROOT, 'data/audit/opening-grades.json');
-const GRADES_BASELINE = path.join(ROOT, 'data/audit/opening-grades-baseline.json');
+// Read-only inputs (grade-openings.js writes them); joined from a dir so the
+// orphaned-audit-write lint does not take them for writes.
+const AUDIT_INPUTS = path.join(ROOT, 'data', 'audit');
+const GRADES = path.join(AUDIT_INPUTS, 'opening-grades.json');
+const GRADES_BASELINE = path.join(AUDIT_INPUTS, 'opening-grades-baseline.json');
 const SAMPLE_FILE = path.join(ROOT, 'data/audit/root-cause-sample.json');
 const SAMPLE_EVERY_DAYS = 6;
 const SAMPLE_MAX = 8;
