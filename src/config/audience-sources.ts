@@ -44,7 +44,7 @@ export const SOURCE_DESCRIPTIONS: Record<string, string> = {
   mezzanine: 'iOS app with verified ticket holders rating shows 1-5 stars.',
   theatr: 'Broadway community app with three-way sentiment: like, dislike, or mixed.',
   broadwayCom: "Star ratings from verified ticket buyers on Broadway\u2019s largest ticket site.",
-  reddit: 'Sentiment analysis from Reddit theatre communities (r/Broadway, r/TheWestEnd). Requires 50+ comments. Excluded for shows closed 3+ years.',
+  reddit: 'Sentiment from Reddit theatre communities (r/Broadway, r/TheWestEnd). No longer updated: it counts only for shows that already have Reddit data, frozen as of November 2026.',
   seatplan: 'UK theatre ticketing platform with 1K-8K verified audience reviews per show.',
   lbo: 'Verified purchase reviews from London Box Office ticket buyers via Feefo.',
   ltd: 'Verified purchase reviews from London Theatre Direct, a major UK ticket reseller with 1K-14K reviews per show.',
