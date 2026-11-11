@@ -310,5 +310,61 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-11T13:52:46.513Z"
+  },
+  {
+    "conditionKey": "opening-night-fulltext-mentions-show:short:cloud-9-west-end-2026",
+    "title": "Shipped review too short to verify on Cloud 9",
+    "description": "thestage/Sam Marlowe (thestage--sam-marlowe.json) SHIPPED with fullText too short to assess title mention (0 chars — paywall stub?): https://www.thestage.co.uk/reviews/cloud-9-review-lyttelton-national-theatre-london",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-11T14:16:28.039Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-t1-missing:cloud-9-west-end-2026",
+    "title": "Auto-remediation gave up on cloud-9-west-end-2026",
+    "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"cloud-9-west-end-2026\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-11T14:16:28.077Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:potus-off-broadway-2026",
+    "title": "Auto-remediation gave up on potus-off-broadway-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"potus-off-broadway-2026\",\"category\":\"off-broadway\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-11T14:16:28.099Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:peter-pan-goes-wrong-regional-2026",
+    "title": "Auto-remediation gave up on peter-pan-goes-wrong-regional-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"peter-pan-goes-wrong-regional-2026\",\"category\":\"regional\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-11T14:16:28.155Z"
   }
 ]
