@@ -418,6 +418,12 @@ test('hook: a CI-skip-marked tip blocks (land.yml would never start); the CLI th
   const same = runHook({ command: 'git commit -qm "audit: refresh [ci skip]" && git push origin HEAD:land/feat', cwd: wt });
   assert.equal(same.decision, 'block');
   assert.match(same.message, /the commit this command makes/);
+  assert.doesNotMatch(same.message, /run the same push again/, 'same-command advice must not loop');
+  assert.equal(runHook({ command: `git commit -qm "x [skip actions]" && git -C "${wt}" push origin HEAD:land/feat && git commit -qm "later"`, cwd: wt }).decision, 'block', 'git -C push');
+  assert.equal(runHook({ command: 'git commit -qm "plain" && git push origin HEAD:land/feat && echo "[skip ci]"', cwd: wt }).decision, 'skip', 'marker after the push is not the commit');
+  // Non-HEAD source ref with a marked tip is judged on that ref.
+  sh(wt, 'git branch -f marked HEAD && git checkout -q marked && git commit -q --allow-empty -m "y [no ci]" && git checkout -q feat');
+  assert.equal(runHook({ command: 'git push origin marked:refs/heads/land/feat', cwd: wt }).decision, 'block');
   assert.equal(runHook({ command: 'git commit -qm "plain" && git push origin HEAD:land/feat', cwd: wt }).decision, 'skip');
   assert.notEqual(runHook({ command: 'git commit -qm "x [skip ci]" && git push origin HEAD:land/feat  # NO-LAND-PREFLIGHT: verified marker is intended here', cwd: wt }).decision, 'block');
 });

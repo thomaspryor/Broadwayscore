@@ -67,6 +67,9 @@ export const MAX_COMMITS = 200;
  * never move into judgeLand. Predicate: landing-ci-coverage.js hasSkipCiMarker.
  * -> { status: 'pass' | 'fail' | 'skip', reason? }
  */
+// `git push`, `git -C dir push`, `git --no-pager push`: where the pushing git call starts.
+const PUSH_WORD_RE = /\bgit(?:\s+(?:-C\s+\S+|-c\s+\S+|--[\w-]+(?:=\S+)?))*\s+push\b/;
+
 export function checkSkipCiTip({ tip, cwd, getMessage = null }) {
   let msg;
   if (getMessage) msg = getMessage(tip);
@@ -79,15 +82,22 @@ export function checkSkipCiTip({ tip, cwd, getMessage = null }) {
 }
 
 export function skipCiMessage({ target, sameCommand = false }) {
-  const what = sameCommand ? 'the commit this command makes before the push' : 'the pushed tip commit';
+  const head = `LAND PREFLIGHT: ${sameCommand ? 'the commit this command makes before the push' : 'the pushed tip commit'} carries a CI-skip marker in its message, so GitHub would start no land.yml run for ${target} and the commit would never land.`;
+  const fix = sameCommand
+    ? [
+      'Fix: drop the marker from the commit message in this command, or run the commit as its own command',
+      'first; the push is then judged on the real tip and this check tells you the next step.',
+    ]
+    : [
+      'Fix (keeps the same ref, fast-forwards):',
+      '  git commit --allow-empty -m "chore(land): trigger land.yml"',
+      '  then run the same push again.',
+      'If the ref already exists on origin with the marked tip, the empty commit is the fix; dispatching land.yml by hand also works (.claude/CLOUD.md Landing).',
+    ];
   return [
-    `LAND PREFLIGHT: ${what} carries a CI-skip marker in its message, so GitHub would start no land.yml run for ${target} and the commit would never land.`,
+    head,
     '',
-    'Fix (keeps the same ref, fast-forwards):',
-    '  git commit --allow-empty -m "chore(land): trigger land.yml"',
-    '  then run the same push again.',
-    'Or reword the commit (git commit --amend -m "<message without the marker>") before the first push.',
-    'If the ref already exists on origin with the marked tip, the empty commit is the fix; dispatching land.yml by hand also works (.claude/CLOUD.md Landing).',
+    ...fix,
     'If you are certain it is wrong, add `# NO-LAND-PREFLIGHT: <reason, 15+ chars>` to the push command (logged).',
   ].join('\n');
 }
@@ -987,7 +997,9 @@ export function runHook({ command, cwd, env = process.env, seams = {}, transcrip
     const bypass = String(command).match(BYPASS_RE);
     // BRO-7353: `git commit -m "... <marker>" && git push origin HEAD:land/x` is
     // the common cloud shape and is otherwise skipped below (HEAD moves first).
-    if (p.headMovedBefore && !bypass && hasSkipCiMarker(String(command).split(/\bgit\s+push\b/)[0])) {
+    // Text-based, so best effort: a message read from a file or editor, or a
+    // marker only after the first push, falls through to that skip.
+    if (p.headMovedBefore && !bypass && hasSkipCiMarker(String(command).split(PUSH_WORD_RE)[0])) {
       logEvent(root, { event: 'block', target: t.dst, skipCi: 'fail-same-command' });
       results.push({ decision: 'block', message: skipCiMessage({ target: t.dst, sameCommand: true }), warnings: [] });
       continue;
