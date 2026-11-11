@@ -330,3 +330,26 @@ test('BRO-7377: the runbook tells a parent to look 3 minutes after create_sessio
   assert.match(rb, /--minutes 3\b/);
   assert.match(rb, /last_init_error|never started/);
 });
+
+test('BRO-7377: an init error from long before the last activity is stale, not a dead child', () => {
+  const later = JSON.parse(JSON.stringify(INIT_FAILED));
+  later.ccr.updated_at = '2026-11-11T15:30:00Z';
+  assert.equal(decide({ session: later, now: '2026-11-11T15:31:00Z' }).action, 'rearm');
+  const atEdge = JSON.parse(JSON.stringify(INIT_FAILED));
+  atEdge.ccr.updated_at = '2026-11-11T13:50:00Z'; // 5 min after the error: still the dead child
+  assert.equal(decide({ session: atEdge, now: '2026-11-11T13:52:00Z' }).action, 'restart');
+});
+
+test('BRO-7377: the restart reason says to archive the dead session and to read its setup output', () => {
+  const r = decide({ session: INIT_FAILED, now: '2026-11-11T13:52:38Z' }).reason;
+  assert.match(r, /archive_session/);
+  assert.match(r, /env_manager_log/);
+});
+
+test('BRO-7377: the stalled-session sweep requeues a never-started session at once instead of nudging it', () => {
+  const { stalledSessionAction } = require('./stalled-session-sweep.js');
+  const entry = { action: 'check', card: 'BRO-1', sessionId: INIT_FAILED.ccr.id, nudges: 0, lastNudgeAt: null };
+  const r = stalledSessionAction({ entry, session: INIT_FAILED, nowMs: Date.parse('2026-11-11T20:00:00Z') });
+  assert.equal(r.action, 'requeue', r.reason);
+  assert.match(r.reason, /never started/);
+});
