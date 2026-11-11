@@ -1859,3 +1859,34 @@ test('daily-runner parks a no-change bounce and splits owner steps off a partial
   assert.match(src, /if \(R\.parkOnNoChange\(\{ hasDiff: lastHasDiff, landBlocked, refusedClose, bounceClass,[\s\S]{0,700}moveCard\(id, 'Paused', note\)[\s\S]{0,120}moveCard\(id, 'Backlog', note\)/);
   assert.match(src, /R\.splitOwnerSteps\(remaining\)[\s\S]{0,500}sh\('node', \['scripts\/linear-brain\.js', \.\.\.R\.ownerStepCardArgs\(/);
 });
+
+// BRO-7356: "Codex runner: landing cards" came back 3 times in 30 days. Each time the cloud lane's
+// disk was full and its stopped runs' runner errors were counted as "cards crashed" by the coarse
+// daily row, while codex-lane-health's disk-low already owns that fault. One regex, one owner.
+test('runnerHealth: runner errors on runs that stopped for disk are the lane alarm\'s, not "crashed on N cards" (BRO-7356)', () => {
+  const now = Date.parse('2026-11-11T08:00:00Z');
+  const run = (at, { done = 'none', crash = 'none', stop = 'no' } = {}) => ({ createdAt: at, body: `## Codex runner 2026-11-11: 1 card(s) worked in 60 min (lane cloud)\n- Landed and Done: ${done}\n- Runner error mid-card (back to Todo): ${crash}\n- Stopped early: ${stop}` });
+  const land = run('2026-11-11T05:00:00Z', { done: 'BRO-1' });
+  // the real 2026-11-11 shape: 4 disk-stopped runs with one runner error each
+  const diskDay = [land, ...['07:46', '05:55', '22:25', '21:55'].map((t, i) => run(`2026-11-11T${i < 2 ? t : '01:00'}:00Z`, { crash: 'BRO-7254', stop: 'only 0.0 GB of disk left (needs 3 GB to start a card)' }))];
+  const row = r.runnerHealth(diskDay, now);
+  assert.equal(row.status, 'pass', row.message);
+  assert.match(row.message, /0 crashed mid-card \(4 more on runs that stopped for disk/);
+  // the same errors on runs that did NOT stop for disk still warn
+  const real = [land, run('2026-11-11T06:00:00Z', { crash: 'BRO-2' }), run('2026-11-11T07:00:00Z', { crash: 'BRO-3' })];
+  assert.equal(r.runnerHealth(real, now).status, 'warn');
+  // crashes outnumbered by the day's landings are noise (real 2026-11-11: 3 crashed beside 7 landed)
+  const noisy = [run('2026-11-11T04:00:00Z', { done: 'BRO-1, BRO-2, BRO-3, BRO-4' }), run('2026-11-11T05:00:00Z', { done: 'BRO-5, BRO-6, BRO-7', crash: 'BRO-8, BRO-9, BRO-10' })];
+  assert.equal(r.runnerHealth(noisy, now).status, 'pass');
+  // a disk stop does not hide a lock stop or a day that landed nothing
+  assert.equal(r.runnerHealth([run('2026-11-11T07:00:00Z', { crash: 'BRO-2', stop: 'only 0.0 GB of disk left (needs 3 GB to start a card)' })], now).status, 'error');
+});
+
+test('class guard (BRO-7356): the daily row and the lane alarm share one disk-stop regex', () => {
+  const rootSrc = fs.readFileSync(new URL('../../scripts/lib/codex-runner.js', import.meta.url), 'utf8');
+  const laneSrc = fs.readFileSync(new URL('../../scripts/lib/codex-lane-health.js', import.meta.url), 'utf8');
+  assert.ok(/DISK_STOP_RE\.test\(f\.stop/.test(rootSrc), 'runnerHealth classifies a disk stop with DISK_STOP_RE');
+  assert.ok(/const DISK_STOP = DISK_STOP_RE;/.test(laneSrc), 'lane alarm uses the same regex, not its own copy');
+  for (const s of ['only 0.0 GB of disk left (needs 3 GB to start a card)', 'out of disk: ENOSPC', 'No space left on device']) assert.ok(r.DISK_STOP_RE.test(s), s);
+  assert.ok(!r.DISK_STOP_RE.test('3 Claude REJECTs in a row'));
+});
