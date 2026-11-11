@@ -1,9 +1,9 @@
 {
   "_meta": {
-    "postedDetection": "skipped",
-    "postedDetectionFailingSince": "2026-11-11T15:28:23.252Z",
+    "postedDetection": "ok",
+    "postedDetectionFailingSince": null,
     "description": "Reddit \"reviews are in\" post drafts for Broadway, WE/OWE/OB openings (BRO-4333). Written by scripts/draft-reddit-opening-posts.js, shown in the opening digest email.",
-    "lastRun": "2026-11-11T15:41:17.014Z"
+    "lastRun": "2026-11-11T15:58:49.666Z"
   },
   "drafts": {
     "delirium-off-broadway-2026": {
@@ -3539,30 +3539,32 @@
       "market": "west-end",
       "subreddit": "TheWestEnd",
       "score": 81,
-      "reviewCount": 9,
+      "reviewCount": 12,
       "url": "https://westendscorecard.com/show/cloud-9-west-end",
-      "notability": 55,
+      "notability": 56,
       "createdAt": "2026-11-11T15:41:17.013Z",
       "status": "ready",
       "source": "claude-sonnet-5-5",
       "lintProblems": [],
-      "title": "Reviews are in for Cloud 9 at the Lyttelton. 81/100 from 9 critics, for a play from 1979!",
-      "body": "I found 9 reviews: 3 raves, 5 positive, 1 mixed, zero negative. Audiences are at a B (across Mezzanine, London Box Office, and Seatplan).\n\nhttps://westendscorecard.com/show/cloud-9-west-end\n\nStuart King at London Box Office called it \"A play which shouldn’t work, which should make us cringe with embarrassment, is an utter delight\". Sarah Crompton at WhatsOnStage praised the revival \"directed with immense sensitivity and poise by Dominic Cooke\". Meanwhile Nick Curtis at the Evening Standard was the least sold, writing \"the play resonates more for its historical significance than its contemporary appeal.\"\n\nWhich I GET, it's an old play and some of it apparently shows its age. Still, the raves outnumber the doubts by a lot. Anyone seen it?\n\nI haven't seen this one yet, and I'm pretty keen.",
-      "why": "A 1979 play landing 81/100 is a surprise worth a title hook, and the lone Nick Curtis dissent gives readers a real argument (historical significance vs. contemporary appeal) to chew on.",
-      "expectedPushback": "Nine reviews is a tiny sample, and scoring a Caryl Churchill play like a math test misses the point.",
-      "suggestedReply": "Fair, nine is a small pile, and the Critic Score is just a weighted average of the published critic reviews, so take it as a rough guide. I mostly like having everyone's quotes in one place.",
+      "title": "Reviews are in for Cloud 9 at the Lyttelton. 81/100 from 12 critics, with just one cooler review in the pile",
+      "body": "Cloud 9 opened at the Lyttelton Theatre, and I found 12 reviews: 3 raves, 8 positive, 1 mixed. Audiences are at a B (across Mezzanine, London Box Office, and Seatplan), so a notch cooler than the critics.\n\nhttps://westendscorecard.com/show/cloud-9-west-end\n\nStuart King at London Box Office said a play that \"shouldn’t work\" \"is an utter delight.\" Critics also kept singling out Sam Troughton's performance as Cathy, and Dominic Cooke's direction gets a lot of love.\n\nThe one cooler review is Nick Curtis at the Evening Standard, who wrote that the play \"resonates more for its historical significance than its contemporary appeal.\" Which I can see, for a 1979 play.\n\nI haven't seen this one yet, and I really want to. Anyone seen it?",
+      "why": "Leads with the 81 and 12 reviews, then gives readers one clear contrast (King's delight vs Curtis's 'historical significance') plus the critics' praise for Troughton, ending with a real question to people who may have seen it.",
+      "expectedPushback": "Someone will say a Caryl Churchill play from 1979 shouldn't be boiled down to a score, and that the B from audiences matters more than critics.",
+      "suggestedReply": "Fair, a number can't tell you what a Churchill play feels like in the room, which is why I pulled the actual quotes. The Critic Score is just a weighted average of the published reviews, and the audience grade sits right next to it.",
       "personalLines": [
-        "I haven't seen this one yet, and I'm pretty keen.",
-        "Still undecided on this one, but the raves are tempting.",
-        "I haven't seen it yet, and the Nick Curtis review has me curious whether the play still lands today."
+        "I haven't seen this one yet, and the reviews have me wanting to.",
+        "Still undecided on this one, but Sam Troughton's reviews are tempting.",
+        "I haven't seen it yet, and that Evening Standard review makes me curious how it plays in the room."
       ],
-      "submitUrl": "https://www.reddit.com/r/TheWestEnd/submit?type=TEXT&title=Reviews+are+in+for+Cloud+9+at+the+Lyttelton.+81%2F100+from+9+critics%2C+for+a+play+from+1979%21&text=I+found+9+reviews%3A+3+raves%2C+5+positive%2C+1+mixed%2C+zero+negative.+Audiences+are+at+a+B+%28across+Mezzanine%2C+London+Box+Office%2C+and+Seatplan%29.%0A%0Ahttps%3A%2F%2Fwestendscorecard.com%2Fshow%2Fcloud-9-west-end%0A%0AStuart+King+at+London+Box+Office+called+it+%22A+play+which+shouldn%E2%80%99t+work%2C+which+should+make+us+cringe+with+embarrassment%2C+is+an+utter+delight%22.+Sarah+Crompton+at+WhatsOnStage+praised+the+revival+%22directed+with+immense+sensitivity+and+poise+by+Dominic+Cooke%22.+Meanwhile+Nick+Curtis+at+the+Evening+Standard+was+the+least+sold%2C+writing+%22the+play+resonates+more+for+its+historical+significance+than+its+contemporary+appeal.%22%0A%0AWhich+I+GET%2C+it%27s+an+old+play+and+some+of+it+apparently+shows+its+age.+Still%2C+the+raves+outnumber+the+doubts+by+a+lot.+Anyone+seen+it%3F%0A%0AI+haven%27t+seen+this+one+yet%2C+and+I%27m+pretty+keen.",
-      "oldRedditSubmitUrl": "https://old.reddit.com/r/TheWestEnd/submit?selftext=true&title=Reviews+are+in+for+Cloud+9+at+the+Lyttelton.+81%2F100+from+9+critics%2C+for+a+play+from+1979%21&text=I+found+9+reviews%3A+3+raves%2C+5+positive%2C+1+mixed%2C+zero+negative.+Audiences+are+at+a+B+%28across+Mezzanine%2C+London+Box+Office%2C+and+Seatplan%29.%0A%0Ahttps%3A%2F%2Fwestendscorecard.com%2Fshow%2Fcloud-9-west-end%0A%0AStuart+King+at+London+Box+Office+called+it+%22A+play+which+shouldn%E2%80%99t+work%2C+which+should+make+us+cringe+with+embarrassment%2C+is+an+utter+delight%22.+Sarah+Crompton+at+WhatsOnStage+praised+the+revival+%22directed+with+immense+sensitivity+and+poise+by+Dominic+Cooke%22.+Meanwhile+Nick+Curtis+at+the+Evening+Standard+was+the+least+sold%2C+writing+%22the+play+resonates+more+for+its+historical+significance+than+its+contemporary+appeal.%22%0A%0AWhich+I+GET%2C+it%27s+an+old+play+and+some+of+it+apparently+shows+its+age.+Still%2C+the+raves+outnumber+the+doubts+by+a+lot.+Anyone+seen+it%3F%0A%0AI+haven%27t+seen+this+one+yet%2C+and+I%27m+pretty+keen.",
+      "submitUrl": "https://www.reddit.com/r/TheWestEnd/submit?type=TEXT&title=Reviews+are+in+for+Cloud+9+at+the+Lyttelton.+81%2F100+from+12+critics%2C+with+just+one+cooler+review+in+the+pile&text=Cloud+9+opened+at+the+Lyttelton+Theatre%2C+and+I+found+12+reviews%3A+3+raves%2C+8+positive%2C+1+mixed.+Audiences+are+at+a+B+%28across+Mezzanine%2C+London+Box+Office%2C+and+Seatplan%29%2C+so+a+notch+cooler+than+the+critics.%0A%0Ahttps%3A%2F%2Fwestendscorecard.com%2Fshow%2Fcloud-9-west-end%0A%0AStuart+King+at+London+Box+Office+said+a+play+that+%22shouldn%E2%80%99t+work%22+%22is+an+utter+delight.%22+Critics+also+kept+singling+out+Sam+Troughton%27s+performance+as+Cathy%2C+and+Dominic+Cooke%27s+direction+gets+a+lot+of+love.%0A%0AThe+one+cooler+review+is+Nick+Curtis+at+the+Evening+Standard%2C+who+wrote+that+the+play+%22resonates+more+for+its+historical+significance+than+its+contemporary+appeal.%22+Which+I+can+see%2C+for+a+1979+play.%0A%0AI+haven%27t+seen+this+one+yet%2C+and+I+really+want+to.+Anyone+seen+it%3F",
+      "oldRedditSubmitUrl": "https://old.reddit.com/r/TheWestEnd/submit?selftext=true&title=Reviews+are+in+for+Cloud+9+at+the+Lyttelton.+81%2F100+from+12+critics%2C+with+just+one+cooler+review+in+the+pile&text=Cloud+9+opened+at+the+Lyttelton+Theatre%2C+and+I+found+12+reviews%3A+3+raves%2C+8+positive%2C+1+mixed.+Audiences+are+at+a+B+%28across+Mezzanine%2C+London+Box+Office%2C+and+Seatplan%29%2C+so+a+notch+cooler+than+the+critics.%0A%0Ahttps%3A%2F%2Fwestendscorecard.com%2Fshow%2Fcloud-9-west-end%0A%0AStuart+King+at+London+Box+Office+said+a+play+that+%22shouldn%E2%80%99t+work%22+%22is+an+utter+delight.%22+Critics+also+kept+singling+out+Sam+Troughton%27s+performance+as+Cathy%2C+and+Dominic+Cooke%27s+direction+gets+a+lot+of+love.%0A%0AThe+one+cooler+review+is+Nick+Curtis+at+the+Evening+Standard%2C+who+wrote+that+the+play+%22resonates+more+for+its+historical+significance+than+its+contemporary+appeal.%22+Which+I+can+see%2C+for+a+1979+play.%0A%0AI+haven%27t+seen+this+one+yet%2C+and+I+really+want+to.+Anyone+seen+it%3F",
       "crosspostSubreddit": null,
       "crosspostSubmitUrl": null,
-      "emailedAt": "2026-11-11T15:49:31.161Z",
+      "emailedAt": "2026-11-11T16:08:38.046Z",
       "emailedScore": 81,
-      "emailedReviewCount": 9
+      "emailedReviewCount": 12,
+      "reminderAt": "2026-11-11T16:08:38.046Z",
+      "updateCount": 1
     }
   }
 }
