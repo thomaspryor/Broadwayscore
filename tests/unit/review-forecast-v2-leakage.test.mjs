@@ -68,6 +68,16 @@ test('audience: a capture dated before opening is used, one on/after is refused'
   }
 });
 
+test('audience from member reviews: the newest included review date decides, a date on/after opening is refused', () => {
+  const ok = V2.buildV2Features(target, setup([], { TARGET: { date: '2015-03-11', score: 90, reviewCount: 40 } }));
+  assert.equal(ok.has.audience, true);
+  V2.assertNoLeakageV2(target, ok.provenance);
+  for (const d of ['2015-03-12', '2015-03-30']) {
+    const g = V2.buildV2Features(target, setup([], { TARGET: { date: d, score: 99, reviewCount: 500 } }));
+    assert.throws(() => V2.assertNoLeakageV2(target, g.provenance), /LEAKAGE\(v2\)/);
+  }
+});
+
 test('assertNoLeakageV2 rejects later, undated, self-referencing inputs', () => {
   const f = V2.buildV2Features(target, setup());
   const bad = (p) => assert.throws(() => V2.assertNoLeakageV2(target, [...f.provenance, p]), /LEAKAGE\(v2\)/);

@@ -11,8 +11,10 @@
  *             Features: shrunk score record, Broadway experience, debut share, company size.
  *   preview   previews length (previewsStartDate to opening) and week-over-week trend of capacity,
  *             average ticket price and gross across the preview weeks that END before opening night.
- *   audience  Show Score aggregate score and review count read off a Wayback capture dated before
- *             opening night (scripts/review-forecast-v2-wayback-sweep.js). Sparse: most shows have none.
+ *   audience  Show Score score and review count over member reviews each dated before opening night:
+ *             either read off a Wayback capture (scripts/review-forecast-v2-wayback-sweep.js, sparse) or
+ *             rebuilt from the live page's dated member reviews (scripts/review-forecast-v2-showscore-members-sweep.js).
+ *             ctx.audience[id] = { date:'YYYY-MM-DD' | timestamp, score, reviewCount }; date is the newest included review.
  */
 'use strict';
 
@@ -155,8 +157,9 @@ function buildV2Features(target, ctx, opts = {}) {
 
   // ---- audience capture (dated before opening) ----
   const a = ctx.audience && ctx.audience[target.id];
-  if (a && a.timestamp && a.score != null && a.reviewCount != null) {
-    const d = `${a.timestamp.slice(0, 4)}-${a.timestamp.slice(4, 6)}-${a.timestamp.slice(6, 8)}`;
+  const aDate = a && (a.date || (a.timestamp && `${a.timestamp.slice(0, 4)}-${a.timestamp.slice(4, 6)}-${a.timestamp.slice(6, 8)}`));
+  if (a && aDate && a.score != null && a.reviewCount != null) {
+    const d = aDate;
     x.audScore = a.score - AUD_SCORE_CENTER;
     x.audCount = Math.log(a.reviewCount + 1) - AUD_COUNT_CENTER;
     note('audience-capture', target.id, d);
