@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-11T14:19:13.164Z",
+  "generatedAt": "2026-11-11T15:24:16.479Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -64,6 +64,11 @@
       "openingDate": "2026-11-12"
     },
     {
+      "id": "now-you-see-me-live-2026",
+      "title": "Now You See Me Live",
+      "openingDate": "2026-11-11"
+    },
+    {
       "id": "speculations-off-west-end-2026",
       "title": "Speculations",
       "openingDate": "2026-11-05"
@@ -108,14 +113,14 @@
     {
       "showId": "the-good-thief-off-broadway-2026",
       "reason": "no data/review-texts directory for this show"
+    },
+    {
+      "showId": "first-and-last-off-broadway-2026",
+      "reason": "no data/review-texts directory for this show"
     }
   ],
   "feedsChecked": 84,
   "feedsFailed": [
-    {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
     {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
@@ -137,8 +142,8 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 848,
-  "matchedGaps": 4,
+  "itemsScanned": 854,
+  "matchedGaps": 8,
   "possibleGaps": 1,
   "gaps": [
     {
@@ -160,6 +165,33 @@
       "publishDate": "2026-11-11"
     },
     {
+      "showId": "cloud-9-west-end-2026",
+      "title": "Cloud 9",
+      "level": "matched",
+      "outletId": "london-unattached",
+      "url": "https://www.london-unattached.com/cloud-9-national-theatre/",
+      "headline": "Cloud 9 &#8211; Lyttelton National Theatre",
+      "publishDate": "2026-11-11"
+    },
+    {
+      "showId": "cloud-9-west-end-2026",
+      "title": "Cloud 9",
+      "level": "matched",
+      "outletId": "guardian",
+      "url": "https://www.theguardian.com/stage/2026/nov/11/cloud-9-review-national-theatre-london-caryl-churchill",
+      "headline": "Caryl Churchill’s magnificent Cloud 9 reaches for the skies – the National Theatre has done it proud",
+      "publishDate": "2026-11-11"
+    },
+    {
+      "showId": "cloud-9-west-end-2026",
+      "title": "Cloud 9",
+      "level": "matched",
+      "outletId": "theupcoming",
+      "url": "https://www.theupcoming.co.uk/2026/11/11/cloud-9-at-the-national-theatre-theatre-review/",
+      "headline": "Cloud 9 at the National Theatre &#124; Theatre review",
+      "publishDate": "2026-11-11"
+    },
+    {
       "showId": "dogstar-off-west-end-2026",
       "title": "Dogstar",
       "level": "matched",
@@ -175,6 +207,15 @@
       "outletId": "rhombus-rota",
       "url": "https://rhombusrota.co.uk/2026/11/11/dogstar-at-the-hampstead-theatre-review/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=dogstar-at-the-hampstead-theatre-review",
       "headline": "Dogstar at the Hampstead Theatre Review",
+      "publishDate": "2026-11-11"
+    },
+    {
+      "showId": "msblackforpresident-off-broadway-2026",
+      "title": "Ms. Blakk for President",
+      "level": "matched",
+      "outletId": "theater-life",
+      "url": "https://theaterlife.com/well-see-ms-blakk-for-president/",
+      "headline": "We’ll See ****, Ms. Blakk for President ****",
       "publishDate": "2026-11-11"
     },
     {
