@@ -8,7 +8,8 @@ name: Refresh Show Score (opening-night window)
 # March 25 pre-opening).
 #
 # This workflow runs daily during the opening-night window, refreshing only
-# shows opening within the ±2 day lookback. ~1-3 shows per run on most days.
+# shows opening within the ±2 day lookback, plus shows opening within 14 days whose
+# critics have already started publishing (BRO-7372: Off-Broadway reviews land in previews). ~1-3 shows per run on most days.
 # Combined with the carousel-scroll fix in scripts/fetch-aggregator-pages.ts
 # and the loud-fail extractor changes in scripts/extract-show-score-reviews.js
 # (all 2026-04-28), this closes the Show Score side of the opening-night gap
@@ -89,19 +90,14 @@ jobs:
             exit 1
           fi
           LOOKBACK="$LOOKBACK_RAW"
-          SHOWS=$(node -e "
+          # Rule (a): opening within +-lookback days. Rule (b), BRO-7372: opening within 14 days and
+          # critics already publishing (Off-Broadway reviews land during previews). Logic and tests:
+          # scripts/lib/show-score-refresh-window.js
+          SHOWS=$(LOOKBACK="$LOOKBACK" node -e "
+            const { selectRefreshShows } = require('./scripts/lib/show-score-refresh-window');
             const shows = require('./data/shows.json').shows;
-            const now = new Date();
-            const lookAhead = new Date(now.getTime() + 2 * 24 * 60 * 60 * 1000);
-            const cutoff = new Date(now.getTime() - $LOOKBACK * 24 * 60 * 60 * 1000);
-            const candidates = shows.filter(s => {
-              if (!s.openingDate) return false;
-              const validStatus = s.status === 'open' || s.status === 'previews';
-              if (!validStatus) return false;
-              const d = new Date(s.openingDate);
-              return d >= cutoff && d <= lookAhead;
-            });
-            console.log(candidates.map(s => s.id).join(','));
+            const reviews = require('./data/reviews.json').reviews || [];
+            console.log(selectRefreshShows(shows, reviews, { lookbackDays: Number(process.env.LOOKBACK) }).join(','));
           ")
           if [ -z "$SHOWS" ]; then
             echo "No shows in opening-night window — exiting early"
