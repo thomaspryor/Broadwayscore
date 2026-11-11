@@ -1,8 +1,13 @@
 {
-  "generatedAt": "2026-11-11T05:08:00.475Z",
+  "generatedAt": "2026-11-11T05:11:54.446Z",
   "card": "BRO-7347",
   "market": "broadway",
-  "floor": 10,
+  "floor": {
+    "shows": 515,
+    "bootstrapMissCriticSampling": 2.42,
+    "ifFullPanelIsItselfADraw": 3.42,
+    "method": "resample each show's critics (one vote per outlet+critic, real tier weights), mean |resample - full|; the second number scales by sqrt(2) because the observed panel is itself one draw. Neither is a hard limit: it is the part of the miss no pre-opening input can remove."
+  },
   "today": "2026-11-11",
   "protocol": "Walk-forward by season, ridge lambda 20, getCriticScore target, season-clustered bootstrap seed 7314 B=2000. diff = MAE with minus MAE without; negative is better. Verdict helps only if the 95% interval is entirely below zero.",
   "baselineV1": {
@@ -31,11 +36,29 @@
     "paidFetches": 0
   },
   "multipleComparisons": "Three primary groups were declared in advance; per-feature rows are exploratory and uncorrected, so a lone exploratory \"helps\" would not count.",
+  "reliability": {
+    "source": "v1 walk-forward (data/audit/review-forecast-backtest.json)",
+    "coverage80": 0.841,
+    "avgWidth80": 28.4,
+    "tierHitModel": 0.362,
+    "tierHitCategoryMean": 0.324,
+    "tierHitPriorElseMean": 0.347
+  },
   "inputs": [
     {
       "input": "Opening-night cast (all six cast features)",
       "kind": "primary",
       "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.6,
+        "maeWith": 18.27
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.09,
+        "maeWith": 9.06
+      },
       "maeWithout": 7.73,
       "maeWith": 7.93,
       "maeCategoryMean": 8.55,
@@ -44,12 +67,27 @@
         0.09,
         0.29
       ],
+      "diffCI95Bonferroni7": [
+        0.03,
+        0.32
+      ],
+      "survivesCorrection": false,
       "verdict": "hurts"
     },
     {
       "input": "Preview signals (length, capacity/price/gross trend, gross level)",
       "kind": "primary",
       "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.6,
+        "maeWith": 17.36
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.09,
+        "maeWith": 8.26
+      },
       "maeWithout": 7.73,
       "maeWith": 7.77,
       "maeCategoryMean": 8.55,
@@ -58,12 +96,27 @@
         -0.2,
         0.4
       ],
+      "diffCI95Bonferroni7": [
+        -0.25,
+        0.54
+      ],
+      "survivesCorrection": false,
       "verdict": "no effect"
     },
     {
       "input": "Cast + preview signals together",
       "kind": "primary",
       "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.6,
+        "maeWith": 18.09
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.09,
+        "maeWith": 8.32
+      },
       "maeWithout": 7.73,
       "maeWith": 7.96,
       "maeCategoryMean": 8.55,
@@ -72,12 +125,27 @@
         0.01,
         0.56
       ],
+      "diffCI95Bonferroni7": [
+        -0.04,
+        0.69
+      ],
+      "survivesCorrection": false,
       "verdict": "hurts"
     },
     {
       "input": "Cast, shows with an opening cast on file only",
       "kind": "primary-subset",
       "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.6,
+        "maeWith": 18.27
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.09,
+        "maeWith": 9.06
+      },
       "maeWithout": 7.73,
       "maeWith": 7.93,
       "maeCategoryMean": 8.55,
@@ -86,12 +154,27 @@
         0.09,
         0.29
       ],
+      "diffCI95Bonferroni7": [
+        0.03,
+        0.32
+      ],
+      "survivesCorrection": false,
       "verdict": "hurts"
     },
     {
       "input": "Preview signals, shows with preview data only",
       "kind": "primary-subset",
       "shows": 339,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.6,
+        "maeWith": 17.36
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.09,
+        "maeWith": 8.26
+      },
       "maeWithout": 7.74,
       "maeWith": 7.79,
       "maeCategoryMean": 8.56,
@@ -100,6 +183,11 @@
         -0.17,
         0.39
       ],
+      "diffCI95Bonferroni7": [
+        -0.22,
+        0.53
+      ],
+      "survivesCorrection": false,
       "verdict": "no effect"
     },
     {
@@ -109,9 +197,214 @@
       "verdict": "cannot be established (fewer than 20 evaluated shows carry this input)"
     },
     {
+      "input": "Panel: per-critic forecasts with tier weights (all critics, then same type)",
+      "kind": "primary",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.6,
+        "maeWith": 19.17
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.09,
+        "maeWith": 8.7
+      },
+      "maeWithout": 7.73,
+      "maeWith": 7.62,
+      "maeCategoryMean": 8.55,
+      "diff": -0.11,
+      "diffCI95": [
+        -0.19,
+        -0.03
+      ],
+      "diffCI95Bonferroni7": [
+        -0.22,
+        -0.01
+      ],
+      "survivesCorrection": true,
+      "verdict": "helps"
+    },
+    {
+      "input": "Panel, shows with an active panel only",
+      "kind": "primary-subset",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.6,
+        "maeWith": 19.17
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.09,
+        "maeWith": 8.7
+      },
+      "maeWithout": 7.73,
+      "maeWith": 7.62,
+      "maeCategoryMean": 8.55,
+      "diff": -0.11,
+      "diffCI95": [
+        -0.19,
+        -0.03
+      ],
+      "diffCI95Bonferroni7": [
+        -0.22,
+        -0.01
+      ],
+      "survivesCorrection": true,
+      "verdict": "helps"
+    },
+    {
+      "input": "Awards earned by earlier productions of the same title",
+      "kind": "primary",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.6,
+        "maeWith": 17.61
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.09,
+        "maeWith": 9.27
+      },
+      "maeWithout": 7.73,
+      "maeWith": 7.82,
+      "maeCategoryMean": 8.55,
+      "diff": 0.09,
+      "diffCI95": [
+        0,
+        0.18
+      ],
+      "diffCI95Bonferroni7": [
+        -0.02,
+        0.22
+      ],
+      "survivesCorrection": false,
+      "verdict": "hurts"
+    },
+    {
+      "input": "Awards, shows with an earlier production that has honours",
+      "kind": "primary-subset",
+      "shows": 40,
+      "missUnder55": null,
+      "miss83Plus": null,
+      "maeWithout": 7.7,
+      "maeWith": 8.54,
+      "maeCategoryMean": 7.88,
+      "diff": 0.84,
+      "diffCI95": [
+        0.17,
+        1.69
+      ],
+      "diffCI95Bonferroni7": [
+        0,
+        2.06
+      ],
+      "survivesCorrection": false,
+      "verdict": "hurts"
+    },
+    {
+      "input": "Calendar: spring crush and month of year",
+      "kind": "primary",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.6,
+        "maeWith": 17.26
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.09,
+        "maeWith": 9.15
+      },
+      "maeWithout": 7.73,
+      "maeWith": 7.76,
+      "maeCategoryMean": 8.55,
+      "diff": 0.03,
+      "diffCI95": [
+        -0.09,
+        0.16
+      ],
+      "diffCI95Bonferroni7": [
+        -0.12,
+        0.2
+      ],
+      "survivesCorrection": false,
+      "verdict": "no effect"
+    },
+    {
+      "input": "Nonprofit-run house flag",
+      "kind": "primary",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.6,
+        "maeWith": 17.68
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.09,
+        "maeWith": 9.04
+      },
+      "maeWithout": 7.73,
+      "maeWith": 7.73,
+      "maeCategoryMean": 8.55,
+      "diff": 0,
+      "diffCI95": [
+        -0.03,
+        0.05
+      ],
+      "diffCI95Bonferroni7": [
+        -0.04,
+        0.08
+      ],
+      "survivesCorrection": false,
+      "verdict": "no effect"
+    },
+    {
+      "input": "Every input together (cast, preview, panel, awards, calendar, house)",
+      "kind": "primary",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.6,
+        "maeWith": 19.29
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.09,
+        "maeWith": 8.2
+      },
+      "maeWithout": 7.73,
+      "maeWith": 8.12,
+      "maeCategoryMean": 8.55,
+      "diff": 0.39,
+      "diffCI95": [
+        -0.06,
+        0.94
+      ],
+      "diffCI95Bonferroni7": [
+        -0.15,
+        1.18
+      ],
+      "survivesCorrection": false,
+      "verdict": "no effect"
+    },
+    {
       "input": "feature: castDevLead",
       "kind": "exploratory",
       "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.6,
+        "maeWith": 17.59
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.09,
+        "maeWith": 9.08
+      },
       "maeWithout": 7.73,
       "maeWith": 7.77,
       "maeCategoryMean": 8.55,
@@ -120,12 +413,27 @@
         -0.02,
         0.12
       ],
+      "diffCI95Bonferroni7": [
+        -0.03,
+        0.15
+      ],
+      "survivesCorrection": false,
       "verdict": "no effect"
     },
     {
       "input": "feature: castDevAll",
       "kind": "exploratory",
       "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.6,
+        "maeWith": 17.94
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.09,
+        "maeWith": 9.05
+      },
       "maeWithout": 7.73,
       "maeWith": 7.79,
       "maeCategoryMean": 8.55,
@@ -134,12 +442,27 @@
         -0.01,
         0.15
       ],
+      "diffCI95Bonferroni7": [
+        -0.02,
+        0.19
+      ],
+      "survivesCorrection": false,
       "verdict": "no effect"
     },
     {
       "input": "feature: castExpLead",
       "kind": "exploratory",
       "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.6,
+        "maeWith": 17.56
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.09,
+        "maeWith": 9.11
+      },
       "maeWithout": 7.73,
       "maeWith": 7.73,
       "maeCategoryMean": 8.55,
@@ -148,12 +471,27 @@
         -0.02,
         0.03
       ],
+      "diffCI95Bonferroni7": [
+        -0.02,
+        0.03
+      ],
+      "survivesCorrection": false,
       "verdict": "no effect"
     },
     {
       "input": "feature: castExpAll",
       "kind": "exploratory",
       "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.6,
+        "maeWith": 17.54
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.09,
+        "maeWith": 9.15
+      },
       "maeWithout": 7.73,
       "maeWith": 7.75,
       "maeCategoryMean": 8.55,
@@ -162,12 +500,27 @@
         0,
         0.04
       ],
+      "diffCI95Bonferroni7": [
+        0,
+        0.05
+      ],
+      "survivesCorrection": false,
       "verdict": "hurts"
     },
     {
       "input": "feature: castDebutFrac",
       "kind": "exploratory",
       "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.6,
+        "maeWith": 17.7
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.09,
+        "maeWith": 9.15
+      },
       "maeWithout": 7.73,
       "maeWith": 7.77,
       "maeCategoryMean": 8.55,
@@ -176,12 +529,27 @@
         0.01,
         0.08
       ],
+      "diffCI95Bonferroni7": [
+        -0.01,
+        0.09
+      ],
+      "survivesCorrection": false,
       "verdict": "hurts"
     },
     {
       "input": "feature: castSize",
       "kind": "exploratory",
       "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.6,
+        "maeWith": 17.63
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.09,
+        "maeWith": 9.04
+      },
       "maeWithout": 7.73,
       "maeWith": 7.73,
       "maeCategoryMean": 8.55,
@@ -190,12 +558,27 @@
         -0.03,
         0.04
       ],
+      "diffCI95Bonferroni7": [
+        -0.04,
+        0.05
+      ],
+      "survivesCorrection": false,
       "verdict": "no effect"
     },
     {
       "input": "feature: prevLen",
       "kind": "exploratory",
       "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.6,
+        "maeWith": 17.36
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.09,
+        "maeWith": 9.13
+      },
       "maeWithout": 7.73,
       "maeWith": 7.74,
       "maeCategoryMean": 8.55,
@@ -204,12 +587,27 @@
         -0.03,
         0.06
       ],
+      "diffCI95Bonferroni7": [
+        -0.06,
+        0.08
+      ],
+      "survivesCorrection": false,
       "verdict": "no effect"
     },
     {
       "input": "feature: prevWeeks",
       "kind": "exploratory",
       "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.6,
+        "maeWith": 17.69
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.09,
+        "maeWith": 8.47
+      },
       "maeWithout": 7.73,
       "maeWith": 7.8,
       "maeCategoryMean": 8.55,
@@ -218,12 +616,27 @@
         -0.12,
         0.34
       ],
+      "diffCI95Bonferroni7": [
+        -0.18,
+        0.44
+      ],
+      "survivesCorrection": false,
       "verdict": "no effect"
     },
     {
       "input": "feature: capSlope",
       "kind": "exploratory",
       "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.6,
+        "maeWith": 17.51
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.09,
+        "maeWith": 9.11
+      },
       "maeWithout": 7.73,
       "maeWith": 7.73,
       "maeCategoryMean": 8.55,
@@ -232,12 +645,27 @@
         -0.03,
         0.04
       ],
+      "diffCI95Bonferroni7": [
+        -0.04,
+        0.05
+      ],
+      "survivesCorrection": false,
       "verdict": "no effect"
     },
     {
       "input": "feature: atpSlope",
       "kind": "exploratory",
       "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.6,
+        "maeWith": 17.35
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.09,
+        "maeWith": 8.95
+      },
       "maeWithout": 7.73,
       "maeWith": 7.66,
       "maeCategoryMean": 8.55,
@@ -246,12 +674,27 @@
         -0.21,
         0.06
       ],
+      "diffCI95Bonferroni7": [
+        -0.25,
+        0.09
+      ],
+      "survivesCorrection": false,
       "verdict": "no effect"
     },
     {
       "input": "feature: grossRel",
       "kind": "exploratory",
       "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.6,
+        "maeWith": 17.54
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.09,
+        "maeWith": 9.13
+      },
       "maeWithout": 7.73,
       "maeWith": 7.73,
       "maeCategoryMean": 8.55,
@@ -260,12 +703,27 @@
         -0.05,
         0.05
       ],
+      "diffCI95Bonferroni7": [
+        -0.07,
+        0.07
+      ],
+      "survivesCorrection": false,
       "verdict": "no effect"
     },
     {
       "input": "feature: grossSlope",
       "kind": "exploratory",
       "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.6,
+        "maeWith": 17.4
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.09,
+        "maeWith": 9.05
+      },
       "maeWithout": 7.73,
       "maeWith": 7.74,
       "maeCategoryMean": 8.55,
@@ -274,24 +732,261 @@
         -0.06,
         0.12
       ],
+      "diffCI95Bonferroni7": [
+        -0.07,
+        0.15
+      ],
+      "survivesCorrection": false,
       "verdict": "no effect"
+    },
+    {
+      "input": "feature: springCrush",
+      "kind": "exploratory",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.6,
+        "maeWith": 17.3
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.09,
+        "maeWith": 9.06
+      },
+      "maeWithout": 7.73,
+      "maeWith": 7.75,
+      "maeCategoryMean": 8.55,
+      "diff": 0.02,
+      "diffCI95": [
+        -0.07,
+        0.1
+      ],
+      "diffCI95Bonferroni7": [
+        -0.11,
+        0.13
+      ],
+      "survivesCorrection": false,
+      "verdict": "no effect"
+    },
+    {
+      "input": "feature: monthSin",
+      "kind": "exploratory",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.6,
+        "maeWith": 17.19
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.09,
+        "maeWith": 9.15
+      },
+      "maeWithout": 7.73,
+      "maeWith": 7.8,
+      "maeCategoryMean": 8.55,
+      "diff": 0.07,
+      "diffCI95": [
+        -0.04,
+        0.18
+      ],
+      "diffCI95Bonferroni7": [
+        -0.08,
+        0.21
+      ],
+      "survivesCorrection": false,
+      "verdict": "no effect"
+    },
+    {
+      "input": "feature: monthCos",
+      "kind": "exploratory",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.6,
+        "maeWith": 17.67
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.09,
+        "maeWith": 9.05
+      },
+      "maeWithout": 7.73,
+      "maeWith": 7.76,
+      "maeCategoryMean": 8.55,
+      "diff": 0.03,
+      "diffCI95": [
+        -0.03,
+        0.09
+      ],
+      "diffCI95Bonferroni7": [
+        -0.04,
+        0.11
+      ],
+      "survivesCorrection": false,
+      "verdict": "no effect"
+    },
+    {
+      "input": "feature: nonprofitHouse",
+      "kind": "exploratory",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.6,
+        "maeWith": 17.68
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.09,
+        "maeWith": 9.04
+      },
+      "maeWithout": 7.73,
+      "maeWith": 7.73,
+      "maeCategoryMean": 8.55,
+      "diff": 0,
+      "diffCI95": [
+        -0.03,
+        0.05
+      ],
+      "diffCI95Bonferroni7": [
+        -0.04,
+        0.08
+      ],
+      "survivesCorrection": false,
+      "verdict": "no effect"
+    },
+    {
+      "input": "feature: awardWins",
+      "kind": "exploratory",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.6,
+        "maeWith": 17.56
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.09,
+        "maeWith": 9.27
+      },
+      "maeWithout": 7.73,
+      "maeWith": 7.81,
+      "maeCategoryMean": 8.55,
+      "diff": 0.08,
+      "diffCI95": [
+        0,
+        0.17
+      ],
+      "diffCI95Bonferroni7": [
+        -0.02,
+        0.22
+      ],
+      "survivesCorrection": false,
+      "verdict": "no effect"
+    },
+    {
+      "input": "feature: awardNoms",
+      "kind": "exploratory",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.6,
+        "maeWith": 17.59
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.09,
+        "maeWith": 9.22
+      },
+      "maeWithout": 7.73,
+      "maeWith": 7.75,
+      "maeCategoryMean": 8.55,
+      "diff": 0.02,
+      "diffCI95": [
+        -0.02,
+        0.06
+      ],
+      "diffCI95Bonferroni7": [
+        -0.04,
+        0.08
+      ],
+      "survivesCorrection": false,
+      "verdict": "no effect"
+    },
+    {
+      "input": "feature: panelAll",
+      "kind": "exploratory",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.6,
+        "maeWith": 18.99
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.09,
+        "maeWith": 8.67
+      },
+      "maeWithout": 7.73,
+      "maeWith": 7.66,
+      "maeCategoryMean": 8.55,
+      "diff": -0.07,
+      "diffCI95": [
+        -0.15,
+        -0.01
+      ],
+      "diffCI95Bonferroni7": [
+        -0.18,
+        0.01
+      ],
+      "survivesCorrection": false,
+      "verdict": "helps"
+    },
+    {
+      "input": "feature: panelType",
+      "kind": "exploratory",
+      "shows": 341,
+      "missUnder55": {
+        "n": 25,
+        "maeWithout": 17.6,
+        "maeWith": 19.02
+      },
+      "miss83Plus": {
+        "n": 55,
+        "maeWithout": 9.09,
+        "maeWith": 8.75
+      },
+      "maeWithout": 7.73,
+      "maeWith": 7.62,
+      "maeCategoryMean": 8.55,
+      "diff": -0.11,
+      "diffCI95": [
+        -0.18,
+        -0.04
+      ],
+      "diffCI95Bonferroni7": [
+        -0.2,
+        -0.02
+      ],
+      "survivesCorrection": true,
+      "verdict": "helps"
     }
   ],
   "notTestable": [
     {
       "input": "Show Score audience score and review count (Wayback capture before opening)",
       "verdict": "cannot be dated at usable coverage",
-      "why": "archive.org availability found no capture dated before opening for any of the first 30 shows swept (2 of 24 in the earlier pilot). Fewer than 20 shows can carry it, so no with/without comparison is possible."
+      "why": "archive.org availability (closest-capture lookups at four offsets before opening) found no pre-opening capture for the 30 shows swept, all opened 2015-10 to 2016-05 (one season). The lookup returns one closest capture per query, so an older pre-opening capture could be missed; a full capture listing (CDX) is blocked from this environment. Treated as unproven coverage, not proof of absence: with 0 captures no with/without comparison is possible."
     },
     {
       "input": "Mezzanine, Theatr (separate audience components)",
-      "verdict": "cannot be dated",
-      "why": "Mezzanine stored data is production aggregates with no review dates. Theatr: 0 of 20 sampled show pages have a Wayback capture before opening."
+      "verdict": "untested (no dated source found)",
+      "why": "Mezzanine stored data is production aggregates with no review dates. Theatr and Broadway.com were not swept: no committed sampling backs a capture-rate claim, so these are untested, not disproven."
     },
     {
       "input": "Broadway.com audience score",
-      "verdict": "cannot be dated",
-      "why": "6 of 20 sampled show pages have an earlier capture, but the one capture read (1 paid fetch) carries no audience rating field."
+      "verdict": "untested (no dated source found)",
+      "why": "Not swept (no committed sampling); the one paid fetch of the pilot found no audience rating field on the page read. Untested, not disproven."
     },
     {
       "input": "BroadwayWorld board chatter before opening",
@@ -306,7 +1001,7 @@
     {
       "input": "Opening date pushed, discount and lottery presence",
       "verdict": "cannot be dated",
-      "why": "No stored original opening date (2 openingDateNote entries only) and no dated discount or lottery history."
+      "why": "No stored original opening date (5 openingDateNote entries in shows.json) and no dated discount or lottery history."
     },
     {
       "input": "Google Trends in the preview window",
@@ -320,9 +1015,32 @@
     }
   ],
   "bestCombinedPrimary": {
-    "input": "None: v1 (today's formula) stays best",
+    "input": "Panel: per-critic forecasts with tier weights (all critics, then same type)",
+    "kind": "primary",
     "shows": 341,
-    "maeWith": 7.73,
-    "verdict": "no input helps"
+    "missUnder55": {
+      "n": 25,
+      "maeWithout": 17.6,
+      "maeWith": 19.17
+    },
+    "miss83Plus": {
+      "n": 55,
+      "maeWithout": 9.09,
+      "maeWith": 8.7
+    },
+    "maeWithout": 7.73,
+    "maeWith": 7.62,
+    "maeCategoryMean": 8.55,
+    "diff": -0.11,
+    "diffCI95": [
+      -0.19,
+      -0.03
+    ],
+    "diffCI95Bonferroni7": [
+      -0.22,
+      -0.01
+    ],
+    "survivesCorrection": true,
+    "verdict": "helps"
   }
 }

@@ -20,7 +20,7 @@ const RF = require('./review-forecast.js');
 
 const { LAG_DAYS, toDay, normName } = RF;
 const CAST_SHRINK_K = 3;
-const LEAD_N = 5; // billing order is the stored order; the first five are "the leads"
+const LEAD_N = 5; // IBDB openingNightCast is often alphabetical, not billing order: "Lead" features are the first five LISTED, not true leads
 const PREVIEW_WEEKS_TREND = 4;
 const PREVIEW_LEN_CENTER = 30; // days; typical Broadway previews, declared in advance
 const AUD_SCORE_CENTER = 85; // Show Score level of a typical show, declared in advance
