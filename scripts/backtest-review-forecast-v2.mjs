@@ -39,6 +39,7 @@ const V2 = require('./lib/review-forecast-v2-inputs.js');
 const EX = require('./lib/review-forecast-v2-extra.js');
 const ER = require('./lib/review-forecast-v2-earlier-run.js');
 const OT = require('./lib/outlet-tiers.js');
+const { isBroadwayCategory } = require('./lib/venue-classification.js'); // BRO-7369: the site's one Broadway predicate
 const EA = require('./lib/review-forecast-v2-earlier-audience.js'); // BRO-7369
 const EC = require('./lib/review-forecast-v2-earlier-critics.js'); // BRO-7369 A, B, C-gap
 const HANDCHECK = new Set(((process.argv.find((a) => a.startsWith('--handcheck=')) || '').slice(12) || '').split(',').filter(Boolean)); // print sweep2 features for these show ids (BRO-7373 hand-check)
@@ -139,7 +140,7 @@ const showMeta = Object.fromEntries(shows.map((s) => [s.id, { limitedRun: !!s.li
 const ctx = { pool, weeks, origins, poolById, castIndex, audience, awards, teams: teamsIdx, openings: openingsIdx, theaterSeats, showMeta, memberShape: memRaw ? memRaw.shows : {}, panel: { byCritic }, earlierRun: erRaw.reviews, troubleSet: new Set(erRaw.trouble || []), earlierAudience, reviewsByShow };
 // transfer = an earlier production of the same title outside Broadway in our data, or earlier-run reviews on file; chosen independently of the new input
 const nonBwayOpenings = new Map();
-for (const s of shows) { if (s.category === 'broadway' || !s.openingDate) continue; const k = RF.titleKey(s.title); if (!nonBwayOpenings.has(k)) nonBwayOpenings.set(k, []); nonBwayOpenings.get(k).push(s.openingDate); }
+for (const s of shows) { if (isBroadwayCategory(s) || !s.openingDate) continue; const k = RF.titleKey(s.title); if (!nonBwayOpenings.has(k)) nonBwayOpenings.set(k, []); nonBwayOpenings.get(k).push(s.openingDate); }
 const isTransfer = (t) => (nonBwayOpenings.get(RF.titleKey(t.title)) || []).some((d) => d < t.openingDate) || !!(erRaw.reviews[t.id] && erRaw.reviews[t.id].length);
 
 const targets = shows.filter((s) => poolById[s.id] && s.category === MARKET && poolById[s.id].rc >= FLOOR && (s.type === 'play' || s.type === 'musical')

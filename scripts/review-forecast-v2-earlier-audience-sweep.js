@@ -22,6 +22,7 @@ const fs = require('fs');
 const path = require('path');
 const EA = require('./lib/review-forecast-v2-earlier-audience.js');
 const RF = require('./lib/review-forecast.js');
+const { isBroadwayCategory } = require('./lib/venue-classification.js');
 
 const ROOT = path.resolve(__dirname, '..');
 const arg = (k, d) => { const a = process.argv.find((x) => x.startsWith(`--${k}=`)); return a ? a.split('=').slice(1).join('=') : d; };
@@ -53,7 +54,7 @@ function candidates(s) {
   const k = RF.titleKey(s.title); const out = []; const seen = new Set([urls[s.id]].filter(Boolean));
   const add = (url, kind, ref) => { if (url && !seen.has(url)) { seen.add(url); out.push({ url, kind, ref }); } };
   for (const q of shows) {
-    if (q.id === s.id || q.category === 'broadway' || !q.openingDate || q.openingDate >= s.openingDate || RF.titleKey(q.title) !== k) continue;
+    if (q.id === s.id || isBroadwayCategory(q) || !q.openingDate || q.openingDate >= s.openingDate || RF.titleKey(q.title) !== k) continue;
     if (urls[q.id]) add(urls[q.id], 'mapped', q.id);
   }
   if (GUESS) { const sl = slugify(s.title); add(OFF + sl, 'guess', null); if (/^the-/.test(sl)) add(OFF + sl.slice(4), 'guess', null); }
