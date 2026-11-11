@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-11T16:33:10.590Z",
+  "timestamp": "2026-11-11T16:59:35.176Z",
   "stats": {
-    "totalReviews": 81520,
-    "alreadyFlagged": 22254,
+    "totalReviews": 81523,
+    "alreadyFlagged": 22255,
     "dateGuardCatches": 218,
     "directorMismatch": 3629,
-    "tvFilmSignals": 2296,
-    "londonSignals": 3688,
+    "tvFilmSignals": 2297,
+    "londonSignals": 3692,
     "offBroadwaySignals": 751,
     "yearMismatch": 369,
     "noPublishDate": 8494
@@ -71863,6 +71863,19 @@
       ]
     },
     {
+      "showId": "the-lives-of-others-west-end-2026",
+      "file": "the-jewish-chronicle--unknown.json",
+      "publishDate": "2026-11-10",
+      "url": "https://www.thejc.com/life/theatre/the-lives-of-others-review-keira-knightley-leads-cast-in-taut-cold-war-thriller-gbmpz4kr",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "the-lord-of-the-rings-a-musical-tale-regional-2024",
       "file": "chicago-reader--emily-mcclanathan.json",
       "score": 77,
@@ -95325,6 +95338,34 @@
     },
     {
       "showId": "cloud-9-west-end-2026",
+      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "score": 77,
+      "publishDate": "2026-11-11",
+      "url": "https://www.allthatdazzles.co.uk/post/review-cloud-9-lyttelton-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "cloud-9-west-end-2026",
+      "file": "all-that-dazzles-uk--unknown.json",
+      "score": 77,
+      "publishDate": "2026-11-11",
+      "url": "https://www.allthatdazzles.co.uk/post/review-cloud-9-lyttelton-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "cloud-9-west-end-2026",
       "file": "broadwayworld--josh-maughan.json",
       "score": 79,
       "publishDate": "2026-11-11",
@@ -95340,7 +95381,7 @@
     {
       "showId": "cloud-9-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "2026-11-11",
       "url": "https://www.theguardian.com/stage/2026/nov/11/cloud-9-review-national-theatre-london-caryl-churchill",
       "findings": [
@@ -95381,6 +95422,20 @@
     },
     {
       "showId": "cloud-9-west-end-2026",
+      "file": "london-unattached--unknown.json",
+      "score": 77,
+      "publishDate": "2026-11-11",
+      "url": "https://www.london-unattached.com/cloud-9-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "cloud-9-west-end-2026",
       "file": "standard--nick-curtis.json",
       "score": 54,
       "publishDate": "2026-11-11",
@@ -95396,7 +95451,7 @@
     {
       "showId": "cloud-9-west-end-2026",
       "file": "telegraph--dominic-cavendish.json",
-      "score": 81,
+      "score": 80,
       "publishDate": "2026-11-11",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/cloud-9-revival-review-modern-classic/",
       "findings": [
@@ -101872,6 +101927,19 @@
       "score": 61,
       "publishDate": "2026-10-27",
       "url": "https://www.londonboxoffice.co.uk/news/post/girls-young-vic-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "girls-off-west-end-2026",
+      "file": "theartsdispatch--unknown.json",
+      "publishDate": "2026-11-08",
+      "url": "https://www.theartsdispatch.com/p/girls-review-young-vic-london",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
