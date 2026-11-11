@@ -1,15 +1,15 @@
 {
-  "updatedAt": "2026-11-11T16:40:31.944Z",
-  "processed": 35,
-  "failed": 49,
-  "successRate": "41.7%",
+  "updatedAt": "2026-11-11T16:50:06.716Z",
+  "processed": 38,
+  "failed": 51,
+  "successRate": "42.7%",
   "tierBreakdown": {
-    "playwright": 24,
+    "playwright": 27,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 3,
     "directCookies": 0,
-    "scrapingdog": 5,
-    "scrapingbee": 3,
+    "scrapingdog": 6,
+    "scrapingbee": 2,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 7
@@ -28,26 +28,26 @@
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-11-11T16:36:26.318Z",
+      "t": "2026-11-11T16:43:25.093Z",
       "event": "bb-session",
-      "session": "07d57716",
+      "session": "5f95e08b",
+      "url": "https://www.nytimes.com/2026/11/11/theater/cloud-nine-national-theatre-london-re"
+    },
+    {
+      "t": "2026-11-11T16:43:25.474Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-11T16:45:38.805Z",
+      "event": "bb-session",
+      "session": "42a438d1",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
     },
     {
-      "t": "2026-11-11T16:36:26.989Z",
+      "t": "2026-11-11T16:45:39.083Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-11-11T16:40:08.434Z",
-      "event": "bb-session",
-      "session": "884c4ac0",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
-    },
-    {
-      "t": "2026-11-11T16:40:09.116Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
     }
   ]
 }
