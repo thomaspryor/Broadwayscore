@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-11T14:16:47.962Z",
+  "generatedAt": "2026-11-11T18:36:41.886Z",
   "night": "2026-11-10",
   "counts": {
     "total": 1,
@@ -10,7 +10,7 @@
   "lines": [
     {
       "verdict": "FAIL",
-      "line": "Cloud 9: reviews not graded, the overnight check did not run; no opening-night email draft; no Reddit draft emailed. Failed."
+      "line": "Cloud 9: reviews not graded, the overnight check did not run; opening-night email draft is out of date (built with score 81 from 12 reviews, the site shows score 78 from 17 reviews); Reddit draft emailed to you is out of date (score 78 from 15 reviews, the site shows score 78 from 17 reviews). Failed."
     }
   ],
   "scoreboard": {
@@ -19,7 +19,7 @@
     "passedOnOwn": 1
   },
   "missFirstSeen": {
-    "cloud-9-west-end-2026|2026-11-10|email:broadcast:missing": "2026-11-11T14:16:47.962Z",
-    "cloud-9-west-end-2026|2026-11-10|email:reddit:missing": "2026-11-11T14:16:47.962Z"
+    "cloud-9-west-end-2026|2026-11-10|email:broadcast:stale": "2026-11-11T18:36:41.886Z",
+    "cloud-9-west-end-2026|2026-11-10|email:reddit:stale": "2026-11-11T18:36:41.886Z"
   }
 }
