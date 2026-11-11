@@ -14,7 +14,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { redditStaleVerdict, readLedgerTail, REDDIT_STALE_HOURS } = require('./lib/reddit-dispatch-cooldown');
+const { redditStaleVerdict, redditOutageVerdict, readRedditLedgerRows, REDDIT_STALE_HOURS } = require('./lib/reddit-dispatch-cooldown');
 
 const CONDITION_KEY = 'reddit-sentiment:stale';
 
@@ -37,8 +37,13 @@ async function main() {
   const nowMs = Date.now();
   const buzz = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'audience-buzz.json'), 'utf8'));
   const lastWriteMs = newestRedditWriteMs(buzz);
-  const attemptsInWindow = countRedditAttempts(readLedgerTail(), nowMs);
+  const attemptsInWindow = countRedditAttempts(readRedditLedgerRows(), nowMs);
+  const ledgerRows = readRedditLedgerRows();
   const v = redditStaleVerdict({ lastWriteMs, attemptsInWindow, nowMs });
+  // BRO-7337: an outage must not wait 48h to be visible. Alerts when the scraper kept
+  // calling Reddit since the last write and nothing was written.
+  const o = redditOutageVerdict({ lastWriteMs, rows: ledgerRows, nowMs });
+  console.log(`[reddit-freshness] outage=${o.outage} (${o.attempts} Reddit calls since the last write)`);
   const last = lastWriteMs ? new Date(lastWriteMs).toISOString() : 'never';
   console.log(`[reddit-freshness] last Reddit write ${last}, ${attemptsInWindow} Reddit calls in ${REDDIT_STALE_HOURS}h, stale=${v.stale}`);
   if (dryRun) return;
@@ -47,6 +52,20 @@ async function main() {
   // Idle (scraper made no Reddit calls) is neither stale nor fresh: leave any open
   // incident alone so a quiet window cannot close it and re-notify on the next probe.
   if (v.idle) return;
+  if (o.outage && !v.stale) {
+    await routeAlert({
+      conditionKey: CONDITION_KEY,
+      title: `Reddit fetching is failing: ${o.attempts} Reddit calls and no successful write since ${last}`,
+      description:
+        'Every fetch tier may be blocked (Reddit serves bot walls to proxies; direct returns 403). Check the scrape step log and ' +
+        'the REDDIT_CLIENT_ID / REDDIT_CLIENT_SECRET secrets (official OAuth route in scripts/lib/reddit-api.js). BRO-7337.',
+      severity: 'warning',
+      disposition: 'auto',
+      category: 'reddit-sentiment',
+      verify: 'node scripts/check-reddit-freshness.js --dry-run',
+    });
+    return;
+  }
   if (!v.stale) {
     resolveCondition(CONDITION_KEY, { reason: 'reddit-freshness: fresh Reddit data written' });
     return;
