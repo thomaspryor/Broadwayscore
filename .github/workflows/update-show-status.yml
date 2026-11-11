@@ -1664,17 +1664,25 @@ jobs:
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
         with:
           script: |
-            try {
-              await github.rest.actions.createWorkflowDispatch({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                workflow_id: 'opening-night-poller.yml',
-                ref: 'main',
-                inputs: {}
-              });
-              console.log('Triggered Opening Night Poller for opened shows (Express auto-fire disabled)');
-            } catch (e) {
-              console.log('Opening Night Poller trigger failed:', e.message);
+            // BRO-7360: one market-scoped run per market, not one market-less run.
+            // A market-less run sits in the poller's 'auto-discovery' concurrency
+            // group and so ran alongside the orchestrator's market-scoped runs on
+            // the same shows (the BRO-7117 overlap class). Per market it queues
+            // behind them instead. broadway covers off-broadway, west-end covers
+            // off-west-end (opening-night-poller.yml "Find shows to poll").
+            for (const market of ['broadway', 'west-end']) {
+              try {
+                await github.rest.actions.createWorkflowDispatch({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  workflow_id: 'opening-night-poller.yml',
+                  ref: 'main',
+                  inputs: { market }
+                });
+                console.log(`Triggered Opening Night Poller (${market}) for opened shows (Express auto-fire disabled)`);
+              } catch (e) {
+                console.log(`Opening Night Poller trigger (${market}) failed:`, e.message);
+              }
             }
 
       - name: Trigger Opening Night Express for opened shows

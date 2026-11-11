@@ -1,18 +1,24 @@
 {
-  "generatedAt": "2026-11-11T00:32:47.517Z",
+  "generatedAt": "2026-11-11T10:08:31.545Z",
   "shadow": true,
-  "checkoutSha": "01fce490d7089302d55ea7c9537dee77dd7ec971",
-  "totalCandidates": 384,
+  "checkoutSha": "fd0108e9e383216e9a6ac099d3c3cc6fc4c05d78",
+  "totalCandidates": 382,
   "eligibleCandidates": 103,
   "checked": 30,
   "truncated": true,
   "fetchError": null,
   "counts": {
-    "pass": 17,
-    "fail": 9,
-    "unverifiable": 4
+    "pass": 15,
+    "fail": 10,
+    "unverifiable": 5
   },
   "alreadyDone": [
+    {
+      "id": "BRO-7334",
+      "name": "Root cause: \"Tech Scorecard weekly port\" keeps coming back (3 cards in 30 days)",
+      "verifyCmd": "node scripts/recurrence-detector.js --check-class tech-scorecard-weekly-port --quiet",
+      "detail": null
+    },
     {
       "id": "BRO-7325",
       "name": "Mac side of the guardrail slim-down: skill-redaction check is off in cloud, four duplicate memory-index lines",
@@ -26,9 +32,9 @@
       "detail": null
     },
     {
-      "id": "BRO-7309",
-      "name": "time-to-publish SLA assumes a 10 minute poll interval; the orchestrator default is 15 (5 in a Broadway show's first 2h)",
-      "verifyCmd": "node --test tests/unit/time-to-publish-sla.test.mjs",
+      "id": "BRO-7308",
+      "name": "Live site vs data parity: no check confirms prod pages show the scores the data holds",
+      "verifyCmd": "node --test tests/unit/prod-data-parity.test.mjs",
       "detail": null
     },
     {
@@ -47,18 +53,6 @@
       "id": "BRO-7283",
       "name": "Lane star-anchored review scores drift at the next full rebuild (Blueberries headline 81 -> 80 after the owner posted it)",
       "verifyCmd": "npx tsx --test tests/unit/lane-comparative-parity.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-7282",
-      "name": "Lane pre-embargo window: close 3 low-severity leftovers (undated page strike, URL-mismatch guard skipped in directOnly, GNews unwrap no-link strike)",
-      "verifyCmd": "node --test tests/unit/lane-preembargo-window.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-7227",
-      "name": "Stall gate leftovers: double Stop run in app sessions, bootstrap copy drift, silent exit without jq",
-      "verifyCmd": "node --test scripts/lib/stall-stop-bootstrap.test.mjs",
       "detail": null
     },
     {
@@ -86,6 +80,12 @@
       "detail": null
     },
     {
+      "id": "BRO-7144",
+      "name": "validate-data.js: make the duplicate-show check sub-quadratic (58 s of every 77 s run)",
+      "verifyCmd": "node --test tests/unit/validate-data-push-refusal-sentinel.test.mjs",
+      "detail": null
+    },
+    {
       "id": "BRO-7129",
       "name": "Opening grade: SERP census counts other cities' productions of classic titles (King Lear '0 of 13 known' were Manchester/London/Chicago/New Orleans/Texas)",
       "verifyCmd": "node --test scripts/lib/census-other-place.test.mjs",
@@ -102,21 +102,21 @@
       "name": "Arm auto-revert of breaking landings (BRO-7102 stage 2 runs in shadow mode)",
       "verifyCmd": "node --test scripts/lib/auto-revert.test.mjs",
       "detail": null
-    },
-    {
-      "id": "BRO-7097",
-      "name": "Codex runner: check out slim worktrees (skip public/images, 740 MB) so 3 slots fit, and replace the disk guesses with measured sizes",
-      "verifyCmd": "node --test tests/unit/codex-runner.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-7094",
-      "name": "Finish the 8 still-needed fix plans left by the BRO-7092 settlement",
-      "verifyCmd": "node --test scripts/lib/pending-fixes-stale-check.test.mjs",
-      "detail": null
     }
   ],
   "failing": [
+    {
+      "id": "BRO-7333",
+      "name": "Root cause: \"Data: armed-but-vacuous backlog cards\" keeps coming back (3 cards in 30 days)",
+      "verifyCmd": "node scripts/recurrence-detector.js --check-class armed-but-vacuous-backlog-cards --quiet",
+      "detail": "FAIL: last case 1d ago, needs 21\n"
+    },
+    {
+      "id": "BRO-7332",
+      "name": "Root cause: \"Cron's latest run failed: Update Lottery/Rush\" keeps coming back (3 cards in 30 days)",
+      "verifyCmd": "node scripts/recurrence-detector.js --check-class update-lottery-rush --quiet",
+      "detail": "FAIL: last case 0d ago, needs 21\n"
+    },
     {
       "id": "BRO-7277",
       "name": "Root cause: \"Data quality: stale announced shows\" keeps coming back (4 cards in 30 days)",
@@ -160,30 +160,30 @@
       "detail": "FAIL: last case 10d ago, needs 21\n"
     },
     {
-      "id": "BRO-7117",
-      "name": "Root cause: \"Opening Night Poller Failed\" keeps coming back (11 cards in 30 days)",
-      "verifyCmd": "node scripts/recurrence-detector.js --check-class opening-night-poller-failed --quiet",
-      "detail": "FAIL: last case 4d ago, needs 21\n"
-    },
-    {
       "id": "BRO-7113",
       "name": "Unit Tests job: cut runtime back under 20 min (shard or speed up the no-data-dependency batch)",
       "verifyCmd": "node scripts/ci-green-rate.js --days 7",
-      "detail": "CI green rate — thomaspryor/Broadwayscore test.yml on main, push runs, last 7d (2026-11-04T00:32Z → 2026-11-11T00:32Z)\n  completed 470 | green 299 | red 169 | cancelled 2 | other 0 | reruns collapsed 0\n  longest green streak 67 | longest red streak 34 | current streak: green x8\n  red episodes 45 | red→green latency median: 32.8 min (45 samples)\n  date        total green red  canc other\n  2026-11-0"
+      "detail": "CI green rate — thomaspryor/Broadwayscore test.yml on main, push runs, last 7d (2026-11-04T10:08Z → 2026-11-11T10:08Z)\n  completed 453 | green 301 | red 150 | cancelled 2 | other 0 | reruns collapsed 0\n  longest green streak 67 | longest red streak 34 | current streak: green x39\n  red episodes 39 | red→green latency median: 37.5 min (39 samples)\n  date        total green red  canc other\n  2026-11-"
     }
   ],
   "unverifiable": [
     {
-      "id": "BRO-7308",
-      "name": "Live site vs data parity: no check confirms prod pages show the scores the data holds",
-      "verifyCmd": "node --test tests/unit/prod-data-parity.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/prod-data-parity.test.mjs"
+      "id": "BRO-7342",
+      "name": "Extend the model-retirement audit to Anthropic and Gemini pins (same drift gap OpenAI had)",
+      "verifyCmd": "node --test tests/unit/provider-deprecations.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/provider-deprecations.test.mjs"
     },
     {
       "id": "BRO-7254",
       "name": "Closing Watch: better break-even estimates for shows with no published running cost",
       "verifyCmd": "node --test scripts/closing-watch-breakeven.test.mjs",
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/closing-watch-breakeven.test.mjs"
+    },
+    {
+      "id": "BRO-7190",
+      "name": "Make WAKEPROMISE/OPENCLAIM advisory hits durable in cloud, then decide block mode",
+      "verifyCmd": "node --test scripts/lib/advisory-durability.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/advisory-durability.test.mjs"
     },
     {
       "id": "BRO-7152",
@@ -200,6 +200,13 @@
   ],
   "landedButOpen": [
     {
+      "id": "BRO-7334",
+      "name": "Root cause: \"Tech Scorecard weekly port\" keeps coming back (3 cards in 30 days)",
+      "branch": "land/job/linear-BRO-7334-mwbd36ue",
+      "sha": "491573bbd4993b4bd995cb0e5b8a8d8c6e3c21a4",
+      "landedAt": "2026-11-11T01:33:58.924Z"
+    },
+    {
       "id": "BRO-7315",
       "name": "Guardrail slim-down: cut hooks, rules and CI gates, prove the survivors with tests",
       "branch": "land/bro-7315-cost-row",
@@ -207,25 +214,18 @@
       "landedAt": "2026-11-10T22:33:59.416Z"
     },
     {
+      "id": "BRO-7308",
+      "name": "Live site vs data parity: no check confirms prod pages show the scores the data holds",
+      "branch": "land/codex-bro-7308",
+      "sha": "82e5fedf6d7ee4d205cfa1dccddb574bfa7430b6",
+      "landedAt": "2026-11-11T05:41:14.070Z"
+    },
+    {
       "id": "BRO-7283",
       "name": "Lane star-anchored review scores drift at the next full rebuild (Blueberries headline 81 -> 80 after the owner posted it)",
       "branch": "land/bro-7283-cost",
       "sha": "85b711f3a29ca768a9093388d718888afb66c924",
       "landedAt": "2026-11-10T13:15:00.497Z"
-    },
-    {
-      "id": "BRO-7282",
-      "name": "Lane pre-embargo window: close 3 low-severity leftovers (undated page strike, URL-mismatch guard skipped in directOnly, GNews unwrap no-link strike)",
-      "branch": "land/codex-bro-7282",
-      "sha": "e703d5bd0dd7803f07b3eb53f9dd876ce2f26481",
-      "landedAt": "2026-11-10T21:38:54.946Z"
-    },
-    {
-      "id": "BRO-7227",
-      "name": "Stall gate leftovers: double Stop run in app sessions, bootstrap copy drift, silent exit without jq",
-      "branch": "land/codex-bro-7227",
-      "sha": "016c22beeefe55a0a5390f5fb7278f36c1cd6daa",
-      "landedAt": "2026-11-10T00:13:27.642Z"
     },
     {
       "id": "BRO-7175",
@@ -268,20 +268,6 @@
       "branch": "land/bro-7116-cost",
       "sha": "617747c4497befac599bab84a65b96fe93bd462f",
       "landedAt": "2026-11-10T20:33:19.998Z"
-    },
-    {
-      "id": "BRO-7097",
-      "name": "Codex runner: check out slim worktrees (skip public/images, 740 MB) so 3 slots fit, and replace the disk guesses with measured sizes",
-      "branch": "land/bro-7097-slim-worktrees",
-      "sha": "13f0f622c164978a852bc6cc19a598df562f559f",
-      "landedAt": "2026-11-07T23:24:38.736Z"
-    },
-    {
-      "id": "BRO-7094",
-      "name": "Finish the 8 still-needed fix plans left by the BRO-7092 settlement",
-      "branch": "land/codex-bro-7094",
-      "sha": "e20f9f97752e0d93623aa36e7d4a13623f9233e4",
-      "landedAt": "2026-11-09T22:54:02.166Z"
     }
   ]
 }

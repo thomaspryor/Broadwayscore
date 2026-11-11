@@ -35,3 +35,17 @@ test('BRO-5769 digest row: warns over the limit or when stale, passes when fresh
   assert.deepEqual(earlyPublishDatesResults({ generatedAt: '2020-01-01T00:00:00Z', awaiting: 5, max: 40 }).map(r => r.status), ['warn']);
   assert.deepEqual(earlyPublishDatesResults(null), []);
 });
+
+test('BRO-7355 digest row: a burst over the limit that is draining passes; a stuck or growing one warns', () => {
+  const { earlyPublishDatesResults } = require('../health-check.js');
+  const now = Date.now();
+  const at = new Date(now).toISOString();
+  const day = new Date(now - 864e5).toISOString();
+  const base = { generatedAt: at, attempted: 2, max: 40, previousGeneratedAt: day };
+  assert.deepEqual(earlyPublishDatesResults({ ...base, awaiting: 120, previousAwaiting: 160 }).map(r => r.status), ['pass']);
+  assert.equal(earlyPublishDatesResults({ ...base, awaiting: 160, previousAwaiting: 160 })[0].status, 'warn');
+  assert.equal(earlyPublishDatesResults({ ...base, awaiting: 170, previousAwaiting: 160 })[0].status, 'warn');
+  assert.equal(earlyPublishDatesResults({ ...base, awaiting: 120 })[0].status, 'warn');
+  // a stale snapshot never passes as draining
+  assert.equal(earlyPublishDatesResults({ ...base, generatedAt: '2020-01-01T00:00:00Z', awaiting: 120, previousAwaiting: 160, previousGeneratedAt: '2019-12-31T00:00:00Z' })[0].status, 'warn');
+});

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-11T04:04:27.335Z",
+  "generatedAt": "2026-11-11T12:39:02.282Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -140,11 +140,19 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "londonpubtheatres",
+      "error": "Client network socket disconnected before secure TLS connection was established"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "fetchPage returned an unexpected page for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&o"
     }
   ],
-  "itemsScanned": 843,
-  "matchedGaps": 1,
-  "possibleGaps": 2,
+  "itemsScanned": 811,
+  "matchedGaps": 3,
+  "possibleGaps": 1,
   "gaps": [
     {
       "showId": "222-a-ghost-story-off-broadway-2026",
@@ -156,6 +164,24 @@
       "publishDate": "2026-11-07"
     },
     {
+      "showId": "dogstar-off-west-end-2026",
+      "title": "Dogstar",
+      "level": "matched",
+      "outletId": "readaboutstuff",
+      "url": "https://readaboutstuff.com/2026/11/11/review-dogstar-hampstead-theatre-london/",
+      "headline": "Review: Dogstar &#8211; Hampstead Theatre, London",
+      "publishDate": "2026-11-11"
+    },
+    {
+      "showId": "dogstar-off-west-end-2026",
+      "title": "Dogstar",
+      "level": "matched",
+      "outletId": "rhombus-rota",
+      "url": "https://rhombusrota.co.uk/2026/11/11/dogstar-at-the-hampstead-theatre-review/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=dogstar-at-the-hampstead-theatre-review",
+      "headline": "Dogstar at the Hampstead Theatre Review",
+      "publishDate": "2026-11-11"
+    },
+    {
       "showId": "king-lear-off-broadway-2026",
       "title": "King Lear",
       "level": "possible",
@@ -163,15 +189,6 @@
       "url": "https://www.theguardian.com/culture/2026/nov/04/every-family-has-silences-kathryn-hunter-on-despair-desire-dislodgeable-limbs-and-her-acting-genius",
       "headline": "‘Every family has silences’: Kathryn Hunter on despair, desire, dislodgeable limbs – and her acting genius",
       "publishDate": "2026-11-04"
-    },
-    {
-      "showId": "wanted-2022",
-      "title": "Wanted",
-      "level": "possible",
-      "outletId": "west-end-best-friend",
-      "url": "https://www.westendbestfriend.co.uk/news/review-jim-carusos-cast-party-with-billy-stritch-at-the-piano-crazy-coqs",
-      "headline": "Review: JIM CARUSO'S CAST PARTY WITH BILLY STRITCH AT THE PIANO, Crazy Coqs",
-      "publishDate": "2026-11-05"
     }
   ]
 }

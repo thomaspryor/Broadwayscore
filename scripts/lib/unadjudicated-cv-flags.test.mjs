@@ -31,3 +31,32 @@ test('only counted showId+url pairs are reported', () => {
   const hits = findUnadjudicatedCounted(files, [{ showId: 'a', url: 'u1' }, { showId: 'b', url: 'u1' }]);
   assert.deepEqual(hits.map((h) => h.file), ['x.json']);
 });
+
+// BRO-7344: the stuck CV-promoted isNonReview class.
+const { isStuckCvPromotedNonReview, findStuckCvPromotedNonReview } = createRequire(import.meta.url)('./unadjudicated-cv-flags.js');
+const stuck = () => ({
+  isNonReview: true,
+  isNonReviewReason: 'CV-promoted (not a review): ',
+  contentVerificationPromoted: 'rebuild: promoted from contentVerification (heuristic, medium)',
+  contentVerification: { articleType: 'review', articleTypeConfidence: 'high', isValid: true, wrongArticle: false },
+  fullText: 'x'.repeat(400),
+});
+
+test('a CV-promoted isNonReview with a review/high CV, no score and no other flag is stuck', () => {
+  assert.equal(isStuckCvPromotedNonReview(stuck()), true);
+  assert.equal(findStuckCvPromotedNonReview([{ showId: 'a', file: 'x.json', record: stuck() }]).length, 1);
+});
+test('any adjudication, score or other exclusion takes a file out of the stuck class', () => {
+  const variants = [
+    { llmScore: { score: 70 } }, { humanReviewScore: 80 }, { nonReviewManualClear: true },
+    { wrongProduction: true }, { wrongShow: true }, { isRoundupArticle: true },
+    { duplicateOf: 'other.json' }, { rejectedAt: '2026-01-01' }, { nonReviewOverride: true },
+    { isNonReviewReason: 'manual (not a review): roundup' }, { fullText: 'short' }, { isNonReview: false },
+    { contentVerificationPromoted: undefined },
+    { contentVerification: { articleType: 'preview', articleTypeConfidence: 'high' } },
+    { contentVerification: { articleType: 'review', articleTypeConfidence: 'medium' } },
+    { contentVerification: { articleType: 'review', articleTypeConfidence: 'high', wrongProduction: true } },
+  ];
+  for (const v of variants) assert.equal(isStuckCvPromotedNonReview({ ...stuck(), ...v }), false, JSON.stringify(v));
+  assert.equal(isStuckCvPromotedNonReview(null), false);
+});

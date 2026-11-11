@@ -1,20 +1,20 @@
 {
   "system": "workflow repeat-failure",
   "status": "warn",
-  "lastChecked": "2026-11-09T09:53:09.453Z",
+  "lastChecked": "2026-11-11T09:30:10.896Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
-      "name": "Workflow repeat-failure: Test UGC Features / UGC Functional & Visual Tests / Run UGC tests",
+      "name": "Workflow repeat-failure: merge main / Checks / Fast-fail — cheap invariant and targeted tests first (BRO-7150)",
       "status": "warn",
-      "message": "Test UGC Features / UGC Functional & Visual Tests / Run UGC tests failed 2 times in the last 24h — likely broken, not transient."
+      "message": "merge main / Checks / Fast-fail — cheap invariant and targeted tests first (BRO-7150) failed 2 times in the last 24h — likely broken, not transient."
     },
     {
-      "name": "Workflow repeat-failure: Check Performance Budget / Bundle Size Check / Build and check bundle sizes",
+      "name": "Workflow repeat-failure: merge main / Checks / Gate verdict",
       "status": "warn",
-      "message": "Check Performance Budget / Bundle Size Check / Build and check bundle sizes failed 2 times in the last 24h — likely broken, not transient."
+      "message": "merge main / Checks / Gate verdict failed 2 times in the last 24h — likely broken, not transient."
     }
   ]
 }

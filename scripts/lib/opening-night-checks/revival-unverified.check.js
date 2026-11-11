@@ -114,4 +114,26 @@ function run(show, context) {
   };
 }
 
-module.exports = { name, description, run, REVIVAL_MENTION_THRESHOLD };
+/**
+ * Per-show violation record for the lifetime sweep (one verdict per show).
+ * Carries the signal so the sweep can tell structural evidence from heuristic.
+ */
+function extractViolations(result) {
+  const d = (result && result.details) || {};
+  return [{ titleMatch: d.titleMatch === true, mentionCount: d.mentionCount || 0 }];
+}
+
+/**
+ * Only a same-market earlier production with the same canonical title is
+ * evidence of a revival. A review-text "revival" count alone is a heuristic:
+ * reviews name other shows' revivals, Tony categories, "revival" of interest
+ * (SIX, Wicked trip it). Mention-only hits stay in the sweep snapshot as
+ * backlog but must not trip the daily digest row: that row filed a card per
+ * new hit and each card could only patch one more case (BRO-5439, 6509, 6706,
+ * 7336 -> BRO-7354). Same shape as slug-mismatch's BRO-7204 fix.
+ */
+function isRevivalEvidence(violation) {
+  return !!(violation && violation.titleMatch === true);
+}
+
+module.exports = { name, description, run, REVIVAL_MENTION_THRESHOLD, extractViolations, isRevivalEvidence };

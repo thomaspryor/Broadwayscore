@@ -22,8 +22,10 @@
  * @param {string} o.stepName
  * @param {string} o.unit
  * @param {function(number): string} o.formatAge
+ * @param {string} [o.evidenceLabel] - wording for the evidence class (BRO-7354: revival rows are not contamination)
+ * @param {string} [o.openRemedy]    - remedy shown in the open-hit hint
  */
-function lifetimeSweepRowResult({ name, snap, ageHours, scriptName, stepName, unit, formatAge }) {
+function lifetimeSweepRowResult({ name, snap, ageHours, scriptName, stepName, unit, formatAge, evidenceLabel = 'contamination evidence', openRemedy = 'flag wrongShow or fix the attribution' }) {
   if (!snap) {
     return { name, status: 'warn', message: 'No lifetime-sweep snapshot yet (cron not yet run)', hint: `node scripts/${scriptName}` };
   }
@@ -39,12 +41,12 @@ function lifetimeSweepRowResult({ name, snap, ageHours, scriptName, stepName, un
       return {
         name,
         status: 'warn',
-        message: `${open} ${unit} with contamination evidence open (${snap.newActionableSinceLastRun || 0} new since last run; ${snap.totalViolations} total across ${snap.showsWithViolations} show(s), ${age} ago)`,
-        hint: `node scripts/${scriptName} --json --no-snapshot to triage; the open ones are the keys of actionableOpen in the snapshot (flag wrongShow or fix the attribution; each stays open up to 96h or until it leaves the sweep)`,
+        message: `${open} ${unit} with ${evidenceLabel} open (${snap.newActionableSinceLastRun || 0} new since last run; ${snap.totalViolations} total across ${snap.showsWithViolations} show(s), ${age} ago)`,
+        hint: `node scripts/${scriptName} --json --no-snapshot to triage; the open ones are the keys of actionableOpen in the snapshot (${openRemedy}; each stays open up to 96h or until it leaves the sweep)`,
       };
     }
-    const backlog = newAll > 0 ? `; ${newAll} new hit(s) with no contamination evidence added to the backlog` : '';
-    return { name, status: 'pass', message: `No open violations with contamination evidence (${snap.totalViolations} known baseline across ${snap.scanned} show(s)${backlog}, ${age} ago)` };
+    const backlog = newAll > 0 ? `; ${newAll} new hit(s) with no ${evidenceLabel} added to the backlog` : '';
+    return { name, status: 'pass', message: `No open violations with ${evidenceLabel} (${snap.totalViolations} known baseline across ${snap.scanned} show(s)${backlog}, ${age} ago)` };
   }
   if (newAll > 0) {
     return { name, status: 'warn', message: `${newAll} NEW ${unit} since last run (${snap.totalViolations} total across ${snap.showsWithViolations} show(s), ${age} ago)`, hint: `node scripts/${scriptName} --json to triage; check newViolationKeys in the snapshot for which ones are new` };

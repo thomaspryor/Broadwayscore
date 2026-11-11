@@ -1,53 +1,102 @@
 {
-  "generatedAt": "2026-11-10T13:44:43.601Z",
-  "total": 366,
-  "armedCount": 348,
-  "refusedCount": 18,
+  "generatedAt": "2026-11-11T13:04:06.039Z",
+  "total": 387,
+  "armedCount": 363,
+  "refusedCount": 24,
   "byKind": {
     "no-section": 1,
-    "no-command": 3,
-    "shape": 13,
+    "shape": 20,
+    "path-prefix": 1,
+    "no-command": 1,
     "basename": 1
   },
   "refused": [
     {
-      "id": "BRO-7284",
-      "name": "Opening-night audit 2026-11-10",
+      "id": "BRO-7361",
+      "name": "Opening-night audit 2026-11-11",
       "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7284/opening-night-audit-2026-11-10",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7361/opening-night-audit-2026-11-11",
       "reason": "card has no acceptance-criteria section or VERIFY line",
       "kind": "no-section"
     },
     {
-      "id": "BRO-7281",
-      "name": "Opening-night dispatch hardening: same-group run replacement, watchdog/sweep double-dispatch, sweep no-op rebuilds",
+      "id": "BRO-7357",
+      "name": "Review forecast v2 shadow: Show Score input beside v1 in the nightly pilot",
       "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7281/opening-night-dispatch-hardening-same-group-run-replacement",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7357/review-forecast-v2-shadow-show-score-input-beside-v1-in-the-nightly",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/backtest-review-forecast-v2.mjs --help)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-7350",
+      "name": "Build Call the Score: signed-in readers guess the Critic Score before opening, guess reveals our forecast",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7350/build-call-the-score-signed-in-readers-guess-the-critic-score-before",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node -e \"process.exit(require(\"fs\").readdirSync(\"supabase/migrations\").some(f=>/score_call/i.test(f))?0:1)\")",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-7346",
+      "name": "Refetch clean text for 3 genuine reviews with spliced foreign text (BRO-7344 leftovers)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7346/refetch-clean-text-for-3-genuine-reviews-with-spliced-foreign-text-bro",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-unadjudicated-cv-flags.js | grep -c 'stuck CV-promoted isNonReview\t')",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-7337",
+      "name": "Reddit fetching failing sitewide since 2026-11-10 ~18:00 UTC (all scraper tiers); pilot Reddit buzz empty; add forum title counts",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7337/reddit-fetching-failing-sitewide-since-2026-11-10-1800-utc-all-scraper",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/check-reddit-freshness.js)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-7330",
+      "name": "Guardrail slim-down round 2: count [VE:code] Stop blocks over two weeks, cut the checks that never catch a real mistake",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7330/guardrail-slim-down-round-2-count-vecode-stop-blocks-over-two-weeks",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: test -f data/audit/stop-block-tally-2026-11.json)",
+      "kind": "path-prefix"
+    },
+    {
+      "id": "BRO-7329",
+      "name": "Review forecast quiet pilot: record a dated forecast per upcoming Broadway opening with preview audience grades and pre-opening buzz, then grade it",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7329/review-forecast-quiet-pilot-record-a-dated-forecast-per-upcoming",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/record-review-forecast-pilot.mjs --scoreboard --dir=/tmp/core-data-checkout/review-forecast-pilot)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-7328",
+      "name": "Design: signed-in users predict a show's critic score before opening (mock for owner)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7328/design-signed-in-users-predict-a-shows-critic-score-before-opening",
       "reason": "acceptance criteria names no runnable command (prose only)",
       "kind": "no-command"
     },
     {
-      "id": "BRO-7255",
-      "name": "Opening-date audit: 1 show need review (2026-11-09)",
+      "id": "BRO-7321",
+      "name": "City hub audit boston-ma 2026-W46: 3 new finding(s)",
       "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7255/opening-date-audit-1-show-need-review-2026-11-09",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7321/city-hub-audit-boston-ma-2026-w46-3-new-findings",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/city-hub-weekly-audit.js --city=boston-ma --no-llm --dry-run --open)",
+      "kind": "shape"
     },
     {
-      "id": "BRO-7253",
-      "name": "Closing date audit: 3 shows need review (2026-11-09)",
+      "id": "BRO-7320",
+      "name": "City hub audit san-diego-ca 2026-W46: 5 new finding(s)",
       "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7253/closing-date-audit-3-shows-need-review-2026-11-09",
-      "reason": "acceptance criteria names no runnable command (prose only)",
-      "kind": "no-command"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7320/city-hub-audit-san-diego-ca-2026-w46-5-new-findings",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/city-hub-weekly-audit.js --city=san-diego-ca --no-llm --dry-run --open)",
+      "kind": "shape"
     },
     {
-      "id": "BRO-7246",
-      "name": "Closing Watch: flag running Broadway shows likely to close before they announce",
+      "id": "BRO-7298",
+      "name": "Visual gate: small owner-requested fixes go live first, screenshots sent after (owner approved option A)",
       "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7246/closing-watch-flag-running-broadway-shows-likely-to-close-before-they",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/test-closing-watch.js)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7298/visual-gate-small-owner-requested-fixes-go-live-first-screenshots-sent",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: npx vitest run tests/unit/visual-gate-small-fix.test.ts)",
       "kind": "shape"
     },
     {
@@ -163,6 +212,69 @@
   },
   "missingCheckPaths": [
     {
+      "id": "BRO-7348",
+      "name": "Owner-only page listing every review forecast and its grade (pilot ledger), plus Reddit never-ask guard text",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7348/owner-only-page-listing-every-review-forecast-and-its-grade-pilot",
+      "cmd": "test -f src/app/admin/forecasts/page.tsx",
+      "missingPaths": [
+        "src/app/admin/forecasts/page.tsx"
+      ]
+    },
+    {
+      "id": "BRO-7342",
+      "name": "Extend the model-retirement audit to Anthropic and Gemini pins (same drift gap OpenAI had)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7342/extend-the-model-retirement-audit-to-anthropic-and-gemini-pins-same",
+      "cmd": "node --test tests/unit/provider-deprecations.test.mjs",
+      "missingPaths": [
+        "tests/unit/provider-deprecations.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-7341",
+      "name": "Move the scoring ensemble's OpenAI leg off gpt-4o / gpt-4.1 before OpenAI shuts them down 2027-01-14",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7341/move-the-scoring-ensembles-openai-leg-off-gpt-4o-gpt-41-before-openai",
+      "cmd": "node --test tests/unit/scoring-openai-pin-live.test.mjs",
+      "missingPaths": [
+        "tests/unit/scoring-openai-pin-live.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-7327",
+      "name": "Grand Horizons: DC Theatre Scene (Mandell, 85) complete and unflagged but missing from live reviews",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7327/grand-horizons-dc-theatre-scene-mandell-85-complete-and-unflagged-but",
+      "cmd": "node --test scripts/lib/url-wipe-hold.test.mjs",
+      "missingPaths": [
+        "scripts/lib/url-wipe-hold.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-7314",
+      "name": "Review forecast: can we predict a show's critic score before reviews drop, and what product sits on it (owner request)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7314/review-forecast-can-we-predict-a-shows-critic-score-before-reviews",
+      "cmd": "node --test scripts/predict-critic-score.test.mjs",
+      "missingPaths": [
+        "scripts/predict-critic-score.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-7302",
+      "name": "Make the wrong-production IBDB warnings in validate-data blocking",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7302/make-the-wrong-production-ibdb-warnings-in-validate-data-blocking",
+      "cmd": "node --test tests/unit/validate-data-ibdb-blocking.test.mjs",
+      "missingPaths": [
+        "tests/unit/validate-data-ibdb-blocking.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-7281",
+      "name": "Opening-night dispatch hardening: same-group run replacement, watchdog/sweep double-dispatch, sweep no-op rebuilds",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7281/opening-night-dispatch-hardening-same-group-run-replacement",
+      "cmd": "node --test tests/unit/opening-night-dispatch-hardening.test.mjs",
+      "missingPaths": [
+        "tests/unit/opening-night-dispatch-hardening.test.mjs"
+      ]
+    },
+    {
       "id": "BRO-7267",
       "name": "Gold buttons sitewide: switch white labels to near-black (btn-primary, hero sign-in buttons, TicketButtonsAB default)",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-7267/gold-buttons-sitewide-switch-white-labels-to-near-black-btn-primary",
@@ -205,15 +317,6 @@
       "cmd": "node --test scripts/lib/advisory-durability.test.mjs",
       "missingPaths": [
         "scripts/lib/advisory-durability.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-7169",
-      "name": "Land BRO-7163 F10 host-voucher sibling fix (flagged-recovery.js) after the Wanted/Blueberries lane freeze",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7169/land-bro-7163-f10-host-voucher-sibling-fix-flagged-recoveryjs-after",
-      "cmd": "node --test tests/unit/host-voucher-sibling-review.test.mjs",
-      "missingPaths": [
-        "tests/unit/host-voucher-sibling-review.test.mjs"
       ]
     },
     {
@@ -863,20 +966,16 @@
       "missingPaths": [
         "scripts/design-sync-verify-project.sh"
       ]
-    }
-  ],
-  "vacuousChecks": [
+    },
     {
       "id": "BRO-7075",
       "name": "Morning digest still a wall of text in Gmail: move board/spend/technical detail out of the email body, larger type, tidy 'Needs your attention'",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-7075/morning-digest-still-a-wall-of-text-in-gmail-move-boardspendtechnical",
-      "cmd": "test -f scripts/lib/email-type-floor.js",
-      "kind": "test-f-satisfied",
-      "polarity": "never-fails",
-      "paths": [
-        "scripts/lib/email-type-floor.js"
-      ],
-      "reason": "`test -f scripts/lib/email-type-floor.js` already passes on origin/main, so re-running it at Done time cannot distinguish finished work from untouched work"
+      "cmd": "node --test scripts/lib/morning-digest-attachment.test.mjs",
+      "missingPaths": [
+        "scripts/lib/morning-digest-attachment.test.mjs"
+      ]
     }
-  ]
+  ],
+  "vacuousChecks": []
 }

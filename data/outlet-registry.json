@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-11-10T15:29:58.514Z",
+    "lastUpdated": "2026-11-11T12:54:25.305Z",
     "version": "2.1.0",
     "lastChange": "BRO-7291: register angeles-stage, laist, baltimore-banner (coverage-gap hosts whose links resolved; the other 14 model-named hosts had only dead or unverifiable links)"
   },
@@ -15507,6 +15507,14 @@
       "domain": "baltimorebanner.com",
       "region": "baltimore",
       "accessModel": "metered"
+    },
+    "case": {
+      "displayName": "Case",
+      "tier": 3,
+      "aliases": [
+        "case"
+      ],
+      "domain": "observer.case.edu"
     }
   },
   "_aliasIndex": {

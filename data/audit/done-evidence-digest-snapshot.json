@@ -1,26 +1,31 @@
 {
-  "generatedAt": "2026-11-11T00:33:21.012Z",
-  "bannerText": "149/186 Done(14d) verified on main · 4 FAILED · 0 vacuous · 12 stuck-but-done — PARTIAL RUN: 25 checks not re-run (ran out of time), so these numbers understate the board",
+  "generatedAt": "2026-11-11T10:08:38.288Z",
+  "bannerText": "132/144 Done(14d) verified on main · 2 FAILED · 0 vacuous · 14 stuck-but-done · 1 mis-armed, needs re-arming (BRO-7351)",
   "items": [
     {
-      "title": "FAILED BRO-7007 — BSC Daily: Data: armed-but-vacuous backlog cards",
-      "detail": "[check-health-row-absent] FAIL: \"Data: armed-but-vacuous backlog cards\" still listed in the 2026-11-11T00:08:14.264Z health snapshot",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7007/bsc-daily-data-armed-but-vacuous-backlog-cards"
-    },
-    {
-      "title": "FAILED BRO-6939 — Onboarding follow-ups: audit new tours' art in CI, keep genre tags through a lost-push redo",
-      "detail": "⚠️ WARNING: Tour \"the-bodyguard-tour-2026\" has no tourOf but 2 non-tour show(s) share its title (the-bodyguard-west-end-2016, the-bodyguard-west-end-2012); set tourOf if it tours …",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6939/onboarding-follow-ups-audit-new-tours-art-in-ci-keep-genre-tags"
-    },
-    {
-      "title": "FAILED BRO-6493 — Closed OB rows with opening == first preview and no Playbill production page (~68): second date source",
-      "detail": "⚠️ WARNING: Tour \"the-bodyguard-tour-2026\" has no tourOf but 2 non-tour show(s) share its title (the-bodyguard-west-end-2016, the-bodyguard-west-end-2012); set tourOf if it tours …",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6493/closed-ob-rows-with-opening-first-preview-and-no-playbill-production"
+      "title": "FAILED BRO-6986 — Auto-fix (second try): Opening Night Poller Failed",
+      "detail": "(gh not authenticated; read runs from the public GitHub API) opening-night-poller.yml: MISMATCH — most recent run concluded 'cancelled', expected 'success' (https://github.com/tho…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6986/auto-fix-second-try-opening-night-poller-failed"
     },
     {
       "title": "FAILED BRO-7270 — main Data Validation red: shouted title for little-bear-ridge-road-regional-2027",
       "detail": "⚠️ WARNING: Tour \"the-bodyguard-tour-2026\" has no tourOf but 2 non-tour show(s) share its title (the-bodyguard-west-end-2016, the-bodyguard-west-end-2012); set tourOf if it tours …",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-7270/main-data-validation-red-shouted-title-for-little-bear-ridge-road"
+    },
+    {
+      "title": "STUCK BRO-7089 — Codex runner: put the disk breakdown in the Linear summary and stand down cleanly on a full disk before git fetch",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7089/codex-runner-put-the-disk-breakdown-in-the-linear-summary-and-stand"
+    },
+    {
+      "title": "STUCK BRO-7041 — P1: The Unbelievers Time Out review rejected as wrong critic (BWW row credits Adam Feldman, page is by Billy McEntee)",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7041/p1-the-unbelievers-time-out-review-rejected-as-wrong-critic-bww-row"
+    },
+    {
+      "title": "STUCK BRO-7031 — P1: Opening night miss: 2:22 - A Ghost Story (2026-11-05)",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7031/p1-opening-night-miss-222-a-ghost-story-2026-11-05"
     },
     {
       "title": "STUCK BRO-6762 — Fix gaps at the source: reviews regular gathering still misses and only the after-the-fact gap audit catches",
@@ -36,11 +41,6 @@
       "title": "STUCK BRO-7299 — main test.yml red: Data Safety Guards / Checkout review-texts (private repo)",
       "detail": "its own evidence holds on main — looks finished",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-7299/main-testyml-red-data-safety-guards-checkout-review-texts-private-repo"
-    },
-    {
-      "title": "STUCK BRO-7274 — Ingest 34 verified-live DC/LA hub reviews missing from corpus (BRO-7256 coverage gaps)",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7274/ingest-34-verified-live-dcla-hub-reviews-missing-from-corpus-bro-7256"
     }
   ],
   "moreCount": 8

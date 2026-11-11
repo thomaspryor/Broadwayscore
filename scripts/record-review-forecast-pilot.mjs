@@ -26,6 +26,7 @@ import { getCriticScore } from './lib/canonical-critic-scores.ts';
 const require = createRequire(import.meta.url);
 const RF = require('./lib/review-forecast.js');
 const P = require('./lib/review-forecast-pilot.js');
+const V2S = require('./lib/review-forecast-v2-shadow.js');
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const arg = (k, d) => { const a = process.argv.find((x) => x.startsWith(`--${k}=`)); return a ? a.split('=').slice(1).join('=') : d; };
@@ -50,6 +51,8 @@ function insideAnyCheckout(p) {
 }
 if (!DIR) { console.error('--dir=<private ledger directory> is required'); process.exit(2); }
 if (insideAnyCheckout(DIR)) { console.error('refusing: --dir must be outside every checkout of this public repo'); process.exit(3); }
+// BRO-7357: nightly tripwire. The public checkout must hold no forecast rows (v1 or v2); this runs in CI every night.
+{ const leaks = require('./lib/forecast-privacy-guard.js').scanTracked(ROOT); if (leaks.length) { console.error('refusing: forecast rows found in tracked public files: ' + leaks.map((l) => l.file).join(', ')); process.exit(4); } }
 fs.mkdirSync(DIR, { recursive: true });
 // One file per write (ledger/YYYY-MM-DD.jsonl, grades/<showId>.json): every write is a new path, so
 // concurrent pushes to the private repo cannot conflict. Lines are parsed strictly, a bad line aborts.
@@ -64,7 +67,7 @@ const readGrades = () => (fs.existsSync(GRADES_DIR) ? fs.readdirSync(GRADES_DIR)
 if (flag('scoreboard')) {
   const g = readGrades();
   console.log(JSON.stringify(P.scoreboard(g), null, 2));
-  for (const r of g) console.log(`${r.showId}: critics ${r.criticScore}, forecast ${r.forecast} (miss ${r.missForecast}), category mean ${r.categoryMean} (miss ${r.missCategoryMean}), preview audience ${r.previewAudience} (miss ${r.missPreviewAudience})`);
+  for (const r of g) console.log(`${r.showId}: critics ${r.criticScore}, forecast ${r.forecast} (miss ${r.missForecast}), category mean ${r.categoryMean} (miss ${r.missCategoryMean}), v2 ${r.forecastV2} (miss ${r.missForecastV2}), preview audience ${r.previewAudience} (miss ${r.missPreviewAudience})`);
   process.exit(0);
 }
 
@@ -73,6 +76,7 @@ const shows = J('data/shows.json').shows;
 const weeks = J('data/grosses-history.json').weeks;
 const origins = J('data/show-origins.json').shows;
 const buzz = J('data/audience-buzz.json');
+const ssUrls = J('data/show-score-urls.json').shows;
 const buzzOf = (id) => (buzz.shows || buzz)[id];
 const slimRc = (id) => { try { return JSON.parse(fs.readFileSync(path.join(ROOT, 'public/data/shows', `${id}.json`), 'utf8')).rc ?? 0; } catch { return 0; } };
 
@@ -159,12 +163,16 @@ for (const s of shows) {
   if (!flag('skip-reddit')) {
     try { reddit = await redditFor(s); } catch (e) { reddit = { available: false, reason: `error: ${String(e.message).slice(0, 120)}` }; }
   }
+  const v1Part = { forecast: Math.round(p.forecast), forecastRaw: Math.round(p.forecast * 10) / 10, lo80: Math.round(p.lo80), hi80: Math.round(p.hi80) };
+  // BRO-7357: v2 shadow beside v1, new field only. Uses the Show Score score+count already in audience-buzz; never fetched here.
+  const v2 = V2S.buildV2Shadow({ features: f, v1: v1Part, showScore: V2S.showScoreInput(buzzOf(s.id)), openingDate: s.openingDate, recordedAt: TODAY, pageUrl: ssUrls[s.id] || null });
   candidates.push({
     showId: s.id, recordedAt: TODAY, openingDate: s.openingDate, previewsStartDate: s.previewsStartDate || null, status: s.status,
-    forecast: Math.round(p.forecast), forecastRaw: Math.round(p.forecast * 10) / 10, lo80: Math.round(p.lo80), hi80: Math.round(p.hi80), categoryMean: Math.round(f.mu * 10) / 10,
+    ...v1Part, categoryMean: Math.round(f.mu * 10) / 10,
     inputs: { priorRun: f.priorScore != null, previewGrosses: f.hasGross, peopleWithHistory: ['dir', 'chor', 'writer'].filter((k) => f.x[k] !== 0), trainN: forecaster.n },
     audience: P.audienceSnapshot(buzzOf(s.id)),
     reddit,
+    v2,
   });
 }
 const { append, skipped } = P.selectAppendable(existing, candidates);
@@ -176,7 +184,7 @@ if (!DRY && append.length) {
   const prior = fs.existsSync(f) ? readJsonl(f) : [];
   fs.writeFileSync(f, prior.concat(append).map((r) => JSON.stringify(r)).join('\n') + '\n');
 }
-for (const r of append) out(`${r.showId} opens ${r.openingDate}: forecast ${r.forecast} [${r.lo80}-${r.hi80}] mean ${r.categoryMean} audience ${r.audience.combined} reddit ${r.reddit.available ? `${r.reddit.leadup.postCount}+${r.reddit.previews.postCount} posts` : r.reddit.reason}`);
+for (const r of append) out(`${r.showId} opens ${r.openingDate}: forecast ${r.forecast} [${r.lo80}-${r.hi80}] v2 ${r.v2.forecast} [${r.v2.lo80}-${r.v2.hi80}] (${r.v2.inputsPresent.join('+')}) mean ${r.categoryMean} audience ${r.audience.combined} reddit ${r.reddit.available ? `${r.reddit.leadup.postCount}+${r.reddit.previews.postCount} posts` : r.reddit.reason}`);
 
 // ---- grade ------------------------------------------------------------------------------
 const ledgerAll = existing.concat(DRY ? [] : append);
@@ -189,7 +197,7 @@ for (const s of shows) {
   // Same settle floor as the backtest: wait until the critic score rests on >= FLOOR reviews.
   const rcAtGrade = slimRc(s.id);
   if (rcAtGrade < FLOOR) continue;
-  const g = P.buildGradeRow({ showId: s.id, openingDate: s.openingDate, today: TODAY, frozen, criticScore: getCriticScore(s.id) });
+  const g = P.buildGradeRow({ showId: s.id, openingDate: s.openingDate, today: TODAY, frozen, criticScore: getCriticScore(s.id), frozenV2: V2S.frozenV2Row(ledgerAll, s.id, s.openingDate) });
   if (g) g.rcAtGrade = rcAtGrade;
   if (g) newGrades.push(g);
 }

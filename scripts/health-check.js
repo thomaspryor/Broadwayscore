@@ -1840,14 +1840,17 @@ function checkQuality() {
         scriptName: 'audit-revival-unverified-lifetime.js',
         stepName: 'revival-unverified lifetime sweep',
         unit: 'unverified revival flag(s)',
+        // BRO-7354: same-title earlier production, not contamination.
+        evidenceLabel: 'a same-title earlier production',
+        openRemedy: 'set isRevival: true if it is a revival, or revivalVerifiedNot: true if it is the original',
       },
-    ].map(({ name, snapFile, scriptName, stepName, unit }) => runCheck(name, () => {
+    ].map(({ name, snapFile, scriptName, stepName, unit, evidenceLabel, openRemedy }) => runCheck(name, () => {
       const snapPath = path.join(AUDIT_DIR, snapFile);
       const snap = fs.existsSync(snapPath) ? readJSON(snapPath) : null;
       const ageHours = snap?.updatedAt ? hoursAgo(snap.updatedAt) : Infinity;
       // BRO-7204: an evidence-aware snapshot warns only on new hits with
       // contamination evidence (scripts/lib/lifetime-sweep-row.js).
-      return lifetimeSweepRowResult({ name, snap, ageHours, scriptName, stepName, unit, formatAge });
+      return lifetimeSweepRowResult({ name, snap, ageHours, scriptName, stepName, unit, formatAge, evidenceLabel, openRemedy });
     })),
 
     // Missed opening-night broadcast sweep (BRO-2934). The dead-man half of
@@ -5080,7 +5083,15 @@ function earlyPublishDatesResults(report, now = Date.now()) {
   const max = isCountValue(report.max) ? report.max : 40;
   const at = Date.parse(report.generatedAt);
   const fresh = Number.isFinite(at) && now - at <= EARLY_PUBLISH_DATES_STALE_MS;
-  if (n > max) {
+  // BRO-7355: a burst above the limit that is shrinking since the last snapshot is the daily sweep doing its
+  // job (40 files/day); the card-filing warn is only for a backlog that is not draining. Three BSC Daily cards
+  // (BRO-6424, 6707, 7125) were filed for bursts that cleared by themselves.
+  const prevAt = Date.parse(report.previousGeneratedAt);
+  const draining = n > max && isCountValue(report.previousAwaiting) && n < report.previousAwaiting
+    && Number.isFinite(prevAt) && Number.isFinite(at) && at - prevAt <= EARLY_PUBLISH_DATES_STALE_MS;
+  if (draining && fresh) {
+    out.push({ name, status: 'pass', message: `${n} early publish date(s) awaiting recheck, above the limit of ${max} but draining (was ${report.previousAwaiting}); the daily recheck is clearing them` });
+  } else if (n > max) {
     out.push({
       name,
       status: 'warn',
@@ -6440,6 +6451,19 @@ async function main() {
   purgeOldExclusionLogs();
 
   const allResults = await computeCoreHealthResults(isCI);
+
+  // BRO-7308: daily production HTML versus the reference shipped by its build.
+  // The probe owns one deduplicated alert condition; do not re-route its findings
+  // through the generic digest as a second card. Local health checks stay offline.
+  if (isCI) {
+    try {
+      const parity = await require('./lib/prod-data-parity').runProbe({ alert: true });
+      if (parity.exitCode === 0) allResults.push({ name: 'Production page parity', status: 'pass', message: `${parity.matched} sampled pages match their deployed critic data` });
+      if (parity.exitCode === 2) allResults.push({ name: 'Production page parity', status: 'warn', message: parity.error || `${parity.unavailable} pages unavailable` });
+    } catch (err) {
+      allResults.push({ name: 'Production page parity', status: 'warn', message: `Probe or alert routing failed: ${err.message}` });
+    }
+  }
 
   // Workflow run summary (last 24h) \u2014 fetched here, before the alerting block,
   // so repeat failures can be promoted into allResults and escalate like any

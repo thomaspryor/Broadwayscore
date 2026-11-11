@@ -1,7 +1,7 @@
 {
   "system": "data",
   "status": "warn",
-  "lastChecked": "2026-11-11T00:06:00.572Z",
+  "lastChecked": "2026-11-11T09:30:10.888Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -94,22 +94,22 @@
     {
       "name": "Data: review coverage holes",
       "status": "warn",
-      "message": "93 review(s) with no usable text, 73 rejected although verified as a review, 34 never scored, 35 with a blocked URL (0 published on the site), across 669 current shows"
+      "message": "94 review(s) with no usable text, 68 rejected although verified as a review, 30 never scored, 35 with a blocked URL (0 published on the site), across 670 current shows"
     },
     {
       "name": "Data: published scores outside the critic's rating",
       "status": "pass",
-      "message": "No published review score contradicts the critic's rating (48181 checked)"
+      "message": "No published review score contradicts the critic's rating (48308 checked)"
     },
     {
       "name": "Data: early publish dates awaiting page-date recheck",
-      "status": "warn",
-      "message": "51 review(s) carry an early or carried publish date no page read has confirmed (limit 40; 202 more already attempted)"
+      "status": "pass",
+      "message": "17 early publish date(s) awaiting recheck (limit 40); 212 already attempted and not yet confirmed"
     },
     {
       "name": "Data: approved-fix drift",
       "status": "warn",
-      "message": "1 unexplained approved-fix drift(s) across 3434 files with approvals"
+      "message": "1 unexplained approved-fix drift(s) across 3446 files with approvals"
     },
     {
       "name": "Data: duplicate-flag leaks (a wrong twin dropping a good review)",
@@ -125,6 +125,11 @@
       "name": "Data: reviewed shows missing from shows.json",
       "status": "warn",
       "message": "1 aggregator-reviewed show(s) not in the catalogue. Oldest: \"What Do Critics Think of THE VISITORS Off-Broadway?\" (bww-roundup — missing 0d)"
+    },
+    {
+      "name": "Data: T1/T2 silent review gaps",
+      "status": "warn",
+      "message": "1 discovered review(s) not reaching the composite score (0 T1). Oldest: the-cottage-regional-2026 — theatermania (empty-body); 1 newer still in flight"
     }
   ]
 }

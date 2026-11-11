@@ -6,17 +6,17 @@ import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { stopHookDecision, missingRootCauseParts, blockMessage, commitSubjects, isFixSubject, cardTitles, hasRootCauseAnswer, answerTexts, blockBudget, main } from './root-cause-stop.mjs';
-import { landedPushIndices } from './review-coverage.mjs';
+import { stopHookDecision, missingRootCauseParts, blockMessage, commitSubjects, isFixSubject, cardTitles, hasRootCauseAnswer, answerTexts, blockBudget, main, chunkStart } from './root-cause-stop.mjs';
+import { landedPushIndices, runShellCode } from './review-coverage.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const CLOUD = { CLAUDE_CODE_REMOTE: 'true' };
-const use = (id, name, input) => ({ kind: 'assistant_tool_use', id, name, input });
+const toolUse = (id, name, input) => ({ kind: 'assistant_tool_use', id, name, input });
 const ok = (id, content = 'ok', isError = false) => ({ kind: 'tool_result', tool_use_id: id, content, isError });
 const say = (text) => ({ kind: 'assistant_text', text });
-const LAND = [use('p1', 'Bash', { command: 'git push origin HEAD:refs/heads/land/bro-1-fix 2>&1 | tail -3' }), ok('p1')];
-const FIX_CARD = [use('c1', 'Bash', { command: 'node scripts/linear-brain.js create "Fix wrong venue on 6 shows" --self --notes "x"' }), ok('c1')];
-const FEATURE_CARD = [use('c2', 'Bash', { command: 'node scripts/linear-brain.js create "Add a tour map page" --self' }), ok('c2')];
+const LAND = [toolUse('p1', 'Bash', { command: 'git push origin HEAD:refs/heads/land/bro-1-fix 2>&1 | tail -3' }), ok('p1')];
+const FIX_CARD = [toolUse('c1', 'Bash', { command: 'node scripts/linear-brain.js create "Fix wrong venue on 6 shows" --self --notes "x"' }), ok('c1')];
+const FEATURE_CARD = [toolUse('c2', 'Bash', { command: 'node scripts/linear-brain.js create "Add a tour map page" --self' }), ok('c2')];
 const SAFE = 'Fixed the six rows.\n\nSAFE TO ARCHIVE — all landed and verified.';
 const d = (events, lastMessage = SAFE, env = CLOUD) => stopHookDecision({ events, lastMessage, env }).decision;
 
@@ -33,15 +33,15 @@ test('passes with CLASS-GUARD, PREVENTION or NO-ROOT-CAUSE in chat', () => {
 });
 
 test('passes when the answer is in the Linear Outcome comment, not the chat', () => {
-  const viaCli = use('l1', 'Bash', { command: "node scripts/linear-brain.js update BRO-1 --state Done --comment \"$(cat <<'EOF'\nOutcome.\nROOT-CAUSE: importer trusted URL slugs\nCLASS-GUARD: scripts/lib/import-guard.test.mjs\nCOUSINS: grepped the other importers, none\nEOF\n)\"" });
+  const viaCli = toolUse('l1', 'Bash', { command: "node scripts/linear-brain.js update BRO-1 --state Done --comment \"$(cat <<'EOF'\nOutcome.\nROOT-CAUSE: importer trusted URL slugs\nCLASS-GUARD: scripts/lib/import-guard.test.mjs\nCOUSINS: grepped the other importers, none\nEOF\n)\"" });
   assert.equal(d([...FIX_CARD, ...LAND, viaCli, ok('l1')]), 'allow');
-  const inline = use('l4', 'Bash', { command: 'node scripts/linear-brain.js update BRO-1 --comment "CLASS-GUARD: scripts/lib/inline.test.mjs ; cousins: grepped data/, none" --state Done' });
+  const inline = toolUse('l4', 'Bash', { command: 'node scripts/linear-brain.js update BRO-1 --comment "CLASS-GUARD: scripts/lib/inline.test.mjs ; cousins: grepped data/, none" --state Done' });
   assert.equal(d([...FIX_CARD, ...LAND, inline, ok('l4')]), 'allow', 'an inline single-line --comment counts');
-  const report = use('l5', 'Bash', { command: "node scripts/linear-session.js report --status=done --summary='NO-ROOT-CAUSE: one manual row typo fixed ; cousins: grepped data/ and scripts/, none'" });
+  const report = toolUse('l5', 'Bash', { command: "node scripts/linear-session.js report --status=done --summary='NO-ROOT-CAUSE: one manual row typo fixed ; cousins: grepped data/ and scripts/, none'" });
   assert.equal(d([...FIX_CARD, ...LAND, report, ok('l5')]), 'allow');
-  const viaMcp = use('l2', 'mcp__Linear__save_comment', { issueId: 'BRO-1', body: 'Outcome\n- CLASS-GUARD: scripts/lib/a.test.mjs\n- COUSINS: grepped data/, none' });
+  const viaMcp = toolUse('l2', 'mcp__Linear__save_comment', { issueId: 'BRO-1', body: 'Outcome\n- CLASS-GUARD: scripts/lib/a.test.mjs\n- COUSINS: grepped data/, none' });
   assert.equal(d([...FIX_CARD, ...LAND, viaMcp, ok('l2')]), 'allow');
-  const viaUuid = use('l3', 'mcp__0a1b2c3d-1111-2222-3333-444455556666__save_comment', { body: 'NO-ROOT-CAUSE: single bad row from a manual edit ; cousins: grepped data/ and scripts/, none' });
+  const viaUuid = toolUse('l3', 'mcp__0a1b2c3d-1111-2222-3333-444455556666__save_comment', { body: 'NO-ROOT-CAUSE: single bad row from a manual edit ; cousins: grepped data/ and scripts/, none' });
   assert.equal(d([...FIX_CARD, ...LAND, viaUuid, ok('l3')]), 'allow');
 });
 
@@ -55,7 +55,7 @@ test('stays quiet when nothing landed, on feature cards, off cloud, with the kil
   assert.equal(d([...FIX_CARD]), 'allow');
   assert.equal(d([...FEATURE_CARD, ...LAND]), 'allow');
   assert.equal(d([...FEATURE_CARD, ...FIX_CARD, ...LAND]), 'block', 'any fix card in the session is checked');
-  const parked = use('c3', 'Bash', { command: 'node scripts/linear-brain.js create "Search broken on mobile" --park "found in passing"' });
+  const parked = toolUse('c3', 'Bash', { command: 'node scripts/linear-brain.js create "Search broken on mobile" --park "found in passing"' });
   assert.equal(d([...FEATURE_CARD, parked, ok('c3'), ...LAND]), 'allow', 'a bug filed for someone else does not make a feature session a fix');
   assert.equal(d([...FIX_CARD, ...LAND], SAFE, {}), 'allow');
   assert.equal(d([...FIX_CARD, ...LAND], SAFE, { ...CLOUD, ROOT_CAUSE_STOP_DISABLE: '1' }), 'allow');
@@ -65,27 +65,27 @@ test('stays quiet when nothing landed, on feature cards, off cloud, with the kil
 });
 
 test('only real landings count: refused, dry-run and delete pushes do not; MCP landings do', () => {
-  const ev = (cmd, isError = false) => [use('x', 'Bash', { command: cmd }), ok('x', 'r', isError)];
+  const ev = (cmd, isError = false) => [toolUse('x', 'Bash', { command: cmd }), ok('x', 'r', isError)];
   assert.deepEqual(landedPushIndices(ev('git push origin HEAD:land/x')), [0]);
   assert.deepEqual(landedPushIndices(ev('git -C /w push origin HEAD:refs/heads/land/x')), [0]);
   assert.deepEqual(landedPushIndices(ev('git push origin HEAD:refs/heads/land/x', true)), [], 'a hook-refused push');
   assert.deepEqual(landedPushIndices(ev('git push --dry-run origin HEAD:land/x')), []);
   assert.deepEqual(landedPushIndices(ev('git push origin --delete land/x')), []);
   assert.deepEqual(landedPushIndices(ev('git push origin claude/foo')), []);
-  assert.deepEqual(landedPushIndices([use('m', 'mcp__github__create_branch', { branch: 'land/y' }), ok('m')]), [0]);
-  assert.deepEqual(landedPushIndices([use('m', 'mcp__github__actions_run_trigger', { workflow_id: 'land.yml' }), ok('m')]), [0]);
-  assert.deepEqual(landedPushIndices([use('m', 'mcp__github__create_branch', { branch: 'claude/y' }), ok('m')]), []);
-  assert.deepEqual(landedPushIndices([use('x', 'Bash', { command: 'git push origin HEAD:refs/heads/land/x 2>&1 | tail -5' }), ok('x', ' ! [rejected]        HEAD -> land/x (fetch first)\nerror: failed to push some refs')]), [], 'a piped push git refused');
-  assert.deepEqual(landedPushIndices([use('m', 'mcp__github__actions_run_trigger', { workflow_id: 'land-ref-prune.yml' }), ok('m')]), [], 'land-* helper workflows are not landings');
-  assert.deepEqual(landedPushIndices([use('m', 'mcp__github__actions_run_trigger', { workflow_id: 'visual-approval-land.yml' }), ok('m')]), []);
+  assert.deepEqual(landedPushIndices([toolUse('m', 'mcp__github__create_branch', { branch: 'land/y' }), ok('m')]), [0]);
+  assert.deepEqual(landedPushIndices([toolUse('m', 'mcp__github__actions_run_trigger', { workflow_id: 'land.yml' }), ok('m')]), [0]);
+  assert.deepEqual(landedPushIndices([toolUse('m', 'mcp__github__create_branch', { branch: 'claude/y' }), ok('m')]), []);
+  assert.deepEqual(landedPushIndices([toolUse('x', 'Bash', { command: 'git push origin HEAD:refs/heads/land/x 2>&1 | tail -5' }), ok('x', ' ! [rejected]        HEAD -> land/x (fetch first)\nerror: failed to push some refs')]), [], 'a piped push git refused');
+  assert.deepEqual(landedPushIndices([toolUse('m', 'mcp__github__actions_run_trigger', { workflow_id: 'land-ref-prune.yml' }), ok('m')]), [], 'land-* helper workflows are not landings');
+  assert.deepEqual(landedPushIndices([toolUse('m', 'mcp__github__actions_run_trigger', { workflow_id: 'visual-approval-land.yml' }), ok('m')]), []);
   assert.deepEqual(landedPushIndices(ev('gh workflow run land.yml -f branch=land/x')), [0]);
   assert.deepEqual(landedPushIndices(ev('node scripts/cloud-dispatch.js land.yml --ref main')), [0]);
-  assert.deepEqual(landedPushIndices([use('m', 'mcp__github__push_files', { branch: 'land/z', files: [] }), ok('m')]), [0]);
+  assert.deepEqual(landedPushIndices([toolUse('m', 'mcp__github__push_files', { branch: 'land/z', files: [] }), ok('m')]), [0]);
 });
 
 test('helpers: titles from CLI and connector creates; answer texts include Linear writes', () => {
-  assert.deepEqual(cardTitles([...FIX_CARD, use('s', 'mcp__Linear__save_issue', { title: 'Fix X', team: 'BRO' }), use('u', 'mcp__Linear__save_issue', { id: 'BRO-2', title: 'edit' })]), ['Fix wrong venue on 6 shows', 'Fix X']);
-  assert.equal(answerTexts([use('b', 'Bash', { command: 'ls' })], 'm').length, 1);
+  assert.deepEqual(cardTitles([...FIX_CARD, toolUse('s', 'mcp__Linear__save_issue', { title: 'Fix X', team: 'BRO' }), toolUse('u', 'mcp__Linear__save_issue', { id: 'BRO-2', title: 'edit' })]), ['Fix wrong venue on 6 shows', 'Fix X']);
+  assert.equal(answerTexts([toolUse('b', 'Bash', { command: 'ls' })], 'm').length, 1);
   assert.equal(hasRootCauseAnswer(['PREVENTION: scripts/lib/q.test.mjs ; cousins: grepped data/, none']), true);
   assert.equal(blockBudget(new Date('2026-11-10T00:00:00Z')), 1);
   assert.equal(blockBudget(new Date('2026-12-22T00:00:00Z')), 2);
@@ -116,8 +116,8 @@ test('verify-edits.sh keeps the root-cause-stop call (a Mac-master sync must not
 });
 
 // BRO-7301: a symptom-titled card (no FIX_RE word) with fix commits must still be checked.
-const SYMPTOM_CARD = [use('c9', 'Bash', { command: "node scripts/linear-brain.js create \"Opening grade: SERP census counts other cities' productions of classic titles\" --self" }), ok('c9')];
-const commit = (id, cmd) => [use(id, 'Bash', { command: cmd }), ok(id)];
+const SYMPTOM_CARD = [toolUse('c9', 'Bash', { command: "node scripts/linear-brain.js create \"Opening grade: SERP census counts other cities' productions of classic titles\" --self" }), ok('c9')];
+const commit = (id, cmd) => [toolUse(id, 'Bash', { command: cmd }), ok(id)];
 
 test('BRO-7301: symptom-titled card + landed fix(...) commit + bare SAFE TO ARCHIVE blocks; feat commit allows', () => {
   const fixC = commit('g1', 'git commit -m "fix(opening-grade): scope SERP census to the show city"');
@@ -147,9 +147,9 @@ test('BRO-7301: commit parsing covers -am, --message=, heredoc, multi -m, MCP; s
   assert.deepEqual(subj(commit('a', 'git commit -m "fix: first" -m "body second"')), ['fix: first']);
   assert.deepEqual(subj(commit('a', 'git commit -m "fix: say \\"hi\\" ok"')), ['fix: say "hi" ok']);
   assert.deepEqual(subj(commit('a', "git add -A && git commit -m \"$(cat <<'EOF'\nfix(x): heredoc subject\n\nbody\nEOF\n)\"")), ['fix(x): heredoc subject']);
-  assert.deepEqual(subj([use('m', 'mcp__github__push_files', { branch: 'land/z', message: 'fix: via mcp\n\nbody', files: [] }), ok('m')]), ['fix: via mcp']);
+  assert.deepEqual(subj([toolUse('m', 'mcp__github__push_files', { branch: 'land/z', message: 'fix: via mcp\n\nbody', files: [] }), ok('m')]), ['fix: via mcp']);
   assert.deepEqual(subj(commit('a', 'cd ~/BroadwayScorecard-app && git commit -m "fix: ios"')), [], 'other repo');
-  assert.deepEqual(subj([use('a', 'Bash', { command: 'git commit -m "fix: refused"' }), ok('a', 'hook refused', true)]), [], 'failed commit');
+  assert.deepEqual(subj([toolUse('a', 'Bash', { command: 'git commit -m "fix: refused"' }), ok('a', 'hook refused', true)]), [], 'failed commit');
   assert.deepEqual(commitSubjects([...commit('a', 'git commit -m "fix: before"'), ...LAND, ...commit('b', 'git commit -m "fix: after landing"')]), ['fix: before'], 'a commit after the last landing never landed');
   assert.deepEqual(commitSubjects(commit('a', 'git commit -m "fix: not pushed"')), [], 'nothing landed');
 });
@@ -190,7 +190,7 @@ test('BRO-7316: a root-cause statement alone is not enough, COUSINS is required 
 });
 
 test('BRO-7316: CLASS-GUARD in a Linear comment and COUSINS in chat combine', () => {
-  const cmt = use('l9', 'mcp__Linear__save_comment', { body: 'CLASS-GUARD: scripts/lib/a.test.mjs' });
+  const cmt = toolUse('l9', 'mcp__Linear__save_comment', { body: 'CLASS-GUARD: scripts/lib/a.test.mjs' });
   assert.equal(d([...FIX_CARD, ...LAND, cmt, ok('l9')], 'COUSINS: grepped all shows for the same field, fixed 3\nSAFE TO ARCHIVE — x'), 'allow');
   assert.equal(d([...FIX_CARD, ...LAND, cmt, ok('l9')]), 'block');
 });
@@ -203,4 +203,113 @@ test('BRO-7316 ship-check: every line counts, templates and "not searched" do no
   assert.deepEqual(missingRootCauseParts(['CLASS-GUARD: <path of the test, check or guard>\nCOUSINS: <where you searched for the same defect>']), ['CLASS-GUARD or NO-ROOT-CAUSE', 'COUSINS'], 'echoed template');
   assert.deepEqual(missingRootCauseParts(['CLASS-GUARD: scripts/lib/a.test.mjs\nCOUSINS: not searched yet, TODO']), ['COUSINS']);
   assert.deepEqual(missingRootCauseParts(['**CLASS-GUARD:** scripts/lib/a.test.mjs\n- **Cousins:** grepped data/ and src/, none']), []);
+});
+
+// BRO-7349: the answer is per chunk of work between accepted SAFE TO ARCHIVE claims, not per session.
+const ANSWER = say('CLASS-GUARD: scripts/lib/venue-guard.test.mjs\nCOUSINS: grepped data/ and scripts/, none');
+const commitLand = (n, subject) => [toolUse(`k${n}`, 'Bash', { command: `git commit -qm "${subject}"` }), ok(`k${n}`), toolUse(`q${n}`, 'Bash', { command: `git push origin HEAD:refs/heads/land/x${n}` }), ok(`q${n}`)];
+const FIRST = [...FIX_CARD, ...commitLand(1, 'fix: wrong venue on 6 shows'), ANSWER, say(SAFE)];
+const feedback = (t = 'Stop hook feedback:\n[command hook 1]: BLOCKED: something') => ({ kind: 'user_text', text: t, synthetic: true });
+
+test('BRO-7349: a second landed fix after an accepted claim needs its own answer', () => {
+  assert.equal(d(FIRST), 'allow', 'first chunk answered');
+  assert.equal(d([...FIRST, ...commitLand(2, 'fix: stale grosses on tour pages')]), 'block', 'the early answer no longer covers a later fix');
+  assert.equal(d([...FIRST, ...commitLand(2, 'fix: stale grosses on tour pages'), say(SAFE)]), 'block', 'the current claim, flushed to the transcript, is not a boundary');
+  assert.equal(d([...FIRST, ...commitLand(2, 'fix: stale grosses on tour pages'), ANSWER]), 'allow', 'a new answer after the claim covers it');
+});
+
+test('BRO-7349: a later chunk with no new fix stays quiet', () => {
+  assert.equal(d([...FIRST, ...commitLand(2, 'data: session cost row')]), 'allow');
+  assert.equal(d([...FIRST, ...commitLand(2, 'Ship-check fixes: tidy names')]), 'allow');
+  const newCard = [toolUse('c9', 'Bash', { command: 'node scripts/linear-brain.js create "Fix broken search on mobile" --self' }), ok('c9')];
+  assert.equal(d([...FIRST, ...newCard, ...commitLand(2, 'search: guard empty query')]), 'block', 'a new fix card in the chunk is a witness');
+  assert.equal(d([...FIRST, ...commitLand(2, 'feat: tour map page')]), 'allow');
+});
+
+test('BRO-7349: a claim this check would block is not a boundary; one another hook refused is', () => {
+  const unanswered = [...FIX_CARD, ...commitLand(1, 'fix: wrong venue on 6 shows'), say(SAFE), feedback()];
+  assert.equal(d([...unanswered, ...commitLand(2, 'Ship-check fixes: names')]), 'block', 'fix A is still unanswered after a follow-up landing');
+  assert.equal(d([...unanswered, ...commitLand(2, 'Ship-check fixes: names'), ANSWER]), 'allow');
+  const answered = [...FIX_CARD, ...commitLand(1, 'fix: wrong venue on 6 shows'), ANSWER, say(SAFE), feedback('Stop hook feedback:\n[command hook 2]: There are 3 unpushed commit(s)')];
+  assert.equal(d([...answered, ...commitLand(2, 'Ship-check fixes: names')]), 'allow', 'an answered claim refused by another hook is still a boundary');
+  assert.equal(d([...answered, ...commitLand(2, 'fix: stale grosses')]), 'block', 'so the next fix after it needs its own answer');
+});
+
+test('BRO-7349: chunkStart and ranged commitSubjects', async () => {
+  const { chunkStart } = await import('./root-cause-stop.mjs');
+  const ev = [...FIRST, ...commitLand(2, 'fix: stale grosses on tour pages')];
+  const c = chunkStart(ev);
+  assert.equal(ev[c.claimIdx].text, SAFE);
+  assert.deepEqual(commitSubjects(ev, { from: c.landedFrom, to: c.lastLanding }), ['fix: stale grosses on tour pages']);
+  assert.deepEqual(commitSubjects(ev), ['fix: wrong venue on 6 shows', 'fix: stale grosses on tour pages'], 'default range unchanged');
+  assert.equal(chunkStart([...FIX_CARD]).claimIdx, -1);
+});
+
+test('BRO-7349: main() gives each chunk its own block budget', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'rcs-'));
+  const tp = path.join(dir, 't.jsonl');
+  const row = (type, content, uuid) => JSON.stringify({ type, uuid, message: { content } }) + '\n';
+  const landRows = (n, subj) => row('assistant', [{ type: 'tool_use', name: 'Bash', id: `k${n}`, input: { command: `git commit -qm "${subj}"` } }]) + row('user', [{ type: 'tool_result', tool_use_id: `k${n}`, content: 'ok' }])
+    + row('assistant', [{ type: 'tool_use', name: 'Bash', id: `p${n}`, input: { command: `git push origin HEAD:refs/heads/land/z${n}` } }]) + row('user', [{ type: 'tool_result', tool_use_id: `p${n}`, content: 'ok' }]);
+  const run = () => spawnSync(process.execPath, [path.join(ROOT, 'scripts/lib/root-cause-stop.mjs'), '--stop-hook'], {
+    input: JSON.stringify({ transcript_path: tp, session_id: 't', last_assistant_message: SAFE }),
+    encoding: 'utf8', env: { ...process.env, ...CLOUD, ROOT_CAUSE_STOP_DISABLE: '' },
+  });
+  fs.writeFileSync(tp, landRows(1, 'fix: a'));
+  assert.equal(run().status, 2);
+  assert.equal(run().status, 0, 'chunk 1 budget spent');
+  fs.appendFileSync(tp, row('assistant', [{ type: 'text', text: 'CLASS-GUARD: scripts/lib/a.test.mjs\nCOUSINS: grepped data/, none\n\n' + SAFE }], 'claim-1') + landRows(2, 'fix: b'));
+  const b = run();
+  assert.equal(b.status, 2, 'a new fix after an accepted claim gets its own reminder');
+  assert.match(b.stderr, /BRO-7316/);
+  fs.rmSync(dir, { recursive: true, force: true });
+  for (const f of fs.readdirSync(os.tmpdir())) if (f.startsWith('root-cause-stop-')) fs.rmSync(path.join(os.tmpdir(), f), { force: true });
+});
+
+test('BRO-7349: a land push mentioned in a heredoc, a node -e test or a sed expression is not a landing', () => {
+  const ev = (cmd) => [toolUse('x', 'Bash', { command: cmd }), ok('x')];
+  assert.deepEqual(landedPushIndices(ev("cat >> t.test.mjs <<'EOF'\nconst LAND = 'git push origin HEAD:refs/heads/land/x';\nEOF")), []);
+  assert.deepEqual(landedPushIndices(ev(`node -e 'run("git push origin HEAD:refs/heads/land/x")'`)), []);
+  assert.deepEqual(landedPushIndices(ev(`sed -i "s/gh workflow run land.yml -f branch=a/gh workflow run land.yml -f branch=b/" t.mjs`)), []);
+  assert.deepEqual(landedPushIndices(ev('git push origin "HEAD:refs/heads/land/x" 2>&1 | tail -2')), [0], 'a quoted refspec still lands');
+  assert.deepEqual(landedPushIndices(ev("git commit -qm 'fix: a thing' && git push origin HEAD:refs/heads/land/x")), [0], 'a quoted commit message before a real push');
+});
+
+test('BRO-7349: a Linear close-out mentioned inside a heredoc or a quoted script is not an answer', () => {
+  const fixture = toolUse('w1', 'Bash', { command: "cat >> t.test.mjs <<'EOF'\nconst c = 'node scripts/linear-brain.js update BRO-1 --comment \"CLASS-GUARD: scripts/lib/x.test.mjs ; cousins: grepped data/, none\"';\nEOF" });
+  assert.equal(d([...FIX_CARD, ...LAND, fixture, ok('w1')]), 'block');
+  const nodeE = toolUse('w2', 'Bash', { command: `node -e 'run("node scripts/linear-brain.js update BRO-1 --comment CLASS-GUARD: scripts/lib/x.test.mjs ; cousins: grepped data/, none")'` });
+  assert.equal(d([...FIX_CARD, ...LAND, nodeE, ok('w2')]), 'block');
+});
+
+test('BRO-7349: many blocked claims in a row stay fast (memoised boundary search)', () => {
+  const ev = [...FIX_CARD];
+  for (let n = 0; n < 40; n++) ev.push(...commitLand(n, `fix: thing ${n}`), { ...say(SAFE), messageId: `m${n}` });
+  const t = Date.now();
+  assert.equal(d(ev), 'block');
+  assert.ok(Date.now() - t < 1000, `took ${Date.now() - t}ms; the boundary search must not re-judge earlier claims`);
+});
+
+test('BRO-7349: a claim made before anything landed does not discard an earlier answer', () => {
+  const ev = [...FIX_CARD, toolUse('k1', 'Bash', { command: 'git commit -qm "fix: venue"' }), ok('k1'), ANSWER, say(SAFE), feedback('Stop hook feedback:\n[command hook 1]: BLOCKED: unpushed commits'), ...commitLand(2, 'fix: venue follow-up').slice(2)];
+  assert.equal(d(ev), 'allow');
+  assert.equal(chunkStart(ev).claimIdx, -1);
+});
+
+test('BRO-7349: a land push handed to a shell is still a landing; one written into a fixture is not', () => {
+  const lp = (command) => landedPushIndices([toolUse('p', 'Bash', { command }), ok('p')]).length;
+  assert.equal(lp('bash -c "git push origin HEAD:refs/heads/land/x"'), 1);
+  assert.equal(lp("sh -c 'cd /tmp/w && git push origin HEAD:refs/heads/land/x'"), 1);
+  assert.equal(lp("bash <<'EOF'\ncd /tmp/w\ngit push origin HEAD:refs/heads/land/x\nEOF"), 1);
+  assert.equal(lp('git push origin "HEAD:refs/heads/land/x"'), 1);
+  assert.equal(lp("cat > t.mjs <<'EOF'\nconst c = 'git push origin HEAD:refs/heads/land/x';\nEOF"), 0);
+  assert.equal(lp("node -e \"run('git push origin HEAD:refs/heads/land/x')\""), 0);
+  assert.equal(runShellCode('bash -c "node scripts/linear-brain.js update BRO-1 --comment x"').includes('linear-brain.js update'), true);
+});
+
+test('BRO-7349: a shell-wrapped land push written into a fixture is not a landing', () => {
+  const lp = (command) => landedPushIndices([toolUse('p', 'Bash', { command }), ok('p')]).length;
+  assert.equal(lp("cat >> t.test.mjs <<'EOF'\nassert.equal(lp('bash -c \"git push origin HEAD:refs/heads/land/x\"'), 1);\nEOF"), 0);
+  assert.equal(lp("node -e \"x('bash -c git push origin HEAD:refs/heads/land/x')\""), 0);
+  assert.equal(lp("cat > a.sh <<'EOF'\nbash <<'X'\ngit push origin HEAD:refs/heads/land/x\nX\nEOF"), 0);
 });

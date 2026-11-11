@@ -151,7 +151,8 @@ test('workflow replay promotes in-window strands into the collection directory, 
   assert.ok(fetches.every(f => f.openingNight === '1'));
   // The existing workflow starts collection after this command completes.
   assert.ok(drainIdx < collectIdx);
-  assert.match(steps[collectIdx].body, /SHOW_FILTER: \$\{\{ steps\.find\.outputs\.shows \}\}/);
+  // BRO-7117: scoped to the shows this run still owns, falling back to Find's list.
+  assert.match(steps[collectIdx].body, /SHOW_FILTER: \$\{\{ steps\.scope\.outputs\.shows \|\| steps\.find\.outputs\.shows \}\}/);
   assert.match(steps[collectIdx].body, /run: node scripts\/collect-review-texts\.js/);
   for (const entry of entries) {
     const promoted = path.join(root, entry.show.id, 'thewrap--robert-hofler.json');

@@ -400,6 +400,37 @@ test('hook: a squashed branch passes; a non-repo cwd and garbage input fail open
   assert.equal(runHook({ command: 'git status', cwd: wt }).decision, 'skip');
 });
 
+test('hook: a CI-skip-marked tip blocks (land.yml would never start); the CLI the Mac lander uses does not (BRO-7353)', () => {
+  const { wt } = landFixture();
+  sh(wt, 'git reset -q --soft origin/main && git commit -qm "data: cost row [skip ci]"');
+  const marked = runHook({ command: 'git push origin HEAD:refs/heads/land/feat', cwd: wt });
+  assert.equal(marked.decision, 'block', JSON.stringify(marked));
+  assert.match(marked.message, /CI-skip marker/);
+  assert.match(marked.message, /--allow-empty/);
+  // The Mac lander runs the CLI on the raw tip and adds its own trigger commit afterwards: must not exit 3.
+  const cli = spawnSync('node', [path.join(ROOT, 'scripts/lib/land-preflight.mjs'), '--cwd', wt, '--tip', 'HEAD', '--base', 'origin/main', '--target', 'land/feat', '--no-fetch', '--no-tests'], { encoding: 'utf8' });
+  assert.equal(cli.status, 0, cli.stderr);
+  // The documented fix clears it.
+  sh(wt, 'git commit -q --allow-empty -m "chore(land): trigger land.yml"');
+  const fixed = runHook({ command: 'git push origin HEAD:refs/heads/land/feat', cwd: wt });
+  assert.equal(fixed.results[0].detail.skipCi.status, 'pass');
+  // Same-command commit with a marker, which the HEAD-moves skip would otherwise wave through.
+  const same = runHook({ command: 'git commit -qm "audit: refresh [ci skip]" && git push origin HEAD:land/feat', cwd: wt });
+  assert.equal(same.decision, 'block');
+  assert.match(same.message, /the commit this command makes/);
+  assert.doesNotMatch(same.message, /run the same push again/, 'same-command advice must not loop');
+  assert.equal(runHook({ command: `git commit -qm "x [skip actions]" && git -C "${wt}" push origin HEAD:land/feat`, cwd: wt }).decision, 'block', 'git -C push');
+  // Fails with a bare /git\s+push/ split: the -C push is not found, so the marker after it was read as the commit's.
+  assert.equal(runHook({ command: `git commit -qm "plain" && git -C "${wt}" push origin HEAD:land/feat && echo "[skip ci]"`, cwd: wt }).decision, 'skip', 'git -C push, marker after');
+  assert.equal(runHook({ command: `git commit -qm "plain" && git -C '${wt}' push origin HEAD:land/feat && echo "[skip ci]"`, cwd: wt }).decision, 'skip', 'quoted -C path');
+  assert.equal(runHook({ command: 'git commit -qm "plain" && git push origin HEAD:land/feat && echo "[skip ci]"', cwd: wt }).decision, 'skip', 'marker after the push is not the commit');
+  // Non-HEAD source ref with a marked tip is judged on that ref.
+  sh(wt, 'git branch -f marked HEAD && git checkout -q marked && git commit -q --allow-empty -m "y [no ci]" && git checkout -q feat');
+  assert.equal(runHook({ command: 'git push origin marked:refs/heads/land/feat', cwd: wt }).decision, 'block');
+  assert.equal(runHook({ command: 'git commit -qm "plain" && git push origin HEAD:land/feat', cwd: wt }).decision, 'skip');
+  assert.notEqual(runHook({ command: 'git commit -qm "x [skip ci]" && git push origin HEAD:land/feat  # NO-LAND-PREFLIGHT: verified marker is intended here', cwd: wt }).decision, 'block');
+});
+
 test('tests: an audit that crashes (exit 1, no JSON) skips instead of blocking with garbage', () => {
   const d = auditRepo();
   write(d, 'scripts/audit-orphan-tests.js', "throw new Error('boom');\n");
@@ -434,6 +465,16 @@ test('hook: an unknown push dir or a non-origin remote is a skip, never judged a
   assert.equal(runHook({ command: 'git --git-dir=/tmp/x/.git push origin HEAD:land/feat', cwd: wt }).decision, 'skip');
   assert.equal(runHook({ command: 'git push fork HEAD:land/feat', cwd: wt }).decision, 'skip');
   assert.equal(runHook({ command: 'git push origin HEAD:land/feat', cwd: wt }).decision, 'block', 'control');
+});
+
+test('hook: a commit and a land push in one command is a skip that says the push went unchecked (BRO-7349)', async () => {
+  const { HEAD_MOVED_WARNING } = await import('../../scripts/lib/land-preflight.mjs');
+  const { wt } = landFixture(); // wt conflicts with main, so judging it would block
+  const v = runHook({ command: 'git commit -qm x && git push origin HEAD:land/feat', cwd: wt });
+  assert.equal(v.decision, 'skip');
+  assert.deepEqual(v.warnings, [HEAD_MOVED_WARNING]);
+  assert.match(HEAD_MOVED_WARNING, /NOT checked/);
+  assert.deepEqual(runHook({ command: 'git status && git push origin HEAD:land/feat', cwd: wt }).warnings.filter((w) => w === HEAD_MOVED_WARNING), [], 'control: no HEAD move, no such warning');
 });
 
 test('tests: manifest problems the audit reports (unsorted manifest) block too', () => {

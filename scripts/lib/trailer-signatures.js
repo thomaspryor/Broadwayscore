@@ -238,22 +238,37 @@ function stripTimesFooter(text) {
 // opens like a listing, carries a run date / phone / domain / "Tickets", has
 // no prose sentence in it, and what precedes it ends a sentence at review length.
 // ---------------------------------------------------------------------------
-const TELEGRAPH_PROMO_RE = /\s*(?:Telegraph Box ?office Popular Shows»|Twitter Icon Facebook Icon WhatsApp Icon Email Icon Comment speech bubble|Buy [^\n]{0,80}?tickets[^\n]{0,80}?Telegraph Box Office\.?|Book tickets via Tickets \| Telegraph Media Group provided by London Theatre Direct(?:\s+Recommended[^\n]{0,200}?Read more)?|This review also appears in Seven magazine[^\n]{0,80})\s*$/i;
+// Second wave (2026-11-11 batch 4: 14 files whose live page held exactly our
+// text still read truncated): the 2010-12 box-office link is split over lines
+// ("Buy tickets to\n\nBlithe Spirit\n\nwith\n\nTelegraph Box Office", "Buy\n\n
+// Frankenstein Tickets\n\nfrom\n\nTelegraph Tickets"), Seven magazine adds a
+// "Follow SEVEN on Twitter" line, and 2017 reviews end "Book your tickets now
+// to avoid disappointment at tickets.telegraph.co.uk or by calling: 0844 871 2118".
+const TELEGRAPH_PROMO_RE = /[\s​]*(?:Telegraph Box ?office Popular Shows»|Twitter Icon Facebook Icon WhatsApp Icon Email Icon Comment speech bubble|Buy [^\n]{0,80}?tickets[^\n]{0,80}?Telegraph Box Office\.?|(?<=^|\n)\s*Buy\b[\s\S]{0,80}?\btickets\b[\s\S]{0,40}?\bTelegraph (?:Box Office|Tickets)\.?|Book tickets via Tickets \| Telegraph Media Group provided by London Theatre Direct(?:\s+Recommended[^\n]{0,200}?Read more)?|This review also appears in Seven magazine[^\n]{0,80}|Follow SEVEN on Twitter @TelegraphSeven|Book your tickets[^\n]{0,60}? at tickets\.telegraph\.co\.uk or by calling:? 0\d{3} ?\d{3} ?\d{4})[\s​]*$/i;
 const TELEGRAPH_FOOTER_MAX = 260;
 // whole month words only: a bare "Mar"/"May" prefix matched "remark", "mayhem"
 const TELEGRAPH_MONTH = '\\b(?:Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|June?|July?|Aug(?:ust)?|Sept?(?:ember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\\b\\.?';
-const TELEGRAPH_OPENER_RE = new RegExp(`^(?:Until\\b|Booking\\b|Book\\b|Tickets?\\b|At\\s+[\\p{Lu}\\d]|[\\p{Lu}\\d][\\w'’&.-]*(?:\\s+[\\w'’&.()-]+){0,6},\\s+(?:London\\b|(?:to|until)\\s+(?:\\d|${TELEGRAPH_MONTH})))`, 'u');
-const TELEGRAPH_EVIDENCE_RE = new RegExp(`\\b(?:[Uu]ntil|to)\\s+(?:${TELEGRAPH_MONTH}\\s+\\d{1,2}|\\d{1,2}\\s+${TELEGRAPH_MONTH})|\\b[a-z0-9-]+\\.(?:co\\.uk|org\\.uk|com|org|net|london|uk)\\b|\\b0\\d{3,4}\\s?\\d{3}\\s?\\d{3,4}\\b|\\bTickets?:`);
+// Each opener names what follows it, so a prose fragment that merely starts
+// with "Until"/"Tickets"/"Book" ("Until the final scene, the") is not a listing
+// (second review, 406b6a883f6).
+const TELEGRAPH_DATE = `(?:${TELEGRAPH_MONTH}\\s+\\d{1,2}|\\d{1,2}\\s+${TELEGRAPH_MONTH})`;
+const TELEGRAPH_OPENER_RE = new RegExp(`^(?:(?:Until|To)\\s+${TELEGRAPH_DATE}|Booking\\s+(?:to|until)\\s+${TELEGRAPH_DATE}|Book(?:ing)?\\s+tickets\\b|Tickets?(?::|\\s+\\d)|At\\s+(?:the\\s+)?\\p{Lu}|(?!(?:Then|But|And|So|Yet|It|He|She|They|We|I|There|Here|Still|Even|Now)\\b)[\\p{Lu}\\d][\\w'’&.-]*(?:\\s+[\\w'’&.()-]+){0,6},\\s+(?:London\\s+(?:[A-Z]{1,2}\\d{1,2}[A-Z]?\\b|\\()|(?:to|until)\\s+${TELEGRAPH_DATE}))`, 'u');
+// later sentences of a listing ("... Tickets: 020 ...", "Purchase X tickets or call 0844 ...")
+const TELEGRAPH_HARD_EVIDENCE_RE = /\b[a-z0-9-]+\.(?:co\.uk|org\.uk|com|org|net|london|uk)\b|\b0\d{2,4}\s?\d{3,4}\s?\d{3,4}\b|^Then touring\b/;
+const TELEGRAPH_EVIDENCE_RE = new RegExp(`\\b(?:[Uu]ntil|to)\\s+(?:${TELEGRAPH_MONTH}\\s+\\d{1,2}|\\d{1,2}\\s+${TELEGRAPH_MONTH})|\\b[a-z0-9-]+\\.(?:co\\.uk|org\\.uk|com|org|net|london|uk)\\b|\\b0\\d{2,4}\\s?\\d{3,4}\\s?\\d{3,4}\\b|\\bTickets?:`);
 // the listing ends on a date, a domain, a number or "book tickets", never on a dangling word
-const TELEGRAPH_END_RE = new RegExp(`(?:\\d|${TELEGRAPH_MONTH}|\\.(?:co\\.uk|org\\.uk|com|org|net|london|uk)|\\bbook tickets|\\))\\.?\\s*$`);
+// (also a full box-office url, and the "; Telegraph Tickets" link text)
+const TELEGRAPH_END_RE = new RegExp(`(?:\\d|${TELEGRAPH_MONTH}|\\.(?:co\\.uk|org\\.uk|com|org|net|london|uk)|\\bbook tickets|\\bTelegraph Tickets|https?://\\S+|\\))\\.?\\s*$`);
 
 function stripTelegraphFooter(text) {
   if (!text || typeof text !== 'string') return text;
-  let t = text.replace(/\s+$/, '');
+  let t = text.replace(/[\s​]+$/, '');
+  let promo = false;
   for (let i = 0; i < 3; i++) {
     const p = t.replace(TELEGRAPH_PROMO_RE, '');
     if (p === t) break;
     t = p;
+    promo = true;
   }
   const base = Math.max(0, t.length - TELEGRAPH_FOOTER_MAX - 5);
   const tail = t.slice(base);
@@ -262,7 +277,7 @@ function stripTelegraphFooter(text) {
   let m;
   while ((m = boundary.exec(tail)) !== null) {
     const footer = tail.slice(m.index + m[0].length).trim();
-    if (!isTelegraphListing(footer)) continue;
+    if (!isTelegraphListing(footer, promo)) continue;
     const body = t.slice(0, base + m.index + m[0].length).replace(/\s+$/, '');
     // the body must end a sentence, and that sentence must not itself be a
     // listing: "... a snarl\n\nUntil Jun 6. Tickets: ..." is a cut-off review
@@ -278,11 +293,23 @@ function stripTelegraphFooter(text) {
   return t === text.replace(/\s+$/, '') ? text : (SENTENCE_END_RE.test(t) && t.length >= RELATED_MIN_REMAINING ? t : text);
 }
 
-function isTelegraphListing(seg) {
+// afterPromo: a box-office promo was just stripped, so the article ended there
+// and the text is not cut off; a one-line "Harold Pinter Theatre, to Apr 14"
+// needs no phone or domain to count as its listing then.
+function isTelegraphListing(seg, afterPromo = false) {
   if (!seg || seg.length < 6 || seg.length > TELEGRAPH_FOOTER_MAX) return false;
   // a listing, not prose: no full sentence inside it
   if (/[a-z]{2,}[.!?]["'”’]?\s+[A-Z][a-z]+ [a-z]+ [a-z]+/.test(seg)) return false;
-  return TELEGRAPH_OPENER_RE.test(seg) && TELEGRAPH_EVIDENCE_RE.test(seg) && TELEGRAPH_END_RE.test(seg);
+  if (!(TELEGRAPH_OPENER_RE.test(seg) && TELEGRAPH_EVIDENCE_RE.test(seg) && TELEGRAPH_END_RE.test(seg))) return false;
+  // A run date alone is not enough ("In 1987, to Oct 18" is prose): a real
+  // listing also carries a box-office domain, a phone number or the closing
+  // "; book tickets" link (third review, 2026-11-11).
+  // "; book tickets" is the link text after a listing; bare "book tickets" and a
+  // postcode also occur in prose (fourth review), so neither counts alone.
+  if (!(TELEGRAPH_HARD_EVIDENCE_RE.test(seg) || /;\s*book tickets$/.test(seg) || (afterPromo && !/[.!?;\n]/.test(seg)))) return false;
+  // every later sentence must be listing too: an opener or a phone / domain
+  const parts = seg.split(/(?<=[a-z0-9)])[.]\s+(?=[A-Z])/).slice(1);
+  return parts.every((p) => TELEGRAPH_OPENER_RE.test(p) || TELEGRAPH_HARD_EVIDENCE_RE.test(p));
 }
 
 // Outlet-scoped strippers (outletId is the registry id on the review file).

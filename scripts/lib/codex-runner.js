@@ -1642,7 +1642,7 @@ function firingThroughput(comments) {
  *  - no summary at all          -> error (the runner is not running; it fires every 2 h)
  *  - a run stopped on the lock  -> error
  *  - nothing landed             -> error (the original "lands nothing" failure)
- *  - 2+ cards crashed mid-card  -> warn
+ *  - 2+ cards crashed mid-card, at least as many as landed (disk-stopped runs excluded: lane alarm) -> warn
  * -> { status: 'pass'|'warn'|'error', message }
  */
 function runnerHealth(comments, nowMs, { windowMs = 24 * 3600_000 } = {}) {
@@ -1657,20 +1657,27 @@ function runnerHealth(comments, nowMs, { windowMs = 24 * 3600_000 } = {}) {
       ? 'Codex runner could not start in the last 24h: its Codex login is not usable (see "## Codex runner did not start" on BRO-4745).'
       : 'No Codex runner summary in the last 24h: the runner is not running (it should post one every 2 hours).' };
   }
-  let landed = 0; let crashed = 0; let checkUsd = 0; const lockStops = [];
+  let landed = 0; let crashed = 0; let diskCrashed = 0; let checkUsd = 0; const lockStops = [];
   for (const c of recent) {
     const f = runnerSummaryFacts(c.body);
     landed += f.landed;
-    crashed += f.crashed;
+    // BRO-7356: a run that stopped for lack of disk is the machine's fault and the lane alarm's
+    // (codex-lane-health 'disk-low'); its runner errors are not Codex crashing on cards.
+    // Scope = exactly what the lane alarm's 'disk-low' covers (cloud lane), and only the stop line's
+    // own disk wording: a crash-streak stop quotes the crash text, which can be a dropped fetch (reviewers 2026-11-11).
+    const ms = Date.parse(c.createdAt);
+    if (runStoppedForDisk(f.stop) && laneOfSummary(c.body, ms) === 'cloud' && nowMs - ms <= DISK_ALARM_WINDOW_MS) diskCrashed += f.crashed; else crashed += f.crashed;
     checkUsd += f.checkUsd;
     if (/lock/i.test(f.stop)) lockStops.push(String(c.createdAt).slice(0, 16));
   }
   // The Claude spend the Codex lane costs (its check), per card it landed (BRO-5384 savings line).
   const spend = `, Claude check $${checkUsd.toFixed(2)}${landed ? ` ($${(checkUsd / landed).toFixed(2)} per landed card)` : ''}`;
-  const facts = `${recent.length} run(s), ${landed} card(s) landed, ${crashed} crashed mid-card${spend} in the last 24h`;
+  const facts = `${recent.length} run(s), ${landed} card(s) landed, ${crashed} crashed mid-card${diskCrashed ? ` (${diskCrashed} more on runs that stopped for disk: the lane alarm's disk-low)` : ''}${spend} in the last 24h`;
   if (lockStops.length) return { status: 'error', message: `Codex runner stopped on its run lock (${lockStops.join(', ')}): ${facts}.` };
   if (!landed) return { status: 'error', message: `Codex runner landed nothing: ${facts}.` };
-  if (crashed >= 2) return { status: 'warn', message: `Codex runner crashed on ${crashed} cards: ${facts}.` };
+  // BRO-7356: crashes that the day's landings outnumber are noise (3 crashed beside 7 landed re-filed the card daily);
+  // a day where crashes reach half the landings is the machine broken, which still warns.
+  if (crashed >= 2 && crashed * 2 >= landed) return { status: 'warn', message: `Codex runner crashed on ${crashed} cards: ${facts}.` };
   return { status: 'pass', message: `${facts}.` };
 }
 
@@ -1867,6 +1874,18 @@ function slotsForDisk({ slots, freeBytes, missingBySlot = [], reserveBytes = 0, 
 // The last two also follow a dropped fetch or a permissions error, so they stop a run (isDiskFailure) only
 // while the disk is low, like a bare ENOSPC; a crash note naming any of them never counts against the card.
 const DISK_FULL_RE = /No space left on device|Out of disk ?space|failed to write object|unpack-objects failed/i;
+// BRO-7356: a run's "Stopped early:" line that names the disk. ONE definition for the lane alarm
+// (codex-lane-health.js, which owns disk stops) and the daily health row (runnerHealth, which must not
+// count those runs' runner errors as "cards crashed": 3 'landing cards' cards in 30 days, each re-filed
+// by the same full-disk day on the cloud lane).
+const DISK_STOP_RE = new RegExp(`GB of disk left|\\bout of disk\\b|\\bENOSPC\\b|${DISK_FULL_RE.source}`, 'i');
+// The lane alarm's disk-low fires on the FIRST cloud disk stop (12h look-back), so every disk stop in the row's 24h window
+// was already reported when it happened; the row must not re-file it a second time as 'crashed'.
+const DISK_ALARM_WINDOW_MS = 24 * 3600_000;
+/** A summary's 'Stopped early' line that is the runner's own disk stop (not a crash-streak line quoting a crash). */
+function runStoppedForDisk(stop) {
+  return DISK_STOP_RE.test(String(stop || '')) && !/runner errors in a row/i.test(String(stop || ''));
+}
 const DISK_SURE_RE = /No space left on device|Out of disk ?space/i;
 function isDiskFailure(text, freeDiskBytes) {
   const t = String(text || '');
@@ -2012,7 +2031,7 @@ module.exports = {
   SLIM_SPARSE_PATTERNS, SLIM_EXCLUDED_DIRS, SLIM_WORKTREE_BYTES, FULL_WORKTREE_BYTES,
   cardNeedsImages, treeModeArgs, isSlimTree, worktreeSummaryLine, worktreeBytesFor, measureTreeBytes,
   isDiskFailure,
-  DISK_FULL_RE,
+  DISK_FULL_RE, DISK_STOP_RE, runStoppedForDisk,
   futureDeferral,
   codexFoundBlocked,
   blockedParkNote,

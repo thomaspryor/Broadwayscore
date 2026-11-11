@@ -121,6 +121,16 @@ test('The Telegraph: listing line + box-office promo are a trailer; a cut-off re
     ' Until Nov 7. Tickets: rsc.org.uk Book tickets via Tickets | Telegraph Media Group provided by London Theatre Direct',
     '\n\nBooking to Feb 12; www.matildathemusical.com\n\nThis review also appears in Seven magazine, free with The Sunday Telegraph',
     ' Until Oct 20. Purchase Strictly Ballroom tickets or call 0844 871 2118',
+    '\n\nBooking until Oct 18, call 020 3989 5455',
+    // second wave (batch 4: live page == saved text, still read truncated)
+    '\n\nBuy tickets to\n\nBetty Blue Eyes\n\nwith\n\nTelegraph Box Office',
+    '\n\nBuy\n\nFrankenstein Tickets\n\nfrom\n\nTelegraph Tickets',
+    "\n\nBuy 'When We Are Married' tickets\n\nfrom\n\nTelegraph Box Office",
+    '\n\nHarold Pinter Theatre, to Apr 14\n\nThis review also appears in SEVEN magazine, free with the Sunday Telegraph\n\nFollow SEVEN on Twitter @TelegraphSeven',
+    '\n\nTo March 6; www.nationaltheatre.org.uk\n\nThis review also appears in SEVEN magazine, free with the Sunday Telegraph\n\nFollow SEVEN on Twitter @TelegraphSeven',
+    ' Book your tickets now to avoid disappointment at tickets.telegraph.co.uk or by calling: 0844 871 2118​',
+    ' Until Jan 19. Tickets: 0844 871 2118; Telegraph Tickets',
+    ' Tickets: 212.719.1300; http://www.roundabouttheatre.org/Shows-Events/Love-Love-Love.aspx',
   ];
   for (const e of endings) {
     assert.equal(T.stripTelegraphFooter(BODY + e), BODY, JSON.stringify(e));
@@ -146,8 +156,45 @@ test('The Telegraph: listing line + box-office promo are a trailer; a cut-off re
     ' Then, to be fair, the revival until Oct 3 drew a summary',
     ' At Chichester, to May 9 the cast play to mayhem',
   ]) assert.equal(T.stripTelegraphFooter(BODY + tail), BODY + tail, tail);
-  const cutVenue = `${BODY.slice(0, -1)} and the lead brings a snarl\n\nNational Theatre, London SE1. Until Jun 6; nationaltheatre.org.uk`;
+  // second review: a cut-off fragment that starts with an opener word is not a listing
+  const L = '\n\nUntil Jun 6. Tickets: 020 3989 5455';
+  for (const frag of [
+    ' It works. Tickets were hard to get and the',
+    ' It works. Until the final scene, the',
+    ' It works.\n\nBook-ending the evening, the director',
+    ' It works. Sondheim, London and the',
+    ' It was a slow start. Then, to Oct 18',
+  ]) {
+    const cut = BODY + frag + L;
+    assert.notEqual(tier(cut, 'telegraph').contentTier, 'complete', frag);
+  }
+  // third review: prose that ends on a date, with no domain/phone/postcode, is not a listing
+  for (const frag of [
+    ' In 1987, to Oct 18', ' When it played Stratford, until May 3', ' If the first half, to May 4',
+    ' At Christmas the run was extended until Jan 5', ' Until Oct 18, when the cast leaves in 2027',
+    ' Tickets: the show was sold out by 2019',
+    // fourth review
+    ' At 86, McKellen is still playing eight shows a week until Oct 18, and those who cannot book tickets',
+    " At Wyndham's, where it runs until Oct 18, there is still just about time to book tickets",
+    ' At the Old Vic, until 18 October, the queue at the box office in London SE1',
+  ]) {
+    assert.equal(T.stripTelegraphFooter(BODY + frag), BODY + frag, frag);
+  }
+  const cutVenue =`${BODY.slice(0, -1)} and the lead brings a snarl\n\nNational Theatre, London SE1. Until Jun 6; nationaltheatre.org.uk`;
   assert.equal(T.stripTelegraphFooter(cutVenue), cutVenue);
+  // second wave: a teaser cut mid-sentence followed by the split box-office
+  // link or the Seven promo is still not complete
+  for (const promo of [
+    '\n\nBuy tickets to\n\nBlithe Spirit\n\nwith\n\nTelegraph Box Office',
+    '\n\nThis review also appears in SEVEN magazine, free with the Sunday Telegraph\n\nFollow SEVEN on Twitter @TelegraphSeven',
+  ]) {
+    assert.notEqual(tier(`${BODY.slice(0, -1)} and the lead brings a${promo}`, 'telegraph').contentTier, 'complete', promo);
+    // a last line that is prose, not a one-line listing, is not stripped either
+    assert.notEqual(tier(`${BODY.slice(0, -1)}\n\nIn 1987, to Oct 18, the lead${promo}`, 'telegraph').contentTier, 'complete', promo);
+  }
+  // prose that merely mentions buying tickets is not the box-office link
+  const buyCut = `${BODY}\n\nBuy tickets while you can, for the`;
+  assert.notEqual(tier(buyCut, 'telegraph').contentTier, 'complete');
   // classify-only: the saved text keeps the listing
   assert.match(stripTrailingJunk(BODY + endings[2], 'telegraph'), /Tickets: 020 3989 5455/);
 });

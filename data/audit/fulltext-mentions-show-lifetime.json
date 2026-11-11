@@ -1,17 +1,11 @@
 {
-  "updatedAt": "2026-11-11T00:51:48.726Z",
-  "scanned": 4803,
-  "showsWithViolations": 565,
-  "totalViolations": 857,
-  "newSinceLastRun": 7,
+  "updatedAt": "2026-11-11T10:15:18.939Z",
+  "scanned": 4804,
+  "showsWithViolations": 564,
+  "totalViolations": 849,
+  "newSinceLastRun": 1,
   "newViolationKeys": [
-    "finding-neverland-2015::huffpost--david-finkle.json",
-    "finding-neverland-2015::nypost--elisabeth-vincentelli.json",
-    "newsies-the-musical-2012::amny--matt-windman.json",
-    "newsies-the-musical-2012::nydailynews--joe-dziemianowicz.json",
-    "newsies-the-musical-2012::nypost--elisabeth-vincentelli.json",
-    "newsies-the-musical-2012::nytimes--ben-brantley.json",
-    "what-the-animals-say-off-west-end-2026::reviewsgate--william-russell.json"
+    "cruise-west-end-2021::telegraph--dominic-cavendish.json"
   ],
   "violationKeys": [
     "the-rocky-horror-show-2026::w42st--michael-musto.json",
@@ -100,8 +94,6 @@
     "old-times-2015::ap--mark-kennedy.json",
     "spring-awakening-2015::financialtimes--brendan-lemon.json",
     "spring-awakening-2015::onstage-blog--c-f-kim.json",
-    "finding-neverland-2015::huffpost--david-finkle.json",
-    "finding-neverland-2015::nypost--elisabeth-vincentelli.json",
     "wolf-hall-parts-one-and-two-2015::nypost--elisabeth-vincentelli.json",
     "wolf-hall-parts-one-and-two-2015::variety--marilyn-stasio.json",
     "the-heidi-chronicles-2015::northjerseycom--robert-feldberg.json",
@@ -160,9 +152,6 @@
     "one-man-two-guvnors-2012::backstage--david-sheward.json",
     "magicbird-2012::backstage--suzy-evans.json",
     "magicbird-2012::zap-2-it--jacqueline-cutler.json",
-    "newsies-the-musical-2012::amny--matt-windman.json",
-    "newsies-the-musical-2012::nydailynews--joe-dziemianowicz.json",
-    "newsies-the-musical-2012::nypost--elisabeth-vincentelli.json",
     "newsies-the-musical-2012::nytimes--ben-brantley.json",
     "death-of-a-salesman-2012::northjerseycom--robert-feldberg.json",
     "wit-2012::ap--mark-kennedy.json",
@@ -585,6 +574,7 @@
     "the-corn-is-green-west-end-2022::thestage--tim-bano.json",
     "the-corn-is-green-west-end-2022::times-uk--clive-davis.json",
     "all-of-us-west-end-2022::whatsonstage--gareth-carr.json",
+    "cruise-west-end-2021::telegraph--dominic-cavendish.json",
     "amelie-west-end-2021::london-box-office--phil-willmott.json",
     "amelie-west-end-2021::london-theatre--mark-shenton.json",
     "amelie-west-end-2021::standard--jessie-thompson.json",
@@ -695,7 +685,6 @@
     "44-off-broadway-2025::theater-scene--victor-gluck.json",
     "the-blood-quilt-off-broadway-2024::thewrap--robert-hofler.json",
     "teeth-off-broadway-2024::thestage--lane-williamson.json",
-    "photograph-51-west-end-2015::telegraph--dominic-cavendish.json",
     "hand-to-god-west-end-2016::artsdesk--marianka-swain.json",
     "impossible-west-end-2015::guardian--michael-billington.json",
     "pay-the-writer-off-broadway-2023::woman-around-town--alix-cohen.json",
@@ -729,7 +718,6 @@
     "how-to-hold-your-breath-west-end-2015::guardian--michael-billington.json",
     "light-shining-in-buckinghamshire-west-end-2015::guardian--michael-billington.json",
     "the-elephant-man-west-end-2015::guardian--michael-billington.json",
-    "the-elephant-man-west-end-2015::telegraph--ben-lawrence.json",
     "the-importance-of-being-earnest-west-end-2015::standard--fiona-mountford.json",
     "roosevelvis-west-end-2015::guardian--lyn-gardner.json",
     "the-father-west-end-2015::guardian--michael-billington.json",
@@ -744,10 +732,8 @@
     "shear-madness-off-broadway-2015::bobs-theater-blog--robert-sholiton.json",
     "confederates-off-broadway-2022::thewrap--robert-hofler.json",
     "one-man-two-guvnors-west-end-2011::thestage--ben-dowell.json",
-    "sweeney-todd-west-end-2012::telegraph--charles-spencer.json",
     "sweeney-todd-west-end-2012::thestage--lisa-martland.json",
     "betty-blue-eyes-west-end-2011::standard--henry-hitchings.json",
-    "betty-blue-eyes-west-end-2011::telegraph--charles-spencer.json",
     "shrek-the-musical-west-end-2011::herald--william-russell.json",
     "the-country-girl-west-end-2010::guardian--michael-billington.json",
     "a-flea-in-her-ear-west-end-2010::guardian--michael-billington.json",
@@ -2730,46 +2716,6 @@
       ]
     },
     {
-      "showId": "finding-neverland-2015",
-      "title": "Finding Neverland",
-      "openingDate": "2015-04-15",
-      "message": "huffpost/David Finkle (huffpost--david-finkle.json) SHIPPED but fullText never mentions 'Finding Neverland' (303 chars): http://www.huffingtonpost.com/david-finkle/first-nighter-flying-off_b_7075296.html\nnypost/Elisabeth Vincentelli (nypost--elisabeth-vincentelli.json) SHIPPED but fullText never mentions 'Finding Neverland' (303 chars): http://nypost.com/2015/04/15/glee-star-matthew-morrison-works-tirelessly-to-drive-overbearing-finding-neverland/",
-      "violations": [
-        {
-          "filename": "huffpost--david-finkle.json",
-          "url": "http://www.huffingtonpost.com/david-finkle/first-nighter-flying-off_b_7075296.html",
-          "outletId": "huffpost",
-          "criticName": "David Finkle",
-          "haystackLength": 303,
-          "textIssuesFlag": false,
-          "triage": {
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          }
-        },
-        {
-          "filename": "nypost--elisabeth-vincentelli.json",
-          "url": "http://nypost.com/2015/04/15/glee-star-matthew-morrison-works-tirelessly-to-drive-overbearing-finding-neverland/",
-          "outletId": "nypost",
-          "criticName": "Elisabeth Vincentelli",
-          "haystackLength": 303,
-          "textIssuesFlag": false,
-          "triage": {
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          }
-        }
-      ]
-    },
-    {
       "showId": "wolf-hall-parts-one-and-two-2015",
       "title": "Wolf Hall Parts One & Two",
       "openingDate": "2015-04-09",
@@ -4029,56 +3975,8 @@
       "showId": "newsies-the-musical-2012",
       "title": "Newsies The Musical",
       "openingDate": "2012-03-29",
-      "message": "amny/Matt Windman (amny--matt-windman.json) SHIPPED but fullText never mentions 'Newsies The Musical' (303 chars): http://www.amny.com/urbanite-1.812039/theater-review-newsies-3-5-stars-1.3632371\nnydailynews/Joe Dziemianowicz (nydailynews--joe-dziemianowicz.json) SHIPPED but fullText never mentions 'Newsies The Musical' (303 chars): http://www.nydailynews.com/entertainment/review-disney-newsies-opens-broadway-article-1.1052432#ixzz1qbAHrygu\nnypost/Elisabeth Vincentelli (nypost--elisabeth-vincentelli.json) SHIPPED but fullText never mentions 'Newsies The Musical' (303 chars): http://www.nypost.com/p/entertainment/theater/striking_ensemble_is_on_tap_9pbHutoLlg9t4OvQa7eKOL?utm_medium=rss&utm_content=Theater\nnytimes/Ben Brantley (nytimes--ben-brantley.json) SHIPPED but fullText never mentions 'Newsies The Musical' (303 chars): http://theater.nytimes.com/2012/03/30/theater/reviews/newsies-the-musical-by-alan-menken-and-harvey-fierstein.html?ref=theater\n⚠️  faster-times/Jonathan Mandell (faster-times--jonathan-mandell.json) also too short to assess (0 chars): http://www.thefastertimes.com/newyorktheater/2012/03/29/newsies-review/",
+      "message": "nytimes/Ben Brantley (nytimes--ben-brantley.json) SHIPPED but fullText never mentions 'Newsies The Musical' (303 chars): http://theater.nytimes.com/2012/03/30/theater/reviews/newsies-the-musical-by-alan-menken-and-harvey-fierstein.html?ref=theater\n⚠️  faster-times/Jonathan Mandell (faster-times--jonathan-mandell.json) also too short to assess (0 chars): http://www.thefastertimes.com/newyorktheater/2012/03/29/newsies-review/",
       "violations": [
-        {
-          "filename": "amny--matt-windman.json",
-          "url": "http://www.amny.com/urbanite-1.812039/theater-review-newsies-3-5-stars-1.3632371",
-          "outletId": "amny",
-          "criticName": "Matt Windman",
-          "haystackLength": 303,
-          "textIssuesFlag": false,
-          "triage": {
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          }
-        },
-        {
-          "filename": "nydailynews--joe-dziemianowicz.json",
-          "url": "http://www.nydailynews.com/entertainment/review-disney-newsies-opens-broadway-article-1.1052432#ixzz1qbAHrygu",
-          "outletId": "nydailynews",
-          "criticName": "Joe Dziemianowicz",
-          "haystackLength": 303,
-          "textIssuesFlag": false,
-          "triage": {
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          }
-        },
-        {
-          "filename": "nypost--elisabeth-vincentelli.json",
-          "url": "http://www.nypost.com/p/entertainment/theater/striking_ensemble_is_on_tap_9pbHutoLlg9t4OvQa7eKOL?utm_medium=rss&utm_content=Theater",
-          "outletId": "nypost",
-          "criticName": "Elisabeth Vincentelli",
-          "haystackLength": 303,
-          "textIssuesFlag": false,
-          "triage": {
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          }
-        },
         {
           "filename": "nytimes--ben-brantley.json",
           "url": "http://theater.nytimes.com/2012/03/30/theater/reviews/newsies-the-musical-by-alan-menken-and-harvey-fierstein.html?ref=theater",
@@ -11734,7 +11632,7 @@
       "showId": "boys-from-the-blackstuff-west-end-2024",
       "title": "Boys from the Blackstuff",
       "openingDate": "2024-05-29",
-      "message": "thestage/Sam Marlowe (thestage--sam-marlowe.json) SHIPPED but fullText never mentions 'Boys from the Blackstuff' (3142 chars): https://www.thestage.co.uk/reviews/boys-from-the-blackstuff-review-olivier-theatre-national-theatre-london-alan-bleasdale-james-graham\n⚠️  telegraph/Mark Brown (telegraph--mark-brown.json) also too short to assess (0 chars): https://www.telegraph.co.uk/theatre/what-to-see/boys-from-the-black-stuff-royal-court-liverpool-review/?n=@",
+      "message": "thestage/Sam Marlowe (thestage--sam-marlowe.json) SHIPPED but fullText never mentions 'Boys from the Blackstuff' (3142 chars): https://www.thestage.co.uk/reviews/boys-from-the-blackstuff-review-olivier-theatre-national-theatre-london-alan-bleasdale-james-graham",
       "violations": [
         {
           "filename": "thestage--sam-marlowe.json",
@@ -12350,7 +12248,7 @@
       "showId": "bleak-expectations-west-end-2023",
       "title": "Bleak Expectations",
       "openingDate": "2023-05-18",
-      "message": "express-uk/Neil Norman (express-uk--neil-norman.json) SHIPPED but fullText never mentions 'Bleak Expectations' (1077 chars): https://www.express.co.uk/entertainment/theatre/1775148/black-expectations-theatre-charles-dickens-radio-4-parody\n⚠️  telegraph/Unknown (telegraph--unknown.json) also too short to assess (0 chars): https://www.telegraph.co.uk/theatre/what-to-see/bleak-expectations-criterion-review-dickens-pastiche-is-eng/\n⚠️  whatsonstage/Theo Bosanquet (whatsonstage--theo-bosanquet.json) also too short to assess (0 chars): https://www.whatsonstage.com/london-theatre/news/bleak-expectations-at-the-criterion-theatre-review_58986.html",
+      "message": "express-uk/Neil Norman (express-uk--neil-norman.json) SHIPPED but fullText never mentions 'Bleak Expectations' (1077 chars): https://www.express.co.uk/entertainment/theatre/1775148/black-expectations-theatre-charles-dickens-radio-4-parody\n⚠️  whatsonstage/Theo Bosanquet (whatsonstage--theo-bosanquet.json) also too short to assess (0 chars): https://www.whatsonstage.com/london-theatre/news/bleak-expectations-at-the-criterion-theatre-review_58986.html",
       "violations": [
         {
           "filename": "express-uk--neil-norman.json",
@@ -12886,6 +12784,30 @@
           "outletId": "whatsonstage",
           "criticName": "Gareth Carr",
           "haystackLength": 4123,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          }
+        }
+      ]
+    },
+    {
+      "showId": "cruise-west-end-2021",
+      "title": "Cruise",
+      "openingDate": "2021-05-20",
+      "message": "telegraph/Dominic Cavendish (telegraph--dominic-cavendish.json) SHIPPED but fullText never mentions 'Cruise' (3112 chars): https://www.telegraph.co.uk/theatre/what-to-see/cruise-duchess-theatre-review-new-play-searingly-honest-sin/",
+      "violations": [
+        {
+          "filename": "telegraph--dominic-cavendish.json",
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/cruise-duchess-theatre-review-new-play-searingly-honest-sin/",
+          "outletId": "telegraph",
+          "criticName": "Dominic Cavendish",
+          "haystackLength": 3112,
           "textIssuesFlag": false,
           "triage": {
             "bucket": "unresolved",
@@ -13950,7 +13872,7 @@
       "showId": "the-end-of-history-west-end-2019",
       "title": "The End of History…",
       "openingDate": "2019-06-27",
-      "message": "guardian/Michael Billington (guardian--michael-billington.json) SHIPPED but fullText never mentions 'The End of History…' (3203 chars): https://www.theguardian.com/stage/2019/jul/04/the-end-of-history-review-jack-thorne-john-tiffany-royal-court\n⚠️  telegraph/Dominic Cavendish (telegraph--dominic-cavendish.json) also too short to assess (0 chars): https://www.telegraph.co.uk/theatre/what-to-see/end-history-royal-court-review-lesley-sharp-brilliant-political/",
+      "message": "guardian/Michael Billington (guardian--michael-billington.json) SHIPPED but fullText never mentions 'The End of History…' (3203 chars): https://www.theguardian.com/stage/2019/jul/04/the-end-of-history-review-jack-thorne-john-tiffany-royal-court",
       "violations": [
         {
           "filename": "guardian--michael-billington.json",
@@ -15179,30 +15101,6 @@
       ]
     },
     {
-      "showId": "photograph-51-west-end-2015",
-      "title": "Photograph 51",
-      "openingDate": "2015-09-14",
-      "message": "telegraph/Dominic Cavendish (telegraph--dominic-cavendish.json) SHIPPED but fullText never mentions 'Photograph 51' (303 chars): https://www.telegraph.co.uk/theatre/what-to-see/photograph-51-noel-coward-theatre-review/",
-      "violations": [
-        {
-          "filename": "telegraph--dominic-cavendish.json",
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/photograph-51-noel-coward-theatre-review/",
-          "outletId": "telegraph",
-          "criticName": "Dominic Cavendish",
-          "haystackLength": 303,
-          "textIssuesFlag": false,
-          "triage": {
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          }
-        }
-      ]
-    },
-    {
       "showId": "hand-to-god-west-end-2016",
       "title": "Hand to God",
       "openingDate": "2016-02-15",
@@ -15918,7 +15816,7 @@
       "showId": "the-elephant-man-west-end-2015",
       "title": "The Elephant Man",
       "openingDate": "2015-05-26",
-      "message": "guardian/Michael Billington (guardian--michael-billington.json) SHIPPED but fullText never mentions 'The Elephant Man' (3123 chars): https://www.theguardian.com/stage/2015/jun/01/the-elephant-man-review-bradley-cooper-london\ntelegraph/Ben Lawrence (telegraph--ben-lawrence.json) SHIPPED but fullText never mentions 'The Elephant Man' (303 chars): https://www.telegraph.co.uk/culture/theatre/theatre-reviews/11639001/The-Elephant-Man-West-End-review.html",
+      "message": "guardian/Michael Billington (guardian--michael-billington.json) SHIPPED but fullText never mentions 'The Elephant Man' (3123 chars): https://www.theguardian.com/stage/2015/jun/01/the-elephant-man-review-bradley-cooper-london",
       "violations": [
         {
           "filename": "guardian--michael-billington.json",
@@ -15933,22 +15831,6 @@
               "no-conclusive-triage-metadata"
             ],
             "nextStep": "read-article-and-verify-title-and-production",
-            "requiresArticleReview": true
-          }
-        },
-        {
-          "filename": "telegraph--ben-lawrence.json",
-          "url": "https://www.telegraph.co.uk/culture/theatre/theatre-reviews/11639001/The-Elephant-Man-West-End-review.html",
-          "outletId": "telegraph",
-          "criticName": "Ben Lawrence",
-          "haystackLength": 303,
-          "textIssuesFlag": false,
-          "triage": {
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
             "requiresArticleReview": true
           }
         }
@@ -16278,24 +16160,8 @@
       "showId": "sweeney-todd-west-end-2012",
       "title": "Sweeney Todd",
       "openingDate": "2012-03-20",
-      "message": "telegraph/Charles Spencer (telegraph--charles-spencer.json) SHIPPED but fullText never mentions 'Sweeney Todd' (303 chars): https://www.telegraph.co.uk/culture/theatre/theatre-reviews/9155712/Sweeney-Todd-Adelphi-Theatre-review.html\nthestage/Lisa Martland (thestage--lisa-martland.json) SHIPPED but fullText never mentions 'Sweeney Todd' (293 chars): https://www.thestage.co.uk/reviews/review.php/35623/sweeney-todd",
+      "message": "thestage/Lisa Martland (thestage--lisa-martland.json) SHIPPED but fullText never mentions 'Sweeney Todd' (293 chars): https://www.thestage.co.uk/reviews/review.php/35623/sweeney-todd",
       "violations": [
-        {
-          "filename": "telegraph--charles-spencer.json",
-          "url": "https://www.telegraph.co.uk/culture/theatre/theatre-reviews/9155712/Sweeney-Todd-Adelphi-Theatre-review.html",
-          "outletId": "telegraph",
-          "criticName": "Charles Spencer",
-          "haystackLength": 303,
-          "textIssuesFlag": false,
-          "triage": {
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          }
-        },
         {
           "filename": "thestage--lisa-martland.json",
           "url": "https://www.thestage.co.uk/reviews/review.php/35623/sweeney-todd",
@@ -16318,29 +16184,13 @@
       "showId": "betty-blue-eyes-west-end-2011",
       "title": "Betty Blue Eyes",
       "openingDate": "2011-04-13",
-      "message": "standard/Henry Hitchings (standard--henry-hitchings.json) SHIPPED but fullText never mentions 'Betty Blue Eyes' (303 chars): https://www.thisislondon.co.uk/theatre/review-23941577-betty-blue-eyes-brings-home-the-bacon.do\ntelegraph/Charles Spencer (telegraph--charles-spencer.json) SHIPPED but fullText never mentions 'Betty Blue Eyes' (303 chars): https://www.telegraph.co.uk/culture/theatre/theatre-reviews/8450084/Betty-Blue-Eyes-Novello-Theatre-review.html",
+      "message": "standard/Henry Hitchings (standard--henry-hitchings.json) SHIPPED but fullText never mentions 'Betty Blue Eyes' (303 chars): https://www.thisislondon.co.uk/theatre/review-23941577-betty-blue-eyes-brings-home-the-bacon.do",
       "violations": [
         {
           "filename": "standard--henry-hitchings.json",
           "url": "https://www.thisislondon.co.uk/theatre/review-23941577-betty-blue-eyes-brings-home-the-bacon.do",
           "outletId": "standard",
           "criticName": "Henry Hitchings",
-          "haystackLength": 303,
-          "textIssuesFlag": false,
-          "triage": {
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          }
-        },
-        {
-          "filename": "telegraph--charles-spencer.json",
-          "url": "https://www.telegraph.co.uk/culture/theatre/theatre-reviews/8450084/Betty-Blue-Eyes-Novello-Theatre-review.html",
-          "outletId": "telegraph",
-          "criticName": "Charles Spencer",
           "haystackLength": 303,
           "textIssuesFlag": false,
           "triage": {
@@ -19108,11 +18958,11 @@
     }
   ],
   "triage": {
-    "total": 857,
+    "total": 849,
     "counts": {
-      "excerpt": 196,
+      "excerpt": 187,
       "wrong-production": 8,
-      "unresolved": 576,
+      "unresolved": 577,
       "truncated": 77
     },
     "outletPlans": [
@@ -19241,9 +19091,9 @@
       },
       {
         "outletId": "amny",
-        "total": 5,
+        "total": 4,
         "counts": {
-          "excerpt": 3,
+          "excerpt": 2,
           "unresolved": 1,
           "wrong-production": 1
         },
@@ -19265,15 +19115,6 @@
               "no-conclusive-triage-metadata"
             ],
             "nextStep": "read-article-and-verify-title-and-production",
-            "requiresArticleReview": true
-          },
-          {
-            "file": "newsies-the-musical-2012/amny--matt-windman.json",
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
             "requiresArticleReview": true
           },
           {
@@ -22574,21 +22415,12 @@
       },
       {
         "outletId": "huffpost",
-        "total": 2,
+        "total": 1,
         "counts": {
-          "excerpt": 2
+          "excerpt": 1
         },
         "requiresArticleReview": true,
         "candidates": [
-          {
-            "file": "finding-neverland-2015/huffpost--david-finkle.json",
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          },
           {
             "file": "ifthen-2014/huffpost--mark-kennedy.json",
             "bucket": "excerpt",
@@ -23432,9 +23264,9 @@
       },
       {
         "outletId": "nydailynews",
-        "total": 9,
+        "total": 8,
         "counts": {
-          "excerpt": 8,
+          "excerpt": 7,
           "unresolved": 1
         },
         "requiresArticleReview": true,
@@ -23468,15 +23300,6 @@
           },
           {
             "file": "merrily-we-roll-along-1981/nydailynews--joe-dzieminaowicz.json",
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          },
-          {
-            "file": "newsies-the-musical-2012/nydailynews--joe-dziemianowicz.json",
             "bucket": "excerpt",
             "evidence": [
               "contentTier=excerpt"
@@ -23524,9 +23347,9 @@
       },
       {
         "outletId": "nypost",
-        "total": 5,
+        "total": 3,
         "counts": {
-          "excerpt": 5
+          "excerpt": 3
         },
         "requiresArticleReview": true,
         "candidates": [
@@ -23541,24 +23364,6 @@
           },
           {
             "file": "eclipsed-off-broadway-2015/nypost--elisabeth-vincentelli.json",
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          },
-          {
-            "file": "finding-neverland-2015/nypost--elisabeth-vincentelli.json",
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          },
-          {
-            "file": "newsies-the-musical-2012/nypost--elisabeth-vincentelli.json",
             "bucket": "excerpt",
             "evidence": [
               "contentTier=excerpt"
@@ -24693,11 +24498,11 @@
       },
       {
         "outletId": "telegraph",
-        "total": 17,
+        "total": 14,
         "counts": {
-          "unresolved": 10,
+          "unresolved": 11,
           "wrong-production": 1,
-          "excerpt": 5,
+          "excerpt": 1,
           "truncated": 1
         },
         "requiresArticleReview": true,
@@ -24721,12 +24526,12 @@
             "requiresArticleReview": true
           },
           {
-            "file": "betty-blue-eyes-west-end-2011/telegraph--charles-spencer.json",
-            "bucket": "excerpt",
+            "file": "cruise-west-end-2021/telegraph--dominic-cavendish.json",
+            "bucket": "unresolved",
             "evidence": [
-              "contentTier=excerpt"
+              "no-conclusive-triage-metadata"
             ],
-            "nextStep": "recover-full-article-and-verify-attribution",
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           },
           {
@@ -24784,15 +24589,6 @@
             "requiresArticleReview": true
           },
           {
-            "file": "photograph-51-west-end-2015/telegraph--dominic-cavendish.json",
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          },
-          {
             "file": "pygmalion-west-end-2023/telegraph--marianka-swain.json",
             "bucket": "unresolved",
             "evidence": [
@@ -24811,30 +24607,12 @@
             "requiresArticleReview": true
           },
           {
-            "file": "sweeney-todd-west-end-2012/telegraph--charles-spencer.json",
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          },
-          {
             "file": "the-authenticator-west-end-2026/telegraph--fiona-mountford.json",
             "bucket": "unresolved",
             "evidence": [
               "no-conclusive-triage-metadata"
             ],
             "nextStep": "read-article-and-verify-title-and-production",
-            "requiresArticleReview": true
-          },
-          {
-            "file": "the-elephant-man-west-end-2015/telegraph--ben-lawrence.json",
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
             "requiresArticleReview": true
           },
           {

@@ -28,7 +28,7 @@
 'use strict';
 const { spawnSync } = require('child_process');
 
-const SKIP_MARKER = /\[(?:skip ci|ci skip|no ci|skip actions|actions skip)\]|skip-checks:\s*true/i;
+const { hasSkipCiMarker } = require('./skip-ci-marker');
 
 /** `on.push.paths` globs from a workflow file's text (top-level push block only). */
 function pushPathsFromWorkflow(text) {
@@ -60,10 +60,6 @@ function touchesCodePaths(files, patterns) {
   if (!files || !files.length || !patterns || !patterns.length) return true;
   const res = patterns.map(globToRegExp);
   return files.some(f => res.some(r => r.test(f)));
-}
-
-function hasSkipCiMarker(message) {
-  return SKIP_MARKER.test(String(message || ''));
 }
 
 /** First run (newest first) whose head_sha is `sha` or a descendant of it. */

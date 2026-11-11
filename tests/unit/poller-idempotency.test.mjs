@@ -9,6 +9,9 @@ import {
   isActiveRun,
   AUTO_RUN_SUFFIX,
   ACTIVE_STATUSES,
+  targetedShowIdFromTitle,
+  activeTargetedPollerShows,
+  partitionByActiveTargetedPoller,
 } from '../../scripts/lib/poller-idempotency.js';
 
 const fixture = [
@@ -262,4 +265,59 @@ test('BRO-4209: override-URL dispatch still skips for a same-show targeted run',
     { databaseId: 10, status: 'queued', displayTitle: 'Opening Night Poller — x-2026' },
   ];
   assert.equal(findInFlightCoverage(runs, 'x-2026', { hasOverrideUrl: true })?.databaseId, 10);
+});
+
+// ---------------------------------------------------------------------------
+// BRO-7117: an auto run leaves shows an active targeted run owns to that run.
+// ---------------------------------------------------------------------------
+
+test('targetedShowIdFromTitle reads the show id after the em-dash separator', () => {
+  assert.equal(targetedShowIdFromTitle('Opening Night Poller — cloud-9-west-end-2026'), 'cloud-9-west-end-2026');
+  assert.equal(targetedShowIdFromTitle('Opening Night Poller — auto'), null);
+  assert.equal(targetedShowIdFromTitle('Opening Night Poller - cloud-9'), null); // ASCII hyphen is not the contract
+  assert.equal(targetedShowIdFromTitle(undefined), null);
+  assert.equal(targetedShowIdFromTitle('Opening Night Poller — '), null);
+});
+
+// Replay of 2026-11-11 00:25Z (BRO-7338): auto run 42931217026 and targeted
+// run 42931235978 both worked on cloud-9-west-end-2026 and both crashed in
+// collect. With the targeted run active, the auto run must drop that show.
+const BRO_7338_RUNS = [
+  { databaseId: 42931235978, status: 'in_progress', displayTitle: 'Opening Night Poller — cloud-9-west-end-2026' },
+  { databaseId: 42931217026, status: 'in_progress', displayTitle: 'Opening Night Poller — auto' },
+  { databaseId: 42874533817, status: 'completed', displayTitle: 'Opening Night Poller — the-lives-of-others-west-end-2026' },
+];
+const BRO_7338_AUTO_SHOWS = [
+  'cloud-9-west-end-2026',
+  'iphigenie-en-tauride-english-national-opera-west-end-2026',
+  'tosca-english-national-opera-west-end-2026',
+  'the-lives-of-others-west-end-2026',
+];
+
+test('BRO-7338 replay: the auto run drops the show the targeted run owns, keeps the rest', () => {
+  const { keep, owned } = partitionByActiveTargetedPoller(BRO_7338_RUNS, BRO_7338_AUTO_SHOWS);
+  assert.deepEqual(owned, [{ showId: 'cloud-9-west-end-2026', runId: 42931235978 }]);
+  assert.deepEqual(keep, BRO_7338_AUTO_SHOWS.slice(1));
+});
+
+test('completed targeted runs and auto runs own nothing', () => {
+  const active = activeTargetedPollerShows(BRO_7338_RUNS);
+  assert.deepEqual([...active.keys()], ['cloud-9-west-end-2026']);
+  assert.equal(activeTargetedPollerShows([]).size, 0);
+  assert.equal(activeTargetedPollerShows(null).size, 0);
+});
+
+test('every active status counts (queued targeted run still owns its show)', () => {
+  for (const status of ACTIVE_STATUSES) {
+    const { owned } = partitionByActiveTargetedPoller(
+      [{ databaseId: 1, status, displayTitle: 'Opening Night Poller — x-2026' }], ['x-2026']);
+    assert.equal(owned.length, 1, status);
+  }
+});
+
+test('slug prefixes do not collide (the-bear-2025 vs the-bear-bites-back-2025)', () => {
+  const runs = [{ databaseId: 9, status: 'queued', displayTitle: 'Opening Night Poller — the-bear-bites-back-2025' }];
+  const { keep, owned } = partitionByActiveTargetedPoller(runs, ['the-bear-2025', 'the-bear-bites-back-2025']);
+  assert.deepEqual(keep, ['the-bear-2025']);
+  assert.deepEqual(owned.map((o) => o.showId), ['the-bear-bites-back-2025']);
 });

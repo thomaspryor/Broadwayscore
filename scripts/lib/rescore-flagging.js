@@ -30,7 +30,34 @@
  */
 
 const { isScoreable } = require('./is-scoreable');
-const { assessFullText } = require('./text-quality');
+const { assessFullText, getBestTextForScoring } = require('./text-quality');
+
+/**
+ * BRO-7345: the scorer's text selector (text-quality.js getBestTextForScoring)
+ * has been fixed several times for complete reviews it read as truncated, so a
+ * curated excerpt outranked the full text: BRO-4804 (page footer, forwarded
+ * contentTier, 2026-10-07), the trailer-signature work (BRO-7171) and BRO-7272
+ * (2026-11-10). A rescore that completed BEFORE the latest such fix recorded
+ * textSource 'excerpt' with the full text on disk; the rescoreCompletedAt loop
+ * guard in isStaleScoreInput then refused to re-flag it, so ~260 complete
+ * reviews stayed scored from an excerpt. Bump this when text-quality.js changes
+ * what the selector picks: each file is then re-flagged once, and the loop guard
+ * holds again after a rescore that ran on the new selector.
+ */
+const TEXT_SELECTOR_CHANGED_AT = '2026-11-10T12:00:00Z';
+
+/**
+ * Scored from an excerpt by an OLD selector, and the CURRENT selector now picks
+ * the full text. Pure function of file state + the constant above.
+ */
+function isExcerptScoreFromOldSelector(data) {
+  if (!data || typeof data !== 'object' || !data.fullText || data.contentTier !== 'complete') return false;
+  const src = data.llmMetadata && data.llmMetadata.textSource;
+  if (!src || src.type !== 'excerpt') return false;
+  const scoredAt = Date.parse((data.llmMetadata && data.llmMetadata.scoredAt) || '');
+  if (!Number.isFinite(scoredAt) || scoredAt >= Date.parse(TEXT_SELECTOR_CHANGED_AT)) return false;
+  return getBestTextForScoring(data).type === 'fullText';
+}
 
 /**
  * Scored from a fullText the scorer itself judged truncated (a paywall cut),
@@ -175,9 +202,35 @@ function isStaleScoreInput(data, show, filePath) {
   if (data.rescoreCompletedAt) {
     const completed = Date.parse(data.rescoreCompletedAt);
     const fetched = Date.parse(data.textFetchedAt || '');
-    if (!Number.isFinite(fetched) || !Number.isFinite(completed) || completed >= fetched) return false;
+    // BRO-7345: unless that rescore ran on an older text selector than today's.
+    if ((!Number.isFinite(fetched) || !Number.isFinite(completed) || completed >= fetched)
+        && !isExcerptScoreFromOldSelector(data)) return false;
   }
   return isScoreable(data, show, filePath);
+}
+
+/**
+ * BRO-7345: classify a complete, long-fullText file whose recorded textSource is
+ * an excerpt and which is not queued. 'actionable' is the only class the guard
+ * (scripts/audit-excerpt-scored-fulltext.js) fails on; the rest are legitimate
+ * reasons a rescore would change nothing or never run:
+ *  excluded      isScoreable() false (nonReview, cvWrongArticle, duplicates, ...)
+ *  non-llm-score the score is an extracted star/grade/human rating, the LLM read does not set it
+ *  unscored      no assignedScore yet (the unscored pipeline's job)
+ *  settled       a rescore already ran on the current selector, or the selector
+ *                still prefers the excerpt, so another rescore would loop
+ * Returns null when the file is not in the population at all.
+ */
+function classifyExcerptScoredFullText(data, show, filePath) {
+  if (!data || typeof data !== 'object') return null;
+  if (data.contentTier !== 'complete' || typeof data.fullText !== 'string' || data.fullText.length < 1500) return null;
+  if (!data.llmMetadata || !data.llmMetadata.textSource || data.llmMetadata.textSource.type !== 'excerpt') return null;
+  if (data.needsRescore === true) return null;
+  if (typeof data.assignedScore !== 'number') return 'unscored';
+  if (data.humanReviewScore != null) return 'non-llm-score';
+  if (data.scoreSource && !isLlmScoreSource(data.scoreSource)) return 'non-llm-score';
+  if (!isScoreable(data, show, filePath)) return 'excluded';
+  return isStaleScoreInput(data, show, filePath) ? 'actionable' : 'settled';
 }
 
 /**
@@ -282,4 +335,4 @@ function queueRescoreForCvPartialWindow(data, show, filePath) {
   return true;
 }
 
-module.exports = { CV_PARTIAL_WINDOW_RESCORE_REASON, queueRescoreForCvPartialWindow, isFalseTruncationScore, isBotStubContaminatedScore, BOT_STUB_FIX_AT, BOT_STUB_TIGHTENED_AT, BOT_STUB_RESCORE_REASON, isStaleScoreInput, isTruncatedScoreNowComplete, markRescoreNeeded, needsRescoreForCvPartialWindow, queueRescoreForLateRating, queueRescoreForClearedRating, isLlmScoreSource };
+module.exports = { TEXT_SELECTOR_CHANGED_AT, isExcerptScoreFromOldSelector, classifyExcerptScoredFullText, CV_PARTIAL_WINDOW_RESCORE_REASON, queueRescoreForCvPartialWindow, isFalseTruncationScore, isBotStubContaminatedScore, BOT_STUB_FIX_AT, BOT_STUB_TIGHTENED_AT, BOT_STUB_RESCORE_REASON, isStaleScoreInput, isTruncatedScoreNowComplete, markRescoreNeeded, needsRescoreForCvPartialWindow, queueRescoreForLateRating, queueRescoreForClearedRating, isLlmScoreSource };

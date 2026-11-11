@@ -62,7 +62,8 @@ test('the poller wires needs_collection into every post-collect gate (targeted r
     assert.match(stepIf(name), /if:[^\n]*steps\.poll\.outputs\.any_collect == 'true'/, name);
   }
   // A collect_existing run is targeted, so the find step's list is already that one show.
-  assert.match(stepIf('Collect full text inline'), /SHOW_FILTER: \$\{\{ steps\.find\.outputs\.shows \}\}/);
+  // BRO-7117: scope step narrows auto runs; a targeted run's scope is that same show.
+  assert.match(stepIf('Collect full text inline'), /SHOW_FILTER: \$\{\{ steps\.scope\.outputs\.shows \|\| steps\.find\.outputs\.shows \}\}/);
   assert.match(yml, /COLLECT_ATTEMPTED_RAW: \$\{\{ steps\.poll\.outputs\.any_collect \}\}/);
   // Only a run that asks for it (the post-lane sweep), never every targeted run: the orchestrator's press-night loop
   // dispatches targeted runs too, and an unfetchable excerpt would make each of them collect, rebuild and deploy.
