@@ -23,7 +23,7 @@ const path = require('path');
  * kind 'ingest-dispatch' so the baseline can show both counts honestly.
  */
 
-const { manualActionsFromCommits, isBotAuthor } = require('./press-night-manual-actions');
+const { manualActionsFromCommits, isBotAuthor, fileChangeOf, outletIdFromFile } = require('./press-night-manual-actions');
 const { handSteps, GATING_FIX_FIELDS } = require('./review-provenance');
 // review-guards pulls scraper/axios/playwright in transitively. The morning digest
 // requires this module for its render helpers only and runs without npm ci
@@ -162,6 +162,8 @@ function causeOfFields(fields) {
 }
 
 const FIRST_PASS_CAUSES = new Set(['discovery-gap', 'text-gap']);
+// Automated second-pass ingests (bot-authored, never hand work).
+const SWEEP_FIND_SUBJECT = /^ingest: /i;
 
 /**
  * Cause of one commit signal (BRO-7375). The file status beats the subject:
@@ -172,6 +174,7 @@ const FIRST_PASS_CAUSES = new Set(['discovery-gap', 'text-gap']);
 function causeOfSignal({ kind, source, fileChange } = {}) {
   const base = kind === 'ingest-dispatch' ? 'discovery-gap' : causeOfSubject(source);
   if (!FIRST_PASS_CAUSES.has(base)) return base;
+  if (fileChange === 'deleted') return 'other';
   if (fileChange === 'added') return 'discovery-gap';
   if (fileChange === 'modified') return 'text-gap';
   return base;
@@ -184,7 +187,9 @@ function causeOfSubject(subject) {
   // BRO-7375: a text recovery ("NYT browser recovery", the gap-recovery
   // driver's "accepted" checkpoints) fixed the text of a review the first pass
   // already found; it is not a review discovery missed.
-  if (/recover|full.?text|refetch|gap-recovery driver/.test(t) && !/\bmissed\b|discover|ingest-urls/.test(t)) return 'text-gap';
+  // Attribution, date and duplicate words win: "re-credited row so it
+  // refetches" is a byline fix (ship-check).
+  if (/recover|full.?text|refetch|gap-recovery driver/.test(t) && !/\bmissed\b|discover|ingest-urls|byline|criticname|re-credit|attribut|outletid|publishdate|date guard|duplic|dedupe|syndicat/.test(t)) return 'text-gap';
   if (/ingest|missed|discovery|on-monitor|opening.night monitor|\bdirect\b|recover|full.?text|pull quote|\badd(ed)?\b.*review|\bfeat: .*review/.test(t)) return 'discovery-gap';
   if (/byline|criticname|re-credit|attribut|outletid/.test(t)) return 'attribution';
   if (/publishdate|date guard/.test(t)) return 'date-guard';
@@ -306,6 +311,20 @@ function gradeOpening({ show, files = [], commits = [], historyFromMs = null, pr
   }
 
   const historyCovers = historyFromMs == null || historyFromMs <= lo;
+  // BRO-7375: reviews an automated later pass (the aggregator-gap audit's
+  // "ingest:" commits) CREATED inside the window: the first pass missed them,
+  // but no person stepped in, so they stay out of signals and the verdict.
+  const sweepFinds = [];
+  for (const c of commits || []) {
+    const at = toMs(c.at);
+    if (!inWin(at) || !SWEEP_FIND_SUBJECT.test(c.subject || '') || !Array.isArray(c.added)) continue;
+    const mine = (c.files || []).filter((f) => f.startsWith(`${show.id}/`));
+    const outlets = [...new Set(mine.map((f) => outletIdFromFile(f, show.id)).filter(Boolean))];
+    for (const o of outlets) {
+      if (fileChangeOf(c, mine.filter((f) => outletIdFromFile(f, show.id) === o)) !== 'added') continue;
+      sweepFinds.push({ kind: 'sweep-find', at: new Date(at).toISOString(), outletId: o, cause: 'discovery-gap', fileChange: 'added', source: `${String(c.sha).slice(0, 8)} ${String(c.subject).slice(0, 120)}` });
+    }
+  }
   const hard = signals.filter((s) => s.kind !== 'ingest-dispatch');
   let verdict;
   if (signals.length) verdict = 'needed-hands';
@@ -339,6 +358,7 @@ function gradeOpening({ show, files = [], commits = [], historyFromMs = null, pr
     verdict,
     onlyIngestDispatches: verdict === 'needed-hands' && hard.length === 0,
     signals,
+    ...(sweepFinds.length ? { sweepFinds } : {}),
     historyCovers,
     // BRO-7166: usual critics (standing set) with no review yet; never moves the verdict.
     expectedMissing: Array.isArray(expectedMissing) && expectedMissing.length ? expectedMissing : null,
@@ -381,7 +401,7 @@ function firstPassMisses(grades) {
   const rows = new Map();
   for (const g of grades || []) {
     if (!g || !g.showId || !g.category) continue;
-    for (const s of g.signals || []) {
+    for (const s of [...(g.signals || []), ...(g.sweepFinds || [])]) {
       if (!s || !s.outletId) continue;
       let cause = s.cause || null;
       if (COMMIT_SIGNAL_KINDS.has(s.kind) && s.source) cause = causeOfSignal(s);
@@ -394,11 +414,16 @@ function firstPassMisses(grades) {
         category: g.category, outletId: s.outletId, showId: g.showId, title: g.title || g.showId,
         embargoAt: g.embargoAt || null, cause, at: s.at || null,
         via: s.source ? scrubSource(s.source) : (s.kind === 'hand-created-file' ? 'review file created by hand' : s.kind),
+        ...(s.kind === 'sweep-find' ? { by: 'sweep' } : {}),
       });
     }
   }
-  return [...rows.values()].sort((a, b) => String(a.embargoAt).localeCompare(String(b.embargoAt)) || a.showId.localeCompare(b.showId) || a.outletId.localeCompare(b.outletId));
+  // A review the first pass never found cannot also be one it found without
+  // text: the later text fix is part of the same miss (ship-check).
+  return sortMisses([...rows.values()].filter((r) => r.cause !== 'discovery-gap' ? !rows.has(`${r.showId}|${r.outletId}|discovery-gap`) : true));
 }
+
+const sortMisses = (rows) => rows.sort((a, b) => String(a.embargoAt).localeCompare(String(b.embargoAt)) || a.showId.localeCompare(b.showId) || a.outletId.localeCompare(b.outletId) || String(a.cause).localeCompare(String(b.cause)));
 
 /**
  * PURE. Rolling miss history: the current grades replace every earlier row
@@ -409,8 +434,9 @@ function mergeMissHistory(prev, current, { nowMs = Date.now(), keepDays = MISS_H
   const fresh = new Set(gradedShows || (current || []).map((r) => r.showId));
   const cutoff = nowMs - keepDays * 864e5;
   const keep = (r) => r && r.showId && r.outletId && !(Date.parse(r.embargoAt) < cutoff);
-  const out = [...(prev || []).filter((r) => keep(r) && !fresh.has(r.showId)), ...(current || []).filter(keep)];
-  return out.sort((a, b) => String(a.embargoAt).localeCompare(String(b.embargoAt)) || a.showId.localeCompare(b.showId) || a.outletId.localeCompare(b.outletId));
+  const byKey = new Map();
+  for (const r of [...(prev || []).filter((x) => keep(x) && !fresh.has(x.showId)), ...(current || []).filter(keep)]) byKey.set(`${r.showId}|${r.outletId}|${r.cause}`, r);
+  return sortMisses([...byKey.values()]);
 }
 
 /** One plain-English line for the owner's morning email. */

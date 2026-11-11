@@ -40,6 +40,7 @@ function parseGitLog(raw) {
     // find a review the first pass missed). name-only output leaves `added` unset.
     const files = [];
     let added = null;
+    let deleted = null;
     for (const raw of lines.slice(1)) {
       const l = raw.trim();
       if (!l) continue;
@@ -47,10 +48,12 @@ function parseGitLog(raw) {
       if (st) {
         files.push(st[2].trim());
         added = added || [];
+        deleted = deleted || [];
         if (st[1] === 'A' || st[1] === 'C') added.push(st[2].trim());
+        if (st[1] === 'D') deleted.push(st[2].trim());
       } else files.push(l);
     }
-    out.push({ sha: m[1], at: m[2], author: m[3], email: m[4], subject: m[5].trim(), files, ...(added ? { added } : {}) });
+    out.push({ sha: m[1], at: m[2], author: m[3], email: m[4], subject: m[5].trim(), files, ...(added ? { added, deleted } : {}) });
   }
   return out;
 }
@@ -59,6 +62,23 @@ function parseGitLog(raw) {
 function outletIdFromFile(file, showId) {
   const m = /^([^/]+)\/([^/]+?)--[^/]*\.json$/.exec(String(file || ''));
   return m && m[1] === showId ? m[2] : null;
+}
+
+/**
+ * How a commit changed one outlet's files (BRO-7375), or null when the log
+ * carried no file status. 'added' = it created the outlet's file (a review
+ * found), 'deleted' = it only removed files, else 'modified'. A rename
+ * (--no-renames: delete + add of the same outlet) is 'modified': the
+ * review already existed.
+ */
+function fileChangeOf(c, outletFiles) {
+  if (!c || !Array.isArray(c.added)) return null;
+  const del = Array.isArray(c.deleted) ? c.deleted : [];
+  const a = outletFiles.some((f) => c.added.includes(f));
+  const d = outletFiles.some((f) => del.includes(f));
+  if (a && !d) return 'added';
+  if (d && !a && outletFiles.every((f) => del.includes(f))) return 'deleted';
+  return 'modified';
 }
 
 /**
@@ -81,12 +101,9 @@ function manualActionsFromCommits(commits, { showId, embargoAt, nightStartH = 4,
     const source = `${String(c.sha).slice(0, 8)} ${c.subject}`;
     const ids = [...new Set(touched.map((f) => outletIdFromFile(f, showId)).filter(Boolean))];
     const base = { at: new Date(at).toISOString(), kind: 'hand-fix', source };
-    // fileChange (BRO-7375), only when the log carried file status: 'added'
-    // when the commit created one of the outlet's files, else 'modified'.
     const change = (id) => {
-      if (!Array.isArray(c.added)) return {};
-      const mine = touched.filter((f) => outletIdFromFile(f, showId) === id);
-      return { fileChange: mine.some((f) => c.added.includes(f)) ? 'added' : 'modified' };
+      const fc = fileChangeOf(c, touched.filter((f) => outletIdFromFile(f, showId) === id));
+      return fc ? { fileChange: fc } : {};
     };
     if (!ids.length) out.push({ ...base, outletId: null, outlet: null });
     else for (const id of ids) out.push({ ...base, outletId: id, outlet: id, ...change(id) });
@@ -101,4 +118,5 @@ function alreadyLogged(rec, a) {
     || ((m.outletId || null) === (a.outletId || null) && Math.abs(Date.parse(m.at) - Date.parse(a.at)) <= 30 * 60000));
 }
 
-module.exports = { alreadyLogged, LOG_FORMAT, SEP, isBotAuthor, parseGitLog, outletIdFromFile, manualActionsFromCommits };
+module.exports = {
+  fileChangeOf, alreadyLogged, LOG_FORMAT, SEP, isBotAuthor, parseGitLog, outletIdFromFile, manualActionsFromCommits };

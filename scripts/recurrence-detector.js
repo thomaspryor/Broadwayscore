@@ -58,6 +58,11 @@ const DAY = 864e5;
 const WINDOW_DAYS = 30;
 const QUIET_DAYS = 21;
 const NEW_ROOT_CAP = 3;
+// Miss classes file first but take at most 2 of the 3 slots, so a backlog of
+// them cannot starve the card classes (BRO-7375 ship-check).
+const MISS_ROOT_CAP = 2;
+// Grades older than this cannot vouch that a miss class went quiet.
+const GRADES_STALE_MS = 72 * 36e5;
 const STALE_MS = 48 * 36e5;
 
 function arg(name, fallback = null) {
@@ -168,7 +173,7 @@ const MARKET_WORDS = { broadway: 'Broadway', 'off-broadway': 'Off-Broadway', 'we
 
 // ---------- snapshot ----------
 
-function buildSnapshot({ cards, ledger, now, complete, commentsById = {}, prevKnown = [], filesById = null, misses = [] }) {
+function buildSnapshot({ cards, ledger, now, complete, commentsById = {}, prevKnown = [], filesById = null, misses = [], missesFresh = true }) {
   const classes = rc.detectClasses(cards, ledger, { now, windowDays: WINDOW_DAYS, filesById });
   const missCls = rc.missClasses(misses, cards, { now, windowDays: WINDOW_DAYS });
   const byId = new Map(cards.map((c) => [c.identifier, c]));
@@ -219,7 +224,9 @@ function buildSnapshot({ cards, ledger, now, complete, commentsById = {}, prevKn
   // the filing order: a card class already has a card per case someone sees,
   // a miss has nothing else on the board.
   const missOut = [];
-  for (const cls of [...missCls.values()].filter((c) => c.recurring).sort((a, b) => b.inWindow - a.inWindow)) {
+  // A class whose root card exists stays listed while it has any show in the
+  // window, so a returning miss is commented instead of read as "first sight".
+  for (const cls of [...missCls.values()].filter((c) => c.recurring || (c.rootCause && c.inWindow > 0)).sort((a, b) => b.inWindow - a.inWindow)) {
     const root = cls.rootCause ? byId.get(cls.rootCause) : null;
     missOut.push({
       key: cls.key,
@@ -261,6 +268,9 @@ function buildSnapshot({ cards, ledger, now, complete, commentsById = {}, prevKn
     keyVersion: rc.KEY_VERSION,
     // false when git could not be read (or --no-files): classes were grouped by title only.
     filesSignal: !!filesById,
+    // false when opening-grades.json was missing or stale: a miss class's
+    // --check-class then answers "unknown", never "quiet" (BRO-7375).
+    missesFresh,
     share: { thisWeek: week(0), lastWeek: week(1) },
     recurringCount: out.length,
     withRootCause: out.filter((c) => c.rootCause).length,
@@ -415,6 +425,7 @@ async function apply(snapshot, prevSnapshot) {
     }
     if (!cls.rootCause) {
       if (filed.length >= NEW_ROOT_CAP) { pending++; continue; }
+      if (cls.kind === 'first-pass-miss' && filed.filter((f) => f.miss).length >= MISS_ROOT_CAP) { pending++; continue; }
       const { issue } = await createLinearIssue({
         title: rootCardTitle(cls),
         description: rootCardDescription(cls),
@@ -447,7 +458,7 @@ async function apply(snapshot, prevSnapshot) {
       cls.rootCauseStartedNow = true;
       cls.rootCauseCreatedAt = new Date().toISOString();
       if (cls.kind !== 'first-pass-miss') for (const id of cls.instances) snapshot.instances[id] = { rootCause: issue.identifier, classKey: cls.key };
-      filed.push({ key: cls.key, card: issue.identifier });
+      filed.push({ key: cls.key, card: issue.identifier, miss: cls.kind === 'first-pass-miss' });
       continue;
     }
     const prev = prevById.get(cls.key);
@@ -683,11 +694,16 @@ function checkAll() {
   return 0;
 }
 
-function checkClass(want, quiet) {
-  const { snap, why } = loadFreshSnapshot();
+function checkClass(want, quiet, given = null) {
+  const { snap, why } = given ? { snap: given, why: null } : loadFreshSnapshot();
   if (why) { console.log(`FAIL: ${why}`); return 3; }
   const keys = Object.keys(snap.lastSeenByKey || {});
   const key = keys.find((k) => k === want || slugOf(k) === slugOf(want));
+  // No fresh grades = no idea whether a miss class had a new show (BRO-7375).
+  if (snap.missesFresh === false && ((key && rc.MISS_KEY_RE.test(key)) || /missed-at-first-pass/.test(slugOf(want)))) {
+    console.log('FAIL: opening-grades.json was missing or stale at the last run; cannot tell if this miss class is quiet');
+    return 3;
+  }
   if (!key) {
     // A slug no run has ever seen is a typo in a VERIFY line, not a quiet class.
     const known = (snap.knownKeys || []).some((k) => slugOf(k) === slugOf(want));
@@ -768,8 +784,11 @@ async function main() {
     }
   }
   const prev = readJson(SNAPSHOT);
-  const misses = missesFromGrades(readJson(arg('--grades', GRADES)), now);
-  const snap = buildSnapshot({ cards, ledger, now, complete, commentsById, filesById, misses, prevKnown: (prev && prev.knownKeys) || (prev && prev.classes || []).map((c) => c.key) });
+  const gradesDoc = readJson(arg('--grades', GRADES));
+  const misses = missesFromGrades(gradesDoc, now);
+  const missesFresh = !!(gradesDoc && now - Date.parse(gradesDoc.generatedAt) <= GRADES_STALE_MS);
+  if (!missesFresh) console.warn('[recurrence] opening-grades.json missing or stale; first-pass miss classes may be incomplete');
+  const snap = buildSnapshot({ cards, ledger, now, complete, commentsById, filesById, misses, missesFresh, prevKnown: (prev && prev.knownKeys) || (prev && prev.classes || []).map((c) => c.key) });
   snap.pendingRootCards = snap.classes.filter((c) => !c.rootCause).length;
   // The weekly independent sample rides along so the digest line has it.
   const smp = readJson(SAMPLE_FILE);

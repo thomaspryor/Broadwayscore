@@ -85,8 +85,11 @@ function loadCommits(rtDir, sinceIso, untilIso) {
   // ingest-urls.yml's own fallback commit when the script did not commit
   // itself: bot-authored, but still a hand dispatch (never caller-tagged).
   const fallback = pm.parseGitLog(git(rtDir, [...base, '--grep=^data: Ingest URLs for ']));
+  // BRO-7375: the aggregator-gap audit's automated ingests ("ingest: ...")
+  // feed sweepFinds (reviews a later pass created), never the hand signals.
+  const sweep = pm.parseGitLog(git(rtDir, [...base, '--grep=^ingest: ']));
   const bySha = new Map();
-  for (const c of [...human, ...ingest, ...fallback]) bySha.set(c.sha, c);
+  for (const c of [...human, ...ingest, ...fallback, ...sweep]) bySha.set(c.sha, c);
   return [...bySha.values()];
 }
 
@@ -169,7 +172,9 @@ function main() {
     firstPassMisses: og.mergeMissHistory(
       (readJson(auditOutPath, null) || {}).firstPassMisses || [],
       og.firstPassMisses(grades),
-      { nowMs, gradedShows: grades.map((g) => g.showId) },
+      // A grade whose git history does not reach its window cannot vouch that
+      // a show had no misses: its earlier rows stay (ship-check).
+      { nowMs, gradedShows: grades.filter((g) => g.historyCovers !== false).map((g) => g.showId) },
     ),
   };
   for (const g of grades) console.log(`${g.verdict.padEnd(13)} ${g.showId}  ${og.gradeLine(g)}`);
