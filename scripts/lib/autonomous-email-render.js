@@ -231,6 +231,7 @@ const PLAIN_HEALTH = [
   // its key is this function's output.
   [/^Cron failed: (.+)/, (m) => `The automated "${m[1]}" job keeps failing`],
   [/^Workflow repeat-failure: (.+)/, (m) => `The automated "${m[1]}" job keeps failing`],
+  [/^Production page parity/, () => 'Some live show pages do not match their latest critic data'],
   [/^Audience coverage/, () => 'Some shows have audience ratings that never linked up'],
   [/^Sync: baseline drift/, () => 'The site is showing fewer shows/reviews than yesterday'],
   [/^Sync: cast coverage/, () => 'Some shows are missing cast lists'],

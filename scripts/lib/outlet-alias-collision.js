@@ -159,6 +159,7 @@ const DECLARED_TYPO_PAIRS = [
   ['preview', 'reviewing-the-drama'], // "review" is an alias of the latter
   ['telegram', 'telegraph'], // "telegrap" is an existing Telegraph typo alias
   ['tribune', 'tribute'], // tribunemag.co.uk / tribute.ca
+  ['metro-uk', 'metro-us'], // metro.co.uk (UK daily) / metro.us (separate US paper), BRO-7335
   // Deliberate city editions; "time-outs" belongs to the London edition.
   ['timeout', 'timeout-london'],
   // Same critic-name routing split documented in DECLARED_THE_EXCEPTIONS;
