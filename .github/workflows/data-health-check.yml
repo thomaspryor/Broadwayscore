@@ -641,6 +641,32 @@ jobs:
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
         run: node scripts/audit-openai-retirements.js --strict --alert
 
+      # BRO-7342: Anthropic twin of the OpenAI shutdown audit above. Diffs Anthropic's deprecations page against
+      # research-cost.js MODEL_SHUTDOWNS for model ids the repo uses. Advisory first (CLAUDE.md rule 19); --alert files
+      # one worker card per condition and clears it when clean; an unreadable page files input-missing only.
+      - name: Anthropic model shutdown audit
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 3
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/audit-provider-retirements.js --provider=anthropic --strict --alert
+
+      # BRO-7342: Gemini twin of the OpenAI shutdown audit above. Diffs Gemini's deprecations page against
+      # research-cost.js MODEL_SHUTDOWNS for model ids the repo uses. Advisory first (CLAUDE.md rule 19); --alert files
+      # one worker card per condition and clears it when clean; an unreadable page files input-missing only.
+      - name: Gemini model shutdown audit
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 3
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/audit-provider-retirements.js --provider=gemini --strict --alert
+
       # BRO-5510: dropped-by-wrong-twin reviews and stale-slot squatters on 2026+ shows (empty outlet slots only).
       # Advisory (CLAUDE.md rule 19): the script exits 0 unless --strict; continue-on-error keeps the job green.
       - name: Stale slot squatter audit
