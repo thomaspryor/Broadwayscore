@@ -167,7 +167,7 @@ for (const t of targets) {
   S2.assertNoLeakageSweep2(t, s2.provenance);
   const aud = v.x.audScore; const typeMusical = t.type === 'musical' ? 1 : 0; const rev = t.isRevival ? 1 : 0;
   if (HANDCHECK.has(t.id)) console.log('HANDCHECK', t.id, t.openingDate, 'y', t.score, JSON.stringify({ x: s2.x, has: s2.has, prov: s2.provenance.map((q) => `${q.kind}:${q.ref}:${q.date ?? ''}`).slice(0, 12) }));
-  rows.push({ t, season: RF.seasonStartYear(t.openingDate), x: { ...f.x, ...v.x, ...e.x, ...er.x, ...s2.x, ...ea.x, ...ec.x, audMusical: aud * typeMusical, audRevival: aud * rev, audPlay: aud * (1 - typeMusical) }, x72: er72.x, x78: er78.x, xEAC: eaC.x, has: { ...v.has, ...e.has, ...er.has, ...Object.fromEntries(Object.entries(s2.has).map(([k, q]) => [`s2${k}`, q])), ...ea.has, ...ec.has, ownPrior: f.priorScore != null, transfer: isTransfer(t) }, mu: f.mu, y: t.score });
+  rows.push({ t, season: RF.seasonStartYear(t.openingDate), x: { ...f.x, ...v.x, ...e.x, ...er.x, ...s2.x, ...ea.x, ...ec.x, audMusical: aud * typeMusical, audRevival: aud * rev, audPlay: aud * (1 - typeMusical) }, x72: er72.x, x78: er78.x, xEAC: eaC.x, has: { ...v.has, ...e.has, ...er.has, ...Object.fromEntries(Object.entries(s2.has).map(([k, q]) => [`s2${k}`, q])), ...ea.has, ...ec.has, ownPrior: f.priorScore != null, transfer: isTransfer(t), londonFirst: f.x.pathLondon === 1, outOfTown: f.x.pathRegional === 1 }, mu: f.mu, y: t.score });
 }
 console.error(`evaluated rows ${rows.length}; v2 leakage-checked ${prov.checked}; awards ${rows.filter((r) => r.has.awards).length}, panel ${rows.filter((r) => r.has.panel).length}, cast ${rows.filter((r) => r.has.cast).length}, preview ${rows.filter((r) => r.has.preview).length}, audience ${rows.filter((r) => r.has.audience).length}`);
 
@@ -278,7 +278,8 @@ function compare(label, names, subsetFn, kind, variant, against) {
   if (w.length !== bw.length || w.some((q, i) => q.id !== bw[i].id)) throw new Error('walk-forward rows misaligned between models');
   const idx = bw.map((_, i) => i).filter((i) => !subsetFn || subsetFn(bw[i]));
   const A = idx.map((i) => w[i]); const B = idx.map((i) => bw[i]);
-  if (A.length < 20) return { input: label, kind, shows: A.length, verdict: 'cannot be established (fewer than 20 evaluated shows carry this input)' };
+  const minN = ext.minN || 20; // BRO-7380: the London and out-of-town cohort rows use the card's floor of 15
+  if (A.length < minN) return { input: label, kind, shows: A.length, verdict: `cannot be established (fewer than ${minN} evaluated shows carry this input)` };
   const ci = diffCI(A, B); const ciAdj = diffCI(A, B, 2000, 0.05 / N_PRIMARY_TESTS);
   const d = maeOf(A) - maeOf(B);
   const verdict = r2(ci[1]) < 0 ? 'helps' : r2(ci[0]) > 0 ? 'hurts' : 'no effect'; // judged on the rounded interval: a hundredth of a point is not an effect
@@ -364,6 +365,15 @@ if (EA_ON) {
   results.push(compare('Earlier-production audience increment over v2, only shows that carry it', [...V2SPEC, 'eaScore'], hasEA, 'exploratory-subset', undefined, { baseNames: V2SPEC }));
   results.push(compare('Earlier-production audience increment over v2, flag plus score', [...V2SPEC, ...EA.EA_GROUPS.flag], null, 'exploratory', undefined, { baseNames: V2SPEC }));
   results.push(compare('Earlier-production audience increment over v2, transfers that carry it', [...V2SPEC, 'eaScore'], (p) => isTr(p) && hasEA(p), 'exploratory-subset', undefined, { baseNames: V2SPEC }));
+  // ---- BRO-7380: London-first and out-of-town cohorts (exploratory, NOT in the correction family: the family size is fixed above). Same eaScore input, now fed by London Show Score pages
+  // found through the Show Score sitemaps. Reported with the raw 95% interval; the nightly pilot gets nothing unless the all-shows increment over v2 already clears the BRO-7369 rule.
+  const isLF = (p) => p.has.londonFirst; const isOT = (p) => p.has.outOfTown && !p.has.londonFirst;
+  for (const [lab, fn] of [['London stage (any London run in path; 62 of 75 start in London)', isLF], ['Out-of-town (no London run)', isOT]]) {
+    results.push(compare(`${lab}: earlier audience vs v1, shows that carry it`, [...V1, 'eaScore'], (p) => fn(p) && hasEA(p), 'exploratory-subset', undefined, { minN: 15 }));
+    results.push(compare(`${lab}: earlier audience INCREMENT over landed v2, shows that carry it`, [...V2SPEC, 'eaScore'], (p) => fn(p) && hasEA(p), 'exploratory-subset', undefined, { baseNames: V2SPEC, minN: 15 }));
+    results.push(compare(`${lab}: earlier audience vs v1, all ${lab} shows`, [...V1, 'eaScore'], fn, 'exploratory-subset', undefined, { minN: 15 }));
+    results.push(compare(`${lab}: earlier audience INCREMENT over landed v2, all ${lab} shows`, [...V2SPEC, 'eaScore'], fn, 'exploratory-subset', undefined, { baseNames: V2SPEC, minN: 15 }));
+  }
   // ---- BRO-7369 A, B, C-gap: the site's own earlier-production critic scores. Each input: vs v1 (all, transfers), increment over v2 (all, transfers) = 4 family tests. Declared before grading. ----
   const hasEC = (p) => p.has.earlierCritics; const hasT1 = (p) => p.has.earlierT1; const hasGap = (p) => p.has.earlierCritics && p.has.earlierAudience;
   const SPECS = [
@@ -521,6 +531,11 @@ const out = {
       withEarlierAudienceAndCritics: rows.filter((r) => r.has.earlierCritics && r.has.earlierAudience).length, transfersWithEarlierProduction: rows.filter((r) => r.has.transfer && r.has.earlierCritics).length,
       byMarket: Object.fromEntries([...EC.EARLIER_CATEGORIES].map((c) => [c, rows.filter((r) => r.has.earlierCritics && (EC.findEarlier(r.t, ctx, EA.earlierCutoff(r.t)) || {}).category === c).length])),
       note: 'v1 already carries the latest earlier production score as priorRun; these tests measure what that does not use (count shrinkage, before-first-preview filter, tier weighting, T1-only, audience-minus-critics gap)' };
+    // BRO-7380: London-first and out-of-town cohort coverage and results (exploratory rows above)
+    const cohort = (fn) => { const rs = rows.filter(fn); const carry = rs.filter((r) => r.has.earlierAudience); return { shows: rs.length, withEarlierAudience: carry.length }; };
+    cov.londonAudience = { londonFirst: cohort((r) => r.has.londonFirst), outOfTownNoLondon: cohort((r) => r.has.outOfTown && !r.has.londonFirst),
+      londonFirstBySourceType: (() => { const m = {}; const ids = new Set(rows.filter((r) => r.has.londonFirst).map((r) => r.t.id)); for (const [id, rec] of ev) { if (!ids.has(id)) continue; const seen = new Set(); for (const x of rec.sources || []) if (x.n > 0 && !x.duplicateOf) seen.add(x.kind || 'unknown'); for (const k of seen) m[k] = (m[k] || 0) + 1; } return m; })(),
+      rows: results.filter((r) => /^(London stage[^:]*|Out-of-town \(no London run\)):/.test(r.input)).map((r) => ({ input: r.input, n: r.shows, maeWithout: r.maeWithout, maeWith: r.maeWith, diff: r.diff, diffCI95: r.diffCI95 })) };
     cov.transferModel = transferModel;
     cov.decision.candidates = results.filter((r) => r.inCorrectionFamily && (r.kind === 'primary' || r.kind === 'primary-subset') && /INCREMENT over (landed )?v2: all shows|INCREMENT over landed v2 \(v1.*all shows|confirmed pages only/.test(r.input)).map((r) => ({ input: r.input, diff: r.diff, diffCI95Bonferroni: r.diffCI95Bonferroni, addToPilot: !!(r.diffCI95Bonferroni && r.diffCI95Bonferroni[1] < 0) }));
     cov.decision.addToPilotAny = cov.decision.candidates.some((c) => c.addToPilot);
