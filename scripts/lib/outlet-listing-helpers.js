@@ -144,22 +144,27 @@ function venuePhrase(show) {
 // me home was dropped as "does not confirm the show" (and cached as such for a week).
 // The forms a page may use for one venue, full string first. Each extra form must be two or
 // more words (a bare "Public" or "Main" proves nothing) and not a generic venue word.
-const GENERIC_VENUE_WORDS = new Set(['theatre', 'theater', 'stage', 'hall', 'house', 'main', 'studio', 'room', 'space', 'auditorium', 'playhouse']);
+const GENERIC_VENUE_WORDS = new Set(['theatre', 'theater', 'theatres', 'theaters', 'stage', 'hall', 'house', 'main', 'studio', 'room', 'space', 'auditorium', 'playhouse']);
+// Place words say where, not which house: "A.R.T./New York Theatres" must not make "new york theatres" a form.
+const PLACE_WORDS = new Set(['new', 'york', 'nyc', 'city', 'manhattan', 'brooklyn', 'london', 'west', 'end', 'off', 'broadway', 'the', 'of', 'at', 'and']);
 function venueForms(show) {
   const full = venuePhrase(show);
   if (!full) return [];
   const out = [full];
   const raw = String((show && show.venue) || '');
+  // A comma means "House, City, ST": the city is what tells two houses of one name apart, and
+  // cutting at a bracket or dash first would drop it again. Such a venue matches whole or not at all.
+  if (raw.includes(',')) return out;
   const [houseRaw, ...stages] = raw.split('/');
   // The house: the text before the stage separator, cut at a " - Main Theatre" suffix or a bracket.
   // NOT cut at a comma: "Paramount Theatre, Aurora, IL" keeps its city, since a page about
   // another city's Paramount must not confirm it (reviewer, BRO-7372).
-  const cut = (x) => hyphenSpaced(x.split(/\s[-–—]\s|\(/)[0]);
+  const cut = (x) => hyphenSpaced(x.split(/\s[-–—]\s|\(/)[0].replace(/[()]/g, ' '));
   const candidates = [cut(houseRaw), ...stages.map(cut)];
   for (const form of candidates) {
     if (!form || out.includes(form) || GENERIC_VENUES.has(form)) continue;
     const words = form.split(/\s+/);
-    if (words.length < 2 || words.every((w) => GENERIC_VENUE_WORDS.has(w))) continue;
+    if (words.length < 2 || words.every((w) => GENERIC_VENUE_WORDS.has(w) || PLACE_WORDS.has(w) || w.length < 2)) continue;
     out.push(form);
   }
   return out;
@@ -607,7 +612,8 @@ function confirmLogicFingerprint() {
   // The whole module's source: the decision leans on helpers and constants (computeTitleForms,
   // GENERIC_VENUES, credit regexes...) a per-function list would miss. A harmless edit to this
   // file drops the cache once; a missed rule change would keep stale verdicts for 7 days.
-  const src = require('fs').readFileSync(__filename, 'utf8');
+  const fs = require('fs');
+  const src = [__filename, require.resolve('./title-match')].map((f) => fs.readFileSync(f, 'utf8')).join('\n');
   return require('crypto').createHash('sha1').update(src).digest('hex').slice(0, 12);
 }
 
