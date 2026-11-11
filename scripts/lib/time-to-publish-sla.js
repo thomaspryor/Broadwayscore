@@ -59,18 +59,19 @@ const MS_MIN = 60 * 1000;
  * Worst-case discovery blindness, in minutes: a review published one second
  * after a poll waits a full interval before we can see it.
  *
- * SOURCED, NOT GUESSED: opening-night-poller.yml has no cron at all ("NO CRON —
- * only dispatched by update-show-status.yml when a show transitions to open",
- * line 18). During an opening the re-poll cadence is the orchestrator's loop —
- * `POLL_INTERVAL=${{ inputs.poll_interval_minutes || 10 }}` then
- * `sleep $((POLL_INTERVAL * 60))` (opening-night-orchestrator.yml:459,682). So
- * the default interval is 10 minutes, operator-overridable per dispatch.
+ * opening-night-orchestrator.yml sets both the poll_interval_minutes input
+ * default and POLL_INTERVAL_OR_DEFAULT fallback to 15 minutes. Its loop calls
+ * press-night-poll-plan.js, which can shorten that to 5 minutes during a
+ * Broadway show's first 2h after embargo. Keep the conservative 15-minute
+ * allowance: historical stage logs do not identify the actual poll plan or
+ * input override, so a first-seen timestamp cannot prove the faster cadence.
+ * time-to-publish-sla.test.mjs locks this to both workflow defaults and the
+ * poll plan's default.
  *
- * A run launched with a different poll_interval_minutes should pass
- * discoveryWindowMinutes to match; leaving this at the default would then
- * understate the bound.
+ * Runs with a known input override should pass discoveryWindowMinutes to
+ * match; a longer interval would otherwise understate the bound.
  */
-const DEFAULT_DISCOVERY_WINDOW_MIN = 10;
+const DEFAULT_DISCOVERY_WINDOW_MIN = 15;
 
 /** Card target: 90% of opening-night reviews live within 15 minutes. */
 const DEFAULT_TARGET_MINUTES = 15;

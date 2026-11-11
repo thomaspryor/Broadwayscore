@@ -288,9 +288,9 @@ async function main() {
 
   let records = computeReviewLatencies(entries, {
     publishTimes,
-    // Defaults to the orchestrator's POLL_INTERVAL default (10 min). A window
-    // dispatched with a different poll_interval_minutes must pass
-    // --discovery-window=N or the bound understates the real worst case.
+    // Uses the orchestrator's 15-minute default conservatively, including
+    // windows where the poll plan may have shortened the sleep to 5 minutes.
+    // For a known input override, pass --discovery-window=N to match that run.
     discoveryWindowMinutes: args.discoveryWindow,
   });
 
