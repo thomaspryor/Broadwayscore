@@ -292,7 +292,10 @@ async function runStranded() {
   // rebased retry) stays behind and must not read as lost work.
   const { landRefCardNumber } = require('./lib/cloud-worker-pick.js');
   const { collectCardLandings, refLastMs } = require('./lib/land-stranded-refs.js');
-  const landingsPage = (p) => gh([`repos/${repo}/actions/workflows/land.yml/runs?status=success&per_page=100&page=${p}`]).workflow_runs || [];
+  const landingsPage = (p) => {
+    const body = gh([`repos/${repo}/actions/workflows/land.yml/runs?status=success&per_page=100&page=${p}`]);
+    return { runs: body.workflow_runs || [], total: body.total_count };
+  };
   // First read: the newest 3 pages. Older landings are read below only when an
   // actionable ref's last run reaches back past them (BRO-7102).
   let landed = collectCardLandings(landingsPage, landRefCardNumber, { maxPages: 3 });
@@ -328,26 +331,37 @@ async function runStranded() {
   }
   // BRO-7102: an escalate/rerun ref older than the landings read so far may be
   // a leftover whose card landed from a retry ref days ago. Read further back
-  // (to the oldest such ref's last run, at most 14 days of landings) and
-  // re-decide those refs, so neither a false LAND-STRANDED card nor a re-run
-  // of stale code goes out.
+  // (to the oldest such ref's last run, up to GitHub's 1000-result cap, ~10
+  // days) and re-decide those refs. A ref the read can not reach waits: it was
+  // already routed while it was younger, and abandons at 14 days.
   const unsure = decisions.filter((d) => (d.action === 'escalate' || d.action === 'rerun')
-    && !cardLandedAt.has(landRefCardNumber(d.branch)) && Number.isFinite(refLastMs(d.inputs)) && refLastMs(d.inputs) < landed.oldestMs);
-  if (unsure.length && !landed.exhausted) {
-    const untilMs = Math.min(...unsure.map((d) => refLastMs(d.inputs)));
+    && !cardLandedAt.has(landRefCardNumber(d.branch)) && !landed.exhausted
+    && !(refLastMs(d.inputs) >= landed.coveredMs));
+  if (unsure.length) {
+    const known = unsure.map((d) => refLastMs(d.inputs)).filter(Number.isFinite);
+    const untilMs = known.length ? Math.min(...known) : -Infinity;
     try {
       landed = collectCardLandings(landingsPage, landRefCardNumber, { untilMs, maxPages: 30, into: cardLandedAt, startPage: landed.nextPage });
     } catch (err) { console.log(`::warning::older landings unreadable (${String(err.message).split('\n')[0]}); holding ${unsure.length} old ref(s) this pass`); }
     for (const d of unsure) {
-      const again = landed.oldestMs <= refLastMs(d.inputs) || landed.exhausted
+      // Decidable when the read reached the ref's last run, or when a landing
+      // newer than it was found anyway (that alone proves superseded).
+      const seen = Date.parse(cardLandedAt.get(landRefCardNumber(d.branch)) || '');
+      const again = landed.exhausted || refLastMs(d.inputs) >= landed.coveredMs || seen > refLastMs(d.inputs)
         ? decideStrandedRef({ ...d.inputs, cardLandedAt: cardLandedAt.get(landRefCardNumber(d.branch)), now })
         : { action: 'wait', reason: 'landings-unread' };
       if (again.action !== d.action) console.log(`${d.branch}: ${d.action} -> ${again.action} (${again.reason}) after reading older landings`);
       Object.assign(d, again);
     }
-    // A ref that turned out superseded is not owed a hand-cancel note either.
-    const gone = new Set(unsure.filter((d) => d.reason === 'superseded').map((d) => d.branch));
-    for (let i = handCancels.length - 1; i >= 0; i -= 1) if (gone.has(handCancels[i].branch)) handCancels.splice(i, 1);
+    // Hand-cancel notes follow the final decision: none for a ref that turned
+    // out superseded or now escalates, and the follow-up named is the real one.
+    const final = new Map(unsure.map((d) => [d.branch, d]));
+    for (let i = handCancels.length - 1; i >= 0; i -= 1) {
+      const d = final.get(handCancels[i].branch);
+      if (!d) continue;
+      if (d.action === 'escalate' || d.reason === 'superseded') handCancels.splice(i, 1);
+      else handCancels[i].followUp = d.action;
+    }
   }
   const escalate = decisions.filter((d) => d.action === 'escalate');
   const reruns = decisions.filter((d) => d.action === 'rerun')

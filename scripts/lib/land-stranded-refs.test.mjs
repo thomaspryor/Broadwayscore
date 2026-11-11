@@ -205,8 +205,8 @@ test('an escalation comment says who cancelled when it was a hand cancel only', 
   const pageStart = Date.parse('2026-11-10T23:00:00Z');
   const pages = Array.from({ length: 5 }, (_, p) => Array.from({ length: 100 }, (_, i) => {
     const k = p * 100 + i;
-    const updated_at = new Date(pageStart - k * 10 * 60000).toISOString(); // one landing every 10 min
-    return { head_branch: k === 380 ? 'land/bro-7102-job-headroom-2' : `land/bro-${8000 + k}-x`, updated_at };
+    const created_at = new Date(pageStart - k * 10 * 60000).toISOString(); // one landing every 10 min
+    return { head_branch: k === 380 ? 'land/bro-7102-job-headroom-2' : `land/bro-${8000 + k}-x`, created_at, updated_at: created_at };
   }));
   pages[3][80].updated_at = '2026-11-08T07:02:47Z';
   const fetchPage = (p) => pages[p - 1] || [];
@@ -221,12 +221,41 @@ test('an escalation comment says who cancelled when it was a hand cancel only', 
   test('BRO-7102: paging back to the ref\'s last run finds the retry landing -> superseded, no card', () => {
     const first = collectCardLandings(fetchPage, landRefCardNumber, { maxPages: 3 });
     const untilMs = refLastMs({ latestRun: refused });
-    assert.ok(untilMs < first.oldestMs, 'the ref predates the first read');
+    assert.ok(untilMs < first.coveredMs, 'the ref predates the first read');
     const more = collectCardLandings(fetchPage, landRefCardNumber, { untilMs, maxPages: 30, into: first.landings, startPage: first.nextPage });
-    assert.ok(more.oldestMs <= untilMs);
+    assert.ok(more.coveredMs <= untilMs);
     assert.equal(more.nextPage, 5, 'stops at the page that reaches the ref, not the whole history');
     const d = decideStrandedRef({ tip: TIP, latestRun: refused, jobs, cardLandedAt: more.landings.get(7102), now });
     assert.deepEqual(d, { action: 'none', reason: 'superseded' });
+  });
+
+  test('the first read covers all 3 pages (no early stop without untilMs)', () => {
+    const seen = [];
+    const r = collectCardLandings((p) => { seen.push(p); return fetchPage(p); }, landRefCardNumber, { maxPages: 3 });
+    assert.deepEqual(seen, [1, 2, 3]);
+    assert.equal(r.nextPage, 4);
+    assert.equal(r.exhausted, false);
+  });
+
+  test('GitHub 1000-result cap: an empty page 11 is truncation, not exhaustion; never read past page 10', () => {
+    const seen = [];
+    const full = (p) => { seen.push(p); return { runs: p <= 10 ? fetchPage(Math.min(p, 5)) : [], total: 2500 }; };
+    const r = collectCardLandings(full, landRefCardNumber, { untilMs: Date.parse('2026-01-01T00:00:00Z'), maxPages: 30, startPage: 4 });
+    assert.equal(Math.max(...seen), 10);
+    assert.equal(r.exhausted, false);
+    const short = collectCardLandings(() => ({ runs: [], total: 2500 }), landRefCardNumber, { maxPages: 1 });
+    assert.equal(short.exhausted, false, 'an empty page while total_count says more is the cap');
+  });
+
+  test('coverage follows created_at (listing order), not a later updated_at', () => {
+    const late = [{ head_branch: 'land/bro-9-a', created_at: '2026-11-01T00:00:00Z', updated_at: '2026-11-09T00:00:00Z' }];
+    const r = collectCardLandings(() => ({ runs: late, total: 5 }), landRefCardNumber, {});
+    assert.equal(r.coveredMs, Date.parse('2026-11-01T00:00:00Z'));
+  });
+
+  test('a workflow_dispatch landing (lists under main) counts for the card its title names', () => {
+    const r = collectCardLandings(() => [{ head_branch: 'main', display_title: 'Land land/bro-7102-job-headroom-2', created_at: '2026-11-08T07:00:00Z', updated_at: '2026-11-08T07:02:47Z' }], landRefCardNumber, {});
+    assert.equal(r.landings.get(7102), '2026-11-08T07:02:47Z');
   });
 
   test('a short final page marks the listing exhausted', () => {
