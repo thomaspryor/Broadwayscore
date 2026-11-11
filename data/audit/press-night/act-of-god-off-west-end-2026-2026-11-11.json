@@ -1,0 +1,311 @@
+{
+  "schemaVersion": 1,
+  "showId": "act-of-god-off-west-end-2026",
+  "night": "2026-11-11",
+  "market": "off-west-end",
+  "embargoAt": "2026-11-11T21:00:00.000Z",
+  "embargoSource": "market-default",
+  "probe": {
+    "startedAt": "2026-11-11T20:30:05.437Z",
+    "endedAt": null,
+    "intervalMin": 5,
+    "samples": 30,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-11-11T22:55:13.995Z",
+    "lastOkSampleAt": "2026-11-11T22:55:13.995Z"
+  },
+  "firstLiveAt": "2026-11-11T20:30:05.437Z",
+  "firstLiveBaseline": true,
+  "lastLiveAt": "2026-11-11T22:30:12.713Z",
+  "liveCount": 7,
+  "liveCountAt": {
+    "1h": 6,
+    "2h": null,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-11-11T22:00:10.678Z",
+    "2h": null,
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": "2026-11-11",
+    "precision": "approx",
+    "source": "prod-rv-publishDate",
+    "tierScope": "T1-T2"
+  },
+  "perReview": [
+    {
+      "key": "the stage|holly o'mahony",
+      "outlet": "The Stage",
+      "critic": "Holly O'Mahony",
+      "tier": 1,
+      "publishAt": "2026-11-11",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-11T20:30:05.437Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "london box office|francesca shaw",
+      "outlet": "London Box Office",
+      "critic": "Francesca Shaw",
+      "tier": 2,
+      "publishAt": "2026-11-11",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-11T20:30:05.437Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "all that dazzles (uk)|unknown",
+      "outlet": "All That Dazzles (UK)",
+      "critic": null,
+      "tier": 3,
+      "publishAt": "2026-11-11",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-11T20:30:05.437Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "west end best friend|unknown",
+      "outlet": "West End Best Friend",
+      "critic": null,
+      "tier": 3,
+      "publishAt": "2026-11-11",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-11T20:30:05.437Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "the spy in the stalls|sammi xing",
+      "outlet": "The Spy in the Stalls",
+      "critic": "Sammi Xing",
+      "tier": 4,
+      "publishAt": "2026-11-11",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-11T20:30:05.437Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "theatre and tonic|annie",
+      "outlet": "Theatre and Tonic",
+      "critic": "Annie",
+      "tier": 3,
+      "publishAt": "2026-11-11",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-11T21:50:10.338Z",
+      "prevOkSampleAt": "2026-11-11T21:45:09.837Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "the reviews hub|anna peterson",
+      "outlet": "The Reviews Hub",
+      "critic": "Anna Peterson",
+      "tier": 2,
+      "publishAt": "2026-11-11",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-11T22:30:12.713Z",
+      "prevOkSampleAt": "2026-11-11T22:25:12.182Z",
+      "baseline": false,
+      "liveNow": true
+    }
+  ],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 7,
+      "fetchedAt": "2026-11-11T23:00:30.240Z",
+      "censusNote": "archive only"
+    }
+  },
+  "manualActions": [],
+  "publishedBy": {
+    "path": "regular",
+    "method": "lane-only-decision",
+    "checks": [
+      {
+        "at": "2026-11-11T23:00:30.315Z",
+        "label": "2h",
+        "standDown": false,
+        "reason": "market not lane-only"
+      }
+    ]
+  },
+  "fileState": {
+    "capturedAt": "2026-11-11T23:00:31.262Z",
+    "files": [
+      {
+        "file": "all-that-dazzles-uk--all-that-dazzles.json",
+        "outletId": "all-that-dazzles-uk",
+        "outlet": "All That Dazzles (UK)",
+        "critic": "All That Dazzles",
+        "firstSeenAt": "2026-11-11T18:13:58.999Z",
+        "scoredAt": "2026-11-11T19:23:52.836Z",
+        "publishDate": "2026-11-11",
+        "url": "allthatdazzles.co.uk/post/review-act-of-god-riverside-studios",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "bestoftheatre--milo-garth.json",
+        "outletId": "bestoftheatre",
+        "outlet": "Best Of Theatre",
+        "critic": "Milo Garth",
+        "firstSeenAt": "2026-11-10T13:26:18.332Z",
+        "scoredAt": null,
+        "publishDate": "2026-09-29",
+        "url": "bestoftheatre.co.uk/blog/post/act-of-god-jacob-oconnor-riverside-studios",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "broadway-baby--unknown.json",
+        "outletId": "broadway-baby",
+        "outlet": "Broadway Baby",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-11-11T16:30:29.227Z",
+        "scoredAt": "2026-11-11T16:52:59.516Z",
+        "publishDate": "2026-11-11",
+        "url": "broadwaybaby.com/shows/act-of-god/839216",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "london-box-office--francesca-shaw.json",
+        "outletId": "london-box-office",
+        "outlet": "London Box Office",
+        "critic": "Francesca Shaw",
+        "firstSeenAt": "2026-11-11T14:15:54.214Z",
+        "scoredAt": "2026-11-11T14:25:53.716Z",
+        "publishDate": "2026-11-11",
+        "url": "londonboxoffice.co.uk/news/post/act-of-god-riverside-studios-review",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "london-box-office--stuart-king.json",
+        "outletId": "london-box-office",
+        "outlet": "London Box Office",
+        "critic": "Stuart King",
+        "firstSeenAt": "2026-10-01T20:01:11.391Z",
+        "scoredAt": "2026-10-01T20:05:38.893Z",
+        "publishDate": null,
+        "url": "londonboxoffice.co.uk/news/post/review-an-act-of-god-vaults",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "readaboutstuff--dan-english.json",
+        "outletId": "readaboutstuff",
+        "outlet": "Read About Stuff",
+        "critic": "Dan English",
+        "firstSeenAt": "2026-11-09T19:17:13.708Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-01",
+        "url": "readaboutstuff.com/2026/11/01/interview-jacob-oconnor-discusses-act-of-god",
+        "includable": false,
+        "reason": "rejectionReason",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "the-spy-in-the-stalls--sammi-xing.json",
+        "outletId": "the-spy-in-the-stalls",
+        "outlet": "The Spy in the Stalls",
+        "critic": "Sammi Xing",
+        "firstSeenAt": "2026-11-11T14:16:06.019Z",
+        "scoredAt": "2026-11-11T14:25:59.456Z",
+        "publishDate": "2026-11-11",
+        "url": "thespyinthestalls.com/2026/11/act-of-god",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "theatre-weekly--unknown.json",
+        "outletId": "theatre-weekly",
+        "outlet": "Theatre Weekly",
+        "critic": "Staff Writer",
+        "firstSeenAt": "2026-11-10T13:26:26.806Z",
+        "scoredAt": null,
+        "publishDate": "2026-09-29",
+        "url": "theatreweekly.com/act-of-god-to-make-london-debut-at-riverside-studios-this-november",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "theatreandtonic--eleanor-bywater.json",
+        "outletId": "theatreandtonic",
+        "outlet": "Theatre and Tonic",
+        "critic": "Eleanor Bywater",
+        "firstSeenAt": "2026-11-11T21:22:37.688Z",
+        "scoredAt": "2026-11-11T21:28:28.935Z",
+        "publishDate": "2026-11-11",
+        "url": "theatreandtonic.co.uk/blog/act-of-god-at-riverside-studios-review",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "thereviewshub--anna-peterson.json",
+        "outletId": "thereviewshub",
+        "outlet": "The Reviews Hub",
+        "critic": "Anna Peterson",
+        "firstSeenAt": "2026-11-11T21:58:21.724Z",
+        "scoredAt": "2026-11-11T22:12:17.975Z",
+        "publishDate": "2026-11-11",
+        "url": "thereviewshub.com/act-of-god-riverside-studios-london",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "thestage--holly-omahony.json",
+        "outletId": "thestage",
+        "outlet": "The Stage",
+        "critic": "Holly O'Mahony",
+        "firstSeenAt": "2026-11-11T14:16:00.555Z",
+        "scoredAt": null,
+        "publishDate": "2026-11-11",
+        "url": "thestage.co.uk/reviews/act-of-god-review-riverside-studios-london",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "west-end-best-friend--unknown.json",
+        "outletId": "west-end-best-friend",
+        "outlet": "West End Best Friend",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-11-11T16:13:49.668Z",
+        "scoredAt": "2026-11-11T16:53:03.999Z",
+        "publishDate": "2026-11-11",
+        "url": "westendbestfriend.co.uk/news/review-act-of-god-riverside-studios",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      }
+    ]
+  }
+}
