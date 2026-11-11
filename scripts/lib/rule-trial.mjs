@@ -94,11 +94,11 @@ export const countWords = (porcelain) => wordChanges(porcelain).words;
  * identifies the changed text; null when no guidance words changed.
  */
 export function guidanceDiff(cwd, base, src = 'HEAD') {
-  const names = git(cwd, ['diff', '--name-only', '--no-renames', `${base}...${src}`]);
+  const names = git(cwd, ['-c', 'core.quotePath=false', 'diff', '--name-only', '--no-renames', `${base}...${src}`]);
   if (names === null) return { files: [], words: 0, hash: null, error: `git diff ${base}...${src} failed` };
   const files = names.split('\n').filter(Boolean).filter(isGuidance);
   if (!files.length) return { files, words: 0, hash: null };
-  const porcelain = git(cwd, ['diff', '--no-renames', '--word-diff=porcelain', `${base}...${src}`, '--', ...files]);
+  const porcelain = git(cwd, ['-c', 'core.quotePath=false', 'diff', '--no-renames', '--word-diff=porcelain', `${base}...${src}`, '--', ...files]);
   if (porcelain === null) return { files, words: 0, hash: null, error: `git diff --word-diff ${base}...${src} failed` };
   const { words, changes } = wordChanges(porcelain);
   if (!words) return { files: [], words: 0, hash: null };
