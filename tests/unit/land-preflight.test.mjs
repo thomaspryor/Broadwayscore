@@ -419,7 +419,10 @@ test('hook: a CI-skip-marked tip blocks (land.yml would never start); the CLI th
   assert.equal(same.decision, 'block');
   assert.match(same.message, /the commit this command makes/);
   assert.doesNotMatch(same.message, /run the same push again/, 'same-command advice must not loop');
-  assert.equal(runHook({ command: `git commit -qm "x [skip actions]" && git -C "${wt}" push origin HEAD:land/feat && git commit -qm "later"`, cwd: wt }).decision, 'block', 'git -C push');
+  assert.equal(runHook({ command: `git commit -qm "x [skip actions]" && git -C "${wt}" push origin HEAD:land/feat`, cwd: wt }).decision, 'block', 'git -C push');
+  // Fails with a bare /git\s+push/ split: the -C push is not found, so the marker after it was read as the commit's.
+  assert.equal(runHook({ command: `git commit -qm "plain" && git -C "${wt}" push origin HEAD:land/feat && echo "[skip ci]"`, cwd: wt }).decision, 'skip', 'git -C push, marker after');
+  assert.equal(runHook({ command: `git commit -qm "plain" && git -C '${wt}' push origin HEAD:land/feat && echo "[skip ci]"`, cwd: wt }).decision, 'skip', 'quoted -C path');
   assert.equal(runHook({ command: 'git commit -qm "plain" && git push origin HEAD:land/feat && echo "[skip ci]"', cwd: wt }).decision, 'skip', 'marker after the push is not the commit');
   // Non-HEAD source ref with a marked tip is judged on that ref.
   sh(wt, 'git branch -f marked HEAD && git checkout -q marked && git commit -q --allow-empty -m "y [no ci]" && git checkout -q feat');

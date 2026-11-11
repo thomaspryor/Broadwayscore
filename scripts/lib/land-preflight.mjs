@@ -68,7 +68,7 @@ export const MAX_COMMITS = 200;
  * -> { status: 'pass' | 'fail' | 'skip', reason? }
  */
 // `git push`, `git -C dir push`, `git --no-pager push`: where the pushing git call starts.
-const PUSH_WORD_RE = /\bgit(?:\s+(?:-C\s+\S+|-c\s+\S+|--[\w-]+(?:=\S+)?))*\s+push\b/;
+const PUSH_WORD_RE = /\bgit(?:\s+(?:-[Cc]\s+(?:"[^"]*"|'[^']*'|\S+)|--[\w-]+(?:=\S+)?))*\s+push\b/;
 
 export function checkSkipCiTip({ tip, cwd, getMessage = null }) {
   let msg;
