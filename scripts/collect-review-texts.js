@@ -71,7 +71,7 @@ const { markReviewTextsPushed } = require('./lib/review-texts-pushed-marker.js')
 const { listUnpushedReviewFiles, startPressNightScoring } = require('./lib/press-night-scoring-trigger'); // BRO-6886
 const { isTimeBudgetExceeded } = require('./lib/collect-time-budget.js');
 const { buildCollectSummary, writeCollectSummary } = require('./lib/collect-run-summary.js');
-const { shouldSkipAlreadyAttempted, dedupeAttemptState } = require('./lib/collection-attempt-guard.js');
+const { shouldSkipAlreadyAttempted, dedupeAttemptState, ensureStateArrays } = require('./lib/collection-attempt-guard.js');
 const { protectStagedDeletions, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard.js');
 const { shouldPushReviewTextsCheckpoint, countUnpushedCommits, decideCheckpointAction } = require('./lib/review-texts-checkpoint-gate.js');
 const { sbPageBudgetDecision, resolveSbPageCreditBudget } = require('./lib/crt-sb-credit-guard.js');
@@ -6060,7 +6060,7 @@ function loadState() {
       const startTime = new Date(saved.startTime);
       const hoursSinceStart = (Date.now() - startTime.getTime()) / (1000 * 60 * 60);
       if (hoursSinceStart < 24) {
-        state = saved;
+        state = ensureStateArrays(saved); // BRO-7338
         // Ensure tierBreakdown and all sub-arrays exist (older state files may be missing keys)
         if (!state.tierBreakdown) {
           state.tierBreakdown = { playwright: [], amp: [], browserbase: [], directCookies: [], scrapingdog: [], scrapingbee: [], brightdata: [], archiveToday: [], archive: [] };
