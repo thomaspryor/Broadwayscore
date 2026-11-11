@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-11T12:56:07.701Z",
+  "timestamp": "2026-11-11T14:14:07.311Z",
   "stats": {
-    "totalReviews": 81399,
-    "alreadyFlagged": 22241,
+    "totalReviews": 81404,
+    "alreadyFlagged": 22242,
     "dateGuardCatches": 218,
     "directorMismatch": 3629,
     "tvFilmSignals": 2296,
-    "londonSignals": 3686,
+    "londonSignals": 3685,
     "offBroadwaySignals": 752,
     "yearMismatch": 369,
     "noPublishDate": 8438
@@ -95345,7 +95345,7 @@
     {
       "showId": "cloud-9-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 97,
+      "score": 98,
       "publishDate": "2026-11-11",
       "url": "https://www.londonboxoffice.co.uk/news/post/cloud-9-national-theatre-lyttelton-review",
       "findings": [
@@ -95408,19 +95408,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "cloud-9-west-end-2026",
-      "file": "timeout-london--unknown.json",
-      "publishDate": "2026-11-09",
-      "url": "https://www.timeout.com/london/theatre/cloud-9",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },

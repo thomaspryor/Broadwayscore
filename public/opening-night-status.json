@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-11T12:56:25.224Z",
+  "generatedAt": "2026-11-11T14:14:21.996Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -384,27 +384,23 @@
       "status": "open",
       "slug": "cloud-9-west-end",
       "thumbnail": "/images/shows/cloud-9-west-end-2026/thumbnail.webp",
-      "siteScore": 80.48,
+      "siteScore": 79.92,
       "liveScore": 80,
-      "scoreDrift": -0.480000000000004,
+      "scoreDrift": 0.0799999999999983,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 7,
-      "t1": 2,
+      "total": 8,
+      "t1": 3,
       "t2": 5,
       "t3": 0,
-      "positive": 6,
+      "positive": 7,
       "mixed": 1,
       "negative": 0,
       "readiness": {
-        "ready": false,
-        "reasons": [
-          "7/8 total",
-          "T1:2/3",
-          "hi-conf:5/6"
-        ],
-        "highConfidence": 5,
+        "ready": true,
+        "reasons": [],
+        "highConfidence": 6,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -414,7 +410,7 @@
       },
       "broadcast": {
         "state": "waiting",
-        "detail": "Not yet broadcast-ready"
+        "detail": "Ready — awaiting send"
       },
       "missingT1": [
         {
@@ -443,10 +439,6 @@
         },
         {
           "name": "The i",
-          "isDualMarket": false
-        },
-        {
-          "name": "Time Out London",
           "isDualMarket": false
         },
         {
@@ -573,6 +565,18 @@
           "t2": 5,
           "t3": 0,
           "p": 6,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-11T14:14:21.996Z",
+          "rc": 8,
+          "s": 79.92,
+          "t1": 3,
+          "t2": 5,
+          "t3": 0,
+          "p": 7,
           "m": 1,
           "n": 0,
           "bc": "waiting"
@@ -1701,396 +1705,6 @@
       ]
     },
     {
-      "id": "kate-allie-and-the-86-mets-off-broadway-2026",
-      "title": "Kate, Allie and the '86 Mets",
-      "market": "broadway",
-      "category": "off-broadway",
-      "type": "play",
-      "openingDate": "2026-11-09",
-      "status": "open",
-      "slug": "kate-allie-and-the-86-mets-off-broadway",
-      "thumbnail": "/images/shows/kate-allie-and-the-86-mets-off-broadway-2026/thumbnail.jpg",
-      "siteScore": null,
-      "liveScore": 74,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 4,
-      "siteFileExists": true,
-      "total": 1,
-      "t1": 0,
-      "t2": 0,
-      "t3": 1,
-      "positive": 1,
-      "mixed": 0,
-      "negative": 0,
-      "readiness": {
-        "ready": false,
-        "reasons": [
-          "1/12 total",
-          "T1:0/3",
-          "T2:0/3",
-          "hi-conf:0/8"
-        ],
-        "highConfidence": 0,
-        "thresholds": {
-          "minReviews": 12,
-          "minT1": 3,
-          "minT2": 3,
-          "minHiConf": 8
-        }
-      },
-      "broadcast": {
-        "state": "waiting",
-        "detail": "Not yet broadcast-ready"
-      },
-      "missingT1": [
-        {
-          "name": "The New York Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "Vulture",
-          "isDualMarket": false
-        },
-        {
-          "name": "Variety",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Hollywood Reporter",
-          "isDualMarket": false
-        },
-        {
-          "name": "The New Yorker",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Wall Street Journal",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Washington Post",
-          "isDualMarket": false
-        },
-        {
-          "name": "Associated Press",
-          "isDualMarket": false
-        },
-        {
-          "name": "Deadline",
-          "isDualMarket": false
-        },
-        {
-          "name": "Time Out New York",
-          "isDualMarket": false
-        },
-        {
-          "name": "Los Angeles Times",
-          "isDualMarket": false
-        },
-        {
-          "name": "Newsday",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Guardian",
-          "isDualMarket": true
-        },
-        {
-          "name": "Broadway News",
-          "isDualMarket": false
-        }
-      ],
-      "missingT2": [
-        {
-          "name": "The Baltimore Sun",
-          "isDualMarket": false
-        },
-        {
-          "name": "Entertainment Weekly",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Post",
-          "isDualMarket": false
-        },
-        {
-          "name": "TheaterMania",
-          "isDualMarket": false
-        },
-        {
-          "name": "BroadwayWorld",
-          "isDualMarket": true
-        },
-        {
-          "name": "amNewYork",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Stage Review",
-          "isDualMarket": false
-        },
-        {
-          "name": "Chicago Tribune",
-          "isDualMarket": false
-        },
-        {
-          "name": "USA Today",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Daily News",
-          "isDualMarket": false
-        },
-        {
-          "name": "TheWrap",
-          "isDualMarket": false
-        },
-        {
-          "name": "Observer",
-          "isDualMarket": true
-        },
-        {
-          "name": "Playbill",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Daily Beast",
-          "isDualMarket": false
-        },
-        {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
-        },
-        {
-          "name": "New York Theater",
-          "isDualMarket": false
-        },
-        {
-          "name": "Theatrely",
-          "isDualMarket": false
-        },
-        {
-          "name": "Talkin' Broadway",
-          "isDualMarket": false
-        },
-        {
-          "name": "Cititour",
-          "isDualMarket": false
-        },
-        {
-          "name": "Slant Magazine",
-          "isDualMarket": false
-        },
-        {
-          "name": "Lighting & Sound America",
-          "isDualMarket": false
-        },
-        {
-          "name": "The New York Sun",
-          "isDualMarket": false
-        },
-        {
-          "name": "Theater Scene",
-          "isDualMarket": false
-        },
-        {
-          "name": "Village Voice",
-          "isDualMarket": false
-        },
-        {
-          "name": "IndieWire",
-          "isDualMarket": false
-        },
-        {
-          "name": "NorthJersey.com",
-          "isDualMarket": false
-        },
-        {
-          "name": "CurtainUp",
-          "isDualMarket": false
-        },
-        {
-          "name": "DC Theatre Scene",
-          "isDualMarket": false
-        },
-        {
-          "name": "NY1",
-          "isDualMarket": false
-        },
-        {
-          "name": "NJ.com",
-          "isDualMarket": false
-        },
-        {
-          "name": "Financial Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "HuffPost",
-          "isDualMarket": false
-        },
-        {
-          "name": "NBC New York",
-          "isDualMarket": false
-        },
-        {
-          "name": "Time",
-          "isDualMarket": false
-        },
-        {
-          "name": "Backstage",
-          "isDualMarket": false
-        },
-        {
-          "name": "Bloomberg",
-          "isDualMarket": false
-        },
-        {
-          "name": "WNYC",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Telegraph",
-          "isDualMarket": true
-        },
-        {
-          "name": "Rolling Stone",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Philadelphia Inquirer",
-          "isDualMarket": false
-        },
-        {
-          "name": "4Columns",
-          "isDualMarket": false
-        },
-        {
-          "name": "Broadway Blog",
-          "isDualMarket": false
-        },
-        {
-          "name": "Exeunt Magazine",
-          "isDualMarket": false
-        },
-        {
-          "name": "People",
-          "isDualMarket": false
-        },
-        {
-          "name": "Slate",
-          "isDualMarket": false
-        },
-        {
-          "name": "Theater Life",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Globe and Mail",
-          "isDualMarket": false
-        },
-        {
-          "name": "WhatsOnStage",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Arts Desk",
-          "isDualMarket": false
-        },
-        {
-          "name": "CBS News",
-          "isDualMarket": false
-        },
-        {
-          "name": "British Theatre Guide",
-          "isDualMarket": false
-        },
-        {
-          "name": "BritishTheatre.com",
-          "isDualMarket": false
-        },
-        {
-          "name": "Chicago Sun-Times",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Spectator (UK)",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Times (UK)",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Sunday Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "Evening Standard",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Independent",
-          "isDualMarket": true
-        },
-        {
-          "name": "The i",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Reviews Hub",
-          "isDualMarket": false
-        },
-        {
-          "name": "London Theatre",
-          "isDualMarket": false
-        },
-        {
-          "name": "LondonTheatre1",
-          "isDualMarket": false
-        },
-        {
-          "name": "Time Out London",
-          "isDualMarket": false
-        },
-        {
-          "name": "Daily Mail",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Mail on Sunday",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Stage",
-          "isDualMarket": true
-        },
-        {
-          "name": "London Box Office",
-          "isDualMarket": false
-        },
-        {
-          "name": "The Tennessean",
-          "isDualMarket": false
-        }
-      ],
-      "timeline": [
-        {
-          "t": "2026-11-10T16:34:38.235Z",
-          "rc": 1,
-          "s": 74,
-          "t1": 0,
-          "t2": 0,
-          "t3": 1,
-          "p": 1,
-          "m": 0,
-          "n": 0,
-          "bc": "waiting"
-        }
-      ]
-    },
-    {
       "id": "wanted-2022",
       "title": "Wanted",
       "market": "broadway",
@@ -2100,23 +1714,23 @@
       "status": "open",
       "slug": "wanted",
       "thumbnail": "/images/shows/wanted-2022/thumbnail.webp",
-      "siteScore": 58.96,
+      "siteScore": 58.98,
       "liveScore": 59,
-      "scoreDrift": 0.03999999999999915,
+      "scoreDrift": 0.020000000000003126,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 22,
+      "total": 23,
       "t1": 5,
       "t2": 14,
-      "t3": 3,
+      "t3": 4,
       "positive": 9,
-      "mixed": 8,
+      "mixed": 9,
       "negative": 5,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 22,
+        "highConfidence": 23,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -2490,6 +2104,18 @@
           "t3": 3,
           "p": 9,
           "m": 8,
+          "n": 5,
+          "bc": "complete"
+        },
+        {
+          "t": "2026-11-11T14:14:21.996Z",
+          "rc": 23,
+          "s": 58.98,
+          "t1": 5,
+          "t2": 14,
+          "t3": 4,
+          "p": 9,
+          "m": 9,
           "n": 5,
           "bc": "complete"
         }
