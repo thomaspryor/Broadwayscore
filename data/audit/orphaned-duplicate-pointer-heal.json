@@ -1,7 +1,7 @@
 {
-  "generated": "2026-11-11T23:28:13.875Z",
+  "generated": "2026-11-11T23:42:45.405Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 54,
+  "count": 53,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -373,13 +373,6 @@
       "targetFile": "providence-journal--katie-landeck.json",
       "reason": "orphaned-duplicate-heal: providence-journal--katie-landeck.json was flagged invalid after providence-journal--unknown.json was pointed at it",
       "field": "duplicateOf"
-    },
-    {
-      "showId": "girls-off-west-end-2026",
-      "loserFile": "thereviewshub--unknown.json",
-      "targetFile": "thereviewshub--jacob-bush.json",
-      "reason": "orphaned-duplicate-heal: thereviewshub--jacob-bush.json was flagged invalid after thereviewshub--unknown.json was pointed at it (duplicateTextOf)",
-      "field": "duplicateTextOf"
     }
   ]
 }
