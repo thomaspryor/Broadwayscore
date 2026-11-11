@@ -46,7 +46,7 @@ const SWEEP2_GROUPS = {
 };
 const SWEEP2_FEATURE_NAMES = Object.values(SWEEP2_GROUPS).flat();
 
-const EXCLUDE_ROLE = /direction|supervis|orchestrat|arrang|design|coordinator|associate|assistant|casting|stage manag|production manag/i;
+const EXCLUDE_ROLE = /direction|supervis|orchestrat|arrang|design|coordinator|associate|assistant|casting|stage manag|production manag|(music|musical) director/i;
 /** Role -> 'dir' | 'book' | 'music' | null. Book writers and composers/lyricists are split (v1 merges them as 'writer'). */
 function roleGroup2(role) {
   const r = String(role || '');
@@ -64,7 +64,7 @@ function teamOf(creativeTeam) {
     const n = normName(c.name);
     if (!n) continue;
     const role = String(c.role || '');
-    if (/^(co-)?directors?$/i.test(role.trim()) || /^director &/i.test(role.trim()) || /^writer & director$/i.test(role.trim())) g.dir.add(n);
+    if (/^(co-)?directors?$/i.test(role.trim()) || /^director &/i.test(role.trim()) || /^(writer|book|playwright)\s*(&|,|\/|and)\s*(co-)?director$/i.test(role.trim())) g.dir.add(n);
     if (EXCLUDE_ROLE.test(role) && !/^director &/i.test(role.trim())) continue;
     if (/music|lyric|composer/i.test(role)) g.music.add(n);
     if (/playwright|\bbook\b|writer|adaptation|author|creator/i.test(role)) g.book.add(n);
@@ -213,8 +213,8 @@ function buildSweep2Features(target, ctx, opts = {}) {
       for (const w of ws) { const r = ctx.weeks[w][id]; if (r.capacity > 0 && r.atp > 0) { caps.push(r.capacity); atps.push(Math.log(r.atp)); } }
       return caps.length ? { cap: RF.mean(caps), atp: RF.mean(atps) } : null;
     };
-    const mine = previewOf(target.id, D);
-    if (mine && ctx.weeks && target.venue) {
+    const mine = ctx.weeks ? previewOf(target.id, D) : null;
+    if (mine && target.venue) {
       const norms = [];
       for (const s of ctx.pool) {
         if (s.id === target.id || s.venue !== target.venue || s.category !== 'broadway') continue;
@@ -230,7 +230,7 @@ function buildSweep2Features(target, ctx, opts = {}) {
         note('gross-week', `${target.id}@box`, wkAll[wkAll.length - 1]);
       }
     }
-    // first pre-opening week level (relative to that week's market median), as v1 builds its two-week level
+    // level four weeks before opening (SCHEDULE_WEEKS back, or the earliest available), relative to that week's market median), as v1 builds its two-week level
     if (wkAll.length >= 2) {
       const w = wkAll[Math.max(0, wkAll.length - SCHEDULE_WEEKS)];
       const all = Object.values(ctx.weeks[w]).filter((r) => r && r.capacity > 0 && r.atp > 0);
@@ -253,7 +253,8 @@ function assertNoLeakageSweep2(target, provenance) {
     if (p.kind === 'static-origin' || p.kind === 'static-venue' || p.kind === 'announced-opening') continue; // undated by definition: static descriptor or the announced schedule
     const d = toDay(p.date);
     if (d == null) { bad.push({ ...p, why: 'undated input' }); continue; }
-    if (p.kind === 'gross-week' || p.kind === 'member-shape') { if (!(d < D)) bad.push({ ...p, why: `${p.kind} not before opening` }); continue; }
+    if (p.kind === 'gross-week') { if (!(d < D)) bad.push({ ...p, why: 'gross-week not before opening' }); continue; }
+    if (p.kind === 'member-shape') { if (!(d <= D - LAG_DAYS)) bad.push({ ...p, why: 'member-shape within the lag or after opening' }); continue; }
     if (p.ref === target.id) { bad.push({ ...p, why: 'uses the show itself' }); continue; }
     if (!(d <= D - LAG_DAYS)) bad.push({ ...p, why: `${p.kind} opened ${(D - d).toFixed(0)}d before target (< ${LAG_DAYS}d lag)` });
   }

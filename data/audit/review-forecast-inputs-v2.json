@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-11T13:50:29.096Z",
+  "generatedAt": "2026-11-11T14:01:33.096Z",
   "card": "BRO-7347",
   "market": "broadway",
   "floor": {
@@ -41,7 +41,7 @@
     "parsed": 0,
     "paidFetches": 0
   },
-  "multipleComparisons": "Bonferroni over 65 tests (6 single-group primary tests, cast+preview, all inputs together, earlier-run linear and step, two forked cuts, flop and rave tails, three combined models, seven Show Score tests, plus 39 BRO-7373 sweep-2 tests (six groups x vs v1 and vs v2 on all, flop and hit cells, minus the shared counts, plus the interaction)). Per-feature rows are exploratory and uncorrected, so a lone exploratory \"helps\" would not count.",
+  "multipleComparisons": "Bonferroni over 65 tests (6 single-group primary tests, cast+preview, all inputs together, earlier-run linear and step, two forked cuts, flop and rave tails, three combined models, seven Show Score tests, plus 39 BRO-7373 sweep-2 tests (13 comparisons: six groups vs v1, six groups vs v2, one interaction; each counted for all shows, flop tail and hit tail = 39)). Per-feature rows are exploratory and uncorrected, so a lone exploratory \"helps\" would not count.",
   "reliability": {
     "source": "v1 walk-forward (data/audit/review-forecast-backtest.json)",
     "coverage80": 0.841,

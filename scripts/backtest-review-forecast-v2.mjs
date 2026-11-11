@@ -152,6 +152,9 @@ for (const r of rows.filter((_, i) => i % 8 === 0)) {
   // earlier-run: add a post-cutoff review (and a year-only date in the opening year) with an extreme score, rebuild
   const dayStr = (d) => new Date(d * 86400000).toISOString().slice(0, 10);
   const cpEr = { ...ctx.earlierRun, [r.t.id]: [...(ctx.earlierRun[r.t.id] || []), [1, dayStr(D - RF.LAG_DAYS + 1), 0], [99, dayStr(D + 40), 0], [1, r.t.openingDate.slice(0, 4), 0]] };
+  // sweep-2: same corrupted pool and post-opening grosses; every feature except the announced-schedule count must stay put
+  const s2b = S2.buildSweep2Features(r.t, { ...ctx, pool: cp, poolById: { ...poolById, ...cpById }, weeks: cw }, { floor: FLOOR });
+  if (S2.SWEEP2_FEATURE_NAMES.some((k) => k !== 'sameWeekOpen' && s2b.x[k] !== r.x[k])) moved++;
   const er2 = ER.buildEarlierRunFeatures(r.t, { ...ctx, earlierRun: cpEr }, r.mu);
   if (ER.ER_FEATURE_NAMES.some((k) => er2.x[k] !== r.x[k])) moved++;
 }

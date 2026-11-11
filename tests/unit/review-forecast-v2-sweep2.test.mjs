@@ -43,8 +43,25 @@ test('assertNoLeakageSweep2 refuses undated, in-lag, self and post-opening input
   bad({ kind: 'team-credit', ref: 'x', date: '2020-03-19' });
   bad({ kind: 'team-credit', ref: 'T', date: '2019-01-01' });
   bad({ kind: 'gross-week', ref: 'g', date: T_DATE });
+  bad({ kind: 'member-shape', ref: 'T', date: '2020-03-19' }); // inside the 3-day lag
   bad({ kind: 'member-shape', ref: 'T', date: '2020-03-21' });
-  assert.ok(S2.assertNoLeakageSweep2(target, [{ kind: 'team-credit', ref: 'x', date: '2020-03-10' }, { kind: 'static-origin', ref: 'T' }, { kind: 'member-shape', ref: 'T', date: '2020-03-19' }]));
+  assert.ok(S2.assertNoLeakageSweep2(target, [{ kind: 'team-credit', ref: 'x', date: '2020-03-10' }, { kind: 'static-origin', ref: 'T' }, { kind: 'member-shape', ref: 'T', date: '2020-03-10' }]));
+});
+
+test('role parsing: music directors are not composers; writer/director counts for both', () => {
+  const t = team([['Mo Dir', 'Music Director'], ['Mu Dir', 'Musical Director'], ['Wa Rit', 'Writer/Director'], ['Bo Dir', 'Book & Director']]);
+  assert.deepEqual([...t.music], []);
+  assert.deepEqual([...t.dir].sort(), ['bo dir', 'wa rit']);
+  assert.deepEqual([...t.book].sort(), ['bo dir', 'wa rit']);
+});
+
+test('box and schedule read only weeks before opening; a missing weeks table does not throw', () => {
+  const ctx = ctxFor([], {});
+  assert.doesNotThrow(() => S2.buildSweep2Features(target, { ...ctx, weeks: undefined }, { floor: 10 }));
+  const mkWeeks = (post) => { const w = {}; for (let i = 6; i >= 1; i--) { const d = new Date(Date.parse(T_DATE) - i * 7 * 86400000).toISOString().slice(0, 10); w[d] = { T: { capacity: 80, atp: 100, gross: 1e5, performances: 8 }, A: { capacity: 90, atp: 90, gross: 1e5, performances: 8 }, B: { capacity: 95, atp: 95, gross: 1e5, performances: 8 }, C: { capacity: 85, atp: 80, gross: 1e5, performances: 8 }, D: { capacity: 70, atp: 70, gross: 1e5, performances: 8 }, E: { capacity: 60, atp: 60, gross: 1e5, performances: 8 } }; } const late = new Date(Date.parse(T_DATE) + 7 * 86400000).toISOString().slice(0, 10); w[late] = { T: { capacity: post, atp: post, gross: 1, performances: 8 } }; return w; };
+  const a = S2.buildSweep2Features(target, { ...ctxFor([], {}), weeks: mkWeeks(1) }, { floor: 10 });
+  const b = S2.buildSweep2Features(target, { ...ctxFor([], {}), weeks: mkWeeks(100) }, { floor: 10 });
+  assert.deepEqual(a.x, b.x);
 });
 
 test('feature names in the groups are exactly the names the builder emits', () => {
