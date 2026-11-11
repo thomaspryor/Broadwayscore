@@ -3169,6 +3169,20 @@ function ensembleScoredSinceCv(data) {
 }
 
 /**
+ * BRO-7331: an ensemble score written at or after the fresh CV, at ANY confidence.
+ * A truncated-but-clearly-praising review gets confidence 'low' from the ensemble
+ * though all models agree it is a review; a not_a_review verdict is handled by the
+ * rejection guards, so for a url-corrected re-verified file the fresh score itself
+ * is the signal that the scorer has read the corrected page.
+ */
+function freshEnsembleScoreSinceCv(data) {
+  if (!data || !data.llmScore || !data.ensembleData) return false;
+  const scored = Date.parse((data.llmMetadata && data.llmMetadata.scoredAt) || '');
+  const verified = Date.parse((data.contentVerification && data.contentVerification.verifiedAt) || '');
+  return Number.isFinite(scored) && Number.isFinite(verified) && scored >= verified;
+}
+
+/**
  * BRO-7331: a url-corrected, re-verified review whose only score is OLDER than
  * the fresh CV (a low-confidence or stale-page score). The scorer's unscored
  * pass skips any file holding an llmScore, so without this the release in
@@ -3352,7 +3366,7 @@ function isNonReviewDemotedByFreshCV(data, opts) {
     // Scoring-only until the ensemble has scored the corrected page: an older (or low-confidence) score belongs to the
     // old url's page and must not reach rebuild (ship-check finding, rolling-thunder theater-life).
     return hasHighConfidenceLlmScore(data)
-      || (isUrlCorrectedReverifiedReview(data) && (!!(opts && opts.forScoring) || ensembleScoredSinceCv(data)));
+      || (isUrlCorrectedReverifiedReview(data) && (!!(opts && opts.forScoring) || freshEnsembleScoreSinceCv(data)));
   }
 
   if (data.classifiedAt) {
@@ -7202,6 +7216,7 @@ module.exports = {
   isStaleCvNonReviewVerdictOverruled,
   isCvPartialWindowAdvisory,
   ensembleScoredSinceCv,
+  freshEnsembleScoreSinceCv,
   cvWrongArticleManuallyCleared,
   isCvWrongArticleHighConfidence,
   cvNonReviewHumanCleared,
