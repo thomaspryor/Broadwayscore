@@ -1,0 +1,38 @@
+{
+  "card": "BRO-7347",
+  "computed": "2026-11-11",
+  "showsTried": 341,
+  "withAnyDatedMemberReview": 237,
+  "none": 104,
+  "byEra": {
+    "pre-2019": {
+      "shows": 121,
+      "withMemberReviews": 101
+    },
+    "2019-2023": {
+      "shows": 122,
+      "withMemberReviews": 112
+    },
+    "2024+": {
+      "shows": 98,
+      "withMemberReviews": 24
+    }
+  },
+  "earlierRunDrop": {
+    "showsTouched": 47,
+    "reviewsDropped": 1514
+  },
+  "coverage": {
+    "capped12Pages": 145,
+    "newestReviewMoreThan7DaysBeforeCutoff": 73,
+    "withReviewsWithin7DaysOfCutoff": 164
+  },
+  "agreementWithLiveAggregate": {
+    "shows": 230,
+    "correlation": 0.88,
+    "meanMember": 81.2,
+    "meanAggregate": 81.6,
+    "meanAbsDiff": 2.5,
+    "caveat": "audience-buzz is the current aggregate (includes post-opening reviews); not a dated preview history"
+  }
+}
