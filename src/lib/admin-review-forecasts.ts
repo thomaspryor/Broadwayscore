@@ -23,6 +23,7 @@ export interface BoardEntry {
   forecast: number | null; lo80: number | null; hi80: number | null; categoryMean: number | null;
   previewAudience: number | null; audienceCount: number | null; forecastRecordedAt: string | null; gradeDueOn: string;
   criticScore: number | null; missForecast: number | null; missCategoryMean: number | null; inRange80: boolean | null;
+  confidence: 'High' | 'Medium' | 'Low' | null; confidenceBasis: string | null;
   group: 'soon' | 'later' | 'graded';
   forecastV2: number | null; lo80V2: number | null; hi80V2: number | null; v2UsedShowScore: boolean; missForecastV2: number | null;
 }

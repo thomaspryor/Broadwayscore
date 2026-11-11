@@ -53,3 +53,15 @@ test('v2 shadow fields and the soon/later/graded groups (BRO-7357), tolerant of 
   assert.equal(a.group, 'soon'); assert.equal(a.forecastV2, 74); assert.equal(a.v2UsedShowScore, true);
   assert.equal(later.group, 'later'); assert.equal(later.forecastV2, null); assert.equal(later.v2UsedShowScore, false);
 });
+
+test('confidence follows the inputs behind the forecast', () => {
+  const { confidenceOf } = createRequire(import.meta.url)('./review-forecast-board.js');
+  const full = { inputs: { priorRun: true, previewGrosses: true, peopleWithHistory: ['dir', 'writer'] }, audience: { totalCount: 300 } };
+  const bare = { inputs: { priorRun: false, previewGrosses: false, peopleWithHistory: [] }, audience: { totalCount: 0 } };
+  const mid = { inputs: { priorRun: true, previewGrosses: false, peopleWithHistory: ['writer'] }, audience: { totalCount: 0 } };
+  assert.equal(confidenceOf(full).level, 'High');
+  assert.equal(confidenceOf(bare).level, 'Low');
+  assert.equal(confidenceOf(mid).level, 'Low');
+  assert.equal(confidenceOf({ ...mid, audience: { totalCount: 80 } }).level, 'Medium');
+  assert.match(confidenceOf(bare).basis, /no prior run/);
+});

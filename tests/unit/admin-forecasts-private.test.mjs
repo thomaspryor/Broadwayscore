@@ -56,6 +56,8 @@ test('forecast page reuses the shared home-page card and labels its number as a 
   const src = fs.readFileSync(new URL('../../src/app/admin/forecasts/page.tsx', import.meta.url), 'utf8');
   assert.match(src, /ShowListCard/, 'page must render the shared ShowListCard');
   assert.match(src, />\s*\{graded \? 'Forecast was' : 'Forecast'\}/, 'score box must be labelled Forecast');
+  assert.match(src, /confidence/, 'each card shows a confidence level');
+  assert.match(src, /e\.lo80/, 'range sits in the score box');
   assert.doesNotMatch(src, /md:grid-cols/, 'single column, no desktop grid');
   assert.doesNotMatch(src, /className="card p-4"/, 'no bespoke card');
 });

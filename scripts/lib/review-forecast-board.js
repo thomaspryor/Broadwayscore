@@ -12,6 +12,23 @@ const SOON_DAYS = 45; // opening within this many days (or already open, waiting
 const MIN_N_FOR_RESULT = 5; // below this many graded shows the UI labels averages as early
 
 /**
+ * Confidence in a forecast, from what it was built on (not yet measured against results; the pilot has no grades).
+ * Points: prior run of the show +1, preview audience grade (100+ votes +2, any votes +1), preview grosses +1,
+ * two or more people with a track record +1. 4+ High, 2-3 Medium, else Low. `basis` lists what is missing.
+ */
+function confidenceOf(row) {
+  const inp = (row && row.inputs) || {};
+  const votes = row && row.audience && typeof row.audience.totalCount === 'number' ? row.audience.totalCount : 0;
+  const people = Array.isArray(inp.peopleWithHistory) ? inp.peopleWithHistory.length : 0;
+  const pts = (inp.priorRun ? 1 : 0) + (votes >= 100 ? 2 : votes > 0 ? 1 : 0) + (inp.previewGrosses ? 1 : 0) + (people >= 2 ? 1 : 0);
+  const missing = [];
+  if (!inp.priorRun) missing.push('no prior run');
+  if (votes === 0) missing.push('no audience grade yet');
+  if (!inp.previewGrosses) missing.push('no preview grosses');
+  return { level: pts >= 4 ? 'High' : pts >= 2 ? 'Medium' : 'Low', basis: missing.length ? missing.join(', ') : 'all inputs present' };
+}
+
+/**
  * @param {{ledgerRows: object[], grades: object[], titleOf?: (id:string)=>string|null, today: string}} o
  * @returns {{summary: object, entries: object[]}}
  */
@@ -51,6 +68,8 @@ function buildBoard({ ledgerRows, grades, titleOf = () => null, today }) {
       missCategoryMean: grade ? grade.missCategoryMean : null,
       inRange80: grade ? grade.inRange80 : null,
       group,
+      confidence: src ? confidenceOf(src).level : null,
+      confidenceBasis: src ? confidenceOf(src).basis : null,
       forecastV2: v2Forecast,
       lo80V2: v2 && typeof v2.lo80 === 'number' ? v2.lo80 : null,
       hi80V2: v2 && typeof v2.hi80 === 'number' ? v2.hi80 : null,
@@ -76,4 +95,4 @@ function buildBoard({ ledgerRows, grades, titleOf = () => null, today }) {
   };
 }
 
-module.exports = { buildBoard, MIN_N_FOR_RESULT, SOON_DAYS };
+module.exports = { buildBoard, confidenceOf, MIN_N_FOR_RESULT, SOON_DAYS };

@@ -35,15 +35,28 @@ function cardShow(e: BoardEntry): ShowCardShow {
   };
 }
 
-/** Right-hand box: same footprint as the home page score box, labelled so it is never read as a Critic Score. */
+/** Right-hand box: same footprint as the home page score box, but dashed and captioned so it reads as a forecast, with its range and confidence beneath. */
 function ForecastBox({ e }: { e: BoardEntry }) {
   const graded = e.state === 'graded';
+  const conf = e.confidence ? { High: 'text-score-great', Medium: 'text-score-tepid', Low: 'text-score-skip' }[e.confidence] : 'text-fg-muted';
   return (
     <div className="flex-shrink-0 flex flex-col items-center justify-center gap-1.5 w-20 sm:w-24">
       <span className="text-[9px] font-semibold uppercase tracking-wide whitespace-nowrap text-fg-muted">
         {graded ? 'Forecast was' : 'Forecast'}
       </span>
-      <ScoreBadge score={e.forecast} size="lg" />
+      <div className="rounded-xl outline outline-2 outline-dashed outline-offset-2 outline-white/30">
+        <ScoreBadge score={e.forecast} size="lg" />
+      </div>
+      {e.lo80 != null && e.hi80 != null ? (
+        <span className="text-xs font-semibold tabular-nums whitespace-nowrap text-gray-300" title="80% chance the Critic Score lands in this range">
+          {e.lo80} to {e.hi80}
+        </span>
+      ) : null}
+      {e.confidence ? (
+        <span className={`text-[10px] font-semibold whitespace-nowrap ${conf}`} title={`Based on: ${e.confidenceBasis}`}>
+          {e.confidence} confidence
+        </span>
+      ) : null}
       {e.forecastV2 != null ? (
         <span className="text-[10px] text-gray-400 whitespace-nowrap" title="Newer model, tracked quietly beside the main forecast">
           v2 {e.forecastV2}
@@ -55,13 +68,13 @@ function ForecastBox({ e }: { e: BoardEntry }) {
 }
 
 function MetaLine({ e }: { e: BoardEntry }) {
-  const range = e.lo80 != null && e.hi80 != null ? `Likely ${e.lo80} to ${e.hi80}` : null;
   const aud = e.previewAudience != null ? `Audience ${Math.round(e.previewAudience)}${e.audienceCount ? ` (${e.audienceCount} votes)` : ''}` : 'No audience grade yet';
   const when = `${e.state === 'upcoming' ? 'Opens' : 'Opened'} ${fmtDate(e.openingDate)}`;
   return (
     <div className="text-sm text-gray-400 mt-2.5">
-      <p>{range ? `${when} · ${range}` : when}</p>
+      <p>{when}</p>
       <p>{aud}</p>
+      {e.confidenceBasis && e.confidenceBasis !== 'all inputs present' ? <p>Confidence limited by: {e.confidenceBasis}</p> : null}
       {e.state === 'graded' ? (
         <p className="text-fg mt-0.5">
           Critic Score {e.criticScore}
