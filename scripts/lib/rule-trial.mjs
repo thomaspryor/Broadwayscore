@@ -58,18 +58,30 @@ function git(cwd, args, timeout = 30000) {
  * -> { words, changes: Map<file, string[]> }
  */
 export function wordChanges(porcelain) {
-  let words = 0; let file = null;
+  let words = 0; let file = null; let inHeader = false; let ctx = [];
   const changes = new Map();
+  const unquote = (p) => (p.startsWith('"') ? p.slice(1, -1).replace(/\\(.)/g, '$1') : p);
   for (const line of porcelain.split('\n')) {
-    const h = /^diff --git a\/(.+?) b\//.exec(line);
-    if (h) { file = h[1]; continue; }
-    if (/^(\+\+\+|---) (a\/|b\/|\/dev\/null)/.test(line)) continue;
+    if (line.startsWith('diff --git ')) { inHeader = true; file = null; ctx = []; continue; }
+    if (inHeader) {
+      // File name from the +++ line (--- for a deleted file): a "diff --git" line cannot be split safely when a path contains " b/".
+      const m = /^(\+\+\+|---) (.+)$/.exec(line);
+      if (m && m[2] !== '/dev/null') {
+        const p = unquote(m[2]).replace(/^[ab]\//, '');
+        if (m[1] === '+++' || !file) file = p;
+      }
+      if (line.startsWith('@@')) { inHeader = false; ctx = []; }
+      continue;
+    }
+    if (line.startsWith('@@')) { ctx = []; continue; }
+    const toks = line.slice(1).split(/\s+/).filter(Boolean);
+    if (line[0] === ' ') { ctx = [...ctx, ...toks].slice(-3); continue; }
     if (line[0] !== '+' && line[0] !== '-') continue;
-    const n = line.slice(1).split(/\s+/).filter(Boolean).length;
-    if (!n) continue;
-    words += n;
+    if (!toks.length) continue;
+    words += toks.length;
     if (!changes.has(file)) changes.set(file, []);
-    changes.get(file).push(line[0] + line.slice(1).trim().split(/\s+/).join(' '));
+    // The three context words before a change place it: "never" before "push" and before "land" are different text.
+    changes.get(file).push(`${ctx.join(' ')}|${line[0]}${toks.join(' ')}`);
   }
   return { words, changes };
 }
@@ -86,7 +98,8 @@ export function guidanceDiff(cwd, base, src = 'HEAD') {
   if (names === null) return { files: [], words: 0, hash: null, error: `git diff ${base}...${src} failed` };
   const files = names.split('\n').filter(Boolean).filter(isGuidance);
   if (!files.length) return { files, words: 0, hash: null };
-  const porcelain = git(cwd, ['diff', '--no-renames', '--word-diff=porcelain', `${base}...${src}`, '--', ...files]) || '';
+  const porcelain = git(cwd, ['diff', '--no-renames', '--word-diff=porcelain', `${base}...${src}`, '--', ...files]);
+  if (porcelain === null) return { files, words: 0, hash: null, error: `git diff --word-diff ${base}...${src} failed` };
   const { words, changes } = wordChanges(porcelain);
   if (!words) return { files: [], words: 0, hash: null };
   const changed = [...changes.keys()].sort();
@@ -127,19 +140,28 @@ export function trialSession(json) {
   const srcs = (s.session_context && s.session_context.sources) || [];
   const repo = srcs.map((x) => x.git_repository).find((g) => g && /broadwayscore(\.git)?$/i.test(g.url || ''));
   if (!repo || !repo.revision) throw new Error(`${s.id}: no Broadwayscore source revision; start the trial with create_session source_revision=<your pushed branch>`);
-  return { id: s.id, revision: repo.revision, bucket: s.status_bucket || '' };
+  return { id: s.id, revision: repo.revision, bucket: s.status_bucket || '', createdAt: s.created_at || null };
 }
 
-/** Resolve a session's revision (branch ref or sha) to a local commit, fetching the branch if needed. */
-export function resolveRevision(cwd, revision) {
-  const name = revision.replace(/^refs\/heads\//, '');
-  for (const cand of [revision, `origin/${name}`]) {
-    const out = git(cwd, ['rev-parse', '--verify', '--quiet', `${cand}^{commit}`]);
+/**
+ * The commit a trial session checked out. A sha is itself. A branch name resolves to the
+ * branch's newest first-parent commit made before the session started, so later edits to
+ * the same branch (a newer draft) are not credited to the trial. Fetches the branch first.
+ */
+export function resolveRevision(cwd, revision, createdAt) {
+  if (/^[0-9a-f]{7,40}$/i.test(revision)) {
+    const out = git(cwd, ['rev-parse', '--verify', '--quiet', `${revision}^{commit}`]);
     if (out) return out.trim();
   }
-  if (git(cwd, ['fetch', '-q', 'origin', name], 90000) === null) return null;
-  const out = git(cwd, ['rev-parse', '--verify', '--quiet', 'FETCH_HEAD^{commit}']);
-  return out ? out.trim() : null;
+  if (!createdAt || Number.isNaN(Date.parse(createdAt))) return null;
+  const name = revision.replace(/^refs\/heads\//, '');
+  git(cwd, ['fetch', '-q', 'origin', name], 90000);
+  for (const ref of [`origin/${name}`, name]) {
+    if (!git(cwd, ['rev-parse', '--verify', '--quiet', `${ref}^{commit}`])) continue;
+    const out = (git(cwd, ['rev-list', '-1', '--first-parent', `--before=${createdAt}`, ref]) || '').trim();
+    return out || null;
+  }
+  return null;
 }
 
 /** -> { row } or { error } */
@@ -148,12 +170,13 @@ export function buildRecord({ cwd, base, src = 'HEAD', sessions, verdict, note, 
   if (!note || note.trim().length < 20) return { error: '--note must say what the trial showed (20+ characters)' };
   if (!sessions.length) return { error: 'need at least one --from-json <trial session get_session file>' };
   const d = guidanceDiff(cwd, base, src);
+  if (d.error) return { error: d.error };
   if (!d.hash) return { error: `no guidance text changed in ${base}...${src}; nothing to record` };
   const revisions = [];
   for (const s of sessions) {
-    if (/WORKING/.test(s.bucket)) return { error: `${s.id} is still working; record after it finishes so its behaviour can be judged` };
-    const sha = resolveRevision(cwd, s.revision);
-    if (!sha) return { error: `${s.id}: cannot resolve its revision ${s.revision}` };
+    if (!s.bucket || /WORKING/.test(s.bucket)) return { error: `${s.id} is still working (or its status is unknown); record after it finishes so its behaviour can be judged` };
+    const sha = resolveRevision(cwd, s.revision, s.createdAt);
+    if (!sha) return { error: `${s.id}: cannot resolve the commit it ran on (${s.revision}, started ${s.createdAt || 'unknown'})` };
     const t = guidanceDiff(cwd, base, sha);
     if (t.hash !== d.hash) return { error: `${s.id} ran on ${s.revision} (${sha.slice(0, 9)}), whose guidance text differs from this branch's; trial the current text` };
     revisions.push(sha);
@@ -195,7 +218,7 @@ export function main(argv, { cwd = process.cwd(), out = console.log, err = conso
   try { a = parseArgs(argv); } catch (e) { err(`rule-trial: ${e.message}`); return 1; }
   if (a.cmd === 'status') {
     const d = guidanceDiff(cwd, a.base, a.src);
-    if (d.error) { err(`rule-trial: ${d.error}`); return 1; }
+    if (d.error) { err(`rule-trial: ${d.error} (is ${a.base} fetched?)`); return 1; }
     const min = minWords();
     const rows = d.hash ? readLedger(canonicalRoot(cwd), LEDGER).filter((r) => r.hash === d.hash) : [];
     const passed = rows.some((r) => r.verdict === 'pass');
