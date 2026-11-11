@@ -14,7 +14,7 @@
  */
 
 /** Modal contexts that come from an in-page action (see ModalContext). */
-export const MIDFLOW_CONTEXTS: readonly string[] = ['rating', 'watchlist', 'watchlist_local'];
+export const MIDFLOW_CONTEXTS: readonly string[] = ['rating', 'watchlist', 'watchlist_local', 'prediction'];
 
 export const MIDFLOW_KEY = 'bsc_signin_midflow';
 /** Same window as the analytics marker (ugc-analytics PENDING_SIGN_IN_TTL_MS). */

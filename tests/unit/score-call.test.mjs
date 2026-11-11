@@ -47,3 +47,24 @@ test('LEAK GUARD: nothing under src/ or public/ reads the ledger or the sync loa
   walk(path.join(ROOT, 'src')); walk(path.join(ROOT, 'public'));
   assert.deepEqual(bad, []);
 });
+
+// Guess first, sign up second: pending pick store (real helpers, fake storage).
+import { createRequire as _cr } from 'node:module';
+{
+  const sc = _cr(import.meta.url)('../../src/lib/score-call.js');
+  const mem = () => { const m = {}; return { getItem: (k) => (k in m ? m[k] : null), setItem: (k, v) => { m[k] = String(v); }, removeItem: (k) => { delete m[k]; } }; };
+  const assertM = (await import('node:assert/strict')).default;
+  const st = mem();
+  assertM.equal(sc.setPendingCall('a', 72.6, st, 1000), null, 'integers only');
+  assertM.equal(sc.setPendingCall('a', 73, st, 1000), 73);
+  assertM.equal(sc.getPendingCall('a', st, 2000), 73);
+  assertM.equal(sc.setPendingCall('a', 40, st, 3000), 40, 'one per show: new pick replaces old');
+  assertM.equal(sc.getPendingCall('a', st, 4000), 40);
+  assertM.equal(sc.setPendingCall('a', 101, st, 5000), null, 'out of range refused');
+  assertM.equal(sc.getPendingCall('a', st, 3000 + 8 * 24 * 3600 * 1000), null, 'expires after 7 days');
+  sc.setPendingCall('b', 55, st, 6000); sc.clearPendingCall('a', st, 6000);
+  assertM.equal(sc.getPendingCall('a', st, 6000), null); assertM.equal(sc.getPendingCall('b', st, 6000), 55);
+  assertM.equal(sc.getPendingCall('a', { getItem() { throw new Error('private'); } }, 1), null, 'storage errors are swallowed');
+  assertM.equal(sc.getPendingCall('a', mem(), 1), null);
+  console.log('pending-store tests ok');
+}
