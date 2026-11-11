@@ -5083,7 +5083,15 @@ function earlyPublishDatesResults(report, now = Date.now()) {
   const max = isCountValue(report.max) ? report.max : 40;
   const at = Date.parse(report.generatedAt);
   const fresh = Number.isFinite(at) && now - at <= EARLY_PUBLISH_DATES_STALE_MS;
-  if (n > max) {
+  // BRO-7355: a burst above the limit that is shrinking since the last snapshot is the daily sweep doing its
+  // job (40 files/day); the card-filing warn is only for a backlog that is not draining. Three BSC Daily cards
+  // (BRO-6424, 6707, 7125) were filed for bursts that cleared by themselves.
+  const prevAt = Date.parse(report.previousGeneratedAt);
+  const draining = n > max && isCountValue(report.previousAwaiting) && n < report.previousAwaiting
+    && Number.isFinite(prevAt) && Number.isFinite(at) && at - prevAt <= EARLY_PUBLISH_DATES_STALE_MS;
+  if (draining && fresh) {
+    out.push({ name, status: 'pass', message: `${n} early publish date(s) awaiting recheck, above the limit of ${max} but draining (was ${report.previousAwaiting}); the daily recheck is clearing them` });
+  } else if (n > max) {
     out.push({
       name,
       status: 'warn',

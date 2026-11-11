@@ -51,6 +51,13 @@ console.log('awaiting by ingest source:', JSON.stringify(bySource));
 console.log('awaiting by show (top 10):', JSON.stringify(Object.entries(byShow).sort((a, b) => b[1] - a[1]).slice(0, 10)));
 const countsArg = process.argv.find(a => a.startsWith('--counts='));
 if (countsArg) {
-  fs.writeFileSync(countsArg.split('=')[1], JSON.stringify({ generatedAt: new Date().toISOString(), awaiting: pending, attempted, max, bySource }, null, 2) + '\n');
+  const countsPath = countsArg.split('=')[1];
+  // BRO-7355: carry the last snapshot's count so the health row can tell a burst the daily sweep is
+  // draining from a backlog that is stuck (only a stuck one needs a card).
+  let prev = null;
+  try { prev = JSON.parse(fs.readFileSync(countsPath, 'utf8')); } catch { /* first run */ }
+  const extra = prev && Number.isFinite(Date.parse(prev.generatedAt)) && isFinite(prev.awaiting)
+    ? { previousAwaiting: Number(prev.awaiting), previousGeneratedAt: prev.generatedAt } : {};
+  fs.writeFileSync(countsPath, JSON.stringify({ generatedAt: new Date().toISOString(), awaiting: pending, attempted, max, bySource, ...extra }, null, 2) + '\n');
 }
 if (pending > max) { console.log(`ADVISORY: ${pending} > ${max}: run backfill-review-dates with recheck_dates=true`); process.exit(1); }
