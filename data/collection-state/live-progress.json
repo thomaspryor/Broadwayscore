@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-11-11T00:33:50.520Z",
-  "processed": 44,
-  "failed": 47,
-  "successRate": "48.4%",
+  "updatedAt": "2026-11-11T01:07:00.316Z",
+  "processed": 114,
+  "failed": 67,
+  "successRate": "63.0%",
   "tierBreakdown": {
-    "playwright": 32,
+    "playwright": 78,
     "amp": 0,
     "browserbase": 3,
     "directCookies": 0,
@@ -12,9 +12,9 @@
     "scrapingbee": 5,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 28
+    "archive": 29
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
       "t": "2026-11-11T00:03:40.476Z",
@@ -66,6 +66,17 @@
       "event": "bb-session",
       "session": "ebb9d4a3",
       "url": "https://publictheater.org/productions/season/2627/the-curious-case-of-benjamin-b"
+    },
+    {
+      "t": "2026-11-11T00:54:07.686Z",
+      "event": "bb-session",
+      "session": "8d6dc49c",
+      "url": "https://www.talkinbroadway.com/regional/minn/minn1534.html"
+    },
+    {
+      "t": "2026-11-11T00:54:08.144Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
