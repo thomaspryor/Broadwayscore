@@ -67,6 +67,7 @@ const {
   itemReadsAsReview,
   headlineLooksLikeNews,
   pageConfirmsShow,
+  confirmLogicFingerprint,
   pageText,
   pageNamesTitle,
   publishedInRunWindow,
@@ -793,9 +794,12 @@ const unconfirmedKey = (url, showId) => `${normalizeUrl(url)}|${showId}`;
 // for one day, so a dead or walled URL does not spend paid fetches every run.
 const FAILED_SHOW_ID = '*unreadable*';
 const FAILED_TTL_MS = 24 * 60 * 60 * 1000;
-function loadUnconfirmedCache(file = UNCONFIRMED_CACHE, nowMs = Date.now()) {
+function loadUnconfirmedCache(file = UNCONFIRMED_CACHE, nowMs = Date.now(), logic = confirmLogicFingerprint()) {
   let raw = {};
-  try { raw = JSON.parse(fs.readFileSync(file, 'utf-8')).entries || {}; } catch { /* first run */ }
+  // BRO-7372: a verdict reached by older confirmation rules is not a verdict under the current
+  // ones (the venue fix left Exeunt's ripple review "unconfirmed" for a week). A cache stamped
+  // with different rules, or with no stamp at all, is dropped whole.
+  try { const j = JSON.parse(fs.readFileSync(file, 'utf-8')); if (j.logic === logic) raw = j.entries || {}; } catch { /* first run */ }
   const live = {};
   for (const [k, at] of Object.entries(raw)) {
     const ttl = k.endsWith(`|${FAILED_SHOW_ID}`) ? FAILED_TTL_MS : UNCONFIRMED_TTL_MS;
@@ -804,10 +808,10 @@ function loadUnconfirmedCache(file = UNCONFIRMED_CACHE, nowMs = Date.now()) {
   return live;
 }
 function isUnconfirmedCached(cache, url, showId) { return !!(cache[unconfirmedKey(url, showId)] || cache[unconfirmedKey(url, FAILED_SHOW_ID)]); }
-function saveUnconfirmedCache(cache, file = UNCONFIRMED_CACHE) {
+function saveUnconfirmedCache(cache, file = UNCONFIRMED_CACHE, logic = confirmLogicFingerprint()) {
   try {
     fs.mkdirSync(path.dirname(file), { recursive: true });
-    fs.writeFileSync(file, JSON.stringify({ note: 'BRO-6921: url|showId pages that did not confirm the show; skipped for 7 days', entries: cache }, null, 2) + '\n');
+    fs.writeFileSync(file, JSON.stringify({ note: 'BRO-6921: url|showId pages that did not confirm the show; skipped for 7 days, or until the confirmation rules change (logic, BRO-7372)', logic, entries: cache }, null, 2) + '\n');
   } catch (err) {
     console.warn(`  ⚠ could not save ${file}: ${err.message}`);
   }
