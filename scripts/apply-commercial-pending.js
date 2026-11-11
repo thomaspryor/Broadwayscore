@@ -445,16 +445,19 @@ async function main() {
       // own public text with research prose (or with nothing, when the
       // research notes were all stripped).
       gate.keepExistingPublicText(commercialEntry, existing);
-      // One bad row must not fail validate-data for the whole batch.
-      const rowErrors = commercialRecordErrors(commercialKey, commercialEntry, {
-        showRecord: keyShowRecord,
-        allRecords: commercial.shows,
-      });
-      if (rowErrors.length) {
-        console.log(`  🛑 "${showId}" — left pending for review: ${rowErrors[0]}`);
-        skipped++;
-        continue;
-      }
+    }
+    // Validate every candidate, including daily/weekly bulk and --show.
+    // Restricting this guard to held-row releases let an Easy Winner with
+    // recouped=null abort the whole daily publish (BRO-4623).
+    const rowErrors = commercialRecordErrors(commercialKey, commercialEntry, {
+      showRecord: keyShowRecord,
+      allRecords: commercial.shows,
+    });
+    if (rowErrors.length) {
+      console.log(`  🛑 "${showId}" — left pending for review: ${rowErrors[0]}`);
+      noteBlocked(showId, `record validation: ${rowErrors[0]}`);
+      skipped++;
+      continue;
     }
 
     commercialEntry.lastUpdated = new Date().toISOString();
