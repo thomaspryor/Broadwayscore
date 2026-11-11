@@ -3169,6 +3169,26 @@ function ensembleScoredSinceCv(data) {
 }
 
 /**
+ * BRO-7331: a url-corrected, re-verified review whose only score is OLDER than
+ * the fresh CV (a low-confidence or stale-page score). The scorer's unscored
+ * pass skips any file holding an llmScore, so without this the release in
+ * isNonReviewDemotedByFreshCV never gets the fresh ensemble score it waits for.
+ * Selected once per CV: after a rescore the score is not older than the CV, so
+ * a low-confidence result cannot re-queue the file every run.
+ */
+function isUrlCorrectedAwaitingFreshScore(data) {
+  if (!data || !data.llmScore || !isUrlCorrectedReverifiedReview(data)) return false;
+  // Narrow to the stuck class: a CV-promoted isNonReview that still holds a stale score.
+  // Ordinary corrected-url reviews are not re-queued (would be a mass unguarded rescore).
+  if (data.isNonReview !== true || !data.contentVerificationPromoted) return false;
+  if (data._locked || data.humanReviewScore != null) return false;
+  if (ensembleScoredSinceCv(data)) return false;
+  const scored = Date.parse((data.llmMetadata && data.llmMetadata.scoredAt) || '');
+  const verified = Date.parse((data.contentVerification && data.contentVerification.verifiedAt) || '');
+  return Number.isFinite(scored) && Number.isFinite(verified) && scored < verified;
+}
+
+/**
  * BRO-6745: a CV "not a review" verdict that describes a body the file no
  * longer holds (refetch after the verdict, or contentHash != current fullText)
  * is not evidence about the stored text, and a confident ensemble score of the
@@ -7105,6 +7125,7 @@ function isReviewContentTrustworthy(data) {
 }
 
 module.exports = {
+  isUrlCorrectedAwaitingFreshScore,
   isRejectedByReasonExclusion,
   isRejectedAtExclusion,
   isRegistrationWallStubExclusion,

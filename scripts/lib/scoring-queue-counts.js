@@ -104,7 +104,7 @@ function unscoredSkipReason(data, ctx) {
   // assignedScore but no llmScore is still selected and scored by the
   // pipeline (Codex adversarial review, task #652 ship-check). The
   // authoritative-star case is handled in commonSelectionSkipReason.
-  if (data.llmScore) return UNSCORED_SKIP.ALREADY_SCORED;
+  if (data.llmScore && !require('./review-guards').isUrlCorrectedAwaitingFreshScore(data)) return UNSCORED_SKIP.ALREADY_SCORED; // BRO-7331
   // A deterministic text-gate rejection (body_too_short / nav_chrome_majority)
   // reproduces identically until the text itself changes. Counting it forever
   // is exactly what pinned this cascade. See rescore-lifecycle.js.
