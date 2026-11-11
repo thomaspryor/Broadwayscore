@@ -10,16 +10,20 @@
  * of them failed (BRO-5716, BRO-6594, BRO-7338).
  *
  * Modes:
- *   node scripts/filter-active-targeted-poller-shows.js "show-a,show-b"
+ *   node scripts/lib/filter-active-targeted-poller-shows.js "show-a,show-b"
  *       prints the shows to KEEP (comma list, possibly empty); each dropped
  *       show is logged on stderr with the targeted run that owns it.
- *   node scripts/filter-active-targeted-poller-shows.js --active
+ *   node scripts/lib/filter-active-targeted-poller-shows.js --active
  *       prints every show id an active targeted run owns (comma list).
  *
  * Fails OPEN: if the run list cannot be read (no gh, no token, API error,
- * 20s timeout), filter mode prints the input unchanged and --active prints
+ * 8s timeout, kept short because the poll loop budget pays for it), filter mode prints the input unchanged and --active prints
  * nothing, with a ::warning:: on stderr. A check that cannot run must never
  * stop the poller from polling. Same posture as filter-active-gather-shows.js.
+ *
+ * Kill switch: repo variable POLLER_TARGETED_YIELD_DISABLED=true (passed in as
+ * env) makes every mode behave as if no show were owned, so auto runs poll
+ * everything again, as before BRO-7117.
  *
  * Needs no npm dependencies: the poller calls it before `npm ci`.
  */
@@ -29,19 +33,19 @@ const { execFileSync } = require('child_process');
 const {
   activeTargetedPollerShows,
   partitionByActiveTargetedPoller,
-} = require('./lib/poller-idempotency');
+} = require('./poller-idempotency');
 
 const USAGE = `filter-active-targeted-poller-shows.js — leave shows an active targeted opening-night poller run owns to that run (BRO-7117).
 
 Usage:
-  node scripts/filter-active-targeted-poller-shows.js "show-a,show-b"   # print shows to keep
-  node scripts/filter-active-targeted-poller-shows.js --active          # print shows owned by active targeted runs`;
+  node scripts/lib/filter-active-targeted-poller-shows.js "show-a,show-b"   # print shows to keep
+  node scripts/lib/filter-active-targeted-poller-shows.js --active          # print shows owned by active targeted runs`;
 
 function listPollerRuns() {
   const out = execFileSync('gh', [
     'run', 'list', '--workflow=opening-night-poller.yml',
     '--json', 'databaseId,status,displayTitle', '--limit', '100',
-  ], { encoding: 'utf8', timeout: 20000, stdio: ['ignore', 'pipe', 'pipe'] });
+  ], { encoding: 'utf8', timeout: 8000, stdio: ['ignore', 'pipe', 'pipe'] });
   const runs = JSON.parse(out);
   if (!Array.isArray(runs)) throw new Error('gh run list did not return an array');
   return runs;
@@ -57,6 +61,11 @@ function main(argv) {
     .split(',').map((s) => s.trim()).filter(Boolean);
   if (!activeMode && !wanted.length) {
     console.log('');
+    return;
+  }
+  if (process.env.POLLER_TARGETED_YIELD_DISABLED === 'true') {
+    console.error('filter-active-targeted-poller-shows: POLLER_TARGETED_YIELD_DISABLED=true, treating no show as owned');
+    console.log(activeMode ? '' : wanted.join(','));
     return;
   }
   let runs;

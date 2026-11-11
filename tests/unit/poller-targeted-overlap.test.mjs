@@ -69,6 +69,12 @@ test('collect and score use the re-scoped list and skip when every show is owned
   for (const s of [collect, score]) {
     assert.match(s.if, /steps\.scope\.outputs\.all_owned != 'true'/, `${s.name} must skip when every show is owned`);
   }
+  const leftover = byName('Dispatch scoring for shows left unscored');
+  assert.match(leftover.if, /steps\.scope\.outputs\.all_owned != 'true'/, 'leftover scoring must not dispatch for owned shows');
+  assert.equal(leftover.env.POLLED_SHOWS, '${{ steps.scope.outputs.shows || steps.find.outputs.shows }}');
+  for (const n of ['Find shows to poll', 'Run poller for each show', 'Scope collect and score to shows this run still owns']) {
+    assert.equal(byName(n).env.POLLER_TARGETED_YIELD_DISABLED, '${{ vars.POLLER_TARGETED_YIELD_DISABLED }}', `${n} must honor the kill switch`);
+  }
   assert.equal(collect.env.SHOW_FILTER, '${{ steps.scope.outputs.shows || steps.find.outputs.shows }}');
   assert.match(score.run, /SHOWS="\$\{\{ steps\.scope\.outputs\.shows \|\| steps\.find\.outputs\.shows \}\}"/);
 });
@@ -77,7 +83,7 @@ function runCli(args, ghScript) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro7117-gh-'));
   fs.writeFileSync(path.join(dir, 'gh'), `#!/bin/sh\n${ghScript}\n`, { mode: 0o755 });
   try {
-    return execFileSync(process.execPath, [path.join(ROOT, 'scripts', CLI), ...args], {
+    return execFileSync(process.execPath, [path.join(ROOT, 'scripts', 'lib', CLI), ...args], {
       encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'],
       env: { ...process.env, PATH: `${dir}:${process.env.PATH}` },
     }).trim();
@@ -100,6 +106,23 @@ test('CLI filter mode drops the owned show (BRO-7338 replay)', () => {
 
 test('CLI --active lists only active targeted shows', () => {
   assert.equal(runCli(['--active'], `echo '${RUNS}'`), 'cloud-9-west-end-2026');
+});
+
+test('drained files are committed even when every loop show was left to a targeted run', () => {
+  const run = byName('Run poller for each show').run;
+  assert.match(run, /\[ -n "\$OWNED_SKIPPED" \] && \[ -n "\$\(cd data\/review-texts && git status --porcelain\)" \]; then\n\s*ANY_NEW=true/);
+  assert.ok(run.indexOf('OWNED_SKIPPED" ] && [ -n "$(cd data/review-texts') < run.indexOf('echo "any_new=$ANY_NEW"'));
+});
+
+test('CLI kill switch: nothing is owned', () => {
+  const env = process.env.POLLER_TARGETED_YIELD_DISABLED;
+  process.env.POLLER_TARGETED_YIELD_DISABLED = 'true';
+  try {
+    assert.equal(runCli(['cloud-9-west-end-2026,b-2026'], `echo '${RUNS}'`), 'cloud-9-west-end-2026,b-2026');
+    assert.equal(runCli(['--active'], `echo '${RUNS}'`), '');
+  } finally {
+    if (env === undefined) delete process.env.POLLER_TARGETED_YIELD_DISABLED; else process.env.POLLER_TARGETED_YIELD_DISABLED = env;
+  }
 });
 
 test('CLI fails open when gh errors: keeps every show, owns nothing', () => {

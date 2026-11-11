@@ -200,6 +200,8 @@ jobs:
           INPUT_SHOW_ID: ${{ inputs.show_id }}
           # BRO-7117: lists active targeted poller runs (needs only actions: read).
           GH_TOKEN: ${{ github.token }}
+          # Kill switch: gh variable set POLLER_TARGETED_YIELD_DISABLED --body true
+          POLLER_TARGETED_YIELD_DISABLED: ${{ vars.POLLER_TARGETED_YIELD_DISABLED }}
         run: |
           # WE reviews publish 12-48h after press night; use longer window
           DEFAULT_LOOKBACK=2
@@ -223,7 +225,7 @@ jobs:
             # (gather, pre-loop _pending drain, collect, score, readiness). The
             # loop and the collect/score scope below re-check, for targeted runs
             # that start later. Fails open: an unreadable run list owns nothing.
-            export POLLER_OWNED_SHOWS=$(node scripts/filter-active-targeted-poller-shows.js --active)
+            export POLLER_OWNED_SHOWS=$(node scripts/lib/filter-active-targeted-poller-shows.js --active)
             [ -n "$POLLER_OWNED_SHOWS" ] && echo "Shows owned by an active targeted poller run (left to it): $POLLER_OWNED_SHOWS"
             SHOWS=$(node -e "
               const shows = require('./data/shows.json').shows;
@@ -377,6 +379,7 @@ jobs:
           INPUT_COLLECT_EXISTING: ${{ inputs.collect_existing }}
           # BRO-7117: owned_elsewhere() lists active targeted poller runs.
           GH_TOKEN: ${{ github.token }}
+          POLLER_TARGETED_YIELD_DISABLED: ${{ vars.POLLER_TARGETED_YIELD_DISABLED }}
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -488,7 +491,7 @@ jobs:
           owned_elsewhere() {
             [ -z "$INPUT_SHOW_ID" ] || return 1
             if [ $((SECONDS - OWNED_AT)) -ge 120 ]; then
-              OWNED_LIST=",$(node scripts/filter-active-targeted-poller-shows.js --active || true),"
+              OWNED_LIST=",$(node scripts/lib/filter-active-targeted-poller-shows.js --active || true),"
               OWNED_AT=$SECONDS
             fi
             [[ "$OWNED_LIST" == *",$1,"* ]] || return 1
@@ -703,6 +706,11 @@ jobs:
           if [ "$NEEDS_COLLECTION" = "true" ]; then ANY_COLLECT=true; fi
           ANY_ACTION=false
           if [ "$ANY_NEW" = "true" ] || [ "$ANY_READY" = "true" ] || [ "$NEEDS_COLLECTION" = "true" ]; then ANY_ACTION=true; fi
+          # BRO-7117: if every show was left to targeted runs, poll_one never saw the
+          # files the pre-loop _pending drain promoted; commit them anyway.
+          if [ "$ANY_NEW" != "true" ] && [ -n "$OWNED_SKIPPED" ] && [ -n "$(cd data/review-texts && git status --porcelain)" ]; then
+            ANY_NEW=true
+          fi
           echo "any_new=$ANY_NEW" >> $GITHUB_OUTPUT
           echo "any_ready=$ANY_READY" >> $GITHUB_OUTPUT
           echo "any_action=$ANY_ACTION" >> $GITHUB_OUTPUT
@@ -850,12 +858,13 @@ jobs:
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
+          POLLER_TARGETED_YIELD_DISABLED: ${{ vars.POLLER_TARGETED_YIELD_DISABLED }}
           INPUT_SHOW_ID: ${{ inputs.show_id }}
           FIND_SHOWS: ${{ steps.find.outputs.shows }}
         run: |
           KEEP="$FIND_SHOWS"
           if [ -z "$INPUT_SHOW_ID" ]; then
-            KEEP=$(node scripts/filter-active-targeted-poller-shows.js "$FIND_SHOWS")
+            KEEP=$(node scripts/lib/filter-active-targeted-poller-shows.js "$FIND_SHOWS")
           fi
           echo "shows=$KEEP" >> "$GITHUB_OUTPUT"
           if [ -z "$KEEP" ]; then
@@ -1110,11 +1119,12 @@ jobs:
       # Story (2026-11-05). Hand any show still holding unscored reviews straight to
       # the dedicated scoring workflow instead of waiting for a poll that may not come.
       - name: Dispatch scoring for shows left unscored
-        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_action == 'true'
+        if: steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_action == 'true' && steps.scope.outputs.all_owned != 'true'
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
-          POLLED_SHOWS: ${{ steps.find.outputs.shows }}
+          # BRO-7117: never hand a show a targeted run owns to a separate scorer.
+          POLLED_SHOWS: ${{ steps.scope.outputs.shows || steps.find.outputs.shows }}
         run: |
           LEFTOVER=$(node scripts/lib/scoring-leftover-shows.js "$POLLED_SHOWS")
           if [ -z "$LEFTOVER" ]; then
