@@ -390,13 +390,17 @@ export function decisionOfPre({ code, stdout = '', stderr = '', timedOut }) {
   if (timedOut || (code !== 0 && code !== 2)) return { decision: 'crash', tag: timedOut ? 'TIMEOUT' : `EXIT_${code}`, detail: String(stderr).trim().split('\n').slice(-1)[0]?.slice(0, 160) || '' };
   const firstLine = (t) => String(t).split('\n').find((l) => /BLOCKED|🛑/.test(l)) || String(t).trim().split('\n')[0] || '';
   if (code === 2) return { decision: 'block', tag: (String(stderr).match(/\[([A-Z][A-Z0-9_]*:[A-Z0-9_]+)\]/) || [])[1] || '?', detail: firstLine(stderr).slice(0, 160) };
+  // Hooks print one JSON object; tolerate log lines before it by trying the whole text, then the last line that is JSON.
   const text = String(stdout).trim();
-  if (text.startsWith('{')) {
+  const cands = [text, ...text.split('\n').reverse().filter((l) => l.trim().startsWith('{'))];
+  for (const c of cands) {
+    if (!c.trim().startsWith('{')) continue;
     try {
-      const o = JSON.parse(text);
+      const o = JSON.parse(c);
       const pd = o.hookSpecificOutput?.permissionDecision;
       if (pd === 'deny' || o.decision === 'block') return { decision: 'block', tag: '?', detail: String(o.hookSpecificOutput?.permissionDecisionReason || o.reason || '').slice(0, 160) };
-    } catch { /* not JSON: an allow with a message */ }
+      break;
+    } catch { /* try the next candidate */ }
   }
   return { decision: 'allow', tag: '', detail: '' };
 }
@@ -466,6 +470,12 @@ export function prepareTree(root, name, rev, { withDirtyFrom = null, isolated = 
     fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     const c = git(root, ['clone', '-q', '--shared', '--no-checkout', root, dir]);
     if (c.status !== 0) throw new Error(`git clone ${dir} failed: ${c.stderr.trim()}`);
+    // A shallow source drops --shared and copies only refs/heads, so a remote-tracking sha
+    // (origin/main) is missing from the clone: fetch it explicitly before checking out.
+    if (git(dir, ['cat-file', '-e', `${rev}^{commit}`]).status !== 0) {
+      const f = git(dir, ['fetch', '-q', '--no-tags', root, rev]);
+      if (f.status !== 0) throw new Error(`could not fetch ${rev} into ${dir}: ${f.stderr.trim()}`);
+    }
     const r = git(dir, ['checkout', '-q', '--detach', rev]);
     if (r.status !== 0) throw new Error(`could not check out ${rev} in ${dir}: ${r.stderr.trim()}`);
   } else if (fs.existsSync(dir)) {
@@ -644,7 +654,8 @@ async function main(argv) {
     }
   } finally {
     fs.rmSync(binDir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
-    for (const t of trees) git(root, ['worktree', 'remove', '--force', t]);
+    // Isolated clones are plain directories (git worktree remove would refuse them).
+    for (const t of trees) fs.rmSync(t, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
   report.secs = Math.round((Date.now() - started) / 1000);
   const stopsN = report.transcripts.reduce((s, t) => s + t.stops, 0);

@@ -315,6 +315,8 @@ test('decisionOfPre: exit 2 and a stdout permissionDecision deny both deny; othe
   assert.equal(decisionOfPre({ code: 0, stdout: JSON.stringify({ hookSpecificOutput: { permissionDecision: 'allow' } }) }).decision, 'allow');
   assert.equal(decisionOfPre({ code: 0, stdout: '{"systemMessage":"note"}' }).decision, 'allow');
   assert.equal(decisionOfPre({ code: 0, stdout: 'plain text' }).decision, 'allow');
+  const pre = decisionOfPre({ code: 0, stdout: 'warming up\n' + JSON.stringify({ hookSpecificOutput: { permissionDecision: 'deny', permissionDecisionReason: 'late json' } }) + '\n' });
+  assert.deepEqual([pre.decision, pre.detail], ['block', 'late json'], 'log lines before the JSON do not hide a deny');
   assert.equal(decisionOfPre({ code: 1, stderr: 'boom' }).decision, 'crash');
   assert.equal(decisionOfPre({ code: null, timedOut: true }).tag, 'TIMEOUT');
 });
@@ -450,5 +452,26 @@ test('prepareTree isolated: a separate git dir, so a hook writing next to the co
     assert.equal(fs.readFileSync(path.join(t, 'a.txt'), 'utf8'), 'committed\n');
   } finally {
     fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});
+
+test('prepareTree isolated: a remote-tracking sha in a shallow source repo still checks out', () => {
+  const up = fs.mkdtempSync(path.join(os.tmpdir(), 'hook-replay-up-'));
+  const sh = fs.mkdtempSync(path.join(os.tmpdir(), 'hook-replay-sh-'));
+  try {
+    git(up, 'init', '-q', '-b', 'main');
+    git(up, 'config', 'user.email', 't@t');
+    git(up, 'config', 'user.name', 't');
+    for (const n of ['one', 'two']) { fs.writeFileSync(path.join(up, 'a.txt'), `${n}\n`); git(up, 'add', '-A'); git(up, 'commit', '-qm', n); }
+    fs.rmSync(sh, { recursive: true, force: true });
+    spawnSync('git', ['clone', '-q', '--depth=1', `file://${up}`, sh], { encoding: 'utf8' });
+    const sha = git(sh, 'rev-parse', 'origin/main');
+    assert.equal(git(sh, 'rev-parse', '--is-shallow-repository'), 'true');
+    git(sh, 'checkout', '-q', '-b', 'work');
+    const t = prepareTree(sh, 'iso', sha, { isolated: true });
+    assert.equal(fs.readFileSync(path.join(t, 'a.txt'), 'utf8'), 'two\n');
+  } finally {
+    fs.rmSync(up, { recursive: true, force: true });
+    fs.rmSync(sh, { recursive: true, force: true });
   }
 });
