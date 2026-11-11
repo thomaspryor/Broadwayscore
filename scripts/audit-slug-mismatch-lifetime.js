@@ -19,5 +19,11 @@ process.exit(runLifetimeSweep({
   extractViolations: (result) => (result.details && result.details.mismatches) || [],
   violationKey: (showId, v) => v.url ? `${showId}::${v.url}` : showId,
   needsShows: true,
+  // Only a hit whose URL names a DIFFERENT show in shows.json is evidence of
+  // cross-show contamination; the rest (headline URLs on reviews whose text
+  // cannot be attributed) stay in the snapshot as backlog but no longer trip
+  // the daily digest row, which filed an unresolvable card for each new
+  // ingest (BRO-4697/5438/5536/5693/6524/7121/7223 -> BRO-7204).
+  isActionable: slugMismatch.isContaminationEvidence,
   argv: process.argv.slice(2),
 }));

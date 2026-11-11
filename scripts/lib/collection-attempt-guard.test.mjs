@@ -10,7 +10,7 @@ import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
-const { shouldSkipAlreadyAttempted, dedupeAttemptState } = require('./collection-attempt-guard.js');
+const { shouldSkipAlreadyAttempted, dedupeAttemptState, ensureStateArrays } = require('./collection-attempt-guard.js');
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
@@ -196,5 +196,22 @@ describe('dedupeAttemptState (BRO-3024 owner re-verification)', () => {
     assert.deepEqual(state.tierBreakdown.browserbase, ['c'], 'already-unique tiers untouched');
     assert.equal(state.tierBreakdown.amp, 'not-an-array', 'non-array tier left alone');
     assert.equal(removed.tierBreakdown, 1);
+  });
+});
+
+describe('ensureStateArrays (BRO-7338)', () => {
+  test('backfills missing failed/skipped so state.failed.length cannot crash', () => {
+    const s = ensureStateArrays({ processed: ['a', 'b'], startTime: 'x' });
+    assert.deepEqual(s.failed, []);
+    assert.deepEqual(s.skipped, []);
+    assert.equal(s.processed.length, 2);
+  });
+  test('keeps existing arrays and replaces non-arrays', () => {
+    const s = ensureStateArrays({ processed: ['a'], failed: ['f'], skipped: null });
+    assert.deepEqual(s.failed, ['f']);
+    assert.deepEqual(s.skipped, []);
+  });
+  test('collector wires it into loadState', () => {
+    assert.match(COLLECTOR_SRC, /state = ensureStateArrays\(saved\)/);
   });
 });

@@ -1,0 +1,97 @@
+{
+  "runDate": "2026-11-11T00:15:54.473Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 20,
+    "priority": "all",
+    "showFilter": "1919-regional-2022",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "successRate": "100.0%"
+  },
+  "tierBreakdown": {
+    "playwright": 1,
+    "amp": 0,
+    "browserbase": 0,
+    "directCookies": 0,
+    "scrapingdog": 0,
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archiveToday": 0,
+    "archive": 1
+  },
+  "statistics": {
+    "tier1Attempts": 1,
+    "tier1Success": 1,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier1_9Attempts": 0,
+    "tier1_9Success": 0,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 2,
+    "tier4Success": 1,
+    "totalFailed": 0,
+    "scrapingBeePageCredits": 0,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 0,
+    "urlDiscoverySuccess": 0,
+    "urlDiscoveryCapped": 0
+  },
+  "thisRun": {
+    "processed": 2,
+    "failed": 0,
+    "shows": [
+      "1919-regional-2022"
+    ],
+    "outOfScopeShows": [],
+    "inheritedFromResume": {
+      "processed": 0,
+      "failed": 0
+    }
+  },
+  "processed": [
+    "1919-regional-2022/chicago-reader--kerry-reid.json",
+    "1919-regional-2022/splash-magazines--larita-s-smith.json"
+  ],
+  "failed": [],
+  "cumulativeResumedState": {
+    "processed": [
+      "1919-regional-2022/chicago-reader--kerry-reid.json",
+      "1919-regional-2022/splash-magazines--larita-s-smith.json"
+    ],
+    "failed": []
+  },
+  "tierDetails": {
+    "playwright": [
+      "1919-regional-2022/splash-magazines--larita-s-smith.json"
+    ],
+    "amp": [],
+    "browserbase": [],
+    "directCookies": [],
+    "scrapingdog": [],
+    "scrapingbee": [],
+    "brightdata": [],
+    "archiveToday": [],
+    "archive": [
+      "1919-regional-2022/chicago-reader--kerry-reid.json"
+    ]
+  },
+  "failuresByOutlet": {},
+  "urlDiscoveries": []
+}

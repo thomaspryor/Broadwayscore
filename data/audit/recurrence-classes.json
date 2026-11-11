@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-10T09:46:51.801Z",
+  "generatedAt": "2026-11-11T00:00:21.443Z",
   "complete": true,
   "windowDays": 30,
   "quietDays": 21,
@@ -8,22 +8,22 @@
   "filesSignal": true,
   "share": {
     "thisWeek": {
-      "total": 333,
-      "root-cause": 21,
-      "system": 163,
-      "instance": 149,
-      "share": 55.3
+      "total": 329,
+      "root-cause": 31,
+      "system": 159,
+      "instance": 139,
+      "share": 57.8
     },
     "lastWeek": {
-      "total": 433,
+      "total": 463,
       "root-cause": 0,
-      "system": 235,
-      "instance": 198,
-      "share": 54.3
+      "system": 254,
+      "instance": 209,
+      "share": 54.9
     }
   },
-  "recurringCount": 36,
-  "withRootCause": 18,
+  "recurringCount": 37,
+  "withRootCause": 21,
   "preventions": {
     "claimed": 4,
     "failed": 4,
@@ -33,10 +33,10 @@
     {
       "key": "unit tests run",
       "slug": "unit-tests-run",
-      "inWindow": 53,
+      "inWindow": 51,
       "total": 64,
       "reasons": [
-        "53 cards in 30 days"
+        "51 cards in 30 days"
       ],
       "firstSeen": "2026-10-05T00:02:30.963Z",
       "lastSeen": "2026-11-07T10:30:12.358Z",
@@ -128,14 +128,14 @@
       "key": "review gap missing cited",
       "slug": "review-gap-missing-cited",
       "inWindow": 37,
-      "total": 58,
+      "total": 50,
       "reasons": [
         "37 cards in 30 days"
       ],
-      "firstSeen": "2026-10-04T10:25:30.288Z",
+      "firstSeen": "2026-10-05T07:59:41.376Z",
       "lastSeen": "2026-11-07T21:27:15.426Z",
       "rootCause": "BRO-7116",
-      "rootCauseState": "unstarted",
+      "rootCauseState": "backlog",
       "rootCauseStartedNow": true,
       "rootCauseCreatedAt": "2026-11-08T09:03:49.306Z",
       "rootCauseStartedAt": null,
@@ -143,14 +143,6 @@
       "subtypes": {},
       "example": "Review gap — \"Harry Potter and the Cursed Child\" missing 1 cited review(s)",
       "instances": [
-        "BRO-4576",
-        "BRO-4577",
-        "BRO-4578",
-        "BRO-4579",
-        "BRO-4580",
-        "BRO-4581",
-        "BRO-4582",
-        "BRO-4583",
         "BRO-4679",
         "BRO-4680",
         "BRO-4789",
@@ -267,7 +259,7 @@
       "firstSeen": "2026-10-16T15:48:40.282Z",
       "lastSeen": "2026-11-06T14:29:28.232Z",
       "rootCause": "BRO-7117",
-      "rootCauseState": "unstarted",
+      "rootCauseState": "backlog",
       "rootCauseStartedNow": true,
       "rootCauseCreatedAt": "2026-11-08T09:03:49.642Z",
       "rootCauseStartedAt": null,
@@ -368,10 +360,10 @@
       "firstSeen": "2026-10-17T13:19:26.960Z",
       "lastSeen": "2026-11-03T10:11:51.064Z",
       "rootCause": "BRO-7202",
-      "rootCauseState": "started",
+      "rootCauseState": "backlog",
       "rootCauseStartedNow": true,
       "rootCauseCreatedAt": "2026-11-09T09:48:08.542Z",
-      "rootCauseStartedAt": "2026-11-09T09:49:21.577Z",
+      "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {
         "2019/1750 reqs": 1,
@@ -401,11 +393,11 @@
       "key": "roundup listed review captured",
       "slug": "roundup-listed-review-captured",
       "inWindow": 7,
-      "total": 17,
+      "total": 15,
       "reasons": [
         "7 cards in 30 days"
       ],
-      "firstSeen": "2026-10-04T22:55:44.913Z",
+      "firstSeen": "2026-10-05T01:37:36.635Z",
       "lastSeen": "2026-10-16T01:58:25.730Z",
       "rootCause": "BRO-7203",
       "rootCauseState": "completed",
@@ -416,8 +408,6 @@
       "subtypes": {},
       "example": "Sea Wall: 1 roundup-listed review(s) still not captured",
       "instances": [
-        "BRO-4629",
-        "BRO-4630",
         "BRO-4658",
         "BRO-4746",
         "BRO-4747",
@@ -451,7 +441,7 @@
       "rootCauseState": "started",
       "rootCauseStartedNow": true,
       "rootCauseCreatedAt": "2026-11-09T09:48:09.321Z",
-      "rootCauseStartedAt": "2026-11-09T09:57:04.531Z",
+      "rootCauseStartedAt": "2026-11-09T10:35:22.230Z",
       "extraRootCauses": [],
       "subtypes": {},
       "example": "BSC Daily: Data quality: slug-mismatch lifetime sweep",
@@ -468,35 +458,6 @@
       "recurredAfterRootClosed": []
     },
     {
-      "key": "e2e tests run unit",
-      "slug": "e2e-tests-run-unit",
-      "inWindow": 6,
-      "total": 7,
-      "reasons": [
-        "6 cards in 30 days"
-      ],
-      "firstSeen": "2026-10-10T00:42:24.205Z",
-      "lastSeen": "2026-10-29T22:00:00.639Z",
-      "rootCause": "BRO-3425",
-      "rootCauseState": "backlog",
-      "rootCauseStartedNow": false,
-      "rootCauseStartedAt": null,
-      "extraRootCauses": [],
-      "subtypes": {},
-      "example": "main test.yml red: E2E Tests / Run unit tests — \"returns shows from different markets with same title\"",
-      "instances": [
-        "BRO-4957",
-        "BRO-5054",
-        "BRO-5160",
-        "BRO-5698",
-        "BRO-6094",
-        "BRO-6558",
-        "BRO-6563"
-      ],
-      "failedPreventions": [],
-      "recurredAfterRootClosed": []
-    },
-    {
       "key": "show need review",
       "slug": "show-need-review",
       "inWindow": 5,
@@ -507,9 +468,9 @@
       "firstSeen": "2026-10-17T17:54:44.773Z",
       "lastSeen": "2026-11-09T23:49:05.492Z",
       "rootCause": "BRO-7275",
-      "rootCauseState": "unstarted",
+      "rootCauseState": "backlog",
       "rootCauseStartedNow": true,
-      "rootCauseCreatedAt": "2026-11-10T09:47:36.016Z",
+      "rootCauseCreatedAt": "2026-11-10T09:47:35.816Z",
       "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {
@@ -541,9 +502,9 @@
       "firstSeen": "2026-10-05T11:51:19.312Z",
       "lastSeen": "2026-11-07T12:31:25.176Z",
       "rootCause": "BRO-7276",
-      "rootCauseState": "unstarted",
+      "rootCauseState": "backlog",
       "rootCauseStartedNow": true,
-      "rootCauseCreatedAt": "2026-11-10T09:47:36.438Z",
+      "rootCauseCreatedAt": "2026-11-10T09:47:36.155Z",
       "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {},
@@ -560,6 +521,61 @@
       "recurredAfterRootClosed": []
     },
     {
+      "key": "e2e tests run unit",
+      "slug": "e2e-tests-run-unit",
+      "inWindow": 5,
+      "total": 7,
+      "reasons": [
+        "5 cards in 30 days"
+      ],
+      "firstSeen": "2026-10-10T00:42:24.205Z",
+      "lastSeen": "2026-10-29T22:00:00.639Z",
+      "rootCause": "BRO-3425",
+      "rootCauseState": "backlog",
+      "rootCauseStartedNow": false,
+      "rootCauseStartedAt": null,
+      "extraRootCauses": [],
+      "subtypes": {},
+      "example": "main test.yml red: E2E Tests / Run unit tests — \"returns shows from different markets with same title\"",
+      "instances": [
+        "BRO-4957",
+        "BRO-5054",
+        "BRO-5160",
+        "BRO-5698",
+        "BRO-6094",
+        "BRO-6558",
+        "BRO-6563"
+      ],
+      "failedPreventions": [],
+      "recurredAfterRootClosed": []
+    },
+    {
+      "key": "lint workflows audit submitter pii committed data files",
+      "slug": "lint-workflows-audit-submitter-pii-committed-data-files",
+      "inWindow": 4,
+      "total": 4,
+      "reasons": [
+        "4 cards in 30 days"
+      ],
+      "firstSeen": "2026-10-19T09:58:51.765Z",
+      "lastSeen": "2026-11-10T19:56:25.868Z",
+      "rootCause": "BRO-3425",
+      "rootCauseState": "backlog",
+      "rootCauseStartedNow": false,
+      "rootCauseStartedAt": null,
+      "extraRootCauses": [],
+      "subtypes": {},
+      "example": "main test.yml red: Lint Workflows / Audit — no submitter PII in committed data/audit files",
+      "instances": [
+        "BRO-5691",
+        "BRO-6423",
+        "BRO-6520",
+        "BRO-7322"
+      ],
+      "failedPreventions": [],
+      "recurredAfterRootClosed": []
+    },
+    {
       "key": "stale announced shows",
       "slug": "stale-announced-shows",
       "inWindow": 4,
@@ -570,9 +586,9 @@
       "firstSeen": "2026-10-16T11:31:00.769Z",
       "lastSeen": "2026-11-09T12:32:55.240Z",
       "rootCause": "BRO-7277",
-      "rootCauseState": "unstarted",
+      "rootCauseState": "backlog",
       "rootCauseStartedNow": true,
-      "rootCauseCreatedAt": "2026-11-10T09:47:36.974Z",
+      "rootCauseCreatedAt": "2026-11-10T09:47:36.649Z",
       "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {},
@@ -587,51 +603,52 @@
       "recurredAfterRootClosed": []
     },
     {
-      "key": "national tour pages show wrong information page problem",
-      "slug": "national-tour-pages-show-wrong-information-page-problem",
-      "inWindow": 4,
-      "total": 14,
+      "key": "unit test shard run scripts lib tests",
+      "slug": "unit-test-shard-run-scripts-lib-tests",
+      "inWindow": 3,
+      "total": 3,
       "reasons": [
-        "4 cards in 30 days"
+        "3 cards in 30 days"
       ],
-      "firstSeen": "2026-10-08T18:00:16.703Z",
-      "lastSeen": "2026-10-31T16:19:23.343Z",
-      "rootCause": "BRO-7118",
-      "rootCauseState": "unstarted",
-      "rootCauseStartedNow": true,
-      "rootCauseCreatedAt": "2026-11-08T09:03:49.995Z",
+      "firstSeen": "2026-11-08T21:51:01.367Z",
+      "lastSeen": "2026-11-10T19:56:27.612Z",
+      "rootCause": "BRO-3425",
+      "rootCauseState": "backlog",
+      "rootCauseStartedNow": false,
       "rootCauseStartedAt": null,
       "extraRootCauses": [],
-      "subtypes": {
-        "city-row-unknown-show": 1,
-        "review-count-mismatch": 2,
-        "poster-missing": 2,
-        "stops-overlap": 1,
-        "city-page-status": 1,
-        "city-missing-from-sitemap": 1,
-        "city-should-index": 1,
-        "schedule-city-unlinked": 1,
-        "list-city-missing": 1,
-        "stops-before-opening": 1,
-        "schedule-orphan": 1,
-        "closed-tour-has-future-stops": 1
-      },
-      "example": "National tour pages show wrong information: 31 page problem(s) (city-row-unknown-show)",
+      "subtypes": {},
+      "example": "main test.yml red: Unit Test Shard (4) / Run scripts/lib tests shard — \"REGRESSION: every real tracked *.jsonl (repo-wide) is either merge=union or a documented exemption\"",
       "instances": [
-        "BRO-4876",
-        "BRO-4877",
-        "BRO-4878",
-        "BRO-4978",
-        "BRO-4979",
-        "BRO-4980",
-        "BRO-4981",
-        "BRO-4982",
-        "BRO-4983",
-        "BRO-4984",
-        "BRO-5066",
-        "BRO-5491",
-        "BRO-6540",
-        "BRO-6728"
+        "BRO-7164",
+        "BRO-7263",
+        "BRO-7323"
+      ],
+      "failedPreventions": [],
+      "recurredAfterRootClosed": []
+    },
+    {
+      "key": "update lottery rush",
+      "slug": "update-lottery-rush",
+      "inWindow": 3,
+      "total": 3,
+      "reasons": [
+        "3 cards in 30 days"
+      ],
+      "firstSeen": "2026-10-26T18:03:55.973Z",
+      "lastSeen": "2026-11-10T12:31:12.469Z",
+      "rootCause": "BRO-7332",
+      "rootCauseState": "unstarted",
+      "rootCauseStartedNow": true,
+      "rootCauseCreatedAt": "2026-11-11T00:01:12.990Z",
+      "rootCauseStartedAt": null,
+      "extraRootCauses": [],
+      "subtypes": {},
+      "example": "BSC Daily: Cron's latest run failed (not yet stale): Update Lottery/Rush",
+      "instances": [
+        "BRO-6364",
+        "BRO-6431",
+        "BRO-7287"
       ],
       "failedPreventions": [],
       "recurredAfterRootClosed": []
@@ -646,10 +663,10 @@
       ],
       "firstSeen": "2026-10-16T11:31:33.621Z",
       "lastSeen": "2026-11-09T12:34:05.861Z",
-      "rootCause": null,
-      "rootCauseState": null,
-      "rootCauseStartedNow": false,
-      "rootCauseCreatedAt": null,
+      "rootCause": "BRO-7333",
+      "rootCauseState": "unstarted",
+      "rootCauseStartedNow": true,
+      "rootCauseCreatedAt": "2026-11-11T00:01:15.799Z",
       "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {},
@@ -672,10 +689,10 @@
       ],
       "firstSeen": "2026-10-26T05:49:29.279Z",
       "lastSeen": "2026-11-09T05:48:49.893Z",
-      "rootCause": null,
-      "rootCauseState": null,
-      "rootCauseStartedNow": false,
-      "rootCauseCreatedAt": null,
+      "rootCause": "BRO-7334",
+      "rootCauseState": "unstarted",
+      "rootCauseStartedNow": true,
+      "rootCauseCreatedAt": "2026-11-11T00:01:16.332Z",
       "rootCauseStartedAt": null,
       "extraRootCauses": [],
       "subtypes": {},
@@ -993,6 +1010,56 @@
       "recurredAfterRootClosed": []
     },
     {
+      "key": "national tour pages show wrong information page problem",
+      "slug": "national-tour-pages-show-wrong-information-page-problem",
+      "inWindow": 3,
+      "total": 14,
+      "reasons": [
+        "3 cards in 30 days"
+      ],
+      "firstSeen": "2026-10-08T18:00:16.703Z",
+      "lastSeen": "2026-10-31T16:19:23.343Z",
+      "rootCause": "BRO-7118",
+      "rootCauseState": "backlog",
+      "rootCauseStartedNow": true,
+      "rootCauseCreatedAt": "2026-11-08T09:03:49.995Z",
+      "rootCauseStartedAt": null,
+      "extraRootCauses": [],
+      "subtypes": {
+        "city-row-unknown-show": 1,
+        "review-count-mismatch": 2,
+        "poster-missing": 2,
+        "stops-overlap": 1,
+        "city-page-status": 1,
+        "city-missing-from-sitemap": 1,
+        "city-should-index": 1,
+        "schedule-city-unlinked": 1,
+        "list-city-missing": 1,
+        "stops-before-opening": 1,
+        "schedule-orphan": 1,
+        "closed-tour-has-future-stops": 1
+      },
+      "example": "National tour pages show wrong information: 31 page problem(s) (city-row-unknown-show)",
+      "instances": [
+        "BRO-4876",
+        "BRO-4877",
+        "BRO-4878",
+        "BRO-4978",
+        "BRO-4979",
+        "BRO-4980",
+        "BRO-4981",
+        "BRO-4982",
+        "BRO-4983",
+        "BRO-4984",
+        "BRO-5066",
+        "BRO-5491",
+        "BRO-6540",
+        "BRO-6728"
+      ],
+      "failedPreventions": [],
+      "recurredAfterRootClosed": []
+    },
+    {
       "key": "revival unverified lifetime sweep",
       "slug": "revival-unverified-lifetime-sweep",
       "inWindow": 3,
@@ -1100,31 +1167,6 @@
       "recurredAfterRootClosed": []
     },
     {
-      "key": "lint workflows audit submitter pii committed data files",
-      "slug": "lint-workflows-audit-submitter-pii-committed-data-files",
-      "inWindow": 3,
-      "total": 3,
-      "reasons": [
-        "3 cards in 30 days"
-      ],
-      "firstSeen": "2026-10-19T09:58:51.765Z",
-      "lastSeen": "2026-10-29T10:12:07.152Z",
-      "rootCause": "BRO-3425",
-      "rootCauseState": "backlog",
-      "rootCauseStartedNow": false,
-      "rootCauseStartedAt": null,
-      "extraRootCauses": [],
-      "subtypes": {},
-      "example": "main test.yml red: Lint Workflows / Audit — no submitter PII in committed data/audit files",
-      "instances": [
-        "BRO-5691",
-        "BRO-6423",
-        "BRO-6520"
-      ],
-      "failedPreventions": [],
-      "recurredAfterRootClosed": []
-    },
-    {
       "key": "headless dispatch success rate",
       "slug": "headless-dispatch-success-rate",
       "inWindow": 3,
@@ -1211,35 +1253,14 @@
       ],
       "failedPreventions": [],
       "recurredAfterRootClosed": []
-    },
-    {
-      "key": "unit tests ordinal publishdate guard parity",
-      "slug": "unit-tests-ordinal-publishdate-guard-parity",
-      "inWindow": 3,
-      "total": 4,
-      "reasons": [
-        "3 cards in 30 days"
-      ],
-      "firstSeen": "2026-10-09T14:32:14.270Z",
-      "lastSeen": "2026-10-12T06:28:27.100Z",
-      "rootCause": "BRO-3425",
-      "rootCauseState": "backlog",
-      "rootCauseStartedNow": false,
-      "rootCauseStartedAt": null,
-      "extraRootCauses": [],
-      "subtypes": {},
-      "example": "main test.yml red: Unit Tests / Ordinal publishDate guard parity (BRO-2836) — \"foo returns the contracted value\"",
-      "instances": [
-        "BRO-4938",
-        "BRO-5102",
-        "BRO-5116",
-        "BRO-5139"
-      ],
-      "failedPreventions": [],
-      "recurredAfterRootClosed": []
     }
   ],
   "expected": [
+    {
+      "key": "touch data audit canary marker",
+      "inWindow": 27,
+      "reason": "canary: filed on purpose to prove the alert chain works"
+    },
     {
       "key": "opening night audit",
       "inWindow": 25,
@@ -1249,11 +1270,6 @@
       "key": "chore bump all updates group across directory",
       "inWindow": 4,
       "reason": "dependabot landing, one per bump"
-    },
-    {
-      "key": "touch data audit canary marker",
-      "inWindow": 26,
-      "reason": "canary: filed on purpose to prove the alert chain works"
     },
     {
       "key": "commercial data pending review",
@@ -1522,38 +1538,6 @@
     "BRO-7066": {
       "rootCause": "BRO-3425",
       "classKey": "unit tests run"
-    },
-    "BRO-4576": {
-      "rootCause": "BRO-7116",
-      "classKey": "review gap missing cited"
-    },
-    "BRO-4577": {
-      "rootCause": "BRO-7116",
-      "classKey": "review gap missing cited"
-    },
-    "BRO-4578": {
-      "rootCause": "BRO-7116",
-      "classKey": "review gap missing cited"
-    },
-    "BRO-4579": {
-      "rootCause": "BRO-7116",
-      "classKey": "review gap missing cited"
-    },
-    "BRO-4580": {
-      "rootCause": "BRO-7116",
-      "classKey": "review gap missing cited"
-    },
-    "BRO-4581": {
-      "rootCause": "BRO-7116",
-      "classKey": "review gap missing cited"
-    },
-    "BRO-4582": {
-      "rootCause": "BRO-7116",
-      "classKey": "review gap missing cited"
-    },
-    "BRO-4583": {
-      "rootCause": "BRO-7116",
-      "classKey": "review gap missing cited"
     },
     "BRO-4679": {
       "rootCause": "BRO-7116",
@@ -1963,14 +1947,6 @@
       "rootCause": "BRO-7202",
       "classKey": "bright data daily breaker tripped web unlocker2"
     },
-    "BRO-4629": {
-      "rootCause": "BRO-7203",
-      "classKey": "roundup listed review captured"
-    },
-    "BRO-4630": {
-      "rootCause": "BRO-7203",
-      "classKey": "roundup listed review captured"
-    },
     "BRO-4658": {
       "rootCause": "BRO-7203",
       "classKey": "roundup listed review captured"
@@ -2059,34 +2035,6 @@
       "rootCause": "BRO-7204",
       "classKey": "slug mismatch lifetime sweep"
     },
-    "BRO-4957": {
-      "rootCause": "BRO-3425",
-      "classKey": "e2e tests run unit"
-    },
-    "BRO-5054": {
-      "rootCause": "BRO-3425",
-      "classKey": "e2e tests run unit"
-    },
-    "BRO-5160": {
-      "rootCause": "BRO-3425",
-      "classKey": "e2e tests run unit"
-    },
-    "BRO-5698": {
-      "rootCause": "BRO-3425",
-      "classKey": "e2e tests run unit"
-    },
-    "BRO-6094": {
-      "rootCause": "BRO-3425",
-      "classKey": "e2e tests run unit"
-    },
-    "BRO-6558": {
-      "rootCause": "BRO-3425",
-      "classKey": "e2e tests run unit"
-    },
-    "BRO-6563": {
-      "rootCause": "BRO-3425",
-      "classKey": "e2e tests run unit"
-    },
     "BRO-5556": {
       "rootCause": "BRO-7275",
       "classKey": "show need review"
@@ -2131,6 +2079,50 @@
       "rootCause": "BRO-7276",
       "classKey": "stuck pipeline items"
     },
+    "BRO-4957": {
+      "rootCause": "BRO-3425",
+      "classKey": "e2e tests run unit"
+    },
+    "BRO-5054": {
+      "rootCause": "BRO-3425",
+      "classKey": "e2e tests run unit"
+    },
+    "BRO-5160": {
+      "rootCause": "BRO-3425",
+      "classKey": "e2e tests run unit"
+    },
+    "BRO-5698": {
+      "rootCause": "BRO-3425",
+      "classKey": "e2e tests run unit"
+    },
+    "BRO-6094": {
+      "rootCause": "BRO-3425",
+      "classKey": "e2e tests run unit"
+    },
+    "BRO-6558": {
+      "rootCause": "BRO-3425",
+      "classKey": "e2e tests run unit"
+    },
+    "BRO-6563": {
+      "rootCause": "BRO-3425",
+      "classKey": "e2e tests run unit"
+    },
+    "BRO-5691": {
+      "rootCause": "BRO-3425",
+      "classKey": "lint workflows audit submitter pii committed data files"
+    },
+    "BRO-6423": {
+      "rootCause": "BRO-3425",
+      "classKey": "lint workflows audit submitter pii committed data files"
+    },
+    "BRO-6520": {
+      "rootCause": "BRO-3425",
+      "classKey": "lint workflows audit submitter pii committed data files"
+    },
+    "BRO-7322": {
+      "rootCause": "BRO-3425",
+      "classKey": "lint workflows audit submitter pii committed data files"
+    },
     "BRO-5448": {
       "rootCause": "BRO-7277",
       "classKey": "stale announced shows"
@@ -2147,84 +2139,52 @@
       "rootCause": "BRO-7277",
       "classKey": "stale announced shows"
     },
-    "BRO-4876": {
-      "rootCause": "BRO-7118",
-      "classKey": "national tour pages show wrong information page problem"
+    "BRO-7164": {
+      "rootCause": "BRO-3425",
+      "classKey": "unit test shard run scripts lib tests"
     },
-    "BRO-4877": {
-      "rootCause": "BRO-7118",
-      "classKey": "national tour pages show wrong information page problem"
+    "BRO-7263": {
+      "rootCause": "BRO-3425",
+      "classKey": "unit test shard run scripts lib tests"
     },
-    "BRO-4878": {
-      "rootCause": "BRO-7118",
-      "classKey": "national tour pages show wrong information page problem"
+    "BRO-7323": {
+      "rootCause": "BRO-3425",
+      "classKey": "unit test shard run scripts lib tests"
     },
-    "BRO-4978": {
-      "rootCause": "BRO-7118",
-      "classKey": "national tour pages show wrong information page problem"
+    "BRO-6364": {
+      "rootCause": "BRO-7332",
+      "classKey": "update lottery rush"
     },
-    "BRO-4979": {
-      "rootCause": "BRO-7118",
-      "classKey": "national tour pages show wrong information page problem"
+    "BRO-6431": {
+      "rootCause": "BRO-7332",
+      "classKey": "update lottery rush"
     },
-    "BRO-4980": {
-      "rootCause": "BRO-7118",
-      "classKey": "national tour pages show wrong information page problem"
-    },
-    "BRO-4981": {
-      "rootCause": "BRO-7118",
-      "classKey": "national tour pages show wrong information page problem"
-    },
-    "BRO-4982": {
-      "rootCause": "BRO-7118",
-      "classKey": "national tour pages show wrong information page problem"
-    },
-    "BRO-4983": {
-      "rootCause": "BRO-7118",
-      "classKey": "national tour pages show wrong information page problem"
-    },
-    "BRO-4984": {
-      "rootCause": "BRO-7118",
-      "classKey": "national tour pages show wrong information page problem"
-    },
-    "BRO-5066": {
-      "rootCause": "BRO-7118",
-      "classKey": "national tour pages show wrong information page problem"
-    },
-    "BRO-5491": {
-      "rootCause": "BRO-7118",
-      "classKey": "national tour pages show wrong information page problem"
-    },
-    "BRO-6540": {
-      "rootCause": "BRO-7118",
-      "classKey": "national tour pages show wrong information page problem"
-    },
-    "BRO-6728": {
-      "rootCause": "BRO-7118",
-      "classKey": "national tour pages show wrong information page problem"
+    "BRO-7287": {
+      "rootCause": "BRO-7332",
+      "classKey": "update lottery rush"
     },
     "BRO-5456": {
-      "rootCause": null,
+      "rootCause": "BRO-7333",
       "classKey": "armed but vacuous backlog cards"
     },
     "BRO-7007": {
-      "rootCause": null,
+      "rootCause": "BRO-7333",
       "classKey": "armed but vacuous backlog cards"
     },
     "BRO-7219": {
-      "rootCause": null,
+      "rootCause": "BRO-7333",
       "classKey": "armed but vacuous backlog cards"
     },
     "BRO-6295": {
-      "rootCause": null,
+      "rootCause": "BRO-7334",
       "classKey": "tech scorecard weekly port"
     },
     "BRO-6810": {
-      "rootCause": null,
+      "rootCause": "BRO-7334",
       "classKey": "tech scorecard weekly port"
     },
     "BRO-7200": {
-      "rootCause": null,
+      "rootCause": "BRO-7334",
       "classKey": "tech scorecard weekly port"
     },
     "BRO-6424": {
@@ -2371,6 +2331,62 @@
       "rootCause": null,
       "classKey": "llm scoring daily spend over budget"
     },
+    "BRO-4876": {
+      "rootCause": "BRO-7118",
+      "classKey": "national tour pages show wrong information page problem"
+    },
+    "BRO-4877": {
+      "rootCause": "BRO-7118",
+      "classKey": "national tour pages show wrong information page problem"
+    },
+    "BRO-4878": {
+      "rootCause": "BRO-7118",
+      "classKey": "national tour pages show wrong information page problem"
+    },
+    "BRO-4978": {
+      "rootCause": "BRO-7118",
+      "classKey": "national tour pages show wrong information page problem"
+    },
+    "BRO-4979": {
+      "rootCause": "BRO-7118",
+      "classKey": "national tour pages show wrong information page problem"
+    },
+    "BRO-4980": {
+      "rootCause": "BRO-7118",
+      "classKey": "national tour pages show wrong information page problem"
+    },
+    "BRO-4981": {
+      "rootCause": "BRO-7118",
+      "classKey": "national tour pages show wrong information page problem"
+    },
+    "BRO-4982": {
+      "rootCause": "BRO-7118",
+      "classKey": "national tour pages show wrong information page problem"
+    },
+    "BRO-4983": {
+      "rootCause": "BRO-7118",
+      "classKey": "national tour pages show wrong information page problem"
+    },
+    "BRO-4984": {
+      "rootCause": "BRO-7118",
+      "classKey": "national tour pages show wrong information page problem"
+    },
+    "BRO-5066": {
+      "rootCause": "BRO-7118",
+      "classKey": "national tour pages show wrong information page problem"
+    },
+    "BRO-5491": {
+      "rootCause": "BRO-7118",
+      "classKey": "national tour pages show wrong information page problem"
+    },
+    "BRO-6540": {
+      "rootCause": "BRO-7118",
+      "classKey": "national tour pages show wrong information page problem"
+    },
+    "BRO-6728": {
+      "rootCause": "BRO-7118",
+      "classKey": "national tour pages show wrong information page problem"
+    },
     "BRO-5439": {
       "rootCause": null,
       "classKey": "revival unverified lifetime sweep"
@@ -2419,18 +2435,6 @@
       "rootCause": null,
       "classKey": "wrongproduction lifetime sweep"
     },
-    "BRO-5691": {
-      "rootCause": "BRO-3425",
-      "classKey": "lint workflows audit submitter pii committed data files"
-    },
-    "BRO-6423": {
-      "rootCause": "BRO-3425",
-      "classKey": "lint workflows audit submitter pii committed data files"
-    },
-    "BRO-6520": {
-      "rootCause": "BRO-3425",
-      "classKey": "lint workflows audit submitter pii committed data files"
-    },
     "BRO-4707": {
       "rootCause": null,
       "classKey": "headless dispatch success rate"
@@ -2470,25 +2474,61 @@
     "BRO-5766": {
       "rootCause": "BRO-3425",
       "classKey": "raw date parse wrong production autoclear trade heal"
-    },
-    "BRO-4938": {
-      "rootCause": "BRO-3425",
-      "classKey": "unit tests ordinal publishdate guard parity"
-    },
-    "BRO-5102": {
-      "rootCause": "BRO-3425",
-      "classKey": "unit tests ordinal publishdate guard parity"
-    },
-    "BRO-5116": {
-      "rootCause": "BRO-3425",
-      "classKey": "unit tests ordinal publishdate guard parity"
-    },
-    "BRO-5139": {
-      "rootCause": "BRO-3425",
-      "classKey": "unit tests ordinal publishdate guard parity"
     }
   },
   "lastSeenByKey": {
+    "count code stop blocks over two weeks cut": "2026-11-10T22:31:37.088Z",
+    "record dated forecast per upcoming broadway opening preview": "2026-11-10T22:26:58.976Z",
+    "signed users predict show critic score before opening": "2026-11-10T22:22:53.454Z",
+    "theatre scene complete unflagged but missing from live": "2026-11-10T20:50:43.619Z",
+    "skill redaction check off cloud four duplicate memory": "2026-11-10T20:20:11.556Z",
+    "shard gauntlet unit test batch speed three slowest": "2026-11-10T20:19:47.370Z",
+    "unit test shard run scripts lib tests": "2026-11-10T19:56:27.612Z",
+    "lint workflows audit submitter pii committed data files": "2026-11-10T19:56:25.868Z",
+    "city hub audit boston w46 new finding": "2026-11-10T19:41:05.782Z",
+    "city hub audit san diego w46 new finding": "2026-11-10T19:40:35.851Z",
+    "creation lost linear": "2026-11-10T19:28:16.884Z",
+    "city hub audit los angeles w46 new finding": "2026-11-10T19:19:40.737Z",
+    "city hub audit chicago w46 new finding": "2026-11-10T19:14:40.592Z",
+    "also require cousins answer": "2026-11-10T19:09:24.239Z",
+    "cut hooks rules gates prove survivors tests": "2026-11-10T19:08:54.415Z",
+    "can predict show critic score before reviews drop": "2026-11-10T19:07:20.953Z",
+    "hide off badge opera shows": "2026-11-10T19:05:42.212Z",
+    "auto search before ever telling owner": "2026-11-10T19:01:57.020Z",
+    "hide west end badge opera shows": "2026-11-10T19:01:32.404Z",
+    "audit string stamp wrongproductionautocleared writers readers gate key": "2026-11-10T19:01:16.776Z",
+    "time publish sla assumes minute poll interval orchestrator": "2026-11-10T18:09:05.785Z",
+    "check confirms prod pages show scores data holds": "2026-11-10T18:08:57.104Z",
+    "instant failed runs over hours paged nobody": "2026-11-10T18:08:32.231Z",
+    "opening night orchestrator workflow file invalid since utc": "2026-11-10T17:33:31.609Z",
+    "growth strategy ideas system improvement pass session prompts": "2026-11-10T17:29:25.827Z",
+    "rebuild dropped legit reviews notextorscoresignal": "2026-11-10T17:14:36.824Z",
+    "guard merge bww excerpts aggregator backfill thumbs against": "2026-11-10T17:07:25.125Z",
+    "make wrong production ibdb warnings validate data blocking": "2026-11-10T16:50:51.243Z",
+    "root cause stop check misses sessions whose title": "2026-11-10T16:26:32.177Z",
+    "e2e tests checkout review texts": "2026-11-10T16:18:46.989Z",
+    "data safety guards checkout review texts": "2026-11-10T16:01:59.581Z",
+    "small owner requested fixes live first screenshots sent": "2026-11-10T15:42:48.879Z",
+    "reads checklist checks wrong action text computer wording": "2026-11-10T14:15:14.809Z",
+    "hold verifier flagged wrong production reviews off site": "2026-11-10T14:13:11.108Z",
+    "visual approval gate misses owner yes after context": "2026-11-10T14:06:07.688Z",
+    "safe archive after landed fixes must carry root": "2026-11-10T14:02:51.148Z",
+    "new review from outlet reviewed earlier production gets": "2026-11-10T13:59:18.751Z",
+    "archive older morning digest opening newsletter draft emails": "2026-11-10T13:58:04.591Z",
+    "prevent each class schedule dual model audit": "2026-11-10T13:56:03.154Z",
+    "ibdb wrong production guard gap object plan email": "2026-11-10T13:53:57.413Z",
+    "turn two default off lane switches": "2026-11-10T12:52:39.684Z",
+    "touch data audit canary marker": "2026-11-10T12:31:24.912Z",
+    "update lottery rush": "2026-11-10T12:31:12.469Z",
+    "enrich off broadway dates": "2026-11-10T12:31:10.001Z",
+    "bright data daily breaker keeps tripping web unlocker2": "2026-11-10T12:31:05.533Z",
+    "opening night audit": "2026-11-10T11:54:26.729Z",
+    "lane star anchored review scores drift next full": "2026-11-10T11:30:40.501Z",
+    "close low severity leftovers": "2026-11-10T11:26:56.133Z",
+    "same group run replacement watchdog sweep double dispatch": "2026-11-10T10:29:41.677Z",
+    "free only fetch mode broadway lane can start": "2026-11-10T09:57:42.972Z",
+    "dedup check 10t09 683z": "2026-11-10T09:53:44.643Z",
+    "alert chain check 10t09 632z": "2026-11-10T09:53:43.483Z",
     "ingest verified live hub reviews missing from corpus": "2026-11-10T09:44:09.965Z",
     "here there blueberries": "2026-11-10T09:36:16.594Z",
     "null publishdate via bww roundup ingest false textsource": "2026-11-10T08:02:01.265Z",
@@ -2500,7 +2540,6 @@
     "blakk president guardian": "2026-11-10T05:36:05.884Z",
     "source real key art regional shows poster venue": "2026-11-10T04:53:54.843Z",
     "wonder arts fuse paranormal boston com": "2026-11-10T04:11:34.994Z",
-    "unit test shard run scripts lib tests": "2026-11-10T01:49:55.981Z",
     "adirondack chair circle talkinbroadway": "2026-11-10T01:31:12.804Z",
     "steel man talkinbroadway": "2026-11-10T01:31:11.360Z",
     "remove blue tour line from broadway show pages": "2026-11-10T01:27:27.265Z",
@@ -2548,7 +2587,6 @@
     "outlet feed staleness": "2026-11-09T12:33:26.970Z",
     "stale announced shows": "2026-11-09T12:32:55.240Z",
     "wanted slant score text steel man tsc review": "2026-11-09T12:17:17.454Z",
-    "opening night audit": "2026-11-09T11:54:33.553Z",
     "nyc theatre playbill verdict job timeouts lbo west": "2026-11-09T11:24:16.616Z",
     "shows where reviews name different director than json": "2026-11-09T11:15:56.550Z",
     "merge duplicate show rows family album lajolla regional": "2026-11-09T11:11:22.550Z",
@@ -2633,7 +2671,6 @@
     "catch openings described opens subject lede": "2026-11-08T14:26:07.736Z",
     "early publish dates awaiting page date recheck": "2026-11-08T12:40:20.100Z",
     "revenue affiliate health": "2026-11-08T12:36:02.422Z",
-    "touch data audit canary marker": "2026-11-08T12:31:47.690Z",
     "codex runner landing cards": "2026-11-08T12:30:55.797Z",
     "dedup check 08t09 566z": "2026-11-08T09:07:32.449Z",
     "alert chain check 08t09 049z": "2026-11-08T09:07:31.033Z",
@@ -3148,7 +3185,6 @@
     "llm scoring spend over budget": "2026-10-29T11:36:47.937Z",
     "seo health": "2026-10-29T11:32:41.521Z",
     "wrongproduction lifetime sweep": "2026-10-29T11:31:32.264Z",
-    "lint workflows audit submitter pii committed data files": "2026-10-29T10:12:07.152Z",
     "cut remaining lock hold causes": "2026-10-29T09:45:12.393Z",
     "chicago local shows from theatre now": "2026-10-29T09:28:14.742Z",
     "city field chicago hub page": "2026-10-29T09:27:44.700Z",
@@ -3190,7 +3226,8 @@
     "root cause today failures stop data drift from": "2026-10-28T18:28:43.473Z",
     "held commercial rows worker parked owner linear": "2026-10-28T18:22:08.111Z",
     "done evidence audit reports mis armed cards failed": "2026-10-28T18:15:31.755Z",
-    "art west end artshub singapore arts hub article": "2026-10-28T17:16:23.627Z",
+    "art west end artshub singapore arts hub article": "2026-11-10T23:03:24.060Z",
+    "stale promoted isnonreview survives url correction refetch": "2026-11-10T23:03:24.060Z",
     "retire unactionable items automatic check could confirm owner": "2026-10-28T16:30:19.074Z",
     "next older season": "2026-10-28T16:29:20.098Z",
     "auto stalled verdict can misread unreconciled stale ledger": "2026-10-28T16:04:16.037Z",
@@ -3217,7 +3254,6 @@
     "exclusion flag whose own stated basis contradicted current": "2026-10-27T11:31:43.009Z",
     "colocated tests red": "2026-10-27T11:31:33.517Z",
     "time publish sla missed within min": "2026-10-27T11:31:22.334Z",
-    "update lottery rush": "2026-10-27T11:30:55.473Z",
     "headless dispatch success rate": "2026-10-27T11:30:40.040Z",
     "listings index page picked end longing viv rose": "2026-10-27T08:36:44.070Z",
     "dedup check 27t07 516z": "2026-10-27T07:53:12.828Z",
@@ -4189,7 +4225,8 @@
     "free trade search discovery": "2026-10-13T17:19:32.377Z",
     "washington post subscriber cookies expired": "2026-10-13T17:01:44.279Z",
     "landing throughput now bottleneck": "2026-10-13T16:06:08.525Z",
-    "execute approved leaves self contradictory clears": "2026-10-13T14:56:49.995Z",
+    "execute approved leaves self contradictory clears": "2026-11-10T20:47:21.558Z",
+    "restore url corrupted review files via pending plan": "2026-11-10T20:47:21.558Z",
     "show hero integrity bans sourced snowman poster since": "2026-10-13T14:55:52.081Z",
     "gather reviews slug guess skips new same title": "2026-10-13T14:50:07.884Z",
     "web search cast files weak source": "2026-10-13T14:46:56.513Z",
@@ -4340,52 +4377,10 @@
     "mystic pizza talkinbroadway": "2026-10-12T00:25:20.269Z",
     "bww roundup reviews glued byline caught duplicates": "2026-10-12T00:05:27.125Z",
     "out town shows shelf page": "2026-10-12T00:05:26.099Z",
-    "move sunday newsletter pre check off mac into": "2026-10-11T23:38:54.378Z",
     "cloud workers reclaim abandoned progress cards": "2026-10-23T21:49:33.821Z",
     "stuck sweep misses mac dispatched cards sitting review": "2026-10-23T21:49:33.821Z",
-    "morning digest drops needs decision flag from every": "2026-10-11T23:26:24.520Z",
-    "mezzanine api returns nothing since oct scripts can": "2026-10-11T23:19:05.317Z",
-    "four probable false alarm review files": "2026-10-11T23:13:12.773Z",
-    "main red fixes starve one pending landing queue": "2026-10-11T22:37:25.827Z",
-    "move google images searches off scrapingbee": "2026-10-11T22:34:33.936Z",
-    "weeklyrunningcost mixes fixed nut all breakeven operating expense": "2026-10-11T22:28:09.711Z",
-    "release owner reviewed held commercial verdicts": "2026-10-11T22:24:04.536Z",
-    "make running show returns estimate reliable musicals": "2026-10-11T22:12:13.888Z",
-    "byline date sweep legacy web search reviews cloud": "2026-10-11T21:55:55.475Z",
-    "broadway historical posters synopses": "2026-10-11T21:49:00.780Z",
-    "unsourced director rows steinberg broadway site tables findtheater": "2026-10-11T21:48:45.825Z",
-    "date company height storm from pdf listings": "2026-10-11T21:26:46.617Z",
-    "block land push whose squashed commit silently reverts": "2026-10-11T21:05:09.921Z",
-    "launchctl reconciler driven config mac retired json inside": "2026-10-11T21:04:52.142Z",
-    "who tommy deadline": "2026-10-11T20:53:05.123Z",
-    "read activity feed just collection lists": "2026-10-11T20:52:52.237Z",
-    "reviews scores outlet critic attribution": "2026-10-11T20:28:27.942Z",
-    "basic show facts historical backfills": "2026-10-11T20:28:27.078Z",
-    "source string test pins pre bro publishdate fallback": "2026-10-11T20:17:26.582Z",
-    "unit tests run review guards regression": "2026-10-11T20:04:44.225Z",
-    "all devils here how shakespeare invented villain": "2026-10-11T20:02:38.937Z",
-    "good time charlie talkinbroadway": "2026-10-11T20:00:36.091Z",
-    "review files store relative urls": "2026-10-11T19:37:43.838Z",
-    "mac cloud memory mirror stopped committing after": "2026-10-11T19:16:32.687Z",
-    "validate recoupment model against confirmed figures": "2026-10-11T19:15:32.848Z",
-    "trim instruction files memory index": "2026-10-11T19:11:55.994Z",
-    "shows stay status open past closingdate": "2026-10-11T18:16:35.252Z",
-    "coriolanus override must pin venue": "2026-10-11T17:30:00.130Z",
-    "mergependingreview drops other writer field changes rows both": "2026-10-11T17:16:48.896Z",
-    "started sessions skip ship check what else wrap": "2026-10-11T17:13:58.731Z",
-    "review submission form accepted theatricalia listing page": "2026-10-11T15:48:49.917Z",
-    "london theatre files carry originalscore": "2026-10-11T15:01:04.795Z",
-    "live rows show pitch copy billing broken wiki": "2026-10-11T14:38:19.970Z",
-    "bro commercial test pins grey house tbd contradicting": "2026-10-11T14:24:07.823Z",
-    "dedup check 11t13 316z": "2026-10-11T13:36:50.056Z",
-    "alert chain check 11t13 969z": "2026-10-11T13:36:47.033Z",
-    "isreported drops history weeks gross but performances": "2026-10-11T11:37:44.856Z",
-    "reviews dropped suspicious": "2026-10-11T10:36:27.856Z",
-    "outlet canonicalize borrowing fixture longer fuzzy matches after": "2026-10-11T10:17:05.908Z",
     "contamination false flags junk rows": "2026-10-23T00:48:19.100Z",
     "verify true bylines": "2026-10-23T00:48:19.100Z",
-    "back off shows whose reddit can count toward": "2026-10-11T22:30:31.329Z",
-    "reddit scraper fails when dispatched shows yet previews": "2026-10-11T22:30:31.329Z",
     "land retry cancel fails github token rate limit": "2026-10-26T12:29:31.339Z",
     "land retry cancelled sweep crashes one unretriable run": "2026-10-26T12:29:31.339Z"
   },
@@ -4426,14 +4421,16 @@
     "stale announced shows",
     "stuck pipeline items",
     "tech scorecard weekly port",
+    "unit test shard run scripts lib tests",
     "unit tests ordinal publishdate guard parity",
     "unit tests run",
     "unit tests run reviews mamma mia party",
     "unit tests run scripts lib",
     "unit tests scripts lib matchslugtoshow real fixtures bro",
+    "update lottery rush",
     "wrongproduction lifetime sweep"
   ],
-  "pendingRootCards": 18,
+  "pendingRootCards": 16,
   "sample": {
     "generatedAt": "2026-11-08T08:58:55.173Z",
     "graded": 8,

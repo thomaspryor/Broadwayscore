@@ -98,6 +98,38 @@ function redditStaleVerdict({ lastWriteMs, attemptsInWindow, nowMs = Date.now() 
 }
 
 /**
+ * BRO-7337: fast outage verdict. redditStaleVerdict needs 48h of silence, so a
+ * run-level outage (2026-11-10: Reddit served bot walls to every proxy tier, 2 runs
+ * failed) reached nobody for two days. Ledger "success" is unreliable here (a 200
+ * bot-wall page counts as success), so key on what actually matters: Reddit calls
+ * made AFTER the newest successful write, with no write since.
+ * @returns {{outage:boolean, attempts:number}}
+ */
+const REDDIT_OUTAGE_MIN_ATTEMPTS = 10;
+function redditOutageVerdict({ lastWriteMs, rows, nowMs = Date.now(), minAttempts = REDDIT_OUTAGE_MIN_ATTEMPTS, windowHours = 24 }) {
+  const since = Math.max(lastWriteMs == null ? 0 : lastWriteMs, nowMs - windowHours * HOUR_MS);
+  const attempts = (rows || []).filter((r) => r && r.host === 'reddit.com' && Date.parse(r.ts) > since).length;
+  return { outage: attempts >= minAttempts, attempts };
+}
+
+/**
+ * BRO-7337: all Reddit rows from the ledger, read from the whole file. The ledger is NOT
+ * time-ordered at its tail (parallel branches append), so readLedgerTail's
+ * "stop once the oldest row is old enough" rule stopped 27k rows short of 2026-11-10's
+ * Reddit calls and the freshness check saw 0 attempts (= "idle", never alerting).
+ */
+function readRedditLedgerRows(file = defaultLedgerPath()) {
+  let text;
+  try { text = fs.readFileSync(file, 'utf8'); } catch (_) { return []; }
+  const rows = [];
+  for (const l of text.split('\n')) {
+    if (!l.includes('"host":"reddit.com"')) continue;
+    try { rows.push(JSON.parse(l)); } catch (_) { /* torn line */ }
+  }
+  return rows;
+}
+
+/**
  * Read ledger rows from the tail of the jsonl (~14MB, ~47k lines). Reads backwards
  * in chunks until the oldest row parsed is older than sinceMs (or the file start),
  * so a "last 48h" window really is 48h (a fixed 2MB tail only reached ~7h).
@@ -140,5 +172,5 @@ function readLedgerTail(file = defaultLedgerPath(), { sinceMs = Date.now() - RED
 
 module.exports = {
   SB_COOLDOWN_WINDOW, SB_PROBE_AFTER_HOURS, SB_RUN_FAILURE_LIMIT, REDDIT_STALE_HOURS,
-  sbHostVerdict, normalizeSbHost, sbRedditVerdict, sbRunBreakerOpen, redditStaleVerdict, readLedgerTail,
+  sbHostVerdict, normalizeSbHost, sbRedditVerdict, sbRunBreakerOpen, redditStaleVerdict, redditOutageVerdict, REDDIT_OUTAGE_MIN_ATTEMPTS, readLedgerTail, readRedditLedgerRows,
 };

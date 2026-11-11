@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-10T23:17:13.021Z",
+  "timestamp": "2026-11-11T00:22:06.423Z",
   "stats": {
-    "totalReviews": 81310,
-    "alreadyFlagged": 22220,
+    "totalReviews": 81320,
+    "alreadyFlagged": 22224,
     "dateGuardCatches": 218,
-    "directorMismatch": 3606,
-    "tvFilmSignals": 2286,
-    "londonSignals": 3666,
+    "directorMismatch": 3607,
+    "tvFilmSignals": 2287,
+    "londonSignals": 3668,
     "offBroadwaySignals": 752,
-    "yearMismatch": 364,
-    "noPublishDate": 8460
+    "yearMismatch": 365,
+    "noPublishDate": 8455
   },
   "findings": [
     {
@@ -19179,6 +19179,20 @@
       "score": 58,
       "publishDate": "2026-08-04",
       "url": "https://www.whatsonstage.com/news/dog-man-the-musical-at-londons-southbank-centre-and-on-tour-review_1728502/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "dogstar-off-west-end-2026",
+      "file": "thereviewshub--richard-maguire.json",
+      "score": 62,
+      "publishDate": "2026-11-10",
+      "url": "https://www.thereviewshub.com/dogstar-hampstead-theatre-london/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -73620,6 +73634,19 @@
     },
     {
       "showId": "the-outsiders-tour-2025",
+      "file": "san-diego-union-tribune--michael-james-rocha.json",
+      "publishDate": "2026-11-05",
+      "url": "https://www.sandiegouniontribune.com/2026/11/05/review-a-gritty-stunning-homecoming-for-the-outsiders/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from the-outsiders-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-outsiders-tour-2025",
       "file": "sesayarts--arpita-ghosal.json",
       "score": 79,
       "publishDate": "2026-06-24",
@@ -77992,6 +78019,19 @@
       "file": "cleveland-plain-dealer--joey-morona.json",
       "publishDate": "2026-09-29",
       "url": "https://www.cleveland.com/news/2026/09/where-else-revival-of-the-whos-rock-opera-tommy-to-launch-north-american-tour-in-cleveland.html",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2024 (2x) more than 2026 (1x). 2024 matches production: the-whos-tommy-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-whos-tommy-tour-2026",
+      "file": "theatermania--pete-hempstead.json",
+      "publishDate": "2026-11-10",
+      "url": "https://www.theatermania.com/news/review-national-tour-of-the-whos-tommy-loses-its-pinball-magic-at-the-hollywood-pantages_1859212/",
       "findings": [
         {
           "type": "YEAR_MISMATCH",
@@ -103874,6 +103914,20 @@
     },
     {
       "showId": "harry-potter-2021",
+      "file": "sfgate--lily-janiak.json",
+      "score": null,
+      "publishDate": "2018-06-28",
+      "url": "https://www.sfgate.com/performance/article/Harry-Potter-play-coming-to-San-Francisco-s-13035122.php",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "harry-potter-2021",
       "file": "theatres-leiter-side--samuel-l-leiter.json",
       "score": 71,
       "publishDate": "April 30, 2018",
@@ -123479,6 +123533,19 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 161d before show (May 20th, 2026 vs 2026-10-28)"
+        }
+      ]
+    },
+    {
+      "showId": "speculations-off-west-end-2026",
+      "file": "uktheatrenetwork--clare-brotherwood.json",
+      "publishDate": "2026-11-05",
+      "url": "https://uktheatrenetwork.com/2026/11/05/speculations-at-the-marylebone-theatre-london/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },

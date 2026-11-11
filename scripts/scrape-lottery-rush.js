@@ -413,7 +413,13 @@ async function extractAndWriteScheduleData(html) {
 
   for (let w = 0; w < MAX_FUTURE_WEEKS; w++) {
     const url = `https://bwayrush.com/api/calendar?currentMonday=${fetchMonday}&direction=next`;
-    const data = await fetchJson(url);
+    let data = await fetchJson(url);
+    if (!data && w === 0) {
+      // BRO-7332: one retry after a pause; the proxy chain fails transiently.
+      console.warn('[Schedule] Calendar API empty on first try — retrying in 20s');
+      await new Promise(r => setTimeout(r, 20000));
+      data = await fetchJson(url);
+    }
     if (!data) {
       console.warn(`[Schedule] Calendar API fetch returned no data for ${fetchMonday} — stopping`);
       break;
@@ -451,9 +457,18 @@ async function extractAndWriteScheduleData(html) {
     console.error('::error::[Schedule] Calendar API returned 0 future weeks — refusing to overwrite show-schedules.json with single-week data.');
     console.error('[Schedule] Likely causes: Cloudflare re-block on proxy (check Bright Data zone), API shape change, or expired/rotated token.');
     console.error('[Schedule] Existing show-schedules.json preserved. Fix upstream or re-run with a working proxy.');
-    // Set non-zero exit so the workflow's notify-failure step fires (Discord + email alert).
+    // BRO-7332: only fail the job when the preserved file is stale/single-week;
+    // a transient proxy blip with fresh multi-week data on disk is a warning.
     // Don't throw — let lottery/playbill/twopenny scrapers finish their own work first.
-    process.exitCode = 1;
+    let existing = null;
+    try { existing = JSON.parse(fs.readFileSync(SCHEDULE_PATH, 'utf8')); } catch { /* none */ }
+    const verdict = decideScheduleFailure(existing);
+    if (verdict.fatal) {
+      console.error(`::error::[Schedule] ${verdict.reason} — failing the job.`);
+      process.exitCode = 1;
+    } else {
+      console.log(`::warning::[Schedule] Calendar refresh failed but ${verdict.reason}; keeping it, job stays green.`);
+    }
     return;
   }
 
@@ -1320,6 +1335,7 @@ const { evaluateShowIdStability } = require('./lib/lottery-stability-guard');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { isFullCheck, stampCheckOnly } = require('./lib/lottery-rush-check');
+const { decideScheduleFailure } = require('./lib/schedule-refresh-policy');
 
 const USAGE = `scrape-lottery-rush.js — Robust Lottery/Rush Data System.
 

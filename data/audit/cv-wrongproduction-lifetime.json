@@ -1,12 +1,12 @@
 {
-  "updatedAt": "2026-11-10T10:22:40.603Z",
-  "scanned": 4801,
+  "updatedAt": "2026-11-11T00:51:10.083Z",
+  "scanned": 4803,
   "showsWithViolations": 167,
   "totalViolations": 223,
   "newSinceLastRun": 0,
   "handled": {
-    "temporal-override-low-confidence": 967,
-    "not-shipped": 59,
+    "temporal-override-low-confidence": 971,
+    "not-shipped": 58,
     "duplicate-not-shipped": 56,
     "rebuild-skip-audit": 32,
     "manual-clear-reason": 12,
@@ -2422,7 +2422,7 @@
       "showId": "operation-mincemeat-west-end-2024",
       "title": "Operation Mincemeat",
       "openingDate": "2023-05-09",
-      "message": "the-recs/Unknown (the-recs--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a genuine review with critical assessment (5-star rating), but the critic attended and is evaluating the Edinbur — https://therecs.co.uk/operation-mincemeat-touring/\nthereviewshub/The Reviews Hub - Scotland (thereviewshub--the-reviews-hub-scotland.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a valid review (evaluates the performance, cast, staging with critical assessment), but it reviews a touring pro — https://www.thereviewshub.com/operation-mincemeat-kings-theatre-edinburgh/",
+      "message": "the-recs/Unknown (the-recs--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a genuine review with critical assessment (5-star rating), but the critic attended and is evaluating the Edinbur — https://therecs.co.uk/operation-mincemeat-touring/\nthereviewshub/The Reviews Hub - Scotland (thereviewshub--the-reviews-hub-scotland.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a valid theater review, but it reviews the UK touring production of Operation Mincemeat, not the West End produc — https://www.thereviewshub.com/operation-mincemeat-kings-theatre-edinburgh/",
       "violations": [
         {
           "filename": "the-recs--unknown.json",
@@ -2444,10 +2444,10 @@
           "criticName": "The Reviews Hub - Scotland",
           "matchedBy": "url",
           "cvConfidence": "high",
-          "cvReasoning": "This is a valid review (evaluates the performance, cast, staging with critical assessment), but it reviews a touring pro",
+          "cvReasoning": "This is a valid theater review, but it reviews the UK touring production of Operation Mincemeat, not the West End produc",
           "cvIssues": [
-            "Review evaluates a touring production, not the West End run at Fortune Theatre",
-            "Text explicitly states 'Runs until 7 November 2026 and on tour' and 'will definitely continue to charm audiences when it tours back to Edinburgh next year'"
+            "Review evaluates a touring production of Operation Mincemeat, not the West End production at Fortune Theatre",
+            "Text explicitly states 'this touring cast' and 'when it tours back to Edinburgh next year', indicating this is a review of the UK touring production"
           ]
         }
       ]

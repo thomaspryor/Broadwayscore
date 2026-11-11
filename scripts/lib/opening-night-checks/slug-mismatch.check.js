@@ -6,6 +6,7 @@ const { titleToSlug, KNOWN_ALIASES } = require('../show-matching.js');
 const { foldDiacritics } = require('../title-match.js');
 const { slugify: urlSlugify } = require('../url-slug.js');
 const { toDateMs } = require('../date-utils.js');
+const { urlNamesOtherShow: canonicalUrlNamesOtherShow } = require('../url-names-other-show.js');
 
 const name = 'slug-mismatch';
 const description = 'Review URL slug does not mention show slug or any known alias (cross-show contamination)';
@@ -590,6 +591,30 @@ function fullTextAboutThisShow(fullTexts, show, shows) {
   });
 }
 
+/**
+ * Contamination evidence in the URL itself (BRO-7204, second pass). A mismatch
+ * only means the URL and saved text never name THIS show, which is true of
+ * nearly every headline URL ("/a-can-of-worms/", "/PATRICK-MARMION-mute-cute")
+ * on a correctly filed review. Cross-show contamination in this pipeline means
+ * a review of ANOTHER show in shows.json got attached here, and its URL then
+ * usually names that show ("/dolly-parton-on-broadway-9-to-5" filed under
+ * Waiting for Godot, BRO-7121). Uses the contamination audit's own matcher
+ * (scripts/lib/url-names-other-show.js: other title of 2+ words and 12+
+ * chars as a whole run in the path, same-family titles skipped) so the two
+ * detectors agree on what "names another show" means. Returns the other
+ * show's title, or null.
+ */
+function urlNamesOtherShow(url, show, shows) {
+  if (!url || !show || !Array.isArray(shows) || shows.length === 0) return null;
+  const hit = canonicalUrlNamesOtherShow(url, show, shows);
+  return hit ? hit.title : null;
+}
+
+// The lifetime sweep's isActionable rule (audit-slug-mismatch-lifetime.js).
+function isContaminationEvidence(mismatch) {
+  return !!(mismatch && mismatch.namesOtherShow);
+}
+
 function run(show, context) {
   const reviews = context.reviewsDoc[show.id] || [];
   if (reviews.length === 0) {
@@ -645,6 +670,10 @@ function run(show, context) {
       criticName: review.criticName,
       url: review.url,
       urlSlug,
+      // Positive contamination evidence (or null: unattributed, no evidence
+      // either way). The lifetime sweep's digest row warns only on new hits
+      // that carry it (BRO-7204).
+      namesOtherShow: urlNamesOtherShow(review.url, show, context.shows),
     });
   }
 
@@ -694,4 +723,5 @@ module.exports = {
   isOpaqueUrlSlug, isIdOnlyCmsUrl, buildMentionRegex, sourceTextNamesShow,
   fullTextNamesShowRepeatedly, buildVenueRegex, fullTextNamesVenueAndTitleWords,
   loadSourceTextByUrl, roundupNamesShow, urlKey, fullTextAboutThisShow,
+  urlNamesOtherShow, isContaminationEvidence,
 };

@@ -1,47 +1,47 @@
 {
-  "generatedAt": "2026-11-10T10:09:12.909Z",
-  "bannerText": "159/173 Done(14d) verified on main · 4 FAILED · 0 vacuous · 17 stuck-but-done · 1 mis-armed, needs re-arming (BRO-7141)",
+  "generatedAt": "2026-11-11T00:33:21.012Z",
+  "bannerText": "149/186 Done(14d) verified on main · 4 FAILED · 0 vacuous · 12 stuck-but-done — PARTIAL RUN: 25 checks not re-run (ran out of time), so these numbers understate the board",
   "items": [
     {
-      "title": "FAILED BRO-7028 — Auto-fix: Opening Night Orchestrator Failed",
-      "detail": "(gh not authenticated; read runs from the public GitHub API) opening-night-orchestrator.yml: MISMATCH — most recent run concluded 'failure', expected 'success' (https://github.com…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7028/auto-fix-opening-night-orchestrator-failed"
-    },
-    {
       "title": "FAILED BRO-7007 — BSC Daily: Data: armed-but-vacuous backlog cards",
-      "detail": "[check-health-row-absent] FAIL: \"Data: armed-but-vacuous backlog cards\" still listed in the 2026-11-10T09:52:21.580Z health snapshot",
+      "detail": "[check-health-row-absent] FAIL: \"Data: armed-but-vacuous backlog cards\" still listed in the 2026-11-11T00:08:14.264Z health snapshot",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-7007/bsc-daily-data-armed-but-vacuous-backlog-cards"
     },
     {
-      "title": "FAILED BRO-6524 — BSC Daily: Data quality: slug-mismatch lifetime sweep",
-      "detail": "[check-health-row-absent] FAIL: \"Data quality: slug-mismatch lifetime sweep\" still listed in the 2026-11-10T09:52:21.580Z health snapshot",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6524/bsc-daily-data-quality-slug-mismatch-lifetime-sweep"
+      "title": "FAILED BRO-6939 — Onboarding follow-ups: audit new tours' art in CI, keep genre tags through a lost-push redo",
+      "detail": "⚠️ WARNING: Tour \"the-bodyguard-tour-2026\" has no tourOf but 2 non-tour show(s) share its title (the-bodyguard-west-end-2016, the-bodyguard-west-end-2012); set tourOf if it tours …",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6939/onboarding-follow-ups-audit-new-tours-art-in-ci-keep-genre-tags"
     },
     {
-      "title": "FAILED BRO-5693 — BSC Daily: Data quality: slug-mismatch lifetime sweep",
-      "detail": "[check-health-row-absent] FAIL: \"Data quality: slug-mismatch lifetime sweep\" still listed in the 2026-11-10T09:52:21.580Z health snapshot",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5693/bsc-daily-data-quality-slug-mismatch-lifetime-sweep"
+      "title": "FAILED BRO-6493 — Closed OB rows with opening == first preview and no Playbill production page (~68): second date source",
+      "detail": "⚠️ WARNING: Tour \"the-bodyguard-tour-2026\" has no tourOf but 2 non-tour show(s) share its title (the-bodyguard-west-end-2016, the-bodyguard-west-end-2012); set tourOf if it tours …",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6493/closed-ob-rows-with-opening-first-preview-and-no-playbill-production"
     },
     {
-      "title": "STUCK BRO-7221 — BSC Daily: Quality: star-vs-score mismatch",
+      "title": "FAILED BRO-7270 — main Data Validation red: shouted title for little-bear-ridge-road-regional-2027",
+      "detail": "⚠️ WARNING: Tour \"the-bodyguard-tour-2026\" has no tourOf but 2 non-tour show(s) share its title (the-bodyguard-west-end-2016, the-bodyguard-west-end-2012); set tourOf if it tours …",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7270/main-data-validation-red-shouted-title-for-little-bear-ridge-road"
+    },
+    {
+      "title": "STUCK BRO-6762 — Fix gaps at the source: reviews regular gathering still misses and only the after-the-fact gap audit catches",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7221/bsc-daily-quality-star-vs-score-mismatch"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6762/fix-gaps-at-the-source-reviews-regular-gathering-still-misses-and-only"
     },
     {
-      "title": "STUCK BRO-7217 — BSC Daily: Quality: outlet feed staleness",
+      "title": "STUCK BRO-6625 — Main test.yml Data Validation red on Oct 30: girls-off-west-end-2026 the-recs auto-clear violation and Little Shop Guardian class-A cross-market leak",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7217/bsc-daily-quality-outlet-feed-staleness"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6625/main-testyml-data-validation-red-on-oct-30-girls-off-west-end-2026-the"
     },
     {
-      "title": "STUCK BRO-7216 — BSC Daily: Data quality: stale announced shows",
+      "title": "STUCK BRO-7299 — main test.yml red: Data Safety Guards / Checkout review-texts (private repo)",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7216/bsc-daily-data-quality-stale-announced-shows"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7299/main-testyml-red-data-safety-guards-checkout-review-texts-private-repo"
     },
     {
-      "title": "STUCK BRO-7213 — Aggregator yield: NYC Theatre and Playbill Verdict job timeouts, LBO West End drop, theatre.reviews dip, Stage backfill",
+      "title": "STUCK BRO-7274 — Ingest 34 verified-live DC/LA hub reviews missing from corpus (BRO-7256 coverage gaps)",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-7213/aggregator-yield-nyc-theatre-and-playbill-verdict-job-timeouts-lbo"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-7274/ingest-34-verified-live-dcla-hub-reviews-missing-from-corpus-bro-7256"
     }
   ],
-  "moreCount": 13
+  "moreCount": 8
 }

@@ -224,6 +224,38 @@ jobs:
           echo "rebased: $(git rev-list --count "$BASE"..HEAD) commit(s), $(git diff --name-only "$BASE"...HEAD | wc -l | tr -d ' ') file(s) changed"
           git diff --name-only "$BASE"...HEAD | sed 's/^/  /'
 
+      # BRO-7078: server-side copy of the pre-push stale-tree checks (BRO-5086,
+      # stale-tree-check.mjs checkStaleRevert + checkBotOwnedRewrite). A session
+      # without the hook pushed land/bro-7078-fixups: 112 files put back to an
+      # older main state, stopped only by an unrelated rebase conflict.
+      # ADVISORY (rule 19): warns, never fails the job. Runs even when the
+      # rebase conflicted (judges merge-base..TIP, the branch as pushed). Uses
+      # main's copy of scripts/lib/stale-tree-check.mjs: a stale tree may carry
+      # an old or missing one.
+      # Rollback: repo variable LAND_STALE_TREE_CHECK_DISABLED=true.
+      - name: Stale-tree revert check (advisory)
+        id: staletree
+        if: ${{ !cancelled() && steps.rebase.outputs.tip != '' && vars.LAND_STALE_TREE_CHECK_DISABLED != 'true' }}
+        continue-on-error: true
+        env:
+          TIP: ${{ steps.rebase.outputs.tip }}
+        run: |
+          # stale-tree-check.mjs imports only node builtins, so main's copy runs
+          # alone from a temp dir, untouched by the branch's (maybe stale) tree.
+          D="$RUNNER_TEMP/stale-tree"; mkdir -p "$D"; P="$D/stale-tree-check.mjs"
+          git show origin/main:scripts/lib/stale-tree-check.mjs > "$P" 2>/dev/null \
+            || git show "$TIP:scripts/lib/stale-tree-check.mjs" > "$P" 2>/dev/null \
+            || { echo "no stale-tree check on main or the branch yet"; exit 0; }
+          OUT=$(timeout 180 node "$P" --ci-stale --base origin/main --tip "$TIP" --cwd "$GITHUB_WORKSPACE" 2>&1) \
+            || { RC=$?; echo "$OUT"; echo "::warning::stale-tree check could not run (exit $RC)"; exit 0; }
+          echo "$OUT"
+          V=$(echo "$OUT" | sed -n 's/^stale_tree=//p' | tail -1)
+          [ -n "$V" ] || echo "::warning::stale-tree check gave no verdict"
+          echo "verdict=${V:-unknown}" >> "$GITHUB_OUTPUT"
+          if [ "$V" = "fail" ]; then
+            { echo "### Stale-tree revert (advisory)"; echo "$OUT" | sed -n 's/^::warning:://p'; } >> "$GITHUB_STEP_SUMMARY"
+          fi
+
       # BRO-5411: server-side backstop for the in-session review gate (BRO-5359).
       # A stale cached container has no hooks, so check the Review-Receipt
       # trailer here. ADVISORY (CLAUDE.md rule 19): continue-on-error, always

@@ -115,4 +115,20 @@ function dedupeAttemptState(state) {
   return removed;
 }
 
-module.exports = { shouldSkipAlreadyAttempted, dedupeAttemptState };
+/**
+ * BRO-7338: a resumed progress.json can be missing top-level arrays (a
+ * checkpoint written mid-run or by an older shape). main() does
+ * `state.failed.length` right after loadState(); an absent `failed` crashed
+ * the whole collect step ("Cannot read properties of undefined (reading
+ * 'length')") and failed the opening-night poller. Backfill every top-level
+ * array the run loop dereferences. Mutates and returns `state`.
+ */
+function ensureStateArrays(state) {
+  if (!state || typeof state !== 'object') return state;
+  for (const key of ['processed', 'failed', 'skipped']) {
+    if (!Array.isArray(state[key])) state[key] = [];
+  }
+  return state;
+}
+
+module.exports = { shouldSkipAlreadyAttempted, dedupeAttemptState, ensureStateArrays };

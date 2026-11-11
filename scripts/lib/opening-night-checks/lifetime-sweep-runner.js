@@ -31,6 +31,8 @@ const { assertCorpusScanned, CorpusNotScannedError } = require('../corpus-scan-g
 
 const ROOT = path.resolve(__dirname, '..', '..', '..');
 const AUDIT_DIR = path.join(ROOT, 'data', 'audit');
+// > digest settle (48h) + autofix persistence (72h) + one missed daily run.
+const EVIDENCE_HOLD_HOURS = 96;
 
 function loadReviewsDoc(reviewsPath) {
   const doc = {};
@@ -68,6 +70,11 @@ function defaultViolationKey(showId, violation) {
  * @param {string[]} config.argv            - process.argv.slice(2)
  * @param {string} [config.extraUsage]      - extra usage text specific to this check
  * @param {function(Array): Object} [config.summarizeHits] - additional report fields (no change to verdicts)
+ * @param {function(Object): boolean} [config.isActionable] - (violation) => true when the hit carries
+ *        positive evidence of the bypass class. When set, the snapshot also records
+ *        newActionableSinceLastRun / actionableViolations, and the digest row warns on
+ *        those instead of on every new key (BRO-7204: a hit with no evidence either way
+ *        is backlog, not news).
  * @returns {number} exit code
  */
 function runLifetimeSweep(config) {
@@ -83,6 +90,8 @@ function runLifetimeSweep(config) {
     argv,
     extraUsage = '',
     summarizeHits = () => ({}),
+    isActionable = null,
+    nowMs = Date.now(),
   } = config;
 
   const SNAPSHOT_PATH = path.join(AUDIT_DIR, snapshotBasename);
@@ -184,22 +193,65 @@ run's snapshot shows up.
   const totalViolations = hits.reduce((n, h) => n + h.violations.length, 0);
   const summary = summarizeHits(hits);
   const currentKeys = new Set();
+  const actionableKeys = new Set();
   for (const h of hits) {
-    for (const v of h.violations) currentKeys.add(violationKey(h.showId, v));
+    for (const v of h.violations) {
+      const key = violationKey(h.showId, v);
+      currentKeys.add(key);
+      if (isActionable && isActionable(v)) actionableKeys.add(key);
+    }
   }
+  // Evidence hits stay OPEN for EVIDENCE_HOLD_HOURS after they first carry
+  // evidence, or until they leave the sweep (flagged/fixed). A one-run delta
+  // would warn for a single day and the morning digest holds a new warning
+  // 48h (health-first-seen.js SETTLE_HOURS) and files only after 72h of
+  // persistence (digest-autofix.js), so a real case would vanish uncarded.
+  // Membership is compared on evidence, not on violation keys, so a backlog
+  // key that later gains evidence (its rival show added to shows.json) opens.
+  const nowIso = new Date(nowMs).toISOString();
+  let actionableOpen = {};
+  let newActionable = [];
+  const computeActionable = (prev, previousKeys) => {
+    if (!isActionable) return;
+    const prevOpen = (prev && prev.actionableOpen && typeof prev.actionableOpen === 'object') ? prev.actionableOpen : {};
+    // Snapshot written before evidence tracking: its keys are baseline, not news.
+    const prevActionable = prev && Array.isArray(prev.actionableKeys) ? new Set(prev.actionableKeys) : previousKeys;
+    for (const key of actionableKeys) {
+      if (prevOpen[key]) {
+        const age = (nowMs - Date.parse(prevOpen[key])) / 3600000;
+        if (age < EVIDENCE_HOLD_HOURS) actionableOpen[key] = prevOpen[key];
+      } else if (!prevActionable.has(key)) {
+        actionableOpen[key] = nowIso;
+        newActionable.push(key);
+      }
+    }
+  };
+  const actionableFields = () => {
+    if (!isActionable) return {};
+    return {
+      actionableViolations: actionableKeys.size,
+      newActionableSinceLastRun: newActionable.length,
+      newActionableKeys: newActionable.slice(0, 50),
+      openActionableCount: Object.keys(actionableOpen).length,
+      actionableOpen,
+      actionableKeys: [...actionableKeys],
+    };
+  };
 
   let newSinceLastRun = currentKeys.size;
   let newViolationKeys = [...currentKeys];
   if (!showArg && !argv.includes('--no-snapshot')) {
     let previousKeys = new Set();
+    let prev = null;
     try {
-      const prev = JSON.parse(fs.readFileSync(SNAPSHOT_PATH, 'utf8'));
+      prev = JSON.parse(fs.readFileSync(SNAPSHOT_PATH, 'utf8'));
       previousKeys = new Set(prev.violationKeys || []);
     } catch {
       // No prior snapshot (first run) — every current hit counts as "new".
     }
     newViolationKeys = [...currentKeys].filter((k) => !previousKeys.has(k));
     newSinceLastRun = newViolationKeys.length;
+    computeActionable(prev, previousKeys);
 
     try {
       fs.mkdirSync(path.dirname(SNAPSHOT_PATH), { recursive: true });
@@ -210,6 +262,7 @@ run's snapshot shows up.
         totalViolations,
         newSinceLastRun,
         newViolationKeys: newViolationKeys.slice(0, 50),
+        ...actionableFields(),
         violationKeys: [...currentKeys],
         hits,
         ...summary,
@@ -225,11 +278,12 @@ run's snapshot shows up.
       showsWithViolations: hits.length,
       totalViolations,
       newSinceLastRun,
+      ...actionableFields(),
       hits,
       ...summary,
     }, null, 2));
   } else {
-    console.log(`${checkModule.name} lifetime sweep (${taskRef}): ${scanned} show(s) with review-texts scanned, ${hits.length} show(s) with unhandled violations (${totalViolations} review(s), ${newSinceLastRun} new since last run).`);
+    console.log(`${checkModule.name} lifetime sweep (${taskRef}): ${scanned} show(s) with review-texts scanned, ${hits.length} show(s) with unhandled violations (${totalViolations} review(s), ${newSinceLastRun} new since last run${isActionable ? `, ${newActionable.length} newly with contamination evidence, ${Object.keys(actionableOpen).length} evidence hit(s) open` : ''}).`);
     for (const h of hits) {
       console.log(`\n-- ${h.title} (${h.showId}), opened ${h.openingDate || 'unknown'} --`);
       console.log(`  ${h.message.split('\n').join('\n  ')}`);
@@ -242,4 +296,4 @@ run's snapshot shows up.
   return totalViolations > 0 ? 1 : 0;
 }
 
-module.exports = { runLifetimeSweep, loadReviewsDoc, defaultExtractViolations, defaultViolationKey };
+module.exports = { EVIDENCE_HOLD_HOURS, runLifetimeSweep, loadReviewsDoc, defaultExtractViolations, defaultViolationKey };

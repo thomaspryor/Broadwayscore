@@ -457,7 +457,71 @@ function runDeadlineReached(startMs, nowMs, deadlineMin = REDDIT_RUN_DEADLINE_MI
   return Number.isFinite(deadlineMin) && deadlineMin > 0 && (nowMs - startMs) >= deadlineMin * 60000;
 }
 
+// Moved from scrape-reddit-sentiment.js (BRO-7329) so other scripts can reuse it without loading the scraper.
+/**
+ * Check if a post title suggests audience reaction (not industry discussion)
+ * Returns: true (definitely audience), false (definitely industry), or null (neutral - include but don't prioritize)
+ */
+function classifyPost(post, showTitle) {
+  const rawTitle = post.title || '';
+  const title = rawTitle.toLowerCase();
+  const flair = (post.link_flair_text || '').toLowerCase();
+
+  // ZEROTH: Roundup / awards / recurring-megathread posts discuss many shows at
+  // once. Their comments must never be attributed to whichever show happened to
+  // match the search (e.g. "Drama Desk Awards 2025" mentioning "Music City").
+  // Exclude outright — overrides review flair.
+  if (isRoundupOrMegathread(rawTitle)) return false;
+
+  // FIRST: Check exclusion keywords - these override everything including flair
+  // Industry keywords to EXCLUDE
+  const industryKeywords = [
+    'injury', 'injured', 'hurt', 'hospital', 'medical',
+    'contract', 'leaving', 'departure', 'replacement',
+    'backstage', 'stagehand', 'crew',
+    'closing notice', 'last performance',
+    'salary', 'wages', 'union', 'strike',
+    'rake', 'raked stage',
+  ];
+
+  // Movie/film keywords to EXCLUDE (for shows with film adaptations)
+  const movieKeywords = [
+    'movie', 'film', 'screening', 'theater chain', 'cinema',
+    'imax', 'dolby', 'amc', 'regal',
+    'ariana grande', 'cynthia erivo',  // Movie cast (Wicked 2024)
+    'jon m. chu', 'universal pictures',
+    'trailer', 'teaser', 'poster reveal',
+    'box office', 'opening weekend',
+  ];
+
+  for (const keyword of industryKeywords) {
+    if (title.includes(keyword)) return false;
+  }
+
+  // Exclude movie/film discussions
+  for (const keyword of movieKeywords) {
+    if (title.includes(keyword)) return false;
+  }
+
+  // THEN: Review flair is a strong positive signal (after exclusions)
+  if (flair.includes('review')) return true;
+
+  // Audience keywords that strongly suggest reactions
+  const audienceKeywords = [
+    'saw', 'seen', 'watched', 'just saw',
+    'review', 'thoughts', 'opinion',
+    'loved', 'amazing', 'recommend',
+    'disappointed', 'favorite',
+  ];
+
+  if (audienceKeywords.some(kw => title.includes(kw))) return true;
+
+  // Neutral - not clearly industry or audience
+  return null;
+}
+
 module.exports = {
+  classifyPost,
   selectPostsForComments,
   runDeadlineReached,
   REDDIT_RUN_DEADLINE_MIN,
