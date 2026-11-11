@@ -1,27 +1,95 @@
 {
   "processed": [
     "cloud-9-west-end-2026/timeout-london--unknown.json",
-    "cloud-9-west-end-2026/theatre-weekly--unknown.json"
+    "cloud-9-west-end-2026/theatre-weekly--unknown.json",
+    "ghost-notes-off-broadway-2026/oazis--unknown.json",
+    "jest-to-impress-off-broadway-2026/donyc--unknown.json",
+    "here-there-are-blueberries-2026/new-york-city-theatre--unknown.json",
+    "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json",
+    "kate-allie-and-the-86-mets-off-broadway-2026/front-row-center--tulis-mccall.json",
+    "msblackforpresident-off-broadway-2026/new-york-notebook--sandy-macdonald.json"
   ],
   "failed": [
-    "cloud-9-west-end-2026/times-uk--susannah-butter.json"
+    "cloud-9-west-end-2026/times-uk--susannah-butter.json",
+    "jest-to-impress-off-broadway-2026/chelmsfordtheatre--genre.json",
+    "now-you-see-me-live-2026/deadline--anthony-dalessandro.json",
+    "medea-off-broadway-2026/express-uk--neil-norman.json",
+    "here-there-are-blueberries-2026/talkinbroadway--unknown.json",
+    "the-visitors-off-broadway-2026/bobs-theater-blog--unknown.json",
+    "the-visitors-off-broadway-2026/boston-globe--unknown.json",
+    "the-visitors-off-broadway-2026/talkinbroadway--unknown.json",
+    "msblackforpresident-off-broadway-2026/guardian--unknown.json",
+    "msblackforpresident-off-broadway-2026/talkinbroadway--unknown.json",
+    "222-a-ghost-story-off-broadway-2026/theatrely--kobi-kassal.json",
+    "222-a-ghost-story-off-broadway-2026/talkinbroadway--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "cloud-9-west-end-2026/timeout-london--unknown.json",
-      "cloud-9-west-end-2026/theatre-weekly--unknown.json"
+      "cloud-9-west-end-2026/theatre-weekly--unknown.json",
+      "ghost-notes-off-broadway-2026/oazis--unknown.json",
+      "jest-to-impress-off-broadway-2026/donyc--unknown.json",
+      "kate-allie-and-the-86-mets-off-broadway-2026/front-row-center--tulis-mccall.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/now-you-see-me-live-2026/deadline--anthony-dalessandro.json"
+    ],
     "directCookies": [],
-    "scrapingdog": [],
-    "scrapingbee": [],
+    "scrapingdog": [
+      "msblackforpresident-off-broadway-2026/new-york-notebook--sandy-macdonald.json"
+    ],
+    "scrapingbee": [
+      "here-there-are-blueberries-2026/cititour--brian-scott-lipton.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "here-there-are-blueberries-2026/new-york-city-theatre--unknown.json"
+    ]
   },
   "startTime": "2026-11-11T10:59:59.833Z",
-  "lastProcessed": "cloud-9-west-end-2026/times-uk--susannah-butter.json",
-  "log": []
+  "lastProcessed": "222-a-ghost-story-off-broadway-2026/talkinbroadway--unknown.json",
+  "log": [
+    {
+      "t": "2026-11-11T11:21:35.313Z",
+      "event": "bb-session",
+      "session": "26af1cca",
+      "url": "https://deadline.com/2026/10/you-can-see-everything-clayface-box-office-12371686"
+    },
+    {
+      "t": "2026-11-11T11:23:29.780Z",
+      "event": "bb-session",
+      "session": "347df59b",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655643"
+    },
+    {
+      "t": "2026-11-11T11:23:30.403Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-11T11:26:08.721Z",
+      "event": "bb-session",
+      "session": "104d8322",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655641"
+    },
+    {
+      "t": "2026-11-11T11:26:09.346Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-11T11:29:10.327Z",
+      "event": "bb-session",
+      "session": "e60b795f",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655599"
+    },
+    {
+      "t": "2026-11-11T11:29:11.035Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ]
 }
