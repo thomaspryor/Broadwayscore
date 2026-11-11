@@ -179,7 +179,10 @@
     "perfect-crime-off-broadway-1987/times-square-chronicles--suzanna-bowling.json",
     "the-mousetrap-west-end-2021/standard--jessie-thompson.json",
     "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
-    "christmas-carol-goes-wrong-west-end-2026/london-theatre-reviews--the-anonymous-reviewer.json"
+    "christmas-carol-goes-wrong-west-end-2026/london-theatre-reviews--the-anonymous-reviewer.json",
+    "cloud-9-west-end-2026/west-end-best-friend--jeff-mostyn.json",
+    "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json",
+    "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json"
   ],
   "failed": [
     "cloud-9-west-end-2026/times-uk--susannah-butter.json",
@@ -299,7 +302,8 @@
     "the-phantom-of-the-opera-west-end-1986/whatsonstage--sarah-crompton.json",
     "evita-2026/thestage--sam-marlowe.json",
     "billy-elliot-the-musical-west-end-2027/telegraph--holly-williams.json",
-    "the-seagull-globe-off-west-end-2026/thestage--sam-marlowe.json"
+    "the-seagull-globe-off-west-end-2026/thestage--sam-marlowe.json",
+    "cloud-9-west-end-2026/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -410,13 +414,17 @@
       "perfect-crime-off-broadway-1987/front-row-center--sarah-downs.json",
       "the-mousetrap-west-end-2021/standard--jessie-thompson.json",
       "the-mousetrap-west-end-2021/theatre-weekly--unknown.json",
-      "christmas-carol-goes-wrong-west-end-2026/london-theatre-reviews--the-anonymous-reviewer.json"
+      "christmas-carol-goes-wrong-west-end-2026/london-theatre-reviews--the-anonymous-reviewer.json",
+      "cloud-9-west-end-2026/west-end-best-friend--jeff-mostyn.json",
+      "the-moth-off-west-end-2026/creative-reviews-uk--creative-reviews-uk.json",
+      "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/now-you-see-me-live-2026/deadline--anthony-dalessandro.json",
       "data/review-texts/paranormal-activity-2026/nytimes--helen-shaw.json",
-      "paranormal-activity-2026/nytimes--helen-shaw.json"
+      "paranormal-activity-2026/nytimes--helen-shaw.json",
+      "data/review-texts/cloud-9-west-end-2026/times-uk--susannah-butter.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -505,7 +513,7 @@
     ]
   },
   "startTime": "2026-11-11T10:59:59.833Z",
-  "lastProcessed": "christmas-carol-goes-wrong-west-end-2026/london-theatre-reviews--the-anonymous-reviewer.json",
+  "lastProcessed": "ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
   "log": [
     {
       "t": "2026-11-11T11:21:35.313Z",
@@ -628,6 +636,17 @@
       "t": "2026-11-11T13:43:31.093Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-11T14:03:02.002Z",
+      "event": "bb-session",
+      "session": "878eca4b",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/charlotte-ritchie-intervi"
+    },
+    {
+      "t": "2026-11-11T14:03:02.733Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
