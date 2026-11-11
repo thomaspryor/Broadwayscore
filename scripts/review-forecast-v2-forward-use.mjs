@@ -11,7 +11,7 @@ const open = Object.fromEntries(arr.map(s => [s.id, s.openingDate]));
 const buzz = JSON.parse(fs.readFileSync('data/audience-buzz.json', 'utf8')); const A = buzz.shows || buzz;
 const S = Object.keys(members).map(id => ({ id, ...members[id], open: open[id] }));
 const mean = x => x.reduce((a, b) => a + b, 0) / x.length;
-const era = s => { const y = +String(s.open || '0').slice(0, 4); return y >= 2024 ? '2024+' : y >= 2019 ? '2019-2023' : 'pre-2019'; };
+const era = s => { const y = +String(s.open || '0').slice(0, 4); return y >= 2025 ? '2025+' : y === 2024 ? '2024' : y >= 2019 ? '2019-2023' : 'pre-2019'; };
 const cover = {};
 for (const s of S) { const k = era(s); cover[k] ??= { shows: 0, withMemberReviews: 0 }; cover[k].shows++; if (s.n > 0) cover[k].withMemberReviews++; }
 const pairs = S.filter(s => s.n >= 5).map(s => [s.mean, A[s.id]?.sources?.showScore?.score]).filter(p => p[1] != null);
