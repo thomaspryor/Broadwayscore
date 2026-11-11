@@ -32,7 +32,7 @@ function scanContent(text, valueKeys = FORECAST_VALUE_KEYS) {
 
 function trackedPublicFiles(root) {
   const out = execFileSync('git', ['ls-files', '-z'], { cwd: root, maxBuffer: 1 << 28 }).toString('utf8');
-  return out.split('\0').filter((f) => f && /\.(json|jsonl|csv|txt|md)$/.test(f) && !ALLOWED.some((re) => re.test(f)));
+  return out.split('\0').filter((f) => f && /\.(json|jsonl|csv|txt|md|js|mjs|cjs|ts|tsx|yml|yaml|html)$/.test(f) && !ALLOWED.some((re) => re.test(f)));
 }
 
 /** Scan every tracked public data file. Returns [{file, signature}]. */
